@@ -41,7 +41,7 @@
 #include "brave/browser/ui/views/toolbar/side_panel_button.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/constants/brave_switches.h"
-#include "brave/components/playlist/common/features.h"
+#include "brave/components/playlist/core/common/features.h"
 #include "brave/components/sidebar/browser/constants.h"
 #include "brave/components/sidebar/browser/pref_names.h"
 #include "brave/components/sidebar/browser/sidebar_item.h"
@@ -853,6 +853,16 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithWebPanelTest, WebPanelTest) {
     // Above item is added at last.
     controller()->ActivateItemAt(sidebar_service->items().size() - 1);
     EXPECT_EQ(tab_model()->GetActiveWebContents()->GetVisibleURL(), item_url);
+
+    // Test toggle existing panel doesn't have any issue even web panel type
+    // exists.
+    auto* panel_ui = browser()->GetFeatures().side_panel_ui();
+    panel_ui->Show(SidePanelEntryId::kCustomizeChrome);
+    ASSERT_TRUE(
+        base::test::RunUntil([&]() { return GetSidePanel()->GetVisible(); }));
+    panel_ui->Close();
+    ASSERT_TRUE(
+        base::test::RunUntil([&]() { return !GetSidePanel()->GetVisible(); }));
     return;
   }
 

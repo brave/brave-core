@@ -1,0 +1,26 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+// Schema for Brave PSST permissions.
+namespace psst {
+    // Represents the behavior type based on user consent decision
+    enum ConsentStatus {
+        kAsk,
+        kAllow,
+        kBlock
+    };
+
+    // Permission information for Psst flow
+    dictionary PsstPermissionInfo {
+        // User consent decision
+        ConsentStatus consent_status;
+        // Actual script version
+        long script_version;
+        // Signed user identifier
+        DOMString user_id;
+        // List of URLs where the user decided not to apply privacy settings
+        DOMString[] urls_to_skip;
+    };
+};

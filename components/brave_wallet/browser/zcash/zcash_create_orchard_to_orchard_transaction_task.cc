@@ -11,6 +11,7 @@
 #include "base/check.h"
 #include "base/numerics/checked_math.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
 
@@ -158,7 +159,7 @@ void ZCashCreateOrchardToOrchardTransactionTask::CreateTransaction() {
       spendable_notes_->anchor_block_id.value();
 
   auto orchard_unified_addr = GetOrchardUnifiedAddress(
-      receiver_, context_.chain_id == mojom::kZCashTestnet);
+      receiver_, IsZCashTestnetKeyring(context_.account_id->keyring_id));
 
   if (!orchard_unified_addr) {
     error_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);

@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "brave/components/playlist/common/mojom/playlist.mojom.h"
+#include "brave/components/playlist/core/common/mojom/playlist.mojom.h"
 #include "mojo/public/cpp/bindings/associated_receiver.h"
 #include "mojo/public/cpp/bindings/scoped_interface_endpoint_handle.h"
 #include "testing/gmock/include/gmock/gmock.h"

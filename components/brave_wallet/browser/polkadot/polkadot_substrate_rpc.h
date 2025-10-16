@@ -8,6 +8,8 @@
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_utils.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace brave_wallet {
@@ -27,9 +29,18 @@ class PolkadotSubstrateRpc {
       base::OnceCallback<void(const std::optional<std::string>&,
                               const std::optional<std::string>&)>;
 
+  using GetAccountBalanceCallback =
+      base::OnceCallback<void(mojom::PolkadotAccountInfoPtr,
+                              const std::optional<std::string>&)>;
+
   // Get the name of the chain pointed to by the current network configuration.
   // "Westend" or "Paseo" for the testnets, "Polkadot" for the mainnet.
-  void GetChainName(const std::string& chain_id, GetChainNameCallback callback);
+  void GetChainName(std::string_view chain_id, GetChainNameCallback callback);
+
+  void GetAccountBalance(
+      std::string_view chain_id,
+      base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> pubkey,
+      GetAccountBalanceCallback callback);
 
  private:
   using APIRequestResult = api_request_helper::APIRequestResult;
@@ -37,8 +48,9 @@ class PolkadotSubstrateRpc {
   static base::DictValue MakeRpcRequestJson(std::string_view method,
                                             base::ListValue params);
 
-  GURL GetNetworkURL(const std::string& chain_id);
+  GURL GetNetworkURL(std::string_view chain_id);
   void OnGetChainName(GetChainNameCallback callback, APIRequestResult res);
+  void OnGetAccountBalance(GetAccountBalanceCallback, APIRequestResult res);
 
   const raw_ref<NetworkManager> network_manager_;
   api_request_helper::APIRequestHelper api_request_helper_;

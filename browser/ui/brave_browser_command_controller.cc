@@ -32,7 +32,7 @@
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "brave/components/commands/common/features.h"
 #include "brave/components/constants/pref_names.h"
-#include "brave/components/playlist/common/buildflags/buildflags.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/browser_process.h"
@@ -64,7 +64,7 @@
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
 #include "brave/browser/playlist/playlist_service_factory.h"
-#include "brave/components/playlist/common/features.h"
+#include "brave/components/playlist/core/common/features.h"
 #endif
 
 #if BUILDFLAG(ENABLE_COMMANDER)
@@ -559,12 +559,14 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
     case IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER:
       brave::ShowWebcompatReporter(&*browser_);
       break;
+#if BUILDFLAG(ENABLE_TOR)
     case IDC_NEW_OFFTHERECORD_WINDOW_TOR:
       brave::NewOffTheRecordWindowTor(&*browser_);
       break;
     case IDC_NEW_TOR_CONNECTION_FOR_SITE:
       brave::NewTorConnectionForSite(&*browser_);
       break;
+#endif
     case IDC_SHOW_BRAVE_SYNC:
       brave::ShowSync(&*browser_);
       break;

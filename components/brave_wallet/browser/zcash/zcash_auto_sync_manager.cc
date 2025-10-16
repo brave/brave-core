@@ -28,7 +28,7 @@ void ZCashAutoSyncManager::Start() {
   CHECK(!started_);
   started_ = true;
   zcash_wallet_service_->GetChainTipStatus(
-      zcash_action_context_.account_id.Clone(), zcash_action_context_.chain_id,
+      zcash_action_context_.account_id.Clone(),
       base::BindOnce(&ZCashAutoSyncManager::OnGetChainTipStatus,
                      weak_ptr_factory_.GetWeakPtr()));
   timer_.Start(FROM_HERE, kZCashAutoSyncRefreshInterval,
@@ -38,7 +38,7 @@ void ZCashAutoSyncManager::Start() {
 
 void ZCashAutoSyncManager::OnTimerHit() {
   zcash_wallet_service_->GetChainTipStatus(
-      zcash_action_context_.account_id.Clone(), zcash_action_context_.chain_id,
+      zcash_action_context_.account_id.Clone(),
       base::BindOnce(&ZCashAutoSyncManager::OnGetChainTipStatus,
                      weak_ptr_factory_.GetWeakPtr()));
 }

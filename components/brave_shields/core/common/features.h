@@ -46,6 +46,7 @@ BASE_DECLARE_FEATURE(kCosmeticFilteringSyncLoad);
 BASE_DECLARE_FEATURE(kBlockAllCookiesToggle);
 BASE_DECLARE_FEATURE(kCosmeticFilteringCustomScriptlets);
 BASE_DECLARE_FEATURE(kBraveShieldsElementPicker);
+BASE_DECLARE_FEATURE(kWebKitAdvancedPrivacyProtections);
 extern const base::FeatureParam<int> kComponentUpdateCheckIntervalMins;
 extern const base::FeatureParam<std::string>
     kCosmeticFilteringSubFrameFirstSelectorsPollingDelayMs;

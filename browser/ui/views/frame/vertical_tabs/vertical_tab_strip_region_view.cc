@@ -34,7 +34,6 @@
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_properties.h"
-#include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
@@ -184,10 +183,12 @@ END_METADATA
 class VerticalTabNewTabButton : public BraveNewTabButton {
   METADATA_HEADER(VerticalTabNewTabButton, BraveNewTabButton)
  public:
-  VerticalTabNewTabButton(TabStrip* tab_strip,
+  VerticalTabNewTabButton(TabStripController* tab_strip_controller,
                           PressedCallback callback,
                           const std::u16string& shortcut_text)
-      : BraveNewTabButton(tab_strip, std::move(callback)) {
+      : BraveNewTabButton(tab_strip_controller,
+                          std::move(callback),
+                          kLeoPlusAddIcon) {
     // Turn off inkdrop to have same bg color with tab's.
     views::InkDrop::Get(this)->SetMode(views::InkDropHost::InkDropMode::OFF);
 
@@ -261,41 +262,19 @@ class VerticalTabNewTabButton : public BraveNewTabButton {
 
   ~VerticalTabNewTabButton() override = default;
 
-  // BraveNewTabButton:
-  SkPath GetBorderPath(const gfx::Point& origin,
-                       bool extend_to_top) const override {
-    auto contents_bounds = GetContentsBounds();
-    SkPath path;
-    const auto* widget = GetWidget();
-    if (widget) {
-      const float radius = GetCornerRadius();
-      const gfx::Rect path_rect(origin.x(), origin.y(), contents_bounds.width(),
-                                contents_bounds.height());
-      path.addRoundRect(RectToSkRect(path_rect), radius, radius);
-      path.close();
-    }
-    return path;
-  }
-
-  void PaintIcon(gfx::Canvas* canvas) override {
-    // Bypass '+' painting as we have a |plus_icon_| for that.
-    return;
-  }
-
   gfx::Insets GetInsets() const override {
     // This button doesn't need any insets. Invalidate parent's one.
     return gfx::Insets();
   }
 
-  void OnPaintFill(gfx::Canvas* canvas) const override {
-    // Invalidate upstream's paint operation.
-    // We fill background whenever state changed to have same bg color with
-    // tab's. See StateChanged().
-    // It's difficult to have same bg color with ink drop.
-  }
-
   void StateChanged(ButtonState old_state) override {
     BraveNewTabButton::StateChanged(old_state);
+    UpdateColors();
+  }
+
+ private:
+  void UpdateColors() override {
+    BraveNewTabButton::UpdateColors();
 
     int bg_color_id = kColorToolbar;
     if (GetState() == views::Button::STATE_PRESSED) {
@@ -308,7 +287,6 @@ class VerticalTabNewTabButton : public BraveNewTabButton {
         views::CreateRoundedRectBackground(bg_color_id, GetCornerRadius()));
   }
 
- private:
   raw_ptr<views::ImageView> plus_icon_ = nullptr;
   raw_ptr<views::Label> text_ = nullptr;
 };
@@ -502,7 +480,7 @@ BraveVerticalTabStripRegionView::BraveVerticalTabStripRegionView(
   separator_->SetBackground(
       views::CreateSolidBackground(kColorBraveVerticalTabSeparator));
   new_tab_button_ = AddChildView(std::make_unique<VerticalTabNewTabButton>(
-      original_region_view_->tab_strip_,
+      original_region_view_->tab_strip_->controller(),
       base::BindRepeating(&TabStrip::NewTabButtonPressed,
                           base::Unretained(original_region_view_->tab_strip_)),
       GetShortcutTextForNewTabButton(browser_view)));
@@ -575,14 +553,6 @@ BraveVerticalTabStripRegionView::BraveVerticalTabStripRegionView(
 
   widget_observation_.Observe(browser_view->GetWidget());
 
-  // At this point, Browser hasn't finished its initialization. In order to
-  // access some of its member, we should observe BrowserList.
-  DCHECK(
-      std::ranges::find(*BrowserList::GetInstance(), browser_view->browser()) ==
-      BrowserList::GetInstance()->end())
-      << "Browser shouldn't be added at this point.";
-  BrowserList::AddObserver(this);
-
   // Note: This should happen after all the PrefMembers have been initialized.
   OnFloatingModePrefChanged();
 
@@ -593,9 +563,6 @@ BraveVerticalTabStripRegionView::~BraveVerticalTabStripRegionView() {
   // We need to move tab strip region to its original parent to avoid crash
   // during drag and drop session.
   UpdateLayout(true);
-  DCHECK(fullscreen_observation_.IsObserving())
-      << "We didn't start to observe FullscreenController from BrowserList's "
-         "callback";
 }
 
 void BraveVerticalTabStripRegionView::ToggleState() {
@@ -646,16 +613,14 @@ void BraveVerticalTabStripRegionView::OnFullscreenStateChanged() {
   PreferredSizeChanged();
 }
 
-void BraveVerticalTabStripRegionView::OnBrowserAdded(Browser* browser) {
-  if (browser != browser_) {
-    return;
-  }
-
+void BraveVerticalTabStripRegionView::ListenFullscreenChanges() {
   auto* fullscreen_controller = GetFullscreenController();
   DCHECK(fullscreen_controller);
   fullscreen_observation_.Observe(fullscreen_controller);
+}
 
-  BrowserList::RemoveObserver(this);
+void BraveVerticalTabStripRegionView::StopListeningFullscreenChanges() {
+  fullscreen_observation_.Reset();
 }
 
 FullscreenController* BraveVerticalTabStripRegionView::GetFullscreenController()
@@ -929,8 +894,6 @@ void BraveVerticalTabStripRegionView::OnThemeChanged() {
   View::OnThemeChanged();
 
   UpdateBorder();
-
-  new_tab_button_->FrameColorsChanged();
 }
 
 void BraveVerticalTabStripRegionView::OnMouseExited(
@@ -1431,7 +1394,7 @@ void BraveVerticalTabStripRegionView::ShowContextMenuForViewImpl(
   }
 
   menu_runner_ = std::make_unique<views::MenuRunner>(
-      browser_view_->frame()->GetSystemMenuModel(),
+      browser_view_->browser_widget()->GetSystemMenuModel(),
       views::MenuRunner::HAS_MNEMONICS | views::MenuRunner::CONTEXT_MENU,
       base::BindRepeating(&BraveVerticalTabStripRegionView::OnMenuClosed,
                           base::Unretained(this)));

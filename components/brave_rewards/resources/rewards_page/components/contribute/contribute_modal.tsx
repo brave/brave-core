@@ -18,17 +18,17 @@ import { TransferError } from './transfer_error'
 import { style, backgroundStyle } from './contribute_modal.style'
 
 type ViewType =
-  'payment-selection' |
-  'payment-form' |
-  'sending' |
-  'success' |
-  'error'
+  | 'payment-selection'
+  | 'payment-form'
+  | 'sending'
+  | 'success'
+  | 'error'
 
 interface Props {
   onClose: () => void
 }
 
-export function ContributeModal (props: Props) {
+export function ContributeModal(props: Props) {
   const { getString } = useLocaleContext()
   const model = React.useContext(AppModelContext)
 
@@ -38,8 +38,8 @@ export function ContributeModal (props: Props) {
   const [viewType, setViewType] = React.useState<ViewType>(() => {
     if (creator && externalWallet) {
       const hasMatchingCustodialProvider =
-        creator.supportedWalletProviders.includes(externalWallet.provider) &&
-        !isSelfCustodyProvider(externalWallet.provider)
+        creator.supportedWalletProviders.includes(externalWallet.provider)
+        && !isSelfCustodyProvider(externalWallet.provider)
 
       if (hasMatchingCustodialProvider && !creator.banner.web3URL) {
         return 'payment-form'
@@ -57,7 +57,9 @@ export function ContributeModal (props: Props) {
 
     model
       .sendContribution(creator.site.id, amount, recurring)
-      .then((success) => { setViewType(success ? 'success' : 'error') })
+      .then((success) => {
+        setViewType(success ? 'success' : 'error')
+      })
   }
 
   function renderHeader() {
@@ -80,7 +82,12 @@ export function ContributeModal (props: Props) {
   function renderContent() {
     switch (viewType) {
       case 'payment-form':
-        return <PaymentForm onCancel={props.onClose} onSend={onSend} />
+        return (
+          <PaymentForm
+            onCancel={props.onClose}
+            onSend={onSend}
+          />
+        )
       case 'payment-selection':
         return (
           <PaymentSelection
@@ -98,7 +105,10 @@ export function ContributeModal (props: Props) {
   }
 
   return (
-    <div className={viewType} data-css-scope={backgroundStyle.scope}>
+    <div
+      className={viewType}
+      data-css-scope={backgroundStyle.scope}
+    >
       <Modal onEscape={props.onClose}>
         <div data-css-scope={style.scope}>
           {renderHeader()}

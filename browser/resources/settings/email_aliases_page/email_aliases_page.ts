@@ -20,8 +20,8 @@ class EmailAliasesPage extends HTMLElement {
     const title = loadTimeData.getString('emailAliasesLabel')
     subpage.setAttribute('page-title', title)
     import('/email_aliases.bundle.js' as any)
-      .then(() => {
-        ;(window as any).mountEmailAliases(subpage)
+      .then(({ mount }) => {
+        mount(subpage)
       })
   }
 }

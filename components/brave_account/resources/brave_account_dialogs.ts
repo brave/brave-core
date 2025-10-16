@@ -10,14 +10,11 @@ import {
   BraveAccountBrowserProxyImpl,
 } from './brave_account_browser_proxy.js'
 import { getHtml } from './brave_account_dialogs.html.js'
+import { Error } from './brave_account_common.js'
 
-export enum Dialog {
-  NONE,
-  CREATE,
-  ENTRY,
-  FORGOT_PASSWORD,
-  SIGN_IN,
-}
+export type Dialog =
+  | { type: 'NONE' | 'CREATE' | 'ENTRY' | 'FORGOT_PASSWORD' | 'SIGN_IN' }
+  | { type: 'ERROR'; error: Error }
 
 export class BraveAccountDialogs extends CrLitElement {
   static get is() {
@@ -30,23 +27,16 @@ export class BraveAccountDialogs extends CrLitElement {
 
   static override get properties() {
     return {
-      dialog: { type: Dialog },
+      dialog: { type: Object },
       signedIn: { type: Boolean, reflect: true },
     }
   }
 
   protected onBackButtonClicked() {
-    switch (this.dialog) {
-      case Dialog.CREATE:
-        this.dialog = Dialog.ENTRY
-        break
-      case Dialog.FORGOT_PASSWORD:
-        this.dialog = Dialog.SIGN_IN
-        break
-      case Dialog.SIGN_IN:
-        this.dialog = Dialog.ENTRY
-        break
-    }
+    this.dialog =
+      this.dialog.type === 'FORGOT_PASSWORD'
+        ? { type: 'SIGN_IN' }
+        : { type: 'ENTRY' }
   }
 
   protected onCloseDialog() {
@@ -56,7 +46,7 @@ export class BraveAccountDialogs extends CrLitElement {
   private browserProxy: BraveAccountBrowserProxy =
     BraveAccountBrowserProxyImpl.getInstance()
 
-  protected accessor dialog: Dialog = Dialog.ENTRY
+  protected accessor dialog: Dialog = { type: 'ENTRY' }
   protected accessor signedIn: boolean = false
 }
 

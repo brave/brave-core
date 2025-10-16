@@ -55,6 +55,7 @@ TEST_F(SpeedreaderServiceTest, DefaultSettings) {
   EXPECT_FALSE(speedreader_service()->IsAllowedForAllReadableSites());
 
   for (const bool enabled : {true, false}) {
+    SCOPED_TRACE(testing::Message() << "Enabled: " << enabled);
     speedreader_service()->SetAllowedForAllReadableSites(enabled);
     EXPECT_EQ(enabled, speedreader_service()->IsAllowedForAllReadableSites());
     EXPECT_EQ(enabled,
@@ -79,6 +80,23 @@ TEST_F(SpeedreaderServiceTest, DefaultSiteSettingsAllSitesEnabled) {
   EXPECT_FALSE(speedreader_service()->IsDisabledForSite(site));
 }
 
+TEST_F(SpeedreaderServiceTest, SpeedreaderDisabled) {
+  const GURL site1("https://example.com");
+  const GURL site2("https://example2.com");
+
+  prefs()->SetBoolean(kSpeedreaderEnabled, false);
+  speedreader_service()->SetEnabledForSite(site2, true);
+
+  for (const bool enabled : {true, false}) {
+    SCOPED_TRACE(testing::Message() << "Enabled: " << enabled);
+    speedreader_service()->SetAllowedForAllReadableSites(enabled);
+    EXPECT_FALSE(speedreader_service()->IsAllowedForSite(site1));
+    EXPECT_FALSE(speedreader_service()->IsAllowedForSite(site2));
+    EXPECT_FALSE(speedreader_service()->IsEnabledForSite(site1));
+    EXPECT_TRUE(speedreader_service()->IsEnabledForSite(site2));
+  }
+}
+
 TEST_F(SpeedreaderServiceTest, OverrideSiteSettingsAllSitesDefault) {
   const GURL site("https://example.com");
 
@@ -96,6 +114,7 @@ TEST_F(SpeedreaderServiceTest, OverrideSiteSettingsAllSitesEnabled) {
 
   speedreader_service()->SetAllowedForAllReadableSites(true);
   for (const bool enabled : {true, false}) {
+    SCOPED_TRACE(testing::Message() << "Enabled: " << enabled);
     speedreader_service()->SetEnabledForSite(site, enabled);
     EXPECT_EQ(enabled, speedreader_service()->IsAllowedForSite(site));
     EXPECT_EQ(enabled, speedreader_service()->IsEnabledForSite(site));

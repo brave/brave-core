@@ -15,7 +15,7 @@ source_set("internal") {
     "//brave/browser/ui/sidebar",
     "//brave/browser/ui/tabs:split_view",
     "//brave/components/brave_vpn/common/buildflags",
-    "//brave/components/playlist/common",
+    "//brave/components/playlist/core/common",
     "//chrome/browser/ui/browser_window",
   ]
 

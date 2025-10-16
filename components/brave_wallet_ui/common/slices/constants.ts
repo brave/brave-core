@@ -34,4 +34,5 @@ export const coinTypesMapping = {
   [BraveWallet.CoinType.BTC]: CoinTypes.BTC,
   [BraveWallet.CoinType.ZEC]: CoinTypes.ZEC,
   [BraveWallet.CoinType.ADA]: CoinTypes.ADA,
+  [BraveWallet.CoinType.DOT]: CoinTypes.DOT,
 }

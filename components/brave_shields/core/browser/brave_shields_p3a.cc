@@ -9,11 +9,9 @@
 
 #include "base/check.h"
 #include "base/check_op.h"
-#include "base/compiler_specific.h"
 #include "base/logging.h"
 #include "base/metrics/histogram_functions.h"
 #include "base/metrics/histogram_macros.h"
-#include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 #include "brave/components/p3a/utils.h"
 #include "brave/components/p3a_utils/bucket.h"
@@ -157,6 +155,18 @@ int DomainCountRelativeToGlobalSetting(PrefService* profile_prefs,
   return total;
 }
 
+ShieldsSettingCounts GetAdsSettingCount(HostContentSettingsMap* map) {
+  ContentSettingsForOneType cosmetic_rules =
+      map->GetSettingsForOneType(ContentSettingsType::BRAVE_COSMETIC_FILTERING);
+  return GetSettingCountFromCosmeticFilteringRules(cosmetic_rules);
+}
+
+ShieldsSettingCounts GetFPSettingCount(HostContentSettingsMap* map) {
+  ContentSettingsForOneType fp_rules =
+      map->GetSettingsForOneType(ContentSettingsType::BRAVE_FINGERPRINTING_V2);
+  return GetSettingCountFromRules(fp_rules);
+}
+
 }  // namespace
 
 void MaybeRecordShieldsUsageP3A(ShieldsIconUsage usage,
@@ -254,18 +264,19 @@ void RecordForgetFirstPartySetting(HostContentSettingsMap* map) {
   UMA_HISTOGRAM_EXACT_LINEAR(kForgetFirstPartyHistogramName, answer, 4);
 }
 
-void MaybeRecordInitialShieldsSettings(PrefService* profile_prefs,
-                                       HostContentSettingsMap* map) {
+void MaybeRecordInitialShieldsSettings(
+    PrefService* profile_prefs,
+    HostContentSettingsMap* map,
+    ControlType cosmetic_filtering_control_type,
+    ControlType fingerprinting_control_type) {
   if (profile_prefs->GetInteger(kFirstReportedRevisionPrefName) >=
       kCurrentReportRevision) {
     return;
   }
   VLOG(1) << "BraveShieldsP3A: Starting initial report for profile";
 
-  ControlType global_ads_setting = GetCosmeticFilteringControlType(map, GURL());
-  ControlType global_fp_setting = GetFingerprintingControlType(map, GURL());
-  RecordShieldsAdsSetting(global_ads_setting);
-  RecordShieldsFingerprintSetting(global_fp_setting);
+  RecordShieldsAdsSetting(cosmetic_filtering_control_type);
+  RecordShieldsFingerprintSetting(fingerprinting_control_type);
 
   // Since internal setting counts don't exist, we will
   // count ads & fp settings for all domains by processing the content settings.
@@ -300,8 +311,10 @@ void MaybeRecordInitialShieldsSettings(PrefService* profile_prefs,
   UpdateDomainSettingCount(profile_prefs, false, ControlType::BLOCK,
                            ads_counts.aggressive);
 
-  RecordShieldsDomainSettingCounts(profile_prefs, false, global_ads_setting);
-  RecordShieldsDomainSettingCounts(profile_prefs, true, global_fp_setting);
+  RecordShieldsDomainSettingCounts(profile_prefs, false,
+                                   cosmetic_filtering_control_type);
+  RecordShieldsDomainSettingCounts(profile_prefs, true,
+                                   fingerprinting_control_type);
   RecordForgetFirstPartySetting(map);
 
   profile_prefs->SetInteger(kFirstReportedRevisionPrefName,

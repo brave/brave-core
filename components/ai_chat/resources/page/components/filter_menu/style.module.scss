@@ -82,3 +82,22 @@
   font: var(--leo-font-default-regular);
   color: var(--leo-color-text-primary);
 }
+
+.toolsMenuItemContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: var(--leo-spacing-m);
+}
+
+.editButton {
+  flex: 0;
+  opacity: 0;
+}
+
+.toolsMenuItemContent:hover .editButton,
+.toolsMenuItemContent:focus-within .editButton,
+leo-menu-item:focus-visible .editButton {
+  opacity: 1;
+}

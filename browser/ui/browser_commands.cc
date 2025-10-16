@@ -43,7 +43,7 @@
 #include "brave/components/sidebar/browser/sidebar_service.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
-#include "brave/components/url_sanitizer/browser/url_sanitizer_service.h"
+#include "brave/components/url_sanitizer/core/browser/url_sanitizer_service.h"
 #include "chrome/browser/bookmarks/bookmark_html_writer.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
@@ -225,6 +225,7 @@ class BookmarksExportListener : public ui::SelectFileDialog::Listener {
   scoped_refptr<ui::SelectFileDialog> file_selector_;
 };
 
+#if BUILDFLAG(ENABLE_TOR)
 void NewOffTheRecordWindowTor(Browser* browser) {
   CHECK(browser);
   NewOffTheRecordWindowTor(browser->profile());
@@ -241,7 +242,6 @@ void NewOffTheRecordWindowTor(Profile* profile) {
 }
 
 void NewTorConnectionForSite(Browser* browser) {
-#if BUILDFLAG(ENABLE_TOR)
   Profile* profile = browser->profile();
   DCHECK(profile);
   tor::TorProfileService* service =
@@ -252,8 +252,8 @@ void NewTorConnectionForSite(Browser* browser) {
     return;
   }
   service->SetNewTorCircuit(current_tab);
-#endif
 }
+#endif
 
 void MaybeDistillAndShowSpeedreaderBubble(Browser* browser) {
 #if BUILDFLAG(ENABLE_SPEEDREADER)

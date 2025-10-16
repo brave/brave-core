@@ -20,6 +20,7 @@
 #include "brave/components/ai_chat/core/browser/engine/mock_engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/renderer_context_menu/render_view_context_menu.h"
@@ -282,8 +283,7 @@ class AIChatRenderViewContextMenuBrowserTest : public InProcessBrowserTest {
       std::string& submitted_text,
       const base::Location& location) {
     EXPECT_CALL(client, OnConversationHistoryUpdate(_))
-        .WillOnce(testing::Invoke([&, location](
-                                      const mojom::ConversationTurnPtr turn) {
+        .WillOnce([&, location](const mojom::ConversationTurnPtr turn) {
           SCOPED_TRACE(testing::Message() << location.ToString());
           ConversationHandler* conversation_handler = GetConversationHandler();
           ASSERT_TRUE(conversation_handler);
@@ -294,7 +294,7 @@ class AIChatRenderViewContextMenuBrowserTest : public InProcessBrowserTest {
           ASSERT_TRUE(entry->selected_text);
           submitted_text = *entry->selected_text;
           run_loop.Quit();
-        }));
+        });
   }
 
   std::unique_ptr<TestRenderViewContextMenu> CreateContextMenu(

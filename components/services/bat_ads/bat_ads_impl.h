@@ -73,7 +73,7 @@ class BatAdsImpl final : public mojom::BatAds {
   void TriggerNewTabPageAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
-      bool should_metrics_fallback_to_p3a,
+      brave_ads::mojom::NewTabPageAdMetricType mojom_ad_metric_type,
       brave_ads::mojom::NewTabPageAdEventType mojom_ad_event_type,
       TriggerNewTabPageAdEventCallback callback) override;
 

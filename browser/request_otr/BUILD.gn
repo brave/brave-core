@@ -23,6 +23,7 @@ source_set("browser_tests") {
     "//brave/components/request_otr/browser",
     "//brave/components/request_otr/common",
     "//chrome/browser",
+    "//chrome/browser/history",
     "//chrome/browser/ui",
     "//chrome/common",
     "//chrome/test:test_support",

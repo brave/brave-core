@@ -313,6 +313,7 @@ bool BraveTabContextMenuContents::IsValidContextMenu() const {
 
 void BraveTabContextMenuContents::OnMenuClosed() {
   menu_closed_ = true;
+  tab_ = nullptr;
 }
 
 void BraveTabContextMenuContents::NewSplitView() {

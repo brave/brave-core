@@ -20,5 +20,10 @@ public class BraveAdaptiveToolbarPrefsClassAdapter extends BraveClassVisitor {
                 sAdaptiveToolbarPrefsClassName,
                 "getCustomizationSetting",
                 sBraveAdaptiveToolbarPrefsClassName);
+
+        changeMethodOwner(
+                sAdaptiveToolbarPrefsClassName,
+                "isCustomizationPreferenceEnabled",
+                sBraveAdaptiveToolbarPrefsClassName);
     }
 }

@@ -48,7 +48,8 @@ mojom::RewardsWalletPtr Wallet::GetWallet(bool* corrupted) {
     return nullptr;
   }
 
-  std::optional<base::Value::Dict> value = base::JSONReader::ReadDict(json);
+  std::optional<base::Value::Dict> value =
+      base::JSONReader::ReadDict(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!value) {
     engine_->LogError(FROM_HERE) << "Parsing of brave wallet failed";
     *corrupted = true;

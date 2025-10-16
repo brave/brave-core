@@ -24,11 +24,13 @@ export function createEventHub(): EventHub {
       elem.dispatchEvent(new CustomEvent(eventName, { detail: data }))
     },
     addListener(name, fn) {
-      const listener = (event: CustomEvent) => { fn && fn(event.detail) }
+      const listener = (event: CustomEvent) => {
+        fn && fn(event.detail)
+      }
       const eventName = globalEventName(name)
       elem.addEventListener(eventName, listener)
       return () => elem.removeEventListener(eventName, listener)
-    }
+    },
   }
 }
 

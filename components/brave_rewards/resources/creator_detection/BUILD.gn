@@ -6,6 +6,7 @@
 import("//brave/components/common/typescript.gni")
 
 transpile_web_ui("creator_detection") {
+  output_module = false
   entry_points = [
     [
       "reddit",

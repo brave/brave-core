@@ -9,6 +9,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "crypto/random.h"
 
 namespace ai_chat {

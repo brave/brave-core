@@ -6,7 +6,6 @@
 #include "brave/components/ntp_background_images/browser/new_tab_takeover_infobar_util.h"
 
 #include "base/check.h"
-#include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_feature.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "components/prefs/pref_service.h"
@@ -15,10 +14,6 @@ namespace ntp_background_images {
 
 bool ShouldDisplayNewTabTakeoverInfobar(const PrefService* prefs) {
   CHECK(prefs);
-
-  if (!brave_ads::kShouldSupportNewTabPageAdConfirmationsForNonRewards.Get()) {
-    return false;
-  }
 
   if (prefs->GetBoolean(brave_rewards::prefs::kEnabled)) {
     return false;

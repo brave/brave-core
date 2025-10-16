@@ -62,10 +62,9 @@ TEST_F(BraveAdsNewTabPageAdPrefetcherTest, Prefetch) {
   const NewTabPageAdInfo expected_ad = BuildNewTabPageAd();
 
   EXPECT_CALL(ads_service(), MaybeServeNewTabPageAd)
-      .WillOnce(::testing::Invoke(
-          [&expected_ad](MaybeServeNewTabPageAdCallback callback) {
-            std::move(callback).Run(expected_ad);
-          }));
+      .WillOnce([&expected_ad](MaybeServeNewTabPageAdCallback callback) {
+        std::move(callback).Run(expected_ad);
+      });
 
   // Act
   prefetcher().Prefetch();
@@ -77,9 +76,9 @@ TEST_F(BraveAdsNewTabPageAdPrefetcherTest, Prefetch) {
 TEST_F(BraveAdsNewTabPageAdPrefetcherTest, PrefetchFailed) {
   // Arrange
   EXPECT_CALL(ads_service(), MaybeServeNewTabPageAd)
-      .WillOnce(::testing::Invoke([](MaybeServeNewTabPageAdCallback callback) {
+      .WillOnce([](MaybeServeNewTabPageAdCallback callback) {
         std::move(callback).Run(/*ad=*/std::nullopt);
-      }));
+      });
 
   // Act
   prefetcher().Prefetch();
@@ -94,10 +93,9 @@ TEST_F(BraveAdsNewTabPageAdPrefetcherTest, PrefetchInvalidAd) {
   ASSERT_FALSE(invalid_ad.IsValid());
 
   EXPECT_CALL(ads_service(), MaybeServeNewTabPageAd)
-      .WillOnce(::testing::Invoke(
-          [&invalid_ad](MaybeServeNewTabPageAdCallback callback) {
-            std::move(callback).Run(invalid_ad);
-          }));
+      .WillOnce([&invalid_ad](MaybeServeNewTabPageAdCallback callback) {
+        std::move(callback).Run(invalid_ad);
+      });
 
   // Act
   prefetcher().Prefetch();
@@ -113,10 +111,9 @@ TEST_F(BraveAdsNewTabPageAdPrefetcherTest,
 
   EXPECT_CALL(ads_service(), MaybeServeNewTabPageAd)
       .Times(2)
-      .WillRepeatedly(::testing::Invoke(
-          [&expected_ad](MaybeServeNewTabPageAdCallback callback) {
-            std::move(callback).Run(expected_ad);
-          }));
+      .WillRepeatedly([&expected_ad](MaybeServeNewTabPageAdCallback callback) {
+        std::move(callback).Run(expected_ad);
+      });
 
   prefetcher().Prefetch();
   ASSERT_EQ(expected_ad, prefetcher().MaybeGetPrefetchedAd());
@@ -134,10 +131,9 @@ TEST_F(BraveAdsNewTabPageAdPrefetcherTest,
   const NewTabPageAdInfo expected_ad = BuildNewTabPageAd();
 
   EXPECT_CALL(ads_service(), MaybeServeNewTabPageAd)
-      .WillOnce(::testing::Invoke(
-          [&expected_ad](MaybeServeNewTabPageAdCallback callback) {
-            std::move(callback).Run(expected_ad);
-          }));
+      .WillOnce([&expected_ad](MaybeServeNewTabPageAdCallback callback) {
+        std::move(callback).Run(expected_ad);
+      });
 
   prefetcher().Prefetch();
 
@@ -155,10 +151,10 @@ TEST_F(BraveAdsNewTabPageAdPrefetcherTest,
 
   MaybeServeNewTabPageAdCallback deferred_maybe_serve_ad_callback;
   EXPECT_CALL(ads_service(), MaybeServeNewTabPageAd)
-      .WillOnce(::testing::Invoke([&deferred_maybe_serve_ad_callback](
-                                      MaybeServeNewTabPageAdCallback callback) {
+      .WillOnce([&deferred_maybe_serve_ad_callback](
+                    MaybeServeNewTabPageAdCallback callback) {
         deferred_maybe_serve_ad_callback = std::move(callback);
-      }));
+      });
 
   prefetcher().Prefetch();
 
@@ -175,10 +171,9 @@ TEST_F(BraveAdsNewTabPageAdPrefetcherTest, ShouldOnlyGetPrefetchedAdOnce) {
   const NewTabPageAdInfo expected_ad = BuildNewTabPageAd();
 
   EXPECT_CALL(ads_service(), MaybeServeNewTabPageAd)
-      .WillOnce(::testing::Invoke(
-          [&expected_ad](MaybeServeNewTabPageAdCallback callback) {
-            std::move(callback).Run(expected_ad);
-          }));
+      .WillOnce([&expected_ad](MaybeServeNewTabPageAdCallback callback) {
+        std::move(callback).Run(expected_ad);
+      });
 
   prefetcher().Prefetch();
   ASSERT_EQ(expected_ad, prefetcher().MaybeGetPrefetchedAd());
@@ -191,10 +186,10 @@ TEST_F(BraveAdsNewTabPageAdPrefetcherTest, CancelPrefetch) {
   // Arrange
   MaybeServeNewTabPageAdCallback deferred_maybe_serve_ad_callback;
   EXPECT_CALL(ads_service(), MaybeServeNewTabPageAd)
-      .WillOnce(::testing::Invoke([&deferred_maybe_serve_ad_callback](
-                                      MaybeServeNewTabPageAdCallback callback) {
+      .WillOnce([&deferred_maybe_serve_ad_callback](
+                    MaybeServeNewTabPageAdCallback callback) {
         deferred_maybe_serve_ad_callback = std::move(callback);
-      }));
+      });
 
   // Act
   prefetcher().Prefetch();

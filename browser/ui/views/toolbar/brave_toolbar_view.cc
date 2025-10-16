@@ -143,7 +143,10 @@ class BraveToolbarView::LayoutGuard {
 };
 
 BraveToolbarView::BraveToolbarView(Browser* browser, BrowserView* browser_view)
-    : ToolbarView(browser, browser_view) {}
+    : ToolbarView(browser, browser_view) {
+  // See the comments in UpdateRecedingCornerRadius().
+  receding_corner_radius_ = GetLayoutConstant(TOOLBAR_CORNER_RADIUS);
+}
 
 BraveToolbarView::~BraveToolbarView() = default;
 
@@ -390,6 +393,11 @@ void BraveToolbarView::Update(content::WebContents* tab) {
   }
 }
 
+void BraveToolbarView::UpdateRecedingCornerRadius() {
+  // Do nothing here as we'll show rounded corners always.
+  // |receding_corner_radius_| is initialized in ctor.
+}
+
 void BraveToolbarView::UpdateBookmarkVisibility() {
   if (!bookmark_) {
     return;
@@ -417,7 +425,7 @@ void BraveToolbarView::UpdateHorizontalPadding() {
   } else {
     auto [leading, trailing] =
         tabs::utils::GetLeadingTrailingCaptionButtonWidth(
-            browser_view_->frame());
+            browser_view_->browser_widget());
     container_view->SetBorder(views::CreateEmptyBorder(
         gfx::Insets().set_left(leading).set_right(trailing)));
   }

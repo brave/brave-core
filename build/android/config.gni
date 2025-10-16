@@ -38,6 +38,7 @@ brave_chrome_java_deps = [
   "//brave/browser/ui/android/theme:java",
   "//brave/browser/ui/android/toolbar:java",
   "//brave/components/ai_chat/core/common/mojom:mojom_java",
+  "//brave/components/brave_ads/core/mojom:mojom_java",
   "//brave/components/brave_news/common:mojom_java",
   "//brave/components/brave_rewards/core/mojom:mojom_java",
   "//brave/components/brave_shields/core/common:mojom_java",
@@ -47,10 +48,10 @@ brave_chrome_java_deps = [
   "//brave/components/browser_ui/notifications/android:java",
   "//brave/components/browser_ui/site_settings/android:java",
   "//brave/components/misc_metrics/common:mojom_java",
-  "//brave/components/playlist/common/mojom:mojom_java",
+  "//brave/components/playlist/core/common/mojom:mojom_java",
   "//brave/components/safe_browsing/android:brave_safe_browsing_java",
   "//brave/components/skus/common:mojom_java",
-  "//brave/components/url_sanitizer/common/mojom:mojom_java",
+  "//brave/components/url_sanitizer/core/common/mojom:mojom_java",
   "//brave/components/variations/android:java",
   "//brave/components/version_info/android:java",
   "//brave/components/webcompat_reporter/common:mojom_java",
@@ -97,6 +98,7 @@ brave_chrome_java_srcjar_deps = [
 ]
 
 brave_chrome_app_java_resources_deps = [
+  "//brave/android:java_resources",
   "//brave/browser/quick_search_engines/android:java_resources",
   "//brave/build/android:android_brave_strings_grd",
 ]

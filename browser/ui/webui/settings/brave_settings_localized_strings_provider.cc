@@ -26,7 +26,7 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/email_aliases/features.h"
-#include "brave/components/playlist/common/buildflags/buildflags.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/version_info/version_info.h"
@@ -50,7 +50,7 @@
 #include "ui/base/l10n/l10n_util.h"
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
-#include "brave/components/playlist/common/features.h"
+#include "brave/components/playlist/core/common/features.h"
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -170,6 +170,42 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       {"siteSettingsLocalhostAccessAllowExceptions",
        IDS_SETTINGS_SITE_SETTINGS_LOCALHOST_ACCESS_ALLOW_EXCEPTIONS},
       {"braveGetStartedTitle", IDS_SETTINGS_BRAVE_GET_STARTED_TITLE},
+      {"braveOriginTitle", IDS_SETTINGS_BRAVE_ORIGIN_TITLE},
+      {"braveOriginHeadingTitle", IDS_SETTINGS_BRAVE_ORIGIN_HEADING_TITLE},
+      {"braveOriginHeadingDescription1",
+       IDS_SETTINGS_BRAVE_ORIGIN_HEADING_DESCRIPTION1},
+      {"braveOriginHeadingDescription2",
+       IDS_SETTINGS_BRAVE_ORIGIN_HEADING_DESCRIPTION2},
+      {"braveOriginSectionAdsTitle",
+       IDS_SETTINGS_BRAVE_ORIGIN_ADS_SECTION_TITLE},
+      {"braveOriginRewardsToggleTitle",
+       IDS_SETTINGS_BRAVE_ORIGIN_REWARDS_TOGGLE_TITLE},
+      {"braveOriginSectionAnalyticsTitle",
+       IDS_SETTINGS_BRAVE_ORIGIN_ANALYTICS_SECTION_TITLE},
+      {"braveOriginSectionFeaturesTitle",
+       IDS_SETTINGS_BRAVE_ORIGIN_FEATURES_SECTION_TITLE},
+      {"braveOriginLeoAiToggleTitle",
+       IDS_SETTINGS_BRAVE_ORIGIN_LEO_AI_TOGGLE_TITLE},
+      {"braveOriginNewsToggleTitle",
+       IDS_SETTINGS_BRAVE_ORIGIN_NEWS_TOGGLE_TITLE},
+      {"braveOriginTalkToggleTitle",
+       IDS_SETTINGS_BRAVE_ORIGIN_TALK_TOGGLE_TITLE},
+      {"braveOriginWaybackMachineToggleTitle",
+       IDS_SETTINGS_BRAVE_ORIGIN_WAYBACK_MACHINE_TOGGLE_TITLE},
+      {"braveOriginSpeedReaderToggleTitle",
+       IDS_SETTINGS_BRAVE_ORIGIN_SPEED_READER_TOGGLE_TITLE},
+      {"braveOriginWebDiscoveryProjectToggleTitle",
+       IDS_SETTINGS_BRAVE_ORIGIN_WEB_DISCOVERY_PROJECT_TOGGLE_TITLE},
+      {"braveOriginP3AToggleTitle", IDS_SETTINGS_BRAVE_ORIGIN_P3A_TOGGLE_TITLE},
+      {"braveOriginStatsReportingToggleTitle",
+       IDS_SETTINGS_BRAVE_ORIGIN_STATS_REPORTING_TOGGLE_TITLE},
+      {"braveOriginTorWindowsToggleTitle",
+       IDS_SETTINGS_BRAVE_ORIGIN_TOR_WINDOWS_TOGGLE_TITLE},
+      {"braveOriginVpnToggleTitle", IDS_SETTINGS_BRAVE_ORIGIN_VPN_TOGGLE_TITLE},
+      {"braveOriginWalletToggleTitle",
+       IDS_SETTINGS_BRAVE_ORIGIN_WALLET_TOGGLE_TITLE},
+      {"braveOriginResetToDefaultsTitle",
+       IDS_SETTINGS_BRAVE_ORIGIN_RESET_TO_DEFAULTS_TITLE},
       {"siteSettingsShields", IDS_SETTINGS_SITE_SETTINGS_SHIELDS},
       {"siteSettingsShieldsStatus", IDS_SETTINGS_SITE_SETTINGS_SHIELDS_STATUS},
       {"siteSettingsShieldsUp", IDS_SETTINGS_SITE_SETTINGS_SHIELDS_UP},
@@ -1307,8 +1343,11 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
       base::FeatureList::IsEnabled(
           brave_shields::features::kCosmeticFilteringCustomScriptlets));
 
-  html_source->AddBoolean("isAdBlockOnlyModeFeatureEnabled",
-                          brave_shields::IsAdblockOnlyModeFeatureEnabled());
+  html_source->AddBoolean(
+      "isAdBlockOnlyModeSupportedAndFeatureEnabled",
+      brave_shields::IsAdblockOnlyModeFeatureEnabled() &&
+          brave_shields::IsAdblockOnlyModeSupportedForLocale(
+              g_browser_process->GetApplicationLocale()));
 
   // Always disable upstream's side panel align option.
   // We add our customized option at preferred position.

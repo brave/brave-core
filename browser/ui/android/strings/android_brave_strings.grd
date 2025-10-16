@@ -263,6 +263,9 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_BRAVE_SHIELDS" desc="Content description for the button that is enable, disable Brave Shields.">
         Enable/Disable Brave Shields
       </message>
+    <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_BRAVE_PIP" desc="Content description for the button that triggers picture-in-picture mode for YouTube videos.">
+      Enter picture-in-picture mode
+    </message>
       <message name="IDS_STATS_NOTIFICATION_PRIVACY_UPDATES_DESCRIPTION"  desc="Text for Notification on description">
         Get weekly privacy updates on tracker &amp; ad blocking.
       </message>
@@ -2320,9 +2323,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_DISABLE_SHARING_HUB" desc="Menu item for disabling sharing hub.">
       Disable Sharing Hub
     </message>
-    <message name="IDS_EDIT" desc="Brave wallet accounts text">
-      Edit
-    </message>
     <message name="IDS_WALLET_ACCOUNTS_UPDATE" desc="Brave wallet accounts update text">
       Update
     </message>
@@ -3047,10 +3047,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Top Visited Site
     </message>
     <message name="IDS_SEARCH_WITH_BRAVE" desc="String used in QuickActionSearchAndBookmarkWidget's search bar">
-      Search with Brave
-    </message>
-    <message name="IDS_SEARCH_WITH_SEARCH_ENGINE" desc="Dynamic string used in QuickActionSearchAndBookmarkWidget's search bar. Placeholder is replaced by default search engine.">
-      Search with <ph name="DEFAULT_SEARCH_ENGINE">%1$s</ph>
+      Search
     </message>
     <message name="IDS_HOME_SCREEN_WIDGET" desc="Home scren widget option in settings">
       Home screen widget

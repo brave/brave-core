@@ -6,6 +6,7 @@
 import("//brave/components/common/typescript.gni")
 
 transpile_web_ui("brave_speedreader_toolbar_ui") {
+  output_module = false
   entry_points = [ [
         "speedreader_toolbar",
         rebase_path("speedreader_toolbar.tsx"),

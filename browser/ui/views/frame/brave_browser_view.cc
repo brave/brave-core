@@ -65,8 +65,8 @@
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/frame/window_frame_util.h"
 #include "chrome/browser/ui/ui_features.h"
-#include "chrome/browser/ui/views/frame/browser_frame.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/frame/browser_widget.h"
 #include "chrome/browser/ui/views/frame/contents_layout_manager.h"
 #include "chrome/browser/ui/views/frame/contents_web_view.h"
 #include "chrome/browser/ui/views/frame/multi_contents_view.h"
@@ -237,8 +237,7 @@ BraveBrowserView* BraveBrowserView::From(BrowserView* view) {
   return static_cast<BraveBrowserView*>(view);
 }
 
-BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
-    : BrowserView(std::move(browser)) {
+BraveBrowserView::BraveBrowserView(Browser* browser) : BrowserView(browser) {
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   // When SideBySide is enabled, each ContentsContainerView in MultiContentsView
   // own ReaderModeToolbarView.
@@ -273,20 +272,20 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
 #endif
 
   // Only normal window (tabbed) should have sidebar.
-  const bool can_have_sidebar = sidebar::CanUseSidebar(browser_.get());
+  const bool can_have_sidebar = sidebar::CanUseSidebar(browser_);
   if (can_have_sidebar) {
     // Wrap chromium side panel with our sidebar container
-    auto original_side_panel = RemoveChildViewT(unified_side_panel_.get());
+    auto original_side_panel =
+        main_container_->RemoveChildViewT(contents_height_side_panel_.get());
     sidebar_container_view_ =
-        AddChildView(std::make_unique<SidebarContainerView>(
-            browser_.get(), browser_->GetFeatures().side_panel_coordinator(),
+        main_container_->AddChildView(std::make_unique<SidebarContainerView>(
+            browser_, browser_->GetFeatures().side_panel_coordinator(),
             std::move(original_side_panel)));
-    unified_side_panel_ = sidebar_container_view_->side_panel();
+    contents_height_side_panel_ = sidebar_container_view_->side_panel();
 
-    if (BraveBrowser::IsBraveWebViewRoundedCornersFeatureEnabled(
-            browser_.get())) {
+    if (BraveBrowser::IsBraveWebViewRoundedCornersFeatureEnabled(browser_)) {
       sidebar_separator_view_ =
-          AddChildView(std::make_unique<SidebarSeparator>());
+          main_container_->AddChildView(std::make_unique<SidebarSeparator>());
     }
 
 #if defined(USE_AURA)
@@ -307,7 +306,7 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
   }
 
   const bool supports_vertical_tabs =
-      tabs::utils::SupportsVerticalTabs(browser_.get());
+      tabs::utils::SupportsVerticalTabs(browser_);
   if (supports_vertical_tabs) {
     vertical_tab_strip_host_view_ =
         AddChildView(std::make_unique<views::View>());
@@ -829,6 +828,14 @@ void BraveBrowserView::OnWidgetActivationChanged(views::Widget* widget,
   }
 }
 
+void BraveBrowserView::OnWidgetWindowModalVisibilityChanged(
+    views::Widget* widget,
+    bool visible) {
+  // We explicitly override this and don't call the parent class, because we
+  // currently don't support scrim views for tab modals and thus don't want the
+  // parent class to make the scrim view visible
+}
+
 void BraveBrowserView::GetAccessiblePanes(std::vector<views::View*>* panes) {
   BrowserView::GetAccessiblePanes(panes);
 
@@ -923,8 +930,8 @@ void BraveBrowserView::UpdateVerticalTabStripBorder() {
 }
 
 void BraveBrowserView::UpdateSidebarBorder() {
-  if (unified_side_panel_) {
-    unified_side_panel_->UpdateBorder();
+  if (contents_height_side_panel_) {
+    contents_height_side_panel_->UpdateBorder();
   }
 
   if (sidebar_container_view_) {
@@ -1025,7 +1032,7 @@ bool BraveBrowserView::AcceleratorPressed(const ui::Accelerator& accelerator) {
 }
 
 bool BraveBrowserView::IsInTabDragging() const {
-  return frame()->tab_drag_kind() == TabDragKind::kAllTabs;
+  return browser_widget()->tab_drag_kind() == TabDragKind::kAllTabs;
 }
 
 views::View* BraveBrowserView::GetContentsContainerForLayoutManager() {
@@ -1037,8 +1044,24 @@ views::View* BraveBrowserView::GetContentsContainerForLayoutManager() {
 }
 
 void BraveBrowserView::ReadyToListenFullscreenChanges() {
+  CHECK(browser_->GetFeatures().exclusive_access_manager());
+
   if (split_view_) {
     split_view_->ListenFullscreenChanges();
+  }
+
+  if (vertical_tab_strip_widget_delegate_view_) {
+    vertical_tab_strip_widget_delegate_view_->vertical_tab_strip_region_view()
+        ->ListenFullscreenChanges();
+  }
+}
+
+void BraveBrowserView::StopListeningFullscreenChanges() {
+  CHECK(browser_->GetFeatures().exclusive_access_manager());
+
+  if (vertical_tab_strip_widget_delegate_view_) {
+    vertical_tab_strip_widget_delegate_view_->vertical_tab_strip_region_view()
+        ->StopListeningFullscreenChanges();
   }
 }
 

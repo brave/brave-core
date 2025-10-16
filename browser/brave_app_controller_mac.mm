@@ -125,10 +125,12 @@ class TorPrefObserver : public BooleanPrefMember {
 }
 
 - (void)applicationWillTerminate:(NSNotification*)notification {
+#if BUILDFLAG(ENABLE_TOR)
   tor_pref_observer_.reset();
   tor_main_pref_observer_.reset();
   _torMenuItem = nil;
   _torMainMenuItem = nil;
+#endif
   [super applicationWillTerminate:notification];
 }
 

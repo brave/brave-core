@@ -144,12 +144,29 @@ public struct BraveVPNRegionListView: View {
       HStack {
         region.countryISOCode.regionFlag ?? Image(braveSystemName: "leo.globe")
         VStack(alignment: .leading) {
-          Text("\(region.displayName)")
-            .font(.body)
-            .foregroundStyle(
-              isSelectedRegion
-                ? Color(braveSystemName: .iconInteractive) : Color(braveSystemName: .textPrimary)
-            )
+          HStack {
+            Text("\(region.displayName)")
+              .font(.body)
+              .foregroundStyle(
+                isSelectedRegion
+                  ? Color(braveSystemName: .iconInteractive) : Color(braveSystemName: .textPrimary)
+              )
+            if !region.smartRoutingProxyState.isEmpty,
+              region.smartRoutingProxyState != kGRDRegionSmartRoutingProxyNone
+            {
+              Image(braveSystemName: "leo.smart.proxy-routing")
+                .resizable()
+                .renderingMode(.template)
+                .aspectRatio(contentMode: .fit)
+                .foregroundColor(Color(braveSystemName: .iconDefault))
+                .frame(width: 14, height: 14)
+                .padding(4)
+                .background(
+                  RoundedRectangle(cornerRadius: 4, style: .continuous)
+                    .fill(Color(braveSystemName: .containerHighlight))
+                )
+            }
+          }
           Text(generateServerCountDetails(for: region))
             .font(.footnote)
             .foregroundStyle(

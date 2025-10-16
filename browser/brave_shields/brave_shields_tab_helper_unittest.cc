@@ -61,6 +61,8 @@ class BraveShieldsTabHelperUnitTest
     observer_ = std::make_unique<
         testing::NiceMock<MockBraveShieldsTabHelperObserver>>();
     brave_shields_tab_helper_->AddObserver(observer_.get());
+
+    TestingBrowserProcess::GetGlobal()->SetApplicationLocale("en-US");
   }
 
   void TearDown() override {
@@ -86,6 +88,10 @@ class BraveShieldsTabHelperUnitTest
         ->GetPrefs();
   }
 
+  void SetApplicationLocale(const std::string& locale) {
+    TestingBrowserProcess::GetGlobal()->SetApplicationLocale(locale);
+  }
+
   PrefService* local_state() {
     return TestingBrowserProcess::GetGlobal()->GetTestingLocalState();
   }
@@ -101,6 +107,19 @@ class BraveShieldsTabHelperUnitTest
 TEST_F(BraveShieldsTabHelperUnitTest,
        DontTriggerOnRepeatedReloadsDetectedWhenFeatureDisabled) {
   feature_list_.InitAndDisableFeature(features::kAdblockOnlyMode);
+  SetBraveShieldsAdBlockOnlyModeEnabled(local_state(), false);
+
+  EXPECT_CALL(*observer_, OnRepeatedReloadsDetected).Times(0);
+
+  NavigateTo(GURL("https://example.com"));
+  Reload();
+  Reload();
+  Reload();
+}
+
+TEST_F(BraveShieldsTabHelperUnitTest,
+       DontTriggerOnRepeatedReloadsDetectedWhenLocaleNotSupported) {
+  SetApplicationLocale("fr-FR");
   SetBraveShieldsAdBlockOnlyModeEnabled(local_state(), false);
 
   EXPECT_CALL(*observer_, OnRepeatedReloadsDetected).Times(0);
@@ -250,6 +269,27 @@ TEST_F(BraveShieldsTabHelperUnitTest,
 TEST_F(BraveShieldsTabHelperUnitTest,
        DontShowShieldsDisabledAdBlockOnlyModePromptWhenFeatureDisabled) {
   feature_list_.InitAndDisableFeature(features::kAdblockOnlyMode);
+  SetBraveShieldsAdBlockOnlyModeEnabled(local_state(), false);
+
+  // Default value of
+  // `features::kAdblockOnlyModePromptAfterShieldsDisabledCount` is 5.
+  brave_shields_tab_helper_->SetBraveShieldsEnabled(false);
+  brave_shields_tab_helper_->SetBraveShieldsEnabled(false);
+  brave_shields_tab_helper_->SetBraveShieldsEnabled(false);
+  brave_shields_tab_helper_->SetBraveShieldsEnabled(false);
+  brave_shields_tab_helper_->SetBraveShieldsEnabled(false);
+
+  EXPECT_EQ(
+      profile_prefs()->GetInteger(brave_shields::prefs::kShieldsDisabledCount),
+      0);
+
+  EXPECT_FALSE(brave_shields_tab_helper_
+                   ->ShouldShowShieldsDisabledAdBlockOnlyModePrompt());
+}
+
+TEST_F(BraveShieldsTabHelperUnitTest,
+       DontShowShieldsDisabledAdBlockOnlyModePromptWhenLocaleNotSupported) {
+  SetApplicationLocale("fr-FR");
   SetBraveShieldsAdBlockOnlyModeEnabled(local_state(), false);
 
   // Default value of

@@ -622,10 +622,6 @@ bool IsBraveShieldsManaged(PrefService* prefs,
   return info.source == content_settings::SettingSource::kPolicy;
 }
 
-bool IsHttpsByDefaultFeatureEnabled() {
-  return base::FeatureList::IsEnabled(net::features::kBraveHttpsByDefault);
-}
-
 bool IsShowStrictFingerprintingModeEnabled() {
   return base::FeatureList::IsEnabled(
       features::kBraveShowStrictFingerprintingMode);
@@ -708,7 +704,7 @@ bool ShouldUpgradeToHttps(
     return false;
   }
   // Don't upgrade if feature is disabled.
-  if (!IsHttpsByDefaultFeatureEnabled()) {
+  if (!base::FeatureList::IsEnabled(net::features::kBraveHttpsByDefault)) {
     return false;
   }
   if (!url.SchemeIsHTTPOrHTTPS() && !url.is_empty()) {
@@ -788,18 +784,6 @@ bool GetForgetFirstPartyStorageEnabled(HostContentSettingsMap* map,
       url, url, ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE);
 
   return setting == CONTENT_SETTING_BLOCK;
-}
-
-ShieldsSettingCounts GetFPSettingCount(HostContentSettingsMap* map) {
-  ContentSettingsForOneType fp_rules =
-      map->GetSettingsForOneType(ContentSettingsType::BRAVE_FINGERPRINTING_V2);
-  return GetSettingCountFromRules(fp_rules);
-}
-
-ShieldsSettingCounts GetAdsSettingCount(HostContentSettingsMap* map) {
-  ContentSettingsForOneType cosmetic_rules =
-      map->GetSettingsForOneType(ContentSettingsType::BRAVE_COSMETIC_FILTERING);
-  return GetSettingCountFromCosmeticFilteringRules(cosmetic_rules);
 }
 
 void SetWebcompatEnabled(HostContentSettingsMap* map,

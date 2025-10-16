@@ -26,26 +26,29 @@ export function createModel(): AppModel {
       provider: 'uphold',
       authenticated: true,
       name: 'Account name',
-      url: 'https://brave.com'
+      url: 'https://brave.com',
     },
     adDiagnosticEntries: [
       {
         name: 'Device Id',
-        value: 'aee1118bb026ae7571069a7a2243f0e560f5a2b45b28f468495ad4034aad577f'
+        value:
+          'aee1118bb026ae7571069a7a2243f0e560f5a2b45b28f468495ad4034aad577f',
       },
       {
         name: 'Opted into Brave News ads',
-        value: 'true'
+        value: 'true',
       },
       {
         name: 'Catalog ID',
-        value: 'KvJb/azOiqUaVq0Mh1oViRmyflvjhg3rvhSFqpdE96I='
-      }
-    ]
+        value: 'KvJb/azOiqUaVq0Mh1oViRmyflvjhg3rvhSFqpdE96I=',
+      },
+    ],
   })
 
   return {
-    getString(key) { return localeStrings[key] },
+    getString(key) {
+      return localeStrings[key]
+    },
     getState: stateManager.getState,
     addListener: stateManager.addListener,
 
@@ -55,13 +58,13 @@ export function createModel(): AppModel {
 
     clearRewardsLog() {
       stateManager.update({
-        rewardsLog: ''
+        rewardsLog: '',
       })
     },
 
     loadRewardsLog() {
       stateManager.update({
-        rewardsLog: sampleLog
+        rewardsLog: sampleLog,
       })
     },
 
@@ -71,41 +74,50 @@ export function createModel(): AppModel {
 
     loadContributions() {
       stateManager.update({
-        contributions: [{
-          id: '812e6649-ba2b-4b8e-8925-163e401007c8',
-          amount: 0.25,
-          type: 'one-time',
-          step: 0,
-          retryCount: -1,
-          createdAt: Date.now(),
-          processor: 'uphold',
-          publishers: [{
-            id: 'github#21312',
-            totalAmount: 1,
-            contributedAmount: 1
-          }, {
-            id: 'youtube#9989',
-            totalAmount: 1,
-            contributedAmount: 1
-          }]
-        }, {
-          id: '812e6649-ba2b-4b8e-8925-163e401007c8',
-          amount: 0.25,
-          type: 'one-time',
-          step: 0,
-          retryCount: -1,
-          createdAt: Date.now(),
-          processor: 'uphold',
-          publishers: [{
-            id: 'github#21312',
-            totalAmount: 1,
-            contributedAmount: 1
-          }, {
-            id: 'youtube#9989',
-            totalAmount: 1,
-            contributedAmount: 1
-          }]
-        }]
+        contributions: [
+          {
+            id: '812e6649-ba2b-4b8e-8925-163e401007c8',
+            amount: 0.25,
+            type: 'one-time',
+            step: 0,
+            retryCount: -1,
+            createdAt: Date.now(),
+            processor: 'uphold',
+            publishers: [
+              {
+                id: 'github#21312',
+                totalAmount: 1,
+                contributedAmount: 1,
+              },
+              {
+                id: 'youtube#9989',
+                totalAmount: 1,
+                contributedAmount: 1,
+              },
+            ],
+          },
+          {
+            id: '812e6649-ba2b-4b8e-8925-163e401007c8',
+            amount: 0.25,
+            type: 'one-time',
+            step: 0,
+            retryCount: -1,
+            createdAt: Date.now(),
+            processor: 'uphold',
+            publishers: [
+              {
+                id: 'github#21312',
+                totalAmount: 1,
+                contributedAmount: 1,
+              },
+              {
+                id: 'youtube#9989',
+                totalAmount: 1,
+                contributedAmount: 1,
+              },
+            ],
+          },
+        ],
       })
     },
 
@@ -116,10 +128,10 @@ export function createModel(): AppModel {
             id: '1',
             key: 'wallet-connected',
             value: 'uphold/1234',
-            createdAt: Date.now()
-          }
-        ]
+            createdAt: Date.now(),
+          },
+        ],
       })
-    }
+    },
   }
 }

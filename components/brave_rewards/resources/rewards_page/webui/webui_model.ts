@@ -10,7 +10,7 @@ import {
   externalWalletFromExtensionData,
   isSelfCustodyProvider,
   ExternalWalletProvider,
-  externalWalletProviderFromString
+  externalWalletProviderFromString,
 } from '../../shared/lib/external_wallet'
 
 import { AppModel, defaultModel } from '../lib/app_model'
@@ -25,7 +25,7 @@ import {
   convertMojoTime,
   convertAdType,
   mapNotification,
-  walletProvidersFromPublisherStatus
+  walletProvidersFromPublisherStatus,
 } from './mojom_helpers'
 
 function normalizePlatform(name: string) {
@@ -56,7 +56,9 @@ function openTab(url: string) {
 }
 
 function isValidWeb3URL(url: string) {
-  try { return new URL(url).protocol === 'https:' } catch {}
+  try {
+    return new URL(url).protocol === 'https:'
+  } catch {}
   return false
 }
 
@@ -64,14 +66,16 @@ function createModelForUnsupportedRegion(): AppModel {
   const stateManager = createStateManager<AppState>(defaultState())
   stateManager.update({
     loading: false,
-    isUnsupportedRegion: true
+    isUnsupportedRegion: true,
   })
   return {
     ...defaultModel(),
     getState: stateManager.getState,
     addListener: stateManager.addListener,
     openTab,
-    getString(key) { return loadTimeData.getString(key) }
+    getString(key) {
+      return loadTimeData.getString(key)
+    },
   }
 }
 
@@ -93,7 +97,7 @@ export function createModel(): AppModel {
 
   // Expose the state manager for devtools diagnostic purposes.
   Object.assign(self, {
-    [Symbol.for('stateManager')]: stateManager
+    [Symbol.for('stateManager')]: stateManager,
   })
 
   stateManager.update({
@@ -101,9 +105,10 @@ export function createModel(): AppModel {
       isBubble,
       isAutoResizeBubble,
       platform,
-      animatedBackgroundEnabled:
-        loadTimeData.getBoolean('animatedBackgroundEnabled')
-    }
+      animatedBackgroundEnabled: loadTimeData.getBoolean(
+        'animatedBackgroundEnabled',
+      ),
+    },
   })
 
   async function updatePaymentId() {
@@ -119,7 +124,7 @@ export function createModel(): AppModel {
   async function updateExternalWallet() {
     const { externalWallet } = await pageHandler.getExternalWallet()
     stateManager.update({
-      externalWallet: externalWalletFromExtensionData(externalWallet)
+      externalWallet: externalWalletFromExtensionData(externalWallet),
     })
   }
 
@@ -138,7 +143,7 @@ export function createModel(): AppModel {
   async function updateBalance() {
     const { balance } = await pageHandler.getAvailableBalance()
     stateManager.update({
-      balance: typeof balance === 'number' ? optional(balance) : optional()
+      balance: typeof balance === 'number' ? optional(balance) : optional(),
     })
   }
 
@@ -172,13 +177,15 @@ export function createModel(): AppModel {
   // after a listener is added for Ads initialization, or after the Ads service
   // queues these calls during service restart.
   function scheduleAdsInfoUpdate() {
-    setTimeout(() => { updateAdsInfo() }, 1000)
+    setTimeout(() => {
+      updateAdsInfo()
+    }, 1000)
   }
 
   async function updateAdsInfo() {
     let [{ statement }, { settings }] = await Promise.all([
       await pageHandler.getAdsStatement(),
-      await pageHandler.getAdsSettings()
+      await pageHandler.getAdsSettings(),
     ])
 
     if (statement && settings) {
@@ -190,12 +197,10 @@ export function createModel(): AppModel {
           adsEnabled: {
             'new-tab-page': settings.newTabPageAdsEnabled,
             'notification': settings.notificationAdsEnabled,
-            'search-result': settings.searchAdsEnabled
           },
           adTypesReceivedThisMonth: {
             'new-tab-page': adTypeSummaryThisMonth.newTabPageAds,
             'notification': adTypeSummaryThisMonth.notificationAds,
-            'search-result': adTypeSummaryThisMonth.searchResultAds
           },
           minEarningsPreviousMonth: statement.minEarningsPreviousMonth,
           nextPaymentDate: convertMojoTime(statement.nextPaymentDate),
@@ -204,8 +209,8 @@ export function createModel(): AppModel {
             settings.shouldAllowSubdivisionTargeting,
           currentSubdivision: settings.currentSubdivision,
           availableSubdivisions: settings.availableSubdivisions,
-          autoDetectedSubdivision: settings.autoDetectedSubdivision
-        }
+          autoDetectedSubdivision: settings.autoDetectedSubdivision,
+        },
       })
     } else {
       stateManager.update({ adsInfo: null })
@@ -226,11 +231,11 @@ export function createModel(): AppModel {
           icon: item.faviconUrl,
           name: item.name,
           url: item.url,
-          platform: parseCreatorPlatform(item.provider)
+          platform: parseCreatorPlatform(item.provider),
         },
         amount: item.weight,
-        nextContributionDate: Number(item.reconcileStamp) * 1000
-      }))
+        nextContributionDate: Number(item.reconcileStamp) * 1000,
+      })),
     })
   }
 
@@ -247,7 +252,7 @@ export function createModel(): AppModel {
 
     const [{ publisherInfo }, { publisherBanner }] = await Promise.all([
       pageHandler.getPublisherInfo(id),
-      pageHandler.getPublisherBanner(id)
+      pageHandler.getPublisherBanner(id),
     ])
 
     if (!publisherInfo) {
@@ -262,18 +267,20 @@ export function createModel(): AppModel {
           icon: publisherInfo.faviconUrl,
           name: publisherInfo.name,
           url: publisherInfo.url,
-          platform: parseCreatorPlatform(publisherInfo.provider)
+          platform: parseCreatorPlatform(publisherInfo.provider),
         },
         banner: {
           title: publisherBanner?.title || '',
           description: publisherBanner?.description || '',
           background: publisherBanner?.background || '',
-          web3URL:isValidWeb3URL(publisherBanner?.web3Url ?? '') ?
-            publisherBanner?.web3Url ?? '' : ''
+          web3URL: isValidWeb3URL(publisherBanner?.web3Url ?? '')
+            ? (publisherBanner?.web3Url ?? '')
+            : '',
         },
-        supportedWalletProviders:
-          walletProvidersFromPublisherStatus(publisherInfo.status)
-      }
+        supportedWalletProviders: walletProvidersFromPublisherStatus(
+          publisherInfo.status,
+        ),
+      },
     })
   }
 
@@ -285,7 +292,7 @@ export function createModel(): AppModel {
 
     let { captchaInfo } = await pageHandler.getCaptchaInfo()
     if (opts.pendingOnly) {
-      if (captchaInfo &&  captchaInfo.maxAttemptsExceeded) {
+      if (captchaInfo && captchaInfo.maxAttemptsExceeded) {
         captchaInfo = null
       }
     }
@@ -333,7 +340,7 @@ export function createModel(): AppModel {
       updateNotifications(),
       inBackground(updateCurrentCreator()),
       inBackground(updateCaptchaInfo({ pendingOnly: true })),
-      inBackground(updateCards())
+      inBackground(updateCards()),
     ])
 
     stateManager.update({ loading: false })
@@ -344,7 +351,8 @@ export function createModel(): AppModel {
       if (document.visibilityState === 'visible') {
         loadData()
       }
-    }, 60))
+    }, 60),
+  )
 
   // When displayed in a bubble, this page may be cached. In order to reset the
   // view state when the bubble is re-opened with cached contents, we update the
@@ -484,15 +492,15 @@ export function createModel(): AppModel {
         adsInfo.adsEnabled[adType] = enabled
         stateManager.update({ adsInfo })
       }
-      await pageHandler.setAdTypeEnabled(convertAdType(adType), enabled);
+      await pageHandler.setAdTypeEnabled(convertAdType(adType), enabled)
     },
 
     async setNotificationAdsPerHour(adsPerHour) {
-      await pageHandler.setNotificationAdsPerHour(adsPerHour);
+      await pageHandler.setNotificationAdsPerHour(adsPerHour)
     },
 
     async setAdsSubdivision(subdivision) {
-      await pageHandler.setAdsSubdivision(subdivision);
+      await pageHandler.setAdsSubdivision(subdivision)
     },
 
     async getAdsHistory() {
@@ -526,8 +534,11 @@ export function createModel(): AppModel {
     },
 
     async sendContribution(creatorID, amount, recurring) {
-      const { contributionSent } =
-        await pageHandler.sendContribution(creatorID, amount, recurring)
+      const { contributionSent } = await pageHandler.sendContribution(
+        creatorID,
+        amount,
+        recurring,
+      )
       return contributionSent
     },
 
@@ -552,7 +563,7 @@ export function createModel(): AppModel {
       stateManager.update({
         notifications: stateManager.getState().notifications.filter((item) => {
           return item.id !== id
-        })
+        }),
       })
       await pageHandler.clearRewardsNotification(id)
     },
@@ -563,6 +574,6 @@ export function createModel(): AppModel {
 
     async recordOfferView() {
       await pageHandler.recordOfferView()
-    }
+    },
   }
 }

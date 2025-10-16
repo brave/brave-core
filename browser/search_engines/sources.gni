@@ -15,7 +15,6 @@ brave_browser_search_engines_sources = [
 brave_browser_search_engines_deps = [
   "//base",
   "//brave/components/brave_search_conversion",
-  "//brave/components/time_period_storage",
   "//chrome/browser/profiles:profile",
   "//components/keyed_service/content",
   "//components/keyed_service/core",
@@ -57,7 +56,6 @@ if (is_android) {
   brave_browser_search_engines_deps += [
     "//brave/browser/profiles:util",
     "//brave/components/search_engines",
-    "//brave/components/time_period_storage",
     "//chrome/browser/profiles:profile",
     "//components/keyed_service/content",
     "//components/pref_registry",

@@ -22,6 +22,7 @@
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/common/ai_chat_urls.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/ai_chat/core/common/prefs.h"
@@ -132,6 +133,39 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
                  HasMemoryCallback callback) override {
     std::move(callback).Run(ai_chat::prefs::HasMemoryFromPrefs(
         memory, *Profile::FromWebUI(web_ui_)->GetPrefs()));
+  }
+
+  void BindConversationHandler(
+      const std::string& conversation_id,
+      mojo::PendingReceiver<ai_chat::mojom::UntrustedConversationHandler>
+          untrusted_conversation_handler_receiver) override {
+    if (conversation_id.empty()) {
+      return;
+    }
+
+    ai_chat::AIChatService* service =
+        ai_chat::AIChatServiceFactory::GetForBrowserContext(
+            web_ui_->GetWebContents()->GetBrowserContext());
+
+    if (!service) {
+      return;
+    }
+
+    service->GetConversation(
+        conversation_id,
+        base::BindOnce(
+            [](mojo::PendingReceiver<
+                   ai_chat::mojom::UntrustedConversationHandler> receiver,
+               ai_chat::ConversationHandler* conversation_handler) {
+              if (!conversation_handler) {
+                DVLOG(0)
+                    << "Failed to get conversation handler for conversation "
+                       "entries frame";
+                return;
+              }
+              conversation_handler->Bind(std::move(receiver));
+            },
+            std::move(untrusted_conversation_handler_receiver)));
   }
 
   void BindUntrustedUI(
@@ -263,42 +297,6 @@ AIChatUntrustedConversationUI::~AIChatUntrustedConversationUI() = default;
 void AIChatUntrustedConversationUI::BindInterface(
     mojo::PendingReceiver<ai_chat::mojom::UntrustedUIHandler> receiver) {
   ui_handler_ = std::make_unique<UIHandler>(web_ui(), std::move(receiver));
-}
-
-void AIChatUntrustedConversationUI::BindInterface(
-    mojo::PendingReceiver<ai_chat::mojom::UntrustedConversationHandler>
-        receiver) {
-  // Get conversation from URL
-  std::string_view conversation_uuid = ai_chat::ConversationUUIDFromURL(
-      web_ui()->GetRenderFrameHost()->GetLastCommittedURL());
-  DVLOG(2) << "Binding conversation frame for conversation uuid:"
-           << conversation_uuid;
-  if (conversation_uuid.empty()) {
-    return;
-  }
-
-  ai_chat::AIChatService* service =
-      ai_chat::AIChatServiceFactory::GetForBrowserContext(
-          web_ui()->GetWebContents()->GetBrowserContext());
-
-  if (!service) {
-    return;
-  }
-
-  service->GetConversation(
-      conversation_uuid,
-      base::BindOnce(
-          [](mojo::PendingReceiver<ai_chat::mojom::UntrustedConversationHandler>
-                 receiver,
-             ai_chat::ConversationHandler* conversation_handler) {
-            if (!conversation_handler) {
-              DVLOG(0) << "Failed to get conversation handler for conversation "
-                          "entries frame";
-              return;
-            }
-            conversation_handler->Bind(std::move(receiver));
-          },
-          std::move(receiver)));
 }
 
 WEB_UI_CONTROLLER_TYPE_IMPL(AIChatUntrustedConversationUI)

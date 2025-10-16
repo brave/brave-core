@@ -305,7 +305,7 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
     return (prune_dirs, additional_paths)
 
 
-def CheckBraveMissingLicense(target_os, path, error):
+def CheckBraveMissingLicense(path, error):
     if path.startswith('brave'):
         # brave/third_party/rust itself doesn't need to have a license, but
         # all subfolders in it should.
@@ -321,12 +321,6 @@ def CheckBraveMissingLicense(target_os, path, error):
         if output.startswith('??'):
             return  # Ignore untracked files
 
-        if target_os == 'android':
-            if path in DESKTOP_ONLY_PATHS:
-                return  # Desktop failures are not relevant on Android.
-        else:
-            if path in ANDROID_ONLY_PATHS:
-                return  # Android failures are not relevant on desktop.
         if not ContainsFiles(os.path.join(_REPOSITORY_ROOT, path)):
             return  # Empty directories do not require license.
         print('\nERROR: missing license information in %s\n'

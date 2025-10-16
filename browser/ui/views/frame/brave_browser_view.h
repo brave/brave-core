@@ -73,7 +73,7 @@ class BraveBrowserView : public BrowserView,
                          public commands::AcceleratorService::Observer {
   METADATA_HEADER(BraveBrowserView, BrowserView)
  public:
-  explicit BraveBrowserView(std::unique_ptr<Browser> browser);
+  explicit BraveBrowserView(Browser* browser);
   BraveBrowserView(const BraveBrowserView&) = delete;
   BraveBrowserView& operator=(const BraveBrowserView&) = delete;
   ~BraveBrowserView() override;
@@ -128,6 +128,7 @@ class BraveBrowserView : public BrowserView,
   views::View* sidebar_host_view() { return sidebar_host_view_; }
 #endif
 
+  void StopListeningFullscreenChanges();
   bool IsSidebarVisible() const;
   void SetSidePanelOperationByActiveTabChange(bool tab_change);
 
@@ -196,6 +197,8 @@ class BraveBrowserView : public BrowserView,
   void UpdateDevTools(content::WebContents* inspected_web_contents) override;
   bool MaybeUpdateDevtools(content::WebContents* web_contents) override;
   void OnWidgetActivationChanged(views::Widget* widget, bool active) override;
+  void OnWidgetWindowModalVisibilityChanged(views::Widget* widget,
+                                            bool visible) override;
   void GetAccessiblePanes(std::vector<views::View*>* panes) override;
   void ShowSplitView(bool focus_active_view) override;
   void HideSplitView() override;

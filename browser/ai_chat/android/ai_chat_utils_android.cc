@@ -13,6 +13,7 @@
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/common/ai_chat_urls.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/android/chrome_jni_headers/BraveLeoUtils_jni.h"
 #include "content/public/browser/web_contents.h"

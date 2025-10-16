@@ -30,5 +30,11 @@ public class BraveRadioButtonGroupAdaptiveToolbarPreferenceClassAdapter extends 
 
         deleteField(sBraveRadioButtonGroupAdaptiveToolbarPreference, "mShareButton");
         makeProtectedField(sRadioButtonGroupAdaptiveToolbarPreference, "mShareButton");
+
+        makePublicMethod(sRadioButtonGroupAdaptiveToolbarPreference, "buildUiStateForStats");
+        addMethodAnnotation(
+                sBraveRadioButtonGroupAdaptiveToolbarPreference,
+                "buildUiStateForStats",
+                "Ljava/lang/Override;");
     }
 }

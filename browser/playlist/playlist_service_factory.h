@@ -11,7 +11,7 @@
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 
 #if BUILDFLAG(IS_ANDROID)
-#include "brave/components/playlist/common/mojom/playlist.mojom.h"
+#include "brave/components/playlist/core/common/mojom/playlist.mojom.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #endif  // BUILDFLAG(IS_ANDROID)
 

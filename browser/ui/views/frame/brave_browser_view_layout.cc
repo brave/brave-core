@@ -47,10 +47,11 @@ BraveBrowserViewLayout::BraveBrowserViewLayout(
     views::View* vertical_tab_strip_container,
     views::View* toolbar,
     InfoBarContainerView* infobar_container,
+    views::View* main_container,
     views::View* contents_container,
     MultiContentsView* multi_contents_view,
     views::View* left_aligned_side_panel_separator,
-    views::View* unified_side_panel,
+    views::View* contents_height_side_panel,
     views::View* right_aligned_side_panel_separator,
     views::View* side_panel_rounded_corner,
     views::View* contents_separator)
@@ -65,11 +66,12 @@ BraveBrowserViewLayout::BraveBrowserViewLayout(
           vertical_tab_strip_container,
           toolbar,
           infobar_container,
+          main_container,
           (browser_view ? browser_view->GetContentsContainerForLayoutManager()
                         : browser_view),
           multi_contents_view,
           left_aligned_side_panel_separator,
-          unified_side_panel,
+          contents_height_side_panel,
           right_aligned_side_panel_separator,
           side_panel_rounded_corner,
           contents_separator) {}
@@ -125,7 +127,7 @@ void BraveBrowserViewLayout::LayoutVerticalTabs() {
     if (IsInfobarVisible()) {
       return infobar_container_->y();
     }
-    return contents_container_->y() - GetContentsMargins().top();
+    return main_container_->y() - GetContentsMargins().top();
   };
 
   gfx::Rect vertical_tab_strip_bounds = browser_view_->GetLocalBounds();
@@ -208,21 +210,20 @@ void BraveBrowserViewLayout::LayoutInfoBar(gfx::Rect& available_bounds) {
 
 void BraveBrowserViewLayout::LayoutContentsContainerView(
     const gfx::Rect& available_bounds) {
-  gfx::Rect new_rect = available_bounds;
+  main_container_->SetBoundsRect(available_bounds);
+
+  if (contents_background_) {
+    contents_background_->SetBoundsRect(available_bounds);
+  }
+
+  gfx::Rect contents_container_bounds = main_container_->GetLocalBounds();
   if (vertical_tab_strip_host_) {
     // Both vertical tab impls should not be enabled together.
     // https://github.com/brave/brave-browser/issues/48373
-    CHECK(!tabs::AreVerticalTabsEnabled());
-    new_rect.Inset(GetInsetsConsideringVerticalTabHost());
-  } else if (tabs::AreVerticalTabsEnabled()) {
-    new_rect.set_height(new_rect.height() - new_rect.y());
-    new_rect.set_width(new_rect.width() - BrowserView::kVerticalTabStripWidth);
+    CHECK(!tabs::IsVerticalTabsFeatureEnabled());
+    contents_container_bounds.Inset(GetInsetsConsideringVerticalTabHost());
   }
 
-  const int top = new_rect.y();
-  const int bottom = browser_view_->height();
-  gfx::Rect contents_container_bounds(new_rect.x(), top, new_rect.width(),
-                                      std::max(0, bottom - top));
   if (webui_tab_strip_ && webui_tab_strip_->GetVisible()) {
     // The WebUI tab strip container should "push" the tab contents down without
     // resizing it.
@@ -230,14 +231,21 @@ void BraveBrowserViewLayout::LayoutContentsContainerView(
         gfx::Insets().set_bottom(-webui_tab_strip_->size().height()));
   }
 
-  if (contents_background_) {
-    contents_background_->SetBoundsRect(contents_container_bounds);
-  }
-
   LayoutSideBar(contents_container_bounds);
   UpdateContentsContainerInsets(contents_container_bounds);
 
   contents_container_->SetBoundsRect(contents_container_bounds);
+}
+
+bool BraveBrowserViewLayout::IsImmersiveModeEnabledWithoutToolbar() const {
+  // When return true here, BrowserViewLayout::LayoutBookmarkAndInfoBars()
+  // makes |top_container_separator_| visible.
+  // We want to use |top_container_separator_| as a separator between
+  // top container and contents instead of MultiContentsContainer's top
+  // separator to cover whole browser window width.
+  // Althought it's always visible, it's only shown when rounded corners
+  // is not applied by controlling its bounds from BraveBrowserView.
+  return true;
 }
 
 void BraveBrowserViewLayout::LayoutSideBar(gfx::Rect& contents_bounds) {

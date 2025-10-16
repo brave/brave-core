@@ -34,6 +34,12 @@ public class OnboardingInitWalletFragment extends BaseOnboardingWalletFragment {
     private boolean mRestartRestoreAction;
     private boolean mButtonClicked;
 
+    // Default constructor required by Android Fragment system. This happens, for example, on
+    // folding/unfolding screen.
+    public OnboardingInitWalletFragment() {
+        this(false, false);
+    }
+
     public OnboardingInitWalletFragment(boolean restartSetupAction, boolean restartRestoreAction) {
         mRestartSetupAction = restartSetupAction;
         mRestartRestoreAction = restartRestoreAction;

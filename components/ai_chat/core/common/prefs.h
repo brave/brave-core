@@ -13,6 +13,7 @@
 #include "base/component_export.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/customization_settings.mojom-forward.h"
 
 class PrefService;
@@ -85,6 +86,9 @@ void UpdateSmartModeInPrefs(const std::string& id,
 // Deletes a smart mode from prefs.
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 void DeleteSmartModeFromPrefs(const std::string& id, PrefService& prefs);
+// Updates the last_used time for a smart mode in prefs.
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+void UpdateSmartModeLastUsedInPrefs(const std::string& id, PrefService& prefs);
 
 }  // namespace ai_chat::prefs
 

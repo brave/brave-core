@@ -151,6 +151,12 @@ constexpr auto kBraveOriginProfileMetadata =
          BraveOriginServiceFactory::BraveOriginPrefMetadata(
              true,
              /*user_settable=*/false)},
+
+        // Web Discovery preferences
+        {kWebDiscoveryEnabled,
+         BraveOriginServiceFactory::BraveOriginPrefMetadata(
+             false,
+             /*user_settable=*/true)},
     });
 
 }  // namespace

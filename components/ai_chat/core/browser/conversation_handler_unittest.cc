@@ -48,6 +48,7 @@
 #include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/ai_chat/core/common/prefs.h"
 #include "brave/components/ai_chat/core/common/test_utils.h"
@@ -1843,7 +1844,7 @@ TEST_F(ConversationHandlerUnitTest, UploadFile) {
 
   constexpr char kTestPrompt[] = "What is this?";
   EXPECT_CALL(*engine, GenerateAssistantResponse)
-      .WillRepeatedly(testing::Invoke(
+      .WillRepeatedly(
           [](PageContentsMap page_contents,
              const std::vector<mojom::ConversationTurnPtr>& history,
              const std::string& selected_language, bool is_temporary_chat,
@@ -1857,7 +1858,7 @@ TEST_F(ConversationHandlerUnitTest, UploadFile) {
                     mojom::ConversationEntryEvent::NewCompletionEvent(
                         mojom::CompletionEvent::New("This is a lion.")),
                     std::nullopt /* model_key */)));
-          }));
+          });
   ASSERT_FALSE(conversation_handler_->GetCurrentModel().vision_support);
 
   // No uploaded files
@@ -3744,7 +3745,7 @@ TEST_F(ConversationHandlerUnitTest, VisionModelSwitchOnScreenshots) {
 
   // Mock engine response
   EXPECT_CALL(*engine, GenerateAssistantResponse)
-      .WillRepeatedly(testing::Invoke(
+      .WillRepeatedly(
           [](PageContentsMap page_contents,
              const std::vector<mojom::ConversationTurnPtr>& history,
              const std::string& selected_language, bool is_temporary_chat,
@@ -3759,7 +3760,7 @@ TEST_F(ConversationHandlerUnitTest, VisionModelSwitchOnScreenshots) {
                         mojom::CompletionEvent::New(
                             "Response with vision model")),
                     std::nullopt /* model_key */)));
-          }));
+          });
 
   base::RunLoop loop;
   // Note: OnModelDataChanged expectation is set at the end for auto model
@@ -4397,6 +4398,10 @@ TEST_F(ConversationHandlerUnitTest,
   ASSERT_EQ(smart_modes.size(), 1u);
   std::string mode_id = smart_modes[0]->id;
 
+  // Get initial timestamps
+  base::Time created_time = smart_modes[0]->created_time;
+  base::Time initial_last_used = smart_modes[0]->last_used;
+
   MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
       conversation_handler_->GetEngineForTesting());
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
@@ -4426,6 +4431,13 @@ TEST_F(ConversationHandlerUnitTest,
   ASSERT_TRUE(history[0]->smart_mode);
   EXPECT_EQ(history[0]->smart_mode->shortcut, "playlist");
   EXPECT_EQ(history[0]->smart_mode->prompt, "Create a playlist of 10 songs");
+
+  // Verify last_used time was updated
+  auto updated_mode = prefs::GetSmartModeFromPrefs(prefs_, mode_id);
+  ASSERT_TRUE(updated_mode);
+  EXPECT_NE(updated_mode->last_used, created_time);
+  EXPECT_GT(updated_mode->last_used, initial_last_used);
+  EXPECT_EQ(updated_mode->created_time, created_time);
 }
 
 TEST_F(ConversationHandlerUnitTest,

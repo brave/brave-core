@@ -289,6 +289,11 @@ void WebcompatReporterService::GetWebcompatCategories(
           IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_ADS)),
       "ads"));
   categories.emplace_back(mojom::WebcompatCategoryItem::New(
+      WebcompatCategory::kBrowserNotSupported,
+      base::UTF16ToUTF8(l10n_util::GetStringUTF16(
+          IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_BROWSER_NOT_SUPPORTED)),
+      "browser not supported"));
+  categories.emplace_back(mojom::WebcompatCategoryItem::New(
       WebcompatCategory::kBlank,
       base::UTF16ToUTF8(l10n_util::GetStringUTF16(
           IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_BLANK)),

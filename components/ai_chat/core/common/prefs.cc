@@ -13,6 +13,7 @@
 #include "base/uuid.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/customization_settings.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "components/prefs/pref_service.h"
@@ -325,6 +326,16 @@ void DeleteSmartModeFromPrefs(const std::string& id, PrefService& prefs) {
   ScopedDictPrefUpdate update(&prefs, prefs::kBraveAIChatSmartModes);
   base::Value::Dict& smart_modes_dict = update.Get();
   smart_modes_dict.Remove(id);
+}
+
+void UpdateSmartModeLastUsedInPrefs(const std::string& id, PrefService& prefs) {
+  ScopedDictPrefUpdate update(&prefs, prefs::kBraveAIChatSmartModes);
+  base::Value::Dict* mode_dict = update->FindDict(id);
+  if (!mode_dict) {
+    return;
+  }
+
+  mode_dict->Set("last_used", base::TimeToValue(base::Time::Now()));
 }
 
 }  // namespace ai_chat::prefs

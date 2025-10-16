@@ -259,8 +259,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, MenuOrderTest) {
   CheckMoreToolsCommandsAreInOrderInMenuModel(private_browser,
                                               more_tools_in_order);
 
-  ui_test_utils::BrowserChangeObserver browser_creation_observer(
-      nullptr, ui_test_utils::BrowserChangeObserver::ChangeType::kAdded);
+  ui_test_utils::BrowserCreatedObserver browser_creation_observer;
   profiles::SwitchToGuestProfile(base::DoNothing());
 
   Browser* guest_browser = browser_creation_observer.Wait();
@@ -315,8 +314,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, MenuOrderTest) {
       guest_browser, more_tools_disabled_for_guest_profile);
 
 #if BUILDFLAG(ENABLE_TOR)
-  ui_test_utils::BrowserChangeObserver tor_browser_creation_observer(
-      nullptr, ui_test_utils::BrowserChangeObserver::ChangeType::kAdded);
+  ui_test_utils::BrowserCreatedObserver tor_browser_creation_observer;
   brave::NewOffTheRecordWindowTor(browser());
   Browser* tor_browser = tor_browser_creation_observer.Wait();
   DCHECK(tor_browser);

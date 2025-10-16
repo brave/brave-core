@@ -386,8 +386,15 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
 
         if (mSearchQuery != null) {
             // Only the filtered passwords and exceptions should be shown.
+            getPreferenceScreen().removeAll();
             passwordManagerHandler.updatePasswordLists();
             return;
+        }
+
+        if (findPreference(PREF_SAVE_PASSWORDS_SWITCH) == null) {
+            // We wiped all preferences to show the search result, add them again
+            SettingsUtils.addPreferencesFromResource(
+                    this, R.xml.brave_password_settings_preferences);
         }
 
         // Update preference states

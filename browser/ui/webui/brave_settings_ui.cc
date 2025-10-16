@@ -37,6 +37,7 @@
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/brave_account/features.h"
 #include "brave/components/brave_origin/brave_origin_handler.h"
+#include "brave/components/brave_origin/brave_origin_utils.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/features.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
@@ -49,7 +50,7 @@
 #include "brave/components/email_aliases/features.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
-#include "brave/components/playlist/common/buildflags/buildflags.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -102,8 +103,8 @@
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
-#include "brave/components/playlist/browser/pref_names.h"
-#include "brave/components/playlist/common/features.h"
+#include "brave/components/playlist/core/common/features.h"
+#include "brave/components/playlist/core/common/pref_names.h"
 #endif
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
@@ -259,6 +260,8 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
 #endif
   html_source->AddBoolean("isBraveAccountEnabled",
                           brave_account::features::IsBraveAccountEnabled());
+  html_source->AddBoolean("isOriginAllowed",
+                          brave_origin::IsBraveOriginEnabled());
   html_source->AddBoolean(
       "isTreeTabsFlagEnabled",
       base::FeatureList::IsEnabled(tabs::features::kBraveTreeTab));

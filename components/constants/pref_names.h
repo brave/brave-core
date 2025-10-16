@@ -16,6 +16,8 @@ inline constexpr char kManagedBraveShieldsDisabledForUrls[] =
     "brave.managed_shields_disabled";
 inline constexpr char kManagedBraveShieldsEnabledForUrls[] =
     "brave.managed_shields_enabled";
+inline constexpr char kManagedDefaultBraveFingerprintingV2[] =
+    "brave.profile.managed_default_content_settings.brave_fingerprinting_v2";
 inline constexpr char kAdsBlocked[] = "brave.stats.ads_blocked";
 // We no longer update this pref, but we keep it around for now because it's
 // added to kAdsBlocked when being displayed.

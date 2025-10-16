@@ -11,8 +11,8 @@ load("@builtin//struct.star", "module", "struct")
 __HOST_OS_IS_LINUX = runtime.os == "linux"
 __HOST_OS_IS_WINDOWS = runtime.os == "windows"
 
-# Rules to disable remote execution.
-__RULES_TO_DISABLE_REMOTE = [
+# Rules to remove from handling.
+__RULES_TO_REMOVE = [
     # We have chromium_src mangling which requires additional inputs/outputs
     # handling. This is not trivial and require careful configuration. Can be
     # revisited when SISO becomes first class citizen in Brave.
@@ -60,8 +60,31 @@ __debug = False
 # Main configuration function that sets up SISO for Brave-specific build
 # requirements by adjusting step configurations and registering custom handlers.
 def __configure(ctx, step_config, handlers):
+    __remove_rules(step_config)
     __adjust_handlers(ctx, step_config, handlers)
     __remove_labels_from_platforms(step_config)
+
+
+# Disable any handling for rules that deviate from upstream.
+def __remove_rules(step_config):
+
+    def should_remove(rule_name):
+        # Remove rules that are not supported by Brave.
+        if rule_name in __RULES_TO_REMOVE:
+            return True
+
+        # Disable remote execution for rust rules on non-Linux platforms. Linux
+        # rust toolchain does not include cross-toolchains, so we can't use it
+        # the same way we use Linux clang toolchain for cross-compilation.
+        if not __HOST_OS_IS_LINUX and rule_name.startswith("rust"):
+            return True
+
+        return False
+
+    step_config["rules"] = [
+        rule for rule in step_config["rules"]
+        if not should_remove(rule["name"])
+    ]
 
 
 # Configures handlers to handle chromium_src overrides and disable remote
@@ -74,18 +97,6 @@ def __adjust_handlers(ctx, step_config, handlers):
     # Adjust rules.
     for rule in step_config["rules"]:
         rule_name = rule["name"]
-
-        # Disable remote execution for rules that need local processing.
-        if rule_name in __RULES_TO_DISABLE_REMOTE:
-            __disable_remote_execution(rule)
-            continue
-
-        # Disable remote execution for rust rules on non-Linux platforms. Linux
-        # rust toolchain does not include cross-toolchains, so we can't use it
-        # the same way we use Linux clang toolchain for cross-compilation.
-        if not __HOST_OS_IS_LINUX and rule_name.startswith("rust"):
-            __disable_remote_execution(rule)
-            continue
 
         if rule_name == "blink/generate_bindings":
             # This step requires increased timeouts to work.
@@ -299,12 +310,6 @@ def __chromium_src_inputs_handler(ctx, cmd, fixed_inputs):
 
     ctx.actions.fix(inputs=new_inputs)
     return __evolve_struct(cmd, inputs=new_inputs)
-
-
-# Disables remote execution for a rule.
-def __disable_remote_execution(rule):
-    rule["remote"] = False
-    rule.pop("reproxy_config", None)
 
 
 # Ensures a list field exists in a dict and returns it.

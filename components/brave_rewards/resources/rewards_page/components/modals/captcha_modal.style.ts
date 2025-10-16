@@ -48,4 +48,3 @@ export const style = scoped.css`
     --leo-icon-color: ${color.systemfeedback.warningIcon};
   }
 `
-

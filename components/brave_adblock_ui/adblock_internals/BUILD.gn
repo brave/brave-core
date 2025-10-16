@@ -5,6 +5,7 @@
 import("//brave/components/common/typescript.gni")
 
 transpile_web_ui("brave_adblock_internals_ui") {
+  output_module = false
   entry_points = [ [
         "brave_adblock_internals",
         rebase_path("brave_adblock_internals.tsx"),

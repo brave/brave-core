@@ -121,5 +121,3 @@ export const mount = (at: HTMLElement) => {
     at
   )
 }
-
-;(window as any).mountCommands = mount

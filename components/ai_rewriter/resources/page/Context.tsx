@@ -2,10 +2,8 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
-import {
-  ActionGroup,
-  ActionType,
-} from 'gen/brave/components/ai_chat/core/common/mojom/ai_chat.mojom.m'
+import { ActionType } from 'gen/brave/components/ai_chat/core/common/mojom/common.mojom.m'
+import { ActionGroup } from 'gen/brave/components/ai_chat/core/common/mojom/ai_chat.mojom.m'
 import {
   AIRewriterPageCallbackRouter,
   AIRewriterPageHandler,

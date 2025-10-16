@@ -19,7 +19,7 @@ import * as urls from '../../../shared/lib/rewards_urls'
 
 import {
   externalWalletProviderFromString,
-  getExternalWalletProviderName
+  getExternalWalletProviderName,
 } from '../../../shared/lib/external_wallet'
 
 import { style } from './authorization_modal.style'
@@ -106,98 +106,98 @@ export function AuthorizationModal() {
       case 'device-limit-reached':
         return (
           <span>
-            {
-              formatMessage(getString('authorizeDeviceLimitReachedText'), [
-                providerName
-              ])
-            }{' '}
+            {formatMessage(getString('authorizeDeviceLimitReachedText'), [
+              providerName,
+            ])}{' '}
             <NewTabLink href={urls.deviceLimitLearnMoreURL}>
               {getString('learnMoreLink')}
             </NewTabLink>
           </span>
         )
       case 'flagged-wallet':
-        return <>
-          <p>
-            {getString('authorizeFlaggedWalletText1')}
-            {getString('authorizeFlaggedWalletText2')}
-          </p>
-          <p>{getString('authorizeFlaggedWalletText3')}</p>
-          <p>
-            <NewTabLink href={urls.flaggedWalletURL}>
-              {getString('authorizeFlaggedWalletText4')}
-            </NewTabLink>
-          </p>
-        </>
+        return (
+          <>
+            <p>
+              {getString('authorizeFlaggedWalletText1')}
+              {getString('authorizeFlaggedWalletText2')}
+            </p>
+            <p>{getString('authorizeFlaggedWalletText3')}</p>
+            <p>
+              <NewTabLink href={urls.flaggedWalletURL}>
+                {getString('authorizeFlaggedWalletText4')}
+              </NewTabLink>
+            </p>
+          </>
+        )
       case 'kyc-required':
         return formatMessage(getString('authorizeKycRequiredText'), [
-          providerName
+          providerName,
         ])
       case 'mismatched-countries':
-        return <>
-          <p>
-            {
-              formatMessage(getString('authorizeMismatchedCountriesText'), [
-                providerName
-              ])
-            }
-          </p>
-          <p>
-            <NewTabLink href={urls.mismatchedCountriesURL}>
-              {getString('learnMoreLink')}
-            </NewTabLink>
-          </p>
-        </>
+        return (
+          <>
+            <p>
+              {formatMessage(getString('authorizeMismatchedCountriesText'), [
+                providerName,
+              ])}
+            </p>
+            <p>
+              <NewTabLink href={urls.mismatchedCountriesURL}>
+                {getString('learnMoreLink')}
+              </NewTabLink>
+            </p>
+          </>
+        )
       case 'mismatched-provider-accounts':
-        return <>
-          <p>
-            {
-              formatMessage(
+        return (
+          <>
+            <p>
+              {formatMessage(
                 getString('authorizeMismatchedProviderAccountsText'),
-                [providerName])
-            }
-          </p>
-          <p>
-            <NewTabLink href={urls.mismatchedProviderAccountsURL}>
-              {getString('learnMoreLink')}
-            </NewTabLink>
-          </p>
-        </>
+                [providerName],
+              )}
+            </p>
+            <p>
+              <NewTabLink href={urls.mismatchedProviderAccountsURL}>
+                {getString('learnMoreLink')}
+              </NewTabLink>
+            </p>
+          </>
+        )
       case 'provider-unavailable':
-        return <>
-          <p>
-            {
-              formatMessage(getString('authorizeProviderUnavailableText1'), [
-                providerName
-              ])
-            }
-          </p>
-          <p>
-            {
-              formatMessage(getString('authorizeProviderUnavailableText2'), {
+        return (
+          <>
+            <p>
+              {formatMessage(getString('authorizeProviderUnavailableText1'), [
+                providerName,
+              ])}
+            </p>
+            <p>
+              {formatMessage(getString('authorizeProviderUnavailableText2'), {
                 tags: {
                   $2: (content) => (
-                    <NewTabLink key='link' href={urls.braveStatusURL}>
+                    <NewTabLink
+                      key='link'
+                      href={urls.braveStatusURL}
+                    >
                       {content}
                     </NewTabLink>
-                  )
-                }
-              })
-            }
-          </p>
-        </>
+                  ),
+                },
+              })}
+            </p>
+          </>
+        )
       case 'region-not-supported':
-        return <>
-          <p>
-            {
-              formatMessage(getString('authorizeRegionNotSupportedText1'), [
-                providerName
-              ])
-            }
-          </p>
-          <p>
-            {
-              formatMessage(getString('authorizeRegionNotSupportedText2'), {
+        return (
+          <>
+            <p>
+              {formatMessage(getString('authorizeRegionNotSupportedText1'), [
+                providerName,
+              ])}
+            </p>
+            <p>
+              {formatMessage(getString('authorizeRegionNotSupportedText2'), {
                 tags: {
                   $2: (content) => (
                     <NewTabLink
@@ -206,32 +206,34 @@ export function AuthorizationModal() {
                     >
                       {content}
                     </NewTabLink>
-                  )
-                }
-              })
-            }
-          </p>
-        </>
+                  ),
+                },
+              })}
+            </p>
+          </>
+        )
       case 'request-signature-verification-error':
       case 'uphold-transaction-verification-failure':
         return (
           <p>
-            {
-              formatMessage(
-                getString('authorizeSignatureVerificationErrorText'),
-                {
-                  placeholders: {
-                    $1: providerName
-                  },
-                  tags: {
-                    $2: (content) => (
-                      <NewTabLink key='link' href={urls.contactSupportURL}>
-                        {content}
-                      </NewTabLink>
-                    )
-                  }
-                })
-            }
+            {formatMessage(
+              getString('authorizeSignatureVerificationErrorText'),
+              {
+                placeholders: {
+                  $1: providerName,
+                },
+                tags: {
+                  $2: (content) => (
+                    <NewTabLink
+                      key='link'
+                      href={urls.contactSupportURL}
+                    >
+                      {content}
+                    </NewTabLink>
+                  ),
+                },
+              },
+            )}
           </p>
         )
       case 'uphold-bat-not-allowed':
@@ -241,17 +243,18 @@ export function AuthorizationModal() {
       case 'unexpected-error':
         return (
           <p>
-            {
-              formatMessage(getString('authorizeUnexpectedErrorText'), {
-                tags: {
-                  $2: (content) => (
-                    <NewTabLink key='link' href={urls.contactSupportURL}>
-                      {content}
-                    </NewTabLink>
-                  )
-                }
-              })
-            }
+            {formatMessage(getString('authorizeUnexpectedErrorText'), {
+              tags: {
+                $2: (content) => (
+                  <NewTabLink
+                    key='link'
+                    href={urls.contactSupportURL}
+                  >
+                    {content}
+                  </NewTabLink>
+                ),
+              },
+            })}
           </p>
         )
     }
@@ -271,7 +274,10 @@ export function AuthorizationModal() {
   }
 
   return (
-    <Modal className='authorization-modal' onEscape={onClose}>
+    <Modal
+      className='authorization-modal'
+      onEscape={onClose}
+    >
       <Modal.Header
         title={getString('authorizeErrorTitle')}
         onClose={onClose}
@@ -284,9 +290,7 @@ export function AuthorizationModal() {
         <div className='error-text'>{errorText()}</div>
       </div>
       <Modal.Actions
-        actions={[
-          { text: getString('closeButtonLabel'), onClick: onClose }
-        ]}
+        actions={[{ text: getString('closeButtonLabel'), onClick: onClose }]}
       />
     </Modal>
   )

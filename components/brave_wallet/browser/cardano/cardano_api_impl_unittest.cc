@@ -1400,6 +1400,7 @@ TEST_F(CardanoApiImplTest, SignTx) {
   auto unsigned_tx_bytes =
       CardanoTransactionSerializer().SerializeTransaction(unsigned_tx);
 
+  auto tx_hash = CardanoTransactionSerializer().GetTxHash(unsigned_tx);
   std::vector<CardanoSignMessageResult> sign_results;
   sign_results.emplace_back(
       brave_wallet_service()
@@ -1407,7 +1408,7 @@ TEST_F(CardanoApiImplTest, SignTx) {
           ->SignMessageByCardanoKeyring(
               added_account->account_id,
               mojom::CardanoKeyId::New(mojom::CardanoKeyRole::kExternal, 0),
-              unsigned_tx_bytes)
+              tx_hash)
           .value());
   sign_results.emplace_back(
       brave_wallet_service()
@@ -1415,7 +1416,7 @@ TEST_F(CardanoApiImplTest, SignTx) {
           ->SignMessageByCardanoKeyring(
               added_account->account_id,
               mojom::CardanoKeyId::New(mojom::CardanoKeyRole::kExternal, 1),
-              unsigned_tx_bytes)
+              tx_hash)
           .value());
 
   CardanoTransaction signed_tx = unsigned_tx;
@@ -1504,6 +1505,7 @@ TEST_F(CardanoApiImplTest, SignTx_ExistingExternalSignature) {
   auto unsigned_tx_bytes =
       CardanoTransactionSerializer().SerializeTransaction(unsigned_tx);
 
+  auto tx_hash = CardanoTransactionSerializer().GetTxHash(unsigned_tx);
   std::vector<CardanoSignMessageResult> sign_results;
   sign_results.emplace_back(
       brave_wallet_service()
@@ -1511,7 +1513,7 @@ TEST_F(CardanoApiImplTest, SignTx_ExistingExternalSignature) {
           ->SignMessageByCardanoKeyring(
               added_account->account_id,
               mojom::CardanoKeyId::New(mojom::CardanoKeyRole::kExternal, 0),
-              unsigned_tx_bytes)
+              tx_hash)
           .value());
   sign_results.emplace_back(
       brave_wallet_service()
@@ -1519,7 +1521,7 @@ TEST_F(CardanoApiImplTest, SignTx_ExistingExternalSignature) {
           ->SignMessageByCardanoKeyring(
               added_account->account_id,
               mojom::CardanoKeyId::New(mojom::CardanoKeyRole::kExternal, 1),
-              unsigned_tx_bytes)
+              tx_hash)
           .value());
 
   CardanoTransaction signed_tx = unsigned_tx;
@@ -1576,6 +1578,7 @@ TEST_F(CardanoApiImplTest, SignTx_PartialSign) {
   auto unsigned_tx_bytes =
       CardanoTransactionSerializer().SerializeTransaction(unsigned_tx);
 
+  auto tx_hash = CardanoTransactionSerializer().GetTxHash(unsigned_tx);
   std::vector<CardanoSignMessageResult> sign_results;
   sign_results.emplace_back(
       brave_wallet_service()
@@ -1583,7 +1586,7 @@ TEST_F(CardanoApiImplTest, SignTx_PartialSign) {
           ->SignMessageByCardanoKeyring(
               added_account->account_id,
               mojom::CardanoKeyId::New(mojom::CardanoKeyRole::kExternal, 0),
-              unsigned_tx_bytes)
+              tx_hash)
           .value());
   sign_results.emplace_back(
       brave_wallet_service()
@@ -1591,7 +1594,7 @@ TEST_F(CardanoApiImplTest, SignTx_PartialSign) {
           ->SignMessageByCardanoKeyring(
               added_account->account_id,
               mojom::CardanoKeyId::New(mojom::CardanoKeyRole::kExternal, 1),
-              unsigned_tx_bytes)
+              tx_hash)
           .value());
 
   CardanoTransaction signed_tx = unsigned_tx;

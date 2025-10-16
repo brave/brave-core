@@ -40,7 +40,6 @@ export function AdsSummary() {
     <div data-css-scope={style.scope}>
       {renderRow(getString('adTypeNewTabPageLabel'), 'new-tab-page')}
       {renderRow(getString('adTypeNotificationLabel'), 'notification')}
-      {renderRow(getString('adTypeSearchResultLabel'), 'search-result')}
     </div>
   )
 }

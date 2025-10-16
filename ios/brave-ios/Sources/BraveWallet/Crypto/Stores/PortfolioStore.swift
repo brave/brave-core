@@ -560,7 +560,6 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
                     )
                   {
                     balanceForToken = await zcashWalletService.fetchZECTransparentBalances(
-                      networkId: tokenNetworkAccounts.network.chainId,
                       accountId: account.accountId
                     )
                   } else {

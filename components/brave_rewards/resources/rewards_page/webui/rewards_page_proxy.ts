@@ -11,8 +11,10 @@ export class RewardsPageProxy {
   callbackRouter: mojom.RewardsPageCallbackRouter
   handler: mojom.RewardsPageHandlerRemote
 
-  constructor(callbackRouter: mojom.RewardsPageCallbackRouter,
-              handler: mojom.RewardsPageHandlerRemote) {
+  constructor(
+    callbackRouter: mojom.RewardsPageCallbackRouter,
+    handler: mojom.RewardsPageHandlerRemote,
+  ) {
     this.callbackRouter = callbackRouter
     this.handler = handler
   }

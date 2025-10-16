@@ -273,7 +273,9 @@ TEST_F(WebcompatReporterServiceUnitTest, RetrievingWebcompatCategories) {
         {mojom::WebcompatCategory::kAds, mojom::WebcompatCategory::kBlank,
          mojom::WebcompatCategory::kScroll, mojom::WebcompatCategory::kForm,
          mojom::WebcompatCategory::kAntiAdblock,
-         mojom::WebcompatCategory::kTracking, mojom::WebcompatCategory::kOther},
+         mojom::WebcompatCategory::kTracking,
+         mojom::WebcompatCategory::kBrowserNotSupported,
+         mojom::WebcompatCategory::kOther},
         {mojom::WebcompatCategory::kCookieNotice,
          mojom::WebcompatCategory::kNewsletter,
          mojom::WebcompatCategory::kSocial, mojom::WebcompatCategory::kChat},
@@ -302,6 +304,7 @@ TEST_F(WebcompatReporterServiceUnitTest, RetrievingWebcompatCategories) {
          mojom::WebcompatCategory::kTracking,
          mojom::WebcompatCategory::kNewsletter,
          mojom::WebcompatCategory::kSocial, mojom::WebcompatCategory::kChat,
+         mojom::WebcompatCategory::kBrowserNotSupported,
          mojom::WebcompatCategory::kOther},
         {}, component_infos);
   }
@@ -316,7 +319,9 @@ TEST_F(WebcompatReporterServiceUnitTest, RetrievingWebcompatCategories) {
          mojom::WebcompatCategory::kScroll, mojom::WebcompatCategory::kForm,
          mojom::WebcompatCategory::kCookieNotice,
          mojom::WebcompatCategory::kAntiAdblock,
-         mojom::WebcompatCategory::kTracking, mojom::WebcompatCategory::kOther},
+         mojom::WebcompatCategory::kTracking,
+         mojom::WebcompatCategory::kBrowserNotSupported,
+         mojom::WebcompatCategory::kOther},
         {mojom::WebcompatCategory::kNewsletter,
          mojom::WebcompatCategory::kSocial, mojom::WebcompatCategory::kChat},
         component_infos);

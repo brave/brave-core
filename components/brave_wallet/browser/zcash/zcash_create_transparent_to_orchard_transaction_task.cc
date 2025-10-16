@@ -109,7 +109,8 @@ void ZCashCreateTransparentToOrchardTransactionTask::CreateTransaction() {
     change_output.address = change_address_->address_string;
     change_output.amount = pick_transparent_inputs_result->change;
     change_output.script_pubkey = ZCashAddressToScriptPubkey(
-        change_output.address, context_.chain_id == mojom::kZCashTestnet);
+        change_output.address,
+        IsZCashTestnetKeyring(context_.account_id->keyring_id));
   }
 
   // Create shielded output
@@ -130,7 +131,7 @@ void ZCashCreateTransparentToOrchardTransactionTask::CreateTransaction() {
       chain_tip_height_.value();
 
   auto orchard_unified_addr = GetOrchardUnifiedAddress(
-      receiver_, context_.chain_id == mojom::kZCashTestnet);
+      receiver_, IsZCashTestnetKeyring(context_.account_id->keyring_id));
   if (!orchard_unified_addr) {
     error_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
     ScheduleWorkOnTask();
@@ -146,7 +147,7 @@ void ZCashCreateTransparentToOrchardTransactionTask::CreateTransaction() {
 
 void ZCashCreateTransparentToOrchardTransactionTask::GetAllUtxos() {
   zcash_wallet_service_->GetUtxos(
-      context_.chain_id, context_.account_id.Clone(),
+      context_.account_id.Clone(),
       base::BindOnce(
           &ZCashCreateTransparentToOrchardTransactionTask::OnGetUtxos,
           weak_ptr_factory_.GetWeakPtr()));

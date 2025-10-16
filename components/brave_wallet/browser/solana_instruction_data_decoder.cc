@@ -12,11 +12,13 @@
 #include "base/check.h"
 #include "base/containers/flat_map.h"
 #include "base/containers/span.h"
+#include "base/containers/span_reader.h"
 #include "base/no_destructor.h"
 #include "base/notreached.h"
 #include "base/numerics/byte_conversions.h"
+#include "base/numerics/checked_math.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/sys_byteorder.h"
+#include "base/strings/string_view_util.h"
 #include "brave/components/brave_wallet/browser/solana_instruction_builder.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
@@ -30,7 +32,10 @@ namespace brave_wallet::solana_ins_data_decoder {
 namespace {
 
 constexpr uint8_t kAuthorityTypeMax = 3;
-constexpr size_t kMaxStringSize32Bit = 4294967291u;
+
+// https://github.com/solana-labs/solana/blob/7700cb3128c1f19820de67b81aa45d18f73d2ac0/sdk/program/src/system_instruction.rs#L152
+// https://github.com/solana-labs/solana/blob/7700cb3128c1f19820de67b81aa45d18f73d2ac0/sdk/program/src/pubkey.rs#L23
+constexpr size_t kMaxSeedLength = 32;
 
 // Tuple of param name, localized name, and type.
 using ParamNameTypeTuple =
@@ -680,31 +685,32 @@ std::optional<std::string> DecodeOptionalPublicKey(
   }
 }
 
-// bincode::serialize uses two u32 together for the string length and a byte
-// array for the actual strings. The first u32 represents the lower bytes of
-// the length, the second represents the upper bytes. The upper bytes will have
-// non-zero value only when the length exceeds the maximum of u32.
-// We currently cap the length here to be the max size of std::string
-// on 32 bit systems, it's safe to do so because currently we don't expect any
-// valid cases would have strings larger than it.
-std::optional<std::string> DecodeString(base::span<const uint8_t> input,
-                                        size_t& offset) {
-  auto len_lower = DecodeUint32(input, offset);
-  if (!len_lower || *len_lower > kMaxStringSize32Bit) {
-    return std::nullopt;
-  }
-  auto len_upper = DecodeUint32(input, offset);
-  if (!len_upper || *len_upper != 0) {  // Non-zero means len exceeds u32 max.
+std::optional<std::string> DecodeSeed(base::span<const uint8_t> input,
+                                      size_t& offset) {
+  auto span_reader = base::SpanReader(input.subspan(offset));
+
+  uint64_t len_raw = 0;
+  if (!span_reader.ReadU64LittleEndian(len_raw)) {
     return std::nullopt;
   }
 
-  if (offset + *len_lower > input.size()) {
+  size_t len = 0;
+  if (!base::CheckedNumeric<size_t>(len_raw).AssignIfValid(&len)) {
     return std::nullopt;
   }
 
-  offset += *len_lower;
-  return std::string(reinterpret_cast<const char*>(&input[offset - *len_lower]),
-                     *len_lower);
+  if (len > kMaxSeedLength) {
+    return std::nullopt;
+  }
+
+  auto bytes = span_reader.Read(len);
+  if (!bytes) {
+    return std::nullopt;
+  }
+
+  offset = base::CheckAdd(offset, span_reader.num_read()).ValueOrDie();
+
+  return std::string(base::as_string_view(*bytes));
 }
 
 bool DecodeParamType(const ParamNameTypeTuple& name_type_tuple,
@@ -730,7 +736,8 @@ bool DecodeParamType(const ParamNameTypeTuple& name_type_tuple,
       value = DecodeOptionalPublicKey(data, offset);
       break;
     case mojom::SolanaInstructionParamType::kString:
-      value = DecodeString(data, offset);
+      // All strings we support are seeds capped by 32 bytes length.
+      value = DecodeSeed(data, offset);
       break;
     case mojom::SolanaInstructionParamType::kAuthorityType:
       value = DecodeAuthorityTypeString(data, offset);

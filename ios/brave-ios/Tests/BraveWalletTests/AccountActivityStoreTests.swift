@@ -225,7 +225,7 @@ class AccountActivityStoreTests: XCTestCase {
     }
 
     let zcashWalletService = BraveWallet.TestZCashWalletService()
-    zcashWalletService._balance = { _, _, completion in
+    zcashWalletService._balance = { _, completion in
       completion(
         .init(
           totalBalance: UInt64(mockZecBalance) ?? 0,

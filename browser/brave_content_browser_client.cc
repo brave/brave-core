@@ -45,7 +45,6 @@
 #include "brave/browser/ui/webui/ads_internals/ads_internals_ui.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_untrusted_conversation_ui.h"
-#include "brave/browser/ui/webui/brave_account/brave_account_ui.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_ui.h"
 #include "brave/browser/ui/webui/skus_internals_ui.h"
 #include "brave/browser/updater/buildflags.h"
@@ -55,7 +54,10 @@
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/bookmarks.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/customization_settings.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/history.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/settings_helper.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/tab_tracker.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom.h"
@@ -98,8 +100,8 @@
 #include "brave/components/google_sign_in_permission/google_sign_in_permission_util.h"
 #include "brave/components/ntp_background_images/browser/mojom/ntp_background_images.mojom.h"
 #include "brave/components/password_strength_meter/password_strength_meter.mojom.h"
-#include "brave/components/playlist/common/buildflags/buildflags.h"
-#include "brave/components/playlist/common/features.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
+#include "brave/components/playlist/core/common/features.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "brave/components/skus/common/features.h"
@@ -109,7 +111,7 @@
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/translate/core/common/brave_translate_switches.h"
-#include "brave/components/url_sanitizer/browser/url_sanitizer_service.h"
+#include "brave/components/url_sanitizer/core/browser/url_sanitizer_service.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 #include "build/build_config.h"
@@ -155,6 +157,7 @@
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_registry.h"
 #include "third_party/blink/public/common/features.h"
 #include "third_party/blink/public/common/loader/url_loader_throttle.h"
+#include "third_party/blink/public/common/switches.h"
 #include "third_party/blink/public/mojom/webpreferences/web_preferences.mojom.h"
 #include "third_party/widevine/cdm/buildflags.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -185,8 +188,12 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/ai_chat/utils.h"
+#include "brave/browser/ui/webui/brave_account/brave_account_ui_desktop.h"
+#include "brave/ui/webui/brave_color_change_listener/brave_color_change_handler.h"
+#include "ui/webui/resources/cr_components/color_change_listener/color_change_listener.mojom.h"
 #endif
 #if BUILDFLAG(IS_ANDROID)
+#include "brave/browser/ui/webui/brave_account/brave_account_ui_android.h"
 #include "brave/components/ai_chat/core/browser/android/ai_chat_iap_subscription_android.h"
 #endif
 
@@ -255,9 +262,9 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
-#include "brave/components/playlist/browser/playlist_background_web_contents_helper.h"
-#include "brave/components/playlist/browser/playlist_media_handler.h"
-#include "brave/components/playlist/common/mojom/playlist.mojom.h"
+#include "brave/components/playlist/content/browser/playlist_background_web_contents_helper.h"
+#include "brave/components/playlist/content/browser/playlist_media_handler.h"
+#include "brave/components/playlist/core/common/mojom/playlist.mojom.h"
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
@@ -460,6 +467,26 @@ void MaybeBindSkusSdkImpl(
   skus::SkusServiceFactory::BindForContext(context, std::move(receiver));
 }
 
+#if !BUILDFLAG(IS_ANDROID)
+void MaybeBindColorChangeHandler(
+    content::RenderFrameHost* const frame_host,
+    mojo::PendingReceiver<color_change_listener::mojom::PageHandler> receiver) {
+  const GURL& frame_host_url = frame_host->GetLastCommittedURL();
+
+  // Only supported on chrome://, chrome-untrusted:// and chrome-extension://
+  // urls
+  if (!frame_host_url.SchemeIs(content::kChromeUIScheme) &&
+      !frame_host_url.SchemeIs(content::kChromeUIUntrustedScheme) &&
+      !frame_host_url.SchemeIs(extensions::kExtensionScheme)) {
+    return;
+  }
+
+  ui::BraveColorChangeHandler::BindInterface(
+      content::WebContents::FromRenderFrameHost(frame_host),
+      std::move(receiver));
+}
+#endif
+
 }  // namespace
 
 BraveContentBrowserClient::BraveContentBrowserClient() = default;
@@ -590,10 +617,11 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
     registry.ForWebUI<AIChatUI>()
         .Add<ai_chat::mojom::AIChatUIHandler>()
         .Add<ai_chat::mojom::Service>()
-        .Add<ai_chat::mojom::TabTrackerService>();
+        .Add<ai_chat::mojom::TabTrackerService>()
+        .Add<ai_chat::mojom::BookmarksPageHandler>()
+        .Add<ai_chat::mojom::HistoryUIHandler>();
     registry.ForWebUI<AIChatUntrustedConversationUI>()
-        .Add<ai_chat::mojom::UntrustedUIHandler>()
-        .Add<ai_chat::mojom::UntrustedConversationHandler>();
+        .Add<ai_chat::mojom::UntrustedUIHandler>();
   }
 
 #if BUILDFLAG(ENABLE_AI_REWRITER)
@@ -652,16 +680,23 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
         .Add<brave_news::mojom::BraveNewsController>()
         .Add<brave_news::mojom::BraveNewsInternals>();
   }
+
+  if (brave_account::features::IsBraveAccountEnabled()) {
+    registry.ForWebUI<BraveAccountUIDesktop>()
+        .Add<brave_account::mojom::Authentication>()
+        .Add<color_change_listener::mojom::PageHandler>()
+        .Add<password_strength_meter::mojom::PasswordStrengthMeter>();
+  }
 #else   // !BUILDFLAG(IS_ANDROID)
   registry.ForWebUI<NewTabTakeoverUI>()
       .Add<new_tab_takeover::mojom::NewTabTakeover>();
-#endif  // !BUILDFLAG(IS_ANDROID)
 
   if (brave_account::features::IsBraveAccountEnabled()) {
-    registry.ForWebUI<BraveAccountUI>()
+    registry.ForWebUI<BraveAccountUIAndroid>()
         .Add<brave_account::mojom::Authentication>()
         .Add<password_strength_meter::mojom::PasswordStrengthMeter>();
   }
+#endif  // !BUILDFLAG(IS_ANDROID)
 }
 
 std::optional<base::UnguessableToken>
@@ -858,6 +893,9 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
     content::RegisterWebUIControllerInterfaceBinder<
         email_aliases::mojom::EmailAliasesService, BraveSettingsUI>(map);
   }
+
+  map->Add<color_change_listener::mojom::PageHandler>(
+      base::BindRepeating(&MaybeBindColorChangeHandler));
 #endif
 
   auto* prefs =
@@ -934,9 +972,20 @@ void BraveContentBrowserClient::AppendExtraCommandLineSwitches(
     int child_process_id) {
   ChromeContentBrowserClient::AppendExtraCommandLineSwitches(command_line,
                                                              child_process_id);
+
   std::string process_type =
       command_line->GetSwitchValueASCII(switches::kProcessType);
   if (process_type == switches::kRendererProcess) {
+#if BUILDFLAG(BRAVE_V8_ENABLE_DRUMBRAKE)
+    if (base::FeatureList::IsEnabled(features::kBraveWebAssemblyJitless)) {
+      content::RenderProcessHost* process =
+          content::RenderProcessHost::FromID(child_process_id);
+      if (process && process->IsJitDisabled()) {
+        command_line->AppendSwitchASCII(blink::switches::kJavaScriptFlags,
+                                        "--wasm-jitless");
+      }
+    }
+#endif  // BUILDFLAG(BRAVE_V8_ENABLE_DRUMBRAKE)
     // Command line parameters from the browser process are propagated to the
     // renderers *after* ContentBrowserClient::AppendExtraCommandLineSwitches()
     // is called from RenderProcessHostImpl::AppendRendererCommandLine(). This
@@ -1110,7 +1159,7 @@ void BraveContentBrowserClient::MaybeHideReferrer(
   }
 }
 
-GURL BraveContentBrowserClient::GetEffectiveURL(
+std::optional<GURL> BraveContentBrowserClient::GetEffectiveURL(
     content::BrowserContext* browser_context,
     const GURL& url) {
   Profile* profile = Profile::FromBrowserContext(browser_context);
@@ -1390,4 +1439,18 @@ bool BraveContentBrowserClient::AllowSignedExchange(
   // `features::kSignedHTTPExchange`, which was being used to disable signed
   // exchanges.
   return false;
+}
+
+bool BraveContentBrowserClient::IsJitDisabledForSite(
+    content::BrowserContext* browser_context,
+    const GURL& site_url) {
+  // When v8-jitless-mode flag is enabled, V8 optimizer
+  // settings should disable JIT completely, not just optimizations
+  if (AreV8OptimizationsDisabledForSite(browser_context, site_url) &&
+      base::FeatureList::IsEnabled(features::kBraveV8JitlessMode)) {
+    return true;
+  }
+
+  return ChromeContentBrowserClient::IsJitDisabledForSite(browser_context,
+                                                          site_url);
 }

@@ -44,6 +44,7 @@
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/prefs.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "components/grit/brave_components_strings.h"
@@ -625,6 +626,9 @@ void ConversationHandler::SubmitHumanConversationEntryWithMode(
     // Create Smart Mode entry
     smart_mode_entry =
         mojom::SmartModeEntry::New(smart_mode->shortcut, smart_mode->prompt);
+
+    // Update last_used time
+    prefs::UpdateSmartModeLastUsedInPrefs(mode_id, *prefs_);
   }
 
   mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New(

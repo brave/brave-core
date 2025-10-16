@@ -25,6 +25,8 @@ CreativeAdInfo BuildCreativeAd(bool should_generate_random_uuids) {
   creative_ad.advertiser_id =
       RandomUuidOr(should_generate_random_uuids, kAdvertiserId);
 
+  creative_ad.metric_type = mojom::NewTabPageAdMetricType::kConfirmation;
+
   creative_ad.start_at = DistantPast();
   creative_ad.end_at = DistantFuture();
 

@@ -910,6 +910,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
   mojom::BlockchainTokenPtr sol_usdc_;
   mojom::BlockchainTokenPtr sol_tsla_;
   mojom::BlockchainTokenPtr fil_token_;
+
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
 };
 
@@ -993,6 +994,29 @@ TEST_F(BraveWalletServiceUnitTest, GetUserAssets) {
   EXPECT_EQ(tokens.size(), 2u);
   EXPECT_EQ(eth_0xaa36a7_token, tokens[0]);
   EXPECT_EQ(token1_0xaa36a7, tokens[1]);
+}
+
+TEST_F(BraveWalletServiceUnitTest, GetUserAssetsAlwaysHasNativeTokensForDot) {
+  GetPrefs()->SetList(kBraveWalletUserAssetsList, base::Value::List());
+
+  auto dot_mainnet_token = GetPolkadotNativeToken(mojom::kPolkadotMainnet);
+  auto dot_testnet_token = GetPolkadotNativeToken(mojom::kPolkadotTestnet);
+
+  EXPECT_THAT(GetUserAssets(mojom::kPolkadotMainnet, mojom::CoinType::DOT),
+              ElementsAre(Eq(std::ref(dot_mainnet_token))));
+  EXPECT_THAT(GetUserAssets(mojom::kPolkadotTestnet, mojom::CoinType::DOT),
+              ElementsAre(Eq(std::ref(dot_testnet_token))));
+
+  dot_mainnet_token->visible = false;
+  dot_mainnet_token->visible = false;
+
+  AddUserAsset(dot_mainnet_token.Clone());
+  AddUserAsset(dot_testnet_token.Clone());
+
+  EXPECT_THAT(GetUserAssets(mojom::kPolkadotMainnet, mojom::CoinType::DOT),
+              ElementsAre(Eq(std::ref(dot_mainnet_token))));
+  EXPECT_THAT(GetUserAssets(mojom::kPolkadotTestnet, mojom::CoinType::DOT),
+              ElementsAre(Eq(std::ref(dot_testnet_token))));
 }
 
 TEST_F(BraveWalletServiceUnitTest, GetUserAssetsAlwaysHasNativeTokensForBtc) {

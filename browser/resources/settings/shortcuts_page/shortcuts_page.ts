@@ -23,8 +23,10 @@ class ShortcutsPage extends HTMLElement {
 
 
     import('/commands.bundle.js' as any)
-      .then(() => (window as any).mountCommands(this.shadowRoot))
-      .catch(() => {})
+      .then(({ mount }) => {
+        mount(this.shadowRoot)
+      })
+      .catch(() => { })
   }
 }
 

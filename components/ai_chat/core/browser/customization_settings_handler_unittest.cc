@@ -12,6 +12,7 @@
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/customization_settings.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/ai_chat/core/common/prefs.h"
@@ -100,10 +101,10 @@ TEST_F(CustomizationSettingsHandlerTest, SetCustomizations_Valid) {
   base::RunLoop run_loop;
   EXPECT_CALL(*mock_ui, OnCustomizationsChanged(_))
       .Times(1)
-      .WillOnce(testing::Invoke([&](mojom::CustomizationsPtr result) {
+      .WillOnce([&](mojom::CustomizationsPtr result) {
         EXPECT_EQ(customizations, result);
         run_loop.Quit();
-      }));
+      });
 
   base::test::TestFuture<std::optional<mojom::CustomizationOperationError>>
       future;
@@ -142,11 +143,11 @@ TEST_F(CustomizationSettingsHandlerTest, AddMemory_Valid) {
   base::RunLoop run_loop;
   EXPECT_CALL(*mock_ui, OnMemoriesChanged(_))
       .Times(1)
-      .WillOnce(testing::Invoke([&](const std::vector<std::string>& result) {
+      .WillOnce([&](const std::vector<std::string>& result) {
         EXPECT_EQ(result,
                   std::vector<std::string>{"I like creative solutions"});
         run_loop.Quit();
-      }));
+      });
 
   base::test::TestFuture<std::optional<mojom::CustomizationOperationError>>
       future;
@@ -208,10 +209,10 @@ TEST_F(CustomizationSettingsHandlerTest, EditMemory_Success) {
   base::RunLoop run_loop;
   EXPECT_CALL(*mock_ui, OnMemoriesChanged(_))
       .Times(1)
-      .WillOnce(testing::Invoke([&](const std::vector<std::string>& result) {
+      .WillOnce([&](const std::vector<std::string>& result) {
         EXPECT_EQ(result, std::vector<std::string>{"Old memory"});
         run_loop.Quit();
-      }));
+      });
 
   base::test::TestFuture<std::optional<mojom::CustomizationOperationError>>
       future;
@@ -224,10 +225,10 @@ TEST_F(CustomizationSettingsHandlerTest, EditMemory_Success) {
   base::RunLoop run_loop2;
   EXPECT_CALL(*mock_ui, OnMemoriesChanged(_))
       .Times(1)
-      .WillOnce(testing::Invoke([&](const std::vector<std::string>& result) {
+      .WillOnce([&](const std::vector<std::string>& result) {
         EXPECT_EQ(result, std::vector<std::string>{"New memory"});
         run_loop2.Quit();
-      }));
+      });
 
   // Edit the memory
   base::test::TestFuture<std::optional<mojom::CustomizationOperationError>>
@@ -347,10 +348,10 @@ TEST_F(CustomizationSettingsHandlerTest, BindUI_Notifications) {
   base::RunLoop run_loop;
   EXPECT_CALL(*mock_ui, OnCustomizationsChanged(_))
       .Times(1)
-      .WillOnce(testing::Invoke([&](mojom::CustomizationsPtr result) {
+      .WillOnce([&](mojom::CustomizationsPtr result) {
         EXPECT_EQ(customizations, result);
         run_loop.Quit();
-      }));
+      });
 
   base::test::TestFuture<std::optional<mojom::CustomizationOperationError>>
       future;
@@ -365,10 +366,10 @@ TEST_F(CustomizationSettingsHandlerTest, BindUI_Notifications) {
   base::RunLoop run_loop2;
   EXPECT_CALL(*mock_ui, OnMemoriesChanged(_))
       .Times(1)
-      .WillOnce(testing::Invoke([&](const std::vector<std::string>& result) {
+      .WillOnce([&](const std::vector<std::string>& result) {
         EXPECT_EQ(result, std::vector<std::string>{"Test Memory"});
         run_loop2.Quit();
-      }));
+      });
 
   base::test::TestFuture<std::optional<mojom::CustomizationOperationError>>
       future2;

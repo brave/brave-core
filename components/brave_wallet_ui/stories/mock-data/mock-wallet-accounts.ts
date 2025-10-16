@@ -62,6 +62,24 @@ export const mockCardanoAccount = {
   hardware: undefined,
 }
 
+export const mockPolkadotAccount = {
+  address: '',
+  accountId: {
+    coin: BraveWallet.CoinType.DOT,
+    keyringId: BraveWallet.KeyringId.kPolkadotMainnet,
+    kind: BraveWallet.AccountKind.kDerived,
+    address: '',
+    accountIndex: 0,
+    uniqueKey: 'mockPolkadotAccount_uniqueKey',
+  },
+  name: 'Polkadot Account',
+  tokenBalanceRegistry: {},
+  nativeBalanceRegistry: {
+    [BraveWallet.POLKADOT_MAINNET]: '123456789',
+  },
+  hardware: undefined,
+}
+
 export const mockAccounts: BraveWallet.AccountInfo[] = [
   mockEthAccount,
   {

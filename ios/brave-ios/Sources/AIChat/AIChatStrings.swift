@@ -292,6 +292,14 @@ extension Strings {
       comment:
         "The model's purpose - Describes what it can do best"
     )
+    public static let introMessageGemmaPurposeDescription = NSLocalizedString(
+      "aichat.introMessageGemmaPurposeDescription",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "General purpose text and image understanding",
+      comment:
+        "The model's purpose - Describes what it can do best"
+    )
     public static let introMessageLlamaMessageDescription = NSLocalizedString(
       "aichat.introMessageLlamaMessageDescription",
       tableName: "BraveLeo",
@@ -338,6 +346,14 @@ extension Strings {
       bundle: .module,
       value:
         "Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by DeepSeek R1, a model created by DeepSeek to perform deep reasoning tasks. DeepSeek R1 is Brave-hosted through our own secure infrastructure.",
+      comment: "The model intro message when you first enter the chat assistant"
+    )
+    public static let introMessageGemmaMessageDescription = NSLocalizedString(
+      "aichat.introMessageGemmaMessageDescription",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value:
+        "Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Gemma 3 12B, a model created by Google DeepMind to be performant and applicable to many use cases. Gemma is Brave-hosted through our own secure infrastructure.",
       comment: "The model intro message when you first enter the chat assistant"
     )
     public static let introMessageGenericMessageDescription = NSLocalizedString(

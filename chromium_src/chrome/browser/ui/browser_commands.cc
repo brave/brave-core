@@ -9,6 +9,7 @@
 
 #include "base/check.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
+#include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -54,16 +55,13 @@ void MakeActiveTabReloadOnlyForSplitTab(
 #define ReloadBypassingCache ReloadBypassingCache_ChromiumImpl
 #define GetReadingListModel GetReadingListModel_ChromiumImpl
 #define kChromeUISplitViewNewTabPageURL kChromeUINewTabURL
-#define CloseSelectedTabs CloseSelectedTabsWithSplitView
 
 // Need to patch to adjust |selected_tabs| in the middle of ReloadInternal().
-#define BRAVE_RELOAD_INTERNAL                                    \
-  MakeActiveTabReloadOnlyForSplitTab(browser->tab_strip_model(), \
-                                     tabs_to_reload);
+#define BRAVE_RELOAD_INTERNAL \
+  MakeActiveTabReloadOnlyForSplitTab(tab_strip_model, tabs_to_reload);
 
 #include <chrome/browser/ui/browser_commands.cc>
 
-#undef CloseSelectedTabs
 #undef BRAVE_RELOAD_INTERNAL
 #undef kChromeUISplitViewNewTabPageURL
 #undef ReloadBypassingCache
@@ -72,14 +70,16 @@ void MakeActiveTabReloadOnlyForSplitTab(
 namespace chrome {
 
 void ReloadBypassingCache(Browser* browser, WindowOpenDisposition disposition) {
+#if BUILDFLAG(ENABLE_TOR)
   Profile* profile = browser->profile();
   DCHECK(profile);
   // NewTorConnectionForSite will do hard reload after obtaining new identity
   if (profile->IsTor()) {
     brave::NewTorConnectionForSite(browser);
-  } else {
-    ReloadBypassingCache_ChromiumImpl(browser, disposition);
+    return;
   }
+#endif
+  ReloadBypassingCache_ChromiumImpl(browser, disposition);
 }
 
 ReadingListModel* GetReadingListModel(Browser* browser) {

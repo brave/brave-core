@@ -824,8 +824,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         }
 
         Tab currentActiveTab = mIconFetcher.getTab();
-        final boolean isPrivateWindow =
-                currentActiveTab != null ? currentActiveTab.isIncognito() : false;
+        final boolean isPrivateWindow = currentActiveTab != null && currentActiveTab.isIncognito();
 
         TextView blockElementsText =
                 mSecondaryLayout.findViewById(R.id.brave_shields_block_element_text);

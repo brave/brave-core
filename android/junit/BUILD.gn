@@ -20,7 +20,10 @@ if (is_android) {
       "brave_junit_tests_org.chromium.chrome.browser.tabbed_mode") {
     sources = [ "src/org/chromium/chrome/browser/tabbed_mode/BraveTabbedAppMenuPropertiesDelegateUnitTest.java" ]
 
-    deps = [ "//chrome/android/junit:chrome_junit_tests_helper" ]
+    deps = [
+      "//chrome/android/junit:chrome_junit_tests_helper",
+      "//components/browser_ui/accessibility/android:page_zoom_utils_java",
+    ]
   }
 
   robolectric_library("brave_junit_tests_org.chromium.chrome.browser.toolbar") {

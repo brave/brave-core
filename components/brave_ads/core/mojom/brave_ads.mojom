@@ -137,6 +137,13 @@ enum NotificationAdEventType {
   kTimedOut
 };
 
+enum NewTabPageAdMetricType {
+  kUndefined = 0,
+  kDisabled,
+  kConfirmation,
+  kP3A,
+};
+
 enum NewTabPageAdEventType {
   kServedImpression = 0,
   kViewedImpression,

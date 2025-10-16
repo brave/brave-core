@@ -6,7 +6,7 @@
 import { color, font } from '@brave/leo/tokens/css/variables'
 import { scoped } from '../../lib/scoped_css'
 
- export const style = scoped.css`
+export const style = scoped.css`
   section {
     padding: 8px;
   }

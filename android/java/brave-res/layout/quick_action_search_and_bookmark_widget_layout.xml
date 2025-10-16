@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/background"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/quick_action_search_widget_background"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingHorizontal="@dimen/quick_action_search_widget_small_margin"
+    android:paddingVertical="@dimen/quick_action_search_widget_small_margin_vertical"
+    android:theme="@style/Theme.Chromium.Widget" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/layoutSearchWithBrave"
+            android:layout_width="0dp"
+            android:layout_height=
+              "@dimen/quick_action_search_widget_small_search_bar_height"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="@dimen/quick_action_search_widget_small_button_horizontal_margin"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@drawable/quick_action_search_widget_small_search_bar_background"
+            tools:ignore="UseCompoundDrawables">
+            
+            <ImageView
+                android:layout_width=
+                  "@dimen/quick_action_search_widget_small_search_bar_icon_size"
+                android:layout_height=
+                  "@dimen/quick_action_search_widget_small_search_bar_icon_size"
+                android:layout_marginVertical="@dimen/quick_action_search_widget_small_search_bar_icon_margin"
+                android:layout_marginStart="@dimen/quick_action_search_widget_small_search_bar_icon_margin"
+                android:layout_marginEnd="@dimen/quick_action_search_widget_small_search_bar_icon_margin_text"
+                android:src="@mipmap/app_icon"
+                android:layout_gravity="center_vertical"
+                android:importantForAccessibility="no"/>
+
+            <TextView
+                android:id="@+id/tvSearchWithBrave"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:textSize="16sp"
+                android:text="@string/search_with_brave"
+                android:textColor="@color/quick_action_search_and_bookmark_widget_text_color"
+                tools:ignore="UseCompatTextViewDrawableXml" />
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/ivVoiceSearch"
+            style="@style/QuickActionSearchWidgetSmallButton"
+            android:layout_marginHorizontal="@dimen/quick_action_search_widget_small_button_horizontal_margin"
+            android:contentDescription="@string/accessibility_toolbar_btn_mic"
+            android:src="@drawable/btn_mic"/>
+
+        <ImageButton
+            android:id="@+id/ivIncognito"
+            style="@style/QuickActionSearchWidgetSmallButton"
+            android:layout_marginHorizontal="@dimen/quick_action_search_widget_small_button_horizontal_margin"
+            android:contentDescription="@string/button_new_incognito_tab"
+            android:src="@drawable/brave_menu_new_private_tab"/>
+
+        <ImageButton
+            android:id="@+id/ibLeo"
+            style="@style/QuickActionSearchWidgetSmallButton"
+            android:layout_marginHorizontal="@dimen/quick_action_search_widget_small_button_horizontal_margin"
+            android:contentDescription="@string/ask_leo_auto_suggestion"
+            android:src="@drawable/ic_brave_ai"/>
+    </LinearLayout>
+
+    <!-- Scrollable GridView for bookmarks -->
+    <GridView
+        android:id="@+id/bookmarksGridView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="16dp"
+        android:layout_marginHorizontal="@dimen/quick_action_search_widget_small_search_bar_background_inset_horizontal"
+        android:numColumns="4"
+        android:verticalSpacing="16dp"
+        android:horizontalSpacing="0dp"
+        android:stretchMode="columnWidth"
+        android:gravity="center"
+        android:visibility="gone" />
+
+</LinearLayout>

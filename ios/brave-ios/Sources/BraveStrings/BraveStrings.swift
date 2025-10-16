@@ -2885,7 +2885,7 @@ extension Strings {
     tableName: "BraveShared",
     bundle: .module,
     value: "Open Website",
-    comment: "Button title to that opens a website."
+    comment: "Button title to open a website."
   )
   public static let viewOn = NSLocalizedString(
     "ViewOn",
@@ -3574,6 +3574,13 @@ extension Strings {
     value: "Leo",
     comment:
       "Title for Brave Leo menu item. Brave Leo is the name of a product and should not be translated"
+  )
+  public static let askBraveMenuItem = NSLocalizedString(
+    "AskBraveMenuItem",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Ask Brave",
+    comment: "Title for Ask Brave menu item. Brave is the company name and should not be translated"
   )
   public static let passwordsMenuItem = NSLocalizedString(
     "PasswordsMenuItem",

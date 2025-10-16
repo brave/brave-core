@@ -17,6 +17,7 @@
 #include "base/task/thread_pool.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/web_contents.h"
 #include "printing/printing_utils.h"
@@ -25,7 +26,6 @@
 #include "third_party/skia/include/core/SkBitmap.h"
 #include "ui/gfx/codec/png_codec.h"
 #include "ui/shell_dialogs/selected_file_info.h"
-
 
 namespace ai_chat {
 

@@ -18,7 +18,7 @@ describe('TeamcityReporter', () => {
     reporter.onRunStart()
 
     expect(mockStdoutWrite).toHaveBeenCalledWith(
-      "##teamcity[testSuiteStarted name='my_suite']\n"
+      "##teamcity[testSuiteStarted name='my_suite']\n",
     )
   })
 
@@ -26,7 +26,7 @@ describe('TeamcityReporter', () => {
     reporter.onRunComplete()
 
     expect(mockStdoutWrite).toHaveBeenCalledWith(
-      "##teamcity[testSuiteFinished name='my_suite']\n"
+      "##teamcity[testSuiteFinished name='my_suite']\n",
     )
   })
 
@@ -35,9 +35,9 @@ describe('TeamcityReporter', () => {
       const test = {
         context: {
           config: {
-            cwd: '/brave/tools/jest_teamcity_reporter'
-          }
-        }
+            cwd: '/brave/tools/jest_teamcity_reporter',
+          },
+        },
       }
 
       const testFileResult = {
@@ -48,54 +48,54 @@ describe('TeamcityReporter', () => {
             title: 'Test 1',
             duration: 100,
             status: 'passed',
-            failureMessages: []
+            failureMessages: [],
           },
           {
             ancestorTitles: ['Group 1:', 'Group 2'],
             title: 'Test 2',
             duration: 200,
             status: 'failed',
-            failureMessages: ['Assertion error']
-          }
+            failureMessages: ['Assertion error'],
+          },
         ],
-        console: [{ type: 'log', message: 'Log message 1', origin: 'origin1' }]
+        console: [{ type: 'log', message: 'Log message 1', origin: 'origin1' }],
       }
 
       reporter.onTestFileResult(test, testFileResult)
 
       expect(mockStdoutWrite).toHaveBeenCalledWith(
-        "##teamcity[testStarted name='example.test.js.Test.Group 1_ > Test 1']\n"
+        "##teamcity[testStarted name='example.test.js.Test.Group 1_ > Test 1']\n",
       )
       expect(mockStdoutWrite).toHaveBeenCalledWith(
-        "##teamcity[testMetadata name='testFilePath' value='example.test.js']\n"
+        "##teamcity[testMetadata name='testFilePath' value='example.test.js']\n",
       )
       expect(mockStdoutWrite).toHaveBeenCalledWith(
-        "##teamcity[testMetadata name='testName' value='Group 1: > Test 1']\n"
+        "##teamcity[testMetadata name='testName' value='Group 1: > Test 1']\n",
       )
       expect(mockStdoutWrite).toHaveBeenCalledWith(
-        "##teamcity[testStdOut name='example.test.js.Test.Group 1_ > Test 1' out='Console messages from example.test.js:|nconsole.log|n  Log message 1|norigin1']\n"
+        "##teamcity[testStdOut name='example.test.js.Test.Group 1_ > Test 1' out='Console messages from example.test.js:|nconsole.log|n  Log message 1|norigin1']\n",
       )
       expect(mockStdoutWrite).toHaveBeenCalledWith(
-        "##teamcity[testFinished name='example.test.js.Test.Group 1_ > Test 1' duration='100']\n"
+        "##teamcity[testFinished name='example.test.js.Test.Group 1_ > Test 1' duration='100']\n",
       )
 
       expect(mockStdoutWrite).toHaveBeenCalledWith(
-        "##teamcity[testStarted name='example.test.js.Test.Group 1_ > Group 2 > Test 2']\n"
+        "##teamcity[testStarted name='example.test.js.Test.Group 1_ > Group 2 > Test 2']\n",
       )
       expect(mockStdoutWrite).toHaveBeenCalledWith(
-        "##teamcity[testMetadata name='testFilePath' value='example.test.js']\n"
+        "##teamcity[testMetadata name='testFilePath' value='example.test.js']\n",
       )
       expect(mockStdoutWrite).toHaveBeenCalledWith(
-        "##teamcity[testMetadata name='testName' value='Group 1: > Group 2 > Test 2']\n"
+        "##teamcity[testMetadata name='testName' value='Group 1: > Group 2 > Test 2']\n",
       )
       expect(mockStdoutWrite).toHaveBeenCalledWith(
-        "##teamcity[testStdOut name='example.test.js.Test.Group 1_ > Group 2 > Test 2' out='Console messages from example.test.js:|nconsole.log|n  Log message 1|norigin1']\n"
+        "##teamcity[testStdOut name='example.test.js.Test.Group 1_ > Group 2 > Test 2' out='Console messages from example.test.js:|nconsole.log|n  Log message 1|norigin1']\n",
       )
       expect(mockStdoutWrite).toHaveBeenCalledWith(
-        "##teamcity[testFailed name='example.test.js.Test.Group 1_ > Group 2 > Test 2' details='failed|nAssertion error']\n"
+        "##teamcity[testFailed name='example.test.js.Test.Group 1_ > Group 2 > Test 2' details='failed|nAssertion error']\n",
       )
       expect(mockStdoutWrite).toHaveBeenCalledWith(
-        "##teamcity[testFinished name='example.test.js.Test.Group 1_ > Group 2 > Test 2' duration='200']\n"
+        "##teamcity[testFinished name='example.test.js.Test.Group 1_ > Group 2 > Test 2' duration='200']\n",
       )
     })
 
@@ -103,9 +103,9 @@ describe('TeamcityReporter', () => {
       const test = {
         context: {
           config: {
-            cwd: '/brave/tools/jest_teamcity_reporter'
-          }
-        }
+            cwd: '/brave/tools/jest_teamcity_reporter',
+          },
+        },
       }
 
       const testFileResult = {
@@ -113,25 +113,25 @@ describe('TeamcityReporter', () => {
         testResults: [],
         testExecError: new Error('Test execution error'),
         failureMessage: 'Test failed',
-        console: [{ type: 'log', message: 'Log message 1', origin: 'origin1' }]
+        console: [{ type: 'log', message: 'Log message 1', origin: 'origin1' }],
       }
 
       reporter.onTestFileResult(test, testFileResult)
 
       expect(mockStdoutWrite).toHaveBeenCalledWith(
-        "##teamcity[testStarted name='example.test.js.Test.All']\n"
+        "##teamcity[testStarted name='example.test.js.Test.All']\n",
       )
       expect(mockStdoutWrite).toHaveBeenCalledWith(
-        "##teamcity[testMetadata name='testFilePath' value='example.test.js']\n"
+        "##teamcity[testMetadata name='testFilePath' value='example.test.js']\n",
       )
       expect(mockStdoutWrite).toHaveBeenCalledWith(
-        "##teamcity[testStdOut name='example.test.js.Test.All' out='Console messages from example.test.js:|nconsole.log|n  Log message 1|norigin1']\n"
+        "##teamcity[testStdOut name='example.test.js.Test.All' out='Console messages from example.test.js:|nconsole.log|n  Log message 1|norigin1']\n",
       )
       expect(mockStdoutWrite).toHaveBeenCalledWith(
-        "##teamcity[testFailed name='example.test.js.Test.All' details='Test failed']\n"
+        "##teamcity[testFailed name='example.test.js.Test.All' details='Test failed']\n",
       )
       expect(mockStdoutWrite).toHaveBeenCalledWith(
-        "##teamcity[testFinished name='example.test.js.Test.All' duration='0']\n"
+        "##teamcity[testFinished name='example.test.js.Test.All' duration='0']\n",
       )
     })
 
@@ -139,9 +139,9 @@ describe('TeamcityReporter', () => {
       const test = {
         context: {
           config: {
-            cwd: '/brave/tools/jest_teamcity_reporter'
-          }
-        }
+            cwd: '/brave/tools/jest_teamcity_reporter',
+          },
+        },
       }
 
       const testFileResult = {
@@ -149,7 +149,7 @@ describe('TeamcityReporter', () => {
         testResults: [],
         // Let's pretend Jest added another way of failing a test file which we
         // don't handle. This member is not part of the Jest test result schema.
-        testValidationError: new Error('Test validation error')
+        testValidationError: new Error('Test validation error'),
       }
 
       expect(() => {
@@ -161,9 +161,9 @@ describe('TeamcityReporter', () => {
       const test = {
         context: {
           config: {
-            cwd: '/brave/tools/jest_teamcity_reporter'
-          }
-        }
+            cwd: '/brave/tools/jest_teamcity_reporter',
+          },
+        },
       }
 
       const testFileResult = {
@@ -174,25 +174,25 @@ describe('TeamcityReporter', () => {
             title: 'Test.1',
             duration: 100,
             status: 'passed',
-            failureMessages: []
+            failureMessages: [],
           },
           {
             ancestorTitles: ['Group 2'],
             title: '.Test B',
             duration: 200,
             status: 'passed',
-            failureMessages: []
-          }
-        ]
+            failureMessages: [],
+          },
+        ],
       }
 
       reporter.onTestFileResult(test, testFileResult)
 
       expect(mockStdoutWrite).toHaveBeenCalledWith(
-        "##teamcity[testStarted name='example.test.js.Test.Group_1 > Test.1']\n"
+        "##teamcity[testStarted name='example.test.js.Test.Group_1 > Test.1']\n",
       )
       expect(mockStdoutWrite).toHaveBeenCalledWith(
-        "##teamcity[testStarted name='example.test.js.Test.Group 2 > .Test B']\n"
+        "##teamcity[testStarted name='example.test.js.Test.Group 2 > .Test B']\n",
       )
     })
   })
@@ -201,21 +201,29 @@ describe('TeamcityReporter', () => {
     it('should generate the correct test prefix for a test file', () => {
       const testCases = [
         {
-          testFilePath: 'components/test/brave_new_tab_ui/state/gridSitesState_test.ts',
-          expectedPrefix: 'components.test.brave_new_tab_ui.state.gridSitesState_test.ts.Test'
+          testFilePath:
+            'components/test/brave_new_tab_ui/state/gridSitesState_test.ts',
+          expectedPrefix:
+            'components.test.brave_new_tab_ui.state.gridSitesState_test.ts.Test',
         },
         {
-          testFilePath: 'components/test/brave_new_tab_ui/state/gridSitesState_test@#$%...ts',
-          expectedPrefix: 'components.test.brave_new_tab_ui.state.gridSitesState_test__$_.ts.Test'
+          testFilePath:
+            'components/test/brave_new_tab_ui/state/gridSitesState_test@#$%...ts',
+          expectedPrefix:
+            'components.test.brave_new_tab_ui.state.gridSitesState_test__$_.ts.Test',
         },
         {
-          testFilePath: '0components/test/brave_new_tab_ui/state/gridSitesState_test.ts',
-          expectedPrefix: '_0components.test.brave_new_tab_ui.state.gridSitesState_test.ts.Test'
+          testFilePath:
+            '0components/test/brave_new_tab_ui/state/gridSitesState_test.ts',
+          expectedPrefix:
+            '_0components.test.brave_new_tab_ui.state.gridSitesState_test.ts.Test',
         },
         {
-          testFilePath: 'components\\test\\brave_new_tab_ui\\state\\gridSitesState_test.ts',
-          expectedPrefix: 'components.test.brave_new_tab_ui.state.gridSitesState_test.ts.Test'
-        }
+          testFilePath:
+            'components\\test\\brave_new_tab_ui\\state\\gridSitesState_test.ts',
+          expectedPrefix:
+            'components.test.brave_new_tab_ui.state.gridSitesState_test.ts.Test',
+        },
       ]
       for (const testCase of testCases) {
         const result = reporter.createTcTestPrefix(testCase.testFilePath)
@@ -229,20 +237,20 @@ describe('TeamcityReporter', () => {
       const testCases = [
         {
           testName: 'Test.1',
-          expectedName: 'Test_1'
+          expectedName: 'Test_1',
         },
         {
           testName: '.Test B',
-          expectedName: '_Test B'
+          expectedName: '_Test B',
         },
         {
           testName: 'Test C.',
-          expectedName: 'Test C.'
+          expectedName: 'Test C.',
         },
         {
           testName: '.Test D.',
-          expectedName: '_Test D.'
-        }
+          expectedName: '_Test D.',
+        },
       ]
       for (const testCase of testCases) {
         const result = reporter.createTcTestName(testCase.testName)
@@ -254,16 +262,16 @@ describe('TeamcityReporter', () => {
       const testCases = [
         {
           testName: '0Test',
-          expectedName: '_0Test'
+          expectedName: '_0Test',
         },
         {
           testName: ' Test',
-          expectedName: '_ Test'
+          expectedName: '_ Test',
         },
         {
           testName: 'Test',
-          expectedName: 'Test'
-        }
+          expectedName: 'Test',
+        },
       ]
       for (const testCase of testCases) {
         const result = reporter.createTcTestName(testCase.testName)
@@ -275,12 +283,12 @@ describe('TeamcityReporter', () => {
       const testCases = [
         {
           testName: 'Test:1 2:3',
-          expectedName: 'Test_1 2_3'
+          expectedName: 'Test_1 2_3',
         },
         {
           testName: ':Test:2',
-          expectedName: '_Test_2'
-        }
+          expectedName: '_Test_2',
+        },
       ]
       for (const testCase of testCases) {
         const result = reporter.createTcTestName(testCase.testName)
@@ -304,25 +312,25 @@ describe('TeamcityReporter', () => {
         (tcFullTestName) => {
           reporter.tcServiceMessage('testFailed', {
             name: tcFullTestName,
-            details: 'Test failed'
+            details: 'Test failed',
           })
-        }
+        },
       )
 
       expect(mockStdoutWrite).toHaveBeenCalledWith(
-        "##teamcity[testStarted name='test > case']\n"
+        "##teamcity[testStarted name='test > case']\n",
       )
       expect(mockStdoutWrite).toHaveBeenCalledWith(
-        "##teamcity[testMetadata name='testFilePath' value='test/file/path']\n"
+        "##teamcity[testMetadata name='testFilePath' value='test/file/path']\n",
       )
       expect(mockStdoutWrite).toHaveBeenCalledWith(
-        "##teamcity[testStdOut name='test > case' out='Console messages from test/file/path:|na|nb']\n"
+        "##teamcity[testStdOut name='test > case' out='Console messages from test/file/path:|na|nb']\n",
       )
       expect(mockStdoutWrite).toHaveBeenCalledWith(
-        "##teamcity[testFailed name='test > case' details='Test failed']\n"
+        "##teamcity[testFailed name='test > case' details='Test failed']\n",
       )
       expect(mockStdoutWrite).toHaveBeenCalledWith(
-        "##teamcity[testFinished name='test > case' duration='1000']\n"
+        "##teamcity[testFinished name='test > case' duration='1000']\n",
       )
     })
   })
@@ -332,7 +340,7 @@ describe('TeamcityReporter', () => {
       reporter.tcServiceMessage('testStarted', { name: 'test' })
 
       expect(mockStdoutWrite).toHaveBeenCalledWith(
-        "##teamcity[testStarted name='test']\n"
+        "##teamcity[testStarted name='test']\n",
       )
     })
 
@@ -346,30 +354,30 @@ describe('TeamcityReporter', () => {
       reporter.tcServiceMessage('testStarted', { param: 0 })
 
       expect(mockStdoutWrite).toHaveBeenCalledWith(
-        "##teamcity[testStarted param='0']\n"
+        "##teamcity[testStarted param='0']\n",
       )
     })
 
     it('should escape special characters in the message parameters', () => {
       reporter.tcServiceMessage('testStarted', {
-        name: 'test\nwith\rspecial|characters'
+        name: 'test\nwith\rspecial|characters',
       })
 
       expect(mockStdoutWrite).toHaveBeenCalledWith(
-        "##teamcity[testStarted name='test|nwith|rspecial||characters']\n"
+        "##teamcity[testStarted name='test|nwith|rspecial||characters']\n",
       )
     })
 
     it('should assert if a parameter value is undefined or null', () => {
       expect(() => {
         reporter.tcServiceMessage('testStarted', {
-          param: undefined
+          param: undefined,
         })
       }).toThrow()
 
       expect(() => {
         reporter.tcServiceMessage('testStarted', {
-          param: null
+          param: null,
         })
       }).toThrow()
     })

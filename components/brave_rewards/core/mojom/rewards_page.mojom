@@ -31,7 +31,6 @@ struct AdsSettings {
   bool is_supported_region;
   bool new_tab_page_ads_enabled;
   bool notification_ads_enabled;
-  bool search_ads_enabled;
   int32 notification_ads_per_hour;
   bool should_allow_subdivision_targeting;
   string current_subdivision;
@@ -42,7 +41,6 @@ struct AdsSettings {
 struct AdTypeSummary {
   int32 notification_ads;
   int32 new_tab_page_ads;
-  int32 search_result_ads;
 };
 
 // We introduce a new struct instead of using `brave_ads.mojom.StatementInfo`

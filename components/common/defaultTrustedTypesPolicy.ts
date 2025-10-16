@@ -10,15 +10,20 @@
 // Import this module on any webui which you wish to call `import()` in.
 // Do NOT add on to this a `createHTML` function which would have the ability
 // for any script to set `HTMLElement.innerHTML`.
+//
+// Note: Trusted Types are not available on iOS until iOS 26
 
 // @ts-expect-error
-window.trustedTypes.createPolicy('default', {
-  createScriptURL: (url: string) => {
-    const parsed = new URL(url, document.location.href)
-    const isSameOrigin = parsed.origin === document.location.origin
-    if (!isSameOrigin) {
+if (typeof window.trustedTypes !== 'undefined') {
+  // @ts-expect-error
+  window.trustedTypes.createPolicy('default', {
+    createScriptURL: (url: string) => {
+      const parsed = new URL(url, document.location.href)
+      const isSameOrigin = parsed.origin === document.location.origin
+      if (!isSameOrigin) {
       throw new Error(`Asked for a script url that has a disallowed origin of ${parsed.origin}. URL was: ${url}.`)
+      }
+      return url
     }
-    return url
-  }
-})
+  })
+}

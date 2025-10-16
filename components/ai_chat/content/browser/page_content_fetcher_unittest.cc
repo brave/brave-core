@@ -40,6 +40,37 @@ namespace ai_chat {
 
 namespace {
 
+constexpr char kGithubPatch[] = R"(diff --git a/file.cc b/file.cc
+index 9e2e7d6ef96..4cdf7cc8ac8 100644
+--- a/file.cc
++++ b/file.cc
+@@ -7,6 +7,7 @@
+ #include "file3.h"
+ #include "file4.h"
++
++int main() {
++    std::cout << "This is the way" << std::endl;
++    return 0;
++})";
+
+constexpr char kGithubRawFile[] = R"(// Sample file content
+#include <iostream>
+
+int main() {
+  std::cout << "Hello World" << std::endl;
+  return 0;
+})";
+
+constexpr char kGithubAtomFeed[] = R"(<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Recent Commits to din_djarin:master</title>
+  <entry>
+    <id>tag:github.com,2008:Grit::Commit/abc123</id>
+    <title>Add new feature</title>
+    <updated>2025-01-15T10:00:00Z</updated>
+  </entry>
+</feed>)";
+
 // Mock PageContentExtractor for testing
 class MockPageContentExtractor : public mojom::PageContentExtractor {
  public:
@@ -220,12 +251,11 @@ TEST_F(PageContentFetcherTest, YouTubeInnerTubeAPISuccess) {
   auto youtube_content = CreateYoutubePageContent(api_key, video_id);
 
   EXPECT_CALL(*mock_extractor, ExtractPageContent(_))
-      .WillOnce(
-          Invoke([&youtube_content](
-                     mojom::PageContentExtractor::ExtractPageContentCallback
-                         callback) {
-            std::move(callback).Run(youtube_content.Clone());
-          }));
+      .WillOnce([&youtube_content](
+                    mojom::PageContentExtractor::ExtractPageContentCallback
+                        callback) {
+        std::move(callback).Run(youtube_content.Clone());
+      });
 
   // Set up network responses
   GURL inner_tube_url("https://www.youtube.com/youtubei/v1/player?key=" +
@@ -315,12 +345,11 @@ TEST_F(PageContentFetcherTest, YouTubeInnerTubeAPINetworkError) {
   auto youtube_content = CreateYoutubePageContent(api_key, video_id);
 
   EXPECT_CALL(*mock_extractor, ExtractPageContent(_))
-      .WillOnce(
-          Invoke([&youtube_content](
-                     mojom::PageContentExtractor::ExtractPageContentCallback
-                         callback) {
-            std::move(callback).Run(youtube_content.Clone());
-          }));
+      .WillOnce([&youtube_content](
+                    mojom::PageContentExtractor::ExtractPageContentCallback
+                        callback) {
+        std::move(callback).Run(youtube_content.Clone());
+      });
 
   // Track the requests that are made
   std::vector<network::ResourceRequest> requests_made;
@@ -362,12 +391,11 @@ TEST_F(PageContentFetcherTest, YouTubeInnerTubeAPIInvalidJsonResponse) {
   auto youtube_content = CreateYoutubePageContent(api_key, video_id);
 
   EXPECT_CALL(*mock_extractor, ExtractPageContent(_))
-      .WillOnce(
-          Invoke([&youtube_content](
-                     mojom::PageContentExtractor::ExtractPageContentCallback
-                         callback) {
-            std::move(callback).Run(youtube_content.Clone());
-          }));
+      .WillOnce([&youtube_content](
+                    mojom::PageContentExtractor::ExtractPageContentCallback
+                        callback) {
+        std::move(callback).Run(youtube_content.Clone());
+      });
 
   // Track the requests that are made
   std::vector<network::ResourceRequest> requests_made;
@@ -409,12 +437,11 @@ TEST_F(PageContentFetcherTest, YouTubeInnerTubeAPINoCaptionTracks) {
   auto youtube_content = CreateYoutubePageContent(api_key, video_id);
 
   EXPECT_CALL(*mock_extractor, ExtractPageContent(_))
-      .WillOnce(
-          Invoke([&youtube_content](
-                     mojom::PageContentExtractor::ExtractPageContentCallback
-                         callback) {
-            std::move(callback).Run(youtube_content.Clone());
-          }));
+      .WillOnce([&youtube_content](
+                    mojom::PageContentExtractor::ExtractPageContentCallback
+                        callback) {
+        std::move(callback).Run(youtube_content.Clone());
+      });
 
   // Track the requests that are made
   std::vector<network::ResourceRequest> requests_made;
@@ -457,12 +484,11 @@ TEST_F(PageContentFetcherTest, InvalidationTokenCaching) {
   auto youtube_content = CreateYoutubePageContent(api_key, video_id);
 
   EXPECT_CALL(*mock_extractor, ExtractPageContent(_))
-      .WillOnce(
-          Invoke([&youtube_content](
-                     mojom::PageContentExtractor::ExtractPageContentCallback
-                         callback) {
-            std::move(callback).Run(youtube_content.Clone());
-          }));
+      .WillOnce([&youtube_content](
+                    mojom::PageContentExtractor::ExtractPageContentCallback
+                        callback) {
+        std::move(callback).Run(youtube_content.Clone());
+      });
 
   // Track the requests that are made
   std::vector<network::ResourceRequest> requests_made;
@@ -499,12 +525,11 @@ TEST_F(PageContentFetcherTest, InvalidationTokenCaching) {
   auto youtube_content2 = CreateYoutubePageContent(api_key, video_id);
 
   EXPECT_CALL(*mock_extractor2, ExtractPageContent(_))
-      .WillOnce(
-          Invoke([&youtube_content2](
-                     mojom::PageContentExtractor::ExtractPageContentCallback
-                         callback) {
-            std::move(callback).Run(youtube_content2.Clone());
-          }));
+      .WillOnce([&youtube_content2](
+                    mojom::PageContentExtractor::ExtractPageContentCallback
+                        callback) {
+        std::move(callback).Run(youtube_content2.Clone());
+      });
 
   base::test::TestFuture<std::string, bool, std::string> future2;
   fetcher_->FetchPageContent(invalidation_token1, future2.GetCallback());
@@ -530,12 +555,11 @@ TEST_F(PageContentFetcherTest, ContentUrlExtraction) {
   auto content_url_page_content = CreateContentUrlPageContent(content_url);
 
   EXPECT_CALL(*mock_extractor, ExtractPageContent(_))
-      .WillOnce(
-          Invoke([&content_url_page_content](
-                     mojom::PageContentExtractor::ExtractPageContentCallback
-                         callback) {
-            std::move(callback).Run(content_url_page_content.Clone());
-          }));
+      .WillOnce([&content_url_page_content](
+                    mojom::PageContentExtractor::ExtractPageContentCallback
+                        callback) {
+        std::move(callback).Run(content_url_page_content.Clone());
+      });
 
   // Track the requests that are made
   std::vector<network::ResourceRequest> requests_made;
@@ -571,10 +595,10 @@ TEST_F(PageContentFetcherTest, NullPageContentResponse) {
   MockPageContentExtractor* mock_extractor = SetUpMockExtractor();
 
   EXPECT_CALL(*mock_extractor, ExtractPageContent(_))
-      .WillOnce(Invoke(
+      .WillOnce(
           [](mojom::PageContentExtractor::ExtractPageContentCallback callback) {
             std::move(callback).Run(nullptr);
-          }));
+          });
 
   base::test::TestFuture<std::string, bool, std::string> future;
   fetcher_->FetchPageContent("", future.GetCallback());
@@ -599,12 +623,11 @@ TEST_F(PageContentFetcherTest, TextContentExtraction) {
   auto text_page_content = CreateTextPageContent(text_content);
 
   EXPECT_CALL(*mock_extractor, ExtractPageContent(_))
-      .WillOnce(
-          Invoke([&text_page_content](
-                     mojom::PageContentExtractor::ExtractPageContentCallback
-                         callback) {
-            std::move(callback).Run(text_page_content.Clone());
-          }));
+      .WillOnce([&text_page_content](
+                    mojom::PageContentExtractor::ExtractPageContentCallback
+                        callback) {
+        std::move(callback).Run(text_page_content.Clone());
+      });
 
   base::test::TestFuture<std::string, bool, std::string> future;
   fetcher_->FetchPageContent("", future.GetCallback());
@@ -634,12 +657,11 @@ TEST_F(PageContentFetcherTest, YouTubeInnerTubeAPIKeyUrlEncoding) {
       CreateYoutubePageContent(api_key_with_special_chars, video_id);
 
   EXPECT_CALL(*mock_extractor, ExtractPageContent(_))
-      .WillOnce(
-          Invoke([&youtube_content](
-                     mojom::PageContentExtractor::ExtractPageContentCallback
-                         callback) {
-            std::move(callback).Run(youtube_content.Clone());
-          }));
+      .WillOnce([&youtube_content](
+                    mojom::PageContentExtractor::ExtractPageContentCallback
+                        callback) {
+        std::move(callback).Run(youtube_content.Clone());
+      });
 
   // Track the requests that are made
   std::vector<network::ResourceRequest> requests_made;
@@ -695,6 +717,184 @@ TEST_F(PageContentFetcherTest, YouTubeInnerTubeAPIKeyUrlEncoding) {
   // Check transcript request
   EXPECT_EQ(requests_made[1].url, transcript_url);
   EXPECT_EQ(requests_made[1].method, "GET");
+}
+
+// Test GitHub pull request URL fetching
+TEST_F(PageContentFetcherTest, GithubPullRequestUrl) {
+  GURL pr_url("https://github.com/brave/din_djarin/pull/65535");
+  GURL expected_patch_url(
+      "https://github.com/brave/din_djarin/pull/65535.patch");
+
+  NavigateAndCommit(pr_url);
+
+  // Track the requests that are made
+  std::vector<network::ResourceRequest> requests_made;
+  test_url_loader_factory_->SetInterceptor(base::BindLambdaForTesting(
+      [&requests_made](const network::ResourceRequest& request) {
+        requests_made.push_back(request);
+      }));
+
+  // Set up network response for patch URL
+  SimulateNetworkResponse(expected_patch_url, net::HTTP_OK, kGithubPatch);
+
+  base::test::TestFuture<std::string, bool, std::string> future;
+  fetcher_->FetchPageContent("", future.GetCallback());
+
+  // Wait for the result
+  auto [content, is_video, invalidation_token] = future.Get();
+
+  EXPECT_EQ(content, kGithubPatch);
+  EXPECT_FALSE(is_video);
+  EXPECT_TRUE(invalidation_token.empty());
+
+  // Verify the request was made to the patch URL
+  EXPECT_EQ(requests_made.size(), 1u);
+  EXPECT_EQ(requests_made[0].url, expected_patch_url);
+  EXPECT_EQ(requests_made[0].method, "GET");
+}
+
+// Test GitHub commit URL fetching
+TEST_F(PageContentFetcherTest, GithubCommitUrl) {
+  GURL commit_url(
+      "https://github.com/brave/din_djarin/commit/"
+      "64bdda5969698bf570002b9f99852f5f595c2e3c");
+  GURL expected_patch_url(
+      "https://github.com/brave/din_djarin/commit/"
+      "64bdda5969698bf570002b9f99852f5f595c2e3c.patch");
+
+  NavigateAndCommit(commit_url);
+
+  // Track the requests that are made
+  std::vector<network::ResourceRequest> requests_made;
+  test_url_loader_factory_->SetInterceptor(base::BindLambdaForTesting(
+      [&requests_made](const network::ResourceRequest& request) {
+        requests_made.push_back(request);
+      }));
+
+  // Set up network response for patch URL
+  SimulateNetworkResponse(expected_patch_url, net::HTTP_OK, kGithubPatch);
+
+  base::test::TestFuture<std::string, bool, std::string> future;
+  fetcher_->FetchPageContent("", future.GetCallback());
+
+  // Wait for the result
+  auto [content, is_video, invalidation_token] = future.Get();
+
+  EXPECT_EQ(content, kGithubPatch);
+  EXPECT_FALSE(is_video);
+  EXPECT_TRUE(invalidation_token.empty());
+
+  // Verify the request was made to the patch URL
+  EXPECT_EQ(requests_made.size(), 1u);
+  EXPECT_EQ(requests_made[0].url, expected_patch_url);
+  EXPECT_EQ(requests_made[0].method, "GET");
+}
+
+// Test GitHub compare URL fetching
+TEST_F(PageContentFetcherTest, GithubCompareUrl) {
+  GURL compare_url(
+      "https://github.com/brave/din_djarin/compare/master...this-is-the-way");
+  GURL expected_patch_url(
+      "https://github.com/brave/din_djarin/compare/"
+      "master...this-is-the-way.patch");
+
+  NavigateAndCommit(compare_url);
+
+  // Track the requests that are made
+  std::vector<network::ResourceRequest> requests_made;
+  test_url_loader_factory_->SetInterceptor(base::BindLambdaForTesting(
+      [&requests_made](const network::ResourceRequest& request) {
+        requests_made.push_back(request);
+      }));
+
+  // Set up network response for patch URL
+  SimulateNetworkResponse(expected_patch_url, net::HTTP_OK, kGithubPatch);
+
+  base::test::TestFuture<std::string, bool, std::string> future;
+  fetcher_->FetchPageContent("", future.GetCallback());
+
+  // Wait for the result
+  auto [content, is_video, invalidation_token] = future.Get();
+
+  EXPECT_EQ(content, kGithubPatch);
+  EXPECT_FALSE(is_video);
+  EXPECT_TRUE(invalidation_token.empty());
+
+  // Verify the request was made to the patch URL
+  EXPECT_EQ(requests_made.size(), 1u);
+  EXPECT_EQ(requests_made[0].url, expected_patch_url);
+  EXPECT_EQ(requests_made[0].method, "GET");
+}
+
+// Test GitHub blob URL fetching
+TEST_F(PageContentFetcherTest, GithubBlobUrl) {
+  GURL blob_url(
+      "https://github.com/brave/din_djarin/blob/master/components/stardust/"
+      "may/the/force/be/with/you.cc");
+  GURL expected_raw_url(
+      "https://github.com/brave/din_djarin/blob/master/components/stardust/"
+      "may/the/force/be/with/you.cc?raw=true");
+
+  NavigateAndCommit(blob_url);
+
+  // Track the requests that are made
+  std::vector<network::ResourceRequest> requests_made;
+  test_url_loader_factory_->SetInterceptor(base::BindLambdaForTesting(
+      [&requests_made](const network::ResourceRequest& request) {
+        requests_made.push_back(request);
+      }));
+
+  // Set up network response for raw URL
+  SimulateNetworkResponse(expected_raw_url, net::HTTP_OK, kGithubRawFile);
+
+  base::test::TestFuture<std::string, bool, std::string> future;
+  fetcher_->FetchPageContent("", future.GetCallback());
+
+  // Wait for the result
+  auto [content, is_video, invalidation_token] = future.Get();
+
+  EXPECT_EQ(content, kGithubRawFile);
+  EXPECT_FALSE(is_video);
+  EXPECT_TRUE(invalidation_token.empty());
+
+  // Verify the request was made to the raw URL
+  EXPECT_EQ(requests_made.size(), 1u);
+  EXPECT_EQ(requests_made[0].url, expected_raw_url);
+  EXPECT_EQ(requests_made[0].method, "GET");
+}
+
+// Test GitHub commits URL fetching
+TEST_F(PageContentFetcherTest, GithubCommitsUrl) {
+  GURL commits_url("https://github.com/brave/din_djarin/commits/master");
+  GURL expected_atom_url(
+      "https://github.com/brave/din_djarin/commits/master.atom");
+
+  NavigateAndCommit(commits_url);
+
+  // Track the requests that are made
+  std::vector<network::ResourceRequest> requests_made;
+  test_url_loader_factory_->SetInterceptor(base::BindLambdaForTesting(
+      [&requests_made](const network::ResourceRequest& request) {
+        requests_made.push_back(request);
+      }));
+
+  // Set up network response for atom URL
+  SimulateNetworkResponse(expected_atom_url, net::HTTP_OK, kGithubAtomFeed);
+
+  base::test::TestFuture<std::string, bool, std::string> future;
+  fetcher_->FetchPageContent("", future.GetCallback());
+
+  // Wait for the result
+  auto [content, is_video, invalidation_token] = future.Get();
+
+  EXPECT_EQ(content, kGithubAtomFeed);
+  EXPECT_FALSE(is_video);
+  EXPECT_TRUE(invalidation_token.empty());
+
+  // Verify the request was made to the atom URL
+  EXPECT_EQ(requests_made.size(), 1u);
+  EXPECT_EQ(requests_made[0].url, expected_atom_url);
+  EXPECT_EQ(requests_made[0].method, "GET");
 }
 
 }  // namespace ai_chat

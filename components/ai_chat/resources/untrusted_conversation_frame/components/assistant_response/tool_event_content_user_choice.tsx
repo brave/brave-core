@@ -9,16 +9,19 @@ import classnames from '$web-common/classnames'
 import ConversationAreaButton from '../../../common/components/conversation_area_button'
 import { createTextContentBlock } from '../../../common/content_block'
 import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
-import type { ToolComponent } from './tool_event'
+import type { ToolComponent, ToolUseContent } from './tool_event'
 import styles from './tool_event.module.scss'
 
 const ToolEventContentUserChoice: ToolComponent = (props) => {
   const context = useUntrustedConversationContext()
-  const content = props.content
+  const content: ToolUseContent = {
+    toolLabel: null,
+    expandedContent: null,
+  }
 
   if (props.toolUseEvent.output) {
     // Tool already completed, don't allow further response
-    content.toolText = (
+    content.expandedContent = (
       <ConversationAreaButton
         isDisabled
         icon={
@@ -33,13 +36,7 @@ const ToolEventContentUserChoice: ToolComponent = (props) => {
         </span>
       </ConversationAreaButton>
     )
-  } else {
-    content.progressIcon = (
-      <span data-testid='tool-choice-progress-icon'>
-        <Icon name='help-outline' />
-      </span>
-    )
-
+  } else if (props.toolInput?.choices?.length) {
     const handleChoice = (choice: string) => {
       if (!props.isEntryActive) {
         return
@@ -50,7 +47,7 @@ const ToolEventContentUserChoice: ToolComponent = (props) => {
       )
     }
 
-    content.toolText = (
+    content.expandedContent = (
       <>
         {props.toolInput?.choices?.map((choice: string, i: number) => (
           <div

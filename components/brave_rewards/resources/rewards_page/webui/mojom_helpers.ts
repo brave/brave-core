@@ -8,38 +8,40 @@ import * as mojom from './mojom'
 import {
   AdType,
   Notification,
-  ExternalWalletDisconnectedNotification
+  ExternalWalletDisconnectedNotification,
 } from '../lib/app_state'
 
 import {
   ExternalWalletProvider,
-  externalWalletProviderFromString
+  externalWalletProviderFromString,
 } from '../../shared/lib/external_wallet'
 
 // Converts a mojo Time value to a JS time ms value.
 export function convertMojoTime(time: any) {
-  return (Number(time?.internalValue) / 1000 - Date.UTC(1601, 0, 1)) || 0
+  return Number(time?.internalValue) / 1000 - Date.UTC(1601, 0, 1) || 0
 }
 
 // Ensures that the specified object literal matches some type |T|
-function create<T> (obj: T): T { return obj }
+function create<T>(obj: T): T {
+  return obj
+}
 
 // Converts a notification object coming from the extension API into an instance
 // of the |Notification| type. If the object cannot be converted, |null| is
 // returned.
-export function mapNotification (
-  obj: mojom.RewardsNotification
+export function mapNotification(
+  obj: mojom.RewardsNotification,
 ): Notification | null {
   const baseProps = {
     id: obj.id,
-    timeStamp: convertMojoTime(obj.timestamp)
+    timeStamp: convertMojoTime(obj.timestamp),
   }
 
   switch (obj.type) {
     case mojom.RewardsNotificationType.kTipsProcessed:
       return {
         ...baseProps,
-        type: 'monthly-tip-completed'
+        type: 'monthly-tip-completed',
       }
     case mojom.RewardsNotificationType.kGeneral:
       switch (obj.args[0]) {
@@ -51,7 +53,7 @@ export function mapNotification (
           return create<ExternalWalletDisconnectedNotification>({
             ...baseProps,
             type: 'external-wallet-disconnected',
-            provider
+            provider,
           })
         }
       }
@@ -64,16 +66,17 @@ export function mapNotification (
 // Converts an AdType value into a mojo enum value.
 export function convertAdType(adType: AdType) {
   switch (adType) {
-    case 'new-tab-page': return mojom.AdType.kNewTabPageAd
-    case 'notification': return mojom.AdType.kNotificationAd
-    case 'search-result': return mojom.AdType.kSearchResultAd
+    case 'new-tab-page':
+      return mojom.AdType.kNewTabPageAd
+    case 'notification':
+      return mojom.AdType.kNotificationAd
   }
 }
 
 // Converts a mojo PublisherStatus to a list of wallet providers.
 export function walletProvidersFromPublisherStatus(
-  value: number
-) : ExternalWalletProvider[] {
+  value: number,
+): ExternalWalletProvider[] {
   switch (value) {
     case mojom.PublisherStatus.BITFLYER_VERIFIED:
       return ['bitflyer']

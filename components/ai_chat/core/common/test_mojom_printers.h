@@ -9,6 +9,7 @@
 #include <string>
 
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 
 namespace ai_chat {
 
@@ -27,6 +28,7 @@ GENERATE_MOJO_PTR_PRINTER(Conversation)
 GENERATE_MOJO_PTR_PRINTER(ToolUseEvent)
 GENERATE_MOJO_PTR_PRINTER(ConversationEntryEvent)
 GENERATE_MOJO_PTR_PRINTER(ConversationTurn)
+GENERATE_MOJO_PTR_PRINTER(ContentBlock)
 
 }  // namespace mojom
 

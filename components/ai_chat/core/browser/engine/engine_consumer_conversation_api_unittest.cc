@@ -33,6 +33,7 @@
 #include "brave/components/ai_chat/core/browser/tools/mock_tool.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_input_properties.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/ai_chat/core/common/test_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"

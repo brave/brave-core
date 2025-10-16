@@ -78,8 +78,7 @@ BraveNewTabUI::BraveNewTabUI(
 
   content::NavigationEntry* navigation_entry =
       web_contents->GetController().GetLastCommittedEntry();
-  const bool was_restored =
-      navigation_entry ? navigation_entry->IsRestored() : false;
+  const bool was_restored = navigation_entry && navigation_entry->IsRestored();
 
   Profile* profile = Profile::FromWebUI(web_ui);
   web_ui->OverrideTitle(l10n_util::GetStringUTF16(IDS_NEW_TAB_TITLE));
@@ -207,9 +206,10 @@ void BraveNewTabUI::BindInterface(
   CHECK(profile);
 
   realbox_handler_ = std::make_unique<RealboxHandler>(
-      std::move(pending_page_handler), profile, web_ui()->GetWebContents(),
-      /*metrics_reporter=*/nullptr,
-      /*omnibox_controller=*/nullptr);
+      std::move(pending_page_handler), /*query_controller=*/nullptr,
+      /*composebox_metrics_recorder=*/nullptr, profile,
+      web_ui()->GetWebContents(),
+      /*metrics_reporter=*/nullptr);
 }
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)

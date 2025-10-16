@@ -115,7 +115,7 @@ void DomainBlockNavigationThrottle::MaybeCreateAndAdd(
     return;
   }
   // Don't block subframes.
-  if (!registry.GetNavigationHandle().IsInMainFrame()) {
+  if (!registry.GetNavigationHandle().IsInPrimaryMainFrame()) {
     return;
   }
   registry.AddThrottle(std::make_unique<DomainBlockNavigationThrottle>(
@@ -188,7 +188,6 @@ DomainBlockNavigationThrottle::WillStartRequest() {
   // Since the call to the ad block service is asynchronous, we defer the final
   // decision of whether to allow or block this navigation. The callback from
   // the task runner will call a method to give our final answer.
-  is_deferred_ = true;
   return content::NavigationThrottle::DEFER;
 }
 
@@ -214,8 +213,6 @@ void DomainBlockNavigationThrottle::OnShouldBlockDomain(
     const BlockResult& block_result) {
   const bool should_block = block_result.should_block;
   const GURL new_url(block_result.new_url);
-  const bool proceed_with_resume_cancel = is_deferred_;
-  is_deferred_ = false;
 
   if (should_block && block_result.info) {
     content::devtools_instrumentation::SendAdblockInfo(
@@ -228,22 +225,19 @@ void DomainBlockNavigationThrottle::OnShouldBlockDomain(
     if (tab_storage) {
       tab_storage->DropBlockedDomain1PESLifetime();
     }
-    if (proceed_with_resume_cancel) {
-      // Navigation was deferred while we called the ad block service on a task
-      // runner, but now we know that we want to allow navigation to continue.
-      Resume();
-      // DO NOT ADD CODE AFTER THIS, as the NavigationThrottle might have been
-      // deleted by the previous call.
-    }
+    // Navigation was deferred while we called the ad block service on a task
+    // runner, but now we know that we want to allow navigation to continue.
+    Resume();
+    return;
   } else if (new_url.is_valid()) {
-    RestartNavigation(new_url, proceed_with_resume_cancel);
+    RestartNavigation(new_url);
   } else {
     switch (domain_blocking_type) {
       case DomainBlockingType::k1PES:
-        Enable1PESAndResume(proceed_with_resume_cancel);
+        Enable1PESAndResume();
         break;
       case DomainBlockingType::kAggressive:
-        ShowInterstitial(proceed_with_resume_cancel);
+        ShowInterstitial();
         break;
       case DomainBlockingType::kNone:
         NOTREACHED();
@@ -251,8 +245,7 @@ void DomainBlockNavigationThrottle::OnShouldBlockDomain(
   }
 }
 
-void DomainBlockNavigationThrottle::ShowInterstitial(
-    bool proceed_with_resume_cancel) {
+void DomainBlockNavigationThrottle::ShowInterstitial() {
   content::NavigationHandle* handle = navigation_handle();
   content::WebContents* web_contents = handle->GetWebContents();
   const GURL& request_url = handle->GetURL();
@@ -281,48 +274,40 @@ void DomainBlockNavigationThrottle::ShowInterstitial(
   security_interstitials::SecurityInterstitialTabHelper::AssociateBlockingPage(
       handle, std::move(blocked_page));
 
-  if (proceed_with_resume_cancel) {
-    // Navigation was deferred rather than canceled outright because the
-    // call to the ad blocking service happens on a task runner, but now we
-    // know that we definitely want to cancel the navigation.
-    CancelDeferredNavigation(content::NavigationThrottle::ThrottleCheckResult(
-        content::NavigationThrottle::CANCEL, net::ERR_BLOCKED_BY_CLIENT,
-        blocked_page_content));
-  }
+  // Navigation was deferred rather than canceled outright because the
+  // call to the ad blocking service happens on a task runner, but now we
+  // know that we definitely want to cancel the navigation.
+  CancelDeferredNavigation(content::NavigationThrottle::ThrottleCheckResult(
+      content::NavigationThrottle::CANCEL, net::ERR_BLOCKED_BY_CLIENT,
+      blocked_page_content));
 }
 
-void DomainBlockNavigationThrottle::Enable1PESAndResume(
-    bool proceed_with_resume_cancel) {
+void DomainBlockNavigationThrottle::Enable1PESAndResume() {
   DCHECK(ephemeral_storage_service_);
   DomainBlockTabStorage* tab_storage = DomainBlockTabStorage::FromWebContents(
       navigation_handle()->GetWebContents());
   if (ephemeral_storage_service_->Is1PESEnabledForUrl(
           navigation_handle()->GetURL())) {
-    if (proceed_with_resume_cancel) {
-      Resume();
-    }
+    Resume();
+    return;
   } else if (tab_storage) {
     tab_storage->Enable1PESForUrlIfPossible(
         ephemeral_storage_service_, navigation_handle()->GetURL(),
         base::BindOnce(&DomainBlockNavigationThrottle::On1PESState,
-                       weak_ptr_factory_.GetWeakPtr(),
-                       proceed_with_resume_cancel));
+                       weak_ptr_factory_.GetWeakPtr()));
   }
 }
 
-void DomainBlockNavigationThrottle::On1PESState(bool proceed_with_resume_cancel,
-                                                bool is_1pes_enabled) {
+void DomainBlockNavigationThrottle::On1PESState(bool is_1pes_enabled) {
   if (is_1pes_enabled) {
-    RestartNavigation(navigation_handle()->GetURL(),
-                      proceed_with_resume_cancel);
-  } else if (proceed_with_resume_cancel) {
+    RestartNavigation(navigation_handle()->GetURL());
+  } else {
     Resume();
+    return;
   }
 }
 
-void DomainBlockNavigationThrottle::RestartNavigation(
-    const GURL& url,
-    bool proceed_with_resume_cancel) {
+void DomainBlockNavigationThrottle::RestartNavigation(const GURL& url) {
   content::NavigationHandle* handle = navigation_handle();
 
   content::OpenURLParams params =
@@ -337,12 +322,10 @@ void DomainBlockNavigationThrottle::RestartNavigation(
   // technically this is a new navigation
   params.redirect_chain.clear();
 
-  if (proceed_with_resume_cancel) {
-    // Cancel without an error status to surface any real errors during page
-    // load.
-    CancelDeferredNavigation(content::NavigationThrottle::ThrottleCheckResult(
-        content::NavigationThrottle::CANCEL));
-  }
+  // Cancel without an error status to surface any real errors during page
+  // load.
+  CancelDeferredNavigation(content::NavigationThrottle::ThrottleCheckResult(
+      content::NavigationThrottle::CANCEL));
 
   base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE, base::BindOnce(

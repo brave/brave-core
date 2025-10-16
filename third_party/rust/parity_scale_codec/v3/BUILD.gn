@@ -1,0 +1,96 @@
+# Copyright 2023 The Chromium Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# @generated from third_party/rust/chromium_crates_io/BUILD.gn.hbs by
+# tools/crates/gnrt.
+# Do not edit!
+
+import("//build/rust/cargo_crate.gni")
+
+cargo_crate("lib") {
+  crate_name = "parity_scale_codec"
+  epoch = "3"
+  crate_type = "rlib"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/parity-scale-codec-v3/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/chromium_crates_io/vendor/parity-scale-codec-v3/src/bit_vec.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/parity-scale-codec-v3/src/btree_utils.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/parity-scale-codec-v3/src/codec.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/parity-scale-codec-v3/src/compact.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/parity-scale-codec-v3/src/const_encoded_len.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/parity-scale-codec-v3/src/counted_input.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/parity-scale-codec-v3/src/decode_all.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/parity-scale-codec-v3/src/decode_finished.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/parity-scale-codec-v3/src/depth_limit.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/parity-scale-codec-v3/src/encode_append.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/parity-scale-codec-v3/src/encode_like.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/parity-scale-codec-v3/src/error.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/parity-scale-codec-v3/src/generic_array.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/parity-scale-codec-v3/src/joiner.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/parity-scale-codec-v3/src/keyedvec.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/parity-scale-codec-v3/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/parity-scale-codec-v3/src/max_encoded_len.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/parity-scale-codec-v3/src/mem_tracking.rs",
+  ]
+  inputs = [ "//brave/third_party/rust/chromium_crates_io/vendor/parity-scale-codec-v3/src/../README.md" ]
+
+  build_native_rust_unit_tests = false
+  edition = "2021"
+  cargo_pkg_authors = "Parity Technologies <admin@parity.io>"
+  cargo_pkg_name = "parity-scale-codec"
+  cargo_pkg_description =
+      "SCALE - Simple Concatenating Aggregated Little Endians"
+  cargo_pkg_repository = "https://github.com/paritytech/parity-scale-codec"
+  cargo_pkg_version = "3.7.5"
+
+  deps = [
+    "//brave/third_party/rust/arrayvec/v0_7:lib",
+    "//brave/third_party/rust/byte_slice_cast/v1:lib",
+    "//brave/third_party/rust/const_format/v0_2:lib",
+    "//brave/third_party/rust/impl_trait_for_tuples/v0_2:lib",
+    "//brave/third_party/rust/serde/v1:lib",
+  ]
+  build_deps = [ "//brave/third_party/rust/rustversion/v1:buildrs_support" ]
+  features = [
+    "chain-error",
+    "default",
+    "serde",
+    "std",
+  ]
+  build_root = "//brave/third_party/rust/chromium_crates_io/vendor/parity-scale-codec-v3/build.rs"
+  build_sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/parity-scale-codec-v3/build.rs" ]
+  rustenv = []
+  rustflags = []
+  build_deps -= [ "//brave/third_party/rust/rustversion/v1:buildrs_support" ]
+
+  #####################################################################
+  # Tweaking which GN `config`s apply to this target.
+
+  # Config changes that apply to all `//third_party/rust` crates.
+  _configs_to_remove = [
+    # We don't need code coverage data for any `chromium_crates_io` crates.
+    "//build/config/coverage:default_coverage",
+
+    # This is third-party code, so remove `chromium_code` config.  We are not
+    # at the same time adding `//build/config/compiler:no_chromium_code`,
+    # because 1) we don't want to pull how warnings are handled by that config
+    # and 2) that config doesn't have any non-warnings-related stuff.
+    "//build/config/compiler:chromium_code",
+  ]
+  _configs_to_add = []
+
+  # Changing (if needed) which configs apply to this specific crate (based on
+  # `extra_kv.configs_to_remove` and `extra_kv.configs_to_add` from
+  # `gnrt_config.toml`).
+  _configs_to_remove += []
+  _configs_to_add += []
+
+  # Applying config changes.
+  library_configs -= _configs_to_remove
+  library_configs += _configs_to_add
+  executable_configs -= _configs_to_remove
+  executable_configs += _configs_to_add
+  proc_macro_configs -= _configs_to_remove
+  proc_macro_configs += _configs_to_add
+}

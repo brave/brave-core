@@ -13,6 +13,7 @@
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 
 namespace ai_chat {
 namespace mojom {
@@ -171,6 +172,22 @@ void PrintTo(const ConversationTurn& turn, std::ostream* os) {
       *os << "    - ";
       PrintTo(*edit, os);
     }
+  }
+}
+
+void PrintTo(const ContentBlock& block, std::ostream* os) {
+  *os << "ContentBlock with";
+  switch (block.which()) {
+    case ContentBlock::Tag::kImageContentBlock:
+      *os << " image_url: "
+          << block.get_image_content_block()->image_url.possibly_invalid_spec()
+          << "\n";
+      break;
+    case ContentBlock::Tag::kTextContentBlock:
+      *os << " text: \"" << block.get_text_content_block()->text << "\"\n";
+      break;
+    default:
+      *os << " type: unknown\n";
   }
 }
 

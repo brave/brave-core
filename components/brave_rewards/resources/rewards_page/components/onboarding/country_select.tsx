@@ -51,15 +51,14 @@ export function CountrySelect(props: Props) {
       onFocus={onFocus}
     >
       <option value=''>{props.placeholderText}</option>
-      {
-        getCountryOptions(props.countries).map(
-          (option) => (
-            <option key={option.code} value={option.code}>
-              {option.name}
-            </option>
-          )
-        )
-      }
+      {getCountryOptions(props.countries).map((option) => (
+        <option
+          key={option.code}
+          value={option.code}
+        >
+          {option.name}
+        </option>
+      ))}
     </select>
   )
 }

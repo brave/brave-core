@@ -12708,7 +12708,9 @@ var solanaWeb3 = $(function (exports) {
           return uuid();
         });
         result.version = typeof options.version !== "undefined" ? options.version : 2;
-        result.notificationIdNull = typeof options.notificationIdNull === "boolean" ? options.notificationIdNull : false;
+        result.notificationIdNull =
+            typeof options.notificationIdNull === 'boolean' &&
+            options.notificationIdNull;
         return result;
       })();
       this.callServer = callServer;

@@ -75,15 +75,12 @@ class FavoritesCollectionViewCell: UICollectionViewCell, CollectionViewReusable 
       $0.textAlignment = .center
       $0.numberOfLines = 1
 
-      var sizeCategory = UIApplication.shared.preferredContentSizeCategory
-      if sizeCategory.isAccessibilityCategory {
-        sizeCategory = .small
-      }
-      let traitCollection = UITraitCollection(preferredContentSizeCategory: sizeCategory)
+      let clampedTraitCollection = self.traitCollection.clampingSizeCategory(
+        maximum: .accessibilityExtraLarge
+      )
       let font = UIFont.preferredFont(
-        for: .caption2,
-        weight: .regular,
-        traitCollection: traitCollection
+        forTextStyle: .caption2,
+        compatibleWith: clampedTraitCollection
       )
       $0.font = font
       $0.lineBreakMode = NSLineBreakMode.byTruncatingTail

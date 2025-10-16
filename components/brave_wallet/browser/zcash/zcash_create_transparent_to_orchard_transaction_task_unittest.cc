@@ -46,10 +46,8 @@ class MockZCashWalletService : public ZCashWalletService {
                            keyring_service,
                            std::move(zcash_rpc)) {}
 
-  MOCK_METHOD3(GetUtxos,
-               void(const std::string& chain_id,
-                    const mojom::AccountIdPtr& account_id,
-                    GetUtxosCallback));
+  MOCK_METHOD2(GetUtxos,
+               void(const mojom::AccountIdPtr& account_id, GetUtxosCallback));
 
   MOCK_METHOD3(DiscoverNextUnusedAddress,
                void(const mojom::AccountIdPtr& account_id,
@@ -149,8 +147,7 @@ class ZCashCreateTransparentToOrchardTransactionTaskTest
   }
 
   ZCashActionContext action_context() {
-    return ZCashActionContext(*zcash_rpc_, {}, sync_state_, account_id_,
-                              mojom::kZCashMainnet);
+    return ZCashActionContext(*zcash_rpc_, {}, sync_state_, account_id_);
   }
 
   base::test::TaskEnvironment& task_environment() { return task_environment_; }
@@ -173,34 +170,31 @@ class ZCashCreateTransparentToOrchardTransactionTaskTest
 };
 
 TEST_F(ZCashCreateTransparentToOrchardTransactionTaskTest, TransactionCreated) {
-  ON_CALL(zcash_wallet_service(), GetUtxos(_, _, _))
-      .WillByDefault(
-          ::testing::Invoke([&](const std::string& chain_id,
-                                const mojom::AccountIdPtr& account_id,
-                                ZCashWalletService::GetUtxosCallback callback) {
-            ZCashWalletService::UtxoMap utxo_map;
-            utxo_map["60000"] = GetZCashUtxo(60000);
-            utxo_map["70000"] = GetZCashUtxo(70000);
-            utxo_map["80000"] = GetZCashUtxo(80000);
-            std::move(callback).Run(std::move(utxo_map));
-          }));
+  ON_CALL(zcash_wallet_service(), GetUtxos(_, _))
+      .WillByDefault([&](const mojom::AccountIdPtr& account_id,
+                         ZCashWalletService::GetUtxosCallback callback) {
+        ZCashWalletService::UtxoMap utxo_map;
+        utxo_map["60000"] = GetZCashUtxo(60000);
+        utxo_map["70000"] = GetZCashUtxo(70000);
+        utxo_map["80000"] = GetZCashUtxo(80000);
+        std::move(callback).Run(std::move(utxo_map));
+      });
 
   ON_CALL(zcash_wallet_service(), DiscoverNextUnusedAddress(_, _, _))
-      .WillByDefault(::testing::Invoke(
+      .WillByDefault(
           [&](const mojom::AccountIdPtr& account_id, bool change,
               ZCashWalletService::DiscoverNextUnusedAddressCallback callback) {
             auto id = mojom::ZCashKeyId::New(account_id->account_index, 1, 0);
             auto addr = keyring_service().GetZCashAddress(account_id, *id);
             std::move(callback).Run(std::move(addr));
-          }));
+          });
 
   ON_CALL(mock_zcash_rpc(), GetLatestBlock(_, _))
-      .WillByDefault(
-          ::testing::Invoke([](const std::string& chain_id,
-                               ZCashRpc::GetLatestBlockCallback callback) {
-            std::move(callback).Run(
-                zcash::mojom::BlockID::New(1000u, std::vector<uint8_t>({})));
-          }));
+      .WillByDefault([](const std::string& chain_id,
+                        ZCashRpc::GetLatestBlockCallback callback) {
+        std::move(callback).Run(
+            zcash::mojom::BlockID::New(1000u, std::vector<uint8_t>({})));
+      });
 
   base::MockCallback<ZCashWalletService::CreateTransactionCallback> callback;
 
@@ -245,33 +239,30 @@ TEST_F(ZCashCreateTransparentToOrchardTransactionTaskTest, TransactionCreated) {
 
 TEST_F(ZCashCreateTransparentToOrchardTransactionTaskTest,
        TransactionCreated_u64Check) {
-  ON_CALL(zcash_wallet_service(), GetUtxos(_, _, _))
-      .WillByDefault(
-          ::testing::Invoke([&](const std::string& chain_id,
-                                const mojom::AccountIdPtr& account_id,
-                                ZCashWalletService::GetUtxosCallback callback) {
-            ZCashWalletService::UtxoMap utxo_map;
-            utxo_map["10000000000"] = GetZCashUtxo(10000000000u);
-            utxo_map["20000000000"] = GetZCashUtxo(20000000000u);
-            std::move(callback).Run(std::move(utxo_map));
-          }));
+  ON_CALL(zcash_wallet_service(), GetUtxos(_, _))
+      .WillByDefault([&](const mojom::AccountIdPtr& account_id,
+                         ZCashWalletService::GetUtxosCallback callback) {
+        ZCashWalletService::UtxoMap utxo_map;
+        utxo_map["10000000000"] = GetZCashUtxo(10000000000u);
+        utxo_map["20000000000"] = GetZCashUtxo(20000000000u);
+        std::move(callback).Run(std::move(utxo_map));
+      });
 
   ON_CALL(zcash_wallet_service(), DiscoverNextUnusedAddress(_, _, _))
-      .WillByDefault(::testing::Invoke(
+      .WillByDefault(
           [&](const mojom::AccountIdPtr& account_id, bool change,
               ZCashWalletService::DiscoverNextUnusedAddressCallback callback) {
             auto id = mojom::ZCashKeyId::New(account_id->account_index, 1, 0);
             auto addr = keyring_service().GetZCashAddress(account_id, *id);
             std::move(callback).Run(std::move(addr));
-          }));
+          });
 
   ON_CALL(mock_zcash_rpc(), GetLatestBlock(_, _))
-      .WillByDefault(
-          ::testing::Invoke([](const std::string& chain_id,
-                               ZCashRpc::GetLatestBlockCallback callback) {
-            std::move(callback).Run(
-                zcash::mojom::BlockID::New(1000u, std::vector<uint8_t>({})));
-          }));
+      .WillByDefault([](const std::string& chain_id,
+                        ZCashRpc::GetLatestBlockCallback callback) {
+        std::move(callback).Run(
+            zcash::mojom::BlockID::New(1000u, std::vector<uint8_t>({})));
+      });
 
   base::MockCallback<ZCashWalletService::CreateTransactionCallback> callback;
 
@@ -317,34 +308,30 @@ TEST_F(ZCashCreateTransparentToOrchardTransactionTaskTest,
 
 TEST_F(ZCashCreateTransparentToOrchardTransactionTaskTest,
        TransactionCreated_OverflowCheck_CustomValue) {
-  ON_CALL(zcash_wallet_service(), GetUtxos(_, _, _))
-      .WillByDefault(
-          ::testing::Invoke([&](const std::string& chain_id,
-                                const mojom::AccountIdPtr& account_id,
-                                ZCashWalletService::GetUtxosCallback callback) {
-            ZCashWalletService::UtxoMap utxo_map;
-            utxo_map["18446744073709551615"] =
-                GetZCashUtxo(18446744073709551615u);
-            utxo_map["20000000000"] = GetZCashUtxo(20000000000u);
-            std::move(callback).Run(std::move(utxo_map));
-          }));
+  ON_CALL(zcash_wallet_service(), GetUtxos(_, _))
+      .WillByDefault([&](const mojom::AccountIdPtr& account_id,
+                         ZCashWalletService::GetUtxosCallback callback) {
+        ZCashWalletService::UtxoMap utxo_map;
+        utxo_map["18446744073709551615"] = GetZCashUtxo(18446744073709551615u);
+        utxo_map["20000000000"] = GetZCashUtxo(20000000000u);
+        std::move(callback).Run(std::move(utxo_map));
+      });
 
   ON_CALL(zcash_wallet_service(), DiscoverNextUnusedAddress(_, _, _))
-      .WillByDefault(::testing::Invoke(
+      .WillByDefault(
           [&](const mojom::AccountIdPtr& account_id, bool change,
               ZCashWalletService::DiscoverNextUnusedAddressCallback callback) {
             auto id = mojom::ZCashKeyId::New(account_id->account_index, 1, 0);
             auto addr = keyring_service().GetZCashAddress(account_id, *id);
             std::move(callback).Run(std::move(addr));
-          }));
+          });
 
   ON_CALL(mock_zcash_rpc(), GetLatestBlock(_, _))
-      .WillByDefault(
-          ::testing::Invoke([](const std::string& chain_id,
-                               ZCashRpc::GetLatestBlockCallback callback) {
-            std::move(callback).Run(
-                zcash::mojom::BlockID::New(1000u, std::vector<uint8_t>({})));
-          }));
+      .WillByDefault([](const std::string& chain_id,
+                        ZCashRpc::GetLatestBlockCallback callback) {
+        std::move(callback).Run(
+            zcash::mojom::BlockID::New(1000u, std::vector<uint8_t>({})));
+      });
 
   base::MockCallback<ZCashWalletService::CreateTransactionCallback> callback;
 
@@ -370,34 +357,30 @@ TEST_F(ZCashCreateTransparentToOrchardTransactionTaskTest,
 
 TEST_F(ZCashCreateTransparentToOrchardTransactionTaskTest,
        TransactionCreated_OverflowCheck) {
-  ON_CALL(zcash_wallet_service(), GetUtxos(_, _, _))
-      .WillByDefault(
-          ::testing::Invoke([&](const std::string& chain_id,
-                                const mojom::AccountIdPtr& account_id,
-                                ZCashWalletService::GetUtxosCallback callback) {
-            ZCashWalletService::UtxoMap utxo_map;
-            utxo_map["18446744073709551615"] =
-                GetZCashUtxo(18446744073709551615u);
-            utxo_map["20000000000"] = GetZCashUtxo(20000000000u);
-            std::move(callback).Run(std::move(utxo_map));
-          }));
+  ON_CALL(zcash_wallet_service(), GetUtxos(_, _))
+      .WillByDefault([&](const mojom::AccountIdPtr& account_id,
+                         ZCashWalletService::GetUtxosCallback callback) {
+        ZCashWalletService::UtxoMap utxo_map;
+        utxo_map["18446744073709551615"] = GetZCashUtxo(18446744073709551615u);
+        utxo_map["20000000000"] = GetZCashUtxo(20000000000u);
+        std::move(callback).Run(std::move(utxo_map));
+      });
 
   ON_CALL(zcash_wallet_service(), DiscoverNextUnusedAddress(_, _, _))
-      .WillByDefault(::testing::Invoke(
+      .WillByDefault(
           [&](const mojom::AccountIdPtr& account_id, bool change,
               ZCashWalletService::DiscoverNextUnusedAddressCallback callback) {
             auto id = mojom::ZCashKeyId::New(account_id->account_index, 1, 0);
             auto addr = keyring_service().GetZCashAddress(account_id, *id);
             std::move(callback).Run(std::move(addr));
-          }));
+          });
 
   ON_CALL(mock_zcash_rpc(), GetLatestBlock(_, _))
-      .WillByDefault(
-          ::testing::Invoke([](const std::string& chain_id,
-                               ZCashRpc::GetLatestBlockCallback callback) {
-            std::move(callback).Run(
-                zcash::mojom::BlockID::New(1000u, std::vector<uint8_t>({})));
-          }));
+      .WillByDefault([](const std::string& chain_id,
+                        ZCashRpc::GetLatestBlockCallback callback) {
+        std::move(callback).Run(
+            zcash::mojom::BlockID::New(1000u, std::vector<uint8_t>({})));
+      });
 
   base::MockCallback<ZCashWalletService::CreateTransactionCallback> callback;
 
@@ -423,34 +406,31 @@ TEST_F(ZCashCreateTransparentToOrchardTransactionTaskTest,
 
 TEST_F(ZCashCreateTransparentToOrchardTransactionTaskTest,
        TransactionCreated_MaxAmount) {
-  ON_CALL(zcash_wallet_service(), GetUtxos(_, _, _))
-      .WillByDefault(
-          ::testing::Invoke([&](const std::string& chain_id,
-                                const mojom::AccountIdPtr& account_id,
-                                ZCashWalletService::GetUtxosCallback callback) {
-            ZCashWalletService::UtxoMap utxo_map;
-            utxo_map["60000"] = GetZCashUtxo(60000);
-            utxo_map["70000"] = GetZCashUtxo(70000);
-            utxo_map["80000"] = GetZCashUtxo(80000);
-            std::move(callback).Run(std::move(utxo_map));
-          }));
+  ON_CALL(zcash_wallet_service(), GetUtxos(_, _))
+      .WillByDefault([&](const mojom::AccountIdPtr& account_id,
+                         ZCashWalletService::GetUtxosCallback callback) {
+        ZCashWalletService::UtxoMap utxo_map;
+        utxo_map["60000"] = GetZCashUtxo(60000);
+        utxo_map["70000"] = GetZCashUtxo(70000);
+        utxo_map["80000"] = GetZCashUtxo(80000);
+        std::move(callback).Run(std::move(utxo_map));
+      });
 
   ON_CALL(zcash_wallet_service(), DiscoverNextUnusedAddress(_, _, _))
-      .WillByDefault(::testing::Invoke(
+      .WillByDefault(
           [&](const mojom::AccountIdPtr& account_id, bool change,
               ZCashWalletService::DiscoverNextUnusedAddressCallback callback) {
             auto id = mojom::ZCashKeyId::New(account_id->account_index, 1, 0);
             auto addr = keyring_service().GetZCashAddress(account_id, *id);
             std::move(callback).Run(std::move(addr));
-          }));
+          });
 
   ON_CALL(mock_zcash_rpc(), GetLatestBlock(_, _))
-      .WillByDefault(
-          ::testing::Invoke([](const std::string& chain_id,
-                               ZCashRpc::GetLatestBlockCallback callback) {
-            std::move(callback).Run(
-                zcash::mojom::BlockID::New(1000u, std::vector<uint8_t>({})));
-          }));
+      .WillByDefault([](const std::string& chain_id,
+                        ZCashRpc::GetLatestBlockCallback callback) {
+        std::move(callback).Run(
+            zcash::mojom::BlockID::New(1000u, std::vector<uint8_t>({})));
+      });
 
   base::MockCallback<ZCashWalletService::CreateTransactionCallback> callback;
 
@@ -489,32 +469,29 @@ TEST_F(ZCashCreateTransparentToOrchardTransactionTaskTest,
 
 TEST_F(ZCashCreateTransparentToOrchardTransactionTaskTest,
        TransactionCreated_MaxAmount_OverflowCheck) {
-  ON_CALL(zcash_wallet_service(), GetUtxos(_, _, _))
-      .WillByDefault(
-          ::testing::Invoke([&](const std::string& chain_id,
-                                const mojom::AccountIdPtr& account_id,
-                                ZCashWalletService::GetUtxosCallback callback) {
-            ZCashWalletService::UtxoMap utxo_map;
-            utxo_map["10000000000"] = GetZCashUtxo(10000000000);
-            std::move(callback).Run(std::move(utxo_map));
-          }));
+  ON_CALL(zcash_wallet_service(), GetUtxos(_, _))
+      .WillByDefault([&](const mojom::AccountIdPtr& account_id,
+                         ZCashWalletService::GetUtxosCallback callback) {
+        ZCashWalletService::UtxoMap utxo_map;
+        utxo_map["10000000000"] = GetZCashUtxo(10000000000);
+        std::move(callback).Run(std::move(utxo_map));
+      });
 
   ON_CALL(zcash_wallet_service(), DiscoverNextUnusedAddress(_, _, _))
-      .WillByDefault(::testing::Invoke(
+      .WillByDefault(
           [&](const mojom::AccountIdPtr& account_id, bool change,
               ZCashWalletService::DiscoverNextUnusedAddressCallback callback) {
             auto id = mojom::ZCashKeyId::New(account_id->account_index, 1, 0);
             auto addr = keyring_service().GetZCashAddress(account_id, *id);
             std::move(callback).Run(std::move(addr));
-          }));
+          });
 
   ON_CALL(mock_zcash_rpc(), GetLatestBlock(_, _))
-      .WillByDefault(
-          ::testing::Invoke([](const std::string& chain_id,
-                               ZCashRpc::GetLatestBlockCallback callback) {
-            std::move(callback).Run(
-                zcash::mojom::BlockID::New(1000u, std::vector<uint8_t>({})));
-          }));
+      .WillByDefault([](const std::string& chain_id,
+                        ZCashRpc::GetLatestBlockCallback callback) {
+        std::move(callback).Run(
+            zcash::mojom::BlockID::New(1000u, std::vector<uint8_t>({})));
+      });
 
   base::MockCallback<ZCashWalletService::CreateTransactionCallback> callback;
 
@@ -553,34 +530,31 @@ TEST_F(ZCashCreateTransparentToOrchardTransactionTaskTest,
 }
 
 TEST_F(ZCashCreateTransparentToOrchardTransactionTaskTest, NotEnoughFunds) {
-  ON_CALL(zcash_wallet_service(), GetUtxos(_, _, _))
-      .WillByDefault(
-          ::testing::Invoke([&](const std::string& chain_id,
-                                const mojom::AccountIdPtr& account_id,
-                                ZCashWalletService::GetUtxosCallback callback) {
-            ZCashWalletService::UtxoMap utxo_map;
-            utxo_map["6000"] = GetZCashUtxo(6000);
-            utxo_map["7000"] = GetZCashUtxo(7000);
-            utxo_map["8000"] = GetZCashUtxo(8000);
-            std::move(callback).Run(std::move(utxo_map));
-          }));
+  ON_CALL(zcash_wallet_service(), GetUtxos(_, _))
+      .WillByDefault([&](const mojom::AccountIdPtr& account_id,
+                         ZCashWalletService::GetUtxosCallback callback) {
+        ZCashWalletService::UtxoMap utxo_map;
+        utxo_map["6000"] = GetZCashUtxo(6000);
+        utxo_map["7000"] = GetZCashUtxo(7000);
+        utxo_map["8000"] = GetZCashUtxo(8000);
+        std::move(callback).Run(std::move(utxo_map));
+      });
 
   ON_CALL(zcash_wallet_service(), DiscoverNextUnusedAddress(_, _, _))
-      .WillByDefault(::testing::Invoke(
+      .WillByDefault(
           [&](const mojom::AccountIdPtr& account_id, bool change,
               ZCashWalletService::DiscoverNextUnusedAddressCallback callback) {
             auto id = mojom::ZCashKeyId::New(account_id->account_index, 1, 0);
             auto addr = keyring_service().GetZCashAddress(account_id, *id);
             std::move(callback).Run(std::move(addr));
-          }));
+          });
 
   ON_CALL(mock_zcash_rpc(), GetLatestBlock(_, _))
-      .WillByDefault(
-          ::testing::Invoke([](const std::string& chain_id,
-                               ZCashRpc::GetLatestBlockCallback callback) {
-            std::move(callback).Run(
-                zcash::mojom::BlockID::New(1000u, std::vector<uint8_t>({})));
-          }));
+      .WillByDefault([](const std::string& chain_id,
+                        ZCashRpc::GetLatestBlockCallback callback) {
+        std::move(callback).Run(
+            zcash::mojom::BlockID::New(1000u, std::vector<uint8_t>({})));
+      });
 
   base::MockCallback<ZCashWalletService::CreateTransactionCallback> callback;
 
@@ -605,30 +579,27 @@ TEST_F(ZCashCreateTransparentToOrchardTransactionTaskTest, NotEnoughFunds) {
 }
 
 TEST_F(ZCashCreateTransparentToOrchardTransactionTaskTest, UtxosError) {
-  ON_CALL(zcash_wallet_service(), GetUtxos(_, _, _))
-      .WillByDefault(
-          ::testing::Invoke([&](const std::string& chain_id,
-                                const mojom::AccountIdPtr& account_id,
-                                ZCashWalletService::GetUtxosCallback callback) {
-            std::move(callback).Run(base::unexpected("error"));
-          }));
+  ON_CALL(zcash_wallet_service(), GetUtxos(_, _))
+      .WillByDefault([&](const mojom::AccountIdPtr& account_id,
+                         ZCashWalletService::GetUtxosCallback callback) {
+        std::move(callback).Run(base::unexpected("error"));
+      });
 
   ON_CALL(zcash_wallet_service(), DiscoverNextUnusedAddress(_, _, _))
-      .WillByDefault(::testing::Invoke(
+      .WillByDefault(
           [&](const mojom::AccountIdPtr& account_id, bool change,
               ZCashWalletService::DiscoverNextUnusedAddressCallback callback) {
             auto id = mojom::ZCashKeyId::New(account_id->account_index, 1, 0);
             auto addr = keyring_service().GetZCashAddress(account_id, *id);
             std::move(callback).Run(std::move(addr));
-          }));
+          });
 
   ON_CALL(mock_zcash_rpc(), GetLatestBlock(_, _))
-      .WillByDefault(
-          ::testing::Invoke([](const std::string& chain_id,
-                               ZCashRpc::GetLatestBlockCallback callback) {
-            std::move(callback).Run(
-                zcash::mojom::BlockID::New(1000u, std::vector<uint8_t>({})));
-          }));
+      .WillByDefault([](const std::string& chain_id,
+                        ZCashRpc::GetLatestBlockCallback callback) {
+        std::move(callback).Run(
+            zcash::mojom::BlockID::New(1000u, std::vector<uint8_t>({})));
+      });
 
   base::MockCallback<ZCashWalletService::CreateTransactionCallback> callback;
 
@@ -650,32 +621,29 @@ TEST_F(ZCashCreateTransparentToOrchardTransactionTaskTest, UtxosError) {
 }
 
 TEST_F(ZCashCreateTransparentToOrchardTransactionTaskTest, ChangeAddressError) {
-  ON_CALL(zcash_wallet_service(), GetUtxos(_, _, _))
-      .WillByDefault(
-          ::testing::Invoke([&](const std::string& chain_id,
-                                const mojom::AccountIdPtr& account_id,
-                                ZCashWalletService::GetUtxosCallback callback) {
-            ZCashWalletService::UtxoMap utxo_map;
-            utxo_map["60000"] = GetZCashUtxo(60000);
-            utxo_map["70000"] = GetZCashUtxo(70000);
-            utxo_map["80000"] = GetZCashUtxo(80000);
-            std::move(callback).Run(std::move(utxo_map));
-          }));
+  ON_CALL(zcash_wallet_service(), GetUtxos(_, _))
+      .WillByDefault([&](const mojom::AccountIdPtr& account_id,
+                         ZCashWalletService::GetUtxosCallback callback) {
+        ZCashWalletService::UtxoMap utxo_map;
+        utxo_map["60000"] = GetZCashUtxo(60000);
+        utxo_map["70000"] = GetZCashUtxo(70000);
+        utxo_map["80000"] = GetZCashUtxo(80000);
+        std::move(callback).Run(std::move(utxo_map));
+      });
 
   ON_CALL(zcash_wallet_service(), DiscoverNextUnusedAddress(_, _, _))
-      .WillByDefault(::testing::Invoke(
+      .WillByDefault(
           [&](const mojom::AccountIdPtr& account_id, bool change,
               ZCashWalletService::DiscoverNextUnusedAddressCallback callback) {
             std::move(callback).Run(base::unexpected("error"));
-          }));
+          });
 
   ON_CALL(mock_zcash_rpc(), GetLatestBlock(_, _))
-      .WillByDefault(
-          ::testing::Invoke([](const std::string& chain_id,
-                               ZCashRpc::GetLatestBlockCallback callback) {
-            std::move(callback).Run(
-                zcash::mojom::BlockID::New(1000u, std::vector<uint8_t>({})));
-          }));
+      .WillByDefault([](const std::string& chain_id,
+                        ZCashRpc::GetLatestBlockCallback callback) {
+        std::move(callback).Run(
+            zcash::mojom::BlockID::New(1000u, std::vector<uint8_t>({})));
+      });
 
   base::MockCallback<ZCashWalletService::CreateTransactionCallback> callback;
 
@@ -697,33 +665,30 @@ TEST_F(ZCashCreateTransparentToOrchardTransactionTaskTest, ChangeAddressError) {
 }
 
 TEST_F(ZCashCreateTransparentToOrchardTransactionTaskTest, LatestBlockError) {
-  ON_CALL(zcash_wallet_service(), GetUtxos(_, _, _))
-      .WillByDefault(
-          ::testing::Invoke([&](const std::string& chain_id,
-                                const mojom::AccountIdPtr& account_id,
-                                ZCashWalletService::GetUtxosCallback callback) {
-            ZCashWalletService::UtxoMap utxo_map;
-            utxo_map["60000"] = GetZCashUtxo(60000);
-            utxo_map["70000"] = GetZCashUtxo(70000);
-            utxo_map["80000"] = GetZCashUtxo(80000);
-            std::move(callback).Run(std::move(utxo_map));
-          }));
+  ON_CALL(zcash_wallet_service(), GetUtxos(_, _))
+      .WillByDefault([&](const mojom::AccountIdPtr& account_id,
+                         ZCashWalletService::GetUtxosCallback callback) {
+        ZCashWalletService::UtxoMap utxo_map;
+        utxo_map["60000"] = GetZCashUtxo(60000);
+        utxo_map["70000"] = GetZCashUtxo(70000);
+        utxo_map["80000"] = GetZCashUtxo(80000);
+        std::move(callback).Run(std::move(utxo_map));
+      });
 
   ON_CALL(zcash_wallet_service(), DiscoverNextUnusedAddress(_, _, _))
-      .WillByDefault(::testing::Invoke(
+      .WillByDefault(
           [&](const mojom::AccountIdPtr& account_id, bool change,
               ZCashWalletService::DiscoverNextUnusedAddressCallback callback) {
             auto id = mojom::ZCashKeyId::New(account_id->account_index, 1, 0);
             auto addr = keyring_service().GetZCashAddress(account_id, *id);
             std::move(callback).Run(std::move(addr));
-          }));
+          });
 
   ON_CALL(mock_zcash_rpc(), GetLatestBlock(_, _))
-      .WillByDefault(
-          ::testing::Invoke([](const std::string& chain_id,
-                               ZCashRpc::GetLatestBlockCallback callback) {
-            std::move(callback).Run(base::unexpected("network error"));
-          }));
+      .WillByDefault([](const std::string& chain_id,
+                        ZCashRpc::GetLatestBlockCallback callback) {
+        std::move(callback).Run(base::unexpected("network error"));
+      });
 
   base::MockCallback<ZCashWalletService::CreateTransactionCallback> callback;
 

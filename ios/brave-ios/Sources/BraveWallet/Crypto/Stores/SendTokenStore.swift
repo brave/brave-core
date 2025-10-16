@@ -408,7 +408,6 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
           if selectedAccount.coin == .zec {
             let zecBalance =
               await self.zcashWalletService.fetchZECTransparentBalances(
-                networkId: selectedSendToken.chainId,
                 accountId: selectedAccount.accountId
               ) ?? 0
             balance = BDouble(zecBalance)
@@ -586,7 +585,6 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
     Task { @MainActor in
       let selectedChain = await rpcService.network(coin: fromAccount.coin, origin: nil)
       let (_, zcashAddressError) = await zcashWalletService.transactionType(
-        chainId: selectedChain.chainId,
         accountId: fromAccount.accountId,
         useShieldedPool: false,
         recipient: recipient

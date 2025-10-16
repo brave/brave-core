@@ -23,6 +23,7 @@
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/skus/browser/pref_names.h"
 #include "brave/components/skus/browser/skus_service_impl.h"

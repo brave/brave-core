@@ -20,10 +20,6 @@ template <typename T>
 class NoDestructor;
 }  // namespace base
 
-namespace web {
-class BrowserState;
-}  // namespace web
-
 namespace skus {
 
 class SkusService;
@@ -44,8 +40,8 @@ class SkusServiceFactory : public ProfileKeyedServiceFactoryIOS {
 
   // ProfileKeyedServiceFactoryIOS implementation.
   std::unique_ptr<KeyedService> BuildServiceInstanceFor(
-      web::BrowserState* context) const override;
-  void RegisterBrowserStatePrefs(
+      ProfileIOS* profile) const override;
+  void RegisterProfilePrefs(
       user_prefs::PrefRegistrySyncable* registry) override;
 
   SkusServiceFactory(const SkusServiceFactory&) = delete;

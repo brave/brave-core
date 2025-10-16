@@ -764,11 +764,11 @@ TEST_F(BraveSyncServiceImplTest_DisableSyncDefaultPasswordsTest,
   base::RepeatingClosure quit_closure = engine_waiter.QuitClosure();
   NiceMock<SyncServiceObserverMock> observer_mock;
   ON_CALL(observer_mock, OnStateChanged(_))
-      .WillByDefault(testing::Invoke([this, quit_closure]() {
+      .WillByDefault([this, quit_closure]() {
         if (engine()) {
           quit_closure.Run();
         }
-      }));
+      });
   brave_sync_service_impl()->AddObserver(&observer_mock);
 
   brave_sync_service_impl()->SetSyncCode(kValidSyncCode);

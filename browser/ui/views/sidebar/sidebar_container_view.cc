@@ -747,9 +747,14 @@ void SidebarContainerView::OnEntryShown(SidePanelEntry* entry) {
 
   // Handling if |entry| is managed one.
   for (const auto& item : sidebar_model_->GetAllSidebarItems()) {
-    if (!item.open_in_panel) {
+    // WebPanel feature is not enabled by default now but that item
+    // type(true to web_type & open_in_panel) could exist if tested before.
+    // That item type should not go further as
+    // sidebar::SidePanelIdFromSideBarItem() doesn't know about that type.
+    if (item.is_web_type() || !item.open_in_panel) {
       continue;
     }
+
     if (entry->key().id() == sidebar::SidePanelIdFromSideBarItem(item)) {
       const auto sidebar_index = sidebar_model_->GetIndexOf(item);
       controller->ActivateItemAt(sidebar_index);
@@ -901,7 +906,8 @@ void SidebarContainerView::StartObservingContextualSidePanelEntry(
   // windows also should have same visible side panel.
   if (shared_pinned_tab_service &&
       shared_pinned_tab_service->IsSharedContents(contents)) {
-    if (auto active_entry = registry->active_entry()) {
+    if (auto active_entry =
+            registry->GetActiveEntryFor(SidePanelEntry::PanelType::kContent)) {
       OnEntryShown(*active_entry);
     }
   }

@@ -18,6 +18,7 @@
 #include "base/timer/wall_clock_timer.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_tab_focus_metrics.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/time_period_storage/time_period_storage.h"
 #include "brave/components/time_period_storage/weekly_storage.h"
 #include "build/build_config.h"

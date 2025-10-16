@@ -21,6 +21,7 @@
 #include "base/no_destructor.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/ntp_background/view_counter_service_factory.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
@@ -118,14 +119,14 @@ void NTPBackgroundImagesBridge::WallpaperLogoClicked(
     const base::android::JavaParamRef<jstring>& jwallpaperId,
     const base::android::JavaParamRef<jstring>& jcreativeInstanceId,
     const base::android::JavaParamRef<jstring>& jdestinationUrl,
-    bool shouldMetricsFallbackToP3a) {
+    int metricType) {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
   if (view_counter_service_) {
     view_counter_service_->BrandedWallpaperLogoClicked(
         base::android::ConvertJavaStringToUTF8(env, jwallpaperId),
         base::android::ConvertJavaStringToUTF8(env, jcreativeInstanceId),
         base::android::ConvertJavaStringToUTF8(env, jdestinationUrl),
-        shouldMetricsFallbackToP3a);
+        static_cast<brave_ads::mojom::NewTabPageAdMetricType>(metricType));
   }
 }
 
@@ -178,15 +179,16 @@ NTPBackgroundImagesBridge::CreateBrandedWallpaper(
                     ntp_background_images::kRichMediaWallpaperType;
   }
 
-  const bool should_metrics_fallback_to_p3a =
-      data.FindBool(
-              ntp_background_images::kWallpaperShouldMetricsFallbackToP3aKey)
-          .value_or(false);
+  brave_ads::mojom::NewTabPageAdMetricType metric_type =
+      brave_ads::mojom::NewTabPageAdMetricType::kConfirmation;
+  if (std::optional<int> value =
+          data.FindInt(ntp_background_images::kWallpaperMetricTypeKey)) {
+    metric_type = static_cast<brave_ads::mojom::NewTabPageAdMetricType>(*value);
+  }
 
   view_counter_service_->BrandedWallpaperWillBeDisplayed(
       wallpaper_id ? *wallpaper_id : "", campaign_id ? *campaign_id : "",
-      creative_instance_id ? *creative_instance_id : "",
-      should_metrics_fallback_to_p3a);
+      creative_instance_id ? *creative_instance_id : "", metric_type);
 
   return Java_NTPBackgroundImagesBridge_createBrandedWallpaper(
       env, ConvertUTF8ToJavaString(env, *image_path), focal_point_x,
@@ -197,7 +199,7 @@ NTPBackgroundImagesBridge::CreateBrandedWallpaper(
       ConvertUTF8ToJavaString(
           env, creative_instance_id ? *creative_instance_id : ""),
       ConvertUTF8ToJavaString(env, wallpaper_id ? *wallpaper_id : ""),
-      is_rich_media, should_metrics_fallback_to_p3a);
+      is_rich_media, static_cast<int>(metric_type));
 }
 
 void NTPBackgroundImagesBridge::GetTopSites(JNIEnv* env,

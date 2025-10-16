@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
+import useMediaQuery from '$web-common/useMediaQuery'
 
 // Types
 import {
@@ -103,8 +104,7 @@ export const BuyQuote = ({
   const quoteServiceProvider = serviceProviders.find(
     (provider) => provider.serviceProvider === serviceProvider,
   )
-  const providerImageUrl = window.matchMedia('(prefers-color-scheme: dark)')
-    .matches
+  const providerImageUrl = useMediaQuery('(prefers-color-scheme: dark)')
     ? quoteServiceProvider?.logoImages?.darkShortUrl
     : quoteServiceProvider?.logoImages?.lightShortUrl
 

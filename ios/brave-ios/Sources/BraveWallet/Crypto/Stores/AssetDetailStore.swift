@@ -459,7 +459,6 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
             } else {
               if accountAssetViewModel.account.coin == .zec {
                 tokenBalance = await self.zcashWalletService.fetchZECTransparentBalances(
-                  networkId: network.chainId,
                   accountId: accountAssetViewModel.account.accountId
                 )
               } else {

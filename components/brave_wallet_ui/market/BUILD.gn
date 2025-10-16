@@ -4,12 +4,12 @@
 # you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import("//brave/components/common/typescript.gni")
-import("//chrome/common/features.gni")
 import("//mojo/public/tools/bindings/mojom.gni")
 import("//tools/grit/preprocess_if_expr.gni")
 import("//tools/grit/repack.gni")
 
 transpile_web_ui("market_display_ui") {
+  output_module = false
   entry_points = [ [
         "market",
         rebase_path("market.tsx"),

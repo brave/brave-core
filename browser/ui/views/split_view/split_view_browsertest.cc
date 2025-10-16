@@ -36,8 +36,10 @@
 #include "chrome/browser/ui/tabs/tab_model.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/frame/browser_non_client_frame_view.h"
+#include "chrome/browser/ui/views/frame/multi_contents_background_view.h"
 #include "chrome/browser/ui/views/frame/multi_contents_resize_area.h"
 #include "chrome/browser/ui/views/frame/multi_contents_view_mini_toolbar.h"
+#include "chrome/browser/ui/views/infobars/infobar_container_view.h"
 #include "chrome/browser/ui/views/tabs/tab.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "chrome/browser/ui/views/tabs/tab_style_views.h"
@@ -46,6 +48,7 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/grit/brave_components_strings.h"
+#include "components/infobars/content/content_infobar_manager.h"
 #include "components/javascript_dialogs/tab_modal_dialog_manager.h"
 #include "components/permissions/permission_request_manager.h"
 #include "components/tabs/public/split_tab_visual_data.h"
@@ -111,7 +114,7 @@ class SideBySideEnabledBrowserTest : public InProcessBrowserTest {
   }
 
   BrowserNonClientFrameView* browser_non_client_frame_view() {
-    return brave_browser_view()->frame()->GetFrameView();
+    return brave_browser_view()->browser_widget()->GetFrameView();
   }
 
   void ToggleVerticalTabStrip() {
@@ -149,8 +152,20 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest,
   // Check MultiContentsView uses our separator and initially hidden.
   EXPECT_FALSE(split_view_separator()->GetVisible());
 
-  // separator should not be empty when split view is closed.
   auto* browser_view = brave_browser_view();
+
+  // Remove all infobars to test top container separator visibility.
+  // Infobar visibility affects that separator visibility.
+  // Start test w/o infobar.
+  infobars::ContentInfoBarManager::FromWebContents(GetWebContentsAt(0))
+      ->RemoveAllInfoBars(/*animate=*/false);
+  browser_view->InvalidateLayout();
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return !browser_view->infobar_container()->GetVisible(); }));
+
+  // separator should not be empty and visible when split view is closed.
+  EXPECT_TRUE(
+      browser_view->top_container_separator_for_testing()->GetVisible());
   EXPECT_NE(
       gfx::Size(),
       browser_view->top_container_separator_for_testing()->GetPreferredSize());
@@ -175,6 +190,8 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest,
       multi_contents_view->contents_container_views_for_testing()[1]);
   ASSERT_TRUE(start_contents_container_view);
   ASSERT_TRUE(end_contents_container_view);
+  EXPECT_FALSE(
+      multi_contents_view->background_view_for_testing()->GetVisible());
 
   FullscreenController* fullscreen_controller = browser()
                                                     ->GetFeatures()
@@ -648,9 +665,19 @@ IN_PROC_BROWSER_TEST_P(SplitViewCommonBrowserTest, BookmarksBarVisibilityTest) {
 #endif
 }
 
+// Only flaky(time out) on macOS.
+// https://github.com/brave/brave-browser/issues/48804
+#if BUILDFLAG(IS_MAC)
+#define MAYBE_JavascriptTabModalDialogView_DialogShouldBeCenteredToRelatedWebView \
+  DISABLED_JavascriptTabModalDialogView_DialogShouldBeCenteredToRelatedWebView
+#else
+#define MAYBE_JavascriptTabModalDialogView_DialogShouldBeCenteredToRelatedWebView \
+  JavascriptTabModalDialogView_DialogShouldBeCenteredToRelatedWebView
+#endif
+
 IN_PROC_BROWSER_TEST_P(
     SplitViewCommonBrowserTest,
-    JavascriptTabModalDialogView_DialogShouldBeCenteredToRelatedWebView) {
+    MAYBE_JavascriptTabModalDialogView_DialogShouldBeCenteredToRelatedWebView) {
   NewSplitTab();
   auto* active_contents = chrome_test_utils::GetActiveWebContents(this);
   ASSERT_TRUE(IsSplitWebContents(active_contents));
@@ -1006,7 +1033,7 @@ class SplitViewBrowserTest : public InProcessBrowserTest {
   }
 
   BrowserNonClientFrameView& browser_non_client_frame_view() {
-    return *browser_view().frame()->GetFrameView();
+    return *browser_view().browser_widget()->GetFrameView();
   }
 
   void ToggleVerticalTabStrip() {
@@ -1041,10 +1068,6 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest,
 // (-[NSWindow beginSheet:]), which natively draws a scrim since macOS 11.
 #if !BUILDFLAG(IS_MAC)
 IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, ScrimForSecondaryContents) {
-  if (!base::FeatureList::IsEnabled(features::kScrimForBrowserWindowModal)) {
-    GTEST_SKIP();
-  }
-
   brave::NewSplitViewForTab(browser());
 
   auto child_widget_delegate = std::make_unique<views::WidgetDelegate>();

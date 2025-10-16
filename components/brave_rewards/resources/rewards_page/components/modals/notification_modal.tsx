@@ -17,17 +17,20 @@ import {
   getNotificationView,
   NotificationActionViewProps,
   NotificationBodyProps,
-  NotificationTitleProps
+  NotificationTitleProps,
 } from '../notifications'
 
 import { style } from './notification_modal.style'
 
 function Title(props: NotificationTitleProps) {
-  function renderIcon () {
+  function renderIcon() {
     switch (props.style) {
-      case 'funding': return <Icon name='hand-coins' />
-      case 'error': return <Icon name='warning-circle-filled' />
-      default: return <Icon name='info-filled' />
+      case 'funding':
+        return <Icon name='hand-coins' />
+      case 'error':
+        return <Icon name='warning-circle-filled' />
+      default:
+        return <Icon name='info-filled' />
     }
   }
 
@@ -49,7 +52,7 @@ function Action(props: NotificationActionViewProps) {
   const tabOpener = React.useContext(TabOpenerContext)
   const externalWallet = useAppState((state) => state.externalWallet)
 
-  function onActionClick () {
+  function onActionClick() {
     model.clearNotification(props.notification.id)
     if (props.action) {
       switch (props.action.type) {
@@ -78,8 +81,11 @@ function useAutoDismissCheck(notification: Notification) {
   const externalWallet = useAppState((state) => state.externalWallet)
 
   // Auto-dismiss "disconnected" notifications if the user is now connected.
-  if (notification.type === 'external-wallet-disconnected' &&
-      externalWallet && externalWallet.authenticated) {
+  if (
+    notification.type === 'external-wallet-disconnected'
+    && externalWallet
+    && externalWallet.authenticated
+  ) {
     return true
   }
 

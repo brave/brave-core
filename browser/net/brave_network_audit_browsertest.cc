@@ -19,14 +19,17 @@
 #include "base/time/time.h"
 #include "brave/browser/net/brave_network_audit_allowed_lists.h"
 #include "brave/browser/net/brave_network_audit_test_helper.h"
-#include "brave/components/playlist/common/buildflags/buildflags.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "chrome/browser/password_manager/profile_password_store_factory.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "chrome/test/base/search_test_utils.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/prefs/pref_service.h"
+#include "components/search_engines/template_url_service.h"
 #include "content/public/test/browser_test.h"
 #include "services/network/public/cpp/network_switches.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -38,7 +41,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
-#include "brave/components/playlist/common/features.h"
+#include "brave/components/playlist/core/common/features.h"
 #endif
 
 namespace brave {
@@ -75,6 +78,16 @@ class BraveNetworkAuditTest : public InProcessBrowserTest {
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
+
+    auto* template_url_service =
+        TemplateURLServiceFactory::GetForProfile(browser()->profile());
+    search_test_utils::WaitForTemplateURLServiceToLoad(template_url_service);
+
+    auto* google_template_url =
+        template_url_service->GetTemplateURLForHost("www.google.com");
+    ASSERT_TRUE(google_template_url);
+    template_url_service->SetUserSelectedDefaultSearchProvider(
+        google_template_url);
 
     ASSERT_TRUE(embedded_test_server()->Start());
   }

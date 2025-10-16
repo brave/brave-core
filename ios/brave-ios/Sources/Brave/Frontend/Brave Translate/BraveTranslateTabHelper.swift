@@ -27,7 +27,6 @@ class BraveTranslateTabHelper: NSObject, TabObserver {
   private static var requestCache = [URL: (data: Data, response: HTTPURLResponse)]()
   private var tasks = [UUID: Task<Void, Error>]()
 
-  private var url: URL?
   private var isTranslationReady = false
   private var translationController: UIHostingController<BraveTranslateContainerView>!
   private var translationSession: BraveTranslateSession?
@@ -57,7 +56,6 @@ class BraveTranslateTabHelper: NSObject, TabObserver {
   init(tab: some TabState, delegate: BraveTranslateScriptHandlerDelegate) {
     self.tab = tab
     self.delegate = delegate
-    self.url = tab.visibleURL
     super.init()
 
     translationController = UIHostingController(
@@ -404,11 +402,10 @@ class BraveTranslateTabHelper: NSObject, TabObserver {
 
   // MARK: - TabObserver
 
-  func tabDidUpdateURL(_ tab: some TabState) {
+  func tabDidFinishNavigation(_ tab: some TabState) {
     Task { @MainActor [weak self, weak tab] in
       guard let self = self, let tab = tab else { return }
 
-      url = tab.visibleURL
       canShowToast = false
       translationTask = nil
 

@@ -631,7 +631,8 @@ bool SpeedreaderTabHelper::SendGestureEvent(ui::ViewAndroid* view,
       ScalePoint(view->GetLocationOnScreen(x, y), 1.f / dip_scale);
   return view->OnGestureEvent(ui::GestureEventAndroid(
       type, gfx::PointF(x / dip_scale, y / dip_scale), root_location, time_ms,
-      scale, 0, 0, 0, 0, /*target_viewport*/ false, /*synthetic_scroll*/ false,
+      /*source*/ ui::GestureDeviceType::DEVICE_TOUCHSCREEN, scale, 0, 0, 0, 0,
+      /*target_viewport*/ false, /*synthetic_scroll*/ false,
       /*prevent_boosting*/ false));
 }
 #endif

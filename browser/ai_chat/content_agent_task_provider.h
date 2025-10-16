@@ -7,7 +7,7 @@
 #define BRAVE_BROWSER_AI_CHAT_CONTENT_AGENT_TASK_PROVIDER_H_
 
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
-#include "chrome/browser/actor/task_id.h"
+#include "chrome/common/actor/task_id.h"
 #include "components/optimization_guide/proto/features/actions_data.pb.h"
 #include "components/tabs/public/tab_interface.h"
 
@@ -36,6 +36,8 @@ class ContentAgentTaskProvider {
   virtual void GetOrCreateTabHandleForTask(
       base::OnceCallback<void(tabs::TabHandle)> callback) = 0;
 
+  // Execute the specified actions on their specified tab(s). The tabs must
+  // be added to the task prior to calling this method.
   // TODO(https://github.com/brave/brave-browser/issues/49289): Now that we can
   // send ToolRequest directly to the ActorKeyedService, this method can accept
   // those instead of the Actions proto. It will be nicer for the Tools to build

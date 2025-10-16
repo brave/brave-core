@@ -28,7 +28,7 @@ PolkadotKeyring::PolkadotKeyring(
     mojom::KeyringId keyring_id)
     : root_account_key_(HDKeySr25519::GenerateFromSeed(seed)),
       keyring_id_(keyring_id) {
-  // can be useful to remember:
+  // Can be useful to remember:
   // https://wiki.polkadot.com/learn/learn-account-advanced/#derivation-paths
 
   CHECK(IsPolkadotKeyring(keyring_id));

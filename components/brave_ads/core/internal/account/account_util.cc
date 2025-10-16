@@ -16,6 +16,13 @@ namespace brave_ads {
 bool IsAllowedToDeposit(const std::string& creative_instance_id,
                         mojom::AdType mojom_ad_type,
                         mojom::ConfirmationType mojom_confirmation_type) {
+  if (mojom_ad_type == mojom::AdType::kNewTabPageAd &&
+      !ShouldReportMetric(creative_instance_id)) {
+    // Do not allow deposits for new tab page ads if we should not report
+    // metrics for the given creative instance.
+    return false;
+  }
+
   if (UserHasJoinedBraveRewards()) {
     // Always allow deposits for Rewards users.
     return true;
@@ -32,9 +39,8 @@ bool IsAllowedToDeposit(const std::string& creative_instance_id,
 
     case mojom::AdType::kNewTabPageAd: {
       // Only allow deposits for non-Rewards users who have opted into new tab
-      // page ads where we should not fallback to P3A.
-      return UserHasOptedInToNewTabPageAds() &&
-             !ShouldFallbackToP3aMetrics(creative_instance_id);
+      // page ads.
+      return UserHasOptedInToNewTabPageAds();
     }
 
     case mojom::AdType::kNotificationAd: {

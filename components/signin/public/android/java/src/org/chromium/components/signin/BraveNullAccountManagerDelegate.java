@@ -5,15 +5,8 @@
 
 package org.chromium.components.signin;
 
-import android.accounts.Account;
-
 import org.chromium.build.annotations.NullMarked;
-import org.chromium.components.externalauth.ExternalAuthUtils;
 
-/**
- * That class extends upstream's NullAccountManagerDelegate.java to be able run Brave on devices
- * without Google Play Services
- */
 @NullMarked
 public class BraveNullAccountManagerDelegate extends NullAccountManagerDelegate {
     public BraveNullAccountManagerDelegate() {
@@ -21,11 +14,15 @@ public class BraveNullAccountManagerDelegate extends NullAccountManagerDelegate 
     }
 
     @Override
-    public Account[] getAccountsSynchronous() {
-        if (!ExternalAuthUtils.getInstance().canUseGooglePlayServices()) {
-            return new Account[] {};
-        }
-
-        return super.getAccountsSynchronous();
+    public void invalidateAccessToken(String authToken) throws AuthException {
+        // No-op implementation. Token invalidation is not needed because:
+        // 1. This delegate doesn't fetch tokens via getAccessToken(), so no tokens
+        //    should exist from this delegate's perspective.
+        // 2. However, tokens can still be passed here from other sources.
+        // 3. Chromium already removes tokens from its internal cache before calling
+        //    this method, so the token is already invalidated from Chromium's perspective.
+        // 4. This method would normally call GoogleAuthUtil.clearToken() to invalidate
+        //    the token in Android's AccountManager cache, but since we're not managing
+        //    real Google accounts, there's nothing to clear at the system level.
     }
 }

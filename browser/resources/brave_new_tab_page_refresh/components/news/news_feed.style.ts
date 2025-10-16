@@ -31,7 +31,7 @@ style.passthrough.css`
     }
   }
 
-  .brave-news-feed-controls {
+  .brave-news-feed-controls, .brave-news-load-new-content-button {
     animation: linear news-control-fade both;
     animation-timeline: scroll();
     animation-range: 0px 100vh;

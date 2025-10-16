@@ -18,7 +18,7 @@
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "content/public/test/browser_test.h"
-#include "ui/gfx/native_widget_types.h"
+#include "ui/gfx/native_ui_types.h"
 
 // npm run test -- brave_browser_tests --filter=NotificationAdPopupBrowserTest.*
 

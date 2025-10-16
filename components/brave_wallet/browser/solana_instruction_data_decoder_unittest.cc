@@ -6,10 +6,10 @@
 #include "brave/components/brave_wallet/browser/solana_instruction_data_decoder.h"
 
 #include <optional>
-#include <tuple>
 #include <utility>
 #include <vector>
 
+#include "base/containers/extend.h"
 #include "brave/components/brave_wallet/browser/solana_instruction.h"
 #include "brave/components/brave_wallet/browser/solana_instruction_builder.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -121,6 +121,58 @@ TEST_F(SolanaInstructionDecoderTest, Decode_SystemCreateAccountWithSeed) {
        {"lamports", "10000"},
        {"space", "100"},
        {"owner_program", mojom::kSolanaTokenProgramId}});
+}
+
+TEST_F(SolanaInstructionDecoderTest, DecodeStringFailsWhenInvalid) {
+  auto payload_prefix = std::to_array<uint8_t>({
+      3,   0,   0,  0,   179, 10,  45,  120, 165, 79, 23,  213,
+      130, 206, 38, 194, 56,  107, 31,  15,  105, 52, 170, 204,
+      201, 218, 15, 234, 163, 176, 140, 194, 226, 39, 121, 169,
+  });
+  auto payload_suffix = std::to_array<uint8_t>(
+      {16,  39,  0,   0,   0,   0,   0,   0,   100, 0,   0,   0,
+       0,   0,   0,   0,   6,   221, 246, 225, 215, 101, 161, 147,
+       217, 203, 225, 70,  206, 235, 121, 172, 28,  180, 133, 237,
+       95,  91,  55,  145, 58,  140, 245, 133, 126, 255, 0,   169});
+
+  // Same payload as for Decode_SystemCreateAccountWithSeed test works.
+  std::vector<uint8_t> payload;
+  base::Extend(payload, payload_prefix);
+  base::Extend(payload, {9, 0, 0, 0, 0, 0, 0, 0});
+  base::Extend(payload, {'T', 'E', 'S', 'T', ' ', 'S', 'E', 'E', 'D'});
+  base::Extend(payload, payload_suffix);
+  EXPECT_TRUE(Decode(payload, mojom::kSolanaSystemProgramId));
+
+  // Empty seed works.
+  payload.clear();
+  base::Extend(payload, payload_prefix);
+  base::Extend(payload, {0, 0, 0, 0, 0, 0, 0, 0});
+  base::Extend(payload, payload_suffix);
+  EXPECT_TRUE(Decode(payload, mojom::kSolanaSystemProgramId));
+
+  // 1 byte seed works.
+  payload.clear();
+  base::Extend(payload, payload_prefix);
+  base::Extend(payload, {1, 0, 0, 0, 0, 0, 0, 0});
+  base::Extend(payload, {'T'});
+  base::Extend(payload, payload_suffix);
+  EXPECT_TRUE(Decode(payload, mojom::kSolanaSystemProgramId));
+
+  // Max uint64 seed size fails.
+  payload.clear();
+  base::Extend(payload, payload_prefix);
+  base::Extend(payload, {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF});
+  base::Extend(payload, {'T'});
+  base::Extend(payload, payload_suffix);
+  EXPECT_FALSE(Decode(payload, mojom::kSolanaSystemProgramId));
+
+  // 40 bytes size seed fails (32 byte max).
+  payload.clear();
+  base::Extend(payload, payload_prefix);
+  base::Extend(payload, {33, 0, 0, 0, 0, 0, 0, 0});
+  base::Extend(payload, std::vector<uint8_t>(33, 'H'));
+  base::Extend(payload, payload_suffix);
+  EXPECT_FALSE(Decode(payload, mojom::kSolanaSystemProgramId));
 }
 
 TEST_F(SolanaInstructionDecoderTest, Decode_SystemAdvanceNonceAccount) {

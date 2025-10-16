@@ -23,13 +23,13 @@
 #include "brave/browser/ui/views/playlist/playlist_bubbles_controller.h"
 #include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
 #include "brave/components/constants/brave_paths.h"
-#include "brave/components/playlist/browser/media_detector_component_manager.h"
-#include "brave/components/playlist/browser/playlist_constants.h"
-#include "brave/components/playlist/browser/playlist_service.h"
-#include "brave/components/playlist/browser/playlist_tab_helper.h"
-#include "brave/components/playlist/browser/pref_names.h"
-#include "brave/components/playlist/common/features.h"
-#include "brave/components/playlist/common/mojom/playlist.mojom.h"
+#include "brave/components/playlist/content/browser/media_detector_component_manager.h"
+#include "brave/components/playlist/content/browser/playlist_constants.h"
+#include "brave/components/playlist/content/browser/playlist_service.h"
+#include "brave/components/playlist/content/browser/playlist_tab_helper.h"
+#include "brave/components/playlist/core/common/features.h"
+#include "brave/components/playlist/core/common/mojom/playlist.mojom.h"
+#include "brave/components/playlist/core/common/pref_names.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -565,7 +565,7 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTestWithSitesUsingMediaSource,
 
   WaitUntil(base::BindLambdaForTesting([&] {
     auto* add_bubble = views::AsViewClass<PlaylistAddBubbleView>(GetBubble());
-    return add_bubble ? !add_bubble->loading_spinner_->GetVisible() : false;
+    return add_bubble && !add_bubble->loading_spinner_->GetVisible();
   }));
 
   EXPECT_TRUE(playlist_tab_helper->saved_items().empty());

@@ -90,8 +90,6 @@ void BravePrivateNewTabPageHandler::GetIsTorConnected(
   if (tor_launcher_factory_)
     is_connected = tor_launcher_factory_->IsTorConnected();
 #endif
-  else
-    is_connected = false;
 
   std::move(callback).Run(is_connected);
 }

@@ -33,19 +33,23 @@ import InputBox from '../input_box'
 import ModelIntro from '../model_intro'
 import OpenExternalLinkModal from '../open_external_link_modal'
 import RateMessagePrivacyModal from '../rate_message_privacy_modal'
+import SmartModeModal from '../smart_mode_modal/smart_mode_modal'
 import PremiumSuggestion from '../premium_suggestion'
 import PrivacyMessage from '../privacy_message'
 import {
   GenerateSuggestionsButton,
   SuggestedQuestion,
 } from '../suggested_question'
-import ToolsMenu from '../filter_menu/tools_menu'
+import ToolsMenu, {
+  ExtendedActionEntry,
+  getIsSmartMode,
+} from '../filter_menu/tools_menu'
 import WelcomeGuide from '../welcome_guide'
 import styles from './style.module.scss'
 import Attachments from '../attachments'
 import useHasConversationStarted from '../../hooks/useHasConversationStarted'
 import { useExtractedQuery } from '../filter_menu/query'
-import TabsMenu from '../filter_menu/tabs_menu'
+import TabsMenu from '../filter_menu/attachments_menu'
 
 // Amount of pixels user has to scroll up to break out of
 // automatic scroll to bottom when new response lines are generated.
@@ -92,9 +96,7 @@ function Main() {
     && conversationContext.associatedContentInfo === null // AssociatedContent request has finished and this is a standalone conversation
     && !aiChatContext.isPremiumUser
 
-  const showAttachments =
-    conversationContext.attachmentsDialog === 'tabs'
-    && aiChatContext.tabs.length > 0
+  const showAttachments = !!conversationContext.attachmentsDialog
 
   const showTemporaryChatInfo = conversationContext.isTemporaryChat
 
@@ -135,18 +137,19 @@ function Main() {
     }
   }
 
-  // Automatic scroll to bottom of scroll anchor when generating new response lines
+  // When the user has scrolled to the end of the conversation we anchor the scroll position to the end of the
+  // conversation.
+  // This means that:
+  // 1. Resizing the window will keep the conversation anchored to the bottom (if it was already at the bottom)
+  // 2. Loading a conversation will scroll to the end
+  // 3. Resizing the window will maintain scroll position, if you were not at the bottom before the resize.
   const scrollIsAtBottom = React.useRef(true)
   const scrollElement = React.useRef<HTMLDivElement | null>(null)
   const scrollAnchor = React.useRef<HTMLDivElement | null>(null)
 
   const handleScroll = React.useCallback(
     (e: React.UIEvent<HTMLDivElement>) => {
-      // Monitor scroll positions only when Assistant is generating,
-      // but always reset to bottom before next generation
-      if (!conversationContext.isGenerating) {
-        scrollIsAtBottom.current = true
-      } else if (scrollAnchor.current && conversationContentElement.current) {
+      if (scrollAnchor.current && conversationContentElement.current) {
         const el = e.currentTarget
         const idealScrollFromBottom =
           el.scrollHeight
@@ -161,8 +164,7 @@ function Main() {
 
   const handleConversationEntriesHeightChanged = () => {
     if (
-      !conversationContext.isGenerating
-      || !scrollElement.current
+      !scrollElement.current
       || !scrollIsAtBottom.current
       || !scrollAnchor.current
     ) {
@@ -215,6 +217,38 @@ function Main() {
     onlyAtStart: true,
     triggerCharacter: '/',
   })
+
+  // Transform smartModes into ActionGroup format and append to actionList
+  const categoriesWithSmartModes = React.useMemo(() => {
+    if (!aiChatContext.smartModes || aiChatContext.smartModes.length === 0) {
+      return aiChatContext.actionList
+    }
+
+    const smartModeGroup = {
+      category: getLocale(S.CHAT_UI_SMART_MODES_GROUP),
+      entries: aiChatContext.smartModes,
+    }
+
+    return [smartModeGroup, ...aiChatContext.actionList]
+  }, [aiChatContext.actionList, aiChatContext.smartModes])
+
+  const handleToolsMenuClick = React.useCallback(
+    (value: ExtendedActionEntry) => {
+      if (getIsSmartMode(value)) {
+        conversationContext.handleSmartModeClick(value)
+        return
+      }
+      conversationContext.handleActionTypeClick(value.details!.type)
+    },
+    [
+      conversationContext.handleSmartModeClick,
+      conversationContext.handleActionTypeClick,
+    ],
+  )
+
+  const handleToolsMenuEditClick = (smartMode: Mojom.SmartMode) => {
+    conversationContext.handleSmartModeEdit(smartMode)
+  }
 
   return (
     <main
@@ -398,13 +432,17 @@ function Main() {
       )}
       <div className={styles.input}>
         <ToolsMenu
-          isOpen={conversationContext.isToolsMenuOpen}
+          isOpen={
+            !conversationContext.selectedSmartMode
+            && conversationContext.isToolsMenuOpen
+          }
           setIsOpen={conversationContext.setIsToolsMenuOpen}
           query={extractedQuery}
-          categories={aiChatContext.actionList}
-          handleClick={conversationContext.handleActionTypeClick}
+          categories={categoriesWithSmartModes}
+          handleClick={handleToolsMenuClick}
+          handleEditClick={handleToolsMenuEditClick}
         />
-        {!hasConversationStarted && <TabsMenu />}
+        <TabsMenu />
         <InputBox
           conversationStarted={hasConversationStarted}
           context={{ ...conversationContext, ...aiChatContext }}
@@ -414,6 +452,7 @@ function Main() {
       <DeleteConversationModal />
       <OpenExternalLinkModal />
       <RateMessagePrivacyModal />
+      {aiChatContext.smartModeDialog && <SmartModeModal />}
     </main>
   )
 }

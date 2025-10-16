@@ -23,6 +23,7 @@
 #include "brave/components/brave_ads/core/public/ads_observer.h"
 #include "brave/components/services/bat_ads/bat_ads_client_mojo_bridge.h"
 #include "brave/components/services/bat_ads/bat_ads_observer.h"
+#include "mojo/public/cpp/bindings/callback_helpers.h"
 
 namespace bat_ads {
 
@@ -97,11 +98,14 @@ void BatAdsImpl::SetContentSettings(
 
 void BatAdsImpl::Initialize(brave_ads::mojom::WalletInfoPtr mojom_wallet,
                             InitializeCallback callback) {
-  GetAds()->Initialize(std::move(mojom_wallet), std::move(callback));
+  GetAds()->Initialize(std::move(mojom_wallet),
+                       mojo::WrapCallbackWithDefaultInvokeIfNotRun(
+                           std::move(callback), /*success=*/false));
 }
 
 void BatAdsImpl::Shutdown(ShutdownCallback callback) {
-  GetAds()->Shutdown(std::move(callback));
+  GetAds()->Shutdown(mojo::WrapCallbackWithDefaultInvokeIfNotRun(
+      std::move(callback), /*success=*/false));
 }
 
 void BatAdsImpl::MaybeGetNotificationAd(
@@ -109,18 +113,20 @@ void BatAdsImpl::MaybeGetNotificationAd(
     MaybeGetNotificationAdCallback callback) {
   GetAds()->MaybeGetNotificationAd(
       placement_id,
-      base::BindOnce(
-          [](MaybeGetNotificationAdCallback callback,
-             base::optional_ref<const brave_ads::NotificationAdInfo> ad) {
-            if (!ad) {
-              return std::move(callback).Run(/*ad*/ std::nullopt);
-            }
+      mojo::WrapCallbackWithDefaultInvokeIfNotRun(
+          base::BindOnce(
+              [](MaybeGetNotificationAdCallback callback,
+                 base::optional_ref<const brave_ads::NotificationAdInfo> ad) {
+                if (!ad) {
+                  return std::move(callback).Run(/*ad*/ std::nullopt);
+                }
 
-            std::optional<base::Value::Dict> dict =
-                brave_ads::NotificationAdToValue(*ad);
-            std::move(callback).Run(std::move(dict));
-          },
-          std::move(callback)));
+                std::optional<base::Value::Dict> dict =
+                    brave_ads::NotificationAdToValue(*ad);
+                std::move(callback).Run(std::move(dict));
+              },
+              std::move(callback)),
+          /*value=*/std::nullopt));
 }
 
 void BatAdsImpl::TriggerNotificationAdEvent(
@@ -129,44 +135,52 @@ void BatAdsImpl::TriggerNotificationAdEvent(
     TriggerNotificationAdEventCallback callback) {
   CHECK(brave_ads::mojom::IsKnownEnumValue(mojom_ad_event_type));
 
-  GetAds()->TriggerNotificationAdEvent(placement_id, mojom_ad_event_type,
-                                       std::move(callback));
+  GetAds()->TriggerNotificationAdEvent(
+      placement_id, mojom_ad_event_type,
+      mojo::WrapCallbackWithDefaultInvokeIfNotRun(std::move(callback),
+                                                  /*success=*/false));
 }
 
 void BatAdsImpl::ParseAndSaveNewTabPageAds(
     base::Value::Dict data,
     ParseAndSaveNewTabPageAdsCallback callback) {
-  GetAds()->ParseAndSaveNewTabPageAds(std::move(data), std::move(callback));
+  GetAds()->ParseAndSaveNewTabPageAds(
+      std::move(data), mojo::WrapCallbackWithDefaultInvokeIfNotRun(
+                           std::move(callback), /*success=*/false));
 }
 
 void BatAdsImpl::MaybeServeNewTabPageAd(
     MaybeServeNewTabPageAdCallback callback) {
-  GetAds()->MaybeServeNewTabPageAd(base::BindOnce(
-      [](MaybeServeNewTabPageAdCallback callback,
-         base::optional_ref<const brave_ads::NewTabPageAdInfo> ad) {
-        if (!ad) {
-          std::move(callback).Run(/*ad*/ std::nullopt);
-          return;
-        }
+  GetAds()->MaybeServeNewTabPageAd(mojo::WrapCallbackWithDefaultInvokeIfNotRun(
+      base::BindOnce(
+          [](MaybeServeNewTabPageAdCallback callback,
+             base::optional_ref<const brave_ads::NewTabPageAdInfo> ad) {
+            if (!ad) {
+              std::move(callback).Run(/*ad*/ std::nullopt);
+              return;
+            }
 
-        std::optional<base::Value::Dict> dict =
-            brave_ads::NewTabPageAdToValue(*ad);
-        std::move(callback).Run(std::move(dict));
-      },
-      std::move(callback)));
+            std::optional<base::Value::Dict> dict =
+                brave_ads::NewTabPageAdToValue(*ad);
+            std::move(callback).Run(std::move(dict));
+          },
+          std::move(callback)),
+      /*value=*/std::nullopt));
 }
 
 void BatAdsImpl::TriggerNewTabPageAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
-    bool should_metrics_fallback_to_p3a,
+    brave_ads::mojom::NewTabPageAdMetricType mojom_ad_metric_type,
     brave_ads::mojom::NewTabPageAdEventType mojom_ad_event_type,
     TriggerNewTabPageAdEventCallback callback) {
   CHECK(brave_ads::mojom::IsKnownEnumValue(mojom_ad_event_type));
 
-  GetAds()->TriggerNewTabPageAdEvent(placement_id, creative_instance_id,
-                                     should_metrics_fallback_to_p3a,
-                                     mojom_ad_event_type, std::move(callback));
+  GetAds()->TriggerNewTabPageAdEvent(
+      placement_id, creative_instance_id, mojom_ad_metric_type,
+      mojom_ad_event_type,
+      mojo::WrapCallbackWithDefaultInvokeIfNotRun(std::move(callback),
+                                                  /*success=*/false));
 }
 
 void BatAdsImpl::TriggerPromotedContentAdEvent(
@@ -176,9 +190,10 @@ void BatAdsImpl::TriggerPromotedContentAdEvent(
     TriggerPromotedContentAdEventCallback callback) {
   CHECK(brave_ads::mojom::IsKnownEnumValue(mojom_ad_event_type));
 
-  GetAds()->TriggerPromotedContentAdEvent(placement_id, creative_instance_id,
-                                          mojom_ad_event_type,
-                                          std::move(callback));
+  GetAds()->TriggerPromotedContentAdEvent(
+      placement_id, creative_instance_id, mojom_ad_event_type,
+      mojo::WrapCallbackWithDefaultInvokeIfNotRun(std::move(callback),
+                                                  /*success=*/false));
 }
 
 void BatAdsImpl::MaybeServeInlineContentAd(
@@ -186,21 +201,24 @@ void BatAdsImpl::MaybeServeInlineContentAd(
     MaybeServeInlineContentAdCallback callback) {
   GetAds()->MaybeServeInlineContentAd(
       dimensions,
-      base::BindOnce(
-          [](MaybeServeInlineContentAdCallback callback,
-             const std::string& dimensions,
-             base::optional_ref<const brave_ads::InlineContentAdInfo> ad) {
-            if (!ad) {
-              std::move(callback).Run(dimensions,
-                                      /*ads*/ std::nullopt);
-              return;
-            }
+      mojo::WrapCallbackWithDefaultInvokeIfNotRun(
+          base::BindOnce(
+              [](MaybeServeInlineContentAdCallback callback,
+                 const std::string& dimensions,
+                 base::optional_ref<const brave_ads::InlineContentAdInfo> ad) {
+                if (!ad) {
+                  std::move(callback).Run(dimensions,
+                                          /*ads*/ std::nullopt);
+                  return;
+                }
 
-            std::optional<base::Value::Dict> dict =
-                brave_ads::InlineContentAdToValue(*ad);
-            std::move(callback).Run(dimensions, std::move(dict));
-          },
-          std::move(callback)));
+                std::optional<base::Value::Dict> dict =
+                    brave_ads::InlineContentAdToValue(*ad);
+                std::move(callback).Run(dimensions, std::move(dict));
+              },
+              std::move(callback)),
+          /*dimensions=*/std::string(),
+          /*value=*/std::nullopt));
 }
 
 void BatAdsImpl::TriggerInlineContentAdEvent(
@@ -210,15 +228,19 @@ void BatAdsImpl::TriggerInlineContentAdEvent(
     TriggerInlineContentAdEventCallback callback) {
   CHECK(brave_ads::mojom::IsKnownEnumValue(mojom_ad_event_type));
 
-  GetAds()->TriggerInlineContentAdEvent(placement_id, creative_instance_id,
-                                        mojom_ad_event_type,
-                                        std::move(callback));
+  GetAds()->TriggerInlineContentAdEvent(
+      placement_id, creative_instance_id, mojom_ad_event_type,
+      mojo::WrapCallbackWithDefaultInvokeIfNotRun(std::move(callback),
+                                                  /*success=*/false));
 }
 
 void BatAdsImpl::MaybeGetSearchResultAd(
     const std::string& placement_id,
     MaybeGetSearchResultAdCallback callback) {
-  GetAds()->MaybeGetSearchResultAd(placement_id, std::move(callback));
+  GetAds()->MaybeGetSearchResultAd(
+      placement_id, mojo::WrapCallbackWithDefaultInvokeIfNotRun(
+                        std::move(callback), /*search_result_ad=*/brave_ads::
+                            mojom::CreativeSearchResultAdInfoPtr()));
 }
 
 void BatAdsImpl::TriggerSearchResultAdEvent(
@@ -228,7 +250,9 @@ void BatAdsImpl::TriggerSearchResultAdEvent(
   CHECK(brave_ads::mojom::IsKnownEnumValue(mojom_ad_event_type));
 
   GetAds()->TriggerSearchResultAdEvent(
-      std::move(mojom_creative_ad), mojom_ad_event_type, std::move(callback));
+      std::move(mojom_creative_ad), mojom_ad_event_type,
+      mojo::WrapCallbackWithDefaultInvokeIfNotRun(std::move(callback),
+                                                  /*success=*/false));
 }
 
 void BatAdsImpl::PurgeOrphanedAdEventsForType(
@@ -236,59 +260,79 @@ void BatAdsImpl::PurgeOrphanedAdEventsForType(
     PurgeOrphanedAdEventsForTypeCallback callback) {
   CHECK(brave_ads::mojom::IsKnownEnumValue(mojom_ad_type));
 
-  GetAds()->PurgeOrphanedAdEventsForType(mojom_ad_type, std::move(callback));
+  GetAds()->PurgeOrphanedAdEventsForType(
+      mojom_ad_type,
+      mojo::WrapCallbackWithDefaultInvokeIfNotRun(std::move(callback),
+                                                  /*success=*/false));
 }
 
 void BatAdsImpl::GetAdHistory(base::Time from_time,
                               base::Time to_time,
                               GetAdHistoryCallback callback) {
-  GetAds()->GetAdHistory(from_time, to_time, std::move(callback));
+  GetAds()->GetAdHistory(from_time, to_time,
+                         mojo::WrapCallbackWithDefaultInvokeIfNotRun(
+                             std::move(callback), /*value=*/std::nullopt));
 }
 
 void BatAdsImpl::GetStatementOfAccounts(
     GetStatementOfAccountsCallback callback) {
-  GetAds()->GetStatementOfAccounts(std::move(callback));
+  GetAds()->GetStatementOfAccounts(mojo::WrapCallbackWithDefaultInvokeIfNotRun(
+      std::move(callback), /*mojom_statement=*/nullptr));
 }
 
 void BatAdsImpl::GetInternals(GetInternalsCallback callback) {
-  GetAds()->GetInternals(std::move(callback));
+  GetAds()->GetInternals(
+      mojo::WrapCallbackWithDefaultInvokeIfNotRun(std::move(callback),
+                                                  /*value=*/std::nullopt));
 }
 
 void BatAdsImpl::GetDiagnostics(GetDiagnosticsCallback callback) {
-  GetAds()->GetDiagnostics(std::move(callback));
+  GetAds()->GetDiagnostics(mojo::WrapCallbackWithDefaultInvokeIfNotRun(
+      std::move(callback), /*value=*/std::nullopt));
 }
 
 void BatAdsImpl::ToggleLikeAd(brave_ads::mojom::ReactionInfoPtr reaction,
                               ToggleLikeAdCallback callback) {
-  GetAds()->ToggleLikeAd(std::move(reaction), std::move(callback));
+  GetAds()->ToggleLikeAd(std::move(reaction),
+                         mojo::WrapCallbackWithDefaultInvokeIfNotRun(
+                             std::move(callback), /*success=*/false));
 }
 
 void BatAdsImpl::ToggleDislikeAd(brave_ads::mojom::ReactionInfoPtr reaction,
                                  ToggleDislikeAdCallback callback) {
-  GetAds()->ToggleDislikeAd(std::move(reaction), std::move(callback));
+  GetAds()->ToggleDislikeAd(std::move(reaction),
+                            mojo::WrapCallbackWithDefaultInvokeIfNotRun(
+                                std::move(callback), /*success=*/false));
 }
 
 void BatAdsImpl::ToggleLikeSegment(brave_ads::mojom::ReactionInfoPtr reaction,
                                    ToggleLikeSegmentCallback callback) {
-  GetAds()->ToggleLikeSegment(std::move(reaction), std::move(callback));
+  GetAds()->ToggleLikeSegment(std::move(reaction),
+                              mojo::WrapCallbackWithDefaultInvokeIfNotRun(
+                                  std::move(callback), /*success=*/false));
 }
 
 void BatAdsImpl::ToggleDislikeSegment(
     brave_ads::mojom::ReactionInfoPtr reaction,
     ToggleDislikeSegmentCallback callback) {
-  GetAds()->ToggleDislikeSegment(std::move(reaction), std::move(callback));
+  GetAds()->ToggleDislikeSegment(std::move(reaction),
+                                 mojo::WrapCallbackWithDefaultInvokeIfNotRun(
+                                     std::move(callback), /*success=*/false));
 }
 
 void BatAdsImpl::ToggleSaveAd(brave_ads::mojom::ReactionInfoPtr reaction,
                               ToggleSaveAdCallback callback) {
-  GetAds()->ToggleSaveAd(std::move(reaction), std::move(callback));
+  GetAds()->ToggleSaveAd(std::move(reaction),
+                         mojo::WrapCallbackWithDefaultInvokeIfNotRun(
+                             std::move(callback), /*success=*/false));
 }
 
 void BatAdsImpl::ToggleMarkAdAsInappropriate(
     brave_ads::mojom::ReactionInfoPtr reaction,
     ToggleMarkAdAsInappropriateCallback callback) {
-  GetAds()->ToggleMarkAdAsInappropriate(std::move(reaction),
-                                        std::move(callback));
+  GetAds()->ToggleMarkAdAsInappropriate(
+      std::move(reaction), mojo::WrapCallbackWithDefaultInvokeIfNotRun(
+                               std::move(callback), /*success=*/false));
 }
 
 brave_ads::Ads* BatAdsImpl::GetAds() {

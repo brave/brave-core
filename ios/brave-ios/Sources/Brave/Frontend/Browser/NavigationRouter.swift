@@ -178,6 +178,10 @@ public enum NavigationPath: Equatable {
     case .braveLeo:
       bvc.popToBVC()
       bvc.openBraveLeo()
+    case .askBrave:
+      guard let url = URL(string: "https://search.brave.com/ask") else { return }
+      bvc.popToBVC()
+      bvc.openURLInNewTab(url, isPrivileged: false)
     @unknown default:
       assertionFailure()
       break

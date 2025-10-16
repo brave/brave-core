@@ -64,6 +64,12 @@ bool IsAdBlockOnlyModeFilterList(const std::string& uuid) {
   return kAdblockOnlyModeFilerListUUIDs.contains(uuid);
 }
 
+bool IsAdBlockOnlyModeSupportedAndFeatureEnabled(const std::string& locale) {
+  return base::FeatureList::IsEnabled(
+             brave_shields::features::kAdblockOnlyMode) &&
+         brave_shields::IsAdblockOnlyModeSupportedForLocale(locale);
+}
+
 }  // namespace
 
 AdBlockComponentServiceManager::AdBlockComponentServiceManager(
@@ -82,7 +88,7 @@ AdBlockComponentServiceManager::AdBlockComponentServiceManager(
                      weak_factory_.GetWeakPtr()));
   catalog_provider_->AddObserver(this);
 
-  if (IsAdblockOnlyModeFeatureEnabled()) {
+  if (IsAdBlockOnlyModeSupportedAndFeatureEnabled(locale_)) {
     local_state_change_registrar_ = std::make_unique<PrefChangeRegistrar>();
     local_state_change_registrar_->Init(local_state_);
     local_state_change_registrar_->Add(
@@ -238,7 +244,7 @@ bool AdBlockComponentServiceManager::IsFilterListEnabled(
   DCHECK(!uuid.empty());
   DCHECK(local_state_);
 
-  if (IsAdblockOnlyModeFeatureEnabled() &&
+  if (IsAdBlockOnlyModeSupportedAndFeatureEnabled(locale_) &&
       IsBraveShieldsAdBlockOnlyModeEnabled(local_state_) &&
       !IsAdBlockOnlyModeFilterList(uuid)) {
     return false;
@@ -293,7 +299,7 @@ void AdBlockComponentServiceManager::EnableFilterList(const std::string& uuid,
     return;
   }
 
-  if (IsAdblockOnlyModeFeatureEnabled() &&
+  if (IsAdBlockOnlyModeSupportedAndFeatureEnabled(locale_) &&
       IsBraveShieldsAdBlockOnlyModeEnabled(local_state_) &&
       !IsAdBlockOnlyModeFilterList(uuid)) {
     return;

@@ -7,6 +7,7 @@ import argparse
 import json
 import os
 import re
+import shlex
 
 import override_utils
 
@@ -30,6 +31,15 @@ def _write_tsconfig_json(original_function, gen_dir, tsconfig, tsconfig_file):
 
 @override_utils.override_function(globals())
 def main(original_function, argv):
+    rsp_parser = argparse.ArgumentParser()
+    rsp_parser.add_argument('--rsp', required=False)
+    rsp_args, _ = rsp_parser.parse_known_args(argv)
+
+    if rsp_args.rsp:
+        with open(rsp_args.rsp, 'r') as f:
+            # Do not prepend argv[0], because original script strips it.
+            argv = shlex.split(f.read())
+
     # Parse only the arguments used by this override
     parser = argparse.ArgumentParser()
     parser.add_argument('--root_dir', required=True)

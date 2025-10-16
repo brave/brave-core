@@ -22,7 +22,7 @@ export function ExploreView() {
   const ref = React.useRef<HTMLDivElement>(null)
   let cards = useAppState((state) => state.cards)
 
-  // Record offer view when the explore section becomes visible
+  // Record offer view when the explore section becomes visible.
   const { setElementRef } = useOnVisibleCallback(() => {
     model.recordOfferView()
   }, {})
@@ -59,14 +59,27 @@ export function ExploreView() {
   if (viewType === 'double') {
     const [left, right] = splitCardsIntoColumns(cards)
     return (
-      <div ref={setElementRef} data-css-scope={style.scope}>
+      <div
+        ref={ref}
+        data-css-scope={style.scope}
+      >
         <h3>{getString('navigationExploreLabel')}</h3>
         <div className='columns'>
           <div>
-            {left.map((card) => <CardView key={card.name} card={card} />)}
+            {left.map((card) => (
+              <CardView
+                key={card.name}
+                card={card}
+              />
+            ))}
           </div>
           <div>
-            {right.map((card) => <CardView key={card.name} card={card} />)}
+            {right.map((card) => (
+              <CardView
+                key={card.name}
+                card={card}
+              />
+            ))}
           </div>
         </div>
       </div>
@@ -74,9 +87,17 @@ export function ExploreView() {
   }
 
   return (
-    <div ref={ref} data-css-scope={style.scope}>
+    <div
+      ref={ref}
+      data-css-scope={style.scope}
+    >
       <h3>{getString('navigationExploreLabel')}</h3>
-      {cards.map((card) => <CardView key={card.name} card={card} />)}
+      {cards.map((card) => (
+        <CardView
+          key={card.name}
+          card={card}
+        />
+      ))}
     </div>
   )
 }

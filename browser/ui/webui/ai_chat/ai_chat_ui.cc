@@ -17,6 +17,7 @@
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui_page_handler.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
+#include "brave/components/ai_chat/core/browser/bookmarks_page_handler.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/tab_tracker_service.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
@@ -24,9 +25,12 @@
 #include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/ai_chat/resources/grit/ai_chat_ui_generated_map.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "chrome/browser/bookmarks/bookmark_model_factory.h"
+#include "chrome/browser/history/history_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/favicon_source.h"
 #include "components/favicon_base/favicon_url_parser.h"
@@ -184,6 +188,23 @@ void AIChatUI::BindInterface(
   CHECK(service);
 
   service->Bind(std::move(pending_receiver));
+}
+
+void AIChatUI::BindInterface(
+    mojo::PendingReceiver<ai_chat::mojom::BookmarksPageHandler>
+        pending_receiver) {
+  bookmarks_page_handler_ = std::make_unique<ai_chat::BookmarksPageHandler>(
+      BookmarkModelFactory::GetForBrowserContext(profile_),
+      std::move(pending_receiver));
+}
+
+void AIChatUI::BindInterface(
+    mojo::PendingReceiver<ai_chat::mojom::HistoryUIHandler> pending_receiver) {
+  history_ui_handler_ = std::make_unique<ai_chat::HistoryUIHandler>(
+      std::move(pending_receiver), HistoryServiceFactory::GetForProfile(
+                                       Profile::FromBrowserContext(profile_),
+                                       ServiceAccessType::EXPLICIT_ACCESS));
+  CHECK(history_ui_handler_);
 }
 
 bool AIChatUIConfig::IsWebUIEnabled(content::BrowserContext* browser_context) {

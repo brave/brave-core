@@ -110,7 +110,6 @@ export const addressEndpoints = ({
           const { data: api } = baseQuery(undefined)
           const { txType, error } =
             await api.zcashWalletService.getTransactionType(
-              arg.chainId,
               arg.accountId,
               arg.useShieldedPool,
               arg.address,

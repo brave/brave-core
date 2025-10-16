@@ -26,12 +26,8 @@ export function AppError(props: Props) {
       <div className='image'>
         <Icon name='warning-circle-outline' />
       </div>
-      <div className='title'>
-        {getString('appErrorTitle')}
-      </div>
-      <div className='details'>
-        {getStack(props.error)}
-      </div>
+      <div className='title'>{getString('appErrorTitle')}</div>
+      <div className='details'>{getStack(props.error)}</div>
     </div>
   )
 }

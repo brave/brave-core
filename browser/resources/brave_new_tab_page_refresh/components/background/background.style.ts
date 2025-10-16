@@ -27,6 +27,14 @@ export const style = scoped.css`
     background-repeat: no-repeat;
     background-position: center center;
     background-image: var(--ntp-background);
+
+    &.sponsored {
+      background-image:
+        linear-gradient(
+          rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0) 35%, rgba(0, 0, 0, 0) 80%,
+          rgba(0, 0, 0, 0.6) 100%),
+        var(--ntp-background);
+    }
   }
 
   .color-background {
@@ -35,12 +43,6 @@ export const style = scoped.css`
 
   iframe {
     border: none;
-    opacity: 1;
-    transition: opacity 250ms;
-
-    &.loading {
-      opacity: 0;
-    }
   }
 
   @keyframes background-fade-in {

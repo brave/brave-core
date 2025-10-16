@@ -4,9 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import Icon from '@brave/leo/react/icon'
 import Toggle from '@brave/leo/react/toggle'
-import Tooltip from '@brave/leo/react/tooltip'
 
 import { formatMessage } from '../../../shared/lib/locale_context'
 import { useLocaleContext } from '../../lib/locale_strings'
@@ -21,7 +19,7 @@ import { style } from './ads_settings_modal.style'
 
 const payoutDateFormatter = new Intl.DateTimeFormat(undefined, {
   month: 'long',
-  day: 'numeric'
+  day: 'numeric',
 })
 
 const adsPerHourOptions = [0, 1, 2, 3, 4, 5, 10]
@@ -41,8 +39,9 @@ export function AdsSettingsModal(props: Props) {
     return null
   }
 
-  const adsReceivedThisMonth = Object.values(adsInfo.adTypesReceivedThisMonth)
-    .reduce((prev, current) => prev + current, 0)
+  const adsReceivedThisMonth = Object.values(
+    adsInfo.adTypesReceivedThisMonth,
+  ).reduce((prev, current) => prev + current, 0)
 
   function onToggleChange(adType: AdType) {
     return (detail: { checked: boolean }) => {
@@ -58,7 +57,7 @@ export function AdsSettingsModal(props: Props) {
   }
 
   function onNotificationAdsPerHourChange(
-    event: React.FormEvent<HTMLSelectElement>
+    event: React.FormEvent<HTMLSelectElement>,
   ) {
     const value = Number(event.currentTarget.value) || 0
     model.setNotificationAdsPerHour(value)
@@ -97,16 +96,18 @@ export function AdsSettingsModal(props: Props) {
               {getString('adsSettingsSubdivisionAutoLabel')}
               {autoNameSuffix}
             </option>
-            {
-              adsInfo.availableSubdivisions.map(({ code, name }) =>
-                <option key={code} value={code}>{name}</option>
-              )
-            }
+            {adsInfo.availableSubdivisions.map(({ code, name }) => (
+              <option
+                key={code}
+                value={code}
+              >
+                {name}
+              </option>
+            ))}
           </select>
         </div>
         <div>
-          {getString('adsSettingsSubdivisionText')}
-          {' '}
+          {getString('adsSettingsSubdivisionText')}{' '}
           <NewTabLink href={urls.adsLearnMoreURL}>
             {getString('learnMoreLink')}
           </NewTabLink>
@@ -122,38 +123,26 @@ export function AdsSettingsModal(props: Props) {
         onClose={props.onClose}
       />
       <div data-css-scope={style.scope}>
-        {
-          externalWallet &&
-            <p className='description'>
-              {getString('adsSettingsText')}
-              {' '}
-              <NewTabLink href={urls.adsLearnMoreURL}>
-                {getString('learnMoreLink')}
-              </NewTabLink>
-            </p>
-        }
+        {externalWallet && (
+          <p className='description'>
+            {getString('adsSettingsText')}{' '}
+            <NewTabLink href={urls.adsLearnMoreURL}>
+              {getString('learnMoreLink')}
+            </NewTabLink>
+          </p>
+        )}
         <section className='summary'>
-          {
-            externalWallet &&
-              <div className='row'>
-                <span>
-                  {getString('adsSettingsPayoutDateLabel')}
-                </span>
-                <span className='value'>
-                  {
-                    payoutDateFormatter.format(
-                      new Date(adsInfo.nextPaymentDate))
-                  }
-                </span>
-              </div>
-          }
+          {externalWallet && (
+            <div className='row'>
+              <span>{getString('adsSettingsPayoutDateLabel')}</span>
+              <span className='value'>
+                {payoutDateFormatter.format(new Date(adsInfo.nextPaymentDate))}
+              </span>
+            </div>
+          )}
           <div className='row'>
-            <span>
-              {getString('adsSettingsTotalAdsLabel')}
-            </span>
-            <span className='value'>
-              {adsReceivedThisMonth}
-            </span>
+            <span>{getString('adsSettingsTotalAdsLabel')}</span>
+            <span className='value'>{adsReceivedThisMonth}</span>
           </div>
         </section>
         <section className='ad-types'>
@@ -166,12 +155,8 @@ export function AdsSettingsModal(props: Props) {
               checked={adsInfo.adsEnabled['new-tab-page']}
               onChange={onToggleChange('new-tab-page')}
             />
-            <span className='name'>
-              {getString('adTypeNewTabPageLabel')}
-            </span>
-            <span>
-              {adsInfo.adTypesReceivedThisMonth['new-tab-page']}
-            </span>
+            <span className='name'>{getString('adTypeNewTabPageLabel')}</span>
+            <span>{adsInfo.adTypesReceivedThisMonth['new-tab-page']}</span>
           </div>
           <div className='row'>
             <Toggle
@@ -184,59 +169,19 @@ export function AdsSettingsModal(props: Props) {
                 value={adsInfo.notificationAdsPerHour}
                 onChange={onNotificationAdsPerHourChange}
               >
-                {
-                  adsPerHourOptions
-                    .filter((n) => n || n === adsInfo.notificationAdsPerHour)
-                    .map((n) => (
-                      <option key={n} value={n}>
-                        {adsPerHourOptionText(n)}
-                      </option>
-                    ))
-                }
+                {adsPerHourOptions
+                  .filter((n) => n || n === adsInfo.notificationAdsPerHour)
+                  .map((n) => (
+                    <option
+                      key={n}
+                      value={n}
+                    >
+                      {adsPerHourOptionText(n)}
+                    </option>
+                  ))}
               </select>
             </span>
-            <span>
-              {adsInfo.adTypesReceivedThisMonth.notification}
-            </span>
-          </div>
-          <div className='row'>
-            <Toggle
-              checked={adsInfo.adsEnabled['search-result']}
-              onChange={onToggleChange('search-result')}
-            />
-            <span className='name'>
-              {getString('adTypeSearchResultLabel')}
-              <Tooltip mode='default'>
-                <Icon name='info-outline' />
-                <div slot='content'>
-                  {
-                    externalWallet &&
-                      <p>
-                        {getString('adsSettingsSearchConnectedTooltip')}
-                      </p>
-                  }
-                  <p>
-                    {
-                      formatMessage(getString('adsSettingsSearchTooltip'), {
-                        tags: {
-                          $1: (content) => (
-                            <NewTabLink
-                              key='link'
-                              href={urls.braveSearchURL}
-                            >
-                              {content}
-                            </NewTabLink>
-                          )
-                        }
-                      })
-                    }
-                  </p>
-                </div>
-              </Tooltip>
-            </span>
-            <span>
-              {adsInfo.adTypesReceivedThisMonth['search-result']}
-            </span>
+            <span>{adsInfo.adTypesReceivedThisMonth.notification}</span>
           </div>
         </section>
         {renderSubdivisions()}

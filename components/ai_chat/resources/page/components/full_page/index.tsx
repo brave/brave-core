@@ -41,8 +41,8 @@ export default function FullScreen() {
     const open = { width: 'var(--navigation-width)', opacity: 1 }
     const close = { width: '0px', opacity: 0 }
     const animationOptions: KeyframeAnimationOptions = {
-      duration: 200,
-      easing: 'ease-out',
+      duration: 400,
+      easing: 'cubic-bezier(0.77, 0, 0.175, 1)',
       fill: 'forwards',
     }
     asideAnimationRef.current = new Animation(
@@ -136,13 +136,7 @@ export default function FullScreen() {
               kind='plain-faint'
               onClick={() => aiChatContext.toggleSidebar()}
             >
-              <Icon
-                name={
-                  asideAnimationRef.current?.playbackRate === 1
-                    ? 'sidenav-expand'
-                    : 'sidenav-collapse'
-                }
-              />
+              <Icon name='window-tabs-vertical-expanded' />
             </Button>
             {!isNavigationRendered && canStartNewConversation && (
               <>

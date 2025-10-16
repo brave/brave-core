@@ -4,9 +4,9 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 export type StringKey =
-  'fullLogDisclaimerText' |
-  'pageDisclaimerText' |
-  'pageTitle'
+  | 'fullLogDisclaimerText'
+  | 'pageDisclaimerText'
+  | 'pageTitle'
 
 export interface Locale {
   getString: (key: StringKey) => string

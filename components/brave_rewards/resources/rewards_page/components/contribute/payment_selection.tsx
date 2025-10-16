@@ -9,9 +9,16 @@ import Icon from '@brave/leo/react/icon'
 
 import { useLocaleContext } from '../../lib/locale_strings'
 import { useAppState } from '../../lib/app_model_context'
-import { TabOpenerContext , NewTabLink } from '../../../shared/components/new_tab_link'
+import {
+  TabOpenerContext,
+  NewTabLink,
+} from '../../../shared/components/new_tab_link'
 import { WalletProviderIcon } from '../../../shared/components/icons/wallet_provider_icon'
-import { ExternalWalletProvider, isSelfCustodyProvider, getExternalWalletProviderName } from '../../../shared/lib/external_wallet'
+import {
+  ExternalWalletProvider,
+  isSelfCustodyProvider,
+  getExternalWalletProviderName,
+} from '../../../shared/lib/external_wallet'
 import * as urls from '../../../shared/lib/rewards_urls'
 
 import { style } from './payment_selection.style'
@@ -66,29 +73,31 @@ export function PaymentSelection(props: Props) {
       <div data-css-scope={style.scope}>
         <div className='text'>
           <Icon name='hand-coins' />
-          <div>
-            {getString('contributeAvailableMethodsText')}
-          </div>
+          <div>{getString('contributeAvailableMethodsText')}</div>
         </div>
         <div className='methods'>
-          {
-            getSupportedProviders().map((provider) => (
-              <div key={provider} className='method'>
-                <div>
-                  <div className='provider-icon'>
-                    <WalletProviderIcon provider={provider} />
-                  </div>
-                  {getExternalWalletProviderName(provider)}
+          {getSupportedProviders().map((provider) => (
+            <div
+              key={provider}
+              className='method'
+            >
+              <div>
+                <div className='provider-icon'>
+                  <WalletProviderIcon provider={provider} />
                 </div>
+                {getExternalWalletProviderName(provider)}
               </div>
-            ))
-          }
+            </div>
+          ))}
         </div>
         <div className='actions'>
           <NewTabLink href={urls.tippingLearnMoreURL}>
             {getString('contributeAboutMethodsLink')}
           </NewTabLink>
-          <Button kind='plain-faint' onClick={props.onCancel}>
+          <Button
+            kind='plain-faint'
+            onClick={props.onCancel}
+          >
             {getString('cancelButtonLabel')}
           </Button>
         </div>
@@ -103,41 +112,42 @@ export function PaymentSelection(props: Props) {
         <div>{getString('contributeChooseMethodText')}</div>
       </div>
       <div className='methods'>
-        {
-          web3URL &&
-            <div className='method'>
-              <button onClick={() => tabOpener.openTab(web3URL)}>
-                <div className='provider-icon'>
-                  <Icon name='product-brave-wallet' />
+        {web3URL && (
+          <div className='method'>
+            <button onClick={() => tabOpener.openTab(web3URL)}>
+              <div className='provider-icon'>
+                <Icon name='product-brave-wallet' />
+              </div>
+              <div className='provider-text'>
+                {getString('contributeWeb3Label')}
+                <div className='subtext'>
+                  {getString('contributeWeb3Subtext')}
                 </div>
-                <div className='provider-text'>
-                  {getString('contributeWeb3Label')}
-                  <div className='subtext'>
-                    {getString('contributeWeb3Subtext')}
-                  </div>
+              </div>
+            </button>
+          </div>
+        )}
+        {matchingProvider && (
+          <div className='method'>
+            <button onClick={props.onSelectCustodial}>
+              <div className='provider-icon'>
+                <WalletProviderIcon provider={matchingProvider} />
+              </div>
+              <div className='provider-text'>
+                {getExternalWalletProviderName(matchingProvider)}
+                <div className='subtext'>
+                  {getString('contributeCustodialSubtext')}
                 </div>
-              </button>
-            </div>
-        }
-        {
-          matchingProvider &&
-            <div className='method'>
-              <button onClick={props.onSelectCustodial}>
-                <div className='provider-icon'>
-                  <WalletProviderIcon provider={matchingProvider} />
-                </div>
-                <div className='provider-text'>
-                  {getExternalWalletProviderName(matchingProvider)}
-                  <div className='subtext'>
-                    {getString('contributeCustodialSubtext')}
-                  </div>
-                </div>
-              </button>
-            </div>
-        }
+              </div>
+            </button>
+          </div>
+        )}
       </div>
       <div className='actions'>
-        <Button kind='plain-faint' onClick={props.onCancel}>
+        <Button
+          kind='plain-faint'
+          onClick={props.onCancel}
+        >
           {getString('cancelButtonLabel')}
         </Button>
       </div>

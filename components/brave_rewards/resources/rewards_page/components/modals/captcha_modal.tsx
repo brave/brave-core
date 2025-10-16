@@ -74,17 +74,24 @@ export function CaptchaModal(props: Props) {
     }
 
     window.addEventListener('message', listener)
-    return () => { window.removeEventListener('message', listener) }
+    return () => {
+      window.removeEventListener('message', listener)
+    }
   }, [props.onCaptchaResult])
 
   function renderContent() {
     if (captchaSolved) {
       return (
         <div className='content solved'>
-          <div className='icon'><Icon name='check-circle-filled' /></div>
+          <div className='icon'>
+            <Icon name='check-circle-filled' />
+          </div>
           <h3>{getString('captchaSolvedTitle')}</h3>
           <p>{getString('captchaSolvedText')}</p>
-          <Button kind='outline' onClick={props.onClose}>
+          <Button
+            kind='outline'
+            onClick={props.onClose}
+          >
             {getString('closeButtonLabel')}
           </Button>
         </div>
@@ -94,7 +101,9 @@ export function CaptchaModal(props: Props) {
     if (props.captchaInfo.maxAttemptsExceeded) {
       return (
         <div className='content max-attempts-exceeded'>
-          <div className='icon'><Icon name='warning-circle-filled' /></div>
+          <div className='icon'>
+            <Icon name='warning-circle-filled' />
+          </div>
           <h3>{getString('captchaMaxAttemptsExceededTitle')}</h3>
           <p>{getString('captchaMaxAttemptsExceededText')}</p>
           <Button

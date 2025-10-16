@@ -1420,7 +1420,8 @@ void KeyringService::ImportEthereumAccountFromJson(
     return;
   }
 
-  auto parsed_json = base::JSONReader::ReadAndReturnValueWithError(json);
+  auto parsed_json = base::JSONReader::ReadAndReturnValueWithError(
+      json, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!parsed_json.has_value() || !parsed_json->is_dict()) {
     std::move(callback).Run({});
     return;
@@ -2597,6 +2598,19 @@ KeyringService::SignCip30MessageByCardanoKeyring(
       HexEncodeLower(CardanoCip30Serializer::SerializeSignedDataSignature(
           *cardano_address, message, signature_pair->signature)));
   return result;
+}
+
+std::optional<std::array<uint8_t, kPolkadotSubstrateAccountIdSize>>
+KeyringService::GetPolkadotPubKey(const mojom::AccountIdPtr& account_id) {
+  CHECK(account_id);
+
+  auto* keyring = GetKeyring<PolkadotKeyring>(account_id->keyring_id);
+  if (!keyring) {
+    return std::nullopt;
+  }
+
+  auto key = keyring->GetPublicKey(account_id->account_index);
+  return {key};
 }
 
 void KeyringService::UpdateNextUnusedAddressForBitcoinAccount(

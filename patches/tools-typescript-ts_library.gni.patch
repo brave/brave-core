@@ -1,8 +1,8 @@
 diff --git a/tools/typescript/ts_library.gni b/tools/typescript/ts_library.gni
-index 9f8d59cdf04620ea6df5965b03a176043937d9d6..72374b8a4e77f9bc838e9d4c1dc2f5c734268fe8 100644
+index 9f8d59cdf04620ea6df5965b03a176043937d9d6..424d09870894a62ed5af31c3f5cbd40514b9b9e9 100644
 --- a/tools/typescript/ts_library.gni
 +++ b/tools/typescript/ts_library.gni
-@@ -169,6 +169,7 @@ template("ts_library") {
+@@ -169,9 +169,11 @@ template("ts_library") {
        ]
      }
  
@@ -10,3 +10,7 @@ index 9f8d59cdf04620ea6df5965b03a176043937d9d6..72374b8a4e77f9bc838e9d4c1dc2f5c7
      args += [ "--path_mappings" ] + path_mappings
      if (defined(invoker.path_mappings)) {
        args += invoker.path_mappings
+     }
++    response_file_contents = args args = [] args = ["--rsp", "{{response_file_name}}"]
+   }
+ }

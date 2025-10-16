@@ -1,5 +1,5 @@
 diff --git a/ios/web/webui/url_data_manager_ios_backend.mm b/ios/web/webui/url_data_manager_ios_backend.mm
-index f2b225354ca5207ade96afcf3ef11c64140c5876..535de1ac11b2522d2b5d1ebc2269b87d43cb25bd 100644
+index 5ad658389fe968dbdf8f23c496dcc6e14cd36206..b443baf1755753553de063b6ec22224b7676058e 100644
 --- a/ios/web/webui/url_data_manager_ios_backend.mm
 +++ b/ios/web/webui/url_data_manager_ios_backend.mm
 @@ -294,7 +294,7 @@ void URLRequestChromeJob::GetResponseInfo(net::HttpResponseInfo* info) {

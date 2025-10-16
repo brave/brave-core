@@ -52,10 +52,9 @@ export function RegenerateAnswerMenu(props: Props) {
       </div>
       <div className={styles.headerGap} />
       <Button
-        fab
         slot='anchor-content'
-        size='small'
         kind='plain-faint'
+        size='tiny'
         onClick={isOpen ? onClose : onOpen}
         title={getLocale(S.CHAT_UI_REGENERATE_ANSWER_MENU_TOOLTIP).replace(
           '$1',
@@ -66,9 +65,15 @@ export function RegenerateAnswerMenu(props: Props) {
           [styles.anchorButtonOpen]: isOpen,
         })}
       >
-        <div className={styles.anchorButtonIconRow}>
-          <Icon name='refresh' />
-          <Icon name={isOpen ? 'carat-up' : 'carat-down'} />
+        <div className={styles.anchorButtonContent}>
+          <span className={styles.anchorButtonText}>{modelDisplayName}</span>
+          <Icon
+            name='carat-down'
+            className={classnames({
+              [styles.anchorButtonIcon]: true,
+              [styles.anchorButtonIconOpen]: isOpen,
+            })}
+          />
         </div>
       </Button>
       {leoModels.map((model) => {

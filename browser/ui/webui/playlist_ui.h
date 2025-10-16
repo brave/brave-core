@@ -11,7 +11,7 @@
 #include <vector>
 
 #include "base/memory/weak_ptr.h"
-#include "brave/components/playlist/common/mojom/playlist.mojom.h"
+#include "brave/components/playlist/core/common/mojom/playlist.mojom.h"
 #include "chrome/browser/ui/webui/top_chrome/top_chrome_web_ui_controller.h"
 #include "chrome/browser/ui/webui/top_chrome/top_chrome_webui_config.h"
 #include "content/public/browser/webui_config.h"

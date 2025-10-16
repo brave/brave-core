@@ -47,6 +47,7 @@
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/tor/tor_profile_manager.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
+#include "chrome/browser/ui/incognito_allowed_url.h"
 #endif
 
 #include "base/feature_list.h"
@@ -60,6 +61,7 @@
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "components/grit/brave_components_strings.h"

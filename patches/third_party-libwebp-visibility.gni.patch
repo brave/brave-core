@@ -1,0 +1,9 @@
+diff --git a/third_party/libwebp/visibility.gni b/third_party/libwebp/visibility.gni
+index c9f06c36ac0b9ed34f13cb0741d0994338c1eb3d..acd6348320c97dcffef10be66501d2c0628acdea 100644
+--- a/third_party/libwebp/visibility.gni
++++ b/third_party/libwebp/visibility.gni
+@@ -20,3 +20,4 @@ allowed_visibility = [
+   "//clank/android_webview/*",
+   "//clank/java/*",
+ ]
++allowed_visibility += [ "//brave/ios/browser/svg" ]

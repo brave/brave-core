@@ -22,6 +22,9 @@ export function TopPromoCard() {
   }
 
   return promoCards.map((card) => (
-    <CardView key={card.name} card={card} />
+    <CardView
+      key={card.name}
+      card={card}
+    />
   ))
 }

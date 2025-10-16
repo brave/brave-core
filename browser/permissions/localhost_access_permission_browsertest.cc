@@ -14,7 +14,6 @@
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/constants/brave_paths.h"
-#include "brave/components/localhost_permission/localhost_permission_component.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
@@ -62,12 +61,6 @@ class LocalhostAccessBrowserTest : public InProcessBrowserTest {
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*", "127.0.0.1");
     current_browser_ = InProcessBrowserTest::browser();
-    localhost_permission_component_ =
-        g_brave_browser_process->localhost_permission_component();
-    if (localhost_permission_component_) {
-      localhost_permission_component_->SetAllowedDomainsForTesting(
-          {kTestEmbeddingDomain});
-    }
 
     // Embedding website server
     https_server_ = std::make_unique<net::EmbeddedTestServer>(
@@ -268,8 +261,6 @@ class LocalhostAccessBrowserTest : public InProcessBrowserTest {
   base::test::ScopedFeatureList feature_list_;
   raw_ptr<Browser, DanglingUntriaged> current_browser_;
   std::unique_ptr<brave_shields::TestFiltersProvider> source_provider_;
-  raw_ptr<localhost_permission::LocalhostPermissionComponent, DanglingUntriaged>
-      localhost_permission_component_;
 
  private:
   std::unique_ptr<permissions::MockPermissionPromptFactory> prompt_factory_;
@@ -453,37 +444,6 @@ IN_PROC_BROWSER_TEST_F(LocalhostAccessBrowserTest, AdblockRuleBadfilter) {
   auto rules = adblock_rule + badfilter_rule;
   AddAdblockRule(rules);
   CheckAskAndAcceptFlow(target_url);
-}
-
-// Test that localhost connections from website not on allowlist
-// are blocked without permission prompt.
-IN_PROC_BROWSER_TEST_F(LocalhostAccessBrowserTest, WebsiteNotOnAllowlist) {
-  std::string test_domain = "localhost";
-  // Note: we're also testing that comments are handled correctly here
-  // because we inserted #b.com into the allowlist.
-  localhost_permission_component_->SetAllowedDomainsForTesting(
-      {base::StrCat({kTestEmbeddingDomain, "\n", "#b.com"})});
-  embedding_url_ = https_server_->GetURL("b.com", kSimplePage);
-  const auto& target_url =
-      localhost_server_->GetURL(test_domain, kTestTargetPath);
-  CheckNoPromptFlow(false, target_url);
-}
-
-// Test that manually adding a website to the site permission exceptions
-// allows connections to localhost from that eTLD+1.
-IN_PROC_BROWSER_TEST_F(LocalhostAccessBrowserTest,
-                       WebsiteNotOnAllowlistButManuallyAdded) {
-  std::string test_domain = "localhost";
-  // Clear out the allowlist.
-  localhost_permission_component_->SetAllowedDomainsForTesting({""});
-  embedding_url_ = https_server_->GetURL(kTestEmbeddingDomain, kSimplePage);
-  const auto& target_url =
-      localhost_server_->GetURL(test_domain, kTestTargetPath);
-  SetCurrentStatus(ContentSetting::CONTENT_SETTING_ALLOW);
-  // Load subresource, should succeed.
-  InsertImage(target_url.spec(), true);
-  // No prompt though.
-  EXPECT_EQ(0, prompt_factory()->show_count());
 }
 
 // Test that different hosts under the same eTLD+1 can prompt.

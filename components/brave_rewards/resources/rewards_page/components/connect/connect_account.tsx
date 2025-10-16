@@ -21,7 +21,7 @@ import {
   isSelfCustodyProvider,
   getExternalWalletProviderName,
   isExternalWalletProviderAllowed,
-  isExternalWalletProviderDisabled
+  isExternalWalletProviderDisabled,
 } from '../../../shared/lib/external_wallet'
 
 import * as routes from '../../lib/app_routes'
@@ -38,7 +38,8 @@ export function ConnectAccount() {
 
   const countryCode = useAppState((state) => state.countryCode)
   const regions = useAppState(
-      (state) => state.rewardsParameters?.walletProviderRegions ?? null)
+    (state) => state.rewardsParameters?.walletProviderRegions ?? null,
+  )
   let providers = useAppState((state) => state.externalWalletProviders)
   const externalWallet = useAppState((state) => state.externalWallet)
 
@@ -59,7 +60,7 @@ export function ConnectAccount() {
   }, [])
 
   providers = providers.filter((name) => {
-    return !isExternalWalletProviderDisabled(regions && regions[name] || null)
+    return !isExternalWalletProviderDisabled((regions && regions[name]) || null)
   })
 
   function onBack() {
@@ -75,7 +76,7 @@ export function ConnectAccount() {
 
   function providerButtonMessage(
     provider: ExternalWalletProvider,
-    allowed: boolean
+    allowed: boolean,
   ) {
     if (!allowed) {
       return (
@@ -86,9 +87,7 @@ export function ConnectAccount() {
     }
     if (provider === 'solana') {
       return (
-        <span className='message'>
-          {getString('connectSolanaMessage')}
-        </span>
+        <span className='message'>{getString('connectSolanaMessage')}</span>
       )
     }
     return null
@@ -121,13 +120,15 @@ export function ConnectAccount() {
       <span className='caret'>
         {getString('connectLoginText')}
         <Icon name='carat-right' />
-      </span>    )
+      </span>
+    )
   }
 
   function providerButton(provider: ExternalWalletProvider) {
     const allowed = isExternalWalletProviderAllowed(
       countryCode,
-      regions && regions[provider] || null)
+      (regions && regions[provider]) || null,
+    )
 
     const onClick = () => {
       if (allowed) {
@@ -168,14 +169,10 @@ export function ConnectAccount() {
           {getString('connectCustodialTitle')}
           <Tooltip mode='default'>
             <Icon name='info-outline' />
-            <div slot='content'>
-              {getString('connectCustodialTooltip')}
-            </div>
+            <div slot='content'>{getString('connectCustodialTooltip')}</div>
           </Tooltip>
         </h3>
-        <section>
-          {entries.map(providerButton)}
-        </section>
+        <section>{entries.map(providerButton)}</section>
         <p className='regions-learn-more'>
           <NewTabLink href={urls.supportedWalletRegionsURL}>
             {getString('connectRegionsLearnMoreText')}
@@ -207,36 +204,37 @@ export function ConnectAccount() {
             </div>
           </Tooltip>
         </h3>
-        <section>
-          {entries.map(providerButton)}
-        </section>
-        {
-          loadingState === 'error' &&
-          selectedProvider &&
-          isSelfCustodyProvider(selectedProvider) &&
+        <section>{entries.map(providerButton)}</section>
+        {loadingState === 'error'
+          && selectedProvider
+          && isSelfCustodyProvider(selectedProvider) && (
             <div className='connect-error'>
               <Icon name='warning-triangle-filled' />
               <span>{getString('connectSelfCustodyError')}</span>
             </div>
-        }
+          )}
         <p className='self-custody-note'>
           {getString('connectSelfCustodyNote')}{' '}
-          {
-            formatMessage(getString('connectSelfCustodyTerms'), {
-              tags: {
-                $1: (content) => (
-                  <NewTabLink key='terms' href={urls.termsOfServiceURL}>
-                    {content}
-                  </NewTabLink>
-                ),
-                $3: (content) => (
-                  <NewTabLink key='privacy-policy' href={urls.privacyPolicyURL}>
-                    {content}
-                  </NewTabLink>
-                )
-              }
-            })
-          }
+          {formatMessage(getString('connectSelfCustodyTerms'), {
+            tags: {
+              $1: (content) => (
+                <NewTabLink
+                  key='terms'
+                  href={urls.termsOfServiceURL}
+                >
+                  {content}
+                </NewTabLink>
+              ),
+              $3: (content) => (
+                <NewTabLink
+                  key='privacy-policy'
+                  href={urls.privacyPolicyURL}
+                >
+                  {content}
+                </NewTabLink>
+              ),
+            },
+          })}
         </p>
       </>
     )
@@ -252,7 +250,12 @@ export function ConnectAccount() {
     <div data-css-scope={style.scope}>
       <div className='brave-rewards-logo' />
       <nav>
-        <Button kind='outline' size='small' fab onClick={onBack}>
+        <Button
+          kind='outline'
+          size='small'
+          fab
+          onClick={onBack}
+        >
           <Icon name='arrow-left' />
         </Button>
       </nav>

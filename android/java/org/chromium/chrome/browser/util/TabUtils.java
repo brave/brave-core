@@ -204,9 +204,8 @@ public class TabUtils {
     public static void openNewTab() {
         try {
             BraveActivity braveActivity = BraveActivity.getBraveActivity();
-            boolean isIncognito = braveActivity != null
-                    ? braveActivity.getCurrentTabModel().isIncognito()
-                    : false;
+            boolean isIncognito =
+                    braveActivity != null && braveActivity.getCurrentTabModel().isIncognito();
             openNewTab(braveActivity, isIncognito);
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "openNewTab " + e);

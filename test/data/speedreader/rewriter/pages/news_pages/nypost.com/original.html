@@ -120,7 +120,7 @@
 				// Check if we have a cookie.
 				if ( GACookie.length ) {
 					// If the cookie value is not empty we have a GA cookie.
-					hasGACookie = GACookie[0].trim().length > 4 ? true : false;
+					hasGACookie = GACookie[0].trim().length > 4;
 				}
 
 				// Id to use for localStorage object which holds the GA clientId and expire time.

@@ -38,7 +38,9 @@ class ZCashCreateTransparentTransactionTask {
   void ScheduleWorkOnTask();
   void WorkOnTask();
 
-  bool IsTestnet() { return context_.chain_id == mojom::kZCashTestnet; }
+  bool IsTestnet() {
+    return context_.account_id->keyring_id == mojom::KeyringId::kZCashTestnet;
+  }
 
   void SetError(const std::string& error_string) { error_ = error_string; }
 

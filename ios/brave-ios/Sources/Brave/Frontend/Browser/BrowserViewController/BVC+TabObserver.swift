@@ -33,8 +33,6 @@ extension BrowserViewController: TabObserver {
       BraveSearchScriptHandler(profile: profile, rewards: rewards),
       ResourceDownloadScriptHandler(),
       DownloadContentScriptHandler(browserController: self),
-      PlaylistScriptHandler(tab: tab),
-      PlaylistFolderSharingScriptHandler(),
       AdsMediaReportingScriptHandler(rewards: rewards),
       ReadyStateScriptHandler(),
       DeAmpScriptHandler(),
@@ -50,6 +48,13 @@ extension BrowserViewController: TabObserver {
 
     if let contentBlocker = tab.contentBlocker {
       injectedScripts.append(contentBlocker)
+    }
+
+    if profileController.profile.prefs.isPlaylistAvailable {
+      injectedScripts.append(contentsOf: [
+        PlaylistScriptHandler(tab: tab),
+        PlaylistFolderSharingScriptHandler(),
+      ])
     }
 
     if profileController.profile.prefs.isBraveTalkAvailable {
@@ -130,9 +135,7 @@ extension BrowserViewController: TabObserver {
       clearPageZoomDialog()
 
       // If we are going to navigate to a new page, refresh the translate status.
-      topToolbar.updateTranslateButtonState(
-        tabManager.selectedTab?.translationState ?? .unavailable
-      )
+      updateTranslateURLBar(tab: tab, state: .unavailable)
 
       // If we are going to navigate to a new page, hide the reader mode button. Unless we
       // are going to a about:reader page. Then we keep it on screen: it will change status

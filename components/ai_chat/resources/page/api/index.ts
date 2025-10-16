@@ -72,6 +72,10 @@ class PageAPI extends API<State> {
   public tabObserver: Mojom.TabDataObserverCallbackRouter =
     new Mojom.TabDataObserverCallbackRouter()
 
+  public bookmarksService = Mojom.BookmarksPageHandler.getRemote()
+
+  public historyService = Mojom.HistoryUIHandler.getRemote()
+
   constructor() {
     super(defaultUIState)
     this.initialize()

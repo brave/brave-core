@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
+import useMediaQuery from '$web-common/useMediaQuery'
 
 // Types
 import { WalletRoutes } from '../../../constants/types'
@@ -117,7 +118,7 @@ export const FundWalletScreen = () => {
     (country) =>
       country.countryCode.toLowerCase() === selectedCountryCode.toLowerCase(),
   )
-  const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+  const isDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
   const isStorybook = isComponentInStorybook()
   const pageTitle = getLocale('braveWalletBuyAsset').replace(
     '$1',

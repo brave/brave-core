@@ -13,6 +13,7 @@
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_daypart_info.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/condition_matcher/condition_matcher_util.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-data-view.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
@@ -35,6 +36,8 @@ struct CreativeAdInfo {
   std::string creative_set_id;
   std::string campaign_id;
   std::string advertiser_id;
+  mojom::NewTabPageAdMetricType metric_type =
+      mojom::NewTabPageAdMetricType::kUndefined;
   base::Time start_at;
   base::Time end_at;
   int daily_cap = 0;

@@ -12,7 +12,7 @@ import { Url } from 'gen/url/mojom/url.mojom.m.js'
 import { useAIChat } from '../../state/ai_chat_context'
 import TrulyPrivateIllustration from './truly_private_illustration.svg'
 import ChatWithIllustration from './chat_with_illustration.svg'
-import AutomateIllustration from './automate_illustration.svg'
+import BYOMIllustration from './byom_illustration.svg'
 import styles from './style.module.scss'
 
 const welcomeCards = [
@@ -27,9 +27,9 @@ const welcomeCards = [
     illustration: ChatWithIllustration,
   },
   {
-    title: getLocale(S.CHAT_UI_WELCOME_CARD_AUTOMATE_WORK_TITLE),
-    description: getLocale(S.CHAT_UI_WELCOME_CARD_AUTOMATE_WORK_SUBTITLE),
-    illustration: AutomateIllustration,
+    title: getLocale(S.CHAT_UI_WELCOME_BRING_YOUR_OWN_MODEL_TITLE),
+    description: getLocale(S.CHAT_UI_WELCOME_BRING_YOUR_OWN_MODEL_SUBTITLE),
+    illustration: BYOMIllustration,
   },
 ]
 

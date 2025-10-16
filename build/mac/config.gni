@@ -23,6 +23,9 @@ declare_args() {
   # we have fully migrated to Omaha 4, we will remove this GN arg with a default
   # value of true.
   install_omaha4_with_pkg = false
+
+  # Path to the private key that is used to sign browser updates.
+  dmg_crx_private_key = ""
 }
 
 if (host_os == "mac") {

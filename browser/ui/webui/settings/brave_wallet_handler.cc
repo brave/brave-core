@@ -356,10 +356,9 @@ void BraveWalletHandler::SetDefaultNetwork(const base::Value::List& args) {
   auto* brave_wallet_service =
       brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
           Profile::FromWebUI(web_ui()));
-  auto result = brave_wallet_service
-                    ? brave_wallet_service->json_rpc_service()->SetNetwork(
-                          *chain_id, *coin, std::nullopt)
-                    : false;
+  auto result = brave_wallet_service &&
+                brave_wallet_service->json_rpc_service()->SetNetwork(
+                    *chain_id, *coin, std::nullopt);
   ResolveJavascriptCallback(args[0], base::Value(result));
 }
 

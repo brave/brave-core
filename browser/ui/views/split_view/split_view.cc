@@ -624,10 +624,6 @@ void SplitView::OnWidgetDestroying(views::Widget* widget) {
 
 void SplitView::OnWidgetWindowModalVisibilityChanged(views::Widget* widget,
                                                      bool visible) {
-  if (!base::FeatureList::IsEnabled(features::kScrimForBrowserWindowModal)) {
-    return;
-  }
-
 #if !BUILDFLAG(IS_MAC)
   // MacOS does not need views window scrim. We use sheets to show window modals
   // (-[NSWindow beginSheet:]), which natively draw a scrim since macOS 11.

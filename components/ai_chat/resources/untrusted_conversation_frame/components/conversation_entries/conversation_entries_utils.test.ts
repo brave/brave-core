@@ -3,13 +3,19 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import * as Mojom from '../../../common/mojom'
 import {
   getReasoningText,
   removeReasoning,
   removeCitationsWithMissingLinks,
   groupConversationEntries,
+  isAssistantGroupTask,
 } from './conversation_entries_utils'
-import * as Mojom from '../../../common/mojom'
+import {
+  createConversationTurnWithDefaults,
+  getToolUseEvent,
+  getCompletionEvent,
+} from '../../../common/test_data_utils'
 
 describe('groupConversationEntries', () => {
   it('should group consecutive assistant entries', () => {
@@ -178,5 +184,236 @@ describe('removeCitationsWithMissingLinks', () => {
     expect(removeCitationsWithMissingLinks(input, citationLinks)).toBe(
       'Citation [1] and [2] thats it.',
     )
+  })
+})
+
+describe('isGroupTask', () => {
+  it('should return true for multiple events with a completion and 2 task tools split across entries', () => {
+    const group: Mojom.ConversationTurn[] = [
+      createConversationTurnWithDefaults({
+        characterType: Mojom.CharacterType.ASSISTANT,
+        events: [
+          getCompletionEvent('Running tasks...'),
+          getToolUseEvent({
+            toolName: 'a-task-tool1',
+            id: '1',
+            argumentsJson: ' input',
+            output: undefined,
+          }),
+        ],
+      }),
+      createConversationTurnWithDefaults({
+        characterType: Mojom.CharacterType.ASSISTANT,
+        events: [
+          getToolUseEvent({
+            toolName: 'a-task-tool2',
+            id: '1',
+            argumentsJson: 'tool input',
+            output: undefined,
+          }),
+        ],
+      }),
+    ]
+
+    expect(isAssistantGroupTask(group)).toBe(true)
+  })
+
+  it('should return true for multiple events with 2 task tools in 1 entry and a completion in the other', () => {
+    const group: Mojom.ConversationTurn[] = [
+      createConversationTurnWithDefaults({
+        characterType: Mojom.CharacterType.ASSISTANT,
+        events: [
+          getToolUseEvent({
+            toolName: 'a-task-tool1',
+            id: '1',
+            argumentsJson: ' input',
+            output: undefined,
+          }),
+          getToolUseEvent({
+            toolName: 'a-task-tool2',
+            id: '1',
+            argumentsJson: 'tool input',
+            output: undefined,
+          }),
+        ],
+      }),
+      createConversationTurnWithDefaults({
+        characterType: Mojom.CharacterType.ASSISTANT,
+        events: [getCompletionEvent('task completed')],
+      }),
+    ]
+
+    expect(isAssistantGroupTask(group)).toBe(true)
+  })
+
+  it('sanity check: should return false when including a non-assistant entry', () => {
+    const group: Mojom.ConversationTurn[] = [
+      createConversationTurnWithDefaults({
+        characterType: Mojom.CharacterType.HUMAN,
+        text: 'Question 1',
+      }),
+      createConversationTurnWithDefaults({
+        characterType: Mojom.CharacterType.ASSISTANT,
+        events: [
+          getToolUseEvent({
+            toolName: 'a-task-tool1',
+            id: '1',
+            argumentsJson: ' input',
+            output: undefined,
+          }),
+          getToolUseEvent({
+            toolName: 'a-task-tool2',
+            id: '1',
+            argumentsJson: 'tool input',
+            output: undefined,
+          }),
+        ],
+      }),
+      createConversationTurnWithDefaults({
+        characterType: Mojom.CharacterType.ASSISTANT,
+        events: [getCompletionEvent('task completed')],
+      }),
+    ]
+
+    expect(isAssistantGroupTask(group)).toBe(false)
+  })
+
+  it('should return false for single entry group', () => {
+    const group: Mojom.ConversationTurn[] = [
+      createConversationTurnWithDefaults({
+        characterType: Mojom.CharacterType.ASSISTANT,
+        events: [
+          getCompletionEvent('Running tasks...'),
+          getToolUseEvent({
+            toolName: 'a-task-tool1',
+            id: '1',
+            argumentsJson: ' input',
+            output: undefined,
+          }),
+          getToolUseEvent({
+            toolName: 'a-task-tool2',
+            id: '1',
+            argumentsJson: 'tool input',
+            output: undefined,
+          }),
+        ],
+      }),
+    ]
+
+    expect(isAssistantGroupTask(group)).toBe(false)
+  })
+
+  it('should return false for empty group', () => {
+    const group: Mojom.ConversationTurn[] = []
+    expect(isAssistantGroupTask(group)).toBe(false)
+  })
+
+  it('should return false when group has no completion event', () => {
+    const group: Mojom.ConversationTurn[] = [
+      createConversationTurnWithDefaults({
+        characterType: Mojom.CharacterType.ASSISTANT,
+        events: [
+          getToolUseEvent({
+            toolName: 'a-task-tool1',
+            id: '1',
+            argumentsJson: ' input',
+            output: undefined,
+          }),
+        ],
+      }),
+      createConversationTurnWithDefaults({
+        characterType: Mojom.CharacterType.ASSISTANT,
+        events: [
+          getToolUseEvent({
+            toolName: 'a-task-tool2',
+            id: '1',
+            argumentsJson: 'tool input',
+            output: undefined,
+          }),
+        ],
+      }),
+    ]
+
+    expect(isAssistantGroupTask(group)).toBe(false)
+  })
+
+  it('should return false when group has no valid tool use events', () => {
+    const group: Mojom.ConversationTurn[] = [
+      createConversationTurnWithDefaults({
+        characterType: Mojom.CharacterType.ASSISTANT,
+        events: [
+          getCompletionEvent('Running tasks...'),
+          getToolUseEvent({
+            toolName: Mojom.USER_CHOICE_TOOL_NAME,
+            id: '1',
+            argumentsJson: ' input',
+            output: undefined,
+          }),
+        ],
+      }),
+      createConversationTurnWithDefaults({
+        characterType: Mojom.CharacterType.ASSISTANT,
+        events: [
+          getToolUseEvent({
+            toolName: Mojom.MEMORY_STORAGE_TOOL_NAME,
+            id: '1',
+            argumentsJson: 'tool input',
+            output: undefined,
+          }),
+        ],
+      }),
+    ]
+
+    expect(isAssistantGroupTask(group)).toBe(false)
+  })
+
+  it('should return false with only 1 task tool use event - no others', () => {
+    const group: Mojom.ConversationTurn[] = [
+      createConversationTurnWithDefaults({
+        characterType: Mojom.CharacterType.ASSISTANT,
+        events: [
+          getToolUseEvent({
+            toolName: 'a-task-tool1',
+            id: '1',
+            argumentsJson: ' input',
+            output: undefined,
+          }),
+        ],
+      }),
+      createConversationTurnWithDefaults({
+        characterType: Mojom.CharacterType.ASSISTANT,
+        events: [getCompletionEvent('task completed')],
+      }),
+    ]
+
+    expect(isAssistantGroupTask(group)).toBe(false)
+  })
+
+  it('should return false with only 1 task tool use event mixed with non-task tool', () => {
+    const group: Mojom.ConversationTurn[] = [
+      createConversationTurnWithDefaults({
+        characterType: Mojom.CharacterType.ASSISTANT,
+        events: [
+          getToolUseEvent({
+            toolName: 'a-task-tool1',
+            id: '1',
+            argumentsJson: ' input',
+            output: undefined,
+          }),
+          getToolUseEvent({
+            toolName: Mojom.USER_CHOICE_TOOL_NAME,
+            id: '1',
+            argumentsJson: ' input',
+            output: undefined,
+          }),
+        ],
+      }),
+      createConversationTurnWithDefaults({
+        characterType: Mojom.CharacterType.ASSISTANT,
+        events: [getCompletionEvent('task completed')],
+      }),
+    ]
+
+    expect(isAssistantGroupTask(group)).toBe(false)
   })
 })

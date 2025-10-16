@@ -905,6 +905,8 @@ base::span<const webui::LocalizedString> GetWebUILocalizedStrings(
                    IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_SOCIAL},
                   {"issueCategoryChat",
                    IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_CHAT},
+                  {"issueCategoryBrowserNotSupported",
+                   IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_BROWSER_NOT_SUPPORTED},
                   {"issueCategoryOther",
                    IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_OTHER},
                   {"reportDetails", IDS_BRAVE_WEBCOMPATREPORTER_REPORT_DETAILS},

@@ -243,12 +243,12 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerBrowserTest, ExpirationSmoke) {
     std::unique_ptr<base::ScopedMockTimeMessageLoopTaskRunner>
         scoped_mock_time_task_runner;
     EXPECT_CALL(*prompt_factory_, OnPermissionPromptCreated(_))
-        .WillOnce(testing::Invoke([&](MockPermissionLifetimePrompt* prompt) {
+        .WillOnce([&](MockPermissionLifetimePrompt* prompt) {
           run_loop.Quit();
           prompt->delegate()->Requests()[0]->SetLifetime(base::Seconds(30));
           scoped_mock_time_task_runner =
               std::make_unique<base::ScopedMockTimeMessageLoopTaskRunner>();
-        }));
+        });
     GURL target_url = RequestPermission(entry, url);
     run_loop.Run();
 
@@ -285,9 +285,9 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerBrowserTest,
     SCOPED_TRACE(GetContentSettingTypeString(entry.type));
     ++show_count;
     EXPECT_CALL(*prompt_factory_, OnPermissionPromptCreated(_))
-        .WillOnce(testing::Invoke([&](MockPermissionLifetimePrompt* prompt) {
+        .WillOnce([&](MockPermissionLifetimePrompt* prompt) {
           prompt->delegate()->Requests()[0]->SetLifetime(base::Seconds(30));
-        }));
+        });
 
     GURL target_url = RequestPermission(entry, url);
     prompt_factory_->WaitForPermissionBubble();
@@ -362,9 +362,9 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerBrowserTest,
     ++show_count;
 
     EXPECT_CALL(*prompt_factory_, OnPermissionPromptCreated(_))
-        .WillOnce(testing::Invoke([&](MockPermissionLifetimePrompt* prompt) {
+        .WillOnce([&](MockPermissionLifetimePrompt* prompt) {
           prompt->delegate()->Requests()[0]->SetLifetime(base::Seconds(30));
-        }));
+        });
     GURL target_url = RequestPermission(entry, url);
     prompt_factory_->WaitForPermissionBubble();
 
@@ -395,9 +395,9 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerBrowserTest,
     prompt_factory_->set_response_type(
         PermissionRequestManager::AutoResponseType::ACCEPT_ALL);
     EXPECT_CALL(*prompt_factory_, OnPermissionPromptCreated(_))
-        .WillOnce(testing::Invoke([](MockPermissionLifetimePrompt* prompt) {
+        .WillOnce([](MockPermissionLifetimePrompt* prompt) {
           prompt->delegate()->Requests()[0]->SetLifetime(base::TimeDelta());
-        }));
+        });
     GURL target_url = RequestPermission(entry, url);
     prompt_factory_->WaitForPermissionBubble();
 
@@ -438,9 +438,9 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerBrowserTest,
     prompt_factory_->set_response_type(
         PermissionRequestManager::AutoResponseType::ACCEPT_ALL);
     EXPECT_CALL(*prompt_factory_, OnPermissionPromptCreated(_))
-        .WillOnce(testing::Invoke([](MockPermissionLifetimePrompt* prompt) {
+        .WillOnce([](MockPermissionLifetimePrompt* prompt) {
           prompt->delegate()->Requests()[0]->SetLifetime(base::TimeDelta());
-        }));
+        });
     GURL target_url = RequestPermission(entry, url);
     prompt_factory_->WaitForPermissionBubble();
 
@@ -485,9 +485,9 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerBrowserTest,
         PermissionRequestManager::AutoResponseType::ACCEPT_ALL);
 
     EXPECT_CALL(*prompt_factory_, OnPermissionPromptCreated(_))
-        .WillOnce(testing::Invoke([](MockPermissionLifetimePrompt* prompt) {
+        .WillOnce([](MockPermissionLifetimePrompt* prompt) {
           prompt->delegate()->Requests()[0]->SetLifetime(base::TimeDelta());
-        }));
+        });
     GURL target_url = RequestPermission(entry, url);
     prompt_factory_->WaitForPermissionBubble();
 
@@ -539,9 +539,9 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerBrowserTest,
         PermissionRequestManager::AutoResponseType::ACCEPT_ALL);
 
     EXPECT_CALL(*prompt_factory_, OnPermissionPromptCreated(_))
-        .WillOnce(testing::Invoke([](MockPermissionLifetimePrompt* prompt) {
+        .WillOnce([](MockPermissionLifetimePrompt* prompt) {
           prompt->delegate()->Requests()[0]->SetLifetime(base::TimeDelta());
-        }));
+        });
     GURL target_url = RequestPermission(entry, url);
     prompt_factory_->WaitForPermissionBubble();
 
@@ -593,9 +593,9 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerBrowserTest,
         PermissionRequestManager::AutoResponseType::ACCEPT_ALL);
 
     EXPECT_CALL(*prompt_factory_, OnPermissionPromptCreated(_))
-        .WillOnce(testing::Invoke([](MockPermissionLifetimePrompt* prompt) {
+        .WillOnce([](MockPermissionLifetimePrompt* prompt) {
           prompt->delegate()->Requests()[0]->SetLifetime(base::TimeDelta());
-        }));
+        });
     GURL target_url = RequestPermission(entry, url);
     prompt_factory_->WaitForPermissionBubble();
 

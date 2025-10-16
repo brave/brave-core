@@ -36,12 +36,14 @@
 *.xslt  text eol=lf
 *.xtb   text eol=lf
 
-.ci_features             text eol=lf
+.ci_features             text eol=lf linguist-language=ini
 .clang*                  text eol=lf
 .git-blame-ignore-revs   text eol=lf
 .gitattributes           text eol=lf
 .gitignore               text eol=lf
-.vpython*                text eol=lf
+.vpython*                text eol=lf linguist-language=protocol-buffer-text-format
+
+/test/filters/*.filter text eol=lf linguist-language=gitignore
 
 DEPS   text eol=lf
 LICENSE text eol=lf

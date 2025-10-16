@@ -19,6 +19,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/creative_campaign_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_daypart_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_deposit_info.h"
+#include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 namespace brave_ads::database::table {
@@ -38,6 +39,7 @@ size_t BindColumns(const mojom::DBActionInfoPtr& mojom_db_action,
   int32_t index = 0;
   for (const auto& [campaign_id, campaign] : campaigns) {
     BindColumnString(mojom_db_action, index++, campaign_id);
+    BindColumnString(mojom_db_action, index++, ToString(campaign.metric_type));
     BindColumnTime(mojom_db_action, index++, campaign.start_at);
     BindColumnTime(mojom_db_action, index++, campaign.end_at);
     BindColumnInt(mojom_db_action, index++, campaign.daily_cap);
@@ -76,9 +78,10 @@ void Campaigns::Insert(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
 
   for (const auto& creative_ad : creative_ads) {
     campaigns[creative_ad.campaign_id] = {
-        creative_ad.start_at,  creative_ad.end_at,
-        creative_ad.daily_cap, creative_ad.advertiser_id,
-        creative_ad.priority,  creative_ad.pass_through_rate};
+        creative_ad.metric_type,      creative_ad.start_at,
+        creative_ad.end_at,           creative_ad.daily_cap,
+        creative_ad.advertiser_id,    creative_ad.priority,
+        creative_ad.pass_through_rate};
 
     geo_targets[creative_ad.campaign_id] = creative_ad.geo_targets;
 
@@ -125,6 +128,7 @@ void Campaigns::Create(
   Execute(mojom_db_transaction, R"(
       CREATE TABLE campaigns (
         id TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
+        metric_type TEXT NOT NULL DEFAULT 'confirmation',
         start_at TIMESTAMP NOT NULL,
         end_at TIMESTAMP NOT NULL,
         daily_cap INTEGER DEFAULT 0 NOT NULL,
@@ -141,6 +145,11 @@ void Campaigns::Migrate(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
   switch (to_version) {
     case 48: {
       MigrateToV48(mojom_db_transaction);
+      break;
+    }
+
+    case 52: {
+      MigrateToV52(mojom_db_transaction);
       break;
     }
 
@@ -165,6 +174,37 @@ void Campaigns::MigrateToV48(
   Create(mojom_db_transaction);
 }
 
+void Campaigns::MigrateToV52(
+    const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
+  CHECK(mojom_db_transaction);
+
+  // Create a temporary table:
+  //   - with a new `metric_type` column with a default value of 'confirmation',
+  //     which will be corrected when the new tab page ads are updated.
+  Execute(mojom_db_transaction, R"(
+      CREATE TABLE campaigns_temp (
+        id TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
+        metric_type TEXT NOT NULL DEFAULT 'confirmation',
+        start_at TIMESTAMP NOT NULL,
+        end_at TIMESTAMP NOT NULL,
+        daily_cap INTEGER DEFAULT 0 NOT NULL,
+        advertiser_id TEXT NOT NULL,
+        priority INTEGER NOT NULL DEFAULT 0,
+        ptr DOUBLE NOT NULL DEFAULT 1
+      ))");
+
+  // Copy legacy columns to the temporary table, drop the legacy table and
+  // rename the temporary table.
+  const std::vector<std::string> columns = {
+      "id",       "start_at", "end_at", "daily_cap", "advertiser_id",
+      "priority", "ptr"};
+
+  CopyTableColumns(mojom_db_transaction, "campaigns", "campaigns_temp", columns,
+                   /*should_drop=*/true);
+
+  RenameTable(mojom_db_transaction, "campaigns_temp", "campaigns");
+}
+
 std::string Campaigns::BuildInsertSql(
     const mojom::DBActionInfoPtr& mojom_db_action,
     const std::map</*campaign_id*/ std::string, CreativeCampaignInfo>&
@@ -178,6 +218,7 @@ std::string Campaigns::BuildInsertSql(
       R"(
           INSERT INTO $1 (
             id,
+            metric_type,
             start_at,
             end_at,
             daily_cap,
@@ -186,7 +227,7 @@ std::string Campaigns::BuildInsertSql(
             ptr
           ) VALUES $2)",
       {GetTableName(),
-       BuildBindColumnPlaceholders(/*column_count=*/7, row_count)},
+       BuildBindColumnPlaceholders(/*column_count=*/8, row_count)},
       nullptr);
 }
 

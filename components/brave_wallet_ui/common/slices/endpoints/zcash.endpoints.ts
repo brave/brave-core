@@ -95,7 +95,6 @@ export const zcashEndpoints = ({
           const { zcashWalletService } = baseQuery(undefined).data
 
           const { balance } = await zcashWalletService.getBalance(
-            args.chainId,
             args.accountId,
           )
 
@@ -178,10 +177,7 @@ export const zcashEndpoints = ({
         try {
           const { zcashWalletService } = baseQuery(undefined).data
 
-          const { status } = await zcashWalletService.getChainTipStatus(
-            args,
-            BraveWallet.Z_CASH_MAINNET,
-          )
+          const { status } = await zcashWalletService.getChainTipStatus(args)
 
           return {
             data: status,

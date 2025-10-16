@@ -44,7 +44,8 @@ std::optional<T> LoadAndParseResourceComponentOnBackgroundThread(
       return std::nullopt;
     }
 
-    dict = base::JSONReader::ReadDict(content);
+    dict = base::JSONReader::ReadDict(content,
+                                      base::JSON_PARSE_CHROMIUM_EXTENSIONS);
     if (!dict) {
       return std::nullopt;
     }

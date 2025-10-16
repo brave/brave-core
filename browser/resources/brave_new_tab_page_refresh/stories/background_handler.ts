@@ -8,7 +8,7 @@ import { Store } from '../lib/store'
 import {
   BackgroundState,
   BackgroundActions,
-  SponsoredImageBackground,
+  NewTabPageAdMetricType,
   SelectedBackgroundType } from '../state/background_state'
 
 function delay(ms: number) {
@@ -20,7 +20,7 @@ function delay(ms: number) {
 const sampleBackground =
     'https://brave.com/static-assets/images/coding-background-texture.jpg'
 
-const sponsoredBackgrounds: Record<string, SponsoredImageBackground | null> = {
+const sponsoredBackgrounds = {
   image: {
     wallpaperType: '',
     imageUrl: sampleBackground,
@@ -32,7 +32,7 @@ const sponsoredBackgrounds: Record<string, SponsoredImageBackground | null> = {
       destinationUrl: 'https://brave.com',
       imageUrl: sampleBackground
     },
-    shouldMetricsFallbackToP3a: false
+    metricType: NewTabPageAdMetricType.kConfirmation
   },
 
   richMedia: {
@@ -46,7 +46,7 @@ const sponsoredBackgrounds: Record<string, SponsoredImageBackground | null> = {
       destinationUrl: 'https://brave.com',
       imageUrl: ''
     },
-    shouldMetricsFallbackToP3a: false
+    metricType: NewTabPageAdMetricType.kConfirmation
   },
 
   none: null
@@ -69,7 +69,8 @@ export function createBackgroundHandler(
   })
 
   store.update({
-    sponsoredRichMediaBaseUrl: 'https://brave.com'
+    sponsoredRichMediaBaseUrl:
+      new URL(sponsoredBackgrounds.richMedia.imageUrl).origin
   })
 
   return {
@@ -114,6 +115,8 @@ export function createBackgroundHandler(
 
     notifySponsoredImageLogoClicked() {},
 
-    notifySponsoredRichMediaEvent(type) {}
+    notifySponsoredRichMediaEvent(type) {
+      console.log('richMediaEvent', type)
+    }
   }
 }

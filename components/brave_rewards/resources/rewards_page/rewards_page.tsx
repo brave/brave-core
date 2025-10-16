@@ -57,6 +57,6 @@ whenDocumentReady().then(() => {
           </ShowHandler>
         </AppModelContext.Provider>
       </LocaleContext.Provider>
-    </TabOpenerContext.Provider>
+    </TabOpenerContext.Provider>,
   )
 })

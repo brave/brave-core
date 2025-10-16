@@ -24,11 +24,14 @@ export function CardItemView(props: Props) {
       onClick={() => model.recordOfferClick()}
     >
       <span className='thumbnail'>
-        {
-          thumbnail
-            ? <img src={thumbnail} />
-            : <img className='favicon' src={faviconURL(item.url)} />
-        }
+        {thumbnail ? (
+          <img src={thumbnail} />
+        ) : (
+          <img
+            className='favicon'
+            src={faviconURL(item.url)}
+          />
+        )}
       </span>
       <span className='item-info'>
         <span className='title'>{item.title}</span>

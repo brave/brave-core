@@ -20,8 +20,9 @@ function getUserFromAppState(eventName: string, screenName: string) {
     for (const name of Object.getOwnPropertyNames(elem)) {
       if (name.startsWith('__reactProps$')) {
         let store: any = null
-        try { store = (elem as any)[name].children.props.store }
-        catch {}
+        try {
+          store = (elem as any)[name].children.props.store
+        } catch {}
         if (store && typeof store.getState === 'function') {
           return store as StateStore
         }
@@ -65,7 +66,7 @@ function getUserFromAppState(eventName: string, screenName: string) {
           id: `twitter#channel:${key}`,
           name: screenName,
           url: `${location.origin}/${screenName}`,
-          imageURL: String(value.profile_image_url_https || '')
+          imageURL: String(value.profile_image_url_https || ''),
         }
       }
     }
@@ -89,9 +90,11 @@ function getUserFromAppState(eventName: string, screenName: string) {
     return null
   }
 
-  document.dispatchEvent(new CustomEvent(eventName, {
-    detail: { user: getUserByScreenName(), messages }
-  }))
+  document.dispatchEvent(
+    new CustomEvent(eventName, {
+      detail: { user: getUserByScreenName(), messages },
+    }),
+  )
 }
 
 initializeDetector(() => {
@@ -141,8 +144,7 @@ initializeDetector(() => {
     return await pollFor(() => getUserFromPath(location.pathname), {
       name: 'creator',
       interval: 1000,
-      timeout: 6000
+      timeout: 6000,
     })
   }
-
 })

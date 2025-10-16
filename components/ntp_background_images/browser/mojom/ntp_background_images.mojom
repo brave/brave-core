@@ -11,6 +11,6 @@ interface SponsoredRichMediaAdEventHandler {
   MaybeReportRichMediaAdEvent(
       string placement_id,
       string creative_instance_id,
-      bool should_metrics_fallback_to_p3a,
+      brave_ads.mojom.NewTabPageAdMetricType mojom_ad_metric_type,
       brave_ads.mojom.NewTabPageAdEventType ad_event_type);
 };

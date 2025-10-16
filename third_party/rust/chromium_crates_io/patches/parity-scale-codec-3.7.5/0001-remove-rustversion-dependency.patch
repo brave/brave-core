@@ -1,0 +1,24 @@
+From 95c4b1e77a4ea805dd3a2f32e10aa35aaad80f59 Mon Sep 17 00:00:00 2001
+From: Christian Mazakas <christian.mazakas@gmail.com>
+Date: Wed, 1 Oct 2025 12:23:13 -0700
+Subject: [PATCH] remove rustversion dependency
+
+---
+ .../vendor/parity-scale-codec-v3/build.rs                  | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
+
+diff --git a/brave/third_party/rust/chromium_crates_io/vendor/parity-scale-codec-v3/build.rs b/brave/third_party/rust/chromium_crates_io/vendor/parity-scale-codec-v3/build.rs
+index 76854863a24..f328e4d9d04 100644
+--- a/brave/third_party/rust/chromium_crates_io/vendor/parity-scale-codec-v3/build.rs
++++ b/brave/third_party/rust/chromium_crates_io/vendor/parity-scale-codec-v3/build.rs
+@@ -1,6 +1 @@
+-fn main() {
+-	println!("cargo:rustc-check-cfg=cfg(nightly)");
+-	if rustversion::cfg!(nightly) {
+-		println!("cargo:rustc-cfg=nightly");
+-	}
+-}
++fn main() {}
+-- 
+2.51.0.windows.1
+

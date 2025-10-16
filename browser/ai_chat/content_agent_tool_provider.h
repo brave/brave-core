@@ -45,6 +45,8 @@ class ContentAgentToolProvider : public ToolProvider,
 
  private:
   friend class BrowserToolsTest;
+  friend class ContentAgentToolProviderTest;
+  friend class ContentAgentToolProviderBrowserTest;
 
   void CreateTools();
 

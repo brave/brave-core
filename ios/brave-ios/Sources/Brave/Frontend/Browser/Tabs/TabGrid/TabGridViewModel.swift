@@ -35,6 +35,7 @@ class TabGridViewModel {
     didSet {
       if !isSearching {
         searchQuery = ""
+        updateTabs()
       }
     }
   }
@@ -43,8 +44,10 @@ class TabGridViewModel {
     didSet {
       // Avoid updating tabs if the search query hasn't changed
       if oldValue == searchQuery { return }
-      withAnimation {
-        updateTabs()
+      if isSearching {
+        withAnimation {
+          updateTabs()
+        }
       }
     }
   }

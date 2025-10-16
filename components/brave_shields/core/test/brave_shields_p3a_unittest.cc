@@ -9,6 +9,7 @@
 
 #include "base/test/metrics/histogram_tester.h"
 #include "base/test/scoped_feature_list.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -83,7 +84,10 @@ TEST_F(BraveShieldsP3ATest, RecordDomainAdBlockCounts) {
                                   GURL("https://brave.com"));
 
   // Test initial count
-  MaybeRecordInitialShieldsSettings(GetProfile()->GetPrefs(), map);
+  MaybeRecordInitialShieldsSettings(
+      GetProfile()->GetPrefs(), map,
+      GetCosmeticFilteringControlType(map, GURL()),
+      GetFingerprintingControlType(map, GURL()));
   histogram_tester_->ExpectBucketCount(kDomainAdsSettingsAboveHistogramName, 1,
                                        1);
   histogram_tester_->ExpectBucketCount(kDomainAdsSettingsBelowHistogramName, 0,
@@ -148,7 +152,10 @@ TEST_F(BraveShieldsP3ATest, RecordDomainFingerprintBlockCounts) {
                                GURL("https://brave.com"));
 
   // Test initial count
-  MaybeRecordInitialShieldsSettings(GetProfile()->GetPrefs(), map);
+  MaybeRecordInitialShieldsSettings(
+      GetProfile()->GetPrefs(), map,
+      GetCosmeticFilteringControlType(map, GURL()),
+      GetFingerprintingControlType(map, GURL()));
   histogram_tester_->ExpectBucketCount(kDomainFPSettingsAboveHistogramName, 1,
                                        1);
   histogram_tester_->ExpectBucketCount(kDomainFPSettingsBelowHistogramName, 0,

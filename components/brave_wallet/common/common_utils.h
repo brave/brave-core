@@ -59,6 +59,7 @@ bool IsZCashKeyring(mojom::KeyringId keyring_id);
 bool IsZCashMainnetKeyring(mojom::KeyringId keyring_id);
 bool IsZCashTestnetKeyring(mojom::KeyringId keyring_id);
 std::string GetNetworkForZCashKeyring(const mojom::KeyringId& keyring_id);
+std::string GetNetworkForZCashAccount(const mojom::AccountIdPtr& account_id);
 
 bool IsCardanoKeyring(mojom::KeyringId keyring_id);
 bool IsCardanoMainnetKeyring(mojom::KeyringId keyring_id);

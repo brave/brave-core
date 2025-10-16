@@ -53,8 +53,8 @@ class DebounceRule {
   static base::expected<std::pair<std::vector<std::unique_ptr<DebounceRule>>,
                                   base::flat_set<std::string>>,
                         std::string>
-  ParseRules(const std::string& contents);
-  static const std::string GetETLDForDebounce(const std::string& host);
+  ParseRules(std::string_view contents);
+  static const std::string GetETLDForDebounce(std::string_view host);
   static bool IsSameETLDForDebounce(const GURL& url1, const GURL& url2);
   static bool GetURLPatternSetFromValue(const base::Value* value,
                                         extensions::URLPatternSet* result);
@@ -68,8 +68,8 @@ class DebounceRule {
 
  private:
   bool CheckPrefForRule(const PrefService* prefs) const;
-  bool ValidateAndParsePatternRegex(const std::string& pattern,
-                                    const std::string& path,
+  bool ValidateAndParsePatternRegex(std::string_view pattern,
+                                    std::string_view path,
                                     std::string* parsed_value) const;
   extensions::URLPatternSet include_pattern_set_;
   extensions::URLPatternSet exclude_pattern_set_;

@@ -50,6 +50,7 @@ class BraveToolbarView : public ToolbarView,
   void Init() override;
   void Layout(PassKey) override;
   void Update(content::WebContents* tab) override;
+  void UpdateRecedingCornerRadius() override;
   void OnThemeChanged() override;
   void OnEditBookmarksEnabledChanged();
   void OnLocationBarIsWideChanged();

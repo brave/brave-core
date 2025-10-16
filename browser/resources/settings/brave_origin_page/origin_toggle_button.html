@@ -1,0 +1,55 @@
+<style include="cr-shared-style cr-actionable-row-style">
+  :host {
+    --cr-icon-button-margin-end: 20px;
+    padding: 0 var(--cr-section-padding);
+  }
+
+  #outerRow {
+    align-items: center;
+    display: flex;
+    min-height: var(--cr-section-two-line-min-height);
+    width: 100%;
+  }
+
+  #outerRow[noSubLabel] {
+    min-height: var(--cr-section-min-height);
+  }
+
+  #icon {
+    margin-inline-end: var(--cr-icon-button-margin-end);
+  }
+
+  #labelWrapper {
+    flex: 1;
+    padding: var(--cr-section-vertical-padding) 0;
+    margin-inline-end: 20px;
+  }
+
+  .label {
+    font-weight: 400;
+  }
+
+  .secondary {
+    color: var(--cr-secondary-text-color);
+  }
+
+  #outerRow:not([disabled]) {
+    cursor: pointer;
+  }
+</style>
+
+<div id="outerRow" noSubLabel$="[[!subLabel]]" disabled$="[[disabled_]]" on-click="onRowClick_">
+  <template is="dom-if" if="[[icon]]">
+    <span id="icon" aria-hidden="true">
+      <cr-icon icon="[[icon]]"></cr-icon>
+    </span>
+  </template>
+  <div id="labelWrapper">
+    <div class="label">[[label]]</div>
+    <div class="cr-secondary-text label" hidden$="[[!subLabel]]">[[subLabel]]</div>
+  </div>
+  <cr-toggle
+      checked="{{checked_}}"
+      disabled="[[disabled_]]">
+  </cr-toggle>
+</div>
