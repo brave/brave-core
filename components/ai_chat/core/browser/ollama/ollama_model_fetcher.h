@@ -12,7 +12,7 @@
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
-#include "brave/components/ai_chat/core/browser/ollama/ollama_client.h"
+#include "brave/components/ai_chat/core/browser/ollama/ollama_service.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
@@ -75,7 +75,7 @@ class OllamaModelFetcher {
 
   void OnOllamaFetchEnabledChanged();
   void OnModelsFetched(
-      std::optional<std::vector<OllamaClient::ModelInfo>> models);
+      std::optional<std::vector<OllamaService::ModelInfo>> models);
   struct PendingModelInfo {
     std::string model_name;
     std::string display_name;
@@ -83,11 +83,11 @@ class OllamaModelFetcher {
 
   void FetchModelDetails(const std::string& model_name);
   void OnModelDetailsFetched(const std::string& model_name,
-                             std::optional<OllamaClient::ModelDetails> details);
+                             std::optional<OllamaService::ModelDetails> details);
 
   const raw_ref<ModelService> model_service_;
   raw_ptr<PrefService> prefs_;
-  std::unique_ptr<OllamaClient> ollama_client_;
+  std::unique_ptr<OllamaService> ollama_service_;
   PrefChangeRegistrar pref_change_registrar_;
   std::map<std::string, PendingModelInfo> pending_models_;
   base::WeakPtrFactory<OllamaModelFetcher> weak_ptr_factory_{this};

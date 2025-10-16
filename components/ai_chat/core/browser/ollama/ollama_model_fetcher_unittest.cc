@@ -113,12 +113,12 @@ class OllamaModelFetcherTest : public testing::Test {
 };
 
 TEST_F(OllamaModelFetcherTest, FetchModelsAddsNewModels) {
-  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaApiTagsEndpoint,
+  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaListModelsAPIEndpoint,
                                          kOllamaModelsResponse);
   // Mock the detail responses for each model
-  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaApiShowEndpoint,
+  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaShowModelInfoAPIEndpoint,
                                          kModelDetailsResponse);
-  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaApiShowEndpoint,
+  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaShowModelInfoAPIEndpoint,
                                          kModelDetailsResponse);
 
   size_t initial_count = model_service()->GetModels().size();
@@ -144,11 +144,11 @@ TEST_F(OllamaModelFetcherTest, FetchModelsAddsNewModels) {
 
 TEST_F(OllamaModelFetcherTest, FetchModelsRemovesObsoleteModels) {
   // First fetch - add 2 models
-  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaApiTagsEndpoint,
+  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaListModelsAPIEndpoint,
                                          kOllamaModelsResponse);
-  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaApiShowEndpoint,
+  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaShowModelInfoAPIEndpoint,
                                          kModelDetailsResponse);
-  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaApiShowEndpoint,
+  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaShowModelInfoAPIEndpoint,
                                          kModelDetailsResponse);
   ollama_model_fetcher()->FetchModels();
 
@@ -167,7 +167,7 @@ TEST_F(OllamaModelFetcherTest, FetchModelsRemovesObsoleteModels) {
 
   // Second fetch - only 1 model remains (llama2 is not new, so no detail fetch
   // needed)
-  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaApiTagsEndpoint,
+  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaListModelsAPIEndpoint,
                                          kOllamaModelsResponseUpdated);
   ollama_model_fetcher()->FetchModels();
 
@@ -187,11 +187,11 @@ TEST_F(OllamaModelFetcherTest, FetchModelsRemovesObsoleteModels) {
 
 TEST_F(OllamaModelFetcherTest, RemoveModelsRemovesAllOllamaModels) {
   // First add some models
-  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaApiTagsEndpoint,
+  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaListModelsAPIEndpoint,
                                          kOllamaModelsResponse);
-  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaApiShowEndpoint,
+  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaShowModelInfoAPIEndpoint,
                                          kModelDetailsResponse);
-  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaApiShowEndpoint,
+  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaShowModelInfoAPIEndpoint,
                                          kModelDetailsResponse);
   ollama_model_fetcher()->FetchModels();
 
@@ -225,7 +225,7 @@ TEST_F(OllamaModelFetcherTest, RemoveModelsRemovesAllOllamaModels) {
 
 TEST_F(OllamaModelFetcherTest, FetchModelsHandlesEmptyResponse) {
   base::RunLoop run_loop;
-  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaApiTagsEndpoint,
+  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaListModelsAPIEndpoint,
                                          "");
 
   size_t initial_count = model_service()->GetModels().size();
@@ -243,7 +243,7 @@ TEST_F(OllamaModelFetcherTest, FetchModelsHandlesEmptyResponse) {
 
 TEST_F(OllamaModelFetcherTest, FetchModelsHandlesInvalidJSON) {
   base::RunLoop run_loop;
-  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaApiTagsEndpoint,
+  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaListModelsAPIEndpoint,
                                          "invalid json");
 
   size_t initial_count = model_service()->GetModels().size();
@@ -260,11 +260,11 @@ TEST_F(OllamaModelFetcherTest, FetchModelsHandlesInvalidJSON) {
 }
 
 TEST_F(OllamaModelFetcherTest, PrefChangeTriggersModelFetch) {
-  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaApiTagsEndpoint,
+  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaListModelsAPIEndpoint,
                                          kOllamaModelsResponse);
-  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaApiShowEndpoint,
+  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaShowModelInfoAPIEndpoint,
                                          kModelDetailsResponse);
-  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaApiShowEndpoint,
+  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaShowModelInfoAPIEndpoint,
                                          kModelDetailsResponse);
 
   size_t initial_count = model_service()->GetModels().size();
@@ -279,11 +279,11 @@ TEST_F(OllamaModelFetcherTest, PrefChangeTriggersModelFetch) {
 
 TEST_F(OllamaModelFetcherTest, PrefChangeTriggersRemove) {
   // First add some models
-  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaApiTagsEndpoint,
+  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaListModelsAPIEndpoint,
                                          kOllamaModelsResponse);
-  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaApiShowEndpoint,
+  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaShowModelInfoAPIEndpoint,
                                          kModelDetailsResponse);
-  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaApiShowEndpoint,
+  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaShowModelInfoAPIEndpoint,
                                          kModelDetailsResponse);
   pref_service()->SetBoolean(prefs::kBraveAIChatOllamaFetchEnabled, true);
 

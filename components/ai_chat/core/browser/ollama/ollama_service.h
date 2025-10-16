@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_OLLAMA_OLLAMA_CLIENT_H_
-#define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_OLLAMA_OLLAMA_CLIENT_H_
+#ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_OLLAMA_OLLAMA_SERVICE_H_
+#define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_OLLAMA_OLLAMA_SERVICE_H_
 
 #include <memory>
 #include <optional>
@@ -26,7 +26,7 @@ namespace ai_chat {
 
 // Handles network communication with a local Ollama instance.
 // Implements the mojom::OllamaService interface for UI communication.
-class OllamaClient : public KeyedService, public mojom::OllamaService {
+class OllamaService : public KeyedService, public mojom::OllamaService {
  public:
   struct ModelInfo {
     std::string name;
@@ -54,18 +54,18 @@ class OllamaClient : public KeyedService, public mojom::OllamaService {
   using ModelDetailsCallback =
       base::OnceCallback<void(std::optional<ModelDetails>)>;
 
-  explicit OllamaClient(
+  explicit OllamaService(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
-  ~OllamaClient() override;
+  ~OllamaService() override;
 
-  OllamaClient(const OllamaClient&) = delete;
-  OllamaClient& operator=(const OllamaClient&) = delete;
+  OllamaService(const OllamaService&) = delete;
+  OllamaService& operator=(const OllamaService&) = delete;
 
   // Bind a receiver for the OllamaService interface
   void BindReceiver(mojo::PendingReceiver<mojom::OllamaService> receiver);
 
   // mojom::OllamaService implementation:
-  void Connected(ConnectedCallback callback) override;
+  void IsConnected(IsConnectedCallback callback) override;
 
   // Fetch available models from Ollama (non-mojo method for internal use)
   void FetchModels(ModelsCallback callback);
@@ -75,7 +75,7 @@ class OllamaClient : public KeyedService, public mojom::OllamaService {
 
  private:
   void OnConnectionCheckComplete(
-      ConnectedCallback callback,
+      IsConnectedCallback callback,
       std::unique_ptr<network::SimpleURLLoader> loader,
       std::optional<std::string> response);
 
@@ -94,9 +94,9 @@ class OllamaClient : public KeyedService, public mojom::OllamaService {
 
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   mojo::ReceiverSet<mojom::OllamaService> receivers_;
-  base::WeakPtrFactory<OllamaClient> weak_ptr_factory_{this};
+  base::WeakPtrFactory<OllamaService> weak_ptr_factory_{this};
 };
 
 }  // namespace ai_chat
 
-#endif  // BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_OLLAMA_OLLAMA_CLIENT_H_
+#endif  // BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_OLLAMA_OLLAMA_SERVICE_H_

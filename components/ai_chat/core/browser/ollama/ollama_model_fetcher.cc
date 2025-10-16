@@ -18,7 +18,7 @@
 #include "base/strings/string_util.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
-#include "brave/components/ai_chat/core/browser/ollama/ollama_client.h"
+#include "brave/components/ai_chat/core/browser/ollama/ollama_service.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "third_party/abseil-cpp/absl/strings/ascii.h"
@@ -42,7 +42,7 @@ OllamaModelFetcher::OllamaModelFetcher(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : model_service_(model_service),
       prefs_(prefs),
-      ollama_client_(std::make_unique<OllamaClient>(url_loader_factory)) {
+      ollama_service_(std::make_unique<OllamaService>(url_loader_factory)) {
   pref_change_registrar_.Init(prefs_);
   pref_change_registrar_.Add(
       prefs::kBraveAIChatOllamaFetchEnabled,
@@ -64,12 +64,12 @@ void OllamaModelFetcher::OnOllamaFetchEnabledChanged() {
 }
 
 void OllamaModelFetcher::FetchModels() {
-  ollama_client_->FetchModels(base::BindOnce(
+  ollama_service_->FetchModels(base::BindOnce(
       &OllamaModelFetcher::OnModelsFetched, weak_ptr_factory_.GetWeakPtr()));
 }
 
 void OllamaModelFetcher::OnModelsFetched(
-    std::optional<std::vector<OllamaClient::ModelInfo>> models) {
+    std::optional<std::vector<OllamaService::ModelInfo>> models) {
   if (!models) {
     return;
   }
@@ -135,14 +135,14 @@ void OllamaModelFetcher::OnModelsFetched(
 }
 
 void OllamaModelFetcher::FetchModelDetails(const std::string& model_name) {
-  ollama_client_->ShowModel(
+  ollama_service_->ShowModel(
       model_name, base::BindOnce(&OllamaModelFetcher::OnModelDetailsFetched,
                                  weak_ptr_factory_.GetWeakPtr(), model_name));
 }
 
 void OllamaModelFetcher::OnModelDetailsFetched(
     const std::string& model_name,
-    std::optional<OllamaClient::ModelDetails> details) {
+    std::optional<OllamaService::ModelDetails> details) {
   auto it = pending_models_.find(model_name);
   if (it == pending_models_.end()) {
     return;
