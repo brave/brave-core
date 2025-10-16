@@ -49,7 +49,7 @@ BraveWalletServiceFactory* BraveWalletServiceFactory::GetInstance() {
 
 BraveWalletServiceFactory::BraveWalletServiceFactory()
     : ProfileKeyedServiceFactoryIOS("BraveWalletService",
-                                    ProfileSelection::kRedirectedInIncognito,
+                                    ProfileSelection::kOwnInstanceInIncognito,
                                     ServiceCreation::kCreateLazily,
                                     TestingCreation::kNoServiceForTests) {}
 
