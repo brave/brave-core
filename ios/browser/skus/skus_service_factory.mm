@@ -38,7 +38,7 @@ SkusServiceFactory* SkusServiceFactory::GetInstance() {
 
 SkusServiceFactory::SkusServiceFactory()
     : ProfileKeyedServiceFactoryIOS("SkusService",
-                                    TestingCreation::kNoServiceForTests) {}
+                                    TestingCreation::kCreateService) {}
 
 SkusServiceFactory::~SkusServiceFactory() = default;
 

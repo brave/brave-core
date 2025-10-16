@@ -27,9 +27,9 @@ ModelServiceFactory* ModelServiceFactory::GetInstance() {
 
 ModelServiceFactory::ModelServiceFactory()
     : ProfileKeyedServiceFactoryIOS("ModelService",
-                                    ProfileSelection::kRedirectedInIncognito,
+                                    ProfileSelection::kNoInstanceInIncognito,
                                     ServiceCreation::kCreateLazily,
-                                    TestingCreation::kNoServiceForTests) {}
+                                    TestingCreation::kCreateService) {}
 
 ModelServiceFactory::~ModelServiceFactory() {}
 
