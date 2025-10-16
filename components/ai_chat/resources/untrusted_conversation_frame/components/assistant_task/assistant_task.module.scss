@@ -58,6 +58,7 @@
     border-radius: 50%;
 
     outline: var(--outline-color) var(--border-size) solid;
+    outline-offset: calc(var(--border-size) * -1);
     background: var(--leo-color-container-background);
 
     // center the icon
