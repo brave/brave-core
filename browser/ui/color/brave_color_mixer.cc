@@ -764,20 +764,20 @@ void AddBraveOmniboxColorMixer(ui::ColorProvider* provider,
 
   auto& postprocessing_mixer = provider->AddPostprocessingMixer();
   // Location bar
-  postprocessing_mixer[kColorLocationBarBackground] =
-      darker_theme::ApplyDarknessFromColor(nala::kColorPrimitiveNeutral10);
-  postprocessing_mixer[kColorLocationBarBackgroundHovered] =
-      darker_theme::ApplyDarknessFromColor(nala::kColorPrimitiveNeutral10);
+  postprocessing_mixer[kColorLocationBarBackground] = {
+      nala::kColorPrimitiveNeutral0};
+  postprocessing_mixer[kColorLocationBarBackgroundHovered] = {
+      nala::kColorPrimitiveNeutral0};
 
   // Omnibox
-  postprocessing_mixer[kColorOmniboxResultsBackground] =
-      darker_theme::ApplyDarknessFromColor(nala::kColorPrimitiveNeutral10);
-  postprocessing_mixer[kColorOmniboxResultsBackgroundHovered] =
-      darker_theme::ApplyDarknessFromColor(nala::kColorPrimitiveNeutral20);
-  postprocessing_mixer[kColorOmniboxResultsBackgroundSelected] =
-      darker_theme::ApplyDarknessFromColor(nala::kColorPrimitiveNeutral20);
-  postprocessing_mixer[kColorBraveOmniboxResultViewSeparator] =
-      darker_theme::ApplyDarknessFromColor(nala::kColorPrimitiveNeutral20);
+  postprocessing_mixer[kColorOmniboxResultsBackground] = {
+      nala::kColorPrimitiveNeutral0};
+  postprocessing_mixer[kColorOmniboxResultsBackgroundHovered] = {
+      nala::kColorPrimitiveNeutral20};
+  postprocessing_mixer[kColorOmniboxResultsBackgroundSelected] = {
+      nala::kColorPrimitiveNeutral20};
+  postprocessing_mixer[kColorBraveOmniboxResultViewSeparator] = {
+      nala::kColorPrimitiveNeutral20};
 
   // Toolbar
   postprocessing_mixer[kColorToolbarButtonIcon] = {
