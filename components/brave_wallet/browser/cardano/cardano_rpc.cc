@@ -16,6 +16,7 @@
 #include "base/command_line.h"
 #include "base/containers/span.h"
 #include "base/functional/bind.h"
+#include "base/numerics/safe_conversions.h"
 #include "base/strings/escape.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
@@ -464,7 +465,7 @@ void CardanoRpc::MaybeStartQueuedRequest() {
   auto rpc_throttle = features::kCardanoRpcThrottle.Get();
   if (ShouldThrottleEndpoint(requests_queue_.front().request_url) &&
       rpc_throttle > 0 &&
-      active_requests_ >= static_cast<uint32_t>(rpc_throttle)) {
+      active_requests_ >= base::saturated_cast<uint32_t>(rpc_throttle)) {
     return;
   }
 

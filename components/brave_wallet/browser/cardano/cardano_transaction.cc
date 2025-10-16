@@ -15,6 +15,7 @@
 #include "base/check.h"
 #include "base/check_op.h"
 #include "base/numerics/clamped_math.h"
+#include "base/numerics/safe_conversions.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/types/optional_util.h"
 #include "brave/components/brave_wallet/common/cardano_address.h"
@@ -122,7 +123,7 @@ base::Value::Dict CardanoTransaction::Outpoint::ToValue() const {
   base::Value::Dict dict;
 
   dict.Set("txid", base::HexEncode(txid));
-  dict.Set("index", static_cast<int>(index));
+  dict.Set("index", base::checked_cast<int>(index));
 
   return dict;
 }
