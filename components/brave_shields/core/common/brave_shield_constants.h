@@ -43,9 +43,7 @@ inline constexpr auto kShieldsContentSettingsTypes =
         ContentSettingsType::BRAVE_SHIELDS,
         ContentSettingsType::BRAVE_REFERRERS,
         ContentSettingsType::BRAVE_COOKIES,
-#if BUILDFLAG(IS_IOS)
         ContentSettingsType::BRAVE_AUTO_SHRED,
-#endif
     });
 
 using ShieldsContentSettingsTypes = decltype(kShieldsContentSettingsTypes);

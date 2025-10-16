@@ -47,6 +47,9 @@ enum {
   kProfileContentSettingsPartitionedExceptionsFingerprintingV2 = 300027,
   kProfileContentSettingsPartitionedExceptionsBraveShields = 300028,
   kProfileContentSettingsPartitionedExceptionsBraveSpeedreader = 300029,
+  kProfileContentSettingsExceptionsBraveAutoShred = 300030,
+  kProfileContentSettingsPartitionedExceptionsBraveAutoShred = 300031,
+  kProfileDefaultContentSettingValuesBraveAutoShred = 300032,
 };
 }  // namespace brave_syncable_prefs_ids
 
@@ -197,6 +200,21 @@ const auto& BraveSyncablePreferences() {
             kProfileContentSettingsPartitionedExceptionsTrackers,
         syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
         sync_preferences::MergeBehavior::kMergeableDict}},
+      {"profile.content_settings.exceptions.braveAutoShred",
+       {brave_syncable_prefs_ids::
+            kProfileContentSettingsExceptionsBraveAutoShred,
+        syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
+        sync_preferences::MergeBehavior::kNone}},
+      {"profile.content_settings.partitioned_exceptions.braveAutoShred",
+       {brave_syncable_prefs_ids::
+            kProfileContentSettingsPartitionedExceptionsBraveAutoShred,
+        syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
+        sync_preferences::MergeBehavior::kNone}},
+      {"profile.default_content_setting_values.braveAutoShred",
+       {brave_syncable_prefs_ids::
+            kProfileDefaultContentSettingValuesBraveAutoShred,
+        syncer::PREFERENCES, sync_preferences::PrefSensitivity::kNone,
+        sync_preferences::MergeBehavior::kNone}},
   });
   return kBraveSyncablePrefsAllowList;
 }
