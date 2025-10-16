@@ -289,13 +289,13 @@ bool BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
     return false;
   }
 
-  const int active_tab_index = model->active_index();
-
-  if (active_tab_index == TabStripModel::kNoTab) {
+  if (TabStripModel::kNoTab == model->active_index()) {
     return false;
   }
 
-  return model->IsActiveTabSplit();
+  // Use rounded corners when browser view shows split view.
+  BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
+  return browser_view->multi_contents_view()->IsInSplitView();
 }
 
 BraveBrowserView::BraveBrowserView(Browser* browser) : BrowserView(browser) {
