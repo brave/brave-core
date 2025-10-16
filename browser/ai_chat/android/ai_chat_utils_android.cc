@@ -40,8 +40,8 @@ static void JNI_BraveLeoUtils_OpenLeoQuery(
         AIChatTabHelper::FromWebContents(web_contents);
     DCHECK(chat_tab_helper);
     conversation = ai_chat_service->GetOrCreateConversationHandlerForContent(
-        chat_tab_helper->associated_web_contents().content_id(),
-        chat_tab_helper->associated_web_contents().GetWeakPtr());
+        chat_tab_helper->web_contents_content().content_id(),
+        chat_tab_helper->web_contents_content().GetWeakPtr());
   } else {
     conversation = ai_chat_service->GetConversation(conversation_uuid_str);
   }
@@ -78,8 +78,8 @@ static void JNI_BraveLeoUtils_OpenLeoUrlForTab(
   DCHECK(chat_tab_helper);
   ConversationHandler* conversation =
       ai_chat_service->GetOrCreateConversationHandlerForContent(
-          chat_tab_helper->associated_web_contents().content_id(),
-          chat_tab_helper->associated_web_contents().GetWeakPtr());
+          chat_tab_helper->web_contents_content().content_id(),
+          chat_tab_helper->web_contents_content().GetWeakPtr());
 
   content::OpenURLParams params(
       ConversationUrl(conversation->get_conversation_uuid()),
