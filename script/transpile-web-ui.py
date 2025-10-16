@@ -27,11 +27,6 @@ def get_not_contained(roots, test_paths):
 
     return not_contained
 
-
-def make_source_absolute(root, path):
-    return path.replace(root, '/')
-
-
 def verify_webpack_srcs(root_gen_dir, data_paths_file, depfile_path,
                         extra_modules):
     src_folder = Path(root_gen_dir).resolve().parents[2].as_posix()
@@ -45,7 +40,7 @@ def verify_webpack_srcs(root_gen_dir, data_paths_file, depfile_path,
     with open(depfile_path) as f:
         files = [
             Path(file).as_posix().replace(src_folder, '/')
-            for file in f.read().split(' ')[1:]
+            for file in f.read().split()[1:]
         ]
 
     all_roots = src_roots + [
