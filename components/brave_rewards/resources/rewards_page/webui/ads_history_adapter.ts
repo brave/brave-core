@@ -65,10 +65,12 @@ function convertMapValue(id: string, value: MapValue): AdsHistoryItem | null {
 
 function convertAdType(typeString: string): AdType | null {
   switch (typeString) {
-    case 'ad_notification': return 'notification'
-    case 'new_tab_page_ad': return 'new-tab-page'
-    case 'search_result_ad': return 'search-result'
-    default: return null
+    case 'ad_notification':
+      return 'notification'
+    case 'new_tab_page_ad':
+      return 'new-tab-page'
+    default:
+      return null
   }
 }
 
