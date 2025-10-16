@@ -641,6 +641,10 @@ TEST_F(BravePrefProviderTest, TestShieldsSettingsMigrationFromResourceIDs) {
 
   // Check migration for all the settings has been properly done.
   for (auto content_type : GetShieldsContentSettingsTypes()) {
+    if (content_type == ContentSettingsType::BRAVE_AUTO_SHRED) {
+      // It is new content settings and has no migration.
+      continue;
+    }
     auto content_type_name = GetShieldsContentTypeName(content_type);
     if (content_type_name == brave_shields::kCosmeticFiltering) {
       // CosmeticFiltering migrated to the obsolete pref for the futher
