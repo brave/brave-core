@@ -48,19 +48,14 @@ class BravePrefProvider : public PrefProvider, public Observer {
                          const ContentSettingsPattern& secondary_pattern,
                          ContentSettingsType content_type,
                          base::Value&& value,
-                         const ContentSettingConstraints& constraints,
-                         const PartitionKey& partition_key =
-                             PartitionKey::WipGetDefault()) override;
+                         const ContentSettingConstraints& constraints) override;
   std::unique_ptr<RuleIterator> GetRuleIterator(
       ContentSettingsType content_type,
-      bool incognito,
-      const PartitionKey& partition_key) const override;
-  std::unique_ptr<Rule> GetRule(
-      const GURL& primary_url,
-      const GURL& secondary_url,
-      ContentSettingsType content_type,
-      bool off_the_record,
-      const PartitionKey& partition_key) const override;
+      bool off_the_record) const override;
+  std::unique_ptr<Rule> GetRule(const GURL& primary_url,
+                                const GURL& secondary_url,
+                                ContentSettingsType content_type,
+                                bool off_the_record) const override;
 
   CookieType GetCookieType(const ContentSettingsPattern& primary_pattern,
                            const ContentSettingsPattern& secondary_pattern,
@@ -113,8 +108,7 @@ class BravePrefProvider : public PrefProvider, public Observer {
       const ContentSettingsPattern& secondary_pattern,
       ContentSettingsType content_type,
       base::Value&& value,
-      const ContentSettingConstraints& constraints,
-      const PartitionKey& partition_key = PartitionKey::WipGetDefault());
+      const ContentSettingConstraints& constraints);
 
   // content_settings::Observer overrides:
   void OnContentSettingChanged(const ContentSettingsPattern& primary_pattern,
