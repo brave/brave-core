@@ -154,8 +154,8 @@ class TestBase : public AdsClientNotifierForTesting, public ::testing::Test {
   bool setup_called_ = false;
   bool teardown_called_ = false;
 
-  test::ScopedCurrentLanguageCode scoped_current_language_code_;
-  test::ScopedCurrentCountryCode scoped_current_country_code_;
+  ScopedCurrentLanguageCode scoped_current_language_code_;
+  ScopedCurrentCountryCode scoped_current_country_code_;
 
   ScopedBrowserVersionNumberForTesting scoped_browser_version_number_;
 

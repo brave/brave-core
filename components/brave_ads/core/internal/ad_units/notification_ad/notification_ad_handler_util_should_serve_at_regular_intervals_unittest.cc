@@ -18,10 +18,10 @@ namespace brave_ads {
 namespace {
 
 struct ParamInfo final {
-  bool should_serve_at_regular_intervals;
-  bool opted_in;
-  bool should_browser_enter_foreground;
-  bool can_show_while_browser_is_backgrounded;
+  bool should_serve_at_regular_intervals = false;
+  bool opted_in = false;
+  bool should_browser_enter_foreground = false;
+  bool can_show_while_browser_is_backgrounded = false;
 } constexpr kTests[] = {{.should_serve_at_regular_intervals = false,
                          .opted_in = false,
                          .should_browser_enter_foreground = false,

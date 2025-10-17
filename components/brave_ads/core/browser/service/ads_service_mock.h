@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_BROWSER_SERVICE_ADS_SERVICE_MOCK_H_
 
 #include <cstdint>
-#include <memory>
 #include <optional>
 #include <string>
 #include <vector>
