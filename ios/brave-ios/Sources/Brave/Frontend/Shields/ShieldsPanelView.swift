@@ -241,7 +241,7 @@ struct ShieldsPanelView: View {
     if FeatureList.kBraveShredFeature.enabled {
       ShieldSettingRow {
         NavigationLink {
-          ShredSettingsView(
+          ShredSiteSettingsView(
             url: url,
             isPersistent: !viewModel.isPrivateBrowsing,
             tab: tab
