@@ -57,6 +57,7 @@ END_METADATA
 }  // namespace
 
 BraveSidePanel::BraveSidePanel(BrowserView* browser_view,
+                               bool has_border,
                                HorizontalAlignment horizontal_alignment)
     : browser_view_(browser_view) {
   scoped_observation_.AddObservation(this);
