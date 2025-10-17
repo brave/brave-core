@@ -87,26 +87,7 @@ struct DefaultShieldsSectionView: View {
       if FeatureList.kBraveShredFeature.enabled {
         NavigationLink(
           destination: {
-            Form {
-              FormPicker(selection: $settings.shredLevel) {
-                ForEach(SiteShredLevel.allCases) { level in
-                  Text(level.localizedTitle)
-                    .foregroundColor(Color(.secondaryBraveLabel))
-                    .tag(level)
-                }
-              } label: {
-                LabelView(
-                  title: Strings.Shields.autoShred,
-                  subtitle: nil
-                )
-              }
-              ToggleView(
-                title: Strings.Shields.shredHistoryRowTitle,
-                subtitle: Strings.Shields.shredHistoryRowDescription,
-                toggle: $settings.shredHistoryItems
-              )
-            }
-            .navigationTitle(Strings.Shields.shredSettingsViewTitle)
+            ShredSettingsView(settings: settings)
           },
           label: {
             LabelView(
