@@ -63,7 +63,7 @@ views::View* BrowserView::GetContentsContainerForLayoutManager() {
 }
 
 bool BrowserView::IsWebPanelContents(content::WebContents* contents) {
-  return false;
+  NOTREACHED();
 }
 
 void BrowserView::SetNativeWindowPropertyForWidget(views::Widget* widget) {

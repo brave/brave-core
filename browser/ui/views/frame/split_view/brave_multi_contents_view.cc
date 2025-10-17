@@ -59,7 +59,7 @@ void BraveMultiContentsView::SetWebPanelContents(
   CHECK(contents_container_view_for_web_panel_);
   contents_container_view_for_web_panel_->contents_view()->SetWebContents(
       web_contents);
-  contents_container_view_for_web_panel_->SetVisible(!!web_contents);
+  contents_container_view_for_web_panel_->SetVisible(web_contents);
 }
 
 bool BraveMultiContentsView::IsWebPanelVisible() const {
