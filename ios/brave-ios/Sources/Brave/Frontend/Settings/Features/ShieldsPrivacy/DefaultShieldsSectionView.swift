@@ -99,12 +99,6 @@ struct DefaultShieldsSectionView: View {
       }
 
       ToggleView(
-        title: Strings.blockCookieConsentNotices,
-        subtitle: nil,
-        toggle: $settings.cookieConsentBlocking
-      )
-
-      ToggleView(
         title: Strings.braveShieldsSaveContactInfo,
         subtitle: Strings.braveShieldsSaveContactInfoDescription,
         toggle: $settings.isSaveContactInfoEnabled
