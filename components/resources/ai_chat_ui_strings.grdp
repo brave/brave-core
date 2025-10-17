@@ -304,13 +304,13 @@
     Shortcut
   </message>
   <message name="IDS_CHAT_UI_SHORTCUT_PLACEHOLDER" desc="Placeholder text for shortcut input" formatter_data="webui=AiChat">
-    tarot
+    Enter your shortcut here
   </message>
   <message name="IDS_CHAT_UI_PROMPT_LABEL" desc="Label for prompt input in smart mode dialog" formatter_data="webui=AiChat">
     Prompt
   </message>
   <message name="IDS_CHAT_UI_PROMPT_PLACEHOLDER" desc="Placeholder text for prompt input" formatter_data="webui=AiChat">
-    Generate a 3-card Tarot reading. Includes names of each card and their meaning and an interpretation of all cards together.
+    Enter your prompt here
   </message>
   <message name="IDS_CHAT_UI_EDIT_SMART_MODE_TITLE" desc="Title for edit smart mode dialog" formatter_data="webui=AiChat">
     Edit smart mode
@@ -337,7 +337,7 @@
     Prompt is required
   </message>
   <message name="IDS_CHAT_UI_PROMPT_TOO_LONG_ERROR" desc="Error message when prompt exceeds character limit" formatter_data="webui=AiChat">
-    Prompt must be 1000 characters or less
+    Prompt must be 5000 characters or less
   </message>
   <message name="IDS_CHAT_UI_EDIT_ANSWER_LABEL" desc="Button title to edit AI agent answer" formatter_data="webui=AiChat">
     Edit answer
