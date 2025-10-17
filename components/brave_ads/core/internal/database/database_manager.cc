@@ -155,12 +155,6 @@ void DatabaseManager::Create(ResultCallback callback) const {
 void DatabaseManager::CreateCallback(ResultCallback callback,
                                      bool success) const {
   if (!success) {
-    SCOPED_CRASH_KEY_STRING64("Issue43317", "failure_reason",
-                              "Failed to create database");
-    SCOPED_CRASH_KEY_NUMBER("Issue43317", "sqlite_schema_version",
-                            database::kVersionNumber);
-    base::debug::DumpWithoutCrashing();
-
     BLOG(0, "Failed to create database for schema version "
                 << database::kVersionNumber);
 
@@ -190,12 +184,6 @@ void DatabaseManager::RazeAndCreateCallback(ResultCallback callback,
                                             int from_version,
                                             bool success) const {
   if (!success) {
-    SCOPED_CRASH_KEY_STRING64("Issue43331", "failure_reason",
-                              "Failed to raze database");
-    SCOPED_CRASH_KEY_NUMBER("Issue43331", "from_sqlite_schema_version",
-                            from_version);
-    base::debug::DumpWithoutCrashing();
-
     BLOG(0, "Failed to raze database for schema version " << from_version);
     return std::move(callback).Run(/*success=*/false);
   }
@@ -242,11 +230,10 @@ void DatabaseManager::MigrateFromVersionCallback(int from_version,
   const int to_version = database::kVersionNumber;
 
   if (!success) {
-    SCOPED_CRASH_KEY_NUMBER("Issue43326", "from_sqlite_schema_version",
+    SCOPED_CRASH_KEY_NUMBER("BraveAds", "from_sqlite_schema_version",
                             from_version);
-    SCOPED_CRASH_KEY_NUMBER("Issue43326", "to_sqlite_schema_version",
-                            to_version);
-    SCOPED_CRASH_KEY_STRING64("Issue43326", "failure_reason",
+    SCOPED_CRASH_KEY_NUMBER("BraveAds", "to_sqlite_schema_version", to_version);
+    SCOPED_CRASH_KEY_STRING64("BraveAds", "failure_reason",
                               "Database migration failed");
     base::debug::DumpWithoutCrashing();
 

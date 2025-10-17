@@ -116,18 +116,6 @@ void GetCallback(
     const CreativeSetConversionInfo creative_set_conversion =
         FromMojomRow(mojom_db_row);
     if (!creative_set_conversion.IsValid()) {
-      SCOPED_CRASH_KEY_BOOL("Issue45296", "id",
-                            !creative_set_conversion.id.empty());
-      SCOPED_CRASH_KEY_BOOL("Issue45296", "url_pattern",
-                            !creative_set_conversion.url_pattern.empty());
-      SCOPED_CRASH_KEY_BOOL(
-          "Issue45296", "observation_window",
-          !creative_set_conversion.observation_window.is_negative());
-      SCOPED_CRASH_KEY_BOOL("Issue45296", "expire_at",
-                            !!creative_set_conversion.expire_at);
-      SCOPED_CRASH_KEY_STRING64("Issue45296", "failure_reason",
-                                "Invalid creative set conversion");
-      base::debug::DumpWithoutCrashing();
       BLOG(0, "Invalid creative set conversion");
       continue;
     }
@@ -162,29 +150,16 @@ void CreativeSetConversions::Save(
     const CreativeSetConversionList& creative_set_conversions,
     ResultCallback callback) {
   CreativeSetConversionList filtered_creative_set_conversions;
-  std::copy_if(
-      creative_set_conversions.cbegin(), creative_set_conversions.cend(),
-      std::back_inserter(filtered_creative_set_conversions),
-      [](const CreativeSetConversionInfo& creative_set_conversion) {
-        const bool is_valid = creative_set_conversion.IsValid();
-        if (!is_valid) {
-          SCOPED_CRASH_KEY_BOOL("Issue45296", "id",
-                                !creative_set_conversion.id.empty());
-          SCOPED_CRASH_KEY_BOOL("Issue45296", "url_pattern",
-                                !creative_set_conversion.url_pattern.empty());
-          SCOPED_CRASH_KEY_BOOL(
-              "Issue45296", "observation_window",
-              !creative_set_conversion.observation_window.is_negative());
-          SCOPED_CRASH_KEY_BOOL("Issue45296", "expire_at",
-                                !!creative_set_conversion.expire_at);
-          SCOPED_CRASH_KEY_STRING64("Issue45296", "failure_reason",
-                                    "Invalid creative set conversion");
-          base::debug::DumpWithoutCrashing();
-          BLOG(0, "Invalid creative set conversion");
-        }
-
-        return is_valid;
-      });
+  std::copy_if(creative_set_conversions.cbegin(),
+               creative_set_conversions.cend(),
+               std::back_inserter(filtered_creative_set_conversions),
+               [](const CreativeSetConversionInfo& creative_set_conversion) {
+                 if (!creative_set_conversion.IsValid()) {
+                   BLOG(0, "Invalid creative set conversion");
+                   return false;
+                 }
+                 return true;
+               });
   if (filtered_creative_set_conversions.empty()) {
     return std::move(callback).Run(/*success=*/true);
   }
