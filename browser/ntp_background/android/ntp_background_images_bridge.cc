@@ -15,6 +15,8 @@
 
 #include "base/android/jni_array.h"
 #include "base/android/jni_string.h"
+#include "base/debug/crash_logging.h"
+#include "base/debug/dump_without_crashing.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/functional/bind.h"
@@ -257,6 +259,9 @@ NTPBackgroundImagesBridge::GetCurrentWallpaper(
     const JavaParamRef<jobject>& obj) {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
   if (!view_counter_service_) {
+    SCOPED_CRASH_KEY_STRING64("Issue50267", "failure_reason",
+                              "Invalid view_counter_service_");
+    base::debug::DumpWithoutCrashing();
     return base::android::ScopedJavaLocalRef<jobject>();
   }
 
@@ -285,8 +290,11 @@ void NTPBackgroundImagesBridge::OnBackgroundImagesDataDidUpdate(
 
 void NTPBackgroundImagesBridge::OnSponsoredImagesDataDidUpdate(
     NTPSponsoredImagesData* data) {
-  // Don't have interest about in-effective component data update.
   if (data != view_counter_service_->GetSponsoredImagesData()) {
+    SCOPED_CRASH_KEY_STRING64("Issue50267", "failure_reason",
+                              "Invalid view_counter_service_");
+    base::debug::DumpWithoutCrashing();
+    // Don't have interest about in-effective component data update.
     return;
   }
 
