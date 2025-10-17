@@ -37,7 +37,6 @@
   UpdateExclusiveAccessBubble_ChromiumImpl(                    \
       const ExclusiveAccessBubbleParams& params,               \
       ExclusiveAccessBubbleHideCallback first_hide_callback);  \
-  virtual views::View* GetContentsContainerForLayoutManager(); \
   void UpdateExclusiveAccessBubble
 
 #if BUILDFLAG(IS_WIN)

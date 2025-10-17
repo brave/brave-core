@@ -23,7 +23,6 @@
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/public/constants.h"
-#include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/constants/pref_names.h"

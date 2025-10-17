@@ -6,9 +6,6 @@
 #ifndef BRAVE_BROWSER_UI_BROWSER_COMMANDS_H_
 #define BRAVE_BROWSER_UI_BROWSER_COMMANDS_H_
 
-#include <optional>
-#include <vector>
-
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
@@ -122,19 +119,8 @@ void ExportAllBookmarks(Browser* browser);
 void ToggleAllBookmarksButtonVisibility(Browser* browser);
 
 // In case |tab| is not provided, the active tab will be used.
-bool CanOpenNewSplitViewForTab(
-    Browser* browser,
-    std::optional<tabs::TabHandle> tab = std::nullopt);
-void NewSplitViewForTab(Browser* browser,
-                        std::optional<tabs::TabHandle> tab = std::nullopt);
 void OpenLinkInSplitView(Browser* browser,
                          content::OpenURLParams open_url_params);
-// In case |indices| empty, selected tabs will be used.
-void TileTabs(Browser* browser, const std::vector<int>& indices = {});
-void BreakTiles(Browser* browser, const std::vector<int>& indices = {});
-bool IsTabsTiled(Browser* browser, const std::vector<int>& indices = {});
-bool CanTileTabs(Browser* browser, const std::vector<int>& indices = {});
-void SwapTabsInTile(Browser* browser);
 
 // Split view API with SideBySide.
 // false if active tab is already split tab.

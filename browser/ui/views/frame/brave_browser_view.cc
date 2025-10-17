@@ -28,7 +28,6 @@
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/features.h"
-#include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
 #include "brave/browser/ui/views/brave_actions/brave_shields_action_view.h"
 #include "brave/browser/ui/views/brave_help_bubble/brave_help_bubble_host_view.h"
@@ -41,7 +40,6 @@
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
 #include "brave/browser/ui/views/omnibox/brave_omnibox_view_views.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
-#include "brave/browser/ui/views/split_view/split_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
@@ -302,13 +300,6 @@ BraveBrowserView::BraveBrowserView(Browser* browser) : BrowserView(browser) {
         prefs::kSidePanelHorizontalAlignment,
         base::BindRepeating(&BraveBrowserView::OnPreferenceChanged,
                             base::Unretained(this)));
-  }
-
-  if (tabs::features::IsBraveSplitViewEnabled() && browser_->is_type_normal()) {
-    split_view_ = contents_container_->parent()->AddChildView(
-        std::make_unique<SplitView>(*browser_, *this, contents_container_,
-                                    contents_container_view_->contents_view()));
-    set_contents_view(split_view_);
   }
 
   const bool supports_vertical_tabs =
@@ -782,42 +773,12 @@ void BraveBrowserView::MaybeShowReadingListInSidePanelIPH() {
   // Do nothing.
 }
 
-void BraveBrowserView::UpdateDevTools(
-    content::WebContents* inspected_web_contents) {
-  if (!split_view_ ||
-      split_view_->secondary_contents_web_view()->web_contents() !=
-          inspected_web_contents) {
-    BrowserView::UpdateDevTools(inspected_web_contents);
-    return;
-  }
-
-  // In case of split view and `inspected_web_contents` is not the active web
-  // contents, we need to update devtools for the secondary web contents
-  // container view.
-  auto* devtools_ui_controller =
-      browser_->GetFeatures().devtools_ui_controller();
-  devtools_ui_controller->MakeSureControllerExists(
-      split_view_->secondary_contents_container_view());
-  devtools_ui_controller->UpdateDevtools(
-      split_view_->secondary_contents_container_view(), inspected_web_contents,
-      true);
-  DeprecatedLayoutImmediately();
-}
-
 bool BraveBrowserView::MaybeUpdateDevtools(content::WebContents* web_contents) {
   CHECK(!web_contents || web_contents == GetActiveWebContents())
       << "This method is supposed to be called only for the active web "
          "contents";
 
-  if (split_view_) {
-    split_view_->WillUpdateDevToolsForActiveContents({});
-  }
-
   bool result = BrowserView::MaybeUpdateDevtools(web_contents);
-
-  if (split_view_) {
-    split_view_->DidUpdateDevToolsForActiveContents({});
-  }
 
   UpdateWebViewRoundedCorners();
   return result;
@@ -845,14 +806,6 @@ void BraveBrowserView::OnWidgetWindowModalVisibilityChanged(
   // We explicitly override this and don't call the parent class, because we
   // currently don't support scrim views for tab modals and thus don't want the
   // parent class to make the scrim view visible
-}
-
-void BraveBrowserView::GetAccessiblePanes(std::vector<views::View*>* panes) {
-  BrowserView::GetAccessiblePanes(panes);
-
-  if (split_view_) {
-    split_view_->GetAccessiblePanes({}, panes);
-  }
 }
 
 void BraveBrowserView::UpdateContentsShadowVisibility() {
@@ -956,17 +909,7 @@ void BraveBrowserView::OnActiveTabChanged(content::WebContents* old_contents,
                                           int reason) {
   UpdateRoundedCornersUI();
 
-  if (split_view_) {
-    split_view_->WillChangeActiveWebContents(
-        /*passkey*/ {}, old_contents, new_contents);
-  }
-
   BrowserView::OnActiveTabChanged(old_contents, new_contents, index, reason);
-
-  if (split_view_) {
-    split_view_->DidChangeActiveWebContents(
-        /*passkey*/ {}, old_contents, new_contents);
-  }
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   UpdateReaderModeToolbar();
@@ -1046,20 +989,8 @@ bool BraveBrowserView::IsInTabDragging() const {
   return browser_widget()->tab_drag_kind() == TabDragKind::kAllTabs;
 }
 
-views::View* BraveBrowserView::GetContentsContainerForLayoutManager() {
-  // In split view, |split_view_| wraps primary and secondary contents and
-  // it manages each content's bounds. So, BrowserViewLayoutManager only
-  // need to manage |split_view_|'s bounds.
-  return split_view_ ? split_view_
-                     : BrowserView::GetContentsContainerForLayoutManager();
-}
-
 void BraveBrowserView::ReadyToListenFullscreenChanges() {
   CHECK(browser_->GetFeatures().exclusive_access_manager());
-
-  if (split_view_) {
-    split_view_->ListenFullscreenChanges();
-  }
 
   if (vertical_tab_strip_widget_delegate_view_) {
     vertical_tab_strip_widget_delegate_view_->vertical_tab_strip_region_view()
@@ -1139,16 +1070,13 @@ void BraveBrowserView::UpdateWebViewRoundedCorners() {
 
   if (multi_contents_view_) {
     GetBraveMultiContentsView()->UpdateCornerRadius();
+    return;
   }
 
-  const auto in_split_view_mode =
-      !!browser_->GetFeatures().split_view_browser_data();
-
   auto update_corner_radius =
-      [in_split_view_mode](
-          views::WebView* contents, views::WebView* devtools,
-          ContentsContainerView::DevToolsDockedPlacement devtools_placement,
-          gfx::RoundedCornersF corners) {
+      [](views::WebView* contents, views::WebView* devtools,
+         ContentsContainerView::DevToolsDockedPlacement devtools_placement,
+         gfx::RoundedCornersF corners) {
         // In addition to giving the contents container rounded corners, we also
         // need to round the corners of the native view holder that displays the
         // web contents.
@@ -1159,31 +1087,29 @@ void BraveBrowserView::UpdateWebViewRoundedCorners() {
           devtools->holder()->SetCornerRadii(corners);
         }
 
-        if (!in_split_view_mode) {
-          // In order to make the contents web view and devtools appear to be
-          // contained within a single rounded-corner view, square the contents
-          // webview corners that are adjacent to devtools.
-          // TODO(sko) We need to override
-          // BrowserView::GetDevToolsDockedPlacement(). It depends on coordinate
-          // of it but in split view mode, the calculation is not correct.
-          switch (devtools_placement) {
-            case ContentsContainerView::DevToolsDockedPlacement::kLeft:
-              corners.set_upper_left(0);
-              corners.set_lower_left(0);
-              break;
-            case ContentsContainerView::DevToolsDockedPlacement::kRight:
-              corners.set_upper_right(0);
-              corners.set_lower_right(0);
-              break;
-            case ContentsContainerView::DevToolsDockedPlacement::kBottom:
-              corners.set_lower_left(0);
-              corners.set_lower_right(0);
-              break;
-            case ContentsContainerView::DevToolsDockedPlacement::kNone:
-              break;
-            case ContentsContainerView::DevToolsDockedPlacement::kUnknown:
-              break;
-          }
+        // In order to make the contents web view and devtools appear to be
+        // contained within a single rounded-corner view, square the contents
+        // webview corners that are adjacent to devtools.
+        // TODO(sko) We need to override
+        // BrowserView::GetDevToolsDockedPlacement(). It depends on coordinate
+        // of it but in split view mode, the calculation is not correct.
+        switch (devtools_placement) {
+          case ContentsContainerView::DevToolsDockedPlacement::kLeft:
+            corners.set_upper_left(0);
+            corners.set_lower_left(0);
+            break;
+          case ContentsContainerView::DevToolsDockedPlacement::kRight:
+            corners.set_upper_right(0);
+            corners.set_lower_right(0);
+            break;
+          case ContentsContainerView::DevToolsDockedPlacement::kBottom:
+            corners.set_lower_left(0);
+            corners.set_lower_right(0);
+            break;
+          case ContentsContainerView::DevToolsDockedPlacement::kNone:
+            break;
+          case ContentsContainerView::DevToolsDockedPlacement::kUnknown:
+            break;
         }
 
         if (contents && contents->holder()) {
@@ -1199,10 +1125,6 @@ void BraveBrowserView::UpdateWebViewRoundedCorners() {
                          contents_container_view_->devtools_web_view(),
                          contents_container_view_->devtools_docked_placement(),
                          corners);
-  }
-
-  if (in_split_view_mode) {
-    split_view_->UpdateCornerRadius(corners);
   }
 }
 

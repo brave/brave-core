@@ -29,11 +29,8 @@ source_set("browser_tests") {
     sources += [
       "shared_pinned_tab_service_browsertest.cc",
       "shared_pinned_tab_service_browsertest.h",
-      "split_view_browser_data_browsertest.cc",
-      "split_view_tab_strip_model_adapter_browsertest.cc",
     ]
     deps += [
-      "//brave/browser/ui/tabs:split_view",
       "//brave/browser/ui/tabs:tab_strip",
       "//chrome/browser/ui:ui_features",
       "//chrome/browser/ui/browser_window",
