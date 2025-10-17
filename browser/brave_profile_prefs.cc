@@ -385,6 +385,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   registry->RegisterBooleanPref(kShieldsStatsBadgeVisible, true);
   registry->RegisterBooleanPref(kGoogleLoginControlType, true);
+  registry->RegisterBooleanPref(kGlobalPrivacyControlDisabledByPolicy, false);
   registry->RegisterBooleanPref(brave_shields::prefs::kFBEmbedControlType,
                                 true);
   registry->RegisterBooleanPref(brave_shields::prefs::kTwitterEmbedControlType,

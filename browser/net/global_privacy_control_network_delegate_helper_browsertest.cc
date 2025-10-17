@@ -10,9 +10,12 @@
 #include "base/thread_annotations.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/network_constants.h"
+#include "brave/components/constants/pref_names.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "net/dns/mock_host_resolver.h"
@@ -151,6 +154,42 @@ IN_PROC_BROWSER_TEST_F(GlobalPrivacyControlNetworkDelegateBrowserTest,
 
   EXPECT_EQ(MessageServiceWorker(rfh, "hasGpc"), true);
   EXPECT_EQ(MessageServiceWorker(rfh, "checkGpc"), true);
+}
+
+IN_PROC_BROWSER_TEST_F(GlobalPrivacyControlNetworkDelegateBrowserTest,
+                       SecGPCHeaderNotSentWhenDisabledByPolicy) {
+  // Make sure the pref is set to false by default
+  EXPECT_FALSE(browser()->profile()->GetPrefs()->GetBoolean(
+      kGlobalPrivacyControlDisabledByPolicy));
+
+  browser()->profile()->GetPrefs()->SetBoolean(
+      kGlobalPrivacyControlDisabledByPolicy, true);
+
+  const GURL target = https_server().GetURL("a.test", "/simple.html");
+  StartTracking();
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), target));
+  EXPECT_EQ(header_result(), GPCHeaderResult::kNoHeader);
+}
+
+IN_PROC_BROWSER_TEST_F(
+    GlobalPrivacyControlNetworkDelegateBrowserTest,
+    NavigatorGlobalPrivacyAPIReturnsFalseWhenDisabledByPolicy) {
+  // Make sure the pref is set to false by default
+  EXPECT_FALSE(browser()->profile()->GetPrefs()->GetBoolean(
+      kGlobalPrivacyControlDisabledByPolicy));
+
+  browser()->profile()->GetPrefs()->SetBoolean(
+      kGlobalPrivacyControlDisabledByPolicy, true);
+
+  const GURL target = https_server().GetURL("a.test", "/simple.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), target));
+
+  auto* rfh = browser()
+                  ->tab_strip_model()
+                  ->GetActiveWebContents()
+                  ->GetPrimaryMainFrame();
+
+  EXPECT_EQ(false, content::EvalJs(rfh, "navigator.globalPrivacyControl"));
 }
 
 class GlobalPrivacyControlFlagDisabledTest

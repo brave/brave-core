@@ -92,6 +92,9 @@ inline constexpr char kBraveShieldsSettingsVersion[] =
 inline constexpr char kDefaultBrowserPromptEnabled[] =
     "brave.default_browser_prompt_enabled";
 
+inline constexpr char kGlobalPrivacyControlDisabledByPolicy[] =
+    "brave.global_privacy_control_disabled_by_policy";
+
 #if BUILDFLAG(ENABLE_EXTENSIONS) || BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
 inline constexpr char kWebDiscoveryEnabled[] = "brave.web_discovery_enabled";
 #endif

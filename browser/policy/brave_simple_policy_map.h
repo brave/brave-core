@@ -115,6 +115,8 @@ inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
      base::Value::Type::BOOLEAN},
     {policy::key::kDefaultBraveFingerprintingV2Setting,
      kManagedDefaultBraveFingerprintingV2, base::Value::Type::INTEGER},
+    {policy::key::kBraveGlobalPrivacyControlDisabled,
+     kGlobalPrivacyControlDisabledByPolicy, base::Value::Type::BOOLEAN},
 };
 
 }  // namespace policy

@@ -1,0 +1,37 @@
+caption: Disable Global Privacy Control (GPC)
+default: null
+desc: |-
+  Disable Global Privacy Control (GPC) in Brave.
+
+  Global Privacy Control (GPC) allows users to signal that they do not want to be tracked online. GPC sends a Sec-GPC request header and exposes the navigator.globalPrivacyControl JavaScript API.
+
+            If this policy is set to true, Global Privacy Control will always be disabled.
+
+            If this policy is set to false, Global Privacy Control will always be enabled.
+
+            If you set this policy, users cannot change or override it.
+
+            If this policy is left unset, Global Privacy Control will be enabled by default.
+example_value: true
+features:
+  can_be_mandatory: true
+  can_be_recommended: false
+  dynamic_refresh: true
+  per_profile: true
+items:
+- caption: Enable Global Privacy Control
+  value: false
+- caption: Disable Global Privacy Control
+  value: true
+- caption: Allow the user to decide
+  value: null
+owners:
+- clifton@brave.com
+- aseren@brave.com
+schema:
+  type: boolean
+supported_on:
+- chrome.*:142-
+- android:142-
+tags: []
+type: main
