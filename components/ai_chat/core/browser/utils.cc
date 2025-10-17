@@ -194,11 +194,6 @@ EngineConsumer::GenerationDataCallback BindParseRewriteReceivedData(
   return base::BindRepeating(
       [](ConversationHandler::GeneratedTextCallback callback,
          EngineConsumer::GenerationResultData result_data) {
-        // TODO(petemill): This probably should exist at the EngineConsumer
-        // level and possibly only for the OAI engine since the others use
-        // stop sequences to exclude the ending tag.
-        constexpr char kResponseTagPattern[] =
-            "<\\/?(response|respons|respon|respo|resp|res|re|r)?$";
         auto& rewrite_event = result_data.event;
         if (!rewrite_event->is_completion_event()) {
           return;
@@ -206,14 +201,7 @@ EngineConsumer::GenerationDataCallback BindParseRewriteReceivedData(
 
         std::string suggestion =
             rewrite_event->get_completion_event()->completion;
-
-        base::TrimWhitespaceASCII(suggestion, base::TRIM_ALL, &suggestion);
         if (suggestion.empty()) {
-          return;
-        }
-
-        // Avoid showing the ending tag.
-        if (RE2::PartialMatch(suggestion, kResponseTagPattern)) {
           return;
         }
 

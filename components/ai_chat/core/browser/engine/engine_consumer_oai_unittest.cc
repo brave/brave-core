@@ -30,6 +30,7 @@
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/engine/test_utils.h"
+#include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/customization_settings.mojom.h"
@@ -2526,6 +2527,71 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponse_WithSmartMode) {
   // Wait for the response
   auto result = future.Take();
   EXPECT_TRUE(result.has_value());
+}
+
+TEST_F(EngineConsumerOAIUnitTest, GenerateRewriteSuggestion) {
+  auto* client = GetClient();
+  base::RunLoop run_loop;
+
+  std::string test_text = "Hello World";
+  std::string expected_response = "Improved text here.";
+  std::string expected_question =
+      GetActionTypeQuestion(mojom::ActionType::IMPROVE);
+  std::string expected_prompt = base::ReplaceStringPlaceholders(
+      l10n_util::GetStringUTF8(
+          IDS_AI_CHAT_LLAMA2_GENERATE_REWRITE_SUGGESTION_PROMPT),
+      {test_text, expected_question}, nullptr);
+  std::string expected_seed =
+      "Here is the requested rewritten version of "
+      "the excerpt in <response> tags:\n<response>";
+
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _))
+      .WillOnce(
+          [&](const mojom::CustomModelOptions& options,
+              base::Value::List messages,
+              EngineConsumer::GenerationDataCallback data_callback,
+              EngineConsumer::GenerationCompletedCallback completed_callback,
+              const std::optional<std::vector<std::string>>& stop_sequences) {
+            // Verify the messages structure
+            ASSERT_EQ(messages.size(), 2u);
+
+            // First message should be user with the prompt
+            const auto& first_message = messages[0].GetDict();
+            EXPECT_EQ(*first_message.FindString("role"), "user");
+            EXPECT_EQ(*first_message.FindString("content"), expected_prompt);
+
+            // Second message should be assistant seed message
+            const auto& second_message = messages[1].GetDict();
+            EXPECT_EQ(*second_message.FindString("role"), "assistant");
+            EXPECT_EQ(*second_message.FindString("content"), expected_seed);
+
+            // Verify stop sequences include </response>
+            ASSERT_TRUE(stop_sequences.has_value());
+            ASSERT_EQ(stop_sequences->size(), 1u);
+            EXPECT_EQ((*stop_sequences)[0], "</response>");
+
+            // Return completion
+            std::move(completed_callback)
+                .Run(base::ok(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewCompletionEvent(
+                        mojom::CompletionEvent::New(expected_response)),
+                    std::nullopt /* model_key */)));
+          });
+
+  engine_->GenerateRewriteSuggestion(
+      test_text, mojom::ActionType::IMPROVE, "", base::DoNothing(),
+      base::BindLambdaForTesting([&run_loop, &expected_response](
+                                     EngineConsumer::GenerationResult result) {
+        ASSERT_TRUE(result.has_value());
+        ASSERT_TRUE(result->event);
+        ASSERT_TRUE(result->event->is_completion_event());
+        EXPECT_EQ(result->event->get_completion_event()->completion,
+                  expected_response);
+        run_loop.Quit();
+      }));
+
+  run_loop.Run();
+  testing::Mock::VerifyAndClearExpectations(client);
 }
 
 }  // namespace ai_chat
