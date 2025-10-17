@@ -12,7 +12,7 @@ import Shared
 import os.log
 
 enum UrpError {
-  case networkError, downloadIdNotFound, ipNotFound, endpointError
+  case networkError, downloadIdNotFound, ipNotFound, endpointError, pingDisabledByUser
 }
 
 /// Api endpoints for user referral program.
@@ -30,12 +30,20 @@ struct UrpService {
   private let apiKey: String
   private let sessionManager: URLSession
   private let certificateEvaluator: URPCertificatePinningService
+  private let braveCoreStats: BraveStats?
 
-  init(host: String, apiKey: String, adServicesURL: String, adReportsURL: String) {
+  init(
+    host: String,
+    apiKey: String,
+    adServicesURL: String,
+    adReportsURL: String,
+    braveCoreStats: BraveStats?
+  ) {
     self.host = host
     self.apiKey = apiKey
     self.adServicesURL = adServicesURL
     self.adReportsURL = adReportsURL
+    self.braveCoreStats = braveCoreStats
 
     // Certificate pinning
     certificateEvaluator = URPCertificatePinningService()
@@ -50,6 +58,11 @@ struct UrpService {
     refCode: String?,
     completion: @escaping (ReferralData?, UrpError?) -> Void
   ) {
+    guard let stats = braveCoreStats, stats.isStatsReportingEnabled else {
+      Logger.module.debug("Stats reporting disabled by the user.")
+      completion(nil, .pingDisabledByUser)
+      return
+    }
     guard var endPoint = URL(string: host) else {
       completion(nil, .endpointError)
       return
@@ -155,6 +168,11 @@ struct UrpService {
     with downloadId: String,
     completion: @escaping (Bool?, UrpError?) -> Void
   ) {
+    guard let stats = braveCoreStats, stats.isStatsReportingEnabled else {
+      Logger.module.debug("Stats reporting disabled by the user.")
+      completion(nil, .pingDisabledByUser)
+      return
+    }
     guard var endPoint = URL(string: host) else {
       completion(nil, .endpointError)
       return

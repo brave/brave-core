@@ -45,7 +45,9 @@ struct ProfileState {
     // Setup Attribution manager
     attributionManager = AttributionManager(
       dau: dau,
-      urp: UserReferralProgram.shared
+      urp: UserReferralProgram(
+        braveCoreStats: profileController.braveStats
+      )
     )
 
     // Setup Rewards & Ads
