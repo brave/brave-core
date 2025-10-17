@@ -12,18 +12,11 @@
 
 namespace brave_updater {
 
-// DO NOT TURN THIS FEATURE ON IN PRODUCTION. As of this writing, it only
-// implements the happy path of switching from Sparkle to Omaha 4 on macOS. It
-// does not handle switching from Omaha 4 back to Sparkle. When you do enable
-// the feature in the future, make sure that it is not enabled for any clients
-// that suffer from the above limitations.
-BASE_FEATURE(kBraveUseOmaha4Alpha,
-             "BraveUseOmaha4Alpha",
-             base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kBraveUseOmaha4, base::FEATURE_DISABLED_BY_DEFAULT);
 
 BASE_FEATURE_PARAM(int,
                    kLegacyFallbackIntervalDays,
-                   &kBraveUseOmaha4Alpha,
+                   &kBraveUseOmaha4,
                    "legacy-fallback-interval-days",
                    5);
 
@@ -45,7 +38,7 @@ bool ShouldUseOmaha4Impl(base::Time now, std::optional<bool>& state) {
     if (days_since_null % legacy_fallback_interval_days == 0) {
       state = false;
     } else {
-      state = base::FeatureList::IsEnabled(kBraveUseOmaha4Alpha);
+      state = base::FeatureList::IsEnabled(kBraveUseOmaha4);
     }
     VLOG(1) << "Using Omaha 4: " << state.value();
   }
