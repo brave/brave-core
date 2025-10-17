@@ -48,8 +48,8 @@ bool BraveBrowserPolicyProvider::IsFirstPolicyLoadComplete(
   return first_policies_loaded_;
 }
 
-void BraveBrowserPolicyProvider::OnBraveOriginPoliciesReady() {
-  // Now that BraveOrigin policies are ready, trigger policy loading for the
+void BraveBrowserPolicyProvider::OnBravePoliciesReady() {
+  // Now that Brave policies are ready, trigger policy loading for the
   // first time.
   RefreshPolicies(policy::PolicyFetchReason::kBrowserStart);
 }

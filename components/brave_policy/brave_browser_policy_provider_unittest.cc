@@ -44,7 +44,7 @@ TEST_F(BraveBrowserPolicyProviderTest, InitAndPolicyLoadComplete) {
       provider_.IsFirstPolicyLoadComplete(policy::POLICY_DOMAIN_CHROME));
 
   // Fire the observer event to trigger policy loading
-  provider_.OnBraveOriginPoliciesReady();
+  provider_.OnBravePoliciesReady();
 
   // Now policies should be loaded
   EXPECT_TRUE(
@@ -56,7 +56,7 @@ TEST_F(BraveBrowserPolicyProviderTest, EmptyPolicyBundle) {
   provider_.Init(&schema_registry_);
 
   // Fire the observer event to trigger policy loading
-  provider_.OnBraveOriginPoliciesReady();
+  provider_.OnBravePoliciesReady();
 
   // Get the policy bundle
   const policy::PolicyBundle& bundle = provider_.policies();
@@ -75,7 +75,7 @@ TEST_F(BraveBrowserPolicyProviderTest, RefreshPolicies) {
   provider_.Init(&schema_registry_);
 
   // Fire the observer event to trigger policy loading
-  provider_.OnBraveOriginPoliciesReady();
+  provider_.OnBravePoliciesReady();
 
   // Policies should be loaded after observer event
   EXPECT_TRUE(
@@ -96,7 +96,7 @@ TEST_F(BraveBrowserPolicyProviderTest, ShutdownHandling) {
   provider_.Init(&schema_registry_);
 
   // Fire the observer event to trigger policy loading
-  provider_.OnBraveOriginPoliciesReady();
+  provider_.OnBravePoliciesReady();
 
   // Verify initialized state
   EXPECT_TRUE(
@@ -115,7 +115,7 @@ TEST_F(BraveBrowserPolicyProviderTest, BasicInitialization) {
   provider_.Init(&schema_registry_);
 
   // Fire the observer event to trigger policy loading
-  provider_.OnBraveOriginPoliciesReady();
+  provider_.OnBravePoliciesReady();
 
   EXPECT_TRUE(
       provider_.IsFirstPolicyLoadComplete(policy::POLICY_DOMAIN_CHROME));
@@ -126,7 +126,7 @@ TEST_F(BraveBrowserPolicyProviderTest, PolicyDomainHandling) {
   provider_.Init(&schema_registry_);
 
   // Fire the observer event to trigger policy loading
-  provider_.OnBraveOriginPoliciesReady();
+  provider_.OnBravePoliciesReady();
 
   // Test policy load complete for different domains
   EXPECT_TRUE(
@@ -145,7 +145,7 @@ TEST_F(BraveBrowserPolicyProviderTest, OnBrowserPolicyChanged) {
   provider_.Init(&schema_registry_);
 
   // Fire the observer event to trigger policy loading
-  provider_.OnBraveOriginPoliciesReady();
+  provider_.OnBravePoliciesReady();
 
   // Call OnBrowserPolicyChanged
   provider_.OnBrowserPolicyChanged("test.browser.pref");

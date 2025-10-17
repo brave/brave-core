@@ -82,9 +82,9 @@ class BraveOriginPolicyManagerTest : public testing::Test {
   TestingPrefServiceSimple pref_service_;
 };
 
-class TestObserver : public BraveOriginPolicyManager::Observer {
+class TestObserver : public brave_policy::BravePolicyObserver {
  public:
-  void OnBraveOriginPoliciesReady() override { ready_called_ = true; }
+  void OnBravePoliciesReady() override { ready_called_ = true; }
 
   void OnBrowserPolicyChanged(std::string_view pref_name) override {
     browser_policy_changed_called_ = true;

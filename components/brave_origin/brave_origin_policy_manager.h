@@ -11,8 +11,8 @@
 #include "base/containers/flat_map.h"
 #include "base/memory/raw_ptr.h"
 #include "base/observer_list.h"
-#include "base/observer_list_types.h"
 #include "brave/components/brave_origin/brave_origin_policy_info.h"
+#include "brave/components/brave_policy/brave_policy_observer.h"
 
 class PrefService;
 
@@ -29,21 +29,6 @@ using PoliciesEnabledMap = base::flat_map<std::string, bool>;
 // the local state management from policy providers.
 class BraveOriginPolicyManager {
  public:
-  // Observer interface for objects that need to be notified when
-  // BraveOrigin policies are loaded/changed.
-  class Observer : public base::CheckedObserver {
-   public:
-    // Called when BraveOrigin policies become available or are updated.
-    virtual void OnBraveOriginPoliciesReady() = 0;
-
-    // Called when a browser-level policy preference is changed.
-    virtual void OnBrowserPolicyChanged(std::string_view policy_key) {}
-
-    // Called when a profile-level policy preference is changed.
-    virtual void OnProfilePolicyChanged(std::string_view policy_key,
-                                        std::string_view profile_id) {}
-  };
-
   static BraveOriginPolicyManager* GetInstance();
 
   // Initialize with pref definitions mappings from browser layer and local
@@ -53,8 +38,8 @@ class BraveOriginPolicyManager {
             PrefService* local_state);
 
   // Add/remove observers for policy readiness notifications
-  void AddObserver(Observer* observer);
-  void RemoveObserver(Observer* observer);
+  void AddObserver(brave_policy::BravePolicyObserver* observer);
+  void RemoveObserver(brave_policy::BravePolicyObserver* observer);
 
   // Get policy value for a specific policy
   std::optional<bool> GetPolicyValue(
@@ -110,7 +95,7 @@ class BraveOriginPolicyManager {
   BraveOriginPolicyMap browser_policy_definitions_;
   BraveOriginPolicyMap profile_policy_definitions_;
   raw_ptr<PrefService> local_state_ = nullptr;
-  base::ObserverList<Observer> observers_;
+  base::ObserverList<brave_policy::BravePolicyObserver> observers_;
 };
 
 }  // namespace brave_origin
