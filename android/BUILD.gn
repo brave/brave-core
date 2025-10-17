@@ -389,6 +389,7 @@ android_resources("java_resources") {
     "java/brave-res/drawable/ic_sync.xml",
     "java/brave-res/drawable/ic_tablet.xml",
     "java/brave-res/drawable/ic_thank_you.xml",
+    "java/brave-res/drawable/ic_theme_system.xml",
     "java/brave-res/drawable/ic_tipping_error.xml",
     "java/brave-res/drawable/ic_toggle_down.xml",
     "java/brave-res/drawable/ic_toggle_up.xml",
