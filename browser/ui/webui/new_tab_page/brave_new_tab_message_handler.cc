@@ -214,7 +214,7 @@ void BraveNewTabMessageHandler::RegisterMessages() {
           &BraveNewTabMessageHandler::HandleRegisterNewTabPageView,
           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
-      "brandedWallpaperLogoClicked",
+      "recordClickedAdEvent",
       base::BindRepeating(
           &BraveNewTabMessageHandler::HandleBrandedWallpaperLogoClicked,
           base::Unretained(this)));
@@ -495,7 +495,7 @@ void BraveNewTabMessageHandler::HandleBrandedWallpaperLogoClicked(
     metric_type = static_cast<brave_ads::mojom::NewTabPageAdMetricType>(*value);
   }
 
-  service->BrandedWallpaperLogoClicked(
+  service->RecordClickedAdEvent(
       placement_id ? *placement_id : "",
       creative_instance_id ? *creative_instance_id : "",
       target_url ? *target_url : "", metric_type);
@@ -556,7 +556,7 @@ void BraveNewTabMessageHandler::HandleGetWallpaperData(
     metric_type = static_cast<brave_ads::mojom::NewTabPageAdMetricType>(*value);
   }
 
-  service->BrandedWallpaperWillBeDisplayed(
+  service->RecordViewedAdEvent(
       placement_id ? *placement_id : "", campaign_id ? *campaign_id : "",
       creative_instance_id ? *creative_instance_id : "", metric_type);
 

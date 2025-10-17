@@ -283,7 +283,7 @@ void NTPBackgroundImagesService::RegisterSponsoredImagesComponent() {
   // However, this background interval is too long for SI. Use 15mins interval.
   sponsored_images_update_check_callback_ = base::BindRepeating(
       &NTPBackgroundImagesService::CheckSponsoredImagesComponentUpdate,
-      base::Unretained(this), data->component_id.data());
+      weak_factory_.GetWeakPtr(), data->component_id.data());
 
   last_updated_at_ = base::Time::Now();
 
@@ -385,7 +385,7 @@ void NTPBackgroundImagesService::MonitorReferralPromoCodeChange() {
   pref_change_registrar_.Add(
       kReferralPromoCode,
       base::BindRepeating(&NTPBackgroundImagesService::OnPreferenceChanged,
-                          base::Unretained(this)));
+                          weak_factory_.GetWeakPtr()));
 #endif
 }
 

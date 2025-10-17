@@ -11,7 +11,6 @@
 #include <string>
 #include <vector>
 
-#include "base/functional/callback_forward.h"
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
@@ -74,17 +73,16 @@ class ViewCounterService : public KeyedService,
   // opted-in or data is available.
   void RegisterPageView();
 
-  void BrandedWallpaperLogoClicked(
+  void RecordViewedAdEvent(
+      const std::string& placement_id,
+      const std::string& campaign_id,
+      const std::string& creative_instance_id,
+      brave_ads::mojom::NewTabPageAdMetricType mojom_ad_metric_type);
+  void RecordClickedAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
       const std::string& target_url,
       brave_ads::mojom::NewTabPageAdMetricType mojom_ad_metric_type);
-
-  void MaybeTriggerNewTabPageAdEvent(
-      const std::string& placement_id,
-      const std::string& creative_instance_id,
-      brave_ads::mojom::NewTabPageAdMetricType mojom_ad_metric_type,
-      brave_ads::mojom::NewTabPageAdEventType mojom_ad_event_type);
 
   std::optional<base::Value::Dict> GetNextWallpaperForDisplay();
   std::optional<base::Value::Dict> GetCurrentWallpaperForDisplay();
@@ -99,11 +97,6 @@ class ViewCounterService : public KeyedService,
   std::string GetSuperReferralThemeName() const;
   std::string GetSuperReferralCode() const;
 
-  void BrandedWallpaperWillBeDisplayed(
-      const std::string& placement_id,
-      const std::string& campaign_id,
-      const std::string& creative_instance_id,
-      brave_ads::mojom::NewTabPageAdMetricType mojom_ad_metric_type);
   NTPSponsoredImagesData* GetSponsoredImagesData() const;
 
   void InitializeWebUIDataSource(content::WebUIDataSource* html_source);
@@ -192,6 +185,12 @@ class ViewCounterService : public KeyedService,
   void ResetModel();
 
   void MaybePrefetchNewTabPageAd();
+
+  void MaybeTriggerNewTabPageAdEvent(
+      const std::string& placement_id,
+      const std::string& creative_instance_id,
+      brave_ads::mojom::NewTabPageAdMetricType mojom_ad_metric_type,
+      brave_ads::mojom::NewTabPageAdEventType mojom_ad_event_type);
 
   void UpdateP3AValues();
 
