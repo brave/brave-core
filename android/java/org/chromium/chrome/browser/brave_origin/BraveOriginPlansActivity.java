@@ -46,6 +46,12 @@ import org.chromium.ui.text.SpanApplier;
  * displaying the UI.
  */
 public class BraveOriginPlansActivity extends AsyncInitializationActivity {
+    // Intent extra key for passing incognito profile flag
+    public static final String EXTRA_IS_INCOGNITO = "extra_is_incognito";
+
+    // Flag indicating whether to use incognito profile
+    private boolean mIsIncognito;
+
     // UI components for displaying subscription plan progress indicators
     private ProgressBar mMonthlyPlanProgress;
     private ProgressBar mYearlyPlanProgress;
@@ -79,6 +85,9 @@ public class BraveOriginPlansActivity extends AsyncInitializationActivity {
     /** Initializes the UI layout and sets up event handlers. */
     @Override
     protected void triggerLayoutInflation() {
+        // Get incognito flag from intent
+        mIsIncognito = getIntent().getBooleanExtra(EXTRA_IS_INCOGNITO, false);
+
         // Set the main layout for the Origin plans activity
         setContentView(R.layout.activity_brave_origin_plans);
 
@@ -128,10 +137,16 @@ public class BraveOriginPlansActivity extends AsyncInitializationActivity {
                     if (productDetails == null) {
                         return;
                     }
-                    // Get the current profile and initiate purchase flow for the selected plan. The
-                    // purchase is initiated on original profile only.
-                    Profile currentProfile =
-                            getProfileProviderSupplier().get().getOriginalProfile();
+                    // Get the current profile based on intent flag and initiate purchase flow
+                    Profile currentProfile;
+                    if (mIsIncognito) {
+                        currentProfile =
+                                getProfileProviderSupplier()
+                                        .get()
+                                        .getOffTheRecordProfile(/* createIfNeeded= */ true);
+                    } else {
+                        currentProfile = getProfileProviderSupplier().get().getOriginalProfile();
+                    }
                     InAppPurchaseWrapper.getInstance()
                             .initiatePurchase(
                                     BraveOriginPlansActivity.this, productDetails, currentProfile);

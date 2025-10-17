@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2025 The Brave Authors. All rights reserved.
+   This Source Code Form is subject to the terms of the Mozilla Public
+   License, v. 2.0. If a copy of the MPL was not distributed with this file,
+   You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+        android:key="origin_ads_category"
+        android:title="@string/prefs_section_ads">
+
+        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+            android:key="rewards_switch"
+            android:title="@string/origin_rewards_toggle"
+            android:icon="@drawable/brave_menu_rewards"
+            android:defaultValue="false" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="origin_analytics_category"
+        android:title="@string/prefs_section_analytics">
+
+        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+            android:key="crash_reports_switch"
+            android:title="@string/origin_crash_reports_toggle"
+            android:icon="@drawable/bar_chart"
+            android:defaultValue="false" />
+
+        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+            android:key="privacy_preserving_analytics_switch"
+            android:title="@string/origin_privacy_preserving_analytics_toggle"
+            android:icon="@drawable/bar_chart"
+            android:defaultValue="false" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="origin_features_category"
+        android:title="@string/prefs_section_features">
+
+        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+            android:key="email_aliases_switch"
+            android:title="@string/origin_email_aliases_toggle"
+            android:icon="@drawable/email_shield"
+            android:defaultValue="false" />
+
+        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+            android:key="leo_ai_switch"
+            android:title="@string/origin_leo_ai_toggle"
+            android:icon="@drawable/ic_brave_ai"
+            android:defaultValue="false" />
+        
+        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+            android:key="news_switch"
+            android:title="@string/origin_news_toggle"
+            android:icon="@drawable/ic_news"
+            android:defaultValue="false" />
+
+        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+            android:key="statistics_reporting_switch"
+            android:title="@string/origin_statistics_reporting_toggle"
+            android:icon="@drawable/bar_chart"
+            android:defaultValue="false" />
+
+        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+            android:key="vpn_switch"
+            android:title="@string/origin_vpn_toggle"
+            android:icon="@drawable/ic_vpn"
+            android:defaultValue="false" />
+
+        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+            android:key="wallet_switch"
+            android:title="@string/origin_wallet_toggle"
+            android:icon="@drawable/ic_crypto_wallets"
+            android:defaultValue="false" />
+
+        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+            android:key="web_discovery_project_switch"
+            android:title="@string/origin_web_discovery_project_toggle"
+            android:icon="@drawable/brave_icon_search"
+            android:defaultValue="false" />
+
+        <!-- Informational text about Brave Origin -->
+        <org.chromium.chrome.browser.settings.BraveOriginDescriptionPreference
+            android:key="origin_description"
+            android:summary="@string/origin_description_text" />
+
+        <org.chromium.chrome.browser.settings.BraveOriginResetPreference
+            android:key="reset_to_defaults"
+            android:title="@string/origin_reset_to_defaults" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="origin_subscription_section"
+        android:title="@string/subscription">
+
+        <org.chromium.components.browser_ui.settings.ChromeBasePreference
+            android:key="subscription_status"
+            android:title="@string/status"/>
+
+        <org.chromium.components.browser_ui.settings.ChromeBasePreference
+            android:key="subscription_expires"
+            android:title="@string/expires"/>
+
+        <org.chromium.components.browser_ui.settings.ChromeBasePreference
+            android:key="subscription_manage"
+            android:title="@string/manage_subscription"/>
+
+        <org.chromium.components.browser_ui.settings.ChromeBasePreference
+            android:key="link_subscription"
+            android:title="@string/link_subscription_title_origin" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

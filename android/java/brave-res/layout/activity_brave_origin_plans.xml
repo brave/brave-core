@@ -69,24 +69,10 @@
                 android:textAlignment="textStart"
                 android:gravity="center_vertical"
                 android:layout_marginHorizontal="24dp"
-                android:layout_marginBottom="8dp"
-                android:textColor="@android:color/white"
-                android:drawablePadding="8dp"
-                android:text="@string/origin_paywall_text_3"
-                app:drawableStartCompat="@drawable/ic_checkmark_gradient" />
-
-            <!-- Premium feature benefit #4 with checkmark icon -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/DefaultRegular"
-                android:textAlignment="textStart"
-                android:gravity="center_vertical"
-                android:layout_marginHorizontal="24dp"
                 android:layout_marginBottom="16dp"
                 android:textColor="@android:color/white"
                 android:drawablePadding="8dp"
-                android:text="@string/origin_paywall_text_4"
+                android:text="@string/origin_paywall_text_3"
                 app:drawableStartCompat="@drawable/ic_checkmark_gradient" />
 
             <!-- Separator line between features and subscription plans -->

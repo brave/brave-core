@@ -1289,6 +1289,7 @@ if (is_android) {
       "//brave/android/javatests/org/chromium/chrome/browser/brave_wallet/BraveWalletUtilsTest.java",
       "//brave/android/javatests/org/chromium/chrome/browser/homepage/settings/BraveHomepageSettingsTest.java",
       "//brave/android/javatests/org/chromium/chrome/browser/language/settings/BraveLanguageSettingsTest.java",
+      "//brave/android/javatests/org/chromium/chrome/browser/origin/settings/BraveOriginPreferencesTest.java",
       "//brave/android/javatests/org/chromium/chrome/browser/privacy/settings/BravePrivacySettingsTest.java",
       "//brave/android/javatests/org/chromium/chrome/browser/safe_browsing/settings/BraveSafeBrowsingSettingsFragmentTest.java",
       "//brave/android/javatests/org/chromium/chrome/browser/settings/BraveMainSettingsFragmentTest.java",
