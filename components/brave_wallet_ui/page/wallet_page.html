@@ -6,9 +6,9 @@
   <if expr="is_ios">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   </if>
-  <else>
+  <if expr="not is_ios">
     <meta name="viewport" content="width=device-width">
-  </else>
+  </if>
   <title>Brave Wallet</title>
   <if expr="not is_ios">
     <link rel="stylesheet" href="chrome://resources/css/md_colors.css">
