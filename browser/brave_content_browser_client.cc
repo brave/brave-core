@@ -246,6 +246,8 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_top_ui.h"
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/browser/ui/webui/brave_shields/shields_panel_ui.h"
+#include "brave/browser/ui/webui/email_aliases/email_aliases_panel_ui.h"
+#include "brave/components/email_aliases/email_aliases.mojom.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_page_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
@@ -891,7 +893,8 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
 
   if (base::FeatureList::IsEnabled(email_aliases::kEmailAliases)) {
     content::RegisterWebUIControllerInterfaceBinder<
-        email_aliases::mojom::EmailAliasesService, BraveSettingsUI>(map);
+        email_aliases::mojom::EmailAliasesService, BraveSettingsUI,
+        EmailAliasesPanelUI>(map);
   }
 
   map->Add<color_change_listener::mojom::PageHandler>(

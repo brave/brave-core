@@ -557,4 +557,7 @@
       Show apps
     </message>
   </if>
+  <message name="IDS_IDC_NEW_EMAIL_ALIAS">
+    New Email Alias
+  </message>
 </grit-part>

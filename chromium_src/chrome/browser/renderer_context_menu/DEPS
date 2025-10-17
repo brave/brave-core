@@ -8,6 +8,7 @@ include_rules = [
   "+brave/components/brave_shields/core/common",
   "+brave/components/containers/buildflags",
   "+brave/components/containers/core",
+  "+brave/components/email_aliases",
   "+brave/components/text_recognition/common",
   "+brave/components/tor/buildflags",
 ]

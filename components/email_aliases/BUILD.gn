@@ -49,6 +49,7 @@ static_library("service") {
     ":mojom",
     "//base",
     "//brave/brave_domains",
+    "//brave/components/constants",
     "//brave/components/email_aliases:features",
     "//brave/components/resources:strings_grit",
     "//components/keyed_service/core",
@@ -64,6 +65,7 @@ source_set("unit_tests") {
   sources = [ "email_aliases_service_unittest.cc" ]
   deps = [
     "//base/test:test_support",
+    "//brave/components/constants",
     "//brave/components/email_aliases:features",
     "//brave/components/email_aliases:service",
     "//brave/components/resources:strings_grit",
