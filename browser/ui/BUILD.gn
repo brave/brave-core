@@ -373,7 +373,7 @@ source_set("ui") {
       "//chrome/browser/ui/webui/settings",
       "//chrome/browser/ui/webui/side_panel/reading_list:mojo_bindings",
       "//chrome/browser/ui/webui/util",
-      "//chrome/browser/ui/webui_browser:feature_flag",
+      "//chrome/browser/ui/webui_browser:headers",
       "//chrome/common:channel_info",
       "//components/bookmarks/common",
       "//components/google/core/common",
