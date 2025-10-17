@@ -61,6 +61,7 @@ class BraveSidePanel : public views::View,
   bool IsClosing();
   void DisableAnimationsForTesting() {}
   void AddHeaderView(std::unique_ptr<views::View> view);
+  void RemoveHeaderView();
   void SetHeaderVisibility(bool visible);
   void SetOutlineVisibility(bool visible);
 
