@@ -8,7 +8,7 @@ import * as React from 'react'
 // Components
 import getNTPBrowserAPI from '../../api/background'
 import { addNewTopSite, editTopSite } from '../../api/topSites'
-import { brandedWallpaperLogoClicked } from '../../api/wallpaper'
+import { recordClickedAdEvent } from '../../api/wallpaper'
 import * as BraveAds from 'gen/brave/components/brave_ads/core/mojom/brave_ads.mojom.m.js'
 import {
   BraveTalkWidget as BraveTalk, Clock, EditTopSite, OverrideReadabilityColor, RewardsWidget as Rewards, SearchPromotion, VPNWidget
@@ -436,7 +436,7 @@ class NewTabPage extends React.Component<Props, State> {
   }
 
   onClickLogo = () => {
-    brandedWallpaperLogoClicked(this.props.newTabData.brandedWallpaper)
+    recordClickedAdEvent(this.props.newTabData.brandedWallpaper)
   }
 
   setForegroundStackWidget = (widget: NewTab.StackWidget) => {
