@@ -12,7 +12,7 @@
 
 namespace brave_updater {
 
-BASE_FEATURE(BraveUseOmaha4, base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kBraveUseOmaha4, base::FEATURE_DISABLED_BY_DEFAULT);
 
 BASE_FEATURE_PARAM(int,
                    kLegacyFallbackIntervalDays,
