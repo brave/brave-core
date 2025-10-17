@@ -54,6 +54,16 @@ class SolanaProviderImplUnitTest;
 class ZCashKeyring;
 struct KeyringSeed;
 
+// Allows tests to set a custom nonce generation callback. Caller is expected to
+// keep the callback alive.
+void SetCreateNonceCallbackForTesting(
+    base::RepeatingCallback<std::array<uint8_t, 12u>()>* callback);
+
+// Allows tests to set a custom salt generation callback. Caller is expected to
+// keep the callback alive.
+void SetCreateSaltCallbackForTesting(
+    base::RepeatingCallback<std::array<uint8_t, 32u>()>* callback);
+
 // This class is not thread-safe and should have single owner
 class KeyringService : public mojom::KeyringService {
  public:
