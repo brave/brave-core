@@ -11,7 +11,9 @@ static_library("browser") {
 
   deps = [
     "//brave/components/local_ai/common:mojom",
+    "//brave/components/resources:strings_grit",
     "//mojo/public/cpp/bindings",
+    "//ui/base",
   ]
 
   public_deps = [ "//base" ]

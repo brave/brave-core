@@ -6,8 +6,40 @@
 #include "brave/components/local_ai/browser/candle_service.h"
 
 #include "base/logging.h"
+#include "base/memory/ref_counted_memory.h"
+#include "components/grit/brave_components_resources.h"
+#include "ui/base/resource/resource_bundle.h"
 
 namespace local_ai {
+
+namespace {
+
+// TODO(darkdh): Use component updater to deliver model files
+mojom::ModelFilesPtr LoadModelFilesFromResources() {
+  auto& resource_bundle = ui::ResourceBundle::GetSharedInstance();
+
+  scoped_refptr<base::RefCountedMemory> weights_data =
+      resource_bundle.LoadDataResourceBytes(
+          IDR_LOCAL_AI_BERT_MODEL_SAFETENSORS);
+  scoped_refptr<base::RefCountedMemory> tokenizer_data =
+      resource_bundle.LoadDataResourceBytes(IDR_LOCAL_AI_BERT_TOKENIZER_JSON);
+  scoped_refptr<base::RefCountedMemory> config_data =
+      resource_bundle.LoadDataResourceBytes(IDR_LOCAL_AI_BERT_CONFIG_JSON);
+
+  if (!weights_data || !tokenizer_data || !config_data) {
+    LOG(ERROR) << "Failed to load BERT model files from resources";
+    return nullptr;
+  }
+
+  auto model_files = mojom::ModelFiles::New();
+  model_files->weights.assign(weights_data->begin(), weights_data->end());
+  model_files->tokenizer.assign(tokenizer_data->begin(), tokenizer_data->end());
+  model_files->config.assign(config_data->begin(), config_data->end());
+
+  return model_files;
+}
+
+}  // namespace
 
 // static
 CandleService* CandleService::GetInstance() {
@@ -35,8 +67,15 @@ void CandleService::BindBert(
 }
 
 void CandleService::RunBertExample() {
-  bert_remote_->RunExample(base::BindOnce(&CandleService::OnRunBertExample,
-                                          weak_ptr_factory_.GetWeakPtr()));
+  auto model_files = LoadModelFilesFromResources();
+  if (!model_files) {
+    LOG(ERROR) << "Failed to load model files";
+    return;
+  }
+
+  bert_remote_->RunExample(
+      std::move(model_files), base::BindOnce(&CandleService::OnRunBertExample,
+                                             weak_ptr_factory_.GetWeakPtr()));
 }
 
 void CandleService::OnRunBertExample(const std::string& result) {

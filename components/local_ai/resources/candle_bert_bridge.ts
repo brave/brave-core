@@ -6,6 +6,7 @@
 import {
   BertInterfaceReceiver,
   CandleService,
+  ModelFiles,
 } from 'gen/brave/components/local_ai/common/candle.mojom.m.js'
 
 console.log('[Candle WASM] Script loaded')
@@ -21,20 +22,6 @@ console.log('[Candle WASM] Initializing Mojo connection...')
 const candleService = CandleService.getRemote()
 
 console.log('[Candle WASM] CandleService remote obtained:', candleService)
-
-// Cache for fetching model files
-async function fetchArrayBuffer(url: string): Promise<Uint8Array> {
-  const cacheName = 'bert-candle-cache'
-  const cache = await caches.open(cacheName)
-  const cachedResponse = await cache.match(url)
-  if (cachedResponse) {
-    const data = await cachedResponse.arrayBuffer()
-    return new Uint8Array(data)
-  }
-  const res = await fetch(url, { cache: 'force-cache' })
-  cache.put(url, res.clone())
-  return new Uint8Array(await res.arrayBuffer())
-}
 
 // Implement the BertInterface Mojo observer
 class BertInterfaceImpl {
@@ -60,42 +47,21 @@ class BertInterfaceImpl {
     console.log('WASM module initialized successfully!')
   }
 
-  // Load the BERT model
-  async loadModel(
-    weightsURL: string,
-    tokenizerURL: string,
-    configURL: string,
-  ): Promise<void> {
-    await this.initialize()
-
-    console.log('Loading BERT model...')
-    const [weightsArrayU8, tokenizerArrayU8, configArrayU8] = await Promise.all(
-      [
-        fetchArrayBuffer(weightsURL),
-        fetchArrayBuffer(tokenizerURL),
-        fetchArrayBuffer(configURL),
-      ],
-    )
-
-    this.model = new Model(weightsArrayU8, tokenizerArrayU8, configArrayU8)
-    console.log('BERT model loaded successfully!')
-  }
-
   // Implementation of BertInterface::RunExample
-  async runExample(): Promise<{ result: string }> {
+  async runExample(modelFiles: ModelFiles): Promise<{ result: string }> {
     await this.initialize()
 
     if (!this.model) {
-      console.log('Model not loaded, loading default model...')
-      // Model files are served from chrome-untrusted://candle-bert-wasm
-      const weightsURL =
-        'chrome-untrusted://candle-bert-wasm/bert/model.safetensors'
-      const tokenizerURL =
-        'chrome-untrusted://candle-bert-wasm/bert/tokenizer.json'
-      const configURL = 'chrome-untrusted://candle-bert-wasm/bert/config.json'
+      console.log('Loading BERT model from provided files...')
 
       try {
-        await this.loadModel(weightsURL, tokenizerURL, configURL)
+        // Convert number[] from mojo to Uint8Array and load model
+        this.model = new Model(
+          new Uint8Array(modelFiles.weights),
+          new Uint8Array(modelFiles.tokenizer),
+          new Uint8Array(modelFiles.config),
+        )
+        console.log('BERT model loaded successfully!')
       } catch (error) {
         console.error('Failed to load model:', error)
         return { result: `Error loading model: ${error}` }

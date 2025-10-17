@@ -5,10 +5,16 @@
 
 module local_ai.mojom;
 
+struct ModelFiles {
+  array<uint8> weights;
+  array<uint8> tokenizer;
+  array<uint8> config;
+};
+
 interface CandleService {
   BindBert(pending_remote<BertInterface> bert);
 };
 
 interface BertInterface {
-  RunExample() => (string result);
+  RunExample(ModelFiles model_files) => (string result);
 };

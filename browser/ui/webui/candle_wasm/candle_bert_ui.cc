@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/local_ai/browser/candle_service.h"
 #include "brave/components/local_ai/resources/grit/candle_bert_bridge_generated.h"
 #include "brave/components/local_ai/resources/grit/candle_bert_bridge_generated_map.h"
 #include "components/grit/brave_components_resources.h"
@@ -50,13 +51,6 @@ UntrustedCandleBertUI::UntrustedCandleBertUI(content::WebUI* web_ui)
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FontSrc,
       std::string("font-src 'self' data:;"));
-
-  // Serve BERT model files
-  source->AddResourcePath("bert/model.safetensors",
-                          IDR_LOCAL_AI_BERT_MODEL_SAFETENSORS);
-  source->AddResourcePath("bert/config.json", IDR_LOCAL_AI_BERT_CONFIG_JSON);
-  source->AddResourcePath("bert/tokenizer.json",
-                          IDR_LOCAL_AI_BERT_TOKENIZER_JSON);
 }
 
 UntrustedCandleBertUI::~UntrustedCandleBertUI() = default;

@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_LOCAL_AI_BROWSER_CANDLE_SERVICE_H_
 #define BRAVE_COMPONENTS_LOCAL_AI_BROWSER_CANDLE_SERVICE_H_
 
+#include "base/functional/callback.h"
 #include "base/memory/weak_ptr.h"
 #include "base/no_destructor.h"
 #include "brave/components/local_ai/common/candle.mojom.h"
@@ -18,6 +19,7 @@ namespace local_ai {
 
 class CandleService : public mojom::CandleService {
  public:
+
   static CandleService* GetInstance();
 
   CandleService(const CandleService&) = delete;
