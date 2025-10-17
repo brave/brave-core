@@ -109,15 +109,15 @@ AIChatUI::AIChatUI(web::WebUIIOS* web_ui, const GURL& url)
 
 AIChatUI::~AIChatUI() {
   web_ui()->GetWebState()->GetInterfaceBinderForMainFrame()->RemoveInterface(
+      ai_chat::mojom::BookmarksPageHandler::Name_);
+  web_ui()->GetWebState()->GetInterfaceBinderForMainFrame()->RemoveInterface(
+      ai_chat::mojom::HistoryUIHandler::Name_);
+  web_ui()->GetWebState()->GetInterfaceBinderForMainFrame()->RemoveInterface(
       ai_chat::mojom::ParentUIFrame::Name_);
   web_ui()->GetWebState()->GetInterfaceBinderForMainFrame()->RemoveInterface(
       ai_chat::mojom::Service::Name_);
   web_ui()->GetWebState()->GetInterfaceBinderForMainFrame()->RemoveInterface(
       ai_chat::mojom::AIChatUIHandler::Name_);
-  web_ui()->GetWebState()->GetInterfaceBinderForMainFrame()->RemoveInterface(
-      ai_chat::mojom::HistoryUIHandler::Name_);
-  web_ui()->GetWebState()->GetInterfaceBinderForMainFrame()->RemoveInterface(
-      ai_chat::mojom::BookmarksPageHandler::Name_);
 }
 
 void AIChatUI::BindInterfaceUIHandler(
