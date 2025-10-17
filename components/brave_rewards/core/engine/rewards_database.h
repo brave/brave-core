@@ -18,7 +18,8 @@
 
 namespace brave_rewards::internal {
 
-class RewardsDatabase : public mojom::RewardsDatabase {
+class RewardsDatabase : public mojom::RewardsDatabase,
+                        public base::MemoryPressureListener {
  public:
   explicit RewardsDatabase(const base::FilePath& path);
 
@@ -57,7 +58,8 @@ class RewardsDatabase : public mojom::RewardsDatabase {
 
   int GetTablesCount();
 
-  void OnMemoryPressure(base::MemoryPressureLevel memory_pressure_level);
+  // MemoryPressureListener overrides:
+  void OnMemoryPressure(base::MemoryPressureLevel level) override;
 
   const base::FilePath db_path_;
   sql::Database db_;
