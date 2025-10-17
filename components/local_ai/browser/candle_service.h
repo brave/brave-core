@@ -6,12 +6,16 @@
 #ifndef BRAVE_COMPONENTS_LOCAL_AI_BROWSER_CANDLE_SERVICE_H_
 #define BRAVE_COMPONENTS_LOCAL_AI_BROWSER_CANDLE_SERVICE_H_
 
+#include "base/functional/callback.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/local_ai/common/candle.mojom.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/remote.h"
 
 namespace local_ai {
+
+// Helper function to load BERT model files from resources
+mojom::ModelFilesPtr LoadBertModelFiles();
 
 class CandleService : mojom::CandleService {
  public:
