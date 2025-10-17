@@ -28,7 +28,6 @@ import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.SignDataUnion;
 import org.chromium.brave_wallet.mojom.SignMessageRequest;
-import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
@@ -42,7 +41,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /** Fragment used by DApps sign operation */
-@NullMarked
 public class SignMessageFragment extends BaseDAppsBottomSheetDialogFragment {
     private static final String TAG = "SignMessageFragment";
 
