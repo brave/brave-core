@@ -104,5 +104,10 @@ void LoadAdBlockOnlyModePolicies(policy::PolicyBundle& bundle) {
                policy::POLICY_LEVEL_MANDATORY, policy::POLICY_SCOPE_USER,
                policy::POLICY_SOURCE_BRAVE,
                base::Value(ContentSetting::CONTENT_SETTING_ALLOW), nullptr);
+
+  // Disable Global Privacy Control.
+  policies.Set(policy::key::kBraveGlobalPrivacyControlDisabled,
+               policy::POLICY_LEVEL_MANDATORY, policy::POLICY_SCOPE_USER,
+               policy::POLICY_SOURCE_BRAVE, base::Value(true), nullptr);
 #endif  // !BUILDFLAG(IS_IOS)
 }
