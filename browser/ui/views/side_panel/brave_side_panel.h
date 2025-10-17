@@ -44,6 +44,7 @@ class BraveSidePanel : public views::View,
   // Same signature as chromium SidePanel
   explicit BraveSidePanel(
       BrowserView* browser_view,
+      bool has_border,
       HorizontalAlignment horizontal_alignment = HorizontalAlignment::kLeft);
   BraveSidePanel(const BraveSidePanel&) = delete;
   BraveSidePanel& operator=(const BraveSidePanel&) = delete;
