@@ -5,6 +5,7 @@
 
 import("//brave/components/common/typescript.gni")
 import("//mojo/public/tools/bindings/mojom.gni")
+import("//tools/grit/preprocess_if_expr.gni")
 
 transpile_web_ui("brave_wallet_page_ui") {
   output_module = false
@@ -19,8 +20,18 @@ transpile_web_ui("brave_wallet_page_ui") {
   ]
 }
 
+preprocess_if_expr("preprocess_html") {
+  visibility = [ ":brave_wallet_page_generated_grit" ]
+  in_folder = "."
+  in_files = [ "wallet_page.html" ]
+  out_folder = "$target_gen_dir/preprocessed"
+}
+
 pack_web_resources("brave_wallet_page_generated") {
   resource_name = "brave_wallet_page"
   output_dir = "$root_gen_dir/brave/components/brave_wallet_page/resources"
-  deps = [ ":brave_wallet_page_ui" ]
+  deps = [
+    ":brave_wallet_page_ui",
+    ":preprocess_html",
+  ]
 }
