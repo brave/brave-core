@@ -43,11 +43,9 @@ void SidebarWebPanelController::OpenWebPanel(const SidebarItem& item) {
       browser_view_->browser(), item.url, 0, false, std::nullopt, true);
   panel_item_ = item;
   GetMultiContentsView()->SetWebPanelContents(panel_contents_);
-  GetMultiContentsView()->SetWebPanelVisible(true);
 }
 
 void SidebarWebPanelController::CloseWebPanel() {
-  GetMultiContentsView()->SetWebPanelVisible(false);
   GetMultiContentsView()->SetWebPanelContents(nullptr);
   panel_contents_ = nullptr;
   panel_item_ = sidebar::SidebarItem();
@@ -74,18 +72,6 @@ void SidebarWebPanelController::OnTabWillBeRemoved(
   if (panel_contents_ == contents) {
     CloseWebPanel();
   }
-}
-
-void SidebarWebPanelController::OnTabStripModelChanged(
-    TabStripModel* tab_strip_model,
-    const TabStripModelChange& change,
-    const TabStripSelectionChange& selection) {
-  if (!panel_contents_ || !selection.active_tab_changed()) {
-    return;
-  }
-
-  const bool is_web_panel_active = panel_contents_ == selection.new_contents;
-  GetMultiContentsView()->SetWebPanelActive(is_web_panel_active);
 }
 
 }  // namespace sidebar

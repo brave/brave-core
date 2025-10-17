@@ -90,6 +90,7 @@ bool SidebarController::DoesBrowserHaveOpenedTabForItem(
 }
 
 void SidebarController::TearDownPreBrowserWindowDestruction() {
+  web_panel_controller_.reset();
   sidebar_service_observed_.Reset();
   sidebar_ = nullptr;
 }
@@ -274,6 +275,12 @@ void SidebarController::SetSidebar(Sidebar* sidebar) {
 
 SidebarWebPanelController* SidebarController::GetWebPanelController() {
   CHECK(IsWebPanelFeatureEnabled());
+
+  // It's too early or late to get web panel controller.
+  if (!sidebar_) {
+    return nullptr;
+  }
+
   if (!web_panel_controller_) {
     web_panel_controller_ =
         std::make_unique<SidebarWebPanelController>(browser_->GetBrowserView());

@@ -11,7 +11,6 @@
 BraveMultiContentsViewDelegateImpl::BraveMultiContentsViewDelegateImpl(
     Browser& browser)
     : MultiContentsViewDelegateImpl(browser),
-      browser_(browser),
       tab_strip_model_(*browser.tab_strip_model()) {}
 
 BraveMultiContentsViewDelegateImpl::~BraveMultiContentsViewDelegateImpl() =
@@ -23,6 +22,7 @@ void BraveMultiContentsViewDelegateImpl::ResizeWebContents(double ratio,
   // But, split tab is not active tab when panel is active.
   // TODO(https://github.com/brave/brave-browser/issues/33533):
   // Need to handle split view resize when web panel is active.
+  // If not skip, crash happened now due to above reason.
   if (!tab_strip_model_->GetActiveTab()->GetSplit()) {
     return;
   }

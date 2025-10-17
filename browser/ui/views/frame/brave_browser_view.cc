@@ -861,6 +861,12 @@ bool BraveBrowserView::MaybeUpdateSplitView(
     return BrowserView::MaybeUpdateSplitView(web_contents);
   }
 
+  // Don't need to update split view state if |web_contents| is web panel.
+  // In BrowserView::MaybeUpdateSplitView(), there is assumption that
+  // split tab is active when multi contents view shows split view now.
+  // But, it's not when web panel is active and split view is opened together.
+  // Early return to avoid crash from that. If |web_contents| is not related
+  // with split tab, dont' need to call base class' method.
   if (IsWebPanelContents(web_contents) &&
       multi_contents_view_->IsInSplitView()) {
     return false;
@@ -1109,8 +1115,10 @@ bool BraveBrowserView::IsWebPanelContents(content::WebContents* contents) {
   }
 
   if (auto* sidebar_controller = browser_->GetFeatures().sidebar_controller()) {
-    return sidebar_controller->GetWebPanelController()->panel_contents() ==
-           contents;
+    if (auto* web_panel_controller =
+            sidebar_controller->GetWebPanelController()) {
+      return web_panel_controller->panel_contents() == contents;
+    }
   }
 
   return false;
