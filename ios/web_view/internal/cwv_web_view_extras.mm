@@ -13,6 +13,7 @@
 #include "ios/web/js_messaging/web_frame_internal.h"
 #include "ios/web/js_messaging/web_view_js_utils.h"
 #include "ios/web/public/js_messaging/web_frames_manager.h"
+#include "ios/web/public/ui/crw_web_view_proxy.h"
 #include "ios/web/web_state/ui/crw_web_controller.h"
 #include "ios/web/web_state/ui/wk_web_view_configuration_provider.h"
 #include "ios/web/web_state/web_state_impl.h"
@@ -33,6 +34,14 @@ const CWVUserAgentType CWVUserAgentTypeDesktop =
     static_cast<CWVUserAgentType>(web::UserAgentType::DESKTOP);
 
 @implementation CWVWebView (Extras)
+
+- (UIEdgeInsets)obscuredInsets {
+  return self.webState->GetWebViewProxy().obscuredInsets;
+}
+
+- (void)setObscuredInsets:(UIEdgeInsets)obscuredInsets {
+  self.webState->GetWebViewProxy().obscuredInsets = obscuredInsets;
+}
 
 + (BOOL)isRestoreDataValid:(NSData*)data {
   return [self _isRestoreDataValid:data];
