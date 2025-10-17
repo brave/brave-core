@@ -67,11 +67,13 @@
       icon="product-brave-news">
   </origin-toggle-button>
 
-  <origin-toggle-button id="toggleSpeedreaderButton"
-      policy-key="BraveSpeedreaderEnabled"
-      label="$i18n{braveOriginSpeedReaderToggleTitle}"
-      icon="product-speedreader">
-  </origin-toggle-button>
+  <if expr="enable_speedreader">
+    <origin-toggle-button id="toggleSpeedreaderButton"
+        policy-key="BraveSpeedreaderEnabled"
+        label="$i18n{braveOriginSpeedReaderToggleTitle}"
+        icon="product-speedreader">
+    </origin-toggle-button>
+  </if>
 
   <origin-toggle-button id="toggleTalkButton"
       policy-key="BraveTalkDisabled"
