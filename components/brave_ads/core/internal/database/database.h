@@ -19,14 +19,14 @@
 
 namespace brave_ads {
 
-class Database final {
+class Database final : public base::MemoryPressureListener {
  public:
   explicit Database(base::FilePath path);
 
   Database(const Database&) = delete;
   Database& operator=(const Database&) = delete;
 
-  ~Database();
+  ~Database() override;
 
   mojom::DBTransactionResultInfoPtr RunTransaction(
       mojom::DBTransactionInfoPtr mojom_db_transaction,
@@ -66,8 +66,7 @@ class Database final {
 
   void ErrorCallback(int error, sql::Statement* statement);
 
-  void MemoryPressureListenerCallback(
-      base::MemoryPressureLevel memory_pressure_level);
+  void OnMemoryPressure(base::MemoryPressureLevel level) override;
 
   base::FilePath db_path_;
   sql::Database db_;
