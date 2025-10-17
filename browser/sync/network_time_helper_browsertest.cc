@@ -62,6 +62,7 @@ class BraveSyncNetworkTimeHelperBrowserTest : public PlatformBrowserTest {
     brave_sync_refs.SetSeed(kValidSyncCode);
   }
 
+ private:
   base::CallbackListSubscription create_services_subscription_;
 };
 
