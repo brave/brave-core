@@ -43,6 +43,13 @@ void NetworkTimeHelper::GetNetworkTime(GetNetworkTimeCallback cb) {
     return;
   }
 
+  // Explicit check for ui_task_runner_ validity. It is required for
+  // BraveSyncNetworkTimeHelperBrowserDeathTest.CrashNoUiTaskRunner test to
+  // trigger crash on all configurations including those where DCHECKs are
+  // enabled. Otherwise EXPECT_CHECK_DEATH() repors failure with motivation
+  // Result: died but not with expected error.
+  CHECK(ui_task_runner_);
+
   // TODO(alexeybarabash): redo it using mojo interface
   // https://github.com/brave/brave-browser/issues/43738
   ui_task_runner_->PostTask(
