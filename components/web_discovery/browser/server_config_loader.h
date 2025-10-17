@@ -109,6 +109,8 @@ class ServerConfigLoader {
   void SetLastServerConfigForTesting(
       std::unique_ptr<ServerConfig> server_config);
   void SetLastPatternsForTesting(std::unique_ptr<PatternsGroup> patterns);
+  void SetLastV2PatternsForTesting(
+      std::unique_ptr<V2PatternsGroup> v2_patterns);
 
  private:
   void OnConfigResponsesDownloaded(
