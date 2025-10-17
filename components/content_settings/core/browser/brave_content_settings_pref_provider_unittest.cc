@@ -573,8 +573,7 @@ TEST_F(BravePrefProviderTest, MigrateFPShieldsSettings) {
       ContentSettingToValue(CONTENT_SETTING_BLOCK), {});
   std::vector<Rule> rules;
   auto rule_iterator = provider.GetRuleIterator(
-      ContentSettingsType::BRAVE_FINGERPRINTING_V2, false,
-      content_settings::PartitionKey::WipGetDefault());
+      ContentSettingsType::BRAVE_FINGERPRINTING_V2, false);
   while (rule_iterator && rule_iterator->HasNext()) {
     auto rule = rule_iterator->Next();
     EXPECT_NE(
