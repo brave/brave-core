@@ -334,7 +334,7 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
 // Enable if possible
 // Test that MaybeSetFullscreen() works with multiple calls.
 IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
-                       DISABLED_MultipleFullscreenCalls) {
+                       MultipleFullscreenCalls) {
   const GURL url = https_server_.GetURL("youtube.com", "/yt_fullscreen.html");
   content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url, 1,
                                                       true);
