@@ -9,6 +9,7 @@ _brave_policies = [
   "BraveSoftware/BraveCosmeticFilteringDisabledForUrls.yaml",
   "BraveSoftware/BraveDeAmpEnabled.yaml",
   "BraveSoftware/BraveDebouncingEnabled.yaml",
+  "BraveSoftware/BraveGlobalPrivacyControlDisabled.yaml",
   "BraveSoftware/BraveNewsDisabled.yaml",
   "BraveSoftware/BraveP3AEnabled.yaml",
   "BraveSoftware/BravePlaylistEnabled.yaml",

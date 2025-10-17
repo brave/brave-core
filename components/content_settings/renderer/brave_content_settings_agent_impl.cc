@@ -146,6 +146,13 @@ bool BraveContentSettingsAgentImpl::IsReduceLanguageEnabled() {
   return shields_settings_->reduce_language;
 }
 
+bool BraveContentSettingsAgentImpl::IsGlobalPrivacyControlDisabledByPolicy() {
+  if (!shields_settings_) {
+    return false;
+  }
+  return shields_settings_->global_privacy_control_disabled_by_policy;
+}
+
 void BraveContentSettingsAgentImpl::BraveSpecificDidAllowJavaScriptOnce(
     const GURL& resource_url) {
   // This will be called for all resources on a page, we want to notify only
@@ -397,7 +404,10 @@ BraveContentSettingsAgentImpl::GetBraveShieldsSettings(
                           HasContentSettingsRules());
     base::debug::DumpWithoutCrashing();
     return brave_shields::mojom::ShieldsSettings::New(
-        farbling_level, base::Token(), std::vector<std::string>(), false);
+        farbling_level, base::Token(),
+        /*origins_to_allow_scripts=*/std::vector<std::string>(),
+        /*reduce_language=*/false,
+        /*global_privacy_control_disabled_by_policy=*/false);
   }
 }
 

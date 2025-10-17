@@ -131,6 +131,8 @@ inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
      kManagedDefaultBraveCosmeticFiltering, base::Value::Type::INTEGER},
     {policy::key::kDefaultBraveAdsSetting, kManagedDefaultBraveAds,
      base::Value::Type::INTEGER},
+    {policy::key::kBraveGlobalPrivacyControlDisabled,
+     kGlobalPrivacyControlDisabledByPolicy, base::Value::Type::BOOLEAN},
 };
 
 }  // namespace policy

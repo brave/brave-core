@@ -383,6 +383,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   gcm::RegisterGCMProfilePrefs(registry);
 #endif
 
+  registry->RegisterBooleanPref(kGlobalPrivacyControlDisabledByPolicy, false);
   registry->RegisterBooleanPref(kShieldsStatsBadgeVisible, true);
   registry->RegisterBooleanPref(kGoogleLoginControlType, true);
   registry->RegisterBooleanPref(brave_shields::prefs::kFBEmbedControlType,
