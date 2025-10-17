@@ -50,6 +50,7 @@ import Attachments from '../components/attachments'
 import { createTextContentBlock } from '../../common/content_block'
 import ToolEvent from '../../untrusted_conversation_frame/components/assistant_response/tool_event'
 import { taskConversationEntries } from './story_utils/history'
+import { toolUseCompleteAssistantDetailStorage } from './story_utils/events'
 
 // TODO(https://github.com/brave/brave-browser/issues/47810): Attempt to split this file up
 
@@ -693,6 +694,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
       getCompletionEvent(
         'This website compares differences between Juniper Model Y and legacy one.',
       ),
+      toolUseCompleteAssistantDetailStorage,
     ],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
