@@ -17,6 +17,7 @@
 #include "components/os_crypt/sync/os_crypt.h"
 #include "components/prefs/pref_service.h"
 #include "net/http/http_request_headers.h"
+#include "net/http/http_status_code.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
@@ -51,6 +52,10 @@ inline constexpr net::NetworkTrafficAnnotationTag kTrafficAnnotation =
       "and cannot be disabled by policy."
   }
 )");
+
+constexpr base::TimeDelta kVerifyResultPollInterval = base::Seconds(5);
+constexpr base::TimeDelta kVerifyResultWatchdogInterval =
+    3 * kVerifyResultPollInterval;
 
 std::string Encrypt(const std::string& plain_text,
                     BraveAccountService::OSCryptCallback encrypt_callback) {
@@ -92,6 +97,7 @@ using endpoint_client::WithHeaders;
 using endpoints::Error;
 using endpoints::PasswordFinalize;
 using endpoints::PasswordInit;
+using endpoints::VerifyResult;
 
 BraveAccountService::BraveAccountService(
     PrefService* pref_service,
@@ -119,7 +125,14 @@ BraveAccountService::BraveAccountService(
     : pref_service_(pref_service),
       api_request_helper_(std::move(api_request_helper)),
       encrypt_callback_(std::move(encrypt_callback)),
-      decrypt_callback_(std::move(decrypt_callback)) {}
+      decrypt_callback_(std::move(decrypt_callback)) {
+  pref_change_registrar_.Init(pref_service_);
+  pref_change_registrar_.Add(
+      prefs::kVerificationToken,
+      base::BindRepeating(&BraveAccountService::OnVerificationTokenChanged,
+                          base::Unretained(this)));
+  OnVerificationTokenChanged();
+}
 
 void BraveAccountService::RegisterInitialize(
     const std::string& email,
@@ -250,6 +263,77 @@ std::optional<mojom::RegisterErrorCode> BraveAccountService::TransformError(
   const auto error_code = static_cast<mojom::RegisterErrorCode>(error->code);
   return mojom::IsKnownEnumValue(error_code) ? std::optional(error_code)
                                              : std::nullopt;
+}
+
+void BraveAccountService::OnVerificationTokenChanged() {
+  if (pref_service_->GetString(prefs::kVerificationToken).empty()) {
+    return verify_result_timer_.Stop();
+  }
+
+  ScheduleVerifyResult();
+}
+
+void BraveAccountService::ScheduleVerifyResult(base::TimeDelta delay) {
+  verify_result_timer_.Start(FROM_HERE, delay,
+                             base::BindOnce(&BraveAccountService::VerifyResult,
+                                            base::Unretained(this)));
+}
+
+void BraveAccountService::VerifyResult() {
+  const auto encrypted_verification_token =
+      pref_service_->GetString(prefs::kVerificationToken);
+  if (encrypted_verification_token.empty()) {
+    return;
+  }
+
+  const auto verification_token =
+      Decrypt(encrypted_verification_token, decrypt_callback_);
+  if (verification_token.empty()) {
+    return;
+  }
+
+  WithHeaders<VerifyResult::Request> request;
+  request.wait = false;
+  request.headers.SetHeader("Authorization",
+                            base::StrCat({"Bearer ", verification_token}));
+  Client<endpoints::VerifyResult>::Send(
+      CHECK_DEREF(api_request_helper_.get()), std::move(request),
+      base::BindOnce(&BraveAccountService::OnVerifyResult,
+                     weak_factory_.GetWeakPtr()));
+
+  // Replace normal cadence with the watchdog timer.
+  ScheduleVerifyResult(kVerifyResultWatchdogInterval);
+}
+
+void BraveAccountService::OnVerifyResult(
+    int response_code,
+    base::expected<std::optional<VerifyResult::Response>,
+                   std::optional<VerifyResult::Error>> reply) {
+  if (const auto response = std::move(reply).value_or(std::nullopt);
+      response && !response->auth_token.empty()) {
+    // We stop polling regardless of encryption success,
+    // since the auth token is transient on the server
+    // and cannot be retrieved again.
+    pref_service_->ClearPref(prefs::kVerificationToken);
+
+    if (const auto encrypted_authentication_token =
+            Encrypt(response->auth_token, encrypt_callback_);
+        !encrypted_authentication_token.empty()) {
+      pref_service_->SetString(prefs::kAuthenticationToken,
+                               encrypted_authentication_token);
+    }
+
+    return;
+  }
+
+  if (response_code == net::HTTP_BAD_REQUEST ||
+      response_code == net::HTTP_UNAUTHORIZED) {
+    // Polling cannot recover from these errors, so we stop further attempts.
+    return pref_service_->ClearPref(prefs::kVerificationToken);
+  }
+
+  // Replace watchdog timer with the normal cadence.
+  ScheduleVerifyResult(kVerifyResultPollInterval);
 }
 
 }  // namespace brave_account
