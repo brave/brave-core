@@ -18,6 +18,8 @@ static_library("p3a") {
     "histograms_braveizer.h",
     "managed/component_installer.cc",
     "managed/component_installer.h",
+    "managed/pref_intermediate.cc",
+    "managed/pref_intermediate.h",
     "managed/remote_config_manager.cc",
     "managed/remote_config_manager.h",
     "managed/remote_metric.cc",
@@ -104,7 +106,9 @@ source_set("unit_tests") {
   sources = [
     "constellation_helper_unittest.cc",
     "constellation_log_store_unittest.cc",
+    "managed/pref_intermediate_unittest.cc",
     "managed/remote_config_manager_unittest.cc",
+    "managed/remote_metric_manager_unittest.cc",
     "message_manager_unittest.cc",
     "metric_log_store_unittest.cc",
     "metric_names_unittest.cc",
