@@ -60,7 +60,7 @@ class BraveSidePanel : public views::View,
   gfx::Size GetContentSizeUpperBound() const { return gfx::Size(); }
   bool IsClosing();
   void DisableAnimationsForTesting() {}
-  void SetHeaderVisibility(bool visible);
+  void RemoveHeaderView();
   void SetOutlineVisibility(bool visible);
 
   template <typename T>

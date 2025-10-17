@@ -220,7 +220,7 @@ void BraveSidePanel::AddHeaderView(std::unique_ptr<views::View> view) {
   header_view_ = std::move(view);
 }
 
-void BraveSidePanel::SetHeaderVisibility(bool visible) {}
+void BraveSidePanel::RemoveHeaderView() {}
 
 void BraveSidePanel::SetOutlineVisibility(bool visible) {}
 
