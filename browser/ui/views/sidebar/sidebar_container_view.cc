@@ -188,8 +188,7 @@ bool SidebarContainerView::PreHandleMouseEvent(
 
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser_);
   gfx::RectF mouse_event_detect_bounds(
-      browser_view->GetContentsContainerForLayoutManager()
-          ->GetBoundsInScreen());
+      browser_view->contents_container()->GetBoundsInScreen());
 
   // Detect bounds should include rounded corners margin to make sidebar
   // visible from that padding also.

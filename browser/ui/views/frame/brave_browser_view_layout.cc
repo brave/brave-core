@@ -55,26 +55,24 @@ BraveBrowserViewLayout::BraveBrowserViewLayout(
     views::View* right_aligned_side_panel_separator,
     views::View* side_panel_rounded_corner,
     views::View* contents_separator)
-    : BrowserViewLayout(
-          std::move(delegate),
-          browser_view,
-          window_scrim,
-          top_container,
-          web_app_frame_toolbar,
-          web_app_window_title,
-          tab_strip_region_view,
-          vertical_tab_strip_container,
-          toolbar,
-          infobar_container,
-          main_container,
-          (browser_view ? browser_view->GetContentsContainerForLayoutManager()
-                        : browser_view),
-          multi_contents_view,
-          left_aligned_side_panel_separator,
-          contents_height_side_panel,
-          right_aligned_side_panel_separator,
-          side_panel_rounded_corner,
-          contents_separator) {}
+    : BrowserViewLayout(std::move(delegate),
+                        browser_view,
+                        window_scrim,
+                        top_container,
+                        web_app_frame_toolbar,
+                        web_app_window_title,
+                        tab_strip_region_view,
+                        vertical_tab_strip_container,
+                        toolbar,
+                        infobar_container,
+                        main_container,
+                        contents_container,
+                        multi_contents_view,
+                        left_aligned_side_panel_separator,
+                        contents_height_side_panel,
+                        right_aligned_side_panel_separator,
+                        side_panel_rounded_corner,
+                        contents_separator) {}
 
 BraveBrowserViewLayout::~BraveBrowserViewLayout() = default;
 

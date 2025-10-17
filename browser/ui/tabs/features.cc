@@ -35,10 +35,6 @@ BASE_FEATURE(kBraveVerticalTabHideCompletely,
              "BraveVerticalTabHideCompletely",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
-BASE_FEATURE(kBraveSplitView,
-             "BraveSplitView",
-             base::FEATURE_DISABLED_BY_DEFAULT);
-
 BASE_FEATURE(kBraveTreeTab, "BraveTreeTab", base::FEATURE_DISABLED_BY_DEFAULT);
 
 BASE_FEATURE(kBraveRenamingTabs,
@@ -47,17 +43,6 @@ BASE_FEATURE(kBraveRenamingTabs,
 
 bool HorizontalTabsUpdateEnabled() {
   return base::FeatureList::IsEnabled(kBraveHorizontalTabsUpdate);
-}
-
-bool IsBraveSplitViewEnabled() {
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveSplitView)) {
-    return false;
-  }
-
-  // Brave can't use both features together.
-  // We'll migrate our SplitView feature onto upstream's SideBySide
-  // feature.
-  return !base::FeatureList::IsEnabled(::features::kSideBySide);
 }
 
 }  // namespace tabs::features

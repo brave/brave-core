@@ -25,14 +25,11 @@ BASE_DECLARE_FEATURE(kBraveVerticalTabScrollBar);
 
 BASE_DECLARE_FEATURE(kBraveVerticalTabHideCompletely);
 
-BASE_DECLARE_FEATURE(kBraveSplitView);
-
 BASE_DECLARE_FEATURE(kBraveTreeTab);
 
 BASE_DECLARE_FEATURE(kBraveRenamingTabs);
 
 bool HorizontalTabsUpdateEnabled();
-bool IsBraveSplitViewEnabled();
 
 }  // namespace tabs::features
 
