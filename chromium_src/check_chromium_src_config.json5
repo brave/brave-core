@@ -19,6 +19,7 @@
         "base/feature_override.h",
         "check_chromium_src_config.json5",
         "chrome/browser/devtools/url_constants_unittest.cc",
+        "chrome/browser/flags/android/chrome_feature_list.cc",
         "chrome/browser/history/history_utils_unittest.cc",
         "chrome/browser/notifications/notification_handler_impl.h",
         "chrome/browser/safe_browsing/download_protection/check_client_download_request_base_browsertest.cc",
