@@ -13,8 +13,6 @@
 #include <vector>
 
 #include "base/check.h"
-#include "base/debug/crash_logging.h"
-#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "base/location.h"
 #include "base/strings/string_util.h"
@@ -121,21 +119,6 @@ void GetCallback(
        mojom_db_transaction_result->rows_union->get_rows()) {
     const TransactionInfo transaction = FromMojomRow(mojom_db_row);
     if (!transaction.IsValid()) {
-      SCOPED_CRASH_KEY_BOOL("Issue45296", "id", !transaction.id.empty());
-      SCOPED_CRASH_KEY_BOOL("Issue45296", "created_at",
-                            !!transaction.created_at);
-      SCOPED_CRASH_KEY_BOOL("Issue45296", "creative_instance_id",
-                            !transaction.creative_instance_id.empty());
-      SCOPED_CRASH_KEY_BOOL("Issue45296", "segment",
-                            !transaction.segment.empty());
-      SCOPED_CRASH_KEY_BOOL("Issue45296", "ad_type",
-                            transaction.ad_type != mojom::AdType::kUndefined);
-      SCOPED_CRASH_KEY_BOOL(
-          "Issue45296", "confirmation_type",
-          transaction.confirmation_type != mojom::ConfirmationType::kUndefined);
-      SCOPED_CRASH_KEY_STRING64("Issue45296", "failure_reason",
-                                "Invalid transaction");
-      base::debug::DumpWithoutCrashing();
       BLOG(0, "Invalid transaction");
       continue;
     }
@@ -216,33 +199,15 @@ void MigrateToV43(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
 void Transactions::Save(const TransactionList& transactions,
                         ResultCallback callback) {
   TransactionList filtered_transactions;
-  std::copy_if(
-      transactions.cbegin(), transactions.cend(),
-      std::back_inserter(filtered_transactions),
-      [](const TransactionInfo& transaction) {
-        const bool is_valid = transaction.IsValid();
-        if (!is_valid) {
-          SCOPED_CRASH_KEY_BOOL("Issue45296", "id", !transaction.id.empty());
-          SCOPED_CRASH_KEY_BOOL("Issue45296", "created_at",
-                                !!transaction.created_at);
-          SCOPED_CRASH_KEY_BOOL("Issue45296", "creative_instance_id",
-                                !transaction.creative_instance_id.empty());
-          SCOPED_CRASH_KEY_BOOL("Issue45296", "segment",
-                                !transaction.segment.empty());
-          SCOPED_CRASH_KEY_BOOL(
-              "Issue45296", "ad_type",
-              transaction.ad_type != mojom::AdType::kUndefined);
-          SCOPED_CRASH_KEY_BOOL("Issue45296", "confirmation_type",
-                                transaction.confirmation_type !=
-                                    mojom::ConfirmationType::kUndefined);
-          SCOPED_CRASH_KEY_STRING64("Issue45296", "failure_reason",
-                                    "Invalid transaction");
-          base::debug::DumpWithoutCrashing();
-          BLOG(0, "Invalid transaction");
-        }
-
-        return is_valid;
-      });
+  std::copy_if(transactions.cbegin(), transactions.cend(),
+               std::back_inserter(filtered_transactions),
+               [](const TransactionInfo& transaction) {
+                 if (!transaction.IsValid()) {
+                   BLOG(0, "Invalid transaction");
+                   return false;
+                 }
+                 return true;
+               });
   if (filtered_transactions.empty()) {
     return std::move(callback).Run(/*success=*/true);
   }
