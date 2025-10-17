@@ -593,7 +593,6 @@ android_resources("java_resources") {
     "java/brave-res/layout/fragment_create_account.xml",
     "java/brave-res/layout/fragment_create_custom_filters.xml",
     "java/brave-res/layout/fragment_creating_wallet.xml",
-    "java/brave-res/layout/fragment_dapps_message.xml",
     "java/brave-res/layout/fragment_dormant_users_engagement_dialog.xml",
     "java/brave-res/layout/fragment_encryption_key.xml",
     "java/brave-res/layout/fragment_fingerprint_unlock.xml",

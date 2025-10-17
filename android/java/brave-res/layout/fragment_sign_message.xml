@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -14,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:layout_marginBottom="20dp"
-        android:paddingStart="24dp"
+        android:paddingHorizontal="24dp"
         android:text="@string/mainnet"
         android:textColor="@color/wallet_text_color"
         android:textSize="16sp"
@@ -94,23 +95,19 @@
         app:layout_constraintTop_toBottomOf="@+id/fragment_sign_msg_tv_account_name"
         tools:text="Your signature is being requested" />
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/fragment_sign_msg_tv_message_tabs"
+    <TextView
+        android:id="@+id/fragment_sign_msg_tv_message_details"
+        android:padding="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
+        android:textColor="@color/tab_color"
+        android:gravity="center"
+        android:text="@string/details"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragment_sign_msg_tv_message"
-        app:tabGravity="fill"
-        app:tabMaxWidth="0dp"
-        app:tabMode="fixed"
-        app:tabIndicatorHeight="0dp"
-        app:tabIndicatorColor="@android:color/transparent"
-        app:tabSelectedTextColor="@color/tab_color"
-        app:tabTextAppearance="@style/BraveWalletTabsTextAppearance"
-        app:tabTextColor="@color/wallet_text_color"
-        tools:ignore="SpeakableTextPresentCheck" />
+        app:layout_constraintTop_toBottomOf="@+id/fragment_sign_msg_tv_message" />
 
     <View
         android:id="@+id/view_tab_line"
@@ -119,20 +116,65 @@
         android:layout_marginBottom="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragment_sign_msg_tv_message_tabs"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_sign_msg_tv_message_details"
         android:layout_height="2dp" />
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/fragment_sign_msg_tv_message_view_pager"
+    <LinearLayout
+        android:id="@+id/non_ascii_warning_layout"
+        android:background="@drawable/wallet_top_banner_bg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
         android:layout_marginTop="12dp"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_tab_line">
+
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:textSize="16sp"
+            android:textColor="@color/wallet_error_text_color"
+            android:drawablePadding="2dp"
+            app:drawableStartCompat="@drawable/ic_warning"
+            android:text="@string/wallet_non_ascii_characters"/>
+
+        <TextView
+            android:id="@+id/non_ascii_warning_text_link"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:textSize="16sp"
+            android:textColor="@color/brave_link"
+            android:text="@string/wallet_non_ascii_characters_original"/>
+
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/sign_message_text"
+        style="@style/BraveWalletEditTextBordered"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="32dp"
+        android:minHeight="100dp"
+        android:inputType="none"
+        android:paddingVertical="10dp"
+        android:textIsSelectable="true"
+        android:focusable="false"
+        android:longClickable="false"
+        android:importantForAutofill="no"
         app:layout_constraintBottom_toTopOf="@+id/approve_tx_bottom_sheet_action"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/view_tab_line"
+        app:layout_constraintTop_toBottomOf="@id/non_ascii_warning_layout"
         app:layout_constraintVertical_bias="0"
-        />
+        android:lines="14"
+        android:scrollbars="vertical"
+        android:fadeScrollbars="false"
+        tools:ignore="LabelFor" />
 
     <LinearLayout
         android:id="@+id/approve_tx_bottom_sheet_action"
