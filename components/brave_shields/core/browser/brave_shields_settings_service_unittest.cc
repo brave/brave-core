@@ -402,8 +402,7 @@ TEST_F(BraveShieldsSettingsServiceTest, GetJsContentSettingsOverriddenData) {
   extension_provider->SetWebsiteSetting(
       ContentSettingsPattern::FromURL(url), ContentSettingsPattern::Wildcard(),
       ContentSettingsType::JAVASCRIPT, base::Value(CONTENT_SETTING_ALLOW),
-      /*constraints=*/{},
-      content_settings::PartitionKey::GetDefaultForTesting());
+      /*constraints=*/{});
   // Overridde to ALLOW via extension
   content_settings::TestUtils::OverrideProvider(
       GetHostContentSettingsMap(), std::move(extension_provider),
