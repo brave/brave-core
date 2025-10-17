@@ -16,6 +16,7 @@
 #include "brave/components/p3a/managed/pref_intermediate.h"
 #include "brave/components/p3a/managed/probe_intermediate.h"
 #include "brave/components/p3a/managed/time_period_events_intermediate.h"
+#include "brave/components/p3a/managed/value_map_intermediate.h"
 #include "components/prefs/pref_service.h"
 
 namespace p3a {
@@ -29,6 +30,7 @@ constexpr char kPrefIntermediateType[] = "pref";
 constexpr char kTimePeriodEventsIntermediateType[] = "time_period_events";
 constexpr char kBucketIntermediateType[] = "bucket";
 constexpr char kPercentageIntermediateType[] = "percentage";
+constexpr char kValueMapIntermediateType[] = "value_map";
 
 }  // namespace
 
@@ -180,6 +182,15 @@ std::unique_ptr<RemoteMetricIntermediate> RemoteMetric::GetIntermediateInstance(
     }
     return std::make_unique<PercentageIntermediate>(std::move(definition),
                                                     this);
+  }
+
+  if (*type == kValueMapIntermediateType) {
+    ValueMapIntermediateDefinition definition;
+    base::JSONValueConverter<ValueMapIntermediateDefinition> converter;
+    if (!converter.Convert(config, &definition)) {
+      return nullptr;
+    }
+    return std::make_unique<ValueMapIntermediate>(std::move(definition), this);
   }
 
   return nullptr;  // Unknown type
