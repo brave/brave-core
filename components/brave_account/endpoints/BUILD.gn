@@ -13,6 +13,8 @@ source_set("endpoints") {
     "password_finalize.h",
     "password_init.cc",
     "password_init.h",
+    "verify_result.cc",
+    "verify_result.h",
   ]
 
   deps = [
@@ -34,6 +36,8 @@ generated_types("generated_api_types") {
     "password_finalize_response.idl",
     "password_init_request.idl",
     "password_init_response.idl",
+    "verify_result_request.idl",
+    "verify_result_response.idl",
   ]
 
   deps = [ "//base" ]
@@ -48,6 +52,7 @@ source_set("unit_tests") {
     "endpoint_test.h",
     "password_finalize_unittest.cc",
     "password_init_unittest.cc",
+    "verify_result_unittest.cc",
   ]
 
   deps = [
