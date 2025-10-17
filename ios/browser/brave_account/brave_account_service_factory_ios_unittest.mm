@@ -12,6 +12,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_account/features.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
+#include "ios/chrome/browser/shared/model/profile/test/test_profile_ios.h"
 #include "ios/chrome/browser/shared/model/profile/test/test_profile_manager_ios.h"
 #include "ios/chrome/test/ios_chrome_scoped_testing_local_state.h"
 #include "ios/web/public/test/web_task_environment.h"
@@ -30,19 +31,18 @@ enum class ProfileKind {
 class BraveAccountServiceFactoryIOSTest
     : public testing::TestWithParam<ProfileKind> {
  protected:
-  void SetUp() override {
-    // Must be constructed before any ProfileIOS is created.
-    BraveAccountServiceFactoryIOS::GetInstance();
-  }
-
   ProfileIOS* GetProfileForKind(ProfileKind kind) {
+    TestProfileIOS::Builder builder;
+    builder.AddTestingFactory(
+        BraveAccountServiceFactoryIOS::GetInstance(),
+        BraveAccountServiceFactoryIOS::GetDefaultFactory());
+
     switch (kind) {
       case ProfileKind::kRegularOriginal:
-        return profile_manager_.AddProfileWithBuilder(
-            TestProfileIOS::Builder());
+        return profile_manager_.AddProfileWithBuilder(std::move(builder));
       case ProfileKind::kRegularOTR:
-        return CHECK_DEREF(profile_manager_.AddProfileWithBuilder(
-                               TestProfileIOS::Builder()))
+        return CHECK_DEREF(
+                   profile_manager_.AddProfileWithBuilder(std::move(builder)))
             .GetOffTheRecordProfile();
     }
 
