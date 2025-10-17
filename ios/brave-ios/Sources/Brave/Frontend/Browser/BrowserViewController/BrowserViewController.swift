@@ -474,7 +474,7 @@ public class BrowserViewController: UIViewController {
     Preferences.Rewards.rewardsToggledOnce.observe(from: self)
     Preferences.Playlist.enablePlaylistURLBarButton.observe(from: self)
     Preferences.NewTabPage.backgroundMediaTypeRaw.observe(from: self)
-    ShieldPreferences.blockAdsAndTrackingLevelRaw.observe(from: self)
+    Preferences.Shields.blockAdsAndTrackingLevelRaw.observe(from: self)
     Preferences.Privacy.screenTimeEnabled.observe(from: self)
     Preferences.Translate.translateEnabled.observe(from: self)
 
@@ -2864,7 +2864,7 @@ extension BrowserViewController: PreferencesObserver {
       Preferences.Shields.blockImages.key,
       Preferences.Shields.useRegionAdBlock.key:
       tabManager.reloadSelectedTab()
-    case ShieldPreferences.blockAdsAndTrackingLevelRaw.key:
+    case Preferences.Shields.blockAdsAndTrackingLevelRaw.key:
       tabManager.reloadSelectedTab()
       recordGlobalAdBlockShieldsP3A()
       // Global shield setting changed, reset selectors cache.

@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveShields
+import Preferences
 import WebKit
 import XCTest
 
@@ -53,7 +54,7 @@ final class PageDataTests: XCTestCase {
       // NOTE: If we were to add some engines we might see additional types
       let expectedMainFrameTypes: Set<UserScriptType> = [
         .siteStateListener, .farblingProtection(etld: "example.com"),
-        .gpc(ShieldPreferences.enableGPC.value),
+        .gpc(Preferences.Shields.enableGPC.value),
       ]
       XCTAssertEqual(mainFrameRequestTypes, expectedMainFrameTypes)
 
@@ -84,7 +85,7 @@ final class PageDataTests: XCTestCase {
       )
       let expectedMainAndSubFrameTypes: Set<UserScriptType> = [
         .siteStateListener, .farblingProtection(etld: "example.com"),
-        .gpc(ShieldPreferences.enableGPC.value),
+        .gpc(Preferences.Shields.enableGPC.value),
       ]
       XCTAssertEqual(expectedMainAndSubFrameTypes, addedSubFrameFrameRequestTypes)
 

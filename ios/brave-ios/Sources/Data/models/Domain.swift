@@ -147,8 +147,7 @@ public final class Domain: NSManagedObject, CRUD {
   }
 
   public class func totalDomainsWithFingerprintingProtectionLoweredFromGlobal() -> Int {
-    guard Preferences.Shields.fingerprintingProtection.value,
-      let domains = Domain.all(where: NSPredicate(format: "shield_fpProtection != nil"))
+    guard let domains = Domain.all(where: NSPredicate(format: "shield_fpProtection != nil"))
     else {
       return 0  // Can't be lower than off
     }
@@ -156,8 +155,7 @@ public final class Domain: NSManagedObject, CRUD {
   }
 
   public class func totalDomainsWithFingerprintingProtectionIncreasedFromGlobal() -> Int {
-    guard !Preferences.Shields.fingerprintingProtection.value,
-      let domains = Domain.all(where: NSPredicate(format: "shield_fpProtection != nil"))
+    guard let domains = Domain.all(where: NSPredicate(format: "shield_fpProtection != nil"))
     else {
       return 0  // Can't be higher than on
     }

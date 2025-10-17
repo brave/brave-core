@@ -244,8 +244,8 @@ class DomainTests: CoreDataTestCase {
     let domain3 = Domain.getOrCreate(forUrl: compound, persistent: true)
 
     // verify default is SiteShredLevel.never
-    ShieldPreferences.shredLevelRaw.value = nil
-    XCTAssertEqual(ShieldPreferences.shredLevel, .never)
+    Preferences.Shields.shredLevelRaw.value = nil
+    XCTAssertEqual(Preferences.Shields.shredLevel, .never)
 
     // test defaults
     XCTAssertEqual((Domain.allDomainsWithAutoShredLevel(nil) ?? []).count, 3)
@@ -281,15 +281,15 @@ class DomainTests: CoreDataTestCase {
 
   @MainActor func testAllDomainsWithShredLevelAppExit() {
     let domain = Domain.getOrCreate(forUrl: url, persistent: true)
-    // domain should use `ShieldPreferences.shredLevel` value (default)
+    // domain should use `Preferences.Shields.shredLevel` value (default)
     let domain2 = Domain.getOrCreate(forUrl: url2, persistent: true)
     domain.shredLevel = .never
     let domain3 = Domain.getOrCreate(forUrl: compound, persistent: true)
     domain2.shredLevel = .appExit
 
     // verify default is SiteShredLevel.never
-    ShieldPreferences.shredLevelRaw.value = nil
-    XCTAssertEqual(ShieldPreferences.shredLevel, .never)
+    Preferences.Shields.shredLevelRaw.value = nil
+    XCTAssertEqual(Preferences.Shields.shredLevel, .never)
 
     var allDomainsWithShredLevelAppExit = Domain.allDomainsWithShredLevelAppExit() ?? []
     XCTAssertEqual(allDomainsWithShredLevelAppExit.count, 1)
@@ -298,8 +298,8 @@ class DomainTests: CoreDataTestCase {
     XCTAssertFalse(allDomainsWithShredLevelAppExit.contains(where: { $0.url == domain3.url }))
 
     // update default to SiteShredLevel.appExit
-    ShieldPreferences.shredLevel = .appExit
-    XCTAssertEqual(ShieldPreferences.shredLevel, .appExit)
+    Preferences.Shields.shredLevel = .appExit
+    XCTAssertEqual(Preferences.Shields.shredLevel, .appExit)
 
     // should contain domain2 & domain3
     allDomainsWithShredLevelAppExit = Domain.allDomainsWithShredLevelAppExit() ?? []
