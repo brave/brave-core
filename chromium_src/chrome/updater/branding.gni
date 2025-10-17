@@ -11,11 +11,16 @@
 # So we define our values in a scope here, then use forward_variables_from(...)
 # in upstream's .gni file to apply the changes from this scope.
 
+import("//brave/components/brave_origin/buildflags/buildflags.gni")
 import("//build/config/chrome_build.gni")
 import("//build/util/branding.gni")
 
 brave_updater_branding = {
-  browser_name = "Brave"
+  if (is_brave_origin_branded) {
+    browser_name = "Brave Origin"
+  } else {
+    browser_name = "Brave"
+  }
   browser_product_name = chrome_product_full_name
   crash_product_name = "BraveUpdater"
   crash_upload_url = "https://cr.brave.com"

@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/build/brave_channel.gni")
+import("//brave/components/brave_origin/buildflags/buildflags.gni")
 import("//build/config/apple/symbols.gni")
 import("//build/util/branding.gni")
 import("//chrome/version.gni")
@@ -104,18 +105,22 @@ if (is_win) {
   if (target_cpu == "x86") {
     _arch = "32"
   }
+  _product_prefix = "BraveBrowser"
+  if (is_brave_origin_branded) {
+    _product_prefix = "BraveOrigin"
+  }
   brave_installer_exe = "brave_installer.exe"
   brave_stub_installer_exe =
-      "BraveBrowser$_channel" + "Setup$_arch$brave_underline_full_version.exe"
+      "$_product_prefix$_channel" + "Setup$_arch$brave_underline_full_version.exe"
   brave_untagged_stub_installer_exe =
-      "BraveBrowserUntagged$_channel" +
+      "$_product_prefix" + "Untagged$_channel" +
       "Setup$_arch$brave_underline_full_version.exe"
   brave_standalone_installer_exe =
-      "BraveBrowserStandalone$_channel" +
+      "$_product_prefix" + "Standalone$_channel" +
       "Setup$_arch$brave_underline_full_version.exe"
-  brave_silent_installer_exe = "BraveBrowserStandaloneSilent$_channel" +
+  brave_silent_installer_exe = "$_product_prefix" + "StandaloneSilent$_channel" +
                                "Setup$_arch$brave_underline_full_version.exe"
-  brave_untagged_installer_exe = "BraveBrowserStandaloneUntagged$_channel" +
+  brave_untagged_installer_exe = "$_product_prefix" + "StandaloneUntagged$_channel" +
                                  "Setup$_arch$brave_underline_full_version.exe"
 } else if (is_mac) {
   brave_exe = "$chrome_product_full_name.app"
@@ -136,12 +141,16 @@ if (is_win) {
   } else {
     brave_product_dir_name_suffix = "-Development"
   }
+  _product_name = "Brave-Browser"
+  if (is_brave_origin_branded) {
+    _product_name = "Brave-Origin"
+  }
   brave_product_dir_name =
-      "BraveSoftware/Brave-Browser$brave_product_dir_name_suffix"
+      "BraveSoftware/$_product_name$brave_product_dir_name_suffix"
 
   if (base_sparkle_update_url == "") {
     base_sparkle_update_url =
-        "https://updates.bravesoftware.com/sparkle/Brave-Browser"
+        "https://updates.bravesoftware.com/sparkle/$_product_name"
   }
 }
 

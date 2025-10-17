@@ -9,9 +9,16 @@
 
 # Please provide a reason if you are adding new overrides to this file.
 
+import("//brave/components/brave_origin/buildflags/buildflags.gni")
+
 proprietary_codecs = true
 ffmpeg_branding = "Chrome"
-branding_path_component = "brave"
-branding_path_product = "brave"
+if (is_brave_origin_branded) {
+  branding_path_component = "brave_origin"
+  branding_path_product = "brave_origin"
+} else {
+  branding_path_component = "brave"
+  branding_path_product = "brave"
+}
 enable_glic = false
 enable_widevine = true
