@@ -16,6 +16,7 @@ import DataImporter
 import Growth
 import LocalAuthentication
 import NetworkExtension
+import Origin
 import Playlist
 import Preferences
 import Shared
@@ -627,6 +628,22 @@ class SettingsViewController: TableViewController {
       cellClass: MultilineSubtitleCell.self
     )
     general.rows.append(websiteRedirectsRow)
+
+    if FeatureList.kBraveOrigin.enabled {
+      general.rows.append(
+        Row(
+          text: Strings.Origin.originProductName,
+          selection: { [unowned self] in
+            let controller = UIHostingController(rootView: OriginSettingsView())
+            controller.title = Strings.Origin.originProductName  // Not Translated
+            self.navigationController?.pushViewController(controller, animated: true)
+          },
+          image: UIImage(braveSystemNamed: "leo.product.origin"),
+          accessory: .disclosureIndicator,
+          cellClass: MultilineSubtitleCell.self
+        )
+      )
+    }
 
     return general
   }()
