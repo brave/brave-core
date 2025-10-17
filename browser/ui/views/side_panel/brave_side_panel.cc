@@ -223,7 +223,7 @@ void BraveSidePanel::OnResize(int resize_amount, bool done_resizing) {
 
 void BraveSidePanel::AddHeaderView(std::unique_ptr<views::View> view) {}
 
-void BraveSidePanel::SetHeaderVisibility(bool visible) {}
+void BraveSidePanel::RemoveHeaderView() {}
 
 void BraveSidePanel::SetOutlineVisibility(bool visible) {}
 
