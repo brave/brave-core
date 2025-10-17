@@ -22,11 +22,15 @@ class NoDestructor;
 
 namespace brave_wallet {
 
+class SwapService;
+
 class SwapServiceFactory : public ProfileKeyedServiceFactoryIOS {
  public:
   // Creates the service if it doesn't exist already for |profile|.
   static mojo::PendingRemote<mojom::SwapService> GetForProfile(
       ProfileIOS* profile);
+
+  static SwapService* GetServiceForProfile(ProfileIOS* profile);
 
   static SwapServiceFactory* GetInstance();
 
