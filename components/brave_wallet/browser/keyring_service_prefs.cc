@@ -64,7 +64,7 @@ std::string KeyringIdPrefString(mojom::KeyringId keyring_id) {
 }
 
 const base::Value* GetPrefForKeyring(PrefService* profile_prefs,
-                                     const std::string& key,
+                                     std::string_view key,
                                      mojom::KeyringId keyring_id) {
   const auto& keyrings_pref = profile_prefs->GetDict(kBraveWalletKeyrings);
   const base::Value::Dict* keyring_dict =
@@ -77,7 +77,7 @@ const base::Value* GetPrefForKeyring(PrefService* profile_prefs,
 }
 
 void SetPrefForKeyring(PrefService* profile_prefs,
-                       const std::string& key,
+                       std::string_view key,
                        base::Value value,
                        mojom::KeyringId keyring_id) {
   DCHECK(profile_prefs);
@@ -91,7 +91,7 @@ void SetPrefForKeyring(PrefService* profile_prefs,
 }
 
 const base::Value::List* GetPrefForKeyringList(PrefService* profile_prefs,
-                                               const std::string& key,
+                                               std::string_view key,
                                                mojom::KeyringId keyring_id) {
   if (const base::Value* result =
           GetPrefForKeyring(profile_prefs, key, keyring_id);
@@ -102,7 +102,7 @@ const base::Value::List* GetPrefForKeyringList(PrefService* profile_prefs,
 }
 
 const base::Value::Dict* GetPrefForKeyringDict(PrefService* profile_prefs,
-                                               const std::string& key,
+                                               std::string_view key,
                                                mojom::KeyringId keyring_id) {
   if (const base::Value* result =
           GetPrefForKeyring(profile_prefs, key, keyring_id);
@@ -114,7 +114,7 @@ const base::Value::Dict* GetPrefForKeyringDict(PrefService* profile_prefs,
 
 base::Value::List& GetListPrefForKeyringUpdate(
     ScopedDictPrefUpdate& dict_update,
-    const std::string& key,
+    std::string_view key,
     mojom::KeyringId keyring_id) {
   return *dict_update.Get()
               .EnsureDict(KeyringIdPrefString(keyring_id))
@@ -123,7 +123,7 @@ base::Value::List& GetListPrefForKeyringUpdate(
 
 base::Value::Dict& GetDictPrefForKeyringUpdate(
     ScopedDictPrefUpdate& dict_update,
-    const std::string& key,
+    std::string_view key,
     mojom::KeyringId keyring_id) {
   return *dict_update.Get()
               .EnsureDict(KeyringIdPrefString(keyring_id))
@@ -147,7 +147,7 @@ uint32_t GenerateNextAccountIndex(PrefService* profile_prefs,
 }
 
 bool SetSelectedWalletAccountInPrefs(PrefService* profile_prefs,
-                                     const std::string& unique_key) {
+                                     std::string_view unique_key) {
   if (unique_key ==
       profile_prefs->GetString(kBraveWalletSelectedWalletAccount)) {
     return false;
@@ -170,7 +170,7 @@ std::string GetSelectedDappAccountFromPrefs(PrefService* profile_prefs,
 
 bool SetSelectedDappAccountInPrefs(PrefService* profile_prefs,
                                    mojom::CoinType dapp_coin,
-                                   const std::string& unique_key) {
+                                   std::string_view unique_key) {
   CHECK(CoinSupportsDapps(dapp_coin));
   const char* pref_name =
       dapp_coin == mojom::CoinType::ETH   ? kBraveWalletSelectedEthDappAccount

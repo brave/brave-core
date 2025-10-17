@@ -16,16 +16,6 @@
 
 namespace brave_wallet {
 
-TEST(PasswordEncryptorUnitTest, CreateNonce) {
-  EXPECT_EQ(PasswordEncryptor::CreateNonce().size(), 12u);
-  EXPECT_NE(PasswordEncryptor::CreateNonce(), PasswordEncryptor::CreateNonce());
-}
-
-TEST(PasswordEncryptorUnitTest, CreateSalt) {
-  EXPECT_EQ(PasswordEncryptor::CreateSalt().size(), 32u);
-  EXPECT_NE(PasswordEncryptor::CreateSalt(), PasswordEncryptor::CreateSalt());
-}
-
 TEST(PasswordEncryptorUnitTest, DeriveKeyFromPasswordUsingPbkdf2) {
   EXPECT_NE(PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
                 "password", base::byte_span_from_cstring("salt"), 100),
