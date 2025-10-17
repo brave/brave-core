@@ -20,6 +20,7 @@
 #include "chrome/browser/ui/views/frame/contents_container_outline.h"
 #include "chrome/browser/ui/views/frame/multi_contents_view_mini_toolbar.h"
 #include "chrome/browser/ui/views/frame/scrim_view.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_delegate.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -86,11 +87,18 @@ BraveContentsContainerView::BraveContentsContainerView(
 
 BraveContentsContainerView::~BraveContentsContainerView() = default;
 
+bool BraveContentsContainerView::IsActive() const {
+  auto* web_contents = contents_view_->web_contents();
+  if (!web_contents) {
+    return false;
+  }
+
+  return tabs::TabInterface::GetFromContents(web_contents)->IsActivated();
+}
+
 void BraveContentsContainerView::UpdateBorderAndOverlay(bool is_in_split,
                                                         bool is_active,
                                                         bool is_highlighted) {
-  is_active_ = is_active;
-
   // We don't use highlighted state as we're always using thicker border
   // for highlighting active split tab.
   ContentsContainerView::UpdateBorderAndOverlay(is_in_split, is_active,

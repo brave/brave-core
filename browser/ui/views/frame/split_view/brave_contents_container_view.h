@@ -31,7 +31,8 @@ class BraveContentsContainerView :
   explicit BraveContentsContainerView(BrowserView* browser_view);
   ~BraveContentsContainerView() override;
 
-  bool is_active() const { return is_active_; }
+  // true when a tab that wraps this container's web contents is active.
+  bool IsActive() const;
 
   // ContentsContainerView:
   void UpdateBorderAndOverlay(bool is_in_split,
@@ -55,7 +56,6 @@ class BraveContentsContainerView :
 
   float GetCornerRadius(bool for_border) const;
 
-  bool is_active_ = false;
   raw_ref<BrowserView> browser_view_;
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)

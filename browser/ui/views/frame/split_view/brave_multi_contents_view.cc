@@ -59,21 +59,7 @@ void BraveMultiContentsView::SetWebPanelContents(
   CHECK(contents_container_view_for_web_panel_);
   contents_container_view_for_web_panel_->contents_view()->SetWebContents(
       web_contents);
-}
-
-void BraveMultiContentsView::SetWebPanelVisible(bool visible) {
-  CHECK(contents_container_view_for_web_panel_);
-  contents_container_view_for_web_panel_->SetVisible(visible);
-  contents_container_view_for_web_panel_->UpdateBorderAndOverlay(
-      /*is_in_split*/ true, /*is_active*/ false,
-      /*is_highlighted*/ false);
-}
-
-void BraveMultiContentsView::SetWebPanelActive(bool active) {
-  CHECK(contents_container_view_for_web_panel_);
-  contents_container_view_for_web_panel_->UpdateBorderAndOverlay(
-      /*is_in_split*/ true, /*is_active*/ active,
-      /*is_highlighted*/ false);
+  contents_container_view_for_web_panel_->SetVisible(!!web_contents);
 }
 
 bool BraveMultiContentsView::IsWebPanelVisible() const {
@@ -148,14 +134,28 @@ void BraveMultiContentsView::ResetResizeArea() {
 
 void BraveMultiContentsView::UpdateContentsBorderAndOverlay() {
   if (!contents_container_view_for_web_panel_ ||
-      !contents_container_view_for_web_panel_->is_active()) {
+      !contents_container_view_for_web_panel_->GetVisible()) {
     MultiContentsView::UpdateContentsBorderAndOverlay();
     return;
   }
 
+  if (!contents_container_view_for_web_panel_->IsActive()) {
+    contents_container_view_for_web_panel_->UpdateBorderAndOverlay(
+        /*is_in_split*/ true, /*is_active*/ false,
+        /*is_highlighted*/ false);
+    MultiContentsView::UpdateContentsBorderAndOverlay();
+    return;
+  }
+
+  // When web panel is active, only it should have active border.
+  contents_container_view_for_web_panel_->UpdateBorderAndOverlay(
+      /*is_in_split*/ true, /*is_active*/ true,
+      /*is_highlighted*/ false);
+
   for (auto* contents_container_view : contents_container_views_) {
-    contents_container_view->UpdateBorderAndOverlay(IsInSplitView(), false,
-                                                    false);
+    contents_container_view->UpdateBorderAndOverlay(IsInSplitView(),
+                                                    /*is_active*/ false,
+                                                    /*is_highlighted*/ false);
   }
 }
 
