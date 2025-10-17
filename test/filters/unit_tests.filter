@@ -646,6 +646,10 @@
 -OmniboxControllerTest.CheckDefaultAutocompleteProviders
 -OmniboxEditModelTest.*
 
+# These tests fail because we disable uploading these event logs
+-WebRtcEventLogManagerTestPolicy.*
+-WebRtcEventLogUploaderImplTest.*
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
 -AboutFlagsTest.EveryFlagHasMetadata
@@ -763,6 +767,5 @@
 -UpdateServiceCanUpdateFeatureEnabledNonDefaultUpdateUrl.*
 -VideoOverlayWindowViewsTest.*
 -VideoOverlayWindowViewsWith2024UITest.*
--WebRtcEventLogUploaderImplTest.*
 -WebstoreInstallerTest.*
 -WellKnownChangePasswordNavigationThrottleTest.CreateNavigationThrottle_ChangePasswordUrl_FromGoogleLink
