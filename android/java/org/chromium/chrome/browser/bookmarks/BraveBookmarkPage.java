@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.back_press.BackPressManager;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.native_page.NativePageHost;
@@ -23,8 +24,9 @@ public class BraveBookmarkPage extends BookmarkPage {
             @NonNull SnackbarManager snackbarManager,
             @NonNull Profile profile,
             @NonNull NativePageHost host,
-            @Nullable ComponentName componentName) {
-        super(snackbarManager, profile, host, componentName);
+            @Nullable ComponentName componentName,
+            BackPressManager backPressManager) {
+        super(snackbarManager, profile, host, componentName, backPressManager);
 
         if (mBookmarkManagerCoordinator instanceof BraveBookmarkManagerCoordinator
                 && BraveActivity.getChromeTabbedActivity() != null) {

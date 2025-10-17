@@ -46,13 +46,14 @@
 
 -keep class org.chromium.chrome.browser.ntp.NewTabPageLayout {
     *** mMvTilesContainerLayout;
-    *** mLogoCoordinator;
-    *** mInitialTileNum;
+    *** mMvtContentFits;
     *** mProfile;
     *** initializeSiteSectionView(...);
     *** setSearchProviderTopMargin(...);
     *** setSearchProviderBottomMargin(...);
     *** getLogoMargin(...);
+    *** calculateTabletMvtWidth(...);
+    *** updateMvtOnTablet(...);
 }
 
 -keep class org.chromium.chrome.browser.suggestions.tile.MostVisitedTilesMediator {
@@ -472,11 +473,11 @@
 -keep class org.chromium.chrome.browser.omnibox.suggestions.AutocompleteMediator {
     *** mDropdownViewInfoListManager;
     *** mDropdownViewInfoListBuilder;
-    public <init>(...);
+    <init>(...);
 }
 
 -keep class org.chromium.chrome.browser.omnibox.suggestions.BraveAutocompleteMediator {
-    public <init>(...);
+    <init>(...);
 }
 
 -keep class org.chromium.chrome.browser.omnibox.suggestions.BraveAutocompleteMediatorBase {
@@ -975,6 +976,8 @@
     *** getCustomUriRadioButton(...);
     *** getChromeNtpRadioButton(...);
 }
+
+-keep class org.chromium.components.browser_ui.settings.ContainedRadioButtonGroupPreference
 
 -keep class org.chromium.chrome.browser.homepage.settings.BraveRadioButtonGroupHomepagePreference
 

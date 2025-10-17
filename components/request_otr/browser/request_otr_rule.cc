@@ -91,7 +91,8 @@ RequestOTRRule::ParseRules(const std::string& contents) {
   if (contents.empty()) {
     return base::unexpected("Could not obtain request_otr configuration");
   }
-  std::optional<base::Value::List> root = base::JSONReader::ReadList(contents);
+  std::optional<base::Value::List> root = base::JSONReader::ReadList(
+      contents, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!root) {
     return base::unexpected("Failed to parse request_otr configuration");
   }

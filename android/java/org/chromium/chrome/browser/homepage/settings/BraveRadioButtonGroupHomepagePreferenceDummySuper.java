@@ -12,10 +12,10 @@ import android.widget.RadioGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
-import androidx.preference.Preference;
 
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.browser.homepage.settings.RadioButtonGroupHomepagePreference.PreferenceValues;
+import org.chromium.components.browser_ui.settings.ContainedRadioButtonGroupPreference;
 import org.chromium.components.browser_ui.widget.RadioButtonWithDescription;
 import org.chromium.components.browser_ui.widget.RadioButtonWithEditText;
 
@@ -24,7 +24,8 @@ import org.chromium.components.browser_ui.widget.RadioButtonWithEditText;
  * compilable before bytecode manipulations.
  */
 @NullMarked
-public class BraveRadioButtonGroupHomepagePreferenceDummySuper extends Preference {
+public class BraveRadioButtonGroupHomepagePreferenceDummySuper
+        extends ContainedRadioButtonGroupPreference {
     public BraveRadioButtonGroupHomepagePreferenceDummySuper(Context context, AttributeSet attrs) {
         super(context, attrs);
 

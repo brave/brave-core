@@ -130,7 +130,8 @@ void StarRandomnessPoints::HandleRandomnessResponse(
   }
   url_loaders_[log_type] = nullptr;
   base::JSONReader::Result parsed_body =
-      base::JSONReader::ReadAndReturnValueWithError(*response_body);
+      base::JSONReader::ReadAndReturnValueWithError(
+          *response_body, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!parsed_body.has_value() || !parsed_body.value().is_dict()) {
     LOG(ERROR) << "StarRandomnessPoints: failed to parse randomness "
                   "response json: "

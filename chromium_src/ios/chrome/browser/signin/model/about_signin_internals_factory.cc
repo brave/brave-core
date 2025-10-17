@@ -32,11 +32,11 @@ AboutSigninInternalsFactory* AboutSigninInternalsFactory::GetInstance() {
 
 std::unique_ptr<KeyedService>
 AboutSigninInternalsFactory::BuildServiceInstanceFor(
-    web::BrowserState* context) const {
+    ProfileIOS* profile) const {
   return nullptr;
 }
 
-void AboutSigninInternalsFactory::RegisterBrowserStatePrefs(
+void AboutSigninInternalsFactory::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* user_prefs) {}
 
 }  // namespace ios

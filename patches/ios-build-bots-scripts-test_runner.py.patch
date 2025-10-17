@@ -1,8 +1,8 @@
 diff --git a/ios/build/bots/scripts/test_runner.py b/ios/build/bots/scripts/test_runner.py
-index 2066232b7031670347a1019558b8bc56d1dd74b4..68f21d82438b977f7e67280787c55e22effb16ab 100644
+index f27e1ce284f7b1a764e8413eafe5c75cbf53c1dc..c01721cec972e78af1e0b0eb6e4beff00b657f08 100644
 --- a/ios/build/bots/scripts/test_runner.py
 +++ b/ios/build/bots/scripts/test_runner.py
-@@ -386,6 +386,7 @@ class TestRunner(object):
+@@ -398,6 +398,7 @@ class TestRunner(object):
    @staticmethod
    def remove_proxy_settings():
      """removes any proxy settings which may remain from a previous run."""

@@ -207,7 +207,7 @@ void MdTextButton::UpdateColors() {
 
 MdTextButton::ButtonColors MdTextButton::GetButtonColors() {
   auto state = GetVisualState();
-  bool is_dark = GetNativeTheme()->GetPreferredColorScheme() ==
+  bool is_dark = GetNativeTheme()->preferred_color_scheme() ==
                  ui::NativeTheme::PreferredColorScheme::kDark;
   float opacity = 1;
 

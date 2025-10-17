@@ -11,7 +11,6 @@
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
 #include "components/omnibox/browser/autocomplete_match.h"
 #include "components/omnibox/browser/bookmark_provider.h"
-#include "components/omnibox/browser/omnibox_view.h"
 #include "components/prefs/pref_service.h"
 
 BraveBookmarkProvider::~BraveBookmarkProvider() = default;

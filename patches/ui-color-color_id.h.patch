@@ -1,8 +1,8 @@
 diff --git a/ui/color/color_id.h b/ui/color/color_id.h
-index b6fe461a04dfabab9b114b4a0c0c6cc08718cdaf..3895f6826b759f679ceedd9bb5fddd944062cb26 100644
+index e340ccdfb4c364774679c1b68df4b1340286d41a..6cee83c632679adb4f596d85faca762673c34a2a 100644
 --- a/ui/color/color_id.h
 +++ b/ui/color/color_id.h
-@@ -680,6 +680,7 @@
+@@ -684,6 +684,7 @@
  
  #define COLOR_IDS \
    CROSS_PLATFORM_COLOR_IDS \

@@ -14,9 +14,8 @@
 class BraveBrowserFrameViewLinuxNative : public BrowserFrameViewLinuxNative {
   METADATA_HEADER(BraveBrowserFrameViewLinuxNative, BrowserFrameViewLinuxNative)
  public:
-
   BraveBrowserFrameViewLinuxNative(
-      BrowserFrame* frame,
+      BrowserWidget* frame,
       BrowserView* browser_view,
       BrowserFrameViewLayoutLinuxNative* layout,
       std::unique_ptr<ui::NavButtonProvider> nav_button_provider);

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/side_panel/bookmarks/power_bookmarks_list.ts b/chrome/browser/resources/side_panel/bookmarks/power_bookmarks_list.ts
-index d91639e608f6d85388b73f36f8b4e18a285d0e0d..6362dc234dfc1989acac728a03d4f8e1cfeeaa07 100644
+index 7bf006c6ac72bdcbfb2c8870fa2e7b8454a0460e..98107be35a4465f266e7494227a3c9c046171eea 100644
 --- a/chrome/browser/resources/side_panel/bookmarks/power_bookmarks_list.ts
 +++ b/chrome/browser/resources/side_panel/bookmarks/power_bookmarks_list.ts
 @@ -193,7 +193,8 @@ export class PowerBookmarksListElement extends PolymerElement implements

@@ -1,8 +1,8 @@
 diff --git a/definitions/prepopulated_engines.json b/definitions/prepopulated_engines.json
-index c7a8cb293345ab6161323f5e822e923ef2a31849..4e49a5342af7c78b963e94089167af5040427e72 100644
+index 35ad4c08913a24dca1b97410cb36f1f0ee2dfb33..0a732bb404fe6f774a741b2d8aff063ee94d9b58 100644
 --- a/definitions/prepopulated_engines.json
 +++ b/definitions/prepopulated_engines.json
-@@ -115,24 +115,6 @@
+@@ -117,25 +117,6 @@
        "id": 68
      },
  
@@ -11,6 +11,7 @@ index c7a8cb293345ab6161323f5e822e923ef2a31849..4e49a5342af7c78b963e94089167af50
 -      "keyword": "duckduckgo.com",
 -      "favicon_url": "https://duckduckgo.com/favicon.ico",
 -      "base_builtin_resource_id": "SEARCH_ENGINE_DUCKDUCKGO",
+-      "logo_url": "https://staticcdn.duckduckgo.com/serp-fe/www/logos/dynamic/DuckDuckGoLogo.png",
 -      "search_url": "https://duckduckgo.com/?q={searchTerms}",
 -      "suggest_url": "https://duckduckgo.com/ac/?q={searchTerms}&type=list",
 -      "new_tab_url": "https://duckduckgo.com/chrome_newtab",
@@ -27,7 +28,7 @@ index c7a8cb293345ab6161323f5e822e923ef2a31849..4e49a5342af7c78b963e94089167af50
      "ecosia": {
        "name": "Ecosia",
        "keyword": "ecosia.org",
-@@ -348,30 +330,6 @@
+@@ -352,30 +333,6 @@
        "id": 108
      },
  

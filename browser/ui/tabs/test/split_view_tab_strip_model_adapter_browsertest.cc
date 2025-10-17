@@ -80,43 +80,44 @@ IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
 IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
                        TilingTabsMakesGroupSynchronized_OnlyFirstTabIsGrouped) {
   // Given that a tab is in a group,
-  const auto group_id = tab_groups::TabGroupId::GenerateNew();
-  tab_strip_model()->AddTabGroup(group_id, {});
   tab_strip_model()->AddWebContents(CreateWebContents(), -1,
                                     ui::PageTransition::PAGE_TRANSITION_TYPED,
-                                    /*add_types=*/0, group_id);
+                                    /*add_types=*/0);
+  auto* first_tab = tab_strip_model()->GetTabAtIndex(1);
+  const auto group_id = tab_strip_model()->AddToNewGroup({1});
+  ASSERT_TRUE(tab_strip_model()->group_model());
 
   // When tiling with a non grouped tab
   tab_strip_model()->AppendWebContents(CreateWebContents(),
-                                       /*foreground*/ true);
-  ASSERT_FALSE(tab_strip_model()->GetTabGroupForTab(2));
-  data().TileTabs({tab_strip_model()->GetTabAtIndex(1)->GetHandle(),
-                   tab_strip_model()->GetTabAtIndex(2)->GetHandle()});
-  ASSERT_TRUE(
-      data().IsTabTiled(tab_strip_model()->GetTabAtIndex(1)->GetHandle()));
-  ASSERT_TRUE(
-      data().IsTabTiled(tab_strip_model()->GetTabAtIndex(2)->GetHandle()));
+                                       /*foreground=*/true);
+  auto* second_tab = tab_strip_model()->GetTabAtIndex(2);
+  ASSERT_FALSE(tab_strip_model()->GetTabGroupForTab(
+      tab_strip_model()->GetIndexOfTab(second_tab)));
+
+  data().TileTabs({first_tab->GetHandle(), second_tab->GetHandle()});
   base::RunLoop().RunUntilIdle();
+  ASSERT_TRUE(data().IsTabTiled(first_tab->GetHandle()));
+  ASSERT_TRUE(data().IsTabTiled(second_tab->GetHandle()));
 
   // Then the other tab should be grouped too
-  EXPECT_TRUE(tab_strip_model()->GetTabGroupForTab(1));
-  EXPECT_EQ(group_id, *tab_strip_model()->GetTabGroupForTab(1));
+  int idx = tab_strip_model()->GetIndexOfTab(first_tab);
+  EXPECT_TRUE(tab_strip_model()->GetTabGroupForTab(idx));
+  EXPECT_EQ(group_id, *tab_strip_model()->GetTabGroupForTab(idx));
 }
 
 IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
                        TilingTabsMakesGroupSynchronized_InDifferentGroups) {
   // Given that tabs are in different groups
-  const auto group_id = tab_groups::TabGroupId::GenerateNew();
-  tab_strip_model()->AddTabGroup(group_id, {});
   tab_strip_model()->AddWebContents(CreateWebContents(), -1,
                                     ui::PageTransition::PAGE_TRANSITION_TYPED,
-                                    /*add_types=*/0, group_id);
+                                    /*add_types=*/0);
+  const auto group_id = tab_strip_model()->AddToNewGroup({1});
+  ASSERT_TRUE(tab_strip_model()->group_model());
 
-  const auto second_group_id = tab_groups::TabGroupId::GenerateNew();
-  tab_strip_model()->AddTabGroup(second_group_id, {});
   tab_strip_model()->AddWebContents(CreateWebContents(), -1,
                                     ui::PageTransition::PAGE_TRANSITION_TYPED,
-                                    /*add_types=*/0, second_group_id);
+                                    /*add_types=*/0);
+  const auto second_group_id = tab_strip_model()->AddToNewGroup({2});
   ASSERT_EQ(second_group_id, *tab_strip_model()->GetTabGroupForTab(2));
 
   // When tiling with a tab in another group,
@@ -373,16 +374,14 @@ IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
 IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
                        TabGroupedStateChanged) {
   // Given that tabs are tiled in a group,
-  const auto group_id = tab_groups::TabGroupId::GenerateNew();
+  tab_strip_model()->InsertWebContentsAt(-1, CreateWebContents(),
+                                         /*add_types=*/0);
+  tab_strip_model()->InsertWebContentsAt(-1, CreateWebContents(),
+                                         /*add_types=*/0);
+  tab_strip_model()->InsertWebContentsAt(-1, CreateWebContents(),
+                                         /*add_types=*/0);
+  const auto group_id = tab_strip_model()->AddToNewGroup({0, 1, 2});
   ASSERT_TRUE(tab_strip_model()->group_model());
-  tab_strip_model()->AddTabGroup(group_id, {});
-
-  tab_strip_model()->InsertWebContentsAt(-1, CreateWebContents(),
-                                         /*add_types*/ 0, group_id);
-  tab_strip_model()->InsertWebContentsAt(-1, CreateWebContents(),
-                                         /*add_types*/ 0, group_id);
-  tab_strip_model()->InsertWebContentsAt(-1, CreateWebContents(),
-                                         /*add_types*/ 0, group_id);
   data().TileTabs({tab_strip_model()->GetTabAtIndex(1)->GetHandle(),
                    tab_strip_model()->GetTabAtIndex(2)->GetHandle()});
 

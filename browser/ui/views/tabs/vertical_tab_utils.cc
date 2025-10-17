@@ -91,7 +91,7 @@ bool IsVerticalTabOnRight(const Browser* browser) {
 }
 
 std::pair<int, int> GetLeadingTrailingCaptionButtonWidth(
-    const BrowserFrame* frame) {
+    const BrowserWidget* frame) {
 #if BUILDFLAG(IS_MAC)
   // On Mac, window caption buttons are drawn by the system.
   return {80, 0};

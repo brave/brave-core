@@ -246,8 +246,8 @@ void BraveReferralsService::OnReferralInitLoadComplete(
     return;
   }
 
-  auto parsed_json =
-      base::JSONReader::ReadAndReturnValueWithError(*response_body);
+  auto parsed_json = base::JSONReader::ReadAndReturnValueWithError(
+      *response_body, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!parsed_json.has_value() || !parsed_json->is_dict()) {
     LOG(ERROR) << "Failed to parse referral initialization response: "
                << (!parsed_json.has_value() ? parsed_json.error().message
@@ -296,8 +296,8 @@ void BraveReferralsService::OnReferralFinalizationCheckLoadComplete(
     return;
   }
 
-  auto parsed_json =
-      base::JSONReader::ReadAndReturnValueWithError(*response_body);
+  auto parsed_json = base::JSONReader::ReadAndReturnValueWithError(
+      *response_body, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!parsed_json.has_value() || !parsed_json->is_dict()) {
     LOG(ERROR) << "Failed to parse referral finalization check response: "
                << (!parsed_json.has_value() ? parsed_json.error().message

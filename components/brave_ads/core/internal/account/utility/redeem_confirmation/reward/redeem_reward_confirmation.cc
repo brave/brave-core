@@ -198,8 +198,8 @@ RedeemRewardConfirmation::HandleFetchPaymentTokenUrlResponse(
                                             /*should_retry=*/true));
   }
 
-  std::optional<base::Value::Dict> dict =
-      base::JSONReader::ReadDict(mojom_url_response.body);
+  std::optional<base::Value::Dict> dict = base::JSONReader::ReadDict(
+      mojom_url_response.body, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!dict) {
     return base::unexpected(std::make_tuple(
         base::StrCat({"Failed to parse response: ", mojom_url_response.body}),
