@@ -42,6 +42,7 @@ export default function BeginGeneration() {
           })}
           handleClick={() => {}}
           handleEditClick={() => {}}
+          handleNewSmartModeClick={() => {}}
         />
         <InputBox
           conversationStarted

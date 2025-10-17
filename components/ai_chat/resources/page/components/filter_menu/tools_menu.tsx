@@ -11,6 +11,7 @@ import {
   ActionEntry,
   SmartMode,
 } from 'components/ai_chat/resources/common/mojom'
+import { getLocale } from '$web-common/locale'
 import FilterMenu, { Props } from './filter_menu'
 import { matches } from './query'
 import styles from './style.module.scss'
@@ -20,6 +21,7 @@ export type ExtendedActionEntry = ActionEntry | SmartMode
 type ToolsMenuProps = {
   handleClick: (type: ExtendedActionEntry) => void
   handleEditClick: (smartMode: SmartMode) => void
+  handleNewSmartModeClick: () => void
 } & Pick<
   Props<ExtendedActionEntry>,
   'categories' | 'isOpen' | 'setIsOpen' | 'query'
@@ -53,6 +55,22 @@ export default function ToolsMenu(props: ToolsMenuProps) {
       setIsOpen={props.setIsOpen}
       query={props.query}
       matchesQuery={matchesQuery}
+      noMatchesMessage={
+        <div className={styles.toolsNoMatches}>
+          {getLocale(S.CHAT_UI_TOOLS_MENU_NO_SMART_MODES_FOUND)}
+        </div>
+      }
+      footer={
+        <div className={styles.toolsMenuFooter}>
+          <leo-menu-item
+            aria-selected={false}
+            onClick={props.handleNewSmartModeClick}
+          >
+            <Icon name='plus-add' />
+            {getLocale(S.CHAT_UI_TOOLS_MENU_NEW_SMART_MODE_BUTTON_LABEL)}
+          </leo-menu-item>
+        </div>
+      }
     >
       {(item) => {
         if ('subheading' in item && item.subheading !== undefined) {

@@ -250,6 +250,18 @@ function Main() {
     conversationContext.handleSmartModeEdit(smartMode)
   }
 
+  const handleNewSmartModeClick = React.useCallback(() => {
+    const inputText = conversationContext.inputText
+    aiChatContext.setSmartModeDialog({
+      id: '',
+      shortcut: inputText.startsWith('/') ? inputText.substring(1) : inputText,
+      prompt: '',
+      model: '',
+      createdTime: { internalValue: BigInt(0) },
+      lastUsed: { internalValue: BigInt(0) },
+    })
+  }, [conversationContext.inputText, aiChatContext.setSmartModeDialog])
+
   return (
     <main
       data-testid='main'
@@ -441,6 +453,7 @@ function Main() {
           categories={categoriesWithSmartModes}
           handleClick={handleToolsMenuClick}
           handleEditClick={handleToolsMenuEditClick}
+          handleNewSmartModeClick={handleNewSmartModeClick}
         />
         <TabsMenu />
         <InputBox

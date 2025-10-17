@@ -16,6 +16,7 @@ export interface Props<T> {
   categories: { category: string; entries: T[] }[]
 
   header?: React.ReactNode
+  footer?: React.ReactNode
   noMatchesMessage?: React.ReactNode
 
   matchesQuery: (
@@ -114,7 +115,7 @@ export default function FilterMenu<T>(props: Props<T>) {
         setTimeout(() => props.setIsOpen(false))
         return false
       }}
-      placement='top'
+      placement='top-start'
     >
       {props.header}
       {filtered.map((category) => {
@@ -132,6 +133,7 @@ export default function FilterMenu<T>(props: Props<T>) {
         )
       })}
       {noMatches && props.noMatchesMessage}
+      {props.footer}
     </ButtonMenu>
   )
 }

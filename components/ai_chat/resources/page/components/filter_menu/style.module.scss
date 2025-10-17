@@ -4,7 +4,9 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 .buttonMenu {
+  --menu-width: 270px;
   --leo-menu-max-height: 320px;
+  width: max-content;
 }
 
 .highlightFirstItem {
@@ -100,4 +102,52 @@
 .toolsMenuItemContent:focus-within .editButton,
 leo-menu-item:focus-visible .editButton {
   opacity: 1;
+}
+
+.toolsMenuFooter {
+  display: flex;
+  width: 100%;
+  min-width: var(--menu-width);
+  padding: var(--leo-spacing-xs);
+  background-color: var(--leo-color-container-background);
+  position: sticky;
+  bottom: 0;
+  inset-inline: 0;
+  border-radius: 0px 0px 8px 8px;
+  border-top: 1px solid var(--leo-color-divider-subtle);
+  // This is to prevent highlighting the footer button
+  // that is getting applied by highlightFirstItem.
+  &:not(:focus-within) leo-menu-item {
+    &:first-of-type {
+      background-color: var(--leo-color-container-background);
+      color: var(--leo-color-text-tertiary);
+    }
+    &:hover {
+      background-color: var(--leo-color-container-highlight);
+    }
+  }
+  leo-menu-item {
+    --leo-icon-size: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: var(--leo-spacing-s);
+    font: var(--leo-font-default-semibold);
+    color: var(--leo-color-text-tertiary);
+    width: 100%;
+    border-radius: var(--leo-radius-s);
+    padding: var(--leo-spacing-l);
+    &:hover {
+      background-color: var(--leo-color-container-highlight);
+    }
+  }
+}
+
+.toolsNoMatches {
+  font: var(--leo-font-default-regular);
+  color: var(--leo-color-text-tertiary);
+  padding: var(--leo-spacing-m) var(--leo-spacing-l);
+  text-align: center;
+  max-width: var(--menu-width);
 }
