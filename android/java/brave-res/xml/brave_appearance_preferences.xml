@@ -5,6 +5,12 @@
      You can obtain one at https://mozilla.org/MPL/2.0/. -->
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+    <Preference
+        android:fragment="org.chromium.chrome.browser.night_mode.settings.BraveThemePreferences"
+        android:key="brave_ui_theme"
+        android:icon="@drawable/ic_theme_system"
+        android:title="@string/theme_settings" />
+
     <org.chromium.components.browser_ui.settings.ChromeBasePreference
         android:fragment="org.chromium.brave.browser.customize_menu.settings.BraveCustomizeMenuPreferenceFragment"
         android:key="brave_customize_menu"
@@ -15,11 +21,6 @@
         android:fragment="org.chromium.chrome.browser.toolbar.settings.AddressBarSettingsFragment"
         android:key="address_bar"
         android:title="@string/address_bar_settings"/>
-
-    <Preference
-        android:fragment="org.chromium.chrome.browser.toolbar.adaptive.settings.AdaptiveToolbarSettingsFragment"
-        android:key="toolbar_shortcut"
-        android:title="@string/toolbar_shortcut"/>
 
     <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
         android:key="brave_bottom_toolbar_enabled_key"
@@ -62,10 +63,4 @@
         android:title="@string/show_undo_when_tabs_closed"
         android:summaryOn="@string/text_on"
         android:summaryOff="@string/text_off" />
-
-    <Preference
-        android:fragment="org.chromium.chrome.browser.night_mode.settings.BraveThemePreferences"
-        android:key="ui_theme"
-        android:title="@string/theme_settings" />
-
 </PreferenceScreen>

@@ -82,7 +82,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
     private static final String PREF_AUTOFILL_PRIVATE_WINDOW = "autofill_private_window";
     private static final String PREF_TABS = "tabs";
     private static final String PREF_MEDIA = "media";
-    private static final String PREF_APPEARANCE = "appearance";
+    private static final String PREF_APPEARANCE = "brave_appearance";
     private static final String PREF_NEW_TAB_PAGE = "background_images";
     private static final String PREF_ACCESSIBILITY = "accessibility";
     private static final String PREF_CONTENT_SETTINGS = "content_settings";
@@ -417,6 +417,9 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
 
         // We want to move toolbar shortcut preference to the Appearence settings.
         removePreferenceIfPresent(MainSettings.PREF_TOOLBAR_SHORTCUT);
+
+        // We have our own Appearance settings so we don't need the upstream's one.
+        removePreferenceIfPresent(MainSettings.PREF_APPEARANCE);
     }
 
     // A wrapper to suppress NullAway warning for the prefs which always present
