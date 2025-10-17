@@ -7,6 +7,7 @@
 
 #include "base/feature_list.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_untrusted_conversation_ui.h"
+#include "brave/browser/ui/webui/ai_chat/code_sandbox_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/ledger/ledger_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/line_chart/line_chart_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/market/market_ui.h"
@@ -69,5 +70,7 @@ void RegisterChromeUntrustedWebUIConfigs() {
   if (ai_chat::features::IsAIChatEnabled()) {
     content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
         std::make_unique<AIChatUntrustedConversationUIConfig>());
+    content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
+        std::make_unique<ai_chat::CodeSandboxUIConfig>());
   }
 }

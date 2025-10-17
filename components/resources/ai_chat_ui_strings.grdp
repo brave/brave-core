@@ -747,4 +747,13 @@
   <message name="IDS_CHAT_UI_TOOL_LABEL_NAVIGATE_WEB_PAGE_WITH_INPUT" desc="Label for the navigate web page tool with a known URL destination" formatter_data="webui=AiChat">
     Navigated the web page to <ph name="URL">$1<ex>https://www.example.com</ex></ph>
   </message>
+  <message name="IDS_CHAT_UI_CODE_EXECUTION_TITLE" desc="Title for code execution tool event" formatter_data="webui=AiChat">
+    Code Execution
+  </message>
+  <message name="IDS_CHAT_UI_CODE_EXECUTION_CODE_LABEL" desc="Label for code section in code execution tool" formatter_data="webui=AiChat">
+    Code:
+  </message>
+  <message name="IDS_CHAT_UI_CODE_EXECUTION_OUTPUT_LABEL" desc="Label for output section in code execution tool" formatter_data="webui=AiChat">
+    Output:
+  </message>
 </grit-part>
