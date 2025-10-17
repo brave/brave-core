@@ -14,6 +14,7 @@
 #include "brave/components/p3a/managed/bucket_intermediate.h"
 #include "brave/components/p3a/managed/percentage_intermediate.h"
 #include "brave/components/p3a/managed/pref_intermediate.h"
+#include "brave/components/p3a/managed/probe_intermediate.h"
 #include "components/prefs/pref_service.h"
 
 namespace p3a {
@@ -22,6 +23,7 @@ namespace {
 
 constexpr char kMinVersionKey[] = "min_version";
 constexpr char kTypeKey[] = "type";
+constexpr char kProbeIntermediateType[] = "probe";
 constexpr char kPrefIntermediateType[] = "pref";
 constexpr char kBucketIntermediateType[] = "bucket";
 constexpr char kPercentageIntermediateType[] = "percentage";
@@ -128,6 +130,15 @@ std::unique_ptr<RemoteMetricIntermediate> RemoteMetric::GetIntermediateInstance(
   const auto* type = dict->FindString(kTypeKey);
   if (!type) {
     return nullptr;
+  }
+
+  if (*type == kProbeIntermediateType) {
+    ProbeIntermediateDefinition definition;
+    base::JSONValueConverter<ProbeIntermediateDefinition> converter;
+    if (!converter.Convert(config, &definition)) {
+      return nullptr;
+    }
+    return std::make_unique<ProbeIntermediate>(std::move(definition), this);
   }
 
   if (*type == kPrefIntermediateType) {
