@@ -107,7 +107,7 @@ void SidebarController::ActivateItemAt(std::optional<size_t> index,
 
   const auto& item = sidebar_model_->GetAllSidebarItems()[*index];
 
-  if (item.is_web_panel_type()) {
+  if (sidebar::IsWebPanelFeatureEnabled() && item.is_web_panel_type()) {
     // TODO(https://github.com/brave/brave-browser/issues/33533): web panel item
     // also should be activated.
     GetWebPanelController()->ToggleWebPanel(item);

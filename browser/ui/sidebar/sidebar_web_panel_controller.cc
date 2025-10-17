@@ -19,12 +19,17 @@ SidebarWebPanelController::SidebarWebPanelController(BrowserView& browser_view)
 }
 
 SidebarWebPanelController::~SidebarWebPanelController() {
+  // When browser closes while panel is open, tab strip model will be cleared
+  // and panel_contents_ is also will be cleared out from
+  // SidebarWebPanelController::OnTabRemoved()
   CHECK(!panel_contents_);
 }
 
 void SidebarWebPanelController::ToggleWebPanel(const SidebarItem& item) {
   // If panel is for |item|, close and return.
   // Otherwise, open new panel after closing.
+  // When item is same but url has been changed, closes the current panel and
+  // reopens the panel with the new url.
   const bool close_and_return =
       panel_item_.IsValidItem() && panel_item_.url == item.url;
   if (panel_item_.IsValidItem()) {
@@ -39,6 +44,8 @@ void SidebarWebPanelController::ToggleWebPanel(const SidebarItem& item) {
 }
 
 void SidebarWebPanelController::OpenWebPanel(const SidebarItem& item) {
+  CHECK(!panel_item_.IsValidItem());
+
   panel_contents_ = chrome::AddAndReturnTabAt(
       browser_view_->browser(), item.url, 0, false, std::nullopt, true);
   panel_item_ = item;

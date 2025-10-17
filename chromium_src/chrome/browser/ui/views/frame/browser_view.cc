@@ -59,7 +59,7 @@
 #undef BRAVE_BROWSER_VIEW_LAYOUT_CONVERTED_HIT_TEST
 
 bool BrowserView::IsWebPanelContents(content::WebContents* contents) {
-  return false;
+  NOTREACHED();
 }
 
 void BrowserView::SetNativeWindowPropertyForWidget(views::Widget* widget) {
