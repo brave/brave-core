@@ -35,8 +35,34 @@ namespace {
 constexpr int kEmptyDbVersionNumber = 1;
 constexpr int kCurrentVersionNumber = 2;
 
-std::optional<uint32_t> ReadUint32(sql::Statement& statement, size_t index) {
-  auto v = statement.ColumnInt64(index);
+template <size_t const T>
+base::expected<std::optional<std::array<uint8_t, T>>, std::string>
+ReadSizedBlob(sql::Statement& statement, int position) {
+  int columns = statement.ColumnCount();
+  if (position >= columns) {
+    return base::unexpected("Position mismatch");
+  }
+
+  if (statement.GetColumnType(position) == sql::ColumnType::kNull) {
+    return base::ok(std::nullopt);
+  }
+
+  if (statement.GetColumnType(position) != sql::ColumnType::kBlob) {
+    return base::unexpected("Type mismatch");
+  }
+
+  auto blob = statement.ColumnBlob(position);
+  if (blob.size() != T) {
+    return base::unexpected("Size mismatch");
+  }
+
+  std::array<uint8_t, T> to;
+  base::span(to).copy_from(blob);
+  return base::ok(to);
+}
+
+std::optional<uint32_t> ReadUint32(sql::Statement& statement, int position) {
+  auto v = statement.ColumnInt64(position);
   auto checked_v = base::CheckedNumeric<uint32_t>(v);
   if (!checked_v.IsValid()) {
     return std::nullopt;
@@ -46,8 +72,8 @@ std::optional<uint32_t> ReadUint32(sql::Statement& statement, size_t index) {
 
 // SQLite doesn't support uint64 natively so we restore it from int64 bytes.
 // We also check that value matches int64 positive range.
-std::optional<uint64_t> ReadAmount(sql::Statement& statement, size_t index) {
-  auto v = statement.ColumnInt64(index);
+std::optional<uint64_t> ReadAmount(sql::Statement& statement, int position) {
+  auto v = statement.ColumnInt64(position);
   auto checked_v = base::CheckedNumeric<uint64_t>(v);
   if (!checked_v.IsValid()) {
     return std::nullopt;
@@ -65,11 +91,11 @@ std::optional<int64_t> AmountToInt64(uint64_t value) {
 
 base::expected<CheckpointTreeState, std::string> ReadCheckpointTreeState(
     sql::Statement& statement,
-    size_t index) {
-  if (statement.GetColumnType(index) == sql::ColumnType::kNull) {
+    int position) {
+  if (statement.GetColumnType(position) == sql::ColumnType::kNull) {
     return std::nullopt;
   }
-  auto v = ReadUint32(statement, index);
+  auto v = ReadUint32(statement, position);
   if (!v) {
     return base::unexpected("Format error");
   }
@@ -78,11 +104,11 @@ base::expected<CheckpointTreeState, std::string> ReadCheckpointTreeState(
 
 base::expected<std::optional<OrchardShardRootHash>, std::string> ReadRootHash(
     sql::Statement& statement,
-    size_t index) {
-  if (statement.GetColumnType(index) == sql::ColumnType::kNull) {
+    int position) {
+  if (statement.GetColumnType(position) == sql::ColumnType::kNull) {
     return std::nullopt;
   }
-  auto v = statement.ColumnBlob(index);
+  auto v = statement.ColumnBlob(position);
   if (v.size() != kOrchardShardTreeHashSize) {
     return base::unexpected("Size error");
   }

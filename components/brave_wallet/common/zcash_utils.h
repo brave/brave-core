@@ -66,7 +66,7 @@ inline constexpr size_t kChainReorgBlockDelta = 150;
 inline constexpr size_t kScanBatchSize = 10;
 
 // https://zips.z.cash/zip-0316#encoding-of-unified-addresses
-enum ZCashAddrType {
+enum ZCashAddrType : uint8_t {
   kP2PKH = 0x00,
   kP2PSH = 0x01,
   kSapling = 0x02,
