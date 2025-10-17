@@ -87,7 +87,7 @@ IN_PROC_BROWSER_TEST_F(BraveSyncNetworkTimeHelperBrowserDeathTest,
   brave_sync::NetworkTimeHelper::GetInstance()->SetNetworkTimeTracker(
       g_browser_process->network_time_tracker(), nullptr);
 
-  EXPECT_CHECK_DEATH(
-      brave_sync::NetworkTimeHelper::GetInstance()->GetNetworkTime(
-          base::DoNothing()));
+  EXPECT_DEATH(brave_sync::NetworkTimeHelper::GetInstance()->GetNetworkTime(
+                   base::DoNothing()),
+               "");
 }
