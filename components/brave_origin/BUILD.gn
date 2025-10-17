@@ -5,6 +5,8 @@
 
 static_library("brave_origin") {
   sources = [
+    "ad_block_only_mode_policy_manager.cc",
+    "ad_block_only_mode_policy_manager.h",
     "brave_origin_handler.cc",
     "brave_origin_handler.h",
     "brave_origin_policy_info.cc",
@@ -34,6 +36,7 @@ static_library("brave_origin") {
     "//mojo/public/cpp/bindings",
   ]
   deps = [
+    "//brave/components/brave_shields/core/common",
     "//components/keyed_service/core",
     "//components/policy/core/common",
     "//components/prefs",
@@ -44,6 +47,7 @@ source_set("unit_tests") {
   testonly = true
 
   sources = [
+    "ad_block_only_mode_policy_manager_unittest.cc",
     "brave_origin_handler_unittest.cc",
     "brave_origin_policy_manager_unittest.cc",
     "brave_origin_service_unittest.cc",
@@ -54,6 +58,7 @@ source_set("unit_tests") {
   deps = [
     ":brave_origin",
     "//base/test:test_support",
+    "//brave/components/brave_shields/core/common",
     "//components/policy/core/common:test_support",
     "//components/prefs:test_support",
     "//testing/gtest",

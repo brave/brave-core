@@ -1,0 +1,36 @@
+caption: Control default referrer behavior through Brave Shields
+desc: |-
+  This policy determines whether websites can access referrer information when users navigate from one site to another.
+
+  If this policy is set to 1 (AllowReferrers), normal referrer header transmission is permitted, allowing websites to see which site the user came from. Some sites may require this for functionality.
+
+  If this policy is set to 2 (BlockReferrers), websites are prevented from seeing which site the user came from, enhancing privacy by blocking referrer information from being sent.
+
+  If left unset, Brave uses the default referrer behavior (blocks referrers), but users can modify this setting through Brave Shields.
+default: null
+example_value: 2
+features:
+  can_be_mandatory: true
+  can_be_recommended: false
+  dynamic_refresh: true
+  per_profile: true
+items:
+- caption: Allow referrer information
+  name: AllowReferrers
+  value: 1
+- caption: Block referrer information
+  name: BlockReferrers
+  value: 2
+owners:
+- bbondy@brave.com
+- clifton@brave.com
+schema:
+  enum:
+  - 1
+  - 2
+  type: integer
+supported_on:
+- chrome.*:142-
+- android:142-
+tags: []
+type: main

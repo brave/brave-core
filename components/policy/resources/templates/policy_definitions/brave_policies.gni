@@ -6,6 +6,7 @@
 _brave_policies = [
   "BraveSoftware/.group.details.yaml",
   "BraveSoftware/BraveAIChatEnabled.yaml",
+  "BraveSoftware/BraveCosmeticFilteringDisabledForUrls.yaml",
   "BraveSoftware/BraveDeAmpEnabled.yaml",
   "BraveSoftware/BraveDebouncingEnabled.yaml",
   "BraveSoftware/BraveNewsDisabled.yaml",
@@ -23,7 +24,14 @@ _brave_policies = [
   "BraveSoftware/BraveWebDiscoveryEnabled.yaml",
   "BraveSoftware/BraveWalletDisabled.yaml",
   "BraveSoftware/BraveWaybackMachineEnabled.yaml",
+  "BraveSoftware/DefaultBraveAdsSetting.yaml",
+  "BraveSoftware/DefaultBraveCookiesSetting.yaml",
+  "BraveSoftware/DefaultBraveCosmeticFilteringSetting.yaml",
   "BraveSoftware/DefaultBraveFingerprintingV2Setting.yaml",
+  "BraveSoftware/DefaultBraveHttpsUpgradeSetting.yaml",
+  "BraveSoftware/DefaultBraveReferrersSetting.yaml",
+  "BraveSoftware/DefaultBraveRemember1PStorageSetting.yaml",
+  "BraveSoftware/DefaultBraveTrackersSetting.yaml",
   "BraveSoftware/IPFSEnabled.yaml",
   "BraveSoftware/TorDisabled.yaml",
 ]

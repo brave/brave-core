@@ -1,0 +1,42 @@
+caption: Control default cosmetic filtering behavior through Brave Shields
+desc: |-
+  This policy determines how Brave hides unwanted page elements like empty ad spaces, social media widgets, and other visual clutter.
+
+  If this policy is set to 1 (DisableCosmeticFiltering), cosmetic filtering is disabled entirely, allowing all page elements to display.
+
+  If this policy is set to 2 (StandardCosmeticFiltering), third-party cosmetic elements like empty ad spaces and social media widgets are hidden while preserving first-party content.
+
+  If this policy is set to 3 (AggressiveCosmeticFiltering), comprehensive cosmetic filtering is applied, hiding both first-party and third-party unwanted page elements including empty ad spaces, social media widgets, and other visual clutter.
+
+  If left unset, Brave uses the default cosmetic filtering behavior (standard filtering), but users can modify this setting through Brave Shields.
+default: null
+example_value: 2
+features:
+  can_be_mandatory: true
+  can_be_recommended: false
+  dynamic_refresh: true
+  per_profile: true
+items:
+- caption: Disable cosmetic filtering
+  name: DisableCosmeticFiltering
+  value: 1
+- caption: Standard cosmetic filtering (block third-party elements)
+  name: StandardCosmeticFiltering
+  value: 2
+- caption: Aggressive cosmetic filtering (block all elements)
+  name: AggressiveCosmeticFiltering
+  value: 3
+owners:
+- bbondy@brave.com
+- clifton@brave.com
+schema:
+  enum:
+  - 1
+  - 2
+  - 3
+  type: integer
+supported_on:
+- chrome.*:142-
+- android:142-
+tags: []
+type: main

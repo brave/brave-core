@@ -1,0 +1,36 @@
+caption: Control default ad blocking behavior through Brave Shields
+desc: |-
+  This policy determines how Brave handles advertisements and promotional content on web pages.
+
+  If this policy is set to 1 (AllowAds), advertisements are permitted to be displayed normally on websites.
+
+  If this policy is set to 2 (BlockAds), ads, trackers, and other promotional content are filtered out using Brave's ad blocking lists.
+
+  If left unset, Brave uses the default ad blocking behavior (blocks ads), but users can modify this setting through Brave Shields.
+default: null
+example_value: 2
+features:
+  can_be_mandatory: true
+  can_be_recommended: false
+  dynamic_refresh: true
+  per_profile: true
+items:
+- caption: Allow advertisements
+  name: AllowAds
+  value: 1
+- caption: Block advertisements
+  name: BlockAds
+  value: 2
+owners:
+- bbondy@brave.com
+- clifton@brave.com
+schema:
+  enum:
+  - 1
+  - 2
+  type: integer
+supported_on:
+- chrome.*:142-
+- android:142-
+tags: []
+type: main
