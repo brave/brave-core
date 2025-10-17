@@ -413,6 +413,37 @@ TEST(CommonUtils, GetNetworkForPolkadotAccount) {
                 mojom::AccountKind::kDerived, 123)));
 }
 
+TEST(CommonUtils, IsECashKeyring) {
+  for (const auto& keyring_id : kAllKeyrings) {
+    if (keyring_id == mojom::KeyringId::kECashMainnet ||
+        keyring_id == mojom::KeyringId::kECashTestnet) {
+      EXPECT_TRUE(IsECashKeyring(keyring_id));
+    } else {
+      EXPECT_FALSE(IsECashKeyring(keyring_id));
+    }
+  }
+}
+
+TEST(CommonUtils, IsECashMainnetKeyring) {
+  for (const auto& keyring_id : kAllKeyrings) {
+    if (keyring_id == mojom::KeyringId::kECashMainnet) {
+      EXPECT_TRUE(IsECashMainnetKeyring(keyring_id));
+    } else {
+      EXPECT_FALSE(IsECashMainnetKeyring(keyring_id));
+    }
+  }
+}
+
+TEST(CommonUtils, IsECashTestnetKeyring) {
+  for (const auto& keyring_id : kAllKeyrings) {
+    if (keyring_id == mojom::KeyringId::kECashTestnet) {
+      EXPECT_TRUE(IsECashTestnetKeyring(keyring_id));
+    } else {
+      EXPECT_FALSE(IsECashTestnetKeyring(keyring_id));
+    }
+  }
+}
+
 TEST(CommonUtils, GetActiveEndpointUrl) {
   mojom::NetworkInfo chain = GetTestNetworkInfo1();
   EXPECT_EQ(GURL("https://url1.com"), GetActiveEndpointUrl(chain));
