@@ -3,18 +3,21 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+.dropdown {
+  leo-option {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--leo-spacing-m);
+    padding: var(--leo-spacing-m);
+  }
+}
+
 .description {
   font: var(--leo-font-default-regular);
   color: var(--leo-color-text-secondary);
   margin-bottom: var(--leo-spacing-xl);
-}
-
-.optionContent {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  gap: var(--leo-spacing-m);
 }
 
 .optionLeft {
@@ -23,21 +26,9 @@
   gap: var(--leo-spacing-m);
 }
 
-.optionLabel {
-  flex-shrink: 0;
-}
-
 .gradientIcon {
   --leo-icon-color: var(--leo-gradient-icons-active);
-}
-
-.content {
-  display: flex;
-  padding: 0 var(--leo-spacing-2xl);
-  flex-direction: column;
-  align-items: center;
-  gap: var(--leo-spacing-xl);
-  align-self: stretch;
+  --leo-icon-size: 20px;
 }
 
 .footer {
