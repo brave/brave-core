@@ -747,4 +747,10 @@
   <message name="IDS_CHAT_UI_TOOL_LABEL_NAVIGATE_WEB_PAGE_WITH_INPUT" desc="Label for the navigate web page tool with a known URL destination" formatter_data="webui=AiChat">
     Navigated the web page to <ph name="URL">$1<ex>https://www.example.com</ex></ph>
   </message>
+  <message name="IDS_CHAT_UI_TODO_HEADER_LABEL" desc="Heading for a list of TODOs" formatter_data="webui=AiChat">
+    <ph name="COMPLETED_COUNT">$1<ex>3</ex></ph> of <ph name="TOTAL_COUNT">$2<ex>5</ex></ph> done
+  </message>
+  <message name="IDS_CHAT_UI_TODO_TOOL_UPDATING_LABEL" desc="Message shown when AI is updating its list of TODOs" formatter_data="webui=AiChat">
+    Updating TODO list…
+  </message>
 </grit-part>

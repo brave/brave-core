@@ -9,6 +9,7 @@
 #include <string_view>
 
 #include "base/no_destructor.h"
+#include "brave/components/ai_chat/core/browser/tools/todo_tool.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_input_properties.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -50,7 +51,7 @@ class UserChoiceTool : public Tool {
   bool RequiresUserInteractionBeforeHandling() const override { return true; }
 };
 
-const std::vector<Tool*>& AllTools() {
+const std::vector<Tool*>& StaticTools() {
   static const base::NoDestructor<std::vector<Tool*>> kTools([] {
     std::vector<Tool*> tools;
     if (features::IsToolsEnabled()) {
@@ -67,15 +68,23 @@ const std::vector<Tool*>& AllTools() {
 
 ConversationToolProvider::ConversationToolProvider(
     base::WeakPtr<Tool> memory_storage_tool)
-    : memory_storage_tool_(memory_storage_tool) {}
+    : memory_storage_tool_(memory_storage_tool) {
+  todo_tool_ = std::make_unique<TodoTool>();
+}
 
 ConversationToolProvider::~ConversationToolProvider() = default;
 
+void ConversationToolProvider::OnNewGenerationLoop() {
+  todo_tool_ = std::make_unique<TodoTool>();
+}
+
 std::vector<base::WeakPtr<Tool>> ConversationToolProvider::GetTools() {
   std::vector<base::WeakPtr<Tool>> tools;
-  for (Tool* tool : AllTools()) {
+  for (Tool* tool : StaticTools()) {
     tools.push_back(tool->GetWeakPtr());
   }
+
+  tools.push_back(todo_tool_->GetWeakPtr());
 
   if (memory_storage_tool_) {
     tools.push_back(memory_storage_tool_);
