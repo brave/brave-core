@@ -77,8 +77,6 @@ inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
     {policy::key::kBraveVPNDisabled, brave_vpn::prefs::kManagedBraveVPNDisabled,
      base::Value::Type::BOOLEAN},
 #endif
-    {policy::key::kBraveAIChatEnabled, ai_chat::prefs::kEnabledByPolicy,
-     base::Value::Type::BOOLEAN},
     {policy::key::kBraveP3AEnabled, p3a::kP3AEnabled,
      base::Value::Type::BOOLEAN},
     {policy::key::kBraveStatsPingEnabled, kStatsReportingEnabled,
@@ -115,6 +113,13 @@ inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
      base::Value::Type::BOOLEAN},
     {policy::key::kDefaultBraveFingerprintingV2Setting,
      kManagedDefaultBraveFingerprintingV2, base::Value::Type::INTEGER},
+};
+
+// Static policy handlers that cache the first policy value and don't support
+// dynamic refresh.
+inline constexpr PolicyToPreferenceMapEntry kBraveStaticSimplePolicyMap[] = {
+    {policy::key::kBraveAIChatEnabled, ai_chat::prefs::kEnabledByPolicy,
+     base::Value::Type::BOOLEAN},
 };
 
 }  // namespace policy
