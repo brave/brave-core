@@ -53,8 +53,7 @@ void SetupTestState(
     user_provider->SetWebsiteSetting(
         ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),
         ContentSettingsType::COOKIES, base::Value(default_cookie_setting),
-        /*constraints=*/{},
-        content_settings::PartitionKey::GetDefaultForTesting());
+        /*constraints=*/{});
   }
 
   for (const auto& exception : user_cookie_exceptions) {
@@ -62,16 +61,14 @@ void SetupTestState(
         ContentSettingsPattern::FromString(exception.primary_pattern),
         ContentSettingsPattern::FromString(exception.secondary_pattern),
         ContentSettingsType::COOKIES, base::Value(exception.content_setting),
-        /*constraints=*/{},
-        content_settings::PartitionKey::GetDefaultForTesting());
+        /*constraints=*/{});
   }
 
   if (managed_cookie_setting != privacy_sandbox_test_util::kNoSetting) {
     managed_provider->SetWebsiteSetting(
         ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),
         ContentSettingsType::COOKIES, base::Value(managed_cookie_setting),
-        /*constraints=*/{},
-        content_settings::PartitionKey::GetDefaultForTesting());
+        /*constraints=*/{});
   }
 
   for (const auto& exception : managed_cookie_exceptions) {
@@ -79,8 +76,7 @@ void SetupTestState(
         ContentSettingsPattern::FromString(exception.primary_pattern),
         ContentSettingsPattern::FromString(exception.secondary_pattern),
         ContentSettingsType::COOKIES, base::Value(exception.content_setting),
-        /*constraints=*/{},
-        content_settings::PartitionKey::GetDefaultForTesting());
+        /*constraints=*/{});
   }
 
   content_settings::TestUtils::OverrideProvider(
