@@ -39,6 +39,7 @@ public class BraveMostVisitedTilesMediator extends MostVisitedTilesMediator {
     @Override
     public void onTileDataChanged() {
         super.onTileDataChanged();
+        // Write the new tiles to shared preferences and update the GridView widget
         QuickActionSearchAndBookmarkWidgetProvider.DataManager.parseTilesAndWriteWidgetTiles(
                 mTileGroup.getTileSections().get(TileSectionType.PERSONALIZED));
     }
@@ -46,6 +47,7 @@ public class BraveMostVisitedTilesMediator extends MostVisitedTilesMediator {
     @Override
     public void onTileIconChanged(Tile tile) {
         super.onTileIconChanged(tile);
-        QuickActionSearchAndBookmarkWidgetProvider.updateTileIcon(tile);
+        // Notify the GridView widget to refresh its data when a tile icon changes
+        QuickActionSearchAndBookmarkWidgetProvider.notifyWidgetDataChanged();
     }
 }

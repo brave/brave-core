@@ -896,6 +896,7 @@ brave_java_resources = [
   "java/res/layout/web_notification_icon_frame_brave.xml",
   "java/res/layout/web_notification_small_icon.xml",
   "java/res/layout/widevine_permission_request_custom_view.xml",
+  "java/res/layout/widget_bookmark_grid_item.xml",
   "java/res/menu/bookmark_tab_menu.xml",
   "java/res/menu/exit_settings_menu.xml",
   "java/res/menu/menu_brave_news_settings_search.xml",
