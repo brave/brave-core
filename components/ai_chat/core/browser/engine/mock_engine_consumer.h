@@ -44,8 +44,8 @@ class MockEngineConsumer : public EngineConsumer {
 
   MOCK_METHOD(void,
               GenerateRewriteSuggestion,
-              (std::string text,
-               const std::string& question,
+              (const std::string& text,
+               mojom::ActionType action_type,
                const std::string& selected_language,
                GenerationDataCallback received_callback,
                GenerationCompletedCallback completed_callback),

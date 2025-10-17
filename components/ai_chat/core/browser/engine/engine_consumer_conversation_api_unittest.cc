@@ -442,11 +442,37 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   testing::Mock::VerifyAndClearExpectations(mock_api_client);
 }
 
-TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_Rewrite) {
-  std::string expected_events = R"([
-    {"role": "user", "type": "userText", "content": "Hello World"},
-    {"role": "user", "type": "requestRewrite", "content": "Use a funny tone"}
-  ])";
+struct RewriteTestData {
+  std::string name;
+  mojom::ActionType action_type;
+  std::string expected_type;
+  std::string expected_tone;
+};
+
+class EngineConsumerConversationAPIUnitTest_Rewrite
+    : public EngineConsumerConversationAPIUnitTest,
+      public testing::WithParamInterface<RewriteTestData> {};
+
+TEST_P(EngineConsumerConversationAPIUnitTest_Rewrite, GenerateEvents) {
+  const RewriteTestData& test_data = GetParam();
+
+  std::string expected_events;
+  if (test_data.expected_tone.empty()) {
+    expected_events = absl::StrFormat(
+        R"([
+          {"role": "user", "type": "pageExcerpt", "content": "Hello World"},
+          {"role": "user", "type": "%s", "content": ""}
+        ])",
+        test_data.expected_type);
+  } else {
+    expected_events = absl::StrFormat(
+        R"([
+          {"role": "user", "type": "pageExcerpt", "content": "Hello World"},
+          {"role": "user", "type": "%s", "content": "", "tone": "%s"}
+        ])",
+        test_data.expected_type, test_data.expected_tone);
+  }
+
   base::RunLoop run_loop;
   auto* mock_api_client = GetMockConversationAPIClient();
   EXPECT_CALL(*mock_api_client, PerformRequest)
@@ -469,12 +495,39 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_Rewrite) {
       });
 
   engine_->GenerateRewriteSuggestion(
-      "Hello World", "Use a funny tone", "", base::DoNothing(),
+      "Hello World", test_data.action_type, "", base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
   testing::Mock::VerifyAndClearExpectations(mock_api_client);
 }
+
+INSTANTIATE_TEST_SUITE_P(
+    AllRewriteTypes,
+    EngineConsumerConversationAPIUnitTest_Rewrite,
+    testing::Values(RewriteTestData{"Paraphrase", mojom::ActionType::PARAPHRASE,
+                                    "requestParaphrase", ""},
+                    RewriteTestData{"Improve", mojom::ActionType::IMPROVE,
+                                    "requestImprove", ""},
+                    RewriteTestData{"Shorten", mojom::ActionType::SHORTEN,
+                                    "requestShorten", ""},
+                    RewriteTestData{"Expand", mojom::ActionType::EXPAND,
+                                    "requestExpand", ""},
+                    RewriteTestData{"Academic", mojom::ActionType::ACADEMICIZE,
+                                    "requestChangeTone", "academic"},
+                    RewriteTestData{"Professional",
+                                    mojom::ActionType::PROFESSIONALIZE,
+                                    "requestChangeTone", "professional"},
+                    RewriteTestData{"Casual", mojom::ActionType::CASUALIZE,
+                                    "requestChangeTone", "casual"},
+                    RewriteTestData{"Funny", mojom::ActionType::FUNNY_TONE,
+                                    "requestChangeTone", "funny"},
+                    RewriteTestData{"Persuasive",
+                                    mojom::ActionType::PERSUASIVE_TONE,
+                                    "requestChangeTone", "persuasive"}),
+    [](const testing::TestParamInfo<RewriteTestData>& info) {
+      return info.param.name;
+    });
 
 TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ToolUse) {
   EngineConsumer::ConversationHistory history;
