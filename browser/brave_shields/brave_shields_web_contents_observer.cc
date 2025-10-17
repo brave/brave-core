@@ -313,7 +313,8 @@ void BraveShieldsWebContentsObserver::SendShieldsSettings(
   rfh->GetRemoteAssociatedInterfaces()->GetInterface(&agent);
   agent->SetShieldsSettings(brave_shields::mojom::ShieldsSettings::New(
       farbling_level, farbling_token, allowed_scripts_,
-      brave_shields::IsReduceLanguageEnabledForProfile(pref_service)));
+      brave_shields::IsReduceLanguageEnabledForProfile(pref_service),
+      pref_service->GetBoolean(kGlobalPrivacyControlDisabledByPolicy)));
 }
 
 void BraveShieldsWebContentsObserver::BindReceiver(
