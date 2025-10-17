@@ -11,6 +11,8 @@
 #include "base/check.h"
 #include "base/check_op.h"
 #include "base/command_line.h"
+#include "base/debug/crash_logging.h"
+#include "base/debug/dump_without_crashing.h"
 #include "base/feature_list.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
@@ -185,7 +187,14 @@ void NTPBackgroundImagesService::MaybeCheckForSponsoredComponentUpdate() {
   // If previous update check is missed, do update check now.
   if (base::Time::Now() - *last_updated_at_ >
       features::kSponsoredImagesUpdateCheckAfter.Get()) {
-    sponsored_images_update_check_callback_.Run();
+    if (sponsored_images_update_check_callback_) {
+      sponsored_images_update_check_callback_.Run();
+    } else {
+      SCOPED_CRASH_KEY_STRING64(
+          "Issue50267", "failure_reason",
+          "sponsored_images_update_check_callback_ is null");
+      base::debug::DumpWithoutCrashing();
+    }
   }
 }
 
@@ -195,6 +204,21 @@ void NTPBackgroundImagesService::ForceSponsoredComponentUpdate() {
 }
 
 void NTPBackgroundImagesService::ScheduleNextSponsoredImagesComponentUpdate() {
+  if (!sponsored_images_update_check_callback_) {
+    SCOPED_CRASH_KEY_STRING64(
+        "Issue50267", "failure_reason",
+        "sponsored_images_update_check_callback_ is null");
+    base::debug::DumpWithoutCrashing();
+    return;
+  }
+
+  if (!sponsored_images_component_id_) {
+    SCOPED_CRASH_KEY_STRING64("Issue50267", "failure_reason",
+                              "sponsored_images_component_id_ is null");
+    base::debug::DumpWithoutCrashing();
+    return;
+  }
+
   const base::Time next_update_check_time =
       base::Time::Now() + features::kSponsoredImagesUpdateCheckAfter.Get();
   sponsored_images_update_check_timer_.Start(
@@ -513,6 +537,10 @@ NTPSponsoredImagesData* NTPBackgroundImagesService::GetSponsoredImagesData(
   const bool is_super_referrals_enabled =
       base::FeatureList::IsEnabled(features::kBraveNTPSuperReferralWallpaper);
   if (is_super_referrals_enabled) {
+    SCOPED_CRASH_KEY_STRING64("Issue50267", "failure_reason",
+                              "Super referrals are enabled");
+    base::debug::DumpWithoutCrashing();
+
     if (super_referral) {
       if (super_referrals_images_data_ &&
           super_referrals_images_data_->IsValid()) {
@@ -538,7 +566,21 @@ NTPSponsoredImagesData* NTPBackgroundImagesService::GetSponsoredImagesData(
   NTPSponsoredImagesData* const images_data =
       supports_rich_media ? sponsored_images_data_.get()
                           : sponsored_images_data_excluding_rich_media_.get();
-  if (!images_data || !images_data->IsValid()) {
+  if (!images_data) {
+    SCOPED_CRASH_KEY_BOOL("Issue50267", "supports_rich_media",
+                          supports_rich_media);
+    SCOPED_CRASH_KEY_STRING64("Issue50267", "failure_reason",
+                              "Sponsored images data is null");
+    base::debug::DumpWithoutCrashing();
+    return nullptr;
+  }
+
+  if (!images_data->IsValid()) {
+    SCOPED_CRASH_KEY_BOOL("Issue50267", "supports_rich_media",
+                          supports_rich_media);
+    SCOPED_CRASH_KEY_STRING64("Issue50267", "failure_reason",
+                              "Sponsored images data is invalid");
+    base::debug::DumpWithoutCrashing();
     return nullptr;
   }
 
@@ -594,6 +636,8 @@ void NTPBackgroundImagesService::OnGetSponsoredComponentJsonData(
   std::optional<base::Value::Dict> json_value = base::JSONReader::ReadDict(
       json_string, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!json_value) {
+    SCOPED_CRASH_KEY_STRING64("Issue50267", "failure_reason", "Invalid JSON");
+    base::debug::DumpWithoutCrashing();
     DVLOG(2) << "Read json data failed. Invalid JSON data";
     return;
   }

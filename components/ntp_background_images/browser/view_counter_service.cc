@@ -13,8 +13,9 @@
 
 #include "base/check.h"
 #include "base/check_is_test.h"
+#include "base/debug/crash_logging.h"
+#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
-#include "base/functional/callback_helpers.h"
 #include "base/logging.h"
 #include "base/metrics/histogram_macros.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
@@ -223,6 +224,9 @@ ViewCounterService::GetCurrentBrandedWallpaper() const {
   }
 
   if (images_data->IsSuperReferral()) {
+    SCOPED_CRASH_KEY_STRING64("Issue50267", "failure_reason",
+                              "Super referrals are enabled");
+    base::debug::DumpWithoutCrashing();
     return GetCurrentBrandedWallpaperFromModel();
   }
 
@@ -243,6 +247,11 @@ ViewCounterService::GetCurrentBrandedWallpaperFromAdsService() const {
   if (!images_data) {
     ads_service_->OnFailedToPrefetchNewTabPageAd(ad->placement_id,
                                                  ad->creative_instance_id);
+    SCOPED_CRASH_KEY_STRING64("Issue50267", "creative_instance_id",
+                              ad->creative_instance_id);
+    SCOPED_CRASH_KEY_STRING64("Issue50267", "failure_reason",
+                              "No sponsored images data after prefetching");
+    base::debug::DumpWithoutCrashing();
     return std::nullopt;
   }
 
@@ -251,6 +260,11 @@ ViewCounterService::GetCurrentBrandedWallpaperFromAdsService() const {
   if (!background) {
     ads_service_->OnFailedToPrefetchNewTabPageAd(ad->placement_id,
                                                  ad->creative_instance_id);
+    SCOPED_CRASH_KEY_STRING64("Issue50267", "creative_instance_id",
+                              ad->creative_instance_id);
+    SCOPED_CRASH_KEY_STRING64("Issue50267", "failure_reason",
+                              "No matching background");
+    base::debug::DumpWithoutCrashing();
     return std::nullopt;
   }
 
@@ -315,6 +329,10 @@ void ViewCounterService::OnSuperReferralCampaignDidEnd() {
 void ViewCounterService::ParseAndSaveNewTabPageAdsCallback(bool success) {
   if (success) {
     MaybePrefetchNewTabPageAd();
+  } else {
+    SCOPED_CRASH_KEY_STRING64("Issue50267", "failure_reason",
+                              "Failed to parse and save ads");
+    base::debug::DumpWithoutCrashing();
   }
 }
 
@@ -400,10 +418,28 @@ void ViewCounterService::MaybeTriggerNewTabPageAdEvent(
     brave_ads::mojom::NewTabPageAdMetricType mojom_ad_metric_type,
     brave_ads::mojom::NewTabPageAdEventType mojom_ad_event_type) {
   if (ads_service_) {
-    ads_service_->TriggerNewTabPageAdEvent(placement_id, creative_instance_id,
-                                           mojom_ad_metric_type,
-                                           mojom_ad_event_type,
-                                           /*intentional*/ base::DoNothing());
+    ads_service_->TriggerNewTabPageAdEvent(
+        placement_id, creative_instance_id, mojom_ad_metric_type,
+        mojom_ad_event_type,
+        base::BindOnce(
+            [](const std::string& creative_instance_id,
+               brave_ads::mojom::NewTabPageAdMetricType mojom_ad_metric_type,
+               brave_ads::mojom::NewTabPageAdEventType mojom_ad_event_type,
+               bool success) {
+              if (!success) {
+                SCOPED_CRASH_KEY_STRING64("Issue50267", "creative_instance_id",
+                                          creative_instance_id);
+                SCOPED_CRASH_KEY_NUMBER("Issue50267", "metric_type",
+                                        static_cast<int>(mojom_ad_metric_type));
+                SCOPED_CRASH_KEY_NUMBER("Issue50267", "event_type",
+                                        static_cast<int>(mojom_ad_event_type));
+                SCOPED_CRASH_KEY_STRING64(
+                    "Issue50267", "failure_reason",
+                    "Failed to trigger new tab page ad event");
+                base::debug::DumpWithoutCrashing();
+              }
+            },
+            creative_instance_id, mojom_ad_metric_type, mojom_ad_event_type));
   }
 }
 
@@ -493,8 +529,21 @@ std::string ViewCounterService::GetSuperReferralCode() const {
 
 void ViewCounterService::MaybePrefetchNewTabPageAd() {
   NTPSponsoredImagesData* images_data = GetSponsoredImagesData();
-  if (!ads_service_ || !CanShowSponsoredImages() || !images_data ||
-      images_data->IsSuperReferral()) {
+  if (!ads_service_) {
+    SCOPED_CRASH_KEY_STRING64("Issue50267", "failure_reason",
+                              "ads_service_ is null");
+    base::debug::DumpWithoutCrashing();
+    return;
+  }
+
+  if (!CanShowSponsoredImages() || !images_data) {
+    return;
+  }
+
+  if (images_data->IsSuperReferral()) {
+    SCOPED_CRASH_KEY_STRING64("Issue50267", "failure_reason",
+                              "Super referrals are enabled");
+    base::debug::DumpWithoutCrashing();
     return;
   }
 
