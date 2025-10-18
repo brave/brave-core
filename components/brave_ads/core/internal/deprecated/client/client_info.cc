@@ -152,9 +152,8 @@ std::string ClientInfo::ToJson() const {
 bool ClientInfo::FromJson(const std::string& json) {
   TRACE_EVENT(kTraceEventCategory, "ClientInfo::FromJson");
 
-  std::optional<base::Value::Dict> dict = base::JSONReader::ReadDict(
-      json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                base::JSONParserOptions::JSON_PARSE_RFC);
+  std::optional<base::Value::Dict> dict =
+      base::JSONReader::ReadDict(json, base::JSONParserOptions::JSON_PARSE_RFC);
   if (!dict) {
     BLOG(0, "Malformed client JSON state");
     return false;

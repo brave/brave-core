@@ -13,7 +13,7 @@ namespace brave_ads::json::reader {
 
 std::optional<AdHistoryList> ReadAdHistory(const std::string& json) {
   std::optional<base::Value::Dict> dict =
-      base::JSONReader::ReadDict(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
+      base::JSONReader::ReadDict(json, base::JSON_PARSE_RFC);
   if (!dict) {
     return std::nullopt;
   }
