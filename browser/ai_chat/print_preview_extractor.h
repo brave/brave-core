@@ -11,7 +11,7 @@
 #include <string>
 
 #include "base/memory/weak_ptr.h"
-#include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
+#include "brave/components/ai_chat/content/browser/associated_web_contents_content.h"
 #include "content/public/browser/web_contents.h"
 #include "printing/buildflags/buildflags.h"
 
@@ -24,13 +24,13 @@ class WebContents;
 namespace ai_chat {
 
 class PrintPreviewExtractor
-    : public AIChatTabHelper::PrintPreviewExtractionDelegate {
+    : public AssociatedWebContentsContent::PrintPreviewExtractionDelegate {
  public:
   // Performs the print preview extraction. Used only for a single operation.
   class Extractor {
    public:
-    using ImageCallback =
-        AIChatTabHelper::PrintPreviewExtractionDelegate::CaptureImagesCallback;
+    using ImageCallback = AssociatedWebContentsContent::
+        PrintPreviewExtractionDelegate::CaptureImagesCallback;
 
     virtual ~Extractor() = default;
     virtual void CreatePrintPreview() = 0;

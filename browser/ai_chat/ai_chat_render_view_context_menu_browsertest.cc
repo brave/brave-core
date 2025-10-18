@@ -258,8 +258,9 @@ class AIChatRenderViewContextMenuBrowserTest : public InProcessBrowserTest {
 
     return AIChatServiceFactory::GetInstance()
         ->GetForBrowserContext(browser()->profile())
-        ->GetOrCreateConversationHandlerForContent(helper->content_id(),
-                                                   helper->GetWeakPtr());
+        ->GetOrCreateConversationHandlerForContent(
+            helper->web_contents_content().content_id(),
+            helper->web_contents_content().GetWeakPtr());
   }
 
   std::unique_ptr<testing::NiceMock<MockConversationHandlerClient>>
