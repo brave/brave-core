@@ -73,22 +73,26 @@ export function TopSiteEditModal(props: Props) {
       <div data-css-scope={style.scope} onKeyDown={maybeSubmitOnKeyDown}>
         <h4>
           {props.topSite ?
-              getString('editTopSiteTitle') :
-              getString('addTopSiteTitle')
+              getString(S.NEW_TAB_EDIT_TOP_SITE_TITLE) :
+              getString(S.NEW_TAB_ADD_TOP_SITE_TITLE)
           }
         </h4>
         <Input value={title} onInput={(detail) => setTitle(detail.value)}>
-          <span className='label'>{getString('topSitesTitleLabel')}</span>
+          <span className='label'>
+            {getString(S.NEW_TAB_TOP_SITES_TITLE_LABEL)}
+          </span>
         </Input>
         <Input value={url} onInput={(detail) => setURL(detail.value)}>
-          <span className='label'>{getString('topSitesURLLabel')}</span>
+          <span className='label'>
+            {getString(S.NEW_TAB_TOP_SITES_URL_LABEL)}
+          </span>
         </Input>
         <div className='actions'>
           <Button kind='outline' onClick={props.onClose}>
-            {getString('cancelButtonLabel')}
+            {getString(S.NEW_TAB_CANCEL_BUTTON_LABEL)}
           </Button>
           <Button type='submit' isDisabled={!isValidInput()} onClick={onSubmit}>
-            {getString('saveChangesButtonLabel')}
+            {getString(S.NEW_TAB_SAVE_CHANGES_BUTTON_LABEL)}
           </Button>
         </div>
       </div>
