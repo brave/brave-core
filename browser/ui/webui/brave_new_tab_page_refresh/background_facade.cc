@@ -197,7 +197,7 @@ BackgroundFacade::GetSponsoredImageBackground() {
 
   auto sponsored_image = ReadSponsoredImageData(*data);
   if (sponsored_image) {
-    view_counter_service_->BrandedWallpaperWillBeDisplayed(
+    view_counter_service_->RecordViewedAdEvent(
         sponsored_image->wallpaper_id, sponsored_image->campaign_id,
         sponsored_image->creative_instance_id, sponsored_image->metric_type);
   }
@@ -280,7 +280,7 @@ void BackgroundFacade::NotifySponsoredImageLogoClicked(
   if (!view_counter_service_) {
     return;
   }
-  view_counter_service_->BrandedWallpaperLogoClicked(
+  view_counter_service_->RecordClickedAdEvent(
       wallpaper_id, creative_instance_id, destination_url, metric_type);
 }
 

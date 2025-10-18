@@ -124,7 +124,7 @@ void NTPBackgroundImagesBridge::WallpaperLogoClicked(
     int metricType) {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
   if (view_counter_service_) {
-    view_counter_service_->BrandedWallpaperLogoClicked(
+    view_counter_service_->RecordClickedAdEvent(
         base::android::ConvertJavaStringToUTF8(env, jwallpaperId),
         base::android::ConvertJavaStringToUTF8(env, jcreativeInstanceId),
         base::android::ConvertJavaStringToUTF8(env, jdestinationUrl),
@@ -188,7 +188,7 @@ NTPBackgroundImagesBridge::CreateBrandedWallpaper(
     metric_type = static_cast<brave_ads::mojom::NewTabPageAdMetricType>(*value);
   }
 
-  view_counter_service_->BrandedWallpaperWillBeDisplayed(
+  view_counter_service_->RecordViewedAdEvent(
       wallpaper_id ? *wallpaper_id : "", campaign_id ? *campaign_id : "",
       creative_instance_id ? *creative_instance_id : "", metric_type);
 
