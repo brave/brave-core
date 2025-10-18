@@ -8,11 +8,9 @@
 
 #include <vector>
 
-#include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "brave/components/brave_ads/core/internal/serving/prediction/model_based/weight/creative_ad_model_based_predictor_weights_info.h"
-#include "brave/components/brave_ads/core/internal/serving/prediction/model_based/weight/creative_inline_content_ad_model_based_predictor_weights_builder.h"
 #include "brave/components/brave_ads/core/internal/serving/prediction/model_based/weight/creative_new_tab_page_ad_model_based_predictor_weights_builder.h"
 #include "brave/components/brave_ads/core/internal/serving/prediction/model_based/weight/creative_notification_ad_model_based_predictor_weights_builder.h"
 
@@ -20,14 +18,6 @@ namespace brave_ads {
 
 template <typename T>
 struct CreativeAdModelBasedPredictorWeightsBuilder;
-
-template <>
-struct CreativeAdModelBasedPredictorWeightsBuilder<
-    CreativeInlineContentAdInfo> {
-  static CreativeAdModelBasedPredictorWeightsInfo build() {
-    return BuildCreativeInlineContentAdModelBasedPredictorWeights();
-  }
-};
 
 template <>
 struct CreativeAdModelBasedPredictorWeightsBuilder<CreativeNewTabPageAdInfo> {

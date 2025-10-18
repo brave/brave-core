@@ -12,8 +12,6 @@ bool UserHasJoinedBraveRewards();
 bool UserHasJoinedBraveRewardsAndNotConnectedWallet();
 bool UserHasJoinedBraveRewardsAndConnectedWallet();
 
-bool UserHasOptedInToBraveNewsAds();
-
 bool UserHasOptedInToNewTabPageAds();
 
 bool UserHasOptedInToNotificationAds();

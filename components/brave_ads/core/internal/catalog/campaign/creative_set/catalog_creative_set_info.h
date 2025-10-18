@@ -12,9 +12,7 @@
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/catalog_conversion_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/catalog_os_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/catalog_segment_info.h"
-#include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/creative/inline_content_ad/catalog_creative_inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/creative/notification_ad/catalog_creative_notification_ad_info.h"
-#include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/creative/promoted_content_ad/catalog_creative_promoted_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/serving/targeting/condition_matcher/condition_matcher_util.h"
 
 namespace brave_ads {
@@ -46,8 +44,6 @@ struct CatalogCreativeSetInfo final {
   CatalogOsList oses;
   CatalogConversionList conversions;
   CatalogCreativeNotificationAdList creative_notification_ads;
-  CatalogCreativeInlineContentAdList creative_inline_content_ads;
-  CatalogCreativePromotedContentAdList creative_promoted_content_ads;
 };
 
 using CatalogCreativeSetList = std::vector<CatalogCreativeSetInfo>;

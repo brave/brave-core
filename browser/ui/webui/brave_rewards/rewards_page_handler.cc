@@ -510,8 +510,6 @@ void RewardsPageHandler::SetAdTypeEnabled(brave_ads::mojom::AdType ad_type,
       prefs_->SetBoolean(brave_ads::prefs::kOptedInToNotificationAds, enabled);
       break;
     case AdType::kSearchResultAd:
-    case AdType::kPromotedContentAd:
-    case AdType::kInlineContentAd:
     case AdType::kUndefined:
       // These Ad types cannot be enabled/disabled from the Rewards page.
       break;

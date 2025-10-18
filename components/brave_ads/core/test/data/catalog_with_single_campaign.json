@@ -21,24 +21,6 @@
               }
             },
             {
-              "creativeInstanceId": "60001aa5-9368-45d2-81fc-e69887d278c5",
-              "type": {
-                "code": "promoted_content_all_v1",
-                "name": "promoted_content",
-                "platform": "all",
-                "version": 1
-              },
-              "payload": {
-                "feed": "https://brave.com/1/promoted_content_ad",
-                "title": "Promoted Content 1",
-                "domain": "Domain 1",
-                "category": "Category 1",
-                "ogImages": false,
-                "contentType": "Content Type 1",
-                "description": "Test Promoted Content Ad Campaign 1"
-              }
-            },
-            {
               "creativeInstanceId": "b0615969-6ee0-4559-b50c-f84be23302e4",
               "type": {
                 "code": "inline_content_all_v1",

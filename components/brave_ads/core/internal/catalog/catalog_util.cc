@@ -16,9 +16,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creatives_builder.h"
 #include "brave/components/brave_ads/core/internal/creatives/creatives_info.h"
-#include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ads_database_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ads_database_util.h"
-#include "brave/components/brave_ads/core/internal/creatives/promoted_content_ads/creative_promoted_content_ads_database_util.h"
 #include "brave/components/brave_ads/core/internal/prefs/pref_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
@@ -101,28 +99,6 @@ void Delete(ResultCallback callback) {
             creative_new_tab_page_ads
         ))");
 
-  database::Execute(mojom_db_transaction, R"(
-      DELETE FROM
-        creative_inline_content_ads
-      WHERE
-        creative_instance_id NOT IN (
-          SELECT
-            DISTINCT creative_instance_id
-          FROM
-            creative_new_tab_page_ads
-        ))");
-
-  database::Execute(mojom_db_transaction, R"(
-      DELETE FROM
-        creative_promoted_content_ads
-      WHERE
-        creative_instance_id NOT IN (
-          SELECT
-            DISTINCT creative_instance_id
-          FROM
-            creative_new_tab_page_ads
-        ))");
-
   database::RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
                            std::move(callback));
 }
@@ -136,8 +112,6 @@ void SaveCatalogCallback(const CatalogInfo& catalog,
 
     const CreativesInfo creatives = BuildCreatives(catalog);
     database::SaveCreativeNotificationAds(creatives.notification_ads);
-    database::SaveCreativeInlineContentAds(creatives.inline_content_ads);
-    database::SaveCreativePromotedContentAds(creatives.promoted_content_ads);
     database::SaveCreativeSetConversions(creatives.conversions);
   } else {
     BLOG(0, "Failed to save catalog");

@@ -18,7 +18,6 @@
 #include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/resource/text_classification_resource_constants.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
-#include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -121,23 +120,6 @@ TEST_F(BraveAdsTextClassificationResourceTest,
 }
 
 TEST_F(BraveAdsTextClassificationResourceTest,
-       DoNotLoadResourceWhenOptingInToBraveNewsAds) {
-  // Arrange
-  test::OptOutOfAllAds();
-
-  NotifyResourceComponentDidChange(test::kLanguageComponentManifestVersion,
-                                   test::kLanguageComponentId);
-  ASSERT_FALSE(resource_->IsLoaded());
-
-  // Act
-  SetProfileBooleanPref(brave_news::prefs::kBraveNewsOptedIn, true);
-  SetProfileBooleanPref(brave_news::prefs::kNewTabPageShowToday, true);
-
-  // Assert
-  EXPECT_FALSE(resource_->IsLoaded());
-}
-
-TEST_F(BraveAdsTextClassificationResourceTest,
        DoNotLoadResourceWhenOptingInToNewTabPageAds) {
   // Arrange
   test::OptOutOfAllAds();
@@ -176,7 +158,6 @@ TEST_F(BraveAdsTextClassificationResourceTest,
 TEST_F(BraveAdsTextClassificationResourceTest,
        DoNotResetResourceIfAlreadyOptedInToNotificationAds) {
   // Arrange
-  test::OptOutOfBraveNewsAds();
   test::OptOutOfNewTabPageAds();
   test::OptOutOfSearchResultAds();
 

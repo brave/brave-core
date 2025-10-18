@@ -30,11 +30,9 @@ bool DoesRequireResourceForNewTabPageAds() {
 
 bool DoesRequireResource() {
   // Require resource only if:
-  // - The user has opted into Brave News ads.
   // - The user has opted into new tab page ads and and joined Brave Rewards.
   // - The user has joined Brave Rewards and opted into notification ads.
-  return UserHasOptedInToBraveNewsAds() ||
-         DoesRequireResourceForNewTabPageAds() ||
+  return DoesRequireResourceForNewTabPageAds() ||
          UserHasOptedInToNotificationAds();
 }
 
@@ -117,7 +115,6 @@ void AntiTargetingResource::Unload() {
 
 void AntiTargetingResource::OnNotifyPrefDidChange(const std::string& path) {
   if (DoesMatchUserHasJoinedBraveRewardsPrefPath(path) ||
-      DoesMatchUserHasOptedInToBraveNewsAdsPrefPath(path) ||
       DoesMatchUserHasOptedInToNewTabPageAdsPrefPath(path) ||
       DoesMatchUserHasOptedInToNotificationAdsPrefPath(path)) {
     // This condition should include all the preferences that are present in the

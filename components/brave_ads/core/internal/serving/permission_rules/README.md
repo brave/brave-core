@@ -16,6 +16,6 @@ Permission rules determine if users are allowed to see ads.
 | network connection  | Check if there is an active internet connection.  |
 | user activity  | Check if we have gained the user's attention.  |
 
-See [inline content ads](./inline_content_ads/README.md), [new tab page ads](./new_tab_page_ads/README.md), [notification ads](./notification_ads/README.md), [promoted content ads](./promoted_content_ads/README.md) and [search result ads](./search_result_ads/README.md) for specific creative permission rules.
+See [new tab page ads](./new_tab_page_ads/README.md), [notification ads](./notification_ads/README.md) and [search result ads](./search_result_ads/README.md) for specific creative permission rules.
 
 Please add to it!

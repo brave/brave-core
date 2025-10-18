@@ -31,7 +31,6 @@
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
-#include "brave/components/brave_ads/core/public/ad_units/inline_content_ad/inline_content_ad_info.h"
 #include "brave/components/brave_news/browser/background_history_querier.h"
 #include "brave/components/brave_news/browser/brave_news_engine.h"
 #include "brave/components/brave_news/browser/brave_news_p3a.h"
@@ -561,43 +560,9 @@ void BraveNewsController::AddConfigurationListener(
 }
 
 void BraveNewsController::GetDisplayAd(GetDisplayAdCallback callback) {
-  DVLOG(1) << __FUNCTION__;
-  // TODO(petemill): maybe we need to have a way to re-fetch ads_service,
-  // since it may have been disabled at time of service creation and enabled
-  // some time later.
-  if (!ads_service_) {
-    VLOG(1) << "GetDisplayAd: no ads service";
-    std::move(callback).Run(nullptr);
-    return;
-  }
-  auto on_ad_received = base::BindOnce(
-      [](GetDisplayAdCallback callback, const std::string& dimensions,
-         base::optional_ref<const brave_ads::InlineContentAdInfo>
-             inline_content_ad) {
-        if (!inline_content_ad) {
-          VLOG(1) << "GetDisplayAd: no ad";
-          std::move(callback).Run(nullptr);
-          return;
-        }
-        VLOG(1) << "GetDisplayAd: GOT ad";
-        // Convert to our mojom entity.
-        // TODO(petemill): brave_ads seems to use mojom, perhaps we can
-        // receive and send to callback the actual typed mojom struct from
-        // brave_ads?
-        auto ad = mojom::DisplayAd::New();
-        ad->uuid = inline_content_ad->placement_id;
-        ad->creative_instance_id = inline_content_ad->creative_instance_id;
-        ad->cta_text = inline_content_ad->cta_text;
-        ad->dimensions = inline_content_ad->dimensions;
-        ad->title = inline_content_ad->title;
-        ad->description = inline_content_ad->description;
-        ad->image =
-            mojom::Image::NewPaddedImageUrl(inline_content_ad->image_url);
-        ad->target_url = inline_content_ad->target_url;
-        std::move(callback).Run(std::move(ad));
-      },
-      std::move(callback));
-  ads_service_->MaybeServeInlineContentAd("900x750", std::move(on_ad_received));
+  // TODO(https://github.com/brave/brave-browser/issues/50312): Remove Brave
+  // News inline content ads code.
+  std::move(callback).Run(nullptr);
 }
 
 void BraveNewsController::OnInteractionSessionStarted() {
@@ -606,27 +571,17 @@ void BraveNewsController::OnInteractionSessionStarted() {
 }
 
 void BraveNewsController::OnPromotedItemView(
-    const std::string& item_id,
-    const std::string& creative_instance_id) {
-  DVLOG(1) << __FUNCTION__;
-  if (ads_service_ && !item_id.empty() && !creative_instance_id.empty()) {
-    ads_service_->TriggerPromotedContentAdEvent(
-        item_id, creative_instance_id,
-        brave_ads::mojom::PromotedContentAdEventType::kViewedImpression,
-        /*intentional*/ base::DoNothing());
-  }
+    const std::string& /*item_id*/,
+    const std::string& /*creative_instance_id*/) {
+  // TODO(https://github.com/brave/brave-browser/issues/50311): Remove Brave
+  // News promoted ads code.
 }
 
 void BraveNewsController::OnPromotedItemVisit(
-    const std::string& item_id,
-    const std::string& creative_instance_id) {
-  DVLOG(1) << __FUNCTION__;
-  if (ads_service_ && !item_id.empty() && !creative_instance_id.empty()) {
-    ads_service_->TriggerPromotedContentAdEvent(
-        item_id, creative_instance_id,
-        brave_ads::mojom::PromotedContentAdEventType::kClicked,
-        /*intentional*/ base::DoNothing());
-  }
+    const std::string& /*item_id*/,
+    const std::string& /*creative_instance_id*/) {
+  // TODO(https://github.com/brave/brave-browser/issues/50311): Remove Brave
+  // News promoted ads code.
 }
 
 void BraveNewsController::OnNewCardsViewed(uint16_t card_views) {
@@ -646,59 +601,17 @@ void BraveNewsController::OnSidebarFilterUsage() {
 }
 
 void BraveNewsController::OnDisplayAdVisit(
-    const std::string& item_id,
-    const std::string& creative_instance_id) {
-  DVLOG(1) << __FUNCTION__;
-  // Validate
-  if (item_id.empty()) {
-    LOG(ERROR) << "News: asked to record visit for an ad without ad id";
-    return;
-  }
-  if (creative_instance_id.empty()) {
-    LOG(ERROR) << "News: asked to record visit for an ad without "
-                  "ad creative instance id";
-    return;
-  }
-  // Let ad service know an ad was visited
-  if (!ads_service_) {
-    VLOG(1)
-        << "News: Asked to record an ad visit but there is no ads service for"
-           "this profile!";
-    return;
-  }
-  ads_service_->TriggerInlineContentAdEvent(
-      item_id, creative_instance_id,
-      brave_ads::mojom::InlineContentAdEventType::kClicked,
-      /*intentional*/ base::DoNothing());
+    const std::string& /*item_id*/,
+    const std::string& /*creative_instance_id*/) {
+  // TODO(https://github.com/brave/brave-browser/issues/50312): Remove Brave
+  // News inline content ads code.
 }
 
 void BraveNewsController::OnDisplayAdView(
-    const std::string& item_id,
-    const std::string& creative_instance_id) {
-  DVLOG(1) << __FUNCTION__;
-  // Validate
-  if (item_id.empty()) {
-    LOG(ERROR) << "News: asked to record view for an ad without ad id";
-    return;
-  }
-  if (creative_instance_id.empty()) {
-    LOG(ERROR) << "News: asked to record view for an ad without "
-                  "ad creative instance id";
-    return;
-  }
-  // Let ad service know an ad was viewed
-  if (!ads_service_) {
-    VLOG(1)
-        << "News: Asked to record an ad visit but there is no ads service for"
-           "this profile!";
-    return;
-  }
-  ads_service_->TriggerInlineContentAdEvent(
-      item_id, creative_instance_id,
-      brave_ads::mojom::InlineContentAdEventType::kViewedImpression,
-      /*intentional*/ base::DoNothing());
-
-  news_metrics_.RecordWeeklyDisplayAdsViewedCount(true);
+    const std::string& /*item_id*/,
+    const std::string& /*creative_instance_id*/) {
+  // TODO(https://github.com/brave/brave-browser/issues/50312): Remove Brave
+  // News inline content ads code.
 }
 
 void BraveNewsController::GetVisitedSites(GetVisitedSitesCallback callback) {

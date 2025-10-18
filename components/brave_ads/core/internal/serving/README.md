@@ -7,7 +7,6 @@ conditions. Ads are anonymously matched to opportunities.
 
 | format  | description  |
 |---|---|
-| inline content ad  | Displayed on the Brave News feed  |
 | new tab page ad  | Displayed on new tab pages  |
 | notification ad  | Displayed as system or custom push notifications  |
 

@@ -98,7 +98,6 @@ extension FeedCardGenerator {
     private let categoryGroupFillStrategy: CategoryFillStrategy<String>
     private let dealsFillStrategy: CategoryFillStrategy<String?>
     private var contentAdsQueryFailed: Bool = false
-    private var inlineContentAdsPurged: Bool = false
     private var repeatingSequence: [FeedSequenceElement]?
     private var repeatedSequenceCardCount: Int = 0
 
@@ -184,27 +183,6 @@ extension FeedCardGenerator {
         return fillStrategy.next(from: &partners, where: imageExists).map {
           [.partner($0)]
         }
-      case .braveAd:
-        // If we fail to obtain inline content ads during a card gen it can be assumed that
-        // all further calls will fail since cards are generated all at once
-        guard !contentAdsQueryFailed, let ads = ads, ads.isServiceRunning() else { return [] }
-        if !inlineContentAdsPurged {
-          inlineContentAdsPurged = true
-          _ = await Task { @MainActor in
-            await ads.purgeOrphanedAdEvents(for: .inlineContentAd)
-          }.value
-        }
-        let contentAd = await Task { @MainActor in
-          await ads.maybeServeInlineContentAd("900x750").1
-        }.value
-        guard let ad = contentAd else {
-          contentAdsQueryFailed = true
-          Logger.module.debug(
-            "Inline content ads could not be filled; Skipping for the rest of this feed generation"
-          )
-          return []
-        }
-        return [.ad(ad)]
       case .headline(let paired):
         if articles.isEmpty { return [] }
         let imageExists = { (item: FeedItem) -> Bool in

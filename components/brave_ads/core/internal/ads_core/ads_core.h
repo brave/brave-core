@@ -42,8 +42,7 @@ class AdsCore final {
   Account& GetAccount();
 
   // Provides methods for serving and triggering events for various types of
-  // ads, including inline content ads, new tab page ads, notification ads,
-  // promoted content ads, and search result ads.
+  // ads, including new tab page ads, notification ads, and search result ads.
   AdHandler& GetAdHandler();
 
   // Provides methods for engaging with ads, such as liking, disliking, marking

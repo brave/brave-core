@@ -18,10 +18,8 @@
 #include "brave/components/brave_ads/core/internal/creatives/creative_ads_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/dayparts_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/geo_targets_database_table.h"
-#include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ads_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ads_database_table.h"
-#include "brave/components/brave_ads/core/internal/creatives/promoted_content_ads/creative_promoted_content_ads_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/segments_database_table.h"
 #include "brave/components/brave_ads/core/internal/history/ad_history_database_table.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events_database_table.h"
@@ -63,15 +61,8 @@ void Create(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
   table::CreativeNotificationAds creative_notification_ads_database_table;
   creative_notification_ads_database_table.Create(mojom_db_transaction);
 
-  table::CreativeInlineContentAds creative_inline_content_ads_database_table;
-  creative_inline_content_ads_database_table.Create(mojom_db_transaction);
-
   table::CreativeNewTabPageAds creative_new_tab_page_ads_database_table;
   creative_new_tab_page_ads_database_table.Create(mojom_db_transaction);
-
-  table::CreativePromotedContentAds
-      creative_promoted_content_ads_database_table;
-  creative_promoted_content_ads_database_table.Create(mojom_db_transaction);
 
   table::CreativeAds creative_ads_database_table;
   creative_ads_database_table.Create(mojom_db_transaction);

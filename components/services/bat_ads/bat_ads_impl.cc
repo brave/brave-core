@@ -12,8 +12,6 @@
 #include "base/check.h"
 #include "base/types/optional_ref.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
-#include "brave/components/brave_ads/core/public/ad_units/inline_content_ad/inline_content_ad_info.h"
-#include "brave/components/brave_ads/core/public/ad_units/inline_content_ad/inline_content_ad_value_util.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_value_util.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
@@ -179,57 +177,6 @@ void BatAdsImpl::TriggerNewTabPageAdEvent(
   GetAds()->TriggerNewTabPageAdEvent(
       placement_id, creative_instance_id, mojom_ad_metric_type,
       mojom_ad_event_type,
-      mojo::WrapCallbackWithDefaultInvokeIfNotRun(std::move(callback),
-                                                  /*success=*/false));
-}
-
-void BatAdsImpl::TriggerPromotedContentAdEvent(
-    const std::string& placement_id,
-    const std::string& creative_instance_id,
-    brave_ads::mojom::PromotedContentAdEventType mojom_ad_event_type,
-    TriggerPromotedContentAdEventCallback callback) {
-  CHECK(brave_ads::mojom::IsKnownEnumValue(mojom_ad_event_type));
-
-  GetAds()->TriggerPromotedContentAdEvent(
-      placement_id, creative_instance_id, mojom_ad_event_type,
-      mojo::WrapCallbackWithDefaultInvokeIfNotRun(std::move(callback),
-                                                  /*success=*/false));
-}
-
-void BatAdsImpl::MaybeServeInlineContentAd(
-    const std::string& dimensions,
-    MaybeServeInlineContentAdCallback callback) {
-  GetAds()->MaybeServeInlineContentAd(
-      dimensions,
-      mojo::WrapCallbackWithDefaultInvokeIfNotRun(
-          base::BindOnce(
-              [](MaybeServeInlineContentAdCallback callback,
-                 const std::string& dimensions,
-                 base::optional_ref<const brave_ads::InlineContentAdInfo> ad) {
-                if (!ad) {
-                  std::move(callback).Run(dimensions,
-                                          /*ads*/ std::nullopt);
-                  return;
-                }
-
-                std::optional<base::Value::Dict> dict =
-                    brave_ads::InlineContentAdToValue(*ad);
-                std::move(callback).Run(dimensions, std::move(dict));
-              },
-              std::move(callback)),
-          /*dimensions=*/std::string(),
-          /*value=*/std::nullopt));
-}
-
-void BatAdsImpl::TriggerInlineContentAdEvent(
-    const std::string& placement_id,
-    const std::string& creative_instance_id,
-    brave_ads::mojom::InlineContentAdEventType mojom_ad_event_type,
-    TriggerInlineContentAdEventCallback callback) {
-  CHECK(brave_ads::mojom::IsKnownEnumValue(mojom_ad_event_type));
-
-  GetAds()->TriggerInlineContentAdEvent(
-      placement_id, creative_instance_id, mojom_ad_event_type,
       mojo::WrapCallbackWithDefaultInvokeIfNotRun(std::move(callback),
                                                   /*success=*/false));
 }

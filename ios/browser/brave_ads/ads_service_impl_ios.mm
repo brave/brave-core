@@ -192,32 +192,6 @@ void AdsServiceImplIOS::GetStatementOfAccounts(
   ads_->GetStatementOfAccounts(std::move(callback));
 }
 
-void AdsServiceImplIOS::MaybeServeInlineContentAd(
-    const std::string& dimensions,
-    MaybeServeInlineContentAdCallback callback) {
-  if (!IsInitialized()) {
-    return std::move(callback).Run(dimensions,
-                                   /*inline_content_ad*/ std::nullopt);
-  }
-
-  ads_->MaybeServeInlineContentAd(dimensions, std::move(callback));
-}
-
-void AdsServiceImplIOS::TriggerInlineContentAdEvent(
-    const std::string& placement_id,
-    const std::string& creative_instance_id,
-    mojom::InlineContentAdEventType mojom_ad_event_type,
-    TriggerAdEventCallback callback) {
-  CHECK(mojom::IsKnownEnumValue(mojom_ad_event_type));
-
-  if (!IsInitialized()) {
-    return std::move(callback).Run(/*success*/ false);
-  }
-
-  ads_->TriggerInlineContentAdEvent(placement_id, creative_instance_id,
-                                    mojom_ad_event_type, std::move(callback));
-}
-
 void AdsServiceImplIOS::PrefetchNewTabPageAd() {
   if (!IsInitialized()) {
     return;
@@ -290,21 +264,6 @@ void AdsServiceImplIOS::TriggerNewTabPageAdEvent(
   ads_->TriggerNewTabPageAdEvent(placement_id, creative_instance_id,
                                  mojom_ad_metric_type, mojom_ad_event_type,
                                  std::move(callback));
-}
-
-void AdsServiceImplIOS::TriggerPromotedContentAdEvent(
-    const std::string& placement_id,
-    const std::string& creative_instance_id,
-    mojom::PromotedContentAdEventType mojom_ad_event_type,
-    TriggerAdEventCallback callback) {
-  CHECK(mojom::IsKnownEnumValue(mojom_ad_event_type));
-
-  if (!IsInitialized()) {
-    return std::move(callback).Run(/*success*/ false);
-  }
-
-  ads_->TriggerPromotedContentAdEvent(placement_id, creative_instance_id,
-                                      mojom_ad_event_type, std::move(callback));
 }
 
 void AdsServiceImplIOS::MaybeGetSearchResultAd(

@@ -34,68 +34,11 @@ TEST_F(BraveAdsConversionsUtilTest, IsAllowedToConvertInlineContentAdEvent) {
 }
 
 TEST_F(BraveAdsConversionsUtilTest,
-       IsNotAllowedToConvertInlineContentAdEventIfOptedOutOfBraveNewsAds) {
-  // Arrange
-  test::OptOutOfBraveNewsAds();
-
-  const AdInfo ad = test::BuildAd(mojom::AdType::kInlineContentAd,
-                                  /*should_generate_random_uuids=*/false);
-  const AdEventInfo ad_event =
-      BuildAdEvent(ad, mojom::ConfirmationType::kViewedImpression,
-                   /*created_at=*/test::Now());
-
-  // Act & Assert
-  EXPECT_FALSE(IsAllowedToConvertAdEvent(ad_event));
-}
-
-TEST_F(BraveAdsConversionsUtilTest,
        IsAllowedToConvertInlineContentAdEventForNonRewardsUser) {
   // Arrange
   test::DisableBraveRewards();
 
   const AdInfo ad = test::BuildAd(mojom::AdType::kInlineContentAd,
-                                  /*should_generate_random_uuids=*/false);
-  const AdEventInfo ad_event =
-      BuildAdEvent(ad, mojom::ConfirmationType::kViewedImpression,
-                   /*created_at=*/test::Now());
-
-  // Act & Assert
-  EXPECT_TRUE(IsAllowedToConvertAdEvent(ad_event));
-}
-
-TEST_F(BraveAdsConversionsUtilTest, IsAllowedToConvertPromotedContentAdEvent) {
-  // Arrange
-  const AdInfo ad = test::BuildAd(mojom::AdType::kPromotedContentAd,
-                                  /*should_generate_random_uuids=*/false);
-  const AdEventInfo ad_event =
-      BuildAdEvent(ad, mojom::ConfirmationType::kViewedImpression,
-                   /*created_at=*/test::Now());
-
-  // Act & Assert
-  EXPECT_TRUE(IsAllowedToConvertAdEvent(ad_event));
-}
-
-TEST_F(BraveAdsConversionsUtilTest,
-       IsNotAllowedToConvertPromotedContentAdEventIfOptedOutOfBraveNewsAds) {
-  // Arrange
-  test::OptOutOfBraveNewsAds();
-
-  const AdInfo ad = test::BuildAd(mojom::AdType::kPromotedContentAd,
-                                  /*should_generate_random_uuids=*/false);
-  const AdEventInfo ad_event =
-      BuildAdEvent(ad, mojom::ConfirmationType::kViewedImpression,
-                   /*created_at=*/test::Now());
-
-  // Act & Assert
-  EXPECT_FALSE(IsAllowedToConvertAdEvent(ad_event));
-}
-
-TEST_F(BraveAdsConversionsUtilTest,
-       IsAllowedToConvertPromotedContentAdEventForNonRewardsUser) {
-  // Arrange
-  test::DisableBraveRewards();
-
-  const AdInfo ad = test::BuildAd(mojom::AdType::kPromotedContentAd,
                                   /*should_generate_random_uuids=*/false);
   const AdEventInfo ad_event =
       BuildAdEvent(ad, mojom::ConfirmationType::kViewedImpression,

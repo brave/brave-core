@@ -12,6 +12,7 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_builder.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_feature.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-data-view.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/ad_info.h"
 
@@ -112,7 +113,7 @@ TEST_F(BraveAdsAdEventHandlerUtilTest, WasAdServed) {
 
   // Act & Assert
   EXPECT_TRUE(WasAdServed(ad, ad_events,
-                          mojom::InlineContentAdEventType::kViewedImpression));
+                          mojom::NewTabPageAdEventType::kViewedImpression));
 }
 
 TEST_F(BraveAdsAdEventHandlerUtilTest, WasAdServedIfNoPreviousEvents) {
@@ -124,7 +125,7 @@ TEST_F(BraveAdsAdEventHandlerUtilTest, WasAdServedIfNoPreviousEvents) {
 
   // Act & Assert
   EXPECT_TRUE(WasAdServed(ad, /*ad_events=*/{},
-                          mojom::InlineContentAdEventType::kServedImpression));
+                          mojom::NewTabPageAdEventType::kServedImpression));
 }
 
 TEST_F(BraveAdsAdEventHandlerUtilTest, WasAdNeverServed) {
@@ -136,7 +137,7 @@ TEST_F(BraveAdsAdEventHandlerUtilTest, WasAdNeverServed) {
 
   // Act & Assert
   EXPECT_FALSE(WasAdServed(ad, /*ad_events=*/{},
-                           mojom::InlineContentAdEventType::kViewedImpression));
+                           mojom::NewTabPageAdEventType::kViewedImpression));
 }
 
 TEST_F(BraveAdsAdEventHandlerUtilTest,
@@ -163,7 +164,7 @@ TEST_F(BraveAdsAdEventHandlerUtilTest,
 
   // Act & Assert
   EXPECT_TRUE(ShouldDeduplicateAdEvent(
-      ad, ad_events, mojom::InlineContentAdEventType::kViewedImpression));
+      ad, ad_events, mojom::NewTabPageAdEventType::kViewedImpression));
 }
 
 TEST_F(BraveAdsAdEventHandlerUtilTest,
@@ -190,7 +191,7 @@ TEST_F(BraveAdsAdEventHandlerUtilTest,
 
   // Act & Assert
   EXPECT_FALSE(ShouldDeduplicateAdEvent(
-      ad, ad_events, mojom::InlineContentAdEventType::kViewedImpression));
+      ad, ad_events, mojom::NewTabPageAdEventType::kViewedImpression));
 }
 
 TEST_F(BraveAdsAdEventHandlerUtilTest, ShouldAlwaysDeduplicateViewedAdEvent) {
@@ -216,7 +217,7 @@ TEST_F(BraveAdsAdEventHandlerUtilTest, ShouldAlwaysDeduplicateViewedAdEvent) {
 
   // Act & Assert
   EXPECT_TRUE(ShouldDeduplicateAdEvent(
-      ad, ad_events, mojom::InlineContentAdEventType::kViewedImpression));
+      ad, ad_events, mojom::NewTabPageAdEventType::kViewedImpression));
 }
 
 TEST_F(BraveAdsAdEventHandlerUtilTest,
@@ -237,7 +238,7 @@ TEST_F(BraveAdsAdEventHandlerUtilTest,
 
   // Act & Assert
   EXPECT_FALSE(ShouldDeduplicateAdEvent(
-      ad, ad_events, mojom::InlineContentAdEventType::kViewedImpression));
+      ad, ad_events, mojom::NewTabPageAdEventType::kViewedImpression));
 }
 
 TEST_F(BraveAdsAdEventHandlerUtilTest,
@@ -266,8 +267,8 @@ TEST_F(BraveAdsAdEventHandlerUtilTest,
   AdvanceClockBy(kDeduplicateClickedAdEventFor.Get());
 
   // Act & Assert
-  EXPECT_TRUE(ShouldDeduplicateAdEvent(
-      ad, ad_events, mojom::InlineContentAdEventType::kClicked));
+  EXPECT_TRUE(ShouldDeduplicateAdEvent(ad, ad_events,
+                                       mojom::NewTabPageAdEventType::kClicked));
 }
 
 TEST_F(BraveAdsAdEventHandlerUtilTest,
@@ -297,7 +298,7 @@ TEST_F(BraveAdsAdEventHandlerUtilTest,
 
   // Act & Assert
   EXPECT_FALSE(ShouldDeduplicateAdEvent(
-      ad, ad_events, mojom::InlineContentAdEventType::kClicked));
+      ad, ad_events, mojom::NewTabPageAdEventType::kClicked));
 }
 
 TEST_F(BraveAdsAdEventHandlerUtilTest, ShouldAlwaysDeduplicateClickedAdEvent) {
@@ -325,8 +326,8 @@ TEST_F(BraveAdsAdEventHandlerUtilTest, ShouldAlwaysDeduplicateClickedAdEvent) {
   AdvanceClockTo(test::DistantFuture());
 
   // Act & Assert
-  EXPECT_TRUE(ShouldDeduplicateAdEvent(
-      ad, ad_events, mojom::InlineContentAdEventType::kClicked));
+  EXPECT_TRUE(ShouldDeduplicateAdEvent(ad, ad_events,
+                                       mojom::NewTabPageAdEventType::kClicked));
 }
 
 TEST_F(BraveAdsAdEventHandlerUtilTest,
@@ -351,7 +352,7 @@ TEST_F(BraveAdsAdEventHandlerUtilTest,
 
   // Act & Assert
   EXPECT_FALSE(ShouldDeduplicateAdEvent(
-      ad, ad_events, mojom::InlineContentAdEventType::kClicked));
+      ad, ad_events, mojom::NewTabPageAdEventType::kClicked));
 }
 
 }  // namespace brave_ads

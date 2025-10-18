@@ -13,7 +13,6 @@
 #include "brave/components/brave_ads/core/internal/prefs/pref_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
-#include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "net/http/http_status_code.h"
@@ -107,31 +106,6 @@ TEST_F(BraveAdsSubdivisionTest, FetchWhenOptingInToNotificationAds) {
 
   // Act & Assert
   SetProfileBooleanPref(prefs::kOptedInToNotificationAds, true);
-}
-
-TEST_F(BraveAdsSubdivisionTest, DoNotFetchWhenOptingOutOfBraveNewsAds) {
-  // Arrange
-  MockHttpOkUrlResponse(/*country_code=*/"US", /*subdivision_code=*/"CA");
-
-  EXPECT_CALL(subdivision_observer_mock_, OnDidUpdateSubdivision).Times(0);
-
-  // Act & Assert
-  SetProfileBooleanPref(brave_news::prefs::kBraveNewsOptedIn, false);
-  SetProfileBooleanPref(brave_news::prefs::kNewTabPageShowToday, false);
-  task_environment_.DescribeCurrentTasks();
-}
-
-TEST_F(BraveAdsSubdivisionTest, DoNotFetchWhenOptingInToBraveNewsAds) {
-  // Arrange
-  test::OptOutOfAllAds();
-
-  MockHttpOkUrlResponse(/*country_code=*/"US", /*subdivision_code=*/"CA");
-
-  EXPECT_CALL(subdivision_observer_mock_, OnDidUpdateSubdivision).Times(0);
-
-  // Act & Assert
-  SetProfileBooleanPref(brave_news::prefs::kBraveNewsOptedIn, true);
-  SetProfileBooleanPref(brave_news::prefs::kNewTabPageShowToday, true);
 }
 
 TEST_F(BraveAdsSubdivisionTest, DoNotFetchWhenOptingOutOfNewTabPageAds) {

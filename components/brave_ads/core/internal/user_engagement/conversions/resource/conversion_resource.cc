@@ -24,12 +24,11 @@ namespace {
 
 bool DoesRequireResource() {
   // Require resource only if:
-  // - The user has joined Brave Rewards and opted into Brave News ads, new tab
-  //   page ads, notification ads, or search result ads.
-  return UserHasJoinedBraveRewards() &&
-         (UserHasOptedInToBraveNewsAds() || UserHasOptedInToNewTabPageAds() ||
-          UserHasOptedInToNotificationAds() ||
-          UserHasOptedInToSearchResultAds());
+  // - The user has joined Brave Rewards and opted into new tab page ads,
+  //   notification ads, or search result ads.
+  return UserHasJoinedBraveRewards() && (UserHasOptedInToNewTabPageAds() ||
+                                         UserHasOptedInToNotificationAds() ||
+                                         UserHasOptedInToSearchResultAds());
 }
 
 }  // namespace
@@ -94,7 +93,6 @@ void ConversionResource::Unload() {
 
 void ConversionResource::OnNotifyPrefDidChange(const std::string& path) {
   if (DoesMatchUserHasJoinedBraveRewardsPrefPath(path) ||
-      DoesMatchUserHasOptedInToBraveNewsAdsPrefPath(path) ||
       DoesMatchUserHasOptedInToNewTabPageAdsPrefPath(path) ||
       DoesMatchUserHasOptedInToNotificationAdsPrefPath(path) ||
       DoesMatchUserHasOptedInToSearchResultAdsPrefPath(path)) {

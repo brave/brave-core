@@ -40,9 +40,7 @@ bool CatalogCreativeSetInfo::operator==(
          condition_matchers == other.condition_matchers &&
          segments == other.segments && oses == other.oses &&
          conversions == other.conversions &&
-         creative_notification_ads == other.creative_notification_ads &&
-         creative_inline_content_ads == other.creative_inline_content_ads &&
-         creative_promoted_content_ads == other.creative_promoted_content_ads;
+         creative_notification_ads == other.creative_notification_ads;
 }
 
 bool CatalogCreativeSetInfo::DoesSupportOS() const {

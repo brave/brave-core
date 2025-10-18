@@ -17,9 +17,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_daypart_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/creatives_info.h"
-#include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
-#include "brave/components/brave_ads/core/internal/creatives/promoted_content_ads/creative_promoted_content_ad_info.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-data-view.h"
 
 namespace brave_ads {
@@ -89,81 +87,6 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
 
           creative_ad.segment = base::ToLowerASCII(segment.name);
           creatives.notification_ads.push_back(creative_ad);
-          ++entries;
-        }
-      }
-
-      // Inline content ad creatives
-      for (const auto& creative : creative_set.creative_inline_content_ads) {
-        CreativeInlineContentAdInfo creative_ad;
-        creative_ad.creative_instance_id = creative.instance_id;
-        creative_ad.creative_set_id = creative_set.id;
-        creative_ad.campaign_id = campaign.id;
-        creative_ad.advertiser_id = campaign.advertiser_id;
-        creative_ad.metric_type = mojom::NewTabPageAdMetricType::kConfirmation;
-        creative_ad.start_at = campaign.start_at;
-        creative_ad.end_at = campaign.end_at;
-        creative_ad.daily_cap = campaign.daily_cap;
-        creative_ad.priority = campaign.priority;
-        creative_ad.pass_through_rate = campaign.pass_through_rate;
-        creative_ad.per_day = creative_set.per_day;
-        creative_ad.per_week = creative_set.per_week;
-        creative_ad.per_month = creative_set.per_month;
-        creative_ad.total_max = creative_set.total_max;
-        creative_ad.value = creative_set.value;
-        creative_ad.split_test_group = creative_set.split_test_group;
-        creative_ad.dayparts = dayparts;
-        creative_ad.geo_targets = geo_targets;
-        creative_ad.target_url = creative.payload.target_url;
-
-        creative_ad.title = creative.payload.title;
-        creative_ad.description = creative.payload.description;
-        creative_ad.image_url = creative.payload.image_url;
-        creative_ad.dimensions = creative.payload.dimensions;
-        creative_ad.cta_text = creative.payload.cta_text;
-
-        // Segments
-        for (const auto& segment : creative_set.segments) {
-          CHECK(!segment.name.empty());
-
-          creative_ad.segment = base::ToLowerASCII(segment.name);
-          creatives.inline_content_ads.push_back(creative_ad);
-          ++entries;
-        }
-      }
-
-      // Promoted content ad creatives
-      for (const auto& creative : creative_set.creative_promoted_content_ads) {
-        CreativePromotedContentAdInfo creative_ad;
-        creative_ad.creative_instance_id = creative.instance_id;
-        creative_ad.creative_set_id = creative_set.id;
-        creative_ad.campaign_id = campaign.id;
-        creative_ad.advertiser_id = campaign.advertiser_id;
-        creative_ad.metric_type = mojom::NewTabPageAdMetricType::kConfirmation;
-        creative_ad.start_at = campaign.start_at;
-        creative_ad.end_at = campaign.end_at;
-        creative_ad.daily_cap = campaign.daily_cap;
-        creative_ad.priority = campaign.priority;
-        creative_ad.pass_through_rate = campaign.pass_through_rate;
-        creative_ad.per_day = creative_set.per_day;
-        creative_ad.per_week = creative_set.per_week;
-        creative_ad.per_month = creative_set.per_month;
-        creative_ad.total_max = creative_set.total_max;
-        creative_ad.value = creative_set.value;
-        creative_ad.split_test_group = creative_set.split_test_group;
-        creative_ad.dayparts = dayparts;
-        creative_ad.geo_targets = geo_targets;
-        creative_ad.target_url = creative.payload.target_url;
-
-        creative_ad.title = creative.payload.title;
-        creative_ad.description = creative.payload.description;
-
-        // Segments
-        for (const auto& segment : creative_set.segments) {
-          CHECK(!segment.name.empty());
-
-          creative_ad.segment = base::ToLowerASCII(segment.name);
-          creatives.promoted_content_ads.push_back(creative_ad);
           ++entries;
         }
       }

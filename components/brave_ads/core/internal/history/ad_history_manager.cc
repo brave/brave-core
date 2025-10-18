@@ -10,7 +10,6 @@
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/internal/ad_units/promoted_content_ad/promoted_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_info.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/internal/history/ad_history_builder_util.h"
@@ -19,7 +18,6 @@
 #include "brave/components/brave_ads/core/internal/history/ad_history_value_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
-#include "brave/components/brave_ads/core/public/ad_units/inline_content_ad/inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
@@ -69,12 +67,6 @@ void AdHistoryManager::GetForUI(base::Time from_time,
 }
 
 void AdHistoryManager::Add(
-    const InlineContentAdInfo& ad,
-    mojom::ConfirmationType mojom_confirmation_type) const {
-  MaybeAdd(ad, mojom_confirmation_type, ad.title, ad.description);
-}
-
-void AdHistoryManager::Add(
     const NewTabPageAdInfo& ad,
     mojom::ConfirmationType mojom_confirmation_type) const {
   MaybeAdd(ad, mojom_confirmation_type, ad.company_name, ad.alt);
@@ -84,12 +76,6 @@ void AdHistoryManager::Add(
     const NotificationAdInfo& ad,
     mojom::ConfirmationType mojom_confirmation_type) const {
   MaybeAdd(ad, mojom_confirmation_type, ad.title, ad.body);
-}
-
-void AdHistoryManager::Add(
-    const PromotedContentAdInfo& ad,
-    mojom::ConfirmationType mojom_confirmation_type) const {
-  MaybeAdd(ad, mojom_confirmation_type, ad.title, ad.description);
 }
 
 void AdHistoryManager::Add(

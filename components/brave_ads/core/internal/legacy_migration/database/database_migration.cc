@@ -19,10 +19,8 @@
 #include "brave/components/brave_ads/core/internal/creatives/creative_ads_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/dayparts_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/geo_targets_database_table.h"
-#include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ads_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ads_database_table.h"
-#include "brave/components/brave_ads/core/internal/creatives/promoted_content_ads/creative_promoted_content_ads_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/segments_database_table.h"
 #include "brave/components/brave_ads/core/internal/history/ad_history_database_table.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/database/database_constants.h"
@@ -96,18 +94,9 @@ void MigrateToVersion(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
   creative_notification_ads_database_table.Migrate(mojom_db_transaction,
                                                    to_version);
 
-  table::CreativeInlineContentAds creative_inline_content_ads_database_table;
-  creative_inline_content_ads_database_table.Migrate(mojom_db_transaction,
-                                                     to_version);
-
   table::CreativeNewTabPageAds creative_new_tab_page_ads_database_table;
   creative_new_tab_page_ads_database_table.Migrate(mojom_db_transaction,
                                                    to_version);
-
-  table::CreativePromotedContentAds
-      creative_promoted_content_ads_database_table;
-  creative_promoted_content_ads_database_table.Migrate(mojom_db_transaction,
-                                                       to_version);
 
   table::CreativeAds creative_ads_database_table;
   creative_ads_database_table.Migrate(mojom_db_transaction, to_version);

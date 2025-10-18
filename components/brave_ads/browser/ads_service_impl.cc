@@ -42,7 +42,6 @@
 #include "brave/components/brave_ads/core/browser/service/ads_service_observer.h"
 #include "brave/components/brave_ads/core/browser/service/new_tab_page_ad_prefetcher.h"
 #include "brave/components/brave_ads/core/browser/service/virtual_pref_provider.h"
-#include "brave/components/brave_ads/core/public/ad_units/inline_content_ad/inline_content_ad_value_util.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_value_util.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_feature.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
@@ -52,7 +51,6 @@
 #include "brave/components/brave_ads/core/public/history/site_history.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_ads/core/public/user_attention/user_idle_detection/user_idle_detection_feature.h"
-#include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/content/rewards_service.h"
 #include "brave/components/brave_rewards/core/mojom/rewards.mojom-forward.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
@@ -300,11 +298,6 @@ bool AdsServiceImpl::UserHasJoinedBraveRewards() const {
   return prefs_->GetBoolean(brave_rewards::prefs::kEnabled);
 }
 
-bool AdsServiceImpl::UserHasOptedInToBraveNewsAds() const {
-  return prefs_->GetBoolean(brave_news::prefs::kBraveNewsOptedIn) &&
-         prefs_->GetBoolean(brave_news::prefs::kNewTabPageShowToday);
-}
-
 bool AdsServiceImpl::UserHasOptedInToNewTabPageAds() const {
   return prefs_->GetBoolean(
              ntp_background_images::prefs::kNewTabPageShowBackgroundImage) &&
@@ -362,9 +355,8 @@ bool AdsServiceImpl::CanStartBatAdsService() const {
   }
 
   // The user has not joined Brave Rewards, so we only start the service if the
-  // user has opted in to Brave News, new tab takeover, or search result ads.
-  return UserHasOptedInToBraveNewsAds() || UserHasOptedInToNewTabPageAds() ||
-         UserHasOptedInToSearchResultAds();
+  // user has opted in to new tab takeover, or search result ads.
+  return UserHasOptedInToNewTabPageAds() || UserHasOptedInToSearchResultAds();
 }
 
 void AdsServiceImpl::MaybeStartBatAdsService() {
@@ -717,7 +709,6 @@ void AdsServiceImpl::InitializePrefChangeRegistrar() {
 
   InitializeBraveRewardsPrefChangeRegistrar();
   InitializeSubdivisionTargetingPrefChangeRegistrar();
-  InitializeBraveNewsAdsPrefChangeRegistrar();
   InitializeNewTabPageAdsPrefChangeRegistrar();
   InitializeNotificationAdsPrefChangeRegistrar();
   InitializeSearchResultAdsPrefChangeRegistrar();
@@ -743,20 +734,6 @@ void AdsServiceImpl::InitializeSubdivisionTargetingPrefChangeRegistrar() {
       base::BindRepeating(&AdsServiceImpl::NotifyPrefChanged,
                           base::Unretained(this),
                           prefs::kSubdivisionTargetingAutoDetectedSubdivision));
-}
-
-void AdsServiceImpl::InitializeBraveNewsAdsPrefChangeRegistrar() {
-  pref_change_registrar_.Add(
-      brave_news::prefs::kBraveNewsOptedIn,
-      base::BindRepeating(&AdsServiceImpl::OnOptedInToAdsPrefChanged,
-                          base::Unretained(this),
-                          brave_news::prefs::kBraveNewsOptedIn));
-
-  pref_change_registrar_.Add(
-      brave_news::prefs::kNewTabPageShowToday,
-      base::BindRepeating(&AdsServiceImpl::OnOptedInToAdsPrefChanged,
-                          base::Unretained(this),
-                          brave_news::prefs::kNewTabPageShowToday));
 }
 
 void AdsServiceImpl::InitializeNewTabPageAdsPrefChangeRegistrar() {
@@ -1312,49 +1289,6 @@ void AdsServiceImpl::GetStatementOfAccounts(
                                                   /*statement*/ nullptr));
 }
 
-void AdsServiceImpl::MaybeServeInlineContentAd(
-    const std::string& dimensions,
-    MaybeServeInlineContentAdCallback callback) {
-  if (!bat_ads_associated_remote_.is_bound()) {
-    return std::move(callback).Run(dimensions,
-                                   /*inline_content_ad*/ std::nullopt);
-  }
-
-  auto callback_wrapper = base::BindOnce(
-      [](MaybeServeInlineContentAdCallback callback,
-         const std::string& dimensions, std::optional<base::Value::Dict> dict) {
-        if (!dict) {
-          return std::move(callback).Run(dimensions,
-                                         /*inline_content_ad*/ std::nullopt);
-        }
-
-        std::move(callback).Run(dimensions, InlineContentAdFromValue(*dict));
-      },
-      std::move(callback));
-
-  bat_ads_associated_remote_->MaybeServeInlineContentAd(
-      dimensions, mojo::WrapCallbackWithDefaultInvokeIfNotRun(
-                      std::move(callback_wrapper), dimensions,
-                      /*inline_content_ad*/ std::nullopt));
-}
-
-void AdsServiceImpl::TriggerInlineContentAdEvent(
-    const std::string& placement_id,
-    const std::string& creative_instance_id,
-    mojom::InlineContentAdEventType mojom_ad_event_type,
-    TriggerAdEventCallback callback) {
-  CHECK(mojom::IsKnownEnumValue(mojom_ad_event_type));
-
-  if (!bat_ads_associated_remote_.is_bound()) {
-    return std::move(callback).Run(/*success*/ false);
-  }
-
-  bat_ads_associated_remote_->TriggerInlineContentAdEvent(
-      placement_id, creative_instance_id, mojom_ad_event_type,
-      mojo::WrapCallbackWithDefaultInvokeIfNotRun(std::move(callback),
-                                                  /*success*/ false));
-}
-
 void AdsServiceImpl::PrefetchNewTabPageAd() {
   new_tab_page_ad_prefetcher_->Prefetch();
 }
@@ -1442,22 +1376,6 @@ void AdsServiceImpl::TriggerNewTabPageAdEvent(
   bat_ads_associated_remote_->TriggerNewTabPageAdEvent(
       placement_id, creative_instance_id, mojom_ad_metric_type,
       mojom_ad_event_type, std::move(callback));
-}
-
-void AdsServiceImpl::TriggerPromotedContentAdEvent(
-    const std::string& placement_id,
-    const std::string& creative_instance_id,
-    mojom::PromotedContentAdEventType mojom_ad_event_type,
-    TriggerAdEventCallback callback) {
-  CHECK(mojom::IsKnownEnumValue(mojom_ad_event_type));
-
-  if (!bat_ads_associated_remote_.is_bound()) {
-    return std::move(callback).Run(/*success*/ false);
-  }
-
-  bat_ads_associated_remote_->TriggerPromotedContentAdEvent(
-      placement_id, creative_instance_id, mojom_ad_event_type,
-      std::move(callback));
 }
 
 void AdsServiceImpl::MaybeGetSearchResultAd(

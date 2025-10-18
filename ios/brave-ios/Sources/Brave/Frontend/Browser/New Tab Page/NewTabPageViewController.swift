@@ -863,24 +863,6 @@ class NewTabPageViewController: UIViewController {
         let alert = FeedActionAlertView.feedDisabledAlertView(for: context.item)
         alert.present(on: self)
       }
-    case .inlineContentAdAction(.opened(let inNewTab, let switchingToPrivateMode), let ad):
-      guard let url = ad.targetURL.asURL else { return }
-      if !switchingToPrivateMode {
-        rewards.ads.triggerInlineContentAdEvent(
-          ad.placementID,
-          creativeInstanceId: ad.creativeInstanceID,
-          eventType: .clicked,
-          completion: { _ in }
-        )
-      }
-      delegate?.navigateToInput(
-        url.absoluteString,
-        inNewTab: inNewTab,
-        switchingToPrivateMode: switchingToPrivateMode
-      )
-    case .inlineContentAdAction(.toggledSource, _):
-      // Inline content ads have no source
-      break
     case .rateCardAction(.rateBrave):
       Preferences.Review.newsCardShownDate.value = Date()
       guard

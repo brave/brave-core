@@ -152,14 +152,6 @@ interface BatAds {
 
   GetStatementOfAccounts() => (brave_ads.mojom.StatementInfo? mojom_statement);
 
-  MaybeServeInlineContentAd(string dimensions) =>
-      (string dimensions, mojo_base.mojom.DictionaryValue? value);
-  TriggerInlineContentAdEvent(
-      string placement_id,
-      string creative_instance_id,
-      brave_ads.mojom.InlineContentAdEventType mojom_ad_event_type) =>
-          (bool success);
-
   ParseAndSaveNewTabPageAds(mojo_base.mojom.DictionaryValue value) => (bool success);
   MaybeServeNewTabPageAd() => (mojo_base.mojom.DictionaryValue? value);
   TriggerNewTabPageAdEvent(
@@ -174,12 +166,6 @@ interface BatAds {
   TriggerNotificationAdEvent(
       string placement_id,
       brave_ads.mojom.NotificationAdEventType mojom_ad_event_type) =>
-          (bool success);
-
-  TriggerPromotedContentAdEvent(
-      string placement_id,
-      string creative_instance_id,
-      brave_ads.mojom.PromotedContentAdEventType mojom_ad_event_type) =>
           (bool success);
 
   MaybeGetSearchResultAd(string placement_id) =>

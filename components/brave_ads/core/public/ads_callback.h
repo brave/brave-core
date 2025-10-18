@@ -13,7 +13,6 @@
 #include "base/types/optional_ref.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
-#include "brave/components/brave_ads/core/public/ad_units/inline_content_ad/inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
 #include "brave/components/brave_ads/core/public/history/ad_history_item_info.h"
@@ -35,9 +34,6 @@ using ParseAndSaveNewTabPageAdsCallback =
     base::OnceCallback<void(bool success)>;
 using MaybeServeNewTabPageAdCallback =
     base::OnceCallback<void(base::optional_ref<const NewTabPageAdInfo> ad)>;
-using MaybeServeInlineContentAdCallback =
-    base::OnceCallback<void(const std::string& dimensions,
-                            base::optional_ref<const InlineContentAdInfo> ad)>;
 
 using MaybeGetNotificationAdCallback =
     base::OnceCallback<void(base::optional_ref<const NotificationAdInfo> ad)>;

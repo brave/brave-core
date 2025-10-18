@@ -44,7 +44,7 @@ Included as part of the "payment token" payload. See [Brave Rewards user payment
 | key  | example  | description  |
 |---|---|---|
 | platform  | {"platform":"macos"}  | Operating system.  |
-| summary  | {"totals":[{"ad_format":"ad_notification","click":1,"view":2},{"ad_format":"inline_content_ad","view":1}]}  | Summary of payment tokens for each creative.  |
+| summary  | {"totals":[{"ad_format":"ad_notification","click":1,"view":2},{"ad_format":"new_tab_page_ad","view":1}]}  | Summary of payment tokens for each creative.  |
 
 Please add to it!
 

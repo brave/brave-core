@@ -19,8 +19,6 @@ namespace {
 constexpr std::string_view kUndefinedType;
 constexpr std::string_view kNotificationAdType = "ad_notification";
 constexpr std::string_view kNewTabPageAdType = "new_tab_page_ad";
-constexpr std::string_view kPromotedContentAdType = "promoted_content_ad";
-constexpr std::string_view kInlineContentAdType = "inline_content_ad";
 constexpr std::string_view kSearchResultAdType = "search_result_ad";
 
 constexpr auto kStringToMojomMap =
@@ -28,8 +26,6 @@ constexpr auto kStringToMojomMap =
         {{kUndefinedType, mojom::AdType::kUndefined},
          {kNotificationAdType, mojom::AdType::kNotificationAd},
          {kNewTabPageAdType, mojom::AdType::kNewTabPageAd},
-         {kPromotedContentAdType, mojom::AdType::kPromotedContentAd},
-         {kInlineContentAdType, mojom::AdType::kInlineContentAd},
          {kSearchResultAdType, mojom::AdType::kSearchResultAd}});
 
 constexpr auto kMojomToStringMap =
@@ -37,8 +33,6 @@ constexpr auto kMojomToStringMap =
         {{mojom::AdType::kUndefined, kUndefinedType},
          {mojom::AdType::kNotificationAd, kNotificationAdType},
          {mojom::AdType::kNewTabPageAd, kNewTabPageAdType},
-         {mojom::AdType::kPromotedContentAd, kPromotedContentAdType},
-         {mojom::AdType::kInlineContentAd, kInlineContentAdType},
          {mojom::AdType::kSearchResultAd, kSearchResultAdType}});
 
 }  // namespace

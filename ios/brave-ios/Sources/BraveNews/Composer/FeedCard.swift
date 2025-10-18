@@ -28,8 +28,6 @@ public enum FeedCard: Hashable {
   case deals(_ feeds: [FeedItem], title: String?)
   /// A brave partner item
   case partner(_ feed: FeedItem)
-  /// A brave display ad card
-  case ad(InlineContentAd)
   /// A single item displayed prompinently with an image
   case headline(_ feed: FeedItem)
   /// A pair of `headline` items that should be displayed side by side horizontally with equal sizes
