@@ -9,7 +9,6 @@
 
 #include "base/containers/contains.h"
 #include "base/test/run_until.h"
-#include "brave/browser/brave_browser_features.h"
 #include "brave/browser/ui/bookmark/bookmark_helper.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/tabs/brave_tab_layout_constants.h"
@@ -22,6 +21,7 @@
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
 #include "brave/browser/ui/views/split_view/split_view_layout_manager.h"
 #include "brave/browser/ui/views/split_view/split_view_separator.h"
+#include "brave/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/renderer_context_menu/render_view_context_menu.h"
 #include "chrome/browser/ui/browser.h"
@@ -88,12 +88,13 @@ IN_PROC_BROWSER_TEST_F(SplitViewDisabledBrowserTest,
 
 class SideBySideEnabledBrowserTest : public InProcessBrowserTest {
  public:
-  SideBySideEnabledBrowserTest() {
-    scoped_features_.InitWithFeatures(
-        /*enabled_features*/ {},
-        /*disabled_features*/ {features::kBraveWebViewRoundedCorners});
-  }
+  SideBySideEnabledBrowserTest() = default;
   ~SideBySideEnabledBrowserTest() override = default;
+
+  void SetUpOnMainThread() override {
+    InProcessBrowserTest::SetUpOnMainThread();
+    browser()->profile()->GetPrefs()->SetBoolean(kWebViewRoundedCorners, false);
+  }
 
   TabStrip* tab_strip() {
     return BrowserView::GetBrowserViewForBrowser(browser())->tabstrip();
@@ -344,13 +345,13 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest, SelectTabTest) {
 
 class SideBySideWithRoundedCornersTest : public SideBySideEnabledBrowserTest {
  public:
-  SideBySideWithRoundedCornersTest() {
-    // Reset to have different features config with base test class.
-    scoped_features_.Reset();
-    scoped_features_.InitWithFeatures(
-        /*enabled_features*/ {features::kBraveWebViewRoundedCorners}, {});
-  }
+  SideBySideWithRoundedCornersTest() = default;
   ~SideBySideWithRoundedCornersTest() override = default;
+
+  void SetUpOnMainThread() override {
+    InProcessBrowserTest::SetUpOnMainThread();
+    browser()->profile()->GetPrefs()->SetBoolean(kWebViewRoundedCorners, true);
+  }
 };
 
 IN_PROC_BROWSER_TEST_F(SideBySideWithRoundedCornersTest, ContentsShadowTest) {

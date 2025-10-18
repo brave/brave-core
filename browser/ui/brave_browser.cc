@@ -25,6 +25,7 @@
 #include "brave/browser/ui/tabs/public/constants.h"
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "brave/common/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/lifetime/browser_close_manager.h"
 #include "chrome/browser/profiles/profile.h"
@@ -63,11 +64,8 @@ void BraveBrowser::SuppressBrowserWindowClosingDialogForTesting(bool suppress) {
 }
 
 // static
-bool BraveBrowser::IsBraveWebViewRoundedCornersFeatureEnabled(
-    Browser* browser) {
-  // If we have prefs for toggling rounded corners in runtime, check that prefs
-  // here.
-  return base::FeatureList::IsEnabled(features::kBraveWebViewRoundedCorners) &&
+bool BraveBrowser::IsBraveWebViewRoundedCornersEnabled(Browser* browser) {
+  return browser->profile()->GetPrefs()->GetBoolean(kWebViewRoundedCorners) &&
          browser->is_type_normal();
 }
 
@@ -78,7 +76,7 @@ bool BraveBrowser::ShouldUseBraveWebViewRoundedCornersForContents(
     return false;
   }
 
-  if (base::FeatureList::IsEnabled(features::kBraveWebViewRoundedCorners)) {
+  if (browser->profile()->GetPrefs()->GetBoolean(kWebViewRoundedCorners)) {
     return true;
   }
 

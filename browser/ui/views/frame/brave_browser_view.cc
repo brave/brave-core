@@ -47,6 +47,7 @@
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/browser/ui/views/toolbar/wallet_button.h"
 #include "brave/browser/ui/views/window_closing_confirm_dialog_view.h"
+#include "brave/common/pref_names.h"
 #include "brave/components/commands/common/features.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/sidebar/common/features.h"
@@ -264,6 +265,11 @@ BraveBrowserView::BraveBrowserView(Browser* browser) : BrowserView(browser) {
   // Show the correct value in settings on initial start
   UpdateSearchTabsButtonState();
 
+  pref_change_registrar_.Add(
+      kWebViewRoundedCorners,
+      base::BindRepeating(&BraveBrowserView::OnPreferenceChanged,
+                          base::Unretained(this)));
+
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   pref_change_registrar_.Add(
       brave_vpn::prefs::kBraveVPNShowButton,
@@ -283,7 +289,7 @@ BraveBrowserView::BraveBrowserView(Browser* browser) : BrowserView(browser) {
             std::move(original_side_panel)));
     contents_height_side_panel_ = sidebar_container_view_->side_panel();
 
-    if (BraveBrowser::IsBraveWebViewRoundedCornersFeatureEnabled(browser_)) {
+    if (BraveBrowser::IsBraveWebViewRoundedCornersEnabled(browser_)) {
       sidebar_separator_view_ =
           main_container_->AddChildView(std::make_unique<SidebarSeparator>());
     }
@@ -325,6 +331,11 @@ BraveBrowserView::BraveBrowserView(Browser* browser) : BrowserView(browser) {
 void BraveBrowserView::OnPreferenceChanged(const std::string& pref_name) {
   if (pref_name == kTabsSearchShow) {
     UpdateSearchTabsButtonState();
+    return;
+  }
+
+  if (pref_name == kWebViewRoundedCorners) {
+    UpdateRoundedCornersUI();
     return;
   }
 
@@ -845,8 +856,8 @@ void BraveBrowserView::GetAccessiblePanes(std::vector<views::View*>* panes) {
 }
 
 void BraveBrowserView::UpdateContentsShadowVisibility() {
-  // Don't need contents shadow always if rounded corners feature is off.
-  if (!BraveBrowser::IsBraveWebViewRoundedCornersFeatureEnabled(browser())) {
+  // Don't need contents shadow always if rounded corners setting is off.
+  if (!BraveBrowser::IsBraveWebViewRoundedCornersEnabled(browser())) {
     return;
   }
 

@@ -6,6 +6,7 @@
 brave_chrome_common_sources = [
   "//brave/common/brave_channel_info.cc",
   "//brave/common/brave_channel_info.h",
+  "//brave/common/pref_names.h",
   "//brave/common/resource_bundle_helper.cc",
   "//brave/common/resource_bundle_helper.h",
 ]

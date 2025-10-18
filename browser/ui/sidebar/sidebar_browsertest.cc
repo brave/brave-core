@@ -17,7 +17,6 @@
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/app/brave_command_ids.h"
-#include "brave/browser/brave_browser_features.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
@@ -39,6 +38,7 @@
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/browser/ui/views/toolbar/side_panel_button.h"
+#include "brave/common/pref_names.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/constants/brave_switches.h"
 #include "brave/components/playlist/core/common/features.h"
@@ -617,12 +617,17 @@ class SidebarBrowserWithSplitViewTest
     }
 
     scoped_features_.InitWithFeatureStates(
-        {{::features::kBraveWebViewRoundedCorners, std::get<0>(GetParam())},
-         {tabs::features::kBraveSplitView, std::get<1>(GetParam())},
+        {{tabs::features::kBraveSplitView, std::get<1>(GetParam())},
          {::features::kSideBySide, std::get<2>(GetParam())}});
   }
 
   ~SidebarBrowserWithSplitViewTest() override = default;
+
+  void SetUpOnMainThread() override {
+    SidebarBrowserTest::SetUpOnMainThread();
+    browser()->profile()->GetPrefs()->SetBoolean(kWebViewRoundedCorners,
+                                                 std::get<0>(GetParam()));
+  }
 
   void NewSplitTab() {
     if (IsSideBySideEnabled()) {
@@ -1624,9 +1629,13 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidebarRightSideTest) {
   prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, false);
   EXPECT_TRUE(IsSidebarUIOnLeft());
 
+  int expected_sidebar_x = vertical_tabs_container->GetBoundsInScreen().right();
+  if (BraveContentsViewUtil::GetRoundedCornersWebViewMargin(browser())) {
+    expected_sidebar_x += 1;
+  }
+
   // Check if vertical tabs is located first and sidebar is following it.
-  EXPECT_EQ(vertical_tabs_container->GetBoundsInScreen().right(),
-            sidebar_container->GetBoundsInScreen().x());
+  EXPECT_EQ(sidebar_container->GetBoundsInScreen().x(), expected_sidebar_x);
 
   // Check sidebar position option is synced between normal and private window.
   auto* private_browser = CreateIncognitoBrowser(browser()->profile());
