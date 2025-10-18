@@ -28,8 +28,6 @@
 
 class PrefService;
 
-class GURL;
-
 namespace brave_ads {
 class AdsService;
 }  // namespace brave_ads
@@ -40,7 +38,6 @@ class WeeklyStorage;
 namespace ntp_background_images {
 
 class BraveNTPCustomBackgroundService;
-class NTPP3AHelper;
 
 struct NTPBackgroundImagesData;
 struct NTPSponsoredImagesData;
@@ -57,7 +54,6 @@ class ViewCounterService : public KeyedService,
                      brave_ads::AdsService* ads_service,
                      PrefService* prefs,
                      PrefService* local_state,
-                     std::unique_ptr<NTPP3AHelper> ntp_p3a_helper,
                      bool is_supported_locale);
   ~ViewCounterService() override;
 
@@ -94,10 +90,6 @@ class ViewCounterService : public KeyedService,
   std::string GetSuperReferralCode() const;
 
   NTPSponsoredImagesData* GetSponsoredImagesData() const;
-
-  void OnTabURLChanged(const GURL& url);
-
-  NTPP3AHelper* GetP3AHelper() const;
 
  private:
   friend class ViewCounterServiceTest;
@@ -207,7 +199,6 @@ class ViewCounterService : public KeyedService,
   std::unique_ptr<WeeklyStorage> new_tab_count_state_;
   std::unique_ptr<WeeklyStorage> branded_new_tab_count_state_;
 
-  std::unique_ptr<NTPP3AHelper> ntp_p3a_helper_;
   base::ScopedObservation<NTPBackgroundImagesService,
                           NTPBackgroundImagesService::Observer>
       ntp_background_images_service_observation_{this};
