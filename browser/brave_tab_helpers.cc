@@ -107,10 +107,6 @@
 namespace brave {
 
 void AttachTabHelpers(content::WebContents* web_contents) {
-  // If your TabHelper is related to privacy consider whether it belongs in this
-  // method, so it can also be attached to background WebContents.
-  AttachPrivacySensitiveTabHelpers(web_contents);
-
 #if BUILDFLAG(IS_ANDROID)
   YouTubeScriptInjectorTabHelper::CreateForWebContents(web_contents);
 #else
@@ -221,15 +217,6 @@ void AttachTabHelpers(content::WebContents* web_contents) {
     }
   }
 #endif  // BUILDFLAG(ENABLE_PLAYLIST)
-}
-
-void AttachPrivacySensitiveTabHelpers(content::WebContents* web_contents) {
-  brave_shields::BraveShieldsWebContentsObserver::CreateForWebContents(
-      web_contents);
-  if (base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage)) {
-    ephemeral_storage::EphemeralStorageTabHelper::CreateForWebContents(
-        web_contents);
-  }
 }
 
 }  // namespace brave
