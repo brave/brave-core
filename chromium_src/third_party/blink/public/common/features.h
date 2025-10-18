@@ -25,6 +25,13 @@ BLINK_COMMON_EXPORT BASE_DECLARE_FEATURE(kRestrictEventSourcePool);
 BLINK_COMMON_EXPORT BASE_DECLARE_FEATURE(kMiddleButtonClickAutoscroll);
 #endif  // BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
 
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC)
+// A feature flag that allow users to open context menu even if
+// event.preventDefault() is called on contextmenu event when Shift key is
+// pressed.
+BLINK_COMMON_EXPORT BASE_DECLARE_FEATURE(kForceContextMenuOnShiftRightClick);
+#endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC)
+
 // Chromium used this function to control Prerender2 feature, but then the
 // feature was permanently enabled and the function was removed. We still want
 // to keep the Prerender2 functionality disabled, so putting back the function
