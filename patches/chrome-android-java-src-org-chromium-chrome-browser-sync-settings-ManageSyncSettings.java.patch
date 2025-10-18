@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
-index a0b7d52a64ec7688d22cf6f40f019992c32b2c0d..d9631184f5266a7b9d38631fb60d5446b2a0eb0b 100644
+index cf006ed1838c674a573f8782ebc69cc155f76b48..4dbe507c6b21e47f7d48eb383c3edbd6e8a96499 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
 @@ -68,7 +68,7 @@ import org.chromium.chrome.browser.ui.signin.SignOutCoordinator;
@@ -11,7 +11,7 @@ index a0b7d52a64ec7688d22cf6f40f019992c32b2c0d..d9631184f5266a7b9d38631fb60d5446
  import org.chromium.components.browser_ui.settings.ChromeBasePreference;
  import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
  import org.chromium.components.browser_ui.settings.SettingsUtils;
-@@ -711,6 +711,7 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
+@@ -704,6 +704,7 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
       */
      private void updateSyncPreferences() {
          String signedInAccountName =

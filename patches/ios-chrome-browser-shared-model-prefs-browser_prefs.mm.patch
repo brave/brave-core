@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-index dde588d8453501d7b05794fd7b12a8f446768a13..9273409b8094a3a7351192118cd73e2747a0f43c 100644
+index 16fc0daca14b7b13176bcf7419e4586ff3bc802b..0b8569740ecf5540d506769961f32aa5ddfa0ab6 100644
 --- a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-@@ -675,6 +675,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+@@ -679,6 +679,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
  
    // Deprecated 09/2025.
    registry->RegisterBooleanPref(prefs::kBottomOmnibox, false);
@@ -10,7 +10,7 @@ index dde588d8453501d7b05794fd7b12a8f446768a13..9273409b8094a3a7351192118cd73e27
  }
  
  void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -1135,6 +1136,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+@@ -1138,6 +1139,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
    // instead.
    registry->RegisterBooleanPref(prefs::kHomeCustomizationMostVisitedEnabled,
                                  true);

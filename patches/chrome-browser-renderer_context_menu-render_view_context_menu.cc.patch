@@ -15,6 +15,6 @@ index 2db8b2739177ac246dedb06f4c3694f47de5f726..ebbe20392f2418165b8d67a47017d54c
      return;
    }
 +  BRAVE_APPEND_SEARCH_PROVIDER
-
+ 
    std::u16string printable_selection_text = PrintableSelectionText();
    EscapeAmpersands(&printable_selection_text);

@@ -1,8 +1,8 @@
 diff --git a/components/sync/base/BUILD.gn b/components/sync/base/BUILD.gn
-index 5b22bad636de09548b51bb52ab0bef6280577f98..8137c8ba4a97bd2420ae5d52c50c876254b01866 100644
+index 73698cfd2c6385959c080680824d72e25dc8584a..7821b5fe8d56ef8510614fba58cbda01adbee1d1 100644
 --- a/components/sync/base/BUILD.gn
 +++ b/components/sync/base/BUILD.gn
-@@ -87,6 +87,7 @@ static_library("base") {
+@@ -86,6 +86,7 @@ static_library("base") {
    ]
  
    defines = [ "SYNC_USER_AGENT_PRODUCT=$sync_user_agent_product" ]
