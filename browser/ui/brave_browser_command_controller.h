@@ -35,8 +35,9 @@ class WebContents;
 // This namespace is needed for a chromium_src override
 namespace chrome {
 
-class BraveBrowserCommandController : public chrome::BrowserCommandController,
+class BraveBrowserCommandController : public chrome::BrowserCommandController
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
+    ,
                                       public brave_vpn::BraveVPNServiceObserver
 #endif
 {
