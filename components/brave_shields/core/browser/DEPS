@@ -1,6 +1,7 @@
 include_rules = [
   "+components/component_updater",
   "+components/content_settings/core",
+  "+components/keyed_service/core/keyed_service.h",
   "+components/prefs",
   "+components/value_store",
   "+components/sync_preferences",

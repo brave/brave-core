@@ -5,8 +5,10 @@
 
 source_set("brave_shields") {
   sources = [
-    "brave_shields_settings_factory.h",
-    "brave_shields_settings_factory.mm",
+    "brave_shields_settings_service_factory.h",
+    "brave_shields_settings_service_factory.mm",
+    "brave_shields_settings_service_factory_bridge.h",
+    "brave_shields_settings_service_factory_bridge.mm",
   ]
 
   deps = [
@@ -14,9 +16,15 @@ source_set("brave_shields") {
     "//brave/components/brave_shields/core/browser",
     "//brave/components/brave_shields/ios/browser",
     "//brave/ios/browser/api/profile",
+    "//brave/ios/browser/keyed_service",
+    "//components/keyed_service/core",
+    "//components/user_prefs",
     "//ios/chrome/browser/content_settings/model",
     "//ios/chrome/browser/shared/model/application_context",
     "//ios/chrome/browser/shared/model/profile",
+    "//ios/chrome/browser/shared/model/profile:profile_keyed_service_factory",
+    "//ios/web/public",
+    "//url",
   ]
 
   frameworks = [ "Foundation.framework" ]
