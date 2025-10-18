@@ -28,6 +28,7 @@ brave_grit("static_resources") {
     "//brave/components/ai_chat/resources",
     "//brave/components/brave_rewards/resources",
     "//brave/components/brave_shields/resources:bundle_js",
+    "//brave/components/brave_wallet_ui/page:brave_wallet_page_generated",
     "//brave/components/decentralized_dns/content/resources:bundle_js",
     "//brave/components/request_otr/resources:bundle_js",
   ]
@@ -58,6 +59,7 @@ repack("resources") {
     "//brave/components/ai_rewriter/common/buildflags",
     "//brave/components/brave_account/resources",
     "//brave/components/brave_ads/browser/resources:generated_resources",
+    "//brave/components/brave_wallet_ui:resources",
     "//brave/components/cosmetic_filters/resources/data:generated_resources",
     "//brave/components/skus/browser/resources:generated_resources",
   ]
@@ -66,6 +68,7 @@ repack("resources") {
     "$root_gen_dir/brave/components/ai_chat/resources/custom_site_distiller_scripts/custom_site_distiller_scripts_generated.pak",
     "$root_gen_dir/brave/components/brave_account/resources/brave_account_resources.pak",
     "$root_gen_dir/brave/components/brave_ads/browser/resources/ads_internals_generated.pak",
+    "$root_gen_dir/brave/components/brave_wallet/resources/brave_wallet.pak",
     "$root_gen_dir/brave/components/cosmetic_filters/resources/cosmetic_filters_generated.pak",
     "$root_gen_dir/brave/components/skus/browser/resources/skus_internals_generated.pak",
     "$root_gen_dir/components/brave_components_static.pak",
@@ -119,13 +122,6 @@ repack("resources") {
     deps +=
         [ "//brave/components/ai_rewriter/resources/page:generated_resources" ]
     sources += [ "$root_gen_dir/brave/components/ai_rewriter/resources/page/ai_rewriter_ui_generated.pak" ]
-  }
-
-  if (!is_ios) {
-    deps += [ "//brave/components/brave_wallet_ui:resources" ]
-    sources += [
-      "$root_gen_dir/brave/components/brave_wallet/resources/brave_wallet.pak",
-    ]
   }
 
   deps += [ "//brave/components/brave_wallet/resources:ethereum_provider_generated_resources" ]
