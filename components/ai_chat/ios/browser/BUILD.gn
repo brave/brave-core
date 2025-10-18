@@ -9,6 +9,7 @@ source_set("browser") {
     "ai_chat.h",
     "ai_chat.mm",
     "ai_chat_delegate.h",
+    "ai_chat_ui_handler_bridge.h",
     "associated_content_driver_ios.h",
     "associated_content_driver_ios.mm",
     "conversation_client.h",
