@@ -71,7 +71,7 @@ public class BraveSkusManager {
           Preferences.VPN.skusCredential.value = credential
           BraveVPN.setCustomVPNCredential(vpnCredential)
         }
-      case .leo:
+      case .leo, .origin:
         break
       case .unknown:
         Logger.module.debug("[SkusManager] - Unknown Credentials")
@@ -122,6 +122,17 @@ public class BraveSkusManager {
             _ = await prepareCredentialsPresentation(for: domain, path: "*")
 
             Preferences.AIChat.subscriptionExpirationDate.value = credentialSummary.expiresAt
+          }
+        case .origin:
+          if Preferences.BraveOrigin.subscriptionOrderId.value == nil {
+            Preferences.BraveOrigin.subscriptionOrderId.value = credentialSummary.orderId
+          }
+
+          if Preferences.BraveOrigin.subscriptionOrderId.value != nil {
+            Logger.module.debug("[SkusManager] - Preparing Origin Credentials")
+            _ = await prepareCredentialsPresentation(for: domain, path: "*")
+
+            Preferences.BraveOrigin.subscriptionExpirationDate.value = credentialSummary.expiresAt
           }
         case .unknown:
           Logger.module.debug("[SkusManager] - Unknown Credentials")
@@ -181,11 +192,13 @@ private enum CredentialType {
   case unknown
   case vpn
   case leo
+  case origin
 
   static func from(domain: String) -> CredentialType {
     switch domain {
     case "vpn.brave.software", "vpn.bravesoftware.com", "vpn.brave.com": return .vpn
     case "leo.brave.software", "leo.bravesoftware.com", "leo.brave.com": return .leo
+    case "origin.brave.software", "origin.bravesoftware.com", "origin.brave.com": return .origin
     default:
       return .unknown
     }
