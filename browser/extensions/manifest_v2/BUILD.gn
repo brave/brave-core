@@ -13,8 +13,6 @@ source_set("manifest_v2") {
     "brave_extensions_manifest_v2_installer.h",
     "brave_extensions_manifest_v2_migrator.cc",
     "brave_extensions_manifest_v2_migrator.h",
-    "brave_hosted_extensions.cc",
-    "brave_hosted_extensions.h",
     "features.cc",
     "features.h",
   ]
