@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_P3A_COMPONENT_INSTALLER_H_
-#define BRAVE_COMPONENTS_P3A_COMPONENT_INSTALLER_H_
+#ifndef BRAVE_COMPONENTS_P3A_MANAGED_COMPONENT_INSTALLER_H_
+#define BRAVE_COMPONENTS_P3A_MANAGED_COMPONENT_INSTALLER_H_
 
 namespace component_updater {
 class ComponentUpdateService;
@@ -20,4 +20,4 @@ void MaybeToggleP3AComponent(component_updater::ComponentUpdateService* cus,
 
 }  // namespace p3a
 
-#endif  // BRAVE_COMPONENTS_P3A_COMPONENT_INSTALLER_H_
+#endif  // BRAVE_COMPONENTS_P3A_MANAGED_COMPONENT_INSTALLER_H_

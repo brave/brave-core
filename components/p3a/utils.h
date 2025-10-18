@@ -29,6 +29,12 @@ void RecordValueIfGreater(Enumeration value,
   }
 }
 
+bool ParseValueList(const base::Value* value, base::Value::List* field);
+
+bool ParseValue(const base::Value* value, base::Value* field);
+
+bool ParseDict(const base::Value* value, base::Value::Dict* field);
+
 }  // namespace p3a
 
 #endif  // BRAVE_COMPONENTS_P3A_UTILS_H_
