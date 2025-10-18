@@ -11,7 +11,7 @@
 #include <string>
 #include <string_view>
 
-#include "base/json/json_writer.h"
+#include "base/values.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "url/gurl.h"
 
@@ -29,15 +29,17 @@ namespace detail {
 
 // Concept that checks whether `T` defines a non-static, accessible member
 // function `ToValue()` such that:
-//   - `t.ToValue()` can be passed to `base::WriteJson()`
+//   - `t.ToValue()` is a valid expression,
+//      and that call yields a `base::Value::Dict`
 //   - `&T::ToValue` is a valid member function pointer (ensures it's a
 //      non-static member function)
 //
 // In short: models any type with a proper non-static `ToValue()` function
-// whose result is suitable for JSON serialization via `base::WriteJson()`.
+// whose result is a `base::Value::Dict`.
 template <typename T>
-concept ToValue = requires(T t) { base::WriteJson(t.ToValue()); } &&
-                  std::is_member_function_pointer_v<decltype(&T::ToValue)>;
+concept ToValue = requires(T t) {
+  { t.ToValue() } -> std::same_as<base::Value::Dict>;
+} && std::is_member_function_pointer_v<decltype(&T::ToValue)>;
 
 // Concept that checks whether `T` defines a static, accessible member
 // function `FromValue()` such that:
