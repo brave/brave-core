@@ -4,5 +4,5 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 declare_args() {
-  is_brave_origin_branded = false
+  is_brave_origin_branded = true
 }
