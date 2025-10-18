@@ -67,7 +67,7 @@
 -NativeChromeColorMixerWinBrowserTest.NativeThemeForWebWithAccentColor
 
 # These tests fail because in Release we set GOOGLE_CHROME_BRANDING in
-# chrome/browser/extensions/install_verifier.cc (on Win and Mac), which causes
+# extensions/browser/install_verifier.cc (on Win and Mac), which causes
 # InstallVerifier::ShouldEnforce to return true and leads to the test failing
 # to install extension due to it not being from webstore. Unclear why this is
 # not failing upstream for the same reason.

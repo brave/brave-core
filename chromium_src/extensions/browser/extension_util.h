@@ -1,10 +1,15 @@
-// Copyright (c) 2025 The Brave Authors. All rights reserved.
-// This Source Code Form is subject to the terms of the Mozilla Public
-// License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// You can obtain one at https://mozilla.org/MPL/2.0/.
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_EXTENSIONS_MANIFEST_V2_BRAVE_HOSTED_EXTENSIONS_H_
-#define BRAVE_BROWSER_EXTENSIONS_MANIFEST_V2_BRAVE_HOSTED_EXTENSIONS_H_
+#ifndef BRAVE_CHROMIUM_SRC_EXTENSIONS_BROWSER_EXTENSION_UTIL_H_
+#define BRAVE_CHROMIUM_SRC_EXTENSIONS_BROWSER_EXTENSION_UTIL_H_
+
+// This override is used to add convenience functions to avoid adding build
+// dependencies.
+
+#include <extensions/browser/extension_util.h>  // IWYU pragma: export
 
 #include <array>
 #include <optional>
@@ -72,6 +77,7 @@ std::optional<extensions::ExtensionId> GetBraveHostedExtensionId(
 // In case if the given id is unknown returns nullopt.
 std::optional<extensions::ExtensionId> GetWebStoreHostedExtensionId(
     const extensions::ExtensionId& brave_hosted_extension_id);
+
 }  // namespace extensions_mv2
 
-#endif  // BRAVE_BROWSER_EXTENSIONS_MANIFEST_V2_BRAVE_HOSTED_EXTENSIONS_H_
+#endif  // BRAVE_CHROMIUM_SRC_EXTENSIONS_BROWSER_EXTENSION_UTIL_H_
