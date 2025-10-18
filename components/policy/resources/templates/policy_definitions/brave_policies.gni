@@ -25,6 +25,7 @@ _brave_policies = [
   "BraveSoftware/BraveWalletDisabled.yaml",
   "BraveSoftware/BraveWaybackMachineEnabled.yaml",
   "BraveSoftware/DefaultBraveFingerprintingV2Setting.yaml",
+  "BraveSoftware/DefaultBraveRemember1PStorageSetting.yaml",
   "BraveSoftware/IPFSEnabled.yaml",
   "BraveSoftware/TorDisabled.yaml",
 ]

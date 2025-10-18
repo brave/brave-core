@@ -834,6 +834,25 @@ TEST_F(BraveShieldsUtilTest, GetFingerprintingControlType_ManagedPref) {
                                       map, GURL("http://brave.com")));
 }
 
+/* FORGET FIRST-PARTY STORAGE */
+TEST_F(BraveShieldsUtilTest, GetForgetFirstPartyStorageEnabled_ManagedPref) {
+  auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
+
+  profile()->GetTestingPrefService()->SetManagedPref(
+      kManagedDefaultBraveRemember1PStorage,
+      base::Value(CONTENT_SETTING_ALLOW));
+  EXPECT_FALSE(brave_shields::GetForgetFirstPartyStorageEnabled(map, GURL()));
+  EXPECT_FALSE(brave_shields::GetForgetFirstPartyStorageEnabled(
+      map, GURL("http://brave.com")));
+
+  profile()->GetTestingPrefService()->SetManagedPref(
+      kManagedDefaultBraveRemember1PStorage,
+      base::Value(CONTENT_SETTING_BLOCK));
+  EXPECT_TRUE(brave_shields::GetForgetFirstPartyStorageEnabled(map, GURL()));
+  EXPECT_TRUE(brave_shields::GetForgetFirstPartyStorageEnabled(
+      map, GURL("http://brave.com")));
+}
+
 /* NOSCRIPT CONTROL */
 TEST_F(BraveShieldsUtilTest, SetNoScriptControlType_Default) {
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
