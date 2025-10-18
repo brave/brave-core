@@ -57,3 +57,17 @@ source_set("brave_simple_policy_map") {
     deps += [ "//brave/components/ipfs" ]
   }
 }
+
+static_library("policy") {
+  sources = [
+    "brave_ads_policy_handler.cc",
+    "brave_ads_policy_handler.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/constants",
+    "//components/policy/core/browser",
+    "//components/policy/core/common:common_constants",
+  ]
+}
