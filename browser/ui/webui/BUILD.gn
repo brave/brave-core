@@ -9,18 +9,20 @@ import("//brave/build/config.gni")
 source_set("browser_tests") {
   testonly = true
 
-  sources = []
+  sources = [ "brave_settings_ui_browsertest.cc" ]
 
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
   deps = [
     "//base",
+    "//chrome/browser/profiles",
     "//chrome/browser/search_engines",
     "//chrome/browser/ui",
     "//chrome/browser/ui:browser_navigator_params_headers",
     "//chrome/test",
     "//chrome/test:test_support",
     "//components/omnibox/browser",
+    "//content/test:test_support",
     "//testing/gtest",
     "//ui/base",
   ]
