@@ -1,0 +1,62 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+.modelIcon {
+  --leo-icon-size: 20px;
+  --leo-icon-color: var(--leo-color-icon-default);
+
+  &[data-key='chat-automatic'] {
+    --leo-icon-color: var(--leo-gradient-icons-active);
+  }
+}
+
+.modelIconDetailed {
+  --leo-icon-size: 18px;
+  --leo-icon-color: var(--leo-color-icon-default);
+  border-radius: var(--leo-radius-m);
+  border: 1px solid var(--leo-color-divider-subtle);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+
+  &[data-key='chat-automatic'] {
+    --leo-icon-color: white;
+    background: var(--leo-gradient-icons-active);
+    border: none;
+  }
+}
+
+.column {
+  flex-grow: 1;
+}
+
+.modelName {
+  font: var(--leo-font-default-regular);
+  color: var(--leo-color-text-primary);
+}
+
+.modelSubtitle {
+  font: var(--leo-font-small-regular);
+  color: var(--leo-color-text-tertiary);
+  padding: 0;
+  margin: 0;
+}
+
+.nameAndLabel {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  gap: var(--leo-spacing-s);
+}
+
+.modelLabel {
+  display: flex;
+}

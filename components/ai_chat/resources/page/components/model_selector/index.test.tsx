@@ -188,17 +188,22 @@ describe('ModelSelector', () => {
 
     const labels = document.querySelectorAll<HTMLElement>('leo-label')
 
-    // Check that premium label is visible
+    // Check that current model label is visible
     expect(labels[0]).toBeInTheDocument()
     expect(labels[0]).toBeVisible()
-    expect(labels[0]).toHaveTextContent(
+    expect(labels[0]).toHaveTextContent('CHAT_UI_CURRENT_LABEL')
+
+    // Check that premium model label is visible
+    expect(labels[2]).toBeInTheDocument()
+    expect(labels[2]).toBeVisible()
+    expect(labels[2]).toHaveTextContent(
       'CHAT_UI_MODEL_PREMIUM_LABEL_NON_PREMIUM',
     )
 
     // Check that local label is visible
-    expect(labels[2]).toBeInTheDocument()
-    expect(labels[2]).toBeVisible()
-    expect(labels[2]).toHaveTextContent('CHAT_UI_MODEL_LOCAL_LABEL')
+    expect(labels[3]).toBeInTheDocument()
+    expect(labels[3]).toBeVisible()
+    expect(labels[3]).toHaveTextContent('CHAT_UI_MODEL_LOCAL_LABEL')
   })
 
   it('should call setCurrentModel when a model is clicked', async () => {

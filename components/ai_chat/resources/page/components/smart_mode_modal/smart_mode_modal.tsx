@@ -9,11 +9,11 @@ import Dialog from '@brave/leo/react/dialog'
 import Dropdown from '@brave/leo/react/dropdown'
 import Icon from '@brave/leo/react/icon'
 import Input from '@brave/leo/react/input'
-import Label from '@brave/leo/react/label'
 import TextArea from '@brave/leo/react/textarea'
 import classnames from '$web-common/classnames'
 import { getLocale } from '$web-common/locale'
 import styles from './smart_mode_modal_style.module.scss'
+import { ModelOption } from '../model_menu_item/model_menu_item'
 import { useAIChat } from '../../state/ai_chat_context'
 import { useConversation } from '../../state/conversation_context'
 import { getModelIcon } from '../../../common/constants'
@@ -182,6 +182,7 @@ export default function SmartModeModal() {
             onChange={(e: { value: string }) => setSelectedModel(e.value || '')}
             placeholder={getLocale(S.CHAT_UI_USE_DEFAULT_MODEL_LABEL)}
             positionStrategy='fixed'
+            className={styles.dropdown}
           >
             <div slot='label'>
               {getLocale(S.CHAT_UI_MODEL_FOR_PROMPT_LABEL)}
@@ -208,53 +209,20 @@ export default function SmartModeModal() {
                 : getLocale(S.CHAT_UI_USE_DEFAULT_MODEL_LABEL)}
             </div>
             <leo-option value=''>
-              <div className={styles.optionContent}>
-                <div className={styles.optionLeft}>
-                  <div className={styles.gradientIcon}>
-                    <Icon name='product-brave-leo' />
-                  </div>
-                  {getLocale(S.CHAT_UI_USE_DEFAULT_MODEL_LABEL)}
+              <div className={styles.optionLeft}>
+                <div className={styles.gradientIcon}>
+                  <Icon name='product-brave-leo' />
                 </div>
+                {getLocale(S.CHAT_UI_USE_DEFAULT_MODEL_LABEL)}
               </div>
             </leo-option>
             {conversationContext.allModels?.map((model: Mojom.Model) => (
-              <leo-option
+              <ModelOption
                 key={model.key}
-                value={model.key}
-              >
-                <div className={styles.optionContent}>
-                  <div className={styles.optionLeft}>
-                    <Icon
-                      className={classnames({
-                        [styles.gradientIcon]: model.key === 'chat-automatic',
-                      })}
-                      name={getModelIcon(model.key)}
-                    />
-                    {model.displayName}
-                  </div>
-                  <div>
-                    {model.options.leoModelOptions?.access
-                      === Mojom.ModelAccess.PREMIUM && (
-                      <Label
-                        mode='outline'
-                        color='blue'
-                        className={styles.optionLabel}
-                      >
-                        {getLocale(S.CHAT_UI_MODEL_PREMIUM_LABEL_NON_PREMIUM)}
-                      </Label>
-                    )}
-                    {model.options.customModelOptions && (
-                      <Label
-                        mode='default'
-                        color='blue'
-                        className={styles.optionLabel}
-                      >
-                        {getLocale(S.CHAT_UI_MODEL_LOCAL_LABEL)}
-                      </Label>
-                    )}
-                  </div>
-                </div>
-              </leo-option>
+                model={model}
+                isCurrent={model.key === selectedModel}
+                showPremiumLabel={!aiChatContext.isPremiumUser}
+              />
             ))}
           </Dropdown>
 
