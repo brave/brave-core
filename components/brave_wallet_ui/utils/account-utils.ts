@@ -181,7 +181,12 @@ export const keyringIdForNewAccount = (
   }
 
   if (coin === BraveWallet.CoinType.DOT) {
-    return BraveWallet.KeyringId.kPolkadotMainnet
+    if (chainId === BraveWallet.POLKADOT_MAINNET) {
+      return BraveWallet.KeyringId.kPolkadotMainnet
+    }
+    if (chainId === BraveWallet.POLKADOT_TESTNET) {
+      return BraveWallet.KeyringId.kPolkadotTestnet
+    }
   }
 
   assertNotReached(`Unknown coin ${coin} and chainId ${chainId}`)
