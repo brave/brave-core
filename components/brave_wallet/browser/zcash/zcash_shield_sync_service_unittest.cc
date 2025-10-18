@@ -249,6 +249,7 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
       .WillByDefault(
           [](const std::string& chain_id,
              ZCashRpc::GetLatestBlockCallback callback) {
+            EXPECT_EQ(chain_id, mojom::kZCashMainnet);
             std::move(callback).Run(zcash::mojom::BlockID::New(
                 kNu5BlockUpdate + 500u, std::vector<uint8_t>({})));
           });
@@ -257,6 +258,7 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
       .WillByDefault(
           [](const std::string& chain_id, zcash::mojom::BlockIDPtr block,
              ZCashRpc::GetTreeStateCallback callback) {
+            EXPECT_EQ(chain_id, mojom::kZCashMainnet);
             // Valid tree state
             auto tree_state = zcash::mojom::TreeState::New(
                 chain_id, block->height, "aabb", 0, "", "");
@@ -267,6 +269,7 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
       .WillByDefault(
           [](const std::string& chain_id, uint32_t from, uint32_t to,
              ZCashRpc::GetCompactBlocksCallback callback) {
+            EXPECT_EQ(chain_id, mojom::kZCashMainnet);
             std::vector<zcash::mojom::CompactBlockPtr> blocks;
             for (uint32_t i = from; i <= to; i++) {
               auto chain_metadata = zcash::mojom::ChainMetadata::New();
@@ -300,6 +303,7 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
       .WillByDefault(
           [](const std::string& chain_id,
              ZCashRpc::GetLatestBlockCallback callback) {
+            EXPECT_EQ(chain_id, mojom::kZCashMainnet);
             std::move(callback).Run(zcash::mojom::BlockID::New(
                 kNu5BlockUpdate + 1000u, std::vector<uint8_t>({})));
           });
@@ -370,6 +374,7 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
       .WillByDefault(
           [](const std::string& chain_id,
              ZCashRpc::GetLatestBlockCallback callback) {
+            EXPECT_EQ(chain_id, mojom::kZCashMainnet);
             // New chain tip is after the previous one.
             std::move(callback).Run(zcash::mojom::BlockID::New(
                 kNu5BlockUpdate + 1100u, std::vector<uint8_t>({})));
@@ -379,6 +384,7 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
       .WillByDefault(
           [](const std::string& chain_id, zcash::mojom::BlockIDPtr block,
              ZCashRpc::GetTreeStateCallback callback) {
+            EXPECT_EQ(chain_id, mojom::kZCashMainnet);
             // Hash of the latest scanned block
             // Tree state has been changed
             auto tree_state = zcash::mojom::TreeState::New(
@@ -436,6 +442,7 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
       .WillByDefault(
           [](const std::string& chain_id,
              ZCashRpc::GetLatestBlockCallback callback) {
+            EXPECT_EQ(chain_id, mojom::kZCashMainnet);
             // New chain tip below previous one.
             std::move(callback).Run(zcash::mojom::BlockID::New(
                 kNu5BlockUpdate + 1030u, std::vector<uint8_t>({})));
@@ -445,6 +452,7 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
       .WillByDefault(
           [](const std::string& chain_id, zcash::mojom::BlockIDPtr block,
              ZCashRpc::GetTreeStateCallback callback) {
+            EXPECT_EQ(chain_id, mojom::kZCashMainnet);
             // Hash of the latest scanned block differs
             auto tree_state = zcash::mojom::TreeState::New(
                 chain_id, block->height, "aabbccddee", 0, "", "");

@@ -90,9 +90,6 @@ class ZCashGetChainTipStatusTaskTest : public testing::Test {
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
     base::FilePath db_path(
         temp_dir_.GetPath().Append(FILE_PATH_LITERAL("orchard.db")));
-    account_id_ = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
-                                          mojom::KeyringId::kZCashMainnet,
-                                          mojom::AccountKind::kDerived, 0);
 
     mocked_sync_state_ = std::make_unique<MockOrchardSyncState>(db_path);
     sync_state_ = base::SequenceBound<MockOrchardSyncStateProxy>(
@@ -107,6 +104,10 @@ class ZCashGetChainTipStatusTaskTest : public testing::Test {
     keyring_service_->Reset();
     keyring_service_->RestoreWallet(kMnemonicGalleryEqual, kTestWalletPassword,
                                     false, base::DoNothing());
+
+    auto account = AccountUtils(keyring_service_.get())
+                       .EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
+    account_id_ = account->account_id.Clone();
 
     zcash_wallet_service_ = std::make_unique<ZCashWalletService>(
         db_path, *keyring_service_,
@@ -165,6 +166,7 @@ TEST_F(ZCashGetChainTipStatusTaskTest, Success) {
   ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
       .WillByDefault([](const std::string& chain_id,
                         ZCashRpc::GetLatestBlockCallback callback) {
+        EXPECT_EQ(chain_id, mojom::kZCashMainnet);
         std::move(callback).Run(
             zcash::mojom::BlockID::New(1000u, std::vector<uint8_t>({})));
       });
@@ -201,6 +203,7 @@ TEST_F(ZCashGetChainTipStatusTaskTest, EmptyAccount) {
   ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
       .WillByDefault([](const std::string& chain_id,
                         ZCashRpc::GetLatestBlockCallback callback) {
+        EXPECT_EQ(chain_id, mojom::kZCashMainnet);
         std::move(callback).Run(
             zcash::mojom::BlockID::New(1000u, std::vector<uint8_t>({})));
       });
@@ -232,6 +235,7 @@ TEST_F(ZCashGetChainTipStatusTaskTest, Error_AccountNotShielded) {
   ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
       .WillByDefault([](const std::string& chain_id,
                         ZCashRpc::GetLatestBlockCallback callback) {
+        EXPECT_EQ(chain_id, mojom::kZCashMainnet);
         std::move(callback).Run(
             zcash::mojom::BlockID::New(1000u, std::vector<uint8_t>({})));
       });
@@ -265,6 +269,7 @@ TEST_F(ZCashGetChainTipStatusTaskTest, Error_GetAccountMeta) {
   ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
       .WillByDefault([](const std::string& chain_id,
                         ZCashRpc::GetLatestBlockCallback callback) {
+        EXPECT_EQ(chain_id, mojom::kZCashMainnet);
         std::move(callback).Run(
             zcash::mojom::BlockID::New(1000u, std::vector<uint8_t>({})));
       });
@@ -296,6 +301,7 @@ TEST_F(ZCashGetChainTipStatusTaskTest, Error_GetLatestBlock) {
   ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
       .WillByDefault([](const std::string& chain_id,
                         ZCashRpc::GetLatestBlockCallback callback) {
+        EXPECT_EQ(chain_id, mojom::kZCashMainnet);
         std::move(callback).Run(base::unexpected("error"));
       });
 

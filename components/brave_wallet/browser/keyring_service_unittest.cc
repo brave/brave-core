@@ -4181,6 +4181,66 @@ TEST_F(KeyringServiceUnitTest, GetOrchardRawBytes) {
          0x75, 0x02, 0x25, 0x78, 0x2a, 0x4a, 0x2b, 0x80, 0x00, 0xab});
     EXPECT_EQ(expected, actual);
   }
+
+  // Test testnet accounts using correct test vectors
+  {
+    auto actual =
+        service
+            .GetOrchardRawBytes(
+                MakeIndexBasedAccountId(mojom::CoinType::ZEC,
+                                        mojom::KeyringId::kZCashTestnet,
+                                        mojom::AccountKind::kDerived, 4),
+                mojom::ZCashKeyId::New(4, 0 /* external */, 0))
+            .value();
+    auto expected = OrchardAddrRawPart(
+        {0xf1, 0x15, 0x36, 0x87, 0x51, 0x8a, 0x51, 0x98, 0xb6, 0xa8, 0xe4,
+         0xe3, 0xee, 0x9b, 0x39, 0x06, 0x8e, 0x8e, 0xd8, 0xd7, 0xf6, 0x6c,
+         0x6a, 0x4c, 0xf5, 0xc4, 0xee, 0xf7, 0x18, 0x60, 0x01, 0x3a, 0xab,
+         0xd6, 0xf2, 0xb2, 0xd2, 0x87, 0xeb, 0x59, 0xc2, 0x54, 0x98});
+    EXPECT_EQ(expected, actual);
+  }
+
+  {
+    auto actual =
+        service
+            .GetOrchardRawBytes(
+                MakeIndexBasedAccountId(mojom::CoinType::ZEC,
+                                        mojom::KeyringId::kZCashTestnet,
+                                        mojom::AccountKind::kDerived, 1),
+                mojom::ZCashKeyId::New(1, 0 /* external */, 0))
+            .value();
+    auto expected = OrchardAddrRawPart(
+        {0x2f, 0xea, 0xc2, 0x2c, 0x73, 0x52, 0xbc, 0x15, 0xf6, 0x13, 0x82,
+         0xab, 0x11, 0xf1, 0x7f, 0x79, 0x67, 0x09, 0xe9, 0x0e, 0x10, 0xee,
+         0x90, 0xe9, 0xf5, 0x8c, 0xb3, 0x02, 0x3d, 0x76, 0x84, 0x26, 0x6f,
+         0x6b, 0x38, 0x06, 0x0c, 0x0b, 0x35, 0xe7, 0xb5, 0x6d, 0x83});
+    EXPECT_EQ(expected, actual);
+  }
+
+  // Test that mainnet and testnet produce different raw bytes for the same
+  // account/key indices This is expected behavior since testnet uses different
+  // network parameters
+  {
+    auto mainnet_result =
+        service
+            .GetOrchardRawBytes(
+                MakeIndexBasedAccountId(mojom::CoinType::ZEC,
+                                        mojom::KeyringId::kZCashMainnet,
+                                        mojom::AccountKind::kDerived, 0),
+                mojom::ZCashKeyId::New(0, 0 /* external */, 0))
+            .value();
+
+    auto testnet_result =
+        service
+            .GetOrchardRawBytes(
+                MakeIndexBasedAccountId(mojom::CoinType::ZEC,
+                                        mojom::KeyringId::kZCashTestnet,
+                                        mojom::AccountKind::kDerived, 0),
+                mojom::ZCashKeyId::New(0, 0 /* external */, 0))
+            .value();
+
+    EXPECT_NE(mainnet_result, testnet_result);
+  }
 }
 
 TEST_F(KeyringServiceUnitTest, GetOrchardRawBytes_ZCashDisabled) {

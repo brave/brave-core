@@ -239,7 +239,6 @@ export const Account = () => {
   const { data: zcashBalance } = useGetZCashBalanceQuery(
     isShieldedAccount && selectedAccount
       ? {
-          chainId: BraveWallet.Z_CASH_MAINNET,
           accountId: selectedAccount.accountId,
         }
       : skipToken,
