@@ -11,14 +11,12 @@
 #include "base/types/cxx23_to_underlying.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
-#include "brave/components/ntp_background_images/browser/ntp_p3a_helper.h"
 
 namespace ntp_background_images {
 
 NTPSponsoredRichMediaAdEventHandler::NTPSponsoredRichMediaAdEventHandler(
-    brave_ads::AdsService* ads_service,
-    NTPP3AHelper* ntp_p3a_helper)
-    : ads_service_(ads_service), ntp_p3a_helper_(ntp_p3a_helper) {}
+    brave_ads::AdsService* ads_service)
+    : ads_service_(ads_service) {}
 
 NTPSponsoredRichMediaAdEventHandler::~NTPSponsoredRichMediaAdEventHandler() =
     default;
@@ -37,12 +35,6 @@ void NTPSponsoredRichMediaAdEventHandler::MaybeReportRichMediaAdEvent(
     brave_ads::mojom::NewTabPageAdEventType mojom_ad_event_type) {
   if (!ShouldReportNewTabPageAdEvent(mojom_ad_event_type)) {
     return;
-  }
-
-  if (mojom_ad_metric_type == brave_ads::mojom::NewTabPageAdMetricType::kP3A &&
-      ntp_p3a_helper_) {
-    ntp_p3a_helper_->RecordNewTabPageAdEvent(mojom_ad_event_type,
-                                             creative_instance_id);
   }
 
   if (ads_service_) {

@@ -10,10 +10,6 @@ source_set("ntp_background") {
   sources = [
     "new_tab_takeover_infobar_delegate.cc",
     "new_tab_takeover_infobar_delegate.h",
-    "ntp_p3a_helper_impl.cc",
-    "ntp_p3a_helper_impl.h",
-    "ntp_tab_helper.cc",
-    "ntp_tab_helper.h",
     "view_counter_service_factory.cc",
     "view_counter_service_factory.h",
   ]
@@ -73,10 +69,7 @@ source_set("ntp_background") {
 source_set("unit_tests") {
   testonly = true
 
-  sources = [
-    "new_tab_takeover_infobar_delegate_unittest.cc",
-    "ntp_p3a_helper_impl_unittest.cc",
-  ]
+  sources = [ "new_tab_takeover_infobar_delegate_unittest.cc" ]
 
   deps = [
     ":ntp_background",
