@@ -12,7 +12,6 @@
 #include "base/files/file_util.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
-#include "brave/browser/extensions/manifest_v2/brave_hosted_extensions.h"
 #include "brave/browser/extensions/manifest_v2/features.h"
 #include "chrome/browser/profiles/profile.h"
 #include "extensions/browser/disable_reason.h"
@@ -23,6 +22,7 @@
 #include "extensions/browser/extension_registrar_factory.h"
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_registry_factory.h"
+#include "extensions/browser/extension_util.h"
 #include "extensions/common/constants.h"
 
 namespace {

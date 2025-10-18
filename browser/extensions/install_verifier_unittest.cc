@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "chrome/browser/extensions/install_verifier.h"
+#include "extensions/browser/install_verifier.h"
 
 #include "build/build_config.h"
 #include "testing/gtest/include/gtest/gtest.h"
