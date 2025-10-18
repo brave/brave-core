@@ -4,7 +4,9 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "chrome/browser/policy/configuration_policy_handler_list_factory.h"
+
 #include "brave/browser/policy/brave_simple_policy_map.h"
+#include "brave/browser/policy/handlers/brave_https_upgrade_policy_handler.h"
 #include "components/policy/core/browser/configuration_policy_handler.h"
 
 #define BuildHandlerList BuildHandlerList_ChromiumImpl
@@ -22,6 +24,8 @@ std::unique_ptr<ConfigurationPolicyHandlerList> BuildHandlerList(
     handlers->AddHandler(std::make_unique<SimplePolicyHandler>(
         entry.policy_name, entry.preference_path, entry.value_type));
   }
+
+  handlers->AddHandler(std::make_unique<BraveHttpsUpgradePolicyHandler>());
 
   return handlers;
 }

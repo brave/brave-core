@@ -140,6 +140,7 @@ brave_chrome_browser_deps = [
   "//brave/browser/misc_metrics",
   "//brave/browser/misc_metrics:misc_metrics_impl",
   "//brave/browser/ntp_background",
+  "//brave/browser/policy/handlers",
   "//brave/browser/skus",
   "//brave/browser/sync",
   "//brave/browser/themes",

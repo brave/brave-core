@@ -1,0 +1,41 @@
+caption: Control HTTPS upgrade behavior
+default: null
+desc: |-
+  This policy determines how Brave handles HTTP to HTTPS upgrades to improve connection security.
+
+            If this policy is set to 1 (Disabled), HTTP connections are allowed.
+
+            If this policy is set to 2 (Strict), HTTPS connections are required.
+
+            If this policy is set to 3 (Standard), HTTP is upgraded to HTTPS when available.
+
+            If left unset, users can configure the HTTPS upgrade behavior in Brave Shields settings.
+example_value: 3
+features:
+  can_be_mandatory: true
+  can_be_recommended: false
+  dynamic_refresh: true
+  per_profile: true
+items:
+- caption: Allow HTTP
+  name: Disabled
+  value: 1
+- caption: Require HTTPS
+  name: Strict
+  value: 2
+- caption: Prefer HTTPS
+  name: Standard
+  value: 3
+owners:
+- managed-policies@brave.com
+schema:
+  enum:
+  - 1
+  - 2
+  - 3
+  type: integer
+supported_on:
+- chrome.*:142-
+- android:142-
+tags: []
+type: int-enum
