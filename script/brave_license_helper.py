@@ -56,6 +56,12 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
         os.path.join('brave', 'vendor', 'brave-ios'),
         os.path.join('brave', 'vendor', 'brave_base'),
 
+        # TODO: This can probably be removed entirely before merging.
+        # WireGuard build artifacts (downloaded Go toolchain, gradle cache, and gen dir)
+        #os.path.join('brave', 'third_party', 'wireguard-android', 'tunnel', 'tools', 'libwg-go', '.gobuild'),
+        #os.path.join('brave', 'third_party', 'wireguard-android', 'tunnel', 'tools', 'libwg-go', '.gradle_cache'),
+        #os.path.join('brave', 'third_party', 'wireguard-android', 'tunnel', 'tools', 'libwg-go', 'gen'),
+
         # Metadata files for Rust crates are located in the subfolders of
         # brave/third_party/rust/<crate_name>/<v>, the crates themselves in
         # brave/third_party/rust/chromium_crates_io can be skipped.

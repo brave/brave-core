@@ -1,0 +1,9 @@
+diff --git a/build/config/warning_suppression.txt b/build/config/warning_suppression.txt
+index 5e3d46f6e1a5768ce86c9f7c0b4bb2e7a60a4b03..ff0b1d063d5d60ec0b537234c16264053e2a1460 100644
+--- a/build/config/warning_suppression.txt
++++ b/build/config/warning_suppression.txt
+@@ -67,3 +67,4 @@ src:*{/,\\}third_party{/,\\}webrtc{/,\\}*
+ src:*{/,\\}third_party{/,\\}webrtc_overrides{/,\\}test{/,\\}*
+ # TODO(crbug.com/439492886): This suppression must be fixed internally.
+ src:*{/,\\}chrome{/,\\}browser{/,\\}platform_experience{/,\\}*
++brave/third_party/wireguard-android/.*: unsafe-buffer-usage
