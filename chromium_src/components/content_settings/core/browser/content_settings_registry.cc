@@ -403,6 +403,14 @@ void ContentSettingsRegistry::BraveInit() {
           WebsiteSettingsRegistry::PLATFORM_IOS,
       WebsiteSettingsInfo::INHERIT_IN_INCOGNITO);
 
+  website_settings_registry_->Register(
+      ContentSettingsType::BRAVE_AUTO_SHRED, brave_shields::kBraveAutoShred,
+      brave_shields::AutoShredSetting::DefaultValue(),
+      WebsiteSettingsInfo::SYNCABLE, WebsiteSettingsInfo::NOT_LOSSY,
+      WebsiteSettingsInfo::TOP_ORIGIN_ONLY_SCOPE,
+      WebsiteSettingsRegistry::PLATFORM_IOS,
+      WebsiteSettingsInfo::INHERIT_IN_INCOGNITO);
+
 #if BUILDFLAG(ENABLE_PSST)
   if (base::FeatureList::IsEnabled(psst::features::kEnablePsst)) {
     website_settings_registry_->Register(
