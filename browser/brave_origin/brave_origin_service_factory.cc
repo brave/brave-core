@@ -7,6 +7,7 @@
 
 #include <string_view>
 
+#include "base/check_is_test.h"
 #include "base/containers/fixed_flat_map.h"
 #include "base/containers/map_util.h"
 #include "base/no_destructor.h"
@@ -55,13 +56,16 @@ namespace brave_origin {
 policy::PolicyService* GetPolicyServiceFromProfile(Profile* profile);
 
 policy::PolicyService* GetBrowserPolicyService() {
-  if (g_browser_process && g_browser_process->browser_policy_connector()) {
-    auto* connector = reinterpret_cast<policy::BrowserPolicyConnectorBase*>(
-        g_browser_process->browser_policy_connector());
-    // Only get policy service if we have one already or not in testing mode
-    if (connector->HasPolicyService()) {
-      return connector->GetPolicyService();
-    }
+  if (!g_browser_process || !g_browser_process->browser_policy_connector()) {
+    CHECK_IS_TEST();
+    return nullptr;
+  }
+
+  auto* connector = reinterpret_cast<policy::BrowserPolicyConnectorBase*>(
+      g_browser_process->browser_policy_connector());
+  // Only get policy service if we have one already or not in testing mode
+  if (connector->HasPolicyService()) {
+    return connector->GetPolicyService();
   }
   return nullptr;
 }
