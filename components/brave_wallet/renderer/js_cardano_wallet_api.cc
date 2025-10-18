@@ -358,31 +358,35 @@ v8::Local<v8::Promise> JSCardanoWalletApi::GetUtxos(gin::Arguments* args) {
     std::unique_ptr<base::Value> arg1_value =
         content::V8ValueConverter::Create()->FromV8Value(
             arguments.at(0), isolate->GetCurrentContext());
-    if (!arg1_value || !arg1_value->GetIfString()) {
+    if (arg1_value && !arg1_value->GetIfString()) {
       args->ThrowError();
       return v8::Local<v8::Promise>();
     }
-    amount = arg1_value->GetString();
+    if (arg1_value) {
+      amount = arg1_value->GetString();
+    }
   }
 
   if (arguments.size() > 1) {
     std::unique_ptr<base::Value> arg2_value =
         content::V8ValueConverter::Create()->FromV8Value(
             arguments.at(1), isolate->GetCurrentContext());
-    if (!arg2_value || !arg2_value->GetIfDict()) {
+    if (arg2_value && !arg2_value->GetIfDict()) {
       args->ThrowError();
       return v8::Local<v8::Promise>();
     }
 
-    auto page_value = arg2_value->GetIfDict()->FindInt("page");
-    auto page_limit = arg2_value->GetIfDict()->FindInt("limit");
+    if (arg2_value) {
+      auto page_value = arg2_value->GetIfDict()->FindInt("page");
+      auto page_limit = arg2_value->GetIfDict()->FindInt("limit");
 
-    if (!page_value || !page_limit) {
-      args->ThrowError();
-      return v8::Local<v8::Promise>();
+      if (!page_value || !page_limit) {
+        args->ThrowError();
+        return v8::Local<v8::Promise>();
+      }
+
+      page = mojom::CardanoProviderPagination::New(*page_value, *page_limit);
     }
-
-    page = mojom::CardanoProviderPagination::New(*page_value, *page_limit);
   }
 
   cardano_api_->GetUtxos(
