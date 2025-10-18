@@ -4,6 +4,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "chrome/browser/policy/configuration_policy_handler_list_factory.h"
+
+#include "brave/browser/policy/brave_referrers_policy_handler.h"
 #include "brave/browser/policy/brave_simple_policy_map.h"
 #include "components/policy/core/browser/configuration_policy_handler.h"
 
@@ -22,6 +24,8 @@ std::unique_ptr<ConfigurationPolicyHandlerList> BuildHandlerList(
     handlers->AddHandler(std::make_unique<SimplePolicyHandler>(
         entry.policy_name, entry.preference_path, entry.value_type));
   }
+
+  handlers->AddHandler(std::make_unique<BraveReferrersPolicyHandler>());
 
   return handlers;
 }

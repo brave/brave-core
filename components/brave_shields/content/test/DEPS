@@ -10,4 +10,8 @@ specific_include_rules = {
   "test_filters_provider\.h": [
     "+third_party/rust/cxx/v1/cxx.h",
   ],
+  "brave_shields_util_unittest\.cc": [
+    "+chrome/browser/content_settings/host_content_settings_map_factory.h",
+    "+chrome/test/base/testing_profile.h",
+  ],
 }
