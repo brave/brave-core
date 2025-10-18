@@ -552,6 +552,17 @@ void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
       postprocessing_mixer.GetResultColor(ui::kColorFrameActive)};
   postprocessing_mixer[kColorToolbar] =
       darker_theme::ApplyDarknessFromColor(nala::kColorPrimitiveNeutral5);
+
+  // Override saved tab group button / bookmark folder icon color in darker
+  // theme. These colors are originally defined in material_chrome_color_mixer,
+  // But we override them here because we want to override these only when it's
+  // darker theme mode except Private/Tor profile. Also we want to make it sure
+  // they are overridden regardless of order of adding mixers, so we use
+  // postprocessing mixer.
+  postprocessing_mixer[kColorBookmarkFolderIcon] = {
+      nala::kColorPrimitiveNeutral40};
+  postprocessing_mixer[kColorBookmarkButtonIcon] = {
+      nala::kColorPrimitiveNeutral40};
 #endif  // defined(TOOLKIT_VIEWS)
 }
 
