@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_BROWSER_BRAVE_SHIELDS_SETTINGS_H_
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_BROWSER_BRAVE_SHIELDS_SETTINGS_H_
 
+#include "brave/components/brave_shields/core/common/brave_shields_panel.mojom-data-view.h"
 #include "brave/components/brave_shields/core/common/shields_settings.mojom.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
 
@@ -43,6 +44,9 @@ class BraveShieldsSettings {
 
   void SetNoScriptEnabled(bool is_enabled, const GURL& url);
   bool IsNoScriptEnabled(const GURL& url);
+
+  mojom::ScriptBlockedByExtensionStatus GetScriptBlockedByExtensionStatus(
+      const GURL& url);
 
  private:
   const raw_ref<HostContentSettingsMap>

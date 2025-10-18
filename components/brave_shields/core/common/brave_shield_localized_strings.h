@@ -55,6 +55,8 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveShieldsConnectionsUpgraded", IDS_BRAVE_SHIELDS_CONNECTIONS_UPGRADED},
     {"braveShieldsHTTPSEnable", IDS_BRAVE_SHIELDS_HTTPS_ENABLE},
     {"braveShieldsScriptsBlocked", IDS_BRAVE_SHIELDS_SCRIPTS_BLOCKED},
+    {"braveShieldsScriptsBlockedOverriddenByExt",
+     IDS_BRAVE_SHIELDS_SCRIPTS_BLOCKED_OVERRIDDEN_BY_EXTENSION},
     {"braveShieldsScriptsBlockedEnable",
      IDS_BRAVE_SHIELDS_SCRIPTS_BLOCKED_ENABLE},
     {"braveShieldsTrackersAndAds", IDS_BRAVE_SHIELDS_TRACKERS_AND_ADS},

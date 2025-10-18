@@ -18,6 +18,7 @@ struct ShieldsSettings {
   mojo_base.mojom.Token farbling_token;
   array<string> origins_to_allow_scripts;
   bool reduce_language;
+  ScriptBlockedByExtensionStatus scripts_blocked_by_extension_status = kNotSet;
 };
 
 enum AdBlockMode {
@@ -44,4 +45,10 @@ enum HttpsUpgradeMode {
   STRICT_MODE,
   STANDARD_MODE,
   DISABLED_MODE
+};
+
+enum ScriptBlockedByExtensionStatus {
+  kNotSet = 0,
+  kBlocked,
+  kAllowed
 };

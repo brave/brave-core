@@ -146,6 +146,14 @@ bool BraveContentSettingsAgentImpl::IsReduceLanguageEnabled() {
   return shields_settings_->reduce_language;
 }
 
+brave_shields::mojom::ScriptBlockedByExtensionStatus
+BraveContentSettingsAgentImpl::GetScriptBlockedByExtensionStatus() const {
+  if (!shields_settings_) {
+    return brave_shields::mojom::ScriptBlockedByExtensionStatus::kNotSet;
+  }
+  return shields_settings_->scripts_blocked_by_extension_status;
+}
+
 void BraveContentSettingsAgentImpl::BraveSpecificDidAllowJavaScriptOnce(
     const GURL& resource_url) {
   // This will be called for all resources on a page, we want to notify only
@@ -183,7 +191,13 @@ bool BraveContentSettingsAgentImpl::AllowScript(bool enabled_per_settings) {
       BraveSpecificDidAllowJavaScriptOnce(secondary_url);
     }
   }
-  return allow;
+
+  const auto script_blocked_status = GetScriptBlockedByExtensionStatus();
+
+  return script_blocked_status ==
+                 brave_shields::mojom::ScriptBlockedByExtensionStatus::kBlocked
+             ? false
+             : allow;
 }
 
 void BraveContentSettingsAgentImpl::DidNotAllowScript() {
@@ -228,7 +242,11 @@ bool BraveContentSettingsAgentImpl::AllowScriptFromSource(
     }
   }
 
-  return allow;
+  const auto script_blocked_status = GetScriptBlockedByExtensionStatus();
+  return script_blocked_status ==
+                 brave_shields::mojom::ScriptBlockedByExtensionStatus::kBlocked
+             ? false
+             : allow;
 }
 
 blink::WebSecurityOrigin
@@ -397,7 +415,8 @@ BraveContentSettingsAgentImpl::GetBraveShieldsSettings(
                           HasContentSettingsRules());
     base::debug::DumpWithoutCrashing();
     return brave_shields::mojom::ShieldsSettings::New(
-        farbling_level, base::Token(), std::vector<std::string>(), false);
+        farbling_level, base::Token(), std::vector<std::string>(), false,
+        brave_shields::mojom::ScriptBlockedByExtensionStatus::kNotSet);
   }
 }
 
