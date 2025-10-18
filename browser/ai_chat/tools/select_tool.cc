@@ -10,6 +10,7 @@
 #include "brave/browser/ai_chat/tools/target_util.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_input_properties.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_utils.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "chrome/common/actor/task_id.h"
 #include "components/optimization_guide/proto/features/actions_data.pb.h"
 
@@ -28,7 +29,7 @@ SelectTool::SelectTool(ContentAgentTaskProvider* task_provider)
 SelectTool::~SelectTool() = default;
 
 std::string_view SelectTool::Name() const {
-  return "select_dropdown";
+  return mojom::kSelectDropdownToolName;
 }
 
 std::string_view SelectTool::Description() const {
