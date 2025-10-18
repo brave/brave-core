@@ -7,7 +7,6 @@
 
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_rpc_blockfrost_api.h"
-#include "brave/components/brave_wallet/common/hex_utils.h"
 
 namespace brave_wallet::cardano_rpc {
 
@@ -60,12 +59,14 @@ std::optional<Block> Block::FromBlockfrostApiValue(
 
 // static
 std::optional<UnspentOutput> UnspentOutput::FromBlockfrostApiValue(
+    CardanoAddress address_to,
     std::optional<blockfrost_api::UnspentOutput> api_unspent_output) {
   if (!api_unspent_output) {
     return std::nullopt;
   }
 
   UnspentOutput result;
+  result.address_to = std::move(address_to);
   if (!base::HexStringToSpan(api_unspent_output->tx_hash, result.tx_hash)) {
     return std::nullopt;
   }

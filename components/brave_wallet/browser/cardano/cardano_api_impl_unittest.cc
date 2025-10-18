@@ -49,18 +49,14 @@ namespace brave_wallet {
 
 namespace {
 
-std::vector<std::pair<CardanoAddress, cardano_rpc::UnspentOutput>>
-UtxosToVector(
-    const std::map<std::string,
-                   std::vector<cardano_rpc::blockfrost_api::UnspentOutput>>&
-        map) {
-  std::vector<std::pair<CardanoAddress, cardano_rpc::UnspentOutput>> result;
+cardano_rpc::UnspentOutputs UtxosToVector(auto& map) {
+  cardano_rpc::UnspentOutputs result;
   for (const auto& by_addr : map) {
     for (const auto& utxo : by_addr.second) {
       result.push_back(
-          {CardanoAddress::FromString(by_addr.first).value(),
-           cardano_rpc::UnspentOutput::FromBlockfrostApiValue(utxo.Clone())
-               .value()});
+          cardano_rpc::UnspentOutput::FromBlockfrostApiValue(
+              *CardanoAddress::FromString(by_addr.first), utxo.Clone())
+              .value());
     }
   }
   return result;

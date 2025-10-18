@@ -19,7 +19,6 @@
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/test_utils.h"  // IWYU pragma: keep
@@ -100,16 +99,17 @@ TEST_F(CardanoGetUtxosTaskUnitTest, OneAddress) {
   GetCardanoUtxosTask task(*cardano_wallet_service_, mojom::kCardanoMainnet,
                            {addr1});
 
-  TestFuture<base::expected<GetCardanoUtxosTask::UtxoMap, std::string>>
+  TestFuture<base::expected<cardano_rpc::UnspentOutputs, std::string>>
       utxos_future;
   task.Start(utxos_future.GetCallback());
 
   auto utxos = utxos_future.Take().value();
-  EXPECT_EQ(utxos.size(), 1u);
-  EXPECT_EQ(utxos[addr1].size(), 2u);
+  EXPECT_EQ(utxos.size(), 2u);
 
-  EXPECT_EQ(utxos[addr1][0].lovelace_amount, 54321u);
-  EXPECT_EQ(utxos[addr1][1].lovelace_amount, 600000u);
+  EXPECT_EQ(utxos[0].lovelace_amount, 54321u);
+  EXPECT_EQ(utxos[0].address_to, addr1);
+  EXPECT_EQ(utxos[1].lovelace_amount, 600000u);
+  EXPECT_EQ(utxos[1].address_to, addr1);
 }
 
 TEST_F(CardanoGetUtxosTaskUnitTest, TwoAddresses) {
@@ -121,19 +121,20 @@ TEST_F(CardanoGetUtxosTaskUnitTest, TwoAddresses) {
   GetCardanoUtxosTask task(*cardano_wallet_service_, mojom::kCardanoMainnet,
                            {addr1, addr2});
 
-  TestFuture<base::expected<GetCardanoUtxosTask::UtxoMap, std::string>>
+  TestFuture<base::expected<cardano_rpc::UnspentOutputs, std::string>>
       utxos_future;
   task.Start(utxos_future.GetCallback());
 
   auto utxos = utxos_future.Take().value();
-  EXPECT_EQ(utxos.size(), 2u);
+  EXPECT_EQ(utxos.size(), 3u);
 
-  EXPECT_EQ(utxos[addr1].size(), 2u);
-  EXPECT_EQ(utxos[addr1][0].lovelace_amount, 54321u);
-  EXPECT_EQ(utxos[addr1][1].lovelace_amount, 600000u);
+  EXPECT_EQ(utxos[0].lovelace_amount, 54321u);
+  EXPECT_EQ(utxos[0].address_to, addr1);
+  EXPECT_EQ(utxos[1].lovelace_amount, 600000u);
+  EXPECT_EQ(utxos[1].address_to, addr1);
 
-  EXPECT_EQ(utxos[addr2].size(), 1u);
-  EXPECT_EQ(utxos[addr2][0].lovelace_amount, 7000000u);
+  EXPECT_EQ(utxos[2].lovelace_amount, 7000000u);
+  EXPECT_EQ(utxos[2].address_to, addr2);
 }
 
 TEST_F(CardanoGetUtxosTaskUnitTest, NetworkFailure) {
@@ -146,7 +147,7 @@ TEST_F(CardanoGetUtxosTaskUnitTest, NetworkFailure) {
 
   cardano_test_rpc_server_->set_fail_address_utxo_request(true);
 
-  TestFuture<base::expected<GetCardanoUtxosTask::UtxoMap, std::string>>
+  TestFuture<base::expected<cardano_rpc::UnspentOutputs, std::string>>
       utxos_future;
   task.Start(utxos_future.GetCallback());
 
@@ -165,14 +166,12 @@ TEST_F(CardanoGetUtxosTaskUnitTest, UnknownAddress) {
   GetCardanoUtxosTask task(*cardano_wallet_service_, mojom::kCardanoMainnet,
                            {addr1});
 
-  TestFuture<base::expected<GetCardanoUtxosTask::UtxoMap, std::string>>
+  TestFuture<base::expected<cardano_rpc::UnspentOutputs, std::string>>
       utxos_future;
   task.Start(utxos_future.GetCallback());
 
   auto utxos = utxos_future.Take().value();
-  EXPECT_EQ(utxos.size(), 1u);
-
-  EXPECT_EQ(utxos[addr1].size(), 0u);
+  EXPECT_EQ(utxos.size(), 0u);
 }
 
 }  // namespace brave_wallet

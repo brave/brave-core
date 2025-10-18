@@ -8,11 +8,7 @@
 #include "base/containers/span.h"
 #include "base/containers/span_writer.h"
 #include "base/strings/string_number_conversions.h"
-#include "brave/components/brave_wallet/browser/cardano/cardano_transaction.h"
-#include "brave/components/brave_wallet/browser/cardano/cardano_transaction_serializer.h"
 #include "brave/components/brave_wallet/common/cardano_address.h"
-#include "brave/components/brave_wallet/common/hex_utils.h"
-#include "brave/components/brave_wallet/common/test_utils.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -60,19 +56,25 @@ TEST(CardanoCip30SerializerTest, SerializeSignedDataSignature) {
 }
 
 TEST(CardanoCip30SerializerTest, SerializeAmount) {
-  auto serialized = CardanoCip30Serializer::SerializeAmount(2000000u);
+  auto serialized = *CardanoCip30Serializer::SerializeAmount(2000000u);
   EXPECT_EQ(serialized, "1a001e8480");
   EXPECT_EQ(2000000u,
             CardanoCip30Serializer::DeserializeAmount(serialized).value());
   EXPECT_FALSE(CardanoCip30Serializer::DeserializeAmount(""));
 
   auto max_serialized = CardanoCip30Serializer::SerializeAmount(UINT64_MAX);
-  EXPECT_EQ(UINT64_MAX,
-            CardanoCip30Serializer::DeserializeAmount(max_serialized).value());
+  EXPECT_FALSE(max_serialized);
+
+  auto signed_max_serialized =
+      *CardanoCip30Serializer::SerializeAmount(UINT64_MAX / 2);
+  EXPECT_EQ(signed_max_serialized, "1b7fffffffffffffff");
+  EXPECT_EQ(
+      UINT64_MAX / 2,
+      CardanoCip30Serializer::DeserializeAmount(signed_max_serialized).value());
 }
 
 TEST(CardanoCip30SerializerTest, SerializeUtxos) {
-  std::vector<std::pair<CardanoAddress, cardano_rpc::UnspentOutput>> utxos;
+  cardano_rpc::UnspentOutputs utxos;
   // Utxo1
   {
     cardano_rpc::UnspentOutput output;
@@ -83,12 +85,10 @@ TEST(CardanoCip30SerializerTest, SerializeUtxos) {
         "d9ef8dcd983c6fe996d5029e010e224bec191d0f63ff695cdab046abfd79dfbd",
         &tx_bytes);
     base::SpanWriter(base::span(output.tx_hash)).Write(tx_bytes);
-    utxos.push_back(
-        {CardanoAddress::FromString(
-             "addr1qyx2zscdearcexdktcgq6g27jkyff65dw82w6catczfwxz2qjy"
-             "nwf42y3c7ejrrekj5r2fh6kx5m9gcrmywpqxw3np5qjeh38p")
-             .value(),
-         std::move(output)});
+    output.address_to = *CardanoAddress::FromString(
+        "addr1qyx2zscdearcexdktcgq6g27jkyff65dw82w6catczfwxz2qjy"
+        "nwf42y3c7ejrrekj5r2fh6kx5m9gcrmywpqxw3np5qjeh38p");
+    utxos.push_back(std::move(output));
   }
 
   // Utxo2
@@ -101,11 +101,10 @@ TEST(CardanoCip30SerializerTest, SerializeUtxos) {
         "42c7b97f09cf640dcb76c7426c1181594dfc2da3aa000476aa9639bc0a131f4d",
         &tx_bytes);
     base::SpanWriter(base::span(output.tx_hash)).Write(tx_bytes);
-    utxos.push_back({CardanoAddress::FromString(
-                         "addr1q95842gcg7yr4uxqrr0l389msd68rgvv7cd9q9qc9f36mddy"
-                         "q3v4daq49vspumzngv66wfydv2l3qsqtlwa2pvpd6vmstarkzs")
-                         .value(),
-                     std::move(output)});
+    output.address_to = *CardanoAddress::FromString(
+        "addr1q95842gcg7yr4uxqrr0l389msd68rgvv7cd9q9qc9f36mddy"
+        "q3v4daq49vspumzngv66wfydv2l3qsqtlwa2pvpd6vmstarkzs");
+    utxos.push_back(std::move(output));
   }
 
   EXPECT_EQ(
