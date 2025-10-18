@@ -8,11 +8,9 @@
 
 #include "chrome/browser/ui/views/tabs/tab_slot_controller.h"
 
-#define IsGroupCollapsed                                \
-  IsTabTiled(const Tab* tab) const override;            \
-  bool IsFirstTabInTile(const Tab* tab) const override; \
-  const Browser* GetBrowser() const override;           \
-  bool IsGroupCollapsed
+#define IsGroupCollapsed(...)                   \
+  IsGroupCollapsed(__VA_ARGS__) const override; \
+  const Browser* GetBrowser()
 
 #include <chrome/browser/ui/views/tabs/fake_tab_slot_controller.h>  // IWYU pragma: export
 

@@ -24,7 +24,6 @@
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/tabs/features.h"
-#include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/frame/split_view/brave_contents_container_view.h"
@@ -35,7 +34,6 @@
 #include "brave/browser/ui/views/sidebar/sidebar_control_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_items_contents_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_items_scroll_view.h"
-#include "brave/browser/ui/views/split_view/split_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/browser/ui/views/toolbar/side_panel_button.h"
@@ -605,80 +603,37 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, ItemDragIndicatorCalcTest) {
 
 class SidebarBrowserWithSplitViewTest
     : public SidebarBrowserTest,
-      public testing::WithParamInterface<std::tuple<bool, bool, bool>> {
+      public testing::WithParamInterface<bool> {
  public:
   SidebarBrowserWithSplitViewTest() {
-    // Use all three false as a default state.
-    // Don't touch any feature state.
-    if (!std::get<0>(GetParam()) && !std::get<1>(GetParam()) &&
-        !std::get<2>(GetParam())) {
-      scoped_features_.Init();
-      return;
-    }
-
     scoped_features_.InitWithFeatureStates(
-        {{::features::kBraveWebViewRoundedCorners, std::get<0>(GetParam())},
-         {tabs::features::kBraveSplitView, std::get<1>(GetParam())},
-         {::features::kSideBySide, std::get<2>(GetParam())}});
+        {{::features::kBraveWebViewRoundedCorners, GetParam()}});
   }
 
   ~SidebarBrowserWithSplitViewTest() override = default;
 
   void NewSplitTab() {
-    if (IsSideBySideEnabled()) {
-      chrome::NewSplitTab(browser(),
-                          split_tabs::SplitTabCreatedSource::kTabContextMenu);
-      return;
-    }
-
-    if (IsBraveSplitViewEnabled()) {
-      brave::NewSplitViewForTab(browser());
-      return;
-    }
-
-    NOTREACHED();
+    chrome::NewSplitTab(browser(),
+                        split_tabs::SplitTabCreatedSource::kTabContextMenu);
   }
 
   // Use this when left split view is active.
   views::View* GetStartSplitContentsView() {
-    if (IsSideBySideEnabled()) {
       return browser_view()
           ->GetBraveMultiContentsView()
           ->GetActiveContentsContainerView();
-    }
-
-    if (IsBraveSplitViewEnabled()) {
-      return browser_view()->split_view()->contents_container_;
-    }
-
-    NOTREACHED();
   }
 
   // Use this when left split view is active.
   views::View* GetEndSplitContentsView() {
-    if (IsSideBySideEnabled()) {
       return browser_view()
           ->GetBraveMultiContentsView()
           ->GetInactiveContentsContainerView();
-    }
-
-    if (IsBraveSplitViewEnabled()) {
-      return browser_view()->split_view()->secondary_contents_container_view();
-    }
-
-    NOTREACHED();
   }
 
   BraveBrowserView* browser_view() {
     return BraveBrowserView::From(
         BrowserView::GetBrowserViewForBrowser(browser()));
-  }
-
-  bool IsBraveSplitViewEnabled() const {
-    return base::FeatureList::IsEnabled(tabs::features::kBraveSplitView);
-  }
-  bool IsSideBySideEnabled() const {
-    return base::FeatureList::IsEnabled(::features::kSideBySide);
   }
 
  private:
@@ -692,8 +647,7 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithSplitViewTest,
       SidebarService::ShowSidebarOption::kShowOnMouseOver);
 
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
-  auto* contents_container =
-      browser_view->GetContentsContainerForLayoutManager();
+  auto* contents_container = browser_view->contents_container();
   auto* prefs = browser()->profile()->GetPrefs();
   auto* sidebar_container = GetSidebarContainerView();
 
@@ -771,14 +725,6 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithSplitViewTest,
   auto* left_split_view = GetStartSplitContentsView();
   auto* right_split_view = GetEndSplitContentsView();
 
-  // With Brave split view, need to wait as primary/secondary contents view
-  // are positioned in async based on active tab status.
-  if (!IsSideBySideEnabled()) {
-    ASSERT_TRUE(base::test::RunUntil([&]() {
-      return left_split_view->bounds().x() < right_split_view->bounds().x();
-    }));
-  }
-
   // Check left split view's left hot corner handles.
   mouse_position = left_split_view->GetBoundsInScreen().origin();
   mouse_position.Offset(2, 2);
@@ -795,13 +741,7 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithSplitViewTest,
 INSTANTIATE_TEST_SUITE_P(
     /* no prefix */,
     SidebarBrowserWithSplitViewTest,
-    testing::Values(std::make_tuple(/*rounded*/ false,
-                                    /*brave split*/ true,
-                                    /*sidebyside*/ false),
-                    std::make_tuple(false, false, true),
-                    std::make_tuple(true, true, false),
-                    std::make_tuple(true, false, true),
-                    std::make_tuple(false, false, false)));
+    ::testing::Bool());
 
 class SidebarBrowserWithWebPanelTest
     : public SidebarBrowserTest,
