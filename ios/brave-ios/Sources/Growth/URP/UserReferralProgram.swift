@@ -15,7 +15,6 @@ public class UserReferralProgram {
 
   /// Domains must match server HTTP header ones _exactly_
   private static let urpCookieOnlyDomains = ["coinbase.com"]
-  public static let shared = UserReferralProgram()
 
   struct HostUrl {
     static let staging = "https://usage-ping.bravesoftware.com"
@@ -38,7 +37,7 @@ public class UserReferralProgram {
 
   let service: UrpService
 
-  public init() {
+  public init(braveCoreStats: BraveStats?) {
     // This should _probably_ correspond to the baseUrl for NTPDownloader
     let host = AppConstants.isOfficialBuild ? HostUrl.prod : HostUrl.staging
 
@@ -48,7 +47,8 @@ public class UserReferralProgram {
       host: host,
       apiKey: apiKey,
       adServicesURL: adServicesURLString,
-      adReportsURL: adReportsURLString
+      adReportsURL: adReportsURLString,
+      braveCoreStats: braveCoreStats
     )
 
     self.service = urpService
@@ -203,7 +203,7 @@ public class UserReferralProgram {
 
       var shouldRemoveData = false
 
-      if error == .downloadIdNotFound {
+      if error == .downloadIdNotFound || error == .pingDisabledByUser {
         shouldRemoveData = true
       }
 

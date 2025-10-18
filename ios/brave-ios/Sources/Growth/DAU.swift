@@ -107,6 +107,10 @@ public class DAU {
   }
 
   @objc private func sendPingToServerInternal() {
+    guard let stats = braveCoreStats, stats.isStatsReportingEnabled else {
+      Logger.module.debug("DAU ping disabled by the user.")
+      return
+    }
     guard let paramsAndPrefs = paramsAndPrefsSetup(for: Date()) else {
       Logger.module.debug("dau, no changes detected, no server ping")
       return
