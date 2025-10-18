@@ -11,7 +11,10 @@
 #include "brave/components/brave_origin/brave_origin_policy_info.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/p3a/pref_names.h"
+#include "chrome/test/base/testing_browser_process.h"
+#include "chrome/test/base/testing_profile_manager.h"
 #include "components/policy/policy_constants.h"
+#include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -154,6 +157,25 @@ TEST(BraveOriginServiceFactoryTest,
   // Verify that we have profile-level policies
   EXPECT_GT(profile_policy_definitions.size(), 0u)
       << "Should have at least some profile policies";
+}
+
+// Test fixture for profile-related tests
+class BraveOriginServiceFactoryProfileTest : public ::testing::Test {
+ protected:
+  void SetUp() override { ASSERT_TRUE(profile_manager_.SetUp()); }
+
+  content::BrowserTaskEnvironment task_environment_;
+  TestingProfileManager profile_manager_{TestingBrowserProcess::GetGlobal()};
+};
+
+TEST_F(BraveOriginServiceFactoryProfileTest, NoServiceForGuestProfile) {
+  // Create a guest profile
+  auto* guest_profile = profile_manager_.CreateGuestProfile();
+  ASSERT_NE(guest_profile, nullptr);
+
+  // Verify that BraveOriginService is not created for guest profiles
+  auto* service = BraveOriginServiceFactory::GetForProfile(guest_profile);
+  EXPECT_EQ(service, nullptr);
 }
 
 }  // namespace brave_origin
