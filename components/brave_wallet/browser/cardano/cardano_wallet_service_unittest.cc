@@ -175,6 +175,13 @@ TEST_F(CardanoWalletServiceUnitTest, GetChangeAddress) {
             "cxpy8vz4k2g73yc9nzvalpwnvgmkxpq6jdpa8");
 }
 
+TEST_F(CardanoWalletServiceUnitTest, GetStakeAddress) {
+  SetupCardanoAccount();
+  auto address = cardano_wallet_service_->GetStakeAddress(account_id());
+  EXPECT_EQ(address->ToString(),
+            "stake1uxmhqml68p5dwrcrurqjrkp2m9y0gjvze3xwlshfkydmrqsfg5el9");
+}
+
 TEST_F(CardanoWalletServiceUnitTest, CreateAndSignCardanoTransaction) {
   // TODO(https://github.com/brave/brave-browser/issues/45278): needs more tests
   // for all corner cases.

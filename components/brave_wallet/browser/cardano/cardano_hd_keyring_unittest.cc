@@ -35,6 +35,11 @@ TEST(CardanoHDKeyringUnitTest, TestVectors1) {
       "2fxv2umyhttkxyxp8x0dlpdt3k6cwng5pxj3jhsydzer3"
       "jcu5d8ps7zex2k2xt3uqxgjqnnj83ws8lhrn648jjxtwq"
       "fjkjv7");
+  EXPECT_EQ(mainnet_keyring.GetStakeAddress(0)->ToString(),
+            "stake"
+            "1uy"
+            "evw2xnsc0pvn9t9r9c7qryfqfeerchgrlm3ea2nefr9hq"
+            "xdekzz");
   auto signature_pair =
       mainnet_keyring.SignMessage(0, CardanoKeyId(CardanoKeyRole::kExternal, 0),
                                   base::byte_span_from_cstring("brave"));
@@ -53,6 +58,11 @@ TEST(CardanoHDKeyringUnitTest, TestVectors1) {
       "2fxv2umyhttkxyxp8x0dlpdt3k6cwng5pxj3jhsydzer3"
       "jcu5d8ps7zex2k2xt3uqxgjqnnj83ws8lhrn648jjxtwq"
       "2ytjqp");
+  EXPECT_EQ(testnet_keyring.GetStakeAddress(0)->ToString(),
+            "stake_test"
+            "1uq"
+            "evw2xnsc0pvn9t9r9c7qryfqfeerchgrlm3ea2nefr9hq"
+            "p8n5xl");
   signature_pair =
       testnet_keyring.SignMessage(0, CardanoKeyId(CardanoKeyRole::kExternal, 0),
                                   base::byte_span_from_cstring("brave"));
@@ -80,6 +90,11 @@ TEST(CardanoHDKeyringUnitTest, TestVectors2) {
       "y6nhfyks7wdu3dudslys37v252w2nwhv0fw2nfawemmn8"
       "k8ttq8f3gag0h89aepvx3xf69g0l9pf80tqv7cve0l33s"
       "dn8p3d");
+  EXPECT_EQ(mainnet_keyring.GetStakeAddress(0)->ToString(),
+            "stake"
+            "1u8"
+            "mr44sr5c5w58mnj7uskrgnyaz58ljs5nh4sx0vxvhlccc"
+            "k9u6w0");
   auto signature_pair =
       mainnet_keyring.SignMessage(0, CardanoKeyId(CardanoKeyRole::kExternal, 0),
                                   base::byte_span_from_cstring("brave"));
@@ -98,6 +113,11 @@ TEST(CardanoHDKeyringUnitTest, TestVectors2) {
       "y6nhfyks7wdu3dudslys37v252w2nwhv0fw2nfawemmn8"
       "k8ttq8f3gag0h89aepvx3xf69g0l9pf80tqv7cve0l33s"
       "w96paj");
+  EXPECT_EQ(testnet_keyring.GetStakeAddress(0)->ToString(),
+            "stake_test1"
+            "urm"
+            "r44sr5c5w58mnj7uskrgnyaz58ljs5nh4sx0vxvhlccc"
+            "30kc2j");
   signature_pair =
       testnet_keyring.SignMessage(0, CardanoKeyId(CardanoKeyRole::kExternal, 0),
                                   base::byte_span_from_cstring("brave"));
@@ -121,6 +141,11 @@ TEST(CardanoHDKeyringUnitTest, TestVectorsAbandon24) {
       "qt0pru382hy9vjlsxv3ye02z50sfvt8xunscg5pgden77"
       "z73dpdfng2ctw2ekqplqgrljelz7h4dneac27nn3qx3rq"
       "rhqvwd");
+  EXPECT_EQ(mainnet_keyring.GetStakeAddress(0)->ToString(),
+            "stake"
+            "1u8"
+            "p0gksk5e59v9h9vmqqlsyplevl30t6keu7u90fecsrg3s"
+            "v33m94");
   auto signature_pair =
       mainnet_keyring.SignMessage(0, CardanoKeyId(CardanoKeyRole::kExternal, 0),
                                   base::byte_span_from_cstring("brave"));
@@ -139,6 +164,11 @@ TEST(CardanoHDKeyringUnitTest, TestVectorsAbandon24) {
       "qt0pru382hy9vjlsxv3ye02z50sfvt8xunscg5pgden77"
       "z73dpdfng2ctw2ekqplqgrljelz7h4dneac27nn3qx3rq"
       "qpavzj");
+  EXPECT_EQ(testnet_keyring.GetStakeAddress(0)->ToString(),
+            "stake_test"
+            "1ur"
+            "p0gksk5e59v9h9vmqqlsyplevl30t6keu7u90fecsrg3s"
+            "tmmepg");
   signature_pair =
       testnet_keyring.SignMessage(0, CardanoKeyId(CardanoKeyRole::kExternal, 0),
                                   base::byte_span_from_cstring("brave"));

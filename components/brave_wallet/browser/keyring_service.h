@@ -20,6 +20,7 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/buildflags.h"
+#include "brave/components/brave_wallet/common/cardano_address.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
@@ -272,6 +273,8 @@ class KeyringService : public mojom::KeyringService {
   mojom::CardanoAddressPtr GetCardanoAddress(
       const mojom::AccountIdPtr& account_id,
       const mojom::CardanoKeyIdPtr& payment_key_id);
+  std::optional<CardanoAddress> GetCardanoStakeAddress(
+      const mojom::AccountIdPtr& account_id);
   std::optional<CardanoSignMessageResult> SignMessageByCardanoKeyring(
       const mojom::AccountIdPtr& account_id,
       const mojom::CardanoKeyIdPtr& key_id,
