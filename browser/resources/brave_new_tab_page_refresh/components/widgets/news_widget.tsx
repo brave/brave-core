@@ -4,7 +4,6 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 
 import * as mojom from 'gen/brave/components/brave_news/common/brave_news.mojom.m.js'
@@ -42,7 +41,7 @@ export function NewsWidget() {
       <div className='title'>
         {getString('newsWidgetTitle')}
       </div>
-      {braveNews.isOptInPrefEnabled ? <PeekItem /> : <OptIn />}
+      {braveNews.isOptInPrefEnabled ? <PeekItem /> : <Preview />}
     </div>
   )
 }
@@ -72,6 +71,7 @@ function PeekItem() {
       <SafeImage
         src={getNewsItemImage(peekItem)}
         targetSize={{ width: 71, height: 48 }}
+        className='article-image'
       />
       <div>
         <div className='meta'>
@@ -90,23 +90,24 @@ function PeekItem() {
   )
 }
 
-function OptIn() {
-  const braveNews = useBraveNews()
+function Preview() {
   return (
-    <div className='opt-in'>
-      <div className='graphic' />
-      <div className='text'>
-        {getString('newsEnableText')}
+    <Link
+      className='peek preview'
+      url='https://brave.com/brave-news'
+      openInNewTab
+    >
+      <div className='article-image' />
+      <div>
+        <div className='meta'>
+          {channelIcons.default}
+          <span>{getString('newsPreviewTitle')}</span>
+        </div>
+        <div className='item-title'>
+          {getString('newsPreviewText')}
+        </div>
       </div>
-      <div className='actions'>
-        <Button
-          size='small'
-          onClick={() => { braveNews.toggleBraveNewsOnNTP(true) }}
-        >
-          {getString('newsEnableButtonLabel')}
-        </Button>
-      </div>
-    </div>
+    </Link>
   )
 }
 
