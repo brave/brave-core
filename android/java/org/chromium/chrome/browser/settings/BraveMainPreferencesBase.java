@@ -15,6 +15,7 @@ import android.provider.Settings;
 import androidx.preference.Preference;
 
 import org.chromium.base.BraveFeatureList;
+import org.chromium.base.Callback;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
@@ -24,6 +25,8 @@ import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveLaunchIntentDispatcher;
 import org.chromium.chrome.browser.brave_leo.BraveLeoPrefUtils;
+import org.chromium.chrome.browser.brave_origin.BraveOriginPlansActivity;
+import org.chromium.chrome.browser.brave_origin.BraveOriginSubscriptionPrefs;
 import org.chromium.chrome.browser.customtabs.BraveAccountCustomTabActivity;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.homepage.settings.BraveHomepageSettings;
@@ -93,6 +96,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
     private static final String PREF_BRAVE_WALLET = "brave_wallet";
     private static final String PREF_BRAVE_VPN = "brave_vpn";
     private static final String PREF_BRAVE_LEO = "brave_leo";
+    private static final String PREF_BRAVE_ORIGIN = "brave_origin";
     private static final String PREF_USE_CUSTOM_TABS = "use_custom_tabs";
     private static final String PREF_LANGUAGES = "languages";
     private static final String PREF_BRAVE_LANGUAGES = "brave_languages";
@@ -350,6 +354,12 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
             setPreferenceOrder(PREF_USE_CUSTOM_TABS, ++generalOrder);
         }
 
+        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_ORIGIN)) {
+            setPreferenceOrder(PREF_BRAVE_ORIGIN, ++generalOrder);
+        } else {
+            removePreferenceIfPresent(PREF_BRAVE_ORIGIN);
+        }
+
         int displaySectionOrder = generalOrder;
         setPreferenceOrder(PREF_DISPLAY_SECTION, ++displaySectionOrder);
 
@@ -499,6 +509,62 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
                 findPreference(PREF_CLOSING_ALL_TABS_CLOSES_BRAVE);
         assumeNonNull(closingAllTabsClosesBravePreference);
         closingAllTabsClosesBravePreference.setOnPreferenceChangeListener(this);
+
+        Preference braveOriginPreference = findPreference(PREF_BRAVE_ORIGIN);
+        if (braveOriginPreference != null) {
+            braveOriginPreference.setOnPreferenceClickListener(
+                    new Preference.OnPreferenceClickListener() {
+                        @Override
+                        public boolean onPreferenceClick(Preference preference) {
+                            handleOriginPreferenceClick();
+                            return true;
+                        }
+                    });
+        }
+    }
+
+    private void handleOriginPreferenceClick() {
+        if (getActivity() == null || getActivity().isFinishing()) {
+            return;
+        }
+
+        // Check if subscription is active
+        boolean isSubscriptionActive =
+                BraveOriginSubscriptionPrefs.getIsSubscriptionActive(getProfile());
+
+        if (!isSubscriptionActive) {
+            Intent intent = new Intent(getActivity(), BraveOriginPlansActivity.class);
+            intent.putExtra(
+                    BraveOriginPlansActivity.EXTRA_IS_INCOGNITO, getProfile().isOffTheRecord());
+            getActivity().startActivity(intent);
+
+            return;
+        }
+
+        // Subscription is active - request credential summary and open activity
+        // BraveOriginPlansActivity if not active
+        // BraveOriginPreferences if active
+        BraveOriginSubscriptionPrefs.requestCredentialSummary(
+                getProfile(),
+                new Callback<Boolean>() {
+                    @Override
+                    public void onResult(Boolean isActive) {
+                        if (getActivity() == null || getActivity().isFinishing()) {
+                            return;
+                        }
+                        if (isActive != null && isActive) {
+                            SettingsNavigationFactory.createSettingsNavigation()
+                                    .startSettings(getActivity(), BraveOriginPreferences.class);
+                        } else {
+                            Intent intent =
+                                    new Intent(getActivity(), BraveOriginPlansActivity.class);
+                            intent.putExtra(
+                                    BraveOriginPlansActivity.EXTRA_IS_INCOGNITO,
+                                    getProfile().isOffTheRecord());
+                            getActivity().startActivity(intent);
+                        }
+                    }
+                });
     }
 
     private void initRateBrave() {

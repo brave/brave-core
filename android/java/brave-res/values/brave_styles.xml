@@ -411,6 +411,10 @@
         <item name="fontWeight">400</item>
     </style>
 
+    <style name="LargeRegularPrimitiveBlurple40" parent="LargeRegular">>
+        <item name="android:textColor">@color/primitive_blurple_40</item>
+    </style>
+
     <style name="LargeSemibold">
         <!-- Default browser size for fonts -->
         <item name="android:textSize">@dimen/large_semibold</item>

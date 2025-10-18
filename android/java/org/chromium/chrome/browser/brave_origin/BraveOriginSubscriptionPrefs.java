@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.brave_origin;
 
+import android.app.Activity;
 import android.util.Base64;
 
 import org.json.JSONException;
@@ -22,6 +23,8 @@ import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.settings.BraveOriginPreferences;
+import org.chromium.chrome.browser.settings.SettingsNavigationFactory;
 import org.chromium.components.prefs.PrefService;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.skus.mojom.SkusResult;
@@ -61,6 +64,21 @@ public class BraveOriginSubscriptionPrefs {
         }
         UserPrefs.get(profile)
                 .setBoolean(BravePref.BRAVE_ORIGIN_SUBSCRIPTION_ACTIVE_ANDROID, value);
+    }
+
+    /**
+     * Gets the Origin subscription active status for the given profile.
+     *
+     * @param profile The profile to use for preference retrieval
+     * @return The subscription active status, or false if profile is null
+     */
+    public static boolean getIsSubscriptionActive(@Nullable Profile profile) {
+        if (profile == null) {
+            Log.e(TAG, "getIsSubscriptionActive profile is null");
+            return false;
+        }
+        return UserPrefs.get(profile)
+                .getBoolean(BravePref.BRAVE_ORIGIN_SUBSCRIPTION_ACTIVE_ANDROID);
     }
 
     /**
@@ -247,7 +265,9 @@ public class BraveOriginSubscriptionPrefs {
                         if (result == null || result.code != SkusResultCode.OK) {
                             Log.e(
                                     TAG,
-                                    "Failed to fetch order credentials: "
+                                    "Failed to fetch order credentials for order ID: "
+                                            + orderId
+                                            + " "
                                             + (result != null ? result.message : "null result"));
                             return;
                         }
@@ -367,5 +387,19 @@ public class BraveOriginSubscriptionPrefs {
         prefService.setString(BravePref.BRAVE_ORIGIN_ORDER_ID_ANDROID, "");
         prefService.setString(BravePref.BRAVE_ORIGIN_PACKAGE_NAME_ANDROID, "");
         resetSubscriptionLinkedStatus(profile);
+    }
+
+    /**
+     * Opens the Brave Origin preferences settings screen.
+     *
+     * @param activity The activity to use for launching the settings
+     */
+    public static void openOriginPreferences(@Nullable Activity activity) {
+        if (activity == null || activity.isFinishing()) {
+            Log.e(TAG, "openOriginPreferences activity is null or finishing");
+            return;
+        }
+        SettingsNavigationFactory.createSettingsNavigation()
+                .startSettings(activity, BraveOriginPreferences.class);
     }
 }

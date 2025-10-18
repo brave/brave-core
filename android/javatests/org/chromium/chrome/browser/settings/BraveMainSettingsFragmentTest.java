@@ -5,6 +5,8 @@
 
 package org.chromium.chrome.browser.settings;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import android.os.Looper;
@@ -15,10 +17,16 @@ import androidx.test.filters.SmallTest;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import org.chromium.base.BraveFeatureList;
+import org.chromium.base.test.util.CriteriaHelper;
 import org.chromium.base.test.util.DoNotBatch;
+import org.chromium.base.test.util.Features.DisableFeatures;
+import org.chromium.base.test.util.Features.EnableFeatures;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.tracing.settings.DeveloperSettings;
 import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 
@@ -26,8 +34,12 @@ import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 @RunWith(ChromeJUnit4ClassRunner.class)
 @DoNotBatch(reason = "Tests cannot run batched because they launch a Settings activity.")
 public class BraveMainSettingsFragmentTest {
-    private final SettingsActivityTestRule<MainSettings> mSettingsActivityTestRule =
+    private static final String PREF_BRAVE_ORIGIN = "brave_origin";
+
+    @Rule
+    public final SettingsActivityTestRule<MainSettings> mSettingsActivityTestRule =
             new SettingsActivityTestRule<>(MainSettings.class);
+
     private MainSettings mMainSettings;
 
     @Before
@@ -94,6 +106,61 @@ public class BraveMainSettingsFragmentTest {
                     prevPref.getTitle() + " should precede " + pref.getTitle(),
                     pref.getOrder() > prevPref.getOrder());
         }
+    }
+
+    // Test for BraveOrigin pref when feature is disabled. It should not be shown.
+    @Test
+    @SmallTest
+    @DisableFeatures(BraveFeatureList.BRAVE_ORIGIN)
+    public void testBraveOriginPrefNotShownWhenFeatureDisabled() {
+        Assert.assertFalse(
+                "BraveOrigin feature should be disabled",
+                ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_ORIGIN));
+        startSettings();
+
+        // Wait for async preference updates to complete
+        // Note: We check getPreferenceScreen().findPreference() directly because
+        // BraveMainPreferencesBase.findPreference() also returns removed preferences
+        CriteriaHelper.pollUiThread(
+                () -> {
+                    return mMainSettings.getPreferenceScreen().findPreference(PREF_BRAVE_ORIGIN)
+                            == null;
+                },
+                "Preference should be removed when feature is disabled",
+                5000L,
+                100L);
+
+        Preference braveOriginPref =
+                mMainSettings.getPreferenceScreen().findPreference(PREF_BRAVE_ORIGIN);
+        assertNull(
+                "PREF_BRAVE_ORIGIN should not be shown when feature is disabled", braveOriginPref);
+    }
+
+    // Test for BraveOrigin pref when feature is enabled. It should be shown.
+    @Test
+    @SmallTest
+    @EnableFeatures(BraveFeatureList.BRAVE_ORIGIN)
+    public void testBraveOriginPrefShownWhenFeatureEnabled() {
+        Assert.assertTrue(
+                "BraveOrigin feature should be enabled",
+                ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_ORIGIN));
+        startSettings();
+
+        // Wait for async preference updates to complete
+        // Note: We check getPreferenceScreen().findPreference() directly because
+        // BraveMainPreferencesBase.findPreference() also returns removed preferences
+        CriteriaHelper.pollUiThread(
+                () -> {
+                    return mMainSettings.getPreferenceScreen().findPreference(PREF_BRAVE_ORIGIN)
+                            != null;
+                },
+                "Preference should be present when feature is enabled",
+                5000L,
+                100L);
+
+        Preference braveOriginPref =
+                mMainSettings.getPreferenceScreen().findPreference(PREF_BRAVE_ORIGIN);
+        assertNotNull("PREF_BRAVE_ORIGIN should be shown when feature is enabled", braveOriginPref);
     }
 
     private void startSettings() {
