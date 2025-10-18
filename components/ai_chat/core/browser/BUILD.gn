@@ -89,6 +89,7 @@ static_library("browser") {
 
   deps = [
     ":generated_brave_search_responses",
+    "ollama",
     "//brave/brave_domains",
     "//brave/components/ai_chat/core/common",
     "//brave/components/ai_chat/core/common/buildflags",
@@ -174,6 +175,7 @@ source_set("unit_tests") {
 
   deps = [
     ":test_support",
+    "ollama:unit_tests",
     "//base/test:test_support",
     "//brave/components/ai_chat/core/browser",
     "//brave/components/ai_chat/core/common",

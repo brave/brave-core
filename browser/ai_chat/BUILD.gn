@@ -244,6 +244,7 @@ source_set("unit_tests") {
     "//components/services/paint_preview_compositor/public/mojom",
     "//content/public/browser",
     "//content/test:test_support",
+    "//services/network:test_support",
     "//testing/gtest",
     "//url",
   ]
