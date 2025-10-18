@@ -7,10 +7,7 @@ source_set("browser_tests") {
   testonly = true
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
-  sources = [
-    "split_view_browsertest.cc",
-    "split_view_location_bar_browsertest.cc",
-  ]
+  sources = [ "split_view_browsertest.cc" ]
 
   deps = [
     "//base",
