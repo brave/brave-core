@@ -609,24 +609,16 @@ void BraveNewsController::OnPromotedItemView(
     const std::string& item_id,
     const std::string& creative_instance_id) {
   DVLOG(1) << __FUNCTION__;
-  if (ads_service_ && !item_id.empty() && !creative_instance_id.empty()) {
-    ads_service_->TriggerPromotedContentAdEvent(
-        item_id, creative_instance_id,
-        brave_ads::mojom::PromotedContentAdEventType::kViewedImpression,
-        /*intentional*/ base::DoNothing());
-  }
+  // TODO(https://github.com/brave/brave-browser/issues/50311): Remove Brave
+  // News promoted ads code.
 }
 
 void BraveNewsController::OnPromotedItemVisit(
     const std::string& item_id,
     const std::string& creative_instance_id) {
   DVLOG(1) << __FUNCTION__;
-  if (ads_service_ && !item_id.empty() && !creative_instance_id.empty()) {
-    ads_service_->TriggerPromotedContentAdEvent(
-        item_id, creative_instance_id,
-        brave_ads::mojom::PromotedContentAdEventType::kClicked,
-        /*intentional*/ base::DoNothing());
-  }
+  // TODO(https://github.com/brave/brave-browser/issues/50311): Remove Brave
+  // News promoted ads code.
 }
 
 void BraveNewsController::OnNewCardsViewed(uint16_t card_views) {

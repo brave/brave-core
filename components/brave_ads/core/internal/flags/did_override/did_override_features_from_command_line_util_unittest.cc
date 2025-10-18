@@ -16,7 +16,6 @@
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_payment_tokens/redeem_payment_tokens_feature.h"
 #include "brave/components/brave_ads/core/internal/account/utility/tokens_feature.h"
 #include "brave/components/brave_ads/core/internal/ad_units/inline_content_ad/inline_content_ad_feature.h"
-#include "brave/components/brave_ads/core/internal/ad_units/promoted_content_ad/promoted_content_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_feature.h"
 #include "brave/components/brave_ads/core/internal/common/subdivision/subdivision_feature.h"
 #include "brave/components/brave_ads/core/internal/common/test/command_line_switch_test_info.h"
@@ -145,9 +144,6 @@ struct ParamInfo final {
                              kPermissionRulesFeature.name},
      .did_override_from_command_line = true},
     {.command_line_switch = {switches::kEnableFeatures,
-                             kPromotedContentAdFeature.name},
-     .did_override_from_command_line = true},
-    {.command_line_switch = {switches::kEnableFeatures,
                              kPurchaseIntentFeature.name},
      .did_override_from_command_line = true},
     {.command_line_switch = {switches::kEnableFeatures,
@@ -247,9 +243,6 @@ struct ParamInfo final {
      .did_override_from_command_line = true},
     {.command_line_switch = {variations::switches::kForceFieldTrialParams,
                              kPermissionRulesFeature.name},
-     .did_override_from_command_line = true},
-    {.command_line_switch = {variations::switches::kForceFieldTrialParams,
-                             kPromotedContentAdFeature.name},
      .did_override_from_command_line = true},
     {.command_line_switch = {variations::switches::kForceFieldTrialParams,
                              kPurchaseIntentFeature.name},

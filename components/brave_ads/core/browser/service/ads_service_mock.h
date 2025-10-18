@@ -74,13 +74,6 @@ class AdsServiceMock : public AdsService {
               (base::Value::Dict, ParseAndSaveNewTabPageAdsCallback));
 
   MOCK_METHOD(void,
-              TriggerPromotedContentAdEvent,
-              (const std::string&,
-               const std::string&,
-               mojom::PromotedContentAdEventType,
-               TriggerAdEventCallback));
-
-  MOCK_METHOD(void,
               MaybeGetSearchResultAd,
               (const std::string&, MaybeGetSearchResultAdCallback));
   MOCK_METHOD(void,

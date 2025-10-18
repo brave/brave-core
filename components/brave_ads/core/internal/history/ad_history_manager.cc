@@ -10,7 +10,6 @@
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/internal/ad_units/promoted_content_ad/promoted_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_info.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/internal/history/ad_history_builder_util.h"
@@ -84,12 +83,6 @@ void AdHistoryManager::Add(
     const NotificationAdInfo& ad,
     mojom::ConfirmationType mojom_confirmation_type) const {
   MaybeAdd(ad, mojom_confirmation_type, ad.title, ad.body);
-}
-
-void AdHistoryManager::Add(
-    const PromotedContentAdInfo& ad,
-    mojom::ConfirmationType mojom_confirmation_type) const {
-  MaybeAdd(ad, mojom_confirmation_type, ad.title, ad.description);
 }
 
 void AdHistoryManager::Add(

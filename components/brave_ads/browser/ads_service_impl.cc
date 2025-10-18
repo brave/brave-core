@@ -1434,22 +1434,6 @@ void AdsServiceImpl::TriggerNewTabPageAdEvent(
       mojom_ad_event_type, std::move(callback));
 }
 
-void AdsServiceImpl::TriggerPromotedContentAdEvent(
-    const std::string& placement_id,
-    const std::string& creative_instance_id,
-    mojom::PromotedContentAdEventType mojom_ad_event_type,
-    TriggerAdEventCallback callback) {
-  CHECK(mojom::IsKnownEnumValue(mojom_ad_event_type));
-
-  if (!bat_ads_associated_remote_.is_bound()) {
-    return std::move(callback).Run(/*success*/ false);
-  }
-
-  bat_ads_associated_remote_->TriggerPromotedContentAdEvent(
-      placement_id, creative_instance_id, mojom_ad_event_type,
-      std::move(callback));
-}
-
 void AdsServiceImpl::MaybeGetSearchResultAd(
     const std::string& placement_id,
     MaybeGetSearchResultAdCallback callback) {

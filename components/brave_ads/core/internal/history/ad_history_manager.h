@@ -25,7 +25,6 @@ namespace brave_ads {
 struct InlineContentAdInfo;
 struct NewTabPageAdInfo;
 struct NotificationAdInfo;
-struct PromotedContentAdInfo;
 struct SearchResultAdInfo;
 
 class AdHistoryManager final {
@@ -54,8 +53,6 @@ class AdHistoryManager final {
   void Add(const NewTabPageAdInfo& ad,
            mojom::ConfirmationType mojom_confirmation_type) const;
   void Add(const NotificationAdInfo& ad,
-           mojom::ConfirmationType mojom_confirmation_type) const;
-  void Add(const PromotedContentAdInfo& ad,
            mojom::ConfirmationType mojom_confirmation_type) const;
   void Add(const SearchResultAdInfo& ad,
            mojom::ConfirmationType mojom_confirmation_type) const;

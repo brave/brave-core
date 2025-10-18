@@ -19,7 +19,6 @@ namespace {
 constexpr char kUndefinedType[] = "";
 constexpr char kNotificationAdType[] = "ad_notification";
 constexpr char kNewTabPageAdType[] = "new_tab_page_ad";
-constexpr char kPromotedContentAdType[] = "promoted_content_ad";
 constexpr char kInlineContentAdType[] = "inline_content_ad";
 constexpr char kSearchResultAdType[] = "search_result_ad";
 
@@ -28,7 +27,6 @@ constexpr auto kStringToMojomAdTypeMap =
         {{kUndefinedType, mojom::AdType::kUndefined},
          {kNotificationAdType, mojom::AdType::kNotificationAd},
          {kNewTabPageAdType, mojom::AdType::kNewTabPageAd},
-         {kPromotedContentAdType, mojom::AdType::kPromotedContentAd},
          {kInlineContentAdType, mojom::AdType::kInlineContentAd},
          {kSearchResultAdType, mojom::AdType::kSearchResultAd}});
 
@@ -37,7 +35,6 @@ constexpr auto kMojomAdTypeToStringMap =
         {{mojom::AdType::kUndefined, kUndefinedType},
          {mojom::AdType::kNotificationAd, kNotificationAdType},
          {mojom::AdType::kNewTabPageAd, kNewTabPageAdType},
-         {mojom::AdType::kPromotedContentAd, kPromotedContentAdType},
          {mojom::AdType::kInlineContentAd, kInlineContentAdType},
          {mojom::AdType::kSearchResultAd, kSearchResultAdType}});
 

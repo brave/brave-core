@@ -98,7 +98,7 @@ TEST_F(BraveAdsCreativeInstanceExclusionRuleTest,
   ad_events.push_back(ad_event_2);
 
   const AdEventInfo ad_event_3 = test::BuildAdEvent(
-      creative_ad, mojom::AdType::kPromotedContentAd,
+      creative_ad, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kServedImpression, /*created_at=*/test::Now(),
       /*should_generate_random_uuids=*/true);
   ad_events.push_back(ad_event_3);

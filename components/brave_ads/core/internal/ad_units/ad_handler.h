@@ -14,7 +14,6 @@
 #include "brave/components/brave_ads/core/internal/ad_units/inline_content_ad/inline_content_ad_handler.h"
 #include "brave/components/brave_ads/core/internal/ad_units/new_tab_page_ad/new_tab_page_ad_handler.h"
 #include "brave/components/brave_ads/core/internal/ad_units/notification_ad/notification_ad_handler.h"
-#include "brave/components/brave_ads/core/internal/ad_units/promoted_content_ad/promoted_content_ad_handler.h"
 #include "brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_handler.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog.h"
 #include "brave/components/brave_ads/core/internal/common/subdivision/subdivision.h"
@@ -67,12 +66,6 @@ class AdHandler final : public ConversionsObserver, SiteVisitObserver {
       mojom::NotificationAdEventType mojom_ad_event_type,
       TriggerAdEventCallback callback);
 
-  void TriggerPromotedContentAdEvent(
-      const std::string& placement_id,
-      const std::string& creative_instance_id,
-      mojom::PromotedContentAdEventType mojom_ad_event_type,
-      TriggerAdEventCallback callback);
-
   std::optional<mojom::CreativeSearchResultAdInfoPtr> MaybeGetSearchResultAd(
       const std::string& placement_id);
 
@@ -123,7 +116,6 @@ class AdHandler final : public ConversionsObserver, SiteVisitObserver {
   InlineContentAdHandler inline_content_ad_handler_;
   NewTabPageAdHandler new_tab_page_ad_handler_;
   NotificationAdHandler notification_ad_handler_;
-  PromotedContentAdHandler promoted_content_ad_handler_;
   SearchResultAdHandler search_result_ad_handler_;
 };
 

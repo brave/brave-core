@@ -292,21 +292,6 @@ void AdsServiceImplIOS::TriggerNewTabPageAdEvent(
                                  std::move(callback));
 }
 
-void AdsServiceImplIOS::TriggerPromotedContentAdEvent(
-    const std::string& placement_id,
-    const std::string& creative_instance_id,
-    mojom::PromotedContentAdEventType mojom_ad_event_type,
-    TriggerAdEventCallback callback) {
-  CHECK(mojom::IsKnownEnumValue(mojom_ad_event_type));
-
-  if (!IsInitialized()) {
-    return std::move(callback).Run(/*success*/ false);
-  }
-
-  ads_->TriggerPromotedContentAdEvent(placement_id, creative_instance_id,
-                                      mojom_ad_event_type, std::move(callback));
-}
-
 void AdsServiceImplIOS::MaybeGetSearchResultAd(
     const std::string& placement_id,
     MaybeGetSearchResultAdCallback callback) {

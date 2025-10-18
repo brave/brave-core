@@ -227,23 +227,6 @@ void AdsImpl::TriggerNotificationAdEvent(
                                             std::move(callback));
 }
 
-void AdsImpl::TriggerPromotedContentAdEvent(
-    const std::string& placement_id,
-    const std::string& creative_instance_id,
-    mojom::PromotedContentAdEventType mojom_ad_event_type,
-    TriggerAdEventCallback callback) {
-  if (task_queue_.should_queue()) {
-    return task_queue_.Add(base::BindOnce(
-        &AdsImpl::TriggerPromotedContentAdEvent, weak_factory_.GetWeakPtr(),
-        placement_id, creative_instance_id, mojom_ad_event_type,
-        std::move(callback)));
-  }
-
-  GetAdHandler().TriggerPromotedContentAdEvent(
-      placement_id, creative_instance_id, mojom_ad_event_type,
-      std::move(callback));
-}
-
 void AdsImpl::MaybeGetSearchResultAd(const std::string& placement_id,
                                      MaybeGetSearchResultAdCallback callback) {
   if (task_queue_.should_queue()) {

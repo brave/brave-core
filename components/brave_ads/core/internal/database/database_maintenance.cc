@@ -54,7 +54,6 @@ void MaybePurgeBraveNewsAdEvents() {
 
   if (!UserHasOptedInToBraveNewsAds()) {
     PurgeAdEventsForType(mojom::AdType::kInlineContentAd);
-    PurgeAdEventsForType(mojom::AdType::kPromotedContentAd);
   }
 }
 

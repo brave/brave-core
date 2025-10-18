@@ -34,7 +34,6 @@ AdHandler::AdHandler()
       notification_ad_handler_(site_visit_,
                                subdivision_targeting_,
                                anti_targeting_resource_),
-      promoted_content_ad_handler_(site_visit_),
       search_result_ad_handler_(site_visit_) {
   conversions_observation_.Observe(&conversions_);
   site_visit_observation_.Observe(&site_visit_);
@@ -76,18 +75,6 @@ void AdHandler::TriggerNewTabPageAdEvent(
   new_tab_page_ad_handler_.TriggerEvent(placement_id, creative_instance_id,
                                         mojom_ad_event_type,
                                         std::move(callback));
-}
-
-void AdHandler::TriggerPromotedContentAdEvent(
-    const std::string& placement_id,
-    const std::string& creative_instance_id,
-    mojom::PromotedContentAdEventType mojom_ad_event_type,
-    TriggerAdEventCallback callback) {
-  CHECK(!placement_id.empty());
-
-  promoted_content_ad_handler_.TriggerEvent(placement_id, creative_instance_id,
-                                            mojom_ad_event_type,
-                                            std::move(callback));
 }
 
 void AdHandler::MaybeServeInlineContentAd(

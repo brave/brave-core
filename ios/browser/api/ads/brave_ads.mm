@@ -1586,22 +1586,6 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
       base::BindOnce(completion));
 }
 
-- (void)triggerPromotedContentAdEvent:(NSString*)placementId
-                   creativeInstanceId:(NSString*)creativeInstanceId
-                            eventType:
-                                (BraveAdsPromotedContentAdEventType)eventType
-                           completion:(void (^)(BOOL success))completion {
-  if (![self isServiceRunning]) {
-    return completion(/*success=*/false);
-  }
-
-  adsService->TriggerPromotedContentAdEvent(
-      base::SysNSStringToUTF8(placementId),
-      base::SysNSStringToUTF8(creativeInstanceId),
-      static_cast<brave_ads::mojom::PromotedContentAdEventType>(eventType),
-      base::BindOnce(completion));
-}
-
 - (void)triggerSearchResultAdClickedEvent:(NSString*)placementId
                                completion:(void (^)(BOOL success))completion {
   if (![self isServiceRunning]) {

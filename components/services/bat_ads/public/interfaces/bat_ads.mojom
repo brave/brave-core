@@ -176,12 +176,6 @@ interface BatAds {
       brave_ads.mojom.NotificationAdEventType mojom_ad_event_type) =>
           (bool success);
 
-  TriggerPromotedContentAdEvent(
-      string placement_id,
-      string creative_instance_id,
-      brave_ads.mojom.PromotedContentAdEventType mojom_ad_event_type) =>
-          (bool success);
-
   MaybeGetSearchResultAd(string placement_id) =>
       (brave_ads.mojom.CreativeSearchResultAdInfo? search_result_ad);
   TriggerSearchResultAdEvent(

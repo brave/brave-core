@@ -183,19 +183,6 @@ void BatAdsImpl::TriggerNewTabPageAdEvent(
                                                   /*success=*/false));
 }
 
-void BatAdsImpl::TriggerPromotedContentAdEvent(
-    const std::string& placement_id,
-    const std::string& creative_instance_id,
-    brave_ads::mojom::PromotedContentAdEventType mojom_ad_event_type,
-    TriggerPromotedContentAdEventCallback callback) {
-  CHECK(brave_ads::mojom::IsKnownEnumValue(mojom_ad_event_type));
-
-  GetAds()->TriggerPromotedContentAdEvent(
-      placement_id, creative_instance_id, mojom_ad_event_type,
-      mojo::WrapCallbackWithDefaultInvokeIfNotRun(std::move(callback),
-                                                  /*success=*/false));
-}
-
 void BatAdsImpl::MaybeServeInlineContentAd(
     const std::string& dimensions,
     MaybeServeInlineContentAdCallback callback) {

@@ -140,12 +140,6 @@ OBJC_EXPORT
                          eventType:(BraveAdsNotificationAdEventType)eventType
                         completion:(void (^)(BOOL success))completion;
 
-- (void)triggerPromotedContentAdEvent:(NSString*)placementId
-                   creativeInstanceId:(NSString*)creativeInstanceId
-                            eventType:
-                                (BraveAdsPromotedContentAdEventType)eventType
-                           completion:(void (^)(BOOL success))completion;
-
 - (void)triggerSearchResultAdClickedEvent:(NSString*)placementId
                                completion:(void (^)(BOOL success))completion;
 

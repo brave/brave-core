@@ -37,8 +37,7 @@ TEST_F(BraveAdsConversionsUtilInternalTest,
       const auto confirmation_type = static_cast<mojom::ConfirmationType>(j);
 
       bool expected_can_convert_ad_event;
-      if (mojom_ad_type == mojom::AdType::kInlineContentAd ||
-          mojom_ad_type == mojom::AdType::kPromotedContentAd) {
+      if (mojom_ad_type == mojom::AdType::kInlineContentAd) {
         // For non-Rewards users who have opted into Brave News, allow
         // view-through and click-through conversions.
         expected_can_convert_ad_event =

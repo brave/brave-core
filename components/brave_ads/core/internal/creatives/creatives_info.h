@@ -10,7 +10,6 @@
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
-#include "brave/components/brave_ads/core/internal/creatives/promoted_content_ads/creative_promoted_content_ad_info.h"
 
 namespace brave_ads {
 
@@ -28,7 +27,6 @@ struct CreativesInfo final {
   CreativeInlineContentAdList inline_content_ads;
   CreativeNewTabPageAdList new_tab_page_ads;
   CreativeNotificationAdList notification_ads;
-  CreativePromotedContentAdList promoted_content_ads;
 
   CreativeSetConversionList conversions;
 };

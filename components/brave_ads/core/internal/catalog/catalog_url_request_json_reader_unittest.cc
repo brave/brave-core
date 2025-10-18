@@ -15,7 +15,6 @@
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/creative/catalog_type_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/creative/inline_content_ad/catalog_creative_inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/creative/notification_ad/catalog_creative_notification_ad_info.h"
-#include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/creative/promoted_content_ad/catalog_creative_promoted_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/test/file_test_util.h"
@@ -77,27 +76,6 @@ CatalogCampaignInfo BuildCatalogCampaign1() {
       GURL("https://brave.com/1/notification_ad");
   catalog_creative_notification_ads.push_back(catalog_creative_notification_ad);
 
-  // Creative Promoted Content Ads
-  CatalogCreativePromotedContentAdList catalog_creative_promoted_content_ads;
-
-  CatalogCreativePromotedContentAdInfo catalog_creative_promoted_content_ad;
-  catalog_creative_promoted_content_ad.instance_id =
-      "60001aa5-9368-45d2-81fc-e69887d278c5";
-  CatalogTypeInfo catalog_type_promoted_content_ad_type;
-  catalog_type_promoted_content_ad_type.code = "promoted_content_all_v1";
-  catalog_type_promoted_content_ad_type.name = "promoted_content";
-  catalog_type_promoted_content_ad_type.platform = "all";
-  catalog_type_promoted_content_ad_type.version = 1;
-  catalog_creative_promoted_content_ad.type =
-      catalog_type_promoted_content_ad_type;
-  catalog_creative_promoted_content_ad.payload.title = "Promoted Content 1";
-  catalog_creative_promoted_content_ad.payload.description =
-      "Test Promoted Content Ad Campaign 1";
-  catalog_creative_promoted_content_ad.payload.target_url =
-      GURL("https://brave.com/1/promoted_content_ad");
-  catalog_creative_promoted_content_ads.push_back(
-      catalog_creative_promoted_content_ad);
-
   // Creative Inline Content Ads
   CatalogCreativeInlineContentAdList catalog_creative_inline_content_ads;
 
@@ -150,8 +128,6 @@ CatalogCampaignInfo BuildCatalogCampaign1() {
       catalog_creative_notification_ads;
   catalog_creative_set.creative_inline_content_ads =
       catalog_creative_inline_content_ads;
-  catalog_creative_set.creative_promoted_content_ads =
-      catalog_creative_promoted_content_ads;
   catalog_creative_set.conversions = catalog_conversions;
   catalog_creative_sets.push_back(catalog_creative_set);
 
@@ -237,27 +213,6 @@ CatalogCampaignInfo BuildCatalogCampaign2() {
       GURL("https://brave.com/2/notification_ad");
   catalog_creative_notification_ads.push_back(catalog_creative_notification_ad);
 
-  // Creative Promoted Content Ads
-  CatalogCreativePromotedContentAdList catalog_creative_promoted_content_ads;
-
-  CatalogCreativePromotedContentAdInfo catalog_creative_promoted_content_ad;
-  catalog_creative_promoted_content_ad.instance_id =
-      "9f2f49ab-77d7-4e99-9428-472dc8e04f90";
-  CatalogTypeInfo catalog_type_promoted_content_ad_type;
-  catalog_type_promoted_content_ad_type.code = "promoted_content_all_v1";
-  catalog_type_promoted_content_ad_type.name = "promoted_content";
-  catalog_type_promoted_content_ad_type.platform = "all";
-  catalog_type_promoted_content_ad_type.version = 1;
-  catalog_creative_promoted_content_ad.type =
-      catalog_type_promoted_content_ad_type;
-  catalog_creative_promoted_content_ad.payload.title = "Promoted Content 2";
-  catalog_creative_promoted_content_ad.payload.description =
-      "Test Promoted Content Ad Campaign 2";
-  catalog_creative_promoted_content_ad.payload.target_url =
-      GURL("https://brave.com/2/promoted_content_ad");
-  catalog_creative_promoted_content_ads.push_back(
-      catalog_creative_promoted_content_ad);
-
   // Creative Inline Content Ads
   CatalogCreativeInlineContentAdList catalog_creative_inline_content_ads;
 
@@ -307,8 +262,6 @@ CatalogCampaignInfo BuildCatalogCampaign2() {
   catalog_creative_set.oses = catalog_oses;
   catalog_creative_set.creative_notification_ads =
       catalog_creative_notification_ads;
-  catalog_creative_set.creative_promoted_content_ads =
-      catalog_creative_promoted_content_ads;
   catalog_creative_set.creative_inline_content_ads =
       catalog_creative_inline_content_ads;
   catalog_creative_set.conversions = catalog_conversions;

@@ -285,38 +285,6 @@ std::optional<CatalogCreativeInlineContentAdInfo> ParseCreativeInlineContentAd(
   return creative;
 }
 
-std::optional<CatalogCreativePromotedContentAdInfo>
-ParseCreativePromotedContentAd(const base::Value::Dict& dict) {
-  CatalogCreativePromotedContentAdInfo creative;
-
-  const std::string* const title = dict.FindString("title");
-  if (!title || title->empty()) {
-    BLOG(1, "Invalid promoted content ad title");
-    return std::nullopt;
-  }
-  creative.payload.title = *title;
-
-  const std::string* const description = dict.FindString("description");
-  if (!description || description->empty()) {
-    BLOG(1, "Invalid promoted content ad description");
-    return std::nullopt;
-  }
-  creative.payload.description = *description;
-
-  const std::string* const feed = dict.FindString("feed");
-  if (!feed || feed->empty()) {
-    BLOG(1, "Invalid promoted content ad feed URL");
-    return std::nullopt;
-  }
-  creative.payload.target_url = GURL(*feed);
-  if (!ShouldSupportUrl(creative.payload.target_url)) {
-    BLOG(1, "Unsupported promoted content ad feed URL");
-    return std::nullopt;
-  }
-
-  return creative;
-}
-
 std::optional<CatalogTypeInfo> ParseCreativeType(
     const base::Value::Dict& dict) {
   const base::Value::Dict* const type_dict = dict.FindDict("type");
@@ -434,12 +402,6 @@ bool ParseCreative(const base::Value::Dict& dict,
     return ParseCreativeForType<CatalogCreativeInlineContentAdInfo>(
         ParseCreativeInlineContentAd, creative_set, *creative_instance_id,
         *payload_dict, *type, creative_set.creative_inline_content_ads);
-  }
-
-  if (type->code == "promoted_content_all_v1") {
-    return ParseCreativeForType<CatalogCreativePromotedContentAdInfo>(
-        ParseCreativePromotedContentAd, creative_set, *creative_instance_id,
-        *payload_dict, *type, creative_set.creative_promoted_content_ads);
   }
 
   // Unsupported type, ignore it to avoid failing the entire catalog.

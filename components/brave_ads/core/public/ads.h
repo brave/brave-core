@@ -139,20 +139,6 @@ class Ads {
       mojom::NotificationAdEventType mojom_ad_event_type,
       TriggerAdEventCallback callback) = 0;
 
-  // Called when a user views or interacts with a promoted content ad to trigger
-  // a `mojom_ad_event_type` event for the specified `placement_id` and
-  // `creative_instance_id`. `placement_id` should be a 128-bit random UUID in
-  // the form of version 4. See RFC 4122, section 4.4. The same `placement_id`
-  // generated for the viewed impression event should be used for all other
-  // events for the same ad placement. The callback takes one argument - `bool`
-  // is set to `true` if successful otherwise `false`. Must be called before the
-  // `mojom::PromotedContentAdEventType::target_url` landing page is opened.
-  virtual void TriggerPromotedContentAdEvent(
-      const std::string& placement_id,
-      const std::string& creative_instance_id,
-      mojom::PromotedContentAdEventType mojom_ad_event_type,
-      TriggerAdEventCallback callback) = 0;
-
   // Called to get the search result ad specified by `placement_id`. The
   // callback takes one argument - `mojom::CreativeSearchResultAdInfoPtr`
   // containing the info of the search result ad.

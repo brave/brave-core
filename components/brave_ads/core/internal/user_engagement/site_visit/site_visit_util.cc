@@ -18,8 +18,7 @@ namespace brave_ads {
 
 bool IsAllowedToLandOnPage(mojom::AdType mojom_ad_type) {
   switch (mojom_ad_type) {
-    case mojom::AdType::kInlineContentAd:
-    case mojom::AdType::kPromotedContentAd: {
+    case mojom::AdType::kInlineContentAd: {
       // Only if:
       // - The user has joined Brave News.
       return UserHasOptedInToBraveNewsAds();

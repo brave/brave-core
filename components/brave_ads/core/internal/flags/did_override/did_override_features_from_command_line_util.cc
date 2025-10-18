@@ -19,7 +19,6 @@
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_payment_tokens/redeem_payment_tokens_feature.h"
 #include "brave/components/brave_ads/core/internal/account/utility/tokens_feature.h"
 #include "brave/components/brave_ads/core/internal/ad_units/inline_content_ad/inline_content_ad_feature.h"
-#include "brave/components/brave_ads/core/internal/ad_units/promoted_content_ad/promoted_content_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_feature.h"
 #include "brave/components/brave_ads/core/internal/common/subdivision/subdivision_feature.h"
 #include "brave/components/brave_ads/core/internal/reminders/reminders_feature.h"
@@ -70,7 +69,6 @@ const base::Feature* const kFeatures[] = {
     &kNotificationAdFeature,
     &kNotificationAdServingFeature,
     &kPermissionRulesFeature,
-    &kPromotedContentAdFeature,
     &kPurchaseIntentFeature,
     &kRedeemPaymentTokensFeature,
     &kRemindersFeature,
