@@ -89,7 +89,10 @@ WorkerContentSettingsClient_BraveImpl::GetBraveShieldsSettings(
                           HasContentSettingsRules());
     base::debug::DumpWithoutCrashing();
     return brave_shields::mojom::ShieldsSettings::New(
-        farbling_level, base::Token(), std::vector<std::string>(), false);
+        farbling_level, base::Token(),
+        /*origins_to_allow_scripts=*/std::vector<std::string>(),
+        /*reduce_language=*/false,
+        /*global_privacy_control_disabled_by_policy=*/false);
   }
 }
 

@@ -764,7 +764,8 @@ BraveContentBrowserClient::WorkerGetBraveShieldSettings(
 
   return brave_shields::mojom::ShieldsSettings::New(
       farbling_level, farbling_token, std::vector<std::string>(),
-      brave_shields::IsReduceLanguageEnabledForProfile(pref_service));
+      brave_shields::IsReduceLanguageEnabledForProfile(pref_service),
+      pref_service->GetBoolean(kGlobalPrivacyControlDisabledByPolicy));
 }
 
 content::ContentBrowserClient::AllowWebBluetoothResult

@@ -5,7 +5,9 @@
 
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/shields_settings.mojom-shared.h"
+#include "brave/components/constants/pref_names.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
+#include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
 
 #include <chrome/browser/content_settings/content_settings_manager_delegate.cc>
@@ -42,7 +44,8 @@ brave_shields::mojom::ShieldsSettingsPtr GetBraveShieldsSettingsOnUI(
 
   return brave_shields::mojom::ShieldsSettings::New(
       farbling_level, farbling_token, std::vector<std::string>(),
-      brave_shields::IsReduceLanguageEnabledForProfile(pref_service));
+      brave_shields::IsReduceLanguageEnabledForProfile(pref_service),
+      pref_service->GetBoolean(kGlobalPrivacyControlDisabledByPolicy));
 }
 
 }  // namespace

@@ -29,6 +29,9 @@ class GURL;
   virtual bool IsReduceLanguageEnabled() {                                  \
     return false;                                                           \
   }                                                                         \
+  virtual bool IsGlobalPrivacyControlDisabledByPolicy() {                   \
+    return false;                                                           \
+  }                                                                         \
   virtual blink::WebSecurityOrigin GetEphemeralStorageOriginSync() {        \
     return blink::WebSecurityOrigin();                                      \
   }                                                                         \
