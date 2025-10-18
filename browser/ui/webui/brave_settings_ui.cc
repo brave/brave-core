@@ -338,7 +338,11 @@ void BraveSettingsUI::BindInterface(
   auto* profile = Profile::FromWebUI(web_ui());
   auto* brave_origin_service =
       brave_origin::BraveOriginServiceFactory::GetForProfile(profile);
-  auto handler = std::make_unique<brave_origin::BraveOriginSettingsHandlerImpl>(
-      brave_origin_service);
-  mojo::MakeSelfOwnedReceiver(std::move(handler), std::move(receiver));
+  // Service may be null for Guest profiles
+  if (brave_origin_service) {
+    auto handler =
+        std::make_unique<brave_origin::BraveOriginSettingsHandlerImpl>(
+            brave_origin_service);
+    mojo::MakeSelfOwnedReceiver(std::move(handler), std::move(receiver));
+  }
 }
