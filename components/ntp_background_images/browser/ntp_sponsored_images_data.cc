@@ -6,6 +6,8 @@
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_images_data.h"
 
 #include "base/check.h"
+#include "base/debug/crash_logging.h"
+#include "base/debug/dump_without_crashing.h"
 #include "base/files/file_path.h"
 #include "base/logging.h"
 #include "base/strings/string_util.h"
@@ -474,6 +476,11 @@ const Creative* NTPSponsoredImagesData::GetCreativeByInstanceId(
       }
     }
   }
+  SCOPED_CRASH_KEY_STRING64("Issue50267", "creative_instance_id",
+                            creative_instance_id);
+  SCOPED_CRASH_KEY_STRING64("Issue50267", "failure_reason",
+                            "Failed to get creative by instance id");
+  base::debug::DumpWithoutCrashing();
   return nullptr;
 }
 
