@@ -51,11 +51,12 @@ class BraveAccountServiceTest : public testing::TestWithParam<const TestCase*> {
             TRAFFIC_ANNOTATION_FOR_TESTS,
             test_url_loader_factory_.GetSafeWeakWrapper());
     mock_api_request_helper_ = mock_api_request_helper.get();
-    auto os_crypt_callback = base::BindRepeating(
-        &BraveAccountServiceTest::OSCrypt, base::Unretained(this));
     brave_account_service_ = base::WrapUnique(new BraveAccountService(
-        &pref_service_, std::move(mock_api_request_helper), os_crypt_callback,
-        os_crypt_callback));
+        &pref_service_, std::move(mock_api_request_helper),
+        base::BindRepeating(&BraveAccountServiceTest::Encrypt,
+                            base::Unretained(this)),
+        base::BindRepeating(&BraveAccountServiceTest::Decrypt,
+                            base::Unretained(this))));
   }
 
   void RunTestCase() {
@@ -85,18 +86,28 @@ class BraveAccountServiceTest : public testing::TestWithParam<const TestCase*> {
           return api_request_helper::MockAPIRequestHelper::Ticket();
         });
 
-    base::test::TestFuture<typename TestCase::MojoExpected> future;
-    TestCase::Run(CHECK_DEREF(brave_account_service_.get()), test_case,
-                  future.GetCallback());
-    EXPECT_EQ(future.Take(), test_case.mojo_expected);
+    if constexpr (requires { typename TestCase::MojoExpected; }) {
+      base::test::TestFuture<typename TestCase::MojoExpected> future;
+      TestCase::Run(test_case, CHECK_DEREF(brave_account_service_.get()),
+                    future.GetCallback());
+      EXPECT_EQ(future.Take(), test_case.mojo_expected);
+    } else {
+      TestCase::Run(test_case, pref_service_, task_environment_);
+    }
   }
 
-  bool OSCrypt(const std::string& in, std::string* out) {
+  bool Encrypt(const std::string& in, std::string* out) {
     *out = in;
-    return !CHECK_DEREF(this->GetParam()).fail_cryptography;
+    return !CHECK_DEREF(this->GetParam()).fail_encryption;
   }
 
-  base::test::TaskEnvironment task_environment_;
+  bool Decrypt(const std::string& in, std::string* out) {
+    *out = in;
+    return !CHECK_DEREF(this->GetParam()).fail_decryption;
+  }
+
+  base::test::TaskEnvironment task_environment_{
+      base::test::TaskEnvironment::TimeSource::MOCK_TIME};
   base::test::ScopedFeatureList scoped_feature_list_{features::kBraveAccount};
   TestingPrefServiceSimple pref_service_;
   network::TestURLLoaderFactory test_url_loader_factory_;
