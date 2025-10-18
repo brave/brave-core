@@ -15,7 +15,6 @@
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/new_tab/new_tab_shows_options.h"
 #include "brave/browser/ntp_background/brave_ntp_custom_background_service_factory.h"
-#include "brave/browser/ntp_background/ntp_p3a_helper_impl.h"
 #include "brave/browser/ui/brave_ui_features.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/new_tab_page_initializer.h"
 #include "brave/browser/ui/webui/brave_sanitized_image_source.h"
@@ -159,13 +158,8 @@ BraveNewTabUI::BraveNewTabUI(
   source->AddString("ntpNewTabTakeoverRichMediaUrl",
                     kNTPNewTabTakeoverRichMediaUrl);
 
-  ntp_background_images::NTPP3AHelper* ntp_p3a_helper = nullptr;
-  if (view_counter_service != nullptr) {
-    ntp_p3a_helper = view_counter_service->GetP3AHelper();
-  }
   rich_media_ad_event_handler_ = std::make_unique<
-      ntp_background_images::NTPSponsoredRichMediaAdEventHandler>(
-      ads_service, ntp_p3a_helper);
+      ntp_background_images::NTPSponsoredRichMediaAdEventHandler>(ads_service);
 
   source->AddLocalizedStrings(webui::kBraveNewsStrings);
 

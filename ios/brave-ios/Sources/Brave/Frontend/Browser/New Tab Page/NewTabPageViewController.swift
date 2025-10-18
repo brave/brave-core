@@ -165,7 +165,6 @@ class NewTabPageViewController: UIViewController {
   private var cancellables: Set<AnyCancellable> = []
   private let privateBrowsingManager: PrivateBrowsingManager
 
-  private let p3aHelper: NewTabPageP3AHelper
   private let profilePrefs: any PrefService
 
   init(
@@ -174,8 +173,7 @@ class NewTabPageViewController: UIViewController {
     dataSource: NTPDataSource,
     feedDataSource: FeedDataSource,
     rewards: BraveRewards,
-    privateBrowsingManager: PrivateBrowsingManager,
-    p3aHelper: NewTabPageP3AHelper
+    privateBrowsingManager: PrivateBrowsingManager
   ) {
     self.browserTab = tab
     self.profilePrefs = profilePrefs
@@ -186,7 +184,6 @@ class NewTabPageViewController: UIViewController {
       privateBrowsingManager: privateBrowsingManager,
       profilePrefs: profilePrefs
     )
-    self.p3aHelper = p3aHelper
     background = NewTabPageBackground(dataSource: dataSource, rewards: rewards)
     notifications = NewTabPageNotifications(rewards: rewards)
     collectionView = NewTabCollectionView(frame: .zero, collectionViewLayout: layout)
@@ -688,19 +685,6 @@ class NewTabPageViewController: UIViewController {
     if let tab = browserTab,
       case .sponsoredMedia(let sponsoredBackground) = background.currentBackground
     {
-      let eventType: NewTabPageP3AHelper.EventType? = {
-        switch event {
-        case .clicked: return .tapped
-        case .viewedImpression: return .viewed
-        case .mediaPlay: return .mediaPlay
-        case .media25: return .media25
-        case .media100: return .media100
-        default: return nil
-        }
-      }()
-      if let eventType, sponsoredBackground.metricType == .p3a {
-        p3aHelper.recordEvent(eventType, on: tab, for: sponsoredBackground)
-      }
       rewards.ads.triggerNewTabPageAdEvent(
         background.wallpaperId.uuidString,
         creativeInstanceId: sponsoredBackground.creativeInstanceId,

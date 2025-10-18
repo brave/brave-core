@@ -263,8 +263,6 @@ public class BrowserViewController: UIViewController {
   /// In app purchase obsever for VPN Subscription action
   let iapObserver: BraveVPNInAppPurchaseObserver
 
-  private let ntpP3AHelper: NewTabPageP3AHelper
-
   private let prefsChangeRegistrar: PrefChangeRegistrar
 
   let defaultBrowserHelper: DefaultBrowserHelper = .init()
@@ -334,7 +332,6 @@ public class BrowserViewController: UIViewController {
     )
 
     iapObserver = BraveVPN.iapObserver
-    ntpP3AHelper = .init(p3aUtils: braveCore.p3aUtils, rewards: rewards)
 
     super.init(nibName: nil, bundle: nil)
     didInit()
@@ -1503,8 +1500,7 @@ public class BrowserViewController: UIViewController {
         dataSource: backgroundDataSource,
         feedDataSource: feedDataSource,
         rewards: rewards,
-        privateBrowsingManager: privateBrowsingManager,
-        p3aHelper: ntpP3AHelper
+        privateBrowsingManager: privateBrowsingManager
       )
       // Donate NewTabPage Activity For Custom Suggestions
       let newTabPageActivity =

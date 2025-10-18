@@ -336,12 +336,6 @@ extension Preferences {
     /// Tells the app whether we should show Favourites in new tab page view controller
     public static let showNewTabFavourites =
       Option<Bool>(key: "newtabpage.show-newtab-favourites", default: true)
-
-    /// A Codable json representation of NewTabPageP3AHelperStorage
-    public static let sponsoredImageEventCount = Option<String?>(
-      key: "newtabpage.si-p3a.event-count-constellation",
-      default: nil
-    )
   }
 
   final public class AdblockDebug {

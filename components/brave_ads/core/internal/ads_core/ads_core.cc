@@ -38,8 +38,7 @@ Reactions& AdsCore::GetReactions() {
 void AdsCore::UpdateReportMetricState(
     const std::string& creative_instance_id,
     mojom::NewTabPageAdMetricType mojom_ad_metric_type) {
-  if (mojom_ad_metric_type == mojom::NewTabPageAdMetricType::kDisabled ||
-      mojom_ad_metric_type == mojom::NewTabPageAdMetricType::kP3A) {
+  if (mojom_ad_metric_type == mojom::NewTabPageAdMetricType::kDisabled) {
     disable_metrics_.insert(creative_instance_id);
   } else {
     disable_metrics_.erase(creative_instance_id);

@@ -11,7 +11,6 @@
 #include <string>
 #include <vector>
 
-#include "base/functional/callback_forward.h"
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
@@ -45,7 +44,6 @@ class WeeklyStorage;
 namespace ntp_background_images {
 
 class BraveNTPCustomBackgroundService;
-class NTPP3AHelper;
 
 struct NTPBackgroundImagesData;
 struct NTPSponsoredImagesData;
@@ -62,7 +60,6 @@ class ViewCounterService : public KeyedService,
                      brave_ads::AdsService* ads_service,
                      PrefService* prefs,
                      PrefService* local_state,
-                     std::unique_ptr<NTPP3AHelper> ntp_p3a_helper,
                      bool is_supported_locale);
   ~ViewCounterService() override;
 
@@ -107,10 +104,6 @@ class ViewCounterService : public KeyedService,
   NTPSponsoredImagesData* GetSponsoredImagesData() const;
 
   void InitializeWebUIDataSource(content::WebUIDataSource* html_source);
-
-  void OnTabURLChanged(const GURL& url);
-
-  NTPP3AHelper* GetP3AHelper() const;
 
  private:
   friend class ViewCounterServiceTest;
@@ -214,7 +207,6 @@ class ViewCounterService : public KeyedService,
   std::unique_ptr<WeeklyStorage> new_tab_count_state_;
   std::unique_ptr<WeeklyStorage> branded_new_tab_count_state_;
 
-  std::unique_ptr<NTPP3AHelper> ntp_p3a_helper_;
   base::ScopedObservation<NTPBackgroundImagesService,
                           NTPBackgroundImagesService::Observer>
       ntp_background_images_service_observation_{this};
