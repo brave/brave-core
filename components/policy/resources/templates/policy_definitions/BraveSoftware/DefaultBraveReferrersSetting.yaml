@@ -1,0 +1,35 @@
+caption: Control referrer information access
+default: null
+desc: |-
+  This policy determines whether websites can access referrer information when users navigate from one site to another.
+
+            If this policy is set to 1 (AllowReferrer), referrer header transmission is allowed.
+
+            If this policy is set to 2 (BlockReferrer), referrer header transmission is blocked.
+
+            If left unset, referrer header transmission is blocked by default, but users can change this via "Block cookies" control in Brave Shields settings (allowed if "Allow all cookies", blocked otherwise).
+example_value: 2
+features:
+  can_be_mandatory: true
+  can_be_recommended: false
+  dynamic_refresh: true
+  per_profile: true
+items:
+- caption: Allow referrer header transmission
+  name: AllowReferrer
+  value: 1
+- caption: Block referrer header transmission
+  name: BlockReferrer
+  value: 2
+owners:
+- managed-policies@brave.com
+schema:
+  enum:
+  - 1
+  - 2
+  type: integer
+supported_on:
+- chrome.*:142-
+- android:142-
+tags: []
+type: int-enum

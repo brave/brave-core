@@ -7,6 +7,7 @@
 
 #include "brave/browser/policy/brave_simple_policy_map.h"
 #include "brave/browser/policy/handlers/brave_https_upgrade_policy_handler.h"
+#include "brave/browser/policy/handlers/brave_referrers_policy_handler.h"
 #include "components/policy/core/browser/configuration_policy_handler.h"
 
 #define BuildHandlerList BuildHandlerList_ChromiumImpl
@@ -26,6 +27,7 @@ std::unique_ptr<ConfigurationPolicyHandlerList> BuildHandlerList(
   }
 
   handlers->AddHandler(std::make_unique<BraveHttpsUpgradePolicyHandler>());
+  handlers->AddHandler(std::make_unique<BraveReferrersPolicyHandler>());
 
   return handlers;
 }
