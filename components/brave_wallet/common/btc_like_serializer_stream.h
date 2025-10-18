@@ -9,13 +9,13 @@
 #include <vector>
 
 #include "base/containers/span.h"
-#include "base/memory/raw_ptr.h"
 
 namespace brave_wallet {
 
 class BtcLikeSerializerStream {
  public:
-  explicit BtcLikeSerializerStream(std::vector<uint8_t>* to) : to_(to) {}
+  BtcLikeSerializerStream();
+  ~BtcLikeSerializerStream();
 
   void Push8(uint8_t i);
   void Push16(uint16_t i);
@@ -26,12 +26,12 @@ class BtcLikeSerializerStream {
   void PushBytes(base::span<const uint8_t> bytes);
   void PushBytesReversed(base::span<const uint8_t> bytes);
 
-  uint32_t serialized_bytes() const { return serialized_bytes_; }
+  std::vector<uint8_t> Take() &&;
+
+  const std::vector<uint8_t>& data() const { return data_; }
 
  private:
-  uint32_t serialized_bytes_ = 0;
-  std::vector<uint8_t>* to() { return to_.get(); }
-  raw_ptr<std::vector<uint8_t>> to_;
+  std::vector<uint8_t> data_;
 };
 
 }  // namespace brave_wallet

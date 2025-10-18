@@ -29,10 +29,10 @@ namespace brave_wallet {
 
 template <size_t const T>
 base::expected<std::optional<std::array<uint8_t, T>>, std::string>
-ReadSizedBlob(sql::Statement& statement, size_t position) {
-  auto columns = statement.ColumnCount();
+ReadSizedBlob(sql::Statement& statement, int position) {
+  int columns = statement.ColumnCount();
   CHECK(columns >= 0);
-  if (position >= static_cast<size_t>(columns)) {
+  if (position >= columns) {
     return base::unexpected("Position mismatch");
   }
 
