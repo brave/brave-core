@@ -34,8 +34,8 @@ class RequestOTRRule {
   static base::expected<std::pair<std::vector<std::unique_ptr<RequestOTRRule>>,
                                   base::flat_set<std::string>>,
                         std::string>
-  ParseRules(const std::string& contents);
-  static const std::string GetETLDForRequestOTR(const std::string& host);
+  ParseRules(std::string_view contents);
+  static const std::string GetETLDForRequestOTR(std::string_view host);
   static bool GetURLPatternSetFromValue(const base::Value* value,
                                         extensions::URLPatternSet* result);
 

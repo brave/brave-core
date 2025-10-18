@@ -15,7 +15,6 @@
 #include "chrome/browser/extensions/chrome_content_verifier_delegate.h"
 #include "chrome/browser/extensions/crx_installer.h"
 #include "chrome/browser/extensions/extension_service.h"
-#include "chrome/browser/extensions/install_verifier.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -27,6 +26,7 @@
 #include "extensions/browser/disable_reason.h"
 #include "extensions/browser/extension_dialog_auto_confirm.h"
 #include "extensions/browser/extension_system.h"
+#include "extensions/browser/install_verifier.h"
 #include "extensions/common/extension.h"
 #include "extensions/common/extension_builder.h"
 #include "net/dns/mock_host_resolver.h"
@@ -232,7 +232,7 @@ class BraveExtensionsManifestV2InstallerBrowserTest
   void SetUpOnMainThread() override {
     auto get_extension = [](const net::test_server::HttpRequest& request)
         -> std::unique_ptr<net::test_server::HttpResponse> {
-      if (request.GetURL().path_piece() != "/extensions") {
+      if (request.GetURL().path() != "/extensions") {
         return nullptr;
       }
 

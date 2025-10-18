@@ -74,7 +74,7 @@ constexpr char kSkusState[] = R"({
     "wallet": null
   })";
 
-std::string StripTrailingUUID(const std::string& input) {
+std::string_view StripTrailingUUID(std::string_view input) {
   const size_t UUIDLength = 36;
   if (input.length() <= UUIDLength) {
     return "";
@@ -86,7 +86,7 @@ std::string StripTrailingUUID(const std::string& input) {
 std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
     const net::test_server::HttpRequest& request) {
   const GURL url = request.GetURL();
-  const std::string path_trimmed = StripTrailingUUID(url.path());
+  const std::string_view path_trimmed = StripTrailingUUID(url.path());
   auto response = std::make_unique<net::test_server::BasicHttpResponse>();
   if (request.method_string == "GET" &&
       path_trimmed ==

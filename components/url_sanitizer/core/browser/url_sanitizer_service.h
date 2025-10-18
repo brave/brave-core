@@ -83,7 +83,7 @@ class URLSanitizerService : public KeyedService,
 
   void UpdateConfig(Config config);
 
-  std::string StripQueryParameter(const std::string& query,
+  std::string StripQueryParameter(std::string_view query,
                                   const base::flat_set<std::string>& trackers);
 
  private:

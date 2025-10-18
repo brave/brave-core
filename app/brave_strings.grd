@@ -1330,7 +1330,7 @@ Brave is unable to recover your settings.
       </if>
 
       <message name="IDS_APP_ALSO_DELETE_APPS_DATA" desc="Checkbox text to ask the user during uninstall; Whether they want to remove associated data for the app being uninstalled. Only used when uninstalling an app associated with a particular website.">
-        Remove this apps data from Brave
+        Remove this app's data from Brave
       </message>
 
       <!-- App shortcuts -->
@@ -1996,6 +1996,17 @@ Brave is unable to recover your settings.
         <message name="IDS_LENS_COMPOSEBOX_HINT_TEXT" desc="The hint text of the AI mode searchbox in the Lens side panel. This text is shown in the searchbox when the user has not yet typed any text, and prompts the user to ask a follow up question.">
           Ask a follow up
         </message>
+
+        <if expr="use_titlecase">
+          <message name="IDS_CONTEXT_MENU_SHOW_AI_MODE_OMNIBOX_BUTTON" desc="In Title Case: The text label of the omnibox context menu option to show the 'AI Mode' shortcut button">
+            Always Show Brave AI Mode Shortcut
+          </message>
+        </if>
+        <if expr="not use_titlecase">
+        <message name="IDS_CONTEXT_MENU_SHOW_AI_MODE_OMNIBOX_BUTTON" desc="The text label of the omnibox context menu option to show the 'AI Mode' shortcut button">
+          Always show Brave AI Mode shortcut
+        </message>
+        </if>
       </if>
 
       <!-- OOBE -->
@@ -2295,7 +2306,7 @@ Brave is unable to recover your settings.
         Speeds up sites with Brave's V8 engine but makes Brave slightly less resistant to attacks
       </message>
       <message name="IDS_SETTINGS_SITE_SETTINGS_JAVASCRIPT_OPTIMIZER_ALLOWED_SUB_LABEL" desc="Sub-label for the enabled option of the JavaScript optimizer content setting.">
-        Brave runs faster and features that use JavaScript should work as designed (recommended)
+        Brave runs faster and features that use JavaScript should work as designed
       </message>
       <message name="IDS_SETTINGS_SITE_SETTINGS_JAVASCRIPT_OPTIMIZER_BLOCKED_SUB_LABEL" desc="Sub-label for the disabled option of the JavaScript optimizer content setting.">
         Reduces performance but makes Brave more resistant to attacks
@@ -2631,11 +2642,26 @@ Brave is unable to recover your settings.
         <message name="IDS_GLIC_STATUS_ICON_TOOLTIP_CLOSE_BETA" translateable="false" desc="This is the tooltip that is shown when the glic status icon is hovered and the Glic window is open. It indicates that this is the Beta version of the browser.">
           Close Gemini (Beta)
         </message>
+        <message name="IDS_GLIC_STATUS_ICON_TOOLTIP_TOGGLE" translateable="false" desc="This is the tooltip that is shown when the glic status icon is hovered.">
+          Toggle Gemini in Brave
+        </message>
+        <message name="IDS_GLIC_STATUS_ICON_TOOLTIP_TOGGLE_CANARY" translateable="false" desc="This is the tooltip that is shown when the glic status icon is hovered. It indicates that this is the Canary version of the browser.">
+          Toggle Gemini (Canary)
+        </message>
+        <message name="IDS_GLIC_STATUS_ICON_TOOLTIP_TOGGLE_DEV" translateable="false" desc="This is the tooltip that is shown when the glic status icon is hovered. It indicates that this is the Dev version of the browser.">
+          Toggle Gemini (Dev)
+        </message>
+        <message name="IDS_GLIC_STATUS_ICON_TOOLTIP_TOGGLE_BETA" translateable="false" desc="This is the tooltip that is shown when the glic status icon is hovered. It indicates that this is the Beta version of the browser.">
+          Toggle Gemini (Beta)
+        </message>
         <message name="IDS_GLIC_STATUS_ICON_MENU_SHOW" translateable="false" desc="This is the menu item for showing the glic UI.">
           Open Gemini in Brave
         </message>
         <message name="IDS_GLIC_STATUS_ICON_MENU_CLOSE" translateable="false" desc="This is the menu item for closing the Glic window.">
           Close Gemini in Brave
+        </message>
+        <message name="IDS_GLIC_STATUS_ICON_MENU_TOGGLE" translateable="false" desc="This is the menu item for toggling the glic UI.">
+          Toggle Gemini in Brave
         </message>
         <message name="IDS_GLIC_INELIGIBLE_PROFILE_NOTICE" translateable="false" desc="This is the text of the glic ineligible profile notice.">
           To use Gemini in Brave, sign in with a different Brave sync chain
@@ -2729,7 +2755,27 @@ Brave is unable to recover your settings.
         <message name="IDS_IOS_DESKTOP_PASSWORD_PROMO_BUBBLE_FOOTER_DESCRIPTION_REMINDER" desc="The description for the footer of the iOS desktop password promo bubble.">
           Sign in faster to sites using saved passwords for Brave on iOS
         </message>
+        <message name="IDS_IOS_DESKTOP_PROMO_REMINDER_CONFIRMATION" desc="Body text of the promo bubble that appears after uses choose to be reminded of the feature on their iOS device. The placeholder will be replaced by the name of the feature.">
+          You'll see a prompt to try <ph name="FEATURE_NAME">$1<ex>Google Lens</ex></ph> next time you open Brave iOS.
+        </message>
+        <message name="IDS_IOS_DESKTOP_PASSWORD_PROMO_REMINDER_CONFIRMATION" desc="Body text of the promo bubble that appears after uses choose to be reminded of the Password Manager on their iOS device.">
+          Next time you open Brave on your <ph name="DEVICE_TYPE">$1<ex>iPhone</ex></ph>, you'll see a prompt to use Brave Password Manager.
+        </message>
       </if>
+
+      <!--Default Search Engine Reset Notification-->
+      <message name="IDS_DEFAULT_SEARCH_ENGINE_RESET_NOTIFICATION_TITLE" desc="Title of the notification shown when Brave resets the default search engine (DSE) due to preference tampering.">
+        Your settings were changed by an unknown app
+      </message>
+      <message name="IDS_DEFAULT_SEARCH_ENGINE_RESET_NOTIFICATION_BODY" desc="Body text of the notification shown when Brave resets the default search engine, explaining that a change from outside Brave was detected.">
+        Your default search engine was changed from outside of Brave. To protect you, Brave reset it.
+      </message>
+      <message name="IDS_DEFAULT_SEARCH_ENGINE_RESET_NOTIFICATION_GOT_IT_BUTTON" desc="Label for the 'Got it' button in the default search engine reset notification, which dismisses the UI.">
+        Got it
+      </message>
+      <message name="IDS_DEFAULT_SEARCH_ENGINE_RESET_NOTIFICATION_LEARN_MORE_BUTTON" desc="Label for the 'Learn more' button in the default search engine reset notification, which opens a help center article.">
+        Learn more
+      </message>
     <message name="IDS_CHROME_SHORTCUT_NAME_BETA" desc="The Chrome shortcut name for beta channel">
           Google Chrome Beta
         </message><message name="IDS_CHROME_SHORTCUT_NAME_DEV" desc="The Chrome shortcut name for dev channel">

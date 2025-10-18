@@ -14,14 +14,14 @@ import androidx.preference.Preference;
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
-import org.chromium.base.supplier.ObservableSupplier;
-import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.brave.browser.customize_menu.CustomizeBraveMenu;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveFeatureUtil;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsObserver;
+import org.chromium.chrome.browser.appearance.settings.AppearanceSettingsFragment;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.multiwindow.BraveMultiWindowDialogFragment;
 import org.chromium.chrome.browser.multiwindow.BraveMultiWindowUtils;
@@ -31,14 +31,13 @@ import org.chromium.chrome.browser.ntp.NtpUtil;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.tasks.tab_management.BraveTabUiFeatureUtilities;
 import org.chromium.chrome.browser.toolbar.ToolbarPositionController;
-import org.chromium.chrome.browser.toolbar.adaptive.AdaptiveToolbarFeatures;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.toolbar.settings.AddressBarSettingsFragment;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.ui.base.DeviceFormFactor;
 
-public class AppearancePreferences extends BravePreferenceFragment
+public class AppearancePreferences extends AppearanceSettingsFragment
         implements Preference.OnPreferenceChangeListener, BraveRewardsObserver {
     public static final String PREF_HIDE_BRAVE_REWARDS_ICON = "hide_brave_rewards_icon";
     public static final String PREF_HIDE_BRAVE_REWARDS_ICON_MIGRATION =
@@ -51,17 +50,14 @@ public class AppearancePreferences extends BravePreferenceFragment
     public static final String PREF_ENABLE_MULTI_WINDOWS = "enable_multi_windows";
     public static final String PREF_SHOW_UNDO_WHEN_TABS_CLOSED = "show_undo_when_tabs_closed";
     public static final String PREF_ADDRESS_BAR = "address_bar";
-    public static final String PREF_TOOLBAR_SHORTCUT = "toolbar_shortcut";
     private static final String PREF_BRAVE_CUSTOMIZE_MENU = "brave_customize_menu";
 
     private BraveRewardsNativeWorker mBraveRewardsNativeWorker;
 
-    private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();
-
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mPageTitle.set(getString(R.string.prefs_appearance));
+    public void onCreatePreferences(@Nullable Bundle savedInstanceState, @Nullable String rootKey) {
+        super.onCreatePreferences(savedInstanceState, rootKey);
+
         SettingsUtils.addPreferencesFromResource(this, R.xml.brave_appearance_preferences);
 
         // Forward the custom menu item keys from appearance to custom menu item preference screen.
@@ -92,13 +88,12 @@ public class AppearancePreferences extends BravePreferenceFragment
             removePreferenceIfPresent(PREF_ADDRESS_BAR);
         }
 
-        if (!AdaptiveToolbarFeatures.isCustomizationEnabled()) {
-            removePreferenceIfPresent(PREF_TOOLBAR_SHORTCUT);
+        // We have our own Theme preference, so hide the original one.
+        Preference prefUiTheme = findPreference(AppearanceSettingsFragment.PREF_UI_THEME);
+        if (prefUiTheme != null) {
+            prefUiTheme.setVisible(false);
         }
     }
-
-    @Override
-    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {}
 
     private void removePreferenceIfPresent(String key) {
         Preference preference = getPreferenceScreen().findPreference(key);
@@ -181,11 +176,6 @@ public class AppearancePreferences extends BravePreferenceFragment
     }
 
     @Override
-    public ObservableSupplier<String> getPageTitle() {
-        return mPageTitle;
-    }
-
-    @Override
     public void onStart() {
         if (mBraveRewardsNativeWorker != null) {
             mBraveRewardsNativeWorker.addObserver(this);
@@ -230,10 +220,9 @@ public class AppearancePreferences extends BravePreferenceFragment
                     .setEnabled(BottomToolbarConfiguration.isToolbarTopAnchored());
         }
 
-        if (AdaptiveToolbarFeatures.isCustomizationEnabled()) {
-            updatePreferenceIcon(
-                    PREF_TOOLBAR_SHORTCUT, R.drawable.ic_browser_customizable_shortcut);
-        }
+        updatePreferenceIcon(
+                AppearanceSettingsFragment.PREF_TOOLBAR_SHORTCUT,
+                R.drawable.ic_browser_customizable_shortcut);
     }
 
     @Override

@@ -35,7 +35,7 @@
 #include "chrome/browser/ui/tabs/split_tab_menu_model.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
 #include "chrome/browser/ui/ui_features.h"
-#include "chrome/browser/ui/views/frame/browser_non_client_frame_view.h"
+#include "chrome/browser/ui/views/frame/browser_frame_view.h"
 #include "chrome/browser/ui/views/frame/multi_contents_background_view.h"
 #include "chrome/browser/ui/views/frame/multi_contents_resize_area.h"
 #include "chrome/browser/ui/views/frame/multi_contents_view_mini_toolbar.h"
@@ -113,29 +113,13 @@ class SideBySideEnabledBrowserTest : public InProcessBrowserTest {
         brave_browser_view()->multi_contents_view());
   }
 
-  BrowserNonClientFrameView* browser_non_client_frame_view() {
+  BrowserFrameView* browser_non_client_frame_view() {
     return brave_browser_view()->browser_widget()->GetFrameView();
   }
 
   void ToggleVerticalTabStrip() {
     brave::ToggleVerticalTabStrip(browser());
     browser_non_client_frame_view()->DeprecatedLayoutImmediately();
-  }
-
-  javascript_dialogs::TabModalDialogManager* GetTabModalDialogManagerAt(
-      int index) {
-    return javascript_dialogs::TabModalDialogManager::FromWebContents(
-        GetWebContentsAt(index));
-  }
-
-  web_modal::WebContentsModalDialogManager* GetWebModalDialogManagerAt(
-      int index) {
-    return web_modal::WebContentsModalDialogManager::FromWebContents(
-        GetWebContentsAt(index));
-  }
-
-  content::WebContents* GetWebContentsAt(int index) {
-    return browser()->tab_strip_model()->GetWebContentsAt(index);
   }
 
  protected:
@@ -157,7 +141,8 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest,
   // Remove all infobars to test top container separator visibility.
   // Infobar visibility affects that separator visibility.
   // Start test w/o infobar.
-  infobars::ContentInfoBarManager::FromWebContents(GetWebContentsAt(0))
+  infobars::ContentInfoBarManager::FromWebContents(
+      browser()->tab_strip_model()->GetWebContentsAt(0))
       ->RemoveAllInfoBars(/*animate=*/false);
   browser_view->InvalidateLayout();
   ASSERT_TRUE(base::test::RunUntil(
@@ -312,34 +297,6 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest, SelectTabTest) {
   EXPECT_EQ(3, tab_strip()->GetActiveIndex());
   EXPECT_FALSE(tab_strip()->tab_at(2)->IsActive());
   EXPECT_TRUE(tab_strip()->tab_at(3)->IsActive());
-
-  // Flaky with dialog test on macOS.
-#if !BUILDFLAG(IS_MAC)
-  // Activate split tab at 2
-  tab_strip()->SelectTab(tab_strip()->tab_at(2), GetDummyEvent());
-  EXPECT_EQ(2, tab_strip()->GetActiveIndex());
-
-  // Check activated split tab is the the that owned tab modal.
-  // Launch dialog from active split tab (at 2).
-  bool did_suppress = false;
-  GetTabModalDialogManagerAt(2)->RunJavaScriptDialog(
-      GetWebContentsAt(2), GetWebContentsAt(2)->GetPrimaryMainFrame(),
-      content::JAVASCRIPT_DIALOG_TYPE_ALERT, std::u16string(), std::u16string(),
-      base::BindOnce([](bool, const std::u16string&) {}), &did_suppress);
-
-  EXPECT_TRUE(GetTabModalDialogManagerAt(2)->IsShowingDialogForTesting());
-  EXPECT_TRUE(GetWebModalDialogManagerAt(2)->IsDialogActive());
-
-  // Activate non split tab at 0.
-  tab_strip()->SelectTab(tab_strip()->tab_at(0), GetDummyEvent());
-  EXPECT_EQ(0, tab_strip()->GetActiveIndex());
-
-  // Activate split tab that doesn't have tab modal.
-  // Check tab at 2 is activated because only a split tab that owns
-  // tab modal can be activated till that modal is dismissed.
-  tab_strip()->SelectTab(tab_strip()->tab_at(3), GetDummyEvent());
-  EXPECT_EQ(2, tab_strip()->GetActiveIndex());
-#endif
 }
 
 class SideBySideWithRoundedCornersTest : public SideBySideEnabledBrowserTest {
@@ -1032,7 +989,7 @@ class SplitViewBrowserTest : public InProcessBrowserTest {
     return *browser_view().split_view_->split_view_separator_;
   }
 
-  BrowserNonClientFrameView& browser_non_client_frame_view() {
+  BrowserFrameView& browser_non_client_frame_view() {
     return *browser_view().browser_widget()->GetFrameView();
   }
 

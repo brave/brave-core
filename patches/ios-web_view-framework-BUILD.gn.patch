@@ -1,12 +1,12 @@
 diff --git a/ios/web_view/framework/BUILD.gn b/ios/web_view/framework/BUILD.gn
-index 513a47eb3586ed9af96b3cbd718551fa10138028..3742f6e7300821619ec4b5ae6ae5f38275dc7bec 100644
+index af0a72f2d1f886528ac68636cd44910003e2efbb..e4b39d602d60e016127843321ea17f3128f7c074 100644
 --- a/ios/web_view/framework/BUILD.gn
 +++ b/ios/web_view/framework/BUILD.gn
-@@ -48,6 +48,7 @@ source_set("web_view_sources") {
+@@ -68,6 +68,7 @@ source_set("web_view_sources") {
    # TODO(crbug.com/40031409): Fix code that adds exit-time destructors and
    # enable the diagnostic by removing this line.
    configs += [ "//build/config/compiler:no_exit_time_destructors" ]
 +  import("//brave/ios/web_view/sources.gni") sources -= brave_ios_web_view_excluded_sources public_deps -= brave_ios_web_view_excluded_public_deps
  }
  
- ios_framework_bundle("web_view") {
+ if (current_toolchain == _framework_toolchain) {

@@ -1,8 +1,8 @@
 diff --git a/front_end/core/protocol_client/protocol_client.ts b/front_end/core/protocol_client/protocol_client.ts
-index df6d90848c5a888ce9208908221b4ee31b4c790b..84770e2bb3c7fc39084caaf5f0c4657f3025c8db 100644
+index f0822af9c9506a343e9f26e7a102e7b96175d16f..7906d9239918e4ce3f0a9a3b927711ad6413b9cb 100644
 --- a/front_end/core/protocol_client/protocol_client.ts
 +++ b/front_end/core/protocol_client/protocol_client.ts
-@@ -19,3 +19,4 @@ self.Protocol = self.Protocol || {};
+@@ -19,3 +19,4 @@ globalThis.Protocol = globalThis.Protocol || {};
  
  // FIXME: This instance of InspectorBackend should not be a side effect of importing this module.
  InspectorBackendCommands.registerCommands(InspectorBackend.inspectorBackend);

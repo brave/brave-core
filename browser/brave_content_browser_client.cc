@@ -141,6 +141,7 @@
 #include "content/public/browser/navigation_throttle_registry.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/render_process_host.h"
+#include "content/public/browser/site_instance.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/weak_document_ptr.h"
 #include "content/public/browser/web_ui_browser_interface_broker_registry.h"
@@ -414,10 +415,10 @@ void BindBraveSearchDefaultHost(
   if (profile->IsRegularProfile()) {
     auto* template_url_service =
         TemplateURLServiceFactory::GetForProfile(profile);
-    const std::string host = frame_host->GetLastCommittedURL().host();
     mojo::MakeSelfOwnedReceiver(
         std::make_unique<brave_search::BraveSearchDefaultHost>(
-            host, template_url_service, profile->GetPrefs()),
+            frame_host->GetLastCommittedURL().host(), template_url_service,
+            profile->GetPrefs()),
         std::move(receiver));
   } else {
     // Dummy API which always returns false for private contexts.

@@ -44,6 +44,7 @@ class BraveSidePanel : public views::View,
   // Same signature as chromium SidePanel
   explicit BraveSidePanel(
       BrowserView* browser_view,
+      bool has_border,
       HorizontalAlignment horizontal_alignment = HorizontalAlignment::kLeft);
   BraveSidePanel(const BraveSidePanel&) = delete;
   BraveSidePanel& operator=(const BraveSidePanel&) = delete;
@@ -59,6 +60,13 @@ class BraveSidePanel : public views::View,
   gfx::Size GetContentSizeUpperBound() const { return gfx::Size(); }
   bool IsClosing();
   void DisableAnimationsForTesting() {}
+  void RemoveHeaderView();
+  void SetOutlineVisibility(bool visible);
+
+  template <typename T>
+  T* GetHeaderView() {
+    return views::AsViewClass<T>(header_view_.get());
+  }
 
   void set_fixed_contents_width(std::optional<int> fixed_width) {
     fixed_contents_width_ = fixed_width;
@@ -67,7 +75,6 @@ class BraveSidePanel : public views::View,
   // views::ResizeAreaDelegate:
   void OnResize(int resize_amount, bool done_resizing) override;
   void AddHeaderView(std::unique_ptr<views::View> view);
-  void SetHeaderVisibility(bool visible);
 
   // views::View:
   void OnThemeChanged() override;

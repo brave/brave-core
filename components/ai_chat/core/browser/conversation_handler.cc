@@ -445,10 +445,10 @@ void ConversationHandler::SendFeedback(const std::string& category,
       },
       std::move(callback));
 
-  std::vector<std::string> urls;
+  std::vector<std::string_view> urls;
+  auto associated_content = associated_content_manager_->GetAssociatedContent();
   if (send_hostname) {
-    for (const auto& content :
-         associated_content_manager_->GetAssociatedContent()) {
+    for (const auto& content : associated_content) {
       if (!content->url.is_valid() || !content->url.SchemeIsHTTPOrHTTPS()) {
         continue;
       }

@@ -13,7 +13,7 @@
   ComputeReferrerForPolicy(                                                   \
       ReferrerPolicy policy, const GURL& original_referrer,                   \
       const GURL& destination, bool* same_origin_out_for_metrics) {           \
-    if (base::EndsWith(original_referrer.host_piece(), ".onion",              \
+    if (base::EndsWith(original_referrer.host(), ".onion",                    \
                        base::CompareCase::INSENSITIVE_ASCII) &&               \
         !url::IsSameOriginWith(original_referrer, destination)) {             \
       return GURL();                                                          \

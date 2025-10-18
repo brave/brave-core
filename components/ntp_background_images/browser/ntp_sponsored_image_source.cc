@@ -62,8 +62,7 @@ void NTPSponsoredImageSource::StartDataRequest(
 
 std::string NTPSponsoredImageSource::GetMimeType(const GURL& url) {
   std::string mime_type;
-  const base::FilePath file_path =
-      base::FilePath::FromUTF8Unsafe(url.path_piece());
+  const base::FilePath file_path = base::FilePath::FromUTF8Unsafe(url.path());
   if (!file_path.empty()) {
     net::GetWellKnownMimeTypeFromFile(file_path, &mime_type);
   }

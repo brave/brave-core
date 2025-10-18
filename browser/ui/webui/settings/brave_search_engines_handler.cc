@@ -53,7 +53,7 @@ void SortDefaultSearchEnginesListInJP(
           return false;
         }
 
-        return GURL(*url).host_piece() == yahoo_jp_url.host_piece();
+        return GURL(*url).host() == yahoo_jp_url.host();
       });
 
   if (yahoo_jp == defaults.end()) {

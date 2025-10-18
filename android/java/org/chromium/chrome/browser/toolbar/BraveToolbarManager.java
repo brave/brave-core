@@ -13,7 +13,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewStub;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.chromium.base.BravePreferenceKeys;
@@ -23,6 +22,7 @@ import org.chromium.base.ContextUtils;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.base.supplier.OneshotSupplier;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.app.BraveActivity;
@@ -87,6 +87,7 @@ import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
 import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
 import org.chromium.chrome.browser.ui.system.StatusBarColorController;
 import org.chromium.chrome.browser.undo_tab_close_snackbar.UndoBarThrottle;
+import org.chromium.components.browser_ui.accessibility.PageZoomManager;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.components.browser_ui.desktop_windowing.DesktopWindowStateManager;
 import org.chromium.components.browser_ui.widget.scrim.ScrimManager;
@@ -173,12 +174,12 @@ public class BraveToolbarManager extends ToolbarManager
             ScrimManager scrimManager,
             ToolbarActionModeCallback toolbarActionModeCallback,
             FindToolbarManager findToolbarManager,
-            ObservableSupplier<Profile> profileSupplier,
+            ObservableSupplier<@Nullable Profile> profileSupplier,
             ObservableSupplier<BookmarkModel> bookmarkModelSupplier,
             OneshotSupplier<LayoutStateProvider> layoutStateProviderSupplier,
             OneshotSupplier<AppMenuCoordinator> appMenuCoordinatorSupplier,
             boolean canShowUpdateBadge,
-            @NonNull ObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
+            ObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
             ObservableSupplier<Boolean> omniboxFocusStateSupplier,
             OneshotSupplier<Boolean> promoShownOneshotSupplier,
             WindowAndroid windowAndroid,
@@ -187,25 +188,24 @@ public class BraveToolbarManager extends ToolbarManager
             StatusBarColorController statusBarColorController,
             AppMenuDelegate appMenuDelegate,
             ActivityLifecycleDispatcher activityLifecycleDispatcher,
-            @NonNull BottomSheetController bottomSheetController,
-            @NonNull DataSharingTabManager dataSharingTabManager,
-            @NonNull TabContentManager tabContentManager,
-            @NonNull TabCreatorManager tabCreatorManager,
-            @NonNull
-                    Supplier<MerchantTrustSignalsCoordinator>
-                            merchantTrustSignalsCoordinatorSupplier,
-            @NonNull OmniboxActionDelegate omniboxActionDelegate,
+            BottomSheetController bottomSheetController,
+            DataSharingTabManager dataSharingTabManager,
+            TabContentManager tabContentManager,
+            TabCreatorManager tabCreatorManager,
+            Supplier<MerchantTrustSignalsCoordinator> merchantTrustSignalsCoordinatorSupplier,
+            OmniboxActionDelegate omniboxActionDelegate,
             Supplier<EphemeralTabCoordinator> ephemeralTabCoordinatorSupplier,
             boolean initializeWithIncognitoColors,
             @Nullable BackPressManager backPressManager,
             ObservableSupplier<ReadAloudController> readAloudControllerSupplier,
             @Nullable DesktopWindowStateManager desktopWindowStateManager,
             @Nullable MultiInstanceManager multiInstanceManager,
-            @NonNull ObservableSupplier<TabBookmarker> tabBookmarkerSupplier,
-            @Nullable MenuButtonCoordinator.VisibilityDelegate menuButtonVisibilityDelegate,
+            ObservableSupplier<TabBookmarker> tabBookmarkerSupplier,
+            MenuButtonCoordinator.@Nullable VisibilityDelegate menuButtonVisibilityDelegate,
             TopControlsStacker topControlsStacker,
             ObservableSupplier<TopInsetCoordinator> topInsetCoordinatorSupplier,
-            @Nullable ObservableSupplier<Boolean> xrSpaceModeObservableSupplier) {
+            @Nullable ObservableSupplier<Boolean> xrSpaceModeObservableSupplier,
+            PageZoomManager pageZoomManager) {
         super(
                 activity,
                 bottomControlsStacker,
@@ -253,7 +253,8 @@ public class BraveToolbarManager extends ToolbarManager
                 menuButtonVisibilityDelegate,
                 topControlsStacker,
                 topInsetCoordinatorSupplier,
-                xrSpaceModeObservableSupplier);
+                xrSpaceModeObservableSupplier,
+                pageZoomManager);
 
         mOmniboxFocusStateSupplier = omniboxFocusStateSupplier;
         mLayoutStateProviderSupplier = layoutStateProviderSupplier;

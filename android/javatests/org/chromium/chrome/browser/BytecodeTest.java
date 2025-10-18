@@ -12,9 +12,9 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -154,6 +154,7 @@ import org.chromium.chrome.browser.undo_tab_close_snackbar.UndoBarThrottle;
 import org.chromium.chrome.browser.user_education.UserEducationHelper;
 import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 import org.chromium.components.bookmarks.BookmarkItem;
+import org.chromium.components.browser_ui.accessibility.PageZoomIndicatorCoordinator;
 import org.chromium.components.browser_ui.accessibility.PageZoomManager;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.components.browser_ui.desktop_windowing.DesktopWindowStateManager;
@@ -694,12 +695,6 @@ public class BytecodeTest {
                         "updateButtonVisibility",
                         MethodModifier.REGULAR,
                         void.class));
-        Assert.assertTrue(
-                methodExists(
-                        "org/chromium/chrome/browser/omnibox/LocationBarMediator",
-                        "shouldShowDeleteButton",
-                        MethodModifier.REGULAR,
-                        boolean.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/tasks/ReturnToChromeUtil",
@@ -1339,7 +1334,8 @@ public class BytecodeTest {
                         MenuButtonCoordinator.VisibilityDelegate.class,
                         TopControlsStacker.class,
                         ObservableSupplier.class,
-                        ObservableSupplier.class));
+                        ObservableSupplier.class,
+                        PageZoomManager.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
@@ -1415,7 +1411,8 @@ public class BytecodeTest {
                         OneshotSupplier.class,
                         ObservableSupplier.class,
                         ObservableSupplier.class,
-                        StartupMetricsTracker.class));
+                        StartupMetricsTracker.class,
+                        MultiInstanceManager.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator", // presubmit: ignore-long-line
@@ -1453,7 +1450,8 @@ public class BytecodeTest {
                         ForwardButtonCoordinator.class,
                         HomeButtonDisplay.class,
                         ExtensionToolbarCoordinator.class,
-                        TopControlsStacker.class));
+                        TopControlsStacker.class,
+                        BrowserControlsStateProvider.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/toolbar/menu_button/MenuButtonCoordinator", // presubmit: ignore-long-line
@@ -1499,8 +1497,6 @@ public class BytecodeTest {
                         Supplier.class,
                         LocationBarDataProvider.class,
                         Callback.class,
-                        Callback.class,
-                        Supplier.class,
                         BookmarkState.class,
                         OmniboxActionDelegate.class,
                         ActivityLifecycleDispatcher.class,
@@ -1551,7 +1547,7 @@ public class BytecodeTest {
                 constructorsMatch(
                         "org/chromium/chrome/browser/suggestions/tile/MostVisitedTilesMediator",
                         "org/chromium/chrome/browser/suggestions/tile/BraveMostVisitedTilesMediator",
-                        Resources.class,
+                        Context.class,
                         UiConfig.class,
                         MostVisitedTilesLayout.class,
                         TileRenderer.class,
@@ -1601,9 +1597,7 @@ public class BytecodeTest {
                         BackKeyBehaviorDelegate.class,
                         PageInfoAction.class,
                         Callback.class,
-                        Callback.class,
                         BraveLocationBarMediator.getOmniboxUmaClass(),
-                        Supplier.class,
                         BookmarkState.class,
                         BooleanSupplier.class,
                         Supplier.class,
@@ -1617,7 +1611,9 @@ public class BytecodeTest {
                         Supplier.class,
                         OnLongClickListener.class,
                         BrowserControlsStateProvider.class,
-                        boolean.class));
+                        boolean.class,
+                        PageZoomManager.class,
+                        Function.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/omnibox/LocationBarMediator",
@@ -1640,7 +1636,8 @@ public class BytecodeTest {
                         ObservableSupplier.class,
                         BrowserControlsStateProvider.class,
                         Supplier.class,
-                        ObservableSupplier.class));
+                        ObservableSupplier.class,
+                        PageZoomIndicatorCoordinator.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/AppHooks",
@@ -1670,7 +1667,8 @@ public class BytecodeTest {
                         PropertyModel.class,
                         Callback.class,
                         LogoCoordinator.VisibilityObserver.class,
-                        CachedTintedBitmap.class));
+                        CachedTintedBitmap.class,
+                        Drawable.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/notifications/permissions/NotificationPermissionRationaleDialogController",

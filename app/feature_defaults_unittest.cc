@@ -68,10 +68,10 @@
 #include "android_webview/common/aw_features.h"
 #include "chrome/browser/flags/android/chrome_feature_list.h"
 #else
-#include "chrome/browser/enterprise/connectors/analysis/content_analysis_features.h"
 #include "chrome/browser/sharing_hub/sharing_hub_features.h"
 #include "chrome/browser/ui/toasts/toast_features.h"
 #include "components/device_signals/core/common/signals_features.h"
+#include "components/enterprise/connectors/core/features.h"
 #include "components/translate/core/common/translate_util.h"
 #include "extensions/common/extension_features.h"
 #include "services/device/public/cpp/device_features.h"
@@ -194,7 +194,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &media::kLiveCaption,
       &metrics::structured::kPhoneHubStructuredMetrics,
       &net::features::kEnableWebTransportDraft07,
-      &net::features::kTopLevelTpcdOriginTrial,
       &net::features::kTpcdMetadataGrants,
       &net::features::kWaitForFirstPartySetsInit,
       &network::features::kBrowsingTopics,
@@ -216,7 +215,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &omnibox::kStarterPackExpansion,
       &omnibox::kZeroSuggestPrefetching,
       &optimization_guide::features::kOptimizationGuideFetchingForSRP,
-      &optimization_guide::features::kOptimizationGuidePersonalizedFetching,
       &optimization_guide::features::kOptimizationHints,
       &permissions::features::kCpssUseTfliteSignatureRunner,
 #if !BUILDFLAG(IS_ANDROID)
@@ -240,7 +238,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &switches::kSyncEnableBookmarksInTransportMode,
       &syncer::kSyncAutofillLoyaltyCard,
 #if !BUILDFLAG(IS_ANDROID)
-      &toast_features::kPinnedTabToastOnClose,
       &translate::kTFLiteLanguageDetectionEnabled,
 #endif
       &webapps::features::kWebAppsEnableMLModelForPromotion,

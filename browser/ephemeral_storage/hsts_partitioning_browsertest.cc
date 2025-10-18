@@ -40,7 +40,7 @@ constexpr char kFetchScript[] = R"(
 std::unique_ptr<net::test_server::HttpResponse> RespondWithServerType(
     const net::test_server::HttpRequest& request) {
   GURL url = request.GetURL();
-  if (url.path_piece() != "/server_type") {
+  if (url.path() != "/server_type") {
     return nullptr;
   }
 

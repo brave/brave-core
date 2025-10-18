@@ -25,7 +25,6 @@ import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.tab.Tab;
-import org.chromium.chrome.browser.tabwindow.TabWindowManager;
 import org.chromium.components.omnibox.action.OmniboxActionDelegate;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.content_public.browser.WebContents;
@@ -63,9 +62,7 @@ class BraveAutocompleteMediator extends AutocompleteMediator
             Supplier<@Nullable Tab> activityTabSupplier,
             @Nullable Supplier<ShareDelegate> shareDelegateSupplier,
             LocationBarDataProvider locationBarDataProvider,
-            Callback<Tab> bringTabToFrontCallback,
             Callback<String> bringTabGroupToFrontCallback,
-            Supplier<TabWindowManager> tabWindowManagerSupplier,
             BookmarkState bookmarkState,
             OmniboxActionDelegate omniboxActionDelegate,
             ActivityLifecycleDispatcher lifecycleDispatcher,
@@ -84,9 +81,7 @@ class BraveAutocompleteMediator extends AutocompleteMediator
                 activityTabSupplier,
                 shareDelegateSupplier,
                 locationBarDataProvider,
-                bringTabToFrontCallback,
                 bringTabGroupToFrontCallback,
-                tabWindowManagerSupplier,
                 bookmarkState,
                 omniboxActionDelegate,
                 lifecycleDispatcher,

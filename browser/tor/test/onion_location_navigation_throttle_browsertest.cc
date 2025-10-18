@@ -62,15 +62,15 @@ std::unique_ptr<net::test_server::HttpResponse> HandleOnionLocation(
     </html>
   )html");
 
-  if (request.GetURL().path_piece() == kTestOnionPath) {
+  if (request.GetURL().path() == kTestOnionPath) {
     http_response->AddCustomHeader("onion-location", kTestOnionURL);
     // Subsequent headers should be ignored.
     http_response->AddCustomHeader("onion-location", kTestOnionURL2);
-  } else if (request.GetURL().path_piece() == kTestInvalidScheme) {
+  } else if (request.GetURL().path() == kTestInvalidScheme) {
     http_response->AddCustomHeader("onion-location", kTestInvalidSchemeURL);
-  } else if (request.GetURL().path_piece() == kTestNotOnion) {
+  } else if (request.GetURL().path() == kTestNotOnion) {
     http_response->AddCustomHeader("onion-location", kTestNotOnionURL);
-  } else if (request.GetURL().path_piece() == kTestErrorPage) {
+  } else if (request.GetURL().path() == kTestErrorPage) {
     http_response->AddCustomHeader("onion-location", kTestAttackerOnionURL);
     http_response->set_content(R"html(
         <html>
@@ -82,7 +82,7 @@ std::unique_ptr<net::test_server::HttpResponse> HandleOnionLocation(
           </head>
         </html>
       )html");
-  } else if (request.GetURL().path_piece() == kDownload) {
+  } else if (request.GetURL().path() == kDownload) {
     http_response->set_content_type("application/octet-stream");
     http_response->set_content("Some data");
     http_response->AddCustomHeader("onion-location", kTestAttackerOnionURL);
@@ -132,9 +132,7 @@ class OnionLocationNavigationThrottleBrowserTest : public InProcessBrowserTest {
     return brave_location_bar_view->GetOnionLocationView();
   }
 
-  void CheckOnionLocationLabel(Browser* browser,
-                               const GURL& url,
-                               bool wait_for_tor_window = true) {
+  void CheckOnionLocationLabel(Browser* browser, const GURL& url) {
     bool is_tor = browser->profile()->IsTor();
     auto* onion_location_view = GetOnionLocationView(browser);
     ASSERT_TRUE(onion_location_view);
@@ -159,21 +157,19 @@ class OnionLocationNavigationThrottleBrowserTest : public InProcessBrowserTest {
                             ui::EF_LEFT_MOUSE_BUTTON, ui::EF_LEFT_MOUSE_BUTTON);
     views::test::ButtonTestApi(onion_location_view).NotifyClick(pressed);
     views::test::ButtonTestApi(onion_location_view).NotifyClick(released);
-    if (wait_for_tor_window) {
-      browser_creation_observer.Wait();
-    }
+    BrowserWindowInterface* const tor_browser =
+        browser_creation_observer.Wait();
     BrowserList* browser_list = BrowserList::GetInstance();
     ASSERT_EQ(2U, browser_list->size());
-    Browser* tor_browser = browser_list->get(1);
-    ASSERT_TRUE(tor_browser->profile()->IsTor());
+    ASSERT_TRUE(tor_browser->GetProfile()->IsTor());
     content::WebContents* tor_web_contents =
-        tor_browser->tab_strip_model()->GetActiveWebContents();
+        tor_browser->GetTabStripModel()->GetActiveWebContents();
     navigation_observer.Wait();
     EXPECT_EQ(tor_web_contents->GetVisibleURL(), url);
     // We don't close the original tab
-    EXPECT_EQ(browser->tab_strip_model()->count(), is_tor ? 2 : 1);
+    EXPECT_EQ(browser->GetTabStripModel()->count(), is_tor ? 2 : 1);
     // No new tab in Tor window
-    EXPECT_EQ(tor_browser->tab_strip_model()->count(), is_tor ? 2 : 1);
+    EXPECT_EQ(tor_browser->GetTabStripModel()->count(), is_tor ? 2 : 1);
   }
 
   Browser* OpenTorWindow() {
@@ -205,7 +201,7 @@ IN_PROC_BROWSER_TEST_P(OnionLocationHeaderNavigationThrottleBrowserTest,
       tor::OnionLocationTabHelper::FromWebContents(web_contents);
   EXPECT_TRUE(helper->should_show_icon());
   EXPECT_EQ(helper->onion_location(), GURL(kTestOnionURL));
-  CheckOnionLocationLabel(browser, GURL(kTestOnionURL), false);
+  CheckOnionLocationLabel(browser, GURL(kTestOnionURL));
 
   GURL url2 = test_server()->GetURL("/no_onion");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser, url2));
@@ -288,10 +284,9 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   BrowserList* browser_list = BrowserList::GetInstance();
   EXPECT_EQ(1U, browser_list->size());
-  ASSERT_FALSE(browser_list->get(0)->profile()->IsTor());
+  ASSERT_FALSE(browser()->profile()->IsTor());
 
-  web_contents =
-      browser_list->get(0)->tab_strip_model()->GetActiveWebContents();
+  web_contents = browser()->tab_strip_model()->GetActiveWebContents();
   EXPECT_EQ(web_contents->GetVisibleURL(), url);
 }
 
@@ -308,10 +303,9 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest, NotOnion) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   BrowserList* browser_list = BrowserList::GetInstance();
   EXPECT_EQ(1U, browser_list->size());
-  ASSERT_FALSE(browser_list->get(0)->profile()->IsTor());
+  ASSERT_FALSE(browser()->profile()->IsTor());
 
-  web_contents =
-      browser_list->get(0)->tab_strip_model()->GetActiveWebContents();
+  web_contents = browser()->tab_strip_model()->GetActiveWebContents();
   EXPECT_EQ(web_contents->GetVisibleURL(), url);
 }
 
@@ -328,10 +322,9 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest, HTTPHost) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   BrowserList* browser_list = BrowserList::GetInstance();
   EXPECT_EQ(1U, browser_list->size());
-  ASSERT_FALSE(browser_list->get(0)->profile()->IsTor());
+  ASSERT_FALSE(browser()->profile()->IsTor());
 
-  web_contents =
-      browser_list->get(0)->tab_strip_model()->GetActiveWebContents();
+  web_contents = browser()->tab_strip_model()->GetActiveWebContents();
   EXPECT_EQ(web_contents->GetVisibleURL(), url);
 }
 

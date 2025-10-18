@@ -12,12 +12,14 @@
 #include "base/scoped_observation.h"
 #include "chrome/browser/profiles/profile_observer.h"
 #include "chrome/browser/ui/browser_list_observer.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
 #include "chrome/browser/ui/tabs/tab_renderer_data.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_member.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
 
 class Profile;
 class BrowserList;
@@ -65,7 +67,6 @@ class SharedPinnedTabService : public KeyedService,
   // BrowserListObserver:
   void OnBrowserAdded(Browser* browser) override;
   void OnBrowserSetLastActive(Browser* browser) override;
-  void OnBrowserClosing(Browser* browser) override;
   void OnBrowserRemoved(Browser* browser) override;
 
   // TabStripModelObserver:
@@ -95,6 +96,9 @@ class SharedPinnedTabService : public KeyedService,
   void OnTabUnpinned(TabStripModel* tab_strip_model,
                      base::WeakPtr<content::WebContents> contents,
                      int index);
+
+  // Callback for browser closed events.
+  void OnBrowserDidClose(BrowserWindowInterface* browser_window_interface);
 
   void SynchronizeNewPinnedTab(int index);
   void SynchronizeDeletedPinnedTab(int index);
@@ -138,6 +142,11 @@ class SharedPinnedTabService : public KeyedService,
       browser_list_observation_{this};
 
   BooleanPrefMember shared_pinned_tab_enabled_;
+
+  // Map to track browser close callback subscriptions.
+  absl::flat_hash_map<raw_ptr<BrowserWindowInterface>,
+                      base::CallbackListSubscription>
+      browser_close_subscriptions_;
 
   base::WeakPtrFactory<SharedPinnedTabService> weak_ptr_factory_{this};
 };

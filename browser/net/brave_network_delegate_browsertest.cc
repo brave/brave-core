@@ -54,7 +54,7 @@ bool NavigateRenderFrameToURL(content::RenderFrameHost* frame,
 
 GURL GetHttpRequestURL(const net::test_server::HttpRequest& http_request) {
   return GURL(
-      base::StrCat({http_request.base_url.scheme_piece(), "://",
+      base::StrCat({http_request.base_url.scheme(), "://",
                     http_request.headers.at(net::HttpRequestHeaders::kHost),
                     http_request.relative_url}));
 }

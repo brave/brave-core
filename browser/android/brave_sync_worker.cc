@@ -225,6 +225,12 @@ void BraveSyncWorker::OnStateChanged(syncer::SyncService* service) {
   }
 }
 
+void BraveSyncWorker::OnSyncShutdown(syncer::SyncService* sync) {
+  if (sync_service_observer_.IsObservingSource(sync)) {
+    sync_service_observer_.RemoveObservation(sync);
+  }
+}
+
 namespace {
 std::string GetErrorDescription(
     const syncer::SyncProtocolError& sync_protocol_error) {

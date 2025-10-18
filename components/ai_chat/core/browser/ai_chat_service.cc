@@ -100,8 +100,7 @@ std::vector<mojom::AssociatedContentPtr> CloneAssociatedContent(
 
 // Determines whether its safe to associate content with a conversation.
 bool CanAssociateContent(AssociatedContentDelegate* delegate) {
-  return delegate &&
-         kAllowedContentSchemes.contains(delegate->url().scheme_piece());
+  return delegate && kAllowedContentSchemes.contains(delegate->url().scheme());
 }
 
 }  // namespace

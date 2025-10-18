@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "components/sync/service/sync_service_impl.h"
+
 #include "base/logging.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/sync/service/brave_sync_auth_manager.h"
@@ -40,8 +42,16 @@ GURL BraveGetSyncServiceURL(const base::CommandLine& command_line,
   return GetSyncServiceURL(command_line, channel);
 }
 
+// Reporting of sync errors is disabled in Brave to prevent the profile avatar
+// button from providing visual feedback to the user.
+SyncService::UserActionableError SyncServiceImpl::GetUserActionableError()
+    const {
+  return SyncService::UserActionableError::kNone;
+}
+
 }  // namespace syncer
 
+#define GetUserActionableError GetUserActionableError_ChromiumImpl
 #define SyncAuthManager BraveSyncAuthManager
 #define SyncStoppedReporter BraveSyncStoppedReporter
 #define GetSyncServiceURL(...) \
@@ -49,6 +59,7 @@ GURL BraveGetSyncServiceURL(const base::CommandLine& command_line,
 
 #include <components/sync/service/sync_service_impl.cc>
 
+#undef GetUserActionableError
 #undef SyncAuthManager
 #undef SyncStoppedReporter
 #undef GetSyncServiceURL
