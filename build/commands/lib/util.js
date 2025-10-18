@@ -558,7 +558,6 @@ const util = {
         config.force_gn_gen ||
         !doesBuildNinjaExist ||
         hasBuildArgsUpdated ||
-        shouldCheck ||
         wasInterrupted
 
       if (shouldRunGnGen) {
@@ -567,6 +566,8 @@ const util = {
           ['gen', outputDir, ...extraGnGenOpts, ...internalOpts],
           options,
         )
+      } else if (shouldCheck) {
+        util.run('gn', ['check', outputDir], options)
       }
     })
   },
