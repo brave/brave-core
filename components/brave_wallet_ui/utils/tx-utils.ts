@@ -1809,6 +1809,63 @@ export const parseTransactionWithoutPrices = ({
   }
 }
 
+/**
+ * Detects if a transaction is a cancel transaction
+ * Cancel transactions are ETH transactions that:
+ * 1. Have a value of 0
+ * 2. Have empty data field
+ * 3. Are sent to the same address as the sender (self-send)
+ */
+export const isCancelTransaction = (tx: TransactionInfo): boolean => {
+  // Only ETH transactions support cancel/speedup
+  const coinType = getCoinFromTxDataUnion(tx.txDataUnion)
+  if (coinType !== BraveWallet.CoinType.ETH) {
+    return false
+  }
+
+  // Check if this is an ETH send transaction
+  if (tx.txType !== BraveWallet.TransactionType.ETHSend) {
+    return false
+  }
+
+  // Get transaction data - handle both EIP1559 and legacy transactions
+  const ethTxData1559 = tx.txDataUnion.ethTxData1559
+  const ethTxData = tx.txDataUnion.ethTxData
+
+  if (!ethTxData1559 && !ethTxData) {
+    return false
+  }
+
+  // Extract transaction details
+  let value = '0'
+  let data: number[] = []
+  let toAddress = ''
+
+  if (ethTxData1559) {
+    // EIP1559 transaction
+    value = ethTxData1559.baseData.value || '0'
+    data = ethTxData1559.baseData.data || []
+    toAddress = ethTxData1559.baseData.to || ''
+  } else if (ethTxData) {
+    // Legacy transaction
+    value = ethTxData.value || '0'
+    data = ethTxData.data || []
+    toAddress = ethTxData.to || ''
+  }
+
+  const fromAddress = tx.fromAccountId?.address || ''
+
+  // Cancel transactions have:
+  // 1. Value of 0
+  // 2. Empty data field
+  // 3. To address is the same as from address (self-send)
+  const hasZeroValue = value === '0' || value === '0x0'
+  const hasEmptyData = !data || data.length === 0
+  const isSelfSend = toAddress.toLowerCase() === fromAddress.toLowerCase()
+
+  return hasZeroValue && hasEmptyData && isSelfSend
+}
+
 export const parseTransactionWithPrices = ({
   accounts,
   tx,
