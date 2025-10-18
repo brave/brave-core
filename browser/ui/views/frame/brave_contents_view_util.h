@@ -19,14 +19,11 @@ class View;
 class BraveContentsViewUtil {
  public:
   // The distance between main content areas and other UI elements.
-  static constexpr int kMarginThickness = 4;
+  static constexpr int kMarginThickness = 8;
 
   // The border radius applied to main content areas.
-#if BUILDFLAG(IS_MAC)
-  static constexpr int kBorderRadius = 7;
-#else
-  static constexpr int kBorderRadius = 4;
-#endif
+  // Different value per platforms.
+  static int GetBorderRadius();
 
   // Creates a drop shadow for the specified content area view.
   static std::unique_ptr<ViewShadow> CreateShadow(views::View* view);
