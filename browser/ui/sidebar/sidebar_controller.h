@@ -78,6 +78,8 @@ class SidebarController : public SidebarService::Observer {
   Sidebar* sidebar() const { return sidebar_; }
   SidebarModel* model() const { return sidebar_model_.get(); }
 
+  SidebarWebPanelController* GetWebPanelController();
+
   // SidebarService::Observer overrides:
   void OnShowSidebarOptionChanged(
       SidebarService::ShowSidebarOption option) override;
@@ -92,8 +94,6 @@ class SidebarController : public SidebarService::Observer {
   // Try to find a tab that loads |url| from other browsers
   // and activate it if found.
   bool ActiveTabFromOtherBrowsersForHost(const GURL& url);
-
-  SidebarWebPanelController* GetWebPanelController();
 
   raw_ptr<TabStripModel> tab_strip_model_ = nullptr;
   raw_ptr<Profile> profile_ = nullptr;
