@@ -1,0 +1,69 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/browser/policy/handlers/brave_remember_1p_storage_policy_handler.h"
+
+#include "base/containers/fixed_flat_map.h"
+#include "base/containers/map_util.h"
+#include "components/content_settings/core/common/content_settings.h"
+#include "components/content_settings/core/common/pref_names.h"
+#include "components/policy/core/browser/configuration_policy_handler.h"
+#include "components/policy/core/common/policy_map.h"
+#include "components/policy/policy_constants.h"
+#include "components/prefs/pref_value_map.h"
+
+namespace policy {
+
+namespace {
+
+// Converts policy values to their corresponding underlying content setting
+// values. This abstraction layer allows changing the underlying values while
+// keeping the policy values stable.
+constexpr auto kPolicyValueToContentSettingMap =
+    base::MakeFixedFlatMap<BraveRemember1PStorageSetting, ContentSetting>({
+        {BraveRemember1PStorageSetting::kRememberFirstPartyStorage,
+         CONTENT_SETTING_ALLOW},
+        {BraveRemember1PStorageSetting::kForgetFirstPartyStorage,
+         CONTENT_SETTING_BLOCK},
+    });
+
+}  // namespace
+
+BraveRemember1PStoragePolicyHandler::BraveRemember1PStoragePolicyHandler()
+    : IntRangePolicyHandlerBase(
+          key::kDefaultBraveRemember1PStorageSetting,
+          static_cast<int>(
+              BraveRemember1PStorageSetting::kRememberFirstPartyStorage),
+          static_cast<int>(
+              BraveRemember1PStorageSetting::kForgetFirstPartyStorage),
+          /*clamp=*/false) {}
+
+BraveRemember1PStoragePolicyHandler::~BraveRemember1PStoragePolicyHandler() =
+    default;
+
+void BraveRemember1PStoragePolicyHandler::ApplyPolicySettings(
+    const PolicyMap& policies,
+    PrefValueMap* prefs) {
+  const base::Value* value =
+      policies.GetValue(policy_name(), base::Value::Type::INTEGER);
+
+  int value_in_range;
+  if (!value || !EnsureInRange(value, &value_in_range, nullptr)) {
+    return;
+  }
+
+  const auto* content_setting = base::FindOrNull(
+      kPolicyValueToContentSettingMap,
+      static_cast<BraveRemember1PStorageSetting>(value_in_range));
+  if (!content_setting) {
+    return;
+  }
+
+  CHECK(prefs);
+  prefs->SetInteger(prefs::kManagedDefaultBraveRemember1PStorageSetting,
+                    *content_setting);
+}
+
+}  // namespace policy
