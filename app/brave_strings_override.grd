@@ -364,7 +364,11 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
         <if expr="not use_titlecase">
           </if>
 
+        <if expr="use_titlecase">
+          </if>
+        <if expr="not use_titlecase">
         </if>
+      </if>
 
       <if expr="is_chromeos">
         </if>
@@ -451,6 +455,7 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
 
       <if expr="not is_android">
         </if>
-    </messages>
+
+      </messages>
   </release>
 </grit>

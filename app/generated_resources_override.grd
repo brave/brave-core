@@ -1353,7 +1353,10 @@ are declared in tools/grit/grit_args.gni.
     <if expr="is_chromeos">
         </if>
 
-<if expr="is_android">
+    <if expr="is_chromeos">
+        </if>
+
+    <if expr="is_android">
         </if>
 
     <if expr="is_android">
