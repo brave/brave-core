@@ -116,6 +116,10 @@ module.exports = async function (env, argv) {
             return callback(null, 'module ' + request);
           }
         }
+
+        if (/^chrome-untrusted:\/\/resources\/brave\/polkadot_bridge_wasm/.test(request)) {
+          return callback(null, 'module ' + request);
+        }
         callback();
       },
     ],

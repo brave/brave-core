@@ -55,6 +55,9 @@ inline constexpr char kUntrustedLedgerURL[] =
     "chrome-untrusted://ledger-bridge/";
 inline constexpr char kUntrustedNftHost[] = "nft-display";
 inline constexpr char kUntrustedNftURL[] = "chrome-untrusted://nft-display/";
+inline constexpr char kUntrustedPolkadotHost[] = "polkadot-bridge";
+inline constexpr char kUntrustedPolkadotURL[] =
+    "chrome-untrusted://polkadot-bridge/";
 inline constexpr char kUntrustedLineChartHost[] = "line-chart-display";
 inline constexpr char kUntrustedLineChartURL[] =
     "chrome-untrusted://line-chart-display/";
