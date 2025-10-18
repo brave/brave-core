@@ -47,6 +47,8 @@ inline constexpr char kBraveUIWalletPageURL[] = "chrome://wallet/";
 inline constexpr char kWalletPageHost[] = "wallet";
 inline constexpr char kExtensionSettingsURL[] = "brave://settings/extensions";
 inline constexpr char kWalletSettingsURL[] = "brave://settings/wallet";
+inline constexpr char kEmailAliasesSettingsURL[] =
+    "brave://settings/email-aliases";
 inline constexpr char kBraveSyncPath[] = "braveSync";
 inline constexpr char kBraveSyncSetupPath[] = "braveSync/setup";
 inline constexpr char kTorInternalsHost[] = "tor-internals";

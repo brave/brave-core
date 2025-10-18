@@ -16,6 +16,7 @@
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/ui/toolbar/app_menu_icons.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
+#include "brave/components/email_aliases/features.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -102,6 +103,7 @@ void BraveAppMenuModel::Build() {
   BuildBraveProductsSection();
   BuildBrowserSection();
   BuildMoreToolsSubMenu();
+  InsertEmailAliasesItem();
   BuildHelpSubMenu();
 
   ApplyLeoIcons(this);
@@ -125,6 +127,28 @@ void BraveAppMenuModel::Build() {
     CHECK(reading_list_submenu);
     ApplyLeoIcons(static_cast<ui::SimpleMenuModel*>(reading_list_submenu));
   }
+}
+
+void BraveAppMenuModel::InsertEmailAliasesItem() {
+  if (!base::FeatureList::IsEnabled(email_aliases::kEmailAliases)) {
+    return;
+  }
+
+  auto* autofill_menu_model =
+      static_cast<ui::SimpleMenuModel*>(GetSubmenuModelAt(
+          GetIndexOfCommandId(IDC_PASSWORDS_AND_AUTOFILL_MENU).value()));
+  if (!autofill_menu_model) {
+    return;
+  }
+
+  const auto index =
+      autofill_menu_model->GetIndexOfCommandId(IDC_SHOW_PASSWORD_MANAGER);
+  if (!index) {
+    return;
+  }
+
+  autofill_menu_model->InsertItemWithStringIdAt(
+      *index + 1, IDC_SHOW_EMAIL_ALIASES, IDS_SHOW_EMAIL_ALIASES);
 }
 
 void BraveAppMenuModel::BuildTabsAndWindowsSection() {
