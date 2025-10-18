@@ -15,9 +15,12 @@
 
 #define BRAVE_MANAGED_DEFAULT                    \
   {ContentSettingsType::BRAVE_FINGERPRINTING_V2, \
-   kManagedDefaultBraveFingerprintingV2},
+   kManagedDefaultBraveFingerprintingV2},        \
+      {ContentSettingsType::BRAVE_HTTPS_UPGRADE, \
+       kManagedDefaultBraveHttpsUpgrade},
 
-#define BRAVE_MANAGED_DEFAULT_PREFS kManagedDefaultBraveFingerprintingV2,
+#define BRAVE_MANAGED_DEFAULT_PREFS \
+  kManagedDefaultBraveFingerprintingV2, kManagedDefaultBraveHttpsUpgrade,
 
 #include <components/content_settings/core/browser/content_settings_policy_provider.cc>
 #undef BRAVE_MANAGED_DEFAULT_PREFS
