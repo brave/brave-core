@@ -104,8 +104,10 @@ function getPageVisibility () {
     // <if expr="enable_speedreader">
     speedreader: loadTimeData.getBoolean('isSpeedreaderAllowed'),
     // </if>
+    // <if expr="enable_tor">
     braveTor: !loadTimeData.getBoolean('braveTorDisabledByPolicy') ||
               loadTimeData.getBoolean('shouldExposeElementsForTesting'),
+    // </if>
     origin: loadTimeData.getBoolean('isOriginAllowed'),
   }
   // Proxy so we can respond to any other property
