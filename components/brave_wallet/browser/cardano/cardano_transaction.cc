@@ -107,8 +107,6 @@ CardanoTransaction& CardanoTransaction::operator=(CardanoTransaction&& other) =
     default;
 bool CardanoTransaction::operator==(const CardanoTransaction& other) const =
     default;
-bool CardanoTransaction::operator!=(const CardanoTransaction& other) const =
-    default;
 
 CardanoTransaction::Outpoint::Outpoint() = default;
 CardanoTransaction::Outpoint::~Outpoint() = default;

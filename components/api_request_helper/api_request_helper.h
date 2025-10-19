@@ -46,7 +46,6 @@ class APIRequestResult {
   ~APIRequestResult();
 
   bool operator==(const APIRequestResult& other) const;
-  bool operator!=(const APIRequestResult& other) const;
 
   bool Is2XXResponseCode() const;
   bool IsResponseCodeValid() const;

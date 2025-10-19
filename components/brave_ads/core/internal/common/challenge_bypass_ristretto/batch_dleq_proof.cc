@@ -78,10 +78,6 @@ bool BatchDLEQProof::operator==(const BatchDLEQProof& other) const {
   return EncodeBase64().value_or("") == other.EncodeBase64().value_or("");
 }
 
-bool BatchDLEQProof::operator!=(const BatchDLEQProof& other) const {
-  return !(*this == other);
-}
-
 BatchDLEQProof BatchDLEQProof::DecodeBase64(
     const std::string& batch_dleq_proof_base64) {
   return BatchDLEQProof(batch_dleq_proof_base64);

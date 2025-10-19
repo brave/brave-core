@@ -44,8 +44,4 @@ bool CreativeAdInfo::operator==(const CreativeAdInfo& other) const {
          target_url == other.target_url && dayparts == other.dayparts;
 }
 
-bool CreativeAdInfo::operator!=(const CreativeAdInfo& other) const {
-  return !(*this == other);
-}
-
 }  // namespace brave_ads
