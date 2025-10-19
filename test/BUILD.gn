@@ -766,6 +766,7 @@ test("brave_browser_tests") {
 
   sources = [
     "//brave/browser/brave_content_browser_client_browsertest.cc",
+    "//brave/browser/brave_origin/brave_origin_service_browsertest.cc",
     "//brave/browser/brave_prefs_browsertest.cc",
     "//brave/browser/brave_scheme_load_browsertest.cc",
     "//brave/browser/brave_shields/ad_block_devtools_browsertest.cc",

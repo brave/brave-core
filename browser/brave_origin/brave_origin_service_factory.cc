@@ -221,7 +221,7 @@ BraveOriginPolicyMap BraveOriginServiceFactory::GetBrowserPolicyDefinitions() {
   for (const auto& [policy_key, pref_name, type] :
        policy::kBraveStaticSimplePolicyMap) {
     if (const auto* metadata =
-            base::FindOrNull(kBraveOriginBrowserMetadata, policy_key)) {
+            base::FindOrNull(kBraveOriginBrowserMetadata, pref_name)) {
       browser_policy_definitions.emplace(
           policy_key,
           BraveOriginPolicyInfo(pref_name, metadata->origin_default_value,
@@ -250,7 +250,7 @@ BraveOriginPolicyMap BraveOriginServiceFactory::GetProfilePolicyDefinitions() {
   for (const auto& [policy_key, pref_name, type] :
        policy::kBraveStaticSimplePolicyMap) {
     if (const auto* metadata =
-            base::FindOrNull(kBraveOriginProfileMetadata, policy_key)) {
+            base::FindOrNull(kBraveOriginProfileMetadata, pref_name)) {
       profile_policy_definitions.emplace(
           policy_key,
           BraveOriginPolicyInfo(pref_name, metadata->origin_default_value,
