@@ -29,20 +29,23 @@ public class BraveReaderModeManager extends ReaderModeManager {
 
     @VisibleForTesting
     @Override
-    void tryShowingPrompt() {
-        if (mTab == null || mTab.getWebContents() == null) return;
+    boolean tryShowingPrompt(boolean resetRestorePrompt) {
+        if (mTab == null || mTab.getWebContents() == null) return false;
 
         Profile profile = Profile.fromWebContents(mTab.getWebContents());
-        if (profile == null || !UserPrefs.get(profile).getBoolean(Pref.READER_FOR_ACCESSIBILITY))
-            return;
+        if (profile == null || !UserPrefs.get(profile).getBoolean(Pref.READER_FOR_ACCESSIBILITY)) {
+            return false;
+        }
 
         // If it is regular tab, we pretend to be a custom tab to show the prompt if applicable.
         spoofCustomTab(!mTab.isCustomTab() && !mTab.isIncognito());
 
-        super.tryShowingPrompt();
+        boolean result = super.tryShowingPrompt(resetRestorePrompt);
 
         // There is no need to spoof custom tab after showing the prompt.
         spoofCustomTab(false);
+
+        return result;
     }
 
     /*
