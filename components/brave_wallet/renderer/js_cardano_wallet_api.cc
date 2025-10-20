@@ -358,7 +358,7 @@ v8::Local<v8::Promise> JSCardanoWalletApi::GetUtxos(gin::Arguments* args) {
     std::unique_ptr<base::Value> arg1_value =
         content::V8ValueConverter::Create()->FromV8Value(
             arguments.at(0), isolate->GetCurrentContext());
-    if (arg1_value && !arg1_value->GetIfString()) {
+    if (arg1_value && !arg1_value->is_string()) {
       args->ThrowError();
       return v8::Local<v8::Promise>();
     }
@@ -371,14 +371,14 @@ v8::Local<v8::Promise> JSCardanoWalletApi::GetUtxos(gin::Arguments* args) {
     std::unique_ptr<base::Value> arg2_value =
         content::V8ValueConverter::Create()->FromV8Value(
             arguments.at(1), isolate->GetCurrentContext());
-    if (arg2_value && !arg2_value->GetIfDict()) {
+    if (arg2_value && !arg2_value->is_dict()) {
       args->ThrowError();
       return v8::Local<v8::Promise>();
     }
 
     if (arg2_value) {
-      auto page_value = arg2_value->GetIfDict()->FindInt("page");
-      auto page_limit = arg2_value->GetIfDict()->FindInt("limit");
+      auto page_value = arg2_value->GetDict().FindInt("page");
+      auto page_limit = arg2_value->GetDict().FindInt("limit");
 
       if (!page_value || !page_limit) {
         args->ThrowError();
@@ -425,7 +425,7 @@ v8::Local<v8::Promise> JSCardanoWalletApi::SignTx(gin::Arguments* args) {
       content::V8ValueConverter::Create()->FromV8Value(
           arguments.at(0), isolate->GetCurrentContext());
 
-  if (!arg1_value || !arg1_value->GetIfString()) {
+  if (!arg1_value || !arg1_value->is_string()) {
     args->ThrowError();
     return v8::Local<v8::Promise>();
   }
@@ -436,12 +436,12 @@ v8::Local<v8::Promise> JSCardanoWalletApi::SignTx(gin::Arguments* args) {
         content::V8ValueConverter::Create()->FromV8Value(
             arguments.at(1), isolate->GetCurrentContext());
 
-    if (!arg2_value || !arg2_value->GetIfBool()) {
+    if (!arg2_value || !arg2_value->is_bool()) {
       args->ThrowError();
       return v8::Local<v8::Promise>();
     }
 
-    partial_sign = arg2_value->GetIfBool().value_or(false);
+    partial_sign = arg2_value->GetBool();
   }
 
   cardano_api_->SignTx(
@@ -483,8 +483,8 @@ v8::Local<v8::Promise> JSCardanoWalletApi::SignData(gin::Arguments* args) {
       content::V8ValueConverter::Create()->FromV8Value(
           arguments.at(1), isolate->GetCurrentContext());
 
-  if (!arg1_value || !arg2_value || !arg1_value->GetIfString() ||
-      !arg2_value->GetIfString()) {
+  if (!arg1_value || !arg2_value || !arg1_value->is_string() ||
+      !arg2_value->is_string()) {
     args->ThrowError();
     return v8::Local<v8::Promise>();
   }
@@ -550,7 +550,7 @@ v8::Local<v8::Promise> JSCardanoWalletApi::SubmitTx(gin::Arguments* args) {
   std::unique_ptr<base::Value> arg1_value =
       content::V8ValueConverter::Create()->FromV8Value(
           arguments.at(0), isolate->GetCurrentContext());
-  if (!arg1_value || !arg1_value->GetIfString()) {
+  if (!arg1_value || !arg1_value->is_string()) {
     args->ThrowError();
     return v8::Local<v8::Promise>();
   }
@@ -608,7 +608,7 @@ v8::Local<v8::Promise> JSCardanoWalletApi::GetCollateral(gin::Arguments* args) {
       content::V8ValueConverter::Create()->FromV8Value(
           arguments.at(0), isolate->GetCurrentContext());
 
-  if (!arg1_value || !arg1_value->GetIfDict()) {
+  if (!arg1_value || !arg1_value->is_dict()) {
     args->ThrowError();
     return v8::Local<v8::Promise>();
   }
