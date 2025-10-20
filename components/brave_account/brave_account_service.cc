@@ -191,7 +191,7 @@ void BraveAccountService::OnRegisterInitialize(
     RegisterInitializeCallback callback,
     int response_code,
     endpoint_client::Reply<endpoints::PasswordInit> reply) {
-  auto result = endpoint_client::functions::HandleReply(
+  auto result = endpoint_client::functions::TransformReply(
       std::move(reply),
       [&](auto response) -> base::expected<mojom::RegisterInitializeResultPtr,
                                            mojom::RegisterErrorPtr> {
@@ -236,7 +236,7 @@ void BraveAccountService::OnRegisterFinalize(
     const std::string& encrypted_verification_token,
     int response_code,
     endpoint_client::Reply<PasswordFinalize> reply) {
-  auto result = endpoint_client::functions::HandleReply(
+  auto result = endpoint_client::functions::TransformReply(
       std::move(reply),
       [&](auto response) -> base::expected<mojom::RegisterFinalizeResultPtr,
                                            mojom::RegisterErrorPtr> {
