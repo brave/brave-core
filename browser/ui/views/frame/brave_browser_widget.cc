@@ -14,8 +14,6 @@
 #include "brave/browser/ui/views/frame/brave_browser_root_view.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/themes/theme_service.h"
-#include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/browser_widget.h"
@@ -39,21 +37,6 @@ BraveBrowserWidget::~BraveBrowserWidget() {
   // at the start of BrowserWidget dtor, this method is should be called here.
   BraveBrowserView::From(view_)->StopListeningFullscreenChanges();
 }
-
-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
-// Tor/Guest profile should use DarkAura. If not, their native ui is affected by
-// normal windows theme change.
-const ui::NativeTheme* BraveBrowserWidget::GetNativeTheme() const {
-  if ((view_->browser()->profile()->IsIncognitoProfile() ||
-       view_->browser()->profile()->IsTor() ||
-       view_->browser()->profile()->IsGuestSession()) &&
-      ThemeServiceFactory::GetForProfile(view_->browser()->profile())
-          ->UsingDefaultTheme()) {
-    return ui::NativeTheme::GetInstanceForDarkUI();
-  }
-  return views::Widget::GetNativeTheme();
-}
-#endif
 
 ui::ColorProviderKey::ThemeInitializerSupplier*
 BraveBrowserWidget::GetCustomTheme() const {
@@ -87,6 +70,12 @@ void BraveBrowserWidget::SetTabDragKind(TabDragKind kind) {
 
 ui::ColorProviderKey BraveBrowserWidget::GetColorProviderKey() const {
   auto key = BrowserWidget::GetColorProviderKey();
+
+  // We want to use dark mode for guest profile.
+  if (view_->browser()->profile()->IsGuestSession()) {
+    key.color_mode = ui::ColorProviderKey::ColorMode::kDark;
+    key.user_color_source = ui::ColorProviderKey::UserColorSource::kGrayscale;
+  }
 
   if (base::FeatureList::IsEnabled(darker_theme::features::kBraveDarkerTheme)) {
     // Note that we don't change set SchemeVariant to kDarker if

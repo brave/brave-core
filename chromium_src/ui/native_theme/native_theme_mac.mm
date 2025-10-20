@@ -12,13 +12,6 @@
 
 namespace ui {
 
-// Shared instance for dark UI. This was part of Chromium, but got removed in
-// Chromium 141. However, we use it for Private/Tor windows.
-NativeTheme* NativeTheme::GetInstanceForDarkUI() {
-  static base::NoDestructor<NativeThemeMac> s_native_theme;
-  return s_native_theme.get();
-}
-
 SkColor NativeThemeMac::GetSystemButtonPressedColor(SkColor base_color) const {
   return NativeTheme::GetSystemButtonPressedColor(base_color);
 }

@@ -11,9 +11,13 @@
 #include "brave/browser/ui/color/color_palette.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/ui/color/nala/nala_color_id.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/profiles/profile_manager.h"
+#include "chrome/browser/profiles/profile_test_util.h"
+#include "chrome/browser/profiles/profile_window.h"
 #include "chrome/browser/themes/test/theme_service_changed_waiter.h"
 #include "chrome/browser/themes/theme_service.h"
 #include "chrome/browser/themes/theme_service_factory.h"
@@ -22,15 +26,21 @@
 #include "chrome/browser/ui/omnibox/omnibox_theme.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "chrome/test/base/ui_test_utils.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
 #include "extensions/buildflags/buildflags.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest-spi.h"
 #include "ui/color/color_provider.h"
+#include "ui/color/color_provider_key.h"
 #include "ui/native_theme/native_theme.h"
 #include "ui/native_theme/native_theme_observer.h"
 #include "ui/native_theme/os_settings_provider.h"
+
+#if BUILDFLAG(ENABLE_TOR)
+#include "brave/browser/tor/tor_profile_manager.h"
+#endif
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "chrome/browser/extensions/crx_installer.h"
@@ -227,4 +237,36 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, ColorProviderTest) {
   cp = browser_view->GetColorProvider();
   frame_active_color = cp->GetColor(ui::kColorFrameActive);
   EXPECT_EQ(kPrivateFrame, frame_active_color);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, NonNormalWindowDarkModeTest) {
+  // Check non-normal window's color provider mode is dark.
+  profiles::SwitchToGuestProfile();
+  Browser* guest_browser = ui_test_utils::WaitForBrowserToOpen();
+  ASSERT_TRUE(guest_browser);
+  ASSERT_TRUE(guest_browser->profile()->IsGuestSession());
+  ASSERT_FALSE(guest_browser->profile()->IsIncognitoProfile());
+  auto* browser_view = BrowserView::GetBrowserViewForBrowser(guest_browser);
+  auto* browser_widget = browser_view->GetWidget();
+  auto key = browser_widget->GetColorProviderKeyForTesting();
+  EXPECT_EQ(ui::ColorProviderKey::ColorMode::kDark, key.color_mode);
+
+  auto* private_browser = CreateIncognitoBrowser(browser()->profile());
+  ASSERT_TRUE(private_browser);
+  ASSERT_TRUE(private_browser->profile()->IsIncognitoProfile());
+  browser_view = BrowserView::GetBrowserViewForBrowser(private_browser);
+  browser_widget = browser_view->GetWidget();
+  key = browser_widget->GetColorProviderKeyForTesting();
+  EXPECT_EQ(ui::ColorProviderKey::ColorMode::kDark, key.color_mode);
+
+#if BUILDFLAG(ENABLE_TOR)
+  Browser* tor_browser =
+      TorProfileManager::SwitchToTorProfile(browser()->profile());
+  ASSERT_TRUE(tor_browser);
+  ASSERT_TRUE(tor_browser->profile()->IsIncognitoProfile());
+  browser_view = BrowserView::GetBrowserViewForBrowser(tor_browser);
+  browser_widget = browser_view->GetWidget();
+  key = browser_widget->GetColorProviderKeyForTesting();
+  EXPECT_EQ(ui::ColorProviderKey::ColorMode::kDark, key.color_mode);
+#endif
 }
