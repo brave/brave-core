@@ -8,7 +8,6 @@
 
 #include <concepts>
 #include <memory>
-#include <optional>
 #include <string>
 #include <utility>
 #include <variant>
@@ -46,12 +45,31 @@ namespace brave_account::endpoint_client {
 
 enum class RequestCancelability { kNonCancelable, kCancelable };
 
+
+struct NetworkError {
+  int response_code;
+  std::string error_message;
+
+  bool operator==(const NetworkError&) const = default;
+};
+
+struct ParseError {
+  std::string error_message;
+  bool operator==(const ParseError&) const = default;
+};
+
+template <concepts::Error ErrorType>
+using Error = std::variant<NetworkError, ParseError, ErrorType>;
+
+template <concepts::Endpoint EndpointType>
+using Reply = base::expected<typename EndpointType::Response,
+                             Error<typename EndpointType::Error>>;
+
 template <IsEndpoint T>
 class Client {
   using Response = typename T::Response;
   using Error = typename T::Error;
-  using Expected =
-      base::expected<std::optional<Response>, std::optional<Error>>;
+  using Expected = Reply<T>;
   using Callback = base::OnceCallback<void(int, Expected)>;
 
   // Depending on |C|, either takes ownership of (moves out) |simple_url_loader|
@@ -104,6 +122,44 @@ class Client {
       request.network_traffic_annotation_tag =
           net::MutableNetworkTrafficAnnotationTag(MISSING_TRAFFIC_ANNOTATION);
     }
+  static void Send(api_request_helper::APIRequestHelper& api_request_helper,
+                   Request request,
+                   Callback callback) {
+    auto on_response = [](Callback callback,
+                          api_request_helper::APIRequestResult result) {
+      if (!result.IsResponseCodeValid()) {
+        std::move(callback).Run(
+            result.response_code(),
+            base::unexpected(NetworkError(result.response_code())));
+      } else if (result.value_body().is_none() &&
+                 !result.error_message().empty()) {
+        // If APIRequestHelper has failed to parse JSON then forward the
+        // error.
+        std::move(callback).Run(
+            result.response_code(),
+            base::unexpected(ParseError(std::move(result).TakeErrorMessage())));
+      } else if (!result.Is2XXResponseCode()) {
+        if (auto error = Error::FromValue(result.value_body())) {
+          // Endpoint answers with error.
+          std::move(callback).Run(result.response_code(),
+                                  base::unexpected(std::move(*error)));
+        } else {
+          // Endpoint Error's structure is wrong.
+          std::move(callback).Run(
+              result.response_code(),
+              base::unexpected(ParseError("Can't parse endpoint Error")));
+        }
+      } else if (auto response = Response::FromValue(result.value_body())) {
+        // Forward response.
+        std::move(callback).Run(result.response_code(),
+                                base::ok(std::move(*response)));
+      } else {
+        // Endpoint Response's structure is wrong.
+        std::move(callback).Run(
+            result.response_code(),
+            base::unexpected(ParseError("Can't parse endpoint Response")));
+      }
+    };
 
     auto resource_request = std::make_unique<network::ResourceRequest>();
     resource_request->url = T::URL();
