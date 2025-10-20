@@ -321,6 +321,9 @@ license_files = ['../../../../../../brave/components/speedreader/rust/lib/src/re
 extra_input_roots = [ "../README.md" ]
 license_files = ['LICENSE.Apache-2.0']
 
+[crate.rustc_hash]
+license_files = ['LICENSE-Apache']
+
 [crate.selectors]
 build_script_outputs = [ "ascii_case_insensitive_html_attributes.rs" ]
 license_files = ['../../../../../common/licenses/MPL-2.0']
