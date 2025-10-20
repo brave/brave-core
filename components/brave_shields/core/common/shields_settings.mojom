@@ -46,8 +46,10 @@ enum HttpsUpgradeMode {
   DISABLED_MODE
 };
 
+// Do not change order of this enum. The order is relied upon for
+// it's accompanying shield setting.
 enum AutoShredMode {
-  NEVER,
+  NEVER = 0,
   LAST_TAB_CLOSED,
   APP_EXIT,
 };
