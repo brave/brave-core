@@ -17,8 +17,8 @@
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/metrics/metrics_reporting_state.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_window.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
 #include "chrome/browser/ui/chrome_pages.h"
 #include "chrome/browser/ui/session_crashed_bubble.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
@@ -51,9 +51,10 @@ namespace {
 void ScheduleSessionCrashedBubble() {
   // It's ok to use lastly used browser because there will be only one when
   // this launched after un-cleaned exit.
-  if (auto* browser = BrowserList::GetInstance()->GetLastActive())
+  if (auto* browser = GetLastActiveBrowserWindowInterfaceWithAnyProfile()) {
     SessionCrashedBubble::ShowIfNotOffTheRecordProfile(
         browser, /*skip_tab_checking=*/false);
+  }
 }
 
 gfx::FontList GetFont(int font_size, gfx::Font::Weight weight) {
@@ -63,9 +64,10 @@ gfx::FontList GetFont(int font_size, gfx::Font::Weight weight) {
 }
 
 void OpenSettingPage() {
-  if (auto* browser = BrowserList::GetInstance()->GetLastActive())
-    chrome::ShowSettingsSubPageForProfile(browser->profile(),
+  if (auto* browser = GetLastActiveBrowserWindowInterfaceWithAnyProfile()) {
+    chrome::ShowSettingsSubPageForProfile(browser->GetProfile(),
                                           chrome::kPrivacySubPage);
+  }
 }
 
 }  // namespace

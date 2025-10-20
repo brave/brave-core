@@ -22,8 +22,8 @@
 #include "brave/components/sidebar/browser/sidebar_service.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "cc/paint/paint_flags.h"
-#include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "ui/base/clipboard/clipboard.h"
 #include "ui/base/clipboard/clipboard_format_type.h"
@@ -107,7 +107,7 @@ SidebarItemsScrollView::SidebarItemsScrollView(BraveBrowser* browser)
   bounds_animator_observed_.AddObservation(scroll_animator_for_item_.get());
   bounds_animator_observed_.AddObservation(scroll_animator_for_smooth_.get());
   contents_view_ =
-      AddChildView(std::make_unique<SidebarItemsContentsView>(browser_, this));
+      AddChildView(std::make_unique<SidebarItemsContentsView>(browser, this));
   up_arrow_ = AddChildView(
       std::make_unique<SidebarItemsArrowView>(l10n_util::GetStringUTF16(
           IDS_SIDEBAR_ITEMS_SCROLL_UP_BUTTON_ACCESSIBLE_NAME)));
@@ -225,7 +225,8 @@ void SidebarItemsScrollView::OnItemAdded(const sidebar::SidebarItem& item,
 
   // Only show item added feedback bubble on active browser window if this new
   // item is explicitely by user gesture.
-  if (user_gesture && browser_ == BrowserList::GetInstance()->GetLastActive()) {
+  if (user_gesture &&
+      browser_ == GetLastActiveBrowserWindowInterfaceWithAnyProfile()) {
     // If added item is not visible because of narrow height, we should scroll
     // to make it visible.
     if (NeedScrollForItemAt(index)) {
@@ -529,7 +530,7 @@ void SidebarItemsScrollView::PerformDrop(
   if (drag_context_->ShouldMoveItem()) {
     output_drag_op = ui::mojom::DragOperation::kMove;
     auto* service =
-        sidebar::SidebarServiceFactory::GetForProfile(browser_->profile());
+        sidebar::SidebarServiceFactory::GetForProfile(browser_->GetProfile());
     service->MoveItem(*drag_context_->source_index(),
                       drag_context_->GetTargetIndex());
   }

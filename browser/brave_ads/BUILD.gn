@@ -101,6 +101,7 @@ source_set("impl") {
 
   if (!is_android) {
     sources += [ "ad_units/notification_ad/notification_ad_platform_bridge.cc" ]
+    deps += [ "//chrome/browser/ui/browser_window" ]
   } else {
     sources += [
       "ad_units/notification_ad/notification_ad_platform_bridge_android.cc",
