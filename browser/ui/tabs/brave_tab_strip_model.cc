@@ -18,7 +18,7 @@
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/tabs/public/brave_tab_strip_collection.h"
-#include "brave/components/tabs/public/tree_tab_node.h"
+#include "brave/components/tabs/public/tree_tab_node_tab_collection.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
@@ -166,7 +166,7 @@ int BraveTabStripModel::GetTreeHeightOfTab(int index) const {
     return 0;
   }
 
-  return static_cast<const TreeTabNode*>(parent_collection)
+  return static_cast<const tabs::TreeTabNodeTabCollection*>(parent_collection)
       ->GetTopLevelAncestor()
       ->height();
 }
@@ -181,7 +181,8 @@ int BraveTabStripModel::GetTreeNodeLevel(int index) const {
     return 0;
   }
 
-  return static_cast<const TreeTabNode*>(parent_collection)->level();
+  return static_cast<const tabs::TreeTabNodeTabCollection*>(parent_collection)
+      ->level();
 }
 
 void BraveTabStripModel::OnTreeTabRelatedPrefChanged() {
@@ -199,7 +200,7 @@ void BraveTabStripModel::BuildTreeTabs() {
   auto* unpinned_collection = contents_data()->unpinned_collection();
   CHECK(unpinned_collection);
 
-  TreeTabNode::BuildTreeTabs(*unpinned_collection);
+  tabs::TreeTabNodeTabCollection::BuildTreeTabs(*unpinned_collection);
   contents_data()->set_in_tree_tab_mode(true);
 }
 
@@ -213,7 +214,7 @@ void BraveTabStripModel::FlattenTreeTabs() {
   auto* unpinned_collection = contents_data()->unpinned_collection();
   CHECK(unpinned_collection);
 
-  TreeTabNode::FlattenTreeTabs(*unpinned_collection);
+  tabs::TreeTabNodeTabCollection::FlattenTreeTabs(*unpinned_collection);
   contents_data()->set_in_tree_tab_mode(false);
 }
 
