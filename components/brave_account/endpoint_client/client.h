@@ -70,11 +70,14 @@ class Client {
               : base::unexpected(Error::FromValue(result.value_body())));
     };
 
-    const auto json = base::WriteJson(request.ToValue());
-    CHECK(json) << "Failed to serialize request to JSON!";
+    std::string json;
+    if (auto dict = request.ToValue(); !dict.empty()) {
+      json = base::WriteJson(std::move(dict)).value_or("");
+      CHECK(!json.empty()) << "Failed to serialize request to JSON!";
+    }
 
     api_request_helper.Request(
-        std::string(T::Method()), T::URL(), *json, "application/json",
+        std::string(T::Method()), T::URL(), json, "application/json",
         base::BindOnce(std::move(on_response), std::move(callback)),
         base::ToVector(headers.GetHeaderVector(), [](const auto& header) {
           return std::pair(header.key, header.value);
