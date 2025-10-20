@@ -24,6 +24,7 @@ source_set("web_view") {
     "//brave/ios/browser/api/web_view/autofill",
     "//brave/ios/browser/api/web_view/passwords",
     "//brave/ios/browser/ui/web_view:features",
+    "//brave/ios/browser/ui/webui/ai_chat",
     "//brave/ios/web_view",
     "//ios/chrome/browser/affiliations/model",
     "//ios/chrome/browser/autofill/model",

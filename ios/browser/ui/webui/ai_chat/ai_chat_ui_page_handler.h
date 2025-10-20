@@ -83,6 +83,8 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
       mojo::PendingReceiver<mojom::ParentUIFrame> receiver);
 
  private:
+  void SubmitVoiceQuery(const std::string& conversation_uuid, NSString* query);
+
   // AssociatedContentDelegate::Observer
   void OnRequestArchive(AssociatedContentDelegate* delegate) override;
 
