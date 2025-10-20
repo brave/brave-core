@@ -212,10 +212,10 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 -      <cr-icon icon=\\"cr:chevron-right\\" slot=\\"suffix-icon\\"></cr-icon>
 +      <cr-icon icon=\\"window-edit\\" slot=\\"prefix-icon\\"></cr-icon>
      </cr-button>
-      \${this.isSourceTabFirstPartyNtp_() ? html\`<hr class=\\"sp-cards-separator\\">
-     <div id=\\"shortcuts\\" class=\\"section sp-card\\">
-       <sp-heading hide-back-button>
-@@ -98,10 +92,9 @@
+     \${this.ntpNextFeaturesEnabled_ ? html\`
+       <hr class=\\"sp-cards-separator\\">
+       <div id=\\"tools\\" class=\\"section sp-card\\">
+@@ -107,10 +101,9 @@
      <customize-chrome-wallpaper-search @back-click=\\"\${this.onBackClick_}\\"
          page-name=\\"wallpaper-search\\" id=\\"wallpaperSearchPage\\">
      </customize-chrome-wallpaper-search>
