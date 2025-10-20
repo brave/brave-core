@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 brave_ios_web_view_public_headers = [
+  "//brave/ios/web_view/public/cwv_download_task_extras.h",
   "//brave/ios/web_view/public/cwv_ssl_status_extras.h",
   "//brave/ios/web_view/public/cwv_x509_certificate_extras.h",
   "//brave/ios/web_view/public/cwv_web_view_extras.h",
