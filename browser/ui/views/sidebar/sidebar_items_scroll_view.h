@@ -31,6 +31,7 @@ class SidebarBrowserTest;
 }  // namespace sidebar
 
 class BraveBrowser;
+class BrowserWindowInterface;
 class SidebarItemDragContext;
 class SidebarItemsContentsView;
 
@@ -131,7 +132,7 @@ class SidebarItemsScrollView : public views::View,
   void ClearDragIndicator();
 
   std::optional<size_t> lastly_added_item_index_;
-  raw_ptr<BraveBrowser> browser_ = nullptr;
+  raw_ptr<BrowserWindowInterface> browser_ = nullptr;
   raw_ptr<views::ImageButton> up_arrow_ = nullptr;
   raw_ptr<views::ImageButton> down_arrow_ = nullptr;
   raw_ptr<SidebarItemsContentsView> contents_view_ = nullptr;
