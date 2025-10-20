@@ -1109,7 +1109,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetUtxos_WrongPagination) {
                          "window.cardano.brave.enable()).getUtxos() } "
                          "catch(error) {return error} })();");
     base::Value::Dict dict_value;
-    dict_value.Set("maxNumber", base::Value(2));
+    dict_value.Set("maxSize", base::Value(2));
 
     EXPECT_EQ(dict_value, result);
   }

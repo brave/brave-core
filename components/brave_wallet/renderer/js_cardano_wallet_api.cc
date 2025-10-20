@@ -37,7 +37,7 @@ v8::Local<v8::Value> ConvertError(
   base::Value::Dict error_value;
 
   if (error->pagination_error_payload) {
-    error_value.Set("maxNumber",
+    error_value.Set("maxSize",
                     base::Value(error->pagination_error_payload->payload));
     return content::V8ValueConverter::Create()->ToV8Value(error_value, context);
   }
