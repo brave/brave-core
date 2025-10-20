@@ -13,8 +13,16 @@ struct ModelFiles {
 
 interface CandleService {
   BindBert(pending_remote<BertInterface> bert);
+
+  BindEmbeddingGemma(pending_remote<EmbeddingGemmaInterface> embedding_gemma);
 };
 
 interface BertInterface {
   RunExample(ModelFiles model_files) => (string result);
+};
+
+interface EmbeddingGemmaInterface {
+  Init(ModelFiles model_files) => (bool success);
+
+  Embed(string input) => (array<double> output);
 };

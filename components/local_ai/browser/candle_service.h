@@ -29,6 +29,9 @@ class CandleService : public mojom::CandleService {
 
   void BindBert(mojo::PendingRemote<mojom::BertInterface>) override;
 
+  void BindEmbeddingGemma(
+      mojo::PendingRemote<mojom::EmbeddingGemmaInterface>) override;
+
   void RunBertExample();
 
  private:
@@ -41,6 +44,8 @@ class CandleService : public mojom::CandleService {
 
   mojo::ReceiverSet<mojom::CandleService> receivers_;
   mojo::Remote<mojom::BertInterface> bert_remote_;
+
+  mojo::Remote<mojom::EmbeddingGemmaInterface> embedding_gemma_remote_;
 
   base::WeakPtrFactory<CandleService> weak_ptr_factory_{this};
 };

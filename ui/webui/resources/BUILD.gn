@@ -27,6 +27,7 @@ include_polymer = !is_android && !is_ios
 group("grdp") {
   public_deps = [
     ":candle_bert",
+    ":candle_embedding_gemma",
     ":fonts_grdp",
     ":icons_grdp",
     ":leo_bundle",
@@ -139,6 +140,28 @@ transpile_web_ui("candle_bert") {
   ]
 
   rust_packages = [ rebase_path("wasm/candle_bert/Cargo.toml") ]
+
+  no_iife = true
+  output_module = true
+  public_asset_path = "chrome-untrusted://resources/brave/"
+}
+
+transpile_web_ui("candle_embedding_gemma") {
+  resource_name = "candle_embedding_gemma"
+  generate_grdp = true
+  resource_path_prefix = "brave"
+
+  entry_points = [ [
+        "candle_embedding_gemma",
+        rebase_path("wasm/candle_embedding_gemma/index.js"),
+      ] ]
+
+  inputs = [
+    rebase_path("wasm/Cargo.lock"),
+    rebase_path("wasm/candle_embedding_gemma/src/lib.rs"),
+  ]
+
+  rust_packages = [ rebase_path("wasm/candle_embedding_gemma/Cargo.toml") ]
 
   no_iife = true
   output_module = true

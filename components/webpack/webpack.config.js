@@ -119,6 +119,9 @@ module.exports = async function (env, argv) {
         if (/^chrome-untrusted:\/\/resources\/brave\/candle_bert/.test(request)) {
           return callback(null, 'module ' + request);
         }
+        if (/^chrome-untrusted:\/\/resources\/brave\/candle_embedding_gemma/.test(request)) {
+          return callback(null, 'module ' + request);
+        }
         callback();
       },
     ],

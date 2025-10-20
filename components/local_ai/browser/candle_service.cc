@@ -66,6 +66,15 @@ void CandleService::BindBert(
   RunBertExample();
 }
 
+void CandleService::BindEmbeddingGemma(
+    mojo::PendingRemote<mojom::EmbeddingGemmaInterface> pending_remote) {
+  // Reset if already bound (e.g., on page reload)
+  if (embedding_gemma_remote_.is_bound()) {
+    embedding_gemma_remote_.reset();
+  }
+  embedding_gemma_remote_.Bind(std::move(pending_remote));
+}
+
 void CandleService::RunBertExample() {
   auto model_files = LoadModelFilesFromResources();
   if (!model_files) {

@@ -232,6 +232,10 @@
     "META": {"sizes": {"includes": [10]}},
     "includes": [32660],
   },
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-candle_embedding_gemma/candle_embedding_gemma.grd": {
+    "META": {"sizes": {"includes": [10]}},
+    "includes": [32680],
+  },
   # WARNING: The upstream ChromeOS/Ash strings currently run through 40000. We
   # must be careful not to exceed that maximum when adding new strings here.
   # Check out/<BUILD_TYPE>/gen/brave/resources/brave_resource_ids for how much
