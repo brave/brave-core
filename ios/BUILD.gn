@@ -78,6 +78,7 @@ group("brave_ios") {
 
 brave_core_public_headers = [
   "//brave/base/apple/base_value_bridge.h",
+  "//brave/components/ai_chat/ios/browser/ai_chat_ui_handler_bridge.h",
   "//brave/ios/app/brave_core_main.h",
   "//brave/ios/web/advanced_privacy_protections/wkwebpagepreferences_private.h",
   "//brave/ios/app/brave_profile_controller.h",
