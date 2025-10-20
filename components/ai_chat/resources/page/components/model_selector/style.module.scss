@@ -41,27 +41,23 @@
 .buttonMenu {
   --leo-menu-max-height: calc(100vh - 136px);
   leo-menu-item {
-    --leo-icon-size: 20px;
-    --leo-icon-color: var(--leo-color-icon-default);
-
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: var(--leo-spacing-l);
     padding: var(--leo-spacing-s) var(--leo-spacing-m);
     max-width: 270px;
-    font: var(--leo-font-default-regular);
-  }
-  leo-menu-item:first-of-type {
-    margin-top: 4px;
   }
 }
 
 .menuFooterIconAndText {
+  --leo-icon-size: 20px;
+  --leo-icon-color: var(--leo-color-icon-default);
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: var(--leo-spacing-m);
+  font: var(--leo-font-default-regular);
 }
 
 .menuFooter {
@@ -85,9 +81,6 @@
       background-color: var(--leo-color-container-highlight);
     }
   }
-  leo-menu-item:first-of-type {
-    margin-top: 0;
-  }
 }
 
 .menuFooterExtraPadding {
@@ -99,45 +92,4 @@
 
 .footerGap {
   min-height: 48px;
-}
-
-.modelIcon {
-  --leo-icon-size: 18px;
-  --leo-icon-color: var(--leo-color-icon-default);
-
-  border-radius: var(--leo-radius-m);
-  border: 1px solid var(--leo-color-divider-subtle);
-
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-
-  flex-shrink: 0;
-
-  width: 32px;
-  height: 32px;
-
-  &[data-key='chat-automatic'] {
-    --leo-icon-color: white;
-
-    background: var(--leo-gradient-icons-active);
-    border: none;
-  }
-}
-
-.menuText {
-  flex-grow: 1;
-  font: var(--leo-font-default-regular);
-}
-
-.modelSubtitle {
-  font: var(--leo-font-small-regular);
-  color: var(--leo-color-text-tertiary);
-  padding: 0;
-  margin: 0;
-}
-
-.modelLabel {
-  align-self: flex-start;
 }
