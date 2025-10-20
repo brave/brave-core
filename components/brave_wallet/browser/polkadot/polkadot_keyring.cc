@@ -13,7 +13,10 @@ namespace brave_wallet {
 
 namespace {
 
+// Address prefixes based on network:
+// https://wiki.polkadot.com/learn/learn-account-advanced/.
 constexpr uint8_t kPolkadotPrefix = 0u;
+// 42 relates to general Substrate address.
 constexpr uint8_t kWestendPrefix = 42u;
 
 inline constexpr char const kPolkadotTestnet[] =
