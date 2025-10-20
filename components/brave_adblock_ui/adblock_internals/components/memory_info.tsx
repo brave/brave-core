@@ -11,15 +11,21 @@ interface Props {
 }
 
 export class MemoryInfo extends React.Component<Props, {}> {
-  render () {
-    const items = Object.keys(this.props.memory).map(key => {
+  render() {
+    const items = Object.keys(this.props.memory).map((key) => {
       const v = this.props.memory[key]
-      return (<div key={key}>{key} : {v}</div>)
+      return (
+        <div key={key}>
+          {key} : {v}
+        </div>
+      )
     })
 
-    return (<div>
-      <h2>{this.props.caption}</h2>
-      {items}
-    </div>)
+    return (
+      <div>
+        <h2>{this.props.caption}</h2>
+        {items}
+      </div>
+    )
   }
 }
