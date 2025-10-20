@@ -1,20 +1,12 @@
 diff --git a/chrome/browser/renderer_context_menu/render_view_context_menu.cc b/chrome/browser/renderer_context_menu/render_view_context_menu.cc
-index 2db8b2739177ac246dedb06f4c3694f47de5f726..ebbe20392f2418165b8d67a47017d54cd30de4ea 100644
+index 93ed247bd9c78e2d278e27c37cd3389ba8179054..9def69a902f9063457c4152e2807bc817fc7405f 100644
 --- a/chrome/browser/renderer_context_menu/render_view_context_menu.cc
 +++ b/chrome/browser/renderer_context_menu/render_view_context_menu.cc
-@@ -235,6 +235,7 @@
- #include "ui/base/models/image_model.h"
- #include "ui/base/mojom/menu_source_type.mojom.h"
- #include "ui/base/window_open_disposition_utils.h"
-+#include "ui/color/color_provider.h"
- #include "ui/gfx/favicon_size.h"
- #include "ui/gfx/geometry/point.h"
- #include "ui/gfx/geometry/point_conversions.h"
-@@ -2401,6 +2402,7 @@ void RenderViewContextMenu::AppendSearchProvider() {
+@@ -2402,6 +2402,7 @@ void RenderViewContextMenu::AppendSearchProvider() {
    if (!selection_navigation_url_.is_valid()) {
      return;
    }
 +  BRAVE_APPEND_SEARCH_PROVIDER
-
+ 
    std::u16string printable_selection_text = PrintableSelectionText();
    EscapeAmpersands(&printable_selection_text);
