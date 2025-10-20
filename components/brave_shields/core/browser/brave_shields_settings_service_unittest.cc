@@ -312,7 +312,6 @@ TEST_F(BraveShieldsSettingsServiceTest, NoScriptsEnabledByDefault) {
             brave_shields::ControlType::ALLOW);
 }
 
-#if BUILDFLAG(IS_IOS)
 TEST_F(BraveShieldsSettingsTest, AutoShredMode) {
   // verify the initial values
   EXPECT_EQ(brave_shields_settings()->GetAutoShredMode(kTestUrl),
@@ -385,4 +384,3 @@ TEST_F(BraveShieldsSettingsTest, DefaultAutoShredMode) {
                 brave_shields::AutoShredSetting::kContentSettingsType),
             AutoShredDictFrom(AutoShredMode::NEVER));
 }
-#endif

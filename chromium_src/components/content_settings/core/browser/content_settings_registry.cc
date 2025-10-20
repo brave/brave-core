@@ -408,7 +408,9 @@ void ContentSettingsRegistry::BraveInit() {
       brave_shields::AutoShredSetting::DefaultValue(),
       WebsiteSettingsInfo::SYNCABLE, WebsiteSettingsInfo::NOT_LOSSY,
       WebsiteSettingsInfo::TOP_ORIGIN_ONLY_SCOPE,
-      WebsiteSettingsRegistry::PLATFORM_IOS,
+      WebsiteSettingsRegistry::DESKTOP |
+          WebsiteSettingsRegistry::PLATFORM_ANDROID |
+          WebsiteSettingsRegistry::PLATFORM_IOS,
       WebsiteSettingsInfo::INHERIT_IN_INCOGNITO);
 
 #if BUILDFLAG(ENABLE_PSST)
