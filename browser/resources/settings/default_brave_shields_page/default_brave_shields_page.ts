@@ -36,7 +36,7 @@ interface BraveShieldsPage {
     fingerprintingSelectControlType: HTMLSelectElement,
     forgetFirstPartyStorageControlType: SettingsToggleButtonElement,
     httpsUpgradeControlType: HTMLSelectElement,
-    noScriptControlType: SettingsToggleButtonElement,
+    noScriptControlToggle: SettingsToggleButtonElement,
     setContactInfoSaveFlagToggle: SettingsToggleButtonElement,
   }
 }
@@ -142,6 +142,14 @@ class BraveShieldsPage extends BraveShieldsPageBase {
         type: Boolean,
         value: loadTimeData.getBoolean('isForgetFirstPartyStorageFeatureEnabled')
       },
+      noScriptControlType_: {
+        type: Object,
+        value: {
+          key: '',
+          type: chrome.settingsPrivate.PrefType.BOOLEAN,
+          value: false,
+        }
+      },
       isForgetFirstPartyStorageEnabled_: {
         type: Object,
         value: {
@@ -175,6 +183,7 @@ class BraveShieldsPage extends BraveShieldsPageBase {
   private declare cookieControlTypes_: ControlType[]
   private declare cookieControlType_: string
   private declare httpsUpgradeControlType_: string
+  private declare noScriptControlType_: chrome.settingsPrivate.PrefObject<boolean>
   private declare isForgetFirstPartyStorageEnabled_: chrome.settingsPrivate.
     PrefObject<boolean>
   private declare isFingerprintingEnabled_: chrome.settingsPrivate.PrefObject<boolean>
@@ -261,6 +270,14 @@ class BraveShieldsPage extends BraveShieldsPageBase {
       this.httpsUpgradeControlType_ = value
     })
 
+    this.browserProxy_.getNoScriptControlType().then(value => {
+      this.noScriptControlType_ = {
+        key: '',
+        type: chrome.settingsPrivate.PrefType.BOOLEAN,
+        value: value,
+      }
+    })
+
     this.browserProxy_.getForgetFirstPartyStorageEnabled().then(value => {
       this.isForgetFirstPartyStorageEnabled_ = {
         key: '',
@@ -305,7 +322,7 @@ class BraveShieldsPage extends BraveShieldsPageBase {
 
   onNoScriptControlChange_ () {
     this.browserProxy_.
-      setNoScriptControlType(this.$.noScriptControlType.checked)
+      setNoScriptControlType(this.$.noScriptControlToggle.checked)
   }
 
   onForgetFirstPartyStorageToggleChange_ () {

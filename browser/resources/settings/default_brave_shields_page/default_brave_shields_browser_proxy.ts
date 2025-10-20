@@ -29,6 +29,7 @@ export interface DefaultBraveShieldsBrowserProxy {
   getHttpsUpgradeControlType: () => Promise<string>
   setHttpsUpgradeControlType: (value: string) => void
 
+  getNoScriptControlType: () => Promise<boolean>
   setNoScriptControlType: (value: boolean) => void
 
   getForgetFirstPartyStorageEnabled: () => Promise<boolean>
@@ -88,6 +89,10 @@ implements DefaultBraveShieldsBrowserProxy {
 
   setHttpsUpgradeControlType (value: string) {
     chrome.send('setHttpsUpgradeControlType', [value])
+  }
+
+  getNoScriptControlType () {
+    return sendWithPromise('getNoScriptControlType')
   }
 
   setNoScriptControlType (value: boolean) {

@@ -94,7 +94,6 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[kShieldsStatsBadgeVisible] =
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[kAdControlType] = settings_api::PrefType::kBoolean;
-  (*s_brave_allowlist)[kNoScriptControlType] = settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[kGoogleLoginControlType] =
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[brave_shields::prefs::kFBEmbedControlType] =
