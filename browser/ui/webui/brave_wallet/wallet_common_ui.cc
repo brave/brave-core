@@ -14,6 +14,7 @@
 #if !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/webui/favicon_source.h"
 #endif
@@ -55,10 +56,10 @@ content::WebContents* GetWebContentsFromTabId(Browser** browser,
 
 content::WebContents* GetActiveWebContents() {
 #if !BUILDFLAG(IS_ANDROID)
-  return BrowserList::GetInstance()
-      ->GetLastActive()
-      ->tab_strip_model()
-      ->GetActiveWebContents();
+  BrowserWindowInterface* const bwi =
+      GetLastActiveBrowserWindowInterfaceWithAnyProfile();
+  CHECK(bwi);
+  return bwi->GetTabStripModel()->GetActiveWebContents();
 #else
   return nullptr;
 #endif

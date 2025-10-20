@@ -38,7 +38,7 @@
 #include "brave/components/webcompat_reporter/resources/grit/webcompat_reporter_generated_map.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
-#include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/language/core/browser/pref_names.h"
 #include "components/prefs/pref_service.h"
@@ -69,11 +69,12 @@ constexpr char kGetViewPortSizeParamName[] = "height";
 constexpr char kOnViewPortSizeChangedEventName[] = "onViewPortSizeChanged";
 
 content::WebContents* GetActiveWebContents() {
-  const auto* browser = BrowserList::GetInstance()->GetLastActive();
-  if (!browser) {
+  BrowserWindowInterface* const bwi =
+      GetLastActiveBrowserWindowInterfaceWithAnyProfile();
+  if (!bwi) {
     return nullptr;
   }
-  return browser->tab_strip_model()->GetActiveWebContents();
+  return bwi->GetTabStripModel()->GetActiveWebContents();
 }
 
 const std::optional<gfx::Rect> GetContainerBounds(content::WebUI* web_ui) {
@@ -87,13 +88,14 @@ const std::optional<gfx::Rect> GetContainerBounds(content::WebUI* web_ui) {
 }
 
 views::Widget* GetBrowserWidget() {
-  const auto* browser = BrowserList::GetInstance()->GetLastActive();
-  if (!browser) {
+  BrowserWindowInterface* const bwi =
+      GetLastActiveBrowserWindowInterfaceWithAnyProfile();
+  if (!bwi) {
     return nullptr;
   }
 
   auto* widget = views::Widget::GetWidgetForNativeWindow(
-      browser->window()->GetNativeWindow());
+      bwi->GetWindow()->GetNativeWindow());
   if (!widget) {
     return nullptr;
   }
@@ -102,12 +104,13 @@ views::Widget* GetBrowserWidget() {
 }
 
 content::RenderWidgetHostView* GetRenderWidgetHostViewForActiveTab() {
-  const auto* browser = BrowserList::GetInstance()->GetLastActive();
-  if (!browser) {
+  BrowserWindowInterface* const bwi =
+      GetLastActiveBrowserWindowInterfaceWithAnyProfile();
+  if (!bwi) {
     return nullptr;
   }
 
-  auto* last_active_tab = browser->tab_strip_model()->GetActiveTab();
+  auto* last_active_tab = bwi->GetTabStripModel()->GetActiveTab();
   if (!last_active_tab) {
     return nullptr;
   }

@@ -74,6 +74,7 @@ source_set("impl") {
     "//chrome/browser/profiles:profile",
     "//chrome/browser/search_engines",
     "//chrome/browser/ui",
+    "//chrome/browser/ui/browser_window",
     "//chrome/common:channel_info",
     "//chrome/common:chrome_features",
     "//chrome/common:constants",
