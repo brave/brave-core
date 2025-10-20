@@ -1,0 +1,22 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module local_ai.mojom;
+
+struct ModelFiles {
+  array<uint8> weights;
+  array<uint8> tokenizer;
+  array<uint8> config;
+};
+
+interface CandleService {
+  BindEmbeddingGemma(pending_remote<EmbeddingGemmaInterface> embedding_gemma);
+};
+
+interface EmbeddingGemmaInterface {
+  Init(ModelFiles model_files) => (bool success);
+
+  Embed(string input) => (array<double> output);
+};
