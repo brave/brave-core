@@ -230,6 +230,10 @@
     "META": {"sizes": {"includes": [20]}},
     "includes": [32631],
   },
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-candle_embedding_gemma/candle_embedding_gemma.grd": {
+    "META": {"sizes": {"includes": [2]}},
+    "includes": [32651],
+  },
   "brave/browser/resources/bookmark_icon/bookmark_icon_resources.grd": {
     "structures": [32660],
   },
