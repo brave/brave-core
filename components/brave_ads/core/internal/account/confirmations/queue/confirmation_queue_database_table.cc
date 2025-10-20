@@ -207,7 +207,7 @@ ConfirmationQueueItemInfo FromMojomRow(
 
   confirmation_queue_item.confirmation.user_data.fixed =
       base::JSONReader::ReadDict(ColumnString(mojom_db_row, 11),
-                                 base::JSON_PARSE_CHROMIUM_EXTENSIONS)
+                                 base::JSON_PARSE_RFC)
           .value_or(base::Value::Dict());
 
   const base::Time process_at = ColumnTime(mojom_db_row, 12);
