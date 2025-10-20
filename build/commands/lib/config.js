@@ -456,6 +456,13 @@ Config.prototype.buildArgs = function () {
     args.enable_updater = true
   }
 
+  if (args.is_asan || args.is_ubsan || args.is_msan) {
+    // Temporarily disabling dcheck_always_on for sanitiser builds, as there
+    // are some serious reports coming back. It is necessary first to stabilise
+    // these sanitisers with this flag first before using the default.
+    args.dcheck_always_on = false
+  }
+
   if (!this.isBraveReleaseBuild()) {
     args.chrome_pgo_phase = 0
 
