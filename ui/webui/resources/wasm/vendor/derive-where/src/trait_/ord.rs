@@ -11,7 +11,7 @@ use crate::{Data, DeriveTrait, Item, SimpleType, SplitGenerics, TraitImpl};
 pub struct Ord;
 
 impl TraitImpl for Ord {
-	fn as_str(&self) -> &'static str {
+		fn as_str(&self) -> &'static str {
 		"Ord"
 	}
 
