@@ -119,6 +119,7 @@
 -LoginStateCheckerTest.*
 -ModelQualityLogsUploaderTest.TotalFlowTimeIsRecorded
 -NotificationContentDetectionServiceFactoryTest.DisabledForAndroidArmAndLowEndDevices
+-PasswordChangeDelegateImplTest.LoginPasswordFormIsLogged
 -PasswordChangeDelegateImplTest.MetricsReportedFlowOffered
 -PasswordChangeDelegateImplTest.OtpDetectionIgnoredWhenPasswordChangeNotStarted
 -PasswordChangeDelegateImplTest.OtpDetectionProcessedFieldNotFocusableSkip
@@ -337,6 +338,7 @@
 -NotificationTelemetryServiceTest.NonEmptyTelemetryStoreAtConstruction/*
 -NotificationTelemetryServiceTest.SendsTelemetryReport/*
 -NotificationTelemetryServiceTest.ServiceWorkerSubscriptionRecordsServiceWorkerBehavior/*
+-SafeBrowsingPrefChangeHandlerTest.ToastSuppressedForTailoredSecurityChange
 -SafeBrowsingResultTest.GetState_EnabledEnhanced
 -SafeBrowsingServiceTest.TestMinAllowedTimeForReferrerChains
 -SafeBrowsingServiceTest.TestMinAllowedTimeForReferrerChains_EsbEnabledOnStartup
@@ -655,6 +657,11 @@
 # The following test uses Chromium's list of "starter pack engines", which
 # includes entries not supported by Brave (i.e. "@gemini").
 -OmniboxEditModelPopupTest.GetPopupAccessibilityLabelForCurrentSelection_KeywordMode
+
+# This test fails because ContextualTasksContextService cannot be created
+# because it depends on PageEmbeddingsService being created and that service
+# is not created because we disable kHistoryEmbeddings.
+-ContextualTasksContextServiceFactoryTest.CreatesServiceForProfile
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
