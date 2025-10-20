@@ -12,7 +12,7 @@
 #undef IsHandledURL
 #undef IsHandledProtocol
 
-bool ProfileIOData::IsHandledProtocol(const std::string& scheme) {
+bool ProfileIOData::IsHandledProtocol(std::string_view scheme) {
   if (scheme == kBraveUIScheme)
     return true;
   return IsHandledProtocol_ChromiumImpl(scheme);
@@ -27,7 +27,5 @@ bool ProfileIOData::IsHandledURL(const GURL& url) {
     // We handle error cases.
     return true;
   }
-  // TODO: remove the string copy once upstream is fixed.
-  // https://crrev.com/c/7030028
-  return IsHandledProtocol(std::string(url.scheme()));
+  return IsHandledProtocol(url.scheme());
 }
