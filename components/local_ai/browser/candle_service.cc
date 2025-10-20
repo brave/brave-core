@@ -12,6 +12,7 @@
 #include "base/path_service.h"
 #include "base/task/thread_pool.h"
 #include "components/grit/brave_components_resources.h"
+#include "mojo/public/cpp/base/big_buffer.h"
 #include "ui/base/resource/resource_bundle.h"
 
 namespace local_ai {
@@ -43,7 +44,7 @@ mojom::ModelFilesPtr LoadModelFilesFromResources() {
   return model_files;
 }
 
-mojom::ModelFilesPtr LoadEmbeddingGemmaModelFilesFromDisk() {
+mojom::LargeModelFilesPtr LoadEmbeddingGemmaModelFilesFromDisk() {
   // TODO(darkdh): Make this configurable or use component updater
   base::FilePath home_dir;
   if (!base::PathService::Get(base::DIR_HOME, &home_dir)) {
@@ -58,29 +59,34 @@ mojom::ModelFilesPtr LoadEmbeddingGemmaModelFilesFromDisk() {
   base::FilePath tokenizer_path = model_dir.Append("tokenizer.json");
   base::FilePath config_path = model_dir.Append("config.json");
 
-  std::string weights_data;
-  std::string tokenizer_data;
-  std::string config_data;
-
-  if (!base::ReadFileToString(weights_path, &weights_data)) {
+  auto weights_opt = base::ReadFileToBytes(weights_path);
+  if (!weights_opt) {
     LOG(ERROR) << "Failed to read model weights from: " << weights_path;
     return nullptr;
   }
 
-  if (!base::ReadFileToString(tokenizer_path, &tokenizer_data)) {
+  auto tokenizer_opt = base::ReadFileToBytes(tokenizer_path);
+  if (!tokenizer_opt) {
     LOG(ERROR) << "Failed to read tokenizer from: " << tokenizer_path;
     return nullptr;
   }
 
-  if (!base::ReadFileToString(config_path, &config_data)) {
+  auto config_opt = base::ReadFileToBytes(config_path);
+  if (!config_opt) {
     LOG(ERROR) << "Failed to read config from: " << config_path;
     return nullptr;
   }
 
-  auto model_files = mojom::ModelFiles::New();
-  model_files->weights.assign(weights_data.begin(), weights_data.end());
-  model_files->tokenizer.assign(tokenizer_data.begin(), tokenizer_data.end());
-  model_files->config.assign(config_data.begin(), config_data.end());
+  LOG(ERROR) << "Loaded weights, size: " << weights_opt->size();
+  LOG(ERROR) << "Loaded tokenizer, size: " << tokenizer_opt->size();
+  LOG(ERROR) << "Loaded config, size: " << config_opt->size();
+
+  // Create BigBuffer directly - it will automatically use shared memory for
+  // large data (> 64KB)
+  auto model_files = mojom::LargeModelFiles::New();
+  model_files->weights = mojo_base::BigBuffer(std::move(*weights_opt));
+  model_files->tokenizer = mojo_base::BigBuffer(std::move(*tokenizer_opt));
+  model_files->config = mojo_base::BigBuffer(std::move(*config_opt));
 
   return model_files;
 }
@@ -153,13 +159,13 @@ void CandleService::RunEmbeddingGemmaInit() {
 }
 
 void CandleService::OnEmbeddingGemmaModelFilesLoaded(
-    mojom::ModelFilesPtr model_files) {
+    mojom::LargeModelFilesPtr model_files) {
   if (!model_files) {
     LOG(ERROR) << "Failed to load embedding gemma model files from disk";
     return;
   }
 
-  LOG(ERROR) << "Model files loaded, initializing Embedding Gemma model...";
+  LOG(ERROR) << "Model files loaded, sending Init request...";
   embedding_gemma_remote_->Init(
       std::move(model_files),
       base::BindOnce(&CandleService::OnEmbeddingGemmaInit,

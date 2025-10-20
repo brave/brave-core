@@ -6,7 +6,7 @@
 import {
   CandleService,
   EmbeddingGemmaInterfaceReceiver,
-  ModelFiles,
+  LargeModelFiles,
 } from 'gen/brave/components/local_ai/common/candle.mojom.m.js'
 
 console.log('[Candle WASM] Embedding Gemma Script loaded')
@@ -35,7 +35,7 @@ class EmbeddingGemmaInterfaceImpl {
   }
 
   // Implementation of EmbeddingGemmaInterface::Init
-  async init(modelFiles: ModelFiles): Promise<{ success: boolean }> {
+  async init(modelFiles: LargeModelFiles): Promise<{ success: boolean }> {
     if (this.isInitialized) {
       console.log('Model already initialized')
       return { success: true }
@@ -44,13 +44,48 @@ class EmbeddingGemmaInterfaceImpl {
     console.log('Loading Embedding Gemma model from provided files...')
 
     try {
-      // Convert mojo arrays to Vec<u8> format expected by Rust WASM
-      const weights = Array.from(modelFiles.weights)
-      const tokenizer = Array.from(modelFiles.tokenizer)
-      const config = Array.from(modelFiles.config)
+      // Helper function to extract data from BigBuffer
+      const extractBigBuffer = (
+        buffer: any,
+        name: string,
+      ): Uint8Array | null => {
+        if (buffer.bytes) {
+          const data = new Uint8Array(buffer.bytes)
+          console.log(`${name} using inline bytes, size:`, data.byteLength)
+          return data
+        } else if (buffer.sharedMemory) {
+          const sharedMem = buffer.sharedMemory
+          console.log(`${name} shared memory size:`, sharedMem.size)
+          const mapResult = sharedMem.bufferHandle.mapBuffer(0, sharedMem.size)
+          if (!mapResult.buffer) {
+            console.error(
+              `Failed to map ${name} shared buffer, result:`,
+              mapResult.result,
+            )
+            return null
+          }
+          const data = new Uint8Array(mapResult.buffer)
+          console.log(`${name} using shared memory, size:`, data.byteLength)
+          return data
+        } else {
+          console.error(`Invalid ${name} BigBuffer: no bytes or shared memory`)
+          return null
+        }
+      }
+
+      // Extract all model files from BigBuffer
+      console.log('Extracting model files from BigBuffer...')
+      const weightsData = extractBigBuffer(modelFiles.weights, 'Weights')
+      const tokenizerData = extractBigBuffer(modelFiles.tokenizer, 'Tokenizer')
+      const configData = extractBigBuffer(modelFiles.config, 'Config')
+
+      if (!weightsData || !tokenizerData || !configData) {
+        console.error('Failed to extract model files')
+        return { success: false }
+      }
 
       console.log('Creating Gemma3Embedder instance...')
-      this.embedder = new Gemma3Embedder(weights, tokenizer, config)
+      this.embedder = new Gemma3Embedder(weightsData, tokenizerData, configData)
       this.isInitialized = true
       console.log('Embedding Gemma model loaded successfully!')
       return { success: true }

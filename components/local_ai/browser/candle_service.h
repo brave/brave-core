@@ -42,7 +42,7 @@ class CandleService : public mojom::CandleService {
   ~CandleService() override;
 
   void OnRunBertExample(const std::string& result);
-  void OnEmbeddingGemmaModelFilesLoaded(mojom::ModelFilesPtr model_files);
+  void OnEmbeddingGemmaModelFilesLoaded(mojom::LargeModelFilesPtr model_files);
   void OnEmbeddingGemmaInit(bool success);
   void OnEmbeddingGemmaEmbed(const std::string& text,
                              const std::vector<double>& embedding);

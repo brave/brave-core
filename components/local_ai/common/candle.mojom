@@ -5,10 +5,18 @@
 
 module local_ai.mojom;
 
+import "mojo/public/mojom/base/big_buffer.mojom";
+
 struct ModelFiles {
   array<uint8> weights;
   array<uint8> tokenizer;
   array<uint8> config;
+};
+
+struct LargeModelFiles {
+  mojo_base.mojom.BigBuffer weights;
+  mojo_base.mojom.BigBuffer tokenizer;
+  mojo_base.mojom.BigBuffer config;
 };
 
 interface CandleService {
@@ -22,7 +30,7 @@ interface BertInterface {
 };
 
 interface EmbeddingGemmaInterface {
-  Init(ModelFiles model_files) => (bool success);
+  Init(LargeModelFiles model_files) => (bool success);
 
   Embed(string input) => (array<double> output);
 };
