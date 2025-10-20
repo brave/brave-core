@@ -64,6 +64,9 @@ class APIRequestResult {
   // Note: use TakeBody()/value_body() instead where possible.
   std::string SerializeBodyToString() const;
 
+  const std::string& error_message() const { return error_message_; }
+  std::string TakeErrorMessage() &&;
+
   // HTTP response headers.
   const base::flat_map<std::string, std::string>& headers() const {
     return headers_;
@@ -79,6 +82,7 @@ class APIRequestResult {
 
   int response_code_ = -1;
   base::Value value_body_;
+  std::string error_message_;  // Can be set by APIRequestHelper only.
   base::flat_map<std::string, std::string> headers_;
   int error_code_ = -1;
   GURL final_url_;
