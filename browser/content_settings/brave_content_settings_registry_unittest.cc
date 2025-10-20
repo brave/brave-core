@@ -218,6 +218,19 @@ TEST_F(BraveContentSettingsRegistryTest, GetInitialDefaultSetting) {
     info = registry()->Get(ContentSettingsType::BRAVE_SPEEDREADER);
     EXPECT_EQ(CONTENT_SETTING_ASK, info->GetInitialDefaultSetting());
   }
+
+  {
+    SCOPED_TRACE("Content setting: BRAVE_AUTO_SHRED");
+    const WebsiteSettingsInfo* ws_info =
+        website_settings_registry()->Get(ContentSettingsType::BRAVE_AUTO_SHRED);
+    const auto initial_value = brave_shields::AutoShredSetting::FromValue(
+        ws_info->initial_default_value());
+    EXPECT_EQ(brave_shields::mojom::AutoShredMode::NEVER, initial_value);
+    EXPECT_EQ(brave_shields::mojom::AutoShredMode::NEVER,
+              brave_shields::AutoShredSetting::kDefaultValue);
+    EXPECT_EQ(ws_info->initial_default_value(),
+              brave_shields::AutoShredSetting::DefaultValue());
+  }
 }
 
 }  // namespace content_settings
