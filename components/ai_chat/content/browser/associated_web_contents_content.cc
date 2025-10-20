@@ -20,6 +20,7 @@
 #include "base/strings/string_util.h"
 #include "base/strings/utf_ostream_operators.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/types/fixed_array.h"
 #include "brave/components/ai_chat/content/browser/page_content_fetcher.h"
 #include "brave/components/ai_chat/content/browser/pdf_utils.h"
 #include "brave/components/ai_chat/core/browser/associated_content_driver.h"
@@ -276,23 +277,14 @@ void AssociatedWebContentsContent::OnGetPDFPageCount(
 void AssociatedWebContentsContent::OnAllPDFPagesTextReceived(
     FetchPageContentCallback callback,
     const std::vector<std::pair<size_t, std::string>>& page_texts) {
-  // Pre-size vector to hold all texts in order
-  std::vector<std::string> ordered_texts(page_texts.size());
+  base::FixedArray<std::string_view> ordered_texts(page_texts.size());
 
   // Insert texts at their correct indices
   for (const auto& [index, text] : page_texts) {
-    ordered_texts[index] = std::move(text);
+    ordered_texts[index] = text;
   }
 
-  std::string content;
-  for (auto it = ordered_texts.begin(); it != ordered_texts.end(); ++it) {
-    content.append(*it);
-    if (std::next(it) != ordered_texts.end()) {
-      content.append("\n");
-    }
-  }
-
-  std::move(callback).Run(std::move(content), false, "");
+  std::move(callback).Run(base::JoinString(ordered_texts, "\n"), false, "");
 }
 #endif  // BUILDFLAG(ENABLE_PDF)
 
