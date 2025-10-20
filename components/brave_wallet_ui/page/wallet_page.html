@@ -4,6 +4,7 @@
   <base href="/">
   <meta charset="utf-8">
   <if expr="is_ios">
+    <!-- iOS-only: lock viewport to prevent auto-zoom when focusing input fields and preserve WebUI layout consistency. -->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   </if>
   <if expr="not is_ios">
