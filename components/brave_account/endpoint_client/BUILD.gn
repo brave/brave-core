@@ -14,6 +14,7 @@ source_set("endpoint_client") {
     "request.h",
     "request_types.h",
     "with_headers.h",
+    "functions.h",
   ]
 
   deps = [
