@@ -8,8 +8,8 @@
 #include "base/feature_list.h"
 #include "base/logging.h"
 #include "base/notimplemented.h"
-#include "brave/components/tabs/public/tree_tab_node.h"
 #include "brave/components/tabs/public/tree_tab_node_id.h"
+#include "brave/components/tabs/public/tree_tab_node_tab_collection.h"
 #include "components/tabs/public/tab_collection.h"
 
 namespace tabs {
@@ -40,10 +40,11 @@ void BraveTabStripCollection::AddTabRecursive(
         previous_tab->GetParentCollection(GetPassKey());
     CHECK_EQ(previous_tab_collection->type(), TabCollection::Type::TREE_NODE);
 
-    if (static_cast<TreeTabNode*>(opener_collection)->GetTopLevelAncestor() ==
-        static_cast<TreeTabNode*>(previous_tab_collection)
+    if (static_cast<tabs::TreeTabNodeTabCollection*>(opener_collection)
+            ->GetTopLevelAncestor() ==
+        static_cast<tabs::TreeTabNodeTabCollection*>(previous_tab_collection)
             ->GetTopLevelAncestor()) {
-      auto tree_tab_node = std::make_unique<TreeTabNode>(
+      auto tree_tab_node = std::make_unique<tabs::TreeTabNodeTabCollection>(
           tree_tab::TreeTabNodeId::GenerateNew(), std::move(tab));
 
       opener_collection->AddCollection(std::move(tree_tab_node),
@@ -53,7 +54,7 @@ void BraveTabStripCollection::AddTabRecursive(
   }
 
   // Otherwise, we insert the new tab into the current collection and then wrap
-  // it with a TreeTabNode.
+  // it with a tabs::TreeTabNodeTabCollection.
   auto* added_tab = tab.get();
   TabStripCollection::AddTabRecursive(std::move(tab), index, new_group_id,
                                       new_pinned_state);
@@ -64,7 +65,7 @@ void BraveTabStripCollection::AddTabRecursive(
   CHECK(target_index);
 
   auto detached_tab = parent_collection->MaybeRemoveTab(added_tab);
-  auto tree_tab_node = std::make_unique<TreeTabNode>(
+  auto tree_tab_node = std::make_unique<tabs::TreeTabNodeTabCollection>(
       tree_tab::TreeTabNodeId::GenerateNew(), std::move(detached_tab));
   parent_collection->AddCollection(std::move(tree_tab_node), *target_index);
 }
