@@ -144,6 +144,10 @@ class BraveWebViewHolder : public web::WebStateUserData<BraveWebViewHolder> {
 - (id<CRWResponderInputView>)webStateInputViewProvider:(web::WebState*)webState;
 @end
 
+@interface BraveWebView ()
+@property(nonatomic, weak) id<AIChatUIHandlerBridge> aiChatUIHandler;
+@end
+
 @implementation BraveWebView {
   std::unique_ptr<BraveWebViewWebStatePolicyDecider> _webStatePolicyDecider;
 }
@@ -192,6 +196,8 @@ class BraveWebViewHolder : public web::WebStateUserData<BraveWebViewHolder> {
 - (void)attachSecurityInterstitialHelpersToWebStateIfNecessary {
   [super attachSecurityInterstitialHelpersToWebStateIfNecessary];
   AttachTabHelpers(self.webState);
+  ai_chat::UIHandlerBridgeHolder::GetOrCreateForWebState(self.webState)
+      ->SetBridge(self.aiChatUIHandler);
 }
 
 - (CWVAutofillController*)newAutofillController {
@@ -307,12 +313,8 @@ class BraveWebViewHolder : public web::WebStateUserData<BraveWebViewHolder> {
 
 @implementation BraveWebView (AIChat)
 
-- (id<AIChatUIHandlerBridge>)aiChatUIHandler {
-  return ai_chat::UIHandlerBridgeHolder::GetOrCreateForWebState(self.webState)
-      ->bridge();
-}
-
 - (void)setAiChatUIHandler:(id<AIChatUIHandlerBridge>)bridge {
+  _aiChatUIHandler = bridge;
   ai_chat::UIHandlerBridgeHolder::GetOrCreateForWebState(self.webState)
       ->SetBridge(bridge);
 }
