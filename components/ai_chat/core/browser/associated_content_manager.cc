@@ -130,9 +130,12 @@ void AssociatedContentManager::AddContent(AssociatedContentDelegate* delegate,
     // fetch because its a bit of an edge case, and there are no real
     // consequences of not having the content (except for the content not being
     // attached).
+    // Additionally, we want to call GetContent even if `notify_updated` is
+    // false so we cache the attached content.
     delegate->GetContent(base::BindOnce(
-        [](base::WeakPtr<AssociatedContentManager> self, PageContent content) {
-          if (!self) {
+        [](base::WeakPtr<AssociatedContentManager> self, bool notify_updated,
+           PageContent content) {
+          if (!self || !notify_updated) {
             return;
           }
 
@@ -140,7 +143,7 @@ void AssociatedContentManager::AddContent(AssociatedContentDelegate* delegate,
           // conversation.
           self->conversation_->OnAssociatedContentUpdated();
         },
-        weak_ptr_factory_.GetWeakPtr()));
+        weak_ptr_factory_.GetWeakPtr(), notify_updated));
 
     content_delegates_.push_back(delegate);
     content_observations_.AddObservation(delegate);
