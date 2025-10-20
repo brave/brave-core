@@ -44,7 +44,7 @@ class BraveSyncNetworkTimeHelperBrowserTest : public PlatformBrowserTest {
     create_services_subscription_ =
         BrowserContextDependencyManager::GetInstance()
             ->RegisterCreateServicesCallbackForTesting(
-                base::BindRepeating(&BraveSyncNetworkTimeHelperBrowserTest ::
+                base::BindRepeating(&BraveSyncNetworkTimeHelperBrowserTest::
                                         OnWillCreateBrowserContextServices,
                                     base::Unretained(this)));
   }
