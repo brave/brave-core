@@ -8,6 +8,7 @@ import BraveShared
 import BraveShields
 import Data
 import Foundation
+import Preferences
 import Shared
 import WebKit
 
@@ -87,7 +88,7 @@ import WebKit
     }
 
     var userScriptTypes: Set<UserScriptType> = [
-      .siteStateListener, .gpc(ShieldPreferences.enableGPC.value),
+      .siteStateListener, .gpc(Preferences.Shields.enableGPC.value),
     ]
 
     // Handle dynamic domain level scripts on the main document.

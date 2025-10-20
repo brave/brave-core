@@ -281,7 +281,7 @@ class TabManager: NSObject {
     configuration.allowsInlineMediaPlayback = true
     // Enables Zoom in website by ignoring their javascript based viewport Scale limits.
     configuration.ignoresViewportScaleLimits = true
-    configuration.upgradeKnownHostsToHTTPS = ShieldPreferences.httpsUpgradeLevel.isEnabled
+    configuration.upgradeKnownHostsToHTTPS = Preferences.Shields.httpsUpgradeLevel.isEnabled
 
     #if BRAVE_CHANNEL_NIGHTLY || DEBUG
     if FeatureList.kWebKitAdvancedPrivacyProtections.enabled {
