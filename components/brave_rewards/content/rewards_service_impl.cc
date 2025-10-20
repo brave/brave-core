@@ -480,7 +480,7 @@ void RewardsServiceImpl::AcceptTermsOfServiceUpdate() {
 }
 
 std::string RewardsServiceImpl::GetCountryCode() const {
-  std::string declared_geo = prefs_->GetString(prefs::kDeclaredGeo);
+  const auto& declared_geo = prefs_->GetString(prefs::kDeclaredGeo);
   return !declared_geo.empty()
              ? declared_geo
              : std::string(
@@ -2023,7 +2023,7 @@ std::string RewardsServiceImpl::GetExternalWalletType() const {
     return internal::constant::kWalletBitflyer;
   }
 
-  const std::string type = prefs_->GetString(prefs::kExternalWalletType);
+  const auto& type = prefs_->GetString(prefs::kExternalWalletType);
 
   if (IsValidWalletType(type)) {
     return type;
