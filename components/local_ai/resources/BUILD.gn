@@ -29,4 +29,26 @@ pack_web_resources("candle_bert_bridge_generated") {
     "//brave/ui/webui/resources:candle_bert",
   ]
 }
+
+# Untrusted WebUI for WASM execution at
+# chrome-untrusted://candle-embedding-gemma-wasm
+transpile_web_ui("candle_embedding_gemma_bridge_ui") {
+  entry_points = [ [
+        "candle_embedding_gemma_bridge",
+        rebase_path("candle_embedding_gemma_bridge.ts"),
+      ] ]
+  webpack_aliases = [ "browser" ]
+  resource_name = "candle_embedding_gemma_bridge"
+
+  deps = [ "//brave/components/local_ai/common:mojom_js" ]
+}
+
+pack_web_resources("candle_embedding_gemma_bridge_generated") {
+  resource_name = "candle_embedding_gemma_bridge"
+  output_dir = "$root_gen_dir/brave/components/local_ai/resources"
+  deps = [
+    ":candle_embedding_gemma_bridge_ui",
+    "//brave/ui/webui/resources:candle_embedding_gemma",
+  ]
+}
 # Trusted WebUI at chrome://local-ai-internals (just static HTML, no build needed)

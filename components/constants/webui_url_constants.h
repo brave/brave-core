@@ -69,6 +69,10 @@ inline constexpr char kLocalAIInternalsURL[] = "chrome://local-ai-internals/";
 inline constexpr char kUntrustedCandleBertWasmHost[] = "candle-bert-wasm";
 inline constexpr char kUntrustedCandleBertWasmURL[] =
     "chrome-untrusted://candle-bert-wasm/";
+inline constexpr char kUntrustedCandleEmbeddingGemmaWasmHost[] =
+    "candle-embedding-gemma-wasm";
+inline constexpr char kUntrustedCandleEmbeddingGemmaWasmURL[] =
+    "chrome-untrusted://candle-embedding-gemma-wasm/";
 inline constexpr char kShieldsPanelURL[] = "chrome://brave-shields.top-chrome";
 inline constexpr char kShieldsPanelHost[] = "brave-shields.top-chrome";
 inline constexpr char kCookieListOptInHost[] = "cookie-list-opt-in.top-chrome";

@@ -47,6 +47,7 @@
       <!-- WebUI Local AI resources -->
       <include name="IDR_LOCAL_AI_INTERNALS_HTML" file="../local_ai/resources/local_ai.html" type="BINDATA" />
       <include name="IDR_CANDLE_BERT_BRIDGE_HTML" file="../local_ai/resources/candle_bert_bridge.html" type="BINDATA" />
+      <include name="IDR_CANDLE_EMBEDDING_GEMMA_BRIDGE_HTML" file="../local_ai/resources/candle_embedding_gemma_bridge.html" type="BINDATA" />
       <include name="IDR_LOCAL_AI_BERT_MODEL_SAFETENSORS" file="../../ui/webui/resources/bert_models/all-MiniLM-L6-v2/model.safetensors" type="BINDATA" compress="gzip" />
       <include name="IDR_LOCAL_AI_BERT_CONFIG_JSON" file="../../ui/webui/resources/bert_models/all-MiniLM-L6-v2/config.json" type="BINDATA" />
       <include name="IDR_LOCAL_AI_BERT_TOKENIZER_JSON" file="../../ui/webui/resources/bert_models/all-MiniLM-L6-v2/tokenizer.json" type="BINDATA" compress="gzip" />

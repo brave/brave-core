@@ -25,10 +25,11 @@ LocalAIInternalsUI::LocalAIInternalsUI(content::WebUI* web_ui)
       content::WebUIDataSource::CreateAndAdd(profile, kLocalAIInternalsHost);
   web_ui->AddRequestableScheme(content::kChromeUIUntrustedScheme);
 
-  // Allow embedding the untrusted candle-bert-wasm iframe
+  // Allow embedding the untrusted candle WASM iframes
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameSrc,
-      std::string("frame-src ") + kUntrustedCandleBertWasmURL + ";");
+      std::string("frame-src ") + kUntrustedCandleBertWasmURL + " " +
+          kUntrustedCandleEmbeddingGemmaWasmURL + ";");
 
   // Allow loading resources from chrome:// and chrome-untrusted://
   source->OverrideContentSecurityPolicy(

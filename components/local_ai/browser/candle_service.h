@@ -19,7 +19,6 @@ namespace local_ai {
 
 class CandleService : public mojom::CandleService {
  public:
-
   static CandleService* GetInstance();
 
   CandleService(const CandleService&) = delete;
@@ -33,6 +32,8 @@ class CandleService : public mojom::CandleService {
       mojo::PendingRemote<mojom::EmbeddingGemmaInterface>) override;
 
   void RunBertExample();
+  void RunEmbeddingGemmaInit();
+  void RunEmbeddingGemmaExamples();
 
  private:
   friend class base::NoDestructor<CandleService>;
@@ -41,6 +42,10 @@ class CandleService : public mojom::CandleService {
   ~CandleService() override;
 
   void OnRunBertExample(const std::string& result);
+  void OnEmbeddingGemmaModelFilesLoaded(mojom::ModelFilesPtr model_files);
+  void OnEmbeddingGemmaInit(bool success);
+  void OnEmbeddingGemmaEmbed(const std::string& text,
+                             const std::vector<double>& embedding);
 
   mojo::ReceiverSet<mojom::CandleService> receivers_;
   mojo::Remote<mojom::BertInterface> bert_remote_;

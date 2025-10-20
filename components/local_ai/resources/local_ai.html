@@ -28,13 +28,19 @@
       <p><strong>Architecture:</strong></p>
       <ul>
         <li><strong>Trusted Page:</strong> chrome://local-ai-internals (this page)</li>
-        <li><strong>Untrusted WASM:</strong> chrome-untrusted://candle-bert-wasm (iframe below)</li>
+        <li><strong>Untrusted WASM:</strong> chrome-untrusted://candle-bert-wasm</li>
+        <li><strong>Untrusted WASM:</strong> chrome-untrusted://candle-embedding-gemma-wasm</li>
       </ul>
-      <p>The Candle BERT WASM module runs in an isolated untrusted context for security.</p>
+      <p>The Candle WASM modules run in isolated untrusted contexts for security.</p>
       <p><strong>Check the console for logs from both contexts.</strong></p>
     </div>
 
-    <h2>Untrusted WASM Iframe:</h2>
-    <iframe src="chrome-untrusted://candle-bert-wasm/" title="Candle BERT WASM"></iframe>
+    <h2>BERT WASM (from bundled resources):</h2>
+    <iframe src="chrome-untrusted://candle-bert-wasm/"
+      title="Candle BERT WASM"></iframe>
+
+    <h2>Embedding Gemma WASM (from ~/Downloads/embeddinggemma-300m):</h2>
+    <iframe src="chrome-untrusted://candle-embedding-gemma-wasm/"
+      title="Candle Embedding Gemma WASM"></iframe>
   </body>
 </html>
