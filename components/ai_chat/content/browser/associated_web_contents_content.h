@@ -167,7 +167,12 @@ class AssociatedWebContentsContent : public content::WebContentsObserver,
   raw_ptr<AIChatMetrics> ai_chat_metrics_;
 
   bool is_same_document_navigation_ = false;
-  int pending_navigation_id_;
+
+  // We use -1 to indicate that the WebContents doesn't have a
+  // pending_navigation. This matches the default value of |content_id()|  which
+  // this may be used as.
+  int pending_navigation_id_ = -1;
+
   std::u16string previous_page_title_;
   bool is_page_loaded_ = false;
 
