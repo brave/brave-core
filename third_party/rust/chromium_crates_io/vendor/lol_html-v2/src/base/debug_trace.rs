@@ -11,22 +11,18 @@ cfg_if! {
                 $({
                     use std::char;
 
-                    print!(": {:?}", $ch.map(|ch| char::from_u32(ch as u32).unwrap_or('\u{fffd}') ));
+                    print!(": {:?}", $ch.map(|ch| char::from_u32(ch.into()).unwrap_or('\u{fffd}') ));
                 })*
 
                 println!();
             };
 
             ( @buffer $buffer:expr ) => {
-                use crate::base::Bytes;
-
-                println!("-- Buffered: {:#?}", Bytes::from($buffer.bytes()));
+                println!("-- Buffered: {:#?}", $buffer.bytes());
             };
 
             ( @write $slice:expr ) => {
-                use crate::base::Bytes;
-
-                println!("-- Write: {:#?}", Bytes::from($slice));
+                println!("-- Write: {:#?}", $slice);
             };
 
             ( @end ) => ( println!("-- End"); );
@@ -40,15 +36,13 @@ cfg_if! {
             ( @noop ) => ( println!("NOOP"); );
 
             ( @continue_from_bookmark $bookmark:expr, $parser_directive:expr, $chunk:expr ) => {
-                use crate::base::Bytes;
-
                 println!();
                 println!("Continue from:");
                 println!("{:#?}", $bookmark);
                 println!("Parser directive: `{:#?}`", $parser_directive);
 
                 // as_debug_string() is UTF-8, and the position for the input encoding is not guaranteed to match it
-                let chunk = Bytes::from($chunk);
+                let chunk = crate::base::Bytes::new($chunk);
                 let (before, after) = chunk.split_at($bookmark.pos);
 
                 println!("Bookmark start: `{}|*|{}`", before.as_debug_string(), after.as_debug_string());

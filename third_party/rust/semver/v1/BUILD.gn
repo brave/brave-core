@@ -15,7 +15,6 @@ cargo_crate("lib") {
   crate_root =
       "//brave/third_party/rust/chromium_crates_io/vendor/semver-v1/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/semver-v1/src/backport.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/semver-v1/src/display.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/semver-v1/src/error.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/semver-v1/src/eval.rs",
@@ -34,16 +33,11 @@ cargo_crate("lib") {
   cargo_pkg_description =
       "Parser and evaluator for Cargo's flavor of Semantic Versioning"
   cargo_pkg_repository = "https://github.com/dtolnay/semver"
-  cargo_pkg_version = "1.0.26"
+  cargo_pkg_version = "1.0.27"
 
   features = [
     "default",
     "std",
-  ]
-  build_root =
-      "//brave/third_party/rust/chromium_crates_io/vendor/semver-v1/build.rs"
-  build_sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/semver-v1/build.rs",
   ]
   rustenv = []
   rustflags = []

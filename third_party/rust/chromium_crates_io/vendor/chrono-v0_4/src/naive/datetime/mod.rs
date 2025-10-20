@@ -15,14 +15,14 @@ use rkyv::{Archive, Deserialize, Serialize};
 
 #[cfg(feature = "alloc")]
 use crate::format::DelayedFormat;
-use crate::format::{parse, parse_and_remainder, ParseError, ParseResult, Parsed, StrftimeItems};
 use crate::format::{Fixed, Item, Numeric, Pad};
+use crate::format::{ParseError, ParseResult, Parsed, StrftimeItems, parse, parse_and_remainder};
 use crate::naive::{Days, IsoWeek, NaiveDate, NaiveTime};
 use crate::offset::Utc;
 use crate::time_delta::NANOS_PER_SEC;
 use crate::{
-    expect, try_opt, DateTime, Datelike, FixedOffset, MappedLocalTime, Months, TimeDelta, TimeZone,
-    Timelike, Weekday,
+    DateTime, Datelike, FixedOffset, MappedLocalTime, Months, TimeDelta, TimeZone, Timelike,
+    Weekday, expect, try_opt,
 };
 
 /// Tools to help serializing/deserializing `NaiveDateTime`s
@@ -944,9 +944,13 @@ impl NaiveDateTime {
     /// The maximum possible `NaiveDateTime`.
     pub const MAX: Self = Self { date: NaiveDate::MAX, time: NaiveTime::MAX };
 
-    /// The Unix Epoch, 1970-01-01 00:00:00.
-    pub const UNIX_EPOCH: Self =
-        expect(NaiveDate::from_ymd_opt(1970, 1, 1), "").and_time(NaiveTime::MIN);
+    /// The datetime of the Unix Epoch, 1970-01-01 00:00:00.
+    ///
+    /// Note that while this may look like the UNIX epoch, it is missing the
+    /// time zone. The actual UNIX epoch cannot be expressed by this type,
+    /// however it is available as [`DateTime::UNIX_EPOCH`].
+    #[deprecated(since = "0.4.41", note = "use `DateTime::UNIX_EPOCH` instead")]
+    pub const UNIX_EPOCH: Self = DateTime::UNIX_EPOCH.naive_utc();
 }
 
 impl From<NaiveDate> for NaiveDateTime {
@@ -2134,18 +2138,13 @@ impl str::FromStr for NaiveDateTime {
     }
 }
 
-/// The default value for a NaiveDateTime is one with epoch 0
-/// that is, 1st of January 1970 at 00:00:00.
+/// The default value for a NaiveDateTime is 1st of January 1970 at 00:00:00.
 ///
-/// # Example
-///
-/// ```rust
-/// use chrono::NaiveDateTime;
-///
-/// assert_eq!(NaiveDateTime::default(), NaiveDateTime::UNIX_EPOCH);
-/// ```
+/// Note that while this may look like the UNIX epoch, it is missing the
+/// time zone. The actual UNIX epoch cannot be expressed by this type,
+/// however it is available as [`DateTime::UNIX_EPOCH`].
 impl Default for NaiveDateTime {
     fn default() -> Self {
-        Self::UNIX_EPOCH
+        DateTime::UNIX_EPOCH.naive_local()
     }
 }

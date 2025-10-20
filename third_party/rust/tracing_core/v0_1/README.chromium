@@ -1,7 +1,7 @@
 Name: tracing-core
 URL: https://crates.io/crates/tracing-core
-Version: 0.1.33
-Revision: cb0f0e71dd1020d63f2190ffef298b989c9e88b0
+Version: 0.1.34
+Revision: d08e7a6eea1833810ea527e18ea03b08cd402c9d
 License: MIT
 License File: //brave/third_party/rust/chromium_crates_io/vendor/tracing-core-v0_1/LICENSE
 Shipped: yes

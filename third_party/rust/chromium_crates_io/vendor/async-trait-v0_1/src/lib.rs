@@ -6,31 +6,46 @@
 //!
 //! <br>
 //!
-//! <h5>Type erasure for async trait methods</h5>
+//! <h4>Type erasure for async trait methods</h4>
 //!
-//! The initial round of stabilizations for the async/await language feature in
-//! Rust 1.39 did not include support for async fn in traits. Trying to include
-//! an async fn in a trait produces the following error:
+//! The stabilization of async functions in traits in Rust 1.75 did not include
+//! support for using traits containing async functions as `dyn Trait`. Trying
+//! to use dyn with an async trait produces the following error:
 //!
 //! ```compile_fail
-//! trait MyTrait {
-//!     async fn f() {}
+//! pub trait Trait {
+//!     async fn f(&self);
+//! }
+//!
+//! pub fn make() -> Box<dyn Trait> {
+//!     unimplemented!()
 //! }
 //! ```
 //!
 //! ```text
-//! error[E0706]: trait fns cannot be declared `async`
-//!  --> src/main.rs:4:5
+//! error[E0038]: the trait `Trait` is not dyn compatible
+//!  --> src/main.rs:5:22
 //!   |
-//! 4 |     async fn f() {}
-//!   |     ^^^^^^^^^^^^^^^
+//! 5 | pub fn make() -> Box<dyn Trait> {
+//!   |                      ^^^^^^^^^ `Trait` is not dyn compatible
+//!   |
+//! note: for a trait to be dyn compatible it needs to allow building a vtable
+//!       for more information, visit <https://doc.rust-lang.org/reference/items/traits.html#dyn-compatibility>
+//!  --> src/main.rs:2:14
+//!   |
+//! 1 | pub trait Trait {
+//!   |           ----- this trait is not dyn compatible...
+//! 2 |     async fn f(&self);
+//!   |              ^ ...because method `f` is `async`
+//!   = help: consider moving `f` to another trait
 //! ```
 //!
-//! This crate provides an attribute macro to make async fn in traits work.
+//! This crate provides an attribute macro to make async fn in traits work with
+//! dyn traits.
 //!
 //! Please refer to [*why async fn in traits are hard*][hard] for a deeper
 //! analysis of how this implementation differs from what the compiler and
-//! language hope to deliver in the future.
+//! language deliver natively.
 //!
 //! [hard]: https://smallcultfollowing.com/babysteps/blog/2019/10/26/async-fn-in-traits-are-hard/
 //!
@@ -42,7 +57,9 @@
 //! using async fn in a trait.
 //!
 //! The only thing to notice here is that we write an `#[async_trait]` macro on
-//! top of traits and trait impls that contain async fn, and then they work.
+//! top of traits and trait impls that contain async fn, and then they work. We
+//! get to have `Vec<Box<dyn Advertisement + Sync>>` or `&[&dyn Advertisement]`,
+//! for example.
 //!
 //! ```
 //! use async_trait::async_trait;
@@ -110,15 +127,14 @@
 //! > &#9745;&emsp;Associated types;<br>
 //! > &#9745;&emsp;Having async and non-async functions in the same trait;<br>
 //! > &#9745;&emsp;Default implementations provided by the trait;<br>
-//! > &#9745;&emsp;Elided lifetimes;<br>
-//! > &#9745;&emsp;Dyn-capable traits.<br>
+//! > &#9745;&emsp;Elided lifetimes.<br>
 //!
 //! <br>
 //!
 //! # Explanation
 //!
 //! Async fns get transformed into methods that return `Pin<Box<dyn Future +
-//! Send + 'async>>` and delegate to a private async freestanding function.
+//! Send + 'async_trait>>` and delegate to an async block.
 //!
 //! For example the `impl Advertisement for AutoplayingVideo` above would be
 //! expanded as:
@@ -126,17 +142,15 @@
 //! ```
 //! # const IGNORE: &str = stringify! {
 //! impl Advertisement for AutoplayingVideo {
-//!     fn run<'async>(
-//!         &'async self,
-//!     ) -> Pin<Box<dyn core::future::Future<Output = ()> + Send + 'async>>
+//!     fn run<'async_trait>(
+//!         &'async_trait self,
+//!     ) -> Pin<Box<dyn core::future::Future<Output = ()> + Send + 'async_trait>>
 //!     where
-//!         Self: Sync + 'async,
+//!         Self: Sync + 'async_trait,
 //!     {
-//!         async fn run(_self: &AutoplayingVideo) {
+//!         Box::pin(async move {
 //!             /* the original method body */
-//!         }
-//!
-//!         Box::pin(run(self))
+//!         })
 //!     }
 //! }
 //! # };
@@ -199,120 +213,22 @@
 //!     async fn test(elided: Elided<'_>) {}
 //! }
 //! ```
-//!
-//! <br><br>
-//!
-//! # Dyn traits
-//!
-//! Traits with async methods can be used as trait objects as long as they meet
-//! the usual requirements for dyn -- no methods with type parameters, no self
-//! by value, no associated types, etc.
-//!
-//! ```
-//! # use async_trait::async_trait;
-//! #
-//! #[async_trait]
-//! pub trait ObjectSafe {
-//!     async fn f(&self);
-//!     async fn g(&mut self);
-//! }
-//!
-//! # const IGNORE: &str = stringify! {
-//! impl ObjectSafe for MyType {...}
-//!
-//! let value: MyType = ...;
-//! # };
-//! #
-//! # struct MyType;
-//! #
-//! # #[async_trait]
-//! # impl ObjectSafe for MyType {
-//! #     async fn f(&self) {}
-//! #     async fn g(&mut self) {}
-//! # }
-//! #
-//! # let value: MyType = MyType;
-//! let object = &value as &dyn ObjectSafe;  // make trait object
-//! ```
-//!
-//! The one wrinkle is in traits that provide default implementations of async
-//! methods. In order for the default implementation to produce a future that is
-//! Send, the async_trait macro must emit a bound of `Self: Sync` on trait
-//! methods that take `&self` and a bound `Self: Send` on trait methods that
-//! take `&mut self`. An example of the former is visible in the expanded code
-//! in the explanation section above.
-//!
-//! If you make a trait with async methods that have default implementations,
-//! everything will work except that the trait cannot be used as a trait object.
-//! Creating a value of type `&dyn Trait` will produce an error that looks like
-//! this:
-//!
-//! ```text
-//! error: the trait `Test` cannot be made into an object
-//!  --> src/main.rs:8:5
-//!   |
-//! 8 |     async fn cannot_dyn(&self) {}
-//!   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-//! ```
-//!
-//! For traits that need to be object safe and need to have default
-//! implementations for some async methods, there are two resolutions. Either
-//! you can add Send and/or Sync as supertraits (Send if there are `&mut self`
-//! methods with default implementations, Sync if there are `&self` methods with
-//! default implementations) to constrain all implementors of the trait such that
-//! the default implementations are applicable to them:
-//!
-//! ```
-//! # use async_trait::async_trait;
-//! #
-//! #[async_trait]
-//! pub trait ObjectSafe: Sync {  // added supertrait
-//!     async fn can_dyn(&self) {}
-//! }
-//! #
-//! # struct MyType;
-//! #
-//! # #[async_trait]
-//! # impl ObjectSafe for MyType {}
-//! #
-//! # let value = MyType;
-//!
-//! let object = &value as &dyn ObjectSafe;
-//! ```
-//!
-//! or you can strike the problematic methods from your trait object by
-//! bounding them with `Self: Sized`:
-//!
-//! ```
-//! # use async_trait::async_trait;
-//! #
-//! #[async_trait]
-//! pub trait ObjectSafe {
-//!     async fn cannot_dyn(&self) where Self: Sized {}
-//!
-//!     // presumably other methods
-//! }
-//! #
-//! # struct MyType;
-//! #
-//! # #[async_trait]
-//! # impl ObjectSafe for MyType {}
-//! #
-//! # let value = MyType;
-//!
-//! let object = &value as &dyn ObjectSafe;
-//! ```
 
+#![doc(html_root_url = "https://docs.rs/async-trait/0.1.89")]
 #![allow(
     clippy::default_trait_access,
     clippy::doc_markdown,
+    clippy::elidable_lifetime_names,
     clippy::explicit_auto_deref,
     clippy::if_not_else,
     clippy::items_after_statements,
+    clippy::match_like_matches_macro,
     clippy::module_name_repetitions,
+    clippy::needless_lifetimes,
     clippy::shadow_unrelated,
     clippy::similar_names,
-    clippy::too_many_lines
+    clippy::too_many_lines,
+    clippy::trivially_copy_pass_by_ref
 )]
 
 extern crate proc_macro;
@@ -323,6 +239,7 @@ mod expand;
 mod lifetime;
 mod parse;
 mod receiver;
+mod verbatim;
 
 use crate::args::Args;
 use crate::expand::expand;

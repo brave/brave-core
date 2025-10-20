@@ -153,7 +153,7 @@
 //!             if *hole_guard.value >= hole_guard.v[i] {
 //!                 // move the element back and the hole forward
 //!                 let index = hole_guard.index;
-//!                 ptr::copy_nonoverlapping(&hole_guard.v[index + 1], &mut hole_guard.v[index], 1);
+//!                 hole_guard.v.swap(index, index + 1);
 //!                 hole_guard.index += 1;
 //!             } else {
 //!                 break;
@@ -193,7 +193,7 @@ extern crate core as std;
 
 use std::fmt;
 use std::marker::PhantomData;
-use std::mem::{self, ManuallyDrop};
+use std::mem::ManuallyDrop;
 use std::ops::{Deref, DerefMut};
 use std::ptr;
 
@@ -228,19 +228,25 @@ pub enum OnSuccess {}
 
 impl Strategy for Always {
     #[inline(always)]
-    fn should_run() -> bool { true }
+    fn should_run() -> bool {
+        true
+    }
 }
 
 #[cfg(feature = "use_std")]
 impl Strategy for OnUnwind {
     #[inline]
-    fn should_run() -> bool { std::thread::panicking() }
+    fn should_run() -> bool {
+        std::thread::panicking()
+    }
 }
 
 #[cfg(feature = "use_std")]
 impl Strategy for OnSuccess {
     #[inline]
-    fn should_run() -> bool { !std::thread::panicking() }
+    fn should_run() -> bool {
+        !std::thread::panicking()
+    }
 }
 
 /// Macro to create a `ScopeGuard` (always run).
@@ -296,8 +302,9 @@ macro_rules! defer_on_unwind {
 ///
 /// The `ScopeGuard` implements `Deref` so that you can access the inner value.
 pub struct ScopeGuard<T, F, S = Always>
-    where F: FnOnce(T),
-          S: Strategy,
+where
+    F: FnOnce(T),
+    S: Strategy,
 {
     value: ManuallyDrop<T>,
     dropfn: ManuallyDrop<F>,
@@ -306,14 +313,16 @@ pub struct ScopeGuard<T, F, S = Always>
 }
 
 impl<T, F, S> ScopeGuard<T, F, S>
-    where F: FnOnce(T),
-          S: Strategy,
+where
+    F: FnOnce(T),
+    S: Strategy,
 {
     /// Create a `ScopeGuard` that owns `v` (accessible through deref) and calls
     /// `dropfn` when its destructor runs.
     ///
     /// The `Strategy` decides whether the scope guard's closure should run.
     #[inline]
+    #[must_use]
     pub fn with_strategy(v: T, dropfn: F) -> ScopeGuard<T, F, S> {
         ScopeGuard {
             value: ManuallyDrop::new(v),
@@ -334,7 +343,7 @@ impl<T, F, S> ScopeGuard<T, F, S>
     /// fn main() {
     ///     let mut guard = guard(Vec::new(), |mut v| v.clear());
     ///     guard.push(1);
-    ///     
+    ///
     ///     if conditional() {
     ///         // a condition maybe makes us decide to
     ///         // “defuse” the guard and get back its inner parts
@@ -346,26 +355,26 @@ impl<T, F, S> ScopeGuard<T, F, S>
     /// ```
     #[inline]
     pub fn into_inner(guard: Self) -> T {
-        // Cannot move out of Drop-implementing types, so
-        // ptr::read the value and forget the guard.
+        // Cannot move out of `Drop`-implementing types,
+        // so `ptr::read` the value and forget the guard.
+        let mut guard = ManuallyDrop::new(guard);
         unsafe {
             let value = ptr::read(&*guard.value);
-            // read the closure so that it is dropped, and assign it to a local
-            // variable to ensure that it is only dropped after the guard has
-            // been forgotten. (In case the Drop impl of the closure, or that
-            // of any consumed captured variable, panics).
-            let _dropfn = ptr::read(&*guard.dropfn);
-            mem::forget(guard);
+            // Drop the closure after `value` has been read, so that if the
+            // closure's `drop` function panics, unwinding still tries to drop
+            // `value`.
+            ManuallyDrop::drop(&mut guard.dropfn);
             value
         }
     }
 }
 
-
 /// Create a new `ScopeGuard` owning `v` and with deferred closure `dropfn`.
 #[inline]
+#[must_use]
 pub fn guard<T, F>(v: T, dropfn: F) -> ScopeGuard<T, F, Always>
-    where F: FnOnce(T)
+where
+    F: FnOnce(T),
 {
     ScopeGuard::with_strategy(v, dropfn)
 }
@@ -375,8 +384,10 @@ pub fn guard<T, F>(v: T, dropfn: F) -> ScopeGuard<T, F, Always>
 /// Requires crate feature `use_std`.
 #[cfg(feature = "use_std")]
 #[inline]
+#[must_use]
 pub fn guard_on_success<T, F>(v: T, dropfn: F) -> ScopeGuard<T, F, OnSuccess>
-    where F: FnOnce(T)
+where
+    F: FnOnce(T),
 {
     ScopeGuard::with_strategy(v, dropfn)
 }
@@ -410,8 +421,10 @@ pub fn guard_on_success<T, F>(v: T, dropfn: F) -> ScopeGuard<T, F, OnSuccess>
 /// ```
 #[cfg(feature = "use_std")]
 #[inline]
+#[must_use]
 pub fn guard_on_unwind<T, F>(v: T, dropfn: F) -> ScopeGuard<T, F, OnUnwind>
-    where F: FnOnce(T)
+where
+    F: FnOnce(T),
 {
     ScopeGuard::with_strategy(v, dropfn)
 }
@@ -420,14 +433,17 @@ pub fn guard_on_unwind<T, F>(v: T, dropfn: F) -> ScopeGuard<T, F, OnUnwind>
 // not accessible from references.
 // The guard does not store any instance of S, so it is also irrelevant.
 unsafe impl<T, F, S> Sync for ScopeGuard<T, F, S>
-    where T: Sync,
-          F: FnOnce(T),
-          S: Strategy
-{}
+where
+    T: Sync,
+    F: FnOnce(T),
+    S: Strategy,
+{
+}
 
 impl<T, F, S> Deref for ScopeGuard<T, F, S>
-    where F: FnOnce(T),
-          S: Strategy
+where
+    F: FnOnce(T),
+    S: Strategy,
 {
     type Target = T;
 
@@ -437,8 +453,9 @@ impl<T, F, S> Deref for ScopeGuard<T, F, S>
 }
 
 impl<T, F, S> DerefMut for ScopeGuard<T, F, S>
-    where F: FnOnce(T),
-          S: Strategy
+where
+    F: FnOnce(T),
+    S: Strategy,
 {
     fn deref_mut(&mut self) -> &mut T {
         &mut *self.value
@@ -446,15 +463,14 @@ impl<T, F, S> DerefMut for ScopeGuard<T, F, S>
 }
 
 impl<T, F, S> Drop for ScopeGuard<T, F, S>
-    where F: FnOnce(T),
-          S: Strategy
+where
+    F: FnOnce(T),
+    S: Strategy,
 {
     fn drop(&mut self) {
         // This is OK because the fields are `ManuallyDrop`s
         // which will not be dropped by the compiler.
-        let (value, dropfn) = unsafe {
-            (ptr::read(&*self.value), ptr::read(&*self.dropfn))
-        };
+        let (value, dropfn) = unsafe { (ptr::read(&*self.value), ptr::read(&*self.dropfn)) };
         if S::should_run() {
             dropfn(value);
         }
@@ -462,14 +478,15 @@ impl<T, F, S> Drop for ScopeGuard<T, F, S>
 }
 
 impl<T, F, S> fmt::Debug for ScopeGuard<T, F, S>
-    where T: fmt::Debug,
-          F: FnOnce(T),
-          S: Strategy
+where
+    T: fmt::Debug,
+    F: FnOnce(T),
+    S: Strategy,
 {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         f.debug_struct(stringify!(ScopeGuard))
-         .field("value", &*self.value)
-         .finish()
+            .field("value", &*self.value)
+            .finish()
     }
 }
 

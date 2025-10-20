@@ -28,7 +28,7 @@ cargo_crate("lib") {
   cargo_pkg_name = "once_cell"
   cargo_pkg_description = "Single assignment cells and lazy values."
   cargo_pkg_repository = "https://github.com/matklad/once_cell"
-  cargo_pkg_version = "1.16.0"
+  cargo_pkg_version = "1.21.3"
 
   features = [
     "alloc",

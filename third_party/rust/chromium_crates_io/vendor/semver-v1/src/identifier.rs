@@ -67,13 +67,11 @@
 // allows size_of::<Version>() == size_of::<Option<Version>>().
 
 use crate::alloc::alloc::{alloc, dealloc, handle_alloc_error, Layout};
-use core::isize;
 use core::mem;
 use core::num::{NonZeroU64, NonZeroUsize};
 use core::ptr::{self, NonNull};
 use core::slice;
 use core::str;
-use core::usize;
 
 const PTR_BYTES: usize = mem::size_of::<NonNull<u8>>();
 
@@ -163,8 +161,6 @@ impl Identifier {
             0x100_0000_0000_0000..=0xffff_ffff_ffff_ffff => {
                 unreachable!("please refrain from storing >64 petabytes of text in semver version");
             }
-            #[cfg(no_exhaustive_int_match)] // rustc <1.33
-            _ => unreachable!(),
         }
     }
 
@@ -324,13 +320,6 @@ unsafe fn inline_len(repr: &Identifier) -> NonZeroUsize {
     // because inline strings are at least 1 byte long and cannot contain \0.
     let repr = unsafe { ptr::read(repr as *const Identifier as *const NonZeroU64) };
 
-    // Rustc >=1.53 has intrinsics for counting zeros on a non-zeroable integer.
-    // On many architectures these are more efficient than counting on ordinary
-    // zeroable integers (bsf vs cttz). On rustc <1.53 without those intrinsics,
-    // we count zeros in the u64 rather than the NonZeroU64.
-    #[cfg(no_nonzero_bitscan)]
-    let repr = repr.get();
-
     #[cfg(target_endian = "little")]
     let zero_bits_on_string_end = repr.leading_zeros();
     #[cfg(target_endian = "big")]
@@ -417,9 +406,6 @@ unsafe fn ptr_as_str(repr: &NonNull<u8>) -> &str {
 
 // Number of base-128 digits required for the varint representation of a length.
 fn bytes_for_varint(len: NonZeroUsize) -> usize {
-    #[cfg(no_nonzero_bitscan)] // rustc <1.53
-    let len = len.get();
-
     let usize_bits = mem::size_of::<usize>() * 8;
     let len_bits = usize_bits - len.leading_zeros() as usize;
     (len_bits + 6) / 7

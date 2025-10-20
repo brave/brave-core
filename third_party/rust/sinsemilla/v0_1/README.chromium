@@ -1,0 +1,10 @@
+Name: sinsemilla
+URL: https://crates.io/crates/sinsemilla
+Version: 0.1.0
+Revision: 206f7a960c55222a138a85447f1ddc666822cac0
+License: Apache-2.0
+License File: //brave/third_party/rust/chromium_crates_io/vendor/sinsemilla-v0_1/LICENSE-Apache
+Shipped: yes
+Security Critical: yes
+
+Description: A collision-resistant circuit-efficient hash function

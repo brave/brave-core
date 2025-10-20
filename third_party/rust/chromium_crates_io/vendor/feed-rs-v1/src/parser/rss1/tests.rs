@@ -6,7 +6,7 @@ use crate::util::test;
 #[test]
 fn test_example_1() {
     // Parse the feed
-    let test_data = test::fixture_as_string("rss_1.0_example_1.xml");
+    let test_data = test::fixture_as_string("rss1/rss_1.0_example_1.xml");
     let actual = parser::parse(test_data.as_bytes()).unwrap();
 
     // Expected feed
@@ -18,7 +18,7 @@ fn test_example_1() {
         .link(Link::new("http://www.example.com/main.html", None))
         .description(Text::new("Site description".into()))
         .updated(actual.updated) // not present in the test data
-        .published_rfc3339("2017-06-13T09:00:00Z")
+        .published("2017-06-13T09:00:00Z")
         .language("ja")
         .entry(
             Entry::default()
@@ -27,7 +27,7 @@ fn test_example_1() {
                 .title(Text::new("記事1のタイトル".into()))
                 .link(Link::new("記事1のURL", None))
                 .summary(Text::new("記事1の内容".into()))
-                .published_rfc3339("2017-06-13T09:00:00Z")
+                .published("2017-06-13T09:00:00Z")
                 .author(Person::new("記事1の作者名")),
         )
         .entry(
@@ -48,7 +48,7 @@ fn test_example_1() {
 #[test]
 fn test_example_2() {
     // Parse the feed
-    let test_data = test::fixture_as_string("rss_1.0_example_2.xml");
+    let test_data = test::fixture_as_string("rss1/rss_1.0_example_2.xml");
     let feed = parser::parse(test_data.as_bytes()).unwrap();
 
     // content:encoded should be mapped to the content field
@@ -68,7 +68,7 @@ fn test_example_2() {
 #[test]
 fn test_spec_1() {
     // Parse the feed
-    let test_data = test::fixture_as_string("rss_1.0_spec_1.xml");
+    let test_data = test::fixture_as_string("rss1/rss_1.0_spec_1.xml");
     let actual = parser::parse(test_data.as_bytes()).unwrap();
 
     // Expected feed
@@ -104,7 +104,7 @@ fn test_spec_1() {
 #[test]
 fn test_spec_2() {
     // Parse the feed
-    let test_data = test::fixture_as_string("rss_1.0_spec_2.xml");
+    let test_data = test::fixture_as_string("rss1/rss_1.0_spec_2.xml");
     let actual = parser::parse(test_data.as_bytes()).unwrap();
 
     // Expected feed
@@ -142,7 +142,7 @@ fn test_spec_2() {
 // Verifies that publish date is set
 #[test]
 fn test_debian() {
-    let test_data = test::fixture_as_string("rss_1.0_debian.xml");
+    let test_data = test::fixture_as_string("rss1/rss_1.0_debian.xml");
     let actual = parser::parse(test_data.as_bytes()).unwrap();
     let entry = actual.entries.get(0).expect("feed has 1 entry");
 
@@ -152,7 +152,7 @@ fn test_debian() {
 // Verifies ISO8859 decoding works correctly
 #[test]
 fn test_iso8859() {
-    let test_data = test::fixture_as_raw("rss_1.0_iso8859.xml");
+    let test_data = test::fixture_as_raw("rss1/rss_1.0_iso8859.xml");
     let actual = parser::parse(test_data.as_slice()).unwrap();
     let entry = actual.entries.get(0).expect("feed has 1 entry");
 
@@ -161,4 +161,14 @@ fn test_iso8859() {
     assert!(summary.starts_with(expected));
     let content = entry.content.as_ref().unwrap().body.as_ref().unwrap();
     assert!(content.contains(expected));
+}
+
+// Verifies bioRxiv titles are extracted correctly
+#[test]
+fn test_bio_rxiv() {
+    let test_data = test::fixture_as_raw("rss1/rss_1.0_biorxiv.xml");
+    let actual = parser::parse(test_data.as_slice()).unwrap();
+    for entry in actual.entries {
+        assert!(!entry.title.unwrap().content.is_empty())
+    }
 }

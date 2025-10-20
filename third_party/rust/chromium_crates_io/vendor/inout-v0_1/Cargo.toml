@@ -13,14 +13,20 @@
 edition = "2021"
 rust-version = "1.56"
 name = "inout"
-version = "0.1.3"
+version = "0.1.4"
 authors = ["RustCrypto Developers"]
+build = false
+autolib = false
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
 description = "Custom reference types for code generic over in-place and buffer-to-buffer modes of operation."
 documentation = "https://docs.rs/inout"
+readme = false
 keywords = ["custom-reference"]
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/RustCrypto/utils"
-resolver = "2"
 
 [package.metadata.docs.rs]
 all-features = true
@@ -29,12 +35,16 @@ rustdoc-args = [
     "docsrs",
 ]
 
+[features]
+std = ["block-padding/std"]
+
+[lib]
+name = "inout"
+path = "src/lib.rs"
+
 [dependencies.block-padding]
 version = "0.3"
 optional = true
 
 [dependencies.generic-array]
 version = "0.14"
-
-[features]
-std = ["block-padding/std"]

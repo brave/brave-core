@@ -6,6 +6,11 @@
 //!
 //! # Examples
 //!
+//! **Note:** Please see [feature detection] for a note on enabling unstable
+//! features based on detection via this crate.
+//!
+//! [feature detection]: crate#feature-detection
+//!
 //! * Set a `cfg` flag in `build.rs` if the running compiler was determined to
 //!   be at least version `1.13.0`:
 //!
@@ -19,6 +24,7 @@
 //!
 //!   See [`is_max_version`] or [`is_exact_version`] to check if the compiler
 //!   is _at most_ or _exactly_ a certain version.
+//!   <br /><br />
 //!
 //! * Check that the running compiler was released on or after `2018-12-18`:
 //!
@@ -34,6 +40,7 @@
 //!
 //!   See [`is_max_date`] or [`is_exact_date`] to check if the compiler was
 //!   released _prior to_ or _exactly on_ a certain date.
+//!   <br /><br />
 //!
 //! * Check that the running compiler supports feature flags:
 //!
@@ -47,6 +54,9 @@
 //!   };
 //!   ```
 //!
+//!   Please see the note on [feature detection].
+//!   <br /><br />
+//!
 //! * Check that the running compiler supports a specific feature:
 //!
 //!   ```rust
@@ -56,6 +66,9 @@
 //!      println!("cargo:rustc-cfg=has_doc_cfg");
 //!   }
 //!   ```
+//!
+//!   Please see the note on [feature detection].
+//!   <br /><br />
 //!
 //! * Check that the running compiler is on the stable channel:
 //!
@@ -72,6 +85,24 @@
 //! To interact with the version, release date, and release channel as structs,
 //! use [`Version`], [`Date`], and [`Channel`], respectively. The [`triple()`]
 //! function returns all three values efficiently.
+//!
+//! # Feature Detection
+//!
+//! While this crate can be used to determine if the current compiler supports
+//! an unstable feature, no crate can determine whether that feature will work
+//! in a way that you expect ad infinitum. If the feature changes in an
+//! incompatible way, then your crate, as well as all of its transitive
+//! dependents, will fail to build. As a result, great care should be taken when
+//! enabling nightly features even when they're supported by the compiler.
+//!
+//! One common mitigation used in practice is to make using unstable features
+//! transitively opt-in via a crate feature or `cfg` so that broken builds only
+//! affect those that explicitly asked for the feature. Another complementary
+//! approach is to probe `rustc` at build-time by asking it to compile a small
+//! but exemplary program that determines whether the feature works as expected,
+//! enabling the feature only if the probe succeeds. Finally, eschewing these
+//! recommendations, you should track the `nightly` channel closely to minimize
+//! the total impact of a nightly breakages.
 //!
 //! # Alternatives
 //!
@@ -256,7 +287,9 @@ pub fn is_exact_version(version: &str) -> Option<bool> {
 
 /// Checks whether the running or installed `rustc` supports feature flags.
 ///
-/// In other words, if the channel is either "nightly" or "dev".
+/// Returns true if the channel is either "nightly" or "dev".
+///
+/// **Please see the note on [feature detection](crate#feature-detection).**
 ///
 /// Note that support for specific `rustc` features can be enabled or disabled
 /// via the `allow-features` compiler flag, which this function _does not_
@@ -271,6 +304,8 @@ pub fn is_feature_flaggable() -> Option<bool> {
 }
 
 /// Checks whether the running or installed `rustc` supports `feature`.
+///
+/// **Please see the note on [feature detection](crate#feature-detection).**
 ///
 /// Returns _true_ _iff_ [`is_feature_flaggable()`] returns `true` _and_ the
 /// feature is not disabled via exclusion in `allow-features` via `RUSTFLAGS` or

@@ -2,11 +2,11 @@
 //!
 //! Rust's `HashMap` and `HashSet` are backed by the the `hashbrown` crate.
 
+use alloc::alloc::Layout;
 use core::mem;
-use std::{
-    alloc::Layout,
-    collections::{HashMap, HashSet},
-};
+
+#[cfg(feature = "std")]
+use std::collections::{HashMap, HashSet};
 
 use crate::DynamicUsage;
 

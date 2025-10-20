@@ -94,7 +94,6 @@ cargo_crate("lib") {
     "printing",
     "proc-macro",
     "quote",
-    "visit",
     "visit-mut",
   ]
   build_root =
@@ -232,7 +231,6 @@ cargo_crate("buildrs_support") {
     "printing",
     "proc-macro",
     "quote",
-    "visit",
     "visit-mut",
   ]
   build_root =

@@ -20,17 +20,29 @@ use cfg_if::cfg_if;
 #[derive(Copy, Clone, Eq, PartialEq, Debug)]
 pub enum TextType {
     /// Text inside a `<plaintext>` element.
+    ///
+    /// All text is interpreter literally. There's no escaping possible.
     PlainText,
     /// Text inside `<title>` and `<textarea>` elements.
+    ///
+    /// It may contain HTML entities. It's similar to `Data`, but syntax of tags (other than the closing tag for the element) is interpreted as text.
     RCData,
     /// Text inside `<style>`, `<xmp>`, `<iframe>`, `<noembed>`, `<noframes>` and
     /// `<noscript>` elements.
+    ///
+    /// This text does not support escaping with HTML entities. It must not contain any text that looks like a closing tag.
     RawText,
     /// Text inside a `<script>` element.
+    ///
+    /// This text does not support escaping with HTML entities. It must not contain any text that looks like a closing tag.
     ScriptData,
     /// Regular text.
+    ///
+    /// It may contain HTML entities. `<` should be escaped as `&lt;`, and literal `&` should be escaped as `&amp;`.
     Data,
     /// Text inside a [CDATA section].
+    ///
+    /// This text does not support escaping with HTML entities. `]]>` must be escaped, e.g. with `]]]]><![CDATA[>`.
     ///
     /// [CDATA section]: https://developer.mozilla.org/en-US/docs/Web/API/CDATASection
     CDataSection,
@@ -55,8 +67,8 @@ cfg_if! {
             }
         }
 
+        #[allow(clippy::fallible_impl_from)]
         impl<'s> From<&'s str> for TextType {
-            #[allow(clippy::fallible_impl_from)]
             fn from(text_type: &'s str) -> Self {
                 match text_type {
                     "Data state" => Self::Data,

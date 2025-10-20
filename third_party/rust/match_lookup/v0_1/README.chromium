@@ -1,0 +1,10 @@
+Name: match-lookup
+URL: https://crates.io/crates/match-lookup
+Version: 0.1.1
+Revision: 0ebd639b97ea3918c1a066e1b80c4dc5f764f2cd
+License: MIT
+License File:
+Shipped: yes
+Security Critical: yes
+
+Description: proc macro for generating match block for alphabets, please dont use this. its slow and extremly likely to not be what you are looking for.

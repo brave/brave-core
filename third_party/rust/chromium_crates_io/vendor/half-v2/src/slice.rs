@@ -11,7 +11,7 @@ use crate::{bf16, binary16::arch, f16};
 #[cfg(feature = "alloc")]
 #[allow(unused_imports)]
 use alloc::{vec, vec::Vec};
-use core::slice;
+use zerocopy::{transmute_mut, transmute_ref};
 
 /// Extensions to `[f16]` and `[bf16]` slices to support conversion and reinterpret operations.
 ///
@@ -301,20 +301,12 @@ mod private {
 impl HalfFloatSliceExt for [f16] {
     #[inline]
     fn reinterpret_cast(&self) -> &[u16] {
-        let pointer = self.as_ptr() as *const u16;
-        let length = self.len();
-        // SAFETY: We are reconstructing full length of original slice, using its same lifetime,
-        // and the size of elements are identical
-        unsafe { slice::from_raw_parts(pointer, length) }
+        transmute_ref!(self)
     }
 
     #[inline]
     fn reinterpret_cast_mut(&mut self) -> &mut [u16] {
-        let pointer = self.as_mut_ptr().cast::<u16>();
-        let length = self.len();
-        // SAFETY: We are reconstructing full length of original slice, using its same lifetime,
-        // and the size of elements are identical
-        unsafe { slice::from_raw_parts_mut(pointer, length) }
+        transmute_mut!(self)
     }
 
     #[inline]
@@ -383,20 +375,12 @@ impl HalfFloatSliceExt for [f16] {
 impl HalfFloatSliceExt for [bf16] {
     #[inline]
     fn reinterpret_cast(&self) -> &[u16] {
-        let pointer = self.as_ptr() as *const u16;
-        let length = self.len();
-        // SAFETY: We are reconstructing full length of original slice, using its same lifetime,
-        // and the size of elements are identical
-        unsafe { slice::from_raw_parts(pointer, length) }
+        transmute_ref!(self)
     }
 
     #[inline]
     fn reinterpret_cast_mut(&mut self) -> &mut [u16] {
-        let pointer = self.as_mut_ptr().cast::<u16>();
-        let length = self.len();
-        // SAFETY: We are reconstructing full length of original slice, using its same lifetime,
-        // and the size of elements are identical
-        unsafe { slice::from_raw_parts_mut(pointer, length) }
+        transmute_mut!(self)
     }
 
     #[inline]
@@ -481,11 +465,7 @@ impl HalfBitsSliceExt for [u16] {
     where
         H: crate::private::SealedHalf,
     {
-        let pointer = self.as_ptr() as *const H;
-        let length = self.len();
-        // SAFETY: We are reconstructing full length of original slice, using its same lifetime,
-        // and the size of elements are identical
-        unsafe { slice::from_raw_parts(pointer, length) }
+        transmute_ref!(self)
     }
 
     #[inline]
@@ -493,11 +473,7 @@ impl HalfBitsSliceExt for [u16] {
     where
         H: crate::private::SealedHalf,
     {
-        let pointer = self.as_mut_ptr() as *mut H;
-        let length = self.len();
-        // SAFETY: We are reconstructing full length of original slice, using its same lifetime,
-        // and the size of elements are identical
-        unsafe { slice::from_raw_parts_mut(pointer, length) }
+        transmute_mut!(self)
     }
 }
 

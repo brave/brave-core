@@ -54,3 +54,9 @@ pub use self::rwlock::{
     RwLockUpgradableReadGuard, RwLockWriteGuard,
 };
 pub use ::lock_api;
+
+#[cfg(feature = "arc_lock")]
+pub use self::lock_api::{
+    ArcMutexGuard, ArcReentrantMutexGuard, ArcRwLockReadGuard, ArcRwLockUpgradableReadGuard,
+    ArcRwLockWriteGuard,
+};

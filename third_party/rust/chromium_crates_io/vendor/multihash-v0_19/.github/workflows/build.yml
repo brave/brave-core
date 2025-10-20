@@ -148,7 +148,7 @@ jobs:
           tool: cargo-hack
 
       - name: Cargo Hack - Check each feature
-        run: cargo hack check -p multihash-codetable --each-feature
+        run: cargo hack check -p multihash-codetable --each-feature --exclude-features arb
         shell: bash
         env:
           RUSTFLAGS: -D warnings

@@ -26,12 +26,16 @@ impl Uuid {
     ///
     /// # References
     ///
-    /// * [Version 4 UUIDs in RFC4122](https://www.rfc-editor.org/rfc/rfc4122#section-4.4)
+    /// * [UUID Version 4 in RFC 9562](https://www.ietf.org/rfc/rfc9562.html#section-5.4)
     ///
     /// [`getrandom`]: https://crates.io/crates/getrandom
     /// [from_random_bytes]: struct.Builder.html#method.from_random_bytes
     pub fn new_v4() -> Uuid {
-        crate::Builder::from_random_bytes(crate::rng::bytes()).into_uuid()
+        // This is an optimized method for generating random UUIDs that just masks
+        // out the bits for the version and variant and sets them both together
+        Uuid::from_u128(
+            crate::rng::u128() & 0xFFFFFFFFFFFF4FFFBFFFFFFFFFFFFFFF | 0x40008000000000000000,
+        )
     }
 }
 
@@ -40,11 +44,14 @@ mod tests {
     use super::*;
     use crate::{Variant, Version};
 
-    #[cfg(target_arch = "wasm32")]
+    #[cfg(all(target_arch = "wasm32", any(target_os = "unknown", target_os = "none")))]
     use wasm_bindgen_test::*;
 
     #[test]
-    #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+    #[cfg_attr(
+        all(target_arch = "wasm32", any(target_os = "unknown", target_os = "none")),
+        wasm_bindgen_test
+    )]
     fn test_new() {
         let uuid = Uuid::new_v4();
 
@@ -53,7 +60,10 @@ mod tests {
     }
 
     #[test]
-    #[cfg_attr(target_arch = "wasm32", wasm_bindgen_test)]
+    #[cfg_attr(
+        all(target_arch = "wasm32", any(target_os = "unknown", target_os = "none")),
+        wasm_bindgen_test
+    )]
     fn test_get_version() {
         let uuid = Uuid::new_v4();
 

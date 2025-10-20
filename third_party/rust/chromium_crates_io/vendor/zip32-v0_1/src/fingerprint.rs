@@ -88,8 +88,8 @@ fn test_seed_fingerprint() {
         let fp = SeedFingerprint::from_seed(&tv.root_seed).expect("root_seed has valid length");
         assert_eq!(&fp.to_bytes(), &tv.fingerprint[..]);
         assert_eq!(
-            std::format!("{:?}", fp),
-            std::format!("SeedFingerprint({})", tv.fingerprint_str)
+            alloc::format!("{:?}", fp),
+            alloc::format!("SeedFingerprint({})", tv.fingerprint_str)
         );
     }
 }

@@ -1,9 +1,9 @@
 Name: serde_bytes
 URL: https://crates.io/crates/serde_bytes
-Version: 0.11.17
-Revision: dc4181f09270a4c1bb44a185e813bd4ca0d5d69a
+Version: 0.11.19
+Revision: 34f3c7d442716d0f28db7c3641882648ce387b60
 License: Apache-2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/serde_bytes-v0_11/LICENSE-APACHE
+License File: //brave/third_party/rust/chromium_crates_io/vendor/serde_bytes-v0_11/LICENSE-Apache
 Shipped: yes
 Security Critical: yes
 

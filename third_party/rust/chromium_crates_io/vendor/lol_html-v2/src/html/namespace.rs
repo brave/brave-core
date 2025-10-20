@@ -2,9 +2,9 @@
 #[derive(Default, Copy, Clone, Eq, PartialEq, Debug)]
 pub enum Namespace {
     #[default]
-    Html,
-    Svg,
-    MathML,
+    Html = 0,
+    Svg = 1,
+    MathML = 2,
 }
 
 impl Namespace {

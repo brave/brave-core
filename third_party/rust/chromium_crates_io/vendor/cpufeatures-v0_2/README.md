@@ -2,10 +2,10 @@
 
 [![crate][crate-image]][crate-link]
 [![Docs][docs-image]][docs-link]
+[![Build Status][build-image]][build-link]
 ![Apache2/MIT licensed][license-image]
 ![Rust Version][rustc-image]
 [![Project Chat][chat-image]][chat-link]
-[![Build Status][build-image]][build-link]
 
 Lightweight and efficient runtime CPU feature detection for `aarch64`, `loongarch64`, and
 `x86`/`x86_64` targets.
@@ -108,7 +108,7 @@ dual licensed as above, without any additional terms or conditions.
 
 [//]: # (badges)
 
-[crate-image]: https://img.shields.io/crates/v/cpufeatures.svg
+[crate-image]: https://img.shields.io/crates/v/cpufeatures.svg?logo=rust
 [crate-link]: https://crates.io/crates/cpufeatures
 [docs-image]: https://docs.rs/cpufeatures/badge.svg
 [docs-link]: https://docs.rs/cpufeatures/
@@ -116,7 +116,7 @@ dual licensed as above, without any additional terms or conditions.
 [rustc-image]: https://img.shields.io/badge/rustc-1.40+-blue.svg
 [chat-image]: https://img.shields.io/badge/zulip-join_chat-blue.svg
 [chat-link]: https://rustcrypto.zulipchat.com/#narrow/stream/260052-utils
-[build-image]: https://github.com/RustCrypto/utils/workflows/cpufeatures/badge.svg?branch=master&event=push
+[build-image]: https://github.com/RustCrypto/utils/actions/workflows/cpufeatures.yml/badge.svg
 [build-link]: https://github.com/RustCrypto/utils/actions/workflows/cpufeatures.yml
 
 [//]: # (general links)

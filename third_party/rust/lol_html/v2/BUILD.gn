@@ -20,6 +20,7 @@ cargo_crate("lib") {
     "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/base/encoding.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/base/mod.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/base/range.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/base/spanned.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/html/local_name.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/html/mod.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/html/namespace.rs",
@@ -67,10 +68,11 @@ cargo_crate("lib") {
     "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/rewritable_units/element.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/rewritable_units/mod.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/rewritable_units/mutations.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/rewritable_units/streaming_sink.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/rewritable_units/text_decoder.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/rewritable_units/text_encoder.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/rewritable_units/tokens/attributes.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/rewritable_units/tokens/capturer/mod.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/rewritable_units/tokens/capturer/text_decoder.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/rewritable_units/tokens/capturer/to_token.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/rewritable_units/tokens/comment.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/lol_html-v2/src/rewritable_units/tokens/doctype.rs",
@@ -102,17 +104,18 @@ cargo_crate("lib") {
   cargo_pkg_description =
       "Streaming HTML rewriter/parser with CSS selector-based API"
   cargo_pkg_repository = "https://github.com/cloudflare/lol-html"
-  cargo_pkg_version = "2.2.0"
+  cargo_pkg_version = "2.7.0"
 
   deps = [
     "//brave/third_party/rust/bitflags/v2:lib",
     "//brave/third_party/rust/cfg_if/v1:lib",
-    "//brave/third_party/rust/cssparser/v0_29:lib",
+    "//brave/third_party/rust/cssparser/v0_35:lib",
     "//brave/third_party/rust/encoding_rs/v0_8:lib",
-    "//brave/third_party/rust/hashbrown/v0_15:lib",
+    "//brave/third_party/rust/hashbrown/v0_16:lib",
     "//brave/third_party/rust/memchr/v2:lib",
     "//brave/third_party/rust/mime/v0_3:lib",
-    "//brave/third_party/rust/selectors/v0_24:lib",
+    "//brave/third_party/rust/precomputed_hash/v0_1:lib",
+    "//brave/third_party/rust/selectors/v0_32:lib",
     "//brave/third_party/rust/thiserror/v2:lib",
   ]
   rustenv = []

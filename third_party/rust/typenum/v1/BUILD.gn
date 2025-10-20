@@ -17,6 +17,10 @@ cargo_crate("lib") {
   sources = [
     "//brave/third_party/rust/chromium_crates_io/vendor/typenum-v1/src/array.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/typenum-v1/src/bit.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/typenum-v1/src/gen.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/typenum-v1/src/gen/consts.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/typenum-v1/src/gen/generic_const_mappings.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/typenum-v1/src/gen/op.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/typenum-v1/src/int.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/typenum-v1/src/lib.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/typenum-v1/src/marker_traits.rs",
@@ -34,28 +38,14 @@ cargo_crate("lib") {
   cargo_pkg_name = "typenum"
   cargo_pkg_description = "Typenum is a Rust library for type-level numbers evaluated at     compile time. It currently supports bits, unsigned integers, and signed     integers. It also provides a type-level array of type-level numbers, but its     implementation is incomplete."
   cargo_pkg_repository = "https://github.com/paholg/typenum"
-  cargo_pkg_version = "1.16.0"
+  cargo_pkg_version = "1.19.0"
 
-  build_root = "//brave/third_party/rust/chromium_crates_io/vendor/typenum-v1/build/main.rs"
-  build_sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/typenum-v1/build/main.rs" ]
-  build_script_inputs = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/typenum-v1/src/../build/generic_const_mappings.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/typenum-v1/src/../build/main.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/typenum-v1/src/../build/op.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/typenum-v1/src/../build/tests.rs",
+  build_root =
+      "//brave/third_party/rust/chromium_crates_io/vendor/typenum-v1/build.rs"
+  build_sources = [
+    "//brave/third_party/rust/chromium_crates_io/vendor/typenum-v1/build.rs",
   ]
-  build_script_outputs = [
-    "consts.rs",
-    "op.rs",
-  ]
-  rustenv = [
-    "TYPENUM_BUILD_CONSTS=" +
-        rebase_path(target_gen_dir, get_path_info(crate_root, "dir")) +
-        "/lib/consts.rs",
-    "TYPENUM_BUILD_OP=" +
-        rebase_path(target_gen_dir, get_path_info(crate_root, "dir")) +
-        "/lib/op.rs",
-  ]
+  rustenv = []
   rustflags = []
 
   #####################################################################

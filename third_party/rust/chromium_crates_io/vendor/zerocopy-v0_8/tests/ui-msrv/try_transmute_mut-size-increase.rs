@@ -17,5 +17,5 @@ use zerocopy::try_transmute_mut;
 // larger one.
 fn main() {
     let src = &mut 0u8;
-    let increase_size: Result<&mut [u8; 2], _> = try_transmute_mut!(src);
+    let _increase_size: Result<&mut [u8; 2], _> = try_transmute_mut!(src);
 }

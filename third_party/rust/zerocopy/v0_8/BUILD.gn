@@ -17,6 +17,7 @@ cargo_crate("lib") {
     "//brave/third_party/rust/chromium_crates_io/vendor/zerocopy-v0_8/src/byte_slice.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/zerocopy-v0_8/src/byteorder.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/zerocopy-v0_8/src/deprecated.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/zerocopy-v0_8/src/doctests.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/zerocopy-v0_8/src/error.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/zerocopy-v0_8/src/impls.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/zerocopy-v0_8/src/layout.rs",
@@ -28,6 +29,7 @@ cargo_crate("lib") {
     "//brave/third_party/rust/chromium_crates_io/vendor/zerocopy-v0_8/src/pointer/ptr.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/zerocopy-v0_8/src/pointer/transmute.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/zerocopy-v0_8/src/ref.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/zerocopy-v0_8/src/split_at.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/zerocopy-v0_8/src/util/macro_util.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/zerocopy-v0_8/src/util/macros.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/zerocopy-v0_8/src/util/mod.rs",
@@ -41,9 +43,14 @@ cargo_crate("lib") {
   cargo_pkg_name = "zerocopy"
   cargo_pkg_description = "Zerocopy makes zero-cost memory manipulation effortless. We write \"unsafe\" so you don't have to."
   cargo_pkg_repository = "https://github.com/google/zerocopy"
-  cargo_pkg_version = "0.8.24"
+  cargo_pkg_version = "0.8.27"
 
-  features = [ "simd" ]
+  deps = [ "//brave/third_party/rust/zerocopy_derive/v0_8:lib" ]
+  features = [
+    "derive",
+    "simd",
+    "zerocopy-derive",
+  ]
   build_root = "//brave/third_party/rust/chromium_crates_io/vendor/zerocopy-v0_8/build.rs"
   build_sources = [
     "//brave/third_party/rust/chromium_crates_io/vendor/zerocopy-v0_8/build.rs",

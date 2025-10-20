@@ -82,4 +82,4 @@ cfg_if! {
     }
 }
 
-pub use self::imp::{thread_yield, ThreadParker, UnparkHandle};
+pub use self::imp::{thread_yield, ThreadParker};

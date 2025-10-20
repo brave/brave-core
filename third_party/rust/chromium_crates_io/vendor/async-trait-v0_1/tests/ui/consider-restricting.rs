@@ -13,14 +13,14 @@ struct Client;
 
 #[async_trait]
 impl ClientExt for Client {
-    async fn publish<T: IntoUrl>(&self, url: T) {}
+    async fn publish<T: IntoUrl>(&self, _url: T) {}
 }
 
 struct Client2;
 
 #[async_trait]
 impl ClientExt for Client2 {
-    async fn publish<T>(&self, url: T) {}
+    async fn publish<T>(&self, _url: T) {}
 }
 
 fn main() {}

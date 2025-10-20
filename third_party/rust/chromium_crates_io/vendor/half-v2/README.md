@@ -1,5 +1,5 @@
 # `f16` and `bf16` floating point types for Rust
-[![Crates.io](https://img.shields.io/crates/v/half.svg)](https://crates.io/crates/half/) [![Documentation](https://docs.rs/half/badge.svg)](https://docs.rs/half/) ![Crates.io](https://img.shields.io/crates/l/half) [![Build status](https://github.com/starkat99/half-rs/actions/workflows/rust.yml/badge.svg?branch=main&event=push)](https://github.com/starkat99/half-rs/actions/workflows/rust.yml) [![CircleCI](https://dl.circleci.com/status-badge/img/gh/starkat99/half-rs/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/starkat99/half-rs/tree/main)
+[![Crates.io](https://img.shields.io/crates/v/half.svg)](https://crates.io/crates/half/) [![Documentation](https://docs.rs/half/badge.svg)](https://docs.rs/half/) ![Crates.io](https://img.shields.io/crates/l/half) [![Build status](https://github.com/VoidStarKat/half-rs/actions/workflows/rust.yml/badge.svg?branch=main&event=push)](https://github.com/VoidStarKat/half-rs/actions/workflows/rust.yml) [![CircleCI](https://dl.circleci.com/status-badge/img/gh/VoidStarKat/half-rs/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/VoidStarKat/half-rs/tree/main)
 
 This crate implements a half-precision floating point `f16` type for Rust implementing the IEEE
 754-2008 standard [`binary16`](https://en.wikipedia.org/wiki/Half-precision_floating-point_format)
@@ -39,14 +39,11 @@ See the [crate documentation](https://docs.rs/half/) for more details.
   dependency on the [`serde`](https://crates.io/crates/serde) crate.
 
 - **`num-traits`** — Enable `ToPrimitive`, `FromPrimitive`, `ToBytes`, `FromBytes`, `Num`, `Float`,
-  `FloatCore` and `Bounded` trait implementations from the
+  `FloatCore`, `Signed`, and `Bounded` trait implementations from the
   [`num-traits`](https://crates.io/crates/num-traits) crate.
 
 - **`bytemuck`** — Enable `Zeroable` and `Pod` trait implementations from the
   [`bytemuck`](https://crates.io/crates/bytemuck) crate.
-
-- **`zerocopy`** — Enable `IntoBytes` and `FromBytes` trait implementations from the 
-  [`zerocopy`](https://crates.io/crates/zerocopy) crate.
 
 - **`rand_distr`** — Enable sampling from distributions like `StandardUniform` and `StandardNormal` 
   from the [`rand_distr`](https://crates.io/crates/rand_distr) crate.
@@ -56,16 +53,19 @@ See the [crate documentation](https://docs.rs/half/) for more details.
 - **`aribtrary`** -- Enable fuzzing support with [`arbitrary`](https://crates.io/crates/arbitrary) 
   crate by implementing `Arbitrary` trait.
 
+- **`nightly`** -- Enable nightly-only features (currently `loongarch64` intrinsics).
+
 ### Hardware support
 
 The following list details hardware support for floating point types in this crate. When using `std`
 library, runtime CPU target detection will be used. To get the most performance benefits, compile
 for specific CPU features which avoids the runtime overhead and works in a `no_std` environment.
 
-| Architecture | CPU Target Feature | Notes |
-| ------------ | ------------------ | ----- |
-| `x86`/`x86_64` | `f16c` | This supports conversion to/from `f16` only (including vector SIMD) and does not support any `bf16` or arithmetic operations. |
-| `aarch64` | `fp16` | This supports all operations on `f16` only. |
+| Architecture | CPU Target Feature | Notes                                                                                                                                                  |
+| ------------ | ------------------ |--------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `x86`/`x86_64` | `f16c` | This supports conversion to/from `f16` only (including vector SIMD) and does not support any `bf16` or arithmetic operations.                          |
+| `aarch64` | `fp16` | This supports all operations on `f16` only.                                                                                                            |
+| `loongarch64` | `lsx` | (`nightly` feature only) This supports conversion to/from `f16` only (including vector SIMD) and does not support any `bf16` or arithmetic operations. |
 
 ### More Documentation
 

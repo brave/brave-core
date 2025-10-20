@@ -1,9 +1,10 @@
-name: Run CI
+name: CI
 on:
   push:
-    branches: ["auto"]
+    branches: ["main"]
   pull_request:
-    branches: ["**"]
+  merge_group:
+    types: [checks_requested]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -14,12 +15,12 @@ env:
 
 jobs:
   ci:
-    name: Run CI
+    name: Build and Test
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        rust: [1.56.0, nightly, beta, stable]
+        rust: [1.70.0, nightly, beta, stable]
 
     steps:
       - uses: actions/checkout@v2
@@ -35,8 +36,11 @@ jobs:
         run: |
           cargo build --no-default-features
           cargo build
-      - name: Tests
-        run: cargo test --all
+          cargo build --features malloc_size_of
+      - uses: actions-rs/cargo@v1
+        with:
+          command: test
+          args: --all
       - name: Build codegen
         run: |
           cd string-cache-codegen && cargo build && cd ..
@@ -47,7 +51,7 @@ jobs:
 
 
   build_result:
-    name: homu build finished
+    name: Result
     runs-on: ubuntu-latest
     needs:
       - "ci"

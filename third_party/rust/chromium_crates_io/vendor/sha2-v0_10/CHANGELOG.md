@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 0.10.9 (2025-04-30)
+### Added
+- `force-soft-compact` crate feature to enable compact software backend (backport of [#686]) [#687]
+
+[#686]: https://github.com/RustCrypto/hashes/pull/686
+[#687]: https://github.com/RustCrypto/hashes/pull/687
+
 ## 0.10.8 (2023-09-26)
 ### Added
 - `asm!`-based backend for LoongArch64 targets gated behind `loongarch64_asm` feature [#507]

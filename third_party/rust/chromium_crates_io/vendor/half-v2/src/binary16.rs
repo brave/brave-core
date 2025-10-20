@@ -19,7 +19,6 @@ use core::{
 };
 #[cfg(feature = "serde")]
 use serde::{Deserialize, Serialize};
-#[cfg(feature = "zerocopy")]
 use zerocopy::{FromBytes, Immutable, IntoBytes, KnownLayout};
 
 pub(crate) mod arch;
@@ -41,12 +40,9 @@ pub(crate) mod arch;
 )]
 #[cfg_attr(feature = "rkyv", rkyv(resolver = F16Resolver))]
 #[cfg_attr(feature = "bytemuck", derive(Zeroable, Pod))]
-#[cfg_attr(
-    feature = "zerocopy",
-    derive(FromBytes, Immutable, IntoBytes, KnownLayout)
-)]
 #[cfg_attr(kani, derive(kani::Arbitrary))]
 #[cfg_attr(feature = "arbitrary", derive(arbitrary::Arbitrary))]
+#[derive(FromBytes, Immutable, IntoBytes, KnownLayout)]
 pub struct f16(u16);
 
 impl f16 {
@@ -522,7 +518,7 @@ impl f16 {
     #[inline]
     #[must_use]
     pub fn max(self, other: f16) -> f16 {
-        if other > self && !other.is_nan() {
+        if self.is_nan() || other > self {
             other
         } else {
             self
@@ -545,7 +541,7 @@ impl f16 {
     #[inline]
     #[must_use]
     pub fn min(self, other: f16) -> f16 {
-        if other < self && !other.is_nan() {
+        if self.is_nan() || other < self {
             other
         } else {
             self
@@ -1398,6 +1394,7 @@ mod test {
     }
 
     #[test]
+    #[cfg_attr(miri, ignore)]
     fn test_f16_consts() {
         // DIGITS
         let digits = ((f16::MANTISSA_DIGITS as f32 - 1.0) * 2f32.log10()).floor() as u32;
@@ -1588,7 +1585,7 @@ mod test {
         assert!(nan32.is_nan() && nan32.is_sign_positive());
         assert!(neg_nan32.is_nan() && neg_nan32.is_sign_negative());
 
-        // f32/f64 NaN conversion sign is non-deterministic: https://github.com/starkat99/half-rs/issues/103
+        // f32/f64 NaN conversion sign is non-deterministic: https://github.com/VoidStarKat/half-rs/issues/103
         assert!(nan32_from_64.is_nan());
         assert!(neg_nan32_from_64.is_nan());
         assert!(nan16_from_64.is_nan());
@@ -1615,7 +1612,7 @@ mod test {
         assert!(nan32.is_nan() && nan32.is_sign_positive());
         assert!(neg_nan32.is_nan() && neg_nan32.is_sign_negative());
 
-        // f32/f64 NaN conversion sign is non-deterministic: https://github.com/starkat99/half-rs/issues/103
+        // f32/f64 NaN conversion sign is non-deterministic: https://github.com/VoidStarKat/half-rs/issues/103
         assert!(nan32_from_16.is_nan());
         assert!(neg_nan32_from_16.is_nan());
         assert!(nan64_from_16.is_nan());
@@ -1625,6 +1622,7 @@ mod test {
     }
 
     #[test]
+    #[cfg_attr(miri, ignore)]
     fn test_f16_to_f32() {
         let f = f16::from_f32(7.0);
         assert_eq!(f.to_f32(), 7.0f32);
@@ -1646,6 +1644,7 @@ mod test {
     }
 
     #[test]
+    #[cfg_attr(miri, ignore)]
     fn test_f16_to_f64() {
         let f = f16::from_f64(7.0);
         assert_eq!(f.to_f64(), 7.0f64);
@@ -1721,6 +1720,7 @@ mod test {
 
     #[test]
     #[allow(clippy::erasing_op, clippy::identity_op)]
+    #[cfg_attr(miri, ignore)]
     fn round_to_even_f32() {
         // smallest positive subnormal = 0b0.0000_0000_01 * 2^-14 = 2^-24
         let min_sub = f16::from_bits(1);
@@ -1816,6 +1816,7 @@ mod test {
 
     #[test]
     #[allow(clippy::erasing_op, clippy::identity_op)]
+    #[cfg_attr(miri, ignore)]
     fn round_to_even_f64() {
         // smallest positive subnormal = 0b0.0000_0000_01 * 2^-14 = 2^-24
         let min_sub = f16::from_bits(1);
@@ -1960,5 +1961,51 @@ mod test {
         } else {
             f.0 == roundtrip.0
         }
+    }
+
+    #[test]
+    fn test_max() {
+        let a = f16::from_f32(0.0);
+        let b = f16::from_f32(42.0);
+        assert_eq!(a.max(b), b);
+
+        let a = f16::from_f32(42.0);
+        let b = f16::from_f32(0.0);
+        assert_eq!(a.max(b), a);
+
+        let a = f16::NAN;
+        let b = f16::from_f32(42.0);
+        assert_eq!(a.max(b), b);
+
+        let a = f16::from_f32(42.0);
+        let b = f16::NAN;
+        assert_eq!(a.max(b), a);
+
+        let a = f16::NAN;
+        let b = f16::NAN;
+        assert!(a.max(b).is_nan());
+    }
+
+    #[test]
+    fn test_min() {
+        let a = f16::from_f32(0.0);
+        let b = f16::from_f32(42.0);
+        assert_eq!(a.min(b), a);
+
+        let a = f16::from_f32(42.0);
+        let b = f16::from_f32(0.0);
+        assert_eq!(a.min(b), b);
+
+        let a = f16::NAN;
+        let b = f16::from_f32(42.0);
+        assert_eq!(a.min(b), b);
+
+        let a = f16::from_f32(42.0);
+        let b = f16::NAN;
+        assert_eq!(a.min(b), a);
+
+        let a = f16::NAN;
+        let b = f16::NAN;
+        assert!(a.min(b).is_nan());
     }
 }

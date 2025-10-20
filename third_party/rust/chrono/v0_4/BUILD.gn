@@ -40,6 +40,7 @@ cargo_crate("lib") {
     "//brave/third_party/rust/chromium_crates_io/vendor/chrono-v0_4/src/naive/time/tests.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/chrono-v0_4/src/offset/fixed.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/chrono-v0_4/src/offset/local/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-v0_4/src/offset/local/tz_data.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/chrono-v0_4/src/offset/local/tz_info/mod.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/chrono-v0_4/src/offset/local/tz_info/parser.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/chrono-v0_4/src/offset/local/tz_info/rule.rs",
@@ -53,6 +54,7 @@ cargo_crate("lib") {
     "//brave/third_party/rust/chromium_crates_io/vendor/chrono-v0_4/src/time_delta.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/chrono-v0_4/src/traits.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/chrono-v0_4/src/weekday.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/chrono-v0_4/src/weekday_set.rs",
   ]
   inputs = []
 
@@ -61,7 +63,7 @@ cargo_crate("lib") {
   cargo_pkg_name = "chrono"
   cargo_pkg_description = "Date and time library for Rust"
   cargo_pkg_repository = "https://github.com/chronotope/chrono"
-  cargo_pkg_version = "0.4.39"
+  cargo_pkg_version = "0.4.42"
 
   deps = [
     "//brave/third_party/rust/num_traits/v0_2:lib",

@@ -66,6 +66,7 @@
 //! | ------------ | ------------------ | ----- |
 //! | `x86`/`x86_64` | `f16c` | This supports conversion to/from [`struct@f16`] only (including vector SIMD) and does not support any [`struct@bf16`] or arithmetic operations. |
 //! | `aarch64` | `fp16` | This supports all operations on [`struct@f16`] only. |
+//! | `loongarch64` | `lsx` | This supports conversion to/from [`struct@f16`] only (including vector SIMD) and does not support any [`struct@bf16`] or arithmetic operations. |
 //!
 //! # Cargo Features
 //!
@@ -89,13 +90,10 @@
 //!
 //! - **`num-traits`** — Adds support for the [`num-traits`] crate by implementing [`ToPrimitive`],
 //!   [`FromPrimitive`], [`ToBytes`], `FromBytes`, [`AsPrimitive`], [`Num`], [`Float`],
-//!   [`FloatCore`], and [`Bounded`] traits for both [`struct@f16`] and [`struct@bf16`].
+//!   [`FloatCore`], [`Signed`], and [`Bounded`] traits for both [`struct@f16`] and [`struct@bf16`].
 //!
 //! - **`bytemuck`** — Adds support for the [`bytemuck`] crate by implementing [`Zeroable`] and
 //!   [`Pod`] traits for both [`struct@f16`] and [`struct@bf16`].
-//!
-//! - **`zerocopy`** — Adds support for the [`zerocopy`] crate by implementing [`IntoBytes`] and
-//!   [`FromBytes`] traits for both [`struct@f16`] and [`struct@bf16`].
 //!
 //! - **`rand_distr`** — Adds support for the [`rand_distr`] crate by implementing [`Distribution`]
 //!   and other traits for both [`struct@f16`] and [`struct@bf16`].
@@ -104,6 +102,8 @@
 //!
 //! - **`aribtrary`** -- Enable fuzzing support with [`arbitrary`] crate by implementing
 //!   [`Arbitrary`] trait.
+//!
+//! - **`nightly`** -- Enable nightly-only features.
 //!
 //! [`alloc`]: https://doc.rust-lang.org/alloc/
 //! [`std`]: https://doc.rust-lang.org/std/
@@ -149,6 +149,7 @@
 [`Num`]: ::num_traits::Num
 [`Float`]: ::num_traits::Float
 [`FloatCore`]: ::num_traits::float::FloatCore
+[`Signed`]: ::num_traits::Signed
 [`Bounded`]: ::num_traits::Bounded"
 )]
 #![cfg_attr(
@@ -214,11 +215,21 @@
     future_incompatible
 )]
 #![cfg_attr(not(target_arch = "spirv"), warn(missing_debug_implementations))]
+#![cfg_attr(
+    all(feature = "nightly", target_arch = "loongarch64"),
+    feature(
+        stdarch_loongarch,
+        stdarch_loongarch_feature_detection,
+        loongarch_target_feature
+    )
+)]
 #![allow(clippy::verbose_bit_mask, clippy::cast_lossless, unexpected_cfgs)]
 #![cfg_attr(not(feature = "std"), no_std)]
-#![doc(html_root_url = "https://docs.rs/half/2.6.0")]
+#![doc(html_root_url = "https://docs.rs/half/2.7.1")]
 #![doc(test(attr(deny(warnings), allow(unused))))]
-#![cfg_attr(docsrs, feature(doc_auto_cfg))]
+// Until updated to use newly stabilized `from_bits`, disable new lint warning about the transmutes
+#![allow(unknown_lints, unnecessary_transmutes)]
+#![warn(unknown_lints)]
 
 #[cfg(feature = "alloc")]
 extern crate alloc;
@@ -263,8 +274,9 @@ pub mod prelude {
 // Keep this module private to crate
 mod private {
     use crate::{bf16, f16};
+    use zerocopy::{FromBytes, Immutable, IntoBytes};
 
-    pub trait SealedHalf {}
+    pub trait SealedHalf: FromBytes + IntoBytes + Immutable {}
 
     impl SealedHalf for f16 {}
     impl SealedHalf for bf16 {}

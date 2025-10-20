@@ -13,7 +13,10 @@ cargo_crate("lib") {
   epoch = "2"
   crate_type = "rlib"
   crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/percent-encoding-v2/src/lib.rs"
-  sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/percent-encoding-v2/src/lib.rs" ]
+  sources = [
+    "//brave/third_party/rust/chromium_crates_io/vendor/percent-encoding-v2/src/ascii_set.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/percent-encoding-v2/src/lib.rs",
+  ]
   inputs = []
 
   build_native_rust_unit_tests = false
@@ -22,11 +25,12 @@ cargo_crate("lib") {
   cargo_pkg_name = "percent-encoding"
   cargo_pkg_description = "Percent encoding and decoding"
   cargo_pkg_repository = "https://github.com/servo/rust-url/"
-  cargo_pkg_version = "2.2.0"
+  cargo_pkg_version = "2.3.2"
 
   features = [
     "alloc",
     "default",
+    "std",
   ]
   rustenv = []
   rustflags = []

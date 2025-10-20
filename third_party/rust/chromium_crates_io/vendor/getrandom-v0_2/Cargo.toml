@@ -12,10 +12,11 @@
 [package]
 edition = "2018"
 name = "getrandom"
-version = "0.2.15"
+version = "0.2.16"
 authors = ["The Rand Project Developers"]
 build = false
 exclude = [".*"]
+autolib = false
 autobins = false
 autoexamples = false
 autotests = false
@@ -50,6 +51,23 @@ rustdoc-args = [
     "docsrs",
 ]
 
+[features]
+custom = []
+js = [
+    "wasm-bindgen",
+    "js-sys",
+]
+linux_disable_fallback = []
+rdrand = []
+rustc-dep-of-std = [
+    "compiler_builtins",
+    "core",
+    "libc/rustc-dep-of-std",
+    "wasi/rustc-dep-of-std",
+]
+std = []
+test-in-browser = []
+
 [lib]
 name = "getrandom"
 path = "src/lib.rs"
@@ -82,36 +100,19 @@ version = "1.0"
 optional = true
 package = "rustc-std-workspace-core"
 
-[features]
-custom = []
-js = [
-    "wasm-bindgen",
-    "js-sys",
-]
-linux_disable_fallback = []
-rdrand = []
-rustc-dep-of-std = [
-    "compiler_builtins",
-    "core",
-    "libc/rustc-dep-of-std",
-    "wasi/rustc-dep-of-std",
-]
-std = []
-test-in-browser = []
-
-[target."cfg(all(any(target_arch = \"wasm32\", target_arch = \"wasm64\"), target_os = \"unknown\"))".dependencies.js-sys]
+[target.'cfg(all(any(target_arch = "wasm32", target_arch = "wasm64"), target_os = "unknown"))'.dependencies.js-sys]
 version = "0.3"
 optional = true
 
-[target."cfg(all(any(target_arch = \"wasm32\", target_arch = \"wasm64\"), target_os = \"unknown\"))".dependencies.wasm-bindgen]
+[target.'cfg(all(any(target_arch = "wasm32", target_arch = "wasm64"), target_os = "unknown"))'.dependencies.wasm-bindgen]
 version = "0.2.62"
 optional = true
 default-features = false
 
-[target."cfg(all(any(target_arch = \"wasm32\", target_arch = \"wasm64\"), target_os = \"unknown\"))".dev-dependencies.wasm-bindgen-test]
+[target.'cfg(all(any(target_arch = "wasm32", target_arch = "wasm64"), target_os = "unknown"))'.dev-dependencies.wasm-bindgen-test]
 version = "0.3.18"
 
-[target."cfg(target_os = \"wasi\")".dependencies.wasi]
+[target.'cfg(target_os = "wasi")'.dependencies.wasi]
 version = "0.11"
 default-features = false
 

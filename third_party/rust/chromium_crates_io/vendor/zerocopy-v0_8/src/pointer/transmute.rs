@@ -10,10 +10,12 @@ use core::{
     cell::{Cell, UnsafeCell},
     mem::{ManuallyDrop, MaybeUninit},
     num::Wrapping,
-    ptr::NonNull,
 };
 
-use crate::{pointer::invariant::*, FromBytes, Immutable, IntoBytes, Unalign};
+use crate::{
+    pointer::{invariant::*, PtrInner},
+    FromBytes, Immutable, IntoBytes, Unalign,
+};
 
 /// Transmutations which are sound to attempt, conditional on validating the bit
 /// validity of the destination type.
@@ -129,10 +131,12 @@ pub enum BecauseMutationCompatible {}
 //       exists, no mutation is permitted except via that `Ptr`
 //     - Aliasing is `Shared`, `Src: Immutable`, and `Dst: Immutable`, in which
 //       case no mutation is possible via either `Ptr`
-//   - `Dst: TransmuteFrom<Src, SV, DV>`, and so the set of `DV`-valid `Dst`s is
-//     a supserset of the set of `SV`-valid `Src`s
-// - Reverse transmutation: `Src: TransmuteFrom<Dst, DV, SV>`, and so the set of
-//   `DV`-valid `Dst`s is a subset of the set of `SV`-valid `Src`s
+//   - `Dst: TransmuteFrom<Src, SV, DV>`. Since `Dst: SizeEq<Src>`, this bound
+//     guarantees that the set of `DV`-valid `Dst`s is a supserset of the set of
+//     `SV`-valid `Src`s.
+// - Reverse transmutation: `Src: TransmuteFrom<Dst, DV, SV>`. Since `Dst:
+//   SizeEq<Src>`, this guarantees that the set of `DV`-valid `Dst`s is a subset
+//   of the set of `SV`-valid `Src`s.
 // - No safe code, given access to `src` and `dst`, can cause undefined
 //   behavior: By `Dst: MutationCompatible<Src, A, SV, DV, _>`, at least one of
 //   the following holds:
@@ -204,23 +208,26 @@ pub unsafe trait InvariantsEq<T: ?Sized> {}
 // SAFETY: Trivially sound to have multiple `&T` pointing to the same referent.
 unsafe impl<T: ?Sized> InvariantsEq<T> for T {}
 
-// SAFETY: `Dst: InvariantsEq<Src> + TransmuteFrom<Src, V, V>`, and `Src:
-// TransmuteFrom<Dst, V, V>`.
-unsafe impl<Src: ?Sized, Dst: ?Sized, A: Aliasing, V: Validity>
-    MutationCompatible<Src, A, V, V, BecauseInvariantsEq> for Dst
+// SAFETY: `Dst: InvariantsEq<Src> + TransmuteFrom<Src, SV, DV>`, and `Src:
+// TransmuteFrom<Dst, DV, SV>`.
+unsafe impl<Src: ?Sized, Dst: ?Sized, A: Aliasing, SV: Validity, DV: Validity>
+    MutationCompatible<Src, A, SV, DV, BecauseInvariantsEq> for Dst
 where
-    Src: TransmuteFrom<Dst, V, V>,
-    Dst: TransmuteFrom<Src, V, V> + InvariantsEq<Src>,
+    Src: TransmuteFrom<Dst, DV, SV>,
+    Dst: TransmuteFrom<Src, SV, DV> + InvariantsEq<Src>,
 {
 }
 
 pub(crate) enum BecauseInvariantsEq {}
 
 macro_rules! unsafe_impl_invariants_eq {
-    ($tyvar:ident => $t:ty, $u:ty) => {
+    ($tyvar:ident => $t:ty, $u:ty) => {{
+        crate::util::macros::__unsafe();
+        // SAFETY: The caller promises that this is sound.
         unsafe impl<$tyvar> InvariantsEq<$t> for $u {}
+        // SAFETY: The caller promises that this is sound.
         unsafe impl<$tyvar> InvariantsEq<$u> for $t {}
-    };
+    }};
 }
 
 impl_transitive_transmute_from!(T => MaybeUninit<T> => T => Wrapping<T>);
@@ -269,10 +276,14 @@ where
 ///
 /// # Safety
 ///
-/// The set of bit patterns allowed to appear in the referent of a `Ptr<Src, (_,
-/// _, SV)>` must be a subset of the set allowed to appear in the referent of a
-/// `Ptr<Self, (_, _, DV)>`.
-pub unsafe trait TransmuteFrom<Src: ?Sized, SV, DV>: SizeEq<Src> {}
+/// Given `src: Ptr<Src, (_, _, SV)>` and `dst: Ptr<Dst, (_, _, DV)>`, if the
+/// referents of `src` and `dst` are the same size, then the set of bit patterns
+/// allowed to appear in `src`'s referent must be a subset of the set allowed to
+/// appear in `dst`'s referent.
+///
+/// If the referents are not the same size, then `Dst: TransmuteFrom<Src, SV,
+/// DV>` conveys no safety guarantee.
+pub unsafe trait TransmuteFrom<Src: ?Sized, SV, DV> {}
 
 /// # Safety
 ///
@@ -280,17 +291,21 @@ pub unsafe trait TransmuteFrom<Src: ?Sized, SV, DV>: SizeEq<Src> {}
 /// etc) and have the same size. In particular:
 /// - If `T: Sized` and `Self: Sized`, then their sizes must be equal
 /// - If `T: ?Sized` and `Self: ?Sized`, then it must be the case that, given
-///   any `t: *mut T`, `t as *mut Self` produces a pointer which addresses the
-///   same number of bytes as `t`.
+///   any `t: PtrInner<'_, T>`, `<Self as SizeEq<T>>::cast_from_raw(t)` produces
+///   a pointer which addresses the same number of bytes as `t`. *Note that it
+///   is **not** guaranteed that an `as` cast preserves referent size: it may be
+///   the case that `cast_from_raw` modifies the pointer's metadata in order to
+///   preserve referent size, which an `as` cast does not do.*
 pub unsafe trait SizeEq<T: ?Sized> {
-    fn cast_from_raw(t: NonNull<T>) -> NonNull<Self>;
+    fn cast_from_raw(t: PtrInner<'_, T>) -> PtrInner<'_, Self>;
 }
 
 // SAFETY: `T` trivially has the same size and vtable kind as `T`, and since
 // pointer `*mut T -> *mut T` pointer casts are no-ops, this cast trivially
 // preserves referent size (when `T: ?Sized`).
 unsafe impl<T: ?Sized> SizeEq<T> for T {
-    fn cast_from_raw(t: NonNull<T>) -> NonNull<T> {
+    #[inline(always)]
+    fn cast_from_raw(t: PtrInner<'_, T>) -> PtrInner<'_, T> {
         t
     }
 }
@@ -301,7 +316,7 @@ unsafe impl<T: ?Sized> SizeEq<T> for T {
 unsafe impl<Src, Dst> TransmuteFrom<Src, Valid, Initialized> for Dst
 where
     Src: IntoBytes + ?Sized,
-    Dst: SizeEq<Src> + ?Sized,
+    Dst: ?Sized,
 {
 }
 
@@ -311,11 +326,11 @@ where
 unsafe impl<Src, Dst> TransmuteFrom<Src, Initialized, Valid> for Dst
 where
     Src: ?Sized,
-    Dst: FromBytes + SizeEq<Src> + ?Sized,
+    Dst: FromBytes + ?Sized,
 {
 }
 
-// TODO(#2354): This seems like a smell - the soundness of this bound has
+// FIXME(#2354): This seems like a smell - the soundness of this bound has
 // nothing to do with `Src` or `Dst` - we're basically just saying `[u8; N]` is
 // transmutable into `[u8; N]`.
 
@@ -324,11 +339,11 @@ where
 unsafe impl<Src, Dst> TransmuteFrom<Src, Initialized, Initialized> for Dst
 where
     Src: ?Sized,
-    Dst: SizeEq<Src> + ?Sized,
+    Dst: ?Sized,
 {
 }
 
-// TODO(#2354): This seems like a smell - the soundness of this bound has
+// FIXME(#2354): This seems like a smell - the soundness of this bound has
 // nothing to do with `Dst` - we're basically just saying that any type is
 // transmutable into `MaybeUninit<[u8; N]>`.
 
@@ -337,103 +352,97 @@ where
 unsafe impl<Src, Dst, V> TransmuteFrom<Src, V, Uninit> for Dst
 where
     Src: ?Sized,
-    Dst: SizeEq<Src> + ?Sized,
+    Dst: ?Sized,
     V: Validity,
 {
 }
 
-safety_comment! {
-    /// SAFETY:
-    /// - `ManuallyDrop<T>` has the same size as `T` [1]
-    /// - `ManuallyDrop<T>` has the same validity as `T` [1]
-    ///
-    /// [1] Per https://doc.rust-lang.org/1.81.0/std/mem/struct.ManuallyDrop.html:
-    ///
-    ///   `ManuallyDrop<T>` is guaranteed to have the same layout and bit
-    ///   validity as `T`
-    unsafe_impl_for_transparent_wrapper!(T: ?Sized => ManuallyDrop<T>);
+// SAFETY:
+// - `ManuallyDrop<T>` has the same size as `T` [1]
+// - `ManuallyDrop<T>` has the same validity as `T` [1]
+//
+// [1] Per https://doc.rust-lang.org/1.81.0/std/mem/struct.ManuallyDrop.html:
+//
+//   `ManuallyDrop<T>` is guaranteed to have the same layout and bit validity as
+//   `T`
+const _: () = unsafe { unsafe_impl_for_transparent_wrapper!(T: ?Sized => ManuallyDrop<T>) };
 
-    /// SAFETY:
-    /// - `Unalign<T>` promises to have the same size as `T`.
-    /// - `Unalign<T>` promises to have the same validity as `T`.
-    unsafe_impl_for_transparent_wrapper!(T => Unalign<T>);
-    /// SAFETY:
-    /// `Unalign<T>` promises to have the same size and validity as `T`. Given
-    /// `u: &Unalign<T>`, it is already possible to obtain `let t =
-    /// u.try_deref().unwrap()`. Because `Unalign<T>` has the same size as `T`,
-    /// the returned `&T` must point to the same referent as `u`, and thus it
-    /// must be sound for these two references to exist at the same time since
-    /// it's already possible for safe code to get into this state.
-    unsafe_impl_invariants_eq!(T => T, Unalign<T>);
+// SAFETY:
+// - `Unalign<T>` promises to have the same size as `T`.
+// - `Unalign<T>` promises to have the same validity as `T`.
+const _: () = unsafe { unsafe_impl_for_transparent_wrapper!(T => Unalign<T>) };
+// SAFETY: `Unalign<T>` promises to have the same size and validity as `T`.
+// Given `u: &Unalign<T>`, it is already possible to obtain `let t =
+// u.try_deref().unwrap()`. Because `Unalign<T>` has the same size as `T`, the
+// returned `&T` must point to the same referent as `u`, and thus it must be
+// sound for these two references to exist at the same time since it's already
+// possible for safe code to get into this state.
+const _: () = unsafe { unsafe_impl_invariants_eq!(T => T, Unalign<T>) };
 
-    /// SAFETY:
-    /// - `Wrapping<T>` has the same size as `T` [1].
-    /// - `Wrapping<T>` has only one field, which is `pub` [2]. We are also
-    ///   guaranteed per that `Wrapping<T>` has the same layout as `T` [1]. The
-    ///   only way for both of these to be true simultaneously is for
-    ///   `Wrapping<T>` to have the same bit validity as `T`. In particular, in
-    ///   order to change the bit validity, one of the following would need to
-    ///   happen:
-    ///   - `Wrapping` could change its `repr`, but this would violate the
-    ///     layout guarantee.
-    ///   - `Wrapping` could add or change its fields, but this would be a
-    ///     stability-breaking change.
-    ///
-    /// [1] Per https://doc.rust-lang.org/1.85.0/core/num/struct.Wrapping.html#layout-1:
-    ///
-    ///   `Wrapping<T>` is guaranteed to have the same layout and ABI as `T`.
-    ///
-    /// [2] Definition from https://doc.rust-lang.org/1.85.0/core/num/struct.Wrapping.html:
-    ///
-    ///   ```
-    ///   #[repr(transparent)]
-    ///   pub struct Wrapping<T>(pub T);
-    ///   ```
-    unsafe_impl_for_transparent_wrapper!(T => Wrapping<T>);
-    /// SAFETY:
-    /// By the preceding safety proof, `Wrapping<T>` and `T` have the same
-    /// layout and bit validity. Since a `Wrapping<T>`'s `T` field is `pub`,
-    /// given `w: &Wrapping<T>`, it's possible to do `let t = &w.t`, which means
-    /// that it's already possible for safe code to obtain a `&Wrapping<T>` and
-    /// a `&T` pointing to the same referent at the same time. Thus, this must
-    /// be sound.
-    unsafe_impl_invariants_eq!(T => T, Wrapping<T>);
+// SAFETY:
+// - `Wrapping<T>` has the same size as `T` [1].
+// - `Wrapping<T>` has only one field, which is `pub` [2]. We are also
+//   guaranteed per that `Wrapping<T>` has the same layout as `T` [1]. The only
+//   way for both of these to be true simultaneously is for `Wrapping<T>` to
+//   have the same bit validity as `T`. In particular, in order to change the
+//   bit validity, one of the following would need to happen:
+//   - `Wrapping` could change its `repr`, but this would violate the layout
+//     guarantee.
+//   - `Wrapping` could add or change its fields, but this would be a
+//     stability-breaking change.
+//
+// [1] Per https://doc.rust-lang.org/1.85.0/core/num/struct.Wrapping.html#layout-1:
+//
+//   `Wrapping<T>` is guaranteed to have the same layout and ABI as `T`.
+//
+// [2] Definition from https://doc.rust-lang.org/1.85.0/core/num/struct.Wrapping.html:
+//
+//   ```
+//   #[repr(transparent)]
+//   pub struct Wrapping<T>(pub T);
+//   ```
+const _: () = unsafe { unsafe_impl_for_transparent_wrapper!(T => Wrapping<T>) };
 
-    /// SAFETY:
-    /// - `UnsafeCell<T>` has the same size as `T` [1].
-    /// - Per [1], `UnsafeCell<T>` has the same bit validity as `T`. Technically
-    ///   the term "representation" doesn't guarantee this, but the subsequent
-    ///   sentence in the documentation makes it clear that this is the
-    ///   intention.
-    ///
-    /// [1] Per https://doc.rust-lang.org/1.81.0/core/cell/struct.UnsafeCell.html#memory-layout:
-    ///
-    ///   `UnsafeCell<T>` has the same in-memory representation as its inner
-    ///   type `T`. A consequence of this guarantee is that it is possible to
-    ///   convert between `T` and `UnsafeCell<T>`.
-    unsafe_impl_for_transparent_wrapper!(T: ?Sized => UnsafeCell<T>);
+// SAFETY: By the preceding safety proof, `Wrapping<T>` and `T` have the same
+// layout and bit validity. Since a `Wrapping<T>`'s `T` field is `pub`, given
+// `w: &Wrapping<T>`, it's possible to do `let t = &w.t`, which means that it's
+// already possible for safe code to obtain a `&Wrapping<T>` and a `&T` pointing
+// to the same referent at the same time. Thus, this must be sound.
+const _: () = unsafe { unsafe_impl_invariants_eq!(T => T, Wrapping<T>) };
 
-    /// SAFETY:
-    /// - `Cell<T>` has the same size as `T` [1].
-    /// - Per [1], `Cell<T>` has the same bit validity as `T`. Technically the
-    ///   term "representation" doesn't guarantee this, but it does promise to
-    ///   have the "same memory layout and caveats as `UnsafeCell<T>`." The
-    ///   `UnsafeCell` docs [2] make it clear that bit validity is the intention
-    ///   even if that phrase isn't used.
-    ///
-    /// [1] Per https://doc.rust-lang.org/1.85.0/std/cell/struct.Cell.html#memory-layout:
-    ///
-    ///   `Cell<T>` has the same memory layout and caveats as `UnsafeCell<T>`.
-    ///   In particular, this means that `Cell<T>` has the same in-memory
-    ///   representation as its inner type `T`.
-    ///
-    /// [2] Per https://doc.rust-lang.org/1.81.0/core/cell/struct.UnsafeCell.html#memory-layout:
-    ///
-    ///   `UnsafeCell<T>` has the same in-memory representation as its inner
-    ///   type `T`. A consequence of this guarantee is that it is possible to
-    ///   convert between `T` and `UnsafeCell<T>`.
-    unsafe_impl_for_transparent_wrapper!(T: ?Sized => Cell<T>);
-}
+// SAFETY:
+// - `UnsafeCell<T>` has the same size as `T` [1].
+// - Per [1], `UnsafeCell<T>` has the same bit validity as `T`. Technically the
+//   term "representation" doesn't guarantee this, but the subsequent sentence
+//   in the documentation makes it clear that this is the intention.
+//
+// [1] Per https://doc.rust-lang.org/1.81.0/core/cell/struct.UnsafeCell.html#memory-layout:
+//
+//   `UnsafeCell<T>` has the same in-memory representation as its inner type
+//   `T`. A consequence of this guarantee is that it is possible to convert
+//   between `T` and `UnsafeCell<T>`.
+const _: () = unsafe { unsafe_impl_for_transparent_wrapper!(T: ?Sized => UnsafeCell<T>) };
+
+// SAFETY:
+// - `Cell<T>` has the same size as `T` [1].
+// - Per [1], `Cell<T>` has the same bit validity as `T`. Technically the term
+//   "representation" doesn't guarantee this, but it does promise to have the
+//   "same memory layout and caveats as `UnsafeCell<T>`." The `UnsafeCell` docs
+//   [2] make it clear that bit validity is the intention even if that phrase
+//   isn't used.
+//
+// [1] Per https://doc.rust-lang.org/1.85.0/std/cell/struct.Cell.html#memory-layout:
+//
+//   `Cell<T>` has the same memory layout and caveats as `UnsafeCell<T>`. In
+//   particular, this means that `Cell<T>` has the same in-memory representation
+//   as its inner type `T`.
+//
+// [2] Per https://doc.rust-lang.org/1.81.0/core/cell/struct.UnsafeCell.html#memory-layout:
+//
+//   `UnsafeCell<T>` has the same in-memory representation as its inner type
+//   `T`. A consequence of this guarantee is that it is possible to convert
+//   between `T` and `UnsafeCell<T>`.
+const _: () = unsafe { unsafe_impl_for_transparent_wrapper!(T: ?Sized => Cell<T>) };
 
 impl_transitive_transmute_from!(T: ?Sized => Cell<T> => T => UnsafeCell<T>);
 impl_transitive_transmute_from!(T: ?Sized => UnsafeCell<T> => T => Cell<T>);
@@ -451,14 +460,20 @@ unsafe impl<T> TransmuteFrom<T, Uninit, Valid> for MaybeUninit<T> {}
 //   `MaybeUninit<T>` is guaranteed to have the same size, alignment, and ABI as
 //   `T`
 unsafe impl<T> SizeEq<T> for MaybeUninit<T> {
-    fn cast_from_raw(t: NonNull<T>) -> NonNull<MaybeUninit<T>> {
-        cast!(t)
+    #[inline(always)]
+    fn cast_from_raw(t: PtrInner<'_, T>) -> PtrInner<'_, MaybeUninit<T>> {
+        // SAFETY: Per preceding safety comment, `MaybeUninit<T>` and `T` have
+        // the same size, and so this cast preserves referent size.
+        unsafe { cast!(t) }
     }
 }
 
 // SAFETY: See previous safety comment.
 unsafe impl<T> SizeEq<MaybeUninit<T>> for T {
-    fn cast_from_raw(t: NonNull<MaybeUninit<T>>) -> NonNull<T> {
-        cast!(t)
+    #[inline(always)]
+    fn cast_from_raw(t: PtrInner<'_, MaybeUninit<T>>) -> PtrInner<'_, T> {
+        // SAFETY: Per preceding safety comment, `MaybeUninit<T>` and `T` have
+        // the same size, and so this cast preserves referent size.
+        unsafe { cast!(t) }
     }
 }

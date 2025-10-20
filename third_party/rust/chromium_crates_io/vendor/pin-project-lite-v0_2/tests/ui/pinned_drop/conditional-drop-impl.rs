@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0 OR MIT
+
 use pin_project_lite::pin_project;
 
 // In `Drop` impl, the implementor must specify the same requirement as type definition.

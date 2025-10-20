@@ -7,7 +7,7 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
-use crate::dynamic_set::{Entry, DYNAMIC_SET};
+use crate::dynamic_set::{dynamic_set, Entry};
 use crate::static_sets::StaticAtomSet;
 use debug_unreachable::debug_unreachable;
 
@@ -82,6 +82,15 @@ pub struct Atom<Static> {
     phantom: PhantomData<Static>,
 }
 
+// This isn't really correct as the Atoms can technically take up space. But I guess it's ok
+// as it is possible to measure the size of the atom set separately/
+#[cfg(feature = "malloc_size_of")]
+impl<Static: StaticAtomSet> malloc_size_of::MallocSizeOf for Atom<Static> {
+    fn size_of(&self, _ops: &mut malloc_size_of::MallocSizeOfOps) -> usize {
+        0
+    }
+}
+
 // FIXME: bound removed from the struct definition before of this error for pack_static:
 // "error[E0723]: trait bounds other than `Sized` on const fn parameters are unstable"
 // https://github.com/rust-lang/rust/issues/57563
@@ -95,6 +104,25 @@ impl<Static> Atom<Static> {
                 // STATIC_TAG ensures this is non-zero
                 NonZeroU64::new_unchecked((STATIC_TAG as u64) | ((n as u64) << STATIC_SHIFT_BITS))
             },
+            phantom: PhantomData,
+        }
+    }
+
+    /// For the atom!() macros
+    #[inline(always)]
+    #[doc(hidden)]
+    pub const fn pack_inline(mut n: u64, len: u8) -> Self {
+        if cfg!(target_endian = "big") {
+            // Reverse order of top 7 bytes.
+            // Bottom 8 bits of `n` are zero, and we need that to remain so.
+            // String data is stored in top 7 bytes, tag and length in bottom byte.
+            n = n.to_le() << 8;
+        }
+
+        let data: u64 = (INLINE_TAG as u64) | ((len as u64) << LEN_OFFSET) | n;
+        Self {
+            // INLINE_TAG ensures this is never zero
+            unsafe_data: unsafe { NonZeroU64::new_unchecked(data) },
             phantom: PhantomData,
         }
     }
@@ -186,21 +214,23 @@ impl<Static: StaticAtomSet> Hash for Atom<Static> {
 
 impl<'a, Static: StaticAtomSet> From<Cow<'a, str>> for Atom<Static> {
     fn from(string_to_add: Cow<'a, str>) -> Self {
-        Self::try_static_internal(&*string_to_add).unwrap_or_else(|hash| {
-            let len = string_to_add.len();
-            if len <= MAX_INLINE_LEN {
-                let mut data: u64 = (INLINE_TAG as u64) | ((len as u64) << LEN_OFFSET);
-                {
-                    let dest = inline_atom_slice_mut(&mut data);
-                    dest[..len].copy_from_slice(string_to_add.as_bytes())
-                }
-                Atom {
-                    // INLINE_TAG ensures this is never zero
-                    unsafe_data: unsafe { NonZeroU64::new_unchecked(data) },
-                    phantom: PhantomData,
-                }
-            } else {
-                let ptr: std::ptr::NonNull<Entry> = DYNAMIC_SET.insert(string_to_add, hash.g);
+        let len = string_to_add.len();
+        if len == 0 {
+            Self::pack_static(Static::empty_string_index())
+        } else if len <= MAX_INLINE_LEN {
+            let mut data: u64 = (INLINE_TAG as u64) | ((len as u64) << LEN_OFFSET);
+            {
+                let dest = inline_atom_slice_mut(&mut data);
+                dest[..len].copy_from_slice(string_to_add.as_bytes());
+            }
+            Atom {
+                // INLINE_TAG ensures this is never zero
+                unsafe_data: unsafe { NonZeroU64::new_unchecked(data) },
+                phantom: PhantomData,
+            }
+        } else {
+            Self::try_static_internal(&*string_to_add).unwrap_or_else(|hash| {
+                let ptr: std::ptr::NonNull<Entry> = dynamic_set().insert(string_to_add, hash.g);
                 let data = ptr.as_ptr() as u64;
                 debug_assert!(0 == data & TAG_MASK);
                 Atom {
@@ -208,8 +238,8 @@ impl<'a, Static: StaticAtomSet> From<Cow<'a, str>> for Atom<Static> {
                     unsafe_data: unsafe { NonZeroU64::new_unchecked(data) },
                     phantom: PhantomData,
                 }
-            }
-        })
+            })
+        }
     }
 }
 
@@ -236,7 +266,7 @@ impl<Static> Drop for Atom<Static> {
 
         // Out of line to guide inlining.
         fn drop_slow<Static>(this: &mut Atom<Static>) {
-            DYNAMIC_SET.remove(this.unsafe_data.get() as *mut Entry);
+            dynamic_set().remove(this.unsafe_data.get() as *mut Entry);
         }
     }
 }
@@ -254,8 +284,9 @@ impl<Static: StaticAtomSet> ops::Deref for Atom<Static> {
                 }
                 INLINE_TAG => {
                     let len = (self.unsafe_data() & LEN_MASK) >> LEN_OFFSET;
+                    debug_assert!(len as usize <= MAX_INLINE_LEN);
                     let src = inline_atom_slice(&self.unsafe_data);
-                    str::from_utf8_unchecked(&src[..(len as usize)])
+                    str::from_utf8_unchecked(src.get_unchecked(..(len as usize)))
                 }
                 STATIC_TAG => Static::get().atoms[self.static_index() as usize],
                 _ => debug_unreachable!(),
@@ -361,28 +392,24 @@ impl<Static: StaticAtomSet> Atom<Static> {
 
 #[inline(always)]
 fn inline_atom_slice(x: &NonZeroU64) -> &[u8] {
-    unsafe {
         let x: *const NonZeroU64 = x;
         let mut data = x as *const u8;
         // All except the lowest byte, which is first in little-endian, last in big-endian.
         if cfg!(target_endian = "little") {
-            data = data.offset(1);
+            data = unsafe { data.offset(1) };
         }
         let len = 7;
-        slice::from_raw_parts(data, len)
-    }
+        unsafe { slice::from_raw_parts(data, len) }   
 }
 
 #[inline(always)]
-fn inline_atom_slice_mut(x: &mut u64) -> &mut [u8] {
-    unsafe {
+fn inline_atom_slice_mut(x: &mut u64) -> &mut [u8] {   
         let x: *mut u64 = x;
         let mut data = x as *mut u8;
         // All except the lowest byte, which is first in little-endian, last in big-endian.
         if cfg!(target_endian = "little") {
-            data = data.offset(1);
+            data = unsafe { data.offset(1) };
         }
         let len = 7;
-        slice::from_raw_parts_mut(data, len)
-    }
+        unsafe { slice::from_raw_parts_mut(data, len) }
 }

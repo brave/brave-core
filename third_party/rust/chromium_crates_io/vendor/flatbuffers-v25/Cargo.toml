@@ -12,7 +12,7 @@
 [package]
 edition = "2018"
 name = "flatbuffers"
-version = "25.2.10"
+version = "25.9.23"
 authors = [
     "Robert Winslow <hello@rwinslow.com>",
     "FlatBuffers Maintainers",
@@ -39,6 +39,11 @@ categories = [
 license = "Apache-2.0"
 repository = "https://github.com/google/flatbuffers"
 
+[features]
+default = ["std"]
+serialize = ["serde"]
+std = []
+
 [lib]
 name = "flatbuffers"
 path = "src/lib.rs"
@@ -52,8 +57,3 @@ optional = true
 
 [build-dependencies.rustc_version]
 version = "0.4.0"
-
-[features]
-default = ["std"]
-serialize = ["serde"]
-std = []

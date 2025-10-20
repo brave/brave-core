@@ -25,9 +25,9 @@ pub use self::sint::{read_i16, read_i32, read_i64, read_i8, read_nfix};
 pub use self::str::{read_str, read_str_from_slice, read_str_len, read_str_ref, DecodeStringError};
 pub use self::uint::{read_pfix, read_u16, read_u32, read_u64, read_u8};
 
+use core::fmt::{self, Debug, Display, Formatter};
 #[cfg(feature = "std")]
 use std::error;
-use core::fmt::{self, Display, Debug, Formatter};
 
 use num_traits::cast::FromPrimitive;
 
@@ -40,10 +40,9 @@ pub use bytes::Bytes;
 #[allow(deprecated)]
 pub use crate::errors::Error;
 
-
 /// The error type for I/O operations on `RmpRead` and associated traits.
 ///
-/// For [std::io::Read], this is [std::io::Error]
+/// For [`std::io::Read`], this is [`std::io::Error`]
 pub trait RmpReadErr: Display + Debug + crate::errors::MaybeErrBound + 'static {}
 #[cfg(feature = "std")]
 impl RmpReadErr for std::io::Error {}
@@ -65,7 +64,7 @@ macro_rules! read_byteorder_utils {
         )*
     };
 }
-mod sealed{
+mod sealed {
     pub trait Sealed {}
     #[cfg(feature = "std")]
     impl<T: ?Sized + std::io::Read> Sealed for T {}
@@ -74,15 +73,14 @@ mod sealed{
     impl Sealed for super::Bytes<'_> {}
 }
 
-
 /// A type that `rmp` supports reading from.
 ///
 /// The methods of this trait should be considered an implementation detail (for now).
 /// It is currently sealed (can not be implemented by the user).
 ///
-/// See also [std::io::Read] and [byteorder::ReadBytesExt]
+/// See also [`std::io::Read`] and [`byteorder::ReadBytesExt`]
 ///
-/// Its primary implementations are [std::io::Read] and [Bytes].
+/// Its primary implementations are [`std::io::Read`] and [Bytes].
 pub trait RmpRead: sealed::Sealed {
     type Error: RmpReadErr;
     /// Read a single (unsigned) byte from this stream
@@ -97,7 +95,7 @@ pub trait RmpRead: sealed::Sealed {
     ///
     /// If there are not enough bytes, this will return an error.
     ///
-    /// See also [std::io::Read::read_exact]
+    /// See also [`std::io::Read::read_exact`]
     fn read_exact_buf(&mut self, buf: &mut [u8]) -> Result<(), Self::Error>;
 
     // Internal helper functions to map I/O error into the `InvalidDataRead` error.
@@ -180,7 +178,6 @@ impl<E: RmpReadErr> From<E> for MarkerWriteError<E> {
         MarkerWriteError(err)
     }
 }
-
 
 /// An error that can occur when attempting to read a MessagePack marker from the reader.
 #[derive(Debug)]
@@ -419,8 +416,8 @@ where
     R: RmpRead,
 {
     match read_marker(rd)? {
-        Marker::FixArray(size) => Ok(size as u32),
-        Marker::Array16 => Ok(rd.read_data_u16()? as u32),
+        Marker::FixArray(size) => Ok(u32::from(size)),
+        Marker::Array16 => Ok(u32::from(rd.read_data_u16()?)),
         Marker::Array32 => Ok(rd.read_data_u32()?),
         marker => Err(ValueReadError::TypeMismatch(marker)),
     }
@@ -444,8 +441,8 @@ pub fn read_map_len<R: RmpRead>(rd: &mut R) -> Result<u32, ValueReadError<R::Err
 
 pub fn marker_to_len<R: RmpRead>(rd: &mut R, marker: Marker) -> Result<u32, ValueReadError<R::Error>> {
     match marker {
-        Marker::FixMap(size) => Ok(size as u32),
-        Marker::Map16 => Ok(rd.read_data_u16()? as u32),
+        Marker::FixMap(size) => Ok(u32::from(size)),
+        Marker::Map16 => Ok(u32::from(rd.read_data_u16()?)),
         Marker::Map32 => Ok(rd.read_data_u32()?),
         marker => Err(ValueReadError::TypeMismatch(marker)),
     }
@@ -460,8 +457,8 @@ pub fn marker_to_len<R: RmpRead>(rd: &mut R, marker: Marker) -> Result<u32, Valu
 // TODO: Docs.
 pub fn read_bin_len<R: RmpRead>(rd: &mut R) -> Result<u32, ValueReadError<R::Error>> {
     match read_marker(rd)? {
-        Marker::Bin8 => Ok(rd.read_data_u8()? as u32),
-        Marker::Bin16 => Ok(rd.read_data_u16()? as u32),
+        Marker::Bin8 => Ok(u32::from(rd.read_data_u8()?)),
+        Marker::Bin16 => Ok(u32::from(rd.read_data_u16()?)),
         Marker::Bin32 => Ok(rd.read_data_u32()?),
         marker => Err(ValueReadError::TypeMismatch(marker)),
     }

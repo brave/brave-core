@@ -30,6 +30,12 @@ impl From<base_x::DecodeError> for Error {
     }
 }
 
+impl From<base256emoji::DecodeError> for Error {
+    fn from(_: base256emoji::DecodeError) -> Self {
+        Self::InvalidBaseString
+    }
+}
+
 impl From<data_encoding::DecodeError> for Error {
     fn from(_: data_encoding::DecodeError) -> Self {
         Self::InvalidBaseString

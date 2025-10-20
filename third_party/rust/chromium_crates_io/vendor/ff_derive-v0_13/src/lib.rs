@@ -471,7 +471,7 @@ fn prime_field_constants_and_sqrt(
     let bytes = limbs * 8;
     let modulus_num_bits = biguint_num_bits(modulus.clone());
 
-    // The number of bits we should "shave" from a randomly sampled reputation, i.e.,
+    // The number of bits we should "shave" from a randomly sampled representation, i.e.,
     // if our modulus is 381 bits and our representation is 384 bits, we should shave
     // 3 bits from the beginning of a randomly sampled 384 bit representation to
     // reduce the cost of rejection sampling.
@@ -529,7 +529,7 @@ fn prime_field_constants_and_sqrt(
                     (sqrt * &sqrt).ct_eq(self), // Only return Some if it's the square root.
                 )
             }
-        } else if (modulus % BigUint::from_str("16").unwrap()) == BigUint::from_str("1").unwrap() {
+        } else {
             // Addition chain for (t - 1) // 2
             let t_minus_1_over_2 = if t == BigUint::one() {
                 quote!( #name::ONE )
@@ -538,7 +538,7 @@ fn prime_field_constants_and_sqrt(
             };
 
             quote! {
-                // Tonelli-Shank's algorithm for q mod 16 = 1
+                // Tonelli-Shanks algorithm works for every remaining odd prime.
                 // https://eprint.iacr.org/2012/685.pdf (page 12, algorithm 5)
                 use ::ff::derive::subtle::{ConditionallySelectable, ConstantTimeEq};
 
@@ -581,12 +581,6 @@ fn prime_field_constants_and_sqrt(
                     (x * &x).ct_eq(self), // Only return Some if it's the square root.
                 )
             }
-        } else {
-            syn::Error::new_spanned(
-                &name,
-                "ff_derive can't generate a square root function for this field.",
-            )
-            .to_compile_error()
         };
 
     // Compute R^2 mod m
@@ -916,30 +910,28 @@ fn prime_field_impl(
     let from_repr_impl = endianness.from_repr(name, limbs);
     let to_repr_impl = endianness.to_repr(quote! {#repr}, &mont_reduce_self_params, limbs);
 
-    cfg_if::cfg_if! {
-        if #[cfg(feature = "bits")] {
-            let to_le_bits_impl = ReprEndianness::Little.to_repr(
-                quote! {::ff::derive::bitvec::array::BitArray::new},
-                &mont_reduce_self_params,
-                limbs,
-            );
+    let prime_field_bits_impl = if cfg!(feature = "bits") {
+        let to_le_bits_impl = ReprEndianness::Little.to_repr(
+            quote! {::ff::derive::bitvec::array::BitArray::new},
+            &mont_reduce_self_params,
+            limbs,
+        );
 
-            let prime_field_bits_impl = quote! {
-                impl ::ff::PrimeFieldBits for #name {
-                    type ReprBits = REPR_BITS;
+        Some(quote! {
+            impl ::ff::PrimeFieldBits for #name {
+                type ReprBits = REPR_BITS;
 
-                    fn to_le_bits(&self) -> ::ff::FieldBits<REPR_BITS> {
-                        #to_le_bits_impl
-                    }
-
-                    fn char_le_bits() -> ::ff::FieldBits<REPR_BITS> {
-                        ::ff::FieldBits::new(MODULUS)
-                    }
+                fn to_le_bits(&self) -> ::ff::FieldBits<REPR_BITS> {
+                    #to_le_bits_impl
                 }
-            };
-        } else {
-            let prime_field_bits_impl = quote! {};
-        }
+
+                fn char_le_bits() -> ::ff::FieldBits<REPR_BITS> {
+                    ::ff::FieldBits::new(MODULUS)
+                }
+            }
+        })
+    } else {
+        None
     };
 
     let top_limb_index = limbs - 1;
@@ -1282,7 +1274,7 @@ fn prime_field_impl(
                     // `0xfff... >> REPR_SHAVE_BITS` overflows. So use `checked_shr` instead.
                     // This is always sufficient because we will have at most one spare limb
                     // to accommodate values of up to twice the modulus.
-                    tmp.0.as_mut()[#top_limb_index] &= 0xffffffffffffffffu64.checked_shr(REPR_SHAVE_BITS).unwrap_or(0);
+                    tmp.0[#top_limb_index] &= 0xffffffffffffffffu64.checked_shr(REPR_SHAVE_BITS).unwrap_or(0);
 
                     if tmp.is_valid() {
                         return tmp
@@ -1381,7 +1373,7 @@ fn prime_field_impl(
             }
 
             /// Subtracts the modulus from this element if this element is not in the
-            /// field. Only used interally.
+            /// field. Only used internally.
             #[inline(always)]
             fn reduce(&mut self) {
                 if !self.is_valid() {

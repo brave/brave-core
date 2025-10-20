@@ -1,6 +1,6 @@
 [package]
 name = "serde_bytes"
-version = "0.11.17"
+version = "0.11.19"
 authors = ["David Tolnay <dtolnay@gmail.com>"]
 categories = ["encoding", "no-std", "no-std::no-alloc"]
 description = "Optimized handling of `&[u8]` and `Vec<u8>` for Serde"
@@ -13,15 +13,19 @@ rust-version = "1.68"
 
 [features]
 default = ["std"]
-std = ["serde/std"]
-alloc = ["serde/alloc"]
+std = ["serde_core/std"]
+alloc = ["serde_core/alloc"]
 
 [dependencies]
-serde = { version = "1.0.166", default-features = false }
+serde_core = { version = "1.0.220", default-features = false }
+
+[target.'cfg(any())'.dependencies]
+serde = { version = "1.0.220", default-features = false }
 
 [dev-dependencies]
 bincode = { version = "2", features = ["serde"] }
-serde_derive = "1.0.166"
+serde = "1.0.220"
+serde_derive = "1.0.220"
 serde_test = "1.0.166"
 
 [package.metadata.docs.rs]

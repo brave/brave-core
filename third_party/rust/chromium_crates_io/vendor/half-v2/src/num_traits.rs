@@ -1548,3 +1548,37 @@ impl FromBytes for bf16 {
         Self::from_ne_bytes(*bytes)
     }
 }
+
+macro_rules! impl_signed {
+    ($ty:ty) => {
+        impl ::num_traits::Signed for $ty {
+            #[inline]
+            fn abs(&self) -> Self {
+                ::num_traits::float::Float::abs(*self)
+            }
+
+            #[inline]
+            fn abs_sub(&self, other: &Self) -> Self {
+                ::num_traits::float::Float::abs_sub(*self, *other)
+            }
+
+            #[inline]
+            fn signum(&self) -> Self {
+                ::num_traits::float::Float::signum(*self)
+            }
+
+            #[inline]
+            fn is_positive(&self) -> bool {
+                ::num_traits::float::Float::is_sign_positive(*self)
+            }
+
+            #[inline]
+            fn is_negative(&self) -> bool {
+                ::num_traits::float::Float::is_sign_negative(*self)
+            }
+        }
+    };
+}
+
+impl_signed!(f16);
+impl_signed!(bf16);

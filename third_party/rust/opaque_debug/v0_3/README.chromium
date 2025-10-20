@@ -1,9 +1,9 @@
 Name: opaque-debug
 URL: https://crates.io/crates/opaque-debug
-Version: 0.3.0
-Revision: 16464056b59eeb223318ad36de9b01eeb06c0c6b
+Version: 0.3.1
+Revision: dd4adddf8b716bb51eb8ccb8c73e47bff1e358aa
 License: Apache-2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/opaque-debug-v0_3/LICENSE-APACHE
+License File: //brave/third_party/rust/chromium_crates_io/vendor/opaque-debug-v0_3/LICENSE-Apache
 Shipped: yes
 Security Critical: yes
 

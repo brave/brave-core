@@ -11,6 +11,7 @@
 //! ### Various and tooling related to serde
 
 #[cfg(feature = "serde")]
+#[rustfmt::skip]
 macro_rules! serde_boilerplate { ($t:ty) => {
 impl serde_crate::Serialize for $t {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error> where S: serde_crate::Serializer {
@@ -38,7 +39,9 @@ impl<'d> serde_crate::Deserialize<'d> for $t {
 } } // macro_rules! serde_boilerplate
 
 #[cfg(not(feature = "serde"))]
-macro_rules! serde_boilerplate { ($t:ty) => { } }
+macro_rules! serde_boilerplate {
+    ($t:ty) => {};
+}
 
 #[cfg(all(test, feature = "serde"))]
 mod test {
@@ -51,6 +54,7 @@ mod test {
 
     use crate::*;
 
+    #[rustfmt::skip]
     static COMPRESSED_PUBLIC_KEY : CompressedRistretto = CompressedRistretto([
         208, 120, 140, 129, 177, 179, 237, 159,
         252, 160, 028, 013, 206, 005, 211, 241,
@@ -58,6 +62,7 @@ mod test {
         119, 046, 246, 029, 079, 080, 077, 084]);
 
     /*
+    #[rustfmt::skip]
     static ED25519_PUBLIC_KEY: CompressedEdwardsY = CompressedEdwardsY([
         130, 039, 155, 015, 062, 076, 188, 063,
         124, 122, 026, 251, 233, 253, 225, 220,
@@ -65,6 +70,7 @@ mod test {
         160, 083, 172, 058, 219, 042, 086, 120, ]);
     */
 
+    #[rustfmt::skip]
     static ED25519_SECRET_KEY: MiniSecretKey = MiniSecretKey([
         062, 070, 027, 163, 092, 182, 011, 003,
         077, 234, 098, 004, 011, 127, 079, 228,
@@ -72,6 +78,7 @@ mod test {
         085, 251, 152, 002, 241, 042, 072, 054, ]);
 
     /// Ed25519 signature with the above keypair of a blank message.
+    #[rustfmt::skip]
     static SIGNATURE_BYTES: [u8; SIGNATURE_LENGTH] = [
         010, 126, 151, 143, 157, 064, 047, 001,
         196, 140, 179, 058, 226, 152, 018, 102,
@@ -81,7 +88,6 @@ mod test {
         079, 108, 213, 080, 124, 252, 084, 167,
         216, 085, 134, 144, 129, 149, 041, 081,
         063, 120, 126, 100, 092, 059, 050, 138, ];
-
 
     #[test]
     fn serialize_deserialize_signature() {
@@ -172,21 +178,21 @@ mod test {
     #[test]
     fn serialize_public_key_size() {
         let public_key = PublicKey::from_compressed(COMPRESSED_PUBLIC_KEY).unwrap();
-        assert_eq!(serialized_size(&public_key).unwrap(), 32+8);  // Size specific to bincode==1.0.1
+        assert_eq!(serialized_size(&public_key).unwrap(), 32 + 8); // Size specific to bincode==1.0.1
     }
 
     #[test]
     fn serialize_signature_size() {
         let signature: Signature = Signature::from_bytes(&SIGNATURE_BYTES).unwrap();
-        assert_eq!(serialized_size(&signature).unwrap(), 64+8);  // Size specific to bincode==1.0.1
+        assert_eq!(serialized_size(&signature).unwrap(), 64 + 8); // Size specific to bincode==1.0.1
     }
 
     #[test]
     fn serialize_secret_key_size() {
-        assert_eq!(serialized_size(&ED25519_SECRET_KEY).unwrap(), 32+8);
+        assert_eq!(serialized_size(&ED25519_SECRET_KEY).unwrap(), 32 + 8);
         let secret_key = ED25519_SECRET_KEY.expand(ExpansionMode::Ed25519);
-        assert_eq!(serialized_size(&secret_key).unwrap(), 64+8);  // Sizes specific to bincode==1.0.1
+        assert_eq!(serialized_size(&secret_key).unwrap(), 64 + 8); // Sizes specific to bincode==1.0.1
         let secret_key = ED25519_SECRET_KEY.expand(ExpansionMode::Uniform);
-        assert_eq!(serialized_size(&secret_key).unwrap(), 64+8);  // Sizes specific to bincode==1.0.1
+        assert_eq!(serialized_size(&secret_key).unwrap(), 64 + 8); // Sizes specific to bincode==1.0.1
     }
 }

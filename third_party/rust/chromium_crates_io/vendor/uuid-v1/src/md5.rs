@@ -1,6 +1,6 @@
 #[cfg(feature = "v3")]
 pub(crate) fn hash(ns: &[u8], src: &[u8]) -> [u8; 16] {
-    use md_5::{Digest, Md5};
+    use md5::{Digest, Md5};
 
     let mut hasher = Md5::new();
 

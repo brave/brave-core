@@ -80,7 +80,7 @@ fn handle_nest1<R: BufRead>(nest1: Element<R>) -> TestResult {
 
 #[test]
 fn test_iterate_stream() -> TestResult {
-    let test_data = test::fixture_as_string("xml_sample_1.xml");
+    let test_data = test::fixture_as_string("xml/xml_sample_1.xml");
 
     // Root element should be "catalog"
     let source = ElementSource::new(test_data.as_bytes(), None)?;
@@ -94,7 +94,7 @@ fn test_iterate_stream() -> TestResult {
 // TODO expand test coverage (zero children, empty elements etc)
 #[test]
 fn test_children_as_string() -> TestResult {
-    let test_data = test::fixture_as_string("xml_sample_2.xml");
+    let test_data = test::fixture_as_string("xml/xml_sample_2.xml");
 
     // Root element should be "catalog"
     let source = ElementSource::new(test_data.as_bytes(), None)?;
@@ -233,7 +233,7 @@ fn test_xml_unescape_attrib() -> TestResult {
 // Verifies decoding of ISO 8859 content works correctly
 #[test]
 fn test_iso8859_decode() -> TestResult {
-    let xml = test::fixture_as_raw("xml_iso8859.xml");
+    let xml = test::fixture_as_raw("xml/xml_iso8859.xml");
     let source = ElementSource::new(xml.as_slice(), None)?;
     let root = source.root()?.unwrap();
     let item = root.children().next().unwrap()?;

@@ -71,16 +71,8 @@ pub fn expand(input: &DeriveInput, trait_name: &'static str) -> Result<TokenStre
             }
         });
 
-        // The `track-caller` feature is set by our build script based
-        // on rustc version detection, as `#[track_caller]` was
-        // stabilized in a later version (1.46) of Rust than our MSRV (1.36).
-        let track_caller = if cfg!(feature = "track-caller") {
-            quote! { #[track_caller] }
-        } else {
-            quote! {}
-        };
         let func = quote! {
-            #track_caller
+            #[track_caller]
             pub fn #fn_name(self) -> #ret_type {
                 match self {
                     #enum_name ::#variant_ident #data_pattern => #ret_value,

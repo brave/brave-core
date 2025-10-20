@@ -1,5 +1,5 @@
 #![no_std]
-#![cfg_attr(docsrs, feature(doc_auto_cfg))]
+#![cfg_attr(docsrs, feature(doc_cfg))]
 #![doc(
     html_logo_url = "https://raw.githubusercontent.com/RustCrypto/media/6ee8e381/logo.svg",
     html_favicon_url = "https://raw.githubusercontent.com/RustCrypto/media/6ee8e381/logo.svg"
@@ -252,7 +252,7 @@ mod x86;
 
 use core::{
     marker::{PhantomData, PhantomPinned},
-    mem::{self, MaybeUninit},
+    mem::{size_of, MaybeUninit},
     num::{
         self, NonZeroI128, NonZeroI16, NonZeroI32, NonZeroI64, NonZeroI8, NonZeroIsize,
         NonZeroU128, NonZeroU16, NonZeroU32, NonZeroU64, NonZeroU8, NonZeroUsize,
@@ -409,10 +409,10 @@ where
         //
         // Safety:
         //
-        // The memory pointed to by `self` is valid for `mem::size_of::<Self>()` bytes.
+        // The memory pointed to by `self` is valid for `size_of::<Self>()` bytes.
         // It is also properly aligned, because `u8` has an alignment of `1`.
         unsafe {
-            volatile_set((self as *mut Self).cast::<u8>(), 0, mem::size_of::<Self>());
+            volatile_set((self as *mut Self).cast::<u8>(), 0, size_of::<Self>());
         }
 
         // Ensures self is overwritten with the `None` bit pattern. volatile_write can't be
@@ -457,7 +457,7 @@ impl<Z> Zeroize for MaybeUninit<Z> {
 impl<Z> Zeroize for [MaybeUninit<Z>] {
     fn zeroize(&mut self) {
         let ptr = self.as_mut_ptr().cast::<MaybeUninit<u8>>();
-        let size = self.len().checked_mul(mem::size_of::<Z>()).unwrap();
+        let size = self.len().checked_mul(size_of::<Z>()).unwrap();
         assert!(size <= isize::MAX as usize);
 
         // Safety:
@@ -595,6 +595,8 @@ impl Zeroize for String {
 #[cfg(feature = "std")]
 impl Zeroize for CString {
     fn zeroize(&mut self) {
+        use core::mem;
+
         // mem::take uses replace internally to swap the pointer
         // Unfortunately this results in an allocation for a Box::new(&[0]) as CString must
         // contain a trailing zero byte
@@ -767,7 +769,7 @@ fn volatile_write<T: Copy + Sized>(dst: &mut T, src: T) {
 /// The memory pointed to by `dst` must be a single allocated object that is valid for `count`
 /// contiguous elements of `T`.
 /// `count` must not be larger than an `isize`.
-/// `dst` being offset by `mem::size_of::<T> * count` bytes must not wrap around the address space.
+/// `dst` being offset by `size_of::<T> * count` bytes must not wrap around the address space.
 /// Also `dst` must be properly aligned.
 #[inline(always)]
 unsafe fn volatile_set<T: Copy + Sized>(dst: *mut T, src: T, count: usize) {
@@ -783,7 +785,7 @@ unsafe fn volatile_set<T: Copy + Sized>(dst: *mut T, src: T, count: usize) {
         // Safety:
         //
         // This is safe, because the pointer is valid and because `dst` is well aligned for `T` and
-        // `ptr` is an offset of `dst` by a multiple of `mem::size_of::<T>()` bytes.
+        // `ptr` is an offset of `dst` by a multiple of `size_of::<T>()` bytes.
         ptr::write_volatile(ptr, src);
     }
 }
@@ -837,10 +839,10 @@ unsafe fn volatile_set<T: Copy + Sized>(dst: *mut T, src: T, count: usize) {
 /// ```
 #[inline(always)]
 pub unsafe fn zeroize_flat_type<F: Sized>(data: *mut F) {
-    let size = mem::size_of::<F>();
+    let size = size_of::<F>();
     // Safety:
     //
-    // This is safe because `mem::size_of<T>()` returns the exact size of the object in memory, and
+    // This is safe because `size_of<T>()` returns the exact size of the object in memory, and
     // `data_ptr` points directly to the first byte of the data.
     volatile_set(data as *mut u8, 0, size);
     atomic_fence()

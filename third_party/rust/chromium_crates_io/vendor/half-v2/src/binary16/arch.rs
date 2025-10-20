@@ -8,9 +8,13 @@ mod x86;
 #[cfg(target_arch = "aarch64")]
 mod aarch64;
 
+#[cfg(all(feature = "nightly", target_arch = "loongarch64"))]
+mod loongarch64;
+
 macro_rules! convert_fn {
     (if x86_feature("f16c") { $f16c:expr }
     else if aarch64_feature("fp16") { $aarch64:expr }
+    else if loongarch64_feature("lsx") { $loongarch64:expr }
     else { $fallback:expr }) => {
         cfg_if::cfg_if! {
             // Use intrinsics directly when a compile target or using no_std
@@ -25,7 +29,13 @@ macro_rules! convert_fn {
                 target_feature = "fp16"
             ))] {
                 $aarch64
-
+            }
+            else if #[cfg(all(
+                feature = "nightly",
+                target_arch = "loongarch64",
+                target_feature = "lsx"
+            ))] {
+                $loongarch64
             }
 
             // Use CPU feature detection if using std
@@ -51,6 +61,18 @@ macro_rules! convert_fn {
                     $fallback
                 }
             }
+            else if #[cfg(all(
+                feature = "std",
+                feature = "nightly",
+                target_arch = "loongarch64",
+            ))] {
+                use std::arch::is_loongarch_feature_detected;
+                if is_loongarch_feature_detected!("lsx") {
+                    $loongarch64
+                } else {
+                    $fallback
+                }
+            }
 
             // Fallback to software
             else {
@@ -67,6 +89,8 @@ pub(crate) fn f32_to_f16(f: f32) -> u16 {
             unsafe { x86::f32_to_f16_x86_f16c(f) }
         } else if aarch64_feature("fp16") {
             unsafe { aarch64::f32_to_f16_fp16(f) }
+        } else if loongarch64_feature("lsx") {
+            unsafe { loongarch64::f32_to_f16_lsx(f) }
         } else {
             f32_to_f16_fallback(f)
         }
@@ -80,6 +104,8 @@ pub(crate) fn f64_to_f16(f: f64) -> u16 {
             unsafe { x86::f32_to_f16_x86_f16c(f as f32) }
         } else if aarch64_feature("fp16") {
             unsafe { aarch64::f64_to_f16_fp16(f) }
+        } else if loongarch64_feature("lsx") {
+            f64_to_f16_fallback(f)
         } else {
             f64_to_f16_fallback(f)
         }
@@ -93,6 +119,8 @@ pub(crate) fn f16_to_f32(i: u16) -> f32 {
             unsafe { x86::f16_to_f32_x86_f16c(i) }
         } else if aarch64_feature("fp16") {
             unsafe { aarch64::f16_to_f32_fp16(i) }
+        } else if loongarch64_feature("lsx") {
+            unsafe { loongarch64::f16_to_f32_lsx(i) }
         } else {
             f16_to_f32_fallback(i)
         }
@@ -106,6 +134,8 @@ pub(crate) fn f16_to_f64(i: u16) -> f64 {
             unsafe { x86::f16_to_f32_x86_f16c(i) as f64 }
         } else if aarch64_feature("fp16") {
             unsafe { aarch64::f16_to_f64_fp16(i) }
+        } else if loongarch64_feature("lsx") {
+            unsafe { loongarch64::f16_to_f32_lsx(i) as f64 }
         } else {
             f16_to_f64_fallback(i)
         }
@@ -119,6 +149,8 @@ pub(crate) fn f32x4_to_f16x4(f: &[f32; 4]) -> [u16; 4] {
             unsafe { x86::f32x4_to_f16x4_x86_f16c(f) }
         } else if aarch64_feature("fp16") {
             unsafe { aarch64::f32x4_to_f16x4_fp16(f) }
+        } else if loongarch64_feature("lsx") {
+            unsafe { loongarch64::f32x4_to_f16x4_lsx(f) }
         } else {
             f32x4_to_f16x4_fallback(f)
         }
@@ -132,6 +164,8 @@ pub(crate) fn f16x4_to_f32x4(i: &[u16; 4]) -> [f32; 4] {
             unsafe { x86::f16x4_to_f32x4_x86_f16c(i) }
         } else if aarch64_feature("fp16") {
             unsafe { aarch64::f16x4_to_f32x4_fp16(i) }
+        } else if loongarch64_feature("lsx") {
+            unsafe { loongarch64::f16x4_to_f32x4_lsx(i) }
         } else {
             f16x4_to_f32x4_fallback(i)
         }
@@ -145,6 +179,8 @@ pub(crate) fn f64x4_to_f16x4(f: &[f64; 4]) -> [u16; 4] {
             unsafe { x86::f64x4_to_f16x4_x86_f16c(f) }
         } else if aarch64_feature("fp16") {
             unsafe { aarch64::f64x4_to_f16x4_fp16(f) }
+        } else if loongarch64_feature("lsx") {
+            unsafe { loongarch64::f64x4_to_f16x4_lsx(f) }
         } else {
             f64x4_to_f16x4_fallback(f)
         }
@@ -158,6 +194,8 @@ pub(crate) fn f16x4_to_f64x4(i: &[u16; 4]) -> [f64; 4] {
             unsafe { x86::f16x4_to_f64x4_x86_f16c(i) }
         } else if aarch64_feature("fp16") {
             unsafe { aarch64::f16x4_to_f64x4_fp16(i) }
+        } else if loongarch64_feature("lsx") {
+            unsafe { loongarch64::f16x4_to_f64x4_lsx(i) }
         } else {
             f16x4_to_f64x4_fallback(i)
         }
@@ -174,6 +212,13 @@ pub(crate) fn f32x8_to_f16x8(f: &[f32; 8]) -> [u16; 8] {
                 let mut result = [0u16; 8];
                 convert_chunked_slice_4(f.as_slice(), result.as_mut_slice(),
                     aarch64::f32x4_to_f16x4_fp16);
+                result
+            }
+        } else if loongarch64_feature("lsx") {
+            {
+                let mut result = [0u16; 8];
+                convert_chunked_slice_4(f.as_slice(), result.as_mut_slice(),
+                    loongarch64::f32x4_to_f16x4_lsx);
                 result
             }
         } else {
@@ -194,6 +239,13 @@ pub(crate) fn f16x8_to_f32x8(i: &[u16; 8]) -> [f32; 8] {
                     aarch64::f16x4_to_f32x4_fp16);
                 result
             }
+        } else if loongarch64_feature("lsx") {
+            {
+                let mut result = [0f32; 8];
+                convert_chunked_slice_4(i.as_slice(), result.as_mut_slice(),
+                    loongarch64::f16x4_to_f32x4_lsx);
+                result
+            }
         } else {
             f16x8_to_f32x8_fallback(i)
         }
@@ -210,6 +262,13 @@ pub(crate) fn f64x8_to_f16x8(f: &[f64; 8]) -> [u16; 8] {
                 let mut result = [0u16; 8];
                 convert_chunked_slice_4(f.as_slice(), result.as_mut_slice(),
                     aarch64::f64x4_to_f16x4_fp16);
+                result
+            }
+        } else if loongarch64_feature("lsx") {
+            {
+                let mut result = [0u16; 8];
+                convert_chunked_slice_4(f.as_slice(), result.as_mut_slice(),
+                    loongarch64::f64x4_to_f16x4_lsx);
                 result
             }
         } else {
@@ -230,6 +289,13 @@ pub(crate) fn f16x8_to_f64x8(i: &[u16; 8]) -> [f64; 8] {
                     aarch64::f16x4_to_f64x4_fp16);
                 result
             }
+        } else if loongarch64_feature("lsx") {
+            {
+                let mut result = [0f64; 8];
+                convert_chunked_slice_4(i.as_slice(), result.as_mut_slice(),
+                    loongarch64::f16x4_to_f64x4_lsx);
+                result
+            }
         } else {
             f16x8_to_f64x8_fallback(i)
         }
@@ -244,6 +310,8 @@ pub(crate) fn f32_to_f16_slice(src: &[f32], dst: &mut [u16]) {
                 x86::f32x4_to_f16x4_x86_f16c)
         } else if aarch64_feature("fp16") {
             convert_chunked_slice_4(src, dst, aarch64::f32x4_to_f16x4_fp16)
+        } else if loongarch64_feature("lsx") {
+            convert_chunked_slice_4(src, dst, loongarch64::f32x4_to_f16x4_lsx)
         } else {
             slice_fallback(src, dst, f32_to_f16_fallback)
         }
@@ -258,6 +326,8 @@ pub(crate) fn f16_to_f32_slice(src: &[u16], dst: &mut [f32]) {
                 x86::f16x4_to_f32x4_x86_f16c)
         } else if aarch64_feature("fp16") {
             convert_chunked_slice_4(src, dst, aarch64::f16x4_to_f32x4_fp16)
+        } else if loongarch64_feature("lsx") {
+            convert_chunked_slice_4(src, dst, loongarch64::f16x4_to_f32x4_lsx)
         } else {
             slice_fallback(src, dst, f16_to_f32_fallback)
         }
@@ -272,6 +342,8 @@ pub(crate) fn f64_to_f16_slice(src: &[f64], dst: &mut [u16]) {
                 x86::f64x4_to_f16x4_x86_f16c)
         } else if aarch64_feature("fp16") {
             convert_chunked_slice_4(src, dst, aarch64::f64x4_to_f16x4_fp16)
+        } else if loongarch64_feature("lsx") {
+            convert_chunked_slice_4(src, dst, loongarch64::f64x4_to_f16x4_lsx)
         } else {
             slice_fallback(src, dst, f64_to_f16_fallback)
         }
@@ -286,6 +358,8 @@ pub(crate) fn f16_to_f64_slice(src: &[u16], dst: &mut [f64]) {
                 x86::f16x4_to_f64x4_x86_f16c)
         } else if aarch64_feature("fp16") {
             convert_chunked_slice_4(src, dst, aarch64::f16x4_to_f64x4_fp16)
+        } else if loongarch64_feature("lsx") {
+            convert_chunked_slice_4(src, dst, loongarch64::f16x4_to_f64x4_lsx)
         } else {
             slice_fallback(src, dst, f16_to_f64_fallback)
         }

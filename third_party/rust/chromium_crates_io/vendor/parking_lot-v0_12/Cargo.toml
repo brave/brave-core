@@ -10,10 +10,17 @@
 # See Cargo.toml.orig for the original contents.
 
 [package]
-edition = "2018"
+edition = "2021"
+rust-version = "1.71"
 name = "parking_lot"
-version = "0.12.1"
+version = "0.12.5"
 authors = ["Amanieu d'Antras <amanieu@gmail.com>"]
+build = false
+autolib = false
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
 description = "More compact and efficient implementations of the standard synchronization primitives."
 readme = "README.md"
 keywords = [
@@ -27,17 +34,20 @@ categories = ["concurrency"]
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/Amanieu/parking_lot"
 
-[dependencies.lock_api]
-version = "0.4.6"
+[package.metadata.docs.rs]
+features = [
+    "arc_lock",
+    "serde",
+    "deadlock_detection",
+]
+rustdoc-args = ["--generate-link-to-definition"]
 
-[dependencies.parking_lot_core]
-version = "0.9.0"
-
-[dev-dependencies.bincode]
-version = "1.3.3"
-
-[dev-dependencies.rand]
-version = "0.8.3"
+[package.metadata.playground]
+features = [
+    "arc_lock",
+    "serde",
+    "deadlock_detection",
+]
 
 [features]
 arc_lock = ["lock_api/arc_lock"]
@@ -51,3 +61,27 @@ nightly = [
 owning_ref = ["lock_api/owning_ref"]
 send_guard = []
 serde = ["lock_api/serde"]
+
+[lib]
+name = "parking_lot"
+path = "src/lib.rs"
+
+[[test]]
+name = "issue_203"
+path = "tests/issue_203.rs"
+
+[[test]]
+name = "issue_392"
+path = "tests/issue_392.rs"
+
+[dependencies.lock_api]
+version = "0.4.14"
+
+[dependencies.parking_lot_core]
+version = "0.9.12"
+
+[dev-dependencies.bincode]
+version = "1.3.3"
+
+[dev-dependencies.rand]
+version = "0.8.3"

@@ -29,7 +29,7 @@ cargo_crate("lib") {
   cargo_pkg_description =
       "Library for building and interfacing with finite fields"
   cargo_pkg_repository = "https://github.com/zkcrypto/ff"
-  cargo_pkg_version = "0.13.0"
+  cargo_pkg_version = "0.13.1"
 
   deps = [
     "//brave/third_party/rust/bitvec/v1:lib",

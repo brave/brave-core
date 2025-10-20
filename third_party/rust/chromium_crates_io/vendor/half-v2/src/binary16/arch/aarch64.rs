@@ -6,6 +6,7 @@ use core::{
     mem::MaybeUninit,
     ptr,
 };
+use zerocopy::transmute;
 
 #[target_feature(enable = "fp16")]
 #[inline]
@@ -58,36 +59,33 @@ pub(super) unsafe fn f64_to_f16_fp16(f: f64) -> u16 {
 #[target_feature(enable = "fp16")]
 #[inline]
 pub(super) unsafe fn f16x4_to_f32x4_fp16(v: &[u16; 4]) -> [f32; 4] {
-    let mut vec = MaybeUninit::<uint16x4_t>::uninit();
-    ptr::copy_nonoverlapping(v.as_ptr(), vec.as_mut_ptr().cast(), 4);
+    let vec: uint16x4_t = transmute!(*v);
     let result: float32x4_t;
     asm!(
         "fcvtl {0:v}.4s, {1:v}.4h",
         out(vreg) result,
-        in(vreg) vec.assume_init(),
+        in(vreg) vec,
         options(pure, nomem, nostack));
-    *(&result as *const float32x4_t).cast()
+    transmute!(result)
 }
 
 #[target_feature(enable = "fp16")]
 #[inline]
 pub(super) unsafe fn f32x4_to_f16x4_fp16(v: &[f32; 4]) -> [u16; 4] {
-    let mut vec = MaybeUninit::<float32x4_t>::uninit();
-    ptr::copy_nonoverlapping(v.as_ptr(), vec.as_mut_ptr().cast(), 4);
+    let vec: float32x4_t = transmute!(*v);
     let result: uint16x4_t;
     asm!(
         "fcvtn {0:v}.4h, {1:v}.4s",
         out(vreg) result,
-        in(vreg) vec.assume_init(),
+        in(vreg) vec,
         options(pure, nomem, nostack));
-    *(&result as *const uint16x4_t).cast()
+    transmute!(result)
 }
 
 #[target_feature(enable = "fp16")]
 #[inline]
 pub(super) unsafe fn f16x4_to_f64x4_fp16(v: &[u16; 4]) -> [f64; 4] {
-    let mut vec = MaybeUninit::<uint16x4_t>::uninit();
-    ptr::copy_nonoverlapping(v.as_ptr(), vec.as_mut_ptr().cast(), 4);
+    let vec: uint16x4_t = transmute!(*v);
     let low: float64x2_t;
     let high: float64x2_t;
     asm!(
@@ -97,9 +95,9 @@ pub(super) unsafe fn f16x4_to_f64x4_fp16(v: &[u16; 4]) -> [f64; 4] {
         lateout(vreg) low,
         lateout(vreg) high,
         out(vreg) _,
-        in(vreg) vec.assume_init(),
+        in(vreg) vec,
         options(pure, nomem, nostack));
-    *[low, high].as_ptr().cast()
+    transmute!([low, high])
 }
 
 #[target_feature(enable = "fp16")]
@@ -119,7 +117,7 @@ pub(super) unsafe fn f64x4_to_f16x4_fp16(v: &[f64; 4]) -> [u16; 4] {
         in(vreg) low.assume_init(),
         in(vreg) high.assume_init(),
         options(pure, nomem, nostack));
-    *(&result as *const uint16x4_t).cast()
+    transmute!(result)
 }
 
 #[target_feature(enable = "fp16")]

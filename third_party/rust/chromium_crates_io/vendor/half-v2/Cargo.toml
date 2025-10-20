@@ -13,7 +13,7 @@
 edition = "2021"
 rust-version = "1.81"
 name = "half"
-version = "2.6.0"
+version = "2.7.1"
 authors = ["Kathryn Long <squeeself@gmail.com>"]
 build = false
 exclude = [
@@ -51,12 +51,14 @@ rustdoc-args = [
 [features]
 alloc = []
 default = ["std"]
+nightly = []
 rand_distr = [
     "dep:rand",
     "dep:rand_distr",
 ]
 std = ["alloc"]
 use-intrinsics = []
+zerocopy = []
 
 [lib]
 name = "half"
@@ -109,9 +111,11 @@ optional = true
 default-features = false
 
 [dependencies.zerocopy]
-version = "0.8.23"
-features = ["derive"]
-optional = true
+version = "0.8.26"
+features = [
+    "derive",
+    "simd",
+]
 default-features = false
 
 [dev-dependencies.criterion]

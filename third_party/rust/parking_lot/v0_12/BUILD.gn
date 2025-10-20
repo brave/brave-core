@@ -31,12 +31,12 @@ cargo_crate("lib") {
   inputs = []
 
   build_native_rust_unit_tests = false
-  edition = "2018"
+  edition = "2021"
   cargo_pkg_authors = "Amanieu d'Antras <amanieu@gmail.com>"
   cargo_pkg_name = "parking_lot"
   cargo_pkg_description = "More compact and efficient implementations of the standard synchronization primitives."
   cargo_pkg_repository = "https://github.com/Amanieu/parking_lot"
-  cargo_pkg_version = "0.12.1"
+  cargo_pkg_version = "0.12.5"
 
   deps = [
     "//brave/third_party/rust/lock_api/v0_4:lib",

@@ -173,9 +173,7 @@ unsafe impl lock_api::RawRwLockFair for RawRwLock {
 
     #[inline]
     unsafe fn bump_shared(&self) {
-        if self.state.load(Ordering::Relaxed) & (READERS_MASK | WRITER_BIT)
-            == ONE_READER | WRITER_BIT
-        {
+        if self.state.load(Ordering::Relaxed) & WRITER_BIT != 0 {
             self.bump_shared_slow();
         }
     }
@@ -346,6 +344,7 @@ unsafe impl lock_api::RawRwLockUpgrade for RawRwLock {
     unsafe fn unlock_upgradable(&self) {
         self.deadlock_release();
         let state = self.state.load(Ordering::Relaxed);
+        #[allow(clippy::collapsible_if)]
         if state & PARKED_BIT == 0 {
             if self
                 .state
@@ -399,6 +398,7 @@ unsafe impl lock_api::RawRwLockUpgradeFair for RawRwLock {
     unsafe fn unlock_upgradable_fair(&self) {
         self.deadlock_release();
         let state = self.state.load(Ordering::Relaxed);
+        #[allow(clippy::collapsible_if)]
         if state & PARKED_BIT == 0 {
             if self
                 .state
@@ -418,7 +418,7 @@ unsafe impl lock_api::RawRwLockUpgradeFair for RawRwLock {
 
     #[inline]
     unsafe fn bump_upgradable(&self) {
-        if self.state.load(Ordering::Relaxed) == ONE_READER | UPGRADABLE_BIT | PARKED_BIT {
+        if self.state.load(Ordering::Relaxed) & PARKED_BIT != 0 {
             self.bump_upgradable_slow();
         }
     }
@@ -540,6 +540,7 @@ impl RawRwLock {
         let mut state = self.state.load(Ordering::Relaxed);
         loop {
             // This mirrors the condition in try_lock_shared_fast
+            #[allow(clippy::collapsible_if)]
             if state & WRITER_BIT != 0 {
                 if !recursive || state & READERS_MASK == 0 {
                     return false;
@@ -688,6 +689,7 @@ impl RawRwLock {
                 }
 
                 // This is the same condition as try_lock_shared_fast
+                #[allow(clippy::collapsible_if)]
                 if *state & WRITER_BIT != 0 {
                     if !recursive || *state & READERS_MASK == 0 {
                         return false;
@@ -868,7 +870,10 @@ impl RawRwLock {
 
     #[cold]
     fn upgrade_slow(&self, timeout: Option<Instant>) -> bool {
-        self.wait_for_readers(timeout, ONE_READER | UPGRADABLE_BIT)
+        self.deadlock_release();
+        let result = self.wait_for_readers(timeout, ONE_READER | UPGRADABLE_BIT);
+        self.deadlock_acquire();
+        result
     }
 
     #[cold]
@@ -923,8 +928,8 @@ impl RawRwLock {
         self.lock_upgradable();
     }
 
-    /// Common code for waking up parked threads after releasing WRITER_BIT or
-    /// UPGRADABLE_BIT.
+    /// Common code for waking up parked threads after releasing `WRITER_BIT` or
+    /// `UPGRADABLE_BIT`.
     ///
     /// # Safety
     ///
@@ -1004,7 +1009,12 @@ impl RawRwLock {
                 state & READERS_MASK != 0 && state & WRITER_PARKED_BIT != 0
             };
             let before_sleep = || {};
-            let timed_out = |_, _| {};
+            let timed_out = |_, was_last_thread: bool| {
+                // Clear the parked bit while holding the queue lock. There can
+                // only be one thread parked (this one).
+                debug_assert!(was_last_thread);
+                self.state.fetch_and(!WRITER_PARKED_BIT, Ordering::Relaxed);
+            };
             // SAFETY:
             //   * `addr` is an address we control.
             //   * `validate`/`timed_out` does not panic or call into any function of `parking_lot`.
@@ -1033,10 +1043,9 @@ impl RawRwLock {
                     // We need to release WRITER_BIT and revert back to
                     // our previous value. We also wake up any threads that
                     // might be waiting on WRITER_BIT.
-                    let state = self.state.fetch_add(
-                        prev_value.wrapping_sub(WRITER_BIT | WRITER_PARKED_BIT),
-                        Ordering::Relaxed,
-                    );
+                    let state = self
+                        .state
+                        .fetch_add(prev_value.wrapping_sub(WRITER_BIT), Ordering::Relaxed);
                     if state & PARKED_BIT != 0 {
                         let callback = |_, result: UnparkResult| {
                             // Clear the parked bit if there no more parked threads
@@ -1047,7 +1056,7 @@ impl RawRwLock {
                         };
                         // SAFETY: `callback` does not panic or call any function of `parking_lot`.
                         unsafe {
-                            self.wake_parked_threads(ONE_READER | UPGRADABLE_BIT, callback);
+                            self.wake_parked_threads(prev_value, callback);
                         }
                     }
                     return false;

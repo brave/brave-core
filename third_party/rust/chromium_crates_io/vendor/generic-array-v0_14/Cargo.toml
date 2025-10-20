@@ -11,11 +11,12 @@
 
 [package]
 name = "generic-array"
-version = "0.14.6"
+version = "0.14.9"
 authors = [
     "Bartłomiej Kamiński <fizyk20@gmail.com>",
     "Aaron Trent <novacrazy@gmail.com>",
 ]
+build = "build.rs"
 include = [
     "src/**/*",
     "LICENSE",
@@ -23,6 +24,11 @@ include = [
     "CHANGELOG.md",
     "build.rs",
 ]
+autolib = false
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
 description = "Generic types implementing functionality of arrays"
 documentation = "http://fizyk20.github.io/generic-array/generic_array/"
 readme = "README.md"
@@ -43,8 +49,15 @@ features = [
     "zeroize",
 ]
 
+[badges.travis-ci]
+repository = "fizyk20/generic-array"
+
+[features]
+more_lengths = []
+
 [lib]
 name = "generic_array"
+path = "src/lib.rs"
 
 [dependencies.serde]
 version = "1.0"
@@ -67,9 +80,3 @@ version = "1.0"
 
 [build-dependencies.version_check]
 version = "0.9"
-
-[features]
-more_lengths = []
-
-[badges.travis-ci]
-repository = "fizyk20/generic-array"

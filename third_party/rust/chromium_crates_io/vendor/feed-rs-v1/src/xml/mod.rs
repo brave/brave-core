@@ -497,7 +497,7 @@ impl XmlEvent {
             .decoder()
             .decode(bytes)
             .ok()
-            .and_then(|name| name.split(':').rev().next().map(str::to_string))
+            .and_then(|name| name.split(':').next_back().map(str::to_string))
             .unwrap_or_default()
     }
 

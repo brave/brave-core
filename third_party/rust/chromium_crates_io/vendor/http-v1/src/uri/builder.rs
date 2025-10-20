@@ -1,4 +1,4 @@
-use std::convert::{TryFrom, TryInto};
+use std::convert::TryInto;
 
 use super::{Authority, Parts, PathAndQuery, Scheme};
 use crate::Uri;
@@ -44,8 +44,8 @@ impl Builder {
     /// ```
     pub fn scheme<T>(self, scheme: T) -> Self
     where
-        Scheme: TryFrom<T>,
-        <Scheme as TryFrom<T>>::Error: Into<crate::Error>,
+        T: TryInto<Scheme>,
+        <T as TryInto<Scheme>>::Error: Into<crate::Error>,
     {
         self.map(move |mut parts| {
             let scheme = scheme.try_into().map_err(Into::into)?;
@@ -68,8 +68,8 @@ impl Builder {
     /// ```
     pub fn authority<T>(self, auth: T) -> Self
     where
-        Authority: TryFrom<T>,
-        <Authority as TryFrom<T>>::Error: Into<crate::Error>,
+        T: TryInto<Authority>,
+        <T as TryInto<Authority>>::Error: Into<crate::Error>,
     {
         self.map(move |mut parts| {
             let auth = auth.try_into().map_err(Into::into)?;
@@ -92,8 +92,8 @@ impl Builder {
     /// ```
     pub fn path_and_query<T>(self, p_and_q: T) -> Self
     where
-        PathAndQuery: TryFrom<T>,
-        <PathAndQuery as TryFrom<T>>::Error: Into<crate::Error>,
+        T: TryInto<PathAndQuery>,
+        <T as TryInto<PathAndQuery>>::Error: Into<crate::Error>,
     {
         self.map(move |mut parts| {
             let p_and_q = p_and_q.try_into().map_err(Into::into)?;
@@ -137,7 +137,6 @@ impl Builder {
     where
         F: FnOnce(Parts) -> Result<Parts, crate::Error>,
     {
-
         Builder {
             parts: self.parts.and_then(func),
         }
@@ -149,6 +148,14 @@ impl Default for Builder {
     fn default() -> Builder {
         Builder {
             parts: Ok(Parts::default()),
+        }
+    }
+}
+
+impl From<Uri> for Builder {
+    fn from(uri: Uri) -> Self {
+        Self {
+            parts: Ok(uri.into_parts()),
         }
     }
 }
@@ -193,5 +200,12 @@ mod tests {
             assert_eq!(uri.path(), "/foo");
             assert_eq!(uri.query(), Some(expected_query.as_str()));
         }
+    }
+
+    #[test]
+    fn build_from_uri() {
+        let original_uri = Uri::default();
+        let uri = Builder::from(original_uri.clone()).build().unwrap();
+        assert_eq!(original_uri, uri);
     }
 }

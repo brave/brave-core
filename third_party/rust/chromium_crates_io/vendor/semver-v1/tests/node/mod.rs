@@ -37,7 +37,7 @@ impl Display for VersionReq {
     }
 }
 
-#[cfg_attr(not(no_track_caller), track_caller)]
+#[track_caller]
 pub(super) fn req(text: &str) -> VersionReq {
     VersionReq(crate::util::req(text))
 }

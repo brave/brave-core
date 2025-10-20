@@ -8,23 +8,23 @@ use arrayvec::ArrayString;
 
 use core::fmt::{self, Write};
 
-fn get_digits_display(n: impl fmt::Display) -> ArrayString<[u8; 64]> {
-    let mut buff = ArrayString::<[u8; 64]>::new();
+fn get_digits_display(n: impl fmt::Display) -> ArrayString<64> {
+    let mut buff = ArrayString::<64>::new();
     write!(buff, "{}", n).unwrap();
     buff
 }
-fn get_hex_digits(n: impl fmt::UpperHex) -> ArrayString<[u8; 64]> {
-    let mut buff = ArrayString::<[u8; 64]>::new();
+fn get_hex_digits(n: impl fmt::UpperHex) -> ArrayString<64> {
+    let mut buff = ArrayString::<64>::new();
     write!(buff, "{:X}", n).unwrap();
     buff
 }
-fn get_lower_hex_digits(n: impl fmt::LowerHex) -> ArrayString<[u8; 64]> {
-    let mut buff = ArrayString::<[u8; 64]>::new();
+fn get_lower_hex_digits(n: impl fmt::LowerHex) -> ArrayString<64> {
+    let mut buff = ArrayString::<64>::new();
     write!(buff, "{:x}", n).unwrap();
     buff
 }
-fn get_binary_digits(n: impl fmt::Binary) -> ArrayString<[u8; 192]> {
-    let mut buff = ArrayString::<[u8; 192]>::new();
+fn get_binary_digits(n: impl fmt::Binary) -> ArrayString<192> {
+    let mut buff = ArrayString::<192>::new();
     write!(buff, "{:b}", n).unwrap();
     buff
 }

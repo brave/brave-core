@@ -16,7 +16,7 @@ pub(crate) fn handle_itunes_channel_element<R: BufRead>(element: Element<R>, fee
             }
         }),
 
-        (NS::Itunes, "category") => if_some_then(handle_category(element), |category| feed.categories.push(category)),
+        (NS::Itunes, "category") => if_some_then(handle_category(element)?, |category| feed.categories.push(category)),
 
         (NS::Itunes, "explicit") => if_some_then(handle_explicit(element), |rating| {
             // Assign if not already set from media
@@ -61,8 +61,25 @@ fn handle_author<R: BufRead>(element: Element<R>) -> Option<MediaCredit> {
 }
 
 // Handles <itunes:category>
-fn handle_category<R: BufRead>(element: Element<R>) -> Option<Category> {
-    element.attr_value("text").map(|text| Category::new(&text))
+fn handle_category<R: BufRead>(element: Element<R>) -> ParseFeedResult<Option<Category>> {
+    Ok(if let Some(text) = element.attr_value("text") {
+        // Create a new category for this level
+        let mut category = Category::new(&text);
+
+        // Add any sub-categories
+        for child in element.children() {
+            let child = child?;
+            if child.ns_and_tag() == (NS::Itunes, "category") {
+                if let Some(subcat) = handle_category(child)? {
+                    category.subcategories.push(subcat);
+                }
+            }
+        }
+
+        Some(category)
+    } else {
+        None
+    })
 }
 
 // Handles <itunes:duration>

@@ -1,6 +1,6 @@
 macro_rules! action {
     (| $self:tt, $ctx:tt, $input:ident | > $action_fn:ident ? $($args:expr),* ) => {
-        $self.$action_fn($ctx, $input $(,$args),*).map_err(ParsingTermination::ActionError)?;
+        $self.$action_fn($ctx, $input $(,$args),*)?;
     };
 
     (| $self:tt, $ctx:tt, $input:ident | > $action_fn:ident $($args:expr),* ) => {
@@ -13,14 +13,21 @@ macro_rules! action {
     };
 
     ( @state_transition | $self:tt, $ctx:tt, $input:ident | > - -> $state:ident) => {
-        $self.switch_state(Self::$state);
+        $self.set_state(Self::$state);
         return Ok(());
+    };
+
+    ( @state_transition | $self:tt, $ctx:tt, $input:ident | > - -> #[inline] $state:ident) => {
+        // Jumps directly to the state function, which allows easy inlining,
+        // but the calls using #[inline] must never create a loop
+        $self.set_state(Self::$state);
+        return Self::$state($self, $ctx, $input);
     };
 
     ( @state_transition | $self:tt, $ctx:tt, $input:ident | > - -> dyn $state_getter:ident) => {
         {
             let state = $self.$state_getter();
-            $self.switch_state(state);
+            $self.set_state(state);
         }
 
         return Ok(());

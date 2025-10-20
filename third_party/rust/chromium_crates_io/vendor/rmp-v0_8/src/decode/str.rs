@@ -3,7 +3,7 @@ use std::error;
 use core::fmt::{self, Display, Formatter};
 use core::str::{from_utf8, Utf8Error};
 
-use super::{RmpRead, RmpReadErr, read_marker, ValueReadError};
+use super::{read_marker, RmpRead, RmpReadErr, ValueReadError};
 use crate::Marker;
 
 #[derive(Debug)]
@@ -71,9 +71,9 @@ fn read_str_len_with_nread<R>(rd: &mut R) -> Result<(u32, usize), ValueReadError
     where R: RmpRead
 {
     match read_marker(rd)? {
-        Marker::FixStr(size) => Ok((size as u32, 1)),
-        Marker::Str8 => Ok((rd.read_data_u8()? as u32, 2)),
-        Marker::Str16 => Ok((rd.read_data_u16()? as u32, 3)),
+        Marker::FixStr(size) => Ok((u32::from(size), 1)),
+        Marker::Str8 => Ok((u32::from(rd.read_data_u8()?), 2)),
+        Marker::Str16 => Ok((u32::from(rd.read_data_u16()?), 3)),
         Marker::Str32 => Ok((rd.read_data_u32()?, 5)),
         marker => Err(ValueReadError::TypeMismatch(marker)),
     }

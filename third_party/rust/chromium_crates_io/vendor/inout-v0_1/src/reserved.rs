@@ -91,7 +91,7 @@ impl<'a, T> InOutBufReserved<'a, 'a, T> {
     /// Get output buffer length.
     #[inline(always)]
     pub fn get_out_len(&self) -> usize {
-        self.in_len
+        self.out_len
     }
 }
 

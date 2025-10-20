@@ -28,13 +28,12 @@ cargo_crate("lib") {
   cargo_pkg_name = "string_cache"
   cargo_pkg_description = "A string interning library for Rust, developed as part of the Servo project."
   cargo_pkg_repository = "https://github.com/servo/string-cache"
-  cargo_pkg_version = "0.8.7"
+  cargo_pkg_version = "0.8.9"
 
   deps = [
     "//brave/third_party/rust/new_debug_unreachable/v1:lib",
-    "//brave/third_party/rust/once_cell/v1:lib",
     "//brave/third_party/rust/parking_lot/v0_12:lib",
-    "//brave/third_party/rust/phf_shared/v0_10:lib",
+    "//brave/third_party/rust/phf_shared/v0_11:lib",
     "//brave/third_party/rust/precomputed_hash/v0_1:lib",
     "//brave/third_party/rust/serde/v1:lib",
   ]

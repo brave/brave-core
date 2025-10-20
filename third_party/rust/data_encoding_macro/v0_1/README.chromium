@@ -1,7 +1,7 @@
 Name: data-encoding-macro
 URL: https://crates.io/crates/data-encoding-macro
-Version: 0.1.15
-Revision: 18203b91ced11ac3284177d7a96e5cd6ad76c921
+Version: 0.1.18
+Revision: 4fce77c46bc02ee2c5aa3434276c5adbb0f67de2
 License: MIT
 License File: //brave/third_party/rust/chromium_crates_io/vendor/data-encoding-macro-v0_1/LICENSE
 Shipped: yes

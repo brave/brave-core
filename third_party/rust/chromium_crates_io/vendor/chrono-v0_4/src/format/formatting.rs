@@ -97,7 +97,19 @@ impl<'a, I: Iterator<Item = B> + Clone, B: Borrow<Item<'a>>> DelayedFormat<I> {
         DelayedFormat { date, time, off: Some(name_and_diff), items, locale }
     }
 
-    fn format(&self, w: &mut impl Write) -> fmt::Result {
+    /// Formats `DelayedFormat` into a `core::fmt::Write` instance.
+    /// # Errors
+    /// This function returns a `core::fmt::Error` if formatting into the `core::fmt::Write` instance fails.
+    ///
+    /// # Example
+    /// ### Writing to a String
+    /// ```
+    /// let dt = chrono::DateTime::from_timestamp(1643723400, 123456789).unwrap();
+    /// let df = dt.format("%Y-%m-%d %H:%M:%S%.9f");
+    /// let mut buffer = String::new();
+    /// let _ = df.write_to(&mut buffer);
+    /// ```
+    pub fn write_to(&self, w: &mut (impl Write + ?Sized)) -> fmt::Result {
         for item in self.items.clone() {
             match *item.borrow() {
                 Item::Literal(s) | Item::Space(s) => w.write_str(s),
@@ -112,14 +124,19 @@ impl<'a, I: Iterator<Item = B> + Clone, B: Borrow<Item<'a>>> DelayedFormat<I> {
     }
 
     #[cfg(feature = "alloc")]
-    fn format_numeric(&self, w: &mut impl Write, spec: &Numeric, pad: Pad) -> fmt::Result {
+    fn format_numeric(
+        &self,
+        w: &mut (impl Write + ?Sized),
+        spec: &Numeric,
+        pad: Pad,
+    ) -> fmt::Result {
         use self::Numeric::*;
 
-        fn write_one(w: &mut impl Write, v: u8) -> fmt::Result {
+        fn write_one(w: &mut (impl Write + ?Sized), v: u8) -> fmt::Result {
             w.write_char((b'0' + v) as char)
         }
 
-        fn write_two(w: &mut impl Write, v: u8, pad: Pad) -> fmt::Result {
+        fn write_two(w: &mut (impl Write + ?Sized), v: u8, pad: Pad) -> fmt::Result {
             let ones = b'0' + v % 10;
             match (v / 10, pad) {
                 (0, Pad::None) => {}
@@ -130,7 +147,7 @@ impl<'a, I: Iterator<Item = B> + Clone, B: Borrow<Item<'a>>> DelayedFormat<I> {
         }
 
         #[inline]
-        fn write_year(w: &mut impl Write, year: i32, pad: Pad) -> fmt::Result {
+        fn write_year(w: &mut (impl Write + ?Sized), year: i32, pad: Pad) -> fmt::Result {
             if (1000..=9999).contains(&year) {
                 // fast path
                 write_hundreds(w, (year / 100) as u8)?;
@@ -141,7 +158,7 @@ impl<'a, I: Iterator<Item = B> + Clone, B: Borrow<Item<'a>>> DelayedFormat<I> {
         }
 
         fn write_n(
-            w: &mut impl Write,
+            w: &mut (impl Write + ?Sized),
             n: usize,
             v: i64,
             pad: Pad,
@@ -149,15 +166,15 @@ impl<'a, I: Iterator<Item = B> + Clone, B: Borrow<Item<'a>>> DelayedFormat<I> {
         ) -> fmt::Result {
             if always_sign {
                 match pad {
-                    Pad::None => write!(w, "{:+}", v),
+                    Pad::None => write!(w, "{v:+}"),
                     Pad::Zero => write!(w, "{:+01$}", v, n + 1),
                     Pad::Space => write!(w, "{:+1$}", v, n + 1),
                 }
             } else {
                 match pad {
-                    Pad::None => write!(w, "{}", v),
-                    Pad::Zero => write!(w, "{:01$}", v, n),
-                    Pad::Space => write!(w, "{:1$}", v, n),
+                    Pad::None => write!(w, "{v}"),
+                    Pad::Zero => write!(w, "{v:0n$}"),
+                    Pad::Space => write!(w, "{v:n$}"),
                 }
             }
         }
@@ -173,6 +190,7 @@ impl<'a, I: Iterator<Item = B> + Clone, B: Borrow<Item<'a>>> DelayedFormat<I> {
             (IsoYearMod100, Some(d), _) => {
                 write_two(w, d.iso_week().year().rem_euclid(100) as u8, pad)
             }
+            (Quarter, Some(d), _) => write_one(w, d.quarter() as u8),
             (Month, Some(d), _) => write_two(w, d.month() as u8, pad),
             (Day, Some(d), _) => write_two(w, d.day() as u8, pad),
             (WeekFromSun, Some(d), _) => write_two(w, d.weeks_from(Weekday::Sun) as u8, pad),
@@ -201,7 +219,7 @@ impl<'a, I: Iterator<Item = B> + Clone, B: Borrow<Item<'a>>> DelayedFormat<I> {
     }
 
     #[cfg(feature = "alloc")]
-    fn format_fixed(&self, w: &mut impl Write, spec: &Fixed) -> fmt::Result {
+    fn format_fixed(&self, w: &mut (impl Write + ?Sized), spec: &Fixed) -> fmt::Result {
         use Fixed::*;
         use InternalInternal::*;
 
@@ -240,7 +258,7 @@ impl<'a, I: Iterator<Item = B> + Clone, B: Borrow<Item<'a>>> DelayedFormat<I> {
                     } else if nano % 1_000 == 0 {
                         write!(w, "{:06}", nano / 1_000)
                     } else {
-                        write!(w, "{:09}", nano)
+                        write!(w, "{nano:09}")
                     }
                 }
             }
@@ -265,7 +283,7 @@ impl<'a, I: Iterator<Item = B> + Clone, B: Borrow<Item<'a>>> DelayedFormat<I> {
             (Internal(InternalFixed { val: Nanosecond9NoDot }), _, Some(t), _) => {
                 write!(w, "{:09}", t.nanosecond() % 1_000_000_000)
             }
-            (TimezoneName, _, _, Some((tz_name, _))) => write!(w, "{}", tz_name),
+            (TimezoneName, _, _, Some((tz_name, _))) => write!(w, "{tz_name}"),
             (TimezoneOffset | TimezoneOffsetZ, _, _, Some((_, off))) => {
                 let offset_format = OffsetFormat {
                     precision: OffsetPrecision::Minutes,
@@ -321,7 +339,7 @@ impl<'a, I: Iterator<Item = B> + Clone, B: Borrow<Item<'a>>> DelayedFormat<I> {
 impl<'a, I: Iterator<Item = B> + Clone, B: Borrow<Item<'a>>> Display for DelayedFormat<I> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         let mut result = String::new();
-        self.format(&mut result)?;
+        self.write_to(&mut result)?;
         f.pad(&result)
     }
 }
@@ -329,7 +347,7 @@ impl<'a, I: Iterator<Item = B> + Clone, B: Borrow<Item<'a>>> Display for Delayed
 /// Tries to format given arguments with given formatting items.
 /// Internally used by `DelayedFormat`.
 #[cfg(feature = "alloc")]
-#[deprecated(since = "0.4.32", note = "Use DelayedFormat::fmt instead")]
+#[deprecated(since = "0.4.32", note = "Use DelayedFormat::fmt or DelayedFormat::write_to instead")]
 pub fn format<'a, I, B>(
     w: &mut fmt::Formatter,
     date: Option<&NaiveDate>,
@@ -353,7 +371,7 @@ where
 
 /// Formats single formatting item
 #[cfg(feature = "alloc")]
-#[deprecated(since = "0.4.32", note = "Use DelayedFormat::fmt instead")]
+#[deprecated(since = "0.4.32", note = "Use DelayedFormat::fmt or DelayedFormat::write_to instead")]
 pub fn format_item(
     w: &mut fmt::Formatter,
     date: Option<&NaiveDate>,
@@ -374,7 +392,7 @@ pub fn format_item(
 #[cfg(any(feature = "alloc", feature = "serde"))]
 impl OffsetFormat {
     /// Writes an offset from UTC with the format defined by `self`.
-    fn format(&self, w: &mut impl Write, off: FixedOffset) -> fmt::Result {
+    fn format(&self, w: &mut (impl Write + ?Sized), off: FixedOffset) -> fmt::Result {
         let off = off.local_minus_utc();
         if self.allow_zulu && off == 0 {
             w.write_char('Z')?;
@@ -483,7 +501,7 @@ pub enum SecondsFormat {
 #[inline]
 #[cfg(any(feature = "alloc", feature = "serde"))]
 pub(crate) fn write_rfc3339(
-    w: &mut impl Write,
+    w: &mut (impl Write + ?Sized),
     dt: NaiveDateTime,
     off: FixedOffset,
     secform: SecondsFormat,
@@ -495,7 +513,7 @@ pub(crate) fn write_rfc3339(
         write_hundreds(w, (year % 100) as u8)?;
     } else {
         // ISO 8601 requires the explicit sign for out-of-range years
-        write!(w, "{:+05}", year)?;
+        write!(w, "{year:+05}")?;
     }
     w.write_char('-')?;
     write_hundreds(w, dt.date().month() as u8)?;
@@ -521,7 +539,7 @@ pub(crate) fn write_rfc3339(
         SecondsFormat::Secs => {}
         SecondsFormat::Millis => write!(w, ".{:03}", nano / 1_000_000)?,
         SecondsFormat::Micros => write!(w, ".{:06}", nano / 1000)?,
-        SecondsFormat::Nanos => write!(w, ".{:09}", nano)?,
+        SecondsFormat::Nanos => write!(w, ".{nano:09}")?,
         SecondsFormat::AutoSi => {
             if nano == 0 {
             } else if nano % 1_000_000 == 0 {
@@ -529,7 +547,7 @@ pub(crate) fn write_rfc3339(
             } else if nano % 1_000 == 0 {
                 write!(w, ".{:06}", nano / 1_000)?
             } else {
-                write!(w, ".{:09}", nano)?
+                write!(w, ".{nano:09}")?
             }
         }
         SecondsFormat::__NonExhaustive => unreachable!(),
@@ -547,7 +565,7 @@ pub(crate) fn write_rfc3339(
 #[cfg(feature = "alloc")]
 /// write datetimes like `Tue, 1 Jul 2003 10:52:37 +0200`, same as `%a, %d %b %Y %H:%M:%S %z`
 pub(crate) fn write_rfc2822(
-    w: &mut impl Write,
+    w: &mut (impl Write + ?Sized),
     dt: NaiveDateTime,
     off: FixedOffset,
 ) -> fmt::Result {
@@ -592,7 +610,7 @@ pub(crate) fn write_rfc2822(
 }
 
 /// Equivalent to `{:02}` formatting for n < 100.
-pub(crate) fn write_hundreds(w: &mut impl Write, n: u8) -> fmt::Result {
+pub(crate) fn write_hundreds(w: &mut (impl Write + ?Sized), n: u8) -> fmt::Result {
     if n >= 100 {
         return Err(fmt::Error);
     }
@@ -611,12 +629,41 @@ mod tests {
     #[cfg(feature = "alloc")]
     use crate::{NaiveDate, NaiveTime, TimeZone, Timelike, Utc};
 
+    #[cfg(feature = "alloc")]
+    #[test]
+    fn test_delayed_write_to() {
+        let dt = crate::DateTime::from_timestamp(1643723400, 123456789).unwrap();
+        let df = dt.format("%Y-%m-%d %H:%M:%S%.9f");
+
+        let mut dt_str = String::new();
+
+        df.write_to(&mut dt_str).unwrap();
+        assert_eq!(dt_str, "2022-02-01 13:50:00.123456789");
+    }
+
+    #[cfg(all(feature = "std", feature = "unstable-locales", feature = "alloc"))]
+    #[test]
+    fn test_with_locale_delayed_write_to() {
+        use crate::DateTime;
+        use crate::format::locales::Locale;
+
+        let dt = DateTime::from_timestamp(1643723400, 123456789).unwrap();
+        let df = dt.format_localized("%A, %B %d, %Y", Locale::ja_JP);
+
+        let mut dt_str = String::new();
+
+        df.write_to(&mut dt_str).unwrap();
+
+        assert_eq!(dt_str, "火曜日, 2月 01, 2022");
+    }
+
     #[test]
     #[cfg(feature = "alloc")]
     fn test_date_format() {
         let d = NaiveDate::from_ymd_opt(2012, 3, 4).unwrap();
         assert_eq!(d.format("%Y,%C,%y,%G,%g").to_string(), "2012,20,12,2012,12");
         assert_eq!(d.format("%m,%b,%h,%B").to_string(), "03,Mar,Mar,March");
+        assert_eq!(d.format("%q").to_string(), "1");
         assert_eq!(d.format("%d,%e").to_string(), "04, 4");
         assert_eq!(d.format("%U,%W,%V").to_string(), "10,09,09");
         assert_eq!(d.format("%a,%A,%w,%u").to_string(), "Sun,Sunday,0,7");
@@ -721,31 +768,31 @@ mod tests {
 
         // Item::Literal, odd number of padding bytes.
         let percent = datetime.format("%%");
-        assert_eq!("   %", format!("{:>4}", percent));
-        assert_eq!("%   ", format!("{:<4}", percent));
-        assert_eq!(" %  ", format!("{:^4}", percent));
+        assert_eq!("   %", format!("{percent:>4}"));
+        assert_eq!("%   ", format!("{percent:<4}"));
+        assert_eq!(" %  ", format!("{percent:^4}"));
 
         // Item::Numeric, custom non-ASCII padding character
         let year = datetime.format("%Y");
-        assert_eq!("——2007", format!("{:—>6}", year));
-        assert_eq!("2007——", format!("{:—<6}", year));
-        assert_eq!("—2007—", format!("{:—^6}", year));
+        assert_eq!("——2007", format!("{year:—>6}"));
+        assert_eq!("2007——", format!("{year:—<6}"));
+        assert_eq!("—2007—", format!("{year:—^6}"));
 
         // Item::Fixed
         let tz = datetime.format("%Z");
-        assert_eq!("  UTC", format!("{:>5}", tz));
-        assert_eq!("UTC  ", format!("{:<5}", tz));
-        assert_eq!(" UTC ", format!("{:^5}", tz));
+        assert_eq!("  UTC", format!("{tz:>5}"));
+        assert_eq!("UTC  ", format!("{tz:<5}"));
+        assert_eq!(" UTC ", format!("{tz:^5}"));
 
         // [Item::Numeric, Item::Space, Item::Literal, Item::Space, Item::Numeric]
         let ymd = datetime.format("%Y %B %d");
-        assert_eq!("  2007 January 02", format!("{:>17}", ymd));
-        assert_eq!("2007 January 02  ", format!("{:<17}", ymd));
-        assert_eq!(" 2007 January 02 ", format!("{:^17}", ymd));
+        assert_eq!("  2007 January 02", format!("{ymd:>17}"));
+        assert_eq!("2007 January 02  ", format!("{ymd:<17}"));
+        assert_eq!(" 2007 January 02 ", format!("{ymd:^17}"));
 
         // Truncated
         let time = datetime.format("%T%.6f");
-        assert_eq!("12:34:56.1234", format!("{:.13}", time));
+        assert_eq!("12:34:56.1234", format!("{time:.13}"));
     }
 
     #[test]

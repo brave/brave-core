@@ -75,13 +75,14 @@ cargo_crate("lib") {
   cargo_pkg_description =
       "Fast PLONK-based zero-knowledge proving system with no trusted setup"
   cargo_pkg_repository = "https://github.com/zcash/halo2"
-  cargo_pkg_version = "0.3.0"
+  cargo_pkg_version = "0.3.1"
 
   deps = [
     "//brave/third_party/rust/blake2b_simd/v1:lib",
     "//brave/third_party/rust/ff/v0_13:lib",
     "//brave/third_party/rust/group/v0_13:lib",
     "//brave/third_party/rust/halo2_legacy_pdqsort/v0_1:lib",
+    "//brave/third_party/rust/indexmap/v1:lib",
     "//brave/third_party/rust/maybe_rayon/v0_1:lib",
     "//brave/third_party/rust/pasta_curves/v0_5:lib",
     "//brave/third_party/rust/rand_core/v0_6:lib",

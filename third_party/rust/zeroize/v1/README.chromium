@@ -1,9 +1,9 @@
 Name: zeroize
 URL: https://crates.io/crates/zeroize
-Version: 1.8.1
-Revision: 7050a8402b44344023cd8d27fe6e0e4055d6bdde
+Version: 1.8.2
+Revision: c100874101bfd584870de5dde1b13dd92a17bf48
 License: Apache-2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/zeroize-v1/LICENSE-APACHE
+License File: //brave/third_party/rust/chromium_crates_io/vendor/zeroize-v1/LICENSE-Apache
 Shipped: yes
 Security Critical: yes
 

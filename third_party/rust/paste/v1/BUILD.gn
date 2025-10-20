@@ -28,7 +28,7 @@ cargo_crate("lib") {
   cargo_pkg_name = "paste"
   cargo_pkg_description = "Macros for all your token pasting needs"
   cargo_pkg_repository = "https://github.com/dtolnay/paste"
-  cargo_pkg_version = "1.0.12"
+  cargo_pkg_version = "1.0.15"
 
   build_root =
       "//brave/third_party/rust/chromium_crates_io/vendor/paste-v1/build.rs"

@@ -340,27 +340,39 @@ impl<
                 let initial_state = initial_state?;
 
                 // Load the input into this region.
-                let load_input_word = |i: usize| {
-                    let constraint_var = match input.0[i].clone() {
-                        Some(PaddedWord::Message(word)) => word,
-                        Some(PaddedWord::Padding(padding_value)) => region.assign_fixed(
-                            || format!("load pad_{}", i),
-                            config.rc_b[i],
-                            1,
-                            || Value::known(padding_value),
-                        )?,
+                let load_input_word = |(i, input_word): (usize, &Option<PaddedWord<F>>)| {
+                    let (cell, value) = match input_word {
+                        Some(PaddedWord::Message(word)) => (word.cell(), word.value().copied()),
+                        Some(PaddedWord::Padding(padding_value)) => {
+                            let value = Value::known(*padding_value);
+                            let cell = region
+                                .assign_fixed(
+                                    || format!("load pad_{}", i),
+                                    config.rc_b[i],
+                                    1,
+                                    || value,
+                                )?
+                                .cell();
+                            (cell, value)
+                        }
                         _ => panic!("Input is not padded"),
                     };
-                    constraint_var
-                        .copy_advice(
-                            || format!("load input_{}", i),
-                            &mut region,
-                            config.state[i],
-                            1,
-                        )
-                        .map(StateWord)
+                    let var = region.assign_advice(
+                        || format!("load input_{}", i),
+                        config.state[i],
+                        1,
+                        || value,
+                    )?;
+                    region.constrain_equal(cell, var.cell())?;
+
+                    Ok(StateWord(var))
                 };
-                let input: Result<Vec<_>, Error> = (0..RATE).map(load_input_word).collect();
+                let input: Result<Vec<_>, Error> = input
+                    .expose_inner()
+                    .iter()
+                    .enumerate()
+                    .map(load_input_word)
+                    .collect();
                 let input = input?;
 
                 // Constrain the output.
@@ -388,14 +400,8 @@ impl<
     }
 
     fn get_output(state: &State<Self::Word, WIDTH>) -> Squeezing<Self::Word, RATE> {
-        Squeezing(
-            state[..RATE]
-                .iter()
-                .map(|word| Some(word.clone()))
-                .collect::<Vec<_>>()
-                .try_into()
-                .unwrap(),
-        )
+        let vals = state[..RATE].to_vec();
+        Squeezing::init_full(vals.try_into().expect("correct length"))
     }
 }
 
@@ -597,9 +603,11 @@ mod tests {
         circuit::{Layouter, SimpleFloorPlanner, Value},
         dev::MockProver,
         pasta::Fp,
-        plonk::{Circuit, ConstraintSystem, Error},
+        plonk::{self, Circuit, ConstraintSystem, Error, SingleVerifier},
+        poly::commitment::Params,
+        transcript::{Blake2bRead, Blake2bWrite, Challenge255},
     };
-    use pasta_curves::pallas;
+    use pasta_curves::{pallas, EqAffine};
     use rand::rngs::OsRng;
 
     use super::{PoseidonInstructions, Pow5Chip, Pow5Config, StateWord};
@@ -679,7 +687,7 @@ mod tests {
                 .try_into()
                 .unwrap();
             let (round_constants, mds, _) = S::constants();
-            poseidon::permute::<_, S, WIDTH, RATE>(
+            poseidon::test_only_permute::<_, S, WIDTH, RATE>(
                 &mut expected_final_state,
                 &mds,
                 &round_constants,
@@ -840,7 +848,29 @@ mod tests {
             _spec: PhantomData,
         };
         let prover = MockProver::run(k, &circuit, vec![]).unwrap();
-        assert_eq!(prover.verify(), Ok(()))
+        assert_eq!(prover.verify(), Ok(()));
+
+        let params = Params::new(k);
+        let vk = plonk::keygen_vk(&params, &circuit).unwrap();
+        let pk = plonk::keygen_pk(&params, vk, &circuit).unwrap();
+
+        let mut transcript = Blake2bWrite::<_, EqAffine, _>::init(vec![]);
+        plonk::create_proof(
+            &params,
+            &pk,
+            &[circuit],
+            &[&[]],
+            &mut OsRng,
+            &mut transcript,
+        )
+        .unwrap();
+        let proof = transcript.finalize();
+
+        let strategy = SingleVerifier::new(&params);
+        let mut transcript = Blake2bRead::<_, _, Challenge255<_>>::init(&proof[..]);
+        assert!(
+            plonk::verify_proof(&params, pk.get_vk(), strategy, &[&[]], &mut transcript).is_ok()
+        );
     }
 
     #[test]

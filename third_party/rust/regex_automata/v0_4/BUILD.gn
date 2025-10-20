@@ -1,3 +1,161 @@
-group("lib") {
-  public_deps = [ "//third_party/rust/regex_automata/v0_4:lib" ]
+# Copyright 2023 The Chromium Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# @generated from third_party/rust/chromium_crates_io/BUILD.gn.hbs by
+# tools/crates/gnrt.
+# Do not edit!
+
+import("//build/rust/cargo_crate.gni")
+
+cargo_crate("lib") {
+  crate_name = "regex_automata"
+  epoch = "0.4"
+  crate_type = "rlib"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/dfa/accel.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/dfa/automaton.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/dfa/dense.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/dfa/determinize.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/dfa/minimize.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/dfa/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/dfa/onepass.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/dfa/regex.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/dfa/remapper.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/dfa/search.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/dfa/sparse.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/dfa/special.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/dfa/start.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/hybrid/dfa.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/hybrid/error.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/hybrid/id.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/hybrid/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/hybrid/regex.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/hybrid/search.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/macros.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/meta/error.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/meta/limited.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/meta/literal.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/meta/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/meta/regex.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/meta/reverse_inner.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/meta/stopat.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/meta/strategy.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/meta/wrappers.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/nfa/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/nfa/thompson/backtrack.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/nfa/thompson/builder.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/nfa/thompson/compiler.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/nfa/thompson/error.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/nfa/thompson/literal_trie.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/nfa/thompson/map.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/nfa/thompson/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/nfa/thompson/nfa.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/nfa/thompson/pikevm.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/nfa/thompson/range_trie.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/util/alphabet.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/util/captures.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/util/determinize/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/util/determinize/state.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/util/empty.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/util/escape.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/util/int.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/util/interpolate.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/util/iter.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/util/lazy.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/util/look.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/util/memchr.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/util/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/util/pool.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/util/prefilter/aho_corasick.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/util/prefilter/byteset.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/util/prefilter/memchr.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/util/prefilter/memmem.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/util/prefilter/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/util/prefilter/teddy.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/util/primitives.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/util/search.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/util/sparse_set.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/util/start.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/util/syntax.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/util/unicode_data/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/util/unicode_data/perl_word.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/util/utf8.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/regex-automata-v0_4/src/util/wire.rs",
+  ]
+  inputs = []
+
+  build_native_rust_unit_tests = false
+  edition = "2021"
+  cargo_pkg_authors =
+      "The Rust Project Developers, Andrew Gallant <jamslam@gmail.com>"
+  cargo_pkg_name = "regex-automata"
+  cargo_pkg_description =
+      "Automata construction and matching using regular expressions."
+  cargo_pkg_repository = "https://github.com/rust-lang/regex"
+  cargo_pkg_version = "0.4.13"
+
+  deps = [
+    "//brave/third_party/rust/aho_corasick/v1:lib",
+    "//brave/third_party/rust/memchr/v2:lib",
+    "//brave/third_party/rust/regex_syntax/v0_8:lib",
+  ]
+  features = [
+    "alloc",
+    "dfa-onepass",
+    "hybrid",
+    "meta",
+    "nfa-backtrack",
+    "nfa-pikevm",
+    "nfa-thompson",
+    "perf-inline",
+    "perf-literal",
+    "perf-literal-multisubstring",
+    "perf-literal-substring",
+    "std",
+    "syntax",
+    "unicode",
+    "unicode-age",
+    "unicode-bool",
+    "unicode-case",
+    "unicode-gencat",
+    "unicode-perl",
+    "unicode-script",
+    "unicode-segment",
+    "unicode-word-boundary",
+  ]
+  rustenv = []
+  rustflags = []
+
+  #####################################################################
+  # Tweaking which GN `config`s apply to this target.
+
+  # Config changes that apply to all `//third_party/rust` crates.
+  _configs_to_remove = [
+    # We don't need code coverage data for any `chromium_crates_io` crates.
+    "//build/config/coverage:default_coverage",
+
+    # This is third-party code, so remove `chromium_code` config.  We are not
+    # at the same time adding `//build/config/compiler:no_chromium_code`,
+    # because 1) we don't want to pull how warnings are handled by that config
+    # and 2) that config doesn't have any non-warnings-related stuff.
+    "//build/config/compiler:chromium_code",
+  ]
+  _configs_to_add = []
+
+  # Changing (if needed) which configs apply to this specific crate (based on
+  # `extra_kv.configs_to_remove` and `extra_kv.configs_to_add` from
+  # `gnrt_config.toml`).
+  _configs_to_remove += []
+  _configs_to_add += []
+
+  # Applying config changes.
+  library_configs -= _configs_to_remove
+  library_configs += _configs_to_add
+  executable_configs -= _configs_to_remove
+  executable_configs += _configs_to_add
+  proc_macro_configs -= _configs_to_remove
+  proc_macro_configs += _configs_to_add
 }

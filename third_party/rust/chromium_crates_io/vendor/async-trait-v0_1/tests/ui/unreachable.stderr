@@ -9,6 +9,6 @@ error: unreachable statement
 note: the lint level is defined here
   --> tests/ui/unreachable.rs:1:9
    |
-1  | #![deny(warnings)]
+ 1 | #![deny(warnings)]
    |         ^^^^^^^^
    = note: `#[deny(unreachable_code)]` implied by `#[deny(warnings)]`

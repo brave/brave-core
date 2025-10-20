@@ -5,9 +5,7 @@ use mime::Mime;
 
 use crate::parser::util;
 #[cfg(test)]
-use crate::parser::util::timestamp_rfc2822_lenient;
-#[cfg(test)]
-use crate::parser::util::timestamp_rfc3339_lenient;
+use crate::parser::util::parse_timestamp_lenient;
 use url::Url;
 
 /// Combined model for a syndication feed (i.e. RSS1, RSS 2, Atom, JSON Feed)
@@ -189,13 +187,8 @@ impl Feed {
         self
     }
 
-    pub fn published_rfc2822(mut self, pub_date: &str) -> Self {
-        self.published = timestamp_rfc2822_lenient(pub_date);
-        self
-    }
-
-    pub fn published_rfc3339(mut self, pub_date: &str) -> Self {
-        self.published = timestamp_rfc3339_lenient(pub_date);
+    pub fn published(mut self, pub_date: &str) -> Self {
+        self.published = parse_timestamp_lenient(pub_date);
         self
     }
 
@@ -219,13 +212,8 @@ impl Feed {
         self
     }
 
-    pub fn updated_rfc2822(mut self, updated: &str) -> Self {
-        self.updated = timestamp_rfc2822_lenient(updated);
-        self
-    }
-
-    pub fn updated_rfc3339(mut self, updated: &str) -> Self {
-        self.updated = timestamp_rfc3339_lenient(updated);
+    pub fn updated_parsed(mut self, updated: &str) -> Self {
+        self.updated = parse_timestamp_lenient(updated);
         self
     }
 }
@@ -308,6 +296,12 @@ pub struct Entry {
     /// 2) a default for any other "media:*" elements found at the item level
     /// See the Atom tests for youtube and newscred for examples
     pub media: Vec<MediaObject>,
+
+    /// Atom (optional): The language specified on the item
+    pub language: Option<String>,
+    /// Atom (optional): The base url specified on the item to resolve any relative
+    /// references found within the scope on the item
+    pub base: Option<String>,
 }
 
 impl Default for Entry {
@@ -326,6 +320,8 @@ impl Default for Entry {
             source: None,
             rights: None,
             media: Vec::new(),
+            language: None,
+            base: None,
         }
     }
 }
@@ -362,13 +358,8 @@ impl Entry {
         self
     }
 
-    pub fn published_rfc2822(mut self, published: &str) -> Self {
-        self.published = timestamp_rfc2822_lenient(published);
-        self
-    }
-
-    pub fn published_rfc3339(mut self, published: &str) -> Self {
-        self.published = timestamp_rfc3339_lenient(published);
+    pub fn published(mut self, published: &str) -> Self {
+        self.published = parse_timestamp_lenient(published);
         self
     }
 
@@ -392,18 +383,23 @@ impl Entry {
         self
     }
 
-    pub fn updated_rfc2822(mut self, updated: &str) -> Self {
-        self.updated = timestamp_rfc2822_lenient(updated);
-        self
-    }
-
-    pub fn updated_rfc3339(mut self, updated: &str) -> Self {
-        self.updated = timestamp_rfc3339_lenient(updated);
+    pub fn updated_parsed(mut self, updated: &str) -> Self {
+        self.updated = parse_timestamp_lenient(updated);
         self
     }
 
     pub fn media(mut self, media: MediaObject) -> Self {
         self.media.push(media);
+        self
+    }
+
+    pub fn language(mut self, language: &str) -> Self {
+        self.language = Some(language.to_owned());
+        self
+    }
+
+    pub fn base(mut self, url: &str) -> Self {
+        self.base = Some(url.to_owned());
         self
     }
 }
@@ -423,6 +419,8 @@ pub struct Category {
     pub scheme: Option<String>,
     /// Atom (optional): Provides a human-readable label for display.
     pub label: Option<String>,
+    /// Sub-categories (typically from the iTunes namespace i.e. https://help.apple.com/itc/podcasts_connect/#/itcb54353390)
+    pub subcategories: Vec<Category>,
 }
 
 impl Category {
@@ -431,6 +429,7 @@ impl Category {
             term: term.trim().into(),
             scheme: None,
             label: None,
+            subcategories: Vec::new(),
         }
     }
 }

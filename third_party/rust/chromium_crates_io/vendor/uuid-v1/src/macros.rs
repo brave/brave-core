@@ -4,6 +4,13 @@ macro_rules! define_uuid_macro {
         #[cfg(feature = "macro-diagnostics")]
         #[macro_export]
         macro_rules! uuid {
+            ($uuid:expr) => {{
+                const OUTPUT: $crate::Uuid = match $crate::Uuid::try_parse($uuid) {
+                    $crate::__macro_support::Ok(u) => u,
+                    $crate::__macro_support::Err(_) => panic!("invalid UUID"),
+                };
+                OUTPUT
+            }};
             ($uuid:literal) => {{
                 $crate::Uuid::from_bytes($crate::uuid_macro_internal::parse_lit!($uuid))
             }};
@@ -13,17 +20,10 @@ macro_rules! define_uuid_macro {
         #[cfg(not(feature = "macro-diagnostics"))]
         #[macro_export]
         macro_rules! uuid {
-            ($uuid:literal) => {{
+            ($uuid:expr) => {{
                 const OUTPUT: $crate::Uuid = match $crate::Uuid::try_parse($uuid) {
-                    Ok(u) => u,
-                    Err(_) => {
-                        // here triggers const_err
-                        // const_panic requires 1.57
-                        #[allow(unconditional_panic)]
-                        let _ = ["invalid uuid representation"][1];
-
-                        loop {} // -> never type
-                    }
+                    $crate::__macro_support::Ok(u) => u,
+                    $crate::__macro_support::Err(_) => panic!("invalid UUID"),
                 };
                 OUTPUT
             }};
@@ -57,6 +57,12 @@ define_uuid_macro! {
 /// # use uuid::uuid;
 /// let uuid = uuid!("urn:uuid:F9168C5E-CEB2-4faa-B6BF-329BF39FA1E4");
 /// ```
+/// Using a const variable:
+/// ```
+/// # use uuid::uuid;
+/// const UUID_STR: &str = "12345678-1234-5678-1234-567812345678";
+/// let UUID = uuid!(UUID_STR);
+/// ```
 ///
 /// ## Compilation Failures
 ///
@@ -78,22 +84,35 @@ define_uuid_macro! {
 ///     |                              ^
 /// ```
 ///
-/// Tokens that aren't string literals are also rejected:
-///
-/// ```compile_fail
-/// # use uuid::uuid;
-/// let uuid_str: &str = "550e8400e29b41d4a716446655440000";
-/// let uuid = uuid!(uuid_str);
-/// ```
-///
-/// Provides the following compilation error:
-///
-/// ```txt
-/// error: expected string literal
-///   |
-///   |     let uuid = uuid!(uuid_str);
-///   |                      ^^^^^^^^
-/// ```
-///
 /// [uuid::Uuid]: https://docs.rs/uuid/*/uuid/struct.Uuid.html
 }
+
+// Internal macros
+
+// These `transmute` macros are a stepping stone towards `zerocopy` integration.
+// When the `zerocopy` feature is enabled, which it is in CI, the transmutes are 
+// checked by it
+
+// SAFETY: Callers must ensure this call would be safe when handled by zerocopy
+#[cfg(not(all(uuid_unstable, feature = "zerocopy")))]
+macro_rules! unsafe_transmute_ref(
+    ($e:expr) => { unsafe { core::mem::transmute::<&_, &_>($e) } }
+);
+
+// SAFETY: Callers must ensure this call would be safe when handled by zerocopy
+#[cfg(all(uuid_unstable, feature = "zerocopy"))]
+macro_rules! unsafe_transmute_ref(
+    ($e:expr) => { zerocopy::transmute_ref!($e) }
+);
+
+// SAFETY: Callers must ensure this call would be safe when handled by zerocopy
+#[cfg(not(all(uuid_unstable, feature = "zerocopy")))]
+macro_rules! unsafe_transmute(
+    ($e:expr) => { unsafe { core::mem::transmute::<_, _>($e) } }
+);
+
+// SAFETY: Callers must ensure this call would be safe when handled by zerocopy
+#[cfg(all(uuid_unstable, feature = "zerocopy"))]
+macro_rules! unsafe_transmute(
+    ($e:expr) => { zerocopy::transmute!($e) }
+);

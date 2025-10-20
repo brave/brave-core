@@ -6,7 +6,6 @@
 // copied, modified, or distributed except according to those terms.
 
 use crate::raw_rwlock::RawRwLock;
-use lock_api;
 
 /// A reader-writer lock
 ///
@@ -638,5 +637,23 @@ mod tests {
             assert!(lock.is_locked());
             assert!(lock.is_locked_exclusive());
         }
+    }
+
+    #[test]
+    #[cfg(feature = "arc_lock")]
+    fn test_issue_430() {
+        let lock = std::sync::Arc::new(RwLock::new(0));
+
+        let mut rl = lock.upgradable_read_arc();
+
+        rl.with_upgraded(|_| {
+            println!("lock upgrade");
+        });
+
+        rl.with_upgraded(|_| {
+            println!("lock upgrade");
+        });
+
+        drop(lock);
     }
 }

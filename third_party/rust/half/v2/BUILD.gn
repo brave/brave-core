@@ -20,6 +20,7 @@ cargo_crate("lib") {
     "//brave/third_party/rust/chromium_crates_io/vendor/half-v2/src/binary16.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/half-v2/src/binary16/arch.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/half-v2/src/binary16/arch/aarch64.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/half-v2/src/binary16/arch/loongarch64.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/half-v2/src/binary16/arch/x86.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/half-v2/src/leading_zeros.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/half-v2/src/lib.rs",
@@ -36,9 +37,12 @@ cargo_crate("lib") {
   cargo_pkg_name = "half"
   cargo_pkg_description = "Half-precision floating point f16 and bf16 types for Rust implementing the IEEE 754-2008 standard binary16 and bfloat16 types."
   cargo_pkg_repository = "https://github.com/VoidStarKat/half-rs"
-  cargo_pkg_version = "2.6.0"
+  cargo_pkg_version = "2.7.1"
 
-  deps = [ "//brave/third_party/rust/cfg_if/v1:lib" ]
+  deps = [
+    "//brave/third_party/rust/cfg_if/v1:lib",
+    "//brave/third_party/rust/zerocopy/v0_8:lib",
+  ]
   rustenv = []
   rustflags = []
 

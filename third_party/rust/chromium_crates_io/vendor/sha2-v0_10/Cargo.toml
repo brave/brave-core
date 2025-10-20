@@ -12,8 +12,14 @@
 [package]
 edition = "2018"
 name = "sha2"
-version = "0.10.8"
+version = "0.10.9"
 authors = ["RustCrypto Developers"]
+build = false
+autolib = false
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
 description = """
 Pure Rust implementation of the SHA-2 hash function family
 including SHA-224, SHA-256, SHA-384, and SHA-512.
@@ -40,6 +46,29 @@ rustdoc-args = [
     "docsrs",
 ]
 
+[features]
+asm = ["sha2-asm"]
+asm-aarch64 = ["asm"]
+compress = []
+default = ["std"]
+force-soft = []
+force-soft-compact = []
+loongarch64_asm = []
+oid = ["digest/oid"]
+std = ["digest/std"]
+
+[lib]
+name = "sha2"
+path = "src/lib.rs"
+
+[[test]]
+name = "mod"
+path = "tests/mod.rs"
+
+[[bench]]
+name = "mod"
+path = "benches/mod.rs"
+
 [dependencies.cfg-if]
 version = "1.0"
 
@@ -53,19 +82,9 @@ features = ["dev"]
 [dev-dependencies.hex-literal]
 version = "0.2.2"
 
-[features]
-asm = ["sha2-asm"]
-asm-aarch64 = ["asm"]
-compress = []
-default = ["std"]
-force-soft = []
-loongarch64_asm = []
-oid = ["digest/oid"]
-std = ["digest/std"]
-
-[target."cfg(any(target_arch = \"aarch64\", target_arch = \"x86_64\", target_arch = \"x86\"))".dependencies.cpufeatures]
+[target.'cfg(any(target_arch = "aarch64", target_arch = "x86_64", target_arch = "x86"))'.dependencies.cpufeatures]
 version = "0.2"
 
-[target."cfg(any(target_arch = \"aarch64\", target_arch = \"x86_64\", target_arch = \"x86\"))".dependencies.sha2-asm]
+[target.'cfg(any(target_arch = "aarch64", target_arch = "x86_64", target_arch = "x86"))'.dependencies.sha2-asm]
 version = "0.6.1"
 optional = true

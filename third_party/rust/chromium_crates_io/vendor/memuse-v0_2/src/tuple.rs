@@ -1,4 +1,4 @@
-use std::array;
+use core::array;
 
 use crate::DynamicUsage;
 
@@ -136,8 +136,10 @@ tuple_impls! {
     }
 }
 
+#[cfg(feature = "std")]
 #[cfg(test)]
 mod tests {
+    use alloc::vec::Vec;
     use std::collections::HashSet;
 
     use super::*;

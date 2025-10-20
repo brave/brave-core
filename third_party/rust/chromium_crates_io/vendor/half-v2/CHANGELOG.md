@@ -5,7 +5,33 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-## [2.6.0] - 2024-04-08 <a name="2.6.0"></a>
+## [2.7.1] - 2025-10-13 <a name="2.7.1"></a>
+### Fixed
+- `loongarch64` `lsx` hardware intrinsics for `f16` conversions now enabled only under
+  `nightly` cargo feature, fixing compile errors on stable Rust.
+
+## [2.7.0] - 2025-10-08 <a name="2.7.0"></a>
+### Changed
+- `zerocopy` is now a required dependency. The optional `zerocopy` crate feature is deprecated.
+  This change is to ensure better code safety and prevent potential unsound behavior.
+- Git repository URL has changed due to GitHub user name change. Old URL is redirected.
+
+### Added
+- New `num-traits` implementations: `Signed` for `f16` and `bf16`. By [@djsell].
+- `loongarch64` `lsx` hardware intrinsic support for `f16` conversions. By [@heiher].
+- Implemented `Weight` trait from `rand` crate for `f16` and `bf16` with `rand` optional cargo
+  feature. By [@majian4work].
+
+### Fixed
+- `min` and `max` incorrectly propagate `NaN` values when `self` is `NaN`. Fixes [#126],
+  by [@mgottscho].
+- Suppressed warnings from new `unnecessary_transmutes` lint.
+
+### Removed 
+- `doc_auto_cfg` feature has been removed from docs.rs documentation due to removal of rust
+  feature.
+
+## [2.6.0] - 2025-04-08 <a name="2.6.0"></a>
 ### Changed
 - Fixed some incorrect minimum supported versions of dependencies that weren't caught due to
   improper `Cargo.lock`:
@@ -16,7 +42,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - `f16` and `bf16` now implement `Immutable` and `KnownLayout` for `zerocopy` crate. By [@usamoi].
 
-## [2.5.0] - 2024-03-13 <a name="2.5.0"></a>
+## [2.5.0] - 2025-03-13 <a name="2.5.0"></a>
 ### Changed
 - Updated optional dependencies to latest major versions: 
   * `zercopy` 0.6 -> 0.8
@@ -361,6 +387,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 [#103]: https://github.com/starkat99/half-rs/issues/103
 [#107]: https://github.com/starkat99/half-rs/issues/107
 [#110]: https://github.com/starkat99/half-rs/issues/110
+[#126]: https://github.com/starkat99/half-rs/issues/126
 
 [@tspiteri]: https://github.com/tspiteri
 [@PSeitz]: https://github.com/PSeitz
@@ -385,9 +412,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 [@FL33TW00D]: https://github.com/FL33TW00D
 [@kpreid]: https://github.com/kpreid
 [@usamoi]: https://github.com/usamoi
+[@mgottscho]: https://github.com/mgottscho
+[@djsell]: https://github.com/djsell
+[@heiher]: https://github.com/heiher
+[@majian4work]: https://github.com/majian4work
 
 
-[Unreleased]: https://github.com/starkat99/half-rs/compare/v2.6.0...HEAD
+[Unreleased]: https://github.com/starkat99/half-rs/compare/v2.7.1...HEAD
+[2.7.1]: https://github.com/starkat99/half-rs/compare/v2.7.0...v2.7.1
+[2.7.0]: https://github.com/starkat99/half-rs/compare/v2.6.0...v2.7.0
 [2.6.0]: https://github.com/starkat99/half-rs/compare/v2.5.0...v2.6.0
 [2.5.0]: https://github.com/starkat99/half-rs/compare/v2.4.1...v2.5.0
 [2.4.1]: https://github.com/starkat99/half-rs/compare/v2.4.0...v2.4.1

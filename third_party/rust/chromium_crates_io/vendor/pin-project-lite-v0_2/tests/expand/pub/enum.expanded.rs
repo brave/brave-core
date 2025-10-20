@@ -3,13 +3,19 @@ pub enum Enum<T, U> {
     Struct { pinned: T, unpinned: U },
     Unit,
 }
-#[allow(dead_code)]
-#[allow(single_use_lifetimes)]
-#[allow(clippy::unknown_clippy_lints)]
-#[allow(clippy::mut_mut)]
-#[allow(clippy::redundant_pub_crate)]
-#[allow(clippy::ref_option_ref)]
-#[allow(clippy::type_repetition_in_bounds)]
+#[doc(hidden)]
+#[allow(
+    dead_code,
+    single_use_lifetimes,
+    clippy::unknown_clippy_lints,
+    clippy::absolute_paths,
+    clippy::min_ident_chars,
+    clippy::mut_mut,
+    clippy::redundant_pub_crate,
+    clippy::ref_option_ref,
+    clippy::single_char_lifetime_names,
+    clippy::type_repetition_in_bounds
+)]
 pub(crate) enum EnumProj<'__pin, T, U>
 where
     Enum<T, U>: '__pin,
@@ -20,13 +26,19 @@ where
     },
     Unit,
 }
-#[allow(dead_code)]
-#[allow(single_use_lifetimes)]
-#[allow(clippy::unknown_clippy_lints)]
-#[allow(clippy::mut_mut)]
-#[allow(clippy::redundant_pub_crate)]
-#[allow(clippy::ref_option_ref)]
-#[allow(clippy::type_repetition_in_bounds)]
+#[doc(hidden)]
+#[allow(
+    dead_code,
+    single_use_lifetimes,
+    clippy::unknown_clippy_lints,
+    clippy::absolute_paths,
+    clippy::min_ident_chars,
+    clippy::mut_mut,
+    clippy::redundant_pub_crate,
+    clippy::ref_option_ref,
+    clippy::single_char_lifetime_names,
+    clippy::type_repetition_in_bounds
+)]
 pub(crate) enum EnumProjRef<'__pin, T, U>
 where
     Enum<T, U>: '__pin,
@@ -37,33 +49,50 @@ where
     },
     Unit,
 }
-#[allow(single_use_lifetimes)]
-#[allow(clippy::unknown_clippy_lints)]
-#[allow(clippy::used_underscore_binding)]
+#[allow(
+    single_use_lifetimes,
+    clippy::unknown_clippy_lints,
+    clippy::absolute_paths,
+    clippy::min_ident_chars,
+    clippy::single_char_lifetime_names,
+    clippy::used_underscore_binding
+)]
 const _: () = {
     impl<T, U> Enum<T, U> {
+        #[doc(hidden)]
+        #[inline]
         pub(crate) fn project<'__pin>(
             self: ::pin_project_lite::__private::Pin<&'__pin mut Self>,
         ) -> EnumProj<'__pin, T, U> {
             unsafe {
                 match self.get_unchecked_mut() {
-                    Self::Struct { pinned, unpinned } => EnumProj::Struct {
-                        pinned: ::pin_project_lite::__private::Pin::new_unchecked(pinned),
-                        unpinned: unpinned,
-                    },
+                    Self::Struct { pinned, unpinned } => {
+                        EnumProj::Struct {
+                            pinned: ::pin_project_lite::__private::Pin::new_unchecked(
+                                pinned,
+                            ),
+                            unpinned: unpinned,
+                        }
+                    }
                     Self::Unit => EnumProj::Unit,
                 }
             }
         }
+        #[doc(hidden)]
+        #[inline]
         pub(crate) fn project_ref<'__pin>(
             self: ::pin_project_lite::__private::Pin<&'__pin Self>,
         ) -> EnumProjRef<'__pin, T, U> {
             unsafe {
                 match self.get_ref() {
-                    Self::Struct { pinned, unpinned } => EnumProjRef::Struct {
-                        pinned: ::pin_project_lite::__private::Pin::new_unchecked(pinned),
-                        unpinned: unpinned,
-                    },
+                    Self::Struct { pinned, unpinned } => {
+                        EnumProjRef::Struct {
+                            pinned: ::pin_project_lite::__private::Pin::new_unchecked(
+                                pinned,
+                            ),
+                            unpinned: unpinned,
+                        }
+                    }
                     Self::Unit => EnumProjRef::Unit,
                 }
             }
@@ -75,10 +104,12 @@ const _: () = {
         Struct: (T, ::pin_project_lite::__private::AlwaysUnpin<U>),
         Unit: (),
     }
-    impl<'__pin, T, U> ::pin_project_lite::__private::Unpin for Enum<T, U> where
-        __Origin<'__pin, T, U>: ::pin_project_lite::__private::Unpin
-    {
-    }
+    impl<'__pin, T, U> ::pin_project_lite::__private::Unpin for Enum<T, U>
+    where
+        ::pin_project_lite::__private::PinnedFieldsOf<
+            __Origin<'__pin, T, U>,
+        >: ::pin_project_lite::__private::Unpin,
+    {}
     trait MustNotImplDrop {}
     #[allow(clippy::drop_bounds, drop_bounds)]
     impl<T: ::pin_project_lite::__private::Drop> MustNotImplDrop for T {}

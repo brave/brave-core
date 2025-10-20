@@ -86,7 +86,7 @@ impl TimeZone for DstTester {
         {
             MappedLocalTime::None
         } else {
-            panic!("Unexpected local time {}", local)
+            panic!("Unexpected local time {local}")
         }
     }
 
@@ -118,7 +118,7 @@ impl TimeZone for DstTester {
         } else if *utc >= utc_to_winter_transition && *utc < utc_to_summer_transition {
             DstTester::winter_offset()
         } else {
-            panic!("Unexpected utc time {}", utc)
+            panic!("Unexpected utc time {utc}")
         }
     }
 }
@@ -154,7 +154,10 @@ fn test_datetime_from_timestamp_millis() {
     // that of `from_timestamp_opt`.
     let secs_test = [0, 1, 2, 1000, 1234, 12345678, -1, -2, -1000, -12345678];
     for secs in secs_test.iter().cloned() {
-        assert_eq!(DateTime::from_timestamp_millis(secs * 1000), DateTime::from_timestamp(secs, 0));
+        assert_eq!(
+            DateTime::from_timestamp_millis(secs * 1000),
+            DateTime::from_timestamp_secs(secs)
+        );
     }
 }
 
@@ -191,7 +194,7 @@ fn test_datetime_from_timestamp_micros() {
     for secs in secs_test.iter().copied() {
         assert_eq!(
             DateTime::from_timestamp_micros(secs * 1_000_000),
-            DateTime::from_timestamp(secs, 0)
+            DateTime::from_timestamp_secs(secs)
         );
     }
 }
@@ -242,24 +245,34 @@ fn test_datetime_from_timestamp_nanos() {
     for secs in secs_test.iter().copied() {
         assert_eq!(
             Some(DateTime::from_timestamp_nanos(secs * 1_000_000_000)),
-            DateTime::from_timestamp(secs, 0)
+            DateTime::from_timestamp_secs(secs)
         );
     }
 }
 
 #[test]
+fn test_datetime_from_timestamp_secs() {
+    let valid = [-2208936075, 0, 119731017, 1234567890, 2034061609];
+
+    for timestamp_secs in valid.iter().copied() {
+        let datetime = DateTime::from_timestamp_secs(timestamp_secs).unwrap();
+        assert_eq!(timestamp_secs, datetime.timestamp());
+        assert_eq!(DateTime::from_timestamp(timestamp_secs, 0).unwrap(), datetime);
+    }
+}
+
+#[test]
 fn test_datetime_from_timestamp() {
-    let from_timestamp = |secs| DateTime::from_timestamp(secs, 0);
     let ymdhms = |y, m, d, h, n, s| {
         NaiveDate::from_ymd_opt(y, m, d).unwrap().and_hms_opt(h, n, s).unwrap().and_utc()
     };
-    assert_eq!(from_timestamp(-1), Some(ymdhms(1969, 12, 31, 23, 59, 59)));
-    assert_eq!(from_timestamp(0), Some(ymdhms(1970, 1, 1, 0, 0, 0)));
-    assert_eq!(from_timestamp(1), Some(ymdhms(1970, 1, 1, 0, 0, 1)));
-    assert_eq!(from_timestamp(1_000_000_000), Some(ymdhms(2001, 9, 9, 1, 46, 40)));
-    assert_eq!(from_timestamp(0x7fffffff), Some(ymdhms(2038, 1, 19, 3, 14, 7)));
-    assert_eq!(from_timestamp(i64::MIN), None);
-    assert_eq!(from_timestamp(i64::MAX), None);
+    assert_eq!(DateTime::from_timestamp_secs(-1), Some(ymdhms(1969, 12, 31, 23, 59, 59)));
+    assert_eq!(DateTime::from_timestamp_secs(0), Some(ymdhms(1970, 1, 1, 0, 0, 0)));
+    assert_eq!(DateTime::from_timestamp_secs(1), Some(ymdhms(1970, 1, 1, 0, 0, 1)));
+    assert_eq!(DateTime::from_timestamp_secs(1_000_000_000), Some(ymdhms(2001, 9, 9, 1, 46, 40)));
+    assert_eq!(DateTime::from_timestamp_secs(0x7fffffff), Some(ymdhms(2038, 1, 19, 3, 14, 7)));
+    assert_eq!(DateTime::from_timestamp_secs(i64::MIN), None);
+    assert_eq!(DateTime::from_timestamp_secs(i64::MAX), None);
 }
 
 #[test]
@@ -734,10 +747,7 @@ fn test_datetime_rfc2822() {
             "Thu,\n\t13\n      Feb\n        1969\n    23:32\n             -0330 (Newfoundland Time)"
         ),
         Ok(
-            ymdhms(
-                &FixedOffset::east_opt(-3 * 60 * 60 - 30 * 60).unwrap(),
-                1969, 2, 13, 23, 32, 0,
-            )
+            ymdhms(&FixedOffset::east_opt(-3 * 60 * 60 - 30 * 60).unwrap(), 1969, 2, 13, 23, 32, 0,)
         )
     );
     // example from RFC 2822 Appendix A.5. without trailing " (Newfoundland Time)"
@@ -1032,25 +1042,22 @@ fn test_parse_datetime_utc() {
         "+82701-05-6T15:9:60.898989898989Z",
     ];
     for &s in &valid {
-        eprintln!("test_parse_datetime_utc valid {:?}", s);
+        eprintln!("test_parse_datetime_utc valid {s:?}");
         let d = match s.parse::<DateTime<Utc>>() {
             Ok(d) => d,
-            Err(e) => panic!("parsing `{}` has failed: {}", s, e),
+            Err(e) => panic!("parsing `{s}` has failed: {e}"),
         };
-        let s_ = format!("{:?}", d);
+        let s_ = format!("{d:?}");
         // `s` and `s_` may differ, but `s.parse()` and `s_.parse()` must be same
         let d_ = match s_.parse::<DateTime<Utc>>() {
             Ok(d) => d,
             Err(e) => {
-                panic!("`{}` is parsed into `{:?}`, but reparsing that has failed: {}", s, d, e)
+                panic!("`{s}` is parsed into `{d:?}`, but reparsing that has failed: {e}")
             }
         };
         assert!(
             d == d_,
-            "`{}` is parsed into `{:?}`, but reparsed result `{:?}` does not match",
-            s,
-            d,
-            d_
+            "`{s}` is parsed into `{d:?}`, but reparsed result `{d_:?}` does not match"
         );
     }
 
@@ -1084,7 +1091,7 @@ fn test_parse_datetime_utc() {
         "  +82701  -  05  -  6  T  15  :  9  : 60.898989898989   Z", // valid datetime, wrong format
     ];
     for &s in &invalid {
-        eprintln!("test_parse_datetime_utc invalid {:?}", s);
+        eprintln!("test_parse_datetime_utc invalid {s:?}");
         assert!(s.parse::<DateTime<Utc>>().is_err());
     }
 }
@@ -1099,8 +1106,10 @@ fn test_parse_from_str() {
         Ok(ymdhms(&edt, 2014, 5, 7, 12, 34, 56))
     ); // ignore offset
     assert!(DateTime::parse_from_str("20140507000000", "%Y%m%d%H%M%S").is_err()); // no offset
-    assert!(DateTime::parse_from_str("Fri, 09 Aug 2013 23:54:35 GMT", "%a, %d %b %Y %H:%M:%S GMT")
-        .is_err());
+    assert!(
+        DateTime::parse_from_str("Fri, 09 Aug 2013 23:54:35 GMT", "%a, %d %b %Y %H:%M:%S GMT")
+            .is_err()
+    );
     assert_eq!(
         DateTime::parse_from_str("0", "%s").unwrap(),
         DateTime::from_timestamp(0, 0).unwrap().fixed_offset()
@@ -1569,7 +1578,7 @@ fn test_min_max_getters() {
     let offset_max = FixedOffset::east_opt(2 * 60 * 60).unwrap();
     let beyond_max = offset_max.from_utc_datetime(&NaiveDateTime::MAX);
 
-    assert_eq!(format!("{:?}", beyond_min), "-262144-12-31T22:00:00-02:00");
+    assert_eq!(format!("{beyond_min:?}"), "-262144-12-31T22:00:00-02:00");
     // RFC 2822 doesn't support years with more than 4 digits.
     // assert_eq!(beyond_min.to_rfc2822(), "");
     #[cfg(feature = "alloc")]
@@ -1594,7 +1603,7 @@ fn test_min_max_getters() {
     assert_eq!(beyond_min.second(), 0);
     assert_eq!(beyond_min.nanosecond(), 0);
 
-    assert_eq!(format!("{:?}", beyond_max), "+262143-01-01T01:59:59.999999999+02:00");
+    assert_eq!(format!("{beyond_max:?}"), "+262143-01-01T01:59:59.999999999+02:00");
     // RFC 2822 doesn't support years with more than 4 digits.
     // assert_eq!(beyond_max.to_rfc2822(), "");
     #[cfg(feature = "alloc")]
@@ -1895,7 +1904,7 @@ fn nano_roundrip() {
         i64::MAX - 1,
         i64::MAX,
     ] {
-        println!("nanos: {}", nanos);
+        println!("nanos: {nanos}");
         let dt = Utc.timestamp_nanos(nanos);
         let nanos2 = dt.timestamp_nanos_opt().expect("value roundtrips");
         assert_eq!(nanos, nanos2);

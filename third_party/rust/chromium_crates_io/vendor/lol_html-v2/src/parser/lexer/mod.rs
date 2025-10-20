@@ -5,20 +5,14 @@ mod conditions;
 mod lexeme;
 
 pub(crate) use self::lexeme::*;
-use crate::base::{Align, Range};
+use crate::base::{Align, Bytes, Range};
 use crate::html::{LocalNameHash, Namespace, TextType};
-use crate::parser::state_machine::{
-    ActionError, ActionResult, FeedbackDirective, StateMachine, StateResult,
-};
+use crate::parser::state_machine::{ActionResult, FeedbackDirective, StateMachine, StateResult};
 use crate::parser::{ParserContext, ParserDirective, ParsingAmbiguityError, TreeBuilderFeedback};
-use crate::rewriter::RewritingError;
 
 pub(crate) trait LexemeSink {
-    fn handle_tag(&mut self, lexeme: &TagLexeme<'_>) -> Result<ParserDirective, RewritingError>;
-    fn handle_non_tag_content(
-        &mut self,
-        lexeme: &NonTagContentLexeme<'_>,
-    ) -> Result<(), RewritingError>;
+    fn handle_tag(&mut self, lexeme: &TagLexeme<'_>) -> ActionResult<ParserDirective>;
+    fn handle_non_tag_content(&mut self, lexeme: &NonTagContentLexeme<'_>) -> ActionResult;
 }
 
 pub(crate) type State<S> = fn(&mut Lexer<S>, context: &mut ParserContext<S>, &[u8]) -> StateResult;
@@ -30,7 +24,6 @@ pub(crate) struct Lexer<S> {
     is_last_input: bool,
     lexeme_start: usize,
     token_part_start: usize,
-    is_state_enter: bool,
     cdata_allowed: bool,
     state: State<S>,
     current_tag_token: Option<TagTokenOutline>,
@@ -51,7 +44,6 @@ impl<S: LexemeSink> Lexer<S> {
             is_last_input: false,
             lexeme_start: 0,
             token_part_start: 0,
-            is_state_enter: true,
             cdata_allowed: false,
             state: Self::data_state,
             current_tag_token: None,
@@ -115,10 +107,8 @@ impl<S: LexemeSink> Lexer<S> {
 
         self.lexeme_start = lexeme.raw_range().end;
 
-        context
-            .output_sink
-            .handle_non_tag_content(lexeme)
-            .map_err(ActionError::RewritingError)
+        context.output_sink.handle_non_tag_content(lexeme)?;
+        Ok(())
     }
 
     #[inline]
@@ -126,7 +116,7 @@ impl<S: LexemeSink> Lexer<S> {
         &mut self,
         context: &mut ParserContext<S>,
         lexeme: &TagLexeme<'_>,
-    ) -> Result<ParserDirective, RewritingError> {
+    ) -> ActionResult<ParserDirective> {
         trace!(@output lexeme);
 
         self.lexeme_start = lexeme.raw_range().end;
@@ -138,12 +128,14 @@ impl<S: LexemeSink> Lexer<S> {
     #[must_use]
     fn create_lexeme_with_raw<'i, T>(
         &self,
+        previously_consumed_byte_count: usize,
         input: &'i [u8],
         token: T,
         raw_end: usize,
     ) -> Lexeme<'i, T> {
         Lexeme::new(
-            input.into(),
+            previously_consumed_byte_count,
+            Bytes::new(input),
             token,
             Range {
                 start: self.lexeme_start,
@@ -154,18 +146,28 @@ impl<S: LexemeSink> Lexer<S> {
 
     #[inline]
     #[must_use]
-    fn create_lexeme_with_raw_inclusive<'i, T>(&self, input: &'i [u8], token: T) -> Lexeme<'i, T> {
+    fn create_lexeme_with_raw_inclusive<'i, T>(
+        &self,
+        previously_consumed_byte_count: usize,
+        input: &'i [u8],
+        token: T,
+    ) -> Lexeme<'i, T> {
         let raw_end = self.pos() + 1;
 
-        self.create_lexeme_with_raw(input, token, raw_end)
+        self.create_lexeme_with_raw(previously_consumed_byte_count, input, token, raw_end)
     }
 
     #[inline]
     #[must_use]
-    fn create_lexeme_with_raw_exclusive<'i, T>(&self, input: &'i [u8], token: T) -> Lexeme<'i, T> {
+    fn create_lexeme_with_raw_exclusive<'i, T>(
+        &self,
+        previously_consumed_byte_count: usize,
+        input: &'i [u8],
+        token: T,
+    ) -> Lexeme<'i, T> {
         let raw_end = self.pos();
 
-        self.create_lexeme_with_raw(input, token, raw_end)
+        self.create_lexeme_with_raw(previously_consumed_byte_count, input, token, raw_end)
     }
 }
 

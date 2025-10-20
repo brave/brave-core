@@ -1,6 +1,6 @@
 [package]
 name = "smallvec"
-version = "1.10.0"
+version = "1.15.1"
 edition = "2018"
 authors = ["The Servo Project Developers"]
 license = "MIT OR Apache-2.0"
@@ -18,6 +18,9 @@ write = []
 union = []
 specialization = []
 may_dangle = []
+drain_filter = []
+drain_keep_rest = ["drain_filter"]
+impl_bincode = ["bincode", "unty"]
 
 # UNSTABLE FEATURES (requires Rust nightly)
 # Enable to use the #[debugger_visualizer] attribute.
@@ -25,16 +28,19 @@ debugger_visualizer = []
 
 [dependencies]
 serde = { version = "1", optional = true, default-features = false }
+malloc_size_of = { version = "0.1", optional = true, default-features = false }
 arbitrary = { version = "1", optional = true }
+bincode = { version = "2", optional = true, default-features = false }
+unty = { version = "0.0.4", optional = true, default-features = false }
 
-[dev_dependencies]
-bincode = "1.0.1"
+[dev-dependencies]
+bincode1 = { package = "bincode", version = "1.0.1" }
 debugger_test = "0.1.0"
 debugger_test_parser = "0.1.0"
 
 [package.metadata.docs.rs]
 all-features = true
-rustdoc-args = ["--cfg", "docsrs"]
+rustdoc-args = ["--cfg", "docsrs", "--generate-link-to-definition"]
 
 [[test]]
 name = "debugger_visualizer"

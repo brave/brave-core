@@ -64,6 +64,30 @@ fn reserve_overflow() {
 }
 
 #[test]
+fn reserve() {
+    let mut headers = HeaderMap::<usize>::default();
+    assert_eq!(headers.capacity(), 0);
+
+    let requested_cap = 8;
+    headers.reserve(requested_cap);
+
+    let reserved_cap = headers.capacity();
+    assert!(
+        reserved_cap >= requested_cap,
+        "requested {} capacity, but it reserved only {} entries",
+        requested_cap,
+        reserved_cap,
+    );
+
+    for i in 0..requested_cap {
+        let name = format!("h{i}").parse::<HeaderName>().unwrap();
+        headers.insert(name, i);
+    }
+
+    assert_eq!(headers.capacity(), reserved_cap, "unexpected reallocation");
+}
+
+#[test]
 fn drain() {
     let mut headers = HeaderMap::new();
 

@@ -1,7 +1,6 @@
 # `uuid`
 
 [![Latest Version](https://img.shields.io/crates/v/uuid.svg)](https://crates.io/crates/uuid)
-![Minimum rustc version](https://img.shields.io/badge/rustc-1.46.0+-yellow.svg)
 [![Continuous integration](https://github.com/uuid-rs/uuid/actions/workflows/ci.yml/badge.svg)](https://github.com/uuid-rs/uuid/actions/workflows/ci.yml)
 
 Here's an example of a UUID:
@@ -29,11 +28,10 @@ Add the following to your `Cargo.toml`:
 
 ```toml
 [dependencies.uuid]
-version = "1.3.0"
+version = "1.18.1"
+# Lets you generate random UUIDs
 features = [
-    "v4",                # Lets you generate random UUIDs
-    "fast-rng",          # Use a faster (but still sufficiently random) RNG
-    "macro-diagnostics", # Enable better diagnostics for compile-time UUIDs
+    "v4",
 ]
 ```
 
@@ -66,18 +64,13 @@ assert_eq!(Some(Version::Random), my_uuid.get_version());
 If you'd like to parse UUIDs _really_ fast, check out the [`uuid-simd`](https://github.com/nugine/uuid-simd)
 library.
 
-For more details on using `uuid`, [see the library documentation](https://docs.rs/uuid/1.3.0/uuid).
-
-## Minimum Supported Rust Version (MSRV)
-
-The minimum supported Rust version for `uuid` is documented in
-CI. It may be bumped in minor releases as necessary.
+For more details on using `uuid`, [see the library documentation](https://docs.rs/uuid/1.18.1/uuid).
 
 ## References
 
-* [`uuid` library docs](https://docs.rs/uuid/1.3.0/uuid).
+* [`uuid` library docs](https://docs.rs/uuid/1.18.1/uuid).
 * [Wikipedia: Universally Unique Identifier](http://en.wikipedia.org/wiki/Universally_unique_identifier).
-* [RFC4122: A Universally Unique IDentifier (UUID) URN Namespace](http://tools.ietf.org/html/rfc4122).
+* [RFC 9562: Universally Unique IDentifiers (UUID)](https://www.ietf.org/rfc/rfc9562.html).
 
 ---
 # License
@@ -88,9 +81,6 @@ Licensed under either of
 * MIT license (LICENSE-MIT or https://opensource.org/licenses/MIT)
 
 at your option.
-
-
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fuuid-rs%2Fuuid.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fuuid-rs%2Fuuid?ref=badge_large)
 
 ## Contribution
 

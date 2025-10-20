@@ -1,6 +1,6 @@
 [package]
 name = "zcash_spec"
-version = "0.1.0"
+version = "0.1.2"
 authors = [
     "Jack Grigg <jack@electriccoin.co>",
 ]
@@ -12,4 +12,4 @@ repository = "https://github.com/zcash/zcash_spec"
 license = "MIT OR Apache-2.0"
 
 [dependencies]
-blake2b_simd = "1"
+blake2b_simd = { version = "1", default-features = false }

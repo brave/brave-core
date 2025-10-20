@@ -18,12 +18,12 @@ pub fn fb_vector_to_slice<T>(vector: flatbuffers::Vector<'_, T>) -> &[T] {
         // We can't use T with the size more than MIN_ALIGNMENT.
         // Since the beginning of flatbuffer data is aligned to that size,
         // the alignment of the data must be a divisor of MIN_ALIGNMENT.
-        assert!(MIN_ALIGNMENT % std::mem::size_of::<T>() == 0);
+        assert!(MIN_ALIGNMENT.is_multiple_of(std::mem::size_of::<T>()));
     }
     let _ = static_assert_alignment::<T>;
 
-    assert!(bytes.len() % std::mem::size_of::<T>() == 0);
-    assert!(bytes.as_ptr() as usize % std::mem::align_of::<T>() == 0);
+    assert!(bytes.len().is_multiple_of(std::mem::size_of::<T>()));
+    assert!((bytes.as_ptr() as usize).is_multiple_of(std::mem::align_of::<T>()));
     unsafe {
         std::slice::from_raw_parts(
             bytes.as_ptr() as *const T,
@@ -82,7 +82,7 @@ impl VerifiedFlatFilterListMemory {
             raw_data: vec,
             start,
         };
-        assert!(memory.data().as_ptr() as usize % MIN_ALIGNMENT == 0);
+        assert!((memory.data().as_ptr() as usize).is_multiple_of(MIN_ALIGNMENT));
         memory
     }
 

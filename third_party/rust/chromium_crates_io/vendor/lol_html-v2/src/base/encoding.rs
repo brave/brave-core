@@ -80,7 +80,8 @@ impl SharedEncoding {
     #[must_use]
     pub fn get(&self) -> &'static Encoding {
         let encoding = self.encoding.load(Ordering::Relaxed);
-        ALL_ENCODINGS[encoding]
+        // it will never be out of range, but get() avoids a panic branch
+        ALL_ENCODINGS.get(encoding).unwrap_or(&ALL_ENCODINGS[0])
     }
 
     pub fn set(&self, encoding: AsciiCompatibleEncoding) {

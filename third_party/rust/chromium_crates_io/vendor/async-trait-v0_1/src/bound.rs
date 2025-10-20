@@ -1,5 +1,5 @@
 use proc_macro2::{Ident, Span, TokenStream};
-use quote::quote_spanned;
+use quote::{quote, ToTokens};
 use syn::punctuated::Punctuated;
 use syn::{Token, TypeParamBound};
 
@@ -34,10 +34,12 @@ impl InferredBound {
             InferredBound::Sync => "Sync",
         }
     }
+}
 
-    pub fn spanned_path(&self, span: Span) -> TokenStream {
-        let ident = Ident::new(self.as_str(), span);
-        quote_spanned!(span=> ::core::marker::#ident)
+impl ToTokens for InferredBound {
+    fn to_tokens(&self, tokens: &mut TokenStream) {
+        let ident = Ident::new(self.as_str(), Span::call_site());
+        quote!(::core::marker::#ident).to_tokens(tokens);
     }
 }
 

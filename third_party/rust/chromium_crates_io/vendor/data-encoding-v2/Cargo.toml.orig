@@ -1,6 +1,6 @@
 [package]
 name = "data-encoding"
-version = "2.6.0"
+version = "2.9.0"
 authors = ["Julien Cretin <git@ia0.eu>"]
 license = "MIT"
 edition = "2018"
@@ -21,3 +21,13 @@ rustdoc-args = ["--cfg=docsrs"]
 default = ["std"]
 alloc = []
 std = ["alloc"]
+
+[lints]
+clippy.undocumented-unsafe-blocks = "warn"
+rust.elided-lifetimes-in-paths = "warn"
+rust.let-underscore-drop = "warn"
+rust.missing-debug-implementations = "warn"
+rust.missing-docs = "warn"
+rust.unreachable-pub = "warn"
+rust.unsafe-op-in-unsafe-fn = "warn"
+rust.unused-results = "warn"

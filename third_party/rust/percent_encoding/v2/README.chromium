@@ -1,9 +1,9 @@
 Name: percent-encoding
 URL: https://crates.io/crates/percent-encoding
-Version: 2.2.0
-Revision: 359bc90a4f07224f79cc79c45dc873d44bcd6f14
+Version: 2.3.2
+Revision: 91377f48bf35011d042aa5abef9e7f2a0a625aaa
 License: Apache-2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/percent-encoding-v2/LICENSE-APACHE
+License File: //brave/third_party/rust/chromium_crates_io/vendor/percent-encoding-v2/LICENSE-Apache
 Shipped: yes
 Security Critical: yes
 

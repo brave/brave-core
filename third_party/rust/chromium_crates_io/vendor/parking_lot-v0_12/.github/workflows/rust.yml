@@ -17,11 +17,8 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu, macos, windows]
-        channel: [1.49.0, stable, beta, nightly]
+        channel: [stable, beta, nightly]
         feature: [arc_lock, serde, deadlock_detection]
-        exclude:
-          - feature: deadlock_detection
-            channel: '1.49.0'
         include:
           - channel: nightly
             feature: nightly
@@ -31,13 +28,15 @@ jobs:
             os: ubuntu
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - run: rustup default ${{ matrix.channel }}
     - run: cargo build --all
     - run: cargo test --all
     - run: cargo build --all --features ${{ matrix.feature }}
     - run: cargo test --all --features ${{ matrix.feature }}
       if: matrix.feature == 'nightly'
+    - run: cargo install cargo-msrv
+    - run: cargo msrv --workspace verify
   build_other_platforms:
     runs-on: ubuntu-latest
     strategy:
@@ -45,23 +44,23 @@ jobs:
         target:
           - wasm32-unknown-unknown
           - x86_64-fortanix-unknown-sgx
-          #- x86_64-unknown-redox
-          #- x86_64-linux-android
+          - x86_64-unknown-redox
+          - x86_64-linux-android
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - run: rustup default nightly
     - run: rustup target add ${{ matrix.target }}
     - run: cargo build --workspace --target ${{ matrix.target }} --features nightly
   build_docs:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - run: rustup default nightly
       - run: cargo doc --workspace --features arc_lock,serde,deadlock_detection --no-deps -p parking_lot -p parking_lot_core -p lock_api
   benchmark:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - run: rustup default nightly
       - run: |
           cd benchmark

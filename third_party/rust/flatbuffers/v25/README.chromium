@@ -1,7 +1,7 @@
 Name: flatbuffers
 URL: https://crates.io/crates/flatbuffers
-Version: 25.2.10
-Revision: 1c514626e83c20fffa8557e75641848e1e15cd5e
+Version: 25.9.23
+Revision: 187240970746d00bbd26b0f5873ed54d2477f9f3
 License: Apache-2.0
 License File:
 Shipped: yes

@@ -3,7 +3,7 @@ use std::error::Error as StdError;
 use std::panic::{RefUnwindSafe, UnwindSafe};
 use std::sync::Mutex;
 
-type BoxResult = Result<(), Box<dyn StdError + Send + Sync>>;
+type HandlerResult = Result<(), Box<dyn StdError + Send + Sync>>;
 
 /// The type of inserted content.
 #[derive(Copy, Clone)]
@@ -89,7 +89,7 @@ impl Mutations {
 pub(crate) enum StringChunk {
     Buffer(Box<str>, ContentType),
     // The mutex is never actually locked, but makes the struct `Sync` without unsafe.
-    Stream(Mutex<Box<dyn StreamingHandler + Send>>),
+    Stream(Mutex<Box<dyn StreamingHandler + Send + 'static>>),
 }
 
 impl StringChunk {
@@ -98,7 +98,7 @@ impl StringChunk {
     }
 
     #[inline]
-    pub(crate) fn stream(handler: Box<dyn StreamingHandler + Send>) -> Self {
+    pub(crate) fn stream(handler: Box<dyn StreamingHandler + Send + 'static>) -> Self {
         Self::Stream(Mutex::new(handler))
     }
 }
@@ -130,7 +130,7 @@ impl DynamicString {
         self.chunks.push(chunk);
     }
 
-    pub fn encode(self, sink: &mut StreamingHandlerSink<'_>) -> BoxResult {
+    pub fn encode(self, sink: &mut StreamingHandlerSink<'_>) -> HandlerResult {
         for chunk in self.chunks {
             match chunk {
                 StringChunk::Buffer(content, content_type) => {
@@ -143,13 +143,19 @@ impl DynamicString {
                         .map_err(std::sync::PoisonError::into_inner);
                     h.write_all(sink)?;
                 }
-            };
+            }
         }
         Ok(())
     }
 }
 
 /// A callback used to write content asynchronously.
+///
+/// Use the [`streaming!`] macro to construct it.
+#[diagnostic::on_unimplemented(
+    note = "use `streaming!` macro to create the handler",
+    label = "Must be `FnOnce(&mut StreamingHandlerSink<'_>) -> Result<(), Box<dyn std::error::Error + Send + Sync>> + Send + 'static`"
+)]
 pub trait StreamingHandler {
     /// This method is called only once, and is expected to write content
     /// by calling the [`sink.write_str()`](StreamingHandlerSink::write_str) one or more times.
@@ -157,15 +163,18 @@ pub trait StreamingHandler {
     /// Multiple calls to `sink.write_str()` append more content to the output.
     ///
     /// See [`StreamingHandlerSink`].
-    fn write_all(self: Box<Self>, sink: &mut StreamingHandlerSink<'_>) -> BoxResult;
+    ///
+    /// Note: if you get "implementation of `FnOnce` is not general enough" error, add explicit argument
+    /// `sink: &mut StreamingHandlerSink<'_>` to the closure.
+    fn write_all(self: Box<Self>, sink: &mut StreamingHandlerSink<'_>) -> HandlerResult;
 }
 
 impl RefUnwindSafe for StringChunk {}
 impl UnwindSafe for StringChunk {}
 
-impl<F> From<F> for Box<dyn StreamingHandler + Send>
+impl<F> From<F> for Box<dyn StreamingHandler + Send + 'static>
 where
-    F: FnOnce(&mut StreamingHandlerSink<'_>) -> BoxResult + Send + 'static,
+    F: FnOnce(&mut StreamingHandlerSink<'_>) -> HandlerResult + Send + 'static,
 {
     #[inline]
     fn from(f: F) -> Self {
@@ -175,10 +184,10 @@ where
 
 impl<F> StreamingHandler for F
 where
-    F: FnOnce(&mut StreamingHandlerSink<'_>) -> BoxResult + Send + 'static,
+    F: FnOnce(&mut StreamingHandlerSink<'_>) -> HandlerResult + Send + 'static,
 {
     #[inline]
-    fn write_all(self: Box<F>, sink: &mut StreamingHandlerSink<'_>) -> BoxResult {
+    fn write_all(self: Box<F>, sink: &mut StreamingHandlerSink<'_>) -> HandlerResult {
         (self)(sink)
     }
 }

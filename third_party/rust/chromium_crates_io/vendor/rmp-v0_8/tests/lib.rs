@@ -1,7 +1,9 @@
-extern crate rmp as msgpack;
-
 #[cfg(test)]
 #[macro_use]
 extern crate quickcheck;
 
-mod func;
+mod func {
+    mod decode;
+    mod encode;
+    mod mirror;
+}

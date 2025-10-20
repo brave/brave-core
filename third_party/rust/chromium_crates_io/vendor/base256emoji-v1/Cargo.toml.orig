@@ -1,0 +1,14 @@
+[package]
+name = "base256emoji"
+description = "A multibase base256emoji implementation."
+homepage = "https://github.com/Jorropo/base256emoji"
+documentation = "https://docs.rs/base256emoji"
+readme = "README.md"
+version = "1.0.2"
+edition = "2021"
+license = "MIT"
+repository = "https://github.com/Jorropo/base256emoji/"
+
+[dependencies]
+match-lookup = "0.1.1"
+const-str = "0.4.3"

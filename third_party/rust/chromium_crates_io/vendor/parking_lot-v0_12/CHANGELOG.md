@@ -1,3 +1,100 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+
+## `parking_lot` - [0.12.5](https://github.com/Amanieu/parking_lot/compare/parking_lot-v0.12.4...parking_lot-v0.12.5) - 2025-09-30
+
+- Bumped MSRV to 1.71
+- Fixed Miri when the `hardware-lock-elision` feature is enabled (#491)
+- Added missing `into_arc(_fair)` methods (#472)
+- Fixed `RawRwLock::bump_*()` not releasing lock when there are multiple readers (#471)
+
+## `parking_lot_core` - [0.9.12](https://github.com/Amanieu/parking_lot/compare/parking_lot_core-v0.9.11...parking_lot_core-v0.9.12) - 2025-09-30
+
+- Bumped MSRV to 1.71
+- Switched from `windows-targets` to `windows-link`. (#493)
+- Replaced `thread-id` dependency with `std::thread::ThreadId` (#483)
+- Added SGX implementation for `ThreadParker.park_until` (#481)
+
+## `lock_api` - [0.4.14](https://github.com/Amanieu/parking_lot/compare/lock_api-v0.4.13...lock_api-v0.4.14) - 2025-09-30
+
+- Fixed use of `doc_cfg` when building on docs.rs.
+- Bumped MSRV to 1.71
+- Added `#[track_caller]` where locking implementations could feasibly need to panic
+- Added `try_map_or_err` to various mutex guards (#480)
+- Removed unnecessary build script and `autocfg` dependency (#474)
+- Added missing `into_arc(_fair)` methods (#472)
+
+## `parking_lot` - [0.12.4](https://github.com/Amanieu/parking_lot/compare/parking_lot-v0.12.3...parking_lot-v0.12.4) - 2025-05-29
+
+- Fix parked upgraders potentially not being woken up after a write lock
+- Fix clearing `PARKED_WRITER_BIT` after a timeout
+
+## `parking_lot_core` - [0.9.11](https://github.com/Amanieu/parking_lot/compare/parking_lot_core-v0.9.10...parking_lot_core-v0.9.11) - 2025-05-29
+
+- Use Release/Acquire ordering in thread_parker::windows::Backend::create
+- Remove warnings due to new lint on unknown cfgs
+
+## `lock_api` - [0.4.13](https://github.com/Amanieu/parking_lot/compare/lock_api-v0.4.12...lock_api-v0.4.13) - 2025-05-29
+
+- Remove warnings due to new lint on unknown cfgs
+
+## parking_lot 0.12.3 (2024-05-24)
+
+- Export types provided by arc_lock feature (#442)
+
+## parking_lot 0.12.2, parking_lot_core 0.9.10, lock_api 0.4.12 (2024-04-15)
+
+- Fixed panic when calling `with_upgraded` twice on a `ArcRwLockUpgradableReadGuard` (#431)
+- Fixed `RwLockUpgradeableReadGuard::with_upgraded` 
+- Added lock_api::{Mutex, ReentrantMutex, RwLock}::from_raw methods (#429)
+- Added Apple visionOS support (#433)
+
+## parking_lot_core 0.9.9, lock_api 0.4.11 (2023-10-18)
+
+- Fixed `RwLockUpgradeableReadGuard::with_upgraded`. (#393)
+- Fixed `ReentrantMutex::bump` lock count. (#390)
+- Added methods to unsafely create a lock guard out of thin air. (#403)
+- Added support for Apple tvOS. (#405)
+
+## parking_lot_core 0.9.8, lock_api 0.4.10 (2023-06-05)
+
+- Mark guards with `#[clippy::has_significant_drop]` (#369, #371)
+- Removed windows-sys dependency (#374, #378)
+- Add `atomic_usize` default feature to support platforms without atomics. (#380)
+- Add with_upgraded API to upgradable read locks (#386)
+- Make RwLock guards Sync again (#370)
+
+## parking_lot_core 0.9.7 (2023-02-01)
+
+- Update windows-sys dependency to 0.45. (#368)
+
+## parking_lot_core 0.9.6 (2023-01-11)
+
+- Add support for watchOS. (#367)
+
+## parking_lot_core 0.9.5 (2022-11-29)
+
+- Update use of `libc::timespec` to prepare for future libc version (#363)
+
+## parking_lot_core 0.9.4 (2022-10-18)
+
+- Bump windows-sys dependency to 0.42. (#356)
+
+## lock_api 0.4.9 (2022-09-20)
+
+- Fixed `ReentrantMutexGuard::try_map` signature (#355)
+
+## lock_api 0.4.8 (2022-08-28)
+
+- Fixed unsound `Sync`/`Send` impls for `ArcMutexGuard`. (#349)
+- Added `ArcMutexGuard::into_arc`. (#350)
+
 ## parking_lot 0.12.1 (2022-05-31)
 
 - Fixed incorrect memory ordering in `RwLock`. (#344)

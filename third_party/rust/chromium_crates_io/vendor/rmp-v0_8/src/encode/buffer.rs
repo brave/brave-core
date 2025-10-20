@@ -1,9 +1,9 @@
-//! Implementation of the [ByteBuf] type
+//! Implementation of the [`ByteBuf`] type
 
 use super::RmpWrite;
+use alloc::vec::Vec;
 #[cfg(not(feature = "std"))]
 use core::fmt::{self, Display, Formatter};
-use alloc::vec::Vec;
 
 /// An error returned from writing to `&mut [u8]` (a byte buffer of fixed capacity) on no_std
 ///
@@ -17,7 +17,7 @@ use alloc::vec::Vec;
 #[cfg(not(feature = "std"))]
 #[doc(hidden)]
 pub struct FixedBufCapacityOverflow {
-    _priv: ()
+    _priv: (),
 }
 
 /// An error returned from writing to `&mut [u8]`
@@ -61,9 +61,7 @@ impl<'a> RmpWrite for &'a mut [u8] {
             }
             Ok(())
         } else {
-            Err(FixedBufCapacityOverflow {
-                _priv: ()
-            })
+            Err(FixedBufCapacityOverflow { _priv: () })
         }
     }
 }
@@ -84,28 +82,35 @@ pub struct ByteBuf {
 impl ByteBuf {
     /// Construct a new empty buffer
     #[inline]
+    #[must_use]
     pub fn new() -> Self {
         ByteBuf { bytes: Vec::new() }
     }
     /// Construct a new buffer with the specified capacity
     ///
-    /// See [Vec::with_capacity] for details
+    /// See [`Vec::with_capacity`] for details
     #[inline]
+    #[must_use]
     pub fn with_capacity(capacity: usize) -> Self {
-        ByteBuf { bytes: Vec::with_capacity(capacity) }
+        ByteBuf {
+            bytes: Vec::with_capacity(capacity),
+        }
     }
     /// Unwrap the underlying buffer of this vector
     #[inline]
+    #[must_use]
     pub fn into_vec(self) -> Vec<u8> {
         self.bytes
     }
-    /// Wrap the specified vector as a [ByteBuf]
+    /// Wrap the specified vector as a [`ByteBuf`]
     #[inline]
+    #[must_use]
     pub fn from_vec(bytes: Vec<u8>) -> Self {
         ByteBuf { bytes }
     }
     /// Get a reference to this type as a [Vec]
     #[inline]
+    #[must_use]
     pub fn as_vec(&self) -> &Vec<u8> {
         &self.bytes
     }
@@ -116,6 +121,7 @@ impl ByteBuf {
     }
     /// Get a reference to this type as a slice of bytes (`&[u8]`)
     #[inline]
+    #[must_use]
     pub fn as_slice(&self) -> &[u8] {
         &self.bytes
     }
@@ -168,7 +174,6 @@ impl RmpWrite for ByteBuf {
 #[cfg(not(feature = "std"))]
 impl<'a> RmpWrite for Vec<u8> {
     type Error = core::convert::Infallible;
-
 
     #[inline]
     fn write_u8(&mut self, val: u8) -> Result<(), Self::Error> {

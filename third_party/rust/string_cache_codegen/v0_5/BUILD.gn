@@ -25,11 +25,11 @@ cargo_crate("buildrs_support") {
   cargo_pkg_name = "string_cache_codegen"
   cargo_pkg_description = "A codegen library for string-cache, developed as part of the Servo project."
   cargo_pkg_repository = "https://github.com/servo/string-cache"
-  cargo_pkg_version = "0.5.2"
+  cargo_pkg_version = "0.5.4"
 
   deps = [
-    "//brave/third_party/rust/phf_generator/v0_10:lib",
-    "//brave/third_party/rust/phf_shared/v0_10:lib",
+    "//brave/third_party/rust/phf_generator/v0_11:lib",
+    "//brave/third_party/rust/phf_shared/v0_11:lib",
     "//brave/third_party/rust/proc_macro2/v1:lib",
     "//brave/third_party/rust/quote/v1:lib",
   ]

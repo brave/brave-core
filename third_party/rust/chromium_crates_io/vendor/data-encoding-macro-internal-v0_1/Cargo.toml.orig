@@ -1,6 +1,6 @@
 [package]
 name = "data-encoding-macro-internal"
-version = "0.1.13"
+version = "0.1.16"
 authors = ["Julien Cretin <cretin@google.com>"]
 license = "MIT"
 edition = "2018"
@@ -14,12 +14,12 @@ include = ["Cargo.toml", "LICENSE", "README.md", "src/lib.rs"]
 proc-macro = true
 
 [dependencies.data-encoding]
-version = "2.6.0"
+version = "2.9.0"
 path = "../.."
 default-features = false
 features = ["alloc"]
 
 [dependencies.syn]
-version = "1"
+version = ">= 1, < 3"
 default-features = false
 features = ["parsing", "proc-macro"]

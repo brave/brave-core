@@ -17,12 +17,13 @@ cargo_crate("lib") {
   inputs = []
 
   build_native_rust_unit_tests = false
-  edition = "2015"
-  cargo_pkg_authors = "Vurich <jackefransham@hotmail.co.uk>"
+  edition = "2021"
+  cargo_pkg_authors = "Eira Fransham <jackefransham@gmail.com>"
   cargo_pkg_name = "crunchy"
   cargo_pkg_description =
       "Crunchy unroller: deterministically unroll constant loops"
-  cargo_pkg_version = "0.2.2"
+  cargo_pkg_repository = "https://github.com/eira-fransham/crunchy"
+  cargo_pkg_version = "0.2.4"
 
   features = [
     "default",

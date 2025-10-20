@@ -36,7 +36,7 @@ unsafe impl GetThreadId for RawThreadId {
 /// - `ReentrantMutexGuard` does not give mutable references to the locked data.
 ///   Use a `RefCell` if you need this.
 ///
-/// See [`Mutex`](type.Mutex.html) for more details about the underlying mutex
+/// See [`Mutex`](crate::Mutex) for more details about the underlying mutex
 /// primitive.
 pub type ReentrantMutex<T> = lock_api::ReentrantMutex<RawMutex, RawThreadId, T>;
 
@@ -71,7 +71,9 @@ pub type MappedReentrantMutexGuard<'a, T> =
 #[cfg(test)]
 mod tests {
     use crate::ReentrantMutex;
+    use crate::ReentrantMutexGuard;
     use std::cell::RefCell;
+    use std::sync::mpsc::channel;
     use std::sync::Arc;
     use std::thread;
 
@@ -132,6 +134,26 @@ mod tests {
         let mutex = ReentrantMutex::new(vec![0u8, 10]);
 
         assert_eq!(format!("{:?}", mutex), "ReentrantMutex { data: [0, 10] }");
+    }
+
+    #[test]
+    fn test_reentrant_mutex_bump() {
+        let mutex = Arc::new(ReentrantMutex::new(()));
+        let mutex2 = mutex.clone();
+
+        let mut guard = mutex.lock();
+
+        let (tx, rx) = channel();
+
+        thread::spawn(move || {
+            let _guard = mutex2.lock();
+            tx.send(()).unwrap();
+        });
+
+        // `bump()` repeatedly until the thread starts up and requests the lock
+        while rx.try_recv().is_err() {
+            ReentrantMutexGuard::bump(&mut guard);
+        }
     }
 
     #[cfg(feature = "serde")]

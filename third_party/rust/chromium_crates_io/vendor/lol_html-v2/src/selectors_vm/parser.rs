@@ -5,6 +5,7 @@ use selectors::parser::{
     Combinator, Component, NonTSPseudoClass, Parser, PseudoElement, SelectorImpl, SelectorList,
     SelectorParseErrorKind,
 };
+use selectors::parser::{NthSelectorData, ParseRelative};
 use std::fmt;
 use std::str::FromStr;
 
@@ -12,7 +13,7 @@ use std::str::FromStr;
 pub(crate) struct SelectorImplDescriptor;
 
 #[derive(Clone, Default, Eq, PartialEq)]
-pub struct CssString(pub Box<str>);
+pub struct CssString(Box<str>);
 
 impl<'a> From<&'a str> for CssString {
     fn from(value: &'a str) -> Self {
@@ -20,9 +21,40 @@ impl<'a> From<&'a str> for CssString {
     }
 }
 
+impl CssString {
+    pub fn to_boxed_slice(&self) -> Box<str> {
+        self.0.clone()
+    }
+}
+
+impl std::ops::Deref for CssString {
+    type Target = str;
+    fn deref(&self) -> &str {
+        &self.0
+    }
+}
+
 impl ToCss for CssString {
     fn to_css<W: fmt::Write>(&self, dest: &mut W) -> fmt::Result {
         dest.write_str(&self.0)
+    }
+}
+
+impl precomputed_hash::PrecomputedHash for CssString {
+    fn precomputed_hash(&self) -> u32 {
+        if let Some(v) = self.0.as_bytes().get(..4) {
+            let mut tmp = [0u8; 4];
+            tmp.copy_from_slice(v);
+            u32::from_ne_bytes(tmp)
+        } else {
+            0
+        }
+    }
+}
+
+impl precomputed_hash::PrecomputedHash for Namespace {
+    fn precomputed_hash(&self) -> u32 {
+        *self as u32
     }
 }
 
@@ -38,7 +70,7 @@ impl SelectorImpl for SelectorImplDescriptor {
     type NonTSPseudoClass = NonTSPseudoClassStub;
     type PseudoElement = PseudoElementStub;
 
-    type ExtraMatchingData = ();
+    type ExtraMatchingData<'unused> = ();
 }
 
 #[derive(PartialEq, Eq, Clone, Debug, Hash)]
@@ -100,7 +132,7 @@ impl SelectorsParser {
                 Combinator::NextSibling => Err(SelectorError::UnsupportedCombinator('+')),
                 Combinator::LaterSibling => Err(SelectorError::UnsupportedCombinator('~')),
                 Combinator::PseudoElement | Combinator::SlotAssignment => {
-                    unreachable!("Pseudo element combinators should be filtered out at this point")
+                    Err(SelectorError::UnsupportedPseudoClassOrElement)
                 }
             },
 
@@ -111,14 +143,13 @@ impl SelectorsParser {
             | Component::ExplicitNoNamespace
             | Component::ID(_)
             | Component::Class(_)
-            | Component::FirstChild
-            | Component::NthChild(_, _)
-            | Component::FirstOfType
-            | Component::NthOfType(_, _)
             | Component::AttributeInNoNamespaceExists { .. }
             | Component::AttributeInNoNamespace { .. } => Ok(()),
 
+            Component::Nth(data) => Self::validate_nth(data),
+
             Component::Negation(selectors) => selectors
+                .slice()
                 .iter()
                 .try_for_each(|s| s.iter().try_for_each(Self::validate_component)),
 
@@ -127,12 +158,6 @@ impl SelectorsParser {
             | Component::Part(_)
             | Component::Host(_)
             | Component::Is(_)
-            | Component::LastChild
-            | Component::LastOfType
-            | Component::NthLastChild(_, _)
-            | Component::NthLastOfType(_, _)
-            | Component::OnlyChild
-            | Component::OnlyOfType
             | Component::Root
             | Component::Scope
             | Component::Where(_)
@@ -140,22 +165,50 @@ impl SelectorsParser {
             | Component::NonTSPseudoClass(_)
             | Component::Slotted(_) => Err(SelectorError::UnsupportedPseudoClassOrElement),
 
+            // This is for `:nth-child(n of .selector)`,
+            // which is subtly different from `.selector:nth-of-type(n)`
+            Component::NthOf(_) => Err(SelectorError::UnsupportedPseudoClassOrElement),
+
             Component::DefaultNamespace(_)
             | Component::Namespace(_, _)
             | Component::AttributeOther(_) => Err(SelectorError::NamespacedSelector),
+
+            Component::ImplicitScope
+            | Component::ParentSelector
+            | Component::RelativeSelectorAnchor
+            | Component::Has(_) => Err(SelectorError::UnsupportedSyntax),
+            Component::Invalid(_) => Err(SelectorError::UnexpectedToken),
         }
     }
 
     fn validate(
         selector_list: SelectorList<SelectorImplDescriptor>,
     ) -> Result<SelectorList<SelectorImplDescriptor>, SelectorError> {
-        for selector in &selector_list.0 {
+        Self::validate_selectors(selector_list.slice())?;
+        Ok(selector_list)
+    }
+
+    fn validate_selectors(
+        selector_list: &[selectors::parser::Selector<SelectorImplDescriptor>],
+    ) -> Result<(), SelectorError> {
+        for selector in selector_list {
             for component in selector.iter_raw_match_order() {
                 Self::validate_component(component)?;
             }
         }
+        Ok(())
+    }
 
-        Ok(selector_list)
+    fn validate_nth(nth: &NthSelectorData) -> Result<(), SelectorError> {
+        match nth.ty {
+            selectors::parser::NthType::Child | selectors::parser::NthType::OfType => Ok(()),
+            selectors::parser::NthType::LastChild
+            | selectors::parser::NthType::OnlyChild
+            | selectors::parser::NthType::LastOfType
+            | selectors::parser::NthType::OnlyOfType => {
+                Err(SelectorError::UnsupportedPseudoClassOrElement)
+            }
+        }
     }
 
     #[inline]
@@ -163,7 +216,7 @@ impl SelectorsParser {
         let mut input = ParserInput::new(selector);
         let mut css_parser = CssParser::new(&mut input);
 
-        SelectorList::parse(&Self, &mut css_parser)
+        SelectorList::parse(&Self, &mut css_parser, ParseRelative::No)
             .map_err(SelectorError::from)
             .and_then(Self::validate)
     }
@@ -172,6 +225,10 @@ impl SelectorsParser {
 impl<'i> Parser<'i> for SelectorsParser {
     type Impl = SelectorImplDescriptor;
     type Error = SelectorParseErrorKind<'i>;
+
+    fn parse_nth_child_of(&self) -> bool {
+        false
+    }
 }
 
 /// Parsed CSS selector.

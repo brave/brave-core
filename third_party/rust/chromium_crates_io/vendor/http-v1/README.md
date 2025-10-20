@@ -17,7 +17,7 @@ To use `http`, first add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-http = "0.2"
+http = "1.0"
 ```
 
 Next, add this to your crate:

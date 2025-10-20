@@ -147,7 +147,7 @@ error[E0277]: the size for values of type `[u8]` cannot be known at compilation 
 note: required by an implicit `Sized` bound in `std::intrinsics::transmute`
   --> $RUST/core/src/intrinsics/mod.rs
    |
-   | pub const unsafe fn transmute<Src, Dst>(_src: Src) -> Dst {
+   | pub const unsafe fn transmute<Src, Dst>(src: Src) -> Dst;
    |                                    ^^^ required by the implicit `Sized` requirement on this type parameter in `transmute`
    = note: this error originates in the macro `$crate::assert_size_eq` which comes from the expansion of the macro `transmute_ref` (in Nightly builds, run with -Z macro-backtrace for more info)
 

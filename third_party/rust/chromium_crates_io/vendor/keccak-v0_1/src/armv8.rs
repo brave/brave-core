@@ -1,10 +1,10 @@
-/// Keccak-f1600 on ARMv8.4-A with FEAT_SHA3.
+/// Keccak-p1600 on ARMv8.4-A with FEAT_SHA3.
 ///
 /// See p. K12.2.2  p. 11,749 of the ARM Reference manual.
 /// Adapted from the Keccak-f1600 implementation in the XKCP/K12.
 /// see <https://github.com/XKCP/K12/blob/df6a21e6d1f34c1aa36e8d702540899c97dba5a0/lib/ARMv8Asha3/KeccakP-1600-ARMv8Asha3.S#L69>
 #[target_feature(enable = "sha3")]
-pub unsafe fn f1600_armv8_sha3_asm(state: &mut [u64; 25]) {
+pub unsafe fn p1600_armv8_sha3_asm(state: &mut [u64; 25], round_count: usize) {
     core::arch::asm!("
         // Read state
         ld1.1d {{ v0- v3}}, [x0], #32
@@ -16,11 +16,9 @@ pub unsafe fn f1600_armv8_sha3_asm(state: &mut [u64; 25]) {
         ld1.1d {{v24}},     [x0]
         sub x0, x0, #192
 
-        // Loop 24 rounds
         // NOTE: This loop actually computes two f1600 functions in
         // parallel, in both the lower and the upper 64-bit of the
         // 128-bit registers v0-v24.
-        mov	x8, #24
     0:  sub	x8, x8, #1
 
         // Theta Calculations
@@ -115,7 +113,8 @@ pub unsafe fn f1600_armv8_sha3_asm(state: &mut [u64; 25]) {
         st1.1d	{{v24}},     [x0]
     ",
         in("x0") state.as_mut_ptr(),
-        in("x1") crate::RC.as_ptr(),
+        in("x1") crate::RC[24-round_count..].as_ptr(),
+        in("x8") round_count,
         clobber_abi("C"),
         options(nostack)
     );
@@ -185,9 +184,9 @@ mod tests {
         ];
 
         let mut state = [0u64; 25];
-        unsafe { keccak_f1600(&mut state) };
+        unsafe { p1600_armv8_sha3_asm(&mut state, 24) };
         assert_eq!(state, state_first);
-        unsafe { keccak_f1600(&mut state) };
+        unsafe { p1600_armv8_sha3_asm(&mut state, 24) };
         assert_eq!(state, state_second);
     }
 }

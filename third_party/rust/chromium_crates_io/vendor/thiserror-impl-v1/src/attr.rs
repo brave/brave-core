@@ -2,7 +2,7 @@ use proc_macro2::{Delimiter, Group, Literal, Punct, Spacing, Span, TokenStream, 
 use quote::{format_ident, quote, ToTokens};
 use std::collections::BTreeSet as Set;
 use syn::parse::discouraged::Speculative;
-use syn::parse::ParseStream;
+use syn::parse::{End, ParseStream};
 use syn::{
     braced, bracketed, parenthesized, token, Attribute, Error, Ident, Index, LitFloat, LitInt,
     LitStr, Meta, Result, Token,
@@ -91,7 +91,11 @@ fn parse_error_attribute<'a>(attrs: &mut Attrs<'a>, attr: &'a Attribute) -> Resu
     syn::custom_keyword!(transparent);
 
     attr.parse_args_with(|input: ParseStream| {
-        if let Some(kw) = input.parse::<Option<transparent>>()? {
+        let lookahead = input.lookahead1();
+        let fmt = if lookahead.peek(LitStr) {
+            input.parse::<LitStr>()?
+        } else if lookahead.peek(transparent) {
+            let kw: transparent = input.parse()?;
             if attrs.transparent.is_some() {
                 return Err(Error::new_spanned(
                     attr,
@@ -103,14 +107,12 @@ fn parse_error_attribute<'a>(attrs: &mut Attrs<'a>, attr: &'a Attribute) -> Resu
                 span: kw.span,
             });
             return Ok(());
-        }
+        } else {
+            return Err(lookahead.error());
+        };
 
-        let fmt: LitStr = input.parse()?;
-
-        let ahead = input.fork();
-        ahead.parse::<Option<Token![,]>>()?;
-        let args = if ahead.is_empty() {
-            input.advance_to(&ahead);
+        let args = if input.is_empty() || input.peek(Token![,]) && input.peek2(End) {
+            input.parse::<Option<Token![,]>>()?;
             TokenStream::new()
         } else {
             parse_token_expr(input, false)?
@@ -140,6 +142,13 @@ fn parse_error_attribute<'a>(attrs: &mut Attrs<'a>, attr: &'a Attribute) -> Resu
 fn parse_token_expr(input: ParseStream, mut begin_expr: bool) -> Result<TokenStream> {
     let mut tokens = Vec::new();
     while !input.is_empty() {
+        if input.peek(token::Group) {
+            let group: TokenTree = input.parse()?;
+            tokens.push(group);
+            begin_expr = false;
+            continue;
+        }
+
         if begin_expr && input.peek(Token![.]) {
             if input.peek2(Ident) {
                 input.parse::<Token![.]>()?;

@@ -1,3 +1,5 @@
+#![allow(non_snake_case)]
+
 //! Manual bindings to the win32 API to avoid dependencies on windows-sys or winapi
 //! as these bindings will **never** change and `parking_lot_core` is a foundational
 //! dependency for the Rust ecosystem, so the dependencies used by it have an
@@ -24,8 +26,8 @@ pub type WaitOnAddress = unsafe extern "system" fn(
 ) -> BOOL;
 pub type WakeByAddressSingle = unsafe extern "system" fn(Address: *const std::ffi::c_void);
 
-windows_targets::link!("kernel32.dll" "system" fn GetLastError() -> u32);
-windows_targets::link!("kernel32.dll" "system" fn CloseHandle(hObject: HANDLE) -> BOOL);
-windows_targets::link!("kernel32.dll" "system" fn GetModuleHandleA(lpModuleName: *const u8) -> HINSTANCE);
-windows_targets::link!("kernel32.dll" "system" fn GetProcAddress(hModule: HINSTANCE, lpProcName: *const u8) -> FARPROC);
-windows_targets::link!("kernel32.dll" "system" fn Sleep(dwMilliseconds: u32) -> ());
+windows_link::link!("kernel32.dll" "system" fn GetLastError() -> u32);
+windows_link::link!("kernel32.dll" "system" fn CloseHandle(hObject: HANDLE) -> BOOL);
+windows_link::link!("kernel32.dll" "system" fn GetModuleHandleA(lpModuleName: *const u8) -> HINSTANCE);
+windows_link::link!("kernel32.dll" "system" fn GetProcAddress(hModule: HINSTANCE, lpProcName: *const u8) -> FARPROC);
+windows_link::link!("kernel32.dll" "system" fn Sleep(dwMilliseconds: u32) -> ());

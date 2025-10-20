@@ -30,7 +30,7 @@
 //! }
 //! ```
 
-#![doc(html_root_url = "https://docs.rs/serde_bytes/0.11.17")]
+#![doc(html_root_url = "https://docs.rs/serde_bytes/0.11.19")]
 #![cfg_attr(not(feature = "std"), no_std)]
 #![deny(missing_docs)]
 #![allow(
@@ -42,6 +42,8 @@
     clippy::needless_lifetimes,
     clippy::ptr_as_ptr
 )]
+
+extern crate serde_core as serde;
 
 mod bytearray;
 mod bytes;

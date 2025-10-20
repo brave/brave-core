@@ -20,6 +20,7 @@ cargo_crate("lib") {
   inputs = [
     "//brave/third_party/rust/chromium_crates_io/vendor/servo_arc-v0_4/.cargo-checksum.json",
     "//brave/third_party/rust/chromium_crates_io/vendor/servo_arc-v0_4/.cargo_vcs_info.json",
+    "//brave/third_party/rust/chromium_crates_io/vendor/servo_arc-v0_4/README.md",
   ]
 
   build_native_rust_unit_tests = false
@@ -28,9 +29,13 @@ cargo_crate("lib") {
   cargo_pkg_name = "servo_arc"
   cargo_pkg_description = "A fork of std::sync::Arc with some extra functionality and without weak references"
   cargo_pkg_repository = "https://github.com/servo/stylo"
-  cargo_pkg_version = "0.4.0"
+  cargo_pkg_version = "0.4.1"
 
   deps = [ "//brave/third_party/rust/stable_deref_trait/v1:lib" ]
+  features = [
+    "default",
+    "track_alloc_size",
+  ]
   rustenv = []
   rustflags = []
 

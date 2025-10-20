@@ -35,17 +35,18 @@ pub(crate) enum TagTokenOutline {
 }
 
 #[derive(Debug)]
+pub struct DoctypeTokenOutline {
+    pub name: Option<Range>,
+    pub public_id: Option<Range>,
+    pub system_id: Option<Range>,
+    pub force_quirks: bool,
+}
+
+#[derive(Debug)]
 pub(crate) enum NonTagContentTokenOutline {
     Text(TextType),
     Comment(Range),
-
-    Doctype {
-        name: Option<Range>,
-        public_id: Option<Range>,
-        system_id: Option<Range>,
-        force_quirks: bool,
-    },
-
+    Doctype(Box<DoctypeTokenOutline>),
     Eof,
 }
 
@@ -69,15 +70,10 @@ impl Align for NonTagContentTokenOutline {
     fn align(&mut self, offset: usize) {
         match self {
             Self::Comment(text) => text.align(offset),
-            Self::Doctype {
-                name,
-                public_id,
-                system_id,
-                ..
-            } => {
-                name.align(offset);
-                public_id.align(offset);
-                system_id.align(offset);
+            Self::Doctype(doctype) => {
+                doctype.name.align(offset);
+                doctype.public_id.align(offset);
+                doctype.system_id.align(offset);
             }
             _ => (),
         }

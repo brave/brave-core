@@ -1,6 +1,6 @@
 [package]
 name = "inout"
-version = "0.1.3" # Also update html_root_url in lib.rs when bumping this
+version = "0.1.4" # Also update html_root_url in lib.rs when bumping this
 description = "Custom reference types for code generic over in-place and buffer-to-buffer modes of operation."
 authors = ["RustCrypto Developers"]
 license = "MIT OR Apache-2.0"

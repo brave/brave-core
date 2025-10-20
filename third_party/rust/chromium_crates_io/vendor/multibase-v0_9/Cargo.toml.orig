@@ -1,6 +1,6 @@
 [package]
 name = "multibase"
-version = "0.9.1"
+version = "0.9.2"
 authors = ["Friedel Ziegelmayer <dignifiedquire@gmail.com>"]
 edition = "2018"
 license = "MIT"
@@ -16,12 +16,13 @@ std = ["data-encoding/std"]
 
 [dependencies]
 base-x = { version = "0.2.7", default-features = false }
+base256emoji = "1.0.2"
 data-encoding = { version = "2.3.1", default-features = false, features = ["alloc"] }
 data-encoding-macro = "0.1.9"
 
 [dev-dependencies]
-criterion = "0.3"
-rand = "0.7"
+criterion = "0.7"
+rand = "0.9"
 
 [[bench]]
 name = "multibase"

@@ -1,0 +1,10 @@
+Name: phf
+URL: https://crates.io/crates/phf
+Version: 0.10.1
+Revision: bed01538ae576876f11189d541875d228acef9e8
+License: MIT
+License File:
+Shipped: yes
+Security Critical: yes
+
+Description: Runtime support for perfect hash function data structures

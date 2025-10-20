@@ -13,7 +13,7 @@
 edition = "2021"
 rust-version = "1.57.0"
 name = "const_format"
-version = "0.2.34"
+version = "0.2.35"
 authors = ["rodrimati1992 <rodrimatt1985@gmail.com>"]
 build = false
 include = [
@@ -47,26 +47,6 @@ features = [
     "all",
     "__docsrs",
 ]
-
-[lib]
-name = "const_format"
-path = "src/lib.rs"
-
-[dependencies.const_format_proc_macros]
-version = "=0.2.34"
-
-[dependencies.konst]
-version = "0.2.13"
-optional = true
-default-features = false
-
-[dev-dependencies.arrayvec]
-version = "0.5.1"
-default-features = false
-
-[dev-dependencies.fastrand]
-version = "1.3.5"
-default-features = false
 
 [features]
 __debug = ["const_format_proc_macros/debug"]
@@ -106,3 +86,23 @@ rust_1_64 = [
     "konst/rust_1_64",
 ]
 rust_1_83 = ["rust_1_64"]
+
+[lib]
+name = "const_format"
+path = "src/lib.rs"
+
+[dependencies.const_format_proc_macros]
+version = "=0.2.34"
+
+[dependencies.konst]
+version = "0.2.13"
+optional = true
+default-features = false
+
+[dev-dependencies.arrayvec]
+version = "0.7.0"
+default-features = false
+
+[dev-dependencies.fastrand]
+version = "1.3.5"
+default-features = false

@@ -7,6 +7,20 @@ and this library adheres to Rust's notion of
 
 ## [Unreleased]
 
+## [0.1.3] - 2024-12-13
+
+### Fixed
+- Disabled default features of dependencies to fix no-std support.
+
+## [0.1.2] - 2024-10-22
+
+### Added
+- `zip32::arbitrary` module, implementing hardened-only "arbitrary" key
+  derivation that needs no ecosystem-wide coordination.
+- `zip32::hardened_only` module, providing a generic hardened-only key
+  derivation framework (initially used for Orchard and `zip32::arbitrary`).
+- `impl {PartialOrd, Ord, Hash}` for `zip32::DiversifierIndex`
+
 ## [0.1.1] - 2024-03-14
 
 ### Added

@@ -28,7 +28,7 @@ cargo_crate("buildrs_support") {
   cargo_pkg_description =
       "Tiny crate to check the version of the installed/running rustc."
   cargo_pkg_repository = "https://github.com/SergioBenitez/version_check"
-  cargo_pkg_version = "0.9.4"
+  cargo_pkg_version = "0.9.5"
 
   rustenv = []
   rustflags = []

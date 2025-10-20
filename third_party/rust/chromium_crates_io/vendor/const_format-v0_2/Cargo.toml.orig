@@ -1,6 +1,6 @@
 [package]
 name = "const_format"
-version = "0.2.34"
+version = "0.2.35"
 authors = ["rodrimati1992 <rodrimatt1985@gmail.com>"]
 rust-version = "1.57.0"
 edition = "2021"
@@ -65,7 +65,7 @@ optional = true
 
 [dev-dependencies]
 fastrand = {version = "1.3.5", default-features = false}
-arrayvec = {version = "0.5.1", default-features = false}
+arrayvec = {version = "0.7.0", default-features = false}
 
 [package.metadata.docs.rs]
 features = ["all", "__docsrs"]

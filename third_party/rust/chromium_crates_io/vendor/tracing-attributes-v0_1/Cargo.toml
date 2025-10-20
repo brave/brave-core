@@ -11,15 +11,16 @@
 
 [package]
 edition = "2018"
-rust-version = "1.63.0"
+rust-version = "1.65.0"
 name = "tracing-attributes"
-version = "0.1.28"
+version = "0.1.30"
 authors = [
     "Tokio Contributors <team@tokio.rs>",
     "Eliza Weisman <eliza@buoyant.io>",
     "David Barsky <dbarsky@amazon.com>",
 ]
 build = false
+autolib = false
 autobins = false
 autoexamples = false
 autotests = false
@@ -45,6 +46,12 @@ license = "MIT"
 repository = "https://github.com/tokio-rs/tracing"
 resolver = "2"
 
+[badges.maintenance]
+status = "experimental"
+
+[features]
+async-await = []
+
 [lib]
 name = "tracing_attributes"
 path = "src/lib.rs"
@@ -53,6 +60,10 @@ proc-macro = true
 [[test]]
 name = "async_fn"
 path = "tests/async_fn.rs"
+
+[[test]]
+name = "dead_code"
+path = "tests/dead_code.rs"
 
 [[test]]
 name = "destructuring"
@@ -136,16 +147,11 @@ features = ["env-filter"]
 [dev-dependencies.trybuild]
 version = "1.0.64"
 
-[features]
-async-await = []
-
-[badges.maintenance]
-status = "experimental"
-
 [lints.rust.unexpected_cfgs]
 level = "warn"
 priority = 0
 check-cfg = [
     "cfg(flaky_tests)",
     "cfg(tracing_unstable)",
+    "cfg(unsound_local_offset)",
 ]

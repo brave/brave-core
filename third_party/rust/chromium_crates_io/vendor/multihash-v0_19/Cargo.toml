@@ -13,7 +13,7 @@
 edition = "2021"
 rust-version = "1.64"
 name = "multihash"
-version = "0.19.2"
+version = "0.19.3"
 authors = [
     "dignifiedquire <dignifiedquire@gmail.com>",
     "David Craven <david@craven.ch>",
@@ -93,7 +93,7 @@ version = "1.0.58"
 version = "1.0.160"
 
 [features]
-alloc = []
+alloc = ["core2/alloc"]
 arb = [
     "dep:quickcheck",
     "dep:rand",

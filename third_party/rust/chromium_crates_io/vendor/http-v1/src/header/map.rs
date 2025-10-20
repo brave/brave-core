@@ -1,5 +1,5 @@
-use std::collections::HashMap;
 use std::collections::hash_map::RandomState;
+use std::collections::HashMap;
 use std::convert::TryFrom;
 use std::hash::{BuildHasher, Hash, Hasher};
 use std::iter::{FromIterator, FusedIterator};
@@ -8,15 +8,15 @@ use std::{fmt, mem, ops, ptr, vec};
 
 use crate::Error;
 
-use super::HeaderValue;
 use super::name::{HdrName, HeaderName, InvalidHeaderName};
+use super::HeaderValue;
 
 pub use self::as_header_name::AsHeaderName;
 pub use self::into_header_name::IntoHeaderName;
 
 /// A set of HTTP headers
 ///
-/// `HeaderMap` is an multimap of [`HeaderName`] to values.
+/// `HeaderMap` is a multimap of [`HeaderName`] to values.
 ///
 /// [`HeaderName`]: struct.HeaderName.html
 ///
@@ -211,6 +211,11 @@ pub struct ValueDrain<'a, T> {
     first: Option<T>,
     next: Option<::std::vec::IntoIter<T>>,
     lt: PhantomData<&'a mut HeaderMap<T>>,
+}
+
+/// Error returned when max capacity of `HeaderMap` is exceeded
+pub struct MaxSizeReached {
+    _priv: (),
 }
 
 /// Tracks the value iterator state
@@ -441,7 +446,7 @@ impl HeaderMap {
     /// assert_eq!(0, map.capacity());
     /// ```
     pub fn new() -> Self {
-        HeaderMap::with_capacity(0)
+        HeaderMap::try_with_capacity(0).unwrap()
     }
 }
 
@@ -454,10 +459,10 @@ impl<T> HeaderMap<T> {
     /// allocations before `capacity` headers are stored in the map.
     ///
     /// More capacity than requested may be allocated.
-    /// 
+    ///
     /// # Panics
-    /// 
-    /// Requested capacity too large: would overflow `usize`.
+    ///
+    /// This method panics if capacity exceeds max `HeaderMap` capacity.
     ///
     /// # Examples
     ///
@@ -469,32 +474,57 @@ impl<T> HeaderMap<T> {
     /// assert_eq!(12, map.capacity());
     /// ```
     pub fn with_capacity(capacity: usize) -> HeaderMap<T> {
+        Self::try_with_capacity(capacity).expect("size overflows MAX_SIZE")
+    }
+
+    /// Create an empty `HeaderMap` with the specified capacity.
+    ///
+    /// The returned map will allocate internal storage in order to hold about
+    /// `capacity` elements without reallocating. However, this is a "best
+    /// effort" as there are usage patterns that could cause additional
+    /// allocations before `capacity` headers are stored in the map.
+    ///
+    /// More capacity than requested may be allocated.
+    ///
+    /// # Errors
+    ///
+    /// This function may return an error if `HeaderMap` exceeds max capacity
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use http::HeaderMap;
+    /// let map: HeaderMap<u32> = HeaderMap::try_with_capacity(10).unwrap();
+    ///
+    /// assert!(map.is_empty());
+    /// assert_eq!(12, map.capacity());
+    /// ```
+    pub fn try_with_capacity(capacity: usize) -> Result<HeaderMap<T>, MaxSizeReached> {
         if capacity == 0 {
-            HeaderMap {
+            Ok(HeaderMap {
                 mask: 0,
                 indices: Box::new([]), // as a ZST, this doesn't actually allocate anything
                 entries: Vec::new(),
                 extra_values: Vec::new(),
                 danger: Danger::Green,
-            }
+            })
         } else {
             let raw_cap = match to_raw_capacity(capacity).checked_next_power_of_two() {
                 Some(c) => c,
-                None => panic!(
-                    "requested capacity {} too large: next power of two would overflow `usize`",
-                    capacity
-                ),
+                None => return Err(MaxSizeReached { _priv: () }),
             };
-            assert!(raw_cap <= MAX_SIZE, "requested capacity too large");
+            if raw_cap > MAX_SIZE {
+                return Err(MaxSizeReached { _priv: () });
+            }
             debug_assert!(raw_cap > 0);
 
-            HeaderMap {
+            Ok(HeaderMap {
                 mask: (raw_cap - 1) as Size,
                 indices: vec![Pos::none(); raw_cap].into_boxed_slice(),
-                entries: Vec::with_capacity(raw_cap),
+                entries: Vec::with_capacity(usable_capacity(raw_cap)),
                 extra_values: Vec::new(),
                 danger: Danger::Green,
-            }
+            })
         }
     }
 
@@ -629,7 +659,7 @@ impl<T> HeaderMap<T> {
     ///
     /// # Panics
     ///
-    /// Panics if the new allocation size overflows `usize`.
+    /// Panics if the new allocation size overflows `HeaderMap` `MAX_SIZE`.
     ///
     /// # Examples
     ///
@@ -641,27 +671,62 @@ impl<T> HeaderMap<T> {
     /// # map.insert(HOST, "bar".parse().unwrap());
     /// ```
     pub fn reserve(&mut self, additional: usize) {
+        self.try_reserve(additional)
+            .expect("size overflows MAX_SIZE")
+    }
+
+    /// Reserves capacity for at least `additional` more headers to be inserted
+    /// into the `HeaderMap`.
+    ///
+    /// The header map may reserve more space to avoid frequent reallocations.
+    /// Like with `with_capacity`, this will be a "best effort" to avoid
+    /// allocations until `additional` more headers are inserted. Certain usage
+    /// patterns could cause additional allocations before the number is
+    /// reached.
+    ///
+    /// # Errors
+    ///
+    /// This method differs from `reserve` by returning an error instead of
+    /// panicking if the value is too large.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use http::HeaderMap;
+    /// # use http::header::HOST;
+    /// let mut map = HeaderMap::new();
+    /// map.try_reserve(10).unwrap();
+    /// # map.try_insert(HOST, "bar".parse().unwrap()).unwrap();
+    /// ```
+    pub fn try_reserve(&mut self, additional: usize) -> Result<(), MaxSizeReached> {
         // TODO: This can't overflow if done properly... since the max # of
         // elements is u16::MAX.
         let cap = self
             .entries
             .len()
             .checked_add(additional)
-            .expect("reserve overflow");
+            .ok_or_else(MaxSizeReached::new)?;
 
-        if cap > self.indices.len() {
-            let cap = cap.next_power_of_two();
-            assert!(cap <= MAX_SIZE, "header map reserve over max capacity");
-            assert!(cap != 0, "header map reserve overflowed");
+        let raw_cap = to_raw_capacity(cap);
 
-            if self.entries.len() == 0 {
-                self.mask = cap as Size - 1;
-                self.indices = vec![Pos::none(); cap].into_boxed_slice();
-                self.entries = Vec::with_capacity(usable_capacity(cap));
+        if raw_cap > self.indices.len() {
+            let raw_cap = raw_cap
+                .checked_next_power_of_two()
+                .ok_or_else(MaxSizeReached::new)?;
+            if raw_cap > MAX_SIZE {
+                return Err(MaxSizeReached::new());
+            }
+
+            if self.entries.is_empty() {
+                self.mask = raw_cap as Size - 1;
+                self.indices = vec![Pos::none(); raw_cap].into_boxed_slice();
+                self.entries = Vec::with_capacity(usable_capacity(raw_cap));
             } else {
-                self.grow(cap);
+                self.try_grow(raw_cap)?;
             }
         }
+
+        Ok(())
     }
 
     /// Returns a reference to the value associated with the key.
@@ -970,7 +1035,9 @@ impl<T> HeaderMap<T> {
         let entries = &mut self.entries[..] as *mut _;
         let extra_values = &mut self.extra_values as *mut _;
         let len = self.entries.len();
-        unsafe { self.entries.set_len(0); }
+        unsafe {
+            self.entries.set_len(0);
+        }
 
         Drain {
             idx: 0,
@@ -1001,7 +1068,7 @@ impl<T> HeaderMap<T> {
         } else {
             ValueIter {
                 map: self,
-                index: ::std::usize::MAX,
+                index: usize::MAX,
                 front: None,
                 back: None,
             }
@@ -1029,6 +1096,10 @@ impl<T> HeaderMap<T> {
     /// Gets the given key's corresponding entry in the map for in-place
     /// manipulation.
     ///
+    /// # Panics
+    ///
+    /// This method panics if capacity exceeds max `HeaderMap` capacity
+    ///
     /// # Examples
     ///
     /// ```
@@ -1054,7 +1125,7 @@ impl<T> HeaderMap<T> {
     where
         K: IntoHeaderName,
     {
-        key.entry(self)
+        key.try_entry(self).expect("size overflows MAX_SIZE")
     }
 
     /// Gets the given key's corresponding entry in the map for in-place
@@ -1066,22 +1137,35 @@ impl<T> HeaderMap<T> {
     /// valid `HeaderName`s to passed as the key (such as `String`). If they
     /// do not parse as a valid `HeaderName`, this returns an
     /// `InvalidHeaderName` error.
+    ///
+    /// If reserving space goes over the maximum, this will also return an
+    /// error. However, to prevent breaking changes to the return type, the
+    /// error will still say `InvalidHeaderName`, unlike other `try_*` methods
+    /// which return a `MaxSizeReached` error.
     pub fn try_entry<K>(&mut self, key: K) -> Result<Entry<'_, T>, InvalidHeaderName>
     where
         K: AsHeaderName,
     {
-        key.try_entry(self)
+        key.try_entry(self).map_err(|err| match err {
+            as_header_name::TryEntryError::InvalidHeaderName(e) => e,
+            as_header_name::TryEntryError::MaxSizeReached(_e) => {
+                // Unfortunately, we cannot change the return type of this
+                // method, so the max size reached error needs to be converted
+                // into an InvalidHeaderName. Yay.
+                InvalidHeaderName::new()
+            }
+        })
     }
 
-    fn entry2<K>(&mut self, key: K) -> Entry<'_, T>
+    fn try_entry2<K>(&mut self, key: K) -> Result<Entry<'_, T>, MaxSizeReached>
     where
         K: Hash + Into<HeaderName>,
         HeaderName: PartialEq<K>,
     {
         // Ensure that there is space in the map
-        self.reserve_one();
+        self.try_reserve_one()?;
 
-        insert_phase_one!(
+        Ok(insert_phase_one!(
             self,
             key,
             probe,
@@ -1090,24 +1174,24 @@ impl<T> HeaderMap<T> {
             danger,
             Entry::Vacant(VacantEntry {
                 map: self,
-                hash: hash,
+                hash,
                 key: key.into(),
-                probe: probe,
-                danger: danger,
+                probe,
+                danger,
             }),
             Entry::Occupied(OccupiedEntry {
                 map: self,
                 index: pos,
-                probe: probe,
+                probe,
             }),
             Entry::Vacant(VacantEntry {
                 map: self,
-                hash: hash,
+                hash,
                 key: key.into(),
-                probe: probe,
-                danger: danger,
+                probe,
+                danger,
             })
-        )
+        ))
     }
 
     /// Inserts a key-value pair into the map.
@@ -1125,6 +1209,10 @@ impl<T> HeaderMap<T> {
     /// The key is not updated, though; this matters for types that can be `==`
     /// without being identical.
     ///
+    /// # Panics
+    ///
+    /// This method panics if capacity exceeds max `HeaderMap` capacity
+    ///
     /// # Examples
     ///
     /// ```
@@ -1141,18 +1229,56 @@ impl<T> HeaderMap<T> {
     where
         K: IntoHeaderName,
     {
-        key.insert(self, val)
+        self.try_insert(key, val).expect("size overflows MAX_SIZE")
+    }
+
+    /// Inserts a key-value pair into the map.
+    ///
+    /// If the map did not previously have this key present, then `None` is
+    /// returned.
+    ///
+    /// If the map did have this key present, the new value is associated with
+    /// the key and all previous values are removed. **Note** that only a single
+    /// one of the previous values is returned. If there are multiple values
+    /// that have been previously associated with the key, then the first one is
+    /// returned. See `insert_mult` on `OccupiedEntry` for an API that returns
+    /// all values.
+    ///
+    /// The key is not updated, though; this matters for types that can be `==`
+    /// without being identical.
+    ///
+    /// # Errors
+    ///
+    /// This function may return an error if `HeaderMap` exceeds max capacity
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use http::HeaderMap;
+    /// # use http::header::HOST;
+    /// let mut map = HeaderMap::new();
+    /// assert!(map.try_insert(HOST, "world".parse().unwrap()).unwrap().is_none());
+    /// assert!(!map.is_empty());
+    ///
+    /// let mut prev = map.try_insert(HOST, "earth".parse().unwrap()).unwrap().unwrap();
+    /// assert_eq!("world", prev);
+    /// ```
+    pub fn try_insert<K>(&mut self, key: K, val: T) -> Result<Option<T>, MaxSizeReached>
+    where
+        K: IntoHeaderName,
+    {
+        key.try_insert(self, val)
     }
 
     #[inline]
-    fn insert2<K>(&mut self, key: K, value: T) -> Option<T>
+    fn try_insert2<K>(&mut self, key: K, value: T) -> Result<Option<T>, MaxSizeReached>
     where
         K: Hash + Into<HeaderName>,
         HeaderName: PartialEq<K>,
     {
-        self.reserve_one();
+        self.try_reserve_one()?;
 
-        insert_phase_one!(
+        Ok(insert_phase_one!(
             self,
             key,
             probe,
@@ -1163,7 +1289,7 @@ impl<T> HeaderMap<T> {
             {
                 let _ = danger; // Make lint happy
                 let index = self.entries.len();
-                self.insert_entry(hash, key.into(), value);
+                self.try_insert_entry(hash, key.into(), value)?;
                 self.indices[probe] = Pos::new(index, hash);
                 None
             },
@@ -1171,10 +1297,10 @@ impl<T> HeaderMap<T> {
             Some(self.insert_occupied(pos, value)),
             // Robinhood
             {
-                self.insert_phase_two(key.into(), value, hash, probe, danger);
+                self.try_insert_phase_two(key.into(), value, hash, probe, danger)?;
                 None
             }
-        )
+        ))
     }
 
     /// Set an occupied bucket to the given value
@@ -1202,14 +1328,12 @@ impl<T> HeaderMap<T> {
         let raw_links = self.raw_links();
         let extra_values = &mut self.extra_values;
 
-        let next = links.map(|l| {
-            drain_all_extra_values(raw_links, extra_values, l.next)
-                .into_iter()
-        });
+        let next =
+            links.map(|l| drain_all_extra_values(raw_links, extra_values, l.next).into_iter());
 
         ValueDrain {
             first: Some(old),
-            next: next,
+            next,
             lt: PhantomData,
         }
     }
@@ -1223,6 +1347,10 @@ impl<T> HeaderMap<T> {
     /// of the list of values currently associated with the key. The key is not
     /// updated, though; this matters for types that can be `==` without being
     /// identical.
+    ///
+    /// # Panics
+    ///
+    /// This method panics if capacity exceeds max `HeaderMap` capacity
     ///
     /// # Examples
     ///
@@ -1244,18 +1372,56 @@ impl<T> HeaderMap<T> {
     where
         K: IntoHeaderName,
     {
-        key.append(self, value)
+        self.try_append(key, value)
+            .expect("size overflows MAX_SIZE")
+    }
+
+    /// Inserts a key-value pair into the map.
+    ///
+    /// If the map did not previously have this key present, then `false` is
+    /// returned.
+    ///
+    /// If the map did have this key present, the new value is pushed to the end
+    /// of the list of values currently associated with the key. The key is not
+    /// updated, though; this matters for types that can be `==` without being
+    /// identical.
+    ///
+    /// # Errors
+    ///
+    /// This function may return an error if `HeaderMap` exceeds max capacity
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use http::HeaderMap;
+    /// # use http::header::HOST;
+    /// let mut map = HeaderMap::new();
+    /// assert!(map.try_insert(HOST, "world".parse().unwrap()).unwrap().is_none());
+    /// assert!(!map.is_empty());
+    ///
+    /// map.try_append(HOST, "earth".parse().unwrap()).unwrap();
+    ///
+    /// let values = map.get_all("host");
+    /// let mut i = values.iter();
+    /// assert_eq!("world", *i.next().unwrap());
+    /// assert_eq!("earth", *i.next().unwrap());
+    /// ```
+    pub fn try_append<K>(&mut self, key: K, value: T) -> Result<bool, MaxSizeReached>
+    where
+        K: IntoHeaderName,
+    {
+        key.try_append(self, value)
     }
 
     #[inline]
-    fn append2<K>(&mut self, key: K, value: T) -> bool
+    fn try_append2<K>(&mut self, key: K, value: T) -> Result<bool, MaxSizeReached>
     where
         K: Hash + Into<HeaderName>,
         HeaderName: PartialEq<K>,
     {
-        self.reserve_one();
+        self.try_reserve_one()?;
 
-        insert_phase_one!(
+        Ok(insert_phase_one!(
             self,
             key,
             probe,
@@ -1266,7 +1432,7 @@ impl<T> HeaderMap<T> {
             {
                 let _ = danger;
                 let index = self.entries.len();
-                self.insert_entry(hash, key.into(), value);
+                self.try_insert_entry(hash, key.into(), value)?;
                 self.indices[probe] = Pos::new(index, hash);
                 false
             },
@@ -1277,17 +1443,17 @@ impl<T> HeaderMap<T> {
             },
             // Robinhood
             {
-                self.insert_phase_two(key.into(), value, hash, probe, danger);
+                self.try_insert_phase_two(key.into(), value, hash, probe, danger)?;
 
                 false
             }
-        )
+        ))
     }
 
     #[inline]
-    fn find<K: ?Sized>(&self, key: &K) -> Option<(usize, usize)>
+    fn find<K>(&self, key: &K) -> Option<(usize, usize)>
     where
-        K: Hash + Into<HeaderName>,
+        K: Hash + Into<HeaderName> + ?Sized,
         HeaderName: PartialEq<K>,
     {
         if self.entries.is_empty() {
@@ -1317,26 +1483,26 @@ impl<T> HeaderMap<T> {
 
     /// phase 2 is post-insert where we forward-shift `Pos` in the indices.
     #[inline]
-    fn insert_phase_two(
+    fn try_insert_phase_two(
         &mut self,
         key: HeaderName,
         value: T,
         hash: HashValue,
         probe: usize,
         danger: bool,
-    ) -> usize {
+    ) -> Result<usize, MaxSizeReached> {
         // Push the value and get the index
         let index = self.entries.len();
-        self.insert_entry(hash, key, value);
+        self.try_insert_entry(hash, key, value)?;
 
         let num_displaced = do_insert_phase_two(&mut self.indices, probe, Pos::new(index, hash));
 
         if danger || num_displaced >= DISPLACEMENT_THRESHOLD {
             // Increase danger level
-            self.danger.to_yellow();
+            self.danger.set_yellow();
         }
 
-        index
+        Ok(index)
     }
 
     /// Removes a key from the map, returning the value associated with the key.
@@ -1415,7 +1581,7 @@ impl<T> HeaderMap<T> {
 
         // backward shift deletion in self.indices
         // after probe, shift all non-ideally placed indices backward
-        if self.entries.len() > 0 {
+        if !self.entries.is_empty() {
             let mut last_probe = probe;
             let mut probe = probe + 1;
 
@@ -1458,15 +1624,24 @@ impl<T> HeaderMap<T> {
     }
 
     #[inline]
-    fn insert_entry(&mut self, hash: HashValue, key: HeaderName, value: T) {
-        assert!(self.entries.len() < MAX_SIZE, "header map at capacity");
+    fn try_insert_entry(
+        &mut self,
+        hash: HashValue,
+        key: HeaderName,
+        value: T,
+    ) -> Result<(), MaxSizeReached> {
+        if self.entries.len() >= MAX_SIZE {
+            return Err(MaxSizeReached::new());
+        }
 
         self.entries.push(Bucket {
-            hash: hash,
-            key: key,
-            value: value,
+            hash,
+            key,
+            value,
             links: None,
         });
+
+        Ok(())
     }
 
     fn rebuild(&mut self) {
@@ -1516,7 +1691,7 @@ impl<T> HeaderMap<T> {
         }
     }
 
-    fn reserve_one(&mut self) {
+    fn try_reserve_one(&mut self) -> Result<(), MaxSizeReached> {
         let len = self.entries.len();
 
         if self.danger.is_yellow() {
@@ -1524,15 +1699,15 @@ impl<T> HeaderMap<T> {
 
             if load_factor >= LOAD_FACTOR_THRESHOLD {
                 // Transition back to green danger level
-                self.danger.to_green();
+                self.danger.set_green();
 
                 // Double the capacity
                 let new_cap = self.indices.len() * 2;
 
                 // Grow the capacity
-                self.grow(new_cap);
+                self.try_grow(new_cap)?;
             } else {
-                self.danger.to_red();
+                self.danger.set_red();
 
                 // Rebuild hash table
                 for index in self.indices.iter_mut() {
@@ -1549,16 +1724,18 @@ impl<T> HeaderMap<T> {
                 self.entries = Vec::with_capacity(usable_capacity(new_raw_cap));
             } else {
                 let raw_cap = self.indices.len();
-                self.grow(raw_cap << 1);
+                self.try_grow(raw_cap << 1)?;
             }
         }
+
+        Ok(())
     }
 
     #[inline]
-    fn grow(&mut self, new_raw_cap: usize) {
-        assert!(new_raw_cap <= MAX_SIZE, "requested capacity too large");
-        // This path can never be reached when handling the first allocation in
-        // the map.
+    fn try_grow(&mut self, new_raw_cap: usize) -> Result<(), MaxSizeReached> {
+        if new_raw_cap > MAX_SIZE {
+            return Err(MaxSizeReached::new());
+        }
 
         // find first ideally placed element -- start of cluster
         let mut first_ideal = 0;
@@ -1591,6 +1768,7 @@ impl<T> HeaderMap<T> {
         // Reserve additional entry slots
         let more = self.capacity() - self.entries.len();
         self.entries.reserve_exact(more);
+        Ok(())
     }
 
     #[inline]
@@ -1604,9 +1782,8 @@ impl<T> HeaderMap<T> {
 fn remove_extra_value<T>(
     mut raw_links: RawLinks<T>,
     extra_values: &mut Vec<ExtraValue<T>>,
-    idx: usize)
-    -> ExtraValue<T>
-{
+    idx: usize,
+) -> ExtraValue<T> {
     let prev;
     let next;
 
@@ -1627,8 +1804,7 @@ fn remove_extra_value<T>(
         (Link::Entry(prev), Link::Extra(next)) => {
             debug_assert!(raw_links[prev].is_some());
 
-            raw_links[prev].as_mut().unwrap()
-                .next = next;
+            raw_links[prev].as_mut().unwrap().next = next;
 
             debug_assert!(extra_values.len() > next);
             extra_values[next].prev = Link::Entry(prev);
@@ -1636,8 +1812,7 @@ fn remove_extra_value<T>(
         (Link::Extra(prev), Link::Entry(next)) => {
             debug_assert!(raw_links[next].is_some());
 
-            raw_links[next].as_mut().unwrap()
-                .tail = prev;
+            raw_links[next].as_mut().unwrap().tail = prev;
 
             debug_assert!(extra_values.len() > prev);
             extra_values[prev].next = Link::Entry(next);
@@ -1725,9 +1900,8 @@ fn remove_extra_value<T>(
 fn drain_all_extra_values<T>(
     raw_links: RawLinks<T>,
     extra_values: &mut Vec<ExtraValue<T>>,
-    mut head: usize)
-    -> Vec<T>
-{
+    mut head: usize,
+) -> Vec<T> {
     let mut vec = Vec::new();
     loop {
         let extra = remove_extra_value(raw_links, extra_values, head);
@@ -1848,18 +2022,18 @@ impl<T> FromIterator<(HeaderName, T)> for HeaderMap<T> {
 /// let headers: HeaderMap = (&map).try_into().expect("valid headers");
 /// assert_eq!(headers["X-Custom-Header"], "my value");
 /// ```
-impl<'a, K, V, T> TryFrom<&'a HashMap<K, V>> for HeaderMap<T>
-    where
-        K: Eq + Hash,
-        HeaderName: TryFrom<&'a K>,
-        <HeaderName as TryFrom<&'a K>>::Error: Into<crate::Error>,
-        T: TryFrom<&'a V>,
-        T::Error: Into<crate::Error>,
+impl<'a, K, V, S, T> TryFrom<&'a HashMap<K, V, S>> for HeaderMap<T>
+where
+    K: Eq + Hash,
+    HeaderName: TryFrom<&'a K>,
+    <HeaderName as TryFrom<&'a K>>::Error: Into<crate::Error>,
+    T: TryFrom<&'a V>,
+    T::Error: Into<crate::Error>,
 {
     type Error = Error;
 
-    fn try_from(c: &'a HashMap<K, V>) -> Result<Self, Self::Error> {
-        c.into_iter()
+    fn try_from(c: &'a HashMap<K, V, S>) -> Result<Self, Self::Error> {
+        c.iter()
             .map(|(k, v)| -> crate::Result<(HeaderName, T)> {
                 let name = TryFrom::try_from(k).map_err(Into::into)?;
                 let value = TryFrom::try_from(v).map_err(Into::into)?;
@@ -1918,7 +2092,7 @@ impl<T> Extend<(Option<HeaderName>, T)> for HeaderMap<T> {
         };
 
         'outer: loop {
-            let mut entry = match self.entry2(key) {
+            let mut entry = match self.try_entry2(key).expect("size overflows MAX_SIZE") {
                 Entry::Occupied(mut e) => {
                     // Replace all previous values while maintaining a handle to
                     // the entry.
@@ -1992,11 +2166,11 @@ impl<T: fmt::Debug> fmt::Debug for HeaderMap<T> {
 
 impl<T> Default for HeaderMap<T> {
     fn default() -> Self {
-        HeaderMap::with_capacity(0)
+        HeaderMap::try_with_capacity(0).expect("zero capacity should never fail")
     }
 }
 
-impl<'a, K, T> ops::Index<K> for HeaderMap<T>
+impl<K, T> ops::Index<K> for HeaderMap<T>
 where
     K: AsHeaderName,
 {
@@ -2046,7 +2220,7 @@ fn append_value<T>(
         Some(links) => {
             let idx = extra.len();
             extra.push(ExtraValue {
-                value: value,
+                value,
                 prev: Link::Extra(links.tail),
                 next: Link::Entry(entry_idx),
             });
@@ -2058,7 +2232,7 @@ fn append_value<T>(
         None => {
             let idx = extra.len();
             extra.push(ExtraValue {
-                value: value,
+                value,
                 prev: Link::Entry(entry_idx),
                 next: Link::Entry(entry_idx),
             });
@@ -2200,6 +2374,18 @@ impl<'a, T> Iterator for Keys<'a, T> {
     fn size_hint(&self) -> (usize, Option<usize>) {
         self.inner.size_hint()
     }
+
+    fn nth(&mut self, n: usize) -> Option<Self::Item> {
+        self.inner.nth(n).map(|b| &b.key)
+    }
+
+    fn count(self) -> usize {
+        self.inner.count()
+    }
+
+    fn last(self) -> Option<Self::Item> {
+        self.inner.last().map(|b| &b.key)
+    }
 }
 
 impl<'a, T> ExactSizeIterator for Keys<'a, T> {}
@@ -2247,9 +2433,7 @@ impl<'a, T> Iterator for Drain<'a, T> {
             // Remove the extra value
 
             let raw_links = RawLinks(self.entries);
-            let extra = unsafe {
-                remove_extra_value(raw_links, &mut *self.extra_values, next)
-            };
+            let extra = unsafe { remove_extra_value(raw_links, &mut *self.extra_values, next) };
 
             match extra.next {
                 Link::Extra(idx) => self.next = Some(idx),
@@ -2309,6 +2493,10 @@ impl<'a, T> Entry<'a, T> {
     ///
     /// Returns a mutable reference to the **first** value in the entry.
     ///
+    /// # Panics
+    ///
+    /// This method panics if capacity exceeds max `HeaderMap` capacity
+    ///
     /// # Examples
     ///
     /// ```
@@ -2332,11 +2520,47 @@ impl<'a, T> Entry<'a, T> {
     /// assert_eq!(map["x-hello"], 1);
     /// ```
     pub fn or_insert(self, default: T) -> &'a mut T {
+        self.or_try_insert(default)
+            .expect("size overflows MAX_SIZE")
+    }
+
+    /// Ensures a value is in the entry by inserting the default if empty.
+    ///
+    /// Returns a mutable reference to the **first** value in the entry.
+    ///
+    /// # Errors
+    ///
+    /// This function may return an error if `HeaderMap` exceeds max capacity
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use http::HeaderMap;
+    /// let mut map: HeaderMap<u32> = HeaderMap::default();
+    ///
+    /// let headers = &[
+    ///     "content-length",
+    ///     "x-hello",
+    ///     "Content-Length",
+    ///     "x-world",
+    /// ];
+    ///
+    /// for &header in headers {
+    ///     let counter = map.entry(header)
+    ///         .or_try_insert(0)
+    ///         .unwrap();
+    ///     *counter += 1;
+    /// }
+    ///
+    /// assert_eq!(map["content-length"], 2);
+    /// assert_eq!(map["x-hello"], 1);
+    /// ```
+    pub fn or_try_insert(self, default: T) -> Result<&'a mut T, MaxSizeReached> {
         use self::Entry::*;
 
         match self {
-            Occupied(e) => e.into_mut(),
-            Vacant(e) => e.insert(default),
+            Occupied(e) => Ok(e.into_mut()),
+            Vacant(e) => e.try_insert(default),
         }
     }
 
@@ -2366,20 +2590,66 @@ impl<'a, T> Entry<'a, T> {
     /// # use http::HeaderMap;
     /// # use http::header::HOST;
     /// let mut map = HeaderMap::new();
-    /// map.insert(HOST, "world".parse().unwrap());
+    /// map.try_insert(HOST, "world".parse().unwrap()).unwrap();
     ///
-    /// let res = map.entry("host")
-    ///     .or_insert_with(|| unreachable!());
+    /// let res = map.try_entry("host")
+    ///     .unwrap()
+    ///     .or_try_insert_with(|| unreachable!())
+    ///     .unwrap();
     ///
     ///
     /// assert_eq!(res, "world");
     /// ```
     pub fn or_insert_with<F: FnOnce() -> T>(self, default: F) -> &'a mut T {
+        self.or_try_insert_with(default)
+            .expect("size overflows MAX_SIZE")
+    }
+
+    /// Ensures a value is in the entry by inserting the result of the default
+    /// function if empty.
+    ///
+    /// The default function is not called if the entry exists in the map.
+    /// Returns a mutable reference to the **first** value in the entry.
+    ///
+    /// # Examples
+    ///
+    /// Basic usage.
+    ///
+    /// ```
+    /// # use http::HeaderMap;
+    /// let mut map = HeaderMap::new();
+    ///
+    /// let res = map.entry("x-hello")
+    ///     .or_insert_with(|| "world".parse().unwrap());
+    ///
+    /// assert_eq!(res, "world");
+    /// ```
+    ///
+    /// The default function is not called if the entry exists in the map.
+    ///
+    /// ```
+    /// # use http::HeaderMap;
+    /// # use http::header::HOST;
+    /// let mut map = HeaderMap::new();
+    /// map.try_insert(HOST, "world".parse().unwrap()).unwrap();
+    ///
+    /// let res = map.try_entry("host")
+    ///     .unwrap()
+    ///     .or_try_insert_with(|| unreachable!())
+    ///     .unwrap();
+    ///
+    ///
+    /// assert_eq!(res, "world");
+    /// ```
+    pub fn or_try_insert_with<F: FnOnce() -> T>(
+        self,
+        default: F,
+    ) -> Result<&'a mut T, MaxSizeReached> {
         use self::Entry::*;
 
         match self {
-            Occupied(e) => e.into_mut(),
-            Vacant(e) => e.insert(default()),
+            Occupied(e) => Ok(e.into_mut()),
+            Vacant(e) => e.try_insert(default()),
         }
     }
 
@@ -2454,12 +2724,33 @@ impl<'a, T> VacantEntry<'a, T> {
     /// assert_eq!(map["x-hello"], "world");
     /// ```
     pub fn insert(self, value: T) -> &'a mut T {
+        self.try_insert(value).expect("size overflows MAX_SIZE")
+    }
+
+    /// Insert the value into the entry.
+    ///
+    /// The value will be associated with this entry's key. A mutable reference
+    /// to the inserted value will be returned.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use http::header::{HeaderMap, Entry};
+    /// let mut map = HeaderMap::new();
+    ///
+    /// if let Entry::Vacant(v) = map.entry("x-hello") {
+    ///     v.insert("world".parse().unwrap());
+    /// }
+    ///
+    /// assert_eq!(map["x-hello"], "world");
+    /// ```
+    pub fn try_insert(self, value: T) -> Result<&'a mut T, MaxSizeReached> {
         // Ensure that there is space in the map
         let index =
             self.map
-                .insert_phase_two(self.key, value.into(), self.hash, self.probe, self.danger);
+                .try_insert_phase_two(self.key, value, self.hash, self.probe, self.danger)?;
 
-        &mut self.map.entries[index].value
+        Ok(&mut self.map.entries[index].value)
     }
 
     /// Insert the value into the entry.
@@ -2473,24 +2764,47 @@ impl<'a, T> VacantEntry<'a, T> {
     /// # use http::header::*;
     /// let mut map = HeaderMap::new();
     ///
-    /// if let Entry::Vacant(v) = map.entry("x-hello") {
-    ///     let mut e = v.insert_entry("world".parse().unwrap());
+    /// if let Entry::Vacant(v) = map.try_entry("x-hello").unwrap() {
+    ///     let mut e = v.try_insert_entry("world".parse().unwrap()).unwrap();
     ///     e.insert("world2".parse().unwrap());
     /// }
     ///
     /// assert_eq!(map["x-hello"], "world2");
     /// ```
     pub fn insert_entry(self, value: T) -> OccupiedEntry<'a, T> {
+        self.try_insert_entry(value)
+            .expect("size overflows MAX_SIZE")
+    }
+
+    /// Insert the value into the entry.
+    ///
+    /// The value will be associated with this entry's key. The new
+    /// `OccupiedEntry` is returned, allowing for further manipulation.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use http::header::*;
+    /// let mut map = HeaderMap::new();
+    ///
+    /// if let Entry::Vacant(v) = map.try_entry("x-hello").unwrap() {
+    ///     let mut e = v.try_insert_entry("world".parse().unwrap()).unwrap();
+    ///     e.insert("world2".parse().unwrap());
+    /// }
+    ///
+    /// assert_eq!(map["x-hello"], "world2");
+    /// ```
+    pub fn try_insert_entry(self, value: T) -> Result<OccupiedEntry<'a, T>, MaxSizeReached> {
         // Ensure that there is space in the map
         let index =
             self.map
-                .insert_phase_two(self.key, value.into(), self.hash, self.probe, self.danger);
+                .try_insert_phase_two(self.key, value, self.hash, self.probe, self.danger)?;
 
-        OccupiedEntry {
+        Ok(OccupiedEntry {
             map: self.map,
-            index: index,
+            index,
             probe: self.probe,
-        }
+        })
     }
 }
 
@@ -2894,7 +3208,7 @@ impl<'a, T> OccupiedEntry<'a, T> {
     /// assert_eq!("earth", map["host"]);
     /// ```
     pub fn insert(&mut self, value: T) -> T {
-        self.map.insert_occupied(self.index, value.into())
+        self.map.insert_occupied(self.index, value)
     }
 
     /// Sets the value of the entry.
@@ -2920,7 +3234,7 @@ impl<'a, T> OccupiedEntry<'a, T> {
     /// assert_eq!("earth", map["host"]);
     /// ```
     pub fn insert_mult(&mut self, value: T) -> ValueDrain<'_, T> {
-        self.map.insert_occupied_mult(self.index, value.into())
+        self.map.insert_occupied_mult(self.index, value)
     }
 
     /// Insert the value into the entry.
@@ -2947,7 +3261,7 @@ impl<'a, T> OccupiedEntry<'a, T> {
     pub fn append(&mut self, value: T) {
         let idx = self.index;
         let entry = &mut self.map.entries[idx];
-        append_value(idx, entry, &mut self.map.extra_values, value.into());
+        append_value(idx, entry, &mut self.map.extra_values, value);
     }
 
     /// Remove the entry from the map.
@@ -3012,10 +3326,9 @@ impl<'a, T> OccupiedEntry<'a, T> {
         let raw_links = self.map.raw_links();
         let extra_values = &mut self.map.extra_values;
 
-        let next = self.map.entries[self.index].links.map(|l| {
-            drain_all_extra_values(raw_links, extra_values, l.next)
-                .into_iter()
-        });
+        let next = self.map.entries[self.index]
+            .links
+            .map(|l| drain_all_extra_values(raw_links, extra_values, l.next).into_iter());
 
         let entry = self.map.remove_found(self.probe, self.index);
 
@@ -3126,12 +3439,12 @@ impl<'a, T> Iterator for ValueDrain<'a, T> {
             // Exactly 1
             (&Some(_), &None) => (1, Some(1)),
             // 1 + extras
-            (&Some(_), &Some(ref extras)) => {
+            (&Some(_), Some(extras)) => {
                 let (l, u) = extras.size_hint();
                 (l + 1, u.map(|u| u + 1))
-            },
+            }
             // Extras only
-            (&None, &Some(ref extras)) => extras.size_hint(),
+            (&None, Some(extras)) => extras.size_hint(),
             // No more
             (&None, &None) => (0, Some(0)),
         }
@@ -3142,7 +3455,7 @@ impl<'a, T> FusedIterator for ValueDrain<'a, T> {}
 
 impl<'a, T> Drop for ValueDrain<'a, T> {
     fn drop(&mut self) {
-        while let Some(_) = self.next() {}
+        for _ in self.by_ref() {}
     }
 }
 
@@ -3163,17 +3476,13 @@ impl<T> ops::Index<usize> for RawLinks<T> {
     type Output = Option<Links>;
 
     fn index(&self, idx: usize) -> &Self::Output {
-        unsafe {
-            &(*self.0)[idx].links
-        }
+        unsafe { &(*self.0)[idx].links }
     }
 }
 
 impl<T> ops::IndexMut<usize> for RawLinks<T> {
     fn index_mut(&mut self, idx: usize) -> &mut Self::Output {
-        unsafe {
-            &mut (*self.0)[idx].links
-        }
+        unsafe { &mut (*self.0)[idx].links }
     }
 }
 
@@ -3185,7 +3494,7 @@ impl Pos {
         debug_assert!(index < MAX_SIZE);
         Pos {
             index: index as Size,
-            hash: hash,
+            hash,
         }
     }
 
@@ -3219,38 +3528,53 @@ impl Pos {
 
 impl Danger {
     fn is_red(&self) -> bool {
-        match *self {
-            Danger::Red(_) => true,
-            _ => false,
-        }
+        matches!(*self, Danger::Red(_))
     }
 
-    fn to_red(&mut self) {
+    fn set_red(&mut self) {
         debug_assert!(self.is_yellow());
         *self = Danger::Red(RandomState::new());
     }
 
     fn is_yellow(&self) -> bool {
-        match *self {
-            Danger::Yellow => true,
-            _ => false,
+        matches!(*self, Danger::Yellow)
+    }
+
+    fn set_yellow(&mut self) {
+        if let Danger::Green = *self {
+            *self = Danger::Yellow;
         }
     }
 
-    fn to_yellow(&mut self) {
-        match *self {
-            Danger::Green => {
-                *self = Danger::Yellow;
-            }
-            _ => {}
-        }
-    }
-
-    fn to_green(&mut self) {
+    fn set_green(&mut self) {
         debug_assert!(self.is_yellow());
         *self = Danger::Green;
     }
 }
+
+// ===== impl MaxSizeReached =====
+
+impl MaxSizeReached {
+    fn new() -> Self {
+        MaxSizeReached { _priv: () }
+    }
+}
+
+impl fmt::Debug for MaxSizeReached {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        f.debug_struct("MaxSizeReached")
+            // skip _priv noise
+            .finish()
+    }
+}
+
+impl fmt::Display for MaxSizeReached {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.write_str("max size reached")
+    }
+}
+
+impl std::error::Error for MaxSizeReached {}
 
 // ===== impl Utils =====
 
@@ -3281,9 +3605,9 @@ fn probe_distance(mask: Size, hash: HashValue, current: usize) -> usize {
     current.wrapping_sub(desired_pos(mask, hash)) & mask as usize
 }
 
-fn hash_elem_using<K: ?Sized>(danger: &Danger, k: &K) -> HashValue
+fn hash_elem_using<K>(danger: &Danger, k: &K) -> HashValue
 where
-    K: Hash,
+    K: Hash + ?Sized,
 {
     use fnv::FnvHasher;
 
@@ -3314,7 +3638,7 @@ where
  */
 
 mod into_header_name {
-    use super::{Entry, HdrName, HeaderMap, HeaderName};
+    use super::{Entry, HdrName, HeaderMap, HeaderName, MaxSizeReached};
 
     /// A marker trait used to identify values that can be used as insert keys
     /// to a `HeaderMap`.
@@ -3330,31 +3654,36 @@ mod into_header_name {
     // without breaking any external crate.
     pub trait Sealed {
         #[doc(hidden)]
-        fn insert<T>(self, map: &mut HeaderMap<T>, val: T) -> Option<T>;
+        fn try_insert<T>(self, map: &mut HeaderMap<T>, val: T)
+            -> Result<Option<T>, MaxSizeReached>;
 
         #[doc(hidden)]
-        fn append<T>(self, map: &mut HeaderMap<T>, val: T) -> bool;
+        fn try_append<T>(self, map: &mut HeaderMap<T>, val: T) -> Result<bool, MaxSizeReached>;
 
         #[doc(hidden)]
-        fn entry<T>(self, map: &mut HeaderMap<T>) -> Entry<'_, T>;
+        fn try_entry<T>(self, map: &mut HeaderMap<T>) -> Result<Entry<'_, T>, MaxSizeReached>;
     }
 
     // ==== impls ====
 
     impl Sealed for HeaderName {
         #[inline]
-        fn insert<T>(self, map: &mut HeaderMap<T>, val: T) -> Option<T> {
-            map.insert2(self, val)
+        fn try_insert<T>(
+            self,
+            map: &mut HeaderMap<T>,
+            val: T,
+        ) -> Result<Option<T>, MaxSizeReached> {
+            map.try_insert2(self, val)
         }
 
         #[inline]
-        fn append<T>(self, map: &mut HeaderMap<T>, val: T) -> bool {
-            map.append2(self, val)
+        fn try_append<T>(self, map: &mut HeaderMap<T>, val: T) -> Result<bool, MaxSizeReached> {
+            map.try_append2(self, val)
         }
 
         #[inline]
-        fn entry<T>(self, map: &mut HeaderMap<T>) -> Entry<'_, T> {
-            map.entry2(self)
+        fn try_entry<T>(self, map: &mut HeaderMap<T>) -> Result<Entry<'_, T>, MaxSizeReached> {
+            map.try_entry2(self)
         }
     }
 
@@ -3362,17 +3691,21 @@ mod into_header_name {
 
     impl<'a> Sealed for &'a HeaderName {
         #[inline]
-        fn insert<T>(self, map: &mut HeaderMap<T>, val: T) -> Option<T> {
-            map.insert2(self, val)
+        fn try_insert<T>(
+            self,
+            map: &mut HeaderMap<T>,
+            val: T,
+        ) -> Result<Option<T>, MaxSizeReached> {
+            map.try_insert2(self, val)
         }
         #[inline]
-        fn append<T>(self, map: &mut HeaderMap<T>, val: T) -> bool {
-            map.append2(self, val)
+        fn try_append<T>(self, map: &mut HeaderMap<T>, val: T) -> Result<bool, MaxSizeReached> {
+            map.try_append2(self, val)
         }
 
         #[inline]
-        fn entry<T>(self, map: &mut HeaderMap<T>) -> Entry<'_, T> {
-            map.entry2(self)
+        fn try_entry<T>(self, map: &mut HeaderMap<T>) -> Result<Entry<'_, T>, MaxSizeReached> {
+            map.try_entry2(self)
         }
     }
 
@@ -3380,17 +3713,21 @@ mod into_header_name {
 
     impl Sealed for &'static str {
         #[inline]
-        fn insert<T>(self, map: &mut HeaderMap<T>, val: T) -> Option<T> {
-            HdrName::from_static(self, move |hdr| map.insert2(hdr, val))
+        fn try_insert<T>(
+            self,
+            map: &mut HeaderMap<T>,
+            val: T,
+        ) -> Result<Option<T>, MaxSizeReached> {
+            HdrName::from_static(self, move |hdr| map.try_insert2(hdr, val))
         }
         #[inline]
-        fn append<T>(self, map: &mut HeaderMap<T>, val: T) -> bool {
-            HdrName::from_static(self, move |hdr| map.append2(hdr, val))
+        fn try_append<T>(self, map: &mut HeaderMap<T>, val: T) -> Result<bool, MaxSizeReached> {
+            HdrName::from_static(self, move |hdr| map.try_append2(hdr, val))
         }
 
         #[inline]
-        fn entry<T>(self, map: &mut HeaderMap<T>) -> Entry<'_, T> {
-            HdrName::from_static(self, move |hdr| map.entry2(hdr))
+        fn try_entry<T>(self, map: &mut HeaderMap<T>) -> Result<Entry<'_, T>, MaxSizeReached> {
+            HdrName::from_static(self, move |hdr| map.try_entry2(hdr))
         }
     }
 
@@ -3398,11 +3735,30 @@ mod into_header_name {
 }
 
 mod as_header_name {
-    use super::{Entry, HdrName, HeaderMap, HeaderName, InvalidHeaderName};
+    use super::{Entry, HdrName, HeaderMap, HeaderName, InvalidHeaderName, MaxSizeReached};
 
     /// A marker trait used to identify values that can be used as search keys
     /// to a `HeaderMap`.
     pub trait AsHeaderName: Sealed {}
+
+    // Debug not currently needed, save on compiling it
+    #[allow(missing_debug_implementations)]
+    pub enum TryEntryError {
+        InvalidHeaderName(InvalidHeaderName),
+        MaxSizeReached(MaxSizeReached),
+    }
+
+    impl From<InvalidHeaderName> for TryEntryError {
+        fn from(e: InvalidHeaderName) -> TryEntryError {
+            TryEntryError::InvalidHeaderName(e)
+        }
+    }
+
+    impl From<MaxSizeReached> for TryEntryError {
+        fn from(e: MaxSizeReached) -> TryEntryError {
+            TryEntryError::MaxSizeReached(e)
+        }
+    }
 
     // All methods are on this pub(super) trait, instead of `AsHeaderName`,
     // so that they aren't publicly exposed to the world.
@@ -3414,7 +3770,7 @@ mod as_header_name {
     // without breaking any external crate.
     pub trait Sealed {
         #[doc(hidden)]
-        fn try_entry<T>(self, map: &mut HeaderMap<T>) -> Result<Entry<'_, T>, InvalidHeaderName>;
+        fn try_entry<T>(self, map: &mut HeaderMap<T>) -> Result<Entry<'_, T>, TryEntryError>;
 
         #[doc(hidden)]
         fn find<T>(&self, map: &HeaderMap<T>) -> Option<(usize, usize)>;
@@ -3427,8 +3783,8 @@ mod as_header_name {
 
     impl Sealed for HeaderName {
         #[inline]
-        fn try_entry<T>(self, map: &mut HeaderMap<T>) -> Result<Entry<'_, T>, InvalidHeaderName> {
-            Ok(map.entry2(self))
+        fn try_entry<T>(self, map: &mut HeaderMap<T>) -> Result<Entry<'_, T>, TryEntryError> {
+            Ok(map.try_entry2(self)?)
         }
 
         #[inline]
@@ -3445,8 +3801,8 @@ mod as_header_name {
 
     impl<'a> Sealed for &'a HeaderName {
         #[inline]
-        fn try_entry<T>(self, map: &mut HeaderMap<T>) -> Result<Entry<'_, T>, InvalidHeaderName> {
-            Ok(map.entry2(self))
+        fn try_entry<T>(self, map: &mut HeaderMap<T>) -> Result<Entry<'_, T>, TryEntryError> {
+            Ok(map.try_entry2(self)?)
         }
 
         #[inline]
@@ -3455,7 +3811,7 @@ mod as_header_name {
         }
 
         fn as_str(&self) -> &str {
-            <HeaderName>::as_str(*self)
+            <HeaderName>::as_str(self)
         }
     }
 
@@ -3463,8 +3819,10 @@ mod as_header_name {
 
     impl<'a> Sealed for &'a str {
         #[inline]
-        fn try_entry<T>(self, map: &mut HeaderMap<T>) -> Result<Entry<'_, T>, InvalidHeaderName> {
-            HdrName::from_bytes(self.as_bytes(), move |hdr| map.entry2(hdr))
+        fn try_entry<T>(self, map: &mut HeaderMap<T>) -> Result<Entry<'_, T>, TryEntryError> {
+            Ok(HdrName::from_bytes(self.as_bytes(), move |hdr| {
+                map.try_entry2(hdr)
+            })??)
         }
 
         #[inline]
@@ -3481,7 +3839,7 @@ mod as_header_name {
 
     impl Sealed for String {
         #[inline]
-        fn try_entry<T>(self, map: &mut HeaderMap<T>) -> Result<Entry<'_, T>, InvalidHeaderName> {
+        fn try_entry<T>(self, map: &mut HeaderMap<T>) -> Result<Entry<'_, T>, TryEntryError> {
             self.as_str().try_entry(map)
         }
 
@@ -3499,7 +3857,7 @@ mod as_header_name {
 
     impl<'a> Sealed for &'a String {
         #[inline]
-        fn try_entry<T>(self, map: &mut HeaderMap<T>) -> Result<Entry<'_, T>, InvalidHeaderName> {
+        fn try_entry<T>(self, map: &mut HeaderMap<T>) -> Result<Entry<'_, T>, TryEntryError> {
             self.as_str().try_entry(map)
         }
 
@@ -3509,7 +3867,7 @@ mod as_header_name {
         }
 
         fn as_str(&self) -> &str {
-            *self
+            self
         }
     }
 
@@ -3539,7 +3897,7 @@ fn test_bounds() {
 #[test]
 fn skip_duplicates_during_key_iteration() {
     let mut map = HeaderMap::new();
-    map.append("a", HeaderValue::from_static("a"));
-    map.append("a", HeaderValue::from_static("b"));
+    map.try_append("a", HeaderValue::from_static("a")).unwrap();
+    map.try_append("a", HeaderValue::from_static("b")).unwrap();
     assert_eq!(map.keys().count(), map.keys_len());
 }

@@ -189,7 +189,8 @@ impl_pow_f!(f64);
 
 macro_rules! impl_pow_i {
     () => ();
-    ($t: ty $(, $tail:tt)*) => (
+    ($(#[$meta:meta])*  $t: ty $(, $tail:tt)*) => (
+        $(#[$meta])*
         impl Pow<UTerm> for $t {
             type Output = $t;
             #[inline]
@@ -198,6 +199,7 @@ macro_rules! impl_pow_i {
             }
         }
 
+        $(#[$meta])*
         impl<U: Unsigned, B: Bit> Pow<UInt<U, B>> for $t {
             type Output = $t;
             #[inline]
@@ -206,6 +208,7 @@ macro_rules! impl_pow_i {
             }
         }
 
+        $(#[$meta])*
         impl Pow<Z0> for $t {
             type Output = $t;
             #[inline]
@@ -214,6 +217,7 @@ macro_rules! impl_pow_i {
             }
         }
 
+        $(#[$meta])*
         impl<U: Unsigned + NonZero> Pow<PInt<U>> for $t {
             type Output = $t;
             #[inline]
@@ -228,7 +232,11 @@ macro_rules! impl_pow_i {
 
 impl_pow_i!(u8, u16, u32, u64, usize, i8, i16, i32, i64, isize);
 #[cfg(feature = "i128")]
-impl_pow_i!(u128, i128);
+impl_pow_i!(
+    #[cfg_attr(docsrs, doc(cfg(feature = "i128")))]
+    u128,
+    i128
+);
 
 #[test]
 fn pow_test() {
@@ -308,11 +316,31 @@ pub trait Cmp<Rhs = Self> {
 }
 
 /// A **type operator** that gives the length of an `Array` or the number of bits in a `UInt`.
+#[allow(clippy::len_without_is_empty)]
 pub trait Len {
     /// The length as a type-level unsigned integer.
     type Output: crate::Unsigned;
     /// This function isn't used in this crate, but may be useful for others.
     fn len(&self) -> Self::Output;
+}
+
+/// A **type operator** that gives the sum of all elements of an `Array`.
+pub trait FoldAdd {
+    /// The type of the result of the sum
+    type Output;
+}
+
+/// A **type operator** that gives the product of all elements of an `Array`.
+pub trait FoldMul {
+    /// The type of the result of the product
+    type Output;
+}
+
+#[test]
+fn fold_test() {
+    use crate::*;
+    assert_eq!(10, <FoldSum::<tarr![U2, U3, U5]>>::to_u32());
+    assert_eq!(30, <FoldProd::<tarr![U2, U3, U5]>>::to_u32());
 }
 
 /// Division as a partial function. This **type operator** performs division just as `Div`, but is
@@ -347,6 +375,7 @@ pub trait IsLess<Rhs = Self> {
     /// The type representing either `True` or `False`
     type Output: Bit;
     /// Method returning `True` or `False`.
+    #[allow(clippy::wrong_self_convention)]
     fn is_less(self, rhs: Rhs) -> Self::Output;
 }
 
@@ -369,6 +398,7 @@ pub trait IsEqual<Rhs = Self> {
     /// The type representing either `True` or `False`
     type Output: Bit;
     /// Method returning `True` or `False`.
+    #[allow(clippy::wrong_self_convention)]
     fn is_equal(self, rhs: Rhs) -> Self::Output;
 }
 
@@ -391,6 +421,7 @@ pub trait IsGreater<Rhs = Self> {
     /// The type representing either `True` or `False`
     type Output: Bit;
     /// Method returning `True` or `False`.
+    #[allow(clippy::wrong_self_convention)]
     fn is_greater(self, rhs: Rhs) -> Self::Output;
 }
 
@@ -413,6 +444,7 @@ pub trait IsLessOrEqual<Rhs = Self> {
     /// The type representing either `True` or `False`
     type Output: Bit;
     /// Method returning `True` or `False`.
+    #[allow(clippy::wrong_self_convention)]
     fn is_less_or_equal(self, rhs: Rhs) -> Self::Output;
 }
 
@@ -435,6 +467,7 @@ pub trait IsNotEqual<Rhs = Self> {
     /// The type representing either `True` or `False`
     type Output: Bit;
     /// Method returning `True` or `False`.
+    #[allow(clippy::wrong_self_convention)]
     fn is_not_equal(self, rhs: Rhs) -> Self::Output;
 }
 
@@ -457,6 +490,7 @@ pub trait IsGreaterOrEqual<Rhs = Self> {
     /// The type representing either `True` or `False`
     type Output: Bit;
     /// Method returning `True` or `False`.
+    #[allow(clippy::wrong_self_convention)]
     fn is_greater_or_equal(self, rhs: Rhs) -> Self::Output;
 }
 

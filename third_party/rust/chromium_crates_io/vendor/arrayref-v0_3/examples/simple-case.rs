@@ -10,6 +10,6 @@ fn main() {
     x[20] = 1;
     x[21] = 4;
     x[24] = 3;
-    x[0] = add_three(array_mut_ref![x,20,3]);
+    x[0] = add_three(array_mut_ref![x, 20, 3]);
     assert_eq!(x[0], 8);
 }

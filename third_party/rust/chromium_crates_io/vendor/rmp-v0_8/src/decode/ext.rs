@@ -1,5 +1,5 @@
-use crate::Marker;
 use super::{read_marker, RmpRead, ValueReadError};
+use crate::Marker;
 
 /// Attempts to read exactly 3 bytes from the given reader and interpret them as a fixext1 type
 /// with data attached.
@@ -155,8 +155,8 @@ pub fn read_ext_meta<R: RmpRead>(rd: &mut R) -> Result<ExtMeta, ValueReadError<R
         Marker::FixExt4 => 4,
         Marker::FixExt8 => 8,
         Marker::FixExt16 => 16,
-        Marker::Ext8 => rd.read_data_u8()? as u32,
-        Marker::Ext16 => rd.read_data_u16()? as u32,
+        Marker::Ext8 => u32::from(rd.read_data_u8()?),
+        Marker::Ext16 => u32::from(rd.read_data_u16()?),
         Marker::Ext32 => rd.read_data_u32()?,
         marker => return Err(ValueReadError::TypeMismatch(marker)),
     };
