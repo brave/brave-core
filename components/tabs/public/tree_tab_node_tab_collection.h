@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_TABS_PUBLIC_TREE_TAB_NODE_H_
-#define BRAVE_COMPONENTS_TABS_PUBLIC_TREE_TAB_NODE_H_
+#ifndef BRAVE_COMPONENTS_TABS_PUBLIC_TREE_TAB_NODE_TAB_COLLECTION_H_
+#define BRAVE_COMPONENTS_TABS_PUBLIC_TREE_TAB_NODE_TAB_COLLECTION_H_
 
 #include <memory>
 
@@ -12,11 +12,13 @@
 #include "components/tabs/public/tab_collection.h"
 #include "components/tabs/public/tab_interface.h"
 
-// TreeTabNode is a specialized TabCollection that represents a node in the
-// tree structure of tabs. It contains a current tab and can have child
-// collections, such as other TreeTabNodes, TabGroupTabCollections,
-// SplitTabCollections.
-class TreeTabNode : public tabs::TabCollection {
+namespace tabs {
+
+// TreeTabNodeTabCollection is a specialized TabCollection that represents a
+// node in the tree structure of tabs. It contains a current tab and can have
+// child collections, such as other TreeTabNodeTabCollections,
+// TabGroupTabCollections, SplitTabCollections.
+class TreeTabNodeTabCollection : public tabs::TabCollection {
  public:
   // Builds the tree tabs structure starting from the root collection.
   // This will wrap all tabs in the tree with TreeTabNode
@@ -26,9 +28,9 @@ class TreeTabNode : public tabs::TabCollection {
   // to their parent collections and removing the TreeTabNodes themselves.
   static void FlattenTreeTabs(TabCollection& root);
 
-  TreeTabNode(const tree_tab::TreeTabNodeId& tree_tab_node_id,
-              std::unique_ptr<tabs::TabInterface> current_tab);
-  ~TreeTabNode() override;
+  TreeTabNodeTabCollection(const tree_tab::TreeTabNodeId& tree_tab_node_id,
+                           std::unique_ptr<tabs::TabInterface> current_tab);
+  ~TreeTabNodeTabCollection() override;
 
   const tree_tab::TreeTabNodeId& tree_tab_node_id() const {
     return tree_tab_node_id_;
@@ -41,17 +43,19 @@ class TreeTabNode : public tabs::TabCollection {
   int level() const { return level_; }
 
   // Returns the top-level ancestor TreeTabNode in the hierarchy.
-  TreeTabNode* GetTopLevelAncestor();
-  const TreeTabNode* GetTopLevelAncestor() const;
+  TreeTabNodeTabCollection* GetTopLevelAncestor();
+  const TreeTabNodeTabCollection* GetTopLevelAncestor() const;
 
   // TabCollection:
   void OnReparentedImpl(TabCollection* old_parent,
                         TabCollection* new_parent) override;
 
  private:
-  // Returns all TreeTabNodes recursively from the given parent collection.
-  static void CollectTreeNodesRecursively(tabs::TabCollection& parent,
-                                          std::vector<TreeTabNode*>& nodes);
+  // Returns all TreeTabNodeTabCollections recursively from the given parent
+  // collection.
+  static void CollectTreeNodesRecursively(
+      tabs::TabCollection& parent,
+      std::vector<TreeTabNodeTabCollection*>& nodes);
 
   // Callback for when the current tab is about to be detached.
   // This is used to ensure that the current tab is properly handled when the
@@ -89,4 +93,6 @@ class TreeTabNode : public tabs::TabCollection {
   base::CallbackListSubscription will_detach_tab_subscription_;
 };
 
-#endif  // BRAVE_COMPONENTS_TABS_PUBLIC_TREE_TAB_NODE_H_
+}  // namespace tabs
+
+#endif  // BRAVE_COMPONENTS_TABS_PUBLIC_TREE_TAB_NODE_TAB_COLLECTION_H_
