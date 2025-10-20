@@ -6,12 +6,11 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_PROFILES_PROFILE_IO_DATA_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_PROFILES_PROFILE_IO_DATA_H_
 
-#include <string>
 #include "url/gurl.h"
 
-#define IsHandledProtocol                                    \
-  IsHandledProtocol_ChromiumImpl(const std::string& scheme); \
-  static bool IsHandledProtocol
+#define IsHandledProtocol(...)                 \
+  IsHandledProtocol_ChromiumImpl(__VA_ARGS__); \
+  static bool IsHandledProtocol(__VA_ARGS__)
 
 #define IsHandledURL                          \
   IsHandledURL_ChromiumImpl(const GURL& url); \
