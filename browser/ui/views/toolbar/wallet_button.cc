@@ -20,7 +20,7 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
-#include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
@@ -43,10 +43,10 @@ namespace {
 constexpr int kBraveWalletLeftMarginExtra = -3;
 
 content::WebContents* GetActiveWebContents() {
-  return BrowserList::GetInstance()
-      ->GetLastActive()
-      ->tab_strip_model()
-      ->GetActiveWebContents();
+  BrowserWindowInterface* const bwi =
+      GetLastActiveBrowserWindowInterfaceWithAnyProfile();
+  CHECK(bwi);
+  return bwi->GetTabStripModel()->GetActiveWebContents();
 }
 
 class BraveWalletButtonHighlightPathGenerator

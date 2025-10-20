@@ -34,6 +34,7 @@
 #include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/tabs/features.h"
@@ -977,7 +978,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripDragAndDropBrowserTest,
         EXPECT_EQ(2, std::ranges::count_if(*browser_list, [&](Browser* b) {
                     return b->profile() == browser()->profile();
                   }));
-        auto* new_browser = browser_list->GetLastActive();
+        auto* new_browser = GetLastActiveBrowserWindowInterfaceWithAnyProfile();
         auto* browser_view = BrowserView::GetBrowserViewForBrowser(new_browser);
         auto* tab = browser_view->tabstrip()->tab_at(0);
         ASSERT_TRUE(tab);
@@ -986,7 +987,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripDragAndDropBrowserTest,
         EXPECT_TRUE(tab->IsMouseHovered());
         EXPECT_TRUE(tab->dragging());
         ReleaseMouse();
-        new_browser->window()->Close();
+        new_browser->GetWindow()->Close();
       }));
 }
 

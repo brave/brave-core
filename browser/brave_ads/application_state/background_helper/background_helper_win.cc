@@ -9,8 +9,8 @@
 
 #include "base/functional/bind.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_window.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
 #include "ui/gfx/win/singleton_hwnd.h"
 #include "ui/views/win/hwnd_util.h"
 
@@ -25,10 +25,10 @@ BackgroundHelperWin::BackgroundHelperWin() {
 BackgroundHelperWin::~BackgroundHelperWin() = default;
 
 bool BackgroundHelperWin::IsForeground() const {
-  auto* browser = BrowserList::GetInstance()->GetLastActive();
-  if (browser && browser->window() && browser->window()->GetNativeWindow()) {
+  auto* browser = GetLastActiveBrowserWindowInterfaceWithAnyProfile();
+  if (browser && browser->GetWindow()) {
     return ::GetForegroundWindow() ==
-           views::HWNDForNativeWindow(browser->window()->GetNativeWindow());
+           views::HWNDForNativeWindow(browser->GetWindow()->GetNativeWindow());
   }
 
   return false;
