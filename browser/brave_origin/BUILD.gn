@@ -72,7 +72,10 @@ source_set("unit_tests") {
     "//brave/components/brave_origin",
     "//brave/components/constants",
     "//brave/components/p3a",
+    "//chrome/browser/profiles",
+    "//chrome/test:test_support",
     "//components/policy/core/common:test_support",
+    "//content/test:test_support",
     "//testing/gtest",
   ]
 
