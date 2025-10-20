@@ -206,7 +206,7 @@ INSTANTIATE_TEST_SUITE_P(
                  .with_headers = false,
                  .status_code = net::HTTP_OK,
                  .server_reply = R"({"response": "some response"})",
-                 .expected_reply = base::ok(TestResponse("some response"))},
+                 .expected_reply = TestResponse("some response")},
         TestCase{.request = TestRequest{{"invalid response"}},
                  .with_headers = false,
                  .status_code = net::HTTP_CREATED,
