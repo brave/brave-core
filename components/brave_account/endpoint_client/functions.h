@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ACCOUNT_ENDPOINT_CLIENT_FUNCTIONS_H_
 #define BRAVE_COMPONENTS_BRAVE_ACCOUNT_ENDPOINT_CLIENT_FUNCTIONS_H_
 
-#include <type_traits>
 #include <variant>
 
 #include "brave/components/brave_account/endpoint_client/concepts.h"
@@ -14,13 +13,15 @@
 namespace brave_account::endpoint_client::functions::detail {
 
 template <typename Handler, typename T>
-concept CanHandle = requires(Handler&& h, T&& value) {
+concept CanTransform = requires(Handler&& h, T&& value) {
   std::forward<Handler>(h)(std::forward<T>(value));
 };
 
-template <typename ErrorReturnType, typename Errors, typename... ErrorHandlers>
-constexpr auto HandleErrors(Errors&& errors,
-                            ErrorHandlers&&... on_error) noexcept {
+template <typename ErrorReturnType,
+          typename Error,
+          typename... ErrorTransformer>
+constexpr auto TransformError(Error&& errors,
+                              ErrorTransformer&&... on_error) noexcept {
   bool handled = false;
 
   return std::visit(
@@ -29,15 +30,15 @@ constexpr auto HandleErrors(Errors&& errors,
         ErrorReturnType result;
         (
             [&] {
-              if constexpr (CanHandle<ErrorHandlers, ErrorType>) {
+              if constexpr (CanTransform<ErrorTransformer, ErrorType>) {
                 if (!handled) {
                   auto invoke_on_error = [&]() -> decltype(auto) {
-                    return std::invoke(std::forward<ErrorHandlers>(on_error),
+                    return std::invoke(std::forward<ErrorTransformer>(on_error),
                                        std::forward<ErrorType>(value));
                   };
                   static_assert(
-                      concepts::ErrorHandler<decltype(invoke_on_error),
-                                             ErrorReturnType>,
+                      concepts::ErrorTransformer<decltype(invoke_on_error),
+                                                 ErrorReturnType>,
                       "Error handler should return a value which is "
                       "convertible to |on_reposnse| error type.");
 
@@ -76,7 +77,7 @@ namespace brave_account::endpoint_client::functions {
 //  Example usage:
 //  base::expected<Response, Error> reply = Client::Send(...);
 //
-//  auto result = HandleReply(
+//  auto result = TransformReply(
 //    std::move(reply),
 //    [&](Response response) -> base::expected<Data, ProcessError> {
 //      return ProcessResponse(response);
@@ -93,7 +94,7 @@ namespace brave_account::endpoint_client::functions {
 //  );
 //
 //  Example usage:
-//  auto result = HandleReply(
+//  auto result = TransformReply(
 //    std::move(reply),
 //    [&](Response response) -> base::expected<Data, ProcessError> {
 //      return ProcessResponse(response);
@@ -109,13 +110,14 @@ namespace brave_account::endpoint_client::functions {
 //  );
 
 template <typename Reply,
-          concepts::ResponseHandler<typename Reply::value_type> ResponseHandler,
-          typename... ErrorHandlers>
-constexpr auto HandleReply(Reply&& reply,
-                           ResponseHandler&& on_response,
-                           ErrorHandlers&&... on_error) noexcept {
+          concepts::ResponseTransformer<typename Reply::value_type>
+              ResponseTransformer,
+          typename... ErrorTransformer>
+constexpr auto TransformReply(Reply&& reply,
+                              ResponseTransformer&& on_response,
+                              ErrorTransformer&&... on_error) noexcept {
   auto invoke_on_response = [&]() -> decltype(auto) {
-    return std::invoke(std::forward<ResponseHandler>(on_response),
+    return std::invoke(std::forward<ResponseTransformer>(on_response),
                        std::forward<Reply>(reply).value());
   };
 
@@ -126,9 +128,9 @@ constexpr auto HandleReply(Reply&& reply,
 
   if (!reply.has_value()) {
     return ResultType(base::unexpect,
-                      detail::HandleErrors<ErrorType>(
+                      detail::TransformError<ErrorType>(
                           std::move(reply).error(),
-                          std::forward<ErrorHandlers>(on_error)...));
+                          std::forward<ErrorTransformer>(on_error)...));
   }
   return invoke_on_response();
 }
