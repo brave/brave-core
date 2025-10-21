@@ -85,6 +85,11 @@
         android:defaultValue="false"
         android:icon="@drawable/ic_closing_all_closes_brave"
         android:title="@string/prefs_closing_all_tabs_closes_brave"/>
+    <org.chromium.components.browser_ui.settings.ChromeBasePreference
+        android:key="brave_origin"
+        android:order="14"
+        android:icon="@drawable/product_origin"
+        android:title="@string/menu_origin"/>
     <PreferenceCategory
         android:key="display_section"
         android:order="15"
