@@ -6,17 +6,22 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_SLOT_CONTROLLER_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_SLOT_CONTROLLER_H_
 
+#include "brave/components/tabs/public/tree_tab_node.h"
+#include "brave/components/tabs/public/tree_tab_node_id.h"
+
 #define IsGroupCollapsed(...)                                  \
   IsGroupCollapsed(__VA_ARGS__) const = 0;                     \
   virtual void SetCustomTitleForTab(                           \
       Tab* tab, const std::optional<std::u16string>& title) {} \
   virtual const Browser* GetBrowser()
 
-// Add interface methods to get level and height for Tree tabs
-#define ShiftGroupRight(...)                           \
-  ShiftGroupRight(__VA_ARGS__) = 0;                    \
-  virtual int GetTreeHeight(const Tab* tab) const = 0; \
-  virtual int GetTreeNodeLevel(const Tab* tab) const
+// Add interface methods to TreeTabNode with its id.
+#define ShiftGroupRight(...)                                               \
+  ShiftGroupRight(__VA_ARGS__) = 0;                                        \
+  /* returns the height of the tree that given TreeTabNodeId belongs to */ \
+  virtual int GetTreeHeight(const tree_tab::TreeTabNodeId& id) const = 0;  \
+  virtual const tabs::TreeTabNode& GetTreeTabNode(                         \
+      const tree_tab::TreeTabNodeId& id) const
 
 #include <chrome/browser/ui/views/tabs/tab_slot_controller.h>  // IWYU pragma: export
 

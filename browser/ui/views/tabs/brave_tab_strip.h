@@ -11,6 +11,7 @@
 
 #include "base/gtest_prod_util.h"
 #include "base/memory/weak_ptr.h"
+#include "brave/components/tabs/public/tree_tab_node.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 
 class Tab;
@@ -40,8 +41,9 @@ class BraveTabStrip : public TabStrip {
   void SetCustomTitleForTab(
       Tab* tab,
       const std::optional<std::u16string>& title) override;
-  int GetTreeHeight(const Tab* tab) const override;
-  int GetTreeNodeLevel(const Tab* tab) const override;
+  int GetTreeHeight(const tree_tab::TreeTabNodeId& id) const override;
+  const tabs::TreeTabNode& GetTreeTabNode(
+      const tree_tab::TreeTabNodeId& id) const override;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, ScrollBarVisibility);
