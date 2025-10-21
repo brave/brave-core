@@ -46,6 +46,7 @@ void TestingBraveBrowserProcess::DeleteInstance() {
 
 // static
 void TestingBraveBrowserProcess::StartTearDown() {
+  // Reset BraveOriginPolicyManager to prevent dangling pointer to local_state_.
   brave_origin::BraveOriginPolicyManager::GetInstance()->Shutdown();
 }
 
