@@ -9,7 +9,6 @@ import type { ToolComponent, ToolUseContent } from './tool_event'
 
 const ToolEventContentAssistantDetailStorage: ToolComponent = (props) => {
   const content: ToolUseContent = {
-    // TODO: translation
     toolLabel: getLocale(S.CHAT_UI_TOOL_LABEL_ASSISTANT_DETAIL_STORAGE),
     expandedContent: null,
   }
@@ -20,7 +19,7 @@ const ToolEventContentAssistantDetailStorage: ToolComponent = (props) => {
       return props.toolInput.information
     }
     // Otherwise use the raw input string and strip the "{"information": "" part
-    // from the start of the string
+    // from the start of the string so that we render in-progress arguments.
     if (props.toolUseEvent.argumentsJson) {
       return props.toolUseEvent.argumentsJson.substring(16)
     }
