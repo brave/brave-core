@@ -219,6 +219,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       Preferences.Search.shouldOverrideDSEForJapanRegion.value = false
     }
 
+    if Preferences.URP.installAttributionLookupOutstanding.value == nil {
+      // Similarly to referral lookup, this prefrence should be set if it is a new user
+      // Trigger install attribution fetch only first launch
+      Preferences.URP.installAttributionLookupOutstanding.value = isFirstLaunch
+    }
+
     Preferences.General.isFirstLaunch.value = false
 
     Task {

@@ -45,7 +45,9 @@ struct ProfileState {
     // Setup Attribution manager
     attributionManager = AttributionManager(
       dau: dau,
-      urp: UserReferralProgram.shared
+      urp: UserReferralProgram(
+        braveCoreStats: profileController.braveStats
+      )
     )
 
     // Setup Rewards & Ads
@@ -423,13 +425,6 @@ extension SceneDelegate {
       name: BraveServiceStateObserver.coreServiceLoadedNotification,
       object: nil
     )
-
-    if Preferences.URP.installAttributionLookupOutstanding.value == nil {
-      // Similarly to referral lookup, this prefrence should be set if it is a new user
-      // Trigger install attribution fetch only first launch
-      Preferences.URP.installAttributionLookupOutstanding.value =
-        Preferences.General.isFirstLaunch.value
-    }
 
     PrivacyReportsManager.scheduleNotification(debugMode: !AppConstants.isOfficialBuild)
     PrivacyReportsManager.consolidateData()
