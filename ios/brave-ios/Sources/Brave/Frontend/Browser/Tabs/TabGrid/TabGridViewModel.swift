@@ -363,7 +363,7 @@ class TabGridViewModel {
     func tabManagerDidRestoreTabs(_ tabManager: TabManager) {
       notify()
     }
-    
+
     func tabManagerDidAddAndSelectNTP(_ tabManager: TabManager) {
       notify()
     }
