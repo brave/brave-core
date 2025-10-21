@@ -59,7 +59,9 @@
   case PermissionType::BRAVE_OPEN_AI_CHAT:                       \
     return ContentSettingsType::BRAVE_OPEN_AI_CHAT;              \
   case PermissionType::BRAVE_CARDANO:                            \
-    return ContentSettingsType::BRAVE_CARDANO;
+    return ContentSettingsType::BRAVE_CARDANO;                   \
+  case PermissionType::BRAVE_PSST:                               \
+    return ContentSettingsType::BRAVE_PSST;
 
 #include <components/permissions/permission_util.cc>
 #undef PermissionUtil
@@ -85,6 +87,8 @@ std::string PermissionUtil::GetPermissionString(
       return "BraveOpenAIChatPermission";
     case ContentSettingsType::BRAVE_CARDANO:
       return "BraveCardano";
+    case ContentSettingsType::BRAVE_PSST:
+      return "BravePsst";
     default:
       return PermissionUtil_ChromiumImpl::GetPermissionString(content_type);
   }
@@ -111,6 +115,10 @@ bool PermissionUtil::GetPermissionType(ContentSettingsType type,
     *out = PermissionType::BRAVE_OPEN_AI_CHAT;
     return true;
   }
+  if (type == ContentSettingsType::BRAVE_PSST) {
+    *out = PermissionType::BRAVE_PSST;
+    return true;
+  }
 
   return PermissionUtil_ChromiumImpl::GetPermissionType(type, out);
 }
@@ -124,6 +132,7 @@ bool PermissionUtil::IsPermission(ContentSettingsType type) {
     case ContentSettingsType::BRAVE_GOOGLE_SIGN_IN:
     case ContentSettingsType::BRAVE_LOCALHOST_ACCESS:
     case ContentSettingsType::BRAVE_OPEN_AI_CHAT:
+    case ContentSettingsType::BRAVE_PSST:
       return true;
     default:
       return PermissionUtil_ChromiumImpl::IsPermission(type);
@@ -161,6 +170,8 @@ PermissionType PermissionUtil::ContentSettingsTypeToPermissionType(
       return PermissionType::BRAVE_OPEN_AI_CHAT;
     case ContentSettingsType::BRAVE_CARDANO:
       return PermissionType::BRAVE_CARDANO;
+    case ContentSettingsType::BRAVE_PSST:
+      return PermissionType::BRAVE_PSST;
     default:
       return PermissionUtil_ChromiumImpl::ContentSettingsTypeToPermissionType(
           permission);

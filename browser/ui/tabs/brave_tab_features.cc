@@ -24,6 +24,7 @@
 #include "brave/browser/psst/psst_ui_delegate_impl.h"
 #include "brave/components/psst/browser/content/psst_tab_web_contents_observer.h"
 #include "brave/components/psst/common/features.h"
+#include "brave/browser/psst/psst_ui_presenter.h"
 #endif
 
 namespace tabs {
@@ -55,7 +56,7 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
             tab.GetContents(), profile,
             std::make_unique<psst::PsstUiDelegateImpl>(
                 psst::BravePsstPermissionContextFactory::GetForProfile(
-                    profile)),
+                    profile), std::make_unique<psst::UiDesktopPresenter>(tab.GetContents())),
             profile->GetPrefs(), ISOLATED_WORLD_ID_BRAVE_INTERNAL);
   }
 #endif

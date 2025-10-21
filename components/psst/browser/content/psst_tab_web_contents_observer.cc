@@ -11,24 +11,26 @@
 #include "base/debug/crash_logging.h"
 #include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
+#include "base/functional/callback_helpers.h"
 #include "base/json/json_writer.h"
 #include "base/strings/strcat.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
 #include "base/values.h"
+#include "brave/components/psst/browser/core/psst_permission_request.h"
 #include "brave/components/psst/browser/core/psst_rule.h"
 #include "brave/components/psst/browser/core/psst_rule_registry.h"
 #include "brave/components/psst/common/features.h"
 #include "brave/components/psst/common/pref_names.h"
+#include "components/permissions/permission_request_manager.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
-#include "components/permissions/permission_request_manager.h"
-#include "brave/components/psst/browser/core/psst_permission_request.h"
+#include "url/origin.h"
 
 namespace psst {
 
@@ -37,6 +39,8 @@ namespace {
 constexpr base::TimeDelta kScriptTimeout = base::Seconds(15);
 const char kShouldProcessKey[] = "should_process_key";
 const char kSignedUserId[] = "user";
+const char kUserScriptResultTasksPropName[] = "tasks";
+const char kUserScriptResultTaskItemUrlPropName[] = "url";
 
 struct PsstNavigationData : public base::SupportsUserData::Data {
  public:
@@ -114,7 +118,6 @@ PsstTabWebContentsObserver::PsstTabWebContentsObserver(
     std::unique_ptr<PsstUiDelegate> ui_delegate,
     InjectScriptCallback inject_script_callback)
     : WebContentsObserver(web_contents),
-      content::WebContentsUserData<PsstTabWebContentsObserver>(*web_contents),
       registry_(registry),
       prefs_(prefs),
       inject_script_callback_(std::move(inject_script_callback)),
@@ -148,6 +151,10 @@ void PsstTabWebContentsObserver::DocumentOnLoadCompletedInPrimaryMainFrame() {
   if (!ShouldInsertScriptForPage(id)) {
     return;
   }
+
+  LOG(INFO) << "[PSST] "
+               "PsstTabWebContentsObserver::"
+               "DocumentOnLoadCompletedInPrimaryMainFrame";
 
   registry_->CheckIfMatch(
       web_contents()->GetLastCommittedURL(),
@@ -191,27 +198,57 @@ void PsstTabWebContentsObserver::OnUserScriptResult(
     return;
   }
 
+  const auto* user_id = user_script_result.GetDict().FindString(kSignedUserId);
   // We should break the flow in case of signed-in user ID is not available
-  if (const auto* user_id =
-          user_script_result.GetDict().FindString(kSignedUserId);
-      !user_id || user_id->empty()) {
+  if (!user_id || user_id->empty()) {
     ui_delegate_->UpdateTasks(100, {}, mojom::PsstStatus::kFailed);
     return;
   }
 
-  // Here possible the request permission flow can be started:
-  // permissions::PermissionRequestManager::FromWebContents(web_contents())
-  //     ->AddRequest(
-  //         web_contents()->GetPrimaryMainFrame(),
-  //         std::make_unique<PsstPermissionRequest>(web_contents()->GetLastCommittedURL()));
+  const auto* tasks =
+      user_script_result.GetDict().FindList(kUserScriptResultTasksPropName);
+  if (!tasks || tasks->empty()) {
+    ui_delegate_->UpdateTasks(100, {}, mojom::PsstStatus::kFailed);
+    return;
+  }
 
+  const int script_version = rule->version();
+  active_consent_data_ = std::make_unique<PsstConsentData>(
+      *user_id, url::Origin::Create(web_contents()->GetLastCommittedURL()),
+      tasks->Clone(), script_version,
+      base::BindOnce(&PsstTabWebContentsObserver::OnUserAcceptedPsstSettings,
+                     weak_factory_.GetWeakPtr(), id, std::move(rule),
+                     std::move(user_script_result)));
+
+  // Here possible the request permission flow can be started:
+  permissions::PermissionRequestManager::FromWebContents(web_contents())
+      ->AddRequest(web_contents()->GetPrimaryMainFrame(),
+                   std::make_unique<PsstPermissionRequest>(
+                       web_contents()->GetLastCommittedURL()));
+}
+
+void PsstTabWebContentsObserver::OnUserAcceptedPsstSettings(
+    int nav_entry_id,
+    std::unique_ptr<MatchedRule> rule,
+    base::Value user_script_result,
+    const base::Value::List disabled_checks) {
+  // Exclude the URLs, disabled by the user
+  if (auto* tasks = user_script_result.GetDict().FindList(
+          kUserScriptResultTasksPropName)) {
+    tasks->EraseIf([&](const base::Value& v) {
+      const auto& item_dict = v.GetDict();
+      const auto* url =
+          item_dict.FindString(kUserScriptResultTaskItemUrlPropName);
+      return url && disabled_checks.contains(*url);
+    });
+  }
 
   RunWithTimeout(
-      id,
+      nav_entry_id,
       MaybeAddParamsToScript(std::move(rule),
                              std::move(user_script_result).TakeDict()),
       base::BindOnce(&PsstTabWebContentsObserver::OnPolicyScriptResult,
-                     weak_factory_.GetWeakPtr(), id));
+                     weak_factory_.GetWeakPtr(), nav_entry_id));
 }
 
 void PsstTabWebContentsObserver::OnPolicyScriptResult(
@@ -258,18 +295,16 @@ void PsstTabWebContentsObserver::OnScriptTimeout(int id) {
   ui_delegate_->UpdateTasks(100, {}, mojom::PsstStatus::kFailed);
 }
 
-void PsstTabWebContentsObserver::ShowBubble(permissions::PermissionPrompt::Delegate* delegate) {
+void PsstTabWebContentsObserver::ShowBubble(
+    permissions::PermissionPrompt::Delegate* delegate) {
   CHECK(delegate);
   if (!ui_delegate_) {
     return;
   }
 
-  active_permission_prompt_delegate_ = delegate;
-  
-  // PsstConsentData psst_consent_data();
-  // ui_delegate_->Show(std::move(psst_consent_data));
+  //ui_delegate_->Show(std::move(*active_consent_data_), delegate);
+  ui_delegate_->ShowPsstInfobar(base::NullCallback(), delegate);
+  active_consent_data_.reset();
 }
-
-WEB_CONTENTS_USER_DATA_KEY_IMPL(PsstTabWebContentsObserver);
 
 }  // namespace psst

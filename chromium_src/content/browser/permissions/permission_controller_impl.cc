@@ -23,6 +23,7 @@
   case PermissionType::BRAVE_LOCALHOST_ACCESS:          \
   case PermissionType::BRAVE_OPEN_AI_CHAT:              \
   case PermissionType::BRAVE_CARDANO:                   \
+  case PermissionType::BRAVE_PSST:                      \
   case PermissionType::NUM
 
 #include <content/browser/permissions/permission_controller_impl.cc>

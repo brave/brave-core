@@ -7,11 +7,15 @@ static_library("psst") {
   public = [
     "brave_psst_permission_context_factory.h",
     "psst_ui_delegate_impl.h",
+    "psst_ui_presenter.h",
   ]
 
   sources = [
+    "brave_psst_infobar_delegate.cc",
+    "brave_psst_infobar_delegate.h",
     "brave_psst_permission_context_factory.cc",
     "psst_ui_delegate_impl.cc",
+     "psst_ui_presenter.cc",
   ]
 
   deps = [

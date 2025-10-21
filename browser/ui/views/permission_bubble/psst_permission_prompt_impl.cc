@@ -6,6 +6,24 @@
 #include "brave/browser/ui/views/permission_bubble/psst_permission_prompt_impl.h"
 
 #include "brave/components/psst/browser/content/psst_tab_web_contents_observer.h"
+#include "components/tabs/public/tab_interface.h"
+#include "brave/browser/ui/tabs/public/brave_tab_features.h"
+
+namespace {
+  psst::PsstTabWebContentsObserver* GetPsstObserver(
+      content::WebContents* web_contents) {
+    auto* tab_interface = tabs::TabInterface::GetFromContents(web_contents);
+    if (!tab_interface) {
+      return nullptr;
+    }
+    auto* brave_tab_features =
+        tabs::BraveTabFeatures::FromTabFeatures(tab_interface->GetTabFeatures());
+    if (!brave_tab_features) {
+      return nullptr;
+    }
+    return brave_tab_features->psst_web_contents_observer();
+  }
+}
 
 PsstPermissionPromptImpl::PsstPermissionPromptImpl(
     content::WebContents* web_contents,
@@ -30,9 +48,8 @@ PsstPermissionPromptImpl::GetTabSwitchingBehavior() {
 }
 
 void PsstPermissionPromptImpl::ShowCustomDialog() {
-// Get PSST observer and trigger ShowBubble
-  if (auto* psst_observer = 
-      psst::PsstTabWebContentsObserver::FromWebContents(web_contents_)) {
+  // Get PSST observer and trigger ShowBubble
+  if (auto* psst_observer = GetPsstObserver(web_contents_)) {
     psst_observer->ShowBubble(delegate_);
   } else {
     // Fallback: deny permission if no PSST observer
