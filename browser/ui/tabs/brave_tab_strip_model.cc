@@ -17,6 +17,7 @@
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/tabs/public/brave_tab_strip_collection.h"
+#include "brave/components/tabs/public/tree_tab_node.h"
 #include "brave/components/tabs/public/tree_tab_node_tab_collection.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -167,7 +168,8 @@ int BraveTabStripModel::GetTreeHeightOfTab(int index) const {
 
   return static_cast<const tabs::TreeTabNodeTabCollection*>(parent_collection)
       ->GetTopLevelAncestor()
-      ->height();
+      ->node()
+      .height();
 }
 
 int BraveTabStripModel::GetTreeNodeLevel(int index) const {
@@ -181,7 +183,8 @@ int BraveTabStripModel::GetTreeNodeLevel(int index) const {
   }
 
   return static_cast<const tabs::TreeTabNodeTabCollection*>(parent_collection)
-      ->level();
+      ->node()
+      .level();
 }
 
 void BraveTabStripModel::OnTreeTabRelatedPrefChanged() {
