@@ -430,8 +430,11 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, MAYBE_Fullscreen) {
   ASSERT_TRUE(browser_view()
                   ->vertical_tab_strip_host_view_->GetPreferredSize()
                   .width());
-  auto* fullscreen_controller =
-      browser_view()->GetExclusiveAccessManager()->fullscreen_controller();
+  auto* fullscreen_controller = browser_view()
+                                    ->browser()
+                                    ->GetFeatures()
+                                    .exclusive_access_manager()
+                                    ->fullscreen_controller();
   {
     auto observer = FullscreenNotificationObserver(browser());
     fullscreen_controller->ToggleBrowserFullscreenMode(/*user_initiated=*/true);
