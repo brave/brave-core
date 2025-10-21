@@ -15,6 +15,7 @@ rust_static_library("rust_lib") {
     "src/engine.rs",
     "src/filter_set.rs",
     "src/lib.rs",
+    "src/resource_storage.rs",
     "src/result.rs",
   ]
 
