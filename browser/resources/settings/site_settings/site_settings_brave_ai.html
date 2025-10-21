@@ -1,0 +1,15 @@
+<!-- Copyright (c) 2025 The Brave Authors. All rights reserved.
+ This Source Code Form is subject to the terms of the Mozilla Public
+ License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+<settings-subpage associated-control="[[$$('#braveAIChat')]]" page-title="$i18n{siteSettingsBraveOpenAIChat}">
+  <settings-category-default-radio-group id="braveAIChatDefault"
+    category="[[contentSettingsTypesEnum_.BRAVE_OPEN_AI_CHAT]]"
+    block-option-label="$i18n{siteSettingsBraveOpenAIChatBlock}"
+    allow-option-label="$i18n{siteSettingsBraveOpenAIChatAsk}" allow-option-icon="user" block-option-icon="user-off">
+  </settings-category-default-radio-group>
+  <category-setting-exceptions id="braveAIChatExceptions" category="[[contentSettingsTypesEnum_.BRAVE_OPEN_AI_CHAT]]"
+    block-header="$i18n{siteSettingsBlock}" allow-header="$i18n{siteSettingsAllow}" read-only-list>
+  </category-setting-exceptions>
+</settings-subpage>

@@ -16,6 +16,7 @@ import '../brave_survey_panelist_page/brave_survey_panelist_page.js'
 import '../site_settings/site_settings_autoplay.js'
 import '../site_settings/site_settings_localhost.js'
 import '../site_settings/site_settings_shields.js'
+import '../site_settings/site_settings_brave_ai.js'
 import { ContentSettingsTypes } from '../site_settings/constants.js';
 
 RegisterPolymerPrototypeModification({
@@ -121,6 +122,17 @@ RegisterPolymerTemplateModifications({
                 slot="view"
                 in-search-mode="[[inSearchMode_]]">
               </site-settings-localhost-page>`)
+    }
+
+    if (loadTimeData.getBoolean('isOpenAIChatFromBraveSearchEnabled')) {
+      viewManager.appendChild(html`
+      <site-settings-brave-ai-page
+          id=${ContentSettingsTypes.BRAVE_OPEN_AI_CHAT}
+          route-path$="[[routes_.SITE_SETTINGS_BRAVE_OPEN_AI_CHAT.path]]"
+          data-parent-view-id="siteSettings"
+          slot="view"
+          in-search-mode="[[inSearchMode_]]">
+        </site-settings-brave-ai-page>`)
     }
 
     // Move the safety hub to the end of the page
