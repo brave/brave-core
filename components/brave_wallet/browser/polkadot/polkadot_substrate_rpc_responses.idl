@@ -31,4 +31,11 @@ namespace polkadot_substrate_rpc_responses {
     AccountInfo[]? result;
     Error? error;
   };
+
+  dictionary PolkadotFinalizedHead {
+    DOMString jsonrpc;
+    long id;
+    DOMString? result;
+    Error? error;
+  };
 };

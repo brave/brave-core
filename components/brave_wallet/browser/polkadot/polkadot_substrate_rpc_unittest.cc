@@ -441,4 +441,119 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetAccountBalance) {
   }
 }
 
+TEST_F(PolkadotSubstrateRpcUnitTest, GetFinalizedHead) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitWithFeaturesAndParameters(
+      {{features::kBraveWalletPolkadotFeature, {}}}, {});
+
+  url_loader_factory_.ClearResponses();
+
+  const auto* chain_id = mojom::kPolkadotTestnet;
+  std::string testnet_url =
+      network_manager_
+          ->GetKnownChain(mojom::kPolkadotTestnet, mojom::CoinType::DOT)
+          ->rpc_endpoints.front()
+          .spec();
+
+  EXPECT_EQ(testnet_url, "https://polkadot-westend.wallet.brave.com/");
+
+  base::test::TestFuture<std::optional<std::string>, std::optional<std::string>>
+      future;
+
+  {
+    polkadot_substrate_rpc_->GetFinalizedHead(chain_id, future.GetCallback());
+
+    auto* reqs = url_loader_factory_.pending_requests();
+    EXPECT_TRUE(reqs);
+    EXPECT_EQ(reqs->size(), 1u);
+
+    auto const& req = reqs->at(0);
+    EXPECT_TRUE(req.request.request_body->elements());
+    auto const& element = req.request.request_body->elements()->at(0);
+
+    std::string expected_body = R"(
+      {
+        "id": 1,
+        "jsonrpc": "2.0",
+        "method": "chain_getFinalizedHead",
+        "params": []
+      })";
+
+    auto ret = std::ranges::remove_if(
+        expected_body, [](auto c) { return c == ' ' || c == '\n'; });
+    expected_body.erase(ret.begin(), ret.end());
+
+    EXPECT_EQ(element.As<network::DataElementBytes>().AsStringPiece(),
+              expected_body);
+
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "id": 1,
+        "jsonrpc": "2.0",
+        "result":"0xba38d3e0e1033e97a3aa294e59741c9f4ab8786c8d55c493d0ebc58b885961b3"
+      })");
+
+    auto [hash, error] = future.Take();
+
+    EXPECT_EQ(error, std::nullopt);
+    EXPECT_EQ(
+        hash,
+        "0xba38d3e0e1033e97a3aa294e59741c9f4ab8786c8d55c493d0ebc58b885961b3");
+  }
+
+  {
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "id": 1,
+        "jsonrpc": "2.0",
+        "error": {
+          "code": -32700,
+          "message": "Network outage"
+        }
+      })");
+
+    polkadot_substrate_rpc_->GetFinalizedHead(chain_id, future.GetCallback());
+    auto [hash, error] = future.Take();
+
+    EXPECT_EQ(hash, std::nullopt);
+    EXPECT_EQ(error, "Network outage");
+  }
+
+  {
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "id": 1,
+        "jsonrpc": "2.0",
+        "error": {
+          "code": -32700
+        }
+      })");
+
+    polkadot_substrate_rpc_->GetFinalizedHead(chain_id, future.GetCallback());
+    auto [hash, error] = future.Take();
+
+    EXPECT_EQ(hash, std::nullopt);
+    EXPECT_EQ(error, WalletInternalErrorMessage());
+  }
+
+  {
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "id": 1,
+        "jsonrpc": "2.0",
+        "data": "random stuff"
+      })");
+
+    polkadot_substrate_rpc_->GetFinalizedHead(chain_id, future.GetCallback());
+    auto [hash, error] = future.Take();
+
+    EXPECT_EQ(hash, std::nullopt);
+    EXPECT_EQ(error, WalletParsingErrorMessage());
+  }
+}
+
 }  // namespace brave_wallet
