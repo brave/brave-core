@@ -76,28 +76,16 @@ class BraveSpellingMenuObserverTest : public InProcessBrowserTest {
  private:
   std::unique_ptr<SpellingMenuObserver> observer_;
   std::unique_ptr<BraveMockRenderViewContextMenu> menu_;
-
-#if BUILDFLAG(IS_WIN) && BUILDFLAG(USE_BROWSER_SPELLCHECKER)
-  base::test::ScopedFeatureList feature_list_;
-#endif  // BUILDFLAG(IS_WIN) && BUILDFLAG(USE_BROWSER_SPELLCHECKER)
 };
 
-#if BUILDFLAG(IS_WIN) && BUILDFLAG(USE_BROWSER_SPELLCHECKER)
-BraveSpellingMenuObserverTest::BraveSpellingMenuObserverTest() {
-  feature_list_.InitAndDisableFeature(
-      spellcheck::kWinDelaySpellcheckServiceInit);
-}
-#else
 BraveSpellingMenuObserverTest::BraveSpellingMenuObserverTest() = default;
-#endif
 
 BraveSpellingMenuObserverTest::~BraveSpellingMenuObserverTest() = default;
 
 }  // namespace
 
 // Tests that right-clicking not add "Ask Brave for suggestions".
-IN_PROC_BROWSER_TEST_F(BraveSpellingMenuObserverTest,
-                       CheckAskBraveNotShown) {
+IN_PROC_BROWSER_TEST_F(BraveSpellingMenuObserverTest, CheckAskBraveNotShown) {
   // Test menu with a misspelled word.
   Reset();
   InitMenu("wiimode", nullptr);
