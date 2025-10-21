@@ -1618,7 +1618,7 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/omnibox/suggestions/BraveDropdownItemViewInfoListBuilder", // presubmit: ignore-long-line
                         Supplier.class,
                         BookmarkState.class,
-                        Supplier.class));
+                        ObservableSupplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListManager",
