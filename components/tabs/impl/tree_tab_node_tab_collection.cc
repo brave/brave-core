@@ -17,6 +17,7 @@
 #include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/types/to_address.h"
+#include "brave/components/tabs/public/tree_tab_node.h"
 #include "components/tabs/public/tab_interface.h"
 
 namespace tabs {
@@ -94,8 +95,8 @@ TreeTabNodeTabCollection::TreeTabNodeTabCollection(
                     {TabCollection::Type::SPLIT, TabCollection::Type::GROUP,
                      TabCollection::Type::TREE_NODE},
                     /*supports_tabs=*/true),
-      tree_tab_node_id_(tree_tab_node_id),
-      current_tab_(base::to_address(current_tab)) {
+      current_tab_(base::to_address(current_tab)),
+      node_(std::make_unique<TreeTabNode>(*this, tree_tab_node_id)) {
   CHECK(!tree_tab_node_id.is_empty());
   CHECK(current_tab_);
 
@@ -123,19 +124,19 @@ const TreeTabNodeTabCollection* TreeTabNodeTabCollection::GetTopLevelAncestor()
 
 void TreeTabNodeTabCollection::OnReparentedImpl(TabCollection* old_parent,
                                                 TabCollection* new_parent) {
-  CalculateLevelAndHeightRecursively();
+  node_->CalculateLevelAndHeightRecursively({});
 
   CHECK_NE(old_parent, new_parent);
 
   if (new_parent) {
     if (new_parent->type() == TabCollection::Type::TREE_NODE) {
       static_cast<TreeTabNodeTabCollection*>(new_parent)
-          ->OnChildHeightChanged();
+          ->node_->OnChildHeightChanged({});
     }
   } else {
     if (old_parent && old_parent->type() == TabCollection::Type::TREE_NODE) {
       static_cast<TreeTabNodeTabCollection*>(old_parent)
-          ->OnChildHeightChanged();
+          ->node_->OnChildHeightChanged({});
     }
   }
 }
@@ -187,78 +188,6 @@ void TreeTabNodeTabCollection::OnWillDetach(
     tabs::TabInterface::DetachReason detach_reason) {
   if (current_tab_ == tab) {
     current_tab_ = nullptr;
-  }
-}
-
-int TreeTabNodeTabCollection::CalculateLevelAndHeightRecursively() {
-  auto* parent_collection = GetParentCollection();
-  if (!parent_collection ||
-      parent_collection->type() != TabCollection::Type::TREE_NODE) {
-    // If there's no parent or the parent is not a tree node, this is the root.
-    LOG(ERROR) << "TreeTabNode level == 0 " << " parent? "
-               << (parent_collection != nullptr) << " type? "
-               << (parent_collection
-                       ? static_cast<int>(parent_collection->type())
-                       : -1);
-    level_ = 0;
-  } else {
-    auto* parent_tree_node =
-        static_cast<TreeTabNodeTabCollection*>(parent_collection);
-    level_ = parent_tree_node->level_ + 1;
-    LOG(ERROR) << "TreeTabNode level updated: " << level_;
-  }
-
-  int max_height = std::numeric_limits<int>::min();
-  for (const auto& child : GetTreeNodeChildren()) {
-    if (std::holds_alternative<tabs::TabCollection*>(child)) {
-      auto* collection = std::get<tabs::TabCollection*>(child);
-      if (collection->type() != TabCollection::Type::TREE_NODE) {
-        continue;
-      }
-
-      CHECK_EQ(collection->GetParentCollection(), this);
-
-      max_height = std::max(max_height,
-                            static_cast<TreeTabNodeTabCollection*>(collection)
-                                    ->CalculateLevelAndHeightRecursively() +
-                                1);
-    }
-  }
-
-  height_ = (max_height == std::numeric_limits<int>::min()) ? 0 : max_height;
-
-  return height_;
-}
-
-void TreeTabNodeTabCollection::OnChildHeightChanged() {
-  // Update height of this node.
-  int max_height = std::numeric_limits<int>::min();
-  for (const auto& child : GetTreeNodeChildren()) {
-    if (std::holds_alternative<tabs::TabCollection*>(child)) {
-      auto* collection = std::get<tabs::TabCollection*>(child);
-      if (collection->type() != TabCollection::Type::TREE_NODE) {
-        continue;
-      }
-
-      max_height = std::max(
-          max_height,
-          static_cast<TreeTabNodeTabCollection*>(collection)->height_ + 1);
-    }
-  }
-
-  auto new_height =
-      (max_height == std::numeric_limits<int>::min()) ? 0 : max_height;
-  if (new_height == height_) {
-    return;
-  }
-
-  height_ = new_height;
-
-  if (auto* parent_collection = GetParentCollection();
-      parent_collection &&
-      parent_collection->type() == TabCollection::Type::TREE_NODE) {
-    static_cast<TreeTabNodeTabCollection*>(parent_collection)
-        ->OnChildHeightChanged();
   }
 }
 
