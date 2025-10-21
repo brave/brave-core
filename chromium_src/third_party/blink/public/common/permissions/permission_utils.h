@@ -22,6 +22,7 @@
   BRAVE_LOCALHOST_ACCESS,           \
   BRAVE_OPEN_AI_CHAT,               \
   BRAVE_CARDANO,                    \
+  BRAVE_PSST,                       \
   NUM
 // clang-format on
 
