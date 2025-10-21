@@ -185,16 +185,18 @@ const util = {
   },
 
   run: (cmd, args = [], options = {}) => {
-    const { continueOnFail, skipLogging, ...cmdOptions } = options
+    const { continueOnFail, skipLogging, logError, ...cmdOptions } = options
     const prog = util.runProcess(cmd, args, cmdOptions, skipLogging)
     if (prog.status !== 0) {
-      if (!continueOnFail) {
+      if (!continueOnFail || logError) {
         if (skipLogging) {
           console.log(cmd, args, 'exited with status', prog.status, cmdOptions)
         }
 
         console.log(prog.stdout && prog.stdout.toString())
         console.error(prog.stderr && prog.stderr.toString())
+      }
+      if (!continueOnFail) {
         process.exit(1)
       }
     }
