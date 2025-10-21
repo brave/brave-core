@@ -9,12 +9,13 @@
 
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
-#include "brave/browser/brave_browser_features.h"
 #include "brave/browser/ui/bookmark/bookmark_helper.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
+#include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
+#include "brave/common/pref_names.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_commands.h"
@@ -33,6 +34,7 @@
 #include "chrome/browser/ui/views/infobars/infobar_container_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
@@ -97,6 +99,10 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, LayoutWithVerticalTabTest) {
   // BookmarkBar not visible as current active tab is not NTP.
   EXPECT_FALSE(bookmark_bar()->GetVisible());
 
+  const int contents_margin =
+      BraveContentsViewUtil::GetRoundedCornersWebViewMargin(browser());
+  const int top_contents_separator_height = contents_margin > 0 ? 0 : 1;
+
   // Infobar is visible at first run.
   // Update this test if it's not visible at first run.
   // Wait till infobar's positioning is finished.
@@ -104,7 +110,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, LayoutWithVerticalTabTest) {
       [&]() { return infobar_container()->GetVisible(); }));
 
   auto contents_area_origin = [&]() {
-    return gfx::Point(contents_container()->bounds().x(),
+    return gfx::Point(contents_container()->bounds().x() - contents_margin,
                       main_container()->bounds().y());
   };
 
@@ -124,7 +130,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, LayoutWithVerticalTabTest) {
   EXPECT_EQ(vertical_tab_strip_host_view()->bounds().top_right(),
             bookmark_bar()->bounds().origin());
   EXPECT_EQ(bookmark_bar()->bounds().bottom_left() +
-                gfx::Vector2d(0, /*top container separator*/ 1),
+                gfx::Vector2d(0, top_contents_separator_height),
             contents_area_origin());
 
   // Hide bookmark bar always.
@@ -156,7 +162,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, LayoutWithVerticalTabTest) {
   EXPECT_TRUE(bookmark_bar()->GetVisible());
   EXPECT_EQ(vertical_tab_strip_host_view()->bounds().origin(),
             bookmark_bar()->bounds().bottom_left() +
-                gfx::Vector2d(0, /*contents separator*/ 1));
+                gfx::Vector2d(0, top_contents_separator_height));
   EXPECT_EQ(infobar_container()->bounds().bottom_left(),
             contents_area_origin());
 
@@ -168,7 +174,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, LayoutWithVerticalTabTest) {
   EXPECT_TRUE(bookmark_bar()->GetVisible());
   EXPECT_EQ(vertical_tab_strip_host_view()->bounds().origin(),
             bookmark_bar()->bounds().bottom_left() +
-                gfx::Vector2d(0, /*top container separator*/ 1));
+                gfx::Vector2d(0, top_contents_separator_height));
   EXPECT_EQ(vertical_tab_strip_host_view()->bounds().top_right(),
             contents_area_origin());
 }
@@ -179,8 +185,13 @@ class BraveBrowserViewWithRoundedCornersTest
  public:
   BraveBrowserViewWithRoundedCornersTest() {
     scoped_features_.InitWithFeatureStates(
-        {{features::kBraveWebViewRoundedCorners, IsRoundedCornersEnabled()},
-         {features::kSideBySide, IsSideBySideEnabled()}});
+        {{features::kSideBySide, IsSideBySideEnabled()}});
+  }
+
+  void SetUpOnMainThread() override {
+    BraveBrowserViewTest::SetUpOnMainThread();
+    browser()->profile()->GetPrefs()->SetBoolean(kWebViewRoundedCorners,
+                                                 IsRoundedCornersEnabled());
   }
 
   void NewSplitTab() {
@@ -278,6 +289,7 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
   // Check contents container doesn't have margin when rounded corners is
   // disabled.
   chrome::AddTabAt(browser(), GURL(), -1, true);
+
   if (IsRoundedCornersEnabled()) {
     EXPECT_EQ(contents_container->bounds().x() - rounded_corners_margin,
               main_container->GetLocalBounds().x());
