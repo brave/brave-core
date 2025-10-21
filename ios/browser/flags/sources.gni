@@ -10,6 +10,7 @@ brave_flags_deps = [
   "//brave/components/brave_rewards/core",
   "//brave/components/brave_rewards/core/buildflags",
   "//brave/components/brave_shields/core/common",
+  "//brave/components/brave_sync:features",
   "//brave/components/brave_user_agent/common",
   "//brave/components/brave_wallet/common",
   "//brave/components/de_amp/common",
