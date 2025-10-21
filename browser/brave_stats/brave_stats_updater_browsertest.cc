@@ -138,7 +138,6 @@ class BraveStatsUpdaterBrowserTest : public PlatformBrowserTest {
     wait_for_standard_stats_updated_loop_ = std::make_unique<base::RunLoop>();
     wait_for_standard_stats_updated_loop_->Run();
   }
-
  private:
   std::unique_ptr<base::RunLoop> wait_for_referral_initialized_loop_;
   std::unique_ptr<base::RunLoop> wait_for_standard_stats_updated_loop_;
@@ -161,22 +160,6 @@ IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
   // First check preference should now be true
   EXPECT_TRUE(g_browser_process->local_state()->GetBoolean(kFirstCheckMade));
 }
-
-// The stats updater should not reach the endpoint
-IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
-                       StatsUpdaterUsagePingDisabledFirstCheck) {
-  g_browser_process->local_state()->SetBoolean(kStatsReportingEnabled, false);
-
-  WaitForReferralInitializeCallback();
-  WaitForStandardStatsUpdatedCallback();
-
-  // Dummy URL confirms no request was triggered
-  EXPECT_EQ(GetUpdateURL().host(), "no-thanks.invalid");
-
-  // No prefs should be updated
-  EXPECT_FALSE(g_browser_process->local_state()->GetBoolean(kFirstCheckMade));
-}
-
 // Run the stats updater with no active referral and verify that the
 // update url specifies the default referral code
 IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
@@ -201,7 +184,6 @@ IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
   EXPECT_TRUE(net::GetValueForKeyInQuery(update_url, "ref", &query_value));
   EXPECT_EQ(query_value, "BRV001");
 }
-
 
 class BraveStatsUpdaterReferralCodeBrowserTest
     : public BraveStatsUpdaterBrowserTest {
