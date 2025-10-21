@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index 01876a8c3cbf61eea9b5fa29326555ff42acfc2e..bb02f826a04d8bdaa28202e9d35ecf596f64e5bd 100644
+index 169df86ae37456ab66de43af975f30740f896237..33482bf51342fea158cb45bd26b1518117d178db 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
-@@ -5036,6 +5036,7 @@ const FeatureEntry::FeatureVariation kSeamlessSigninPromoTypes[] = {
+@@ -5027,6 +5027,7 @@ const FeatureEntry::FeatureVariation kSeamlessSigninVariations[] = {
  //
  // When adding a new choice, add it to the end of the list.
  const FeatureEntry kFeatureEntries[] = {

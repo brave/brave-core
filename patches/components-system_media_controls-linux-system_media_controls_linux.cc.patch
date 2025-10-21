@@ -1,5 +1,5 @@
 diff --git a/components/system_media_controls/linux/system_media_controls_linux.cc b/components/system_media_controls/linux/system_media_controls_linux.cc
-index cd9562a00662db1821312d94af498086022f8e49..48b4d0b69117925d921a09340fa3feb106a9f059 100644
+index 36267e255d28817944f94cda754d7051ddfecb75..8a94eb2e407bd52553156ec99932d6c30760b89a 100644
 --- a/components/system_media_controls/linux/system_media_controls_linux.cc
 +++ b/components/system_media_controls/linux/system_media_controls_linux.cc
 @@ -64,7 +64,7 @@ constexpr base::TimeDelta kUpdatePositionInterval = base::Milliseconds(100);

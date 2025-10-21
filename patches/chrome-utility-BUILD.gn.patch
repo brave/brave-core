@@ -1,8 +1,8 @@
 diff --git a/chrome/utility/BUILD.gn b/chrome/utility/BUILD.gn
-index c524bf95656e79249463ea9898bbd7342bb06999..5dada809a85cd92097e7a110c69648f33726cd3b 100644
+index 708d3db9a2b7dad11d7e1f094cdc4705ed9077db..b87bd1f9df3c4690105558e5978a8a4c2f1d4689 100644
 --- a/chrome/utility/BUILD.gn
 +++ b/chrome/utility/BUILD.gn
-@@ -261,6 +261,7 @@ static_library("utility") {
+@@ -250,6 +250,7 @@ static_library("utility") {
    if (enable_on_device_translation) {
      deps += [ "//components/services/on_device_translation:on_device_translation_service" ]
    }
