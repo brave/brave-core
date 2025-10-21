@@ -19,9 +19,9 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/types/expected.h"
 #include "brave/brave_domains/service_domains.h"
+#include "brave/components/constants/brave_services_key.h"
 #include "brave/components/email_aliases/email_aliases.mojom.h"
 #include "brave/components/email_aliases/email_aliases_api.h"
-#include "brave/components/email_aliases/email_aliases_api_key.h"
 #include "brave/components/email_aliases/features.h"
 #include "components/grit/brave_components_strings.h"
 #include "mojo/public/cpp/bindings/clone_traits.h"
@@ -42,8 +42,6 @@ constexpr char kAccountsServiceVerifyResultPath[] = "verify/result";
 
 constexpr char kEmailAliasesServiceURL[] =
     "https://aliases.bravesoftware.com/manage";
-
-constexpr char kEmailAliasesServiceAPIKey[] = BUILDFLAG(EMAIL_ALIASES_API_KEY);
 
 // Minimum interval between verify/result polls
 constexpr base::TimeDelta kSessionPollInterval = base::Seconds(2);
@@ -119,18 +117,12 @@ GURL EmailAliasesService::GetEmailAliasesServiceURLForTesting() {
   return GURL(kEmailAliasesServiceURL);
 }
 
-// static
-std::string EmailAliasesService::GetEmailAliasesServiceAPIKeyForTesting() {
-  return kEmailAliasesServiceAPIKey;
-}
-
 EmailAliasesService::EmailAliasesService(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : url_loader_factory_(url_loader_factory),
       verify_init_url_(GetAccountsServiceVerifyInitURL()),
       verify_result_url_(GetAccountsServiceVerifyResultURL()),
-      email_aliases_service_base_url_(GURL(kEmailAliasesServiceURL)),
-      email_aliases_api_key_(kEmailAliasesServiceAPIKey) {
+      email_aliases_service_base_url_(GURL(kEmailAliasesServiceURL)) {
   CHECK(base::FeatureList::IsEnabled(email_aliases::kEmailAliases));
 }
 
@@ -427,7 +419,8 @@ void EmailAliasesService::ApiFetchInternal(
   resource_request->method = method;
   resource_request->headers.SetHeader("Authorization",
                                       std::string("Bearer ") + auth_token_);
-  resource_request->headers.SetHeader("X-API-key", email_aliases_api_key_);
+  resource_request->headers.SetHeader("X-API-key",
+                                      BUILDFLAG(BRAVE_SERVICES_KEY));
   auto simple_url_loader = network::SimpleURLLoader::Create(
       std::move(resource_request), kTrafficAnnotation);
   simple_url_loader->SetAllowHttpErrorResults(true);

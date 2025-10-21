@@ -20,6 +20,7 @@
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "base/types/expected.h"
+#include "brave/components/constants/brave_services_key.h"
 #include "brave/components/email_aliases/features.h"
 #include "components/grit/brave_components_strings.h"
 #include "net/base/net_errors.h"
@@ -702,8 +703,7 @@ TEST_F(EmailAliasesAPITest, ApiFetch_AttachesAuthTokenAndAPIKeyHeaders) {
   // The helper enqueues the request body separately; here we just ensure it
   // ran. Validate headers captured by the interceptor.
   EXPECT_EQ(seen_authorization, "Bearer auth456");
-  EXPECT_EQ(seen_api_key,
-            EmailAliasesService::GetEmailAliasesServiceAPIKeyForTesting());
+  EXPECT_EQ(seen_api_key, BUILDFLAG(BRAVE_SERVICES_KEY));
 }
 
 }  // namespace email_aliases
