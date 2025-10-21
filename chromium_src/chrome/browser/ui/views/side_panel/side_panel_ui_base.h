@@ -13,13 +13,13 @@ class BraveSidePanelCoordinator;
 // the private current_key_ member variable.
 // Inheritance:
 // BraveSidePanelCoordinator -> SidePanelCoordinator -> SidePanelUIBase
-#define set_current_key                   \
+#define SetCurrentKey                     \
   Unused();                               \
   friend class BraveSidePanelCoordinator; \
-  void set_current_key
+  void SetCurrentKey
 
 #include <chrome/browser/ui/views/side_panel/side_panel_ui_base.h>  // IWYU pragma: export
 
-#undef set_current_key
+#undef SetCurrentKey
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_SIDE_PANEL_SIDE_PANEL_UI_BASE_H_
