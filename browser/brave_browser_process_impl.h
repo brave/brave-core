@@ -151,9 +151,6 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
   void OnTorEnabledChanged();
 #endif
 
-  void UpdateBraveDarkMode();
-  void OnBraveDarkModeChanged();
-
   void InitBraveStatsHelper();
 
 #if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
