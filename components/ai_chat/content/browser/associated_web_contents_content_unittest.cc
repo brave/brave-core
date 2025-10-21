@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
+#include "brave/components/ai_chat/content/browser/associated_web_contents_content.h"
 
 #include <memory>
 #include <string>
@@ -12,10 +12,9 @@
 #include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
 #include "base/test/test_future.h"
+#include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
-#include "chrome/test/base/chrome_render_view_host_test_harness.h"
-#include "chrome/test/base/testing_profile.h"
 #include "components/favicon/content/content_favicon_driver.h"
 #include "components/favicon/core/test/mock_favicon_service.h"
 #include "components/pdf/common/constants.h"
@@ -39,7 +38,7 @@ using ::testing::NiceMock;
 namespace ai_chat {
 
 class MockPrintPreviewExtractor
-    : public AIChatTabHelper::PrintPreviewExtractionDelegate {
+    : public AssociatedWebContentsContent::PrintPreviewExtractionDelegate {
  public:
   MockPrintPreviewExtractor() = default;
   ~MockPrintPreviewExtractor() override = default;
@@ -48,14 +47,15 @@ class MockPrintPreviewExtractor
 };
 
 class MockPageContentFetcher
-    : public AIChatTabHelper::PageContentFetcherDelegate {
+    : public AssociatedWebContentsContent::PageContentFetcherDelegate {
  public:
   MockPageContentFetcher() = default;
   ~MockPageContentFetcher() override = default;
 
   MOCK_METHOD(void,
               FetchPageContent,
-              (std::string_view, AIChatTabHelper::FetchPageContentCallback),
+              (std::string_view,
+               AssociatedWebContentsContent::FetchPageContentCallback),
               (override));
   MOCK_METHOD(void,
               GetSearchSummarizerKey,
@@ -76,12 +76,15 @@ class MockAssociatedContentObserver
   MOCK_METHOD(void, OnRequestArchive, (AssociatedContentDelegate*), (override));
 };
 
-class AIChatTabHelperUnitTest : public content::RenderViewHostTestHarness,
-                                public testing::WithParamInterface<bool> {
+class AssociatedWebContentsContentUnitTest
+    : public content::RenderViewHostTestHarness,
+      public testing::WithParamInterface<bool> {
  public:
-  AIChatTabHelperUnitTest() { is_print_preview_supported_ = GetParam(); }
+  AssociatedWebContentsContentUnitTest() {
+    is_print_preview_supported_ = GetParam();
+  }
 
-  ~AIChatTabHelperUnitTest() override = default;
+  ~AssociatedWebContentsContentUnitTest() override = default;
 
   void SetUp() override {
     content::RenderViewHostTestHarness::SetUp();
@@ -91,29 +94,29 @@ class AIChatTabHelperUnitTest : public content::RenderViewHostTestHarness,
         web_contents(), is_print_preview_supported_
                             ? std::make_unique<MockPrintPreviewExtractor>()
                             : nullptr);
-    helper_ = AIChatTabHelper::FromWebContents(web_contents());
-    helper_->SetPageContentFetcherDelegateForTesting(
+    auto* helper = AIChatTabHelper::FromWebContents(web_contents());
+    web_contents_content_ = &helper->web_contents_content();
+
+    web_contents_content_->SetPageContentFetcherDelegateForTesting(
         std::make_unique<MockPageContentFetcher>());
     page_content_fetcher_ = static_cast<MockPageContentFetcher*>(
-        helper_->GetPageContentFetcherDelegateForTesting());
+        web_contents_content_->GetPageContentFetcherDelegateForTesting());
     print_preview_extractor_ = static_cast<MockPrintPreviewExtractor*>(
-        helper_->GetPrintPreviewExtractionDelegateForTesting());
+        web_contents_content_->GetPrintPreviewExtractionDelegateForTesting());
     // Verify the implementation doesn't somehow create an object for
     // PrintPreviewExtractor
     if (!is_print_preview_supported_) {
       EXPECT_EQ(print_preview_extractor_, nullptr);
     }
     observer_ = std::make_unique<NiceMock<MockAssociatedContentObserver>>();
-    helper_->AddObserver(observer_.get());
+    web_contents_content_->AddObserver(observer_.get());
   }
 
   void TearDown() override {
-    helper_->RemoveObserver(observer_.get());
-    content::RenderViewHostTestHarness::TearDown();
-  }
+    web_contents_content_->RemoveObserver(observer_.get());
+    web_contents_content_ = nullptr;
 
-  std::unique_ptr<content::BrowserContext> CreateBrowserContext() override {
-    return std::make_unique<TestingProfile>();
+    content::RenderViewHostTestHarness::TearDown();
   }
 
   void NavigateTo(GURL url,
@@ -143,21 +146,24 @@ class AIChatTabHelperUnitTest : public content::RenderViewHostTestHarness,
   }
 
   void SimulateLoadFinished() {
-    helper_->DidFinishLoad(main_rfh(), web_contents()->GetLastCommittedURL());
+    web_contents_content_->DidFinishLoad(main_rfh(),
+                                         web_contents()->GetLastCommittedURL());
   }
 
-  void GetPageContent(AIChatTabHelper::FetchPageContentCallback callback,
-                      std::string_view invalidation_token) {
-    helper_->GetPageContent(std::move(callback), invalidation_token);
+  void GetPageContent(
+      AssociatedWebContentsContent::FetchPageContentCallback callback,
+      std::string_view invalidation_token) {
+    web_contents_content_->GetPageContent(std::move(callback),
+                                          invalidation_token);
   }
 
   void GetScreenshots(
       mojom::ConversationHandler::GetScreenshotsCallback callback) {
-    helper_->GetScreenshots(std::move(callback));
+    web_contents_content_->GetScreenshots(std::move(callback));
   }
 
   void TitleWasSet(content::NavigationEntry* entry) {
-    helper_->TitleWasSet(entry);
+    web_contents_content_->TitleWasSet(entry);
   }
 
   content::TestWebContents* test_web_contents() {
@@ -166,23 +172,26 @@ class AIChatTabHelperUnitTest : public content::RenderViewHostTestHarness,
 
 #if BUILDFLAG(ENABLE_PDF)
   void OnAllPDFPagesTextReceived(
-      AIChatTabHelper::FetchPageContentCallback callback,
+      AssociatedWebContentsContent::FetchPageContentCallback callback,
       const std::vector<std::pair<size_t, std::string>>& page_texts) {
-    helper_->OnAllPDFPagesTextReceived(std::move(callback), page_texts);
+    web_contents_content_->OnAllPDFPagesTextReceived(std::move(callback),
+                                                     page_texts);
   }
 
-  void OnGetPDFPageCount(AIChatTabHelper::FetchPageContentCallback callback,
-                         pdf::mojom::PdfListener::GetPdfBytesStatus status,
-                         const std::vector<uint8_t>& bytes,
-                         uint32_t page_count) {
-    helper_->OnGetPDFPageCount(std::move(callback), status, bytes, page_count);
+  void OnGetPDFPageCount(
+      AssociatedWebContentsContent::FetchPageContentCallback callback,
+      pdf::mojom::PdfListener::GetPdfBytesStatus status,
+      const std::vector<uint8_t>& bytes,
+      uint32_t page_count) {
+    web_contents_content_->OnGetPDFPageCount(std::move(callback), status, bytes,
+                                             page_count);
   }
 #endif  // BUILDFLAG(ENABLE_PDF)
 
  protected:
   NiceMock<favicon::MockFaviconService> favicon_service_;
   std::unique_ptr<NiceMock<MockAssociatedContentObserver>> observer_;
-  raw_ptr<AIChatTabHelper, DanglingUntriaged> helper_;
+  raw_ptr<AssociatedWebContentsContent> web_contents_content_;
   raw_ptr<MockPrintPreviewExtractor, DanglingUntriaged>
       print_preview_extractor_;
   raw_ptr<MockPageContentFetcher, DanglingUntriaged> page_content_fetcher_;
@@ -191,14 +200,15 @@ class AIChatTabHelperUnitTest : public content::RenderViewHostTestHarness,
 
 INSTANTIATE_TEST_SUITE_P(
     ,
-    AIChatTabHelperUnitTest,
+    AssociatedWebContentsContentUnitTest,
     ::testing::Bool(),
-    [](const testing::TestParamInfo<AIChatTabHelperUnitTest::ParamType>& info) {
+    [](const testing::TestParamInfo<
+        AssociatedWebContentsContentUnitTest::ParamType>& info) {
       return absl::StrFormat("PrintPreview_%s",
                              info.param ? "Enabled" : "Disabled");
     });
 
-TEST_P(AIChatTabHelperUnitTest, OnNewPage) {
+TEST_P(AssociatedWebContentsContentUnitTest, OnNewPage) {
   EXPECT_CALL(*observer_, OnRequestArchive).Times(3);
   NavigateTo(GURL("https://www.brave.com"));
   NavigateTo(GURL("https://www.brave.com/1"));
@@ -239,7 +249,7 @@ TEST_P(AIChatTabHelperUnitTest, OnNewPage) {
   testing::Mock::VerifyAndClearExpectations(&observer_);
 }
 
-TEST_P(AIChatTabHelperUnitTest, GetPageContent_HasContent) {
+TEST_P(AssociatedWebContentsContentUnitTest, GetPageContent_HasContent) {
   constexpr char kExpectedText[] = "This is the way.";
   // Add whitespace to ensure it's trimmed
   constexpr char kSuppliedText[] = "   \n    This is the way.   \n  ";
@@ -249,25 +259,29 @@ TEST_P(AIChatTabHelperUnitTest, GetPageContent_HasContent) {
       .WillOnce(base::test::RunOnceCallback<1>(kSuppliedText, false, ""));
   // Note: No need to mock CaptureImages since print preview hosts
   // are not triggered when regular content is available
-  base::MockCallback<AIChatTabHelper::FetchPageContentCallback> callback;
+  base::MockCallback<AssociatedWebContentsContent::FetchPageContentCallback>
+      callback;
   EXPECT_CALL(callback, Run(kExpectedText, false, ""));
   GetPageContent(callback.Get(), "");
 }
 
-TEST_P(AIChatTabHelperUnitTest, GetPageContent_VideoContent) {
+TEST_P(AssociatedWebContentsContentUnitTest, GetPageContent_VideoContent) {
   // A url that doesn't by itself trigger print preview extraction.
   NavigateTo(GURL("https://www.brave.com"));
   EXPECT_CALL(*page_content_fetcher_, FetchPageContent)
       .WillOnce(base::test::RunOnceCallback<1>("", true, ""));
   // Note: No need to mock CaptureImages since print preview hosts
   // are not triggered for video content
-  base::MockCallback<AIChatTabHelper::FetchPageContentCallback> callback;
+  base::MockCallback<AssociatedWebContentsContent::FetchPageContentCallback>
+      callback;
   EXPECT_CALL(callback, Run("", true, ""));
   GetPageContent(callback.Get(), "");
 }
 
-TEST_P(AIChatTabHelperUnitTest, GetPageContent_PrintPreviewTriggeringURL) {
-  base::MockCallback<AIChatTabHelper::FetchPageContentCallback> callback;
+TEST_P(AssociatedWebContentsContentUnitTest,
+       GetPageContent_PrintPreviewTriggeringURL) {
+  base::MockCallback<AssociatedWebContentsContent::FetchPageContentCallback>
+      callback;
   // A url that triggers print preview extraction - should return empty content
   // to allow autoscreenshots mechanism to handle server-side OCR
   for (const auto& host : kPrintPreviewRetrievalHosts) {
@@ -286,7 +300,7 @@ TEST_P(AIChatTabHelperUnitTest, GetPageContent_PrintPreviewTriggeringURL) {
   }
 }
 
-TEST_P(AIChatTabHelperUnitTest,
+TEST_P(AssociatedWebContentsContentUnitTest,
        GetPageContent_PrintPreviewTriggeringURLFailed) {
   // A url that does by itself trigger print preview extraction.
   NavigateTo(GURL("https://docs.google.com"));
@@ -298,16 +312,18 @@ TEST_P(AIChatTabHelperUnitTest,
     EXPECT_CALL(*page_content_fetcher_, FetchPageContent)
         .WillOnce(base::test::RunOnceCallback<1>("", false, ""));
   }
-  base::MockCallback<AIChatTabHelper::FetchPageContentCallback> callback;
+  base::MockCallback<AssociatedWebContentsContent::FetchPageContentCallback>
+      callback;
   EXPECT_CALL(callback, Run("", false, ""));
   GetPageContent(callback.Get(), "");
 }
 
-TEST_P(AIChatTabHelperUnitTest,
+TEST_P(AssociatedWebContentsContentUnitTest,
        GetPageContent_PrintPreviewTriggeringUrlWaitForLoad) {
   // A url that does by itself trigger print preview extraction.
   NavigateTo(GURL("https://docs.google.com"), /*keep_loading=*/true);
-  base::MockCallback<AIChatTabHelper::FetchPageContentCallback> callback;
+  base::MockCallback<AssociatedWebContentsContent::FetchPageContentCallback>
+      callback;
   // Not epecting callback to be run until page load.
   EXPECT_CALL(callback, Run).Times(0);
   if (is_print_preview_supported_) {
@@ -348,7 +364,7 @@ TEST_P(AIChatTabHelperUnitTest,
   }
 }
 
-TEST_P(AIChatTabHelperUnitTest,
+TEST_P(AssociatedWebContentsContentUnitTest,
        GetPageContent_ClearPendingCallbackOnNavigation) {
   const GURL initial_url =
       GURL(is_print_preview_supported_ ? "https://docs.google.com"
@@ -357,7 +373,8 @@ TEST_P(AIChatTabHelperUnitTest,
     SCOPED_TRACE(testing::Message() << "Same document: " << is_same_document);
     NavigateTo(initial_url,
                /*keep_loading=*/true);
-    base::MockCallback<AIChatTabHelper::FetchPageContentCallback> callback;
+    base::MockCallback<AssociatedWebContentsContent::FetchPageContentCallback>
+        callback;
     EXPECT_CALL(callback, Run).Times(0);
     if (!is_print_preview_supported_) {
       EXPECT_CALL(*page_content_fetcher_, FetchPageContent)
@@ -382,7 +399,7 @@ TEST_P(AIChatTabHelperUnitTest,
 }
 
 #if BUILDFLAG(ENABLE_PDF)
-TEST_P(AIChatTabHelperUnitTest, OnAllPDFPagesTextReceived) {
+TEST_P(AssociatedWebContentsContentUnitTest, OnAllPDFPagesTextReceived) {
   // Create test data with out-of-order pages
   std::vector<std::pair<size_t, std::string>> page_texts = {
       {2, "Page 3 content"},
@@ -399,7 +416,7 @@ TEST_P(AIChatTabHelperUnitTest, OnAllPDFPagesTextReceived) {
   EXPECT_EQ(content, "Page 1 content\nPage 2 content\nPage 3 content");
 }
 
-TEST_P(AIChatTabHelperUnitTest, OnGetPDFPageCount_FailedStatus) {
+TEST_P(AssociatedWebContentsContentUnitTest, OnGetPDFPageCount_FailedStatus) {
   base::test::TestFuture<std::string, bool, std::string> future;
 
   OnGetPDFPageCount(future.GetCallback(),
@@ -412,7 +429,8 @@ TEST_P(AIChatTabHelperUnitTest, OnGetPDFPageCount_FailedStatus) {
   EXPECT_TRUE(invalidation_token.empty());
 }
 
-TEST_P(AIChatTabHelperUnitTest, OnGetPDFPageCount_SuccessWhenNoPDFHelper) {
+TEST_P(AssociatedWebContentsContentUnitTest,
+       OnGetPDFPageCount_SuccessWhenNoPDFHelper) {
   ASSERT_FALSE(pdf::PDFDocumentHelper::MaybeGetForWebContents(web_contents()));
 
   base::test::TestFuture<std::string, bool, std::string> future;
@@ -428,7 +446,8 @@ TEST_P(AIChatTabHelperUnitTest, OnGetPDFPageCount_SuccessWhenNoPDFHelper) {
 }
 #endif  // BUILDFLAG(ENABLE_PDF)
 
-TEST_P(AIChatTabHelperUnitTest, GetPageContent_NoFallbackWhenNotPDF) {
+TEST_P(AssociatedWebContentsContentUnitTest,
+       GetPageContent_NoFallbackWhenNotPDF) {
   NavigateTo(GURL("https://www.brave.com"));
 #if BUILDFLAG(ENABLE_PDF)
   ASSERT_FALSE(pdf::PDFDocumentHelper::MaybeGetForWebContents(web_contents()));
@@ -452,7 +471,7 @@ TEST_P(AIChatTabHelperUnitTest, GetPageContent_NoFallbackWhenNotPDF) {
 }
 
 // Tests for GetScreenshots method decision logic
-TEST_P(AIChatTabHelperUnitTest, GetScreenshots_PrintPreviewHost) {
+TEST_P(AssociatedWebContentsContentUnitTest, GetScreenshots_PrintPreviewHost) {
   // Test that print preview hosts use CaptureImages when delegate is available
   NavigateTo(GURL("https://docs.google.com/document"));
 
@@ -480,7 +499,7 @@ TEST_P(AIChatTabHelperUnitTest, GetScreenshots_PrintPreviewHost) {
   }
 }
 
-TEST_P(AIChatTabHelperUnitTest, GetScreenshots_RegularHost) {
+TEST_P(AssociatedWebContentsContentUnitTest, GetScreenshots_RegularHost) {
   // Test that regular hosts use FullScreenshotter (we can't easily mock this)
   NavigateTo(GURL("https://www.example.com"));
 
@@ -503,7 +522,7 @@ TEST_P(AIChatTabHelperUnitTest, GetScreenshots_RegularHost) {
   // depends on the actual rendering, but we can verify the call completed
 }
 
-TEST_P(AIChatTabHelperUnitTest, GetScreenshots_MultipleHosts) {
+TEST_P(AssociatedWebContentsContentUnitTest, GetScreenshots_MultipleHosts) {
   // Test all print preview hosts
   for (const auto& host : kPrintPreviewRetrievalHosts) {
     SCOPED_TRACE(testing::Message() << "Testing host: " << host);
@@ -537,7 +556,7 @@ TEST_P(AIChatTabHelperUnitTest, GetScreenshots_MultipleHosts) {
   }
 }
 
-TEST_P(AIChatTabHelperUnitTest, GetScreenshots_PrintPreviewError) {
+TEST_P(AssociatedWebContentsContentUnitTest, GetScreenshots_PrintPreviewError) {
   // Test error handling when print preview extraction fails
   NavigateTo(GURL("https://docs.google.com/document"));
 
@@ -559,7 +578,7 @@ TEST_P(AIChatTabHelperUnitTest, GetScreenshots_PrintPreviewError) {
 }
 
 #if BUILDFLAG(ENABLE_PDF)
-TEST_P(AIChatTabHelperUnitTest, GetScreenshots_PDFContent) {
+TEST_P(AssociatedWebContentsContentUnitTest, GetScreenshots_PDFContent) {
   // Test that PDF content uses print preview extraction
   NavigateTo(GURL("https://example.com/document.pdf"));
 
