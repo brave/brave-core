@@ -28,18 +28,19 @@ public class BraveOriginDescriptionPreference extends TextMessagePreference {
     public void onBindViewHolder(PreferenceViewHolder holder) {
         super.onBindViewHolder(holder);
 
-        TextView summaryView = (TextView) holder.findViewById(android.R.id.summary);
-        if (summaryView != null) {
-            // The text is too long, so we need to set the max lines to the maximum value
-            // otherwise it will be cut off
-            summaryView.setMaxLines(Integer.MAX_VALUE);
-
-            // Parse HTML to support bold text
-            CharSequence summary = getSummary();
-            if (summary != null) {
-                Spanned styledText = Html.fromHtml(summary.toString(), Html.FROM_HTML_MODE_LEGACY);
-                summaryView.setText(styledText);
-            }
+        if (!(holder.findViewById(android.R.id.summary) instanceof TextView summaryView)) {
+            return;
         }
+        // The text is too long, so we need to set the max lines to the maximum value
+        // otherwise it will be cut off
+        summaryView.setMaxLines(Integer.MAX_VALUE);
+
+        // Parse HTML to support bold text
+        CharSequence summary = getSummary();
+        if (summary == null) {
+            return;
+        }
+        Spanned styledText = Html.fromHtml(summary.toString(), Html.FROM_HTML_MODE_LEGACY);
+        summaryView.setText(styledText);
     }
 }
