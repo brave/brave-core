@@ -15,6 +15,8 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/tabs/features.h"
+#include "brave/browser/ui/tabs/tree_tab_model.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/tabs/public/brave_tab_strip_collection.h"
 #include "brave/components/tabs/public/tree_tab_node.h"
@@ -156,37 +158,6 @@ void BraveTabStripModel::SetCustomTitleForTab(
   NotifyTabChanged(tab_interface, TabChangeType::kAll);
 }
 
-int BraveTabStripModel::GetTreeHeightOfTab(int index) const {
-  auto* tab_interface = GetTabAtIndex(index);
-  CHECK(tab_interface);
-
-  const auto* parent_collection = tab_interface->GetParentCollection();
-  if (!parent_collection ||
-      parent_collection->type() != tabs::TabCollection::Type::TREE_NODE) {
-    return 0;
-  }
-
-  return static_cast<const tabs::TreeTabNodeTabCollection*>(parent_collection)
-      ->GetTopLevelAncestor()
-      ->node()
-      .height();
-}
-
-int BraveTabStripModel::GetTreeNodeLevel(int index) const {
-  auto* tab_interface = GetTabAtIndex(index);
-  CHECK(tab_interface);
-
-  const auto* parent_collection = tab_interface->GetParentCollection();
-  if (!parent_collection ||
-      parent_collection->type() != tabs::TabCollection::Type::TREE_NODE) {
-    return 0;
-  }
-
-  return static_cast<const tabs::TreeTabNodeTabCollection*>(parent_collection)
-      ->node()
-      .level();
-}
-
 void BraveTabStripModel::OnTreeTabRelatedPrefChanged() {
   if (*tree_tabs_enabled_ && *vertical_tabs_enabled_) {
     BuildTreeTabs();
@@ -197,7 +168,8 @@ void BraveTabStripModel::OnTreeTabRelatedPrefChanged() {
 
 void BraveTabStripModel::BuildTreeTabs() {
   CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveTreeTab));
-  CHECK(!contents_data()->in_tree_tab_mode());
+  CHECK(!tree_tab_model_);
+  tree_tab_model_ = std::make_unique<TreeTabModel>();
 
   auto* unpinned_collection = contents_data()->unpinned_collection();
   CHECK(unpinned_collection);
@@ -209,7 +181,7 @@ void BraveTabStripModel::BuildTreeTabs() {
 void BraveTabStripModel::FlattenTreeTabs() {
   CHECK(base::FeatureList::IsEnabled(tabs::kBraveTreeTab));
 
-  if (!contents_data()->in_tree_tab_mode()) {
+  if (!tree_tab_model_) {
     return;
   }
 

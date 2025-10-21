@@ -8,6 +8,8 @@
 #include <utility>
 
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
+#include "brave/browser/ui/tabs/features.h"
+#include "brave/browser/ui/tabs/tree_tab_model.h"
 #include "brave/browser/ui/views/tabs/brave_tab_context_menu_contents.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip.h"
 #include "chrome/browser/ui/tabs/features.h"
@@ -46,14 +48,26 @@ void BraveBrowserTabStripController::SetCustomTitleForTab(
       ->SetCustomTitleForTab(index, title);
 }
 
-int BraveBrowserTabStripController::GetTreeHeightOfTab(int index) const {
-  return static_cast<BraveTabStripModel*>(model_.get())
-      ->GetTreeHeightOfTab(index);
+// Gets the TreeTabNode for the given id.
+const tabs::TreeTabNode& BraveBrowserTabStripController::GetTreeTabNode(
+    const tree_tab::TreeTabNodeId& id) const {
+  auto* tree_model =
+      static_cast<BraveTabStripModel*>(model_.get())->tree_model();
+  CHECK(tree_model) << "TreeTabModel is not available.";
+
+  const auto* node = tree_model->GetNode(id);
+  CHECK(node) << "TreeTabNode is not found for id: " << id;
+
+  return *node;
 }
 
-int BraveBrowserTabStripController::GetTreeNodeLevel(int index) const {
-  return static_cast<BraveTabStripModel*>(model_.get())
-      ->GetTreeNodeLevel(index);
+int BraveBrowserTabStripController::GetTreeHeight(
+    const tree_tab::TreeTabNodeId& id) const {
+  auto* tree_model =
+      static_cast<BraveTabStripModel*>(model_.get())->tree_model();
+  CHECK(tree_model) << "TreeTabModel is not available.";
+
+  return tree_model->GetTreeHeight(id);
 }
 
 void BraveBrowserTabStripController::ShowContextMenuForTab(

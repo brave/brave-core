@@ -51,6 +51,8 @@ if (!is_android) {
     ]
 
     deps = [
+      ":tree_tab_model",
+      "//brave/browser/ui:brave_tab_features",
       "//brave/components/tabs",
       "//chrome/browser/ui/tabs:features",
       "//chrome/browser/ui/tabs:tab_strip",
@@ -72,5 +74,16 @@ source_set("tab_model") {
     "//chrome/browser/ui/tabs",
     "//chrome/browser/ui/tabs:tab_model",
     "//ui/base",
+  ]
+}
+source_set("tree_tab_model") {
+  sources = [
+    "tree_tab_model.cc",
+    "tree_tab_model.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/tabs",
   ]
 }
