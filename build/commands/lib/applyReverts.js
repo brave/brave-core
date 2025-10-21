@@ -11,7 +11,12 @@ const { runGit } = require('./util')
  */
 function applyReverts(repoPath, commits, dryRun = false) {
   function git(...args) {
-    const options = { skipLogging: true, logError: true }
+    // Setting the name and email for git is necessary in environments (such as
+    // CI) where the values are not set. In that case, Git would error out.
+    const env = { ...process.env }
+    env.GIT_AUTHOR_NAME = env.GIT_COMMITTER_NAME = 'Brave build'
+    env.GIT_AUTHOR_EMAIL = env.GIT_COMMITTER_EMAIL = 'brave@brave.com'
+    const options = { skipLogging: true, logError: true, env: env }
     const result = runGit(repoPath, args, true, options)
     if (result === null)
       throw new Error(`Git command failed: git ${args.join(' ')}`)
