@@ -33,18 +33,12 @@ static_library("features") {
   public_deps = [ "//base" ]
 }
 
-buildflag_header_with_env_config("email_aliases_api_key") {
-  header = "email_aliases_api_key.h"
-  env_config_flags = [ "EMAIL_ALIASES_API_KEY" ]
-}
-
 static_library("service") {
   sources = [
     "email_aliases_service.cc",
     "email_aliases_service.h",
   ]
   deps = [
-    ":email_aliases_api_key",
     ":email_aliases_api_types",
     ":mojom",
     "//base",
