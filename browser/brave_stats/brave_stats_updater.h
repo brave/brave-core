@@ -64,6 +64,7 @@ class BraveStatsUpdater : public ProfileManagerObserver {
 
   static void SetStatsUpdatedCallbackForTesting(
       StatsUpdatedCallback* stats_updated_callback);
+  static void DisableAutoStartForTesting();
   void SetURLLoaderFactoryForTesting(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   void SetUsageServerForTesting(const std::string& usage_server);

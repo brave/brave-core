@@ -64,6 +64,8 @@ static constexpr int kUpdateServerStartupPingDelaySeconds = 3;
 // today.
 static constexpr int kUpdateServerPeriodicPingFrequencySeconds = 5 * 60;
 
+static bool g_disable_auto_start_for_testing = false;
+
 GURL GetUpdateURL(
     const GURL& base_update_url,
     const brave_stats::BraveStatsUpdaterParams& stats_updater_params) {
@@ -126,7 +128,9 @@ BraveStatsUpdater::BraveStatsUpdater(PrefService* pref_service,
     g_browser_process->profile_manager()->AddObserver(this);
   }
 
-  Start();
+  if (!g_disable_auto_start_for_testing) {
+    Start();
+  }
 }
 
 BraveStatsUpdater::~BraveStatsUpdater() {
@@ -182,6 +186,10 @@ void BraveStatsUpdater::SetStatsUpdatedCallbackForTesting(
 void BraveStatsUpdater::SetURLLoaderFactoryForTesting(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
   testing_url_loader_factory_ = url_loader_factory;
+}
+
+void BraveStatsUpdater::DisableAutoStartForTesting() {
+  g_disable_auto_start_for_testing = true;
 }
 
 void BraveStatsUpdater::SetUsageServerForTesting(
