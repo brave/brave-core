@@ -16,7 +16,7 @@ import styles from './smart_mode_modal_style.module.scss'
 import { ModelOption } from '../model_menu_item/model_menu_item'
 import { useAIChat } from '../../state/ai_chat_context'
 import { useConversation } from '../../state/conversation_context'
-import { getModelIcon } from '../../../common/constants'
+import { AUTOMATIC_MODEL_KEY, getModelIcon } from '../../../common/constants'
 import * as Mojom from '../../../common/mojom'
 
 export default function SmartModeModal() {
@@ -25,7 +25,7 @@ export default function SmartModeModal() {
 
   // State
   const [selectedModel, setSelectedModel] = React.useState(
-    aiChatContext.smartModeDialog?.model,
+    aiChatContext.smartModeDialog?.model || AUTOMATIC_MODEL_KEY,
   )
   const [shortcut, setShortcut] = React.useState(
     // Explicitly set to undefined since shortcut could be an empty string
@@ -105,7 +105,7 @@ export default function SmartModeModal() {
     aiChatContext.setSmartModeDialog(null)
     setShortcut(undefined)
     setPrompt(undefined)
-    setSelectedModel(undefined)
+    setSelectedModel(AUTOMATIC_MODEL_KEY)
     setShowDelete(false)
   }, [aiChatContext.setSmartModeDialog])
 
@@ -119,13 +119,13 @@ export default function SmartModeModal() {
         aiChatContext.smartModeDialog.id,
         shortcut.trim(),
         prompt.trim(),
-        selectedModel || null,
+        selectedModel,
       )
     } else {
       aiChatContext.service?.createSmartMode(
         shortcut.trim(),
         prompt.trim(),
-        selectedModel || null,
+        selectedModel,
       )
     }
 
@@ -179,8 +179,7 @@ export default function SmartModeModal() {
         <div className={styles.formSection}>
           <Dropdown
             value={selectedModel}
-            onChange={(e: { value: string }) => setSelectedModel(e.value || '')}
-            placeholder={getLocale(S.CHAT_UI_USE_DEFAULT_MODEL_LABEL)}
+            onChange={(e: { value: string }) => setSelectedModel(e.value)}
             positionStrategy='fixed'
             className={styles.dropdown}
           >
@@ -191,31 +190,16 @@ export default function SmartModeModal() {
               <Icon
                 slot='left-icon'
                 className={classnames({
-                  [styles.gradientIcon]:
-                    !selectedModel || selectedModel === 'chat-automatic',
+                  [styles.gradientIcon]: selectedModel === AUTOMATIC_MODEL_KEY,
                 })}
-                name={
-                  selectedModel === 'chat-automatic'
-                    ? 'product-brave-leo'
-                    : getModelIcon(selectedModel || '')
-                }
+                name={getModelIcon(selectedModel)}
               />
             }
             <div slot='value'>
-              {selectedModel
-                ? conversationContext.allModels?.find(
-                    (m) => m.key === selectedModel,
-                  )?.displayName
-                : getLocale(S.CHAT_UI_USE_DEFAULT_MODEL_LABEL)}
+              {conversationContext.allModels?.find(
+                (m) => m.key === selectedModel,
+              )?.displayName ?? ''}
             </div>
-            <leo-option value=''>
-              <div className={styles.optionLeft}>
-                <div className={styles.gradientIcon}>
-                  <Icon name='product-brave-leo' />
-                </div>
-                {getLocale(S.CHAT_UI_USE_DEFAULT_MODEL_LABEL)}
-              </div>
-            </leo-option>
             {conversationContext.allModels?.map((model: Mojom.Model) => (
               <ModelOption
                 key={model.key}

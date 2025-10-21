@@ -10,12 +10,11 @@ import Icon from '@brave/leo/react/icon'
 import classnames from '$web-common/classnames'
 import * as Mojom from '../../../common/mojom'
 import { getLocale } from '$web-common/locale'
+import { AUTOMATIC_MODEL_KEY } from '../../../common/constants'
 import { useAIChat } from '../../state/ai_chat_context'
 import { useConversation } from '../../state/conversation_context'
 import { ModelMenuItem } from '../model_menu_item/model_menu_item'
 import styles from './style.module.scss'
-
-const AUTO_MODEL_KEY = 'chat-automatic'
 
 export function ModelSelector() {
   const aiChatContext = useAIChat()
@@ -44,7 +43,7 @@ export function ModelSelector() {
 
     // Find the Auto model (chat-automatic)
     const autoModel = conversationContext.allModels.find(
-      (model) => model.key === AUTO_MODEL_KEY,
+      (model) => model.key === AUTOMATIC_MODEL_KEY,
     )
     const defaultModel = conversationContext.userDefaultModel
     const currentModel = conversationContext.currentModel
@@ -56,14 +55,14 @@ export function ModelSelector() {
     }
 
     // Add defaultModel if it exists and is not Auto
-    if (defaultModel && defaultModel.key !== AUTO_MODEL_KEY) {
+    if (defaultModel && defaultModel.key !== AUTOMATIC_MODEL_KEY) {
       recommendedList.push(defaultModel)
     }
 
     // Add currentModel if it exists and is not Auto or defaultModel
     if (
       currentModel
-      && currentModel.key !== AUTO_MODEL_KEY
+      && currentModel.key !== AUTOMATIC_MODEL_KEY
       && currentModel.key !== defaultModel?.key
     ) {
       recommendedList.push(currentModel)
