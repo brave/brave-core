@@ -394,9 +394,9 @@ public class BraveOriginSubscriptionPrefs {
      *
      * @param activity The activity to use for launching the settings
      */
-    public static void openOriginPreferences(@Nullable Activity activity) {
-        if (activity == null || activity.isFinishing()) {
-            Log.e(TAG, "openOriginPreferences activity is null or finishing");
+    public static void openOriginPreferences(Activity activity) {
+        if (activity.isFinishing()) {
+            Log.e(TAG, "openOriginPreferences activity is finishing");
             return;
         }
         SettingsNavigationFactory.createSettingsNavigation()
