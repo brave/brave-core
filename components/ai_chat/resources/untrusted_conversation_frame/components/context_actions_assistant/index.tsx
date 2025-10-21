@@ -8,6 +8,7 @@ import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 import { getLocale } from '$web-common/locale'
 import classnames from '$web-common/classnames'
+import { AUTOMATIC_MODEL_KEY } from '../../../common/constants'
 import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
 import CopyButton from '../copy_button'
 import { RegenerateAnswerMenu } from '../regenerate_answer_menu'
@@ -53,7 +54,8 @@ export default function ContextActionsAssistant(
   }
 
   const leoModels = conversationContext.allModels.filter(
-    (model) => model.options.leoModelOptions && model.key !== 'chat-automatic',
+    (model) =>
+      model.options.leoModelOptions && model.key !== AUTOMATIC_MODEL_KEY,
   )
 
   const handleOpenCloseRegenerateAnswerMenu = React.useCallback(

@@ -297,9 +297,6 @@
   <message name="IDS_CHAT_UI_MODEL_FOR_PROMPT_LABEL" desc="Label for model selection in smart mode dialog" formatter_data="webui=AiChat">
     Model for prompt
   </message>
-  <message name="IDS_CHAT_UI_USE_DEFAULT_MODEL_LABEL" desc="Label for using default model option" formatter_data="webui=AiChat">
-    Use default model
-  </message>
   <message name="IDS_CHAT_UI_SHORTCUT_LABEL" desc="Label for shortcut input in smart mode dialog" formatter_data="webui=AiChat">
     Shortcut
   </message>
