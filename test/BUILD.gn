@@ -44,6 +44,7 @@ static_library("test_support") {
 
   deps = [
     "//brave/browser",
+    "//brave/components/brave_origin",
     "//brave/components/brave_shields/content/browser",
     "//brave/components/brave_shields/content/test:test_support",
     "//brave/components/brave_vpn/common/buildflags",
