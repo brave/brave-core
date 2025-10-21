@@ -118,10 +118,6 @@ void ScrollTabToBottom(Browser* browser);
 void ExportAllBookmarks(Browser* browser);
 void ToggleAllBookmarksButtonVisibility(Browser* browser);
 
-// In case |tab| is not provided, the active tab will be used.
-void OpenLinkInSplitView(Browser* browser,
-                         content::OpenURLParams open_url_params);
-
 // Split view API with SideBySide.
 // false if active tab is already split tab.
 bool CanOpenNewSplitTabsWithSideBySide(Browser* browser);

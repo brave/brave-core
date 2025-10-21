@@ -105,10 +105,6 @@ class BraveBrowserCommandController : public chrome::BrowserCommandController
   void UpdateCommandsForPin();
   void UpdateCommandForSplitView();
 
-  // Rename to UpdateCommandForSplitView when we enable
-  // SideBySide by default.
-  void UpdateCommandForSplitViewWithSideBySide();
-
   bool ExecuteBraveCommandWithDisposition(int id,
                                           WindowOpenDisposition disposition,
                                           base::TimeTicks time_stamp);

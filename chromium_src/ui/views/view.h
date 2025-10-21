@@ -7,14 +7,12 @@
 #define BRAVE_CHROMIUM_SRC_UI_VIEWS_VIEW_H_
 
 class SharedPinnedTabDummyView;
-class SplitViewLocationBar;
 
 // DO NOT ADD TO THIS LIST!
 // These existing cases are "grandfathered in", but there shouldn't be more.
 // See comments atop View class in ui/views/view.h.
 #define BRAVE_VIEW_OWNED_BY_CLIENT_PASS_KEY \
-  friend class ::SharedPinnedTabDummyView;  \
-  friend class ::SplitViewLocationBar;
+  friend class ::SharedPinnedTabDummyView;
 
 #include <ui/views/view.h>  // IWYU pragma: export
 
