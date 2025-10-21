@@ -98,12 +98,14 @@ void BatAdsImpl::SetContentSettings(
 
 void BatAdsImpl::Initialize(brave_ads::mojom::WalletInfoPtr mojom_wallet,
                             InitializeCallback callback) {
+  LOG(ERROR) << "FOOBAR.Initialize";
   GetAds()->Initialize(std::move(mojom_wallet),
                        mojo::WrapCallbackWithDefaultInvokeIfNotRun(
                            std::move(callback), /*success=*/false));
 }
 
 void BatAdsImpl::Shutdown(ShutdownCallback callback) {
+  LOG(ERROR) << "FOOBAR.Shutdown";
   GetAds()->Shutdown(mojo::WrapCallbackWithDefaultInvokeIfNotRun(
       std::move(callback), /*success=*/false));
 }
@@ -144,6 +146,8 @@ void BatAdsImpl::TriggerNotificationAdEvent(
 void BatAdsImpl::ParseAndSaveNewTabPageAds(
     base::Value::Dict data,
     ParseAndSaveNewTabPageAdsCallback callback) {
+  LOG(ERROR) << "FOOBAR.ParseAndSaveNewTabPageAds."
+                "WrapCallbackWithDefaultInvokeIfNotRun";
   GetAds()->ParseAndSaveNewTabPageAds(
       std::move(data), mojo::WrapCallbackWithDefaultInvokeIfNotRun(
                            std::move(callback), /*success=*/false));
@@ -151,6 +155,7 @@ void BatAdsImpl::ParseAndSaveNewTabPageAds(
 
 void BatAdsImpl::MaybeServeNewTabPageAd(
     MaybeServeNewTabPageAdCallback callback) {
+  LOG(ERROR) << "FOOBAR.MaybeServeNewTabPageAd";
   GetAds()->MaybeServeNewTabPageAd(mojo::WrapCallbackWithDefaultInvokeIfNotRun(
       base::BindOnce(
           [](MaybeServeNewTabPageAdCallback callback,
@@ -176,6 +181,7 @@ void BatAdsImpl::TriggerNewTabPageAdEvent(
     TriggerNewTabPageAdEventCallback callback) {
   CHECK(brave_ads::mojom::IsKnownEnumValue(mojom_ad_event_type));
 
+  LOG(ERROR) << "FOOBAR.TriggerNewTabPageAdEvent";
   GetAds()->TriggerNewTabPageAdEvent(
       placement_id, creative_instance_id, mojom_ad_metric_type,
       mojom_ad_event_type,
@@ -260,6 +266,7 @@ void BatAdsImpl::PurgeOrphanedAdEventsForType(
     PurgeOrphanedAdEventsForTypeCallback callback) {
   CHECK(brave_ads::mojom::IsKnownEnumValue(mojom_ad_type));
 
+  LOG(ERROR) << "FOOBAR.PurgeOrphanedAdEventsForType: " << mojom_ad_type;
   GetAds()->PurgeOrphanedAdEventsForType(
       mojom_ad_type,
       mojo::WrapCallbackWithDefaultInvokeIfNotRun(std::move(callback),

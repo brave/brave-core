@@ -1377,9 +1377,11 @@ void AdsServiceImpl::ParseAndSaveNewTabPageAds(
     base::Value::Dict dict,
     ParseAndSaveNewTabPageAdsCallback callback) {
   if (!bat_ads_associated_remote_.is_bound()) {
+    LOG(ERROR) << "FOOBAR.ParseAndSaveNewTabPageAds.Unbound";
     return std::move(callback).Run(/*success*/ false);
   }
 
+  LOG(ERROR) << "FOOBAR.ParseAndSaveNewTabPageAds: Bound";
   bat_ads_associated_remote_->ParseAndSaveNewTabPageAds(
       std::move(dict),
       base::BindOnce(&AdsServiceImpl::OnParseAndSaveNewTabPageAdsCallback,

@@ -416,6 +416,9 @@ void Database::ErrorCallback(int extended_error,
                               static_cast<int>(result_code));
       base::debug::DumpWithoutCrashing();
     }
+
+    LOG(ERROR) << "FOOBAR.Database.ErrorCallback: " << db_.GetErrorMessage()
+               << " " << result_code;
   }
 }
 

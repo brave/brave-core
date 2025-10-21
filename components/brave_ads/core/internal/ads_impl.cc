@@ -161,22 +161,26 @@ void AdsImpl::ParseAndSaveNewTabPageAds(
     base::Value::Dict dict,
     ParseAndSaveNewTabPageAdsCallback callback) {
   if (task_queue_.should_queue()) {
+    LOG(ERROR) << "FOOBAR.AdsImpl::ParseAndSaveNewTabPageAds.Queued";
     return task_queue_.Add(base::BindOnce(
         &AdsImpl::ParseAndSaveNewTabPageAds, weak_factory_.GetWeakPtr(),
         std::move(dict), std::move(callback)));
   }
 
+  LOG(ERROR) << "FOOBAR.AdsImpl::ParseAndSaveNewTabPageAds";
   GetAdHandler().ParseAndSaveNewTabPageAds(std::move(dict),
                                            std::move(callback));
 }
 
 void AdsImpl::MaybeServeNewTabPageAd(MaybeServeNewTabPageAdCallback callback) {
   if (task_queue_.should_queue()) {
+    LOG(ERROR) << "FOOBAR.AdsImpl::MaybeServeNewTabPageAd.Queued";
     return task_queue_.Add(base::BindOnce(&AdsImpl::MaybeServeNewTabPageAd,
                                           weak_factory_.GetWeakPtr(),
                                           std::move(callback)));
   }
 
+  LOG(ERROR) << "FOOBAR.AdsImpl::MaybeServeNewTabPageAd";
   GetAdHandler().MaybeServeNewTabPageAd(std::move(callback));
 }
 
@@ -187,6 +191,7 @@ void AdsImpl::TriggerNewTabPageAdEvent(
     mojom::NewTabPageAdEventType mojom_ad_event_type,
     TriggerAdEventCallback callback) {
   if (task_queue_.should_queue()) {
+    LOG(ERROR) << "FOOBAR.AdsImpl::TriggerNewTabPageAdEvent.Queued";
     return task_queue_.Add(base::BindOnce(
         &AdsImpl::TriggerNewTabPageAdEvent, weak_factory_.GetWeakPtr(),
         placement_id, creative_instance_id, mojom_ad_metric_type,
@@ -195,6 +200,7 @@ void AdsImpl::TriggerNewTabPageAdEvent(
 
   UpdateReportMetricState(creative_instance_id, mojom_ad_metric_type);
 
+  LOG(ERROR) << "FOOBAR.AdsImpl::TriggerNewTabPageAdEvent";
   GetAdHandler().TriggerNewTabPageAdEvent(placement_id, creative_instance_id,
                                           mojom_ad_event_type,
                                           std::move(callback));
@@ -278,11 +284,15 @@ void AdsImpl::PurgeOrphanedAdEventsForType(
     mojom::AdType mojom_ad_type,
     PurgeOrphanedAdEventsForTypeCallback callback) {
   if (task_queue_.should_queue()) {
+    LOG(ERROR) << "FOOBAR.AdsImpl::PurgeOrphanedAdEventsForType.Queued: "
+               << mojom_ad_type;
     return task_queue_.Add(base::BindOnce(
         &AdsImpl::PurgeOrphanedAdEventsForType, weak_factory_.GetWeakPtr(),
         mojom_ad_type, std::move(callback)));
   }
 
+  LOG(ERROR) << "FOOBAR.AdsImpl::PurgeOrphanedAdEventsForType: "
+             << mojom_ad_type;
   PurgeOrphanedAdEvents(
       mojom_ad_type,
       base::BindOnce(

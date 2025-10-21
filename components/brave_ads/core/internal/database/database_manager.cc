@@ -30,9 +30,13 @@ DatabaseManager::DatabaseManager(const base::FilePath& path)
     : database_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
           {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
-      database_(base::SequenceBound<Database>(database_task_runner_, path)) {}
+      database_(base::SequenceBound<Database>(database_task_runner_, path)) {
+  LOG(ERROR) << "FOOBAR.DatabaseManager.Constructor";
+}
 
-DatabaseManager::~DatabaseManager() = default;
+DatabaseManager::~DatabaseManager() {
+  LOG(ERROR) << "FOOBAR.DatabaseManager.Destructor";
+}
 
 // static
 DatabaseManager& DatabaseManager::GetInstance() {

@@ -327,9 +327,11 @@ void ViewCounterService::OnSponsoredImagesDataDidUpdate(
 
 void ViewCounterService::OnSponsoredContentDidUpdate(
     const base::Value::Dict& data) {
+  LOG(ERROR) << "FOOBAR.OnSponsoredContentDidUpdate";
   if (ads_service_) {
     // Since `data` contains small JSON from a CRX component, cloning it has no
     // performance impact.
+    LOG(ERROR) << "FOOBAR.OnSponsoredContentDidUpdate.ads_service_";
     ads_service_->ParseAndSaveNewTabPageAds(
         data.Clone(),
         base::BindOnce(&ViewCounterService::ParseAndSaveNewTabPageAdsCallback,
