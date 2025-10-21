@@ -32,7 +32,7 @@ namespace tabs {
 
 namespace {
 
-bool CanUseUserColor(const ui::ColorProviderKey& key) {
+bool HasNonGrayscaleUserColor(const ui::ColorProviderKey& key) {
   // Some platform can have user color with gray scale.
   // Ex, accent color is always set as user_color on Windows.
   return (key.user_color_source !=
@@ -45,7 +45,7 @@ SkColor GetActiveVerticalTabBackgroundColor(const ui::ColorProviderKey& key,
                                             const ui::ColorMixer& mixer) {
   const auto default_color =
       mixer.GetResultColor(nala::kColorDesktopbrowserTabbarActiveTabVertical);
-  if (!CanUseUserColor(key)) {
+  if (!HasNonGrayscaleUserColor(key)) {
     return default_color;
   }
 
@@ -68,7 +68,7 @@ SkColor GetHoveredTabBackgroundColor(const ui::ColorProviderKey& key,
         default_color_id == nala::kColorDesktopbrowserTabbarHoverTabHorizontal);
 
   const auto default_color = mixer.GetResultColor(default_color_id);
-  if (!CanUseUserColor(key)) {
+  if (!HasNonGrayscaleUserColor(key)) {
     // Defaults to Nala if no user color.
     return default_color;
   }
@@ -105,7 +105,7 @@ SkColor GetSplitViewTileBackgroundColor(const ui::ColorProviderKey& key,
                                         SkColor input,
                                         const ui::ColorMixer& mixer) {
   const auto default_color = mixer.GetResultColor(default_color_id);
-  if (!CanUseUserColor(key)) {
+  if (!HasNonGrayscaleUserColor(key)) {
     return default_color;
   }
 
