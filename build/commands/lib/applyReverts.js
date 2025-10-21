@@ -11,7 +11,8 @@ const { runGit } = require('./util')
  */
 function applyReverts(repoPath, commits, dryRun = false) {
   function git(...args) {
-    const result = runGit(repoPath, args, true, { skipLogging: true })
+    const options = { skipLogging: true, logError: true }
+    const result = runGit(repoPath, args, true, options)
     if (result === null)
       throw new Error(`Git command failed: git ${args.join(' ')}`)
     return result
