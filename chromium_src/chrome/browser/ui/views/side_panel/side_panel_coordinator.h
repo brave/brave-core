@@ -21,12 +21,12 @@
 #include "chrome/browser/ui/views/side_panel/side_panel_util.h"
 #include "ui/views/view_observer.h"
 
-#define UpdatePinState                    \
-  UpdatePinState_UnUsed();                \
+#define ClearCachedEntryViews             \
+  ClearCachedEntryViews_UnUsed();         \
   friend class BraveSidePanelCoordinator; \
-  void UpdatePinState
+  void ClearCachedEntryViews
 
 #include <chrome/browser/ui/views/side_panel/side_panel_coordinator.h>  // IWYU pragma: export
-#undef UpdatePinState
+#undef ClearCachedEntryViews
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_SIDE_PANEL_SIDE_PANEL_COORDINATOR_H_
