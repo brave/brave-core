@@ -10,36 +10,4 @@ namespace dark_mode {
 void RegisterBraveDarkModeLocalStatePrefs(PrefRegistrySimple* registry) {
 }
 
-bool SystemDarkModeEnabled() {
-  return false;
-}
-
-void SetUseSystemDarkModeEnabledForTest(bool enabled) {
-}
-
-std::string GetStringFromBraveDarkModeType(BraveDarkModeType type) {
-  return "Default";
-}
-
-void SetBraveDarkModeType(const std::string& type) {
-}
-
-void SetBraveDarkModeType(BraveDarkModeType type) {
-}
-
-BraveDarkModeType GetActiveBraveDarkModeType() {
-  return BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DEFAULT;
-}
-
-BraveDarkModeType GetBraveDarkModeType() {
-  return BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DEFAULT;
-}
-
-base::Value::List GetBraveDarkModeTypeList() {
-  return base::Value::List();
-}
-
-void SetSystemDarkMode(BraveDarkModeType type) {
-}
-
 }  // namespace dark_mode

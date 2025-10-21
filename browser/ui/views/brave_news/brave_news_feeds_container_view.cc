@@ -8,7 +8,6 @@
 #include <memory>
 
 #include "brave/browser/brave_news/brave_news_tab_helper.h"
-#include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/ui/views/brave_news/brave_news_feed_item_view.h"
 #include "content/public/browser/web_contents.h"
 #include "third_party/skia/include/core/SkColor.h"
@@ -59,8 +58,10 @@ BraveNewsFeedsContainerView::~BraveNewsFeedsContainerView() = default;
 
 void BraveNewsFeedsContainerView::OnThemeChanged() {
   views::View::OnThemeChanged();
-  auto is_dark = dark_mode::GetActiveBraveDarkModeType() ==
-                 dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK;
+
+  // Move colors to color mixer.
+  auto is_dark = false;
+
   constexpr float kCornerRadius = 12;
   SetBackground(views::CreateRoundedRectBackground(
       is_dark ? kBackgroundColorDark : kBackgroundColorLight, kCornerRadius));

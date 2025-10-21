@@ -8,9 +8,6 @@
 
 #define GetSystemButtonPressedColor                                   \
   GetSystemButtonPressedColor_ChromiumImpl(SkColor base_color) const; \
-  friend void SetUseDarkColors(bool dark_mode);                       \
-  friend void ReCalcAndSetPreferredColorScheme();                     \
-  static NativeTheme* BraveGetInstanceForNativeUi();                  \
   virtual SkColor GetSystemButtonPressedColor
 
 #include <ui/native_theme/native_theme.h>  // IWYU pragma: export
