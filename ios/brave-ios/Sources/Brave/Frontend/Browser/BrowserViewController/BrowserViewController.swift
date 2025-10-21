@@ -2772,6 +2772,13 @@ extension BrowserViewController: NewTabPageDelegate {
   }
 
   func showNewTabTakeoverInfoBarIfNeeded() {
+    // do not show if favoritesController is visible
+    if let favoritesController,
+      favoritesController.view.alpha == 1,
+      !favoritesController.view.isHidden
+    {
+      return
+    }
     if !rewards.ads.shouldDisplayNewTabTakeoverInfobar() {
       return
     }

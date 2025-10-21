@@ -31,6 +31,8 @@ protocol TabManagerDelegate: AnyObject {
   func tabManagerDidRestoreTabs(_ tabManager: TabManager)
   func tabManagerDidAddTabs(_ tabManager: TabManager)
   func tabManagerDidRemoveAllTabs(_ tabManager: TabManager, toast: ButtonToast?)
+
+  func tabManagerDidAddAndSelectNTP(_ tabManager: TabManager)
 }
 
 protocol TabManagerStateDelegate: AnyObject {
@@ -483,6 +485,9 @@ class TabManager: NSObject {
   ) -> any TabState {
     let tab = addTab(request, afterTab: afterTab, isPrivate: isPrivate)
     selectTab(tab)
+    if tab.visibleURL == TabManager.ntpInteralURL {
+      delegates.forEach { $0.get()?.tabManagerDidAddAndSelectNTP(self) }
+    }
     return tab
   }
 
@@ -1593,6 +1598,7 @@ extension TabManagerDelegate {
   func tabManager(_ tabManager: TabManager, willRemoveTab tab: some TabState) {}
   func tabManagerDidAddTabs(_ tabManager: TabManager) {}
   func tabManagerDidRemoveAllTabs(_ tabManager: TabManager, toast: ButtonToast?) {}
+  func tabManagerDidAddAndSelectNTP(_ tabManager: TabManager) {}
 }
 
 extension TabManager: PreferencesObserver {
