@@ -7,9 +7,9 @@
 
 #include <memory>
 #include <utility>
-#include <variant>
 
 #include "absl/strings/str_format.h"
+#include "base/byte_count.h"
 #include "base/check.h"
 #include "base/feature_list.h"
 #include "base/json/json_reader.h"
@@ -24,7 +24,6 @@
 #include "brave/components/email_aliases/email_aliases_api.h"
 #include "brave/components/email_aliases/features.h"
 #include "components/grit/brave_components_strings.h"
-#include "mojo/public/cpp/bindings/clone_traits.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/resource_request.h"
@@ -63,7 +62,7 @@ const net::NetworkTrafficAnnotationTag kTrafficAnnotation =
         cookies_allowed: YES
     })");
 
-constexpr int kMaxResponseLength = 32768;
+constexpr auto kMaxResponseLength = base::KiB(32);
 
 // Parses a JSON response body into type T (which must expose a `message` field)
 // from arbitrary JSON. On success, returns base::ok(T)
@@ -189,7 +188,7 @@ void EmailAliasesService::RequestAuthentication(
       url_loader_factory_.get(),
       base::BindOnce(&EmailAliasesService::OnRequestAuthenticationResponse,
                      base::Unretained(this), std::move(callback)),
-      kMaxResponseLength);
+      kMaxResponseLength.InBytesUnsigned());
 }
 
 void EmailAliasesService::OnRequestAuthenticationResponse(
@@ -255,7 +254,7 @@ void EmailAliasesService::RequestSession() {
       url_loader_factory_.get(),
       base::BindOnce(&EmailAliasesService::OnRequestSessionResponse,
                      base::Unretained(this)),
-      kMaxResponseLength);
+      kMaxResponseLength.InBytesUnsigned());
 }
 
 void EmailAliasesService::OnRequestSessionResponse(
@@ -443,7 +442,7 @@ void EmailAliasesService::ApiFetchInternal(
             std::move(inner_callback).Run(std::move(response_body));
           },
           std::move(callback), std::move(simple_url_loader)),
-      kMaxResponseLength);
+      kMaxResponseLength.InBytesUnsigned());
 }
 
 void EmailAliasesService::OnGenerateAliasResponse(
