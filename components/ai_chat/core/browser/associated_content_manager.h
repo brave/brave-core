@@ -50,7 +50,12 @@ class AssociatedContentManager : public AssociatedContentDelegate::Observer {
 
   // Adds a content delegate to the list of content delegates.
   // If |notify_updated| is true, the conversation will be notified that the
-  // content has been updated.
+  // content has been updated. You might want to avoid notifying if you're
+  // adding multiple contents at once, or if you're replacing (i.e. via a
+  // RemoveContent followed by an AddContent) and you don't want to tell the
+  // ConversationHandler/Frontend about the intermediate states.
+  // Additionally |OnAssociatedContentUpdated| will update the conversation
+  // metadata, which can be problematic if you aren't expecting it to change.
   // If |detach_existing_content| is true, the current content will be detached
   // and the new content will be set as the only content for this conversation.
   void AddContent(AssociatedContentDelegate* delegate,
