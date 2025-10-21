@@ -11,7 +11,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.view.Window;
-import android.view.WindowManager;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -71,7 +70,6 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
     protected void onPreCreate() {
         super.onPreCreate();
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             mActivityType =
@@ -253,7 +251,7 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
     private void showCurrentFragment() {
         if (mFragment != null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.frame_layout, mFragment);
+            ft.replace(R.id.fragment_container, mFragment);
             ft.commit();
         }
     }
