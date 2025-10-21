@@ -534,8 +534,6 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
 
         if (!isSubscriptionActive) {
             Intent intent = new Intent(getActivity(), BraveOriginPlansActivity.class);
-            intent.putExtra(
-                    BraveOriginPlansActivity.EXTRA_IS_INCOGNITO, getProfile().isOffTheRecord());
             getActivity().startActivity(intent);
 
             return;
@@ -558,9 +556,6 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
                         } else {
                             Intent intent =
                                     new Intent(getActivity(), BraveOriginPlansActivity.class);
-                            intent.putExtra(
-                                    BraveOriginPlansActivity.EXTRA_IS_INCOGNITO,
-                                    getProfile().isOffTheRecord());
                             getActivity().startActivity(intent);
                         }
                     }
