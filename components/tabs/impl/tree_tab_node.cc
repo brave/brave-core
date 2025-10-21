@@ -14,6 +14,10 @@ TreeTabNode::TreeTabNode(TreeTabNodeTabCollection& collection,
                          const tree_tab::TreeTabNodeId& id)
     : collection_(collection), id_(id) {}
 
+int TreeTabNode::GetTreeHeight() const {
+  return collection_->GetTopLevelAncestor()->node().height();
+}
+
 int TreeTabNode::CalculateLevelAndHeightRecursively(
     base::PassKey<TreeTabNodeTabCollection> pass_key) {
   return CalculateLevelAndHeightRecursivelyImpl();

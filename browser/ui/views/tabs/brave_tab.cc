@@ -139,12 +139,14 @@ void BraveTab::EnterRenameMode() {
   rename_textfield_->RequestFocus();
 }
 
-int BraveTab::GetTreeHeight() const {
-  return controller_->GetTreeHeight(this);
+const tabs::TreeTabNode& BraveTab::GetTreeTabNode() const {
+  CHECK(tree_tab_node().has_value());
+  return controller_->GetTreeTabNode(*tree_tab_node());
 }
 
-int BraveTab::GetTreeNodeLevel() const {
-  return controller_->GetTreeNodeLevel(this);
+int BraveTab::GetTreeHeight() const {
+  CHECK(tree_tab_node().has_value());
+  return controller_->GetTreeHeight(*tree_tab_node());
 }
 
 std::u16string BraveTab::GetRenderedTooltipText(const gfx::Point& p) const {
@@ -177,7 +179,7 @@ void BraveTab::ActiveStateChanged() {
   Tab::ActiveStateChanged();
 
   if (IsActive()) {
-    LOG(ERROR) << "node level: " << GetTreeNodeLevel() << " / "
+    LOG(ERROR) << "node level: " << GetTreeTabNode().level() << " / "
                << GetTreeHeight();
   }
 
@@ -304,7 +306,7 @@ bool BraveTab::IsActive() const {
 }
 
 TabNestingInfo BraveTab::GetTabNestingInfo() const {
-  return {.tree_height = GetTreeHeight(), .level = GetTreeNodeLevel()};
+  return {.tree_height = GetTreeHeight(), .level = GetTreeTabNode().level()};
 }
 
 bool BraveTab::HandleKeyEvent(views::Textfield* sender,

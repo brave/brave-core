@@ -31,6 +31,9 @@ class TreeTabNode {
   void set_collapsed(bool collapsed) { collapsed_ = collapsed; }
   bool collapsed() const { return collapsed_; }
 
+  // Returns the height of the tree that this node belongs to.
+  int GetTreeHeight() const;
+
   // Exposes the calculation of level and height to TreeTabNodeTabCollection.
   int CalculateLevelAndHeightRecursively(
       base::PassKey<TreeTabNodeTabCollection> pass_key);

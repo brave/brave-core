@@ -10,12 +10,17 @@
 #include <string>
 
 #include "base/gtest_prod_util.h"
+#include "brave/components/tabs/public/tree_tab_node_id.h"
 #include "chrome/browser/ui/views/tabs/tab.h"
 #include "ui/gfx/geometry/point.h"
 #include "ui/views/controls/label.h"
 #include "ui/views/controls/textfield/textfield.h"
 #include "ui/views/controls/textfield/textfield_controller.h"
 #include "ui/views/mouse_watcher.h"
+
+namespace tabs {
+class TreeTabNode;
+}  // namespace tabs
 
 // Brave specific tab implementation that extends the base Tab class.
 // It includes features like vertical tab support, renaming functionality.
@@ -29,11 +34,11 @@ class BraveTab : public Tab, public views::TextfieldController {
 
   void EnterRenameMode();
 
+  // Returns the tabs::TreeTabNode that this tab is associated with.
+  const tabs::TreeTabNode& GetTreeTabNode() const;
+
   // Returns the height of the tree that this tab belongs to.
   int GetTreeHeight() const;
-
-  // Returns the level of the node in the tree that this tab belongs to.
-  int GetTreeNodeLevel() const;
 
   // Tab:
   std::u16string GetRenderedTooltipText(const gfx::Point& p) const override;

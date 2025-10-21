@@ -17,6 +17,7 @@ static_library("tabs") {
   ]
 
   deps = [
+    "//base",
     "//components/tab_groups",
     "//components/tabs:public",
   ]

@@ -16,6 +16,8 @@
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "components/prefs/pref_member.h"
 
+class TreeTabModel;
+
 class BraveTabStripModel : public TabStripModel {
  public:
   explicit BraveTabStripModel(TabStripModelDelegate* delegate,
@@ -48,11 +50,9 @@ class BraveTabStripModel : public TabStripModel {
   void SetCustomTitleForTab(int index,
                             const std::optional<std::u16string>& title);
 
-  // Returns tree height that the `tab` at the given index belongs to.
-  int GetTreeHeightOfTab(int index) const;
-
-  // Returns tree node level of the `tab` at the given index.
-  int GetTreeNodeLevel(int index) const;
+  // Can be null when tree tab feature is disabled via flag or pref.
+  const TreeTabModel* tree_model() const { return tree_tab_model_.get(); }
+  TreeTabModel* tree_model() { return tree_tab_model_.get(); }
 
   // TabStripModel:
   void SelectRelativeTab(TabRelativeDirection direction,
@@ -77,7 +77,11 @@ class BraveTabStripModel : public TabStripModel {
 
   BooleanPrefMember tree_tabs_enabled_;
   BooleanPrefMember vertical_tabs_enabled_;
-  bool in_tree_mode_ = false;
+
+  // The model for tree tabs hosted within this TabStripModel. When the feature
+  // flag is disabled or the feature is turned off via related preferences,
+  // this will be null.
+  std::unique_ptr<TreeTabModel> tree_tab_model_;
 };
 
 #endif  // BRAVE_BROWSER_UI_TABS_BRAVE_TAB_STRIP_MODEL_H_
