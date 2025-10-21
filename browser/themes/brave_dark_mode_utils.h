@@ -6,11 +6,6 @@
 #ifndef BRAVE_BROWSER_THEMES_BRAVE_DARK_MODE_UTILS_H_
 #define BRAVE_BROWSER_THEMES_BRAVE_DARK_MODE_UTILS_H_
 
-#include <string>
-
-#include "base/values.h"
-#include "build/build_config.h"
-
 class PrefRegistrySimple;
 
 namespace dark_mode {
@@ -28,33 +23,6 @@ enum class BraveDarkModeType {
 
 // APIs for prefs.
 void RegisterBraveDarkModeLocalStatePrefs(PrefRegistrySimple* registry);
-
-std::string GetStringFromBraveDarkModeType(BraveDarkModeType type);
-base::Value::List GetBraveDarkModeTypeList();
-void SetBraveDarkModeType(const std::string& type);
-void SetBraveDarkModeType(BraveDarkModeType type);
-// Returns current effective theme type. dark or light.
-BraveDarkModeType GetActiveBraveDarkModeType();
-// Returns current theme type.
-// dark/light will be returned if platform doesn't support system dark mode.
-// Otherwise, returns default/dark/light.
-BraveDarkModeType GetBraveDarkModeType();
-bool SystemDarkModeEnabled();
-void SetUseSystemDarkModeEnabledForTest(bool enabled);
-
-// When system supports system per-application system theme changing, set it.
-// Currently, only MacOS support it.
-// Otherewise, we need to overrides from native theme level and explicitly
-// notifying to let observers know.
-// By overriding, base ui components also use same brave theme type.
-void SetSystemDarkMode(BraveDarkModeType type);
-
-#if BUILDFLAG(IS_LINUX)
-// Cache system preference from DarkModeManagerLinux.
-// This cached value is used whenever user chooses "Same as Linux" option.
-void CacheSystemDarkModePrefs(bool prefer_dark_theme);
-bool HasCachedSystemDarkModeType();
-#endif
 
 }  // namespace dark_mode
 

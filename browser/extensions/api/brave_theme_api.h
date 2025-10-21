@@ -11,16 +11,6 @@
 namespace extensions {
 namespace api {
 
-class BraveThemeGetBraveThemeListFunction : public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveTheme.getBraveThemeList", UNKNOWN)
-
- protected:
-  ~BraveThemeGetBraveThemeListFunction() override {}
-
-  ResponseAction Run() override;
-};
-
 class BraveThemeGetBraveThemeTypeFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveTheme.getBraveThemeType", UNKNOWN)

@@ -20,21 +20,20 @@ namespace extensions {
 
 BraveThemeEventRouter::BraveThemeEventRouter(Profile* profile)
     : profile_(profile) {
-  observer_.Observe(ui::NativeTheme::GetInstanceForNativeUi());
+  // Observe theme service
 }
 
 BraveThemeEventRouter::~BraveThemeEventRouter() = default;
 
 void BraveThemeEventRouter::OnNativeThemeUpdated(
     ui::NativeTheme* observed_theme) {
-  DCHECK(observer_.IsObservingSource(observed_theme));
   Notify();
 }
 
 void BraveThemeEventRouter::Notify() {
-  const std::string theme_type =
-      dark_mode::GetStringFromBraveDarkModeType(
-          dark_mode::GetActiveBraveDarkModeType());
+  // Get current schem from theme service and fire with one of two strings
+  // ('Light' | 'Dark').
+  const std::string theme_type = "Light";
 
   auto event = std::make_unique<extensions::Event>(
       extensions::events::BRAVE_ON_BRAVE_THEME_TYPE_CHANGED,

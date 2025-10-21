@@ -25,23 +25,6 @@
     ],
     "functions": [
       {
-        "name": "getBraveThemeList",
-        "type": "function",
-        "description": "Get available brave theme list",
-        "parameters": [],
-        "returns_async": {
-          "name": "callback",
-          "parameters": [
-            {
-              "name": "types",
-              "type": "string",
-              "description": "json stringified available theme list"
-            }
-          ]
-        },
-        "does_not_support_promises": "Requires refactoring"
-      },
-      {
         "name": "getBraveThemeType",
         "type": "function",
         "description": "Get current brave theme",

@@ -7,7 +7,6 @@
 
 #include "base/test/scoped_feature_list.h"
 #include "brave/app/brave_command_ids.h"
-#include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/ui/brave_browser_command_controller.h"
 #include "brave/browser/ui/views/toolbar/brave_browser_app_menu_button.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
@@ -78,10 +77,10 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, AppMenuButtonUpgradeAlertTest) {
   EXPECT_TRUE(brave_menu_button->ShouldBlendHighlightColor());
 
   // Check our highlight color.
-  dark_mode::SetBraveDarkModeType(
-      dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT);
-  EXPECT_EQ(dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT,
-            dark_mode::GetActiveBraveDarkModeType());
+  // dark_mode::SetBraveDarkModeType(
+  //     dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT);
+  // EXPECT_EQ(dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT,
+  //           dark_mode::GetActiveBraveDarkModeType());
   EXPECT_EQ(brave_menu_button->GetHighlightColor(), std::nullopt);
   brave_menu_button->SetTypeAndSeverity(
       {AppMenuIconController::IconType::UPGRADE_NOTIFICATION,

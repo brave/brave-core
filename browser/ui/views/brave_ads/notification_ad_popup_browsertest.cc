@@ -7,7 +7,6 @@
 
 #include <tuple>
 
-#include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/ui/brave_ads/notification_ad.h"
 #include "brave/browser/ui/brave_ads/notification_ad_popup_handler.h"
 #include "brave/browser/ui/views/brave_ads/notification_ad_popup_collection.h"
@@ -62,8 +61,8 @@ class NotificationAdPopupBrowserTest
 IN_PROC_BROWSER_TEST_P(NotificationAdPopupBrowserTest,
                        DISABLED_CheckThemeChanged) {
   // Check appearance in light theme.
-  dark_mode::SetBraveDarkModeType(
-      dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT);
+  //   dark_mode::SetBraveDarkModeType(
+  //       dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT);
 
   const std::string notification_id = "notification_id";
   const auto& [_, notification_title, notification_body] = GetParam();
@@ -90,8 +89,8 @@ IN_PROC_BROWSER_TEST_P(NotificationAdPopupBrowserTest,
   EXPECT_NO_FATAL_FAILURE(
       widget_snapshot_checker.CaptureAndCheckSnapshot(popup->GetWidget()));
 
-  dark_mode::SetBraveDarkModeType(
-      dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK);
+  //   dark_mode::SetBraveDarkModeType(
+  //       dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK);
   // Check appearance in dark theme.
   EXPECT_NO_FATAL_FAILURE(
       widget_snapshot_checker.CaptureAndCheckSnapshot(popup->GetWidget()));

@@ -10,7 +10,6 @@ declare namespace chrome.braveTheme {
   type ThemeTypeCallback = (themeType: ThemeType) => unknown
   type ThemeListCallback = (themeList: string /* JSON of type ThemeItem[] */) => unknown
   const getBraveThemeType: (themeType: ThemeTypeCallback) => void
-  const getBraveThemeList: (cb: ThemeListCallback) => void
   const setBraveThemeType: (themeType: ThemeType) => void
   const onBraveThemeTypeChanged: {
     addListener: (callback: ThemeTypeCallback) => void

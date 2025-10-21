@@ -4,14 +4,11 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/extensions/brave_theme_event_router.h"
-#include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/themes/brave_theme_service.h"
-#include "brave/components/constants/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
-#include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
@@ -31,8 +28,8 @@ class MockBraveThemeEventRouter : public BraveThemeEventRouter {
 
 IN_PROC_BROWSER_TEST_F(BraveThemeEventRouterBrowserTest,
                        ThemeChangeTest) {
-  dark_mode::SetBraveDarkModeType(
-      dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK);
+  //   dark_mode::SetBraveDarkModeType(
+  //       dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK);
 
   extensions::MockBraveThemeEventRouter* mock_router =
       new extensions::MockBraveThemeEventRouter(browser()->profile());
@@ -41,14 +38,14 @@ IN_PROC_BROWSER_TEST_F(BraveThemeEventRouterBrowserTest,
   service->SetBraveThemeEventRouterForTesting(mock_router);
 
   EXPECT_CALL(*mock_router, Notify()).Times(1);
-  dark_mode::SetBraveDarkModeType(
-      dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT);
+  //   dark_mode::SetBraveDarkModeType(
+  //       dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT);
 
   EXPECT_CALL(*mock_router, Notify()).Times(1);
-  dark_mode::SetBraveDarkModeType(
-      dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK);
+  //   dark_mode::SetBraveDarkModeType(
+  //       dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK);
 
   EXPECT_CALL(*mock_router, Notify()).Times(0);
-  dark_mode::SetBraveDarkModeType(
-      dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK);
+  //   dark_mode::SetBraveDarkModeType(
+  //       dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK);
 }

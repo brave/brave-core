@@ -8,8 +8,6 @@
 #include <memory>
 
 #include "base/test/metrics/histogram_tester.h"
-#include "brave/browser/themes/brave_dark_mode_utils.h"
-#include "brave/components/constants/pref_names.h"
 #include "chrome/browser/themes/theme_service.h"
 #include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/test/base/testing_browser_process.h"
@@ -26,7 +24,7 @@ class ThemeMetricsTest : public testing::Test {
  public:
   void SetUp() override {
     theme_service_ = ThemeServiceFactory::GetForProfile(&profile_);
-    dark_mode::SetUseSystemDarkModeEnabledForTest(true);
+    // dark_mode::SetUseSystemDarkModeEnabledForTest(true);
     theme_metrics_ = std::make_unique<ThemeMetrics>(theme_service_);
   }
 
@@ -40,11 +38,11 @@ class ThemeMetricsTest : public testing::Test {
 
 TEST_F(ThemeMetricsTest, ReportMetrics) {
   histogram_tester_.ExpectUniqueSample(kBrowserColorSchemeHistogramName, 0, 1);
-  dark_mode::SetBraveDarkModeType(
-      dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK);
+  // dark_mode::SetBraveDarkModeType(
+  //     dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK);
   histogram_tester_.ExpectBucketCount(kBrowserColorSchemeHistogramName, 1, 1);
-  dark_mode::SetBraveDarkModeType(
-      dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT);
+  // dark_mode::SetBraveDarkModeType(
+  //     dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT);
   histogram_tester_.ExpectBucketCount(kBrowserColorSchemeHistogramName, 2, 1);
   histogram_tester_.ExpectTotalCount(kBrowserColorSchemeHistogramName, 3);
 

@@ -13,24 +13,5 @@ source_set("themes") {
 
   if (is_android) {
     sources += [ "brave_dark_mode_utils_android.cc" ]
-  } else {
-    sources += [
-      "brave_dark_mode_utils_internal.cc",
-      "brave_dark_mode_utils_internal.h",
-    ]
-
-    if (is_linux) {
-      sources += [ "brave_dark_mode_utils_linux.cc" ]
-    }
-
-    if (is_mac) {
-      sources += [ "brave_dark_mode_utils_mac.mm" ]
-    }
-
-    if (is_win) {
-      sources += [ "brave_dark_mode_utils_win.cc" ]
-    }
-
-    deps += [ "//ui/native_theme" ]
   }
 }
