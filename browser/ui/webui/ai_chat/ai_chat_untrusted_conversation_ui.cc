@@ -30,11 +30,13 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/favicon_source.h"
+#include "chrome/browser/ui/webui/util/image_util.h"
 #include "components/favicon_base/favicon_url_parser.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_webui_strings.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/url_data_source.h"
 #include "content/public/browser/web_contents.h"
@@ -53,6 +55,7 @@
 #else
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/chrome_pages.h"
+#include "chrome/browser/ui/thumbnails/thumbnail_tracker.h"
 #include "chrome/browser/ui/webui/theme_source.h"
 #endif
 
@@ -63,7 +66,12 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
  public:
   UIHandler(content::WebUI* web_ui,
             mojo::PendingReceiver<ai_chat::mojom::UntrustedUIHandler> receiver)
-      : web_ui_(web_ui), receiver_(this, std::move(receiver)) {
+      : web_ui_(web_ui),
+#if !BUILDFLAG(IS_ANDROID)  // Match thumnbail_tracker.h GN guard
+        thumbnail_tracker_(base::BindRepeating(&UIHandler::ThumbnailUpdated,
+                                               base::Unretained(this))),
+#endif
+        receiver_(this, std::move(receiver)) {
     // Set up pref change observer for memory changes
     PrefService* prefs = Profile::FromWebUI(web_ui_)->GetPrefs();
     pref_change_registrar_.Init(prefs);
@@ -103,6 +111,28 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
       return;
     }
     OpenURL(url);
+  }
+
+  void AddTabToThumbnailTracker(int32_t tab_id) override {
+#if !BUILDFLAG(IS_ANDROID)  // Match thumnbail_tracker.h GN guard
+    auto* tab_handle = tabs::TabHandle(tab_id).Get();
+    if (!tab_handle) {
+      DLOG(ERROR) << "Failed to get tab handle for tab id: " << tab_id;
+      return;
+    }
+    thumbnail_tracker_.AddTab(tab_handle->GetContents());
+#endif
+  }
+
+  void RemoveTabFromThumbnailTracker(int32_t tab_id) override {
+#if !BUILDFLAG(IS_ANDROID)  // Match thumnbail_tracker.h GN guard
+    auto* tab_handle = tabs::TabHandle(tab_id).Get();
+    if (!tab_handle) {
+      DLOG(ERROR) << "Failed to get tab handle for tab id: " << tab_id;
+      return;
+    }
+    thumbnail_tracker_.RemoveTab(tab_handle->GetContents());
+#endif
   }
 
   void BindParentPage(mojo::PendingReceiver<ai_chat::mojom::ParentUIFrame>
@@ -215,7 +245,27 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
     untrusted_ui_->OnMemoriesChanged(memories);
   }
 
+#if !BUILDFLAG(IS_ANDROID)  // Match thumnbail_tracker.h GN guard
+  void ThumbnailUpdated(content::WebContents* contents,
+                        ThumbnailTracker::CompressedThumbnailData image) {
+    if (!image) {
+      return;
+    }
+    auto tab_id =
+        tabs::TabInterface::GetFromContents(contents)->GetHandle().raw_value();
+    std::string data_uri;
+    data_uri = webui::MakeDataURIForImage(base::span(image->data), "jpeg");
+    untrusted_ui_->ThumbnailUpdated(tab_id, data_uri);
+  }
+#endif
+
   raw_ptr<content::WebUI> web_ui_ = nullptr;
+
+// Match //chrome/browser/ui/thumbnails guard
+#if !BUILDFLAG(IS_ANDROID)
+  ThumbnailTracker thumbnail_tracker_;
+#endif
+
   mojo::Receiver<ai_chat::mojom::UntrustedUIHandler> receiver_;
   mojo::Remote<ai_chat::mojom::UntrustedUI> untrusted_ui_;
   PrefChangeRegistrar pref_change_registrar_;
@@ -268,7 +318,7 @@ AIChatUntrustedConversationUI::AIChatUntrustedConversationUI(
       "chrome-untrusted://theme;");
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ImgSrc,
-      "img-src 'self' blob: chrome-untrusted://resources "
+      "img-src 'self' blob: data: chrome-untrusted://resources "
       "chrome-untrusted://image chrome-untrusted://favicon2;");
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FontSrc,
