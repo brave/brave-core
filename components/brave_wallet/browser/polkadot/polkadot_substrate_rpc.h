@@ -33,6 +33,10 @@ class PolkadotSubstrateRpc {
       base::OnceCallback<void(mojom::PolkadotAccountInfoPtr,
                               const std::optional<std::string>&)>;
 
+  using GetFinalizedHeadCallback =
+      base::OnceCallback<void(std::optional<std::string>,
+                              std::optional<std::string>)>;
+
   // Get the name of the chain pointed to by the current network configuration.
   // "Westend" or "Paseo" for the testnets, "Polkadot" for the mainnet.
   void GetChainName(std::string_view chain_id, GetChainNameCallback callback);
@@ -41,6 +45,9 @@ class PolkadotSubstrateRpc {
       std::string_view chain_id,
       base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> pubkey,
       GetAccountBalanceCallback callback);
+
+  void GetFinalizedHead(std::string_view chain_id,
+                        GetFinalizedHeadCallback callback);
 
  private:
   using APIRequestResult = api_request_helper::APIRequestResult;
@@ -51,6 +58,7 @@ class PolkadotSubstrateRpc {
   GURL GetNetworkURL(std::string_view chain_id);
   void OnGetChainName(GetChainNameCallback callback, APIRequestResult res);
   void OnGetAccountBalance(GetAccountBalanceCallback, APIRequestResult res);
+  void OnGetFinalizedHead(GetFinalizedHeadCallback, APIRequestResult res);
 
   const raw_ref<NetworkManager> network_manager_;
   api_request_helper::APIRequestHelper api_request_helper_;

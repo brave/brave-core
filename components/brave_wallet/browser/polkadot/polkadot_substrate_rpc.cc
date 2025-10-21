@@ -327,6 +327,47 @@ void PolkadotSubstrateRpc::OnGetAccountBalance(
   return std::move(callback).Run(nullptr, WalletParsingErrorMessage());
 }
 
+void PolkadotSubstrateRpc::GetFinalizedHead(std::string_view chain_id,
+                                            GetFinalizedHeadCallback callback) {
+  auto url = GetNetworkURL(chain_id);
+
+  auto payload = base::WriteJson(
+      MakeRpcRequestJson("chain_getFinalizedHead", base::ListValue()));
+  CHECK(payload);
+
+  api_request_helper_.Request(
+      net::HttpRequestHeaders::kPostMethod, url, *payload, "application/json",
+      base::BindOnce(&PolkadotSubstrateRpc::OnGetFinalizedHead,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void PolkadotSubstrateRpc::OnGetFinalizedHead(GetFinalizedHeadCallback callback,
+                                              APIRequestResult api_result) {
+  if (!api_result.Is2XXResponseCode()) {
+    return std::move(callback).Run(std::nullopt, WalletInternalErrorMessage());
+  }
+
+  auto res = polkadot_substrate_rpc_responses::PolkadotFinalizedHead::FromValue(
+      api_result.value_body());
+
+  if (!res) {
+    return std::move(callback).Run(std::nullopt, WalletParsingErrorMessage());
+  }
+
+  if (res->error) {
+    if (res->error->message) {
+      return std::move(callback).Run(std::nullopt, res->error->message.value());
+    }
+    return std::move(callback).Run(std::nullopt, WalletInternalErrorMessage());
+  }
+
+  if (!res->result) {
+    return std::move(callback).Run(std::nullopt, WalletParsingErrorMessage());
+  }
+
+  return std::move(callback).Run(std::move(*res->result), std::nullopt);
+}
+
 GURL PolkadotSubstrateRpc::GetNetworkURL(std::string_view chain_id) {
   return network_manager_->GetNetworkURL(chain_id, mojom::CoinType::DOT);
 }
