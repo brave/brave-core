@@ -14,6 +14,7 @@
 #include "base/values.h"
 #include "brave/browser/webcompat_reporter/webcompat_reporter_service_factory.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
+#include "brave/components/brave_shields/core/common/brave_shields_settings_values.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/webcompat_reporter/browser/webcompat_reporter_service.h"
 #include "chrome/browser/browser_process.h"
@@ -90,6 +91,10 @@ void DefaultBraveShieldsHandler::RegisterMessages() {
       base::BindRepeating(
           &DefaultBraveShieldsHandler::SetHttpsUpgradeControlType,
           base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "getNoScriptControlType",
+      base::BindRepeating(&DefaultBraveShieldsHandler::GetNoScriptControlType,
+                          base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "setNoScriptControlType",
       base::BindRepeating(&DefaultBraveShieldsHandler::SetNoScriptControlType,
@@ -322,6 +327,18 @@ void DefaultBraveShieldsHandler::SetHttpsUpgradeControlType(
   brave_shields::SetHttpsUpgradeControlType(
       HostContentSettingsMapFactory::GetForProfile(profile_),
       ControlTypeFromString(value), GURL(), g_browser_process->local_state());
+}
+
+void DefaultBraveShieldsHandler::GetNoScriptControlType(
+    const base::Value::List& args) {
+  CHECK_EQ(args.size(), 1U);
+  CHECK(profile_);
+  ControlType setting = brave_shields::GetNoScriptControlType(
+      HostContentSettingsMapFactory::GetForProfile(profile_), GURL());
+
+  AllowJavascript();
+  ResolveJavascriptCallback(args[0],
+                            base::Value(setting != ControlType::ALLOW));
 }
 
 void DefaultBraveShieldsHandler::SetNoScriptControlType(

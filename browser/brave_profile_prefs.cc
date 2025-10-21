@@ -343,6 +343,9 @@ void RegisterProfilePrefsForMigration(
 
   // Added 2025-09
   SearchEngineTrackerFactory::RegisterProfilePrefsForMigration(registry);
+
+  // Added 2025-10
+  registry->RegisterBooleanPref(kNoScriptControlType, false);
 }
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
@@ -375,7 +378,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kAskEnableWidvine, true);
 
   // Default Brave shields
-  registry->RegisterBooleanPref(kNoScriptControlType, false);
   registry->RegisterBooleanPref(kAdControlType, true);
   registry->RegisterBooleanPref(kShieldsAdvancedViewEnabled, false);
 
