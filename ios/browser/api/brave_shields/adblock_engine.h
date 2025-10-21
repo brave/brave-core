@@ -92,14 +92,6 @@ OBJC_EXPORT
 /// Checks if a tag exists in the engine
 - (bool)tagExists:(NSString*)tag;
 
-/// Adds a resource to the engine by name
-// BOOL return type must be used so Swift turns this into a throwing function
-- (BOOL)addResourceWithKey:(NSString*)key
-               contentType:(NSString*)contentType
-                      data:(NSString*)data
-                     error:(NSError**)error
-    NS_SWIFT_NAME(addResource(key:contentType:data:));
-
 /// Uses a list of `Resource`s from JSON format
 - (bool)useResources:(NSString*)resources;
 

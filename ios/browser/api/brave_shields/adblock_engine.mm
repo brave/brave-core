@@ -215,21 +215,6 @@ class AdblockEngineBox final {
   return adblock_engine->tag_exists(base::SysNSStringToUTF8(tag));
 }
 
-- (bool)addResourceWithKey:(NSString*)key
-               contentType:(NSString*)contentType
-                      data:(NSString*)data
-                     error:(NSError**)error {
-  const auto result = adblock_engine->add_resource(
-      base::SysNSStringToUTF8(key), base::SysNSStringToUTF8(contentType),
-      base::SysNSStringToUTF8(data));
-  const auto success = result.result_kind == adblock::ResultKind::Success;
-  if (result.result_kind != adblock::ResultKind::Success && error) {
-    *error = [[self class] adblockErrorForKind:result.result_kind
-                                       message:result.error_message];
-  }
-  return success;
-}
-
 - (bool)useResources:(NSString*)resources {
   return adblock_engine->use_resources(base::SysNSStringToUTF8(resources));
 }
