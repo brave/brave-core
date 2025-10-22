@@ -27,11 +27,13 @@ class EmbeddingGemmaInterfaceImpl {
   receiver: EmbeddingGemmaInterfaceReceiver
   embedder: typeof Gemma3Embedder | null
   isInitialized: boolean
+  initTime: number
 
   constructor() {
     this.receiver = new EmbeddingGemmaInterfaceReceiver(this)
     this.embedder = null
     this.isInitialized = false
+    this.initTime = 0
   }
 
   // Implementation of EmbeddingGemmaInterface::Init
@@ -41,6 +43,7 @@ class EmbeddingGemmaInterfaceImpl {
       return { success: true }
     }
 
+    const startTime = performance.now()
     console.log('Loading Embedding Gemma model from provided files...')
 
     try {
@@ -87,7 +90,10 @@ class EmbeddingGemmaInterfaceImpl {
       console.log('Creating Gemma3Embedder instance...')
       this.embedder = new Gemma3Embedder(weightsData, tokenizerData, configData)
       this.isInitialized = true
-      console.log('Embedding Gemma model loaded successfully!')
+      this.initTime = performance.now() - startTime
+      console.log(
+        `Embedding Gemma model loaded successfully in ${this.initTime.toFixed(2)}ms`,
+      )
       return { success: true }
     } catch (error) {
       console.error('Failed to load model:', error)
@@ -130,3 +136,63 @@ console.log('[Candle WASM] Embedding Gemma WASM bridge initialized!')
 // Optionally expose to window for debugging
 ;(window as any).embeddingGemmaImpl = embeddingGemmaImpl
 console.log('[Candle WASM] Exposed embeddingGemmaImpl for debugging')
+
+// UI handling
+const statusEl = document.getElementById('status')!
+const textInput = document.getElementById('textInput') as HTMLInputElement
+const embedBtn = document.getElementById('embedBtn') as HTMLButtonElement
+const resultEl = document.getElementById('result')!
+
+// Poll for initialization
+const checkInit = setInterval(() => {
+  if (embeddingGemmaImpl.isInitialized) {
+    statusEl.textContent = `Ready! (Initialized in ${embeddingGemmaImpl.initTime.toFixed(2)}ms)`
+    statusEl.className = 'status ready'
+    textInput.disabled = false
+    embedBtn.disabled = false
+    clearInterval(checkInit)
+  }
+}, 100)
+
+// Handle embed button click
+embedBtn.addEventListener('click', async () => {
+  const text = textInput.value.trim()
+  if (!text) return
+
+  embedBtn.disabled = true
+  const startTime = performance.now()
+
+  try {
+    const result = await candleService.embed(text)
+    const embedTime = performance.now() - startTime
+
+    if (result.embedding && result.embedding.length > 0) {
+      const first5 = result.embedding
+        .slice(0, 5)
+        .map((v) => v.toFixed(4))
+        .join(', ')
+      resultEl.textContent = [
+        `Text: "${text}"`,
+        `Embed time: ${embedTime.toFixed(2)}ms`,
+        `Dimension: ${result.embedding.length}`,
+        `First 5 values: [${first5}, ...]`,
+      ].join('\n')
+      resultEl.style.display = 'block'
+    }
+  } catch (error) {
+    resultEl.textContent = `Error: ${error}`
+    resultEl.style.display = 'block'
+  } finally {
+    embedBtn.disabled = false
+  }
+})
+
+// Handle example button clicks
+document.querySelectorAll('.example-btn').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    const text = btn.getAttribute('data-text')
+    if (text) {
+      textInput.value = text
+    }
+  })
+})
