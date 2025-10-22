@@ -99,8 +99,6 @@ std::optional<mojom::OnRampProvider> ParseProvider(
     const std::string& provider_str) {
   if (provider_str == "ramp") {
     return mojom::OnRampProvider::kRamp;
-  } else if (provider_str == "sardine") {
-    return mojom::OnRampProvider::kSardine;
   } else if (provider_str == "transak") {
     return mojom::OnRampProvider::kTransak;
   } else if (provider_str == "stripe") {

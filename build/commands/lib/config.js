@@ -296,8 +296,6 @@ const Config = function () {
     'rewards_grant_prod_endpoint',
     'rewards_grant_staging_endpoint',
     'safebrowsing_api_endpoint',
-    'sardine_client_id',
-    'sardine_client_secret',
     'service_key_aichat',
     'service_key_stt',
     'sparkle_dsa_private_key_file',

@@ -16,21 +16,6 @@
 
 namespace brave_wallet {
 
-std::optional<std::string_view> GetSardineNetworkName(
-    std::string_view chain_id) {
-  // key = chain_id, value = sardine_network_name
-  static constexpr auto kSardineNetworkNames =
-      base::MakeFixedFlatMap<std::string_view, std::string_view>(
-          {{mojom::kMainnetChainId, "ethereum"},
-           {mojom::kPolygonMainnetChainId, "ethereum"},
-           {mojom::kAvalancheMainnetChainId, "avalanche"},
-           {mojom::kFantomMainnetChainId, "fantom"},
-           {mojom::kSolanaMainnet, "solana"}});
-
-  return base::OptionalFromPtr(
-      base::FindOrNull(kSardineNetworkNames, chain_id));
-}
-
 std::string GetAssetRatioBaseURL() {
   std::string ratios_url =
       base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(

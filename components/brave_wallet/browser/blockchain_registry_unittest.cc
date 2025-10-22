@@ -790,13 +790,12 @@ TEST(BlockchainRegistryUnitTest, GetProvidersBuyTokens) {
   // Ethereum mainnet tokens are present
   auto run_loop = std::make_unique<base::RunLoop>();
   registry->GetProvidersBuyTokens(
-      {mojom::OnRampProvider::kRamp, mojom::OnRampProvider::kSardine,
-       mojom::OnRampProvider::kTransak,
+      {mojom::OnRampProvider::kRamp, mojom::OnRampProvider::kTransak,
        mojom::OnRampProvider::kTransak /* test duplicate provider */},
       mojom::kMainnetChainId,
       base::BindLambdaForTesting(
           [&](std::vector<mojom::BlockchainTokenPtr> token_list) {
-            EXPECT_EQ(token_list.size(), 4UL);
+            EXPECT_EQ(token_list.size(), 2UL);
             run_loop->Quit();
           }));
   run_loop->Run();
@@ -804,8 +803,7 @@ TEST(BlockchainRegistryUnitTest, GetProvidersBuyTokens) {
   // Polygon mainnet token is present
   run_loop = std::make_unique<base::RunLoop>();
   registry->GetProvidersBuyTokens(
-      {mojom::OnRampProvider::kRamp, mojom::OnRampProvider::kSardine,
-       mojom::OnRampProvider::kTransak,
+      {mojom::OnRampProvider::kRamp, mojom::OnRampProvider::kTransak,
        mojom::OnRampProvider::kTransak /* test duplicate provider */},
       mojom::kPolygonMainnetChainId,
       base::BindLambdaForTesting(

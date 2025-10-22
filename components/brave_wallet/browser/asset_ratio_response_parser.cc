@@ -65,29 +65,6 @@ mojom::AssetPriceSource GetAssetPriceSource(const std::string& source) {
 
 }  // namespace
 
-std::optional<std::string> ParseSardineAuthToken(
-    const base::Value& json_value) {
-  // Parses results like this:
-  // {
-  //   "clientToken":"74618e17-a537-4f5d-ab4d-9916739560b1",
-  //   "expiresAt":"2022-07-25T19:59:57Z"
-  //   "name": "brave-core",
-  // }
-
-  if (!json_value.is_dict()) {
-    VLOG(0) << "Invalid response, JSON is not a dict";
-    return std::nullopt;
-  }
-
-  const std::string* auth_token =
-      json_value.GetDict().FindString("clientToken");
-  if (!auth_token) {
-    return std::nullopt;
-  }
-
-  return *auth_token;
-}
-
 // ParseAssetPrices parses the response from the pricing API of Gate3.
 //
 // Docs:

@@ -9,16 +9,6 @@ import("//build/config/features.gni")
 import("//third_party/protobuf/proto_library.gni")
 import("//tools/json_schema_compiler/json_schema_api.gni")
 
-declare_args() {
-  sardine_client_id = ""
-  sardine_client_secret = ""
-}
-
-if (is_official_build) {
-  assert(sardine_client_id != "")
-  assert(sardine_client_secret != "")
-}
-
 static_library("browser") {
   sources = [
     "account_discovery_manager.cc",
@@ -395,8 +385,6 @@ static_library("browser") {
       "//sql",
     ]
   }
-
-  configs += [ ":sardine_config" ]
 }
 
 # TODO(https://github.com/brave/brave-browser/issues/47669) this should be
@@ -638,13 +626,6 @@ generated_types("generated_swap_responses") {
   visibility = [
     ":browser",
     ":unit_tests",
-  ]
-}
-
-config("sardine_config") {
-  defines = [
-    "SARDINE_CLIENT_ID=\"$sardine_client_id\"",
-    "SARDINE_CLIENT_SECRET=\"$sardine_client_secret\"",
   ]
 }
 
