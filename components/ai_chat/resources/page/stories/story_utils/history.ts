@@ -27,7 +27,7 @@ export const taskConversationEntries: Mojom.ConversationTurn[] = [
     ],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
-    smartMode: undefined,
+    skill: undefined,
     modelKey: '1',
   },
   {
@@ -115,7 +115,7 @@ export const taskConversationEntries: Mojom.ConversationTurn[] = [
     ],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
-    smartMode: undefined,
+    skill: undefined,
     modelKey: '1',
   },
   {
@@ -146,7 +146,7 @@ export const taskConversationEntries: Mojom.ConversationTurn[] = [
     ],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
-    smartMode: undefined,
+    skill: undefined,
     modelKey: '1',
   },
   {
@@ -181,7 +181,7 @@ export const taskConversationEntries: Mojom.ConversationTurn[] = [
     ],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
-    smartMode: undefined,
+    skill: undefined,
     modelKey: '1',
   },
 ]

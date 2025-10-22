@@ -42,7 +42,7 @@ export default function BeginGeneration() {
           })}
           handleClick={() => {}}
           handleEditClick={() => {}}
-          handleNewSmartModeClick={() => {}}
+          handleNewSkillClick={() => {}}
         />
         <InputBox
           conversationStarted
@@ -77,10 +77,10 @@ export default function BeginGeneration() {
             setAttachmentsDialog: () => {},
             unassociatedTabs: [],
             attachImages: () => {},
-            handleSmartModeClick: () => {},
-            selectedSmartMode: undefined,
-            resetSelectedSmartMode: () => {},
-            smartModes: [],
+            handleSkillClick: () => {},
+            selectedSkill: undefined,
+            resetSelectedSkill: () => {},
+            skills: [],
           }}
         />
       </FiltersContainer>

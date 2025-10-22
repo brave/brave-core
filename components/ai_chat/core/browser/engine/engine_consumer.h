@@ -156,8 +156,8 @@ class EngineConsumer {
   bool CanPerformCompletionRequest(
       const ConversationHistory& conversation_history) const;
 
-  static std::string BuildSmartModeDefinitionMessage(
-      const mojom::SmartModeEntryPtr& smart_mode);
+  static std::string BuildSkillDefinitionMessage(
+      const mojom::SkillEntryPtr& skill);
   uint32_t max_associated_content_length_ = 0;
   std::string model_name_ = "";
   raw_ptr<ModelService> model_service_;

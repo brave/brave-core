@@ -282,55 +282,55 @@
   <message name="IDS_CHAT_UI_COPY_PROMPT_BUTTON_LABEL" desc="Button title to copy prompt content" formatter_data="webui=AiChat">
     Copy prompt
   </message>
-  <message name="IDS_CHAT_UI_SAVE_AS_SMART_MODE_BUTTON_LABEL" desc="Button title to save prompt as smart mode" formatter_data="webui=AiChat">
-    Save as smart mode
+  <message name="IDS_CHAT_UI_SAVE_AS_SKILL_BUTTON_LABEL" desc="Button title to save prompt as skill" formatter_data="webui=AiChat">
+    Save as skill
   </message>
-  <message name="IDS_CHAT_UI_SMART_MODES_GROUP" desc="Group label for smart modes in tools menu" formatter_data="webui=AiChat">
-    My Smart Modes
+  <message name="IDS_CHAT_UI_SKILLS_GROUP" desc="Group label for skills in tools menu" formatter_data="webui=AiChat">
+    My Skills
   </message>
-  <message name="IDS_CHAT_UI_NEW_SMART_MODE_TITLE" desc="Title for new smart mode dialog" formatter_data="webui=AiChat">
-    New smart mode
+  <message name="IDS_CHAT_UI_NEW_SKILL_TITLE" desc="Title for new skill dialog" formatter_data="webui=AiChat">
+    New skill
   </message>
-  <message name="IDS_CHAT_UI_SMART_MODE_DESCRIPTION" desc="Description text for smart mode dialog" formatter_data="webui=AiChat">
-    Smart modes will appear in your [/] tools and are accessible by just typing the "/name" you set up below.
+  <message name="IDS_CHAT_UI_SKILL_DESCRIPTION" desc="Description text for skill dialog" formatter_data="webui=AiChat">
+    Skills will appear in your [/] tools and are accessible by just typing the "/name" you set up below.
   </message>
-  <message name="IDS_CHAT_UI_MODEL_FOR_PROMPT_LABEL" desc="Label for model selection in smart mode dialog" formatter_data="webui=AiChat">
+  <message name="IDS_CHAT_UI_MODEL_FOR_PROMPT_LABEL" desc="Label for model selection in skill dialog" formatter_data="webui=AiChat">
     Model for prompt
   </message>
-  <message name="IDS_CHAT_UI_SHORTCUT_LABEL" desc="Label for shortcut input in smart mode dialog" formatter_data="webui=AiChat">
+  <message name="IDS_CHAT_UI_SHORTCUT_LABEL" desc="Label for shortcut input in skill dialog" formatter_data="webui=AiChat">
     Shortcut
   </message>
   <message name="IDS_CHAT_UI_SHORTCUT_PLACEHOLDER" desc="Placeholder text for shortcut input" formatter_data="webui=AiChat">
     Enter your shortcut here
   </message>
-  <message name="IDS_CHAT_UI_PROMPT_LABEL" desc="Label for prompt input in smart mode dialog" formatter_data="webui=AiChat">
+  <message name="IDS_CHAT_UI_PROMPT_LABEL" desc="Label for prompt input in skill dialog" formatter_data="webui=AiChat">
     Prompt
   </message>
   <message name="IDS_CHAT_UI_PROMPT_PLACEHOLDER" desc="Placeholder text for prompt input" formatter_data="webui=AiChat">
     Enter your prompt here
   </message>
-  <message name="IDS_CHAT_UI_EDIT_SMART_MODE_TITLE" desc="Title for edit smart mode dialog" formatter_data="webui=AiChat">
-    Edit smart mode
+  <message name="IDS_CHAT_UI_EDIT_SKILL_TITLE" desc="Title for edit skill dialog" formatter_data="webui=AiChat">
+    Edit skill
   </message>
-  <message name="IDS_CHAT_UI_DELETE_SMART_MODE_TITLE" desc="Title for delete smart mode confirmation dialog" formatter_data="webui=AiChat">
-    Delete smart mode
+  <message name="IDS_CHAT_UI_DELETE_SKILL_TITLE" desc="Title for delete skill confirmation dialog" formatter_data="webui=AiChat">
+    Delete skill
   </message>
-  <message name="IDS_CHAT_UI_DELETE_SMART_MODE_WARNING" desc="Warning message for deleting a smart mode" formatter_data="webui=AiChat">
-    Are you sure you want to delete this mode? This action cannot be undone.
+  <message name="IDS_CHAT_UI_DELETE_SKILL_WARNING" desc="Warning message for deleting a skill" formatter_data="webui=AiChat">
+    Are you sure you want to delete this skill? This action cannot be undone.
   </message>
-  <message name="IDS_CHAT_UI_SHORTCUT_REQUIRED_ERROR" desc="Error message when shortcut field is empty in smart mode dialog" formatter_data="webui=AiChat">
+  <message name="IDS_CHAT_UI_SHORTCUT_REQUIRED_ERROR" desc="Error message when shortcut field is empty in skill dialog" formatter_data="webui=AiChat">
     Shortcut is required
   </message>
-  <message name="IDS_CHAT_UI_SHORTCUT_FORMAT_ERROR" desc="Error message when shortcut format is invalid in smart mode dialog" formatter_data="webui=AiChat">
+  <message name="IDS_CHAT_UI_SHORTCUT_FORMAT_ERROR" desc="Error message when shortcut format is invalid in skill dialog" formatter_data="webui=AiChat">
     Shortcut can only contain letters, numbers, underscore, and hyphen
   </message>
-  <message name="IDS_CHAT_UI_SHORTCUT_TOO_LONG_ERROR" desc="Error message when shortcut exceeds maximum length in smart mode dialog" formatter_data="webui=AiChat">
+  <message name="IDS_CHAT_UI_SHORTCUT_TOO_LONG_ERROR" desc="Error message when shortcut exceeds maximum length in skill dialog" formatter_data="webui=AiChat">
     Shortcut must be 64 characters or less
   </message>
   <message name="IDS_CHAT_UI_SHORTCUT_DUPLICATE_ERROR" desc="Error message when shortcut already exists" formatter_data="webui=AiChat">
     Shortcut already exists
   </message>
-  <message name="IDS_CHAT_UI_PROMPT_REQUIRED_ERROR" desc="Error message when prompt field is empty in smart mode dialog" formatter_data="webui=AiChat">
+  <message name="IDS_CHAT_UI_PROMPT_REQUIRED_ERROR" desc="Error message when prompt field is empty in skill dialog" formatter_data="webui=AiChat">
     Prompt is required
   </message>
   <message name="IDS_CHAT_UI_PROMPT_TOO_LONG_ERROR" desc="Error message when prompt exceeds character limit" formatter_data="webui=AiChat">
@@ -777,10 +777,10 @@
   <message name="IDS_CHAT_UI_TOOL_LABEL_WAIT" desc="Label for when the assistant is waiting for a page to load or update" formatter_data="webui=AiChat">
     Waiting for the page
   </message>
-  <message name="IDS_CHAT_UI_TOOLS_MENU_NO_SMART_MODES_FOUND" desc="Message shown when no smart modes are found" formatter_data="webui=AiChat">
-    No smart modes found. Create a new one by clicking the ”New” button.
+  <message name="IDS_CHAT_UI_TOOLS_MENU_NO_SKILLS_FOUND" desc="Message shown when no skills are found" formatter_data="webui=AiChat">
+    No skills found. Create a new one by clicking the "New" button.
   </message>
-  <message name="IDS_CHAT_UI_TOOLS_MENU_NEW_SMART_MODE_BUTTON_LABEL" desc="Label for the new smart mode button" formatter_data="webui=AiChat">
+  <message name="IDS_CHAT_UI_TOOLS_MENU_NEW_SKILL_BUTTON_LABEL" desc="Label for the new skill button" formatter_data="webui=AiChat">
     New
   </message>
   <message name='IDS_CHAT_UI_TOOL_LABEL_ASSISTANT_DETAIL_STORAGE' desc="Label for when the assistant is storing information for later" formatter_data="webui=AiChat">

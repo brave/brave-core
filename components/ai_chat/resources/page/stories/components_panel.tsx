@@ -172,7 +172,7 @@ const MEMORY_HISTORY: Mojom.ConversationTurn[] = [
     events: [],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
-    smartMode: undefined,
+    skill: undefined,
     modelKey: '1',
   },
   {
@@ -203,7 +203,7 @@ const MEMORY_HISTORY: Mojom.ConversationTurn[] = [
     ],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
-    smartMode: undefined,
+    skill: undefined,
     modelKey: '1',
   },
   {
@@ -218,7 +218,7 @@ const MEMORY_HISTORY: Mojom.ConversationTurn[] = [
     events: [],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
-    smartMode: undefined,
+    skill: undefined,
     modelKey: '1',
   },
   {
@@ -249,7 +249,7 @@ const MEMORY_HISTORY: Mojom.ConversationTurn[] = [
     ],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
-    smartMode: undefined,
+    skill: undefined,
     modelKey: '1',
   },
   {
@@ -264,7 +264,7 @@ const MEMORY_HISTORY: Mojom.ConversationTurn[] = [
     events: [],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
-    smartMode: undefined,
+    skill: undefined,
     modelKey: '1',
   },
   {
@@ -297,14 +297,14 @@ const MEMORY_HISTORY: Mojom.ConversationTurn[] = [
     ],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
-    smartMode: undefined,
+    skill: undefined,
     modelKey: '1',
   },
 ]
 
 const HISTORY: Mojom.ConversationTurn[] = [
   {
-    uuid: 'smart-mode-turn',
+    uuid: 'skill-turn',
     text: '/translate Hello world, how are you today?',
     characterType: Mojom.CharacterType.HUMAN,
     actionType: Mojom.ActionType.QUERY,
@@ -315,14 +315,14 @@ const HISTORY: Mojom.ConversationTurn[] = [
     events: [],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
-    smartMode: {
+    skill: {
       shortcut: 'translate',
       prompt: 'Translate the following text to English',
     },
     modelKey: '1',
   },
   {
-    uuid: 'smart-mode-response',
+    uuid: 'skill-response',
     text: '',
     characterType: Mojom.CharacterType.ASSISTANT,
     actionType: Mojom.ActionType.UNSPECIFIED,
@@ -338,7 +338,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     ],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
-    smartMode: undefined,
+    skill: undefined,
     modelKey: '1',
   },
   {
@@ -353,7 +353,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     events: [],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
-    smartMode: undefined,
+    skill: undefined,
     modelKey: '1',
   },
   {
@@ -372,7 +372,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     ],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
-    smartMode: undefined,
+    skill: undefined,
     modelKey: '1',
   },
   {
@@ -387,7 +387,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     events: [],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
-    smartMode: undefined,
+    skill: undefined,
     modelKey: '1',
   },
   // Show how a Task is displayed within history. Use the AssistantTask story for
@@ -405,7 +405,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     events: [],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
-    smartMode: undefined,
+    skill: undefined,
     modelKey: '1',
   },
   {
@@ -424,7 +424,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     ],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
-    smartMode: undefined,
+    skill: undefined,
     modelKey: '1',
   },
   {
@@ -439,7 +439,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     events: [],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
-    smartMode: undefined,
+    skill: undefined,
     modelKey: '1',
   },
   {
@@ -458,7 +458,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     ],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
-    smartMode: undefined,
+    skill: undefined,
     modelKey: '1',
   },
   {
@@ -473,7 +473,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     events: [],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
-    smartMode: undefined,
+    skill: undefined,
     modelKey: '1',
   },
   {
@@ -507,7 +507,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     ],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
-    smartMode: undefined,
+    skill: undefined,
     modelKey: '1',
   },
   {
@@ -523,7 +523,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     events: [],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
-    smartMode: undefined,
+    skill: undefined,
     modelKey: '1',
   },
   {
@@ -561,7 +561,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     ],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
-    smartMode: undefined,
+    skill: undefined,
     modelKey: '1',
   },
   {
@@ -584,7 +584,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
         events: [],
         uploadedFiles: [],
         fromBraveSearchSERP: false,
-        smartMode: undefined,
+        skill: undefined,
         modelKey: '1',
       },
     ],
@@ -592,7 +592,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     events: [],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
-    smartMode: undefined,
+    skill: undefined,
     modelKey: '1',
   },
   {
@@ -613,7 +613,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     ],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
-    smartMode: undefined,
+    skill: undefined,
     modelKey: '1',
   },
   {
@@ -635,7 +635,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
       },
     ],
     fromBraveSearchSERP: false,
-    smartMode: undefined,
+    skill: undefined,
     modelKey: '1',
   },
   {
@@ -650,7 +650,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     events: [getCompletionEvent('It is a lion!')],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
-    smartMode: undefined,
+    skill: undefined,
     modelKey: '1',
   },
   {
@@ -678,7 +678,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
       },
     ],
     fromBraveSearchSERP: false,
-    smartMode: undefined,
+    skill: undefined,
     modelKey: '1',
   },
   {
@@ -698,7 +698,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     ],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
-    smartMode: undefined,
+    skill: undefined,
     modelKey: '1',
   },
   {
@@ -732,7 +732,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
       },
     ],
     fromBraveSearchSERP: false,
-    smartMode: undefined,
+    skill: undefined,
     modelKey: '1',
   },
   {
@@ -751,7 +751,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     ],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
-    smartMode: undefined,
+    skill: undefined,
     modelKey: '1',
   },
   {
@@ -785,7 +785,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     ],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
-    smartMode: undefined,
+    skill: undefined,
     modelKey: '1',
   },
   // Show that tool use events are NOT interactive if they are not the last entry in the
@@ -806,7 +806,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     ],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
-    smartMode: undefined,
+    skill: undefined,
     modelKey: '1',
   },
   // Show that single or multipletool use events are interactive if they are the
@@ -828,7 +828,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     ],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
-    smartMode: undefined,
+    skill: undefined,
     modelKey: '1',
   },
 ]
@@ -974,9 +974,9 @@ type CustomArgs = {
   isDragActive: boolean
   isDragOver: boolean
   useMemoryHistory: boolean
-  smartModeDialog: Mojom.SmartMode | null
+  skillDialog: Mojom.Skill | null
   selectedActionType: Mojom.ActionType | undefined
-  selectedSmartMode: Mojom.SmartMode | undefined
+  selectedSkill: Mojom.Skill | undefined
 }
 
 const args: CustomArgs = {
@@ -1020,9 +1020,9 @@ const args: CustomArgs = {
   isDragActive: false,
   isDragOver: false,
   useMemoryHistory: false,
-  smartModeDialog: null,
+  skillDialog: null,
   selectedActionType: undefined,
-  selectedSmartMode: undefined,
+  selectedSkill: undefined,
 }
 
 const meta: Meta<CustomArgs> = {
@@ -1146,7 +1146,7 @@ function StoryContext(
       options.args.isAIChatAgentProfileFeatureEnabled,
     isAIChatAgentProfile: options.args.isAIChatAgentProfile,
     isStandalone: options.args.isStandalone,
-    smartModes: [
+    skills: [
       {
         id: 'translate-mode',
         shortcut: 'translate',
@@ -1212,8 +1212,8 @@ function StoryContext(
       setArgs({ editingConversationId: id }),
     setDeletingConversationId: (id: string | null) =>
       setArgs({ deletingConversationId: id }),
-    smartModeDialog: options.args.smartModeDialog,
-    setSmartModeDialog: () => {},
+    skillDialog: options.args.skillDialog,
+    setSkillDialog: () => {},
     showSidebar: showSidebar,
     toggleSidebar: () => setShowSidebar((s) => !s),
     getBookmarks: async () => [
@@ -1286,7 +1286,7 @@ function StoryContext(
     shouldShowLongConversationInfo: options.args.shouldShowLongConversationInfo,
     inputText,
     selectedActionType: options.args.selectedActionType,
-    selectedSmartMode: options.args.selectedSmartMode,
+    selectedSkill: options.args.selectedSkill,
     isToolsMenuOpen,
     isCurrentModelLeo: true,
     isCharLimitApproaching: inputText.length > 64,
@@ -1307,11 +1307,11 @@ function StoryContext(
     handleStopGenerating: async () => {},
     submitInputTextToAPI: () => {},
     resetSelectedActionType: () => setArgs({ selectedActionType: undefined }),
-    resetSelectedSmartMode: () => setArgs({ selectedSmartMode: undefined }),
+    resetSelectedSkill: () => setArgs({ selectedSkill: undefined }),
     handleActionTypeClick: (actionType: Mojom.ActionType) => {
       const update: Partial<CustomArgs> = {
         selectedActionType: actionType,
-        selectedSmartMode: undefined,
+        selectedSkill: undefined,
       }
 
       if (options.args.inputText.startsWith('/')) {
@@ -1321,15 +1321,15 @@ function StoryContext(
       setArgs(update)
       setIsToolsMenuOpen(false)
     },
-    handleSmartModeClick: (smartMode: any) => {
+    handleSkillClick: (skill: any) => {
       setArgs({
-        selectedSmartMode: smartMode,
+        selectedSkill: skill,
         selectedActionType: undefined,
-        inputText: `/${smartMode.shortcut} `,
+        inputText: `/${skill.shortcut} `,
       })
       setIsToolsMenuOpen(false)
     },
-    handleSmartModeEdit: () => {},
+    handleSkillEdit: () => {},
     setIsToolsMenuOpen,
     handleFeedbackFormCancel: () => {},
     handleFeedbackFormSubmit: () => Promise.resolve(),

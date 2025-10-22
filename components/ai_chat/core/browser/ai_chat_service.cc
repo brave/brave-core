@@ -157,8 +157,8 @@ AIChatService::AIChatService(
       base::BindRepeating(&AIChatService::OnMemoryEnabledChanged,
                           weak_ptr_factory_.GetWeakPtr()));
   pref_change_registrar_.Add(
-      prefs::kBraveAIChatSmartModes,
-      base::BindRepeating(&AIChatService::OnSmartModesChanged,
+      prefs::kBraveAIChatSkills,
+      base::BindRepeating(&AIChatService::OnSkillsChanged,
                           weak_ptr_factory_.GetWeakPtr()));
 
   MaybeInitStorage();
@@ -640,26 +640,26 @@ void AIChatService::DismissPremiumPrompt() {
   profile_prefs_->SetBoolean(prefs::kUserDismissedPremiumPrompt, true);
 }
 
-void AIChatService::GetSmartModes(GetSmartModesCallback callback) {
-  auto smart_modes = prefs::GetSmartModesFromPrefs(*profile_prefs_);
-  std::move(callback).Run(std::move(smart_modes));
+void AIChatService::GetSkills(GetSkillsCallback callback) {
+  auto skills = prefs::GetSkillsFromPrefs(*profile_prefs_);
+  std::move(callback).Run(std::move(skills));
 }
 
-void AIChatService::CreateSmartMode(const std::string& shortcut,
-                                    const std::string& prompt,
-                                    const std::optional<std::string>& model) {
-  prefs::AddSmartModeToPrefs(shortcut, prompt, model, *profile_prefs_);
+void AIChatService::CreateSkill(const std::string& shortcut,
+                                const std::string& prompt,
+                                const std::optional<std::string>& model) {
+  prefs::AddSkillToPrefs(shortcut, prompt, model, *profile_prefs_);
 }
 
-void AIChatService::UpdateSmartMode(const std::string& id,
-                                    const std::string& shortcut,
-                                    const std::string& prompt,
-                                    const std::optional<std::string>& model) {
-  prefs::UpdateSmartModeInPrefs(id, shortcut, prompt, model, *profile_prefs_);
+void AIChatService::UpdateSkill(const std::string& id,
+                                const std::string& shortcut,
+                                const std::string& prompt,
+                                const std::optional<std::string>& model) {
+  prefs::UpdateSkillInPrefs(id, shortcut, prompt, model, *profile_prefs_);
 }
 
-void AIChatService::DeleteSmartMode(const std::string& id) {
-  prefs::DeleteSmartModeFromPrefs(id, *profile_prefs_);
+void AIChatService::DeleteSkill(const std::string& id) {
+  prefs::DeleteSkillFromPrefs(id, *profile_prefs_);
 }
 
 void AIChatService::GetActionMenuList(GetActionMenuListCallback callback) {
@@ -861,9 +861,9 @@ void AIChatService::OnStateChanged() {
   }
 }
 
-void AIChatService::OnSmartModesChanged() {
+void AIChatService::OnSkillsChanged() {
   for (auto& remote : observer_remotes_) {
-    remote->OnSmartModesChanged(prefs::GetSmartModesFromPrefs(*profile_prefs_));
+    remote->OnSkillsChanged(prefs::GetSkillsFromPrefs(*profile_prefs_));
   }
 }
 

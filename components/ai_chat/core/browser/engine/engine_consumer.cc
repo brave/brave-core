@@ -38,10 +38,10 @@ std::string EngineConsumer::GetPromptForEntry(
 }
 
 // static
-std::string EngineConsumer::BuildSmartModeDefinitionMessage(
-    const mojom::SmartModeEntryPtr& smart_mode) {
+std::string EngineConsumer::BuildSkillDefinitionMessage(
+    const mojom::SkillEntryPtr& skill) {
   return absl::StrFormat("When handling the request, interpret '/%s' as '%s'",
-                         smart_mode->shortcut, smart_mode->prompt);
+                         skill->shortcut, skill->prompt);
 }
 
 EngineConsumer::EngineConsumer(ModelService* model_service, PrefService* prefs)

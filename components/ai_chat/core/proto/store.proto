@@ -49,7 +49,7 @@ message WebSourcesEventProto {
   repeated WebSourceProto sources = 1;
 }
 
-message SmartModeEntryProto {
+message SkillEntryProto {
   string shortcut = 1;
   string prompt = 2;
 }

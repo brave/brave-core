@@ -526,18 +526,17 @@ base::Value::List EngineConsumerOAIRemote::BuildMessages(
                             ? "user"
                             : "assistant");
 
-    // For human turns with smart mode, use content blocks
-    if (turn->character_type == CharacterType::HUMAN && turn->smart_mode) {
-      std::string mode_definition =
-          BuildSmartModeDefinitionMessage(turn->smart_mode);
+    // For human turns with skill, use content blocks
+    if (turn->character_type == CharacterType::HUMAN && turn->skill) {
+      std::string skill_definition = BuildSkillDefinitionMessage(turn->skill);
 
       base::Value::List content_blocks;
 
-      // Add smart mode definition as first content block
-      base::Value::Dict smart_mode_block;
-      smart_mode_block.Set("type", "text");
-      smart_mode_block.Set("text", mode_definition);
-      content_blocks.Append(std::move(smart_mode_block));
+      // Add skill definition as first content block
+      base::Value::Dict skill_block;
+      skill_block.Set("type", "text");
+      skill_block.Set("text", skill_definition);
+      content_blocks.Append(std::move(skill_block));
 
       // Add user message as second content block
       base::Value::Dict user_message_block;

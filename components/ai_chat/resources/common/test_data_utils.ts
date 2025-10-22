@@ -64,7 +64,7 @@ export function createConversationTurnWithDefaults(
     createdTime: { internalValue: BigInt(Date.now()) },
     edits: undefined,
     uploadedFiles: undefined,
-    smartMode: undefined,
+    skill: undefined,
     fromBraveSearchSERP: false,
     modelKey: undefined,
     actionType: Mojom.ActionType.UNSPECIFIED,
