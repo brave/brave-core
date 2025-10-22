@@ -31,9 +31,10 @@ class CandleService : public mojom::CandleService {
   void BindEmbeddingGemma(
       mojo::PendingRemote<mojom::EmbeddingGemmaInterface>) override;
 
+  void Embed(const std::string& text, EmbedCallback callback) override;
+
   void RunBertExample();
   void RunEmbeddingGemmaInit();
-  void RunEmbeddingGemmaExamples();
 
  private:
   friend class base::NoDestructor<CandleService>;
@@ -44,8 +45,6 @@ class CandleService : public mojom::CandleService {
   void OnRunBertExample(const std::string& result);
   void OnEmbeddingGemmaModelFilesLoaded(mojom::LargeModelFilesPtr model_files);
   void OnEmbeddingGemmaInit(bool success);
-  void OnEmbeddingGemmaEmbed(const std::string& text,
-                             const std::vector<double>& embedding);
 
   mojo::ReceiverSet<mojom::CandleService> receivers_;
   mojo::Remote<mojom::BertInterface> bert_remote_;

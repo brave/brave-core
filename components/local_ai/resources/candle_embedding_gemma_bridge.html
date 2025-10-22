@@ -7,21 +7,68 @@
       body {
         font-family: system-ui, -apple-system, sans-serif;
         margin: 20px;
-        background: #f5f5f5;
       }
       .status {
         padding: 10px;
         margin: 10px 0;
-        background: #fff;
-        border-left: 4px solid #4CAF50;
+        border-radius: 4px;
+      }
+      .status.loading { background: #fff3cd; }
+      .status.ready { background: #d1e7dd; }
+      .status.error { background: #f8d7da; }
+      input {
+        width: 100%;
+        padding: 8px;
+        margin: 10px 0;
+        box-sizing: border-box;
+      }
+      button {
+        padding: 8px 16px;
+        cursor: pointer;
+      }
+      button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      .result {
+        margin-top: 10px;
+        padding: 10px;
+        background: #f8f9fa;
+        border-radius: 4px;
+        font-size: 12px;
+        white-space: pre-wrap;
+        font-family: monospace;
+      }
+      .examples {
+        margin: 10px 0;
+      }
+      .example-btn {
+        padding: 6px 12px;
+        margin: 2px;
+        background: #e9ecef;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 12px;
+      }
+      .example-btn:hover {
+        background: #dee2e6;
       }
     </style>
   </head>
   <body>
-    <h1>Candle Embedding Gemma WASM Bridge</h1>
-    <div class="status">
-      <p>Check the console for detailed logs.</p>
+    <h2>Embedding Gemma WASM</h2>
+    <div id="status" class="status loading">Initializing...</div>
+    <div class="examples">
+      <strong>Examples:</strong>
+      <button class="example-btn" data-text="The cat sits outside">Example 1</button>
+      <button class="example-btn" data-text="A man is playing guitar">Example 2</button>
+      <button class="example-btn" data-text="I love pasta">Example 3</button>
+      <button class="example-btn" data-text="The new movie is awesome">Example 4</button>
     </div>
+    <input id="textInput" placeholder="Enter text to embed" disabled />
+    <button id="embedBtn" disabled>Generate Embedding</button>
+    <div id="result" class="result" style="display:none;"></div>
     <script type="module"
       src="candle_embedding_gemma_bridge.bundle.js"></script>
   </body>

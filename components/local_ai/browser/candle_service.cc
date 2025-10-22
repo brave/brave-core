@@ -129,6 +129,16 @@ void CandleService::BindEmbeddingGemma(
   RunEmbeddingGemmaInit();
 }
 
+void CandleService::Embed(const std::string& text, EmbedCallback callback) {
+  if (!embedding_gemma_remote_) {
+    LOG(ERROR) << "Embedding Gemma not initialized";
+    std::move(callback).Run({});
+    return;
+  }
+
+  embedding_gemma_remote_->Embed(text, std::move(callback));
+}
+
 void CandleService::RunBertExample() {
   auto model_files = LoadModelFilesFromResources();
   if (!model_files) {
@@ -175,39 +185,9 @@ void CandleService::OnEmbeddingGemmaModelFilesLoaded(
 void CandleService::OnEmbeddingGemmaInit(bool success) {
   if (success) {
     LOG(ERROR) << "Embedding Gemma model initialized successfully!";
-    // Run example embeddings after successful initialization
-    RunEmbeddingGemmaExamples();
   } else {
     LOG(ERROR) << "Failed to initialize Embedding Gemma model";
   }
-}
-
-void CandleService::RunEmbeddingGemmaExamples() {
-  // Test with a few example strings
-  std::vector<std::string> test_strings = {
-      "The cat sits outside",
-      "A man is playing guitar",
-      "I love pasta",
-      "The new movie is awesome",
-  };
-
-  LOG(ERROR) << "Running embedding examples...";
-  for (const auto& text : test_strings) {
-    embedding_gemma_remote_->Embed(
-        text, base::BindOnce(&CandleService::OnEmbeddingGemmaEmbed,
-                             weak_ptr_factory_.GetWeakPtr(), text));
-  }
-}
-
-void CandleService::OnEmbeddingGemmaEmbed(
-    const std::string& text,
-    const std::vector<double>& embedding) {
-  LOG(ERROR) << "Embedding for \"" << text
-             << "\": dimension=" << embedding.size() << ", first 5 values: [";
-  for (size_t i = 0; i < std::min(size_t(5), embedding.size()); ++i) {
-    LOG(ERROR) << "  " << embedding[i] << (i < 4 ? "," : "");
-  }
-  LOG(ERROR) << "]";
 }
 
 }  // namespace local_ai
