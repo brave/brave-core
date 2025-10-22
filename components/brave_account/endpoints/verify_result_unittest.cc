@@ -24,20 +24,37 @@ using VerifyResultTestCase = EndpointTestCase<VerifyResult>;
 
 namespace {
 
-const VerifyResultTestCase* Success() {
-  static const base::NoDestructor<VerifyResultTestCase> kSuccess(
-      {.test_name = "success",
+const VerifyResultTestCase* SuccessAuthTokenIsNull() {
+  static const base::NoDestructor<VerifyResultTestCase> kSuccessAuthTokenIsNull(
+      {.test_name = "success_auth_token_is_null",
        .http_status_code = net::HTTP_OK,
-       .raw_reply = R"({ "authToken": "34c375d933e3c",
+       .raw_reply = R"({ "authToken": null,
                          "email": "email",
                          "service": "accounts",
-                         "verified": true })",
+                         "verified": false })",
        .reply = [] {
          VerifyResult::Response response;
-         response.auth_token = "34c375d933e3c";
+         response.auth_token = base::Value();
          return response;
        }()});
-  return kSuccess.get();
+  return kSuccessAuthTokenIsNull.get();
+}
+
+const VerifyResultTestCase* SuccessAuthTokenIsNotNull() {
+  static const base::NoDestructor<VerifyResultTestCase>
+      kSuccessAuthTokenIsNotNull(
+          {.test_name = "success_auth_token_is_not_null",
+           .http_status_code = net::HTTP_OK,
+           .raw_reply = R"({ "authToken": "34c375d933e3c",
+                             "email": "email",
+                             "service": "accounts",
+                             "verified": true })",
+           .reply = [] {
+             VerifyResult::Response response;
+             response.auth_token = base::Value("34c375d933e3c");
+             return response;
+           }()});
+  return kSuccessAuthTokenIsNotNull.get();
 }
 
 // clang-format off
@@ -106,7 +123,8 @@ TEST_P(VerifyResultTest, HandlesReplies) {
 
 INSTANTIATE_TEST_SUITE_P(VerifyResultTestCases,
                          VerifyResultTest,
-                         testing::Values(Success(),
+                         testing::Values(SuccessAuthTokenIsNull(),
+                                         SuccessAuthTokenIsNotNull(),
                                          ApplicationJsonErrorCodeIsNull(),
                                          ApplicationJsonErrorCodeIsNotNull(),
                                          NonApplicationJsonError()),
