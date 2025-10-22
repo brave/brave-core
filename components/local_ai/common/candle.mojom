@@ -15,6 +15,9 @@ struct ModelFiles {
 
 interface CandleService {
   BindEmbeddingGemma(pending_remote<EmbeddingGemmaInterface> embedding_gemma);
+
+  // Generate embeddings for the given text
+  Embed(string text) => (array<double> embedding);
 };
 
 interface EmbeddingGemmaInterface {
