@@ -216,8 +216,8 @@ function syncChromium(program) {
 
   if (syncWithForce) {
     console.log('Apply commit patches after forced sync')
-    util.runGit(config.srcDir, ['am', 'brave/patches/commits/0001-Revert-windows-installer-mini_installer-patching-cle.patch'])
-    util.runGit(config.srcDir, ['am', 'brave/patches/commits/0002-Revert-windows-installer-Clean-up-installer-patching.patch'])
+    util.runGit(config.srcDir, ['am', '--no-gpg-sign', '--committer-date-is-author-date', 'brave/patches/commits/0001-Revert-windows-installer-mini_installer-patching-cle.patch'])
+    util.runGit(config.srcDir, ['am', '--no-gpg-sign', '--committer-date-is-author-date', 'brave/patches/commits/0002-Revert-windows-installer-Clean-up-installer-patching.patch'])
   }
 
   const postSyncChromiumRef = util.getGitReadableLocalRef(config.srcDir)
