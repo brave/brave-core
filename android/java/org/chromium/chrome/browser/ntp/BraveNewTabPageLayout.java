@@ -194,6 +194,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
     private boolean mIsDisplayNewsFeed;
     private boolean mIsDisplayNewsOptin;
     private long mNewsFeedLastViewTime;
+    private ViewTreeObserver.OnGlobalLayoutListener mBgImageViewOnGlobalLayoutListener;
 
     private static final int SHOW_BRAVE_RATE_ENTRY_AT = 10; // 10th row
 
@@ -897,6 +898,15 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
             mWorkerTask = null;
         }
 
+        var observer =
+                mBgImageView != null && mBgImageViewOnGlobalLayoutListener != null
+                        ? mBgImageView.getViewTreeObserver()
+                        : null;
+        if (observer != null && observer.isAlive()) {
+            observer.removeOnGlobalLayoutListener(mBgImageViewOnGlobalLayoutListener);
+            mBgImageViewOnGlobalLayoutListener = null;
+        }
+
         if (!mIsFromBottomSheet) {
             setBackgroundResource(0);
             if (mImageDrawable != null && mImageDrawable.getBitmap() != null
@@ -1308,22 +1318,42 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
         mBgImageView = (ImageView) findViewById(R.id.bg_image_view);
         mBgImageView.setScaleType(ImageView.ScaleType.MATRIX);
 
-        ViewTreeObserver observer = mBgImageView.getViewTreeObserver();
-        observer.addOnGlobalLayoutListener(
-                new ViewTreeObserver.OnGlobalLayoutListener() {
-                    @Override
-                    public void onGlobalLayout() {
-                        mWorkerTask =
-                                new FetchWallpaperWorkerTask(
-                                        ntpImage,
-                                        mBgImageView.getMeasuredWidth(),
-                                        mBgImageView.getMeasuredHeight(),
-                                        mWallpaperRetrievedCallback);
-                        mWorkerTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        if (mBgImageViewOnGlobalLayoutListener == null) {
+            mBgImageViewOnGlobalLayoutListener =
+                    new ViewTreeObserver.OnGlobalLayoutListener() {
+                        private int mLastWidth;
+                        private int mLastHeight;
 
-                        mBgImageView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                    }
-                });
+                        @Override
+                        public void onGlobalLayout() {
+                            int currentWidth = mBgImageView.getMeasuredWidth();
+                            int currentHeight = mBgImageView.getMeasuredHeight();
+
+                            // Only re-fetch if dimensions actually changed
+                            if (currentWidth > 0
+                                    && currentHeight > 0
+                                    && (currentWidth != mLastWidth
+                                            || currentHeight != mLastHeight)) {
+                                mLastWidth = currentWidth;
+                                mLastHeight = currentHeight;
+
+                                if (mWorkerTask != null) {
+                                    mWorkerTask.cancel(true);
+                                }
+
+                                mWorkerTask =
+                                        new FetchWallpaperWorkerTask(
+                                                ntpImage,
+                                                currentWidth,
+                                                currentHeight,
+                                                mWallpaperRetrievedCallback);
+                                mWorkerTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                            }
+                        }
+                    };
+        }
+        ViewTreeObserver observer = mBgImageView.getViewTreeObserver();
+        observer.addOnGlobalLayoutListener(mBgImageViewOnGlobalLayoutListener);
     }
 
     private void checkAndShowNTPImage(boolean isReset) {
