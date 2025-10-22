@@ -904,8 +904,8 @@ TEST_F(NftMetadataFetcherUnitTest, DecodeMetadataUri) {
       /* metadata.symbol value */ 10 + /* metadata.uri.length*/ 4 +
       /* metadata.uri value */ 200;
   for (size_t i = 0; i <= position_of_last_uri_byte; i++) {
-    EXPECT_FALSE(NftMetadataFetcher::DecodeMetadataUri(
-        base::span(uri_borsh_encoded).subspan(i)));
+    ASSERT_FALSE(NftMetadataFetcher::DecodeMetadataUri(
+        base::span(uri_borsh_encoded).first(i)));
   }
 
   // Invalid borsh encoding due to incorrect claimed length of metadata URI
