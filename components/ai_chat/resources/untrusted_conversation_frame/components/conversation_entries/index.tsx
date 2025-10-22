@@ -38,7 +38,7 @@ import styles from './style.module.scss'
 import AssistantTask from '../assistant_task/assistant_task'
 
 // Function to highlight skill shortcuts in text
-const maybeHighlightSkillText = (text: string, skill?: Mojom.SkillEntry) => {
+const maybeHighlightSkillText = (text: string, skill?: Mojom.SkillEntry | null) => {
   if (!skill) return text
 
   const shortcutPattern = `/${skill.shortcut}`
@@ -377,7 +377,7 @@ function ConversationEntries() {
                       && !firstEntryEdit.selectedText
                       && !showEditInput && (
                         <ContextActionsAssistant
-                          turnUuid={firstEntryEdit.uuid}
+                          turnUuid={firstEntryEdit.uuid ?? undefined}
                           turnModelKey={turnModelKey}
                           onEditAnswerClicked={
                             canEditEntry

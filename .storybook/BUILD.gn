@@ -14,7 +14,6 @@ group("storybook") {
   # are disabled in a regular brave build due to build flags,
   # they will be generated before storybook is compiled.
   deps = [
-    "//brave/components/ai_chat/core/common/mojom:mojom_js",
     "//brave/components/brave_new_tab_ui:mojom_js",
     "//brave/components/brave_news/common:mojom_js",
     "//brave/components/brave_rewards/core/mojom:mojom_js",

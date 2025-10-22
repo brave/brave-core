@@ -9,7 +9,6 @@ mojom_component("mojom") {
   output_prefix = "ai_rewriter_mojom"
   macro_prefix = "AI_REWRITER_MOJOM"
 
-  generate_legacy_js_bindings = true
   webui_module_path = "/"
 
   sources = [ "ai_rewriter.mojom" ]

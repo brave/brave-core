@@ -5,6 +5,11 @@
 
 const path = require('path')
 
+const allPrefixes = (path, searchPaths) => ['chrome://', 'chrome-untrusted://', ''].reduce((acc, prefix) => {
+  acc[prefix + path] = searchPaths
+  return acc;
+}, {});
+
 /**
  * @param {string} genPath The path to the generated files in the build output.
  * @returns A map of path aliases
@@ -24,9 +29,9 @@ module.exports = function (genPath) {
     'chrome://resources/brave': path.join(
       genPath,
       'brave/ui/webui/resources/tsc'),
-    'chrome://resources/mojo/mojo/public': path.resolve(
-      genPath,
-      'mojo/public'),
+    ...allPrefixes('//resources/mojo', path.join(
+        genPath,
+        'ui/webui/resources/tsc/mojo')),
     'chrome://resources': path.join(
       genPath, 'ui/webui/resources/tsc'),
     // We import brave-ui direct from source and not from package repo, so we need

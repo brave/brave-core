@@ -5,5 +5,5 @@
 
 declare_args() {
   # At the moment, the rewriter is enabled on Desktop if ai_chat is
-  enable_ai_rewriter = is_linux || is_win || is_mac
+  enable_ai_rewriter = false
 }

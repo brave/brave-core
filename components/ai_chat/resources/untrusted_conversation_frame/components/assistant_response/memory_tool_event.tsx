@@ -48,7 +48,7 @@ const MemoryToolEvent: React.FC<Props> = ({ toolUseEvent }) => {
     )
 
     return () => {
-      context.uiObserver?.removeListener(id)
+      context.uiObserver?.removeListener(id!)
     }
   }, [memoryContent])
 

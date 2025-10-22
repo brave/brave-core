@@ -27,8 +27,8 @@ export const defaultConversationEntriesUIState: ConversationEntriesUIState = {
   isLeoModel: true,
   allModels: [],
   currentModelKey: '',
-  contentUsedPercentage: undefined,
-  visualContentUsedPercentage: undefined,
+  contentUsedPercentage: null,
+  visualContentUsedPercentage: null,
   trimmedTokens: BigInt(0),
   totalTokens: BigInt(0),
   canSubmitUserEntries: false,
@@ -49,7 +49,7 @@ export function updateToolUseEventInHistory(
   if (index !== -1) {
     updatedHistory[index] = {
       ...updatedHistory[index],
-      events: updatedHistory[index].events?.map((event) => event),
+      events: updatedHistory[index].events?.map((event) => event) || null,
     }
     const eventIndex = updatedHistory[index].events?.findIndex(
       (event) => event.toolUseEvent?.id === toolUse.id,

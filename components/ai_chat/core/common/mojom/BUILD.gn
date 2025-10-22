@@ -10,7 +10,6 @@ mojom_component("mojom") {
   macro_prefix = "AI_CHAT_MOJOM"
 
   generate_java = true
-  generate_legacy_js_bindings = true
   webui_module_path = "/"
 
   sources = [

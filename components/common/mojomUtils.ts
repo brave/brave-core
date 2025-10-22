@@ -5,12 +5,6 @@
 
 import type * as mojo from 'gen/mojo/public/mojom/base/time.mojom.m.js'
 
-type MojomEnum = {
-  [key: string]: number
-  MIN_VALUE: number
-  MAX_VALUE: number
-}
-
 /**
  * Converts a mojo time to a JS time.
  */
@@ -39,7 +33,7 @@ export function mojoTimeDeltaToJSDate(mojoTime: mojo.TimeDelta) {
   return new Date(Number(mojoTime.microseconds) / 1000)
 }
 
-export function getKeysForMojomEnum<T extends MojomEnum>(
+export function getKeysForMojomEnum<T extends { [key: string]: number }>(
   mojomEnum: T
 ): Array<Exclude<keyof T, 'MIN_VALUE' | 'MAX_VALUE'>> {
   const ignoreKeys = ['MIN_VALUE', 'MAX_VALUE']

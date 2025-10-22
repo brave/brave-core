@@ -17,7 +17,7 @@ import { getKeysForMojomEnum } from '$web-common/mojomUtils'
 function getCategoryName(category: Mojom.ModelCategory) {
   // To avoid problems when order of enum values change, we base the key
   // on the enum name rather than the number value, e.g. "CHAT" vs 0
-  const categoryKey = getKeysForMojomEnum(Mojom.ModelCategory)[category]
+  const categoryKey = getKeysForMojomEnum(Mojom.ModelCategory as any)[category] as string
   return getLocale('CHAT_UI_MODEL_CATEGORY_' + categoryKey)
 }
 

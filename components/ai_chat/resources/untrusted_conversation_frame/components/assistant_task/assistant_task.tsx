@@ -75,7 +75,7 @@ export default function AssistantTask(props: Props) {
 
     // Stop listening for thumbnails when we stop being the active task.
     return () => {
-      conversationContext.uiObserver?.removeListener(id)
+      conversationContext.uiObserver?.removeListener(id!)
       conversationContext.uiHandler?.removeTabFromThumbnailTracker(
         conversationContext.contentTaskTabId!,
       )

@@ -1,4 +1,12 @@
 {
   "extends": "../../../../tsconfig",
-  "include": ["**/*.ts", "**/*.tsx", "**/*.d.ts", "../../../definitions/*.d.ts"]
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.d.ts",
+    "../../../definitions/*.d.ts",
+    "../out/Component/gen/brave/components/ai_chat/resources/**/*.d.ts",
+    "../out/Component/gen/brave/components/ai_chat/resources/**/*.ts",
+    "../out/Component/gen/brave/components/ai_chat/resources/**/*.js",
+  ]
 }

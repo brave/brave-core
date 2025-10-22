@@ -7,8 +7,6 @@ import * as React from 'react'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 
-import { mojoString16ToString } from 'chrome://resources/js/mojo_type_util.js'
-
 import { AutocompleteMatch, ClickEvent } from '../../state/search_state'
 import { useSearchState, useSearchActions } from '../../context/search_context'
 import { getString } from '../../lib/strings'
@@ -18,7 +16,7 @@ import { SafeImage } from '../common/safe_image'
 import { style } from './search_results.style'
 
 function useMojoString16<T>(value: T) {
-  return React.useMemo(() => mojoString16ToString(value), [value])
+  return '';// React.useMemo(() => mojoString16ToString(value), [value])
 }
 
 function MatchImage(props: { match: AutocompleteMatch }) {

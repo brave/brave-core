@@ -20,7 +20,7 @@ export class SearchBoxProxy {
   }
 
   addListeners(listeners: Partial<mojom.PageInterface>) {
-    return addCallbackListeners(this.callbackRouter, listeners)
+    return addCallbackListeners(this.callbackRouter as any, listeners)
   }
 
   static getInstance(): SearchBoxProxy {

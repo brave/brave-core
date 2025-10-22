@@ -16,7 +16,7 @@ transpile_web_ui("ai_rewriter_ui") {
     "//brave/components/ai_chat/resources/",
   ]
   deps = [
-    "//brave/components/ai_rewriter/common/mojom:mojom_js",
+    "//brave/components/ai_rewriter/common/mojom:mojom_ts__generator",
     "//brave/components/resources:strings",
   ]
 }

@@ -28,6 +28,7 @@ import("//extensions/buildflags/buildflags.gni")
 import("//testing/test.gni")
 import("//third_party/widevine/cdm/widevine.gni")
 import("//tools/v8_context_snapshot/v8_context_snapshot.gni")
+import("//brave/components/ai_rewriter/common/buildflags/buildflags.gni")
 
 if (is_android) {
   import("//build/config/android/rules.gni")

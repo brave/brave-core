@@ -26,7 +26,7 @@ transpile_web_ui("ai_chat_ui") {
   ]
 
   deps = [
-    "//brave/components/ai_chat/core/common/mojom:mojom_js",
+    "//brave/components/ai_chat/core/common/mojom:mojom_ts__generator",
     "//brave/components/resources:strings",
   ]
 }
