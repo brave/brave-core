@@ -43,8 +43,8 @@ interface ParentUIFrame {
   // buttons.
   RegenerateAnswerMenuIsOpen(bool is_open);
 
-  // Show the smart mode creation dialog with the provided prompt text
-  ShowSmartModeDialog(string prompt);
+  // Show the skill creation dialog with the provided prompt text
+  ShowSkillDialog(string prompt);
 };
 
 // Browser-side handler for a Conversation's UI responsible for displaying

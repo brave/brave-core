@@ -7,21 +7,18 @@ import * as React from 'react'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 
-import {
-  ActionEntry,
-  SmartMode,
-} from 'components/ai_chat/resources/common/mojom'
+import { ActionEntry, Skill } from 'components/ai_chat/resources/common/mojom'
 import { getLocale } from '$web-common/locale'
 import FilterMenu, { Props } from './filter_menu'
 import { matches } from './query'
 import styles from './style.module.scss'
 
-export type ExtendedActionEntry = ActionEntry | SmartMode
+export type ExtendedActionEntry = ActionEntry | Skill
 
 type ToolsMenuProps = {
   handleClick: (type: ExtendedActionEntry) => void
-  handleEditClick: (smartMode: SmartMode) => void
-  handleNewSmartModeClick: () => void
+  handleEditClick: (skill: Skill) => void
+  handleNewSkillClick: () => void
 } & Pick<
   Props<ExtendedActionEntry>,
   'categories' | 'isOpen' | 'setIsOpen' | 'query'
@@ -31,9 +28,7 @@ const getIsActionEntry = (item: ExtendedActionEntry): item is ActionEntry => {
   return 'details' in item && item.details !== undefined
 }
 
-export const getIsSmartMode = (
-  item: ExtendedActionEntry,
-): item is SmartMode => {
+export const getIsSkill = (item: ExtendedActionEntry): item is Skill => {
   return 'shortcut' in item
 }
 
@@ -41,7 +36,7 @@ function matchesQuery(query: string, entry: ExtendedActionEntry) {
   if (getIsActionEntry(entry)) {
     return matches(query, entry.details!.label)
   }
-  if (getIsSmartMode(entry)) {
+  if (getIsSkill(entry)) {
     return matches(query, entry.shortcut)
   }
   return false
@@ -57,17 +52,17 @@ export default function ToolsMenu(props: ToolsMenuProps) {
       matchesQuery={matchesQuery}
       noMatchesMessage={
         <div className={styles.toolsNoMatches}>
-          {getLocale(S.CHAT_UI_TOOLS_MENU_NO_SMART_MODES_FOUND)}
+          {getLocale(S.CHAT_UI_TOOLS_MENU_NO_SKILLS_FOUND)}
         </div>
       }
       footer={
         <div className={styles.toolsMenuFooter}>
           <leo-menu-item
             aria-selected={false}
-            onClick={props.handleNewSmartModeClick}
+            onClick={props.handleNewSkillClick}
           >
             <Icon name='plus-add' />
-            {getLocale(S.CHAT_UI_TOOLS_MENU_NEW_SMART_MODE_BUTTON_LABEL)}
+            {getLocale(S.CHAT_UI_TOOLS_MENU_NEW_SKILL_BUTTON_LABEL)}
           </leo-menu-item>
         </div>
       }
@@ -85,7 +80,7 @@ export default function ToolsMenu(props: ToolsMenuProps) {
           >
             <div className={styles.toolsMenuItemContent}>
               {isActionEntry ? item.details!.label : item.shortcut}
-              {getIsSmartMode(item) && (
+              {getIsSkill(item) && (
                 <Button
                   fab
                   kind='plain-faint'

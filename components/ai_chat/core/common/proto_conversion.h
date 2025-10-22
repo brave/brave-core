@@ -29,12 +29,12 @@ bool SerializeToolUseEvent(const mojom::ToolUseEventPtr& mojom_event,
                            store::ToolUseEventProto* proto_event);
 
 COMPONENT_EXPORT(AI_CHAT_COMMON)
-mojom::SmartModeEntryPtr DeserializeSmartModeEntry(
-    const store::SmartModeEntryProto& proto_entry);
+mojom::SkillEntryPtr DeserializeSkillEntry(
+    const store::SkillEntryProto& proto_entry);
 
 COMPONENT_EXPORT(AI_CHAT_COMMON)
-void SerializeSmartModeEntry(const mojom::SmartModeEntryPtr& mojom_entry,
-                             store::SmartModeEntryProto* proto_entry);
+void SerializeSkillEntry(const mojom::SkillEntryPtr& mojom_entry,
+                         store::SkillEntryProto* proto_entry);
 
 }  // namespace ai_chat
 

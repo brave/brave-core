@@ -12,30 +12,30 @@ import Input from '@brave/leo/react/input'
 import TextArea from '@brave/leo/react/textarea'
 import classnames from '$web-common/classnames'
 import { getLocale } from '$web-common/locale'
-import styles from './smart_mode_modal_style.module.scss'
+import styles from './skill_modal_style.module.scss'
 import { ModelOption } from '../model_menu_item/model_menu_item'
 import { useAIChat } from '../../state/ai_chat_context'
 import { useConversation } from '../../state/conversation_context'
 import { AUTOMATIC_MODEL_KEY, getModelIcon } from '../../../common/constants'
 import * as Mojom from '../../../common/mojom'
 
-export default function SmartModeModal() {
+export default function SkillModal() {
   const aiChatContext = useAIChat()
   const conversationContext = useConversation()
 
   // State
   const [selectedModel, setSelectedModel] = React.useState(
-    aiChatContext.smartModeDialog?.model || AUTOMATIC_MODEL_KEY,
+    aiChatContext.skillDialog?.model || AUTOMATIC_MODEL_KEY,
   )
   const [shortcut, setShortcut] = React.useState(
     // Explicitly set to undefined since shortcut could be an empty string
     // which would then show an immediate error.
-    aiChatContext.smartModeDialog?.shortcut || undefined,
+    aiChatContext.skillDialog?.shortcut || undefined,
   )
   const [prompt, setPrompt] = React.useState(
     // Explicitly set to undefined since prompt could be an empty string
     // which would then show an immediate error.
-    aiChatContext.smartModeDialog?.prompt || undefined,
+    aiChatContext.skillDialog?.prompt || undefined,
   )
   const [showDelete, setShowDelete] = React.useState(false)
 
@@ -57,17 +57,17 @@ export default function SmartModeModal() {
     }
 
     // Check for duplicate shortcut
-    const existingSmartMode = aiChatContext.smartModes.find(
-      (mode: Mojom.SmartMode) =>
-        mode.shortcut === shortcut.trim()
-        && mode.id !== aiChatContext.smartModeDialog?.id,
+    const existingSkill = aiChatContext.skills.find(
+      (skill: Mojom.Skill) =>
+        skill.shortcut === shortcut.trim()
+        && skill.id !== aiChatContext.skillDialog?.id,
     )
-    if (existingSmartMode) {
+    if (existingSkill) {
       return getLocale(S.CHAT_UI_SHORTCUT_DUPLICATE_ERROR)
     }
 
     return ''
-  }, [shortcut, aiChatContext.smartModeDialog?.id, aiChatContext.smartModes])
+  }, [shortcut, aiChatContext.skillDialog?.id, aiChatContext.skills])
 
   const promptError = React.useMemo(() => {
     // Undefined means the user hasn't typed anything yet,
@@ -86,43 +86,43 @@ export default function SmartModeModal() {
 
   // Determine if we're in edit mode
   const isEditMode = React.useMemo(
-    () => !!aiChatContext.smartModeDialog?.id,
-    [aiChatContext.smartModeDialog?.id],
+    () => !!aiChatContext.skillDialog?.id,
+    [aiChatContext.skillDialog?.id],
   )
 
   const dialogTitle = React.useMemo(() => {
     if (showDelete) {
-      return getLocale(S.CHAT_UI_DELETE_SMART_MODE_TITLE)
+      return getLocale(S.CHAT_UI_DELETE_SKILL_TITLE)
     }
     if (isEditMode) {
-      return getLocale(S.CHAT_UI_EDIT_SMART_MODE_TITLE)
+      return getLocale(S.CHAT_UI_EDIT_SKILL_TITLE)
     }
-    return getLocale(S.CHAT_UI_NEW_SMART_MODE_TITLE)
+    return getLocale(S.CHAT_UI_NEW_SKILL_TITLE)
   }, [isEditMode, showDelete])
 
   // Methods
   const closeAndReset = React.useCallback(() => {
-    aiChatContext.setSmartModeDialog(null)
+    aiChatContext.setSkillDialog(null)
     setShortcut(undefined)
     setPrompt(undefined)
     setSelectedModel(AUTOMATIC_MODEL_KEY)
     setShowDelete(false)
-  }, [aiChatContext.setSmartModeDialog])
+  }, [aiChatContext.setSkillDialog])
 
   const onSave = React.useCallback(() => {
     if (shortcutError || promptError || !shortcut || !prompt) {
       return
     }
 
-    if (isEditMode && aiChatContext.smartModeDialog?.id) {
-      aiChatContext.service?.updateSmartMode(
-        aiChatContext.smartModeDialog.id,
+    if (isEditMode && aiChatContext.skillDialog?.id) {
+      aiChatContext.service?.updateSkill(
+        aiChatContext.skillDialog.id,
         shortcut.trim(),
         prompt.trim(),
         selectedModel,
       )
     } else {
-      aiChatContext.service?.createSmartMode(
+      aiChatContext.service?.createSkill(
         shortcut.trim(),
         prompt.trim(),
         selectedModel,
@@ -134,7 +134,7 @@ export default function SmartModeModal() {
     shortcutError,
     promptError,
     isEditMode,
-    aiChatContext.smartModeDialog?.id,
+    aiChatContext.skillDialog?.id,
     shortcut,
     prompt,
     selectedModel,
@@ -143,24 +143,24 @@ export default function SmartModeModal() {
   ])
 
   const onDelete = React.useCallback(() => {
-    if (!isEditMode || !aiChatContext.smartModeDialog?.id) {
+    if (!isEditMode || !aiChatContext.skillDialog?.id) {
       return
     }
 
-    if (aiChatContext.service?.deleteSmartMode) {
-      aiChatContext.service.deleteSmartMode(aiChatContext.smartModeDialog.id)
+    if (aiChatContext.service?.deleteSkill) {
+      aiChatContext.service.deleteSkill(aiChatContext.skillDialog.id)
     }
     closeAndReset()
   }, [
     isEditMode,
-    aiChatContext.smartModeDialog?.id,
+    aiChatContext.skillDialog?.id,
     aiChatContext.service,
     closeAndReset,
   ])
 
   return (
     <Dialog
-      isOpen={!!aiChatContext.smartModeDialog}
+      isOpen={!!aiChatContext.skillDialog}
       showClose
       backdropClickCloses={false}
       onClose={closeAndReset}
@@ -170,8 +170,8 @@ export default function SmartModeModal() {
       <div className={styles.description}>
         {getLocale(
           showDelete
-            ? S.CHAT_UI_DELETE_SMART_MODE_WARNING
-            : S.CHAT_UI_SMART_MODE_DESCRIPTION,
+            ? S.CHAT_UI_DELETE_SKILL_WARNING
+            : S.CHAT_UI_SKILL_DESCRIPTION,
         )}
       </div>
 
