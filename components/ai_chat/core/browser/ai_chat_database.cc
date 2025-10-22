@@ -352,6 +352,7 @@ std::vector<mojom::ConversationPtr> AIChatDatabase::GetAllConversations() {
     std::string uuid = statement.ColumnString(0);
     if (conversation && conversation->uuid != uuid) {
       conversation_list.emplace_back(std::move(conversation));
+      conversation = nullptr;
     }
 
     if (!conversation) {

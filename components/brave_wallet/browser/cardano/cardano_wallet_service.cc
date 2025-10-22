@@ -341,9 +341,9 @@ cardano_rpc::CardanoRpc* CardanoWalletService::GetCardanoRpc(
 void CardanoWalletService::SetUrlLoaderFactoryForTesting(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
   cardano_mainnet_rpc_.SetUrlLoaderFactoryForTesting(  // IN-TEST
-      std::move(url_loader_factory));
+      url_loader_factory);
   cardano_testnet_rpc_.SetUrlLoaderFactoryForTesting(  // IN-TEST
-      std::move(url_loader_factory));
+      url_loader_factory);
 }
 
 }  // namespace brave_wallet

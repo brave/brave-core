@@ -467,12 +467,10 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   EXPECT_CALL(ui_delegate(), UpdateTasks(100, _, mojom::PsstStatus::kFailed))
       .Times(1);
 
-  // User script result is not a dictionary
-  auto script_params = base::Value();
-
+  // User script result is an empty value
   EXPECT_CALL(inject_script_callback(), Run(user_script, _))
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
-                                           std::move(script_params)));
+                                           base::Value()));
   // No policy script executed
   EXPECT_CALL(inject_script_callback(), Run(policy_script, _)).Times(0);
 
@@ -481,7 +479,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
                                                              url);
   observer.Wait();
   check_loop.Run();
-  EXPECT_EQ(script_params, user_script_insert_future.Take());
+  EXPECT_EQ(base::Value(), user_script_insert_future.Take());
 }
 
 TEST_F(PsstTabWebContentsObserverUnitTest,
@@ -500,11 +498,11 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
       .Times(1);
 
   base::test::TestFuture<base::Value> user_script_insert_future;
-  auto script_params = base::Value(base::Value::Dict());
 
+  // User script result is an empty dictionary
   EXPECT_CALL(inject_script_callback(), Run(user_script, _))
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
-                                           std::move(script_params)));
+                                           base::Value(base::Value::Dict())));
   // No policy script executed
   EXPECT_CALL(inject_script_callback(), Run(policy_script, _)).Times(0);
 
@@ -514,7 +512,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   observer.Wait();
 
   check_loop.Run();
-  EXPECT_EQ(script_params, user_script_insert_future.Take());
+  EXPECT_EQ(base::Value::Dict(), user_script_insert_future.Take());
 }
 
 TEST_F(PsstTabWebContentsObserverUnitTest,
@@ -533,11 +531,9 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
       .Times(1);
 
   // User script result is an empty dictionary
-  auto script_params = base::Value(base::Value::Dict());
-
   EXPECT_CALL(inject_script_callback(), Run(user_script, _))
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
-                                           std::move(script_params)));
+                                           base::Value(base::Value::Dict())));
   // No policy script executed
   EXPECT_CALL(inject_script_callback(), Run(policy_script, _)).Times(0);
 
@@ -547,7 +543,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   observer.Wait();
 
   check_loop.Run();
-  EXPECT_EQ(script_params, user_script_insert_future.Take());
+  EXPECT_EQ(base::Value::Dict(), user_script_insert_future.Take());
 }
 
 TEST_F(PsstTabWebContentsObserverUnitTest,

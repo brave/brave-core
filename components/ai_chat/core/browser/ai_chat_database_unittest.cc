@@ -811,6 +811,7 @@ TEST_P(AIChatDatabaseTest, AddOrUpdateAssociatedContent) {
   expected_contents[0] = "Second contents";
   metadata->associated_content[0]->content_used_percentage = 50;
 
+  associated_content.clear();
   associated_content.push_back(metadata->associated_content[0]->Clone());
   EXPECT_TRUE(db_->AddOrUpdateAssociatedContent(
       uuid, std::move(associated_content), expected_contents));
@@ -866,6 +867,7 @@ TEST_P(AIChatDatabaseTest, AddOrUpdateAssociatedContent_MultiContent) {
   expected_contents[0] = "New first contents";
   metadata->associated_content[1]->title = "Updated title!";
 
+  associated_content.clear();
   associated_content.push_back(metadata->associated_content[0]->Clone());
   associated_content.push_back(metadata->associated_content[1]->Clone());
 
@@ -954,6 +956,7 @@ TEST_P(AIChatDatabaseTest, DeleteAssociatedWebContent) {
       0, 0, false, std::move(associated_content));
 
   auto history_second = CreateSampleChatHistory(1u, -1);
+  associated_content.clear();
   associated_content.push_back(mojom::AssociatedContent::New(
       "second-content", mojom::ContentType::PageContent, "page title", 2,
       page_url, 62, history_second.front()->uuid.value()));

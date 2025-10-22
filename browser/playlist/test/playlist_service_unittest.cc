@@ -1218,6 +1218,7 @@ TEST_F(PlaylistServiceUnitTest, ResetAll) {
   // Adding item should work after resetting.
   auto item = prototype_item.Clone();
   item->id = base::Token::CreateRandom().ToString();
+  items.clear();
   items.push_back(item.Clone());
   service->AddMediaFilesFromItems(kDefaultPlaylistID, false /* no caching */,
                                   base::NullCallback(), std::move(items));
