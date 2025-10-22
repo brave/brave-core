@@ -7,8 +7,10 @@
 
 #include <memory>
 #include <string_view>
+#include <vector>
 
 #include "base/base64.h"
+#include "base/containers/span.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "base/test/values_test_util.h"
@@ -868,22 +870,24 @@ TEST_F(NftMetadataFetcherUnitTest, DecodeMetadataUri) {
       187, 228, 119, 214, 204, 110, 244, 200, 40, 36, 82, 15, 47, 60, 157, 148,
       32, 0, 0, 0, 83, 80, 69, 67, 73, 65, 76, 32, 83, 65, 85, 67, 69, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0, 0, 0, 0, 0, 0, 0,
-      0, 0, 0, 0, 0, 0,  // the next four bytes encode length of the URI string
-                         // (200)
-      200, 0, 0, 0, 104, 116, 116, 112, 115, 58, 47, 47, 98, 97, 102, 107, 114,
-      101, 105, 102, 52, 119, 120, 53, 52, 119, 106, 114, 55, 112, 103, 102,
-      117, 103, 51, 119, 108, 97, 116, 114, 51, 110, 102, 110, 116, 115, 102,
-      119, 110, 103, 118, 54, 101, 117, 115, 101, 98, 98, 113, 117, 101, 122,
-      114, 120, 101, 110, 106, 54, 99, 107, 52, 46, 105, 112, 102, 115, 46, 100,
-      119, 101, 98, 46, 108, 105, 110, 107, 63, 101, 120, 116, 61, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0,
+      // the next 204 bytes encode the URI string
+      200, 0, 0, 0,  // uri length ends here
+      104, 116, 116, 112, 115, 58, 47, 47, 98, 97, 102, 107, 114, 101, 105, 102,
+      52, 119, 120, 53, 52, 119, 106, 114, 55, 112, 103, 102, 117, 103, 51, 119,
+      108, 97, 116, 114, 51, 110, 102, 110, 116, 115, 102, 119, 110, 103, 118,
+      54, 101, 117, 115, 101, 98, 98, 113, 117, 101, 122, 114, 120, 101, 110,
+      106, 54, 99, 107, 52, 46, 105, 112, 102, 115, 46, 100, 119, 101, 98, 46,
+      108, 105, 110, 107, 63, 101, 120, 116, 61, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-      0, 0, 0, 0, 0, 0, 0, 0, 0, 232, 3, 0, 0, 1, 1, 255, 1, 0, 1, 1, 162, 43,
-      239, 108, 12, 203, 135, 105, 3, 217, 196, 174, 232, 132, 8, 168, 100, 3,
-      25, 234, 33, 253, 65, 3, 139, 60, 169, 234, 98, 211, 214, 213, 0};
-  auto uri = nft_metadata_fetcher_->DecodeMetadataUri(uri_borsh_encoded);
+      0, 0, 0,  // uri payload ends here
+      232, 3, 0, 0, 1, 1, 255, 1, 0, 1, 1, 162, 43, 239, 108, 12, 203, 135, 105,
+      3, 217, 196, 174, 232, 132, 8, 168, 100, 3, 25, 234, 33, 253, 65, 3, 139,
+      60, 169, 234, 98, 211, 214, 213, 0};
+  auto uri = NftMetadataFetcher::DecodeMetadataUri(uri_borsh_encoded);
   ASSERT_TRUE(uri);
   EXPECT_EQ(uri.value().spec(),
             "https://"
@@ -900,10 +904,8 @@ TEST_F(NftMetadataFetcherUnitTest, DecodeMetadataUri) {
       /* metadata.symbol value */ 10 + /* metadata.uri.length*/ 4 +
       /* metadata.uri value */ 200;
   for (size_t i = 0; i <= position_of_last_uri_byte; i++) {
-    std::vector<uint8_t> uri_borsh_encoded_prefix(
-        uri_borsh_encoded.begin(), uri_borsh_encoded.begin() + i);
-    uri = nft_metadata_fetcher_->DecodeMetadataUri(uri_borsh_encoded_prefix);
-    EXPECT_FALSE(uri);
+    EXPECT_FALSE(NftMetadataFetcher::DecodeMetadataUri(
+        base::span(uri_borsh_encoded).subspan(i)));
   }
 
   // Invalid borsh encoding due to incorrect claimed length of metadata URI
@@ -916,8 +918,8 @@ TEST_F(NftMetadataFetcherUnitTest, DecodeMetadataUri) {
       32, 0, 0, 0, 83, 80, 69, 67, 73, 65, 76, 32, 83, 65, 85, 67, 69, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0,
-      // next four bytes encode the URI of the string, which have been overrided
-      // to be incorrect (too large)
+      // next four bytes encode the URI of the string, which have been
+      // overridden to be incorrect (too large)
       255, 255, 255, 0, 104, 116, 116, 112, 115, 58, 47, 47, 98, 97, 102, 107,
       114, 101, 105, 102, 52, 119, 120, 53, 52, 119, 106, 114, 55, 112, 103,
       102, 117, 103, 51, 119, 108, 97, 116, 114, 51, 110, 102, 110, 116, 115,
@@ -931,8 +933,7 @@ TEST_F(NftMetadataFetcherUnitTest, DecodeMetadataUri) {
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 232, 3, 0, 0, 1, 1, 255, 1, 0, 1, 1, 162,
       43, 239, 108, 12, 203, 135, 105, 3, 217, 196, 174, 232, 132, 8, 168, 100,
       3, 25, 234, 33, 253, 65, 3, 139, 60, 169, 234, 98, 211, 214, 213, 0};
-  uri = nft_metadata_fetcher_->DecodeMetadataUri(uri_borsh_encoded);
-  ASSERT_FALSE(uri);
+  ASSERT_FALSE(NftMetadataFetcher::DecodeMetadataUri(uri_borsh_encoded));
 
   // Valid borsh encoding, but invalid URI is parsed but yields empty URI
   auto uri_borsh_encoded2 = base::Base64Decode(
@@ -943,14 +944,24 @@ TEST_F(NftMetadataFetcherUnitTest, DecodeMetadataUri) {
       "z3uw2G0ERMo8Eth4BAgABAf8BAAEBoivvbAzLh2kD2cSu6IQIqGQDGeoh/"
       "UEDizyp6mLT1tUA");
   ASSERT_TRUE(uri_borsh_encoded2);
-  uri = nft_metadata_fetcher_->DecodeMetadataUri(*uri_borsh_encoded2);
+  uri = NftMetadataFetcher::DecodeMetadataUri(*uri_borsh_encoded2);
   ASSERT_TRUE(uri);
   EXPECT_EQ(uri.value().spec(), "");
 
   // Invalid borsh encoding is not parsed
   uri_borsh_encoded2 = base::Base64Decode("d2hvb3BzIQ==");
   ASSERT_TRUE(uri_borsh_encoded2);
-  ASSERT_FALSE(nft_metadata_fetcher_->DecodeMetadataUri(*uri_borsh_encoded2));
+  ASSERT_FALSE(NftMetadataFetcher::DecodeMetadataUri(*uri_borsh_encoded2));
+
+  ASSERT_FALSE(NftMetadataFetcher::DecodeMetadataUri({}));
+
+  // All strings would be max size - should fail reading these strings.
+  ASSERT_FALSE(
+      NftMetadataFetcher::DecodeMetadataUri(std::vector<uint8_t>(1000, 0xff)));
+
+  // All strings would be zero size - should return empty url.
+  EXPECT_EQ(GURL(), *NftMetadataFetcher::DecodeMetadataUri(
+                        std::vector<uint8_t>(1000, 0x00)));
 }
 
 }  // namespace brave_wallet
