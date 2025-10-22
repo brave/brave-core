@@ -92,7 +92,7 @@ class EmailAliasesService : public KeyedService,
   static GURL GetAccountsServiceVerifyResultURL();
 
   // Returns the base URL for the Email Aliases service.
-  static GURL GetEmailAliasesServiceURLForTesting();
+  static GURL GetEmailAliasesServiceURL();
 
  private:
   // Callback that receives the response body as an optional string.

@@ -379,8 +379,7 @@ class AliasObserver : public mojom::EmailAliasesServiceObserver {
 class EmailAliasesAPITest : public ::testing::Test {
  public:
   void AddManageResponseFor(const std::optional<std::string>& body) {
-    const GURL manage_url =
-        EmailAliasesService::GetEmailAliasesServiceURLForTesting();
+    const GURL manage_url = EmailAliasesService::GetEmailAliasesServiceURL();
     if (body.has_value()) {
       url_loader_factory_.AddResponse(manage_url.spec(), *body,
                                       base::Contains(*body, "error")
@@ -395,8 +394,7 @@ class EmailAliasesAPITest : public ::testing::Test {
 
   void AddRefreshResponseFor(
       const std::optional<std::string>& refresh_body = std::nullopt) {
-    const GURL manage_url =
-        EmailAliasesService::GetEmailAliasesServiceURLForTesting();
+    const GURL manage_url = EmailAliasesService::GetEmailAliasesServiceURL();
     url_loader_factory_.AddResponse(manage_url.Resolve("?status=active").spec(),
                                     refresh_body.value_or("[]"));
   }
@@ -677,8 +675,7 @@ TEST_F(EmailAliasesAPITest, ApiFetch_AttachesAuthTokenAndAPIKeyHeaders) {
       [&]() { return service_->GetAuthTokenForTesting() == "auth456"; }));
 
   // Intercept the next manage request to capture headers.
-  const GURL manage_url =
-      EmailAliasesService::GetEmailAliasesServiceURLForTesting();
+  const GURL manage_url = EmailAliasesService::GetEmailAliasesServiceURL();
   std::string seen_authorization;
   std::string seen_api_key;
   url_loader_factory_.SetInterceptor(
