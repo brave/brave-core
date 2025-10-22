@@ -462,7 +462,6 @@ test("brave_unit_tests") {
       "//brave/browser/ui/toolbar:brave_app_menu_unit_test",
       "//brave/browser/ui/views/download/bubble:unit_tests",
       "//brave/browser/ui/views/infobars:unit_tests",
-      "//brave/browser/ui/views/split_view:unit_tests",
       "//brave/browser/ui/views/tabs:unit_tests",
       "//brave/browser/ui/webui/cr_components:unit_tests",
       "//brave/browser/ui/webui/settings:unit_tests",
@@ -1158,7 +1157,6 @@ test("brave_browser_tests") {
       "//brave/browser/brave_autofill_browsertest.cc",
       "//brave/browser/brave_resources_browsertest.cc",
       "//brave/browser/brave_shields/ad_block_custom_resources_browsertest.cc",
-      "//brave/browser/renderer_context_menu/test/render_view_context_menu_browsertest.cc",
       "//brave/browser/ssl/certificate_transparency_browsertest.cc",
       "//brave/browser/ui/views/toolbar/wallet_button_notification_source_browsertest.cc",
     ]
@@ -1174,7 +1172,6 @@ test("brave_browser_tests") {
       "//brave/browser/sync:browser_tests",
       "//brave/browser/ui/ai_rewriter:browsertest",
       "//brave/browser/ui/geolocation:browser_tests",
-      "//brave/browser/ui/tabs:split_view",
       "//brave/browser/ui/tabs:tab_strip",
       "//brave/browser/ui/toolbar:brave_app_menu_browser_tests",
       "//brave/browser/ui/webui/side_panel/customize_chrome:browser_tests",

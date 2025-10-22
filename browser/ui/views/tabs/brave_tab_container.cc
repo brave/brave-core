@@ -19,7 +19,6 @@
 #include "brave/browser/ui/tabs/brave_tab_layout_constants.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/features.h"
-#include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/tabs/brave_tab_group_header.h"
@@ -110,24 +109,6 @@ base::OnceClosure BraveTabContainer::LockLayout() {
   layout_locked_ = true;
   return base::BindOnce(&BraveTabContainer::OnUnlockLayout,
                         base::Unretained(this));
-}
-
-void BraveTabContainer::AddedToWidget() {
-  TabContainerImpl::AddedToWidget();
-  auto* tab_strip =
-      static_cast<TabStrip*>(base::to_address(tab_slot_controller_));
-  if (!tab_strip->controller() || !tab_strip->GetBrowserWindowInterface()) {
-    CHECK_IS_TEST();
-    return;
-  }
-
-  auto* browser_window_interface = tab_strip->GetBrowserWindowInterface();
-  if (auto* split_view_data =
-          browser_window_interface->GetFeatures().split_view_browser_data()) {
-    if (!split_view_data_observation_.IsObserving()) {
-      split_view_data_observation_.Observe(split_view_data);
-    }
-  }
 }
 
 gfx::Size BraveTabContainer::CalculatePreferredSize(
@@ -307,41 +288,6 @@ void BraveTabContainer::UpdateLayoutOrientation() {
   InvalidateLayout();
 }
 
-void BraveTabContainer::PaintBoundingBoxForTiles(
-    gfx::Canvas& canvas,
-    const SplitViewBrowserData* split_view_data) {
-  std::ranges::for_each(split_view_data->tiles(), [&](const auto& tile) {
-    PaintBoundingBoxForTile(canvas, tile);
-  });
-}
-
-void BraveTabContainer::PaintBoundingBoxForTile(gfx::Canvas& canvas,
-                                                const TabTile& tile) {
-  if (!GetTabCount()) {
-    return;
-  }
-
-  // Note that GetTabAtModelIndex() and IsValidModelIndex() is actually using
-  // "ViewModel" index. See TabContainerImpl::GetTabAtModelIndex(), and
-  // implementations in compound_tab_container.cc implementation. Thus, we need
-  // to add pinned tab count.
-  auto* tab_strip_model = tab_slot_controller_->GetBrowser()->tab_strip_model();
-  const int offset =
-      IsPinnedTabContainer() ? 0 : tab_strip_model->IndexOfFirstNonPinnedTab();
-
-  auto tab1_index = tab_strip_model->GetIndexOfTab(tile.first.Get()) - offset;
-  auto tab2_index = tab_strip_model->GetIndexOfTab(tile.second.Get()) - offset;
-  if (!controller_->IsValidModelIndex(tab1_index) ||
-      !controller_->IsValidModelIndex(tab2_index)) {
-    // In case the tiled tab is not in this container, this can happen.
-    // For instance, this container is for pinned tabs but tabs in the tile are
-    // unpinned.
-    return;
-  }
-
-  PaintBoundingBoxForSplitTab(canvas, {tab1_index, tab2_index});
-}
-
 void BraveTabContainer::PaintBoundingBoxForSplitTabs(gfx::Canvas& canvas) {
   auto* tab_strip_model = tab_slot_controller_->GetBrowser()->tab_strip_model();
   const int offset =
@@ -478,13 +424,7 @@ void BraveTabContainer::PaintChildren(const views::PaintInfo& paint_info) {
                                paint_info.paint_recording_size(),
                                paint_info.paint_recording_scale_x(),
                                paint_info.paint_recording_scale_y(), nullptr);
-    auto* browser_window_interface = tab_strip->GetBrowserWindowInterface();
-    if (auto* split_view_data =
-            browser_window_interface->GetFeatures().split_view_browser_data()) {
-      PaintBoundingBoxForTiles(*recorder.canvas(), split_view_data);
-    } else {
-      PaintBoundingBoxForSplitTabs(*recorder.canvas());
-    }
+    PaintBoundingBoxForSplitTabs(*recorder.canvas());
   }
 
   for (const ZOrderableTabContainerElement& child : orderable_children) {
@@ -690,24 +630,6 @@ void BraveTabContainer::HandleDragExited() {
   SetDropArrow({});
 }
 
-void BraveTabContainer::OnTileTabs(const TabTile& tile) {
-  UpdateTabsBorderInTile(tile);
-  SchedulePaint();
-}
-
-void BraveTabContainer::OnDidBreakTile(const TabTile& tile) {
-  UpdateTabsBorderInTile(tile);
-  SchedulePaint();
-}
-
-void BraveTabContainer::OnSwapTabsInTile(const TabTile& tile) {
-  UpdateTabsBorderInTile(tile);
-}
-
-void BraveTabContainer::OnWillDeleteBrowserData() {
-  split_view_data_observation_.Reset();
-}
-
 gfx::Rect BraveTabContainer::GetDropBounds(int drop_index,
                                            bool drop_before,
                                            bool drop_in_group,
@@ -878,15 +800,6 @@ void BraveTabContainer::UpdateTabsBorderInSplitTab(
   }
 
   AnimateToIdealBounds();
-}
-
-void BraveTabContainer::UpdateTabsBorderInTile(const TabTile& tile) {
-  auto* tab_strip_model = tab_slot_controller_->GetBrowser()->tab_strip_model();
-  const int offset =
-      IsPinnedTabContainer() ? 0 : tab_strip_model->IndexOfFirstNonPinnedTab();
-  UpdateTabsBorderInSplitTab(
-      {tab_strip_model->GetIndexOfTab(tile.first.Get()) - offset,
-       tab_strip_model->GetIndexOfTab(tile.second.Get()) - offset});
 }
 
 BEGIN_METADATA(BraveTabContainer)

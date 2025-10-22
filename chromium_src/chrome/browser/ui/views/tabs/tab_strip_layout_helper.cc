@@ -9,7 +9,6 @@
 #include "brave/browser/ui/views/tabs/brave_tab_strip.h"
 
 #define CalculateTabBounds                                                     \
-  FillTiledState(tab_widths, static_cast<BraveTabStrip*>(tab_strip_.get())) && \
           use_vertical_tabs_&& FillGroupInfo(tab_widths)                       \
       ? tabs::CalculateVerticalTabBounds(                                      \
             tab_widths, available_width,                                       \
@@ -36,26 +35,6 @@ bool TabStripLayoutHelper::FillGroupInfo(
     tab_width_constraints.set_is_tab_in_group(
         slots_.at(i).type == TabSlotView::ViewType::kTab &&
         slots_.at(i).view->group().has_value());
-  }
-  return true;
-}
-
-bool TabStripLayoutHelper::FillTiledState(
-    std::vector<TabWidthConstraints>& tab_widths,
-    BraveTabStrip* tab_strip) {
-  if (!tab_strip_) {
-    // This method can be called before the tab strip is set.
-    return true;
-  }
-
-  for (int i = 0; i < static_cast<int>(slots_.size()); i++) {
-    auto index = GetBraveTabStrip()->GetModelIndexOf(slots_.at(i).view);
-    if (!index) {
-      continue;
-    }
-
-    auto& tab_width = tab_widths[i];
-    tab_width.state().set_tiled_state(tab_strip->GetTiledStateForTab(*index));
   }
   return true;
 }

@@ -41,7 +41,6 @@ class BraveTooltipPopup;
 }  // namespace brave_tooltips
 
 class MenuButtonDelegate;
-class SplitViewLocationBar;
 class VerticalTabStripWidgetDelegateView;
 
 #define CreatePassKey                                \
@@ -49,7 +48,6 @@ class VerticalTabStripWidgetDelegateView;
   friend class ::brave_ads::NotificationAdPopup;     \
   friend class ::brave_tooltips::BraveTooltipPopup;  \
   friend class ::MenuButtonDelegate;                 \
-  friend class ::SplitViewLocationBar;               \
   friend class ::VerticalTabStripWidgetDelegateView; \
   static WdvPassKey CreatePassKey
 

@@ -13,7 +13,6 @@
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/tabs/features.h"
-#include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/features.h"
@@ -44,10 +43,6 @@ BraveVPNController* BrowserWindowFeatures::brave_vpn_controller() {
 void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
   BrowserWindowFeatures_ChromiumImpl::Init(browser);
 
-  if (tabs::features::IsBraveSplitViewEnabled()) {
-    split_view_browser_data_ = std::make_unique<SplitViewBrowserData>(browser);
-  }
-
   if (brave_rewards::RewardsServiceFactory::GetForProfile(
           browser->GetProfile())) {
     rewards_panel_coordinator_ =
@@ -77,12 +72,6 @@ void BrowserWindowFeatures::InitPostBrowserViewConstruction(
 }
 
 void BrowserWindowFeatures::TearDownPreBrowserWindowDestruction() {
-  // SplitView depends on some browser window features(ex, fullscreen
-  // controller) that destroyed via
-  // BrowserWindowFeatures_ChromiumImpl::TearDownPreBrowserWindowDestruction().
-  // So we need to reset it before they're gone.
-  split_view_browser_data_.reset();
-
   BrowserWindowFeatures_ChromiumImpl::TearDownPreBrowserWindowDestruction();
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   brave_vpn_controller_.reset();

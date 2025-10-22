@@ -141,37 +141,20 @@ void BraveBrowserCommandController::OnTabStripModelChanged(
   UpdateCommandsForSend();
   UpdateCommandsForPin();
 
-  if (tabs::features::IsBraveSplitViewEnabled() && browser_->is_type_normal() &&
-      selection.active_tab_changed()) {
-    UpdateCommandForSplitView();
-  }
-
   if (base::FeatureList::IsEnabled(features::kSideBySide) &&
       browser_->is_type_normal() && selection.active_tab_changed()) {
-    UpdateCommandForSplitViewWithSideBySide();
+    UpdateCommandForSplitView();
   }
 }
 
 void BraveBrowserCommandController::OnSplitTabChanged(
     const SplitTabChange& change) {
-  UpdateCommandForSplitViewWithSideBySide();
+  UpdateCommandForSplitView();
 }
 
 void BraveBrowserCommandController::OnTabGroupChanged(
     const TabGroupChange& change) {
   UpdateCommandsForTabs();
-}
-
-void BraveBrowserCommandController::OnTileTabs(const TabTile& tile) {
-  UpdateCommandForSplitView();
-}
-
-void BraveBrowserCommandController::OnWillBreakTile(const TabTile& tile) {
-  UpdateCommandForSplitView();
-}
-
-void BraveBrowserCommandController::OnWillDeleteBrowserData() {
-  split_view_browser_data_observation_.Reset();
 }
 
 bool BraveBrowserCommandController::SupportsCommand(int id) const {
@@ -473,25 +456,6 @@ void BraveBrowserCommandController::UpdateCommandsForPin() {
 }
 
 void BraveBrowserCommandController::UpdateCommandForSplitView() {
-  if (auto* data = browser_->GetFeatures().split_view_browser_data()) {
-    if (!split_view_browser_data_observation_.IsObserving()) {
-      split_view_browser_data_observation_.Observe(data);
-    }
-  }
-
-  UpdateCommandEnabled(IDC_NEW_SPLIT_VIEW, brave::CanOpenNewSplitViewForTab(
-                                               base::to_address(browser_)));
-  UpdateCommandEnabled(IDC_TILE_TABS,
-                       brave::CanTileTabs(base::to_address(browser_)));
-
-  const auto is_tab_tiled = brave::IsTabsTiled(base::to_address(browser_));
-  for (auto command_enabled_when_tab_is_tiled :
-       {IDC_BREAK_TILE, IDC_SWAP_SPLIT_VIEW}) {
-    UpdateCommandEnabled(command_enabled_when_tab_is_tiled, is_tab_tiled);
-  }
-}
-
-void BraveBrowserCommandController::UpdateCommandForSplitViewWithSideBySide() {
   // Some upstream unit test calls split tab apis w/o enabling SideBySide
   // feature.
   if (!base::FeatureList::IsEnabled(features::kSideBySide)) {
@@ -736,42 +700,26 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       brave::BringAllTabs(&*browser_);
       break;
     case IDC_NEW_SPLIT_VIEW: {
-      if (tabs::features::IsBraveSplitViewEnabled()) {
-        brave::NewSplitViewForTab(&*browser_);
-      } else {
         CHECK(base::FeatureList::IsEnabled(features::kSideBySide));
         chrome::NewSplitTab(base::to_address(browser_),
                             split_tabs::SplitTabCreatedSource::kToolbarButton);
-      }
       break;
     }
     case IDC_TILE_TABS: {
-      if (tabs::features::IsBraveSplitViewEnabled()) {
-        brave::TileTabs(&*browser_);
-      } else {
         CHECK(base::FeatureList::IsEnabled(features::kSideBySide));
         brave::SplitTabsWithSideBySide(
             base::to_address(browser_),
             split_tabs::SplitTabCreatedSource::kToolbarButton);
-      }
       break;
     }
     case IDC_BREAK_TILE: {
-      if (tabs::features::IsBraveSplitViewEnabled()) {
-        brave::BreakTiles(&*browser_);
-      } else {
         CHECK(base::FeatureList::IsEnabled(features::kSideBySide));
         brave::RemoveSplitWithSideBySide(base::to_address(browser_));
-      }
       break;
     }
     case IDC_SWAP_SPLIT_VIEW: {
-      if (tabs::features::IsBraveSplitViewEnabled()) {
-        brave::SwapTabsInTile(&*browser_);
-      } else {
         CHECK(base::FeatureList::IsEnabled(features::kSideBySide));
         brave::SwapTabsInSplitWithSideBySide(base::to_address(browser_));
-      }
       break;
     }
     default:

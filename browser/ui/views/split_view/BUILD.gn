@@ -3,44 +3,16 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-source_set("split_view") {
-  sources = [
-    "split_view_layout_manager.cc",
-    "split_view_layout_manager.h",
-    "split_view_location_bar.cc",
-    "split_view_location_bar.h",
-  ]
-
-  deps = [
-    "//base",
-    "//brave/browser/ui:brave_tab_features",
-    "//brave/components/vector_icons",
-    "//cc",
-    "//chrome/browser/ui/color:mixers",
-    "//components/omnibox/browser",
-    "//components/prefs",
-    "//content/public/browser",
-    "//ui/base",
-    "//ui/gfx",
-    "//ui/views",
-  ]
-}
-
 source_set("browser_tests") {
   testonly = true
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
-  sources = [
-    "split_view_browsertest.cc",
-    "split_view_location_bar_browsertest.cc",
-  ]
+  sources = [ "split_view_browsertest.cc" ]
 
   deps = [
     "//base",
-    "//brave/browser/ui/tabs:split_view",
     "//brave/browser/ui/tabs:tab_model",
     "//brave/browser/ui/views/frame/split_view",
-    "//brave/browser/ui/views/split_view",
     "//brave/components/resources:strings_grit",
     "//chrome/browser/ui",
     "//chrome/browser/ui:ui_features",
@@ -52,25 +24,5 @@ source_set("browser_tests") {
     "//components/javascript_dialogs",
     "//content/public/common",
     "//content/test:test_support",
-  ]
-}
-
-source_set("unit_tests") {
-  testonly = true
-
-  sources = [
-    "split_view_layout_manager_unittest.cc",
-    "split_view_location_bar_model_delegate_unittest.cc",
-    "split_view_location_bar_unittest.cc",
-  ]
-
-  deps = [
-    "//base/test:test_support",
-    "//brave/browser/ui/views/split_view",
-    "//chrome/browser/ui",
-    "//chrome/browser/ui:ui_features",
-    "//chrome/test:test_support",
-    "//content/test:test_support",
-    "//testing/gtest",
   ]
 }

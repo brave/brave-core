@@ -42,7 +42,6 @@ class BraveMultiContentsView : public MultiContentsView {
   BraveContentsContainerView* GetInactiveContentsContainerView();
 
  private:
-  friend class SplitViewLocationBarBrowserTest;
   friend class SideBySideEnabledBrowserTest;
   friend class SpeedReaderWithSplitViewBrowserTest;
   FRIEND_TEST_ALL_PREFIXES(SideBySideEnabledBrowserTest,
