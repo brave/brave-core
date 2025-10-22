@@ -129,6 +129,10 @@ void BraveWalletHandler::RegisterMessages() {
       base::BindRepeating(&BraveWalletHandler::IsCardanoEnabled,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
+      "isPolkadotEnabled",
+      base::BindRepeating(&BraveWalletHandler::IsPolkadotEnabled,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
       "isCardanoDAppSupportEnabled",
       base::BindRepeating(&BraveWalletHandler::IsCardanoDAppSupportEnabled,
                           base::Unretained(this)));
@@ -428,6 +432,13 @@ void BraveWalletHandler::IsCardanoEnabled(const base::Value::List& args) {
   AllowJavascript();
   ResolveJavascriptCallback(args[0],
                             base::Value(::brave_wallet::IsCardanoEnabled()));
+}
+
+void BraveWalletHandler::IsPolkadotEnabled(const base::Value::List& args) {
+  CHECK_EQ(args.size(), 1U);
+  AllowJavascript();
+  ResolveJavascriptCallback(args[0],
+                            base::Value(::brave_wallet::IsPolkadotEnabled()));
 }
 
 void BraveWalletHandler::IsCardanoDAppSupportEnabled(

@@ -577,6 +577,8 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_CREATE_ACCOUNT_CARDANO_TESTNET_DESCRIPTION},
     {"braveWalletCreateAccountPolkadotDescription",
      IDS_BRAVE_WALLET_CREATE_ACCOUNT_POLKADOT_DESCRIPTION},
+    {"braveWalletCreateAccountPolkadotTestnetDescription",
+     IDS_BRAVE_WALLET_CREATE_ACCOUNT_POLKADOT_TESTNET_DESCRIPTION},
     {"braveWalletFilecoinPrivateKeyProtocol",
      IDS_BRAVE_WALLET_FILECOIN_PRIVATE_KEY_PROTOCOL},
     {"braveWalletAddAccountImport", IDS_BRAVE_WALLET_ADD_ACCOUNT_IMPORT},

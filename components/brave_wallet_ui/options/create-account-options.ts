@@ -145,6 +145,21 @@ export const CreateAccountOptions = (options: {
       icon: getNetworkLogo(BraveWallet.POLKADOT_MAINNET, 'DOT'),
       chainIcons: ['dot-color'],
     })
+
+    if (
+      isNetworkVisible(BraveWallet.CoinType.DOT, BraveWallet.POLKADOT_TESTNET)
+    ) {
+      testnetAccounts.push({
+        description: getLocale(
+          'braveWalletCreateAccountPolkadotTestnetDescription',
+        ),
+        name: 'Polkadot Westend',
+        fixedNetwork: BraveWallet.POLKADOT_TESTNET,
+        coin: BraveWallet.CoinType.DOT,
+        icon: getNetworkLogo(BraveWallet.POLKADOT_TESTNET, 'DOT'),
+        chainIcons: ['dot-color'],
+      })
+    }
   }
 
   return accounts.concat(testnetAccounts)
