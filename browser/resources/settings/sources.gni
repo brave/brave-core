@@ -71,6 +71,7 @@ brave_settings_web_component_files = [
   "getting_started_page/getting_started.ts",
   "getting_started_page/getting_started_page_index.ts",
   "site_settings/site_settings_shields.ts",
+  "site_settings/site_settings_solana.ts",
   "social_blocking_page/social_blocking_page.ts",
   "ui/searchable_drop_down_cros.ts",
 ]

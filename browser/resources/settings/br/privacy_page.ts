@@ -132,36 +132,6 @@ function InsertEthereumSubpage (section: Element)
     `)
 }
 
-function InsertSolanaSubpage (section: Element)
-{
-  section.appendChild(
-    html`
-      <template is="dom-if" route-path="/content/solana" no-search>
-        <settings-subpage
-          associated-control="[[$$('#solana')]]"
-          page-title="${loadTimeData.getString('siteSettingsSolana')}">
-          <settings-category-default-radio-group
-              id="solanaDefault"
-              category="[[contentSettingsTypesEnum_.SOLANA]]"
-              block-option-label=
-                "${loadTimeData.getString('siteSettingsSolanaBlock')}"
-              allow-option-label=
-                "${loadTimeData.getString('siteSettingsSolanaAsk')}"
-              allow-option-icon="solana-on"
-              block-option-icon="solana-off">
-          </settings-category-default-radio-group>
-          <category-setting-exceptions
-            id="solanaExceptions"
-            category="[[contentSettingsTypesEnum_.SOLANA]]"
-            block-header="${loadTimeData.getString('siteSettingsBlock')}"
-            allow-header="${loadTimeData.getString('siteSettingsAllow')}"
-            read-only-list>
-          </category-setting-exceptions>
-        </settings-subpage>
-      </template>
-    `)
-}
-
 function InsertCardanoSubpage (section: Element)
 {
   section.appendChild(
@@ -254,7 +224,6 @@ RegisterPolymerTemplateModifications({
       loadTimeData.getBoolean('isBraveWalletAllowed')
     if (isNativeBraveWalletEnabled && isBraveWalletAllowed) {
       InsertEthereumSubpage(section)
-      InsertSolanaSubpage(section)
       if (isCardanoDappSupportFeatureEnabled) {
         InsertCardanoSubpage(section)
       }
