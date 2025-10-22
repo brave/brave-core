@@ -3,16 +3,19 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "base/test/metrics/histogram_tester.h"
 #include "brave/browser/misc_metrics/vertical_tab_metrics.h"
+
+#include "base/test/metrics/histogram_tester.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/tab_group_sync/tab_group_sync_service_factory.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/prefs/pref_service.h"
+#include "components/saved_tab_groups/public/tab_group_sync_service.h"
 #include "content/public/test/browser_test.h"
 
 namespace misc_metrics {
@@ -103,6 +106,12 @@ IN_PROC_BROWSER_TEST_F(VerticalTabMetricsTest, PinnedTabs) {
 }
 
 IN_PROC_BROWSER_TEST_F(VerticalTabMetricsTest, GroupTabs) {
+  auto* tab_groups_service =
+      tab_groups::TabGroupSyncServiceFactory::GetForProfile(
+          browser()->profile());
+  ASSERT_TRUE(tab_groups_service);
+  tab_groups_service->SetIsInitializedForTesting(true);
+
   chrome::AddTabAt(browser(), {}, -1, true);
 
   histogram_tester_.ExpectTotalCount(kVerticalGroupTabsHistogramName, 0);
