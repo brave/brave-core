@@ -530,9 +530,6 @@ std::string ViewCounterService::GetSuperReferralCode() const {
 void ViewCounterService::MaybePrefetchNewTabPageAd() {
   NTPSponsoredImagesData* images_data = GetSponsoredImagesData();
   if (!ads_service_) {
-    SCOPED_CRASH_KEY_STRING64("Issue50267", "failure_reason",
-                              "ads_service_ is null");
-    base::debug::DumpWithoutCrashing();
     return;
   }
 
