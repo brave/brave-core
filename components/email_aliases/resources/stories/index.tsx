@@ -195,9 +195,7 @@ class StubEmailAliasesService implements EmailAliasesServiceInterface {
     return { result: { success: aliasEmail, failure: undefined } }
   }
 
-  async requestAuthentication(
-    authEmail: string,
-  ): Promise<{
+  async requestAuthentication(authEmail: string): Promise<{
     result: EmailAliasesService_RequestAuthentication_ResponseParam_Result
   }> {
     if (Math.random() < 1 / 3) {
