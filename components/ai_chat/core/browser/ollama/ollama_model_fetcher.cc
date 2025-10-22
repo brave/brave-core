@@ -95,7 +95,7 @@ void OllamaModelFetcher::OnModelsFetched(
   }
 
   // Remove Ollama models that are no longer available
-  model_service_->DeleteCustomModelsIf(base::BindRepeating(
+  model_service_->MaybeDeleteCustomModels(base::BindRepeating(
       [](const std::set<std::string>& current_models,
          const base::Value::Dict& model_dict) {
         const std::string* endpoint_str =

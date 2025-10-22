@@ -652,7 +652,7 @@ void ModelService::DeleteCustomModel(uint32_t index) {
   }
 }
 
-void ModelService::DeleteCustomModelsIf(CustomModelPredicate predicate) {
+void ModelService::MaybeDeleteCustomModels(CustomModelPredicate predicate) {
   ScopedListPrefUpdate update(pref_service_, kCustomModelsList);
   std::vector<std::string> removed_keys;
 

@@ -421,7 +421,7 @@ TEST_F(ModelServiceTest, DeleteCustomModelsByEndpoint) {
   }
 
   // Delete all models with endpoint1
-  GetService()->DeleteCustomModelsIf(base::BindRepeating(
+  GetService()->MaybeDeleteCustomModels(base::BindRepeating(
       [](const GURL& target_endpoint, const base::Value::Dict& model_dict) {
         const std::string* endpoint_str =
             model_dict.FindString(kCustomModelItemEndpointUrlKey);
@@ -460,7 +460,7 @@ TEST_F(ModelServiceTest, DeleteCustomModelByNameAndEndpoint) {
   }
 
   // Delete only model1
-  GetService()->DeleteCustomModelsIf(base::BindRepeating(
+  GetService()->MaybeDeleteCustomModels(base::BindRepeating(
       [](const std::string& target_name, const GURL& target_endpoint,
          const base::Value::Dict& model_dict) {
         const std::string* endpoint_str =
@@ -511,7 +511,7 @@ TEST_F(ModelServiceTest, DeleteCustomModelsByEndpoint_WithDefaultModel) {
   EXPECT_CALL(*observer_, OnModelListUpdated()).Times(1);
 
   // Delete the model
-  GetService()->DeleteCustomModelsIf(base::BindRepeating(
+  GetService()->MaybeDeleteCustomModels(base::BindRepeating(
       [](const GURL& target_endpoint, const base::Value::Dict& model_dict) {
         const std::string* endpoint_str =
             model_dict.FindString(kCustomModelItemEndpointUrlKey);

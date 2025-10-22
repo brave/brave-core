@@ -13,6 +13,7 @@
 #include "base/json/json_reader.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
+#include "net/http/http_request_headers.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -118,7 +119,7 @@ void OllamaService::BindReceiver(
 void OllamaService::IsConnected(IsConnectedCallback callback) {
   auto request = std::make_unique<network::ResourceRequest>();
   request->url = GURL(mojom::kOllamaBaseUrl);
-  request->method = "GET";
+  request->method = net::HttpRequestHeaders::kGetMethod;
 
   auto loader = network::SimpleURLLoader::Create(std::move(request),
                                                  kOllamaConnectionAnnotation);
@@ -136,9 +137,7 @@ void OllamaService::OnConnectionCheckComplete(
     IsConnectedCallback callback,
     std::unique_ptr<network::SimpleURLLoader> loader,
     std::optional<std::string> response) {
-  bool connected = response &&
-                   response->find("Ollama is running") != std::string::npos &&
-                   loader->ResponseInfo() && loader->ResponseInfo()->headers &&
+  bool connected = loader->ResponseInfo() && loader->ResponseInfo()->headers &&
                    loader->ResponseInfo()->headers->response_code() == 200;
 
   std::move(callback).Run(connected);
@@ -147,7 +146,7 @@ void OllamaService::OnConnectionCheckComplete(
 void OllamaService::FetchModels(ModelsCallback callback) {
   auto request = std::make_unique<network::ResourceRequest>();
   request->url = GURL(mojom::kOllamaListModelsAPIEndpoint);
-  request->method = "GET";
+  request->method = net::HttpRequestHeaders::kGetMethod;
 
   auto loader = network::SimpleURLLoader::Create(std::move(request),
                                                  kOllamaModelsAnnotation);

@@ -5,7 +5,6 @@
 
 #include "brave/components/ai_chat/content/browser/ollama_service_factory.h"
 
-#include "base/check.h"
 #include "base/no_destructor.h"
 #include "brave/components/ai_chat/core/browser/ollama/ollama_service.h"
 #include "brave/components/ai_chat/core/common/features.h"
@@ -24,19 +23,22 @@ OllamaServiceFactory* OllamaServiceFactory::GetInstance() {
 // static
 OllamaService* OllamaServiceFactory::GetForBrowserContext(
     content::BrowserContext* context) {
-  DCHECK(context);
-  if (features::IsAIChatEnabled()) {
-    return static_cast<OllamaService*>(
-        GetInstance()->GetServiceForBrowserContext(context, true));
-  }
-
-  return nullptr;
+  return static_cast<OllamaService*>(
+      GetInstance()->GetServiceForBrowserContext(context, true));
 }
 
 OllamaServiceFactory::OllamaServiceFactory()
     : BrowserContextKeyedServiceFactory(
           "OllamaServiceFactory",
           BrowserContextDependencyManager::GetInstance()) {}
+
+content::BrowserContext* OllamaServiceFactory::GetBrowserContextToUse(
+    content::BrowserContext* context) const {
+  if (!features::IsAIChatEnabled()) {
+    return nullptr;
+  }
+  return BrowserContextKeyedServiceFactory::GetBrowserContextToUse(context);
+}
 
 OllamaServiceFactory::~OllamaServiceFactory() = default;
 

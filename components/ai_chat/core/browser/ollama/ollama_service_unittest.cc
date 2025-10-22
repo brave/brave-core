@@ -109,12 +109,13 @@ TEST_F(OllamaServiceTest, ConnectedNoResponse) {
 }
 
 TEST_F(OllamaServiceTest, ConnectedWrongResponse) {
+  // Any 200 response from Ollama base URL indicates it's running
   test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaBaseUrl,
                                          "Some other response");
 
   base::RunLoop run_loop;
   ollama_client()->IsConnected(base::BindLambdaForTesting([&](bool connected) {
-    EXPECT_FALSE(connected);
+    EXPECT_TRUE(connected);
     run_loop.Quit();
   }));
 

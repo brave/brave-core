@@ -78,7 +78,7 @@ class ModelService : public KeyedService {
   // Delete custom models matching a predicate
   using CustomModelPredicate =
       base::RepeatingCallback<bool(const base::Value::Dict&)>;
-  void DeleteCustomModelsIf(CustomModelPredicate predicate);
+  void MaybeDeleteCustomModels(CustomModelPredicate predicate);
 
   // Get all custom models
   const std::vector<ai_chat::mojom::ModelPtr> GetCustomModels();

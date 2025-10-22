@@ -40,6 +40,8 @@ class OllamaServiceFactory : public BrowserContextKeyedServiceFactory {
   ~OllamaServiceFactory() override;
 
   // BrowserContextKeyedServiceFactory overrides:
+  content::BrowserContext* GetBrowserContextToUse(
+      content::BrowserContext* context) const override;
   std::unique_ptr<KeyedService> BuildServiceInstanceForBrowserContext(
       content::BrowserContext* context) const override;
 };
