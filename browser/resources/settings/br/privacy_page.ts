@@ -102,36 +102,6 @@ function InsertAutoplaySubpage (section: Element)
     `)
 }
 
-function InsertEthereumSubpage (section: Element)
-{
-  section.appendChild(
-    html`
-      <template is="dom-if" route-path="/content/ethereum" no-search>
-        <settings-subpage
-          associated-control="[[$$('#ethereum')]]"
-          page-title="${loadTimeData.getString('siteSettingsEthereum')}">
-          <settings-category-default-radio-group
-              id="ethereumDefault"
-              category="[[contentSettingsTypesEnum_.ETHEREUM]]"
-              block-option-label=
-                "${loadTimeData.getString('siteSettingsEthereumBlock')}"
-              allow-option-label=
-                "${loadTimeData.getString('siteSettingsEthereumAsk')}"
-              allow-option-icon="ethereum-on"
-              block-option-icon="ethereum-off">
-          </settings-category-default-radio-group>
-          <category-setting-exceptions
-            id="ethereumExceptions"
-            category="[[contentSettingsTypesEnum_.ETHEREUM]]"
-            block-header="${loadTimeData.getString('siteSettingsBlock')}"
-            allow-header="${loadTimeData.getString('siteSettingsAllow')}"
-            read-only-list>
-          </category-setting-exceptions>
-        </settings-subpage>
-      </template>
-    `)
-}
-
 function InsertCardanoSubpage (section: Element)
 {
   section.appendChild(
@@ -223,7 +193,6 @@ RegisterPolymerTemplateModifications({
     const isBraveWalletAllowed =
       loadTimeData.getBoolean('isBraveWalletAllowed')
     if (isNativeBraveWalletEnabled && isBraveWalletAllowed) {
-      InsertEthereumSubpage(section)
       if (isCardanoDappSupportFeatureEnabled) {
         InsertCardanoSubpage(section)
       }
