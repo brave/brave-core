@@ -13,6 +13,7 @@
 
 #include "base/check.h"
 #include "base/containers/span.h"
+#include "base/numerics/safe_conversions.h"
 #include "brave/components/brave_wallet/browser/internal/hd_key_common.h"
 #include "brave/components/brave_wallet/common/cardano_address.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
@@ -133,9 +134,9 @@ std::unique_ptr<HDKeyEd25519Slip23> CardanoHDKeyring::DeriveKey(
     return nullptr;
   }
 
-  return account_key->DeriveChildFromPath(
-      std::array{DerivationIndex::Normal(static_cast<uint32_t>(key_id.role)),
-                 DerivationIndex::Normal(key_id.index)});
+  return account_key->DeriveChildFromPath(std::array{
+      DerivationIndex::Normal(base::checked_cast<uint32_t>(key_id.role)),
+      DerivationIndex::Normal(key_id.index)});
 }
 
 }  // namespace brave_wallet

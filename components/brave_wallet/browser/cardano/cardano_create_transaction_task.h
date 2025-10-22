@@ -60,7 +60,8 @@ class CardanoCreateTransactionTask {
   void OnGetLatestEpochParameters(base::expected<cardano_rpc::EpochParameters,
                                                  std::string> epoch_parameters);
   void OnGetLatestBlock(base::expected<cardano_rpc::Block, std::string> bock);
-  void OnGetUtxos(base::expected<UtxoMap, std::string> utxos);
+  void OnGetUtxos(
+      base::expected<cardano_rpc::UnspentOutputs, std::string> utxos);
   void OnDiscoverNextUnusedChangeAddress(
       base::expected<mojom::CardanoAddressPtr, std::string> address);
   bool IsAllRequiredDataFetched();
@@ -77,8 +78,7 @@ class CardanoCreateTransactionTask {
 
   std::optional<cardano_rpc::EpochParameters> latest_epoch_parameters_;
   std::optional<cardano_rpc::Block> latest_block_;
-  std::optional<std::map<CardanoAddress, cardano_rpc::UnspentOutputs>>
-      utxo_map_;
+  std::optional<cardano_rpc::UnspentOutputs> utxos_;
   Callback callback_;
   base::WeakPtrFactory<CardanoCreateTransactionTask> weak_ptr_factory_{this};
 };
