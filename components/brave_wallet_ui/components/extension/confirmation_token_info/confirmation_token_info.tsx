@@ -23,6 +23,9 @@ import { getLocale } from '../../../../common/locale'
 import { copyToClipboard } from '../../../utils/copy-to-clipboard'
 import { reduceAddress } from '../../../utils/reduce-address'
 import {
+  reduceAccountDisplayName, //
+} from '../../../utils/reduce-account-name'
+import {
   computeFiatAmount,
   getPriceRequestsForTokens,
 } from '../../../utils/pricing-utils'
@@ -67,6 +70,15 @@ import useExplorer from '../../../common/hooks/explorer'
 const ICON_CONFIG = { size: 'big', marginLeft: 0, marginRight: 0 } as const
 const AssetIconWithPlaceholder = withPlaceholderIcon(AssetIcon, ICON_CONFIG)
 
+type TokenInfoLabel =
+  | 'send'
+  | 'spend'
+  | 'receive'
+  | 'bridge'
+  | 'to'
+  | 'shield'
+  | 'fee'
+
 interface Props {
   token?: BraveWallet.BlockchainToken
   network?: BraveWallet.NetworkInfo
@@ -76,7 +88,7 @@ interface Props {
   account?: BraveWallet.AccountInfo
   receiveAddress?: string
   isAssociatedTokenAccountCreation?: boolean
-  label: 'send' | 'spend' | 'receive' | 'bridge' | 'to' | 'shield'
+  label: TokenInfoLabel
 }
 
 export function ConfirmationTokenInfo(props: Props) {
@@ -114,14 +126,20 @@ export function ConfirmationTokenInfo(props: Props) {
   )
 
   // Computed
-  const labelText =
-    label === 'send'
-      ? getLocale('braveWalletSend')
-      : label === 'spend'
-        ? getLocale('braveWalletSpend')
-        : label === 'shield'
-          ? getLocale('braveWalletShielding')
-          : getLocale('braveWalletReceive')
+  const getLabelText = (label: TokenInfoLabel) => {
+    switch (label) {
+      case 'fee':
+        return getLocale('braveWalletEstimatedFee')
+      case 'send':
+        return getLocale('braveWalletSend')
+      case 'spend':
+        return getLocale('braveWalletSpend')
+      case 'shield':
+        return getLocale('braveWalletShielding')
+      default:
+        return getLocale('braveWalletReceive')
+    }
+  }
 
   const ataCreationLocale = getLocale(
     'braveWalletConfirmTransactionAccountCreationFee',
@@ -290,7 +308,7 @@ export function ConfirmationTokenInfo(props: Props) {
       >
         <Row justifyContent='space-between'>
           <ConfirmationInfoLabel textColor='secondary'>
-            {labelText}
+            {getLabelText(label)}
           </ConfirmationInfoLabel>
           <Tooltip
             text={account ? (account?.address ?? '') : (receiveAddress ?? '')}
@@ -306,7 +324,7 @@ export function ConfirmationTokenInfo(props: Props) {
                       account={account}
                       marginRight={4}
                     />
-                    {account?.name ?? ''}
+                    {reduceAccountDisplayName(account?.name ?? '', 18)}
                   </Row>
                 ) : (
                   reduceAddress(receiveAddress ?? '')
