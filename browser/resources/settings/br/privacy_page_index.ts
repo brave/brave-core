@@ -17,6 +17,7 @@ import '../site_settings/site_settings_autoplay.js'
 import '../site_settings/site_settings_localhost.js'
 import '../site_settings/site_settings_shields.js'
 import '../site_settings/site_settings_brave_ai.js'
+import '../site_settings/site_settings_solana.js'
 import { ContentSettingsTypes } from '../site_settings/constants.js';
 
 RegisterPolymerPrototypeModification({
@@ -133,6 +134,16 @@ RegisterPolymerTemplateModifications({
           slot="view"
           in-search-mode="[[inSearchMode_]]">
         </site-settings-brave-ai-page>`)
+
+      if (loadTimeData.getBoolean('isBraveWalletAllowed') && loadTimeData.getBoolean('isNativeBraveWalletFeatureEnabled')) {
+      viewManager.appendChild(html`
+      <site-settings-solana-page
+          id="${ContentSettingsTypes.SOLANA}"
+          route-path$="[[routes_.SITE_SETTINGS_SOLANA.path]]"
+          data-parent-view-id="siteSettings"
+          slot="view"
+          in-search-mode="[[inSearchMode_]]">
+        </site-settings-solana-page>`)
     }
 
     // Move the safety hub to the end of the page
