@@ -1,0 +1,36 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+
+source_set("brave_origin") {
+  sources = [
+    "brave_origin_service_factory.h",
+    "brave_origin_service_factory.mm",
+  ]
+  deps = [
+    "//base",
+    "//brave/components/ai_chat/core/common",
+    "//brave/components/brave_news/common",
+    "//brave/components/brave_origin",
+    "//brave/components/brave_rewards/core",
+    "//brave/components/brave_vpn/common/buildflags",
+    "//brave/components/brave_wallet/common:pref_names",
+    "//brave/components/constants",
+    "//brave/components/p3a",
+    "//brave/components/playlist/core/common",
+    "//brave/ios/browser/policy",
+    "//components/keyed_service/core",
+    "//components/policy/core/browser",
+    "//components/user_prefs",
+    "//ios/chrome/browser/policy/model",
+    "//ios/chrome/browser/shared/model/application_context",
+    "//ios/chrome/browser/shared/model/profile",
+    "//ios/chrome/browser/shared/model/profile:profile_keyed_service_factory",
+  ]
+  if (enable_brave_vpn) {
+    deps += [ "//brave/components/brave_vpn/common" ]
+  }
+}
