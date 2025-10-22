@@ -9,7 +9,7 @@ const { runGit } = require('./util')
  * Reverts a list of git commits, in the given order. This function is
  * idempotent - if a commit has already been reverted, it will be skipped.
  */
-function applyReverts(repoPath, commits, dryRun = false) {
+function applyReverts(repoPath, commits, dryRun = false, logError = true) {
   function git(...args) {
     const env = { ...process.env }
     // Setting the name and email for git is necessary in environments (such as
@@ -20,7 +20,7 @@ function applyReverts(repoPath, commits, dryRun = false) {
     // deterministic. This prevents `update_patches` from constantly updating
     // .patch files just because the hash has changed.
     env.GIT_AUTHOR_DATE = env.GIT_COMMITTER_DATE = '1970-01-01T00:00:00Z'
-    const options = { skipLogging: true, logError: true, env: env }
+    const options = { skipLogging: true, logError: logError, env: env }
     const result = runGit(repoPath, args, true, options)
     if (result === null)
       throw new Error(`Git command failed: git ${args.join(' ')}`)
