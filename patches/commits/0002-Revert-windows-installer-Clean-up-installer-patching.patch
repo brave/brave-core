@@ -1,0 +1,2448 @@
+From 643bddab1abf882f38a7ca6832bea703216c8149 Mon Sep 17 00:00:00 2001
+From: Claudio DeSouza <cdesouza@brave.com>
+Date: Wed, 22 Oct 2025 06:13:55 +0100
+Subject: [PATCH 2/2] Revert "windows installer: Clean up installer patching
+ code."
+
+This reverts commit 13ca199c69edee9777c9089226f23e5a5632e791.
+---
+ chrome/app/chromium_strings.grd               |   3 +
+ chrome/app/google_chrome_strings.grd          |   3 +
+ chrome/installer/DEPS                         |   1 +
+ chrome/installer/setup/BUILD.gn               |   6 +
+ chrome/installer/setup/DEPS                   |   1 +
+ .../installer/setup/archive_patch_helper.cc   | 116 +++++++
+ chrome/installer/setup/archive_patch_helper.h | 107 +++++++
+ .../setup/archive_patch_helper_unittest.cc    |  82 +++++
+ chrome/installer/setup/brand_behaviors.h      |   9 +-
+ chrome/installer/setup/chromium_behaviors.cc  |   3 +-
+ .../setup/google_chrome_behaviors.cc          |  14 +-
+ chrome/installer/setup/install_params.h       |   4 +
+ chrome/installer/setup/install_worker.cc      |  37 ++-
+ .../setup/install_worker_unittest.cc          |   7 +-
+ chrome/installer/setup/setup_main.cc          |  67 +++-
+ chrome/installer/setup/setup_main.h           |   9 +-
+ chrome/installer/setup/setup_util.cc          |  33 ++
+ chrome/installer/setup/setup_util.h           |   8 +
+ chrome/installer/setup/setup_util_unittest.cc | 161 ++++++++++
+ chrome/installer/setup/unpack_archive.cc      | 160 +++++++---
+ chrome/installer/setup/unpack_archive.h       |  15 +-
+ .../setup/unpack_archive_unittest.cc          |  38 ++-
+ .../installer/util/google_update_settings.cc  |  47 ++-
+ .../installer/util/google_update_settings.h   |  34 +-
+ .../util/google_update_settings_unittest.cc   | 129 ++++++--
+ .../prebuild/create_installer_string_rc.py    |   1 +
+ chrome/installer/util/util_constants.cc       |  14 +
+ chrome/installer/util/util_constants.h        |  34 +-
+ .../config/chrome_beta_installed.prop         |   2 +
+ .../config/chrome_canary_installed.prop       |   2 +
+ .../config/chrome_dev_installed.prop          |   2 +
+ .../config/chrome_system_installed.prop       |   2 +
+ .../config/chrome_user_installed.prop         |   2 +
+ .../previous_chrome_canary_installed.prop     |   1 +
+ .../previous_chrome_system_installed.prop     |   2 +
+ .../previous_chrome_user_installed.prop       |   2 +
+ third_party/bspatch/BUILD.gn                  |  17 +
+ third_party/bspatch/DIR_METADATA              |   6 +
+ third_party/bspatch/LICENSE                   |  23 ++
+ third_party/bspatch/OWNERS                    |   1 +
+ third_party/bspatch/README.chromium           |  24 ++
+ third_party/bspatch/mbspatch.cc               | 302 ++++++++++++++++++
+ third_party/bspatch/mbspatch.h                | 112 +++++++
+ third_party/bspatch/visibility.gni            |   6 +
+ 44 files changed, 1507 insertions(+), 142 deletions(-)
+ create mode 100644 chrome/installer/setup/archive_patch_helper.cc
+ create mode 100644 chrome/installer/setup/archive_patch_helper.h
+ create mode 100644 chrome/installer/setup/archive_patch_helper_unittest.cc
+ create mode 100644 third_party/bspatch/BUILD.gn
+ create mode 100644 third_party/bspatch/DIR_METADATA
+ create mode 100644 third_party/bspatch/LICENSE
+ create mode 100644 third_party/bspatch/OWNERS
+ create mode 100644 third_party/bspatch/README.chromium
+ create mode 100644 third_party/bspatch/mbspatch.cc
+ create mode 100644 third_party/bspatch/mbspatch.h
+ create mode 100644 third_party/bspatch/visibility.gni
+
+diff --git a/chrome/app/chromium_strings.grd b/chrome/app/chromium_strings.grd
+index eb8624991bbc3..f51fcb9f4cb53 100644
+--- a/chrome/app/chromium_strings.grd
++++ b/chrome/app/chromium_strings.grd
+@@ -661,6 +661,9 @@ Chromium is unable to recover your settings.
+         <message name="IDS_SAME_VERSION_REPAIR_FAILED" desc="Error displayed if installation fails due to Chrome running.">
+           Can not install the same Chromium version that is currently running. Please close Chromium and try again.
+         </message>
++        <message name="IDS_SETUP_PATCH_FAILED" desc="Error message when setup.exe fails to patch itself.">
++          Installation failed due to unspecified error. Please download Chromium again.
++        </message>
+         <message name="IDS_INSTALL_OS_NOT_SUPPORTED" desc="Error displayed if OS is not supported">
+           Chromium requires Windows 10 or higher.
+         </message>
+diff --git a/chrome/app/google_chrome_strings.grd b/chrome/app/google_chrome_strings.grd
+index 3de3a54049a5e..2ffc5c722c86d 100644
+--- a/chrome/app/google_chrome_strings.grd
++++ b/chrome/app/google_chrome_strings.grd
+@@ -639,6 +639,9 @@ Google Chrome is unable to recover your settings.
+         <message name="IDS_SAME_VERSION_REPAIR_FAILED" desc="Error displayed if installation fails due to Chrome running.">
+           Can not install the same Google Chrome version that is currently running. Please close Google Chrome and try again.
+         </message>
++        <message name="IDS_SETUP_PATCH_FAILED" desc="Error message when setup.exe fails to patch itself.">
++          Installation failed due to unspecified error. Please download Google Chrome again.
++        </message>
+         <message name="IDS_INSTALL_OS_NOT_SUPPORTED" desc="Error displayed if OS is not supported">
+           Google Chrome requires Windows 10 or higher.
+         </message>
+diff --git a/chrome/installer/DEPS b/chrome/installer/DEPS
+index 0fc0de27f08e9..8ad972af8cd6b 100644
+--- a/chrome/installer/DEPS
++++ b/chrome/installer/DEPS
+@@ -2,5 +2,6 @@ include_rules = [
+   "+components/crash",
+   "+components/variations",
+   "+rlz",
++  "+third_party/bspatch",
+   "+third_party/lzma_sdk",
+ ]
+diff --git a/chrome/installer/setup/BUILD.gn b/chrome/installer/setup/BUILD.gn
+index d8693d152c499..7a687dd5cf3df 100644
+--- a/chrome/installer/setup/BUILD.gn
++++ b/chrome/installer/setup/BUILD.gn
+@@ -52,6 +52,8 @@ if (is_win) {
+   static_library("lib") {
+     sources = [
+       "${branding_path_product}_behaviors.cc",
++      "archive_patch_helper.cc",
++      "archive_patch_helper.h",
+       "brand_behaviors.h",
+       "configure_app_container_sandbox.cc",
+       "configure_app_container_sandbox.h",
+@@ -111,6 +113,9 @@ if (is_win) {
+       "//components/metrics:client_info",
+       "//components/metrics:metrics_pref_names",
+       "//components/version_info:channel",
++      "//components/zucchini:zucchini_io",
++      "//components/zucchini:zucchini_lib",
++      "//third_party/bspatch",
+       "//third_party/crashpad/crashpad/client",
+       "//third_party/crashpad/crashpad/util",
+       "//ui/base:fullscreen_win",
+@@ -132,6 +137,7 @@ if (is_win) {
+   # This test covers the mini installer and setup tests.
+   test("setup_unittests") {
+     sources = [
++      "archive_patch_helper_unittest.cc",
+       "configure_app_container_sandbox_unittest.cc",
+       "downgrade_cleanup_unittest.cc",
+       "install_unittest.cc",
+diff --git a/chrome/installer/setup/DEPS b/chrome/installer/setup/DEPS
+index 8653c20ec6254..0f5bf8168220d 100644
+--- a/chrome/installer/setup/DEPS
++++ b/chrome/installer/setup/DEPS
+@@ -10,6 +10,7 @@ include_rules = [
+   "+components/base32",
+   "+components/metrics",
+   "+components/version_info/channel.h",
++  "+components/zucchini",
+   "+third_party/crashpad",
+ ]
+ 
+diff --git a/chrome/installer/setup/archive_patch_helper.cc b/chrome/installer/setup/archive_patch_helper.cc
+new file mode 100644
+index 0000000000000..2eeb049423d3a
+--- /dev/null
++++ b/chrome/installer/setup/archive_patch_helper.cc
+@@ -0,0 +1,116 @@
++// Copyright 2013 The Chromium Authors
++// Use of this source code is governed by a BSD-style license that can be
++// found in the LICENSE file.
++
++#include "chrome/installer/setup/archive_patch_helper.h"
++
++#include <stdint.h>
++
++#include <optional>
++
++#include "base/files/file_util.h"
++#include "base/logging.h"
++#include "chrome/installer/util/lzma_util.h"
++#include "components/zucchini/zucchini.h"
++#include "components/zucchini/zucchini_integration.h"
++#include "third_party/bspatch/mbspatch.h"
++
++namespace installer {
++
++ArchivePatchHelper::ArchivePatchHelper(const base::FilePath& working_directory,
++                                       const base::FilePath& compressed_archive,
++                                       const base::FilePath& patch_source,
++                                       const base::FilePath& target,
++                                       UnPackConsumer consumer)
++    : working_directory_(working_directory),
++      compressed_archive_(compressed_archive),
++      patch_source_(patch_source),
++      target_(target),
++      consumer_(consumer) {}
++
++ArchivePatchHelper::~ArchivePatchHelper() = default;
++
++// static
++bool ArchivePatchHelper::UncompressAndPatch(
++    const base::FilePath& working_directory,
++    const base::FilePath& compressed_archive,
++    const base::FilePath& patch_source,
++    const base::FilePath& target,
++    UnPackConsumer consumer) {
++  ArchivePatchHelper instance(working_directory, compressed_archive,
++                              patch_source, target, consumer);
++  return (instance.Uncompress(nullptr) && instance.ApplyAndDeletePatch());
++}
++
++bool ArchivePatchHelper::Uncompress(base::FilePath* last_uncompressed_file) {
++  // The target shouldn't already exist.
++  DCHECK(!base::PathExists(target_));
++
++  // UnPackArchive takes care of logging.
++  base::FilePath output_file;
++  UnPackStatus unpack_status =
++      UnPackArchive(compressed_archive_, working_directory_, &output_file);
++  RecordUnPackMetrics(unpack_status, consumer_);
++  if (unpack_status != UNPACK_NO_ERROR)
++    return false;
++
++  last_uncompressed_file_ = output_file;
++  if (last_uncompressed_file)
++    *last_uncompressed_file = last_uncompressed_file_;
++  return true;
++}
++
++bool ArchivePatchHelper::ApplyAndDeletePatch() {
++  const bool succeeded = ZucchiniEnsemblePatch() || BinaryPatch();
++  if (!last_uncompressed_file_.empty()) {
++    base::DeleteFile(last_uncompressed_file_);
++  }
++  return succeeded;
++}
++
++bool ArchivePatchHelper::ZucchiniEnsemblePatch() {
++  if (last_uncompressed_file_.empty()) {
++    LOG(ERROR) << "No patch file found in compressed archive.";
++    return false;
++  }
++
++  zucchini::status::Code result =
++      zucchini::Apply(patch_source_, last_uncompressed_file_, target_);
++
++  if (result == zucchini::status::kStatusSuccess)
++    return true;
++
++  LOG(ERROR) << "Failed to apply patch " << last_uncompressed_file_.value()
++             << " to file " << patch_source_.value() << " and generating file "
++             << target_.value()
++             << " using Zucchini. err=" << static_cast<uint32_t>(result);
++
++  // Ensure a partial output is not left behind.
++  base::DeleteFile(target_);
++
++  return false;
++}
++
++bool ArchivePatchHelper::BinaryPatch() {
++  if (last_uncompressed_file_.empty()) {
++    LOG(ERROR) << "No patch file found in compressed archive.";
++    return false;
++  }
++
++  int result = ApplyBinaryPatch(patch_source_.value().c_str(),
++                                last_uncompressed_file_.value().c_str(),
++                                target_.value().c_str());
++  if (result == OK)
++    return true;
++
++  LOG(ERROR) << "Failed to apply patch " << last_uncompressed_file_.value()
++             << " to file " << patch_source_.value() << " and generating file "
++             << target_.value() << " using bsdiff. err=" << result;
++
++  // Ensure a partial output is not left behind.
++  base::DeleteFile(target_);
++
++  return false;
++}
++
++}  // namespace installer
+diff --git a/chrome/installer/setup/archive_patch_helper.h b/chrome/installer/setup/archive_patch_helper.h
+new file mode 100644
+index 0000000000000..90f8997e904d4
+--- /dev/null
++++ b/chrome/installer/setup/archive_patch_helper.h
+@@ -0,0 +1,107 @@
++// Copyright 2013 The Chromium Authors
++// Use of this source code is governed by a BSD-style license that can be
++// found in the LICENSE file.
++
++#ifndef CHROME_INSTALLER_SETUP_ARCHIVE_PATCH_HELPER_H_
++#define CHROME_INSTALLER_SETUP_ARCHIVE_PATCH_HELPER_H_
++
++#include "base/files/file_path.h"
++#include "chrome/installer/setup/setup_util.h"
++#include "chrome/installer/util/lzma_util.h"
++
++namespace installer {
++
++// A helper class that facilitates uncompressing and patching the chrome archive
++// and installer.
++//
++// Chrome's installer is deployed along with a compressed archive containing
++// either 1) an uncompressd archive of the product binaries or 2) a patch file
++// to be applied to the uncompressed archive of the version being updated. To
++// obtain the uncompressed archive, the contents of the compressed archive are
++// uncompressed and extracted. Installation proceeds directly if the
++// uncompressed archive is found after this step. Otherwise, the patch is
++// applied to the previous version's uncompressed archive using either
++// Zucchini's patching or bspatch.
++//
++// Chrome's installer itself may also be deployed as a patch against the
++// previous version's saved installer binary. The same process is followed to
++// obtain the new installer. The compressed archive unconditionally contains a
++// patch file in this case.
++class ArchivePatchHelper {
++ public:
++  // Constructs an instance that can uncompress |compressed_archive| into
++  // |working_directory| and optionally apply the extracted patch file to
++  // |patch_source|, writing the result to |target|.
++  ArchivePatchHelper(const base::FilePath& working_directory,
++                     const base::FilePath& compressed_archive,
++                     const base::FilePath& patch_source,
++                     const base::FilePath& target,
++                     UnPackConsumer consumer);
++
++  ArchivePatchHelper(const ArchivePatchHelper&) = delete;
++  ArchivePatchHelper& operator=(const ArchivePatchHelper&) = delete;
++
++  ~ArchivePatchHelper();
++
++  // Uncompresses |compressed_archive| in |working_directory| then applies the
++  // extracted patch file to |patch_source|, writing the result to |target|.
++  // Ensemble patching via Zucchini is attempted first (if it is enabled). If
++  // that fails bspatch is attempted. Returns false if uncompression or all
++  // patching steps fail.
++  static bool UncompressAndPatch(const base::FilePath& working_directory,
++                                 const base::FilePath& compressed_archive,
++                                 const base::FilePath& patch_source,
++                                 const base::FilePath& target,
++                                 UnPackConsumer consumer);
++
++  // Uncompresses compressed_archive() into the working directory. On success,
++  // last_uncompressed_file (if not nullptr) is populated with the path to the
++  // last file extracted from the archive.
++  bool Uncompress(base::FilePath* last_uncompressed_file);
++
++  // Performs ensemble patching on the uncompressed version of
++  // |compressed_archive| in |working_directory| as specified in the constructor
++  // using files from |patch_source|. Ensemble patching via Zucchini is
++  // attempted first (if it is enabled). Zucchini falls back to bspatch if
++  // unsuccessful. The uncompressed patch file is unconditionally deleted at the
++  // end.
++  bool ApplyAndDeletePatch();
++
++  // Attempts to use Zucchini to apply last_uncompressed_file() to
++  // patch_source() to generate target(). Returns false if patching fails.
++  bool ZucchiniEnsemblePatch();
++
++  // Attempts to use bspatch to apply last_uncompressed_file() to patch_source()
++  // to generate target(). Returns false if patching fails.
++  bool BinaryPatch();
++
++  const base::FilePath& compressed_archive() const {
++    return compressed_archive_;
++  }
++  void set_patch_source(const base::FilePath& patch_source) {
++    patch_source_ = patch_source;
++  }
++  const base::FilePath& patch_source() const { return patch_source_; }
++  const base::FilePath& target() const { return target_; }
++
++  // Returns the path of the last file extracted by Uncompress().
++  const base::FilePath& last_uncompressed_file() const {
++    return last_uncompressed_file_;
++  }
++  void set_last_uncompressed_file(
++      const base::FilePath& last_uncompressed_file) {
++    last_uncompressed_file_ = last_uncompressed_file;
++  }
++
++ private:
++  base::FilePath working_directory_;
++  base::FilePath compressed_archive_;
++  base::FilePath patch_source_;
++  base::FilePath target_;
++  base::FilePath last_uncompressed_file_;
++  UnPackConsumer consumer_;
++};
++
++}  // namespace installer
++
++#endif  // CHROME_INSTALLER_SETUP_ARCHIVE_PATCH_HELPER_H_
+diff --git a/chrome/installer/setup/archive_patch_helper_unittest.cc b/chrome/installer/setup/archive_patch_helper_unittest.cc
+new file mode 100644
+index 0000000000000..7a5dc23d19ef4
+--- /dev/null
++++ b/chrome/installer/setup/archive_patch_helper_unittest.cc
+@@ -0,0 +1,82 @@
++// Copyright 2013 The Chromium Authors
++// Use of this source code is governed by a BSD-style license that can be
++// found in the LICENSE file.
++
++#include "chrome/installer/setup/archive_patch_helper.h"
++
++#include "base/files/file_path.h"
++#include "base/files/file_util.h"
++#include "base/files/scoped_temp_dir.h"
++#include "base/path_service.h"
++#include "chrome/common/chrome_paths.h"
++#include "testing/gtest/include/gtest/gtest.h"
++
++namespace {
++
++class ArchivePatchHelperTest : public testing::Test {
++ protected:
++  static void SetUpTestCase() {
++    ASSERT_TRUE(base::PathService::Get(chrome::DIR_TEST_DATA, &data_dir_));
++    data_dir_ = data_dir_.AppendASCII("installer");
++    ASSERT_TRUE(base::PathExists(data_dir_));
++  }
++
++  static void TearDownTestCase() { data_dir_.clear(); }
++
++  void SetUp() override {
++    // Create a temp directory for testing.
++    ASSERT_TRUE(test_dir_.CreateUniqueTempDir());
++  }
++
++  void TearDown() override {
++    // Clean up test directory manually so we can fail if it leaks.
++    ASSERT_TRUE(test_dir_.Delete());
++  }
++
++  // The path to input data used in tests.
++  static base::FilePath data_dir_;
++
++  // The temporary directory used to contain the test operations.
++  base::ScopedTempDir test_dir_;
++};
++
++base::FilePath ArchivePatchHelperTest::data_dir_;
++
++}  // namespace
++
++TEST_F(ArchivePatchHelperTest, ZucchiniPatching) {
++  base::FilePath src = data_dir_.AppendASCII("archive1.7z");
++  base::FilePath patch = data_dir_.AppendASCII("zucchini_archive.diff");
++  base::FilePath dest = test_dir_.GetPath().AppendASCII("archive2.7z");
++  installer::ArchivePatchHelper archive_helper(
++      test_dir_.GetPath(), base::FilePath(), src, dest,
++      installer::UnPackConsumer::SETUP_EXE_PATCH);
++  archive_helper.set_last_uncompressed_file(patch);
++  EXPECT_TRUE(archive_helper.ZucchiniEnsemblePatch());
++  base::FilePath base = data_dir_.AppendASCII("archive2.7z");
++  EXPECT_TRUE(base::ContentsEqual(dest, base));
++}
++
++TEST_F(ArchivePatchHelperTest, InvalidDiff_MisalignedCblen) {
++  base::FilePath src = data_dir_.AppendASCII("bin.old");
++  base::FilePath patch = data_dir_.AppendASCII("misaligned_cblen.diff");
++  base::FilePath dest = test_dir_.GetPath().AppendASCII("bin.new");
++  installer::ArchivePatchHelper archive_helper(
++      test_dir_.GetPath(), base::FilePath(), src, dest,
++      installer::UnPackConsumer::SETUP_EXE_PATCH);
++  archive_helper.set_last_uncompressed_file(patch);
++  // Should fail, but not crash.
++  EXPECT_FALSE(archive_helper.BinaryPatch());
++}
++
++TEST_F(ArchivePatchHelperTest, InvalidDiff_NegativeSeek) {
++  base::FilePath src = data_dir_.AppendASCII("bin.old");
++  base::FilePath patch = data_dir_.AppendASCII("negative_seek.diff");
++  base::FilePath dest = test_dir_.GetPath().AppendASCII("bin.new");
++  installer::ArchivePatchHelper archive_helper(
++      test_dir_.GetPath(), base::FilePath(), src, dest,
++      installer::UnPackConsumer::SETUP_EXE_PATCH);
++  archive_helper.set_last_uncompressed_file(patch);
++  // Should fail, but not crash.
++  EXPECT_FALSE(archive_helper.BinaryPatch());
++}
+diff --git a/chrome/installer/setup/brand_behaviors.h b/chrome/installer/setup/brand_behaviors.h
+index 9f0cbe76c204a..6abc5f80a8d89 100644
+--- a/chrome/installer/setup/brand_behaviors.h
++++ b/chrome/installer/setup/brand_behaviors.h
+@@ -20,9 +20,12 @@ class Version;
+ 
+ namespace installer {
+ 
+-// Updates the updater's view of "ap" to match current norms.
+-// TODO(crbug.com/441478433): Delete this cleanup some time in 2027.
+-void UpdateInstallStatus();
++// Communicates a change in install status to the updater. |archive_type|, if
++// not UNKNOWN_ARCHIVE_TYPE, indicates what type of install/update is being
++// applied. |install_status|, if not UNKNOWN_STATUS, indicates the result of the
++// install/update.
++void UpdateInstallStatus(installer::ArchiveType archive_type,
++                         installer::InstallStatus install_status);
+ 
+ // Returns an opaque string holding data relating to the browser being
+ // uninstalled. This function is called before the product's Clients key is
+diff --git a/chrome/installer/setup/chromium_behaviors.cc b/chrome/installer/setup/chromium_behaviors.cc
+index 3c9db99a099d8..76bb0155a0ac1 100644
+--- a/chrome/installer/setup/chromium_behaviors.cc
++++ b/chrome/installer/setup/chromium_behaviors.cc
+@@ -6,7 +6,8 @@
+ 
+ namespace installer {
+ 
+-void UpdateInstallStatus() {}
++void UpdateInstallStatus(installer::ArchiveType archive_type,
++                         installer::InstallStatus install_status) {}
+ 
+ std::wstring GetDistributionData() {
+   return std::wstring();
+diff --git a/chrome/installer/setup/google_chrome_behaviors.cc b/chrome/installer/setup/google_chrome_behaviors.cc
+index a4d9546c583cf..b2adfba6a355d 100644
+--- a/chrome/installer/setup/google_chrome_behaviors.cc
++++ b/chrome/installer/setup/google_chrome_behaviors.cc
+@@ -91,8 +91,18 @@ bool IsMetricsEnabled(const base::FilePath& file_path) {
+ 
+ }  // namespace
+ 
+-void UpdateInstallStatus() {
+-  GoogleUpdateSettings::UpdateInstallStatus();
++// If |archive_type| is INCREMENTAL_ARCHIVE_TYPE and |install_status| does not
++// indicate a successful update, "-full" is appended to Chrome's "ap" value in
++// its ClientState key if it is not present, resulting in the full installer
++// being returned from the next update check. If |archive_type| is
++// FULL_ARCHIVE_TYPE or |install_status| indicates a successful update, "-full"
++// is removed from the "ap" value. "-stage:*" values are
++// unconditionally removed from the "ap" value.
++void UpdateInstallStatus(installer::ArchiveType archive_type,
++                         installer::InstallStatus install_status) {
++  GoogleUpdateSettings::UpdateInstallStatus(
++      install_static::IsSystemInstall(), archive_type,
++      InstallUtil::GetInstallReturnCode(install_status));
+ }
+ 
+ // Returns a string holding the following URL query parameters:
+diff --git a/chrome/installer/setup/install_params.h b/chrome/installer/setup/install_params.h
+index d0ae93e4d34d2..3d374c7bb0ab5 100644
+--- a/chrome/installer/setup/install_params.h
++++ b/chrome/installer/setup/install_params.h
+@@ -25,6 +25,8 @@ class InstallerState;
+ // with the lifetime of the contained references and pointers to
+ // be a strict subset of the calling stack frame.
+ struct InstallParams : public ModifyParams {
++  // Path to the archive (chrome.7z)
++  const raw_ref<const base::FilePath> archive_path;
+   // Unpacked Chrome package (inside |temp_path|)
+   const raw_ref<const base::FilePath> src_path;
+   // Working directory used during install/update
+@@ -36,6 +38,7 @@ struct InstallParams : public ModifyParams {
+                 InstallationState& installation_state,
+                 const base::FilePath& setup_path,
+                 const base::Version& current_version,
++                const base::FilePath& archive_path,
+                 const base::FilePath& src_path,
+                 const base::FilePath& temp_path,
+                 const base::Version& new_version)
+@@ -43,6 +46,7 @@ struct InstallParams : public ModifyParams {
+                      installation_state,
+                      setup_path,
+                      current_version),
++        archive_path(archive_path),
+         src_path(src_path),
+         temp_path(temp_path),
+         new_version(new_version) {}
+diff --git a/chrome/installer/setup/install_worker.cc b/chrome/installer/setup/install_worker.cc
+index 3393a297bb712..e92470fe15e08 100644
+--- a/chrome/installer/setup/install_worker.cc
++++ b/chrome/installer/setup/install_worker.cc
+@@ -85,6 +85,7 @@ void AddInstallerCopyTasks(const InstallParams& install_params,
+ 
+   const InstallerState& installer_state = *install_params.installer_state;
+   const base::FilePath& setup_path = *install_params.setup_path;
++  const base::FilePath& archive_path = *install_params.archive_path;
+   const base::FilePath& temp_path = *install_params.temp_path;
+   const base::Version& new_version = *install_params.new_version;
+ 
+@@ -106,6 +107,25 @@ void AddInstallerCopyTasks(const InstallParams& install_params,
+     install_list->AddCopyTreeWorkItem(setup_path, active_setup_exe, temp_path,
+                                       WorkItem::ALWAYS);
+   }
++
++  base::FilePath archive_dst(installer_dir.Append(archive_path.BaseName()));
++  if (archive_path != archive_dst) {
++    // In the past, we copied rather than moved for system level installs so
++    // that the permissions of %ProgramFiles% would be picked up.  Now that
++    // |temp_path| is in %ProgramFiles% for system level installs (and in
++    // %LOCALAPPDATA% otherwise), there is no need to do this for the archive.
++    // Setup.exe, on the other hand, is created elsewhere so it must always be
++    // copied.
++    if (temp_path.IsParent(archive_path)) {
++      install_list->AddMoveTreeWorkItem(archive_path, archive_dst, temp_path,
++                                        WorkItem::ALWAYS_MOVE);
++    } else {
++      // This may occur when setup is run out of an existing installation
++      // directory. We cannot remove the system-level archive.
++      install_list->AddCopyTreeWorkItem(archive_path, archive_dst, temp_path,
++                                        WorkItem::ALWAYS);
++    }
++  }
+ }
+ 
+ // A callback invoked by |work_item| that adds firewall rules for Chrome. Rules
+@@ -202,6 +222,7 @@ void AddDeleteUninstallEntryForMSIWorkItems(
+ void AddChromeWorkItems(const InstallParams& install_params,
+                         WorkItemList* install_list) {
+   const InstallerState& installer_state = *install_params.installer_state;
++  const base::FilePath& archive_path = *install_params.archive_path;
+   const base::FilePath& src_path = *install_params.src_path;
+   const base::FilePath& temp_path = *install_params.temp_path;
+   const base::Version& current_version = *install_params.current_version;
+@@ -210,17 +231,21 @@ void AddChromeWorkItems(const InstallParams& install_params,
+   const base::FilePath& target_path = installer_state.target_path();
+ 
+   if (current_version.IsValid()) {
+-    // TODO(crbug.com/441478433): Delete this cleanup some time in 2027.
+     // Delete the archive from an existing install to save some disk space.
+     base::FilePath old_installer_dir(
+         installer_state.GetInstallerDirectory(current_version));
+     base::FilePath old_archive(
+         old_installer_dir.Append(installer::kChromeArchive));
+-    auto* delete_old_archive_work_item =
+-        install_list->AddDeleteTreeWorkItem(old_archive, temp_path);
+-    // Don't cause failure of |install_list| if this WorkItem fails.
+-    delete_old_archive_work_item->set_best_effort(true);
+-    delete_old_archive_work_item->set_rollback_enabled(false);
++    // Don't delete the archive that we are actually installing from.
++    if (archive_path != old_archive) {
++      auto* delete_old_archive_work_item =
++          install_list->AddDeleteTreeWorkItem(old_archive, temp_path);
++      // Don't cause failure of |install_list| if this WorkItem fails.
++      delete_old_archive_work_item->set_best_effort(true);
++      // No need to roll this back; if installation fails we'll be moved to the
++      // "-full" channel anyway.
++      delete_old_archive_work_item->set_rollback_enabled(false);
++    }
+   }
+ 
+   // Delete any new_chrome.exe if present (we will end up creating a new one
+diff --git a/chrome/installer/setup/install_worker_unittest.cc b/chrome/installer/setup/install_worker_unittest.cc
+index 6574446d32395..eb2b61894e725 100644
+--- a/chrome/installer/setup/install_worker_unittest.cc
++++ b/chrome/installer/setup/install_worker_unittest.cc
+@@ -256,6 +256,8 @@ class InstallWorkerTest : public testing::Test {
+     // Don't bother ensuring that these paths exist. Since we're just
+     // building the work item lists and not running them, they shouldn't
+     // actually be touched.
++    archive_path_ =
++        base::FilePath(L"C:\\UnlikelyPath\\Temp\\chrome_123\\chrome.7z");
+     src_path_ = base::FilePath(
+         L"C:\\UnlikelyPath\\Temp\\chrome_123\\source\\Chrome-bin");
+     setup_path_ =
+@@ -266,6 +268,7 @@ class InstallWorkerTest : public testing::Test {
+  protected:
+   std::unique_ptr<base::Version> current_version_;
+   std::unique_ptr<base::Version> new_version_;
++  base::FilePath archive_path_;
+   base::FilePath setup_path_;
+   base::FilePath src_path_;
+   base::FilePath temp_dir_;
+@@ -319,8 +322,8 @@ TEST_F(InstallWorkerTest, TestInstallChromeSystem) {
+   const base::Version current_version(
+       installer_state->GetCurrentVersion(*installation_state));
+   installer::InstallParams install_params = {
+-      *installer_state, *installation_state, setup_path_,   current_version,
+-      src_path_,        temp_dir_,           *new_version_,
++      *installer_state, *installation_state, setup_path_, current_version,
++      archive_path_,    src_path_,           temp_dir_,   *new_version_,
+   };
+ 
+   // Set up expectations for setup.exe's on-os-upgrade handler.
+diff --git a/chrome/installer/setup/setup_main.cc b/chrome/installer/setup/setup_main.cc
+index bf5b9a610a7cd..c2e0c6a76aaf2 100644
+--- a/chrome/installer/setup/setup_main.cc
++++ b/chrome/installer/setup/setup_main.cc
+@@ -68,6 +68,7 @@
+ #include "chrome/common/chrome_switches.h"
+ #include "chrome/install_static/install_details.h"
+ #include "chrome/install_static/install_util.h"
++#include "chrome/installer/setup/archive_patch_helper.h"
+ #include "chrome/installer/setup/brand_behaviors.h"
+ #include "chrome/installer/setup/configure_app_container_sandbox.h"
+ #include "chrome/installer/setup/downgrade_cleanup.h"
+@@ -666,9 +667,10 @@ installer::InstallStatus InstallProducts(InstallationState& original_state,
+                                          InstallerState* installer_state) {
+   DCHECK(installer_state);
+   installer::InstallStatus install_status = installer::UNKNOWN_STATUS;
++  installer::ArchiveType archive_type = installer::UNKNOWN_ARCHIVE_TYPE;
+   installer_state->SetStage(installer::PRECONDITIONS);
+-  // Remove any legacy "-full" values from the product's "ap" value.
+-  installer::UpdateInstallStatus();
++  // Remove any legacy "-stage:*" values from the product's "ap" value.
++  installer::UpdateInstallStatus(archive_type, install_status);
+ 
+   // Drop to background processing mode if the process was started below the
+   // normal process priority class. This is done here because InstallProducts-
+@@ -680,8 +682,9 @@ installer::InstallStatus InstallProducts(InstallationState& original_state,
+   if (CheckPreInstallConditions(original_state, *installer_state,
+                                 &install_status)) {
+     VLOG(1) << "Installing to " << installer_state->target_path().value();
+-    install_status = InstallProductsHelper(original_state, setup_exe, cmd_line,
+-                                           prefs, *installer_state);
++    install_status =
++        InstallProductsHelper(original_state, setup_exe, cmd_line, prefs,
++                              *installer_state, &archive_type);
+   } else {
+     // CheckPreInstallConditions must set the status on failure.
+     DCHECK_NE(install_status, installer::UNKNOWN_STATUS);
+@@ -701,6 +704,8 @@ installer::InstallStatus InstallProducts(InstallationState& original_state,
+     }
+   }
+ 
++  UpdateInstallStatus(archive_type, install_status);
++
+   return install_status;
+ }
+ 
+@@ -923,7 +928,43 @@ bool HandleNonInstallCmdLineOptions(installer::ModifyParams& modify_params,
+   bool handled = true;
+   // TODO(tommi): Split these checks up into functions and use a data driven
+   // map of switch->function.
+-  if (cmd_line.HasSwitch(installer::switches::kShowEula)) {
++  if (cmd_line.HasSwitch(installer::switches::kUpdateSetupExe)) {
++    installer_state->SetStage(installer::UPDATING_SETUP);
++    installer::InstallStatus status = installer::SETUP_PATCH_FAILED;
++    // If --update-setup-exe command line option is given, we apply the given
++    // patch to current exe, and store the resulting binary in the path
++    // specified by --new-setup-exe. But we need to first unpack the file
++    // given in --update-setup-exe.
++
++    const base::FilePath compressed_archive(
++        cmd_line.GetSwitchValuePath(installer::switches::kUpdateSetupExe));
++    VLOG(1) << "Opening archive " << compressed_archive.value();
++    // The top unpack failure result with 28 days aggregation (>=0.01%)
++    // Setup.Install.LzmaUnPackResult_SetupExePatch
++    // 0.02% PATH_NOT_FOUND
++    //
++    // More information can also be found with metric:
++    // Setup.Install.LzmaUnPackNTSTATUS_SetupExePatch
++
++    // We use the `new_setup_exe` directory as the working directory for
++    // `ArchivePatchHelper::UncompressAndPatch`. For System installs, this
++    // directory would be under %ProgramFiles% (a directory that only admins can
++    // write to by default) and hence a secure location.
++    const base::FilePath new_setup_exe(
++        cmd_line.GetSwitchValuePath(installer::switches::kNewSetupExe));
++    if (installer::ArchivePatchHelper::UncompressAndPatch(
++            new_setup_exe.DirName(), compressed_archive, setup_exe,
++            new_setup_exe, installer::UnPackConsumer::SETUP_EXE_PATCH)) {
++      status = installer::NEW_VERSION_UPDATED;
++    }
++
++    *exit_code = InstallUtil::GetInstallReturnCode(status);
++    if (*exit_code) {
++      LOG(WARNING) << "setup.exe patching failed.";
++      installer_state->WriteInstallerResult(status, IDS_SETUP_PATCH_FAILED_BASE,
++                                            nullptr);
++    }
++  } else if (cmd_line.HasSwitch(installer::switches::kShowEula)) {
+     // Check if we need to show the EULA. If it is passed as a command line
+     // then the dialog is shown and regardless of the outcome setup exits here.
+     std::wstring inner_frame =
+@@ -1190,7 +1231,9 @@ InstallStatus InstallProductsHelper(InstallationState& original_state,
+                                     const base::FilePath& setup_exe,
+                                     const base::CommandLine& cmd_line,
+                                     const InitialPreferences& prefs,
+-                                    InstallerState& installer_state) {
++                                    InstallerState& installer_state,
++                                    ArchiveType* archive_type) {
++  DCHECK(archive_type);
+   const bool system_install = installer_state.system_install();
+ 
+   // Create a temp folder where we will unpack Chrome archive. If it fails,
+@@ -1204,8 +1247,10 @@ InstallStatus InstallProductsHelper(InstallationState& original_state,
+     return TEMP_DIR_FAILED;
+   }
+ 
+-  RETURN_IF_ERROR(UnpackChromeArchive(unpack_path, original_state, setup_exe,
+-                                      cmd_line, installer_state));
++  base::FilePath uncompressed_archive;
++  RETURN_IF_ERROR(UnpackAndMaybePatchChromeArchive(
++      unpack_path, original_state, setup_exe, cmd_line, installer_state,
++      archive_type, uncompressed_archive));
+ 
+   VLOG(1) << "unpacked to " << unpack_path.value();
+ 
+@@ -1243,9 +1288,9 @@ InstallStatus InstallProductsHelper(InstallationState& original_state,
+       const base::Version current_version(
+           installer_state.GetCurrentVersion(original_state));
+       InstallParams install_params = {
+-          installer_state,    original_state, setup_exe,
+-          current_version,    src_path,       temp_path.path(),
+-          *installer_version,
++          installer_state,  original_state,       setup_exe,
++          current_version,  uncompressed_archive, src_path,
++          temp_path.path(), *installer_version,
+       };
+ 
+       install_status =
+diff --git a/chrome/installer/setup/setup_main.h b/chrome/installer/setup/setup_main.h
+index 389c7a75f2a87..ed60f080117f1 100644
+--- a/chrome/installer/setup/setup_main.h
++++ b/chrome/installer/setup/setup_main.h
+@@ -22,14 +22,15 @@ class InitialPreferences;
+ 
+ // Helper function that performs the installation of a set of products.
+ // |installer_directory|, if non-nullptr, is populated with the path to the
+-// directory containing the newly installed setup.exe. delegated_to_existing|
+-// is set to |true| if installation was delegated to a pre-existing higher
+-// version.
++// directory containing the newly installed setup.exe. |archive_type| is
++// populated with the type of archive found. |delegated_to_existing| is set to
++// |true| if installation was delegated to a pre-existing higher version.
+ InstallStatus InstallProductsHelper(InstallationState& original_state,
+                                     const base::FilePath& setup_exe,
+                                     const base::CommandLine& cmd_line,
+                                     const InitialPreferences& prefs,
+-                                    InstallerState& installer_state);
++                                    InstallerState& installer_state,
++                                    ArchiveType* archive_type);
+ 
+ }  // namespace installer
+ 
+diff --git a/chrome/installer/setup/setup_util.cc b/chrome/installer/setup/setup_util.cc
+index d4d580493fa59..7ea39a93b45e4 100644
+--- a/chrome/installer/setup/setup_util.cc
++++ b/chrome/installer/setup/setup_util.cc
+@@ -164,6 +164,39 @@ base::Version* GetMaxVersionFromArchiveDir(const base::FilePath& chrome_path) {
+   return (version_found ? max_version.release() : nullptr);
+ }
+ 
++base::FilePath FindArchiveToPatch(const InstallationState& original_state,
++                                  const InstallerState& installer_state,
++                                  const base::Version& desired_version) {
++  if (desired_version.IsValid()) {
++    base::FilePath archive(
++        installer_state.GetInstallerDirectory(desired_version)
++            .Append(kChromeArchive));
++    return base::PathExists(archive) ? archive : base::FilePath();
++  }
++
++  // Check based on the version number advertised to Google Update, since that
++  // is the value used to select a specific differential update. If an archive
++  // can't be found using that, fallback to using the newest version present.
++  base::FilePath patch_source;
++  const ProductState* product =
++      original_state.GetProductState(installer_state.system_install());
++  if (product) {
++    patch_source = installer_state.GetInstallerDirectory(product->version())
++                       .Append(installer::kChromeArchive);
++    if (base::PathExists(patch_source))
++      return patch_source;
++  }
++  std::unique_ptr<base::Version> version(
++      installer::GetMaxVersionFromArchiveDir(installer_state.target_path()));
++  if (version) {
++    patch_source = installer_state.GetInstallerDirectory(*version).Append(
++        installer::kChromeArchive);
++    if (base::PathExists(patch_source))
++      return patch_source;
++  }
++  return base::FilePath();
++}
++
+ bool DeleteFileFromTempProcess(const base::FilePath& path,
+                                uint32_t delay_before_delete_ms) {
+   static const wchar_t kRunDll32Path[] =
+diff --git a/chrome/installer/setup/setup_util.h b/chrome/installer/setup/setup_util.h
+index 2f16e5d079208..9e02196b40da8 100644
+--- a/chrome/installer/setup/setup_util.h
++++ b/chrome/installer/setup/setup_util.h
+@@ -31,6 +31,7 @@ class Version;
+ 
+ namespace installer {
+ 
++class InstallationState;
+ class InstallerState;
+ class InitialPreferences;
+ 
+@@ -49,6 +50,13 @@ enum UnPackConsumer {
+ // Returns the maximum version found or nullptr if no version is found.
+ base::Version* GetMaxVersionFromArchiveDir(const base::FilePath& chrome_path);
+ 
++// Returns the uncompressed archive of the installed version that serves as the
++// source for patching.  If |desired_version| is valid, only the path to that
++// version will be returned, or empty if it doesn't exist.
++base::FilePath FindArchiveToPatch(const InstallationState& original_state,
++                                  const InstallerState& installer_state,
++                                  const base::Version& desired_version);
++
+ // Spawns a new process that waits for a specified amount of time before
+ // attempting to delete |path|.  This is useful for setup to delete the
+ // currently running executable or a file that we cannot close right away but
+diff --git a/chrome/installer/setup/setup_util_unittest.cc b/chrome/installer/setup/setup_util_unittest.cc
+index 507b388af009b..0949d9f867015 100644
+--- a/chrome/installer/setup/setup_util_unittest.cc
++++ b/chrome/installer/setup/setup_util_unittest.cc
+@@ -374,6 +374,167 @@ TEST(SetupUtilTest, DeleteDowngradeVersion) {
+   ASSERT_FALSE(InstallUtil::GetDowngradeVersion());
+ }
+ 
++namespace {
++
++// A test fixture that configures an InstallationState and an InstallerState
++// with a product being updated.
++class FindArchiveToPatchTest : public testing::Test {
++ public:
++  FindArchiveToPatchTest(const FindArchiveToPatchTest&) = delete;
++  FindArchiveToPatchTest& operator=(const FindArchiveToPatchTest&) = delete;
++
++ protected:
++  class FakeInstallationState : public installer::InstallationState {};
++
++  class FakeProductState : public installer::ProductState {
++   public:
++    static FakeProductState* FromProductState(const ProductState* product) {
++      return static_cast<FakeProductState*>(const_cast<ProductState*>(product));
++    }
++
++    void set_version(const base::Version& version) {
++      if (version.IsValid())
++        version_ = std::make_unique<base::Version>(version);
++      else
++        version_.reset();
++    }
++
++    void set_uninstall_command(const base::CommandLine& uninstall_command) {
++      uninstall_command_ = uninstall_command;
++    }
++  };
++
++  FindArchiveToPatchTest() = default;
++
++  void SetUp() override {
++    ASSERT_TRUE(test_dir_.CreateUniqueTempDir());
++    ASSERT_NO_FATAL_FAILURE(
++        registry_override_manager_.OverrideRegistry(HKEY_CURRENT_USER));
++    ASSERT_NO_FATAL_FAILURE(
++        registry_override_manager_.OverrideRegistry(HKEY_LOCAL_MACHINE));
++    product_version_ = base::Version("30.0.1559.0");
++    max_version_ = base::Version("47.0.1559.0");
++
++    // Install the product according to the version.
++    original_state_ = std::make_unique<FakeInstallationState>();
++    InstallProduct();
++
++    // Prepare to update the product in the temp dir.
++    installer_state_ = std::make_unique<installer::InstallerState>(
++        kSystemInstall_ ? installer::InstallerState::SYSTEM_LEVEL
++                        : installer::InstallerState::USER_LEVEL);
++    installer_state_->set_target_path_for_testing(test_dir_.GetPath());
++
++    // Create archives in the two version dirs.
++    ASSERT_TRUE(
++        base::CreateDirectory(GetProductVersionArchivePath().DirName()));
++    ASSERT_TRUE(base::WriteFile(GetProductVersionArchivePath(), "a"));
++    ASSERT_TRUE(base::CreateDirectory(GetMaxVersionArchivePath().DirName()));
++    ASSERT_TRUE(base::WriteFile(GetMaxVersionArchivePath(), "b"));
++  }
++
++  void TearDown() override { original_state_.reset(); }
++
++  base::FilePath GetArchivePath(const base::Version& version) const {
++    return test_dir_.GetPath()
++        .AppendASCII(version.GetString())
++        .Append(installer::kInstallerDir)
++        .Append(installer::kChromeArchive);
++  }
++
++  base::FilePath GetMaxVersionArchivePath() const {
++    return GetArchivePath(max_version_);
++  }
++
++  base::FilePath GetProductVersionArchivePath() const {
++    return GetArchivePath(product_version_);
++  }
++
++  void InstallProduct() {
++    FakeProductState* product = FakeProductState::FromProductState(
++        original_state_->GetNonVersionedProductState(kSystemInstall_));
++
++    product->set_version(product_version_);
++    base::CommandLine uninstall_command(
++        test_dir_.GetPath()
++            .AppendASCII(product_version_.GetString())
++            .Append(installer::kInstallerDir)
++            .Append(installer::kSetupExe));
++    uninstall_command.AppendSwitch(installer::switches::kUninstall);
++    product->set_uninstall_command(uninstall_command);
++  }
++
++  void UninstallProduct() {
++    FakeProductState::FromProductState(
++        original_state_->GetNonVersionedProductState(kSystemInstall_))
++        ->set_version(base::Version());
++  }
++
++  static const bool kSystemInstall_;
++  base::ScopedTempDir test_dir_;
++  base::Version product_version_;
++  base::Version max_version_;
++  std::unique_ptr<FakeInstallationState> original_state_;
++  std::unique_ptr<installer::InstallerState> installer_state_;
++
++ private:
++  registry_util::RegistryOverrideManager registry_override_manager_;
++};
++
++const bool FindArchiveToPatchTest::kSystemInstall_ = false;
++
++}  // namespace
++
++// Test that the path to the advertised product version is found.
++TEST_F(FindArchiveToPatchTest, ProductVersionFound) {
++  base::FilePath patch_source(installer::FindArchiveToPatch(
++      *original_state_, *installer_state_, base::Version()));
++  EXPECT_EQ(GetProductVersionArchivePath().value(), patch_source.value());
++}
++
++// Test that the path to the max version is found if the advertised version is
++// missing.
++TEST_F(FindArchiveToPatchTest, MaxVersionFound) {
++  // The patch file is absent.
++  ASSERT_TRUE(base::DeleteFile(GetProductVersionArchivePath()));
++  base::FilePath patch_source(installer::FindArchiveToPatch(
++      *original_state_, *installer_state_, base::Version()));
++  EXPECT_EQ(GetMaxVersionArchivePath().value(), patch_source.value());
++
++  // The product doesn't appear to be installed, so the max version is found.
++  UninstallProduct();
++  patch_source = installer::FindArchiveToPatch(
++      *original_state_, *installer_state_, base::Version());
++  EXPECT_EQ(GetMaxVersionArchivePath().value(), patch_source.value());
++}
++
++// Test that an empty path is returned if no version is found.
++TEST_F(FindArchiveToPatchTest, NoVersionFound) {
++  // The product doesn't appear to be installed and no archives are present.
++  UninstallProduct();
++  ASSERT_TRUE(base::DeleteFile(GetProductVersionArchivePath()));
++  ASSERT_TRUE(base::DeleteFile(GetMaxVersionArchivePath()));
++
++  base::FilePath patch_source(installer::FindArchiveToPatch(
++      *original_state_, *installer_state_, base::Version()));
++  EXPECT_EQ(base::FilePath::StringType(), patch_source.value());
++}
++
++TEST_F(FindArchiveToPatchTest, DesiredVersionFound) {
++  base::FilePath patch_source1(installer::FindArchiveToPatch(
++      *original_state_, *installer_state_, product_version_));
++  EXPECT_EQ(GetProductVersionArchivePath().value(), patch_source1.value());
++  base::FilePath patch_source2(installer::FindArchiveToPatch(
++      *original_state_, *installer_state_, max_version_));
++  EXPECT_EQ(GetMaxVersionArchivePath().value(), patch_source2.value());
++}
++
++TEST_F(FindArchiveToPatchTest, DesiredVersionNotFound) {
++  base::FilePath patch_source(installer::FindArchiveToPatch(
++      *original_state_, *installer_state_, base::Version("1.2.3.4")));
++  EXPECT_EQ(base::FilePath().value(), patch_source.value());
++}
++
+ TEST(SetupUtilTest, ContainsUnsupportedSwitch) {
+   EXPECT_FALSE(installer::ContainsUnsupportedSwitch(
+       base::CommandLine::FromString(L"foo.exe")));
+diff --git a/chrome/installer/setup/unpack_archive.cc b/chrome/installer/setup/unpack_archive.cc
+index 564547f24ef30..1f4f4f77b3c72 100644
+--- a/chrome/installer/setup/unpack_archive.cc
++++ b/chrome/installer/setup/unpack_archive.cc
+@@ -7,6 +7,8 @@
+ 
+ #include "chrome/installer/setup/unpack_archive.h"
+ 
++#include <memory>
++
+ #include "base/check.h"
+ #include "base/check_op.h"
+ #include "base/command_line.h"
+@@ -16,6 +18,7 @@
+ #include "base/types/expected.h"
+ #include "base/types/expected_macros.h"
+ #include "base/version.h"
++#include "chrome/installer/setup/archive_patch_helper.h"
+ #include "chrome/installer/setup/installer_state.h"
+ #include "chrome/installer/setup/setup_constants.h"
+ #include "chrome/installer/setup/setup_util.h"
+@@ -27,15 +30,59 @@ namespace installer {
+ 
+ namespace {
+ 
+-// Workhorse for producing an uncompressed archive (chrome.7z) given a
+-// chrome.packed.7z containing the full uncompressed archive. Returns the path
+-// to the uncompressed archive, or an error. In the error case, the result is
+-// wrriten to registry (via WriteInstallerResult).
+-base::expected<base::FilePath, InstallStatus> UncompressChromeArchive(
+-    const base::FilePath& compressed_archive,
++// Returns nullptr if no compressed archive is available for processing,
++// otherwise returns a patch helper configured to uncompress and patch.
++std::unique_ptr<ArchivePatchHelper> CreateChromeArchiveHelper(
++    const base::FilePath& setup_exe,
++    const base::FilePath& install_archive,
++    const InstallerState& installer_state,
+     const base::FilePath& working_directory,
+-    const InstallerState& installer_state) {
++    UnPackConsumer consumer) {
++  // A compressed archive is ordinarily given on the command line by the mini
++  // installer. If one was not given, look for chrome.packed.7z next to the
++  // running program.
++  base::FilePath compressed_archive =
++      install_archive.empty()
++          ? setup_exe.DirName().Append(kChromeCompressedArchive)
++          : install_archive;
++
++  // Fail if no compressed archive is found.
++  if (!base::PathExists(compressed_archive)) {
++    LOG_IF(ERROR, !install_archive.empty())
++        << switches::kInstallArchive << "=" << compressed_archive.value()
++        << " not found.";
++    return nullptr;
++  }
++
++  // chrome.7z is either extracted directly from the compressed archive into the
++  // working dir or is the target of patching in the working dir.
++  base::FilePath target(working_directory.Append(kChromeArchive));
++  DCHECK(!base::PathExists(target));
++
++  // Specify an empty path for the patch source since it isn't yet known that
++  // one is needed. It will be supplied in UncompressAndPatchChromeArchive if it
++  // is.
++  return std::make_unique<ArchivePatchHelper>(
++      working_directory, compressed_archive, base::FilePath(), target,
++      consumer);
++}
++
++}  // namespace
++
++// Workhorse for producing an uncompressed archive (chrome.7z) given a
++// chrome.packed.7z containing either a patch file based on the version of
++// chrome being updated or the full uncompressed archive. Returns true on
++// success, in which case |archive_type| is populated based on what was found.
++// Returns false on failure, in which case |install_status| contains the error
++// code and the result is written to the registry (via WriteInstallerResult).
++base::expected<void, InstallStatus> UncompressAndPatchChromeArchive(
++    const InstallationState& original_state,
++    const InstallerState& installer_state,
++    ArchivePatchHelper* archive_helper,
++    ArchiveType* archive_type,
++    const base::Version& previous_version) {
+   installer_state.SetStage(UNCOMPRESSING);
++
+   // UMA tells us the following about the time required for uncompression as of
+   // M75:
+   // --- Foreground (<10%) ---
+@@ -63,32 +110,63 @@ base::expected<base::FilePath, InstallStatus> UncompressChromeArchive(
+   // More information can also be found with metrics:
+   // Setup.Install.LzmaUnPackNTSTATUS_CompressedChromeArchive
+   // Setup.Install.LzmaUnPackNTSTATUS_ChromeArchivePatch
+-  base::FilePath output_file;
+-  UnPackStatus unpack_status =
+-      UnPackArchive(compressed_archive, working_directory, &output_file);
+-  RecordUnPackMetrics(unpack_status, UnPackConsumer::COMPRESSED_CHROME_ARCHIVE);
+-  if (unpack_status != UNPACK_NO_ERROR) {
++  if (!archive_helper->Uncompress(nullptr)) {
+     installer_state.WriteInstallerResult(
+         UNCOMPRESSION_FAILED, IDS_INSTALL_UNCOMPRESSION_FAILED_BASE, nullptr);
+     return base::unexpected(UNCOMPRESSION_FAILED);
+   }
+-  return base::ok(output_file);
+-}
+ 
+-}  // namespace
++  // Short-circuit if uncompression produced the uncompressed archive rather
++  // than a patch file.
++  if (base::PathExists(archive_helper->target())) {
++    *archive_type = FULL_ARCHIVE_TYPE;
++    return base::ok();
++  }
++
++  // Find the installed version's archive to serve as the source for patching.
++  base::FilePath patch_source(
++      FindArchiveToPatch(original_state, installer_state, previous_version));
++  if (patch_source.empty()) {
++    LOG(ERROR) << "Failed to find archive to patch.";
++    installer_state.WriteInstallerResult(DIFF_PATCH_SOURCE_MISSING,
++                                         IDS_INSTALL_UNCOMPRESSION_FAILED_BASE,
++                                         nullptr);
++    return base::unexpected(DIFF_PATCH_SOURCE_MISSING);
++  }
++  archive_helper->set_patch_source(patch_source);
++
++  // UMA tells us the following about the time required for patching as of M75:
++  // --- Foreground ---
++  //   12s (50%ile) / 3-6m (99%ile)
++  // --- Background ---
++  //   1m (50%ile) / >60m (99%ile)
++  installer_state.SetStage(PATCHING);
++  if (!archive_helper->ApplyAndDeletePatch()) {
++    installer_state.WriteInstallerResult(APPLY_DIFF_PATCH_FAILED,
++                                         IDS_INSTALL_UNCOMPRESSION_FAILED_BASE,
++                                         nullptr);
++    return base::unexpected(APPLY_DIFF_PATCH_FAILED);
++  }
++
++  *archive_type = INCREMENTAL_ARCHIVE_TYPE;
++  return base::ok();
++}
+ 
+-base::expected<base::FilePath, InstallStatus> UnpackChromeArchive(
++base::expected<void, InstallStatus> UnpackAndMaybePatchChromeArchive(
+     const base::FilePath& unpack_path,
+     InstallationState& original_state,
+     const base::FilePath& setup_exe,
+     const base::CommandLine& cmd_line,
+-    const InstallerState& installer_state) {
++    const InstallerState& installer_state,
++    ArchiveType* archive_type,
++    base::FilePath& uncompressed_archive) {
++  *archive_type = UNKNOWN_ARCHIVE_TYPE;
+   base::FilePath install_archive =
+       cmd_line.GetSwitchValuePath(switches::kInstallArchive);
+   // If this is an uncompressed installation then pass the uncompressed
+   // chrome.7z directly, so the chrome.packed.7z unpacking step will be
+   // bypassed.
+-  base::FilePath uncompressed_archive =
++  uncompressed_archive =
+       cmd_line.GetSwitchValuePath(switches::kUncompressedArchive);
+   if (!install_archive.empty() || uncompressed_archive.empty()) {
+     if (!uncompressed_archive.empty()) {
+@@ -97,26 +175,26 @@ base::expected<base::FilePath, InstallStatus> UnpackChromeArchive(
+              "provided. This is unsupported. Please provide one archive.";
+       return base::unexpected(UNSUPPORTED_OPTION);
+     }
++    base::Version previous_version;
++    if (cmd_line.HasSwitch(switches::kPreviousVersion)) {
++      previous_version = base::Version(
++          cmd_line.GetSwitchValueASCII(switches::kPreviousVersion));
++    }
+ 
+-    // A compressed archive is ordinarily given on the command line by the mini
+-    // installer. If one was not given, look for chrome.packed.7z next to the
+-    // running program.
+-    base::FilePath compressed_archive =
+-        install_archive.empty()
+-            ? setup_exe.DirName().Append(kChromeCompressedArchive)
+-            : install_archive;
+-
+-    // Uncompress if a compressed archive exists.
+-    if (base::PathExists(compressed_archive)) {
++    std::unique_ptr<ArchivePatchHelper> archive_helper(
++        CreateChromeArchiveHelper(
++            setup_exe, install_archive, installer_state, unpack_path,
++            (previous_version.IsValid()
++                 ? UnPackConsumer::CHROME_ARCHIVE_PATCH
++                 : UnPackConsumer::COMPRESSED_CHROME_ARCHIVE)));
++    if (archive_helper) {
+       VLOG(1) << "Installing Chrome from compressed archive "
+-              << compressed_archive;
+-      ASSIGN_OR_RETURN(uncompressed_archive,
+-                       UncompressChromeArchive(compressed_archive, unpack_path,
+-                                               installer_state));
+-    } else {
+-      LOG_IF(ERROR, !install_archive.empty())
+-          << switches::kInstallArchive << "=" << compressed_archive
+-          << " not found.";
++              << archive_helper->compressed_archive().value();
++      RETURN_IF_ERROR(UncompressAndPatchChromeArchive(
++          original_state, installer_state, archive_helper.get(), archive_type,
++          previous_version));
++      uncompressed_archive = archive_helper->target();
++      DCHECK(!uncompressed_archive.empty());
+     }
+   }
+ 
+@@ -124,12 +202,18 @@ base::expected<base::FilePath, InstallStatus> UnpackChromeArchive(
+   // was not given or generated.
+   if (uncompressed_archive.empty()) {
+     uncompressed_archive = setup_exe.DirName().Append(kChromeArchive);
+-    if (base::PathExists(uncompressed_archive)) {
++  }
++
++  if (*archive_type == UNKNOWN_ARCHIVE_TYPE) {
++    // An archive was not uncompressed or patched above.
++    if (uncompressed_archive.empty() ||
++        !base::PathExists(uncompressed_archive)) {
+       LOG(ERROR) << "Cannot install Chrome without an uncompressed archive.";
+       installer_state.WriteInstallerResult(
+           INVALID_ARCHIVE, IDS_INSTALL_INVALID_ARCHIVE_BASE, nullptr);
+       return base::unexpected(INVALID_ARCHIVE);
+     }
++    *archive_type = FULL_ARCHIVE_TYPE;
+   }
+ 
+   // Unpack the uncompressed archive.
+@@ -160,7 +244,7 @@ base::expected<base::FilePath, InstallStatus> UnpackChromeArchive(
+         UNPACKING_FAILED, IDS_INSTALL_UNCOMPRESSION_FAILED_BASE, nullptr);
+     return base::unexpected(UNPACKING_FAILED);
+   }
+-  return base::ok(uncompressed_archive);
++  return base::ok();
+ }
+ 
+ }  // namespace installer
+diff --git a/chrome/installer/setup/unpack_archive.h b/chrome/installer/setup/unpack_archive.h
+index debb8f6917b10..377cda68cdbe4 100644
+--- a/chrome/installer/setup/unpack_archive.h
++++ b/chrome/installer/setup/unpack_archive.h
+@@ -18,16 +18,19 @@ namespace installer {
+ class InstallationState;
+ class InstallerState;
+ 
+-// Declares the unpack function needed to unpack compressed and uncompressed
+-// archives in setup.exe. Uncompress the archive if an uncompressed archive was
+-// not specified on the command line and a compressed archive is found. On
+-// success, returns the path to the uncompressed archive.
+-base::expected<base::FilePath, InstallStatus> UnpackChromeArchive(
++// Declares the unpack function needed to unpack compressed and
++// uncompressed archives in setup.exe. Uncompress and optionally patch the
++// archive if an uncompressed archive was not specified on the command line and
++// a compressed archive is found. On success, `uncompressed_archive` will be
++// given the full path to the uncompressed archive.
++base::expected<void, InstallStatus> UnpackAndMaybePatchChromeArchive(
+     const base::FilePath& unpack_path,
+     InstallationState& original_state,
+     const base::FilePath& setup_exe,
+     const base::CommandLine& cmd_line,
+-    const InstallerState& installer_state);
++    const InstallerState& installer_state,
++    ArchiveType* archive_type,
++    base::FilePath& uncompressed_archive);
+ 
+ }  // namespace installer
+ 
+diff --git a/chrome/installer/setup/unpack_archive_unittest.cc b/chrome/installer/setup/unpack_archive_unittest.cc
+index bf8999a5a9fd6..c7138befa8a8c 100644
+--- a/chrome/installer/setup/unpack_archive_unittest.cc
++++ b/chrome/installer/setup/unpack_archive_unittest.cc
+@@ -12,7 +12,6 @@
+ #include "base/files/file_util.h"
+ #include "base/files/scoped_temp_dir.h"
+ #include "base/path_service.h"
+-#include "base/test/gmock_expected_support.h"
+ #include "base/types/expected.h"
+ #include "chrome/installer/setup/installer_state.h"
+ #include "chrome/installer/util/installation_state.h"
+@@ -86,13 +85,15 @@ TEST_P(SetupUnpackArchiveTest, UnpackArchive) {
+   base::CommandLine cmd_line = base::CommandLine::FromString(L"setup.exe");
+   cmd_line.AppendSwitchPath(GetParam().archive_switch, chrome_archive);
+   FakeInstallerState installer_state;
++  ArchiveType archive_type;
++  base::FilePath uncompressed_chrome_archive_out;
+ 
+-  ASSERT_THAT(
+-      UnpackChromeArchive(
+-          temp_dir.GetPath(), original_state,
+-          base::FilePath(),  // Unused when archive is provided via cmd_line.
+-          cmd_line, installer_state),
+-      base::test::HasValue());
++  base::expected<void, InstallStatus> result = UnpackAndMaybePatchChromeArchive(
++      temp_dir.GetPath(), original_state,
++      base::FilePath(),  // Unused when archive is provided via cmd_line.
++      cmd_line, installer_state, &archive_type,
++      uncompressed_chrome_archive_out);
++  ASSERT_TRUE(result.has_value()) << result.error();
+ 
+   // Instead of containing "chrome-bin", the test archives contain this
+   // "test_data.txt". Make sure the output file exists and matches the test
+@@ -102,6 +103,12 @@ TEST_P(SetupUnpackArchiveTest, UnpackArchive) {
+                                          FILE_PATH_LITERAL("test_data.txt"))),
+                                      &actual_installer_data));
+   EXPECT_STREQ(actual_installer_data.c_str(), "fakechromiumdata");
++
++  EXPECT_EQ(uncompressed_chrome_archive_out,
++            GetParam().uncompressed_output_matches_input_file
++                ? chrome_archive
++                : temp_dir.GetPath().Append(FILE_PATH_LITERAL("chrome.7z")));
++  ASSERT_EQ(archive_type, ArchiveType::FULL_ARCHIVE_TYPE);
+ }
+ 
+ TEST(SetupUnpackArchiveTest, UnpackFailsWhenCompressedAndUncompressedProvided) {
+@@ -117,13 +124,16 @@ TEST(SetupUnpackArchiveTest, UnpackFailsWhenCompressedAndUncompressedProvided) {
+       "uncompressed-archive",
+       GetTestFileRootPath().Append(FILE_PATH_LITERAL("test_chrome.7z")));
+   FakeInstallerState installer_state;
+-
+-  EXPECT_THAT(
+-      UnpackChromeArchive(
+-          temp_dir.GetPath(), original_state,
+-          base::FilePath(),  // Unused when archive is provided via cmd_line.
+-          cmd_line, installer_state),
+-      base::test::ErrorIs(InstallStatus::UNSUPPORTED_OPTION));
++  ArchiveType archive_type;
++  base::FilePath uncompressed_chrome_archive_out;
++
++  base::expected<void, InstallStatus> result = UnpackAndMaybePatchChromeArchive(
++      temp_dir.GetPath(), original_state,
++      base::FilePath(),  // Unused when archive is provided via cmd_line.
++      cmd_line, installer_state, &archive_type,
++      uncompressed_chrome_archive_out);
++  ASSERT_FALSE(result.has_value());
++  ASSERT_EQ(result.error(), UNSUPPORTED_OPTION);
+ }
+ 
+ }  // namespace installer
+diff --git a/chrome/installer/util/google_update_settings.cc b/chrome/installer/util/google_update_settings.cc
+index aa6e966d2ca32..255428eb7df8f 100644
+--- a/chrome/installer/util/google_update_settings.cc
++++ b/chrome/installer/util/google_update_settings.cc
+@@ -429,9 +429,16 @@ bool GoogleUpdateSettings::ClearReferral() {
+   return ClearGoogleUpdateStrKey(google_update::kRegReferralField);
+ }
+ 
+-void GoogleUpdateSettings::UpdateInstallStatus() {
++void GoogleUpdateSettings::UpdateInstallStatus(
++    bool system_install,
++    installer::ArchiveType archive_type,
++    int install_return_code) {
++  DCHECK(archive_type != installer::UNKNOWN_ARCHIVE_TYPE ||
++         install_return_code != 0);
++
+   installer::AdditionalParameters additional_parameters;
+-  if (UpdateGoogleUpdateApKey(additional_parameters) &&
++  if (UpdateGoogleUpdateApKey(archive_type, install_return_code,
++                              &additional_parameters) &&
+       !additional_parameters.Commit()) {
+     PLOG(ERROR) << "Failed to write to application's ClientState key "
+                 << google_update::kRegApField << " = "
+@@ -453,14 +460,36 @@ void GoogleUpdateSettings::SetProgress(bool system_install,
+ }
+ 
+ bool GoogleUpdateSettings::UpdateGoogleUpdateApKey(
+-    installer::AdditionalParameters& additional_parameters) {
+-  if (additional_parameters.SetFullSuffix(false)) {
+-    VLOG(1) << "Removed incremental installer failure key; "
+-               "switching to channel: "
+-            << additional_parameters.value();
+-    return true;
++    installer::ArchiveType archive_type,
++    int install_return_code,
++    installer::AdditionalParameters* additional_parameters) {
++  DCHECK(archive_type != installer::UNKNOWN_ARCHIVE_TYPE ||
++         install_return_code != 0);
++  bool modified = false;
++
++  if (archive_type == installer::FULL_ARCHIVE_TYPE || !install_return_code) {
++    if (additional_parameters->SetFullSuffix(false)) {
++      VLOG(1) << "Removed incremental installer failure key; "
++                 "switching to channel: "
++              << additional_parameters->value();
++      modified = true;
++    }
++  } else if (archive_type == installer::INCREMENTAL_ARCHIVE_TYPE) {
++    if (additional_parameters->SetFullSuffix(true)) {
++      VLOG(1) << "Incremental installer failed; switching to channel: "
++              << additional_parameters->value();
++      modified = true;
++    } else {
++      VLOG(1) << "Incremental installer failure; already on channel: "
++              << additional_parameters->value();
++    }
++  } else {
++    // It's okay if we don't know the archive type.  In this case, leave the
++    // "-full" suffix as we found it.
++    DCHECK_EQ(installer::UNKNOWN_ARCHIVE_TYPE, archive_type);
+   }
+-  return false;
++
++  return modified;
+ }
+ 
+ GoogleUpdateSettings::UpdatePolicy GoogleUpdateSettings::GetAppUpdatePolicy(
+diff --git a/chrome/installer/util/google_update_settings.h b/chrome/installer/util/google_update_settings.h
+index e7371900b8af3..88e381ed47612 100644
+--- a/chrome/installer/util/google_update_settings.h
++++ b/chrome/installer/util/google_update_settings.h
+@@ -179,9 +179,18 @@ class GoogleUpdateSettings {
+   // true if this operation succeeded.
+   static bool ClearReferral();
+ 
+-  // This method unconditionally clears legacy "-full" modifiers from the
+-  // Google Update "ap" key.
+-  static void UpdateInstallStatus();
++  // This method changes the Google Update "ap" value to move the installation
++  // on to or off of one of the recovery channels.
++  // - If incremental installer fails we append a magic string ("-full"), if
++  // it is not present already, so that Google Update server next time will send
++  // full installer to update Chrome on the local machine
++  // - If we are currently running full installer, we remove this magic
++  // string (if it is present) regardless of whether installer failed or not.
++  // There is no fall-back for full installer :)
++  // - Unconditionally clear a legacy "-stage:" modifier.
++  static void UpdateInstallStatus(bool system_install,
++                                  installer::ArchiveType archive_type,
++                                  int install_return_code);
+ 
+   // Sets the InstallerProgress value in the registry so that Google Update can
+   // provide informative user feedback. |path| is the full path to the app's
+@@ -191,9 +200,24 @@ class GoogleUpdateSettings {
+                           const std::wstring& path,
+                           int progress);
+ 
+-  // This method unconditionally clears legacy "-full" modifiers from |value|.
++  // This method updates the value for Google Update "ap" key for Chrome
++  // based on whether we are doing incremental install (or not) and whether
++  // the install succeeded.
++  // - If install worked, remove the magic string (if present).
++  // - If incremental installer failed, append a magic string (if
++  //   not present already).
++  // - If full installer failed, still remove this magic
++  //   string (if it is present already).
++  // Additionally, any legacy ""-stage:*" values are
++  // unconditionally removed.
++  //
++  // archive_type: tells whether this is incremental install or not.
++  // install_return_code: if 0, means installation was successful.
++  // value: current value of Google Update "ap" key.
+   // Returns true if |value| is modified.
+-  static bool UpdateGoogleUpdateApKey(installer::AdditionalParameters& value);
++  static bool UpdateGoogleUpdateApKey(installer::ArchiveType archive_type,
++                                      int install_return_code,
++                                      installer::AdditionalParameters* value);
+ 
+   // Returns the effective update policy for |app_guid| as dictated by
+   // Group Policy settings.  |is_overridden|, if non-nullptr, is populated with
+diff --git a/chrome/installer/util/google_update_settings_unittest.cc b/chrome/installer/util/google_update_settings_unittest.cc
+index 64cc1564eb4ed..7469d83d376ec 100644
+--- a/chrome/installer/util/google_update_settings_unittest.cc
++++ b/chrome/installer/util/google_update_settings_unittest.cc
+@@ -173,41 +173,74 @@ class GoogleUpdateSettingsTest : public testing::Test {
+ 
+ }  // namespace
+ 
+-// Run through all combinations success and failure results, and a fistful
+-// of initial "ap" values checking that the expected final "ap" value is
+-// generated by GoogleUpdateSettings::UpdateGoogleUpdateApKey.
++// Run through all combinations of diff vs. full install, success and failure
++// results, and a fistful of initial "ap" values checking that the expected
++// final "ap" value is generated by
++// GoogleUpdateSettings::UpdateGoogleUpdateApKey.
+ TEST_F(GoogleUpdateSettingsTest, UpdateGoogleUpdateApKey) {
++  const installer::ArchiveType archive_types[] = {
++      installer::UNKNOWN_ARCHIVE_TYPE, installer::FULL_ARCHIVE_TYPE,
++      installer::INCREMENTAL_ARCHIVE_TYPE};
+   const int results[] = {installer::FIRST_INSTALL_SUCCESS,
+                          installer::INSTALL_FAILED};
+   const wchar_t* const plain[] = {L"", L"1.1", L"1.1-dev"};
+   const wchar_t* const full[] = {L"-full", L"1.1-full", L"1.1-dev-full"};
+   static_assert(std::size(full) == std::size(plain), "bad full array size");
+   const wchar_t* const* input_arrays[] = {plain, full};
+-  for (const int result : results) {
+-    SCOPED_TRACE(
+-        ::testing::Message()
+-        << "result="
+-        << (result == installer::FIRST_INSTALL_SUCCESS ? "SUCCESS" : "FAILED"));
+-    const wchar_t* const* outputs = plain;
+-
+-    for (const wchar_t* const* inputs : input_arrays) {
+-      for (size_t input_idx = 0; input_idx < std::size(plain); ++input_idx) {
+-        const wchar_t* input = inputs[input_idx];
+-        const wchar_t* output = outputs[input_idx];
+-        SCOPED_TRACE(::testing::Message() << "input=\"" << input << "\"");
+-        SCOPED_TRACE(::testing::Message() << "output=\"" << output << "\"");
+-
+-        std::unique_ptr<WorkItemList> work_item_list(
+-            WorkItem::CreateWorkItemList());
+-
+-        ASSERT_TRUE(CreateApKey(work_item_list.get(), input));
+-        installer::AdditionalParameters ap;
+-        if (std::wstring_view(output) == ap.value()) {
+-          EXPECT_FALSE(GoogleUpdateSettings::UpdateGoogleUpdateApKey(ap));
+-        } else {
+-          EXPECT_TRUE(GoogleUpdateSettings::UpdateGoogleUpdateApKey(ap));
++  for (const installer::ArchiveType archive_type : archive_types) {
++    SCOPED_TRACE(::testing::Message()
++                 << "archive_type="
++                 << (archive_type == installer::UNKNOWN_ARCHIVE_TYPE
++                         ? "UNKNOWN"
++                         : (archive_type == installer::FULL_ARCHIVE_TYPE
++                                ? "FULL"
++                                : "INCREMENTAL")));
++    for (const int result : results) {
++      SCOPED_TRACE(::testing::Message()
++                   << "result="
++                   << (result == installer::FIRST_INSTALL_SUCCESS ? "SUCCESS"
++                                                                  : "FAILED"));
++      // The archive type will/must always be known on install success.
++      if (archive_type == installer::UNKNOWN_ARCHIVE_TYPE &&
++          result == installer::FIRST_INSTALL_SUCCESS) {
++        continue;
++      }
++      const wchar_t* const* outputs = nullptr;
++      if (result == installer::FIRST_INSTALL_SUCCESS ||
++          archive_type == installer::FULL_ARCHIVE_TYPE) {
++        outputs = plain;
++      } else if (archive_type == installer::INCREMENTAL_ARCHIVE_TYPE) {
++        outputs = full;
++      }  // else if (archive_type == UNKNOWN) see below
++
++      for (const wchar_t* const* inputs : input_arrays) {
++        if (archive_type == installer::UNKNOWN_ARCHIVE_TYPE) {
++          // "-full" is untouched if the archive type is unknown.
++          if (inputs == full)
++            outputs = full;
++          else
++            outputs = plain;
++        }
++        for (size_t input_idx = 0; input_idx < std::size(plain); ++input_idx) {
++          const wchar_t* input = inputs[input_idx];
++          const wchar_t* output = outputs[input_idx];
++          SCOPED_TRACE(::testing::Message() << "input=\"" << input << "\"");
++          SCOPED_TRACE(::testing::Message() << "output=\"" << output << "\"");
++
++          std::unique_ptr<WorkItemList> work_item_list(
++              WorkItem::CreateWorkItemList());
++
++          ASSERT_TRUE(CreateApKey(work_item_list.get(), input));
++          installer::AdditionalParameters ap;
++          if (std::wstring_view(output) == ap.value()) {
++            EXPECT_FALSE(GoogleUpdateSettings::UpdateGoogleUpdateApKey(
++                archive_type, result, &ap));
++          } else {
++            EXPECT_TRUE(GoogleUpdateSettings::UpdateGoogleUpdateApKey(
++                archive_type, result, &ap));
++          }
++          EXPECT_STREQ(output, ap.value());
+         }
+-        EXPECT_STREQ(output, ap.value());
+       }
+     }
+   }
+@@ -215,9 +248,39 @@ TEST_F(GoogleUpdateSettingsTest, UpdateGoogleUpdateApKey) {
+ 
+ TEST_F(GoogleUpdateSettingsTest, UpdateInstallStatusTest) {
+   std::unique_ptr<WorkItemList> work_item_list(WorkItem::CreateWorkItemList());
++  // Test incremental install failure
++  ASSERT_TRUE(CreateApKey(work_item_list.get(), L""))
++      << "Failed to create ap key.";
++  GoogleUpdateSettings::UpdateInstallStatus(
++      false, installer::INCREMENTAL_ARCHIVE_TYPE, installer::INSTALL_FAILED);
++  EXPECT_STREQ(ReadApKeyValue().c_str(), L"-full");
++  work_item_list->Rollback();
++
++  work_item_list.reset(WorkItem::CreateWorkItemList());
++  // Test incremental install success
++  ASSERT_TRUE(CreateApKey(work_item_list.get(), L""))
++      << "Failed to create ap key.";
++  GoogleUpdateSettings::UpdateInstallStatus(false,
++                                            installer::INCREMENTAL_ARCHIVE_TYPE,
++                                            installer::FIRST_INSTALL_SUCCESS);
++  EXPECT_STREQ(ReadApKeyValue().c_str(), L"");
++  work_item_list->Rollback();
++
++  work_item_list.reset(WorkItem::CreateWorkItemList());
++  // Test full install failure
++  ASSERT_TRUE(CreateApKey(work_item_list.get(), L"-full"))
++      << "Failed to create ap key.";
++  GoogleUpdateSettings::UpdateInstallStatus(false, installer::FULL_ARCHIVE_TYPE,
++                                            installer::INSTALL_FAILED);
++  EXPECT_STREQ(ReadApKeyValue().c_str(), L"");
++  work_item_list->Rollback();
++
++  work_item_list.reset(WorkItem::CreateWorkItemList());
++  // Test full install success
+   ASSERT_TRUE(CreateApKey(work_item_list.get(), L"-full"))
+       << "Failed to create ap key.";
+-  GoogleUpdateSettings::UpdateInstallStatus();
++  GoogleUpdateSettings::UpdateInstallStatus(false, installer::FULL_ARCHIVE_TYPE,
++                                            installer::FIRST_INSTALL_SUCCESS);
+   EXPECT_STREQ(ReadApKeyValue().c_str(), L"");
+   work_item_list->Rollback();
+ 
+@@ -235,9 +298,17 @@ TEST_F(GoogleUpdateSettingsTest, UpdateInstallStatusTest) {
+   } else if (key.DeleteValue(google_update::kRegApField) == ERROR_SUCCESS) {
+     ap_key_deleted = true;
+   }
+-  GoogleUpdateSettings::UpdateInstallStatus();
++  // try differential installer
++  GoogleUpdateSettings::UpdateInstallStatus(
++      false, installer::INCREMENTAL_ARCHIVE_TYPE, installer::INSTALL_FAILED);
++  EXPECT_STREQ(ReadApKeyValue().c_str(), L"-full");
++  // try full installer now
++  GoogleUpdateSettings::UpdateInstallStatus(false, installer::FULL_ARCHIVE_TYPE,
++                                            installer::INSTALL_FAILED);
+   EXPECT_STREQ(ReadApKeyValue().c_str(), L"");
+   // Now cleanup to leave the system in unchanged state.
++  // - Diff installer creates an ap key if it didn't exist, so delete this ap
++  // key
+   // - If we created any reg key path for ap, roll it back
+   // - Finally restore the original value of ap key.
+   if (key.Open(HKEY_CURRENT_USER, reg_key.c_str(),
+diff --git a/chrome/installer/util/prebuild/create_installer_string_rc.py b/chrome/installer/util/prebuild/create_installer_string_rc.py
+index b1495d54d477c..6f9d09b43b9a7 100755
+--- a/chrome/installer/util/prebuild/create_installer_string_rc.py
++++ b/chrome/installer/util/prebuild/create_installer_string_rc.py
+@@ -27,6 +27,7 @@ STRING_IDS = [
+   'IDS_PRODUCT_DESCRIPTION',
+   'IDS_PRODUCT_NAME',
+   'IDS_SAME_VERSION_REPAIR_FAILED',
++  'IDS_SETUP_PATCH_FAILED',
+   'IDS_SHORTCUT_NEW_WINDOW',
+   'IDS_SHORTCUT_TOOLTIP',
+   'IDS_TRACING_SERVICE_DESCRIPTION',
+diff --git a/chrome/installer/util/util_constants.cc b/chrome/installer/util/util_constants.cc
+index 45e4ccfb248b6..a92f0ce9e1cfc 100644
+--- a/chrome/installer/util/util_constants.cc
++++ b/chrome/installer/util/util_constants.cc
+@@ -103,12 +103,21 @@ const char kMakeChromeDefault[] = "make-chrome-default";
+ // Tells installer to expect to be run as a subsidiary to an MSI.
+ const char kMsi[] = "msi";
+ 
++// Useful only when used with --update-setup-exe; otherwise ignored. Specifies
++// the full path where the updated setup.exe will be written. Any other files
++// created in the indicated directory may be deleted by the caller after process
++// termination.
++const char kNewSetupExe[] = "new-setup-exe";
++
+ // Specifies a nonce to use with the rotate device key command.
+ const char kNonce[] = "nonce";
+ 
+ // Notify the installer that the OS has been upgraded.
+ const char kOnOsUpgrade[] = "on-os-upgrade";
+ 
++// Provide the previous version that patch is for.
++const char kPreviousVersion[] = "previous-version";
++
+ // Requests that setup attempt to reenable autoupdates for Chrome.
+ const char kReenableAutoupdates[] = "reenable-autoupdates";
+ 
+@@ -166,6 +175,11 @@ const char kTriggerActiveSetup[] = "trigger-active-setup";
+ // If present, setup will uninstall chrome.
+ const char kUninstall[] = "uninstall";
+ 
++// Also see --new-setup-exe. This command line option specifies a diff patch
++// that setup.exe will apply to itself and store the resulting binary in the
++// path given by --new-setup-exe.
++const char kUpdateSetupExe[] = "update-setup-exe";
++
+ // Enable verbose logging (info level).
+ const char kVerboseLogging[] = "verbose-logging";
+ 
+diff --git a/chrome/installer/util/util_constants.h b/chrome/installer/util/util_constants.h
+index aa736392a7060..20d445fcd1a02 100644
+--- a/chrome/installer/util/util_constants.h
++++ b/chrome/installer/util/util_constants.h
+@@ -29,11 +29,11 @@ enum InstallStatus {
+   USER_LEVEL_INSTALL_EXISTS = 5,  // User level install already exists.
+   SYSTEM_LEVEL_INSTALL_EXISTS = 6,  // Machine level install already exists.
+   INSTALL_FAILED = 7,               // Install/update failed.
+-  // SETUP_PATCH_FAILED = 8,        // Failed to patch setup.exe.
+-  OS_NOT_SUPPORTED = 9,       // Current OS not supported.
+-  OS_ERROR = 10,              // OS API call failed.
+-  TEMP_DIR_FAILED = 11,       // Unable to get Temp directory.
+-  UNCOMPRESSION_FAILED = 12,  // Failed to uncompress Chrome archive.
++  SETUP_PATCH_FAILED = 8,           // Failed to patch setup.exe.
++  OS_NOT_SUPPORTED = 9,             // Current OS not supported.
++  OS_ERROR = 10,                    // OS API call failed.
++  TEMP_DIR_FAILED = 11,             // Unable to get Temp directory.
++  UNCOMPRESSION_FAILED = 12,        // Failed to uncompress Chrome archive.
+   INVALID_ARCHIVE = 13,       // Something wrong with the installer archive.
+   INSUFFICIENT_RIGHTS = 14,   // User trying system level install is not Admin.
+   CHROME_NOT_INSTALLED = 15,  // Chrome not installed (returned in case of
+@@ -70,7 +70,7 @@ enum InstallStatus {
+   // CONFLICTING_CHANNEL_EXISTS = 39,
+   // READY_MODE_REQUIRES_CHROME = 40,
+   // APP_HOST_REQUIRES_MULTI_INSTALL = 41,
+-  // APPLY_DIFF_PATCH_FAILED = 42,  // Failed to apply a diff patch.
++  APPLY_DIFF_PATCH_FAILED = 42,  // Failed to apply a diff patch.
+   // INCONSISTENT_UPDATE_POLICY = 43,
+   // APP_HOST_REQUIRES_USER_LEVEL = 44,
+   // APP_HOST_REQUIRES_BINARIES = 45,
+@@ -78,10 +78,10 @@ enum InstallStatus {
+   INVALID_STATE_FOR_OPTION = 47,  // A non-install option was called with an
+                                   // invalid installer state.
+   // WAIT_FOR_EXISTING_FAILED = 48,
+-  // PATCH_INVALID_ARGUMENTS = 49,    // The arguments of --patch were missing
+-  // or they were invalid for any reason.
+-  // DIFF_PATCH_SOURCE_MISSING = 50,  // No previous version archive found for
+-  // differential update.
++  PATCH_INVALID_ARGUMENTS = 49,    // The arguments of --patch were missing or
++                                   // they were invalid for any reason.
++  DIFF_PATCH_SOURCE_MISSING = 50,  // No previous version archive found for
++                                   // differential update.
+   // UNUSED_BINARIES = 51,
+   // UNUSED_BINARIES_UNINSTALLED = 52,
+   UNSUPPORTED_OPTION = 53,          // An unsupported legacy option was given.
+@@ -135,13 +135,23 @@ enum InstallStatus {
+                             // the SetupInstallResult enum in enums.xml.
+ };
+ 
++// The type of an update archive.
++enum ArchiveType {
++  UNKNOWN_ARCHIVE_TYPE,     // Unknown or uninitialized.
++  FULL_ARCHIVE_TYPE,        // Full chrome.7z archive.
++  INCREMENTAL_ARCHIVE_TYPE  // Incremental or differential archive.
++};
++
+ // Stages of an installation from which a progress indication is derived.
+-// Generally listed in the order in which they are reached, except that
+-// ROLLINGBACK may occur throughout in case of error.
++// Generally listed in the order in which they are reached. The exceptions to
++// this are the fork-and-join for diff vs. full installers (where there are
++// additional (costly) stages for the former) and rollback in case of error.
+ enum InstallerStage {
+   NO_STAGE,                  // No stage to report.
++  UPDATING_SETUP,            // Patching setup.exe with differential update.
+   PRECONDITIONS,             // Evaluating pre-install conditions.
+   UNCOMPRESSING,             // Uncompressing chrome.packed.7z.
++  PATCHING,                  // Patching chrome.7z with differential update.
+   UNPACKING,                 // Unpacking chrome.7z.
+   CREATING_VISUAL_MANIFEST,  // Creating VisualElementsManifest.xml.
+   BUILDING,                  // Building the install work item list.
+diff --git a/chrome/test/mini_installer/config/chrome_beta_installed.prop b/chrome/test/mini_installer/config/chrome_beta_installed.prop
+index 08d603414732e..971ac773e46b3 100644
+--- a/chrome/test/mini_installer/config/chrome_beta_installed.prop
++++ b/chrome/test/mini_installer/config/chrome_beta_installed.prop
+@@ -10,6 +10,8 @@
+         {"exists": true},
+     "$LOCAL_APPDATA\\$CHROME_DIR_BETA\\Application\\$MINI_INSTALLER_FILE_VERSION\\chrome_wer.dll":
+         {"exists": true},
++    "$LOCAL_APPDATA\\$CHROME_DIR_BETA\\Application\\$MINI_INSTALLER_FILE_VERSION\\Installer\\chrome.7z":
++        {"exists": true},
+     "$LOCAL_APPDATA\\$CHROME_DIR_BETA\\Application\\$MINI_INSTALLER_FILE_VERSION\\Installer\\setup.exe":
+         {"exists": true},
+     "$LOCAL_APPDATA\\$CHROME_DIR_BETA\\Application\\$MINI_INSTALLER_FILE_VERSION\\IwaKeyDistribution\\iwa-key-distribution.pb":
+diff --git a/chrome/test/mini_installer/config/chrome_canary_installed.prop b/chrome/test/mini_installer/config/chrome_canary_installed.prop
+index 9a62390576e48..b8046ce0d4ab8 100644
+--- a/chrome/test/mini_installer/config/chrome_canary_installed.prop
++++ b/chrome/test/mini_installer/config/chrome_canary_installed.prop
+@@ -10,6 +10,8 @@
+         {"exists": true},
+     "$LOCAL_APPDATA\\$CHROME_DIR_SXS\\Application\\$MINI_INSTALLER_FILE_VERSION\\chrome_wer.dll":
+         {"exists": true},
++    "$LOCAL_APPDATA\\$CHROME_DIR_SXS\\Application\\$MINI_INSTALLER_FILE_VERSION\\Installer\\chrome.7z":
++        {"exists": true},
+     "$LOCAL_APPDATA\\$CHROME_DIR_SXS\\Application\\$MINI_INSTALLER_FILE_VERSION\\Installer\\setup.exe":
+         {"exists": true},
+     "$LOCAL_APPDATA\\$CHROME_DIR_SXS\\Application\\$MINI_INSTALLER_FILE_VERSION\\IwaKeyDistribution\\iwa-key-distribution.pb":
+diff --git a/chrome/test/mini_installer/config/chrome_dev_installed.prop b/chrome/test/mini_installer/config/chrome_dev_installed.prop
+index a4ca65ccd5db4..fd3fdc00647c0 100644
+--- a/chrome/test/mini_installer/config/chrome_dev_installed.prop
++++ b/chrome/test/mini_installer/config/chrome_dev_installed.prop
+@@ -10,6 +10,8 @@
+         {"exists": true},
+     "$LOCAL_APPDATA\\$CHROME_DIR_DEV\\Application\\$MINI_INSTALLER_FILE_VERSION\\chrome_wer.dll":
+         {"exists": true},
++    "$LOCAL_APPDATA\\$CHROME_DIR_DEV\\Application\\$MINI_INSTALLER_FILE_VERSION\\Installer\\chrome.7z":
++        {"exists": true},
+     "$LOCAL_APPDATA\\$CHROME_DIR_DEV\\Application\\$MINI_INSTALLER_FILE_VERSION\\Installer\\setup.exe":
+         {"exists": true},
+     "$LOCAL_APPDATA\\$CHROME_DIR_DEV\\Application\\$MINI_INSTALLER_FILE_VERSION\\IwaKeyDistribution\\iwa-key-distribution.pb":
+diff --git a/chrome/test/mini_installer/config/chrome_system_installed.prop b/chrome/test/mini_installer/config/chrome_system_installed.prop
+index 18a466afd3d3d..263a76c33c5d9 100644
+--- a/chrome/test/mini_installer/config/chrome_system_installed.prop
++++ b/chrome/test/mini_installer/config/chrome_system_installed.prop
+@@ -17,6 +17,8 @@
+       "condition": "'$CHROME_SHORT_NAME' != 'Chrome'",
+       "exists": false
+     },
++    "$PROGRAM_FILES\\$CHROME_DIR\\Application\\$MINI_INSTALLER_FILE_VERSION\\Installer\\chrome.7z":
++        {"exists": true},
+     "$PROGRAM_FILES\\$CHROME_DIR\\Application\\$MINI_INSTALLER_FILE_VERSION\\Installer\\setup.exe":
+         {"exists": true},
+     "$PROGRAM_FILES\\$CHROME_DIR\\Application\\$MINI_INSTALLER_FILE_VERSION\\IwaKeyDistribution\\iwa-key-distribution.pb":
+diff --git a/chrome/test/mini_installer/config/chrome_user_installed.prop b/chrome/test/mini_installer/config/chrome_user_installed.prop
+index 2030ef0e542f4..2dc6d7270e204 100644
+--- a/chrome/test/mini_installer/config/chrome_user_installed.prop
++++ b/chrome/test/mini_installer/config/chrome_user_installed.prop
+@@ -9,6 +9,8 @@
+         {"exists": true},
+     "$LOCAL_APPDATA\\$CHROME_DIR\\Application\\$MINI_INSTALLER_FILE_VERSION\\chrome_wer.dll":
+         {"exists": true},
++    "$LOCAL_APPDATA\\$CHROME_DIR\\Application\\$MINI_INSTALLER_FILE_VERSION\\Installer\\chrome.7z":
++        {"exists": true},
+     "$LOCAL_APPDATA\\$CHROME_DIR\\Application\\$MINI_INSTALLER_FILE_VERSION\\Installer\\setup.exe":
+         {"exists": true},
+     "$LOCAL_APPDATA\\$CHROME_DIR\\Application\\$MINI_INSTALLER_FILE_VERSION\\IwaKeyDistribution\\iwa-key-distribution.pb":
+diff --git a/chrome/test/mini_installer/config/previous_chrome_canary_installed.prop b/chrome/test/mini_installer/config/previous_chrome_canary_installed.prop
+index 3a1b382182f12..bfdb5a63c37e1 100644
+--- a/chrome/test/mini_installer/config/previous_chrome_canary_installed.prop
++++ b/chrome/test/mini_installer/config/previous_chrome_canary_installed.prop
+@@ -7,6 +7,7 @@
+     "$LOCAL_APPDATA\\$CHROME_DIR_SXS\\Application\\$PREVIOUS_VERSION_MINI_INSTALLER_FILE_VERSION\\chrome.dll": {"exists": true},
+     "$LOCAL_APPDATA\\$CHROME_DIR_SXS\\Application\\$PREVIOUS_VERSION_MINI_INSTALLER_FILE_VERSION\\chrome_elf.dll": {"exists": true},
+     "$LOCAL_APPDATA\\$CHROME_DIR_SXS\\Application\\$PREVIOUS_VERSION_MINI_INSTALLER_FILE_VERSION\\chrome_wer.dll": {"exists": true},
++    "$LOCAL_APPDATA\\$CHROME_DIR_SXS\\Application\\$PREVIOUS_VERSION_MINI_INSTALLER_FILE_VERSION\\Installer\\chrome.7z": {"exists": true},
+     "$LOCAL_APPDATA\\$CHROME_DIR_SXS\\Application\\$PREVIOUS_VERSION_MINI_INSTALLER_FILE_VERSION\\Installer\\setup.exe": {"exists": true},
+     "$LOCAL_APPDATA\\$CHROME_DIR_SXS\\Application\\$PREVIOUS_VERSION_MINI_INSTALLER_FILE_VERSION\\IwaKeyDistribution\\iwa-key-distribution.pb": {"exists": true},
+     "$LOCAL_APPDATA\\$CHROME_DIR_SXS\\Application\\$PREVIOUS_VERSION_MINI_INSTALLER_FILE_VERSION\\IwaKeyDistribution\\manifest.json": {"exists": true},
+diff --git a/chrome/test/mini_installer/config/previous_chrome_system_installed.prop b/chrome/test/mini_installer/config/previous_chrome_system_installed.prop
+index dec1277422d7f..3c3482ffc8010 100644
+--- a/chrome/test/mini_installer/config/previous_chrome_system_installed.prop
++++ b/chrome/test/mini_installer/config/previous_chrome_system_installed.prop
+@@ -17,6 +17,8 @@
+       "condition": "'$CHROME_SHORT_NAME' != 'Chrome'",
+       "exists": false
+     },
++    "$PROGRAM_FILES\\$CHROME_DIR\\Application\\$PREVIOUS_VERSION_MINI_INSTALLER_FILE_VERSION\\Installer\\chrome.7z":
++        {"exists": true},
+     "$PROGRAM_FILES\\$CHROME_DIR\\Application\\$PREVIOUS_VERSION_MINI_INSTALLER_FILE_VERSION\\Installer\\setup.exe":
+         {"exists": true},
+     "$PROGRAM_FILES\\$CHROME_DIR\\Application\\$PREVIOUS_VERSION_MINI_INSTALLER_FILE_VERSION\\IwaKeyDistribution\\iwa-key-distribution.pb":
+diff --git a/chrome/test/mini_installer/config/previous_chrome_user_installed.prop b/chrome/test/mini_installer/config/previous_chrome_user_installed.prop
+index 8ffac81c9966b..9f5de11e5286e 100644
+--- a/chrome/test/mini_installer/config/previous_chrome_user_installed.prop
++++ b/chrome/test/mini_installer/config/previous_chrome_user_installed.prop
+@@ -9,6 +9,8 @@
+         {"exists": true},
+     "$LOCAL_APPDATA\\$CHROME_DIR\\Application\\$PREVIOUS_VERSION_MINI_INSTALLER_FILE_VERSION\\chrome_wer.dll":
+         {"exists": true},
++    "$LOCAL_APPDATA\\$CHROME_DIR\\Application\\$PREVIOUS_VERSION_MINI_INSTALLER_FILE_VERSION\\Installer\\chrome.7z":
++        {"exists": true},
+     "$LOCAL_APPDATA\\$CHROME_DIR\\Application\\$PREVIOUS_VERSION_MINI_INSTALLER_FILE_VERSION\\Installer\\setup.exe":
+         {"exists": true},
+     "$LOCAL_APPDATA\\$CHROME_DIR\\Application\\$PREVIOUS_VERSION_MINI_INSTALLER_FILE_VERSION\\IwaKeyDistribution\\iwa-key-distribution.pb":
+diff --git a/third_party/bspatch/BUILD.gn b/third_party/bspatch/BUILD.gn
+new file mode 100644
+index 0000000000000..1d88f3c187e36
+--- /dev/null
++++ b/third_party/bspatch/BUILD.gn
+@@ -0,0 +1,17 @@
++# Copyright 2015 The Chromium Authors
++# Use of this source code is governed by a BSD-style license that can be
++# found in the LICENSE file.
++
++import("//third_party/bspatch/visibility.gni")
++
++source_set("bspatch") {
++  sources = [
++    "mbspatch.cc",
++    "mbspatch.h",
++  ]
++
++  configs -= [ "//build/config/compiler:chromium_code" ]
++  configs += [ "//build/config/compiler:no_chromium_code" ]
++
++  deps = [ "//third_party/lzma_sdk" ]
++}
+diff --git a/third_party/bspatch/DIR_METADATA b/third_party/bspatch/DIR_METADATA
+new file mode 100644
+index 0000000000000..165d888f9f445
+--- /dev/null
++++ b/third_party/bspatch/DIR_METADATA
+@@ -0,0 +1,6 @@
++monorail: {
++  component: "Internals>Installer"
++}
++buganizer_public: {
++  component_id: 1456937
++}
+diff --git a/third_party/bspatch/LICENSE b/third_party/bspatch/LICENSE
+new file mode 100644
+index 0000000000000..f2521d71cd6a6
+--- /dev/null
++++ b/third_party/bspatch/LICENSE
+@@ -0,0 +1,23 @@
++Copyright 2003,2004 Colin Percival
++All rights reserved
++
++Redistribution and use in source and binary forms, with or without
++modification, are permitted providing that the following conditions
++are met:
++1. Redistributions of source code must retain the above copyright
++   notice, this list of conditions and the following disclaimer.
++2. Redistributions in binary form must reproduce the above copyright
++   notice, this list of conditions and the following disclaimer in the
++   documentation and/or other materials provided with the distribution.
++
++THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
++IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
++WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
++ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
++DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
++DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
++OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
++HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
++STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
++IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
++POSSIBILITY OF SUCH DAMAGE.
+diff --git a/third_party/bspatch/OWNERS b/third_party/bspatch/OWNERS
+new file mode 100644
+index 0000000000000..de16560211a9b
+--- /dev/null
++++ b/third_party/bspatch/OWNERS
+@@ -0,0 +1 @@
++file://chrome/installer/OWNERS
+diff --git a/third_party/bspatch/README.chromium b/third_party/bspatch/README.chromium
+new file mode 100644
+index 0000000000000..31620eb74f631
+--- /dev/null
++++ b/third_party/bspatch/README.chromium
+@@ -0,0 +1,24 @@
++Name: bspatch
++URL: https://github.com/mozilla-services/services-central-legacy/tree/master/toolkit/mozapps/update/updater
++Version: N/A
++Revision: 465265d0d473d107b76e74d969199eaf2cdc8750
++Update Mechanism: Static.HardFork (https://crbug.com/422918425)
++License: BSD-2-Clause
++License File: LICENSE
++Security Critical: yes
++Shipped: yes
++
++Description:
++This is Chrome's locally patched copy of Colin Percival's bspatch tool
++(see ../bsdiff for the corresponding bsdiff tool).
++
++Originally obtained from Mozilla's local copy/fork of bspatch; see:
++
++The license is shared in common with bsdiff.
++
++Local changes include CRC32 verification and improvements in error handling.
++
++Update(08 Sep 08): Changed ApplyBinaryPatch to accept wchar_t paths
++instead of char paths.
++Update(12 May 13): Report error on MBS_ApplyPatch failure.
++Update(27 July 16): Improve validation of diffs.
+diff --git a/third_party/bspatch/mbspatch.cc b/third_party/bspatch/mbspatch.cc
+new file mode 100644
+index 0000000000000..d33ceeaafe82a
+--- /dev/null
++++ b/third_party/bspatch/mbspatch.cc
+@@ -0,0 +1,302 @@
++/*-
++ * Copyright 2003,2004 Colin Percival
++ * All rights reserved
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted providing that the following conditions
++ * are met:
++ * 1. Redistributions of source code must retain the above copyright
++ *    notice, this list of conditions and the following disclaimer.
++ * 2. Redistributions in binary form must reproduce the above copyright
++ *    notice, this list of conditions and the following disclaimer in the
++ *    documentation and/or other materials provided with the distribution.
++ *
++ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
++ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
++ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
++ * ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
++ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
++ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
++ * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
++ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
++ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
++ * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
++ * POSSIBILITY OF SUCH DAMAGE.
++ *
++ * Changelog:
++ * 2005-04-26 - Define the header as a C structure, add a CRC32 checksum to
++ *              the header, and make all the types 32-bit.
++ *                --Benjamin Smedberg <benjamin@smedbergs.us>
++ * 2007-11-14 - Added CalculateCrc() and ApplyBinaryPatch() methods.
++ *                --Rahul Kuchhal
++ * 2016-07-27 - Improve validation of diffs.
++ *                --Ricky Zhou
++ */
++
++#include "mbspatch.h"
++
++#include <sys/stat.h>
++#include <sys/types.h>
++#include <stdlib.h>
++#include <stdio.h>
++#include <fcntl.h>
++#include <string.h>
++#include <limits.h>
++
++#ifdef _WIN32
++# include <io.h>
++# include <winsock2.h>
++#else
++# include <unistd.h>
++# include <arpa/inet.h>
++#endif
++
++extern "C" {
++#include <7zCrc.h>
++}
++
++#ifndef SSIZE_MAX
++# define SSIZE_MAX LONG_MAX
++#endif
++
++int
++MBS_ReadHeader(int fd, MBSPatchHeader *header)
++{
++  int s = read(fd, header, sizeof(MBSPatchHeader));
++  if (s != sizeof(MBSPatchHeader))
++    return READ_ERROR;
++
++  header->slen      = ntohl(header->slen);
++  header->scrc32    = ntohl(header->scrc32);
++  header->dlen      = ntohl(header->dlen);
++  header->cblen     = ntohl(header->cblen);
++  header->difflen   = ntohl(header->difflen);
++  header->extralen  = ntohl(header->extralen);
++
++  struct stat hs;
++  s = fstat(fd, &hs);
++  if (s != 0)
++    return READ_ERROR;
++
++  if (memcmp(header->tag, "MBDIFF10", 8) != 0)
++    return UNEXPECTED_ERROR;
++
++  if (hs.st_size > INT_MAX)
++    return UNEXPECTED_ERROR;
++
++  size_t size = static_cast<size_t>(hs.st_size);
++  if (size < sizeof(MBSPatchHeader))
++    return UNEXPECTED_ERROR;
++  size -= sizeof(MBSPatchHeader);
++
++  if (size < header->cblen)
++    return UNEXPECTED_ERROR;
++  size -= header->cblen;
++
++  if (size < header->difflen)
++    return UNEXPECTED_ERROR;
++  size -= header->difflen;
++
++  if (size < header->extralen)
++    return UNEXPECTED_ERROR;
++  size -= header->extralen;
++
++  if (size != 0)
++    return UNEXPECTED_ERROR;
++
++  return OK;
++}
++
++int
++MBS_ApplyPatch(const MBSPatchHeader *header, int patchfd,
++               unsigned char *fbuffer, int filefd)
++{
++  unsigned char *fbufstart = fbuffer;
++  unsigned char *fbufend = fbuffer + header->slen;
++
++  unsigned char *buf = (unsigned char*) malloc(header->cblen +
++                                               header->difflen +
++                                               header->extralen);
++  if (!buf)
++    return MEM_ERROR;
++
++  int rv = OK;
++
++  int r = header->cblen + header->difflen + header->extralen;
++  unsigned char *wb = buf;
++  while (r) {
++    int c = read(patchfd, wb, (r > SSIZE_MAX) ? SSIZE_MAX : r);
++    if (c < 0) {
++      rv = READ_ERROR;
++      goto end;
++    }
++
++    r -= c;
++    wb += c;
++
++    if (c == 0 && r) {
++      rv = UNEXPECTED_ERROR;
++      goto end;
++    }
++  }
++
++  {
++    MBSPatchTriple *ctrlsrc = (MBSPatchTriple*) buf;
++    if (header->cblen % sizeof(MBSPatchTriple) != 0) {
++      rv = UNEXPECTED_ERROR;
++      goto end;
++    }
++
++    unsigned char *diffsrc = buf + header->cblen;
++    unsigned char *extrasrc = diffsrc + header->difflen;
++
++    MBSPatchTriple *ctrlend = (MBSPatchTriple*) diffsrc;
++    unsigned char *diffend = extrasrc;
++    unsigned char *extraend = extrasrc + header->extralen;
++
++    while (ctrlsrc < ctrlend) {
++      ctrlsrc->x = ntohl(ctrlsrc->x);
++      ctrlsrc->y = ntohl(ctrlsrc->y);
++      ctrlsrc->z = ntohl(ctrlsrc->z);
++
++#ifdef DEBUG_bsmedberg
++      printf("Applying block:\n"
++             " x: %u\n"
++             " y: %u\n"
++             " z: %i\n",
++             ctrlsrc->x,
++             ctrlsrc->y,
++             ctrlsrc->z);
++#endif
++
++      /* Add x bytes from oldfile to x bytes from the diff block */
++
++      if (ctrlsrc->x > static_cast<size_t>(fbufend - fbuffer) ||
++          ctrlsrc->x > static_cast<size_t>(diffend - diffsrc)) {
++        rv = UNEXPECTED_ERROR;
++        goto end;
++      }
++      for (unsigned int i = 0; i < ctrlsrc->x; ++i) {
++        diffsrc[i] += fbuffer[i];
++      }
++      if ((int) write(filefd, diffsrc, ctrlsrc->x) != ctrlsrc->x) {
++        rv = WRITE_ERROR;
++        goto end;
++      }
++      fbuffer += ctrlsrc->x;
++      diffsrc += ctrlsrc->x;
++
++      /* Copy y bytes from the extra block */
++
++      if (ctrlsrc->y > static_cast<size_t>(extraend - extrasrc)) {
++        rv = UNEXPECTED_ERROR;
++        goto end;
++      }
++      if ((int) write(filefd, extrasrc, ctrlsrc->y) != ctrlsrc->y) {
++        rv = WRITE_ERROR;
++        goto end;
++      }
++      extrasrc += ctrlsrc->y;
++
++      /* "seek" forwards in oldfile by z bytes */
++
++      if (ctrlsrc->z < fbufstart - fbuffer ||
++          ctrlsrc->z > fbufend - fbuffer) {
++        rv = UNEXPECTED_ERROR;
++        goto end;
++      }
++      fbuffer += ctrlsrc->z;
++
++      /* and on to the next control block */
++
++      ++ctrlsrc;
++    }
++  }
++
++end:
++  free(buf);
++  return rv;
++}
++
++int CalculateCrc(const unsigned char *buf, int size) {
++  CrcGenerateTable();
++  unsigned int crc = 0xffffffffL;
++  crc = ~CrcCalc(buf, size);
++  return crc;
++}
++
++/* _O_BINARY is a MSWindows open() mode flag.  When absent, MSWindows
++ * open() translates CR+LF to LF; when present, it passes bytes
++ * through faithfully.  Under *nix, we are always in binary mode, so
++ * the following #define turns this flag into a no-op w.r.t.  bitwise
++ * OR.  Note that this would be DANGEROUS AND UNSOUND if we used
++ * _O_BINARY other than as a bitwise OR mask (e.g., as a bitwise AND
++ * mask to check for binary mode), but it seems OK in the limited
++ * context of the following small function. */
++#ifndef _O_BINARY
++# define _O_BINARY 0
++#endif
++
++int ApplyBinaryPatch(const wchar_t *old_file, const wchar_t *patch_file,
++                     const wchar_t *new_file) {
++  int ret = OK;
++  int ofd = -1;
++  int nfd = -1;
++  unsigned char *buf = NULL;
++
++  int pfd = _wopen(patch_file, O_RDONLY | _O_BINARY);
++  if (pfd < 0) return READ_ERROR;
++
++  do {
++    MBSPatchHeader header;
++    if ((ret = MBS_ReadHeader(pfd, &header)))
++      break;
++
++    ofd = _wopen(old_file, O_RDONLY | _O_BINARY);
++    if (ofd < 0) {
++      ret = READ_ERROR;
++      break;
++    }
++
++    struct stat os;
++    if ((ret = fstat(ofd, &os))) {
++      ret = READ_ERROR;
++      break;
++    }
++
++    if (os.st_size != header.slen) {
++      ret = UNEXPECTED_ERROR;
++      break;
++    }
++
++    buf = (unsigned char*) malloc(header.slen);
++    if (!buf) {
++      ret = MEM_ERROR;
++      break;
++    }
++
++    if (read(ofd, buf, header.slen) != header.slen) {
++      ret = READ_ERROR;
++      break;
++    }
++
++    if (CalculateCrc(buf, header.slen) != header.scrc32) {
++      ret = CRC_ERROR;
++      break;
++    }
++
++    nfd = _wopen(new_file, O_WRONLY | O_TRUNC | O_CREAT | _O_BINARY);
++    if (nfd < 0) {
++      ret = READ_ERROR;
++      break;
++    }
++
++    ret = MBS_ApplyPatch(&header, pfd, buf, nfd);
++  } while (0);
++
++  free(buf);
++  close(pfd);
++  if (ofd >= 0) close(ofd);
++  if (nfd >= 0) close(nfd);
++  return ret;
++}
+diff --git a/third_party/bspatch/mbspatch.h b/third_party/bspatch/mbspatch.h
+new file mode 100644
+index 0000000000000..1a901d7c6ed30
+--- /dev/null
++++ b/third_party/bspatch/mbspatch.h
+@@ -0,0 +1,112 @@
++/*-
++ * Copyright 2003,2004 Colin Percival
++ * All rights reserved
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted providing that the following conditions
++ * are met:
++ * 1. Redistributions of source code must retain the above copyright
++ *    notice, this list of conditions and the following disclaimer.
++ * 2. Redistributions in binary form must reproduce the above copyright
++ *    notice, this list of conditions and the following disclaimer in the
++ *    documentation and/or other materials provided with the distribution.
++ *
++ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
++ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
++ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
++ * ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
++ * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
++ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
++ * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
++ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
++ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
++ * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
++ * POSSIBILITY OF SUCH DAMAGE.
++ *
++ * Changelog:
++ * 2005-04-26 - Define the header as a C structure, add a CRC32 checksum to
++ *              the header, and make all the types 32-bit.
++ *                --Benjamin Smedberg <benjamin@smedbergs.us>
++ */
++
++#ifndef bspatch_h__
++#define bspatch_h__
++
++#define OK 0
++#define MEM_ERROR 1
++// #define IO_ERROR 2  // Use READ_ERROR or WRITE_ERROR instead
++#define USAGE_ERROR 3
++#define CRC_ERROR 4
++#define PARSE_ERROR 5
++#define READ_ERROR 6
++#define WRITE_ERROR 7
++#define UNEXPECTED_ERROR 8
++
++typedef struct MBSPatchHeader_ {
++  /* "MBDIFF10" */
++  char tag[8];
++  
++  /* Length of the file to be patched */
++  unsigned int slen;
++
++  /* CRC32 of the file to be patched */
++  unsigned int scrc32;
++
++  /* Length of the result file */
++  unsigned int dlen;
++
++  /* Length of the control block in bytes */
++  unsigned int cblen;
++
++  /* Length of the diff block in bytes */
++  unsigned int difflen;
++
++  /* Length of the extra block in bytes */
++  unsigned int extralen;
++
++  /* Control block (MBSPatchTriple[]) */
++  /* Diff block (binary data) */
++  /* Extra block (binary data) */
++} MBSPatchHeader;
++
++/**
++ * Read the header of a patch file into the MBSPatchHeader structure.
++ *
++ * @param fd Must have been opened for reading, and be at the beginning
++ *           of the file.
++ */
++int MBS_ReadHeader(int fd, MBSPatchHeader *header);
++
++/**
++ * Apply a patch. This method does not validate the checksum of the original
++ * file: client code should validate the checksum before calling this method.
++ *
++ * @param patchfd Must have been processed by MBS_ReadHeader
++ * @param fbuffer The original file read into a memory buffer of length
++ *                header->slen.
++ * @param filefd  Must have been opened for writing. Should be truncated
++ *                to header->dlen if it is an existing file. The offset
++ *                should be at the beginning of the file.
++ */
++int MBS_ApplyPatch(const MBSPatchHeader *header, int patchfd,
++                   unsigned char *fbuffer, int filefd);
++
++typedef struct MBSPatchTriple_ {
++  unsigned int x; /* add x bytes from oldfile to x bytes from the diff block */
++  unsigned int y; /* copy y bytes from the extra block */
++  int z; /* seek forwards in oldfile by z bytes */
++} MBSPatchTriple;
++
++/**
++ * Apply the given patch file to a given source file. This method validates 
++ * the CRC of the original file stored in the patch file, before applying the 
++ * patch to it.
++ */
++int ApplyBinaryPatch(const wchar_t *old_file, const wchar_t *patch_file,
++                     const wchar_t *new_file);
++
++/**
++  * Calculates Crc of the given buffer by calling CRC method in LZMA SDK
++  */
++int CalculateCrc(const unsigned char *buf, int size);
++#endif  // bspatch_h__
+diff --git a/third_party/bspatch/visibility.gni b/third_party/bspatch/visibility.gni
+new file mode 100644
+index 0000000000000..937b436c91776
+--- /dev/null
++++ b/third_party/bspatch/visibility.gni
+@@ -0,0 +1,6 @@
++# bspatch is infrequently updated and rarely used. New additions to the below
++# list should be scrutinized.
++visibility = [
++  "//chrome/installer/setup/*",
++  "//third_party/bspatch",
++]
+-- 
+2.43.0
+

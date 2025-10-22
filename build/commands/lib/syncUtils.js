@@ -214,6 +214,12 @@ function syncChromium(program) {
   util.addGitExclusion(config.srcDir, 'brave/')
   util.writeJSON(latestSyncInfoFilePath, expectedSyncInfo)
 
+  if (syncWithForce) {
+    console.log('Apply commit patches after forced sync')
+    util.runGit(config.srcDir, ['am', 'brave/patches/commits/0001-Revert-windows-installer-mini_installer-patching-cle.patch'])
+    util.runGit(config.srcDir, ['am', 'brave/patches/commits/0002-Revert-windows-installer-Clean-up-installer-patching.patch'])
+  }
+
   const postSyncChromiumRef = util.getGitReadableLocalRef(config.srcDir)
   Log.status(`Chromium is now at ${postSyncChromiumRef || '[unknown]'}`)
   return true

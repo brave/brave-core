@@ -1,0 +1,745 @@
+From 588f494609e7a3d4f465ef25529ee8f3a48a2509 Mon Sep 17 00:00:00 2001
+From: Claudio DeSouza <cdesouza@brave.com>
+Date: Wed, 22 Oct 2025 06:13:45 +0100
+Subject: [PATCH 1/2] Revert "windows installer: mini_installer patching
+ cleanups"
+
+This reverts commit a4d120daa3b09272d0dfe4a7ce20157dc18cb74e.
+---
+ chrome/installer/mini_installer/BUILD.gn      |   5 +
+ .../installer/mini_installer/configuration.cc |  33 +++-
+ .../installer/mini_installer/configuration.h  |   9 +-
+ .../mini_installer/configuration_test.cc      |   2 +-
+ .../mini_installer/mini_installer.cc          | 185 +++++++++++++++++-
+ .../installer/mini_installer/mini_installer.h |   8 +-
+ .../mini_installer_constants.cc               |  13 ++
+ .../mini_installer/mini_installer_unittest.cc |  82 +++++++-
+ .../installer/mini_installer/mini_string.cc   |  38 ++++
+ chrome/installer/mini_installer/mini_string.h |  16 ++
+ .../mini_installer/mini_string_test.cc        |  16 ++
+ chrome/installer/mini_installer/regkey.cc     |   6 +
+ chrome/installer/mini_installer/regkey.h      |   3 +-
+ 13 files changed, 398 insertions(+), 18 deletions(-)
+
+diff --git a/chrome/installer/mini_installer/BUILD.gn b/chrome/installer/mini_installer/BUILD.gn
+index 93cfcfeffc0b7..8593aa90907b6 100644
+--- a/chrome/installer/mini_installer/BUILD.gn
++++ b/chrome/installer/mini_installer/BUILD.gn
+@@ -181,6 +181,11 @@ action("mini_installer_archive") {
+     "--build_time",
+     build_timestamp,
+ 
++    # Optional arguments to generate diff installer.
++    #'--last_chrome_installer=C:/Temp/base',
++    #'--setup_exe_format=DIFF',
++    #'--diff_algorithm=ZUCCHINI',
++
+     # Optional argument for verbose archiving output.
+     #"--verbose",
+   ]
+diff --git a/chrome/installer/mini_installer/configuration.cc b/chrome/installer/mini_installer/configuration.cc
+index f247568ff0331..a5fdecc832180 100644
+--- a/chrome/installer/mini_installer/configuration.cc
++++ b/chrome/installer/mini_installer/configuration.cc
+@@ -45,8 +45,9 @@ Configuration::~Configuration() {
+   Clear();
+ }
+ 
+-bool Configuration::Initialize() {
++bool Configuration::Initialize(HMODULE module) {
+   Clear();
++  ReadResources(module);
+   ReadRegistry();
+   return ParseCommandLine(::GetCommandLine());
+ }
+@@ -66,6 +67,7 @@ void Configuration::Clear() {
+   is_system_level_ = false;
+   has_invalid_switch_ = false;
+   should_delete_extracted_files_ = true;
++  previous_version_ = nullptr;
+ }
+ 
+ // |command_line| is shared with this instance in the sense that this
+@@ -100,6 +102,35 @@ bool Configuration::ParseCommandLine(const wchar_t* command_line) {
+   return true;
+ }
+ 
++void Configuration::ReadResources(HMODULE module) {
++  HRSRC resource_info_block =
++      FindResource(module, MAKEINTRESOURCE(ID_PREVIOUS_VERSION), RT_RCDATA);
++  if (!resource_info_block)
++    return;
++
++  HGLOBAL data_handle = LoadResource(module, resource_info_block);
++  if (!data_handle)
++    return;
++
++  // The data is a Unicode string, so it must be a multiple of two bytes.
++  DWORD version_size = SizeofResource(module, resource_info_block);
++  if (!version_size || (version_size & 0x01) != 0)
++    return;
++
++  void* version_data = LockResource(data_handle);
++  if (!version_data)
++    return;
++
++  const wchar_t* version_string = reinterpret_cast<wchar_t*>(version_data);
++  size_t version_len = version_size / sizeof(wchar_t);
++
++  // The string must be terminated.
++  if (version_string[version_len - 1])
++    return;
++
++  previous_version_ = version_string;
++}
++
+ void Configuration::ReadRegistry() {
+   // Extracted files should not be deleted iff the user has manually created a
+   // ChromeInstallerCleanup string value in the registry under
+diff --git a/chrome/installer/mini_installer/configuration.h b/chrome/installer/mini_installer/configuration.h
+index e2b6155fe43fc..b746f68cef51d 100644
+--- a/chrome/installer/mini_installer/configuration.h
++++ b/chrome/installer/mini_installer/configuration.h
+@@ -5,6 +5,8 @@
+ #ifndef CHROME_INSTALLER_MINI_INSTALLER_CONFIGURATION_H_
+ #define CHROME_INSTALLER_MINI_INSTALLER_CONFIGURATION_H_
+ 
++#include <windows.h>
++
+ namespace mini_installer {
+ 
+ // A simple container of the mini_installer's configuration, as dictated by the
+@@ -15,7 +17,7 @@ class Configuration {
+   ~Configuration();
+ 
+   // Initializes this instance on the basis of the process's command line.
+-  bool Initialize();
++  bool Initialize(HMODULE module);
+ 
+   // Returns the program portion of the command line, or nullptr if it cannot be
+   // determined (e.g., by misuse).
+@@ -39,6 +41,9 @@ class Configuration {
+   // Returns true if any invalid switch is found on the command line.
+   bool has_invalid_switch() const { return has_invalid_switch_; }
+ 
++  // Returns the previous version contained in the image's resource.
++  const wchar_t* previous_version() const { return previous_version_; }
++
+   // Returns true if extracted files should be deleted prior to exit.
+   bool should_delete_extracted_files() const {
+     return should_delete_extracted_files_;
+@@ -47,6 +52,7 @@ class Configuration {
+  protected:
+   void Clear();
+   bool ParseCommandLine(const wchar_t* command_line);
++  void ReadResources(HMODULE module);
+   void ReadRegistry();
+ 
+   wchar_t** args_;
+@@ -56,6 +62,7 @@ class Configuration {
+   bool is_system_level_;
+   bool has_invalid_switch_;
+   bool should_delete_extracted_files_;
++  const wchar_t* previous_version_;
+ 
+  private:
+   Configuration(const Configuration&) = delete;
+diff --git a/chrome/installer/mini_installer/configuration_test.cc b/chrome/installer/mini_installer/configuration_test.cc
+index 5b5dc03732d89..6fd4ee4e19f9d 100644
+--- a/chrome/installer/mini_installer/configuration_test.cc
++++ b/chrome/installer/mini_installer/configuration_test.cc
+@@ -44,7 +44,7 @@ class ScopedGoogleUpdateIsMachine {
+ class TestConfiguration : public Configuration {
+  public:
+   explicit TestConfiguration(const wchar_t* command_line) {
+-    EXPECT_TRUE(Initialize());
++    EXPECT_TRUE(Initialize(::GetModuleHandle(nullptr)));
+     EXPECT_TRUE(ParseCommandLine(command_line));
+   }
+ 
+diff --git a/chrome/installer/mini_installer/mini_installer.cc b/chrome/installer/mini_installer/mini_installer.cc
+index 44f29f2fafda8..b24e4cbef109f 100644
+--- a/chrome/installer/mini_installer/mini_installer.cc
++++ b/chrome/installer/mini_installer/mini_installer.cc
+@@ -149,8 +149,91 @@ void WriteExtraCode1(const Configuration& configuration, DWORD extra_code_1) {
+   }
+ }
+ 
++// This function sets the flag in registry to indicate that Google Update
++// should try full installer next time. If the current installer works, this
++// flag is cleared by setup.exe at the end of install.
++void SetInstallerFlags(const Configuration& configuration) {
++  StackString<128> value;
++
++  RegKey key;
++  if (!OpenInstallStateKey(configuration, &key)) {
++    return;
++  }
++
++  // TODO(grt): Trim legacy modifiers (chrome,chromeframe,apphost,applauncher,
++  // multi,readymode,stage,migrating,multifail) from the ap value.
++
++  LONG ret = key.ReadSZValue(kApRegistryValue, value.get(), value.capacity());
++
++  // The conditions below are handling two cases:
++  // 1. When ap value is present, we want to add the required tag only if it
++  //    is not present.
++  // 2. When ap value is missing, we are going to create it with the required
++  //    tag.
++  if ((ret == ERROR_SUCCESS) || (ret == ERROR_FILE_NOT_FOUND)) {
++    if (ret == ERROR_FILE_NOT_FOUND) {
++      value.clear();
++    }
++
++    if (!StrEndsWith(value.get(), kFullInstallerSuffix) &&
++        value.append(kFullInstallerSuffix)) {
++      key.WriteSZValue(kApRegistryValue, value.get());
++    }
++  }
++}
+ #endif  // BUILDFLAG(GOOGLE_CHROME_BRANDING)
+ 
++// Gets the setup.exe path from Registry by looking at the value of Uninstall
++// string.  |size| is measured in wchar_t units.
++ProcessExitResult GetSetupExePathForAppGuid(bool system_level,
++                                            const wchar_t* app_guid,
++                                            const wchar_t* previous_version,
++                                            wchar_t* path,
++                                            size_t size) {
++  const HKEY root_key = system_level ? HKEY_LOCAL_MACHINE : HKEY_CURRENT_USER;
++  RegKey key;
++  LONG result = OpenClientStateKey(root_key, app_guid, KEY_QUERY_VALUE, &key);
++  if (result == ERROR_SUCCESS) {
++    result = key.ReadSZValue(kUninstallRegistryValue, path, size);
++  }
++  if (result != ERROR_SUCCESS) {
++    return ProcessExitResult(UNABLE_TO_FIND_REGISTRY_KEY, result);
++  }
++
++  // Check that the path to the existing installer includes the expected
++  // version number.  It's not necessary for accuracy to verify before/after
++  // delimiters.
++  if (!SearchStringI(path, previous_version)) {
++    return ProcessExitResult(PATCH_NOT_FOR_INSTALLED_VERSION);
++  }
++
++  // Strip double-quotes surrounding the string, if present.
++  if (size >= 1 && path[0] == '\"') {
++    size_t path_length = SafeStrLen(path, size);
++    if (path_length >= 2 && path[path_length - 1] == '\"') {
++      if (!SafeStrCopy(path, size, path + 1)) {
++        return ProcessExitResult(PATH_STRING_OVERFLOW);
++      }
++      path[path_length - 2] = '\0';
++    }
++  }
++
++  return ProcessExitResult(SUCCESS_EXIT_CODE);
++}
++
++// Gets the path to setup.exe of the previous version. The overall path is found
++// in the Uninstall string in the registry. A previous version number specified
++// in |configuration| is used if available. |size| is measured in wchar_t units.
++ProcessExitResult GetPreviousSetupExePath(const Configuration& configuration,
++                                          wchar_t* path,
++                                          size_t size) {
++  // Check Chrome's ClientState key for the path to setup.exe. This will have
++  // the correct path for all well-functioning installs.
++  return GetSetupExePathForAppGuid(
++      configuration.is_system_level(), configuration.chrome_app_guid(),
++      configuration.previous_version(), path, size);
++}
++
+ // Calls CreateProcess with good default parameters and waits for the process to
+ // terminate returning the process exit code. In case of CreateProcess failure,
+ // returns a results object with the provided codes as follows:
+@@ -353,16 +436,56 @@ bool ResourceDeleterDelegate::OnResource(const wchar_t* name,
+ }
+ #endif  // defined(COMPONENT_BUILD)
+ 
++// Applies an differential update to the previous setup.exe provided by
++// `patch_path` and produces a new setup.exe at the path `target_path`.
++ProcessExitResult PatchSetup(const Configuration& configuration,
++                             const PathString& patch_path,
++                             const PathString& dest_path,
++                             int& max_delete_attempts) {
++  CommandString cmd_line;
++  PathString exe_path;
++  ProcessExitResult exit_code = GetPreviousSetupExePath(
++      configuration, exe_path.get(), exe_path.capacity());
++  if (!exit_code.IsSuccess()) {
++    return exit_code;
++  }
++
++  if (!cmd_line.append(L"\"") || !cmd_line.append(exe_path.get()) ||
++      !cmd_line.append(L"\" --") || !cmd_line.append(kCmdUpdateSetupExe) ||
++      !cmd_line.append(L"=\"") || !cmd_line.append(patch_path.get()) ||
++      !cmd_line.append(L"\" --") || !cmd_line.append(kCmdNewSetupExe) ||
++      !cmd_line.append(L"=\"") || !cmd_line.append(dest_path.get()) ||
++      !cmd_line.append(L"\"")) {
++    exit_code = ProcessExitResult(COMMAND_STRING_OVERFLOW);
++  }
++
++  if (!exit_code.IsSuccess()) {
++    return exit_code;
++  }
++
++  // Get any command line option specified for mini_installer and pass them
++  // on to setup.exe.
++  AppendCommandLineFlags(configuration.command_line(), &cmd_line);
++
++  exit_code = RunProcessAndWait(exe_path.get(), cmd_line.get(),
++                                SETUP_PATCH_FAILED_FILE_NOT_FOUND,
++                                SETUP_PATCH_FAILED_PATH_NOT_FOUND,
++                                SETUP_PATCH_FAILED_COULD_NOT_CREATE_PROCESS);
++  DeleteWithRetryAndMetrics(patch_path.get(), max_delete_attempts);
++
++  return exit_code;
++}
++
+ }  // namespace
+ 
+ ProcessExitResult UnpackBinaryResources(HMODULE module,
+                                         const wchar_t* base_path,
+                                         PathString& setup_path,
++                                        ResourceTypeString& setup_type,
+                                         PathString& archive_path,
+                                         ResourceTypeString& archive_type,
+                                         int& max_delete_attempts) {
+-  // Generate the setup.exe path where we uncompress setup resource.
+-  ResourceTypeString setup_type;
++  // Generate the setup.exe path where we patch/uncompress setup resource.
+   PathString setup_name;
+   MemoryRange setup_range;
+   PathString archive_name;
+@@ -370,7 +493,8 @@ ProcessExitResult UnpackBinaryResources(HMODULE module,
+ 
+   // Scan through all types of resources looking for the chrome archive (which
+   // is expected to be either a B7 chrome.packed.7z or a BN chrome.7z) and
+-  // installer (which is expected to be a BL setup.ex_, or a BN setup.exe).
++  // installer (which is expected to be a B7 setup_patch.packed.7z, a BL
++  // setup.ex_, or a BN setup.exe).
+   for (const auto* type :
+        {kLZMAResourceType, kLZCResourceType, kBinResourceType}) {
+     DWORD error_code = ERROR_SUCCESS;
+@@ -472,8 +596,17 @@ ProcessExitResult RunSetup(const Configuration& configuration,
+                            bool compressed_archive) {
+   // Get the path to setup.exe.
+   PathString setup_exe;
+-  if (!setup_exe.assign(setup_path)) {
+-    return ProcessExitResult(COMMAND_STRING_OVERFLOW);
++
++  if (*setup_path != L'\0') {
++    if (!setup_exe.assign(setup_path)) {
++      return ProcessExitResult(COMMAND_STRING_OVERFLOW);
++    }
++  } else {
++    ProcessExitResult exit_code = GetPreviousSetupExePath(
++        configuration, setup_exe.get(), setup_exe.capacity());
++    if (!exit_code.IsSuccess()) {
++      return exit_code;
++    }
+   }
+ 
+   // There could be three full paths in the command line for setup.exe (path
+@@ -495,6 +628,15 @@ ProcessExitResult RunSetup(const Configuration& configuration,
+     return ProcessExitResult(COMMAND_STRING_OVERFLOW);
+   }
+ 
++  // Append the command line param for the previous version of Chrome.
++  if (configuration.previous_version() &&
++      (!cmd_line.append(L" --") || !cmd_line.append(kCmdPreviousVersion) ||
++       !cmd_line.append(L"=\"") ||
++       !cmd_line.append(configuration.previous_version()) ||
++       !cmd_line.append(L"\""))) {
++    return ProcessExitResult(COMMAND_STRING_OVERFLOW);
++  }
++
+   // Get any command line option specified for mini_installer and pass them
+   // on to setup.exe
+   AppendCommandLineFlags(configuration.command_line(), &cmd_line);
+@@ -714,7 +856,7 @@ ProcessExitResult WMain(HMODULE module) {
+ 
+   // Parse configuration from the command line and resources.
+   Configuration configuration;
+-  if (!configuration.Initialize()) {
++  if (!configuration.Initialize(module)) {
+     return ProcessExitResult(GENERIC_INITIALIZATION_FAILURE, ::GetLastError());
+   }
+ 
+@@ -730,14 +872,41 @@ ProcessExitResult WMain(HMODULE module) {
+     return exit_code;
+   }
+ 
++#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
++  // Set the magic suffix in registry to try full installer next time. We ignore
++  // any errors here and we try to set the suffix for user level unless
++  // GoogleUpdateIsMachine=1 is present in the environment or --system-level is
++  // on the command line in which case we set it for system level instead. This
++  // only applies to the Google Chrome distribution.
++  SetInstallerFlags(configuration);
++#endif
++
+   int max_delete_attempts = 0;
+   PathString setup_path;
++  ResourceTypeString setup_type;
+   PathString archive_path;
+   ResourceTypeString archive_type;
+ 
+   exit_code =
+-      UnpackBinaryResources(module, base_path.get(), setup_path, archive_path,
+-                            archive_type, max_delete_attempts);
++      UnpackBinaryResources(module, base_path.get(), setup_path, setup_type,
++                            archive_path, archive_type, max_delete_attempts);
++
++  // If a compressed setup patch was found, run the previous setup.exe to
++  // patch and generate the new setup.exe.
++  if (exit_code.IsSuccess() && setup_type.compare(kLZMAResourceType) == 0) {
++    PathString setup_dest_path;
++    if (!setup_dest_path.assign(base_path.get()) ||
++        !setup_dest_path.append(kSetupExe)) {
++      return ProcessExitResult(PATH_STRING_OVERFLOW);
++    }
++    exit_code = PatchSetup(configuration, setup_path, setup_dest_path,
++                           max_delete_attempts);
++    if (exit_code.IsSuccess()) {
++      setup_path.assign(setup_dest_path);
++    } else {
++      setup_path.clear();
++    }
++  }
+ 
+   // While unpacking the binaries, we paged in a whole bunch of memory that
+   // we don't need anymore.  Let's give it back to the pool before running
+diff --git a/chrome/installer/mini_installer/mini_installer.h b/chrome/installer/mini_installer/mini_installer.h
+index 0bce93936fdfe..2b2d38313e429 100644
+--- a/chrome/installer/mini_installer/mini_installer.h
++++ b/chrome/installer/mini_installer/mini_installer.h
+@@ -56,22 +56,24 @@ void AppendCommandLineFlags(const wchar_t* command_line, CommandString* buffer);
+ 
+ // Finds and writes to disk resources of various types. Returns false
+ // if there is a problem in writing any resource to disk. setup.exe resource
+-// can come in one of these possible forms:
++// can come in one of three possible forms:
++// - Resource type 'B7', compressed using LZMA (*.7z)
+ // - Resource type 'BL', compressed using LZ (*.ex_)
+ // - Resource type 'BN', uncompressed (*.exe)
+ // - Resource type 'BD', uncompressed dependencies for component builds
+ // If setup.exe is present in more than one form, the precedence order is
+-// BL > BN.
++// B7 > BL > BN
+ // For more details see chrome/tools/build/win/create_installer_archive.py.
+ //
+ // For component builds, all files stored as uncompressed 'BD' resources
+ // are also extracted. This is generally the set of DLLs/resources needed by
+ // setup.exe to run. |max_delete_attempts| is set to the highest number of
+ // attempts needed by DeleteWithRetry to delete files that are unpacked and
+-// processed (setup.ex_, or setup.exe).
++// processed (setup_patch.packed.7z, setup.ex_, or setup.exe).
+ ProcessExitResult UnpackBinaryResources(HMODULE module,
+                                         const wchar_t* base_path,
+                                         PathString& setup_path,
++                                        ResourceTypeString& setup_type,
+                                         PathString& archive_path,
+                                         ResourceTypeString& archive_type,
+                                         int& max_delete_attempts);
+diff --git a/chrome/installer/mini_installer/mini_installer_constants.cc b/chrome/installer/mini_installer/mini_installer_constants.cc
+index c2a03ccbb6460..cbcd4cf1a3ef2 100644
+--- a/chrome/installer/mini_installer/mini_installer_constants.cc
++++ b/chrome/installer/mini_installer/mini_installer_constants.cc
+@@ -19,9 +19,15 @@ const wchar_t kSetupPrefix[] = L"setup";
+ // Command line switch names for setup.exe.
+ const wchar_t kCmdInstallArchive[] = L"install-archive";
+ const wchar_t kCmdUncompressedArchive[] = L"uncompressed-archive";
++const wchar_t kCmdUpdateSetupExe[] = L"update-setup-exe";
++const wchar_t kCmdNewSetupExe[] = L"new-setup-exe";
++const wchar_t kCmdPreviousVersion[] = L"previous-version";
+ 
+ // Temp directory prefix that this process creates.
+ const wchar_t kTempPrefix[] = L"CR_";
++// ap value suffix to force subsequent updates to use the full rather than
++// differential updater.
++const wchar_t kFullInstallerSuffix[] = L"-full";
+ 
+ // The resource types that would be unpacked from the mini installer.
+ // Uncompressed binary.
+@@ -36,6 +42,8 @@ const wchar_t kLZCResourceType[] = L"BL";
+ const wchar_t kLZMAResourceType[] = L"B7";
+ 
+ // Registry value names.
++// The name of an app's Client State registry value that holds its tag/channel.
++const wchar_t kApRegistryValue[] = L"ap";
+ // The name of the value in kCleanupRegistryKey that tells the installer not to
+ // delete extracted files.
+ const wchar_t kCleanupRegistryValue[] = L"ChromeInstallerCleanup";
+@@ -43,6 +51,11 @@ const wchar_t kCleanupRegistryValue[] = L"ChromeInstallerCleanup";
+ const wchar_t kInstallerErrorRegistryValue[] = L"InstallerError";
+ const wchar_t kInstallerExtraCode1RegistryValue[] = L"InstallerExtraCode1";
+ const wchar_t kInstallerResultRegistryValue[] = L"InstallerResult";
++const wchar_t kPvRegistryValue[] = L"pv";
++const wchar_t kUninstallArgumentsRegistryValue[] = L"UninstallArguments";
++// The name of an app's Client State registry value that holds the path to its
++// uninstaller.
++const wchar_t kUninstallRegistryValue[] = L"UninstallString";
+ 
+ // Registry key paths.
+ #if BUILDFLAG(GOOGLE_CHROME_BRANDING)
+diff --git a/chrome/installer/mini_installer/mini_installer_unittest.cc b/chrome/installer/mini_installer/mini_installer_unittest.cc
+index dc0eacb42e777..9e4f2a8feaace 100644
+--- a/chrome/installer/mini_installer/mini_installer_unittest.cc
++++ b/chrome/installer/mini_installer/mini_installer_unittest.cc
+@@ -30,6 +30,14 @@ namespace mini_installer {
+ 
+ namespace {
+ 
++#define PREVIOUS_VERSION L"62.0.1234.0"
++constexpr wchar_t kPreviousVersion[] = PREVIOUS_VERSION;
++
++class FakeConfiguration : public Configuration {
++ public:
++  FakeConfiguration() { previous_version_ = kPreviousVersion; }
++};
++
+ base::FilePath GetTestFileRootPath() {
+   base::FilePath test_data_root;
+   base::PathService::Get(base::DIR_SRC_TEST_DATA_ROOT, &test_data_root);
+@@ -134,6 +142,7 @@ TEST_P(MiniInstallerTest, UnpackMiniInstaller) {
+ 
+   int max_delete_attempts = 0;
+   PathString setup_path;
++  ResourceTypeString setup_type;
+   PathString archive_path;
+   ResourceTypeString archive_type;
+ 
+@@ -143,14 +152,15 @@ TEST_P(MiniInstallerTest, UnpackMiniInstaller) {
+   ASSERT_TRUE(loaded_module.is_valid());
+ 
+   std::wstring temp_path = temp_dir.GetPath().value() + L"\\";
+-  ProcessExitResult exit_code =
+-      UnpackBinaryResources(loaded_module.get(), temp_path.c_str(), setup_path,
+-                            archive_path, archive_type, max_delete_attempts);
++  ProcessExitResult exit_code = UnpackBinaryResources(
++      loaded_module.get(), temp_path.c_str(), setup_path, setup_type,
++      archive_path, archive_type, max_delete_attempts);
+   EXPECT_EQ(exit_code.exit_code, SUCCESS_EXIT_CODE);
+ 
+   base::FilePath expected_setup_path =
+       temp_dir.GetPath().Append(FILE_PATH_LITERAL("setup.exe"));
+   EXPECT_STREQ(setup_path.get(), expected_setup_path.value().c_str());
++  EXPECT_STREQ(setup_type.get(), GetParam().expected_setup_resource_type);
+ 
+   std::string actual_setup_data;
+   EXPECT_TRUE(base::ReadFileToString(expected_setup_path, &actual_setup_data));
+@@ -172,4 +182,70 @@ TEST_P(MiniInstallerTest, UnpackMiniInstaller) {
+   }
+ }
+ 
++// A test harness for GetPreviousSetupExePath.
++class GetPreviousSetupExePathTest : public ::testing::Test {
++ public:
++  GetPreviousSetupExePathTest(const GetPreviousSetupExePathTest&) = delete;
++  GetPreviousSetupExePathTest& operator=(const GetPreviousSetupExePathTest&) =
++      delete;
++
++ protected:
++  GetPreviousSetupExePathTest() = default;
++  ~GetPreviousSetupExePathTest() override = default;
++
++  void SetUp() override {
++    ASSERT_NO_FATAL_FAILURE(
++        registry_override_manager_.OverrideRegistry(HKEY_CURRENT_USER));
++  }
++
++  const Configuration& configuration() const { return configuration_; }
++
++  // Writes |path| to the registry in Chrome's ClientState...UninstallString
++  // value.
++  void SetPreviousSetup(const wchar_t* path) {
++    base::win::RegKey key;
++    const install_static::InstallDetails& details =
++        install_static::InstallDetails::Get();
++    ASSERT_EQ(
++        key.Create(HKEY_CURRENT_USER, details.GetClientStateKeyPath().c_str(),
++                   KEY_SET_VALUE | KEY_WOW64_32KEY),
++        ERROR_SUCCESS);
++    ASSERT_EQ(key.WriteValue(installer::kUninstallStringField, path),
++              ERROR_SUCCESS);
++  }
++
++ private:
++  registry_util::RegistryOverrideManager registry_override_manager_;
++  FakeConfiguration configuration_;
++};
++
++// Tests that the path is returned.
++TEST_F(GetPreviousSetupExePathTest, SimpleTest) {
++  static constexpr wchar_t kSetupExePath[] =
++      L"C:\\SomePath\\To\\" PREVIOUS_VERSION L"\\setup.exe";
++  ASSERT_NO_FATAL_FAILURE(SetPreviousSetup(kSetupExePath));
++
++  StackString<MAX_PATH> path;
++  ProcessExitResult result =
++      GetPreviousSetupExePath(configuration(), path.get(), path.capacity());
++  ASSERT_TRUE(result.IsSuccess());
++  EXPECT_STREQ(path.get(), kSetupExePath);
++}
++
++// Tests that quotes are removed, if present.
++TEST_F(GetPreviousSetupExePathTest, QuoteStripping) {
++  static constexpr wchar_t kSetupExePath[] =
++      L"C:\\SomePath\\To\\" PREVIOUS_VERSION L"\\setup.exe";
++  std::wstring quoted_path(L"\"");
++  quoted_path += kSetupExePath;
++  quoted_path += L"\"";
++  ASSERT_NO_FATAL_FAILURE(SetPreviousSetup(quoted_path.c_str()));
++
++  StackString<MAX_PATH> path;
++  ProcessExitResult result =
++      GetPreviousSetupExePath(configuration(), path.get(), path.capacity());
++  ASSERT_TRUE(result.IsSuccess());
++  EXPECT_STREQ(path.get(), kSetupExePath);
++}
++
+ }  // namespace mini_installer
+diff --git a/chrome/installer/mini_installer/mini_string.cc b/chrome/installer/mini_installer/mini_string.cc
+index 97af1e182ba4e..4530eec0083d5 100644
+--- a/chrome/installer/mini_installer/mini_string.cc
++++ b/chrome/installer/mini_installer/mini_string.cc
+@@ -114,6 +114,44 @@ bool StrStartsWith(const wchar_t* str, const wchar_t* start_str) {
+   return true;
+ }
+ 
++const wchar_t* SearchStringI(const wchar_t* source, const wchar_t* find) {
++  if (!find || find[0] == L'\0')
++    return source;
++
++  const wchar_t* scan = source;
++  while (*scan) {
++    const wchar_t* s = scan;
++    const wchar_t* f = find;
++
++    while (*s && *f && EqualASCIICharI(*s, *f))
++      ++s, ++f;
++
++    if (!*f)
++      return scan;
++
++    ++scan;
++  }
++
++  return nullptr;
++}
++
++bool FindTagInStr(const wchar_t* str,
++                  const wchar_t* tag,
++                  const wchar_t** position) {
++  int tag_length = ::lstrlen(tag);
++  const wchar_t* scan = str;
++  for (const wchar_t* tag_start = SearchStringI(scan, tag);
++       tag_start != nullptr; tag_start = SearchStringI(scan, tag)) {
++    scan = tag_start + tag_length;
++    if (*scan == L'-' || *scan == L'\0') {
++      if (position != nullptr)
++        *position = tag_start;
++      return true;
++    }
++  }
++  return false;
++}
++
+ const wchar_t* GetNameFromPathExt(const wchar_t* path, size_t size) {
+   if (!size)
+     return path;
+diff --git a/chrome/installer/mini_installer/mini_string.h b/chrome/installer/mini_installer/mini_string.h
+index 27dfc5c07cab0..84d88811dfb7d 100644
+--- a/chrome/installer/mini_installer/mini_string.h
++++ b/chrome/installer/mini_installer/mini_string.h
+@@ -60,6 +60,17 @@ bool StrEndsWith(const wchar_t* str, const wchar_t* end_str);
+ // (specified by start_str).
+ bool StrStartsWith(const wchar_t* str, const wchar_t* start_str);
+ 
++// Case insensitive search of the first occurrence of |find| in |source|.
++const wchar_t* SearchStringI(const wchar_t* source, const wchar_t* find);
++
++// Searches for |tag| within |str|.  Returns true if |tag| is found and is
++// immediately followed by '-' or is at the end of the string.  If |position|
++// is non-nullptr, the location of the tag is returned in |*position| on
++// success.
++bool FindTagInStr(const wchar_t* str,
++                  const wchar_t* tag,
++                  const wchar_t** position);
++
+ // Takes the path to file and returns a pointer to the basename component.
+ // Example input -> output:
+ //     c:\full\path\to\file.ext -> file.ext
+@@ -113,6 +124,11 @@ class StackString {
+ 
+   bool empty() const { return length() == 0; }
+ 
++  // Does a case insensitive search for a substring.
++  const wchar_t* findi(const wchar_t* find) const {
++    return SearchStringI(buffer_, find);
++  }
++
+   // Case insensitive string compare.
+   int comparei(const wchar_t* str) const { return lstrcmpiW(buffer_, str); }
+ 
+diff --git a/chrome/installer/mini_installer/mini_string_test.cc b/chrome/installer/mini_installer/mini_string_test.cc
+index 07f639cb36dde..9ba9e8c49b6e0 100644
+--- a/chrome/installer/mini_installer/mini_string_test.cc
++++ b/chrome/installer/mini_installer/mini_string_test.cc
+@@ -60,3 +60,19 @@ TEST_F(MiniInstallerStringTest, StackStringOverflow) {
+   EXPECT_EQ(0, compare_str.compare(str.get()));
+   EXPECT_EQ(str.length(), compare_str.length());
+ }
++
++// Tests the case insensitive find support of the StackString class.
++TEST_F(MiniInstallerStringTest, StackStringFind) {
++  static const wchar_t kTestStringSource[] = L"1234ABcD567890";
++  static const wchar_t kTestStringFind[] = L"abcd";
++  static const wchar_t kTestStringNotFound[] = L"80";
++
++  StackString<MAX_PATH> str;
++  EXPECT_TRUE(str.assign(kTestStringSource));
++  EXPECT_EQ(str.get(), str.findi(kTestStringSource));
++  EXPECT_EQ(nullptr, str.findi(kTestStringNotFound));
++  const wchar_t* found = str.findi(kTestStringFind);
++  EXPECT_NE(nullptr, found);
++  std::wstring check(found, _countof(kTestStringFind) - 1);
++  EXPECT_EQ(0, lstrcmpi(check.c_str(), kTestStringFind));
++}
+diff --git a/chrome/installer/mini_installer/regkey.cc b/chrome/installer/mini_installer/regkey.cc
+index 585c6687fc6a0..79e79d6b38303 100644
+--- a/chrome/installer/mini_installer/regkey.cc
++++ b/chrome/installer/mini_installer/regkey.cc
+@@ -57,6 +57,12 @@ LONG RegKey::ReadDWValue(const wchar_t* value_name, DWORD* value) const {
+   return result;
+ }
+ 
++LONG RegKey::WriteSZValue(const wchar_t* value_name, const wchar_t* value) {
++  return ::RegSetValueEx(key_, value_name, 0, REG_SZ,
++                         reinterpret_cast<const BYTE*>(value),
++                         (lstrlen(value) + 1) * sizeof(wchar_t));
++}
++
+ LONG RegKey::WriteDWValue(const wchar_t* value_name, DWORD value) {
+   return ::RegSetValueEx(key_, value_name, 0, REG_DWORD,
+                          reinterpret_cast<const BYTE*>(&value), sizeof(value));
+diff --git a/chrome/installer/mini_installer/regkey.h b/chrome/installer/mini_installer/regkey.h
+index a83145ea5870f..14910d5240315 100644
+--- a/chrome/installer/mini_installer/regkey.h
++++ b/chrome/installer/mini_installer/regkey.h
+@@ -34,8 +34,9 @@ class RegKey {
+                    size_t value_size) const;
+   LONG ReadDWValue(const wchar_t* value_name, DWORD* value) const;
+ 
+-  // Write a value to the registry.
++  // Write a value to the registry.  SZ |value| must be null-terminated.
+   // Returns ERROR_SUCCESS or an error code.
++  LONG WriteSZValue(const wchar_t* value_name, const wchar_t* value);
+   LONG WriteDWValue(const wchar_t* value_name, DWORD value);
+ 
+   // Closes the key if it was open.
+-- 
+2.43.0
+
