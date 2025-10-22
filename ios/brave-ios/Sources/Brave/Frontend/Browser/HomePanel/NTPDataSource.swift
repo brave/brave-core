@@ -6,7 +6,6 @@ import BraveCore
 import Preferences
 import Shared
 import UIKit
-import os.log
 
 enum NTPWallpaper {
   case image(NTPBackgroundImage)
@@ -125,8 +124,6 @@ public class NTPDataSource {
     guard let newTabPageAd = rewards?.ads.maybeGetPrefetchedNewTabPageAd()
     else { return nil }
 
-    let gracePeriodEnded = hasGracePeriodEnded(sponsoredImageData)
-
     let isSponsoredVideoAllowed =
       Preferences.NewTabPage.backgroundMediaType == .sponsoredImagesAndVideos
 
@@ -136,13 +133,10 @@ public class NTPDataSource {
       }
 
       for creative in campaign.backgrounds {
-        // Campaigns with disabled metrics are always eligible to be shown.
-        let isEligible =
-          (gracePeriodEnded || creative.metricType == .disabled) && creative.logo.imagePath != nil
+        if creative.logo.imagePath != nil
           && creative.creativeInstanceId == newTabPageAd.creativeInstanceID
           && (!creative.isVideoFile || isSponsoredVideoAllowed)
-
-        if isEligible {
+        {
           return .sponsoredMedia(creative)
         }
       }
@@ -236,30 +230,6 @@ public class NTPDataSource {
     {
       replaceFavoritesIfNeeded?(superReferralImageData.topSites)
     }
-  }
-
-  private func hasGracePeriodEnded(_ sponsoredImageData: NTPSponsoredImageData) -> Bool {
-    if BraveRewards.Configuration.current().isDebug == true {
-      // If debug mode is enabled, consider it ended.
-      return true
-    }
-
-    guard let gracePeriod = sponsoredImageData.gracePeriod?.doubleValue,
-      let installDate = Preferences.P3A.installationDate.value
-    else {
-      // If either the grace period or install date is not set, consider it ended.
-      return true
-    }
-
-    let gracePeriodEndAt = installDate + TimeInterval(gracePeriod)
-    if Date.now >= gracePeriodEndAt {
-      return true
-    }
-
-    Logger.module.info(
-      "Sponsored images not shown: Grace period after installation is still active until \(gracePeriodEndAt)"
-    )
-    return false
   }
 }
 

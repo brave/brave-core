@@ -107,7 +107,7 @@ bool ConfirmationStateManager::FromJson(const std::string& json) {
               json.size());
 
   std::optional<base::Value::Dict> dict =
-      base::JSONReader::ReadDict(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
+      base::JSONReader::ReadDict(json, base::JSON_PARSE_RFC);
   confirmation_tokens_.RemoveAll();
   payment_tokens_.RemoveAllTokens();
 

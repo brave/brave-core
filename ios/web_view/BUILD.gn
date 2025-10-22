@@ -25,10 +25,12 @@ config("config") {
 
 source_set("web_view") {
   sources = [
+    "internal/cwv_download_task_extras.mm",
     "internal/cwv_global_state.mm",
     "internal/cwv_ssl_status_extras.mm",
     "internal/cwv_web_view_extras.mm",
     "internal/cwv_x509_certificate_extras.mm",
+    "public/cwv_download_task_extras.h",
     "public/cwv_ssl_status_extras.h",
     "public/cwv_web_view_extras.h",
     "public/cwv_x509_certificate_extras.h",

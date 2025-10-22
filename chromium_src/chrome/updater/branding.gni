@@ -93,6 +93,6 @@ brave_updater_branding = {
   declare_args() {
     # Omaha 4 update server:
     update_check_url =
-        "https://updates.bravesoftware.com/non-stable/service/update2/json"
+        "https://updates.bravesoftware.com/prod/service/update2/json"
   }
 }

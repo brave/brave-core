@@ -48,7 +48,7 @@ class CardanoWalletService : public mojom::CardanoWalletService {
                                  DiscoverNextUnusedAddressCallback callback);
 
   using GetUtxosCallback = base::OnceCallback<void(
-      base::expected<GetCardanoUtxosTask::UtxoMap, std::string>)>;
+      base::expected<cardano_rpc::UnspentOutputs, std::string>)>;
   void GetUtxos(mojom::AccountIdPtr account_id, GetUtxosCallback callback);
 
   using CardanoCreateTransactionTaskCallback =
@@ -96,12 +96,12 @@ class CardanoWalletService : public mojom::CardanoWalletService {
 
   void OnGetUtxosForGetBalance(
       GetBalanceCallback callback,
-      base::expected<GetCardanoUtxosTask::UtxoMap, std::string> utxos);
+      base::expected<cardano_rpc::UnspentOutputs, std::string> utxos);
 
   void OnGetUtxosTaskDone(
       GetCardanoUtxosTask* task,
       GetUtxosCallback callback,
-      base::expected<GetCardanoUtxosTask::UtxoMap, std::string> result);
+      base::expected<cardano_rpc::UnspentOutputs, std::string> result);
 
   void OnCreateCardanoTransactionTaskDone(
       CardanoCreateTransactionTask* task,

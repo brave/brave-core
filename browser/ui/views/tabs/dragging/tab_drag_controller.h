@@ -9,7 +9,6 @@
 #include <optional>
 #include <vector>
 
-#include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
 #include "chrome/browser/ui/views/tabs/dragging/tab_drag_controller.h"
 
@@ -40,9 +39,6 @@ class TabDragController : public TabDragControllerChromium {
   void DetachAndAttachToNewContext(ReleaseCapture release_capture,
                                    TabDragContext* target_context) override;
 
-  [[nodiscard]] Liveness ContinueDragging(
-      const gfx::Point& point_in_screen) override;
-
  private:
   gfx::Vector2d GetVerticalTabStripWidgetOffset();
 
@@ -51,8 +47,6 @@ class TabDragController : public TabDragControllerChromium {
 
   BraveVerticalTabStripRegionView::ScopedStateResetter
       vertical_tab_state_resetter_;
-
-  SplitViewBrowserData::OnTabDragEndedClosure on_tab_drag_ended_closure_;
 
   base::WeakPtrFactory<TabDragController> weak_factory_{this};
 };

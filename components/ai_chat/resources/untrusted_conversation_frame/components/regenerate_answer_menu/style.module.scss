@@ -5,15 +5,12 @@
 
 .buttonMenu {
   leo-menu-item {
-    --leo-icon-size: 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: var(--leo-spacing-xl);
     padding: var(--leo-spacing-m);
-    margin: var(--leo-spacing-s) var(--leo-spacing-s) 0;
     min-width: 240px;
-    font: var(--leo-font-default-regular);
   }
 }
 
@@ -98,6 +95,8 @@
   border-radius: 0px 0px 8px 8px;
   border: 1px solid var(--leo-color-divider-subtle);
   leo-menu-item {
+    --leo-icon-size: 20px;
+    font: var(--leo-font-default-regular);
     justify-content: flex-start;
     border-radius: var(--leo-radius-s);
     margin: 0;
@@ -109,14 +108,5 @@
 }
 
 .footerGap {
-  min-height: 51px;
-}
-
-.modelIconAndName {
-  --leo-icon-size: 20px;
-  --leo-icon-color: var(--leo-color-icon-default);
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: var(--leo-spacing-m);
+  min-height: 47px;
 }

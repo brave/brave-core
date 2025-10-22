@@ -1713,4 +1713,34 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         }
         return true;
     }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+        maybeHideRewardsLayout(MeasureSpec.getSize(widthMeasureSpec));
+    }
+
+    /**
+     * Hides the rewards layout if the toolbar width is less than the minimum tablet width and the
+     * rewards icon should be shown. Uses the same threshold as the existing toolbar button
+     * visibility logic in ToolbarTablet.
+     */
+    private void maybeHideRewardsLayout(int width) {
+        // Only hide the rewards layout on tablet devices, like it is done in the upstream code.
+        if (!BraveReflectionUtil.equalTypes(this.getClass(), ToolbarTablet.class)) {
+            return;
+        }
+
+        if (mRewardsLayout == null || !NtpUtil.shouldShowRewardsIcon()) {
+            return;
+        }
+
+        mRewardsLayout.setVisibility(
+                width >= DeviceFormFactor.getNonMultiDisplayMinimumTabletWidthPx(getContext())
+                        ? View.VISIBLE
+                        : View.GONE);
+        // Update the shields layout background to match the rewards layout visibility.
+        updateShieldsLayoutBackground(mRewardsLayout.getVisibility() == View.GONE);
+    }
 }

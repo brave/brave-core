@@ -7,7 +7,9 @@ import '../brave_appearance_page/sidebar.js'
 import '../brave_appearance_page/tabs.js'
 import '../brave_content_page/content.js'
 import '../brave_content_page/playlist.js'
+// <if expr="enable_speedreader">
 import '../brave_content_page/speedreader.js'
+// </if>
 import '../brave_data_collection_page/brave_data_collection_page.js'
 import '../brave_default_extensions_page/brave_default_extensions_page.js'
 import '../brave_new_tab_page/brave_new_tab_page.js'

@@ -5,6 +5,9 @@
 
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/new_tab_page_ads/new_tab_page_ad_exclusion_rules.h"
 
+#include <memory>
+
+#include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/grace_period_exclusion_rule.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
 
@@ -18,6 +21,10 @@ NewTabPageAdExclusionRules::NewTabPageAdExclusionRules(
     : ExclusionRulesBase(ad_events,
                          subdivision_targeting,
                          anti_targeting_resource,
-                         site_history) {}
+                         site_history) {
+  exclusion_rules_.push_back(std::make_unique<GracePeriodExclusionRule>());
+}
+
+NewTabPageAdExclusionRules::~NewTabPageAdExclusionRules() = default;
 
 }  // namespace brave_ads

@@ -1,6 +1,6 @@
 {
   "name": "brave-core",
-  "version": "1.85.65",
+  "version": "1.85.85",
   "description": "Brave Core is a set of changes, APIs and scripts used for customizing Chromium to make Brave.",
   "main": "index.js",
   "scripts": {
@@ -76,7 +76,7 @@
     "projects": {
       "chrome": {
         "dir": "src",
-        "tag": "142.0.7444.23",
+        "tag": "142.0.7444.34",
         "repository": {
           "url": "https://github.com/brave/chromium"
         }
@@ -136,7 +136,7 @@
     "eslint-plugin-jest": "28.11.0",
     "eslint-plugin-licenses": "1.0.2",
     "eslint-plugin-no-unsanitized": "4.0.2",
-    "eslint-plugin-node": "11.1.0",
+    "eslint-plugin-n": "16.6.2",
     "eslint-plugin-promise": "6.1.1",
     "eslint-plugin-react-hooks": "4.6.0",
     "ethereum-blockies": "github:brave/blockies#0880fa9867b7da039e6d6f143b8f6c57b9f9eb3b",

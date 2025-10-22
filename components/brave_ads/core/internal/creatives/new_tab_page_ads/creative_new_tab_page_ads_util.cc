@@ -7,6 +7,7 @@
 
 #include <optional>
 #include <string>
+#include <string_view>
 #include <utility>
 
 #include "base/containers/fixed_flat_map.h"
@@ -14,6 +15,7 @@
 #include "base/functional/bind.h"
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/time/time_delta_from_string.h"
 #include "base/types/cxx23_to_underlying.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/ads_core/ads_core_util.h"
@@ -24,10 +26,12 @@
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpaper_type_constants.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpaper_type_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_table.h"
+#include "brave/components/brave_ads/core/internal/prefs/pref_util.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_constants.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_ads/core/public/common/url/url_util.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 
 namespace brave_ads {
 
@@ -47,7 +51,7 @@ constexpr auto kStringToMojomMap =
          {kP3AAdMetricType, mojom::NewTabPageAdMetricType::kP3A}});
 
 constexpr auto kMojomToStringMap =
-    base::MakeFixedFlatMap<mojom::NewTabPageAdMetricType, std::string>({
+    base::MakeFixedFlatMap<mojom::NewTabPageAdMetricType, std::string_view>({
         {mojom::NewTabPageAdMetricType::kUndefined, kUndefinedAdMetricType},
         {mojom::NewTabPageAdMetricType::kDisabled, kDisabledAdMetricType},
         {mojom::NewTabPageAdMetricType::kConfirmation,
@@ -58,6 +62,9 @@ constexpr auto kMojomToStringMap =
 // Schema keys.
 constexpr int kExpectedSchemaVersion = 2;
 constexpr char kSchemaVersionKey[] = "schemaVersion";
+
+// Grace period keys.
+constexpr char kGracePeriodKey[] = "gracePeriod";
 
 // Campaign keys.
 constexpr int kExpectedCampaignVersion = 1;
@@ -163,6 +170,15 @@ void ParseAndSaveNewTabPageAds(base::Value::Dict dict,
     // Currently, only version 2 is supported. Update this code to maintain.
     return std::move(callback).Run(/*success=*/false);
   }
+
+  base::TimeDelta grace_period = base::Days(3);
+  if (const std::string* const value = dict.FindString(kGracePeriodKey)) {
+    grace_period = base::TimeDeltaFromString(*value).value_or(grace_period);
+    BLOG(1, "Grace period changed to " << grace_period);
+  } else {
+    BLOG(1, "Grace period not specified, defaulting to " << grace_period);
+  }
+  SetProfileTimeDeltaPref(prefs::kGracePeriod, grace_period);
 
   const base::Value::List* const campaign_list = dict.FindList(kCampaignsKey);
   if (!campaign_list) {
@@ -580,7 +596,7 @@ std::string ToString(const mojom::NewTabPageAdMetricType& value) {
   const auto iter = kMojomToStringMap.find(value);
   if (iter != kMojomToStringMap.cend()) {
     const auto [_, metric_type] = *iter;
-    return metric_type;
+    return std::string(metric_type);
   }
 
   NOTREACHED() << "Unexpected value for mojom::NewTabPageAdMetricType: "

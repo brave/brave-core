@@ -10,6 +10,7 @@
 #include "base/logging.h"
 #include "base/values.h"
 #include "brave/components/brave_origin/brave_origin_utils.h"
+#include "brave/components/brave_policy/ad_block_only_mode/ad_block_only_mode_policy_manager.h"
 #include "components/policy/core/common/policy_bundle.h"
 #include "components/policy/core/common/policy_map.h"
 #include "components/policy/core/common/policy_namespace.h"
@@ -33,6 +34,10 @@ void BraveProfilePolicyProvider::Init(policy::SchemaRegistry* registry) {
   // loading.
   brave_origin_observation_.Observe(
       brave_origin::BraveOriginPolicyManager::GetInstance());
+
+  // Register as AdBlockOnlyModePolicyManager observer.
+  ad_block_only_mode_policy_observation_.Observe(
+      AdBlockOnlyModePolicyManager::GetInstance());
 }
 
 void BraveProfilePolicyProvider::RefreshPolicies(
@@ -50,12 +55,17 @@ bool BraveProfilePolicyProvider::IsFirstPolicyLoadComplete(
   return first_policies_loaded_;
 }
 
-void BraveProfilePolicyProvider::OnBraveOriginPoliciesReady() {
+void BraveProfilePolicyProvider::OnBravePoliciesReady() {
   policies_ready_ = true;
 
-  // Once we have BraveOrigin policies and a profile ID trigger Refresh policies
+  // Once we have Brave policies and a profile ID trigger Refresh policies
   if (!profile_id_.empty()) {
-    RefreshPolicies(policy::PolicyFetchReason::kBrowserStart);
+    // `OnBravePoliciesReady()` can be called multiple times, so we need to
+    // choose the appropriate reason for the policies refresh basing on the
+    // first policies load complete state.
+    RefreshPolicies(first_policies_loaded_
+                        ? policy::PolicyFetchReason::kUserRequest
+                        : policy::PolicyFetchReason::kBrowserStart);
   }
 }
 
@@ -64,13 +74,15 @@ policy::PolicyBundle BraveProfilePolicyProvider::LoadPolicies() {
 
   // TODO(https://github.com/brave/brave-browser/issues/47463)
   // Get the actual purchase state from SKU service.
-#if DCHECK_IS_ON()  // Debug builds only
+#if !defined(OFFICIAL_BUILD)
   if (brave_origin::IsBraveOriginEnabled()) {
     LoadBraveOriginPolicies(bundle);
   }
 #else
-  // Always disabled in release builds
+  // Always disabled in official builds
 #endif
+
+  MaybeLoadAdBlockOnlyModePolicies(bundle);
 
   return bundle;
 }
@@ -109,6 +121,27 @@ void BraveProfilePolicyProvider::LoadBraveOriginPolicy(
   bundle_policy_map.Set(std::string(policy_key), policy::POLICY_LEVEL_MANDATORY,
                         policy::POLICY_SCOPE_USER, policy::POLICY_SOURCE_BRAVE,
                         base::Value(enabled), nullptr);
+}
+
+void BraveProfilePolicyProvider::MaybeLoadAdBlockOnlyModePolicies(
+    policy::PolicyBundle& bundle) {
+  auto ad_block_only_mode_policies =
+      AdBlockOnlyModePolicyManager::GetInstance()->GetPolicies();
+  // Ad Block Only mode policies can be empty if the feature is disabled or
+  // the Ad Block Only mode is not enabled.
+  if (ad_block_only_mode_policies.empty()) {
+    return;
+  }
+
+  policy::PolicyMap& bundle_policy_map = bundle.Get(
+      policy::PolicyNamespace(policy::POLICY_DOMAIN_CHROME, std::string()));
+
+  for (auto& [policy_key, value] : ad_block_only_mode_policies) {
+    bundle_policy_map.Set(
+        std::string(policy_key), policy::POLICY_LEVEL_MANDATORY,
+        policy::POLICY_SCOPE_USER, policy::POLICY_SOURCE_BRAVE,
+        std::move(value), nullptr);
+  }
 }
 
 void BraveProfilePolicyProvider::OnProfilePolicyChanged(

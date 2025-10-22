@@ -16,6 +16,7 @@
 #include "base/command_line.h"
 #include "base/containers/span.h"
 #include "base/functional/bind.h"
+#include "base/numerics/safe_conversions.h"
 #include "base/strings/escape.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
@@ -27,7 +28,7 @@
 #include "brave/components/brave_wallet/browser/cardano/cardano_rpc_schema.h"
 #include "brave/components/brave_wallet/browser/json_rpc_response_parser.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
-#include "brave/components/brave_wallet/common/bech32.h"
+#include "brave/components/brave_wallet/common/cardano_address.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/switches.h"
@@ -289,10 +290,9 @@ void CardanoRpc::OnGetLatestEpochParameters(
   std::move(callback).Run(base::ok(std::move(*epoch_parameters)));
 }
 
-void CardanoRpc::GetUtxoList(const std::string& address,
+void CardanoRpc::GetUtxoList(const CardanoAddress& address,
                              GetUtxoListCallback callback) {
-  DCHECK(bech32::Decode(address)) << address;
-  GURL request_url = MakeUtxoListUrl(GetNetworkURL(), address);
+  GURL request_url = MakeUtxoListUrl(GetNetworkURL(), address.ToString());
   if (!request_url.is_valid()) {
     return ReplyWithInternalError(std::move(callback));
   }
@@ -305,7 +305,7 @@ void CardanoRpc::GetUtxoList(const std::string& address,
 }
 
 void CardanoRpc::OnGetUtxoList(GetUtxoListCallback callback,
-                               const std::string& address,
+                               const CardanoAddress& address,
                                APIRequestResult api_request_result) {
   // Utxo list for never transacted address is returned as 404. This just means
   // an empty utxo list for us.
@@ -326,7 +326,7 @@ void CardanoRpc::OnGetUtxoList(GetUtxoListCallback callback,
   UnspentOutputs result;
   for (const auto& item : *items) {
     auto utxo = UnspentOutput::FromBlockfrostApiValue(
-        blockfrost_api::UnspentOutput::FromValue(item));
+        address, blockfrost_api::UnspentOutput::FromValue(item));
     if (!utxo) {
       return ReplyWithInvalidJsonError(std::move(callback));
     }
@@ -465,7 +465,7 @@ void CardanoRpc::MaybeStartQueuedRequest() {
   auto rpc_throttle = features::kCardanoRpcThrottle.Get();
   if (ShouldThrottleEndpoint(requests_queue_.front().request_url) &&
       rpc_throttle > 0 &&
-      active_requests_ >= static_cast<uint32_t>(rpc_throttle)) {
+      active_requests_ >= base::saturated_cast<uint32_t>(rpc_throttle)) {
     return;
   }
 

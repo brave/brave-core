@@ -71,6 +71,9 @@
 #error "This file requires ARC support."
 #endif
 
+NSString* const kBraveAdsFirstRunAtPrefName =
+    base::SysUTF8ToNSString(brave_ads::prefs::kFirstRunAt);
+
 #define BLOG(verbose_level, format, ...)                  \
   [self log:(__FILE__)                                    \
        line:(__LINE__)verboseLevel:(verbose_level)message \

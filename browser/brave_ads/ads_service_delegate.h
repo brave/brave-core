@@ -12,9 +12,10 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/raw_ref.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
-#include "components/prefs/pref_service.h"
 
+class GURL;
 class NotificationDisplayService;
+class PrefService;
 class Profile;
 
 namespace brave_adaptive_captcha {

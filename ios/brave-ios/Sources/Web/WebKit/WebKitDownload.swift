@@ -24,9 +24,16 @@ class WebKitDownload: Download {
     self.webView = download.webView
     self.downloadDecisionHandler = downloadDecisionHandler
 
+    var originatingHost = ""
+    if #available(iOS 18.2, *) {
+      originatingHost = download.originatingFrame.securityOrigin.host
+    }
+
     super.init(
       suggestedFilename: suggestedFileName,
       originalURL: download.originalRequest?.url,
+      redirectedURL: response.url,
+      originatingHost: originatingHost,
       mimeType: response.mimeType
     )
 

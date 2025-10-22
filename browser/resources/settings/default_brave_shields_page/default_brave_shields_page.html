@@ -89,9 +89,9 @@
       </template>
     </select>
   </div>
-  <settings-toggle-button id="noScriptControlType"
+  <settings-toggle-button id="noScriptControlToggle"
       class="cr-row"
-      pref="{{prefs.brave.no_script_default}}"
+      pref="[[noScriptControlType_]]"
       label="$i18n{noScriptControlLabel}"
       on-settings-boolean-control-change="onNoScriptControlChange_"
       disabled="[[isAdBlockOnlyModeEnabled_]]">

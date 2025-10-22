@@ -34,19 +34,21 @@ void BraveOriginPolicyManager::Init(
   initialized_ = true;
 
   // Notify observers that policies are now ready
-  observers_.Notify(&Observer::OnBraveOriginPoliciesReady);
+  observers_.Notify(&brave_policy::BravePolicyObserver::OnBravePoliciesReady);
 }
 
-void BraveOriginPolicyManager::AddObserver(Observer* observer) {
+void BraveOriginPolicyManager::AddObserver(
+    brave_policy::BravePolicyObserver* observer) {
   observers_.AddObserver(observer);
 
   // If local state is already available, notify immediately
   if (local_state_) {
-    observer->OnBraveOriginPoliciesReady();
+    observer->OnBravePoliciesReady();
   }
 }
 
-void BraveOriginPolicyManager::RemoveObserver(Observer* observer) {
+void BraveOriginPolicyManager::RemoveObserver(
+    brave_policy::BravePolicyObserver* observer) {
   observers_.RemoveObserver(observer);
 }
 
@@ -137,10 +139,12 @@ void BraveOriginPolicyManager::SetPolicyValue(
 
   // Notify observers of the policy change
   if (profile_id.has_value()) {
-    observers_.Notify(&Observer::OnProfilePolicyChanged, policy_key,
-                      profile_id.value());
+    observers_.Notify(
+        &brave_policy::BravePolicyObserver::OnProfilePolicyChanged, policy_key,
+        profile_id.value());
   } else {
-    observers_.Notify(&Observer::OnBrowserPolicyChanged, policy_key);
+    observers_.Notify(
+        &brave_policy::BravePolicyObserver::OnBrowserPolicyChanged, policy_key);
   }
 }
 

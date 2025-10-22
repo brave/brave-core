@@ -669,13 +669,13 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
 #endif
 
 #if BUILDFLAG(ENABLE_OMAHA4)
-#define BRAVE_UPDATER_FEATURE_ENTRIES                          \
-  EXPAND_FEATURE_ENTRIES({                                     \
-      "brave-use-omaha4-alpha",                                \
-      "Use Omaha 4 Alpha",                                     \
-      "Use the new automatic update system",                   \
-      kOsMac,                                                  \
-      FEATURE_VALUE_TYPE(brave_updater::kBraveUseOmaha4Alpha), \
+#define BRAVE_UPDATER_FEATURE_ENTRIES                     \
+  EXPAND_FEATURE_ENTRIES({                                \
+      "brave-use-omaha4",                                 \
+      "Use Omaha 4",                                      \
+      "Use the new automatic update system",              \
+      kOsMac,                                             \
+      FEATURE_VALUE_TYPE(brave_updater::kBraveUseOmaha4), \
   })
 #else
 #define BRAVE_UPDATER_FEATURE_ENTRIES
@@ -1196,14 +1196,6 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(                                                  \
               webcompat::features::kBraveWebcompatExceptionsService),          \
-      },                                                                       \
-      {                                                                        \
-          "brave-web-view-rounded-corners",                                    \
-          "Use rounded corners on main content areas",                         \
-          "Renders the main content area and sidebar panel with rounded "      \
-          "corners, padding, and a drop shadow",                               \
-          kOsWin | kOsLinux | kOsMac,                                          \
-          FEATURE_VALUE_TYPE(features::kBraveWebViewRoundedCorners),           \
       },                                                                       \
       {                                                                        \
           "brave-override-sync-server-url",                                    \

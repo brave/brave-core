@@ -8,9 +8,9 @@
 
 #include <memory>
 
-#include "brave/browser/ui/webui/brave_wallet/common_handler/wallet_handler.h"
 #include "brave/browser/ui/webui/brave_wallet/page_handler/wallet_page_handler.h"
 #include "brave/components/brave_rewards/core/mojom/rewards_page.mojom.h"
+#include "brave/components/brave_wallet/browser/wallet_handler.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "chrome/browser/ui/webui/top_chrome/top_chrome_webui_config.h"
 #include "content/public/browser/web_ui_controller.h"

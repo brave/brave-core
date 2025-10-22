@@ -6,6 +6,7 @@
 // Schema for the /v2/accounts/* errors.
 namespace endpoints {
   dictionary Error {
-    long code;
+    // either long, or null, but must always be present
+    any code;
   };
 };

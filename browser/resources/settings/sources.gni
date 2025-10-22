@@ -6,6 +6,7 @@
 import("//brave/browser/shell_integrations/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/containers/buildflags/buildflags.gni")
+import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 
 # Provide our file list to chromium's settings page build
@@ -27,7 +28,6 @@ brave_settings_web_component_files = [
   "brave_content_page/content.ts",
   "brave_content_page/content_page_index.ts",
   "brave_content_page/playlist.ts",
-  "brave_content_page/speedreader.ts",
   "brave_data_collection_page/brave_data_collection_page.ts",
   "brave_default_extensions_page/brave_default_extensions_page.ts",
   "brave_default_extensions_page/brave_extensions_manifest_v2_subpage.ts",
@@ -232,6 +232,10 @@ if (enable_containers) {
   brave_settings_mojo_files_deps +=
       [ "//brave/components/containers/core/mojom:mojom_ts__generator" ]
   brave_settings_mojo_files += [ "$root_gen_dir/brave/components/containers/core/mojom/containers.mojom-webui.ts" ]
+}
+
+if (enable_speedreader) {
+  brave_settings_web_component_files += [ "brave_content_page/speedreader.ts" ]
 }
 
 # Generate the list for inclusion via preprocess and exclusion for chromium's preprocess

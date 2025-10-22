@@ -55,7 +55,8 @@ bool LinkageChecker::ShouldPerformCheck() {
 }
 
 mojom::ExternalWalletPtr LinkageChecker::GetExternalWallet() {
-  auto wallet_type = Get<RewardsPrefs>().GetString(prefs::kExternalWalletType);
+  const auto& wallet_type =
+      Get<RewardsPrefs>().GetString(prefs::kExternalWalletType);
   if (wallet_type.empty()) {
     return nullptr;
   }

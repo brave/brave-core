@@ -9,8 +9,6 @@
 #include <utility>
 
 #include "base/check_is_test.h"
-#include "base/debug/crash_logging.h"
-#include "base/debug/dump_without_crashing.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/common/random/random_util.h"
 
@@ -42,15 +40,6 @@ base::Time Timer::StartWithPrivacy(const base::Location& location,
                                    base::OnceClosure user_task) {
   base::TimeDelta rand_delay = RandTimeDelta(delay);
   if (rand_delay.is_negative()) {
-    // TODO(https://github.com/brave/brave-browser/issues/43332): Invalid random
-    // timer delay.
-    SCOPED_CRASH_KEY_STRING256("Issue32066", "location", location.ToString());
-    SCOPED_CRASH_KEY_NUMBER("Issue32066", "rand_delay",
-                            rand_delay.InMicroseconds());
-    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
-                              "Invalid random timer delay");
-    base::debug::DumpWithoutCrashing();
-
     rand_delay = base::Seconds(1);
   }
 

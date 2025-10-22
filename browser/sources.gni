@@ -167,6 +167,7 @@ brave_chrome_browser_deps = [
   "//brave/components/brave_origin",
   "//brave/components/brave_perf_predictor/browser",
   "//brave/components/brave_policy",
+  "//brave/components/brave_policy/ad_block_only_mode",
   "//brave/components/brave_private_new_tab_ui/common",
   "//brave/components/brave_private_new_tab_ui/common:mojom",
   "//brave/components/brave_referrals/browser",

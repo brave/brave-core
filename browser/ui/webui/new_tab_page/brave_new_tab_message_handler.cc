@@ -390,7 +390,7 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
 
   // Handle string settings
   if (settings_value.is_string()) {
-    const auto settings_value_string = settings_value.GetString();
+    const auto& settings_value_string = settings_value.GetString();
     if (settings_key_input == "clockFormat") {
       settings_key = kNewTabPageClockFormat;
     } else if (settings_key_input == "lastUsedNtpSearchEngine") {

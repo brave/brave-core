@@ -281,7 +281,7 @@ class TabManager: NSObject {
     configuration.allowsInlineMediaPlayback = true
     // Enables Zoom in website by ignoring their javascript based viewport Scale limits.
     configuration.ignoresViewportScaleLimits = true
-    configuration.upgradeKnownHostsToHTTPS = ShieldPreferences.httpsUpgradeLevel.isEnabled
+    configuration.upgradeKnownHostsToHTTPS = Preferences.Shields.httpsUpgradeLevel.isEnabled
 
     #if BRAVE_CHANNEL_NIGHTLY || DEBUG
     if FeatureList.kWebKitAdvancedPrivacyProtections.enabled {
@@ -970,7 +970,7 @@ class TabManager: NSObject {
     }
 
     // Delete the history for forgotten websites
-    if let historyAPI = self.historyAPI {
+    if let historyAPI = self.historyAPI, Preferences.Shields.shredHistoryItems.value {
       // if we're only forgetting 1 site, we can query history by it's domain
       let query = urls.count == 1 ? urls.first?.baseDomain : nil
 

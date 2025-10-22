@@ -9,6 +9,7 @@
 #include "base/json/json_reader.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_input_properties.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_utils.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "chrome/common/actor/task_id.h"
 #include "components/optimization_guide/proto/features/actions_data.pb.h"
 
@@ -26,7 +27,7 @@ WaitTool::WaitTool(ContentAgentTaskProvider* task_provider)
 WaitTool::~WaitTool() = default;
 
 std::string_view WaitTool::Name() const {
-  return "wait";
+  return mojom::kWaitToolName;
 }
 
 std::string_view WaitTool::Description() const {

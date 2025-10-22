@@ -6,6 +6,7 @@
 #include "brave/browser/extensions/api/settings_private/brave_prefs_util.h"
 
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/common/pref_names.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
@@ -94,7 +95,6 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[kShieldsStatsBadgeVisible] =
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[kAdControlType] = settings_api::PrefType::kBoolean;
-  (*s_brave_allowlist)[kNoScriptControlType] = settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[kGoogleLoginControlType] =
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[brave_shields::prefs::kFBEmbedControlType] =
@@ -232,6 +232,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[kEnableClosingLastTab] =
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[kShowFullscreenReminder] =
+      settings_api::PrefType::kBoolean;
+  (*s_brave_allowlist)[kWebViewRoundedCorners] =
       settings_api::PrefType::kBoolean;
 
   // Brave Wallet pref

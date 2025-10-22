@@ -406,10 +406,21 @@ constexpr char kUpgradedKeyringsDict166[] = R"(
     }
   })";
 
+template <std::size_t Size>
+base::RepeatingCallback<std::array<uint8_t, Size>()> CreateFilledArrayCallback(
+    uint8_t& counter) {
+  return base::BindLambdaForTesting([&counter] {
+    std::array<uint8_t, Size> result;
+    result.fill(counter++);
+    return result;
+  });
+}
+
 }  // namespace
 
 class KeyringServiceMigrationsUnitTest : public testing::Test {
  public:
+  KeyringServiceMigrationsUnitTest() {}
   PrefService* GetPrefs() { return &profile_prefs_; }
   PrefService* GetLocalState() { return &local_state_; }
 
@@ -419,22 +430,14 @@ class KeyringServiceMigrationsUnitTest : public testing::Test {
     RegisterProfilePrefs(profile_prefs_.registry());
     RegisterLocalStatePrefs(local_state_.registry());
     RegisterProfilePrefsForMigration(profile_prefs_.registry());
-
-    PasswordEncryptor::GetCreateNonceCallbackForTesting() =
-        base::BindLambdaForTesting([this] {
-          return std::vector<uint8_t>(kEncryptorNonceSize, next_nonce_++);
-        });
-    PasswordEncryptor::GetCreateSaltCallbackForTesting() =
-        base::BindLambdaForTesting([this] {
-          return std::vector<uint8_t>(kEncryptorSaltSize, next_salt_++);
-        });
+    SetCreateNonceCallbackForTesting(&custom_nonce_callback_);
+    SetCreateSaltCallbackForTesting(&custom_salt_callback_);
   }
 
   void TearDown() override {
-    PasswordEncryptor::GetCreateNonceCallbackForTesting() =
-        base::NullCallback();
-    PasswordEncryptor::GetCreateSaltCallbackForTesting() = base::NullCallback();
     testing::Test::TearDown();
+    SetCreateNonceCallbackForTesting(nullptr);
+    SetCreateSaltCallbackForTesting(nullptr);
   }
 
   static std::optional<std::string> GetWalletMnemonic(
@@ -455,6 +458,14 @@ class KeyringServiceMigrationsUnitTest : public testing::Test {
  private:
   uint8_t next_nonce_ = 1;
   uint8_t next_salt_ = 1;
+
+  base::RepeatingCallback<std::array<uint8_t, kEncryptorNonceSize>()>
+      custom_nonce_callback_{
+          CreateFilledArrayCallback<kEncryptorNonceSize>(next_nonce_)};
+
+  base::RepeatingCallback<std::array<uint8_t, kEncryptorSaltSize>()>
+      custom_salt_callback_{
+          CreateFilledArrayCallback<kEncryptorSaltSize>(next_salt_)};
 
   base::test::ScopedFeatureList feature_list_{
       features::kBraveWalletZCashFeature};

@@ -3,27 +3,20 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/views/split_view/split_view.h"
-
 #include <utility>
 
-#include "base/containers/contains.h"
 #include "base/test/run_until.h"
-#include "brave/browser/brave_browser_features.h"
 #include "brave/browser/ui/bookmark/bookmark_helper.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/tabs/brave_tab_layout_constants.h"
 #include "brave/browser/ui/tabs/features.h"
-#include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/browser/ui/views/brave_javascript_tab_modal_dialog_view_views.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/frame/split_view/brave_contents_container_view.h"
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
-#include "brave/browser/ui/views/split_view/split_view_layout_manager.h"
-#include "brave/browser/ui/views/split_view/split_view_separator.h"
+#include "brave/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/renderer_context_menu/render_view_context_menu.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
@@ -54,7 +47,6 @@
 #include "components/tabs/public/split_tab_visual_data.h"
 #include "components/tabs/public/tab_interface.h"
 #include "components/web_modal/web_contents_modal_dialog_manager.h"
-#include "content/public/browser/context_menu_params.h"
 #include "content/public/common/javascript_dialog_type.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
@@ -68,7 +60,6 @@
 #include "ui/gfx/geometry/skia_conversions.h"
 #include "ui/views/view_utils.h"
 #include "ui/views/widget/widget.h"
-#include "url/origin.h"
 
 namespace {
 ui::MouseEvent GetDummyEvent() {
@@ -77,23 +68,15 @@ ui::MouseEvent GetDummyEvent() {
 }
 }  // namespace
 
-using SplitViewDisabledBrowserTest = InProcessBrowserTest;
-
-// Check brave split view is disabled by default.
-IN_PROC_BROWSER_TEST_F(SplitViewDisabledBrowserTest,
-                       SplitViewDisabledStateTest) {
-  auto* split_view_data = browser()->GetFeatures().split_view_browser_data();
-  EXPECT_FALSE(!!split_view_data);
-}
-
 class SideBySideEnabledBrowserTest : public InProcessBrowserTest {
  public:
-  SideBySideEnabledBrowserTest() {
-    scoped_features_.InitWithFeatures(
-        /*enabled_features*/ {},
-        /*disabled_features*/ {features::kBraveWebViewRoundedCorners});
-  }
+  SideBySideEnabledBrowserTest() = default;
   ~SideBySideEnabledBrowserTest() override = default;
+
+  void SetUpOnMainThread() override {
+    InProcessBrowserTest::SetUpOnMainThread();
+    browser()->profile()->GetPrefs()->SetBoolean(kWebViewRoundedCorners, false);
+  }
 
   TabStrip* tab_strip() {
     return BrowserView::GetBrowserViewForBrowser(browser())->tabstrip();
@@ -144,12 +127,6 @@ class SideBySideEnabledBrowserTest : public InProcessBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest,
                        BraveMultiContentsViewTest) {
-  // Check SplitView feature is not enabled.
-  EXPECT_FALSE(tabs::features::IsBraveSplitViewEnabled());
-  auto* split_view_data = browser()->GetFeatures().split_view_browser_data();
-  EXPECT_FALSE(!!split_view_data);
-
-  // Check MultiContentsView uses our separator and initially hidden.
   EXPECT_FALSE(split_view_separator()->GetVisible());
 
   auto* browser_view = brave_browser_view();
@@ -344,13 +321,13 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest, SelectTabTest) {
 
 class SideBySideWithRoundedCornersTest : public SideBySideEnabledBrowserTest {
  public:
-  SideBySideWithRoundedCornersTest() {
-    // Reset to have different features config with base test class.
-    scoped_features_.Reset();
-    scoped_features_.InitWithFeatures(
-        /*enabled_features*/ {features::kBraveWebViewRoundedCorners}, {});
-  }
+  SideBySideWithRoundedCornersTest() = default;
   ~SideBySideWithRoundedCornersTest() override = default;
+
+  void SetUpOnMainThread() override {
+    InProcessBrowserTest::SetUpOnMainThread();
+    browser()->profile()->GetPrefs()->SetBoolean(kWebViewRoundedCorners, true);
+  }
 };
 
 IN_PROC_BROWSER_TEST_F(SideBySideWithRoundedCornersTest, ContentsShadowTest) {
@@ -404,16 +381,9 @@ IN_PROC_BROWSER_TEST_F(SideBySideWithRoundedCornersTest,
 }
 
 // Use for testing brave split view and SideBySide together.
-class SplitViewCommonBrowserTest : public InProcessBrowserTest,
-                                   public testing::WithParamInterface<bool> {
+class SplitViewCommonBrowserTest : public InProcessBrowserTest {
  public:
-  SplitViewCommonBrowserTest() {
-    if (!IsSideBySideEnabled()) {
-      scoped_features_.InitWithFeatures(
-          /*enabled_features*/ {tabs::features::kBraveSplitView},
-          /*disabled_features*/ {features::kSideBySide});
-    }
-  }
+  SplitViewCommonBrowserTest() = default;
   ~SplitViewCommonBrowserTest() override = default;
 
   bool GetIsTabHiddenFromPermissionManagerFromTabAt(int index) {
@@ -459,41 +429,26 @@ class SplitViewCommonBrowserTest : public InProcessBrowserTest,
   }
 
   void NewSplitTab() {
-    IsSideBySideEnabled()
-        ? chrome::NewSplitTab(browser(),
-                              split_tabs::SplitTabCreatedSource::kToolbarButton)
-        : brave::NewSplitViewForTab(browser());
+    chrome::NewSplitTab(browser(),
+                        split_tabs::SplitTabCreatedSource::kToolbarButton);
   }
-
-  bool IsSideBySideEnabled() const { return GetParam(); }
 
   bool IsSplitTabAt(int index) {
     return IsSplitWebContents(GetWebContentsAt(index));
   }
 
   void SwapActiveSplitTab() {
-    if (IsSideBySideEnabled()) {
       auto* tab_strip_model = browser()->tab_strip_model();
       auto split_id =
           tab_strip_model->GetSplitForTab(tab_strip_model->active_index());
       ASSERT_TRUE(split_id);
       tab_strip_model->ReverseTabsInSplit(split_id.value());
-    } else {
-      brave::SwapTabsInTile(browser());
-    }
   }
 
   bool IsSplitWebContents(content::WebContents* web_contents) {
     auto tab_handle =
         tabs::TabInterface::GetFromContents(web_contents)->GetHandle();
-    if (IsSideBySideEnabled()) {
-      return tab_handle.Get()->IsSplit();
-    }
-
-    auto* split_view_browser_data =
-        browser()->GetFeatures().split_view_browser_data();
-    CHECK(split_view_browser_data);
-    return split_view_browser_data->GetTile(tab_handle).has_value();
+    return tab_handle.Get()->IsSplit();
   }
 
   ContentsWebView* GetContentsWebView() {
@@ -509,7 +464,7 @@ class SplitViewCommonBrowserTest : public InProcessBrowserTest,
   base::test::ScopedFeatureList scoped_features_;
 };
 
-IN_PROC_BROWSER_TEST_P(SplitViewCommonBrowserTest, SplitTabInsetsTest) {
+IN_PROC_BROWSER_TEST_F(SplitViewCommonBrowserTest, SplitTabInsetsTest) {
   brave::ToggleVerticalTabStrip(browser());
 
   auto* tab_strip_model = browser()->tab_strip_model();
@@ -590,7 +545,7 @@ IN_PROC_BROWSER_TEST_P(SplitViewCommonBrowserTest, SplitTabInsetsTest) {
 }
 
 // Check split view works with pinned tabs.
-IN_PROC_BROWSER_TEST_P(SplitViewCommonBrowserTest, SplitViewWithPinnedTabTest) {
+IN_PROC_BROWSER_TEST_F(SplitViewCommonBrowserTest, SplitViewWithPinnedTabTest) {
   auto* tab_strip_model = browser()->tab_strip_model();
   tab_strip_model->SetTabPinned(0, true);
   chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
@@ -609,7 +564,7 @@ IN_PROC_BROWSER_TEST_P(SplitViewCommonBrowserTest, SplitViewWithPinnedTabTest) {
   chrome::PinTab(browser());
 }
 
-IN_PROC_BROWSER_TEST_P(SplitViewCommonBrowserTest, BookmarksBarVisibilityTest) {
+IN_PROC_BROWSER_TEST_F(SplitViewCommonBrowserTest, BookmarksBarVisibilityTest) {
   auto* prefs = browser()->profile()->GetPrefs();
   auto* tab_strip_model = browser()->tab_strip_model();
   NewSplitTab();
@@ -634,7 +589,7 @@ IN_PROC_BROWSER_TEST_P(SplitViewCommonBrowserTest, BookmarksBarVisibilityTest) {
   // With SideBySide, bookmarks bar is shown always if one of split tab is NTP.
   // Otherwise, it's shown only when active split tab is NTP.
   brave::SetBookmarkState(brave::BookmarkBarState::kNtp, prefs);
-  EXPECT_EQ(IsSideBySideEnabled() ? BookmarkBar::SHOW : BookmarkBar::HIDDEN,
+  EXPECT_EQ(BookmarkBar::SHOW,
             BookmarkBarController::From(browser())->bookmark_bar_state());
   tab_strip_model->ActivateTabAt(1);
   EXPECT_EQ(BookmarkBar::SHOW,
@@ -656,7 +611,7 @@ IN_PROC_BROWSER_TEST_P(SplitViewCommonBrowserTest, BookmarksBarVisibilityTest) {
 
   // Same reason with above for having different result with SideBySide
   // enabled state.
-  EXPECT_EQ(IsSideBySideEnabled() ? BookmarkBar::SHOW : BookmarkBar::HIDDEN,
+  EXPECT_EQ(BookmarkBar::SHOW,
             BookmarkBarController::From(browser())->bookmark_bar_state());
 
   tab_strip_model->ActivateTabAt(1);
@@ -675,7 +630,7 @@ IN_PROC_BROWSER_TEST_P(SplitViewCommonBrowserTest, BookmarksBarVisibilityTest) {
   JavascriptTabModalDialogView_DialogShouldBeCenteredToRelatedWebView
 #endif
 
-IN_PROC_BROWSER_TEST_P(
+IN_PROC_BROWSER_TEST_F(
     SplitViewCommonBrowserTest,
     MAYBE_JavascriptTabModalDialogView_DialogShouldBeCenteredToRelatedWebView) {
   NewSplitTab();
@@ -721,7 +676,7 @@ IN_PROC_BROWSER_TEST_P(
   JavascriptTabModalDialogView_DialogShouldBeCenteredToRelatedWebView_InVerticalTab
 #endif
 
-IN_PROC_BROWSER_TEST_P(
+IN_PROC_BROWSER_TEST_F(
     SplitViewCommonBrowserTest,
     MAYBE_JavascriptTabModalDialogView_DialogShouldBeCenteredToRelatedWebView_InVerticalTab) {
   brave::ToggleVerticalTabStrip(browser());
@@ -745,7 +700,7 @@ IN_PROC_BROWSER_TEST_P(
   EXPECT_EQ(web_view_bounds.CenterPoint().x(), dialog_bounds.CenterPoint().x());
 }
 
-IN_PROC_BROWSER_TEST_P(SplitViewCommonBrowserTest, InactiveSplitTabTest) {
+IN_PROC_BROWSER_TEST_F(SplitViewCommonBrowserTest, InactiveSplitTabTest) {
   NewSplitTab();
   auto* tab_strip_model = browser()->tab_strip_model();
 
@@ -795,41 +750,18 @@ IN_PROC_BROWSER_TEST_P(SplitViewCommonBrowserTest, InactiveSplitTabTest) {
       content::JAVASCRIPT_DIALOG_TYPE_ALERT, std::u16string(), std::u16string(),
       base::BindOnce([](bool, const std::u16string&) {}), &did_suppress);
 
-  if (!IsSideBySideEnabled()) {
-    // false because tab modal manager not yet launched dialog as tab is hidden.
-    EXPECT_FALSE(GetTabModalDialogManagerAt(0)->IsShowingDialogForTesting());
-    EXPECT_FALSE(GetWebModalDialogManagerAt(0)->IsDialogActive());
-    EXPECT_FALSE(GetIsWebContentsBlockedFromTabAt(0));
-
-    // Activate split tab at 0.
-    tab_strip_model->ActivateTabAt(0);
-    ASSERT_TRUE(base::test::RunUntil([&]() { return HasWebModalDialogAt(0); }));
-
-    // true because tab/web modal manager launched dialog as tab is activated.
-    // check modal dialog at tab 0 is visible.
-    ASSERT_TRUE(
-        base::test::RunUntil([&]() { return IsWebModalDialogVisibleAt(0); }));
-  } else {
     // True because tab modal manager will active the tab when showing a dialog.
     EXPECT_EQ(0, tab_strip_model->active_index());
     EXPECT_TRUE(GetTabModalDialogManagerAt(0)->IsShowingDialogForTesting());
     EXPECT_TRUE(GetWebModalDialogManagerAt(0)->IsDialogActive());
     EXPECT_TRUE(GetIsWebContentsBlockedFromTabAt(0));
-  }
 
   // Activate split tab at 1.
   tab_strip_model->ActivateTabAt(1);
 
-  if (!IsSideBySideEnabled()) {
-    // Check modal dialog at tab 0 is hidden.
-    EXPECT_EQ(1, tab_strip_model->active_index());
-    ASSERT_TRUE(
-        base::test::RunUntil([&]() { return !IsWebModalDialogVisibleAt(0); }));
-  } else {
     // In SideBySide, active tab is still tab at 0 because it's not allowed to
     // activate another split tab when curren split tab has dialog.
     EXPECT_EQ(0, tab_strip_model->active_index());
-  }
 
   // still true as modal was created.
   EXPECT_TRUE(GetTabModalDialogManagerAt(0)->IsShowingDialogForTesting());
@@ -867,7 +799,7 @@ class LoadObserver : public content::WebContentsObserver {
 
 }  // namespace
 
-IN_PROC_BROWSER_TEST_P(SplitViewCommonBrowserTest, SplitViewReloadTest) {
+IN_PROC_BROWSER_TEST_F(SplitViewCommonBrowserTest, SplitViewReloadTest) {
   NewSplitTab();
   content::WaitForLoadStop(GetWebContentsAt(0));
   content::WaitForLoadStop(GetWebContentsAt(1));
@@ -951,7 +883,7 @@ IN_PROC_BROWSER_TEST_P(SplitViewCommonBrowserTest, SplitViewReloadTest) {
   }
 }
 
-IN_PROC_BROWSER_TEST_P(SplitViewCommonBrowserTest, SplitViewCloseTabTest) {
+IN_PROC_BROWSER_TEST_F(SplitViewCommonBrowserTest, SplitViewCloseTabTest) {
   NewSplitTab();
 
   auto* tab_strip_model = browser()->tab_strip_model();
@@ -989,449 +921,4 @@ IN_PROC_BROWSER_TEST_P(SplitViewCommonBrowserTest, SplitViewCloseTabTest) {
   chrome::CloseTab(browser());
   EXPECT_EQ(0, tab_strip_model->active_index());
   EXPECT_EQ(1, tab_strip_model->count());
-}
-
-INSTANTIATE_TEST_SUITE_P(
-    /* no prefix */,
-    SplitViewCommonBrowserTest,
-    ::testing::Bool());
-
-class SplitViewBrowserTest : public InProcessBrowserTest {
- public:
-  SplitViewBrowserTest() {
-    scoped_features_.InitWithFeatures(
-        /*enabled_features*/ {tabs::features::kBraveSplitView},
-        /*disabled_features*/ {features::kSideBySide});
-  }
-  ~SplitViewBrowserTest() override = default;
-
-  BraveBrowserView& browser_view() {
-    return *static_cast<BraveBrowserView*>(
-        BrowserView::GetBrowserViewForBrowser(browser()));
-  }
-
-  ContentsContainerView& secondary_contents_container() {
-    return *browser_view().split_view_->secondary_contents_container_view_;
-  }
-
-  views::WebView& secondary_contents_view() {
-    return *browser_view().split_view_->secondary_contents_web_view();
-  }
-
-  ScrimView& secondary_contents_scrim_view() {
-    return *secondary_contents_container().contents_scrim_view();
-  }
-
-  views::WebView& secondary_dev_tools() {
-    return *secondary_contents_container().devtools_web_view();
-  }
-
-  SplitView& split_view() { return *browser_view().split_view_; }
-
-  SplitViewSeparator& split_view_separator() {
-    return *browser_view().split_view_->split_view_separator_;
-  }
-
-  BrowserNonClientFrameView& browser_non_client_frame_view() {
-    return *browser_view().browser_widget()->GetFrameView();
-  }
-
-  void ToggleVerticalTabStrip() {
-    brave::ToggleVerticalTabStrip(browser());
-    browser_non_client_frame_view().DeprecatedLayoutImmediately();
-  }
-
-  TabStrip& tab_strip() {
-    return *BrowserView::GetBrowserViewForBrowser(browser())->tabstrip();
-  }
-
-  TabStripModel& tab_strip_model() { return *(browser()->tab_strip_model()); }
-
- private:
-  base::test::ScopedFeatureList scoped_features_;
-};
-
-IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest,
-                       SplitViewContainsContentsContainer) {
-  EXPECT_EQ(browser_view().contents_container()->parent(), &split_view());
-  EXPECT_EQ(
-      static_cast<BraveBrowserViewLayout*>(browser_view().GetLayoutManager())
-          ->contents_container(),
-      &split_view());
-
-  // MultiContentsView is not initialized if we don't enable
-  // features::kSideBySide.
-  EXPECT_FALSE(browser_view().multi_contents_view());
-}
-
-// MacOS does not need views window scrim. We use sheet to show window modals
-// (-[NSWindow beginSheet:]), which natively draws a scrim since macOS 11.
-#if !BUILDFLAG(IS_MAC)
-IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, ScrimForSecondaryContents) {
-  brave::NewSplitViewForTab(browser());
-
-  auto child_widget_delegate = std::make_unique<views::WidgetDelegate>();
-  auto child_widget = std::make_unique<views::Widget>();
-  child_widget_delegate->SetModalType(ui::mojom::ModalType::kWindow);
-  views::Widget::InitParams params(
-      views::Widget::InitParams::CLIENT_OWNS_WIDGET,
-      views::Widget::InitParams::TYPE_WINDOW);
-  params.delegate = child_widget_delegate.get();
-  params.parent = secondary_contents_container().GetWidget()->GetNativeView();
-  child_widget->Init(std::move(params));
-
-  child_widget->Show();
-  EXPECT_TRUE(secondary_contents_scrim_view().GetVisible());
-  child_widget->Hide();
-  EXPECT_FALSE(secondary_contents_scrim_view().GetVisible());
-  child_widget->Show();
-  EXPECT_TRUE(secondary_contents_scrim_view().GetVisible());
-  // Destroy the child widget, the parent should be notified about child modal
-  // visibility change.
-  child_widget.reset();
-  EXPECT_FALSE(secondary_contents_scrim_view().GetVisible());
-}
-#endif  // !BUILDFLAG(IS_MAC)
-
-IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest,
-                       GetAccessiblePaneContainsSecondaryViews) {
-  secondary_contents_container().SetVisible(true);
-  secondary_contents_view().SetVisible(true);
-  secondary_dev_tools().SetVisible(true);
-  std::vector<views::View*> panes;
-  static_cast<views::WidgetDelegate*>(&browser_view())
-      ->GetAccessiblePanes(&panes);
-  EXPECT_TRUE(base::Contains(panes, &secondary_contents_view()));
-  EXPECT_TRUE(base::Contains(panes, &secondary_dev_tools()));
-
-  secondary_contents_view().SetVisible(false);
-  secondary_dev_tools().SetVisible(false);
-  panes.clear();
-  static_cast<views::WidgetDelegate*>(&browser_view())
-      ->GetAccessiblePanes(&panes);
-  EXPECT_FALSE(base::Contains(panes, &secondary_contents_view()));
-  EXPECT_FALSE(base::Contains(panes, &secondary_dev_tools()));
-}
-
-IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest,
-                       TilingTwoTabsMakesSecondaryWebViewVisible) {
-  // Given secondary web view is hidden as there's no tiled tabs
-  ASSERT_FALSE(secondary_contents_container().GetVisible());
-
-  EXPECT_FALSE(split_view_separator().GetVisible());
-  EXPECT_FALSE(split_view_separator().menu_button_widget_->IsVisible());
-
-  // When tiling tabs and one of them is the active tab,
-  brave::NewSplitViewForTab(browser());
-  auto* split_view_data = browser()->GetFeatures().split_view_browser_data();
-  ASSERT_TRUE(split_view_data);
-  ASSERT_TRUE(split_view_data->IsTabTiled(
-      tab_strip_model().GetTabAtIndex(0)->GetHandle()));
-  ASSERT_TRUE(split_view_data->IsTabTiled(
-      tab_strip_model().GetTabAtIndex(1)->GetHandle()));
-
-  // Secondary web view should become visible
-  EXPECT_TRUE(secondary_contents_container().GetVisible());
-  EXPECT_TRUE(split_view_separator().GetVisible());
-  EXPECT_TRUE(split_view_separator().menu_button_widget_->IsVisible());
-}
-
-IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest,
-                       BreakingTileMakesSecondaryWebViewHidden) {
-  // Given there were tiled tabs
-  brave::NewSplitViewForTab(browser());
-  auto* split_view_data = browser()->GetFeatures().split_view_browser_data();
-  ASSERT_TRUE(split_view_data);
-  ASSERT_TRUE(split_view_data->IsTabTiled(
-      tab_strip_model().GetTabAtIndex(0)->GetHandle()));
-  ASSERT_TRUE(split_view_data->IsTabTiled(
-      tab_strip_model().GetTabAtIndex(1)->GetHandle()));
-  EXPECT_TRUE(split_view_separator().GetVisible());
-  EXPECT_TRUE(split_view_separator().menu_button_widget_->IsVisible());
-
-  // When breaking the tile
-  split_view_data->BreakTile(tab_strip_model().GetTabAtIndex(0)->GetHandle());
-  ASSERT_FALSE(split_view_data->IsTabTiled(
-      tab_strip_model().GetTabAtIndex(0)->GetHandle()));
-
-  // Then, the secondary web view should become hidden
-  EXPECT_FALSE(secondary_contents_container().GetVisible());
-  EXPECT_FALSE(split_view_separator().GetVisible());
-  EXPECT_FALSE(split_view_separator().menu_button_widget_->IsVisible());
-}
-
-IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest,
-                       ActivateNonTiledTabShouldHideSecondaryWebView) {
-  // Given there were tiled tabs and non tiled tab, and split view is visible
-  brave::NewSplitViewForTab(browser());
-  auto* split_view_data = browser()->GetFeatures().split_view_browser_data();
-  ASSERT_TRUE(split_view_data);
-  ASSERT_TRUE(split_view_data->IsTabTiled(
-      tab_strip_model().GetTabAtIndex(0)->GetHandle()));
-  ASSERT_TRUE(split_view_data->IsTabTiled(
-      tab_strip_model().GetTabAtIndex(1)->GetHandle()));
-  chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ false);
-  ASSERT_TRUE(secondary_contents_container().GetVisible());
-  EXPECT_TRUE(split_view_separator().GetVisible());
-  EXPECT_TRUE(split_view_separator().menu_button_widget_->IsVisible());
-
-  // When activating non-tiled tab
-  tab_strip_model().ActivateTabAt(2);
-
-  // Then, the secondary web view should become hidden
-  ASSERT_TRUE(base::test::RunUntil(
-      [&]() { return !secondary_contents_container().GetVisible(); }));
-  EXPECT_FALSE(split_view_separator().GetVisible());
-  EXPECT_FALSE(split_view_separator().menu_button_widget_->IsVisible());
-}
-
-IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest,
-                       ActivateTiledTabsShouldShowWebView) {
-  // Given there were tiled tabs and non tiled tab, and the non tiled tab is the
-  // active tab
-  brave::NewSplitViewForTab(browser());
-  auto* split_view_data = browser()->GetFeatures().split_view_browser_data();
-  ASSERT_TRUE(split_view_data);
-  ASSERT_TRUE(split_view_data->IsTabTiled(
-      tab_strip_model().GetTabAtIndex(0)->GetHandle()));
-  ASSERT_TRUE(split_view_data->IsTabTiled(
-      tab_strip_model().GetTabAtIndex(1)->GetHandle()));
-  chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
-  ASSERT_FALSE(secondary_contents_container().GetVisible());
-
-  // When activating a tiled tab
-  tab_strip_model().ActivateTabAt(0);
-
-  // Then, the secondary web view should show up
-  ASSERT_TRUE(base::test::RunUntil(
-      [&]() { return secondary_contents_container().GetVisible(); }));
-}
-
-IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest,
-                       SecondaryWebViewShouldHoldNonActiveTiledTab) {
-  // Given that two tabs are tiled
-  brave::NewSplitViewForTab(browser());
-  auto* split_view_data = browser()->GetFeatures().split_view_browser_data();
-  ASSERT_TRUE(split_view_data);
-  ASSERT_TRUE(split_view_data->IsTabTiled(
-      tab_strip_model().GetTabAtIndex(0)->GetHandle()));
-  ASSERT_TRUE(split_view_data->IsTabTiled(
-      tab_strip_model().GetTabAtIndex(1)->GetHandle()));
-  ASSERT_TRUE(secondary_contents_container().GetVisible());
-  auto tile = *split_view_data->GetTile(
-      tab_strip_model().GetTabAtIndex(0)->GetHandle());
-
-  // When the tile.first is active contents,
-  tab_strip_model().ActivateTabAt(
-      tab_strip_model().GetIndexOfTab(tile.first.Get()));
-  auto active_tab_handle =
-      tab_strip_model()
-          .GetTabAtIndex(tab_strip_model().GetIndexOfWebContents(
-              tab_strip_model().GetActiveWebContents()))
-          ->GetHandle();
-  ASSERT_EQ(active_tab_handle, tile.first);
-
-  // Then the secondary web view should hold the tile.second
-  EXPECT_EQ(tab_strip_model().GetWebContentsAt(
-                tab_strip_model().GetIndexOfTab(tile.second.Get())),
-            secondary_contents_view().web_contents());
-
-  // On the other hand, when tile.second is active contents,
-  tab_strip_model().ActivateTabAt(
-      tab_strip_model().GetIndexOfTab(tile.second.Get()));
-  active_tab_handle =
-      tab_strip_model()
-          .GetTabAtIndex(tab_strip_model().GetIndexOfWebContents(
-              tab_strip_model().GetActiveWebContents()))
-          ->GetHandle();
-  ASSERT_EQ(active_tab_handle, tile.second);
-
-  // Then the secondary web view should hold the tile.first
-  EXPECT_EQ(tab_strip_model().GetWebContentsAt(
-                tab_strip_model().GetIndexOfTab(tile.first.Get())),
-            secondary_contents_view().web_contents());
-}
-
-IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, SplitViewSizeDelta) {
-  // Given there are two tiles
-  brave::NewSplitViewForTab(browser());
-  chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
-  brave::NewSplitViewForTab(browser());
-
-  // When size delta is set
-  auto* split_view_layout_manager =
-      static_cast<SplitViewLayoutManager*>(split_view().GetLayoutManager());
-  constexpr int kSizeDelta = 100;
-  split_view_layout_manager->set_split_view_size_delta(kSizeDelta);
-
-  // Then these should be persisted during tab activation.
-  tab_strip_model().ActivateTabAt(0);
-  EXPECT_EQ(0, split_view_layout_manager->split_view_size_delta());
-
-  tab_strip_model().ActivateTabAt(3);
-  EXPECT_EQ(kSizeDelta, split_view_layout_manager->split_view_size_delta());
-}
-
-IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, SplitViewTabPathTest) {
-  brave::NewSplitViewForTab(browser());
-  int active_index = tab_strip_model().active_index();
-  ASSERT_NE(TabStripModel::kNoTab, active_index);
-
-  TabStrip* tab_strip = browser_view().tabstrip();
-  Tab* tab = tab_strip->tab_at(active_index);
-
-  SkPath mask = tab->tab_style_views()->GetPath(TabStyle::PathType::kFill,
-                                                /* scale */ 1.0,
-                                                /* force_active */ false,
-                                                TabStyle::RenderUnits::kDips);
-  SkRegion clip_region;
-  clip_region.setRect({0, 0, 200, 200});
-  SkRegion mask_region;
-  ASSERT_TRUE(mask_region.setPath(mask, clip_region));
-
-  EXPECT_EQ(brave_tabs::kHorizontalSplitViewTabVerticalSpacing,
-            mask_region.getBounds().top());
-  EXPECT_EQ(brave_tabs::kHorizontalTabInset, mask_region.getBounds().left());
-  EXPECT_EQ(GetLayoutConstant(TAB_STRIP_HEIGHT) -
-                GetLayoutConstant(TABSTRIP_TOOLBAR_OVERLAP) -
-                (brave_tabs::kHorizontalSplitViewTabVerticalSpacing * 2),
-            mask_region.getBounds().height());
-}
-
-IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, SplitViewFullscreenTest) {
-  brave::NewSplitViewForTab(browser());
-
-  // In split view tile, both contents are visible and have its border.
-  EXPECT_TRUE(browser_view().contents_container()->GetVisible());
-  EXPECT_TRUE(browser_view().contents_container()->GetBorder());
-  EXPECT_TRUE(secondary_contents_container().GetVisible());
-  EXPECT_TRUE(secondary_contents_container().GetBorder());
-
-  // Simulate tab-fullscreen state change.
-  FullscreenController* fullscreen_controller = browser()
-                                                    ->GetFeatures()
-                                                    .exclusive_access_manager()
-                                                    ->fullscreen_controller();
-  fullscreen_controller->set_is_tab_fullscreen_for_testing(true);
-  split_view().OnFullscreenStateChanged();
-
-  // In tab full screen, only primary content is visible w/o border.
-  EXPECT_TRUE(browser_view().contents_container()->GetVisible());
-  EXPECT_FALSE(browser_view().contents_container()->GetBorder());
-  EXPECT_FALSE(secondary_contents_container().GetVisible());
-  EXPECT_FALSE(secondary_contents_container().GetBorder());
-
-  fullscreen_controller->set_is_tab_fullscreen_for_testing(false);
-  split_view().OnFullscreenStateChanged();
-
-  EXPECT_TRUE(browser_view().contents_container()->GetVisible());
-  EXPECT_TRUE(browser_view().contents_container()->GetBorder());
-  EXPECT_TRUE(secondary_contents_container().GetVisible());
-  EXPECT_TRUE(secondary_contents_container().GetBorder());
-}
-
-class SplitViewCookieBrowserTest : public SplitViewBrowserTest {
- public:
-  void SetUpOnMainThread() override {
-    SplitViewBrowserTest::SetUpOnMainThread();
-    embedded_test_server()->RegisterRequestHandler(base::BindRepeating(
-        [](const net::test_server::HttpRequest& request)
-            -> std::unique_ptr<net::test_server::HttpResponse> {
-          auto response =
-              std::make_unique<net::test_server::BasicHttpResponse>();
-          response->set_content(request.headers.count("Cookie")
-                                    ? request.headers.at("Cookie")
-                                    : "NONE");
-          response->set_code(net::HTTP_OK);
-          return response;
-        }));
-
-    ASSERT_TRUE(embedded_test_server()->Start());
-  }
-
-  void TearDownOnMainThread() override {
-    ASSERT_TRUE(embedded_test_server()->ShutdownAndWaitUntilComplete());
-    SplitViewBrowserTest::TearDownOnMainThread();
-  }
-};
-
-class MockBraveRenderViewContextMenu : public BraveRenderViewContextMenu {
- public:
-  MockBraveRenderViewContextMenu(content::RenderFrameHost& render_frame_host,
-                                 const content::ContextMenuParams& params)
-      : BraveRenderViewContextMenu(render_frame_host, params) {}
-  ~MockBraveRenderViewContextMenu() override = default;
-
-  void Show() override {}
-};
-
-IN_PROC_BROWSER_TEST_F(SplitViewCookieBrowserTest, CookieTest) {
-  // Navigate to a page and sets a cookie.
-  GURL target_url = embedded_test_server()->GetURL("/");
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), target_url));
-  content::WebContents* web_contents =
-      browser()->tab_strip_model()->GetActiveWebContents();
-  ASSERT_TRUE(
-      content::ExecJs(web_contents->GetPrimaryMainFrame(),
-                      "document.cookie = 'Strict=value1; SameSite=Strict;'"));
-  ASSERT_TRUE(content::ExecJs(web_contents->GetPrimaryMainFrame(),
-                              "document.cookie = 'Lax=value2; SameSite=Lax;'"));
-
-  // Navigate to a page that sub page to check cookies.
-  target_url = embedded_test_server()->GetURL("/sub");
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), target_url));
-  auto cookie =
-      content::EvalJs(web_contents->GetPrimaryMainFrame(), "document.cookie")
-          .ExtractString();
-  EXPECT_EQ(cookie, "Strict=value1; Lax=value2");
-
-  // Open up different site
-  chrome::AddTabAt(browser(), GURL("about:blank"), /*index*/ 1,
-                   /*foreground*/ true);
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL("about:blank")));
-
-  // Triggers "Open link in split view" context menu command.
-  auto* initiator_contents =
-      browser()->tab_strip_model()->GetActiveWebContents();
-
-  content::ContextMenuParams params;
-  params.page_url = initiator_contents->GetLastCommittedURL();
-  params.frame_url =
-      initiator_contents->GetPrimaryMainFrame()->GetLastCommittedURL();
-  params.frame_origin = url::Origin::Create(params.frame_url);
-  params.link_url = target_url;
-
-  auto menu = static_cast<std::unique_ptr<RenderViewContextMenuBase>>(
-      std::make_unique<MockBraveRenderViewContextMenu>(
-          *initiator_contents->GetPrimaryMainFrame(), params));
-  menu->Init();
-
-  ASSERT_TRUE(
-      menu->IsCommandIdEnabled(IDC_CONTENT_CONTEXT_OPENLINK_SPLIT_VIEW));
-  menu->ExecuteCommand(IDC_CONTENT_CONTEXT_OPENLINK_SPLIT_VIEW, 0);
-
-  // Split view should be created with the target url
-  auto* split_contents = browser()->tab_strip_model()->GetActiveWebContents();
-  ASSERT_TRUE(brave::IsTabsTiled(
-      browser(), {tab_strip_model().GetIndexOfWebContents(split_contents)}));
-  ASSERT_EQ(3, browser()->tab_strip_model()->count());
-
-  // Getting cookies from client site should be same
-  ASSERT_TRUE(
-      base::test::RunUntil([&]() { return !split_contents->IsLoading(); }));
-  auto client_cookies =
-      content::EvalJs(split_contents->GetPrimaryMainFrame(), "document.cookie")
-          .ExtractString();
-  ASSERT_EQ(client_cookies, "Strict=value1; Lax=value2");
-
-  // But cookies that server has got must not contain Strict value as it was
-  // requested from different site
-  std::string cookies_server_got =
-      content::EvalJs(split_contents->GetPrimaryMainFrame(),
-                      "document.body.innerHTML")
-          .ExtractString();
-  EXPECT_FALSE(base::Contains(cookies_server_got, "Strict=value1"))
-      << cookies_server_got;
-  EXPECT_TRUE(base::Contains(cookies_server_got, "Lax=value2"))
-      << cookies_server_got;
 }

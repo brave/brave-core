@@ -228,7 +228,8 @@ LanguageMetrics::LanguageMetrics(PrefService* profile_prefs)
 LanguageMetrics::~LanguageMetrics() = default;
 
 void LanguageMetrics::RecordLanguageMetric() {
-  auto languages = profile_prefs_->GetString(language::prefs::kAcceptLanguages);
+  const auto& languages =
+      profile_prefs_->GetString(language::prefs::kAcceptLanguages);
   auto languages_split = base::SplitString(
       languages, ",", base::WhitespaceHandling::TRIM_WHITESPACE,
       base::SplitResult::SPLIT_WANT_NONEMPTY);

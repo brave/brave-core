@@ -58,20 +58,19 @@ TEST(CardanoTransaction, TxInput_Value) {
 
 TEST(CardanoTransaction, TxInput_FromRpcUtxo) {
   cardano_rpc::UnspentOutput rpc_utxo;
+  rpc_utxo.address_to = *CardanoAddress::FromString(kAddress1);
   rpc_utxo.tx_hash = test::HexToArray<32>(
       "f80875bfaa0726fadc0068cca851f3252762670df345e6c7a483fe841af98e98");
   rpc_utxo.output_index = 1;
   rpc_utxo.lovelace_amount = 555;
 
-  auto input = CardanoTransaction::TxInput::FromRpcUtxo(
-      *CardanoAddress::FromString(kAddress1), rpc_utxo);
-  ASSERT_TRUE(input);
+  auto input = CardanoTransaction::TxInput::FromRpcUtxo(rpc_utxo);
 
-  EXPECT_EQ(input->utxo_address, *CardanoAddress::FromString(kAddress1));
-  EXPECT_EQ(input->utxo_outpoint.index, 1u);
-  EXPECT_EQ(base::HexEncode(input->utxo_outpoint.txid),
+  EXPECT_EQ(input.utxo_address, *CardanoAddress::FromString(kAddress1));
+  EXPECT_EQ(input.utxo_outpoint.index, 1u);
+  EXPECT_EQ(base::HexEncode(input.utxo_outpoint.txid),
             "F80875BFAA0726FADC0068CCA851F3252762670DF345E6C7A483FE841AF98E98");
-  EXPECT_EQ(input->utxo_value, 555u);
+  EXPECT_EQ(input.utxo_value, 555u);
 }
 
 TEST(CardanoTransaction, TxOutput_Value) {

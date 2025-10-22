@@ -63,7 +63,6 @@ source_set("browser_tests") {
     ":sidebar",
     "//base",
     "//brave/app:command_ids",
-    "//brave/browser/ui/tabs:split_view",
     "//brave/browser/ui/views/frame/split_view",
     "//brave/components/ai_chat/core/common",
     "//brave/components/playlist/core/common",

@@ -183,9 +183,11 @@ extension BrowserViewController {
   func recordFinterprintProtectionP3A(buckets: [Bucket]) {
     // if the flag is enabled, P3A is recorded in core shields functions.
     guard FeatureList.kBraveShieldsContentSettings.enabled else { return }
+    let isFingerprintingProtectionEnabled = Preferences.Shields.fingerprintingProtection.value
     // Q53 On how many domains has the user set the FP setting to be lower (block less) than the default?
     let fingerprintingBelowGlobalCount =
-      Domain.totalDomainsWithFingerprintingProtectionLoweredFromGlobal()
+      isFingerprintingProtectionEnabled
+      ? Domain.totalDomainsWithFingerprintingProtectionLoweredFromGlobal() : 0
     UmaHistogramRecordValueToBucket(
       "Brave.Shields.DomainFingerprintSettingsBelowGlobal",
       buckets: buckets,
@@ -193,7 +195,8 @@ extension BrowserViewController {
     )
     // Q54 On how many domains has the user set the FP setting to be higher (block more) than the default?
     let fingerprintingAboveGlobalCount =
-      Domain.totalDomainsWithFingerprintingProtectionIncreasedFromGlobal()
+      isFingerprintingProtectionEnabled
+      ? Domain.totalDomainsWithFingerprintingProtectionIncreasedFromGlobal() : 0
     UmaHistogramRecordValueToBucket(
       "Brave.Shields.DomainFingerprintSettingsAboveGlobal",
       buckets: buckets,
@@ -212,7 +215,7 @@ extension BrowserViewController {
     }
 
     let answer = { () -> Answer in
-      switch ShieldPreferences.blockAdsAndTrackingLevel {
+      switch Preferences.Shields.blockAdsAndTrackingLevel {
       case .disabled: return .disabled
       case .standard: return .standard
       case .aggressive: return .aggressive

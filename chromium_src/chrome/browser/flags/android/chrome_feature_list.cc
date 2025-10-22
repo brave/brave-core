@@ -11,6 +11,7 @@
 #include "brave/components/brave_account/features.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_feature.h"
 #include "brave/components/brave_news/common/features.h"
+#include "brave/components/brave_origin/features.h"
 #include "brave/components/brave_rewards/core/features.h"
 #include "brave/components/brave_search_conversion/features.h"
 #include "brave/components/brave_shields/core/common/features.h"
@@ -38,34 +39,35 @@
 #endif
 
 // clang-format off
-#define kForceWebContentsDarkMode kForceWebContentsDarkMode,            \
-    BRAVE_AI_CHAT_FLAGS                                                 \
-    BRAVE_WEB_DISCOVERY_FLAG                                            \
-    &brave_rewards::features::kBraveRewards,                            \
-    &brave_search_conversion::features::kOmniboxBanner,                 \
-    &brave_vpn::features::kBraveVPNLinkSubscriptionAndroidUI,           \
-    &brave_wallet::features::kNativeBraveWalletFeature,                 \
-    &playlist::features::kPlaylist,                                     \
-    &download::features::kParallelDownloading,                          \
-    &preferences::features::kBraveBackgroundVideoPlayback,              \
-    &preferences::features::kBravePictureInPictureForYouTubeVideos,     \
-    &request_otr::features::kBraveRequestOTRTab,                        \
-    &safe_browsing::features::kBraveAndroidSafeBrowsing,                \
-    &debounce::features::kBraveDebounce,                                \
-    &webcompat::features::kBraveWebcompatExceptionsService,             \
-    &net::features::kBraveHttpsByDefault,                               \
-    &net::features::kBraveFallbackDoHProvider,                          \
-    &google_sign_in_permission::features::kBraveGoogleSignInPermission, \
-    &net::features::kBraveForgetFirstPartyStorage,                      \
-    &brave_shields::features::kBraveShowStrictFingerprintingMode,       \
-    &brave_shields::features::kBraveLocalhostAccessPermission,          \
-    &brave_shields::features::kBlockAllCookiesToggle,                   \
-    &brave_shields::features::kBraveShieldsElementPicker,               \
-    &features::kBraveAndroidDynamicColors,                              \
-    &features::kNewAndroidOnboarding,                                   \
-    &brave_ads::kNewTabPageAdFeature,                                   \
+#define kForceWebContentsDarkMode kForceWebContentsDarkMode,                   \
+    BRAVE_AI_CHAT_FLAGS                                                        \
+    BRAVE_WEB_DISCOVERY_FLAG                                                   \
+    &brave_rewards::features::kBraveRewards,                                   \
+    &brave_search_conversion::features::kOmniboxBanner,                        \
+    &brave_vpn::features::kBraveVPNLinkSubscriptionAndroidUI,                  \
+    &brave_wallet::features::kNativeBraveWalletFeature,                        \
+    &playlist::features::kPlaylist,                                            \
+    &download::features::kParallelDownloading,                                 \
+    &preferences::features::kBraveBackgroundVideoPlayback,                     \
+    &preferences::features::kBravePictureInPictureForYouTubeVideos,            \
+    &request_otr::features::kBraveRequestOTRTab,                               \
+    &safe_browsing::features::kBraveAndroidSafeBrowsing,                       \
+    &debounce::features::kBraveDebounce,                                       \
+    &webcompat::features::kBraveWebcompatExceptionsService,                    \
+    &net::features::kBraveHttpsByDefault,                                      \
+    &net::features::kBraveFallbackDoHProvider,                                 \
+    &google_sign_in_permission::features::kBraveGoogleSignInPermission,        \
+    &net::features::kBraveForgetFirstPartyStorage,                             \
+    &brave_shields::features::kBraveShowStrictFingerprintingMode,              \
+    &brave_shields::features::kBraveLocalhostAccessPermission,                 \
+    &brave_shields::features::kBlockAllCookiesToggle,                          \
+    &brave_shields::features::kBraveShieldsElementPicker,                      \
+    &features::kBraveAndroidDynamicColors,                                     \
+    &features::kNewAndroidOnboarding,                                          \
+    &brave_ads::kNewTabPageAdFeature,                                          \
     &ntp_background_images::features::kBraveNTPBrandedWallpaperSurveyPanelist, \
-    &brave_account::features::kBraveAccount
+    &brave_account::features::kBraveAccount,                                   \
+    &brave_origin::features::kBraveOrigin
 
 // clang-format on
 

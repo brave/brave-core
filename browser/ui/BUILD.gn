@@ -290,10 +290,6 @@ source_set("ui") {
       "webui/settings/default_brave_shields_handler.h",
       "webui/side_panel/reading_list/brave_reading_list_page_handler.cc",
       "webui/side_panel/reading_list/brave_reading_list_page_handler.h",
-      "webui/speedreader/speedreader_toolbar_data_handler_impl.cc",
-      "webui/speedreader/speedreader_toolbar_data_handler_impl.h",
-      "webui/speedreader/speedreader_toolbar_ui.cc",
-      "webui/speedreader/speedreader_toolbar_ui.h",
       "webui/webcompat_reporter/webcompat_reporter_dialog.cc",
       "webui/webcompat_reporter/webcompat_reporter_dialog.h",
       "webui/welcome_page/brave_welcome_ui.cc",
@@ -307,13 +303,21 @@ source_set("ui") {
       "whats_new/whats_new_util.h",
     ]
 
+    if (enable_speedreader) {
+      sources += [
+        "webui/speedreader/speedreader_toolbar_data_handler_impl.cc",
+        "webui/speedreader/speedreader_toolbar_data_handler_impl.h",
+        "webui/speedreader/speedreader_toolbar_ui.cc",
+        "webui/speedreader/speedreader_toolbar_ui.h",
+      ]
+    }
+
     deps += [
       "//base",
       "//brave/browser/email_aliases",
       "//brave/browser/ntp_background",
       "//brave/browser/profiles:util",
       "//brave/browser/ui/sidebar",
-      "//brave/browser/ui/tabs:split_view",
       "//brave/browser/ui/tabs:tab_model",
       "//brave/browser/ui/tabs:tab_strip",
       "//brave/common",
@@ -561,13 +565,6 @@ source_set("ui") {
       "views/side_panel/brave_side_panel_view_base.h",
       "views/side_panel/side_panel_web_ui_view_utils.cc",
       "views/side_panel/side_panel_web_ui_view_utils.h",
-      "views/split_view/split_view.cc",
-      "views/split_view/split_view.h",
-      "views/split_view/split_view_location_bar_model_delegate.cc",
-      "views/split_view/split_view_location_bar_model_delegate.h",
-      "views/split_view/split_view_separator.cc",
-      "views/split_view/split_view_separator.h",
-      "views/split_view/split_view_separator_delegate.h",
       "views/tabs/brave_browser_tab_strip_controller.cc",
       "views/tabs/brave_browser_tab_strip_controller.h",
       "views/tabs/brave_compound_tab_container.cc",
@@ -1080,9 +1077,6 @@ source_set("ui") {
       "//brave/components/brave_welcome/common",
       "//brave/components/brave_welcome_ui:generated_resources",
       "//brave/components/commands/common",
-      "//brave/components/speedreader/common",
-      "//brave/components/speedreader/common:mojom",
-      "//brave/components/speedreader/resources/panel:generated_resources",
       "//brave/components/version_info",
       "//chrome/app:branded_strings",
       "//chrome/browser/ui/tabs:tab_enums",
@@ -1094,6 +1088,14 @@ source_set("ui") {
       "//ui/color",
       "//ui/web_dialogs",
     ]
+
+    if (enable_speedreader) {
+      deps += [
+        "//brave/components/speedreader/common",
+        "//brave/components/speedreader/common:mojom",
+        "//brave/components/speedreader/resources/panel:generated_resources",
+      ]
+    }
   }
 
   if (enable_extensions && toolkit_views) {
@@ -1264,11 +1266,11 @@ source_set("ui") {
     deps += [
       "//brave/browser/brave_wallet:tab_helper",
       "//brave/browser/ui/brave_wallet",
-      "//brave/browser/ui/webui/brave_wallet/common_handler",
       "//brave/components/ai_chat/core/common",
       "//brave/components/brave_news/common",
       "//brave/components/brave_rewards/core",
       "//brave/components/brave_wallet/browser:permission_utils",
+      "//brave/components/brave_wallet/browser:wallet_handler",
       "//brave/components/brave_wallet/common",
       "//brave/components/brave_wallet/common:buildflags",
       "//brave/components/brave_wallet/common:mojom",
@@ -1299,8 +1301,6 @@ source_set("ui") {
       "webui/brave_wallet/android/android_wallet_page_handler.h",
       "webui/brave_wallet/android/android_wallet_page_ui.cc",
       "webui/brave_wallet/android/android_wallet_page_ui.h",
-      "webui/brave_wallet/common_handler/wallet_handler.cc",
-      "webui/brave_wallet/common_handler/wallet_handler.h",
       "webui/brave_wallet/page_handler/wallet_page_handler.cc",
       "webui/brave_wallet/page_handler/wallet_page_handler.h",
       "webui/brave_wallet/wallet_common_ui.cc",
@@ -1308,8 +1308,8 @@ source_set("ui") {
     ]
     deps += [
       "//brave/browser/brave_wallet",
-      "//brave/browser/ui/webui/brave_wallet/common_handler",
       "//brave/components/brave_wallet/browser:hd_keyring",
+      "//brave/components/brave_wallet/browser:wallet_handler",
       "//brave/components/brave_wallet/common",
       "//brave/components/brave_wallet/common:mojom",
       "//brave/components/brave_wallet_ui:resources",

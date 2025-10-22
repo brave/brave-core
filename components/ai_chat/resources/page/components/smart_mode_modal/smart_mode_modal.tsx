@@ -9,14 +9,14 @@ import Dialog from '@brave/leo/react/dialog'
 import Dropdown from '@brave/leo/react/dropdown'
 import Icon from '@brave/leo/react/icon'
 import Input from '@brave/leo/react/input'
-import Label from '@brave/leo/react/label'
 import TextArea from '@brave/leo/react/textarea'
 import classnames from '$web-common/classnames'
 import { getLocale } from '$web-common/locale'
 import styles from './smart_mode_modal_style.module.scss'
+import { ModelOption } from '../model_menu_item/model_menu_item'
 import { useAIChat } from '../../state/ai_chat_context'
 import { useConversation } from '../../state/conversation_context'
-import { getModelIcon } from '../../../common/constants'
+import { AUTOMATIC_MODEL_KEY, getModelIcon } from '../../../common/constants'
 import * as Mojom from '../../../common/mojom'
 
 export default function SmartModeModal() {
@@ -25,7 +25,7 @@ export default function SmartModeModal() {
 
   // State
   const [selectedModel, setSelectedModel] = React.useState(
-    aiChatContext.smartModeDialog?.model,
+    aiChatContext.smartModeDialog?.model || AUTOMATIC_MODEL_KEY,
   )
   const [shortcut, setShortcut] = React.useState(
     // Explicitly set to undefined since shortcut could be an empty string
@@ -78,7 +78,7 @@ export default function SmartModeModal() {
     if (!prompt.trim()) {
       return getLocale(S.CHAT_UI_PROMPT_REQUIRED_ERROR)
     }
-    if (prompt.length > 1000) {
+    if (prompt.length > 5000) {
       return getLocale(S.CHAT_UI_PROMPT_TOO_LONG_ERROR)
     }
     return ''
@@ -105,7 +105,7 @@ export default function SmartModeModal() {
     aiChatContext.setSmartModeDialog(null)
     setShortcut(undefined)
     setPrompt(undefined)
-    setSelectedModel(undefined)
+    setSelectedModel(AUTOMATIC_MODEL_KEY)
     setShowDelete(false)
   }, [aiChatContext.setSmartModeDialog])
 
@@ -119,13 +119,13 @@ export default function SmartModeModal() {
         aiChatContext.smartModeDialog.id,
         shortcut.trim(),
         prompt.trim(),
-        selectedModel || null,
+        selectedModel,
       )
     } else {
       aiChatContext.service?.createSmartMode(
         shortcut.trim(),
         prompt.trim(),
-        selectedModel || null,
+        selectedModel,
       )
     }
 
@@ -179,9 +179,9 @@ export default function SmartModeModal() {
         <div className={styles.formSection}>
           <Dropdown
             value={selectedModel}
-            onChange={(e: { value: string }) => setSelectedModel(e.value || '')}
-            placeholder={getLocale(S.CHAT_UI_USE_DEFAULT_MODEL_LABEL)}
+            onChange={(e: { value: string }) => setSelectedModel(e.value)}
             positionStrategy='fixed'
+            className={styles.dropdown}
           >
             <div slot='label'>
               {getLocale(S.CHAT_UI_MODEL_FOR_PROMPT_LABEL)}
@@ -190,71 +190,23 @@ export default function SmartModeModal() {
               <Icon
                 slot='left-icon'
                 className={classnames({
-                  [styles.gradientIcon]:
-                    !selectedModel || selectedModel === 'chat-automatic',
+                  [styles.gradientIcon]: selectedModel === AUTOMATIC_MODEL_KEY,
                 })}
-                name={
-                  selectedModel === 'chat-automatic'
-                    ? 'product-brave-leo'
-                    : getModelIcon(selectedModel || '')
-                }
+                name={getModelIcon(selectedModel)}
               />
             }
             <div slot='value'>
-              {selectedModel
-                ? conversationContext.allModels?.find(
-                    (m) => m.key === selectedModel,
-                  )?.displayName
-                : getLocale(S.CHAT_UI_USE_DEFAULT_MODEL_LABEL)}
+              {conversationContext.allModels?.find(
+                (m) => m.key === selectedModel,
+              )?.displayName ?? ''}
             </div>
-            <leo-option value=''>
-              <div className={styles.optionContent}>
-                <div className={styles.optionLeft}>
-                  <div className={styles.gradientIcon}>
-                    <Icon name='product-brave-leo' />
-                  </div>
-                  {getLocale(S.CHAT_UI_USE_DEFAULT_MODEL_LABEL)}
-                </div>
-              </div>
-            </leo-option>
             {conversationContext.allModels?.map((model: Mojom.Model) => (
-              <leo-option
+              <ModelOption
                 key={model.key}
-                value={model.key}
-              >
-                <div className={styles.optionContent}>
-                  <div className={styles.optionLeft}>
-                    <Icon
-                      className={classnames({
-                        [styles.gradientIcon]: model.key === 'chat-automatic',
-                      })}
-                      name={getModelIcon(model.key)}
-                    />
-                    {model.displayName}
-                  </div>
-                  <div>
-                    {model.options.leoModelOptions?.access
-                      === Mojom.ModelAccess.PREMIUM && (
-                      <Label
-                        mode='outline'
-                        color='blue'
-                        className={styles.optionLabel}
-                      >
-                        {getLocale(S.CHAT_UI_MODEL_PREMIUM_LABEL_NON_PREMIUM)}
-                      </Label>
-                    )}
-                    {model.options.customModelOptions && (
-                      <Label
-                        mode='default'
-                        color='blue'
-                        className={styles.optionLabel}
-                      >
-                        {getLocale(S.CHAT_UI_MODEL_LOCAL_LABEL)}
-                      </Label>
-                    )}
-                  </div>
-                </div>
-              </leo-option>
+                model={model}
+                isCurrent={model.key === selectedModel}
+                showPremiumLabel={!aiChatContext.isPremiumUser}
+              />
             ))}
           </Dropdown>
 

@@ -160,7 +160,7 @@
     Hide completely when minimized
   </message>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_TABS_USE_FLOATING_VERTICAL_TABS" desc="The label for enabling floating mode for vertical tab strip">
-    Expand vertical tabs panel on mouseover when minimized
+    Auto expand on hover when minimized
   </message>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_HOVER_MODE" desc="The label for the settings select controlling what happens when a user hovers over a tab.">
     Tab hover mode
@@ -169,7 +169,7 @@
     Position
   </message>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_VERTICAL_TAB_EXPANDED_STATE_PER_WINDOW" desc="Title for checkbox to set expanded state per window">
-    Expand vertical tabs independently per window
+    Auto expand vertical tabs independently per window
   </message>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_VERTICAL_TAB_SHOW_SCROLLBAR" desc="Title for checkbox to show scrollbar on vertical tabs">
     Show scrollbar
@@ -198,6 +198,9 @@
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_LOCATION_BAR_IS_WIDE" desc="The label for whether the location bar should display wide or not">
     Use wide address bar
   </message>
+  <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_WEB_VIEW_ROUNDED_CORNERS" desc="The label for whether the main content areas should have rounded corners">
+    Show rounded corners on main content areas
+  </message>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_SHOW_AUTOCOMPLETE_IN_ADDRESS_BAR" desc="The label for settings switch controlling the showing of autocomplete in address bar">
     Show autocomplete suggestions in address bar
   </message>
@@ -223,7 +226,7 @@
     Show Leo AI button
   </message>
   <message name="IDS_SETTINGS_SHOW_BOOKMARK_BAR" desc="The label for settings switch controlling the permanent visibility of bookmarks bar">
-    Show bookmarks
+    Show bookmarks bar
   </message>
   <message name="IDS_SETTINGS_ALWAYS_SHOW_BOOKMARK_BAR_ALWAYS" desc="The label for settings switch controlling the permanent visibility of bookmarks bar">
     Always
@@ -256,7 +259,7 @@
     Speedreader
   </message>
   <message name="IDS_SETTINGS_SPEEDREADER_FEATURE_SUB_LABEL" desc="The sub-label describing the Speedreader feature">
-    Enable the Speedreader feature
+    Enable the Speedreader feature.
   </message>
   <message name="IDS_SETTINGS_SPEEDREADER_ALLOWED_FOR_ALL_READABLE_SITES_LABEL" desc="The label for enabling Speedreader on all sites">
     Automatically use Speedreader when possible
@@ -363,7 +366,7 @@
     Shields
   </message>
   <message name="IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_TITLE" desc="The title for Brave shields Defaults sub-section in settings">
-    Block trackers and ads which follow you across the web.
+    Block trackers and ads which follow you across the web
   </message>
   <message name="IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DESCRIPTION_1" desc="The description for Brave shields Defaults sub-section in settings">
     These are the default Shields settings. They apply to all websites unless you change something in the Shields panel on a particular site. Changing these won't affect your existing per-site settings.

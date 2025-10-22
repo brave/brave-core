@@ -344,6 +344,12 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_PREFS_SECTION_FEATURES" desc="Title for Brave-specific features section">
         Features
       </message>
+      <message name="IDS_PREFS_SECTION_ADS" desc="Title for Brave Origin Ads section">
+        Ads
+      </message>
+      <message name="IDS_PREFS_SECTION_ANALYTICS" desc="Title for Brave Origin Analytics section">
+        Analytics
+      </message>
       <message name="IDS_BRAVE_SHIELDS_AND_PRIVACY" desc="Label for the settings related to shields and privacy">
         Brave Shields &amp; privacy
       </message>
@@ -373,12 +379,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       </message>
       <message name="IDS_MENU_EXIT" desc="Menu item for exit browser. [CHAR-LIMIT=27]">
         Exit
-      </message>
-      <message name="IDS_BLOCK_COOKIE_CONSENT_NOTICES_TITLE" desc="Title for Block cookie consent notices setting.">
-        Block cookie consent notices
-      </message>
-      <message name="IDS_BLOCK_COOKIE_CONSENT_NOTICES_SUMMARY" desc="Summary for Block cookie consent notices setting.">
-        Blocks website pop-ups that ask you to accept / decline cookies on their site
       </message>
       <message name="IDS_UNSTOPPABLE_DOMAINS_TITLE" desc="Title for Unstoppable Domains settings.">
         Unstoppable Domains
@@ -3163,6 +3163,51 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_MENU_BRAVE_LEO" desc="Brave AI menu item text">
       Leo AI
     </message>
+    <message name="IDS_MENU_ORIGIN" desc="Brave Origin settings menu item text">
+      Origin
+    </message>
+    <message name="IDS_ORIGIN_REWARDS_TOGGLE" desc="Brave Origin rewards toggle title">
+      Rewards
+    </message>
+    <message name="IDS_ORIGIN_CRASH_REPORTS_TOGGLE" desc="Brave Origin automatically send crash reports toggle title">
+      Automatically send crash reports
+    </message>
+    <message name="IDS_ORIGIN_PRIVACY_PRESERVING_ANALYTICS_TOGGLE" desc="Brave Origin privacy preserving analytics toggle title">
+      Privacy preserving analytics
+    </message>
+    <message name="IDS_ORIGIN_EMAIL_ALIASES_TOGGLE" desc="Brave Origin email aliases toggle title">
+      Email aliases
+    </message>
+    <message name="IDS_ORIGIN_LEO_AI_TOGGLE" desc="Brave Origin Leo AI toggle title">
+      Leo AI
+    </message>
+    <message name="IDS_ORIGIN_NEWS_TOGGLE" desc="Brave Origin News toggle title">
+      News
+    </message>
+    <message name="IDS_ORIGIN_STATISTICS_REPORTING_TOGGLE" desc="Brave Origin Statistics reporting toggle title">
+      Statistics reporting
+    </message>
+    <message name="IDS_ORIGIN_VPN_TOGGLE" desc="Brave Origin VPN toggle title">
+      VPN
+    </message>
+    <message name="IDS_ORIGIN_WALLET_TOGGLE" desc="Brave Origin Wallet toggle title">
+      Wallet
+    </message>
+    <message name="IDS_ORIGIN_WEB_DISCOVERY_PROJECT_TOGGLE" desc="Brave Origin Web Discovery Project toggle title">
+      Web Discovery Project
+    </message>
+    <message name="IDS_ORIGIN_RESET_TO_DEFAULTS" desc="Brave Origin reset to defaults preference title">
+      Reset to defaults
+    </message>
+    <message name="IDS_ORIGIN_TOGGLE_ENABLED_DESCRIPTION" desc="Description shown when a toggle is enabled in Brave Origin settings">
+      This feature is enabled because you opted into it
+    </message>
+    <message name="IDS_ORIGIN_DESCRIPTION_TEXT" desc="Brave Origin description text explaining the subscription">
+      Brave Origin is a subscription-based way to disable the revenue-generating features that otherwise support Brave as a business. Brave Origin subscribers will continue to benefit from our industry-leading privacy, adblock, and speed (via Brave Shields), as well as regular software updates, Chromium patches, and security and privacy improvements. They'll also unlock the option to disable features like Brave Leo, News, Rewards, Wallet, VPN, Web3 domains, and more.&lt;br&gt;&lt;br&gt;Subscribers will see a new control panel in the browser settings menu. Existing features—as well as any new features we ship in the future—would appear here, and be toggled off by default.&lt;br&gt;&lt;br&gt;&lt;b&gt;Note: Brave Origin will not disable browser features that you currently use, and will not affect Brave Search features or Brave Search Ads.&lt;/b&gt;
+    </message>
+    <message name="IDS_LINK_SUBSCRIPTION_TITLE_ORIGIN" desc="Brave Origin link subscription settings title text">
+      Link purchase to your Brave account
+    </message>
     <message name="IDS_BRAVE_WALLET_SIGN_IN_WITH_BRAVE_WALLET" desc="Sign in with Brave Wallet Title">
       Sign in with Brave Wallet
     </message>
@@ -3641,16 +3686,13 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Try 7 days free
     </message>
     <message name="IDS_ORIGIN_PAYWALL_TEXT_1" desc="Brave Origin paywall text">
-      Support Brave's industry-leading work for Web privacy and open-source adblocking lists
+      Support our mission &amp; open-source work
     </message>
     <message name="IDS_ORIGIN_PAYWALL_TEXT_2" desc="Brave Origin paywall text">
-      Optimized for a more minimalist browser interface
+      Minimal browser UI centered on Shields
     </message>
     <message name="IDS_ORIGIN_PAYWALL_TEXT_3" desc="Brave Origin paywall text">
-      A core of Brave Shields for adblock, privacy, and speed
-    </message>
-    <message name="IDS_ORIGIN_PAYWALL_TEXT_4" desc="Brave Origin paywall text">
-      Support for IT-managed policies at work
+      Maintain core adblock, privacy, &amp; speed
     </message>
     <message name="IDS_YEARLY_SUBSCRIPTION_BEST_VALUE" desc="Brave Origin yearly plan best value text">
       best value

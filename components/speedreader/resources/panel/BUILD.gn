@@ -4,6 +4,9 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/common/typescript.gni")
+import("//brave/components/speedreader/common/buildflags/buildflags.gni")
+
+assert(enable_speedreader)
 
 transpile_web_ui("brave_speedreader_toolbar_ui") {
   output_module = false

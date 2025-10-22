@@ -12,6 +12,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+OBJC_EXPORT NSString* const kBraveAdsFirstRunAtPrefName;
+
 @class NotificationAdIOS, InlineContentAdIOS, NewTabPageAdIOS;
 
 OBJC_EXPORT

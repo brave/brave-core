@@ -8,7 +8,6 @@
 
 #include <array>
 #include <optional>
-#include <string>
 #include <utility>
 #include <vector>
 
@@ -54,9 +53,7 @@ class CardanoTransaction {
     base::Value::Dict ToValue() const;
     static std::optional<TxInput> FromValue(const base::Value::Dict& value);
 
-    static std::optional<TxInput> FromRpcUtxo(
-        const CardanoAddress& address,
-        const cardano_rpc::UnspentOutput& utxo);
+    static TxInput FromRpcUtxo(const cardano_rpc::UnspentOutput& utxo);
 
     CardanoAddress utxo_address;
     Outpoint utxo_outpoint;

@@ -15,6 +15,8 @@
 #include "base/check_is_test.h"
 #include "base/containers/circular_deque.h"
 #include "base/containers/flat_map.h"
+#include "base/debug/crash_logging.h"
+#include "base/debug/dump_without_crashing.h"
 #include "base/feature_list.h"
 #include "base/files/file_util.h"
 #include "base/files/important_file_writer.h"
@@ -60,6 +62,7 @@
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
+#include "components/metrics/metrics_pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/variations/pref_names.h"
 #include "content/public/browser/browser_context.h"
@@ -265,6 +268,16 @@ void AdsServiceImpl::Migrate() {
   if (ads_per_hour == 0) {
     prefs_->ClearPref(prefs::kMaximumNotificationAdsPerHour);
     prefs_->SetBoolean(prefs::kOptedInToNotificationAds, false);
+  }
+
+  if (!local_state_->HasPrefPath(prefs::kFirstRunAt)) {
+    base::Time first_run_at =
+        local_state_->HasPrefPath(metrics::prefs::kInstallDate)
+            ? base::Time::FromSecondsSinceUnixEpoch(static_cast<double>(
+                  local_state_->GetInt64(metrics::prefs::kInstallDate)))
+            : base::Time::Now();
+
+    local_state_->SetTime(prefs::kFirstRunAt, first_run_at);
   }
 }
 
@@ -1404,6 +1417,15 @@ void AdsServiceImpl::TriggerNewTabPageAdEvent(
   CHECK(mojom::IsKnownEnumValue(mojom_ad_event_type));
 
   if (!bat_ads_associated_remote_.is_bound()) {
+    SCOPED_CRASH_KEY_STRING32("Issue50267", "creative_instance_id",
+                              creative_instance_id);
+    SCOPED_CRASH_KEY_NUMBER("Issue50267", "metric_type",
+                            static_cast<int>(mojom_ad_metric_type));
+    SCOPED_CRASH_KEY_NUMBER("Issue50267", "event_type",
+                            static_cast<int>(mojom_ad_event_type));
+    SCOPED_CRASH_KEY_STRING32("Issue50267", "failure_reason",
+                              "bat_ads_associated_remote_ not bound");
+    base::debug::DumpWithoutCrashing();
     return std::move(callback).Run(/*success*/ false);
   }
 

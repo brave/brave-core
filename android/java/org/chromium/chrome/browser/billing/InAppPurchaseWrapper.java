@@ -546,7 +546,8 @@ public class InAppPurchaseWrapper {
                             BraveLeoUtils.bringMainActivityOnTop();
                         }
                     });
-        } else if (isOriginProduct) {
+        } else if (isOriginProduct && activity != null) {
+            final BraveActivity finalActivity = activity;
             ThreadUtils.runOnUiThread(
                     () -> {
                         BraveOriginSubscriptionPrefs.setIsSubscriptionActive(
@@ -556,6 +557,7 @@ public class InAppPurchaseWrapper {
                                 mPurchaseProfile, purchase.getProducts().get(0));
                         BraveOriginSubscriptionPrefs.setOriginPurchaseToken(
                                 mPurchaseProfile, purchase.getPurchaseToken());
+                        BraveOriginSubscriptionPrefs.openOriginPreferences(finalActivity);
                     });
         }
         showToast(context.getResources().getString(R.string.subscription_consumed));

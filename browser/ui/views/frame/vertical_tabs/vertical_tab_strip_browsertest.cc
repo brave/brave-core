@@ -15,6 +15,7 @@
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/tabs/brave_browser_tab_strip_controller.h"
@@ -777,6 +778,12 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripStringBrowserTest, ContextMenuString) {
 }
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, PinningGroupedTab) {
+  auto* tab_groups_service =
+      tab_groups::TabGroupSyncServiceFactory::GetForProfile(
+          browser()->profile());
+  ASSERT_TRUE(tab_groups_service);
+  tab_groups_service->SetIsInitializedForTesting(true);
+
   // Regression check for https://github.com/brave/brave-browser/issues/40201
   ToggleVerticalTabStrip();
 
@@ -1192,7 +1199,9 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripHideCompletelyTest, GetMinimumWidth) {
 
   // When the preference is disabled, the minimum width should be back to 41px.
   SetHideCompletelyWhenCollapsed(false);
-  EXPECT_EQ(41, region_view->GetMinimumSize().width());
+  const int contents_margin =
+      BraveContentsViewUtil::GetRoundedCornersWebViewMargin(browser());
+  EXPECT_EQ(41 - contents_margin, region_view->GetMinimumSize().width());
 }
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripHideCompletelyTest, ShouldBeInvisible) {

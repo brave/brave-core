@@ -156,7 +156,7 @@ std::vector<std::string> UnBlindCredsMock(const mojom::CredsBatch& creds) {
   DCHECK(signed_creds_base64.has_value());
 
   for (auto& item : signed_creds_base64.value()) {
-    unblinded_encoded_creds.push_back(item.GetString());
+    unblinded_encoded_creds.push_back(std::move(item).TakeString());
   }
 
   return unblinded_encoded_creds;

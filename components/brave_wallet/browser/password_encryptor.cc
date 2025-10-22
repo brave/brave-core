@@ -12,10 +12,8 @@
 #include "base/base64.h"
 #include "base/check.h"
 #include "base/containers/span.h"
-#include "base/no_destructor.h"
 #include "crypto/aead.h"
 #include "crypto/kdf.h"
-#include "crypto/random.h"
 
 namespace brave_wallet {
 namespace {
@@ -26,46 +24,6 @@ constexpr char kNonceKey[] = "nonce";
 PasswordEncryptor::PasswordEncryptor(PassKey, base::span<uint8_t> key)
     : key_(key.begin(), key.end()) {}
 PasswordEncryptor::~PasswordEncryptor() = default;
-
-// TODO(apaymyshev): Need to use much lesser value for unit tests where this
-// value is irrelevant. Otherwise it takes too much time for tests to pass.
-// static
-std::optional<int>& PasswordEncryptor::GetPbkdf2IterationsForTesting() {
-  static std::optional<int> iterations;
-  return iterations;
-}
-
-// static
-base::RepeatingCallback<std::vector<uint8_t>()>&
-PasswordEncryptor::GetCreateNonceCallbackForTesting() {
-  static base::NoDestructor<base::RepeatingCallback<std::vector<uint8_t>()>>
-      callback;
-  return *callback.get();
-}
-
-// static
-base::RepeatingCallback<std::vector<uint8_t>()>&
-PasswordEncryptor::GetCreateSaltCallbackForTesting() {
-  static base::NoDestructor<base::RepeatingCallback<std::vector<uint8_t>()>>
-      callback;
-  return *callback.get();
-}
-
-// static
-std::vector<uint8_t> PasswordEncryptor::CreateNonce() {
-  if (GetCreateNonceCallbackForTesting()) {
-    return GetCreateNonceCallbackForTesting().Run();  // IN-TEST
-  }
-  return crypto::RandBytesAsVector(kEncryptorNonceSize);
-}
-
-// static
-std::vector<uint8_t> PasswordEncryptor::CreateSalt() {
-  if (GetCreateSaltCallbackForTesting()) {
-    return GetCreateSaltCallbackForTesting().Run();  // IN-TEST
-  }
-  return crypto::RandBytesAsVector(kEncryptorSaltSize);
-}
 
 // static
 std::unique_ptr<PasswordEncryptor> PasswordEncryptor::CreateEncryptor(
@@ -79,11 +37,8 @@ std::unique_ptr<PasswordEncryptor> PasswordEncryptor::CreateEncryptor(
     return nullptr;
   }
 
-  const auto iterations =
-      GetPbkdf2IterationsForTesting().value_or(kPbkdf2Iterations);  // IN-TEST
-
   return PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(password, salt,
-                                                             iterations);
+                                                             kPbkdf2Iterations);
 }
 
 // static

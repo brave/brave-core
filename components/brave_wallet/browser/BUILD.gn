@@ -588,6 +588,19 @@ source_set("test_support") {
   ]
 }  # source_set("test_support")
 
+source_set("wallet_handler") {
+  sources = [
+    "wallet_handler.cc",
+    "wallet_handler.h",
+  ]
+  deps = [
+    "//brave/components/brave_wallet/browser",
+    "//brave/components/brave_wallet/common",
+    "//brave/components/brave_wallet/common:mojom",
+    "//mojo/public/cpp/bindings",
+  ]
+}
+
 generated_types("generated_blockchain_list_schemas") {
   sources = [ "blockchain_list_schemas.idl" ]
   root_namespace = "brave_wallet::%(namespace)s"

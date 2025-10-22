@@ -95,6 +95,7 @@ source_set("unit_tests") {
     "//base/test:test_support",
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_ads/core",
+    "//components/metrics:metrics_pref_names",
     "//components/prefs",
     "//components/prefs:test_support",
     "//content/test:test_support",

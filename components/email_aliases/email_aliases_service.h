@@ -92,10 +92,7 @@ class EmailAliasesService : public KeyedService,
   static GURL GetAccountsServiceVerifyResultURL();
 
   // Returns the base URL for the Email Aliases service.
-  static GURL GetEmailAliasesServiceURLForTesting();
-
-  // Returns the API key for the Email Aliases service.
-  static std::string GetEmailAliasesServiceAPIKeyForTesting();
+  static GURL GetEmailAliasesServiceURL();
 
  private:
   // Callback that receives the response body as an optional string.
@@ -198,9 +195,6 @@ class EmailAliasesService : public KeyedService,
 
   // Cached fully-qualified email aliases service base URL.
   const GURL email_aliases_service_base_url_;
-
-  // Cached email aliases API key.
-  const std::string email_aliases_api_key_;
 
   // One-shot timer used to delay subsequent verify/result polls so that they
   // are not issued more frequently than the minimum interval.

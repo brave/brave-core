@@ -40,28 +40,28 @@ std::string KeyringIdPrefString(mojom::KeyringId keyring_id);
 
 // Gets a `key`ed value for a given keyring from prefs.
 const base::Value* GetPrefForKeyring(PrefService* profile_prefs,
-                                     const std::string& key,
+                                     std::string_view key,
                                      mojom::KeyringId keyring_id);
 // Sets a `key`ed `value` for a given keyring to prefs. Clears `key` if
 // `value` is none.
 void SetPrefForKeyring(PrefService* profile_prefs,
-                       const std::string& key,
+                       std::string_view key,
                        base::Value value,
                        mojom::KeyringId keyring_id);
 
 const base::Value::List* GetPrefForKeyringList(PrefService* profile_prefs,
-                                               const std::string& key,
+                                               std::string_view key,
                                                mojom::KeyringId keyring_id);
 const base::Value::Dict* GetPrefForKeyringDict(PrefService* profile_prefs,
-                                               const std::string& key,
+                                               std::string_view key,
                                                mojom::KeyringId keyring_id);
 base::Value::List& GetListPrefForKeyringUpdate(
     ScopedDictPrefUpdate& dict_update,
-    const std::string& key,
+    std::string_view key,
     mojom::KeyringId keyring_id);
 base::Value::Dict& GetDictPrefForKeyringUpdate(
     ScopedDictPrefUpdate& dict_update,
-    const std::string& key,
+    std::string_view key,
     mojom::KeyringId keyring_id);
 
 uint32_t GenerateNextAccountIndex(PrefService* profile_prefs,
@@ -70,10 +70,10 @@ uint32_t GenerateNextAccountIndex(PrefService* profile_prefs,
 std::string GetSelectedDappAccountFromPrefs(PrefService* profile_prefs,
                                             mojom::CoinType dapp_coin);
 bool SetSelectedWalletAccountInPrefs(PrefService* profile_prefs,
-                                     const std::string& unique_key);
+                                     std::string_view unique_key);
 bool SetSelectedDappAccountInPrefs(PrefService* profile_prefs,
                                    mojom::CoinType dapp_coin,
-                                   const std::string& unique_key);
+                                   std::string_view unique_key);
 
 struct HardwareAccountInfo {
   HardwareAccountInfo();

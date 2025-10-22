@@ -10,6 +10,7 @@ Exclusion rules frequency cap the number of times a user can see a new tab page 
 | dayparting  | Exclude the ad if not within the scheduled time slot  |
 | dislike segment  | Exclude the ad if the user disliked the segment  |
 | dislike  | Exclude the ad if the user disliked the advertiser  |
+| grace period  | Exclude the ad during the grace period, except when metrics are disabled  |
 | marked as inappropriate  | Exclude the ad if the user marked the creative set as inappropriate  |
 | page land  | Exclude the ad if the user previously landed on a page within the specified time window for the same campaign  |
 | per day  | Exclude the ad if it exceeds the per-day cap for the creative set  |

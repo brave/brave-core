@@ -132,9 +132,11 @@ void BraveContentsContainerView::UpdateBorderRoundedCorners() {
   devtools_web_view_->holder()->SetCornerRadii(contents_corner_radius);
   devtools_scrim_view_->SetRoundedCorners(contents_corner_radius);
 
+#if BUILDFLAG(ENABLE_SPEEDREADER)
   if (reader_mode_toolbar_) {
     reader_mode_toolbar_->SetCornerRadius(GetCornerRadius(false));
   }
+#endif
 }
 
 views::ProposedLayout BraveContentsContainerView::CalculateProposedLayout(

@@ -399,7 +399,12 @@ void Database::ErrorCallback(int extended_error,
         result_code != sql::SqliteResultCode::kIoRead &&
         result_code != sql::SqliteResultCode::kIoWrite &&
         result_code != sql::SqliteResultCode::kIoFsync &&
-        result_code != sql::SqliteResultCode::kIoTruncate) {
+        result_code != sql::SqliteResultCode::kIoTruncate &&
+        result_code != sql::SqliteResultCode::kReadOnlyDbMoved &&
+        result_code != sql::SqliteResultCode::kBusy &&
+        result_code != sql::SqliteResultCode::kLocked &&
+        result_code != sql::SqliteResultCode::kIoAccess &&
+        result_code != sql::SqliteResultCode::kIoFstat) {
       SCOPED_CRASH_KEY_NUMBER("BraveAds", "sqlite_schema_version",
                               database::kVersionNumber);
       SCOPED_CRASH_KEY_STRING1024(

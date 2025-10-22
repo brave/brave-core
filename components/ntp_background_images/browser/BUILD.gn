@@ -63,7 +63,6 @@ static_library("browser") {
     "//components/content_settings/core/browser",
     "//components/content_settings/core/common",
     "//components/keyed_service/core",
-    "//components/metrics",
     "//components/pref_registry",
     "//components/prefs",
     "//components/variations",

@@ -21,7 +21,7 @@ namespace {
 
 struct ParamInfo final {
   test::CommandLineSwitchInfo command_line_switch;
-  bool did_override_command_line_switch;
+  bool did_override_command_line_switch = false;
 };
 
 // TODO(https://github.com/brave/brave-browser/issues/48713): This is a case of

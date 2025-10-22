@@ -43,7 +43,8 @@ mojom::RewardsWalletPtr Wallet::GetWallet(bool* corrupted) {
   DCHECK(corrupted);
   *corrupted = false;
 
-  auto json = engine_->Get<RewardsPrefs>().GetString(prefs::kWalletBrave);
+  const auto& json =
+      engine_->Get<RewardsPrefs>().GetString(prefs::kWalletBrave);
   if (json.empty()) {
     return nullptr;
   }

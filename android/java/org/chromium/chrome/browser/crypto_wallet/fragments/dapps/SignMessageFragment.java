@@ -10,6 +10,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.Html;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,25 +22,21 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.viewpager2.widget.ViewPager2;
-
-import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.tabs.TabLayoutMediator;
-
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountId;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.CoinType;
+import org.chromium.brave_wallet.mojom.SignDataUnion;
 import org.chromium.brave_wallet.mojom.SignMessageRequest;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.domain.WalletModel;
-import org.chromium.chrome.browser.crypto_wallet.adapters.SignMessagePagerAdapter;
+import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.JavaUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.chrome.browser.crypto_wallet.util.Validations;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -44,11 +44,9 @@ import java.util.concurrent.Executors;
 public class SignMessageFragment extends BaseDAppsBottomSheetDialogFragment {
     private static final String TAG = "SignMessageFragment";
 
-    private List<String> mTabTitles;
     private SignMessageRequest mCurrentSignMessageRequest;
-    private SignMessagePagerAdapter mSignMessagePagerAdapter;
-    private ViewPager2 mViewPager;
-    private TabLayout mTabLayout;
+    private boolean mUnicodeEscapeVersion;
+    private TextView mSignMessageText;
     private ImageView mAccountImage;
     private TextView mAccountName;
     private TextView mNetworkName;
@@ -64,8 +62,6 @@ public class SignMessageFragment extends BaseDAppsBottomSheetDialogFragment {
         super.onCreate(savedInstanceState);
         mExecutor = Executors.newSingleThreadExecutor();
         mHandler = new Handler(Looper.getMainLooper());
-        mTabTitles = new ArrayList<>();
-        mTabTitles.add(getString(R.string.details));
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
             mWalletModel = activity.getWalletModel();
@@ -79,12 +75,10 @@ public class SignMessageFragment extends BaseDAppsBottomSheetDialogFragment {
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_sign_message, container, false);
-        mViewPager = view.findViewById(R.id.fragment_sign_msg_tv_message_view_pager);
-        mTabLayout = view.findViewById(R.id.fragment_sign_msg_tv_message_tabs);
+        mSignMessageText = view.findViewById(R.id.sign_message_text);
         mAccountImage = view.findViewById(R.id.fragment_sign_msg_cv_iv_account);
         mAccountName = view.findViewById(R.id.fragment_sign_msg_tv_account_name);
         mNetworkName = view.findViewById(R.id.fragment_sign_msg_tv_network_name);
-        mViewPager.setUserInputEnabled(false);
 
         mBtCancel = view.findViewById(R.id.fragment_sign_msg_btn_cancel);
         mBtSign = view.findViewById(R.id.fragment_sign_msg_btn_sign);
@@ -94,7 +88,7 @@ public class SignMessageFragment extends BaseDAppsBottomSheetDialogFragment {
         return view;
     }
 
-    private void notifySignMessageRequestProcessed(boolean approved) {
+    private void notifySignMessageRequestProcessed(final boolean approved) {
         getBraveWalletService()
                 .notifySignMessageRequestProcessed(
                         approved, mCurrentSignMessageRequest.id, null, null);
@@ -105,50 +99,86 @@ public class SignMessageFragment extends BaseDAppsBottomSheetDialogFragment {
         fillSignMessageInfo(true);
     }
 
-    private void fillSignMessageInfo(boolean init) {
+    private void fillSignMessageInfo(final boolean init) {
         getBraveWalletService()
                 .getPendingSignMessageRequests(
                         requests -> {
-                            if (requests == null || requests.length == 0) {
-                                Intent intent = new Intent();
-                                getActivity().setResult(Activity.RESULT_OK, intent);
-                                getActivity().finish();
-
-                                return;
-                            }
-
-                            mCurrentSignMessageRequest = requests[0];
-                            mSignMessagePagerAdapter =
-                                    new SignMessagePagerAdapter(
-                                            this, mTabTitles, mCurrentSignMessageRequest);
-
-                            mViewPager.setAdapter(mSignMessagePagerAdapter);
-                            new TabLayoutMediator(
-                                            mTabLayout,
-                                            mViewPager,
-                                            (tab, position) ->
-                                                    tab.setText(mTabTitles.get(position)))
-                                    .attach();
-                            if (init) {
-                                mBtCancel.setOnClickListener(
-                                        v -> {
-                                            notifySignMessageRequestProcessed(false);
-                                        });
-                                mBtSign.setOnClickListener(
-                                        v -> {
-                                            notifySignMessageRequestProcessed(true);
-                                        });
-                            }
-                            if (mCurrentSignMessageRequest.originInfo != null
-                                    && URLUtil.isValidUrl(
-                                            mCurrentSignMessageRequest.originInfo.originSpec)) {
-                                mWebSite.setText(
-                                        Utils.geteTldSpanned(
-                                                mCurrentSignMessageRequest.originInfo));
-                            }
-                            updateAccount(mCurrentSignMessageRequest.accountId);
-                            updateNetwork(mCurrentSignMessageRequest.chainId);
+                            maybeHandlePendingRequests(init, requests);
                         });
+    }
+
+    private void maybeHandlePendingRequests(
+            final boolean init, @Nullable SignMessageRequest[] requests) {
+        if (requests == null || requests.length == 0) {
+            Intent intent = new Intent();
+            getActivity().setResult(Activity.RESULT_OK, intent);
+            getActivity().finish();
+            return;
+        }
+
+        mCurrentSignMessageRequest = requests[0];
+
+        // Extract message and set up UI.
+        mUnicodeEscapeVersion = false;
+        final String message;
+        final boolean isEip712;
+        if (mCurrentSignMessageRequest.signData.which() == SignDataUnion.Tag.EthStandardSignData) {
+            message = mCurrentSignMessageRequest.signData.getEthStandardSignData().message;
+            isEip712 = false;
+        } else if (mCurrentSignMessageRequest.signData.which()
+                == SignDataUnion.Tag.EthSignTypedData) {
+            message = mCurrentSignMessageRequest.signData.getEthSignTypedData().messageJson;
+            isEip712 = true;
+        } else if (mCurrentSignMessageRequest.signData.which()
+                == SignDataUnion.Tag.SolanaSignData) {
+            message = mCurrentSignMessageRequest.signData.getSolanaSignData().message;
+            isEip712 = false;
+        } else if (mCurrentSignMessageRequest.signData.which() == SignDataUnion.Tag.EthSiweData) {
+            message = mCurrentSignMessageRequest.signData.getEthSiweData().statement;
+            isEip712 = false;
+        } else {
+            message = "";
+            isEip712 = false;
+        }
+
+        updateTextEthSign(mUnicodeEscapeVersion, message, isEip712);
+
+        if (Validations.hasUnicode(message)) {
+            mSignMessageText.setLines(12);
+            View view = getView();
+            if (view != null) {
+                view.findViewById(R.id.non_ascii_warning_layout).setVisibility(View.VISIBLE);
+                TextView warningLinkText = view.findViewById(R.id.non_ascii_warning_text_link);
+                warningLinkText.setOnClickListener(
+                        v -> {
+                            warningLinkText.setText(
+                                    mUnicodeEscapeVersion
+                                            ? getString(
+                                                    R.string.wallet_non_ascii_characters_original)
+                                            : getString(
+                                                    R.string.wallet_non_ascii_characters_ascii));
+                            mUnicodeEscapeVersion = !mUnicodeEscapeVersion;
+                            updateTextEthSign(mUnicodeEscapeVersion, message, isEip712);
+                        });
+            }
+        }
+
+        if (init) {
+            mBtCancel.setOnClickListener(
+                    v -> {
+                        notifySignMessageRequestProcessed(false);
+                    });
+            mBtSign.setOnClickListener(
+                    v -> {
+                        notifySignMessageRequestProcessed(true);
+                    });
+        }
+        if (mCurrentSignMessageRequest.originInfo != null
+                && URLUtil.isValidUrl(mCurrentSignMessageRequest.originInfo.originSpec)) {
+            mWebSite.setText(Utils.geteTldSpanned(mCurrentSignMessageRequest.originInfo));
+        }
+        updateAccount(mCurrentSignMessageRequest.accountId);
+        updateNetwork(mCurrentSignMessageRequest.chainId);
     }
 
     private void updateAccount(AccountId accountId) {
@@ -184,5 +214,30 @@ public class SignMessageFragment extends BaseDAppsBottomSheetDialogFragment {
         if (JavaUtils.anyNull(mWalletModel, chainId)) return;
         var selectedNetwork = mWalletModel.getNetworkModel().getNetwork(chainId);
         mNetworkName.setText(selectedNetwork.chainName);
+    }
+
+    private void updateTextEthSign(
+            final boolean unicodeEscape, final String message, final boolean isEip712) {
+        String escapedDomain = "";
+        if (isEip712) {
+            String domain = mCurrentSignMessageRequest.signData.getEthSignTypedData().domainJson;
+            escapedDomain = unicodeEscape ? Validations.unicodeEscape(domain) : domain;
+        }
+        String escapedMessage = unicodeEscape ? Validations.unicodeEscape(message) : message;
+
+        Spanned domainPart =
+                escapedDomain.isEmpty()
+                        ? new SpannableString("")
+                        : AndroidUtils.formatHTML(
+                                getString(
+                                        R.string.wallet_sign_message_details_domain_section,
+                                        Html.escapeHtml(escapedDomain)));
+        Spanned messagePart =
+                AndroidUtils.formatHTML(
+                        getString(
+                                R.string.wallet_sign_message_details_message_section,
+                                Html.escapeHtml(escapedMessage)));
+
+        mSignMessageText.setText(TextUtils.concat(domainPart, messagePart));
     }
 }

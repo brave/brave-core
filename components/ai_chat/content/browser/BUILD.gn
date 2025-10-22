@@ -16,6 +16,8 @@ static_library("browser") {
     "ai_chat_throttle.h",
     "associated_url_content.cc",
     "associated_url_content.h",
+    "associated_web_contents_content.cc",
+    "associated_web_contents_content.h",
     "full_screenshotter.cc",
     "full_screenshotter.h",
     "model_service_factory.cc",
@@ -70,6 +72,7 @@ source_set("unit_tests") {
   testonly = true
   sources = [
     "associated_url_content_unittest.cc",
+    "associated_web_contents_content_unittest.cc",
     "page_content_fetcher_unittest.cc",
   ]
 
@@ -81,10 +84,14 @@ source_set("unit_tests") {
     "//brave/components/ai_chat/core/common",
     "//brave/components/ai_chat/core/common/mojom",
     "//brave/components/api_request_helper",
+    "//components/favicon/content",
+    "//components/favicon/core/test:test_support",
+    "//components/pdf/common:constants",
     "//content/public/browser",
     "//content/test:test_support",
     "//mojo/public/cpp/bindings",
     "//net:test_support",
+    "//pdf:buildflags",
     "//services/data_decoder/public/cpp",
     "//services/data_decoder/public/cpp:test_support",
     "//services/network:test_support",
@@ -94,4 +101,8 @@ source_set("unit_tests") {
     "//testing/gtest",
     "//url",
   ]
+
+  if (enable_pdf) {
+    deps += [ "//components/pdf/browser" ]
+  }
 }

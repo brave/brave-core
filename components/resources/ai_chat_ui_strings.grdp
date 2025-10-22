@@ -297,20 +297,17 @@
   <message name="IDS_CHAT_UI_MODEL_FOR_PROMPT_LABEL" desc="Label for model selection in smart mode dialog" formatter_data="webui=AiChat">
     Model for prompt
   </message>
-  <message name="IDS_CHAT_UI_USE_DEFAULT_MODEL_LABEL" desc="Label for using default model option" formatter_data="webui=AiChat">
-    Use default model
-  </message>
   <message name="IDS_CHAT_UI_SHORTCUT_LABEL" desc="Label for shortcut input in smart mode dialog" formatter_data="webui=AiChat">
     Shortcut
   </message>
   <message name="IDS_CHAT_UI_SHORTCUT_PLACEHOLDER" desc="Placeholder text for shortcut input" formatter_data="webui=AiChat">
-    tarot
+    Enter your shortcut here
   </message>
   <message name="IDS_CHAT_UI_PROMPT_LABEL" desc="Label for prompt input in smart mode dialog" formatter_data="webui=AiChat">
     Prompt
   </message>
   <message name="IDS_CHAT_UI_PROMPT_PLACEHOLDER" desc="Placeholder text for prompt input" formatter_data="webui=AiChat">
-    Generate a 3-card Tarot reading. Includes names of each card and their meaning and an interpretation of all cards together.
+    Enter your prompt here
   </message>
   <message name="IDS_CHAT_UI_EDIT_SMART_MODE_TITLE" desc="Title for edit smart mode dialog" formatter_data="webui=AiChat">
     Edit smart mode
@@ -337,7 +334,7 @@
     Prompt is required
   </message>
   <message name="IDS_CHAT_UI_PROMPT_TOO_LONG_ERROR" desc="Error message when prompt exceeds character limit" formatter_data="webui=AiChat">
-    Prompt must be 1000 characters or less
+    Prompt must be 5000 characters or less
   </message>
   <message name="IDS_CHAT_UI_EDIT_ANSWER_LABEL" desc="Button title to edit AI agent answer" formatter_data="webui=AiChat">
     Edit answer
@@ -746,5 +743,47 @@
   </message>
   <message name="IDS_CHAT_UI_TOOL_LABEL_NAVIGATE_WEB_PAGE_WITH_INPUT" desc="Label for the navigate web page tool with a known URL destination" formatter_data="webui=AiChat">
     Navigated the web page to <ph name="URL">$1<ex>https://www.example.com</ex></ph>
+  </message>
+  <message name="IDS_AI_CHAT_TASK_PROGRESS_LABEL" desc="Label for the task progress tab in the assistant response" formatter_data="webui=AiChat">
+    Progress
+  </message>
+  <message name="IDS_AI_CHAT_TASK_STEPS_LABEL" desc="Label for the task steps tab in the assistant response" formatter_data="webui=AiChat">
+    Steps
+  </message>
+  <message name="IDS_CHAT_UI_TOOL_LABEL_CLICK_ELEMENT" desc="Label for when the assistant is clicking something on a page" formatter_data="webui=AiChat">
+    Clicking on the page
+  </message>
+  <message name="IDS_CHAT_UI_TOOL_LABEL_DRAG_AND_RELEASE" desc="Label for when the assistant is dragging and dropping something on a page" formatter_data="webui=AiChat">
+    Dragging and dropping on the page
+  </message>
+  <message name="IDS_CHAT_UI_TOOL_LABEL_NAVIGATE_HISTORY_BACK" desc="Label for when the assistant is navigating back in browser history" formatter_data="webui=AiChat">
+    Navigating back
+  </message>
+  <message name="IDS_CHAT_UI_TOOL_LABEL_NAVIGATE_HISTORY_FORWARD" desc="Label for when the assistant is navigating forward in browser history" formatter_data="webui=AiChat">
+    Navigating forward
+  </message>
+  <message name="IDS_CHAT_UI_TOOL_LABEL_MOVE_MOUSE" desc="Label for when the assistant is moving the mouse pointer on a page" formatter_data="webui=AiChat">
+    Moving the mouse
+  </message>
+  <message name="IDS_CHAT_UI_TOOL_LABEL_SCROLL_ELEMENT" desc="Label for when the assistant is scrolling on a page" formatter_data="webui=AiChat">
+    Scrolling
+  </message>
+  <message name="IDS_CHAT_UI_TOOL_LABEL_SELECT_DROPDOWN" desc="Label for when the assistant is selecting an option from a dropdown on a page" formatter_data="webui=AiChat">
+    Selecting from a dropdown
+  </message>
+  <message name="IDS_CHAT_UI_TOOL_LABEL_TYPE_TEXT" desc="Label for when the assistant is typing text into a field on a page" formatter_data="webui=AiChat">
+    Typing text
+  </message>
+  <message name="IDS_CHAT_UI_TOOL_LABEL_WAIT" desc="Label for when the assistant is waiting for a page to load or update" formatter_data="webui=AiChat">
+    Waiting for the page
+  </message>
+  <message name="IDS_CHAT_UI_TOOLS_MENU_NO_SMART_MODES_FOUND" desc="Message shown when no smart modes are found" formatter_data="webui=AiChat">
+    No smart modes found. Create a new one by clicking the ”New” button.
+  </message>
+  <message name="IDS_CHAT_UI_TOOLS_MENU_NEW_SMART_MODE_BUTTON_LABEL" desc="Label for the new smart mode button" formatter_data="webui=AiChat">
+    New
+  </message>
+  <message name='IDS_CHAT_UI_TOOL_LABEL_ASSISTANT_DETAIL_STORAGE' desc="Label for when the assistant is storing information for later" formatter_data="webui=AiChat">
+    Noting down some information for later about the page
   </message>
 </grit-part>

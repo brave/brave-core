@@ -18,6 +18,7 @@ source_set("browser_tests") {
     "//chrome/app:command_ids",
     "//chrome/browser",
     "//chrome/browser/profiles:profile",
+    "//chrome/browser/tab_group_sync:factories",
     "//chrome/browser/ui",
     "//chrome/browser/ui:browser_navigator_params_headers",
     "//components/prefs",
@@ -29,11 +30,8 @@ source_set("browser_tests") {
     sources += [
       "shared_pinned_tab_service_browsertest.cc",
       "shared_pinned_tab_service_browsertest.h",
-      "split_view_browser_data_browsertest.cc",
-      "split_view_tab_strip_model_adapter_browsertest.cc",
     ]
     deps += [
-      "//brave/browser/ui/tabs:split_view",
       "//brave/browser/ui/tabs:tab_strip",
       "//chrome/browser/ui:ui_features",
       "//chrome/browser/ui/browser_window",

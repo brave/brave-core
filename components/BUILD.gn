@@ -28,6 +28,7 @@ test("brave_components_unittests") {
     "//brave/components/brave_account/endpoints:unit_tests",
     "//brave/components/brave_origin:unit_tests",
     "//brave/components/brave_policy:unit_tests",
+    "//brave/components/brave_policy/ad_block_only_mode:unit_tests",
     "//brave/components/brave_shields/core/browser:unit_tests",
     "//brave/components/brave_shields/core/common:unit_tests",
     "//brave/components/brave_wallet/common:unit_tests",

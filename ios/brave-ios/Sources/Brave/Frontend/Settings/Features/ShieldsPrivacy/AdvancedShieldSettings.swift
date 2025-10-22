@@ -27,14 +27,6 @@ import os
     var isEnabled: Bool
   }
 
-  @Published var cookieConsentBlocking: Bool {
-    didSet {
-      FilterListStorage.shared.ensureFilterList(
-        for: AdblockFilterListCatalogEntry.cookieConsentNoticesComponentID,
-        isEnabled: cookieConsentBlocking
-      )
-    }
-  }
   @Published var blockMobileAnnoyances: Bool {
     didSet {
       FilterListStorage.shared.ensureFilterList(
@@ -81,7 +73,7 @@ import os
         braveShieldsSettings.defaultAdBlockMode = adBlockAndTrackingPreventionLevel.adBlockMode
       }
       // Also assign to existing pref until deprecated so reverse migration is not required
-      ShieldPreferences.blockAdsAndTrackingLevel = adBlockAndTrackingPreventionLevel
+      Preferences.Shields.blockAdsAndTrackingLevel = adBlockAndTrackingPreventionLevel
     }
   }
   @Published var isBlockScriptsEnabled: Bool {
@@ -107,7 +99,7 @@ import os
   }
   @Published var httpsUpgradeLevel: HTTPSUpgradeLevel {
     didSet {
-      ShieldPreferences.httpsUpgradeLevel = httpsUpgradeLevel
+      Preferences.Shields.httpsUpgradeLevel = httpsUpgradeLevel
       HttpsUpgradeServiceFactory.get(privateMode: false)?.clearAllowlist(
         fromStart: Date.distantPast,
         end: Date.distantFuture
@@ -117,7 +109,12 @@ import os
   @Published var shredLevel: SiteShredLevel {
     didSet {
       // TODO: Support AutoShred via content settings brave-browser#47753
-      ShieldPreferences.shredLevel = shredLevel
+      Preferences.Shields.shredLevel = shredLevel
+    }
+  }
+  @Published var shredHistoryItems: Bool {
+    didSet {
+      Preferences.Shields.shredHistoryItems.value = shredHistoryItems
     }
   }
 
@@ -181,21 +178,18 @@ import os
       self.isBlockFingerprintingEnabled =
         braveShieldsSettings.defaultFingerprintMode == .standardMode
     } else {
-      self.adBlockAndTrackingPreventionLevel = ShieldPreferences.blockAdsAndTrackingLevel
+      self.adBlockAndTrackingPreventionLevel = Preferences.Shields.blockAdsAndTrackingLevel
       self.isBlockScriptsEnabled = Preferences.Shields.blockScripts.value
       self.isBlockFingerprintingEnabled = Preferences.Shields.fingerprintingProtection.value
     }
-    self.httpsUpgradeLevel = ShieldPreferences.httpsUpgradeLevel
+    self.httpsUpgradeLevel = Preferences.Shields.httpsUpgradeLevel
     self.isDeAmpEnabled = deAmpPrefs.isDeAmpEnabled
     self.isDebounceEnabled = debounceService?.isEnabled ?? false
     // TODO: Support AutoShred via content settings brave-browser#47753
-    self.shredLevel = ShieldPreferences.shredLevel
+    self.shredLevel = Preferences.Shields.shredLevel
+    self.shredHistoryItems = Preferences.Shields.shredHistoryItems.value
     self.webcompatReporterHandler = webcompatReporterHandler
     self.isSurveyPanelistEnabled = rewards?.ads.isSurveyPanelistEnabled ?? false
-
-    cookieConsentBlocking = FilterListStorage.shared.isEnabled(
-      for: AdblockFilterListCatalogEntry.cookieConsentNoticesComponentID
-    )
 
     blockMobileAnnoyances = FilterListStorage.shared.isEnabled(
       for: AdblockFilterListCatalogEntry.mobileAnnoyancesComponentID
@@ -361,10 +355,6 @@ import os
       .sink { filterLists in
         for filterList in filterLists {
           switch filterList.entry.componentId {
-          case AdblockFilterListCatalogEntry.cookieConsentNoticesComponentID:
-            if filterList.isEnabled != self.cookieConsentBlocking {
-              self.cookieConsentBlocking = filterList.isEnabled
-            }
           case AdblockFilterListCatalogEntry.mobileAnnoyancesComponentID:
             if filterList.isEnabled != self.blockMobileAnnoyances {
               self.blockMobileAnnoyances = filterList.isEnabled

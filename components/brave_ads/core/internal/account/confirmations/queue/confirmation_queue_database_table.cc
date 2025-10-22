@@ -14,8 +14,6 @@
 #include <vector>
 
 #include "base/check.h"
-#include "base/debug/crash_logging.h"
-#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
@@ -209,7 +207,7 @@ ConfirmationQueueItemInfo FromMojomRow(
 
   confirmation_queue_item.confirmation.user_data.fixed =
       base::JSONReader::ReadDict(ColumnString(mojom_db_row, 11),
-                                 base::JSON_PARSE_CHROMIUM_EXTENSIONS)
+                                 base::JSON_PARSE_RFC)
           .value_or(base::Value::Dict());
 
   const base::Time process_at = ColumnTime(mojom_db_row, 12);
@@ -240,11 +238,6 @@ void GetCallback(
     const ConfirmationQueueItemInfo confirmation_queue_item =
         FromMojomRow(mojom_db_row);
     if (!confirmation_queue_item.IsValid()) {
-      SCOPED_CRASH_KEY_BOOL("Issue45296", "process_at",
-                            !!confirmation_queue_item.process_at);
-      SCOPED_CRASH_KEY_STRING64("Issue45296", "failure_reason",
-                                "Invalid confirmation queue item");
-      base::debug::DumpWithoutCrashing();
       BLOG(0, "Invalid confirmation queue item");
       continue;
     }
@@ -312,11 +305,6 @@ void ConfirmationQueue::Save(
                [](const ConfirmationQueueItemInfo& confirmation_queue_item) {
                  const bool is_valid = confirmation_queue_item.IsValid();
                  if (!is_valid) {
-                   SCOPED_CRASH_KEY_BOOL("Issue45296", "process_at",
-                                         !!confirmation_queue_item.process_at);
-                   SCOPED_CRASH_KEY_STRING64("Issue45296", "failure_reason",
-                                             "Invalid confirmation queue item");
-                   base::debug::DumpWithoutCrashing();
                    BLOG(0, "Invalid confirmation queue item");
                  }
 

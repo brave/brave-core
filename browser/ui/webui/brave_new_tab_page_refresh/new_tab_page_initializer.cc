@@ -18,6 +18,7 @@
 #include "brave/browser/ui/brave_ui_features.h"
 #include "brave/browser/ui/webui/brave_sanitized_image_source.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
+#include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
@@ -156,11 +157,16 @@ void NewTabPageInitializer::AddLoadTimeValues() {
 #endif
   source_->AddBoolean("vpnFeatureEnabled", vpn_feature_enabled);
 
-  source_->AddBoolean("featureFlagBraveNewsFeedV2Enabled", true);
+  bool news_feed_update_enabled =
+      base::FeatureList::IsEnabled(brave_news::features::kBraveNewsFeedUpdate);
+  source_->AddBoolean("featureFlagBraveNewsFeedV2Enabled",
+                      news_feed_update_enabled);
 
   source_->AddBoolean(
       "newsFeatureEnabled",
-      !prefs->GetBoolean(brave_news::prefs::kBraveNewsDisabledByPolicy));
+      news_feed_update_enabled &&
+          !prefs->GetBoolean(brave_news::prefs::kBraveNewsDisabledByPolicy));
+
   source_->AddBoolean("talkFeatureEnabled",
                       !prefs->GetBoolean(kBraveTalkDisabledByPolicy));
 }

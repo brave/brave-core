@@ -30,7 +30,6 @@ if (toolkit_views) {
     "//brave/browser/ui/views/frame/split_view",
     "//brave/browser/ui/views/frame/vertical_tabs",
     "//brave/browser/ui/views/side_panel/ai_chat",
-    "//brave/browser/ui/views/split_view",
     "//brave/browser/ui/sidebar",
   ]
 
