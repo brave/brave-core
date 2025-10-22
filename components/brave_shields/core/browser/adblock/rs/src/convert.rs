@@ -7,13 +7,14 @@ use std::time::Duration;
 
 use crate::ffi::{
     BlockerResult, FilterListMetadata, OptionalString, OptionalU16, RegexDebugEntry,
-    RegexDebugInfo, RegexManagerDiscardPolicy,
+    DebugInfo, RegexManagerDiscardPolicy,
 };
 use adblock::blocker::BlockerResult as InnerBlockerResult;
 use adblock::lists::{ExpiresInterval, FilterListMetadata as InnerFilterListMetadata};
+use adblock::engine::EngineDebugInfo as InnerEngineDebugInfo;
+
 use adblock::regex_manager::{
     RegexDebugEntry as InnerRegexDebugEntry,
-    RegexDebugInfo as InnerRegexDebugInfo,
     RegexManagerDiscardPolicy as InnerRegexManagerDiscardPolicy,
 };
 
@@ -46,11 +47,12 @@ impl From<InnerRegexDebugEntry> for RegexDebugEntry {
     }
 }
 
-impl From<InnerRegexDebugInfo> for RegexDebugInfo {
-    fn from(info: InnerRegexDebugInfo) -> Self {
+impl From<InnerEngineDebugInfo> for DebugInfo {
+    fn from(info: InnerEngineDebugInfo) -> Self {
         Self {
-            regex_data: info.regex_data.into_iter().map(|e| e.into()).collect(),
-            compiled_regex_count: info.compiled_regex_count,
+            regex_data: info.regex_debug_info.regex_data.into_iter().map(|e| e.into()).collect(),
+            compiled_regex_count: info.regex_debug_info.compiled_regex_count,
+            flatbuffer_size: info.flatbuffer_size,
         }
     }
 }
