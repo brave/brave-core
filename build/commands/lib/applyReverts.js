@@ -11,11 +11,15 @@ const { runGit } = require('./util')
  */
 function applyReverts(repoPath, commits, dryRun = false) {
   function git(...args) {
+    const env = { ...process.env }
     // Setting the name and email for git is necessary in environments (such as
     // CI) where the values are not set. In that case, Git would error out.
-    const env = { ...process.env }
     env.GIT_AUTHOR_NAME = env.GIT_COMMITTER_NAME = 'Brave build'
     env.GIT_AUTHOR_EMAIL = env.GIT_COMMITTER_EMAIL = 'brave@brave.com'
+    // Fix the remaining attributes of the commit in order to make its hash
+    // deterministic. This prevents `update_patches` from constantly updating
+    // .patch files just because the hash has changed.
+    env.GIT_AUTHOR_DATE = env.GIT_COMMITTER_DATE = '1970-01-01T00:00:00Z'
     const options = { skipLogging: true, logError: true, env: env }
     const result = runGit(repoPath, args, true, options)
     if (result === null)

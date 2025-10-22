@@ -173,4 +173,24 @@ describe('applyReverts', function () {
     const fileContent = await readTestFile()
     expect(fileContent).toBe(file1InitialContent)
   })
+
+  test('produces deterministic commit hashes', async function () {
+    await writeTestFile(file1ModifiedContent)
+    await repo.runGit(['add', '.'])
+    await repo.runGit(['commit', '-m', 'Modify file'])
+    const commitToRevert = await getCommitHash(repo)
+
+    applyReverts(repo.path, [commitToRevert])
+    const firstRevertHash = (await repo.runGit(['rev-parse', 'HEAD'])).trim()
+
+    await repo.runGit(['reset', '--hard', 'HEAD~1'])
+
+    // Sleep for one second to ensure Git sees a different timestamp. Otherwise,
+    // this test could pass even without a correct implementation.
+    await new Promise(resolve => setTimeout(resolve, 1000))
+
+    applyReverts(repo.path, [commitToRevert])
+    const secondRevertHash = (await repo.runGit(['rev-parse', 'HEAD'])).trim()
+    expect(firstRevertHash).toBe(secondRevertHash)
+  })
 })
