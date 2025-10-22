@@ -6,12 +6,30 @@
 #include "brave/browser/misc_metrics/theme_metrics.h"
 
 #include "base/metrics/histogram_macros.h"
+#include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "chrome/browser/themes/theme_service.h"
+
+namespace {
+
+dark_mode::BraveDarkModeType GetBraveDarkModeType(ThemeService* service) {
+  auto type = service->GetBrowserColorScheme();
+  if (type == ThemeService::BrowserColorScheme::kSystem) {
+    return dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DEFAULT;
+  } else if (type == ThemeService::BrowserColorScheme::kLight) {
+    return dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT;
+  } else {
+    CHECK_EQ(ThemeService::BrowserColorScheme::kDark, type);
+    return dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK;
+  }
+}
+
+}  // namespace
 
 namespace misc_metrics {
 
 ThemeMetrics::ThemeMetrics(ThemeService* theme_service)
     : theme_service_(theme_service) {
+  theme_observer_.Observe(theme_service_);
   ReportMetrics();
 }
 
@@ -22,10 +40,9 @@ void ThemeMetrics::ReportMetrics() {
     return;
   }
 
-  // Fetch value from theme service.
-  // UMA_HISTOGRAM_EXACT_LINEAR(
-  //     kBrowserColorSchemeHistogramName,
-  //     static_cast<int>(dark_mode::GetBraveDarkModeType()), 3);
+  UMA_HISTOGRAM_EXACT_LINEAR(
+      kBrowserColorSchemeHistogramName,
+      static_cast<int>(GetBraveDarkModeType(theme_service_)), 3);
   UMA_HISTOGRAM_BOOLEAN(kThemeColorDefaultHistogramName,
                         theme_service_->UsingDefaultTheme());
 }

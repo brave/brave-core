@@ -24,7 +24,6 @@ class ThemeMetricsTest : public testing::Test {
  public:
   void SetUp() override {
     theme_service_ = ThemeServiceFactory::GetForProfile(&profile_);
-    // dark_mode::SetUseSystemDarkModeEnabledForTest(true);
     theme_metrics_ = std::make_unique<ThemeMetrics>(theme_service_);
   }
 
@@ -38,11 +37,12 @@ class ThemeMetricsTest : public testing::Test {
 
 TEST_F(ThemeMetricsTest, ReportMetrics) {
   histogram_tester_.ExpectUniqueSample(kBrowserColorSchemeHistogramName, 0, 1);
-  // dark_mode::SetBraveDarkModeType(
-  //     dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK);
+  theme_service_->SetBrowserColorScheme(
+      ThemeService::BrowserColorScheme::kDark);
   histogram_tester_.ExpectBucketCount(kBrowserColorSchemeHistogramName, 1, 1);
-  // dark_mode::SetBraveDarkModeType(
-  //     dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT);
+
+  theme_service_->SetBrowserColorScheme(
+      ThemeService::BrowserColorScheme::kLight);
   histogram_tester_.ExpectBucketCount(kBrowserColorSchemeHistogramName, 2, 1);
   histogram_tester_.ExpectTotalCount(kBrowserColorSchemeHistogramName, 3);
 
