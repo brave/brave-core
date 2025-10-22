@@ -12,7 +12,10 @@
 #include "base/metrics/histogram_macros.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/constants/url_constants.h"
+#include "brave/components/query_filter/pref_names.h"
 #include "brave/components/query_filter/utils.h"
+#include "chrome/browser/profiles/profile.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/common/referrer.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/url_request/url_request.h"
@@ -44,12 +47,33 @@ bool ApplyPotentialReferrerBlock(std::shared_ptr<BraveRequestInfo> ctx) {
   return false;
 }
 
+bool IsTrackingQueryParametersFilteringEnabled(
+    std::shared_ptr<BraveRequestInfo> ctx) {
+  if (!ctx->browser_context) {
+    return true;
+  }
+
+  Profile* profile = Profile::FromBrowserContext(ctx->browser_context);
+  CHECK(profile);
+  // Default to enabled unless controlled by policy.
+  if (!profile->GetPrefs()->IsManagedPreference(
+          query_filter::kTrackingQueryParametersFilteringEnabled)) {
+    return true;
+  }
+
+  // Return the policy-controlled value.
+  return profile->GetPrefs()->GetBoolean(
+      query_filter::kTrackingQueryParametersFilteringEnabled);
+}
+
 }  // namespace
 
 int OnBeforeURLRequest_SiteHacksWork(const ResponseCallback& next_callback,
                                      std::shared_ptr<BraveRequestInfo> ctx) {
   ApplyPotentialReferrerBlock(ctx);
-  if (ctx->allow_brave_shields) {
+
+  if (ctx->allow_brave_shields &&
+      IsTrackingQueryParametersFilteringEnabled(ctx)) {
     auto filtered_url = query_filter::MaybeApplyQueryStringFilter(
         ctx->initiator_url, ctx->redirect_source, ctx->request_url, ctx->method,
         ctx->internal_redirect);
