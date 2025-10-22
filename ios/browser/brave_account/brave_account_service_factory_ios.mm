@@ -5,6 +5,7 @@
 
 #include "brave/ios/browser/brave_account/brave_account_service_factory_ios.h"
 
+#include "base/functional/bind.h"
 #include "brave/components/brave_account/brave_account_service.h"
 #include "brave/components/brave_account/features.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
@@ -12,6 +13,16 @@
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace brave_account {
+
+namespace {
+
+std::unique_ptr<KeyedService> BuildBraveAccountService(ProfileIOS* profile) {
+  CHECK(profile);
+  return std::make_unique<BraveAccountService>(
+      profile->GetPrefs(), profile->GetSharedURLLoaderFactory());
+}
+
+}  // namespace
 
 // static
 BraveAccountServiceFactoryIOS* BraveAccountServiceFactoryIOS::GetInstance() {
@@ -27,8 +38,16 @@ BraveAccountService* BraveAccountServiceFactoryIOS::GetFor(
       GetInstance()->GetServiceForContext(state, true));
 }
 
+// static
+ProfileKeyedServiceFactoryIOS::TestingFactory
+BraveAccountServiceFactoryIOS::GetDefaultFactory() {
+  return base::BindOnce(&BuildBraveAccountService);
+}
+
 BraveAccountServiceFactoryIOS::BraveAccountServiceFactoryIOS()
-    : ProfileKeyedServiceFactoryIOS("BraveAccountService") {
+    : ProfileKeyedServiceFactoryIOS("BraveAccountService",
+                                    ServiceCreation::kCreateWithProfile,
+                                    TestingCreation::kNoServiceForTests) {
   CHECK(features::IsBraveAccountEnabled());
 }
 
@@ -37,9 +56,7 @@ BraveAccountServiceFactoryIOS::~BraveAccountServiceFactoryIOS() = default;
 std::unique_ptr<KeyedService>
 BraveAccountServiceFactoryIOS::BuildServiceInstanceFor(
     ProfileIOS* profile) const {
-  CHECK(profile);
-  return std::make_unique<BraveAccountService>(
-      profile->GetPrefs(), profile->GetSharedURLLoaderFactory());
+  return BuildBraveAccountService(profile);
 }
 
 }  // namespace brave_account

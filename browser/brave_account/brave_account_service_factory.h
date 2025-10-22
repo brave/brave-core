@@ -37,6 +37,8 @@ class BraveAccountServiceFactory : public ProfileKeyedServiceFactory {
   ~BraveAccountServiceFactory() override;
 
   // BrowserContextKeyedServiceFactory:
+  bool ServiceIsCreatedWithBrowserContext() const override;
+
   std::unique_ptr<KeyedService> BuildServiceInstanceForBrowserContext(
       content::BrowserContext* context) const override;
 };
