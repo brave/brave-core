@@ -62,17 +62,16 @@ generate_grd("build_grd") {
   ]
   input_files_base_dir = rebase_path(".", "//")
 
-  deps = [ ":preprocess" ]
+  grdp_files = [ "$root_gen_dir/brave/web-ui-email_aliases/email_aliases.grdp" ]
+
+  deps = [
+    ":preprocess",
+    "//brave/components/email_aliases/resources:email_aliases_ui",
+  ]
 
   if (!is_android) {
-    grdp_files = [
-      "$root_gen_dir/brave/web-ui-commands/commands.grdp",
-      "$root_gen_dir/brave/web-ui-email_aliases/email_aliases.grdp",
-    ]
-    deps += [
-      "shortcuts_page:commands_ui",
-      "//brave/components/email_aliases/resources:email_aliases_ui",
-    ]
+    grdp_files += [ "$root_gen_dir/brave/web-ui-commands/commands.grdp" ]
+    deps += [ "shortcuts_page:commands_ui" ]
   }
 }
 
