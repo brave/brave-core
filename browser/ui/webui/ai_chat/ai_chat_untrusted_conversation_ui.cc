@@ -115,9 +115,44 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
 
   void AddTabToThumbnailTracker(int32_t tab_id) override {
 #if !BUILDFLAG(IS_ANDROID)  // Match thumnbail_tracker.h GN guard
+    // Security check: only allow if the conversation has the tab as a task
+    if (conversation_id_.empty()) {
+      DLOG(ERROR)
+          << "Cannot add tab to thumbnail tracker for empty conversation";
+      return;
+    }
+
+    ai_chat::AIChatService* service =
+        ai_chat::AIChatServiceFactory::GetForBrowserContext(
+            web_ui_->GetWebContents()->GetBrowserContext());
+    CHECK(service)
+        << "Service should be available if WebUI class is instantiated";
+
+    // We can use the sync version of GetConversation as the conversation must
+    // be in-memory for the UI to be displayed.
+    ai_chat::ConversationHandler* conversation =
+        service->GetConversation(conversation_id_);
+    if (!conversation) {
+      // Technically it's possible for a conversation to be unloaded whilst the
+      // UI is still open. This can especially happen if the conversation is
+      // deleted (or all data chosen to be cleared). At that point, the UI
+      // shouldn't be asking to track new tab thumbnails, but we don't need
+      // to crash.
+      DLOG(ERROR) << __func__ << " Conversation not found for conversation id: "
+                  << conversation_id_;
+      return;
+    }
+
+    if (!conversation->get_task_tab_ids().contains(tab_id)) {
+      DLOG(ERROR) << __func__ << " Tab id: " << tab_id
+                  << " is not a task for conversation: " << conversation_id_;
+      return;
+    }
+
     auto* tab_handle = tabs::TabHandle(tab_id).Get();
     if (!tab_handle) {
-      DLOG(ERROR) << "Failed to get tab handle for tab id: " << tab_id;
+      DLOG(ERROR) << __func__
+                  << " Failed to get tab handle for tab id: " << tab_id;
       return;
     }
     thumbnail_tracker_.AddTab(tab_handle->GetContents());
@@ -128,7 +163,8 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
 #if !BUILDFLAG(IS_ANDROID)  // Match thumnbail_tracker.h GN guard
     auto* tab_handle = tabs::TabHandle(tab_id).Get();
     if (!tab_handle) {
-      DLOG(ERROR) << "Failed to get tab handle for tab id: " << tab_id;
+      DLOG(ERROR) << __func__
+                  << " Failed to get tab handle for tab id: " << tab_id;
       return;
     }
     thumbnail_tracker_.RemoveTab(tab_handle->GetContents());
@@ -172,6 +208,8 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
     if (conversation_id.empty()) {
       return;
     }
+
+    conversation_id_ = conversation_id;
 
     ai_chat::AIChatService* service =
         ai_chat::AIChatServiceFactory::GetForBrowserContext(
@@ -246,6 +284,7 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
   }
 
 #if !BUILDFLAG(IS_ANDROID)  // Match thumnbail_tracker.h GN guard
+  // Callback for ThumbnailTracker
   void ThumbnailUpdated(content::WebContents* contents,
                         ThumbnailTracker::CompressedThumbnailData image) {
     if (!image) {
@@ -269,6 +308,10 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
   mojo::Receiver<ai_chat::mojom::UntrustedUIHandler> receiver_;
   mojo::Remote<ai_chat::mojom::UntrustedUI> untrusted_ui_;
   PrefChangeRegistrar pref_change_registrar_;
+
+  // ID of the conversation this UI is displaying. This frame page is single-use
+  // for a single conversation.
+  std::string conversation_id_;
 };
 
 }  // namespace
