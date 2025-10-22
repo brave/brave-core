@@ -14,11 +14,13 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "brave/ios/browser/brave_wallet/features.h"
 #include "brave/ios/browser/ui/webui/ads/ads_internals_ui.h"
 #include "brave/ios/browser/ui/webui/ai_chat/ai_chat_ui.h"
 #include "brave/ios/browser/ui/webui/ai_chat/ai_chat_untrusted_conversation_ui.h"
 #include "brave/ios/browser/ui/webui/ai_chat/features.h"
 #include "brave/ios/browser/ui/webui/brave_account/brave_account_ui_ios.h"
+#include "brave/ios/browser/ui/webui/brave_wallet/wallet_page_ui.h"
 #include "brave/ios/browser/ui/webui/skus/skus_internals_ui.h"
 #include "build/build_config.h"
 #include "components/prefs/pref_service.h"
@@ -79,6 +81,10 @@ WebUIIOSFactoryFunction GetWebUIIOSFactoryFunction(const GURL& url) {
   } else if (url_host == kAIChatUIHost &&
              ai_chat::features::IsAIChatWebUIEnabled()) {
     return &NewWebUIIOS<AIChatUI>;
+  } else if (url_host == kWalletPageHost &&
+             base::FeatureList::IsEnabled(
+                 brave_wallet::features::kBraveWalletWebUIIOS)) {
+    return &NewWebUIIOS<WalletPageUI>;
   }
   return nullptr;
 }
