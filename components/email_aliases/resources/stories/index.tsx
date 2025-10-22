@@ -121,6 +121,7 @@ class StubEmailAliasesService implements EmailAliasesServiceInterface {
   accountRequestId: number
   observers: Set<EmailAliasesServiceObserverRemote |
                  EmailAliasesServiceObserverInterface>
+
   constructor(authState: AuthState) {
     this.authState = authState
     this.observers = new Set<EmailAliasesServiceObserverRemote |
@@ -141,7 +142,7 @@ class StubEmailAliasesService implements EmailAliasesServiceInterface {
   async updateAlias (aliasEmail: string, note: string | null):
     Promise<{ result: EmailAliasesService_UpdateAlias_ResponseParam_Result }> {
     if (Math.random() < 1/3) {
-      throw getLocale('emailAliasesUpdateAliasError')
+      throw new Error(getLocale('emailAliasesUpdateAliasError'))
     }
     const alias = { email: aliasEmail, note: note ?? '', domains: undefined }
     this.aliases.set(aliasEmail, alias)
@@ -154,7 +155,7 @@ class StubEmailAliasesService implements EmailAliasesServiceInterface {
   async deleteAlias (aliasEmail: string):
     Promise<{ result: EmailAliasesService_DeleteAlias_ResponseParam_Result }> {
     if (Math.random() < 1/3) {
-      throw getLocale('emailAliasesDeleteAliasError')
+      throw new Error(getLocale('emailAliasesDeleteAliasError'))
     }
     this.aliases.delete(aliasEmail)
     this.observers.forEach(observer => {
@@ -166,7 +167,7 @@ class StubEmailAliasesService implements EmailAliasesServiceInterface {
   async generateAlias (): Promise<{ result: EmailAliasesService_GenerateAlias_ResponseParam_Result }> {
     await new Promise(resolve => setTimeout(resolve, 1000))
     if (Math.random() < 1/3) {
-      throw getLocale('emailAliasesGenerateError')
+      throw new Error(getLocale('emailAliasesGenerateError'))
     }
     let aliasEmail: string = ''
     do {
@@ -180,7 +181,7 @@ class StubEmailAliasesService implements EmailAliasesServiceInterface {
   async requestAuthentication (authEmail: string):
     Promise<{ result: EmailAliasesService_RequestAuthentication_ResponseParam_Result }> {
     if (Math.random() < 1/3) {
-      throw getLocale('emailAliasesRequestAuthenticationError')
+      throw new Error(getLocale('emailAliasesRequestAuthenticationError'))
     }
     this.observers.forEach(observer => {
       observer.onAuthStateChanged({

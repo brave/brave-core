@@ -5,8 +5,7 @@
 
 import { Alias } from "gen/brave/components/email_aliases/email_aliases.mojom.m"
 import { color, font, spacing } from '@brave/leo/tokens/css/variables'
-import { formatLocale } from '$web-common/locale'
-import { getLocale } from '$web-common/locale'
+import { formatLocale, getLocale } from '$web-common/locale'
 import { onEnterKeyForDiv } from './on_enter_key'
 import * as React from 'react'
 import Button from '@brave/leo/react/button'
