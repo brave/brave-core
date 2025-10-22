@@ -347,6 +347,7 @@ source_set("ui") {
       "//brave/components/sidebar/browser",
       "//brave/components/sidebar/common",
       "//brave/components/speedreader/common/buildflags",
+      "//brave/ui/webui/brave_color_change_listener",
       "//chrome/app:generated_resources",
       "//chrome/browser/app_mode",
       "//chrome/browser/content_settings:content_settings_factory",
