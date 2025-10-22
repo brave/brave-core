@@ -192,25 +192,6 @@ function InsertCardanoSubpage (section: Element)
     `)
 }
 
-function InsertShieldsSubpage (section: Element)
-{
-  section.appendChild(
-    html`
-      <template is="dom-if" route-path="/content/braveShields" no-search>
-        <settings-subpage
-          associated-control="[[$$('#braveShields')]]"
-          page-title="${loadTimeData.getString('siteSettingsShieldsStatus')}">
-          <category-setting-exceptions
-            id="shieldsExceptions"
-            category="[[contentSettingsTypesEnum_.BRAVE_SHIELDS]]"
-            block-header="${loadTimeData.getString('siteSettingsShieldsDown')}"
-            allow-header="${loadTimeData.getString('siteSettingsShieldsUp')}">
-          </category-setting-exceptions>
-        </settings-subpage>
-      </template>
-    `)
-}
-
 function InsertBraveOpenAIChatSubpage (section: Element)
 {
   section.appendChild(
@@ -278,7 +259,6 @@ RegisterPolymerTemplateModifications({
         InsertCardanoSubpage(section)
       }
     }
-    InsertShieldsSubpage(section)
     const permissionsLinkRow =
       templateContent.getElementById('permissionsLinkRow')
     if (!permissionsLinkRow) {

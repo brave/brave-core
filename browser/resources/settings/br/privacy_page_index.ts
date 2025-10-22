@@ -10,8 +10,10 @@ import {
 } from 'chrome://resources/brave/polymer_overriding.js'
 import type { Route } from '../router.js';
 import { routes } from '../route.js';
-import {loadTimeData} from "../i18n_setup.js"
-import {pageVisibility} from './page_visibility.js'
+import { loadTimeData } from "../i18n_setup.js"
+import { pageVisibility } from './page_visibility.js'
+import '../site_settings/site_settings_shields.js'
+import { ContentSettingsTypes } from '../site_settings/constants.js';
 
 RegisterPolymerPrototypeModification({
   'settings-privacy-page-index': (prototype) => {
@@ -89,6 +91,15 @@ RegisterPolymerTemplateModifications({
         in-search-mode="[[inSearchMode_]]">
       </settings-brave-survey-panelist-page>`)
     }
+
+    viewManager.appendChild(html`
+      <site-settings-shields-page
+          id="${ContentSettingsTypes.BRAVE_SHIELDS}"
+          route-path$="[[routes_.SITE_SETTINGS_SHIELDS_STATUS.path]]"
+          data-parent-view-id="siteSettings"
+          slot="view"
+          in-search-mode="[[inSearchMode_]]">
+        </site-settings-shields-page>`)
 
     // Move the safety hub to the end of the page
     const safetyHubTemplate = templateContent.querySelector(

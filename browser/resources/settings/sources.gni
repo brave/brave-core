@@ -68,6 +68,7 @@ brave_settings_web_component_files = [
   "default_brave_shields_page/shields_page_index.ts",
   "getting_started_page/getting_started.ts",
   "getting_started_page/getting_started_page_index.ts",
+  "site_settings/site_settings_shields.ts",
   "social_blocking_page/social_blocking_page.ts",
   "ui/searchable_drop_down_cros.ts",
 ]
