@@ -5,13 +5,12 @@
 
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_substrate_rpc.h"
 
-#include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
+#include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
-#include "brave/components/brave_wallet/common/features.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
@@ -50,10 +49,6 @@ class PolkadotSubstrateRpcUnitTest : public testing::Test {
 };
 
 TEST_F(PolkadotSubstrateRpcUnitTest, GetChainName) {
-  base::test::ScopedFeatureList feature_list;
-  feature_list.InitWithFeaturesAndParameters(
-      {{features::kBraveWalletPolkadotFeature, {}}}, {});
-
   url_loader_factory_.ClearResponses();
 
   const auto* chain_id = mojom::kPolkadotTestnet;
@@ -129,10 +124,6 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetChainName) {
 }
 
 TEST_F(PolkadotSubstrateRpcUnitTest, GetAccountBalance) {
-  base::test::ScopedFeatureList feature_list;
-  feature_list.InitWithFeaturesAndParameters(
-      {{features::kBraveWalletPolkadotFeature, {}}}, {});
-
   url_loader_factory_.ClearResponses();
 
   const auto* chain_id = mojom::kPolkadotTestnet;
@@ -180,12 +171,9 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetAccountBalance) {
         ]
       })";
 
-    auto ret = std::ranges::remove_if(
-        expected_body, [](auto c) { return c == ' ' || c == '\n'; });
-    expected_body.erase(ret.begin(), ret.end());
-
-    EXPECT_EQ(element.As<network::DataElementBytes>().AsStringPiece(),
-              expected_body);
+    EXPECT_EQ(base::test::ParseJsonDict(
+                  element.As<network::DataElementBytes>().AsStringPiece()),
+              base::test::ParseJsonDict(expected_body));
 
     url_loader_factory_.AddResponse(testnet_url,
                                     R"(
@@ -442,10 +430,6 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetAccountBalance) {
 }
 
 TEST_F(PolkadotSubstrateRpcUnitTest, GetFinalizedHead) {
-  base::test::ScopedFeatureList feature_list;
-  feature_list.InitWithFeaturesAndParameters(
-      {{features::kBraveWalletPolkadotFeature, {}}}, {});
-
   url_loader_factory_.ClearResponses();
 
   const auto* chain_id = mojom::kPolkadotTestnet;
@@ -479,12 +463,9 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetFinalizedHead) {
         "params": []
       })";
 
-    auto ret = std::ranges::remove_if(
-        expected_body, [](auto c) { return c == ' ' || c == '\n'; });
-    expected_body.erase(ret.begin(), ret.end());
-
-    EXPECT_EQ(element.As<network::DataElementBytes>().AsStringPiece(),
-              expected_body);
+    EXPECT_EQ(base::test::ParseJsonDict(
+                  element.As<network::DataElementBytes>().AsStringPiece()),
+              base::test::ParseJsonDict(expected_body));
 
     url_loader_factory_.AddResponse(testnet_url,
                                     R"(
