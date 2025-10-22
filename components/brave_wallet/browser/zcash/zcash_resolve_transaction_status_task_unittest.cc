@@ -60,10 +60,6 @@ class ZCashResolveTransactionStatusTaskTest : public testing::Test {
       : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
 
   void SetUp() override {
-    account_id_ = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
-                                          mojom::KeyringId::kZCashMainnet,
-                                          mojom::AccountKind::kDerived, 0);
-
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
     base::FilePath db_path(
         temp_dir_.GetPath().Append(FILE_PATH_LITERAL("orchard.db")));
@@ -76,6 +72,10 @@ class ZCashResolveTransactionStatusTaskTest : public testing::Test {
     keyring_service_->Reset();
     keyring_service_->RestoreWallet(kMnemonicGalleryEqual, kTestWalletPassword,
                                     false, base::DoNothing());
+
+    auto account = AccountUtils(keyring_service_.get())
+                       .EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
+    account_id_ = account->account_id.Clone();
 
     zcash_wallet_service_ = std::make_unique<ZCashWalletService>(
         db_path, *keyring_service_,
@@ -136,6 +136,7 @@ TEST_F(ZCashResolveTransactionStatusTaskTest, Confirmed) {
       .WillByDefault(
           [](const std::string& chain_id,
              MockZCashRPC::GetLatestBlockCallback callback) {
+            EXPECT_EQ(chain_id, mojom::kZCashMainnet);
             std::move(callback).Run(zcash::mojom::BlockID::New(
                 kTransactionHeight + 5u, std::vector<uint8_t>()));
           });
@@ -144,6 +145,7 @@ TEST_F(ZCashResolveTransactionStatusTaskTest, Confirmed) {
       .WillByDefault(
           [](const std::string& chain_id, const std::string& tx_hash,
              MockZCashRPC::GetTransactionCallback callback) {
+            EXPECT_EQ(chain_id, mojom::kZCashMainnet);
             EXPECT_EQ(tx_hash, "tx_hash");
             std::move(callback).Run(zcash::mojom::RawTransaction::New(
                 std::vector<uint8_t>(), kTransactionHeight));
