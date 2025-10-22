@@ -611,7 +611,7 @@ class SidebarBrowserWithSplitViewTest
   void SetUpOnMainThread() override {
     SidebarBrowserTest::SetUpOnMainThread();
     browser()->profile()->GetPrefs()->SetBoolean(kWebViewRoundedCorners,
-                                                 std::get<0>(GetParam()));
+                                                 GetParam());
   }
 
   void NewSplitTab() {
