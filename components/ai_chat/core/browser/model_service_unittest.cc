@@ -503,7 +503,9 @@ TEST_F(ModelServiceTest, DeleteCustomModelsByEndpoint_WithDefaultModel) {
   EXPECT_EQ(GetService()->GetDefaultModelKey(), custom_model_key);
 
   // Expect observer to be called when default model is removed
-  EXPECT_CALL(*observer_, OnDefaultModelChanged(custom_model_key, "chat-basic"))
+  const std::string expected_default = features::kAIModelsDefaultKey.Get();
+  EXPECT_CALL(*observer_,
+              OnDefaultModelChanged(custom_model_key, expected_default))
       .Times(1);
   // Expect OnModelListUpdated to be called when InitModels is called
   EXPECT_CALL(*observer_, OnModelListUpdated()).Times(1);
@@ -517,9 +519,9 @@ TEST_F(ModelServiceTest, DeleteCustomModelsByEndpoint_WithDefaultModel) {
       },
       endpoint));
 
-  // Default model should be reset to chat-basic
+  // Default model should be reset to the platform default
   EXPECT_NE(GetService()->GetDefaultModelKey(), custom_model_key);
-  EXPECT_EQ(GetService()->GetDefaultModelKey(), "chat-basic");
+  EXPECT_EQ(GetService()->GetDefaultModelKey(), expected_default);
 
   testing::Mock::VerifyAndClearExpectations(observer_.get());
 }
