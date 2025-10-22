@@ -1099,7 +1099,8 @@ void BraveBrowserView::UpdateWebViewRoundedCorners() {
 
   // In fullscreen-for-tab mode (e.g. full-screen video), no corners should be
   // rounded.
-  if (auto* exclusive_access_manager = GetExclusiveAccessManager()) {
+  if (auto* exclusive_access_manager =
+          browser_->GetFeatures().exclusive_access_manager()) {
     if (auto* controller = exclusive_access_manager->fullscreen_controller()) {
       if (controller->IsWindowFullscreenForTabOrPending()) {
         corners = gfx::RoundedCornersF(0);

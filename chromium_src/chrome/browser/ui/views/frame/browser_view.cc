@@ -30,7 +30,6 @@
 #define ToolbarView BraveToolbarView
 #define TabStripRegionView BraveTabStripRegionView
 #define BookmarkBarView BraveBookmarkBarView
-#define UpdateExclusiveAccessBubble UpdateExclusiveAccessBubble_ChromiumImpl
 #define MultiContentsView BraveMultiContentsView
 
 #define BRAVE_BROWSER_VIEW_LAYOUT_CONVERTED_HIT_TEST \
@@ -38,16 +37,25 @@
     return false;                                    \
   }
 
+// Show/Hide full screen reminder bubble based on our settings preference
+// for tab-initiated ones.
+#define EXCLUSIVE_ACCESS_CONTEXT_IMPL_UPDATE_EXCLUSIVE_ACCESS_BUBBLE    \
+  if (!GetProfile()->GetPrefs()->GetBoolean(kShowFullscreenReminder) && \
+      params.type ==                                                    \
+          EXCLUSIVE_ACCESS_BUBBLE_TYPE_FULLSCREEN_EXIT_INSTRUCTION) {   \
+    return;                                                             \
+  }
+
 #include <chrome/browser/ui/views/frame/browser_view.cc>
 
 #undef MultiContentsView
-#undef UpdateExclusiveAccessBubble
 #undef BookmarkBarView
 #undef TabStripRegionView
 #undef ToolbarView
 #undef BrowserViewLayout
 #undef InfoBarContainerView
 #undef BRAVE_BROWSER_VIEW_LAYOUT_CONVERTED_HIT_TEST
+#undef EXCLUSIVE_ACCESS_CONTEXT_IMPL_UPDATE_EXCLUSIVE_ACCESS_BUBBLE
 
 void BrowserView::SetNativeWindowPropertyForWidget(views::Widget* widget) {
   // Sets a kBrowserWindowKey to given child |widget| so that we can get
@@ -57,18 +65,4 @@ void BrowserView::SetNativeWindowPropertyForWidget(views::Widget* widget) {
       << "The |widget| should be child of BrowserView's widget.";
 
   widget->SetNativeWindowProperty(kBrowserViewKey, this);
-}
-
-void BrowserView::UpdateExclusiveAccessBubble(
-    const ExclusiveAccessBubbleParams& params,
-    ExclusiveAccessBubbleHideCallback first_hide_callback) {
-  // Show/Hide full screen reminder bubble based on our settings preference
-  // for tab-initiated ones.
-  if (!GetProfile()->GetPrefs()->GetBoolean(kShowFullscreenReminder) &&
-      params.type == EXCLUSIVE_ACCESS_BUBBLE_TYPE_FULLSCREEN_EXIT_INSTRUCTION) {
-    return;
-  }
-
-  UpdateExclusiveAccessBubble_ChromiumImpl(params,
-                                           std::move(first_hide_callback));
 }
