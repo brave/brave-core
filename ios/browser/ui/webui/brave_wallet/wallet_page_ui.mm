@@ -61,7 +61,7 @@ WalletPageUI::WalletPageUI(web::WebUIIOS* web_ui, const GURL& url)
 
 WalletPageUI::~WalletPageUI() {
   web_ui()->GetWebState()->GetInterfaceBinderForMainFrame()->RemoveInterface(
-      "brave_wallet.mojom.PageHandlerFactory");
+      brave_wallet::mojom::PageHandlerFactory::Name_);
 }
 
 void WalletPageUI::BindInterface(

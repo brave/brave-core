@@ -16,7 +16,7 @@ WalletPageHandler::WalletPageHandler(
 WalletPageHandler::~WalletPageHandler() = default;
 
 void WalletPageHandler::ShowApprovePanelUI() {
-  NOTREACHED();  // No need for iOS since it's handled on the Swift side.
+  // No need for iOS since it's handled on the Swift side.
 }
 
 void WalletPageHandler::ShowWalletBackupUI() {
