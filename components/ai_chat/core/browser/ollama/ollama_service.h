@@ -28,32 +28,6 @@ namespace ai_chat {
 // Implements the mojom::OllamaService interface for UI communication.
 class OllamaService : public KeyedService, public mojom::OllamaService {
  public:
-  struct ModelInfo {
-    std::string name;
-    ModelInfo();
-    ModelInfo(const ModelInfo&);
-    ModelInfo& operator=(const ModelInfo&);
-    ModelInfo(ModelInfo&&);
-    ModelInfo& operator=(ModelInfo&&);
-    ~ModelInfo();
-  };
-
-  struct ModelDetails {
-    uint32_t context_length = 0;
-    bool has_vision = false;
-    ModelDetails();
-    ModelDetails(const ModelDetails&);
-    ModelDetails& operator=(const ModelDetails&);
-    ModelDetails(ModelDetails&&);
-    ModelDetails& operator=(ModelDetails&&);
-    ~ModelDetails();
-  };
-
-  using ModelsCallback =
-      base::OnceCallback<void(std::optional<std::vector<ModelInfo>>)>;
-  using ModelDetailsCallback =
-      base::OnceCallback<void(std::optional<ModelDetails>)>;
-
   explicit OllamaService(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   ~OllamaService() override;
@@ -67,48 +41,11 @@ class OllamaService : public KeyedService, public mojom::OllamaService {
   // mojom::OllamaService implementation:
   void IsConnected(IsConnectedCallback callback) override;
 
-  // Fetch available models from Ollama (non-mojo method for internal use)
-  virtual void FetchModels(ModelsCallback callback);
-
-  // Fetch detailed information for a specific model
-  virtual void ShowModel(const std::string& model_name,
-                         ModelDetailsCallback callback);
-
  private:
-  FRIEND_TEST_ALL_PREFIXES(OllamaServiceTest, ParseModelsResponse_Valid);
-  FRIEND_TEST_ALL_PREFIXES(OllamaServiceTest, ParseModelsResponse_InvalidJSON);
-  FRIEND_TEST_ALL_PREFIXES(OllamaServiceTest,
-                           ParseModelsResponse_MissingModelsKey);
-  FRIEND_TEST_ALL_PREFIXES(OllamaServiceTest, ParseModelsResponse_EmptyModels);
-  FRIEND_TEST_ALL_PREFIXES(OllamaServiceTest,
-                           ParseModelsResponse_InvalidModelStructure);
-  FRIEND_TEST_ALL_PREFIXES(OllamaServiceTest, ParseModelDetailsResponse_Valid);
-  FRIEND_TEST_ALL_PREFIXES(OllamaServiceTest,
-                           ParseModelDetailsResponse_InvalidJSON);
-  FRIEND_TEST_ALL_PREFIXES(OllamaServiceTest,
-                           ParseModelDetailsResponse_NoModelInfo);
-  FRIEND_TEST_ALL_PREFIXES(OllamaServiceTest,
-                           ParseModelDetailsResponse_NoCapabilities);
-  FRIEND_TEST_ALL_PREFIXES(OllamaServiceTest,
-                           ParseModelDetailsResponse_EmptyResponse);
-
   void OnConnectionCheckComplete(
       IsConnectedCallback callback,
       std::unique_ptr<network::SimpleURLLoader> loader,
       std::optional<std::string> response);
-
-  void OnModelsListComplete(ModelsCallback callback,
-                            std::unique_ptr<network::SimpleURLLoader> loader,
-                            std::optional<std::string> response);
-
-  void OnModelDetailsComplete(ModelDetailsCallback callback,
-                              std::unique_ptr<network::SimpleURLLoader> loader,
-                              std::optional<std::string> response);
-
-  std::optional<std::vector<ModelInfo>> ParseModelsResponse(
-      const std::string& response_body);
-  std::optional<ModelDetails> ParseModelDetailsResponse(
-      const std::string& response_body);
 
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   mojo::ReceiverSet<mojom::OllamaService> receivers_;

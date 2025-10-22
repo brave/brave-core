@@ -31,10 +31,6 @@ namespace {
 using ::testing::_;
 using ::testing::NiceMock;
 
-// Keys for custom model prefs
-constexpr char kCustomModelItemModelKey[] = "model_request_name";
-constexpr char kCustomModelItemEndpointUrlKey[] = "endpoint_url";
-
 class MockModelServiceObserver : public ModelService::Observer {
  public:
   MockModelServiceObserver() = default;
@@ -48,7 +44,6 @@ class MockModelServiceObserver : public ModelService::Observer {
               OnDefaultModelChanged,
               (const std::string&, const std::string&),
               (override));
-  MOCK_METHOD(void, OnModelListUpdated, (), (override));
 
  private:
   base::ScopedObservation<ModelService, ModelService::Observer>
@@ -388,174 +383,6 @@ TEST_F(ModelServiceTest, GetLeoModelKeyByName_And_GetLeoModelNameByKey) {
   EXPECT_FALSE(key.has_value());
   auto name = GetService()->GetLeoModelNameByKey("nonexistent-key");
   EXPECT_FALSE(name.has_value());
-}
-
-TEST_F(ModelServiceTest, DeleteCustomModelsByEndpoint) {
-  const GURL endpoint1 = GURL("http://example.com");
-  const GURL endpoint2 = GURL("http://other.com");
-
-  // Add multiple custom models with different endpoints
-  {
-    mojom::ModelPtr model1 = mojom::Model::New();
-    model1->display_name = "Model 1";
-    model1->options = mojom::ModelOptions::NewCustomModelOptions(
-        mojom::CustomModelOptions::New("model1", 0, 0, 0, "", endpoint1, ""));
-    GetService()->AddCustomModel(std::move(model1));
-
-    mojom::ModelPtr model2 = mojom::Model::New();
-    model2->display_name = "Model 2";
-    model2->options = mojom::ModelOptions::NewCustomModelOptions(
-        mojom::CustomModelOptions::New("model2", 0, 0, 0, "", endpoint1, ""));
-    GetService()->AddCustomModel(std::move(model2));
-
-    mojom::ModelPtr model3 = mojom::Model::New();
-    model3->display_name = "Model 3";
-    model3->options = mojom::ModelOptions::NewCustomModelOptions(
-        mojom::CustomModelOptions::New("model3", 0, 0, 0, "", endpoint2, ""));
-    GetService()->AddCustomModel(std::move(model3));
-  }
-
-  {
-    auto custom_models = GetService()->GetCustomModels();
-    EXPECT_EQ(custom_models.size(), 3u);
-  }
-
-  // Delete all models with endpoint1
-  GetService()->MaybeDeleteCustomModels(base::BindRepeating(
-      [](const GURL& target_endpoint, const base::Value::Dict& model_dict) {
-        const std::string* endpoint_str =
-            model_dict.FindString(kCustomModelItemEndpointUrlKey);
-        return endpoint_str && GURL(*endpoint_str) == target_endpoint;
-      },
-      endpoint1));
-
-  auto custom_models = GetService()->GetCustomModels();
-  EXPECT_EQ(custom_models.size(), 1u);
-  EXPECT_EQ(custom_models[0]->display_name, "Model 3");
-  EXPECT_EQ(custom_models[0]->options->get_custom_model_options()->endpoint,
-            endpoint2);
-}
-
-TEST_F(ModelServiceTest, DeleteCustomModelByNameAndEndpoint) {
-  const GURL endpoint = GURL("http://example.com");
-
-  // Add multiple custom models with the same endpoint
-  {
-    mojom::ModelPtr model1 = mojom::Model::New();
-    model1->display_name = "Model 1";
-    model1->options = mojom::ModelOptions::NewCustomModelOptions(
-        mojom::CustomModelOptions::New("model1", 0, 0, 0, "", endpoint, ""));
-    GetService()->AddCustomModel(std::move(model1));
-
-    mojom::ModelPtr model2 = mojom::Model::New();
-    model2->display_name = "Model 2";
-    model2->options = mojom::ModelOptions::NewCustomModelOptions(
-        mojom::CustomModelOptions::New("model2", 0, 0, 0, "", endpoint, ""));
-    GetService()->AddCustomModel(std::move(model2));
-  }
-
-  {
-    auto custom_models = GetService()->GetCustomModels();
-    EXPECT_EQ(custom_models.size(), 2u);
-  }
-
-  // Delete only model1
-  GetService()->MaybeDeleteCustomModels(base::BindRepeating(
-      [](const std::string& target_name, const GURL& target_endpoint,
-         const base::Value::Dict& model_dict) {
-        const std::string* endpoint_str =
-            model_dict.FindString(kCustomModelItemEndpointUrlKey);
-        const std::string* model_name =
-            model_dict.FindString(kCustomModelItemModelKey);
-        return endpoint_str && model_name &&
-               GURL(*endpoint_str) == target_endpoint &&
-               *model_name == target_name;
-      },
-      "model1", endpoint));
-
-  auto custom_models = GetService()->GetCustomModels();
-  EXPECT_EQ(custom_models.size(), 1u);
-  EXPECT_EQ(custom_models[0]->display_name, "Model 2");
-  EXPECT_EQ(
-      custom_models[0]->options->get_custom_model_options()->model_request_name,
-      "model2");
-}
-
-TEST_F(ModelServiceTest, DeleteCustomModelsByEndpoint_WithDefaultModel) {
-  const GURL endpoint = GURL("http://example.com");
-
-  // Add a custom model
-  std::string custom_model_key;
-  {
-    mojom::ModelPtr model = mojom::Model::New();
-    model->display_name = "Custom Model";
-    model->options = mojom::ModelOptions::NewCustomModelOptions(
-        mojom::CustomModelOptions::New("model1", 0, 0, 0, "", endpoint, ""));
-    GetService()->AddCustomModel(std::move(model));
-
-    auto custom_models = GetService()->GetCustomModels();
-    ASSERT_EQ(custom_models.size(), 1u);
-    custom_model_key = custom_models[0]->key;
-  }
-
-  // Set the custom model as default
-  GetService()->SetDefaultModelKey(custom_model_key);
-  EXPECT_EQ(GetService()->GetDefaultModelKey(), custom_model_key);
-
-  // Expect observer to be called when default model is removed
-  const std::string expected_default = features::kAIModelsDefaultKey.Get();
-  EXPECT_CALL(*observer_,
-              OnDefaultModelChanged(custom_model_key, expected_default))
-      .Times(1);
-  // Expect OnModelListUpdated to be called when InitModels is called
-  EXPECT_CALL(*observer_, OnModelListUpdated()).Times(1);
-
-  // Delete the model
-  GetService()->MaybeDeleteCustomModels(base::BindRepeating(
-      [](const GURL& target_endpoint, const base::Value::Dict& model_dict) {
-        const std::string* endpoint_str =
-            model_dict.FindString(kCustomModelItemEndpointUrlKey);
-        return endpoint_str && GURL(*endpoint_str) == target_endpoint;
-      },
-      endpoint));
-
-  // Default model should be reset to the platform default
-  EXPECT_NE(GetService()->GetDefaultModelKey(), custom_model_key);
-  EXPECT_EQ(GetService()->GetDefaultModelKey(), expected_default);
-
-  testing::Mock::VerifyAndClearExpectations(observer_.get());
-}
-
-TEST_F(ModelServiceTest, GetCustomModels) {
-  // Initially should be empty
-  {
-    auto custom_models = GetService()->GetCustomModels();
-    EXPECT_EQ(custom_models.size(), 0u);
-  }
-
-  // Leo models should exist
-  size_t initial_model_count = GetService()->GetModels().size();
-  EXPECT_GT(initial_model_count, 0u);
-
-  // Add a custom model
-  const GURL endpoint = GURL("http://example.com");
-  {
-    mojom::ModelPtr model = mojom::Model::New();
-    model->display_name = "Custom Model";
-    model->options = mojom::ModelOptions::NewCustomModelOptions(
-        mojom::CustomModelOptions::New("model1", 0, 0, 0, "", endpoint, ""));
-    GetService()->AddCustomModel(std::move(model));
-  }
-
-  // GetCustomModels should return only custom models
-  {
-    auto custom_models = GetService()->GetCustomModels();
-    EXPECT_EQ(custom_models.size(), 1u);
-    EXPECT_TRUE(custom_models[0]->options->is_custom_model_options());
-  }
-
-  // GetModels should return both Leo and custom models
-  EXPECT_EQ(GetService()->GetModels().size(), initial_model_count + 1);
 }
 
 }  // namespace ai_chat
