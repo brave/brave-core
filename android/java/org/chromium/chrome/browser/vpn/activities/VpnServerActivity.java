@@ -41,6 +41,10 @@ public class VpnServerActivity extends BraveVpnParentActivity {
         void onCityClick(Region city, int position);
     }
 
+    public interface OnCityRadioSelection {
+        void onCityRadioSelect(Region city, int position);
+    }
+
     private void initializeViews() {
         setContentView(R.layout.activity_vpn_server);
 
@@ -89,6 +93,31 @@ public class VpnServerActivity extends BraveVpnParentActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private void selectCity(Region city, int position) {
+        Region region = BraveVpnUtils.selectedRegion;
+        if (BraveVpnPrefUtils.getRegionName().equals(city.name)) {
+            Toast.makeText(
+                            VpnServerActivity.this,
+                            R.string.already_selected_the_server,
+                            Toast.LENGTH_SHORT)
+                    .show();
+            return;
+        }
+        mVpnServerAdapter.updateSelectedCity(position);
+        BraveVpnUtils.selectedServerRegion =
+                new BraveVpnServerRegion(
+                        false,
+                        position == 0 ? region.country : city.country,
+                        position == 0 ? region.continent : city.continent,
+                        position == 0 ? region.countryIsoCode : city.countryIsoCode,
+                        position == 0 ? region.name : city.name,
+                        position == 0 ? region.namePretty : city.namePretty,
+                        position == 0
+                                ? BraveVpnConstants.REGION_PRECISION_COUNTRY
+                                : BraveVpnConstants.REGION_PRECISION_CITY);
+        changeServerRegion();
+    }
+
     @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
@@ -108,28 +137,14 @@ public class VpnServerActivity extends BraveVpnParentActivity {
                 new OnCitySelection() {
                     @Override
                     public void onCityClick(Region city, int position) {
-                        if (BraveVpnPrefUtils.getRegionName().equals(city.name)) {
-                            Toast.makeText(
-                                            VpnServerActivity.this,
-                                            R.string.already_selected_the_server,
-                                            Toast.LENGTH_SHORT)
-                                    .show();
-                        } else {
-                            BraveVpnUtils.selectedServerRegion =
-                                    new BraveVpnServerRegion(
-                                            false,
-                                            position == 0 ? region.country : city.country,
-                                            position == 0 ? region.continent : city.continent,
-                                            position == 0
-                                                    ? region.countryIsoCode
-                                                    : city.countryIsoCode,
-                                            position == 0 ? region.name : city.name,
-                                            position == 0 ? region.namePretty : city.namePretty,
-                                            position == 0
-                                                    ? BraveVpnConstants.REGION_PRECISION_COUNTRY
-                                                    : BraveVpnConstants.REGION_PRECISION_CITY);
-                            changeServerRegion();
-                        }
+                        selectCity(city, position);
+                    }
+                });
+        mVpnServerAdapter.setOnCityRadioSelection(
+                new OnCityRadioSelection() {
+                    @Override
+                    public void onCityRadioSelect(Region city, int position) {
+                        selectCity(city, position);
                     }
                 });
         mServerRegionList.setAdapter(mVpnServerAdapter);
