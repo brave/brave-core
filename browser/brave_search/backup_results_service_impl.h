@@ -81,6 +81,7 @@ class BackupResultsServiceImpl : public BackupResultsService,
     size_t requests_loaded = 0;
     int last_response_code = -1;
     base::OneShotTimer timeout_timer;
+    base::OneShotTimer request_delay_timer;
   };
   using PendingRequestList = std::list<PendingRequest>;
 

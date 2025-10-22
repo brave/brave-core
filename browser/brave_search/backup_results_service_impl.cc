@@ -9,8 +9,10 @@
 #include <utility>
 
 #include "base/byte_count.h"
+#include "base/command_line.h"
 #include "base/functional/bind.h"
 #include "base/rand_util.h"
+#include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_search/browser/backup_results_allowed_urls.h"
 #include "brave/components/brave_search/browser/backup_results_service.h"
 #include "brave/components/brave_search/common/features.h"
@@ -42,6 +44,9 @@ namespace brave_search {
 
 namespace {
 
+constexpr char kBackupResultsRequestDelaySwitch[] =
+    "backup-results-request-delay";
+
 constexpr net::NetworkTrafficAnnotationTag kNetworkTrafficAnnotationTag =
     net::DefineNetworkTrafficAnnotation("brave_search_backup", R"(
       semantics {
@@ -67,6 +72,21 @@ constexpr net::NetworkTrafficAnnotationTag kNetworkTrafficAnnotationTag =
 
 constexpr base::ByteCount kMaxResponseSize = base::MiB(5);
 constexpr base::TimeDelta kTimeout = base::Seconds(5);
+constexpr base::TimeDelta kDefaultRequestDelay = base::Milliseconds(100);
+
+base::TimeDelta GetRequestDelay() {
+  const auto& command_line = *base::CommandLine::ForCurrentProcess();
+  if (command_line.HasSwitch(kBackupResultsRequestDelaySwitch)) {
+    int delay_ms = 0;
+    if (base::StringToInt(
+            command_line.GetSwitchValueASCII(kBackupResultsRequestDelaySwitch),
+            &delay_ms) &&
+        delay_ms >= 0) {
+      return base::Milliseconds(delay_ms);
+    }
+  }
+  return kDefaultRequestDelay;
+}
 
 class BackupResultsWebContentsObserver
     : public content::WebContentsObserver,
@@ -244,7 +264,12 @@ bool BackupResultsServiceImpl::HandleWebContentsStartRequest(
     return true;
   }
 
-  MakeSimpleURLLoaderRequest(pending_request, url);
+  auto request_delay = GetRequestDelay();
+  LOG(ERROR) << "Request delay: " << request_delay.InMilliseconds();
+  pending_request->request_delay_timer.Start(
+      FROM_HERE, request_delay,
+      base::BindOnce(&BackupResultsServiceImpl::MakeSimpleURLLoaderRequest,
+                     base::Unretained(this), pending_request, url));
   return false;
 }
 
@@ -283,6 +308,7 @@ base::WeakPtr<BackupResultsService> BackupResultsServiceImpl::GetWeakPtr() {
 void BackupResultsServiceImpl::MakeSimpleURLLoaderRequest(
     PendingRequestList::iterator pending_request,
     const GURL& url) {
+  LOG(ERROR) << "Making simple URL loader request";
   pending_request->timeout_timer.Stop();
   pending_request->shared_url_loader_factory =
       pending_request->otr_profile->GetDefaultStoragePartition()
