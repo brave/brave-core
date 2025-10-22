@@ -140,8 +140,32 @@
     Block scripts
   </message>
   
-  <message name="IDS_BRAVE_SHIELDS_SCRIPTS_BLOCKED_OVERRIDDEN_BY_EXTENSION" desc="A label for scripts Scripts blocked option which is overridden by extension rule.">
+  <message name="IDS_BRAVE_SHIELDS_SCRIPTS_BLOCKED_OVERRIDDEN" desc="A label for scripts Scripts blocked option which is overridden by rule.">
+    (enforced)
+  </message>
+  
+   <message name="IDS_BRAVE_SHIELDS_SCRIPTS_BLOCKED_OVERRIDDEN_BY_EXTENSION" desc="A label for scripts Scripts blocked option which is overridden by extension rule.">
     (enforced by extension)
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_SCRIPTS_BLOCKED_OVERRIDDEN_BY_POLICY" desc="A label for scripts Scripts blocked option which is overridden by a policy rule.">
+    (enforced by policy)
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_SCRIPTS_BLOCKED_OVERRIDDEN_BY_ALLOWLIST" desc="A label for scripts Scripts blocked option which is overridden by a allowlist built into the browser's WebUI.">
+    (enforced by allowlist)
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_SCRIPTS_BLOCKED_OVERRIDDEN_BY_COMPONENT" desc="A label for scripts Scripts blocked option which is overridden by a component rule.">
+    (enforced by component)
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_SCRIPTS_BLOCKED_OVERRIDDEN_BY_SUPERVISOR" desc="A label for scripts Scripts blocked option which is overridden by a supervisor rule.">
+    (enforced by supervisor)
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_SCRIPTS_BLOCKED_OVERRIDDEN_BY_PWA" desc="A label for scripts Scripts blocked option which is overridden by a PWA.">
+    (enforced by PWA)
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_SCRIPTS_BLOCKED_ENABLE" desc="A label to describe expand/collapse button for the website scripts blocked section.">

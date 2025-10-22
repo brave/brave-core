@@ -902,21 +902,26 @@ bool IsDeveloperModeEnabled(PrefService* profile_state) {
   return profile_state->GetBoolean(prefs::kAdBlockDeveloperMode);
 }
 
-mojom::ScriptBlockedByExtensionStatus GetScriptBlockedByExtensionStatus(
+mojom::ContentSettingsOverriddenDataPtr GetContentSettingsOverriddenData(
     HostContentSettingsMap* map,
-    const GURL& primary_url) {
-  const auto rules =
-      map->GetSettingsForOneType(ContentSettingsType::JAVASCRIPT);
+    const GURL& primary_url,
+    ContentSettingsType content_type) {
+  mojom::ContentSettingsOverriddenDataPtr result =
+      mojom::ContentSettingsOverriddenData::New(
+          mojom::ContentSettingsOverriddenStatus::kNotSet,
+          content_settings::mojom::ProviderType::kDefaultProvider);
+  const auto rules = map->GetSettingsForOneType(content_type);
   for (const auto& rule : rules) {
     if (rule.primary_pattern.Matches(primary_url) &&
-        rule.source ==
-            content_settings::mojom::ProviderType::kCustomExtensionProvider) {
-      return rule.GetContentSetting() == CONTENT_SETTING_BLOCK
-                 ? mojom::ScriptBlockedByExtensionStatus::kBlocked
-                 : mojom::ScriptBlockedByExtensionStatus::kAllowed;
+        (rule.source < result->provider_type)) {
+      result = mojom::ContentSettingsOverriddenData::New(
+          rule.GetContentSetting() == CONTENT_SETTING_BLOCK
+              ? mojom::ContentSettingsOverriddenStatus::kBlocked
+              : mojom::ContentSettingsOverriddenStatus::kAllowed,
+          rule.source);
     }
   }
-  return mojom::ScriptBlockedByExtensionStatus::kNotSet;
+  return result;
 }
 
 }  // namespace brave_shields

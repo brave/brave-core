@@ -28,7 +28,7 @@ export const FooterActionBox = styled.div`
     background-color: transparent;
     padding: 0;
     margin: 0;
-    border:0;
+    border: 0;
     color: var(--text-color);
     font-size: 13px;
     font-weight: 500;
@@ -46,7 +46,7 @@ export const FooterActionBox = styled.div`
       --svg-color: ${color.primary[60]};
     }
   }
-  
+
   i {
     display: block;
     width: 17px;
@@ -76,7 +76,7 @@ export const ControlGroup = styled.div`
   grid-gap: 10px;
   align-items: center;
   margin-bottom: 8px;
-  
+
   .col-2,
   label {
     grid-column: 2;
@@ -109,12 +109,12 @@ export const LabelContainer = styled.div`
 `
 
 export const SecondaryText = styled.span`
-  color:${color.text.disabled};
+  color: ${color.text.disabled};
   margin-top: 5px;
 `
 
 interface CountButtonProps {
-  visible?: boolean;
+  visible?: boolean
 }
 export const CountButton = styled.button<CountButtonProps>`
   background-color: transparent;
@@ -130,7 +130,7 @@ export const CountButton = styled.button<CountButtonProps>`
   border-radius: 4px;
   border: 2px solid transparent;
   cursor: pointer;
-  display: ${props => props.visible === false ? 'none' : 'block'};
+  display: ${(props) => (props.visible === false ? 'none' : 'block')};
 
   &:hover {
     background-color: ${color.neutral[10]};
@@ -149,5 +149,4 @@ export const CountButton = styled.button<CountButtonProps>`
       background-color: unset;
     }
   }
-
 `

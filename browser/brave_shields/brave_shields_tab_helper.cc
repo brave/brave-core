@@ -384,9 +384,9 @@ bool BraveShieldsTabHelper::GetNoScriptEnabled() {
   return brave_shields_settings_->IsNoScriptEnabled(GetCurrentSiteURL());
 }
 
-mojom::ScriptBlockedByExtensionStatus
-BraveShieldsTabHelper::GetScriptBlockedByExtensionStatus() {
-  return brave_shields_settings_->GetScriptBlockedByExtensionStatus(
+mojom::ContentSettingsOverriddenDataPtr
+BraveShieldsTabHelper::GetJsContentSettingsOverriddenData() {
+  return brave_shields_settings_->GetJsContentSettingsOverriddenData(
       GetCurrentSiteURL());
 }
 

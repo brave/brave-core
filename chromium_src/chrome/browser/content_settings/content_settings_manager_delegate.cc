@@ -37,17 +37,18 @@ brave_shields::mojom::ShieldsSettingsPtr GetBraveShieldsSettingsOnUI(
                 HostContentSettingsMapFactory::GetForProfile(browser_context),
                 top_frame_url)
           : base::Token();
-  const auto scripts_blocked_by_extension =
-      brave_shields::GetScriptBlockedByExtensionStatus(
+  auto scripts_blocked_by_extension =
+      brave_shields::GetContentSettingsOverriddenData(
           HostContentSettingsMapFactory::GetForProfile(browser_context),
-          top_frame_url);
+          top_frame_url,
+          content_settings::mojom::ContentSettingsType::JAVASCRIPT);
 
   PrefService* pref_service = user_prefs::UserPrefs::Get(browser_context);
 
   return brave_shields::mojom::ShieldsSettings::New(
       farbling_level, farbling_token, std::vector<std::string>(),
       brave_shields::IsReduceLanguageEnabledForProfile(pref_service),
-      scripts_blocked_by_extension);
+      std::move(scripts_blocked_by_extension));
 }
 
 }  // namespace

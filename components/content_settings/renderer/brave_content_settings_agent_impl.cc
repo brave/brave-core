@@ -146,12 +146,13 @@ bool BraveContentSettingsAgentImpl::IsReduceLanguageEnabled() {
   return shields_settings_->reduce_language;
 }
 
-brave_shields::mojom::ScriptBlockedByExtensionStatus
+brave_shields::mojom::ContentSettingsOverriddenStatus
 BraveContentSettingsAgentImpl::GetScriptBlockedByExtensionStatus() const {
-  if (!shields_settings_) {
-    return brave_shields::mojom::ScriptBlockedByExtensionStatus::kNotSet;
+  if (!shields_settings_ ||
+      !shields_settings_->scripts_blocked_by_extension_status) {
+    return brave_shields::mojom::ContentSettingsOverriddenStatus::kNotSet;
   }
-  return shields_settings_->scripts_blocked_by_extension_status;
+  return shields_settings_->scripts_blocked_by_extension_status->status;
 }
 
 void BraveContentSettingsAgentImpl::BraveSpecificDidAllowJavaScriptOnce(
@@ -195,7 +196,7 @@ bool BraveContentSettingsAgentImpl::AllowScript(bool enabled_per_settings) {
   const auto script_blocked_status = GetScriptBlockedByExtensionStatus();
 
   return script_blocked_status ==
-                 brave_shields::mojom::ScriptBlockedByExtensionStatus::kBlocked
+                 brave_shields::mojom::ContentSettingsOverriddenStatus::kBlocked
              ? false
              : allow;
 }
@@ -244,7 +245,7 @@ bool BraveContentSettingsAgentImpl::AllowScriptFromSource(
 
   const auto script_blocked_status = GetScriptBlockedByExtensionStatus();
   return script_blocked_status ==
-                 brave_shields::mojom::ScriptBlockedByExtensionStatus::kBlocked
+                 brave_shields::mojom::ContentSettingsOverriddenStatus::kBlocked
              ? false
              : allow;
 }
@@ -416,7 +417,7 @@ BraveContentSettingsAgentImpl::GetBraveShieldsSettings(
     base::debug::DumpWithoutCrashing();
     return brave_shields::mojom::ShieldsSettings::New(
         farbling_level, base::Token(), std::vector<std::string>(), false,
-        brave_shields::mojom::ScriptBlockedByExtensionStatus::kNotSet);
+        nullptr);
   }
 }
 

@@ -15,10 +15,13 @@ import getPanelBrowserAPI, {
   CookieBlockMode,
   FingerprintMode,
   HttpsUpgradeMode,
-  ScriptBlockedByExtensionStatus,
+  ContentSettingsOverriddenStatus,
 } from '../../api/panel_browser_api'
 import DataContext from '../../state/context'
 import { ViewType } from '../../state/component_types'
+import {
+  ProviderType
+} from 'gen/components/content_settings/core/common/content_settings_enums.mojom.m'
 
 const adBlockModeOptions = [
   { value: AdBlockMode.AGGRESSIVE, text: getLocale('braveShieldsTrackersAndAdsBlockedAgg') },
@@ -116,6 +119,29 @@ function AdvancedControlsContent () {
     if (getSiteSettings) getSiteSettings()
   }
 
+  const getEnforcedDescription = () => {
+    if (!siteSettings) {
+      return ''
+    }
+
+    switch (siteSettings.scriptsBlockedByExtensionStatus.providerType) {
+      case ProviderType.kCustomExtensionProvider:
+        return getLocale('braveShieldsScriptsBlockedOverriddenByExt')
+      case ProviderType.kPolicyProvider:
+        return getLocale('braveShieldsScriptsBlockedOverriddenByPolicy')
+      case ProviderType.kWebuiAllowlistProvider:
+        return getLocale('braveShieldsScriptsBlockedOverriddenByAllowlist')
+      case ProviderType.kComponentExtensionProvider:
+        return getLocale('braveShieldsScriptsBlockedOverriddenByComponent')
+      case ProviderType.kSupervisedProvider:
+        return getLocale('braveShieldsScriptsBlockedOverriddenBySupervisor')
+      case ProviderType.kInstalledWebappProvider:
+        return getLocale('braveShieldsScriptsBlockedOverriddenByPWA')
+      default:
+        return getLocale('braveShieldsScriptsBlockedOverridden')
+    }
+  }
+
   const adsListCount = siteBlockInfo?.adsList.length ?? 0
   const jsListCount = siteBlockInfo?.blockedJsList.length ?? 0
   const invokedWebcompatListCount = siteBlockInfo?.invokedWebcompatList.length ?? 0
@@ -126,6 +152,13 @@ function AdvancedControlsContent () {
   const isBraveForgetFirstPartyStorageFeatureEnabled = loadTimeData.getBoolean(
     'isBraveForgetFirstPartyStorageFeatureEnabled'
   )
+  const isEnforced =
+    siteSettings?.scriptsBlockedByExtensionStatus.status
+      !== ContentSettingsOverriddenStatus.kNotSet
+    && typeof siteSettings?.scriptsBlockedByExtensionStatus.providerType
+      !== 'undefined'
+    && siteSettings?.scriptsBlockedByExtensionStatus.providerType
+      < ProviderType.kPrefProvider
 
   return (
     <section
@@ -180,31 +213,23 @@ function AdvancedControlsContent () {
               <span>
                 {getLocale('braveShieldsScriptsBlocked')}
               </span>
-              {siteSettings?.scriptsBlockedByExtensionStatus !==
-                  ScriptBlockedByExtensionStatus.kNotSet && (
-                  <S.SecondaryText>
-                    {getLocale('braveShieldsScriptsBlockedOverriddenByExt')}
-                  </S.SecondaryText>
-                )}
+              {isEnforced && (
+                <S.SecondaryText>{getEnforcedDescription()}</S.SecondaryText>
+              )}
             </S.LabelContainer>
             <Toggle
               aria-label={getLocale('braveShieldsScriptsBlockedEnable')}
               onChange={handleIsNoScriptEnabledChange}
               checked={siteSettings?.isNoscriptEnabled}
               size='small'
-              disabled={siteBlockInfo?.isBraveShieldsManaged ||
-                siteSettings?.scriptsBlockedByExtensionStatus !==
-                  ScriptBlockedByExtensionStatus.kNotSet}
+              disabled={siteBlockInfo?.isBraveShieldsManaged || isEnforced}
             />
           </label>
           <S.CountButton
             title={jsListCount.toString()}
             aria-label={getLocale('braveShieldsScriptsBlocked')}
             onClick={() => setViewType?.(ViewType.ScriptsList)}
-            visible={
-              siteSettings?.scriptsBlockedByExtensionStatus ===
-              ScriptBlockedByExtensionStatus.kNotSet
-            }
+            visible={!isEnforced}
             disabled={jsListCount <= 0}
           >
             {jsListCount > 99 ? '99+' : jsListCount}

@@ -142,9 +142,10 @@ base::Token GetFarblingToken(HostContentSettingsMap* map, const GURL& url);
 
 bool IsDeveloperModeEnabled(PrefService* profile_state);
 
-mojom::ScriptBlockedByExtensionStatus GetScriptBlockedByExtensionStatus(
+mojom::ContentSettingsOverriddenDataPtr GetContentSettingsOverriddenData(
     HostContentSettingsMap* map,
-    const GURL& primary_url);
+    const GURL& primary_url,
+    ContentSettingsType content_type);
 
 }  // namespace brave_shields
 

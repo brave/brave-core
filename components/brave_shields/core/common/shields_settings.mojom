@@ -6,6 +6,7 @@
 module brave_shields.mojom;
 
 import "mojo/public/mojom/base/token.mojom";
+import "components/content_settings/core/common/content_settings_enums.mojom";
 
 enum FarblingLevel {
   OFF,
@@ -13,12 +14,23 @@ enum FarblingLevel {
   MAXIMUM,
 };
 
+enum ContentSettingsOverriddenStatus {
+  kNotSet = 0,
+  kBlocked,
+  kAllowed
+};
+
+struct ContentSettingsOverriddenData {
+  ContentSettingsOverriddenStatus status = kNotSet;
+  content_settings.mojom.ProviderType provider_type;
+};
+
 struct ShieldsSettings {
   FarblingLevel farbling_level;
   mojo_base.mojom.Token farbling_token;
   array<string> origins_to_allow_scripts;
   bool reduce_language;
-  ScriptBlockedByExtensionStatus scripts_blocked_by_extension_status = kNotSet;
+  ContentSettingsOverriddenData scripts_blocked_by_extension_status;
 };
 
 enum AdBlockMode {
@@ -45,12 +57,6 @@ enum HttpsUpgradeMode {
   STRICT_MODE,
   STANDARD_MODE,
   DISABLED_MODE
-};
-
-enum ScriptBlockedByExtensionStatus {
-  kNotSet = 0,
-  kBlocked,
-  kAllowed
 };
 
 // Do not change order of this enum. The order is relied upon for

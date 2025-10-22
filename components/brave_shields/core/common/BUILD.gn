@@ -45,7 +45,10 @@ mojom_component("mojom") {
     "shields_settings.mojom",
   ]
 
-  deps = [ "//components/content_settings/core/common:content_settings_types" ]
+  deps = [
+    "//components/content_settings/core/common:content_settings_enums",
+    "//components/content_settings/core/common:content_settings_types",
+  ]
 
   public_deps = [
     "//mojo/public/mojom/base",

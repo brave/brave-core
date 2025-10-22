@@ -16,7 +16,6 @@ import {
   FingerprintMode,
   CookieBlockMode,
   HttpsUpgradeMode,
-  ScriptBlockedByExtensionStatus,
 } from '../api/panel_browser_api'
 import {
   ViewType
@@ -80,8 +79,7 @@ export default {
           cookieBlockMode: CookieBlockMode.ALLOW,
           httpsUpgradeMode: HttpsUpgradeMode.DISABLED_MODE,
           isNoscriptEnabled: false,
-          scriptsBlockedByExtensionStatus:
-            ScriptBlockedByExtensionStatus.kNotSet,
+          scriptsBlockedByExtensionStatus: {},
           isForgetFirstPartyStorageEnabled: false,
           webcompatSettings: {}
         },

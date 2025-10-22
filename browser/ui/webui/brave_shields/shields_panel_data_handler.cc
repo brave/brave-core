@@ -86,7 +86,7 @@ void ShieldsPanelDataHandler::GetSiteSettings(
   settings.webcompat_settings =
       active_shields_data_controller_->GetWebcompatSettings();
   settings.scripts_blocked_by_extension_status =
-      active_shields_data_controller_->GetScriptBlockedByExtensionStatus();
+      active_shields_data_controller_->GetJsContentSettingsOverriddenData();
 
   std::move(callback).Run(settings.Clone());
 }
