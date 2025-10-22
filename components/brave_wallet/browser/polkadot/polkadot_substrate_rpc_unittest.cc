@@ -445,6 +445,8 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetFinalizedHead) {
       future;
 
   {
+    // Successful RPC call.
+
     polkadot_substrate_rpc_->GetFinalizedHead(chain_id, future.GetCallback());
 
     auto* reqs = url_loader_factory_.pending_requests();
@@ -480,10 +482,12 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetFinalizedHead) {
     EXPECT_EQ(error, std::nullopt);
     EXPECT_EQ(
         hash,
-        "0xba38d3e0e1033e97a3aa294e59741c9f4ab8786c8d55c493d0ebc58b885961b3");
+        "ba38d3e0e1033e97a3aa294e59741c9f4ab8786c8d55c493d0ebc58b885961b3");
   }
 
   {
+    // RPC node returns an error code, with a message.
+
     url_loader_factory_.AddResponse(testnet_url,
                                     R"(
       {
@@ -503,6 +507,8 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetFinalizedHead) {
   }
 
   {
+    // RPC node returns an error code, with no message.
+
     url_loader_factory_.AddResponse(testnet_url,
                                     R"(
       {
@@ -521,12 +527,50 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetFinalizedHead) {
   }
 
   {
+    // RPC node returns something non-compliant.
+
     url_loader_factory_.AddResponse(testnet_url,
                                     R"(
       {
         "id": 1,
         "jsonrpc": "2.0",
         "data": "random stuff"
+      })");
+
+    polkadot_substrate_rpc_->GetFinalizedHead(chain_id, future.GetCallback());
+    auto [hash, error] = future.Take();
+
+    EXPECT_EQ(hash, std::nullopt);
+    EXPECT_EQ(error, WalletParsingErrorMessage());
+  }
+
+  {
+    // RPC node returns the wrong data type for the result.
+
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "id": 1,
+        "jsonrpc": "2.0",
+        "data": 1234
+      })");
+
+    polkadot_substrate_rpc_->GetFinalizedHead(chain_id, future.GetCallback());
+    auto [hash, error] = future.Take();
+
+    EXPECT_EQ(hash, std::nullopt);
+    EXPECT_EQ(error, WalletParsingErrorMessage());
+  }
+
+  {
+    // RPC node returns invalid hex string.
+
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "id": 1,
+        "jsonrpc": "2.0",
+        "result": "0xcat1234",
       })");
 
     polkadot_substrate_rpc_->GetFinalizedHead(chain_id, future.GetCallback());

@@ -365,7 +365,19 @@ void PolkadotSubstrateRpc::OnGetFinalizedHead(GetFinalizedHeadCallback callback,
     return std::move(callback).Run(std::nullopt, WalletParsingErrorMessage());
   }
 
-  return std::move(callback).Run(std::move(*res->result), std::nullopt);
+  std::string hash = std::move(*res->result);
+  if (!hash.starts_with("0x")) {
+    return std::move(callback).Run(std::nullopt, WalletParsingErrorMessage());
+  }
+
+  hash.erase(0, 2);
+  for (auto c : hash) {
+    if (!base::IsHexDigit(c)) {
+      return std::move(callback).Run(std::nullopt, WalletParsingErrorMessage());
+    }
+  }
+
+  return std::move(callback).Run(std::move(hash), std::nullopt);
 }
 
 GURL PolkadotSubstrateRpc::GetNetworkURL(std::string_view chain_id) {
