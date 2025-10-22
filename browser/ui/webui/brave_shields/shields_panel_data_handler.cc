@@ -85,7 +85,7 @@ void ShieldsPanelDataHandler::GetSiteSettings(
       active_shields_data_controller_->GetForgetFirstPartyStorageEnabled();
   settings.webcompat_settings =
       active_shields_data_controller_->GetWebcompatSettings();
-  settings.scripts_blocked_by_extension_status =
+  settings.scripts_blocked_override_status =
       active_shields_data_controller_->GetJsContentSettingsOverriddenData();
 
   std::move(callback).Run(settings.Clone());

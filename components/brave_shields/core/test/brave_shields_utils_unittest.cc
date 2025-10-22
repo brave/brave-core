@@ -1041,17 +1041,17 @@ TEST_F(BraveShieldsUtilTest, GetContentSettingsOverriddenData) {
   // No override
   auto content_settings_overridden_data =
       brave_shields::GetContentSettingsOverriddenData(
-          map, url, ContentSettingsType::JAVASCRIPT);
+          map, url, GURL(), ContentSettingsType::JAVASCRIPT);
   EXPECT_EQ(brave_shields::mojom::ContentSettingsOverriddenStatus::kBlocked,
             content_settings_overridden_data->status);
-  EXPECT_EQ(content_settings::ProviderType::kPrefProvider,
-            content_settings_overridden_data->provider_type);
+  EXPECT_EQ(brave_shields::mojom::ContentSettingsOverrideSource::kUser,
+            content_settings_overridden_data->override_source);
 
   auto extension_provider = std::make_unique<content_settings::MockProvider>();
   extension_provider->SetWebsiteSetting(
-      ContentSettingsPattern::FromURL(url),
-      ContentSettingsPattern::FromURL(url), ContentSettingsType::JAVASCRIPT,
-      base::Value(CONTENT_SETTING_ALLOW), /*constraints=*/{},
+      ContentSettingsPattern::FromURL(url), ContentSettingsPattern::Wildcard(),
+      ContentSettingsType::JAVASCRIPT, base::Value(CONTENT_SETTING_ALLOW),
+      /*constraints=*/{},
       content_settings::PartitionKey::GetDefaultForTesting());
   // Overridde to ALLOW via extension
   content_settings::TestUtils::OverrideProvider(
@@ -1060,23 +1060,23 @@ TEST_F(BraveShieldsUtilTest, GetContentSettingsOverriddenData) {
 
   content_settings_overridden_data =
       brave_shields::GetContentSettingsOverriddenData(
-          map, url, ContentSettingsType::JAVASCRIPT);
+          map, url, GURL(), ContentSettingsType::JAVASCRIPT);
   EXPECT_EQ(brave_shields::mojom::ContentSettingsOverriddenStatus::kAllowed,
             content_settings_overridden_data->status);
-  EXPECT_EQ(content_settings::ProviderType::kCustomExtensionProvider,
-            content_settings_overridden_data->provider_type);
+  EXPECT_EQ(brave_shields::mojom::ContentSettingsOverrideSource::kExtension,
+            content_settings_overridden_data->override_source);
 }
 
-TEST_F(BraveShieldsUtilTest, NoContentSettingsOverriddenData) {
+TEST_F(BraveShieldsUtilTest, DefaultContentSettingsOverriddenData) {
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
   const GURL url = GURL("https://brave.com");
 
   auto content_settings_overridden_data =
       brave_shields::GetContentSettingsOverriddenData(
-          map, url, ContentSettingsType::JAVASCRIPT);
+          map, url, GURL(), ContentSettingsType::JAVASCRIPT);
   EXPECT_TRUE(content_settings_overridden_data);
-  EXPECT_EQ(brave_shields::mojom::ContentSettingsOverriddenStatus::kNotSet,
+  EXPECT_EQ(brave_shields::mojom::ContentSettingsOverriddenStatus::kAllowed,
             content_settings_overridden_data->status);
-  EXPECT_EQ(content_settings::ProviderType::kDefaultProvider,
-            content_settings_overridden_data->provider_type);
+  EXPECT_EQ(brave_shields::mojom::ContentSettingsOverrideSource::kUser,
+            content_settings_overridden_data->override_source);
 }

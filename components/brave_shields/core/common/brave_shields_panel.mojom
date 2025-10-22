@@ -88,6 +88,6 @@ struct SiteSettings {
   HttpsUpgradeMode https_upgrade_mode;
   bool is_noscript_enabled;
   bool is_forget_first_party_storage_enabled;
-  ContentSettingsOverriddenData scripts_blocked_by_extension_status;
+  ContentSettingsOverriddenData scripts_blocked_override_status;
   map<content_settings.mojom.ContentSettingsType, bool> webcompat_settings;
 };

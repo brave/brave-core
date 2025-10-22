@@ -758,17 +758,17 @@ BraveContentBrowserClient::WorkerGetBraveShieldSettings(
                 HostContentSettingsMapFactory::GetForProfile(browser_context),
                 url)
           : base::Token();
-  auto scripts_blocked_by_extension =
+  auto scripts_blocked_override_data =
       brave_shields::GetContentSettingsOverriddenData(
           HostContentSettingsMapFactory::GetForProfile(browser_context), url,
-          content_settings::mojom::ContentSettingsType::JAVASCRIPT);
+          GURL(), content_settings::mojom::ContentSettingsType::JAVASCRIPT);
 
   PrefService* pref_service = user_prefs::UserPrefs::Get(browser_context);
 
   return brave_shields::mojom::ShieldsSettings::New(
       farbling_level, farbling_token, std::vector<std::string>(),
       brave_shields::IsReduceLanguageEnabledForProfile(pref_service),
-      std::move(scripts_blocked_by_extension));
+      std::move(scripts_blocked_override_data));
 }
 
 content::ContentBrowserClient::AllowWebBluetoothResult

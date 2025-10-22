@@ -145,6 +145,7 @@ bool IsDeveloperModeEnabled(PrefService* profile_state);
 mojom::ContentSettingsOverriddenDataPtr GetContentSettingsOverriddenData(
     HostContentSettingsMap* map,
     const GURL& primary_url,
+    const GURL& secondary_url,
     ContentSettingsType content_type);
 
 }  // namespace brave_shields

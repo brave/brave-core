@@ -16,12 +16,10 @@ import getPanelBrowserAPI, {
   FingerprintMode,
   HttpsUpgradeMode,
   ContentSettingsOverriddenStatus,
+  ContentSettingsOverrideSource,
 } from '../../api/panel_browser_api'
 import DataContext from '../../state/context'
 import { ViewType } from '../../state/component_types'
-import {
-  ProviderType
-} from 'gen/components/content_settings/core/common/content_settings_enums.mojom.m'
 
 const adBlockModeOptions = [
   { value: AdBlockMode.AGGRESSIVE, text: getLocale('braveShieldsTrackersAndAdsBlockedAgg') },
@@ -120,22 +118,16 @@ function AdvancedControlsContent () {
   }
 
   const getEnforcedDescription = () => {
-    if (!siteSettings) {
-      return ''
-    }
-
-    switch (siteSettings.scriptsBlockedByExtensionStatus.providerType) {
-      case ProviderType.kCustomExtensionProvider:
+    switch (siteSettings?.scriptsBlockedOverrideStatus.overrideSource) {
+      case ContentSettingsOverrideSource.kExtension:
         return getLocale('braveShieldsScriptsBlockedOverriddenByExt')
-      case ProviderType.kPolicyProvider:
+      case ContentSettingsOverrideSource.kPolicy:
         return getLocale('braveShieldsScriptsBlockedOverriddenByPolicy')
-      case ProviderType.kWebuiAllowlistProvider:
+      case ContentSettingsOverrideSource.kAllowList:
         return getLocale('braveShieldsScriptsBlockedOverriddenByAllowlist')
-      case ProviderType.kComponentExtensionProvider:
-        return getLocale('braveShieldsScriptsBlockedOverriddenByComponent')
-      case ProviderType.kSupervisedProvider:
+      case ContentSettingsOverrideSource.kSupervised:
         return getLocale('braveShieldsScriptsBlockedOverriddenBySupervisor')
-      case ProviderType.kInstalledWebappProvider:
+      case ContentSettingsOverrideSource.kInstalledWebApp:
         return getLocale('braveShieldsScriptsBlockedOverriddenByPWA')
       default:
         return getLocale('braveShieldsScriptsBlockedOverridden')
@@ -153,12 +145,13 @@ function AdvancedControlsContent () {
     'isBraveForgetFirstPartyStorageFeatureEnabled'
   )
   const isEnforced =
-    siteSettings?.scriptsBlockedByExtensionStatus.status
+    siteSettings?.scriptsBlockedOverrideStatus.overrideSource !== undefined
+    && siteSettings?.scriptsBlockedOverrideStatus.status
       !== ContentSettingsOverriddenStatus.kNotSet
-    && typeof siteSettings?.scriptsBlockedByExtensionStatus.providerType
-      !== 'undefined'
-    && siteSettings?.scriptsBlockedByExtensionStatus.providerType
-      < ProviderType.kPrefProvider
+    && siteSettings?.scriptsBlockedOverrideStatus.overrideSource
+      !== ContentSettingsOverrideSource.kUser
+    && siteSettings?.scriptsBlockedOverrideStatus.overrideSource
+      !== ContentSettingsOverrideSource.kNone
 
   return (
     <section

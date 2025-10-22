@@ -149,10 +149,10 @@ bool BraveContentSettingsAgentImpl::IsReduceLanguageEnabled() {
 brave_shields::mojom::ContentSettingsOverriddenStatus
 BraveContentSettingsAgentImpl::GetScriptBlockedByExtensionStatus() const {
   if (!shields_settings_ ||
-      !shields_settings_->scripts_blocked_by_extension_status) {
+      !shields_settings_->scripts_blocked_override_status) {
     return brave_shields::mojom::ContentSettingsOverriddenStatus::kNotSet;
   }
-  return shields_settings_->scripts_blocked_by_extension_status->status;
+  return shields_settings_->scripts_blocked_override_status->status;
 }
 
 void BraveContentSettingsAgentImpl::BraveSpecificDidAllowJavaScriptOnce(

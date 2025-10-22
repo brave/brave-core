@@ -177,6 +177,35 @@ base::Token CreateStableFarblingToken(const GURL& url) {
   return base::Token(high, low);
 }
 
+mojom::ContentSettingsOverrideSource ConvertSettingsSource(
+    const content_settings::SettingSource source) {
+  switch (source) {
+    case content_settings::SettingSource::kUser:
+      return mojom::ContentSettingsOverrideSource::kUser;
+    case content_settings::SettingSource::kExtension:
+      return mojom::ContentSettingsOverrideSource::kExtension;
+    case content_settings::SettingSource::kPolicy:
+      return mojom::ContentSettingsOverrideSource::kPolicy;
+    case content_settings::SettingSource::kSupervised:
+      return mojom::ContentSettingsOverrideSource::kSupervised;
+    case content_settings::SettingSource::kInstalledWebApp:
+      return mojom::ContentSettingsOverrideSource::kInstalledWebApp;
+    case content_settings::SettingSource::kNone:
+      return mojom::ContentSettingsOverrideSource::kNone;
+    case content_settings::SettingSource::kAllowList:
+      return mojom::ContentSettingsOverrideSource::kAllowList;
+    case content_settings::SettingSource::kTpcdGrant:
+      return mojom::ContentSettingsOverrideSource::kTpcdGrant;
+    case content_settings::SettingSource::kRemoteList:
+      return mojom::ContentSettingsOverrideSource::kRemoteList;
+    case content_settings::SettingSource::kOsJavascriptOptimizer:
+      return mojom::ContentSettingsOverrideSource::kOsJavascriptOptimizer;
+    case content_settings::SettingSource::kTest:
+      return mojom::ContentSettingsOverrideSource::kTest;
+  }
+  NOTREACHED();
+}
+
 }  // namespace
 
 ContentSettingsPattern GetPatternFromURL(const GURL& url) {
@@ -905,23 +934,16 @@ bool IsDeveloperModeEnabled(PrefService* profile_state) {
 mojom::ContentSettingsOverriddenDataPtr GetContentSettingsOverriddenData(
     HostContentSettingsMap* map,
     const GURL& primary_url,
+    const GURL& secondary_url,
     ContentSettingsType content_type) {
-  mojom::ContentSettingsOverriddenDataPtr result =
-      mojom::ContentSettingsOverriddenData::New(
-          mojom::ContentSettingsOverriddenStatus::kNotSet,
-          content_settings::mojom::ProviderType::kDefaultProvider);
-  const auto rules = map->GetSettingsForOneType(content_type);
-  for (const auto& rule : rules) {
-    if (rule.primary_pattern.Matches(primary_url) &&
-        (rule.source < result->provider_type)) {
-      result = mojom::ContentSettingsOverriddenData::New(
-          rule.GetContentSetting() == CONTENT_SETTING_BLOCK
-              ? mojom::ContentSettingsOverriddenStatus::kBlocked
-              : mojom::ContentSettingsOverriddenStatus::kAllowed,
-          rule.source);
-    }
-  }
-  return result;
+  content_settings::SettingInfo info;
+  const auto rule =
+      map->GetContentSetting(primary_url, secondary_url, content_type, &info);
+  return mojom::ContentSettingsOverriddenData::New(
+      rule == CONTENT_SETTING_BLOCK
+          ? mojom::ContentSettingsOverriddenStatus::kBlocked
+          : mojom::ContentSettingsOverriddenStatus::kAllowed,
+      ConvertSettingsSource(info.source));
 }
 
 }  // namespace brave_shields

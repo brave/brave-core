@@ -305,9 +305,9 @@ void BraveShieldsWebContentsObserver::SendShieldsSettings(
           ? brave_shields::GetFarblingToken(host_content_settings_map,
                                             primary_url)
           : base::Token();
-  auto scripts_blocked_by_extension =
+  auto scripts_blocked_override_data =
       brave_shields::GetContentSettingsOverriddenData(
-          host_content_settings_map, primary_url,
+          host_content_settings_map, primary_url, GURL(),
           content_settings::mojom::ContentSettingsType::JAVASCRIPT);
 
   PrefService* pref_service =
@@ -318,7 +318,7 @@ void BraveShieldsWebContentsObserver::SendShieldsSettings(
   agent->SetShieldsSettings(brave_shields::mojom::ShieldsSettings::New(
       farbling_level, farbling_token, allowed_scripts_,
       brave_shields::IsReduceLanguageEnabledForProfile(pref_service),
-      std::move(scripts_blocked_by_extension)));
+      std::move(scripts_blocked_override_data)));
 }
 
 void BraveShieldsWebContentsObserver::BindReceiver(
