@@ -5,12 +5,13 @@
 
 //! Cardano Transaction Decoder
 //!
-//! This module provides functionality to decode Cardano transactions from CBOR format
-//! and apply signatures to create signed transactions. It follows the Cardano
-//! transaction structure: [body, witness_set, metadata].
+//! This module provides functionality to decode Cardano transactions from CBOR
+//! format and apply signatures to create signed transactions. It follows the
+//! Cardano transaction structure: [body, witness_set, metadata].
 //!
-//! The decoder extracts transaction inputs and outputs from the transaction body,
-//! while the signature application preserves existing witnesses and adds new ones.
+//! The decoder extracts transaction inputs and outputs from the transaction
+//! body, while the signature application preserves existing witnesses and adds
+//! new ones.
 
 use std::fmt;
 
@@ -223,7 +224,8 @@ fn extract_inputs(
     body_map: &[(CborValue, CborValue)],
 ) -> Result<Vec<CxxRestoredCardanoInput>, Error> {
     let inputs_value = find_map_value(body_map, INPUTS_KEY)?;
-    // Inputs are stored directly in an array value or in a tag value wrapping an array.
+    // Inputs are stored directly in an array value or in a tag value wrapping an
+    // array.
     let inputs_array: &Vec<_> = match inputs_value {
         Some(CborValue::Array(arr)) => arr,
         Some(CborValue::Tag(SET_TAG, ref tagged_array)) => match &**tagged_array {
@@ -343,7 +345,8 @@ fn box_error(error: Error) -> Box<CxxSignedCardanoTransactionResult> {
 /// Applies signatures to an unsigned Cardano transaction
 ///
 /// This function preserves existing witnesses and adds new signatures.
-/// The vk_witness set follows the Cardano format: {0: [[pubkey1, signature1], ...]}
+/// The vk_witness set follows the Cardano format: {0: [[pubkey1, signature1],
+/// ...]}
 pub fn apply_signatures(
     bytes: &[u8],
     witnesses: Vec<CxxWitness>,
@@ -369,7 +372,8 @@ pub fn apply_signatures(
     // Append new witnesses to existing witness set
     if let CborValue::Map(witness_map) = &mut transaction_array[WITNESS_SET_INDEX] {
         let vk_witness_entry = {
-            // If not found, insert a SET_TAG entry with an empty array so it will be found below
+            // If not found, insert a SET_TAG entry with an empty array so it will be found
+            // below
             if !witness_map.iter().any(|(k, _)| {
                 matches!(k, CborValue::Integer(i) if *i == ciborium::value::Integer::from(VK_WITNESS_KEY))
             }) {

@@ -60,12 +60,13 @@ mod ffi {
             epoch: u8,
         ) -> RandomnessRequestStateResult;
 
-        // Construct a randomness request for some given Constellation points (output of prepare_measurement)
-        // for the caller to send to the randomness server
+        // Construct a randomness request for some given Constellation points (output of
+        // prepare_measurement) for the caller to send to the randomness server
         fn construct_randomness_request(rrs: &RandomnessRequestStateWrapper) -> Vec<VecU8>;
 
-        // Construct a final Constellation message for some given Constellation randomness and pre-randomness
-        // points (output of prepare_measurement and construct_randomness_request) to send to the collector/aggregator.
+        // Construct a final Constellation message for some given Constellation
+        // randomness and pre-randomness points (output of prepare_measurement
+        // and construct_randomness_request) to send to the collector/aggregator.
         fn construct_message(
             rand_points: &Vec<VecU8>,
             rand_proofs: &Vec<VecU8>,
@@ -75,7 +76,8 @@ mod ffi {
             threshold: u32,
         ) -> ByteDataResult;
 
-        // To be used for dev/testing only. Mocks the randomness server by producing a randomness response.
+        // To be used for dev/testing only. Mocks the randomness server by producing a
+        // randomness response.
         fn generate_local_randomness(req: &Vec<VecU8>, epoch: u8) -> LocalRandomnessDataResult;
     }
 }

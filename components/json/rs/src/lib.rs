@@ -356,8 +356,7 @@ pub fn convert_all_numbers_to_string(json: &str, path: &str) -> String {
 /// "d": null}, path="/b" -> {"a":"1","b":[{"bai1":"1"},{"bai3":"3"}],
 /// "c":"string","d":null}
 /// ```
-pub fn convert_all_numbers_to_string_and_remove_null_values(json: &str,
-    path: &str) -> String {
+pub fn convert_all_numbers_to_string_and_remove_null_values(json: &str, path: &str) -> String {
     use serde_json::Value;
     fn convert_recursively(value: &mut Value) -> bool {
         let mut result = true;
@@ -372,7 +371,7 @@ pub fn convert_all_numbers_to_string_and_remove_null_values(json: &str,
                     }
                     return false;
                 });
-            },
+            }
             Value::Array(vec) => {
                 for vec_item in vec.iter_mut() {
                     convert_recursively(vec_item);
@@ -387,10 +386,14 @@ pub fn convert_all_numbers_to_string_and_remove_null_values(json: &str,
                 if vec.is_empty() {
                     result = false;
                 }
-            },
-            Value::String(s) => { result = !s.is_empty(); }
-            Value::Null => { result = false; }
-            _ => ()
+            }
+            Value::String(s) => {
+                result = !s.is_empty();
+            }
+            Value::Null => {
+                result = false;
+            }
+            _ => (),
         };
 
         result

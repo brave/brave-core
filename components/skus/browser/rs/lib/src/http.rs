@@ -10,7 +10,7 @@ use async_trait::async_trait;
 use futures_retry::{ErrorHandler, RetryPolicy};
 use rand::{rngs::OsRng, Rng};
 use serde_json::{to_string_pretty, Value};
-use tracing::{debug, event, span, Level, instrument};
+use tracing::{debug, event, instrument, span, Level};
 
 pub use http;
 use http::{Request, Response};
@@ -22,7 +22,8 @@ use crate::sdk::SDK;
 static BASE_DELAY_MS: u64 = 250;
 static MAX_DELAY_MS: u64 = 10000;
 
-/// Default mapping of server response codes to be used after explicitly handling known response codes
+/// Default mapping of server response codes to be used after explicitly
+/// handling known response codes
 impl From<http::Response<Vec<u8>>> for InternalError {
     fn from(resp: http::Response<Vec<u8>>) -> Self {
         event!(Level::DEBUG, "coming from response to internal error");
@@ -104,13 +105,15 @@ where
                     "inside RetryLater - waiting for after_ms",
                 );
 
-                // If the delay is more than is allowed by our maximum delay, return without retry
+                // If the delay is more than is allowed by our maximum delay, return without
+                // retry
                 if after_ms > MAX_DELAY_MS {
                     return RetryPolicy::ForwardError(e);
                 }
 
-                // If the server instructed us with a specific delay, delay for at least that long
-                // while incorporating some random delay based on our current attempt
+                // If the server instructed us with a specific delay, delay for at least that
+                // long while incorporating some random delay based on our
+                // current attempt
                 cmp::min(
                     after_ms + rng.gen_range(0..BASE_DELAY_MS * (1 << current_attempt)),
                     MAX_DELAY_MS,
@@ -140,8 +143,10 @@ pub fn clone_resp(resp: &Response<Vec<u8>>) -> Response<Vec<u8>> {
 #[instrument]
 pub fn delay_from_response<T: std::fmt::Debug>(resp: &http::Response<T>) -> Option<Duration> {
     resp.headers().get(http::header::RETRY_AFTER).and_then(|value| {
-        let parsed_retry_delay = value.to_str().ok().and_then(
-            |value| value.trim().parse::<u64>().ok().map(Duration::from_secs));
+        let parsed_retry_delay = value
+            .to_str()
+            .ok()
+            .and_then(|value| value.trim().parse::<u64>().ok().map(Duration::from_secs));
         event!(
             Level::DEBUG,
             parsed_retry_delay =?parsed_retry_delay,

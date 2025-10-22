@@ -185,8 +185,8 @@ impl Engine {
             .unwrap_or_default()
     }
 
-    /// A 0-length vector will be returned if there was any issue during serialization. Be sure to
-    /// handle that case.
+    /// A 0-length vector will be returned if there was any issue during
+    /// serialization. Be sure to handle that case.
     pub fn serialize(&self) -> Vec<u8> {
         self.engine.serialize()
     }
@@ -202,12 +202,9 @@ impl Engine {
             .ok()
             .and_then(|resources_json| serde_json::from_str::<Vec<Resource>>(resources_json).ok())
             .and_then(|resources| {
-                let in_memory_storage = InMemoryResourceStorage::from_resources(
-                    resources);
+                let in_memory_storage = InMemoryResourceStorage::from_resources(resources);
                 let shared_storage = Arc::new(in_memory_storage);
-                let bc_storage = BraveCoreResourceStorage {
-                    shared_storage
-                };
+                let bc_storage = BraveCoreResourceStorage { shared_storage };
 
                 self.engine.use_resource_storage(bc_storage);
                 Some(())
