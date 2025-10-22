@@ -2478,10 +2478,6 @@
 -ExternalInstallErrorTest.InitialPreinstallFallbackTitleWhenIdNotListed
 -ExternalInstallErrorTest.InitialPreinstallUsesProviderInTitle
 
-# This test fails because we override location_bar_model::GetSecurityVectorIcon
-# to return a non-standard icon
--WebUIBrowserTest.NavigatePage
-
 # Upstream and Brave vertical tab implementations must not be enabled
 # simulataneously (see https://github.com/brave/brave-browser/issues/48373)
 -VerticalSplitTabViewTest.ProposedLayout_*
@@ -2505,11 +2501,16 @@
 -BrowserViewTest.AvoidUnnecessaryVisibilityChanges
 -BrowserViewTest.ScrimForBrowserWindowModal
 
+# This test fails because it requires a mojom interface which is bound in Brave
+# but not the upstream tests
+-WebUIBrowserTest.NavigatePage
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestPolicyEnabled.*
 -AdsPageLoadMetricsObserverBrowserTest.*
 -AdsPageLoadMetricsObserverSurfaceBrowserTest.DetectedAsAd/*
 -All/AmpPageLoadMetricsBrowserTest.*
+-All/BrowsingDataRemoverBrowserTestP.BrowserContextDestructionVsCookieRemoval/kLastHour
 -All/BrowsingDataRemoverBrowserTestP.CookieIncognitoDeletion/*
 -All/ClickToCallPolicyTest.*
 -All/ClientHintsBrowserTestForBlockAcceptClientHintsExperiment.Block/*
@@ -2692,6 +2693,7 @@
 -EventPage/DeclarativeNetRequestLazyApiTest.TestMatchOutcome/0
 -EventPage/ExtensionBackForwardCacheBrowserTest.ChromeRuntimeConnectUsageInIframeWithIframeNavigation/0
 -EventPage/ExtensionBackForwardCacheBrowserTest.ChromeTabsConnectWithMultipleReceivers/0
+-EventPage/ExtensionBackForwardCacheBrowserTest.MessageSentToCachedIdFails/0
 -EventPage/ExtensionContextMenuLazyTest.*
 -EventPage/ExtensionPreferenceApiTest.*
 -ExitTypeServiceTest.*
@@ -3248,8 +3250,6 @@
 -WebstoreReinstallerItemSnippetsBrowserTest.TestWebstoreReinstall
 -WebUIBrowserAsyncTest.*
 -WebUIBrowserExpectFailTest.*
-# Fails it requires a mojom interface which is bound in Brave but not the upstream tests
--WebUIBrowserTest.NavigatePage
 -WebUICoverageTest.*
 -WebUIJSErrorReportingTest.*
 -WebUiNtpBrowserTest.*
