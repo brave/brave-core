@@ -166,7 +166,7 @@ std::vector<mojom::ConversationTurnPtr> CreateSampleChatHistory(
         base::StrCat({"query", base::NumberToString(i)}),
         std::nullopt /* prompt */, std::nullopt, std::nullopt,
         now + base::Seconds(i * 60) + base::Hours(future_hours), std::nullopt,
-        std::move(uploaded_files), nullptr /* smart_mode */, false,
+        std::move(uploaded_files), nullptr /* skill */, false,
         std::nullopt /* model_key */));
     // response
     std::vector<mojom::ConversationEntryEventPtr> events;
@@ -185,8 +185,7 @@ std::vector<mojom::ConversationTurnPtr> CreateSampleChatHistory(
         mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE, "",
         std::nullopt /* prompt */, std::nullopt, std::move(events),
         now + base::Seconds((i * 60) + 30) + base::Hours(future_hours),
-        std::nullopt, std::nullopt, nullptr /* smart_mode */, false,
-        "chat-basic"));
+        std::nullopt, std::nullopt, nullptr /* skill */, false, "chat-basic"));
   }
   return history;
 }

@@ -21,7 +21,7 @@ export type State = Mojom.ServiceState & {
   isAIChatAgentProfileFeatureEnabled: boolean
   isAIChatAgentProfile: boolean
   actionList: Mojom.ActionGroup[]
-  smartModes: Mojom.SmartMode[]
+  skills: Mojom.Skill[]
   tabs: Mojom.TabData[]
 
   // This is the content of the tab that this conversation is shown next to (if
@@ -47,7 +47,7 @@ export const defaultUIState: State = {
   ),
   isAIChatAgentProfile: loadTimeData.getBoolean('isAIChatAgentProfile'),
   actionList: [],
-  smartModes: [],
+  skills: [],
   tabs: [],
 }
 
@@ -101,14 +101,14 @@ class PageAPI extends API<State> {
       { isStandalone },
       { conversations },
       { actionList },
-      { smartModes },
+      { skills },
       premiumStatus,
     ] = await Promise.all([
       this.service.bindObserver(this.observer.$.bindNewPipeAndPassRemote()),
       this.uiHandler.setChatUI(this.uiObserver.$.bindNewPipeAndPassRemote()),
       this.service.getConversations(),
       this.service.getActionMenuList(),
-      this.service.getSmartModes(),
+      this.service.getSkills(),
       this.getCurrentPremiumStatus(),
     ])
     this.setPartialState({
@@ -118,7 +118,7 @@ class PageAPI extends API<State> {
       isStandalone,
       conversations,
       actionList,
-      smartModes,
+      skills,
     })
 
     this.service.bindMetrics(this.metrics.$.bindNewPipeAndPassReceiver())
@@ -145,13 +145,11 @@ class PageAPI extends API<State> {
       },
     )
 
-    this.observer.onSmartModesChanged.addListener(
-      (smartModes: Mojom.SmartMode[]) => {
-        this.setPartialState({
-          smartModes,
-        })
-      },
-    )
+    this.observer.onSkillsChanged.addListener((skills: Mojom.Skill[]) => {
+      this.setPartialState({
+        skills,
+      })
+    })
 
     this.uiObserver.onChildFrameBound.addListener(
       (parentPagePendingReceiver: Mojom.ParentUIFramePendingReceiver) => {

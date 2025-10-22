@@ -33,7 +33,7 @@ import InputBox from '../input_box'
 import ModelIntro from '../model_intro'
 import OpenExternalLinkModal from '../open_external_link_modal'
 import RateMessagePrivacyModal from '../rate_message_privacy_modal'
-import SmartModeModal from '../smart_mode_modal/smart_mode_modal'
+import SkillModal from '../skill_modal/skill_modal'
 import PremiumSuggestion from '../premium_suggestion'
 import PrivacyMessage from '../privacy_message'
 import {
@@ -42,7 +42,7 @@ import {
 } from '../suggested_question'
 import ToolsMenu, {
   ExtendedActionEntry,
-  getIsSmartMode,
+  getIsSkill,
 } from '../filter_menu/tools_menu'
 import WelcomeGuide from '../welcome_guide'
 import styles from './style.module.scss'
@@ -218,41 +218,41 @@ function Main() {
     triggerCharacter: '/',
   })
 
-  // Transform smartModes into ActionGroup format and append to actionList
-  const categoriesWithSmartModes = React.useMemo(() => {
-    if (!aiChatContext.smartModes || aiChatContext.smartModes.length === 0) {
+  // Transform skills into ActionGroup format and append to actionList
+  const categoriesWithSkills = React.useMemo(() => {
+    if (!aiChatContext.skills || aiChatContext.skills.length === 0) {
       return aiChatContext.actionList
     }
 
-    const smartModeGroup = {
-      category: getLocale(S.CHAT_UI_SMART_MODES_GROUP),
-      entries: aiChatContext.smartModes,
+    const skillGroup = {
+      category: getLocale(S.CHAT_UI_SKILLS_GROUP),
+      entries: aiChatContext.skills,
     }
 
-    return [smartModeGroup, ...aiChatContext.actionList]
-  }, [aiChatContext.actionList, aiChatContext.smartModes])
+    return [skillGroup, ...aiChatContext.actionList]
+  }, [aiChatContext.actionList, aiChatContext.skills])
 
   const handleToolsMenuClick = React.useCallback(
     (value: ExtendedActionEntry) => {
-      if (getIsSmartMode(value)) {
-        conversationContext.handleSmartModeClick(value)
+      if (getIsSkill(value)) {
+        conversationContext.handleSkillClick(value)
         return
       }
       conversationContext.handleActionTypeClick(value.details!.type)
     },
     [
-      conversationContext.handleSmartModeClick,
+      conversationContext.handleSkillClick,
       conversationContext.handleActionTypeClick,
     ],
   )
 
-  const handleToolsMenuEditClick = (smartMode: Mojom.SmartMode) => {
-    conversationContext.handleSmartModeEdit(smartMode)
+  const handleToolsMenuEditClick = (skill: Mojom.Skill) => {
+    conversationContext.handleSkillEdit(skill)
   }
 
-  const handleNewSmartModeClick = React.useCallback(() => {
+  const handleNewSkillClick = React.useCallback(() => {
     const inputText = conversationContext.inputText
-    aiChatContext.setSmartModeDialog({
+    aiChatContext.setSkillDialog({
       id: '',
       shortcut: inputText.startsWith('/') ? inputText.substring(1) : inputText,
       prompt: '',
@@ -260,7 +260,7 @@ function Main() {
       createdTime: { internalValue: BigInt(0) },
       lastUsed: { internalValue: BigInt(0) },
     })
-  }, [conversationContext.inputText, aiChatContext.setSmartModeDialog])
+  }, [conversationContext.inputText, aiChatContext.setSkillDialog])
 
   return (
     <main
@@ -445,15 +445,15 @@ function Main() {
       <div className={styles.input}>
         <ToolsMenu
           isOpen={
-            !conversationContext.selectedSmartMode
+            !conversationContext.selectedSkill
             && conversationContext.isToolsMenuOpen
           }
           setIsOpen={conversationContext.setIsToolsMenuOpen}
           query={extractedQuery}
-          categories={categoriesWithSmartModes}
+          categories={categoriesWithSkills}
           handleClick={handleToolsMenuClick}
           handleEditClick={handleToolsMenuEditClick}
-          handleNewSmartModeClick={handleNewSmartModeClick}
+          handleNewSkillClick={handleNewSkillClick}
         />
         <TabsMenu />
         <InputBox
@@ -465,7 +465,7 @@ function Main() {
       <DeleteConversationModal />
       <OpenExternalLinkModal />
       <RateMessagePrivacyModal />
-      {aiChatContext.smartModeDialog && <SmartModeModal />}
+      {aiChatContext.skillDialog && <SkillModal />}
     </main>
   )
 }

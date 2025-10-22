@@ -20,7 +20,7 @@ interface ContextMenuHumanProps {
   onClose: () => void
   onEditQuestionClicked: () => void
   onCopyQuestionClicked?: () => void
-  onSaveAsSmartModeClicked?: () => void
+  onSaveAsSkillClicked?: () => void
 }
 
 export default function ContextMenuHuman(props: ContextMenuHumanProps) {
@@ -60,10 +60,10 @@ export default function ContextMenuHuman(props: ContextMenuHumanProps) {
             <span>{getLocale(S.CHAT_UI_COPY_PROMPT_BUTTON_LABEL)}</span>
           </leo-menu-item>
         )}
-        {props.onSaveAsSmartModeClicked && (
-          <leo-menu-item onClick={props.onSaveAsSmartModeClicked}>
+        {props.onSaveAsSkillClicked && (
+          <leo-menu-item onClick={props.onSaveAsSkillClicked}>
             <Icon name='slash' />
-            <span>{getLocale(S.CHAT_UI_SAVE_AS_SMART_MODE_BUTTON_LABEL)}</span>
+            <span>{getLocale(S.CHAT_UI_SAVE_AS_SKILL_BUTTON_LABEL)}</span>
           </leo-menu-item>
         )}
       </ButtonMenu>

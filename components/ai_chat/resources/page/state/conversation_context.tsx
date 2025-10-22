@@ -54,7 +54,7 @@ export type ConversationContext = SendFeedbackState
     shouldShowLongConversationInfo: boolean
     inputText: string
     selectedActionType: Mojom.ActionType | undefined
-    selectedSmartMode: Mojom.SmartMode | undefined
+    selectedSkill: Mojom.Skill | undefined
     isToolsMenuOpen: boolean
     isCurrentModelLeo: boolean
     generatedUrlToBeOpened: Url | undefined
@@ -72,10 +72,10 @@ export type ConversationContext = SendFeedbackState
     setInputText: (text: string) => void
     submitInputTextToAPI: () => void
     resetSelectedActionType: () => void
-    resetSelectedSmartMode: () => void
+    resetSelectedSkill: () => void
     handleActionTypeClick: (actionType: Mojom.ActionType) => void
-    handleSmartModeClick: (smartMode: Mojom.SmartMode) => void
-    handleSmartModeEdit: (smartMode: Mojom.SmartMode) => void
+    handleSkillClick: (skill: Mojom.Skill) => void
+    handleSkillEdit: (skill: Mojom.Skill) => void
     setIsToolsMenuOpen: (isOpen: boolean) => void
     handleVoiceRecognition?: () => void
     disassociateContent: (content: Mojom.AssociatedContent) => void
@@ -119,7 +119,7 @@ export const defaultContext: ConversationContext = {
   shouldShowLongConversationInfo: false,
   inputText: '',
   selectedActionType: undefined,
-  selectedSmartMode: undefined,
+  selectedSkill: undefined,
   isToolsMenuOpen: false,
   isCurrentModelLeo: true,
   generatedUrlToBeOpened: undefined,
@@ -137,10 +137,10 @@ export const defaultContext: ConversationContext = {
   setInputText: () => {},
   submitInputTextToAPI: () => {},
   resetSelectedActionType: () => {},
-  resetSelectedSmartMode: () => {},
+  resetSelectedSkill: () => {},
   handleActionTypeClick: () => {},
-  handleSmartModeClick: () => {},
-  handleSmartModeEdit: () => {},
+  handleSkillClick: () => {},
+  handleSkillEdit: () => {},
   setIsToolsMenuOpen: () => {},
   isTemporaryChat: false,
   disassociateContent: () => {},
@@ -459,9 +459,9 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     })
   }
 
-  const resetSelectedSmartMode = () => {
+  const resetSelectedSkill = () => {
     setPartialContext({
-      selectedSmartMode: undefined,
+      selectedSkill: undefined,
     })
   }
 
@@ -474,7 +474,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
   const handleActionTypeClick = (actionType: Mojom.ActionType) => {
     const update: Partial<ConversationContext> = {
       selectedActionType: actionType,
-      selectedSmartMode: undefined,
+      selectedSkill: undefined,
       isToolsMenuOpen: false,
     }
 
@@ -485,25 +485,25 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     setPartialContext(update)
   }
 
-  const handleSmartModeClick = (smartMode: Mojom.SmartMode) => {
+  const handleSkillClick = (skill: Mojom.Skill) => {
     const update: Partial<ConversationContext> = {
       selectedActionType: undefined,
-      selectedSmartMode: smartMode,
+      selectedSkill: skill,
       isToolsMenuOpen: false,
-      inputText: `/${smartMode.shortcut} `,
+      inputText: `/${skill.shortcut} `,
     }
 
     setPartialContext(update)
   }
 
-  const handleSmartModeEdit = (smartMode: Mojom.SmartMode) => {
-    // Close tools menu and open smart mode dialog in edit mode
+  const handleSkillEdit = (skill: Mojom.Skill) => {
+    // Close tools menu and open skill dialog in edit mode
     setPartialContext({
       isToolsMenuOpen: false,
     })
 
-    // Open dialog with existing smart mode data for editing
-    aiChatContext.setSmartModeDialog(smartMode)
+    // Open dialog with existing skill data for editing
+    aiChatContext.setSkillDialog(skill)
   }
 
   const submitInputTextToAPI = () => {
@@ -524,10 +524,10 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
       getAPI().metrics.onSendingPromptWithFullPage()
     }
 
-    if (context.selectedSmartMode) {
-      conversationHandler.submitHumanConversationEntryWithMode(
+    if (context.selectedSkill) {
+      conversationHandler.submitHumanConversationEntryWithSkill(
         context.inputText,
-        context.selectedSmartMode.id,
+        context.selectedSkill.id,
       )
     } else if (context.selectedActionType) {
       conversationHandler.submitHumanConversationEntryWithAction(
@@ -546,7 +546,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
       pendingMessageFiles: [],
     })
     resetSelectedActionType()
-    resetSelectedSmartMode()
+    resetSelectedSkill()
   }
 
   const disassociateContent = (content: Mojom.AssociatedContent) => {
@@ -749,10 +749,10 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     }
   }, [])
 
-  // Listen for showSmartModeDialog requests from the child frame
+  // Listen for showSkillDialog requests from the child frame
   React.useEffect(() => {
     const listener = (prompt: string) => {
-      aiChatContext.setSmartModeDialog({
+      aiChatContext.setSkillDialog({
         id: '',
         shortcut: '',
         prompt: prompt,
@@ -762,7 +762,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
       })
     }
     const listenerId =
-      getAPI().conversationEntriesFrameObserver.showSmartModeDialog.addListener(
+      getAPI().conversationEntriesFrameObserver.showSkillDialog.addListener(
         listener,
       )
 
@@ -791,11 +791,11 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     setCurrentModel: (model) => conversationHandler.changeModel(model.key),
     generateSuggestedQuestions: () => conversationHandler.generateQuestions(),
     resetSelectedActionType,
-    resetSelectedSmartMode,
+    resetSelectedSkill,
     setInputText: (inputText) => setPartialContext({ inputText }),
     handleActionTypeClick,
-    handleSmartModeClick,
-    handleSmartModeEdit,
+    handleSkillClick,
+    handleSkillEdit,
     submitInputTextToAPI,
     isGenerating: context.isGenerating,
     switchToBasicModel,

@@ -231,8 +231,8 @@ function ConversationEntries() {
                                       setEditInputId(index)
                                     }
                                     onCopyQuestionClicked={handleCopyText}
-                                    onSaveAsSmartModeClicked={() =>
-                                      conversationContext.parentUiFrame?.showSmartModeDialog(
+                                    onSaveAsSkillClicked={() =>
+                                      conversationContext.parentUiFrame?.showSkillDialog(
                                         firstEntryEdit.text,
                                       )
                                     }
