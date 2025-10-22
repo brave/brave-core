@@ -27,12 +27,13 @@ class MockEmailAliasesService extends EmailAliasesServiceInterface {
     this.observer?.onAliasesUpdated(aliases)
   }
 
-  notifyObserverAuthStateChanged(status: AuthenticationStatus,
-                                 email: string,
-                                 errorMessage?: string) {
+  notifyObserverAuthStateChanged(
+    status: AuthenticationStatus,
+    email: string,
+    errorMessage?: string,
+  ) {
     expect(this.observer).toBeDefined()
-    this.observer?.onAuthStateChanged(
-      { status, email, errorMessage })
+    this.observer?.onAuthStateChanged({ status, email, errorMessage })
   }
 
   generateAlias = jest.fn()
@@ -45,10 +46,10 @@ class MockEmailAliasesService extends EmailAliasesServiceInterface {
 
 const createBindObserver =
   (emailAliasesService: MockEmailAliasesService) =>
-    (observer: EmailAliasesServiceObserverInterface) => {
-      emailAliasesService.addObserver(observer)
-      return () => { }
-    }
+  (observer: EmailAliasesServiceObserverInterface) => {
+    emailAliasesService.addObserver(observer)
+    return () => {}
+  }
 
 const mockEmail = 'test@brave.com'
 
@@ -56,36 +57,44 @@ const mockEmail = 'test@brave.com'
 const setupTest = async () => {
   const mockEmailAliasesService = new MockEmailAliasesService()
 
-  render(<ManagePageConnected
-    emailAliasesService={mockEmailAliasesService}
-    bindObserver={createBindObserver(mockEmailAliasesService)}
-  />)
+  render(
+    <ManagePageConnected
+      emailAliasesService={mockEmailAliasesService}
+      bindObserver={createBindObserver(mockEmailAliasesService)}
+    />,
+  )
 
   return mockEmailAliasesService
 }
 
-const mockAliases = [{
-  email: 'alias1@brave.com',
-  note: 'Test Alias 1',
-  domains: undefined
-}, {
-  email: 'alias2@brave.com',
-  note: 'Test Alias 2',
-  domains: undefined
-}]
+const mockAliases = [
+  {
+    email: 'alias1@brave.com',
+    note: 'Test Alias 1',
+    domains: undefined,
+  },
+  {
+    email: 'alias2@brave.com',
+    note: 'Test Alias 2',
+    domains: undefined,
+  },
+]
 
 const authenticate = async (
   service: MockEmailAliasesService,
   status: AuthenticationStatus,
   email: string = mockEmail,
-  errorMessage?: string) => {
+  errorMessage?: string,
+) => {
   await act(() => {
     service.notifyObserverAuthStateChanged(status, email, errorMessage)
   })
 }
 
-const updateAliases = async (service: MockEmailAliasesService,
-  aliases = mockAliases) => {
+const updateAliases = async (
+  service: MockEmailAliasesService,
+  aliases = mockAliases,
+) => {
   await act(() => {
     service.notifyObserverAliasesUpdated(aliases)
   })
@@ -106,10 +115,10 @@ describe('ManagePageConnected', () => {
   it('shows loading state initially', async () => {
     await setupTest()
     await waitFor(() => {
-      expect(document.querySelector('leo-progressring'))
-        .toBeInTheDocument()
-      expect(screen.getByText(
-        'emailAliasesConnectingToBraveAccount')).toBeInTheDocument()
+      expect(document.querySelector('leo-progressring')).toBeInTheDocument()
+      expect(
+        screen.getByText('emailAliasesConnectingToBraveAccount'),
+      ).toBeInTheDocument()
     })
   })
 
@@ -118,10 +127,12 @@ describe('ManagePageConnected', () => {
     await authenticate(service, AuthenticationStatus.kUnauthenticated)
 
     await waitFor(() => {
-      expect(screen.getByText('emailAliasesSignInOrCreateAccount'))
-        .toBeInTheDocument()
-      expect(screen.getByPlaceholderText('emailAliasesEmailAddressPlaceholder'))
-        .toBeInTheDocument()
+      expect(
+        screen.getByText('emailAliasesSignInOrCreateAccount'),
+      ).toBeInTheDocument()
+      expect(
+        screen.getByPlaceholderText('emailAliasesEmailAddressPlaceholder'),
+      ).toBeInTheDocument()
     })
   })
 
@@ -131,8 +142,7 @@ describe('ManagePageConnected', () => {
 
     await waitFor(() => {
       expect(screen.getByText(mockEmail)).toBeInTheDocument()
-      expect(screen.getByText('emailAliasesBraveAccount'))
-        .toBeInTheDocument()
+      expect(screen.getByText('emailAliasesBraveAccount')).toBeInTheDocument()
       expect(screen.getByText('emailAliasesSignOut')).toBeInTheDocument()
     })
   })
@@ -142,12 +152,13 @@ describe('ManagePageConnected', () => {
     await authenticate(service, AuthenticationStatus.kAuthenticating)
 
     await waitFor(() => {
-      expect(screen.getByText('emailAliasesLoginEmailOnTheWay'))
-        .toBeInTheDocument()
-      expect(screen.getByText('emailAliasesClickOnSecureLogin'))
-        .toBeInTheDocument()
-      expect(screen.getByText('emailAliasesDontSeeEmail'))
-        .toBeInTheDocument()
+      expect(
+        screen.getByText('emailAliasesLoginEmailOnTheWay'),
+      ).toBeInTheDocument()
+      expect(
+        screen.getByText('emailAliasesClickOnSecureLogin'),
+      ).toBeInTheDocument()
+      expect(screen.getByText('emailAliasesDontSeeEmail')).toBeInTheDocument()
     })
   })
 
@@ -156,11 +167,13 @@ describe('ManagePageConnected', () => {
     await authenticate(service, AuthenticationStatus.kAuthenticated)
 
     // Add an alias
-    await updateAliases(service, [{
-      email: 'alias1@brave.com',
-      note: 'Test Alias 1',
-      domains: undefined
-    }])
+    await updateAliases(service, [
+      {
+        email: 'alias1@brave.com',
+        note: 'Test Alias 1',
+        domains: undefined,
+      },
+    ])
 
     await waitFor(() => {
       expect(screen.queryByText('alias1@brave.com')).toBeInTheDocument()
@@ -169,19 +182,23 @@ describe('ManagePageConnected', () => {
     })
 
     // Add more aliases
-    await updateAliases(service, [{
-      email: 'alias1@brave.com',
-      note: 'Test Alias 1',
-      domains: undefined
-    }, {
-      email: 'alias2@brave.com',
-      note: 'Test Alias 2',
-      domains: undefined
-    }, {
-      email: 'alias3@brave.com',
-      note: 'Test Alias 3',
-      domains: undefined
-    }])
+    await updateAliases(service, [
+      {
+        email: 'alias1@brave.com',
+        note: 'Test Alias 1',
+        domains: undefined,
+      },
+      {
+        email: 'alias2@brave.com',
+        note: 'Test Alias 2',
+        domains: undefined,
+      },
+      {
+        email: 'alias3@brave.com',
+        note: 'Test Alias 3',
+        domains: undefined,
+      },
+    ])
 
     await waitFor(() => {
       expect(screen.queryByText('alias1@brave.com')).toBeInTheDocument()
@@ -195,19 +212,23 @@ describe('ManagePageConnected', () => {
     await authenticate(service, AuthenticationStatus.kAuthenticated)
 
     // Add aliases
-    await updateAliases(service, [{
-      email: 'alias1@brave.com',
-      note: 'Test Alias 1',
-      domains: undefined
-    }, {
-      email: 'alias2@brave.com',
-      note: 'Test Alias 2',
-      domains: undefined
-    }, {
-      email: 'alias3@brave.com',
-      note: 'Test Alias 3',
-      domains: undefined
-    }])
+    await updateAliases(service, [
+      {
+        email: 'alias1@brave.com',
+        note: 'Test Alias 1',
+        domains: undefined,
+      },
+      {
+        email: 'alias2@brave.com',
+        note: 'Test Alias 2',
+        domains: undefined,
+      },
+      {
+        email: 'alias3@brave.com',
+        note: 'Test Alias 3',
+        domains: undefined,
+      },
+    ])
 
     await waitFor(() => {
       expect(screen.queryByText('alias1@brave.com')).toBeInTheDocument()
@@ -216,11 +237,13 @@ describe('ManagePageConnected', () => {
     })
 
     // remove first and last alias
-    await updateAliases(service, [{
-      email: 'alias2@brave.com',
-      note: 'Test Alias 2',
-      domains: undefined
-    }])
+    await updateAliases(service, [
+      {
+        email: 'alias2@brave.com',
+        note: 'Test Alias 2',
+        domains: undefined,
+      },
+    ])
 
     await waitFor(() => {
       expect(screen.queryByText('alias1@brave.com')).not.toBeInTheDocument()
@@ -234,19 +257,23 @@ describe('ManagePageConnected', () => {
     await authenticate(service, AuthenticationStatus.kAuthenticated)
 
     // Add aliases
-    await updateAliases(service, [{
-      email: 'alias1@brave.com',
-      note: 'Test Alias 1',
-      domains: undefined
-    }, {
-      email: 'alias2@brave.com',
-      note: 'Test Alias 2',
-      domains: undefined
-    }, {
-      email: 'alias3@brave.com',
-      note: 'Test Alias 3',
-      domains: undefined
-    }])
+    await updateAliases(service, [
+      {
+        email: 'alias1@brave.com',
+        note: 'Test Alias 1',
+        domains: undefined,
+      },
+      {
+        email: 'alias2@brave.com',
+        note: 'Test Alias 2',
+        domains: undefined,
+      },
+      {
+        email: 'alias3@brave.com',
+        note: 'Test Alias 3',
+        domains: undefined,
+      },
+    ])
 
     await waitFor(() => {
       expect(screen.queryByText('alias1@brave.com')).toBeInTheDocument()
@@ -255,19 +282,23 @@ describe('ManagePageConnected', () => {
     })
 
     // swap first/last alias and rename second alias
-    await updateAliases(service, [{
-      email: 'alias3@brave.com',
-      note: 'Test Alias 3',
-      domains: undefined
-    }, {
-      email: '2.alias@brave.com',
-      note: 'Test Alias 2',
-      domains: undefined
-    }, {
-      email: 'alias1@brave.com',
-      note: 'Test Alias 1',
-      domains: undefined
-    }])
+    await updateAliases(service, [
+      {
+        email: 'alias3@brave.com',
+        note: 'Test Alias 3',
+        domains: undefined,
+      },
+      {
+        email: '2.alias@brave.com',
+        note: 'Test Alias 2',
+        domains: undefined,
+      },
+      {
+        email: 'alias1@brave.com',
+        note: 'Test Alias 1',
+        domains: undefined,
+      },
+    ])
 
     // Note: We don't actually care about ordering so we don't check that the
     // order of first/last was swapped.
@@ -284,19 +315,23 @@ describe('ManagePageConnected', () => {
     await authenticate(service, AuthenticationStatus.kAuthenticated)
 
     // Add aliases
-    await updateAliases(service, [{
-      email: 'alias1@brave.com',
-      note: 'Test Alias 1',
-      domains: undefined
-    }, {
-      email: 'alias2@brave.com',
-      note: 'Test Alias 2',
-      domains: undefined
-    }, {
-      email: 'alias3@brave.com',
-      note: 'Test Alias 3',
-      domains: undefined
-    }])
+    await updateAliases(service, [
+      {
+        email: 'alias1@brave.com',
+        note: 'Test Alias 1',
+        domains: undefined,
+      },
+      {
+        email: 'alias2@brave.com',
+        note: 'Test Alias 2',
+        domains: undefined,
+      },
+      {
+        email: 'alias3@brave.com',
+        note: 'Test Alias 3',
+        domains: undefined,
+      },
+    ])
 
     await waitFor(() => {
       expect(screen.queryByText('alias1@brave.com')).toBeInTheDocument()
@@ -318,15 +353,18 @@ describe('ManagePageConnected', () => {
     const service = await setupTest()
 
     // Notify of aliases, while not logged in.
-    await updateAliases(service, [{
-      email: 'alias1@brave.com',
-      note: 'Test Alias 1',
-      domains: undefined
-    }, {
-      email: 'alias2@brave.com',
-      note: 'Test Alias 2',
-      domains: undefined
-    }])
+    await updateAliases(service, [
+      {
+        email: 'alias1@brave.com',
+        note: 'Test Alias 1',
+        domains: undefined,
+      },
+      {
+        email: 'alias2@brave.com',
+        note: 'Test Alias 2',
+        domains: undefined,
+      },
+    ])
 
     // Shouldn't show the aliases in the UI.
     await expectAliasesNotVisible()
@@ -373,8 +411,12 @@ describe('ManagePageConnected', () => {
   it('shows error message when auth fails', async () => {
     const service = await setupTest()
 
-    await authenticate(service, AuthenticationStatus.kAuthenticating, mockEmail,
-      'mockErrorMessage')
+    await authenticate(
+      service,
+      AuthenticationStatus.kAuthenticating,
+      mockEmail,
+      'mockErrorMessage',
+    )
 
     await waitFor(() => {
       expect(screen.getByText(/mockErrorMessage/)).toBeInTheDocument()
@@ -394,52 +436,63 @@ describe('ManagePageConnected', () => {
   it('can recover from an authentication error', async () => {
     const service = await setupTest()
 
-    await authenticate(service, AuthenticationStatus.kAuthenticating, mockEmail,
-      'mockErrorMessage')
+    await authenticate(
+      service,
+      AuthenticationStatus.kAuthenticating,
+      mockEmail,
+      'mockErrorMessage',
+    )
 
     await waitFor(() => {
-      expect(screen.queryByText(/mockErrorMessage/))
-        .toBeInTheDocument()
+      expect(screen.queryByText(/mockErrorMessage/)).toBeInTheDocument()
     })
 
     await authenticate(service, AuthenticationStatus.kAuthenticating, mockEmail)
 
     await waitFor(() => {
-      expect(screen.queryByText(/mockErrorMessage/))
-        .not.toBeInTheDocument()
+      expect(screen.queryByText(/mockErrorMessage/)).not.toBeInTheDocument()
     })
   })
 
-  it('Data doesn\'t persist across different logins', async () => {
+  it("Data doesn't persist across different logins", async () => {
     const service = await setupTest()
 
     await authenticate(service, AuthenticationStatus.kAuthenticated)
     await updateAliases(service)
     await authenticate(
-      service, AuthenticationStatus.kUnauthenticated, mockEmail)
+      service,
+      AuthenticationStatus.kUnauthenticated,
+      mockEmail,
+    )
     await expectAliasesNotVisible()
 
     await authenticate(service, AuthenticationStatus.kAuthenticated)
     await expectAliasesNotVisible()
   })
 
-  it('doesn\'t show an error message if the string is empty', async () => {
+  it("doesn't show an error message if the string is empty", async () => {
     const service = await setupTest()
 
-    await authenticate(service, AuthenticationStatus.kAuthenticating, mockEmail,
-       'mockErrorMessage')
+    await authenticate(
+      service,
+      AuthenticationStatus.kAuthenticating,
+      mockEmail,
+      'mockErrorMessage',
+    )
 
     await waitFor(() => {
-      expect(screen.queryByText('mockErrorMessage'))
-        .toBeInTheDocument()
+      expect(screen.queryByText('mockErrorMessage')).toBeInTheDocument()
     })
 
-    await authenticate(service, AuthenticationStatus.kAuthenticating, mockEmail,
-       '' /* empty string */ )
+    await authenticate(
+      service,
+      AuthenticationStatus.kAuthenticating,
+      mockEmail,
+      '' /* empty string */,
+    )
 
     await waitFor(() => {
-      expect(screen.queryByText('mockErrorMessage'))
-        .not.toBeInTheDocument()
+      expect(screen.queryByText('mockErrorMessage')).not.toBeInTheDocument()
     })
   })
 })

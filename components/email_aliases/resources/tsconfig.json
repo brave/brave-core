@@ -3,10 +3,5 @@
     "jsx": "react"
   },
   "extends": "../../../../tsconfig.json",
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    "**/*.d.ts",
-    "../../definitions/*.d.ts"
-  ]
+  "include": ["**/*.ts", "**/*.tsx", "**/*.d.ts", "../../definitions/*.d.ts"]
 }

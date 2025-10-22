@@ -9,14 +9,18 @@ import { KeyboardEvent } from 'react'
 describe('onEnterKey', () => {
   const testKeyPress = (key: string, shouldCall: boolean) => {
     let called = false
-    const wrappedHandler = onEnterKeyForDiv(() => { called = true })
+    const wrappedHandler = onEnterKeyForDiv(() => {
+      called = true
+    })
     wrappedHandler({ key } as KeyboardEvent<HTMLDivElement>)
     expect(called).toBe(shouldCall)
   }
 
   const testInputKeyPress = (key: string, shouldCall: boolean) => {
     let called = false
-    const wrappedHandler = onEnterKeyForInput(() => { called = true })
+    const wrappedHandler = onEnterKeyForInput(() => {
+      called = true
+    })
     wrappedHandler({ innerEvent: { key } } as any)
     expect(called).toBe(shouldCall)
   }

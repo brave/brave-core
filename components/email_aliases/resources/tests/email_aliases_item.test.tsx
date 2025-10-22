@@ -20,11 +20,10 @@ Object.assign(navigator, {
 })
 
 describe('AliasItem', () => {
-
   const mockAlias: Alias = {
     email: 'test1@brave.com',
     note: 'Test Alias 1',
-    domains: ['brave.com']
+    domains: ['brave.com'],
   }
 
   beforeEach(() => {
@@ -37,7 +36,7 @@ describe('AliasItem', () => {
         alias={mockAlias}
         onEdit={mockOnEdit}
         onDelete={mockOnDelete}
-      />
+      />,
     )
 
     // Check if alias information is displayed correctly
@@ -51,7 +50,7 @@ describe('AliasItem', () => {
         alias={mockAlias}
         onEdit={mockOnEdit}
         onDelete={mockOnDelete}
-      />
+      />,
     )
 
     // Click copy button
@@ -59,8 +58,9 @@ describe('AliasItem', () => {
     fireEvent.click(copyButtons[0])
 
     // Check if clipboard API was called
-    expect(navigator.clipboard.writeText)
-      .toHaveBeenCalledWith('test1@brave.com')
+    expect(navigator.clipboard.writeText).toHaveBeenCalledWith(
+      'test1@brave.com',
+    )
   })
 
   it('copies email when clicking alias label', () => {
@@ -69,7 +69,7 @@ describe('AliasItem', () => {
         alias={mockAlias}
         onEdit={mockOnEdit}
         onDelete={mockOnDelete}
-      />
+      />,
     )
 
     // Click the alias label
@@ -77,8 +77,9 @@ describe('AliasItem', () => {
     fireEvent.click(aliasLabel)
 
     // Check if clipboard API was called
-    expect(navigator.clipboard.writeText)
-      .toHaveBeenCalledWith('test1@brave.com')
+    expect(navigator.clipboard.writeText).toHaveBeenCalledWith(
+      'test1@brave.com',
+    )
   })
 
   it('handles delete functionality', async () => {
@@ -87,7 +88,7 @@ describe('AliasItem', () => {
         alias={mockAlias}
         onEdit={mockOnEdit}
         onDelete={mockOnDelete}
-      />
+      />,
     )
 
     // Click delete button
@@ -104,7 +105,7 @@ describe('AliasItem', () => {
         alias={mockAlias}
         onEdit={mockOnEdit}
         onDelete={mockOnDelete}
-      />
+      />,
     )
 
     // Click edit button
@@ -114,5 +115,4 @@ describe('AliasItem', () => {
     // Check if callback was called
     expect(mockOnEdit).toHaveBeenCalled()
   })
-
 })

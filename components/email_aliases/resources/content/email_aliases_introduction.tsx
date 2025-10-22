@@ -18,17 +18,21 @@ const SectionTitle = styled(Card)`
   row-gap: ${spacing.m};
 `
 
-export const Introduction = () =>
+export const Introduction = () => (
   <SectionTitle>
-      <div>
+    <div>
       <h4>{getLocale('emailAliasesShortDescription')}</h4>
-      </div>
-      <div>
-        {getLocale('emailAliasesDescription')}  {
-           /* TODO(https://github.com/brave/brave-browser/issues/45408):
+    </div>
+    <div>
+      {getLocale('emailAliasesDescription')}{' '}
+      {/* TODO(https://github.com/brave/brave-browser/issues/45408):
            // Link to the email aliases support page */}
-        <SecureLink href="https://support.brave.app" target='_blank'>
-          {getLocale('emailAliasesLearnMore')}
-        </SecureLink>
-      </div>
+      <SecureLink
+        href='https://support.brave.app'
+        target='_blank'
+      >
+        {getLocale('emailAliasesLearnMore')}
+      </SecureLink>
+    </div>
   </SectionTitle>
+)

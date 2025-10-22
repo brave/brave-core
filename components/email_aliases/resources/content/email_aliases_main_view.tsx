@@ -16,8 +16,8 @@ import {
   AuthenticationStatus,
   AuthState,
   Alias,
-  EmailAliasesServiceInterface
-} from "gen/brave/components/email_aliases/email_aliases.mojom.m"
+  EmailAliasesServiceInterface,
+} from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
 
 const SpacedRow = styled(Row)`
   gap: ${spacing.m};
@@ -29,21 +29,27 @@ const SpacedRow = styled(Row)`
 export const MainView = ({
   aliasesState,
   authState,
-  emailAliasesService
+  emailAliasesService,
 }: {
-  authState: AuthState,
-  aliasesState: Alias[],
+  authState: AuthState
+  aliasesState: Alias[]
   emailAliasesService: EmailAliasesServiceInterface
-}) => (authState.status === AuthenticationStatus.kStartup
-        ? <SpacedRow>
-            <ProgressRing />
-            <div>{getLocale('emailAliasesConnectingToBraveAccount')}</div>
-          </SpacedRow>
-        : <span>
-            <MainEmailDisplay
-              email={authState.email}
-              emailAliasesService={emailAliasesService} />
-            <AliasList aliases={aliasesState}
-              authEmail={authState.email}
-              emailAliasesService={emailAliasesService} />
-          </span>)
+}) =>
+  authState.status === AuthenticationStatus.kStartup ? (
+    <SpacedRow>
+      <ProgressRing />
+      <div>{getLocale('emailAliasesConnectingToBraveAccount')}</div>
+    </SpacedRow>
+  ) : (
+    <span>
+      <MainEmailDisplay
+        email={authState.email}
+        emailAliasesService={emailAliasesService}
+      />
+      <AliasList
+        aliases={aliasesState}
+        authEmail={authState.email}
+        emailAliasesService={emailAliasesService}
+      />
+    </span>
+  )

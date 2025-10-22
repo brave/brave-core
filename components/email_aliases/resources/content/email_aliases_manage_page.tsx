@@ -10,8 +10,12 @@ import { MainView } from './email_aliases_main_view'
 import * as React from 'react'
 import Col from './styles/Col'
 import styled from 'styled-components'
-import { Alias, AuthState, AuthenticationStatus, EmailAliasesServiceInterface }
-  from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
+import {
+  Alias,
+  AuthState,
+  AuthenticationStatus,
+  EmailAliasesServiceInterface,
+} from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
 
 const PageCol = styled(Col)`
   font: ${font.default.regular};
@@ -24,21 +28,29 @@ const PageCol = styled(Col)`
   }
 `
 
-export const ManagePage = ({ aliasesState, authState, emailAliasesService }: {
-  aliasesState: Alias[],
-  authState: AuthState,
+export const ManagePage = ({
+  aliasesState,
+  authState,
+  emailAliasesService,
+}: {
+  aliasesState: Alias[]
+  authState: AuthState
   emailAliasesService: EmailAliasesServiceInterface
 }) => (
   <PageCol>
     <Introduction />
-    {authState.status === AuthenticationStatus.kUnauthenticated ||
-      authState.status === AuthenticationStatus.kAuthenticating
-      ? <MainEmailEntryForm
+    {authState.status === AuthenticationStatus.kUnauthenticated
+    || authState.status === AuthenticationStatus.kAuthenticating ? (
+      <MainEmailEntryForm
         authState={authState}
-        emailAliasesService={emailAliasesService} />
-      : <MainView
+        emailAliasesService={emailAliasesService}
+      />
+    ) : (
+      <MainView
         authState={authState}
         aliasesState={aliasesState}
-        emailAliasesService={emailAliasesService} />}
+        emailAliasesService={emailAliasesService}
+      />
+    )}
   </PageCol>
 )

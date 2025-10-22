@@ -3,18 +3,17 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { EmailAliasesServiceInterface }
-  from "gen/brave/components/email_aliases/email_aliases.mojom.m"
-import { font, spacing } from "@brave/leo/tokens/css/variables"
+import { EmailAliasesServiceInterface } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
+import { font, spacing } from '@brave/leo/tokens/css/variables'
 import { getLocale } from '$web-common/locale'
 import * as React from 'react'
-import BraveIconCircle from "./styles/brave_icon_circle"
+import BraveIconCircle from './styles/brave_icon_circle'
 import Button from '@brave/leo/react/button'
-import Card from "./styles/Card"
-import Col from "./styles/Col"
+import Card from './styles/Card'
+import Col from './styles/Col'
 import Icon from '@brave/leo/react/icon'
-import Row from "./styles/Row"
-import styled from "styled-components"
+import Row from './styles/Row'
+import styled from 'styled-components'
 
 const MainEmailTextContainer = styled(Col)`
   justify-content: center;
@@ -41,16 +40,22 @@ const AccountRow = styled(Row)`
   }
 `
 
-export const MainEmailDisplay = ({ email, emailAliasesService }:
-  { email: string, emailAliasesService: EmailAliasesServiceInterface }) => {
-  const [cancelAuthenticationOrLogoutPending,
-    setCancelAuthenticationOrLogoutPending] = React.useState(false)
+export const MainEmailDisplay = ({
+  email,
+  emailAliasesService,
+}: {
+  email: string
+  emailAliasesService: EmailAliasesServiceInterface
+}) => {
+  const [
+    cancelAuthenticationOrLogoutPending,
+    setCancelAuthenticationOrLogoutPending,
+  ] = React.useState(false)
   return (
     <Card>
       <AccountRow>
         <Row>
-          <BraveIconCircle
-            name='social-brave-release-favicon-fullheight-color' />
+          <BraveIconCircle name='social-brave-release-favicon-fullheight-color' />
           <MainEmailTextContainer>
             <MainEmail>
               {email === ''
@@ -71,8 +76,12 @@ export const MainEmailDisplay = ({ email, emailAliasesService }:
             setCancelAuthenticationOrLogoutPending(true)
             await emailAliasesService.cancelAuthenticationOrLogout()
             setCancelAuthenticationOrLogoutPending(false)
-          }}>
-          <Icon slot='icon-before' name="outside" />
+          }}
+        >
+          <Icon
+            slot='icon-before'
+            name='outside'
+          />
           <span>{getLocale('emailAliasesSignOut')}</span>
         </Button>
       </AccountRow>
