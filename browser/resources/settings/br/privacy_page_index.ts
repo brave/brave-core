@@ -16,6 +16,7 @@ import '../site_settings/site_settings_autoplay.js'
 import '../site_settings/site_settings_localhost.js'
 import '../site_settings/site_settings_cardano.js'
 import '../site_settings/site_settings_ethereum.js'
+import '../site_settings/site_settings_google.js'
 import '../site_settings/site_settings_shields.js'
 import '../site_settings/site_settings_brave_ai.js'
 import '../site_settings/site_settings_solana.js'
@@ -96,6 +97,17 @@ RegisterPolymerTemplateModifications({
         prefs="{{prefs}}"
         in-search-mode="[[inSearchMode_]]">
       </settings-brave-survey-panelist-page>`)
+    }
+
+    if (loadTimeData.getBoolean('isGoogleSignInFeatureEnabled')) {
+      viewManager.appendChild(html`
+        <site-settings-google-page
+            id="${ContentSettingsTypes.GOOGLE_SIGN_IN}"
+            route-path$="[[routes_.SITE_SETTINGS_GOOGLE_SIGN_IN.path]]"
+            data-parent-view-id="siteSettings"
+            slot="view"
+            in-search-mode="[[inSearchMode_]]">
+          </site-settings-google-page>`)
     }
 
     viewManager.appendChild(html`
