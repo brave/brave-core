@@ -623,16 +623,10 @@ void AddBravePrivateThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorToolbarButtonActivated] = {SkColorSetRGB(0x7C, 0x91, 0xFF)};
   mixer[kColorSidebarButtonPressed] = {kColorToolbarButtonActivated};
 
-  // These colors should be nala colors, but we don't necessarily match the
-  // theme in the browser, so we hardcode light/dark values.
-  // kColorDividerSubtle
   mixer[kColorSidebarPanelHeaderSeparator] = {nala::kColorPrimitiveNeutral20};
   mixer[kColorSidebarPanelHeaderBackground] = {nala::kColorPrimitiveNeutral5};
   mixer[kColorSidebarPanelHeaderTitle] = {nala::kColorPrimitiveNeutral90};
-
-  // kColorIconDefault
   mixer[kColorSidebarPanelHeaderButton] = {nala::kColorPrimitiveNeutral90};
-  // kColorNeutral60
   mixer[kColorSidebarPanelHeaderButtonHovered] = {
       nala::kColorPrimitiveNeutral80};
 }
