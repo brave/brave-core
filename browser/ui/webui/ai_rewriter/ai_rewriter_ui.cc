@@ -113,10 +113,12 @@ void AIRewriterUI::RewriteText(const std::string& text,
     return;
   }
 
-  // TODO(petemill): Pass |action| in addition to |instructions| when supported
-  // by engine.
+  // TODO(jocelyn): Fix rewriter UI now that we only expect action from this
+  // API so instructions param is ignored here, we would need to remove those
+  // instructions in the frontend.
+  // https://github.com/brave/brave-browser/issues/50385
   ai_engine_->GenerateRewriteSuggestion(
-      text, instructions, /*selected_language*/ "",
+      text, action, /*selected_language*/ "",
       ai_chat::BindParseRewriteReceivedData(
           base::BindRepeating(&AIRewriterUI::OnRewriteSuggestionGenerated,
                               weak_ptr_factory_.GetWeakPtr())),
