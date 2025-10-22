@@ -51,17 +51,33 @@ const VerifyResultTestCase* Success() {
 // - HTTP 5XX:
 //   - { "code": 0, "error": "Internal Server Error", "status": <5xx> }
 // clang-format on
-const VerifyResultTestCase* ApplicationJsonError() {
+const VerifyResultTestCase* ApplicationJsonErrorCodeIsNull() {
   static const base::NoDestructor<VerifyResultTestCase> kApplicationJsonError(
-      {.test_name = "application_json_error",
+      {.test_name = "application_json_error_code_is_null",
        .http_status_code = net::HTTP_BAD_REQUEST,
        .raw_reply =
-           R"({ "code": 13004,
-                "error": "account already exists",
+           R"({ "code": null,
+                "error": "Bad Request",
                 "status": 400 })",
        .reply = base::unexpected([] {
          VerifyResult::Error error;
-         error.code = 13004;
+         error.code = base::Value();
+         return error;
+       }())});
+  return kApplicationJsonError.get();
+}
+
+const VerifyResultTestCase* ApplicationJsonErrorCodeIsNotNull() {
+  static const base::NoDestructor<VerifyResultTestCase> kApplicationJsonError(
+      {.test_name = "application_json_error_code_is_not_null",
+       .http_status_code = net::HTTP_NOT_FOUND,
+       .raw_reply =
+           R"({ "code": 13002,
+                "error": "verification not found or invalid id/code",
+                "status": 404 })",
+       .reply = base::unexpected([] {
+         VerifyResult::Error error;
+         error.code = base::Value(13002);
          return error;
        }())});
   return kApplicationJsonError.get();
@@ -91,7 +107,8 @@ TEST_P(VerifyResultTest, HandlesReplies) {
 INSTANTIATE_TEST_SUITE_P(VerifyResultTestCases,
                          VerifyResultTest,
                          testing::Values(Success(),
-                                         ApplicationJsonError(),
+                                         ApplicationJsonErrorCodeIsNull(),
+                                         ApplicationJsonErrorCodeIsNotNull(),
                                          NonApplicationJsonError()),
                          VerifyResultTest::kNameGenerator);
 

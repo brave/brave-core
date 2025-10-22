@@ -243,11 +243,12 @@ void BraveAccountService::OnRegisterFinalize(
 
 std::optional<mojom::RegisterErrorCode> BraveAccountService::TransformError(
     std::optional<Error> error) {
-  if (!error) {
+  if (!error || !error->code.is_int()) {
     return std::nullopt;
   }
 
-  const auto error_code = static_cast<mojom::RegisterErrorCode>(error->code);
+  const auto error_code =
+      static_cast<mojom::RegisterErrorCode>(error->code.GetInt());
   return mojom::IsKnownEnumValue(error_code) ? std::optional(error_code)
                                              : std::nullopt;
 }

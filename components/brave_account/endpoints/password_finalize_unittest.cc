@@ -62,7 +62,7 @@ const PasswordFinalizeTestCase* ApplicationJsonError() {
                               )",
                              .reply = base::unexpected([] {
                                PasswordFinalize::Error error;
-                               error.code = 14002;
+                               error.code = base::Value(14002);
                                return error;
                              }())});
   return kApplicationJsonError.get();

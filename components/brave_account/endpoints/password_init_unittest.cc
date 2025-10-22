@@ -64,7 +64,7 @@ const PasswordInitTestCase* ApplicationJsonError() {
                 "status": 400 })",
        .reply = base::unexpected([] {
          PasswordInit::Error error;
-         error.code = 13004;
+         error.code = base::Value(13004);
          return error;
        }())});
   return kApplicationJsonError.get();

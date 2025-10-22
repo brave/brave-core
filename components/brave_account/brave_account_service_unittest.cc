@@ -88,6 +88,25 @@ const RegisterInitializeTestCase* InitializeErrorMissingOrFailedToParse() {
   return kInitializeErrorMissingOrFailedToParse.get();
 }
 
+const RegisterInitializeTestCase* InitializeErrorCodeIsNull() {
+  static const base::NoDestructor<RegisterInitializeTestCase>
+      kInitializeErrorCodeIsNull({
+          .test_name = "initialize_error_code_is_null",
+          .email = "email",
+          .blinded_message = "blinded_message",
+          .http_status_code = net::HTTP_BAD_REQUEST,
+          .fail_cryptography = {},  // not used
+          .endpoint_expected = base::unexpected([] {
+            endpoints::PasswordInit::Error error;
+            error.code = base::Value();
+            return error;
+          }()),
+          .mojo_expected = base::unexpected(
+              mojom::RegisterError::New(net::HTTP_BAD_REQUEST, std::nullopt)),
+      });
+  return kInitializeErrorCodeIsNull.get();
+}
+
 const RegisterInitializeTestCase* InitializeNewAccountEmailRequired() {
   static const base::NoDestructor<RegisterInitializeTestCase>
       kInitializeNewAccountEmailRequired({
@@ -98,7 +117,7 @@ const RegisterInitializeTestCase* InitializeNewAccountEmailRequired() {
           .fail_cryptography = {},  // not used
           .endpoint_expected = base::unexpected([] {
             endpoints::PasswordInit::Error error;
-            error.code = 11005;
+            error.code = base::Value(11005);
             return error;
           }()),
           .mojo_expected = base::unexpected(mojom::RegisterError::New(
@@ -118,7 +137,7 @@ const RegisterInitializeTestCase* InitializeIntentNotAllowed() {
           .fail_cryptography = {},  // not used
           .endpoint_expected = base::unexpected([] {
             endpoints::PasswordInit::Error error;
-            error.code = 13003;
+            error.code = base::Value(13003);
             return error;
           }()),
           .mojo_expected = base::unexpected(mojom::RegisterError::New(
@@ -138,7 +157,7 @@ const RegisterInitializeTestCase* InitializeTooManyVerifications() {
           .fail_cryptography = {},  // not used
           .endpoint_expected = base::unexpected([] {
             endpoints::PasswordInit::Error error;
-            error.code = 13001;
+            error.code = base::Value(13001);
             return error;
           }()),
           .mojo_expected = base::unexpected(mojom::RegisterError::New(
@@ -158,7 +177,7 @@ const RegisterInitializeTestCase* InitializeAccountExists() {
           .fail_cryptography = {},  // not used
           .endpoint_expected = base::unexpected([] {
             endpoints::PasswordInit::Error error;
-            error.code = 13004;
+            error.code = base::Value(13004);
             return error;
           }()),
           .mojo_expected = base::unexpected(mojom::RegisterError::New(
@@ -177,7 +196,7 @@ const RegisterInitializeTestCase* InitializeEmailDomainNotSupported() {
           .fail_cryptography = {},  // not used
           .endpoint_expected = base::unexpected([] {
             endpoints::PasswordInit::Error error;
-            error.code = 13006;
+            error.code = base::Value(13006);
             return error;
           }()),
           .mojo_expected = base::unexpected(mojom::RegisterError::New(
@@ -197,7 +216,7 @@ const RegisterInitializeTestCase* InitializeUnauthorized() {
           .fail_cryptography = {},  // not used
           .endpoint_expected = base::unexpected([] {
             endpoints::PasswordInit::Error error;
-            error.code = 0;
+            error.code = base::Value(0);
             return error;
           }()),
           .mojo_expected = base::unexpected(mojom::RegisterError::New(
@@ -217,7 +236,7 @@ const RegisterInitializeTestCase* InitializeServerError() {
           .fail_cryptography = {},  // not used
           .endpoint_expected = base::unexpected([] {
             endpoints::PasswordInit::Error error;
-            error.code = 0;
+            error.code = base::Value(0);
             return error;
           }()),
           .mojo_expected = base::unexpected(mojom::RegisterError::New(
@@ -237,7 +256,7 @@ const RegisterInitializeTestCase* InitializeUnknown() {
           .fail_cryptography = {},  // not used
           .endpoint_expected = base::unexpected([] {
             endpoints::PasswordInit::Error error;
-            error.code = 42;
+            error.code = base::Value(42);
             return error;
           }()),
           .mojo_expected = base::unexpected(
@@ -359,6 +378,7 @@ INSTANTIATE_TEST_SUITE_P(
     testing::Values(InitializeEmailEmpty(),
                     InitializeBlindedMessageEmpty(),
                     InitializeErrorMissingOrFailedToParse(),
+                    InitializeErrorCodeIsNull(),
                     InitializeNewAccountEmailRequired(),
                     InitializeIntentNotAllowed(),
                     InitializeTooManyVerifications(),
@@ -460,6 +480,26 @@ const RegisterFinalizeTestCase* FinalizeErrorMissingOrFailedToParse() {
   return kFinalizeErrorMissingOrFailedToParse.get();
 }
 
+const RegisterFinalizeTestCase* FinalizeErrorCodeIsNull() {
+  static const base::NoDestructor<RegisterFinalizeTestCase>
+      kFinalizeErrorCodeIsNull({
+          .test_name = "finalize_error_code_is_null",
+          .encrypted_verification_token =
+              base::Base64Encode("encrypted_verification_token"),
+          .serialized_record = "serialized_record",
+          .fail_cryptography = false,
+          .http_status_code = net::HTTP_NOT_FOUND,
+          .endpoint_expected = base::unexpected([] {
+            endpoints::PasswordFinalize::Error error;
+            error.code = base::Value();
+            return error;
+          }()),
+          .mojo_expected = base::unexpected(
+              mojom::RegisterError::New(net::HTTP_NOT_FOUND, std::nullopt)),
+      });
+  return kFinalizeErrorCodeIsNull.get();
+}
+
 const RegisterFinalizeTestCase* FinalizeInterimPasswordStateNotFound() {
   static const base::NoDestructor<RegisterFinalizeTestCase>
       kFinalizeInterimPasswordStateNotFound({
@@ -471,7 +511,7 @@ const RegisterFinalizeTestCase* FinalizeInterimPasswordStateNotFound() {
           .http_status_code = net::HTTP_NOT_FOUND,
           .endpoint_expected = base::unexpected([] {
             endpoints::PasswordFinalize::Error error;
-            error.code = 14001;
+            error.code = base::Value(14001);
             return error;
           }()),
           .mojo_expected = base::unexpected(mojom::RegisterError::New(
@@ -492,7 +532,7 @@ const RegisterFinalizeTestCase* FinalizeInterimPasswordStateExpired() {
           .http_status_code = net::HTTP_BAD_REQUEST,
           .endpoint_expected = base::unexpected([] {
             endpoints::PasswordFinalize::Error error;
-            error.code = 14002;
+            error.code = base::Value(14002);
             return error;
           }()),
           .mojo_expected = base::unexpected(mojom::RegisterError::New(
@@ -513,7 +553,7 @@ const RegisterFinalizeTestCase* FinalizeUnauthorized() {
           .http_status_code = net::HTTP_UNAUTHORIZED,
           .endpoint_expected = base::unexpected([] {
             endpoints::PasswordFinalize::Error error;
-            error.code = 0;
+            error.code = base::Value(0);
             return error;
           }()),
           .mojo_expected = base::unexpected(mojom::RegisterError::New(
@@ -533,7 +573,7 @@ const RegisterFinalizeTestCase* FinalizeForbidden() {
       .http_status_code = net::HTTP_FORBIDDEN,
       .endpoint_expected = base::unexpected([] {
         endpoints::PasswordFinalize::Error error;
-        error.code = 0;
+        error.code = base::Value(0);
         return error;
       }()),
       .mojo_expected = base::unexpected(mojom::RegisterError::New(
@@ -553,7 +593,7 @@ const RegisterFinalizeTestCase* FinalizeServerError() {
           .http_status_code = net::HTTP_INTERNAL_SERVER_ERROR,
           .endpoint_expected = base::unexpected([] {
             endpoints::PasswordFinalize::Error error;
-            error.code = 0;
+            error.code = base::Value(0);
             return error;
           }()),
           .mojo_expected = base::unexpected(mojom::RegisterError::New(
@@ -573,7 +613,7 @@ const RegisterFinalizeTestCase* FinalizeUnknown() {
       .http_status_code = net::HTTP_TOO_EARLY,
       .endpoint_expected = base::unexpected([] {
         endpoints::PasswordFinalize::Error error;
-        error.code = 42;
+        error.code = base::Value(42);
         return error;
       }()),
       .mojo_expected = base::unexpected(
@@ -615,6 +655,7 @@ INSTANTIATE_TEST_SUITE_P(
                     FinalizeSerializedRecordEmpty(),
                     FinalizeVerificationTokenFailedToDecrypt(),
                     FinalizeErrorMissingOrFailedToParse(),
+                    FinalizeErrorCodeIsNull(),
                     FinalizeInterimPasswordStateNotFound(),
                     FinalizeInterimPasswordStateExpired(),
                     FinalizeUnauthorized(),
