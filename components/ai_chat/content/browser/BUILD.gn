@@ -22,8 +22,6 @@ static_library("browser") {
     "full_screenshotter.h",
     "model_service_factory.cc",
     "model_service_factory.h",
-    "ollama_service_factory.cc",
-    "ollama_service_factory.h",
     "page_content_fetcher.cc",
     "page_content_fetcher.h",
     "pdf_utils.cc",

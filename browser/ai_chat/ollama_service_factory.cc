@@ -3,12 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/ai_chat/content/browser/ollama_service_factory.h"
+#include "brave/browser/ai_chat/ollama_service_factory.h"
 
 #include "base/no_destructor.h"
 #include "brave/components/ai_chat/core/browser/ollama/ollama_service.h"
-#include "brave/components/ai_chat/core/common/features.h"
-#include "components/keyed_service/content/browser_context_dependency_manager.h"
+#include "chrome/browser/profiles/profile_selections.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/storage_partition.h"
 
@@ -28,17 +27,11 @@ OllamaService* OllamaServiceFactory::GetForBrowserContext(
 }
 
 OllamaServiceFactory::OllamaServiceFactory()
-    : BrowserContextKeyedServiceFactory(
+    : ProfileKeyedServiceFactory(
           "OllamaServiceFactory",
-          BrowserContextDependencyManager::GetInstance()) {}
-
-content::BrowserContext* OllamaServiceFactory::GetBrowserContextToUse(
-    content::BrowserContext* context) const {
-  if (!features::IsAIChatEnabled()) {
-    return nullptr;
-  }
-  return BrowserContextKeyedServiceFactory::GetBrowserContextToUse(context);
-}
+          ProfileSelections::Builder()
+              .WithRegular(ProfileSelection::kOriginalOnly)
+              .Build()) {}
 
 OllamaServiceFactory::~OllamaServiceFactory() = default;
 

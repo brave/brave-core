@@ -3,12 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_AI_CHAT_CONTENT_BROWSER_OLLAMA_SERVICE_FACTORY_H_
-#define BRAVE_COMPONENTS_AI_CHAT_CONTENT_BROWSER_OLLAMA_SERVICE_FACTORY_H_
+#ifndef BRAVE_BROWSER_AI_CHAT_OLLAMA_SERVICE_FACTORY_H_
+#define BRAVE_BROWSER_AI_CHAT_OLLAMA_SERVICE_FACTORY_H_
 
 #include <memory>
 
-#include "components/keyed_service/content/browser_context_keyed_service_factory.h"
+#include "chrome/browser/profiles/profile_keyed_service_factory.h"
 #include "components/keyed_service/core/keyed_service.h"
 
 namespace content {
@@ -25,7 +25,7 @@ namespace ai_chat {
 
 class OllamaService;
 
-class OllamaServiceFactory : public BrowserContextKeyedServiceFactory {
+class OllamaServiceFactory : public ProfileKeyedServiceFactory {
  public:
   OllamaServiceFactory(const OllamaServiceFactory&) = delete;
   OllamaServiceFactory& operator=(const OllamaServiceFactory&) = delete;
@@ -39,12 +39,10 @@ class OllamaServiceFactory : public BrowserContextKeyedServiceFactory {
   OllamaServiceFactory();
   ~OllamaServiceFactory() override;
 
-  // BrowserContextKeyedServiceFactory overrides:
-  content::BrowserContext* GetBrowserContextToUse(
-      content::BrowserContext* context) const override;
+  // ProfileKeyedServiceFactory overrides:
   std::unique_ptr<KeyedService> BuildServiceInstanceForBrowserContext(
       content::BrowserContext* context) const override;
 };
 }  // namespace ai_chat
 
-#endif  // BRAVE_COMPONENTS_AI_CHAT_CONTENT_BROWSER_OLLAMA_SERVICE_FACTORY_H_
+#endif  // BRAVE_BROWSER_AI_CHAT_OLLAMA_SERVICE_FACTORY_H_
