@@ -164,6 +164,7 @@ source_set("browser_tests") {
     "//base/test:test_support",
     "//brave/browser/misc_metrics:misc_metrics_impl",
     "//chrome/browser/profiles:profile",
+    "//chrome/browser/tab_group_sync:factories",
     "//chrome/test:test_support",
     "//components/prefs:test_support",
     "//testing/gtest",
