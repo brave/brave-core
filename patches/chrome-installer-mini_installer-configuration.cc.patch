@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/mini_installer/configuration.cc b/chrome/installer/mini_installer/configuration.cc
-index f247568ff033121f2aeb6d66c505a514e392b9a6..b4fbb00f6d30090ee6be83a317feddd455a586bb 100644
+index a5fdecc832180e6e540ed7288b95baf7874e0998..e94eb13bf7d2f8a1ecd6acfa9a77538eb8ad5de3 100644
 --- a/chrome/installer/mini_installer/configuration.cc
 +++ b/chrome/installer/mini_installer/configuration.cc
 @@ -30,7 +30,11 @@ namespace {
@@ -14,7 +14,7 @@ index f247568ff033121f2aeb6d66c505a514e392b9a6..b4fbb00f6d30090ee6be83a317feddd4
                                             value.get(), kBufferSize);
    return length == 1 && *value.get() == L'1';
  }
-@@ -80,7 +84,9 @@ bool Configuration::ParseCommandLine(const wchar_t* command_line) {
+@@ -82,7 +86,9 @@ bool Configuration::ParseCommandLine(const wchar_t* command_line) {
    for (int i = 1; i < argument_count_; ++i) {
      if (0 == ::lstrcmpi(args_[i], L"--system-level"))
        is_system_level_ = true;
