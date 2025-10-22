@@ -222,56 +222,6 @@ TEST_F(OllamaModelFetcherTest, FetchModelsRemovesObsoleteModels) {
   }));
 }
 
-TEST_F(OllamaModelFetcherTest, RemoveModelsRemovesAllOllamaModels) {
-  // First add some models
-  ollama_model_fetcher()->FetchModels();
-
-  std::vector<OllamaService::ModelInfo> mock_models;
-  OllamaService::ModelInfo model1;
-  model1.name = "llama2:7b";
-  mock_models.push_back(model1);
-
-  OllamaService::ModelInfo model2;
-  model2.name = "mistral:latest";
-  mock_models.push_back(model2);
-
-  mock_ollama_service()->TriggerFetchModelsCallback(std::move(mock_models));
-
-  OllamaService::ModelDetails details;
-  details.context_length = 4096;
-  details.has_vision = false;
-
-  mock_ollama_service()->TriggerShowModelCallback("llama2:7b", details);
-  mock_ollama_service()->TriggerShowModelCallback("mistral:latest", details);
-
-  EXPECT_TRUE(base::test::RunUntil([&]() {
-    const auto& models = model_service()->GetModels();
-    size_t count = 0;
-    for (const auto& model : models) {
-      if (model->options && model->options->is_custom_model_options() &&
-          model->options->get_custom_model_options()->endpoint.spec() ==
-              ai_chat::mojom::kOllamaEndpoint) {
-        count++;
-      }
-    }
-    return count == 2;
-  }));
-
-  // Now remove them
-  ollama_model_fetcher()->RemoveModels();
-
-  const auto& models_after = model_service()->GetModels();
-  size_t ollama_count_after = 0;
-  for (const auto& model : models_after) {
-    if (model->options && model->options->is_custom_model_options() &&
-        model->options->get_custom_model_options()->endpoint.spec() ==
-            ai_chat::mojom::kOllamaEndpoint) {
-      ollama_count_after++;
-    }
-  }
-  EXPECT_EQ(0u, ollama_count_after);
-}
-
 TEST_F(OllamaModelFetcherTest, FetchModelsHandlesEmptyResponse) {
   base::RunLoop run_loop;
 
@@ -341,7 +291,7 @@ TEST_F(OllamaModelFetcherTest, PrefChangeTriggersModelFetch) {
   }));
 }
 
-TEST_F(OllamaModelFetcherTest, PrefChangeTriggersRemove) {
+TEST_F(OllamaModelFetcherTest, PrefChangeDoesntTriggersRemove) {
   // First add some models
   pref_service()->SetBoolean(prefs::kBraveAIChatOllamaFetchEnabled, true);
 
@@ -390,7 +340,7 @@ TEST_F(OllamaModelFetcherTest, PrefChangeTriggersRemove) {
         count++;
       }
     }
-    return count == 0;
+    return count == 2;
   }));
 }
 

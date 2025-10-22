@@ -55,8 +55,6 @@ void OllamaModelFetcher::OnOllamaFetchEnabledChanged() {
 
   if (ollama_fetch_enabled) {
     FetchModels();
-  } else {
-    RemoveModels();
   }
 }
 
@@ -176,16 +174,6 @@ void OllamaModelFetcher::OnModelDetailsFetched(
 
   // Remove from pending models
   pending_models_.erase(it);
-}
-
-void OllamaModelFetcher::RemoveModels() {
-  model_service_->DeleteCustomModelsIf(
-      base::BindRepeating([](const base::Value::Dict& model_dict) {
-        const std::string* endpoint_str =
-            model_dict.FindString(kCustomModelItemEndpointUrlKey);
-        return endpoint_str &&
-               GURL(*endpoint_str) == GURL(mojom::kOllamaEndpoint);
-      }));
 }
 
 }  // namespace ai_chat
