@@ -137,6 +137,11 @@ iOS has separate factories because Profile subclasses `web::BrowserState`
 instead of `content::BrowserContext`, but the same principles apply to
 `ProfileKeyedServiceFactoryIOS`.
 
+Note that when adapting a desktop factory that is created eagerly with the 
+browser context/`Profile`, the iOS factory must be created using 
+`TestingCreation::kNoServiceForTests` to satisfy a `CHECK` in 
+`ProfileKeyedServiceFactoryIOS`
+
 #### iOS and Desktop profile checks
 
 TODO - standardize a way to maintain consistency between
