@@ -39,4 +39,11 @@ if (is_android) {
       "//chrome/browser/settings:java",
     ]
   }
+
+  robolectric_library("brave_junit_tests_org.chromium.chrome.browser.vpn") {
+    resources_package = "org.chromium.chrome.browser.vpn"
+    sources = [ "src/org/chromium/chrome/browser/vpn/activities/BraveVpnParentActivityTest.java" ]
+
+    deps = [ "//chrome/android/junit:chrome_junit_tests_helper" ]
+  }
 }
