@@ -25,22 +25,15 @@ store.dispatch(init())
 function initialize () {
   console.timeStamp('loaded')
   // Get rendering going
-  new Promise(resolve => chrome.braveTheme.getBraveThemeType(resolve))
-  .then((themeType: chrome.braveTheme.ThemeType) => {
-    createRoot(document.getElementById('root')!).render(
-      <Provider store={store}>
-        <BraveCoreThemeProvider
-          initialThemeType={themeType}
-          dark={DarkTheme}
-          light={Theme}
-        >
-          <App />
-        </BraveCoreThemeProvider>
-      </Provider>)
-  })
-  .catch((error) => {
-    console.error('Problem mounting brave new tab', error)
-  })
+  createRoot(document.getElementById('root')!).render(
+    <Provider store={store}>
+      <BraveCoreThemeProvider
+        dark={DarkTheme}
+        light={Theme}
+      >
+        <App />
+      </BraveCoreThemeProvider>
+    </Provider>)
 }
 
 console.timeStamp('JS start')

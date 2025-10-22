@@ -23,29 +23,20 @@ import {
 setIconBasePath('chrome://resources/brave-icons')
 
 function App() {
-  const [initialThemeType, setInitialThemeType] =
-    React.useState<chrome.braveTheme.ThemeType>()
-  React.useEffect(() => {
-    chrome.braveTheme.getBraveThemeType(setInitialThemeType)
-  }, [])
-
   React.useEffect(() => {
     runLocalStorageMigrations()
   }, [])
 
   return (
     <Provider store={store}>
-      {initialThemeType && (
-        <BraveCoreThemeProvider
-          initialThemeType={initialThemeType}
-          dark={walletDarkTheme}
-          light={walletLightTheme}
-        >
-          <BrowserRouter>
-            <Container />
-          </BrowserRouter>
-        </BraveCoreThemeProvider>
-      )}
+      <BraveCoreThemeProvider
+        dark={walletDarkTheme}
+        light={walletLightTheme}
+      >
+        <BrowserRouter>
+          <Container />
+        </BrowserRouter>
+      </BraveCoreThemeProvider>
     </Provider>
   )
 }

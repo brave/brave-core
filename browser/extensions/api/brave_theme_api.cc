@@ -9,24 +9,41 @@
 #include <optional>
 #include <string>
 
-#include "base/json/json_writer.h"
-#include "base/values.h"
+#include "base/notreached.h"
 #include "brave/common/extensions/api/brave_theme.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/themes/theme_service.h"
+#include "chrome/browser/themes/theme_service_factory.h"
+
+namespace {
+
+ThemeService::BrowserColorScheme ConvertToBrowserColorScheme(
+    const std::string scheme) {
+  if (scheme == "System") {
+    return ThemeService::BrowserColorScheme::kSystem;
+  } else if (scheme == "Light") {
+    return ThemeService::BrowserColorScheme::kLight;
+  } else if (scheme == "Dark") {
+    return ThemeService::BrowserColorScheme::kDark;
+  }
+
+  NOTREACHED();
+}
+
+}  // namespace
 
 namespace extensions::api {
-
-ExtensionFunction::ResponseAction BraveThemeGetBraveThemeTypeFunction::Run() {
-  // Fetch current type from theme service.
-  const std::string theme_type = "Light";
-  return RespondNow(WithArguments(theme_type));
-}
 
 ExtensionFunction::ResponseAction BraveThemeSetBraveThemeTypeFunction::Run() {
   std::optional<brave_theme::SetBraveThemeType::Params> params =
       brave_theme::SetBraveThemeType::Params::Create(args());
   EXTENSION_FUNCTION_VALIDATE(params);
 
-  // Set to theme service.
+  auto* theme_service = ThemeServiceFactory::GetForProfile(
+      Profile::FromBrowserContext(browser_context()));
+  CHECK(theme_service);
+  theme_service->SetBrowserColorScheme(
+      ConvertToBrowserColorScheme(params->type));
 
   return RespondNow(NoArguments());
 }

@@ -4,15 +4,18 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/extensions/api/brave_theme_api.h"
+
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/themes/theme_service.h"
+#include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "content/public/test/browser_test.h"
 #include "extensions/browser/api_test_utils.h"
 #include "extensions/common/extension_builder.h"
 
-using extensions::api::BraveThemeGetBraveThemeTypeFunction;
-using extensions::api_test_utils::RunFunctionAndReturnSingleResult;
+using extensions::api::BraveThemeSetBraveThemeTypeFunction;
+using extensions::api_test_utils::RunFunction;
 
 class BraveThemeAPIBrowserTest : public InProcessBrowserTest {
  public:
@@ -30,18 +33,29 @@ class BraveThemeAPIBrowserTest : public InProcessBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(BraveThemeAPIBrowserTest,
-                       BraveThemeGetBraveThemeTypeTest) {
-  // Change to Light type and check it from api.
-  // dark_mode::SetBraveDarkModeType(
-  //     dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT);
-  // EXPECT_EQ(dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT,
-  //           dark_mode::GetActiveBraveDarkModeType());
+                       BraveThemeSetBraveThemeTypeTest) {
+  auto* theme_service =
+      ThemeServiceFactory::GetForProfile(browser()->profile());
+  CHECK(theme_service);
 
-  scoped_refptr<BraveThemeGetBraveThemeTypeFunction> get_function(
-      new BraveThemeGetBraveThemeTypeFunction());
-  get_function->set_extension(extension().get());
-  auto value = RunFunctionAndReturnSingleResult(
-      get_function.get(), std::string("[]"), browser()->profile());
-  ASSERT_TRUE(value);
-  EXPECT_EQ(value->GetString(), "Light");
+  scoped_refptr<BraveThemeSetBraveThemeTypeFunction> set_dark_function(
+      new BraveThemeSetBraveThemeTypeFunction());
+  set_dark_function->set_extension(extension().get());
+  RunFunction(set_dark_function.get(), R"(["Dark"])", browser()->profile());
+  EXPECT_EQ(ThemeService::BrowserColorScheme::kDark,
+            theme_service->GetBrowserColorScheme());
+
+  scoped_refptr<BraveThemeSetBraveThemeTypeFunction> set_light_function(
+      new BraveThemeSetBraveThemeTypeFunction());
+  set_light_function->set_extension(extension().get());
+  RunFunction(set_light_function.get(), R"(["Light"])", browser()->profile());
+  EXPECT_EQ(ThemeService::BrowserColorScheme::kLight,
+            theme_service->GetBrowserColorScheme());
+
+  scoped_refptr<BraveThemeSetBraveThemeTypeFunction> set_system_function(
+      new BraveThemeSetBraveThemeTypeFunction());
+  set_system_function->set_extension(extension().get());
+  RunFunction(set_system_function.get(), R"(["System"])", browser()->profile());
+  EXPECT_EQ(ThemeService::BrowserColorScheme::kSystem,
+            theme_service->GetBrowserColorScheme());
 }

@@ -790,7 +790,6 @@ test("brave_browser_tests") {
     "//brave/browser/extensions/brave_extension_functional_test.cc",
     "//brave/browser/extensions/brave_extension_functional_test.h",
     "//brave/browser/extensions/brave_extension_provider_browsertest.cc",
-    "//brave/browser/extensions/brave_theme_event_router_browsertest.cc",
     "//brave/browser/extensions/extension_system_browsertest.cc",
     "//brave/browser/perf/brave_perf_features_processor_browsertest.cc",
     "//brave/browser/policy/brave_policy_browsertest.cc",
