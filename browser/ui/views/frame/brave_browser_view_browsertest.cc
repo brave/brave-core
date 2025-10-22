@@ -26,6 +26,7 @@
 #include "chrome/browser/ui/views/bookmarks/bookmark_bar_view.h"
 #include "chrome/browser/ui/views/frame/browser_non_client_frame_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/frame/multi_contents_view.h"
 #include "chrome/browser/ui/views/frame/scrim_view.h"
 #include "chrome/browser/ui/views/infobars/infobar_container_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -50,7 +51,7 @@ class BraveBrowserViewTest : public InProcessBrowserTest {
   }
 
   BrowserNonClientFrameView* browser_non_client_frame_view() {
-    return browser_view()->frame()->GetFrameView();
+    return browser_view()->browser_widget()->GetFrameView();
   }
 
   BraveBrowserView* brave_browser_view() {
@@ -65,8 +66,10 @@ class BraveBrowserViewTest : public InProcessBrowserTest {
     return brave_browser_view()->vertical_tab_strip_host_view_;
   }
 
+  views::View* main_container() { return browser_view()->main_container(); }
+
   views::View* contents_container() {
-    return browser_view()->GetContentsContainerForLayoutManager();
+    return browser_view()->contents_container();
   }
 
   views::View* infobar_container() {
@@ -91,14 +94,18 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, LayoutWithVerticalTabTest) {
   // Infobar is visible at first run.
   // Update this test if it's not visible at first run.
   // Wait till infobar's positioning is finished.
-  ASSERT_TRUE(base::test::RunUntil([&]() {
-    return infobar_container()->GetVisible() &&
-           (infobar_container()->bounds().bottom_left() ==
-            contents_container()->bounds().origin());
-  }));
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return infobar_container()->GetVisible(); }));
 
-  EXPECT_EQ(infobar_container()->bounds().bottom_left(),
-            contents_container()->bounds().origin());
+  auto contents_area_origin = [&]() {
+    return gfx::Point(contents_container()->bounds().x(),
+                      main_container()->bounds().y());
+  };
+
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return infobar_container()->bounds().bottom_left() ==
+           contents_area_origin();
+  }));
 
   // Bookmark bar should be visible with NTP.
   chrome::AddTabAt(browser(), GURL(), -1, true);
@@ -112,7 +119,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, LayoutWithVerticalTabTest) {
             bookmark_bar()->bounds().origin());
   EXPECT_EQ(bookmark_bar()->bounds().bottom_left() +
                 gfx::Vector2d(0, /*top container separator*/ 1),
-            contents_container()->bounds().origin());
+            contents_area_origin());
 
   // Hide bookmark bar always.
   // Check contents container is positioned right after the vertical tab.
@@ -122,14 +129,14 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, LayoutWithVerticalTabTest) {
       [&]() { return !browser()->window()->IsBookmarkBarAnimating(); }));
   EXPECT_FALSE(bookmark_bar()->GetVisible());
   EXPECT_EQ(vertical_tab_strip_host_view()->bounds().top_right(),
-            contents_container()->bounds().origin());
+            contents_area_origin());
 
   // Activate non-NTP tab and check contents container is positioned below the
   // infobar.
   browser()->tab_strip_model()->ActivateTabAt(0);
   EXPECT_TRUE(infobar_container()->GetVisible());
   EXPECT_EQ(infobar_container()->bounds().bottom_left(),
-            contents_container()->bounds().origin());
+            contents_area_origin());
 
   // Show bookmark bar always.
   // Check vertical tab is positioned below the bookmark bar.
@@ -145,7 +152,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, LayoutWithVerticalTabTest) {
             bookmark_bar()->bounds().bottom_left() +
                 gfx::Vector2d(0, /*contents separator*/ 1));
   EXPECT_EQ(infobar_container()->bounds().bottom_left(),
-            contents_container()->bounds().origin());
+            contents_area_origin());
 
   // Activate NTP tab.
   // Check vertical tab is positioned below the bookmark bar.
@@ -157,7 +164,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, LayoutWithVerticalTabTest) {
             bookmark_bar()->bounds().bottom_left() +
                 gfx::Vector2d(0, /*top container separator*/ 1));
   EXPECT_EQ(vertical_tab_strip_host_view()->bounds().top_right(),
-            contents_container()->bounds().origin());
+            contents_area_origin());
 }
 
 class BraveBrowserViewWithRoundedCornersTest
@@ -187,6 +194,11 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
     EXPECT_FALSE(brave_browser_view()->contents_background_view_);
     return;
   }
+
+  EXPECT_TRUE(brave_browser_view()->contents_background_view_);
+
+  EXPECT_EQ(brave_browser_view()->contents_background_view_->bounds(),
+            brave_browser_view()->main_container()->bounds());
 
   content::WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();

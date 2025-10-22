@@ -251,6 +251,10 @@ inline constexpr char kGoogleAccountHomeAddressURL[] =
 inline constexpr char kGoogleAccountWorkAddressURL[] =
     "https://support.brave.app/";
 
+// URL of the change Google Account name page.
+inline constexpr char kGoogleAccountNameEmailAddressEditURL[] =
+    "https://support.brave.app/";
+
 // URL of the two factor authentication setup required intersitial.
 inline constexpr char kGoogleTwoFactorIntersitialURL[] =
     "https://support.brave.app/";
@@ -299,7 +303,12 @@ inline constexpr char kInsecureDownloadBlockingLearnMoreUrl[] =
 inline constexpr char16_t kMyActivityUrlInClearBrowsingData[] =
     u"https://support.brave.app/";
 
-// The URL for "Your Gemini Apps Activity" page.
+// The URL for the Gemini Personal Context page.
+inline constexpr char16_t kGeminiPersonalContextUrl[] =
+    u"https://support.brave.app/";
+
+// The URL for "Your Gemini Apps Activity" page.inline constexpr char16_t
+// kMyActivityGeminiAppsUrl[] =
 inline constexpr char16_t kMyActivityGeminiAppsUrl[] =
     u"https://support.brave.app/";
 

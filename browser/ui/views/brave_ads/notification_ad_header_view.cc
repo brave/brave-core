@@ -129,7 +129,9 @@ std::unique_ptr<views::Label> NotificationAdHeaderView::CreateTitleLabel() {
 }
 
 void NotificationAdHeaderView::UpdateTitleLabel() {
-  const bool should_use_dark_colors = GetNativeTheme()->ShouldUseDarkColors();
+  const bool should_use_dark_colors =
+      GetNativeTheme()->preferred_color_scheme() ==
+      ui::NativeTheme::PreferredColorScheme::kDark;
 
   CHECK(title_label_);
   title_label_->SetEnabledColor(should_use_dark_colors ? kDarkModeTitleColor

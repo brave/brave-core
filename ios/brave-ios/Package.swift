@@ -14,7 +14,10 @@ var package = Package(
   products: [
     .library(name: "Brave", targets: ["Brave"]),
     .library(name: "Shared", targets: ["Shared"]),
-    .library(name: "BraveCore", targets: ["BraveCore", "MaterialComponents"]),
+    .library(
+      name: "BraveCore",
+      targets: ["BraveCore", "PartitionAllocSupport"]
+    ),
     .library(name: "BraveShared", targets: ["BraveShared"]),
     .library(name: "BraveShields", targets: ["BraveShields"]),
     .library(name: "BraveUI", targets: ["BraveUI"]),
@@ -86,7 +89,7 @@ var package = Package(
         "Shared",
         "BraveWallet",
         "BraveCore",
-        "MaterialComponents",
+        "PartitionAllocSupport",
         "BraveUI",
         "DesignSystem",
         "Data",
@@ -256,7 +259,6 @@ var package = Package(
       name: "Shared",
       dependencies: [
         "BraveCore",
-        "MaterialComponents",
         "Strings",
       ],
       plugins: ["LoggerPlugin"]
@@ -273,7 +275,10 @@ var package = Package(
     ),
     .testTarget(
       name: "CertificateUtilitiesTests",
-      dependencies: ["CertificateUtilities", "BraveShared", "BraveCore", "MaterialComponents"],
+      dependencies: [
+        "CertificateUtilities", "BraveShared", "BraveCore",
+        "PartitionAllocSupport",
+      ],
       exclude: ["Certificates/self-signed.conf"],
       resources: [
         .copy("Certificates/certviewer/brave.com.cer"),
@@ -326,11 +331,11 @@ var package = Package(
       plugins: ["LeoAssetsPlugin"]
     ),
     .binaryTarget(name: "NalaAssets", path: "../../../out/ios_current_link/NalaAssets.xcframework"),
-    .binaryTarget(name: "BraveCore", path: "../../../out/ios_current_link/BraveCore.xcframework"),
     .binaryTarget(
-      name: "MaterialComponents",
-      path: "../../../out/ios_current_link/MaterialComponents.xcframework"
+      name: "PartitionAllocSupport",
+      path: "../../../out/ios_current_link/PartitionAllocSupport.xcframework"
     ),
+    .binaryTarget(name: "BraveCore", path: "../../../out/ios_current_link/BraveCore.xcframework"),
     .binaryTarget(
       name: "GRDWireGuardKit",
       path: "../third_party/GRDWireGuardKit/GRDWireGuardKit.xcframework"
@@ -365,7 +370,7 @@ var package = Package(
       dependencies: [
         "Data",
         "BraveCore",
-        "MaterialComponents",
+        "PartitionAllocSupport",
         "BraveShared",
         "BraveUI",
         "DesignSystem",

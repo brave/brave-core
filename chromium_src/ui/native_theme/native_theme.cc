@@ -8,6 +8,10 @@
 #include "ui/gfx/color_palette.h"
 #include "ui/gfx/color_utils.h"
 
+#if BUILDFLAG(IS_MAC)
+#include "ui/native_theme/native_theme_mac.h"
+#endif
+
 #define GetSystemButtonPressedColor GetSystemButtonPressedColor_ChromiumImpl
 #include <ui/native_theme/native_theme.cc>
 #undef GetSystemButtonPressedColor
@@ -15,7 +19,7 @@
 namespace ui {
 
 SkColor NativeTheme::GetSystemButtonPressedColor(SkColor base_color) const {
-  bool is_dark = (GetPreferredColorScheme() == PreferredColorScheme::kDark);
+  bool is_dark = (preferred_color_scheme() == PreferredColorScheme::kDark);
   return color_utils::GetResultingPaintColor(
       SkColorSetA(gfx::kColorButtonBackground, is_dark ? 0x2b : 0x23),
       base_color);

@@ -43,13 +43,12 @@ SkusServiceFactory::SkusServiceFactory()
 SkusServiceFactory::~SkusServiceFactory() = default;
 
 std::unique_ptr<KeyedService> SkusServiceFactory::BuildServiceInstanceFor(
-    web::BrowserState* context) const {
+    ProfileIOS* profile) const {
   // Return null if feature is disabled
   if (!base::FeatureList::IsEnabled(skus::features::kSkusFeature)) {
     return nullptr;
   }
 
-  auto* profile = ProfileIOS::FromBrowserState(context);
   if (profile->IsOffTheRecord()) {
     return nullptr;
   }
@@ -61,7 +60,7 @@ std::unique_ptr<KeyedService> SkusServiceFactory::BuildServiceInstanceFor(
   return sku_service;
 }
 
-void SkusServiceFactory::RegisterBrowserStatePrefs(
+void SkusServiceFactory::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
   skus::RegisterProfilePrefsForMigration(registry);
 }

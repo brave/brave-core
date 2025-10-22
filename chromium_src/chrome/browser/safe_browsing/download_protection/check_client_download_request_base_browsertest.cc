@@ -13,6 +13,7 @@
 #include "components/network_session_configurator/common/network_switches.h"
 #include "components/prefs/pref_service.h"
 #include "components/safe_browsing/content/browser/web_ui/safe_browsing_ui.h"
+#include "components/safe_browsing/content/browser/web_ui/web_ui_content_info_singleton.h"
 #include "components/safe_browsing/core/common/proto/csd.pb.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/download_manager.h"
@@ -42,7 +43,8 @@ class BraveCheckClientDownloadRequestBaseBrowserTest
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir_);
     https_server_.ServeFilesFromDirectory(test_data_dir_);
     https_server_.AddDefaultHandlers(GetChromeTestDataDir());
-    safe_browsing::WebUIInfoSingleton::GetInstance()->AddListenerForTesting();
+    safe_browsing::WebUIContentInfoSingleton::GetInstance()
+        ->AddListenerForTesting();
 
     ASSERT_TRUE(https_server_.Start());
 
@@ -70,7 +72,7 @@ IN_PROC_BROWSER_TEST_F(BraveCheckClientDownloadRequestBaseBrowserTest,
   ui_test_utils::DownloadURL(browser(), download_url());
 
   const std::vector<std::unique_ptr<safe_browsing::ClientDownloadRequest>>&
-      requests = safe_browsing::WebUIInfoSingleton::GetInstance()
+      requests = safe_browsing::WebUIContentInfoSingleton::GetInstance()
                      ->client_download_requests_sent();
 
   ASSERT_EQ(requests.size(), 1u);

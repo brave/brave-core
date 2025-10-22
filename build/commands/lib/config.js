@@ -650,9 +650,6 @@ Config.prototype.buildArgs = function () {
     args.brave_safebrowsing_api_key = this.braveAndroidSafeBrowsingApiKey
     args.safe_browsing_mode = 2
 
-    // Required since cr126 to use Chrome password store
-    args.use_login_database_as_backend = true
-
     // TODO(fixme)
     args.enable_tor = false
 
@@ -731,11 +728,11 @@ Config.prototype.buildArgs = function () {
 
     args.brave_ios_developer_options_code = this.braveIOSDeveloperOptionsCode
 
-    // This is currently being flipped on and off by the Chromium team to test
-    // however it causes crashes for us at launch. Check `ios/features.gni`
-    // in the future to see if this is no longer needed
-    // https://github.com/brave/brave-browser/issues/29934
-    args.ios_partition_alloc_enabled = false
+    // The app currently crashes on launch without disabling these 2 args:
+    // https://github.com/brave/brave-browser/issues/49595
+    // When this is fixed in Chromium we can remove these 2 arguments
+    args.use_partition_alloc_as_malloc = false
+    args.enable_backup_ref_ptr_support = false
 
     args.ios_provider_target = '//brave/ios/browser/providers:brave_providers'
 
