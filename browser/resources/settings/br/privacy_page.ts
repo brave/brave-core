@@ -102,36 +102,6 @@ function InsertAutoplaySubpage (section: Element)
     `)
 }
 
-function InsertCardanoSubpage (section: Element)
-{
-  section.appendChild(
-    html`
-      <template is="dom-if" route-path="/content/cardano" no-search>
-        <settings-subpage
-          associated-control="[[$$('#cardano')]]"
-          page-title="${loadTimeData.getString('siteSettingsCardano')}">
-          <settings-category-default-radio-group
-              id="cardanoDefault"
-              category="[[contentSettingsTypesEnum_.CARDANO]]"
-              block-option-label=
-                "${loadTimeData.getString('siteSettingsCardanoBlock')}"
-              allow-option-label=
-                "${loadTimeData.getString('siteSettingsCardanoAsk')}"
-              allow-option-icon="cardano-on"
-              block-option-icon="cardano-off">
-          </settings-category-default-radio-group>
-          <category-setting-exceptions
-            id="cardanoExceptions"
-            category="[[contentSettingsTypesEnum_.CARDANO]]"
-            block-header="${loadTimeData.getString('siteSettingsBlock')}"
-            allow-header="${loadTimeData.getString('siteSettingsAllow')}"
-            read-only-list>
-          </category-setting-exceptions>
-        </settings-subpage>
-      </template>
-    `)
-}
-
 function InsertBraveOpenAIChatSubpage (section: Element)
 {
   section.appendChild(
@@ -186,17 +156,7 @@ RegisterPolymerTemplateModifications({
       InsertBraveOpenAIChatSubpage(section)
     }
     InsertAutoplaySubpage(section)
-    const isNativeBraveWalletEnabled =
-      loadTimeData.getBoolean('isNativeBraveWalletFeatureEnabled')
-    const isCardanoDappSupportFeatureEnabled =
-      loadTimeData.getBoolean('isCardanoDappSupportFeatureEnabled')
-    const isBraveWalletAllowed =
-      loadTimeData.getBoolean('isBraveWalletAllowed')
-    if (isNativeBraveWalletEnabled && isBraveWalletAllowed) {
-      if (isCardanoDappSupportFeatureEnabled) {
-        InsertCardanoSubpage(section)
-      }
-    }
+
     const permissionsLinkRow =
       templateContent.getElementById('permissionsLinkRow')
     if (!permissionsLinkRow) {

@@ -13,6 +13,7 @@ import { routes } from '../route.js';
 import { loadTimeData } from "../i18n_setup.js"
 import { pageVisibility } from './page_visibility.js'
 import '../brave_survey_panelist_page/brave_survey_panelist_page.js'
+import '../site_settings/site_settings_cardano.js'
 import '../site_settings/site_settings_ethereum.js'
 import '../site_settings/site_settings_shields.js'
 import '../site_settings/site_settings_solana.js'
@@ -121,6 +122,17 @@ RegisterPolymerTemplateModifications({
             slot="view"
             in-search-mode="[[inSearchMode_]]">
           </site-settings-solana-page>`)
+
+      if (loadTimeData.getBoolean('isCardanoDappSupportFeatureEnabled')) {
+        viewManager.appendChild(html`
+          <site-settings-cardano-page
+              id="${ContentSettingsTypes.CARDANO}"
+              route-path$="[[routes_.SITE_SETTINGS_CARDANO.path]]"
+              data-parent-view-id="siteSettings"
+              slot="view"
+              in-search-mode="[[inSearchMode_]]">
+            </site-settings-cardano-page>`)
+      }
     }
 
     // Move the safety hub to the end of the page
