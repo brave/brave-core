@@ -73,6 +73,7 @@ brave_settings_web_component_files = [
   "site_settings/site_settings_autoplay.ts",
   "site_settings/site_settings_brave_ai.ts",
   "site_settings/site_settings_localhost.ts",
+  "site_settings/site_settings_google.ts",
   "site_settings/site_settings_shields.ts",
   "site_settings/site_settings_cardano.ts",
   "site_settings/site_settings_ethereum.ts",
