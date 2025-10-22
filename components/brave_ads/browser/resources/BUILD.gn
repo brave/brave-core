@@ -18,7 +18,7 @@ transpile_web_ui("ads_internals_ui") {
   ]
 
   resource_name = "ads_internals"
-  data = [ "//brave/components/brave_ads/browser/resources/" ]
+  imports_from = [ "//brave/components/brave_ads/browser/resources/" ]
 }
 
 pack_web_resources("generated_resources") {

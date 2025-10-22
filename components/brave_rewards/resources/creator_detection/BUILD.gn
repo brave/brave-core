@@ -30,7 +30,8 @@ transpile_web_ui("creator_detection") {
     ],
   ]
   resource_name = "creator_detection"
-  data = [ "//brave/components/brave_rewards/resources/creator_detection/" ]
+  imports_from =
+      [ "//brave/components/brave_rewards/resources/creator_detection/" ]
 }
 
 pack_web_resources("creator_detection_generated") {

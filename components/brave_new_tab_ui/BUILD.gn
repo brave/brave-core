@@ -25,7 +25,7 @@ transpile_web_ui("brave_new_tab_ui") {
     ]
   }
   resource_name = "brave_new_tab"
-  data = [
+  imports_from = [
     "//brave/components/brave_new_tab_ui/",
     "//brave/components/brave_news/browser/resources/",
     "//brave/components/brave_rewards/resources/shared/",

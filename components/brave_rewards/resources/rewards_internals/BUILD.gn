@@ -11,7 +11,7 @@ transpile_web_ui("rewards_internals") {
         rebase_path("rewards_internals.tsx"),
       ] ]
   resource_name = "rewards_internals"
-  data = [ "//brave/components/brave_rewards/resources/" ]
+  imports_from = [ "//brave/components/brave_rewards/resources/" ]
   deps = [
     "//brave/components/brave_rewards/core/mojom:webui_js",
     "//mojo/public/js:resources",

@@ -13,7 +13,7 @@ transpile_web_ui("resources") {
         rebase_path("brave_new_tab_page.tsx"),
       ] ]
   resource_name = "brave_new_tab_page_refresh"
-  data = [
+  imports_from = [
     "//brave/browser/resources/brave_new_tab_page_refresh/",
     "//brave/components/brave_news/browser/resources/",
     "//brave/components/brave_rewards/resources/",

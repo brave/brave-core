@@ -12,7 +12,7 @@ transpile_web_ui("ai_rewriter_ui") {
         "rewriter_ui",
         rebase_path("rewriter_ui.tsx"),
       ] ]
-  data = [
+  imports_from = [
     "//brave/components/ai_rewriter/resources/page/",
     "//brave/components/ai_chat/resources/",
   ]

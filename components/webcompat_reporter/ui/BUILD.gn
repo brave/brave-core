@@ -15,7 +15,7 @@ transpile_web_ui("ui") {
       ] ]
 
   resource_name = "webcompat_reporter"
-  data = [ "//brave/components/webcompat_reporter/ui/" ]
+  imports_from = [ "//brave/components/webcompat_reporter/ui/" ]
 }
 
 pack_web_resources("generated_resources") {
