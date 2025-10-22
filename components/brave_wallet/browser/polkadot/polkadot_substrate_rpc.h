@@ -46,6 +46,15 @@ class PolkadotSubstrateRpc {
       base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> pubkey,
       GetAccountBalanceCallback callback);
 
+  // Get the hash of the last finalized block in the canon chain. This is used
+  // during extrinsic creation where the blockhash is used as a portion of the
+  // payload. Note, the finalized block's hash is only used when the current
+  // head is within the MAX_FINALITY_LAG of the finalized block, as described
+  // here:
+  // https://github.com/polkadot-js/api/blob/f45dfc72ec320cab7d69f08010c9921d2a21065f/packages/api-derive/src/tx/signingInfo.ts#L41-L71
+  //
+  // This hash defines the start of the mortality period, described as H(B):
+  // https://spec.polkadot.network/id-extrinsics#defn-extrinsic-signature
   void GetFinalizedHead(std::string_view chain_id,
                         GetFinalizedHeadCallback callback);
 
