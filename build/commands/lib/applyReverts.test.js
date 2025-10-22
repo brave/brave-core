@@ -30,7 +30,7 @@ describe('applyReverts', function () {
   }
 
   function expectApplyRevertsToThrow(hashes) {
-    expect(() => applyReverts(repo.path, hashes, false)).toThrow()
+    expect(() => applyReverts(repo.path, hashes, false, false)).toThrow()
   }
 
   beforeEach(async function () {
