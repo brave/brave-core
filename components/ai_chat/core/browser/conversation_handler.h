@@ -9,6 +9,7 @@
 #include <cstdint>
 #include <memory>
 #include <optional>
+#include <set>
 #include <string>
 #include <string_view>
 #include <utility>
@@ -256,6 +257,8 @@ class ConversationHandler : public mojom::ConversationHandler,
 
   mojom::APIError current_error() const override;
 
+  const std::set<int32_t>& get_task_tab_ids() const { return task_tab_ids_; }
+
   void SetEngineForTesting(std::unique_ptr<EngineConsumer> engine_for_testing) {
     engine_ = std::move(engine_for_testing);
   }
@@ -456,6 +459,12 @@ class ConversationHandler : public mojom::ConversationHandler,
   // If we keep it, should it be part of mojom::Conversation?
   mojom::ConversationCapability conversation_capability_ =
       mojom::ConversationCapability::CHAT;
+
+  // Set of tab IDs that have been part of tasks whilst this conversation is
+  // in-memory. Since conversations are finite (limited by context size) and not
+  // held in memory forever, we don't currently prune the tab IDs once they
+  // close. Therefore, these are not guaranteed to be active.
+  std::set<int32_t> task_tab_ids_;
 
   raw_ptr<AIChatService, DanglingUntriaged> ai_chat_service_;
   raw_ptr<ModelService> model_service_;

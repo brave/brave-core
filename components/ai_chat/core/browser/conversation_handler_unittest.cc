@@ -3476,6 +3476,8 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_OnContentTaskStarted) {
 
   int32_t test_tab_id = 1;
 
+  EXPECT_EQ(0u, conversation_handler_->get_task_tab_ids().size());
+
   MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
       conversation_handler_->GetEngineForTesting());
 
@@ -3500,6 +3502,9 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_OnContentTaskStarted) {
   // Submit a human entry to trigger the tool use
   conversation_handler_->SubmitHumanConversationEntry(".", std::nullopt);
   run_loop.Run();
+
+  EXPECT_EQ(1u, conversation_handler_->get_task_tab_ids().size());
+  EXPECT_EQ(test_tab_id, *conversation_handler_->get_task_tab_ids().begin());
 }
 
 TEST_F(ConversationHandlerUnitTest, AssociatingContentTriggersGetContent) {

@@ -1606,6 +1606,11 @@ void ConversationHandler::OnModelRemoved(const std::string& removed_key) {
 }
 
 void ConversationHandler::OnContentTaskStarted(int32_t tab_id) {
+  // Store the tab_id so consumers can validate a tab is used by a tool
+  // in this conversation, or that a tab can locate its controlling
+  // conversation.
+  task_tab_ids_.insert(tab_id);
+
   // Notify clients so they may display the relationship in UI
   for (auto& client : untrusted_conversation_ui_handlers_) {
     client->ContentTaskStarted(tab_id);
