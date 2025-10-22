@@ -1,8 +1,54 @@
 # Changelog
 
-## Unreleased
+## 1.21.3
 
--
+- Outline more initialization in `race`: [#284](https://github.com/matklad/once_cell/pull/284),
+  [#285](https://github.com/matklad/once_cell/pull/285).
+
+## 1.21.2
+- Relax success ordering from AcqRel to Release in `race`: [#278](https://github.com/matklad/once_cell/pull/278).
+
+## 1.21.1
+- Reduce MSRV to 1.65: [#277](https://github.com/matklad/once_cell/pull/277).
+
+## 1.21.0
+
+- Outline initialization in `race`: [#273](https://github.com/matklad/once_cell/pull/273).
+- Add `OnceNonZereUsize::get_unchecked`: [#274](https://github.com/matklad/once_cell/pull/274).
+- Add `OnceBox::clone` and `OnceBox::with_value`: [#275](https://github.com/matklad/once_cell/pull/275).
+- Increase MSRV to 1.70
+
+## 1.20.2
+
+- Remove `portable_atomic` from Cargo.lock if it is not, in fact, used: [#267](https://github.com/matklad/once_cell/pull/267)
+  This is a work-around for this cargo bug: https://github.com/rust-lang/cargo/issues/10801.
+
+## 1.20.1
+
+- Allow using `race` module using just `portable_atomic`, without `critical_section` and provide
+  better error messages on targets without atomic CAS instruction,
+  [#265](https://github.com/matklad/once_cell/pull/265).
+
+## 1.19.0
+
+- Use `portable-atomic` instead of `atomic-polyfill`, [#251](https://github.com/matklad/once_cell/pull/251).
+
+## 1.18.0
+
+- `MSRV` is updated to 1.60.0 to take advantage of `dep:` syntax for cargo features,
+  removing "implementation details" from publicly visible surface.
+
+## 1.17.2
+
+- Avoid unnecessary synchronization in `Lazy::{force,deref}_mut()`, [#231](https://github.com/matklad/once_cell/pull/231).
+
+## 1.17.1
+
+- Make `OnceRef` implementation compliant with [strict provenance](https://github.com/rust-lang/rust/issues/95228).
+
+## 1.17.0
+
+- Add `race::OnceRef` for storing a `&'a T`.
 
 ## 1.16.0
 

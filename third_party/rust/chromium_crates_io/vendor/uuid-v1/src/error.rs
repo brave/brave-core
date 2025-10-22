@@ -9,29 +9,34 @@ pub(crate) enum ErrorKind {
     /// Invalid character in the [`Uuid`] string.
     ///
     /// [`Uuid`]: ../struct.Uuid.html
-    Char { character: char, index: usize },
+    ParseChar { character: char, index: usize },
     /// A simple [`Uuid`] didn't contain 32 characters.
     ///
     /// [`Uuid`]: ../struct.Uuid.html
-    SimpleLength { len: usize },
+    ParseSimpleLength { len: usize },
     /// A byte array didn't contain 16 bytes
-    ByteLength { len: usize },
+    ParseByteLength { len: usize },
     /// A hyphenated [`Uuid`] didn't contain 5 groups
     ///
     /// [`Uuid`]: ../struct.Uuid.html
-    GroupCount { count: usize },
+    ParseGroupCount { count: usize },
     /// A hyphenated [`Uuid`] had a group that wasn't the right length
     ///
     /// [`Uuid`]: ../struct.Uuid.html
-    GroupLength {
+    ParseGroupLength {
         group: usize,
         len: usize,
         index: usize,
     },
     /// The input was not a valid UTF8 string
-    InvalidUTF8,
-    /// Some other error occurred.
-    Other,
+    ParseInvalidUTF8,
+    /// Some other parsing error occurred.
+    ParseOther,
+    /// The UUID is nil.
+    Nil,
+    /// A system time was invalid.
+    #[cfg(feature = "std")]
+    InvalidSystemTime(&'static str),
 }
 
 /// A string that is guaranteed to fail to parse to a [`Uuid`].
@@ -50,7 +55,7 @@ impl<'a> InvalidUuid<'a> {
         // Check whether or not the input was ever actually a valid UTF8 string
         let input_str = match std::str::from_utf8(self.0) {
             Ok(s) => s,
-            Err(_) => return Error(ErrorKind::InvalidUTF8),
+            Err(_) => return Error(ErrorKind::ParseInvalidUTF8),
         };
 
         let (uuid_str, offset, simple) = match input_str.as_bytes() {
@@ -72,7 +77,7 @@ impl<'a> InvalidUuid<'a> {
             let byte = character as u8;
             if character as u32 - byte as u32 > 0 {
                 // Multibyte char
-                return Error(ErrorKind::Char {
+                return Error(ErrorKind::ParseChar {
                     character,
                     index: index + offset + 1,
                 });
@@ -82,9 +87,9 @@ impl<'a> InvalidUuid<'a> {
                     group_bounds[hyphen_count] = index;
                 }
                 hyphen_count += 1;
-            } else if !matches!(byte, b'0'..=b'9' | b'a'..=b'f' | b'A'..=b'F') {
+            } else if !byte.is_ascii_hexdigit() {
                 // Non-hex char
-                return Error(ErrorKind::Char {
+                return Error(ErrorKind::ParseChar {
                     character: byte as char,
                     index: index + offset + 1,
                 });
@@ -95,13 +100,13 @@ impl<'a> InvalidUuid<'a> {
             // This means that we tried and failed to parse a simple uuid.
             // Since we verified that all the characters are valid, this means
             // that it MUST have an invalid length.
-            Error(ErrorKind::SimpleLength {
+            Error(ErrorKind::ParseSimpleLength {
                 len: input_str.len(),
             })
         } else if hyphen_count != 4 {
             // We tried to parse a hyphenated variant, but there weren't
             // 5 groups (4 hyphen splits).
-            Error(ErrorKind::GroupCount {
+            Error(ErrorKind::ParseGroupCount {
                 count: hyphen_count + 1,
             })
         } else {
@@ -109,7 +114,7 @@ impl<'a> InvalidUuid<'a> {
             const BLOCK_STARTS: [usize; 5] = [0, 9, 14, 19, 24];
             for i in 0..4 {
                 if group_bounds[i] != BLOCK_STARTS[i + 1] - 1 {
-                    return Error(ErrorKind::GroupLength {
+                    return Error(ErrorKind::ParseGroupLength {
                         group: i,
                         len: group_bounds[i] - BLOCK_STARTS[i],
                         index: offset + BLOCK_STARTS[i] + 1,
@@ -118,7 +123,7 @@ impl<'a> InvalidUuid<'a> {
             }
 
             // The last group must be too long
-            Error(ErrorKind::GroupLength {
+            Error(ErrorKind::ParseGroupLength {
                 group: 4,
                 len: input_str.len() - BLOCK_STARTS[4],
                 index: offset + BLOCK_STARTS[4] + 1,
@@ -131,25 +136,25 @@ impl<'a> InvalidUuid<'a> {
 impl fmt::Display for Error {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self.0 {
-            ErrorKind::Char {
+            ErrorKind::ParseChar {
                 character, index, ..
             } => {
                 write!(f, "invalid character: expected an optional prefix of `urn:uuid:` followed by [0-9a-fA-F-], found `{}` at {}", character, index)
             }
-            ErrorKind::SimpleLength { len } => {
+            ErrorKind::ParseSimpleLength { len } => {
                 write!(
                     f,
                     "invalid length: expected length 32 for simple format, found {}",
                     len
                 )
             }
-            ErrorKind::ByteLength { len } => {
+            ErrorKind::ParseByteLength { len } => {
                 write!(f, "invalid length: expected 16 bytes, found {}", len)
             }
-            ErrorKind::GroupCount { count } => {
+            ErrorKind::ParseGroupCount { count } => {
                 write!(f, "invalid group count: expected 5, found {}", count)
             }
-            ErrorKind::GroupLength { group, len, .. } => {
+            ErrorKind::ParseGroupLength { group, len, .. } => {
                 let expected = [8, 4, 4, 4, 12][group];
                 write!(
                     f,
@@ -157,8 +162,11 @@ impl fmt::Display for Error {
                     group, expected, len
                 )
             }
-            ErrorKind::InvalidUTF8 => write!(f, "non-UTF8 input"),
-            ErrorKind::Other => write!(f, "failed to parse a UUID"),
+            ErrorKind::ParseInvalidUTF8 => write!(f, "non-UTF8 input"),
+            ErrorKind::Nil => write!(f, "the UUID is nil"),
+            ErrorKind::ParseOther => write!(f, "failed to parse a UUID"),
+            #[cfg(feature = "std")]
+            ErrorKind::InvalidSystemTime(ref e) => write!(f, "the system timestamp is invalid: {e}"),
         }
     }
 }
@@ -168,5 +176,5 @@ mod std_support {
     use super::*;
     use crate::std::error;
 
-    impl error::Error for Error {}
+    impl error::Error for Error { }
 }

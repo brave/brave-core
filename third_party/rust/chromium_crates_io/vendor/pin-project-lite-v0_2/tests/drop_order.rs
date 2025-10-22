@@ -1,4 +1,4 @@
-#![warn(rust_2018_idioms, single_use_lifetimes)]
+// SPDX-License-Identifier: Apache-2.0 OR MIT
 
 // Refs: https://doc.rust-lang.org/reference/destructors.html
 

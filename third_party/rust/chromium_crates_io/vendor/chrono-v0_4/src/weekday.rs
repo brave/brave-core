@@ -161,11 +161,7 @@ impl Weekday {
     pub const fn days_since(&self, other: Weekday) -> u32 {
         let lhs = *self as u32;
         let rhs = other as u32;
-        if lhs < rhs {
-            7 + lhs - rhs
-        } else {
-            lhs - rhs
-        }
+        if lhs < rhs { 7 + lhs - rhs } else { lhs - rhs }
     }
 }
 
@@ -242,12 +238,15 @@ pub struct ParseWeekdayError {
     pub(crate) _dummy: (),
 }
 
+#[cfg(all(not(feature = "std"), feature = "core-error"))]
+impl core::error::Error for ParseWeekdayError {}
+
 #[cfg(feature = "std")]
 impl std::error::Error for ParseWeekdayError {}
 
 impl fmt::Display for ParseWeekdayError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_fmt(format_args!("{:?}", self))
+        f.write_fmt(format_args!("{self:?}"))
     }
 }
 
@@ -344,8 +343,8 @@ mod tests {
     #[test]
     #[cfg(feature = "serde")]
     fn test_serde_serialize() {
-        use serde_json::to_string;
         use Weekday::*;
+        use serde_json::to_string;
 
         let cases: Vec<(Weekday, &str)> = vec![
             (Mon, "\"Mon\""),
@@ -366,8 +365,8 @@ mod tests {
     #[test]
     #[cfg(feature = "serde")]
     fn test_serde_deserialize() {
-        use serde_json::from_str;
         use Weekday::*;
+        use serde_json::from_str;
 
         let cases: Vec<(&str, Weekday)> = vec![
             ("\"mon\"", Mon),

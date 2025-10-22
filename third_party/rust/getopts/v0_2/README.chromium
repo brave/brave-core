@@ -1,9 +1,9 @@
 Name: getopts
 URL: https://crates.io/crates/getopts
-Version: 0.2.23
-Revision: 57b183a98599261ab535401b64aa0a46ab0b6a44
+Version: 0.2.24
+Revision: 40846923f0ce024bcf8d3e9100cab64a38c8dd08
 License: Apache-2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/getopts-v0_2/LICENSE-APACHE
+License File: //brave/third_party/rust/chromium_crates_io/vendor/getopts-v0_2/LICENSE-Apache
 Shipped: yes
 Security Critical: yes
 

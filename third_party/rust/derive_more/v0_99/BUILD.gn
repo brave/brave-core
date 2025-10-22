@@ -38,6 +38,7 @@ cargo_crate("lib") {
     "//brave/third_party/rust/chromium_crates_io/vendor/derive_more-v0_99/src/not_like.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/derive_more-v0_99/src/parsing.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/derive_more-v0_99/src/sum_like.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/derive_more-v0_99/src/syn_compat.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/derive_more-v0_99/src/try_into.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/derive_more-v0_99/src/unwrap.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/derive_more-v0_99/src/utils.rs",
@@ -50,13 +51,13 @@ cargo_crate("lib") {
   cargo_pkg_name = "derive_more"
   cargo_pkg_description = "Adds #[derive(x)] macros for more traits"
   cargo_pkg_repository = "https://github.com/JelteF/derive_more"
-  cargo_pkg_version = "0.99.17"
+  cargo_pkg_version = "0.99.20"
 
   deps = [
     "//brave/third_party/rust/convert_case/v0_4:lib",
     "//brave/third_party/rust/proc_macro2/v1:lib",
     "//brave/third_party/rust/quote/v1:lib",
-    "//brave/third_party/rust/syn/v1:lib",
+    "//brave/third_party/rust/syn/v2:lib",
   ]
   features = [
     "add",

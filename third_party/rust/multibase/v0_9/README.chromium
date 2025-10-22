@@ -1,9 +1,9 @@
 Name: multibase
 URL: https://crates.io/crates/multibase
-Version: 0.9.1
-Revision: 3c36b28e0072de4b5302bfceedc318aec5c125b0
+Version: 0.9.2
+Revision: eba2f9804cc6f4257cbfdef01bc1193a23d5dcdc
 License: MIT
-License File:
+License File: //brave/third_party/rust/chromium_crates_io/vendor/multibase-v0_9/LICENSE
 Shipped: yes
 Security Critical: yes
 

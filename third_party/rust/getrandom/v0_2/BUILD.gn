@@ -47,7 +47,7 @@ cargo_crate("lib") {
   cargo_pkg_name = "getrandom"
   cargo_pkg_description = "A small cross-platform library for retrieving random data from system source"
   cargo_pkg_repository = "https://github.com/rust-random/getrandom"
-  cargo_pkg_version = "0.2.15"
+  cargo_pkg_version = "0.2.16"
 
   deps = [ "//brave/third_party/rust/cfg_if/v1:lib" ]
   if (!is_win) {

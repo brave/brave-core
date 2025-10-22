@@ -22,11 +22,13 @@ cargo_crate("lib") {
     "//brave/third_party/rust/chromium_crates_io/vendor/sha2-v0_10/src/sha256/aarch64.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/sha2-v0_10/src/sha256/loongarch64_asm.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/sha2-v0_10/src/sha256/soft.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/sha2-v0_10/src/sha256/soft_compact.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/sha2-v0_10/src/sha256/x86.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/sha2-v0_10/src/sha512.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/sha2-v0_10/src/sha512/aarch64.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/sha2-v0_10/src/sha512/loongarch64_asm.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/sha2-v0_10/src/sha512/soft.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/sha2-v0_10/src/sha512/soft_compact.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/sha2-v0_10/src/sha512/x86.rs",
   ]
   inputs = []
@@ -37,7 +39,7 @@ cargo_crate("lib") {
   cargo_pkg_name = "sha2"
   cargo_pkg_description = "Pure Rust implementation of the SHA-2 hash function family including SHA-224, SHA-256, SHA-384, and SHA-512."
   cargo_pkg_repository = "https://github.com/RustCrypto/hashes"
-  cargo_pkg_version = "0.10.8"
+  cargo_pkg_version = "0.10.9"
 
   deps = [
     "//brave/third_party/rust/cfg_if/v1:lib",

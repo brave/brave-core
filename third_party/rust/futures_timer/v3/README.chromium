@@ -1,9 +1,9 @@
 Name: futures-timer
 URL: https://crates.io/crates/futures-timer
-Version: 3.0.2
-Revision: 30e562cdde45b8a6ee93d22094df8664ff8dfdfb
+Version: 3.0.3
+Revision: 07dbe53da1b5ddb703cdfc74ad59e15cb4134ce0
 License: Apache-2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/futures-timer-v3/LICENSE-APACHE
+License File: //brave/third_party/rust/chromium_crates_io/vendor/futures-timer-v3/LICENSE-Apache
 Shipped: yes
 Security Critical: yes
 

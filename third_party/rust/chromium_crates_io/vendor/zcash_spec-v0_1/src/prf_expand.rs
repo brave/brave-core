@@ -95,6 +95,7 @@ with_inputs!(a, A);
 impl PrfExpand<([u8; 32], [u8; 4])> {
     pub const SPROUT_ZIP32_CHILD: Self = Self::new(0x80);
     pub const ORCHARD_ZIP32_CHILD: Self = Self::new(0x81);
+    pub const ARBITRARY_ZIP32_CHILD: Self = Self::new(0xAB);
 }
 impl PrfExpand<([u8; 32], [u8; 32])> {
     pub const ORCHARD_DK_OVK: Self = Self::new(0x82);

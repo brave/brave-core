@@ -379,11 +379,6 @@ if (epoch == "2") {
 }
 ''' }
 
-[crate.typenum]
-extra_build_script_src_roots = [ "../build" ]
-build_script_outputs = [ "consts.rs", "op.rs" ]
-extra_kv = { rustenv = [ "TYPENUM_BUILD_CONSTS=\" + rebase_path(target_gen_dir, get_path_info(crate_root, \"dir\")) + \"/lib/consts.rs", "TYPENUM_BUILD_OP=\" + rebase_path(target_gen_dir, get_path_info(crate_root, \"dir\")) + \"/lib/op.rs" ] }
-
 [crate.uint]
 license_files = ['../../../../../common/licenses/Apache-2.0']
 

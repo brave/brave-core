@@ -11,33 +11,48 @@
 
 [package]
 edition = "2018"
+rust-version = "1.70.0"
 name = "string_cache"
-version = "0.8.7"
+version = "0.8.9"
 authors = ["The Servo Project Developers"]
+build = false
+autolib = false
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
 description = "A string interning library for Rust, developed as part of the Servo project."
-documentation = "https://docs.rs/string_cache/"
+documentation = "https://docs.rs/string_cache"
 readme = "README.md"
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/servo/string-cache"
 
 [lib]
 name = "string_cache"
+path = "src/lib.rs"
+
+[[example]]
+name = "simple"
+path = "examples/simple.rs"
 
 [[test]]
 name = "small-stack"
+path = "tests/small-stack.rs"
 harness = false
+
+[dependencies.malloc_size_of]
+version = "0.1"
+optional = true
+default-features = false
 
 [dependencies.new_debug_unreachable]
 version = "1.0.2"
-
-[dependencies.once_cell]
-version = "1.10.0"
 
 [dependencies.parking_lot]
 version = "0.12"
 
 [dependencies.phf_shared]
-version = "0.10"
+version = "0.11"
 
 [dependencies.precomputed-hash]
 version = "0.1"

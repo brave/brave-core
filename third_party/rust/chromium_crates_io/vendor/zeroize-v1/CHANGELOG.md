@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 1.8.2 (2025-09-29)
+### Changed
+- Switch from `doc_auto_cfg` to `doc_cfg` ([#1228])
+
+[#1228]: https://github.com/RustCrypto/utils/pull/1228
+
 ## 1.8.1 (2024-05-25)
 ### Changed
 - Feature-gate AVX-512 support under `simd`; restores MSRV 1.60 ([#1073])

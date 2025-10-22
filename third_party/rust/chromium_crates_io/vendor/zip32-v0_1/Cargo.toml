@@ -13,11 +13,17 @@
 edition = "2021"
 rust-version = "1.60"
 name = "zip32"
-version = "0.1.1"
+version = "0.1.3"
 authors = [
     "Jack Grigg <jack@electriccoin.co>",
     "Kris Nuttycombe <kris@electriccoin.co>",
 ]
+build = false
+autolib = false
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
 description = "Common types for implementing shielded hierarchical deterministic wallets"
 homepage = "https://github.com/zcash/zip32"
 documentation = "https://docs.rs/zip32/"
@@ -25,18 +31,28 @@ readme = "README.md"
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/zcash/zip32"
 
+[lib]
+name = "zip32"
+path = "src/lib.rs"
+
 [dependencies.blake2b_simd]
 version = "1"
+default-features = false
 
 [dependencies.memuse]
-version = "0.2.1"
+version = "0.2.2"
+default-features = false
 
 [dependencies.subtle]
 version = "2.2.3"
+default-features = false
+
+[dependencies.zcash_spec]
+version = "0.1.2"
 
 [dev-dependencies.assert_matches]
 version = "1.5"
 
 [features]
 default = ["std"]
-std = []
+std = ["memuse/std"]

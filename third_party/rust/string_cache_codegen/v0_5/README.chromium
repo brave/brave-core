@@ -1,9 +1,9 @@
 Name: string_cache_codegen
 URL: https://crates.io/crates/string_cache_codegen
-Version: 0.5.2
-Revision: d317968441e57cbd6f5ab61a7975956a1edc772e
+Version: 0.5.4
+Revision: 88600346b44ae50afaf52a31d6a0db1c37b94b02
 License: Apache-2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/string_cache_codegen-v0_5/LICENSE-APACHE
+License File: //brave/third_party/rust/chromium_crates_io/vendor/string_cache_codegen-v0_5/LICENSE-Apache
 Shipped: yes
 Security Critical: yes
 

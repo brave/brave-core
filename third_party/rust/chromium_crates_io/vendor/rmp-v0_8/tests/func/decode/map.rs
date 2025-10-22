@@ -1,7 +1,7 @@
 use super::Cursor;
 
-use crate::msgpack::decode::*;
-use crate::msgpack::Marker;
+use rmp::decode::*;
+use rmp::Marker;
 
 #[test]
 fn from_fixmap_min_read_size() {
@@ -55,7 +55,7 @@ fn from_null_read_map_len() {
 
     match read_map_len(&mut cur) {
         Err(ValueReadError::TypeMismatch(Marker::Null)) => (),
-        other => panic!("unexpected result: {:?}", other),
+        other => panic!("unexpected result: {other:?}"),
     }
     assert_eq!(1, cur.position());
 }

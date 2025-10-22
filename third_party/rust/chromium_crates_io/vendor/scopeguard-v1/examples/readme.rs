@@ -1,10 +1,12 @@
-
-#[macro_use(defer)] extern crate scopeguard;
+#[macro_use(defer)]
+extern crate scopeguard;
 
 use scopeguard::guard;
 
 fn f() {
-    defer!(println!("Called at return or panic"));
+    defer! {
+        println!("Called at return or panic");
+    }
     panic!();
 }
 
@@ -17,7 +19,7 @@ fn g() {
         // write file at return or panic
         let _ = f.sync_all();
     });
-    // Access the file through the scope guard itself
+    // access the file through the scope guard itself
     file.write_all(b"test me\n").unwrap();
 }
 

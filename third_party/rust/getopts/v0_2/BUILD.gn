@@ -25,9 +25,13 @@ cargo_crate("lib") {
   cargo_pkg_name = "getopts"
   cargo_pkg_description = "getopts-like option parsing"
   cargo_pkg_repository = "https://github.com/rust-lang/getopts"
-  cargo_pkg_version = "0.2.23"
+  cargo_pkg_version = "0.2.24"
 
   deps = [ "//brave/third_party/rust/unicode_width/v0_2:lib" ]
+  features = [
+    "default",
+    "unicode",
+  ]
   rustenv = []
   rustflags = []
 

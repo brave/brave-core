@@ -1,0 +1,10 @@
+Name: base256emoji
+URL: https://crates.io/crates/base256emoji
+Version: 1.0.2
+Revision: f7cf4ae2c15123376d6634ca7aed005034b396ec
+License: MIT
+License File:
+Shipped: yes
+Security Critical: yes
+
+Description: A multibase base256emoji implementation.

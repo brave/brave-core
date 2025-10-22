@@ -1,0 +1,24 @@
+[package]
+name = "halo2_poseidon"
+version = "0.1.0"
+authors = [
+    "Jack Grigg <jack@electriccoin.co>",
+    "Daira Emma Hopwood <daira@jacaranda.org>",
+    "Ying Tong Lai",
+]
+edition = "2021"
+rust-version = "1.60"
+description = "The Poseidon algebraic hash function for Halo 2"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/zcash/halo2"
+readme = "README.md"
+categories = ["cryptography"]
+
+[dependencies]
+bitvec = { version = "1", default-features = false }
+ff = { version = "0.13", default-features = false }
+group = "0.13"
+pasta_curves = "0.5"
+
+[features]
+test-dependencies = []

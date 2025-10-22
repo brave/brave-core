@@ -16,8 +16,8 @@ __ https://docs.rs/either/
 
 |build_status|_ |crates|_
 
-.. |build_status| image:: https://github.com/bluss/either/workflows/CI/badge.svg?branch=master
-.. _build_status: https://github.com/bluss/either/actions
+.. |build_status| image:: https://github.com/rayon-rs/either/workflows/CI/badge.svg?branch=main
+.. _build_status: https://github.com/rayon-rs/either/actions
 
 .. |crates| image:: https://img.shields.io/crates/v/either.svg
 .. _crates: https://crates.io/crates/either
@@ -25,11 +25,51 @@ __ https://docs.rs/either/
 How to use with cargo::
 
     [dependencies]
-    either = "1.8"
+    either = "1"
 
 
 Recent Changes
 --------------
+
+- 1.15.0
+
+  - Fix ``serde`` support when building without ``std``, by @klkvr (#119)
+
+  - Use a more common ``std`` feature for default enablement, deprecating
+    the ``use_std`` feature as a mere alias of the new name.
+
+- 1.14.0
+
+  - **MSRV**: ``either`` now requires Rust 1.63 or later.
+
+  - Implement ``fmt::Write`` for ``Either``, by @yotamofek (#113)
+
+  - Replace ``Into<Result> for Either`` with ``From<Either> for Result``, by @cuviper (#118)
+
+- 1.13.0
+
+  - Add new methods ``.cloned()`` and ``.copied()``, by @ColonelThirtyTwo (#107)
+
+- 1.12.0
+
+  - **MSRV**: ``either`` now requires Rust 1.37 or later.
+
+  - Specialize ``nth_back`` for ``Either`` and ``IterEither``, by @cuviper (#106)
+
+- 1.11.0
+
+  - Add new trait ``IntoEither`` that is useful to convert to ``Either`` in method chains,
+    by @SFM61319 (#101)
+
+- 1.10.0
+
+  - Add new methods ``.factor_iter()``, ``.factor_iter_mut()``,  and ``.factor_into_iter()``
+    that return ``Either`` items, plus ``.iter()`` and ``.iter_mut()`` to convert to direct
+    reference iterators; by @aj-bagwell and @cuviper (#91)
+
+- 1.9.0
+
+  - Add new methods ``.map_either()`` and ``.map_either_with()``, by @nasadorian (#82)
 
 - 1.8.1
 

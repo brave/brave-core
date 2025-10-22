@@ -4,8 +4,10 @@ RMP is a pure Rust [MessagePack](http://msgpack.org) implementation of an effici
 serialization format. This crate provides low-level core functionality, writers and readers for
 primitive values with direct mapping between binary MessagePack format.
 
-**Warning** this library is still in rapid development and everything may change until 1.0
-comes.
+[Looking for Serde support](https://lib.rs/crates/rmp-serde)?
+
+This crate represents the very basic functionality needed to work with MessagePack format.
+Ideologically it is developed as a basis for building high-level abstractions.
 
 ### Usage
 
@@ -13,22 +15,20 @@ To use `rmp`, first add this to your `Cargo.toml`:
 
 ```toml
 [dependencies.rmp]
-rmp = "^0.8"
+rmp = "0.8"
 ```
 
 ### Features
 
-- **Convenient API**
+- **Low-level API**
 
-  RMP is designed to be lightweight and straightforward. There are low-level API, which gives you
-  full control on data encoding/decoding process and makes no heap allocations. On the other hand
-  there are high-level API, which provides you convenient interface using Rust standard library and
-  compiler reflection, allowing to encode/decode structures using `derive` attribute.
+  RMP is designed to be lightweight and straightforward. There are low-level APIs, which give you
+  full control over the encoding/decoding process. `no-std` environments are supported.
 
 - **Zero-copy value decoding**
 
-  RMP allows to decode bytes from a buffer in a zero-copy manner easily and blazingly fast, while Rust
-  static checks guarantees that the data will be valid until buffer lives.
+  RMP allows to decode bytes from a buffer in a zero-copy manner, without any heap allocations.
+  easily and blazingly fast. Rust static checks guarantee that the data will be valid until buffer lives.
 
 - **Clear error handling**
 
@@ -40,9 +40,6 @@ rmp = "^0.8"
   existing functionality.
 
 ### Detailed
-
-This crate represents the very basic functionality needed to work with MessagePack format.
-Ideologically it is developed as a basis for building high-level abstractions.
 
 Currently there are two large modules: encode and decode. More detail you can find in the
 corresponding sections.
@@ -140,6 +137,6 @@ assert_eq!([0xcb, 0x40, 0x9, 0x21, 0xfb, 0x54, 0x44, 0x2d, 0x18], buf[..]);
 assert_eq!(pi, rmp::decode::read_f64(&mut &buf[..]).unwrap());
 ```
 
-[read_int]: decode/fn.read_int.html
-
 License: MIT
+
+[read_int]: https://docs.rs/rmp/latest/rmp/decode/fn.read_int.html

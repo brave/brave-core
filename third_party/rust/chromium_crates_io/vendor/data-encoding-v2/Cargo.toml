@@ -13,14 +13,20 @@
 edition = "2018"
 rust-version = "1.48"
 name = "data-encoding"
-version = "2.6.0"
+version = "2.9.0"
 authors = ["Julien Cretin <git@ia0.eu>"]
+build = false
 include = [
     "Cargo.toml",
     "LICENSE",
     "README.md",
     "src/lib.rs",
 ]
+autolib = false
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
 description = "Efficient and customizable data-encoding functions like base64, base32, and hex"
 documentation = "https://docs.rs/data-encoding"
 readme = "README.md"
@@ -44,3 +50,19 @@ rustdoc-args = ["--cfg=docsrs"]
 alloc = []
 default = ["std"]
 std = ["alloc"]
+
+[lib]
+name = "data_encoding"
+path = "src/lib.rs"
+
+[lints.clippy]
+undocumented-unsafe-blocks = "warn"
+
+[lints.rust]
+elided-lifetimes-in-paths = "warn"
+let-underscore-drop = "warn"
+missing-debug-implementations = "warn"
+missing-docs = "warn"
+unreachable-pub = "warn"
+unsafe-op-in-unsafe-fn = "warn"
+unused-results = "warn"

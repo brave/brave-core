@@ -71,7 +71,7 @@ fn char_to_utf8_debug_test() {
 
     let other_escapes = [('\'', r#"'\''"#), ('\"', r#"'\"'"#), ('\\', r#"'\\'"#)];
 
-    let mut buffer = arrayvec::ArrayString::<[u8; 12]>::new();
+    let mut buffer = arrayvec::ArrayString::<12>::new();
     for c in '\x20'..=core::char::MAX {
         let utf8_here = char_to_debug(c);
 

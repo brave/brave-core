@@ -1,9 +1,11 @@
 use super::{Attribute, AttributeNameError, Attributes};
 use super::{Mutations, Serialize, Token};
-use crate::base::Bytes;
+use crate::base::SourceLocation;
+use crate::base::SpannedRawBytes;
+use crate::base::{Bytes, BytesCow};
 use crate::errors::RewritingError;
 use crate::html::Namespace;
-use crate::html_content::{ContentType, StreamingHandler};
+use crate::html_content::{ContentType, StreamingHandler, StreamingHandlerSink};
 use crate::rewritable_units::StringChunk;
 use encoding_rs::Encoding;
 use std::fmt::{self, Debug};
@@ -11,61 +13,74 @@ use std::fmt::{self, Debug};
 /// An HTML start tag rewritable unit.
 ///
 /// Exposes API for examination and modification of a parsed HTML start tag.
-pub struct StartTag<'i> {
-    name: Bytes<'i>,
-    attributes: Attributes<'i>,
+pub struct StartTag<'input_token> {
+    name: BytesCow<'input_token>,
+    attributes: Attributes<'input_token>,
     ns: Namespace,
     self_closing: bool,
-    raw: Option<Bytes<'i>>,
-    encoding: &'static Encoding,
+    raw: SpannedRawBytes<'input_token>,
     pub(crate) mutations: Mutations,
 }
 
-impl<'i> StartTag<'i> {
+impl<'input_token> StartTag<'input_token> {
+    /// Reuses encoding from `attributes`
     #[inline]
     #[must_use]
-    pub(super) const fn new_token(
-        name: Bytes<'i>,
-        attributes: Attributes<'i>,
+    pub(super) fn new_token(
+        name: Bytes<'input_token>,
+        attributes: Attributes<'input_token>,
         ns: Namespace,
         self_closing: bool,
-        raw: Bytes<'i>,
-        encoding: &'static Encoding,
-    ) -> Token<'i> {
+        raw: SpannedRawBytes<'input_token>,
+    ) -> Token<'input_token> {
         Token::StartTag(StartTag {
-            name,
+            name: name.into(),
             attributes,
             ns,
             self_closing,
-            raw: Some(raw),
-            encoding,
+            raw,
             mutations: Mutations::new(),
         })
     }
 
-    #[inline]
+    #[inline(always)]
     #[doc(hidden)]
     pub const fn encoding(&self) -> &'static Encoding {
-        self.encoding
+        self.attributes.encoding
     }
 
-    /// Returns the name of the tag.
+    /// Returns the name of the tag, always ASCII lowercased.
     #[inline]
     pub fn name(&self) -> String {
-        self.name.as_lowercase_string(self.encoding)
+        self.name.as_lowercase_string(self.attributes.encoding)
     }
 
     /// Returns the name of the tag, preserving its case.
     #[inline]
     pub fn name_preserve_case(&self) -> String {
-        self.name.as_string(self.encoding)
+        self.name.as_string(self.attributes.encoding)
     }
 
     /// Sets the name of the tag.
     #[inline]
-    pub fn set_name(&mut self, name: Bytes<'static>) {
+    pub(crate) fn set_name_raw(&mut self, name: BytesCow<'static>) {
         self.name = name;
-        self.raw = None;
+        self.raw.set_modified();
+    }
+
+    /// Sets the name of the start tag only. To rename the element, prefer [`Element::set_tag_name()`][crate::html_content::Element::set_tag_name].
+    ///
+    /// The tag name must have a valid syntax for its context.
+    ///
+    /// The new tag name must be in the same namespace, have the same content model, and be valid in its location.
+    /// Otherwise change of the tag name may cause the resulting document to be parsed in an unexpected way,
+    /// out of sync with this library.
+    #[doc(hidden)]
+    #[deprecated(
+        note = "this method won't convert the string encoding, and the type of the argument is a private implementation detail. Use Element::set_tag_name() instead"
+    )]
+    pub fn set_name(&mut self, name: BytesCow<'static>) {
+        self.set_name_raw(name);
     }
 
     /// Returns the [namespace URI] of the tag's element.
@@ -78,18 +93,21 @@ impl<'i> StartTag<'i> {
 
     /// Returns an immutable collection of tag's attributes.
     #[inline]
-    pub fn attributes(&self) -> &[Attribute<'i>] {
+    pub fn attributes(&self) -> &[Attribute<'input_token>] {
         &self.attributes
     }
 
-    /// Sets `value` of tag's attribute with `name`.
+    /// Sets `value` of tag's attribute with `name`. The value may have HTML/XML entities.
+    ///
+    /// `"` will be entity-escaped if needed. `&` won't be escaped.
     ///
     /// If tag doesn't have an attribute with the `name`, method adds a new attribute
     /// to the tag with `name` and `value`.
     #[inline]
     pub fn set_attribute(&mut self, name: &str, value: &str) -> Result<(), AttributeNameError> {
-        self.attributes.set_attribute(name, value, self.encoding)?;
-        self.raw = None;
+        self.attributes
+            .set_attribute(name, value, self.attributes.encoding)?;
+        self.raw.set_modified();
 
         Ok(())
     }
@@ -98,14 +116,14 @@ impl<'i> StartTag<'i> {
     #[inline]
     pub fn remove_attribute(&mut self, name: &str) {
         if self.attributes.remove_attribute(name) {
-            self.raw = None;
+            self.raw.set_modified();
         }
     }
 
     /// Whether the tag syntactically ends with `/>`. In HTML content this is purely a decorative, unnecessary, and has no effect of any kind.
     ///
     /// The `/>` syntax only affects parsing of elements in foreign content (SVG and MathML).
-    /// It will never close any HTML tags that aren't already defined as [void](spec) in HTML.
+    /// It will never close any HTML tags that aren't already defined as [void][spec] in HTML.
     ///
     /// This function only reports the parsed syntax, and will not report which elements are actually void in HTML.
     ///
@@ -161,7 +179,7 @@ impl<'i> StartTag<'i> {
     /// Consequent calls to the method append to the previously inserted content.
     ///
     /// Use the [`streaming!`] macro to make a `StreamingHandler` from a closure.
-    pub fn streaming_before(&mut self, string_writer: Box<dyn StreamingHandler + Send>) {
+    pub fn streaming_before(&mut self, string_writer: Box<dyn StreamingHandler + Send + 'static>) {
         self.mutations
             .mutate()
             .content_before
@@ -173,7 +191,7 @@ impl<'i> StartTag<'i> {
     /// Consequent calls to the method prepend to the previously inserted content.
     ///
     /// Use the [`streaming!`] macro to make a `StreamingHandler` from a closure.
-    pub fn streaming_after(&mut self, string_writer: Box<dyn StreamingHandler + Send>) {
+    pub fn streaming_after(&mut self, string_writer: Box<dyn StreamingHandler + Send + 'static>) {
         self.mutations
             .mutate()
             .content_after
@@ -185,7 +203,7 @@ impl<'i> StartTag<'i> {
     /// Consequent calls to the method overwrite previous replacement content.
     ///
     /// Use the [`streaming!`] macro to make a `StreamingHandler` from a closure.
-    pub fn streaming_replace(&mut self, string_writer: Box<dyn StreamingHandler + Send>) {
+    pub fn streaming_replace(&mut self, string_writer: Box<dyn StreamingHandler + Send + 'static>) {
         self.mutations
             .mutate()
             .replace(StringChunk::stream(string_writer));
@@ -197,8 +215,10 @@ impl<'i> StartTag<'i> {
         self.mutations.mutate().remove();
     }
 
-    fn serialize_self(&self, output_handler: &mut dyn FnMut(&[u8])) -> Result<(), RewritingError> {
-        if let Some(raw) = &self.raw {
+    fn serialize_self(&self, sink: &mut StreamingHandlerSink<'_>) -> Result<(), RewritingError> {
+        let output_handler = sink.output_handler();
+
+        if let Some(raw) = self.raw.original() {
             output_handler(raw);
             return Ok(());
         }
@@ -232,8 +252,16 @@ impl<'i> StartTag<'i> {
     #[cfg(test)]
     pub(crate) const fn raw_attributes(
         &self,
-    ) -> (&'i Bytes<'i>, &'i crate::parser::AttributeBuffer) {
+    ) -> (
+        &'input_token Bytes<'input_token>,
+        &'input_token crate::parser::AttributeBuffer,
+    ) {
         self.attributes.raw_attributes()
+    }
+
+    /// Position of this tag in the source document, before any rewriting
+    pub fn source_location(&self) -> SourceLocation {
+        self.raw.source_location()
     }
 }
 
@@ -246,6 +274,7 @@ impl Debug for StartTag<'_> {
             .field("name", &self.name())
             .field("attributes", &self.attributes())
             .field("self_closing", &self.self_closing)
+            .field("at", &self.source_location())
             .finish()
     }
 }

@@ -11,11 +11,12 @@
 
 [package]
 edition = "2018"
-rust-version = "1.31"
+rust-version = "1.61"
 name = "semver"
-version = "1.0.26"
+version = "1.0.27"
 authors = ["David Tolnay <dtolnay@gmail.com>"]
-build = "build.rs"
+build = false
+exclude = ["build.rs"]
 autolib = false
 autobins = false
 autoexamples = false
@@ -33,19 +34,20 @@ license = "MIT OR Apache-2.0"
 repository = "https://github.com/dtolnay/semver"
 
 [package.metadata.docs.rs]
+targets = ["x86_64-unknown-linux-gnu"]
 rustdoc-args = [
     "--generate-link-to-definition",
     "--extern-html-root-url=core=https://doc.rust-lang.org",
     "--extern-html-root-url=alloc=https://doc.rust-lang.org",
     "--extern-html-root-url=std=https://doc.rust-lang.org",
 ]
-targets = ["x86_64-unknown-linux-gnu"]
 
 [package.metadata.playground]
 features = ["serde"]
 
 [features]
 default = ["std"]
+serde = ["dep:serde"]
 std = []
 
 [lib]
@@ -73,6 +75,12 @@ name = "parse"
 path = "benches/parse.rs"
 
 [dependencies.serde]
-version = "1.0.194"
+version = "1.0.220"
+optional = true
+default-features = false
+package = "serde_core"
+
+[target."cfg(any())".dependencies.serde]
+version = "1.0.220"
 optional = true
 default-features = false

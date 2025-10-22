@@ -17,6 +17,7 @@ cargo_crate("lib") {
     "//brave/third_party/rust/chromium_crates_io/vendor/thiserror-v2/src/aserror.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/thiserror-v2/src/display.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/thiserror-v2/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/thiserror-v2/src/private.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/thiserror-v2/src/provide.rs",
     "//brave/third_party/rust/chromium_crates_io/vendor/thiserror-v2/src/var.rs",
   ]
@@ -28,7 +29,7 @@ cargo_crate("lib") {
   cargo_pkg_name = "thiserror"
   cargo_pkg_description = "derive(Error)"
   cargo_pkg_repository = "https://github.com/dtolnay/thiserror"
-  cargo_pkg_version = "2.0.11"
+  cargo_pkg_version = "2.0.17"
 
   deps = [ "//brave/third_party/rust/thiserror_impl/v2:lib" ]
   features = [

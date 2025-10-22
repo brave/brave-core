@@ -145,8 +145,8 @@ mod tests {
 
     use arrayvec::ArrayVec;
 
-    fn get_words(text: &str) -> ArrayVec<[&str; 20]> {
-        let mut list = <ArrayVec<[&str; 20]>>::new();
+    fn get_words(text: &str) -> ArrayVec<&str, 20> {
+        let mut list = <ArrayVec<&str, 20>>::new();
         let mut word_iter = WordIterator::new(text.as_bytes());
 
         while let Some((niter, word_range)) = word_iter.next() {

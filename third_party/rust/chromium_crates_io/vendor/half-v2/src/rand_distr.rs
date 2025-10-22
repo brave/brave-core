@@ -25,6 +25,26 @@ impl_distribution_via_f32!(bf16, rand_distr::Exp1);
 impl_distribution_via_f32!(bf16, rand_distr::Open01);
 impl_distribution_via_f32!(bf16, rand_distr::OpenClosed01);
 
+impl rand::distr::weighted::Weight for f16 {
+    const ZERO: Self = Self::ZERO;
+
+    fn checked_add_assign(&mut self, v: &Self) -> Result<(), ()> {
+        // Floats have an explicit representation for overflow
+        *self += v;
+        Ok(())
+    }
+}
+
+impl rand::distr::weighted::Weight for bf16 {
+    const ZERO: Self = Self::ZERO;
+
+    fn checked_add_assign(&mut self, v: &Self) -> Result<(), ()> {
+        // Floats have an explicit representation for overflow
+        *self += v;
+        Ok(())
+    }
+}
+
 #[derive(Debug, Clone, Copy)]
 pub struct Float16Sampler(UniformFloat<f32>);
 

@@ -9,7 +9,7 @@ use core::{
 use libc::c_void;
 
 cfg_if! {
-    if #[cfg(any(target_os = "netbsd", target_os = "openbsd", target_os = "android"))] {
+    if #[cfg(any(target_os = "netbsd", target_os = "openbsd", target_os = "android", target_os = "cygwin"))] {
         use libc::__errno as errno_location;
     } else if #[cfg(any(target_os = "linux", target_os = "emscripten", target_os = "hurd", target_os = "redox", target_os = "dragonfly"))] {
         use libc::__errno_location as errno_location;

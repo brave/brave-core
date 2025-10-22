@@ -13,11 +13,11 @@ pub use self::bin::{write_bin, write_bin_len};
 pub use self::dec::{write_f32, write_f64};
 pub use self::sint::{write_i16, write_i32, write_i64, write_i8, write_nfix, write_sint};
 pub use self::str::{write_str, write_str_len};
-pub use self::uint::{write_pfix, write_u16, write_u32, write_u64, write_u8, write_uint};
+pub use self::uint::{write_pfix, write_u16, write_u32, write_u64, write_u8, write_uint, write_uint8};
 
+use core::fmt::{self, Debug, Display, Formatter};
 #[cfg(feature = "std")]
 use std::error;
-use core::fmt::{self, Display, Debug, Formatter};
 
 use crate::Marker;
 
@@ -28,10 +28,10 @@ pub use buffer::ByteBuf;
 #[allow(deprecated)]
 pub use crate::errors::Error;
 
-/// The error type for operations on the [RmpWrite] trait.
+/// The error type for operations on the [`RmpWrite`] trait.
 ///
-/// For [std::io::Write], this is [std::io::Error]
-/// For [ByteBuf], this is [core::convert::Infallible]
+/// For [`std::io::Write`], this is [`std::io::Error`]
+/// For [`ByteBuf`], this is [`core::convert::Infallible`]
 pub trait RmpWriteErr: Display + Debug + crate::errors::MaybeErrBound + 'static {}
 #[cfg(feature = "std")]
 impl RmpWriteErr for std::io::Error {}
@@ -46,7 +46,6 @@ impl<E: RmpWriteErr> From<E> for MarkerWriteError<E> {
         MarkerWriteError(err)
     }
 }
-
 
 /// Attempts to write the given marker into the writer.
 fn write_marker<W: RmpWrite>(wr: &mut W, marker: Marker) -> Result<(), MarkerWriteError<W::Error>> {
@@ -64,7 +63,6 @@ impl<E: RmpWriteErr> From<E> for DataWriteError<E> {
         DataWriteError(err)
     }
 }
-
 
 /// Encodes and attempts to write a nil value into the given write.
 ///
@@ -104,7 +102,7 @@ pub fn write_bool<W: RmpWrite>(wr: &mut W, val: bool) -> Result<(), W::Error> {
     write_marker(wr, marker).map_err(|e| e.0)
 }
 
-mod sealed{
+mod sealed {
     pub trait Sealed {}
     #[cfg(feature = "std")]
     impl<T: ?Sized + std::io::Write> Sealed for T {}
@@ -114,7 +112,6 @@ mod sealed{
     impl Sealed for alloc::vec::Vec<u8> {}
     impl Sealed for super::ByteBuf {}
 }
-
 
 macro_rules! write_byteorder_utils {
     ($($name:ident => $tp:ident),* $(,)?) => {
@@ -138,9 +135,9 @@ macro_rules! write_byteorder_utils {
 /// The methods of this trait should be considered an implementation detail (for now).
 /// It is currently sealed (can not be implemented by the user).
 ///
-/// See also [std::uo::Write] and [byteorder::WriteBytesExt]
+/// See also [`std::io::Write`] and [`byteorder::WriteBytesExt`]
 ///
-/// Its primary implementations are [std::io::Write] and [ByteBuf].
+/// Its primary implementations are [`std::io::Write`] and [`ByteBuf`].
 pub trait RmpWrite: sealed::Sealed {
     type Error: RmpWriteErr;
 
@@ -154,7 +151,7 @@ pub trait RmpWrite: sealed::Sealed {
     /// Write a slice of bytes to the underlying stream
     ///
     /// This will either write all the bytes or return an error.
-    /// See also [std::io::Write::write_all]
+    /// See also [`std::io::Write::write_all`]
     fn write_bytes(&mut self, buf: &[u8]) -> Result<(), Self::Error>;
 
     // Internal helper functions to map I/O error into the `DataWriteError` error.
@@ -260,18 +257,19 @@ impl<E: RmpWriteErr> Display for ValueWriteError<E> {
 /// marker or the data.
 pub fn write_array_len<W: RmpWrite>(wr: &mut W, len: u32) -> Result<Marker, ValueWriteError<W::Error>> {
     let marker = if len < 16 {
-        write_marker(wr, Marker::FixArray(len as u8))?;
         Marker::FixArray(len as u8)
     } else if len <= u16::MAX as u32 {
-        write_marker(wr, Marker::Array16)?;
-        wr.write_data_u16(len as u16)?;
         Marker::Array16
     } else {
-        write_marker(wr, Marker::Array32)?;
-        wr.write_data_u32(len)?;
         Marker::Array32
     };
 
+    write_marker(wr, marker)?;
+    if marker == Marker::Array16 {
+        wr.write_data_u16(len as u16)?;
+    } else if marker == Marker::Array32 {
+        wr.write_data_u32(len)?;
+    }
     Ok(marker)
 }
 
@@ -284,18 +282,19 @@ pub fn write_array_len<W: RmpWrite>(wr: &mut W, len: u32) -> Result<Marker, Valu
 /// marker or the data.
 pub fn write_map_len<W: RmpWrite>(wr: &mut W, len: u32) -> Result<Marker, ValueWriteError<W::Error>> {
     let marker = if len < 16 {
-        write_marker(wr, Marker::FixMap(len as u8))?;
         Marker::FixMap(len as u8)
     } else if len <= u16::MAX as u32 {
-        write_marker(wr, Marker::Map16)?;
-        wr.write_data_u16(len as u16)?;
         Marker::Map16
     } else {
-        write_marker(wr, Marker::Map32)?;
-        wr.write_data_u32(len)?;
         Marker::Map32
     };
 
+    write_marker(wr, marker)?;
+    if marker == Marker::Map16 {
+        wr.write_data_u16(len as u16)?;
+    } else if marker == Marker::Map32 {
+        wr.write_data_u32(len)?;
+    }
     Ok(marker)
 }
 
@@ -313,42 +312,24 @@ pub fn write_map_len<W: RmpWrite>(wr: &mut W, len: u32) -> Result<Marker, ValueW
 /// 2-byte type information.
 pub fn write_ext_meta<W: RmpWrite>(wr: &mut W, len: u32, ty: i8) -> Result<Marker, ValueWriteError<W::Error>> {
     let marker = match len {
-        1 => {
-            write_marker(wr, Marker::FixExt1)?;
-            Marker::FixExt1
-        }
-        2 => {
-            write_marker(wr, Marker::FixExt2)?;
-            Marker::FixExt2
-        }
-        4 => {
-            write_marker(wr, Marker::FixExt4)?;
-            Marker::FixExt4
-        }
-        8 => {
-            write_marker(wr, Marker::FixExt8)?;
-            Marker::FixExt8
-        }
-        16 => {
-            write_marker(wr, Marker::FixExt16)?;
-            Marker::FixExt16
-        }
-        len if len < 256 => {
-            write_marker(wr, Marker::Ext8)?;
-            wr.write_data_u8(len as u8)?;
-            Marker::Ext8
-        }
-        len if len < 65536 => {
-            write_marker(wr, Marker::Ext16)?;
-            wr.write_data_u16(len as u16)?;
-            Marker::Ext16
-        }
-        len => {
-            write_marker(wr, Marker::Ext32)?;
-            wr.write_data_u32(len)?;
-            Marker::Ext32
-        }
+        1 => Marker::FixExt1,
+        2 => Marker::FixExt2,
+        4 => Marker::FixExt4,
+        8 => Marker::FixExt8,
+        16 => Marker::FixExt16,
+        0..=255 => Marker::Ext8,
+        256..=65535 => Marker::Ext16,
+        _ => Marker::Ext32,
     };
+    write_marker(wr, marker)?;
+
+    if marker == Marker::Ext8 {
+        wr.write_data_u8(len as u8)?;
+    } else if marker == Marker::Ext16 {
+        wr.write_data_u16(len as u16)?;
+    } else if marker == Marker::Ext32 {
+        wr.write_data_u32(len)?;
+    }
 
     wr.write_data_i8(ty)?;
 

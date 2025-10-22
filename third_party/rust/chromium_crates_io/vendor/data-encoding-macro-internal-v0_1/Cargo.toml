@@ -13,29 +13,37 @@
 edition = "2018"
 rust-version = "1.48"
 name = "data-encoding-macro-internal"
-version = "0.1.13"
+version = "0.1.16"
 authors = ["Julien Cretin <cretin@google.com>"]
+build = false
 include = [
     "Cargo.toml",
     "LICENSE",
     "README.md",
     "src/lib.rs",
 ]
+autolib = false
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
 description = "Internal library for data-encoding-macro"
 readme = "README.md"
 license = "MIT"
 repository = "https://github.com/ia0/data-encoding"
 
 [lib]
+name = "data_encoding_macro_internal"
+path = "src/lib.rs"
 proc-macro = true
 
 [dependencies.data-encoding]
-version = "2.6.0"
+version = "2.9.0"
 features = ["alloc"]
 default-features = false
 
 [dependencies.syn]
-version = "1"
+version = ">= 1, < 3"
 features = [
     "parsing",
     "proc-macro",

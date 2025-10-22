@@ -81,6 +81,8 @@ impl Channel {
     /// Returns `true` if this channel supports feature flags. In other words,
     /// returns `true` if the channel is either `dev` or `nightly`.
     ///
+    /// **Please see the note on [feature detection](crate#feature-detection).**
+    ///
     /// # Example
     ///
     /// ```rust

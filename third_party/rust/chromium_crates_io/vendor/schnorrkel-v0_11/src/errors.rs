@@ -17,7 +17,6 @@
 use core::fmt;
 use core::fmt::Display;
 
-
 /// `Result` specialized to this crate for convenience.
 pub type SignatureResult<T> = Result<T, SignatureError>;
 
@@ -88,7 +87,7 @@ pub enum SignatureError {
         /// Describes the type returning the error
         description: &'static str,
         /// Length expected by the constructor in bytes
-        length: usize
+        length: usize,
     },
     /// Signature not marked as schnorrkel, maybe try ed25519 instead.
     NotMarkedSchnorrkel,
@@ -112,6 +111,7 @@ pub enum SignatureError {
     },
 }
 
+#[rustfmt::skip]
 impl Display for SignatureError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         use self::SignatureError::*;
@@ -126,7 +126,7 @@ impl Display for SignatureError {
                 write!(f, "The provided key is not valid"),
             BytesLengthError { name, length, .. } =>
                 write!(f, "{name} must be {length} bytes in length"),
-            NotMarkedSchnorrkel => 
+            NotMarkedSchnorrkel =>
                 write!(f, "Signature bytes not marked as a schnorrkel signature"),
             MuSigAbsent { musig_stage, } =>
                 write!(f, "Absent {musig_stage} violated multi-signature protocol"),
@@ -149,7 +149,8 @@ impl failure::Fail for SignatureError {}
 /// `impl From<SignatureError> for E where E: serde::de::Error`.
 #[cfg(feature = "serde")]
 pub fn serde_error_from_signature_error<E>(err: SignatureError) -> E
-where E: serde_crate::de::Error
+where
+    E: serde_crate::de::Error,
 {
     E::custom(err)
 }

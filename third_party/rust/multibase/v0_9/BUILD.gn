@@ -28,9 +28,10 @@ cargo_crate("lib") {
   cargo_pkg_name = "multibase"
   cargo_pkg_description = "multibase in rust"
   cargo_pkg_repository = "https://github.com/multiformats/rust-multibase"
-  cargo_pkg_version = "0.9.1"
+  cargo_pkg_version = "0.9.2"
 
   deps = [
+    "//brave/third_party/rust/base256emoji/v1:lib",
     "//brave/third_party/rust/base_x/v0_2:lib",
     "//brave/third_party/rust/data_encoding/v2:lib",
     "//brave/third_party/rust/data_encoding_macro/v0_1:lib",

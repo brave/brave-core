@@ -22,7 +22,7 @@ cargo_crate("lib") {
   cargo_pkg_name = "data-encoding"
   cargo_pkg_description = "Efficient and customizable data-encoding functions like base64, base32, and hex"
   cargo_pkg_repository = "https://github.com/ia0/data-encoding"
-  cargo_pkg_version = "2.6.0"
+  cargo_pkg_version = "2.9.0"
 
   features = [
     "alloc",

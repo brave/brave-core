@@ -1,0 +1,98 @@
+# Copyright 2023 The Chromium Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# @generated from third_party/rust/chromium_crates_io/BUILD.gn.hbs by
+# tools/crates/gnrt.
+# Do not edit!
+
+import("//build/rust/cargo_crate.gni")
+
+cargo_crate("lib") {
+  crate_name = "quick_xml"
+  epoch = "0.31"
+  crate_type = "rlib"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/quick-xml-v0_31/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/chromium_crates_io/vendor/quick-xml-v0_31/src/de/key.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/quick-xml-v0_31/src/de/map.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/quick-xml-v0_31/src/de/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/quick-xml-v0_31/src/de/resolver.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/quick-xml-v0_31/src/de/simple_type.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/quick-xml-v0_31/src/de/text.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/quick-xml-v0_31/src/de/var.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/quick-xml-v0_31/src/encoding.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/quick-xml-v0_31/src/errors.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/quick-xml-v0_31/src/escapei.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/quick-xml-v0_31/src/events/attributes.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/quick-xml-v0_31/src/events/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/quick-xml-v0_31/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/quick-xml-v0_31/src/name.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/quick-xml-v0_31/src/reader/async_tokio.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/quick-xml-v0_31/src/reader/buffered_reader.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/quick-xml-v0_31/src/reader/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/quick-xml-v0_31/src/reader/ns_reader.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/quick-xml-v0_31/src/reader/slice_reader.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/quick-xml-v0_31/src/reader/state.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/quick-xml-v0_31/src/se/content.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/quick-xml-v0_31/src/se/element.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/quick-xml-v0_31/src/se/key.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/quick-xml-v0_31/src/se/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/quick-xml-v0_31/src/se/simple_type.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/quick-xml-v0_31/src/se/text.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/quick-xml-v0_31/src/serde_helpers.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/quick-xml-v0_31/src/utils.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/quick-xml-v0_31/src/writer.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/quick-xml-v0_31/src/writer/async_tokio.rs",
+  ]
+  inputs = []
+
+  build_native_rust_unit_tests = false
+  edition = "2021"
+  cargo_pkg_name = "quick-xml"
+  cargo_pkg_description = "High performance xml reader and writer"
+  cargo_pkg_repository = "https://github.com/tafia/quick-xml"
+  cargo_pkg_version = "0.31.0"
+
+  deps = [
+    "//brave/third_party/rust/encoding_rs/v0_8:lib",
+    "//brave/third_party/rust/memchr/v2:lib",
+  ]
+  features = [
+    "default",
+    "encoding",
+    "encoding_rs",
+  ]
+  rustenv = []
+  rustflags = []
+
+  #####################################################################
+  # Tweaking which GN `config`s apply to this target.
+
+  # Config changes that apply to all `//third_party/rust` crates.
+  _configs_to_remove = [
+    # We don't need code coverage data for any `chromium_crates_io` crates.
+    "//build/config/coverage:default_coverage",
+
+    # This is third-party code, so remove `chromium_code` config.  We are not
+    # at the same time adding `//build/config/compiler:no_chromium_code`,
+    # because 1) we don't want to pull how warnings are handled by that config
+    # and 2) that config doesn't have any non-warnings-related stuff.
+    "//build/config/compiler:chromium_code",
+  ]
+  _configs_to_add = []
+
+  # Changing (if needed) which configs apply to this specific crate (based on
+  # `extra_kv.configs_to_remove` and `extra_kv.configs_to_add` from
+  # `gnrt_config.toml`).
+  _configs_to_remove += []
+  _configs_to_add += []
+
+  # Applying config changes.
+  library_configs -= _configs_to_remove
+  library_configs += _configs_to_add
+  executable_configs -= _configs_to_remove
+  executable_configs += _configs_to_add
+  proc_macro_configs -= _configs_to_remove
+  proc_macro_configs += _configs_to_add
+}

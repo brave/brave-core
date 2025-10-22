@@ -3,8 +3,9 @@ use bytes::{Bytes, BytesMut};
 use std::convert::TryFrom;
 use std::error::Error;
 use std::fmt::Write;
+use std::hash::{Hash, Hasher};
 use std::str::FromStr;
-use std::{cmp, fmt, mem, str};
+use std::{cmp, fmt, str};
 
 use crate::header::name::HeaderName;
 
@@ -17,7 +18,7 @@ use crate::header::name::HeaderName;
 /// To handle this, the `HeaderValue` is useable as a type and can be compared
 /// with strings and implements `Debug`. A `to_str` fn is provided that returns
 /// an `Err` if the header value contains non visible ascii characters.
-#[derive(Clone, Hash)]
+#[derive(Clone)]
 pub struct HeaderValue {
     inner: Bytes,
     is_sensitive: bool,
@@ -85,6 +86,12 @@ impl HeaderValue {
         let mut i = 0;
         while i < bytes.len() {
             if !is_visible_ascii(bytes[i]) {
+                // TODO: When msrv is bumped to larger than 1.57, this should be
+                // replaced with `panic!` macro.
+                // https://blog.rust-lang.org/2021/12/02/Rust-1.57.0.html#panic-in-const-contexts
+                //
+                // See the panics section of this method's document for details.
+                #[allow(clippy::no_effect, clippy::out_of_bounds_indexing)]
                 ([] as [u8; 0])[0]; // Invalid header value
             }
             i += 1;
@@ -122,6 +129,7 @@ impl HeaderValue {
     /// assert!(val.is_err());
     /// ```
     #[inline]
+    #[allow(clippy::should_implement_trait)]
     pub fn from_str(src: &str) -> Result<HeaderValue, InvalidHeaderValue> {
         HeaderValue::try_from_generic(src, |s| Bytes::copy_from_slice(s.as_bytes()))
     }
@@ -191,6 +199,13 @@ impl HeaderValue {
     ///
     /// This function does NOT validate that illegal bytes are not contained
     /// within the buffer.
+    ///
+    /// ## Panics
+    /// In a debug build this will panic if `src` is not valid UTF-8.
+    ///
+    /// ## Safety
+    /// `src` must contain valid UTF-8. In a release build it is undefined
+    /// behaviour to call this with `src` that is not valid UTF-8.
     pub unsafe fn from_maybe_shared_unchecked<T>(src: T) -> HeaderValue
     where
         T: AsRef<[u8]> + 'static,
@@ -203,7 +218,6 @@ impl HeaderValue {
                 }
             }
         } else {
-
             if_downcast_into!(T, Bytes, src, {
                 return HeaderValue {
                     inner: src,
@@ -223,7 +237,10 @@ impl HeaderValue {
         HeaderValue::try_from_generic(src, std::convert::identity)
     }
 
-    fn try_from_generic<T: AsRef<[u8]>, F: FnOnce(T) -> Bytes>(src: T, into: F) -> Result<HeaderValue, InvalidHeaderValue> {
+    fn try_from_generic<T: AsRef<[u8]>, F: FnOnce(T) -> Bytes>(
+        src: T,
+        into: F,
+    ) -> Result<HeaderValue, InvalidHeaderValue> {
         for &b in src.as_ref() {
             if !is_valid(b) {
                 return Err(InvalidHeaderValue { _priv: () });
@@ -407,27 +424,7 @@ macro_rules! from_integers {
     ($($name:ident: $t:ident => $max_len:expr),*) => {$(
         impl From<$t> for HeaderValue {
             fn from(num: $t) -> HeaderValue {
-                let mut buf = if mem::size_of::<BytesMut>() - 1 < $max_len {
-                    // On 32bit platforms, BytesMut max inline size
-                    // is 15 bytes, but the $max_len could be bigger.
-                    //
-                    // The likelihood of the number *actually* being
-                    // that big is very small, so only allocate
-                    // if the number needs that space.
-                    //
-                    // The largest decimal number in 15 digits:
-                    // It wold be 10.pow(15) - 1, but this is a constant
-                    // version.
-                    if num as u64 > 999_999_999_999_999_999 {
-                        BytesMut::with_capacity($max_len)
-                    } else {
-                        // fits inline...
-                        BytesMut::new()
-                    }
-                } else {
-                    // full value fits inline, so don't allocate!
-                    BytesMut::new()
-                };
+                let mut buf = BytesMut::with_capacity($max_len);
                 let _ = buf.write_str(::itoa::Buffer::new().format(num));
                 HeaderValue {
                     inner: buf.freeze(),
@@ -615,6 +612,12 @@ impl Error for ToStrError {}
 
 // ===== PartialEq / PartialOrd =====
 
+impl Hash for HeaderValue {
+    fn hash<H: Hasher>(&self, state: &mut H) {
+        self.inner.hash(state);
+    }
+}
+
 impl PartialEq for HeaderValue {
     #[inline]
     fn eq(&self, other: &HeaderValue) -> bool {
@@ -627,7 +630,7 @@ impl Eq for HeaderValue {}
 impl PartialOrd for HeaderValue {
     #[inline]
     fn partial_cmp(&self, other: &HeaderValue) -> Option<cmp::Ordering> {
-        self.inner.partial_cmp(&other.inner)
+        Some(self.cmp(other))
     }
 }
 
@@ -697,7 +700,7 @@ impl PartialOrd<HeaderValue> for [u8] {
 impl PartialEq<String> for HeaderValue {
     #[inline]
     fn eq(&self, other: &String) -> bool {
-        *self == &other[..]
+        *self == other[..]
     }
 }
 

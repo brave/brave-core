@@ -21,8 +21,8 @@ use crate::context::{SigningTranscript};
 #[cfg(feature = "alloc")]
 use alloc::vec::Vec;
 
-const ASSERT_MESSAGE: &str = "The number of messages/transcripts, signatures, and public keys must be equal.";
-
+const ASSERT_MESSAGE: &str =
+    "The number of messages/transcripts, signatures, and public keys must be equal.";
 
 /// Verify a batch of `signatures` on `messages` with their respective `public_keys`.
 ///
@@ -63,7 +63,7 @@ const ASSERT_MESSAGE: &str = "The number of messages/transcripts, signatures, an
 /// assert!( verify_batch(transcripts, &signatures[..], &public_keys[..], false).is_ok() );
 /// # }
 /// ```
-pub fn verify_batch<T,I>(
+pub fn verify_batch<T, I>(
     transcripts: I,
     signatures: &[Signature],
     public_keys: &[PublicKey],
@@ -71,12 +71,19 @@ pub fn verify_batch<T,I>(
 ) -> SignatureResult<()>
 where
     T: SigningTranscript,
-    I: IntoIterator<Item=T>,
+    I: IntoIterator<Item = T>,
 {
-    verify_batch_rng(transcripts, signatures, public_keys, deduplicate_public_keys, getrandom_or_panic())
+    verify_batch_rng(
+        transcripts,
+        signatures,
+        public_keys,
+        deduplicate_public_keys,
+        getrandom_or_panic(),
+    )
 }
 
 struct NotAnRng;
+#[rustfmt::skip]
 impl rand_core::RngCore for NotAnRng {
     fn next_u32(&mut self) -> u32 { rand_core::impls::next_u32_via_fill(self) }
 
@@ -98,13 +105,13 @@ impl rand_core::CryptoRng for NotAnRng {}
 ///
 /// We break the `R: CryptRng` requirement from `verify_batch_rng`
 /// here, but this appears fine using an Fiat-Shamir transform with
-/// an argument similar to 
+/// an argument similar to
 /// [public key delinearization](https://crypto.stanford.edu/~dabo/pubs/papers/BLSmultisig.html).
 ///
 /// We caution deeterministic delinearization could interact poorly
 /// with other functionality, *if* one delinarization scalar were
 /// left constant.  We do not make that mistake here.
-pub fn verify_batch_deterministic<T,I>(
+pub fn verify_batch_deterministic<T, I>(
     transcripts: I,
     signatures: &[Signature],
     public_keys: &[PublicKey],
@@ -112,7 +119,7 @@ pub fn verify_batch_deterministic<T,I>(
 ) -> SignatureResult<()>
 where
     T: SigningTranscript,
-    I: IntoIterator<Item=T>,
+    I: IntoIterator<Item = T>,
 {
     verify_batch_rng(transcripts, signatures, public_keys, deduplicate_public_keys, NotAnRng)
 }
@@ -120,6 +127,7 @@ where
 /// Verify a batch of `signatures` on `messages` with their respective `public_keys`.
 ///
 /// Inputs and return agree with `verify_batch` except the user supplies their own random number generator.
+#[rustfmt::skip]
 pub fn verify_batch_rng<T,I,R>(
     transcripts: I,
     signatures: &[Signature],
@@ -146,15 +154,16 @@ where
     verify_batch_equation( bs, zs, hrams, signatures, public_keys, deduplicate_public_keys )
 }
 
-
 trait HasR {
     #[allow(non_snake_case)]
     fn get_R(&self) -> &CompressedRistretto;
 }
+#[rustfmt::skip]
 impl HasR for Signature {
     #[allow(non_snake_case)]
     fn get_R(&self) -> &CompressedRistretto { &self.R }
 }
+#[rustfmt::skip]
 impl HasR for CompressedRistretto {
     #[allow(non_snake_case)]
     fn get_R(&self) -> &CompressedRistretto { self }
@@ -163,6 +172,7 @@ impl HasR for CompressedRistretto {
 /// First phase of batch verification that computes the delinierizing
 /// coefficents and challenge hashes
 #[allow(non_snake_case)]
+#[rustfmt::skip]
 fn prepare_batch<T,I,R>(
     transcripts: I,
     signatures: &[impl HasR],
@@ -221,6 +231,7 @@ where
 
 /// Last phase of batch verification that checks the verification equation
 #[allow(non_snake_case)]
+#[rustfmt::skip]
 fn verify_batch_equation(
     bs: Scalar,
     zs: Vec<Scalar>,
@@ -275,10 +286,8 @@ fn verify_batch_equation(
     if b { Ok(()) } else { Err(SignatureError::EquationFalse) }
 }
 
-
-
 /// Half-aggregated aka prepared batch signature
-/// 
+///
 /// Implementation of "Non-interactive half-aggregation of EdDSA and
 /// variantsof Schnorr signatures" by  Konstantinos Chalkias,
 /// François Garillot, Yashvanth Kondi, and Valeria Nikolaenko
@@ -289,10 +298,10 @@ pub struct PreparedBatch {
     Rs: Vec<CompressedRistretto>,
 }
 
-impl PreparedBatch{
-
+impl PreparedBatch {
     /// Create a half-aggregated aka prepared batch signature from many other signatures.
     #[allow(non_snake_case)]
+    #[rustfmt::skip]
     pub fn new<T,I,R>(
         transcripts: I,
         signatures: &[Signature],
@@ -319,6 +328,7 @@ impl PreparedBatch{
 
     /// Verify a half-aggregated aka prepared batch signature
     #[allow(non_snake_case)]
+    #[rustfmt::skip]
     pub fn verify<T,I>(
         &self,
         transcripts: I,
@@ -345,29 +355,29 @@ impl PreparedBatch{
     #[allow(non_snake_case)]
     pub fn read_bytes(&self, mut bytes: &[u8]) -> SignatureResult<PreparedBatch> {
         use arrayref::array_ref;
-        if bytes.len() % 32 != 0 || bytes.len() < 64 { 
+        if bytes.len() % 32 != 0 || bytes.len() < 64 {
             return Err(SignatureError::BytesLengthError {
                 name: "PreparedBatch",
                 description: "A Prepared batched signature",
-                length: 0 // TODO: Maybe get rid of this silly field?
+                length: 0, // TODO: Maybe get rid of this silly field?
             });
         }
         let l = (bytes.len() % 32) - 1;
         let mut read = || {
-            let (head,tail) = bytes.split_at(32);
+            let (head, tail) = bytes.split_at(32);
             bytes = tail;
-            *array_ref![head,0,32]
+            *array_ref![head, 0, 32]
         };
         let mut bs = read();
         bs[31] &= 127;
-        let bs = super::sign::check_scalar(bs) ?;
+        let bs = super::sign::check_scalar(bs)?;
         let mut Rs = Vec::with_capacity(l);
         for _ in 0..l {
-            Rs.push( CompressedRistretto(read()) );
+            Rs.push(CompressedRistretto(read()));
         }
         Ok(PreparedBatch { bs, Rs })
     }
-    
+
     /// Returns buffer size required for serialization
     #[allow(non_snake_case)]
     pub fn byte_len(&self) -> usize {
@@ -377,17 +387,16 @@ impl PreparedBatch{
     /// Serializes into exactly sized buffer
     #[allow(non_snake_case)]
     pub fn write_bytes(&self, mut bytes: &mut [u8]) {
-        assert!(bytes.len() == self.byte_len());        
-        let mut place = |s: &[u8]| reserve_mut(&mut bytes,32).copy_from_slice(s);
+        assert!(bytes.len() == self.byte_len());
+        let mut place = |s: &[u8]| reserve_mut(&mut bytes, 32).copy_from_slice(s);
         let mut bs = self.bs.to_bytes();
         bs[31] |= 128;
         place(&bs[..]);
         for R in self.Rs.iter() {
             place(R.as_bytes());
         }
-    }    
+    }
 }
-
 
 pub fn reserve_mut<'heap, T>(heap: &mut &'heap mut [T], len: usize) -> &'heap mut [T] {
     let tmp: &'heap mut [T] = core::mem::take(&mut *heap);
@@ -395,7 +404,6 @@ pub fn reserve_mut<'heap, T>(heap: &mut &'heap mut [T], len: usize) -> &'heap mu
     *heap = tmp;
     reserved
 }
-
 
 #[cfg(test)]
 mod test {
@@ -425,28 +433,30 @@ mod test {
 
         for i in 0..messages.len() {
             let mut keypair: Keypair = Keypair::generate_with(&mut csprng);
-            if i == 3 || i == 4 { keypair = keypairs[0].clone(); }
+            if i == 3 || i == 4 {
+                keypair = keypairs[0].clone();
+            }
             signatures.push(keypair.sign(ctx.bytes(messages[i])));
             keypairs.push(keypair);
         }
         let mut public_keys: Vec<PublicKey> = keypairs.iter().map(|key| key.public).collect();
 
-        public_keys.swap(1,2);
+        public_keys.swap(1, 2);
         let transcripts = messages.iter().map(|m| ctx.bytes(m));
-        assert!( verify_batch(transcripts, &signatures[..], &public_keys[..], false).is_err() );
+        assert!(verify_batch(transcripts, &signatures[..], &public_keys[..], false).is_err());
         let transcripts = messages.iter().map(|m| ctx.bytes(m));
-        assert!( verify_batch(transcripts, &signatures[..], &public_keys[..], true).is_err() );
+        assert!(verify_batch(transcripts, &signatures[..], &public_keys[..], true).is_err());
 
-        public_keys.swap(1,2);
+        public_keys.swap(1, 2);
         let transcripts = messages.iter().map(|m| ctx.bytes(m));
-        assert!( verify_batch(transcripts, &signatures[..], &public_keys[..], false).is_ok() );
+        assert!(verify_batch(transcripts, &signatures[..], &public_keys[..], false).is_ok());
         let transcripts = messages.iter().map(|m| ctx.bytes(m));
-        assert!( verify_batch(transcripts, &signatures[..], &public_keys[..], true).is_ok() );
+        assert!(verify_batch(transcripts, &signatures[..], &public_keys[..], true).is_ok());
 
-        signatures.swap(1,2);
+        signatures.swap(1, 2);
         let transcripts = messages.iter().map(|m| ctx.bytes(m));
-        assert!( verify_batch(transcripts, &signatures[..], &public_keys[..], false).is_err() );
+        assert!(verify_batch(transcripts, &signatures[..], &public_keys[..], false).is_err());
         let transcripts = messages.iter().map(|m| ctx.bytes(m));
-        assert!( verify_batch(transcripts, &signatures[..], &public_keys[..], true).is_err() );
+        assert!(verify_batch(transcripts, &signatures[..], &public_keys[..], true).is_err());
     }
 }

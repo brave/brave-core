@@ -19,7 +19,6 @@ pub type Error = ::std::io::Error;
 #[deprecated(note = "Doesn't work meaningfully on no_std")]
 pub type Error = ::core::convert::Infallible;
 
-
 /// Internal type used to abstract over the [`std::error::Error`] trait
 ///
 /// This is a nop in no-std environments.
@@ -27,9 +26,9 @@ pub type Error = ::core::convert::Infallible;
 #[doc(hidden)]
 pub trait MaybeErrBound: std::error::Error {}
 #[cfg(feature = "std")]
-impl<T: ?Sized + std::error::Error> MaybeErrBound for T  {}
+impl<T: ?Sized + std::error::Error> MaybeErrBound for T {}
 #[cfg(not(feature = "std"))]
 #[doc(hidden)]
 pub trait MaybeErrBound {}
 #[cfg(not(feature = "std"))]
-impl<T: ?Sized> MaybeErrBound for T  {}
+impl<T: ?Sized> MaybeErrBound for T {}

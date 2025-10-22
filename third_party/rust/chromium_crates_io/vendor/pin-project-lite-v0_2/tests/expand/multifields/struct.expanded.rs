@@ -5,30 +5,48 @@ struct Struct<T, U> {
     unpinned1: U,
     unpinned2: U,
 }
-#[allow(dead_code)]
-#[allow(single_use_lifetimes)]
-#[allow(clippy::mut_mut)]
-#[allow(clippy::redundant_pub_crate)]
-#[allow(clippy::type_repetition_in_bounds)]
+#[doc(hidden)]
+#[allow(
+    dead_code,
+    single_use_lifetimes,
+    clippy::unknown_clippy_lints,
+    clippy::absolute_paths,
+    clippy::min_ident_chars,
+    clippy::mut_mut,
+    clippy::redundant_pub_crate,
+    clippy::single_char_lifetime_names,
+    clippy::type_repetition_in_bounds
+)]
 struct StructProjReplace<T, U> {
     pinned1: ::pin_project_lite::__private::PhantomData<T>,
     pinned2: ::pin_project_lite::__private::PhantomData<T>,
     unpinned1: U,
     unpinned2: U,
 }
-#[allow(explicit_outlives_requirements)]
-#[allow(single_use_lifetimes)]
-#[allow(clippy::unknown_clippy_lints)]
-#[allow(clippy::redundant_pub_crate)]
-#[allow(clippy::used_underscore_binding)]
+#[allow(
+    explicit_outlives_requirements,
+    single_use_lifetimes,
+    clippy::unknown_clippy_lints,
+    clippy::absolute_paths,
+    clippy::min_ident_chars,
+    clippy::redundant_pub_crate,
+    clippy::single_char_lifetime_names,
+    clippy::used_underscore_binding
+)]
 const _: () = {
-    #[allow(dead_code)]
-    #[allow(single_use_lifetimes)]
-    #[allow(clippy::unknown_clippy_lints)]
-    #[allow(clippy::mut_mut)]
-    #[allow(clippy::redundant_pub_crate)]
-    #[allow(clippy::ref_option_ref)]
-    #[allow(clippy::type_repetition_in_bounds)]
+    #[doc(hidden)]
+    #[allow(
+        dead_code,
+        single_use_lifetimes,
+        clippy::unknown_clippy_lints,
+        clippy::absolute_paths,
+        clippy::min_ident_chars,
+        clippy::mut_mut,
+        clippy::redundant_pub_crate,
+        clippy::ref_option_ref,
+        clippy::single_char_lifetime_names,
+        clippy::type_repetition_in_bounds
+    )]
     struct Projection<'__pin, T, U>
     where
         Struct<T, U>: '__pin,
@@ -38,13 +56,19 @@ const _: () = {
         unpinned1: &'__pin mut (U),
         unpinned2: &'__pin mut (U),
     }
-    #[allow(dead_code)]
-    #[allow(single_use_lifetimes)]
-    #[allow(clippy::unknown_clippy_lints)]
-    #[allow(clippy::mut_mut)]
-    #[allow(clippy::redundant_pub_crate)]
-    #[allow(clippy::ref_option_ref)]
-    #[allow(clippy::type_repetition_in_bounds)]
+    #[doc(hidden)]
+    #[allow(
+        dead_code,
+        single_use_lifetimes,
+        clippy::unknown_clippy_lints,
+        clippy::absolute_paths,
+        clippy::min_ident_chars,
+        clippy::mut_mut,
+        clippy::redundant_pub_crate,
+        clippy::ref_option_ref,
+        clippy::single_char_lifetime_names,
+        clippy::type_repetition_in_bounds
+    )]
     struct ProjectionRef<'__pin, T, U>
     where
         Struct<T, U>: '__pin,
@@ -55,16 +79,14 @@ const _: () = {
         unpinned2: &'__pin (U),
     }
     impl<T, U> Struct<T, U> {
+        #[doc(hidden)]
+        #[inline]
         fn project<'__pin>(
             self: ::pin_project_lite::__private::Pin<&'__pin mut Self>,
         ) -> Projection<'__pin, T, U> {
             unsafe {
-                let Self {
-                    pinned1,
-                    pinned2,
-                    unpinned1,
-                    unpinned2,
-                } = self.get_unchecked_mut();
+                let Self { pinned1, pinned2, unpinned1, unpinned2 } = self
+                    .get_unchecked_mut();
                 Projection {
                     pinned1: ::pin_project_lite::__private::Pin::new_unchecked(pinned1),
                     pinned2: ::pin_project_lite::__private::Pin::new_unchecked(pinned2),
@@ -73,16 +95,13 @@ const _: () = {
                 }
             }
         }
+        #[doc(hidden)]
+        #[inline]
         fn project_ref<'__pin>(
             self: ::pin_project_lite::__private::Pin<&'__pin Self>,
         ) -> ProjectionRef<'__pin, T, U> {
             unsafe {
-                let Self {
-                    pinned1,
-                    pinned2,
-                    unpinned1,
-                    unpinned2,
-                } = self.get_ref();
+                let Self { pinned1, pinned2, unpinned1, unpinned2 } = self.get_ref();
                 ProjectionRef {
                     pinned1: ::pin_project_lite::__private::Pin::new_unchecked(pinned1),
                     pinned2: ::pin_project_lite::__private::Pin::new_unchecked(pinned2),
@@ -91,6 +110,8 @@ const _: () = {
                 }
             }
         }
+        #[doc(hidden)]
+        #[inline]
         fn project_replace(
             self: ::pin_project_lite::__private::Pin<&mut Self>,
             replacement: Self,
@@ -101,12 +122,7 @@ const _: () = {
                     __self_ptr,
                     replacement,
                 );
-                let Self {
-                    pinned1,
-                    pinned2,
-                    unpinned1,
-                    unpinned2,
-                } = &mut *__self_ptr;
+                let Self { pinned1, pinned2, unpinned1, unpinned2 } = &mut *__self_ptr;
                 let result = StructProjReplace {
                     pinned1: ::pin_project_lite::__private::PhantomData,
                     pinned2: ::pin_project_lite::__private::PhantomData,
@@ -115,8 +131,12 @@ const _: () = {
                 };
                 {
                     (
-                        ::pin_project_lite::__private::UnsafeDropInPlaceGuard::new(pinned1),
-                        ::pin_project_lite::__private::UnsafeDropInPlaceGuard::new(pinned2),
+                        ::pin_project_lite::__private::UnsafeDropInPlaceGuard::new(
+                            pinned1,
+                        ),
+                        ::pin_project_lite::__private::UnsafeDropInPlaceGuard::new(
+                            pinned2,
+                        ),
                         (),
                         (),
                     );
@@ -133,10 +153,12 @@ const _: () = {
         unpinned1: ::pin_project_lite::__private::AlwaysUnpin<U>,
         unpinned2: ::pin_project_lite::__private::AlwaysUnpin<U>,
     }
-    impl<'__pin, T, U> ::pin_project_lite::__private::Unpin for Struct<T, U> where
-        __Origin<'__pin, T, U>: ::pin_project_lite::__private::Unpin
-    {
-    }
+    impl<'__pin, T, U> ::pin_project_lite::__private::Unpin for Struct<T, U>
+    where
+        ::pin_project_lite::__private::PinnedFieldsOf<
+            __Origin<'__pin, T, U>,
+        >: ::pin_project_lite::__private::Unpin,
+    {}
     trait MustNotImplDrop {}
     #[allow(clippy::drop_bounds, drop_bounds)]
     impl<T: ::pin_project_lite::__private::Drop> MustNotImplDrop for T {}

@@ -11,8 +11,9 @@
 
 [package]
 edition = "2021"
+rust-version = "1.56"
 name = "ff"
-version = "0.13.0"
+version = "0.13.1"
 authors = ["Sean Bowe <ewillbefull@gmail.com>", "Jack Grigg <thestr4d@gmail.com>"]
 description = "Library for building and interfacing with finite fields"
 homepage = "https://github.com/zkcrypto/ff"
@@ -39,7 +40,7 @@ optional = true
 default-features = false
 
 [dependencies.ff_derive]
-version = "0.13"
+version = "0.13.1"
 optional = true
 
 [dependencies.rand_core]

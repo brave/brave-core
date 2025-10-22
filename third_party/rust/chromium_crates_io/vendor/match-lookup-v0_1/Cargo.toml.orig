@@ -1,0 +1,18 @@
+[package]
+name = "match-lookup"
+version = "0.1.1"
+authors = ["mriise <me@mriise.net>"]
+description = "proc macro for generating match block for alphabets, please dont use this. its slow and extremly likely to not be what you are looking for."
+edition = "2021"
+repository = "https://github.com/mriise/smol-base-x"
+license = "MIT"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+syn = { version = "1.0", features = ["full"] }
+quote = "1.0"
+proc-macro2 = "1.0"
+
+[lib]
+proc-macro = true

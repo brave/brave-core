@@ -1,5 +1,11 @@
+## [0.19.3](https://github.com/multiformats/rust-multihash/compare/v0.19.2...v0.19.3) (2024-12-06)
 
-## [](https://github.com/multiformats/rust-multihash/compare/v0.19.1...v0.19.2) (2023-10-23)
+### Bug Fixes
+
+* make alloc without std work ([#377](https://github.com/multiformats/rust-multihash/issues/377)) ([03f84e9](https://github.com/multiformats/rust-multihash/commit/03f84e9ab4d884b1bb51d71facd0868339e1c5e2)), closes [#375](https://github.com/multiformats/rust-multihash/issues/375)
+
+
+## [0.19.2](https://github.com/multiformats/rust-multihash/compare/v0.19.1...v0.19.2) (2024-10-23)
 
 ### Dependency Updates
 
@@ -14,14 +20,14 @@
   - update `synstructure`
   - update `syn` to v2
 
-## [](https://github.com/multiformats/rust-multihash/compare/v0.19.0...v0.19.1) (2023-09-06)
+## [0.19.1](https://github.com/multiformats/rust-multihash/compare/v0.19.0...v0.19.1) (2023-09-06)
 
 ### Bug Fixes
 
-* make Serde (de)serialization no_std compatible ([#337](https://github.com/multiformats/rust-multihash/issues/337)) ([7ad5161](https://github.com/multiformats/rust-multihash/commit/7ad51614ad347bfa8c6f421986abc517e04091f6)), closes 336[#](https://github.com/multiformats/rust-multihash/issues/336). This was a regression introduced in v0.19.0.
+* make Serde (de)serialization no_std compatible ([#337](https://github.com/multiformats/rust-multihash/issues/337)) ([7ad5161](https://github.com/multiformats/rust-multihash/commit/7ad51614ad347bfa8c6f421986abc517e04091f6)), closes [#336](https://github.com/multiformats/rust-multihash/issues/336). This was a regression introduced in v0.19.0.
 
 
-## [](https://github.com/multiformats/rust-multihash/compare/v0.18.0...v0.19.0) (2023-06-06)
+## [0.19.0](https://github.com/multiformats/rust-multihash/compare/v0.18.0...v0.19.0) (2023-06-06)
 
 
 ### ⚠ BREAKING CHANGES
@@ -115,7 +121,7 @@ When upgrading to `v0.19`, consider the following:
   Check the [identity example](examples/identity.rs) for more information on how to replicate the functionality.
 
 
-## [v0.18.1](https://github.com/multiformats/rust-multihash/compare/v0.18.0...v0.18.1) (2023-04-14)
+## [0.18.1](https://github.com/multiformats/rust-multihash/compare/v0.18.0...v0.18.1) (2023-04-14)
 
 
 ### Bug Fixes

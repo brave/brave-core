@@ -1,7 +1,7 @@
 use super::Cursor;
 
-use crate::msgpack::decode::*;
-use crate::msgpack::Marker;
+use rmp::decode::*;
+use rmp::Marker;
 
 #[test]
 fn from_nfix_min() {
@@ -28,7 +28,7 @@ fn from_nfix_type_mismatch() {
 
     match read_nfix(&mut cur) {
         Err(ValueReadError::TypeMismatch(..)) => (),
-        other => panic!("unexpected result: {:?}", other),
+        other => panic!("unexpected result: {other:?}"),
     }
     assert_eq!(1, cur.position());
 }
@@ -58,7 +58,7 @@ fn from_i8_type_mismatch() {
 
     match read_i8(&mut cur) {
         Err(ValueReadError::TypeMismatch(Marker::Null)) => (),
-        other => panic!("unexpected result: {:?}", other),
+        other => panic!("unexpected result: {other:?}"),
     }
     assert_eq!(1, cur.position());
 }
@@ -97,7 +97,7 @@ fn from_i16_type_mismatch() {
 
     match read_i16(&mut cur) {
         Err(ValueReadError::TypeMismatch(Marker::Null)) => (),
-        other => panic!("unexpected result: {:?}", other),
+        other => panic!("unexpected result: {other:?}"),
     }
     assert_eq!(1, cur.position());
 }
@@ -116,7 +116,7 @@ fn from_i32_min() {
     let buf = [0xd2, 0x80, 0x00, 0x00, 0x00];
     let mut cur = Cursor::new(&buf[..]);
 
-    assert_eq!(-2147483648, read_i32(&mut cur).unwrap());
+    assert_eq!(-2_147_483_648, read_i32(&mut cur).unwrap());
     assert_eq!(5, cur.position());
 }
 
@@ -136,7 +136,7 @@ fn from_i32_type_mismatch() {
 
     match read_i32(&mut cur) {
         Err(ValueReadError::TypeMismatch(Marker::Null)) => (),
-        other => panic!("unexpected result: {:?}", other),
+        other => panic!("unexpected result: {other:?}"),
     }
     assert_eq!(1, cur.position());
 }
@@ -175,7 +175,7 @@ fn from_i64_type_mismatch() {
 
     match read_i64(&mut cur) {
         Err(ValueReadError::TypeMismatch(Marker::Null)) => (),
-        other => panic!("unexpected result: {:?}", other),
+        other => panic!("unexpected result: {other:?}"),
     }
     assert_eq!(1, cur.position());
 }

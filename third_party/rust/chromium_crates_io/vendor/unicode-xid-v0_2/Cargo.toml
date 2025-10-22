@@ -12,16 +12,21 @@
 [package]
 rust-version = "1.17"
 name = "unicode-xid"
-version = "0.2.4"
+version = "0.2.6"
 authors = [
     "erick.tryzelaar <erick.tryzelaar@gmail.com>",
     "kwantam <kwantam@gmail.com>",
     "Manish Goregaokar <manishsmail@gmail.com>",
 ]
+build = false
 exclude = [
     "/.github/**",
     "/scripts/*",
 ]
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
 description = """
 Determine whether characters have the XID_Start
 or XID_Continue properties according to
@@ -38,8 +43,17 @@ keywords = [
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/unicode-rs/unicode-xid"
 
+[lib]
+name = "unicode_xid"
+path = "src/lib.rs"
+
+[[test]]
+name = "exhaustive_tests"
+path = "tests/exhaustive_tests.rs"
+
 [[bench]]
 name = "xid"
+path = "benches/xid.rs"
 harness = false
 
 [dev-dependencies.criterion]

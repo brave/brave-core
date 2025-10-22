@@ -14,9 +14,9 @@ This crate provides types and macros for formatting strings at compile-time.
 There are some features that require a variety of Rust versions,
 the sections below describe the features that are available for each version.
 
-### Rust 1.57.0
+### Rust 1.60.0
 
-These macros are available in Rust 1.57.0:
+These macros are available in Rust 1.60.0:
 
 - [`concatcp`]:
 Concatenates `integers`, `bool`, `char`, and `&str` constants into a `&'static str` constant.
@@ -276,7 +276,7 @@ and makes macros that evaluate to a value compatible with [inline const patterns
 
 # Minimum Supported Rust Version
 
-`const_format` requires Rust 1.57.0.
+`const_format` requires Rust 1.60.0.
 
 Features that require newer versions of Rust, or the nightly compiler,
 need to be explicitly enabled with cargo features.

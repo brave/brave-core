@@ -1,7 +1,7 @@
 Name: multihash
 URL: https://crates.io/crates/multihash
-Version: 0.19.2
-Revision: 4c0ef5268355308d7f083482dad1c81318db4f6b
+Version: 0.19.3
+Revision: 90a6c19ec71ced09469eec164a3586aafeddfbbd
 License: MIT
 License File: //brave/third_party/rust/chromium_crates_io/vendor/multihash-v0_19/LICENSE
 Shipped: yes

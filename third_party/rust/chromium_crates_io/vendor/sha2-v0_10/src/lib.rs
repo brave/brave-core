@@ -11,6 +11,20 @@
 //!
 //! # Usage
 //!
+//! ## One-shot API
+//!
+//! ```rust
+//! use hex_literal::hex;
+//! use sha2::{Sha256, Digest};
+//!
+//! let result = Sha256::digest(b"hello world");
+//! assert_eq!(result[..], hex!("
+//!     b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9
+//! ")[..]);
+//! ```
+//!
+//! ## Incremental API
+//!
 //! ```rust
 //! use hex_literal::hex;
 //! use sha2::{Sha256, Sha512, Digest};

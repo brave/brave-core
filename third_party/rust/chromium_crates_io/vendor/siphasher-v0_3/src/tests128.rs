@@ -8,8 +8,9 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
-use super::sip128::{Hasher128, SipHasher, SipHasher13, SipHasher24};
 use std::hash::{Hash, Hasher};
+
+use super::sip128::{Hasher128, SipHasher, SipHasher13, SipHasher24};
 
 // Hash just the bytes of the slice, without length prefix
 struct Bytes<'a>(&'a [u8]);
@@ -29,6 +30,14 @@ fn hash_with<H: Hasher + Hasher128, T: Hash>(mut st: H, x: &T) -> [u8; 16] {
 
 fn hash<T: Hash>(x: &T) -> [u8; 16] {
     hash_with(SipHasher::new(), x)
+}
+
+#[test]
+fn test_siphash128_idempotent() {
+    let val64 = 0xdead_beef_dead_beef_u64;
+    assert_eq!(hash(&val64), hash(&val64));
+    let val32 = 0xdeadbeef_u32;
+    assert_eq!(hash(&val32), hash(&val32));
 }
 
 #[test]
@@ -94,6 +103,28 @@ fn test_siphash128_2_4() {
 }
 
 #[test]
+fn test_siphash128_simple() {
+    let array: &[u8] = &[1, 2, 3];
+    let key: &[u8; 16] = &[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+    let hasher = SipHasher13::new_with_key(key);
+    let h = hasher.hash(array).as_bytes();
+    _ = h;
+}
+
+#[test]
+fn test_siphash128_incremental() {
+    let array1: &[u8] = &[1, 2, 3];
+    let array2: &[u8] = &[4, 5, 6];
+    let key: &[u8; 16] = &[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+    let mut hasher = SipHasher13::new_with_key(key);
+    hasher.write(array1);
+    hasher.write(array2);
+    let h = hasher.finish128().as_bytes();
+    _ = h;
+}
+
+#[test]
+#[cfg(all(feature = "serde", feature = "serde_json"))]
 fn test_siphash128_serde() {
     let val64 = 0xdead_beef_dead_beef_u64;
     let hash = hash(&val64);

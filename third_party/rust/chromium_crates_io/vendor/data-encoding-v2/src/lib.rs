@@ -145,21 +145,6 @@
 
 #![no_std]
 #![cfg_attr(docsrs, feature(doc_auto_cfg))]
-// TODO: This list up to warn(clippy::pedantic) should ideally use a lint group.
-#![warn(elided_lifetimes_in_paths)]
-// TODO(msrv): #![warn(let_underscore_drop)]
-#![warn(missing_debug_implementations)]
-#![warn(missing_docs)]
-#![warn(unreachable_pub)]
-// TODO(msrv): #![warn(unsafe_op_in_unsafe_fn)]
-#![warn(unused_results)]
-#![allow(unused_unsafe)] // TODO(msrv)
-#![warn(clippy::pedantic)]
-#![allow(clippy::assigning_clones)] // TODO(msrv)
-#![allow(clippy::doc_markdown)]
-#![allow(clippy::enum_glob_use)]
-#![allow(clippy::similar_names)]
-#![allow(clippy::uninlined_format_args)] // TODO(msrv)
 
 #[cfg(feature = "alloc")]
 extern crate alloc;
@@ -175,6 +160,7 @@ use alloc::vec;
 #[cfg(feature = "alloc")]
 use alloc::vec::Vec;
 use core::convert::TryInto;
+use core::debug_assert as safety_assert;
 
 macro_rules! check {
     ($e: expr, $c: expr) => {
@@ -255,13 +241,15 @@ macro_rules! dispatch {
     ($body: expr) => { $body };
 }
 
-unsafe fn chunk_unchecked(x: &[u8], n: usize, i: usize) -> &[u8] {
-    debug_assert!((i + 1) * n <= x.len());
+fn chunk_unchecked<T>(x: &[T], n: usize, i: usize) -> &[T] {
+    safety_assert!((i + 1) * n <= x.len());
+    // SAFETY: Ensured by correctness requirements (and asserted above).
     unsafe { core::slice::from_raw_parts(x.as_ptr().add(n * i), n) }
 }
 
-unsafe fn chunk_mut_unchecked(x: &mut [u8], n: usize, i: usize) -> &mut [u8] {
-    debug_assert!((i + 1) * n <= x.len());
+fn chunk_mut_unchecked<T>(x: &mut [T], n: usize, i: usize) -> &mut [T] {
+    safety_assert!((i + 1) * n <= x.len());
+    // SAFETY: Ensured by correctness requirements (and asserted above).
     unsafe { core::slice::from_raw_parts_mut(x.as_mut_ptr().add(n * i), n) }
 }
 
@@ -273,6 +261,7 @@ fn floor(x: usize, m: usize) -> usize {
     x / m * m
 }
 
+#[inline]
 fn vectorize<F: FnMut(usize)>(n: usize, bs: usize, mut f: F) {
     for k in 0 .. n / bs {
         for i in k * bs .. (k + 1) * bs {
@@ -362,6 +351,7 @@ fn order(msb: bool, n: usize, i: usize) -> usize {
     }
 }
 
+#[inline]
 fn enc(bit: usize) -> usize {
     match bit {
         1 | 2 | 4 => 1,
@@ -371,6 +361,7 @@ fn enc(bit: usize) -> usize {
     }
 }
 
+#[inline]
 fn dec(bit: usize) -> usize {
     enc(bit) * 8 / bit
 }
@@ -409,8 +400,8 @@ fn encode_mut<B: Static<usize>, M: Static<bool>>(
         _ => 1,
     };
     vectorize(n, bs, |i| {
-        let input = unsafe { chunk_unchecked(input, enc, i) };
-        let output = unsafe { chunk_mut_unchecked(output, dec, i) };
+        let input = chunk_unchecked(input, enc, i);
+        let output = chunk_mut_unchecked(output, dec, i);
         encode_block(bit, msb, symbols, input, output);
     });
     encode_block(bit, msb, symbols, &input[enc * n ..], &mut output[dec * n ..]);
@@ -432,7 +423,7 @@ fn decode_block<B: Static<usize>, M: Static<bool>>(
         x |= u64::from(y) << (bit * order(msb, dec(bit), j));
     }
     for (j, output) in output.iter_mut().enumerate() {
-        *output = (x >> (8 * order(msb, enc(bit), j)) & 0xff) as u8;
+        *output = ((x >> (8 * order(msb, enc(bit), j))) & 0xff) as u8;
     }
     Ok(())
 }
@@ -448,8 +439,8 @@ fn decode_mut<B: Static<usize>, M: Static<bool>>(
     let dec = dec(bit.val());
     let n = input.len() / dec;
     for i in 0 .. n {
-        let input = unsafe { chunk_unchecked(input, dec, i) };
-        let output = unsafe { chunk_mut_unchecked(output, enc, i) };
+        let input = chunk_unchecked(input, dec, i);
+        let output = chunk_mut_unchecked(output, enc, i);
         decode_block(bit, msb, values, input, output).map_err(|e| dec * i + e)?;
     }
     decode_block(bit, msb, values, &input[dec * n ..], &mut output[enc * n ..])
@@ -556,8 +547,8 @@ fn encode_wrap_mut<
     let olen = dec - end.len();
     let n = input.len() / enc;
     for i in 0 .. n {
-        let input = unsafe { chunk_unchecked(input, enc, i) };
-        let output = unsafe { chunk_mut_unchecked(output, dec, i) };
+        let input = chunk_unchecked(input, enc, i);
+        let output = chunk_mut_unchecked(output, dec, i);
         encode_base(bit, msb, symbols, input, &mut output[.. olen]);
         output[olen ..].copy_from_slice(end);
     }
@@ -880,6 +871,7 @@ pub type InternalEncoding = &'static [u8];
 // - width % dec(bit) == 0
 // - for all x in separator values[x] is IGNORE
 #[derive(Debug, Clone, PartialEq, Eq)]
+#[repr(transparent)]
 pub struct Encoding(#[doc(hidden)] pub InternalEncoding);
 
 /// How to translate characters when decoding
@@ -1306,6 +1298,34 @@ impl Encoding {
         }
     }
 
+    /// Encodes `input` in `output` and returns it as a `&str`
+    ///
+    /// It is guaranteed that `output` and the return value only differ by their type. They both
+    /// point to the same range of memory (pointer and length).
+    ///
+    /// # Panics
+    ///
+    /// Panics if the `output` length does not match the result of [`encode_len`] for the `input`
+    /// length.
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use data_encoding::BASE64;
+    /// # let mut buffer = vec![0; 100];
+    /// let input = b"Hello world";
+    /// let output = &mut buffer[0 .. BASE64.encode_len(input.len())];
+    /// assert_eq!(BASE64.encode_mut_str(input, output), "SGVsbG8gd29ybGQ=");
+    /// ```
+    ///
+    /// [`encode_len`]: struct.Encoding.html#method.encode_len
+    pub fn encode_mut_str<'a>(&self, input: &[u8], output: &'a mut [u8]) -> &'a str {
+        self.encode_mut(input, output);
+        safety_assert!(output.is_ascii());
+        // SAFETY: Ensured by correctness guarantees of encode_mut (and asserted above).
+        unsafe { core::str::from_utf8_unchecked(output) }
+    }
+
     /// Appends the encoding of `input` to `output`
     ///
     /// # Examples
@@ -1320,10 +1340,12 @@ impl Encoding {
     /// ```
     #[cfg(feature = "alloc")]
     pub fn encode_append(&self, input: &[u8], output: &mut String) {
+        // SAFETY: Ensured by correctness guarantees of encode_mut (and asserted below).
         let output = unsafe { output.as_mut_vec() };
         let output_len = output.len();
         output.resize(output_len + self.encode_len(input.len()), 0u8);
         self.encode_mut(input, &mut output[output_len ..]);
+        safety_assert!(output[output_len ..].is_ascii());
     }
 
     /// Returns an object to encode a fragmented input and append it to `output`
@@ -1365,9 +1387,27 @@ impl Encoding {
         for input in input.chunks(buffer.len() / dec * enc) {
             let buffer = &mut buffer[.. self.encode_len(input.len())];
             self.encode_mut(input, buffer);
+            safety_assert!(buffer.is_ascii());
+            // SAFETY: Ensured by correctness guarantees of encode_mut (and asserted above).
             output.write_str(unsafe { core::str::from_utf8_unchecked(buffer) })?;
         }
         Ok(())
+    }
+
+    /// Returns an object to display the encoding of `input`
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use data_encoding::BASE64;
+    /// assert_eq!(
+    ///     format!("Payload: {}", BASE64.encode_display(b"Hello world")),
+    ///     "Payload: SGVsbG8gd29ybGQ=",
+    /// );
+    /// ```
+    #[must_use]
+    pub fn encode_display<'a>(&'a self, input: &'a [u8]) -> Display<'a> {
+        Display { encoding: self, input }
     }
 
     /// Returns encoded `input`
@@ -1383,12 +1423,15 @@ impl Encoding {
     pub fn encode(&self, input: &[u8]) -> String {
         let mut output = vec![0u8; self.encode_len(input.len())];
         self.encode_mut(input, &mut output);
+        safety_assert!(output.is_ascii());
+        // SAFETY: Ensured by correctness guarantees of encode_mut (and asserted above).
         unsafe { String::from_utf8_unchecked(output) }
     }
 
-    /// Returns the decoded length of an input of length `len`
+    /// Returns the maximum decoded length of an input of length `len`
     ///
-    /// See [`decode_mut`] for when to use it.
+    /// See [`decode_mut`] for when to use it. In particular, the actual decoded length might be
+    /// smaller if the actual input contains padding or ignored characters.
     ///
     /// # Errors
     ///
@@ -1623,7 +1666,7 @@ pub struct Encoder<'a> {
 }
 
 #[cfg(feature = "alloc")]
-impl<'a> Drop for Encoder<'a> {
+impl Drop for Encoder<'_> {
     fn drop(&mut self) {
         self.encoding.encode_append(&self.buffer[.. self.length as usize], self.output);
     }
@@ -1668,6 +1711,19 @@ impl<'a> Encoder<'a> {
     /// This is equivalent to dropping the encoder and required for correctness, otherwise some
     /// encoded data may be missing at the end.
     pub fn finalize(self) {}
+}
+
+/// Wraps an encoding and input for display purposes.
+#[derive(Debug)]
+pub struct Display<'a> {
+    encoding: &'a Encoding,
+    input: &'a [u8],
+}
+
+impl core::fmt::Display for Display<'_> {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        self.encoding.encode_write(self.input, f)
+    }
 }
 
 #[derive(Debug, Copy, Clone)]
@@ -2118,6 +2174,86 @@ const BASE32_NOPAD_IMPL: &[u8] = &[
     128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128,
     128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128,
     128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 29,
+];
+
+/// Unpadded base32 encoding with case-insensitive decoding
+///
+/// This encoding is a static version of:
+///
+/// ```rust
+/// # use data_encoding::{Specification, BASE32_NOPAD_NOCASE};
+/// let mut spec = Specification::new();
+/// spec.symbols.push_str("ABCDEFGHIJKLMNOPQRSTUVWXYZ234567");
+/// spec.translate.from.push_str("abcdefghijklmnopqrstuvwxyz");
+/// spec.translate.to.push_str("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+/// assert_eq!(BASE32_NOPAD_NOCASE, spec.encoding().unwrap());
+/// ```
+pub const BASE32_NOPAD_NOCASE: Encoding = Encoding::internal_new(BASE32_NOPAD_NOCASE_IMPL);
+const BASE32_NOPAD_NOCASE_IMPL: &[u8] = &[
+    65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88,
+    89, 90, 50, 51, 52, 53, 54, 55, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80,
+    81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 50, 51, 52, 53, 54, 55, 65, 66, 67, 68, 69, 70, 71, 72,
+    73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 50, 51, 52, 53, 54, 55,
+    65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88,
+    89, 90, 50, 51, 52, 53, 54, 55, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80,
+    81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 50, 51, 52, 53, 54, 55, 65, 66, 67, 68, 69, 70, 71, 72,
+    73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 50, 51, 52, 53, 54, 55,
+    65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88,
+    89, 90, 50, 51, 52, 53, 54, 55, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80,
+    81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 50, 51, 52, 53, 54, 55, 128, 128, 128, 128, 128, 128,
+    128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128,
+    128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128,
+    128, 128, 128, 128, 128, 128, 26, 27, 28, 29, 30, 31, 128, 128, 128, 128, 128, 128, 128, 128,
+    128, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24,
+    25, 128, 128, 128, 128, 128, 128, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,
+    18, 19, 20, 21, 22, 23, 24, 25, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128,
+    128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128,
+    128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128,
+    128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128,
+    128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128,
+    128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128,
+    128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128,
+    128, 128, 128, 128, 128, 128, 128, 128, 29,
+];
+
+/// Unpadded base32 encoding with visual error correction during decoding
+///
+/// This encoding is a static version of:
+///
+/// ```rust
+/// # use data_encoding::{Specification, BASE32_NOPAD_VISUAL};
+/// let mut spec = Specification::new();
+/// spec.symbols.push_str("ABCDEFGHIJKLMNOPQRSTUVWXYZ234567");
+/// spec.translate.from.push_str("01l8");
+/// spec.translate.to.push_str("OIIB");
+/// assert_eq!(BASE32_NOPAD_VISUAL, spec.encoding().unwrap());
+/// ```
+pub const BASE32_NOPAD_VISUAL: Encoding = Encoding::internal_new(BASE32_NOPAD_VISUAL_IMPL);
+const BASE32_NOPAD_VISUAL_IMPL: &[u8] = &[
+    65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88,
+    89, 90, 50, 51, 52, 53, 54, 55, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80,
+    81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 50, 51, 52, 53, 54, 55, 65, 66, 67, 68, 69, 70, 71, 72,
+    73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 50, 51, 52, 53, 54, 55,
+    65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88,
+    89, 90, 50, 51, 52, 53, 54, 55, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80,
+    81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 50, 51, 52, 53, 54, 55, 65, 66, 67, 68, 69, 70, 71, 72,
+    73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 50, 51, 52, 53, 54, 55,
+    65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88,
+    89, 90, 50, 51, 52, 53, 54, 55, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80,
+    81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 50, 51, 52, 53, 54, 55, 128, 128, 128, 128, 128, 128,
+    128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128,
+    128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128,
+    128, 128, 128, 128, 14, 8, 26, 27, 28, 29, 30, 31, 1, 128, 128, 128, 128, 128, 128, 128, 128,
+    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
+    128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 8, 128,
+    128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128,
+    128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128,
+    128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128,
+    128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128,
+    128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128,
+    128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128,
+    128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128,
+    128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 29,
 ];
 
 /// Padded base32hex encoding

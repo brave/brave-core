@@ -471,23 +471,20 @@ to a few **milliseconds** depending on the size of the pattern.) Not only is
 compilation itself expensive, but this also prevents optimizations that reuse
 allocations internally to the regex engine.
 
-In Rust, it can sometimes be a pain to pass regexes around if they're used from
-inside a helper function. Instead, we recommend using crates like [`once_cell`]
-and [`lazy_static`] to ensure that patterns are compiled exactly once.
+In Rust, it can sometimes be a pain to pass regular expressions around if
+they're used from inside a helper function. Instead, we recommend using
+[`std::sync::LazyLock`], or the [`once_cell`] crate,
+if you can't use the standard library.
 
-[`once_cell`]: https://crates.io/crates/once_cell
-[`lazy_static`]: https://crates.io/crates/lazy_static
-
-This example shows how to use `once_cell`:
+This example shows how to use `std::sync::LazyLock`:
 
 ```rust
-use {
-    once_cell::sync::Lazy,
-    regex::Regex,
-};
+use std::sync::LazyLock;
+
+use regex::Regex;
 
 fn some_helper_function(haystack: &str) -> bool {
-    static RE: Lazy<Regex> = Lazy::new(|| Regex::new(r"...").unwrap());
+    static RE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"...").unwrap());
     RE.is_match(haystack)
 }
 
@@ -500,6 +497,9 @@ fn main() {
 Specifically, in this example, the regex will be compiled when it is used for
 the first time. On subsequent uses, it will reuse the previously built `Regex`.
 Notice how one can define the `Regex` locally to a specific function.
+
+[`std::sync::LazyLock`]: https://doc.rust-lang.org/std/sync/struct.LazyLock.html
+[`once_cell`]: https://crates.io/crates/once_cell
 
 ### Sharing a regex across threads can result in contention
 
@@ -833,7 +833,7 @@ assert_eq!((m.start(), m.end()), (5, 5));
 ```
 
 When both CRLF mode and multi-line mode are enabled, then `^` and `$` will
-match either `\r` and `\n`, but never in the middle of a `\r\n`:
+match either `\r` or `\n`, but never in the middle of a `\r\n`:
 
 ```
 use regex::Regex;
@@ -1120,7 +1120,7 @@ case `O(m * n)` time. Thus, iteration of all matches in a haystack has
 worst case `O(m * n^2)`. A good example of a pattern that exhibits this is
 `(?:A+){1000}|` or even `.*[^A-Z]|[A-Z]`.
 
-In general, unstrusted haystacks are easier to stomach than untrusted patterns.
+In general, untrusted haystacks are easier to stomach than untrusted patterns.
 Untrusted patterns give a lot more control to the caller to impact the
 performance of a search. In many cases, a regex search will actually execute in
 average case `O(n)` time (i.e., not dependent on the size of the regex), but
@@ -1182,6 +1182,10 @@ default are noted.
   just interested in the kinds of decisions being made by the regex engine.
 
 ### Performance features
+
+**Note**:
+  To get performance benefits offered by the SIMD, `std` must be enabled.
+  None of the `perf-*` features will enable `std` implicitly.
 
 * **perf** -
   Enables all performance related features except for `perf-dfa-full`. This
@@ -1274,7 +1278,7 @@ It is somewhat unusual for a regex engine to have dependencies, as most regex
 libraries are self contained units with no dependencies other than a particular
 environment's standard library. Indeed, for other similarly optimized regex
 engines, most or all of the code in the dependencies of this crate would
-normally just be unseparable or coupled parts of the crate itself. But since
+normally just be inseparable or coupled parts of the crate itself. But since
 Rust and its tooling ecosystem make the use of dependencies so easy, it made
 sense to spend some effort de-coupling parts of this crate and making them
 independently useful.
@@ -1315,6 +1319,9 @@ this for literal optimizations.
 #![no_std]
 #![deny(missing_docs)]
 #![cfg_attr(feature = "pattern", feature(pattern))]
+// This adds Cargo feature annotations to items in the rustdoc output. Which is
+// sadly hugely beneficial for this crate due to the number of features.
+#![cfg_attr(docsrs_regex, feature(doc_cfg))]
 #![warn(missing_debug_implementations)]
 
 #[cfg(doctest)]

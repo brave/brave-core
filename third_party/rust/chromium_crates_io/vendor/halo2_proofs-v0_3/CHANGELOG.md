@@ -7,6 +7,22 @@ and this project adheres to Rust's notion of
 
 ## [Unreleased]
 
+## [0.3.1] - 2025-07-07
+### Security
+`halo2_proofs` uses a multiopen argument in its proofs, which takes the sequence
+of circuit queries and evaluations, and groups them into query sets for proof
+efficiency. The previous implementation had a bug where two queries within the
+sequence could provide the same evaluation point and commitment, but different
+evaluations. A vulnerable circuit with a bug resulting in such a sequence of
+evaluations is unsound, but a verifier for this circuit would previously not
+reject these proofs.
+
+The multiopen logic has been updated to detect and reject this case; both provers
+and verifiers now return an error instead. The multiopen logic now also uses the
+`indexmap` crate to further reduce its complexity.
+
+The bug was found by Suneal from zkSecurity.
+
 ## [0.3.0] - 2023-03-21
 ### Breaking circuit changes
 - `halo2_proofs::circuit::floor_planner::V1` was relying internally on the Rust

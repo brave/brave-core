@@ -12,15 +12,16 @@
 [package]
 edition = "2021"
 name = "servo_arc"
-version = "0.4.0"
+version = "0.4.1"
 authors = ["The Servo Project Developers"]
 build = false
+autolib = false
 autobins = false
 autoexamples = false
 autotests = false
 autobenches = false
 description = "A fork of std::sync::Arc with some extra functionality and without weak references"
-readme = false
+readme = "README.md"
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/servo/stylo"
 
@@ -36,6 +37,7 @@ optional = true
 version = "1.0.0"
 
 [features]
+default = ["track_alloc_size"]
 gecko_refcount_logging = []
 servo = [
     "serde",

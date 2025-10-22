@@ -1,9 +1,9 @@
 Name: string_cache
 URL: https://crates.io/crates/string_cache
-Version: 0.8.7
-Revision: 34f914c99e8bdc5f2fa842fd04f190c7c9e4df3b
+Version: 0.8.9
+Revision: b92f7eb3ff504034ec58c0154f9a9b053e23da4f
 License: Apache-2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/string_cache-v0_8/LICENSE-APACHE
+License File: //brave/third_party/rust/chromium_crates_io/vendor/string_cache-v0_8/LICENSE-Apache
 Shipped: yes
 Security Critical: yes
 

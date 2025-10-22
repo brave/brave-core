@@ -7,6 +7,12 @@ and this project adheres to Rust's notion of
 
 ## [Unreleased]
 
+## [0.3.1] - 2024-12-16
+- `halo2_gadgets::poseidon::primitives` is now a re-export of the new `halo2_poseidon`
+  crate.
+- `halo2_gadgets::sinsemilla::primitives` is now a re-export of the new `sinsemilla`
+  crate.
+
 ## [0.3.0] - 2023-03-21
 ### Added
 - `halo2_gadgets::poseidon::primitives::{Mds, generate_constants}`

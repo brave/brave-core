@@ -243,6 +243,9 @@ pub(crate) struct SerializeFormat<'a> {
     procedural_action: &'a HashMap<Hash, Vec<String>>,
     #[serde(serialize_with = "stabilize_hashmap_serialization")]
     procedural_action_exception: &'a HashMap<Hash, Vec<String>>,
+
+    #[serde(serialize_with = "serialize_network_filter_list")]
+    removeparam: &'a NetworkFilterList,
 }
 
 impl SerializeFormat<'_> {
@@ -301,6 +304,9 @@ pub(crate) struct DeserializeFormat {
     procedural_action: HashMap<Hash, Vec<String>>,
     #[serde(default)]
     procedural_action_exception: HashMap<Hash, Vec<String>>,
+
+    #[serde(default)]
+    removeparam: NetworkFilterListDeserializeFmt,
 }
 
 impl DeserializeFormat {
@@ -341,6 +347,8 @@ impl<'a> From<(&'a Blocker, &'a CosmeticFilterCache)> for SerializeFormat<'a> {
 
             procedural_action: &cfc.specific_rules.procedural_action.0,
             procedural_action_exception: &cfc.specific_rules.procedural_action_exception.0,
+
+            removeparam: &blocker.removeparam,
         }
     }
 }
@@ -360,7 +368,7 @@ impl TryFrom<DeserializeFormat> for (Blocker, CosmeticFilterCache) {
                 exceptions: v.exceptions.try_into()?,
                 importants: v.importants.try_into()?,
                 redirects: v.redirects.try_into()?,
-                removeparam: NetworkFilterList::default(),
+                removeparam: v.removeparam.try_into()?,
                 filters: v.filters.try_into()?,
                 generic_hide: v.generic_hide.try_into()?,
 

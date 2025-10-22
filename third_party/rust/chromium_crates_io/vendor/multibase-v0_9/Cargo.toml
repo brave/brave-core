@@ -3,31 +3,59 @@
 # When uploading crates to the registry Cargo will automatically
 # "normalize" Cargo.toml files for maximal compatibility
 # with all versions of Cargo and also rewrite `path` dependencies
-# to registry (e.g., crates.io) dependencies
+# to registry (e.g., crates.io) dependencies.
 #
-# If you believe there's an error in this file please file an
-# issue against the rust-lang/cargo repository. If you're
-# editing this file be aware that the upstream Cargo.toml
-# will likely look very different (and much more reasonable)
+# If you are reading this file be aware that the original Cargo.toml
+# will likely look very different (and much more reasonable).
+# See Cargo.toml.orig for the original contents.
 
 [package]
 edition = "2018"
 name = "multibase"
-version = "0.9.1"
+version = "0.9.2"
 authors = ["Friedel Ziegelmayer <dignifiedquire@gmail.com>"]
+build = false
+autolib = false
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
 description = "multibase in rust"
 homepage = "https://github.com/multiformats/rust-multibase"
 readme = "README.md"
-keywords = ["ipld", "ipfs", "multihash", "cid", "no_std"]
+keywords = [
+    "ipld",
+    "ipfs",
+    "multihash",
+    "cid",
+    "no_std",
+]
 license = "MIT"
 repository = "https://github.com/multiformats/rust-multibase"
 
+[features]
+default = ["std"]
+std = ["data-encoding/std"]
+
+[lib]
+name = "multibase"
+path = "src/lib.rs"
+
+[[test]]
+name = "lib"
+path = "tests/lib.rs"
+
 [[bench]]
 name = "multibase"
+path = "benches/multibase.rs"
 harness = false
+
 [dependencies.base-x]
 version = "0.2.7"
 default-features = false
+
+[dependencies.base256emoji]
+version = "1.0.2"
 
 [dependencies.data-encoding]
 version = "2.3.1"
@@ -36,12 +64,9 @@ default-features = false
 
 [dependencies.data-encoding-macro]
 version = "0.1.9"
-[dev-dependencies.criterion]
-version = "0.3"
 
-[dev-dependencies.rand]
+[dev-dependencies.criterion]
 version = "0.7"
 
-[features]
-default = ["std"]
-std = ["data-encoding/std"]
+[dev-dependencies.rand]
+version = "0.9"

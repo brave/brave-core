@@ -191,7 +191,7 @@ pub struct Kind(u8);
 ///         // ...
 ///         # drop(span); Id::from_u64(1)
 ///     }
-
+///
 ///     fn event(&self, event: &Event<'_>) {
 ///         // ...
 ///         # drop(event);
@@ -332,7 +332,7 @@ impl<'a> Metadata<'a> {
     }
 }
 
-impl<'a> fmt::Debug for Metadata<'a> {
+impl fmt::Debug for Metadata<'_> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let mut meta = f.debug_struct("Metadata");
         meta.field("name", &self.name)
@@ -440,12 +440,12 @@ impl fmt::Debug for Kind {
     }
 }
 
-impl<'a> Eq for Metadata<'a> {}
+impl Eq for Metadata<'_> {}
 
-impl<'a> PartialEq for Metadata<'a> {
+impl PartialEq for Metadata<'_> {
     #[inline]
     fn eq(&self, other: &Self) -> bool {
-        if core::ptr::eq(&self, &other) {
+        if core::ptr::eq(self, other) {
             true
         } else if cfg!(not(debug_assertions)) {
             // In a well-behaving application, two `Metadata` can be assumed to

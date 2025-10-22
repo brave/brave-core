@@ -1,0 +1,35 @@
+[package]
+name = "const-str"
+version = "0.4.3"
+authors = ["Nugine <nugine@foxmail.com>"]
+edition = "2021"
+description = "compile-time string operations"
+license = "MIT"
+repository = "https://github.com/Nugine/const-str"
+keywords = ["string", "const", "proc-macro"]
+categories = ["text-processing", "no-std"]
+readme = "../README.md"
+rust-version = "1.61.0"
+
+[features]
+default = []
+std = []
+proc = ["dep:const-str-proc-macro"]
+regex = ["proc", "const-str-proc-macro?/regex"]
+http = ["proc", "const-str-proc-macro?/http"]
+case = ["proc", "const-str-proc-macro?/heck"]
+all = ["std", "proc", "regex", "http", "case"]
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
+
+[dependencies.const-str-proc-macro]
+version = "=0.4.2"
+path = "../const-str-proc-macro"
+optional = true
+
+[dev-dependencies]
+regex = "1.5.6"
+http = "0.2.8"
+heck = { version = "0.4.0", features = ["unicode"] }

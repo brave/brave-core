@@ -67,10 +67,7 @@ fn get_usize(map: &mut HashMap<String, TokenTree>, key: &str) -> usize {
 }
 
 fn get_padding(map: &mut HashMap<String, TokenTree>) -> Option<char> {
-    let node = match map.remove("padding") {
-        None => return None,
-        Some(node) => node,
-    };
+    let node = map.remove("padding")?;
     if let Ok(result) = syn::parse::<syn::LitChar>(node.clone().into()) {
         return Some(result.value());
     }
@@ -81,10 +78,7 @@ fn get_padding(map: &mut HashMap<String, TokenTree>) -> Option<char> {
 }
 
 fn get_bool(map: &mut HashMap<String, TokenTree>, key: &str) -> Option<bool> {
-    let node = match map.remove(key) {
-        None => return None,
-        Some(node) => node,
-    };
+    let node = map.remove(key)?;
     match syn::parse::<syn::LitBool>(node.into()) {
         Ok(result) => Some(result.value),
         _ => panic!("expected bool for {}", key),

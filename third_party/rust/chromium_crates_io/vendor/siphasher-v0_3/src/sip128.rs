@@ -12,6 +12,7 @@
 
 use core::cmp;
 use core::hash;
+use core::hash::Hasher as _;
 use core::marker::PhantomData;
 use core::mem;
 use core::ptr;
@@ -199,6 +200,14 @@ impl SipHasher {
         bytes[8..16].copy_from_slice(&self.0.hasher.k1.to_le_bytes());
         bytes
     }
+
+    /// Hash a byte array - This is the easiest and safest way to use SipHash.
+    #[inline]
+    pub fn hash(&self, bytes: &[u8]) -> Hash128 {
+        let mut hasher = self.0.hasher;
+        hasher.write(bytes);
+        hasher.finish128()
+    }
 }
 
 impl Hasher128 for SipHasher {
@@ -247,6 +256,14 @@ impl SipHasher13 {
         bytes[8..16].copy_from_slice(&self.hasher.k1.to_le_bytes());
         bytes
     }
+
+    /// Hash a byte array - This is the easiest and safest way to use SipHash.
+    #[inline]
+    pub fn hash(&self, bytes: &[u8]) -> Hash128 {
+        let mut hasher = self.hasher;
+        hasher.write(bytes);
+        hasher.finish128()
+    }
 }
 
 impl Hasher128 for SipHasher13 {
@@ -294,6 +311,14 @@ impl SipHasher24 {
         bytes[0..8].copy_from_slice(&self.hasher.k0.to_le_bytes());
         bytes[8..16].copy_from_slice(&self.hasher.k1.to_le_bytes());
         bytes
+    }
+
+    /// Hash a byte array - This is the easiest and safest way to use SipHash.
+    #[inline]
+    pub fn hash(&self, bytes: &[u8]) -> Hash128 {
+        let mut hasher = self.hasher;
+        hasher.write(bytes);
+        hasher.finish128()
     }
 }
 
@@ -526,7 +551,7 @@ impl<S: Sip> hash::Hasher for Hasher<S> {
 
     #[inline]
     fn write_u64(&mut self, i: u64) {
-        self.short_write(i, i.to_le() as u64);
+        self.short_write(i, i.to_le());
     }
 
     #[inline]

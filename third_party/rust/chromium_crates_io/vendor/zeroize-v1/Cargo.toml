@@ -13,8 +13,14 @@
 edition = "2021"
 rust-version = "1.60"
 name = "zeroize"
-version = "1.8.1"
+version = "1.8.2"
 authors = ["The RustCrypto Project Developers"]
+build = false
+autolib = false
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
 description = """
 Securely clear secrets from memory with a simple trait built on
 stable Rust primitives which guarantee memory is zeroed using an
@@ -22,6 +28,7 @@ operation will not be 'optimized away' by the compiler.
 Uses a portable pure Rust implementation that works everywhere,
 even WASM!
 """
+homepage = "https://github.com/RustCrypto/utils/tree/master/zeroize"
 readme = "README.md"
 keywords = [
     "memory",
@@ -37,7 +44,7 @@ categories = [
     "os",
 ]
 license = "Apache-2.0 OR MIT"
-repository = "https://github.com/RustCrypto/utils/tree/master/zeroize"
+repository = "https://github.com/RustCrypto/utils"
 
 [package.metadata.docs.rs]
 all-features = true
@@ -45,6 +52,26 @@ rustdoc-args = [
     "--cfg",
     "docsrs",
 ]
+
+[features]
+aarch64 = []
+alloc = []
+default = ["alloc"]
+derive = ["zeroize_derive"]
+simd = []
+std = ["alloc"]
+
+[lib]
+name = "zeroize"
+path = "src/lib.rs"
+
+[[test]]
+name = "zeroize"
+path = "tests/zeroize.rs"
+
+[[test]]
+name = "zeroize_derive"
+path = "tests/zeroize_derive.rs"
 
 [dependencies.serde]
 version = "1.0"
@@ -54,11 +81,3 @@ default-features = false
 [dependencies.zeroize_derive]
 version = "1.3"
 optional = true
-
-[features]
-aarch64 = []
-alloc = []
-default = ["alloc"]
-derive = ["zeroize_derive"]
-simd = []
-std = ["alloc"]

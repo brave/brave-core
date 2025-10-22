@@ -13,7 +13,7 @@
 edition = "2018"
 rust-version = "1.68"
 name = "serde_bytes"
-version = "0.11.17"
+version = "0.11.19"
 authors = ["David Tolnay <dtolnay@gmail.com>"]
 build = false
 autolib = false
@@ -39,18 +39,18 @@ license = "MIT OR Apache-2.0"
 repository = "https://github.com/serde-rs/bytes"
 
 [package.metadata.docs.rs]
+targets = ["x86_64-unknown-linux-gnu"]
 rustdoc-args = [
     "--generate-link-to-definition",
     "--extern-html-root-url=core=https://doc.rust-lang.org",
     "--extern-html-root-url=alloc=https://doc.rust-lang.org",
     "--extern-html-root-url=std=https://doc.rust-lang.org",
 ]
-targets = ["x86_64-unknown-linux-gnu"]
 
 [features]
-alloc = ["serde/alloc"]
+alloc = ["serde_core/alloc"]
 default = ["std"]
-std = ["serde/std"]
+std = ["serde_core/std"]
 
 [lib]
 name = "serde_bytes"
@@ -68,16 +68,23 @@ path = "tests/test_partialeq.rs"
 name = "test_serde"
 path = "tests/test_serde.rs"
 
-[dependencies.serde]
-version = "1.0.166"
+[dependencies.serde_core]
+version = "1.0.220"
 default-features = false
 
 [dev-dependencies.bincode]
 version = "2"
 features = ["serde"]
 
+[dev-dependencies.serde]
+version = "1.0.220"
+
 [dev-dependencies.serde_derive]
-version = "1.0.166"
+version = "1.0.220"
 
 [dev-dependencies.serde_test]
 version = "1.0.166"
+
+[target."cfg(any())".dependencies.serde]
+version = "1.0.220"
+default-features = false

@@ -1,6 +1,6 @@
 [package]
 name = "halo2_proofs"
-version = "0.3.0"
+version = "0.3.1"
 authors = [
     "Sean Bowe <sean@electriccoin.co>",
     "Ying Tong Lai <yingtong@electriccoin.co>",
@@ -47,6 +47,7 @@ harness = false
 backtrace = { version = "0.3", optional = true }
 ff = "0.13"
 group = "0.13"
+indexmap = "1"
 pasta_curves = "0.5"
 rand_core = { version = "0.6", default-features = false }
 tracing = "0.1"

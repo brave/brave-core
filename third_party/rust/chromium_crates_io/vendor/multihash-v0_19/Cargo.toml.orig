@@ -7,7 +7,7 @@ name = "multihash"
 description = "Implementation of the multihash format"
 repository = "https://github.com/multiformats/rust-multihash"
 keywords = ["multihash", "ipfs"]
-version = "0.19.2"
+version = "0.19.3"
 authors = ["dignifiedquire <dignifiedquire@gmail.com>", "David Craven <david@craven.ch>", "Volker Mische <volker.mische@gmail.com>"]
 license = "MIT"
 readme = "README.md"
@@ -18,7 +18,7 @@ rust-version = "1.64"
 [features]
 default = ["std"]
 std = ["unsigned-varint/std", "alloc"]
-alloc = []
+alloc = ["core2/alloc"]
 arb = ["dep:quickcheck", "dep:rand", "dep:arbitrary"]
 scale-codec = ["dep:parity-scale-codec"]
 serde-codec = ["serde"] # Deprecated, don't use.

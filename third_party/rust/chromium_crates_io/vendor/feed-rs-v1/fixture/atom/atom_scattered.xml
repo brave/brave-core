@@ -1,0 +1,18 @@
+
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title>Scattered Thoughts</title>
+    <link href="https://www.scattered-thoughts.net/atom.xml" rel="self" type="application/atom+xml"/>
+    <link href="https://www.scattered-thoughts.net/"/>
+    <updated>2023-12-01T00:00:00+00:00</updated>
+    <author><name>Jamie Brandon</name></author>
+    <id>https://www.scattered-thoughts.net/atom.xml</id>
+    <entry xml:lang="en">
+        <title>0042: consulting lessons, there are no strings on me, buttondown, focus goof, jsfuck, 1ml</title>
+        <published>2023-12-01T00:00:00+00:00</published>
+        <updated>2023-12-01T00:00:00+00:00</updated>
+        <link href="https://www.scattered-thoughts.net/log/0042/" type="text/html" rel="alternate"/>
+        <id>https://www.scattered-thoughts.net/log/0042/</id>
+        <content type="text/html"><a href="https://www.scattered-thoughts.net/log/0042/">0042: consulting lessons, there are no strings on me</a></content>
+    </entry>
+</feed>

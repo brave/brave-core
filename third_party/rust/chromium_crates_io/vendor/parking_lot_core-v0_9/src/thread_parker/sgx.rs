@@ -6,6 +6,7 @@
 // copied, modified, or distributed except according to those terms.
 
 use core::sync::atomic::{AtomicBool, Ordering};
+use std::io::ErrorKind;
 use std::time::Instant;
 use std::{
     io,
@@ -57,9 +58,23 @@ impl super::ThreadParkerT for ThreadParker {
     }
 
     #[inline]
-    unsafe fn park_until(&self, _timeout: Instant) -> bool {
-        // FIXME: https://github.com/fortanix/rust-sgx/issues/31
-        panic!("timeout not supported in SGX");
+    unsafe fn park_until(&self, timeout: Instant) -> bool {
+        while self.parked.load(Ordering::Acquire) {
+            let remaining = match timeout.checked_duration_since(Instant::now()) {
+                Some(remaining) => remaining,
+                None => {
+                    return false;
+                }
+            };
+            let remaining_nanos = u128::min(remaining.as_nanos(), WAIT_INDEFINITE as u128 - 1) as u64;
+
+            if let Err(e) = usercalls::wait(EV_UNPARK, remaining_nanos) {
+                if e.kind() == ErrorKind::TimedOut || e.kind() == ErrorKind::WouldBlock {
+                    return false;
+                }
+            }
+        }
+        true
     }
 
     #[inline]

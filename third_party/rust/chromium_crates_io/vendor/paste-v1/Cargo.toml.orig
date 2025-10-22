@@ -1,9 +1,10 @@
 [package]
 name = "paste"
-version = "1.0.12"
+version = "1.0.15"
 authors = ["David Tolnay <dtolnay@gmail.com>"]
-categories = ["development-tools", "no-std"]
+categories = ["development-tools", "no-std", "no-std::no-alloc"]
 description = "Macros for all your token pasting needs"
+documentation = "https://docs.rs/paste"
 edition = "2018"
 keywords = ["macros"]
 license = "MIT OR Apache-2.0"
@@ -20,3 +21,4 @@ trybuild = { version = "1.0.49", features = ["diff"] }
 
 [package.metadata.docs.rs]
 targets = ["x86_64-unknown-linux-gnu"]
+rustdoc-args = ["--generate-link-to-definition"]

@@ -3,18 +3,18 @@
 use std::marker;
 use std::ops::Deref;
 use std::sync::atomic::Ordering::SeqCst;
-use std::sync::atomic::{AtomicBool, AtomicUsize};
+use std::sync::atomic::{AtomicBool, AtomicPtr};
 use std::sync::Arc;
 
 pub struct ArcList<T> {
-    list: AtomicUsize,
+    list: AtomicPtr<Node<T>>,
     _marker: marker::PhantomData<T>,
 }
 
 impl<T> ArcList<T> {
     pub fn new() -> ArcList<T> {
         ArcList {
-            list: AtomicUsize::new(0),
+            list: AtomicPtr::new(Node::EMPTY),
             _marker: marker::PhantomData,
         }
     }
@@ -31,10 +31,10 @@ impl<T> ArcList<T> {
             return Ok(());
         }
         let mut head = self.list.load(SeqCst);
-        let node = Arc::into_raw(data.clone()) as usize;
+        let node = Arc::into_raw(data.clone()) as *mut Node<T>;
         loop {
             // If we've been sealed off, abort and return an error
-            if head == 1 {
+            if head == Node::SEALED {
                 unsafe {
                     drop(Arc::from_raw(node as *mut Node<T>));
                 }
@@ -55,16 +55,19 @@ impl<T> ArcList<T> {
     pub fn take(&self) -> ArcList<T> {
         let mut list = self.list.load(SeqCst);
         loop {
-            if list == 1 {
+            if list == Node::SEALED {
                 break;
             }
-            match self.list.compare_exchange(list, 0, SeqCst, SeqCst) {
+            match self
+                .list
+                .compare_exchange(list, Node::EMPTY, SeqCst, SeqCst)
+            {
                 Ok(_) => break,
                 Err(l) => list = l,
             }
         }
         ArcList {
-            list: AtomicUsize::new(list),
+            list: AtomicPtr::new(list),
             _marker: marker::PhantomData,
         }
     }
@@ -73,7 +76,7 @@ impl<T> ArcList<T> {
     /// `push`.
     pub fn take_and_seal(&self) -> ArcList<T> {
         ArcList {
-            list: AtomicUsize::new(self.list.swap(1, SeqCst)),
+            list: AtomicPtr::new(self.list.swap(Node::SEALED, SeqCst)),
             _marker: marker::PhantomData,
         }
     }
@@ -82,7 +85,7 @@ impl<T> ArcList<T> {
     /// empty list.
     pub fn pop(&mut self) -> Option<Arc<Node<T>>> {
         let head = *self.list.get_mut();
-        if head == 0 || head == 1 {
+        if head == Node::EMPTY || head == Node::SEALED {
             return None;
         }
         let head = unsafe { Arc::from_raw(head as *const Node<T>) };
@@ -103,15 +106,19 @@ impl<T> Drop for ArcList<T> {
 }
 
 pub struct Node<T> {
-    next: AtomicUsize,
+    next: AtomicPtr<Node<T>>,
     enqueued: AtomicBool,
     data: T,
 }
 
 impl<T> Node<T> {
+    const EMPTY: *mut Node<T> = std::ptr::null_mut();
+
+    const SEALED: *mut Node<T> = std::ptr::null_mut::<Node<T>>().wrapping_add(1);
+
     pub fn new(data: T) -> Node<T> {
         Node {
-            next: AtomicUsize::new(0),
+            next: AtomicPtr::new(Node::EMPTY),
             enqueued: AtomicBool::new(false),
             data,
         }

@@ -25,7 +25,7 @@ cargo_crate("lib") {
   cargo_pkg_name = "zcash_note_encryption"
   cargo_pkg_description = "Note encryption for Zcash transactions"
   cargo_pkg_repository = "https://github.com/zcash/librustzcash"
-  cargo_pkg_version = "0.4.0"
+  cargo_pkg_version = "0.4.1"
 
   deps = [
     "//brave/third_party/rust/chacha20/v0_9:lib",

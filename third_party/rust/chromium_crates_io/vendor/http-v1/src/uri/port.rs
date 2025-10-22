@@ -22,7 +22,7 @@ impl<T> Port<T> {
     /// let port = authority.port().unwrap();
     /// assert_eq!(port.as_u16(), 80);
     /// ```
-    pub fn as_u16(&self) -> u16 {
+    pub const fn as_u16(&self) -> u16 {
         self.port
     }
 }

@@ -5,7 +5,7 @@
 // http://opensource.org/licenses/MIT>, at your option. This file may not be
 // copied, modified, or distributed except according to those terms.
 
-//! This library provides type-safe and fully-featured `Mutex` and `RwLock`
+//! This library provides type-safe and fully-featured [`Mutex`] and [`RwLock`]
 //! types which wrap a simple raw mutex or rwlock type. This has several
 //! benefits: not only does it eliminate a large portion of the work in
 //! implementing custom lock types, it also allows users to write code which is
@@ -20,7 +20,7 @@
 //!    your mutex guard as a type alias for `lock_api::MutexGuard`.
 //!    See the [example](#example) below for details.
 //!
-//! This process is similar for RwLocks, except that two guards need to be
+//! This process is similar for [`RwLock`]s, except that two guards need to be
 //! exported instead of one. (Or 3 guards if your type supports upgradable read
 //! locks, see [extension traits](#extension-traits) below for details)
 //!
@@ -86,6 +86,7 @@
 //!   requires the `alloc` crate to be present.
 
 #![no_std]
+#![cfg_attr(docsrs, feature(doc_cfg))]
 #![warn(missing_docs)]
 #![warn(rust_2018_idioms)]
 
@@ -99,6 +100,7 @@ extern crate alloc;
 pub struct GuardSend(());
 
 /// Marker type which indicates that the Guard type for a lock is not `Send`.
+#[allow(dead_code)]
 pub struct GuardNoSend(*mut ());
 
 unsafe impl Sync for GuardNoSend {}
@@ -106,7 +108,9 @@ unsafe impl Sync for GuardNoSend {}
 mod mutex;
 pub use crate::mutex::*;
 
+#[cfg(feature = "atomic_usize")]
 mod remutex;
+#[cfg(feature = "atomic_usize")]
 pub use crate::remutex::*;
 
 mod rwlock;

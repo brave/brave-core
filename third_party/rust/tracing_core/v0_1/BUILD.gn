@@ -37,7 +37,7 @@ cargo_crate("lib") {
   cargo_pkg_name = "tracing-core"
   cargo_pkg_description = "Core primitives for application-level tracing."
   cargo_pkg_repository = "https://github.com/tokio-rs/tracing"
-  cargo_pkg_version = "0.1.33"
+  cargo_pkg_version = "0.1.34"
 
   deps = [ "//brave/third_party/rust/once_cell/v1:lib" ]
   features = [

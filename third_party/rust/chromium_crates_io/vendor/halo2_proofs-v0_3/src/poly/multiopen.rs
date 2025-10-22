@@ -4,6 +4,9 @@
 //! [halo]: https://eprint.iacr.org/2019/1021
 
 use std::collections::{BTreeMap, BTreeSet};
+use std::hash::Hash;
+
+use indexmap::IndexMap;
 
 use super::*;
 use crate::{arithmetic::CurveAffine, transcript::ChallengeScalar};
@@ -100,6 +103,17 @@ impl<'r, 'params: 'r, C: CurveAffine> PartialEq for CommitmentReference<'r, 'par
     }
 }
 
+impl<'r, 'params: 'r, C: CurveAffine> Eq for CommitmentReference<'r, 'params, C> {}
+
+impl<'r, 'params: 'r, C: CurveAffine> Hash for CommitmentReference<'r, 'params, C> {
+    fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
+        match *self {
+            CommitmentReference::Commitment(a) => std::ptr::hash(a, state),
+            CommitmentReference::MSM(a) => std::ptr::hash(a, state),
+        }
+    }
+}
+
 #[derive(Debug)]
 struct CommitmentData<F, T: PartialEq> {
     commitment: T,
@@ -120,7 +134,7 @@ impl<F, T: PartialEq> CommitmentData<F, T> {
 }
 
 trait Query<F>: Sized {
-    type Commitment: PartialEq + Copy;
+    type Commitment: Eq + Hash + Copy;
     type Eval: Clone + Default;
 
     fn get_point(&self) -> F;
@@ -133,13 +147,18 @@ type IntermediateSets<F, Q> = (
     Vec<Vec<F>>,
 );
 
-fn construct_intermediate_sets<F: Field + Ord, I, Q: Query<F>>(queries: I) -> IntermediateSets<F, Q>
+/// Returns `None` if `queries` contains two queries with the same point and commitment,
+/// but different evaluations.
+fn construct_intermediate_sets<F: Field + Ord, I, Q: Query<F>>(
+    queries: I,
+) -> Option<IntermediateSets<F, Q>>
 where
     I: IntoIterator<Item = Q> + Clone,
 {
     // Construct sets of unique commitments and corresponding information about
     // their queries.
-    let mut commitment_map: Vec<CommitmentData<Q::Eval, Q::Commitment>> = vec![];
+    let mut commitment_map: IndexMap<Q::Commitment, CommitmentData<Option<Q::Eval>, ()>> =
+        IndexMap::new();
 
     // Also construct mapping from a unique point to a point_index. This defines
     // an ordering on the points.
@@ -153,16 +172,11 @@ where
             .entry(query.get_point())
             .or_insert(num_points);
 
-        if let Some(pos) = commitment_map
-            .iter()
-            .position(|comm| comm.commitment == query.get_commitment())
-        {
-            commitment_map[pos].point_indices.push(*point_idx);
-        } else {
-            let mut tmp = CommitmentData::new(query.get_commitment());
-            tmp.point_indices.push(*point_idx);
-            commitment_map.push(tmp);
-        }
+        commitment_map
+            .entry(query.get_commitment())
+            .or_insert_with(|| CommitmentData::new(()))
+            .point_indices
+            .push(*point_idx);
     }
 
     // Also construct inverse mapping from point_index to the point
@@ -174,49 +188,45 @@ where
     // Construct map of unique ordered point_idx_sets to their set_idx
     let mut point_idx_sets = BTreeMap::new();
     // Also construct mapping from commitment to point_idx_set
-    let mut commitment_set_map = Vec::new();
+    let mut commitment_set_map = IndexMap::new();
 
-    for commitment_data in commitment_map.iter() {
+    for (commitment, commitment_data) in commitment_map.iter_mut() {
         let mut point_index_set = BTreeSet::new();
         // Note that point_index_set is ordered, unlike point_indices
         for &point_index in commitment_data.point_indices.iter() {
             point_index_set.insert(point_index);
         }
+        let len = point_index_set.len();
 
         // Push point_index_set to CommitmentData for the relevant commitment
-        commitment_set_map.push((commitment_data.commitment, point_index_set.clone()));
+        commitment_set_map.insert(*commitment, point_index_set.clone());
 
         let num_sets = point_idx_sets.len();
         point_idx_sets.entry(point_index_set).or_insert(num_sets);
-    }
 
-    // Initialise empty evals vec for each unique commitment
-    for commitment_data in commitment_map.iter_mut() {
-        let len = commitment_data.point_indices.len();
-        commitment_data.evals = vec![Q::Eval::default(); len];
+        // Initialise empty evals vec for each unique commitment
+        commitment_data.evals = vec![None; len];
     }
 
     // Populate set_index, evals and points for each commitment using point_idx_sets
     for query in queries {
+        // An entry for every query's commitment was added to `commitment_map` the first
+        // time we iterated through `queries`.
+        let commitment_data = commitment_map
+            .get_mut(&query.get_commitment())
+            .expect("present by construction");
+
         // The index of the point at which the commitment is queried
         let point_index = point_index_map.get(&query.get_point()).unwrap();
 
         // The point_index_set at which the commitment was queried
-        let mut point_index_set = BTreeSet::new();
-        for (commitment, point_idx_set) in commitment_set_map.iter() {
-            if query.get_commitment() == *commitment {
-                point_index_set = point_idx_set.clone();
-            }
-        }
-        assert!(!point_index_set.is_empty());
+        let point_index_set = commitment_set_map
+            .get(&query.get_commitment())
+            .expect("present by construction");
 
         // The set_index of the point_index_set
-        let set_index = point_idx_sets.get(&point_index_set).unwrap();
-        for commitment_data in commitment_map.iter_mut() {
-            if query.get_commitment() == commitment_data.commitment {
-                commitment_data.set_index = *set_index;
-            }
-        }
+        let set_index = point_idx_sets.get(point_index_set).unwrap();
+        commitment_data.set_index = *set_index;
         let point_index_set: Vec<usize> = point_index_set.iter().cloned().collect();
 
         // The offset of the point_index in the point_index_set
@@ -225,13 +235,33 @@ where
             .position(|i| i == point_index)
             .unwrap();
 
-        for commitment_data in commitment_map.iter_mut() {
-            if query.get_commitment() == commitment_data.commitment {
-                // Insert the eval using the ordering of the point_index_set
-                commitment_data.evals[point_index_in_set] = query.get_eval();
-            }
+        // Insert the eval using the ordering of the point_index_set
+        let eval = commitment_data
+            .evals
+            .get_mut(point_index_in_set)
+            .expect("valid index");
+        if eval.is_none() {
+            *eval = Some(query.get_eval());
+        } else {
+            // Caller tried to provide two different evaluations for the same
+            // commitment. Permitting this would be unsound.
+            return None;
         }
     }
+
+    let commitment_map = commitment_map
+        .into_iter()
+        .map(|(commitment, commitment_data)| CommitmentData {
+            commitment,
+            set_index: commitment_data.set_index,
+            point_indices: commitment_data.point_indices,
+            evals: commitment_data
+                .evals
+                .into_iter()
+                .map(|eval| eval.expect("logic ensures all evals are set"))
+                .collect(),
+        })
+        .collect();
 
     // Get actual points in each point set
     let mut point_sets: Vec<Vec<F>> = vec![Vec::new(); point_idx_sets.len()];
@@ -242,7 +272,7 @@ where
         }
     }
 
-    (commitment_map, point_sets)
+    Some((commitment_map, point_sets))
 }
 
 #[test]
@@ -357,6 +387,99 @@ fn test_roundtrip() {
     }
 }
 
+#[test]
+fn test_identical_queries() {
+    use assert_matches::assert_matches;
+    use group::Curve;
+    use rand_core::OsRng;
+
+    use super::commitment::{Blind, Params};
+    use crate::arithmetic::eval_polynomial;
+    use crate::pasta::{EqAffine, Fp};
+    use crate::transcript::Challenge255;
+
+    const K: u32 = 4;
+
+    let params: Params<EqAffine> = Params::new(K);
+    let domain = EvaluationDomain::new(1, K);
+    let rng = OsRng;
+
+    let mut ax = domain.empty_coeff();
+    for (i, a) in ax.iter_mut().enumerate() {
+        *a = Fp::from(10 + i as u64);
+    }
+
+    let mut bx = domain.empty_coeff();
+    for (i, a) in bx.iter_mut().enumerate() {
+        *a = Fp::from(100 + i as u64);
+    }
+
+    let mut cx = domain.empty_coeff();
+    for (i, a) in cx.iter_mut().enumerate() {
+        *a = Fp::from(100 + i as u64);
+    }
+
+    let blind = Blind(Fp::random(rng));
+
+    let a = params.commit(&ax, blind).to_affine();
+    let b = params.commit(&bx, blind).to_affine();
+    let c = params.commit(&cx, blind).to_affine();
+
+    let x = Fp::random(rng);
+    let y = Fp::random(rng);
+    let avx = eval_polynomial(&ax, x);
+    let bvx = eval_polynomial(&bx, x);
+    let bvx_bad = Fp::random(rng);
+    let cvy = eval_polynomial(&cx, y);
+
+    let mut transcript = crate::transcript::Blake2bWrite::<_, _, Challenge255<_>>::init(vec![]);
+    create_proof(
+        &params,
+        rng,
+        &mut transcript,
+        std::iter::empty()
+            .chain(Some(ProverQuery {
+                point: x,
+                poly: &ax,
+                blind,
+            }))
+            .chain(Some(ProverQuery {
+                point: x,
+                poly: &bx,
+                blind,
+            }))
+            .chain(Some(ProverQuery {
+                point: y,
+                poly: &cx,
+                blind,
+            })),
+    )
+    .unwrap();
+    let proof = transcript.finalize();
+
+    {
+        let mut proof = &proof[..];
+
+        let mut transcript =
+            crate::transcript::Blake2bRead::<_, _, Challenge255<_>>::init(&mut proof);
+        let msm = params.empty_msm();
+
+        assert_matches!(
+            verify_proof(
+                &params,
+                &mut transcript,
+                std::iter::empty()
+                    .chain(Some(VerifierQuery::new_commitment(&a, x, avx)))
+                    .chain(Some(VerifierQuery::new_commitment(&b, x, bvx_bad))) // This is wrong.
+                    .chain(Some(VerifierQuery::new_commitment(&b, x, bvx)))
+                    .chain(Some(VerifierQuery::new_commitment(&c, y, cvy))),
+                msm,
+            ),
+            Err(Error::OpeningError)
+        );
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::Query;
@@ -387,7 +510,11 @@ mod tests {
 #[cfg(test)]
 mod proptests {
     use group::ff::FromUniformBytes;
-    use proptest::{collection::vec, prelude::*, sample::select};
+    use proptest::{
+        collection::{hash_set, vec},
+        prelude::*,
+        sample::select,
+    };
 
     use super::construct_intermediate_sets;
     use pasta_curves::Fp;
@@ -441,10 +568,16 @@ mod proptests {
     prop_compose! {
         // Mapping from column index to point index.
         fn arb_queries_inner(num_points: usize, num_cols: usize, num_queries: usize)(
-            col_indices in vec(select((0..num_cols).collect::<Vec<_>>()), num_queries),
-            point_indices in vec(select((0..num_points).collect::<Vec<_>>()), num_queries)
+            // Use a HashSet to ensure we sample distinct (column, point) queries.
+            queries in hash_set(
+                (
+                    select((0..num_cols).collect::<Vec<_>>()),
+                    select((0..num_points).collect::<Vec<_>>()),
+                ),
+                num_queries,
+            )
         ) -> Vec<(usize, usize)> {
-            col_indices.into_iter().zip(point_indices.into_iter()).collect()
+            queries.into_iter().collect()
         }
     }
 
@@ -476,13 +609,15 @@ mod proptests {
         fn test_intermediate_sets(
             (queries_1, queries_2) in compare_queries(8, 8, 16)
         ) {
-            let (commitment_data, _point_sets) = construct_intermediate_sets(queries_1);
+            let (commitment_data, _point_sets) = construct_intermediate_sets(queries_1)
+                .ok_or_else(|| TestCaseError::Fail("mismatched evals".into()))?;
             let set_indices = commitment_data.iter().map(|data| data.set_index).collect::<Vec<_>>();
             let point_indices = commitment_data.iter().map(|data| data.point_indices.clone()).collect::<Vec<_>>();
 
             // It shouldn't matter what the point or eval values are; we should get
             // the same exact point set indices and point indices again.
-            let (new_commitment_data, _new_point_sets) = construct_intermediate_sets(queries_2);
+            let (new_commitment_data, _new_point_sets) = construct_intermediate_sets(queries_2)
+                .ok_or_else(|| TestCaseError::Fail("mismatched evals".into()))?;
             let new_set_indices = new_commitment_data.iter().map(|data| data.set_index).collect::<Vec<_>>();
             let new_point_indices = new_commitment_data.iter().map(|data| data.point_indices.clone()).collect::<Vec<_>>();
 

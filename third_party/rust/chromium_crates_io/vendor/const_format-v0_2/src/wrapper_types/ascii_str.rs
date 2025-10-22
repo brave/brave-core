@@ -225,7 +225,7 @@ mod tests {
     #[cfg(not(miri))]
     #[test]
     fn only_ascii_constructible() {
-        let mut string = ArrayString::<[u8; 1024]>::new();
+        let mut string = ArrayString::<1024>::new();
         let min = '\u{20}';
         let max = '\u{80}';
         assert!(!max.is_ascii());

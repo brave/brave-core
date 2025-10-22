@@ -1,9 +1,9 @@
 Name: thiserror
 URL: https://crates.io/crates/thiserror
-Version: 2.0.11
-Revision: 0f532e326e9a4cc6c6e30ee19ab00cb9eeb44362
+Version: 2.0.17
+Revision: 72ae716e6d6a7f7fdabdc394018c745b4d39ca45
 License: Apache-2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/thiserror-v2/LICENSE-APACHE
+License File: //brave/third_party/rust/chromium_crates_io/vendor/thiserror-v2/LICENSE-Apache
 Shipped: yes
 Security Critical: yes
 

@@ -30,6 +30,7 @@
 //! | PS Vita           | `*-vita-*`         | [`getentropy`][13]
 //! | QNX Neutrino      | `*‑nto-qnx*`       | [`/dev/urandom`][14] (identical to `/dev/random`)
 //! | AIX               | `*-ibm-aix`        | [`/dev/urandom`][15]
+//! | Cygwin            | `*-cygwin`         | [`getrandom`][19] (based on [`RtlGenRandom`])
 //!
 //! Pull Requests that add support for new targets to `getrandom` are always welcome.
 //!
@@ -181,8 +182,10 @@
 //! [16]: https://man.netbsd.org/getrandom.2
 //! [17]: https://www.gnu.org/software/libc/manual/html_mono/libc.html#index-getrandom
 //! [18]: https://github.com/rust3ds/shim-3ds/commit/b01d2568836dea2a65d05d662f8e5f805c64389d
+//! [19]: https://github.com/cygwin/cygwin/blob/main/winsup/cygwin/libc/getentropy.cc
 //!
 //! [`BCryptGenRandom`]: https://docs.microsoft.com/en-us/windows/win32/api/bcrypt/nf-bcrypt-bcryptgenrandom
+//! [`RtlGenRandom`]: https://learn.microsoft.com/en-us/windows/win32/api/ntsecapi/nf-ntsecapi-rtlgenrandom
 //! [`Crypto.getRandomValues`]: https://www.w3.org/TR/WebCryptoAPI/#Crypto-method-getRandomValues
 //! [`RDRAND`]: https://software.intel.com/en-us/articles/intel-digital-random-number-generator-drng-software-implementation-guide
 //! [`CCRandomGenerateBytes`]: https://opensource.apple.com/source/CommonCrypto/CommonCrypto-60074/include/CommonRandom.h.auto.html
@@ -201,7 +204,7 @@
 #![doc(
     html_logo_url = "https://www.rust-lang.org/logos/rust-logo-128x128-blk.png",
     html_favicon_url = "https://www.rust-lang.org/favicon.ico",
-    html_root_url = "https://docs.rs/getrandom/0.2.15"
+    html_root_url = "https://docs.rs/getrandom/0.2.16"
 )]
 #![no_std]
 #![warn(rust_2018_idioms, unused_lifetimes, missing_docs)]
@@ -251,6 +254,7 @@ cfg_if! {
         // Check for target_arch = "arm" to only include the 3DS. Does not
         // include the Nintendo Switch (which is target_arch = "aarch64").
         all(target_os = "horizon", target_arch = "arm"),
+        target_os = "cygwin",
     ))] {
         mod util_libc;
         #[path = "getrandom.rs"] mod imp;

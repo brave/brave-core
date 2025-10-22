@@ -1,3 +1,0 @@
-group("lib") {
-  public_deps = [ "//third_party/rust/windows_targets/v0_52:lib" ]
-}

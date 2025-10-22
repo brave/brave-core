@@ -13,13 +13,19 @@
 edition = "2021"
 rust-version = "1.59"
 name = "halo2_proofs"
-version = "0.3.0"
+version = "0.3.1"
 authors = [
     "Sean Bowe <sean@electriccoin.co>",
     "Ying Tong Lai <yingtong@electriccoin.co>",
     "Daira Hopwood <daira@electriccoin.co>",
     "Jack Grigg <jack@electriccoin.co>",
 ]
+build = false
+autolib = false
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
 description = """
 Fast PLONK-based zero-knowledge proving system with no trusted setup
 """
@@ -34,6 +40,7 @@ keywords = [
 categories = ["cryptography"]
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/zcash/halo2"
+resolver = "1"
 
 [package.metadata.docs.rs]
 all-features = true
@@ -44,31 +51,76 @@ rustdoc-args = [
     "katex-header.html",
 ]
 
+[features]
+batch = ["rand_core/getrandom"]
+beta = []
+default = [
+    "batch",
+    "multicore",
+]
+dev-graph = [
+    "plotters",
+    "tabbycat",
+]
+floor-planner-v1-legacy-pdqsort = ["halo2_legacy_pdqsort"]
+gadget-traces = ["backtrace"]
+multicore = ["maybe-rayon/threads"]
+nightly = ["beta"]
+sanity-checks = []
+test-dev-graph = [
+    "dev-graph",
+    "plotters/bitmap_backend",
+]
+
 [lib]
+name = "halo2_proofs"
+path = "src/lib.rs"
 bench = false
 
 [[example]]
 name = "circuit-layout"
+path = "examples/circuit-layout.rs"
 required-features = ["test-dev-graph"]
+
+[[example]]
+name = "cost-model"
+path = "examples/cost-model.rs"
+
+[[example]]
+name = "simple-example"
+path = "examples/simple-example.rs"
+
+[[example]]
+name = "two-chip"
+path = "examples/two-chip.rs"
+
+[[test]]
+name = "plonk_api"
+path = "tests/plonk_api.rs"
 
 [[bench]]
 name = "arithmetic"
-harness = false
-
-[[bench]]
-name = "hashtocurve"
-harness = false
-
-[[bench]]
-name = "plonk"
+path = "benches/arithmetic.rs"
 harness = false
 
 [[bench]]
 name = "dev_lookup"
+path = "benches/dev_lookup.rs"
 harness = false
 
 [[bench]]
 name = "fft"
+path = "benches/fft.rs"
+harness = false
+
+[[bench]]
+name = "hashtocurve"
+path = "benches/hashtocurve.rs"
+harness = false
+
+[[bench]]
+name = "plonk"
+path = "benches/plonk.rs"
 harness = false
 
 [dependencies.backtrace]
@@ -87,6 +139,9 @@ version = "0.13"
 [dependencies.halo2_legacy_pdqsort]
 version = "0.1.0"
 optional = true
+
+[dependencies.indexmap]
+version = "1"
 
 [dependencies.maybe-rayon]
 version = "0.1.0"
@@ -129,27 +184,6 @@ version = "0.6"
 features = ["getrandom"]
 default-features = false
 
-[features]
-batch = ["rand_core/getrandom"]
-beta = []
-default = [
-    "batch",
-    "multicore",
-]
-dev-graph = [
-    "plotters",
-    "tabbycat",
-]
-floor-planner-v1-legacy-pdqsort = ["halo2_legacy_pdqsort"]
-gadget-traces = ["backtrace"]
-multicore = ["maybe-rayon/threads"]
-nightly = ["beta"]
-sanity-checks = []
-test-dev-graph = [
-    "dev-graph",
-    "plotters/bitmap_backend",
-]
-
-[target."cfg(all(target_arch = \"wasm32\", target_os = \"unknown\"))".dev-dependencies.getrandom]
+[target.'cfg(all(target_arch = "wasm32", target_os = "unknown"))'.dev-dependencies.getrandom]
 version = "0.2"
 features = ["js"]

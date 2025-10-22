@@ -21,7 +21,7 @@ jobs:
     - uses: actions/checkout@v2
       with:
         fetch-depth: 0 # fetch tags for publish
-
+    - uses: Swatinem/rust-cache@359a70e43a0bb8a13953b04a90f76428b4959bb6
     - run: cargo run -p xtask -- ci
       env:
         CARGO_REGISTRY_TOKEN: ${{ secrets.CRATES_IO_TOKEN }}

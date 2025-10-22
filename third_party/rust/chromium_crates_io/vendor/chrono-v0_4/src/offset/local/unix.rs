@@ -12,7 +12,7 @@ use std::{cell::RefCell, collections::hash_map, env, fs, hash::Hasher, time::Sys
 
 use super::tz_info::TimeZone;
 use super::{FixedOffset, NaiveDateTime};
-use crate::{Datelike, MappedLocalTime};
+use crate::MappedLocalTime;
 
 pub(super) fn offset_from_utc_datetime(utc: &NaiveDateTime) -> MappedLocalTime<FixedOffset> {
     offset(utc, false)
@@ -74,15 +74,15 @@ struct Cache {
 #[cfg(target_os = "aix")]
 const TZDB_LOCATION: &str = "/usr/share/lib/zoneinfo";
 
-#[cfg(not(any(target_os = "android", target_os = "aix")))]
+#[cfg(not(any(target_os = "android", target_os = "aix", target_env = "ohos")))]
 const TZDB_LOCATION: &str = "/usr/share/zoneinfo";
 
 fn fallback_timezone() -> Option<TimeZone> {
     let tz_name = iana_time_zone::get_timezone().ok()?;
-    #[cfg(not(target_os = "android"))]
-    let bytes = fs::read(format!("{}/{}", TZDB_LOCATION, tz_name)).ok()?;
-    #[cfg(target_os = "android")]
-    let bytes = android_tzdata::find_tz_data(&tz_name).ok()?;
+    #[cfg(not(any(target_os = "android", target_env = "ohos")))]
+    let bytes = fs::read(format!("{TZDB_LOCATION}/{tz_name}")).ok()?;
+    #[cfg(any(target_os = "android", target_env = "ohos"))]
+    let bytes = crate::offset::local::tz_data::for_zone(&tz_name).ok()??;
     TimeZone::from_tz_data(&bytes).ok()
 }
 
@@ -164,7 +164,7 @@ impl Cache {
         // we pass through the year as the year of a local point in time must either be valid in that locale, or
         // the entire time was skipped in which case we will return MappedLocalTime::None anyway.
         self.zone
-            .find_local_time_type_from_local(d.and_utc().timestamp(), d.year())
+            .find_local_time_type_from_local(d)
             .expect("unable to select local time type")
             .and_then(|o| FixedOffset::east_opt(o.offset()))
     }

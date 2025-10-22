@@ -8,9 +8,9 @@ use core::borrow::Borrow;
 use core::str;
 
 use super::scan;
+use super::{BAD_FORMAT, INVALID, OUT_OF_RANGE, TOO_LONG, TOO_SHORT};
 use super::{Fixed, InternalFixed, InternalInternal, Item, Numeric, Pad, Parsed};
 use super::{ParseError, ParseResult};
-use super::{BAD_FORMAT, INVALID, OUT_OF_RANGE, TOO_LONG, TOO_SHORT};
 use crate::{DateTime, FixedOffset, Weekday};
 
 fn set_weekday_with_num_days_from_sunday(p: &mut Parsed, v: i64) -> ParseResult<()> {
@@ -343,6 +343,7 @@ where
                     IsoYear => (4, true, Parsed::set_isoyear),
                     IsoYearDiv100 => (2, false, Parsed::set_isoyear_div_100),
                     IsoYearMod100 => (2, false, Parsed::set_isoyear_mod_100),
+                    Quarter => (1, false, Parsed::set_quarter),
                     Month => (2, false, Parsed::set_month),
                     Day => (2, false, Parsed::set_day),
                     WeekFromSun => (2, false, Parsed::set_week_from_sun),
@@ -416,9 +417,30 @@ where
                         s = &s[2..];
                     }
 
-                    &Nanosecond | &Nanosecond3 | &Nanosecond6 | &Nanosecond9 => {
+                    &Nanosecond => {
                         if s.starts_with('.') {
                             let nano = try_consume!(scan::nanosecond(&s[1..]));
+                            parsed.set_nanosecond(nano)?;
+                        }
+                    }
+
+                    &Nanosecond3 => {
+                        if s.starts_with('.') {
+                            let nano = try_consume!(scan::nanosecond_fixed(&s[1..], 3));
+                            parsed.set_nanosecond(nano)?;
+                        }
+                    }
+
+                    &Nanosecond6 => {
+                        if s.starts_with('.') {
+                            let nano = try_consume!(scan::nanosecond_fixed(&s[1..], 6));
+                            parsed.set_nanosecond(nano)?;
+                        }
+                    }
+
+                    &Nanosecond9 => {
+                        if s.starts_with('.') {
+                            let nano = try_consume!(scan::nanosecond_fixed(&s[1..], 9));
                             parsed.set_nanosecond(nano)?;
                         }
                     }
@@ -640,15 +662,17 @@ mod tests {
         // most unicode whitespace characters
         parses(
             "\u{00A0}\u{1680}\u{2000}\u{2001}\u{2002}\u{2003}\u{2004}\u{2005}\u{2006}\u{2007}\u{2008}\u{2009}\u{3000}",
-            &[Space("\u{00A0}\u{1680}\u{2000}\u{2001}\u{2002}\u{2003}\u{2004}\u{2005}\u{2006}\u{2007}\u{2008}\u{2009}\u{3000}")]
+            &[Space(
+                "\u{00A0}\u{1680}\u{2000}\u{2001}\u{2002}\u{2003}\u{2004}\u{2005}\u{2006}\u{2007}\u{2008}\u{2009}\u{3000}",
+            )],
         );
         // most unicode whitespace characters
         parses(
             "\u{00A0}\u{1680}\u{2000}\u{2001}\u{2002}\u{2003}\u{2004}\u{2005}\u{2006}\u{2007}\u{2008}\u{2009}\u{3000}",
             &[
                 Space("\u{00A0}\u{1680}\u{2000}\u{2001}\u{2002}\u{2003}\u{2004}"),
-                Space("\u{2005}\u{2006}\u{2007}\u{2008}\u{2009}\u{3000}")
-            ]
+                Space("\u{2005}\u{2006}\u{2007}\u{2008}\u{2009}\u{3000}"),
+            ],
         );
         check("a", &[Space("")], Err(TOO_LONG));
         check("a", &[Space(" ")], Err(TOO_LONG));
@@ -817,9 +841,16 @@ mod tests {
             parsed!(year_div_100: 12, year_mod_100: 34, isoyear_div_100: 56, isoyear_mod_100: 78),
         );
         check(
-            "1 2 3 4 5",
-            &[num(Month), num(Day), num(WeekFromSun), num(NumDaysFromSun), num(IsoWeek)],
-            parsed!(month: 1, day: 2, week_from_sun: 3, weekday: Weekday::Thu, isoweek: 5),
+            "1 1 2 3 4 5",
+            &[
+                num(Quarter),
+                num(Month),
+                num(Day),
+                num(WeekFromSun),
+                num(NumDaysFromSun),
+                num(IsoWeek),
+            ],
+            parsed!(quarter: 1, month: 1, day: 2, week_from_sun: 3, weekday: Weekday::Thu, isoweek: 5),
         );
         check(
             "6 7 89 01",
@@ -900,7 +931,7 @@ mod tests {
 
     #[test]
     fn test_parse_fixed_nanosecond() {
-        use crate::format::Fixed::Nanosecond;
+        use crate::format::Fixed::{Nanosecond, Nanosecond3, Nanosecond6, Nanosecond9};
         use crate::format::InternalInternal::*;
         use crate::format::Item::Literal;
         use crate::format::Numeric::Second;
@@ -933,6 +964,28 @@ mod tests {
         check(".4x", &[fixed(Nanosecond)], Err(TOO_LONG));
         check(".  4", &[fixed(Nanosecond)], Err(INVALID));
         check("  .4", &[fixed(Nanosecond)], Err(TOO_LONG)); // no automatic trimming
+
+        // fixed-length fractions of a second
+        check("", &[fixed(Nanosecond3)], parsed!()); // no field set, but not an error
+        check("4", &[fixed(Nanosecond3)], Err(TOO_LONG)); // never consumes `4`
+        check(".12", &[fixed(Nanosecond3)], Err(TOO_SHORT));
+        check(".123", &[fixed(Nanosecond3)], parsed!(nanosecond: 123_000_000));
+        check(".1234", &[fixed(Nanosecond3)], Err(TOO_LONG));
+        check(".1234", &[fixed(Nanosecond3), Literal("4")], parsed!(nanosecond: 123_000_000));
+
+        check("", &[fixed(Nanosecond6)], parsed!()); // no field set, but not an error
+        check("4", &[fixed(Nanosecond6)], Err(TOO_LONG)); // never consumes `4`
+        check(".12345", &[fixed(Nanosecond6)], Err(TOO_SHORT));
+        check(".123456", &[fixed(Nanosecond6)], parsed!(nanosecond: 123_456_000));
+        check(".1234567", &[fixed(Nanosecond6)], Err(TOO_LONG));
+        check(".1234567", &[fixed(Nanosecond6), Literal("7")], parsed!(nanosecond: 123_456_000));
+
+        check("", &[fixed(Nanosecond9)], parsed!()); // no field set, but not an error
+        check("4", &[fixed(Nanosecond9)], Err(TOO_LONG)); // never consumes `4`
+        check(".12345678", &[fixed(Nanosecond9)], Err(TOO_SHORT));
+        check(".123456789", &[fixed(Nanosecond9)], parsed!(nanosecond: 123_456_789));
+        check(".1234567890", &[fixed(Nanosecond9)], Err(TOO_LONG));
+        check(".1234567890", &[fixed(Nanosecond9), Literal("0")], parsed!(nanosecond: 123_456_789));
 
         // fixed: nanoseconds without the dot
         check("", &[internal_fixed(Nanosecond3NoDot)], Err(TOO_SHORT));
@@ -1667,13 +1720,12 @@ mod tests {
         // Test against test data above
         for &(date, checkdate) in testdates.iter() {
             #[cfg(feature = "std")]
-            eprintln!("Test input: {:?}\n    Expect: {:?}", date, checkdate);
+            eprintln!("Test input: {date:?}\n    Expect: {checkdate:?}");
             let dt = rfc2822_to_datetime(date); // parse a date
             if dt != checkdate {
                 // check for expected result
                 panic!(
-                    "Date conversion failed for {}\nReceived: {:?}\nExpected: {:?}",
-                    date, dt, checkdate
+                    "Date conversion failed for {date}\nReceived: {dt:?}\nExpected: {checkdate:?}"
                 );
             }
         }
@@ -1826,8 +1878,7 @@ mod tests {
             if dt != checkdate {
                 // check for expected result
                 panic!(
-                    "Date conversion failed for {}\nReceived: {:?}\nExpected: {:?}",
-                    date, dt, checkdate
+                    "Date conversion failed for {date}\nReceived: {dt:?}\nExpected: {checkdate:?}"
                 );
             }
         }
@@ -1835,8 +1886,10 @@ mod tests {
 
     #[test]
     fn test_issue_1010() {
-        let dt = crate::NaiveDateTime::parse_from_str("\u{c}SUN\u{e}\u{3000}\0m@J\u{3000}\0\u{3000}\0m\u{c}!\u{c}\u{b}\u{c}\u{c}\u{c}\u{c}%A\u{c}\u{b}\0SU\u{c}\u{c}",
-        "\u{c}\u{c}%A\u{c}\u{b}\0SUN\u{c}\u{c}\u{c}SUNN\u{c}\u{c}\u{c}SUN\u{c}\u{c}!\u{c}\u{b}\u{c}\u{c}\u{c}\u{c}%A\u{c}\u{b}%a");
+        let dt = crate::NaiveDateTime::parse_from_str(
+            "\u{c}SUN\u{e}\u{3000}\0m@J\u{3000}\0\u{3000}\0m\u{c}!\u{c}\u{b}\u{c}\u{c}\u{c}\u{c}%A\u{c}\u{b}\0SU\u{c}\u{c}",
+            "\u{c}\u{c}%A\u{c}\u{b}\0SUN\u{c}\u{c}\u{c}SUNN\u{c}\u{c}\u{c}SUN\u{c}\u{c}!\u{c}\u{b}\u{c}\u{c}\u{c}\u{c}%A\u{c}\u{b}%a",
+        );
         assert_eq!(dt, Err(ParseError(ParseErrorKind::Invalid)));
     }
 }

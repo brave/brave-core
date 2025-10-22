@@ -1,4 +1,5 @@
 use core::{mem::MaybeUninit, ptr};
+use zerocopy::transmute;
 
 #[cfg(target_arch = "x86")]
 use core::arch::x86::{
@@ -21,37 +22,34 @@ use super::convert_chunked_slice_8;
 #[target_feature(enable = "f16c")]
 #[inline]
 pub(super) unsafe fn f16_to_f32_x86_f16c(i: u16) -> f32 {
-    let mut vec = MaybeUninit::<__m128i>::zeroed();
-    vec.as_mut_ptr().cast::<u16>().write(i);
-    let retval = _mm_cvtph_ps(vec.assume_init());
-    *(&retval as *const __m128).cast()
+    let vec: __m128i = transmute!([i, 0, 0, 0, 0, 0, 0, 0]);
+    let retval: [f32; 4] = transmute!(_mm_cvtph_ps(vec));
+    retval[0]
 }
 
 #[target_feature(enable = "f16c")]
 #[inline]
 pub(super) unsafe fn f32_to_f16_x86_f16c(f: f32) -> u16 {
-    let mut vec = MaybeUninit::<__m128>::zeroed();
-    vec.as_mut_ptr().cast::<f32>().write(f);
-    let retval = _mm_cvtps_ph(vec.assume_init(), _MM_FROUND_TO_NEAREST_INT);
-    *(&retval as *const __m128i).cast()
+    let vec: __m128 = transmute!([f, 0.0, 0.0, 0.0]);
+    let retval = _mm_cvtps_ph(vec, _MM_FROUND_TO_NEAREST_INT);
+    let retval: [u16; 8] = transmute!(retval);
+    retval[0]
 }
 
 #[target_feature(enable = "f16c")]
 #[inline]
 pub(super) unsafe fn f16x4_to_f32x4_x86_f16c(v: &[u16; 4]) -> [f32; 4] {
-    let mut vec = MaybeUninit::<__m128i>::zeroed();
-    ptr::copy_nonoverlapping(v.as_ptr(), vec.as_mut_ptr().cast(), 4);
-    let retval = _mm_cvtph_ps(vec.assume_init());
-    *(&retval as *const __m128).cast()
+    let vec: __m128i = transmute!([*v, [0, 0, 0, 0]]);
+    transmute!(_mm_cvtph_ps(vec))
 }
 
 #[target_feature(enable = "f16c")]
 #[inline]
 pub(super) unsafe fn f32x4_to_f16x4_x86_f16c(v: &[f32; 4]) -> [u16; 4] {
-    let mut vec = MaybeUninit::<__m128>::uninit();
-    ptr::copy_nonoverlapping(v.as_ptr(), vec.as_mut_ptr().cast(), 4);
-    let retval = _mm_cvtps_ph(vec.assume_init(), _MM_FROUND_TO_NEAREST_INT);
-    *(&retval as *const __m128i).cast()
+    let vec: __m128 = zerocopy::transmute!(*v);
+    let retval = _mm_cvtps_ph(vec, _MM_FROUND_TO_NEAREST_INT);
+    let retval: [[u16; 4]; 2] = transmute!(retval);
+    retval[0]
 }
 
 #[target_feature(enable = "f16c")]
@@ -80,19 +78,16 @@ pub(super) unsafe fn f64x4_to_f16x4_x86_f16c(v: &[f64; 4]) -> [u16; 4] {
 #[target_feature(enable = "f16c")]
 #[inline]
 pub(super) unsafe fn f16x8_to_f32x8_x86_f16c(v: &[u16; 8]) -> [f32; 8] {
-    let mut vec = MaybeUninit::<__m128i>::zeroed();
-    ptr::copy_nonoverlapping(v.as_ptr(), vec.as_mut_ptr().cast(), 8);
-    let retval = _mm256_cvtph_ps(vec.assume_init());
-    *(&retval as *const __m256).cast()
+    let vec: __m128i = transmute!(*v);
+    transmute!(_mm256_cvtph_ps(vec))
 }
 
 #[target_feature(enable = "f16c")]
 #[inline]
 pub(super) unsafe fn f32x8_to_f16x8_x86_f16c(v: &[f32; 8]) -> [u16; 8] {
-    let mut vec = MaybeUninit::<__m256>::uninit();
-    ptr::copy_nonoverlapping(v.as_ptr(), vec.as_mut_ptr().cast(), 8);
-    let retval = _mm256_cvtps_ph(vec.assume_init(), _MM_FROUND_TO_NEAREST_INT);
-    *(&retval as *const __m128i).cast()
+    let vec: __m256 = transmute!(*v);
+    let retval = _mm256_cvtps_ph(vec, _MM_FROUND_TO_NEAREST_INT);
+    transmute!(retval)
 }
 
 #[target_feature(enable = "f16c")]

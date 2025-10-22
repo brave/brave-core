@@ -19,7 +19,6 @@ use core::{
 };
 #[cfg(feature = "serde")]
 use serde::{Deserialize, Serialize};
-#[cfg(feature = "zerocopy")]
 use zerocopy::{FromBytes, Immutable, IntoBytes, KnownLayout};
 
 pub(crate) mod convert;
@@ -42,11 +41,8 @@ pub(crate) mod convert;
 )]
 #[cfg_attr(feature = "rkyv", rkyv(resolver = Bf16Resolver))]
 #[cfg_attr(feature = "bytemuck", derive(Zeroable, Pod))]
-#[cfg_attr(
-    feature = "zerocopy",
-    derive(FromBytes, Immutable, IntoBytes, KnownLayout)
-)]
 #[cfg_attr(kani, derive(kani::Arbitrary))]
+#[derive(FromBytes, Immutable, IntoBytes, KnownLayout)]
 pub struct bf16(u16);
 
 impl bf16 {
@@ -511,7 +507,7 @@ impl bf16 {
     #[inline]
     #[must_use]
     pub fn max(self, other: bf16) -> bf16 {
-        if other > self && !other.is_nan() {
+        if self.is_nan() || other > self {
             other
         } else {
             self
@@ -534,7 +530,7 @@ impl bf16 {
     #[inline]
     #[must_use]
     pub fn min(self, other: bf16) -> bf16 {
-        if other < self && !other.is_nan() {
+        if self.is_nan() || other < self {
             other
         } else {
             self
@@ -1519,7 +1515,7 @@ mod test {
         assert!(nan32.is_nan() && nan32.is_sign_positive());
         assert!(neg_nan32.is_nan() && neg_nan32.is_sign_negative());
 
-        // f32/f64 NaN conversion sign is non-deterministic: https://github.com/starkat99/half-rs/issues/103
+        // f32/f64 NaN conversion sign is non-deterministic: https://github.com/VoidStarKat/half-rs/issues/103
         assert!(neg_nan32_from_64.is_nan());
         assert!(nan32_from_64.is_nan());
         assert!(nan16_from_64.is_nan());
@@ -1546,7 +1542,7 @@ mod test {
         assert!(nan32.is_nan() && nan32.is_sign_positive());
         assert!(neg_nan32.is_nan() && neg_nan32.is_sign_negative());
 
-        // // f32/f64 NaN conversion sign is non-deterministic: https://github.com/starkat99/half-rs/issues/103
+        // // f32/f64 NaN conversion sign is non-deterministic: https://github.com/VoidStarKat/half-rs/issues/103
         assert!(nan32_from_16.is_nan());
         assert!(neg_nan32_from_16.is_nan());
         assert!(nan64_from_16.is_nan());
@@ -1575,6 +1571,7 @@ mod test {
     }
 
     #[test]
+    #[cfg_attr(miri, ignore)]
     fn test_bf16_to_f64() {
         let f = bf16::from_f64(7.0);
         assert_eq!(f.to_f64(), 7.0f64);
@@ -1648,6 +1645,7 @@ mod test {
 
     #[test]
     #[allow(clippy::erasing_op, clippy::identity_op)]
+    #[cfg_attr(miri, ignore)]
     fn round_to_even_f32() {
         // smallest positive subnormal = 0b0.0000_001 * 2^-126 = 2^-133
         let min_sub = bf16::from_bits(1);
@@ -1743,6 +1741,7 @@ mod test {
 
     #[test]
     #[allow(clippy::erasing_op, clippy::identity_op)]
+    #[cfg_attr(miri, ignore)]
     fn round_to_even_f64() {
         // smallest positive subnormal = 0b0.0000_001 * 2^-126 = 2^-133
         let min_sub = bf16::from_bits(1);
@@ -1876,5 +1875,51 @@ mod test {
         } else {
             f.0 == roundtrip.0
         }
+    }
+
+    #[test]
+    fn test_max() {
+        let a = bf16::from_f32(0.0);
+        let b = bf16::from_f32(42.0);
+        assert_eq!(a.max(b), b);
+
+        let a = bf16::from_f32(42.0);
+        let b = bf16::from_f32(0.0);
+        assert_eq!(a.max(b), a);
+
+        let a = bf16::NAN;
+        let b = bf16::from_f32(42.0);
+        assert_eq!(a.max(b), b);
+
+        let a = bf16::from_f32(42.0);
+        let b = bf16::NAN;
+        assert_eq!(a.max(b), a);
+
+        let a = bf16::NAN;
+        let b = bf16::NAN;
+        assert!(a.max(b).is_nan());
+    }
+
+    #[test]
+    fn test_min() {
+        let a = bf16::from_f32(0.0);
+        let b = bf16::from_f32(42.0);
+        assert_eq!(a.min(b), a);
+
+        let a = bf16::from_f32(42.0);
+        let b = bf16::from_f32(0.0);
+        assert_eq!(a.min(b), b);
+
+        let a = bf16::NAN;
+        let b = bf16::from_f32(42.0);
+        assert_eq!(a.min(b), b);
+
+        let a = bf16::from_f32(42.0);
+        let b = bf16::NAN;
+        assert_eq!(a.min(b), a);
+
+        let a = bf16::NAN;
+        let b = bf16::NAN;
+        assert!(a.min(b).is_nan());
     }
 }

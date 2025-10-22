@@ -1,9 +1,9 @@
 Name: scopeguard
 URL: https://crates.io/crates/scopeguard
-Version: 1.1.0
-Revision: c1ae9969f7c9bc9013602b4bf29bb789e6e7eb16
+Version: 1.2.0
+Revision: bb988222848d39b0b9037b29da3a3a1eb05ebf4b
 License: Apache-2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/scopeguard-v1/LICENSE-APACHE
+License File: //brave/third_party/rust/chromium_crates_io/vendor/scopeguard-v1/LICENSE-Apache
 Shipped: yes
 Security Critical: yes
 

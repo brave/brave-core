@@ -1,6 +1,6 @@
 [package]
 name = "zeroize"
-version = "1.8.1"
+version = "1.8.2"
 description = """
 Securely clear secrets from memory with a simple trait built on
 stable Rust primitives which guarantee memory is zeroed using an
@@ -10,7 +10,8 @@ even WASM!
 """
 authors = ["The RustCrypto Project Developers"]
 license = "Apache-2.0 OR MIT"
-repository = "https://github.com/RustCrypto/utils/tree/master/zeroize"
+homepage = "https://github.com/RustCrypto/utils/tree/master/zeroize"
+repository = "https://github.com/RustCrypto/utils"
 readme = "README.md"
 categories = ["cryptography", "memory-management", "no-std", "os"]
 keywords = ["memory", "memset", "secure", "volatile", "zero"]

@@ -69,4 +69,4 @@ Small note: If editing the README, please conform to the [standard-readme](https
 
 ## License
 
-[MIT](LICENSE) © 2017 Friedel Ziegelmayer
+[MIT](LICENSE) © Friedel Ziegelmayer

@@ -11,10 +11,15 @@
 
 //! Adapters for alternative string formats.
 
+use core::{convert::TryInto as _, str::FromStr};
+
 use crate::{
-    std::{borrow::Borrow, fmt, ptr, str},
-    Uuid, Variant,
+    std::{borrow::Borrow, fmt, str},
+    Error, Uuid, Variant,
 };
+
+#[cfg(feature = "std")]
+use crate::std::string::{String, ToString};
 
 impl std::fmt::Debug for Uuid {
     #[inline]
@@ -26,6 +31,13 @@ impl std::fmt::Debug for Uuid {
 impl fmt::Display for Uuid {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         fmt::LowerHex::fmt(self, f)
+    }
+}
+
+#[cfg(feature = "std")]
+impl From<Uuid> for String {
+    fn from(uuid: Uuid) -> Self {
+        uuid.to_string()
     }
 }
 
@@ -55,25 +67,105 @@ impl fmt::UpperHex for Uuid {
 
 /// Format a [`Uuid`] as a hyphenated string, like
 /// `67e55044-10b1-426f-9247-bb680e5fe0c8`.
-#[derive(Clone, Copy, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
+#[derive(
+    Clone,
+    Copy,
+    Debug,
+    Default,
+    Eq,
+    Hash,
+    Ord,
+    PartialEq,
+    PartialOrd,
+)]
+#[cfg_attr(
+    all(uuid_unstable, feature = "zerocopy"),
+    derive(
+        zerocopy::IntoBytes,
+        zerocopy::FromBytes,
+        zerocopy::KnownLayout,
+        zerocopy::Immutable,
+        zerocopy::Unaligned
+    )
+)]
 #[repr(transparent)]
 pub struct Hyphenated(Uuid);
 
 /// Format a [`Uuid`] as a simple string, like
 /// `67e5504410b1426f9247bb680e5fe0c8`.
-#[derive(Clone, Copy, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
+#[derive(
+    Clone,
+    Copy,
+    Debug,
+    Default,
+    Eq,
+    Hash,
+    Ord,
+    PartialEq,
+    PartialOrd,
+)]
+#[cfg_attr(
+    all(uuid_unstable, feature = "zerocopy"),
+    derive(
+        zerocopy::IntoBytes,
+        zerocopy::FromBytes,
+        zerocopy::KnownLayout,
+        zerocopy::Immutable,
+        zerocopy::Unaligned
+    )
+)]
 #[repr(transparent)]
 pub struct Simple(Uuid);
 
 /// Format a [`Uuid`] as a URN string, like
 /// `urn:uuid:67e55044-10b1-426f-9247-bb680e5fe0c8`.
-#[derive(Clone, Copy, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
+#[derive(
+    Clone,
+    Copy,
+    Debug,
+    Default,
+    Eq,
+    Hash,
+    Ord,
+    PartialEq,
+    PartialOrd,
+)]
+#[cfg_attr(
+    all(uuid_unstable, feature = "zerocopy"),
+    derive(
+        zerocopy::IntoBytes,
+        zerocopy::FromBytes,
+        zerocopy::KnownLayout,
+        zerocopy::Immutable,
+        zerocopy::Unaligned
+    )
+)]
 #[repr(transparent)]
 pub struct Urn(Uuid);
 
 /// Format a [`Uuid`] as a braced hyphenated string, like
 /// `{67e55044-10b1-426f-9247-bb680e5fe0c8}`.
-#[derive(Clone, Copy, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
+#[derive(
+    Clone,
+    Copy,
+    Debug,
+    Default,
+    Eq,
+    Hash,
+    Ord,
+    PartialEq,
+    PartialOrd,
+)]
+#[cfg_attr(
+    all(uuid_unstable, feature = "zerocopy"),
+    derive(
+        zerocopy::IntoBytes,
+        zerocopy::FromBytes,
+        zerocopy::KnownLayout,
+        zerocopy::Immutable,
+        zerocopy::Unaligned
+    )
+)]
 #[repr(transparent)]
 pub struct Braced(Uuid);
 
@@ -87,8 +179,7 @@ impl Uuid {
     /// Get a borrowed [`Hyphenated`] formatter.
     #[inline]
     pub fn as_hyphenated(&self) -> &Hyphenated {
-        // SAFETY: `Uuid` and `Hyphenated` have the same ABI
-        unsafe { &*(self as *const Uuid as *const Hyphenated) }
+        unsafe_transmute_ref!(self)
     }
 
     /// Get a [`Simple`] formatter.
@@ -100,8 +191,7 @@ impl Uuid {
     /// Get a borrowed [`Simple`] formatter.
     #[inline]
     pub fn as_simple(&self) -> &Simple {
-        // SAFETY: `Uuid` and `Simple` have the same ABI
-        unsafe { &*(self as *const Uuid as *const Simple) }
+        unsafe_transmute_ref!(self)
     }
 
     /// Get a [`Urn`] formatter.
@@ -113,8 +203,7 @@ impl Uuid {
     /// Get a borrowed [`Urn`] formatter.
     #[inline]
     pub fn as_urn(&self) -> &Urn {
-        // SAFETY: `Uuid` and `Urn` have the same ABI
-        unsafe { &*(self as *const Uuid as *const Urn) }
+        unsafe_transmute_ref!(self)
     }
 
     /// Get a [`Braced`] formatter.
@@ -126,8 +215,7 @@ impl Uuid {
     /// Get a borrowed [`Braced`] formatter.
     #[inline]
     pub fn as_braced(&self) -> &Braced {
-        // SAFETY: `Uuid` and `Braced` have the same ABI
-        unsafe { &*(self as *const Uuid as *const Braced) }
+        unsafe_transmute_ref!(self)
     }
 }
 
@@ -182,43 +270,49 @@ const fn format_hyphenated(src: &[u8; 16], upper: bool) -> [u8; 36] {
 #[inline]
 fn encode_simple<'b>(src: &[u8; 16], buffer: &'b mut [u8], upper: bool) -> &'b mut str {
     let buf = &mut buffer[..Simple::LENGTH];
-    let dst = buf.as_mut_ptr();
+    let buf: &mut [u8; Simple::LENGTH] = buf.try_into().unwrap();
+    *buf = format_simple(src, upper);
 
-    // SAFETY: `buf` is guaranteed to be at least `LEN` bytes
     // SAFETY: The encoded buffer is ASCII encoded
-    unsafe {
-        ptr::write(dst.cast(), format_simple(src, upper));
-        str::from_utf8_unchecked_mut(buf)
-    }
+    unsafe { str::from_utf8_unchecked_mut(buf) }
 }
 
 #[inline]
 fn encode_hyphenated<'b>(src: &[u8; 16], buffer: &'b mut [u8], upper: bool) -> &'b mut str {
     let buf = &mut buffer[..Hyphenated::LENGTH];
-    let dst = buf.as_mut_ptr();
+    let buf: &mut [u8; Hyphenated::LENGTH] = buf.try_into().unwrap();
+    *buf = format_hyphenated(src, upper);
 
-    // SAFETY: `buf` is guaranteed to be at least `LEN` bytes
     // SAFETY: The encoded buffer is ASCII encoded
-    unsafe {
-        ptr::write(dst.cast(), format_hyphenated(src, upper));
-        str::from_utf8_unchecked_mut(buf)
-    }
+    unsafe { str::from_utf8_unchecked_mut(buf) }
 }
 
 #[inline]
 fn encode_braced<'b>(src: &[u8; 16], buffer: &'b mut [u8], upper: bool) -> &'b mut str {
-    let buf = &mut buffer[..Braced::LENGTH];
-    buf[0] = b'{';
-    buf[Braced::LENGTH - 1] = b'}';
+    let buf = &mut buffer[..Hyphenated::LENGTH + 2];
+    let buf: &mut [u8; Hyphenated::LENGTH + 2] = buf.try_into().unwrap();
 
-    // SAFETY: `buf` is guaranteed to be at least `LEN` bytes
-    // SAFETY: The encoded buffer is ASCII encoded
-    unsafe {
-        let dst = buf.as_mut_ptr().add(1);
-
-        ptr::write(dst.cast(), format_hyphenated(src, upper));
-        str::from_utf8_unchecked_mut(buf)
+    #[cfg_attr(
+        all(uuid_unstable, feature = "zerocopy"),
+        derive(zerocopy::IntoBytes)
+    )]
+    #[repr(C)]
+    struct Braced {
+        open_curly: u8,
+        hyphenated: [u8; Hyphenated::LENGTH],
+        close_curly: u8,
     }
+
+    let braced = Braced {
+        open_curly: b'{',
+        hyphenated: format_hyphenated(src, upper),
+        close_curly: b'}',
+    };
+
+    *buf = unsafe_transmute!(braced);
+
+    // SAFETY: The encoded buffer is ASCII encoded
+    unsafe { str::from_utf8_unchecked_mut(buf) }
 }
 
 #[inline]
@@ -226,14 +320,12 @@ fn encode_urn<'b>(src: &[u8; 16], buffer: &'b mut [u8], upper: bool) -> &'b mut 
     let buf = &mut buffer[..Urn::LENGTH];
     buf[..9].copy_from_slice(b"urn:uuid:");
 
-    // SAFETY: `buf` is guaranteed to be at least `LEN` bytes
-    // SAFETY: The encoded buffer is ASCII encoded
-    unsafe {
-        let dst = buf.as_mut_ptr().add(9);
+    let dst = &mut buf[9..(9 + Hyphenated::LENGTH)];
+    let dst: &mut [u8; Hyphenated::LENGTH] = dst.try_into().unwrap();
+    *dst = format_hyphenated(src, upper);
 
-        ptr::write(dst.cast(), format_hyphenated(src, upper));
-        str::from_utf8_unchecked_mut(buf)
-    }
+    // SAFETY: The encoded buffer is ASCII encoded
+    unsafe { str::from_utf8_unchecked_mut(buf) }
 }
 
 impl Hyphenated {
@@ -816,6 +908,46 @@ impl Urn {
     /// ```
     pub const fn into_uuid(self) -> Uuid {
         self.0
+    }
+}
+
+impl FromStr for Hyphenated {
+    type Err = Error;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        crate::parser::parse_hyphenated(s.as_bytes())
+            .map(|b| Hyphenated(Uuid(b)))
+            .map_err(|invalid| invalid.into_err())
+    }
+}
+
+impl FromStr for Simple {
+    type Err = Error;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        crate::parser::parse_simple(s.as_bytes())
+            .map(|b| Simple(Uuid(b)))
+            .map_err(|invalid| invalid.into_err())
+    }
+}
+
+impl FromStr for Urn {
+    type Err = Error;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        crate::parser::parse_urn(s.as_bytes())
+            .map(|b| Urn(Uuid(b)))
+            .map_err(|invalid| invalid.into_err())
+    }
+}
+
+impl FromStr for Braced {
+    type Err = Error;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        crate::parser::parse_braced(s.as_bytes())
+            .map(|b| Braced(Uuid(b)))
+            .map_err(|invalid| invalid.into_err())
     }
 }
 

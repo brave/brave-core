@@ -5,8 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.99.20 - 2025-04-23
 
-## 0.99.10 - 2020-??-??
+- Revert adding of Rust Playground metadata
+
+## 0.99.19 - 2025-02-03
+
+- Add Rust Playground metadata
+
+## 0.99.18 - 2024-06-15
+
+- Update syn to version 2.x
+- Bump minimum supported rust version to 1.65
+
+## 0.99.10 - 2020-09-11
 
 ### Improvements
 
