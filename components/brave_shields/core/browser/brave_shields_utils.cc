@@ -939,6 +939,13 @@ mojom::ContentSettingsOverriddenDataPtr GetContentSettingsOverriddenData(
   content_settings::SettingInfo info;
   const auto rule =
       map->GetContentSetting(primary_url, secondary_url, content_type, &info);
+
+  if (info.source == content_settings::SettingSource::kUser) {
+    return mojom::ContentSettingsOverriddenData::New(
+        mojom::ContentSettingsOverriddenStatus::kNotSet,
+        ConvertSettingsSource(info.source));
+  }
+
   return mojom::ContentSettingsOverriddenData::New(
       rule == CONTENT_SETTING_BLOCK
           ? mojom::ContentSettingsOverriddenStatus::kBlocked
