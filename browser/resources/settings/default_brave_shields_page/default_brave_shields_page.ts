@@ -292,7 +292,6 @@ class BraveShieldsPage extends BraveShieldsPageBase {
         value: value.contactInfoSaveFlag,
       }
     })
-    this.browserProxy_.setNoScriptControlType
   }
 
   onAdControlChange_ () {
