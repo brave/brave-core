@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/BUILD.gn b/chrome/browser/ui/BUILD.gn
-index 27ed707c71f2e75d939833212f20e1ce5eb01ae2..71fb53f5cf72994a611924fc675e4623670dfc81 100644
+index f4531197ae5e1438c35a101d2c86c9b6edd1953f..e103798ae941c3e810611122c7d3cab5b0173551 100644
 --- a/chrome/browser/ui/BUILD.gn
 +++ b/chrome/browser/ui/BUILD.gn
 @@ -769,6 +769,7 @@ static_library("ui") {
@@ -22,7 +22,7 @@ index 27ed707c71f2e75d939833212f20e1ce5eb01ae2..71fb53f5cf72994a611924fc675e4623
      }
    }
  
-@@ -5391,6 +5395,7 @@ static_library("ui_public_dependencies") {
+@@ -5393,6 +5397,7 @@ static_library("ui_public_dependencies") {
    if (enable_extensions_core) {
      public_deps += [ "//extensions/browser" ]
    }
@@ -30,7 +30,7 @@ index 27ed707c71f2e75d939833212f20e1ce5eb01ae2..71fb53f5cf72994a611924fc675e4623
    if (!is_android) {
      public_deps += [
        "//build:branding_buildflags",
-@@ -5445,6 +5450,7 @@ source_set("layout_constants") {
+@@ -5447,6 +5452,7 @@ source_set("layout_constants") {
    if (is_chromeos) {
      deps += [ "//chromeos/constants" ]
    }
