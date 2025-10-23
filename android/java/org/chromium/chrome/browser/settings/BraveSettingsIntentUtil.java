@@ -9,7 +9,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
@@ -21,10 +20,18 @@ public class BraveSettingsIntentUtil {
             "org.chromium.chrome.browser.password_entry_edit.CredentialEditFragmentView";
 
     public static Intent createIntent(
-            @NonNull Context context,
+            Context context, @Nullable String fragmentName, @Nullable Bundle fragmentArgs) {
+        return createIntent(context, fragmentName, fragmentArgs, /* addToBackStack= */ false);
+    }
+
+    public static Intent createIntent(
+            Context context,
             @Nullable String fragmentName,
-            @Nullable Bundle fragmentArgs) {
-        Intent intent = SettingsIntentUtil.createIntent(context, fragmentName, fragmentArgs);
+            @Nullable Bundle fragmentArgs,
+            boolean addToBackStack) {
+        Intent intent =
+                SettingsIntentUtil.createIntent(
+                        context, fragmentName, fragmentArgs, addToBackStack);
         intent.setClass(context, BraveSettingsActivity.class);
         /*
          * Password settings and credential edit fragments are not used in the upstream anymore and
