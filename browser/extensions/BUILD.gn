@@ -100,7 +100,6 @@ source_set("extensions") {
     "//brave/browser/brave_search",
     "//brave/browser/component_updater",
     "//brave/browser/extensions/api:generated_api_registration",
-    "//brave/browser/themes",
     "//brave/browser/ui:brave_tab_prefs",
     "//brave/common",
     "//brave/common/extensions/api",

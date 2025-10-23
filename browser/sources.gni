@@ -141,7 +141,6 @@ brave_chrome_browser_deps = [
   "//brave/browser/ntp_background",
   "//brave/browser/skus",
   "//brave/browser/sync",
-  "//brave/browser/themes",
   "//brave/browser/ui",
   "//brave/browser/ui/webui/ads_internals",
   "//brave/browser/ui/webui/brave_account",
@@ -313,6 +312,7 @@ if (!is_android) {
   ]
 
   brave_chrome_browser_deps += [
+    "//brave/browser/themes",
     "//brave/browser/ui/ai_chat",
     "//brave/browser/ui/tabs:impl",
     "//brave/browser/ui/webui/brave_new_tab_page_refresh",

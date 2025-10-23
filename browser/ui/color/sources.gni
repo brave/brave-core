@@ -23,7 +23,6 @@ if (!is_android) {
   ]
 
   brave_browser_ui_color_mixers_deps += [
-    "//brave/browser/themes",
     "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/brave_wayback_machine/buildflags",
     "//brave/components/playlist/core/common",
