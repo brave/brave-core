@@ -31,7 +31,6 @@ source_set("brave_account") {
   if (!is_android) {
     deps += [
       "//chrome/browser/ui/webui",
-      "//mojo/public/cpp/bindings",
       "//ui/compositor",
       "//ui/gfx/geometry",
       "//ui/views",

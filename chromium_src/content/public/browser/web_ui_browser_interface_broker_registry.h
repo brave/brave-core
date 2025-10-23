@@ -22,8 +22,8 @@
 // Adds a method for exposing an interface to all WebUIs in the registry. Once
 // https://chromium-review.googlesource.com/c/chromium/src/+/7047465 lands
 // upstream we can remove this.
-#define AddBinderForTesting                                                 \
-  AddBinderForTesting_Unused();                                             \
+#define CreateInterfaceBroker                                               \
+  CreateInterfaceBroker_Chromium(WebUIController& controller);              \
   template <typename Interface>                                             \
   WebUIBrowserInterfaceBrokerRegistry& AddGlobal(                           \
       base::RepeatingCallback<void(                                         \
@@ -53,14 +53,13 @@
   }                                                                         \
                                                                             \
  private:                                                                   \
-  std::vector<content::BinderInitializer> global_binder_initializers_;      \
+  std::vector<BinderInitializer> global_binder_initializers_;               \
                                                                             \
  public:                                                                    \
-  template <typename Interface>                                             \
-  void AddBinderForTesting
+  std::unique_ptr<PerWebUIBrowserInterfaceBroker> CreateInterfaceBroker
 
 #include <content/public/browser/web_ui_browser_interface_broker_registry.h>  // IWYU pragma: export
 
-#undef AddBinderForTesting
+#undef CreateInterfaceBroker
 
 #endif  // BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_BROWSER_WEB_UI_BROWSER_INTERFACE_BROKER_REGISTRY_H_

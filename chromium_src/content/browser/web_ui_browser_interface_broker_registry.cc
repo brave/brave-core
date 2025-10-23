@@ -15,17 +15,31 @@
 
 // Pass |global_binder_initializers_| through to the
 // PerWebUIBrowserInterfaceBroker.
-// Upstream only passes the initializers for the particular WebUI through.
-// Once https://chromium-review.googlesource.com/c/chromium/src/+/7047465 lands
-// we can remove this.
-#define GetType() GetType());                                                \
-  if (iter == binder_initializers_.end())                                    \
-    return nullptr;                                                          \
-  std::vector<BinderInitializer> initializers = global_binder_initializers_; \
-  std::ranges::copy(iter->second, std::back_inserter(initializers));         \
-  return std::make_unique<PerWebUIBrowserInterfaceBroker>(controller,        \
-                                                          initializers);  DCHECK(true
+// Upstream only passes the initializers for the particular WebUI through, so we
+// completely replace the original function. Once
+// https://chromium-review.googlesource.com/c/chromium/src/+/7047465 lands we
+// can remove this.
+#define CreateInterfaceBroker(controller) \
+  CreateInterfaceBroker_Chromium(controller)
 
 #include <content/browser/web_ui_browser_interface_broker_registry.cc>
 
-#undef GetType
+#undef CreateInterfaceBroker
+
+namespace content {
+
+std::unique_ptr<PerWebUIBrowserInterfaceBroker>
+WebUIBrowserInterfaceBrokerRegistry::CreateInterfaceBroker(
+    WebUIController& controller) {
+  auto iter = binder_initializers_.find(controller.GetType());
+  if (iter == binder_initializers_.end()) {
+    return nullptr;
+  }
+
+  std::vector<BinderInitializer> initializers = global_binder_initializers_;
+  std::ranges::copy(iter->second, std::back_inserter(initializers));
+  return std::make_unique<PerWebUIBrowserInterfaceBroker>(controller,
+                                                          initializers);
+}
+
+}  // namespace content
