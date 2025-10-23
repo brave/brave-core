@@ -45,6 +45,16 @@
         "../out/Release_arm64/gen/*",
         "../out/Debug_arm64/gen/*"
       ],
+      "//resources/mojo/*": [
+        "../out/Component/gen/ui/webui/resources/tsc/mojo/*",
+        "../out/Static/gen/ui/webui/resources/tsc/mojo/*",
+        "../out/Release/gen/ui/webui/resources/tsc/mojo/*",
+        "../out/Debug/gen/ui/webui/resources/tsc/mojo/*",
+        "../out/Component_arm64/gen/ui/webui/resources/tsc/mojo/*",
+        "../out/Static_arm64/gen/ui/webui/resources/tsc/mojo/*",
+        "../out/Release_arm64/gen/ui/webui/resources/tsc/mojo/*",
+        "../out/Debug_arm64/gen/ui/webui/resources/tsc/mojo/*"
+      ],
       "chrome://resources/*": [
         "../out/Component/gen/ui/webui/resources/tsc/*",
         "../out/Static/gen/ui/webui/resources/tsc/*",

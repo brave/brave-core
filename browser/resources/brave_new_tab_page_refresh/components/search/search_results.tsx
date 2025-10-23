@@ -7,6 +7,7 @@ import * as React from 'react'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 
+import type { String16 } from '//resources/mojo/mojo/public/mojom/base/string16.mojom-webui.js';
 import { mojoString16ToString } from 'chrome://resources/js/mojo_type_util.js'
 
 import { AutocompleteMatch, ClickEvent } from '../../state/search_state'
@@ -17,7 +18,7 @@ import { SafeImage } from '../common/safe_image'
 
 import { style } from './search_results.style'
 
-function useMojoString16<T>(value: T) {
+function useMojoString16(value: String16) {
   return React.useMemo(() => mojoString16ToString(value), [value])
 }
 
