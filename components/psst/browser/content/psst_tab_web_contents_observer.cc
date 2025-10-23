@@ -303,7 +303,7 @@ void PsstTabWebContentsObserver::ShowBubble(
   }
 
   //ui_delegate_->Show(std::move(*active_consent_data_), delegate);
-  ui_delegate_->ShowPsstInfobar(base::NullCallback(), delegate);
+  ui_delegate_->ShowPsstInfobar(base::NullCallback(), delegate, std::move(*active_consent_data_));
   active_consent_data_.reset();
 }
 

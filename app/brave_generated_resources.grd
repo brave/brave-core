@@ -1471,6 +1471,9 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <message name="IDS_BRAVE_PSST_INFO_BAR_REVIEW_SUGGESTIONS" desc="OK button that shows on the info bar and allows to start review of the PSST suggestions">
         Review suggestions
       </message>
+      <message name="IDS_BRAVE_PSST_INFO_BAR_REVIEW_SUGGESTIONS_CANCEL" desc="Cancel button that shows on the info bar and allows to dismiss the PSST suggestions">
+        Cancel
+      </message>
 
       <!--Customize Chrome Panel -->
       <message name="IDS_BRAVE_CUSTOMIZE_MENU_TOOLBAR_LABEL" desc="The label for the option to customize toolbar icons in the customization menu on the New Tab Page. This is a button which opens a panel for customizing toolbar icons when clicked.">

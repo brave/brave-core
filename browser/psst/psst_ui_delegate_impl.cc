@@ -5,7 +5,9 @@
 
 #include "brave/browser/psst/psst_ui_delegate_impl.h"
 
+#include "base/values.h"
 #include "brave/browser/psst/psst_ui_presenter.h"
+#include "content/public/browser/web_contents.h"
 namespace psst {
 
 PsstUiDelegateImpl::PsstUiDelegateImpl(
@@ -26,8 +28,9 @@ LOG(INFO) << "[PSST] PsstUiDelegateImpl::Show delegate_: " << (delegate_ ? "not 
   //OnUserAcceptedPsstSettings(base::Value::List());
 }
 
-void PsstUiDelegateImpl::ShowPsstInfobar(PsstTabWebContentsObserver::InfobarCallback callback, permissions::PermissionPrompt::Delegate* delegate) {
+void PsstUiDelegateImpl::ShowPsstInfobar(PsstTabWebContentsObserver::InfobarCallback callback, permissions::PermissionPrompt::Delegate* delegate, PsstConsentData dialog_data) {
   delegate_ = delegate;
+  dialog_data_ = std::move(dialog_data);
 
 ui_presenter_->ShowInfoBar(
       base::BindOnce(&PsstUiDelegateImpl::OnInfobarAccepted,
@@ -49,15 +52,26 @@ std::optional<PsstPermissionInfo> PsstUiDelegateImpl::GetPsstPermissionInfo(
 
 void PsstUiDelegateImpl::OnInfobarAccepted(PsstTabWebContentsObserver::InfobarCallback callback,
                                            const bool is_accepted) {
-LOG(INFO) << "[PSST] OnInfobarAccepted delegate_: " << (delegate_ ? "not null" : "null") << " is_accepted:" << is_accepted;
+LOG(INFO) << "[PSST] OnInfobarAccepted "
+<< " delegate_: " << (delegate_ ? "not null" : "null") << " is_accepted:" << is_accepted;
   // if (!callback) {
   //   return;
   // }
+
+  if (!delegate_){
+    LOG(INFO) << "[PSST] OnInfobarAccepted delegate_ is null, returning";
+    return;
+  }
 
   if(!is_accepted) {
     delegate_->Deny();
     return;
   }
+
+  // Create the PSST permission when user accepts the infobar
+  permission_context_->GrantPermission(
+      dialog_data_->origin, ConsentStatus::kAllow, dialog_data_->script_version,
+      dialog_data_->user_id, base::Value::List());
 
   delegate_->Accept();
 
@@ -68,7 +82,8 @@ void PsstUiDelegateImpl::OnUserAcceptedPsstSettings(
     base::Value::List urls_to_skip) {
 LOG(INFO) << "[PSST] User accepted PSST settings";
 
-  // Create the PSST permission when user accepts the dialog
+
+  // Update allowed list of the  urls in the PSST permission when user accepts PSST dialog
   permission_context_->GrantPermission(
       dialog_data_->origin, ConsentStatus::kAllow, dialog_data_->script_version,
       dialog_data_->user_id, urls_to_skip.Clone());

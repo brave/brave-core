@@ -45,7 +45,7 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
     virtual ~PsstUiDelegate() = default;
     // Show the consent dialog to the user with the provided data.
     virtual void Show(PsstConsentData dialog_data, permissions::PermissionPrompt::Delegate* delegate) = 0;
-    virtual void ShowPsstInfobar(InfobarCallback callback, permissions::PermissionPrompt::Delegate* delegate) = 0;
+    virtual void ShowPsstInfobar(InfobarCallback callback, permissions::PermissionPrompt::Delegate* delegate, PsstConsentData dialog_data) = 0;
     // Update the UI state based on the applied tasks and progress.
     virtual void UpdateTasks(long progress,
                              const std::vector<PolicyTask>& applied_tasks,

@@ -34,7 +34,7 @@ class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate {
 
   void Show(PsstConsentData dialog_data, permissions::PermissionPrompt::Delegate* delegate) override;
 
-  void ShowPsstInfobar(PsstTabWebContentsObserver::InfobarCallback callback, permissions::PermissionPrompt::Delegate* delegate) override;
+  void ShowPsstInfobar(PsstTabWebContentsObserver::InfobarCallback callback, permissions::PermissionPrompt::Delegate* delegate, PsstConsentData dialog_data) override;
 
   // PsstUiDelegate overrides
   void UpdateTasks(long progress,

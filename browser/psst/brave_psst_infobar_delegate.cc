@@ -44,7 +44,17 @@ int BravePsstInfoBarDelegate::GetButtons() const {
 
 std::u16string BravePsstInfoBarDelegate::GetButtonLabel(
     InfoBarButton button) const {
-  return l10n_util::GetStringUTF16(IDS_BRAVE_PSST_INFO_BAR_REVIEW_SUGGESTIONS);
+  if (button == BUTTON_OK) {
+    return l10n_util::GetStringUTF16(
+        IDS_BRAVE_PSST_INFO_BAR_REVIEW_SUGGESTIONS);
+  }
+
+  if (button == BUTTON_CANCEL) {
+    return l10n_util::GetStringUTF16(
+        IDS_BRAVE_PSST_INFO_BAR_REVIEW_SUGGESTIONS_CANCEL);
+  }
+
+  return std::u16string();
 }
 
 bool BravePsstInfoBarDelegate::Accept() {
