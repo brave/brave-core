@@ -73,35 +73,6 @@ function InsertLocalhostAccessSubpage (section: Element)
     `)
 }
 
-function InsertAutoplaySubpage (section: Element)
-{
-  section.appendChild(
-    html`
-      <template is="dom-if" route-path="/content/autoplay" no-search>
-        <settings-subpage
-          associated-control="[[$$('#autoplay')]]"
-          page-title="${loadTimeData.getString('siteSettingsAutoplay')}">
-          <settings-category-default-radio-group
-              id="autoplayDefault"
-              category="[[contentSettingsTypesEnum_.AUTOPLAY]]"
-              block-option-label=
-                "${loadTimeData.getString('siteSettingsAutoplayBlock')}"
-              allow-option-label=
-                "${loadTimeData.getString('siteSettingsAutoplayAllow')}"
-              allow-option-icon="autoplay-on"
-              block-option-icon="autoplay-off">
-          </settings-category-default-radio-group>
-          <category-setting-exceptions
-            id="autoplayExceptions"
-            category="[[contentSettingsTypesEnum_.AUTOPLAY]]"
-            block-header="${loadTimeData.getString('siteSettingsBlock')}"
-            allow-header="${loadTimeData.getString('siteSettingsAllow')}">
-          </category-setting-exceptions>
-        </settings-subpage>
-      </template>
-    `)
-}
-
 function InsertEthereumSubpage (section: Element)
 {
   section.appendChild(
@@ -245,7 +216,6 @@ RegisterPolymerTemplateModifications({
     if (isOpenAIChatFromBraveSearchEnabled) {
       InsertBraveOpenAIChatSubpage(section)
     }
-    InsertAutoplaySubpage(section)
     const isNativeBraveWalletEnabled =
       loadTimeData.getBoolean('isNativeBraveWalletFeatureEnabled')
     const isCardanoDappSupportFeatureEnabled =

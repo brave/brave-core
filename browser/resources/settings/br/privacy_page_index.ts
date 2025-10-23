@@ -12,6 +12,7 @@ import type { Route } from '../router.js';
 import { routes } from '../route.js';
 import { loadTimeData } from "../i18n_setup.js"
 import { pageVisibility } from './page_visibility.js'
+import '../site_settings/site_settings_autoplay.js'
 import '../site_settings/site_settings_shields.js'
 import { ContentSettingsTypes } from '../site_settings/constants.js';
 
@@ -100,6 +101,15 @@ RegisterPolymerTemplateModifications({
           slot="view"
           in-search-mode="[[inSearchMode_]]">
         </site-settings-shields-page>`)
+
+    viewManager.appendChild(html`
+      <site-settings-autoplay-page
+          id="${ContentSettingsTypes.AUTOPLAY}"
+          route-path$="[[routes_.SITE_SETTINGS_AUTOPLAY.path]]"
+          data-parent-view-id="siteSettings"
+          slot="view"
+          in-search-mode="[[inSearchMode_]]">
+        </site-settings-autoplay-page>`)
 
     // Move the safety hub to the end of the page
     const safetyHubTemplate = templateContent.querySelector(

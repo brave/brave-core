@@ -1,0 +1,15 @@
+<!-- Copyright (c) 2025 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+<settings-subpage
+  page-title="$i18n{siteSettingsAutoplay}">
+  <settings-category-default-radio-group id="autoplayDefault" category="[[contentSettingsTypesEnum_.AUTOPLAY]]"
+    block-option-label="$i18n{siteSettingsAutoplayBlock}" allow-option-label="$i18n{siteSettingsAutoplayAllow}" allow-option-icon="autoplay-on"
+    block-option-icon="autoplay-off">
+  </settings-category-default-radio-group>
+  <category-setting-exceptions id="autoplayExceptions" category="[[contentSettingsTypesEnum_.AUTOPLAY]]"
+    block-header="$i18n{siteSettingsBlock}" allow-header="$i18n{siteSettingsAllow}">
+  </category-setting-exceptions>
+</settings-subpage>
