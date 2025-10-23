@@ -5,6 +5,8 @@
 
 package org.chromium.chrome.browser.homepage.settings;
 
+import static org.mockito.Mockito.when;
+
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle.State;
 import androidx.test.core.app.ActivityScenario;
@@ -26,10 +28,13 @@ import org.robolectric.shadows.ShadowLooper;
 import org.chromium.base.test.BaseRobolectricTestRunner;
 import org.chromium.base.test.util.Feature;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.homepage.HomepageManager;
 import org.chromium.chrome.browser.homepage.HomepagePolicyManager;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.profiles.ProfileManager;
+import org.chromium.components.bookmarks.BookmarkId;
+import org.chromium.components.bookmarks.BookmarkType;
 import org.chromium.components.browser_ui.widget.RadioButtonWithDescription;
 import org.chromium.components.browser_ui.widget.RadioButtonWithEditText;
 import org.chromium.components.prefs.PrefService;
@@ -44,6 +49,7 @@ public class BraveHomepageSettingsUnitTest {
 
     @Mock public HomepagePolicyManager mMockHomepagePolicyManager;
     @Mock public Profile mProfile;
+    @Mock private BookmarkModel mBookmarkModel;
 
     private ActivityScenario<TestActivity> mActivityScenario;
     private TestActivity mActivity;
@@ -53,6 +59,10 @@ public class BraveHomepageSettingsUnitTest {
     private RadioButtonWithDescription mChromeNtpRadioButton;
     private RadioButtonWithDescription mMobileBookmarksRadioButton;
     private RadioButtonWithEditText mCustomUriRadioButton;
+
+    private static final long TEST_BOOKMARK_ID = 42;
+    private static final BookmarkId MOBILE_BOOKMARKS_REASSIGNED_ID =
+            new BookmarkId(TEST_BOOKMARK_ID, BookmarkType.NORMAL);
 
     // We are following example of upstream's {@link HomepageSettingsUnitTest} and use
     // ActivityScenario here. The reason of using ActivityScenario is likely to have an ability to
@@ -70,6 +80,10 @@ public class BraveHomepageSettingsUnitTest {
                 });
         ProfileManager.setLastUsedProfileForTesting(mProfile);
         HomepagePolicyManager.setPrefServiceForTesting(Mockito.mock(PrefService.class));
+
+        BookmarkModel.setInstanceForTesting(mBookmarkModel);
+        when(mBookmarkModel.getMobileFolderId()).thenReturn(MOBILE_BOOKMARKS_REASSIGNED_ID);
+        when(mBookmarkModel.isBookmarkModelLoaded()).thenReturn(true);
     }
 
     @After
@@ -139,7 +153,7 @@ public class BraveHomepageSettingsUnitTest {
         // End the activity. The homepage should be the `Mobile bookmarks` path.
         finishSettingsActivity();
         Assert.assertEquals(
-                BraveRadioButtonGroupHomepagePreference.MOBILE_BOOKMARKS_PATH,
+                "chrome-native://bookmarks/folder/" + TEST_BOOKMARK_ID,
                 homepageManager.getHomepageGurl().getSpec());
     }
 
