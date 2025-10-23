@@ -7,9 +7,9 @@
 
 #include "base/check.h"
 #include "base/debug/crash_logging.h"
-#include "base/debug/dump_without_crashing.h"
 #include "base/files/file_path.h"
 #include "base/logging.h"
+#include "base/notreached.h"
 #include "base/strings/string_util.h"
 #include "base/time/time_delta_from_string.h"
 #include "base/uuid.h"
@@ -229,7 +229,7 @@ std::optional<Campaign> NTPSponsoredImagesData::MaybeParseCampaign(
                                 campaign.campaign_id);
       SCOPED_CRASH_KEY_STRING64("Issue50267", "failure_reason",
                                 "Invalid new tab page ad metric type");
-      base::debug::DumpWithoutCrashing();
+      DUMP_WILL_BE_NOTREACHED();
     }
   }
 
@@ -486,7 +486,7 @@ const Creative* NTPSponsoredImagesData::GetCreativeByInstanceId(
                             creative_instance_id);
   SCOPED_CRASH_KEY_STRING64("Issue50267", "failure_reason",
                             "Failed to get creative by instance id");
-  base::debug::DumpWithoutCrashing();
+  DUMP_WILL_BE_NOTREACHED();
   return nullptr;
 }
 

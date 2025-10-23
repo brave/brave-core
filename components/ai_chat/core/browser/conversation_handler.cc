@@ -19,12 +19,12 @@
 #include "base/containers/fixed_flat_set.h"
 #include "base/containers/span.h"
 #include "base/debug/crash_logging.h"
-#include "base/debug/dump_without_crashing.h"
 #include "base/files/file_path.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/logging.h"
 #include "base/memory/weak_ptr.h"
+#include "base/notreached.h"
 #include "base/numerics/safe_math.h"
 #include "base/rand_util.h"
 #include "base/strings/strcat.h"
@@ -294,13 +294,13 @@ void ConversationHandler::InitEngine() {
     // It is unexpected that we get here. Dump a call stack
     // to help figure out why it happens.
     SCOPED_CRASH_KEY_STRING1024("BraveAIChatModel", "key", model_key_);
-    base::debug::DumpWithoutCrashing();
+    DUMP_WILL_BE_NOTREACHED();
     // Use default
     model = model_service_->GetModel(features::kAIModelsDefaultKey.Get());
     if (!model) {
       SCOPED_CRASH_KEY_STRING1024("BraveAIChatModel", "key",
                                   features::kAIModelsDefaultKey.Get());
-      base::debug::DumpWithoutCrashing();
+      DUMP_WILL_BE_NOTREACHED();
       const auto& all_models = model_service_->GetModels();
       // Use first if given bad default value
       model = all_models.at(0).get();

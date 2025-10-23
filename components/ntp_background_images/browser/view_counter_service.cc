@@ -14,10 +14,10 @@
 #include "base/check.h"
 #include "base/check_is_test.h"
 #include "base/debug/crash_logging.h"
-#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/metrics/histogram_macros.h"
+#include "base/notreached.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
@@ -247,7 +247,7 @@ ViewCounterService::GetCurrentBrandedWallpaper() const {
   if (images_data->IsSuperReferral()) {
     SCOPED_CRASH_KEY_STRING64("Issue50267", "failure_reason",
                               "Super referrals are enabled");
-    base::debug::DumpWithoutCrashing();
+    DUMP_WILL_BE_NOTREACHED();
     return GetCurrentBrandedWallpaperFromModel();
   }
 
@@ -272,7 +272,7 @@ ViewCounterService::GetCurrentBrandedWallpaperFromAdsService() const {
                               ad->creative_instance_id);
     SCOPED_CRASH_KEY_STRING64("Issue50267", "failure_reason",
                               "No sponsored images data after prefetching");
-    base::debug::DumpWithoutCrashing();
+    DUMP_WILL_BE_NOTREACHED();
     return std::nullopt;
   }
 
@@ -285,7 +285,7 @@ ViewCounterService::GetCurrentBrandedWallpaperFromAdsService() const {
                               ad->creative_instance_id);
     SCOPED_CRASH_KEY_STRING64("Issue50267", "failure_reason",
                               "No matching background");
-    base::debug::DumpWithoutCrashing();
+    DUMP_WILL_BE_NOTREACHED();
     return std::nullopt;
   }
 
@@ -353,7 +353,7 @@ void ViewCounterService::ParseAndSaveNewTabPageAdsCallback(bool success) {
   } else {
     SCOPED_CRASH_KEY_STRING64("Issue50267", "failure_reason",
                               "Failed to parse and save ads");
-    base::debug::DumpWithoutCrashing();
+    DUMP_WILL_BE_NOTREACHED();
   }
 }
 
@@ -510,7 +510,7 @@ void ViewCounterService::MaybePrefetchNewTabPageAd() {
   if (images_data->IsSuperReferral()) {
     SCOPED_CRASH_KEY_STRING64("Issue50267", "failure_reason",
                               "Super referrals are enabled");
-    base::debug::DumpWithoutCrashing();
+    DUMP_WILL_BE_NOTREACHED();
     return;
   }
 
@@ -541,7 +541,7 @@ void ViewCounterService::MaybeTriggerNewTabPageAdEvent(
                 SCOPED_CRASH_KEY_STRING64(
                     "Issue50267", "failure_reason",
                     "Failed to trigger new tab page ad event");
-                base::debug::DumpWithoutCrashing();
+                DUMP_WILL_BE_NOTREACHED();
               }
             },
             creative_instance_id, mojom_ad_metric_type, mojom_ad_event_type));

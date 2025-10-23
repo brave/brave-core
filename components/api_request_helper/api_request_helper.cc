@@ -13,13 +13,13 @@
 #include "base/check.h"
 #include "base/check_op.h"
 #include "base/debug/alias.h"
-#include "base/debug/dump_without_crashing.h"
 #include "base/functional/callback_helpers.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/logging.h"
 #include "base/memory/raw_ptr.h"
 #include "base/metrics/histogram_functions.h"
+#include "base/notreached.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/task/thread_pool.h"
@@ -478,7 +478,7 @@ void APIRequestHelper::URLLoaderHandler::OnParseJsonResponse(
       // could still be used.
       DEBUG_ALIAS_FOR_GURL(url_alias, result.final_url());
       DEBUG_ALIAS_FOR_CSTR(result_str, result_value.error().c_str(), 1024);
-      base::debug::DumpWithoutCrashing();
+      DUMP_WILL_BE_NOTREACHED();
     }
     std::move(result_callback_).Run(std::move(result));
     return;

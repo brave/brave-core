@@ -14,10 +14,10 @@
 #include "base/base64.h"
 #include "base/check.h"
 #include "base/check_op.h"
-#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/metrics/histogram_macros.h"
+#include "base/notreached.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
 #include "base/values.h"
@@ -225,7 +225,7 @@ void WebcompatReporterDOMHandler::HandleCaptureScreenshot(
     AddWebcompatReporterError(
         pending_report_,
         "Could not create screenshot, RenderWidgetHostView unavailable");
-    base::debug::DumpWithoutCrashing();
+    DUMP_WILL_BE_NOTREACHED();
     return;
   }
 

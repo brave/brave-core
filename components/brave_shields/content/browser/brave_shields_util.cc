@@ -14,7 +14,7 @@
 #include "url/origin.h"
 
 #if !DCHECK_IS_ON()
-#include "base/debug/dump_without_crashing.h"
+#include "base/notreached.h"
 #endif
 
 using content::Referrer;

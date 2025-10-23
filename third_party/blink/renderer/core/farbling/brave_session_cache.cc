@@ -10,7 +10,6 @@
 #include "base/check.h"
 #include "base/compiler_specific.h"
 #include "base/debug/alias.h"
-#include "base/debug/dump_without_crashing.h"
 #include "base/feature_list.h"
 #include "base/hash/hash.h"
 #include "base/notreached.h"
@@ -235,7 +234,7 @@ BraveSessionCache::BraveSessionCache(ExecutionContext& context)
         ContentSettingsType::BRAVE_WEBCOMPAT_NONE);
     if (!default_shields_settings_) {
       DEBUG_ALIAS_FOR_OBJECT(settings_client_alias, settings_client);
-      base::debug::DumpWithoutCrashing();
+      DUMP_WILL_BE_NOTREACHED();
       default_shields_settings_ = brave_shields::mojom::ShieldsSettings::New();
     }
   } else {
@@ -456,7 +455,7 @@ BraveFarblingLevel BraveSessionCache::GetBraveFarblingLevel(
       // https://github.com/brave/brave-browser/issues/41889 debug.
       if (!shields_settings) {
         DEBUG_ALIAS_FOR_OBJECT(settings_client_alias, settings_client);
-        base::debug::DumpWithoutCrashing();
+        DUMP_WILL_BE_NOTREACHED();
         return default_shields_settings_->farbling_level;
       }
       farbling_levels_.insert(webcompat_content_settings,

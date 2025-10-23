@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "base/debug/dump_without_crashing.h"
+#include "base/notreached.h"
 
 #include <content/public/browser/content_browser_client.cc>
 
@@ -40,7 +40,7 @@ ContentBrowserClient::WorkerGetBraveShieldSettings(
     BrowserContext* browser_context) {
   // BraveContentBrowserClient should implement this. It's possible this is
   // reached somehow, add dumps to see if it's true.
-  base::debug::DumpWithoutCrashing();
+  DUMP_WILL_BE_NOTREACHED();
   return brave_shields::mojom::ShieldsSettingsPtr();
 }
 

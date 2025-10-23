@@ -9,8 +9,8 @@
 
 #include "base/check.h"
 #include "base/debug/crash_logging.h"
-#include "base/debug/dump_without_crashing.h"
 #include "base/logging.h"
+#include "base/notreached.h"
 #include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 #include "brave/components/content_settings/renderer/brave_content_settings_agent_impl.h"
 #include "components/content_settings/renderer/content_settings_agent_impl.h"
@@ -87,7 +87,7 @@ WorkerContentSettingsClient_BraveImpl::GetBraveShieldsSettings(
                               document_origin_.GetDebugString(false));
     SCOPED_CRASH_KEY_BOOL("BraveShieldsSettings", "has_cs_rules",
                           HasContentSettingsRules());
-    base::debug::DumpWithoutCrashing();
+    DUMP_WILL_BE_NOTREACHED();
     return brave_shields::mojom::ShieldsSettings::New(
         farbling_level, base::Token(), std::vector<std::string>(), false,
         false);
