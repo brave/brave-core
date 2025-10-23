@@ -11,9 +11,16 @@ testonly = true
 if (is_android) {
   robolectric_library(
       "brave_junit_tests_org.chromium.chrome.browser.homepage") {
-    sources = [ "src/org/chromium/chrome/browser/homepage/settings/BraveHomepageSettingsUnitTest.java" ]
+    sources = [
+      "src/org/chromium/chrome/browser/homepage/BraveHomepageManagerTest.java",
+      "src/org/chromium/chrome/browser/homepage/settings/BraveHomepageSettingsUnitTest.java",
+    ]
 
-    deps = [ "//chrome/android/junit:chrome_junit_tests_helper" ]
+    deps = [
+      "//chrome/android/junit:chrome_junit_tests_helper",
+      "//components/bookmarks/common/android:bookmark_type_javagen",
+      "//components/bookmarks/common/android:bookmarks_java",
+    ]
   }
 
   robolectric_library(
