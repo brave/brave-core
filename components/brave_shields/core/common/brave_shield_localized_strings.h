@@ -63,8 +63,6 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_SHIELDS_SCRIPTS_BLOCKED_OVERRIDDEN_BY_POLICY},
     {"braveShieldsScriptsBlockedOverriddenByAllowlist",
      IDS_BRAVE_SHIELDS_SCRIPTS_BLOCKED_OVERRIDDEN_BY_ALLOWLIST},
-    {"braveShieldsScriptsBlockedOverriddenByComponent",
-     IDS_BRAVE_SHIELDS_SCRIPTS_BLOCKED_OVERRIDDEN_BY_COMPONENT},
     {"braveShieldsScriptsBlockedOverriddenBySupervisor",
      IDS_BRAVE_SHIELDS_SCRIPTS_BLOCKED_OVERRIDDEN_BY_SUPERVISOR},
     {"braveShieldsScriptsBlockedOverriddenByPWA",

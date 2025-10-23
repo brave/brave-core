@@ -156,10 +156,6 @@
     (enforced by allowlist)
   </message>
 
-  <message name="IDS_BRAVE_SHIELDS_SCRIPTS_BLOCKED_OVERRIDDEN_BY_COMPONENT" desc="A label for scripts Scripts blocked option which is overridden by a component rule.">
-    (enforced by component)
-  </message>
-
   <message name="IDS_BRAVE_SHIELDS_SCRIPTS_BLOCKED_OVERRIDDEN_BY_SUPERVISOR" desc="A label for scripts Scripts blocked option which is overridden by a supervisor rule.">
     (enforced by supervisor)
   </message>
