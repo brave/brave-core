@@ -54,39 +54,6 @@ inline constexpr net::NetworkTrafficAnnotationTag kTrafficAnnotation =
   }
 )");
 
-std::string Encrypt(const std::string& plain_text,
-                    BraveAccountService::OSCryptCallback encrypt_callback) {
-  if (plain_text.empty()) {
-    return std::string();
-  }
-
-  std::string encrypted;
-  if (!encrypt_callback.Run(plain_text, &encrypted)) {
-    return std::string();
-  }
-
-  return base::Base64Encode(encrypted);
-}
-
-std::string Decrypt(const std::string& base64,
-                    BraveAccountService::OSCryptCallback decrypt_callback) {
-  if (base64.empty()) {
-    return std::string();
-  }
-
-  std::string encrypted;
-  if (!base::Base64Decode(base64, &encrypted)) {
-    return std::string();
-  }
-
-  std::string plain_text;
-  if (!decrypt_callback.Run(encrypted, &plain_text)) {
-    return std::string();
-  }
-
-  return plain_text;
-}
-
 }  // namespace
 
 using endpoint_client::Client;
@@ -134,6 +101,37 @@ BraveAccountService::BraveAccountService(
   OnVerificationTokenChanged();
 }
 
+std::string BraveAccountService::Encrypt(const std::string& plain_text) const {
+  if (plain_text.empty()) {
+    return std::string();
+  }
+
+  std::string encrypted;
+  if (!encrypt_callback_.Run(plain_text, &encrypted)) {
+    return std::string();
+  }
+
+  return base::Base64Encode(encrypted);
+}
+
+std::string BraveAccountService::Decrypt(const std::string& base64) const {
+  if (base64.empty()) {
+    return std::string();
+  }
+
+  std::string encrypted;
+  if (!base::Base64Decode(base64, &encrypted)) {
+    return std::string();
+  }
+
+  std::string plain_text;
+  if (!decrypt_callback_.Run(encrypted, &plain_text)) {
+    return std::string();
+  }
+
+  return plain_text;
+}
+
 void BraveAccountService::RegisterInitialize(
     const std::string& email,
     const std::string& blinded_message,
@@ -162,8 +160,7 @@ void BraveAccountService::RegisterFinalize(
         base::unexpected(mojom::RegisterError::New()));
   }
 
-  const std::string verification_token =
-      Decrypt(encrypted_verification_token, decrypt_callback_);
+  const std::string verification_token = Decrypt(encrypted_verification_token);
   if (verification_token.empty()) {
     return std::move(callback).Run(base::unexpected(mojom::RegisterError::New(
         std::nullopt,
@@ -211,7 +208,7 @@ void BraveAccountService::OnRegisterInitialize(
             }
 
             std::string encrypted_verification_token =
-                Encrypt(response->verification_token, encrypt_callback_);
+                Encrypt(response->verification_token);
             if (encrypted_verification_token.empty()) {
               return base::unexpected(mojom::RegisterError::New(
                   std::nullopt, mojom::RegisterErrorCode::
@@ -288,8 +285,7 @@ void BraveAccountService::VerifyResult() {
     return;
   }
 
-  const auto verification_token =
-      Decrypt(encrypted_verification_token, decrypt_callback_);
+  const auto verification_token = Decrypt(encrypted_verification_token);
   if (verification_token.empty()) {
     return;
   }
@@ -334,7 +330,7 @@ void BraveAccountService::OnVerifyResult(
     pref_service_->ClearPref(prefs::kVerificationToken);
 
     if (const auto encrypted_authentication_token =
-            Encrypt(authentication_token, encrypt_callback_);
+            Encrypt(authentication_token);
         !encrypted_authentication_token.empty()) {
       pref_service_->SetString(prefs::kAuthenticationToken,
                                encrypted_authentication_token);

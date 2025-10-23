@@ -65,6 +65,10 @@ class BraveAccountService : public KeyedService, public mojom::Authentication {
       OSCryptCallback decrypt_callback,
       std::unique_ptr<base::OneShotTimer> verify_result_timer);
 
+  std::string Encrypt(const std::string& plain_text) const;
+
+  std::string Decrypt(const std::string& base64) const;
+
   void RegisterInitialize(const std::string& email,
                           const std::string& blinded_message,
                           RegisterInitializeCallback callback) override;
