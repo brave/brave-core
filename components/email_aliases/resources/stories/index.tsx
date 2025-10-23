@@ -19,7 +19,7 @@ import {
   EmailAliasesService_GenerateAlias_ResponseParam_Result,
   EmailAliasesService_RequestAuthentication_ResponseParam_Result,
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
-import { provideStrings } from '../../../../../.storybook/locale'
+import { provideStrings } from '../../../../.storybook/locale'
 
 provideStrings({
   emailAliasesShortDescription: 'Keep your personal email address private',
