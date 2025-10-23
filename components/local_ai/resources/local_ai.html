@@ -13,12 +13,41 @@
         height: 600px;
         border: 1px solid #ccc;
         margin-top: 20px;
+        display: none;
+      }
+      iframe.active {
+        display: block;
       }
       .info {
         background: #e3f2fd;
         padding: 15px;
         border-radius: 4px;
         margin-bottom: 20px;
+      }
+      .model-selector {
+        margin: 20px 0;
+        padding: 15px;
+        background: #f5f5f5;
+        border-radius: 4px;
+      }
+      .model-selector label {
+        display: block;
+        margin: 10px 0;
+        cursor: pointer;
+        padding: 8px;
+        border-radius: 4px;
+        transition: background 0.2s;
+      }
+      .model-selector label:hover {
+        background: #e0e0e0;
+      }
+      .model-selector input[type="radio"] {
+        margin-right: 8px;
+      }
+      .model-description {
+        color: #666;
+        font-size: 0.9em;
+        margin-left: 24px;
       }
     </style>
   </head>
@@ -36,16 +65,38 @@
       <p><strong>Check the console for logs from both contexts.</strong></p>
     </div>
 
-    <h2>BERT WASM (from bundled resources):</h2>
-    <iframe src="chrome-untrusted://candle-bert-wasm/"
+    <div class="model-selector">
+      <h2>Select a Model:</h2>
+      <label>
+        <input type="radio" name="model" value="bert" checked>
+        <strong>BERT WASM</strong>
+        <div class="model-description">Text embedding model (from bundled resources)</div>
+      </label>
+      <label>
+        <input type="radio" name="model" value="gemma">
+        <strong>Embedding Gemma WASM</strong>
+        <div class="model-description">Google's embedding model (from ~/Downloads/embeddinggemma-300m)</div>
+      </label>
+      <label>
+        <input type="radio" name="model" value="phi">
+        <strong>Phi Language Model WASM</strong>
+        <div class="model-description">Microsoft Phi-2 with SIMD optimization (from ~/Downloads/candle-quantized-phi)</div>
+      </label>
+    </div>
+
+    <iframe id="bert-frame"
+      class="active"
+      src="chrome-untrusted://candle-bert-wasm/"
       title="Candle BERT WASM"></iframe>
 
-    <h2>Embedding Gemma WASM (from ~/Downloads/embeddinggemma-300m):</h2>
-    <iframe src="chrome-untrusted://candle-embedding-gemma-wasm/"
+    <iframe id="gemma-frame"
+      src="about:blank"
       title="Candle Embedding Gemma WASM"></iframe>
 
-    <h2>Phi Language Model WASM (from ~/Downloads/candle-quantized-phi):</h2>
-    <iframe src="chrome-untrusted://candle-phi-wasm/"
+    <iframe id="phi-frame"
+      src="about:blank"
       title="Candle Phi WASM"></iframe>
+
+    <script src="local_ai.js"></script>
   </body>
 </html>

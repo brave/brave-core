@@ -46,6 +46,7 @@
 
       <!-- WebUI Local AI resources -->
       <include name="IDR_LOCAL_AI_INTERNALS_HTML" file="../local_ai/resources/local_ai.html" type="BINDATA" />
+      <include name="IDR_LOCAL_AI_INTERNALS_JS" file="../local_ai/resources/local_ai.js" type="BINDATA" />
       <include name="IDR_CANDLE_BERT_BRIDGE_HTML" file="../local_ai/resources/candle_bert_bridge.html" type="BINDATA" />
       <include name="IDR_CANDLE_EMBEDDING_GEMMA_BRIDGE_HTML" file="../local_ai/resources/candle_embedding_gemma_bridge.html" type="BINDATA" />
       <include name="IDR_CANDLE_PHI_BRIDGE_HTML" file="../local_ai/resources/candle_phi_bridge.html" type="BINDATA" />
