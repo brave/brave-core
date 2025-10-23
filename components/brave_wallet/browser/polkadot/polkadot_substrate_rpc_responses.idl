@@ -39,4 +39,19 @@ namespace polkadot_substrate_rpc_responses {
     DOMString? result;
     Error? error;
   };
+
+  dictionary ChainHeader {
+    DOMString parentHash;
+    DOMString number;
+    DOMString stateRoot;
+    DOMString extrinsicsRoot;
+    any digest;
+  };
+
+  dictionary PolkadotChainHeader {
+    DOMString jsonrpc;
+    long id;
+    ChainHeader? result;
+    Error? error;
+  };
 };
