@@ -58,6 +58,7 @@ source_set("ui") {
     "//brave/browser/brave_origin",
     "//brave/browser/brave_rewards",
     "//brave/browser/skus",
+    "//brave/browser/ui/page_info",
     "//brave/browser/ui/webui/brave_account",
     "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/brave_origin",
@@ -948,6 +949,7 @@ source_set("ui") {
     deps += [
       "//brave/browser/ui/views/brave_ads",
       "//brave/browser/ui/views/brave_tooltips",
+      "//brave/browser/ui/views/page_info",
       "//ui/views/controls/webview",
     ]
   }
