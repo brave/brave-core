@@ -15,7 +15,7 @@ static_library("psst") {
     "brave_psst_infobar_delegate.h",
     "brave_psst_permission_context_factory.cc",
     "psst_ui_delegate_impl.cc",
-     "psst_ui_presenter.cc",
+    "psst_ui_presenter.cc",
   ]
 
   deps = [
@@ -26,8 +26,12 @@ static_library("psst") {
     "//brave/components/psst/browser/core",
     "//brave/components/psst/common",
     "//chrome/browser/content_settings:content_settings_factory",
+    "//chrome/browser/infobars",
     "//chrome/browser/profiles",
+    "//chrome/browser/ui/webui",
+    "//components/infobars/content",
     "//components/permissions",
+    "//ui/web_dialogs",
   ]
 }
 

@@ -92,9 +92,9 @@
   case PermissionName::BRAVE_PSST:                                          \
     return PermissionType::BRAVE_PSST;
 
-#define kLocalNetworkAccess     \
-    kLocalNetworkAccess;        \
-case PermissionType::BRAVE_PSST:\
+#define kLocalNetworkAccess        \
+  kLocalNetworkAccess;             \
+  case PermissionType::BRAVE_PSST: \
     return std::nullopt;
 
 #include <third_party/blink/common/permissions/permission_utils.cc>

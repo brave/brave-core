@@ -1,15 +1,16 @@
 /* Copyright (c) 2025 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_UI_VIEWS_PERMISSION_BUBBLE_PSTT_PERMISSION_PROMPT_H_
-#define BRAVE_BROWSER_UI_VIEWS_PERMISSION_BUBBLE_PSTT_PERMISSION_PROMPT_H_
+#ifndef BRAVE_BROWSER_UI_VIEWS_PERMISSION_BUBBLE_PSST_PERMISSION_PROMPT_IMPL_H_
+#define BRAVE_BROWSER_UI_VIEWS_PERMISSION_BUBBLE_PSST_PERMISSION_PROMPT_IMPL_H_
 
+#include "base/memory/raw_ptr.h"
 #include "components/permissions/permission_prompt.h"
 #include "content/public/browser/web_contents.h"
-#include "base/memory/raw_ptr.h"
 
+// PSST permission promt implementation
 class PsstPermissionPromptImpl : public permissions::PermissionPrompt {
  public:
   PsstPermissionPromptImpl(const PsstPermissionPromptImpl&) = default;
@@ -31,7 +32,7 @@ class PsstPermissionPromptImpl : public permissions::PermissionPrompt {
       const override;
   std::optional<permissions::feature_params::PermissionElementPromptPosition>
   GetPromptPosition() const override;
-  
+
  private:
   void ShowCustomDialog();
 
@@ -39,4 +40,4 @@ class PsstPermissionPromptImpl : public permissions::PermissionPrompt {
   raw_ptr<Delegate> delegate_;
 };
 
-#endif  // BRAVE_BROWSER_UI_VIEWS_PERMISSION_BUBBLE_PSTT_PERMISSION_PROMPT_H_
+#endif  // BRAVE_BROWSER_UI_VIEWS_PERMISSION_BUBBLE_PSST_PERMISSION_PROMPT_IMPL_H_

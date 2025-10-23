@@ -35,6 +35,7 @@ class UiDesktopPresenter : public PsstUiPresenter {
       BravePsstInfoBarDelegate::AcceptCallback on_accept_callback) override;
   void ShowIcon() override;
   void ShowDialog() override;
+
  private:
   void OnInfobarAccepted(
       BravePsstInfoBarDelegate::AcceptCallback on_accept_callback,

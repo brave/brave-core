@@ -3,5 +3,6 @@ include_rules = [
   "+components/permissions/object_permission_context_base.h",
   "+crypto",
   "+components/prefs",
+  "+components/permissions",
   "+extensions/common",
 ]

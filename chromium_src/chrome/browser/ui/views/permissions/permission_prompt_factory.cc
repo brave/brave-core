@@ -35,8 +35,8 @@ std::unique_ptr<permissions::PermissionPrompt> CreatePermissionPrompt(
           permissions::RequestType::kBraveCardano) {
     return std::make_unique<BraveWalletPermissionPromptImpl>(
         browser, web_contents, *delegate);
-  } else if(delegate->Requests()[0]->request_type() ==
-            permissions::RequestType::kBravePsst) {
+  } else if (delegate->Requests()[0]->request_type() ==
+             permissions::RequestType::kBravePsst) {
     return std::make_unique<PsstPermissionPromptImpl>(web_contents, delegate);
   }
 #endif
