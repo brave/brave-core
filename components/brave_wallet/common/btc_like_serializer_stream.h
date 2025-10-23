@@ -9,29 +9,30 @@
 #include <vector>
 
 #include "base/containers/span.h"
-#include "base/memory/raw_ptr.h"
+#include "base/numerics/safe_conversions.h"
 
 namespace brave_wallet {
 
 class BtcLikeSerializerStream {
  public:
-  explicit BtcLikeSerializerStream(std::vector<uint8_t>* to) : to_(to) {}
+  BtcLikeSerializerStream();
+  ~BtcLikeSerializerStream();
 
-  void Push8(uint8_t i);
-  void Push16(uint16_t i);
-  void Push32(uint32_t i);
-  void Push64(uint64_t i);
-  void PushCompactSize(uint64_t i);
+  void Push8(base::StrictNumeric<uint8_t> i);
+  void Push16(base::StrictNumeric<uint16_t> i);
+  void Push32(base::StrictNumeric<uint32_t> i);
+  void Push64(base::StrictNumeric<uint64_t> i);
+  void PushCompactSize(base::StrictNumeric<uint64_t> i);
   void PushSizeAndBytes(base::span<const uint8_t> bytes);
   void PushBytes(base::span<const uint8_t> bytes);
   void PushBytesReversed(base::span<const uint8_t> bytes);
 
-  uint32_t serialized_bytes() const { return serialized_bytes_; }
+  std::vector<uint8_t> Take() &&;
+
+  const std::vector<uint8_t>& data() const { return data_; }
 
  private:
-  uint32_t serialized_bytes_ = 0;
-  std::vector<uint8_t>* to() { return to_.get(); }
-  raw_ptr<std::vector<uint8_t>> to_;
+  std::vector<uint8_t> data_;
 };
 
 }  // namespace brave_wallet

@@ -60,22 +60,22 @@ void PushOutput(const ZCashTransaction::TxOutput& output,
 
 // https://zips.z.cash/zip-0244#s-2c-amounts-sig-digest
 std::array<uint8_t, 32> HashAmounts(const ZCashTransaction& tx) {
-  std::vector<uint8_t> data;
-  BtcLikeSerializerStream stream(&data);
+  BtcLikeSerializerStream stream;
   for (const auto& input : tx.transparent_part().inputs) {
     stream.Push64(input.utxo_value);
   }
-  return Blake2b256(data, base::byte_span_from_cstring("ZTxTrAmountsHash"));
+  return Blake2b256(stream.data(),
+                    base::byte_span_from_cstring("ZTxTrAmountsHash"));
 }
 
 // https://zips.z.cash/zip-0244#s-2d-scriptpubkeys-sig-digest
 std::array<uint8_t, 32> HashScriptPubKeys(const ZCashTransaction& tx) {
-  std::vector<uint8_t> data;
-  BtcLikeSerializerStream stream(&data);
+  BtcLikeSerializerStream stream;
   for (const auto& input : tx.transparent_part().inputs) {
     stream.PushSizeAndBytes(input.script_pub_key);
   }
-  return Blake2b256(data, base::byte_span_from_cstring("ZTxTrScriptsHash"));
+  return Blake2b256(stream.data(),
+                    base::byte_span_from_cstring("ZTxTrScriptsHash"));
 }
 
 std::array<uint8_t, kBlake2bPersonalizerLength> GetHashPersonalizer(
@@ -96,22 +96,20 @@ void ZCashSerializer::SerializeSignature(
     ZCashTransaction::TxInput& input,
     const std::vector<uint8_t>& pubkey,
     const std::vector<uint8_t>& signature) {
-  DCHECK(input.script_sig.empty());
-  BtcLikeSerializerStream stream(&input.script_sig);
+  BtcLikeSerializerStream stream;
   stream.PushCompactSize(signature.size() + 1);
   stream.PushBytes(signature);
   stream.Push8(tx.sighash_type());
   stream.PushSizeAndBytes(pubkey);
+  input.script_sig = std::move(stream).Take();
 }
 
 // static
 // https://zips.z.cash/zip-0244#s-2g-txin-sig-digest
 std::array<uint8_t, kZCashDigestSize> ZCashSerializer::HashTxIn(
     std::optional<ZCashTransaction::TxInput> tx_in) {
-  std::vector<uint8_t> data;
+  BtcLikeSerializerStream stream;
   if (tx_in) {
-    BtcLikeSerializerStream stream(&data);
-
     PushOutpoint(tx_in->utxo_outpoint, stream);
     stream.Push64(tx_in->utxo_value);
 
@@ -120,7 +118,8 @@ std::array<uint8_t, kZCashDigestSize> ZCashSerializer::HashTxIn(
     stream.Push32(tx_in->n_sequence);
   }
 
-  return Blake2b256(data, base::byte_span_from_cstring("Zcash___TxInHash"));
+  return Blake2b256(std::move(stream).data(),
+                    base::byte_span_from_cstring("Zcash___TxInHash"));
 }
 
 // static
@@ -173,46 +172,46 @@ bool ZCashSerializer::SignTransparentPart(KeyringService& keyring_service,
 // https://zips.z.cash/zip-0244#t-2a-prevouts-digest
 std::array<uint8_t, kZCashDigestSize> ZCashSerializer::HashPrevouts(
     const ZCashTransaction& tx) {
-  std::vector<uint8_t> data;
-  BtcLikeSerializerStream stream(&data);
+  BtcLikeSerializerStream stream;
   for (const auto& input : tx.transparent_part().inputs) {
     PushOutpoint(input.utxo_outpoint, stream);
   }
-  return Blake2b256(data, base::byte_span_from_cstring("ZTxIdPrevoutHash"));
+  return Blake2b256(stream.data(),
+                    base::byte_span_from_cstring("ZTxIdPrevoutHash"));
 }
 
 // static
 // https://zips.z.cash/zip-0244#t-2b-sequence-digest
 std::array<uint8_t, kZCashDigestSize> ZCashSerializer::HashSequences(
     const ZCashTransaction& tx) {
-  std::vector<uint8_t> data;
-  BtcLikeSerializerStream stream(&data);
+  BtcLikeSerializerStream stream;
   for (const auto& input : tx.transparent_part().inputs) {
     stream.Push32(input.n_sequence);
   }
-  return Blake2b256(data, base::byte_span_from_cstring("ZTxIdSequencHash"));
+  return Blake2b256(stream.data(),
+                    base::byte_span_from_cstring("ZTxIdSequencHash"));
 }
 
 // static
 // https://zips.z.cash/zip-0244#t-2a-prevouts-digest
 std::array<uint8_t, kZCashDigestSize> ZCashSerializer::HashOutputs(
     const ZCashTransaction& tx) {
-  std::vector<uint8_t> data;
-  BtcLikeSerializerStream stream(&data);
+  BtcLikeSerializerStream stream;
   for (const auto& output : tx.transparent_part().outputs) {
     PushOutput(output, stream);
   }
-  return Blake2b256(data, base::byte_span_from_cstring("ZTxIdOutputsHash"));
+  return Blake2b256(stream.data(),
+                    base::byte_span_from_cstring("ZTxIdOutputsHash"));
 }
 
 // static
 // https://zips.z.cash/zip-0244#t-1-header-digest
 std::array<uint8_t, kZCashDigestSize> ZCashSerializer::HashHeader(
     const ZCashTransaction& tx) {
-  std::vector<uint8_t> data;
-  BtcLikeSerializerStream stream(&data);
+  BtcLikeSerializerStream stream;
   PushHeader(tx, stream);
-  return Blake2b256(data, base::byte_span_from_cstring("ZTxIdHeadersHash"));
+  return Blake2b256(stream.data(),
+                    base::byte_span_from_cstring("ZTxIdHeadersHash"));
 }
 
 // static
@@ -224,15 +223,15 @@ std::array<uint8_t, kZCashDigestSize> ZCashSerializer::CalculateTxIdDigest(
 
   std::array<uint8_t, kZCashDigestSize> transparent_hash;
   {
-    std::vector<uint8_t> data;
-    BtcLikeSerializerStream stream(&data);
+    BtcLikeSerializerStream stream;
     if (!zcash_transaction.transparent_part().IsEmpty()) {
       stream.PushBytes(ZCashSerializer::HashPrevouts(zcash_transaction));
       stream.PushBytes(ZCashSerializer::HashSequences(zcash_transaction));
       stream.PushBytes(ZCashSerializer::HashOutputs(zcash_transaction));
     }
-    transparent_hash = Blake2b256(
-        data, base::byte_span_from_cstring(kTransparentHashPersonalizer));
+    transparent_hash =
+        Blake2b256(stream.data(),
+                   base::byte_span_from_cstring(kTransparentHashPersonalizer));
   }
 
   std::array<uint8_t, kZCashDigestSize> sapling_hash;
@@ -249,14 +248,14 @@ std::array<uint8_t, kZCashDigestSize> ZCashSerializer::CalculateTxIdDigest(
 
   std::array<uint8_t, kZCashDigestSize> digest_hash;
   {
-    std::vector<uint8_t> data;
-    BtcLikeSerializerStream stream(&data);
+    BtcLikeSerializerStream stream;
     stream.PushBytes(header_hash);
     stream.PushBytes(transparent_hash);
     stream.PushBytes(sapling_hash);
     stream.PushBytes(orchard_hash);
 
-    digest_hash = Blake2b256(data, GetHashPersonalizer(zcash_transaction));
+    digest_hash =
+        Blake2b256(stream.data(), GetHashPersonalizer(zcash_transaction));
   }
 
   std::reverse(digest_hash.begin(), digest_hash.end());
@@ -274,8 +273,7 @@ std::array<uint8_t, kZCashDigestSize> ZCashSerializer::CalculateSignatureDigest(
 
   std::array<uint8_t, kZCashDigestSize> transparent_hash;
   {
-    std::vector<uint8_t> data;
-    BtcLikeSerializerStream stream(&data);
+    BtcLikeSerializerStream stream;
 
     if (!zcash_transaction.transparent_part().IsEmpty()) {
       stream.Push8(zcash_transaction.sighash_type());
@@ -288,8 +286,9 @@ std::array<uint8_t, kZCashDigestSize> ZCashSerializer::CalculateSignatureDigest(
       stream.PushBytes(HashTxIn(input));
     }
 
-    transparent_hash = Blake2b256(
-        data, base::byte_span_from_cstring(kTransparentHashPersonalizer));
+    transparent_hash =
+        Blake2b256(stream.data(),
+                   base::byte_span_from_cstring(kTransparentHashPersonalizer));
   }
 
   std::array<uint8_t, kZCashDigestSize> sapling_hash;
@@ -306,14 +305,14 @@ std::array<uint8_t, kZCashDigestSize> ZCashSerializer::CalculateSignatureDigest(
 
   std::array<uint8_t, kZCashDigestSize> digest_hash;
   {
-    std::vector<uint8_t> data;
-    BtcLikeSerializerStream stream(&data);
+    BtcLikeSerializerStream stream;
     stream.PushBytes(header_hash);
     stream.PushBytes(transparent_hash);
     stream.PushBytes(sapling_hash);
     stream.PushBytes(orchard_hash);
 
-    digest_hash = Blake2b256(data, GetHashPersonalizer(zcash_transaction));
+    digest_hash =
+        Blake2b256(stream.data(), GetHashPersonalizer(zcash_transaction));
   }
 
   return digest_hash;
@@ -323,8 +322,7 @@ std::array<uint8_t, kZCashDigestSize> ZCashSerializer::CalculateSignatureDigest(
 // https://zips.z.cash/zip-0225
 std::vector<uint8_t> ZCashSerializer::SerializeRawTransaction(
     const ZCashTransaction& zcash_transaction) {
-  std::vector<uint8_t> data;
-  BtcLikeSerializerStream stream(&data);
+  BtcLikeSerializerStream stream;
 
   PushHeader(zcash_transaction, stream);
 
@@ -350,17 +348,17 @@ std::vector<uint8_t> ZCashSerializer::SerializeRawTransaction(
   }
 
   // Sapling
-  stream.PushCompactSize(0);
-  stream.PushCompactSize(0);
+  stream.PushCompactSize(0u);
+  stream.PushCompactSize(0u);
 
   // Orchard
   if (zcash_transaction.orchard_part().raw_tx) {
     stream.PushBytes(zcash_transaction.orchard_part().raw_tx.value());
   } else {
-    stream.PushCompactSize(0);
+    stream.PushCompactSize(uint8_t{0});
   }
 
-  return data;
+  return std::move(stream).Take();
 }
 
 }  // namespace brave_wallet
