@@ -11,6 +11,7 @@
 #include "base/types/cxx23_to_underlying.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "brave/components/ntp_background_images/browser/ntp_p3a_util.h"
 
 namespace ntp_background_images {
 
@@ -35,6 +36,15 @@ void NTPSponsoredRichMediaAdEventHandler::MaybeReportRichMediaAdEvent(
     brave_ads::mojom::NewTabPageAdEventType mojom_ad_event_type) {
   if (!ShouldReportNewTabPageAdEvent(mojom_ad_event_type)) {
     return;
+  }
+
+  // IPF campaigns are the only ones to use a metric type of kDisabled, but
+  // this condition should be changed if that expectation changes.
+  if (mojom_ad_metric_type ==
+          brave_ads::mojom::NewTabPageAdMetricType::kDisabled &&
+      mojom_ad_event_type ==
+          brave_ads::mojom::NewTabPageAdEventType::kClicked) {
+    RecordInProductFeatureClick();
   }
 
   if (ads_service_) {

@@ -13,6 +13,9 @@ namespace ntp_background_images {
 // Specifically used to record if sponsored images are enabled.
 void RecordSponsoredImagesEnabledP3A(const PrefService* prefs);
 
+void RecordInProductFeatureView();
+void RecordInProductFeatureClick();
+
 }  // namespace ntp_background_images
 
 #endif  // BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_NTP_P3A_UTIL_H_

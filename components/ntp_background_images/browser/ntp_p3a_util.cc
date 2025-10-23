@@ -12,6 +12,15 @@
 
 namespace ntp_background_images {
 
+namespace {
+
+constexpr char kInProductFeatureViewHistogramName[] =
+    "Brave.NTP.InProductFeature.View";
+constexpr char kInProductFeatureClickHistogramName[] =
+    "Brave.NTP.InProductFeature.Click";
+
+}  // namespace
+
 void RecordSponsoredImagesEnabledP3A(const PrefService* const prefs) {
   CHECK(prefs);
 
@@ -20,6 +29,14 @@ void RecordSponsoredImagesEnabledP3A(const PrefService* const prefs) {
       prefs->GetBoolean(prefs::kNewTabPageShowSponsoredImagesBackgroundImage);
   UMA_HISTOGRAM_BOOLEAN("Brave.NTP.SponsoredMediaType",
                         is_sponsored_image_enabled);
+}
+
+void RecordInProductFeatureView() {
+  UMA_HISTOGRAM_BOOLEAN(kInProductFeatureViewHistogramName, true);
+}
+
+void RecordInProductFeatureClick() {
+  UMA_HISTOGRAM_BOOLEAN(kInProductFeatureClickHistogramName, true);
 }
 
 }  // namespace ntp_background_images
