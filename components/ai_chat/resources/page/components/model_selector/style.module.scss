@@ -93,3 +93,13 @@
 .footerGap {
   min-height: 48px;
 }
+
+.alert {
+  --leo-alert-padding: var(--leo-spacing-l);
+  margin: var(--leo-spacing-s) var(--leo-spacing-s) 0 var(--leo-spacing-s);
+  max-width: 270px;
+}
+
+.alertText {
+  font: var(--leo-font-small-regular);
+}

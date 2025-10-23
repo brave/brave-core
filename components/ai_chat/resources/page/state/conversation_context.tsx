@@ -240,8 +240,13 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     defaultModelKey: string,
     allModels: Mojom.Model[],
   ): Partial<ConversationContext> => {
+    const availableModels =
+      aiChatContext.isAIChatAgentProfileFeatureEnabled
+      && aiChatContext.isAIChatAgentProfile
+        ? allModels.filter((model) => model.supportsTools)
+        : allModels
     return {
-      allModels,
+      allModels: availableModels,
       currentModel: allModels.find((m) => m.key === currentModelKey),
       userDefaultModel: allModels.find((m) => m.key === defaultModelKey),
     }

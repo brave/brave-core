@@ -786,4 +786,7 @@
   <message name='IDS_CHAT_UI_TOOL_LABEL_ASSISTANT_DETAIL_STORAGE' desc="Label for when the assistant is storing information for later" formatter_data="webui=AiChat">
     Noting down some information for later about the page
   </message>
+  <message name="IDS_CHAT_UI_AGENT_MODE_MODEL_INFO" desc="Warning message for agent mode" formatter_data="webui=AiChat">
+    Agent mode works with models with tool support. Non-compatible models are hidden from this list.
+  </message>
 </grit-part>

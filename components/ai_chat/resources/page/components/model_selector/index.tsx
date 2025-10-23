@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
+import Alert from '@brave/leo/react/alert'
 import ButtonMenu from '@brave/leo/react/buttonMenu'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
@@ -133,6 +134,20 @@ export function ModelSelector() {
           />
         </div>
       </Button>
+
+      {/* TODO: This should be based off of conversationCapability
+      in the future. https://github.com/brave/brave-browser/issues/49261 */}
+      {aiChatContext.isAIChatAgentProfile
+        && aiChatContext.isAIChatAgentProfileFeatureEnabled && (
+          <Alert
+            type='info'
+            className={styles.alert}
+          >
+            <div className={styles.alertText}>
+              {getLocale(S.CHAT_UI_AGENT_MODE_MODEL_INFO)}
+            </div>
+          </Alert>
+        )}
 
       {models.map((model) => {
         return (
