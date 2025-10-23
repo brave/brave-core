@@ -36,7 +36,6 @@ class BlindedToken {
   ~BlindedToken();
 
   bool operator==(const BlindedToken&) const;
-  bool operator!=(const BlindedToken&) const;
 
   bool has_value() const {
     return blinded_token_ && blinded_token_.has_value();

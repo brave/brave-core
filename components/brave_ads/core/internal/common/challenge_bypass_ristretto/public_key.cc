@@ -45,10 +45,6 @@ bool PublicKey::operator==(const PublicKey& other) const {
   return EncodeBase64().value_or("") == other.EncodeBase64().value_or("");
 }
 
-bool PublicKey::operator!=(const PublicKey& other) const {
-  return !(*this == other);
-}
-
 PublicKey PublicKey::DecodeBase64(const std::string& public_key_base64) {
   return PublicKey(public_key_base64);
 }

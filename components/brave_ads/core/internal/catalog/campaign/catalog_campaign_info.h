@@ -28,7 +28,6 @@ struct CatalogCampaignInfo final {
   ~CatalogCampaignInfo();
 
   bool operator==(const CatalogCampaignInfo&) const;
-  bool operator!=(const CatalogCampaignInfo&) const;
 
   std::string id;
   int priority = 0;

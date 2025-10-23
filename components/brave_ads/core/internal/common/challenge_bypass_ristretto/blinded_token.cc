@@ -46,10 +46,6 @@ bool BlindedToken::operator==(const BlindedToken& other) const {
   return EncodeBase64().value_or("") == other.EncodeBase64().value_or("");
 }
 
-bool BlindedToken::operator!=(const BlindedToken& other) const {
-  return !(*this == other);
-}
-
 BlindedToken BlindedToken::DecodeBase64(
     const std::string& blinded_token_base64) {
   return BlindedToken(blinded_token_base64);

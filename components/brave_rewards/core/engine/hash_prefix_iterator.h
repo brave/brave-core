@@ -80,10 +80,6 @@ class HashPrefixIterator {
     return index_ == rhs.index_;
   }
 
-  bool operator!=(const HashPrefixIterator& rhs) const {
-    return index_ != rhs.index_;
-  }
-
   bool operator>(const HashPrefixIterator& rhs) const {
     return index_ > rhs.index_;
   }

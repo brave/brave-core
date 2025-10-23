@@ -39,9 +39,6 @@ bool ZCashTransaction::operator==(const ZCashTransaction& other) const {
          std::tie(other.transparent_part_, this->orchard_part_, other.locktime_,
                   other.to_, other.amount_, other.fee_, other.memo_);
 }
-bool ZCashTransaction::operator!=(const ZCashTransaction& other) const {
-  return !(*this == other);
-}
 
 ZCashTransaction::Outpoint::Outpoint() = default;
 ZCashTransaction::Outpoint::~Outpoint() = default;
@@ -55,10 +52,6 @@ bool ZCashTransaction::Outpoint::operator==(
     const ZCashTransaction::Outpoint& other) const {
   return std::tie(this->txid, this->index) == std::tie(other.txid, other.index);
 }
-bool ZCashTransaction::Outpoint::operator!=(
-    const ZCashTransaction::Outpoint& other) const {
-  return !(*this == other);
-}
 
 ZCashTransaction::OrchardPart::OrchardPart() = default;
 ZCashTransaction::OrchardPart::~OrchardPart() = default;
@@ -71,9 +64,6 @@ ZCashTransaction::OrchardPart& ZCashTransaction::OrchardPart::operator=(
 bool ZCashTransaction::OrchardPart::operator==(const OrchardPart& other) const {
   return std::tie(this->digest, this->outputs, this->raw_tx) ==
          std::tie(other.digest, other.outputs, other.raw_tx);
-}
-bool ZCashTransaction::OrchardPart::operator!=(const OrchardPart& other) const {
-  return !(*this == other);
 }
 
 ZCashTransaction::TransparentPart::TransparentPart() = default;
@@ -90,10 +80,6 @@ bool ZCashTransaction::TransparentPart::operator==(
     const TransparentPart& other) const {
   return std::tie(this->inputs, this->outputs) ==
          std::tie(other.inputs, other.outputs);
-}
-bool ZCashTransaction::TransparentPart::operator!=(
-    const TransparentPart& other) const {
-  return !(*this == other);
 }
 bool ZCashTransaction::TransparentPart::IsEmpty() const {
   return inputs.empty() && outputs.empty();
@@ -145,10 +131,6 @@ bool ZCashTransaction::TxInput::operator==(
                   this->script_sig, this->script_pub_key) ==
          std::tie(other.utxo_address, other.utxo_outpoint, other.utxo_value,
                   other.script_sig, other.script_pub_key);
-}
-bool ZCashTransaction::TxInput::operator!=(
-    const ZCashTransaction::TxInput& other) const {
-  return !(*this == other);
 }
 
 base::Value::Dict ZCashTransaction::TxInput::ToValue() const {
@@ -229,10 +211,6 @@ bool ZCashTransaction::TxOutput::operator==(
     const ZCashTransaction::TxOutput& other) const {
   return std::tie(this->address, this->amount, this->script_pubkey) ==
          std::tie(other.address, other.amount, other.script_pubkey);
-}
-bool ZCashTransaction::TxOutput::operator!=(
-    const ZCashTransaction::TxOutput& other) const {
-  return !(*this == other);
 }
 
 base::Value::Dict ZCashTransaction::TxOutput::ToValue() const {

@@ -138,10 +138,6 @@ bool APIRequestResult::operator==(const APIRequestResult& other) const {
   return tied(*this) == tied(other);
 }
 
-bool APIRequestResult::operator!=(const APIRequestResult& other) const {
-  return !(*this == other);
-}
-
 bool APIRequestResult::Is2XXResponseCode() const {
   return response_code_ >= 200 && response_code_ <= 299;
 }

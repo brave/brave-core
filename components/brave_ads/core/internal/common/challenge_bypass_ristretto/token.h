@@ -36,7 +36,6 @@ class Token {
   ~Token();
 
   bool operator==(const Token&) const;
-  bool operator!=(const Token&) const;
 
   bool has_value() const { return token_.has_value(); }
 

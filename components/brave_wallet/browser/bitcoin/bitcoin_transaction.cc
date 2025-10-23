@@ -115,9 +115,6 @@ bool BitcoinTransaction::operator==(const BitcoinTransaction& other) const {
                                              other.locktime_, other.to_,
                                              other.amount_);
 }
-bool BitcoinTransaction::operator!=(const BitcoinTransaction& other) const {
-  return !(*this == other);
-}
 
 BitcoinTransaction::Outpoint::Outpoint() = default;
 BitcoinTransaction::Outpoint::~Outpoint() = default;
@@ -130,10 +127,6 @@ BitcoinTransaction::Outpoint& BitcoinTransaction::Outpoint::operator=(
 bool BitcoinTransaction::Outpoint::operator==(
     const BitcoinTransaction::Outpoint& other) const {
   return std::tie(this->txid, this->index) == std::tie(other.txid, other.index);
-}
-bool BitcoinTransaction::Outpoint::operator!=(
-    const BitcoinTransaction::Outpoint& other) const {
-  return !(*this == other);
 }
 bool BitcoinTransaction::Outpoint::operator<(
     const BitcoinTransaction::Outpoint& other) const {
@@ -187,10 +180,6 @@ bool BitcoinTransaction::TxInput::operator==(
                   this->script_sig, this->witness, this->raw_outpoint_tx) ==
          std::tie(other.utxo_address, other.utxo_outpoint, other.utxo_value,
                   other.script_sig, other.witness, other.raw_outpoint_tx);
-}
-bool BitcoinTransaction::TxInput::operator!=(
-    const BitcoinTransaction::TxInput& other) const {
-  return !(*this == other);
 }
 
 base::Value::Dict BitcoinTransaction::TxInput::ToValue() const {
@@ -313,10 +302,6 @@ bool BitcoinTransaction::TxOutput::operator==(
   return std::tie(this->type, this->address, this->script_pubkey,
                   this->amount) ==
          std::tie(other.type, other.address, other.script_pubkey, other.amount);
-}
-bool BitcoinTransaction::TxOutput::operator!=(
-    const BitcoinTransaction::TxOutput& other) const {
-  return !(*this == other);
 }
 
 base::Value::Dict BitcoinTransaction::TxOutput::ToValue() const {

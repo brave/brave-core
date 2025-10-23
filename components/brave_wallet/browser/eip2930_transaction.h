@@ -24,7 +24,6 @@ class Eip2930Transaction : public EthTransaction {
     ~AccessListItem();
     AccessListItem(const AccessListItem&);
     bool operator==(const AccessListItem&) const;
-    bool operator!=(const AccessListItem&) const;
 
     AccessedAddress address;
     std::vector<AccessedStorageKey> storage_keys;
