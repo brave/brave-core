@@ -12,7 +12,6 @@
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "brave/browser/brave_news/brave_news_tab_helper.h"
-#include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/ui/views/brave_news/brave_news_bubble_controller.h"
 #include "brave/browser/ui/views/brave_news/brave_news_feed_item_view.h"
 #include "brave/browser/ui/views/brave_news/brave_news_feeds_container_view.h"
