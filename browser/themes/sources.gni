@@ -18,8 +18,10 @@ if (!is_android) {
   brave_browser_themes_deps += [
     "//base",
     "//brave/app:brave_generated_resources_grit",
+    "//brave/browser/themes",
     "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/constants",
+    "//chrome/browser:browser_process",
     "//chrome/browser/ui",
     "//chrome/browser/ui/color:color_headers",
     "//chrome/common",

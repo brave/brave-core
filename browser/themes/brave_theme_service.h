@@ -26,6 +26,8 @@ class BraveThemeService : public ThemeService {
   void OnDarkerThemePrefChanged();
 #endif  // defined(TOOLKIT_VIEWS)
 
+  void MigrateBrowserColorSchemeFromBraveDarkModePrefs(Profile* profile);
+
   BooleanPrefMember darker_theme_enabled_;
 };
 

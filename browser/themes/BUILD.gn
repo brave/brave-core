@@ -7,6 +7,7 @@ source_set("themes") {
   sources = [
     "brave_dark_mode_utils.cc",
     "brave_dark_mode_utils.h",
+    "pref_names.h",
   ]
 
   deps = [
