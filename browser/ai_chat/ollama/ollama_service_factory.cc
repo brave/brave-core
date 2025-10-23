@@ -3,11 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ai_chat/ollama_service_factory.h"
+#include "brave/browser/ai_chat/ollama/ollama_service_factory.h"
 
 #include "base/no_destructor.h"
-#include "brave/browser/ai_chat/ai_chat_utils.h"
 #include "brave/components/ai_chat/core/browser/ollama/ollama_service.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_selections.h"
 #include "content/public/browser/browser_context.h"
@@ -39,7 +39,7 @@ OllamaServiceFactory::~OllamaServiceFactory() = default;
 std::unique_ptr<KeyedService>
 OllamaServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
-  if (!IsAllowedForContext(context)) {
+  if (!features::IsAIChatEnabled()) {
     return nullptr;
   }
   auto url_loader_factory = context->GetDefaultStoragePartition()
