@@ -240,6 +240,14 @@
     "META": {"sizes": {"includes": [10]}},
     "includes": [32700],
   },
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-candle_phi/candle_phi.grd": {
+    "META": {"sizes": {"includes": [10]}},
+    "includes": [32720],
+  },
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-candle_phi_bridge/candle_phi_bridge.grd": {
+    "META": {"sizes": {"includes": [10]}},
+    "includes": [32740],
+  },
   # WARNING: The upstream ChromeOS/Ash strings currently run through 40000. We
   # must be careful not to exceed that maximum when adding new strings here.
   # Check out/<BUILD_TYPE>/gen/brave/resources/brave_resource_ids for how much

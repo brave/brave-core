@@ -49,6 +49,7 @@
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_ui.h"
 #include "brave/browser/ui/webui/candle_wasm/candle_bert_ui.h"
 #include "brave/browser/ui/webui/candle_wasm/candle_embedding_gemma_ui.h"
+#include "brave/browser/ui/webui/candle_wasm/candle_phi_ui.h"
 #include "brave/browser/ui/webui/skus_internals_ui.h"
 #include "brave/browser/updater/buildflags.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
@@ -640,6 +641,9 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
       .Add<local_ai::mojom::CandleService>();
 
   registry.ForWebUI<local_ai::UntrustedCandleEmbeddingGemmaUI>()
+      .Add<local_ai::mojom::CandleService>();
+
+  registry.ForWebUI<local_ai::UntrustedCandlePhiUI>()
       .Add<local_ai::mojom::CandleService>();
 
   if (base::FeatureList::IsEnabled(skus::features::kSkusFeature)) {

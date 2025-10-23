@@ -31,10 +31,13 @@ class CandleService : public mojom::CandleService {
   void BindEmbeddingGemma(
       mojo::PendingRemote<mojom::EmbeddingGemmaInterface>) override;
 
+  void BindPhi(mojo::PendingRemote<mojom::PhiInterface>) override;
+
   void Embed(const std::string& text, EmbedCallback callback) override;
 
   void RunBertExample();
   void RunEmbeddingGemmaInit();
+  void RunPhiInit();
 
  private:
   friend class base::NoDestructor<CandleService>;
@@ -45,11 +48,15 @@ class CandleService : public mojom::CandleService {
   void OnRunBertExample(const std::string& result);
   void OnEmbeddingGemmaModelFilesLoaded(mojom::LargeModelFilesPtr model_files);
   void OnEmbeddingGemmaInit(bool success);
+  void OnPhiModelFilesLoaded(mojom::LargeModelFilesPtr model_files);
+  void OnPhiInit(bool success);
 
   mojo::ReceiverSet<mojom::CandleService> receivers_;
   mojo::Remote<mojom::BertInterface> bert_remote_;
 
   mojo::Remote<mojom::EmbeddingGemmaInterface> embedding_gemma_remote_;
+
+  mojo::Remote<mojom::PhiInterface> phi_remote_;
 
   base::WeakPtrFactory<CandleService> weak_ptr_factory_{this};
 };

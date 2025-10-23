@@ -73,6 +73,9 @@ inline constexpr char kUntrustedCandleEmbeddingGemmaWasmHost[] =
     "candle-embedding-gemma-wasm";
 inline constexpr char kUntrustedCandleEmbeddingGemmaWasmURL[] =
     "chrome-untrusted://candle-embedding-gemma-wasm/";
+inline constexpr char kUntrustedCandlePhiWasmHost[] = "candle-phi-wasm";
+inline constexpr char kUntrustedCandlePhiWasmURL[] =
+    "chrome-untrusted://candle-phi-wasm/";
 inline constexpr char kShieldsPanelURL[] = "chrome://brave-shields.top-chrome";
 inline constexpr char kShieldsPanelHost[] = "brave-shields.top-chrome";
 inline constexpr char kCookieListOptInHost[] = "cookie-list-opt-in.top-chrome";

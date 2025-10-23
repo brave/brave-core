@@ -14,6 +14,7 @@
 #include "brave/browser/ui/webui/brave_wallet/trezor/trezor_ui.h"
 #include "brave/browser/ui/webui/candle_wasm/candle_bert_ui.h"
 #include "brave/browser/ui/webui/candle_wasm/candle_embedding_gemma_ui.h"
+#include "brave/browser/ui/webui/candle_wasm/candle_phi_ui.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
@@ -77,4 +78,6 @@ void RegisterChromeUntrustedWebUIConfigs() {
       std::make_unique<local_ai::UntrustedCandleBertUIConfig>());
   content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
       std::make_unique<local_ai::UntrustedCandleEmbeddingGemmaUIConfig>());
+  content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
+      std::make_unique<local_ai::UntrustedCandlePhiUIConfig>());
 }

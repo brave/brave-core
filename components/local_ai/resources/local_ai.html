@@ -30,6 +30,7 @@
         <li><strong>Trusted Page:</strong> chrome://local-ai-internals (this page)</li>
         <li><strong>Untrusted WASM:</strong> chrome-untrusted://candle-bert-wasm</li>
         <li><strong>Untrusted WASM:</strong> chrome-untrusted://candle-embedding-gemma-wasm</li>
+        <li><strong>Untrusted WASM:</strong> chrome-untrusted://candle-phi-wasm</li>
       </ul>
       <p>The Candle WASM modules run in isolated untrusted contexts for security.</p>
       <p><strong>Check the console for logs from both contexts.</strong></p>
@@ -42,5 +43,9 @@
     <h2>Embedding Gemma WASM (from ~/Downloads/embeddinggemma-300m):</h2>
     <iframe src="chrome-untrusted://candle-embedding-gemma-wasm/"
       title="Candle Embedding Gemma WASM"></iframe>
+
+    <h2>Phi Language Model WASM (from ~/Downloads/candle-quantized-phi):</h2>
+    <iframe src="chrome-untrusted://candle-phi-wasm/"
+      title="Candle Phi WASM"></iframe>
   </body>
 </html>

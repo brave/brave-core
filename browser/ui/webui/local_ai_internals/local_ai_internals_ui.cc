@@ -29,7 +29,8 @@ LocalAIInternalsUI::LocalAIInternalsUI(content::WebUI* web_ui)
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameSrc,
       std::string("frame-src ") + kUntrustedCandleBertWasmURL + " " +
-          kUntrustedCandleEmbeddingGemmaWasmURL + ";");
+          kUntrustedCandleEmbeddingGemmaWasmURL + " " +
+          kUntrustedCandlePhiWasmURL + ";");
 
   // Allow loading resources from chrome:// and chrome-untrusted://
   source->OverrideContentSecurityPolicy(

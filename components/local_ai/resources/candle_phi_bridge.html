@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Candle Phi Bridge</title>
+    <style>
+      body {
+        font-family: system-ui, -apple-system, sans-serif;
+        margin: 20px;
+        max-width: 800px;
+      }
+      .status {
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 4px;
+        font-size: 14px;
+      }
+      .status.loading { background: #fff3cd; }
+      .status.ready { background: #d1e7dd; }
+      .status.error { background: #f8d7da; }
+      .status.generating { background: #cfe2ff; }
+      textarea {
+        width: 100%;
+        padding: 8px;
+        margin: 10px 0;
+        box-sizing: border-box;
+        font-family: inherit;
+        font-size: 14px;
+        min-height: 100px;
+        resize: vertical;
+      }
+      button {
+        padding: 8px 16px;
+        cursor: pointer;
+        margin: 5px 5px 5px 0;
+        font-size: 14px;
+      }
+      button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      .controls {
+        margin: 15px 0;
+      }
+      .control-group {
+        margin: 10px 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .control-group label {
+        min-width: 120px;
+        font-size: 14px;
+      }
+      .control-group input[type="range"] {
+        flex: 1;
+      }
+      .control-group output {
+        min-width: 60px;
+        text-align: center;
+        padding: 4px 8px;
+        background: #f8f9fa;
+        border-radius: 4px;
+        font-size: 12px;
+      }
+      .result {
+        margin-top: 10px;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 4px;
+        font-size: 14px;
+        white-space: pre-wrap;
+        font-family: monospace;
+        line-height: 1.5;
+        min-height: 200px;
+      }
+      .examples {
+        margin: 10px 0;
+      }
+      .example-btn {
+        padding: 6px 12px;
+        margin: 2px;
+        background: #e9ecef;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 12px;
+      }
+      .example-btn:hover {
+        background: #dee2e6;
+      }
+      .stats {
+        font-size: 12px;
+        color: #6c757d;
+        margin-top: 10px;
+      }
+      details {
+        margin: 10px 0;
+      }
+      summary {
+        cursor: pointer;
+        font-weight: 500;
+        padding: 5px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Phi Language Model WASM</h2>
+    <div id="status" class="status loading">Initializing...</div>
+
+    <div class="examples">
+      <strong>Example Prompts:</strong>
+      <button class="example-btn" data-text="Instruct: What is the capital of France?
+Output:">Question</button>
+      <button class="example-btn" data-text="Sebastien is in London today, it's the middle of July yet it's raining, so Sebastien is feeling gloomy. He">Simple prompt</button>
+      <button class="example-btn" data-text="Suppose Alice originally had 3 apples, then Bob gave Alice 7 apples, then Alice gave Cook 5 apples, and then Tim gave Alice 3x the amount of apples Alice had. How many apples does Alice have now?
+Let's think step by step.">Math problem</button>
+      <button class="example-btn" data-text="Write a python function called batch(function, list) which call function(x) for x in list in parallel
+Solution:">Code completion</button>
+    </div>
+
+    <textarea id="promptInput" placeholder="Enter your prompt here...">Instruct: Write a detailed analogy between mathematics and a lighthouse.
+Output:</textarea>
+
+    <details open>
+      <summary>Advanced Options</summary>
+      <div class="controls">
+        <div class="control-group">
+          <label>Temperature:</label>
+          <input type="range" id="temperature" min="0" max="2" step="0.01" value="0.0">
+          <output id="tempOutput">0.00</output>
+        </div>
+        <div class="control-group">
+          <label>Top-p:</label>
+          <input type="range" id="topP" min="0" max="1" step="0.01" value="1.0">
+          <output id="topPOutput">1.00</output>
+        </div>
+        <div class="control-group">
+          <label>Repeat Penalty:</label>
+          <input type="range" id="repeatPenalty" min="1" max="2" step="0.01" value="1.1">
+          <output id="repeatPenaltyOutput">1.10</output>
+        </div>
+        <div class="control-group">
+          <label>Max Tokens:</label>
+          <input type="range" id="maxTokens" min="1" max="500" step="1" value="200">
+          <output id="maxTokensOutput">200</output>
+        </div>
+        <div class="control-group">
+          <label>Seed:</label>
+          <input type="number" id="seed" value="299792458" style="flex: 1; padding: 4px 8px;">
+          <button id="randomSeedBtn">Random</button>
+        </div>
+      </div>
+    </details>
+
+    <button id="generateBtn" disabled>Generate</button>
+    <button id="stopBtn" disabled>Stop</button>
+    <button id="clearBtn">Clear</button>
+
+    <div id="result" class="result" style="display:none;"></div>
+    <div id="stats" class="stats" style="display:none;"></div>
+
+    <script type="module" src="candle_phi_bridge.bundle.js"></script>
+  </body>
+</html>

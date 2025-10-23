@@ -1,0 +1,31 @@
+Name: Candle Phi WASM
+Short Name: candle-phi
+URL: https://github.com/huggingface/candle
+Version: Adapted from candle-wasm-examples/phi
+Date: 2025-01-XX
+License: Apache 2.0 / MIT
+License File: https://github.com/huggingface/candle/blob/main/LICENSE-APACHE
+Security Critical: yes
+Shipped: yes
+
+Description:
+WASM module for running Phi language models (Phi-1.5/Phi-2) locally in the
+browser using the Candle ML framework. Supports quantized GGUF models for
+efficient inference.
+
+The implementation is adapted from the Candle examples repository at:
+https://github.com/huggingface/candle/tree/main/candle-wasm-examples/phi
+
+Features:
+- Phi-1.5 and Phi-2 model support
+- GGUF quantized model format (q4k, q80)
+- Streaming text generation
+- Configurable temperature, top-p, and repeat penalty
+- JavaScript/TypeScript API via wasm-bindgen
+
+Local Modifications:
+- Updated crate name from candle-wasm-example-phi to candle_phi
+- Updated dependencies to match Brave's WASM build system
+- Changed candle to candle-core dependency
+- Set wasm-bindgen version to match Brave's toolchain (0.2.100)
+- Updated candle version to 0.9.1

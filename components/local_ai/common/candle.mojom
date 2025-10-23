@@ -24,6 +24,8 @@ interface CandleService {
 
   BindEmbeddingGemma(pending_remote<EmbeddingGemmaInterface> embedding_gemma);
 
+  BindPhi(pending_remote<PhiInterface> phi);
+
   // Generate embeddings for the given text
   Embed(string text) => (array<double> embedding);
 };
@@ -36,4 +38,14 @@ interface EmbeddingGemmaInterface {
   Init(LargeModelFiles model_files) => (bool success);
 
   Embed(string input) => (array<double> output);
+};
+
+interface PhiInterface {
+  Init(LargeModelFiles model_files, bool quantized) => (bool success);
+
+  InitWithPrompt(string prompt, double temp, double top_p,
+                 float repeat_penalty, uint32 repeat_last_n,
+                 uint64 seed) => (string first_token);
+
+  NextToken() => (string token, bool is_end);
 };
