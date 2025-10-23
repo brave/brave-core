@@ -49,7 +49,7 @@ class LinkPreviewViewController: UIViewController {
       : browserController.profileController.profile
     let braveShieldsTabHelper: BraveShieldsTabHelper = .init(
       tab: tab,
-      braveShieldsSettings: BraveShieldsSettingsFactory.create(for: profile)
+      braveShieldsSettings: BraveShieldsSettingsServiceFactory.get(profile: profile)
     )
     tab.braveShieldsHelper = braveShieldsTabHelper
     tab.addPolicyDecider(braveShieldsTabHelper)

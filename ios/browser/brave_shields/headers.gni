@@ -3,5 +3,4 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-brave_shields_public_headers =
-    [ "//brave/ios/browser/brave_shields/brave_shields_settings_factory.h" ]
+brave_shields_public_headers = [ "//brave/ios/browser/brave_shields/brave_shields_settings_service_factory_bridge.h" ]

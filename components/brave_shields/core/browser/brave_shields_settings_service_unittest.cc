@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/brave_shields/core/browser/brave_shields_settings.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
@@ -19,10 +19,10 @@
 using brave_shields::mojom::AdBlockMode;
 using brave_shields::mojom::FingerprintMode;
 
-class BraveShieldsSettingsTest : public testing::Test {
+class BraveShieldsSettingsServiceTest : public testing::Test {
  public:
-  BraveShieldsSettingsTest() {}
-  ~BraveShieldsSettingsTest() override = default;
+  BraveShieldsSettingsServiceTest() {}
+  ~BraveShieldsSettingsServiceTest() override = default;
 
   void SetUp() override {
     HostContentSettingsMap::RegisterProfilePrefs(profile_prefs_.registry());
@@ -33,7 +33,7 @@ class BraveShieldsSettingsTest : public testing::Test {
         false /* store_last_modified */, false /* restore_session */,
         false /* should_record_metrics */);
     brave_shields_settings_ =
-        std::make_unique<brave_shields::BraveShieldsSettings>(
+        std::make_unique<brave_shields::BraveShieldsSettingsService>(
             *GetHostContentSettingsMap(), GetLocalState(), &profile_prefs_);
   }
 
@@ -46,7 +46,7 @@ class BraveShieldsSettingsTest : public testing::Test {
 
   const GURL kTestUrl{"https://brave.com"};
 
-  brave_shields::BraveShieldsSettings* brave_shields_settings() {
+  brave_shields::BraveShieldsSettingsService* brave_shields_settings() {
     return brave_shields_settings_.get();
   }
 
@@ -55,10 +55,11 @@ class BraveShieldsSettingsTest : public testing::Test {
   TestingPrefServiceSimple local_state_;
   sync_preferences::TestingPrefServiceSyncable profile_prefs_;
   scoped_refptr<HostContentSettingsMap> host_content_settings_map_;
-  std::unique_ptr<brave_shields::BraveShieldsSettings> brave_shields_settings_;
+  std::unique_ptr<brave_shields::BraveShieldsSettingsService>
+      brave_shields_settings_;
 };
 
-TEST_F(BraveShieldsSettingsTest, BraveShieldsEnabled) {
+TEST_F(BraveShieldsSettingsServiceTest, BraveShieldsEnabled) {
   // verify the initial values
   EXPECT_TRUE(brave_shields_settings()->GetBraveShieldsEnabled(kTestUrl));
   EXPECT_TRUE(brave_shields::GetBraveShieldsEnabled(GetHostContentSettingsMap(),
@@ -77,7 +78,7 @@ TEST_F(BraveShieldsSettingsTest, BraveShieldsEnabled) {
       GetHostContentSettingsMap(), GURL("https://example.com")));
 }
 
-TEST_F(BraveShieldsSettingsTest, AdBlockMode) {
+TEST_F(BraveShieldsSettingsServiceTest, AdBlockMode) {
   // verify the initial values
   EXPECT_EQ(brave_shields_settings()->GetAdBlockMode(kTestUrl),
             AdBlockMode::STANDARD);
@@ -116,7 +117,7 @@ TEST_F(BraveShieldsSettingsTest, AdBlockMode) {
       AdBlockMode::STANDARD);
 }
 
-TEST_F(BraveShieldsSettingsTest, DefaultAdBlockMode) {
+TEST_F(BraveShieldsSettingsServiceTest, DefaultAdBlockMode) {
   // explicitly set so we can verify this is unchanged by updating default
   brave_shields_settings()->SetAdBlockMode(AdBlockMode::STANDARD, kTestUrl);
 
@@ -164,7 +165,7 @@ TEST_F(BraveShieldsSettingsTest, DefaultAdBlockMode) {
             brave_shields::ControlType::BLOCK_THIRD_PARTY);
 }
 
-TEST_F(BraveShieldsSettingsTest, FingerprintMode) {
+TEST_F(BraveShieldsSettingsServiceTest, FingerprintMode) {
   // verify the initial values
   EXPECT_EQ(brave_shields_settings()->GetFingerprintMode(kTestUrl),
             FingerprintMode::STANDARD_MODE);
@@ -219,7 +220,7 @@ TEST_F(BraveShieldsSettingsTest, FingerprintMode) {
             brave_shields::ControlType::DEFAULT);
 }
 
-TEST_F(BraveShieldsSettingsTest, DefaultFingerprintMode) {
+TEST_F(BraveShieldsSettingsServiceTest, DefaultFingerprintMode) {
   // explicitly set so we can verify this is unchanged by updating default
   brave_shields_settings()->SetFingerprintMode(FingerprintMode::STANDARD_MODE,
                                                kTestUrl);
@@ -253,7 +254,7 @@ TEST_F(BraveShieldsSettingsTest, DefaultFingerprintMode) {
             brave_shields::ControlType::DEFAULT);
 }
 
-TEST_F(BraveShieldsSettingsTest, NoScriptsEnabled) {
+TEST_F(BraveShieldsSettingsServiceTest, NoScriptsEnabled) {
   // verify the initial values
   EXPECT_FALSE(brave_shields_settings()->IsNoScriptEnabled(kTestUrl));
   EXPECT_EQ(brave_shields::GetNoScriptControlType(GetHostContentSettingsMap(),
@@ -276,7 +277,7 @@ TEST_F(BraveShieldsSettingsTest, NoScriptsEnabled) {
             brave_shields::ControlType::ALLOW);
 }
 
-TEST_F(BraveShieldsSettingsTest, NoScriptsEnabledByDefault) {
+TEST_F(BraveShieldsSettingsServiceTest, NoScriptsEnabledByDefault) {
   // explicitly set so we can verify this is unchanged by updating default
   brave_shields_settings()->SetNoScriptEnabled(false, kTestUrl);
 

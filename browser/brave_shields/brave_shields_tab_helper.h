@@ -11,10 +11,10 @@
 #include <vector>
 
 #include "base/containers/flat_set.h"
+#include "base/memory/raw_ptr.h"
 #include "base/observer_list.h"
 #include "base/observer_list_types.h"
 #include "base/scoped_observation.h"
-#include "brave/components/brave_shields/core/browser/brave_shields_settings.h"
 #include "brave/components/brave_shields/core/common/brave_shields_panel.mojom.h"
 #include "brave/components/brave_shields/core/common/shields_settings.mojom.h"
 #include "components/content_settings/core/browser/content_settings_observer.h"
@@ -32,6 +32,8 @@ using brave_shields::mojom::HttpsUpgradeMode;
 using content::NavigationEntry;
 
 namespace brave_shields {
+
+class BraveShieldsSettingsService;
 
 // Per-tab class to manage Shields panel data
 class BraveShieldsTabHelper
@@ -146,7 +148,7 @@ class BraveShieldsTabHelper
   base::ScopedObservation<HostContentSettingsMap, content_settings::Observer>
       observation_{this};
   const raw_ref<HostContentSettingsMap> host_content_settings_map_;
-  std::unique_ptr<BraveShieldsSettings> brave_shields_settings_;
+  const raw_ref<BraveShieldsSettingsService> brave_shields_settings_;
 
   PrefChangeRegistrar local_state_change_registrar_;
 

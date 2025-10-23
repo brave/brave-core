@@ -3,11 +3,14 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_BROWSER_BRAVE_SHIELDS_SETTINGS_H_
-#define BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_BROWSER_BRAVE_SHIELDS_SETTINGS_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_BROWSER_BRAVE_SHIELDS_SETTINGS_SERVICE_H_
+#define BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_BROWSER_BRAVE_SHIELDS_SETTINGS_SERVICE_H_
 
+#include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_shields/core/common/shields_settings.mojom.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
+#include "components/keyed_service/core/keyed_service.h"
 
 class GURL;
 class HostContentSettingsMap;
@@ -15,13 +18,13 @@ class PrefService;
 
 namespace brave_shields {
 
-class BraveShieldsSettings {
+class BraveShieldsSettingsService : public KeyedService {
  public:
-  explicit BraveShieldsSettings(
+  explicit BraveShieldsSettingsService(
       HostContentSettingsMap& host_content_settings_map,
       PrefService* local_state = nullptr,
       PrefService* profile_state = nullptr);
-  virtual ~BraveShieldsSettings();
+  ~BraveShieldsSettingsService() override;
 
   void SetBraveShieldsEnabled(bool enable, const GURL& url);
   bool GetBraveShieldsEnabled(const GURL& url);
@@ -53,4 +56,4 @@ class BraveShieldsSettings {
 
 }  // namespace brave_shields
 
-#endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_BROWSER_BRAVE_SHIELDS_SETTINGS_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_BROWSER_BRAVE_SHIELDS_SETTINGS_SERVICE_H_

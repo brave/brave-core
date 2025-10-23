@@ -17,6 +17,7 @@
 #include "brave/browser/brave_search/backup_results_service_factory.h"
 #include "brave/browser/brave_shields/ad_block_pref_service_factory.h"
 #include "brave/browser/brave_shields/brave_farbling_service_factory.h"
+#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_ipfs_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
@@ -218,6 +219,7 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
     psst::BravePsstPermissionContextFactory::GetInstance();
   }
 #endif  // BUILDFLAG(ENABLE_PSST)
+  BraveShieldsSettingsServiceFactory::GetInstance();
 }
 
 }  // namespace brave
