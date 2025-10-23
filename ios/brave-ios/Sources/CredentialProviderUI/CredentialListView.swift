@@ -221,6 +221,7 @@ extension CredentialListModel {
     var rank: Int64 = 0
     var serviceIdentifier: String!
     var serviceName: String!
+    var registryControlledDomain: String!
     var note: String!
     var syncId: Data!
     var userDisplayName: String!
