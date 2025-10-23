@@ -5,13 +5,16 @@
 
 #include "base/check.h"
 #include "base/path_service.h"
+#include "brave/browser/themes/brave_dark_mode_utils.h"
+#include "brave/browser/themes/pref_names.h"
 #include "brave/browser/ui/color/brave_color_id.h"
-#include "brave/browser/ui/color/brave_color_mixer.h"
 #include "brave/browser/ui/color/color_palette.h"
 #include "brave/components/constants/brave_paths.h"
+#include "brave/components/constants/pref_names.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/ui/color/nala/nala_color_id.h"
 #include "build/build_config.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/profiles/profile_test_util.h"
@@ -21,10 +24,11 @@
 #include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
-#include "chrome/browser/ui/omnibox/omnibox_theme.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
 #include "extensions/buildflags/buildflags.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -52,6 +56,10 @@ class BraveThemeServiceTest : public InProcessBrowserTest {
  public:
   BraveThemeServiceTest() = default;
   ~BraveThemeServiceTest() override = default;
+
+  PrefService* local_state() { return g_browser_process->local_state(); }
+
+  PrefService* profile_prefs() { return browser()->profile()->GetPrefs(); }
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   bool UsingCustomTheme(const ThemeService& theme_service) const {
@@ -148,4 +156,33 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, NonNormalWindowDarkModeTest) {
   key = browser_widget->GetColorProviderKeyForTesting();
   EXPECT_EQ(ui::ColorProviderKey::ColorMode::kDark, key.color_mode);
 #endif
+}
+
+IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, PRE_BraveDarkModeMigrationTest) {
+  // Check on first launch.
+  EXPECT_EQ(dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DEFAULT,
+            static_cast<dark_mode::BraveDarkModeType>(
+                local_state()->GetInteger(kBraveDarkMode)));
+  EXPECT_EQ(ThemeService::BrowserColorScheme::kSystem,
+            static_cast<ThemeService::BrowserColorScheme>(
+                profile_prefs()->GetInteger(prefs::kBrowserColorScheme)));
+  EXPECT_TRUE(profile_prefs()->GetBoolean(dark_mode::kBraveDarkModeMigrated));
+
+  // Set migration is not yet done and brave dark mode is dark for checking
+  // migration at next launch.
+  profile_prefs()->SetBoolean(dark_mode::kBraveDarkModeMigrated, false);
+  local_state()->SetInteger(
+      kBraveDarkMode,
+      static_cast<int>(
+          dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK));
+}
+
+IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, BraveDarkModeMigrationTest) {
+  EXPECT_EQ(dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK,
+            static_cast<dark_mode::BraveDarkModeType>(
+                local_state()->GetInteger(kBraveDarkMode)));
+  EXPECT_EQ(ThemeService::BrowserColorScheme::kDark,
+            static_cast<ThemeService::BrowserColorScheme>(
+                profile_prefs()->GetInteger(prefs::kBrowserColorScheme)));
+  EXPECT_TRUE(profile_prefs()->GetBoolean(dark_mode::kBraveDarkModeMigrated));
 }
