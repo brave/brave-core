@@ -100,6 +100,14 @@ void ZCashTxManager::AddUnapprovedZCashTransaction(
                          weak_factory_.GetWeakPtr(), from.Clone(), origin,
                          std::move(callback)));
       return;
+    } else if (tx_result.value() == mojom::ZCashTxType::kOrchardToTransparent) {
+      LOG(ERROR) << "XXXZZZ Creating Orchard to Transparent transaction";
+      zcash_wallet_service_->CreateOrchardToTransparentTransaction(
+          from->Clone(), params->to, amount,
+          base::BindOnce(&ZCashTxManager::ContinueAddUnapprovedTransaction,
+                         weak_factory_.GetWeakPtr(), from.Clone(), origin,
+                         std::move(callback)));
+      return;
     }
   }
 #endif

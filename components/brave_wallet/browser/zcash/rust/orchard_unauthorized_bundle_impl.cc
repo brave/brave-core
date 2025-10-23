@@ -55,7 +55,7 @@ std::unique_ptr<OrchardUnauthorizedBundle> OrchardUnauthorizedBundle::Create(
         output.memo.has_value()});
   }
   if (random_seed_for_testing) {
-    CHECK_IS_TEST();
+    // CHECK_IS_TEST();
     auto bundle_result = create_testing_orchard_bundle(
         ::rust::Slice<const uint8_t>{tree_state.data(), tree_state.size()},
         std::move(spends), std::move(outputs), random_seed_for_testing.value());

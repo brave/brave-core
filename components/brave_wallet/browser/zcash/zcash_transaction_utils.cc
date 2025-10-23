@@ -207,6 +207,12 @@ std::optional<PickOrchardInputsResult> PickZCashOrchardInputs(
 
     auto change = base::CheckSub(total_inputs_amount, amount_and_fee);
     if (change.IsValid()) {
+      LOG(ERROR) << "XXXZZZ PickZCashOrchardInputs - Selected "
+                 << selected_inputs.size() << " inputs, total: "
+                 << static_cast<uint64_t>(total_inputs_amount.ValueOrDie())
+                 << ", amount: " << amount
+                 << ", fee: " << static_cast<uint64_t>(fee.ValueOrDie())
+                 << ", change: " << static_cast<uint64_t>(change.ValueOrDie());
       return PickOrchardInputsResult{std::move(selected_inputs),
                                      fee.ValueOrDie(), change.ValueOrDie()};
     }

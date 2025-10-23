@@ -31,6 +31,7 @@
 #if BUILDFLAG(ENABLE_ORCHARD)
 #include "brave/components/brave_wallet/browser/zcash/zcash_auto_sync_manager.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_create_orchard_to_orchard_transaction_task.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_create_orchard_to_transparent_transaction_task.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_create_transparent_to_orchard_transaction_task.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_get_zcash_chain_tip_status_task.h"
 #endif  // BUILDFLAG(ENABLE_ORCHARD)
@@ -377,12 +378,22 @@ void ZCashWalletService::OnCompleteTransactionTaskDone(
   CHECK(complete_transaction_tasks_.erase(task));
 
   if (!result.has_value()) {
+    LOG(ERROR) << "XXXZZZ OnCompleteTransactionTaskDone - Transaction "
+                  "completion failed: "
+               << result.error();
     std::move(callback).Run("", std::move(original_zcash_transaction),
                             result.error());
     return;
   }
 
+  LOG(ERROR) << "XXXZZZ OnCompleteTransactionTaskDone - Transaction completed "
+                "successfully, serializing and sending";
   auto tx = ZCashSerializer::SerializeRawTransaction(result.value());
+  LOG(ERROR)
+      << "XXXZZZ OnCompleteTransactionTaskDone - Serialized transaction size: "
+      << tx.size();
+  LOG(ERROR) << "XXXZZZ send transaction";
+  LOG(ERROR) << "XXXZZZ " << ToHex(tx);
   zcash_rpc_->SendTransaction(
       GetNetworkForZCashAccount(account_id), std::move(tx),
       base::BindOnce(&ZCashWalletService::OnSendTransactionResult,
@@ -427,11 +438,22 @@ ZCashWalletService::GetTransactionType(const mojom::AccountIdPtr& account_id,
 #if BUILDFLAG(ENABLE_ORCHARD)
   if (IsZCashShieldedTransactionsEnabled()) {
     if (use_shielded_pool) {
-      auto validation_result = ValidateOrchardRecipientAddress(testnet, addr);
-      if (validation_result.has_value()) {
+      // Check if it's an Orchard address first
+      auto orchard_validation_result =
+          ValidateOrchardRecipientAddress(testnet, addr);
+      if (orchard_validation_result.has_value()) {
         return base::ok(mojom::ZCashTxType::kOrchardToOrchard);
       }
-      return base::unexpected(validation_result.error());
+
+      // If not Orchard, check if it's a transparent address (Orchard to
+      // Transparent)
+      auto transparent_validation_result =
+          ValidateTransparentRecipientAddress(testnet, addr);
+      if (transparent_validation_result.has_value()) {
+        return base::ok(mojom::ZCashTxType::kOrchardToTransparent);
+      }
+
+      return base::unexpected(orchard_validation_result.error());
     }
 
     if (ValidateOrchardRecipientAddress(testnet, addr).has_value()) {
@@ -476,11 +498,24 @@ void ZCashWalletService::OnSendTransactionResult(
     ZCashTransaction tx,
     base::expected<zcash::mojom::SendResponsePtr, std::string> result) {
   if (result.has_value() && result.value() && (*result)->error_code == 0) {
+    LOG(ERROR)
+        << "XXXZZZ OnSendTransactionResult - Transaction sent successfully!";
     auto tx_id = ZCashSerializer::CalculateTxIdDigest(tx);
     auto tx_id_hex = ToHex(tx_id);
     CHECK(tx_id_hex.starts_with("0x"));
+    LOG(ERROR) << "XXXZZZ OnSendTransactionResult - Transaction ID: "
+               << tx_id_hex.substr(2);
     std::move(callback).Run(tx_id_hex.substr(2), std::move(tx), "");
   } else {
+    LOG(ERROR) << "XXXZZZ OnSendTransactionResult - Transaction send failed!";
+    if (result.has_value() && result.value()) {
+      LOG(ERROR) << "XXXZZZ OnSendTransactionResult - Error code: "
+                 << (*result)->error_code
+                 << ", Error message: " << (*result)->error_message;
+    } else {
+      LOG(ERROR) << "XXXZZZ OnSendTransactionResult - Error: "
+                 << result.error();
+    }
     std::move(callback).Run("", std::move(tx), WalletInternalErrorMessage());
   }
 }
@@ -751,6 +786,44 @@ void ZCashWalletService::OnCreateOrchardToOrchardTransactionTaskDone(
     CreateTransactionCallback callback,
     base::expected<ZCashTransaction, std::string> result) {
   CHECK(create_shielded_transaction_tasks_.erase(task));
+
+  std::move(callback).Run(result);
+}
+
+void ZCashWalletService::CreateOrchardToTransparentTransaction(
+    mojom::AccountIdPtr account_id,
+    const std::string& address_to,
+    uint64_t amount,
+    CreateTransactionCallback callback) {
+  CHECK(IsZCashShieldedTransactionsEnabled());
+
+  // Validate the transparent address
+  bool testnet = IsZCashTestnetKeyring(account_id->keyring_id);
+  auto validation_result =
+      ValidateTransparentRecipientAddress(testnet, address_to);
+  if (!validation_result.has_value()) {
+    std::move(callback).Run(base::unexpected(WalletInternalErrorMessage()));
+    return;
+  }
+
+  auto [task_it, inserted] =
+      create_orchard_to_transparent_transaction_tasks_.insert(
+          std::make_unique<ZCashCreateOrchardToTransparentTransactionTask>(
+              base::PassKey<ZCashWalletService>(), *this,
+              CreateActionContext(account_id), address_to, amount));
+  CHECK(inserted);
+  auto* task_ptr = task_it->get();
+
+  task_ptr->Start(base::BindOnce(
+      &ZCashWalletService::OnCreateOrchardToTransparentTransactionTaskDone,
+      weak_ptr_factory_.GetWeakPtr(), task_ptr, std::move(callback)));
+}
+
+void ZCashWalletService::OnCreateOrchardToTransparentTransactionTaskDone(
+    ZCashCreateOrchardToTransparentTransactionTask* task,
+    CreateTransactionCallback callback,
+    base::expected<ZCashTransaction, std::string> result) {
+  CHECK(create_orchard_to_transparent_transaction_tasks_.erase(task));
 
   std::move(callback).Run(result);
 }
