@@ -23,7 +23,7 @@ class UntrustedSanitizedImageSource : public SanitizedImageSource {
   // SanitizedImageSource:
   std::string GetSource() const override;
   void StartDataRequest(
-      const std::string& path,
+      std::string_view path,
       web::URLDataSourceIOS::GotDataCallback callback) override;
 };
 
