@@ -45,7 +45,6 @@ bool BraveThemeService::GetIsGrayscale() const {
 void BraveThemeService::OnDarkerThemePrefChanged() {
   NotifyThemeChanged();
 }
-
 #endif  // defined(TOOLKIT_VIEWS)
 
 void BraveThemeService::MigrateBrowserColorSchemeFromBraveDarkModePrefs(
