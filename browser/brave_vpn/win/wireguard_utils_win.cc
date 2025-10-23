@@ -307,8 +307,11 @@ wireguard::WireguardKeyPair WireguardGenerateKeypairImpl() {
     return std::nullopt;
   }
 
-  return std::make_tuple(base::WideToUTF8(public_key_data.Get()),
-                         base::WideToUTF8(private_key_data.Get()));
+  std::string public_key = reinterpret_cast<std::string::value_type*>(
+      public_key_data.Get(), public_key_data.ByteLength());
+  std::string private_key = reinterpret_cast<std::string::value_type*>(
+      private_key_data.Get(), private_key_data.ByteLength());
+  return std::make_tuple(public_key, private_key);
 }
 
 void WireguardGenerateKeypair(
