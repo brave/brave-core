@@ -180,7 +180,12 @@ class DownloadQueueTests: XCTestCase {
   }
 
   func test_downloadSuggestedFileName_UnicodeBidiControlEscaped() {
-    let download = Download(suggestedFilename: "file\u{0000202e}4pm.doc", originalURL: nil)
+    let download = Download(
+      suggestedFilename: "file\u{0000202e}4pm.doc",
+      originalURL: nil,
+      redirectedURL: nil,
+      originatingHost: ""
+    )
     XCTAssertEqual(download.filename, "file4pm.doc")
   }
 }
@@ -197,7 +202,7 @@ private func makeSUT() -> (sut: DownloadQueue, delegate: DownloadQueueDelegateSp
 
 extension Download {
   convenience override init() {
-    self.init(suggestedFilename: "", originalURL: nil)
+    self.init(suggestedFilename: "", originalURL: nil, redirectedURL: nil, originatingHost: "")
   }
 }
 
@@ -211,7 +216,7 @@ private class DownloadSpy: Download {
   var receivedMessages: [Message] = []
 
   init() {
-    super.init(suggestedFilename: "", originalURL: nil)
+    super.init(suggestedFilename: "", originalURL: nil, redirectedURL: nil, originatingHost: "")
   }
 
   override func resume() {

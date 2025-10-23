@@ -191,26 +191,22 @@ extension BrowserViewController: TabDownloadDelegate {
       return false
     }
 
-    // The following logic for the title and url is from Chromium: https://github.com/brave/brave-browser/issues/45988
-    // and https://hackerone.com/reports/3175265
-    // Title has a max length of 33 characters and can be truncated in the middle to allow showing
-    // the beginning of the file name as well as the extension.
-    // URL has a max length of 40, otherwise fall-back to the eTLD+1 (may or may not be >= 40)
-
-    let host = download.originalURL?.host() ?? tab.lastCommittedURL?.host() ?? ""
-    let url =
-      download.originalURL?.isWebPage(includeDataURIs: false) == true
-      ? download.originalURL : tab.lastCommittedURL
-    var formattedUrl = URLFormatter.formatURLOrigin(
-      forSecurityDisplay: url?.absoluteString ?? host,
-      schemeDisplay: .omitHttpAndHttps
-    )
-
-    // Fallback to eTLD+1 - Origin is too long
-    if formattedUrl.isEmpty || formattedUrl.count > 40 {
-      formattedUrl = url?.baseDomain ?? host  // eTLD+1
+    // Only show the origin displayed on the download alert on 18.2+
+    var host = ""
+    if #available(iOS 18.2, *) {
+      // The originating host is only populated running on iOS 18.2.
+      host = download.originatingHost
+      // Use the originating host provided by WKWebView.
+      if host.isEmpty, let redirectedURLHost = download.redirectedURL?.host {
+        // If originating host is not available (e.g. the download is triggered
+        // by a data:// frame, use the download host instead).
+        host = redirectedURLHost
+      }
     }
 
+    // The following logic for the title is from Chromium: https://github.com/brave/brave-browser/issues/45988
+    // Title has a max length of 33 characters and can be truncated in the middle to allow showing
+    // the beginning of the file name as well as the extension.
     // Truncate the file-name after stripping any unicode control characters
     // Max file name length of 33 characters (same as Chromium)
     let filename = suggestedFileName
