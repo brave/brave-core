@@ -599,8 +599,10 @@ void BraveContentBrowserClient::
 void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
     content::WebUIBrowserInterfaceBrokerRegistry& registry) {
   ChromeContentBrowserClient::RegisterWebUIInterfaceBrokers(registry);
+#if !BUILDFLAG(IS_ANDROID)
   registry.AddGlobal<color_change_listener::mojom::PageHandler>(
       base::BindRepeating(&MaybeBindColorChangeHandler));
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
   if (brave_vpn::IsBraveVPNFeatureEnabled()) {

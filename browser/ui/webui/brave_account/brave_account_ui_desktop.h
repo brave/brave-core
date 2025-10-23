@@ -24,10 +24,6 @@ class BraveAccountUIDesktop
  public:
   explicit BraveAccountUIDesktop(content::WebUI* web_ui);
 
-  using BraveAccountUIBase<
-      content::WebUIDataSource,
-      brave_account::BraveAccountServiceFactory>::BindInterface;
-
  private:
   WEB_UI_CONTROLLER_TYPE_DECL();
 };

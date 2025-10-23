@@ -30,14 +30,12 @@ source_set("brave_account") {
 
   if (!is_android) {
     deps += [
-      "//brave/ui/webui/brave_color_change_listener",
       "//chrome/browser/ui/webui",
       "//mojo/public/cpp/bindings",
       "//ui/compositor",
       "//ui/gfx/geometry",
       "//ui/views",
       "//ui/web_dialogs",
-      "//ui/webui/resources/cr_components/color_change_listener:mojom",
       "//url",
     ]
   }

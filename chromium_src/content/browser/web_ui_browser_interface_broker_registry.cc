@@ -23,8 +23,8 @@
     return nullptr;                                                          \
   std::vector<BinderInitializer> initializers = global_binder_initializers_; \
   std::ranges::copy(iter->second, std::back_inserter(initializers));         \
-  return std::make_unique<content::PerWebUIBrowserInterfaceBroker>(          \
-      controller, initializers);  DCHECK(true
+  return std::make_unique<PerWebUIBrowserInterfaceBroker>(controller,        \
+                                                          initializers);  DCHECK(true
 
 #include <content/browser/web_ui_browser_interface_broker_registry.cc>
 

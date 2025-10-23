@@ -6,13 +6,16 @@
 #ifndef BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_BROWSER_WEB_UI_BROWSER_INTERFACE_BROKER_REGISTRY_H_
 #define BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_BROWSER_WEB_UI_BROWSER_INTERFACE_BROKER_REGISTRY_H_
 
+#include <utility>
 #include <vector>
 
 #include "base/functional/bind.h"
+#include "base/functional/callback.h"
 #include "content/public/browser/per_web_ui_browser_interface_broker.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
+#include "content/public/browser/web_ui_controller.h"
 #include "mojo/public/cpp/bindings/binder_map.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 
@@ -20,16 +23,14 @@
 // https://chromium-review.googlesource.com/c/chromium/src/+/7047465 lands
 // upstream we can remove this.
 #define AddBinderForTesting                                                 \
-  AddBinderForTesting_Unused() {}                                           \
+  AddBinderForTesting_Unused();                                             \
   template <typename Interface>                                             \
   WebUIBrowserInterfaceBrokerRegistry& AddGlobal(                           \
-      base::RepeatingCallback<void(content::RenderFrameHost*,               \
-                                   mojo::PendingReceiver<Interface>)>       \
-          binder) {                                                         \
+      base::RepeatingCallback<void(                                         \
+          RenderFrameHost*, mojo::PendingReceiver<Interface>)> binder) {    \
     return AddGlobal<Interface>(base::BindRepeating(                        \
-        [](base::RepeatingCallback<void(content::RenderFrameHost*,          \
-                                        mojo::PendingReceiver<Interface>)>  \
-               binder,                                                      \
+        [](base::RepeatingCallback<void(                                    \
+               RenderFrameHost*, mojo::PendingReceiver<Interface>)> binder, \
            WebUIController* controller,                                     \
            mojo::PendingReceiver<Interface> receiver) {                     \
           binder.Run(controller->web_ui()->GetRenderFrameHost(),            \
