@@ -46,12 +46,12 @@ class BraveWebUIIOSDataSource::BraveInternalDataSource
 
   std::string GetSource() const override { return parent_->GetSource(); }
 
-  void StartDataRequest(const std::string& path,
+  void StartDataRequest(std::string_view path,
                         URLDataSourceIOS::GotDataCallback callback) override {
     return parent_->StartDataRequest(path, std::move(callback));
   }
 
-  std::string GetMimeType(const std::string& path) const override {
+  std::string GetMimeType(std::string_view path) const override {
     return parent_->GetMimeType(path);
   }
 
@@ -114,8 +114,7 @@ BraveWebUIIOSDataSource::BraveWebUIIOSDataSource(std::string_view source_name)
 
 BraveWebUIIOSDataSource::~BraveWebUIIOSDataSource() = default;
 
-std::string BraveWebUIIOSDataSource::GetMimeType(
-    const std::string& path) const {
+std::string BraveWebUIIOSDataSource::GetMimeType(std::string_view path) const {
   if (base::EndsWith(path, ".css", base::CompareCase::INSENSITIVE_ASCII)) {
     return "text/css";
   }

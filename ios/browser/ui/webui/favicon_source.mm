@@ -162,7 +162,7 @@ std::string FaviconSource::GetSource() const {
 }
 
 void FaviconSource::StartDataRequest(
-    const std::string& path,
+    std::string_view path,
     web::URLDataSourceIOS::GotDataCallback callback) {
   favicon::FaviconService* favicon_service =
       ios::FaviconServiceFactory::GetForProfile(
@@ -173,7 +173,8 @@ void FaviconSource::StartDataRequest(
   }
 
   chrome::ParsedFaviconPath parsed;
-  bool success = chrome::ParseFaviconPath(path, url_format_, &parsed);
+  bool success =
+      chrome::ParseFaviconPath(std::string(path), url_format_, &parsed);
   if (!success) {
     SendDefaultResponse(std::move(callback));
     return;
@@ -252,7 +253,7 @@ void FaviconSource::StartDataRequest(
   }
 }
 
-std::string FaviconSource::GetMimeType(const std::string&) const {
+std::string FaviconSource::GetMimeType(std::string_view) const {
   // We need to explicitly return a mime type, otherwise if the user tries to
   // drag the image they get no extension.
   return "image/png";
