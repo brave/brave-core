@@ -13,7 +13,6 @@
 #include "base/functional/callback.h"
 #include "base/strings/strcat.h"
 #include "brave/components/brave_account/brave_account_service_constants.h"
-#include "brave/components/brave_account/endpoint_client/client.h"
 #include "brave/components/brave_account/pref_names.h"
 #include "components/os_crypt/sync/os_crypt.h"
 #include "components/prefs/pref_service.h"
@@ -26,33 +25,33 @@ namespace brave_account {
 
 namespace {
 
-inline constexpr net::NetworkTrafficAnnotationTag kTrafficAnnotation =
-    net::DefineNetworkTrafficAnnotation("brave_account_endpoints",
-                                        R"(
-  semantics {
-    sender: "Brave Account client"
-    description:
-      "Implements the creation or sign-in process for a Brave Account."
-    trigger:
-      "User attempts to create or sign in to a Brave Account from settings."
-    user_data: {
-      type: EMAIL
-    }
-    data:
-      "Blinded cryptographic message for secure password setup "
-      "and account email address."
-      "Verification token for account activation and "
-      "serialized cryptographic record for account finalization."
-    destination: OTHER
-    destination_other: "Brave Account service"
-  }
-  policy {
-    cookies_allowed: NO
-    policy_exception_justification:
-      "These requests are essential for Brave Account creation and sign-in "
-      "and cannot be disabled by policy."
-  }
-)");
+// inline constexpr net::NetworkTrafficAnnotationTag kTrafficAnnotation =
+//     net::DefineNetworkTrafficAnnotation("brave_account_endpoints",
+//                                         R"(
+//   semantics {
+//     sender: "Brave Account client"
+//     description:
+//       "Implements the creation or sign-in process for a Brave Account."
+//     trigger:
+//       "User attempts to create or sign in to a Brave Account from settings."
+//     user_data: {
+//       type: EMAIL
+//     }
+//     data:
+//       "Blinded cryptographic message for secure password setup "
+//       "and account email address."
+//       "Verification token for account activation and "
+//       "serialized cryptographic record for account finalization."
+//     destination: OTHER
+//     destination_other: "Brave Account service"
+//   }
+//   policy {
+//     cookies_allowed: NO
+//     policy_exception_justification:
+//       "These requests are essential for Brave Account creation and sign-in "
+//       "and cannot be disabled by policy."
+//   }
+// )");
 
 std::string Encrypt(const std::string& plain_text,
                     BraveAccountService::OSCryptCallback encrypt_callback) {
@@ -89,7 +88,9 @@ std::string Decrypt(const std::string& base64,
 
 }  // namespace
 
+using endpoint_client::Cancelability;
 using endpoint_client::Client;
+using endpoint_client::RequestHandle;
 using endpoint_client::WithHeaders;
 using endpoints::Error;
 using endpoints::PasswordFinalize;
@@ -99,14 +100,11 @@ using endpoints::VerifyResult;
 BraveAccountService::BraveAccountService(
     PrefService* pref_service,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : BraveAccountService(
-          pref_service,
-          std::make_unique<api_request_helper::APIRequestHelper>(
-              kTrafficAnnotation,
-              std::move(url_loader_factory)),
-          base::BindRepeating(&OSCrypt::EncryptString),
-          base::BindRepeating(&OSCrypt::DecryptString),
-          std::make_unique<base::OneShotTimer>()) {}
+    : BraveAccountService(pref_service,
+                          std::move(url_loader_factory),
+                          base::BindRepeating(&OSCrypt::EncryptString),
+                          base::BindRepeating(&OSCrypt::DecryptString),
+                          std::make_unique<base::OneShotTimer>()) {}
 
 BraveAccountService::~BraveAccountService() = default;
 
@@ -117,12 +115,12 @@ void BraveAccountService::BindInterface(
 
 BraveAccountService::BraveAccountService(
     PrefService* pref_service,
-    std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper,
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     OSCryptCallback encrypt_callback,
     OSCryptCallback decrypt_callback,
     std::unique_ptr<base::OneShotTimer> verify_result_timer)
     : pref_service_(pref_service),
-      api_request_helper_(std::move(api_request_helper)),
+      url_loader_factory_(std::move(url_loader_factory)),
       encrypt_callback_(std::move(encrypt_callback)),
       decrypt_callback_(std::move(decrypt_callback)),
       verify_result_timer_(std::move(verify_result_timer)) {
@@ -148,7 +146,7 @@ void BraveAccountService::RegisterInitialize(
   request.new_account_email = email;
   request.serialize_response = true;
   Client<PasswordInit>::Send(
-      CHECK_DEREF(api_request_helper_.get()), std::move(request),
+      url_loader_factory_, std::move(request),
       base::BindOnce(&BraveAccountService::OnRegisterInitialize,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
@@ -175,7 +173,7 @@ void BraveAccountService::RegisterFinalize(
   request.headers.SetHeader("Authorization",
                             base::StrCat({"Bearer ", verification_token}));
   Client<PasswordFinalize>::Send(
-      CHECK_DEREF(api_request_helper_.get()), std::move(request),
+      url_loader_factory_, std::move(request),
       base::BindOnce(&BraveAccountService::OnRegisterFinalize,
                      weak_factory_.GetWeakPtr(), std::move(callback),
                      encrypted_verification_token));
@@ -274,14 +272,21 @@ void BraveAccountService::OnVerificationTokenChanged() {
   ScheduleVerifyResult();
 }
 
-void BraveAccountService::ScheduleVerifyResult(base::TimeDelta delay) {
+void BraveAccountService::ScheduleVerifyResult(base::TimeDelta delay,
+                                               RequestHandle previous_request) {
   CHECK_DEREF(verify_result_timer_.get())
-      .Start(FROM_HERE, delay,
-             base::BindOnce(&BraveAccountService::VerifyResult,
-                            base::Unretained(this)));
+      .Start(
+          FROM_HERE, delay,
+          base::BindOnce(&BraveAccountService::VerifyResult,
+                         base::Unretained(this), std::move(previous_request)));
 }
 
-void BraveAccountService::VerifyResult() {
+void BraveAccountService::VerifyResult(RequestHandle previous_request) {
+  if (previous_request) {
+    DVLOG(0) << "Dropping previous request";
+    previous_request.reset();
+  }
+
   const auto encrypted_verification_token =
       pref_service_->GetString(prefs::kVerificationToken);
   if (encrypted_verification_token.empty()) {
@@ -298,13 +303,15 @@ void BraveAccountService::VerifyResult() {
   request.wait = false;
   request.headers.SetHeader("Authorization",
                             base::StrCat({"Bearer ", verification_token}));
-  Client<endpoints::VerifyResult>::Send(
-      CHECK_DEREF(api_request_helper_.get()), std::move(request),
-      base::BindOnce(&BraveAccountService::OnVerifyResult,
-                     weak_factory_.GetWeakPtr()));
+  previous_request =
+      Client<endpoints::VerifyResult>::Send<Cancelability::kCancelable>(
+          url_loader_factory_, std::move(request),
+          base::BindOnce(&BraveAccountService::OnVerifyResult,
+                         weak_factory_.GetWeakPtr()));
 
   // Replace normal cadence with the watchdog timer.
-  ScheduleVerifyResult(kVerifyResultWatchdogInterval);
+  ScheduleVerifyResult(kVerifyResultWatchdogInterval,
+                       std::move(previous_request));
 }
 
 void BraveAccountService::OnVerifyResult(
