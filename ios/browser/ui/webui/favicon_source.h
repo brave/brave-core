@@ -50,9 +50,9 @@ class FaviconSource : public web::URLDataSourceIOS {
   // web::URLDataSourceIOS implementation.
   std::string GetSource() const override;
   void StartDataRequest(
-      const std::string& path,
+      std::string_view path,
       web::URLDataSourceIOS::GotDataCallback callback) override;
-  std::string GetMimeType(const std::string& path) const override;
+  std::string GetMimeType(std::string_view path) const override;
   bool AllowCaching() const override;
   bool ShouldReplaceExistingSource() const override;
   bool ShouldServiceRequest(const GURL& url) const override;
