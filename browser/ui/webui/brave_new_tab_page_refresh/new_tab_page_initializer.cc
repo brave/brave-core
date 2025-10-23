@@ -18,6 +18,7 @@
 #include "brave/browser/ui/brave_ui_features.h"
 #include "brave/browser/ui/webui/brave_sanitized_image_source.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
@@ -169,6 +170,19 @@ void NewTabPageInitializer::AddLoadTimeValues() {
 
   source_->AddBoolean("talkFeatureEnabled",
                       !prefs->GetBoolean(kBraveTalkDisabledByPolicy));
+
+  bool ai_chat_input_enabled =
+      ai_chat::features::IsAIChatEnabled() &&
+      ai_chat::features::IsShowAIChatInputOnNewTabPageEnabled();
+
+  source_->AddBoolean("aiChatInputEnabled", ai_chat_input_enabled);
+
+  // Required by Brave AI Chat UI.
+  source_->AddBoolean("isMobile", false);
+  source_->AddBoolean("isHistoryEnabled", false);
+  source_->AddBoolean("isAIChatAgentProfileFeatureEnabled",
+                      ai_chat::features::IsAIChatAgentProfileEnabled());
+  source_->AddBoolean("isAIChatAgentProfile", profile->IsAIChatAgent());
 }
 
 void NewTabPageInitializer::AddStrings() {
@@ -231,6 +245,8 @@ void NewTabPageInitializer::AddStrings() {
       {"rewardsTosUpdateTitle", IDS_REWARDS_TOS_UPDATE_HEADING},
       {"rewardsWidgetTitle", IDS_NEW_TAB_REWARDS_WIDGET_TITLE},
       {"saveChangesButtonLabel", IDS_NEW_TAB_SAVE_CHANGES_BUTTON_LABEL},
+      {"searchAndChatSettingsTitle",
+       IDS_NEW_TAB_SEARCH_AND_CHAT_SETTINGS_TITLE},
       {"searchAskLeoDescription", IDS_OMNIBOX_ASK_LEO_DESCRIPTION},
       {"searchBoxPlaceholderText", IDS_NEW_TAB_SEARCH_BOX_PLACEHOLDER_TEXT},
       {"searchBoxPlaceholderTextBrave",
@@ -248,6 +264,7 @@ void NewTabPageInitializer::AddStrings() {
        IDS_NEW_TAB_SEARCH_SUGGESTIONS_PROMPT_TITLE},
       {"settingsTitle", IDS_NEW_TAB_SETTINGS_TITLE},
       {"showBackgroundsLabel", IDS_NEW_TAB_SHOW_BACKGROUNDS_LABEL},
+      {"showChatInputLabel", IDS_NEW_TAB_SHOW_CHAT_INPUT_LABEL},
       {"showClockLabel", IDS_NEW_TAB_SHOW_CLOCK_LABEL},
       {"showRewardsWidgetLabel", IDS_NEW_TAB_SHOW_REWARDS_WIDGET_LABEL},
       {"showSearchBoxLabel", IDS_NEW_TAB_SHOW_SEARCH_BOX_LABEL},
@@ -303,6 +320,7 @@ void NewTabPageInitializer::AddStrings() {
 
   source_->AddLocalizedStrings(kStrings);
   source_->AddLocalizedStrings(webui::kBraveNewsStrings);
+  source_->AddLocalizedStrings(webui::kAiChatStrings);
 }
 
 void NewTabPageInitializer::AddPluralStrings() {
