@@ -310,9 +310,8 @@ base::Value::Dict GetModelDict(mojom::ModelPtr model) {
   model_dict.Set(kCustomModelContextSizeKey,
                  static_cast<int32_t>(options.context_size));
 
-  // Check if the model has a user-specified system prompt
-  if (options.model_system_prompt.has_value() &&
-      !options.model_system_prompt->empty()) {
+  // Save system prompt (even if empty to allow clearing)
+  if (options.model_system_prompt.has_value()) {
     model_dict.Set(kCustomModelSystemPromptKey,
                    options.model_system_prompt.value());
   }
