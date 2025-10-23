@@ -18,7 +18,7 @@
 #include "base/numerics/safe_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/values.h"
-#include "brave/components/brave_shields/core/common/brave_shield_utils.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_locale_utils.h"
 
 namespace {
 
