@@ -84,14 +84,18 @@ void UiDesktopPresenter::ShowIcon() {
   // This could involve updating the UI state or notifying the user.
 }
 
+void UiDesktopPresenter::ShowDialog() {
+  // Implementation to show the dialog in the UI.
+  // This could involve creating a new dialog instance and displaying it.
+  OpenPsstDialog(web_contents_);
+}
+
 void UiDesktopPresenter::OnInfobarAccepted(
     BravePsstInfoBarDelegate::AcceptCallback on_accept_callback,
     const bool is_accepted) {
   if (on_accept_callback) {
     std::move(on_accept_callback).Run(is_accepted);
   }
-  // Open the Psst dialog when the infobar is accepted.
-  OpenPsstDialog(web_contents_);
 }
 
 }  // namespace psst

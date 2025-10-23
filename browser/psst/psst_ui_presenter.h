@@ -22,6 +22,7 @@ class PsstUiPresenter {
 
   virtual void ShowInfoBar(
       BravePsstInfoBarDelegate::AcceptCallback on_accept_callback) = 0;
+  virtual void ShowDialog() = 0;
   virtual void ShowIcon() = 0;
 };
 
@@ -33,7 +34,7 @@ class UiDesktopPresenter : public PsstUiPresenter {
   void ShowInfoBar(
       BravePsstInfoBarDelegate::AcceptCallback on_accept_callback) override;
   void ShowIcon() override;
-
+  void ShowDialog() override;
  private:
   void OnInfobarAccepted(
       BravePsstInfoBarDelegate::AcceptCallback on_accept_callback,

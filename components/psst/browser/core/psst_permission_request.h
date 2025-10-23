@@ -16,7 +16,12 @@ class PsstPermissionRequest : public permissions::PermissionRequest {
   PsstPermissionRequest& operator=(const PsstPermissionRequest&) = delete;
   ~PsstPermissionRequest() override;
 
-  
+ private:
+    void PermissionDecided(
+      PermissionDecision decision,
+      bool is_final_decision,
+      const permissions::PermissionRequestData& request_data);
+
 };
 
 #endif  // BRAVE_BROWSER_PSST_PSST_PERMISSION_REQUEST_H_
