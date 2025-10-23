@@ -21,7 +21,7 @@ transpile_web_ui("playlist_ui") {
     ],
   ]
 
-  data = [ "//brave/components/playlist/content/browser/resources" ]
+  imports_from = [ "//brave/components/playlist/content/browser/resources" ]
 
   public_deps = [
     "//brave/components/playlist/core/common/mojom:mojom_js",
