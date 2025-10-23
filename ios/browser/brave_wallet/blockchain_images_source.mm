@@ -27,13 +27,13 @@ std::string BlockchainImagesSource::GetSource() const {
   return kImageSourceHost;
 }
 
-void BlockchainImagesSource::StartDataRequest(const std::string& path,
+void BlockchainImagesSource::StartDataRequest(std::string_view path,
                                               GotDataCallback callback) {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
   StartDataRequestForPath(path, std::move(callback));
 }
 
-std::string BlockchainImagesSource::GetMimeType(const std::string& path) const {
+std::string BlockchainImagesSource::GetMimeType(std::string_view path) const {
   return GetMimeTypeForPath(path);
 }
 

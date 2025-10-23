@@ -41,7 +41,7 @@ class BraveWebUIIOSDataSource : public web::WebUIIOSDataSourceImpl {
  protected:
   ~BraveWebUIIOSDataSource() override;
 
-  virtual std::string GetMimeType(const std::string& path) const;
+  virtual std::string GetMimeType(std::string_view path) const;
 
  private:
   class BraveInternalDataSource;

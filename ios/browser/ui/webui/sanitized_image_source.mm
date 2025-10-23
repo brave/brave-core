@@ -159,7 +159,7 @@ std::string SanitizedImageSource::GetSource() const {
 }
 
 void SanitizedImageSource::StartDataRequest(
-    const std::string& path,
+    std::string_view path,
     web::URLDataSourceIOS::GotDataCallback callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
@@ -302,7 +302,7 @@ void SanitizedImageSource::StartImageDownload(
       network::SimpleURLLoader::kMaxBoundedStringDownloadSize);
 }
 
-std::string SanitizedImageSource::GetMimeType(const std::string& path) const {
+std::string SanitizedImageSource::GetMimeType(std::string_view path) const {
   return "image/png";
 }
 
