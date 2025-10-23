@@ -109,6 +109,7 @@
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/themes/pref_names.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/webui/welcome_page/brave_welcome_ui_prefs.h"
 #include "brave/components/brave_private_new_tab_ui/common/pref_names.h"
@@ -263,6 +264,9 @@ void RegisterProfilePrefsForMigration(
 #if !BUILDFLAG(IS_ANDROID)
   // Added 10/2022
   registry->RegisterIntegerPref(kDefaultBrowserLaunchingCount, 0);
+
+  // Added 10/2025
+  registry->RegisterBooleanPref(dark_mode::kBraveDarkModeMigrated, false);
 #endif
   brave_wallet::RegisterProfilePrefsForMigration(registry);
 

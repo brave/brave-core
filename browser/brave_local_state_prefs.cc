@@ -104,6 +104,9 @@ void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry) {
 #if !BUILDFLAG(IS_ANDROID)
   // Added 10/2022
   registry->RegisterBooleanPref(kDefaultBrowserPromptEnabled, true);
+
+  // Added 10/2025
+  dark_mode::RegisterBraveDarkModeLocalStatePrefs(registry);
 #endif
 
   misc_metrics::UptimeMonitorImpl::RegisterPrefsForMigration(registry);
@@ -150,7 +153,6 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 #if !BUILDFLAG(IS_ANDROID)
   BraveNewTabMessageHandler::RegisterLocalStatePrefs(registry);
   BraveWindowTracker::RegisterPrefs(registry);
-  dark_mode::RegisterBraveDarkModeLocalStatePrefs(registry);
   whats_new::RegisterLocalStatePrefs(registry);
 
   registry->RegisterBooleanPref(kEnableSearchSuggestionsByDefault, false);
