@@ -96,13 +96,10 @@ using endpoints::PasswordInit;
 BraveAccountService::BraveAccountService(
     PrefService* pref_service,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : BraveAccountService(
-          pref_service,
-          std::make_unique<api_request_helper::APIRequestHelper>(
-              kTrafficAnnotation,
-              std::move(url_loader_factory)),
-          base::BindRepeating(&OSCrypt::EncryptString),
-          base::BindRepeating(&OSCrypt::DecryptString)) {}
+    : BraveAccountService(pref_service,
+                          std::move(url_loader_factory),
+                          base::BindRepeating(&OSCrypt::EncryptString),
+                          base::BindRepeating(&OSCrypt::DecryptString)) {}
 
 BraveAccountService::~BraveAccountService() = default;
 
@@ -113,11 +110,11 @@ void BraveAccountService::BindInterface(
 
 BraveAccountService::BraveAccountService(
     PrefService* pref_service,
-    std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper,
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     OSCryptCallback encrypt_callback,
     OSCryptCallback decrypt_callback)
     : pref_service_(pref_service),
-      api_request_helper_(std::move(api_request_helper)),
+      url_loader_factory_(std::move(url_loader_factory)),
       encrypt_callback_(std::move(encrypt_callback)),
       decrypt_callback_(std::move(decrypt_callback)) {}
 
@@ -131,11 +128,13 @@ void BraveAccountService::RegisterInitialize(
   }
 
   PasswordInit::Request request;
+  request.network_traffic_annotation_tag =
+      net::MutableNetworkTrafficAnnotationTag(kTrafficAnnotation);
   request.blinded_message = blinded_message;
   request.new_account_email = email;
   request.serialize_response = true;
   Client<PasswordInit>::Send(
-      CHECK_DEREF(api_request_helper_.get()), std::move(request),
+      url_loader_factory_, std::move(request),
       base::BindOnce(&BraveAccountService::OnRegisterInitialize,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
@@ -158,11 +157,13 @@ void BraveAccountService::RegisterFinalize(
   }
 
   WithHeaders<PasswordFinalize::Request> request;
+  request.network_traffic_annotation_tag =
+      net::MutableNetworkTrafficAnnotationTag(kTrafficAnnotation);
   request.serialized_record = serialized_record;
   request.headers.SetHeader("Authorization",
                             base::StrCat({"Bearer ", verification_token}));
   Client<PasswordFinalize>::Send(
-      CHECK_DEREF(api_request_helper_.get()), std::move(request),
+      url_loader_factory_, std::move(request),
       base::BindOnce(&BraveAccountService::OnRegisterFinalize,
                      weak_factory_.GetWeakPtr(), std::move(callback),
                      encrypted_verification_token));

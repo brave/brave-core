@@ -13,6 +13,7 @@
 
 #include "base/values.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
+#include "brave/components/brave_account/endpoint_client/is_request.h"
 #include "url/gurl.h"
 
 // This header defines C++20 concepts that reflect the interface of types
@@ -23,9 +24,7 @@
 // Encoding these requirements as concepts makes the contract explicit and
 // produces clear diagnostics when a type does not conform, rather than
 // cryptic secondary errors from unconstrained template instantiations.
-namespace brave_account::endpoint_client::concepts {
-
-namespace detail {
+namespace brave_account::endpoint_client::concepts::detail {
 
 // Concept that checks whether `T` defines a non-static, accessible member
 // function `ToValue()` such that:
@@ -67,22 +66,9 @@ concept URL = requires {
   { T::URL() } -> std::same_as<GURL>;
 };
 
-// Concept that checks whether `T` defines a static, accessible member
-// function `Method()` such that:
-//   - `T::Method()` is a valid expression,
-//      and that call yields a type convertible to `std::string_view`
-//
-// In short: models any type with a proper static `Method()` function
-// whose result is convertible to `std::string_view`.
-template <typename T>
-concept Method = requires {
-  { T::Method() } -> std::convertible_to<std::string_view>;
-};
+}  // namespace brave_account::endpoint_client::concepts::detail
 
-}  // namespace detail
-
-template <typename T>
-concept Request = detail::ToValue<T>;
+namespace brave_account::endpoint_client::concepts {
 
 template <typename T>
 concept Response = detail::FromValue<T>;
@@ -96,8 +82,9 @@ concept Endpoint =
       typename T::Request;
       typename T::Response;
       typename T::Error;
-    } && Request<typename T::Request> && Response<typename T::Response> &&
-    Error<typename T::Error> && detail::URL<T> && detail::Method<T>;
+    } && endpoint_client::detail::IsRequest<typename T::Request> &&
+    Response<typename T::Response> && Error<typename T::Error> &&
+    detail::URL<T>;
 
 }  // namespace brave_account::endpoint_client::concepts
 

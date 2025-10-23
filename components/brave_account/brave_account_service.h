@@ -56,7 +56,7 @@ class BraveAccountService : public KeyedService, public mojom::Authentication {
   // Provides dependency injection for testing.
   BraveAccountService(
       PrefService* pref_service,
-      std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper,
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       OSCryptCallback encrypt_callback,
       OSCryptCallback decrypt_callback);
 
@@ -85,7 +85,7 @@ class BraveAccountService : public KeyedService, public mojom::Authentication {
       std::optional<endpoints::Error> error);
 
   const raw_ptr<PrefService> pref_service_;
-  std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
+  scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   OSCryptCallback encrypt_callback_;
   OSCryptCallback decrypt_callback_;
   mojo::ReceiverSet<mojom::Authentication> authentication_receivers_;
