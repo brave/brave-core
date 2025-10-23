@@ -16,7 +16,6 @@
 #include "base/containers/circular_deque.h"
 #include "base/containers/flat_map.h"
 #include "base/debug/crash_logging.h"
-#include "base/debug/dump_without_crashing.h"
 #include "base/feature_list.h"
 #include "base/files/file_util.h"
 #include "base/files/important_file_writer.h"
@@ -24,6 +23,7 @@
 #include "base/functional/callback_helpers.h"
 #include "base/logging.h"
 #include "base/metrics/histogram_macros.h"
+#include "base/notreached.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/sequenced_task_runner.h"
@@ -1417,16 +1417,26 @@ void AdsServiceImpl::TriggerNewTabPageAdEvent(
   CHECK(mojom::IsKnownEnumValue(mojom_ad_event_type));
 
   if (!bat_ads_associated_remote_.is_bound()) {
-    SCOPED_CRASH_KEY_STRING32("Issue50267", "creative_instance_id",
+    SCOPED_CRASH_KEY_STRING64("Issue50267", "creative_instance_id",
                               creative_instance_id);
     SCOPED_CRASH_KEY_NUMBER("Issue50267", "metric_type",
                             static_cast<int>(mojom_ad_metric_type));
     SCOPED_CRASH_KEY_NUMBER("Issue50267", "event_type",
                             static_cast<int>(mojom_ad_event_type));
-    SCOPED_CRASH_KEY_STRING32("Issue50267", "failure_reason",
+    SCOPED_CRASH_KEY_STRING64("Issue50267", "failure_reason",
                               "bat_ads_associated_remote_ not bound");
-    base::debug::DumpWithoutCrashing();
+    DUMP_WILL_BE_NOTREACHED();
     return std::move(callback).Run(/*success*/ false);
+  }
+
+  if (creative_instance_id.empty()) {
+    SCOPED_CRASH_KEY_NUMBER("Issue50267", "metric_type",
+                            static_cast<int>(mojom_ad_metric_type));
+    SCOPED_CRASH_KEY_NUMBER("Issue50267", "event_type",
+                            static_cast<int>(mojom_ad_event_type));
+    SCOPED_CRASH_KEY_STRING64("Issue50267", "failure_reason",
+                              "Invalid creative_instance_id");
+    DUMP_WILL_BE_NOTREACHED();
   }
 
   bat_ads_associated_remote_->TriggerNewTabPageAdEvent(
@@ -1454,7 +1464,16 @@ void AdsServiceImpl::MaybeGetSearchResultAd(
     const std::string& placement_id,
     MaybeGetSearchResultAdCallback callback) {
   if (!bat_ads_associated_remote_.is_bound()) {
+    SCOPED_CRASH_KEY_STRING64("Issue50267", "failure_reason",
+                              "bat_ads_associated_remote_ not bound");
+    DUMP_WILL_BE_NOTREACHED();
     return std::move(callback).Run(/*mojom_creative_ad*/ {});
+  }
+
+  if (placement_id.empty()) {
+    SCOPED_CRASH_KEY_STRING64("Issue50267", "failure_reason",
+                              "Invalid placement_id");
+    DUMP_WILL_BE_NOTREACHED();
   }
 
   bat_ads_associated_remote_->MaybeGetSearchResultAd(placement_id,
