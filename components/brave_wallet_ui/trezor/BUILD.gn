@@ -17,7 +17,7 @@ transpile_web_ui("trezor_bridge_ui") {
   webpack_aliases = [ "browser" ]
   resource_name = "trezor_bridge"
 
-  data = [ "//brave/components/brave_wallet_ui/" ]
+  imports_from = [ "//brave/components/brave_wallet_ui/" ]
 
   # TODO(apaymyshev): trezor iframe should not depend on wallet's mojo
   deps = [
