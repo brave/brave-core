@@ -53,7 +53,7 @@ void BraveAccountUIMessageHandler::OnDialogCloseMessage(
 
 BraveAccountUIIOS::BraveAccountUIIOS(web::WebUIIOS* web_ui, const GURL& url)
     : BraveAccountUIBase(ProfileIOS::FromWebUIIOS(web_ui)),
-      web::WebUIIOSController(web_ui, std::string(url.host())) {
+      web::WebUIIOSController(web_ui, url.GetHost()) {
   using Authentication = void (BraveAccountUIBase::*)(
       mojo::PendingReceiver<brave_account::mojom::Authentication>);
   web_ui->GetWebState()->GetInterfaceBinderForMainFrame()->AddInterface(

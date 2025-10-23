@@ -26,7 +26,7 @@
 #include "ui/base/webui/resource_path.h"
 
 AdsInternalsUI::AdsInternalsUI(web::WebUIIOS* web_ui, const GURL& url)
-    : web::WebUIIOSController(web_ui, std::string(url.host())),
+    : web::WebUIIOSController(web_ui, url.GetHost()),
       handler_(brave_ads::AdsServiceFactoryIOS::GetForProfile(
                    ProfileIOS::FromWebUIIOS(web_ui)),
                *ProfileIOS::FromWebUIIOS(web_ui)->GetPrefs()) {
