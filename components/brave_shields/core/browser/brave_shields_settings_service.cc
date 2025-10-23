@@ -168,16 +168,17 @@ bool BraveShieldsSettingsService::IsNoScriptEnabled(const GURL& url) {
   return control_type != ControlType::ALLOW;
 }
 
-void BraveShieldsSettings::SetDefaultAutoShredMode(mojom::AutoShredMode mode) {
+void BraveShieldsSettingsService::SetDefaultAutoShredMode(
+    mojom::AutoShredMode mode) {
   SetAutoShredMode(mode, GURL());
 }
 
-mojom::AutoShredMode BraveShieldsSettings::GetDefaultAutoShredMode() {
+mojom::AutoShredMode BraveShieldsSettingsService::GetDefaultAutoShredMode() {
   return GetAutoShredMode(GURL());
 }
 
-void BraveShieldsSettings::SetAutoShredMode(mojom::AutoShredMode mode,
-                                            const GURL& url) {
+void BraveShieldsSettingsService::SetAutoShredMode(mojom::AutoShredMode mode,
+                                                   const GURL& url) {
   auto primary_pattern = content_settings::CreateDomainPattern(url);
 
   if (!primary_pattern.IsValid()) {
@@ -189,7 +190,8 @@ void BraveShieldsSettings::SetAutoShredMode(mojom::AutoShredMode mode,
       AutoShredSetting::kContentSettingsType, AutoShredSetting::ToValue(mode));
 }
 
-mojom::AutoShredMode BraveShieldsSettings::GetAutoShredMode(const GURL& url) {
+mojom::AutoShredMode BraveShieldsSettingsService::GetAutoShredMode(
+    const GURL& url) {
   return AutoShredSetting::FromValue(
       host_content_settings_map_->GetWebsiteSetting(
           url, GURL(), AutoShredSetting::kContentSettingsType));

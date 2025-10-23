@@ -312,7 +312,7 @@ TEST_F(BraveShieldsSettingsServiceTest, NoScriptsEnabledByDefault) {
             brave_shields::ControlType::ALLOW);
 }
 
-TEST_F(BraveShieldsSettingsTest, AutoShredMode) {
+TEST_F(BraveShieldsSettingsServiceTest, AutoShredMode) {
   // verify the initial values
   EXPECT_EQ(brave_shields_settings()->GetAutoShredMode(kTestUrl),
             AutoShredMode::NEVER);
@@ -350,7 +350,7 @@ TEST_F(BraveShieldsSettingsTest, AutoShredMode) {
             AutoShredDictFrom(AutoShredMode::NEVER));
 }
 
-TEST_F(BraveShieldsSettingsTest, DefaultAutoShredMode) {
+TEST_F(BraveShieldsSettingsServiceTest, DefaultAutoShredMode) {
   // explicitly set so we can verify this is unchanged by updating default
   brave_shields_settings()->SetAutoShredMode(AutoShredMode::NEVER, kTestUrl);
 
