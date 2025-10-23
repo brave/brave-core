@@ -55,6 +55,22 @@ and pass in the services you require instead of calling the factory methods
 internally. This reduces dependencies on the factories and makes unit
 testing/mocking simpler.
 
+#### Keyed Services and Unit Tests
+
+If the KeyedService needs to be created automatically with the profile, then it
+should not be created during unit tests otherwise it is not possible to
+use a `TestProfileIOS` without this service (and then the tests 
+cannot be independent from the service). On iOS, This behaviour will be verified 
+by a `CHECK` when creating the `ProfileKeyedServiceFactoryIOS`
+
+On desktop/android you need to return false for 
+`ServiceIsCreatedWithBrowserContext` or return false for 
+`ServiceIsNULLWhileTesting`
+
+On iOS you need to either remove `ServiceCreation::kCreateWithProfile` or add 
+`TestCreation::kNoServiceForTests` and inject a test factory in tests 
+that need the service to exist.
+
 #### Keyed Services and Mojo
 
 Avoid adding wrapper classes around keyed services to implement mojo interfaces.
