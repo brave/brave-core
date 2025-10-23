@@ -307,6 +307,9 @@ std::vector<TopSite> ViewCounterService::GetTopSitesData() const {
 
 void ViewCounterService::Shutdown() {
   ntp_background_images_service_observation_.Reset();
+  pref_change_registrar_.RemoveAll();
+  p3a_update_timer_.Stop();
+  weak_ptr_factory_.InvalidateWeakPtrs();
 }
 
 void ViewCounterService::OnBackgroundImagesDataDidUpdate(

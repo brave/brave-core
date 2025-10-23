@@ -172,10 +172,21 @@ void NTPBackgroundImagesService::Init() {
 }
 
 void NTPBackgroundImagesService::StartTearDown() {
+  pref_change_registrar_.RemoveAll();
+
+  sponsored_images_update_check_timer_.Stop();
+  sponsored_images_update_check_callback_.Reset();
+
+  observers_.Clear();
+
+  background_images_data_.reset();
+  sponsored_images_data_.reset();
+  sponsored_images_data_excluding_rich_media_.reset();
+  super_referrals_images_data_.reset();
+
   variations_service_ = nullptr;
   component_update_service_ = nullptr;
   pref_service_ = nullptr;
-  pref_change_registrar_.RemoveAll();
 }
 
 void NTPBackgroundImagesService::MaybeCheckForSponsoredComponentUpdate() {
@@ -566,7 +577,21 @@ NTPSponsoredImagesData* NTPBackgroundImagesService::GetSponsoredImagesData(
   NTPSponsoredImagesData* const images_data =
       supports_rich_media ? sponsored_images_data_.get()
                           : sponsored_images_data_excluding_rich_media_.get();
-  if (!images_data || !images_data->IsValid()) {
+  if (!images_data) {
+    SCOPED_CRASH_KEY_BOOL("Issue50267", "supports_rich_media",
+                          supports_rich_media);
+    SCOPED_CRASH_KEY_STRING64("Issue50267", "failure_reason",
+                              "Sponsored images data is null");
+    base::debug::DumpWithoutCrashing();
+    return nullptr;
+  }
+
+  if (!images_data->IsValid()) {
+    SCOPED_CRASH_KEY_BOOL("Issue50267", "supports_rich_media",
+                          supports_rich_media);
+    SCOPED_CRASH_KEY_STRING64("Issue50267", "failure_reason",
+                              "Sponsored images data is invalid");
+    base::debug::DumpWithoutCrashing();
     return nullptr;
   }
 
