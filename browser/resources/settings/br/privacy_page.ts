@@ -40,39 +40,6 @@ function InsertGoogleSignInSubpage (section: Element)
     `)
 }
 
-function InsertLocalhostAccessSubpage (section: Element)
-{
-  section.appendChild(
-    html`
-      <template is="dom-if" route-path="/content/localhostAccess" no-search>
-        <settings-subpage
-          associated-control="[[$$('#localhostAccess')]]"
-          page-title="${loadTimeData.getString('siteSettingsLocalhostAccess')}">
-          <settings-category-default-radio-group
-              id="localhostAccessDefault"
-              category="[[contentSettingsTypesEnum_.LOCALHOST_ACCESS]]"
-              block-option-label=
-                "${loadTimeData.getString('siteSettingsLocalhostAccessBlock')}"
-              allow-option-label=
-                "${loadTimeData.getString('siteSettingsLocalhostAccessAsk')}"
-              allow-option-icon="smartphone-desktop"
-              block-option-icon="smartphone-desktop-off">
-          </settings-category-default-radio-group>
-          <category-setting-exceptions
-            id="localhostExceptions"
-            category="[[contentSettingsTypesEnum_.LOCALHOST_ACCESS]]"
-            block-header=
-              "${loadTimeData.getString(
-                'siteSettingsLocalhostAccessBlockExceptions')}"
-            allow-header=
-              "${loadTimeData.getString(
-                'siteSettingsLocalhostAccessAllowExceptions')}">
-          </category-setting-exceptions>
-        </settings-subpage>
-      </template>
-    `)
-}
-
 function InsertEthereumSubpage (section: Element)
 {
   section.appendChild(
@@ -205,11 +172,6 @@ RegisterPolymerTemplateModifications({
       loadTimeData.getBoolean('isGoogleSignInFeatureEnabled')
     if (isGoogleSignInFeatureEnabled) {
       InsertGoogleSignInSubpage(section)
-    }
-    const isLocalhostAccessFeatureEnabled =
-      loadTimeData.getBoolean('isLocalhostAccessFeatureEnabled')
-    if (isLocalhostAccessFeatureEnabled) {
-      InsertLocalhostAccessSubpage(section)
     }
     const isOpenAIChatFromBraveSearchEnabled =
       loadTimeData.getBoolean('isOpenAIChatFromBraveSearchEnabled')

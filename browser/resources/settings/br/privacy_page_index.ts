@@ -14,6 +14,7 @@ import { loadTimeData } from "../i18n_setup.js"
 import { pageVisibility } from './page_visibility.js'
 import '../brave_survey_panelist_page/brave_survey_panelist_page.js'
 import '../site_settings/site_settings_autoplay.js'
+import '../site_settings/site_settings_localhost.js'
 import '../site_settings/site_settings_shields.js'
 import { ContentSettingsTypes } from '../site_settings/constants.js';
 
@@ -110,6 +111,17 @@ RegisterPolymerTemplateModifications({
           slot="view"
           in-search-mode="[[inSearchMode_]]">
         </site-settings-autoplay-page>`)
+
+    if (loadTimeData.getBoolean('isLocalhostAccessFeatureEnabled')) {
+      viewManager.appendChild(html`
+            <site-settings-localhost-page
+                id="${ContentSettingsTypes.LOCALHOST_ACCESS}"
+                route-path$="[[routes_.SITE_SETTINGS_LOCALHOST_ACCESS.path]]"
+                data-parent-view-id="siteSettings"
+                slot="view"
+                in-search-mode="[[inSearchMode_]]">
+              </site-settings-localhost-page>`)
+    }
 
     // Move the safety hub to the end of the page
     const safetyHubTemplate = templateContent.querySelector(
