@@ -442,14 +442,14 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
           std::vector<std::string>{message->selected_text.value()});
     }
 
-    // Add Smart Mode definition message if this turn has one
+    // Add Skill definition message if this turn has one
     if (message->character_type == mojom::CharacterType::HUMAN &&
-        message->smart_mode) {
-      std::string mode_definition =
-          BuildSmartModeDefinitionMessage(message->smart_mode);
+        message->skill) {
+      std::string skill_definition =
+          BuildSkillDefinitionMessage(message->skill);
       conversation.emplace_back(ConversationEventRole::kUser,
                                 ConversationEventType::kChatMessage,
-                                std::vector<std::string>{mode_definition});
+                                std::vector<std::string>{skill_definition});
     }
 
     // Build the main conversation event

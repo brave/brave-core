@@ -60,35 +60,34 @@ void DeleteAllMemoriesFromPrefs(PrefService& prefs);
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 std::optional<base::Value::Dict> GetUserMemoryDictFromPrefs(PrefService& prefs);
 
-// Smart Modes prefs
-// Returns smart modes from the smart modes dictionary in the pref.
+// Skills prefs
+// Returns skills from the skills dictionary in the pref.
 COMPONENT_EXPORT(AI_CHAT_COMMON)
-std::vector<mojom::SmartModePtr> GetSmartModesFromPrefs(
-    const PrefService& prefs);
-// Returns a specific smart mode by ID, or nullptr if not found.
+std::vector<mojom::SkillPtr> GetSkillsFromPrefs(const PrefService& prefs);
+// Returns a specific skill by ID, or nullptr if not found.
 COMPONENT_EXPORT(AI_CHAT_COMMON)
-mojom::SmartModePtr GetSmartModeFromPrefs(const PrefService& prefs,
-                                          const std::string& id);
+mojom::SkillPtr GetSkillFromPrefs(const PrefService& prefs,
+                                  const std::string& id);
 
-// Adds a new smart mode and saves it to prefs.
+// Adds a new skill and saves it to prefs.
 COMPONENT_EXPORT(AI_CHAT_COMMON)
-void AddSmartModeToPrefs(const std::string& shortcut,
-                         const std::string& prompt,
-                         const std::optional<std::string>& model,
-                         PrefService& prefs);
-// Updates an existing smart mode in prefs.
+void AddSkillToPrefs(const std::string& shortcut,
+                     const std::string& prompt,
+                     const std::optional<std::string>& model,
+                     PrefService& prefs);
+// Updates an existing skill in prefs.
 COMPONENT_EXPORT(AI_CHAT_COMMON)
-void UpdateSmartModeInPrefs(const std::string& id,
-                            const std::string& shortcut,
-                            const std::string& prompt,
-                            const std::optional<std::string>& model,
-                            PrefService& prefs);
-// Deletes a smart mode from prefs.
+void UpdateSkillInPrefs(const std::string& id,
+                        const std::string& shortcut,
+                        const std::string& prompt,
+                        const std::optional<std::string>& model,
+                        PrefService& prefs);
+// Deletes a skill from prefs.
 COMPONENT_EXPORT(AI_CHAT_COMMON)
-void DeleteSmartModeFromPrefs(const std::string& id, PrefService& prefs);
-// Updates the last_used time for a smart mode in prefs.
+void DeleteSkillFromPrefs(const std::string& id, PrefService& prefs);
+// Updates the last_used time for a skill in prefs.
 COMPONENT_EXPORT(AI_CHAT_COMMON)
-void UpdateSmartModeLastUsedInPrefs(const std::string& id, PrefService& prefs);
+void UpdateSkillLastUsedInPrefs(const std::string& id, PrefService& prefs);
 
 }  // namespace ai_chat::prefs
 

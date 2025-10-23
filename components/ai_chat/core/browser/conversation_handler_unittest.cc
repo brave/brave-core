@@ -296,7 +296,7 @@ class ConversationHandlerUnitTest : public testing::Test {
           entries[i].first /* text */, std::nullopt /* prompt */,
           std::nullopt /* selected_text */, std::move(events),
           base::Time::Now(), std::nullopt /* edits */,
-          std::nullopt /* uploaed_images */, nullptr /* smart_mode */,
+          std::nullopt /* uploaed_images */, nullptr /* skill */,
           entries[i].second /* from_brave_search_SERP */,
           std::nullopt /* model_key */);
       expected_history.push_back(entry.Clone());
@@ -482,7 +482,7 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText) {
       std::nullopt, mojom::CharacterType::HUMAN,
       mojom::ActionType::SUMMARIZE_SELECTED_TEXT, expected_turn_text,
       std::nullopt, selected_text, std::nullopt, base::Time::Now(),
-      std::nullopt, std::nullopt, nullptr /* smart_mode */, false,
+      std::nullopt, std::nullopt, nullptr /* skill */, false,
       std::nullopt /* model_key */));
 
   std::vector<mojom::ConversationEntryEventPtr> response_events;
@@ -492,8 +492,7 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText) {
       std::nullopt, mojom::CharacterType::ASSISTANT,
       mojom::ActionType::RESPONSE, expected_response, std::nullopt,
       std::nullopt, std::move(response_events), base::Time::Now(), std::nullopt,
-      std::nullopt, nullptr /* smart_mode */, false,
-      std::nullopt /* model_key */));
+      std::nullopt, nullptr /* skill */, false, std::nullopt /* model_key */));
 
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
   EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(1);
@@ -574,7 +573,7 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText_WithAssociatedContent) {
       std::nullopt, mojom::CharacterType::HUMAN,
       mojom::ActionType::SUMMARIZE_SELECTED_TEXT, expected_turn_text,
       std::nullopt, selected_text, std::nullopt, base::Time::Now(),
-      std::nullopt, std::nullopt, nullptr /* smart_mode */, false,
+      std::nullopt, std::nullopt, nullptr /* skill */, false,
       std::nullopt /* model_key */));
 
   std::vector<mojom::ConversationEntryEventPtr> response_events;
@@ -584,8 +583,7 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText_WithAssociatedContent) {
       std::nullopt, mojom::CharacterType::ASSISTANT,
       mojom::ActionType::RESPONSE, expected_response, std::nullopt,
       std::nullopt, std::move(response_events), base::Time::Now(), std::nullopt,
-      std::nullopt, nullptr /* smart_mode */, false,
-      std::nullopt /* model_key */));
+      std::nullopt, nullptr /* skill */, false, std::nullopt /* model_key */));
 
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
   EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(1);
@@ -1454,7 +1452,7 @@ TEST_F(ConversationHandlerUnitTest, RegenerateAnswer_ErrorCases) {
       "assistant_uuid", mojom::CharacterType::ASSISTANT,
       mojom::ActionType::RESPONSE, "original answer", std::nullopt,
       std::nullopt, std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
-      nullptr /* smart_mode */, false, std::nullopt /* model_key */));
+      nullptr /* skill */, false, std::nullopt /* model_key */));
 
   conversation_handler_->SetChatHistoryForTesting(
       CloneHistory(single_entry_history));
@@ -1502,16 +1500,15 @@ TEST_F(ConversationHandlerUnitTest,
   expected_history.push_back(mojom::ConversationTurn::New(
       "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY, "query",
       std::nullopt, std::nullopt, std::nullopt, base::Time::Now(), std::nullopt,
-      std::nullopt, nullptr /* smart_mode */, true,
-      std::nullopt /* model_key */));
+      std::nullopt, nullptr /* skill */, true, std::nullopt /* model_key */));
   std::vector<mojom::ConversationEntryEventPtr> events;
   events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
       mojom::CompletionEvent::New("summary")));
   expected_history.push_back(mojom::ConversationTurn::New(
       "turn-2", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
       "summary", std::nullopt, std::nullopt, std::move(events),
-      base::Time::Now(), std::nullopt, std::nullopt, nullptr /* smart_mode */,
-      true, std::nullopt /* model_key */));
+      base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, true,
+      std::nullopt /* model_key */));
   ASSERT_EQ(history.size(), expected_history.size());
   for (size_t i = 0; i < history.size(); i++) {
     expected_history[i]->created_time = history[i]->created_time;
@@ -1569,7 +1566,7 @@ TEST_F(ConversationHandlerUnitTest,
   expected_history.push_back(mojom::ConversationTurn::New(
       std::nullopt, mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       "query", std::nullopt, std::nullopt, std::nullopt, base::Time::Now(),
-      std::nullopt, std::nullopt, nullptr /* smart_mode */, true,
+      std::nullopt, std::nullopt, nullptr /* skill */, true,
       std::nullopt /* model_key */));
   std::vector<mojom::ConversationEntryEventPtr> events;
   events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
@@ -1578,12 +1575,12 @@ TEST_F(ConversationHandlerUnitTest,
       std::nullopt, mojom::CharacterType::ASSISTANT,
       mojom::ActionType::RESPONSE, "summary", std::nullopt, std::nullopt,
       std::move(events), base::Time::Now(), std::nullopt, std::nullopt,
-      nullptr /* smart_mode */, true, std::nullopt /* model_key */));
+      nullptr /* skill */, true, std::nullopt /* model_key */));
 
   expected_history.push_back(mojom::ConversationTurn::New(
       std::nullopt, mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       "query2", std::nullopt, std::nullopt, std::nullopt, base::Time::Now(),
-      std::nullopt, std::nullopt, nullptr /* smart_mode */, true,
+      std::nullopt, std::nullopt, nullptr /* skill */, true,
       std::nullopt /* model_key */));
   std::vector<mojom::ConversationEntryEventPtr> events2;
   events2.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
@@ -1592,7 +1589,7 @@ TEST_F(ConversationHandlerUnitTest,
       std::nullopt, mojom::CharacterType::ASSISTANT,
       mojom::ActionType::RESPONSE, "summary2", std::nullopt, std::nullopt,
       std::move(events2), base::Time::Now(), std::nullopt, std::nullopt,
-      nullptr /* smart_mode */, true, std::nullopt /* model_key */));
+      nullptr /* skill */, true, std::nullopt /* model_key */));
 
   ASSERT_EQ(history.size(), expected_history.size());
   for (size_t i = 0; i < history.size(); i++) {
@@ -1633,7 +1630,7 @@ TEST_F(ConversationHandlerUnitTest,
       std::nullopt, mojom::CharacterType::ASSISTANT,
       mojom::ActionType::RESPONSE, "new answer", std::nullopt, std::nullopt,
       std::move(events3), base::Time::Now(), std::nullopt, std::nullopt,
-      nullptr /* smart_mode */, false, std::nullopt /* model_key */);
+      nullptr /* skill */, false, std::nullopt /* model_key */);
   EXPECT_CALL(client, OnConversationHistoryUpdate(TurnEq(expected_turn.get())))
       .Times(testing::AtLeast(2));
 
@@ -3613,7 +3610,7 @@ TEST_F(ConversationHandlerUnitTest, NoScreenshotWhenScreenshotsAlreadyExist) {
       "Previous question", std::nullopt, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt,
       CreateSampleUploadedFiles(1, mojom::UploadedFileType::kScreenshot),
-      nullptr /* smart_mode */, false, std::nullopt);
+      nullptr /* skill */, false, std::nullopt);
   history.push_back(std::move(turn_with_screenshots));
   conversation_handler_->SetChatHistoryForTesting(std::move(history));
 
@@ -4388,19 +4385,19 @@ TEST_F(ConversationHandlerUnitTest,
 }
 
 TEST_F(ConversationHandlerUnitTest,
-       SubmitHumanConversationEntryWithMode_ValidSmartMode) {
+       SubmitHumanConversationEntryWithSkill_ValidSkill) {
   conversation_handler_->associated_content_manager()->ClearContent();
 
-  // Add a smart mode to prefs
-  prefs::AddSmartModeToPrefs("playlist", "Create a playlist of 10 songs",
-                             std::nullopt /* model */, prefs_);
-  auto smart_modes = prefs::GetSmartModesFromPrefs(prefs_);
-  ASSERT_EQ(smart_modes.size(), 1u);
-  std::string mode_id = smart_modes[0]->id;
+  // Add a skill to prefs
+  prefs::AddSkillToPrefs("playlist", "Create a playlist of 10 songs",
+                         std::nullopt /* model */, prefs_);
+  auto skills = prefs::GetSkillsFromPrefs(prefs_);
+  ASSERT_EQ(skills.size(), 1u);
+  std::string skill_id = skills[0]->id;
 
   // Get initial timestamps
-  base::Time created_time = smart_modes[0]->created_time;
-  base::Time initial_last_used = smart_modes[0]->last_used;
+  base::Time created_time = skills[0]->created_time;
+  base::Time initial_last_used = skills[0]->last_used;
 
   MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
       conversation_handler_->GetEngineForTesting());
@@ -4419,21 +4416,21 @@ TEST_F(ConversationHandlerUnitTest,
             run_loop.QuitWhenIdle();
           }));
 
-  conversation_handler_->SubmitHumanConversationEntryWithMode("/playlist 2000",
-                                                              mode_id);
+  conversation_handler_->SubmitHumanConversationEntryWithSkill("/playlist 2000",
+                                                               skill_id);
 
   run_loop.Run();
 
-  // Verify conversation history contains smart mode data
+  // Verify conversation history contains skill data
   const auto& history = conversation_handler_->GetConversationHistory();
   EXPECT_EQ(history.size(), 2u);
   EXPECT_EQ(history[0]->text, "/playlist 2000");
-  ASSERT_TRUE(history[0]->smart_mode);
-  EXPECT_EQ(history[0]->smart_mode->shortcut, "playlist");
-  EXPECT_EQ(history[0]->smart_mode->prompt, "Create a playlist of 10 songs");
+  ASSERT_TRUE(history[0]->skill);
+  EXPECT_EQ(history[0]->skill->shortcut, "playlist");
+  EXPECT_EQ(history[0]->skill->prompt, "Create a playlist of 10 songs");
 
   // Verify last_used time was updated
-  auto updated_mode = prefs::GetSmartModeFromPrefs(prefs_, mode_id);
+  auto updated_mode = prefs::GetSkillFromPrefs(prefs_, skill_id);
   ASSERT_TRUE(updated_mode);
   EXPECT_NE(updated_mode->last_used, created_time);
   EXPECT_GT(updated_mode->last_used, initial_last_used);
@@ -4441,9 +4438,9 @@ TEST_F(ConversationHandlerUnitTest,
 }
 
 TEST_F(ConversationHandlerUnitTest,
-       SubmitHumanConversationEntryWithMode_InvalidSmartMode) {
-  // Test invalid smart mode will just be ignored and submit the input text
-  // as plain text without smart mode message.
+       SubmitHumanConversationEntryWithSkill_InvalidSkill) {
+  // Test invalid skill will just be ignored and submit the input text
+  // as plain text without skill message.
   conversation_handler_->associated_content_manager()->ClearContent();
 
   MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
@@ -4452,7 +4449,7 @@ TEST_F(ConversationHandlerUnitTest,
 
   base::RunLoop run_loop;
 
-  // Engine should still be called (invalid smart mode is silently ignored)
+  // Engine should still be called (invalid skill is silently ignored)
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       .WillOnce(testing::WithArg<8>(
           [&run_loop](EngineConsumer::GenerationCompletedCallback callback) {
@@ -4463,17 +4460,17 @@ TEST_F(ConversationHandlerUnitTest,
             run_loop.QuitWhenIdle();
           }));
 
-  conversation_handler_->SubmitHumanConversationEntryWithMode(
+  conversation_handler_->SubmitHumanConversationEntryWithSkill(
       "Test input", "invalid-mode-id");
 
   run_loop.Run();
 
-  // Verify conversation history created but without smart mode data
+  // Verify conversation history created but without skill data
   const auto& history = conversation_handler_->GetConversationHistory();
   EXPECT_EQ(history.size(), 2u);
 
-  // Human entry should NOT have smart mode data (invalid ID was ignored)
-  EXPECT_FALSE(history[0]->smart_mode);
+  // Human entry should NOT have skill data (invalid ID was ignored)
+  EXPECT_FALSE(history[0]->skill);
   EXPECT_EQ(history[0]->text, "Test input");
 
   // Assistant response should be normal
@@ -4481,16 +4478,16 @@ TEST_F(ConversationHandlerUnitTest,
 }
 
 TEST_F(ConversationHandlerUnitTest,
-       SubmitHumanConversationEntryWithMode_ModelSwitching) {
+       SubmitHumanConversationEntryWithSkill_ModelSwitching) {
   conversation_handler_->associated_content_manager()->ClearContent();
 
-  // Add a smart mode with different model
+  // Add a skill with different model
   std::string different_model = "chat-gemma";
-  prefs::AddSmartModeToPrefs("translate", "Please translate the content",
-                             different_model, prefs_);
-  auto smart_modes = prefs::GetSmartModesFromPrefs(prefs_);
-  ASSERT_EQ(smart_modes.size(), 1u);
-  std::string mode_id = smart_modes[0]->id;
+  prefs::AddSkillToPrefs("translate", "Please translate the content",
+                         different_model, prefs_);
+  auto skills = prefs::GetSkillsFromPrefs(prefs_);
+  ASSERT_EQ(skills.size(), 1u);
+  std::string skill_id = skills[0]->id;
 
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
   base::RunLoop run_loop;
@@ -4504,25 +4501,25 @@ TEST_F(ConversationHandlerUnitTest,
         run_loop.Quit();
       })));
 
-  conversation_handler_->SubmitHumanConversationEntryWithMode("Test input",
-                                                              mode_id);
+  conversation_handler_->SubmitHumanConversationEntryWithSkill("Test input",
+                                                               skill_id);
 
   run_loop.Run();
 }
 
 TEST_F(ConversationHandlerUnitTest,
-       SubmitHumanConversationEntryWithMode_NoModelSwitchingSameModel) {
+       SubmitHumanConversationEntryWithSkill_NoModelSwitchingSameModel) {
   conversation_handler_->associated_content_manager()->ClearContent();
 
   // Get current model key
   std::string current_model = conversation_handler_->GetCurrentModel().key;
 
-  // Add a smart mode with same model as current
-  prefs::AddSmartModeToPrefs("rewrite", "Please rewrite the content",
-                             current_model, prefs_);
-  auto smart_modes = prefs::GetSmartModesFromPrefs(prefs_);
-  ASSERT_EQ(smart_modes.size(), 1u);
-  std::string mode_id = smart_modes[0]->id;
+  // Add a skill with same model as current
+  prefs::AddSkillToPrefs("rewrite", "Please rewrite the content", current_model,
+                         prefs_);
+  auto skills = prefs::GetSkillsFromPrefs(prefs_);
+  ASSERT_EQ(skills.size(), 1u);
+  std::string skill_id = skills[0]->id;
 
   MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
       conversation_handler_->GetEngineForTesting());
@@ -4544,8 +4541,8 @@ TEST_F(ConversationHandlerUnitTest,
             run_loop.QuitWhenIdle();
           }));
 
-  conversation_handler_->SubmitHumanConversationEntryWithMode("Test input",
-                                                              mode_id);
+  conversation_handler_->SubmitHumanConversationEntryWithSkill("Test input",
+                                                               skill_id);
 
   run_loop.Run();
 

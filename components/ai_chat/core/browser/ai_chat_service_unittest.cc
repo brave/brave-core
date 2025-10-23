@@ -111,8 +111,8 @@ class MockServiceClient : public mojom::ServiceObserver {
   MOCK_METHOD(void, OnStateChanged, (mojom::ServiceStatePtr), (override));
 
   MOCK_METHOD(void,
-              OnSmartModesChanged,
-              (std::vector<mojom::SmartModePtr>),
+              OnSkillsChanged,
+              (std::vector<mojom::SkillPtr>),
               (override));
 
  private:
@@ -1500,15 +1500,15 @@ TEST_P(AIChatServiceUnitTest, OnMemoryEnabledChanged_DisabledToEnabled) {
   EXPECT_TRUE(ai_chat_service_->GetMemoryToolForTesting());
 }
 
-TEST_P(AIChatServiceUnitTest, GetSmartModes) {
-  // Add a smart mode to preferences directly
-  prefs::AddSmartModeToPrefs("test", "Test prompt", "model", prefs_);
+TEST_P(AIChatServiceUnitTest, GetSkills) {
+  // Add a skill to preferences directly
+  prefs::AddSkillToPrefs("test", "Test prompt", "model", prefs_);
 
   base::RunLoop run_loop;
-  std::vector<mojom::SmartModePtr> result;
+  std::vector<mojom::SkillPtr> result;
 
-  ai_chat_service_->GetSmartModes(
-      base::BindLambdaForTesting([&](std::vector<mojom::SmartModePtr> modes) {
+  ai_chat_service_->GetSkills(
+      base::BindLambdaForTesting([&](std::vector<mojom::SkillPtr> modes) {
         result = std::move(modes);
         run_loop.Quit();
       }));
@@ -1520,70 +1520,69 @@ TEST_P(AIChatServiceUnitTest, GetSmartModes) {
   EXPECT_EQ(result[0]->model, "model");
 }
 
-TEST_P(AIChatServiceUnitTest, CreateSmartMode) {
+TEST_P(AIChatServiceUnitTest, CreateSkill) {
   MockServiceClient mock_client(ai_chat_service_.get());
   base::RunLoop run_loop;
-  EXPECT_CALL(mock_client, OnSmartModesChanged(_))
-      .WillOnce([&](std::vector<mojom::SmartModePtr> smart_modes) {
-        ASSERT_EQ(smart_modes.size(), 1u);
-        EXPECT_EQ(smart_modes[0]->shortcut, "test_shortcut");
-        EXPECT_EQ(smart_modes[0]->prompt, "Test prompt");
-        EXPECT_EQ(smart_modes[0]->model, "test_model");
+  EXPECT_CALL(mock_client, OnSkillsChanged(_))
+      .WillOnce([&](std::vector<mojom::SkillPtr> skills) {
+        ASSERT_EQ(skills.size(), 1u);
+        EXPECT_EQ(skills[0]->shortcut, "test_shortcut");
+        EXPECT_EQ(skills[0]->prompt, "Test prompt");
+        EXPECT_EQ(skills[0]->model, "test_model");
         run_loop.Quit();
       });
 
-  ai_chat_service_->CreateSmartMode("test_shortcut", "Test prompt",
-                                    "test_model");
+  ai_chat_service_->CreateSkill("test_shortcut", "Test prompt", "test_model");
   run_loop.Run();
 }
 
-TEST_P(AIChatServiceUnitTest, UpdateSmartMode) {
-  // First create a smart mode
-  prefs::AddSmartModeToPrefs("original", "Original prompt", "original_model",
-                             prefs_);
-  auto smart_modes = prefs::GetSmartModesFromPrefs(prefs_);
-  ASSERT_EQ(smart_modes.size(), 1u);
-  std::string id = smart_modes[0]->id;
+TEST_P(AIChatServiceUnitTest, UpdateSkill) {
+  // First create a skill
+  prefs::AddSkillToPrefs("original", "Original prompt", "original_model",
+                         prefs_);
+  auto skills = prefs::GetSkillsFromPrefs(prefs_);
+  ASSERT_EQ(skills.size(), 1u);
+  std::string id = skills[0]->id;
 
   MockServiceClient mock_client(ai_chat_service_.get());
   base::RunLoop run_loop;
-  EXPECT_CALL(mock_client, OnSmartModesChanged(_))
-      .WillOnce([&](std::vector<mojom::SmartModePtr> smart_modes) {
-        ASSERT_EQ(smart_modes.size(), 1u);
-        EXPECT_EQ(smart_modes[0]->shortcut, "updated_shortcut");
-        EXPECT_EQ(smart_modes[0]->prompt, "Updated prompt");
-        EXPECT_EQ(smart_modes[0]->model, "updated_model");
+  EXPECT_CALL(mock_client, OnSkillsChanged(_))
+      .WillOnce([&](std::vector<mojom::SkillPtr> skills) {
+        ASSERT_EQ(skills.size(), 1u);
+        EXPECT_EQ(skills[0]->shortcut, "updated_shortcut");
+        EXPECT_EQ(skills[0]->prompt, "Updated prompt");
+        EXPECT_EQ(skills[0]->model, "updated_model");
         run_loop.Quit();
       });
 
-  ai_chat_service_->UpdateSmartMode(id, "updated_shortcut", "Updated prompt",
-                                    "updated_model");
+  ai_chat_service_->UpdateSkill(id, "updated_shortcut", "Updated prompt",
+                                "updated_model");
   run_loop.Run();
 }
 
-TEST_P(AIChatServiceUnitTest, DeleteSmartMode) {
-  prefs::AddSmartModeToPrefs("test", "Test prompt", "model", prefs_);
-  auto smart_modes = prefs::GetSmartModesFromPrefs(prefs_);
-  ASSERT_EQ(smart_modes.size(), 1u);
-  std::string id = smart_modes[0]->id;
+TEST_P(AIChatServiceUnitTest, DeleteSkill) {
+  prefs::AddSkillToPrefs("test", "Test prompt", "model", prefs_);
+  auto skills = prefs::GetSkillsFromPrefs(prefs_);
+  ASSERT_EQ(skills.size(), 1u);
+  std::string id = skills[0]->id;
 
   MockServiceClient mock_client(ai_chat_service_.get());
   base::RunLoop run_loop;
-  EXPECT_CALL(mock_client, OnSmartModesChanged(_))
-      .WillOnce([&](std::vector<mojom::SmartModePtr> smart_modes) {
-        EXPECT_TRUE(smart_modes.empty());
+  EXPECT_CALL(mock_client, OnSkillsChanged(_))
+      .WillOnce([&](std::vector<mojom::SkillPtr> skills) {
+        EXPECT_TRUE(skills.empty());
         run_loop.Quit();
       });
 
-  ai_chat_service_->DeleteSmartMode(id);
+  ai_chat_service_->DeleteSkill(id);
   run_loop.Run();
 
   // Verify it was deleted
-  auto mode = prefs::GetSmartModeFromPrefs(prefs_, id);
+  auto mode = prefs::GetSkillFromPrefs(prefs_, id);
   EXPECT_FALSE(mode);
 
-  auto all_smart_modes = prefs::GetSmartModesFromPrefs(prefs_);
-  EXPECT_TRUE(all_smart_modes.empty());
+  auto all_skills = prefs::GetSkillsFromPrefs(prefs_);
+  EXPECT_TRUE(all_skills.empty());
 }
 
 }  // namespace ai_chat

@@ -108,9 +108,9 @@ struct UploadedFile {
   UploadedFileType type;
 };
 
-// An entry of an executed smart mode to be stored inside conversation entry
+// An entry of an executed skill to be stored inside conversation entry
 // and persisted in database.
-struct SmartModeEntry {
+struct SkillEntry {
   string shortcut;
   string prompt;
 };
@@ -242,7 +242,7 @@ struct ConversationTurn {
   // User uploaded files, currently including image and screenshot
   array<UploadedFile>? uploaded_files;
 
-  SmartModeEntry? smart_mode;
+  SkillEntry? skill;
 
   // Whether the turn was generated from Brave Search SERP.
   bool from_brave_search_SERP = false;
