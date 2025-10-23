@@ -11,6 +11,8 @@
 #include "chrome/browser/profiles/profile_keyed_service_factory.h"
 #include "components/keyed_service/core/keyed_service.h"
 
+class Profile;
+
 namespace content {
 class BrowserContext;
 }  // namespace content
@@ -27,11 +29,8 @@ class OllamaService;
 
 class OllamaServiceFactory : public ProfileKeyedServiceFactory {
  public:
-  OllamaServiceFactory(const OllamaServiceFactory&) = delete;
-  OllamaServiceFactory& operator=(const OllamaServiceFactory&) = delete;
-
   static OllamaServiceFactory* GetInstance();
-  static OllamaService* GetForBrowserContext(content::BrowserContext* context);
+  static OllamaService* GetForProfile(Profile* profile);
 
  private:
   friend base::NoDestructor<OllamaServiceFactory>;

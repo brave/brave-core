@@ -6,7 +6,9 @@
 #include "brave/browser/ai_chat/ollama_service_factory.h"
 
 #include "base/no_destructor.h"
+#include "brave/browser/ai_chat/ai_chat_utils.h"
 #include "brave/components/ai_chat/core/browser/ollama/ollama_service.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_selections.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/storage_partition.h"
@@ -20,10 +22,9 @@ OllamaServiceFactory* OllamaServiceFactory::GetInstance() {
 }
 
 // static
-OllamaService* OllamaServiceFactory::GetForBrowserContext(
-    content::BrowserContext* context) {
+OllamaService* OllamaServiceFactory::GetForProfile(Profile* profile) {
   return static_cast<OllamaService*>(
-      GetInstance()->GetServiceForBrowserContext(context, true));
+      GetInstance()->GetServiceForBrowserContext(profile, true));
 }
 
 OllamaServiceFactory::OllamaServiceFactory()
@@ -38,6 +39,9 @@ OllamaServiceFactory::~OllamaServiceFactory() = default;
 std::unique_ptr<KeyedService>
 OllamaServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
+  if (!IsAllowedForContext(context)) {
+    return nullptr;
+  }
   auto url_loader_factory = context->GetDefaultStoragePartition()
                                 ->GetURLLoaderFactoryForBrowserProcess();
   return std::make_unique<OllamaService>(url_loader_factory);
