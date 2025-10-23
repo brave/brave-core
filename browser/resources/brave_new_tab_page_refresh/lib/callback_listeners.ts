@@ -5,21 +5,20 @@
 
 type Router<T> = {
   [P in keyof T]: {
-    addListener: (listener: any) => void
-    removeListener: (listener: any) => void
+    addListener: (listener: any) => number
   }
+} & {
+  removeListener: (callbackId: number) => void
 }
 
 export function addCallbackListeners<T>(
   router: Router<T>,
   listeners: Partial<T>
 ) {
-  for (const [key, value] of Object.entries(listeners)) {
-    router[key as keyof T].addListener(value)
-  }
+  const callbackIds = Object.entries(listeners).map(([key, value]) => {
+    return router[key as keyof T].addListener(value)
+  })
   return () => {
-    for (const [key, value] of Object.entries(listeners)) {
-      router[key as keyof T].removeListener(value)
-    }
+    callbackIds.forEach(id => router.removeListener(id))
   }
 }
