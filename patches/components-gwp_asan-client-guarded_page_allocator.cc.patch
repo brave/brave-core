@@ -1,0 +1,13 @@
+diff --git a/components/gwp_asan/client/guarded_page_allocator.cc b/components/gwp_asan/client/guarded_page_allocator.cc
+index 61b6b388709f30eef4116d14a3bccb515b12fc34..48d2b793856ef2490eceb6fabe8025b6986ab0e8 100644
+--- a/components/gwp_asan/client/guarded_page_allocator.cc
++++ b/components/gwp_asan/client/guarded_page_allocator.cc
+@@ -395,7 +395,7 @@ bool GuardedPageAllocator::ReserveSlotAndMetadata(
+       if (++consecutive_oom_hits_ == kOutOfMemoryCount) {
+         oom_hit_ = true;
+         base::AutoUnlock unlock(lock_);
+-        std::move(oom_callback_).Run(total_allocations_);
++        base::ImmediateCrash();
+       }
+     }
+     return false;
