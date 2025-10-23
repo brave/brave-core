@@ -24,7 +24,7 @@
 namespace nft {
 
 UntrustedNftUI::UntrustedNftUI(web::WebUIIOS* web_ui, const GURL& url)
-    : web::WebUIIOSController(web_ui, url.host()) {
+    : web::WebUIIOSController(web_ui, url.GetHost()) {
   BraveWebUIIOSDataSource* untrusted_source =
       brave::CreateAndAddWebUIDataSource(web_ui, url.host(),
                                          kNftDisplayGenerated,
