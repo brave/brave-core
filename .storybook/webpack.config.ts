@@ -23,12 +23,17 @@ const basePathMap = generatePathMap(genPath)
 // Override the path map we use in the browser with some additional mock
 // directories, so that we can replace things in Storybook.
 const pathMap = {
+  '//resources/mojo/mojo/public/js/bindings.js': path.join(genPath, 'mojo/public/js/bindings.js'),
   ...basePathMap,
   'chrome://resources': [
     // As we mock some chrome://resources, insert our mock directory as the first
     // place to look.
     path.resolve(__dirname, 'chrome-resources-mock'),
-    basePathMap['chrome://resources']
+    basePathMap['chrome://resources'],
+
+    // Some mojo bindings have their JS code generated in the gen directory (bindings.js). The type definitions are in the same folder as all the other mojo bindings, so we only
+    // need this for Storybook builds.
+    genPath
   ],
   '$web-common': [
     path.resolve(__dirname, 'web-common-mock'),
@@ -68,13 +73,13 @@ const prefixReplacer = (prefix, replacements) => {
 /**
  * Adds the 'chrome:' scheme to protocol-relative resource URLs.
  */
-const protocolRelativeReplacer = () => {
-  return new webpack.NormalModuleReplacementPlugin(
-    /^\/\/resources\//,
-    (resource) => {
-      resource.request = `chrome:${resource.request}`
-    })
-}
+// const protocolRelativeReplacer = () => {
+//   return new webpack.NormalModuleReplacementPlugin(
+//     /^\/\/resources\//,
+//     (resource) => {
+//       resource.request = `chrome:${resource.request}`
+//     })
+// }
 
 /**
  * Attempts to use mock implementations of a provided module name
@@ -166,7 +171,7 @@ export default async ({ config, mode }) => {
   config.plugins.push(
     provideNodeGlobals,
     useMockedModules(['bridge', 'brave_rewards_api_proxy']),
-    protocolRelativeReplacer(),
+    // protocolRelativeReplacer(),
     ...Object.keys(pathMap)
       .filter((prefix) => prefix.startsWith('chrome://'))
       .map((prefix) => prefixReplacer(prefix, pathMap[prefix]))
@@ -193,3 +198,5 @@ export default async ({ config, mode }) => {
   config.resolve.extensions.push('.ts', '.tsx', '.scss')
   return config
 }
+
+// throw new Error(JSON.stringify(pathMap, null, 2));
