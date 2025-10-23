@@ -27,20 +27,17 @@ export function NewsWidget() {
         {
           braveNews.isOptInPrefEnabled &&
             <leo-menu-item onClick={() => braveNews.setCustomizePage('news')}>
-              <Icon name='tune' /> {getString('newsCustomizeButtonLabel')}
+              <Icon name='tune' />
+              {getString(S.NEW_TAB_NEWS_CUSTOMIZE_BUTTON_LABEL)}
             </leo-menu-item>
         }
         <leo-menu-item onClick={() => braveNews.toggleBraveNewsOnNTP(false)}>
           <Icon name='disable-outline' />
-          {
-            braveNews.isOptInPrefEnabled
-              ? getString('newsDisableButtonLabel')
-              : getString('newsHideButtonLabel')
-          }
+          {getString(S.NEW_TAB_NEWS_DISABLE_BUTTON_LABEL)}
         </leo-menu-item>
       </WidgetMenu>
       <div className='title'>
-        {getString('newsWidgetTitle')}
+        {getString(S.NEW_TAB_NEWS_WIDGET_TITLE)}
       </div>
       {braveNews.isOptInPrefEnabled ? <PeekItem /> : <OptIn />}
     </div>
@@ -96,14 +93,14 @@ function OptIn() {
     <div className='opt-in'>
       <div className='graphic' />
       <div className='text'>
-        {getString('newsEnableText')}
+        {getString(S.BRAVE_NEWS_INTRO_TITLE)}
       </div>
       <div className='actions'>
         <Button
           size='small'
           onClick={() => { braveNews.toggleBraveNewsOnNTP(true) }}
         >
-          {getString('newsEnableButtonLabel')}
+          {getString(S.BRAVE_NEWS_OPT_IN_ACTION_LABEL)}
         </Button>
       </div>
     </div>

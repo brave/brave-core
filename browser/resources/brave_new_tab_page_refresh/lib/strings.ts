@@ -4,121 +4,30 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { getLocale } from '$web-common/locale'
+import '$web-common/strings'
+
+import { BraveNewsStrings } from 'gen/components/grit/brave_components_webui_strings'
+import { BraveNewTabPageStrings } from 'gen/components/grit/brave_components_webui_strings'
+
+declare global {
+  interface Strings {
+    BraveNewTabPageStrings: typeof BraveNewTabPageStrings
+  }
+}
 
 export type StringKey =
-  'addTopSiteLabel' |
-  'addTopSiteTitle' |
-  'backgroundSettingsTitle' |
-  'braveBackgroundLabel' |
-  'cancelButtonLabel' |
-  'clockFormatLabel' |
-  'clockFormatOption12HourText' |
-  'clockFormatOption24HourText' |
-  'clockFormatOptionAutomaticText' |
-  'clockSettingsTitle' |
-  'customBackgroundLabel' |
-  'customBackgroundTitle' |
-  'customizeSearchEnginesLink' |
-  'editTopSiteLabel' |
-  'editTopSiteTitle' |
-  'enabledSearchEnginesLabel' |
-  'gradientBackgroundLabel' |
-  'gradientBackgroundTitle' |
-  'hideRewardsWidgetLabel' |
-  'hideStatsWidgetLabel' |
-  'hideTalkWidgetLabel' |
-  'hideTopSitesLabel' |
-  'hideVpnWidgetLabel' |
-  'newsCustomizeButtonLabel' |
-  'newsDisableButtonLabel' |
-  'newsEnableButtonLabel' |
-  'newsEnableText' |
-  'newsHideButtonLabel' |
-  'newsSettingsTitle' |
-  'newsWidgetTitle' |
-  'photoCreditsText' |
-  'randomizeBackgroundLabel' |
-  'removeTopSiteLabel' |
   'rewardsAdsViewedTooltip' |
-  'rewardsBalanceTitle' |
-  'rewardsConnectButtonLabel' |
-  'rewardsConnectText' |
-  'rewardsConnectTitle' |
   'rewardsFeatureText1' |
   'rewardsFeatureText2' |
-  'rewardsLoginButtonLabel' |
-  'rewardsLoginText' |
-  'rewardsLoginTitle' |
-  'rewardsOnboardingButtonLabel' |
-  'rewardsOnboardingLink' |
   'rewardsPayoutCompletedText' |
-  'rewardsPayoutDetailsLink' |
   'rewardsPayoutProcessingText' |
   'rewardsTosUpdateButtonLabel' |
   'rewardsTosUpdateText' |
   'rewardsTosUpdateTitle' |
-  'rewardsWidgetTitle' |
-  'saveChangesButtonLabel' |
-  'searchAskLeoDescription' |
-  'searchBoxPlaceholderText' |
-  'searchBoxPlaceholderTextBrave' |
-  'searchCustomizeEngineListText' |
-  'searchSettingsTitle' |
-  'searchSuggestionsDismissButtonLabel' |
-  'searchSuggestionsEnableButtonLabel' |
-  'searchSuggestionsPromptText' |
-  'searchSuggestionsPromptTitle' |
-  'settingsTitle' |
-  'showBackgroundsLabel' |
-  'showClockLabel' |
-  'showRewardsWidgetLabel' |
-  'showSearchBoxLabel' |
-  'showSponsoredImagesEarningText' |
-  'showSponsoredImagesLabel' |
-  'showStatsLabel' |
-  'showTalkWidgetLabel' |
-  'showTopSitesLabel' |
-  'showVpnWidgetLabel' |
-  'solidBackgroundLabel' |
-  'solidBackgroundTitle' |
-  'statsAdsBlockedText' |
-  'statsBandwidthSavedText' |
-  'statsTimeSavedText' |
-  'statsTitle' |
-  'talkAboutDataLink' |
-  'talkDescriptionText' |
-  'talkDescriptionTitle' |
-  'talkStartCallLabel' |
-  'talkWidgetTitle' |
-  'topSiteRemovedText' |
-  'topSitesCustomOptionText' |
-  'topSitesCustomOptionTitle' |
-  'topSitesMostVisitedOptionText' |
-  'topSitesMostVisitedOptionTitle' |
-  'topSitesSettingsTitle' |
-  'topSitesShowCustomLabel' |
-  'topSitesShowLessLabel' |
-  'topSitesShowMoreLabel' |
-  'topSitesShowMostVisitedLabel' |
-  'topSitesTitleLabel' |
-  'topSitesURLLabel' |
-  'undoButtonLabel' |
-  'uploadBackgroundLabel' |
-  'vpnChangeRegionLabel' |
-  'vpnFeatureText1' |
-  'vpnFeatureText2' |
-  'vpnFeatureText3' |
-  'vpnOptimalText' |
-  'vpnPoweredByText' |
-  'vpnRestorePurchaseLabel' |
-  'vpnStartTrialLabel' |
-  'vpnStatusConnected' |
-  'vpnStatusConnecting' |
-  'vpnStatusDisconnected' |
-  'vpnStatusDisconnecting' |
-  'vpnWidgetTitle' |
-  'widgetSettingsTitle'
+  'searchAskLeoDescription'
 
-export function getString(key: StringKey) {
+export function getString(
+  key: StringKey | BraveNewTabPageStrings | BraveNewsStrings
+) {
   return getLocale(key)
 }

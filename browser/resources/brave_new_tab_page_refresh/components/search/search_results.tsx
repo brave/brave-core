@@ -91,9 +91,9 @@ export function SearchResults(props: Props) {
     }
     return (
       <div className='suggestions-prompt'>
-        <h4>{getString('searchSuggestionsPromptTitle')}</h4>
+        <h4>{getString(S.NEW_TAB_SEARCH_SUGGESTIONS_PROMPT_TITLE)}</h4>
         <p>
-          {getString('searchSuggestionsPromptText')}
+          {getString(S.NEW_TAB_SEARCH_SUGGESTIONS_PROMPT_TEXT)}
         </p>
         <div className='actions'>
           <Button
@@ -102,7 +102,7 @@ export function SearchResults(props: Props) {
               props.onSearchSuggestionsEnabled()
             }}
           >
-            {getString('searchSuggestionsEnableButtonLabel')}
+            {getString(S.NEW_TAB_SEARCH_SUGGESTIONS_ENABLE_BUTTON_LABEL)}
           </Button>
           <Button
             kind='plain-faint'
@@ -110,7 +110,7 @@ export function SearchResults(props: Props) {
               actions.setSearchSuggestionsPromptDismissed(true)
             }}
           >
-            {getString('searchSuggestionsDismissButtonLabel')}
+            {getString(S.NEW_TAB_SEARCH_SUGGESTIONS_DISMISS_BUTTON_LABEL)}
           </Button>
         </div>
       </div>

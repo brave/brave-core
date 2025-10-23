@@ -20,20 +20,20 @@ export function TalkWidget() {
     <div data-css-scope={style.scope}>
       <WidgetMenu>
         <leo-menu-item onClick={() => actions.setShowTalkWidget(false)}>
-          <Icon name='eye-off' /> {getString('hideTalkWidgetLabel')}
+          <Icon name='eye-off' /> {getString(S.NEW_TAB_HIDE_TALK_WIDGET_LABEL)}
         </leo-menu-item>
       </WidgetMenu>
       <div className='title'>
-        {getString('talkWidgetTitle')}
+        {getString(S.NEW_TAB_TALK_WIDGET_TITLE)}
       </div>
       <div className='content'>
         <div className='graphic' />
         <div className='text'>
           <div className='header'>
-            {getString('talkDescriptionTitle')}
+            {getString(S.NEW_TAB_TALK_DESCRIPTION_TITLE)}
           </div>
           <div>
-            {getString('talkDescriptionText')}
+            {getString(S.NEW_TAB_TALK_DESCRIPTION_TEXT)}
           </div>
         </div>
         <div className='actions'>
@@ -41,10 +41,10 @@ export function TalkWidget() {
             size='small'
             onClick={() => openLink('https://talk.brave.com/widget')}
           >
-            {getString('talkStartCallLabel')}
+            {getString(S.NEW_TAB_TALK_START_CALL_LABEL)}
           </Button>
           <Link url='https://brave.com/privacy/browser/#brave-talk-learn'>
-            {getString('talkAboutDataLink')}
+            {getString(S.NEW_TAB_TALK_ABOUT_DATA_LINK)}
           </Link>
         </div>
       </div>
