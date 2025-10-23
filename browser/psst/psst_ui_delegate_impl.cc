@@ -11,30 +11,32 @@
 namespace psst {
 
 PsstUiDelegateImpl::PsstUiDelegateImpl(
-    BravePsstPermissionContext* permission_context, std::unique_ptr<PsstUiPresenter> ui_presenter)
-    : permission_context_(permission_context), ui_presenter_(std::move(ui_presenter)) {
+    BravePsstPermissionContext* permission_context,
+    std::unique_ptr<PsstUiPresenter> ui_presenter)
+    : permission_context_(permission_context),
+      ui_presenter_(std::move(ui_presenter)) {
   CHECK(permission_context);
 }
 
 PsstUiDelegateImpl::~PsstUiDelegateImpl() = default;
 
-void PsstUiDelegateImpl::Show(PsstConsentData dialog_data, permissions::PermissionPrompt::Delegate* delegate) {
-  dialog_data_ = std::move(dialog_data);
-  delegate_ = delegate;
-LOG(INFO) << "[PSST] PsstUiDelegateImpl::Show delegate_: " << (delegate_ ? "not null" : "null");
+void PsstUiDelegateImpl::Show(PsstConsentData* dialog_data) {
+  dialog_data_ = dialog_data;
+
   // Implementation for showing the consent dialog to the user.
 
-  // When dialog accepted by the user
-  //OnUserAcceptedPsstSettings(base::Value::List());
+  // This should be called when dialog accepted by the user
+  OnUserAcceptedPsstSettings(base::Value::List());
 }
 
-void PsstUiDelegateImpl::ShowPsstInfobar(PsstTabWebContentsObserver::InfobarCallback callback, permissions::PermissionPrompt::Delegate* delegate, PsstConsentData dialog_data) {
+void PsstUiDelegateImpl::ShowPsstInfobar(
+    permissions::PermissionPrompt::Delegate* delegate,
+    PsstConsentData* dialog_data) {
   delegate_ = delegate;
-  dialog_data_ = std::move(dialog_data);
+  dialog_data_ = dialog_data;
 
-ui_presenter_->ShowInfoBar(
-      base::BindOnce(&PsstUiDelegateImpl::OnInfobarAccepted,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+  ui_presenter_->ShowInfoBar(base::BindOnce(
+      &PsstUiDelegateImpl::OnInfobarAccepted, weak_ptr_factory_.GetWeakPtr()));
 }
 
 void PsstUiDelegateImpl::UpdateTasks(
@@ -50,20 +52,10 @@ std::optional<PsstPermissionInfo> PsstUiDelegateImpl::GetPsstPermissionInfo(
   return permission_context_->GetPsstPermissionInfo(origin, user_id);
 }
 
-void PsstUiDelegateImpl::OnInfobarAccepted(PsstTabWebContentsObserver::InfobarCallback callback,
-                                           const bool is_accepted) {
-LOG(INFO) << "[PSST] OnInfobarAccepted "
-<< " delegate_: " << (delegate_ ? "not null" : "null") << " is_accepted:" << is_accepted;
-  // if (!callback) {
-  //   return;
-  // }
-
-  if (!delegate_){
-    LOG(INFO) << "[PSST] OnInfobarAccepted delegate_ is null, returning";
-    return;
-  }
-
-  if(!is_accepted) {
+void PsstUiDelegateImpl::OnInfobarAccepted(const bool is_accepted) {
+  CHECK(delegate_);
+  CHECK(dialog_data_);
+  if (!is_accepted) {
     delegate_->Deny();
     return;
   }
@@ -74,16 +66,13 @@ LOG(INFO) << "[PSST] OnInfobarAccepted "
       dialog_data_->user_id, base::Value::List());
 
   delegate_->Accept();
-
-//  std::move(callback).Run(is_accepted);
 }
 
 void PsstUiDelegateImpl::OnUserAcceptedPsstSettings(
     base::Value::List urls_to_skip) {
-LOG(INFO) << "[PSST] User accepted PSST settings";
-
-
-  // Update allowed list of the  urls in the PSST permission when user accepts PSST dialog
+  CHECK(dialog_data_);
+  // Update allowed list of the  urls in the PSST permission when user accepts
+  // PSST dialog
   permission_context_->GrantPermission(
       dialog_data_->origin, ConsentStatus::kAllow, dialog_data_->script_version,
       dialog_data_->user_id, urls_to_skip.Clone());

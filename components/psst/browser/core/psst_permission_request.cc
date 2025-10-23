@@ -7,7 +7,9 @@
 
 #include "components/permissions/resolvers/content_setting_permission_resolver.h"
 
-PsstPermissionRequest::PsstPermissionRequest(const GURL& requesting_origin)
+PsstPermissionRequest::PsstPermissionRequest(
+    const GURL& requesting_origin,
+    PermissionRrequestCallback callback)
     : PermissionRequest(
           std::make_unique<permissions::PermissionRequestData>(
               std::make_unique<permissions::ContentSettingPermissionResolver>(
@@ -15,9 +17,8 @@ PsstPermissionRequest::PsstPermissionRequest(const GURL& requesting_origin)
               false,
               requesting_origin),
           base::BindRepeating(&PsstPermissionRequest::PermissionDecided,
-                              base::Unretained(this))) {
-  LOG(INFO) << "[PSST] PsstPermissionRequest requesting_origin: " << requesting_origin;
-}
+                              base::Unretained(this))),
+      callback_(std::move(callback)) {}
 
 PsstPermissionRequest::~PsstPermissionRequest() = default;
 
@@ -25,9 +26,8 @@ void PsstPermissionRequest::PermissionDecided(
     PermissionDecision decision,
     bool is_final_decision,
     const permissions::PermissionRequestData& request_data) {
-LOG(INFO) << "[PSST] PsstPermissionRequest::PermissionDecided called with decision: " << static_cast<int>(decision)
-<< " requesting_origin: " << request_data.requesting_origin.spec()
-<< " embedding_origin: " << request_data.embedding_origin.spec()
-<< " request_type: " << (request_data.request_type.has_value() ? std::to_string(static_cast<int>(request_data.request_type.value())) : "null")
-;
+  if (callback_) {
+    std::move(callback_).Run(decision == PermissionDecision::kAllow ||
+                             decision == PermissionDecision::kAllowThisTime);
+  }
 }

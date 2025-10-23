@@ -9,8 +9,8 @@
 #define kStorageAccess                                                       \
   kStorageAccess, kWidevine, kBraveEthereum, kBraveSolana, kBraveOpenAIChat, \
       kBraveGoogleSignInPermission, kBraveLocalhostAccessPermission,         \
-      kBraveCardano, kBravePsst, kBraveMinValue = kWidevine,                             \
-                     kBraveMaxValue = kBravePsst
+      kBraveCardano, kBravePsst, kBraveMinValue = kWidevine,                 \
+                                 kBraveMaxValue = kBravePsst
 
 #define ContentSettingsTypeToRequestType \
   ContentSettingsTypeToRequestType_ChromiumImpl

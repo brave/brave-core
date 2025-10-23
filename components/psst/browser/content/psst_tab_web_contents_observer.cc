@@ -152,10 +152,6 @@ void PsstTabWebContentsObserver::DocumentOnLoadCompletedInPrimaryMainFrame() {
     return;
   }
 
-  LOG(INFO) << "[PSST] "
-               "PsstTabWebContentsObserver::"
-               "DocumentOnLoadCompletedInPrimaryMainFrame";
-
   registry_->CheckIfMatch(
       web_contents()->GetLastCommittedURL(),
       base::BindOnce(&PsstTabWebContentsObserver::InsertUserScript,
@@ -212,19 +208,32 @@ void PsstTabWebContentsObserver::OnUserScriptResult(
     return;
   }
 
+  const auto current_origin =
+      url::Origin::Create(web_contents()->GetLastCommittedURL());
   const int script_version = rule->version();
   active_consent_data_ = std::make_unique<PsstConsentData>(
-      *user_id, url::Origin::Create(web_contents()->GetLastCommittedURL()),
-      tasks->Clone(), script_version,
+      *user_id, current_origin, tasks->Clone(), script_version,
       base::BindOnce(&PsstTabWebContentsObserver::OnUserAcceptedPsstSettings,
                      weak_factory_.GetWeakPtr(), id, std::move(rule),
                      std::move(user_script_result)));
 
-  // Here possible the request permission flow can be started:
+  // check is there is already existing permission
+  auto existing_permission =
+      ui_delegate_->GetPsstPermissionInfo(current_origin, *user_id);
+  if (existing_permission.has_value()) {
+    OnPsstPermissionAccepted(true);
+    return;
+  }
+
+  // start the request permission flow
   permissions::PermissionRequestManager::FromWebContents(web_contents())
-      ->AddRequest(web_contents()->GetPrimaryMainFrame(),
-                   std::make_unique<PsstPermissionRequest>(
-                       web_contents()->GetLastCommittedURL()));
+      ->AddRequest(
+          web_contents()->GetPrimaryMainFrame(),
+          std::make_unique<PsstPermissionRequest>(
+              web_contents()->GetLastCommittedURL(),
+              base::BindOnce(
+                  &PsstTabWebContentsObserver::OnPsstPermissionAccepted,
+                  weak_factory_.GetWeakPtr())));
 }
 
 void PsstTabWebContentsObserver::OnUserAcceptedPsstSettings(
@@ -295,16 +304,24 @@ void PsstTabWebContentsObserver::OnScriptTimeout(int id) {
   ui_delegate_->UpdateTasks(100, {}, mojom::PsstStatus::kFailed);
 }
 
-void PsstTabWebContentsObserver::ShowBubble(
+void PsstTabWebContentsObserver::ShowPermissionRequestBubble(
     permissions::PermissionPrompt::Delegate* delegate) {
   CHECK(delegate);
-  if (!ui_delegate_) {
+  CHECK(ui_delegate_);
+  CHECK(active_consent_data_);
+
+  ui_delegate_->ShowPsstInfobar(delegate, active_consent_data_.get());
+}
+
+void PsstTabWebContentsObserver::OnPsstPermissionAccepted(
+    const bool is_accepted) {
+  CHECK(active_consent_data_);
+
+  if (!is_accepted) {
     return;
   }
 
-  //ui_delegate_->Show(std::move(*active_consent_data_), delegate);
-  ui_delegate_->ShowPsstInfobar(base::NullCallback(), delegate, std::move(*active_consent_data_));
-  active_consent_data_.reset();
+  ui_delegate_->Show(active_consent_data_.get());
 }
 
 }  // namespace psst

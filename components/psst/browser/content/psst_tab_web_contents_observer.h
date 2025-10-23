@@ -17,8 +17,8 @@
 #include "brave/components/psst/common/psst_permission_schema.h"
 #include "brave/components/psst/common/psst_script_responses.h"
 #include "brave/components/psst/common/psst_ui_common.mojom-shared.h"
-#include "content/public/browser/web_contents_observer.h"
 #include "components/permissions/permission_prompt.h"
+#include "content/public/browser/web_contents_observer.h"
 
 class PrefService;
 
@@ -35,7 +35,6 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
   using InjectScriptCallback = base::RepeatingCallback<void(
       const std::string&,
       PsstTabWebContentsObserver::InsertScriptInPageCallback)>;
-  using InfobarCallback = base::OnceCallback<void(const bool is_accepted)>;
 
   // Delegate interface for UI-related actions. This class is responsible for
   // facilitating communication with the consent dialog, ensuring that the UI
@@ -44,8 +43,10 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
    public:
     virtual ~PsstUiDelegate() = default;
     // Show the consent dialog to the user with the provided data.
-    virtual void Show(PsstConsentData dialog_data, permissions::PermissionPrompt::Delegate* delegate) = 0;
-    virtual void ShowPsstInfobar(InfobarCallback callback, permissions::PermissionPrompt::Delegate* delegate, PsstConsentData dialog_data) = 0;
+    virtual void Show(PsstConsentData* dialog_data) = 0;
+    virtual void ShowPsstInfobar(
+        permissions::PermissionPrompt::Delegate* delegate,
+        PsstConsentData* dialog_data) = 0;
     // Update the UI state based on the applied tasks and progress.
     virtual void UpdateTasks(long progress,
                              const std::vector<PolicyTask>& applied_tasks,
@@ -68,7 +69,8 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
   PsstTabWebContentsObserver& operator=(const PsstTabWebContentsObserver&) =
       delete;
 
-  void ShowBubble(permissions::PermissionPrompt::Delegate* delegate);
+  void ShowPermissionRequestBubble(
+      permissions::PermissionPrompt::Delegate* delegate);
 
  private:
   friend class PsstTabWebContentsObserverUnitTestBase;
@@ -91,11 +93,11 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
                       InsertScriptInPageCallback callback);
   void OnScriptTimeout(int id);
 
-  void OnUserAcceptedPsstSettings(
-      int nav_entry_id,
-      std::unique_ptr<MatchedRule> rule,
-      base::Value user_script_result,
-      const base::Value::List disabled_checks);
+  void OnPsstPermissionAccepted(const bool is_accepted);
+  void OnUserAcceptedPsstSettings(int nav_entry_id,
+                                  std::unique_ptr<MatchedRule> rule,
+                                  base::Value user_script_result,
+                                  const base::Value::List disabled_checks);
 
   // content::WebContentsObserver overrides
   void DocumentOnLoadCompletedInPrimaryMainFrame() override;

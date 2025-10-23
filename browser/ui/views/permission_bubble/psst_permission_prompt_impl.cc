@@ -1,29 +1,29 @@
 /* Copyright (c) 2025 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/views/permission_bubble/psst_permission_prompt_impl.h"
 
+#include "brave/browser/ui/tabs/public/brave_tab_features.h"
 #include "brave/components/psst/browser/content/psst_tab_web_contents_observer.h"
 #include "components/tabs/public/tab_interface.h"
-#include "brave/browser/ui/tabs/public/brave_tab_features.h"
 
 namespace {
-  psst::PsstTabWebContentsObserver* GetPsstObserver(
-      content::WebContents* web_contents) {
-    auto* tab_interface = tabs::TabInterface::GetFromContents(web_contents);
-    if (!tab_interface) {
-      return nullptr;
-    }
-    auto* brave_tab_features =
-        tabs::BraveTabFeatures::FromTabFeatures(tab_interface->GetTabFeatures());
-    if (!brave_tab_features) {
-      return nullptr;
-    }
-    return brave_tab_features->psst_web_contents_observer();
+psst::PsstTabWebContentsObserver* GetPsstObserver(
+    content::WebContents* web_contents) {
+  auto* tab_interface = tabs::TabInterface::GetFromContents(web_contents);
+  if (!tab_interface) {
+    return nullptr;
   }
+  auto* brave_tab_features =
+      tabs::BraveTabFeatures::FromTabFeatures(tab_interface->GetTabFeatures());
+  if (!brave_tab_features) {
+    return nullptr;
+  }
+  return brave_tab_features->psst_web_contents_observer();
 }
+}  // namespace
 
 PsstPermissionPromptImpl::PsstPermissionPromptImpl(
     content::WebContents* web_contents,
@@ -48,9 +48,9 @@ PsstPermissionPromptImpl::GetTabSwitchingBehavior() {
 }
 
 void PsstPermissionPromptImpl::ShowCustomDialog() {
-  // Get PSST observer and trigger ShowBubble
+  // Get PSST observer and trigger ShowPermissionRequestBubble
   if (auto* psst_observer = GetPsstObserver(web_contents_)) {
-    psst_observer->ShowBubble(delegate_);
+    psst_observer->ShowPermissionRequestBubble(delegate_);
   } else {
     // Fallback: deny permission if no PSST observer
     delegate_->Deny();
@@ -67,8 +67,8 @@ bool PsstPermissionPromptImpl::IsAskPrompt() const {
   return true;
 }
 
-std::optional<gfx::Rect>
-PsstPermissionPromptImpl::GetViewBoundsInScreen() const {
+std::optional<gfx::Rect> PsstPermissionPromptImpl::GetViewBoundsInScreen()
+    const {
   return std::nullopt;
 }
 

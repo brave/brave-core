@@ -1287,6 +1287,7 @@ source_set("ui") {
       "//brave/components/brave_wallet_ui/trezor:trezor_bridge_generated",
       "//brave/components/commands/browser",
       "//brave/components/constants",
+      "//brave/components/psst/browser/content",
       "//brave/components/resources:strings_grit",
       "//components/permissions",
       "//components/pref_registry",

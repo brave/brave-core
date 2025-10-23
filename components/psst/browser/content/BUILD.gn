@@ -24,6 +24,7 @@ static_library("content") {
   deps = [
     "//brave/components/psst/browser/core",
     "//brave/components/psst/common",
+    "//components/permissions",
     "//components/prefs",
   ]
 }
