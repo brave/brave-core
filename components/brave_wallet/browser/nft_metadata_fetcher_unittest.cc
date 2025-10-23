@@ -903,7 +903,10 @@ TEST_F(NftMetadataFetcherUnitTest, DecodeMetadataUri) {
       /* metadata.name value */ 32 + /* metadata.symbol length */ 4 +
       /* metadata.symbol value */ 10 + /* metadata.uri.length*/ 4 +
       /* metadata.uri value */ 200;
-  for (size_t i = 0; i <= position_of_last_uri_byte; i++) {
+  ASSERT_TRUE(NftMetadataFetcher::DecodeMetadataUri(
+      base::span(uri_borsh_encoded).first(position_of_last_uri_byte)));
+  for (size_t i = position_of_last_uri_byte; i < position_of_last_uri_byte;
+       i++) {
     ASSERT_FALSE(NftMetadataFetcher::DecodeMetadataUri(
         base::span(uri_borsh_encoded).first(i)));
   }
