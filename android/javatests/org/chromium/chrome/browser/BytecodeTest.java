@@ -891,6 +891,16 @@ public class BytecodeTest {
                         Bundle.class));
         Assert.assertTrue(
                 methodExists(
+                        "org/chromium/chrome/browser/settings/SettingsIntentUtil",
+                        "createIntent",
+                        MethodModifier.STATIC,
+                        Intent.class,
+                        Context.class,
+                        String.class,
+                        Bundle.class,
+                        boolean.class));
+        Assert.assertTrue(
+                methodExists(
                         "org/chromium/components/browser_ui/media/MediaSessionHelper",
                         "showNotification",
                         MethodModifier.REGULAR,
@@ -2803,14 +2813,15 @@ public class BytecodeTest {
         if (c == null) {
             return false;
         }
+        // Iterate through all methods in the class to handle the case where the class has several
+        // versions of the same method.
         for (Method m : c.getDeclaredMethods()) {
-            boolean didMethodParamsMatch = true;
             if (m.getName().equals(methodName)) {
                 Class<?> type = m.getReturnType();
                 if ((type == null && returnType != null)
                         || (type != null && returnType == null)
                         || (type != null && returnType != null && !type.equals(returnType))) {
-                    return false;
+                    continue;
                 }
                 Class<?>[] types = m.getParameterTypes();
                 if ((types == null && parameterTypes != null)
@@ -2818,30 +2829,27 @@ public class BytecodeTest {
                         || (types != null
                                 && parameterTypes != null
                                 && types.length != parameterTypes.length)) {
-                    return false;
+                    continue;
                 }
+                boolean paramsMatch = true;
                 for (int i = 0; i < (types == null ? 0 : types.length); i++) {
                     if (!types[i].equals(parameterTypes[i])) {
-                        // Handle case when class has overridden methods, see
-                        // MultiInstanceManagerApi31 class with
-                        //    moveTabToWindow(Activity, Tab, int) and
-                        //    moveTabToWindow(InstanceInfo, Tab, int)
-                        didMethodParamsMatch = false;
+                        paramsMatch = false;
+                        break;
                     }
                 }
-
-                if (!didMethodParamsMatch) {
+                if (!paramsMatch) {
                     continue;
                 }
 
                 if (methodModifier == MethodModifier.STATIC
                         && !Modifier.isStatic(m.getModifiers())) {
-                    return false;
+                    continue;
                 }
 
                 if (methodModifier == MethodModifier.REGULAR
                         && Modifier.isStatic(m.getModifiers())) {
-                    return false;
+                    continue;
                 }
 
                 return true;
