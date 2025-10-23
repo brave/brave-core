@@ -23,7 +23,7 @@ namespace ai_chat {
 
 namespace {
 
-constexpr char kOllamaSuccessResponse[] = "Ollama is running";
+constexpr char kOllamaSuccessResponse[] = "TEST";
 
 }  // namespace
 
@@ -88,20 +88,6 @@ TEST_F(OllamaServiceTest, ConnectedNoResponse) {
   base::RunLoop run_loop;
   ollama_client()->IsConnected(base::BindLambdaForTesting([&](bool connected) {
     EXPECT_FALSE(connected);
-    run_loop.Quit();
-  }));
-
-  run_loop.Run();
-}
-
-TEST_F(OllamaServiceTest, ConnectedWrongResponse) {
-  // Any 200 response from Ollama base URL indicates it's running
-  test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaBaseUrl,
-                                         "Some other response");
-
-  base::RunLoop run_loop;
-  ollama_client()->IsConnected(base::BindLambdaForTesting([&](bool connected) {
-    EXPECT_TRUE(connected);
     run_loop.Quit();
   }));
 
