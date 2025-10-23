@@ -72,6 +72,9 @@ brave_settings_web_component_files = [
   "site_settings/site_settings_brave_ai.ts",
   "site_settings/site_settings_localhost.ts",
   "site_settings/site_settings_shields.ts",
+  "site_settings/site_settings_cardano.ts",
+  "site_settings/site_settings_ethereum.ts",
+  "site_settings/site_settings_solana.ts",
   "social_blocking_page/social_blocking_page.ts",
   "ui/searchable_drop_down_cros.ts",
 ]

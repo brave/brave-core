@@ -40,96 +40,6 @@ function InsertGoogleSignInSubpage (section: Element)
     `)
 }
 
-function InsertEthereumSubpage (section: Element)
-{
-  section.appendChild(
-    html`
-      <template is="dom-if" route-path="/content/ethereum" no-search>
-        <settings-subpage
-          associated-control="[[$$('#ethereum')]]"
-          page-title="${loadTimeData.getString('siteSettingsEthereum')}">
-          <settings-category-default-radio-group
-              id="ethereumDefault"
-              category="[[contentSettingsTypesEnum_.ETHEREUM]]"
-              block-option-label=
-                "${loadTimeData.getString('siteSettingsEthereumBlock')}"
-              allow-option-label=
-                "${loadTimeData.getString('siteSettingsEthereumAsk')}"
-              allow-option-icon="ethereum-on"
-              block-option-icon="ethereum-off">
-          </settings-category-default-radio-group>
-          <category-setting-exceptions
-            id="ethereumExceptions"
-            category="[[contentSettingsTypesEnum_.ETHEREUM]]"
-            block-header="${loadTimeData.getString('siteSettingsBlock')}"
-            allow-header="${loadTimeData.getString('siteSettingsAllow')}"
-            read-only-list>
-          </category-setting-exceptions>
-        </settings-subpage>
-      </template>
-    `)
-}
-
-function InsertSolanaSubpage (section: Element)
-{
-  section.appendChild(
-    html`
-      <template is="dom-if" route-path="/content/solana" no-search>
-        <settings-subpage
-          associated-control="[[$$('#solana')]]"
-          page-title="${loadTimeData.getString('siteSettingsSolana')}">
-          <settings-category-default-radio-group
-              id="solanaDefault"
-              category="[[contentSettingsTypesEnum_.SOLANA]]"
-              block-option-label=
-                "${loadTimeData.getString('siteSettingsSolanaBlock')}"
-              allow-option-label=
-                "${loadTimeData.getString('siteSettingsSolanaAsk')}"
-              allow-option-icon="solana-on"
-              block-option-icon="solana-off">
-          </settings-category-default-radio-group>
-          <category-setting-exceptions
-            id="solanaExceptions"
-            category="[[contentSettingsTypesEnum_.SOLANA]]"
-            block-header="${loadTimeData.getString('siteSettingsBlock')}"
-            allow-header="${loadTimeData.getString('siteSettingsAllow')}"
-            read-only-list>
-          </category-setting-exceptions>
-        </settings-subpage>
-      </template>
-    `)
-}
-
-function InsertCardanoSubpage (section: Element)
-{
-  section.appendChild(
-    html`
-      <template is="dom-if" route-path="/content/cardano" no-search>
-        <settings-subpage
-          associated-control="[[$$('#cardano')]]"
-          page-title="${loadTimeData.getString('siteSettingsCardano')}">
-          <settings-category-default-radio-group
-              id="cardanoDefault"
-              category="[[contentSettingsTypesEnum_.CARDANO]]"
-              block-option-label=
-                "${loadTimeData.getString('siteSettingsCardanoBlock')}"
-              allow-option-label=
-                "${loadTimeData.getString('siteSettingsCardanoAsk')}"
-              allow-option-icon="cardano-on"
-              block-option-icon="cardano-off">
-          </settings-category-default-radio-group>
-          <category-setting-exceptions
-            id="cardanoExceptions"
-            category="[[contentSettingsTypesEnum_.CARDANO]]"
-            block-header="${loadTimeData.getString('siteSettingsBlock')}"
-            allow-header="${loadTimeData.getString('siteSettingsAllow')}"
-            read-only-list>
-          </category-setting-exceptions>
-        </settings-subpage>
-      </template>
-    `)
-}
-
 RegisterPolymerTemplateModifications({
   'settings-privacy-page': (templateContent) => {
     const section = templateContent.querySelector('settings-section')
@@ -143,19 +53,7 @@ RegisterPolymerTemplateModifications({
     if (isGoogleSignInFeatureEnabled) {
       InsertGoogleSignInSubpage(section)
     }
-    const isNativeBraveWalletEnabled =
-      loadTimeData.getBoolean('isNativeBraveWalletFeatureEnabled')
-    const isCardanoDappSupportFeatureEnabled =
-      loadTimeData.getBoolean('isCardanoDappSupportFeatureEnabled')
-    const isBraveWalletAllowed =
-      loadTimeData.getBoolean('isBraveWalletAllowed')
-    if (isNativeBraveWalletEnabled && isBraveWalletAllowed) {
-      InsertEthereumSubpage(section)
-      InsertSolanaSubpage(section)
-      if (isCardanoDappSupportFeatureEnabled) {
-        InsertCardanoSubpage(section)
-      }
-    }
+
     const permissionsLinkRow =
       templateContent.getElementById('permissionsLinkRow')
     if (!permissionsLinkRow) {
