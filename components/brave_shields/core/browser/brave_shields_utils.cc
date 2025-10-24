@@ -64,9 +64,33 @@ class BraveCookieRules {
   ContentSetting general_setting() const { return general_setting_; }
   ContentSetting first_party_setting() const { return first_party_setting_; }
 
+  static BraveCookieRules CalculateRules(
+      HostContentSettingsMap* map,
+      content_settings::CookieSettings* cookie_settings,
+      const GURL& url) {
+    const auto default_rules = BraveCookieRules::GetDefault(cookie_settings);
+    if (IsDefaultCookieManaged(cookie_settings)) {
+      return default_rules;
+    }
+
+    auto result = BraveCookieRules::Get(map, url);
+    if (result.HasDefault()) {
+      result.Merge(default_rules);
+    }
+    return result;
+  }
+
+ private:
   bool HasDefault() const {
     return general_setting_ == CONTENT_SETTING_DEFAULT ||
            first_party_setting_ == CONTENT_SETTING_DEFAULT;
+  }
+
+  static bool IsDefaultCookieManaged(
+      content_settings::CookieSettings* cookie_settings) {
+    content_settings::ProviderType provider_id;
+    cookie_settings->GetDefaultCookieSetting(&provider_id);
+    return provider_id == content_settings::ProviderType::kPolicyProvider;
   }
 
   static BraveCookieRules Get(HostContentSettingsMap* map, const GURL& url) {
@@ -530,11 +554,7 @@ ControlType GetCookieControlType(
   DCHECK(map);
   DCHECK(cookie_settings);
 
-  auto result = BraveCookieRules::Get(map, url);
-  if (result.HasDefault()) {
-    const auto default_rules = BraveCookieRules::GetDefault(cookie_settings);
-    result.Merge(default_rules);
-  }
+  auto result = BraveCookieRules::CalculateRules(map, cookie_settings, url);
 
   if (result.general_setting() == CONTENT_SETTING_ALLOW) {
     return ControlType::ALLOW;
