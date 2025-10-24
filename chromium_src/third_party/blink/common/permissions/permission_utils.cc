@@ -35,7 +35,9 @@
   case PermissionType::BRAVE_SOLANA:                    \
     return "BraveSolana";                               \
   case PermissionType::BRAVE_CARDANO:                   \
-    return "BraveCardano";
+    return "BraveCardano";                              \
+  case PermissionType::BRAVE_PSST:                      \
+    return "BravePsst";
 
 #define kDisplayCapture                                         \
   kDisplayCapture;                                              \
@@ -86,9 +88,17 @@
   case PermissionName::BRAVE_OPEN_AI_CHAT:                                  \
     return PermissionType::BRAVE_OPEN_AI_CHAT;                              \
   case PermissionName::BRAVE_CARDANO:                                       \
-    return PermissionType::BRAVE_CARDANO;
+    return PermissionType::BRAVE_CARDANO;                                   \
+  case PermissionName::BRAVE_PSST:                                          \
+    return PermissionType::BRAVE_PSST;
+
+#define kLocalNetworkAccess        \
+  kLocalNetworkAccess;             \
+  case PermissionType::BRAVE_PSST: \
+    return std::nullopt;
 
 #include <third_party/blink/common/permissions/permission_utils.cc>
 #undef BRAVE_PERMISSION_UTIL_PERMISSION_DESCRIPTOR_INFO_TO_PERMISSION_TYPE
 #undef kDisplayCapture
 #undef PERMISSION_UTIL_GET_PERMISSION_STRING
+#undef kLocalNetworkAccess

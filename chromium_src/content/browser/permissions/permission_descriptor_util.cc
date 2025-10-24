@@ -47,6 +47,9 @@
   case blink::PermissionType::BRAVE_CARDANO:                                  \
     return CreatePermissionDescriptor(                                        \
         blink::mojom::PermissionName::BRAVE_CARDANO);                         \
+  case blink::PermissionType::BRAVE_PSST:                                     \
+    return CreatePermissionDescriptor(                                        \
+        blink::mojom::PermissionName::BRAVE_PSST);                            \
   case blink::PermissionType::NUM
 
 #include <content/browser/permissions/permission_descriptor_util.cc>

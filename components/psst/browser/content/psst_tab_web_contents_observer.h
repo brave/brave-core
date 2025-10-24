@@ -17,6 +17,7 @@
 #include "brave/components/psst/common/psst_permission_schema.h"
 #include "brave/components/psst/common/psst_script_responses.h"
 #include "brave/components/psst/common/psst_ui_common.mojom-shared.h"
+#include "components/permissions/permission_prompt.h"
 #include "content/public/browser/web_contents_observer.h"
 
 class PrefService;
@@ -42,7 +43,10 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
    public:
     virtual ~PsstUiDelegate() = default;
     // Show the consent dialog to the user with the provided data.
-    virtual void Show(PsstConsentData dialog_data) = 0;
+    virtual void Show(PsstConsentData* dialog_data) = 0;
+    virtual void ShowPsstInfobar(
+        permissions::PermissionPrompt::Delegate* delegate,
+        PsstConsentData* dialog_data) = 0;
     // Update the UI state based on the applied tasks and progress.
     virtual void UpdateTasks(long progress,
                              const std::vector<PolicyTask>& applied_tasks,
@@ -65,6 +69,9 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
   PsstTabWebContentsObserver& operator=(const PsstTabWebContentsObserver&) =
       delete;
 
+  void ShowPermissionRequestBubble(
+      permissions::PermissionPrompt::Delegate* delegate);
+
  private:
   friend class PsstTabWebContentsObserverUnitTestBase;
 
@@ -86,6 +93,12 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
                       InsertScriptInPageCallback callback);
   void OnScriptTimeout(int id);
 
+  void OnPsstPermissionAccepted(const bool is_accepted);
+  void OnUserAcceptedPsstSettings(int nav_entry_id,
+                                  std::unique_ptr<MatchedRule> rule,
+                                  base::Value user_script_result,
+                                  const base::Value::List disabled_checks);
+
   // content::WebContentsObserver overrides
   void DocumentOnLoadCompletedInPrimaryMainFrame() override;
   void DidFinishNavigation(content::NavigationHandle* handle) override;
@@ -94,6 +107,7 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
   const raw_ptr<PrefService> prefs_;
   InjectScriptCallback inject_script_callback_;
   std::unique_ptr<PsstUiDelegate> ui_delegate_;
+  std::unique_ptr<PsstConsentData> active_consent_data_{nullptr};
   base::OneShotTimer timeout_timer_;
   base::WeakPtrFactory<PsstTabWebContentsObserver> weak_factory_{this};
 };

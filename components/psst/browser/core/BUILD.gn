@@ -13,6 +13,7 @@ static_library("core") {
     "matched_rule.h",
     "psst_component_installer.h",
     "psst_consent_data.h",
+    "psst_permission_request.h",
     "psst_rule.h",
     "psst_rule_registry.h",
   ]
@@ -24,6 +25,7 @@ static_library("core") {
     "matched_rule.cc",
     "psst_component_installer.cc",
     "psst_consent_data.cc",
+    "psst_permission_request.cc",
     "psst_rule.cc",
     "psst_rule_registry_impl.cc",
     "psst_rule_registry_impl.h",
