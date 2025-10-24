@@ -274,6 +274,13 @@ class VerticalTabNewTabButton : public BraveNewTabButton {
 
  private:
   void UpdateColors() override {
+    auto* widget = GetWidget();
+    if (!widget || widget->IsClosed()) {
+      // Don't update colors if the widget is closed. Otherwise, it may cause
+      // crash.
+      return;
+    }
+
     BraveNewTabButton::UpdateColors();
 
     int bg_color_id = kColorToolbar;
