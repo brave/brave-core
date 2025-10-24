@@ -59,7 +59,7 @@ testing/mocking simpler.
 
 If the KeyedService needs to be created automatically with the profile, then it
 should not be created during unit tests otherwise it is not possible to
-use a `Profile`/`TestProfileIOS` without this service (and then the tests 
+use a `TestingProfile`/`TestProfileIOS` without this service (and then the tests 
 cannot be independent from the service). On iOS, This behaviour will be verified 
 by a `CHECK` when creating the `ProfileKeyedServiceFactoryIOS`
 
