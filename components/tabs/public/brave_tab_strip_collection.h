@@ -10,6 +10,8 @@
 
 namespace tabs {
 
+class BraveTabStripCollectionDelegate;
+
 // BraveTabStripCollection is used to override methods for tree tabs.
 // * In AddTabRecursive(), we need to to create TreeTabNode with a given new tab
 //   and insert it into target collection. The target collection can be another
@@ -18,12 +20,20 @@ namespace tabs {
 class BraveTabStripCollection : public TabStripCollection {
  public:
   BraveTabStripCollection();
-  ~BraveTabStripCollection() override = default;
+  ~BraveTabStripCollection() override;
 
-  void set_in_tree_tab_mode(bool in_tree_tab_mode) {
-    in_tree_tab_mode_ = in_tree_tab_mode;
-  }
-  bool in_tree_tab_mode() const { return in_tree_tab_mode_; }
+  void SetDelegate(std::unique_ptr<BraveTabStripCollectionDelegate> delegate);
+
+  // Exposes APIs for delegate to override behaviors.
+  tabs::TabCollection* GetParentCollection(
+      TabInterface* tab,
+      base::PassKey<BraveTabStripCollectionDelegate> pass_key) const;
+  void AddTabRecursive(
+      std::unique_ptr<TabInterface> tab,
+      size_t index,
+      std::optional<tab_groups::TabGroupId> new_group_id,
+      bool new_pinned_state,
+      base::PassKey<BraveTabStripCollectionDelegate> pass_key);
 
   // TabStripCollection:
   void AddTabRecursive(std::unique_ptr<TabInterface> tab,
@@ -48,7 +58,7 @@ class BraveTabStripCollection : public TabStripCollection {
       bool close_empty_group_collection) override;
 
  private:
-  bool in_tree_tab_mode_ = false;
+  std::unique_ptr<BraveTabStripCollectionDelegate> delegate_;
 };
 
 }  // namespace tabs

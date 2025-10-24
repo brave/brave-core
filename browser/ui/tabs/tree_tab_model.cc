@@ -22,10 +22,22 @@ int TreeTabModel::GetTreeHeight(const tree_tab::TreeTabNodeId& id) const {
   return node->GetTreeHeight();
 }
 
-void TreeTabModel::AddTreeTabNode(tabs::TreeTabNode& node) {
+void TreeTabModel::AddTreeTabNode(const tabs::TreeTabNode& node) {
+  if (tree_tab_nodes_.contains(node.id())) {
+    return;
+  }
+
   tree_tab_nodes_[node.id()] = &node;
 }
 
 void TreeTabModel::RemoveTreeTabNode(const tree_tab::TreeTabNodeId& id) {
+  if (!tree_tab_nodes_.contains(id)) {
+    return;
+  }
+
   tree_tab_nodes_.erase(id);
+}
+
+base::WeakPtr<TreeTabModel> TreeTabModel::GetWeakPtr() {
+  return weak_ptr_factory_.GetWeakPtr();
 }
