@@ -6,7 +6,6 @@
 package org.chromium.chrome.browser.settings;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -15,7 +14,6 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.hardware.Camera;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
@@ -49,6 +47,10 @@ import com.google.android.gms.vision.MultiProcessor;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 import com.google.android.material.tabs.TabLayout;
+import com.google.cardboard.sdk.qrcode.QrCodeTracker;
+import com.google.cardboard.sdk.qrcode.QrCodeTrackerFactory;
+import com.google.cardboard.sdk.qrcode.camera.CameraSource;
+import com.google.cardboard.sdk.qrcode.camera.CameraSourcePreview;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -64,10 +66,6 @@ import org.chromium.chrome.browser.BraveSyncWorker;
 import org.chromium.chrome.browser.back_press.BackPressHelper;
 import org.chromium.chrome.browser.init.ChromeBrowserInitializer;
 import org.chromium.chrome.browser.notifications.BravePermissionUtils;
-import org.chromium.chrome.browser.qrreader.BarcodeTracker;
-import org.chromium.chrome.browser.qrreader.BarcodeTrackerFactory;
-import org.chromium.chrome.browser.qrreader.CameraSource;
-import org.chromium.chrome.browser.qrreader.CameraSourcePreview;
 import org.chromium.chrome.browser.share.qrcode.QRCodeGenerator;
 import org.chromium.chrome.browser.sync.BraveSyncDevices;
 import org.chromium.chrome.browser.sync.SyncServiceFactory;
@@ -86,7 +84,7 @@ import java.util.ArrayList;
 public class BraveSyncScreensPreference extends BravePreferenceFragment
         implements View.OnClickListener,
                 BackPressHelper.ObsoleteBackPressedHandler,
-                BarcodeTracker.BarcodeGraphicTrackerCallback,
+                QrCodeTracker.Listener,
                 BraveSyncDevices.DeviceInfoChangedListener,
                 SyncService.SyncStateChangedListener {
     public static final int BIP39_WORD_COUNT = 24;
@@ -221,7 +219,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
 
         if (grantResults.length != 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             // we have permission, so create the camerasource
-            createCameraSource(true, false);
+            createCameraSource();
             return;
         }
 
@@ -897,8 +895,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         getBraveSyncWorker().finalizeSyncSetup();
     }
 
-    @SuppressLint("InlinedApi")
-    private void createCameraSource(boolean autoFocus, boolean useFlash) {
+    private void createCameraSource() {
         Context context = getActivity().getApplicationContext();
 
         // A barcode detector is created to track barcodes.  An associated multi-processor instance
@@ -906,9 +903,9 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         // graphics for each barcode on screen.  The factory is used by the multi-processor to
         // create a separate tracker instance for each barcode.
         BarcodeDetector barcodeDetector =
-                new BarcodeDetector.Builder(context).setBarcodeFormats(Barcode.ALL_FORMATS).build();
-        BarcodeTrackerFactory barcodeFactory = new BarcodeTrackerFactory(this);
-        barcodeDetector.setProcessor(new MultiProcessor.Builder<>(barcodeFactory).build());
+                new BarcodeDetector.Builder(context).setBarcodeFormats(Barcode.QR_CODE).build();
+        QrCodeTrackerFactory qrCodeFactory = new QrCodeTrackerFactory(this);
+        barcodeDetector.setProcessor(new MultiProcessor.Builder<>(qrCodeFactory).build());
 
         if (!barcodeDetector.isOperational()) {
             // Note: The first time that an app using the barcode or face API is installed on a
@@ -922,28 +919,11 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
             Log.w(TAG, "Detector dependencies are not yet available.");
         }
 
-        // Creates and starts the camera.  Note that this uses a higher resolution in comparison
-        // to other detection examples to enable the barcode detector to detect small barcodes
-        // at long distances.
-        DisplayMetrics metrics = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
-
-        CameraSource.Builder builder =
-                new CameraSource.Builder(getActivity().getApplicationContext(), barcodeDetector)
-                        .setFacing(CameraSource.CAMERA_FACING_BACK)
-                        .setRequestedPreviewSize(metrics.widthPixels, metrics.heightPixels)
-                        .setRequestedFps(24.0f);
-
-        // make sure that auto focus is an available option
-        builder = builder.setFocusMode(
-                autoFocus ? Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE : null);
-
-        mCameraSource =
-                builder.setFlashMode(useFlash ? Camera.Parameters.FLASH_MODE_TORCH : null).build();
+        mCameraSource = new CameraSource(context, barcodeDetector);
     }
 
     private void startCameraSource() throws SecurityException {
-        if (mCameraSource != null && mCameraSourcePreview.mCameraExist) {
+        if (mCameraSource != null) {
             // check that the device has play services available.
             try {
                 int code = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(
@@ -1069,7 +1049,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
     private boolean mQrInProcessingOrFinalized;
 
     @Override
-    public void onDetectedQrCode(Barcode barcode) {
+    public void onQrCodeDetected(Barcode barcode) {
         if (barcode != null) {
             synchronized (mQrInProcessingOrFinalizedLock) {
                 // If camera looks on the QR image and final security warning is shown,
@@ -1325,7 +1305,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         }
 
         if (ensureCameraPermission()) {
-            createCameraSource(true, false);
+            createCameraSource();
         }
 
         getActivity().setTitle(R.string.brave_sync_scan_chain_code);
