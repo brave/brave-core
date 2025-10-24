@@ -7,8 +7,7 @@ import { clickLeoButton } from './test_utils'
 import { MainEmailDisplay } from '../content/email_aliases_main_email_display'
 import { render, screen, act } from '@testing-library/react'
 import * as React from 'react'
-import { EmailAliasesServiceInterface }
-  from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
+import { EmailAliasesServiceInterface } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
 
 const mockEmailAliasesService: EmailAliasesServiceInterface = {
   requestAuthentication: jest.fn(),
@@ -23,9 +22,12 @@ describe('MainEmailDisplay', () => {
   it('renders the main email display', async () => {
     const mockEmail = 'test@example.com'
 
-    render(<MainEmailDisplay
-      email={mockEmail}
-      emailAliasesService={mockEmailAliasesService} />)
+    render(
+      <MainEmailDisplay
+        email={mockEmail}
+        emailAliasesService={mockEmailAliasesService}
+      />,
+    )
 
     expect(screen.getByText('test@example.com')).toBeInTheDocument()
 
@@ -35,7 +37,8 @@ describe('MainEmailDisplay', () => {
       clickLeoButton(signOutButton)
     })
 
-    expect(mockEmailAliasesService.cancelAuthenticationOrLogout)
-      .toHaveBeenCalled()
+    expect(
+      mockEmailAliasesService.cancelAuthenticationOrLogout,
+    ).toHaveBeenCalled()
   })
 })

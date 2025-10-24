@@ -66,7 +66,7 @@ generate_grd("build_grd") {
 
   deps = [
     ":preprocess",
-    "email_aliases_page:email_aliases_ui",
+    "//brave/components/email_aliases/resources:email_aliases_ui",
   ]
 
   if (!is_android) {

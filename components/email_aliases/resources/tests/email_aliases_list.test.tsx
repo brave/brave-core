@@ -9,7 +9,7 @@ import { AliasList, ListIntroduction } from '../content/email_aliases_list'
 import {
   Alias,
   EmailAliasesServiceInterface,
-  MAX_ALIASES
+  MAX_ALIASES,
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
 import { clickLeoButton } from './test_utils'
 
@@ -37,13 +37,13 @@ describe('AliasList', () => {
     {
       email: 'test1@brave.com',
       note: 'Test Alias 1',
-      domains: ['brave.com']
+      domains: ['brave.com'],
     },
     {
       email: 'test2@brave.com',
       note: 'Test Alias 2',
-      domains: ['brave.com']
-    }
+      domains: ['brave.com'],
+    },
   ]
 
   const renderAliasList = () => {
@@ -52,18 +52,17 @@ describe('AliasList', () => {
         aliases={mockAliases}
         authEmail={mockAuthEmail}
         emailAliasesService={mockEmailAliasesService}
-      />
+      />,
     )
   }
 
   const waitForTexts = async (expectedTexts: (string | RegExp)[]) => {
     await waitFor(() => {
-      expectedTexts.forEach(text => {
+      expectedTexts.forEach((text) => {
         expect(screen.getByText(text)).toBeInTheDocument()
       })
     })
   }
-
 
   const clickMenuItem = async (menuText: string) => {
     const menuItemText = screen.queryAllByText(menuText)[0]
@@ -92,7 +91,7 @@ describe('AliasList', () => {
       /test1@brave\.com/,
       /Test Alias 1/,
       /test2@brave\.com/,
-      /Test Alias 2/
+      /Test Alias 2/,
     ])
   })
 
@@ -102,7 +101,7 @@ describe('AliasList', () => {
       <ListIntroduction
         aliasesCount={MAX_ALIASES}
         onCreateClicked={mockOnCreateClicked}
-      />
+      />,
     )
 
     // Check if create button is disabled
@@ -110,15 +109,14 @@ describe('AliasList', () => {
     expect(createButton).toHaveAttribute('isdisabled', 'true')
   })
 
-
-  it ('fires callback when create button is clicked', async () => {
+  it('fires callback when create button is clicked', async () => {
     const mockOnCreateClicked = jest.fn()
 
     render(
       <ListIntroduction
         aliasesCount={mockAliases.length}
         onCreateClicked={mockOnCreateClicked}
-      />
+      />,
     )
 
     const createButton = screen.getByText('emailAliasesCreateAliasLabel')
@@ -127,7 +125,7 @@ describe('AliasList', () => {
     expect(mockOnCreateClicked).toHaveBeenCalled()
   })
 
-  it ('shows Edit Alias Modal when edit button is clicked', async () => {
+  it('shows Edit Alias Modal when edit button is clicked', async () => {
     renderAliasList()
 
     await clickMenuItem('emailAliasesEdit')
@@ -135,13 +133,14 @@ describe('AliasList', () => {
     await waitForTexts([
       'emailAliasesEditAliasTitle',
       'emailAliasesCancelButton',
-      'emailAliasesSaveAliasButton'
+      'emailAliasesSaveAliasButton',
     ])
-    expect(screen.getByPlaceholderText('emailAliasesEditNotePlaceholder'))
-      .toBeInTheDocument()
+    expect(
+      screen.getByPlaceholderText('emailAliasesEditNotePlaceholder'),
+    ).toBeInTheDocument()
   })
 
-  it ('shows Delete Alias Modal when delete button is clicked', async () => {
+  it('shows Delete Alias Modal when delete button is clicked', async () => {
     renderAliasList()
 
     await clickMenuItem('emailAliasesDelete')
@@ -149,7 +148,7 @@ describe('AliasList', () => {
     await waitForTexts([
       'emailAliasesDeleteAliasTitle',
       'emailAliasesCancelButton',
-      'emailAliasesDeleteAliasButton'
+      'emailAliasesDeleteAliasButton',
     ])
   })
 })
