@@ -20,6 +20,9 @@
 #include "brave/ios/browser/ui/webui/ai_chat/ai_chat_untrusted_conversation_ui.h"
 #include "brave/ios/browser/ui/webui/ai_chat/features.h"
 #include "brave/ios/browser/ui/webui/brave_account/brave_account_ui_ios.h"
+#include "brave/ios/browser/ui/webui/brave_wallet/line_chart_ui.h"
+#include "brave/ios/browser/ui/webui/brave_wallet/market_ui.h"
+#include "brave/ios/browser/ui/webui/brave_wallet/nft_ui.h"
 #include "brave/ios/browser/ui/webui/brave_wallet/wallet_page_ui.h"
 #include "brave/ios/browser/ui/webui/skus/skus_internals_ui.h"
 #include "build/build_config.h"
@@ -51,6 +54,17 @@ WebUIIOSFactoryFunction GetUntrustedWebUIIOSFactoryFunction(const GURL& url) {
   if (url_host == kAIChatUntrustedConversationUIHost &&
       ai_chat::features::IsAIChatWebUIEnabled()) {
     return &NewWebUIIOS<AIChatUntrustedConversationUI>;
+  }
+
+  if (base::FeatureList::IsEnabled(
+          brave_wallet::features::kBraveWalletWebUIIOS)) {
+    if (url_host == kUntrustedNftHost) {
+      return &NewWebUIIOS<nft::UntrustedNftUI>;
+    } else if (url_host == kUntrustedMarketHost) {
+      return &NewWebUIIOS<market::UntrustedMarketUI>;
+    } else if (url_host == kUntrustedLineChartHost) {
+      return &NewWebUIIOS<line_chart::UntrustedLineChartUI>;
+    }
   }
 
   return nullptr;

@@ -29,11 +29,28 @@
 #include "brave/ios/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/ios/browser/brave_wallet/meld_integration_service_factory.h"
 #include "brave/ios/browser/brave_wallet/swap_service_factory.h"
+#include "brave/ios/browser/ui/webui/sanitized_image_source.h"
 #include "brave/ios/web/webui/brave_web_ui_ios_data_source.h"
 #include "brave/ios/web/webui/brave_webui_utils.h"
 #include "components/grit/brave_components_resources.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "ios/web/public/web_state.h"
+
+namespace {
+// Content-Security-Policy: frame-src chrome-untrusted://trezor-bridge/
+// chrome-untrusted://ledger-bridge/ chrome-untrusted://nft-display/
+// chrome-untrusted://line-chart-display/ chrome-untrusted://market-display/;
+// fails to work unless all the trailing slashes from each policy.
+// For some reason, on Desktop, the trailing slashes don't seem to matter???
+// So for iOS, this function will strip the trailing slashes so the CSPs apply
+// correctly
+std::string StripTrailingSlash(std::string_view url) {
+  if (!url.empty() && url.back() == '/') {
+    return std::string(url.substr(0, url.size() - 1));
+  }
+  return std::string(url);
+}
+}  // namespace
 
 WalletPageUI::WalletPageUI(web::WebUIIOS* web_ui, const GURL& url)
     : web::WebUIIOSController(web_ui, url.host()) {
@@ -53,6 +70,24 @@ WalletPageUI::WalletPageUI(web::WebUIIOS* web_ui, const GURL& url)
   source->AddBoolean(brave_wallet::mojom::kP3ACountTestNetworksLoadTimeKey,
                      base::CommandLine::ForCurrentProcess()->HasSwitch(
                          brave_wallet::mojom::kP3ACountTestNetworksSwitch));
+
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::FrameSrc,
+      std::string("frame-src ") + StripTrailingSlash(kUntrustedTrezorURL) +
+          " " + StripTrailingSlash(kUntrustedLedgerURL) + " " +
+          StripTrailingSlash(kUntrustedNftURL) + " " +
+          StripTrailingSlash(kUntrustedLineChartURL) + " " +
+          StripTrailingSlash(kUntrustedMarketURL) + ";");
+
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::ImgSrc,
+      base::JoinString({"img-src", "'self'", "chrome://resources",
+                        "chrome://erc-token-images", "chrome://image",
+                        base::StrCat({"data:", ";"})},
+                       " "));
+
+  auto* profile = ProfileIOS::FromWebUIIOS(web_ui);
+  web::URLDataSourceIOS::Add(profile, new SanitizedImageSource(profile));
 
   web_ui->GetWebState()->GetInterfaceBinderForMainFrame()->AddInterface(
       base::BindRepeating(&WalletPageUI::BindInterface,
