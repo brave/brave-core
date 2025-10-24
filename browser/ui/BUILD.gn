@@ -257,6 +257,8 @@ source_set("ui") {
       "webui/brave_shields/shields_panel_handler.h",
       "webui/brave_shields/shields_panel_ui.cc",
       "webui/brave_shields/shields_panel_ui.h",
+      "webui/email_aliases/email_aliases_panel_ui.cc",
+      "webui/email_aliases/email_aliases_panel_ui.h",
       "webui/navigation_bar_data_provider.cc",
       "webui/navigation_bar_data_provider.h",
       "webui/new_tab_page/brave_new_tab_message_handler.cc",
@@ -627,6 +629,7 @@ source_set("ui") {
 
     deps += [
       "//brave/browser/ui/darker_theme",
+      "//brave/browser/ui/email_aliases",
       "//brave/browser/ui/side_panel",
       "//brave/browser/ui/views/location_bar",
       "//chrome/browser:shell_integration",
@@ -834,6 +837,7 @@ source_set("ui") {
     "//brave/components/debounce/core/browser",
     "//brave/components/debounce/core/common",
     "//brave/components/decentralized_dns/core",
+    "//brave/components/email_aliases/resources:email_aliases_panel_generated_resources",
     "//brave/components/google_sign_in_permission",
     "//brave/components/infobars/core",
     "//brave/components/l10n/common",
