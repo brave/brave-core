@@ -1,0 +1,13 @@
+diff --git a/chrome/test/mini_installer/config/chrome_dev_installed.prop b/chrome/test/mini_installer/config/chrome_dev_installed.prop
+index a4ca65ccd5db441ad71866b390133651532db1d3..fd3fdc00647c0e3eeec6f9e2c613fd1d85ee74e9 100644
+--- a/chrome/test/mini_installer/config/chrome_dev_installed.prop
++++ b/chrome/test/mini_installer/config/chrome_dev_installed.prop
+@@ -10,6 +10,8 @@
+         {"exists": true},
+     "$LOCAL_APPDATA\\$CHROME_DIR_DEV\\Application\\$MINI_INSTALLER_FILE_VERSION\\chrome_wer.dll":
+         {"exists": true},
++    "$LOCAL_APPDATA\\$CHROME_DIR_DEV\\Application\\$MINI_INSTALLER_FILE_VERSION\\Installer\\chrome.7z":
++        {"exists": true},
+     "$LOCAL_APPDATA\\$CHROME_DIR_DEV\\Application\\$MINI_INSTALLER_FILE_VERSION\\Installer\\setup.exe":
+         {"exists": true},
+     "$LOCAL_APPDATA\\$CHROME_DIR_DEV\\Application\\$MINI_INSTALLER_FILE_VERSION\\IwaKeyDistribution\\iwa-key-distribution.pb":

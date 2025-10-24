@@ -1,0 +1,20 @@
+diff --git a/chrome/installer/setup/brand_behaviors.h b/chrome/installer/setup/brand_behaviors.h
+index 9f0cbe76c204a2f3f476ce9f96a000bda850a42d..6abc5f80a8d8953f46e6755b61718a8277b2d9f2 100644
+--- a/chrome/installer/setup/brand_behaviors.h
++++ b/chrome/installer/setup/brand_behaviors.h
+@@ -20,9 +20,12 @@ class Version;
+ 
+ namespace installer {
+ 
+-// Updates the updater's view of "ap" to match current norms.
+-// TODO(crbug.com/441478433): Delete this cleanup some time in 2027.
+-void UpdateInstallStatus();
++// Communicates a change in install status to the updater. |archive_type|, if
++// not UNKNOWN_ARCHIVE_TYPE, indicates what type of install/update is being
++// applied. |install_status|, if not UNKNOWN_STATUS, indicates the result of the
++// install/update.
++void UpdateInstallStatus(installer::ArchiveType archive_type,
++                         installer::InstallStatus install_status);
+ 
+ // Returns an opaque string holding data relating to the browser being
+ // uninstalled. This function is called before the product's Clients key is
