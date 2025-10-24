@@ -7,39 +7,6 @@ import {html, RegisterPolymerTemplateModifications} from 'chrome://resources/bra
 import {getTrustedHTML} from 'chrome://resources/js/static_types.js'
 import {loadTimeData} from '../i18n_setup.js'
 
-function InsertGoogleSignInSubpage (section: Element)
-{
-  section.appendChild(
-    html`
-      <template is="dom-if" route-path="/content/googleSignIn" no-search>
-        <settings-subpage
-          associated-control="[[$$('#googleSignIn')]]"
-          page-title="${loadTimeData.getString('siteSettingsGoogleSignIn')}">
-          <settings-category-default-radio-group
-              id="googleSignInDefault"
-              category="[[contentSettingsTypesEnum_.GOOGLE_SIGN_IN]]"
-              block-option-label=
-                "${loadTimeData.getString('siteSettingsGoogleSignInBlock')}"
-              allow-option-label=
-                "${loadTimeData.getString('siteSettingsGoogleSignInAsk')}"
-              allow-option-icon="user"
-              block-option-icon="user-off">
-          </settings-category-default-radio-group>
-          <category-setting-exceptions
-            id="googleSignInExceptions"
-            category="[[contentSettingsTypesEnum_.GOOGLE_SIGN_IN]]"
-            block-header=
-              "${loadTimeData.getString(
-                'siteSettingsGoogleSignInBlockExceptions')}"
-            allow-header=
-              "${loadTimeData.getString(
-                'siteSettingsGoogleSignInAllowExceptions')}">
-          </category-setting-exceptions>
-        </settings-subpage>
-      </template>
-    `)
-}
-
 RegisterPolymerTemplateModifications({
   'settings-privacy-page': (templateContent) => {
     const section = templateContent.querySelector('settings-section')
@@ -47,11 +14,6 @@ RegisterPolymerTemplateModifications({
       console.error(
         `[Settings] Couldn't find privacy_page settings-section`)
       return
-    }
-    const isGoogleSignInFeatureEnabled =
-      loadTimeData.getBoolean('isGoogleSignInFeatureEnabled')
-    if (isGoogleSignInFeatureEnabled) {
-      InsertGoogleSignInSubpage(section)
     }
 
     const permissionsLinkRow =
