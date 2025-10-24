@@ -30,11 +30,13 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/favicon_source.h"
+#include "chrome/browser/ui/webui/util/image_util.h"
 #include "components/favicon_base/favicon_url_parser.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_webui_strings.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/url_data_source.h"
 #include "content/public/browser/web_contents.h"
@@ -53,6 +55,7 @@
 #else
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/chrome_pages.h"
+#include "chrome/browser/ui/thumbnails/thumbnail_tracker.h"
 #include "chrome/browser/ui/webui/theme_source.h"
 #endif
 
@@ -63,7 +66,14 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
  public:
   UIHandler(content::WebUI* web_ui,
             mojo::PendingReceiver<ai_chat::mojom::UntrustedUIHandler> receiver)
-      : web_ui_(web_ui), receiver_(this, std::move(receiver)) {
+      :
+#if !BUILDFLAG(IS_ANDROID)  // Match thumnbail_tracker.h GN guard
+        thumbnail_tracker_(base::BindRepeating(&UIHandler::ThumbnailUpdated,
+                                               base::Unretained(this))),
+#endif
+        web_ui_(web_ui),
+
+        receiver_(this, std::move(receiver)) {
     // Set up pref change observer for memory changes
     PrefService* prefs = Profile::FromWebUI(web_ui_)->GetPrefs();
     pref_change_registrar_.Init(prefs);
@@ -105,6 +115,63 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
     OpenURL(url);
   }
 
+  void AddTabToThumbnailTracker(int32_t tab_id) override {
+#if !BUILDFLAG(IS_ANDROID)  // Match thumnbail_tracker.h GN guard
+    // Security check: only allow if the conversation has the tab as a task
+    if (conversation_id_.empty()) {
+      DVLOG(0) << "Cannot add tab to thumbnail tracker for empty conversation";
+      return;
+    }
+
+    ai_chat::AIChatService* service =
+        ai_chat::AIChatServiceFactory::GetForBrowserContext(
+            web_ui_->GetWebContents()->GetBrowserContext());
+    // Service should be available if WebUI class is instantiated
+    CHECK(service);
+
+    // We can use the sync version of GetConversation as the conversation must
+    // be in-memory for the UI to be displayed.
+    ai_chat::ConversationHandler* conversation =
+        service->GetConversation(conversation_id_);
+    if (!conversation) {
+      // Technically it's possible for a conversation to be unloaded whilst the
+      // UI is still open. This can especially happen if the conversation is
+      // deleted (or all data chosen to be cleared). At that point, the UI
+      // shouldn't be asking to track new tab thumbnails, but we don't need
+      // to crash.
+      DVLOG(0) << __func__ << " Conversation not found for conversation id: "
+               << conversation_id_;
+      return;
+    }
+
+    if (!conversation->get_task_tab_ids().contains(tab_id)) {
+      DVLOG(0) << __func__ << " Tab id: " << tab_id
+               << " is not a task for conversation: " << conversation_id_;
+      return;
+    }
+
+    auto* tab_handle = tabs::TabHandle(tab_id).Get();
+    if (!tab_handle) {
+      DVLOG(0) << __func__
+               << " Failed to get tab handle for tab id: " << tab_id;
+      return;
+    }
+    thumbnail_tracker_.AddTab(tab_handle->GetContents());
+#endif
+  }
+
+  void RemoveTabFromThumbnailTracker(int32_t tab_id) override {
+#if !BUILDFLAG(IS_ANDROID)  // Match thumnbail_tracker.h GN guard
+    auto* tab_handle = tabs::TabHandle(tab_id).Get();
+    if (!tab_handle) {
+      DVLOG(0) << __func__
+               << " Failed to get tab handle for tab id: " << tab_id;
+      return;
+    }
+    thumbnail_tracker_.RemoveTab(tab_handle->GetContents());
+#endif
+  }
+
   void BindParentPage(mojo::PendingReceiver<ai_chat::mojom::ParentUIFrame>
                           parent_ui_frame_receiver) override {
     // Route the receiver to the parent frame
@@ -142,6 +209,8 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
     if (conversation_id.empty()) {
       return;
     }
+
+    conversation_id_ = conversation_id;
 
     ai_chat::AIChatService* service =
         ai_chat::AIChatServiceFactory::GetForBrowserContext(
@@ -215,10 +284,32 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
     untrusted_ui_->OnMemoriesChanged(memories);
   }
 
+#if !BUILDFLAG(IS_ANDROID)  // Match thumnbail_tracker.h GN guard
+  // Callback for ThumbnailTracker
+  void ThumbnailUpdated(content::WebContents* contents,
+                        ThumbnailTracker::CompressedThumbnailData image) {
+    if (!image) {
+      return;
+    }
+    auto tab_id =
+        tabs::TabInterface::GetFromContents(contents)->GetHandle().raw_value();
+    std::string data_uri;
+    data_uri = webui::MakeDataURIForImage(base::span(image->data), "jpeg");
+    untrusted_ui_->ThumbnailUpdated(tab_id, data_uri);
+  }
+
+  ThumbnailTracker thumbnail_tracker_;
+#endif  // !BUILDFLAG(IS_ANDROID)
+
   raw_ptr<content::WebUI> web_ui_ = nullptr;
+
   mojo::Receiver<ai_chat::mojom::UntrustedUIHandler> receiver_;
   mojo::Remote<ai_chat::mojom::UntrustedUI> untrusted_ui_;
   PrefChangeRegistrar pref_change_registrar_;
+
+  // ID of the conversation this UI is displaying. This frame page is single-use
+  // for a single conversation.
+  std::string conversation_id_;
 };
 
 }  // namespace
@@ -268,7 +359,7 @@ AIChatUntrustedConversationUI::AIChatUntrustedConversationUI(
       "chrome-untrusted://theme;");
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ImgSrc,
-      "img-src 'self' blob: chrome-untrusted://resources "
+      "img-src 'self' blob: data: chrome-untrusted://resources "
       "chrome-untrusted://image chrome-untrusted://favicon2;");
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FontSrc,

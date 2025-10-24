@@ -83,10 +83,14 @@ interface UntrustedConversationUI {
   ContentTaskStarted(int32 tab_id);
 };
 
-// UI-side handler for callbacks from UntrustedUIHandler
+// UI-side handler for messages from the browser WebUI
 interface UntrustedUI {
   // Called when memories have changed (added, updated, or deleted)
   OnMemoriesChanged(array<string> memories);
+
+  // Called with a new thumbnail for the tab only if the tab_id is added to the
+  // thumbnail tracker via AddTabToThumbnailTracker.
+  ThumbnailUpdated(int32 tab_id, string data_uri);
 };
 
 // Browser-side handler for untrusted frame that handles rendering of
@@ -112,6 +116,14 @@ interface UntrustedUIHandler {
 
   // Open AI Chat customization settings page
   OpenAIChatCustomizationSettings();
+
+  // Registers a tab to receive thumbnail updates for. Also immediately requests
+  // the current thumbnail.
+  AddTabToThumbnailTracker(int32 tab_id);
+
+  // Always call RemoveTabFromThumbnailTracker when it's no longer needed in the
+  // UI.
+  RemoveTabFromThumbnailTracker(int32 tab_id);
 
   BindParentPage(pending_receiver<ParentUIFrame> parent_frame);
 

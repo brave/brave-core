@@ -11,6 +11,7 @@ import TabItem from '@brave/leo/react/tabItem'
 import classnames from '$web-common/classnames'
 import { getLocale } from '$web-common/locale'
 import * as Mojom from '../../../common/mojom'
+import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
 import AssistantResponse from '../assistant_response'
 import ToolEvent from '../assistant_response/tool_event'
 import styles from './assistant_task.module.scss'
@@ -42,6 +43,44 @@ interface Props {
  */
 export default function AssistantTask(props: Props) {
   const [showSteps, setShowSteps] = React.useState(false)
+  const [taskThumbnail, setTaskThumbnail] = React.useState<string>()
+  const conversationContext = useUntrustedConversationContext()
+
+  React.useEffect(() => {
+    // We only currently support a single task per conversation - only show or
+    // update a thumbnail if this task is active otherwise it will seem like
+    // an older task is making changes to a tab.
+    // TODO(https://github.com/brave/brave-browser/issues/49258): support a
+    // tab-per-ToolUseEvent and keep track of which tool uses are for which tab
+    // when multi-tab agent conversations are supported.
+    if (!conversationContext.contentTaskTabId || !props.isActiveTask) {
+      return
+    }
+
+    // Task is active task - if we get thumbnails for a related Tab, display
+    // it.
+    const id = conversationContext.uiObserver?.thumbnailUpdated.addListener(
+      (tabId: number, dataURI: string) => {
+        if (tabId === conversationContext.contentTaskTabId) {
+          setTaskThumbnail(dataURI)
+        }
+      },
+    )
+
+    // Let the thumbnail tracker know we want to track the thumbnail of
+    // the active task's tab.
+    conversationContext.uiHandler?.addTabToThumbnailTracker(
+      conversationContext.contentTaskTabId,
+    )
+
+    // Stop listening for thumbnails when we stop being the active task.
+    return () => {
+      conversationContext.uiObserver?.removeListener(id)
+      conversationContext.uiHandler?.removeTabFromThumbnailTracker(
+        conversationContext.contentTaskTabId!,
+      )
+    }
+  }, [props.isActiveTask, conversationContext.contentTaskTabId])
 
   const taskData = useExtractTaskData(props.assistantEntries)
 
@@ -73,6 +112,11 @@ export default function AssistantTask(props: Props) {
             />
           )}
         </div>
+        {taskThumbnail && (
+          <div className={styles.taskImage}>
+            <img src={taskThumbnail} />
+          </div>
+        )}
       </div>
     </div>
   )

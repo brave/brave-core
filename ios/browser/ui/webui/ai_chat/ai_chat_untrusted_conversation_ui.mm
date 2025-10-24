@@ -85,6 +85,10 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
     OpenURL(url);
   }
 
+  // No current thumbnail tracker need or support on iOS
+  void AddTabToThumbnailTracker(int32_t tab_id) override {}
+  void RemoveTabFromThumbnailTracker(int32_t tab_id) override {}
+
   void BindParentPage(mojo::PendingReceiver<ai_chat::mojom::ParentUIFrame>
                           parent_ui_frame_receiver) override {
     // Route the receiver to the parent frame
