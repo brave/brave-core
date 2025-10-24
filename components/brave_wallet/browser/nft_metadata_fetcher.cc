@@ -11,9 +11,8 @@
 
 #include "base/base64.h"
 #include "base/containers/span.h"
+#include "base/containers/span_reader.h"
 #include "base/json/json_writer.h"
-#include "base/logging.h"
-#include "base/numerics/byte_conversions.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eth_response_parser.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
@@ -26,17 +25,6 @@
 #include "ui/base/l10n/l10n_util.h"
 
 namespace {
-
-std::optional<uint32_t> DecodeUint32(base::span<const uint8_t> input,
-                                     size_t& offset) {
-  if (offset >= input.size() || input.size() - offset < 4u) {
-    return std::nullopt;
-  }
-
-  auto value = input.subspan(offset).first<4u>();
-  offset += 4u;
-  return base::U32FromLittleEndian(value);
-}
 
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
   return net::DefineNetworkTrafficAnnotation("nft_metadata_fetcher", R"(
@@ -210,7 +198,6 @@ void NftMetadataFetcher::OnSanitizeTokenMetadata(
     GetTokenMetadataIntermediateCallback callback,
     api_request_helper::ValueOrError result) {
   if (!result.has_value()) {
-    VLOG(1) << "Data URI JSON validation error:" << result.error();
     std::move(callback).Run(
         "", static_cast<int>(mojom::JsonRpcError::kParsingError),
         l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
@@ -329,46 +316,50 @@ void NftMetadataFetcher::CompleteGetSolTokenMetadata(
 
 // static
 // Expects a the bytes of a Borsh encoded Metadata struct (see
-// https://docs.rs/spl-token-metadata/latest/spl_token_metadata/state/struct.Metadata.html)
+// https://docs.rs/crate/spl-token-metadata/0.0.1/source/src/state.rs#93-104
 // and returns the URI string in of the nested Data struct (see
-// https://docs.rs/spl-token-metadata/latest/spl_token_metadata/state/struct.Data.html)
+// https://docs.rs/crate/spl-token-metadata/0.0.1/source/src/state.rs#78-89)
 // as a GURL.
 std::optional<GURL> NftMetadataFetcher::DecodeMetadataUri(
     base::span<const uint8_t> data) {
-  size_t offset = 0;
-  offset = offset + /* Skip first byte for metadata.key */ 1 +
-           /* Skip next 32 bytes for `metadata.update_authority` */ 32 +
-           /* Skip next 32 bytes for `metadata.mint` */ 32;
+  base::SpanReader span_reader(data);
+  if (!span_reader.Skip(
+          /* Skip first byte for metadata.key */ 1u +
+          /* Skip next 32 bytes for `metadata.update_authority` */ 32u +
+          /* Skip next 32 bytes for `metadata.mint` */ 32u)) {
+    return std::nullopt;
+  }
 
   // Skip next field, metadata.data.name, a string
   // whose length is represented by a leading 32 bit integer
-  auto length = DecodeUint32(data, offset);
-  if (!length) {
+  uint32_t name_length = 0;
+  if (!span_reader.ReadU32LittleEndian(name_length)) {
     return std::nullopt;
   }
-  offset += static_cast<size_t>(*length);
+  if (!span_reader.Skip(name_length)) {
+    return std::nullopt;
+  }
 
   // Skip next field, `metadata.data.symbol`, a string
   // whose length is represented by a leading 32 bit integer
-  length = DecodeUint32(data, offset);
-  if (!length) {
+  uint32_t symbol_length = 0;
+  if (!span_reader.ReadU32LittleEndian(symbol_length)) {
     return std::nullopt;
   }
-  offset += static_cast<size_t>(*length);
+  if (!span_reader.Skip(symbol_length)) {
+    return std::nullopt;
+  }
 
   // Parse next field, metadata.data.uri, a string
-  length = DecodeUint32(data, offset);
-  if (!length) {
+  uint32_t uri_length = 0;
+  if (!span_reader.ReadU32LittleEndian(uri_length)) {
     return std::nullopt;
   }
-
-  // Prevent out of bounds access in case length value is incorrect
-  if (data.size() <= offset + *length) {
+  auto uri_bytes = span_reader.Read(uri_length);
+  if (!uri_bytes) {
     return std::nullopt;
   }
-  std::string uri =
-      std::string(data.begin() + offset, data.begin() + offset + *length);
-  return GURL(uri);
+  return GURL(base::as_string_view(*uri_bytes));
 }
 
 }  // namespace brave_wallet
