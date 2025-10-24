@@ -12,7 +12,6 @@
 #include "base/check_is_test.h"
 #include "base/check_op.h"
 #include "base/functional/bind.h"
-#include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
@@ -110,7 +109,7 @@ bool BraveSidePanel::IsRightAligned() {
 void BraveSidePanel::UpdateBorder() {
   // Border and shadow should be updated together when rounded corner enabled
   // condition is changed.
-  if (BraveBrowser::ShouldUseBraveWebViewRoundedCornersForContents(
+  if (BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
           browser_view_->browser())) {
     // Use a negative top border to hide the separator inserted by the upstream
     // side panel implementation.

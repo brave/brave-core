@@ -77,6 +77,10 @@ class BraveBrowserView : public BrowserView,
 
   static BraveBrowserView* From(BrowserView* view);
 
+  // We use rounded corners even rounded corners setting is disabled.
+  // Call this when we want to know
+  static bool ShouldUseBraveWebViewRoundedCornersForContents(Browser* browser);
+
   void SetStarredState(bool is_starred) override;
   void ShowUpdateChromeDialog() override;
 

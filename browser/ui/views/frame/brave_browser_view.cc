@@ -236,6 +236,34 @@ BraveBrowserView* BraveBrowserView::From(BrowserView* view) {
   return static_cast<BraveBrowserView*>(view);
 }
 
+bool BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
+    Browser* browser) {
+  if (!browser->is_type_normal()) {
+    return false;
+  }
+
+  if (browser->profile()->GetPrefs()->GetBoolean(kWebViewRoundedCorners)) {
+    return true;
+  }
+
+  if (!base::FeatureList::IsEnabled(features::kSideBySide)) {
+    return false;
+  }
+
+  auto* model = browser->tab_strip_model();
+  if (model->empty()) {
+    return false;
+  }
+
+  const int active_tab_index = model->active_index();
+
+  if (active_tab_index == TabStripModel::kNoTab) {
+    return false;
+  }
+
+  return model->IsActiveTabSplit();
+}
+
 BraveBrowserView::BraveBrowserView(Browser* browser) : BrowserView(browser) {
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   // When SideBySide is enabled, each ContentsContainerView in MultiContentsView
@@ -957,8 +985,7 @@ void BraveBrowserView::OnActiveTabChanged(content::WebContents* old_contents,
 
 void BraveBrowserView::UpdateContentsSeparatorVisibility() {
   // It's not shown with rounded corners mode always.
-  if (BraveBrowser::ShouldUseBraveWebViewRoundedCornersForContents(
-          browser_.get())) {
+  if (ShouldUseBraveWebViewRoundedCornersForContents(browser_.get())) {
     top_container_separator_->SetPreferredSize({});
     return;
   }
@@ -1026,8 +1053,7 @@ void BraveBrowserView::OnMouseMoved(const ui::MouseEvent& event) {
   // This handling is useful when it's in fullscreen. If move the mouse point to
   // window edge quickly BraveBrowserView::PreHandleMouseEvent() is not called.
   if (sidebar_container_view_ && event.type() == ui::EventType::kMouseMoved &&
-      BraveBrowser::ShouldUseBraveWebViewRoundedCornersForContents(
-          browser_.get())) {
+      ShouldUseBraveWebViewRoundedCornersForContents(browser_.get())) {
     gfx::Point position_in_screen = event.location();
     views::View::ConvertPointToScreen(this, &position_in_screen);
     sidebar_container_view_->PreHandleMouseEvent(
@@ -1046,8 +1072,7 @@ BraveBrowser* BraveBrowserView::GetBraveBrowser() const {
 void BraveBrowserView::UpdateWebViewRoundedCorners() {
   gfx::RoundedCornersF corners;
 
-  if (BraveBrowser::ShouldUseBraveWebViewRoundedCornersForContents(
-          browser_.get())) {
+  if (ShouldUseBraveWebViewRoundedCornersForContents(browser_.get())) {
     corners = gfx::RoundedCornersF(BraveContentsViewUtil::kBorderRadius);
   }
 

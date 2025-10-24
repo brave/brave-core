@@ -25,10 +25,6 @@ class BraveBrowser : public Browser {
   BraveBrowser(const BraveBrowser&) = delete;
   BraveBrowser& operator=(const BraveBrowser&) = delete;
 
-  // We use rounded corners even rounded corners setting is disabled.
-  // Call this when we want to know
-  static bool ShouldUseBraveWebViewRoundedCornersForContents(Browser* browser);
-
   // Browser overrides:
   void ScheduleUIUpdate(content::WebContents* source,
                         unsigned changed_flags) override;

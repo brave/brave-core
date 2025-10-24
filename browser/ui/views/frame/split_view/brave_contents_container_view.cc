@@ -7,8 +7,8 @@
 
 #include <memory>
 
-#include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
+#include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view_mini_toolbar.h"
 #include "chrome/browser/profiles/profile.h"
@@ -193,7 +193,7 @@ float BraveContentsContainerView::GetCornerRadius(bool for_border) const {
     return 0;
   }
 
-  return BraveBrowser::ShouldUseBraveWebViewRoundedCornersForContents(
+  return BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
              browser_view_->browser())
              ? BraveContentsViewUtil::kBorderRadius +
                    (for_border ? kBorderThickness : 0)

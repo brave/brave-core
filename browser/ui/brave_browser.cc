@@ -24,7 +24,6 @@
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/public/constants.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
-#include "brave/common/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/lifetime/browser_close_manager.h"
 #include "chrome/browser/profiles/profile.h"
@@ -60,35 +59,6 @@ bool g_suppress_dialog_for_testing = false;
 // static
 void BraveBrowser::SuppressBrowserWindowClosingDialogForTesting(bool suppress) {
   g_suppress_dialog_for_testing = suppress;
-}
-
-// static
-bool BraveBrowser::ShouldUseBraveWebViewRoundedCornersForContents(
-    Browser* browser) {
-  if (!browser->is_type_normal()) {
-    return false;
-  }
-
-  if (browser->profile()->GetPrefs()->GetBoolean(kWebViewRoundedCorners)) {
-    return true;
-  }
-
-  if (!base::FeatureList::IsEnabled(features::kSideBySide)) {
-    return false;
-  }
-
-  auto* model = browser->tab_strip_model();
-  if (model->empty()) {
-    return false;
-  }
-
-  const int active_tab_index = model->active_index();
-
-  if (active_tab_index == TabStripModel::kNoTab) {
-    return false;
-  }
-
-  return model->IsActiveTabSplit();
 }
 
 BraveBrowser::BraveBrowser(const CreateParams& params) : Browser(params) {
