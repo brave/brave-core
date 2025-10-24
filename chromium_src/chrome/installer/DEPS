@@ -1,9 +1,12 @@
 from brave_chromium_utils import inline_file
 inline_file("//chrome/installer/DEPS", globals(), locals())
 
+include_rules.remove("+third_party/bspatch")
+
 include_rules += [
   "+brave/browser/brave_vpn/win",
   "+brave/components/brave_vpn/browser/connection/ikev2/win",
   "+brave/components/brave_vpn/common/buildflags",
   "+brave/installer",
+  "+brave/third_party/bspatch"
 ]

@@ -13,7 +13,7 @@
 #include "chrome/installer/util/lzma_util.h"
 #include "components/zucchini/zucchini.h"
 #include "components/zucchini/zucchini_integration.h"
-#include "third_party/bspatch/mbspatch.h"
+#include "brave/third_party/bspatch/mbspatch.h"
 
 namespace installer {
 
