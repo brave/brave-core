@@ -1,8 +1,27 @@
 diff --git a/chrome/installer/setup/BUILD.gn b/chrome/installer/setup/BUILD.gn
-index d8693d152c49961163fa0647c8cee07bbda42d60..8533e48204ce43f4665c2d86d1cbccdefc4c3b5e 100644
+index d8693d152c49961163fa0647c8cee07bbda42d60..b8da9f417c3dfcf072ea1d5d16c0b11968043355 100644
 --- a/chrome/installer/setup/BUILD.gn
 +++ b/chrome/installer/setup/BUILD.gn
-@@ -122,6 +122,7 @@ if (is_win) {
+@@ -52,6 +52,8 @@ if (is_win) {
+   static_library("lib") {
+     sources = [
+       "${branding_path_product}_behaviors.cc",
++      "archive_patch_helper.cc",
++      "archive_patch_helper.h",
+       "brand_behaviors.h",
+       "configure_app_container_sandbox.cc",
+       "configure_app_container_sandbox.h",
+@@ -111,6 +113,9 @@ if (is_win) {
+       "//components/metrics:client_info",
+       "//components/metrics:metrics_pref_names",
+       "//components/version_info:channel",
++      "//components/zucchini:zucchini_io",
++      "//components/zucchini:zucchini_lib",
++      "//third_party/bspatch",
+       "//third_party/crashpad/crashpad/client",
+       "//third_party/crashpad/crashpad/util",
+       "//ui/base:fullscreen_win",
+@@ -122,6 +127,7 @@ if (is_win) {
          "channel_override_work_item.h",
        ]
      }
@@ -10,3 +29,11 @@ index d8693d152c49961163fa0647c8cee07bbda42d60..8533e48204ce43f4665c2d86d1cbccde
    }
  
    process_version_rc_template("setup_exe_version") {
+@@ -132,6 +138,7 @@ if (is_win) {
+   # This test covers the mini installer and setup tests.
+   test("setup_unittests") {
+     sources = [
++      "archive_patch_helper_unittest.cc",
+       "configure_app_container_sandbox_unittest.cc",
+       "downgrade_cleanup_unittest.cc",
+       "install_unittest.cc",
