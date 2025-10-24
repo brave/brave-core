@@ -10,22 +10,20 @@ interface Props {
   memory: { [key: string]: string }
 }
 
-export class MemoryInfo extends React.Component<Props, {}> {
-  render() {
-    const items = Object.keys(this.props.memory).map((key) => {
-      const v = this.props.memory[key]
-      return (
-        <div key={key}>
-          {key} : {v}
-        </div>
-      )
-    })
-
+export const MemoryInfo = (props: Props) => {
+  const items = Object.keys(props.memory).map((key) => {
+    const v = props.memory[key]
     return (
-      <div>
-        <h2>{this.props.caption}</h2>
-        {items}
+      <div key={key}>
+        {key} : {v}
       </div>
     )
-  }
+  })
+
+  return (
+    <div>
+      <h2>{props.caption}</h2>
+      {items}
+    </div>
+  )
 }

@@ -28,79 +28,77 @@ const EngineInfo = (props: { engine: EngineDebugInfo; caption: string }) => {
   )
 }
 
-export class App extends React.Component<{}, AppState> {
-  constructor(props: {}) {
-    super(props)
-    this.state = new AppState()
-    this.getDebugInfo()
-    setInterval(() => {
-      this.getDebugInfo()
-    }, 2000)
-  }
-
-  getDebugInfo() {
+export const App = () => {
+  const [state, setState] = React.useState(new AppState())
+  const getDebugInfo = () => {
     return sendWithPromise('brave_adblock_internals.getDebugInfo').then(
-      this.onGetDebugInfo.bind(this),
+      (state: AppState) => {
+        saveRegexTexts(state.default_engine.regex_data)
+        saveRegexTexts(state.additional_engine.regex_data)
+        setState(state)
+      },
     )
   }
 
-  onGetDebugInfo(state: AppState) {
-    saveRegexTexts(state.default_engine.regex_data)
-    saveRegexTexts(state.additional_engine.regex_data)
-    this.setState(state)
+  const discardAll = () => {
+    discardRegexs(state.default_engine.regex_data)
+    discardRegexs(state.additional_engine.regex_data)
   }
 
-  discardAll() {
-    discardRegexs(this.state.default_engine.regex_data)
-    discardRegexs(this.state.additional_engine.regex_data)
-  }
+  React.useEffect(() => {
+    getDebugInfo()
+    const interval = setInterval(() => {
+      getDebugInfo()
+    }, 2000)
+    return () => {
+      clearInterval(interval)
+    }
+  }, [])
 
-  render() {
-    return (
+  return (
+    <div>
       <div>
+        <EngineInfo
+          engine={state.default_engine}
+          caption='Default engine'
+        />
+        <EngineInfo
+          engine={state.additional_engine}
+          caption='Additional engine'
+        />
+        <MemoryInfo
+          key='memory'
+          caption='Browser process general memory'
+          memory={state.memory}
+        />
+        <input
+          type='button'
+          value='Show Regexes'
+          onClick={() => {
+            window.location.href = './?regex_debug'
+          }}
+        />
+        <input
+          type='button'
+          value='Discard All Regexes'
+          onClick={() => {
+            discardAll()
+          }}
+        />
+      </div>
+
+      {window.location.href.includes('regex_debug') && (
         <div>
-          <EngineInfo
-            engine={this.state.default_engine}
+          <EngineRegexList
+            info={state.default_engine}
             caption='Default engine'
           />
-          <EngineInfo
-            engine={this.state.additional_engine}
+          <EngineRegexList
+            info={state.additional_engine}
             caption='Additional engine'
           />
-          <MemoryInfo
-            key='memory'
-            caption='Browser process general memory'
-            memory={this.state.memory}
-          />
-          <input
-            type='button'
-            value='Show Regexes'
-            onClick={() => {
-              window.location.href = './?regex_debug'
-            }}
-          />
-          <input
-            type='button'
-            value='Discard All Regexes'
-            onClick={() => {
-              this.discardAll()
-            }}
-          />
         </div>
-
-        {window.location.href.includes('regex_debug') && (
-          <div>
-            <EngineRegexList
-              info={this.state.default_engine}
-              caption='Default engine'
-            />
-            <EngineRegexList
-              info={this.state.additional_engine}
-              caption='Additional engine'
-            />
-          </div>
-        )}
-      </div>
-    )
-  }
+      )}
+    </div>
+  )
 }
