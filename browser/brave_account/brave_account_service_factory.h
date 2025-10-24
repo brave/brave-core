@@ -30,8 +30,6 @@ class BraveAccountServiceFactory : public ProfileKeyedServiceFactory {
   static BraveAccountServiceFactory* GetInstance();
   static BraveAccountService* GetFor(content::BrowserContext* context);
 
-  static TestingFactory GetDefaultFactoryForTesting();
-
  private:
   friend base::NoDestructor<BraveAccountServiceFactory>;
 

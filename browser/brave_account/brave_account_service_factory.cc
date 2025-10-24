@@ -5,7 +5,6 @@
 
 #include "brave/browser/brave_account/brave_account_service_factory.h"
 
-#include "base/functional/bind.h"
 #include "brave/components/brave_account/brave_account_service.h"
 #include "brave/components/brave_account/features.h"
 #include "chrome/browser/profiles/profile.h"
@@ -13,19 +12,6 @@
 #include "content/public/browser/storage_partition.h"
 
 namespace brave_account {
-
-namespace {
-
-std::unique_ptr<KeyedService> BuildBraveAccountService(
-    content::BrowserContext* context) {
-  CHECK(context);
-  return std::make_unique<BraveAccountService>(
-      Profile::FromBrowserContext(context)->GetPrefs(),
-      context->GetDefaultStoragePartition()
-          ->GetURLLoaderFactoryForBrowserProcess());
-}
-
-}  // namespace
 
 // static
 BraveAccountServiceFactory* BraveAccountServiceFactory::GetInstance() {
@@ -39,12 +25,6 @@ BraveAccountService* BraveAccountServiceFactory::GetFor(
   CHECK(context);
   return static_cast<BraveAccountService*>(
       GetInstance()->GetServiceForContext(context, true));
-}
-
-// static
-BrowserContextKeyedServiceFactory::TestingFactory
-BraveAccountServiceFactory::GetDefaultFactoryForTesting() {
-  return base::BindOnce(&BuildBraveAccountService);
 }
 
 BraveAccountServiceFactory::BraveAccountServiceFactory()
@@ -65,7 +45,11 @@ bool BraveAccountServiceFactory::ServiceIsNULLWhileTesting() const {
 std::unique_ptr<KeyedService>
 BraveAccountServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
-  return BuildBraveAccountService(context);
+  CHECK(context);
+  return std::make_unique<BraveAccountService>(
+      Profile::FromBrowserContext(context)->GetPrefs(),
+      context->GetDefaultStoragePartition()
+          ->GetURLLoaderFactoryForBrowserProcess());
 }
 
 }  // namespace brave_account
