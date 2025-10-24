@@ -27,6 +27,7 @@
 #include "chrome/browser/ui/views/side_panel/side_panel_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/color/color_provider.h"
+#include "ui/compositor/layer.h"
 #include "ui/views/background.h"
 #include "ui/views/border.h"
 #include "ui/views/view_class_properties.h"
@@ -59,6 +60,10 @@ END_METADATA
 BraveSidePanel::BraveSidePanel(BrowserView* browser_view,
                                HorizontalAlignment horizontal_alignment)
     : browser_view_(browser_view) {
+  // If panel has layer by default, adjust its radius whenever
+  // updating shadow at UpdateBorder() instead of destroying layer.
+  CHECK(!layer());
+
   scoped_observation_.AddObservation(this);
 
   SetVisible(false);
@@ -118,7 +123,11 @@ void BraveSidePanel::UpdateBorder() {
     return;
   }
 
-  shadow_.reset();
+  if (shadow_) {
+    shadow_.reset();
+    DestroyLayer();
+  }
+
   SetBackground(nullptr);
 
   if (const ui::ColorProvider* color_provider = GetColorProvider()) {
