@@ -36,7 +36,7 @@ export const _AssistantTask = {
               ) => {
                 listener(
                   1,
-                  'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAICAIAAABPmPnhAAAAE0lEQVR4nGNk+M+ABzDhkxzK0gD9wgEPHVaUqgAAAABJRU5ErkJggg==',
+                  'data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAIAAAACUFjqAAAAGUlEQVR4nGKpOP+JATdgwiM3gqUBAQAA//+9LAJQNrjO2wAAAABJRU5ErkJggg==',
                 )
               },
             },
