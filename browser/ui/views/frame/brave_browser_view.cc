@@ -287,7 +287,7 @@ BraveBrowserView::BraveBrowserView(Browser* browser) : BrowserView(browser) {
             std::move(original_side_panel)));
     contents_height_side_panel_ = sidebar_container_view_->side_panel();
 
-    if (BraveBrowser::IsBraveWebViewRoundedCornersEnabled(browser_)) {
+    if (IsBraveWebViewRoundedCornersEnabled()) {
       sidebar_separator_view_ =
           main_container_->AddChildView(std::make_unique<SidebarSeparator>());
     }
@@ -808,9 +808,13 @@ void BraveBrowserView::OnWidgetWindowModalVisibilityChanged(
   // parent class to make the scrim view visible
 }
 
+bool BraveBrowserView::IsBraveWebViewRoundedCornersEnabled() {
+  return browser_->profile()->GetPrefs()->GetBoolean(kWebViewRoundedCorners) &&
+         browser_->is_type_normal();
+}
+
 void BraveBrowserView::UpdateContentsShadowVisibility() {
-  bool show_contents_shadow =
-      BraveBrowser::IsBraveWebViewRoundedCornersEnabled(browser());
+  bool show_contents_shadow = IsBraveWebViewRoundedCornersEnabled();
 
   // With SideBySide, we use chromium's mini toolbar.
   // Unfortunately, it's not rendered well with contents shadow.

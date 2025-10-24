@@ -63,12 +63,6 @@ void BraveBrowser::SuppressBrowserWindowClosingDialogForTesting(bool suppress) {
 }
 
 // static
-bool BraveBrowser::IsBraveWebViewRoundedCornersEnabled(Browser* browser) {
-  return browser->profile()->GetPrefs()->GetBoolean(kWebViewRoundedCorners) &&
-         browser->is_type_normal();
-}
-
-// static
 bool BraveBrowser::ShouldUseBraveWebViewRoundedCornersForContents(
     Browser* browser) {
   if (!browser->is_type_normal()) {
