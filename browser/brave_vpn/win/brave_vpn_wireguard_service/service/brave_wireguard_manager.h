@@ -30,9 +30,6 @@ class BraveWireguardManager
                            BSTR endpoint,
                            DWORD* last_error) override;
   IFACEMETHODIMP DisableVpn(DWORD* last_error) override;
-  IFACEMETHODIMP GenerateKeypair(BSTR* public_key,
-                                 BSTR* private_key,
-                                 DWORD* last_error) override;
 
  private:
   ~BraveWireguardManager() override = default;
