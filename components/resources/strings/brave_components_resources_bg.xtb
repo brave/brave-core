@@ -688,7 +688,6 @@
 <translation id="3266055641283174315">Тип реклама</translation>
 <translation id="8706824117053903390">Преглеждания този месец</translation>
 <translation id="5105890735834548623">Настройки на реклами</translation>
-<translation id="96989662637180657">Реклами на Brave Търсене се показват на <ph name="LINK_BEGIN"/>Brave Търсене<ph name="LINK_END"/>.</translation>
 <translation id="3138160233953903250">Настройки на реклами</translation>
 <translation id="2446517297521536638">Управлявайте видовете и честотата на реклами, които виждате в Brave. Колкото повече виждате, толкова повече можете да спечелите.</translation>
 <translation id="3479272537858623647">Това показва броя Brave реклами, които си видял този месец и които отговарят на условията за печелене на BAT.</translation>
@@ -855,6 +854,11 @@
       other {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} стъпки}
     }</translation>
 <translation id="8621264173374071200"><ph name="EXCHANGE_NAME"/> чрез <ph name="PROVIDER_NAME"/></translation>
+<translation id="646023614746251785">Потвърди размяна</translation>
+<translation id="6264944956989873014">Потвърди свързване</translation>
+<translation id="7067917728851842589">Потвърди изпращане</translation>
+<translation id="2351357639951873714">Потвърди защита</translation>
+<translation id="8332923694292360653">Похарчи</translation>
 <translation id="3735740477244556633">Сортиране по</translation>
 <translation id="6484605214219822434">Преглед на моста</translation>
 <translation id="3365052891357224017">Очаквано време</translation>
@@ -964,6 +968,7 @@
 <translation id="3451958544919449297">Активи на ZEC Testnet магазин</translation>
 <translation id="8459631690385393533">Съхранение на активи в Cardano</translation>
 <translation id="4915057812371523845">Съхранение на активи в Cardano Testnet</translation>
+<translation id="5387140102951033657">Поддържа активи на Substrate в релейната верига на Polkadot и Substrate паравериги</translation>
 <translation id="8500387257977999003">Поверителен ключ <ph name="PROTOCOL"/></translation>
 <translation id="8275038454117074363">Импортиране</translation>
 <translation id="232925166623833246">Импортиране от хардуерен портфейл</translation>
@@ -1075,6 +1080,10 @@
 <translation id="8904889345035514635">Текуща отпусната сума</translation>
 <translation id="7073918978411974168">Предложена отпусната сума</translation>
 <translation id="9019403281000653275">Необходимо е неограничено одобрение</translation>
+<translation id="9108474191347769758">Лимит на разходите</translation>
+<translation id="2102091845281366189">Цел на одобрението</translation>
+<translation id="772196962479335292">Текущ лимит на одобрение</translation>
+<translation id="8215431557133305629">Предложен лимит на одобрение</translation>
 <translation id="4717431746210146708">Разрешаване на този сайт да добави мрежа?</translation>
 <translation id="2521480044079508357">Това ще позволи тази мрежа да бъде използвана с портфейл в Brave.</translation>
 <translation id="1982257600591932657">Име на мрежата</translation>
@@ -1091,7 +1100,7 @@
 <translation id="3948067511324628726">Такса за газ</translation>
 <translation id="7163997622278957886">Оферта</translation>
 <translation id="1074360622426001342">Количество + газ</translation>
-<translation id="2186011161688824046">Сума + такса</translation>
+<translation id="7542099582407803878">Сума + Такса за мрежата</translation>
 <translation id="7084089311475827950">Няма данни.</translation>
 <translation id="5821668936183240062">следващ</translation>
 <translation id="793994607260936590">първи</translation>
@@ -1417,6 +1426,8 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="1908159733454294871">Открит е риск за сигурността</translation>
 <translation id="3621202678540785336">Вход</translation>
 <translation id="3009178788565917040">Изход</translation>
+<translation id="7953669802889559161">Входове</translation>
+<translation id="4554024082642878647">Изходи</translation>
 <translation id="1965889974717516497">Вторични мрежи</translation>
 <translation id="7691821949666755802">Тествайте мрежи</translation>
 <translation id="2816106784624007524">Ограничението за газ трябва да бъде цяло число, по-голямо от 0</translation>
@@ -2139,7 +2150,6 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="5872363163901278000">Увеличаване на скоростта на възпроизвеждане</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8637805148029768813">Понастоящем функцията за обобщаване е налична само за избрани статии и други по-дълги уеб страници.</translation>
-<translation id="1223498995510244364">Обобщи</translation>
 <translation id="7491773233732232424">За Leo</translation>
 <translation id="4611072979071082355">Brave Лио е интелигентен личен асистент с изкуствен интелект, който обогатява работата ти с интернет. Лио е безплатен за използване при ограничен достъп. Brave Лио Premium предлага повече модели и по-високи лимити и дава на абонатите ранен достъп до нови функции. Моделът по подразбиране ще се променя от време на време. За повече подробности виж <ph name="LINK_BEFORE"/>Центъра за помощ на Brave<ph name="LINK_AFTER"/>.</translation>
 <translation id="7297056998057521697">По подразбиране, когато зададеш въпрос на Лио за някой уебсайт или страница, която разглеждаш, съдържанието ѝ или всеки текст, който си маркирал на нея, както и заявката ти за търсене, се изпращат на сървърите на Brave, за да може Лио да отговори. В някои случаи Лио ще изпрати заявки, извлечени от това, което си въвел в Brave Търсене, и ще използва резултатите от търсенето, за да отговори по-добре на въпроса ти. Brave не гарантира точността на отговорите и те може да включват неточна, подвеждаща или невярна информация. Не изпращай чувствителна или лична информация на Brave Лио и внимавай с всякакви отговори, свързани със здравето, финансите, личната безопасност и други подобни. По всяко време можеш да коригираш опциите на Лио в настройките. Отиди в Настройки &gt; Лио.</translation>
@@ -2173,7 +2183,7 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="7127671672828944579">Здравей, аз съм Лио, изцяло хостваният AI асистент на Brave. Задвижван съм от Qwen 14B – модел, създаден от Alibaba Cloud с цел ефективност и широко приложение. Qwen се хоства от Brave чрез нашата собствена защитена инфраструктура. <ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
 <translation id="2328524194917949829">Здравей, аз съм Лио, изцяло хостваният асистент с ИИ на Brave. Захранва ме Gemma 3 12B – модел, създаден от Google DeepMind, с цел ефективност и широко приложение. Gemma се хоства от Brave чрез собствената ни защитена инфраструктура.<ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
 <translation id="634682910381645550">Здравей, аз съм Лио. Аз съм AI асистент на Brave. Задвижван съм от DeepSeek R1 – модел, създаден от DeepSeek за изпълнение на задачи по дълбоко разсъждение. DeepSeek R1 се хоства от Brave чрез нашата собствена защитена инфраструктура.<ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
-<translation id="8932568551552504373">Здравей, аз съм Лио. Проксиран съм от Brave и съм задвижван от Claude Instant – модел, създаден от Anthropic с цел да захранва разговорни задачи и задачи за обработка на текст. Claude Instant се хоства от Brave чрез нашата собствена защитена инфраструктура. <ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
+<translation id="8932568551552504373">Здравей, аз съм Leo. Аз съм AI асистент на Brave. Захранвам се от Claude Instant — модел, създаден от Anthropic за водене на диалог и обработка на текст. Claude Instant се хоства от Brave чрез нашата собствена защитена инфраструктура.<ph name="LINK_BEFORE"/>Научете повече<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Здравей, аз съм Лио. Проксиран съм от Brave и съм задвижван от Claude Haiku – модел, създаден от Anthropic с цел да захранва разговорни задачи и задачи за обработка на текст. Claude Haiku се хоства от Brave чрез нашата собствена защитена инфраструктура. <ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Здравей, аз съм Лио. Проксиран съм от Brave и съм задвижван от Claude Sonnet – модел, създаден от Anthropic с цел да захранва разговорни задачи и задачи за обработка на текст. Claude Sonnet се хоства от Brave чрез нашата собствена защитена инфраструктура. <ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
@@ -2186,6 +2196,7 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="7557539689487606886">Абонирайте се за Premium</translation>
 <translation id="1691256669639196606">Управление на абонамент</translation>
 <translation id="3840096463915153852">История на разговорите</translation>
+<translation id="6761921176674289184">Управление на спомени</translation>
 <translation id="2304783958703511257">Разширени настройки</translation>
 <translation id="3037594989275592390">Езикови модели</translation>
 <translation id="5543505256451301851">Опитайте 7 дни безплатно</translation>
@@ -2259,31 +2270,36 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="7307396647043599949">Още <ph name="COUNT"/>…</translation>
 <translation id="8103700533980268469">Затваряне на това известие</translation>
 <translation id="3417835166382867856">Раздели за търсене</translation>
+<translation id="7311244614769792472">Няма намерени резултати</translation>
+<translation id="3112448569149476523">Опитайте с друго търсене</translation>
 <translation id="1352836459737874921">Прикачи съдържание от други раздели</translation>
-<translation id="3028258613451571431">Изпрати съдържание от страници от разделите на браузъра си, за да дадеш на Лио повече контекст за разговора</translation>
-<translation id="4300920590112551536">Раздели на браузъра</translation>
+<translation id="7039179822221107025">Изпрати съдържание от страници от разделите на браузъра си, за да дадеш на Лио повече контекст за разговора.</translation>
+<translation id="220541218939267992">Съдържанието на страницата ще бъде изпратено до Leo заедно с вашите съобщения.</translation>
 <translation id="1446346932629101482">Добавяне на съдържание на раздела за контекст. Съдържанието ще бъде изпратено на Лио заедно със съобщенията ти.</translation>
 <translation id="7193316103691252734">Няма отговарящи раздели</translation>
 <translation id="2315654674554095762">Leo вече ще помни разговорите ви, за да можете да се връщате към тях. Те се съхраняват криптирано на вашето устройство и можете да ги изтриете по всяко време.</translation>
 <translation id="7821251979960635244">Историята на разговорите ви ще се появи тук, след като започнете разговор.</translation>
 <translation id="887511360213807449">Историята е деактивирана</translation>
 <translation id="5380979378058584412">За да видите предишните си разговори с Leo, трябва да активирате историята на разговорите.</translation>
-<translation id="6291843235651817590">Чат с общо предназначение</translation>
+<translation id="7348809809749151120">Бързо • Търсене</translation>
 <translation id="3185367320601718531">Генериране на разговор и текст</translation>
-<translation id="7979673624064378842">Светкавично бърз чат</translation>
-<translation id="2836330653441111204">Балансирана скорост и интелект</translation>
-<translation id="6695329447007213917">Чат за общи цели, писане на код и други</translation>
-<translation id="7168072214482631597">Разбиране на изображения и текст с общо предназначение</translation>
-<translation id="7226508434216060960">Модел за разсъждение</translation>
+<translation id="2793458212460902934">Бързо • Търсене • Инструменти</translation>
+<translation id="8506027496671575183">Търсене • Визия • Инструменти</translation>
+<translation id="3213834013136637671">Търсене • Визия</translation>
+<translation id="7697693533305615127">Търсене • Мислене</translation>
 <translation id="8782867266498869301">Моделът се променя динамично, за да се използва най-добрият за задачата</translation>
 <translation id="3965507912994218570">Настройки на Leo</translation>
-<translation id="1037324977127422019">Здравейте, аз съм Лео!</translation>
-<translation id="8930348081963284873">Интелигентен асистент с изкуствен интелект, вграден директно в Brave.</translation>
-<translation id="3528849152231418380">Имате нужда от помощ за уебсайт?</translation>
-<translation id="1558192229187362674">Мога да ви помогна с обобщаването на статии, разширяването на съдържанието на даден сайт и много други неща.</translation>
-<translation id="861953757568623294">Мога да ви помогна с обобщаването на статии, разширяването на съдържанието на даден сайт и много други неща. Не сте сигурни откъде да започнете? Опитайте следното:</translation>
-<translation id="5642775487085641191">Искате само да разговаряте?</translation>
-<translation id="8857222718794549840">Попитайте ме за всичко! Можем да говорим на всяка тема, която пожелаете. Винаги се уча и усъвършенствам, за да предоставям по-добри отговори.</translation>
+<translation id="3754337604877048671">Представяме Leo AI</translation>
+<translation id="5295261408976371809">Вашият <ph name="TEXT_BEFORE"/>личен<ph name="TEXT_AFTER"/> AI асистент, вграден директно в браузъра.</translation>
+<translation id="7452913484571004528">Истински лично AI</translation>
+<translation id="8525501048785085223">Leo не запазва или споделя разговори и не ги използва за обучение на модел. Не е необходим акаунт или влизане. Просто отворете и разговаряйте. Частно.</translation>
+<translation id="6401201054391523929">Разговор с вашите раздели и файлове</translation>
+<translation id="8522038408130089105">Трябва да научите повече за сайтовете, които посещавате? Просто ги добавете в чат. Прикачете раздели и локални файлове, за да получите бързи, релевантни отговори.</translation>
+<translation id="3844955602461425647">Автоматизиране на скучната работа</translation>
+<translation id="2196247864500723577">Позволете на Brave да сърфира с вас и да взаимодейства с всичко, което правите в браузъра. Прехвърлете досадните задачи и спестете време за важните неща.</translation>
+<translation id="235457946228076038">Донесете свой собствен модел</translation>
+<translation id="7024005267156189454">Свържете свои собствени AI модели, локални или отдалечени. Персонализирайте поведението, резултатите и възможностите на Leo според вашите нужди.</translation>
+<translation id="7291578285403921288">Научете повече за Leo AI</translation>
 <translation id="9051226419897869406">Чати поверително с Brave Leo</translation>
 <translation id="2414904697165579184">Оформи отговорите на базата на съдържанието на раздела(-ите)</translation>
 <translation id="8258324391302611485">Съдържанието на тази страница ще бъде изпратено на Лио заедно със съобщенията ти.</translation>
@@ -2292,6 +2308,7 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="8732450785281947197">ИИ Инструменти от Лео</translation>
 <translation id="6535533770697728087">Бързи действия</translation>
 <translation id="3237710083340813756">Пренаписване</translation>
+<translation id="1223498995510244364">Обобщи</translation>
 <translation id="1252805982772190086">Кратък пост</translation>
 <translation id="2087555497198267113">Дълъг пост</translation>
 <translation id="4170307327863874820">Блог пост</translation>
@@ -2499,12 +2516,13 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="6764845498618413165">Научете повече.</translation>
 <translation id="7818938154803162778">Разбира се, ще помогна</translation>
 <translation id="7207456302801184289">Добре дошли в Brave</translation>
-<translation id="6716580298071890302">Използване на по-тъмна тема</translation>
+<translation id="293854220404217065">Тема Midnight</translation>
 <translation id="2422927186524098759">Странична лента</translation>
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="8000020256436988724">Лента с инструменти</translation>
 <translation id="6225572914528673855">Адресна лента</translation>
+<translation id="6821966107067356137">Добавяне на RSS емисия</translation>
 <translation id="8293206222192510085">Добавяне на отметка</translation>
 <translation id="7758460733045216901">Панел с отметки</translation>
 <translation id="958268166261124668">Brave VPN: свързан</translation>

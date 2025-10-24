@@ -14,6 +14,9 @@
 <translation id="8522292744959221145">Para verificar se suas senhas estão protegidas contra violações de dados e outros problemas de segurança, <ph name="BEGIN_LINK"/>faça login no Brave<ph name="END_LINK"/>.</translation>
 <translation id="2627788872035182013">Clique no menu do Brave</translation>
 <translation id="1157985233335035034">Idiomas recentes</translation>
+<translation id="7813580490378477695">O parceiro <ph name="PARTNER_NAME"/> adicionou uma extensão que pode mudar a forma como o Brave funciona.
+
+<ph name="EXTENSION_NAME"/></translation>
 <translation id="1184145431117212167">A instalação falhou porque sua versão do Windows não é compatível.</translation>
 <translation id="8541922081612557424">Sobre o Brave</translation>
 <translation id="1203500561924088507">Agradecemos por fazer a instalação. É necessário reiniciar o navegador antes de utilizar o <ph name="BUNDLE_NAME"/>.</translation>
@@ -29,6 +32,7 @@
 <translation id="1345251407431278948">Fixado. Você pode acessar a pesquisa por imagens de novo usando o novo botão na barra de ferramentas</translation>
 <translation id="1356661055722410047">Novidade! Agora é possível traduzir textos e imagens na tela.</translation>
 <translation id="1383876407941801731">Pesquise</translation>
+<translation id="7009295044271335553">&amp;Gerenciar perfis do Brave</translation>
 <translation id="8132634101975074716">Você está conectado ao Brave.</translation>
 <translation id="141901961143729572">Envie feedback</translation>
 <translation id="3880714039086599943">Para compartilhar a janela, use os Ajustes do Sistema para permitir a gravação de tela do Brave.</translation>
@@ -60,12 +64,12 @@
 <translation id="3541642064306182066">Para excluir apenas os dados de navegação deste dispositivo e mantê-los na sua Conta do Brave, <ph name="BEGIN_LINK"/>saia do Brave<ph name="END_LINK"/>.</translation>
 <translation id="4559627161887338743">Você pode gerenciar as Contas do Brave conectadas. Elas são usadas no navegador Brave, na Play Store, no Gmail e muito mais. Se quiser adicionar uma conta para outra pessoa, como um membro da família, adicione um novo usuário ao seu <ph name="DEVICE_TYPE"/>. <ph name="LINK_BEGIN"/>Saiba mais<ph name="LINK_END"/></translation>
 <translation id="1862852878885210965">Procurar com a pesquisa por imagens</translation>
-<translation id="6888366668010117849">Sites podem armazenar informações sobre seus interesses com o Brave. Por exemplo, se você visitar um site para comprar sapatos de maratona, ele pode definir "maratonas" como um dos seus interesses. Depois, se você visitar outro site para se inscrever em uma maratona, esse site pode mostrar um anúncio de sapatos de corrida com base nos seus interesses.</translation>
 <translation id="1880677175115548835">Selecionar texto</translation>
 <translation id="4528406859989804913">Você está fazendo login com uma conta gerenciada e concedendo ao administrador da conta o controle sobre seu perfil do Brave. Seus dados do Brave, como aplicativos, favoritos, histórico, senhas e outras configurações serão permanentemente vinculados a <ph name="USER_NAME"/>. Você pode excluir esses dados pelo painel das Contas do Brave, mas não pode associá-los a outra conta. Você tem a opção de criar um novo perfil para manter seus dados existentes do Brave separados. <ph name="LEARN_MORE"/></translation>
 <translation id="2207454583030080759">O Brave economiza energia da bateria limitando atividades em segundo plano e efeitos visuais, como rolagem suave e frame rates de vídeos. <ph name="BEGIN_LINK"/>Saiba mais sobre a Economia de energia<ph name="END_LINK"/></translation>
 <translation id="1898804291554630487">Perguntar sobre esta página</translation>
 <translation id="8643267611122541711">Brave Updater Service</translation>
+<translation id="712480009194450642">Enquanto sua Conta do Brave estiver conectada, você poderá usar as senhas e outros dados dela no Brave. É possível mudar isso a qualquer momento nas configurações.</translation>
 <translation id="1649714546770135458">Desative essa opção para fazer login em sites do Brave, como o Gmail, sem fazer login no Brave</translation>
 <translation id="916979339327923175">Remover os dados deste app do Brave</translation>
 <translation id="189297655255130768">O Brave não está respondendo. Reiniciar agora?</translation>
@@ -93,6 +97,7 @@
 <translation id="8745514854244955877">Brave - Login na rede - <ph name="PAGE_TITLE"/></translation>
 <translation id="2190166659037789668">Erro na verificação de atualização: <ph name="UPDATE_CHECK_ERROR"/>.</translation>
 <translation id="2058539073923004395">Remover conta do Brave</translation>
+<translation id="5550942974310218641">Tenha mais segurança em qualquer lugar com a Navegação Segura com Maior Proteção no Brave para iOS</translation>
 <translation id="6677253423995557759">Site perigoso. O Brave removeu notificações.</translation>
 <translation id="2236949375853147973">Minha atividade</translation>
 <translation id="457168681575748148">Para acessar seus endereços e muito mais em todos os seus dispositivos, faça login no Brave. O endereço será salvo na sua Conta do Brave depois que você fizer login.</translation>
@@ -100,6 +105,15 @@
 <translation id="8984404842684436004">{NUM_TABS,plural, =1{O Brave recomenda pausar a guia que está deixando o navegador mais lento}one{O Brave recomenda pausar a guia que está deixando o navegador mais lento}other{O Brave recomenda pausar as guias que estão deixando o navegador mais lento}}</translation>
 <translation id="2307973900865360088">Manter no Dock</translation>
 <translation id="7810992039564280750">Confere se os URLs estão em uma lista de sites não seguros armazenada no Brave. Se um site tentar roubar sua senha ou se você fizer o download de um arquivo nocivo, o Brave também poderá enviar os URLs, incluindo partes do conteúdo da página, para o Navegação segura.</translation>
+<translation id="5042718521573656164">Essa ação vai:
+        <ph name="LINE_BREAKS"/>
+          • redefinir alguns atalhos e configurações do Brave;
+          <ph name="LINE_BREAK"/>
+          • desativar extensões;
+          <ph name="LINE_BREAK"/>
+          • excluir cookies e outros dados temporários de sites.
+          <ph name="LINE_BREAKS"/>
+          Os favoritos, o histórico e as senhas salvas não serão afetados.</translation>
 <translation id="9095263438435683933">Para enviar um número daqui para seu smartphone Android, faça login no Brave nos dois dispositivos.</translation>
 <translation id="2356070529366658676">Perguntar</translation>
 <translation id="2359808026110333948">Continuar</translation>
@@ -152,6 +166,7 @@
 <translation id="2928420929544864228">Instalação concluída.</translation>
 <translation id="2481553173340651149">Seus dados são criptografados com a senha longa. Digite-a para usar e salvar os dados do Brave na sua Conta do Brave.</translation>
 <translation id="2945997411976714835">Erro de instalação: falha ao iniciar o processo do instalador.</translation>
+<translation id="2413255940314578781">Faça login mais rápido em sites usando as senhas salvas no Brave no iOS</translation>
 <translation id="3688936822855019158">Sua organização gerencia o Brave</translation>
 <translation id="8208853227947884571">O Brave está atualizado</translation>
 <translation id="5122472867956731189">Se um site tentar roubar sua senha ou se você fizer o download de um arquivo nocivo, o Brave também poderá enviar os URLs, incluindo partes do conteúdo da página, para o Navegação segura</translation>
@@ -166,7 +181,7 @@
 <translation id="4503085212612536713">Outros perfis do Brave</translation>
 <translation id="7918740962659365265">Ajude a melhorar o Brave. Envie relatórios de erros e <ph name="UMA_LINK"/> para o Brave</translation>
 <translation id="2332543193474246254">{NUM_DEVICES,plural, =0{unused plural form}=1{Uma ou mais extensões do Brave estavam acessando 1 dispositivo USB}one{Uma ou mais extensões do Brave estavam acessando # dispositivo USB}other{Uma ou mais extensões do Brave estavam acessando # dispositivos USB}}</translation>
-<translation id="5320085753638900910">Seu histórico de navegação afeta os anúncios que você vê e os interesses estimados abaixo. Para proteger sua privacidade, o Brave exclui automaticamente seus interesses mais antigos do que um mês. Os interesses podem ser atualizados, a menos que você os remova.</translation>
+<translation id="3700405816184340252">Histórico do Brave</translation>
 <translation id="7365690458036015383">Ocorreu uma falha no instalador ao descompactar o arquivo. Baixe o Brave novamente.</translation>
 <translation id="310459126943037700">Falha ao encerrar tarefas.</translation>
 <translation id="8919461291440820124">O Brave está usando seu microfone.</translation>
@@ -175,6 +190,9 @@
 <translation id="5949068186379578553">Para compartilhar a tela, use os Ajustes do Sistema para permitir a gravação de tela do Brave</translation>
 <translation id="4805806622840861220">Reiniciar Brave</translation>
 <translation id="3161522574479303604">Todos os idiomas</translation>
+<translation id="3225882094369124157">Outro programa no seu computador adicionou um tema que pode mudar a forma como o Brave funciona.
+
+<ph name="EXTENSION_NAME"/></translation>
 <translation id="1742948938503172561">Personalize seu novo perfil do Brave</translation>
 <translation id="4805865169608137960">Para remover sua Conta do Brave do Brave, saia dela na página "Configurações"</translation>
 <translation id="1651639704310627074">Mais tarde, o Brave pode perguntar se você quer usar as informações salvas para preencher formulários automaticamente</translation>
@@ -197,9 +215,7 @@
 <translation id="8703492925273919597">Feche todas as janelas do Brave e tente novamente.</translation>
 <translation id="599091950194451698">Para compartilhar a janela, use os Ajustes do Sistema para permitir a gravação de tela do Brave</translation>
 <translation id="1447863765638888625">A conta <ph name="EXISTING_USER"/> já está conectada.  Para manter sua navegação separada, faça login no Brave no seu perfil como <ph name="USER_EMAIL_ADDRESS"/>.</translation>
-<translation id="4061445349373849749">Para proteger sua privacidade, excluímos automaticamente seus interesses que têm mais de quatro semanas. Enquanto você navega, um interesse pode aparecer na lista novamente. Você também pode remover interesses que não quer que o Brave considere.</translation>
 <translation id="8981774130895723211">Para compartilhar a tela, use os Ajustes do Sistema para permitir a gravação de tela do Brave.</translation>
-<translation id="691208314680168371">Seu histórico de navegação, um registro de sites visitados usando o Brave neste dispositivo.</translation>
 <translation id="3597003331831379823">Falha ao executar a configuração com privilégios elevados. <ph name="METAINSTALLER_ERROR"/></translation>
 <translation id="3066805437003400520">Os dados de navegação dessa pessoa serão excluídos deste dispositivo. Para recuperar os dados, faça login no Brave como <ph name="USER_EMAIL"/>.</translation>
 <translation id="7029305463989165490">Para enviar um número de <ph name="ORIGIN"/> ao seu smartphone Android, faça login no Brave nos dois dispositivos.</translation>
@@ -213,12 +229,16 @@
 <translation id="2189149060536531804">O Brave vai informar se algo precisar ser revisado</translation>
 <translation id="6324134303015966238">O Brave pré-carrega páginas que você provavelmente vai visitar para que elas sejam carregadas mais rapidamente ao serem acessadas</translation>
 <translation id="3810973564298564668">Gerenciar</translation>
+<translation id="3846683726093018685">**Resuma**: em uma única frase com menos de 30 palavras, descreva o assunto principal e a finalidade do conteúdo na captura de tela.
+
+          **Sugira perguntas**: gere uma lista com marcadores contendo de 3 a 5 perguntas instigantes que um usuário poderia fazer para entender melhor a captura de tela. Essas perguntas precisam incluir pelo menos uma que seja especificamente sobre um objeto visual, o design ou a posição dele.</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
 <translation id="3885770153807205175">Seletor de idioma</translation>
 <translation id="6315734375101223238">Personalize e controle o Brave. Algo precisa da sua atenção. Clique para ver mais detalhes.</translation>
 <translation id="7130675370997202556">Clique no seu nome para abrir o Brave e começar a navegar.</translation>
 <translation id="3892148308691398805">Copiar texto</translation>
 <translation id="4920958997042285125">A conta de <ph name="EXISTING_USER"/> já está conectada a este perfil do Brave. Para manter sua navegação separada, o Brave pode criar um perfil só para você.</translation>
+<translation id="8744239658215739511">Personalizar o Brave</translation>
 <translation id="3941890832296813527">Erro de instalação: o nome do arquivo do instalador é inválido ou não tem suporte.</translation>
 <translation id="8090497651549769448">O Brave está tentando copiar senhas. Digite a senha do Windows para permitir essa ação.</translation>
 <translation id="4256965182800026277">As senhas, as formas de pagamento e os endereços salvos na sua Conta do Brave serão removidos deste dispositivo. Para usá-los de novo no Brave, faça login novamente.</translation>
@@ -234,8 +254,12 @@
 <translation id="6056473803837713617">Ajude a melhorar o Brave informando as <ph name="BEGIN_LINK"/>configurações atuais<ph name="END_LINK"/></translation>
 <translation id="4050175100176540509">Melhorias de segurança importantes e novos recursos estão disponíveis na versão mais recente.</translation>
 <translation id="4055805654398742145">Gerenciador de senhas</translation>
+<translation id="6654312501894761082">Outro programa no seu computador adicionou uma extensão que pode mudar a forma como o Brave funciona.
+
+<ph name="EXTENSION_NAME"/></translation>
 <translation id="6217792792122501564">{COUNT,plural, =1{A organização vai fechar o Brave automaticamente se ele não for usado por 1 minuto. Os dados de navegação serão excluídos. Isso pode incluir o histórico, o preenchimento automático e os downloads.}one{A organização vai fechar o Brave automaticamente se ele não for usado por # minuto. Os dados de navegação serão excluídos. Isso pode incluir o histórico, o preenchimento automático e os downloads.}other{A organização vai fechar o Brave automaticamente se ele não for usado por # minutos. Os dados de navegação serão excluídos. Isso pode incluir o histórico, o preenchimento automático e os downloads.}}</translation>
 <translation id="5794951150713244901">Acesse a página "Sobre o Brave"</translation>
+<translation id="6596295505984504022">Personalizar o Brave</translation>
 <translation id="4148957013307229264">Instalando...</translation>
 <translation id="4658486203392098459"><ph name="PAGE_TITLE"/> - Login na rede - Brave</translation>
 <translation id="2871190378186459992">Descubra ótimos aplicativos, jogos, extensões e temas para o Brave.</translation>
@@ -249,6 +273,7 @@
 <translation id="3262506503470845422">Ajuda com o Brave</translation>
 <translation id="4281844954008187215">Termos de Serviço</translation>
 <translation id="7691786510374174420">Ocorreu uma falha na instalação devido a um erro não especificado. Se o Brave estiver sendo executado, feche-o e tente novamente.</translation>
+<translation id="6368144843345980623">Exportar senhas do Brave</translation>
 <translation id="4304713468139749426">Gerenciador de Senhas</translation>
 <translation id="4334241893986177674">Pesquisar esta captura de tela</translation>
 <translation id="4334294535648607276">Download concluído</translation>
@@ -314,7 +339,6 @@
 <translation id="5254739261293693943">Faça perguntas sobre este vídeo</translation>
 <translation id="8586264863973514035">Para que as alterações sejam aplicadas, reinicie o Brave</translation>
 <translation id="5286907366254680517">Detectado</translation>
-<translation id="300369155175407115">Quando os testes estão ativados e se o Brave colocou você aleatoriamente em um teste ativo, seu histórico de navegação vai afetar os anúncios que você vê e os interesses estimados abaixo. Para proteger sua privacidade, o Brave exclui seus interesses mais antigos do que um mês.</translation>
 <translation id="6944930779012811739">Brave Updater Internal Service</translation>
 <translation id="7573068992266397941">O Brave encontrou algumas recomendações de segurança para sua avaliação</translation>
 <translation id="8174413867995118050">Outros perfis do Brave</translation>
@@ -332,7 +356,6 @@
 <translation id="894936507076470937">É possível que o Brave não funcione corretamente, porque esta distribuição do Linux não tem mais suporte a ele</translation>
 <translation id="2596557398669145729">O Brave bloqueou o download porque o arquivo pode prejudicar suas contas pessoais e de redes sociais</translation>
 <translation id="696826782632239602">O Brave precisa acessar seu local para compartilhá-lo com este site</translation>
-<translation id="3809116188788099368">Para proteger sua privacidade, excluímos automaticamente seus interesses que têm mais de quatro semanas. Enquanto você navega, um interesse pode aparecer na lista novamente. Se o Brave se enganar ou você não quiser ver certos anúncios, você pode remover um interesse.</translation>
 <translation id="1744365871163268756">Aguarde enquanto o Brave instala as últimas atualizações do sistema.</translation>
 <translation id="3861679447659630159">O Brave está tentando editar senhas. Digite a senha do Windows para permitir essa ação.</translation>
 <translation id="5524890928877629608">canto superior esquerdo da área de pesquisa: <ph name="LEFT"/>% à esquerda, <ph name="TOP"/>% acima</translation>
@@ -364,11 +387,10 @@
 <translation id="5924017743176219022">Conectando-se à Internet...</translation>
 <translation id="5941711191222866238">Minimizar</translation>
 <translation id="5768962901674164501">Faça login no Brave para acessar este favorito e muito mais em todos os seus dispositivos</translation>
+<translation id="5101892358689285100">Deixe o Brave do seu jeito</translation>
 <translation id="5968400720580217226">Modo IA</translation>
-<translation id="3613110494561632737">Se o Brave colocou você aleatoriamente em um teste ativo, seu histórico de navegação vai afetar os anúncios que você vê e os interesses estimados abaixo. Para proteger sua privacidade, o Brave exclui seus interesses mais antigos do que um mês. Os interesses são atualizados, a menos que você os remova.</translation>
 <translation id="4357808717322635817">{COUNT,plural, =1{A organização vai fechar o Brave automaticamente se ele não for usado por 1 minuto.}one{A organização vai fechar o Brave automaticamente se ele não for usado por # minuto.}other{A organização vai fechar o Brave automaticamente se ele não for usado por # minutos.}}</translation>
 <translation id="3598551856834560515">Atualize o Brave para começar a sincronizar</translation>
-<translation id="5225261774087485064">É comum os sites que você visita lembrarem dos seus interesses para personalizar sua experiência. Sites também podem armazenar informações sobre seus interesses com o Brave.</translation>
 <translation id="6003112304606738118">Fazendo o download… <ph name="HOURS"/> hora(s) restante(s)</translation>
 <translation id="6009821354356307391">Faça uma pergunta complementar</translation>
 <translation id="6040143037577758943">Fechar</translation>
@@ -390,6 +412,9 @@
 <translation id="6685697979743742605">Esse arquivo pode ser perigoso<ph name="LINE_BREAK"/>O Brave poderá verificar esse download se você fornecer a senha. As informações sobre o arquivo são enviadas para o recurso Navegação segura do Brave, mas o conteúdo e a senha do arquivo permanecem no dispositivo.</translation>
 <translation id="6182736845697986886">A instalação falhou devido a um erro interno do servidor de atualização.</translation>
 <translation id="4368341489795135329">Verifique se sua conta está conectada ao Brave no <ph name="TARGET_DEVICE_NAME"/> e tente fazer o envio novamente.</translation>
+<translation id="3038354906709778538">Outro programa em seu computador adicionou um app que pode mudar a forma como o Brave funciona.
+
+<ph name="EXTENSION_NAME"/></translation>
 <translation id="8320964054148936490">Este computador já tem uma versão mais recente do Brave. Se o software não estiver funcionando, desinstale o Brave e tente novamente.</translation>
 <translation id="3574823187131579180">{0,plural, =0{O Brave será reiniciado agora}=1{O Brave será reiniciado em 1 segundo}one{O Brave será reiniciado em # segundo}other{O Brave será reiniciado em # segundos}}</translation>
 <translation id="6239161312595354541">Pergunte à pesquisa por imagens sobre este vídeo</translation>
@@ -424,7 +449,6 @@
 <translation id="648319183876919572">O recurso "Navegação segura com proteção reforçada" protege você ainda mais contra sites e downloads perigosos</translation>
 <translation id="5590013613412457132">Desinstalar Brave</translation>
 <translation id="7185585387858242335">Os atalhos são abertos no Brave</translation>
-<translation id="5324409579559361527">Enquanto sua Conta do Brave estiver conectada, você poderá usar as senhas e outros dados dela no Brave. Você pode mudar essa opção nas Configurações quando quiser.</translation>
 <translation id="3617744907966785605">Sua organização vai fechar o Brave se ele não for usado por <ph name="TIMEOUT_DURATION"/>. Os dados de navegação foram excluídos. Isso pode incluir o histórico, o preenchimento automático e os downloads.</translation>
 <translation id="8646609321956191980">Cada perfil armazena as próprias informações do Brave, como favoritos, histórico, senhas, entre outras</translation>
 <translation id="6756656512757374876">Saiba mais sobre <ph name="BEGIN_LINK"/>como o Brave mantém a privacidade dos seus dados<ph name="END_LINK"/></translation>
@@ -457,9 +481,8 @@
 <translation id="6877155553248388166">canto inferior direito da área de pesquisa: <ph name="RIGHT"/>% à direita, <ph name="BOTTOM"/>% abaixo</translation>
 <translation id="6896758677409633944">Copiar</translation>
 <translation id="862687584320433626">Definir o Brave como navegador padrão e fixá-lo na barra de tarefas</translation>
-<translation id="126871877963043118">Quando os testes estão ativados, a medição de anúncios permite que os sites que você visita solicitem informações do Brave, ajudando a medir o desempenho dos anúncios. Ela também restringe o rastreamento entre sites transferindo o mínimo de informações possível entre eles.</translation>
+<translation id="1991562568473125499">&amp;Gerenciar perfis do Brave</translation>
 <translation id="6934579572334859869">Pergunte à pesquisa por imagens sobre esta imagem</translation>
-<translation id="4392161457256085190">Os sites que você visitar vão poder pedir ao Brave para ver seus interesses e personalizar os anúncios mostrados a você. O Brave pode compartilhar até três interesses.</translation>
 <translation id="6965382102122355670">OK</translation>
 <translation id="6418340404893954563">Senhas fracas são fáceis de adivinhar. Deixe o Brave <ph name="BEGIN_LINK"/>criar e guardar senhas fortes para você<ph name="END_LINK"/>.</translation>
 <translation id="3453763134178591239">Termos do ChromeOS</translation>
@@ -469,6 +492,7 @@
 <translation id="7024536598735240744">Erro ao descompactar: <ph name="UNPACK_ERROR"/>.</translation>
 <translation id="7025789849649390912">Instalação interrompida.</translation>
 <translation id="280382502853897110">Personalize o Brave</translation>
+<translation id="7047386856539490735">Esses resultados ajudaram?</translation>
 <translation id="1705567146636171298">Atualizar o Brave</translation>
 <translation id="5499063270485366718">Se uma imagem não tiver uma descrição útil, o Brave tentará fornecer uma para você. As imagens serão enviadas ao Brave para a criação de descrições.</translation>
 <translation id="5966368554860795750">Personalizar o Brave for Testing</translation>
@@ -495,6 +519,7 @@
 <translation id="2865744782251083875">Você não visitou os sites recentemente. O Brave removeu <ph name="PERMISSION_1"/> e <ph name="PERMISSION_2"/>.</translation>
 <translation id="4631170166710903214">Essa extensão não é mais compatível. O Brave recomenda que você a remova.</translation>
 <translation id="7951152294775418909">Continue de onde você parou: o Brave restaura suas guias sempre que você reinicia. Para desativar essa opção, acesse as</translation>
+<translation id="3191314862567596053">Importar senhas para o Brave</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/>: Brave Dev</translation>
 <translation id="7450541714075000668">Texto copiado</translation>
 <translation id="2034072705932785495">O Brave precisa de permissão para este site acessar sua câmera</translation>
@@ -506,7 +531,6 @@
 <translation id="5337027666828618338">Os sites provavelmente funcionarão como esperado. Sua conta será desconectada da maioria dos sites quando você fechar todas as janelas do Brave, exceto sua Conta do Brave, se tiver feito login no Brave.</translation>
 <translation id="3186363903915641692">{0,plural, =1{O Brave será reiniciado em 1 minuto}one{O Brave será reiniciado em # minuto}other{O Brave será reiniciado em # minutos}}</translation>
 <translation id="552342471964912391">Para proteger seus dados, permita que o Brave remova permissões de sites que você não visitou recentemente.</translation>
-<translation id="6378857626787254617">O Brave faz uma estimativa dos seus interesses. Sites que você visitar vão poder pedir ao Brave para ver seus interesses e personalizar os anúncios mostrados a você.</translation>
 <translation id="7583399374488819119">Instalador do <ph name="COMPANY_NAME"/></translation>
 <translation id="3293668930608086049">O Brave está usando sua câmera e seu microfone.</translation>
 <translation id="2827121003398607864">O Brave ficou ainda melhor</translation>
@@ -533,6 +557,7 @@
 <translation id="5687542525349822727">Defina o Brave como o navegador padrão</translation>
 <translation id="6396151137840491551">Quando possível, o Brave faz upgrade automático de conexões sem segurança para HTTPS</translation>
 <translation id="2925193881330501265">Você estava conectado ao Brave como <ph name="USER_EMAIL_ADDRESS"/>. Use a mesma conta para fazer login novamente.</translation>
+<translation id="3206789667839392126">Baixe o Brave no seu smartphone para adicionar uma camada extra de proteção quando estiver em trânsito</translation>
 <translation id="6915252145142862992">Como esta é uma instalação secundária do Brave, ele não pode se tornar seu navegador padrão.</translation>
 <translation id="8004582292198964060">Navegador</translation>
 <translation id="8010081455002666927">Detecção automática</translation>
@@ -588,7 +613,6 @@
 <translation id="8121009781989288430">Copyright © <ph name="YEAR"/> Autores do Brave. Todos os direitos reservados.</translation>
 <translation id="8601359445272098721">Novidade! Agora você pode traduzir texto e imagens na sua tela selecionando o botão "Traduzir tela".</translation>
 <translation id="3052349005266761501">Iniciando o Brave…</translation>
-<translation id="6283840329609797763">Falha na instalação devido a um erro não especificado. Baixe o Brave novamente.</translation>
 <translation id="5128665650717824082">O Brave for Testing não pode ser definido como seu navegador padrão.</translation>
 <translation id="2433912322225810055">Controla também qual página deve ser exibida quando você inicia o Brave ou faz uma pesquisa na Omnibox.</translation>
 <translation id="4100716194836114130">Este é seu Brave</translation>
@@ -607,7 +631,6 @@
 <translation id="6412037018950369131">Se tiver mudado, edite a senha salva no Brave para que ela seja igual à nova senha.</translation>
 <translation id="1150745254876977823">Sua organização exige que você faça login no Brave</translation>
 <translation id="8285294305439559616">O Brave está tentando mostrar senhas. Digite sua senha do Windows para permitir isso.</translation>
-<translation id="6514033039060816211">O Brave pode fazer uma estimativa dos seus interesses com base no seu histórico de navegação das últimas semanas. Essas informações ficam no dispositivo.</translation>
 <translation id="6389268239133412586">Não é possível atualizar o Brave</translation>
 <translation id="7731184591599776500">Logotipo do Brave Enterprise</translation>
 <translation id="3424657754843264466">Gerenciar perfis do Brave</translation>

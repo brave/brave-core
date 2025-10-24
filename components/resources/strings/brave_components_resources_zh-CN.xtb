@@ -688,7 +688,6 @@
 <translation id="3266055641283174315">广告类型</translation>
 <translation id="8706824117053903390">本月观看次数</translation>
 <translation id="5105890735834548623">广告设置</translation>
-<translation id="96989662637180657">Brave 搜索广告显示在<ph name="LINK_BEGIN"/>Brave 搜索<ph name="LINK_END"/>。</translation>
 <translation id="3138160233953903250">广告设置</translation>
 <translation id="2446517297521536638">控制您看到的 Brave 广告类型和频率。观看次数越多，收益越多。</translation>
 <translation id="3479272537858623647">这显示了您本月看到的符合赚取 BAT 的 Brave 广告数量。</translation>
@@ -855,6 +854,11 @@
       other {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} 步骤}
     }</translation>
 <translation id="8621264173374071200"><ph name="EXCHANGE_NAME"/> 通过 <ph name="PROVIDER_NAME"/></translation>
+<translation id="646023614746251785">确认兑换</translation>
+<translation id="6264944956989873014">确认桥接</translation>
+<translation id="7067917728851842589">确认发送</translation>
+<translation id="2351357639951873714">确认保护</translation>
+<translation id="8332923694292360653">支出</translation>
 <translation id="3735740477244556633">排序依据</translation>
 <translation id="6484605214219822434">审核网桥</translation>
 <translation id="3365052891357224017">预计时间</translation>
@@ -964,6 +968,7 @@
 <translation id="3451958544919449297">存储 ZEC Testnet 资产</translation>
 <translation id="8459631690385393533">存储卡尔达诺资产</translation>
 <translation id="4915057812371523845">存储卡尔达诺测试网资产</translation>
+<translation id="5387140102951033657">支持 Polkadot 中继链和 Substrate 平行链上的 Substrate 资产</translation>
 <translation id="8500387257977999003">私钥 <ph name="PROTOCOL"/></translation>
 <translation id="8275038454117074363">导入</translation>
 <translation id="232925166623833246">从硬件钱包导入</translation>
@@ -1075,6 +1080,10 @@
 <translation id="8904889345035514635">当前津贴</translation>
 <translation id="7073918978411974168">计划的津贴</translation>
 <translation id="9019403281000653275">已请求无限制的批准</translation>
+<translation id="9108474191347769758">支出限额</translation>
+<translation id="2102091845281366189">批准目标</translation>
+<translation id="772196962479335292">当前批准限额</translation>
+<translation id="8215431557133305629">拟批准限额</translation>
 <translation id="4717431746210146708">允许此站点添加一个网络？</translation>
 <translation id="2521480044079508357">这将允许在 Brave 钱包内使用该网络。</translation>
 <translation id="1982257600591932657">网络名称</translation>
@@ -1091,7 +1100,7 @@
 <translation id="3948067511324628726">Gas 费用</translation>
 <translation id="7163997622278957886">出价</translation>
 <translation id="1074360622426001342">数量 + gas</translation>
-<translation id="2186011161688824046">金额 + 费用</translation>
+<translation id="7542099582407803878">金额 + 网络费用</translation>
 <translation id="7084089311475827950">无数据。</translation>
 <translation id="5821668936183240062">下一笔</translation>
 <translation id="793994607260936590">第一笔</translation>
@@ -1417,6 +1426,8 @@
 <translation id="1908159733454294871">检测到安全风险</translation>
 <translation id="3621202678540785336">输入</translation>
 <translation id="3009178788565917040">输出</translation>
+<translation id="7953669802889559161">输入</translation>
+<translation id="4554024082642878647">输出</translation>
 <translation id="1965889974717516497">次要网络</translation>
 <translation id="7691821949666755802">测试网络</translation>
 <translation id="2816106784624007524">气体限制必须为大于 0 的整数</translation>
@@ -2139,7 +2150,6 @@ other {# 个来源}
 <translation id="5872363163901278000">提高播放速度</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8637805148029768813">摘要器功能目前仅适用于选定的文章和其他长篇网页。</translation>
-<translation id="1223498995510244364">总结</translation>
 <translation id="7491773233732232424">关于 Leo</translation>
 <translation id="4611072979071082355">Brave Leo 是一款私密的人工智能助手，可以提升您的网络使用体验。Leo 基础版可以免费使用，但功能有限。Brave Leo 高级版提供更多模型、限制更少，并且订阅用户可以提前使用新功能。默认模型会不时更改。如需了解更多详细信息，请参阅 <ph name="LINK_BEFORE"/>Brave 帮助中心<ph name="LINK_AFTER"/>。</translation>
 <translation id="7297056998057521697">在默认情况下，当您针对正在浏览的网站或网页向 Leo 提出问题时，您正在浏览的网页内容、您在页面中高亮的任何文本以及您的搜索查询将会发送给 Brave 服务器，以便 Leo 提供答复。在某些情况下，Leo 会将从您的输入中得出的查询发送给 Brave 搜索，然后使用搜索结果来更好地回答您的问题。Brave 不保证答复的准确性，Leo 的答复可能会包含不准确、误导性或虚假信息。请勿向 Brave Leo 提交敏感或私密信息，并谨慎看待与健康、资金、人身安全或类似问题相关的答案。您可以随时在设置中调整 Leo 的选项。前往设置&gt; Leo。</translation>
@@ -2173,7 +2183,7 @@ other {# 个来源}
 <translation id="7127671672828944579">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Qwen 14B 提供支持，这是一个由阿里巴巴云创建的模型，性能卓越，适用于多种用例。Qwen 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="2328524194917949829">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Gemma 3 12B 提供支持，这是一个由 Google DeepMind 创建的模型，性能卓越，适用于多种用例。Gemma 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="634682910381645550">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 DeepSeek R1 提供支持，这是一个由 DeepSeek 创建的模型，擅长执行深度推理任务。DeepSeek R1 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
-<translation id="8932568551552504373">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Claude Instant 提供支持，这是一个由 Anthropic 创建的模型，用于支持对话和文本处理任务。Claude Instant 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
+<translation id="8932568551552504373">您好，我是 Leo。是 Brave 提供的 AI 助手，由 Anthropic 创建的 Claude Instant 模型驱动⸺该模型可处理对话及文本任务。Claude Instant 由 Brave 自有安全基础架构托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Claude Haiku 提供支持，这是一个由 Anthropic 创建的模型，用于支持对话和文本处理任务。Claude Haiku 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Claude Sonnet 提供支持，这是一个由 Anthropic 创建的模型，用于支持对话和文本处理任务。Claude Sonnet 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">高级</translation>
@@ -2186,6 +2196,7 @@ other {# 个来源}
 <translation id="7557539689487606886">订阅 Premium</translation>
 <translation id="1691256669639196606">管理订阅</translation>
 <translation id="3840096463915153852">对话历史记录</translation>
+<translation id="6761921176674289184">管理记忆</translation>
 <translation id="2304783958703511257">高级设置</translation>
 <translation id="3037594989275592390">语言模型</translation>
 <translation id="5543505256451301851">免费试用 7 天</translation>
@@ -2259,31 +2270,36 @@ other {# 个来源}
 <translation id="7307396647043599949"><ph name="COUNT"/> 更多…</translation>
 <translation id="8103700533980268469">关闭此通知</translation>
 <translation id="3417835166382867856">搜索标签页</translation>
+<translation id="7311244614769792472">未找到结果。</translation>
+<translation id="3112448569149476523">请尝试其他搜索</translation>
 <translation id="1352836459737874921">附加其他标签页的内容</translation>
-<translation id="3028258613451571431">从您的浏览器标签页发送页面内容，为 Leo 提供更多对话上下文</translation>
-<translation id="4300920590112551536">浏览器标签页</translation>
+<translation id="7039179822221107025">从您的浏览器标签页发送页面内容，为 Leo 提供更多对话上下文.</translation>
+<translation id="220541218939267992">页面内容将与您的消息一同发送给 Leo。</translation>
 <translation id="1446346932629101482">添加标签页内容以提供上下文信息。这些内容将会与您的消息一起发送给 Leo。</translation>
 <translation id="7193316103691252734">没有匹配的标签页</translation>
 <translation id="2315654674554095762">现在 Leo 会记住您的对话，以便您回头查看。它们会加密存储在您的设备上，您可以随时删除它们。</translation>
 <translation id="7821251979960635244">对话开始后，您的对话记录将会显示在这里。</translation>
 <translation id="887511360213807449">对话记录已禁用</translation>
 <translation id="5380979378058584412">如要查看您之前与 Leo 的对话，您需要启用对话记录。</translation>
-<translation id="6291843235651817590">通用聊天工具</translation>
+<translation id="7348809809749151120">快速 • 搜索</translation>
 <translation id="3185367320601718531">对话和文本生成</translation>
-<translation id="7979673624064378842">快速流畅的聊天</translation>
-<translation id="2836330653441111204">兼顾速度与智慧</translation>
-<translation id="6695329447007213917">普通聊天、编码等更多功能</translation>
-<translation id="7168072214482631597">通用文本和图像理解</translation>
-<translation id="7226508434216060960">推理模型</translation>
+<translation id="2793458212460902934">快速 • 搜索 • 工具</translation>
+<translation id="8506027496671575183">搜索 • 视觉 • 工具</translation>
+<translation id="3213834013136637671">搜索 • 视觉</translation>
+<translation id="7697693533305615127">搜索 • 思考</translation>
 <translation id="8782867266498869301">模型会动态变化以使用最适合任务的模型</translation>
 <translation id="3965507912994218570">Leo 设置</translation>
-<translation id="1037324977127422019">嗨，我是 Leo！</translation>
-<translation id="8930348081963284873">Brave 内置的人工智能智能助手。</translation>
-<translation id="3528849152231418380">需要网站帮助？</translation>
-<translation id="1558192229187362674">我可以帮助您总结文章、扩展网站内容等。</translation>
-<translation id="861953757568623294">我可以帮助您总结文章、扩展网站内容等。不知道怎么操作？试试这个：</translation>
-<translation id="5642775487085641191">只想聊聊天？</translation>
-<translation id="8857222718794549840">您可以问我任何问题！我们可以讨论任何您想讨论的话题。我一直在学习和进步，以提供更好的答案。</translation>
+<translation id="3754337604877048671">Leo AI 简介</translation>
+<translation id="5295261408976371809">您的 <ph name="TEXT_BEFORE"/>私密<ph name="TEXT_AFTER"/> AI 助手，内建于浏览器中。</translation>
+<translation id="7452913484571004528">真正的私密 AI</translation>
+<translation id="8525501048785085223">Leo 不会保留或分享聊天内容，也不会将其用于模型训练。不需要账户或登录，只需打开即可私密对话。</translation>
+<translation id="6401201054391523929">与您的标签页和文件聊天</translation>
+<translation id="8522038408130089105">想更了解您正在访问的网站？只需将其添加至聊天中。附加您的标签页和本地文件，即可快速获得相关答案。</translation>
+<translation id="3844955602461425647">自动化枯燥工作</translation>
+<translation id="2196247864500723577">让 Brave 与您共同浏览，并与您在浏览器中的所有操作互动。将繁琐的任务交给它，节省时间处理更重要的事情。</translation>
+<translation id="235457946228076038">自备模型</translation>
+<translation id="7024005267156189454">连接您自有的 AI 模型，无论是本地部署还是远程托管。根据偏好定制 Leo 的行为、输出和功能。</translation>
+<translation id="7291578285403921288">了解更多有关 Leo AI 的信息</translation>
 <translation id="9051226419897869406">与 Brave Leo 私密聊天</translation>
 <translation id="2414904697165579184">根据标签页内容生成答复</translation>
 <translation id="8258324391302611485">该页面的内容将与您的消息一起发送给 Leo。</translation>
@@ -2292,6 +2308,7 @@ other {# 个来源}
 <translation id="8732450785281947197">Leo AI 工具</translation>
 <translation id="6535533770697728087">快速操作</translation>
 <translation id="3237710083340813756">重写</translation>
+<translation id="1223498995510244364">总结</translation>
 <translation id="1252805982772190086">短篇帖子</translation>
 <translation id="2087555497198267113">长篇帖子</translation>
 <translation id="4170307327863874820">博客帖子</translation>
@@ -2499,12 +2516,13 @@ other {# 个来源}
 <translation id="6764845498618413165">了解更多。</translation>
 <translation id="7818938154803162778">没问题，我愿意协助</translation>
 <translation id="7207456302801184289">歡迎使用 Brave</translation>
-<translation id="6716580298071890302">使用深色主题</translation>
+<translation id="293854220404217065">午夜主题</translation>
 <translation id="2422927186524098759">侧边栏</translation>
 <translation id="2361906291514218784">Leo 人工智能</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="8000020256436988724">工具栏</translation>
 <translation id="6225572914528673855">地址栏</translation>
+<translation id="6821966107067356137">添加 RSS 源</translation>
 <translation id="8293206222192510085">添加书签</translation>
 <translation id="7758460733045216901">书签面板</translation>
 <translation id="958268166261124668">Brave VPN：已连接</translation>

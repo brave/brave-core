@@ -2,36 +2,36 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="af">
 <translation id="130631256467250065">Jou veranderinge sal in werking tree wanneer jy jou toestel herbegin.</translation>
+<translation id="6451924152958941455">Gaan na
+          die Brave-kieslys &gt;
+          <ph name="SETTINGS_TITLE"/>
+          &gt;
+          <ph name="SYSTEM_TITLE"/>
+          &gt;
+          <ph name="PROXIES_TITLE"/>
+          en maak seker jou opstelling is op “geen instaanbediener nie” of “direk” gestel.</translation>
 <translation id="7999989146447764333">Omvalrapportering is nie beskikbaar in Brave nie.</translation>
 <translation id="1953231710324290369">Jy bekyk tans 'n veilige Brave-bladsy</translation>
 <translation id="907470742420136113">Brave probeer tans instellings vir die invul van betaalmetodes wysig.</translation>
 <translation id="4847979153841887006">Brave-logo</translation>
 <translation id="336808635693308470">Brave probeer tans om betaalmetodes te wysig.</translation>
 <translation id="7932149101545999102">Brave word moontlik gemaak deur die <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/>-oopbronprojek en ander <ph name="BEGIN_LINK_OSS"/>oopbronsagteware<ph name="END_LINK_OSS"/>.</translation>
-<translation id="8746410156982274638">Gaan na
-          die Brave-kieslys &gt;
-          <ph name="SETTINGS_TITLE"/>
-          &gt;
-          <ph name="ADVANCED_TITLE"/>
-          &gt;
-          <ph name="PROXIES_TITLE"/>
-          &gt;
-          LAN-instellings
-          en ontmerk die "Gebruik 'n instaanbediener vir jou LAN"-merkblokkie.</translation>
 <translation id="303960458633076466">Hierdie bladsy is deur Brave geblokkeer</translation>
 <translation id="2017237562285586622">Laat Brave in jou brandmuur- of antivirusinstellings toe om by jou netwerk
           in te gaan.</translation>
 <translation id="4949828774841497663">Gaan na Apps &gt; Stelselinstellings &gt; Netwerk, kies die
           aktiewe netwerk, klik die Besonderhedeknoppie, en ontkies enige instaanbedieners
           wat dalk gekies is.</translation>
-<translation id="8619622797841001082">Gaan na
+<translation id="3269554930871094325">Gaan na
           die Brave-kieslys &gt;
           <ph name="SETTINGS_TITLE"/>
           &gt;
-          <ph name="ADVANCED_TITLE"/>
+          <ph name="SYSTEM_TITLE"/>
           &gt;
           <ph name="PROXIES_TITLE"/>
-          en maak seker jou opstelling is op "geen instaanbediener" of "direk" gestel.</translation>
+          &gt;
+          Netwerk en internet &gt; Instaanbediener
+          en ontkies “Vind instellings outomaties”.</translation>
 <translation id="6159073403999048272">Hierdie bladsye is bedoel vir gebruik deur Brave-ontwikkelaars en word dalk nie aktief onderhou of getoets nie. As jy hulle wil aktiveer, navigeer na <ph name="BEGIN_LINK"/>chrome://chrome-urls<ph name="LINK_END"/>, klik die knoppie om ontfoutbladsye te aktiveer en navigeer dan terug na hierdie bladsy toe.</translation>
 <translation id="2765022094254723779">Brave word ook moontlik gemaak deur ander <ph name="BEGIN_LINK_OSS"/>oopbronsagteware<ph name="END_LINK_OSS"/>.</translation>
 <translation id="9156965752763025780">Jou veranderinge sal in werking tree wanneer jy Brave weer herbegin.</translation>

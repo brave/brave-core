@@ -682,7 +682,6 @@
 <translation id="3266055641283174315">Hirdetés típusa</translation>
 <translation id="8706824117053903390">E havi megtekintések</translation>
 <translation id="5105890735834548623">Hirdetések beállításai</translation>
-<translation id="96989662637180657">A Brave keresési hirdetések a <ph name="LINK_BEGIN"/>Brave-keresésben<ph name="LINK_END"/> jelennek meg.</translation>
 <translation id="3138160233953903250">Hirdetések beállításai</translation>
 <translation id="2446517297521536638">Meghatározhatja, milyen típusú Brave hirdetéseket lásson, és milyen gyakran. Minél többet tekint meg, annál több jutalmat kap.</translation>
 <translation id="3479272537858623647">Ez mutatja, hogy ebben a hónapban hány Brave-hirdetést tekintett meg, amelyek után BAT jár.</translation>
@@ -849,6 +848,11 @@
       other {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} lépés}
     }</translation>
 <translation id="8621264173374071200"><ph name="EXCHANGE_NAME"/> a <ph name="PROVIDER_NAME"/>-en keresztül</translation>
+<translation id="646023614746251785">Csere megerősítése</translation>
+<translation id="6264944956989873014">Híd megerősítése</translation>
+<translation id="7067917728851842589">Küldés megerősítése</translation>
+<translation id="2351357639951873714">Védelem megerősítése</translation>
+<translation id="8332923694292360653">Fizetés</translation>
 <translation id="3735740477244556633">Rendezés</translation>
 <translation id="6484605214219822434">Híd áttekintése</translation>
 <translation id="3365052891357224017">Becsült idő</translation>
@@ -958,6 +962,7 @@
 <translation id="3451958544919449297">ZEC Testnet tárolása</translation>
 <translation id="8459631690385393533">Cardano eszközök tárolása</translation>
 <translation id="4915057812371523845">Cardano Testnet eszközök tárolása</translation>
+<translation id="5387140102951033657">Támogatja a Substrate eszközöket a Polkadot relé láncon és a Substrate parachain-eken</translation>
 <translation id="8500387257977999003"><ph name="PROTOCOL"/> privát kulcs</translation>
 <translation id="8275038454117074363">Importálás</translation>
 <translation id="232925166623833246">Importálás hardveres pénztárcából</translation>
@@ -1069,6 +1074,10 @@
 <translation id="8904889345035514635">Jelenlegi keret</translation>
 <translation id="7073918978411974168">Javasolt keret</translation>
 <translation id="9019403281000653275">Korlátlan jóváhagyás igényelve</translation>
+<translation id="9108474191347769758">Költési limit</translation>
+<translation id="2102091845281366189">Jóváhagyási cél</translation>
+<translation id="772196962479335292">Jelenlegi jóváhagyási limitek</translation>
+<translation id="8215431557133305629">Javasolt jóváhagyási limitek</translation>
 <translation id="4717431746210146708">Engedélyezi, hogy ez az oldal hálózatot adjon hozzá?</translation>
 <translation id="2521480044079508357">Ez engedélyezi, hogy ezt a hálózatot használni lehessen a Brave pénztárcán belül.</translation>
 <translation id="1982257600591932657">Hálózat neve</translation>
@@ -1085,7 +1094,7 @@
 <translation id="3948067511324628726">Gas ára</translation>
 <translation id="7163997622278957886">Ajánlat</translation>
 <translation id="1074360622426001342">Összeg + gas</translation>
-<translation id="2186011161688824046">Összeg + díj</translation>
+<translation id="7542099582407803878">Összeg + Hálózati díj</translation>
 <translation id="7084089311475827950">Nincs adat.</translation>
 <translation id="5821668936183240062">következő</translation>
 <translation id="793994607260936590">első</translation>
@@ -1411,6 +1420,8 @@
 <translation id="1908159733454294871">Biztonsági kockázat észlelve</translation>
 <translation id="3621202678540785336">Bevitel</translation>
 <translation id="3009178788565917040">Kimenet</translation>
+<translation id="7953669802889559161">Bemenetek</translation>
+<translation id="4554024082642878647">Kimenetek</translation>
 <translation id="1965889974717516497">Másodlagos hálózatok</translation>
 <translation id="7691821949666755802">Teszthálózatok</translation>
 <translation id="2816106784624007524">A gas határértéke 0-nál nagyobb egész szám legyen</translation>
@@ -2133,7 +2144,6 @@
 <translation id="5872363163901278000">Visszajátszási sebesség növelése</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8637805148029768813">Az összefoglaló funkció jelenleg csak bizonyos cikkeknél és egyéb hosszú formátumú webhelyeknél elérhető.</translation>
-<translation id="1223498995510244364">Összefoglalás</translation>
 <translation id="7491773233732232424">Tudnivalók a Leóról</translation>
 <translation id="4611072979071082355">A Brave Leo egy MI-alapú intelligens asszisztens, amely tiszteletben tartja az Ön adatainak védelmét és javítja az internetfelhasználó élményt. A Leo korlátozott verzióban ingyenesen elérhető. A Brave Leo Prémium több modellt és nagyobb kapacitást kínál, és az előfizetőknek korai hozzáférést biztosít az új funkciókhoz. Az alapértelmezett modell változhat. További részletekért lásd a <ph name="LINK_BEFORE"/>Brave Súgóközpont<ph name="LINK_AFTER"/> .</translation>
 <translation id="7297056998057521697">Alapértelmezés szerint, amikor Ön kérdést tesz fel a Leónak az éppen megnyitott weboldallal kapcsolatban, akkor az oldal tartalma, az Ön által kijelölt szöveg, valamint a keresőkérdése elküldésre kerül a Brave szervereire, hogy a Leo választ adhasson. Előfordulhat, hogy a Leo az Ön beviteléből további kereséseket indít a Brave keresésben, és a találatokat felhasználja a pontosabb válaszhoz. Fontos tudni, hogy a Brave nem vállal garanciát a válaszok pontosságára – ezek tartalmazhatnak pontatlan, félrevezető vagy hibás információt is. Kérjük, ne osszon meg a Leóval bizalmas vagy személyes adatokat, és legyen különösen körültekintő, ha a válasz egészséggel, pénzügyekkel, személyes biztonsággal vagy más hasonló témával kapcsolatos. A Leo működését bármikor testre szabhatja a Beállítások menüben. Beállítások&gt; Leo.</translation>
@@ -2167,7 +2177,7 @@
 <translation id="7127671672828944579">Üdv, Leo vagyok, a Brave AI-asszisztense. a működésem pedig a Qwen 14B modellen alapul, amelyet az Alibaba Cloud fejlesztett ki, amely számos esetben használható. A Qwen a Brave által biztosított, saját biztonságos infrastruktúrán fut. <ph name="LINK_BEFORE"/>További tudnivalók<ph name="LINK_AFTER"/></translation>
 <translation id="2328524194917949829">Üdv, Leo vagyok, a Brave AI-asszisztense. a működésem pedig a Gemma 3 12B modellen alapul, amelyet a DeepMind fejlesztett ki, amely számos esetben használható. A Gemma a Brave által biztosított, saját biztonságos infrastruktúrán fut. <ph name="LINK_BEFORE"/>További tudnivalók<ph name="LINK_AFTER"/></translation>
 <translation id="634682910381645550">Üdv, Leo vagyok, a Brave AI-asszisztense. a működésem pedig a DeepSeek R1 modellen alapul, amelyet a DeepSeek fejlesztett ki, amely mély gondolkodási feladatokat lát el. A DeepSeek R1 a Brave által biztosított, saját biztonságos infrastruktúrán fut. <ph name="LINK_BEFORE"/>További tudnivalók<ph name="LINK_AFTER"/></translation>
-<translation id="8932568551552504373">Üdv, Leo vagyok. A Brave proxyval üzemeltetnek, a működésem a Claude Instant modellen alapul, amelyet az Anthropic fejlesztett ki beszélgetésre és szövegfeldolgozási feladatok elvégzésére. A Claude Instant a Brave által biztosított, saját biztonságos infrastruktúrán fut.<ph name="LINK_BEFORE"/>Tudjon meg többet<ph name="LINK_AFTER"/></translation>
+<translation id="8932568551552504373">Szia, Leo vagyok. Én vagyok a Brave által működtetett AI-asszisztens. Az Anthropoc által létrehozott Claude Instant modell hajt végre beszélgetési és szövegfeldolgozási feladatokat. A Claude Instant a Brave biztonságos infrastruktúráján fut.<ph name="LINK_BEFORE"/>További információ<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Üdv, Leo vagyok. A Brave proxyval üzemeltetnek, a működésem a Claude Haiku modellen alapul, amelyet az Anthropic fejlesztett ki beszélgetésre és szövegfeldolgozási feladatok elvégzésére. A Claude Haiku a Brave által biztosított, saját biztonságos infrastruktúrán fut.<ph name="LINK_BEFORE"/>Tudjon meg többet<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Üdv, Leo vagyok. A Brave proxyval üzemeltetnek, a működésem a Claude Sonnet modellen alapul, amelyet az Anthropic fejlesztett ki beszélgetésre és szövegfeldolgozási feladatok elvégzésére. A Claude Sonnet a Brave által biztosított, saját biztonságos infrastruktúrán fut.<ph name="LINK_BEFORE"/>Tudjon meg többet<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
@@ -2180,6 +2190,7 @@
 <translation id="7557539689487606886">Prémium előfizetés</translation>
 <translation id="1691256669639196606">Előfizetés kezelése</translation>
 <translation id="3840096463915153852">Beszélgetés előzményei</translation>
+<translation id="6761921176674289184">Emlékek kezelése</translation>
 <translation id="2304783958703511257">Speciális beállítások</translation>
 <translation id="3037594989275592390">Nyelvmodellek</translation>
 <translation id="5543505256451301851">Ingyenes kipróbálás 7 napig</translation>
@@ -2253,31 +2264,36 @@
 <translation id="7307396647043599949"><ph name="COUNT"/> és sok minden más…</translation>
 <translation id="8103700533980268469">Üzenet bezárása</translation>
 <translation id="3417835166382867856">Lapok közötti keresés</translation>
+<translation id="7311244614769792472">Nincs találat</translation>
+<translation id="3112448569149476523">Kérjük, próbáljon ki egy másik keresést</translation>
 <translation id="1352836459737874921">Tartalom hozzáadása a többi lapról</translation>
-<translation id="3028258613451571431">Ossza meg a lap tartalmát, hogy Leo pontosabban tudjon segíteni</translation>
-<translation id="4300920590112551536">Böngésző lapok</translation>
+<translation id="7039179822221107025">Ossza meg a lap tartalmát, hogy Leo pontosabban tudjon segíteni.</translation>
+<translation id="220541218939267992">Az oldal tartalma Leóhoz kerül az üzenetekkel együtt.</translation>
 <translation id="1446346932629101482">A lap tartalmát is megoszthatja kontextusként. Ez az üzeneteivel együtt továbbításra kerül a Leóhoz.</translation>
 <translation id="7193316103691252734">Nincs egyező lap</translation>
 <translation id="2315654674554095762">A Leo mostantól emlékezni fog a beszélgetéseire, hogy visszatérhessen hozzájuk. A beszélgetések titkosítva tárolódnak a készülékén, és bármikor törölheti őket.</translation>
 <translation id="7821251979960635244">A beszélgetés előzményei itt jelennek meg, amint elkezd egy beszélgetést.</translation>
 <translation id="887511360213807449">Előzmények letiltása</translation>
 <translation id="5380979378058584412">Ahhoz, hogy megtekinthesse a Leóval folytatott korábbi beszélgetéseit, engedélyeznie kell a beszélgetési előzményeket.</translation>
-<translation id="6291843235651817590">Általános célú csevegés</translation>
+<translation id="7348809809749151120">Gyors • Keresés</translation>
 <translation id="3185367320601718531">Beszélgetés és szöveg generálása</translation>
-<translation id="7979673624064378842">Villámgyors csevegés</translation>
-<translation id="2836330653441111204">Kiegyensúlyozott sebesség és intelligencia</translation>
-<translation id="6695329447007213917">Általános csevegés, kódolás, és sok minden más</translation>
-<translation id="7168072214482631597">Általános célú szöveg- és képfeldolgozás</translation>
-<translation id="7226508434216060960">Értékelő modell</translation>
+<translation id="2793458212460902934">Gyors • Keresés • Eszközök</translation>
+<translation id="8506027496671575183">Keresés • Képességek • Eszközök</translation>
+<translation id="3213834013136637671">Keresés • Látás</translation>
+<translation id="7697693533305615127">Keresés • Gondolkodás</translation>
 <translation id="8782867266498869301">A modell dinamikusan változik a legjobb feladatellátás érdekében</translation>
 <translation id="3965507912994218570">Leo-beállítások</translation>
-<translation id="1037324977127422019">Üdv, Leo vagyok!</translation>
-<translation id="8930348081963284873">Egy MI-alapú intelligens asszisztens, amely közvetlenül a Brave-ből elérhető.</translation>
-<translation id="3528849152231418380">Segítségre van szüksége egy weboldallal?</translation>
-<translation id="1558192229187362674">Segíthetek a cikkek tartalmának összefoglalásában, egy adott oldal tartalmának bővebb kifejtésében és még több dologban.</translation>
-<translation id="861953757568623294">Segíthetek a cikkek tartalmának összefoglalásában, egy adott oldal tartalmának bővebb kifejtésében és még több dologban. Nem biztos benne, hol kezdje? Próbálja ki ezt:</translation>
-<translation id="5642775487085641191">Csak csevegni szeretne?</translation>
-<translation id="8857222718794549840">Bármit kérdezhet! Az Ön által választott bármilyen témáról beszélgethetünk. Folyamatosan tanulok és fejlődöm, hogy jobb válaszokat adhassak.</translation>
+<translation id="3754337604877048671">Leo AI bemutatkozik</translation>
+<translation id="5295261408976371809">A <ph name="TEXT_BEFORE"/>privát<ph name="TEXT_AFTER"/> AI-asszisztens közvetlenül a böngészőbe építve.</translation>
+<translation id="7452913484571004528">Valóban privát AI</translation>
+<translation id="8525501048785085223">Leo nem tárolja vagy osztja meg a beszélgetéseket, és nem használja őket modelltanításra. Nem szükséges semmilyen fiók vagy bejelentkezés. Csak nyisd meg, és kezdj beszélgetni. Privát módon.</translation>
+<translation id="6401201054391523929">Beszélgetés füleiddel és fájljaiddal</translation>
+<translation id="8522038408130089105">Szeretnél többet megtudni a meglátogatott oldalakról? Csak add hozzá őket egy csevegéshez. Csatold a füleket és helyi fájlokat a gyors és releváns válaszokért.</translation>
+<translation id="3844955602461425647">Az unalmas munka automatizálása</translation>
+<translation id="2196247864500723577">Hagyd, hogy a Brave böngésszen veled és interakcióba lépjen mindennel, amit a böngészőben csinálsz. Bízd a monoton feladatokat Leóra, és fordítsd az idődet fontosabb dolgokra.</translation>
+<translation id="235457946228076038">Hozza el saját modelljét</translation>
+<translation id="7024005267156189454">Csatlakoztasd saját AI modelljeid, akár helyileg futnak, akár távolról. Szabd testre Leo viselkedését, válaszait és képességeit a saját igényeid szerint.</translation>
+<translation id="7291578285403921288">További információ a Leo AI-ról</translation>
 <translation id="9051226419897869406">Csevegjen privátban a Brave Leóval</translation>
 <translation id="2414904697165579184">A megnyitott lap(ok) tartalma segít személyre szabni a válaszokat</translation>
 <translation id="8258324391302611485">Az oldal tartalmát is továbbítjuk Leónak az üzenetével együtt.</translation>
@@ -2286,6 +2302,7 @@
 <translation id="8732450785281947197">Leo MI-eszközök</translation>
 <translation id="6535533770697728087">Gyorsműveletek</translation>
 <translation id="3237710083340813756">Átírás</translation>
+<translation id="1223498995510244364">Összefoglalás</translation>
 <translation id="1252805982772190086">Rövid bejegyzés</translation>
 <translation id="2087555497198267113">Hosszú bejegyzés</translation>
 <translation id="4170307327863874820">Blogbejegyzés</translation>
@@ -2493,12 +2510,13 @@ other {A Brave Pajzsok {BLOCKED_COUNT} követőt blokkolt itt: <ph name="SITE_UR
 <translation id="6764845498618413165">Tudjon meg többet.</translation>
 <translation id="7818938154803162778">Igen, segítek</translation>
 <translation id="7207456302801184289">Üdvözli önt a Brave</translation>
-<translation id="6716580298071890302">Sötétebb téma használata</translation>
+<translation id="293854220404217065">Éjféli téma</translation>
 <translation id="2422927186524098759">Oldalsáv</translation>
 <translation id="2361906291514218784">Leo MI</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="8000020256436988724">Eszköztár</translation>
 <translation id="6225572914528673855">Címsor</translation>
+<translation id="6821966107067356137">RSS-csatorna hozzáadása</translation>
 <translation id="8293206222192510085">Könyvjelző hozzáadása</translation>
 <translation id="7758460733045216901">Könyvjelzők oldalsáv</translation>
 <translation id="958268166261124668">Brave VPN: csatlakozva</translation>

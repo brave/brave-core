@@ -519,6 +519,11 @@
       =1 {You could be getting paid for the <ph name="COUNT_BEGIN"/># Ad<ph name="COUNT_END"/> you've seen this month.}
       other {You could be getting paid for the <ph name="COUNT_BEGIN"/># Ads<ph name="COUNT_END"/> you've seen this month.}
     }</translation>
+<translation id="8611388433418909120">{ADS_VIEWED, plural,
+      =0 {You've seen <ph name="COUNT_BEGIN"/># Ads<ph name="COUNT_END"/> this month}
+      =1 {You're earning for seeing <ph name="COUNT_BEGIN"/># Ad<ph name="COUNT_END"/> this month}
+      other {You're earning for seeing <ph name="COUNT_BEGIN"/># Ads<ph name="COUNT_END"/> this month}
+    }</translation>
 <translation id="6067959437127691361">Using Brave Rewards helps support content creators, and lets you earn BATs.</translation>
 <translation id="2359808026110333948">Continue</translation>
 <translation id="3863981251715594911">How does it work?</translation>
@@ -683,7 +688,6 @@
 <translation id="3266055641283174315">Ad type</translation>
 <translation id="8706824117053903390">Views this month</translation>
 <translation id="5105890735834548623">Ads settings</translation>
-<translation id="96989662637180657">Brave Search Ads appear on <ph name="LINK_BEGIN"/>Brave Search<ph name="LINK_END"/>.</translation>
 <translation id="3138160233953903250">Ads settings</translation>
 <translation id="2446517297521536638">Control what kinds of Brave Ads you see, and how often. The more you see, the more you can earn.</translation>
 <translation id="3479272537858623647">This shows the number of Brave Ads you've seen this month that qualify for earning BAT.</translation>
@@ -850,6 +854,11 @@
       other {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} steps}
     }</translation>
 <translation id="8621264173374071200"><ph name="EXCHANGE_NAME"/> via <ph name="PROVIDER_NAME"/></translation>
+<translation id="646023614746251785">Confirm swap</translation>
+<translation id="6264944956989873014">Confirm bridge</translation>
+<translation id="7067917728851842589">Confirm send</translation>
+<translation id="2351357639951873714">Confirm shield</translation>
+<translation id="8332923694292360653">Spend</translation>
 <translation id="3735740477244556633">Sort by</translation>
 <translation id="6484605214219822434">Review bridge</translation>
 <translation id="3365052891357224017">Est time</translation>
@@ -959,6 +968,7 @@
 <translation id="3451958544919449297">Store ZEC Testnet assets</translation>
 <translation id="8459631690385393533">Store Cardano assets</translation>
 <translation id="4915057812371523845">Store Cardano Testnet assets</translation>
+<translation id="5387140102951033657">Supports Substrate assets on Polkadot relay chain and Substrate parachains</translation>
 <translation id="8500387257977999003">Private key <ph name="PROTOCOL"/></translation>
 <translation id="8275038454117074363">Import</translation>
 <translation id="232925166623833246">Import from hardware wallet</translation>
@@ -1070,6 +1080,10 @@
 <translation id="8904889345035514635">Current allowance</translation>
 <translation id="7073918978411974168">Proposed allowance</translation>
 <translation id="9019403281000653275">Unlimited approval requested</translation>
+<translation id="9108474191347769758">Spend limit</translation>
+<translation id="2102091845281366189">Approval target</translation>
+<translation id="772196962479335292">Current approval limit</translation>
+<translation id="8215431557133305629">Proposed approval limit</translation>
 <translation id="4717431746210146708">Allow this site to add a network?</translation>
 <translation id="2521480044079508357">This will allow this network to be used within Brave Wallet.</translation>
 <translation id="1982257600591932657">Network name</translation>
@@ -1086,7 +1100,7 @@
 <translation id="3948067511324628726">Gas fee</translation>
 <translation id="7163997622278957886">Bid</translation>
 <translation id="1074360622426001342">Amount + gas</translation>
-<translation id="2186011161688824046">Amount + fee</translation>
+<translation id="7542099582407803878">Amount + Network fee</translation>
 <translation id="7084089311475827950">No data.</translation>
 <translation id="5821668936183240062">next</translation>
 <translation id="793994607260936590">first</translation>
@@ -1412,6 +1426,8 @@
 <translation id="1908159733454294871">Security risk detected</translation>
 <translation id="3621202678540785336">Input</translation>
 <translation id="3009178788565917040">Output</translation>
+<translation id="7953669802889559161">Inputs</translation>
+<translation id="4554024082642878647">Outputs</translation>
 <translation id="1965889974717516497">Secondary networks</translation>
 <translation id="7691821949666755802">Test networks</translation>
 <translation id="2816106784624007524">Gas limit must be an integer greater than 0</translation>
@@ -2134,17 +2150,24 @@
 <translation id="5872363163901278000">Increase the playback speed</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8637805148029768813">The summariser feature is currently available only for select articles and other long-form web pages.</translation>
-<translation id="1223498995510244364">Summarise</translation>
 <translation id="7491773233732232424">About Leo</translation>
 <translation id="4611072979071082355">Brave Leo is a private AI smart assistant that enhances your use of the web. Leo is free to use with limited access. Brave Leo Premium offers more models, higher limits and gives subscribers early access to new features. The default model will change from time to time. See the <ph name="LINK_BEFORE"/>Brave Help Center<ph name="LINK_AFTER"/> for more details.</translation>
 <translation id="7297056998057521697">By default, when you ask Leo a question about a website or page you are viewing, the content of the webpage you are viewing or any text you highlight on a page, as well as your search query will be sent to Brave servers in order for Leo to provide a response. In some cases, Leo will send queries derived from your input to Brave Search and use the search results to better answer your question. Brave does not guarantee the accuracy of responses, and responses may include inaccurate, misleading, or false information. Don't submit sensitive or private information to Brave Leo, and use caution with any answers related to health, finance, personal safety, or similar. You can adjust Leo’s options in Settings any time. Go to Settings &gt; Leo.</translation>
 <translation id="6644545214304085600">Leo does not collect identifiers such as your IP address that can be linked to you. We do not train our models based on your data, including your search queries or Brave Leo’s responses. No personal data is stored on our servers, or retained by Brave. See the <ph name="LINK_BEFORE"/>privacy policy<ph name="LINK_AFTER"/> for more information.</translation>
+<translation id="4348006373172097089">{PAGE_COUNT, plural,
+      =1 {Ask a question about the content of this page}
+      other {Ask a question about the content of these pages}
+    }</translation>
 <translation id="6961721183181597848">How can I help you today?</translation>
 <translation id="2966135729673253768">Ask follow up</translation>
 <translation id="6219262425964000211">Drop files here</translation>
 <translation id="4313763911013851687">Drop any files here to add them to the conversation</translation>
 <translation id="4524675003624341892">Suggest questions …</translation>
 <translation id="4567071417854988869">Summarise this video</translation>
+<translation id="4264902191243445258">{PAGE_COUNT, plural,
+      =1 {Summarise this page}
+      other {Summarise these pages}
+    }</translation>
 <translation id="7921782882718083488">Summarise this page</translation>
 <translation id="7932221068776853847">Disconnect to stop sending this page content to Leo, and start a new conversation</translation>
 <translation id="8743383817154663379">Something went wrong while processing your request. Please try again later.</translation>
@@ -2160,7 +2183,7 @@
 <translation id="7127671672828944579">Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Qwen 14B, a model created by Alibaba Cloud to be performant and applicable to many use cases. Qwen is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="2328524194917949829">Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Gemma 3 12B, a model created by Google DeepMind to be performant and applicable to many use cases. Gemma is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="634682910381645550">Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by DeepSeek R1, a model created by DeepSeek to perform deep reasoning tasks. DeepSeek R1 is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
-<translation id="8932568551552504373">Hi, I'm Leo.I'm an AI assistant by Brave. I'm powered by Claude Instant, a model created by Anthropic to power conversational and text processing tasks. Claude Instant is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
+<translation id="8932568551552504373">Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Claude Instant, a model created by Anthropic to power conversational and text processing tasks. Claude Instant is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Claude Haiku, a model created by Anthropic to power conversational and text processing tasks. Claude Haiku is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Claude Sonnet, a model created by Anthropic to power conversational and text processing tasks. Claude Sonnet is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
@@ -2173,6 +2196,7 @@
 <translation id="7557539689487606886">Go Premium</translation>
 <translation id="1691256669639196606">Manage subscription</translation>
 <translation id="3840096463915153852">Conversation history</translation>
+<translation id="6761921176674289184">Manage memories</translation>
 <translation id="2304783958703511257">Advanced settings</translation>
 <translation id="3037594989275592390">Language models</translation>
 <translation id="5543505256451301851">Try 7 days free</translation>
@@ -2246,31 +2270,36 @@
 <translation id="7307396647043599949"><ph name="COUNT"/> more…</translation>
 <translation id="8103700533980268469">Close this notice</translation>
 <translation id="3417835166382867856">Search tabs</translation>
+<translation id="7311244614769792472">No results found</translation>
+<translation id="3112448569149476523">Please try a different search</translation>
 <translation id="1352836459737874921">Attach content from other tabs</translation>
-<translation id="3028258613451571431">Send page content from your browser tabs to give Leo more context for the conversation</translation>
-<translation id="4300920590112551536">Browser tabs</translation>
+<translation id="7039179822221107025">Send page content from your browser tabs to give Leo more context for the conversation.</translation>
+<translation id="220541218939267992">Page contents will be sent to Leo along with your messages.</translation>
 <translation id="1446346932629101482">Add tab contents for context. The contents will be sent to Leo along with your messages.</translation>
 <translation id="7193316103691252734">No matching tabs</translation>
 <translation id="2315654674554095762">Leo will now remember your conversations so you can go back to them. They are stored encrypted on your device, and you can delete them any time.</translation>
 <translation id="7821251979960635244">Your conversation history will appear here once you start a conversation.</translation>
 <translation id="887511360213807449">History is disabled</translation>
 <translation id="5380979378058584412">In order to view your previous conversations with Leo, you need to enable conversation history.</translation>
-<translation id="6291843235651817590">General purpose chat</translation>
+<translation id="7348809809749151120">Fast • Search</translation>
 <translation id="3185367320601718531">Conversation and text generation</translation>
-<translation id="7979673624064378842">Lightning fast chat</translation>
-<translation id="2836330653441111204">Balanced speed and intelligence</translation>
-<translation id="6695329447007213917">General purpose chat, coding, and more</translation>
-<translation id="7168072214482631597">General purpose text and image understanding</translation>
-<translation id="7226508434216060960">Reasoning model</translation>
+<translation id="2793458212460902934">Fast • Search • Tools</translation>
+<translation id="8506027496671575183">Search • Vision • Tools</translation>
+<translation id="3213834013136637671">Search • Vision</translation>
+<translation id="7697693533305615127">Search • Thinking</translation>
 <translation id="8782867266498869301">Model changes dynamically to use the best one for the task</translation>
 <translation id="3965507912994218570">Leo settings</translation>
-<translation id="1037324977127422019">Hi, I'm Leo!</translation>
-<translation id="8930348081963284873">An AI-powered intelligent assistant, built right into Brave.</translation>
-<translation id="3528849152231418380">Need help with a website?</translation>
-<translation id="1558192229187362674">I can help you summarising articles, expanding on a site's content and much more.</translation>
-<translation id="861953757568623294">I can help you summarising articles, expanding on a site's content and much more. Not sure where to start? Try this:</translation>
-<translation id="5642775487085641191">Just want to chat?</translation>
-<translation id="8857222718794549840">Ask me anything! We can talk about any topic you want. I'm always learning and improving to provide better answers.</translation>
+<translation id="3754337604877048671">Introducing Leo AI</translation>
+<translation id="5295261408976371809">Your <ph name="TEXT_BEFORE"/>private<ph name="TEXT_AFTER"/> AI assistant, built right into the browser.</translation>
+<translation id="7452913484571004528">Truly private AI</translation>
+<translation id="8525501048785085223">Leo doesn’t retain or share chats, or use them for model training. No account or login is required. Just open and chat. Privately.</translation>
+<translation id="6401201054391523929">Chat with your tabs and files</translation>
+<translation id="8522038408130089105">Need to know more about the sites you’re visiting? Just add them to a chat. Attach your tabs and local files for fast, relevant answers.</translation>
+<translation id="3844955602461425647">Automate the boring work</translation>
+<translation id="2196247864500723577">Let Brave browse with you and interact with everything you do in the browser. Offload the tedious tasks, and save your time for the important stuff.</translation>
+<translation id="235457946228076038">Bring your own model</translation>
+<translation id="7024005267156189454">Connect your own AI models, whether running locally or remotely. Tailor Leo's behaviour, outputs, and capabilities to your preferences.</translation>
+<translation id="7291578285403921288">Learn more about Leo AI</translation>
 <translation id="9051226419897869406">Chat Privately with Brave Leo</translation>
 <translation id="2414904697165579184">Shape answers based on the tab(s) contents</translation>
 <translation id="8258324391302611485">This page's content will be sent to Leo along with your messages.</translation>
@@ -2279,6 +2308,7 @@
 <translation id="8732450785281947197">Leo AI tools</translation>
 <translation id="6535533770697728087">Quick actions</translation>
 <translation id="3237710083340813756">Rewrite</translation>
+<translation id="1223498995510244364">Summarise</translation>
 <translation id="1252805982772190086">Short post</translation>
 <translation id="2087555497198267113">Long post</translation>
 <translation id="4170307327863874820">Blog post</translation>
@@ -2486,12 +2516,13 @@
 <translation id="6764845498618413165">Learn more.</translation>
 <translation id="7818938154803162778">Sure, I'll help</translation>
 <translation id="7207456302801184289">Welcome to Brave</translation>
-<translation id="6716580298071890302">Use darker theme</translation>
+<translation id="293854220404217065">Midnight theme</translation>
 <translation id="2422927186524098759">Sidebar</translation>
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="8000020256436988724">Toolbar</translation>
 <translation id="6225572914528673855">Address bar</translation>
+<translation id="6821966107067356137">Add RSS feed</translation>
 <translation id="8293206222192510085">Add bookmark</translation>
 <translation id="7758460733045216901">Bookmarks Panel</translation>
 <translation id="958268166261124668">Brave VPN: connected</translation>

@@ -684,7 +684,6 @@
 <translation id="3266055641283174315">Werbungstyp</translation>
 <translation id="8706824117053903390">Anzeigen diesen Monat</translation>
 <translation id="5105890735834548623">Werbungseinstellungen</translation>
-<translation id="96989662637180657">Brave-Suchanzeigen werden in der <ph name="LINK_BEGIN"/>Brave-Suche<ph name="LINK_END"/> angezeigt.</translation>
 <translation id="3138160233953903250">Werbungseinstellungen</translation>
 <translation id="2446517297521536638">Steuern Sie, welche Arten von Brave-Anzeigen Sie sehen und wie oft. Je mehr Sie sehen, umso mehr können Sie verdienen.</translation>
 <translation id="3479272537858623647">Hier wird die Anzahl der Brave Ads angezeigt, die du diesen Monat gesehen hast und die zum Verdienen von BAT qualifizieren.</translation>
@@ -851,6 +850,11 @@
       other {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} Schritte}
     }</translation>
 <translation id="8621264173374071200"><ph name="EXCHANGE_NAME"/> über <ph name="PROVIDER_NAME"/></translation>
+<translation id="646023614746251785">Tausch bestätigen</translation>
+<translation id="6264944956989873014">Bridge bestätigen</translation>
+<translation id="7067917728851842589">Senden bestätigen</translation>
+<translation id="2351357639951873714">Shield bestätigen</translation>
+<translation id="8332923694292360653">Ausgabe</translation>
 <translation id="3735740477244556633">Sortieren nach</translation>
 <translation id="6484605214219822434">Brücke überprüfen</translation>
 <translation id="3365052891357224017">Geschätzte Zeit</translation>
@@ -960,6 +964,7 @@
 <translation id="3451958544919449297">ZEC Testnet-Assets speichern</translation>
 <translation id="8459631690385393533">Cardano-Assets speichern</translation>
 <translation id="4915057812371523845">Cardano-Testnet-Assets speichern</translation>
+<translation id="5387140102951033657">Unterstützt Substrate-Assets auf der Polkadot-Relay-Chain und Substrate-Parachains</translation>
 <translation id="8500387257977999003">Privater Schlüssel <ph name="PROTOCOL"/></translation>
 <translation id="8275038454117074363">importieren</translation>
 <translation id="232925166623833246">Import aus Hardware-Wallet</translation>
@@ -1071,6 +1076,10 @@
 <translation id="8904889345035514635">Aktuelle Zuteilung</translation>
 <translation id="7073918978411974168">Vorgeschlagene Zuteilung</translation>
 <translation id="9019403281000653275">Uneingeschränkte Genehmigung erbeten</translation>
+<translation id="9108474191347769758">Ausgabelimit</translation>
+<translation id="2102091845281366189">Genehmigungsziel</translation>
+<translation id="772196962479335292">Aktuelles Genehmigungslimit</translation>
+<translation id="8215431557133305629">Vorgeschlagenes Genehmigungslimit</translation>
 <translation id="4717431746210146708">Zulassen, dass dieser Site ein Netzwerk hinzugefügt wird?</translation>
 <translation id="2521480044079508357">Dadurch kann dieses Netzwerk innerhalb von Brave Wallet verwendet werden.</translation>
 <translation id="1982257600591932657">Netzwerkname</translation>
@@ -1087,7 +1096,7 @@
 <translation id="3948067511324628726">Transaktionsgebühren</translation>
 <translation id="7163997622278957886">Gebot</translation>
 <translation id="1074360622426001342">Betrag + Gebühren</translation>
-<translation id="2186011161688824046">Betrag + Gebühren</translation>
+<translation id="7542099582407803878">Betrag + Netzwerkgebühr</translation>
 <translation id="7084089311475827950">Keine Daten.</translation>
 <translation id="5821668936183240062">weiter</translation>
 <translation id="793994607260936590">erst</translation>
@@ -1413,6 +1422,8 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="1908159733454294871">Sicherheitsrisiko erkannt</translation>
 <translation id="3621202678540785336">Eingabe</translation>
 <translation id="3009178788565917040">Ausgabe</translation>
+<translation id="7953669802889559161">Eingaben</translation>
+<translation id="4554024082642878647">Ausgaben</translation>
 <translation id="1965889974717516497">Sekundärnetzwerke</translation>
 <translation id="7691821949666755802">Testnetzwerke</translation>
 <translation id="2816106784624007524">Das Gebührenlimit muss eine ganze Zahl größer als 0 sein</translation>
@@ -2135,7 +2146,6 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="5872363163901278000">Steigerung der Abspielgeschwindigkeit</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8637805148029768813">Die Zusammenfassungsfunktion ist derzeit nur für ausgewählte Artikel und andere Webseiten in Langform verfügbar.</translation>
-<translation id="1223498995510244364">Zusammenfassen</translation>
 <translation id="7491773233732232424">Über Leo</translation>
 <translation id="4611072979071082355">Brave Leo ist ein privater, intelligenter KI-Assistent, der dein Surferlebnis im Web verbessert. Leo ist kostenlos mit eingeschränktem Zugriff nutzbar. Brave Leo Premium bietet mehr Modelle, höhere Limits und gewährt Abonnenten frühzeitigen Zugang zu neuen Funktionen. Das Standardmodell wird von Zeit zu Zeit geändert. Weitere Informationen findest du im <ph name="LINK_BEFORE"/>Brave Hilfe-Center<ph name="LINK_AFTER"/>.</translation>
 <translation id="7297056998057521697">Wenn du Leo eine Frage zu einer Website oder Seite stellst, die du gerade ansiehst, werden standardmäßig der Inhalt der angezeigten Website oder der von dir markierte Text auf einer Seite sowie deine Suchanfrage an die Server von Brave gesendet, damit Leo eine Antwort geben kann. In einigen Fällen sendet Leo aus deinen Eingaben abgeleitete Anfragen an Brave Search und verwendet die Suchergebnisse, um deine Frage besser zu beantworten. Brave übernimmt keine Garantie für die Richtigkeit der Antworten, und Antworten können ungenaue, irreführende oder falsche Informationen enthalten. Sende Brave Leo keine sensiblen oder privaten Informationen und sei vorsichtig bei Antworten zu Gesundheit, Finanzen, persönlicher Sicherheit oder Ähnlichem. Du kannst Leos Optionen jederzeit in den Einstellungen anpassen. Gehe zu Einstellungen &gt; Leo.</translation>
@@ -2169,7 +2179,7 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="7127671672828944579">Hallo, ich bin Leo. Ich bin ein KI-Assistent von Brave. Ich werde von Qwen 14B angetrieben, einem Modell, das von Alibaba Cloud entwickelt wurde, um leistungsfähig zu sein und für viele Anwendungsfälle geeignet zu sein. Qwen wird von Brave über unsere eigene sichere Infrastruktur gehostet. <ph name="LINK_BEFORE"/>Mehr erfahren<ph name="LINK_AFTER"/></translation>
 <translation id="2328524194917949829">Hallo, ich bin Leo. Ich bin ein KI-Assistent von Brave. Ich werde von Gemma 3 12B angetrieben, einem Modell, das von Google DeepMind entwickelt wurde, um leistungsfähig zu sein und für viele Anwendungsfälle geeignet zu sein. Gemma wird von Brave über unsere eigene sichere Infrastruktur gehostet. <ph name="LINK_BEFORE"/>Mehr erfahren<ph name="LINK_AFTER"/></translation>
 <translation id="634682910381645550">Hallo, ich bin Leo. Ich bin ein KI-Assistent von Brave. Ich werde von DeepSeek R1 angetrieben, einem Modell, das von DeepSeek entwickelt wurde, um Aufgaben des tiefen Denkens zu bewältigen. DeepSeek R1 wird von Brave über unsere eigene sichere Infrastruktur gehostet. <ph name="LINK_BEFORE"/>Mehr erfahren<ph name="LINK_AFTER"/></translation>
-<translation id="8932568551552504373">Hallo, ich bin Leo. Ich bin ein KI-Assistent von Brave. Ich werde von Claude Instant angetrieben, einem Modell, das von Anthropic entwickelt wurde, um Gesprächs- und Textverarbeitungsaufgaben zu ermöglichen. Claude Instant wird von Brave über unsere eigene sichere Infrastruktur gehostet. <ph name="LINK_BEFORE"/>Mehr erfahren<ph name="LINK_AFTER"/></translation>
+<translation id="8932568551552504373">Hallo, ich bin Leo. Ich bin ein KI-Assistent von Brave. Ich werde von Claude Instant angetrieben, einem Modell, das von Anthropic entwickelt wurde, um Gesprächs- und Textverarbeitungsaufgaben zu ermöglichen. Claude Instant wird von Brave über unsere eigene sichere Infrastruktur gehostet.<ph name="LINK_BEFORE"/>Mehr erfahren<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Hallo, ich bin Leo. Ich bin ein KI-Assistent von Brave. Ich werde von Claude Haiku angetrieben, einem Modell, das von Anthropic entwickelt wurde, um Gesprächs- und Textverarbeitungsaufgaben zu ermöglichen. Claude Haiku wird von Brave über unsere eigene sichere Infrastruktur gehostet. <ph name="LINK_BEFORE"/>Mehr erfahren<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Hallo, ich bin Leo. Ich bin ein KI-Assistent von Brave. Ich werde von Claude Sonnet angetrieben, einem Modell, das von Anthropic entwickelt wurde, um Gesprächs- und Textverarbeitungsaufgaben zu unterstützen. Claude Sonnet wird von Brave über unsere eigene sichere Infrastruktur gehostet. <ph name="LINK_BEFORE"/>Mehr erfahren<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
@@ -2182,6 +2192,7 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="7557539689487606886">Jetzt Premium sichern</translation>
 <translation id="1691256669639196606">Abonnement verwalten</translation>
 <translation id="3840096463915153852">Chatverlauf</translation>
+<translation id="6761921176674289184">Erinnerungen verwalten</translation>
 <translation id="2304783958703511257">Erweiterte Einstellungen</translation>
 <translation id="3037594989275592390">Sprachmodelle</translation>
 <translation id="5543505256451301851">7 Tage lang kostenlos ausprobieren</translation>
@@ -2255,31 +2266,36 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="7307396647043599949"><ph name="COUNT"/> Mehr...</translation>
 <translation id="8103700533980268469">Diese Mitteilung schließen</translation>
 <translation id="3417835166382867856">Tabs durchsuchen</translation>
+<translation id="7311244614769792472">Keine Suchergebnisse gefunden</translation>
+<translation id="3112448569149476523">Bitte versuche eine andere Suche</translation>
 <translation id="1352836459737874921">Inhalte aus anderen Tabs anhängen</translation>
-<translation id="3028258613451571431">Sende den Seiteninhalt deiner Browser-Tabs, um Leo mehr Kontext für das Gespräch zu geben.</translation>
-<translation id="4300920590112551536">Browser-Tabs</translation>
+<translation id="7039179822221107025">Sende den Seiteninhalt deiner Browser-Tabs, um Leo mehr Kontext für das Gespräch zu geben.</translation>
+<translation id="220541218939267992">Der Inhalt dieser Seite wird zusammen mit deinen Nachrichten an Leo gesendet.</translation>
 <translation id="1446346932629101482">Füge Registerkarteninhalte für den Kontext hinzu. Die Inhalte werden zusammen mit deinen Nachrichten an Leo gesendet.</translation>
 <translation id="7193316103691252734">Keine passenden Tabs</translation>
 <translation id="2315654674554095762">Leo merkt sich jetzt deine Unterhaltungen, damit du zu ihnen zurückkehren kannst. Sie werden verschlüsselt auf deinem Gerät gespeichert, und du kannst sie jederzeit löschen.</translation>
 <translation id="7821251979960635244">Dein Konversationsverlauf wird hier angezeigt, sobald du eine Konversation beginnst.</translation>
 <translation id="887511360213807449">Verlauf ist deaktiviert</translation>
 <translation id="5380979378058584412">Um deine früheren Unterhaltungen mit Leo zu sehen, musst du den Gesprächsverlauf aktivieren.</translation>
-<translation id="6291843235651817590">Allgemeiner Chat</translation>
+<translation id="7348809809749151120">Schnell • Suche</translation>
 <translation id="3185367320601718531">Unterhaltung und Textgenerierung</translation>
-<translation id="7979673624064378842">Blitzschneller Chat</translation>
-<translation id="2836330653441111204">Ausgeglichene Geschwindigkeit und Intelligenz</translation>
-<translation id="6695329447007213917">Allzweck-Chat, Codierung und mehr</translation>
-<translation id="7168072214482631597">Allgemeines Text- und Bildverständnis</translation>
-<translation id="7226508434216060960">Schlussfolgerungsmodell</translation>
+<translation id="2793458212460902934">Schnell • Suche • Tools</translation>
+<translation id="8506027496671575183">Suche • Vision • Tools</translation>
+<translation id="3213834013136637671">Suche • Vision</translation>
+<translation id="7697693533305615127">Suche • Denken</translation>
 <translation id="8782867266498869301">Das Modell passt sich dynamisch an, um für die jeweilige Aufgabe das beste zu verwenden</translation>
 <translation id="3965507912994218570">Leo-Einstellungen</translation>
-<translation id="1037324977127422019">Hallo, ich bin Leo!</translation>
-<translation id="8930348081963284873">Ein intelligenter KI-Assistent, der direkt in den Browser integriert ist.</translation>
-<translation id="3528849152231418380">Benötigen Sie Hilfe bei einer Website?</translation>
-<translation id="1558192229187362674">Ich kann Ihnen dabei helfen, Artikel zusammenzufassen, die Inhalte einer Website zu erweitern und vieles mehr.</translation>
-<translation id="861953757568623294">Ich kann Ihnen dabei helfen, Artikel zusammenzufassen, die Inhalte einer Website zu erweitern und vieles mehr. Sie wissen nicht, wo Sie anfangen sollen? Probieren Sie es damit:</translation>
-<translation id="5642775487085641191">Sie möchten nur chatten?</translation>
-<translation id="8857222718794549840">Fragen Sie mich, was Sie möchten. Wir können über jedes Thema sprechen, das Sie möchten. Ich lerne ständig dazu, um bessere Antworten geben zu können.</translation>
+<translation id="3754337604877048671">Das ist Leo KI</translation>
+<translation id="5295261408976371809">Dein <ph name="TEXT_BEFORE"/>privater<ph name="TEXT_AFTER"/> KI-Assistent, direkt im Browser integriert.</translation>
+<translation id="7452913484571004528">Echte Privatsphäre bei KI</translation>
+<translation id="8525501048785085223">Leo speichert oder teilt keine Unterhaltungen und verwendet sie nicht zum Trainieren von Modellen. Kein Konto und kein Login erforderlich. Einfach öffnen und chatten. Privat.</translation>
+<translation id="6401201054391523929">Chatte mit deinen Tabs und Dateien</translation>
+<translation id="8522038408130089105">Du möchtest mehr über die Seiten wissen, die du besuchst? Füge sie einfach zu einem Chat hinzu. Hänge deine Tabs und lokalen Dateien an, um schnelle und relevante Antworten zu erhalten.</translation>
+<translation id="3844955602461425647">Langweilige Arbeit automatisieren</translation>
+<translation id="2196247864500723577">Brave begleitet dich beim Surfen und interagiert mit allem, was du im Browser tust. Übergib mühsame Aufgaben an Brave und konzentriere dich auf das Wesentliche.</translation>
+<translation id="235457946228076038">Bringen Sie Ihr eigenes Modell mit</translation>
+<translation id="7024005267156189454">Verbinde deine eigenen KI-Modelle, ob lokal oder remote ausgeführt. Passe Leos Verhalten, Ausgaben und Fähigkeiten an deine Vorlieben an.</translation>
+<translation id="7291578285403921288">Mehr über Leo KI erfahren</translation>
 <translation id="9051226419897869406">Chatten Sie privat mit Brave Leo</translation>
 <translation id="2414904697165579184">Antworten basierend auf dem/den Inhalt(en) der Tabs gestalten</translation>
 <translation id="8258324391302611485">Der Inhalt dieser Seite wird zusammen mit deinen Nachrichten an Leo gesendet.</translation>
@@ -2288,6 +2304,7 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="8732450785281947197">Leo-KI-Tools</translation>
 <translation id="6535533770697728087">Schnelle Aktionen</translation>
 <translation id="3237710083340813756">Neu schreiben</translation>
+<translation id="1223498995510244364">Zusammenfassen</translation>
 <translation id="1252805982772190086">Kurzer Post</translation>
 <translation id="2087555497198267113">Langer Post</translation>
 <translation id="4170307327863874820">Blog-Post</translation>
@@ -2494,12 +2511,13 @@ hat <ph name="NUMBER"/> Tracker, Anzeigen und mehr blockiert</translation>
 <translation id="6764845498618413165">Mehr erfahren.</translation>
 <translation id="7818938154803162778">Klar, ich helfe gerne.</translation>
 <translation id="7207456302801184289">Willkommen bei Brave</translation>
-<translation id="6716580298071890302">Dunkleres Design verwenden</translation>
+<translation id="293854220404217065">Mitternachtsdesign</translation>
 <translation id="2422927186524098759">Seitenleiste</translation>
 <translation id="2361906291514218784">Leo-KI</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="8000020256436988724">Werkzeugleiste</translation>
 <translation id="6225572914528673855">Adressleiste</translation>
+<translation id="6821966107067356137">RSS-Feed hinzufügen</translation>
 <translation id="8293206222192510085">Lesezeichen hinzufügen</translation>
 <translation id="7758460733045216901">Lesezeichen-Panel</translation>
 <translation id="958268166261124668">Brave VPN: Verbunden</translation>

@@ -1,6 +1,6 @@
 {
   "appName": {
-    "message": "The Brave Extension",
+    "message": "Brave विस्तार",
     "description": "The name of the extension."
   },
   "shields": {
@@ -8,23 +8,23 @@
     "description": "The Shields feature name"
   },
   "up": {
-    "message": "up",
+    "message": "सुरू",
     "description": "Message for when shields is enabled"
   },
   "down": {
-    "message": "down",
+    "message": "बंद",
     "description": "Message for when shields is disabled"
   },
   "forThisSite": {
-    "message": "for this site",
+    "message": "या साइटसाठी",
     "description": "Partial string for the phrase `shields is up *for this site*`"
   },
   "enabledMessage": {
-    "message": "If a site appears broken, try shields down",
+    "message": "साइट तुटलेली दिसल्यास, शील्ड्स बंद करून पहा",
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "You’re browsing this site without Brave’s privacy and security protections. Does it not work right with Shields up?",
+    "message": "तुम्ही ही साइट ब्रेव्हच्या गोपनियता आणि सुरक्षा संरक्षणांशिवाय ब्राउझ करत आहात. शील्ड्स चालू असताना ही साइट योग्य रीतीने कार्य करत नाही का?",
     "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
   },
   "reportBrokenSite": {
@@ -32,27 +32,27 @@
     "description": "Message for the button allowing users to report a broken site to Brave developers"
   },
   "itemsBlocked": {
-    "message": "Items blocked",
+    "message": "आयटम ब्लॉक केले",
     "description": "Message for the main blocked resources text when there is more than one ad/track/script blocked (plural)"
   },
   "itemBlocked": {
-    "message": "Item blocked",
+    "message": "आयटम ब्लॉक केले",
     "description": "Message for the main blocked resources text when there is one ad/track/script blocked (singular)"
   },
   "and": {
-    "message": "and",
+    "message": "आणि",
     "description": "Message for the `and` conjunction. Used to connect grammatically the `item blocked and connection upgrades` and its variant phrases"
   },
   "connectionsUpgraded": {
-    "message": "connections upgraded",
+    "message": "कनेक्शन्स अपग्रेड केले",
     "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and more than one connection upgrade (plural)"
   },
   "connectionUpgraded": {
-    "message": "connection upgraded",
+    "message": "कनेक्शन अपग्रेड केले",
     "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
   },
   "thirdPartyTrackersBlocked": {
-    "message": "Cross-site trackers blocked",
+    "message": "क्रॉस-साइट ट्रॅकर्स ब्लॉक केले",
     "description": "Message for the scripts blocked row label"
   },
   "readOnlyAdsTrackersBlocking": {
@@ -60,11 +60,11 @@
     "description": "Message for the option in the ads and trackers blocking select field in read only view"
   },
   "aggressiveAdsTrackersBlocking": {
-    "message": "Trackers & ads blocked (aggressive)",
+    "message": "ट्रॅकर्स आणि ॲड्स बंद (आक्रमक)",
     "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
   },
   "standardAdsTrackersBlocking": {
-    "message": "Trackers & ads blocked (standard)",
+    "message": "ट्रॅकर्स आणि ॲड्स बंद (मानक)",
     "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with standard heuristics"
   },
   "allowAdsTrackers": {
@@ -72,19 +72,19 @@
     "description": "Message for the option in the ads and trackers blocking select field to allow all ads and trackers"
   },
   "connectionsUpgradedHTTPS": {
-    "message": "Connections upgraded to HTTPS",
+    "message": "HTTPS साठी कनेक्शन्स अपग्रेड केले",
     "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"
   },
   "connectionUpgradedHTTPS": {
-    "message": "Connection upgraded to HTTPS",
+    "message": "HTTPS साठी कनेक्शन अपग्रेड केले",
     "description": "Message for the main blocked resources text when there is one connection upgraded (singular) and no other ads/trackers blocked"
   },
   "scriptsBlocked": {
-    "message": "Scripts blocked",
+    "message": "स्क्रिप्ट ब्लॉक केले",
     "description": "Message for the scripts blocked row label"
   },
   "thirdPartyCookiesBlocked": {
-    "message": "Cross-site cookies blocked",
+    "message": "क्रॉस-साइट कुकीज ब्लॉक केले",
     "description": "Message for the option in the cookies select field to block all 3rd party cookies"
   },
   "allCookiesBlocked": {
@@ -92,11 +92,11 @@
     "description": "Message for the option in the cookies select field to block all cookies"
   },
   "allCookiesAllowed": {
-    "message": "All cookies allowed",
+    "message": "सर्व कुकीजला अनुमती द्या",
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "readOnlyFingerprinting": {
-    "message": "Fingerprinting blocked",
+    "message": "फिंगरप्रिंटिंग ब्लॉक केले",
     "description": "Message for the option in the fingerprinting field in read only view"
   },
   "standardFingerprinting": {
@@ -112,27 +112,27 @@
     "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {
-    "message": "Fingerprinting attempts",
+    "message": "फिंगरप्रिन्टिंग प्रयत्न",
     "description": "Message for the fingerprinting attempts blocked panel"
   },
   "scriptsOnThisSite": {
-    "message": "Scripts on this site",
+    "message": "या साइटवरील स्क्रिप्ट्स",
     "description": "Message for the script resources blocked panel"
   },
   "blockedScripts": {
-    "message": "Blocked scripts",
+    "message": "ब्लॉक केलेले स्क्रिप्ट्स",
     "description": "Message for the script resources blocked"
   },
   "allowedScripts": {
-    "message": "Allowed scripts",
+    "message": "अनुमत स्क्रिप्ट्स",
     "description": "Message for the script resources allowed"
   },
   "blockAll": {
-    "message": "Block all",
+    "message": "सर्व ब्लॉक करा",
     "description": "Message for the resources blocked *block all* option"
   },
   "allowAll": {
-    "message": "Allow all",
+    "message": "सर्व परवानगी द्या",
     "description": "Message for the resources blocked *allow all* option"
   },
   "block": {
@@ -144,15 +144,15 @@
     "description": "Message for the resources blocked *allow* option"
   },
   "blockedOnce": {
-    "message": "Blocked once",
+    "message": "एकदाच ब्लॉक केले",
     "description": "Message for the resources blocked *blocked once* option"
   },
   "allowedOnce": {
-    "message": "Allowed once",
+    "message": "एकदाच परवानगी दिली",
     "description": "Message for the resources blocked *allowed once* option"
   },
   "allowScriptsOnce": {
-    "message": "Allow scripts once",
+    "message": "स्क्रिप्ट्स एकदाच परवानगी द्या",
     "description": "Message for the shortcut in the main interface to allow all scripts once"
   },
   "cancel": {
@@ -164,15 +164,15 @@
     "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
   },
   "applyOnce": {
-    "message": "Apply once",
+    "message": "एकदाच लागू करा",
     "description": "Message for action in dynamic list of resources blocked to *apply once*"
   },
   "changeDefaults": {
-    "message": "Change global shield defaults",
+    "message": "ग्लोबल शील्ड डीफॉल्ट बदला",
     "description": "Message for the button action linking to the settings page"
   },
   "manageCustomFilters": {
-    "message": "Manage custom filters",
+    "message": "कस्टम फिल्टर्स व्यवस्थापित करा",
     "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
   },
   "elementPickerMode": {
@@ -180,23 +180,23 @@
     "description": "Message for context menu that enables the element picker UI to apply cosmetic filter rules to the page."
   },
   "advancedView": {
-    "message": "Advanced View",
+    "message": "प्रगत दृश्य",
     "description": "Message for the advanced view option"
   },
   "simpleView": {
-    "message": "Simple View",
+    "message": "साधे दृश्य",
     "description": "Message for the simple view option"
   },
   "shieldsExplanation": {
-    "message": "Sites often include cookies and scripts which try to identify you and your device (often embedded into ads). They want to work out who you are and follow you across the web — tracking what you do on every site. Brave blocks these things so that you can browse without being followed around.",
+    "message": "साइट्स बर्‍याचदा कुकीज आणि स्क्रिप्ट्स समाविष्ट करतात जे तुमची आणि तुमच्या डिव्हाइसची ओळख पटवण्याचा प्रयत्न करतात (बर्याचदा जाहिरातींमध्ये एम्बेड केलेले). ते तुमची ओळख काढू इच्छितात आणि तुमच्यावर वेबवर फॉलो करतात - तुम्ही प्रत्येक साइटवर काय करता ते ट्रॅक करतात. ब्रेव्ह हे सर्व ब्लॉक करतो जेणेकरून तुम्ही फॉलो न होता ब्राउझ करू शकता.",
     "description": "Message in read-only view explaining what Brave Shields do"
   },
   "blockedResoucesExplanation": {
-    "message": "Cross-site trackers and other creepy things blocked",
+    "message": "क्रॉस-साइट ट्रॅकर्स आणि इतर भीतीची गोष्टी ब्लॉक केल्या",
     "description": "Message for the main trackers count in Shields simple view"
   },
   "webCompatWarning": {
-    "message": "Changing Shield settings in this view may affect web compatibility on this site.",
+    "message": "या दृश्यात शील्ड सेटिंग्ज बदलल्यास या साइटवर वेब सुसंगततेवर परिणाम होऊ शकतो.",
     "description": "Message for web compat warning when switching from simple to advanced view"
   },
   "gotIt": {

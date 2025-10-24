@@ -5,6 +5,8 @@
 <translation id="3478449063771497234">Les notifications sont désactivées</translation>
 <translation id="2862978891748913252">Sélectionnez votre pays</translation>
 <translation id="3970520675790340955">Sélectionnez votre pays pour que nous puissions vous afficher les bonnes options et publicités pour votre région.</translation>
+<translation id="721490496276866468">Importer des mots de passe</translation>
+<translation id="8178175542325151321">Sélectionnez un fichier .csv contenant vos mots de passe pour l'importer dans le gestionnaire de mots de passe de Brave.</translation>
 <translation id="7301741773883122509">Vous pouvez désormais recevoir des récompenses en visualisant des annonces. Vous contribuez à rendre le Web meilleur pour tous. Et ça, c'est génial !</translation>
 <translation id="6439128034594289376">Tout est prêt !</translation>
 <translation id="370665806235115550">Chargement en cours...</translation>
@@ -109,7 +111,6 @@
 <translation id="7304425663107214334">Afficher les suggestions du navigateur</translation>
 <translation id="8982438328166986164">Affiche des sites suggérés en fonction de vos favoris et de votre historique de navigation.</translation>
 <translation id="924029461438529367">Afficher les suggestions de recherche</translation>
-<translation id="5989135139219497991">Afficher les suggestions recommandées</translation>
 <translation id="6285118765755298263">Indexer d'autres moteurs de recherche</translation>
 <translation id="919715748352669592">Indexe automatiquement les sites Web qui suivent les caractéristiques OpenSearch.</translation>
 <translation id="9148058034647219655">Quitter</translation>
@@ -297,6 +298,11 @@
 <translation id="4254029385847607686">DÉCEMBRE</translation>
 <translation id="3960619311638643872">VPN Brave</translation>
 <translation id="1772301834467143364">Actualités Brave</translation>
+<translation id="2518692840036393666">Personnaliser le menu</translation>
+<translation id="5582839680698949063">Menu principal</translation>
+<translation id="7002271985859760052">Actions</translation>
+<translation id="7104487676473617844">Les éléments suivants seront visibles dans le menu uniquement s'ils sont pris en charge par la page ouverte.</translation>
+<translation id="4159764849281393303">WebApp</translation>
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="8428213095426709021">Paramètres</translation>
 <translation id="6020176662032623904">Créateur vérifié</translation>
@@ -319,13 +325,13 @@
 <translation id="3132642509209154999">Ce code a expiré. Veuillez en générer un nouveau depuis votre deuxième appareil, puis réessayer.</translation>
 <translation id="2859229680945501779">Ce code n'est pas valide. Veuillez vérifier que l'heure et le fuseau horaire sont définis correctement sur votre appareil.</translation>
 <translation id="3149880132460839085">Synchronisation Brave</translation>
-<translation id="348794064910142198">La synchronisation Brave vous permet de synchroniser les données des favoris en privé entre vos navigateurs Brave sur vos différents appareils.\n\nIl vous suffit de scanner le code de votre chaîne de synchronisation que vous avez créée sur un autre appareil. Ou démarrez une nouvelle chaîne de synchronisation.</translation>
+<translation id="348794064910142198">La synchronisation vous permet de synchroniser les données entre vos différents appareils.\n\nPour cela, scannez le code de la chaîne de synchronisation créée sur un autre appareil ou démarrez une nouvelle chaîne de synchronisation.</translation>
 <translation id="2614069607859982576">Sur l'appareil synchronisé existant, ouvrez les paramètres dans Brave et cliquez sur « Synchronisation ». Sélectionnez « Ajouter un nouvel appareil » et scannez le code QR affiché à l'écran.</translation>
 <translation id="5241263629636958324">Copié dans le presse-papiers</translation>
 <translation id="5817918615728894473">Associer</translation>
 <translation id="3429575397891106447">Options de synchronisation</translation>
-<translation id="1680065323266179640">Supprimer le compte de synchronisation</translation>
-<translation id="8397325856045820212">La suppression de votre compte effacera toutes vos données chiffrées des serveurs Brave et désactivera la fonction de synchronisation sur tous vous appareils connectés. Les données stockées localement sur ces appareils ne seront toutefois pas supprimées.\n\nCette suppression est irréversible et les données sont irrécupérables. Si vous décidez de réutiliser la synchronisation, vous devrez créer un nouveau compte et ajouter à nouveau chaque appareil individuellement.</translation>
+<translation id="1680065323266179640">Supprimer le compte</translation>
+<translation id="8397325856045820212">La suppression de votre compte effacera toutes vos données chiffrées des serveurs Brave et désactivera la synchronisation sur tous vous appareils connectés. Les données stockées localement sur ces appareils ne seront toutefois pas supprimées.\n\nCette suppression est définitive et les données ne peuvent être récupérées. Pour reprendre la synchronisation, vous devrez créer un nouveau compte et ajouter à nouveau chaque appareil un par un.</translation>
 <translation id="9064376100690171155">Supprimer définitivement le compte</translation>
 <translation id="2740516568641790390">Le compte de synchronisation a bien été supprimé</translation>
 <translation id="7006136453627651236">Échec de la suppression du compte de synchronisation</translation>
@@ -337,9 +343,9 @@
 <translation id="2965377893636908578">Ajouter un ordinateur</translation>
 <translation id="4701589725270449523">Avec un autre téléphone ou une tablette, ouvrez les paramètres dans Brave et cliquez sur « Synchronisation », puis sur « Scanner ».\n\nSur votre appareil mobile, ouvrez les paramètres dans Brave et cliquez sur « Synchronisation », puis sur le bouton « Scanner le code de synchronisation ». Utilisez votre appareil photo pour scanner le code QR ci-dessous.</translation>
 <translation id="67114562351518315">Sur votre ordinateur, ouvrez les paramètres dans Brave et cliquez sur « Synchronisation ». Sélectionnez « Saisir le code de la chaîne de synchronisation ».\n\nSur votre ordinateur, ouvrez les paramètres dans Brave et cliquez sur « Synchronisation », puis cliquez sur le bouton « J'ai un code de synchronisation ».\nSaisissez le code textuel indiqué ci-dessous.</translation>
-<translation id="65315202420929965">Numérisez ce code de synchronisation</translation>
+<translation id="65315202420929965">Scannez ce code de synchronisation</translation>
 <translation id="6764016175302339802">Ce code doit être considéré comme un mot de passe. Si une autre personne réussit à l'obtenir, elle pourra lire et modifier vos données synchronisées.</translation>
-<translation id="2731921493694251495">Saisir le code de la chaîne de synchronisation</translation>
+<translation id="2731921493694251495">Saisissez le code de la chaîne de synchronisation</translation>
 <translation id="2175927920773552910">Code QR</translation>
 <translation id="8653433343015102968">Code textuel</translation>
 <translation id="8624315169751085215">Copier dans le presse-papiers</translation>
@@ -799,7 +805,6 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="750843150060816463">Frais Gas (Gwei)</translation>
 <translation id="1426320910664514906">Limite de Gas</translation>
 <translation id="6389441740143786465">Désactiver le centre de partage</translation>
-<translation id="9065203028668620118">Édition</translation>
 <translation id="473775607612524610">Mettre à jour</translation>
 <translation id="479795390141144417">Échec de la mise à jour du compte.</translation>
 <translation id="8084782383392198011">Le nom du compte ne peut pas être vide.</translation>
@@ -1015,8 +1020,6 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="8496335570810457">Engagement préalable :</translation>
 <translation id="5100124500279922001">Ignorer la simulation de transaction :</translation>
 <translation id="7152095322071766507">Site le plus consulté</translation>
-<translation id="7230006500876504868">Rechercher avec Brave</translation>
-<translation id="5888208462949095139">Rechercher avec <ph name="DEFAULT_SEARCH_ENGINE"/></translation>
 <translation id="5456039738087398178">Widget sur l'écran d'accueil</translation>
 <translation id="703185154752046151">Widget ajouté à l'écran d'accueil</translation>
 <translation id="4635094429202343515">Essayez le widget du moteur de recherche Brave</translation>
@@ -1076,7 +1079,7 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="7618347247876614969">Compte du tableau de la recherche d'adresses :</translation>
 <translation id="7659483790930268440">Index du tableau de la recherche d'adresses :</translation>
 <translation id="5494920125229734069">Tout sélectionner</translation>
-<translation id="6129027151000961048">Leo</translation>
+<translation id="2361906291514218784">Leo AI</translation>
 <translation id="8613144770663526433">Se connecter au portefeuille Brave</translation>
 <translation id="3696514931437952995">Vous vous connectez à <ph name="ORIGIN"/>. Le portefeuille Brave partagera l'adresse de votre portefeuille avec <ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">Voir les détails</translation>
@@ -1093,11 +1096,11 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="6742599753610126012">Effacer l'historique des conversations</translation>
 <translation id="3443052382074796867">Si vous désactivez l'enregistrement des conversations, toutes les conversations enregistrées seront définitivement supprimées. Cette action ne peut être annulée.</translation>
 <translation id="3692772534525889713">Associez votre achat sur le Play Store à votre compte Brave pour utiliser Brave Leo sur d'autres appareils.</translation>
-<translation id="73236265316873967">Leo Premium</translation>
+<translation id="592831784390389506">Leo AI Premium</translation>
 <translation id="1028627582482425924">Annuel</translation>
 <translation id="2985392169397572983">MEILLEURE OFFRE</translation>
 <translation id="1166682575529520472">Mensuel</translation>
-<translation id="451189393813405346">Demander à Leo</translation>
+<translation id="2206846767762985925">Demander à Leo AI</translation>
 <translation id="7322560193401221004">Se souvenir de la progression de lecture du fichier</translation>
 <translation id="7505951907514709271">Reprendre la lecture depuis l'endroit où le fichier a été mis en pause pour la dernière fois.</translation>
 <translation id="6835165453349969605">Se souvenir de la progression de lecture de la liste</translation>
@@ -1140,6 +1143,7 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="3861012838874771868">Ouvrir les paramètres de la playlist</translation>
 <translation id="5220099266891491416">Bouton Masquer la playlist</translation>
 <translation id="7416347631175891923">Faire un essai</translation>
+<translation id="9065203028668620118">Édition</translation>
 <translation id="1173894706177603556">Renommer</translation>
 <translation id="3596306474342941843">Supprimer la playlist</translation>
 <translation id="7765158879357617694">Déplacer</translation>
@@ -1154,7 +1158,7 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="5319532905552885478">Le contenu multimédia est déjà ajouté à la playlist par défaut</translation>
 <translation id="4802584673094436231">Préparation en cours…</translation>
 <translation id="481455355267255546">À venir</translation>
-<translation id="5474757891469990756">Déchaînez les pleins pouvoirs de Leo avec Premium :</translation>
+<translation id="3721790899869840343">Débloquez tout le potentiel de Leo avec la version Premium :</translation>
 <translation id="4173478269537830374">Explorez différents modèles d'IA</translation>
 <translation id="3453542753968940696">Accès prioritaire à des modèles puissants avec différentes compétences.</translation>
 <translation id="3245401959451976966">Débloquez votre créativité</translation>
@@ -1222,7 +1226,6 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="4650851936784160359">La liste des filtres n'a pas pu être mise à jour. Veuillez réessayer.</translation>
 <translation id="3098054327870766317">Afficher le bouton Rétablir lorsque les onglets sont fermés</translation>
 <translation id="1336494649091412226">Voulez-vous vraiment fermer Brave ?</translation>
-<translation id="2361906291514218784">Leo AI</translation>
 <translation id="7942415993090181327">Historique des conversations</translation>
 <translation id="6859935199732075666">Afficher les erreurs de navigation sécurisée</translation>
 <translation id="2735247450315842119">Autoriser les captures d'écran dans les onglets de navigation privée</translation>
@@ -1246,6 +1249,22 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="5139940364318403933">Découvrez comment utiliser Google Drive</translation>
 <translation id="729975465115245577">Aucune application n'est installée sur votre appareil pour stocker le fichier de mots de passe.</translation>
 <translation id="1129510026454351943">Détails : <ph name="ERROR_DESCRIPTION"/></translation>
+<translation id="5594899180331219722">Sélectionner un fichier</translation>
+<translation id="3744219658596020825">Vos mots de passe n'ont pas été importés.</translation>
+<translation id="8258027225380843424">Vos mots de passe ont bien été importés.</translation>
+<translation id="766635563210446220">Impossible d'importer les mots de passe. Vérifiez le formatage du fichier <ph name="FILENAME"/>. <ph name="BEGIN_LINK"/>En savoir plus<ph name="END_LINK"/></translation>
+<translation id="6581356304040102696">Impossible d'importer les mots de passe. La taille du fichier doit être inférieure à 1 Mo.</translation>
+<translation id="5895244669404288318">{COUNT, plural,
+        one {}=1 {Impossible d'importer les mots de passe. Vous ne pouvez importer qu'un mot de passe à la fois.}
+        other {Impossible d'importer les mots de passe. Vous ne pouvez importer jusqu'à <ph name="COUNT_MANY"/> mots de passe à la fois.}}</translation>
+<translation id="3748424433435232460">Un mot de passe pour ce compte est déjà enregistré sur cet appareil.</translation>
+<translation id="6438475350605608554">Vous importez déjà des mots de passe dans un autre onglet.</translation>
+<translation id="3482868954775580230">La lecture du fichier sélectionné a échoué. <ph name="EXCEPTION_INFO"/></translation>
+<translation id="9162995380643712715">{IMPORT_COUNT, plural,
+        one {}=1 {Un mot de passe a été importé.}
+        other {<ph name="IMPORT_COUNT_MANY"/> mots de passe ont été importés.}}</translation>
+<translation id="4637949129057123593">L'importation a échoué.</translation>
+<translation id="4300452012226767715">Gestionnaire de mots de passe non disponible.</translation>
 <translation id="6221633008163990886">Déverrouillez pour exporter vos mots de passe.</translation>
 <translation id="5245792669563792664">mots de passe</translation>
 <translation id="10614374240317010">Jamais enregistrés</translation>
