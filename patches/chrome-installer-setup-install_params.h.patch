@@ -1,0 +1,29 @@
+diff --git a/chrome/installer/setup/install_params.h b/chrome/installer/setup/install_params.h
+index d0ae93e4d34d293d784ac8fb88269d83eef76397..3d374c7bb0ab51a63121ce4fd9f3938f2456db04 100644
+--- a/chrome/installer/setup/install_params.h
++++ b/chrome/installer/setup/install_params.h
+@@ -25,6 +25,8 @@ class InstallerState;
+ // with the lifetime of the contained references and pointers to
+ // be a strict subset of the calling stack frame.
+ struct InstallParams : public ModifyParams {
++  // Path to the archive (chrome.7z)
++  const raw_ref<const base::FilePath> archive_path;
+   // Unpacked Chrome package (inside |temp_path|)
+   const raw_ref<const base::FilePath> src_path;
+   // Working directory used during install/update
+@@ -36,6 +38,7 @@ struct InstallParams : public ModifyParams {
+                 InstallationState& installation_state,
+                 const base::FilePath& setup_path,
+                 const base::Version& current_version,
++                const base::FilePath& archive_path,
+                 const base::FilePath& src_path,
+                 const base::FilePath& temp_path,
+                 const base::Version& new_version)
+@@ -43,6 +46,7 @@ struct InstallParams : public ModifyParams {
+                      installation_state,
+                      setup_path,
+                      current_version),
++        archive_path(archive_path),
+         src_path(src_path),
+         temp_path(temp_path),
+         new_version(new_version) {}

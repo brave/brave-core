@@ -1,0 +1,11 @@
+diff --git a/chrome/installer/DEPS b/chrome/installer/DEPS
+index 0fc0de27f08e91a07d657a002a82b670d8859a8c..8ad972af8cd6b24913350400c13d394a8f74f730 100644
+--- a/chrome/installer/DEPS
++++ b/chrome/installer/DEPS
+@@ -2,5 +2,6 @@ include_rules = [
+   "+components/crash",
+   "+components/variations",
+   "+rlz",
++  "+third_party/bspatch",
+   "+third_party/lzma_sdk",
+ ]
