@@ -11,18 +11,15 @@
 #include "absl/strings/str_format.h"
 #include "base/byte_count.h"
 #include "base/check.h"
-#include "base/feature_list.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/logging.h"
-#include "base/strings/strcat.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/types/expected.h"
 #include "brave/brave_domains/service_domains.h"
 #include "brave/components/constants/brave_services_key.h"
 #include "brave/components/email_aliases/email_aliases.mojom.h"
 #include "brave/components/email_aliases/email_aliases_api.h"
-#include "brave/components/email_aliases/features.h"
 #include "components/grit/brave_components_strings.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
@@ -123,9 +120,7 @@ EmailAliasesService::EmailAliasesService(
     : url_loader_factory_(url_loader_factory),
       verify_init_url_(GetAccountsServiceVerifyInitURL()),
       verify_result_url_(GetAccountsServiceVerifyResultURL()),
-      email_aliases_service_base_url_(GetEmailAliasesServiceURL()) {
-  CHECK(base::FeatureList::IsEnabled(email_aliases::features::kEmailAliases));
-}
+      email_aliases_service_base_url_(GetEmailAliasesServiceURL()) {}
 
 EmailAliasesService::~EmailAliasesService() = default;
 
@@ -517,9 +512,39 @@ void EmailAliasesService::OnRefreshAliasesResponse(
     alias_obj->email = entry.alias;
     aliases.push_back(std::move(alias_obj));
   }
+  number_of_aliases_ = aliases.size();
   for (auto& observer : observers_) {
     observer->OnAliasesUpdated(mojo::Clone(aliases));
   }
+}
+
+bool EmailAliasesService::IsReadyToCreate() const {
+  return !auth_token_.empty() && number_of_aliases_ < max_aliases_;
+}
+
+void EmailAliasesService::NotifyAliasCreationComplete(
+    const std::optional<std::string>& email) {
+  for (auto& observer : email_aliases_bubble_observers_) {
+    observer.OnAliasCreationComplete(email);
+  }
+}
+
+void EmailAliasesService::InvokeManageAliases() {
+  for (auto& observer : email_aliases_bubble_observers_) {
+    observer.OnInvokeManageAliases();
+  }
+}
+
+void EmailAliasesService::AddBubbleObserver(
+    EmailAliasesBubbleObserver* observer) {
+  CHECK(observer);
+  email_aliases_bubble_observers_.AddObserver(observer);
+}
+
+void EmailAliasesService::RemoveBubbleObserver(
+    EmailAliasesBubbleObserver* observer) {
+  CHECK(observer);
+  email_aliases_bubble_observers_.RemoveObserver(observer);
 }
 
 }  // namespace email_aliases
