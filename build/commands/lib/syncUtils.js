@@ -12,7 +12,6 @@ const util = require('./util')
 const applyReverts = require('./applyReverts')
 
 const REVERT_UPSTREAM_UNTIL_WINDOWS_HAS_OMAHA_4 = [
-  '13ca199c69edee9777c9089226f23e5a5632e791',
   'a4d120daa3b09272d0dfe4a7ce20157dc18cb74e',
 ]
 
