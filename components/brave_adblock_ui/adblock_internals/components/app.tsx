@@ -30,12 +30,13 @@ const EngineInfo = (props: { engine: EngineDebugInfo; caption: string }) => {
 
 export const App = () => {
   const [state, setState] = React.useState(new AppState())
+  const [showRegexes, setShowRegexes] = React.useState(false)
   const getDebugInfo = () => {
     return sendWithPromise('brave_adblock_internals.getDebugInfo').then(
-      (state: AppState) => {
-        saveRegexTexts(state.default_engine.regex_data)
-        saveRegexTexts(state.additional_engine.regex_data)
-        setState(state)
+      (newState: AppState) => {
+        saveRegexTexts(newState.default_engine.regex_data)
+        saveRegexTexts(newState.additional_engine.regex_data)
+        setState(newState)
       },
     )
   }
@@ -73,9 +74,9 @@ export const App = () => {
         />
         <input
           type='button'
-          value='Show Regexes'
+          value={`${showRegexes ? 'Hide' : 'Show'} Regexes`}
           onClick={() => {
-            window.location.href = './?regex_debug'
+            setShowRegexes(!showRegexes)
           }}
         />
         <input
@@ -87,7 +88,7 @@ export const App = () => {
         />
       </div>
 
-      {window.location.href.includes('regex_debug') && (
+      {showRegexes && (
         <div>
           <EngineRegexList
             info={state.default_engine}
