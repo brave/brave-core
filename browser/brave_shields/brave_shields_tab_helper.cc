@@ -20,7 +20,6 @@
 #include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
-#include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "chrome/browser/browser_process.h"
@@ -48,7 +47,8 @@ constexpr char kShieldsAllowScriptOnceHistogramName[] =
 }  // namespace
 
 bool IsAdBlockOnlyModeSupportedAndFeatureEnabled() {
-  return brave_shields::IsAdblockOnlyModeFeatureEnabled() &&
+  return base::FeatureList::IsEnabled(
+             brave_shields::features::kAdblockOnlyMode) &&
          brave_shields::IsAdblockOnlyModeSupportedForLocale(
              g_browser_process->GetApplicationLocale());
 }
@@ -100,8 +100,8 @@ void BraveShieldsTabHelper::DidFinishNavigation(
 void BraveShieldsTabHelper::MaybeNotifyRepeatedReloads(
     content::NavigationHandle* navigation_handle) {
   if (!IsAdBlockOnlyModeSupportedAndFeatureEnabled() ||
-      brave_shields::IsBraveShieldsAdBlockOnlyModeEnabled(
-          g_browser_process->local_state())) {
+      g_browser_process->local_state()->GetBoolean(
+          brave_shields::prefs::kAdBlockOnlyModeEnabled)) {
     // Do not notify if ad block only mode feature is disabled or shields ad
     // block only mode is already enabled.
     return;
@@ -285,14 +285,14 @@ void BraveShieldsTabHelper::SetBraveShieldsEnabled(bool is_enabled) {
 
 bool BraveShieldsTabHelper::IsBraveShieldsAdBlockOnlyModeEnabled() {
   return IsAdBlockOnlyModeSupportedAndFeatureEnabled() &&
-         brave_shields::IsBraveShieldsAdBlockOnlyModeEnabled(
-             g_browser_process->local_state());
+         g_browser_process->local_state()->GetBoolean(
+             brave_shields::prefs::kAdBlockOnlyModeEnabled);
 }
 
 void BraveShieldsTabHelper::SetBraveShieldsAdBlockOnlyModeEnabled(
     bool is_enabled) {
-  brave_shields::SetBraveShieldsAdBlockOnlyModeEnabled(
-      g_browser_process->local_state(), is_enabled);
+  g_browser_process->local_state()->SetBoolean(
+      brave_shields::prefs::kAdBlockOnlyModeEnabled, is_enabled);
   ReloadWebContents();
 }
 

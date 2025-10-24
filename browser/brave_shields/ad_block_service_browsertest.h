@@ -43,6 +43,7 @@ class AdBlockServiceTest : public PlatformBrowserTest {
  protected:
   content::ContentMockCertVerifier mock_cert_verifier_;
 
+  PrefService* local_state();
   HostContentSettingsMap* content_settings();
   brave_shields::AdBlockComponentServiceManager* component_service_manager();
   void AddNewRules(const std::string& rules,
