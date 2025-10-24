@@ -9,8 +9,6 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/debug/crash_logging.h"
-#include "base/debug/dump_without_crashing.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/non_reward/non_reward_confirmation_util.h"
@@ -46,13 +44,7 @@ void Confirmations::Confirm(const TransactionInfo& transaction,
           ? BuildRewardConfirmation(transaction, std::move(user_data))
           : BuildNonRewardConfirmation(transaction, std::move(user_data));
   if (!confirmation) {
-    SCOPED_CRASH_KEY_NUMBER("Issue50267", "confirmation_type",
-                            static_cast<int>(transaction.confirmation_type));
-    SCOPED_CRASH_KEY_STRING64("Issue50267", "creative_instance_id",
-                              transaction.creative_instance_id);
-    SCOPED_CRASH_KEY_STRING64("Issue50267", "failure_reason",
-                              "Failed to build confirmation");
-    base::debug::DumpWithoutCrashing();
+    // This can happen if there are no confirmation tokens.
     return BLOG(0, "Failed to build confirmation");
   }
 
