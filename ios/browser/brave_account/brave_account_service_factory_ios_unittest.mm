@@ -37,7 +37,7 @@ class BraveAccountServiceFactoryIOSTest
         TestProfileIOS::Builder builder;
         builder.AddTestingFactory(
             BraveAccountServiceFactoryIOS::GetInstance(),
-            BraveAccountServiceFactoryIOS::GetDefaultFactory());
+            BraveAccountServiceFactoryIOS::GetDefaultFactoryForTesting());
         return profile_manager_.AddProfileWithBuilder(std::move(builder));
       }
       case ProfileKind::kRegularOTR:

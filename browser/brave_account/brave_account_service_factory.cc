@@ -43,8 +43,8 @@ BraveAccountService* BraveAccountServiceFactory::GetFor(
 
 // static
 BrowserContextKeyedServiceFactory::TestingFactory
-BraveAccountServiceFactory::GetDefaultFactory() {
-  return base::BindRepeating(&BuildBraveAccountService);
+BraveAccountServiceFactory::GetDefaultFactoryForTesting() {
+  return base::BindOnce(&BuildBraveAccountService);
 }
 
 BraveAccountServiceFactory::BraveAccountServiceFactory()

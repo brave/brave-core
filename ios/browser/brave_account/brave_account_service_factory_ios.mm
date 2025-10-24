@@ -40,7 +40,7 @@ BraveAccountService* BraveAccountServiceFactoryIOS::GetFor(
 
 // static
 ProfileKeyedServiceFactoryIOS::TestingFactory
-BraveAccountServiceFactoryIOS::GetDefaultFactory() {
+BraveAccountServiceFactoryIOS::GetDefaultFactoryForTesting() {
   return base::BindOnce(&BuildBraveAccountService);
 }
 

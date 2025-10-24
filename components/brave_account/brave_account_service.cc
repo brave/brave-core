@@ -93,6 +93,12 @@ BraveAccountService::BraveAccountService(
       encrypt_callback_(std::move(encrypt_callback)),
       decrypt_callback_(std::move(decrypt_callback)),
       verify_result_timer_(std::move(verify_result_timer)) {
+  CHECK(pref_service_);
+  CHECK(api_request_helper_);
+  CHECK(encrypt_callback_);
+  CHECK(decrypt_callback_);
+  CHECK(verify_result_timer_);
+
   pref_change_registrar_.Init(pref_service_);
   pref_change_registrar_.Add(
       prefs::kVerificationToken,

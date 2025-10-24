@@ -45,9 +45,10 @@ class BraveAccountServiceFactoryTest
     switch (kind) {
       case ProfileKind::kRegularOriginal:
         return manager_.CreateTestingProfile(
-            "testing", TestingProfile::TestingFactory(
-                           BraveAccountServiceFactory::GetInstance(),
-                           BraveAccountServiceFactory::GetDefaultFactory()));
+            "testing",
+            TestingProfile::TestingFactory(
+                BraveAccountServiceFactory::GetInstance(),
+                BraveAccountServiceFactory::GetDefaultFactoryForTesting()));
       case ProfileKind::kRegularOTR:
         return CHECK_DEREF(manager_.CreateTestingProfile("testing"))
             .GetPrimaryOTRProfile(true);
