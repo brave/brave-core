@@ -1,5 +1,5 @@
 diff --git a/components/omnibox/composebox/BUILD.gn b/components/omnibox/composebox/BUILD.gn
-index 148c2c9a523061c9c10cdb95a71cd12878b4b31b..d1da4b700f781b410b2562a8c275e725ebff48b6 100644
+index 3fbd87c5f52408a57d6550fa841719fe6953020a..fed581449a8a3673c8220a7eb044aa6fc15b2685 100644
 --- a/components/omnibox/composebox/BUILD.gn
 +++ b/components/omnibox/composebox/BUILD.gn
 @@ -5,6 +5,7 @@
