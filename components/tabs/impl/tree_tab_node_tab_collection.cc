@@ -23,7 +23,9 @@
 namespace tabs {
 
 // static
-void TreeTabNodeTabCollection::BuildTreeTabs(TabCollection& root) {
+void TreeTabNodeTabCollection::BuildTreeTabs(
+    TabCollection& root,
+    base::RepeatingCallback<void(const TreeTabNode& node)> on_create) {
   auto tabs = root.GetTabsRecursive();
 
   while (!tabs.empty()) {
@@ -41,11 +43,14 @@ void TreeTabNodeTabCollection::BuildTreeTabs(TabCollection& root) {
 
     auto tree_node = std::make_unique<TreeTabNodeTabCollection>(
         tree_tab::TreeTabNodeId::GenerateNew(), std::move(owned_tab_interface));
+    on_create.Run(tree_node->node());
     parent_collection->AddCollection(std::move(tree_node), index);
   }
 }
 
-void TreeTabNodeTabCollection::FlattenTreeTabs(TabCollection& root) {
+void TreeTabNodeTabCollection::FlattenTreeTabs(
+    TabCollection& root,
+    base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> on_remove) {
   // Get all TreeTabNodes recursively from the root.
   std::vector<TreeTabNodeTabCollection*> all_tree_nodes;
   CollectTreeNodesRecursively(root, all_tree_nodes);
@@ -82,6 +87,7 @@ void TreeTabNodeTabCollection::FlattenTreeTabs(TabCollection& root) {
     // * Remove the tree node itself.
     CHECK(tree_node->GetTreeNodeChildren().empty())
         << "Tree node should not have any children at this point.";
+    on_remove.Run(tree_node->node().id());
     auto tree_node_to_be_removed =
         parent_collection->MaybeRemoveCollection(tree_node);
   }

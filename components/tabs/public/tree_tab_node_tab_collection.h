@@ -25,11 +25,15 @@ class TreeTabNodeTabCollection : public tabs::TabCollection {
  public:
   // Builds the tree tabs structure starting from the root collection.
   // This will wrap all tabs in the tree with TreeTabNode
-  static void BuildTreeTabs(TabCollection& root);
+  static void BuildTreeTabs(
+      TabCollection& root,
+      base::RepeatingCallback<void(const TreeTabNode& node)> on_create);
 
   // Flattens the tree tabs structure by moving all tabs from TreeTabNodes
   // to their parent collections and removing the TreeTabNodes themselves.
-  static void FlattenTreeTabs(TabCollection& root);
+  static void FlattenTreeTabs(
+      TabCollection& root,
+      base::RepeatingCallback<void(const tree_tab::TreeTabNodeId&)> on_remove);
 
   TreeTabNodeTabCollection(const tree_tab::TreeTabNodeId& tree_tab_node_id,
                            std::unique_ptr<tabs::TabInterface> current_tab);

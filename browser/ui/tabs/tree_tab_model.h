@@ -8,6 +8,7 @@
 
 #include <map>
 
+#include "base/memory/weak_ptr.h"
 #include "brave/components/tabs/public/tree_tab_node.h"
 
 // A model that contains TreeTabNodes. TreeTabNode provides metadata for tabs
@@ -22,11 +23,16 @@ class TreeTabModel {
   const tabs::TreeTabNode* GetNode(const tree_tab::TreeTabNodeId& id) const;
   int GetTreeHeight(const tree_tab::TreeTabNodeId& id) const;
 
-  void AddTreeTabNode(tabs::TreeTabNode& node);
+  void AddTreeTabNode(const tabs::TreeTabNode& node);
   void RemoveTreeTabNode(const tree_tab::TreeTabNodeId& id);
 
+  base::WeakPtr<TreeTabModel> GetWeakPtr();
+
  private:
-  std::map<tree_tab::TreeTabNodeId, raw_ptr<tabs::TreeTabNode>> tree_tab_nodes_;
+  std::map<tree_tab::TreeTabNodeId, raw_ptr<const tabs::TreeTabNode>>
+      tree_tab_nodes_;
+
+  base::WeakPtrFactory<TreeTabModel> weak_ptr_factory_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_TABS_TREE_TAB_MODEL_H_

@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <cstdint>
 #include <iterator>
+#include <memory>
 #include <vector>
 
 #include "base/containers/span.h"
@@ -15,6 +16,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/tabs/brave_tree_tab_strip_collection_delegate.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/tree_tab_model.h"
 #include "brave/components/constants/pref_names.h"
@@ -171,11 +173,9 @@ void BraveTabStripModel::BuildTreeTabs() {
   CHECK(!tree_tab_model_);
   tree_tab_model_ = std::make_unique<TreeTabModel>();
 
-  auto* unpinned_collection = contents_data()->unpinned_collection();
-  CHECK(unpinned_collection);
-
-  tabs::TreeTabNodeTabCollection::BuildTreeTabs(*unpinned_collection);
-  contents_data()->set_in_tree_tab_mode(true);
+  contents_data()->SetDelegate(
+      std::make_unique<BraveTreeTabStripCollectionDelegate>(
+          *contents_data(), tree_tab_model_->GetWeakPtr()));
 }
 
 void BraveTabStripModel::FlattenTreeTabs() {
@@ -185,11 +185,7 @@ void BraveTabStripModel::FlattenTreeTabs() {
     return;
   }
 
-  auto* unpinned_collection = contents_data()->unpinned_collection();
-  CHECK(unpinned_collection);
-
-  tabs::TreeTabNodeTabCollection::FlattenTreeTabs(*unpinned_collection);
-  contents_data()->set_in_tree_tab_mode(false);
+  contents_data()->SetDelegate(nullptr);
 }
 
 tabs::TabStripCollection&
