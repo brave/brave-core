@@ -61,8 +61,8 @@ def get_chromium_src_override(path: str) -> str:
         path = os.path.abspath(path)
     assert os.path.exists(path), path
     src_dir = get_src_dir()
-    assert path.startswith(src_dir), (path, src_dir)
-    src_path = path[len(src_dir) + 1:]
+    src_path = os.path.relpath(path, src_dir)
+    assert not src_path.startswith('..'), (path, src_dir)
     override_path = wspath(f'//brave/chromium_src/{src_path}')
     if not os.path.exists(override_path):
         for override_extension in get_additional_extensions():
@@ -124,7 +124,8 @@ def get_webui_overriden_file_name(file_name):
 
 
 def get_webui_overridden_but_referenced_files(folder, in_files):
-    """Returns a list of files which are overridden by chromium_src but are still referenced."""
+    """Returns a list of files which are overridden by chromium_src but are
+    still referenced."""
     for file in in_files:
         overridden_name = get_webui_overriden_file_name(file)
         override = os.path.join(folder, overridden_name)
