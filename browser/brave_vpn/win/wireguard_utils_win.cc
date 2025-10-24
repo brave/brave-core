@@ -274,58 +274,6 @@ void DisableBraveVpnWireguardService(wireguard::BooleanCallback callback) {
           std::move(callback));
 }
 
-wireguard::WireguardKeyPair WireguardGenerateKeypairImpl() {
-  base::win::AssertComInitialized();
-  Microsoft::WRL::ComPtr<IBraveVpnWireguardManager> service;
-  if (FAILED(CoCreateInstance(brave_vpn::GetBraveVpnWireguardServiceClsid(),
-                              nullptr, CLSCTX_LOCAL_SERVER,
-                              brave_vpn::GetBraveVpnWireguardServiceIid(),
-                              IID_PPV_ARGS_Helper(&service)))) {
-    VLOG(1) << "Unable to create IBraveVpnWireguardManager instance";
-    return std::nullopt;
-  }
-
-  if (FAILED(CoSetProxyBlanket(
-          service.Get(), RPC_C_AUTHN_DEFAULT, RPC_C_AUTHZ_DEFAULT,
-          COLE_DEFAULT_PRINCIPAL, RPC_C_AUTHN_LEVEL_PKT_PRIVACY,
-          RPC_C_IMP_LEVEL_IMPERSONATE, nullptr, EOAC_DYNAMIC_CLOAKING))) {
-    VLOG(1) << "Unable to call CoSetProxyBlanket";
-    return std::nullopt;
-  }
-
-  DWORD last_error = ERROR_SUCCESS;
-  HRESULT res;
-  base::win::ScopedBstr public_key_data;
-  base::win::ScopedBstr private_key_data;
-  res = service->GenerateKeypair(public_key_data.Receive(),
-                                 private_key_data.Receive(), &last_error);
-
-  if (!SUCCEEDED(res)) {
-    VLOG(1) << "Failure calling GenerateKeyPair. Result: "
-            << logging::SystemErrorCodeToString(res)
-            << " GetLastError: " << last_error;
-    return std::nullopt;
-  }
-
-  std::string public_key = reinterpret_cast<std::string::value_type*>(
-      public_key_data.Get(), public_key_data.ByteLength());
-  std::string private_key = reinterpret_cast<std::string::value_type*>(
-      private_key_data.Get(), private_key_data.ByteLength());
-  return std::make_tuple(public_key, private_key);
-}
-
-void WireguardGenerateKeypair(
-    wireguard::WireguardGenerateKeypairCallback callback) {
-  base::ThreadPool::CreateCOMSTATaskRunner(
-      {base::MayBlock(), base::WithBaseSyncPrimitives(),
-       base::TaskPriority::BEST_EFFORT,
-       base::TaskShutdownBehavior::CONTINUE_ON_SHUTDOWN},
-      base::SingleThreadTaskRunnerThreadMode::DEDICATED)
-      ->PostTaskAndReplyWithResult(
-          FROM_HERE, base::BindOnce(&WireguardGenerateKeypairImpl),
-          std::move(callback));
-}
-
 void ShowBraveVpnStatusTrayIcon() {
   auto executable_path = brave_vpn::GetBraveVPNWireguardServiceExecutablePath(
       base::PathService::CheckedGet(base::DIR_ASSETS));
