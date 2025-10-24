@@ -294,7 +294,8 @@ class EphemeralStorageQaBrowserTest : public InProcessBrowserTest {
   }
 
   // Tests storage stored and then loaded within a single page session.
-  void TestInitialCase(content::WebContents* contents, base::span<const ResultSet, 4u> expected) {
+  void TestInitialCase(content::WebContents* contents,
+                       base::span<const ResultSet, 4u> expected) {
     ASSERT_TRUE(contents);
 
     CheckStorageResults(contents, expected);
@@ -302,7 +303,8 @@ class EphemeralStorageQaBrowserTest : public InProcessBrowserTest {
 
   // Tests storage stored from one page and then loaded from a remote page in
   // the same browsing session.
-  void TestRemotePageSameSession(content::WebContents* contents, base::span<const ResultSet, 4u> expected) {
+  void TestRemotePageSameSession(content::WebContents* contents,
+                                 base::span<const ResultSet, 4u> expected) {
     ASSERT_TRUE(contents);
     ASSERT_EQ(1, tabs_->count());
 
@@ -319,7 +321,8 @@ class EphemeralStorageQaBrowserTest : public InProcessBrowserTest {
 
   // Tests storage stored from one page and then loaded from a remote page in a
   // new browsing session.
-  void TestRemotePageNewSession(content::WebContents* contents, base::span<const ResultSet, 4u> expected) {
+  void TestRemotePageNewSession(content::WebContents* contents,
+                                base::span<const ResultSet, 4u> expected) {
     ASSERT_TRUE(contents);
     ASSERT_EQ(1, tabs_->count());
 
@@ -343,7 +346,8 @@ class EphemeralStorageQaBrowserTest : public InProcessBrowserTest {
 
   // Tests storage stored from one page and then loaded from the same page in a
   // new tab from the same browsing session.
-  void TestThisPageSameSession(content::WebContents* contents, base::span<const ResultSet, 4u> expected) {
+  void TestThisPageSameSession(content::WebContents* contents,
+                               base::span<const ResultSet, 4u> expected) {
     ASSERT_TRUE(contents);
     ASSERT_EQ(1, tabs_->count());
 
@@ -360,7 +364,8 @@ class EphemeralStorageQaBrowserTest : public InProcessBrowserTest {
 
   // Tests storage stored from one page and then loaded from the same page in a
   // new tab from a different browsing session.
-  void TestThisPageDifferentSession(content::WebContents* contents, base::span<const ResultSet, 4u> expected) {
+  void TestThisPageDifferentSession(content::WebContents* contents,
+                                    base::span<const ResultSet, 4u> expected) {
     ASSERT_TRUE(contents);
     ASSERT_EQ(1, tabs_->count());
 
@@ -384,7 +389,8 @@ class EphemeralStorageQaBrowserTest : public InProcessBrowserTest {
 
   // Tests storage stored from one page and then loaded from the same page
   // after having reset the browsing session.
-  void TestNewPageResetSession(content::WebContents* contents, base::span<const ResultSet, 4u> expected) {
+  void TestNewPageResetSession(content::WebContents* contents,
+                               base::span<const ResultSet, 4u> expected) {
     ASSERT_TRUE(contents);
     ASSERT_EQ(1, tabs_->count());
 
