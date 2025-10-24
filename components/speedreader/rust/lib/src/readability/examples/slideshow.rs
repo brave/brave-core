@@ -1,3 +1,8 @@
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
 extern crate readability;
 extern crate reqwest;
 extern crate url;
@@ -102,25 +107,17 @@ fn extract_wrap(name: &str, files: &mut Vec<String>, css: &[u8]) {
 
     files.push(format!(
         "\"{}\"",
-        fs::canonicalize(source_s.to_string())
-            .unwrap()
-            .into_os_string()
-            .into_string()
-            .unwrap()
+        fs::canonicalize(source_s.to_string()).unwrap().into_os_string().into_string().unwrap()
     ));
     files.push(format!(
         "\"{}\"",
-        fs::canonicalize(dest_s.to_string())
-            .unwrap()
-            .into_os_string()
-            .into_string()
-            .unwrap()
+        fs::canonicalize(dest_s.to_string()).unwrap().into_os_string().into_string().unwrap()
     ));
 }
 
 fn main() {
-    // Runs the extractor on article files and puts them side-by-side in the browser, so the user
-    // can manually check for any regressions.
+    // Runs the extractor on article files and puts them side-by-side in the
+    // browser, so the user can manually check for any regressions.
     let client = reqwest::blocking::Client::new();
     let sheet = format!(
         "<style id=\"brave_speedreader_style\">{}</style>",
@@ -162,10 +159,7 @@ fn main() {
     let mut slideshow = fs::File::create("out/slideshow.html").unwrap();
     slideshow.write_all(cheap_template.as_bytes()).unwrap();
 
-    let slideshow_path = fs::canonicalize("out/slideshow.html")
-        .unwrap()
-        .into_os_string()
-        .into_string()
-        .unwrap();
+    let slideshow_path =
+        fs::canonicalize("out/slideshow.html").unwrap().into_os_string().into_string().unwrap();
     Command::new("brave").arg(slideshow_path).spawn().unwrap();
 }

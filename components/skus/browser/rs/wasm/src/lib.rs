@@ -1,3 +1,8 @@
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
 #![allow(unused_variables)]
 
 use std::cell::{RefCell, RefMut};
@@ -78,10 +83,7 @@ pub fn initialize(
             .with_writer(MakeConsoleWriter);
         let perf_layer = performance_layer().with_details_from_fields(Pretty::default());
 
-        tracing_subscriber::registry()
-            .with(fmt_layer)
-            .with(perf_layer)
-            .init();
+        tracing_subscriber::registry().with(fmt_layer).with(perf_layer).init();
 
         if let Some(remote_sdk) = remote_sdk {
             if remote_sdk {

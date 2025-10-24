@@ -9,10 +9,7 @@ use crate::ffi;
 
 impl ffi::SkusResult {
     pub fn new(code: ffi::SkusResultCode, msg: &str) -> Self {
-        ffi::SkusResult {
-            code,
-            msg: msg.to_string(),
-        }
+        ffi::SkusResult { code, msg: msg.to_string() }
     }
 }
 
@@ -34,10 +31,7 @@ impl From<skus::errors::InternalError> for ffi::SkusResult {
 
 impl From<&skus::errors::InternalError> for ffi::SkusResult {
     fn from(e: &skus::errors::InternalError) -> Self {
-        ffi::SkusResult {
-            code: ffi::SkusResultCode::from(e),
-            msg: e.to_string(),
-        }
+        ffi::SkusResult { code: ffi::SkusResultCode::from(e), msg: e.to_string() }
     }
 }
 
@@ -60,7 +54,9 @@ impl From<&skus::errors::InternalError> for ffi::SkusResultCode {
             skus::errors::InternalError::StorageWriteFailed(_) => {
                 ffi::SkusResultCode::StorageWriteFailed
             }
-            skus::errors::InternalError::StorageReadFailed(_) => ffi::SkusResultCode::StorageReadFailed,
+            skus::errors::InternalError::StorageReadFailed(_) => {
+                ffi::SkusResultCode::StorageReadFailed
+            }
             skus::errors::InternalError::OrderUnpaid => ffi::SkusResultCode::OrderUnpaid,
             skus::errors::InternalError::UnhandledVariant => ffi::SkusResultCode::UnhandledVariant,
             skus::errors::InternalError::OrderLocationMismatch => {

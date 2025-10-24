@@ -73,7 +73,11 @@ impl<T> CacheNode<T> {
         I: IntoIterator<Item = &'a str>,
     {
         if let Some(node) = key.into_iter().try_fold(self, |node, path| {
-            if node.data.is_none() { node.children.get_mut(path) } else { Some(node) }
+            if node.data.is_none() {
+                node.children.get_mut(path)
+            } else {
+                Some(node)
+            }
         }) {
             if node.data.is_some() {
                 node.data = None;
