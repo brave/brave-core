@@ -7,18 +7,22 @@
 
 #include "base/check_op.h"
 #include "base/dcheck_is_on.h"
+#include "base/notreached.h"
 #include "base/strings/strcat.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/win/windows_version.h"
+#include "chrome/install_static/install_util.h"
 #include "chrome/installer/setup/brand_behaviors.h"
+#include "chrome/installer/util/google_update_settings.h"
+#include "chrome/installer/util/install_util.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
-
-#define DoPostUninstallOperations DoPostUninstallOperations_UNUSED
-#include <chrome/installer/setup/google_chrome_behaviors.cc>
-#undef DoPostUninstallOperations
 
 namespace installer {
 
 namespace {
+
+bool NavigateToUrlWithHttps(const std::wstring& url);
+void NavigateToUrlWithIExplore(const std::wstring& url);
 
 // This code is copied from `DoPostUninstallOperations` implementation in
 // `chrome/installer/setup/google_chrome_behaviors.cc` with the following
@@ -31,6 +35,20 @@ constexpr std::wstring_view kBraveUninstallSurveyUrl(
     L"https://brave.com/uninstall-survey/?p=brave_uninstall_survey");
 
 }  // namespace
+
+// If |archive_type| is INCREMENTAL_ARCHIVE_TYPE and |install_status| does not
+// indicate a successful update, "-full" is appended to Chrome's "ap" value in
+// its ClientState key if it is not present, resulting in the full installer
+// being returned from the next update check. If |archive_type| is
+// FULL_ARCHIVE_TYPE or |install_status| indicates a successful update, "-full"
+// is removed from the "ap" value. "-stage:*" values are
+// unconditionally removed from the "ap" value.
+void UpdateInstallStatus(installer::ArchiveType archive_type,
+                         installer::InstallStatus install_status) {
+  GoogleUpdateSettings::UpdateInstallStatus(
+      install_static::IsSystemInstall(), archive_type,
+      InstallUtil::GetInstallReturnCode(install_status));
+}
 
 void DoPostUninstallOperations(const base::Version& version,
                                const base::FilePath& local_data_path,
@@ -64,4 +82,15 @@ void DoPostUninstallOperations(const base::Version& version,
   }
 }
 
+class GoogleUpdateSettings_UNUSED {
+ public:
+  static void UpdateInstallStatus() { NOTREACHED(); }
+};
+
 }  // namespace installer
+
+#define GoogleUpdateSettings GoogleUpdateSettings_UNUSED
+#define DoPostUninstallOperations DoPostUninstallOperations_UNUSED
+#include <chrome/installer/setup/google_chrome_behaviors.cc>
+#undef DoPostUninstallOperations
+#undef GoogleUpdateSettings
