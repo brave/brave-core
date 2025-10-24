@@ -54,26 +54,21 @@ void EmailAliasesController::ShowBubble(content::RenderFrameHost* render_frame,
 
   CloseBubble();
 
-  // TODO(https://github.com/brave/brave-browser/issues/50076): Add WebUI
-  // bubble. For now just generate a new alias.
 
-  field_renderer_id_ = field_renderer_id;
-  field_render_frame_host_id_ = render_frame->GetGlobalId();
+  const auto url_with_field =
+      base::StrCat({kEmailAliasesPanelURL,
+                    "?field=", base::NumberToString(field_renderer_id)});
 
-  auto on_alias_created = base::BindOnce(
-      [](base::WeakPtr<EmailAliasesController> self,
-         base::expected<std::string, std::string> result) {
-        if (!self) {
-          return;
-        }
-        if (result.has_value()) {
-          self->OnAliasCreationComplete(result.value());
-        } else {
-          LOG(ERROR) << result.error();
-        }
-      },
-      weak_factory_.GetWeakPtr());
+  auto* anchor_view = browser_view_->GetLocationBarView();
 
+  bubble_ = WebUIBubbleManager::Create<EmailAliasesPanelUI>(
+      anchor_view, browser_view_->browser(), GURL(url_with_field),
+      IDS_SETTINGS_EMAIL_ALIASES_LABEL);
+
+  bubble_->ShowBubble(std::nullopt, views::BubbleBorder::TOP_CENTER);
+  if (bubble_->GetBubbleWidget()) {
+    bubble_->GetBubbleWidget()->SetVisible(true);
+  }
   email_aliases_service_->GenerateAlias(std::move(on_alias_created));
 }
 
