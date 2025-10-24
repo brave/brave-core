@@ -557,4 +557,8 @@
       Show apps
     </message>
   </if>
+  <!-- Email aliases context menu -->
+  <message name="IDS_IDC_NEW_EMAIL_ALIAS" desc="Message for context menu that enables the Email Alias generator UI for the page">
+    New Email Alias
+  </message>
 </grit-part>

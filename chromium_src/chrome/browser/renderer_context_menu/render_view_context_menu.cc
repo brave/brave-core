@@ -776,7 +776,8 @@ void BraveRenderViewContextMenu::AppendDeveloperItems() {
     if (auto* email_aliases = browser->GetFeatures().email_aliases_controller();
         email_aliases && email_aliases->IsAvailableFor(params_)) {
       menu_model_.AddSeparator(ui::NORMAL_SEPARATOR);
-      menu_model_.AddItemWithStringId(IDC_NEW_EMAIL_ALIAS, IDS_NEW_EMAIL_ALIAS);
+      menu_model_.AddItemWithStringId(IDC_NEW_EMAIL_ALIAS,
+                                      IDS_IDC_NEW_EMAIL_ALIAS);
     }
   }
 }
