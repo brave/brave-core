@@ -14,8 +14,6 @@
 #include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
 #include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
-#include "brave/components/brave_shields/core/common/shields_settings.mojom-data-view.h"
-#include "brave/components/brave_shields/core/common/shields_settings.mojom.h"
 #include "brave/components/constants/pref_names.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
@@ -30,8 +28,6 @@
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "components/content_settings/core/common/pref_names.h"
-#include "components/content_settings/core/test/content_settings_mock_provider.h"
-#include "components/content_settings/core/test/content_settings_test_utils.h"
 #include "components/prefs/pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/test/browser_task_environment.h"
@@ -1031,52 +1027,4 @@ TEST_F(BraveShieldsUtilTest, GetDomainBlockingType_ControlTypes) {
 TEST_F(BraveShieldsUtilTest, GetDomainBlockingType) {
   ExpectDomainBlockingType(GURL("https://brave.com"),
                            DomainBlockingType::k1PES);
-}
-
-TEST_F(BraveShieldsUtilTest, GetContentSettingsOverriddenData) {
-  auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
-  const GURL url = GURL("https://brave.com");
-  brave_shields::SetNoScriptControlType(map, ControlType::BLOCK, url);
-
-  // No override
-  auto content_settings_overridden_data =
-      brave_shields::GetContentSettingsOverriddenData(
-          map, url, GURL(), ContentSettingsType::JAVASCRIPT);
-  EXPECT_EQ(brave_shields::mojom::ContentSettingsOverriddenStatus::kNotSet,
-            content_settings_overridden_data->status);
-  EXPECT_EQ(brave_shields::mojom::ContentSettingsOverrideSource::kUser,
-            content_settings_overridden_data->override_source);
-
-  auto extension_provider = std::make_unique<content_settings::MockProvider>();
-  extension_provider->SetWebsiteSetting(
-      ContentSettingsPattern::FromURL(url), ContentSettingsPattern::Wildcard(),
-      ContentSettingsType::JAVASCRIPT, base::Value(CONTENT_SETTING_ALLOW),
-      /*constraints=*/{},
-      content_settings::PartitionKey::GetDefaultForTesting());
-  // Overridde to ALLOW via extension
-  content_settings::TestUtils::OverrideProvider(
-      map, std::move(extension_provider),
-      content_settings::ProviderType::kCustomExtensionProvider);
-
-  content_settings_overridden_data =
-      brave_shields::GetContentSettingsOverriddenData(
-          map, url, GURL(), ContentSettingsType::JAVASCRIPT);
-  EXPECT_EQ(brave_shields::mojom::ContentSettingsOverriddenStatus::kAllowed,
-            content_settings_overridden_data->status);
-  EXPECT_EQ(brave_shields::mojom::ContentSettingsOverrideSource::kExtension,
-            content_settings_overridden_data->override_source);
-}
-
-TEST_F(BraveShieldsUtilTest, DefaultContentSettingsOverriddenData) {
-  auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
-  const GURL url = GURL("https://brave.com");
-
-  auto content_settings_overridden_data =
-      brave_shields::GetContentSettingsOverriddenData(
-          map, url, GURL(), ContentSettingsType::JAVASCRIPT);
-  EXPECT_TRUE(content_settings_overridden_data);
-  EXPECT_EQ(brave_shields::mojom::ContentSettingsOverriddenStatus::kNotSet,
-            content_settings_overridden_data->status);
-  EXPECT_EQ(brave_shields::mojom::ContentSettingsOverrideSource::kUser,
-            content_settings_overridden_data->override_source);
 }

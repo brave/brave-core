@@ -147,7 +147,7 @@ bool BraveContentSettingsAgentImpl::IsReduceLanguageEnabled() {
 }
 
 brave_shields::mojom::ContentSettingsOverriddenStatus
-BraveContentSettingsAgentImpl::GetScriptBlockedByExtensionStatus() const {
+BraveContentSettingsAgentImpl::GetScriptBlockedOverriddenStatus() const {
   if (!shields_settings_ ||
       !shields_settings_->scripts_blocked_override_status) {
     return brave_shields::mojom::ContentSettingsOverriddenStatus::kNotSet;
@@ -193,7 +193,7 @@ bool BraveContentSettingsAgentImpl::AllowScript(bool enabled_per_settings) {
     }
   }
 
-  const auto script_blocked_status = GetScriptBlockedByExtensionStatus();
+  const auto script_blocked_status = GetScriptBlockedOverriddenStatus();
 
   return script_blocked_status ==
                  brave_shields::mojom::ContentSettingsOverriddenStatus::kBlocked
@@ -243,7 +243,7 @@ bool BraveContentSettingsAgentImpl::AllowScriptFromSource(
     }
   }
 
-  const auto script_blocked_status = GetScriptBlockedByExtensionStatus();
+  const auto script_blocked_status = GetScriptBlockedOverriddenStatus();
   return script_blocked_status ==
                  brave_shields::mojom::ContentSettingsOverriddenStatus::kBlocked
              ? false

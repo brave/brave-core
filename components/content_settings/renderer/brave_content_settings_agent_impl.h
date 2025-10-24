@@ -84,7 +84,7 @@ class BraveContentSettingsAgentImpl
   bool IsScriptTemporarilyAllowed(const GURL& script_url);
 
   brave_shields::mojom::ContentSettingsOverriddenStatus
-  GetScriptBlockedByExtensionStatus() const;
+  GetScriptBlockedOverriddenStatus() const;
 
   // brave_shields::mojom::BraveShields.
   void SetShieldsSettings(

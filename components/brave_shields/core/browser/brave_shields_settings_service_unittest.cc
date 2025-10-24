@@ -11,6 +11,8 @@
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "components/content_settings/core/test/content_settings_mock_provider.h"
+#include "components/content_settings/core/test/content_settings_test_utils.h"
 #include "components/prefs/pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -383,4 +385,48 @@ TEST_F(BraveShieldsSettingsServiceTest, DefaultAutoShredMode) {
                 kTestUrl, GURL(),
                 brave_shields::AutoShredSetting::kContentSettingsType),
             AutoShredDictFrom(AutoShredMode::NEVER));
+}
+
+TEST_F(BraveShieldsSettingsServiceTest, GetJsContentSettingsOverriddenData) {
+  const GURL url = GURL("https://brave.com");
+  brave_shields::SetNoScriptControlType(GetHostContentSettingsMap(),
+                                        brave_shields::ControlType::BLOCK, url);
+
+  // No override
+  auto content_settings_overridden_data =
+      brave_shields_settings()->GetJsContentSettingsOverriddenData(url);
+  EXPECT_EQ(brave_shields::mojom::ContentSettingsOverriddenStatus::kNotSet,
+            content_settings_overridden_data->status);
+  EXPECT_EQ(brave_shields::mojom::ContentSettingsOverrideSource::kUser,
+            content_settings_overridden_data->override_source);
+
+  auto extension_provider = std::make_unique<content_settings::MockProvider>();
+  extension_provider->SetWebsiteSetting(
+      ContentSettingsPattern::FromURL(url), ContentSettingsPattern::Wildcard(),
+      ContentSettingsType::JAVASCRIPT, base::Value(CONTENT_SETTING_ALLOW),
+      /*constraints=*/{},
+      content_settings::PartitionKey::GetDefaultForTesting());
+  // Overridde to ALLOW via extension
+  content_settings::TestUtils::OverrideProvider(
+      GetHostContentSettingsMap(), std::move(extension_provider),
+      content_settings::ProviderType::kCustomExtensionProvider);
+
+  content_settings_overridden_data =
+      brave_shields_settings()->GetJsContentSettingsOverriddenData(url);
+  EXPECT_EQ(brave_shields::mojom::ContentSettingsOverriddenStatus::kAllowed,
+            content_settings_overridden_data->status);
+  EXPECT_EQ(brave_shields::mojom::ContentSettingsOverrideSource::kExtension,
+            content_settings_overridden_data->override_source);
+}
+
+TEST_F(BraveShieldsSettingsServiceTest, DefaultContentSettingsOverriddenData) {
+  const GURL url = GURL("https://brave.com");
+
+  auto content_settings_overridden_data =
+      brave_shields_settings()->GetJsContentSettingsOverriddenData(url);
+  EXPECT_TRUE(content_settings_overridden_data);
+  EXPECT_EQ(brave_shields::mojom::ContentSettingsOverriddenStatus::kNotSet,
+            content_settings_overridden_data->status);
+  EXPECT_EQ(brave_shields::mojom::ContentSettingsOverrideSource::kUser,
+            content_settings_overridden_data->override_source);
 }

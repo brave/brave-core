@@ -142,12 +142,6 @@ base::Token GetFarblingToken(HostContentSettingsMap* map, const GURL& url);
 
 bool IsDeveloperModeEnabled(PrefService* profile_state);
 
-mojom::ContentSettingsOverriddenDataPtr GetContentSettingsOverriddenData(
-    HostContentSettingsMap* map,
-    const GURL& primary_url,
-    const GURL& secondary_url,
-    ContentSettingsType content_type);
-
 }  // namespace brave_shields
 
 #endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_BROWSER_BRAVE_SHIELDS_UTILS_H_

@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/shields_settings.mojom-shared.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -11,6 +13,19 @@
 #include <chrome/browser/content_settings/content_settings_manager_delegate.cc>
 
 namespace {
+
+brave_shields::mojom::ContentSettingsOverriddenDataPtr
+GetJsContentSettingsOverriddenData(content::BrowserContext* browser_context,
+                                   const GURL& url) {
+  Profile* profile = Profile::FromBrowserContext(browser_context);
+  auto* settings_service =
+      BraveShieldsSettingsServiceFactory::GetForProfile(profile);
+  if (!settings_service) {
+    return nullptr;
+  }
+
+  return settings_service->GetJsContentSettingsOverriddenData(url);
+}
 
 brave_shields::mojom::ShieldsSettingsPtr GetBraveShieldsSettingsOnUI(
     const content::GlobalRenderFrameHostToken& frame_token) {
@@ -38,11 +53,7 @@ brave_shields::mojom::ShieldsSettingsPtr GetBraveShieldsSettingsOnUI(
                 top_frame_url)
           : base::Token();
   auto scripts_blocked_override_data =
-      brave_shields::GetContentSettingsOverriddenData(
-          HostContentSettingsMapFactory::GetForProfile(browser_context),
-          top_frame_url, GURL(),
-          content_settings::mojom::ContentSettingsType::JAVASCRIPT);
-
+      GetJsContentSettingsOverriddenData(browser_context, top_frame_url);
   PrefService* pref_service = user_prefs::UserPrefs::Get(browser_context);
 
   return brave_shields::mojom::ShieldsSettings::New(

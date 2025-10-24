@@ -13,7 +13,9 @@
 #include "base/check.h"
 #include "base/feature_list.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
@@ -48,6 +50,19 @@ namespace brave_shields {
 namespace {
 
 BraveShieldsWebContentsObserver* g_receiver_impl_for_testing = nullptr;
+
+brave_shields::mojom::ContentSettingsOverriddenDataPtr
+GetJsContentSettingsOverriddenData(content::BrowserContext* browser_context,
+                                   const GURL& url) {
+  Profile* profile = Profile::FromBrowserContext(browser_context);
+  auto* settings_service =
+      BraveShieldsSettingsServiceFactory::GetForProfile(profile);
+  if (!settings_service) {
+    return nullptr;
+  }
+
+  return settings_service->GetJsContentSettingsOverriddenData(url);
+}
 
 }  // namespace
 
@@ -306,10 +321,7 @@ void BraveShieldsWebContentsObserver::SendShieldsSettings(
                                             primary_url)
           : base::Token();
   auto scripts_blocked_override_data =
-      brave_shields::GetContentSettingsOverriddenData(
-          host_content_settings_map, primary_url, GURL(),
-          content_settings::mojom::ContentSettingsType::JAVASCRIPT);
-
+      GetJsContentSettingsOverriddenData(rfh->GetBrowserContext(), primary_url);
   PrefService* pref_service =
       user_prefs::UserPrefs::Get(rfh->GetBrowserContext());
 

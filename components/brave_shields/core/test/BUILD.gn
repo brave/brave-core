@@ -29,7 +29,6 @@ source_set("unit_tests") {
     deps += [
       "//chrome/browser",
       "//chrome/browser/content_settings:content_settings_factory",
-      "//components/content_settings/core/test:test_support",
     ]
   }
 }
