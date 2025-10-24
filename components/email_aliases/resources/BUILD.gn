@@ -31,3 +31,20 @@ transpile_web_ui("email_aliases_ui") {
     "//brave/components/resources:strings",
   ]
 }
+
+transpile_web_ui("email_aliases_panel_ui") {
+  entry_points = [ [
+        "email_aliases_panel",
+        rebase_path("email_aliases_panel.tsx"),
+      ] ]
+
+  resource_name = "email_aliases_panel"
+
+  deps = [ "//brave/components/email_aliases:mojom_js" ]
+}
+
+pack_web_resources("email_aliases_panel_generated_resources") {
+  resource_name = "email_aliases_panel"
+  output_dir = "$root_gen_dir/brave/components/email_aliases/resources"
+  deps = [ ":email_aliases_panel_ui" ]
+}
