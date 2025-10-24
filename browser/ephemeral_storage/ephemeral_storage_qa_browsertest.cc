@@ -29,6 +29,7 @@
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/pref_names.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
@@ -159,7 +160,6 @@ class EphemeralStorageQaBrowserTest : public InProcessBrowserTest {
 
   void TearDownOnMainThread() override {
     InProcessBrowserTest::TearDownOnMainThread();
-    original_tab_ = nullptr;
     tabs_ = nullptr;
   }
 
@@ -294,33 +294,33 @@ class EphemeralStorageQaBrowserTest : public InProcessBrowserTest {
   }
 
   // Tests storage stored and then loaded within a single page session.
-  void TestInitialCase(base::span<const ResultSet, 4u> expected) {
-    ASSERT_TRUE(original_tab_);
+  void TestInitialCase(content::WebContents* contents, base::span<const ResultSet, 4u> expected) {
+    ASSERT_TRUE(contents);
 
-    CheckStorageResults(original_tab_, expected);
+    CheckStorageResults(contents, expected);
   }
 
   // Tests storage stored from one page and then loaded from a remote page in
   // the same browsing session.
-  void TestRemotePageSameSession(base::span<const ResultSet, 4u> expected) {
-    ASSERT_TRUE(original_tab_);
+  void TestRemotePageSameSession(content::WebContents* contents, base::span<const ResultSet, 4u> expected) {
+    ASSERT_TRUE(contents);
     ASSERT_EQ(1, tabs_->count());
 
-    NavigateOtherOrigin(original_tab_);
+    NavigateOtherOrigin(contents);
     ASSERT_EQ(2, tabs_->count());
     ASSERT_EQ(1, tabs_->active_index());
 
-    content::WebContents* contents = tabs_->GetActiveWebContents();
+    content::WebContents* new_contents = tabs_->GetActiveWebContents();
 
-    ClickReadValues(contents);
+    ClickReadValues(new_contents);
 
-    CheckStorageResults(contents, expected);
+    CheckStorageResults(new_contents, expected);
   }
 
   // Tests storage stored from one page and then loaded from a remote page in a
   // new browsing session.
-  void TestRemotePageNewSession(base::span<const ResultSet, 4u> expected) {
-    ASSERT_TRUE(original_tab_);
+  void TestRemotePageNewSession(content::WebContents* contents, base::span<const ResultSet, 4u> expected) {
+    ASSERT_TRUE(contents);
     ASSERT_EQ(1, tabs_->count());
 
     chrome::NewTab(browser());
@@ -329,39 +329,39 @@ class EphemeralStorageQaBrowserTest : public InProcessBrowserTest {
 
     std::string target =
         content::EvalJs(
-            original_tab_.get(),
+            contents.get(),
             "document.getElementById('continue-test-url-step-3').value")
             .ExtractString();
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL(target)));
 
-    content::WebContents* contents = tabs_->GetActiveWebContents();
+    content::WebContents* new_contents = tabs_->GetActiveWebContents();
 
-    ClickReadValues(contents);
+    ClickReadValues(new_contents);
 
-    CheckStorageResults(contents, expected);
+    CheckStorageResults(new_contents, expected);
   }
 
   // Tests storage stored from one page and then loaded from the same page in a
   // new tab from the same browsing session.
-  void TestThisPageSameSession(base::span<const ResultSet, 4u> expected) {
-    ASSERT_TRUE(original_tab_);
+  void TestThisPageSameSession(content::WebContents* contents, base::span<const ResultSet, 4u> expected) {
+    ASSERT_TRUE(contents);
     ASSERT_EQ(1, tabs_->count());
 
-    NavigateSameOrigin(original_tab_);
+    NavigateSameOrigin(contents);
     ASSERT_EQ(2, tabs_->count());
     ASSERT_EQ(1, tabs_->active_index());
 
-    content::WebContents* contents = tabs_->GetActiveWebContents();
+    content::WebContents* new_contents = tabs_->GetActiveWebContents();
 
-    ClickReadValues(contents);
+    ClickReadValues(new_contents);
 
-    CheckStorageResults(contents, expected);
+    CheckStorageResults(new_contents, expected);
   }
 
   // Tests storage stored from one page and then loaded from the same page in a
   // new tab from a different browsing session.
-  void TestThisPageDifferentSession(base::span<const ResultSet, 4u> expected) {
-    ASSERT_TRUE(original_tab_);
+  void TestThisPageDifferentSession(content::WebContents* contents, base::span<const ResultSet, 4u> expected) {
+    ASSERT_TRUE(contents);
     ASSERT_EQ(1, tabs_->count());
 
     chrome::NewTab(browser());
@@ -370,22 +370,22 @@ class EphemeralStorageQaBrowserTest : public InProcessBrowserTest {
 
     std::string target =
         content::EvalJs(
-            original_tab_.get(),
+            contents.get(),
             "document.getElementById('continue-test-url-step-5').value")
             .ExtractString();
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL(target)));
 
-    content::WebContents* contents = tabs_->GetActiveWebContents();
+    content::WebContents* new_contents = tabs_->GetActiveWebContents();
 
-    ClickReadValues(contents);
+    ClickReadValues(new_contents);
 
-    CheckStorageResults(contents, expected);
+    CheckStorageResults(new_contents, expected);
   }
 
   // Tests storage stored from one page and then loaded from the same page
   // after having reset the browsing session.
-  void TestNewPageResetSession(base::span<const ResultSet, 4u> expected) {
-    ASSERT_TRUE(original_tab_);
+  void TestNewPageResetSession(content::WebContents* contents, base::span<const ResultSet, 4u> expected) {
+    ASSERT_TRUE(contents);
     ASSERT_EQ(1, tabs_->count());
 
     chrome::NewTab(browser());
@@ -394,12 +394,12 @@ class EphemeralStorageQaBrowserTest : public InProcessBrowserTest {
 
     std::string target =
         content::EvalJs(
-            original_tab_.get(),
+            contents.get(),
             "document.getElementById('continue-test-url-step-6').value")
             .ExtractString();
 
     const int previous_tab_count = browser()->tab_strip_model()->count();
-    tabs_->CloseWebContentsAt(tabs_->GetIndexOfWebContents(original_tab_),
+    tabs_->CloseWebContentsAt(tabs_->GetIndexOfWebContents(contents),
                               TabCloseTypes::CLOSE_NONE);
     ASSERT_EQ(previous_tab_count - 1, browser()->tab_strip_model()->count());
 
@@ -409,22 +409,24 @@ class EphemeralStorageQaBrowserTest : public InProcessBrowserTest {
 
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL(target)));
 
-    content::WebContents* contents = tabs_->GetActiveWebContents();
+    content::WebContents* new_contents = tabs_->GetActiveWebContents();
 
-    ClickReadValues(contents);
+    ClickReadValues(new_contents);
 
-    CheckStorageResults(contents, expected);
+    CheckStorageResults(new_contents, expected);
   }
 
-  void SetupTestPage() {
+  content::WebContents* SetupTestPage() {
     tabs_ = browser()->tab_strip_model();
 
     GURL tab_url = embedded_test_server()->GetURL("dev-pages.brave.software",
                                                   kEphemeralStorageTestPage);
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), tab_url));
-    original_tab_ = tabs_->GetActiveWebContents();
+    auto original_tab = tabs_->GetActiveWebContents();
 
-    ClickStartTest(original_tab_);
+    ClickStartTest(original_tab);
+
+    return original_tab;
   }
 
  protected:
@@ -433,7 +435,6 @@ class EphemeralStorageQaBrowserTest : public InProcessBrowserTest {
   base::test::ScopedFeatureList feature_list_;
 
  private:
-  raw_ptr<content::WebContents> original_tab_ = nullptr;
   raw_ptr<TabStripModel> tabs_ = nullptr;
 };
 
