@@ -62,6 +62,12 @@ BASE_FEATURE(kNewAndroidOnboarding,
 // This feature is only available on Android 12 and above.
 BASE_FEATURE(kBraveAndroidDynamicColors,
              base::FEATURE_DISABLED_BY_DEFAULT);
+
+// Enable fresh NTP display after idle expiration on Android.
+// This feature allows showing a refreshed NTP when the app has been idle
+// for a specified duration.
+BASE_FEATURE(kBraveFreshNtpAfterIdleExpirement,
+             base::FEATURE_DISABLED_BY_DEFAULT);
 #endif  // BUILDFLAG(IS_ANDROID)
 
 // The variant of the "day zero" experiment. i.e. A, B, C, D, etc.
@@ -69,5 +75,13 @@ const base::FeatureParam<std::string> kBraveDayZeroExperimentVariant{
     &kBraveDayZeroExperiment,
     /*name=*/"variant",
     /*default_value=*/""};
+
+#if BUILDFLAG(IS_ANDROID)
+// The variant of the fresh NTP experiment. i.e. A, B, C, etc.
+const base::FeatureParam<std::string> kBraveFreshNtpAfterIdleExpirementVariant{
+    &kBraveFreshNtpAfterIdleExpirement,
+    /*name=*/"variant",
+    /*default_value=*/""};
+#endif  // BUILDFLAG(IS_ANDROID)
 
 }  // namespace features
