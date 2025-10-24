@@ -124,7 +124,8 @@ def get_webui_overriden_file_name(file_name):
 
 
 def get_webui_overridden_but_referenced_files(folder, in_files):
-    """Returns a list of files which are overridden by chromium_src but are still referenced."""
+    """Returns a list of files which are overridden by chromium_src but are
+    still referenced."""
     for file in in_files:
         overridden_name = get_webui_overriden_file_name(file)
         override = os.path.join(folder, overridden_name)
