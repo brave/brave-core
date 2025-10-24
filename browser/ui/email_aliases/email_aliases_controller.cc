@@ -13,6 +13,7 @@
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 #include "components/grit/brave_components_strings.h"
 #include "content/public/browser/context_menu_params.h"
+#include "content/public/browser/web_contents.h"
 #include "third_party/blink/public/mojom/forms/form_control_type.mojom-shared.h"
 #include "url/gurl.h"
 
@@ -83,9 +84,12 @@ void EmailAliasesController::OpenSettingsPage() {
 void EmailAliasesController::OnAliasCreationComplete(
     const std::optional<std::string>& email) {
   CloseBubble();
-  /*if (email.has_value() && !email->empty() && web_contents_) {
-    web_contents_->Replace(base::UTF8ToUTF16(email.value()));
-  }*/
+  if (email.has_value() && !email->empty() &&
+      browser_view_->GetActiveWebContents()) {
+    // In future: consider to use AutofillDriver::ApplyFieldAction.
+    browser_view_->GetActiveWebContents()->Replace(
+        base::UTF8ToUTF16(email.value()));
+  }
 }
 
 void EmailAliasesController::OnInvokeManageAliases() {
