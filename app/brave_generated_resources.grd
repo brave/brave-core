@@ -374,11 +374,6 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         Block elements
       </message>
 
-      <!-- Email aliases context menu -->
-      <message name="IDS_NEW_EMAIL_ALIAS" desc="Message for context menu that enables the Email Alias generator UI for the page">
-        New Email Alias
-      </message>
-
       <!-- Element Picker -->
       <message name="IDS_BRAVE_ELEMENT_PICKER_CREATE_BTN_DISABLED_LABEL" desc="Label for Element picker's create button in disabled state">
         Select element you want to block
