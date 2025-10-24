@@ -16,8 +16,6 @@
 
 namespace brave_wallet {
 
-std::optional<std::string> ParseSardineAuthToken(const base::Value& json_value);
-
 // New API v1 response parser for /api/pricing/v1/getPrices
 std::vector<mojom::AssetPricePtr> ParseAssetPrices(
     const base::Value& json_value);
