@@ -66,11 +66,13 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
  public:
   UIHandler(content::WebUI* web_ui,
             mojo::PendingReceiver<ai_chat::mojom::UntrustedUIHandler> receiver)
-      : web_ui_(web_ui),
+      :
 #if !BUILDFLAG(IS_ANDROID)  // Match thumnbail_tracker.h GN guard
         thumbnail_tracker_(base::BindRepeating(&UIHandler::ThumbnailUpdated,
                                                base::Unretained(this))),
 #endif
+        web_ui_(web_ui),
+
         receiver_(this, std::move(receiver)) {
     // Set up pref change observer for memory changes
     PrefService* prefs = Profile::FromWebUI(web_ui_)->GetPrefs();
@@ -296,14 +298,11 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
     data_uri = webui::MakeDataURIForImage(base::span(image->data), "jpeg");
     untrusted_ui_->ThumbnailUpdated(tab_id, data_uri);
   }
-#endif
+
+  ThumbnailTracker thumbnail_tracker_;
+#endif  // !BUILDFLAG(IS_ANDROID)
 
   raw_ptr<content::WebUI> web_ui_ = nullptr;
-
-// Match //chrome/browser/ui/thumbnails guard
-#if !BUILDFLAG(IS_ANDROID)
-  ThumbnailTracker thumbnail_tracker_;
-#endif
 
   mojo::Receiver<ai_chat::mojom::UntrustedUIHandler> receiver_;
   mojo::Remote<ai_chat::mojom::UntrustedUI> untrusted_ui_;
