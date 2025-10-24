@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/omnibox/omnibox_edit_model.cc b/chrome/browser/ui/omnibox/omnibox_edit_model.cc
-index ff34f1a1aa49bd8bab2350f9198e34dd1afca0bb..bc1414e2501de91c46231acbbcf3ca459a9a0406 100644
+index 1f4d2e9df60f2e17fc9d20920414a3d4217ed5ca..d8c81eb528ef7ac39ad7bc554e9cb2e159d259dc 100644
 --- a/chrome/browser/ui/omnibox/omnibox_edit_model.cc
 +++ b/chrome/browser/ui/omnibox/omnibox_edit_model.cc
-@@ -1586,6 +1586,7 @@ void OmniboxEditModel::GetInfoForCurrentText(AutocompleteMatch* match,
+@@ -1588,6 +1588,7 @@ void OmniboxEditModel::GetInfoForCurrentText(AutocompleteMatch* match,
      std::u16string text_for_match_generation =
          user_input_in_progress() ? user_text_ : url_for_editing_;
  

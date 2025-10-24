@@ -206,11 +206,10 @@ void BraveNewTabUI::BindInterface(
   auto* profile = Profile::FromWebUI(web_ui());
   CHECK(profile);
 
-  realbox_handler_ = std::make_unique<RealboxHandler>(
-      std::move(pending_page_handler), /*query_controller=*/nullptr,
-      /*composebox_metrics_recorder=*/nullptr, profile,
-      web_ui()->GetWebContents(),
-      /*metrics_reporter=*/nullptr);
+  realbox_handler_ =
+      std::make_unique<RealboxHandler>(std::move(pending_page_handler),
+                                       /*composebox_metrics_recorder=*/nullptr,
+                                       profile, web_ui()->GetWebContents());
 }
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
