@@ -77,6 +77,7 @@ class SearchPage implements PageInterface {
   setInputText(inputText: string) { }
   setThumbnail(thumbnailUrl: string) { }
   onContextualInputStatusChanged(token: string, status: FileUploadStatus, errorType: FileUploadErrorType | null) { }
+  onTabStripChanged() { }
 }
 
 export const search = new SearchPage()
