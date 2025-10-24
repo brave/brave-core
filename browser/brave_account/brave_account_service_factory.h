@@ -30,6 +30,8 @@ class BraveAccountServiceFactory : public ProfileKeyedServiceFactory {
   static BraveAccountServiceFactory* GetInstance();
   static BraveAccountService* GetFor(content::BrowserContext* context);
 
+  static TestingFactory GetDefaultFactory();
+
  private:
   friend base::NoDestructor<BraveAccountServiceFactory>;
 
@@ -38,6 +40,8 @@ class BraveAccountServiceFactory : public ProfileKeyedServiceFactory {
 
   // BrowserContextKeyedServiceFactory:
   bool ServiceIsCreatedWithBrowserContext() const override;
+
+  bool ServiceIsNULLWhileTesting() const override;
 
   std::unique_ptr<KeyedService> BuildServiceInstanceForBrowserContext(
       content::BrowserContext* context) const override;

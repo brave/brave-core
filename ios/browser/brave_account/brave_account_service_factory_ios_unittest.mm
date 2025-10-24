@@ -32,17 +32,17 @@ class BraveAccountServiceFactoryIOSTest
     : public testing::TestWithParam<ProfileKind> {
  protected:
   ProfileIOS* GetProfileForKind(ProfileKind kind) {
-    TestProfileIOS::Builder builder;
-    builder.AddTestingFactory(
-        BraveAccountServiceFactoryIOS::GetInstance(),
-        BraveAccountServiceFactoryIOS::GetDefaultFactory());
-
     switch (kind) {
-      case ProfileKind::kRegularOriginal:
+      case ProfileKind::kRegularOriginal: {
+        TestProfileIOS::Builder builder;
+        builder.AddTestingFactory(
+            BraveAccountServiceFactoryIOS::GetInstance(),
+            BraveAccountServiceFactoryIOS::GetDefaultFactory());
         return profile_manager_.AddProfileWithBuilder(std::move(builder));
+      }
       case ProfileKind::kRegularOTR:
-        return CHECK_DEREF(
-                   profile_manager_.AddProfileWithBuilder(std::move(builder)))
+        return CHECK_DEREF(profile_manager_.AddProfileWithBuilder(
+                               TestProfileIOS::Builder()))
             .GetOffTheRecordProfile();
     }
 
