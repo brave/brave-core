@@ -17,6 +17,7 @@ index 5e4001ae579383c2a06cc8fd7315742ada0f3d22..697bd73a95cc44494b9d4faa986f8390
 +  <variant name=".TipPanel"/>
 +  <variant name=".VPNPanel"/>
 +  <variant name=".WalletPanel"/>
++  <variant name=".EmailAliasesPanel"/>
  </variants>
  
  <!-- LINT.ThenChange(//tools/metrics/histograms/metadata/ui/histograms.xml:TopChromeWebUIName) -->
