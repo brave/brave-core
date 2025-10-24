@@ -6,12 +6,16 @@
 #include "brave/browser/ui/webui/brave_account/brave_account_ui_desktop.h"
 
 #include <memory>
+#include <string>
 
 #include "base/check.h"
+#include "base/check_deref.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_account/features.h"
+#include "brave/components/brave_account/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/common/url_constants.h"
 #include "ui/compositor/layer.h"
@@ -43,7 +47,34 @@ class BraveAccountDialogDelegate : public ui::WebDialogDelegate {
 BraveAccountUIDesktop::BraveAccountUIDesktop(content::WebUI* web_ui)
     : BraveAccountUIBase(Profile::FromWebUI(web_ui),
                          base::BindOnce(&webui::SetupWebUIDataSource)),
-      ConstrainedWebDialogUI(web_ui) {}
+      ConstrainedWebDialogUI(web_ui),
+      pref_service_(CHECK_DEREF(Profile::FromWebUI(web_ui)).GetPrefs()) {
+  CHECK(pref_service_);
+
+  pref_change_registrar_.Init(pref_service_);
+  pref_change_registrar_.Add(
+      brave_account::prefs::kVerificationToken,
+      base::BindRepeating(&BraveAccountUIDesktop::OnVerificationTokenChanged,
+                          base::Unretained(this)));
+}
+
+BraveAccountUIDesktop::~BraveAccountUIDesktop() = default;
+
+void BraveAccountUIDesktop::OnVerificationTokenChanged() {
+  if (pref_service_->GetString(brave_account::prefs::kVerificationToken)
+          .empty()) {
+    return;
+  }
+
+  auto* delegate = GetConstrainedDelegate();
+  if (!delegate) {
+    return;
+  }
+
+  DCHECK(delegate->GetWebDialogDelegate());
+  delegate->GetWebDialogDelegate()->OnDialogClosed("");
+  delegate->OnDialogCloseFromWebUI();
+}
 
 WEB_UI_CONTROLLER_TYPE_IMPL(BraveAccountUIDesktop)
 
