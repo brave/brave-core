@@ -106,28 +106,4 @@ HRESULT BraveWireguardManager::DisableVpn(DWORD* last_error) {
   return S_OK;
 }
 
-HRESULT BraveWireguardManager::GenerateKeypair(BSTR* public_key,
-                                               BSTR* private_key,
-                                               DWORD* last_error) {
-  if (!public_key || !private_key) {
-    VLOG(1) << __func__ << ": unable to generate keys";
-    return E_INVALIDARG;
-  }
-  std::string public_key_raw;
-  std::string private_key_raw;
-  if (!brave_vpn::wireguard::WireguardGenerateKeypair(&public_key_raw,
-                                                      &private_key_raw)) {
-    VLOG(1) << __func__ << ": unable to generate keys";
-    *last_error = ::GetLastError();
-    return E_INVALIDARG;
-  }
-
-  *public_key = SysAllocString(base::UTF8ToWide(public_key_raw).c_str());
-  *private_key = SysAllocString(base::UTF8ToWide(private_key_raw).c_str());
-  if (!*public_key || !*private_key) {
-    return E_OUTOFMEMORY;
-  }
-  return S_OK;
-}
-
 }  // namespace brave_vpn

@@ -17,10 +17,6 @@ interface IBraveVpnWireguardManager : IUnknown
                     [out] DWORD* last_error);
 
   HRESULT DisableVpn([out] DWORD* last_error);
-
-  HRESULT GenerateKeypair([out] BSTR* public_key,
-                          [out] BSTR* private_key,
-                          [out] DWORD* last_error);
 };
 
 [
