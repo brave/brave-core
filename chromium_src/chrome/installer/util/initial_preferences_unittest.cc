@@ -4,5 +4,5 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/chromium_src/chrome/installer/chromium_index_helper_begin.h"
-#include <chrome/installer/setup/install_unittest.cc>
+#include <chrome/installer/util/initial_preferences_unittest.cc>
 #include "brave/chromium_src/chrome/installer/chromium_index_helper_end.h"
