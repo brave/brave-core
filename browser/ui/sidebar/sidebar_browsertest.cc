@@ -255,11 +255,9 @@ class SidebarBrowserTest : public InProcessBrowserTest {
     auto item_count =
         std::size(SidebarServiceFactory::kDefaultBuiltInItemTypes) -
         1 /* for history*/;
-#if BUILDFLAG(ENABLE_PLAYLIST)
     if (!base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
       item_count -= 1;
     }
-#endif
 
     if (!ai_chat::features::IsAIChatEnabled()) {
       item_count -= 1;

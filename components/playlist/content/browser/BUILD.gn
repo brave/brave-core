@@ -4,9 +4,6 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/build/config.gni")
-import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
-
-assert(enable_playlist)
 
 # TODO(sko) This should be component() target.
 # https://github.com/brave/brave-browser/issues/27764
