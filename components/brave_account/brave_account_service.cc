@@ -13,6 +13,7 @@
 #include "base/functional/callback.h"
 #include "base/strings/strcat.h"
 #include "brave/components/brave_account/endpoint_client/client.h"
+#include "brave/components/brave_account/endpoint_client/with_headers.h"
 #include "brave/components/brave_account/pref_names.h"
 #include "components/os_crypt/sync/os_crypt.h"
 #include "components/prefs/pref_service.h"
