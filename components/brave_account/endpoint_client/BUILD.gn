@@ -7,6 +7,8 @@ source_set("endpoint_client") {
   sources = [
     "client.h",
     "concepts.h",
+    "maybe_strip_with_headers.h",
+    "with_headers.h",
   ]
 
   deps = [
@@ -23,6 +25,7 @@ source_set("unit_tests") {
   sources = [
     "client_unittest.cc",
     "concepts_unittest.cc",
+    "maybe_strip_with_headers_unittest.cc",
   ]
 
   deps = [
