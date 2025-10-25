@@ -34,6 +34,14 @@ BraveAccountServiceFactory::BraveAccountServiceFactory()
 
 BraveAccountServiceFactory::~BraveAccountServiceFactory() = default;
 
+bool BraveAccountServiceFactory::ServiceIsCreatedWithBrowserContext() const {
+  return true;
+}
+
+bool BraveAccountServiceFactory::ServiceIsNULLWhileTesting() const {
+  return true;
+}
+
 std::unique_ptr<KeyedService>
 BraveAccountServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
