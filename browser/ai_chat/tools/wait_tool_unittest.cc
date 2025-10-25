@@ -27,9 +27,7 @@ class WaitToolTest : public ContentAgentToolBaseTest {
     base::Value::Dict dict;
     dict.Set("wait_time_ms", wait_time_ms);
 
-    std::string json;
-    base::JSONWriter::Write(dict, &json);
-    return json;
+    return *base::WriteJson(dict);
   }
 
   // Verify wait action properties and conversions

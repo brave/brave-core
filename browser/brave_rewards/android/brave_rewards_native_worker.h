@@ -241,9 +241,6 @@ class BraveRewardsNativeWorker
                           const std::string& publisher_key);
 
  private:
-  std::string StdStrStrMapToJsonString(
-      const base::flat_map<std::string, std::string>& args);
-
   void OnGetUserType(const brave_rewards::mojom::UserType user_type);
 
   void OnBalance(brave_rewards::mojom::BalancePtr balance);

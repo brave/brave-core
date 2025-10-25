@@ -17,9 +17,8 @@
 namespace extensions::api {
 
 ExtensionFunction::ResponseAction BraveThemeGetBraveThemeListFunction::Run() {
-  std::string json_string;
-  base::JSONWriter::Write(dark_mode::GetBraveDarkModeTypeList(), &json_string);
-  return RespondNow(WithArguments(json_string));
+  return RespondNow(WithArguments(std::move(
+      base::WriteJson(dark_mode::GetBraveDarkModeTypeList()).value())));
 }
 
 ExtensionFunction::ResponseAction BraveThemeGetBraveThemeTypeFunction::Run() {

@@ -36,9 +36,7 @@ class TypeToolTest : public ContentAgentToolBaseTest {
     dict.Set("follow_by_enter", follow_by_enter);
     dict.Set("target", target_dict.Clone());
 
-    std::string json;
-    base::JSONWriter::Write(dict, &json);
-    return json;
+    return *base::WriteJson(dict);
   }
 
   std::string CreateInvalidTargetJson(const std::string& target_content) {
@@ -152,10 +150,7 @@ TEST_F(TypeToolTest, MissingText) {
   dict.Set("follow_by_enter", false);
   // Note: No text intentionally
 
-  std::string input_json;
-  base::JSONWriter::Write(dict, &input_json);
-
-  RunWithExpectedError(FROM_HERE, input_json);
+  RunWithExpectedError(FROM_HERE, *base::WriteJson(dict));
 }
 
 TEST_F(TypeToolTest, MissingMode) {
@@ -166,10 +161,7 @@ TEST_F(TypeToolTest, MissingMode) {
   dict.Set("follow_by_enter", false);
   // Note: No mode intentionally
 
-  std::string input_json;
-  base::JSONWriter::Write(dict, &input_json);
-
-  RunWithExpectedError(FROM_HERE, input_json);
+  RunWithExpectedError(FROM_HERE, *base::WriteJson(dict));
 }
 
 TEST_F(TypeToolTest, InvalidMode) {
@@ -180,10 +172,7 @@ TEST_F(TypeToolTest, InvalidMode) {
   dict.Set("mode", "invalid_mode");
   dict.Set("follow_by_enter", false);
 
-  std::string input_json;
-  base::JSONWriter::Write(dict, &input_json);
-
-  RunWithExpectedError(FROM_HERE, input_json);
+  RunWithExpectedError(FROM_HERE, *base::WriteJson(dict));
 }
 
 TEST_F(TypeToolTest, MissingFollowByEnter) {
@@ -194,10 +183,7 @@ TEST_F(TypeToolTest, MissingFollowByEnter) {
   dict.Set("mode", "replace");
   // Note: No follow_by_enter intentionally
 
-  std::string input_json;
-  base::JSONWriter::Write(dict, &input_json);
-
-  RunWithExpectedError(FROM_HERE, input_json);
+  RunWithExpectedError(FROM_HERE, *base::WriteJson(dict));
 }
 
 TEST_F(TypeToolTest, MissingTarget) {
