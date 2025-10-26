@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_SIDEBAR_BROWSER_SIDEBAR_ITEM_H_
 #define BRAVE_COMPONENTS_SIDEBAR_BROWSER_SIDEBAR_ITEM_H_
 
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/sidebar/common/features.h"
 #include "url/gurl.h"
 
@@ -27,9 +28,14 @@ struct SidebarItem {
     kReadingList,
     kHistory,
     kPlaylist,
+#if BUILDFLAG(ENABLE_AI_CHAT)
     kChatUI,
     // When adding new item, dont' forget to update kBuiltInItemLast.
     kBuiltInItemLast = kChatUI,
+#else
+    // When adding new item, dont' forget to update kBuiltInItemLast.
+    kBuiltInItemLast = kPlaylist,
+#endif
   };
 
   static SidebarItem Create(const std::u16string& title,
