@@ -16,16 +16,19 @@
 #include "base/strings/strcat.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/autocomplete/brave_autocomplete_scheme_classifier.h"
+#include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_shields/brave_shields_tab_helper.h"
 #include "brave/browser/cosmetic_filters/cosmetic_filters_tab_helper.h"
+#include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/browser/renderer_context_menu/brave_spelling_options_submenu_observer.h"
-#include "brave/browser/ui/ai_chat/utils.h"
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/browser_dialogs.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_rewriter/common/buildflags/buildflags.h"
+#include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "chrome/browser/autocomplete/chrome_autocomplete_provider_client.h"
@@ -33,6 +36,7 @@
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/common/channel_info.h"
+#include "components/grit/brave_components_strings.h"
 #include "components/omnibox/browser/autocomplete_classifier.h"
 #include "components/omnibox/browser/autocomplete_controller.h"
 #include "components/omnibox/browser/autocomplete_match_type.h"
@@ -50,10 +54,9 @@
 #include "chrome/browser/ui/incognito_allowed_url.h"
 #endif
 
-#include "base/feature_list.h"
+#if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
-#include "brave/browser/brave_browser_process.h"
-#include "brave/browser/misc_metrics/process_misc_metrics.h"
+#include "brave/browser/ui/ai_chat/utils.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/content/browser/associated_web_contents_content.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
@@ -64,8 +67,7 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
-#include "brave/components/brave_shields/core/common/features.h"
-#include "components/grit/brave_components_strings.h"
+#endif
 
 #if BUILDFLAG(ENABLE_AI_REWRITER)
 #include "brave/browser/ui/ai_rewriter/ai_rewriter_dialog_delegate.h"
@@ -202,6 +204,7 @@ void OnGetImageForTextCopy(base::WeakPtr<content::WebContents> web_contents,
 }
 #endif
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
 constexpr char kAIChatRewriteDataKey[] = "ai_chat_rewrite_data";
 
 struct AIChatRewriteData : public base::SupportsUserData::Data {
@@ -344,6 +347,7 @@ void OnRewriteSuggestionCompleted(
 
   web_contents->RemoveUserData(kAIChatRewriteDataKey);
 }
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 }  // namespace
 
@@ -384,6 +388,7 @@ bool BraveRenderViewContextMenu::IsCommandIdEnabled(int id) const {
 #else
       return false;
 #endif
+#if BUILDFLAG(ENABLE_AI_CHAT)
     case IDC_AI_CHAT_CONTEXT_SUMMARIZE_TEXT:
     case IDC_AI_CHAT_CONTEXT_LEO_TOOLS:
     case IDC_AI_CHAT_CONTEXT_EXPLAIN:
@@ -403,6 +408,7 @@ bool BraveRenderViewContextMenu::IsCommandIdEnabled(int id) const {
     case IDC_AI_CHAT_CONTEXT_CHANGE_LENGTH:
     case IDC_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_POST:
       return IsAIChatEnabled();
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 #if BUILDFLAG(ENABLE_AI_REWRITER)
     case IDC_AI_CHAT_CONTEXT_REWRITE:
       return ai_rewriter::features::IsAIRewriterEnabled();
@@ -454,6 +460,7 @@ void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
       CopyTextFromImage();
       break;
 #endif
+#if BUILDFLAG(ENABLE_AI_CHAT)
     case IDC_AI_CHAT_CONTEXT_SUMMARIZE_TEXT:
     case IDC_AI_CHAT_CONTEXT_EXPLAIN:
     case IDC_AI_CHAT_CONTEXT_PARAPHRASE:
@@ -470,6 +477,7 @@ void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
     case IDC_AI_CHAT_CONTEXT_EXPAND:
       ExecuteAIChatCommand(id);
       break;
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 #if BUILDFLAG(ENABLE_AI_REWRITER)
     case IDC_AI_CHAT_CONTEXT_REWRITE:
       ai_rewriter::AIRewriterDialogDelegate::Show(
@@ -496,6 +504,7 @@ void BraveRenderViewContextMenu::CopyTextFromImage() {
 }
 #endif
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
 bool BraveRenderViewContextMenu::IsAIChatEnabled() const {
   return !params_.selection_text.empty() &&
          ai_chat::IsAIChatEnabled(GetProfile()->GetPrefs()) &&
@@ -662,6 +671,7 @@ void BraveRenderViewContextMenu::BuildAIChatMenu() {
       *print_index, IDC_AI_CHAT_CONTEXT_LEO_TOOLS,
       IDS_AI_CHAT_CONTEXT_LEO_TOOLS, &ai_chat_submenu_model_);
 }
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 void BraveRenderViewContextMenu::BuildContainersMenu() {
@@ -827,7 +837,9 @@ void BraveRenderViewContextMenu::InitMenu() {
     }
   }
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
   BuildAIChatMenu();
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
   BuildContainersMenu();

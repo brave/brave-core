@@ -5,10 +5,14 @@
 
 #include "chrome/browser/ui/views/side_panel/side_panel_util.h"
 
+#include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
 #include "brave/browser/ui/views/side_panel/ai_chat/ai_chat_side_panel_web_view.h"
-#include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
+#endif
 
 #define PopulateGlobalEntries PopulateGlobalEntries_ChromiumImpl
 #include <chrome/browser/ui/views/side_panel/side_panel_util.cc>
@@ -26,6 +30,7 @@ void SidePanelUtil::PopulateGlobalEntries(Browser* browser,
     playlist_coordinator->CreateAndRegisterEntry(global_registry);
   }
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
   // AI Chat side panel as a global panel and not tab-specific is conditional
   // for now.
   // TODO(https://github.com/brave/brave-browser/issues/48526): Remove the
@@ -39,4 +44,5 @@ void SidePanelUtil::PopulateGlobalEntries(Browser* browser,
                             /*is_tab_associated=*/false),
         base::NullCallback()));
   }
+#endif
 }

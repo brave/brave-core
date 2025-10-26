@@ -11,8 +11,7 @@
 
 #include "base/check.h"
 #include "base/memory/scoped_refptr.h"
-#include "brave/components/ai_chat/core/browser/utils.h"
-#include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_search_conversion/utils.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "brave/components/omnibox/browser/brave_bookmark_provider.h"
@@ -22,7 +21,6 @@
 #include "brave/components/omnibox/browser/brave_on_device_head_provider.h"
 #include "brave/components/omnibox/browser/brave_search_provider.h"
 #include "brave/components/omnibox/browser/brave_shortcuts_provider.h"
-#include "brave/components/omnibox/browser/leo_provider.h"
 #include "brave/components/omnibox/browser/promotion_provider.h"
 #include "brave/components/omnibox/browser/promotion_utils.h"
 #include "components/omnibox/browser/autocomplete_input.h"
@@ -31,6 +29,12 @@
 #include "components/omnibox/browser/clipboard_provider.h"
 #include "components/omnibox/browser/history_cluster_provider.h"
 #include "components/omnibox/browser/history_fuzzy_provider.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/omnibox/browser/leo_provider.h"
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 #if BUILDFLAG(ENABLE_COMMANDER)
 #include "brave/components/commander/common/buildflags/buildflags.h"
@@ -68,6 +72,7 @@ void MaybeAddCommanderProvider(AutocompleteController::Providers& providers,
 #endif
 }
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
 void MaybeAddLeoProvider(AutocompleteController::Providers& providers,
                          AutocompleteController* controller) {
   auto* provider_client = controller->autocomplete_provider_client();
@@ -78,9 +83,11 @@ void MaybeAddLeoProvider(AutocompleteController::Providers& providers,
     providers.push_back(base::MakeRefCounted<LeoProvider>(provider_client));
   }
 }
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 }  // namespace
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
 namespace ai_chat {
 
 void MaybeShowLeoMatch(AutocompleteResult* result) {
@@ -95,6 +102,7 @@ void MaybeShowLeoMatch(AutocompleteResult* result) {
 }
 
 }  // namespace ai_chat
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 #define SearchProvider BraveSearchProvider
 #define HistoryQuickProvider BraveHistoryQuickProvider
@@ -103,19 +111,19 @@ void MaybeShowLeoMatch(AutocompleteResult* result) {
 #define BookmarkProvider BraveBookmarkProvider
 #define ShortcutsProvider BraveShortcutsProvider
 #define OnDeviceHeadProvider BraveOnDeviceHeadProvider
-#define BRAVE_AUTOCOMPLETE_CONTROLLER_AUTOCOMPLETE_CONTROLLER         \
-  MaybeAddCommanderProvider(providers_, this);                        \
-  MaybeAddLeoProvider(providers_, this);                              \
-  if (IsBraveSearchConversionFeatureEnabled() &&                      \
-      !provider_client_->IsOffTheRecord())                            \
+#define BRAVE_AUTOCOMPLETE_CONTROLLER_AUTOCOMPLETE_CONTROLLER          \
+  MaybeAddCommanderProvider(providers_, this);                         \
+  IF_BUILDFLAG(ENABLE_AI_CHAT, MaybeAddLeoProvider(providers_, this);) \
+  if (IsBraveSearchConversionFeatureEnabled() &&                       \
+      !provider_client_->IsOffTheRecord())                             \
     providers_.push_back(new PromotionProvider(provider_client_.get()));
 
 // This sort should be done right after AutocompleteResult::SortAndCull() in
 // the AutocompleteController::SortCullAndAnnotateResult() to make our sorting
 // run last but before notifying.
-#define BRAVE_AUTOCOMPLETE_CONTROLLER_UPDATE_RESULT \
-  ai_chat::MaybeShowLeoMatch(&internal_result_);    \
-  SortBraveSearchPromotionMatch(&internal_result_); \
+#define BRAVE_AUTOCOMPLETE_CONTROLLER_UPDATE_RESULT                            \
+  IF_BUILDFLAG(ENABLE_AI_CHAT, ai_chat::MaybeShowLeoMatch(&internal_result_);) \
+  SortBraveSearchPromotionMatch(&internal_result_);                            \
   MaybeShowCommands(&internal_result_, input_);
 
 #include <components/omnibox/browser/autocomplete_controller.cc>

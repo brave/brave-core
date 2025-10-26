@@ -1,5 +1,6 @@
 include_rules = [
   "+brave/components/ai_chat/core/browser/model_service.h",
+  "+brave/components/ai_chat/core/common/buildflags",
   "+brave/components/brave_adaptive_captcha/prefs_util.h",
   "+brave/components/brave_ads/core/public/prefs/obsolete_pref_util.h",
   "+brave/components/brave_news/browser/brave_news_p3a.h",
