@@ -17,7 +17,7 @@ import {
   EmailAliasesService,
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
 
-const rootEl = document!.getElementById('mountPoint') as HTMLElement
+const rootEl = document!.getElementById('mountPoint')!
 const shadow = rootEl.attachShadow({ mode: 'open' })
 
 const EmailAliasesPanelConnected = ({
