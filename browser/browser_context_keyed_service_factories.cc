@@ -6,9 +6,6 @@
 #include "brave/browser/browser_context_keyed_service_factories.h"
 
 #include "base/feature_list.h"
-#include "brave/browser/ai_chat/ai_chat_service_factory.h"
-#include "brave/browser/ai_chat/ollama/ollama_service_factory.h"
-#include "brave/browser/ai_chat/tab_tracker_service_factory.h"
 #include "brave/browser/brave_account/brave_account_service_factory.h"
 #include "brave/browser/brave_adaptive_captcha/brave_adaptive_captcha_service_factory.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
@@ -40,8 +37,7 @@
 #include "brave/browser/sync/brave_sync_alerts_service_factory.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
 #include "brave/browser/webcompat_reporter/webcompat_reporter_service_factory.h"
-#include "brave/components/ai_chat/content/browser/model_service_factory.h"
-#include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_account/features.h"
 #include "brave/components/brave_perf_predictor/browser/named_third_party_registry_factory.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
@@ -53,6 +49,14 @@
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/web_discovery/buildflags/buildflags.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/browser/ai_chat/ai_chat_service_factory.h"
+#include "brave/browser/ai_chat/ollama/ollama_service_factory.h"
+#include "brave/browser/ai_chat/tab_tracker_service_factory.h"
+#include "brave/components/ai_chat/content/browser/model_service_factory.h"
+#include "brave/components/ai_chat/core/common/features.h"
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
@@ -186,12 +190,14 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   speedreader::SpeedreaderServiceFactory::GetInstance();
 #endif
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
   if (ai_chat::features::IsAIChatEnabled()) {
     ai_chat::AIChatServiceFactory::GetInstance();
     ai_chat::ModelServiceFactory::GetInstance();
     ai_chat::OllamaServiceFactory::GetInstance();
     ai_chat::TabTrackerServiceFactory::GetInstance();
   }
+#endif
 
   brave_search::BackupResultsServiceFactory::GetInstance();
 

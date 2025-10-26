@@ -12,6 +12,7 @@
 #include "base/containers/map_util.h"
 #include "base/no_destructor.h"
 #include "brave/browser/policy/brave_simple_policy_map.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_origin/brave_origin_policy_manager.h"
 #include "brave/components/brave_origin/brave_origin_service.h"
 #include "brave/components/brave_origin/profile_id.h"
@@ -36,6 +37,10 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/components/brave_vpn/common/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/core/common/pref_names.h"
 #endif
 
 namespace policy {
@@ -115,11 +120,14 @@ constexpr auto kBraveOriginProfileMetadata =
          BraveOriginServiceFactory::BraveOriginPrefMetadata(
              true,
              /*user_settable=*/false)},
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
         // AI Chat preferences
         {ai_chat::prefs::kEnabledByPolicy,
          BraveOriginServiceFactory::BraveOriginPrefMetadata(
              false,
              /*user_settable=*/false)},
+#endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
         // Speedreader preferences

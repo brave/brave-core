@@ -16,9 +16,7 @@
 #include "brave/browser/ui/bookmark/brave_bookmark_prefs.h"
 #include "brave/browser/ui/omnibox/brave_omnibox_client_impl.h"
 #include "brave/common/pref_names.h"
-#include "brave/components/ai_chat/core/browser/model_service.h"
-#include "brave/components/ai_chat/core/common/features.h"
-#include "brave/components/ai_chat/core/common/pref_names.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_account/prefs.h"
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #include "brave/components/brave_ads/core/public/prefs/obsolete_pref_util.h"
@@ -84,6 +82,12 @@
 #include "components/sync/base/pref_names.h"
 #include "extensions/buildflags/buildflags.h"
 #include "third_party/widevine/cdm/buildflags.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/core/browser/model_service.h"
+#include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/ai_chat/core/common/pref_names.h"
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
 #include "brave/components/brave_wayback_machine/pref_names.h"
@@ -323,7 +327,9 @@ void RegisterProfilePrefsForMigration(
   brave_ads::RegisterProfilePrefsForMigration(registry);
 
   // Added 2024-04
+#if BUILDFLAG(ENABLE_AI_CHAT)
   ai_chat::prefs::RegisterProfilePrefsForMigration(registry);
+#endif
 
   brave_shields::RegisterShieldsP3AProfilePrefsForMigration(registry);
 
@@ -509,8 +515,10 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   welcome_ui::prefs::RegisterProfilePrefs(registry);
 #endif  // !BUILDFLAG(IS_ANDROID)
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
   ai_chat::prefs::RegisterProfilePrefs(registry);
   ai_chat::ModelService::RegisterProfilePrefs(registry);
+#endif
 
   brave_account::prefs::RegisterPrefs(registry);
   brave_origin::prefs::RegisterProfilePrefs(registry);

@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
@@ -15,7 +16,7 @@ source_set("brave_simple_policy_map") {
 
   deps = [
     "//base",
-    "//brave/components/ai_chat/core/common",
+    "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/brave_news/common",
     "//brave/components/brave_rewards/core",
     "//brave/components/brave_shields/core/common",
@@ -37,6 +38,10 @@ source_set("brave_simple_policy_map") {
     "//components/policy/core/browser",
     "//components/policy/core/common:common_constants",
   ]
+
+  if (enable_ai_chat) {
+    deps += [ "//brave/components/ai_chat/core/common" ]
+  }
 
   if (enable_tor) {
     deps += [ "//brave/components/tor:pref_names" ]

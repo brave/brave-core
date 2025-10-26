@@ -117,8 +117,6 @@ brave_chrome_browser_deps = [
   "//brave/app:brave_generated_resources_grit",
   "//brave/browser:browser_process",
   "//brave/browser:sparkle_buildflags",
-  "//brave/browser/ai_chat",
-  "//brave/browser/ai_chat/ollama",
   "//brave/browser/brave_account",
   "//brave/browser/brave_adaptive_captcha",
   "//brave/browser/brave_adaptive_captcha:impl",
@@ -150,10 +148,6 @@ brave_chrome_browser_deps = [
   "//brave/browser/updater:buildflags",
   "//brave/common",
   "//brave/common:mojo_bindings",
-  "//brave/components/ai_chat/content/browser",
-  "//brave/components/ai_chat/core/browser",
-  "//brave/components/ai_chat/core/common",
-  "//brave/components/ai_chat/core/common/mojom",
   "//brave/components/ai_rewriter/common/buildflags",
   "//brave/components/body_sniffer",
   "//brave/components/brave_account",
@@ -316,7 +310,6 @@ if (!is_android) {
   ]
 
   brave_chrome_browser_deps += [
-    "//brave/browser/ui/ai_chat",
     "//brave/browser/ui/tabs:impl",
     "//brave/browser/ui/webui/brave_new_tab_page_refresh",
     "//brave/browser/ui/webui/brave_new_tab_page_refresh:mojom",
@@ -336,7 +329,22 @@ if (enable_brave_education) {
   brave_chrome_browser_deps += [ "//brave/browser/ui/webui/brave_education" ]
 }
 
-if (is_android) {
+if (enable_ai_chat) {
+  brave_chrome_browser_deps += [
+    "//brave/browser/ai_chat",
+    "//brave/browser/ai_chat/ollama",
+    "//brave/components/ai_chat/content/browser",
+    "//brave/components/ai_chat/core/browser",
+    "//brave/components/ai_chat/core/common",
+    "//brave/components/ai_chat/core/common/mojom",
+  ]
+
+  if (!is_android) {
+    brave_chrome_browser_deps += [ "//brave/browser/ui/ai_chat" ]
+  }
+}
+
+if (enable_ai_chat && is_android) {
   brave_chrome_browser_sources += brave_browser_ai_chat_android_sources
   brave_chrome_browser_deps += brave_browser_ai_chat_android_deps
 }
@@ -684,7 +692,7 @@ if (enable_extensions) {
       [ "//brave/browser/extensions:brave_prefs_util_impl" ]
 }
 
-if (enable_print_preview) {
+if (enable_ai_chat && enable_print_preview) {
   brave_chrome_browser_deps += [
     "//brave/browser/ai_chat:print_preview_extractor",
     "//brave/browser/ai_chat:print_preview_extractor_internal",
