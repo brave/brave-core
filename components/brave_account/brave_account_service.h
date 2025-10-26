@@ -97,10 +97,8 @@ class BraveAccountService : public KeyedService, public mojom::Authentication {
 
   void VerifyResult();
 
-  void OnVerifyResult(
-      int response_code,
-      base::expected<std::optional<endpoints::VerifyResult::Response>,
-                     std::optional<endpoints::VerifyResult::Error>> reply);
+  void OnVerifyResult(int response_code,
+                      endpoint_client::Reply<endpoints::VerifyResult> reply);
 
   const raw_ptr<PrefService> pref_service_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;

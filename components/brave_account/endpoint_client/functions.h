@@ -22,36 +22,40 @@ template <typename ErrorReturnType,
           typename... ErrorTransformer>
 constexpr auto TransformError(Error&& errors,
                               ErrorTransformer&&... on_error) noexcept {
-  bool handled = false;
+  if constexpr (sizeof...(on_error) == 0) {
+    return ErrorReturnType();
+  } else {
+    return std::visit(
+        [&](auto&& value) -> ErrorReturnType {
+          using ErrorType = decltype(value);
+          ErrorReturnType result;
+          bool handled = false;
+          (
+              [&] {
+                if constexpr (CanTransform<ErrorTransformer, ErrorType>) {
+                  if (!handled) {
+                    auto invoke_on_error = [&]() -> decltype(auto) {
+                      return std::invoke(
+                          std::forward<ErrorTransformer>(on_error),
+                          std::forward<ErrorType>(value));
+                    };
+                    static_assert(
+                        concepts::ErrorTransformer<decltype(invoke_on_error),
+                                                   ErrorReturnType>,
+                        "Error handler should return a value which is "
+                        "convertible to |on_reposnse| error type.");
 
-  return std::visit(
-      [&](auto&& value) -> ErrorReturnType {
-        using ErrorType = decltype(value);
-        ErrorReturnType result;
-        (
-            [&] {
-              if constexpr (CanTransform<ErrorTransformer, ErrorType>) {
-                if (!handled) {
-                  auto invoke_on_error = [&]() -> decltype(auto) {
-                    return std::invoke(std::forward<ErrorTransformer>(on_error),
-                                       std::forward<ErrorType>(value));
-                  };
-                  static_assert(
-                      concepts::ErrorTransformer<decltype(invoke_on_error),
-                                                 ErrorReturnType>,
-                      "Error handler should return a value which is "
-                      "convertible to |on_reposnse| error type.");
-
-                  result = ErrorReturnType(std::invoke(invoke_on_error));
-                  handled = true;
+                    result = ErrorReturnType(std::invoke(invoke_on_error));
+                    handled = true;
+                  }
                 }
-              }
-            }(),
-            ...);
+              }(),
+              ...);
 
-        return result;
-      },
-      std::move(errors));
+          return result;
+        },
+        std::move(errors));
+  }
 }
 
 }  // namespace brave_account::endpoint_client::functions::detail
