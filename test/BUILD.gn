@@ -7,6 +7,7 @@ import("//brave/android/android_browser_tests.gni")
 import("//brave/browser/metrics/buildflags/buildflags.gni")
 import("//brave/browser/updater/buildflags.gni")
 import("//brave/build/config.gni")
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/ai_rewriter/common/buildflags/buildflags.gni")
 import("//brave/components/brave_education/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
@@ -164,7 +165,6 @@ test("brave_unit_tests") {
     "//brave/brave_domains:unit_tests",
     "//brave/browser",
     "//brave/browser:unit_tests",
-    "//brave/browser/ai_chat:unit_tests",
     "//brave/browser/autocomplete:unit_tests",
     "//brave/browser/brave_account:unit_tests",
     "//brave/browser/brave_ads",
@@ -195,7 +195,6 @@ test("brave_unit_tests") {
     "//brave/browser/ui/brave_tooltips",
     "//brave/browser/ui/startup:unit_tests",
     "//brave/browser/ui/webui:unit_tests",
-    "//brave/browser/ui/webui/ai_chat:unit_tests",
     "//brave/browser/user_education:unit_tests",
     "//brave/browser/web_discovery:unit_tests",
     "//brave/chromium_src/components/privacy_sandbox:unit_tests",
@@ -365,6 +364,13 @@ test("brave_unit_tests") {
     ]
   }
 
+  if (enable_ai_chat) {
+    deps += [
+      "//brave/browser/ai_chat:unit_tests",
+      "//brave/browser/ui/webui/ai_chat:unit_tests",
+    ]
+  }
+
   if (enable_widevine) {
     deps += [ "//brave/browser/widevine:unittests" ]
   }
@@ -465,8 +471,6 @@ test("brave_unit_tests") {
       "//brave/browser/ui/webui/settings:unit_tests",
       "//brave/browser/ui/webui/side_panel/customize_chrome:unit_tests",
       "//brave/browser/ui/whats_new:unit_test",
-      "//brave/components/ai_chat/core/common",
-      "//brave/components/ai_chat/core/common/buildflags",
       "//brave/components/brave_news/common:unit_tests",
       "//brave/components/brave_shields/core/common:mojom",
       "//brave/components/brave_vpn/common/buildflags",
@@ -491,6 +495,13 @@ test("brave_unit_tests") {
 
   if (enable_brave_education) {
     deps += [ "//brave/browser/ui/webui/brave_education:unit_tests" ]
+  }
+
+  if (enable_ai_chat) {
+    deps += [
+      "//brave/components/ai_chat/core/common",
+      "//brave/components/ai_chat/core/common/buildflags",
+    ]
   }
 
   # On Windows, brave_install_static_unittests covers channel test.
@@ -879,13 +890,9 @@ test("brave_browser_tests") {
     "//brave/browser/ui/tabs/test:browser_tests",
     "//brave/browser/ui/views/tabs:browser_tests",
     "//brave/browser/ui/webui:browser_tests",
-    "//brave/browser/ui/webui/ai_chat:browser_tests",
     "//brave/browser/ui/webui/settings:browser_tests",
     "//brave/browser/web_discovery:browser_tests",
     "//brave/common",
-    "//brave/components/ai_chat/core/browser",
-    "//brave/components/ai_chat/core/common",
-    "//brave/components/ai_chat/renderer:browser_tests",
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_ads/core",
     "//brave/components/brave_component_updater/browser",
@@ -1063,6 +1070,15 @@ test("brave_browser_tests") {
     sources += [ "//brave/browser/ui/webui/settings/brave_tor_snowflake_extension_browsertest.cc" ]
   }
 
+  if (enable_ai_chat) {
+    deps += [
+      "//brave/browser/ui/webui/ai_chat:browser_tests",
+      "//brave/components/ai_chat/core/browser",
+      "//brave/components/ai_chat/core/common",
+      "//brave/components/ai_chat/renderer:browser_tests",
+    ]
+  }
+
   if (enable_brave_vpn) {
     deps += [
       "//brave/components/brave_vpn/browser",
@@ -1164,7 +1180,6 @@ test("brave_browser_tests") {
     deps += [
       "//brave/app/theme:brave_theme_resources_grit",
       "//brave/app/theme:brave_unscaled_resources_grit",
-      "//brave/browser/ai_chat:browser_tests",
       "//brave/browser/banners:browser_tests",
       "//brave/browser/brave_ads/creatives/search_result_ad:browser_tests",
       "//brave/browser/brave_search:browser_tests",
@@ -1187,10 +1202,6 @@ test("brave_browser_tests") {
       "//components/autofill/content/browser",
       "//components/autofill/core/browser",
     ]
-
-    if (enable_ai_rewriter) {
-      deps += [ "//brave/browser/ui/ai_rewriter:browsertest" ]
-    }
   }
 
   if (enable_commander) {
@@ -1205,6 +1216,14 @@ test("brave_browser_tests") {
 
   if (enable_custom_background) {
     deps += [ "//brave/browser/ntp_background:browser_tests" ]
+  }
+
+  if (enable_ai_chat) {
+    deps += [ "//brave/browser/ai_chat:browser_tests" ]
+  }
+
+  if (enable_ai_rewriter) {
+    deps += [ "//brave/browser/ui/ai_rewriter:browsertest" ]
   }
 
   # API tests and extension deps
