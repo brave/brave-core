@@ -13,5 +13,8 @@ source_set("email_aliases") {
     "//base",
     "//brave/components/email_aliases:features",
     "//brave/components/email_aliases:service",
+    "//brave/components/resources:strings_grit",
+    "//chrome/browser/ui/views/bubble",
+    "//chrome/browser/ui/views/location_bar",
   ]
 }
