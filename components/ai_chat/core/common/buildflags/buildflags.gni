@@ -3,8 +3,10 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//build/config/features.gni")
+declare_args() {
+  enable_ai_chat = true
+}
 
 declare_args() {
-  enable_brave_ai_chat_agent_profile = !is_android
+  enable_brave_ai_chat_agent_profile = enable_ai_chat && !is_android
 }
