@@ -13,6 +13,7 @@
 #include "base/scoped_multi_source_observation.h"
 #include "base/trace_event/trace_event.h"
 #include "base/values.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/browsing_data/chrome_browsing_data_remover_constants.h"
 #include "chrome/browser/lifetime/browser_shutdown.h"
@@ -106,9 +107,11 @@ bool GetClearBrowsingDataOnExitSettings(const Profile* profile,
     *remove_mask |= chrome_browsing_data_remover::DATA_TYPE_CONTENT_SETTINGS;
   }
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
   if (prefs->GetBoolean(browsing_data::prefs::kDeleteBraveLeoHistoryOnExit)) {
     *remove_mask |= chrome_browsing_data_remover::DATA_TYPE_BRAVE_LEO_HISTORY;
   }
+#endif
 
   return (*remove_mask != 0);
 }

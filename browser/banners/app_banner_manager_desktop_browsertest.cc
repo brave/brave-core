@@ -5,6 +5,7 @@
 
 #include "chrome/browser/banners/app_banner_manager_desktop.h"
 
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/banners/test_app_banner_manager_desktop.h"
 #include "chrome/browser/ui/browser.h"
@@ -42,6 +43,12 @@ IN_PROC_BROWSER_TEST_F(AppBannerManagerDesktopBrowserTest_Brave,
   // checking that it's installable and promotable. If they have a bad
   // webmanifest or aren't on the ChromeUI scheme, the test should fail.
   for (const auto& host : kInstallablePWAWebUIHosts) {
+#if !BUILDFLAG(ENABLE_AI_CHAT)
+    // Skip leo-ai host if AI Chat is disabled
+    if (host == kAIChatUIHost) {
+      continue;
+    }
+#endif
     SCOPED_TRACE(testing::Message() << "Host: " << host);
 
     ASSERT_TRUE(ui_test_utils::NavigateToURL(
