@@ -30,14 +30,16 @@ const mainButtonsOptions = [
     iconName: 'headphones',
     hidden: !loadTimeData.getBoolean('ttsEnabled'),
     title: getLocale('braveReaderModeTextToSpeech')
-  },
-  {
+  }
+// <if expr="enable_ai_chat">
+  ,{
     id: 'ai',
     type: MainButtonType.AI,
     iconName: 'product-brave-leo',
     hidden: !loadTimeData.getBoolean('aiChatFeatureEnabled'),
     title: getLocale('braveReaderModeAI')
   }
+// </if>
 ]
 
 const fontStyleOptions = [

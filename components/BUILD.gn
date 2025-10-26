@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/psst/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
@@ -20,9 +21,6 @@ test("brave_components_unittests") {
 
   deps = [
     "//base",
-    "//brave/components/ai_chat/core/browser:unit_tests",
-    "//brave/components/ai_chat/core/browser/ollama:unit_tests",
-    "//brave/components/ai_chat/core/common:unit_tests",
     "//brave/components/api_request_helper:unit_tests",
     "//brave/components/brave_account:unit_tests",
     "//brave/components/brave_account/endpoint_client:unit_tests",
@@ -58,9 +56,20 @@ test("brave_components_unittests") {
     deps += [ "//brave/components/speedreader:unit_tests" ]
   }
 
-  if (use_blink) {
+  if (enable_ai_chat) {
     deps += [
-      "//brave/components/ai_chat/content/browser:unit_tests",
+      "//brave/components/ai_chat/core/browser:unit_tests",
+      "//brave/components/ai_chat/core/browser/ollama:unit_tests",
+      "//brave/components/ai_chat/core/common:unit_tests",
+    ]
+  }
+
+  if (use_blink) {
+    if (enable_ai_chat) {
+      deps += [ "//brave/components/ai_chat/content/browser:unit_tests" ]
+    }
+    deps += [
+      "//brave/components/brave_wallet/browser:unit_tests",
       "//brave/components/brave_wallet/renderer/test:unit_tests",
     ]
   }
