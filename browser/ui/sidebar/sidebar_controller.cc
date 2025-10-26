@@ -15,6 +15,7 @@
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/sidebar/sidebar_web_panel_controller.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/sidebar/browser/pref_names.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
 #include "brave/components/sidebar/common/features.h"
@@ -118,11 +119,13 @@ void SidebarController::ActivateItemAt(std::optional<size_t> index,
   if (!item.is_web_type() && item.open_in_panel) {
     sidebar_model_->SetActiveIndex(index);
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
     if (sidebar::features::kOpenOneShotLeoPanel.Get() &&
         item.built_in_item_type == SidebarItem::BuiltInItemType::kChatUI) {
       // Prevent one-time Leo panel open.
       profile_->GetPrefs()->SetBoolean(kLeoPanelOneShotOpen, true);
     }
+#endif
     return;
   }
 

@@ -8,7 +8,7 @@
 #include <utility>
 
 #include "brave/browser/ui/webui/brave_webui_source.h"
-#include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/speedreader/common/constants.h"
 #include "brave/components/speedreader/common/features.h"
@@ -25,6 +25,10 @@
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/url_constants.h"
 #include "ui/base/l10n/l10n_util.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/core/browser/utils.h"
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 SpeedreaderToolbarUI::SpeedreaderToolbarUI(content::WebUI* web_ui)
     : TopChromeWebUIController(web_ui, true),
@@ -44,9 +48,15 @@ SpeedreaderToolbarUI::SpeedreaderToolbarUI(content::WebUI* web_ui)
     source->AddString(str.name, l10n_str);
   }
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
   source->AddBoolean("aiChatFeatureEnabled",
                      ai_chat::IsAIChatEnabled(profile_->GetPrefs()) &&
                          profile_->IsRegularProfile());
+#else
+  // This would be better to just be compiled out, but it is non-trivial
+  // and would require much more work.
+  source->AddBoolean("aiChatFeatureEnabled", false);
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
   source->AddBoolean("ttsEnabled",
                      base::FeatureList::IsEnabled(

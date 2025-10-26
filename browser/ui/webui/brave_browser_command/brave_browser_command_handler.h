@@ -13,6 +13,7 @@
 #include <utility>
 #include <vector>
 
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/ui/webui/resources/js/brave_browser_command/brave_browser_command.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver.h"
@@ -32,7 +33,9 @@ class BraveBrowserCommandHandler
                          WindowOpenDisposition disposition) = 0;
     virtual void OpenRewardsPanel() = 0;
     virtual void OpenVPNPanel() = 0;
+#if BUILDFLAG(ENABLE_AI_CHAT)
     virtual void OpenAIChat() = 0;
+#endif
   };
 
   BraveBrowserCommandHandler(

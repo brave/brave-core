@@ -22,7 +22,7 @@
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/toolbar/brave_app_menu_model.h"
-#include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/misc_metrics/menu_metrics.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
@@ -44,6 +44,10 @@
 #include "ui/views/layout/box_layout_view.h"
 #include "ui/views/metadata/view_factory.h"
 #include "ui/views/view.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/ui/views/toolbar/brave_vpn_status_label.h"
@@ -234,6 +238,7 @@ void BraveAppMenu::OnMenuClosed(views::MenuItemView* menu) {
 void BraveAppMenu::RecordMenuUsage(int command_id) {
   misc_metrics::MenuGroup group;
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
   if (command_id == IDC_TOGGLE_AI_CHAT) {
     auto* profile_metrics =
         misc_metrics::ProfileMiscMetricsServiceFactory::GetServiceForContext(
@@ -244,6 +249,7 @@ void BraveAppMenu::RecordMenuUsage(int command_id) {
       ai_chat_metrics->HandleOpenViaEntryPoint(ai_chat::EntryPoint::kMenuItem);
     }
   }
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
   switch (command_id) {
     case IDC_NEW_WINDOW:

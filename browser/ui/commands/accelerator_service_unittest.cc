@@ -7,6 +7,7 @@
 
 #include "base/test/scoped_feature_list.h"
 #include "brave/app/brave_command_ids.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
@@ -344,6 +345,7 @@ TEST_F(AcceleratorServiceUnitTest, PolicyFiltering) {
                                    false);
   EXPECT_FALSE(service.IsCommandDisabledByPolicy(IDC_SHOW_BRAVE_REWARDS));
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
   // Test AI Chat (reverse logic - disabled when pref is false)
   const std::vector<int> ai_chat_commands = {IDC_TOGGLE_AI_CHAT,
                                              IDC_OPEN_FULL_PAGE_CHAT};
@@ -361,6 +363,7 @@ TEST_F(AcceleratorServiceUnitTest, PolicyFiltering) {
   for (int command : ai_chat_commands) {
     EXPECT_TRUE(service.IsCommandDisabledByPolicy(command));
   }
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   // Test Speedreader
@@ -392,7 +395,9 @@ TEST_F(AcceleratorServiceUnitTest, PolicyFiltering) {
       {IDC_NEW_TAB, {commands::FromCodesString("Control+KeyT")}},
       {IDC_CONFIGURE_BRAVE_NEWS, {commands::FromCodesString("Control+KeyN")}},
       {IDC_SHOW_BRAVE_WALLET, {commands::FromCodesString("Control+KeyW")}},
+#if BUILDFLAG(ENABLE_AI_CHAT)
       {IDC_TOGGLE_AI_CHAT, {commands::FromCodesString("Control+KeyC")}},
+#endif
   };
 
   // Disable some features and test filtering
@@ -400,31 +405,48 @@ TEST_F(AcceleratorServiceUnitTest, PolicyFiltering) {
       brave_news::prefs::kBraveNewsDisabledByPolicy, true);
   profile().GetPrefs()->SetBoolean(brave_wallet::prefs::kDisabledByPolicy,
                                    true);
+#if BUILDFLAG(ENABLE_AI_CHAT)
   profile().GetPrefs()->SetBoolean(ai_chat::prefs::kEnabledByPolicy,
                                    false);  // Disable AI Chat
+#endif
 
   auto filtered = service.FilterCommandsByPolicy(test_accelerators);
+#if BUILDFLAG(ENABLE_AI_CHAT)
   // Only IDC_NEW_TAB should remain (not policy-controlled)
   EXPECT_EQ(1u, filtered.size());
+#else
+  // IDC_NEW_TAB should remain (AI Chat not included)
+  EXPECT_EQ(1u, filtered.size());
+#endif
   EXPECT_TRUE(filtered.contains(IDC_NEW_TAB));
   EXPECT_FALSE(filtered.contains(IDC_CONFIGURE_BRAVE_NEWS));
   EXPECT_FALSE(filtered.contains(IDC_SHOW_BRAVE_WALLET));
+#if BUILDFLAG(ENABLE_AI_CHAT)
   EXPECT_FALSE(filtered.contains(IDC_TOGGLE_AI_CHAT));
+#endif
 
   // Re-enable commands and test again
   profile().GetPrefs()->SetBoolean(
       brave_news::prefs::kBraveNewsDisabledByPolicy, false);
   profile().GetPrefs()->SetBoolean(brave_wallet::prefs::kDisabledByPolicy,
                                    false);
+#if BUILDFLAG(ENABLE_AI_CHAT)
   profile().GetPrefs()->SetBoolean(ai_chat::prefs::kEnabledByPolicy, true);
+#endif
 
   filtered = service.FilterCommandsByPolicy(test_accelerators);
   // All commands should be present now
+#if BUILDFLAG(ENABLE_AI_CHAT)
   EXPECT_EQ(4u, filtered.size());
+#else
+  EXPECT_EQ(3u, filtered.size());
+#endif
   EXPECT_TRUE(filtered.contains(IDC_NEW_TAB));
   EXPECT_TRUE(filtered.contains(IDC_CONFIGURE_BRAVE_NEWS));
   EXPECT_TRUE(filtered.contains(IDC_SHOW_BRAVE_WALLET));
+#if BUILDFLAG(ENABLE_AI_CHAT)
   EXPECT_TRUE(filtered.contains(IDC_TOGGLE_AI_CHAT));
+#endif
 }
 
 class AcceleratorServiceUnitTestWithLocalState : public testing::Test {
