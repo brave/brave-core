@@ -56,6 +56,7 @@ source_set("command_ids") {
 
 brave_grit("brave_generated_resources_grit") {
   defines = [
+    "enable_ai_chat=$enable_ai_chat",
     "enable_brave_vpn=$enable_brave_vpn",
     "enable_containers=$enable_containers",
     "enable_pin_shortcut=$enable_pin_shortcut",

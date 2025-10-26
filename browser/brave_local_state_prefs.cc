@@ -18,8 +18,8 @@
 #include "brave/browser/search_engines/search_engine_tracker.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/updater/buildflags.h"
-#include "brave/components/brave_ads/core/public/prefs/obsolete_pref_util.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_ads/core/public/prefs/obsolete_pref_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_registry.h"
 #include "brave/components/brave_origin/brave_origin_prefs.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
@@ -52,8 +52,8 @@
 #include "third_party/widevine/cdm/buildflags.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
-#include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
+#include "brave/components/ai_chat/core/common/pref_names.h"
 #endif
 
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_ANDROID)
