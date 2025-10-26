@@ -101,9 +101,7 @@ void StartProcessWithConnectedUser(Profile* profile) {
   wallet.Set("status", static_cast<int>(mojom::WalletStatus::kConnected));
   wallet.Set("user_name", "Brave Test");
 
-  std::string json;
-  base::JSONWriter::Write(wallet, &json);
-  auto encrypted = EncryptPrefString(json);
+  auto encrypted = EncryptPrefString(*base::WriteJson(wallet));
   ASSERT_TRUE(encrypted);
 
   prefs->SetString(prefs::kExternalWalletType, "uphold");

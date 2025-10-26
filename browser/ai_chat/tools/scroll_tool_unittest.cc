@@ -34,9 +34,7 @@ class ScrollToolTest : public ContentAgentToolBaseTest {
     dict.Set("distance", distance);
     dict.Set("target", target_dict.Clone());
 
-    std::string json;
-    base::JSONWriter::Write(dict, &json);
-    return json;
+    return *base::WriteJson(dict);
   }
 
   optimization_guide::proto::Action VerifySuccess(
@@ -126,10 +124,7 @@ TEST_F(ScrollToolTest, MissingDirection) {
   dict.Set("distance", 100.0);
   // Note: No direction intentionally
 
-  std::string input_json;
-  base::JSONWriter::Write(dict, &input_json);
-
-  RunWithExpectedError(FROM_HERE, input_json);
+  RunWithExpectedError(FROM_HERE, *base::WriteJson(dict));
 }
 
 TEST_F(ScrollToolTest, InvalidDirection) {
@@ -139,10 +134,7 @@ TEST_F(ScrollToolTest, InvalidDirection) {
   dict.Set("direction", "diagonal");  // Invalid direction
   dict.Set("distance", 100.0);
 
-  std::string input_json;
-  base::JSONWriter::Write(dict, &input_json);
-
-  RunWithExpectedError(FROM_HERE, input_json);
+  RunWithExpectedError(FROM_HERE, *base::WriteJson(dict));
 }
 
 TEST_F(ScrollToolTest, MissingDistance) {
@@ -152,10 +144,7 @@ TEST_F(ScrollToolTest, MissingDistance) {
   dict.Set("direction", "down");
   // Note: No distance intentionally
 
-  std::string input_json;
-  base::JSONWriter::Write(dict, &input_json);
-
-  RunWithExpectedError(FROM_HERE, input_json);
+  RunWithExpectedError(FROM_HERE, *base::WriteJson(dict));
 }
 
 TEST_F(ScrollToolTest, NegativeDistance) {
@@ -165,10 +154,7 @@ TEST_F(ScrollToolTest, NegativeDistance) {
   dict.Set("direction", "down");
   dict.Set("distance", -50.0);  // Negative distance
 
-  std::string input_json;
-  base::JSONWriter::Write(dict, &input_json);
-
-  RunWithExpectedError(FROM_HERE, input_json);
+  RunWithExpectedError(FROM_HERE, *base::WriteJson(dict));
 }
 
 TEST_F(ScrollToolTest, ZeroDistance) {
@@ -178,10 +164,7 @@ TEST_F(ScrollToolTest, ZeroDistance) {
   dict.Set("direction", "down");
   dict.Set("distance", 0.0);  // Zero distance
 
-  std::string input_json;
-  base::JSONWriter::Write(dict, &input_json);
-
-  RunWithExpectedError(FROM_HERE, input_json);
+  RunWithExpectedError(FROM_HERE, *base::WriteJson(dict));
 }
 
 TEST_F(ScrollToolTest, MissingTargetObject) {
@@ -190,10 +173,7 @@ TEST_F(ScrollToolTest, MissingTargetObject) {
   dict.Set("distance", 100.0);
   // Note: No target intentionally
 
-  std::string input_json;
-  base::JSONWriter::Write(dict, &input_json);
-
-  RunWithExpectedError(FROM_HERE, input_json);
+  RunWithExpectedError(FROM_HERE, *base::WriteJson(dict));
 }
 
 // We only need minimal target validation tests since target_util_unittest.cc

@@ -33,9 +33,7 @@ class ClickToolTest : public ContentAgentToolBaseTest {
     dict.Set("click_count", click_count);
     dict.Set("target", target_dict.Clone());
 
-    std::string json;
-    base::JSONWriter::Write(dict, &json);
-    return json;
+    return *base::WriteJson(dict);
   }
 
   optimization_guide::proto::Action VerifySuccess(
@@ -100,10 +98,7 @@ TEST_F(ClickToolTest, MissingClickType) {
   dict.Set("click_count", "single");
   // Note: No click_type intentionally
 
-  std::string input_json;
-  base::JSONWriter::Write(dict, &input_json);
-
-  RunWithExpectedError(FROM_HERE, input_json);
+  RunWithExpectedError(FROM_HERE, *base::WriteJson(dict));
 }
 
 TEST_F(ClickToolTest, InvalidClickType) {
