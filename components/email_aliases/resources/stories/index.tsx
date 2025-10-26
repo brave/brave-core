@@ -231,9 +231,9 @@ class StubEmailAliasesService implements EmailAliasesServiceInterface {
     })
   }
 
-  showSettingsPage() {
-    // Do nothing in this mock implementation.
-  }
+  notifyAliasCreationComplete(email: string | null) {}
+
+  invokeManageAliases() {}
 }
 
 const stubEmailAliasesServiceNoAccountInstance = new StubEmailAliasesService({
