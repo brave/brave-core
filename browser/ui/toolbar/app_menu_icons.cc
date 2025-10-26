@@ -9,6 +9,7 @@
 #include "base/containers/map_util.h"
 #include "base/no_destructor.h"
 #include "brave/app/brave_command_ids.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "ui/base/models/image_model.h"
@@ -31,7 +32,9 @@ constexpr auto kCommandIcons =
         {IDC_NEW_OFFTHERECORD_WINDOW_TOR, &kLeoWindowTabTorIcon},
         {IDC_SHOW_BRAVE_REWARDS, &kLeoProductBatOutlineIcon},
         {IDC_SHOW_BRAVE_WALLET, &kLeoProductBraveWalletIcon},
+#if BUILDFLAG(ENABLE_AI_CHAT)
         {IDC_TOGGLE_AI_CHAT, &kLeoProductBraveLeoIcon},
+#endif
         {IDC_BRAVE_VPN_MENU, &kLeoProductVpnIcon},
         {IDC_PASSWORDS_AND_AUTOFILL_MENU, &kLeoKeyIcon},
         {IDC_RECENT_TABS_MENU, &kLeoHistoryIcon},

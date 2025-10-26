@@ -8,14 +8,17 @@
 
 #include <memory>
 
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/psst/buildflags/buildflags.h"
 #include "chrome/browser/ui/tabs/public/tab_features.h"
 
 class Profile;
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
 namespace ai_chat {
 class TabDataWebContentsObserver;
 }
+#endif
 
 #if BUILDFLAG(ENABLE_PSST)
 namespace psst {
@@ -42,7 +45,9 @@ class BraveTabFeatures : public TabFeatures {
 #endif
 
  private:
+#if BUILDFLAG(ENABLE_AI_CHAT)
   std::unique_ptr<ai_chat::TabDataWebContentsObserver> tab_data_observer_;
+#endif
 #if BUILDFLAG(ENABLE_PSST)
   std::unique_ptr<psst::PsstTabWebContentsObserver> psst_web_contents_observer_;
 #endif

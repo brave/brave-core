@@ -8,13 +8,17 @@
 #include "brave/browser/ui/webui/brave_browser_command/brave_browser_command_handler.h"
 
 #include "base/containers/contains.h"
-#include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_education/education_urls.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/browser/ai_chat/ai_chat_service_factory.h"
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/brave_vpn/vpn_utils.h"
@@ -40,10 +44,12 @@ bool CanShowVPNBubble(Profile* profile) {
 #endif
 }
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
 bool CanShowAIChat(Profile* profile) {
   return ai_chat::AIChatServiceFactory::GetForBrowserContext(profile) !=
          nullptr;
 }
+#endif
 
 }  // namespace
 
@@ -80,9 +86,11 @@ void BraveBrowserCommandHandler::CanExecuteCommand(
     case brave_browser_command::mojom::Command::kOpenVPNOnboarding:
       can_execute = CanShowVPNBubble(profile_);
       break;
+#if BUILDFLAG(ENABLE_AI_CHAT)
     case brave_browser_command::mojom::Command::kOpenAIChat:
       can_execute = CanShowAIChat(profile_);
       break;
+#endif
   }
   std::move(callback).Run(can_execute);
 }
@@ -111,9 +119,11 @@ void BraveBrowserCommandHandler::ExecuteCommand(
       std::move(callback).Run(false);
       return;
 #endif
+#if BUILDFLAG(ENABLE_AI_CHAT)
     case brave_browser_command::mojom::Command::kOpenAIChat:
       delegate_->OpenAIChat();
       break;
+#endif
   }
 
   std::move(callback).Run(true);

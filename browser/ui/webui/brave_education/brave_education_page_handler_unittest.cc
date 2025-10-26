@@ -10,6 +10,7 @@
 #include "base/test/bind.h"
 #include "base/test/test_future.h"
 #include "brave/browser/ui/webui/brave_browser_command/brave_browser_command_handler.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_education/education_urls.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "chrome/test/base/testing_browser_process.h"
@@ -35,7 +36,9 @@ class TestDelegate : public BraveBrowserCommandHandler::Delegate {
 
   void OpenRewardsPanel() override { add_action_.Run("open-rewards-panel"); }
   void OpenVPNPanel() override { add_action_.Run("open-vpn-panel"); }
+#if BUILDFLAG(ENABLE_AI_CHAT)
   void OpenAIChat() override { add_action_.Run("open-ai-chat"); }
+#endif
 
  private:
   AddActionCallback add_action_;
@@ -63,7 +66,10 @@ class BraveEducationPageHandlerTest : public testing::Test {
         {brave_browser_command::mojom::Command::kOpenRewardsOnboarding,
          brave_browser_command::mojom::Command::kOpenWalletOnboarding,
          brave_browser_command::mojom::Command::kOpenVPNOnboarding,
-         brave_browser_command::mojom::Command::kOpenAIChat});
+#if BUILDFLAG(ENABLE_AI_CHAT)
+         brave_browser_command::mojom::Command::kOpenAIChat
+#endif
+        });
 
     page_handler_ = std::make_unique<BraveBrowserCommandHandler>(
         remote_.BindNewPipeAndPassReceiver(), profile, supported_commands,
@@ -119,6 +125,7 @@ TEST_F(BraveEducationPageHandlerTest, VPNCommandsExecuted) {
 #endif
 }
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
 TEST_F(BraveEducationPageHandlerTest, ChatCommandsExecuted) {
   auto& handler = CreateHandler();
   base::test::TestFuture<bool> future;
@@ -129,6 +136,7 @@ TEST_F(BraveEducationPageHandlerTest, ChatCommandsExecuted) {
   ASSERT_TRUE(future.Get());
   EXPECT_EQ(actions()[0], "open-ai-chat");
 }
+#endif
 
 TEST_F(BraveEducationPageHandlerTest, OffTheRecordProfile) {
   auto* otr_profile = profile().GetOffTheRecordProfile(
@@ -158,9 +166,11 @@ TEST_F(BraveEducationPageHandlerTest, OffTheRecordProfile) {
       future.GetCallback());
   ASSERT_FALSE(future.Get());
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
   handler->CanExecuteCommand(brave_browser_command::mojom::Command::kOpenAIChat,
                              future.GetCallback());
   ASSERT_FALSE(future.Get());
+#endif
 
   EXPECT_TRUE(actions().empty());
 }

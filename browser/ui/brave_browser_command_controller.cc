@@ -15,15 +15,12 @@
 #include "base/notreached.h"
 #include "base/types/to_address.h"
 #include "brave/app/brave_command_ids.h"
-#include "brave/browser/ai_chat/ai_chat_utils.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/tabs/features.h"
-#include "brave/components/ai_chat/core/browser/utils.h"
-#include "brave/components/ai_chat/core/common/features.h"
-#include "brave/components/ai_chat/core/common/pref_names.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/core/rewards_util.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
@@ -50,6 +47,13 @@
 #include "components/prefs/pref_service.h"
 #include "components/sync/base/command_line_switches.h"
 #include "content/public/browser/web_contents.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/browser/ai_chat/ai_chat_utils.h"
+#include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/ai_chat/core/common/pref_names.h"
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
@@ -233,6 +237,7 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   UpdateCommandForWaybackMachine();
   pref_change_registrar_.Init(browser_->profile()->GetPrefs());
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
   UpdateCommandForAIChat();
   if (ai_chat::IsAllowedForContext(browser_->profile(), false)) {
     pref_change_registrar_.Add(
@@ -241,6 +246,7 @@ void BraveBrowserCommandController::InitBraveCommandState() {
             &BraveBrowserCommandController::UpdateCommandForAIChat,
             base::Unretained(this)));
   }
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   if (brave_vpn::IsAllowedForContext(browser_->profile())) {
@@ -352,6 +358,7 @@ void BraveBrowserCommandController::UpdateCommandForSidebar() {
   }
 }
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
 void BraveBrowserCommandController::UpdateCommandForAIChat() {
   // AI Chat command implementation needs sidebar
   bool allowed_for_context = ai_chat::IsAllowedForContext(browser_->profile());
@@ -361,6 +368,7 @@ void BraveBrowserCommandController::UpdateCommandForAIChat() {
       IDC_OPEN_FULL_PAGE_CHAT,
       ai_chat::features::IsAIChatHistoryEnabled() && allowed_for_context);
 }
+#endif
 
 void BraveBrowserCommandController::UpdateCommandForBraveVPN() {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -537,12 +545,14 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
     case IDC_SHOW_BRAVE_WALLET:
       brave::ShowBraveWallet(&*browser_);
       break;
+#if BUILDFLAG(ENABLE_AI_CHAT)
     case IDC_TOGGLE_AI_CHAT:
       brave::ToggleAIChat(&*browser_);
       break;
     case IDC_OPEN_FULL_PAGE_CHAT:
       brave::ShowFullpageChat(&*browser_);
       break;
+#endif
     case IDC_SPEEDREADER_ICON_ONCLICK:
       brave::MaybeDistillAndShowSpeedreaderBubble(&*browser_);
       break;

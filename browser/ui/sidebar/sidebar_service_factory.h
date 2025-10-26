@@ -9,6 +9,7 @@
 #include <memory>
 #include <vector>
 
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/sidebar/browser/sidebar_item.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -35,7 +36,9 @@ class SidebarServiceFactory : public BrowserContextKeyedServiceFactory {
 
   // This is the default display order
   static constexpr SidebarItem::BuiltInItemType kDefaultBuiltInItemTypes[] = {
+#if BUILDFLAG(ENABLE_AI_CHAT)
       SidebarItem::BuiltInItemType::kChatUI,
+#endif
       SidebarItem::BuiltInItemType::kBraveTalk,
       SidebarItem::BuiltInItemType::kWallet,
       SidebarItem::BuiltInItemType::kBookmarks,

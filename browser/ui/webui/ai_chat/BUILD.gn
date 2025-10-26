@@ -5,6 +5,8 @@
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 
+assert(enable_ai_chat)
+
 source_set("ai_chat") {
   sources = [
     "ai_chat_ui.cc",

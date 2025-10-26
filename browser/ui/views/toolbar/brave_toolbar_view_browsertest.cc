@@ -11,12 +11,9 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/tabs/brave_split_tab_menu_model.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
-#include "brave/browser/ui/views/toolbar/ai_chat_button.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/browser/ui/views/toolbar/wallet_button.h"
-#include "brave/components/ai_chat/core/browser/utils.h"
-#include "brave/components/ai_chat/core/common/features.h"
-#include "brave/components/ai_chat/core/common/pref_names.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -62,6 +59,13 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/views/view.h"
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/browser/ui/views/toolbar/ai_chat_button.h"
+#include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/ai_chat/core/common/pref_names.h"
+#endif
+
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/tor/tor_profile_manager.h"
 #endif
@@ -104,6 +108,7 @@ class BraveToolbarViewTest : public InProcessBrowserTest {
   }
 #endif
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
   void BlockAIChatByPolicy(bool value) {
     policy::PolicyMap policies;
     policies.Set(policy::key::kBraveAIChatEnabled,
@@ -113,6 +118,7 @@ class BraveToolbarViewTest : public InProcessBrowserTest {
     EXPECT_EQ(ai_chat::IsAIChatEnabled(browser()->profile()->GetPrefs()),
               !value);
   }
+#endif
 
   void Init(Browser* browser) {
     BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
@@ -145,6 +151,7 @@ class BraveToolbarViewTest : public InProcessBrowserTest {
     return wallet_button->GetVisible();
   }
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
   bool is_ai_chat_button_shown(Browser* browser) {
     BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
     toolbar_view_ = static_cast<BraveToolbarView*>(browser_view->toolbar());
@@ -154,6 +161,7 @@ class BraveToolbarViewTest : public InProcessBrowserTest {
     }
     return button->GetVisible();
   }
+#endif
 
   AvatarToolbarButton* GetAvatarToolbarButton(Browser* browser) {
     return BrowserView::GetBrowserViewForBrowser(browser)
@@ -184,6 +192,7 @@ class BraveToolbarViewTest_VPNEnabled : public BraveToolbarViewTest {
 };
 #endif
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
 class BraveToolbarViewTest_AIChatEnabled : public BraveToolbarViewTest {
  public:
   BraveToolbarViewTest_AIChatEnabled() {
@@ -203,6 +212,7 @@ class BraveToolbarViewTest_AIChatDisabled : public BraveToolbarViewTest {
  protected:
   base::test::ScopedFeatureList scoped_feature_list_;
 };
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest_VPNEnabled, VPNButtonVisibility) {
@@ -234,6 +244,7 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest_VPNEnabled, VPNButtonVisibility) {
 }
 #endif
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
 IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest_AIChatEnabled,
                        AIChatButtonOpenTargetTest) {
   auto* prefs = browser()->profile()->GetPrefs();
@@ -331,6 +342,7 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest_AIChatDisabled,
   // Button is always hidden when feature flag is disabled
   EXPECT_FALSE(is_ai_chat_button_shown(browser()));
 }
+#endif
 
 IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest, ToolbarDividerNotShownTest) {
   // As we don't use divider in toolbar, it should be null always.

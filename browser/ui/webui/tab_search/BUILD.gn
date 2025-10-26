@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+
 # Curerntly this target is desktop only because chromium's
 # tab_search_page_handler is desktop only.
 assert(!is_android)
@@ -10,16 +12,12 @@ assert(!is_android)
 source_set("browser_tests") {
   testonly = true
 
-  sources = [ "tab_search_page_handler_browsertest.cc" ]
+  sources = []
 
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
   deps = [
     "//base",
-    "//brave/browser/ai_chat",
-    "//brave/components/ai_chat/core/browser",
-    "//brave/components/ai_chat/core/browser:test_support",
-    "//brave/components/ai_chat/core/common/mojom",
     "//brave/components/resources:strings_grit",
     "//chrome/browser/ui",
     "//chrome/browser/ui:browser_navigator_params_headers",
@@ -28,4 +26,15 @@ source_set("browser_tests") {
     "//testing/gtest",
     "//ui/base",
   ]
+
+  if (enable_ai_chat) {
+    sources += [ "tab_search_page_handler_browsertest.cc" ]
+
+    deps += [
+      "//brave/browser/ai_chat",
+      "//brave/components/ai_chat/core/browser",
+      "//brave/components/ai_chat/core/browser:test_support",
+      "//brave/components/ai_chat/core/common/mojom",
+    ]
+  }
 }

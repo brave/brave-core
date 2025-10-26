@@ -13,8 +13,12 @@
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/browser/search_engines/search_engine_tracker.h"
-#include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
+#endif
 #include "brave/components/brave_search_conversion/p3a.h"
 #include "brave/components/brave_search_conversion/utils.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
@@ -78,6 +82,7 @@ BraveOmniboxClientImpl::BraveOmniboxClientImpl(LocationBar* location_bar,
   // Record initial search count p3a value.
   RecordSearchEventP3A();
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
   auto* profile_metrics =
       misc_metrics::ProfileMiscMetricsServiceFactory::GetServiceForContext(
           profile);
@@ -85,6 +90,7 @@ BraveOmniboxClientImpl::BraveOmniboxClientImpl(LocationBar* location_bar,
     ai_chat_metrics_ = profile_metrics->GetAIChatMetrics();
     CHECK(ai_chat_metrics_);
   }
+#endif
 
   pref_change_registrar_.Init(profile_->GetPrefs());
   pref_change_registrar_.Add(
@@ -139,9 +145,11 @@ void BraveOmniboxClientImpl::OnAutocompleteAccept(
     if (search_engine_tracker_ != nullptr) {
       search_engine_tracker_->RecordLocationBarQuery();
     }
+#if BUILDFLAG(ENABLE_AI_CHAT)
     if (ai_chat_metrics_) {
       ai_chat_metrics_->RecordOmniboxSearchQuery();
     }
+#endif
   }
   ChromeOmniboxClient::OnAutocompleteAccept(
       destination_url, post_content, disposition, transition, match_type,

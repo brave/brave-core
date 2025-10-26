@@ -11,6 +11,7 @@
 #include "base/containers/fixed_flat_set.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
@@ -264,6 +265,8 @@ TEST_F(ListActionModifiersUnitTest,
 }
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
+
 TEST_F(ListActionModifiersUnitTest,
        ApplyBraveSpecificModifications_AIChatShouldNotBeAddedWhenDisabled) {
   // AI Chat should be added by default(AI Chat enabled by default)
@@ -288,6 +291,8 @@ TEST_F(ListActionModifiersUnitTest,
                         &side_panel::customize_chrome::mojom::Action::id);
   EXPECT_EQ(ai_chat_action_it, modified_actions.end());
 }
+
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 TEST_F(ListActionModifiersUnitTest,
        ApplyBraveSpecificModifications_WalletShouldNotBeAddedWhenDisabled) {
@@ -347,7 +352,9 @@ TEST_F(ListActionModifiersUnitTest,
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   ASSERT_TRUE(brave_vpn::IsBraveVPNEnabled(web_contents_->GetBrowserContext()));
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
+#if BUILDFLAG(ENABLE_AI_CHAT)
   ASSERT_TRUE(ai_chat::IsAIChatEnabled(prefs()));
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
   ASSERT_TRUE(brave_wallet::IsNativeWalletEnabled());
   ASSERT_TRUE(brave_rewards::IsSupportedForProfile(
       Profile::FromBrowserContext(web_contents_->GetBrowserContext())));
@@ -362,7 +369,9 @@ TEST_F(ListActionModifiersUnitTest,
           EqId(ActionId::kForward), EqId(ActionId::kShowAddBookmarkButton),
           EqId(ActionId::kNewIncognitoWindow), EqId(ActionId::kShowSidePanel),
           EqId(ActionId::kTabSearch), EqId(ActionId::kShowWallet),
+#if BUILDFLAG(ENABLE_AI_CHAT)
           EqId(ActionId::kShowAIChat),
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
           EqId(ActionId::kShowVPN),
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
