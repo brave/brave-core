@@ -4,6 +4,7 @@
 # you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import("//brave/browser/shell_integrations/buildflags/buildflags.gni")
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/containers/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
@@ -45,13 +46,6 @@ brave_settings_web_component_files = [
   "brave_sync_page/brave_sync_setup.ts",
   "brave_sync_page/brave_sync_subpage.ts",
   "brave_system_page/brave_system_page_index.ts",
-  "brave_leo_assistant_page/brave_leo_assistant_page.ts",
-  "brave_leo_assistant_page/brave_leo_assistant_page_index.ts",
-  "brave_leo_assistant_page/customization_subpage.ts",
-  "brave_leo_assistant_page/memory_section.ts",
-  "brave_leo_assistant_page/model_list_section.ts",
-  "brave_leo_assistant_page/model_config_ui.ts",
-  "brave_leo_assistant_page/personalization.ts",
   "brave_survey_panelist_page/brave_survey_panelist_page.ts",
   "brave_wallet_page/add_wallet_network_dialog.ts",
   "brave_wallet_page/brave_wallet_page.ts",
@@ -138,7 +132,6 @@ brave_settings_ts_files = [
   "brave_data_collection_page/brave_data_collection_browser_proxy.ts",
   "brave_default_extensions_page/brave_default_extensions_browser_proxy.ts",
   "brave_new_tab_page/brave_new_tab_browser_proxy.ts",
-  "brave_leo_assistant_page/brave_leo_assistant_browser_proxy.ts",
   "brave_privacy_page/brave_privacy_page_browser_proxy.ts",
   "brave_reset_page/brave_reset_profile_dialog_behavior.ts",
   "brave_routes.ts",
@@ -180,6 +173,20 @@ if (enable_tor) {
   brave_settings_ts_files += [ "brave_tor_page/brave_tor_browser_proxy.ts" ]
 }
 
+if (enable_ai_chat) {
+  brave_settings_web_component_files += [
+    "brave_leo_assistant_page/brave_leo_assistant_page.ts",
+    "brave_leo_assistant_page/brave_leo_assistant_page_index.ts",
+    "brave_leo_assistant_page/customization_subpage.ts",
+    "brave_leo_assistant_page/memory_section.ts",
+    "brave_leo_assistant_page/model_list_section.ts",
+    "brave_leo_assistant_page/model_config_ui.ts",
+    "brave_leo_assistant_page/personalization.ts",
+  ]
+  brave_settings_ts_files +=
+      [ "brave_leo_assistant_page/brave_leo_assistant_browser_proxy.ts" ]
+}
+
 brave_settings_ts_definitions =
     [ "//brave/components/definitions/chrome_brave_theme.d.ts" ]
 
@@ -187,16 +194,6 @@ brave_settings_ts_extra_deps =
     [ "//brave/browser/resources/settings:preprocess" ]
 
 brave_settings_mojo_files = [
-  "$root_gen_dir/brave/components/ai_chat/core/common/mojom/settings_helper.mojom-webui.ts",
-  "$root_gen_dir/brave/components/ai_chat/core/common/mojom/ai_chat.mojom-webui.ts",
-  "$root_gen_dir/brave/components/ai_chat/core/common/mojom/bookmarks.mojom-webui.ts",
-
-  # ai_chat.mojom depends on these mojom files, even though they aren't used directly on settings
-  "$root_gen_dir/brave/components/ai_chat/core/common/mojom/common.mojom-webui.ts",
-  "$root_gen_dir/brave/components/ai_chat/core/common/mojom/customization_settings.mojom-webui.ts",
-  "$root_gen_dir/brave/components/ai_chat/core/common/mojom/tab_tracker.mojom-webui.ts",
-  "$root_gen_dir/brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom-webui.ts",
-
   "$root_gen_dir/brave/components/brave_account/mojom/brave_account_settings_handler.mojom-webui.ts",
   "$root_gen_dir/brave/components/brave_origin/common/mojom/brave_origin_settings.mojom-webui.ts",
 
@@ -207,7 +204,6 @@ brave_settings_mojo_files = [
 ]
 
 brave_settings_mojo_files_deps = [
-  "//brave/components/ai_chat/core/common/mojom:mojom_ts__generator",
   "//brave/components/brave_account/mojom:mojom_ts__generator",
   "//brave/components/brave_origin/common/mojom:mojom_ts__generator",
 
@@ -215,6 +211,23 @@ brave_settings_mojo_files_deps = [
   "//brave/app:brave_generated_resources_grit",
   "//brave/components/resources:strings",
 ]
+
+if (enable_ai_chat) {
+  brave_settings_mojo_files += [
+    "$root_gen_dir/brave/components/ai_chat/core/common/mojom/settings_helper.mojom-webui.ts",
+    "$root_gen_dir/brave/components/ai_chat/core/common/mojom/ai_chat.mojom-webui.ts",
+    "$root_gen_dir/brave/components/ai_chat/core/common/mojom/bookmarks.mojom-webui.ts",
+
+    # ai_chat.mojom depends on these mojom files, even though they aren't used directly on settings
+    "$root_gen_dir/brave/components/ai_chat/core/common/mojom/common.mojom-webui.ts",
+    "$root_gen_dir/brave/components/ai_chat/core/common/mojom/customization_settings.mojom-webui.ts",
+    "$root_gen_dir/brave/components/ai_chat/core/common/mojom/tab_tracker.mojom-webui.ts",
+    "$root_gen_dir/brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom-webui.ts",
+  ]
+
+  brave_settings_mojo_files_deps +=
+      [ "//brave/components/ai_chat/core/common/mojom:mojom_ts__generator" ]
+}
 
 brave_settings_ts_deps = [
   "//third_party/lit/v3_0:build_ts",

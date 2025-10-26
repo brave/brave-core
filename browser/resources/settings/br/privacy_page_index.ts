@@ -139,6 +139,7 @@ RegisterPolymerTemplateModifications({
               </site-settings-localhost-page>`)
     }
 
+    // <if expr="enable_ai_chat">
     if (loadTimeData.getBoolean('isOpenAIChatFromBraveSearchEnabled')) {
       viewManager.appendChild(html`
       <site-settings-brave-ai-page
@@ -180,6 +181,7 @@ RegisterPolymerTemplateModifications({
               </site-settings-cardano-page>`)
         }
     }
+    // </if>
 
     // Move the safety hub to the end of the page
     const safetyHubTemplate = templateContent.querySelector(

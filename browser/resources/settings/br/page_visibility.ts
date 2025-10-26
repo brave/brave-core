@@ -92,9 +92,11 @@ function getPageVisibility () {
     // custom properties
     braveSync: !loadTimeData.getBoolean('isSyncDisabled'),
     braveWallet: loadTimeData.getBoolean('isBraveWalletAllowed'),
+    // <if expr="enable_ai_chat">
     leoAssistant: loadTimeData.getBoolean('isLeoAssistantAllowed'),
     leoPersonalization: loadTimeData.getBoolean('isLeoAssistantAllowed'),
     leoModels: loadTimeData.getBoolean('isLeoAssistantAllowed'),
+    // </if>
     surveyPanelist: loadTimeData.getBoolean('isSurveyPanelistAllowed'),
     // <if expr="enable_containers">
     containers: loadTimeData.getBoolean('isContainersEnabled'),

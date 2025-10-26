@@ -297,6 +297,7 @@ RegisterPolymerTemplateModifications({
     }
 
     // Add leo item
+// <if expr="enable_ai_chat">
     const leoAssistantEl = createMenuElement(
       loadTimeData.getString('leoAssistant'),
       '/leo-ai',
@@ -308,6 +309,7 @@ RegisterPolymerTemplateModifications({
     } else if (privacyEl) {
       privacyEl.insertAdjacentElement('afterend', leoAssistantEl)
     }
+// </if>
 
     // Add Sync item
     const syncEl = createMenuElement(
@@ -316,7 +318,16 @@ RegisterPolymerTemplateModifications({
       'product-sync',
       'braveSync',
     )
+// <if expr="enable_ai_chat">
     leoAssistantEl.insertAdjacentElement('afterend', syncEl)
+// </if>
+// <if expr="not enable_ai_chat">
+    if (web3El) {
+      web3El.insertAdjacentElement('afterend', syncEl)
+    } else if (privacyEl) {
+      privacyEl.insertAdjacentElement('afterend', syncEl)
+    }
+// </if>
 
     // Add search item
     const searchEl = getMenuElement(templateContent, '/search')

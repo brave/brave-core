@@ -5,6 +5,7 @@
 
 import("//brave/browser/shell_integrations/buildflags/buildflags.gni")
 import("//brave/build/config.gni")
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/containers/buildflags/buildflags.gni")
@@ -82,6 +83,7 @@ generate_grd("build_grd") {
 # compile (etc.) from that directory.
 preprocess_if_expr("preprocess") {
   defines = [
+    "enable_ai_chat=$enable_ai_chat",
     "enable_tor=$enable_tor",
     "enable_brave_wayback_machine=$enable_brave_wayback_machine",
     "enable_brave_vpn=$enable_brave_vpn",
