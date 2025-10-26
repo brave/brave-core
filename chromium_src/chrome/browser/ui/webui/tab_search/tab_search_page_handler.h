@@ -7,7 +7,11 @@
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_WEBUI_TAB_SEARCH_TAB_SEARCH_PAGE_HANDLER_H_
 
 #include "base/memory/weak_ptr.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 class SessionID;
 
@@ -25,12 +29,14 @@ using TabSearchPageHandler_BraveImpl = TabSearchPageHandler;
 #undef TabSearchPageHandler
 #undef MaybeShowUI
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
 namespace ai_chat {
 struct Tab;
 namespace mojom {
 enum class APIError;
 }  // namespace mojom
 }  // namespace ai_chat
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 // Overrides TabSearchPageHandler to provide Brave-specific functionality.
 // See tab_search.mojom in chromium_src for our extended interface. Currently
@@ -62,13 +68,16 @@ class TabSearchPageHandler : public TabSearchPageHandler_ChromiumImpl {
   void SetTabFocusEnabled() override;
   void GetTabFocusShowFRE(GetTabFocusShowFRECallback callback) override;
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
   void SetOriginalTabsInfoByWindowForTesting(
       const base::flat_map<SessionID, std::vector<TabInfo>>&
           original_tabs_info_by_window) {
     original_tabs_info_by_window_ = original_tabs_info_by_window;
   }
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
  private:
+#if BUILDFLAG(ENABLE_AI_CHAT)
   void OnGetFocusTabs(const std::string& topic,
                       GetFocusTabsCallback callback,
                       base::expected<std::vector<std::string>,
@@ -88,6 +97,7 @@ class TabSearchPageHandler : public TabSearchPageHandler_ChromiumImpl {
   base::flat_map<SessionID, std::vector<TabInfo>> original_tabs_info_by_window_;
 
   base::WeakPtrFactory<TabSearchPageHandler> weak_ptr_factory_{this};
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 };
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_WEBUI_TAB_SEARCH_TAB_SEARCH_PAGE_HANDLER_H_

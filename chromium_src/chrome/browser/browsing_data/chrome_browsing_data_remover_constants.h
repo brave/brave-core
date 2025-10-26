@@ -8,13 +8,17 @@
 
 #include <chrome/browser/browsing_data/chrome_browsing_data_remover_constants.h>  // IWYU pragma: export
 
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+
 namespace chrome_browsing_data_remover {
 constexpr DataType GetBraveDataTypeValue(const int index) {
   return DataType(1) << (63 - index);
 }
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
 inline constexpr DataType DATA_TYPE_BRAVE_LEO_HISTORY =
     GetBraveDataTypeValue(0);
+#endif
 
 }  // namespace chrome_browsing_data_remover
 
