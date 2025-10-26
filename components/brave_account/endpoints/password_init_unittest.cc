@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_account/endpoints/password_init.h"
 
-#include <optional>
 #include <string>
 
 #include "base/no_destructor.h"

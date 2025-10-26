@@ -55,11 +55,12 @@ struct NetworkError {
 
 struct ParseError {
   std::string error_message;
+
   bool operator==(const ParseError&) const = default;
 };
 
-template <concepts::Error ErrorType>
-using Error = std::variant<NetworkError, ParseError, ErrorType>;
+template <concepts::Error EndpointErrorType>
+using Error = std::variant<NetworkError, ParseError, EndpointErrorType>;
 
 template <concepts::Endpoint EndpointType>
 using Reply = base::expected<typename EndpointType::Response,

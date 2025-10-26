@@ -219,7 +219,7 @@ void BraveAccountService::OnRegisterInitialize(
         }
 
         std::string encrypted_verification_token =
-            Encrypt(response.verification_token, encrypt_callback_);
+            Encrypt(response.verification_token);
         if (encrypted_verification_token.empty()) {
           return base::unexpected(mojom::RegisterError::New(
               std::nullopt,
@@ -237,13 +237,6 @@ void BraveAccountService::OnRegisterInitialize(
       [&](auto error) {
         return mojom::RegisterError::New(response_code, std::nullopt);
       });
-            std::string encrypted_verification_token =
-                Encrypt(response->verification_token);
-            if (encrypted_verification_token.empty()) {
-              return base::unexpected(mojom::RegisterError::New(
-                  std::nullopt, mojom::RegisterErrorCode::
-                                    kVerificationTokenEncryptionFailed));
-            }
 
   std::move(callback).Run(std::move(result));
 }
@@ -275,14 +268,11 @@ void BraveAccountService::OnRegisterFinalize(
 
 std::optional<mojom::RegisterErrorCode> BraveAccountService::TransformError(
     Error error) {
-  const auto error_code = static_cast<mojom::RegisterErrorCode>(error.code);
-    std::optional<Error> error) {
-  if (!error || !error->code.is_int()) {
+  if (!error.code.is_int()) {
     return std::nullopt;
   }
-
   const auto error_code =
-      static_cast<mojom::RegisterErrorCode>(error->code.GetInt());
+      static_cast<mojom::RegisterErrorCode>(error.code.GetInt());
   return mojom::IsKnownEnumValue(error_code) ? std::optional(error_code)
                                              : std::nullopt;
 }
@@ -339,19 +329,18 @@ void BraveAccountService::VerifyResult(
 
 void BraveAccountService::OnVerifyResult(
     int response_code,
-    base::expected<std::optional<VerifyResult::Response>,
-                   std::optional<VerifyResult::Error>> reply) {
-  const auto authentication_token = [&] {
-    auto response = std::move(reply).value_or(std::nullopt);
-
-    if (auto* auth_token =
-            response ? response->auth_token.GetIfString() : nullptr;
-        !auth_token || auth_token->empty()) {
-      return std::string();
-    }
-
-    return std::move(response->auth_token).TakeString();
-  }();
+    endpoint_client::Reply<endpoints::VerifyResult> reply) {
+  const auto authentication_token =
+      endpoint_client::functions::TransformReply(
+          std::move(reply),
+          [&](auto response) -> base::expected<std::string, bool> {
+            if (auto* auth_token = response.auth_token.GetIfString();
+                !auth_token || auth_token->empty()) {
+              return base::unexpected(false);
+            }
+            return std::move(response.auth_token).TakeString();
+          })
+          .value_or(std::string());
 
   if (!authentication_token.empty()) {
     // We stop polling regardless of encryption success,
