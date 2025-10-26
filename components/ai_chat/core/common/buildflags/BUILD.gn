@@ -20,6 +20,7 @@ if (is_official_build) {
 buildflag_header("buildflags") {
   header = "buildflags.h"
   flags = [
+    "ENABLE_AI_CHAT=$enable_ai_chat",
     "SERVICE_KEY_AICHAT=\"$service_key_aichat\"",
     "ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE=$enable_brave_ai_chat_agent_profile",
   ]
