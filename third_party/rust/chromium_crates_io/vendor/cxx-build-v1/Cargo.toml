@@ -24,7 +24,7 @@ is_placeholder = true
 version = "^1.0.101"
 default_features = false
 [dependencies.codespan-reporting]
-version = "^0.12"
+version = "^0.13"
 default_features = false
 [dependencies.indexmap]
 version = "^2.9.0"

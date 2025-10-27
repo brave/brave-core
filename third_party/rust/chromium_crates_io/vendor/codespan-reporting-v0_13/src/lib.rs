@@ -6,6 +6,6 @@
 // by `tools/crates/run_gnrt.py vendor`. Do not edit!
 //
 // This is an empty placeholder that has replaced the
-// `codespan-reporting-0.12.0` crate.
+// `codespan-reporting-0.13.1` crate.
 //
 // See `//tools/crates/gnrt/removed_crate.md` to learn more.
