@@ -3,13 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "base/feature_list.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/email_aliases/features.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/chrome_pages.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
-#include "chrome/common/webui_url_constants.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test.h"
@@ -65,10 +63,8 @@ IN_PROC_BROWSER_TEST_P(BraveSettingsEmailAliasesRowBrowserTest,
   const bool enabled = FeatureEnabled();
 
   // Email Aliases link row should exist only if the feature is enabled.
-  EXPECT_EQ(enabled, content::EvalJs(contents(), R"JS(
-    !!window.emailAliasesRow
-  )JS")
-                         .ExtractBool());
+  EXPECT_EQ(enabled,
+            content::EvalJs(contents(), R"JS(!!window.emailAliasesRow)JS"));
 
   if (!enabled) {
     return;
