@@ -6,18 +6,35 @@
 #include <memory>
 
 #include "base/json/json_reader.h"
+#include "base/path_service.h"
+#include "base/run_loop.h"
+#include "base/test/bind.h"
+#include "base/test/run_until.h"
+#include "brave/browser/email_aliases/email_aliases_service_factory.h"
+#include "brave/browser/ui/email_aliases/email_aliases_controller.h"
 #include "brave/browser/ui/webui/brave_settings_ui.h"
+#include "brave/components/constants/brave_paths.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/email_aliases/email_aliases_api.h"
+#include "brave/components/email_aliases/email_aliases_service.h"
 #include "brave/components/email_aliases/features.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/renderer_context_menu/render_view_context_menu.h"
+#include "chrome/browser/renderer_context_menu/render_view_context_menu_test_util.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
+#include "chrome/browser/ui/views/bubble/webui_bubble_manager.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "content/public/browser/render_frame_host.h"
+#include "content/public/browser/render_view_host.h"
+#include "content/public/browser/render_widget_host.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
+#include "content/public/test/test_navigation_observer.h"
 #include "services/network/public/cpp/network_switches.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -47,11 +64,11 @@ std::unique_ptr<net::test_server::HttpResponse> AuthenticationHandler(
     if (data->email == kSuccessEmail) {
       response->set_code(net::HTTP_OK);
       response->set_content_type("application/json");
-      response->set_content(R"({"verificationToken", "success_token"})");
+      response->set_content(R"({"verificationToken": "success_token"})");
     } else if (data->email == kFailEmail) {
       response->set_code(net::HTTP_OK);
       response->set_content_type("application/json");
-      response->set_content(R"({"verificationToken", "fail_token"})");
+      response->set_content(R"({"verificationToken": "fail_token"})");
 
     } else if (data->email == kForbiddenEmail) {
       response->set_code(net::HTTP_FORBIDDEN);
@@ -88,17 +105,17 @@ std::unique_ptr<net::test_server::HttpResponse> SessionHandler(
       session.service = "email-aliases";
       session.verified = true;
       response->set_content_type("application/json");
-      response->set_content(session.ToValue().DebugString());
+      response->set_content(*base::WriteJson(session.ToValue()));
     } else if (token == "fail_token") {
       response->set_code(net::HTTP_UNAUTHORIZED);
       email_aliases::ErrorResponse error;
       response->set_content_type("application/json");
-      response->set_content(error.ToValue().DebugString());
+      response->set_content(*base::WriteJson(error.ToValue()));
     } else {
       response->set_code(net::HTTP_BAD_REQUEST);
       email_aliases::ErrorResponse error;
       response->set_content_type("application/json");
-      response->set_content(error.ToValue().DebugString());
+      response->set_content(*base::WriteJson(error.ToValue()));
     }
     return response;
   }
@@ -106,12 +123,19 @@ std::unique_ptr<net::test_server::HttpResponse> SessionHandler(
   return nullptr;
 }
 
+void ExecuteNewEmailAliasCommand(RenderViewContextMenu* context_menu,
+                                 base::OnceClosure quit_closure) {
+  // Calls EngineConsumer::GenerateRewriteSuggestion
+  context_menu->ExecuteCommand(IDC_NEW_EMAIL_ALIAS, 0);
+  context_menu->Cancel();
+  std::move(quit_closure).Run();
+}
+
 }  // namespace
 
 class EmailAliasesBrowserTest : public InProcessBrowserTest {
  public:
   EmailAliasesBrowserTest() {
-    feature_list_.InitAndEnableFeature(email_aliases::features::kEmailAliases);
     BraveSettingsUI::ShouldExposeElementsForTesting() = true;
   }
 
@@ -124,6 +148,8 @@ class EmailAliasesBrowserTest : public InProcessBrowserTest {
     https_server_.RegisterRequestHandler(
         base::BindRepeating(&AuthenticationHandler));
     https_server_.RegisterRequestHandler(base::BindRepeating(&SessionHandler));
+    https_server_.ServeFilesFromDirectory(
+        base::PathService::CheckedGet(brave::DIR_TEST_DATA));
 
     https_server_.StartAcceptingConnections();
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
@@ -163,7 +189,7 @@ class EmailAliasesBrowserTest : public InProcessBrowserTest {
     return ActiveWebContents();
   }
 
-  void Wait(const std::string& id) {
+  void Wait(const std::string& id, content::WebContents* contents = nullptr) {
     constexpr const char kScript[] = R"js(
       (async () => {
         let waiter = () => {
@@ -176,11 +202,13 @@ class EmailAliasesBrowserTest : public InProcessBrowserTest {
       })();
     )js";
 
-    ASSERT_EQ(true, content::EvalJs(ActiveWebContents(),
+    ASSERT_EQ(true, content::EvalJs((contents ? contents : ActiveWebContents()),
                                     content::JsReplace(kScript, id)));
   }
 
-  void SetText(const std::string& id, const std::string& text) {
+  void SetText(const std::string& id,
+               const std::string& text,
+               content::WebContents* contents = nullptr) {
     constexpr char kSetText[] = R"js(
       (() => {
         const element = window.testing.emailAliases.getElementById($1);
@@ -190,31 +218,85 @@ class EmailAliasesBrowserTest : public InProcessBrowserTest {
         return true;
       })();
     )js";
-    ASSERT_EQ(true, content::EvalJs(ActiveWebContents(),
+    ASSERT_EQ(true, content::EvalJs((contents ? contents : ActiveWebContents()),
                                     content::JsReplace(kSetText, id, text)));
   }
 
-  void Click(const std::string& id) {
+  void Click(const std::string& id, content::WebContents* contents = nullptr) {
     constexpr char kSetText[] = R"js(
       const element = window.testing.emailAliases.getElementById($1);
       element.click();
     )js";
-    ASSERT_TRUE(
-        content::ExecJs(ActiveWebContents(), content::JsReplace(kSetText, id)));
+    ASSERT_TRUE(content::ExecJs((contents ? contents : ActiveWebContents()),
+                                content::JsReplace(kSetText, id)));
+  }
+
+  EmailAliasesService* email_aliases_service() {
+    return EmailAliasesServiceFactory::GetServiceForProfile(
+        browser()->profile());
+  }
+
+  void RunContextMenuOn(const std::string& element_id) {
+    const int x =
+        content::EvalJs(ActiveWebContents(),
+                        content::JsReplace("getElementX($1)", element_id))
+            .ExtractInt();
+    const int y =
+        content::EvalJs(ActiveWebContents(),
+                        content::JsReplace("getElementY($1)", element_id))
+            .ExtractInt();
+
+    base::RunLoop loop;
+    RenderViewContextMenu::RegisterMenuShownCallbackForTesting(
+        base::BindLambdaForTesting([&](RenderViewContextMenu* context_menu) {
+          base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
+              FROM_HERE, base::BindOnce(&ExecuteNewEmailAliasCommand,
+                                        context_menu, loop.QuitClosure()));
+        }));
+    ActiveWebContents()
+        ->GetPrimaryMainFrame()
+        ->GetRenderViewHost()
+        ->GetWidget()
+        ->ShowContextMenuAtPoint(gfx::Point(x, y),
+                                 ui::mojom::MenuSourceType::kMouse);
+    loop.Run();
   }
 
  private:
-  base::test::ScopedFeatureList feature_list_;
+  base::test::ScopedFeatureList feature_list_{
+      email_aliases::features::kEmailAliases};
   content::ContentMockCertVerifier mock_cert_verifier_;
   net::EmbeddedTestServer https_server_{net::EmbeddedTestServer::TYPE_HTTPS};
 };
 
-IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserTest, Login) {
-  Navigate(GURL("chrome://settings/email-aliases"));
+IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserTest, ContextMenuNotAuthorized) {
+  const GURL settings_page("chrome://settings/email-aliases");
 
-  Wait("email-input");
-  SetText("email-input", kSuccessEmail);
-  Click("get-login-link");
+  Navigate(GURL("https://a.test/email_aliases/inputs.html"));
+
+  content::TestNavigationObserver waiter(settings_page);
+  waiter.StartWatchingNewWebContents();
+  RunContextMenuOn("type-email");
+  waiter.WaitForNavigationFinished();
+
+  EXPECT_EQ(ActiveWebContents()->GetLastCommittedURL(), settings_page);
+}
+
+IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserTest, ContextMenuAuthorized) {
+  email_aliases_service()->RequestAuthentication("success@domain.com",
+                                                 base::DoNothing());
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return !email_aliases_service()->GetAuthTokenForTesting().empty();
+  }));
+
+  Navigate(GURL("https://a.test/email_aliases/inputs.html"));
+
+  auto* email_aliases_controller =
+      browser()->GetFeatures().email_aliases_controller();
+  RunContextMenuOn("type-email");
+  // Wait for bubble.
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return !!email_aliases_controller->GetBubbleForTesting(); }));
 }
 
 }  // namespace email_aliases

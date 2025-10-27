@@ -49,6 +49,8 @@ class EmailAliasesController : public EmailAliasesBubbleObserver {
   void CloseBubble();
   void OpenSettingsPage();
 
+  WebUIBubbleManager* GetBubbleForTesting();
+
  private:
   // EmailAliasesBubbleObserver:
   void OnAliasCreationComplete(
