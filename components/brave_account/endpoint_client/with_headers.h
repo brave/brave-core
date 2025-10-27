@@ -6,14 +6,14 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ACCOUNT_ENDPOINT_CLIENT_WITH_HEADERS_H_
 #define BRAVE_COMPONENTS_BRAVE_ACCOUNT_ENDPOINT_CLIENT_WITH_HEADERS_H_
 
-#include "brave/components/brave_account/endpoint_client/concepts.h"
+#include "brave/components/brave_account/endpoint_client/is_request_body.h"
 #include "net/http/http_request_headers.h"
 
 namespace brave_account::endpoint_client {
 
-// Wrapper that extends a Request type T
+// Wrapper that extends an IsRequestBody type T
 // with an additional net::HttpRequestHeaders member.
-template <concepts::Request T>
+template <detail::IsRequestBody T>
 struct WithHeaders : T {
   net::HttpRequestHeaders headers;
 };

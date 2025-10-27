@@ -6,7 +6,9 @@
 source_set("endpoint_client") {
   sources = [
     "client.h",
-    "concepts.h",
+    "is_endpoint.h",
+    "is_request_body.h",
+    "is_response_body.h",
     "maybe_strip_with_headers.h",
     "with_headers.h",
   ]
@@ -24,7 +26,10 @@ source_set("unit_tests") {
 
   sources = [
     "client_unittest.cc",
-    "concepts_unittest.cc",
+    "concept_test.h",
+    "is_endpoint_unittest.cc",
+    "is_request_body_unittest.cc",
+    "is_response_body_unittest.cc",
     "maybe_strip_with_headers_unittest.cc",
   ]
 
