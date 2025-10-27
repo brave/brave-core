@@ -14,6 +14,7 @@
 #include "components/lookalikes/core/lookalike_url_util.h"
 #include "components/lookalikes/core/safety_tips_config.h"
 #include "components/url_formatter/elide_url.h"
+#include "components/url_formatter/spoof_checks/idn_spoof_checker.h"
 #include "components/url_formatter/spoof_checks/top_domains/top_domain_util.h"
 #include "components/url_formatter/url_formatter.h"
 #include "net/base/apple/url_conversions.h"
