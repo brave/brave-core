@@ -12,6 +12,8 @@ namespace brave_wallet {
 // https://raw.githubusercontent.com/polkadot-js/api/refs/heads/master/packages/types-support/src/metadata/v16/substrate-types.json
 inline constexpr const size_t kPolkadotSubstrateAccountIdSize = 32;
 
+inline constexpr const size_t kPolkadotBlockHashSize = 32;
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_UTILS_H_

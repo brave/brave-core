@@ -195,6 +195,20 @@ mojom::PolkadotAccountInfoPtr ParseAccountInfoFromJson(
   return nullptr;
 }
 
+std::optional<std::array<uint8_t, kPolkadotBlockHashSize>> ParseBlockHash(
+    std::string_view sv) {
+  if (sv.starts_with("0x")) {
+    sv.remove_prefix(2);
+  }
+
+  std::array<uint8_t, kPolkadotBlockHashSize> bytes = {};
+  if (!base::HexStringToSpan(sv, bytes)) {
+    return std::nullopt;
+  }
+
+  return bytes;
+}
+
 }  // namespace
 
 PolkadotSubstrateRpc::PolkadotSubstrateRpc(
@@ -365,19 +379,12 @@ void PolkadotSubstrateRpc::OnGetFinalizedHead(GetFinalizedHeadCallback callback,
     return std::move(callback).Run(std::nullopt, WalletParsingErrorMessage());
   }
 
-  std::string hash = std::move(*res->result);
-  if (!hash.starts_with("0x")) {
+  auto block_hash = ParseBlockHash(*res->result);
+  if (!block_hash) {
     return std::move(callback).Run(std::nullopt, WalletParsingErrorMessage());
   }
 
-  hash.erase(0, 2);
-  for (auto c : hash) {
-    if (!base::IsHexDigit(c)) {
-      return std::move(callback).Run(std::nullopt, WalletParsingErrorMessage());
-    }
-  }
-
-  return std::move(callback).Run(std::move(hash), std::nullopt);
+  return std::move(callback).Run(block_hash, std::nullopt);
 }
 
 GURL PolkadotSubstrateRpc::GetNetworkURL(std::string_view chain_id) {
