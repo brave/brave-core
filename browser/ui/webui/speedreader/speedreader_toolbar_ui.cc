@@ -48,15 +48,14 @@ SpeedreaderToolbarUI::SpeedreaderToolbarUI(content::WebUI* web_ui)
     source->AddString(str.name, l10n_str);
   }
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
   source->AddBoolean("aiChatFeatureEnabled",
+#if BUILDFLAG(ENABLE_AI_CHAT)
                      ai_chat::IsAIChatEnabled(profile_->GetPrefs()) &&
-                         profile_->IsRegularProfile());
+                         profile_->IsRegularProfile()
 #else
-  // This would be better to just be compiled out, but it is non-trivial
-  // and would require much more work.
-  source->AddBoolean("aiChatFeatureEnabled", false);
-#endif  // BUILDFLAG(ENABLE_AI_CHAT)
+                     false
+#endif
+  );
 
   source->AddBoolean("ttsEnabled",
                      base::FeatureList::IsEnabled(

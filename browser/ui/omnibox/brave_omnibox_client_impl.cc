@@ -15,10 +15,6 @@
 #include "brave/browser/search_engines/search_engine_tracker.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
-
-#if BUILDFLAG(ENABLE_AI_CHAT)
-#include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
-#endif
 #include "brave/components/brave_search_conversion/p3a.h"
 #include "brave/components/brave_search_conversion/utils.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
@@ -32,6 +28,10 @@
 #include "components/omnibox/browser/omnibox_log.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
+#endif
 
 namespace {
 

@@ -10,9 +10,7 @@
 #include "base/containers/contains.h"
 #include "base/containers/fixed_flat_set.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
-#include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
-#include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
@@ -34,6 +32,11 @@
 #include "ui/base/models/image_model.h"
 #include "ui/color/color_provider.h"
 #include "ui/gfx/image/image_skia.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/components/ai_chat/core/common/pref_names.h"
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/brave_vpn/vpn_utils.h"

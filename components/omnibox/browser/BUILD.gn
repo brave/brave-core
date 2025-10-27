@@ -35,6 +35,7 @@ source_set("unit_tests") {
   deps = [
     "//base",
     "//base/test:test_support",
+    "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/brave_search_conversion",
     "//brave/components/constants",
     "//brave/components/l10n/common:test_support",

@@ -196,7 +196,6 @@ void BraveContentRendererClient::RenderFrameCreated(
         render_frame, content::ISOLATED_WORLD_ID_GLOBAL);
   }
 #endif  // BUILDFLAG(IS_ANDROID)
-#endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   if (base::FeatureList::IsEnabled(

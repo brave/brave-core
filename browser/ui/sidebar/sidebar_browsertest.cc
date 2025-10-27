@@ -1170,7 +1170,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, TabSpecificAndGlobalPanelsTest) {
   tab_model()->ActivateTabAt(0);
   ASSERT_TRUE(
       ui_test_utils::NavigateToURL(browser(), GURL("chrome://new-tab-page/")));
-  // Use a contextual panel that doesn't require AI Chat
+
   panel_ui->Show(SidePanelEntryId::kCustomizeChrome);
   WaitUntil(base::BindLambdaForTesting(
       [&]() { return GetSidePanel()->GetVisible(); }));

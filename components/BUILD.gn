@@ -21,6 +21,7 @@ test("brave_components_unittests") {
 
   deps = [
     "//base",
+    "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/api_request_helper:unit_tests",
     "//brave/components/brave_account:unit_tests",
     "//brave/components/brave_account/endpoint_client:unit_tests",

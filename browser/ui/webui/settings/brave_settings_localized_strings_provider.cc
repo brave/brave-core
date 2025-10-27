@@ -11,7 +11,6 @@
 #include "brave/browser/shell_integrations/buildflags/buildflags.h"
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/browser/ui/webui/settings/brave_privacy_handler.h"
-#include "brave/components/ai_chat/core/browser/model_validator.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_account/features.h"
 #include "brave/components/brave_news/common/pref_names.h"
@@ -53,6 +52,10 @@
 #include "net/base/features.h"
 #include "ui/base/l10n/l10n_util.h"
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/core/browser/model_validator.h"
+#endif
+
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #endif
@@ -93,6 +96,8 @@ constexpr char16_t kEnableNftDiscoveryLearnMoreUrl[] =
 constexpr char16_t kBlockAllCookiesLearnMoreUrl[] =
     u"https://github.com/brave/brave-browser/wiki/"
     u"Block-all-cookies-global-Shields-setting";
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
 constexpr char16_t kLeoCustomModelsLearnMoreURL[] =
     u"https://support.brave.app/hc/en-us/articles/"
     u"34070140231821-How-do-I-use-the-Bring-Your-Own-Model-BYOM-with-Brave-Leo";
@@ -106,6 +111,7 @@ constexpr char16_t kLeoMemoryLearnMoreURL[] =
 
 constexpr char16_t kLeoPrivacyPolicyURL[] =
     u"https://brave.com/privacy/browser/#brave-leo";
+#endif
 
 constexpr char16_t kAdBlockOnlyModeLearnMoreURL[] =
     u"https://support.brave.app/hc/en-us/articles/38076796692109";
@@ -1043,6 +1049,7 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       l10n_util::GetStringFUTF16(
           IDS_SETTINGS_WALLET_RESET_ZCASH_SYNC_STATE_CONFIRMATION,
           confirmation_phrase));
+#if BUILDFLAG(ENABLE_AI_CHAT)
   html_source->AddString(
       "braveLeoAssistantInputDefaultContextSize",
       base::NumberToString16(ai_chat::kDefaultCustomModelContextSize));
@@ -1054,6 +1061,7 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
 
   html_source->AddString("braveLeoAssistantTabOrganizationLearnMoreURL",
                          kTabOrganizationLearnMoreURL);
+#endif
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   html_source->AddString("webDiscoveryLearnMoreURL", kWebDiscoveryLearnMoreUrl);
@@ -1100,6 +1108,7 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       l10n_util::GetStringFUTF16(IDS_SETTINGS_AD_BLOCK_ONLY_MODE_DESC,
                                  kAdBlockOnlyModeLearnMoreURL));
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
   html_source->AddString(
       "braveLeoAssistantYourModelsDesc2",
       l10n_util::GetStringFUTF16(IDS_SETTINGS_LEO_ASSISTANT_YOUR_MODELS_DESC_2,
@@ -1120,6 +1129,7 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       "braveLeoAssistantYourMemoriesDesc",
       l10n_util::GetStringFUTF16(IDS_SETTINGS_LEO_ASSISTANT_YOUR_MEMORIES_DESC,
                                  kLeoMemoryLearnMoreURL));
+#endif
 
   html_source->AddString("braveSurveyPanelistLearnMoreURL",
                          kSurveyPanelistLearnMoreURL);

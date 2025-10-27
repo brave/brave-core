@@ -46,6 +46,7 @@ brave_grit("static_resources") {
 
   defines = [
     "enable_ai_chat=$enable_ai_chat",
+    "enable_ai_rewriter=$enable_ai_rewriter",
     "enable_brave_vpn=$enable_brave_vpn",
     "enable_playlist_webui=$enable_playlist_webui",
     "enable_speedreader=$enable_speedreader",

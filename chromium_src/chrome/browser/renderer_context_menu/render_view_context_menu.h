@@ -6,10 +6,14 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_RENDERER_CONTEXT_MENU_RENDER_VIEW_CONTEXT_MENU_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_RENDERER_CONTEXT_MENU_RENDER_VIEW_CONTEXT_MENU_H_
 
-#include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/containers/core/mojom/containers.mojom-forward.h"
 #include "brave/components/text_recognition/common/buildflags/buildflags.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
+#endif
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "brave/browser/ui/containers/containers_menu_model.h"
@@ -76,9 +80,11 @@ class BraveRenderViewContextMenu
   float GetScaleFactor() override;
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
   void SetAIEngineForTesting(
       std::unique_ptr<ai_chat::EngineConsumer> ai_engine);
   ai_chat::EngineConsumer* GetAIEngineForTesting() { return ai_engine_.get(); }
+#endif
 
  private:
   friend class BraveRenderViewContextMenuTest;
@@ -86,9 +92,11 @@ class BraveRenderViewContextMenu
   void InitMenu() override;
   void NotifyMenuShown() override;
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
   bool IsAIChatEnabled() const;
   void ExecuteAIChatCommand(int command);
   void BuildAIChatMenu();
+#endif
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
   void BuildContainersMenu();
@@ -98,11 +106,13 @@ class BraveRenderViewContextMenu
   void CopyTextFromImage();
 #endif
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
   std::unique_ptr<ai_chat::EngineConsumer> ai_engine_;
   ui::SimpleMenuModel ai_chat_submenu_model_;
   ui::SimpleMenuModel ai_chat_change_tone_submenu_model_;
   ui::SimpleMenuModel ai_chat_change_length_submenu_model_;
   ui::SimpleMenuModel ai_chat_social_media_post_submenu_model_;
+#endif
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
   std::unique_ptr<containers::ContainersMenuModel> containers_submenu_model_;

@@ -1,0 +1,20 @@
+diff --git a/components/browsing_data/core/BUILD.gn b/components/browsing_data/core/BUILD.gn
+index 752b59c8305e509799e5e9d844afd8064ddbcd33..d0e723f301e2aadfb11489cd1d60dde5b4fdc4fd 100644
+--- a/components/browsing_data/core/BUILD.gn
++++ b/components/browsing_data/core/BUILD.gn
+@@ -5,6 +5,7 @@
+ if (is_android) {
+   import("//build/config/android/rules.gni")
+ }
++import("//brave/components/browsing_data/core/sources.gni")
+ 
+ static_library("core") {
+   sources = [
+@@ -49,6 +50,7 @@ static_library("core") {
+     "//ui/base",
+   ]
+ 
++  public_deps = brave_components_browsing_data_core_public_deps
+   configs += [ "//build/config/compiler:wexit_time_destructors" ]
+ }
+ 

@@ -354,11 +354,16 @@ void OnRewriteSuggestionCompleted(
 BraveRenderViewContextMenu::BraveRenderViewContextMenu(
     content::RenderFrameHost& render_frame_host,
     const content::ContextMenuParams& params)
-    : RenderViewContextMenu_Chromium(render_frame_host, params),
+    : RenderViewContextMenu_Chromium(render_frame_host, params)
+#if BUILDFLAG(ENABLE_AI_CHAT)
+      ,
       ai_chat_submenu_model_(this),
       ai_chat_change_tone_submenu_model_(this),
       ai_chat_change_length_submenu_model_(this),
-      ai_chat_social_media_post_submenu_model_(this) {}
+      ai_chat_social_media_post_submenu_model_(this)
+#endif
+{
+}
 
 BraveRenderViewContextMenu::~BraveRenderViewContextMenu() = default;
 
@@ -773,10 +778,12 @@ BraveRenderViewContextMenu::GetCurrentContainerIds() {
 }
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
 void BraveRenderViewContextMenu::SetAIEngineForTesting(
     std::unique_ptr<ai_chat::EngineConsumer> ai_engine) {
   ai_engine_ = std::move(ai_engine);
 }
+#endif
 
 void BraveRenderViewContextMenu::InitMenu() {
   RenderViewContextMenu_Chromium::InitMenu();

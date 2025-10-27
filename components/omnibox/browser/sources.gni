@@ -37,7 +37,6 @@ brave_components_omnibox_browser_sources = [
 brave_components_omnibox_browser_deps = [
   "//base",
   "//brave/components/brave_search_conversion",
-  "//brave/components/commander/common/buildflags",
   "//brave/components/constants",
   "//brave/components/omnibox/buildflags",
   "//brave/components/resources:strings",
@@ -45,6 +44,11 @@ brave_components_omnibox_browser_deps = [
   "//components/prefs",
   "//components/vector_icons",
   "//url",
+]
+
+brave_components_omnibox_browser_public_deps = [
+  "//brave/components/ai_chat/core/common/buildflags",
+  "//brave/components/commander/common/buildflags",
 ]
 
 if (enable_ai_chat) {

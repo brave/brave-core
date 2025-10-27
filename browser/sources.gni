@@ -143,11 +143,11 @@ brave_chrome_browser_deps = [
   "//brave/browser/themes",
   "//brave/browser/ui",
   "//brave/browser/ui/webui/ads_internals",
-  "//brave/browser/ui/webui/ai_chat",
   "//brave/browser/ui/webui/brave_account",
   "//brave/browser/updater:buildflags",
   "//brave/common",
   "//brave/common:mojo_bindings",
+  "//brave/components/ai_chat/core/common/buildflags",
   "//brave/components/ai_rewriter/common/buildflags",
   "//brave/components/body_sniffer",
   "//brave/components/brave_account",
@@ -333,6 +333,7 @@ if (enable_ai_chat) {
   brave_chrome_browser_deps += [
     "//brave/browser/ai_chat",
     "//brave/browser/ai_chat/ollama",
+    "//brave/browser/ui/webui/ai_chat",
     "//brave/components/ai_chat/content/browser",
     "//brave/components/ai_chat/core/browser",
     "//brave/components/ai_chat/core/common",
@@ -657,11 +658,14 @@ brave_chrome_browser_allow_circular_includes_from = [
   "//brave/browser/brave_ads/creatives/search_result_ad",
   "//brave/browser/brave_stats",
   "//brave/browser/ntp_background",
+]
 
+if (enable_ai_chat) {
   # TODO(https://github.com/brave/brave-browser/issues/50507):
   # Remove this once webui/ai_chat does not depend on chrome/browser.
-  "//brave/browser/ui/webui/ai_chat",
-]
+  brave_chrome_browser_allow_circular_includes_from +=
+      [ "//brave/browser/ui/webui/ai_chat" ]
+}
 
 if (enable_brave_ai_chat_agent_profile) {
   brave_chrome_browser_deps +=

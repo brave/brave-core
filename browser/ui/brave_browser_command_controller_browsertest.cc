@@ -15,7 +15,6 @@
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
-#include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/skus/common/features.h"
@@ -41,6 +40,10 @@
 #include "components/sync/base/command_line_switches.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/test_utils.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/core/browser/utils.h"
+#endif
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/tor/tor_profile_service_factory.h"

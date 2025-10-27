@@ -165,7 +165,6 @@ test("brave_unit_tests") {
     "//brave/brave_domains:unit_tests",
     "//brave/browser",
     "//brave/browser:unit_tests",
-    "//brave/browser/autocomplete:unit_tests",
     "//brave/browser/brave_account:unit_tests",
     "//brave/browser/brave_ads",
     "//brave/browser/brave_ads/device_id:unit_tests",
@@ -367,6 +366,7 @@ test("brave_unit_tests") {
   if (enable_ai_chat) {
     deps += [
       "//brave/browser/ai_chat:unit_tests",
+      "//brave/browser/autocomplete:unit_tests",
       "//brave/browser/ui/webui/ai_chat:unit_tests",
     ]
   }
@@ -471,6 +471,7 @@ test("brave_unit_tests") {
       "//brave/browser/ui/webui/settings:unit_tests",
       "//brave/browser/ui/webui/side_panel/customize_chrome:unit_tests",
       "//brave/browser/ui/whats_new:unit_test",
+      "//brave/components/ai_chat/core/common/buildflags",
       "//brave/components/brave_news/common:unit_tests",
       "//brave/components/brave_shields/core/common:mojom",
       "//brave/components/brave_vpn/common/buildflags",
@@ -498,10 +499,7 @@ test("brave_unit_tests") {
   }
 
   if (enable_ai_chat) {
-    deps += [
-      "//brave/components/ai_chat/core/common",
-      "//brave/components/ai_chat/core/common/buildflags",
-    ]
+    deps += [ "//brave/components/ai_chat/core/common" ]
   }
 
   # On Windows, brave_install_static_unittests covers channel test.
@@ -1190,7 +1188,6 @@ test("brave_browser_tests") {
       "//brave/browser/ui/tabs:tab_strip",
       "//brave/browser/ui/toolbar:brave_app_menu_browser_tests",
       "//brave/browser/ui/webui/side_panel/customize_chrome:browser_tests",
-      "//brave/browser/ui/webui/tab_search:browser_tests",
       "//brave/browser/ui/whats_new:browser_test",
       "//brave/browser/url_sanitizer:browser_tests",
       "//brave/components/brave_wallet/browser:test_support",
@@ -1220,6 +1217,11 @@ test("brave_browser_tests") {
 
   if (enable_ai_chat) {
     deps += [ "//brave/browser/ai_chat:browser_tests" ]
+
+    # tab_search is desktop only
+    if (!is_android) {
+      deps += [ "//brave/browser/ui/webui/tab_search:browser_tests" ]
+    }
   }
 
   if (enable_ai_rewriter) {

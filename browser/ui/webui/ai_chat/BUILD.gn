@@ -55,8 +55,8 @@ source_set("ai_chat") {
       "ai_chat_agent_new_tab_page_ui.cc",
       "ai_chat_agent_new_tab_page_ui.h",
     ]
+    public_deps = [ "//brave/browser/ai_chat:ai_chat_agent_profile" ]
     deps += [
-      "//brave/browser/ai_chat:ai_chat_agent_profile",
       "//brave/browser/resources/ai_chat_agent_new_tab_page:pack_js_resources",
       "//brave/browser/resources/ai_chat_agent_new_tab_page:pack_static_resources",
     ]
