@@ -27,21 +27,25 @@ OllamaService* OllamaServiceFactory::GetForProfile(Profile* profile) {
       GetInstance()->GetServiceForBrowserContext(profile, true));
 }
 
+// static
+ProfileSelections OllamaServiceFactory::CreateProfileSelections() {
+  if (!features::IsAIChatEnabled()) {
+    return ProfileSelections::BuildNoProfilesSelected();
+  }
+  return ProfileSelections::Builder()
+      .WithRegular(ProfileSelection::kOriginalOnly)
+      .Build();
+}
+
 OllamaServiceFactory::OllamaServiceFactory()
-    : ProfileKeyedServiceFactory(
-          "OllamaServiceFactory",
-          ProfileSelections::Builder()
-              .WithRegular(ProfileSelection::kOriginalOnly)
-              .Build()) {}
+    : ProfileKeyedServiceFactory("OllamaServiceFactory",
+                                 CreateProfileSelections()) {}
 
 OllamaServiceFactory::~OllamaServiceFactory() = default;
 
 std::unique_ptr<KeyedService>
 OllamaServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
-  if (!features::IsAIChatEnabled()) {
-    return nullptr;
-  }
   auto url_loader_factory = context->GetDefaultStoragePartition()
                                 ->GetURLLoaderFactoryForBrowserProcess();
   return std::make_unique<OllamaService>(url_loader_factory);

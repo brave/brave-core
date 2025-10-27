@@ -35,6 +35,8 @@ class OllamaServiceFactory : public ProfileKeyedServiceFactory {
  private:
   friend base::NoDestructor<OllamaServiceFactory>;
 
+  static ProfileSelections CreateProfileSelections();
+
   OllamaServiceFactory();
   ~OllamaServiceFactory() override;
 
