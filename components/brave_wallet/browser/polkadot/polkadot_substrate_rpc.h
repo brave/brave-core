@@ -46,6 +46,10 @@ class PolkadotSubstrateRpc {
       base::OnceCallback<void(std::optional<PolkadotBlockHeader>,
                               std::optional<std::string>)>;
 
+  using GetBlockHashCallback = base::OnceCallback<void(
+      std::optional<std::array<uint8_t, kPolkadotBlockHashSize>>,
+      std::optional<std::string>)>;
+
   // Get the name of the chain pointed to by the current network configuration.
   // "Westend" or "Paseo" for the testnets, "Polkadot" for the mainnet.
   void GetChainName(std::string_view chain_id, GetChainNameCallback callback);
@@ -85,6 +89,16 @@ class PolkadotSubstrateRpc {
       std::optional<base::span<uint8_t, kPolkadotBlockHashSize>> block_hash,
       GetBlockHeaderCallback callback);
 
+  // Get the block hash for a given block number. This is most useful for
+  // getting the "genesis hash", which is the blockhash of block 0.
+  // If a block number is not provided then the latest block hash is returned.
+  // The genesis hash is used to generate the signing payload used during
+  // extrinsic creation as outlined by the spec here:
+  // https://spec.polkadot.network/id-extrinsics#defn-extrinsic-signature
+  void GetBlockHash(std::string_view chain_id,
+                    std::optional<uint32_t> block_number,
+                    GetBlockHashCallback callback);
+
  private:
   using APIRequestResult = api_request_helper::APIRequestResult;
 
@@ -97,6 +111,7 @@ class PolkadotSubstrateRpc {
   void OnGetAccountBalance(GetAccountBalanceCallback, APIRequestResult res);
   void OnGetFinalizedHead(GetFinalizedHeadCallback, APIRequestResult res);
   void OnGetBlockHeader(GetBlockHeaderCallback callback, APIRequestResult res);
+  void OnGetBlockHash(GetBlockHashCallback callback, APIRequestResult res);
 
   const raw_ref<NetworkManager> network_manager_;
   api_request_helper::APIRequestHelper api_request_helper_;
