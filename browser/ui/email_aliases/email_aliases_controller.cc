@@ -28,7 +28,7 @@ EmailAliasesController::EmailAliasesController(
     EmailAliasesService* email_aliases_service)
     : browser_view_(browser_view),
       email_aliases_service_(email_aliases_service) {
-  CHECK(base::FeatureList::IsEnabled(email_aliases::kEmailAliases));
+  CHECK(base::FeatureList::IsEnabled(email_aliases::features::kEmailAliases));
   CHECK(browser_view_);
   CHECK(email_aliases_service_.get());
 

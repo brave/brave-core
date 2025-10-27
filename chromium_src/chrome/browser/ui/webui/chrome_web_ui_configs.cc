@@ -100,7 +100,7 @@ void RegisterChromeWebUIConfigs() {
   if (brave_account::features::IsBraveAccountEnabled()) {
     map.AddWebUIConfig(std::make_unique<BraveAccountUIDesktopConfig>());
   }
-  if (base::FeatureList::IsEnabled(email_aliases::kEmailAliases)) {
+  if (base::FeatureList::IsEnabled(email_aliases::features::kEmailAliases)) {
     map.AddWebUIConfig(std::make_unique<EmailAliasesPanelUIConfig>());
   }
 #else   // !BUILDFLAG(IS_ANDROID)
