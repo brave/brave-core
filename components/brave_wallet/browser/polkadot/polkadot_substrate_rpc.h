@@ -33,9 +33,9 @@ class PolkadotSubstrateRpc {
       base::OnceCallback<void(mojom::PolkadotAccountInfoPtr,
                               const std::optional<std::string>&)>;
 
-  using GetFinalizedHeadCallback =
-      base::OnceCallback<void(std::optional<std::string>,
-                              std::optional<std::string>)>;
+  using GetFinalizedHeadCallback = base::OnceCallback<void(
+      std::optional<std::array<uint8_t, kPolkadotBlockHashSize>>,
+      std::optional<std::string>)>;
 
   // Get the name of the chain pointed to by the current network configuration.
   // "Westend" or "Paseo" for the testnets, "Polkadot" for the mainnet.

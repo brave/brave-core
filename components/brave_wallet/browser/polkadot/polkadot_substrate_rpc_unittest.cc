@@ -441,7 +441,9 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetFinalizedHead) {
 
   EXPECT_EQ(testnet_url, "https://polkadot-westend.wallet.brave.com/");
 
-  base::test::TestFuture<std::optional<std::string>, std::optional<std::string>>
+  base::test::TestFuture<
+      std::optional<std::array<uint8_t, kPolkadotBlockHashSize>>,
+      std::optional<std::string>>
       future;
 
   {
@@ -481,8 +483,8 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetFinalizedHead) {
 
     EXPECT_EQ(error, std::nullopt);
     EXPECT_EQ(
-        hash,
-        "ba38d3e0e1033e97a3aa294e59741c9f4ab8786c8d55c493d0ebc58b885961b3");
+        base::HexEncode(hash.value()),
+        "BA38D3E0E1033E97A3AA294E59741C9F4AB8786C8D55C493D0EBC58B885961B3");
   }
 
   {
