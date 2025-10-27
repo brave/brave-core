@@ -15,6 +15,7 @@
 #include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_substrate_rpc_responses.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
+#include "brave/components/brave_wallet/common/hex_utils.h"
 
 namespace brave_wallet {
 
@@ -171,42 +172,17 @@ mojom::PolkadotAccountInfoPtr ParseAccountInfoFromJson(
 
   std::string_view sv = *str;
 
-  // Leading 0x, 160 hex chars worth of data.
-  if (sv.size() != 162) {
+  auto hex_bytes = PrefixedHexStringToFixed<80>(sv);
+  if (!hex_bytes) {
     return nullptr;
   }
 
-  if (!sv.starts_with("0x")) {
-    return nullptr;
-  }
-
-  sv.remove_prefix(2);  // Remove leading 0x.
-
-  std::array<uint8_t, 80> hex_bytes = {};
-  if (!base::HexStringToSpan(sv, hex_bytes)) {
-    return nullptr;
-  }
-
-  auto account = ParseAccountInfoAsHex(hex_bytes);
+  auto account = ParseAccountInfoAsHex(*hex_bytes);
   if (account) {
     return account;
   }
 
   return nullptr;
-}
-
-std::optional<std::array<uint8_t, kPolkadotBlockHashSize>> ParseBlockHash(
-    std::string_view sv) {
-  if (sv.starts_with("0x")) {
-    sv.remove_prefix(2);
-  }
-
-  std::array<uint8_t, kPolkadotBlockHashSize> bytes = {};
-  if (!base::HexStringToSpan(sv, bytes)) {
-    return std::nullopt;
-  }
-
-  return bytes;
 }
 
 template <class RpcResponse>
@@ -382,7 +358,8 @@ void PolkadotSubstrateRpc::OnGetFinalizedHead(GetFinalizedHeadCallback callback,
     return std::move(callback).Run(std::nullopt, std::nullopt);
   }
 
-  auto block_hash = ParseBlockHash(*res->result);
+  auto block_hash =
+      PrefixedHexStringToFixed<kPolkadotBlockHashSize>(*res->result);
   if (!block_hash) {
     return std::move(callback).Run(std::nullopt, WalletParsingErrorMessage());
   }
