@@ -579,7 +579,8 @@ public class BytecodeTest {
                         Callback.class,
                         boolean.class,
                         BookmarkManagerOpener.class,
-                        PriceDropNotificationManager.class));
+                        PriceDropNotificationManager.class,
+                        boolean.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/components/permissions/PermissionDialogModelFactory",
