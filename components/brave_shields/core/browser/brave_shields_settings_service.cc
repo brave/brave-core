@@ -179,6 +179,9 @@ mojom::AutoShredMode BraveShieldsSettingsService::GetDefaultAutoShredMode() {
 
 void BraveShieldsSettingsService::SetAutoShredMode(mojom::AutoShredMode mode,
                                                    const GURL& url) {
+  // Shred and AutoShred delete data at the eTLD+1 boundary, because that’s
+  // the Web’s cookie boundary, so we must use the domain pattern to align
+  // with how browsers enforce storage boundaries.
   auto primary_pattern = content_settings::CreateDomainPattern(url);
 
   if (!primary_pattern.IsValid()) {
