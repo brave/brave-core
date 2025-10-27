@@ -17,7 +17,7 @@
 #include "base/types/expected.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_account/endpoint_client/client.h"
-#include "brave/components/brave_account/endpoint_client/concepts.h"
+#include "brave/components/brave_account/endpoint_client/is_endpoint.h"
 #include "brave/components/brave_account/endpoints/error.h"
 #include "net/http/http_status_code.h"
 #include "net/traffic_annotation/network_traffic_annotation_test_helper.h"
@@ -34,7 +34,7 @@ inline bool operator==(const Error& lhs, const Error& rhs) {
   return lhs.code == rhs.code;
 }
 
-template <endpoint_client::concepts::Endpoint T>
+template <endpoint_client::IsEndpoint T>
 struct EndpointTestCase {
   using Expected = base::expected<std::optional<typename T::Response>,
                                   std::optional<typename T::Error>>;
@@ -45,7 +45,7 @@ struct EndpointTestCase {
   Expected reply;
 };
 
-template <endpoint_client::concepts::Endpoint T>
+template <endpoint_client::IsEndpoint T>
 class EndpointTest : public testing::TestWithParam<const EndpointTestCase<T>*> {
  public:
   static constexpr auto kNameGenerator = [](const auto& info) {

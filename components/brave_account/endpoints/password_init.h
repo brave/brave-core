@@ -8,7 +8,7 @@
 
 #include <string_view>
 
-#include "brave/components/brave_account/endpoint_client/concepts.h"
+#include "brave/components/brave_account/endpoint_client/is_endpoint.h"
 #include "brave/components/brave_account/endpoints/error.h"
 #include "brave/components/brave_account/endpoints/password_init_request.h"
 #include "brave/components/brave_account/endpoints/password_init_response.h"
@@ -24,7 +24,7 @@ struct PasswordInit {
   static std::string_view Method();
 };
 
-static_assert(endpoint_client::concepts::Endpoint<PasswordInit>);
+static_assert(endpoint_client::IsEndpoint<PasswordInit>);
 
 }  // namespace brave_account::endpoints
 

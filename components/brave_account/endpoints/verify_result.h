@@ -8,7 +8,7 @@
 
 #include <string_view>
 
-#include "brave/components/brave_account/endpoint_client/concepts.h"
+#include "brave/components/brave_account/endpoint_client/is_endpoint.h"
 #include "brave/components/brave_account/endpoints/error.h"
 #include "brave/components/brave_account/endpoints/verify_result_request.h"
 #include "brave/components/brave_account/endpoints/verify_result_response.h"
@@ -24,7 +24,7 @@ struct VerifyResult {
   static std::string_view Method();
 };
 
-static_assert(endpoint_client::concepts::Endpoint<VerifyResult>);
+static_assert(endpoint_client::IsEndpoint<VerifyResult>);
 
 }  // namespace brave_account::endpoints
 
