@@ -39,10 +39,16 @@ interface Props {
   origin: BraveWallet.OriginInfo
   noBackground?: boolean
   provider?: string
+  orientation?: 'horizontal' | 'vertical'
 }
 
 export const OriginInfoCard = (props: Props) => {
-  const { origin, noBackground = false, provider } = props
+  const {
+    origin,
+    noBackground = false,
+    provider,
+    orientation = 'horizontal',
+  } = props
 
   // Hooks
   const { isDAppVerified, dapp } = useIsDAppVerified(origin)
@@ -64,23 +70,39 @@ export const OriginInfoCard = (props: Props) => {
   return (
     <StyledWrapper
       padding='10px 16px'
-      gap='16px'
-      justifyContent='flex-start'
+      gap={orientation === 'vertical' ? '8px' : '16px'}
+      justifyContent={orientation === 'vertical' ? 'center' : 'flex-start'}
       noBackground={noBackground}
+      orientation={orientation}
+      data-testid='origin-info-card'
     >
-      <FavIcon src={isBraveWallet ? BraveIcon : iconSrc} />
-      <Column alignItems='flex-start'>
+      <FavIcon
+        src={isBraveWallet ? BraveIcon : iconSrc}
+        bigger={orientation === 'vertical'}
+      />
+      <Column alignItems={orientation === 'vertical' ? 'center' : 'flex-start'}>
         {isBraveWallet && provider && (
-          <OriginName textColor='primary'>{provider}</OriginName>
+          <OriginName
+            textColor='primary'
+            textAlign={orientation === 'horizontal' ? 'left' : undefined}
+          >
+            {provider}
+          </OriginName>
         )}
-        <OriginName textColor='primary'>
+        <OriginName
+          textColor='primary'
+          textAlign={orientation === 'horizontal' ? 'left' : undefined}
+        >
           {dapp ? dapp.name : origin.eTldPlusOne}
         </OriginName>
         <Column
           gap='4px'
-          alignItems='flex-start'
+          alignItems={orientation === 'vertical' ? 'center' : 'flex-start'}
         >
-          <OriginUrl textColor='tertiary'>
+          <OriginUrl
+            textColor='tertiary'
+            textAlign={orientation === 'horizontal' ? 'left' : undefined}
+          >
             <CreateSiteOrigin
               originSpec={origin.originSpec}
               eTldPlusOne={origin.eTldPlusOne}
