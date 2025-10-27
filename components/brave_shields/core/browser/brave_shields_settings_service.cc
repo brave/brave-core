@@ -8,45 +8,11 @@
 #include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/brave_shield_utils.h"
-#include "brave/components/content_settings/core/common/content_settings_util.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/prefs/pref_service.h"
 #include "url/gurl.h"
 
 namespace brave_shields {
-
-namespace {
-
-mojom::ContentSettingSource ConvertSettingsSource(
-    const content_settings::SettingSource source) {
-  switch (source) {
-    case content_settings::SettingSource::kUser:
-      return mojom::ContentSettingSource::kUser;
-    case content_settings::SettingSource::kExtension:
-      return mojom::ContentSettingSource::kExtension;
-    case content_settings::SettingSource::kPolicy:
-      return mojom::ContentSettingSource::kPolicy;
-    case content_settings::SettingSource::kSupervised:
-      return mojom::ContentSettingSource::kSupervised;
-    case content_settings::SettingSource::kInstalledWebApp:
-      return mojom::ContentSettingSource::kInstalledWebApp;
-    case content_settings::SettingSource::kNone:
-      return mojom::ContentSettingSource::kNone;
-    case content_settings::SettingSource::kAllowList:
-      return mojom::ContentSettingSource::kAllowList;
-    case content_settings::SettingSource::kTpcdGrant:
-      return mojom::ContentSettingSource::kTpcdGrant;
-    case content_settings::SettingSource::kRemoteList:
-      return mojom::ContentSettingSource::kRemoteList;
-    case content_settings::SettingSource::kOsJavascriptOptimizer:
-      return mojom::ContentSettingSource::kOsJavascriptOptimizer;
-    case content_settings::SettingSource::kTest:
-      return mojom::ContentSettingSource::kTest;
-  }
-  NOTREACHED();
-}
-
-}  // namespace
 
 BraveShieldsSettingsService::BraveShieldsSettingsService(
     HostContentSettingsMap& host_content_settings_map,
