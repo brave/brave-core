@@ -461,6 +461,14 @@ inline constexpr char16_t kSyncEncryptionHelpURL[] =
 // The URL for the "Learn more" link when there is a sync error.
 inline constexpr char kSyncErrorsHelpURL[] = "https://support.brave.app/";
 
+// Legacy URL to the sync google dashboard.
+inline constexpr char kLegacySyncGoogleDashboardURL[] =
+    "https://support.brave.app/";
+
+// New URL to the sync google dashboard.
+inline constexpr char kNewSyncGoogleDashboardURL[] =
+    "https://support.brave.app/";
+
 inline constexpr char kSyncGoogleDashboardURL[] = "https://support.brave.app/";
 
 // The URL for the "Learn more" page for sync setup on the personal stuff page.
