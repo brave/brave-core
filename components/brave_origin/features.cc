@@ -10,6 +10,6 @@
 
 namespace brave_origin::features {
 
-BASE_FEATURE(kBraveOrigin, "BraveOrigin", base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kBraveOrigin, base::FEATURE_DISABLED_BY_DEFAULT);
 
 }  // namespace brave_origin::features

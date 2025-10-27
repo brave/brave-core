@@ -11,6 +11,6 @@ namespace commands::features {
 // This feature enables a page a brave://commands which lists all available
 // commands in Brave, and the shortcut for executing them. In future, this will
 // allow configuring the shortcuts for various commands.
-BASE_FEATURE(kBraveCommands, "BraveCommands", base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kBraveCommands, base::FEATURE_ENABLED_BY_DEFAULT);
 
 }  // namespace commands::features

@@ -10,7 +10,6 @@
 namespace ai_chat::features {
 
 BASE_FEATURE(kAIChatWebUIEnabled,
-             "AIChatWebUIEnabled",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
 bool IsAIChatWebUIEnabled() {

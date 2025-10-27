@@ -11,34 +11,27 @@ namespace tabs::features {
 
 #if BUILDFLAG(IS_LINUX)
 BASE_FEATURE(kBraveChangeActiveTabOnScrollEvent,
-             "BraveChangeActiveTabOnScrollEvent",
              base::FEATURE_ENABLED_BY_DEFAULT);
 #endif  // BUILDFLAG(IS_LINUX)
 
 BASE_FEATURE(kBraveSharedPinnedTabs,
-             "BraveSharedPinnedTabs",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
 BASE_FEATURE(kBraveHorizontalTabsUpdate,
-             "BraveHorizontalTabsUpdate",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
 BASE_FEATURE(kBraveCompactHorizontalTabs,
-             "BraveCompactHorizontalTabs",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
 BASE_FEATURE(kBraveVerticalTabScrollBar,
-             "BraveVerticalTabScrollBar",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
 BASE_FEATURE(kBraveVerticalTabHideCompletely,
-             "BraveVerticalTabHideCompletely",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
-BASE_FEATURE(kBraveTreeTab, "BraveTreeTab", base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kBraveTreeTab, base::FEATURE_DISABLED_BY_DEFAULT);
 
 BASE_FEATURE(kBraveRenamingTabs,
-             "BraveRenamingTabs",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
 bool HorizontalTabsUpdateEnabled() {

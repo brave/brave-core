@@ -16,7 +16,6 @@ BASE_FEATURE(kBraveNewsCardPeekFeature,
              base::FEATURE_ENABLED_BY_DEFAULT);
 
 BASE_FEATURE(kBraveNewsFeedUpdate,
-             "BraveNewsFeedUpdate",
 #if BUILDFLAG(IS_ANDROID)
              base::FEATURE_DISABLED_BY_DEFAULT
 

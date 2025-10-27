@@ -10,6 +10,6 @@
 
 namespace skus::features {
 
-BASE_FEATURE(kSkusFeature, "SkusFeature", base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kSkusFeature, base::FEATURE_ENABLED_BY_DEFAULT);
 
 }  // namespace skus::features

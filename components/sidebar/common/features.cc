@@ -8,11 +8,9 @@
 namespace sidebar::features {
 
 BASE_FEATURE(kSidebarShowAlwaysOnStable,
-             "SidebarShowAlwaysOnStable",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
 BASE_FEATURE(kSidebarWebPanel,
-             "SidebarWebPanel",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
 const base::FeatureParam<bool> kOpenOneShotLeoPanel{

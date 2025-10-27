@@ -8,7 +8,6 @@
 namespace extensions_mv2::features {
 
 BASE_FEATURE(kExtensionsManifestV2,
-             "ExtensionsManifestV2",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
 BASE_FEATURE_PARAM(bool,

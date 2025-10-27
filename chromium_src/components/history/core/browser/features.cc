@@ -14,7 +14,6 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
 }});
 
 BASE_FEATURE(kHistoryMoreSearchResults,
-             "HistoryMoreSearchResults",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
 }  // namespace history

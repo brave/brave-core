@@ -8,7 +8,6 @@
 namespace features {
 
 BASE_FEATURE(kChromiumUserEducation,
-             "ChromiumUserEducation",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
 }  // namespace features
