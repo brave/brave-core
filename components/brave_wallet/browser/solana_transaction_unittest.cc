@@ -24,7 +24,6 @@
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
-#include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
@@ -75,7 +74,7 @@ class SolanaTransactionUnitTest : public testing::Test {
   static mojom::AccountInfoPtr AddAccount(KeyringService* service,
                                           const std::string& account_name) {
     return service->AddAccountSync(mojom::CoinType::SOL,
-                                   mojom::kSolanaKeyringId, account_name);
+                                   mojom::KeyringId::kSolana, account_name);
   }
 
   void SetSelectedAccount(const mojom::AccountIdPtr& account_id) {

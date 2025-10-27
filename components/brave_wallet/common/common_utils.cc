@@ -14,7 +14,6 @@
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
-#include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/buildflags.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/pref_names.h"
@@ -96,7 +95,7 @@ bool IsAllowed(PrefService* prefs) {
 }
 
 bool IsEthereumKeyring(mojom::KeyringId keyring_id) {
-  return keyring_id == mojom::kDefaultKeyringId;
+  return keyring_id == mojom::KeyringId::kDefault;
 }
 
 bool IsEthereumAccount(const mojom::AccountIdPtr& account_id) {
@@ -105,7 +104,7 @@ bool IsEthereumAccount(const mojom::AccountIdPtr& account_id) {
 }
 
 bool IsSolanaKeyring(mojom::KeyringId keyring_id) {
-  return keyring_id == mojom::kSolanaKeyringId;
+  return keyring_id == mojom::KeyringId::kSolana;
 }
 
 bool IsSolanaAccount(const mojom::AccountIdPtr& account_id) {

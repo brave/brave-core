@@ -16,15 +16,6 @@
 
 namespace brave_wallet {
 
-namespace mojom {
-// TODO(apaymyshev): Remove these aliases eventually.
-inline constexpr KeyringId kDefaultKeyringId = KeyringId::kDefault;
-inline constexpr KeyringId kSolanaKeyringId = KeyringId::kSolana;
-inline constexpr KeyringId kFilecoinKeyringId = KeyringId::kFilecoin;
-inline constexpr KeyringId kFilecoinTestnetKeyringId =
-    KeyringId::kFilecoinTestnet;
-}  // namespace mojom
-
 using uint256_t = unsigned _BitInt(256);
 using int256_t = _BitInt(256);
 

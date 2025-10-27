@@ -260,7 +260,7 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
 
   mojom::AccountInfoPtr AddAccount(const std::string& account_name) {
     return keyring_service()->AddAccountSync(
-        mojom::CoinType::ETH, mojom::kDefaultKeyringId, account_name);
+        mojom::CoinType::ETH, mojom::KeyringId::kDefault, account_name);
   }
 
   void SetSelectedAccount(const mojom::AccountIdPtr& account_id) {
