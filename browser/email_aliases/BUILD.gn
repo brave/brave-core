@@ -36,3 +36,17 @@ source_set("unit_tests") {
     "//testing/gtest",
   ]
 }
+
+source_set("browser_tests") {
+  testonly = true
+
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+  sources = [ "email_aliases_browsertest.cc" ]
+
+  deps = [
+    ":email_aliases",
+    "//chrome/browser",
+    "//chrome/test:test_support",
+  ]
+}

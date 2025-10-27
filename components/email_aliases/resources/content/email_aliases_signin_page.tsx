@@ -77,6 +77,7 @@ const BeforeSendingEmailForm = ({
       <div>{getLocale('emailAliasesEnterEmailToGetLoginLink')}</div>
       <LoginRow>
         <StretchyInput
+          id="email-input"
           ref={emailRef}
           onInput={(detail) => setEmail(detail.value)}
           onKeyDown={onEnterKeyForInput(requestAuthentication)}
@@ -86,6 +87,7 @@ const BeforeSendingEmailForm = ({
           value={email}
         />
         <Button
+          id="get-login-link-button"
           onClick={requestAuthentication}
           type='submit'
           kind='filled'
