@@ -19,13 +19,13 @@ std::optional<SkColor> BraveBrowserAppMenuButton::GetHighlightTextColor()
 std::optional<SkColor> BraveBrowserAppMenuButton::GetColorForSeverity() const {
   const auto* const color_provider = GetColorProvider();
   switch (type_and_severity_.severity) {
-    case AppMenuIconController::Severity::NONE:
+    case AppMenuIconController::Severity::kNone:
       return std::nullopt;
-    case AppMenuIconController::Severity::LOW:
+    case AppMenuIconController::Severity::kLow:
       return color_provider->GetColor(kColorAppMenuHighlightSeverityLow);
-    case AppMenuIconController::Severity::MEDIUM:
+    case AppMenuIconController::Severity::kMedium:
       return color_provider->GetColor(kColorAppMenuHighlightSeverityMedium);
-    case AppMenuIconController::Severity::HIGH:
+    case AppMenuIconController::Severity::kHigh:
       return color_provider->GetColor(kColorAppMenuHighlightSeverityHigh);
   }
 }

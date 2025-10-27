@@ -85,18 +85,18 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, AppMenuButtonUpgradeAlertTest) {
       ThemeService::BrowserColorScheme::kLight);
   EXPECT_EQ(brave_menu_button->GetHighlightColor(), std::nullopt);
   brave_menu_button->SetTypeAndSeverity(
-      {AppMenuIconController::IconType::UPGRADE_NOTIFICATION,
-       AppMenuIconController::Severity::LOW});
+      {AppMenuIconController::IconType::kUpgradeNotification,
+       AppMenuIconController::Severity::kLow});
   EXPECT_EQ(brave_menu_button->GetHighlightColor(),
             SkColorSetRGB(0x00, 0x46, 0x07));
   brave_menu_button->SetTypeAndSeverity(
-      {AppMenuIconController::IconType::UPGRADE_NOTIFICATION,
-       AppMenuIconController::Severity::MEDIUM});
+      {AppMenuIconController::IconType::kUpgradeNotification,
+       AppMenuIconController::Severity::kMedium});
   EXPECT_EQ(brave_menu_button->GetHighlightColor(),
             SkColorSetRGB(0x4A, 0x39, 0x00));
   brave_menu_button->SetTypeAndSeverity(
-      {AppMenuIconController::IconType::UPGRADE_NOTIFICATION,
-       AppMenuIconController::Severity::HIGH});
+      {AppMenuIconController::IconType::kUpgradeNotification,
+       AppMenuIconController::Severity::kHigh});
   EXPECT_EQ(brave_menu_button->GetHighlightColor(),
             SkColorSetRGB(0x7D, 0x00, 0x1A));
 
