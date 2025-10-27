@@ -147,6 +147,7 @@ brave_chrome_browser_deps = [
   "//brave/browser/updater:buildflags",
   "//brave/common",
   "//brave/common:mojo_bindings",
+  "//brave/components/ai_chat/core/common/buildflags",
   "//brave/components/ai_rewriter/common/buildflags",
   "//brave/components/body_sniffer",
   "//brave/components/brave_account",

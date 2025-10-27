@@ -209,14 +209,19 @@ TEST_F(SidebarModelTest, ActiveIndexChangedAfterItemAdded) {
   EXPECT_THAT(model()->active_index(), Optional(2u));
 }
 
-// Check Leo item is top-most item.
-#if BUILDFLAG(ENABLE_AI_CHAT)
+// Check that the expected item is top-most.
 TEST_F(SidebarModelTest, TopItemTest) {
   const auto first_item = service()->items()[0];
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  // Leo should be the top item when AI Chat is enabled.
   EXPECT_EQ(first_item.built_in_item_type,
             SidebarItem::BuiltInItemType::kChatUI);
-}
+#else
+  // Brave Talk should be the top item when AI Chat is disabled.
+  EXPECT_EQ(first_item.built_in_item_type,
+            SidebarItem::BuiltInItemType::kBraveTalk);
 #endif
+}
 
 TEST(SidebarUtilTest, SidebarShowOptionsDefaultTest) {
   EXPECT_EQ(SidebarService::ShowSidebarOption::kShowNever,

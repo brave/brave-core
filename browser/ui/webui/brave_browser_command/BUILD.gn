@@ -19,6 +19,7 @@ source_set("brave_browser_command") {
     "//base",
     "//brave/browser/brave_rewards",
     "//brave/browser/brave_wallet",
+    "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/brave_education",
     "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/constants",

@@ -7,7 +7,7 @@ import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 
 source_set("unit_tests") {
   testonly = true
-  sources = []
+  sources = [ "chrome_autocomplete_provider_client_unittest.cc" ]
   deps = [
     "//base/test:test_support",
     "//brave/components/ai_chat/core/common/buildflags",
@@ -16,7 +16,6 @@ source_set("unit_tests") {
   ]
 
   if (enable_ai_chat) {
-    sources += [ "chrome_autocomplete_provider_client_unittest.cc" ]
     deps += [ "//brave/components/ai_chat/core/common" ]
   }
 }

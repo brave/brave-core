@@ -16,6 +16,7 @@ source_set("customize_chrome") {
   deps = [
     "//base",
     "//brave/browser/brave_rewards:util",
+    "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/brave_news/common",
     "//brave/components/brave_rewards/core",
     "//brave/components/brave_vpn/common/buildflags",
@@ -72,6 +73,7 @@ source_set("unit_tests") {
     ":customize_chrome",
     "//base",
     "//brave/browser/brave_rewards:util",
+    "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/brave_news/common",
     "//brave/components/brave_rewards/core",
     "//brave/components/brave_vpn/common/buildflags",

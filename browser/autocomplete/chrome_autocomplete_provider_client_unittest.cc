@@ -3,6 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "components/omnibox/browser/autocomplete_controller.h"
@@ -79,3 +82,5 @@ TEST_F(AutocompleteControllerLeoTest, MaybeShowLeoMatchOrdering) {
         << "When AIChatFirst is on, Leo match is NOT forced down.";
   }
 }
+
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)

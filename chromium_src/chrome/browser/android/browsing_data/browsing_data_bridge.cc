@@ -5,15 +5,18 @@
 
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 
-#define BRAVE_CLEAR_BROWSING_DATA                                    \
-  remove_mask |= BrowsingDataRemover::DATA_TYPE_DOWNLOADS;           \
-  break;                                                             \
-  case browsing_data::BrowsingDataType::BRAVE_AI_CHAT:               \
-    IF_BUILDFLAG(ENABLE_AI_CHAT, {                                   \
-      remove_mask |=                                                 \
-          chrome_browsing_data_remover::DATA_TYPE_BRAVE_LEO_HISTORY; \
-    })                                                               \
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#define BRAVE_CLEAR_BROWSING_DATA                                             \
+  remove_mask |= BrowsingDataRemover::DATA_TYPE_DOWNLOADS;                    \
+  break;                                                                      \
+  case browsing_data::BrowsingDataType::BRAVE_AI_CHAT:                        \
+    remove_mask |= chrome_browsing_data_remover::DATA_TYPE_BRAVE_LEO_HISTORY; \
     break;
+#else
+#define BRAVE_CLEAR_BROWSING_DATA                          \
+  remove_mask |= BrowsingDataRemover::DATA_TYPE_DOWNLOADS; \
+  break;
+#endif
 
 #include <chrome/browser/android/browsing_data/browsing_data_bridge.cc>
 #undef BRAVE_CLEAR_BROWSING_DATA

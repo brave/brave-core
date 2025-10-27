@@ -17,6 +17,7 @@ source_set("unit_tests") {
   deps = [
     "//base",
     "//brave/app:generate_command_metadata",
+    "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/brave_news/common",
     "//brave/components/brave_rewards/core",
     "//brave/components/brave_vpn/common/buildflags",

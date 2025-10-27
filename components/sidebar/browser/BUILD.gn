@@ -22,6 +22,7 @@ static_library("browser") {
 
   deps = [
     "//base",
+    "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/brave_wallet/common",
     "//brave/components/constants",
     "//brave/components/l10n/common",
@@ -50,6 +51,7 @@ source_set("unit_tests") {
   deps = [
     "//base",
     "//base/test:test_support",
+    "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/constants",
     "//brave/components/playlist/core/common",
     "//brave/components/sidebar/browser",
