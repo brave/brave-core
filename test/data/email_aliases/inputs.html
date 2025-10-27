@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Input types test page | 456 Berea Street</title>
+    <style>
+      label {
+        display: block;
+        margin: 0 0 3px;
+      }
+      input {
+        font-size: 1em;
+      }
+      input[type='text'],
+      input[type='search'],
+      input[type='tel'],
+      input[type='url'],
+      input[type='email'] {
+        width: 296px;
+        padding: 2px;
+      }
+    </style>
+  </head>
+  <script>
+    function getElementX(id) {
+      const element = document.getElementById(id)
+      const rect = element.getBoundingClientRect()
+      return Math.ceil(rect.x)
+    }
+
+    function getElementY(id) {
+      const element = document.getElementById(id)
+      const rect = element.getBoundingClientRect()
+      return Math.ceil(rect.y)
+    }
+  </script>
+  <body>
+    <form action=".">
+      <div class="text">
+        <label for="type-text">Text (text)</label>
+        <input
+          type="text"
+          name="type-text"
+          id="type-text"
+        />
+      </div>
+      <div class="text">
+        <label for="type-search">Search (search)</label>
+        <input
+          type="search"
+          name="type-search"
+          id="type-search"
+        />
+      </div>
+      <div class="text">
+        <label for="type-tel">Telephone (tel)</label>
+        <input
+          type="tel"
+          name="type-tel"
+          id="type-tel"
+        />
+      </div>
+      <div class="text">
+        <label for="type-url">URL (url)</label>
+        <input
+          type="url"
+          name="type-url"
+          id="type-url"
+        />
+      </div>
+      <div class="text">
+        <label for="type-email">E-mail (email)</label>
+        <input
+          type="email"
+          name="type-email"
+          id="type-email"
+        />
+      </div>
+      <div class="text">
+        <label for="type-datetime">Date and Time (datetime)</label>
+        <input
+          type="datetime"
+          name="type-datetime"
+          id="type-datetime"
+        />
+      </div>
+    </form>
+  </body>
+</html>

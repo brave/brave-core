@@ -81,6 +81,10 @@ void EmailAliasesController::OpenSettingsPage() {
                                  GURL(kEmailAliasesSettingsURL));
 }
 
+WebUIBubbleManager* EmailAliasesController::GetBubbleForTesting() {
+  return bubble_.get();
+}
+
 void EmailAliasesController::OnAliasCreationComplete(
     const std::optional<std::string>& email) {
   CloseBubble();
