@@ -5,6 +5,8 @@
 <translation id="3478449063771497234">Az értesítések le vannak tiltva</translation>
 <translation id="2862978891748913252">Válassza ki az országot</translation>
 <translation id="3970520675790340955">Válassza ki az országát, hogy a régiójának megfelelő lehetőségeket és hirdetéseket mutathassuk.</translation>
+<translation id="721490496276866468">Jelszavak importálása</translation>
+<translation id="8178175542325151321">Válasszon ki egy olyan .csv fájlt, amely tartalmazza a jelszavait, hogy importálhassa őket a Brave jelszókezelőbe.</translation>
 <translation id="7301741773883122509">Hirdetések megtekintéséért most jutalmat kaphat! Így segíthet mindenki számára jobbá tenni az internetet. Ez fantasztikus!</translation>
 <translation id="6439128034594289376">Hurrá! Készen vagyunk!</translation>
 <translation id="370665806235115550">Betöltés...</translation>
@@ -109,7 +111,6 @@
 <translation id="7304425663107214334">A böngésző javaslatainak megjelenítése</translation>
 <translation id="8982438328166986164">A könyvjelzői és böngészési előzményei alapján ajánlott weboldalak megjelenítése.</translation>
 <translation id="924029461438529367">Keresési javaslatok megjelenítése</translation>
-<translation id="5989135139219497991">A legnépszerűbb webhelyekre vonatkozó javaslatok megjelenítése</translation>
 <translation id="6285118765755298263">Egyéb keresőmotorok indexálása</translation>
 <translation id="919715748352669592">Automatikusan indexálja a weboldalakat, amelyek követik az OpenSearch specet.</translation>
 <translation id="9148058034647219655">Kilépés</translation>
@@ -297,6 +298,11 @@
 <translation id="4254029385847607686">DECEMBER</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="1772301834467143364">Brave News</translation>
+<translation id="2518692840036393666">Menü testreszabása</translation>
+<translation id="5582839680698949063">Főmenü</translation>
+<translation id="7002271985859760052">Oldalműveletek</translation>
+<translation id="7104487676473617844">A következő elemek csak akkor jelennek meg a menüben, ha az aktuálisan megnyitott weboldal támogatja őket.</translation>
+<translation id="4159764849281393303">WebApp</translation>
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="8428213095426709021">Beállítások</translation>
 <translation id="6020176662032623904">Ellenőrzött alkotó</translation>
@@ -799,7 +805,6 @@ other {<ph name="CITY_COUNT_MANY"/> város - }
 <translation id="750843150060816463">Gas ára (Gwei)</translation>
 <translation id="1426320910664514906">Gáz határértéke</translation>
 <translation id="6389441740143786465">Megosztás kikapcsolása</translation>
-<translation id="9065203028668620118">Szerkesztés</translation>
 <translation id="473775607612524610">Frissítés</translation>
 <translation id="479795390141144417">Számla frissítése sikertelen.</translation>
 <translation id="8084782383392198011">A számla neve nem állhat üresen.</translation>
@@ -1015,8 +1020,6 @@ other {<ph name="CITY_COUNT_MANY"/> város - }
 <translation id="8496335570810457">Előzetes vállalás:</translation>
 <translation id="5100124500279922001">Előzetes kihagyása:</translation>
 <translation id="7152095322071766507">Leggyakrabban látogatott oldal</translation>
-<translation id="7230006500876504868">Keresés a Brave-vel</translation>
-<translation id="5888208462949095139">Keresés a következővel: <ph name="DEFAULT_SEARCH_ENGINE"/></translation>
 <translation id="5456039738087398178">Kezdőképernyős modul</translation>
 <translation id="703185154752046151">Modul hozzáadva a kezdőképernyőhöz</translation>
 <translation id="4635094429202343515">Próbálja ki a Brave keresési modulját</translation>
@@ -1076,7 +1079,7 @@ other {<ph name="CITY_COUNT_MANY"/> város - }
 <translation id="7618347247876614969">Címkeresési tábla – fiók:</translation>
 <translation id="7659483790930268440">Címkeresési tábla – index:</translation>
 <translation id="5494920125229734069">Összes kiválasztása</translation>
-<translation id="6129027151000961048">Leo</translation>
+<translation id="2361906291514218784">Leo MI</translation>
 <translation id="8613144770663526433">Bejelentkezés a Brave pénztárcával</translation>
 <translation id="3696514931437952995">A következőbe jelentkezik be: <ph name="ORIGIN"/>. A Brave pénztárca meg fogja osztani a pénztárcája címét a következővel: <ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">Részletek megtekintése</translation>
@@ -1093,11 +1096,11 @@ other {<ph name="CITY_COUNT_MANY"/> város - }
 <translation id="6742599753610126012">Csevegési előzmények törlése</translation>
 <translation id="3443052382074796867">A beszélgetések tárolásának letiltása véglegesen törli az összes korábban tárolt beszélgetést. Ez a művelet nem vonható vissza.</translation>
 <translation id="3692772534525889713">Kapcsolja össze a Play Áruházban lebonyolított vásárlásait a Brave-fiókjával, ha használni szeretné a Brave Leót más eszközökön is.</translation>
-<translation id="73236265316873967">Leo Prémium</translation>
+<translation id="592831784390389506">Leo AI Prémium</translation>
 <translation id="1028627582482425924">Egy év</translation>
 <translation id="2985392169397572983">LEGJOBB ÉRTÉK</translation>
 <translation id="1166682575529520472">Havonta</translation>
-<translation id="451189393813405346">A Leo megkérdezése</translation>
+<translation id="2206846767762985925">Kérdezd Leo AI-t</translation>
 <translation id="7322560193401221004">Jegyezze meg a fájl visszajátszási pozícióját</translation>
 <translation id="7505951907514709271">Az egyéni fájlok esetén a legutóbbi szünet helyéről folytassa a lejátszást</translation>
 <translation id="6835165453349969605">Jegyezze meg a lista visszajátszási pozícióját</translation>
@@ -1140,6 +1143,7 @@ other {<ph name="CITY_COUNT_MANY"/> város - }
 <translation id="3861012838874771868">Lejátszásilista-beállítások megnyitása</translation>
 <translation id="5220099266891491416">Lejátszási lista gomb elrejtése</translation>
 <translation id="7416347631175891923">Próbálja ki!</translation>
+<translation id="9065203028668620118">Szerkesztés</translation>
 <translation id="1173894706177603556">Átnevezés</translation>
 <translation id="3596306474342941843">Lejátszási lista törlése</translation>
 <translation id="7765158879357617694">Áthelyezés</translation>
@@ -1154,7 +1158,7 @@ other {<ph name="CITY_COUNT_MANY"/> város - }
 <translation id="5319532905552885478">Médiatartalom hozzáadva az alapértelmezett lejátszási listához</translation>
 <translation id="4802584673094436231">Előkészítés...</translation>
 <translation id="481455355267255546">A következő</translation>
-<translation id="5474757891469990756">Engedje szabadjára a Leo minden tulajdonságát a Prémiummal:</translation>
+<translation id="3721790899869840343">Használja ki Leo AI teljes erejét a Prémium csomaggal:</translation>
 <translation id="4173478269537830374">Fedezze fel a különböző MI-modelleket</translation>
 <translation id="3453542753968940696">Kiemelt hozzáférés a különböző képességekkel rendelkező, nagy teljesítményű modellekhez.</translation>
 <translation id="3245401959451976966">Engedje szabadjára kreativitását</translation>
@@ -1222,7 +1226,6 @@ other {<ph name="CITY_COUNT_MANY"/> város - }
 <translation id="4650851936784160359">A szűrőlistát nem sikerült frissíteni. Kérjük, próbálja újra.</translation>
 <translation id="3098054327870766317">Visszavonás gomb megjelenítése a lapok bezárásakor</translation>
 <translation id="1336494649091412226">Biztosan kilép a Brave-ből?</translation>
-<translation id="2361906291514218784">Leo MI</translation>
 <translation id="7942415993090181327">Csevegési előzmények</translation>
 <translation id="6859935199732075666">Biztonságos böngészés hibáinak megjelenítése</translation>
 <translation id="2735247450315842119">Képernyőképek engedélyezése privát lapokon</translation>
@@ -1246,6 +1249,18 @@ other {<ph name="CITY_COUNT_MANY"/> város - }
 <translation id="5139940364318403933">További információ a Google Drive használatáról</translation>
 <translation id="729975465115245577">Az eszközön nincs olyan alkalmazás, amely tárolni tudja a jelszavakat tartalmazó fájlt.</translation>
 <translation id="1129510026454351943">Részletek: <ph name="ERROR_DESCRIPTION"/></translation>
+<translation id="5594899180331219722">Fájl kiválasztása</translation>
+<translation id="3744219658596020825">A jelszavak importálása nem sikerült</translation>
+<translation id="8258027225380843424">Sikeres importálás!</translation>
+<translation id="766635563210446220">Nem sikerült importálni a jelszavakat. Ellenőrizze a(z) <ph name="FILENAME"/> fájlt, és győződjön meg róla, hogy a helyes formátumot használja. <ph name="BEGIN_LINK"/>További információ<ph name="END_LINK"/></translation>
+<translation id="6581356304040102696">Nem sikerült importálni a jelszavakat. A fájl méretének 1 MB alatt kell lennie.</translation>
+<translation id="5895244669404288318">{COUNT, plural, =1 {Nem lehet jelszavakat importálni. Egyszerre csak 1 jelszó importálható.} other {Nem lehet jelszavakat importálni. Egyszerre csak legfeljebb <ph name="COUNT_MANY"/> jelszó importálható.}}</translation>
+<translation id="3748424433435232460">Ehhez a fiókhoz már van elmentett jelszó ezen az eszközön</translation>
+<translation id="6438475350605608554">Már folyamatban van jelszavak importálása egy másik lapon</translation>
+<translation id="3482868954775580230">Nem sikerült beolvasni a kiválasztott fájlt. <ph name="EXCEPTION_INFO"/></translation>
+<translation id="9162995380643712715">{IMPORT_COUNT, plural, =1 {1 jelszó sikeresen importálva.} other {<ph name="IMPORT_COUNT_MANY"/> jelszó sikeresen importálva.}}</translation>
+<translation id="4637949129057123593">Sikertelen importálás.</translation>
+<translation id="4300452012226767715">A jelszókezelő nem érhető el.</translation>
 <translation id="6221633008163990886">A zárolás feloldásával exportálhatja a jelszavait</translation>
 <translation id="5245792669563792664">jelszavak</translation>
 <translation id="10614374240317010">Az alábbi oldalakról soha ne mentsen jelszavakat</translation>

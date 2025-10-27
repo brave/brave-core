@@ -2,34 +2,36 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="mr">
 <translation id="130631256467250065">तुम्ही आपल्या डिव्हाइसचा पुढील वेळी पुनरारंभ कराल तेव्हा तुमचे बदल प्रभावी होतील.</translation>
+<translation id="6451924152958941455">Brave मेनू &gt;
+          <ph name="SETTINGS_TITLE"/>
+          &gt;
+          <ph name="SYSTEM_TITLE"/>
+          &gt;
+          <ph name="PROXIES_TITLE"/>
+वर जा
+          आणि तुमचे कॉन्फिगरेशन "प्रॉक्सी नाही" किंवा "प्रत्यक्ष" वर सेट केले असल्याची खात्री करा.</translation>
 <translation id="7999989146447764333">Brave मध्ये क्रॅश अहवाल उपलब्ध नाही.</translation>
 <translation id="1953231710324290369">तुम्ही एक सुरक्षित Brave पेज पाहत आहात</translation>
 <translation id="907470742420136113">Brave पेमेंट पद्धती भरण्यासाठी सेटिंग्जमध्ये फेरबदल करण्याचा प्रयत्न करत आहे.</translation>
 <translation id="4847979153841887006">Brave लोगो</translation>
 <translation id="336808635693308470">Brave हे पेमेंट पद्धती संपादित करण्याचा प्रयत्‍न करत आहे.</translation>
 <translation id="7932149101545999102">Brave हे <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/> खुला स्रोत प्रकल्प आणि इतर <ph name="BEGIN_LINK_OSS"/>खुले स्रोत सॉफ्टवेअर<ph name="END_LINK_OSS"/> द्वारे बनवणे शक्य झाले.</translation>
-<translation id="8746410156982274638">Brave मेनू &gt;
-          <ph name="SETTINGS_TITLE"/>
-          &gt;
-          <ph name="ADVANCED_TITLE"/>
-          &gt;
-          <ph name="PROXIES_TITLE"/>
-          &gt;
-          LAN सेटिंग्ज
-          वर जा आणि "तुमच्या LAN साठी एक प्रॉक्सी सर्व्हर वापरा" चेकबॉक्स ची निवड रद्द करा.</translation>
 <translation id="303960458633076466">हे पेज Brave ने ब्लॉक केले आहे</translation>
 <translation id="2017237562285586622">तुमच्या फायरवॉल किंवा अँटीव्हायरस सेटिंग्जमधील नेटवर्क ॲक्सेस करण्यास
         Brave ला परवानगी  द्या.</translation>
 <translation id="4949828774841497663">अ‍ॅप्लिकेशन &gt; सिस्टीम सेटिंग्ज &gt; नेटवर्क वर जा
           अ‍ॅक्टिव्ह नेटवर्क निवडा, तपशील... बटणावर क्लिक करा, आणि निवडलेल्या कोणत्याही प्रॉक्सीची
           निवड रद्द करा.</translation>
-<translation id="8619622797841001082">Brave मेनू &gt;
+<translation id="3269554930871094325">Brave मेनू &gt;
           <ph name="SETTINGS_TITLE"/>
           &gt;
-          <ph name="ADVANCED_TITLE"/>
+          <ph name="SYSTEM_TITLE"/>
           &gt;
           <ph name="PROXIES_TITLE"/>
-          वर जा आणि तुमचे कॉन्फिगरेशन "प्रॉक्सी नाही" किंवा "प्रत्यक्ष" वर सेट केल्याचे सुनिश्चित करा.</translation>
+          &gt;
+          नेटवर्क आणि इंटरनेट &gt; प्रॉक्सी
+यावर जा
+          आणि "आपोआप सेटिंग्ज शोधा" ची निवड रद्द करा.</translation>
 <translation id="6159073403999048272">ही पेज Brave डेव्हलपरद्वारे वापरण्यासाठी आहेत आणि सक्रियपणे देखरेख किंवा चाचणी केली जाऊ शकत नाहीत. ती सुरू करण्यासाठी, <ph name="BEGIN_LINK"/>chrome://chrome-urls<ph name="LINK_END"/> वर नेव्हिगेट करा, पेज डीबग करा सुरू करण्यासाठी बटणावर क्लिक करा आणि नंतर या पेजवर पुन्हा नेव्हिगेट करा.</translation>
 <translation id="2765022094254723779">Brave हे इतर <ph name="BEGIN_LINK_OSS"/>मुक्त स्रोत सॉफ्टवेअर<ph name="END_LINK_OSS"/> द्वारेदेखील तयार करण्यात आले आहे.</translation>
 <translation id="9156965752763025780">तुम्ही पुढल्या वेळी Brave रीलाँच कराल तोपर्यंत तुमचे बदल प्रभावी होतील.</translation>

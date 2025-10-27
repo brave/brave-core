@@ -2,34 +2,32 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="ja">
 <translation id="130631256467250065">変更内容は、次回のデバイスの起動時に反映されます。</translation>
+<translation id="6451924152958941455">Brave メニュー &gt;
+          [<ph name="SETTINGS_TITLE"/>]
+          &gt;
+          [<ph name="SYSTEM_TITLE"/>]
+          &gt;
+          [<ph name="PROXIES_TITLE"/>]
+          に移動して、設定が [プロキシなし] または [直接] になっていることを確認します。</translation>
 <translation id="7999989146447764333">Brave では、障害レポートをご利用いただけません。</translation>
 <translation id="1953231710324290369">保護された Brave ページを表示しています</translation>
 <translation id="907470742420136113">Brave がお支払い方法の入力の設定を変更しようとしています。</translation>
 <translation id="4847979153841887006">Brave ロゴ</translation>
 <translation id="336808635693308470">Brave がお支払い方法を編集しようとしています。</translation>
 <translation id="7932149101545999102">Brave は <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/> オープンソース プロジェクトやその他の<ph name="BEGIN_LINK_OSS"/>オープンソース ソフトウェア<ph name="END_LINK_OSS"/>によって実現しました。</translation>
-<translation id="8746410156982274638">このオプションを無効にするには:
-          Brave メニュー &gt;
-          <ph name="SETTINGS_TITLE"/>
-          &gt;
-          <ph name="ADVANCED_TITLE"/>
-          &gt;
-          <ph name="PROXIES_TITLE"/>
-          &gt;
-          [LAN の設定]
-          の順に移動して、[LAN にプロキシ サーバーを使用する] チェックボックスをオフにします。</translation>
 <translation id="303960458633076466">このページは Brave によってブロックされています</translation>
 <translation id="2017237562285586622">ファイアウォールやウイルス対策の設定で、Brave からネットワークへのアクセスを
         許可します。</translation>
 <translation id="4949828774841497663">[アプリケーション] &gt; [システム設定] &gt; [ネットワーク] に移動し、アクティブなネットワークを選択したあと、[詳細] ボタンをクリックして、選択されているプロキシがあれば選択を解除します。</translation>
-<translation id="8619622797841001082">このオプションを無効にするには:
-          Brave メニュー &gt;
-          <ph name="SETTINGS_TITLE"/>
+<translation id="3269554930871094325">Brave メニュー &gt;
+          [<ph name="SETTINGS_TITLE"/>]
           &gt;
-          <ph name="ADVANCED_TITLE"/>
+          [<ph name="SYSTEM_TITLE"/>]
           &gt;
-          <ph name="PROXIES_TITLE"/>
-          の順に移動して、設定が [プロキシなし] または [直接] になっていることを確認します。</translation>
+          [<ph name="PROXIES_TITLE"/>]
+          &gt;
+          [ネットワークとインターネット] &gt; [プロキシ]
+          に移動して、[設定を自動的に検出する] の選択を解除します。</translation>
 <translation id="6159073403999048272">これらのページは Brave デベロッパーが使用することを目的としたもので、積極的なメンテナンスやテストが行われていない可能性があります。これらのページを有効にするには、<ph name="BEGIN_LINK"/>chrome://chrome-urls<ph name="LINK_END"/> でデバッグページを有効にするボタンをクリックしてから、このページに戻ります。</translation>
 <translation id="2765022094254723779">Brave の実現には、他の<ph name="BEGIN_LINK_OSS"/>オープンソース ソフトウェア<ph name="END_LINK_OSS"/>もかかわっています。</translation>
 <translation id="9156965752763025780">変更内容は次に Brave を再起動したときに有効になります。</translation>

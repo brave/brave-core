@@ -5,6 +5,8 @@
 <translation id="3478449063771497234">通知已停用</translation>
 <translation id="2862978891748913252">選擇您的國家/地區</translation>
 <translation id="3970520675790340955">選擇您的國家/地區，我們將向您展示合適的選項和廣告。</translation>
+<translation id="721490496276866468">匯入密碼</translation>
+<translation id="8178175542325151321">選擇一個包含您密碼的 .csv 檔案，以便匯入到 Brave 密碼管理員。</translation>
 <translation id="7301741773883122509">現在您可以透過查看廣告而獲得獎勵​​。您正在協助使網際網路成為適合所有人的美好地方。真是太棒了！</translation>
 <translation id="6439128034594289376">喔耶，您已準備好了！</translation>
 <translation id="370665806235115550">載入...</translation>
@@ -109,7 +111,6 @@
 <translation id="7304425663107214334">顯示瀏覽器建議</translation>
 <translation id="8982438328166986164">根據您的書籤和瀏覽記錄顯示網站建議。</translation>
 <translation id="924029461438529367">顯示搜尋建議</translation>
-<translation id="5989135139219497991">顯示熱門建議</translation>
 <translation id="6285118765755298263">為其他搜尋引擎編製索引</translation>
 <translation id="919715748352669592">為遵循 OpenSearch 規範的網站自動編製索引。</translation>
 <translation id="9148058034647219655">結束</translation>
@@ -297,6 +298,11 @@
 <translation id="4254029385847607686">十二月</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="1772301834467143364">Brave 新聞</translation>
+<translation id="2518692840036393666">自訂選單</translation>
+<translation id="5582839680698949063">主選單</translation>
+<translation id="7002271985859760052">頁面操作</translation>
+<translation id="7104487676473617844">以下項目僅在目前開啟的網頁支援時才會顯示於選單中。</translation>
+<translation id="4159764849281393303">WebApp</translation>
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="8428213095426709021">設定</translation>
 <translation id="6020176662032623904">已驗證的創作者</translation>
@@ -799,7 +805,6 @@
 <translation id="750843150060816463">Gas 價格 (Gwei)</translation>
 <translation id="1426320910664514906">Gas 上限</translation>
 <translation id="6389441740143786465">停用共用中樞</translation>
-<translation id="9065203028668620118">編輯</translation>
 <translation id="473775607612524610">更新</translation>
 <translation id="479795390141144417">帳號更新失敗。</translation>
 <translation id="8084782383392198011">帳號名稱不能為空。</translation>
@@ -1015,8 +1020,6 @@
 <translation id="8496335570810457">預檢承諾：</translation>
 <translation id="5100124500279922001">略過預檢：</translation>
 <translation id="7152095322071766507">最常造訪的網站</translation>
-<translation id="7230006500876504868">使用 Brave 搜尋</translation>
-<translation id="5888208462949095139">使用 <ph name="DEFAULT_SEARCH_ENGINE"/> 搜尋</translation>
 <translation id="5456039738087398178">主畫面小工具</translation>
 <translation id="703185154752046151">新增至主畫面的小工具</translation>
 <translation id="4635094429202343515">試試 Brave 搜尋小工具</translation>
@@ -1076,7 +1079,7 @@
 <translation id="7618347247876614969">位址查詢表格帳戶：</translation>
 <translation id="7659483790930268440">位址查詢表格索引：</translation>
 <translation id="5494920125229734069">全選</translation>
-<translation id="6129027151000961048">Leo</translation>
+<translation id="2361906291514218784">Leo AI</translation>
 <translation id="8613144770663526433">用 Brave 錢包登入</translation>
 <translation id="3696514931437952995">您正在登入 <ph name="ORIGIN"/>。Brave 錢包將與 <ph name="ORIGIN"/> 分享您的錢包位址。</translation>
 <translation id="1028781062521375153">檢視詳細資料</translation>
@@ -1093,11 +1096,11 @@
 <translation id="6742599753610126012">清除聊天紀錄</translation>
 <translation id="3443052382074796867">停用對話儲存功能會永久刪除所有先前儲存的對話。此動作無法復原。</translation>
 <translation id="3692772534525889713">將 Play 商店的購買項目與您的 Brave 帳戶建立連結，即可在其他裝置上使用 Brave Leo。</translation>
-<translation id="73236265316873967">Leo Premium</translation>
+<translation id="592831784390389506">Leo AI 高級版</translation>
 <translation id="1028627582482425924">1 年</translation>
 <translation id="2985392169397572983">最佳價值</translation>
 <translation id="1166682575529520472">每月</translation>
-<translation id="451189393813405346">詢問 Leo</translation>
+<translation id="2206846767762985925">詢問 Leo AI</translation>
 <translation id="7322560193401221004">記住檔案播放位置</translation>
 <translation id="7505951907514709271">對於個別檔案，從上次暫停位置重新開始播放</translation>
 <translation id="6835165453349969605">記住清單播放位置</translation>
@@ -1140,6 +1143,7 @@
 <translation id="3861012838874771868">開啟「播放清單設定」</translation>
 <translation id="5220099266891491416">隱藏「播放清單」按鈕</translation>
 <translation id="7416347631175891923">試試看！</translation>
+<translation id="9065203028668620118">編輯</translation>
 <translation id="1173894706177603556">重新命名</translation>
 <translation id="3596306474342941843">刪除播放清單</translation>
 <translation id="7765158879357617694">移動</translation>
@@ -1154,7 +1158,7 @@
 <translation id="5319532905552885478">媒體內容已新增到預設播放清單</translation>
 <translation id="4802584673094436231">準備中…</translation>
 <translation id="481455355267255546">接下來播放</translation>
-<translation id="5474757891469990756">透過 Premium 徹底釋放 Leo 強大效能：</translation>
+<translation id="3721790899869840343">升級為高級版，釋放 Leo AI 的全部功能：</translation>
 <translation id="4173478269537830374">探索不同 AI 模型</translation>
 <translation id="3453542753968940696">搶先使用具備不同技能的強大模型。</translation>
 <translation id="3245401959451976966">盡情揮灑創意</translation>
@@ -1222,7 +1226,6 @@
 <translation id="4650851936784160359">無法更新篩選清單。請再試一次</translation>
 <translation id="3098054327870766317">關閉標籤頁時顯示撤銷按鈕</translation>
 <translation id="1336494649091412226">您確定要退出 Brave 嗎？</translation>
-<translation id="2361906291514218784">Leo AI</translation>
 <translation id="7942415993090181327">聊天紀錄</translation>
 <translation id="6859935199732075666">顯示安全瀏覽錯誤</translation>
 <translation id="2735247450315842119">允許在無痕標籤頁中截圖</translation>
@@ -1246,6 +1249,18 @@
 <translation id="5139940364318403933">瞭解如何使用 Brave 雲端硬碟</translation>
 <translation id="729975465115245577">你的裝置沒有可儲存密碼檔案的應用程式。</translation>
 <translation id="1129510026454351943">詳細資料：<ph name="ERROR_DESCRIPTION"/></translation>
+<translation id="5594899180331219722">選擇檔案</translation>
+<translation id="3744219658596020825">您的密碼未被匯入</translation>
+<translation id="8258027225380843424">匯入成功!</translation>
+<translation id="766635563210446220">無法匯入密碼。請檢查 <ph name="FILENAME"/> 並確保其格式正確。<ph name="BEGIN_LINK"/>進一步瞭解<ph name="END_LINK"/></translation>
+<translation id="6581356304040102696">無法匯入密碼。檔案大小須小於 1 MB。</translation>
+<translation id="5895244669404288318">{COUNT, plural, =1 {無法匯入密碼。您每次只能匯入 1 組密碼。} other {無法匯入密碼。您每次最多只能匯入 <ph name="COUNT_MANY"/> 組密碼。}}</translation>
+<translation id="3748424433435232460">此帳戶的密碼已儲存在此裝置上</translation>
+<translation id="6438475350605608554">您正在另一個分頁中匯入密碼</translation>
+<translation id="3482868954775580230">讀取所選檔案時失敗。<ph name="EXCEPTION_INFO"/></translation>
+<translation id="9162995380643712715">{IMPORT_COUNT, plural, =1 {已成功匯入 1 組密碼。} other {已成功匯入 <ph name="IMPORT_COUNT_MANY"/> 組密碼。}}</translation>
+<translation id="4637949129057123593">匯入失敗.</translation>
+<translation id="4300452012226767715">密碼管理員無法使用。</translation>
 <translation id="6221633008163990886">解鎖即可匯出你的密碼</translation>
 <translation id="5245792669563792664">密碼</translation>
 <translation id="10614374240317010">一律不儲存</translation>

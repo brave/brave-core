@@ -84,7 +84,7 @@
 <translation id="2169338740411893745">Leo AI を新しいタブで開く</translation>
 <translation id="3295805221342028003">Leo AIをサイドバーで開く</translation>
 <translation id="7400808612454224939">Leo AI の設定を管理</translation>
-<translation id="5385064007245738696">Leo AI について</translation>
+<translation id="5385064007245738696">Leo AIについて</translation>
 <translation id="4928988318462976765">ウェブ拡張機能ストア</translation>
 <translation id="9181207987584064303">ウェブ拡張ストアを見る</translation>
 <translation id="3161744659507801211">警告：Braveは拡張機能が閲覧履歴を記録するのを防ぐことはできません。</translation>
@@ -384,9 +384,10 @@
 <translation id="5436069931267876389">コンテナが見つかりません</translation>
 <translation id="2263346047290834619">ツリータブを使用</translation>
 <translation id="5860254591544742609">タイトルバーを表示</translation>
-<translation id="5371926069408837914">折りたたまれている状態でマウスオーバーすると、垂直タブパネルを展開</translation>
+<translation id="4691131445504068802">最小化時に完全に非表示にする</translation>
+<translation id="4909269867860362936">最小化時にホバーで自動的に展開</translation>
 <translation id="3367129510799209147">タブホバーモード</translation>
-<translation id="8527099657928614787">垂直タブをウィンドウごとに独立して展開</translation>
+<translation id="8925055964134259461">垂直タブをウィンドウごとに独立して自動展開</translation>
 <translation id="916373084491701212">スクロールバーを表示</translation>
 <translation id="515949045075831661">右側に表示</translation>
 <translation id="3725395376319291415">左側に表示</translation>
@@ -397,21 +398,21 @@
 <translation id="2396127686705429331">ブックマークボタンを表示する</translation>
 <translation id="2814998458708016836">ワイドアドレスバーを使用する</translation>
 <translation id="4109670531935487117">アドレスバー入力中に自動でサイト候補を表示</translation>
-<translation id="3405901785709583668">トップサジェスチョン</translation>
+<translation id="4579877808890085926">オンデバイス候補</translation>
 <translation id="7859704718976024901">閲覧履歴</translation>
 <translation id="8820817407110198400">ブックマーク バー</translation>
 <translation id="4144468798716165316">クイックコマンド</translation>
 <translation id="7310387888625228830">Leo AI アシスタント</translation>
 <translation id="5222974844674487962">Braveニュースボタンを表示する</translation>
 <translation id="2085436423511121572">Leo AIボタンを表示</translation>
-<translation id="383007806262310953">ブックマーク バーを表示する</translation>
+<translation id="6156323911414505561">ブックマーク バーを表示する</translation>
 <translation id="4054323497808446566">ブックマーク バーをすべてのページに表示</translation>
 <translation id="8693858092251192712">新しいタブページを除き、ブックマーク バーをすべてのページで非表示</translation>
 <translation id="7158817046543187970">ブックマーク バーをすべてのページで非表示</translation>
 <translation id="3416468988018290825">常に完全な URL を表示</translation>
 <translation id="5529693968082667490">タブの検索ボタンを表示</translation>
 <translation id="1013121820689882118">Speedreader</translation>
-<translation id="1467652519828052368">Speedreader機能を有効にする</translation>
+<translation id="5522420266446076076">Speedreader機能を有効にする。</translation>
 <translation id="5211997910936574251">可能な時は自動的にSpeedreaderを使用</translation>
 <translation id="2025435450953474282">記事が自動的にリーダーモードで読み込まれるため、時間を節約できます</translation>
 <translation id="7984721311211272523">タブのスピーカーアイコンでミュート機能を無効にする</translation>
@@ -435,7 +436,7 @@
 <translation id="5690973901138662477">シールドオン</translation>
 <translation id="4697275813919189958">シールドオフ</translation>
 <translation id="6303294677342628402">シールド</translation>
-<translation id="7133511168130368997">しつこく追跡してくるトラッカーや不快な広告をブロックできます。</translation>
+<translation id="5128768857590582420">しつこく追跡してくるトラッカーや不快な広告をブロックできます</translation>
 <translation id="2761825942249694703">これはShieldsのデフォルト設定です。特定のサイト上のShieldsパネルで変更しない限り、すべてのウェブサイトにこの設定が適用されます。この設定を変更しても、既存のサイト設定には影響しません。</translation>
 <translation id="8452536890042542134">ウェブサイト上でほとんどの広告をブロックします。</translation>
 <translation id="4800195524776354947">シールドアイコン上でブロックされているアイテムの数を表示</translation>
@@ -848,6 +849,9 @@
 <translation id="1721787502053471881">本当にこのメモリーを削除しますか？この操作は元に戻せません。</translation>
 <translation id="5239685926753073108">すべてのメモリーを削除する</translation>
 <translation id="2600803466586623124">本当にすべてのメモリーを削除しますか？この操作は元に戻せません。</translation>
+<translation id="7311244614769792472">結果が見つかりませんでした。</translation>
+<translation id="1838374766361614909">検索を消去</translation>
+<translation id="5126255551970171328">メモリを検索</translation>
 <translation id="5985516785067818307">調査パネリスト</translation>
 <translation id="8347743943525229984">Braveアンケートを許可</translation>
 <translation id="3204080538332044581">Braveに対し、新しいタブページに匿名アンケートへのリンクを表示することを許可します。こうした調査は、より良い機能の構築や、ブラウザベースの広告キャンペーンの効果測定などに役立ちます。<ph name="BEGIN_LINK"/>詳細<ph name="END_LINK"/></translation>

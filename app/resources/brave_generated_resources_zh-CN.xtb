@@ -383,9 +383,10 @@
 <translation id="5436069931267876389">未找到容器</translation>
 <translation id="2263346047290834619">使用树形标签页</translation>
 <translation id="5860254591544742609">显示标题栏</translation>
-<translation id="5371926069408837914">当折叠时，在鼠标移动中展开垂直标签面板</translation>
+<translation id="4691131445504068802">最小化时完全隐藏</translation>
+<translation id="4909269867860362936">最小化时悬停自动展开</translation>
 <translation id="3367129510799209147">标签悬停模式</translation>
-<translation id="8527099657928614787">在每个窗口中独立展开垂直标签</translation>
+<translation id="8925055964134259461">在每个窗口中独立展开垂直标签</translation>
 <translation id="916373084491701212">显示滚动条</translation>
 <translation id="515949045075831661">在右侧显示</translation>
 <translation id="3725395376319291415">在左侧显示</translation>
@@ -396,21 +397,21 @@
 <translation id="2396127686705429331">显示书签栏按钮</translation>
 <translation id="2814998458708016836">使用宽地址栏</translation>
 <translation id="4109670531935487117">在地址栏中显示自动完成建议</translation>
-<translation id="3405901785709583668">热门建议</translation>
+<translation id="4579877808890085926">设备上搜索建议</translation>
 <translation id="7859704718976024901">浏览记录</translation>
 <translation id="8820817407110198400">书签栏</translation>
 <translation id="4144468798716165316">快捷指令</translation>
 <translation id="7310387888625228830">Leo 人工智能助手</translation>
 <translation id="5222974844674487962">显示 Brave 新闻按钮</translation>
 <translation id="2085436423511121572">显示 Leo AI 按钮</translation>
-<translation id="383007806262310953">显示书签栏</translation>
+<translation id="6156323911414505561">显示书签栏</translation>
 <translation id="4054323497808446566">所有页面均可见书签栏</translation>
 <translation id="8693858092251192712">除了新标签页，书签栏已在所有页面上隐藏</translation>
 <translation id="7158817046543187970">书签栏已在所有页面上隐藏</translation>
 <translation id="3416468988018290825">始终显示完整的URL</translation>
 <translation id="5529693968082667490">显示标签页搜索按钮</translation>
 <translation id="1013121820689882118">Speedreader</translation>
-<translation id="1467652519828052368">启用快速阅读功能</translation>
+<translation id="5522420266446076076">启用快速阅读功能。</translation>
 <translation id="5211997910936574251">在可以的情况下自动使用快速阅读功能</translation>
 <translation id="2025435450953474282">文章自动以读者模式加载，节省您的时间</translation>
 <translation id="7984721311211272523">禁用标签页扬声器图标中的静音功能</translation>
@@ -434,7 +435,7 @@
 <translation id="5690973901138662477">Shields 向上</translation>
 <translation id="4697275813919189958">Shields Down</translation>
 <translation id="6303294677342628402">屏蔽</translation>
-<translation id="7133511168130368997">拦截在网络上无所不在的跟踪器和广告。</translation>
+<translation id="5128768857590582420">拦截在网络上无所不在的跟踪器和广告</translation>
 <translation id="2761825942249694703">这些是默认屏蔽设置，适用于所有网站（除非您更改了某特定网站的屏蔽面板中的某些设置）。更改这些设置不会影响您现有的每个站点的设置。</translation>
 <translation id="8452536890042542134">这将屏蔽网站上的大多数广告。</translation>
 <translation id="4800195524776354947">在屏蔽图标上显示被拦截的项目的数量</translation>
@@ -846,6 +847,9 @@
 <translation id="1721787502053471881">您确定要删除此记忆吗？此操作无法撤销。</translation>
 <translation id="5239685926753073108">删除所有记忆</translation>
 <translation id="2600803466586623124">您确定要删除所有记忆吗？此操作无法撤销。</translation>
+<translation id="7311244614769792472">未找到结果。</translation>
+<translation id="1838374766361614909">清除搜索</translation>
+<translation id="5126255551970171328">搜索记忆</translation>
 <translation id="5985516785067818307">跟踪调查</translation>
 <translation id="8347743943525229984">允许 Brave 进行调查</translation>
 <translation id="3204080538332044581">允许 Brave 在新标签页中显示隐私调查链接。这些调查可以帮助我们开发更好的功能，以及衡量浏览器广告活动的有效性。<ph name="BEGIN_LINK"/>了解更多<ph name="END_LINK"/></translation>
