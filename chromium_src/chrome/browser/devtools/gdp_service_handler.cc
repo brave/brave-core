@@ -5,12 +5,10 @@
 
 #include "chrome/browser/devtools/gdp_service_handler.h"
 
+#include <chrome/browser/devtools/gdp_service_handler.cc>
+
 // Override to disable GDP service handler requests as it sends them to
 // googleapis.com.
-#define CanMakeRequest CanMakeRequest_Unused
-#include <chrome/browser/devtools/gdp_service_handler.cc>
-#undef CanMakeRequest
-
 void GdpServiceHandler::CanMakeRequest(
     Profile* profile,
     base::OnceCallback<void(bool success)> callback) {
