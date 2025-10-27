@@ -9,7 +9,7 @@
 #include <concepts>
 #include <string_view>
 
-#include "brave/components/brave_account/endpoint_client/is_request_body.h"
+#include "brave/components/brave_account/endpoint_client/is_request.h"
 #include "brave/components/brave_account/endpoint_client/is_response_body.h"
 #include "url/gurl.h"
 
@@ -29,18 +29,6 @@ concept URL = requires {
   { T::URL() } -> std::same_as<GURL>;
 };
 
-// Concept that checks whether `T` defines a static, accessible member
-// function `Method()` such that:
-//   - `T::Method()` is a valid expression,
-//      and that call yields a type convertible to `std::string_view`
-//
-// In short: models any type with a proper static `Method()` function
-// whose result is convertible to `std::string_view`.
-template <typename T>
-concept Method = requires {
-  { T::Method() } -> std::convertible_to<std::string_view>;
-};
-
 }  // namespace detail
 
 template <typename T>
@@ -49,10 +37,9 @@ concept IsEndpoint =
       typename T::Request;
       typename T::Response;
       typename T::Error;
-    } && detail::IsRequestBody<typename T::Request> &&
+    } && detail::IsRequest<typename T::Request> &&
     detail::IsResponseBody<typename T::Response> &&
-    detail::IsResponseBody<typename T::Error> && detail::URL<T> &&
-    detail::Method<T>;
+    detail::IsResponseBody<typename T::Error> && detail::URL<T>;
 
 }  // namespace brave_account::endpoint_client
 

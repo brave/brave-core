@@ -6,10 +6,10 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ACCOUNT_ENDPOINTS_VERIFY_RESULT_H_
 #define BRAVE_COMPONENTS_BRAVE_ACCOUNT_ENDPOINTS_VERIFY_RESULT_H_
 
-#include <string_view>
-
 #include "brave/components/brave_account/endpoint_client/is_endpoint.h"
+#include "brave/components/brave_account/endpoint_client/request_types.h"
 #include "brave/components/brave_account/endpoints/error.h"
+#include "brave/components/brave_account/endpoints/host.h"
 #include "brave/components/brave_account/endpoints/verify_result_request.h"
 #include "brave/components/brave_account/endpoints/verify_result_response.h"
 #include "url/gurl.h"
@@ -17,11 +17,11 @@
 namespace brave_account::endpoints {
 
 struct VerifyResult {
-  using Request = VerifyResultRequest;
+  using Request = endpoint_client::POST<VerifyResultRequest>;
   using Response = VerifyResultResponse;
   using Error = Error;
-  static GURL URL();
-  static std::string_view Method();
+
+  static GURL URL() { return Host().Resolve("/v2/verify/result"); }
 };
 
 static_assert(endpoint_client::IsEndpoint<VerifyResult>);

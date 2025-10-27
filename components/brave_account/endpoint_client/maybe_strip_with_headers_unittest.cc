@@ -9,16 +9,21 @@
 #include <tuple>
 
 #include "base/values.h"
+#include "brave/components/brave_account/endpoint_client/request_types.h"
 #include "brave/components/brave_account/endpoint_client/with_headers.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_account::endpoint_client {
 
+namespace {
+
 using detail::MaybeStripWithHeaders;
 
-struct TestRequest {
+struct TestRequestBody {
   base::Value::Dict ToValue() const;
 };
+
+using TestRequest = POST<TestRequestBody>;
 
 template <typename T>
 struct MaybeStripWithHeadersTest : testing::Test {
@@ -30,9 +35,9 @@ using MaybeStripWithHeadersTestTypes =
     testing::Types<std::tuple<void*, void*>,
                    std::tuple<volatile int, volatile int>,
                    std::tuple<TestRequest, TestRequest>,
-                   std::tuple<WithHeaders<TestRequest>, TestRequest>,
-                   std::tuple<WithHeaders<WithHeaders<TestRequest>>,
-                              WithHeaders<TestRequest>>>;
+                   std::tuple<WithHeaders<TestRequest>, TestRequest>>;
+
+}  // namespace
 
 TYPED_TEST_SUITE(MaybeStripWithHeadersTest, MaybeStripWithHeadersTestTypes);
 

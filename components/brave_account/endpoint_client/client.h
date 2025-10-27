@@ -66,7 +66,7 @@ class Client {
     }
 
     api_request_helper.Request(
-        std::string(T::Method()), T::URL(), json, "application/json",
+        std::string(Request::Method()), T::URL(), json, "application/json",
         base::BindOnce(std::move(on_response), std::move(callback)),
         base::ToVector(headers.GetHeaderVector(), [](const auto& header) {
           return std::pair(header.key, header.value);

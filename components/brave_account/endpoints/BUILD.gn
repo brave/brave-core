@@ -9,13 +9,9 @@ source_set("endpoints") {
   sources = [
     "host.cc",
     "host.h",
-    "password_finalize.cc",
     "password_finalize.h",
-    "password_init.cc",
     "password_init.h",
-    "service_token.cc",
     "service_token.h",
-    "verify_result.cc",
     "verify_result.h",
   ]
 

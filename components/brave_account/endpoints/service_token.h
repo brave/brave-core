@@ -6,10 +6,10 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ACCOUNT_ENDPOINTS_SERVICE_TOKEN_H_
 #define BRAVE_COMPONENTS_BRAVE_ACCOUNT_ENDPOINTS_SERVICE_TOKEN_H_
 
-#include <string_view>
-
 #include "brave/components/brave_account/endpoint_client/is_endpoint.h"
+#include "brave/components/brave_account/endpoint_client/request_types.h"
 #include "brave/components/brave_account/endpoints/error.h"
+#include "brave/components/brave_account/endpoints/host.h"
 #include "brave/components/brave_account/endpoints/service_token_request.h"
 #include "brave/components/brave_account/endpoints/service_token_response.h"
 #include "url/gurl.h"
@@ -17,11 +17,11 @@
 namespace brave_account::endpoints {
 
 struct ServiceToken {
-  using Request = ServiceTokenRequest;
+  using Request = endpoint_client::POST<ServiceTokenRequest>;
   using Response = ServiceTokenResponse;
   using Error = Error;
-  static GURL URL();
-  static std::string_view Method();
+
+  static GURL URL() { return Host().Resolve("/v2/auth/service_token"); }
 };
 
 static_assert(endpoint_client::IsEndpoint<ServiceToken>);

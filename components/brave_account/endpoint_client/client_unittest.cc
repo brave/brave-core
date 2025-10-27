@@ -22,6 +22,8 @@
 #include "base/types/expected.h"
 #include "base/values.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
+#include "brave/components/brave_account/endpoint_client/request_types.h"
+#include "brave/components/brave_account/endpoint_client/with_headers.h"
 #include "net/http/http_request_headers.h"
 #include "net/http/http_status_code.h"
 #include "net/traffic_annotation/network_traffic_annotation_test_helper.h"
@@ -68,7 +70,8 @@ inline constexpr char kErrorKey[] = "error";
 
 namespace brave_account::endpoint_client {
 
-using TestRequest = Message<kRequestKey>;
+using TestRequestBody = Message<kRequestKey>;
+using TestRequest = POST<TestRequestBody>;
 using TestResponse = Message<kResponseKey>;
 using TestError = Message<kErrorKey>;
 
@@ -92,7 +95,6 @@ struct TestEndpoint {
   using Response = TestResponse;
   using Error = TestError;
   static GURL URL() { return GURL("https://example.com/api/query"); }
-  static std::string_view Method() { return "POST"; }
 };
 
 using Expected =
@@ -183,27 +185,27 @@ INSTANTIATE_TEST_SUITE_P(
     ClientTestCases,
     ClientTest,
     testing::Values(
-        TestCase{.request = TestRequest("valid response"),
+        TestCase{.request = TestRequest{"valid response"},
                  .with_headers = false,
                  .status_code = net::HTTP_OK,
                  .server_reply = R"({"response": "some response"})",
                  .expected_reply = TestResponse("some response")},
-        TestCase{.request = TestRequest("invalid response"),
+        TestCase{.request = TestRequest{"invalid response"},
                  .with_headers = false,
                  .status_code = net::HTTP_CREATED,
                  .server_reply = R"({"invalid": response})",
                  .expected_reply = Expected(std::nullopt)},
-        TestCase{.request = TestRequest("valid error"),
+        TestCase{.request = TestRequest{"valid error"},
                  .with_headers = false,
                  .status_code = net::HTTP_BAD_REQUEST,
                  .server_reply = R"({"error": "some error"})",
                  .expected_reply = base::unexpected(TestError("some error"))},
-        TestCase{.request = TestRequest("invalid error"),
+        TestCase{.request = TestRequest{"invalid error"},
                  .with_headers = false,
                  .status_code = net::HTTP_UNAUTHORIZED,
                  .server_reply = R"({"invalid": error})",
                  .expected_reply = base::unexpected(std::nullopt)},
-        TestCase{.request = TestRequest("request with headers"),
+        TestCase{.request = TestRequest{"request with headers"},
                  .with_headers = true,
                  .status_code = net::HTTP_OK,
                  .server_reply = R"({"response": "some response"})",
