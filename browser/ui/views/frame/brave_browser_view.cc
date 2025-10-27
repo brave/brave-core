@@ -809,32 +809,27 @@ void BraveBrowserView::OnWidgetWindowModalVisibilityChanged(
 }
 
 void BraveBrowserView::UpdateContentsShadowVisibility() {
-  // Don't need contents shadow always if rounded corners setting is off.
-  if (!BraveBrowser::IsBraveWebViewRoundedCornersEnabled(browser())) {
-    return;
-  }
-
-  // Set Contents shadow always when SideBySide is off.
-  if (!base::FeatureList::IsEnabled(features::kSideBySide)) {
-    contents_shadow_ = BraveContentsViewUtil::CreateShadow(contents_container_);
-    return;
-  }
+  bool show_contents_shadow =
+      BraveBrowser::IsBraveWebViewRoundedCornersEnabled(browser());
 
   // With SideBySide, we use chromium's mini toolbar.
   // Unfortunately, it's not rendered well with contents shadow.
   // Fixed by hiding contents shadow when split view is active.
   // As split view has another border around contents, we don't need
   // contents shadow.
-  auto* tab_strip_model = browser()->tab_strip_model();
-  const bool hide_contents_shadow = tab_strip_model->IsActiveTabSplit();
-  if (hide_contents_shadow && contents_shadow_) {
-    contents_shadow_.reset();
-    contents_container_->DestroyLayer();
+  if (browser()->tab_strip_model()->IsActiveTabSplit()) {
+    show_contents_shadow = false;
+  }
+
+  // Toggle shadow.
+  if (show_contents_shadow && !contents_shadow_) {
+    contents_shadow_ = BraveContentsViewUtil::CreateShadow(contents_container_);
     return;
   }
 
-  if (!hide_contents_shadow && !contents_shadow_) {
-    contents_shadow_ = BraveContentsViewUtil::CreateShadow(contents_container_);
+  if (!show_contents_shadow && contents_shadow_) {
+    contents_shadow_.reset();
+    contents_container_->DestroyLayer();
   }
 }
 
