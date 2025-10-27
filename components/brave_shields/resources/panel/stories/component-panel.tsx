@@ -17,7 +17,7 @@ import {
   CookieBlockMode,
   HttpsUpgradeMode,
   ContentSettingsOverriddenStatus,
-  ContentSettingsOverrideSource,
+  ContentSettingSource,
 } from '../api/panel_browser_api'
 import {
   ViewType
@@ -83,7 +83,7 @@ export default {
           isNoscriptEnabled: false,
           scriptsBlockedOverrideStatus: {
             status: ContentSettingsOverriddenStatus.kNotSet,
-            overrideSource: ContentSettingsOverrideSource.kNone,
+            overrideSource: ContentSettingSource.kNone,
           },
           isForgetFirstPartyStorageEnabled: false,
           webcompatSettings: {}

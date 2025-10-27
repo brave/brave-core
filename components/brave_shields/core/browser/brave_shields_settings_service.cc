@@ -17,31 +17,31 @@ namespace brave_shields {
 
 namespace {
 
-mojom::ContentSettingsOverrideSource ConvertSettingsSource(
+mojom::ContentSettingSource ConvertSettingsSource(
     const content_settings::SettingSource source) {
   switch (source) {
     case content_settings::SettingSource::kUser:
-      return mojom::ContentSettingsOverrideSource::kUser;
+      return mojom::ContentSettingSource::kUser;
     case content_settings::SettingSource::kExtension:
-      return mojom::ContentSettingsOverrideSource::kExtension;
+      return mojom::ContentSettingSource::kExtension;
     case content_settings::SettingSource::kPolicy:
-      return mojom::ContentSettingsOverrideSource::kPolicy;
+      return mojom::ContentSettingSource::kPolicy;
     case content_settings::SettingSource::kSupervised:
-      return mojom::ContentSettingsOverrideSource::kSupervised;
+      return mojom::ContentSettingSource::kSupervised;
     case content_settings::SettingSource::kInstalledWebApp:
-      return mojom::ContentSettingsOverrideSource::kInstalledWebApp;
+      return mojom::ContentSettingSource::kInstalledWebApp;
     case content_settings::SettingSource::kNone:
-      return mojom::ContentSettingsOverrideSource::kNone;
+      return mojom::ContentSettingSource::kNone;
     case content_settings::SettingSource::kAllowList:
-      return mojom::ContentSettingsOverrideSource::kAllowList;
+      return mojom::ContentSettingSource::kAllowList;
     case content_settings::SettingSource::kTpcdGrant:
-      return mojom::ContentSettingsOverrideSource::kTpcdGrant;
+      return mojom::ContentSettingSource::kTpcdGrant;
     case content_settings::SettingSource::kRemoteList:
-      return mojom::ContentSettingsOverrideSource::kRemoteList;
+      return mojom::ContentSettingSource::kRemoteList;
     case content_settings::SettingSource::kOsJavascriptOptimizer:
-      return mojom::ContentSettingsOverrideSource::kOsJavascriptOptimizer;
+      return mojom::ContentSettingSource::kOsJavascriptOptimizer;
     case content_settings::SettingSource::kTest:
-      return mojom::ContentSettingsOverrideSource::kTest;
+      return mojom::ContentSettingSource::kTest;
   }
   NOTREACHED();
 }

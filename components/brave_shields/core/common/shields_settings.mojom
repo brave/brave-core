@@ -19,7 +19,8 @@ enum ContentSettingsOverriddenStatus {
   kAllowed
 };
 
-enum ContentSettingsOverrideSource {
+// Maps to content_settings::SettingSource
+enum ContentSettingSource {
   kNone = 0,
   kPolicy,
   kExtension,
@@ -35,7 +36,7 @@ enum ContentSettingsOverrideSource {
 
 struct ContentSettingsOverriddenData {
   ContentSettingsOverriddenStatus status = kNotSet;
-  ContentSettingsOverrideSource override_source = kNone;
+  ContentSettingSource override_source = kNone;
 };
 
 struct ShieldsSettings {

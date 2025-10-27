@@ -16,7 +16,7 @@ import getPanelBrowserAPI, {
   FingerprintMode,
   HttpsUpgradeMode,
   ContentSettingsOverriddenStatus,
-  ContentSettingsOverrideSource,
+  ContentSettingSource,
 } from '../../api/panel_browser_api'
 import DataContext from '../../state/context'
 import { ViewType } from '../../state/component_types'
@@ -119,15 +119,15 @@ function AdvancedControlsContent () {
 
   const getEnforcedDescription = () => {
     switch (siteSettings?.scriptsBlockedOverrideStatus.overrideSource) {
-      case ContentSettingsOverrideSource.kExtension:
+      case ContentSettingSource.kExtension:
         return getLocale('braveShieldsScriptsBlockedOverriddenByExt')
-      case ContentSettingsOverrideSource.kPolicy:
+      case ContentSettingSource.kPolicy:
         return getLocale('braveShieldsScriptsBlockedOverriddenByPolicy')
-      case ContentSettingsOverrideSource.kAllowList:
+      case ContentSettingSource.kAllowList:
         return getLocale('braveShieldsScriptsBlockedOverriddenByAllowlist')
-      case ContentSettingsOverrideSource.kSupervised:
+      case ContentSettingSource.kSupervised:
         return getLocale('braveShieldsScriptsBlockedOverriddenBySupervisor')
-      case ContentSettingsOverrideSource.kInstalledWebApp:
+      case ContentSettingSource.kInstalledWebApp:
         return getLocale('braveShieldsScriptsBlockedOverriddenByPWA')
       default:
         return getLocale('braveShieldsScriptsBlockedOverridden')
@@ -149,9 +149,9 @@ function AdvancedControlsContent () {
     && siteSettings?.scriptsBlockedOverrideStatus.status
       !== ContentSettingsOverriddenStatus.kNotSet
     && siteSettings?.scriptsBlockedOverrideStatus.overrideSource
-      !== ContentSettingsOverrideSource.kUser
+      !== ContentSettingSource.kUser
     && siteSettings?.scriptsBlockedOverrideStatus.overrideSource
-      !== ContentSettingsOverrideSource.kNone
+      !== ContentSettingSource.kNone
 
   return (
     <section

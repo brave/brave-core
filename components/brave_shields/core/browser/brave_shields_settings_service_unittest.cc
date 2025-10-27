@@ -397,7 +397,7 @@ TEST_F(BraveShieldsSettingsServiceTest, GetJsContentSettingsOverriddenData) {
       brave_shields_settings()->GetJsContentSettingsOverriddenData(url);
   EXPECT_EQ(brave_shields::mojom::ContentSettingsOverriddenStatus::kNotSet,
             content_settings_overridden_data->status);
-  EXPECT_EQ(brave_shields::mojom::ContentSettingsOverrideSource::kUser,
+  EXPECT_EQ(brave_shields::mojom::ContentSettingSource::kUser,
             content_settings_overridden_data->override_source);
 
   auto extension_provider = std::make_unique<content_settings::MockProvider>();
@@ -415,7 +415,7 @@ TEST_F(BraveShieldsSettingsServiceTest, GetJsContentSettingsOverriddenData) {
       brave_shields_settings()->GetJsContentSettingsOverriddenData(url);
   EXPECT_EQ(brave_shields::mojom::ContentSettingsOverriddenStatus::kAllowed,
             content_settings_overridden_data->status);
-  EXPECT_EQ(brave_shields::mojom::ContentSettingsOverrideSource::kExtension,
+  EXPECT_EQ(brave_shields::mojom::ContentSettingSource::kExtension,
             content_settings_overridden_data->override_source);
 }
 
@@ -427,6 +427,6 @@ TEST_F(BraveShieldsSettingsServiceTest, DefaultContentSettingsOverriddenData) {
   EXPECT_TRUE(content_settings_overridden_data);
   EXPECT_EQ(brave_shields::mojom::ContentSettingsOverriddenStatus::kNotSet,
             content_settings_overridden_data->status);
-  EXPECT_EQ(brave_shields::mojom::ContentSettingsOverrideSource::kUser,
+  EXPECT_EQ(brave_shields::mojom::ContentSettingSource::kUser,
             content_settings_overridden_data->override_source);
 }
