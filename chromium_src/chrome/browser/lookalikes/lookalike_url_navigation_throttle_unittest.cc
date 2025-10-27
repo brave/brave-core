@@ -24,40 +24,39 @@ TEST_F(LookalikeThrottleTest, Basics) {
   const struct TestCase {
     const char* hostname;
     bool expected_blocked;
-    url_formatter::IDNSpoofChecker::Result expected_spoof_check_result;
+    url_formatter::IDNSpoofCheckerResult expected_spoof_check_result;
   } kTestCases[] = {
       // ASCII private domain.
-      {"private.hostname", false,
-       url_formatter::IDNSpoofChecker::Result::kNone},
+      {"private.hostname", false, url_formatter::IDNSpoofCheckerResult::kNone},
 
       // lɔlocked.com, fails ICU spoof checks.
       {"xn--llocked-9bd.com", true,
-       url_formatter::IDNSpoofChecker::Result::kICUSpoofChecks},
+       url_formatter::IDNSpoofCheckerResult::kICUSpoofChecks},
       // þook.com, contains a TLD specific character (þ).
       {"xn--ook-ooa.com", true,
-       url_formatter::IDNSpoofChecker::Result::kTLDSpecificCharacters},
+       url_formatter::IDNSpoofCheckerResult::kTLDSpecificCharacters},
       // example·com.com, unsafe middle dot.
       {"xn--examplecom-rra.com", true,
-       url_formatter::IDNSpoofChecker::Result::kUnsafeMiddleDot},
+       url_formatter::IDNSpoofCheckerResult::kUnsafeMiddleDot},
       // scope.com, with scope in Cyrillic. Whole script confusable.
       {"xn--e1argc3h.com", true,
-       url_formatter::IDNSpoofChecker::Result::kWholeScriptConfusable},
+       url_formatter::IDNSpoofCheckerResult::kWholeScriptConfusable},
       //  Non-ASCII Latin with Non-Latin character
       {"xn--caf-dma9024xvpg.kr", true,
-       url_formatter::IDNSpoofChecker::Result::
+       url_formatter::IDNSpoofCheckerResult::
            kNonAsciiLatinCharMixedWithNonLatin},
       // testーsite.com, has dangerous pattern (ー is CJK character).
       {"xn--testsite-1g5g.com", true,
-       url_formatter::IDNSpoofChecker::Result::kDangerousPattern},
+       url_formatter::IDNSpoofCheckerResult::kDangerousPattern},
 
       // 🍕.com, fails ICU spoof checks, but is allowed because consists of only
       // emoji and ASCII.
       {"xn--vi8h.com", false,
-       url_formatter::IDNSpoofChecker::Result::kICUSpoofChecks},
+       url_formatter::IDNSpoofCheckerResult::kICUSpoofChecks},
       // sparkasse-gießen.de, has a deviation character (ß). This is in punycode
       // because GURL canonicalizes ß to ss.
       {"xn--sparkasse-gieen-2ib.de", false,
-       url_formatter::IDNSpoofChecker::Result::kSafe},
+       url_formatter::IDNSpoofCheckerResult::kSafe},
   };
 
   for (const TestCase& test_case : kTestCases) {
