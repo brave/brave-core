@@ -13,6 +13,7 @@
 
 #include "base/containers/span.h"
 #include "base/feature_list.h"
+#include "base/functional/bind.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
@@ -163,7 +164,20 @@ void BraveTabStripModel::SetCustomTitleForTab(
 void BraveTabStripModel::OnTreeTabRelatedPrefChanged() {
   if (*tree_tabs_enabled_ && *vertical_tabs_enabled_) {
     BuildTreeTabs();
+    tree_tab_node_created_subscription_ =
+        std::make_unique<base::CallbackListSubscription>(
+            tree_tab_model_->RegisterAddTreeTabNodeCallback(base::BindRepeating(
+                &BraveTabStripModel::NotifyTreeTabNodeCreated,
+                base::Unretained(this))));
+    tree_tab_node_destroyed_subscription_ =
+        std::make_unique<base::CallbackListSubscription>(
+            tree_tab_model_->RegisterRemoveTreeTabNodeCallback(
+                base::BindRepeating(
+                    &BraveTabStripModel::NotifyTreeTabNodeDestroyed,
+                    base::Unretained(this))));
   } else {
+    tree_tab_node_created_subscription_.reset();
+    tree_tab_node_destroyed_subscription_.reset();
     FlattenTreeTabs();
   }
 }
@@ -186,6 +200,22 @@ void BraveTabStripModel::FlattenTreeTabs() {
   }
 
   contents_data()->SetDelegate(nullptr);
+}
+
+void BraveTabStripModel::NotifyTreeTabNodeCreated(
+    const tabs::TreeTabNode& node) {
+  auto change = TreeTabChange(node.id(), TreeTabChange::CreatedChange(node));
+  for (auto& observer : observers_) {
+    observer.OnTreeTabChanged(change);
+  }
+}
+
+void BraveTabStripModel::NotifyTreeTabNodeDestroyed(
+    const tree_tab::TreeTabNodeId& id) {
+  auto change = TreeTabChange(id, TreeTabChange::DestroyedChange());
+  for (auto& observer : observers_) {
+    observer.OnTreeTabChanged(change);
+  }
 }
 
 tabs::TabStripCollection&

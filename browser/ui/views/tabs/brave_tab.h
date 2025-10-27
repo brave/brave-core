@@ -35,7 +35,7 @@ class BraveTab : public Tab, public views::TextfieldController {
   void EnterRenameMode();
 
   // Returns the tabs::TreeTabNode that this tab is associated with.
-  const tabs::TreeTabNode& GetTreeTabNode() const;
+  const tabs::TreeTabNode* GetTreeTabNode() const;
 
   // Returns the height of the tree that this tab belongs to.
   int GetTreeHeight() const;

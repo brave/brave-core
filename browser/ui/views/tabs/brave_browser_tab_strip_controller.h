@@ -48,6 +48,7 @@ class BraveBrowserTabStripController : public BrowserTabStripController {
                              ui::mojom::MenuSourceType source_type) override;
   void ExecuteCommandForTab(TabStripModel::ContextMenuCommand command_id,
                             const Tab* tab) override;
+  void OnTreeTabChanged(const TreeTabChange& change) override;
 
  private:
   // If non-NULL it means we're showing a menu for the tab.
