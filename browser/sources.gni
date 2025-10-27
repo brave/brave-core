@@ -647,6 +647,9 @@ brave_chrome_browser_allow_circular_includes_from = [
   "//brave/browser/brave_ads/creatives/search_result_ad",
   "//brave/browser/brave_stats",
   "//brave/browser/ntp_background",
+
+  # TODO(https://github.com/brave/brave-browser/issues/50507):
+  # Remove this once webui/ai_chat does not depend on chrome/browser.
   "//brave/browser/ui/webui/ai_chat",
 ]
 
