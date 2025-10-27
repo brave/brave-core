@@ -53,4 +53,7 @@
         <ignore regexp="The resource `R.drawable.incognito_card_bg` appears to be unused"/>
         <ignore regexp="The resource `R.string.incognito_ntp_block_third_party_cookies_header` appears to be unused" />
     </issue>
+    <issue id="ImpliedQuantity">
+        <ignore regexp="brave/build/android/android_brave_strings_grd"/>
+  </issue>
 </lint>

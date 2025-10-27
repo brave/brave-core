@@ -1,11 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="sw">
-<translation id="3586180167003092914">Dhibiti katika <ph name="BEGIN_LINK1"/>mipangilio ya Android<ph name="END_LINK1"/>
-
-Ulinzi wa Hali ya Juu hudhibiti mipangilio hii ya Brave:
-• "Hakikisha kuwa umewasha muunganisho salama kila wakati".
-• Umezima "kiboreshaji cha JavaScript". <ph name="BEGIN_LINK2"/>Dhibiti vipengele vya Tovuti visivyofuata kanuni<ph name="END_LINK2"/></translation>
 <translation id="1006017844123154345">Fungua Mtandaoni</translation>
 <translation id="1036348656032585052">Zima</translation>
 <translation id="1070329623210597193">Faili ambazo tovuti hii inaweza kuona au kubadilisha</translation>
@@ -45,6 +40,7 @@ Ulinzi wa Hali ya Juu hudhibiti mipangilio hii ya Brave:
 <translation id="1500473259453106018">Ficha kadi ya "kupungua kwa bei kwenye vichupo"</translation>
 <translation id="1508931164824684991">Tovuti zinaweza kutumia JavaScript</translation>
 <translation id="1510341833810331442">Tovuti haziruhusiwi kuhifadhi data kwenye kifaa chako</translation>
+<translation id="1532175480576580256">Umefungua safu ya chini ya njia zangu za mkato katika skrini nzima</translation>
 <translation id="1538031354170655462">Kwa kawaida tovuti hutumia mawasiliano ya vifaa vinavyokaribiana (NFC) ili kufanya kazi na vifaa au vishikizo vilivyo karibu, kama vile kuchanganua beji au kulipa kielektroniki</translation>
 <translation id="1547123415014299762">Vidakuzi vya washirika wengine vinaruhusiwa</translation>
 <translation id="3665719978526894928">Ongeza kasi ya tovuti kupakia ukitumia mtambo wa V8 wa Brave lakini uifanye Brave isistahimili sana mashambulio</translation>
@@ -74,6 +70,7 @@ Ulinzi wa Hali ya Juu hudhibiti mipangilio hii ya Brave:
 <translation id="6704867734300244173">Ikiwa imewashwa, Brave hufanya kazi haraka zaidi na vipengele vinavyotumia JavaScript vinapaswa kufanya kazi kama vilivyokusudiwa. Ikiwa imezimwa, hatua hii hupunguza utendaji lakini hufanya V8 kustahimili zaidi mashambulizi.</translation>
 <translation id="1818308510395330587">Ili uruhusu <ph name="APP_NAME"/> itumie Uhalisia Ulioboreshwa, washa pia kamera katika <ph name="BEGIN_LINK"/>Mipangilio ya Android<ph name="END_LINK"/>.</translation>
 <translation id="1848033246551405023">Fonti ya Sans Serif</translation>
+<translation id="1861262398884155592">Folda hii haina chochote</translation>
 <translation id="1881806992065048905">Safu ya chini ya mwonekano wa ukurasa wa kichupo kipya</translation>
 <translation id="1887786770086287077">Kipengele cha mahali kimezimwa kwenye kifaa hiki. Kiwashe katika <ph name="BEGIN_LINK"/>Mipangilio ya Android<ph name="END_LINK"/>.</translation>
 <translation id="1906181697255754968">Tovuti hufikia faili na folda kwenye kifaa chako kwa ajili ya vipengele kama vile kuhifadhi kazi yako kiotomatiki</translation>
@@ -119,6 +116,7 @@ Ulinzi wa Hali ya Juu hudhibiti mipangilio hii ya Brave:
 <translation id="228293613124499805">Mara nyingi henda tovuti nyingi unazotembelea zikahifadhi data kwenye kifaa chako kwa ajili ya kuboresha hali yako ya utumiaji kwa kuhifadhi mapendeleo au taarifa unazoshiriki na tovuti. Tunapendekeza mipangilio hii isalie ikiwa imewashwa.</translation>
 <translation id="2289270750774289114">Niulize wakati tovuti inataka kugundua vifaa vya Bluetooth vilivyo karibu (inapendekezwa)</translation>
 <translation id="2315043854645842844">Uchaguzi wa cheti cha sehemu ya seva teja hautumiwi na mfumo wa uendeshaji.</translation>
+<translation id="2347601491101454548">Umefungua safu ya chini ya njia zangu za mkato katika skrini nusu</translation>
 <translation id="2359808026110333948">Endelea</translation>
 <translation id="904887679952026733">Tumia mandhari meusi kwenye tovuti wakati Brave inatumia mandhari meusi, panapowezekana</translation>
 <translation id="2390272837142897736">Ongeza ukuzaji</translation>
@@ -149,6 +147,11 @@ Ulinzi wa Hali ya Juu hudhibiti mipangilio hii ya Brave:
 <translation id="2588271083332682494">Kupanga maudhui kwa kutumia vikundi vya vichupo</translation>
 <translation id="2597457036804169544">Usitumie mandhari meusi kwenye tovuti</translation>
 <translation id="2606760465469169465">Thibitisha kiotomatiki</translation>
+<translation id="7615153661410655750">Dhibiti katika <ph name="BEGIN_LINK1"/>mipangilio ya Android<ph name="END_LINK1"/>
+
+Ulinzi wa Hali ya Juu hudhibiti mipangilio hii ya Brave:
+• Umewasha hali ya "Kutumia muunganisho salama kila wakati".
+• Umezima "kiboreshaji cha JavaScript". <ph name="BEGIN_LINK2"/>Dhibiti vipengele vya Tovuti visivyofuata kanuni<ph name="END_LINK2"/></translation>
 <translation id="2621115761605608342">Ruhusu JavaScript ya tovuti mahususi.</translation>
 <translation id="2626708220538466178">Safu ya chini ya kivinjari chaguomsingi imefungwa</translation>
 <translation id="2653659639078652383">Wasilisha</translation>
@@ -306,6 +309,7 @@ Ulinzi wa Hali ya Juu hudhibiti mipangilio hii ya Brave:
 <translation id="4338831206024587507">Tovuti zote zenye kikoa cha <ph name="DOMAIN"/></translation>
 <translation id="4340799661701629185">Usiruhusu tovuti zitume arifa</translation>
 <translation id="4402755511846832236">Zuia tovuti zisijue wakati unatumia kifaa hiki</translation>
+<translation id="8382883799082236806">Umefungua safu ya chini ya rangi za Brave katika skrini nusu</translation>
 <translation id="4412992751769744546">Ruhusu vidakuzi vingine</translation>
 <translation id="1675197434085185531">Brave huzuia tovuti zisitumie vidakuzi vya wahusika wengine kukufuatilia unapovinjari. Tembelea mipangilio ili <ph name="BEGIN_LINK"/>udhibiti ufikiaji wa vidakuzi vya washirika wengine<ph name="END_LINK"/>.</translation>
 <translation id="4425416282877905577">Fonti ya Serif</translation>
@@ -338,6 +342,7 @@ Ulinzi wa Hali ya Juu hudhibiti mipangilio hii ya Brave:
 <translation id="4816495437032298535">Mipangilio uliyohifadhi ya viwango vya ukuzaji wa tovuti</translation>
 <translation id="4836046166855586901">Tovuti ikuombe ruhusa inapotaka kujua wakati unatumia kifaa hiki</translation>
 <translation id="483914009762354899">Inajumuisha tovuti zote zenye kikoa hiki</translation>
+<translation id="4852997963351138624">Hex ya Rangi ya Mandharinyuma</translation>
 <translation id="4882919381756638075">Tovuti hutumia maikrofoni yako kwa ajili ya vipengele vya mawasiliano kama vile kupiga gumzo la video</translation>
 <translation id="4883854917563148705">Huwezi kubadilisha mipangilio inayodhibitiwa</translation>
 <translation id="4887024562049524730">Uliza kabla ya kuruhusu tovuti zitumie data na kifaa chako cha uhalisia pepe (inapendekezwa)</translation>
@@ -358,7 +363,6 @@ Ulinzi wa Hali ya Juu hudhibiti mipangilio hii ya Brave:
 <translation id="5039804452771397117">Ruhusu</translation>
 <translation id="5048398596102334565">Ruhusu tovuti zifikie vitambuzi vyako vya mwendo (inapendekezwa)</translation>
 <translation id="5048841907079026162">Kudhibiti data yako ya kuvinjari</translation>
-<translation id="8623552597614912461">Tovuti hii inaelekea kushiriki maelezo na programu nyingine nje ya Hali fiche.</translation>
 <translation id="5063480226653192405">Matumizi</translation>
 <translation id="5068293087784369013">Badilisha upendavyo ukurasa wako mpya wa kichupo</translation>
 <translation id="5091013926750941408">Tovuti ya kifaa cha mkononi</translation>
@@ -368,6 +372,7 @@ Ulinzi wa Hali ya Juu hudhibiti mipangilio hii ya Brave:
 <translation id="5100237604440890931">Imekunjwa - bofya ili upanue.</translation>
 <translation id="7143053178237996319">Unaweza kutumia Brave wakati wowote unapogusa viungo kwenye ujumbe, hati na programu zingine</translation>
 <translation id="512938610812707830">Laha ya chini ya mikusanyiko ya mandhari ya mwonekano wa kichupo kipya imefunguliwa katika urefu kamili</translation>
+<translation id="5137460097045297858">Umefungua safu ya chini ya kipengele cha gundua mipasho katika skrini nusu</translation>
 <translation id="5139253256813381453">{PRICE_DROP_COUNT,plural, =1{Pata punguzo la bei kwenye vichupo vyako vilivyofunguliwa}other{Pata mapunguzo ya bei kwenye vichupo vyako vilivyofunguliwa}}</translation>
 <translation id="5186036860380548585">Chaguo linapatikana karibu na sehemu ya juu ya skrini</translation>
 <translation id="5197729504361054390">Anwani unazochagua zitashirikiwa na <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/>.</translation>
@@ -386,7 +391,6 @@ Ulinzi wa Hali ya Juu hudhibiti mipangilio hii ya Brave:
 <translation id="5335288049665977812">Ruhusu tovuti zitumie JavaScript (inapendekezwa)</translation>
 <translation id="534295439873310000">Vifaa vya NFC</translation>
 <translation id="5344522958567249764">Dhibiti faragha ya matangazo</translation>
-<translation id="5371407439562620893">Ulinzi na uboreshaji wa JavaScript</translation>
 <translation id="5373874281522292782">Vikundi vyako vya vichupo vimehifadhiwa</translation>
 <translation id="5394307150471348411">{DETAIL_COUNT,plural, =1{(+ 1 zaidi)}other{(+ # zaidi)}}</translation>
 <translation id="5403592356182871684">Majina</translation>
@@ -468,6 +472,7 @@ Ulinzi wa Hali ya Juu hudhibiti mipangilio hii ya Brave:
 <translation id="6207207788774442484">Futa data na uweke upya ruhusa</translation>
 <translation id="6231752747840485235">Ungependa kuondoa '<ph name="APP_NAME"/>'?</translation>
 <translation id="4789073065838177382">Gusa programu ya Kivinjari &gt; Brave</translation>
+<translation id="6260830281887654268">Umefungua laha ya chini ya mikusanyiko ya mandhari ya mwonekano wa kichupo kipya katika skrini nusu</translation>
 <translation id="6262191102408817757">Kulingana na kichupo chako ulichofungua mara ya mwisho</translation>
 <translation id="6262279340360821358">Umezuia <ph name="PERMISSION_1"/> na <ph name="PERMISSION_2"/></translation>
 <translation id="6270391203985052864">Tovuti zinaweza kukuuliza kutuma arifa</translation>
@@ -499,8 +504,10 @@ Ulinzi wa Hali ya Juu hudhibiti mipangilio hii ya Brave:
 <translation id="6608650720463149374">GB <ph name="GIGABYTES"/></translation>
 <translation id="6612358246767739896">Maudhui yanayolindwa</translation>
 <translation id="662080504995468778">Usiondoke</translation>
+<translation id="6630443592285535486">Andika hex hapa</translation>
 <translation id="6635327442719709864">Ukiwasha, tovuti zinaweza kuomba ruhusa ya kutumia milango ya kuingiza data. Ukizima, tovuti haziwezi kuomba ruhusa ya kutumia milango ya kuingiza data.</translation>
 <translation id="6678072580827808850">Hakiki Ukaguzi wa Usalama</translation>
+<translation id="6682057173375416470">Pata makala yanayopendekezwa kwenye ukurasa wa Kichupo Kipya</translation>
 <translation id="6683865262523156564">Tovuti hii ipo katika kikundi kinachoweza kuona shughuli zako. Kikundi hiki kinabainishwa na <ph name="RWS_OWNER"/></translation>
 <translation id="6689172468748959065">Picha za wasifu</translation>
 <translation id="6697925417670533197">Faili zinazopakuliwa</translation>
@@ -550,13 +557,16 @@ Ulinzi wa Hali ya Juu hudhibiti mipangilio hii ya Brave:
 <translation id="728412880473384942">Tovuti zinapakia kwa kasi ya juu lakini si salama sana</translation>
 <translation id="7366415735885268578">Ongeza tovuti</translation>
 <translation id="7368695150573390554">Data yoyote ya nje ya mtandao itafutwa</translation>
+<translation id="7369678931043226462">Badilisha upendavyo safu ya chini ya ukurasa wako mpya wa kichupo uliyofungua katika skrini nusu</translation>
 <translation id="7383715096023715447">Mipangilio ya <ph name="DOMAIN"/></translation>
 <translation id="7399802613464275309">Angalizo la Usalama</translation>
 <translation id="7406113532070524618">Mipangilio hii hufanya kazi bila kukutambulisha au kuruhusu tovuti zione historia yako ya kuvinjari, ingawa tovuti zinaweza kushiriki kiasi kidogo cha maelezo kama sehemu ya uthibitishaji</translation>
 <translation id="7409735910987429903">Tovuti zinaweza kutuma madirisha ibukizi yakuonyeshe matangazo, au kukuelekeza kwenye tovuti ambazo hutaki kuzitembelea</translation>
+<translation id="7412160840120117304">Hex ya Rangi ya Msingi</translation>
 <translation id="7423098979219808738">Uliza kwanza</translation>
 <translation id="7423538860840206698">Imezuiwa kusoma ubao wa kunakili</translation>
 <translation id="7425915948813553151">Mandhari meusi ya tovuti</translation>
+<translation id="746412105358554870">Uboreshaji na usalama wa JavaScript</translation>
 <translation id="7478658909253570368">Usiruhusu tovuti ziunganishe kwenye milango ya kutuma biti za data kwa mfululizo</translation>
 <translation id="7488573225650545859">Ficha sehemu ya Angalia vichupo kwenye orodha yako ya programu</translation>
 <translation id="7521387064766892559">JavaScript</translation>
@@ -586,6 +596,7 @@ Ulinzi wa Hali ya Juu hudhibiti mipangilio hii ya Brave:
 <translation id="7804248752222191302">Tovuti inatumia kamera yako</translation>
 <translation id="7805832099057502789">Safu ya chini ya mwonekano wa ukurasa wa kichupo kipya imefunguliwa katika skrini nzima</translation>
 <translation id="6720480757902085971">Imetolewa na Brave</translation>
+<translation id="7809029041571842593">Umefungua safu ya chini ya kadi za ukurasa wa kichupo kipya katika skrini nusu</translation>
 <translation id="7815680994978050279">Upakuaji hatari umezuiwa</translation>
 <translation id="7835852323729233924">Kucheza maudhui</translation>
 <translation id="783819812427904514">Rejesha sauti ya video</translation>
@@ -643,6 +654,7 @@ Ulinzi wa Hali ya Juu hudhibiti mipangilio hii ya Brave:
 <translation id="8441146129660941386">Peleka nyuma</translation>
 <translation id="8444433999583714703">Ili uruhusu <ph name="APP_NAME"/> ifikie data ya mahali ulipo, washa pia huduma ya mahali katika <ph name="BEGIN_LINK"/>Mipangilio ya Android<ph name="END_LINK"/>.</translation>
 <translation id="8447861592752582886">Batilisha ruhusa ya kifaa</translation>
+<translation id="8467359479529706065">Umefungua safu ya chini ya mwonekano wa ukurasa wa kichupo kipya katika skrini nusu</translation>
 <translation id="8471525937465764768">Tovuti huunganisha kwenye vifaa vya USB kwa ajili ya vipengele kama vile kuchapisha hati au kuweka faili kwenye kifaa cha kuhifadhi</translation>
 <translation id="8473055640493819707">'<ph name="APP_NAME"/>' imepitwa na wakati. Tafadhali weka upya programu hiyo kwenye kifaa.</translation>
 <translation id="847433688444405067">Vinjari kwenye vifaa</translation>
@@ -658,7 +670,6 @@ Ulinzi wa Hali ya Juu hudhibiti mipangilio hii ya Brave:
 <translation id="8549127125482561383">Jinsi ya kuonyesha maombi</translation>
 <translation id="4273503381657013953">Sasa unaweza kutumia Brave wakati wowote unapovinjari au kugusa viungo kwenye ujumbe, hati na programu nyingine.</translation>
 <translation id="857943718398505171">Imeruhusiwa (inapendekezwa)</translation>
-<translation id="8580511488901768832">safu ya chini ya njia zangu za mkato imefunguliwa katika skrini nzima</translation>
 <translation id="8593422116412089302">Ukiwasha, tovuti zinaweza kuomba ruhusa zitumie taarifa ambazo zimehifadhi kukuhusu. Ukizima, tovuti haziwezi kukuomba ruhusa ya kutumia taarifa ambazo zimehifadhi kukuhusu.</translation>
 <translation id="8609465669617005112">Songa juu</translation>
 <translation id="8617611086246832542">Kikiwashwa, mwonekano wa kompyuta wa tovuti utaonyeshwa. Kikizimwa, mwonekano wa kifaa cha mkononi wa tovuti utaonyeshwa.</translation>
@@ -676,6 +687,7 @@ Ulinzi wa Hali ya Juu hudhibiti mipangilio hii ya Brave:
 <translation id="8730621377337864115">Nimemaliza</translation>
 <translation id="8737426583868847403">Tovuti ambapo umehifadhi kiwango mahususi cha ukuzaji zitaonekana hapa</translation>
 <translation id="8751914237388039244">Chagua picha</translation>
+<translation id="8775741625735357092">Unaweza kuwasha sehemu ya alamisho katika Mipangilio &gt; Mwonekano</translation>
 <translation id="8800034312320686233">Je, tovuti haifanyi kazi?</translation>
 <translation id="8801436777607969138">Zuia JavaScript katika tovuti mahususi.</translation>
 <translation id="2026315747406172223">V8 ni mtambo wa JavaScript na WebAssembly wa Brave unaotumika kuboresha utendaji wa tovuti</translation>
@@ -702,6 +714,7 @@ Ulinzi wa Hali ya Juu hudhibiti mipangilio hii ya Brave:
 <translation id="9019902583201351841">Inadhibitiwa na wazazi wako</translation>
 <translation id="902236149563113779">Tovuti hufuatilia mkao wa kamera yako kwa ajili ya vipengele vya Uhalisia Ulioboreshwa, kama vile michezo au ariza za maelekezo</translation>
 <translation id="9039697262778250930">Huenda ukaondolewa kwenye akaunti katika tovuti hizi</translation>
+<translation id="9065203028668620118">Badilisha</translation>
 <translation id="9074739597929991885">Bluetooth</translation>
 <translation id="9106233582039520022">Ungependa kufuta vidakuzi?</translation>
 <translation id="9109747640384633967">{PERMISSIONS_SUMMARY_MIXED,plural, =1{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> na nyingine <ph name="NUM_MORE"/>}other{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> na nyingine <ph name="NUM_MORE"/>}}</translation>
@@ -718,6 +731,7 @@ Ulinzi wa Hali ya Juu hudhibiti mipangilio hii ya Brave:
 <translation id="967624055006145463">Data iliyohifadhiwa</translation>
 <translation id="969975166333045662">Zuia tovuti isitumie kiboreshaji cha V8.</translation>
 <translation id="3110967157686007724">Kichupo cha faragha</translation>
+<translation id="8623552597614912461">Tovuti hii inakaribia kushiriki maelezo na programu nje ya Hali ya Faragha.</translation>
 <translation id="8157212814767579028">Ondoka kwenye hali ya Faragha?</translation>
 <translation id="1593610935874634135">Kampuni inaweza kubainisha kikundi cha tovuti zinazoweza kutumia vidakuzi kushiriki shughuli yako kwenye kikundi. Hili huzimwa kwenye Faragha.</translation>
 </translationbundle>

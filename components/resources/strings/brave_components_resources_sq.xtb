@@ -684,7 +684,6 @@
 <translation id="3266055641283174315">Lloji i Reklamave</translation>
 <translation id="8706824117053903390">Shikime këtë muaj</translation>
 <translation id="5105890735834548623">Rregullimet e Reklamave</translation>
-<translation id="96989662637180657">Reklamat në Kërkim Brave shfaqen tek <ph name="LINK_BEGIN"/>Kërkimi Brave<ph name="LINK_END"/>.</translation>
 <translation id="3138160233953903250">Rregullimet e reklamave</translation>
 <translation id="2446517297521536638">Kontrolloni se cilat lloje të Reklamave Brave shihni dhe sa shpesh. Sa më shumë të shihni, aq më shumë mund të fitoni.</translation>
 <translation id="3479272537858623647">Kjo tregon numrin e Reklamave Brave që keni parë këtë muaj që kualifikohen për fitimin e Shenja e vëmendjes bazë.</translation>
@@ -848,6 +847,11 @@
 <translation id="5136093123841570193">Lidhje nga <ph name="FRIST_NETWORK_NAME"/> në <ph name="SECOND_NETWORK_NAME"/></translation>
 <translation id="5962276579291287541">{SWAP_EXCHANGE_STEPS, plural, =1 {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} hap} other {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} hapa}}</translation>
 <translation id="8621264173374071200"><ph name="EXCHANGE_NAME"/> përmes <ph name="PROVIDER_NAME"/></translation>
+<translation id="646023614746251785">Konfirmo ndërrimin</translation>
+<translation id="6264944956989873014">Konfirmo urën</translation>
+<translation id="7067917728851842589">Konfirmo dërgimin</translation>
+<translation id="2351357639951873714">Konfirmo mbrojtjen</translation>
+<translation id="8332923694292360653">Shpenzo</translation>
 <translation id="3735740477244556633">Renditi sipas</translation>
 <translation id="6484605214219822434">Rishiko lidhjen</translation>
 <translation id="3365052891357224017">Kohë e Pritur</translation>
@@ -957,6 +961,7 @@
 <translation id="3451958544919449297">Ruaj asetet e ZEC Testnet</translation>
 <translation id="8459631690385393533">Ruaj asetet Cardano</translation>
 <translation id="4915057812371523845">Ruaj asetet e Testnet të Cardano</translation>
+<translation id="5387140102951033657">Mbështet asetet Substrate në zinxhirin relé Polkadot dhe parachain-et Substrate</translation>
 <translation id="8500387257977999003">Çelës privat <ph name="PROTOCOL"/></translation>
 <translation id="8275038454117074363">Importo</translation>
 <translation id="232925166623833246">Importo nga llogaria hardware</translation>
@@ -1068,6 +1073,10 @@
 <translation id="8904889345035514635">Leja aktuale</translation>
 <translation id="7073918978411974168">Leja e propozuar</translation>
 <translation id="9019403281000653275">Kërkohet miratim i pakufizuar</translation>
+<translation id="9108474191347769758">Kufi shpenzimi</translation>
+<translation id="2102091845281366189">Qëllimi i aprovimit</translation>
+<translation id="772196962479335292">Kufi aktual i aprovimit</translation>
+<translation id="8215431557133305629">Kufi i propozuar i aprovimit</translation>
 <translation id="4717431746210146708">Lejojë këtë faqe të shtojë një rrjet?</translation>
 <translation id="2521480044079508357">Kjo do të lejojë përdorimin e këtij rrjeti brenda Brave Wallet.</translation>
 <translation id="1982257600591932657">Emri i rrjetit</translation>
@@ -1084,7 +1093,7 @@
 <translation id="3948067511324628726">Tarifa e gazit</translation>
 <translation id="7163997622278957886">Ofro</translation>
 <translation id="1074360622426001342">Sasi + gaz</translation>
-<translation id="2186011161688824046">Sasi + tarifë</translation>
+<translation id="7542099582407803878">Shuma + Tarifa e rrjetit</translation>
 <translation id="7084089311475827950">Pa të dhëna.</translation>
 <translation id="5821668936183240062">pasuesi</translation>
 <translation id="793994607260936590">e parë</translation>
@@ -1410,6 +1419,8 @@
 <translation id="1908159733454294871">Rrezik sigurie i zbuluar</translation>
 <translation id="3621202678540785336">Inputi</translation>
 <translation id="3009178788565917040">Outputi</translation>
+<translation id="7953669802889559161">Input-e</translation>
+<translation id="4554024082642878647">Output-e</translation>
 <translation id="1965889974717516497">Rrjete sekondare</translation>
 <translation id="7691821949666755802">Rrjete testimi</translation>
 <translation id="2816106784624007524">Limiti i gazit duhet të jetë një numër i plotë më i madh se 0</translation>
@@ -2132,7 +2143,6 @@
 <translation id="5872363163901278000">Rrit shpejtësinë e rishikimit</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8637805148029768813">Funksioni i përmbledhjes është aktualisht i disponueshëm vetëm për artikuj të përzgjedhur dhe faqe të tjera të gjata në ueb.</translation>
-<translation id="1223498995510244364">Përmbledhje</translation>
 <translation id="7491773233732232424">Rreth Leo</translation>
 <translation id="4611072979071082355">Brave Leo është një asistent personal privat nga AI që përmirëson përdorimin tuaj të web-it. Leo është falas për t'u përdorur me akses të kufizuar. Brave Leo Premium ofron më shumë modele, kufizime më të larta dhe jep abonentëve akses të hershëm te veçoritë e reja. Modeli i paracaktuar do të ndryshohet herë pas here. Shiko <ph name="LINK_BEFORE"/>Qendra e ndihmës Brave<ph name="LINK_AFTER"/> për më shumë detaje.</translation>
 <translation id="7297056998057521697">Nga seancat nëse e pyet Leo një pyetje mbi një faqe interneti apo faqe që ti po shikon, përmbajtja e faqes që po shikon apo çdo tekst që duket në një faqe, si dhe kërkimi yt do të dërgohet në serverët e Brave në mënyrë që Leo të bëjë një përgjigje. Në disa raste, Leo do të dërgojë pyetje të derivate nga inputi juaj te Kërkimi Brave dhe të përdorë rezultatet e kërkimit për të përmirësuar përgjigjen tuaj. Brave nuk garanton saktësinë e përgjigjeve, dhe përgjigjet mund të përmbajnë informacion të pasaktë, të gabuar ose të rreme. Mos dërgoni informacion të ndjeshëm ose privat te Leo dhe përdorni kujdes me çdo përgjigje që lidhet me shëndetin, financat, sigurinë personale ose të ngjashme. Ju mund ta rregulloni opsionet e Leos te Cilësimet në çdo kohë. Shko te Cilësimet &gt; Leo.</translation>
@@ -2166,7 +2176,7 @@
 <translation id="7127671672828944579">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Qwen 14B, një model i krijuar nga Alibaba Cloud për të qenë performues dhe i aplikueshëm për shumë raste përdorimi. Qwen është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
 <translation id="2328524194917949829">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Gemma 3 12B, një model i krijuar nga Google DeepMind për të qenë performues dhe i aplikueshëm për shumë raste përdorimi. Gemma është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
 <translation id="634682910381645550">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga DeepSeek R1, një model i krijuar nga DeepSeek për të kryer detyra të arsyetimeve të thella. DeepSeek R1 është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
-<translation id="8932568551552504373">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Claude Instant, një model i krijuar nga Anthropic për të fuqizuar detyrat e bisedave dhe përpunimit të teksteve. Claude Instant është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
+<translation id="8932568551552504373">Përshëndetje, unë jam Leo. Unë jam një asistent AI i Brave. Kam fuqi nga Claude Instant, një model i krijuar nga Anthropic për të kryer detyra bisedore dhe përpunimi teksti. Claude Instant ofrohet nga Brave përmes infrastrukturës sonë të sigurt.<ph name="LINK_BEFORE"/>Mësoni më shumë<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Claude Haiku, një model i krijuar nga Anthropic për të fuqizuar detyrat e bisedave dhe përpunimit të teksteve. Claude Haiku është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Claude Sonnet, një model i krijuar nga Anthropic për të fuqizuar detyrat e bisedave dhe përpunimit të teksteve. Claude Sonnet është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
@@ -2179,6 +2189,7 @@
 <translation id="7557539689487606886">Bëhu Premium</translation>
 <translation id="1691256669639196606">Administrimi i abonimeve</translation>
 <translation id="3840096463915153852">Kontribuo me të dhëna anonime kërkimi dhe shfletimi për të përmirësuar Kërkimin Brave me Projektin e Zbulimit të Internetit. Është tërësisht me burim të hapur.</translation>
+<translation id="6761921176674289184">Menaxho kujtimet</translation>
 <translation id="2304783958703511257">Parametra të përparuara</translation>
 <translation id="3037594989275592390">Modelet gjuhësore</translation>
 <translation id="5543505256451301851">Provo 7 ditë falas</translation>
@@ -2251,32 +2262,37 @@
 <translation id="5794962229997281366">Përgjigja e përmirësuar duke kërkuar për <ph name="SEARCH_TERMS"/>.</translation>
 <translation id="7307396647043599949"><ph name="COUNT"/> më shumë...</translation>
 <translation id="8103700533980268469">Mbylle këtë njoftim</translation>
-<translation id="3417835166382867856">Kërkoni skedat</translation>
-<translation id="1352836459737874921">Shto përmbajtje nga skeda të tjera</translation>
-<translation id="3028258613451571431">Dërgo përmbajtjen e faqeve nga skedat e shfletuesit për t'i dhënë më shumë kontekst Leos për bisedën</translation>
-<translation id="4300920590112551536">Skedat e shfletuesit</translation>
+<translation id="3417835166382867856">Kërko skedat</translation>
+<translation id="7311244614769792472">S’u gjetën përfundime kërkimi</translation>
+<translation id="3112448569149476523">Ju lutem provoni një kërkim tjetër</translation>
+<translation id="1352836459737874921">Bashkëngjit përmbajtje nga skeda të tjera</translation>
+<translation id="7039179822221107025">Dërgoni përmbajtjen e skedës suaj nga shfletuesi për t'i dhënë Leos më shumë kontekst për bisedën.</translation>
+<translation id="220541218939267992">Përmbajtja e faqes do t’i dërgohet Leo-s bashkë me mesazhet tuaja.</translation>
 <translation id="1446346932629101482">Shto përmbajtjen e skedave për kontekst. Përmbajtjet do të dërgohen te Leo së bashku me mesazhet tuaja.</translation>
 <translation id="7193316103691252734">Nuk ka skeda që përputhen</translation>
 <translation id="2315654674554095762">Leo do t'i kujtojë bisedat e tua, kështu që mund t'u kthehesh. Ato ruhen të koduara në pajisjen tënde dhe mund t'i fshish në çdo kohë.</translation>
 <translation id="7821251979960635244">Historia e bisedës tënde do të shfaqet këtu pasi të filloni një bisedë.</translation>
 <translation id="887511360213807449">Historia është ç'aktivizuar</translation>
 <translation id="5380979378058584412">Për të parë bisedat e mëparshme me Leo, duhet të aktivizoni historikun e bisedave.</translation>
-<translation id="6291843235651817590">Biseda të përgjithshme</translation>
+<translation id="7348809809749151120">I shpejtë • Kërkim</translation>
 <translation id="3185367320601718531">Bisedë dhe gjenerim tekstesh</translation>
-<translation id="7979673624064378842">Biseda rrufe</translation>
-<translation id="2836330653441111204">Shpejtësi dhe inteligjencë e ekuilibruar</translation>
-<translation id="6695329447007213917">Bisedë për qëllime të përgjithshme, kodim dhe më shumë</translation>
-<translation id="7168072214482631597">Kuptimi i përgjithshëm i tekstit dhe imazhit</translation>
-<translation id="7226508434216060960">Modeli i Arsyetimit</translation>
+<translation id="2793458212460902934">I shpejtë • Kërkim • Mjete</translation>
+<translation id="8506027496671575183">Kërkim • Vision • Mjete</translation>
+<translation id="3213834013136637671">Kërkim • Vision</translation>
+<translation id="7697693533305615127">Kërkim • Mendim</translation>
 <translation id="8782867266498869301">Modeli ndryshon dinamikisht për të përdorur më të mirën për detyrën</translation>
 <translation id="3965507912994218570">Parametrat e Leo</translation>
-<translation id="1037324977127422019">Përshëndetje, jam Leo!</translation>
-<translation id="8930348081963284873">Ndihmës inteligjent i mundësuar nga AI, i ndërtuar direkt në Brave.</translation>
-<translation id="3528849152231418380">Keni nevojë për ndihmë me një faqe interneti?</translation>
-<translation id="1558192229187362674">Unë mund t'ju ndihmoj duke përmbledhur artikuj, duke zgjeruar përmbajtjen e një faqeje dhe më shumë.</translation>
-<translation id="861953757568623294">Unë mund t'ju ndihmoj duke përmbledhur artikuj, duke zgjeruar përmbajtjen e një faqeje dhe më shumë. Nuk jeni të sigurt se ku të filloni? Provoni këtë:</translation>
-<translation id="5642775487085641191">Dëshironi vetëm të bisedoni?</translation>
-<translation id="8857222718794549840">Më pyesni për gjithçka! Mund të flasim për çdo temë që dëshironi. Unë gjithmonë mësoj dhe përmirësohem për të ofruar përgjigje më të mira.</translation>
+<translation id="3754337604877048671">Prezantojmë Leo AI</translation>
+<translation id="5295261408976371809">Asistenti juaj <ph name="TEXT_BEFORE"/>privat<ph name="TEXT_AFTER"/>, i ndërtuar drejt në shfletues.</translation>
+<translation id="7452913484571004528">AI vërtet privat</translation>
+<translation id="8525501048785085223">Leo nuk ruan apo ndan biseda dhe nuk i përdor për trajnimin e modelit. Nuk kërkohet llogari apo hyrje. Thjesht hapni dhe bisedoni. Në privatësi.</translation>
+<translation id="6401201054391523929">Bisedo me skedat dhe skedarët tuaj</translation>
+<translation id="8522038408130089105">Keni nevojë të dini më shumë rreth faqeve që vizitoni? Thjesht shtoni ato në një bisedë. Bashkëngjitni skedat dhe skedarët lokalë për përgjigje të shpejta e relevante.</translation>
+<translation id="3844955602461425647">Automatizoni punën e mërzitshme</translation>
+<translation id="2196247864500723577">Lëreni Brave të shfletojë bashkë me ju dhe të ndërveprojë me gjithçka që bëni në shfletues. Mbështetni detyrat e lodhshme dhe kurseni kohën për gjërat që kanë rëndësi.</translation>
+<translation id="235457946228076038">Sill modelin tënd</translation>
+<translation id="7024005267156189454">Lidheni me modelet tuaja AI, qoftë në mënyrë lokale apo të largët. Personalizoni sjelljen, rezultatet dhe aftësitë e Leo-s sipas preferencave tuaja.</translation>
+<translation id="7291578285403921288">Mësoni më shumë rreth Leo AI</translation>
 <translation id="9051226419897869406">Bisedo Pricishtë me Brave Leo</translation>
 <translation id="2414904697165579184">Formëso përgjigjet bazuar në përmbajtjen e skedës</translation>
 <translation id="8258324391302611485">Përmbajtja e kësaj faqeje do të dërgohet te Leo bashkë me mesazhet e tua.</translation>
@@ -2285,6 +2301,7 @@
 <translation id="8732450785281947197">Mjetet Leo AI</translation>
 <translation id="6535533770697728087">Veprime të shpejta</translation>
 <translation id="3237710083340813756">Ripërshkruaj</translation>
+<translation id="1223498995510244364">Përmbledhje</translation>
 <translation id="1252805982772190086">Postim i shkurtër</translation>
 <translation id="2087555497198267113">Postim i gjatë</translation>
 <translation id="4170307327863874820">Post blogu</translation>
@@ -2492,12 +2509,13 @@
 <translation id="6764845498618413165">Mësoni Më Tepër.</translation>
 <translation id="7818938154803162778">Do t'ju ndihmoj, sigurisht</translation>
 <translation id="7207456302801184289">Mirë se vini në Brave</translation>
-<translation id="6716580298071890302">Përdorni temë më të errët</translation>
+<translation id="293854220404217065">Tema mesnatë</translation>
 <translation id="2422927186524098759">Paneli Anësor</translation>
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="8000020256436988724">Shiriti i mjeteve</translation>
 <translation id="6225572914528673855">Shiriti i adresës</translation>
+<translation id="6821966107067356137">Shto burimin e RSS-së</translation>
 <translation id="8293206222192510085">Shto faqeruajtës</translation>
 <translation id="7758460733045216901">Paneli i Faqeruejtësve</translation>
 <translation id="958268166261124668">VPN Brave: I lidhur</translation>

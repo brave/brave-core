@@ -688,7 +688,6 @@
 <translation id="3266055641283174315">বিজ্ঞাপনের প্রকার</translation>
 <translation id="8706824117053903390">এই মাসে যতবার দেখা হয়েছে</translation>
 <translation id="5105890735834548623">বিজ্ঞাপনের সেটিংস</translation>
-<translation id="96989662637180657"><ph name="LINK_BEGIN"/>Brave সার্চ<ph name="LINK_END"/>-এ Brave সার্চ বিজ্ঞাপন দেখা যায়।</translation>
 <translation id="3138160233953903250">বিজ্ঞাপনের সেটিংস</translation>
 <translation id="2446517297521536638">আপনি কী ধরনের Brave বিজ্ঞাপন দেখছেন এবং কত ঘন ঘন দেখছেন তা নিয়ন্ত্রণ করুন। যত বেশি দেখবেন, তত বেশি উপার্জন করতে পারবেন।</translation>
 <translation id="3479272537858623647">এটি বেসিক অ্যাটেনশন টোকেন (Basic Attention Token) উপার্জনের জন্য যোগ্যতা লাভ করা আপনার এই মাসে দেখা Brave বিজ্ঞাপন এর সংখ্যা দেখায়।</translation>
@@ -855,6 +854,11 @@
       other {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} ধাপ}
     }</translation>
 <translation id="8621264173374071200"><ph name="PROVIDER_NAME"/> এর মাধ্যমে <ph name="EXCHANGE_NAME"/></translation>
+<translation id="646023614746251785">সোয়াপ নিশ্চিত করুন</translation>
+<translation id="6264944956989873014">ব্রিজ নিশ্চিত করুন</translation>
+<translation id="7067917728851842589">পাঠানো নিশ্চিত করুন</translation>
+<translation id="2351357639951873714">শিল্ড নিশ্চিত করুন</translation>
+<translation id="8332923694292360653">ব্যয় করুন</translation>
 <translation id="3735740477244556633">এই অনুসারে সাজান</translation>
 <translation id="6484605214219822434">ব্রিজ পর্যালোচনা করুন</translation>
 <translation id="3365052891357224017">ইস্টার্ন টাইম</translation>
@@ -964,6 +968,7 @@
 <translation id="3451958544919449297">ZEC Testnet অ্যাসেট সংরক্ষণ করুন</translation>
 <translation id="8459631690385393533">Store Cardano সম্পদসমূহ</translation>
 <translation id="4915057812371523845">Store Cardano Testnet সম্পদসমূহ</translation>
+<translation id="5387140102951033657">Polkadot রিলে চেইন এবং Substrate প্যারাচেইনে Substrate সম্পদ সমর্থন করে</translation>
 <translation id="8500387257977999003">ব্যক্তিগত কি <ph name="PROTOCOL"/></translation>
 <translation id="8275038454117074363">আমদানি করুন</translation>
 <translation id="232925166623833246">হার্ডওয়্যার ওয়ালেট থেকে আমদানি করুন</translation>
@@ -1075,6 +1080,10 @@
 <translation id="8904889345035514635">বর্তমান ভাতা</translation>
 <translation id="7073918978411974168">প্রস্তাবিত ভাতা</translation>
 <translation id="9019403281000653275">সীমাহীন অনুমোদন অনুরাধ করা হয়েছে</translation>
+<translation id="9108474191347769758">ব্যয়ের সীমা</translation>
+<translation id="2102091845281366189">অনুমোদনের লক্ষ্য</translation>
+<translation id="772196962479335292">বর্তমান অনুমোদনের সীমা</translation>
+<translation id="8215431557133305629">প্রস্তাবিত অনুমোদনের সীমা</translation>
 <translation id="4717431746210146708">এই সাইটটিকে একটি নেটওয়ার্ক যুক্ত করার অনুমতি দেবেন?</translation>
 <translation id="2521480044079508357">এটি Brave ওয়ালেটের মধ্যে এই নেটওয়ার্কটি ব্যবহার করার অনুমতি দেবে।</translation>
 <translation id="1982257600591932657">নেটওয়ার্কের নাম</translation>
@@ -1091,7 +1100,7 @@
 <translation id="3948067511324628726">গ্যাস ফি</translation>
 <translation id="7163997622278957886">বিড</translation>
 <translation id="1074360622426001342">রাশি + গ্যাস</translation>
-<translation id="2186011161688824046">অর্থরাশি + ফী</translation>
+<translation id="7542099582407803878">পরিমাণ + নেটওয়ার্ক ফি</translation>
 <translation id="7084089311475827950">কোনও তথ্য নেই।</translation>
 <translation id="5821668936183240062">পরবর্তী</translation>
 <translation id="793994607260936590">প্রথম</translation>
@@ -1417,6 +1426,8 @@
 <translation id="1908159733454294871">নিরাপত্তার ঝুঁকি শনাক্ত হয়েছে</translation>
 <translation id="3621202678540785336">ইনপুট</translation>
 <translation id="3009178788565917040">আউটপুট</translation>
+<translation id="7953669802889559161">ইনপুট</translation>
+<translation id="4554024082642878647">আউটপুট</translation>
 <translation id="1965889974717516497">সেকেন্ডারি নেটওয়ার্ক</translation>
 <translation id="7691821949666755802">টেস্ট নেটওয়ার্ক</translation>
 <translation id="2816106784624007524">গ্যাসের সীমাকে অবশ্যই 0-র থেকে বড় একটি পূর্ণসংখ্যা হতে হবে</translation>
@@ -2139,7 +2150,6 @@
 <translation id="5872363163901278000">প্লেব্যাকের গতি বাড়ান</translation>
 <translation id="6129027151000961048">লিও</translation>
 <translation id="8637805148029768813">সংক্ষিপ্তসার বৈশিষ্ট্যটি বর্তমানে শুধুমাত্র নির্বাচিত নিবন্ধ এবং অন্যান্য লং-ফর্মের ওয়েব পেজগুলির জন্য উপলব্ধ।</translation>
-<translation id="1223498995510244364">সারসংক্ষেপ</translation>
 <translation id="7491773233732232424">Leo সম্পর্কে</translation>
 <translation id="4611072979071082355">Brave Leo হল এক ব্যক্তিগত AI স্মার্ট অ্যাসিস্ট্যান্ট যা আপনার ওয়েবের ব্যবহারকে উন্নত করে। Leo সীমিত অ্যাক্সেসের সাথে বিনামূল্যে ব্যবহার করতে পারবেন। Brave Leo প্রিমিয়াম আরও মডেল, আরও বেশি সীমা অফার করে এবং সাবস্ক্রাইবারদের নতুন ফিচাররগুলিতে অন্যদের তুলনায় আগে অ্যাক্সেস দেয়। ডিফল্ট মডেলটি সময়ের সাথে সাথে পরিবর্তিত হয়। আরও বিস্তারিত জানতেSee the <ph name="LINK_BEFORE"/>Brave সহায়তা কেন্দ্র<ph name="LINK_AFTER"/> দেখুন।</translation>
 <translation id="7297056998057521697">ডিফল্টরূপে, যখন আপনি Leo-কে আপনার দেখা কোনও ওয়েবসাইট বা পেজ সম্পর্কে প্রশ্ন করেন, তখন আপনি যে ওয়েবপেজটি দেখছেন তার কন্টেন্টে বা পেজে আপনি যে কোনও টেক্সট হাইলাইট করেন, সেইসাথে আপনার অনুসন্ধানের প্রশ্নটি Brave সার্ভারে পাঠানো হবে যাতে Leo উত্তর দিতে পারে। কিছু ক্ষেত্রে, Leo আপনার ইনপুট থেকে প্রাপ্ত প্রশ্নগুলি Brave সার্চে পাঠাবে এবং আপনার প্রশ্নের আরও ভাল উত্তর দেওয়ার জন্য অনুসন্ধানের ফলাফল ব্যবহার করবে। Brave উত্তরগুলির নির্ভুলতার গ্যারান্টি দেয় না এবং উত্তরগুলিতে ভুল, বিভ্রান্তিকর বা মিথ্যা তথ্য থাকতে পারে। Brave Leo-কে সংবেদনশীল বা ব্যক্তিগত তথ্য জমা দেবেন না এবং স্বাস্থ্য, আর্থিক, ব্যক্তিগত সুরক্ষা বা অনুরূপ সম্পর্কিত কোনও উত্তর দেওয়ার ক্ষেত্রে সতর্কতা অবলম্বন করুন। আপনি যেকোনো সময় সেটিংসে Leo-র বিকল্পগুলি সামঞ্জস্য করতে পারেন। সেটিংস &gt; Leo-তে যান।</translation>
@@ -2173,7 +2183,7 @@
 <translation id="7127671672828944579">হাই, আমি Leo। আমি সম্পূর্ণভাবে Brave এর পক্ষ থেকে উপস্থাপিত একটি AI সহায়ক। বিভিন্ন ব্যবহারিক ক্ষেত্রে প্রয়োগের জন্য আমি Alibaba Cloud এর দ্বারা সৃষ্ট একটি মডেল Qwen 14B দ্বারা চালিত। Qwen আমাদের নিজস্ব নিরাপদ পরিকাঠামোর মাধ্যমে Brave এর দ্বারা উপস্থাপিত। <ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="2328524194917949829">হাই, আমি Leo। আমি সম্পূর্ণভাবে Brave এর পক্ষ থেকে উপস্থাপিত একটি AI সহায়ক। আমি Gemma 3 12B দ্বারা চালিত, একটি মডেল যা কর্মক্ষম এবং বিভিন্ন ব্যবহারিক ক্ষেত্রে প্রয়োগের জন্য Google DeepMind তৈরি করেছে। Gemma আমাদের নিজস্ব নিরাপদ পরিকাঠামোর মাধ্যমে Brave এর দ্বারা উপস্থাপিত। <ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="634682910381645550">হাই, আমি Leo। আমি সম্পূর্ণভাবে Brave এর পক্ষ থেকে উপস্থাপিত একটি AI সহায়ক। আমি DeepSeek R1 দ্বারা চালিত, একটি মডেল যা গভীর প্রাসঙ্গিক কাজের ক্ষেত্রে সম্পাদন করে এবং DeepSeek দ্বারা সৃষ্ট। DeepSeek R1 আমাদের নিজস্ব নিরাপদ পরিকাঠামোর মাধ্যমে Brave এর দ্বারা উপস্থাপিত। <ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
-<translation id="8932568551552504373">হাই, আমি Leo। আমি সম্পূর্ণভাবে Brave এর পক্ষ থেকে উপস্থাপিত একটি AI সহায়ক। আমি Claude Instant দ্বারা চালিত, একটি মডেল যা গতানুগতিক এবং টেক্সট প্রক্রিয়াকরণের কাজগুলি চালানোর জন্য Anthropic তৈরি করেছে। Claude Instant আমাদের নিজস্ব নিরাপদ পরিকাঠামোর মাধ্যমে Brave এর দ্বারা উপস্থাপিত। <ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
+<translation id="8932568551552504373">হাই, আমি লিও। আমি Brave-এর একটি AI সহকারী। আমি চালিত Claude Instant দ্বারা, যা একটি মডেল Anthropic তৈরি করেছে কথোপকথন ও টেক্সট প্রসেসিং পরিচালনার জন্য। Claude Instant Brave-এর নিজস্ব নিরাপদ পরিকাঠামোর মাধ্যমে হোস্ট করা হয়।<ph name="LINK_BEFORE"/>আরও জানুন<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">হাই, আমি Leo। আমি সম্পূর্ণভাবে Brave এর পক্ষ থেকে উপস্থাপিত একটি AI সহায়ক। আমি Claude Haiku দ্বারা চালিত, একটি মডেল যা গতানুগতিক এবং টেক্সট প্রক্রিয়াকরণের কাজগুলি চালানোর জন্য Anthropic তৈরি করেছে। Claude Haiku আমাদের নিজস্ব নিরাপদ পরিকাঠামোর মাধ্যমে Brave এর দ্বারা উপস্থাপিত। <ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">হাই, আমি Leo। আমি সম্পূর্ণভাবে Brave এর পক্ষ থেকে উপস্থাপিত একটি AI সহায়ক। আমি Claude Sonnet দ্বারা চালিত, একটি মডেল যা গতানুগতিক এবং টেক্সট প্রক্রিয়াকরণের কাজগুলি চালানোর জন্য Anthropic তৈরি করেছে। Claude Haiku আমাদের নিজস্ব নিরাপদ পরিকাঠামোর মাধ্যমে Brave এর দ্বারা উপস্থাপিত। <ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">প্রিমিয়াম</translation>
@@ -2186,6 +2196,7 @@
 <translation id="7557539689487606886">প্রিমিয়াম-এ যান</translation>
 <translation id="1691256669639196606">সাবস্ক্রিপশন পরিচালনা করুন</translation>
 <translation id="3840096463915153852">কথোপকথনের ইতিহাস</translation>
+<translation id="6761921176674289184">মেমোরি পরিচালনা করুন</translation>
 <translation id="2304783958703511257">উন্নত সেটিংস</translation>
 <translation id="3037594989275592390">ভাষা মডেল</translation>
 <translation id="5543505256451301851">7 দিন ফ্রি ব্যবহার করে দেখুন</translation>
@@ -2259,31 +2270,36 @@
 <translation id="7307396647043599949">আরও <ph name="COUNT"/> টি…</translation>
 <translation id="8103700533980268469">এই নোটিসটি বন্ধ করুন</translation>
 <translation id="3417835166382867856">ট্যাবগুলি সন্ধান করুন</translation>
+<translation id="7311244614769792472">কোনও ফলাফল পাওয়া যায়নি।</translation>
+<translation id="3112448569149476523">অনুগ্রহ করে অন্য অনুসন্ধান চেষ্টা করুন</translation>
 <translation id="1352836459737874921">অন্যান্য ট্যাবগুলি থেকে বিষয়বস্তু সংযুক্ত করুন</translation>
-<translation id="3028258613451571431">কথোপকথনটির জন্য Leo-কে আরও প্রসঙ্গ সরবরাহ করতে আপনার ব্রাউজার ট্যাবগুলি থেকে পেজের বিষয়বস্তু পাঠান</translation>
-<translation id="4300920590112551536">ব্রাউজার ট্যাবগুলি</translation>
+<translation id="7039179822221107025">কথোপকথনটির জন্য Leo-কে আরও প্রসঙ্গ সরবরাহ করতে আপনার ব্রাউজার ট্যাবগুলি থেকে পেজের বিষয়বস্তু পাঠান.</translation>
+<translation id="220541218939267992">পৃষ্ঠার বিষয়বস্তু Leo-কে আপনার বার্তার সাথে পাঠানো হবে।</translation>
 <translation id="1446346932629101482">প্রসঙ্গের জন্য ট্যাব কন্টেন্টগুলি যোগ করুন। কন্টেন্টগুলি আপনার বার্তার সাথে Leo-র কাছে পাঠানো হবে।</translation>
 <translation id="7193316103691252734">কোনো মিলযুক্ত ট্যাব নেই</translation>
 <translation id="2315654674554095762">Leo এখন আপনার কথোপকথন মনে রাখবে যাতে আপনি তাদের কাছে ফিরে যেতে পারেন। সেগুলি এনক্রিপ্ট করা অবস্থায় আপনার ডিভাইসে সংরক্ষিত হয় এবং আপনি সেগুলি যে কোনো সময় মুছতে পারবেন।</translation>
 <translation id="7821251979960635244">আপনি একটি কথোপকথন শুরু করলে আপনার কথোপকথনের ইতিহাস এখানে প্রদর্শিত হবে।</translation>
 <translation id="887511360213807449">ইতিহাস নিষ্ক্রিয় রয়েছে</translation>
 <translation id="5380979378058584412">Leo-র সাথে আপনার আগের কথোপকথনগুলি দেখতে, আপনাকে কথোপকথনের ইতিহাস সক্রিয় করতে হবে।</translation>
-<translation id="6291843235651817590">সাধারণ উদ্দেশ্যে চ্যাট</translation>
+<translation id="7348809809749151120">দ্রুত • অনুসন্ধান</translation>
 <translation id="3185367320601718531">কথোপকথন এবং টেক্সট জেনারেশন</translation>
-<translation id="7979673624064378842">আলোর মতো দ্রুত চ্যাট</translation>
-<translation id="2836330653441111204">ভারসাম্যময় গতি এবং বুদ্ধিমত্তা</translation>
-<translation id="6695329447007213917">সাধারণ উদ্দেশ্যের চ্যাট, কোডিং এবং আরও অনেক কিছু</translation>
-<translation id="7168072214482631597">সাধারণ উদ্দেশ্যের পাঠ্য এবং ছবি বোঝা</translation>
-<translation id="7226508434216060960">যুক্তি প্রদর্শনের মডেল</translation>
+<translation id="2793458212460902934">দ্রুত • অনুসন্ধান • টুলস</translation>
+<translation id="8506027496671575183">অনুসন্ধান • ভিশন • টুলস</translation>
+<translation id="3213834013136637671">অনুসন্ধান • ভিশন</translation>
+<translation id="7697693533305615127">অনুসন্ধান • চিন্তা</translation>
 <translation id="8782867266498869301">মডেলটি কাজের জন্য সেরাটি ব্যবহার করতে গতিশীলভাবে পরিবর্তিত হয়</translation>
 <translation id="3965507912994218570">Leo সেটিংস</translation>
-<translation id="1037324977127422019">হাই, আমি লিও!</translation>
-<translation id="8930348081963284873">একটি AI-চালিত বুদ্ধিমান সহকারী, সরাসরি Brave-এ তৈরি।</translation>
-<translation id="3528849152231418380">ওয়েবসাইটের সাহায্য প্রয়োজন?</translation>
-<translation id="1558192229187362674">আমি আপনাকে নিবন্ধের সারসংক্ষেপ, সাইটের কন্টেন্ট সম্প্রসারণ এবং আরও অনেক কিছু করতে সাহায্য করতে পারি।</translation>
-<translation id="861953757568623294">আমি আপনাকে নিবন্ধের সারসংক্ষেপ, সাইটের কন্টেন্ট সম্প্রসারণ এবং আরও অনেক কিছু করতে সাহায্য করতে পারি। কোথা থেকে শুরু করবেন নিশ্চিত নন? এটা ব্যবহার করে দেখুন:</translation>
-<translation id="5642775487085641191">শুধু চ্যাট করতে চান?</translation>
-<translation id="8857222718794549840">আমাকে যেকোনও কিছু জিজ্ঞেস করুন! আমরা আপনার পছন্দের যে কোন বিষয় নিয়ে কথা বলতে পারি। আমি প্রতি মুহূর্তে শিখছি এবং আরও ভালো উত্তর দেওয়ার জন্য প্রস্তুত হচ্ছি।</translation>
+<translation id="3754337604877048671">Leo AI পরিচিতি</translation>
+<translation id="5295261408976371809">আপনার <ph name="TEXT_BEFORE"/>গোপনীয়<ph name="TEXT_AFTER"/> AI সহকারী, ব্রাউজারে সরাসরি সংযুক্ত।</translation>
+<translation id="7452913484571004528">প্রকৃত গোপনীয় AI</translation>
+<translation id="8525501048785085223">Leo চ্যাট সংরক্ষণ বা ভাগ করে না, এবং এগুলো মডেল প্রশিক্ষণের জন্য ব্যবহার করে না। কোনো অ্যাকাউন্ট বা লগইনের প্রয়োজন নেই। শুধুমাত্র খুলে চ্যাট করুন। গোপনীয়ভাবে।</translation>
+<translation id="6401201054391523929">আপনার ট্যাব ও ফাইলের সঙ্গে চ্যাট করুন</translation>
+<translation id="8522038408130089105">আপনি যে সাইটগুলোতে যাচ্ছেন সেগুলো সম্পর্কে আরও জানতে চান? শুধু চ্যাটে যোগ করুন। আপনার ট্যাব ও লোকাল ফাইল সংযুক্ত করুন দ্রুত, প্রাসঙ্গিক উত্তরের জন্য।</translation>
+<translation id="3844955602461425647">বিরক্তিকর কাজ অটোমেট করুন</translation>
+<translation id="2196247864500723577">Brave-কে আপনার সঙ্গে ব্রাউজ করতে দিন এবং ব্রাউজারে করা কাজগুলোর সাথে ইন্টার‍্যাক্ট করতে দিন। একঘেয়ে কাজগুলো ছেড়ে দিন, আর সময় বাঁচান গুরুত্বপূর্ণ কাজের জন্য।</translation>
+<translation id="235457946228076038">আপনার নিজের মডেলটি নিয়ে আসুন</translation>
+<translation id="7024005267156189454">আপনার নিজস্ব AI মডেল যুক্ত করুন, স্থানীয় বা দূরবর্তীভাবে চালুকৃত হোক না কেন। Leo-এর আচরণ, আউটপুট এবং সক্ষমতা আপনার পছন্দমতো কাস্টমাইজ করুন।</translation>
+<translation id="7291578285403921288">Leo AI সম্পর্কে আরও জানুন</translation>
 <translation id="9051226419897869406">Brave Leo-এর সাথে ব্যক্তিগতভাবে চ্যাট করুন</translation>
 <translation id="2414904697165579184">ট্যাবের (ট্যাবগুলির) বিষয়বস্তু অনুযায়ী উত্তরগুলি ঠিক করুন</translation>
 <translation id="8258324391302611485">এই পেজের বিষয়বস্তু আপনার বার্তাগুলির সাথে Leo-তে পাঠানো হবে।</translation>
@@ -2292,6 +2308,7 @@
 <translation id="8732450785281947197">Leo AI টুল</translation>
 <translation id="6535533770697728087">দ্রুত পদক্ষেপ</translation>
 <translation id="3237710083340813756">আবার লিখুন</translation>
+<translation id="1223498995510244364">সারসংক্ষেপ</translation>
 <translation id="1252805982772190086">সংক্ষিপ্ত পোস্ট</translation>
 <translation id="2087555497198267113">দীর্ঘ পোস্ট</translation>
 <translation id="4170307327863874820">ব্লগ পোস্ট</translation>
@@ -2499,12 +2516,13 @@
 <translation id="6764845498618413165">আরও জানুন।</translation>
 <translation id="7818938154803162778">অবশ্যই আমি সাহায্য করব</translation>
 <translation id="7207456302801184289">Brave-এ আপনাকে স্বাগত</translation>
-<translation id="6716580298071890302">আরো অন্ধকার থিম ব্যবহার করুন</translation>
+<translation id="293854220404217065">মিডনাইট থিম</translation>
 <translation id="2422927186524098759">সাইডবার</translation>
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="8000020256436988724">টুলবার</translation>
 <translation id="6225572914528673855">অ্যাড্রেস বার</translation>
+<translation id="6821966107067356137">RSS ফিড যোগ করুন</translation>
 <translation id="8293206222192510085">বুকমার্ক যোগ করুন</translation>
 <translation id="7758460733045216901">বুকমার্ক প্যানেল</translation>
 <translation id="958268166261124668">Brave VPN: সংযুক্ত</translation>

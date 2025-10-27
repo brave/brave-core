@@ -3,15 +3,18 @@
 <translationbundle lang="ta">
 <translation id="1010283278930414892">இந்தச் சாதனத்தில் சேமிக்கப்பட்ட கடவுச்சொற்கள் எதுவுமில்லை</translation>
 <translation id="1011749477052068769">இங்கு நகர்த்து</translation>
+<translation id="1014083013111769343">வாசிப்புப் பயன்முறை விருப்பங்கள் முழு அளவிற்குத் திறந்துள்ளன</translation>
 <translation id="1014147525163127655">இந்தச் சாதனத்தில் <ph name="ORIGIN"/> தளத்திற்கான கடவுச்சாவிகள் எதுவுமில்லை</translation>
 <translation id="1016498331642356377">குரல் மூலம் உடனடியாகத் தேடலாம். இந்த ஷார்ட்கட்டை மாற்ற தொட்டுப் பிடித்திருக்கவும்.</translation>
 <translation id="1028699632127661925"><ph name="DEVICE_NAME"/> சாதனத்திற்கு அனுப்புகிறது...</translation>
 <translation id="103269572468856066">இந்தத் தளங்கள் &amp; ஆப்ஸிலிருந்தும் தரவை அழிக்க வேண்டுமா?</translation>
 <translation id="1034259925032978114">சாளரம் திறந்துள்ளது</translation>
-<translation id="1036348656032585052">முடக்கு</translation>
+<translation id="1035113036584565771">உதவிக்குறிப்பு அறிவிப்புகள் புரோமோ மூடப்பட்டுள்ளது</translation>
+<translation id="1036348656032585052">ஆஃப் செய்</translation>
 <translation id="1045899828449635435">இந்தத் தளங்களில் இருந்தும் தரவை அழிக்க வேண்டுமா?</translation>
 <translation id="1052842760770519282">உங்களின் சில கடவுச்சொற்களைப் பயன்படுத்த முடியாது</translation>
 <translation id="1058669287135776095">ஆஃப்லைனில் உள்ளீர்கள். இணைய இணைப்பைச் சரிபார்த்து மீண்டும் முயலவும்.</translation>
+<translation id="1066338698580889414">உதவிக்குறிப்பு அறிவிப்புகள் புரோமோ முழு அளவிற்குத் திறந்துள்ளது</translation>
 <translation id="1070689840697074178">PDFகளை இங்கே பதிவிறக்கலாம்</translation>
 <translation id="107147699690128016">ஃபைல் நீட்டிப்பை மாற்றினால் இந்த ஃபைல் வேறொரு ஆப்ஸில் திறக்கக்கூடும், இது உங்கள் சாதனத்திற்குத் தீங்கிழைக்கக்கூடும்.</translation>
 <translation id="1087799850623149508">முகவரிப் பட்டியைத் தொட்டுப் பிடித்திருப்பதன் மூலம் அதைக் கீழே நகர்த்தலாம்</translation>
@@ -28,6 +31,7 @@
 <translation id="1138458427267715730">இணையம் முழுவதிலும் எந்தவொரு தளத்தில் விலை குறைந்தாலும் அதுகுறித்த விழிப்பூட்டல்களைப் பெறுங்கள்</translation>
 <translation id="1140317858355046628">இதை நீக்கிவிட்டால் "<ph name="GROUP_NAME"/>" பக்கக் குழுவிற்கான அணுகலை எல்லோரும் இழப்பார்கள். அத்துடன், எல்லாச் சாதனங்களில் இருந்தும் இது நீக்கப்படும்.</translation>
 <translation id="1142732900304639782">இந்த மொழிகளுக்கு மொழிபெயர்ப்பு வேண்டாம்:</translation>
+<translation id="1143193470214071120">ஒரு சாளரத்தை மூடவும் அல்லது சாளரங்களை நிர்வகிக்கவும்</translation>
 <translation id="7083341910267693582"><ph name="APP_NAME"/> Braveமில் திறக்கப்படும். தொடர்வதன் மூலம் <ph name="BEGIN_LINK1"/>Brave சேவை விதிமுறைகள்<ph name="END_LINK1"/>, <ph name="BEGIN_LINK2"/>Brave &amp; ChromeOS தொடர்பான கூடுதல் சேவை விதிமுறைகள்<ph name="END_LINK2"/> ஆகியவற்றை ஏற்கிறீர்கள்.</translation>
 <translation id="7443574521624544928">Brave Password Managerரில் நீங்கள் எந்தக் கடவுச்சொல்லையும் சேமிக்கவில்லை.</translation>
 <translation id="115483310321669804"><ph name="PASSWORD"/> கடவுச்சொல்லைப் பயன்படுத்தும்</translation>
@@ -96,6 +100,7 @@
 <translation id="1407135791313364759">எல்லாவற்றையும் திற</translation>
 <translation id="1409879593029778104">ஃபைல் ஏற்கனவே இருப்பதால் <ph name="FILE_NAME"/> இன் பதிவிறக்கம் தடுக்கப்பட்டது.</translation>
 <translation id="3219606989239049572">உங்கள் Brave கணக்கில் தரவைச் சேமியுங்கள்</translation>
+<translation id="1414919006379339073">தற்போதைய சாளரத்தை மூடுக</translation>
 <translation id="1416550906796893042">ஆப்ஸின் பதிப்பு</translation>
 <translation id="5171187478741797469">Braveமை மீண்டும் தொடங்கவா?</translation>
 <translation id="1428770807407000502">ஒத்திசைவை முடக்கவா?</translation>
@@ -204,6 +209,7 @@
 <translation id="197288927597451399">வைத்திரு</translation>
 <translation id="1973912524893600642">தரவை அழிக்காதே</translation>
 <translation id="1974060860693918893">மேம்பட்டவை</translation>
+<translation id="1982274314082047220">விருப்பங்களைப் பார்க்க வாசிப்புப் பயன்முறையை மேல்நோக்கி ஸ்வைப் செய்யவும்</translation>
 <translation id="1984087999855033707">ஃபோன் எண்</translation>
 <translation id="1984417487208496350">பாதுகாப்பற்ற பயன்முறை (பரிந்துரைக்கப்படவில்லை)</translation>
 <translation id="1986685561493779662">பெயர் ஏற்கனவே உள்ளது</translation>
@@ -264,11 +270,11 @@
 <translation id="2318045970523081853">அழைக்க தட்டவும்</translation>
 <translation id="2323763861024343754">தளச் சேமிப்பகம்</translation>
 <translation id="2328474416100889417">“<ph name="GROUP_NAME"/>” பக்கக் குழுவிற்கான அணுகலை அனைவரும் உடனடியாக இழப்பார்கள். அத்துடன், அழைப்புக்கான எல்லா இணைப்புகளும் முடக்கப்படும்.</translation>
+<translation id="2330186936255788117">கூடுதல் புக்மார்க்குகள்</translation>
 <translation id="2332515770639153015">‘மேம்பட்ட பாதுகாப்பு உலாவல்’ அம்சம் இயக்கப்பட்டுள்ளது</translation>
 <translation id="233375395665273385">நீக்கிவிட்டு வெளியேறு</translation>
 <translation id="2341410551640223969"><ph name="WEBAPK_NAME"/> ஆப்ஸை நிறுவ முடியவில்லை.</translation>
 <translation id="3587672679800759167">கணக்குகள், புக்மார்க்குகள், சேமித்த அமைப்புகள் உள்பட Brave பயன்படுத்தும் மொத்தத் தரவு</translation>
-<translation id="2349954856814571872">புக்மார்க் பட்டி பட்டன் ஐகான்</translation>
 <translation id="2767094839186957509">Brave தனியுரிமைக் கொள்கை</translation>
 <translation id="2359808026110333948">தொடர்க</translation>
 <translation id="2362083820973145409">உள்நுழைந்துள்ள கணக்கு: <ph name="USER_NAME"/>. <ph name="USER_EMAIL"/>. அமைப்புகளைத் திறக்கும்.</translation>
@@ -301,7 +307,6 @@
 <translation id="2496180316473517155">உலாவல் வரலாறு</translation>
 <translation id="2497852260688568942">உங்கள் நிர்வாகி ஒத்திசைவை முடக்கியுள்ளார்</translation>
 <translation id="7229462727772664332"><ph name="SITE_NAME"/> என்ற தளம் தொடர்பான உங்களின் உள்நுழைவு நிலை, உலாவிய தரவு, தளத்தின் தரவு ஆகியவை Braveமில் காட்டப்படும்</translation>
-<translation id="2502798195266898572">வாசிப்புப் பயன்முறையைக் காட்டும் கீழ்ப்புறச் சீட்டு முழு உயரத்தில் திறக்கப்பட்டுள்ளது</translation>
 <translation id="2510106555128151389"><ph name="WEBAPK_NAME"/> ஐ நிறுவுகிறது...</translation>
 <translation id="2512234228327349533">வாங்குவதற்கான விருப்பங்களைத் தேடு</translation>
 <translation id="7222718784508482526">தனியுரிமை, பாதுகாப்பு, தரவுச் சேகரிப்பு ஆகியவற்றுடன் தொடர்புடைய மேலும் பல அமைப்புகளுக்கு, <ph name="BEGIN_LINK"/>ஒத்திசைவும் Brave சேவைகளும்<ph name="END_LINK"/> என்பதைப் பார்க்கவும்</translation>
@@ -350,7 +355,7 @@
 <translation id="2687009626279857299">இந்தச் சாதனத்தில் செயல்படவில்லை</translation>
 <translation id="2702516483241149200">புதிது: இந்த உரைக்குச் செல்லும் இணைப்பைப் பகிரலாம்</translation>
 <translation id="2708226184420201102"><ph name="PRODUCT_NAME"/> உலாவியில் திற</translation>
-<translation id="271033894570825754">புதிது</translation>
+<translation id="271033894570825754">புதிய தொகுப்பு</translation>
 <translation id="2718352093833049315">வைஃபையில் மட்டும்</translation>
 <translation id="2718846868787000099">உங்களுக்கு விருப்பமான மொழியில் உள்ளடக்கத்தைக் காட்டுவதற்காக நீங்கள் பார்க்கும் தளங்கள் உங்கள் விருப்பத்தேர்வுகளை அணுகலாம்</translation>
 <translation id="2723001399770238859">ஆடியோ</translation>
@@ -396,6 +401,7 @@
 <translation id="2904414404539560095">தாவலைப் பகிர்வதற்கான சாதனங்களின் பட்டியல் திரையின் முழு அளவிற்குத் திறக்கப்பட்டுள்ளது.</translation>
 <translation id="2908243544703713905">படிக்காத செய்திகள் உள்ளன</translation>
 <translation id="7339921667754113786">Brave அறிவிப்புகள் பிளாட்ஃபார்ம்</translation>
+<translation id="2918484639460781603">அமைப்புகளுக்குச் செல்க</translation>
 <translation id="2923908459366352541">தவறான பெயர்</translation>
 <translation id="6355102470683871794">Brave <ph name="APP_NAME"/> இன் சேமிப்பகம்</translation>
 <translation id="2932222164150889403">கீபோர்டு மாற்றப்படாது</translation>
@@ -419,11 +425,13 @@
 <translation id="2992473221983447149">பட விளக்கங்கள்</translation>
 <translation id="2996291259634659425">கடவுச்சொற்றொடரை உருவாக்கு</translation>
 <translation id="2996809686854298943">URL தேவை</translation>
+<translation id="3024215143424744261">வாசிப்புப் பயன்முறை விருப்பங்கள் மூடப்பட்டுள்ளன</translation>
 <translation id="3026955690410463085">இணைப்பைச் சேர்க்கும்</translation>
 <translation id="3027644380269727216">ஒரு தளத்தில் நீங்கள் மேற்கொண்ட செயல்பாட்டின் அடிப்படையிலானவை. இந்த அமைப்பு இயக்கப்பட்டுள்ளது.</translation>
 <translation id="3027950907978057636"><ph name="APP_LABEL"/>ல் இருந்து</translation>
 <translation id="3029276696788198026">பக்கங்களை முன்கூட்டியே ஏற்றாதே</translation>
 <translation id="3029704984691124060">கடவுத்தொடர்கள் பொருந்தவில்லை</translation>
+<translation id="3029829659829245765"><ph name="TAB_TITLE"/>, தேர்ந்தெடுக்கப்பட்ட இடம் மாறாத பக்கம்</translation>
 <translation id="3036750288708366620"><ph name="BEGIN_LINK"/>உதவி பெறுக<ph name="END_LINK"/></translation>
 <translation id="3037177537145227281">விலையைக் கண்காணிக்கிறது</translation>
 <translation id="3251012123600267109">Braveமில் உள்நுழைவதற்கான அறிவிப்புகளைக் காட்டும்</translation>
@@ -582,6 +590,7 @@
 <translation id="38258275871320156">சிறிய சாளரங்களுக்கு மட்டுமே கிடைக்கும்</translation>
 <translation id="3847319713229060696">வலையைப் பயன்படுத்தும் அனைவருக்கும் பாதுகாப்பை மேம்படுத்த உதவுங்கள்</translation>
 <translation id="385051799172605136">திரும்பு</translation>
+<translation id="3851464569313827017"><ph name="IFRAME_ETLD_PLUS_ONE"/> இல் இருந்து <ph name="SITE_ETLD_PLUS_ONE"/> உள்ளடக்கத்தை உட்பொதிக்கிறது</translation>
 <translation id="3856096718352044181">இது சரியான வழங்குநர்தான் என்பதைச் சரிபார்க்கவும் அல்லது பிறகு முயலவும்</translation>
 <translation id="3858860766373142691">பெயர்</translation>
 <translation id="3863527519275151528">அறிவிப்பைச் செயலாக்குகிறது</translation>
@@ -606,6 +615,7 @@
 <translation id="397105322502079400">கணக்கிடுகிறது...</translation>
 <translation id="397583555483684758">ஒத்திசைவு நிறுத்தப்பட்டது</translation>
 <translation id="3976396876660209797">இந்த ஷார்ட்கட்டை அகற்றி, மீண்டும் உருவாக்கவும்</translation>
+<translation id="397650873162244514"><ph name="TAB_TITLE"/>, இடம் மாறாத பக்கம்</translation>
 <translation id="3985022125189960801">உங்கள் விருப்பத்தைக் கணிக்கும் தளங்களின் தொகுப்பில் ஒரு தளத்தைச் சேர்க்க விரும்பினால் அதை மீண்டும் சேர்க்கலாம்</translation>
 <translation id="3985215325736559418"><ph name="FILE_NAME"/>ஐ மீண்டும் பதிவிறக்கவா?</translation>
 <translation id="3987993985790029246">இணைப்பை நகலெடு</translation>
@@ -614,6 +624,7 @@
 <translation id="5267293611589304570">{NUM_PASSWORDS,plural, =1{உங்கள் Brave கணக்கில் 1 களவாடப்பட்ட கடவுச்சொல் உள்ளது}other{உங்கள் Brave கணக்கில் # களவாடப்பட்ட கடவுச்சொற்கள் உள்ளன}}</translation>
 <translation id="4016425174436051808">பின்தொடர முடியவில்லை. ஏதோ தவறாகிவிட்டது.</translation>
 <translation id="4024768890073681126">இந்த உலாவியை உங்கள் பெற்றோர் நிர்வகிக்கின்றனர்</translation>
+<translation id="4027569221211770437"><ph name="FOLDER_TITLE"/> ஃபோல்டர்</translation>
 <translation id="4034817413553209278">{HOURS,plural, =1{# மணிநேரம்}other{# மணிநேரம்}}</translation>
 <translation id="4042941173059740150"><ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> மூலம் <ph name="SITE_ETLD_PLUS_ONE"/> இணையதளத்தில் தொடருங்கள்</translation>
 <translation id="4044708993631234325">அடிப்புறத் தாள்</translation>
@@ -692,6 +703,7 @@
 <translation id="4380055775103003110">இந்தச் சிக்கல் தொடர்ந்து ஏற்பட்டால் <ph name="SITE_ETLD_PLUS_ONE"/>ல் தொடர நீங்கள் பிற வழிகளை முயலலாம்.</translation>
 <translation id="4384468725000734951">தேடலுக்கு Sogouஐப் பயன்படுத்துகிறீர்கள்</translation>
 <translation id="4387647248986092471">கார் சுயவிவரப் பூட்டை உருவாக்கு</translation>
+<translation id="4387817230000841154">பதிவிறக்கங்களைத் திற</translation>
 <translation id="4401432223274567153">{INACTIVE_TIME_DAYS,plural, =1{1 நாள் அல்லது அதற்கு மேல் பயன்படுத்தாத பக்கங்களும் குழுக்களும்}other{# நாட்கள் அல்லது அதற்கு மேல் பயன்படுத்தாத பக்கங்களும் குழுக்களும்}}</translation>
 <translation id="4402611456429872546"><ph name="LANG"/> - மொழியைப் பதிவிறக்குகிறது…</translation>
 <translation id="4404568932422911380">புக்மார்க்குகள் இல்லை</translation>
@@ -705,7 +717,6 @@
 <translation id="4425173294238317796">கடவுச்சாவியை உறுதிப்படுத்துவதற்கான தாள்</translation>
 <translation id="442518031075347249">உங்கள் விர்ச்சுவல் கார்டை Google Payயில் இனி பயன்படுத்த முடியாது. <ph name="BEGIN_LINK1"/>விர்ச்சுவல் கார்டுகள் குறித்து மேலும் அறிக<ph name="END_LINK1"/></translation>
 <translation id="442577985493096785">{TAB_COUNT,plural, =1{<ph name="TAB_TITLE"/> மற்றும் வேறு <ph name="TAB_COUNT_ONE"/> பக்கம் மூடப்படும்}other{<ph name="TAB_TITLE"/> மற்றும் வேறு <ph name="TAB_COUNT_MANY"/> பக்கங்கள் மூடப்படும்}}</translation>
-<translation id="4426508677408162512">எல்லா புத்தகக்குறிகளும்</translation>
 <translation id="4430277756566635951">தற்போது தேர்ந்தெடுக்கப்பட்டுள்ளது: <ph name="EMAIL"/>. கணக்கைத் தேர்வுசெய்யும்.</translation>
 <translation id="4452411734226507615"><ph name="TAB_TITLE"/> தாவலை மூடும்</translation>
 <translation id="4452548195519783679"><ph name="FOLDER_NAME"/> இல் புத்தகக்குறியைச் சேர்த்தது</translation>
@@ -958,6 +969,7 @@
 <translation id="5626134646977739690">பெயர்:</translation>
 <translation id="5628604359369369630">படிக்காதவை - ஆஃப்லைனில் படிக்கலாம்</translation>
 <translation id="5631483240431073854">திறந்துள்ள பக்கங்களை நிர்வகிக்கலாம்</translation>
+<translation id="5632485077360054581">எப்படி எனக் காட்டு</translation>
 <translation id="8459994515707449554"><ph name="USER_NAME"/> கணக்கில் உள்நுழைந்துள்ளீர்கள். Brave கணக்குப் பிழை. அமைப்புகளைத் திறக்கும்.</translation>
 <translation id="3801854459269566477"><ph name="BEGIN_LINK1"/>இதுவரை தேடியவையும்<ph name="END_LINK1"/> <ph name="BEGIN_LINK2"/>பிற வகையான செயல்பாடுகளும்<ph name="END_LINK2"/> உங்கள் Brave கணக்கில் சேமிக்கப்பட்டிருக்கலாம்</translation>
 <translation id="5648166631817621825">கடந்த 7 நாட்கள்</translation>
@@ -1098,18 +1110,17 @@
 
 எடுத்துக்காட்டாக, சில இணையதளங்கள் நீங்கள் பார்வையிட்ட பிற இணையதளங்களின் அடிப்படையில் இல்லாத விளம்பரங்களைக் காட்டுவதன் மூலம் இந்தக் கோரிக்கைக்குப் பதிலளிக்கலாம். பல இணையதளங்கள் நீங்கள் உலாவிய தரவைத் தொடர்ந்து சேகரித்துப் பயன்படுத்தும் - எடுத்துக்காட்டாக பாதுகாப்பை மேம்படுத்த, உள்ளடக்கம், விளம்பரங்கள் மற்றும் பரிந்துரைகளை வழங்க, அறிக்கைப் புள்ளிவிவரங்களை உருவாக்க நீங்கள் உலாவிய தரவைப் பயன்படுத்தலாம்.</translation>
 <translation id="8883879481897424949">Brave Password Manager</translation>
+<translation id="6248988683584659830">தேடல் அமைப்புகள்</translation>
 <translation id="2715956954609894918">எனது Brave செயல்பாடுகளை இங்கே காட்டு</translation>
 <translation id="6254139308321626268">PDF ஃபைலைப் பார்க்கிறீர்கள்</translation>
 <translation id="725280687245147974">Braveமின் கருவிகள் மூலம் பாதுகாப்பாக உலாவலாம், உங்கள் வசமே கட்டுப்பாட்டை வைத்திருக்கலாம்</translation>
 <translation id="6264376385120300461">பரவாயில்லை, பதிவிறக்கு</translation>
 <translation id="6264485186158353794">பாதுகாப்பான நிலைக்குத் திரும்பு</translation>
-<translation id="6267063201726531683">வாசிப்புப் பயன்முறை கீழ்ப்புறச் சீட்டு</translation>
 <translation id="6277522088822131679">பக்கத்தை அச்சிடுவதில் சிக்கல் ஏற்பட்டது. மீண்டும் முயற்சிக்கவும்.</translation>
 <translation id="6278428485366576908">தீம்</translation>
 <translation id="6291294824436685757">பிரவுசிங் தரவை நீக்கும்; நீக்குவதற்கான தரவைத் தேர்ந்தெடுக்கவும்</translation>
 <translation id="6295158916970320988">எல்லா தளங்களும்</translation>
 <translation id="629730747756840877">கணக்கு</translation>
-<translation id="6300697579369314762">வாசிப்புப் பயன்முறையைக் காட்டும் கீழ்ப்புறச் சீட்டு பாதி உயரத்தில் திறக்கப்பட்டுள்ளது</translation>
 <translation id="6301526076346731664">டெவெலப்பர் கருவிகளைத் திறக்க</translation>
 <translation id="6303969859164067831">வெளியேறி ஒத்திசைவை முடக்கு</translation>
 <translation id="6307241780749477694">இந்தச் சாதனத்தில் உள்ள எல்லாக் கடவுச்சொற்களையும் அணுக இது நீங்கள்தான் என்பதை உறுதிப்படுத்துங்கள்</translation>
@@ -1226,6 +1237,7 @@
 <translation id="6767294960381293877">தாவலைப் பகிர்வதற்கான சாதனங்களின் பட்டியல் திரையின் பாதி அளவிற்குத் திறக்கப்பட்டுள்ளது.</translation>
 <translation id="8174975477247159780">Brave &amp; ChromeOS தொடர்பான கூடுதல் சேவை விதிமுறைகள்</translation>
 <translation id="6786747875388722282">நீட்டிப்புகள்</translation>
+<translation id="6787600234697426339">அனுமதிக்கப்படும் சாளர வரம்பை (<ph name="MAX_INSTANCE_COUNT"/>) அடைந்துவிட்டீர்கள்</translation>
 <translation id="6795633245022906657">புதிய தாவலை உடனடியாகத் திறக்கலாம். இந்த ஷார்ட்கட்டை மாற்ற அமைப்புகளுக்குச் செல்லவும்.</translation>
 <translation id="4757665660890677272">Braveமை உங்கள் இயல்பு பிரவுசராக மாற்றுங்கள்</translation>
 <translation id="679956319013005046">தானாக நிரப்பும் வசதிக்கு உங்களுக்கு விருப்பமான சேவையை அமைக்க, முதலில் அந்தச் சேவையை <ph name="BEGIN_LINK"/>Android அமைப்புகளில்<ph name="END_LINK"/> சேர்க்கவும்.</translation>
@@ -1246,7 +1258,6 @@
 <translation id="6850830437481525139"><ph name="TAB_COUNT"/> தாவல்கள் மூடப்பட்டன</translation>
 <translation id="685340923442249391">{FILE_COUNT,plural, =1{ஆடியோ ஃபைல்கள், பட்டியலில் 1 ஆடியோ ஃபைல் உள்ளது}other{ஆடியோ ஃபைல்கள், பட்டியலில் # ஆடியோ ஃபைல்கள் உள்ளன}}</translation>
 <translation id="4046835482356054431">Discover by Brave - முடக்கப்பட்டுள்ளது</translation>
-<translation id="6861722405755529743">புக்மார்க் பட்டியின் கூடுதல் விருப்பங்கள் பட்டன்</translation>
 <translation id="6864459304226931083">படத்தைப் பதிவிறக்கு</translation>
 <translation id="686490460830618322">ஆப்ஸ் ஃபில்டர் தாள்</translation>
 <translation id="6865313869410766144">தன்னிரப்பி படிவத் தரவு</translation>
@@ -1284,6 +1295,7 @@
 <translation id="6964300328304469089">தற்போது தேர்ந்தெடுக்கப்பட்டுள்ளது: <ph name="NAME"/>, <ph name="EMAIL"/>. கணக்கைத் தேர்வுசெய்யும்.</translation>
 <translation id="6965382102122355670">சரி</translation>
 <translation id="6968350777423863208">{NUMBER_OF_TABS,plural, =1{பகிர்ந்த பக்கக் குழுக்களில் புதிய செயல்பாடுகளுடன் இருக்கும் <ph name="TABS_COUNT_ONE"/> பக்கத்தைக் காட்டும்}other{பகிர்ந்த பக்கக் குழுக்களில் புதிய செயல்பாடுகளுடன் இருக்கும் <ph name="TABS_COUNT_MANY"/> பக்கங்களைக் காட்டும்}}</translation>
+<translation id="6971555615916967190">வாசிப்புப் பயன்முறை விருப்பங்கள் பாதி அளவிற்குத் திறந்துள்ளன</translation>
 <translation id="6971862865055170158">அனுமதிக்காதே</translation>
 <translation id="6976223255612495095"><ph name="TAB_TITLE"/>, புதிய அல்லது புதுப்பிக்கப்பட்ட பக்கம்</translation>
 <translation id="6976811588313110624">புதிய ஷார்ட்கட்டைச் சேர்க்கும்.</translation>
@@ -1322,7 +1334,6 @@
 <translation id="1206376179559420424">கடவுச்சொற்றொடர் என்க்ரிப்ஷனில் Google Payயில் உள்ள பேமெண்ட் முறைகளும் முகவரிகளும் சேர்க்கப்படவில்லை.
 
 இந்த அமைப்பை மாற்ற, <ph name="BEGIN_LINK"/>உங்கள் கணக்கில் உள்ள Brave தரவை நீக்கவும்<ph name="END_LINK"/>.</translation>
-<translation id="7151332203500147130">வாசிப்புப் பயன்முறையைக் காட்டும் கீழ்ப்புறச் சீட்டு மூடப்பட்டுள்ளது</translation>
 <translation id="2679203756569766105">சில ஃபைல்களை Brave தடுப்பதற்கான காரணம் குறித்து மேலும் தெரிந்துகொள்ளுங்கள்</translation>
 <translation id="7168323970702333693">உள்நுழைந்துள்ள கணக்கு: <ph name="USER_NAME"/>. அமைப்புகளைத் திறக்கும்.</translation>
 <translation id="7173114856073700355">ஒத்திசைவு அமைப்புகளைப் பார்க்கவும்</translation>
@@ -1372,6 +1383,7 @@
 <translation id="7375125077091615385">வகை:</translation>
 <translation id="7376560087009844242">‘தொட்டுத் தேடுதல்’ அம்சத்தைப் பயன்படுத்தும்போது அந்தப் பக்கத்தில் இருக்கும் வார்த்தைகளில் சிலவற்றைக் கூடுதலாகச் சேர்ப்பதன் மூலம் சிறந்த முடிவுகளைப் பெறலாம். <ph name="BEGIN_LINK"/>அமைப்புகளுக்குச்<ph name="END_LINK"/> சென்று எப்போது வேண்டுமானாலும் இதை மாற்றிக்கொள்ளலாம்.</translation>
 <translation id="7379900596734708416">தளங்களுக்கான டார்க் தீம் கிடைக்கிறது</translation>
+<translation id="7384486627147155832">உதவிக்குறிப்பு அறிவிப்புகள் புரோமோ பாதி அளவிற்குத் திறந்துள்ளது</translation>
 <translation id="7388615499319468910">விளம்பரங்களின் செயல்திறனைத் தளங்களும் விளம்பரதாரர்களும் தெரிந்துகொள்ளலாம். இந்த அமைப்பு முடக்கப்பட்டுள்ளது.</translation>
 <translation id="7400003506822844357">{FILE_COUNT,plural, =1{மற்றவை, பட்டியலில் 1 ஃபைல் உள்ளது}other{மற்றவை, பட்டியலில் # ஃபைல்கள் உள்ளன}}</translation>
 <translation id="7400418766976504921">URL</translation>
@@ -1403,6 +1415,7 @@
 <translation id="749294055653435199">இந்தச் சாதனத்தில் Google Lensஸைப் பயன்படுத்த முடியாது</translation>
 <translation id="7493994139787901920"><ph name="VERSION"/> (புதுப்பித்தது: <ph name="TIME_SINCE_UPDATE"/>)</translation>
 <translation id="7498271377022651285">காத்திருக்கவும்…</translation>
+<translation id="7501135638693251872">எல்லா புத்தகக்குறிகளும்</translation>
 <translation id="750228856503700085">அறிவிப்புகள் எதுவுமில்லை</translation>
 <translation id="7507207699631365376">இந்த வழங்குநரின் <ph name="BEGIN_LINK"/>தனியுரிமைக் கொள்கையைக்<ph name="END_LINK"/> காட்டு</translation>
 <translation id="750886945254958667">பக்கங்களைப் பின்னர் சேர்ப்பதற்காக இந்தக் குழுவை வைத்திருக்கலாம், வேண்டாமென்றால் வெளியேறிவிடலாம்</translation>
@@ -1539,6 +1552,7 @@
 <translation id="8088176524274673045">அருகிலுள்ளவர்களுடன் பகிர இந்த QR குறியீட்டை அவர்கள் ஸ்கேன் செய்ய வேண்டும்</translation>
 <translation id="8090732854597034573">உங்களுக்கு உதவி தேவைப்பட்டால் பெற்றோரிடம் கேளுங்கள்</translation>
 <translation id="8101414242770404289"><ph name="TIME_PERIOD"/> திறக்கப்பட்ட உலாவிப் பக்கம் எதுவும் இல்லை</translation>
+<translation id="810433609302852">உதவிக்குறிப்பு அறிவிப்புகள் அம்சத்தின் புரோமோவையும் பயன்படுத்துவதற்கான வழிமுறைகளையும் காட்டும் கீழ்ப்புறச் சீட்டு</translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
 <translation id="8107530384992929318">வரிசைப்படுத்தல் விருப்பங்களை மூடும்</translation>
 <translation id="2919733817273403520">Braveமின் அம்சங்களையும் செயல்திறனையும் மேம்படுத்த உதவுதல்</translation>
@@ -1659,9 +1673,9 @@
 <translation id="8611922158252451755">இணைப்பு உள்ள எவராலும் எல்லாப் பக்கங்களையும் திருத்த முடியும் என்பதால் கவனமுடன் பகிரவும். இணைப்பு 48 மணிநேரத்தில் காலாவதியாகும்.</translation>
 <translation id="5784514951651328424">உங்கள் Brave கணக்கு, <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> என்ற இணைப்பில் உலாவல் வரலாறு தொடர்பான பிற தகவல்களைக் கொண்டிருக்கக்கூடும்.</translation>
 <translation id="8617240290563765734">பதிவிறக்கிய உள்ளடக்கத்தில் குறிப்பிட்ட பரிந்துரைக்கப்பட்ட URLஐத் திறக்கவா?</translation>
+<translation id="8634050254805484913">சிறிய திரைகளில் காட்டப்படாது</translation>
 <translation id="8635399646025169806">பக்கக் குழுவை வைத்திருக்கவா?</translation>
 <translation id="8636825310635137004">உங்கள் பிற சாதனங்களிலிருந்து தாவல்களைப் பெற, ஒத்திசைவை இயக்கவும்.</translation>
-<translation id="864544049772947936">சாளரங்களை (<ph name="INSTANCE_COUNTS"/>) நிர்வகி</translation>
 <translation id="8662474268934425487"><ph name="SITE_ETLD_PLUS_ONE"/> கணக்கில் உள்நுழையுங்கள்</translation>
 <translation id="8664979001105139458">ஃபைல் பெயர் ஏற்கனவே உள்ளது</translation>
 <translation id="8676276370198826499"><ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> மூலம் <ph name="SITE_ETLD_PLUS_ONE"/> இணையதளத்தில் பதிவு செய்யுங்கள்</translation>
@@ -1692,7 +1706,6 @@
 <translation id="8812260976093120287">உங்கள் சாதனத்தில் ஆதரிக்கப்படும் கட்டணம் செலுத்துவதற்கான பயன்பாடுகளைப் (மேலே குறிப்பிட்டவை) பயன்படுத்தி, சில இணையதளங்களின் மூலம் பணம் செலுத்தலாம்.</translation>
 <translation id="8816556050903368450">இணைப்பு உட்பட: <ph name="ORIGIN"/></translation>
 <translation id="881688628773363275">தாவல் உள்ளடக்கத்தின் மாதிரிக்காட்சியைப் பார்க்க முடியாது.</translation>
-<translation id="8820817407110198400">புக்மார்க்குகள்</translation>
 <translation id="8824359129672223138">அதிகபட்சம் <ph name="MAX_WINDOW_COUNT"/> சாளரங்களை மட்டுமே பயன்படுத்த முடியும்.</translation>
 <translation id="8835786707922974220">நீங்கள் சேமித்துள்ள கடவுச்சொற்களை எப்போது வேண்டுமானாலும் அணுகும்படி அமைத்துக் கொள்ளுங்கள்</translation>
 <translation id="883806473910249246">உள்ளடக்கத்தைப் பதிவிறக்கும் போது பிழை ஏற்பட்டது.</translation>
@@ -1786,6 +1799,7 @@
 <translation id="930124987204876019">பதிவு, குக்கீகள், தளத் தரவு, தற்காலிகச் சேமிப்பை நீக்கலாம்…</translation>
 <translation id="938850635132480979">பிழை: <ph name="ERROR_CODE"/></translation>
 <translation id="939598580284253335">கடவுச்சொற்றொடரை உள்ளிடுக</translation>
+<translation id="945522503751344254">கருத்தை அனுப்பு</translation>
 <translation id="5406914950576900927">சீனாவில் தேடுவதற்கு, Braveமில் <ph name="BEGIN_BOLD"/>Sogou<ph name="END_BOLD"/>ஐப் பயன்படுத்தலாம். இதை <ph name="BEGIN_LINK"/>அமைப்புகளுக்குச்<ph name="END_LINK"/> சென்று மாற்றலாம்.</translation>
 <translation id="961856697154696964">உலாவிய தரவை நீக்கு</translation>
 <translation id="963246339335003378">செயல் நிர்வாகியைத் திறக்கும்</translation>
@@ -1823,11 +1837,14 @@
 <translation id="3377025655491224618">மறைநிலைத் தாவல்</translation>
 <translation id="1988906120194081364">மறைநிலைக்கு மாற்று</translation>
 <translation id="4300497327999623298">மறைநிலையில் இருந்து வெளியேறு</translation>
+<translation id="8820817407110198400">புத்தகக்குறிகள்</translation>
 <translation id="4968908871398201967">மறைநிலைப் பயன்முறை</translation>
 <translation id="8448127664493413656">மறைநிலை பயன்முறையில் நுழை</translation>
 <translation id="6484416399492735324">மறைநிலை பயன்முறை விட்டு விலகு</translation>
 <translation id="4639461638460276789"><ph name="TAB_TITLE"/>, மறைநிலைப் பக்கம்</translation>
-<translation id="1315014485411054095"><ph name="TAB_TITLE"/>, தேர்ந்தெடுக்கப்பட்ட மறைநிலைப் பக்கம்</translation>
+<translation id="1315014485411054095"><ph name="TAB_TITLE"/>, தேர்ந்தெடுக்கப்பட்ட மறைநிலை பக்கம்</translation>
+<translation id="4306060575297422191"><ph name="TAB_TITLE"/>, பதியப்பட்ட தனிப்பட்ட தாவல்</translation>
+<translation id="6401852251745802167"><ph name="TAB_TITLE"/>, தேர்ந்தெடுக்கப்பட்ட பதியப்பட்ட தனிப்பட்ட தாவல்</translation>
 <translation id="2280910239864711607">புதிய தாவலை மறைநிலையில் திறக்கும்</translation>
 <translation id="7770295979628466744">புக்மார்க்குகளைக் காண்பிக்கவும் அல்லது மறைக்கவும்</translation>
 <translation id="5048396920203761159">{TAB_COUNT,plural, =1{<ph name="TAB_COUNT_ONE"/> மறைநிலைப் பக்கம்}other{<ph name="TAB_COUNT_NORMAL"/> மறைநிலைப் பக்கங்கள்}}</translation>

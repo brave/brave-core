@@ -387,9 +387,10 @@ se lahko izteče. Ali ga želite obnoviti?</translation>
 <translation id="5436069931267876389">Vsebnik ni bil najden</translation>
 <translation id="2263346047290834619">Uporabite zavihke drevesa</translation>
 <translation id="5860254591544742609">Pokaži naslovno vrstico</translation>
-<translation id="5371926069408837914">Razširi ploščo z navpičnimi zavihki, ko premaknete miško, ko je strnjena</translation>
+<translation id="4691131445504068802">Popolnoma skrij, ko je minimizirano</translation>
+<translation id="4909269867860362936">Samodejno razširi ob prehodu miške, ko je minimizirano</translation>
 <translation id="3367129510799209147">Način izbiranja na zavihku</translation>
-<translation id="8527099657928614787">Navpične zavihke neodvisno razširite na okno</translation>
+<translation id="8925055964134259461">Navpične zavihke samodejno razširi ločeno za vsako okno</translation>
 <translation id="916373084491701212">Prikaži vrstico za pomikanje</translation>
 <translation id="515949045075831661">Prikaži na desni strani</translation>
 <translation id="3725395376319291415">Prikaži na levi strani</translation>
@@ -400,21 +401,21 @@ se lahko izteče. Ali ga želite obnoviti?</translation>
 <translation id="2396127686705429331">Prikaži gumb za zaznamke</translation>
 <translation id="2814998458708016836">Uporabi široko naslovno vrstico</translation>
 <translation id="4109670531935487117">Prikaz predlogov za samodejno dokončanje v naslovni vrstici</translation>
-<translation id="3405901785709583668">Top predlogi</translation>
+<translation id="4579877808890085926">Predlogi v napravi</translation>
 <translation id="7859704718976024901">Zgodovina iskanja</translation>
 <translation id="8820817407110198400">Zaznamki</translation>
 <translation id="4144468798716165316">Hitri ukazi</translation>
 <translation id="7310387888625228830">Leo AI pomočnik</translation>
 <translation id="5222974844674487962">Prikaži gumb Brave News</translation>
 <translation id="2085436423511121572">Pokaži gumb za Leo AI</translation>
-<translation id="383007806262310953">Pokaži vrstico z zaznamki</translation>
+<translation id="6156323911414505561">Pokaži vrstico z zaznamki</translation>
 <translation id="4054323497808446566">Vrstica z zaznamki je prikazana na vseh straneh</translation>
 <translation id="8693858092251192712">Vrstica z zaznamki je skrita na vseh straneh, razen na strani novega zavihka</translation>
 <translation id="7158817046543187970">Vrstica z zaznamki je skrita na vseh straneh</translation>
 <translation id="3416468988018290825">Vedno prikaži celoten naslov URL</translation>
 <translation id="5529693968082667490">Prikaži gumb za iskanje po zavihkih</translation>
 <translation id="1013121820689882118">Hitri bralnik</translation>
-<translation id="1467652519828052368">Omogočite funkcijo Hitri bralnik</translation>
+<translation id="5522420266446076076">Omogočite funkcijo Hitri bralnik.</translation>
 <translation id="5211997910936574251">Samodejna uporaba Hitrega bralnika, kadar je to mogoče</translation>
 <translation id="2025435450953474282">Članki se samodejno naložijo v načinu bralnika in vam prihranijo čas</translation>
 <translation id="7984721311211272523">Onemogočite funkcijo izklopa zvoka s pomočjo ikon zvočnikov v zavihkih</translation>
@@ -438,7 +439,7 @@ se lahko izteče. Ali ga želite obnoviti?</translation>
 <translation id="5690973901138662477">Ščiti gor</translation>
 <translation id="4697275813919189958">Ščiti dol</translation>
 <translation id="6303294677342628402">Ščiti</translation>
-<translation id="7133511168130368997">Blokirajte sledilce in oglase, ki vas spremljajo po spletu.</translation>
+<translation id="5128768857590582420">Blokirajte sledilce in oglase, ki vas spremljajo po spletu</translation>
 <translation id="2761825942249694703">To so privzete nastavitve Ščita. Uporabljajo se za vsa spletna mesta, razen če nekaj spremenite na plošči Ščit na določenem spletnem mestu. Če jih spremenite, to ne bo vplivalo na vaše obstoječe nastavitve za spletno mesto.</translation>
 <translation id="8452536890042542134">S tem boste blokirali večino oglasov v spletnih mestih.</translation>
 <translation id="4800195524776354947">Pokaži število blokiranih elementov na ikoni Shields</translation>
@@ -850,6 +851,9 @@ ponovno uporabo sinhronizacije, boste morali ustvariti nov račun in posamično 
 <translation id="1721787502053471881">Ste prepričani, da želite izbrisati ta spomin? Tega dejanja ni mogoče preklicati.</translation>
 <translation id="5239685926753073108">Izbrišite vse spomine</translation>
 <translation id="2600803466586623124">Ste prepričani, da želite izbrisati vse spomine? Tega dejanja ni mogoče preklicati.</translation>
+<translation id="7311244614769792472">Ni zadetkov</translation>
+<translation id="1838374766361614909">Počisti iskanje</translation>
+<translation id="5126255551970171328">Išči spomin</translation>
 <translation id="5985516785067818307">Sodelujoči v anketi</translation>
 <translation id="8347743943525229984">Omogočite ankete Brave</translation>
 <translation id="3204080538332044581">Brave lahko na strani z novim zavihkom prikaže povezave do zasebnih anket. Ankete nam pomagajo pri ustvarjanju boljših funkcij in merjenju učinkovitosti oglaševalskih kampanj v brskalniku. <ph name="BEGIN_LINK"/>Več informacij<ph name="END_LINK"/></translation>

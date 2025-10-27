@@ -689,7 +689,6 @@
 <translation id="3266055641283174315">Typ reklamy</translation>
 <translation id="8706824117053903390">Zobrazení tento měsíc</translation>
 <translation id="5105890735834548623">Nastavení reklam</translation>
-<translation id="96989662637180657">Reklamy Vyhledávání Brave se zobrazují na <ph name="LINK_BEGIN"/>Vyhledávání Brave<ph name="LINK_END"/>.</translation>
 <translation id="3138160233953903250">Nastavení reklam</translation>
 <translation id="2446517297521536638">Mějte kontrolu nad tím, jaké druhy Reklam Brave vidíte, a jak často. Čím více vidíte, tím více můžete vydělat.</translation>
 <translation id="3479272537858623647">Tady se zobrazuje počet Brave Ads, které jsme vám zobrazili tento měsíc a které vás oprávňují k získání BAT.</translation>
@@ -856,6 +855,11 @@
       other {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} kroky}
     }</translation>
 <translation id="8621264173374071200"><ph name="EXCHANGE_NAME"/> prostřednictvím <ph name="PROVIDER_NAME"/></translation>
+<translation id="646023614746251785">Potvrdit výměnu</translation>
+<translation id="6264944956989873014">Potvrdit bridge</translation>
+<translation id="7067917728851842589">Potvrdit odeslání</translation>
+<translation id="2351357639951873714">Potvrdit ochranu</translation>
+<translation id="8332923694292360653">Utratit</translation>
 <translation id="3735740477244556633">Seřadit podle</translation>
 <translation id="6484605214219822434">Můstek recenzí</translation>
 <translation id="3365052891357224017">Odhad. čas</translation>
@@ -965,6 +969,7 @@
 <translation id="3451958544919449297">Ukládání aktiv ZEC Testnet</translation>
 <translation id="8459631690385393533">Uložit aktiva Cardano</translation>
 <translation id="4915057812371523845">Uložit aktiva Cardano Testnet</translation>
+<translation id="5387140102951033657">Podporuje aktiva Substrate na posílacím řetězci Polkadot a parachainy Substrate</translation>
 <translation id="8500387257977999003">Soukromý klíč <ph name="PROTOCOL"/></translation>
 <translation id="8275038454117074363">Import</translation>
 <translation id="232925166623833246">Importovat z hardwarové peněženky</translation>
@@ -1076,6 +1081,10 @@
 <translation id="8904889345035514635">Aktuální příspěvky</translation>
 <translation id="7073918978411974168">Navrhovaný příspěvek</translation>
 <translation id="9019403281000653275">Zažádáno o neomezené schválení</translation>
+<translation id="9108474191347769758">Limit výdajů</translation>
+<translation id="2102091845281366189">Cíl schválení</translation>
+<translation id="772196962479335292">Aktuální limit schválení</translation>
+<translation id="8215431557133305629">Navrhovaný limit schválení</translation>
 <translation id="4717431746210146708">Chcete tomuto webu povolit přidání sítě?</translation>
 <translation id="2521480044079508357">Díky tomu budete moci tuto síť používat v rámci peněženky Brave Wallet.</translation>
 <translation id="1982257600591932657">Název sítě</translation>
@@ -1092,7 +1101,7 @@
 <translation id="3948067511324628726">Poplatek za plyn</translation>
 <translation id="7163997622278957886">Nabídka</translation>
 <translation id="1074360622426001342">Částka + plyn</translation>
-<translation id="2186011161688824046">Částka + poplatek</translation>
+<translation id="7542099582407803878">Částka + síťový poplatek</translation>
 <translation id="7084089311475827950">Chybí údaje.</translation>
 <translation id="5821668936183240062">další</translation>
 <translation id="793994607260936590">první</translation>
@@ -1419,6 +1428,8 @@
 <translation id="1908159733454294871">Bylo zjištěno bezpečnostní riziko</translation>
 <translation id="3621202678540785336">Vstup</translation>
 <translation id="3009178788565917040">Výstup</translation>
+<translation id="7953669802889559161">Vstupy</translation>
+<translation id="4554024082642878647">Výstupy</translation>
 <translation id="1965889974717516497">Sekundární sítě</translation>
 <translation id="7691821949666755802">Testovací sítě</translation>
 <translation id="2816106784624007524">Limit paliva musí být celé číslo větší než 0</translation>
@@ -2142,7 +2153,6 @@ other {# zdrojů}
 <translation id="5872363163901278000">Zvýšit rychlost přehrávání</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8637805148029768813">Funkce tvůrce shrnutí je momentálně dostupná pouze pro vybrané články a další webové stránky typu long-form.</translation>
-<translation id="1223498995510244364">Shrnout</translation>
 <translation id="7491773233732232424">O Leo</translation>
 <translation id="4611072979071082355">Brave Leo je soukromý asistent s umělou inteligencí, který vám usnadní používání webu. Leo je k dispozici zdarma s omezeným přístupem. Brave Leo Premium nabízí více modelů, vyšší limity a poskytuje předplatitelům časný přístup k novým funkcím. Výchozí model se čas od času mění. Další podrobnosti viz <ph name="LINK_BEFORE"/>Centrum nápovědy Brave<ph name="LINK_AFTER"/>.</translation>
 <translation id="7297056998057521697">Když ve výchozím nastaven položíte Leovi otázku týkající se prohlížené webové stránky, bude její obsah nebo jakýkoli text, který na stránce zvýrazníte, a také váš vyhledávací dotaz odeslán na servery společnosti Brave, aby vám Leo mohl poskytnout odpověď. V některých případech odešle Leo dotazy odvozené z vašeho zadání do vyhledávače Brave a použije výsledky vyhledávání k lepšímu zodpovězení vašeho dotazu. Brave nezaručuje přesnost odpovědí a odpovědi mohou obsahovat nepřesné, zavádějící nebo nepravdivé informace. Do vyhledávače Brave Leo nezadávejte citlivé nebo soukromé informace a v případě odpovědí týkajících se zdraví, financí, osobní bezpečnosti apod. buďte obezřetní. Nastavení Lea můžete kdykoli upravit. Přejděte do Nastavení a zvolte možnost Leo.</translation>
@@ -2180,7 +2190,7 @@ other {# zdrojů}
 <translation id="7127671672828944579">Dobrý den, jsem Leo. Jsem AI asistentem od Brave. Využívám model Qwen 14B, který vytvořila společnost Alibaba Cloud, aby byl výkonný a použitelný v mnoha případech. Model Qwen je hostován společností Brave prostřednictvím vlastní zabezpečené infrastruktury.<ph name="LINK_BEFORE"/>Zjistit více<ph name="LINK_AFTER"/></translation>
 <translation id="2328524194917949829">Dobrý den, jsem Leo. Jsem AI asistentem od Brave. Využívám model Gemma 3 12B, který vytvořila společnost Google DeepMind, aby byl výkonný a použitelný v mnoha případech. Model Gemma je hostován společností Brave prostřednictvím vlastní zabezpečené infrastruktury.<ph name="LINK_BEFORE"/>Zjistit více<ph name="LINK_AFTER"/></translation>
 <translation id="634682910381645550">Dobrý den, jsem Leo. Jsem AI asistentem od Brave. Využívám model DeepSeek R1, který vytvořila společnost DeepSeek pro provádění hlubokých úkolů uvažování. Model DeepSeek R1 je hostován společností Brave prostřednictvím vlastní zabezpečené infrastruktury.<ph name="LINK_BEFORE"/>Zjistit více<ph name="LINK_AFTER"/></translation>
-<translation id="8932568551552504373">Dobrý den, jsem Leo.Jsem AI asistentem od Brave. Využívám model Claude Instant, který vytvořila společnost Anthropic ke zpracování úloh konverzace a zpracování textu. Model Claude Instant je hostován společností Brave prostřednictvím vlastní zabezpečené infrastruktury.<ph name="LINK_BEFORE"/>Zjistit více<ph name="LINK_AFTER"/></translation>
+<translation id="8932568551552504373">Ahoj, jsem Leo. Jsem AI asistent od Brave. Mě pohání Claude Instant, model vytvořený společností Anthropic pro konverzační a textové úkoly. Claude Instant je hostován Brave na vlastní zabezpečené infrastruktuře.<ph name="LINK_BEFORE"/>Více informací<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Dobrý den, jsem Leo. Jsem AI asistentem od Brave. Využívám model Claude Haiku, který vytvořila společnost Anthropic ke zpracování úloh konverzace a zpracování textu. Model Claude Haiku je hostován společností Brave prostřednictvím vlastní zabezpečené infrastruktury.<ph name="LINK_BEFORE"/>Zjistit více<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Dobrý den, jsem Leo. Jsem AI asistentem od Brave. Využívám model Claude Sonnet, který vytvořila společnost Anthropic ke zpracování úloh konverzace a zpracování textu. Model Claude Sonnet je hostován společností Brave prostřednictvím vlastní zabezpečené infrastruktury.<ph name="LINK_BEFORE"/>Zjistit více<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
@@ -2193,6 +2203,7 @@ other {# zdrojů}
 <translation id="7557539689487606886">Přejít na Premium</translation>
 <translation id="1691256669639196606">Správa předplatného</translation>
 <translation id="3840096463915153852">Historie konverzací</translation>
+<translation id="6761921176674289184">Spravovat paměti</translation>
 <translation id="2304783958703511257">Pokročilá nastavení</translation>
 <translation id="3037594989275592390">Jazykové modely</translation>
 <translation id="5543505256451301851">Vyzkoušet 7 dní zdarma</translation>
@@ -2266,31 +2277,36 @@ other {# zdrojů}
 <translation id="7307396647043599949"><ph name="COUNT"/> další(ch)…</translation>
 <translation id="8103700533980268469">Zavřít toto oznámení</translation>
 <translation id="3417835166382867856">Vyhledávat v kartách</translation>
+<translation id="7311244614769792472">Nebyly nalezeny žádné výsledky</translation>
+<translation id="3112448569149476523">Zkuste jiný vyhledávač</translation>
 <translation id="1352836459737874921">Připnutí obsahu z ostatních karet</translation>
-<translation id="3028258613451571431">Pošlete obsah internetových stránek z karty prohlížeče, a poskytněte tak Leovi více kontextu pro konverzaci</translation>
-<translation id="4300920590112551536">Karty prohlížeče</translation>
+<translation id="7039179822221107025">Pošlete obsah internetových stránek z karty prohlížeče, a poskytněte tak Leovi více kontextu pro konverzaci.</translation>
+<translation id="220541218939267992">Obsah stránky bude odeslán Leovi společně s vašimi zprávami.</translation>
 <translation id="1446346932629101482">Pro lepší souvislosti přidejte obsah karty. Obsah bude odeslán Leovi spolu s vašimi zprávami.</translation>
 <translation id="7193316103691252734">Žádné odpovídající karty</translation>
 <translation id="2315654674554095762">Leo si nyní bude pamatovat vaše konverzace, abyste se k nim mohli vracet. Jsou uloženy šifrované ve vašem zařízení a můžete je kdykoli smazat.</translation>
 <translation id="7821251979960635244">Po zahájení konverzace se zde zobrazí historie vašich konverzací.</translation>
 <translation id="887511360213807449">Historie je vypnutá</translation>
 <translation id="5380979378058584412">Chcete-li zobrazit své předchozí konverzace se službou Leo, musíte povolit historii konverzací.</translation>
-<translation id="6291843235651817590">Obecný chat</translation>
+<translation id="7348809809749151120">Rychlý • Vyhledávač</translation>
 <translation id="3185367320601718531">Konverzace a generování textu</translation>
-<translation id="7979673624064378842">Bleskově rychlý chat</translation>
-<translation id="2836330653441111204">Vyvážená rychlost a inteligence</translation>
-<translation id="6695329447007213917">Obecný chat, kódování a další</translation>
-<translation id="7168072214482631597">Obecné porozumění textu a obrázkům</translation>
-<translation id="7226508434216060960">Model uvažování</translation>
+<translation id="2793458212460902934">Rychlý • Vyhledávač • Nástroje</translation>
+<translation id="8506027496671575183">Vyhledávač • Vize • Nástroje</translation>
+<translation id="3213834013136637671">Vyhledávač • Vize</translation>
+<translation id="7697693533305615127">Vyhledávač • Myšlení</translation>
 <translation id="8782867266498869301">Model se dynamicky mění, aby použil ten nejlepší pro danou úlohu</translation>
 <translation id="3965507912994218570">Nastavení asistenta Leo</translation>
-<translation id="1037324977127422019">Ahoj, já jsem Leo!</translation>
-<translation id="8930348081963284873">Asistent s umělou inteligencí zabudovaný přímo do prohlížeče Brave.</translation>
-<translation id="3528849152231418380">Potřebujete pomoci s webovými stránkami?</translation>
-<translation id="1558192229187362674">Dokážu vytvářet shrnutí, rozšířit obsah webu a mnoho dalšího.</translation>
-<translation id="861953757568623294">Dokážu vytvářet shrnutí, rozšířit obsah webu a mnoho dalšího. Nevíte, kde začít? Zkuste třeba:</translation>
-<translation id="5642775487085641191">Chcete si jen popovídat?</translation>
-<translation id="8857222718794549840">Zeptejte se mě na cokoli! Můžeme si popovídat o jakémkoli tématu. Stále se učím a zdokonaluji, abych mohl poskytovat lepší odpovědi.</translation>
+<translation id="3754337604877048671">Představujeme Leo AI</translation>
+<translation id="5295261408976371809">Váš <ph name="TEXT_BEFORE"/>soukromý<ph name="TEXT_AFTER"/> AI asistent, přímo vestavěný do prohlížeče.</translation>
+<translation id="7452913484571004528">Opravdu soukromá AI</translation>
+<translation id="8525501048785085223">Leo neukládá ani nesdílí konverzace, a nepoužívá je k tréninku modelu. Není vyžadován žádný účet ani přihlášení. Stačí otevřít a začít chatovat. Soukromě.</translation>
+<translation id="6401201054391523929">Chatujte se svými panely a soubory</translation>
+<translation id="8522038408130089105">Potřebujete více informací o stránkách, které navštěvujete? Stačí je přidat do chatu. Přiložte své panely a místní soubory pro rychlé a relevantní odpovědi.</translation>
+<translation id="3844955602461425647">Automatizujte nudnou práci</translation>
+<translation id="2196247864500723577">Nechte Brave prohlížet s vámi a interagovat se vším, co v prohlížeči děláte. Přenechte nudné úkony a ušetřete čas pro důležité záležitosti.</translation>
+<translation id="235457946228076038">Přineste svůj vlastní model</translation>
+<translation id="7024005267156189454">Propojte vlastní AI modely, ať už běží lokálně nebo vzdáleně. Přizpůsobte chování, výstupy a funkce Lea podle svých preferencí.</translation>
+<translation id="7291578285403921288">Zjistit více o Leo AI</translation>
 <translation id="9051226419897869406">Chatujte bez porušení soukromí s Brave Leo</translation>
 <translation id="2414904697165579184">Utvářejte odpovědi na základě obsahu karty či karet</translation>
 <translation id="8258324391302611485">Obsah této stránky bude odeslán Leovi společně s vašimi zprávami.</translation>
@@ -2299,6 +2315,7 @@ other {# zdrojů}
 <translation id="8732450785281947197">Nástroje UI Leo</translation>
 <translation id="6535533770697728087">Rychlé akce</translation>
 <translation id="3237710083340813756">Přepsat</translation>
+<translation id="1223498995510244364">Shrnout</translation>
 <translation id="1252805982772190086">Krátký příspěvek</translation>
 <translation id="2087555497198267113">Dlouhý příspěvek</translation>
 <translation id="4170307327863874820">Příspěvek na blogu</translation>
@@ -2507,12 +2524,13 @@ other {# zdrojů}
 <translation id="6764845498618413165">Zjistit více.</translation>
 <translation id="7818938154803162778">Jistě, pomohu vám</translation>
 <translation id="7207456302801184289">Vítá vás Brave</translation>
-<translation id="6716580298071890302">Použít tmavší motiv</translation>
+<translation id="293854220404217065">Téma Midnight</translation>
 <translation id="2422927186524098759">Postranní panel</translation>
 <translation id="2361906291514218784">Umělá inteligence Leo</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="8000020256436988724">Panel nástrojů</translation>
 <translation id="6225572914528673855">Adresní řádek</translation>
+<translation id="6821966107067356137">Přidat RSS kanál</translation>
 <translation id="8293206222192510085">Přidat záložku</translation>
 <translation id="7758460733045216901">Panel záložek</translation>
 <translation id="958268166261124668">Brave VPN: Připojeno</translation>

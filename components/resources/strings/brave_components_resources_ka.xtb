@@ -508,6 +508,10 @@
 <translation id="1150455801874605865"><ph name="BOLD_BEGIN"/>შექმნისთვის მზად ხართ?<ph name="BOLD_END"/> მოძებნეთ ანგარიში, რათა მივიღოთ თქვენი ჯილდოები.</translation>
 <translation id="902298128239575729">ჯილდოების გაგზავნა Brave Rewards-ით</translation>
 <translation id="6276721355724491595">მას შემდეგ, რაც დააკავშირებთ სათავსო ანგარიშს, შეძლებთ თქვენი Brave Rewards ბალანსიდან თქვენი საყვარელი შემოქმედებების თანხის გაგზავნას.</translation>
+<translation id="2584752537998444309">{PUBLISHER_COUNT, plural,
+      =1 {ამ თვეში თქვენ ეწვიათ # შემოქმედს, რომელსაც Brave Rewards-ის მხარდაჭერა აქვს}
+      other {ამ თვეში თქვენ ეწვიათ # შემოქმედს, რომელსაც Brave Rewards-ის მხარდაჭერა აქვს}
+    }</translation>
 <translation id="3264975266761862670">მზად ხართ დაიწყოთ ფულის გამომუშავება?</translation>
 <translation id="2784412028126205842">გადახდის ანგარიშთან დაკავშირება</translation>
 <translation id="766126983336630294">{ADS_VIEWED, plural, =0 {ამ თვეში თქვენ ნახეთ <ph name="COUNT_BEGIN"/># რეკლამა<ph name="COUNT_END"/>} =1 {ამ თვეში თქვენ ნახეთ <ph name="COUNT_BEGIN"/># რეკლამა<ph name="COUNT_END"/>. ამისთვის შეიძლება მიიღოთ თანხა.} other {ამ თვეში თქვენ ნახეთ <ph name="COUNT_BEGIN"/># რეკლამა<ph name="COUNT_END"/>. ამისთვის შეიძლება მიიღოთ თანხა.}}</translation>
@@ -680,7 +684,6 @@
 <translation id="3266055641283174315">რეკლამის ტიპი</translation>
 <translation id="8706824117053903390">ამ თვეში ნახვების რაოდენობა</translation>
 <translation id="5105890735834548623">რეკლამების პარამეტრები</translation>
-<translation id="96989662637180657">Brave ძებნის რეკლამები ჩნდება <ph name="LINK_BEGIN"/>Brave ძებნა<ph name="LINK_END"/>.</translation>
 <translation id="3138160233953903250">რეკლამის პარამეტრები</translation>
 <translation id="2446517297521536638">აკონტროლეთ, როგორი Brave რეკლამები გამოჩნდებიან და რამდენად ხშირად. რაც მეტს ნახავთ, მეტი შეგიძლიათ დააგროვოთ.</translation>
 <translation id="3479272537858623647">ეს აჩვენებს რამდენი Brave რეკლამა ნახეთ ამ თვეში, რომელიც ითვლის BAT-ს მისაღებად.</translation>
@@ -842,7 +845,16 @@
 <translation id="3751611888003301070">გზები</translation>
 <translation id="3799091982455573025">სვოპის განხორციელება <ph name="NETWORK_NAME"/>-ზე <ph name="EXCHANGE_NAME"/>-ის მეშვეობით</translation>
 <translation id="5136093123841570193">ქსელის შემოდგომა <ph name="FRIST_NETWORK_NAME"/>-დან <ph name="SECOND_NETWORK_NAME"/>-მდე</translation>
+<translation id="5962276579291287541">{SWAP_EXCHANGE_STEPS, plural,
+      =1 {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} ნაბიჯი}
+      other {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} ნაბიჯები}
+    }</translation>
 <translation id="8621264173374071200"><ph name="EXCHANGE_NAME"/> -ის მეშვეობით <ph name="PROVIDER_NAME"/></translation>
+<translation id="646023614746251785">გადასაცვლელის დადასტურება</translation>
+<translation id="6264944956989873014">ხიდის დადასტურება</translation>
+<translation id="7067917728851842589">გაგზავნის დადასტურება</translation>
+<translation id="2351357639951873714">დაცულობის დადასტურება</translation>
+<translation id="8332923694292360653">ხარჯვა</translation>
 <translation id="3735740477244556633">დალაგება</translation>
 <translation id="6484605214219822434">Bridge-ის გადახედვა</translation>
 <translation id="3365052891357224017">სავარაუდო დრო</translation>
@@ -952,6 +964,7 @@
 <translation id="3451958544919449297">შეინახეთ ZEC Testnet აქტივები</translation>
 <translation id="8459631690385393533">შეინახეთ Cardano აქტივები</translation>
 <translation id="4915057812371523845">შეინახეთ Cardano Testnet აქტივები</translation>
+<translation id="5387140102951033657">გადაცემს Substrate აქტივებს Polkadot-ის რილეი ჯაჭვზე და Substrate-ის პარაჯაჭვებზე</translation>
 <translation id="8500387257977999003">პირადი გასაღები <ph name="PROTOCOL"/></translation>
 <translation id="8275038454117074363">იმპორტი</translation>
 <translation id="232925166623833246">იმპორტით ტექნიკური საფულიდან</translation>
@@ -1063,6 +1076,10 @@
 <translation id="8904889345035514635">მიმდინარე ნებადართულობა</translation>
 <translation id="7073918978411974168">შემოთავაზებული ლიმიტი</translation>
 <translation id="9019403281000653275">მოთხოვნა შეუზღუდავი ნებადართულობისთვის</translation>
+<translation id="9108474191347769758">ხარჯვის ლიმიტი</translation>
+<translation id="2102091845281366189">დადასტურების მიზანი</translation>
+<translation id="772196962479335292">მიმდინარე დადასტურების ლიმიტი</translation>
+<translation id="8215431557133305629">შემოთავაზებული დადასტურების ლიმიტი</translation>
 <translation id="4717431746210146708">დავუშვათ ამ საიტის მიერ ქსელის დამატება?</translation>
 <translation id="2521480044079508357">ეს საშუალებას მისცემს ამ ქსელს გამოყენებოდეს Brave საფულის შიგნით.</translation>
 <translation id="1982257600591932657">ქსელის სახელი</translation>
@@ -1079,7 +1096,7 @@
 <translation id="3948067511324628726">გაზის საფასური</translation>
 <translation id="7163997622278957886">ბიდი</translation>
 <translation id="1074360622426001342">თანხა + გაზი</translation>
-<translation id="2186011161688824046">თანხა + საკომისიო</translation>
+<translation id="7542099582407803878">თანხა + ქსელის საკომისიო</translation>
 <translation id="7084089311475827950">მონაცემები არ არის.</translation>
 <translation id="5821668936183240062">შემდეგი</translation>
 <translation id="793994607260936590">პირველი</translation>
@@ -1402,6 +1419,8 @@
 <translation id="1908159733454294871">გამოვლინდა უსაფრთხოების რისკი</translation>
 <translation id="3621202678540785336">შესვლა</translation>
 <translation id="3009178788565917040">გამოსვლა</translation>
+<translation id="7953669802889559161">შეყვანები</translation>
+<translation id="4554024082642878647">გამოავალი</translation>
 <translation id="1965889974717516497">მეორეხარისხოვანი ქსელები</translation>
 <translation id="7691821949666755802">ტესტური ქსელები</translation>
 <translation id="2816106784624007524">გაზის ლიმიტი უნდა იყოს 0-ზე მეტი მთელი რიცხვი</translation>
@@ -1727,7 +1746,7 @@
 <translation id="2926654984379239545">ჩვენ ვიპოვნეთ <ph name="VALUE"/> რისკები.</translation>
 <translation id="8400506417619199876">კონტრაქტი</translation>
 <translation id="5667702863609780570">უსაფრთხო მოქმედება რისკით</translation>
-<translation id="6405354572620970908">ეს მოთხოვნა ჩანს მავნედ, და შეიძლება დაგტოვოთ დაუცველი ქურდობის.</translation>
+<translation id="6405354572620970908">ეს მოთხოვნა ჩანს მავნედ, და შეიძლება დაგტოვოთ დაუცველი ქურდობის. ნუ გააგრძელებთ, თუ აპლიკაციას არ ენდობით.</translation>
 <translation id="786261184916565476">ჩვენ ვიპოვნეთ <ph name="VALUE"/> საკითხები.</translation>
 <translation id="2826600321627372011">მარშრუტები ვერ არის ნაპოვნი</translation>
 <translation id="2451778499022193433">ანგარიშის სახელი უნდა იყოს <ph name="VALUE"/> სიმბოლო ან ნაკლები</translation>
@@ -2121,7 +2140,6 @@
 <translation id="5872363163901278000">ხმა გართულზე</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8637805148029768813">შემაჯამებელი ფუნქცია ამჟამად ხელმისაწვდომია მხოლოდ არჩეულ სტატიებზე და სხვა გრძელწარმოდგენილ ვებგვერდებზე.</translation>
-<translation id="1223498995510244364">შეჯამება</translation>
 <translation id="7491773233732232424">Leo-ის შესახებ</translation>
 <translation id="4611072979071082355">Brave Leo არის კერძო AI მიმართვის ასისტენტი, რომელიც აუმჯობესებს ინტერნეტის გამოყენებას. Leo-ს უფასოდ გამოიყენებთ შეზღუდული წვდომით. Brave Leo Premium გთავაზობთ მეტ მოდელს, უფრო მეტ ლიმიტს და გაძლევთ ადრე წვდომას ახალ ფუნქციებზე. სტანდარტული მოდელი დროის განვლილით შეიცვლება. დამატებითი ინფორმაციისათვის იხილეთ <ph name="LINK_BEFORE"/>Brave დახმარების ცენტრი<ph name="LINK_AFTER"/>.</translation>
 <translation id="7297056998057521697">სტანდარტულად, როცა Leo-ს ვკითხავთ საიტზე ან გვერდზე, რომელსაც ათვალიერებთ, ნახვის ან ტექსტის გამოყოფისას, როგორც თქვენი ძიების მოთხოვნა, ისე ჩვენი Brave სერვერები გაიგზავნება პასუხების მოსაცემად. ზოგიერთ შემთხვევაში, Leo გაგზავნის მოთხოვნებს Brave Search-ში და გამოიყენებს მოძიების შედეგებს პასუხის გასაუმჯობესებლად. Brave არ იძლევა პასუხების სიზუსტის გარანტიას, პასუხები შეიძლება შეიცავდეს უზუსტობებს, შეცდომებს, ან მცდარ ინფორმაციას. არ გაგზავნოთ მგრძნობიარე ან პირადი ინფორმაცია Brave Leo-ზე, და სიფრთხილე გამოიჩინეთ ჯანმრთელობასთან, ფინანსებთან, პირადი უსაფრთხოებასთან დაკავშირებულ პასუხებთან მიმართებაში. შეგიძლიათ, ნებისმიერ დროს გამოიყენოთ პარამეტრებში Leo-ს ოფციების ცვლილება. გადადით პარამეტრებში &gt; Leo.</translation>
@@ -2155,7 +2173,7 @@
 <translation id="7127671672828944579">გამარჯობა, მე ვარ ლეო. მე ვარ Brave-ის AI ასისტენტი. ჩემი ძალა Qwen 14B-ზეა, მოდელი, რომელიც შექმნილია Alibaba Cloud-ის მიერ, რომ იყოს პერფორმანტული და მრავალი გამოყენების შემთხვევასთან შესაფერისი. Qwen Brave-ს მიერ მასპინძლობს ჩვენს საკუთარ დაცულ ინფრასტრუქტურაში.<ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
 <translation id="2328524194917949829">გამარჯობა, მე ვარ ლეო. მე ვარ Brave-ის AI ასისტენტი. ჩემი ძალა Gemma 3 12B-ზეა, მოდელი, რომელიც შექმნილია Google DeepMind-ის მიერ, რომ იყოს პერფორმანტული და მრავალი გამოყენების შემთხვევასთან შესაფერისი. Gemma Brave-ს მიერ მასპინძლობს ჩვენს საკუთარ დაცულ ინფრასტრუქტურაში.<ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
 <translation id="634682910381645550">გამარჯობა, მე ვარ ლეო. მე ვარ Brave-ის AI ასისტენტი. ჩემი ძალა DeepSeek R1-ზეა, მოდელი, შექმნილი DeepSeek-ის მიერ, რომელიც მუშაობს ღრმა ლოგიკის ამოცანების შესრულებაზე. DeepSeek R1 Brave-ს მიერ მასპინძლობს ჩვენს საკუთარ დაცულ ინფრასტრუქტურაში.<ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
-<translation id="8932568551552504373">გამარჯობა, მე ვარ ლეო.მე ვარ Brave-ის AI ასისტენტი. ჩემი ძალა Claude Instant-ზეა, მოდელი, რომელიც შექმნილია Anthropic-ის მიერ, რომ ემსახუროს საუბრის და ტექსტის დამუშავების ამოცანებს. Claude Instant Brave-ს მიერ მასპინძლობს ჩვენს საკუთარ დაცულ ინფრასტრუქტურაში.<ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
+<translation id="8932568551552504373">გამარჯობა, მე ლეო ვარ. ვარ Brave-ის ხელოვნური ინტელექტის ასისტენტი. მუშაობს Claude Instant-ზე — მოდელზე, რომელიც Anthropic-ს მიერაა შექმნილი ტექსტებისა და დიალოგების დასამუშავებლად. Claude Instant Brave-ის ინფრასტრუქტურაზე მუშაობს საიმედოდ და უსაფრთხოდ.<ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">გამარჯობა, მე ვარ ლეო. მე ვარ Brave-ის AI ასისტენტი. ჩემი ძალა Claude Haiku-ზეა, მოდელი, რომელიც შექმნილია Anthropic-ის მიერ, რომ ემსახუროს საუბრის და ტექსტის დამუშავების ამოცანებს. Claude Haiku Brave-ს მიერ მასპინძლობს ჩვენს საკუთარ დაცულ ინფრასტრუქტურაში.<ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">გამარჯობა, მე ვარ ლეო. მე ვარ Brave-ის AI ასისტენტი. ჩემი ძალა Claude Sonnet-ზეა, მოდელი, რომელიც შექმნილია Anthropic-ის მიერ, რომ ემსახუროს საუბრის და ტექსტის დამუშავების ამოცანებს. Claude Sonnet Brave-ს მიერ მასპინძლობს ჩვენს საკუთარ დაცულ ინფრასტრუქტურაში.<ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">პრემიუმი</translation>
@@ -2168,6 +2186,7 @@
 <translation id="7557539689487606886">პრემიუმის გააქტიურება</translation>
 <translation id="1691256669639196606">აბონენტის მართვა</translation>
 <translation id="3840096463915153852">მიმოწერების ისტორია</translation>
+<translation id="6761921176674289184">მეხსიერებების მართვა</translation>
 <translation id="2304783958703511257">დამატებითი პარამეტრები</translation>
 <translation id="3037594989275592390">ენის მოდელები</translation>
 <translation id="5543505256451301851">სცადეთ უფასოდ 7 დღის განმავლობაში</translation>
@@ -2227,6 +2246,7 @@
 <translation id="4211063437291114749">Leo AI სურს ახალი ჩანართში ვებგვერდის გახსნა. გააგრძელებთ?</translation>
 <translation id="5526001300821542157">ბმულების გახსნა კვლავ არ მეკითხოთ</translation>
 <translation id="1243966363662220847">პასუხის შეფასება</translation>
+<translation id="7417895556119762861">პასუხის მოწონება ან არ მოწონება გააგზავნის Brave-ის შეფასებას, საუბარს, მოდელს, ენას, ვერსიას და პრემიუმ სტატუსს ლეოს გასაუმჯობესებლად. <ph name="LINK_BEFORE"/>იგი﻿ მეტი<ph name="LINK_AFTER"/></translation>
 <translation id="7494736170250048402">ლეოსთვის შეტყობინების გაგზავნა</translation>
 <translation id="4084869091337186002">Leo AI Content Agent ამ პროფილში ყოველთვის ჩართულია</translation>
 <translation id="8650874793377330048">პასუხის შეწყვეტა</translation>
@@ -2240,31 +2260,36 @@
 <translation id="7307396647043599949"><ph name="COUNT"/> მეტი…</translation>
 <translation id="8103700533980268469">შეტყობინების დახურვა</translation>
 <translation id="3417835166382867856">ძიების ჩანართები</translation>
+<translation id="7311244614769792472">შედეგები ვერ მოიძებნა</translation>
+<translation id="3112448569149476523">სცადეთ სხვა საძიებო ტერმინი</translation>
 <translation id="1352836459737874921">მიამაგრეთ კონტენტი სხვა ტაბებიდან</translation>
-<translation id="3028258613451571431">გააგზავნეთ ტაბებში გახსნილი გვერდების შინაარსი, რათა Leo-ს საუბრისთვის მეტი კონტექსტი მიეწოდოს</translation>
-<translation id="4300920590112551536">ბრაუზერის ჩანართები</translation>
+<translation id="7039179822221107025">გააგზავნეთ ტაბებში გახსნილი გვერდების შინაარსი, რათა Leo-ს საუბრისთვის მეტი კონტექსტი მიეწოდოს.</translation>
+<translation id="220541218939267992">გვერდის შიგთავსი ლეოსთან და თქვენს შეტყობინებებთან ერთად გადაეგზავნება.</translation>
 <translation id="1446346932629101482">კონტექსტისთვის ჩანართების დამატება. კონტენტები გადაეცემა Leo-ს შეტყობინებებთან ერთად.</translation>
 <translation id="7193316103691252734">მოცემული ჩანართების შესატყვისი არ არის</translation>
 <translation id="2315654674554095762">Leo უკვე იმახსოვრებს თქვენს მიმოწერებს, რათა მარტივად შეძლოთ მათთან დაბრუნება. ისინი ინტეგრირებულია თქვენს მოწყობილობაში და მათი წაშლა ნებისმიერ დროს შეგიძლიათ.</translation>
 <translation id="7821251979960635244">თქვენი მიმოწერის ისტორია აქ გამოჩნდება, როდესაც დაიწყებთ მიმოწერას.</translation>
 <translation id="887511360213807449">ისტორია გამორთულია</translation>
 <translation id="5380979378058584412">თქვენი წინა საუბრების სანახავად Leo-სთან, საჭიროა ჩართოთ საუბრის ისტორია.</translation>
-<translation id="6291843235651817590">საერთო ჩატი</translation>
+<translation id="7348809809749151120">სწრაფი • ძიება</translation>
 <translation id="3185367320601718531">საუბარი და ტექსტის გენერაცია</translation>
-<translation id="7979673624064378842">ელვისებური ჩატი</translation>
-<translation id="2836330653441111204">ბალანსირებული სიჩქარე და ინტელექტი</translation>
-<translation id="6695329447007213917">ზოგადი მიზნის ჩატი, კოდირება და სხვა</translation>
-<translation id="7168072214482631597">ზოგადი მიზნის ტექსტისა და გამოსახულების გაგება</translation>
-<translation id="7226508434216060960">ლოგიკური მოდელი</translation>
+<translation id="2793458212460902934">სწრაფი • ძიება • ინსტრუმენტები</translation>
+<translation id="8506027496671575183">ძიება • ხედვა • ინსტრუმენტები</translation>
+<translation id="3213834013136637671">ძიება • ხედვა</translation>
+<translation id="7697693533305615127">ძიება • ფიქრი</translation>
 <translation id="8782867266498869301">მოდელი მყისიერად იცვლება სამუშაოს საუკეთესოდ შესასრულებლად</translation>
 <translation id="3965507912994218570">ლეოს პარამეტრები</translation>
-<translation id="1037324977127422019">გამარჯობა, მე ვარ ლეო!</translation>
-<translation id="8930348081963284873">AI-ზე დაფუძნებული ჭკვიანი თანაშემწე, ჩაშენებული Brave-ში.</translation>
-<translation id="3528849152231418380">საჭიროა დახმარება საიტთან დაკავშირებით?</translation>
-<translation id="1558192229187362674">მე შემიძლია დაგეხმაროთ სტატიების შეჯამებაში, საიტის შინაარსის გასაფართოებლად და ბევრ სხვა სიტუაციაში.</translation>
-<translation id="861953757568623294">მე შემიძლია დაგეხმაროთ სტატიების შეჯამებაში, საიტის შინაარსის გასაფართოებლად და ბევრ სხვა სიტუაციაში. არ იცით საიდან დაიწყოთ? სცადეთ ეს:</translation>
-<translation id="5642775487085641191">უბრალოდ გსურთ საუბარი?</translation>
-<translation id="8857222718794549840">მკითხეთ ნებისმიერი რამ! ჩვენ შეგვიძლია ვისაუბროთ ნებისმიერ თემაზე, რაც გსურდეთ. მე ყოველთვის ვსწავლობ და ვაუმჯობესებ პასუხების მიწოდებას.</translation>
+<translation id="3754337604877048671">გაიცანით ლეო AI</translation>
+<translation id="5295261408976371809">თქვენი <ph name="TEXT_BEFORE"/>პირადი<ph name="TEXT_AFTER"/> AI ასისტენტი, ბრაუზერში ჩაშენებული.</translation>
+<translation id="7452913484571004528">ნამდვილად პირადი AI</translation>
+<translation id="8525501048785085223">ლეომ არ იცავს და არ გიზიარებთ საუბრებს, და არც იყენებს მათ მოდელის დასატრენინგებლად. არ არის საჭირო ანგარიში ან შესვლა. უბრალოდ გახსენით და ისაუბრეთ. პირადად.</translation>
+<translation id="6401201054391523929">ესაუბრეთ თქვენს ჩანართებსა და ფაილებს</translation>
+<translation id="8522038408130089105">გსურთ მეტი გაიგოთ საიტების შესახებ, რომელზეც შედიხართ? უბრალოდ დაუმატეთ ისინი ჩათში. მიამაგრეთ ჩანართები და ადგილობრივი ფაილები სწრაფი და შესაბამისი პასუხებისთვის.</translation>
+<translation id="3844955602461425647">მოწესრიგეთ მოსაწყენი საქმე</translation>
+<translation id="2196247864500723577">მიეცით ბრეივს სრულად თანამშრომლობა და ურთიერთქმედება თქვენს ბრაუზერში არსებულ ყველაფერთან. აიცილეთ რუტინული ამოცანები და დრო შეინახეთ მნიშვნელოვან თემებზე.</translation>
+<translation id="235457946228076038">მიიტანე შენი მოდელი</translation>
+<translation id="7024005267156189454">დააკავშირეთ თქვენი AI მოდელები, ადგილობრივად ან დისტანციურად გაშვებული. მოარგეთ ლეოს ქცევა, პასუხები და შესაძლებლობები თქვენი სურვილით.</translation>
+<translation id="7291578285403921288">გაიგეთ მეტი ლეო AI-ის შესახებ</translation>
 <translation id="9051226419897869406">უფრო კონფიდენციალური ჩატი ლეოსთან</translation>
 <translation id="2414904697165579184">ჩამოაყალიბეთ პასუხები ტაბების კონტენტის მიხედვით</translation>
 <translation id="8258324391302611485">ამ გვერდის კონტენტი გადაეცემა Leo-ს შეტყობინებებთან ერთად.</translation>
@@ -2273,6 +2298,7 @@
 <translation id="8732450785281947197">ლეოს AI ინსტრუმენტები</translation>
 <translation id="6535533770697728087">სწრაფი მოქმედებები</translation>
 <translation id="3237710083340813756">ხელახლა დაწერა</translation>
+<translation id="1223498995510244364">შეჯამება</translation>
 <translation id="1252805982772190086">მოკლე პოსტი</translation>
 <translation id="2087555497198267113">გრძელი პოსტი</translation>
 <translation id="4170307327863874820">საიტის პოსტი</translation>
@@ -2401,8 +2427,8 @@
 <translation id="8458987127502506209">Brave-ის დაცვის ჩართვა</translation>
 <translation id="8443488493738411048"><ph name="STATUS_BEFORE"/>დაცვა<ph name="STATUS_AFTER"/> განახლებულია ამ საიტისთვის</translation>
 <translation id="2458631245058451506"><ph name="STATUS_BEFORE"/> დაცვა<ph name="STATUS_AFTER"/> გათიშულია ამ საიტისთვის</translation>
-<translation id="5623354834493649144">თუ ეს საიტი არ მუშაობს სწორად, სცადეთ Shields-ის გამორთვა. 
-    <ph name="NOTE_BEFORE"/>გთხოვთ გაითვალისწინოთ, რომ ეს შესაძლოა შეამციროს Brave-ის კონფიდენციალურობის დაცვა.<ph name="NOTE_AFTER"/></translation>
+<translation id="5623354834493649144">თუ ეს საიტი არ მუშაობს სწორად, სცადეთ Shields-ის გამორთვა.
+   <ph name="NOTE_BEFORE"/>გთხოვთ გაითვალისწინოთ, რომ ეს შესაძლოა შეამციროს Brave-ის კონფიდენციალურობის დაცვა.<ph name="NOTE_AFTER"/></translation>
 <translation id="8377155647357436161">ტრეკერები, რეკლამები და სხვა დაბლოკილია <ph name="LINK_BEFORE"/>დამატებითი დეტალები<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">არ დაცულია Brave Shields-ით <ph name="LINK_BEFORE"/>დამატებითი დეტალები<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">გაფართოებული კონტროლი</translation>
@@ -2440,7 +2466,7 @@
 <translation id="2387532482048804818">დაგვიკავშირდით, თუ საიტი Shields-ით არ მუშაობს სწორად</translation>
 <translation id="3795015906457257780">თქვენ უყურებთ ამ საიტს Brave-ის კონფიდენციალურობის დაცვით</translation>
 <translation id="7194012750329511146">Brave Shields 
-<ph name="NUMBER"/>დაბლოკილია ტრეკერები, რეკლამები და სხვა</translation>
+<ph name="NUMBER"/> დაბლოკილია ტრეკერები, რეკლამები და სხვა</translation>
 <translation id="4292121526390005808">დაბლოკილი სკრიპტები</translation>
 <translation id="5046271170844958713">ნებადართული სკრიპტები</translation>
 <translation id="199862531047218413">გამოყენებული ფინგერპრინტინგის დაცვის საშუალებები</translation>
@@ -2480,12 +2506,13 @@
 <translation id="6764845498618413165">გაიგეთ მეტი.</translation>
 <translation id="7818938154803162778">რა თქმა უნდა</translation>
 <translation id="7207456302801184289">კეთილი იყოს თქვენი მობრძანება Brave-ში</translation>
-<translation id="6716580298071890302">გამოიყენეთ უფრო მუქი ფონი</translation>
+<translation id="293854220404217065">შუაღამის თემა</translation>
 <translation id="2422927186524098759">გვერდითი პანელი</translation>
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="8000020256436988724">ხელსაწყოების პანელი</translation>
 <translation id="6225572914528673855">მისამართის ზოლი</translation>
+<translation id="6821966107067356137">დაამატეთ RSS არხი</translation>
 <translation id="8293206222192510085">სანიშნის დამატება</translation>
 <translation id="7758460733045216901">სანიშნების პანელი</translation>
 <translation id="958268166261124668">Brave VPN: დაკავშირებულია</translation>

@@ -383,9 +383,10 @@
 <translation id="5436069931267876389">קונטיינר לא נמצא</translation>
 <translation id="2263346047290834619">שימוש בתצוגת עץ היררכית לכרטיסיות</translation>
 <translation id="5860254591544742609">הצגת שורת הכותרת</translation>
-<translation id="5371926069408837914">הרחב את חלונית הכרטיסיות האנכיות בעת העברת העכבר כאשר היא מכווצת</translation>
+<translation id="4691131445504068802">הסתר לחלוטין כאשר ממוזער</translation>
+<translation id="4909269867860362936">הרחבה אוטומטית כאשר מרחפים כאשר ממוזער</translation>
 <translation id="3367129510799209147">מצב ריחוף בכרטיסייה</translation>
-<translation id="8527099657928614787">הרחב לשוניות אנכיות באופן עצמאי בכל חלון</translation>
+<translation id="8925055964134259461">הרחב לשוניות אנכיות באופן עצמאי בכל חלון</translation>
 <translation id="916373084491701212">הצג את סרגל הגלילה</translation>
 <translation id="515949045075831661">הצג בצד ימין</translation>
 <translation id="3725395376319291415">הצג בצד שמאל</translation>
@@ -396,21 +397,21 @@
 <translation id="2396127686705429331">הצג כפתור סימניות</translation>
 <translation id="2814998458708016836">השתמש בשורת כתובת רחבה</translation>
 <translation id="4109670531935487117">להציג הצעות השלמה אוטומטית בשורת הכתובת</translation>
-<translation id="3405901785709583668">הצעות מובילות</translation>
+<translation id="4579877808890085926">הצעות מקומיות במכשיר</translation>
 <translation id="7859704718976024901">היסטוריית גלישה</translation>
 <translation id="8820817407110198400">סרגל הסימניות</translation>
 <translation id="4144468798716165316">פקודות מהירות</translation>
 <translation id="7310387888625228830">עוזר בינה מלאכותית של ליאו</translation>
 <translation id="5222974844674487962">כפתור הצג חדשות אמיצות</translation>
 <translation id="2085436423511121572">הצג את לחצן Leo המבוסס בינה מלאכותית</translation>
-<translation id="383007806262310953">הצג את סרגל הסימניות</translation>
+<translation id="6156323911414505561">הצג את סרגל הסימניות</translation>
 <translation id="4054323497808446566">סרגל הסימניות נראה בכל הדפים</translation>
 <translation id="8693858092251192712">סרגל הסימניות מוסתר בכל הדפים למעט את דף הכרטיסייה החדשה</translation>
 <translation id="7158817046543187970">סרגל הסימניות מוסתר בכל הדפים</translation>
 <translation id="3416468988018290825">הצג תמיד כתובות אתרים מלאות</translation>
 <translation id="5529693968082667490">הצג לחצן חיפוש כרטיסייה</translation>
 <translation id="1013121820689882118">Speedreader</translation>
-<translation id="1467652519828052368">הפעלת פיצ׳ר Speedreader</translation>
+<translation id="5522420266446076076">הפעלת פיצ׳ר Speedreader.</translation>
 <translation id="5211997910936574251">שימוש אוטומטי ב-Speedreader כשאפשר</translation>
 <translation id="2025435450953474282">מאמרים נטענים באופן אוטומטי במצב קריאה, כדי לחסוך לך זמן</translation>
 <translation id="7984721311211272523">השבת את פונקציית ההשתקה בסמלי רמקול כרטיסיות</translation>
@@ -434,7 +435,7 @@
 <translation id="5690973901138662477">Shields פועל</translation>
 <translation id="4697275813919189958">Shields לא פועל</translation>
 <translation id="6303294677342628402">הגנות</translation>
-<translation id="7133511168130368997">חסמו עוקבים ומודעות אשר עוקבים אחריכם ברחבי האינטרנט.</translation>
+<translation id="5128768857590582420">חסמו עוקבים ומודעות אשר עוקבים אחריכם ברחבי האינטרנט</translation>
 <translation id="2761825942249694703">אלו הן הגדרות ברירת המחדל של Shields. הן חלות על כל אתרי האינטרנט, אלא אם תבצעו שינוי כלשהו בפאנל של Shields באתר מסוים. שינוי הגדרות אלו לא ישפיע על ההגדרות הספציפיות הקיימות עבור אתר מסוים.</translation>
 <translation id="8452536890042542134">הפעולה תחסום את רוב המודעות באתרים.</translation>
 <translation id="4800195524776354947">הצג את מספר הפריטים החסומים בסמל Shields</translation>
@@ -846,6 +847,9 @@
 <translation id="1721787502053471881">בטוח שברצונך למחוק את הזיכרון הזה? הפעולה לא ניתנת לביטול.</translation>
 <translation id="5239685926753073108">מחיקת כל הזכרונות</translation>
 <translation id="2600803466586623124">בטוח שברצונך למחוק את כל הזכרונות? הפעולה הזו לא ניתנת לביטול.</translation>
+<translation id="7311244614769792472">לא נמצאו תוצאות</translation>
+<translation id="1838374766361614909">ניקוי חיפוש</translation>
+<translation id="5126255551970171328">חפש זיכרון</translation>
 <translation id="5985516785067818307">משתתפ/ת בסקר</translation>
 <translation id="8347743943525229984">הפעלת סקרי Brave</translation>
 <translation id="3204080538332044581">מאפשר ל-Brave להציג לינקים לסקרים פרטיים בדף הכרטיסייה החדשה. סקרים עוזרים לנו לבנות פיצ׳רים טובים יותר ולמדוד את היעילות של קמפיינים פרסומיים בדפדפן. <ph name="BEGIN_LINK"/>למידע נוסף<ph name="END_LINK"/></translation>

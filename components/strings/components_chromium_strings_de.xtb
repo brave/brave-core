@@ -2,17 +2,17 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="de">
 <translation id="130631256467250065">Deine Änderungen werden beim nächsten Neustart wirksam.</translation>
+<translation id="6451924152958941455">Öffne das Brave-Menü &gt; „<ph name="SETTINGS_TITLE"/>“ &gt; „<ph name="SYSTEM_TITLE"/>“ &gt; „<ph name="PROXIES_TITLE"/>“ und prüfe, ob in deiner Konfiguration die Einstellung „Kein Proxy“ oder „Direkt“ verwendet wird.</translation>
 <translation id="7999989146447764333">Absturzberichte sind in Brave nicht verfügbar.</translation>
 <translation id="1953231710324290369">Dies ist eine sichere Brave-Seite</translation>
 <translation id="907470742420136113">Brave versucht, Einstellungen für das Ausfüllen von Zahlungsmethoden zu ändern.</translation>
 <translation id="4847979153841887006">Brave-Logo</translation>
 <translation id="336808635693308470">Brave versucht, Zahlungsmethoden zu bearbeiten.</translation>
 <translation id="7932149101545999102">Brave wird durch das Open-Source-Projekt <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/> und andere <ph name="BEGIN_LINK_OSS"/>Open-Source-Software<ph name="END_LINK_OSS"/> ermöglicht.</translation>
-<translation id="8746410156982274638">Gehe zum Brave-Menü &gt; „<ph name="SETTINGS_TITLE"/>“ &gt; „<ph name="ADVANCED_TITLE"/>“ &gt; „<ph name="PROXIES_TITLE"/>“ &gt; „LAN-Einstellungen“ und deaktiviere das Kästchen „Proxyserver für LAN verwenden“.</translation>
 <translation id="303960458633076466">Diese Seite wurde von Brave blockiert</translation>
 <translation id="2017237562285586622">Erlaube Brave in deinen Firewall- und Virenschutzeinstellungen den Zugriff auf das Netzwerk.</translation>
 <translation id="4949828774841497663">Gehe zu „Anwendungen“ &gt; „Systemeinstellungen“ &gt; „Netzwerk“ und wähle das aktive Netzwerk aus. Klicke auf die Schaltfläche „Details“ und deaktiviere alle ausgewählten Proxys.</translation>
-<translation id="8619622797841001082">Gehe zum Brave-Menü &gt; „<ph name="SETTINGS_TITLE"/>“ &gt; „<ph name="ADVANCED_TITLE"/>“ &gt; „<ph name="PROXIES_TITLE"/>“ und vergewissere dich, dass in deiner Konfiguration die Einstellung „Kein Proxy“ oder „Direkt“ verwendet wird.</translation>
+<translation id="3269554930871094325">Öffne das Brave-Menü &gt; „<ph name="SETTINGS_TITLE"/>“ &gt; „<ph name="SYSTEM_TITLE"/>“ &gt; „<ph name="PROXIES_TITLE"/>“ &gt; „Netzwerk und Internet“ &gt; „Proxy“ und hebe die Auswahl von „Einstellungen automatisch erkennen“ auf.</translation>
 <translation id="6159073403999048272">Diese Seiten sind für Brave-Entwickler gedacht und werden möglicherweise nicht aktiv gepflegt oder getestet. Wenn du sie aktivieren möchtest, gehe zu <ph name="BEGIN_LINK"/>chrome://chrome-urls<ph name="LINK_END"/> und klicke auf die Schaltfläche zum Aktivieren von Debugging-Seiten. Rufe diese Seite dann noch einmal auf.</translation>
 <translation id="2765022094254723779">Brave wird auch durch andere <ph name="BEGIN_LINK_OSS"/>Open-Source-Software<ph name="END_LINK_OSS"/> ermöglicht.</translation>
 <translation id="9156965752763025780">Deine Änderungen werden beim nächsten Neustart von Brave wirksam.</translation>
