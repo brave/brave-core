@@ -17,6 +17,8 @@ source_set("web_view") {
     "brave_web_view.mm",
     "brave_web_view_configuration.h",
     "brave_web_view_configuration.mm",
+    "brave_web_view_download_manager.h",
+    "brave_web_view_download_manager.mm",
     "brave_web_view_internal.h",
   ]
   deps = [
