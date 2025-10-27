@@ -22,6 +22,7 @@
 #include "brave/browser/ui/webui/brave_rewards/rewards_web_ui_utils.h"
 #include "brave/browser/ui/webui/brave_rewards_internals_ui.h"
 #include "brave/browser/ui/webui/skus_internals_ui.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_rewriter/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -74,6 +75,11 @@
 #if BUILDFLAG(ENABLE_AI_REWRITER)
 #include "brave/browser/ui/webui/ai_rewriter/ai_rewriter_ui.h"
 #include "brave/components/ai_rewriter/common/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
+#include "brave/browser/ui/webui/ai_chat/ai_chat_agent_new_tab_page_ui.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #endif
 
 using content::WebUI;
@@ -131,6 +137,12 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
     // WebUIConfig. Currently, we can't add both BravePrivateNewTabUI and
     // BraveNewTabUI configs in RegisterChromeWebUIConfigs because they use the
     // same origin (content::kChromeUIScheme + chrome::kChromeUINewTabHost).
+#if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
+    if (base::FeatureList::IsEnabled(ai_chat::features::kAIChatAgentProfile) &&
+        profile->IsAIChatAgent()) {
+      return new AIChatAgentNewTabPageUI(web_ui);
+    }
+#endif
     if (base::FeatureList::IsEnabled(
             features::kBraveNewTabPageRefreshEnabled)) {
       return new BraveNewTabPageUI(web_ui);
