@@ -12,6 +12,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/scoped_multi_source_observation.h"
 #include "build/build_config.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_entry.h"
 #include "components/prefs/pref_member.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/gfx/geometry/size.h"
@@ -44,6 +45,7 @@ class BraveSidePanel : public views::View,
   // Same signature as chromium SidePanel
   explicit BraveSidePanel(
       BrowserView* browser_view,
+      SidePanelEntry::PanelType type,
       bool has_border,
       HorizontalAlignment horizontal_alignment = HorizontalAlignment::kLeft);
   BraveSidePanel(const BraveSidePanel&) = delete;
@@ -125,6 +127,7 @@ class BraveSidePanel : public views::View,
   // contents layout while sidebar show/hide animation is in-progress.
   std::optional<int> fixed_contents_width_;
   raw_ptr<BrowserView> browser_view_ = nullptr;
+  const SidePanelEntry::PanelType type_;
   IntegerPrefMember side_panel_width_;
   std::unique_ptr<SidePanelResizeWidget> resize_widget_;
   std::unique_ptr<ViewShadow> shadow_;
