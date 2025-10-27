@@ -403,7 +403,7 @@ RasOperationResult SetConnectionParamsUsingPowerShell(
   power_shell.AppendArg("-CipherTransformConstants");
   power_shell.AppendArg("AES256");
   power_shell.AppendArg("-DHGroup");
-  power_shell.AppendArg("Group2");
+  power_shell.AppendArg("ECP384");
   power_shell.AppendArg("-IntegrityCheckMethod");
   power_shell.AppendArg("SHA384");
   power_shell.AppendArg("-PfsGroup");
