@@ -269,7 +269,7 @@ BraveBrowserView* BraveBrowserView::From(BrowserView* view) {
 }
 
 bool BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
-    Browser* browser) {
+    const Browser* browser) {
   if (!browser->is_type_normal()) {
     return false;
   }
