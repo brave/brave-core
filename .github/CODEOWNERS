@@ -286,5 +286,5 @@ content_settings_types.mojom @brave/content-settings-reviewers
 *_service_factory_ios.mm @brave/brave-core-owners
 
 # Brave Account
-*brave_account* @brave/brave-accounts
-*BraveAccount* @brave/brave-accounts
+*brave_account* @szilardszaloki
+*BraveAccount* @szilardszaloki
