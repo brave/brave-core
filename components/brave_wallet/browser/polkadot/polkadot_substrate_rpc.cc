@@ -376,7 +376,7 @@ void PolkadotSubstrateRpc::OnGetFinalizedHead(GetFinalizedHeadCallback callback,
   }
 
   if (!res->result) {
-    return std::move(callback).Run(std::nullopt, WalletParsingErrorMessage());
+    return std::move(callback).Run(std::nullopt, std::nullopt);
   }
 
   auto block_hash = ParseBlockHash(*res->result);
