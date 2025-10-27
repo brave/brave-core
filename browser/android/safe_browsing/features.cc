@@ -11,7 +11,6 @@ namespace safe_browsing {
 namespace features {
 
 BASE_FEATURE(kBraveAndroidSafeBrowsing,
-             "BraveAndroidSafeBrowsing",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
 }  // namespace features

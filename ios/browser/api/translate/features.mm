@@ -8,11 +8,9 @@
 namespace brave::features {
 
 BASE_FEATURE(kBraveTranslateEnabled,
-             "BraveTranslateEnabled",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
 BASE_FEATURE(kBraveAppleTranslateEnabled,
-             "BraveAppleTranslateEnabled",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
 }  // namespace brave::features

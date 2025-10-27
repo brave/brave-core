@@ -25,7 +25,6 @@
 
 namespace brave {
 BASE_FEATURE(kUpgradeWhenIdle,
-             "UpgradeWhenIdle",
              base::FEATURE_DISABLED_BY_DEFAULT);
 }
 

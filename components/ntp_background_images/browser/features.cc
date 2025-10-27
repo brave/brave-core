@@ -20,11 +20,9 @@ BASE_FEATURE(kBraveNTPSuperReferralWallpaper,
              base::FEATURE_DISABLED_BY_DEFAULT);
 
 BASE_FEATURE(kBraveNTPBrandedWallpaperSurveyPanelist,
-             "BraveNTPBrandedWallpaperSurveyPanelist",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
 BASE_FEATURE(kBraveNTPBrandedWallpaper,
-             "BraveNTPBrandedWallpaper",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
 }  // namespace ntp_background_images::features

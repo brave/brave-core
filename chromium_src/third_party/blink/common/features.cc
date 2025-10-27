@@ -36,45 +36,36 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
 }});
 
 BASE_FEATURE(kFileSystemAccessAPI,
-             "FileSystemAccessAPI",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
 BASE_FEATURE(kBraveWebBluetoothAPI,
-             "BraveWebBluetoothAPI",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
 BASE_FEATURE(kNavigatorConnectionAttribute,
-             "NavigatorConnectionAttribute",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
 // Enable blink::MemoryCache partitioning for non SameSite requests.
 BASE_FEATURE(kPartitionBlinkMemoryCache,
-             "PartitionBlinkMemoryCache",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
 // Enable WebSockets connection pool limit per eTLD+1 for each renderer.
 BASE_FEATURE(kRestrictWebSocketsPool,
-             "RestrictWebSocketsPool",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
 // Enables protection against fingerprinting on screen dimensions.
 BASE_FEATURE(kBraveBlockScreenFingerprinting,
-             "BraveBlockScreenFingerprinting",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
 // Enables protection against fingerprinting via high-resolution time stamps.
 BASE_FEATURE(kBraveRoundTimeStamps,
-             "BraveRoundTimeStamps",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
 // Enables the Global Privacy Control header and navigator APIs.
 BASE_FEATURE(kBraveGlobalPrivacyControl,
-             "BraveGlobalPrivacyControl",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
 // Enable EventSource connection pool limit per eTLD+1.
 BASE_FEATURE(kRestrictEventSourcePool,
-             "RestrictEventSourcePool",
 #if BUILDFLAG(IS_ANDROID)
              base::FEATURE_DISABLED_BY_DEFAULT
 #else

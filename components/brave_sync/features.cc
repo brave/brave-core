@@ -9,9 +9,8 @@
 
 namespace brave_sync::features {
 
-BASE_FEATURE(kBraveSync, "BraveSync", base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kBraveSync, base::FEATURE_ENABLED_BY_DEFAULT);
 BASE_FEATURE(kBraveSyncDefaultPasswords,
-             "BraveSyncDefaultPasswords",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
 }  // namespace brave_sync::features

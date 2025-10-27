@@ -24,7 +24,6 @@ BASE_FEATURE(kBraveEphemeralStorage,
              "EphemeralStorage",
              base::FEATURE_ENABLED_BY_DEFAULT);
 BASE_FEATURE(kBraveEphemeralStorageKeepAlive,
-             "BraveEphemeralStorageKeepAlive",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
 const base::FeatureParam<int> kBraveEphemeralStorageKeepAliveTimeInSeconds = {
@@ -32,17 +31,14 @@ const base::FeatureParam<int> kBraveEphemeralStorageKeepAliveTimeInSeconds = {
     "BraveEphemeralStorageKeepAliveTimeInSeconds", 30};
 
 BASE_FEATURE(kBraveFirstPartyEphemeralStorage,
-             "BraveFirstPartyEphemeralStorage",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
 // Partition HSTS state storage by top frame site.
 BASE_FEATURE(kBravePartitionHSTS,
-             "BravePartitionHSTS",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
 // Enables HTTPS-Only Mode in Private Windows with Tor by default.
 BASE_FEATURE(kBraveTorWindowsHttpsOnly,
-             "BraveTorWindowsHttpsOnly",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
 // Enabled HTTPS by Default.
@@ -53,7 +49,6 @@ BASE_FEATURE(kBraveHttpsByDefault,
 // When enabled, use a fallback DNS over HTTPS (DoH)
 // provider when the current DNS provider does not offer Secure DNS.
 BASE_FEATURE(kBraveFallbackDoHProvider,
-             "BraveFallbackDoHProvider",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
 constexpr base::FeatureParam<DohFallbackEndpointType>::Option
@@ -71,12 +66,10 @@ constexpr base::FeatureParam<DohFallbackEndpointType>
 // Add "Forget by default" cookie blocking mode which cleanups storage after a
 // website is closed.
 BASE_FEATURE(kBraveForgetFirstPartyStorage,
-             "BraveForgetFirstPartyStorage",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
 // Ephemeralize third party cookies set during redirects.
 BASE_FEATURE(kBraveProvisionalTLDEphemeralLifetime,
-             "BraveProvisionalTLDEphemeralLifetime",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
 const base::FeatureParam<int>

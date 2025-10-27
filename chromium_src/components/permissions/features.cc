@@ -11,7 +11,6 @@ namespace permissions::features {
 
 // Enables the option of an automatic permission expiration time.
 BASE_FEATURE(kPermissionLifetime,
-             "PermissionLifetime",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{

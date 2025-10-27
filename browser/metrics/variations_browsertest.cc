@@ -15,7 +15,6 @@ namespace variations {
 namespace {
 
 BASE_FEATURE(kVariationsTestFeature,
-             "VariationsTestFeature",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
 // The seed is signed with the private key of the Brave variations server.

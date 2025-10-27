@@ -22,7 +22,6 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
 }});
 
 BASE_FEATURE(kOmniboxTabSwitchByDefault,
-             "OmniboxTabSwitchByDefault",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
 }  // namespace omnibox

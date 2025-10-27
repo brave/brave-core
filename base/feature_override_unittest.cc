@@ -22,21 +22,16 @@ namespace base {
 namespace {
 
 BASE_FEATURE(kTestControlEnabledFeature,
-             "TestControlEnabledFeature",
              FEATURE_ENABLED_BY_DEFAULT);
 BASE_FEATURE(kTestControlDisabledFeature,
-             "TestControlDisabledFeature",
              FEATURE_DISABLED_BY_DEFAULT);
 
 BASE_FEATURE(kTestEnabledButOverridenFeature,
-             "TestEnabledButOverridenFeature",
              FEATURE_ENABLED_BY_DEFAULT);
 BASE_FEATURE(kTestDisabledButOverridenFeature,
-             "TestDisabledButOverridenFeature",
              FEATURE_DISABLED_BY_DEFAULT);
 
 BASE_FEATURE(kTestEnabledButOverridenFeatureWithSameState,
-             "TestEnabledButOverridenFeatureWithSameState",
              FEATURE_ENABLED_BY_DEFAULT);
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{

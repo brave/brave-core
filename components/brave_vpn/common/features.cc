@@ -13,7 +13,6 @@ namespace brave_vpn {
 namespace features {
 
 BASE_FEATURE(kBraveVPN,
-             "BraveVPN",
 #if !BUILDFLAG(IS_LINUX)
              base::FEATURE_ENABLED_BY_DEFAULT
 #else
@@ -22,20 +21,16 @@ BASE_FEATURE(kBraveVPN,
 );
 
 BASE_FEATURE(kBraveVPNLinkSubscriptionAndroidUI,
-             "BraveVPNLinkSubscriptionAndroidUI",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
 #if BUILDFLAG(IS_WIN)
 BASE_FEATURE(kBraveVPNDnsProtection,
-             "BraveVPNDnsProtection",
              base::FEATURE_ENABLED_BY_DEFAULT);
 BASE_FEATURE(kBraveVPNUseWireguardService,
-             "BraveVPNUseWireguardService",
              base::FEATURE_ENABLED_BY_DEFAULT);
 #endif
 #if BUILDFLAG(IS_MAC)
 BASE_FEATURE(kBraveVPNEnableWireguardForOSX,
-             "kBraveVPNEnableWireguardForOSX",
              base::FEATURE_DISABLED_BY_DEFAULT);
 #endif
 }  // namespace features
