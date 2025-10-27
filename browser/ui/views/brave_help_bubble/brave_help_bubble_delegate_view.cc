@@ -138,8 +138,7 @@ class BorderWithArrow : public views::BubbleBorder {
         break;
     }
 
-    return SkPath::Polygon(points.data(), kNumPoints,
-                           part == BubbleArrowPart::kFill);
+    return SkPath::Polygon(points, part == BubbleArrowPart::kFill);
   }
 };
 }  // namespace
