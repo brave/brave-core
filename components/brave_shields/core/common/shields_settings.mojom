@@ -5,18 +5,13 @@
 
 module brave_shields.mojom;
 
+import "components/content_settings/core/common/content_settings.mojom";
 import "mojo/public/mojom/base/token.mojom";
 
 enum FarblingLevel {
   OFF,
   BALANCED,
   MAXIMUM,
-};
-
-enum ContentSettingsOverriddenStatus {
-  kNotSet = 0,
-  kBlocked,
-  kAllowed
 };
 
 // Maps to content_settings::SettingSource
@@ -35,7 +30,8 @@ enum ContentSettingSource {
 };
 
 struct ContentSettingsOverriddenData {
-  ContentSettingsOverriddenStatus status = kNotSet;
+  content_settings.mojom.ContentSetting status
+          = content_settings.mojom.ContentSetting.DEFAULT;
   ContentSettingSource override_source = kNone;
 };
 

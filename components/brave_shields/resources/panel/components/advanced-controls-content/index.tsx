@@ -15,11 +15,13 @@ import getPanelBrowserAPI, {
   CookieBlockMode,
   FingerprintMode,
   HttpsUpgradeMode,
-  ContentSettingsOverriddenStatus,
   ContentSettingSource,
 } from '../../api/panel_browser_api'
 import DataContext from '../../state/context'
 import { ViewType } from '../../state/component_types'
+import {
+  ContentSetting
+} from 'gen/components/content_settings/core/common/content_settings.mojom.m'
 
 const adBlockModeOptions = [
   { value: AdBlockMode.AGGRESSIVE, text: getLocale('braveShieldsTrackersAndAdsBlockedAgg') },
@@ -147,7 +149,7 @@ function AdvancedControlsContent () {
   const isEnforced =
     siteSettings?.scriptsBlockedOverrideStatus.overrideSource !== undefined
     && siteSettings?.scriptsBlockedOverrideStatus.status
-      !== ContentSettingsOverriddenStatus.kNotSet
+      !== ContentSetting.DEFAULT
     && siteSettings?.scriptsBlockedOverrideStatus.overrideSource
       !== ContentSettingSource.kUser
     && siteSettings?.scriptsBlockedOverrideStatus.overrideSource

@@ -146,11 +146,11 @@ bool BraveContentSettingsAgentImpl::IsReduceLanguageEnabled() {
   return shields_settings_->reduce_language;
 }
 
-brave_shields::mojom::ContentSettingsOverriddenStatus
+::ContentSetting
 BraveContentSettingsAgentImpl::GetScriptBlockedOverriddenStatus() const {
   if (!shields_settings_ ||
       !shields_settings_->scripts_blocked_override_status) {
-    return brave_shields::mojom::ContentSettingsOverriddenStatus::kNotSet;
+    return ::ContentSetting::CONTENT_SETTING_DEFAULT;
   }
   return shields_settings_->scripts_blocked_override_status->status;
 }
@@ -195,8 +195,7 @@ bool BraveContentSettingsAgentImpl::AllowScript(bool enabled_per_settings) {
 
   const auto script_blocked_status = GetScriptBlockedOverriddenStatus();
 
-  return script_blocked_status ==
-                 brave_shields::mojom::ContentSettingsOverriddenStatus::kBlocked
+  return script_blocked_status == ::ContentSetting::CONTENT_SETTING_BLOCK
              ? false
              : allow;
 }
@@ -244,8 +243,7 @@ bool BraveContentSettingsAgentImpl::AllowScriptFromSource(
   }
 
   const auto script_blocked_status = GetScriptBlockedOverriddenStatus();
-  return script_blocked_status ==
-                 brave_shields::mojom::ContentSettingsOverriddenStatus::kBlocked
+  return script_blocked_status == ::ContentSetting::CONTENT_SETTING_BLOCK
              ? false
              : allow;
 }

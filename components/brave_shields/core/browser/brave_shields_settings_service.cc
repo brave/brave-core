@@ -241,14 +241,13 @@ BraveShieldsSettingsService::GetJsContentSettingsOverriddenData(
 
   if (info.source == content_settings::SettingSource::kUser) {
     return mojom::ContentSettingsOverriddenData::New(
-        mojom::ContentSettingsOverriddenStatus::kNotSet,
+        ::ContentSetting::CONTENT_SETTING_DEFAULT,
         ConvertSettingsSource(info.source));
   }
 
   return mojom::ContentSettingsOverriddenData::New(
-      rule == CONTENT_SETTING_BLOCK
-          ? mojom::ContentSettingsOverriddenStatus::kBlocked
-          : mojom::ContentSettingsOverriddenStatus::kAllowed,
+      rule == CONTENT_SETTING_BLOCK ? ::ContentSetting::CONTENT_SETTING_BLOCK
+                                    : ::ContentSetting::CONTENT_SETTING_ALLOW,
       ConvertSettingsSource(info.source));
 }
 

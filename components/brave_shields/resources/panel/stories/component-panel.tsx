@@ -16,7 +16,6 @@ import {
   FingerprintMode,
   CookieBlockMode,
   HttpsUpgradeMode,
-  ContentSettingsOverriddenStatus,
   ContentSettingSource,
 } from '../api/panel_browser_api'
 import {
@@ -25,6 +24,9 @@ import {
 import { getLocale } from '../../../../common/locale'
 
 import '@brave/leo/tokens/css/variables.css'
+import {
+  ContentSetting
+} from 'gen/components/content_settings/core/common/content_settings.mojom.m'
 
 const LIST_JS = [
   { 'url': 'https://www.reddit.com/' },
@@ -82,7 +84,7 @@ export default {
           httpsUpgradeMode: HttpsUpgradeMode.DISABLED_MODE,
           isNoscriptEnabled: false,
           scriptsBlockedOverrideStatus: {
-            status: ContentSettingsOverriddenStatus.kNotSet,
+            status: ContentSetting.DEFAULT,
             overrideSource: ContentSettingSource.kNone,
           },
           isForgetFirstPartyStorageEnabled: false,
