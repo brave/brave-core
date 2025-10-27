@@ -431,6 +431,50 @@ void PolkadotSubstrateRpc::OnGetBlockHeader(GetBlockHeaderCallback callback,
   std::move(callback).Run(std::move(*header), std::nullopt);
 }
 
+void PolkadotSubstrateRpc::GetBlockHash(std::string_view chain_id,
+                                        std::optional<uint32_t> block_number,
+                                        GetBlockHashCallback callback) {
+  auto url = GetNetworkURL(chain_id);
+
+  base::ListValue params;
+
+  if (block_number) {
+    params.Append(static_cast<double>(*block_number));
+  }
+
+  auto payload = base::WriteJsonWithOptions(
+      MakeRpcRequestJson("chain_getBlockHash", std::move(params)),
+      base::OPTIONS_OMIT_DOUBLE_TYPE_PRESERVATION);
+  CHECK(payload);
+
+  api_request_helper_.Request(
+      net::HttpRequestHeaders::kPostMethod, url, *payload, "application/json",
+      base::BindOnce(&PolkadotSubstrateRpc::OnGetBlockHash,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void PolkadotSubstrateRpc::OnGetBlockHash(GetBlockHashCallback callback,
+                                          APIRequestResult api_result) {
+  auto res = HandleRpcCall<polkadot_substrate_rpc_responses::PolkadotBlockHash>(
+      api_result);
+
+  if (!res.has_value()) {
+    return std::move(callback).Run(std::nullopt, res.error());
+  }
+
+  if (!res->result) {
+    return std::move(callback).Run(std::nullopt, std::nullopt);
+  }
+
+  auto block_hash =
+      PrefixedHexStringToFixed<kPolkadotBlockHashSize>(*res->result);
+  if (!block_hash) {
+    return std::move(callback).Run(std::nullopt, WalletParsingErrorMessage());
+  }
+
+  return std::move(callback).Run(block_hash, std::nullopt);
+}
+
 GURL PolkadotSubstrateRpc::GetNetworkURL(std::string_view chain_id) {
   return network_manager_->GetNetworkURL(chain_id, mojom::CoinType::DOT);
 }
