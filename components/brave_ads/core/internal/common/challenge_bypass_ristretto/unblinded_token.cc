@@ -51,10 +51,6 @@ bool UnblindedToken::operator==(const UnblindedToken& other) const {
   return EncodeBase64().value_or("") == other.EncodeBase64().value_or("");
 }
 
-bool UnblindedToken::operator!=(const UnblindedToken& other) const {
-  return !(*this == other);
-}
-
 UnblindedToken UnblindedToken::DecodeBase64(
     const std::string& unblinded_token_base64) {
   return UnblindedToken(unblinded_token_base64);

@@ -14,7 +14,7 @@ import { getString } from '../../lib/strings'
 import { inlineCSSVars } from '../../lib/inline_css_vars'
 import { BackgroundTypePanel } from './background_type_panel'
 import { Link } from '../common/link'
-import formatMessage from '$web-common/formatMessage'
+import { formatString } from '$web-common/locale'
 import { settingsURL } from '../../../../../components/brave_rewards/resources/shared/lib/rewards_urls'
 
 import {
@@ -81,7 +81,7 @@ export function BackgroundPanel() {
     return (
       <div className='preview upload'>
         {uploading ? <ProgressRing /> : <Icon name='upload' />}
-        {getString('uploadBackgroundLabel')}
+        {getString(S.NEW_TAB_UPLOAD_BACKGROUND_LABEL)}
       </div>
     )
   }
@@ -144,7 +144,7 @@ export function BackgroundPanel() {
   return (
     <div data-css-scope={style.scope}>
       <div className='control-row'>
-        <label>{getString('showBackgroundsLabel')}</label>
+        <label>{getString(S.NEW_TAB_SHOW_BACKGROUNDS_LABEL)}</label>
         <Toggle
           size='small'
           checked={backgroundsEnabled}
@@ -155,23 +155,21 @@ export function BackgroundPanel() {
         backgroundsEnabled && rewardsFeatureEnabled &&
           <div className='control-row'>
             <label>
-              {getString('showSponsoredImagesLabel')}
+              {getString(S.NEW_TAB_SHOW_SPONSORED_IMAGES_LABEL)}
               <div className='subtext'>
                 {
-                  !rewardsEnabled && formatMessage(
-                    getString('showSponsoredImagesEarningText'),
+                  !rewardsEnabled && formatString(
+                    getString(S.NEW_TAB_SHOW_SPONSORED_IMAGES_EARNING_TEXT),
                     {
-                      tags: {
-                        $1: (content) => (
-                          <Link
-                            key='learn-more'
-                            url={settingsURL}
-                            openInNewTab
-                          >
-                            {content}
-                          </Link>
-                        )
-                      }
+                      $1: (content) => (
+                        <Link
+                          key='learn-more'
+                          url={settingsURL}
+                          openInNewTab
+                        >
+                          {content}
+                        </Link>
+                      )
                     })
                 }
               </div>
@@ -191,7 +189,7 @@ export function BackgroundPanel() {
             <div className='background-option'>
               <button onClick={onCustomPreviewClick}>
                 {renderTypePreview(SelectedBackgroundType.kCustom)}
-                {getString('customBackgroundLabel')}
+                {getString(S.NEW_TAB_CUSTOM_BACKGROUND_LABEL)}
               </button>
             </div>
             <div className='background-option'>
@@ -201,13 +199,13 @@ export function BackgroundPanel() {
                 }}
               >
                 {renderTypePreview(SelectedBackgroundType.kBrave)}
-                {getString('braveBackgroundLabel')}
+                {getString(S.NEW_TAB_BRAVE_BACKGROUND_LABEL)}
               </button>
             </div>
             <div className='background-option'>
               <button onClick={() => setPanel(SelectedBackgroundType.kSolid)}>
                 {renderTypePreview(SelectedBackgroundType.kSolid)}
-                {getString('solidBackgroundLabel')}
+                {getString(S.NEW_TAB_SOLID_BACKGROUND_LABEL)}
               </button>
             </div>
             <div className='background-option'>
@@ -215,7 +213,7 @@ export function BackgroundPanel() {
                 onClick={() => setPanel(SelectedBackgroundType.kGradient)}
               >
                 {renderTypePreview(SelectedBackgroundType.kGradient)}
-                {getString('gradientBackgroundLabel')}
+                {getString(S.NEW_TAB_GRADIENT_BACKGROUND_LABEL)}
               </button>
             </div>
           </div>

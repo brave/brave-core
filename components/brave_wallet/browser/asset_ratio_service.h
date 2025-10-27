@@ -71,13 +71,6 @@ class AssetRatioService : public KeyedService, public mojom::AssetRatioService {
                       const uint8_t limit,
                       GetCoinMarketsCallback callback) override;
 
-  static GURL GetSardineBuyURL(const std::string& network,
-                               const std::string& address,
-                               const std::string& symbol,
-                               const std::string& amount,
-                               const std::string& currency_code,
-                               const std::string& auth_token);
-
   static GURL GetPriceURL(const std::string& vs_currency);
   static GURL GetPriceHistoryURL(const std::string& asset,
                                  const std::string& vs_asset,
@@ -92,13 +85,6 @@ class AssetRatioService : public KeyedService, public mojom::AssetRatioService {
  private:
   friend class AssetRatioServiceUnitTest;
   FRIEND_TEST_ALL_PREFIXES(AssetRatioServiceUnitTest, GetStripeBuyURL);
-  void OnGetSardineAuthToken(const std::string& network,
-                             const std::string& address,
-                             const std::string& symbol,
-                             const std::string& amount,
-                             const std::string& currency_code,
-                             GetBuyUrlV1Callback callback,
-                             APIRequestResult api_request_result);
 
   void GetStripeBuyURL(GetBuyUrlV1Callback callback,
                        const std::string& address,

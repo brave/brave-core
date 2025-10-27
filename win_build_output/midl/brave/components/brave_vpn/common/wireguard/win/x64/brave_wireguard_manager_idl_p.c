@@ -46,8 +46,8 @@
 
 #include "brave_wireguard_manager_idl.h"
 
-#define TYPE_FORMAT_STRING_SIZE   61                                
-#define PROC_FORMAT_STRING_SIZE   151                               
+#define TYPE_FORMAT_STRING_SIZE   43                                
+#define PROC_FORMAT_STRING_SIZE   101                               
 #define EXPR_FORMAT_STRING_SIZE   1                                 
 #define TRANSMIT_AS_TABLE_SIZE    0            
 #define WIRE_MARSHAL_TABLE_SIZE   1            
@@ -246,50 +246,6 @@ static const brave_wireguard_manager_idl_MIDL_PROC_FORMAT_STRING brave_wireguard
 /* 98 */	0x8,		/* FC_LONG */
 			0x0,		/* 0 */
 
-	/* Procedure GenerateKeypair */
-
-/* 100 */	0x33,		/* FC_AUTO_HANDLE */
-			0x6c,		/* Old Flags:  object, Oi2 */
-/* 102 */	NdrFcLong( 0x0 ),	/* 0 */
-/* 106 */	NdrFcShort( 0x5 ),	/* 5 */
-/* 108 */	NdrFcShort( 0x28 ),	/* X64 Stack size/offset = 40 */
-/* 110 */	NdrFcShort( 0x0 ),	/* 0 */
-/* 112 */	NdrFcShort( 0x24 ),	/* 36 */
-/* 114 */	0x45,		/* Oi2 Flags:  srv must size, has return, has ext, */
-			0x4,		/* 4 */
-/* 116 */	0xa,		/* 10 */
-			0x3,		/* Ext Flags:  new corr desc, clt corr check, */
-/* 118 */	NdrFcShort( 0x1 ),	/* 1 */
-/* 120 */	NdrFcShort( 0x0 ),	/* 0 */
-/* 122 */	NdrFcShort( 0x0 ),	/* 0 */
-/* 124 */	NdrFcShort( 0x0 ),	/* 0 */
-
-	/* Parameter public_key */
-
-/* 126 */	NdrFcShort( 0x2113 ),	/* Flags:  must size, must free, out, simple ref, srv alloc size=8 */
-/* 128 */	NdrFcShort( 0x8 ),	/* X64 Stack size/offset = 8 */
-/* 130 */	NdrFcShort( 0x32 ),	/* Type Offset=50 */
-
-	/* Parameter private_key */
-
-/* 132 */	NdrFcShort( 0x2113 ),	/* Flags:  must size, must free, out, simple ref, srv alloc size=8 */
-/* 134 */	NdrFcShort( 0x10 ),	/* X64 Stack size/offset = 16 */
-/* 136 */	NdrFcShort( 0x32 ),	/* Type Offset=50 */
-
-	/* Parameter last_error */
-
-/* 138 */	NdrFcShort( 0x2150 ),	/* Flags:  out, base type, simple ref, srv alloc size=8 */
-/* 140 */	NdrFcShort( 0x18 ),	/* X64 Stack size/offset = 24 */
-/* 142 */	0x8,		/* FC_LONG */
-			0x0,		/* 0 */
-
-	/* Return value */
-
-/* 144 */	NdrFcShort( 0x70 ),	/* Flags:  out, return, base type, */
-/* 146 */	NdrFcShort( 0x20 ),	/* X64 Stack size/offset = 32 */
-/* 148 */	0x8,		/* FC_LONG */
-			0x0,		/* 0 */
-
 			0x0
         }
     };
@@ -331,18 +287,6 @@ static const brave_wireguard_manager_idl_MIDL_TYPE_FORMAT_STRING brave_wireguard
 			0x11, 0xc,	/* FC_RP [alloced_on_stack] [simple_pointer] */
 /* 40 */	0x8,		/* FC_LONG */
 			0x5c,		/* FC_PAD */
-/* 42 */	
-			0x11, 0x4,	/* FC_RP [alloced_on_stack] */
-/* 44 */	NdrFcShort( 0x6 ),	/* Offset= 6 (50) */
-/* 46 */	
-			0x13, 0x0,	/* FC_OP */
-/* 48 */	NdrFcShort( 0xffe2 ),	/* Offset= -30 (18) */
-/* 50 */	0xb4,		/* FC_USER_MARSHAL */
-			0x83,		/* 131 */
-/* 52 */	NdrFcShort( 0x0 ),	/* 0 */
-/* 54 */	NdrFcShort( 0x8 ),	/* 8 */
-/* 56 */	NdrFcShort( 0x0 ),	/* 0 */
-/* 58 */	NdrFcShort( 0xfff4 ),	/* Offset= -12 (46) */
 
 			0x0
         }
@@ -377,8 +321,7 @@ static const USER_MARSHAL_ROUTINE_QUADRUPLE UserMarshalRoutines[ WIRE_MARSHAL_TA
 static const unsigned short IBraveVpnWireguardManager_FormatStringOffsetTable[] =
     {
     0,
-    62,
-    100
+    62
     };
 
 static const MIDL_STUBLESS_PROXY_INFO IBraveVpnWireguardManager_ProxyInfo =
@@ -402,7 +345,7 @@ static const MIDL_SERVER_INFO IBraveVpnWireguardManager_ServerInfo =
     0,
     0,
     0};
-CINTERFACE_PROXY_VTABLE(6) _IBraveVpnWireguardManagerProxyVtbl = 
+CINTERFACE_PROXY_VTABLE(5) _IBraveVpnWireguardManagerProxyVtbl = 
 {
     &IBraveVpnWireguardManager_ProxyInfo,
     &IID_IBraveVpnWireguardManager,
@@ -410,15 +353,14 @@ CINTERFACE_PROXY_VTABLE(6) _IBraveVpnWireguardManagerProxyVtbl =
     IUnknown_AddRef_Proxy,
     IUnknown_Release_Proxy ,
     (void *) (INT_PTR) -1 /* IBraveVpnWireguardManager::EnableVpn */ ,
-    (void *) (INT_PTR) -1 /* IBraveVpnWireguardManager::DisableVpn */ ,
-    (void *) (INT_PTR) -1 /* IBraveVpnWireguardManager::GenerateKeypair */
+    (void *) (INT_PTR) -1 /* IBraveVpnWireguardManager::DisableVpn */
 };
 
 const CInterfaceStubVtbl _IBraveVpnWireguardManagerStubVtbl =
 {
     &IID_IBraveVpnWireguardManager,
     &IBraveVpnWireguardManager_ServerInfo,
-    6,
+    5,
     0, /* pure interpreted */
     CStdStubBuffer_METHODS
 };

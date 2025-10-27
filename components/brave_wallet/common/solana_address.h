@@ -24,7 +24,6 @@ class SolanaAddress {
   SolanaAddress& operator=(SolanaAddress&& other);
 
   bool operator==(const SolanaAddress& other) const;
-  bool operator!=(const SolanaAddress& other) const;
 
   static std::optional<SolanaAddress> FromBytes(
       base::span<const uint8_t> bytes);

@@ -43,8 +43,8 @@ interface ParentUIFrame {
   // buttons.
   RegenerateAnswerMenuIsOpen(bool is_open);
 
-  // Show the smart mode creation dialog with the provided prompt text
-  ShowSmartModeDialog(string prompt);
+  // Show the skill creation dialog with the provided prompt text
+  ShowSkillDialog(string prompt);
 };
 
 // Browser-side handler for a Conversation's UI responsible for displaying
@@ -77,12 +77,20 @@ interface UntrustedConversationUI {
   // Called when the associated content is changed - called when the untrusted
   // conversation frame is attached and when the content is changed.
   AssociatedContentChanged(array<AssociatedContent> associated_content);
+
+  // Called when an observable content-based task is started for any in-progress
+  // conversation entry.
+  ContentTaskStarted(int32 tab_id);
 };
 
-// UI-side handler for callbacks from UntrustedUIHandler
+// UI-side handler for messages from the browser WebUI
 interface UntrustedUI {
   // Called when memories have changed (added, updated, or deleted)
   OnMemoriesChanged(array<string> memories);
+
+  // Called with a new thumbnail for the tab only if the tab_id is added to the
+  // thumbnail tracker via AddTabToThumbnailTracker.
+  ThumbnailUpdated(int32 tab_id, string data_uri);
 };
 
 // Browser-side handler for untrusted frame that handles rendering of
@@ -108,6 +116,14 @@ interface UntrustedUIHandler {
 
   // Open AI Chat customization settings page
   OpenAIChatCustomizationSettings();
+
+  // Registers a tab to receive thumbnail updates for. Also immediately requests
+  // the current thumbnail.
+  AddTabToThumbnailTracker(int32 tab_id);
+
+  // Always call RemoveTabFromThumbnailTracker when it's no longer needed in the
+  // UI.
+  RemoveTabFromThumbnailTracker(int32 tab_id);
 
   BindParentPage(pending_receiver<ParentUIFrame> parent_frame);
 

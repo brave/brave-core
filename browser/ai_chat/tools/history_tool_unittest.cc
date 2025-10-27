@@ -31,9 +31,7 @@ class HistoryToolTest : public ContentAgentToolBaseTest {
     base::Value::Dict dict;
     dict.Set("direction", direction);
 
-    std::string json;
-    base::JSONWriter::Write(dict, &json);
-    return json;
+    return *base::WriteJson(dict);
   }
 
   void VerifySuccess(const std::string& input_json,

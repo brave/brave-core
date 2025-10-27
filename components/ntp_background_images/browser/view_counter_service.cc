@@ -134,25 +134,42 @@ void ViewCounterService::OnContentSettingChanged(
   }
 }
 
-void ViewCounterService::BrandedWallpaperWillBeDisplayed(
+void ViewCounterService::RecordViewedAdEvent(
     const std::string& placement_id,
     const std::string& campaign_id,
     const std::string& creative_instance_id,
     brave_ads::mojom::NewTabPageAdMetricType mojom_ad_metric_type) {
-  if (mojom_ad_metric_type == brave_ads::mojom::NewTabPageAdMetricType::kP3A &&
-      ntp_p3a_helper_) {
+  if (ntp_p3a_helper_ &&
+      mojom_ad_metric_type == brave_ads::mojom::NewTabPageAdMetricType::kP3A) {
     ntp_p3a_helper_->RecordView(creative_instance_id, campaign_id);
   }
-
   branded_new_tab_count_state_->AddDelta(1);
   UpdateP3AValues();
 
-  // The ads service will handle cases where fallback to P3A reporting is
-  // required and will no-op sending a confirmation. However, we still need to
-  // trigger the event to ensure other related logic is executed.
+  // Ads component skips confirmations for P3A and disabled metrics. Still
+  // trigger the ad event so dependent logic runs.
   MaybeTriggerNewTabPageAdEvent(
       placement_id, creative_instance_id, mojom_ad_metric_type,
       brave_ads::mojom::NewTabPageAdEventType::kViewedImpression);
+}
+
+void ViewCounterService::RecordClickedAdEvent(
+    const std::string& placement_id,
+    const std::string& creative_instance_id,
+    const std::string& /*target_url*/,
+    brave_ads::mojom::NewTabPageAdMetricType mojom_ad_metric_type) {
+  if (ntp_p3a_helper_ &&
+      mojom_ad_metric_type == brave_ads::mojom::NewTabPageAdMetricType::kP3A) {
+    ntp_p3a_helper_->RecordNewTabPageAdEvent(
+        brave_ads::mojom::NewTabPageAdEventType::kClicked,
+        creative_instance_id);
+  }
+
+  // Ads component skips confirmations for P3A and disabled metrics. Still
+  // trigger the ad event so dependent logic runs.
+  MaybeTriggerNewTabPageAdEvent(
+      placement_id, creative_instance_id, mojom_ad_metric_type,
+      brave_ads::mojom::NewTabPageAdEventType::kClicked);
 }
 
 NTPSponsoredImagesData* ViewCounterService::GetSponsoredImagesData() const {
@@ -392,57 +409,6 @@ void ViewCounterService::RegisterPageView() {
   MaybePrefetchNewTabPageAd();
 }
 
-void ViewCounterService::BrandedWallpaperLogoClicked(
-    const std::string& placement_id,
-    const std::string& creative_instance_id,
-    const std::string& /*target_url*/,
-    brave_ads::mojom::NewTabPageAdMetricType mojom_ad_metric_type) {
-  if (mojom_ad_metric_type == brave_ads::mojom::NewTabPageAdMetricType::kP3A &&
-      ntp_p3a_helper_) {
-    ntp_p3a_helper_->RecordNewTabPageAdEvent(
-        brave_ads::mojom::NewTabPageAdEventType::kClicked,
-        creative_instance_id);
-  }
-
-  // The ads service will handle cases where fallback to P3A reporting is
-  // required and will no-op sending a confirmation. However, we still need to
-  // trigger the event to ensure other related logic is executed.
-  MaybeTriggerNewTabPageAdEvent(
-      placement_id, creative_instance_id, mojom_ad_metric_type,
-      brave_ads::mojom::NewTabPageAdEventType::kClicked);
-}
-
-void ViewCounterService::MaybeTriggerNewTabPageAdEvent(
-    const std::string& placement_id,
-    const std::string& creative_instance_id,
-    brave_ads::mojom::NewTabPageAdMetricType mojom_ad_metric_type,
-    brave_ads::mojom::NewTabPageAdEventType mojom_ad_event_type) {
-  if (ads_service_) {
-    ads_service_->TriggerNewTabPageAdEvent(
-        placement_id, creative_instance_id, mojom_ad_metric_type,
-        mojom_ad_event_type,
-        base::BindOnce(
-            [](const std::string& creative_instance_id,
-               brave_ads::mojom::NewTabPageAdMetricType mojom_ad_metric_type,
-               brave_ads::mojom::NewTabPageAdEventType mojom_ad_event_type,
-               bool success) {
-              if (!success) {
-                SCOPED_CRASH_KEY_STRING64("Issue50267", "creative_instance_id",
-                                          creative_instance_id);
-                SCOPED_CRASH_KEY_NUMBER("Issue50267", "metric_type",
-                                        static_cast<int>(mojom_ad_metric_type));
-                SCOPED_CRASH_KEY_NUMBER("Issue50267", "event_type",
-                                        static_cast<int>(mojom_ad_event_type));
-                SCOPED_CRASH_KEY_STRING64(
-                    "Issue50267", "failure_reason",
-                    "Failed to trigger new tab page ad event");
-                base::debug::DumpWithoutCrashing();
-              }
-            },
-            creative_instance_id, mojom_ad_metric_type, mojom_ad_event_type));
-  }
-}
-
 bool ViewCounterService::ShouldShowSponsoredImages() const {
   return CanShowSponsoredImages() && model_.ShouldShowSponsoredImages();
 }
@@ -530,9 +496,6 @@ std::string ViewCounterService::GetSuperReferralCode() const {
 void ViewCounterService::MaybePrefetchNewTabPageAd() {
   NTPSponsoredImagesData* images_data = GetSponsoredImagesData();
   if (!ads_service_) {
-    SCOPED_CRASH_KEY_STRING64("Issue50267", "failure_reason",
-                              "ads_service_ is null");
-    base::debug::DumpWithoutCrashing();
     return;
   }
 
@@ -548,6 +511,37 @@ void ViewCounterService::MaybePrefetchNewTabPageAd() {
   }
 
   ads_service_->PrefetchNewTabPageAd();
+}
+
+void ViewCounterService::MaybeTriggerNewTabPageAdEvent(
+    const std::string& placement_id,
+    const std::string& creative_instance_id,
+    brave_ads::mojom::NewTabPageAdMetricType mojom_ad_metric_type,
+    brave_ads::mojom::NewTabPageAdEventType mojom_ad_event_type) {
+  if (ads_service_) {
+    ads_service_->TriggerNewTabPageAdEvent(
+        placement_id, creative_instance_id, mojom_ad_metric_type,
+        mojom_ad_event_type,
+        base::BindOnce(
+            [](const std::string& creative_instance_id,
+               brave_ads::mojom::NewTabPageAdMetricType mojom_ad_metric_type,
+               brave_ads::mojom::NewTabPageAdEventType mojom_ad_event_type,
+               bool success) {
+              if (!success) {
+                SCOPED_CRASH_KEY_STRING64("Issue50267", "creative_instance_id",
+                                          creative_instance_id);
+                SCOPED_CRASH_KEY_NUMBER("Issue50267", "metric_type",
+                                        static_cast<int>(mojom_ad_metric_type));
+                SCOPED_CRASH_KEY_NUMBER("Issue50267", "event_type",
+                                        static_cast<int>(mojom_ad_event_type));
+                SCOPED_CRASH_KEY_STRING64(
+                    "Issue50267", "failure_reason",
+                    "Failed to trigger new tab page ad event");
+                base::debug::DumpWithoutCrashing();
+              }
+            },
+            creative_instance_id, mojom_ad_metric_type, mojom_ad_event_type));
+  }
 }
 
 void ViewCounterService::UpdateP3AValues() {

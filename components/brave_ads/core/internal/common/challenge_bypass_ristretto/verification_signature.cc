@@ -54,11 +54,6 @@ bool VerificationSignature::operator==(
   return EncodeBase64().value_or("") == other.EncodeBase64().value_or("");
 }
 
-bool VerificationSignature::operator!=(
-    const VerificationSignature& other) const {
-  return !(*this == other);
-}
-
 VerificationSignature VerificationSignature::DecodeBase64(
     const std::string& verification_signature_base64) {
   return VerificationSignature(verification_signature_base64);

@@ -35,7 +35,6 @@ class EthAddress {
   EthAddress(const EthAddress& other);
   ~EthAddress();
   bool operator==(const EthAddress& other) const;
-  bool operator!=(const EthAddress& other) const;
 
   bool IsEmpty() const;
   bool IsValid() const;

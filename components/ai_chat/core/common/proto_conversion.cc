@@ -151,14 +151,13 @@ bool SerializeToolUseEvent(const mojom::ToolUseEventPtr& mojom_event,
   return true;
 }
 
-mojom::SmartModeEntryPtr DeserializeSmartModeEntry(
-    const store::SmartModeEntryProto& proto_entry) {
-  return mojom::SmartModeEntry::New(proto_entry.shortcut(),
-                                    proto_entry.prompt());
+mojom::SkillEntryPtr DeserializeSkillEntry(
+    const store::SkillEntryProto& proto_entry) {
+  return mojom::SkillEntry::New(proto_entry.shortcut(), proto_entry.prompt());
 }
 
-void SerializeSmartModeEntry(const mojom::SmartModeEntryPtr& mojom_entry,
-                             store::SmartModeEntryProto* proto_entry) {
+void SerializeSkillEntry(const mojom::SkillEntryPtr& mojom_entry,
+                         store::SkillEntryProto* proto_entry) {
   CHECK(mojom_entry);
   CHECK(proto_entry);
 

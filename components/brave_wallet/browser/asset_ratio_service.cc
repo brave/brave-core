@@ -198,26 +198,6 @@ void AssetRatioService::SetBaseURLForTest(const GURL& base_url_for_test) {
   base_url_for_test_ = base_url_for_test;
 }
 
-GURL AssetRatioService::GetSardineBuyURL(const std::string& chain_id,
-                                         const std::string& address,
-                                         const std::string& symbol,
-                                         const std::string& amount,
-                                         const std::string& currency_code,
-                                         const std::string& auth_token) {
-  std::string_view sardine_network_name =
-      GetSardineNetworkName(chain_id).value_or(std::string_view());
-  GURL url = GURL(kSardineStorefrontBaseURL);
-  url = net::AppendQueryParameter(url, "address", address);
-  url = net::AppendQueryParameter(url, "network", sardine_network_name);
-  url = net::AppendQueryParameter(url, "asset_type", symbol);
-  url = net::AppendQueryParameter(url, "fiat_amount", amount);
-  url = net::AppendQueryParameter(url, "fiat_currency", currency_code);
-  url = net::AppendQueryParameter(url, "client_token", auth_token);
-  url = net::AppendQueryParameter(url, "fixed_asset_type", symbol);
-  url = net::AppendQueryParameter(url, "fixed_network", sardine_network_name);
-  return url;
-}
-
 // static
 GURL AssetRatioService::GetPriceURL(const std::string& vs_currency) {
   std::string base_url =
@@ -260,31 +240,6 @@ void AssetRatioService::GetBuyUrlV1(mojom::OnRampProvider provider,
         net::AppendQueryParameter(ramp_url, "fiatCurrency", currency_code);
     ramp_url = net::AppendQueryParameter(ramp_url, "hostApiKey", kOnRampID);
     std::move(callback).Run(std::move(ramp_url.spec()), std::nullopt);
-  } else if (provider == mojom::OnRampProvider::kSardine) {
-    auto internal_callback =
-        base::BindOnce(&AssetRatioService::OnGetSardineAuthToken,
-                       weak_ptr_factory_.GetWeakPtr(), chain_id, address,
-                       symbol, amount, currency_code, std::move(callback));
-    GURL sardine_token_url = GURL(kSardineClientTokensURL);
-    const std::string sardine_client_id(SARDINE_CLIENT_ID);
-    const std::string sardine_client_secret(SARDINE_CLIENT_SECRET);
-
-    base::Value::Dict payload_value;
-    payload_value.Set("clientId", sardine_client_id);
-    payload_value.Set("clientSecret", sardine_client_id);
-    std::string payload;
-    base::JSONWriter::Write(payload_value, &payload);
-    base::flat_map<std::string, std::string> request_headers;
-    std::string credentials =
-        absl::StrFormat("%s:%s", sardine_client_id,  // username:password
-                        sardine_client_secret);
-    std::string base64_credentials = base::Base64Encode(credentials);
-    std::string header = absl::StrFormat("Basic %s", base64_credentials);
-    request_headers["Authorization"] = std::move(header);
-    api_request_helper_->Request("POST", sardine_token_url, payload,
-                                 "application/json",
-                                 std::move(internal_callback), request_headers,
-                                 {.auto_retry_on_network_change = true});
   } else if (provider == mojom::OnRampProvider::kTransak) {
     GURL transak_url = GURL(kTransakURL);
     transak_url =
@@ -405,30 +360,6 @@ void AssetRatioService::GetPrice(
       std::move(internal_callback), MakeBraveServicesKeyHeaders(),
       {.auto_retry_on_network_change = true, .enable_cache = true},
       std::move(conversion_callback));
-}
-
-void AssetRatioService::OnGetSardineAuthToken(
-    const std::string& chain_id,
-    const std::string& address,
-    const std::string& symbol,
-    const std::string& amount,
-    const std::string& currency_code,
-    GetBuyUrlV1Callback callback,
-    APIRequestResult api_request_result) {
-  if (!api_request_result.Is2XXResponseCode()) {
-    std::move(callback).Run("", "INTERNAL_SERVICE_ERROR");
-    return;
-  }
-
-  auto auth_token = ParseSardineAuthToken(api_request_result.value_body());
-  if (!auth_token) {
-    std::move(callback).Run("", "INTERNAL_SERVICE_ERROR");
-    return;
-  }
-
-  GURL sardine_buy_url = GetSardineBuyURL(chain_id, address, symbol, amount,
-                                          currency_code, *auth_token);
-  std::move(callback).Run(std::move(sardine_buy_url.spec()), std::nullopt);
 }
 
 void AssetRatioService::GetStripeBuyURL(

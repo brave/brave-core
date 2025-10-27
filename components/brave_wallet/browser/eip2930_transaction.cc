@@ -45,11 +45,6 @@ bool Eip2930Transaction::AccessListItem::operator==(
   return true;
 }
 
-bool Eip2930Transaction::AccessListItem::operator!=(
-    const AccessListItem& item) const {
-  return !operator==(item);
-}
-
 Eip2930Transaction::Eip2930Transaction(const Eip2930Transaction&) = default;
 Eip2930Transaction::Eip2930Transaction(std::optional<uint256_t> nonce,
                                        uint256_t gas_price,

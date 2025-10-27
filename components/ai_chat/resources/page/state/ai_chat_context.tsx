@@ -38,8 +38,8 @@ type AIChatContextInternal = AIChatContextProps & {
   setEditingConversationId: (uuid: string | null) => void
   deletingConversationId: string | null
   setDeletingConversationId: (uuid: string | null) => void
-  smartModeDialog: Mojom.SmartMode | null
-  setSmartModeDialog: (smartMode: Mojom.SmartMode | null) => void
+  skillDialog: Mojom.Skill | null
+  setSkillDialog: (skill: Mojom.Skill | null) => void
 
   showSidebar: boolean
   toggleSidebar: () => void
@@ -67,8 +67,8 @@ export const defaultContext: AIChatContext = {
   setEditingConversationId: () => {},
   deletingConversationId: null,
   setDeletingConversationId: () => {},
-  smartModeDialog: null,
-  setSmartModeDialog: () => {},
+  skillDialog: null,
+  setSkillDialog: () => {},
 
   showSidebar: false,
   toggleSidebar: () => {},
@@ -101,8 +101,7 @@ export function AIChatContextProvider(
   const [deletingConversationId, setDeletingConversationId] = React.useState<
     string | null
   >(null)
-  const [smartModeDialog, setSmartModeDialog] =
-    React.useState<Mojom.SmartMode | null>(null)
+  const [skillDialog, setSkillDialog] = React.useState<Mojom.Skill | null>(null)
   const isSmall = useIsSmall()
   const [showSidebar, setShowSidebar] = React.useState(isSmall)
 
@@ -124,8 +123,8 @@ export function AIChatContextProvider(
     setEditingConversationId,
     deletingConversationId,
     setDeletingConversationId,
-    smartModeDialog,
-    setSmartModeDialog,
+    skillDialog,
+    setSkillDialog,
     showSidebar,
     toggleSidebar: () => setShowSidebar((s) => !s),
     conversationEntriesComponent: props.conversationEntriesComponent,

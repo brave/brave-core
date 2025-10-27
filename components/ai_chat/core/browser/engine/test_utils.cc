@@ -20,7 +20,7 @@ std::vector<mojom::ConversationTurnPtr> GetHistoryWithModifiedReply() {
       "Which show is 'This is the way' from?", std::nullopt /* prompt */,
       std::nullopt /* selected_text */, std::nullopt /* events */,
       base::Time::Now(), std::nullopt /* edits */,
-      std::nullopt /* uploaded_images */, nullptr /* smart_mode */, false,
+      std::nullopt /* uploaded_images */, nullptr /* skill */, false,
       std::nullopt /* model_key */));
 
   std::vector<mojom::ConversationEntryEventPtr> events;
@@ -40,7 +40,7 @@ std::vector<mojom::ConversationTurnPtr> GetHistoryWithModifiedReply() {
       "The Mandalorian.", std::nullopt /* prompt */,
       std::nullopt /* selected_text*/, std::move(modified_events),
       base::Time::Now(), std::nullopt /* edits */,
-      std::nullopt /* uploaded_images */, nullptr /* smart_mode */, false,
+      std::nullopt /* uploaded_images */, nullptr /* skill */, false,
       "chat-basic");
   std::vector<mojom::ConversationTurnPtr> edits;
   edits.push_back(std::move(edit));
@@ -48,14 +48,14 @@ std::vector<mojom::ConversationTurnPtr> GetHistoryWithModifiedReply() {
       "turn-2", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
       "Mandalorian.", std::nullopt /* prompt */,
       std::nullopt /* selected_text*/, std::move(events), base::Time::Now(),
-      std::move(edits), std::nullopt /* uploaded_images */,
-      nullptr /* smart_mode */, false, "chat-basic"));
+      std::move(edits), std::nullopt /* uploaded_images */, nullptr /* skill */,
+      false, "chat-basic"));
   history.push_back(mojom::ConversationTurn::New(
       "turn-3", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       "Is it related to a broader series?", std::nullopt /* prompt */,
       std::nullopt /* selected_text */, std::nullopt /* events */,
       base::Time::Now(), std::nullopt /* edits */,
-      std::nullopt /* uploaded_images */, nullptr /* smart_mode */, false,
+      std::nullopt /* uploaded_images */, nullptr /* skill */, false,
       "chat-basic"));
 
   return history;

@@ -28,7 +28,9 @@ BraveAccountService* BraveAccountServiceFactoryIOS::GetFor(
 }
 
 BraveAccountServiceFactoryIOS::BraveAccountServiceFactoryIOS()
-    : ProfileKeyedServiceFactoryIOS("BraveAccountService") {
+    : ProfileKeyedServiceFactoryIOS("BraveAccountService",
+                                    ServiceCreation::kCreateWithProfile,
+                                    TestingCreation::kNoServiceForTests) {
   CHECK(features::IsBraveAccountEnabled());
 }
 

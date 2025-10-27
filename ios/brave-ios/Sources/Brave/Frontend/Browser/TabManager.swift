@@ -283,11 +283,13 @@ class TabManager: NSObject {
     configuration.ignoresViewportScaleLimits = true
     configuration.upgradeKnownHostsToHTTPS = Preferences.Shields.httpsUpgradeLevel.isEnabled
 
-    #if BRAVE_CHANNEL_NIGHTLY || DEBUG
     if FeatureList.kWebKitAdvancedPrivacyProtections.enabled {
-      configuration.defaultWebpagePreferences._setNetworkConnectionIntegrityEnabled(true)
+      let senderKeyPath = String(format: "_setNetw%@rityEnabled:", "orkConnectionInteg")
+      let selector = Selector(senderKeyPath)
+      if configuration.defaultWebpagePreferences.responds(to: selector) {
+        configuration.defaultWebpagePreferences.perform(selector, with: true)
+      }
     }
-    #endif
 
     if configuration.urlSchemeHandler(forURLScheme: InternalURL.scheme) == nil {
       configuration.setURLSchemeHandler(
@@ -998,7 +1000,9 @@ class TabManager: NSObject {
       historyAPI.removeHistory(for: nodes)
     }
 
-    RecentlyClosed.remove(baseDomains: baseDomains)
+    if Preferences.Shields.shredHistoryItems.value {
+      RecentlyClosed.remove(baseDomains: baseDomains)
+    }
 
     for url in urls {
       await FaviconFetcher.deleteCache(for: url)

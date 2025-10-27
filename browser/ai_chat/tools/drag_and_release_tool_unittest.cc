@@ -32,9 +32,7 @@ class DragAndReleaseToolTest : public ContentAgentToolBaseTest {
     dict.Set("from", from_target.Clone());
     dict.Set("to", to_target.Clone());
 
-    std::string json;
-    base::JSONWriter::Write(dict, &json);
-    return json;
+    return *base::WriteJson(dict);
   }
 
   // Verify drag and release action and tool request creation

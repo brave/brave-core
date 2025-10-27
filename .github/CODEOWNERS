@@ -278,3 +278,9 @@ content_settings_registry.cc @brave/content-settings-reviewers
 
 # new content settings need review
 content_settings_types.mojom @brave/content-settings-reviewers
+
+# Keyed service factories need special attention for browser context handling
+# See docs/keyed_services.md
+*_service_factory.cc @brave/brave-core-owners
+*_service_factory.mm @brave/brave-core-owners
+*_service_factory_ios.mm @brave/brave-core-owners

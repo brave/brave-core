@@ -58,11 +58,6 @@ bool SolanaTransaction::SendOptions::operator==(
          skip_preflight == options.skip_preflight;
 }
 
-bool SolanaTransaction::SendOptions::operator!=(
-    const SolanaTransaction::SendOptions& options) const {
-  return !operator==(options);
-}
-
 // static
 std::optional<SolanaTransaction::SendOptions>
 SolanaTransaction::SendOptions::FromValue(
@@ -196,10 +191,6 @@ bool SolanaTransaction::operator==(const SolanaTransaction& tx) const {
          lamports_ == tx.lamports_ && amount_ == tx.amount_ &&
          send_options_ == tx.send_options_ &&
          tx.fee_estimation_ == fee_estimation_;
-}
-
-bool SolanaTransaction::operator!=(const SolanaTransaction& tx) const {
-  return !operator==(tx);
 }
 
 // Get serialized message bytes and array of signers.

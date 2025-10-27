@@ -10,8 +10,8 @@
 #include "base/check.h"
 #include "base/check_op.h"
 #include "base/debug/crash_logging.h"
-#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
+#include "base/notreached.h"
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
@@ -235,7 +235,7 @@ void DatabaseManager::MigrateFromVersionCallback(int from_version,
     SCOPED_CRASH_KEY_NUMBER("BraveAds", "to_sqlite_schema_version", to_version);
     SCOPED_CRASH_KEY_STRING64("BraveAds", "failure_reason",
                               "Database migration failed");
-    base::debug::DumpWithoutCrashing();
+    DUMP_WILL_BE_NOTREACHED();
 
     BLOG(0, "Failed to migrate database from schema version "
                 << from_version << " to schema version " << to_version);

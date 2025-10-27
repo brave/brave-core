@@ -11,9 +11,9 @@ use scraper::{html::Select, Html, Selector};
 #[cxx::bridge(namespace = "web_discovery")]
 mod ffi {
     pub struct SelectAttributeRequest {
-        /// An optional selector for an element within the current selected element.
-        /// The attribute will be retrieved from the embedded element.
-        /// If not needed, an empty string should be provided.
+        /// An optional selector for an element within the current selected
+        /// element. The attribute will be retrieved from the embedded
+        /// element. If not needed, an empty string should be provided.
         pub sub_selector: String,
         /// Arbitrary ID used for storing the scraped result.
         pub key: String,

@@ -1201,7 +1201,6 @@ interface KeyringServiceObserver {
 
 enum OnRampProvider {
   kRamp = 0,
-  kSardine = 1,
   kTransak = 2,
   kStripe = 3,
   kCoinbase = 4,

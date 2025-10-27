@@ -25,8 +25,7 @@ mojom::CoinType PolkadotTxStateManager::GetCoinType() const {
 
 std::unique_ptr<TxMeta> PolkadotTxStateManager::ValueToTxMeta(
     const base::Value::Dict& value) {
-  NOTIMPLEMENTED_LOG_ONCE();
-  return std::make_unique<PolkadotTxMeta>();
+  return nullptr;
 }
 
 }  // namespace brave_wallet

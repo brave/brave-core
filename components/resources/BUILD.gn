@@ -6,7 +6,6 @@
 import("//brave/components/ai_rewriter/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
-import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//brave/resources/brave_grit.gni")
@@ -44,7 +43,6 @@ brave_grit("static_resources") {
   defines = [
     "enable_brave_vpn=$enable_brave_vpn",
     "enable_playlist_webui=$enable_playlist_webui",
-    "enable_playlist=$enable_playlist",
     "enable_speedreader=$enable_speedreader",
   ]
 
@@ -156,7 +154,6 @@ brave_grit("strings") {
     "enable_speedreader=$enable_speedreader",
     "enable_tor=$enable_tor",
     "enable_brave_vpn=$enable_brave_vpn",
-    "enable_playlist=$enable_playlist",
   ]
 
   foreach(locale, all_chrome_locales) {

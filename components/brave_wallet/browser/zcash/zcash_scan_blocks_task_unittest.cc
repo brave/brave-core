@@ -89,6 +89,7 @@ class ZCashScanBlocksTaskTest : public testing::Test {
         .WillByDefault(
             [](const std::string& chain_id,
                ZCashRpc::GetLatestBlockCallback callback) {
+              EXPECT_EQ(chain_id, mojom::kZCashMainnet);
               std::move(callback).Run(zcash::mojom::BlockID::New(
                   kChainTipHeight, std::vector<uint8_t>({})));
             });
@@ -97,6 +98,7 @@ class ZCashScanBlocksTaskTest : public testing::Test {
         .WillByDefault(
             [](const std::string& chain_id, zcash::mojom::BlockIDPtr block,
                ZCashRpc::GetTreeStateCallback callback) {
+              EXPECT_EQ(chain_id, mojom::kZCashMainnet);
               // Valid tree state
               auto tree_state = zcash::mojom::TreeState::New(
                   chain_id, block->height, "aabb", 0, "", "");
@@ -107,6 +109,7 @@ class ZCashScanBlocksTaskTest : public testing::Test {
         .WillByDefault(
             [](const std::string& chain_id, uint32_t from, uint32_t to,
                ZCashRpc::GetCompactBlocksCallback callback) {
+              EXPECT_EQ(chain_id, mojom::kZCashMainnet);
               std::vector<zcash::mojom::CompactBlockPtr> blocks;
               for (uint32_t i = from; i <= to; i++) {
                 auto chain_metadata = zcash::mojom::ChainMetadata::New();
@@ -486,6 +489,7 @@ TEST_F(ZCashScanBlocksTaskTest, PartialScanningDueError) {
       .WillByDefault(
           [](const std::string& chain_id, uint32_t from, uint32_t to,
              ZCashRpc::GetCompactBlocksCallback callback) {
+            EXPECT_EQ(chain_id, mojom::kZCashMainnet);
             std::vector<zcash::mojom::CompactBlockPtr> blocks;
             // Blocks after the second batch are failing
             if (from > kNu5BlockUpdate + kExpectedBatchSize + 10) {
@@ -545,6 +549,7 @@ TEST_F(ZCashScanBlocksTaskTest, ChainTipMismatch) {
       .WillByDefault(
           [](const std::string& chain_id,
              ZCashRpc::GetLatestBlockCallback callback) {
+            EXPECT_EQ(chain_id, mojom::kZCashMainnet);
             std::move(callback).Run(zcash::mojom::BlockID::New(
                 kChainTipHeight - 200, std::vector<uint8_t>({})));
           });
@@ -572,6 +577,7 @@ TEST_F(ZCashScanBlocksTaskTest, NetworkError_LatestBlock) {
   ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
       .WillByDefault([](const std::string& chain_id,
                         ZCashRpc::GetLatestBlockCallback callback) {
+        EXPECT_EQ(chain_id, mojom::kZCashMainnet);
         std::move(callback).Run(base::unexpected("error"));
       });
 
@@ -598,6 +604,7 @@ TEST_F(ZCashScanBlocksTaskTest, NetworkError_CompactBlocks) {
   ON_CALL(zcash_rpc(), GetCompactBlocks(_, _, _, _))
       .WillByDefault([](const std::string& chain_id, uint32_t from, uint32_t to,
                         ZCashRpc::GetCompactBlocksCallback callback) {
+        EXPECT_EQ(chain_id, mojom::kZCashMainnet);
         std::move(callback).Run(base::unexpected("error"));
       });
 
@@ -627,6 +634,7 @@ TEST_F(ZCashScanBlocksTaskTest, NetworkError_TreeState) {
       .WillByDefault([](const std::string& chain_id,
                         zcash::mojom::BlockIDPtr block,
                         ZCashRpc::GetTreeStateCallback callback) {
+        EXPECT_EQ(chain_id, mojom::kZCashMainnet);
         std::move(callback).Run(base::unexpected("error"));
       });
 

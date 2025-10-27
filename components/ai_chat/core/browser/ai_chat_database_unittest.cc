@@ -114,9 +114,9 @@ TEST_P(AIChatDatabaseTest, AddAndGetConversationAndEntries) {
     auto history = CreateSampleChatHistory(1u);
     // Edit the prompt to show that the prompt is persisted
     history[0]->prompt = "first entry prompt";
-    // Add smart mode data to test smart mode persistence
-    history[0]->smart_mode =
-        mojom::SmartModeEntry::New("test", "This is a test smart mode prompt");
+    // Add skill data to test skill persistence
+    history[0]->skill =
+        mojom::SkillEntry::New("test", "This is a test skill prompt");
 
     // Create the conversation metadata which gets persisted
     // when the first entry is asked to be persisted.
@@ -156,11 +156,10 @@ TEST_P(AIChatDatabaseTest, AddAndGetConversationAndEntries) {
     mojom::ConversationArchivePtr result = db_->GetConversationData(uuid);
     ExpectConversationHistoryEquals(FROM_HERE, result->entries, history);
 
-    // Verify smart mode data was persisted correctly
-    ASSERT_TRUE(result->entries[0]->smart_mode);
-    EXPECT_EQ(result->entries[0]->smart_mode->shortcut, "test");
-    EXPECT_EQ(result->entries[0]->smart_mode->prompt,
-              "This is a test smart mode prompt");
+    // Verify skill data was persisted correctly
+    ASSERT_TRUE(result->entries[0]->skill);
+    EXPECT_EQ(result->entries[0]->skill->shortcut, "test");
+    EXPECT_EQ(result->entries[0]->skill->prompt, "This is a test skill prompt");
 
     EXPECT_EQ(result->associated_content.size(), has_content ? 1u : 0u);
     if (has_content) {
@@ -206,7 +205,7 @@ TEST_P(AIChatDatabaseTest, AddAndGetConversationAndEntries) {
           mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
           "edited query 1", std::nullopt, std::nullopt, std::nullopt,
           base::Time::Now() + base::Minutes(121), std::nullopt, std::nullopt,
-          nullptr /* smart_mode */, false, std::nullopt));
+          nullptr /* skill */, false, std::nullopt));
       EXPECT_TRUE(db_->DeleteConversationEntry(last_query->uuid.value()));
       EXPECT_TRUE(db_->AddConversationEntry(uuid, last_query->Clone()));
     }
@@ -223,7 +222,7 @@ TEST_P(AIChatDatabaseTest, AddAndGetConversationAndEntries) {
           mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
           "edited query 2", std::nullopt, std::nullopt, std::nullopt,
           base::Time::Now() + base::Minutes(122), std::nullopt, std::nullopt,
-          nullptr /* smart_mode */, false, std::nullopt));
+          nullptr /* skill */, false, std::nullopt));
       EXPECT_TRUE(db_->DeleteConversationEntry(last_query->uuid.value()));
       EXPECT_TRUE(db_->AddConversationEntry(uuid, last_query->Clone()));
     }
@@ -812,6 +811,7 @@ TEST_P(AIChatDatabaseTest, AddOrUpdateAssociatedContent) {
   expected_contents[0] = "Second contents";
   metadata->associated_content[0]->content_used_percentage = 50;
 
+  associated_content.clear();
   associated_content.push_back(metadata->associated_content[0]->Clone());
   EXPECT_TRUE(db_->AddOrUpdateAssociatedContent(
       uuid, std::move(associated_content), expected_contents));
@@ -867,6 +867,7 @@ TEST_P(AIChatDatabaseTest, AddOrUpdateAssociatedContent_MultiContent) {
   expected_contents[0] = "New first contents";
   metadata->associated_content[1]->title = "Updated title!";
 
+  associated_content.clear();
   associated_content.push_back(metadata->associated_content[0]->Clone());
   associated_content.push_back(metadata->associated_content[1]->Clone());
 
@@ -955,6 +956,7 @@ TEST_P(AIChatDatabaseTest, DeleteAssociatedWebContent) {
       0, 0, false, std::move(associated_content));
 
   auto history_second = CreateSampleChatHistory(1u, -1);
+  associated_content.clear();
   associated_content.push_back(mojom::AssociatedContent::New(
       "second-content", mojom::ContentType::PageContent, "page title", 2,
       page_url, 62, history_second.front()->uuid.value()));
@@ -1399,14 +1401,15 @@ TEST_P(AIChatDatabaseMigrationTest, MigrationToVCurrent) {
   }
 }
 
-TEST_P(AIChatDatabaseMigrationTest, Migration_Version7To8_SmartModeColumn) {
+TEST_P(AIChatDatabaseMigrationTest, Migration_Version7To8_SkillColumn) {
   // Skip this test if we're already at the target version or higher
   if (version() >= 8) {
     return;
   }
 
   // This test verifies that migration from version 7 to 8 correctly adds
-  // the smart_mode_data column to the conversation_entry table.
+  // the smart_mode_data column (backward compability column name for skill
+  // feature) to the conversation_entry table.
 
   // Create and persist a conversation entry before migration
   auto history = CreateSampleChatHistory(1u);
@@ -1427,27 +1430,27 @@ TEST_P(AIChatDatabaseMigrationTest, Migration_Version7To8_SmartModeColumn) {
 
   // After migration (which happens automatically when the test database
   // is initialized), verify that entries can still be retrieved correctly
-  // and that the smart_mode field is properly handled (should be null
+  // and that the skill field is properly handled (should be null
   // for pre-migration data)
-  EXPECT_FALSE(conversation_data->entries[0]->smart_mode);
+  EXPECT_FALSE(conversation_data->entries[0]->skill);
 
-  // Test that new entries can be added with smart mode data after migration
+  // Test that new entries can be added with skill data after migration
   auto new_history = CreateSampleChatHistory(1u);
-  new_history[0]->smart_mode =
-      mojom::SmartModeEntry::New("summarize", "Please summarize this content");
+  new_history[0]->skill =
+      mojom::SkillEntry::New("summarize", "Please summarize this content");
 
   EXPECT_TRUE(db_->AddConversationEntry(uuid, new_history[0]->Clone()));
 
-  // Verify the new entry was stored with smart mode data
+  // Verify the new entry was stored with skill data
   conversation_data = db_->GetConversationData(uuid);
   ASSERT_TRUE(conversation_data);
   EXPECT_EQ(conversation_data->entries.size(), 2u);
 
-  // Check that the new entry has the smart mode data
+  // Check that the new entry has the skill data
   auto& latest_entry = conversation_data->entries[1];
-  ASSERT_TRUE(latest_entry->smart_mode);
-  EXPECT_EQ(latest_entry->smart_mode->shortcut, "summarize");
-  EXPECT_EQ(latest_entry->smart_mode->prompt, "Please summarize this content");
+  ASSERT_TRUE(latest_entry->skill);
+  EXPECT_EQ(latest_entry->skill->shortcut, "summarize");
+  EXPECT_EQ(latest_entry->skill->prompt, "Please summarize this content");
 }
 
 }  // namespace ai_chat

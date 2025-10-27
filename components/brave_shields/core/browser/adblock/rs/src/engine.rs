@@ -5,16 +5,18 @@
 
 use std::collections::HashSet;
 use std::str::Utf8Error;
+use std::sync::Arc;
 
+use crate::resource_storage::BraveCoreResourceStorage;
 use adblock::lists::FilterSet as InnerFilterSet;
-use adblock::resources::{MimeType, Resource, ResourceType};
+use adblock::resources::{InMemoryResourceStorage, Resource};
 use adblock::url_parser::ResolvesDomain;
 use adblock::Engine as InnerEngine;
 use cxx::{let_cxx_string, CxxString, CxxVector};
 
 use crate::ffi::{
-    resolve_domain_position, BlockerResult, BoxEngineResult, ContentBlockingRulesResult,
-    FilterListMetadata, RegexDebugInfo, RegexManagerDiscardPolicy, UnitResult, VecStringResult,
+    resolve_domain_position, BlockerResult, BoxEngineResult, ContentBlockingRulesResult, DebugInfo,
+    FilterListMetadata, RegexManagerDiscardPolicy, VecStringResult,
 };
 use crate::filter_set::FilterSet;
 use crate::result::InternalError;
@@ -33,7 +35,7 @@ impl Default for Box<Engine> {
 }
 
 pub fn new_engine() -> Box<Engine> {
-    Box::new(Engine { engine: InnerEngine::new(true) })
+    Box::new(Engine { engine: InnerEngine::default() })
 }
 
 pub fn engine_with_rules(rules: &CxxVector<u8>) -> BoxEngineResult {
@@ -183,47 +185,28 @@ impl Engine {
             .unwrap_or_default()
     }
 
-    /// A 0-length vector will be returned if there was any issue during serialization. Be sure to
-    /// handle that case.
+    /// A 0-length vector will be returned if there was any issue during
+    /// serialization. Be sure to handle that case.
     pub fn serialize(&self) -> Vec<u8> {
-        match self.engine.serialize() {
-            Ok(v) => v,
-            Err(_e) => vec![],
-        }
+        self.engine.serialize()
     }
 
     pub fn deserialize(&mut self, serialized: &CxxVector<u8>) -> bool {
         self.engine.deserialize(serialized.as_slice()).is_ok()
     }
 
-    pub fn add_resource(
-        &mut self,
-        name: &CxxString,
-        content_type: &CxxString,
-        data: &CxxString,
-    ) -> UnitResult {
-        || -> Result<(), InternalError> {
-            let resource = Resource {
-                name: name.to_str()?.to_string(),
-                aliases: vec![],
-                kind: ResourceType::Mime(MimeType::from(content_type.to_str()?)),
-                content: data.to_string(),
-                dependencies: vec![],
-                // user-added resources require full permissions
-                permission: adblock::resources::PermissionMask::from_bits(0b11111111),
-            };
-            Ok(self.engine.add_resource(resource)?)
-        }()
-        .into()
-    }
-
+    // TODO(https://github.com/brave/brave-browser/issues/50368): remove this method, expose storage API.
     pub fn use_resources(&mut self, resources_json: &CxxString) -> bool {
         resources_json
             .to_str()
             .ok()
             .and_then(|resources_json| serde_json::from_str::<Vec<Resource>>(resources_json).ok())
             .and_then(|resources| {
-                self.engine.use_resources(resources);
+                let in_memory_storage = InMemoryResourceStorage::from_resources(resources);
+                let shared_storage = Arc::new(in_memory_storage);
+                let bc_storage = BraveCoreResourceStorage { shared_storage };
+
+                self.engine.use_resource_storage(bc_storage);
                 Some(())
             })
             .is_some()
@@ -250,8 +233,8 @@ impl Engine {
         .into()
     }
 
-    pub fn get_regex_debug_info(&self) -> RegexDebugInfo {
-        self.engine.get_regex_debug_info().into()
+    pub fn get_debug_info(&self) -> DebugInfo {
+        self.engine.get_debug_info().into()
     }
 
     pub fn discard_regex(&mut self, regex_id: u64) {

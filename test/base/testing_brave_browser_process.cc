@@ -13,6 +13,7 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
+#include "brave/components/brave_origin/brave_origin_policy_manager.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -44,7 +45,10 @@ void TestingBraveBrowserProcess::DeleteInstance() {
 }
 
 // static
-void TestingBraveBrowserProcess::StartTearDown() {}
+void TestingBraveBrowserProcess::StartTearDown() {
+  // Reset BraveOriginPolicyManager to prevent dangling pointer to local_state_.
+  brave_origin::BraveOriginPolicyManager::GetInstance()->Shutdown();
+}
 
 // static
 void TestingBraveBrowserProcess::TearDownAndDeleteInstance() {

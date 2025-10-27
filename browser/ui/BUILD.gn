@@ -58,6 +58,7 @@ source_set("ui") {
     "//brave/browser/brave_origin",
     "//brave/browser/brave_rewards",
     "//brave/browser/skus",
+    "//brave/browser/ui/page_info",
     "//brave/browser/ui/webui/brave_account",
     "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/brave_origin",
@@ -350,11 +351,13 @@ source_set("ui") {
       "//chrome/browser/ui/prefs",
       "//chrome/browser/ui/profiles",
       "//chrome/browser/ui/tabs:tab_menu",
+      "//chrome/browser/ui/thumbnails",
       "//chrome/browser/ui/views/page_action",
       "//chrome/browser/ui/views/side_panel",
       "//chrome/browser/ui/webui/searchbox",
       "//chrome/browser/ui/webui/settings",
       "//chrome/browser/ui/webui/side_panel/reading_list:mojo_bindings",
+      "//chrome/browser/ui/webui/util",
       "//chrome/browser/ui/webui_browser:feature_flag",
       "//chrome/common:channel_info",
       "//components/bookmarks/common",
@@ -836,6 +839,7 @@ source_set("ui") {
     "//brave/components/ntp_background_images/common",
     "//brave/components/p3a",
     "//brave/components/p3a_utils",
+    "//brave/components/playlist/core/common",
     "//brave/components/query_filter",
     "//brave/components/resources:static_resources",
     "//brave/components/services/bat_ads/public/interfaces",
@@ -948,6 +952,7 @@ source_set("ui") {
     deps += [
       "//brave/browser/ui/views/brave_ads",
       "//brave/browser/ui/views/brave_tooltips",
+      "//brave/browser/ui/views/page_info",
       "//ui/views/controls/webview",
     ]
   }
@@ -1318,10 +1323,6 @@ source_set("ui") {
       "//brave/components/brave_wallet_ui/page/screens/send/android:brave_wallet_send_page_generated",
       "//brave/components/brave_wallet_ui/page/screens/swap/android:brave_wallet_swap_page_generated",
     ]
-  }
-
-  if (enable_playlist) {
-    deps += [ "//brave/components/playlist/core/common" ]
   }
 
   if (enable_playlist_webui) {

@@ -804,10 +804,12 @@
 -NTPTilesForSupervisedUsersTest.LoadURL
 -PasskeyUpgradeConfirmationBubbleTest.InvokeUi_default
 -PasswordStatusCheckServiceBaseTest.CheckTimeUpdatedAfterRunScheduledInThePast
+-PriceTrackingBubbleDialogViewBrowserTest.*
 -PriceTrackingEmailDialogViewBrowserTest.*
 -PowerBookmarkBubbleViewBrowserTest.InvokeUi_bookmark_details_on_trackable_product
 -ProfileMenuClickTest_*.*
 -ProfileMenuClickTest_*.*/*
+-ShoppingUiHandlerDelegateBrowserTest.*
 -SigninInterceptFirstRunExperienceDialogWithUnoEnabledBrowserTest.DeclineSync
 -SigninInterceptFirstRunExperienceDialogWithUnoParamBrowserTest.*
 -SigninPromoTabHelperTest.CallAddressMoveCallbackAfterReauthenticationFromTab
@@ -1490,8 +1492,9 @@
 -PersonalizedHintsFetcherBrowserTest.UserSignedIn
 -PlusAddressContextMenuManagerTest.*
 -PlusAddressCreationDialogTest.*
--ProfileManagementDisclaimerServiceBrowserFocusBrowserTest.Test/Managed_EnforcedByPolicy_NewProfile*
--ProfileManagementDisclaimerServiceBrowserFocusBrowserTest.Test/Managed_NoPolicies_NewProfile
+-ProfileManagementDisclaimerServiceBrowserFocusBrowserTest.Test/*
+-ProfileManagementDisclaimerServiceBrowserTest.CachingFirstFailureRetry
+-ProfileManagementDisclaimerServiceBrowserTest.SuccessCaching
 -ProfileManagementDisclaimerServiceCachingBrowserTest.SuccessCaching
 -ProfileManagementDisclaimerServiceCachingBrowserTest.Test
 -ProfileManagementDisclaimerServiceSigninBrowserTest.Test/*
@@ -2478,10 +2481,6 @@
 -ExternalInstallErrorTest.InitialPreinstallFallbackTitleWhenIdNotListed
 -ExternalInstallErrorTest.InitialPreinstallUsesProviderInTitle
 
-# This test fails because we override location_bar_model::GetSecurityVectorIcon
-# to return a non-standard icon
--WebUIBrowserTest.NavigatePage
-
 # Upstream and Brave vertical tab implementations must not be enabled
 # simulataneously (see https://github.com/brave/brave-browser/issues/48373)
 -VerticalSplitTabViewTest.ProposedLayout_*
@@ -2505,11 +2504,16 @@
 -BrowserViewTest.AvoidUnnecessaryVisibilityChanges
 -BrowserViewTest.ScrimForBrowserWindowModal
 
+# This test fails because it requires a mojom interface which is bound in Brave
+# but not the upstream tests
+-WebUIBrowserTest.NavigatePage
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestPolicyEnabled.*
 -AdsPageLoadMetricsObserverBrowserTest.*
 -AdsPageLoadMetricsObserverSurfaceBrowserTest.DetectedAsAd/*
 -All/AmpPageLoadMetricsBrowserTest.*
+-All/BrowsingDataRemoverBrowserTestP.BrowserContextDestructionVsCookieRemoval/kLastHour
 -All/BrowsingDataRemoverBrowserTestP.CookieIncognitoDeletion/*
 -All/ClickToCallPolicyTest.*
 -All/ClientHintsBrowserTestForBlockAcceptClientHintsExperiment.Block/*
@@ -2692,6 +2696,7 @@
 -EventPage/DeclarativeNetRequestLazyApiTest.TestMatchOutcome/0
 -EventPage/ExtensionBackForwardCacheBrowserTest.ChromeRuntimeConnectUsageInIframeWithIframeNavigation/0
 -EventPage/ExtensionBackForwardCacheBrowserTest.ChromeTabsConnectWithMultipleReceivers/0
+-EventPage/ExtensionBackForwardCacheBrowserTest.MessageSentToCachedIdFails/0
 -EventPage/ExtensionContextMenuLazyTest.*
 -EventPage/ExtensionPreferenceApiTest.*
 -ExitTypeServiceTest.*
@@ -3248,8 +3253,6 @@
 -WebstoreReinstallerItemSnippetsBrowserTest.TestWebstoreReinstall
 -WebUIBrowserAsyncTest.*
 -WebUIBrowserExpectFailTest.*
-# Fails it requires a mojom interface which is bound in Brave but not the upstream tests
--WebUIBrowserTest.NavigatePage
 -WebUICoverageTest.*
 -WebUIJSErrorReportingTest.*
 -WebUiNtpBrowserTest.*

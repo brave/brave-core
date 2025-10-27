@@ -176,7 +176,7 @@ bool AdBlockEngine::TagExists(const std::string& tag) {
 
 base::Value::Dict AdBlockEngine::GetDebugInfo() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  const auto debug_info_struct = ad_block_client_->get_regex_debug_info();
+  const auto debug_info_struct = ad_block_client_->get_debug_info();
   base::Value::List regex_list;
   for (const auto& regex_entry : debug_info_struct.regex_data) {
     base::Value::Dict regex_info;

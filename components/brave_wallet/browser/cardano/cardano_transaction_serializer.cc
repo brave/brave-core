@@ -12,6 +12,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/numerics/checked_math.h"
 #include "base/numerics/safe_conversions.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_transaction.h"
 #include "brave/components/brave_wallet/browser/internal/hd_key_common.h"
@@ -163,9 +164,11 @@ std::array<uint8_t, kCardanoTxHashSize> CardanoTransactionSerializer::GetTxHash(
 uint64_t CardanoTransactionSerializer::CalcMinTransactionFee(
     const CardanoTransaction& tx,
     const cardano_rpc::EpochParameters& epoch_parameters) {
-  uint64_t tx_size = CalcTransactionSize(tx);
-  return tx_size * epoch_parameters.min_fee_coefficient +
-         epoch_parameters.min_fee_constant;
+  base::CheckedNumeric<uint64_t> tx_size = CalcTransactionSize(tx);
+  base::CheckedNumeric<uint64_t> fee =
+      tx_size * epoch_parameters.min_fee_coefficient +
+      epoch_parameters.min_fee_constant;
+  return fee.ValueOrDie();
 }
 
 }  // namespace brave_wallet

@@ -412,7 +412,6 @@ void BraveRewardsNativeWorker::RemovePublisherFromMap(JNIEnv* env,
 
 base::android::ScopedJavaLocalRef<jstring>
 BraveRewardsNativeWorker::GetWalletBalance(JNIEnv* env) {
-  std::string json_balance;
   base::Value::Dict root;
   root.Set("total", balance_.total);
 
@@ -421,9 +420,9 @@ BraveRewardsNativeWorker::GetWalletBalance(JNIEnv* env) {
     json_wallets.Set(item.first, item.second);
   }
   root.SetByDottedPath("wallets", std::move(json_wallets));
-  base::JSONWriter::Write(std::move(root), &json_balance);
 
-  return base::android::ConvertUTF8ToJavaString(env, json_balance);
+  return base::android::ConvertUTF8ToJavaString(
+      env, base::WriteJson(root).value_or(""));
 }
 
 base::android::ScopedJavaLocalRef<jstring>
@@ -830,7 +829,7 @@ void BraveRewardsNativeWorker::onPublisherBanner(
     dict.Set("links", std::move(links));
 
     dict.Set("status", static_cast<int32_t>(banner->status));
-    base::JSONWriter::Write(dict, &json_banner_info);
+    json_banner_info = base::WriteJson(dict).value_or("");
   }
   JNIEnv* env = base::android::AttachCurrentThread();
   Java_BraveRewardsNativeWorker_onPublisherBanner(
@@ -853,7 +852,7 @@ void BraveRewardsNativeWorker::OnGetExternalWallet(
     dict.Set("type", brave_rewards_service_->GetExternalWalletType());
     dict.Set("user_name", "");
     dict.Set("account_url", "");
-    base::JSONWriter::Write(dict, &json_wallet);
+    json_wallet = base::WriteJson(dict).value_or("");
   } else {
     base::Value::Dict dict;
     dict.Set("token", wallet->token);
@@ -864,7 +863,7 @@ void BraveRewardsNativeWorker::OnGetExternalWallet(
     dict.Set("type", wallet->type);
     dict.Set("user_name", wallet->user_name);
     dict.Set("account_url", wallet->account_url);
-    base::JSONWriter::Write(dict, &json_wallet);
+    json_wallet = base::WriteJson(dict).value_or("");
   }
   JNIEnv* env = base::android::AttachCurrentThread();
   Java_BraveRewardsNativeWorker_onGetExternalWallet(
@@ -892,17 +891,6 @@ void BraveRewardsNativeWorker::OnExternalWalletReconnected() {
   JNIEnv* env = base::android::AttachCurrentThread();
   Java_BraveRewardsNativeWorker_onExternalWalletReconnected(
       env, weak_java_brave_rewards_native_worker_.get(env));
-}
-
-std::string BraveRewardsNativeWorker::StdStrStrMapToJsonString(
-    const base::flat_map<std::string, std::string>& args) {
-    std::string json_args;
-    base::Value::Dict dict;
-    for (const auto & item : args) {
-      dict.Set(item.first, item.second);
-    }
-    base::JSONWriter::Write(dict, &json_args);
-    return json_args;
 }
 
 void BraveRewardsNativeWorker::RefreshPublisher(

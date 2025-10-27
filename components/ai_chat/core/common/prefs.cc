@@ -23,12 +23,12 @@ namespace ai_chat::prefs {
 
 namespace {
 
-// Helper function to convert a dictionary to SmartMode
-mojom::SmartModePtr SmartModeDictToStruct(const std::string& id,
-                                          const base::Value::Dict& mode_dict) {
-  const std::string* shortcut = mode_dict.FindString("shortcut");
-  const std::string* prompt = mode_dict.FindString("prompt");
-  const std::string* model = mode_dict.FindString("model");
+// Helper function to convert a dictionary to Skill
+mojom::SkillPtr SkillDictToStruct(const std::string& id,
+                                  const base::Value::Dict& skill_dict) {
+  const std::string* shortcut = skill_dict.FindString("shortcut");
+  const std::string* prompt = skill_dict.FindString("prompt");
+  const std::string* model = skill_dict.FindString("model");
 
   if (!shortcut || !prompt) {
     return nullptr;
@@ -36,35 +36,35 @@ mojom::SmartModePtr SmartModeDictToStruct(const std::string& id,
 
   // Parse timestamps using base::ValueToTime
   base::Time created_time, last_used;
-  if (const base::Value* created_time_value = mode_dict.Find("created_time")) {
+  if (const base::Value* created_time_value = skill_dict.Find("created_time")) {
     auto parsed_time = base::ValueToTime(*created_time_value);
     if (parsed_time) {
       created_time = *parsed_time;
     }
   }
-  if (const base::Value* last_used_value = mode_dict.Find("last_used")) {
+  if (const base::Value* last_used_value = skill_dict.Find("last_used")) {
     auto parsed_time = base::ValueToTime(*last_used_value);
     if (parsed_time) {
       last_used = *parsed_time;
     }
   }
 
-  return mojom::SmartMode::New(
-      id, *shortcut, *prompt, model ? std::make_optional(*model) : std::nullopt,
-      created_time, last_used);
+  return mojom::Skill::New(id, *shortcut, *prompt,
+                           model ? std::make_optional(*model) : std::nullopt,
+                           created_time, last_used);
 }
 
-// Helper function to convert SmartMode to dictionary
-base::Value::Dict SmartModeStructToDict(const mojom::SmartModePtr& smart_mode) {
-  base::Value::Dict mode_dict;
-  mode_dict.Set("shortcut", smart_mode->shortcut);
-  mode_dict.Set("prompt", smart_mode->prompt);
-  if (smart_mode->model) {
-    mode_dict.Set("model", *smart_mode->model);
+// Helper function to convert Skill to dictionary
+base::Value::Dict SkillStructToDict(const mojom::SkillPtr& skill) {
+  base::Value::Dict skill_dict;
+  skill_dict.Set("shortcut", skill->shortcut);
+  skill_dict.Set("prompt", skill->prompt);
+  if (skill->model) {
+    skill_dict.Set("model", *skill->model);
   }
-  mode_dict.Set("created_time", base::TimeToValue(smart_mode->created_time));
-  mode_dict.Set("last_used", base::TimeToValue(smart_mode->last_used));
-  return mode_dict;
+  skill_dict.Set("created_time", base::TimeToValue(skill->created_time));
+  skill_dict.Set("last_used", base::TimeToValue(skill->last_used));
+  return skill_dict;
 }
 
 bool IsValidAndUniqueShortcut(const PrefService& prefs,
@@ -82,11 +82,11 @@ bool IsValidAndUniqueShortcut(const PrefService& prefs,
   }
 
   // Check for duplicates
-  const base::Value::Dict& smart_modes_dict =
-      prefs.GetDict(prefs::kBraveAIChatSmartModes);
+  const base::Value::Dict& skills_dict =
+      prefs.GetDict(prefs::kBraveAIChatSkills);
 
-  for (const auto [id, mode_value] : smart_modes_dict) {
-    if (!mode_value.is_dict()) {
+  for (const auto [id, skill_value] : skills_dict) {
+    if (!skill_value.is_dict()) {
       continue;
     }
 
@@ -96,7 +96,7 @@ bool IsValidAndUniqueShortcut(const PrefService& prefs,
     }
 
     const std::string* shortcut_str =
-        mode_value.GetDict().FindString("shortcut");
+        skill_value.GetDict().FindString("shortcut");
     if (shortcut_str && shortcut == *shortcut_str) {
       return false;  // Duplicate found
     }
@@ -242,44 +242,43 @@ std::optional<base::Value::Dict> GetUserMemoryDictFromPrefs(
   return user_memory;
 }
 
-std::vector<mojom::SmartModePtr> GetSmartModesFromPrefs(
-    const PrefService& prefs) {
-  const base::Value::Dict& smart_modes_dict =
-      prefs.GetDict(prefs::kBraveAIChatSmartModes);
+std::vector<mojom::SkillPtr> GetSkillsFromPrefs(const PrefService& prefs) {
+  const base::Value::Dict& skills_dict =
+      prefs.GetDict(prefs::kBraveAIChatSkills);
 
-  std::vector<mojom::SmartModePtr> smart_modes;
+  std::vector<mojom::SkillPtr> skills;
 
-  for (const auto [id, mode_value] : smart_modes_dict) {
-    if (!mode_value.is_dict()) {
+  for (const auto [id, skill_value] : skills_dict) {
+    if (!skill_value.is_dict()) {
       continue;
     }
 
-    auto smart_mode = SmartModeDictToStruct(id, mode_value.GetDict());
-    if (smart_mode) {
-      smart_modes.push_back(std::move(smart_mode));
+    auto skill = SkillDictToStruct(id, skill_value.GetDict());
+    if (skill) {
+      skills.push_back(std::move(skill));
     }
   }
 
-  return smart_modes;
+  return skills;
 }
 
-mojom::SmartModePtr GetSmartModeFromPrefs(const PrefService& prefs,
-                                          const std::string& id) {
-  const base::Value::Dict& smart_modes_dict =
-      prefs.GetDict(prefs::kBraveAIChatSmartModes);
+mojom::SkillPtr GetSkillFromPrefs(const PrefService& prefs,
+                                  const std::string& id) {
+  const base::Value::Dict& skills_dict =
+      prefs.GetDict(prefs::kBraveAIChatSkills);
 
-  const base::Value* mode_value = smart_modes_dict.Find(id);
-  if (!mode_value || !mode_value->is_dict()) {
+  const base::Value* skill_value = skills_dict.Find(id);
+  if (!skill_value || !skill_value->is_dict()) {
     return nullptr;
   }
 
-  return SmartModeDictToStruct(id, mode_value->GetDict());
+  return SkillDictToStruct(id, skill_value->GetDict());
 }
 
-void AddSmartModeToPrefs(const std::string& shortcut,
-                         const std::string& prompt,
-                         const std::optional<std::string>& model,
-                         PrefService& prefs) {
+void AddSkillToPrefs(const std::string& shortcut,
+                     const std::string& prompt,
+                     const std::optional<std::string>& model,
+                     PrefService& prefs) {
   if (prompt.empty() || !IsValidAndUniqueShortcut(prefs, shortcut, "")) {
     return;
   }
@@ -287,55 +286,54 @@ void AddSmartModeToPrefs(const std::string& shortcut,
   std::string id = base::Uuid::GenerateRandomV4().AsLowercaseString();
   base::Time now = base::Time::Now();
 
-  auto smart_mode =
-      mojom::SmartMode::New(id, shortcut, prompt, model, now, now);
+  auto skill = mojom::Skill::New(id, shortcut, prompt, model, now, now);
 
-  ScopedDictPrefUpdate update(&prefs, prefs::kBraveAIChatSmartModes);
-  base::Value::Dict& smart_modes_dict = update.Get();
+  ScopedDictPrefUpdate update(&prefs, prefs::kBraveAIChatSkills);
+  base::Value::Dict& skills_dict = update.Get();
 
-  smart_modes_dict.Set(id, SmartModeStructToDict(smart_mode));
+  skills_dict.Set(id, SkillStructToDict(skill));
 }
 
-void UpdateSmartModeInPrefs(const std::string& id,
-                            const std::string& shortcut,
-                            const std::string& prompt,
-                            const std::optional<std::string>& model,
-                            PrefService& prefs) {
+void UpdateSkillInPrefs(const std::string& id,
+                        const std::string& shortcut,
+                        const std::string& prompt,
+                        const std::optional<std::string>& model,
+                        PrefService& prefs) {
   if (prompt.empty() || !IsValidAndUniqueShortcut(prefs, shortcut, id)) {
     return;
   }
 
-  ScopedDictPrefUpdate update(&prefs, prefs::kBraveAIChatSmartModes);
-  base::Value::Dict& smart_modes_dict = update.Get();
+  ScopedDictPrefUpdate update(&prefs, prefs::kBraveAIChatSkills);
+  base::Value::Dict& skills_dict = update.Get();
 
-  base::Value::Dict* mode_dict = smart_modes_dict.FindDict(id);
-  if (!mode_dict) {
+  base::Value::Dict* skill_dict = skills_dict.FindDict(id);
+  if (!skill_dict) {
     return;
   }
 
-  mode_dict->Set("shortcut", shortcut);
-  mode_dict->Set("prompt", prompt);
+  skill_dict->Set("shortcut", shortcut);
+  skill_dict->Set("prompt", prompt);
   if (model.has_value()) {
-    mode_dict->Set("model", *model);
+    skill_dict->Set("model", *model);
   } else {
-    mode_dict->Remove("model");
+    skill_dict->Remove("model");
   }
 }
 
-void DeleteSmartModeFromPrefs(const std::string& id, PrefService& prefs) {
-  ScopedDictPrefUpdate update(&prefs, prefs::kBraveAIChatSmartModes);
-  base::Value::Dict& smart_modes_dict = update.Get();
-  smart_modes_dict.Remove(id);
+void DeleteSkillFromPrefs(const std::string& id, PrefService& prefs) {
+  ScopedDictPrefUpdate update(&prefs, prefs::kBraveAIChatSkills);
+  base::Value::Dict& skills_dict = update.Get();
+  skills_dict.Remove(id);
 }
 
-void UpdateSmartModeLastUsedInPrefs(const std::string& id, PrefService& prefs) {
-  ScopedDictPrefUpdate update(&prefs, prefs::kBraveAIChatSmartModes);
-  base::Value::Dict* mode_dict = update->FindDict(id);
-  if (!mode_dict) {
+void UpdateSkillLastUsedInPrefs(const std::string& id, PrefService& prefs) {
+  ScopedDictPrefUpdate update(&prefs, prefs::kBraveAIChatSkills);
+  base::Value::Dict* skill_dict = update->FindDict(id);
+  if (!skill_dict) {
     return;
   }
 
-  mode_dict->Set("last_used", base::TimeToValue(base::Time::Now()));
+  skill_dict->Set("last_used", base::TimeToValue(base::Time::Now()));
 }
 
 }  // namespace ai_chat::prefs

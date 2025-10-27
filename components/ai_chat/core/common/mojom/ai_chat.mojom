@@ -122,7 +122,7 @@ struct ConversationArchive {
   array<ContentArchive> associated_content;
 };
 
-struct SmartMode {
+struct Skill {
   string id;
   string shortcut;
   string prompt;
@@ -167,11 +167,11 @@ interface Service {
   DismissStorageNotice();
   DismissPremiumPrompt();
 
-  // Smart Mode management
-  GetSmartModes() => (array<SmartMode> smart_modes);
-  CreateSmartMode(string shortcut, string prompt, string? model);
-  UpdateSmartMode(string id, string shortcut, string prompt, string? model);
-  DeleteSmartMode(string id);
+  // Skill management
+  GetSkills() => (array<Skill> skills);
+  CreateSkill(string shortcut, string prompt, string? model);
+  UpdateSkill(string id, string shortcut, string prompt, string? model);
+  DeleteSkill(string id);
 
   // Get metadata for conversations
   GetConversations() => (array<Conversation> conversations);
@@ -206,7 +206,7 @@ interface Service {
 interface ServiceObserver {
   OnConversationListChanged(array<Conversation> conversations);
   OnStateChanged(ServiceState state);
-  OnSmartModesChanged(array<SmartMode> smart_modes);
+  OnSkillsChanged(array<Skill> skills);
 };
 
 // Browser-side handler for general AI Chat UI functions, implemented
@@ -332,7 +332,7 @@ interface ConversationHandler {
   SubmitHumanConversationEntry(
       string input, array<UploadedFile>? uploaded_files);
   SubmitHumanConversationEntryWithAction(string input, ActionType action_type);
-  SubmitHumanConversationEntryWithMode(string input, string mode_id);
+  SubmitHumanConversationEntryWithSkill(string input, string skill_id);
   SubmitSummarizationRequest();
 
   // Submit one of the generated suggested questions for response from

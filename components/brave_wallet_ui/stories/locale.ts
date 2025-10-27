@@ -661,22 +661,17 @@ provideStrings({
   braveWalletBuyContinueButton: 'Select purchase method',
   braveWalletBuySelectAsset: 'Select an asset',
   braveWalletBuyRampNetworkName: 'Ramp.Network',
-  braveWalletBuySardineName: 'Sardine',
   braveWalletBuyTransakName: 'Transak',
   braveWalletBuyStripeName: 'Link by Stripe',
   braveWalletBuyCoinbaseName: 'Coinbase Pay',
   braveWalletBuyRampDescription:
     'Buy with CC/Debit or ACH. ' + 'Competitive Rates.',
-  braveWalletBuySardineDescription:
-    'Easiest, fastest and cheapest way to '
-    + 'buy crypto with card and bank transfers.',
   braveWalletBuyTransakDescription:
     'Instant buy with your bank account. Lower fees.',
   braveWalletBuyStripeDescription: 'Pay with credit, debit, bank account',
   braveWalletBuyCoinbaseDescription:
     'Buy with the most trusted name in crypto.',
   braveWalletBuyWithRamp: 'Buy with Ramp',
-  braveWalletBuyWithSardine: 'Buy with Sardine',
   braveWalletBuyWithTransak: 'Buy with Transak',
   braveWalletBuyWithStripe: 'Buy with Link',
   braveWalletBuyWithCoinbase: 'Buy with Coinbase Pay',
@@ -856,6 +851,7 @@ provideStrings({
   braveSwapSlow: 'Slow',
   braveSwapAverage: 'Average',
   braveSwapFast: 'Fast',
+  braveWalletEstimatedFee: 'Estimated fee',
 
   // Wallet Main Panel
   braveWalletPanelTitle: 'Brave Wallet',
@@ -1077,6 +1073,12 @@ provideStrings({
   braveWalletGasPrice: 'Gas price',
   braveWalletEditGasEstimatedNetworkFee: 'Estimated network fee',
   braveWalletUseDefault: 'Use default',
+  braveWalletGasFeeTooltip: 'This gas fee will replace the original.',
+  braveWalletGasFeeTooltipDescription:
+    'This will create a new transaction with a new gas fee to '
+    + 'override and cancel the pending one. A cancellation can only be '
+    + 'attempted if the transaction is still pending on the network.',
+  braveWalletSpeedPriority: 'Speed priority',
 
   // Advanced transaction settings
   braveWalletAdvancedTransactionSettings: 'Advanced settings',

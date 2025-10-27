@@ -9,9 +9,9 @@
 
 #include "base/check.h"
 #include "base/debug/crash_logging.h"
-#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "base/location.h"
+#include "base/notreached.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/queue_item/confirmation_queue_item_builder.h"
@@ -63,7 +63,7 @@ void ConfirmationQueue::AddCallback(
         confirmation_queue_item.confirmation.creative_instance_id);
     SCOPED_CRASH_KEY_STRING64("Issue50267", "failure_reason",
                               "Failed to add confirmation to queue");
-    base::debug::DumpWithoutCrashing();
+    DUMP_WILL_BE_NOTREACHED();
     return NotifyFailedToAddConfirmationToQueue(
         confirmation_queue_item.confirmation);
   }
@@ -172,7 +172,7 @@ void ConfirmationQueue::FailedToProcessQueueItemCallback(
                                 confirmation.creative_instance_id);
       SCOPED_CRASH_KEY_STRING64("Issue50267", "failure_reason",
                                 "Failed to retry confirmation queue item");
-      base::debug::DumpWithoutCrashing();
+      DUMP_WILL_BE_NOTREACHED();
 
       return BLOG(0, "Failed to retry confirmation queue item");
     }

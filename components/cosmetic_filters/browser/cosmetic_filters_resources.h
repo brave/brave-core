@@ -49,8 +49,11 @@ class CosmeticFiltersResources final
                             UrlCosmeticResourcesCallback callback) override;
 
  private:
-  raw_ptr<brave_shields::AdBlockService> ad_block_service_ =
-      nullptr;  // Not owned
+  // DanglingPtrDetection is disabled because the AdBlockService is owned by
+  // the BrowserProcess and is guaranteed to be alive for the lifetime of the
+  // browser process. This class however is a self-owned mojo receiver.
+  raw_ptr<brave_shields::AdBlockService, DisableDanglingPtrDetection>
+      ad_block_service_ = nullptr;  // Not owned
 };
 
 }  // namespace cosmetic_filters

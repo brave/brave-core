@@ -32,9 +32,7 @@ class SelectToolTest : public ContentAgentToolBaseTest {
     dict.Set("value", value);
     dict.Set("target", target_dict.Clone());
 
-    std::string json;
-    base::JSONWriter::Write(dict, &json);
-    return json;
+    return *base::WriteJson(dict);
   }
 
   // Verify select action properties and conversions
@@ -107,10 +105,7 @@ TEST_F(SelectToolTest, MissingValue) {
   dict.Set("target", target_dict.Clone());
   // Note: No value intentionally
 
-  std::string input_json;
-  base::JSONWriter::Write(dict, &input_json);
-
-  RunWithExpectedError(FROM_HERE, input_json);
+  RunWithExpectedError(FROM_HERE, *base::WriteJson(dict));
 }
 
 TEST_F(SelectToolTest, InvalidValueType) {
@@ -119,10 +114,7 @@ TEST_F(SelectToolTest, InvalidValueType) {
   dict.Set("target", target_dict.Clone());
   dict.Set("value", 123);  // Invalid type - should be string
 
-  std::string input_json;
-  base::JSONWriter::Write(dict, &input_json);
-
-  RunWithExpectedError(FROM_HERE, input_json);
+  RunWithExpectedError(FROM_HERE, *base::WriteJson(dict));
 }
 
 TEST_F(SelectToolTest, MissingTarget) {

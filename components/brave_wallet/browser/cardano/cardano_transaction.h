@@ -105,7 +105,6 @@ class CardanoTransaction {
   CardanoTransaction(CardanoTransaction&& other);
   CardanoTransaction& operator=(CardanoTransaction&& other);
   bool operator==(const CardanoTransaction& other) const;
-  bool operator!=(const CardanoTransaction& other) const;
 
   base::Value::Dict ToValue() const;
   static std::optional<CardanoTransaction> FromValue(

@@ -32,7 +32,6 @@ class PublicKey {
   ~PublicKey();
 
   bool operator==(const PublicKey&) const;
-  bool operator!=(const PublicKey&) const;
 
   bool has_value() const { return public_key_.has_value(); }
 

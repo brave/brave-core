@@ -30,7 +30,6 @@ struct CreativeAdInfo {
   ~CreativeAdInfo();
 
   bool operator==(const CreativeAdInfo&) const;
-  bool operator!=(const CreativeAdInfo&) const;
 
   std::string creative_instance_id;
   std::string creative_set_id;

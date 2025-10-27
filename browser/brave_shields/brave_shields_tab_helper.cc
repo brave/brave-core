@@ -8,13 +8,16 @@
 #include <string>
 #include <utility>
 
+#include "base/check_deref.h"
 #include "base/i18n/number_formatting.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/notreached.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/types/cxx23_to_underlying.h"
+#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
-#include "brave/components/brave_shields/core/browser/brave_shields_settings.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_locale_utils.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/brave_shield_utils.h"
@@ -57,19 +60,16 @@ BraveShieldsTabHelper::~BraveShieldsTabHelper() = default;
 BraveShieldsTabHelper::BraveShieldsTabHelper(content::WebContents* web_contents)
     : content::WebContentsObserver(web_contents),
       content::WebContentsUserData<BraveShieldsTabHelper>(*web_contents),
-      host_content_settings_map_(*HostContentSettingsMapFactory::GetForProfile(
-          web_contents->GetBrowserContext())) {
+      host_content_settings_map_(
+          CHECK_DEREF(HostContentSettingsMapFactory::GetForProfile(
+              web_contents->GetBrowserContext()))),
+      brave_shields_settings_(
+          CHECK_DEREF(BraveShieldsSettingsServiceFactory::GetForProfile(
+              Profile::FromBrowserContext(
+                  web_contents->GetBrowserContext())))) {
   favicon::ContentFaviconDriver::FromWebContents(web_contents)
       ->AddObserver(this);
   observation_.Observe(&*host_content_settings_map_);
-  PrefService* profile_prefs =
-      Profile::FromBrowserContext(web_contents->GetBrowserContext())
-          ->GetPrefs();
-  brave_shields_settings_ =
-      std::make_unique<brave_shields::BraveShieldsSettings>(
-          *host_content_settings_map_, g_browser_process->local_state(),
-          profile_prefs);
-
   local_state_change_registrar_.Init(g_browser_process->local_state());
   local_state_change_registrar_.Add(
       brave_shields::prefs::kAdBlockOnlyModeEnabled,

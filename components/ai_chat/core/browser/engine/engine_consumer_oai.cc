@@ -33,6 +33,7 @@
 #include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
+#include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/prefs.h"
@@ -111,8 +112,8 @@ void EngineConsumerOAIRemote::UpdateModelOptions(
 }
 
 void EngineConsumerOAIRemote::GenerateRewriteSuggestion(
-    std::string text,
-    const std::string& question,
+    const std::string& text,
+    mojom::ActionType action_type,
     const std::string& selected_language,
     GenerationDataCallback received_callback,
     GenerationCompletedCallback completed_callback) {
@@ -120,7 +121,7 @@ void EngineConsumerOAIRemote::GenerateRewriteSuggestion(
   std::string rewrite_prompt = base::ReplaceStringPlaceholders(
       l10n_util::GetStringUTF8(
           IDS_AI_CHAT_LLAMA2_GENERATE_REWRITE_SUGGESTION_PROMPT),
-      {std::move(truncated_text), question}, nullptr);
+      {std::move(truncated_text), GetActionTypeQuestion(action_type)}, nullptr);
 
   base::Value::List messages;
 
@@ -131,9 +132,19 @@ void EngineConsumerOAIRemote::GenerateRewriteSuggestion(
     messages.Append(std::move(message));
   }
 
-  api_->PerformRequest(model_options_, std::move(messages),
-                       std::move(received_callback),
-                       std::move(completed_callback));
+  // Add a message as seed.
+  {
+    base::Value::Dict message;
+    message.Set("role", "assistant");
+    message.Set("content",
+                "Here is the requested rewritten version of the excerpt "
+                "in <response> tags:\n<response>");
+    messages.Append(std::move(message));
+  }
+
+  api_->PerformRequest(
+      model_options_, std::move(messages), std::move(received_callback),
+      std::move(completed_callback), std::vector<std::string>{"</response>"});
 }
 
 void EngineConsumerOAIRemote::GenerateQuestionSuggestions(
@@ -515,18 +526,17 @@ base::Value::List EngineConsumerOAIRemote::BuildMessages(
                             ? "user"
                             : "assistant");
 
-    // For human turns with smart mode, use content blocks
-    if (turn->character_type == CharacterType::HUMAN && turn->smart_mode) {
-      std::string mode_definition =
-          BuildSmartModeDefinitionMessage(turn->smart_mode);
+    // For human turns with skill, use content blocks
+    if (turn->character_type == CharacterType::HUMAN && turn->skill) {
+      std::string skill_definition = BuildSkillDefinitionMessage(turn->skill);
 
       base::Value::List content_blocks;
 
-      // Add smart mode definition as first content block
-      base::Value::Dict smart_mode_block;
-      smart_mode_block.Set("type", "text");
-      smart_mode_block.Set("text", mode_definition);
-      content_blocks.Append(std::move(smart_mode_block));
+      // Add skill definition as first content block
+      base::Value::Dict skill_block;
+      skill_block.Set("type", "text");
+      skill_block.Set("text", skill_definition);
+      content_blocks.Append(std::move(skill_block));
 
       // Add user message as second content block
       base::Value::Dict user_message_block;

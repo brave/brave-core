@@ -130,19 +130,70 @@ EngineConsumerConversationAPI::GetStrArrFromTabOrganizationResponses(
   return str_arr;
 }
 
+std::optional<ConversationEvent> ActionToRewriteEvent(
+    mojom::ActionType action_type) {
+  ConversationEventType event_type;
+  std::string tone = "";
+
+  switch (action_type) {
+    case mojom::ActionType::PARAPHRASE:
+      event_type = ConversationEventType::kParaphrase;
+      break;
+    case mojom::ActionType::IMPROVE:
+      event_type = ConversationEventType::kImprove;
+      break;
+    case mojom::ActionType::ACADEMICIZE:
+      event_type = ConversationEventType::kChangeTone;
+      tone = "academic";
+      break;
+    case mojom::ActionType::PROFESSIONALIZE:
+      event_type = ConversationEventType::kChangeTone;
+      tone = "professional";
+      break;
+    case mojom::ActionType::PERSUASIVE_TONE:
+      event_type = ConversationEventType::kChangeTone;
+      tone = "persuasive";
+      break;
+    case mojom::ActionType::CASUALIZE:
+      event_type = ConversationEventType::kChangeTone;
+      tone = "casual";
+      break;
+    case mojom::ActionType::FUNNY_TONE:
+      event_type = ConversationEventType::kChangeTone;
+      tone = "funny";
+      break;
+    case mojom::ActionType::SHORTEN:
+      event_type = ConversationEventType::kShorten;
+      break;
+    case mojom::ActionType::EXPAND:
+      event_type = ConversationEventType::kExpand;
+      break;
+    default:
+      return std::nullopt;
+  }
+
+  return ConversationEvent(ConversationEventRole::kUser, event_type, {}, "",
+                           std::nullopt, {}, "", tone);
+}
+
 void EngineConsumerConversationAPI::GenerateRewriteSuggestion(
-    std::string text,
-    const std::string& question,
+    const std::string& text,
+    mojom::ActionType action_type,
     const std::string& selected_language,
     GenerationDataCallback received_callback,
     GenerationCompletedCallback completed_callback) {
+  auto rewrite_event = ActionToRewriteEvent(action_type);
+  if (!rewrite_event) {
+    std::move(completed_callback)
+        .Run(base::unexpected(mojom::APIError::InternalError));
+    return;
+  }
+
   std::vector<ConversationEvent> conversation;
   conversation.emplace_back(ConversationEventRole::kUser,
-                            ConversationEventType::kUserText,
+                            ConversationEventType::kPageExcerpt,
                             std::vector<std::string>{text});
-  conversation.emplace_back(ConversationEventRole::kUser,
-                            ConversationEventType::kRequestRewrite,
-                            /*Content=*/std::vector<std::string>{question});
+  conversation.emplace_back(std::move(*rewrite_event));
   api_->PerformRequest(std::move(conversation), selected_language, std::nullopt,
                        std::nullopt, mojom::ConversationCapability::CHAT,
                        std::move(received_callback),
@@ -391,14 +442,14 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
           std::vector<std::string>{message->selected_text.value()});
     }
 
-    // Add Smart Mode definition message if this turn has one
+    // Add Skill definition message if this turn has one
     if (message->character_type == mojom::CharacterType::HUMAN &&
-        message->smart_mode) {
-      std::string mode_definition =
-          BuildSmartModeDefinitionMessage(message->smart_mode);
+        message->skill) {
+      std::string skill_definition =
+          BuildSkillDefinitionMessage(message->skill);
       conversation.emplace_back(ConversationEventRole::kUser,
                                 ConversationEventType::kChatMessage,
-                                std::vector<std::string>{mode_definition});
+                                std::vector<std::string>{skill_definition});
     }
 
     // Build the main conversation event

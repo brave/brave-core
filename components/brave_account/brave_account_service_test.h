@@ -14,11 +14,15 @@
 #include "base/containers/flat_map.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
+#include "base/location.h"
 #include "base/memory/ptr_util.h"
 #include "base/memory/raw_ptr.h"
+#include "base/memory/scoped_refptr.h"
+#include "base/task/sequenced_task_runner.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
+#include "base/timer/timer.h"
 #include "base/values.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/api_request_helper/mock_api_request_helper.h"
@@ -51,11 +55,15 @@ class BraveAccountServiceTest : public testing::TestWithParam<const TestCase*> {
             TRAFFIC_ANNOTATION_FOR_TESTS,
             test_url_loader_factory_.GetSafeWeakWrapper());
     mock_api_request_helper_ = mock_api_request_helper.get();
-    auto os_crypt_callback = base::BindRepeating(
-        &BraveAccountServiceTest::OSCrypt, base::Unretained(this));
+    auto verify_result_timer = std::make_unique<base::OneShotTimer>();
+    verify_result_timer_ = verify_result_timer.get();
     brave_account_service_ = base::WrapUnique(new BraveAccountService(
-        &pref_service_, std::move(mock_api_request_helper), os_crypt_callback,
-        os_crypt_callback));
+        &pref_service_, std::move(mock_api_request_helper),
+        base::BindRepeating(&BraveAccountServiceTest::Encrypt,
+                            base::Unretained(this)),
+        base::BindRepeating(&BraveAccountServiceTest::Decrypt,
+                            base::Unretained(this)),
+        std::move(verify_result_timer)));
   }
 
   void RunTestCase() {
@@ -80,28 +88,45 @@ class BraveAccountServiceTest : public testing::TestWithParam<const TestCase*> {
               test_case.http_status_code, std::move(value),
               base::flat_map<std::string, std::string>(), net::OK, GURL());
 
-          std::move(callback).Run(std::move(result));
+          // ScheduleVerifyResultTest relies on the mock behaving
+          // asynchronously, so the callback is posted to mimic
+          // APIRequestHelper's async behavior in production.
+          base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+              FROM_HERE,
+              base::BindOnce(std::move(callback), std::move(result)));
 
           return api_request_helper::MockAPIRequestHelper::Ticket();
         });
 
-    base::test::TestFuture<typename TestCase::MojoExpected> future;
-    TestCase::Run(CHECK_DEREF(brave_account_service_.get()), test_case,
-                  future.GetCallback());
-    EXPECT_EQ(future.Take(), test_case.mojo_expected);
+    if constexpr (requires { typename TestCase::MojoExpected; }) {
+      base::test::TestFuture<typename TestCase::MojoExpected> future;
+      TestCase::Run(test_case, CHECK_DEREF(brave_account_service_.get()),
+                    future.GetCallback());
+      EXPECT_EQ(future.Take(), test_case.mojo_expected);
+    } else {
+      TestCase::Run(test_case, pref_service_, task_environment_,
+                    *verify_result_timer_);
+    }
   }
 
-  bool OSCrypt(const std::string& in, std::string* out) {
+  bool Encrypt(const std::string& in, std::string* out) {
     *out = in;
-    return !CHECK_DEREF(this->GetParam()).fail_cryptography;
+    return !CHECK_DEREF(this->GetParam()).fail_encryption;
   }
 
-  base::test::TaskEnvironment task_environment_;
+  bool Decrypt(const std::string& in, std::string* out) {
+    *out = in;
+    return !CHECK_DEREF(this->GetParam()).fail_decryption;
+  }
+
+  base::test::TaskEnvironment task_environment_{
+      base::test::TaskEnvironment::TimeSource::MOCK_TIME};
   base::test::ScopedFeatureList scoped_feature_list_{features::kBraveAccount};
   TestingPrefServiceSimple pref_service_;
   network::TestURLLoaderFactory test_url_loader_factory_;
   std::unique_ptr<BraveAccountService> brave_account_service_;
   raw_ptr<api_request_helper::MockAPIRequestHelper> mock_api_request_helper_;
+  raw_ptr<base::OneShotTimer> verify_result_timer_;
 };
 
 }  // namespace brave_account

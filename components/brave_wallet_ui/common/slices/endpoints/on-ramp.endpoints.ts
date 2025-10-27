@@ -21,7 +21,6 @@ export const onRampEndpoints = ({ query }: WalletApiEndpointBuilderParams) => {
     getOnRampAssets: query<
       {
         rampAssetOptions: BraveWallet.BlockchainToken[]
-        sardineAssetOptions: BraveWallet.BlockchainToken[]
         transakAssetOptions: BraveWallet.BlockchainToken[]
         stripeAssetOptions: BraveWallet.BlockchainToken[]
         coinbaseAssetOptions: BraveWallet.BlockchainToken[]
@@ -35,7 +34,7 @@ export const onRampEndpoints = ({ query }: WalletApiEndpointBuilderParams) => {
             data: { blockchainRegistry },
             cache,
           } = baseQuery(undefined)
-          const { kRamp, kSardine, kTransak, kStripe, kCoinbase } =
+          const { kRamp, kTransak, kStripe, kCoinbase } =
             BraveWallet.OnRampProvider
 
           const rampAssets = await mapLimit(
@@ -43,13 +42,6 @@ export const onRampEndpoints = ({ query }: WalletApiEndpointBuilderParams) => {
             10,
             async (chainId: string) =>
               await blockchainRegistry.getBuyTokens(kRamp, chainId),
-          )
-
-          const sardineAssets = await mapLimit(
-            SupportedOnRampNetworks,
-            10,
-            async (chainId: string) =>
-              await blockchainRegistry.getBuyTokens(kSardine, chainId),
           )
 
           const transakAssets = await mapLimit(
@@ -85,13 +77,6 @@ export const onRampEndpoints = ({ query }: WalletApiEndpointBuilderParams) => {
               updateLogo,
             )
 
-          const sardineAssetOptions: BraveWallet.BlockchainToken[] =
-            await mapLimit(
-              sardineAssets.flatMap((p) => p.tokens),
-              10,
-              updateLogo,
-            )
-
           const transakAssetOptions: BraveWallet.BlockchainToken[] =
             await mapLimit(
               transakAssets.flatMap((p) => p.tokens),
@@ -117,8 +102,6 @@ export const onRampEndpoints = ({ query }: WalletApiEndpointBuilderParams) => {
           // Move Gas coins and BAT to front of list
           const sortedRampOptions =
             sortNativeAndAndBatAssetsToTop(rampAssetOptions)
-          const sortedSardineOptions =
-            sortNativeAndAndBatAssetsToTop(sardineAssetOptions)
           const sortedTransakOptions =
             sortNativeAndAndBatAssetsToTop(transakAssetOptions)
           const sortedStripeOptions =
@@ -128,14 +111,12 @@ export const onRampEndpoints = ({ query }: WalletApiEndpointBuilderParams) => {
 
           const results = {
             rampAssetOptions: sortedRampOptions,
-            sardineAssetOptions: sortedSardineOptions,
             transakAssetOptions: sortedTransakOptions,
             stripeAssetOptions: sortedStripeOptions,
             coinbaseAssetOptions: sortedCoinbaseOptions,
             allAssetOptions: sortNativeAndAndBatAssetsToTop(
               getUniqueAssets(
                 sortedRampOptions.concat(
-                  sortedSardineOptions,
                   sortedTransakOptions,
                   sortedStripeOptions,
                 ),

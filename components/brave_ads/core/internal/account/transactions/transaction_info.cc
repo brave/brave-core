@@ -36,10 +36,6 @@ bool TransactionInfo::operator==(const TransactionInfo& other) const {
          reconciled_at == other.reconciled_at;
 }
 
-bool TransactionInfo::operator!=(const TransactionInfo& other) const {
-  return !(*this == other);
-}
-
 bool TransactionInfo::IsValid() const {
   return !id.empty() && created_at && !creative_instance_id.empty() &&
          !segment.empty() && ad_type != mojom::AdType::kUndefined &&

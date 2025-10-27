@@ -141,6 +141,11 @@ ConversationHandler::ConversationHandler(
     conversation_capability_ = mojom::ConversationCapability::CONTENT_AGENT;
   }
 
+  // Observe tool providers
+  for (const auto& tool_provider : tool_providers_) {
+    tool_provider->AddObserver(this);
+  }
+
   // When a client disconnects, let observers know
   receivers_.set_disconnect_handler(
       base::BindRepeating(&ConversationHandler::OnClientConnectionChanged,
@@ -172,6 +177,9 @@ ConversationHandler::ConversationHandler(
 
 ConversationHandler::~ConversationHandler() {
   OnConversationDeleted();
+  for (const auto& tool_provider : tool_providers_) {
+    tool_provider->RemoveObserver(this);
+  }
 }
 
 void ConversationHandler::AddObserver(Observer* observer) {
@@ -521,7 +529,7 @@ void ConversationHandler::SubmitHumanConversationEntry(
       std::nullopt, CharacterType::HUMAN, mojom::ActionType::QUERY, input,
       std::nullopt /* prompt */, std::nullopt /* selected_text */,
       std::nullopt /* events */, base::Time::Now(), std::nullopt /* edits */,
-      std::move(uploaded_files), nullptr /* smart_mode */, false,
+      std::move(uploaded_files), nullptr /* skill */, false,
       std::nullopt /* model_key */);
   SubmitHumanConversationEntry(std::move(turn));
 }
@@ -604,38 +612,37 @@ void ConversationHandler::SubmitHumanConversationEntryWithAction(
   SubmitSelectedText(input, action_type);
 }
 
-void ConversationHandler::SubmitHumanConversationEntryWithMode(
+void ConversationHandler::SubmitHumanConversationEntryWithSkill(
     const std::string& input,
-    const std::string& mode_id) {
+    const std::string& skill_id) {
   DCHECK(!is_request_in_progress_)
       << "Should not be able to submit more"
       << "than a single human conversation turn at a time.";
 
-  // Get Smart Mode from prefs and convert to SmartModeEntry object
-  auto smart_mode = prefs::GetSmartModeFromPrefs(*prefs_, mode_id);
+  // Get Skill from prefs and convert to SkillEntry object
+  auto skill = prefs::GetSkillFromPrefs(*prefs_, skill_id);
 
-  mojom::SmartModeEntryPtr smart_mode_entry = nullptr;
+  mojom::SkillEntryPtr skill_entry = nullptr;
 
-  if (smart_mode) {
+  if (skill) {
     // Switch model if specified and different from current model
-    if (smart_mode->model && !smart_mode->model->empty() &&
-        *smart_mode->model != GetCurrentModel().key) {
-      ChangeModel(*smart_mode->model);
+    if (skill->model && !skill->model->empty() &&
+        *skill->model != GetCurrentModel().key) {
+      ChangeModel(*skill->model);
     }
 
-    // Create Smart Mode entry
-    smart_mode_entry =
-        mojom::SmartModeEntry::New(smart_mode->shortcut, smart_mode->prompt);
+    // Create Skill entry
+    skill_entry = mojom::SkillEntry::New(skill->shortcut, skill->prompt);
 
     // Update last_used time
-    prefs::UpdateSmartModeLastUsedInPrefs(mode_id, *prefs_);
+    prefs::UpdateSkillLastUsedInPrefs(skill_id, *prefs_);
   }
 
   mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New(
       std::nullopt, CharacterType::HUMAN, mojom::ActionType::QUERY, input,
       std::nullopt /* prompt */, std::nullopt /* selected_text */,
       std::nullopt /* events */, base::Time::Now(), std::nullopt /* edits */,
-      std::nullopt /* uploaded_files */, std::move(smart_mode_entry), false,
+      std::nullopt /* uploaded_files */, std::move(skill_entry), false,
       std::nullopt /* model_key */);
 
   SubmitHumanConversationEntry(std::move(turn));
@@ -688,7 +695,7 @@ void ConversationHandler::ModifyConversation(const std::string& entry_uuid,
         turn->character_type, turn->action_type, trimmed_input,
         std::nullopt /* prompt */, std::nullopt /* selected_text */,
         std::move(events), base::Time::Now(), std::nullopt /* edits */,
-        std::nullopt, nullptr /* smart_mode */, false, turn->model_key);
+        std::nullopt, nullptr /* skill */, false, turn->model_key);
     edited_turn->events->at(*completion_event_index)
         ->get_completion_event()
         ->completion = trimmed_input;
@@ -723,7 +730,7 @@ void ConversationHandler::ModifyConversation(const std::string& entry_uuid,
       turn->action_type, sanitized_input, std::nullopt /* prompt */,
       std::nullopt /* selected_text */, std::nullopt /* events */,
       base::Time::Now(), std::nullopt /* edits */, std::nullopt,
-      nullptr /* smart_mode */, false, turn->model_key);
+      nullptr /* skill */, false, turn->model_key);
   if (!turn->edits) {
     turn->edits.emplace();
   }
@@ -799,7 +806,7 @@ void ConversationHandler::SubmitSummarizationRequest() {
       l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_PAGE),
       std::nullopt /* selected_text */, std::nullopt /* events */,
       base::Time::Now(), std::nullopt /* edits */,
-      std::nullopt /* uploaded_images */, nullptr /* smart_mode */, false,
+      std::nullopt /* uploaded_images */, nullptr /* skill */, false,
       std::nullopt /* model_key */);
   SubmitHumanConversationEntry(std::move(turn));
 }
@@ -826,8 +833,7 @@ void ConversationHandler::SubmitSuggestion(
       std::nullopt, CharacterType::HUMAN, suggestion.action_type,
       suggestion.title, suggestion.prompt, std::nullopt /* selected_text */,
       std::nullopt /* events */, base::Time::Now(), std::nullopt /* edits */,
-      std::nullopt, nullptr /* smart_mode */, false,
-      std::nullopt /* model_key */);
+      std::nullopt, nullptr /* skill */, false, std::nullopt /* model_key */);
   SubmitHumanConversationEntry(std::move(turn));
 
   // Remove the suggestion from the list, assume the list has been modified
@@ -981,7 +987,7 @@ void ConversationHandler::SubmitSelectedTextWithQuestion(
   mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New(
       std::nullopt, CharacterType::HUMAN, action_type, question,
       std::nullopt /* prompt */, selected_text, std::nullopt, base::Time::Now(),
-      std::nullopt, std::nullopt, nullptr /* smart_mode */, false,
+      std::nullopt, std::nullopt, nullptr /* skill */, false,
       std::nullopt /* model_key */);
 
   SubmitHumanConversationEntry(std::move(turn));
@@ -1021,7 +1027,7 @@ void ConversationHandler::AddSubmitSelectedTextError(
   mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New(
       std::nullopt, CharacterType::HUMAN, action_type, question,
       std::nullopt /* prompt */, selected_text, std::nullopt, base::Time::Now(),
-      std::nullopt, std::nullopt, nullptr /* smart_mode */, false,
+      std::nullopt, std::nullopt, nullptr /* skill */, false,
       std::nullopt /* model_key */);
   AddToConversationHistory(std::move(turn));
   SetAPIError(error);
@@ -1160,7 +1166,7 @@ void ConversationHandler::UpdateOrCreateLastAssistantEntry(
         CharacterType::ASSISTANT, mojom::ActionType::RESPONSE, "",
         std::nullopt /* prompt */, std::nullopt,
         std::vector<mojom::ConversationEntryEventPtr>{}, base::Time::Now(),
-        std::nullopt, std::nullopt, nullptr /* smart_mode */, false,
+        std::nullopt, std::nullopt, nullptr /* skill */, false,
         result.model_key);
     chat_history_.push_back(std::move(entry));
   }
@@ -1381,7 +1387,7 @@ void ConversationHandler::OnGetStagedEntriesFromContent(
         base::Uuid::GenerateRandomV4().AsLowercaseString(),
         CharacterType::HUMAN, mojom::ActionType::QUERY, entry.query,
         std::nullopt /* prompt */, std::nullopt, std::nullopt,
-        base::Time::Now(), std::nullopt, std::nullopt, nullptr /* smart_mode */,
+        base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */,
         true, std::nullopt /* model_key */));
     OnConversationEntryAdded(chat_history_.back());
 
@@ -1392,7 +1398,7 @@ void ConversationHandler::OnGetStagedEntriesFromContent(
         base::Uuid::GenerateRandomV4().AsLowercaseString(),
         CharacterType::ASSISTANT, mojom::ActionType::RESPONSE, entry.summary,
         std::nullopt /* prompt */, std::nullopt, std::move(events),
-        base::Time::Now(), std::nullopt, std::nullopt, nullptr /* smart_mode */,
+        base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */,
         true, std::nullopt /* model_key */));
     OnConversationEntryAdded(chat_history_.back());
   }
@@ -1595,6 +1601,18 @@ void ConversationHandler::OnModelRemoved(const std::string& removed_key) {
 
   // Update the engine and fetch the new models
   InitEngine();
+}
+
+void ConversationHandler::OnContentTaskStarted(int32_t tab_id) {
+  // Store the tab_id so consumers can validate a tab is used by a tool
+  // in this conversation, or that a tab can locate its controlling
+  // conversation.
+  task_tab_ids_.insert(tab_id);
+
+  // Notify clients so they may display the relationship in UI
+  for (auto& client : untrusted_conversation_ui_handlers_) {
+    client->ContentTaskStarted(tab_id);
+  }
 }
 
 void ConversationHandler::OnModelDataChanged() {

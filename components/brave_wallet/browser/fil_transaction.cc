@@ -99,10 +99,6 @@ bool FilTransaction::operator==(const FilTransaction& other) const {
   return IsEqual(other);
 }
 
-bool FilTransaction::operator!=(const FilTransaction& other) const {
-  return !IsEqual(other);
-}
-
 // static
 std::optional<FilTransaction> FilTransaction::FromTxData(
     bool is_mainnet,

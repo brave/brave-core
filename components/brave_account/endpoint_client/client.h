@@ -33,7 +33,6 @@ struct WithHeaders : T {
 
 template <concepts::Endpoint T>
 class Client {
-  using Ticket = api_request_helper::APIRequestHelper::Ticket;
   using Request = typename T::Request;
   using Response = typename T::Response;
   using Error = typename T::Error;
@@ -42,27 +41,26 @@ class Client {
   using Callback = base::OnceCallback<void(int, Expected)>;
 
  public:
-  static Ticket Send(api_request_helper::APIRequestHelper& api_request_helper,
-                     Request request,
-                     Callback callback) {
-    return SendImpl(api_request_helper, std::move(request),
-                    net::HttpRequestHeaders(), std::move(callback));
+  static void Send(api_request_helper::APIRequestHelper& api_request_helper,
+                   Request request,
+                   Callback callback) {
+    SendImpl(api_request_helper, std::move(request), net::HttpRequestHeaders(),
+             std::move(callback));
   }
 
-  static Ticket Send(api_request_helper::APIRequestHelper& api_request_helper,
-                     WithHeaders<Request> request,
-                     Callback callback) {
+  static void Send(api_request_helper::APIRequestHelper& api_request_helper,
+                   WithHeaders<Request> request,
+                   Callback callback) {
     auto headers = std::move(request.headers);
-    return SendImpl(api_request_helper, std::move(request), std::move(headers),
-                    std::move(callback));
+    SendImpl(api_request_helper, std::move(request), std::move(headers),
+             std::move(callback));
   }
 
  private:
-  static Ticket SendImpl(
-      api_request_helper::APIRequestHelper& api_request_helper,
-      Request request,
-      net::HttpRequestHeaders headers,
-      Callback callback) {
+  static void SendImpl(api_request_helper::APIRequestHelper& api_request_helper,
+                       Request request,
+                       net::HttpRequestHeaders headers,
+                       Callback callback) {
     auto on_response = [](Callback callback,
                           api_request_helper::APIRequestResult result) {
       std::move(callback).Run(
@@ -78,7 +76,7 @@ class Client {
       CHECK(!json.empty()) << "Failed to serialize request to JSON!";
     }
 
-    return api_request_helper.Request(
+    api_request_helper.Request(
         std::string(T::Method()), T::URL(), json, "application/json",
         base::BindOnce(std::move(on_response), std::move(callback)),
         base::ToVector(headers.GetHeaderVector(), [](const auto& header) {

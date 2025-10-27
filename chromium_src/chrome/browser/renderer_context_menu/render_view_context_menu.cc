@@ -13,6 +13,7 @@
 #include "base/feature_list.h"
 #include "base/logging.h"
 #include "base/notimplemented.h"
+#include "base/strings/strcat.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/autocomplete/brave_autocomplete_scheme_classifier.h"
 #include "brave/browser/brave_shields/brave_shields_tab_helper.h"
@@ -204,7 +205,7 @@ void OnGetImageForTextCopy(base::WeakPtr<content::WebContents> web_contents,
 constexpr char kAIChatRewriteDataKey[] = "ai_chat_rewrite_data";
 
 struct AIChatRewriteData : public base::SupportsUserData::Data {
-  bool has_data_received = false;
+  std::string accumulated_text;
 };
 
 bool IsRewriteCommand(int command) {
@@ -281,14 +282,14 @@ void OnRewriteSuggestionDataReceived(
     return;
   }
 
-  if (rewrite_data->has_data_received) {
+  if (!rewrite_data->accumulated_text.empty()) {
     // Subsequent data received, undo previous streaming result.
     web_contents->Undo();
-  } else {
-    rewrite_data->has_data_received = true;
   }
 
-  web_contents->Replace(base::UTF8ToUTF16(suggestion));
+  // Accumulate the delta to build the full text.
+  base::StrAppend(&rewrite_data->accumulated_text, {suggestion});
+  web_contents->Replace(base::UTF8ToUTF16(rewrite_data->accumulated_text));
 }
 
 void OnRewriteSuggestionCompleted(
@@ -310,7 +311,7 @@ void OnRewriteSuggestionCompleted(
       return;
     }
 
-    if (rewrite_data->has_data_received) {
+    if (!rewrite_data->accumulated_text.empty()) {
       web_contents->Undo();
     }
 
@@ -548,7 +549,7 @@ void BraveRenderViewContextMenu::ExecuteAIChatCommand(int command) {
                        ->GetDefaultAIEngine();
     }
     ai_engine_->GenerateRewriteSuggestion(
-        selected_text, ai_chat::GetActionTypeQuestion(action_type),
+        selected_text, action_type,
         /*selected_language*/ "",
         ai_chat::BindParseRewriteReceivedData(
             base::BindRepeating(&OnRewriteSuggestionDataReceived,

@@ -68,13 +68,12 @@ std::optional<uint64_t> ReadCompactSize(base::span<const uint8_t>& data) {
 
 std::vector<uint8_t> SerializeUnifiedAddress(
     const std::vector<ParsedAddress>& parts) {
-  std::vector<uint8_t> result;
-  BtcLikeSerializerStream stream(&result);
+  BtcLikeSerializerStream stream;
   for (const auto& part : parts) {
     stream.PushCompactSize(part.first);
     stream.PushSizeAndBytes(part.second);
   }
-  return result;
+  return std::move(stream).Take();
 }
 
 std::optional<std::vector<ParsedAddress>> ParseUnifiedAddressBody(
@@ -387,18 +386,17 @@ std::vector<uint8_t> ZCashAddressToScriptPubkey(const std::string& address,
     return {};
   }
 
-  std::vector<uint8_t> data;
-  BtcLikeSerializerStream stream(&data);
+  BtcLikeSerializerStream stream;
   CHECK_EQ(decoded_address->pubkey_hash.size(), 20u);
 
-  stream.Push8(0x76);                              // OP_DUP
-  stream.Push8(0xa9);                              // OP_HASH
-  stream.Push8(0x14);                              // hash size
+  stream.Push8(uint8_t{0x76u});                    // OP_DUP
+  stream.Push8(uint8_t{0xa9u});                    // OP_HASH
+  stream.Push8(uint8_t{0x14u});                    // hash size
   stream.PushBytes(decoded_address->pubkey_hash);  // hash
-  stream.Push8(0x88);                              // OP_EQUALVERIFY
-  stream.Push8(0xac);                              // OP_CHECKSIG
+  stream.Push8(uint8_t{0x88u});                    // OP_EQUALVERIFY
+  stream.Push8(uint8_t{0xacu});                    // OP_CHECKSIG
 
-  return data;
+  return std::move(stream).Take();
 }
 
 std::optional<std::vector<ParsedAddress>> ExtractParsedAddresses(

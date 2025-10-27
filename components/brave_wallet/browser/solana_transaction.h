@@ -36,7 +36,6 @@ class SolanaTransaction {
                 std::optional<bool> skip_preflight_param);
 
     bool operator==(const SolanaTransaction::SendOptions&) const;
-    bool operator!=(const SolanaTransaction::SendOptions&) const;
 
     static std::optional<SendOptions> FromValue(const base::Value::Dict& value);
     static std::optional<SendOptions> FromValue(
@@ -70,7 +69,6 @@ class SolanaTransaction {
   SolanaTransaction& operator=(const SolanaTransaction&) = delete;
   ~SolanaTransaction();
   bool operator==(const SolanaTransaction&) const;
-  bool operator!=(const SolanaTransaction&) const;
 
   // Serialize the message and sign it with the selected account.
   std::optional<std::vector<uint8_t>> GetSignedTransactionBytes(

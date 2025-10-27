@@ -110,7 +110,7 @@ void ChromeAutocompleteProviderClient::OpenLeo(const std::u16string& query) {
           base::UTF16ToUTF8(query) /* text */, std::nullopt /* prompt */,
           std::nullopt /* selected_text */, std::nullopt /* events */,
           base::Time::Now(), std::nullopt /* edits */,
-          std::nullopt /* uploaded images */, nullptr /* smart_mode */,
+          std::nullopt /* uploaded images */, nullptr /* skill */,
           false /* from_brave_search_SERP */, std::nullopt /* model_key */);
 
   auto* profile_metrics =

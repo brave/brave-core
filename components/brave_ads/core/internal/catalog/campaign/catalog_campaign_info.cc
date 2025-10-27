@@ -37,8 +37,4 @@ bool CatalogCampaignInfo::operator==(const CatalogCampaignInfo& other) const {
          geo_targets == other.geo_targets;
 }
 
-bool CatalogCampaignInfo::operator!=(const CatalogCampaignInfo& other) const {
-  return !(*this == other);
-}
-
 }  // namespace brave_ads

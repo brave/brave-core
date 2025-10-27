@@ -48,7 +48,6 @@ struct LocaleSubtagInfo final {
 };
 
 bool operator==(const LocaleSubtagInfo& lhs, const LocaleSubtagInfo& rhs);
-bool operator!=(const LocaleSubtagInfo& lhs, const LocaleSubtagInfo& rhs);
 
 }  // namespace brave_l10n
 

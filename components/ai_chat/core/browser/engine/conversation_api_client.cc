@@ -124,7 +124,12 @@ base::Value::List ConversationEventsToList(
            {ConversationEventType::kPageScreenshot, "pageScreenshot"},
            {ConversationEventType::kUploadPdf, "uploadPdf"},
            {ConversationEventType::kToolUse, "toolUse"},
-           {ConversationEventType::kUserMemory, "userMemory"}});
+           {ConversationEventType::kUserMemory, "userMemory"},
+           {ConversationEventType::kChangeTone, "requestChangeTone"},
+           {ConversationEventType::kParaphrase, "requestParaphrase"},
+           {ConversationEventType::kImprove, "requestImprove"},
+           {ConversationEventType::kShorten, "requestShorten"},
+           {ConversationEventType::kExpand, "requestExpand"}});
 
   base::Value::List events;
   for (auto& event : conversation) {
@@ -178,6 +183,10 @@ base::Value::List ConversationEventsToList(
       event_dict.Set("memory", std::move(*event.user_memory));
     }
 
+    if (event.type == ConversationEventType::kChangeTone) {
+      event_dict.Set("tone", event.tone);
+    }
+
     events.Append(std::move(event_dict));
   }
   return events;
@@ -219,14 +228,16 @@ ConversationAPIClient::ConversationEvent::ConversationEvent(
     const std::string& topic,
     std::optional<base::Value::Dict> user_memory,
     std::vector<mojom::ToolUseEventPtr> tool_calls,
-    const std::string& tool_call_id)
+    const std::string& tool_call_id,
+    const std::string& tone)
     : role(role),
       type(type),
       content(std::move(content)),
       topic(topic),
       user_memory(std::move(user_memory)),
       tool_calls(std::move(tool_calls)),
-      tool_call_id(tool_call_id) {}
+      tool_call_id(tool_call_id),
+      tone(tone) {}
 
 ConversationAPIClient::ConversationEvent::ConversationEvent() = default;
 

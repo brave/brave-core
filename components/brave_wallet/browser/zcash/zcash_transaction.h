@@ -29,7 +29,6 @@ class ZCashTransaction {
     Outpoint(Outpoint&& other);
     Outpoint& operator=(Outpoint&& other);
     bool operator==(const Outpoint& other) const;
-    bool operator!=(const Outpoint& other) const;
 
     base::Value::Dict ToValue() const;
     static std::optional<Outpoint> FromValue(const base::Value::Dict& value);
@@ -46,7 +45,6 @@ class ZCashTransaction {
     TxInput(TxInput&& other);
     TxInput& operator=(TxInput&& other);
     bool operator==(const TxInput& other) const;
-    bool operator!=(const TxInput& other) const;
 
     base::Value::Dict ToValue() const;
     static std::optional<TxInput> FromValue(const base::Value::Dict& value);
@@ -74,7 +72,6 @@ class ZCashTransaction {
     TxOutput(TxOutput&& other);
     TxOutput& operator=(TxOutput&& other);
     bool operator==(const TxOutput& other) const;
-    bool operator!=(const TxOutput& other) const;
 
     base::Value::Dict ToValue() const;
     static std::optional<TxOutput> FromValue(const base::Value::Dict& value);
@@ -92,7 +89,6 @@ class ZCashTransaction {
     TransparentPart& operator=(const TransparentPart& other);
     TransparentPart& operator=(TransparentPart&& other);
     bool operator==(const TransparentPart& other) const;
-    bool operator!=(const TransparentPart& other) const;
 
     bool IsEmpty() const;
 
@@ -111,7 +107,6 @@ class ZCashTransaction {
     OrchardPart& operator=(const OrchardPart& other);
     OrchardPart& operator=(OrchardPart&& other);
     bool operator==(const OrchardPart& other) const;
-    bool operator!=(const OrchardPart& other) const;
 
     std::vector<OrchardInput> inputs;
     std::vector<OrchardOutput> outputs;
@@ -127,7 +122,6 @@ class ZCashTransaction {
   ZCashTransaction(ZCashTransaction&& other);
   ZCashTransaction& operator=(ZCashTransaction&& other);
   bool operator==(const ZCashTransaction& other) const;
-  bool operator!=(const ZCashTransaction& other) const;
 
   base::Value::Dict ToValue() const;
   static std::optional<ZCashTransaction> FromValue(

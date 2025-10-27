@@ -1,0 +1,15 @@
+<!-- Copyright (c) 2025 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+<settings-subpage page-title="$i18n{siteSettingsGoogleSignIn}">
+  <settings-category-default-radio-group id="googleSignInDefault"
+    category="[[contentSettingsTypesEnum_.GOOGLE_SIGN_IN]]" block-option-label="$i18n{siteSettingsGoogleSignInBlock}"
+    allow-option-label="$i18n{siteSettingsGoogleSignInAsk}" allow-option-icon="user" block-option-icon="user-off">
+  </settings-category-default-radio-group>
+  <category-setting-exceptions id="googleSignInExceptions" category="[[contentSettingsTypesEnum_.GOOGLE_SIGN_IN]]"
+    block-header="$i18n{siteSettingsGoogleSignInBlockExceptions}"
+    allow-header="$i18n{siteSettingsGoogleSignInAllowExceptions}">
+  </category-setting-exceptions>
+</settings-subpage>

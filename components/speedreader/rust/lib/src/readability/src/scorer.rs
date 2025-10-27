@@ -96,7 +96,11 @@ pub struct TopCandidate {
 impl TopCandidate {
     #[inline]
     pub fn score(&self) -> f32 {
-        if let Some(elem) = self.node.as_element() { elem.score.get() } else { 0.0 }
+        if let Some(elem) = self.node.as_element() {
+            elem.score.get()
+        } else {
+            0.0
+        }
     }
 }
 
@@ -1127,18 +1131,14 @@ mod tests {
             ImageCandidateError::URLFailedImageHeuristic,
             validate_image_candidate_string("data:image/svg+xml,%3Csvg%20xmlns%3D").unwrap_err()
         );
-        assert!(
-            validate_image_candidate_string("https://cdn.theatlantic.com/imgf/original.jpg")
-                .is_ok()
-        );
+        assert!(validate_image_candidate_string("https://cdn.theatlantic.com/imgf/original.jpg")
+            .is_ok());
         assert!(validate_image_candidate_string("image-480w.jpg      480w").is_ok());
         assert!(validate_image_candidate_string("image-480w.jpg      480w").is_ok());
-        assert!(
-            validate_image_candidate_string(
-                "/content/dam/news/2017/11/16/a08.jpeg?imwidth=480 480w"
-            )
-            .is_ok()
-        );
+        assert!(validate_image_candidate_string(
+            "/content/dam/news/2017/11/16/a08.jpeg?imwidth=480 480w"
+        )
+        .is_ok());
         assert!(validate_image_candidate_string("https://i.guim.co.uk/img/media/603fd890c17afa94c6fd0e41f87875be104b811a/38_0_4848_2912/master/4848.jpg?width=160&amp;quality=85&amp;auto=format&amp;fit=max&amp;s=fc5a4d4e165ba28ea00817f416bae258 160w").is_ok());
     }
 

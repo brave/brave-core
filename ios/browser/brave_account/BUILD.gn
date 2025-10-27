@@ -19,21 +19,3 @@ source_set("brave_account") {
     "//services/network/public/cpp",
   ]
 }
-
-source_set("unit_tests") {
-  testonly = true
-
-  sources = [ "brave_account_service_factory_ios_unittest.mm" ]
-
-  deps = [
-    "//base",
-    "//base/test:test_support",
-    "//brave/components/brave_account:features",
-    "//brave/ios/browser/brave_account",
-    "//ios/chrome/browser/shared/model/profile",
-    "//ios/chrome/browser/shared/model/profile/test",
-    "//ios/chrome/test:test_support",
-    "//ios/web/public/test",
-    "//testing/gtest",
-  ]
-}

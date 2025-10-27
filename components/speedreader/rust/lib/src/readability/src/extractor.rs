@@ -398,10 +398,7 @@ pub fn post_process(dom: &mut Sink, root: Handle, meta: &Meta) {
         }
 
         // Vertical split
-        if !meta.title.is_empty()
-            || meta.description.is_some()
-            || meta.author.is_some()
-        {
+        if !meta.title.is_empty() || meta.description.is_some() || meta.author.is_some() {
             let splitter = dom::create_element_simple(dom, "hr", "", None);
             dom.append(&meta_area, NodeOrText::AppendNode(splitter));
         }

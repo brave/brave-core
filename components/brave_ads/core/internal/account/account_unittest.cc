@@ -13,6 +13,7 @@
 #include "brave/components/brave_ads/core/internal/account/deposits/deposit_util.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/statement/statement_feature.h"
+#include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_test_constants.h"
@@ -210,6 +211,7 @@ TEST_F(BraveAdsAccountTest, DepositForCash) {
   test::BuildAndSetIssuers();
 
   test::MockTokenGenerator(/*count=*/1);
+  test::RefillConfirmationTokens(/*count=*/1);
 
   const test::URLResponseMap url_responses = {
       {BuildCreateRewardConfirmationUrlPath(test::kTransactionId,
@@ -254,6 +256,7 @@ TEST_F(BraveAdsAccountTest, DepositForCashWithUserData) {
   test::BuildAndSetIssuers();
 
   test::MockTokenGenerator(/*count=*/1);
+  test::RefillConfirmationTokens(/*count=*/1);
 
   const test::URLResponseMap url_responses = {
       {BuildCreateRewardConfirmationUrlPath(test::kTransactionId,
@@ -296,6 +299,7 @@ TEST_F(BraveAdsAccountTest, DepositForCashWithUserData) {
 TEST_F(BraveAdsAccountTest, DepositForNonCash) {
   // Arrange
   test::MockTokenGenerator(/*count=*/1);
+  test::RefillConfirmationTokens(/*count=*/1);
 
   // Act & Assert
   base::RunLoop on_did_process_deposit_run_loop;
@@ -324,6 +328,7 @@ TEST_F(BraveAdsAccountTest, DepositForNonCash) {
 TEST_F(BraveAdsAccountTest, DepositForNonCashWithUserData) {
   // Arrange
   test::MockTokenGenerator(/*count=*/1);
+  test::RefillConfirmationTokens(/*count=*/1);
 
   // Act & Assert
   base::RunLoop on_did_process_deposit_run_loop;
@@ -352,6 +357,7 @@ TEST_F(BraveAdsAccountTest, DepositForNonCashWithUserData) {
 TEST_F(BraveAdsAccountTest, DoNotDepositCashIfCreativeInstanceIdDoesNotExist) {
   // Arrange
   test::MockTokenGenerator(/*count=*/1);
+  test::RefillConfirmationTokens(/*count=*/1);
 
   const CreativeNotificationAdInfo creative_ad =
       test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/false);
@@ -372,6 +378,7 @@ TEST_F(BraveAdsAccountTest, DoNotDepositCashIfCreativeInstanceIdDoesNotExist) {
 TEST_F(BraveAdsAccountTest, AddTransactionWhenDepositingCashForRewardsUser) {
   // Arrange
   test::MockTokenGenerator(/*count=*/1);
+  test::RefillConfirmationTokens(/*count=*/1);
 
   const CreativeNotificationAdInfo creative_ad =
       test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/false);
@@ -418,6 +425,7 @@ TEST_F(BraveAdsAccountTest, AddTransactionWhenDepositingCashForRewardsUser) {
 TEST_F(BraveAdsAccountTest, AddTransactionWhenDepositingNonCashForRewardsUser) {
   // Arrange
   test::MockTokenGenerator(/*count=*/1);
+  test::RefillConfirmationTokens(/*count=*/1);
 
   const CreativeNotificationAdInfo creative_ad =
       test::BuildCreativeNotificationAd(/*should_generate_random_uuids=*/false);

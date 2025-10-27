@@ -794,34 +794,203 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetRewardAddresses_Error) {
 }
 
 IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetUtxos) {
-  TestCardanoProvider* provider = test_content_browser_client_.GetProvider(
-      web_contents(browser())->GetPrimaryMainFrame());
-  auto cardano_api = std::make_unique<TestCardanoApi>();
-  ON_CALL(*provider, Enable(_, _))
-      .WillByDefault([&](mojo::PendingReceiver<mojom::CardanoApi> receiver,
-                         TestCardanoProvider::EnableCallback callback) {
-        cardano_api->BindReceiver(std::move(receiver));
-        std::move(callback).Run(nullptr);
-      });
-  ON_CALL(*cardano_api, GetUtxos(_, _, _))
-      .WillByDefault([&](const std::optional<std::string>& amount,
-                         mojom::CardanoProviderPaginationPtr paginate,
-                         TestCardanoApi::GetUtxosCallback callback) {
-        EXPECT_EQ("1", amount.value());
-        EXPECT_EQ(2, paginate->page);
-        EXPECT_EQ(3, paginate->limit);
-        std::move(callback).Run(std::vector<std::string>({"1", "2"}), nullptr);
-      });
+  // Amount and pagination are defined.
+  {
+    TestCardanoProvider* provider = test_content_browser_client_.GetProvider(
+        web_contents(browser())->GetPrimaryMainFrame());
+    auto cardano_api = std::make_unique<TestCardanoApi>();
+    ON_CALL(*provider, Enable(_, _))
+        .WillByDefault([&](mojo::PendingReceiver<mojom::CardanoApi> receiver,
+                           TestCardanoProvider::EnableCallback callback) {
+          cardano_api->BindReceiver(std::move(receiver));
+          std::move(callback).Run(nullptr);
+        });
+    ON_CALL(*cardano_api, GetUtxos(_, _, _))
+        .WillByDefault([&](const std::optional<std::string>& amount,
+                           mojom::CardanoProviderPaginationPtr paginate,
+                           TestCardanoApi::GetUtxosCallback callback) {
+          EXPECT_EQ("1", amount.value());
+          EXPECT_EQ(2, paginate->page);
+          EXPECT_EQ(3, paginate->limit);
+          std::move(callback).Run(std::vector<std::string>({"1", "2"}),
+                                  nullptr);
+        });
 
-  auto result = EvalJs(web_contents(browser()),
-                       "(async () => { return await (await "
-                       "window.cardano.brave.enable()).getUtxos(\"1\", {page: "
-                       "2, limit:3}) })();");
+    auto result =
+        EvalJs(web_contents(browser()),
+               "(async () => { return await (await "
+               "window.cardano.brave.enable()).getUtxos(\"1\", {page: "
+               "2, limit:3}) })();");
 
-  base::Value::List list_value;
-  list_value.Append(base::Value("1"));
-  list_value.Append(base::Value("2"));
-  EXPECT_EQ(list_value, result);
+    base::Value::List list_value;
+    list_value.Append(base::Value("1"));
+    list_value.Append(base::Value("2"));
+    EXPECT_EQ(list_value, result);
+  }
+
+  // Amount undefined, pagination not defined.
+  {
+    TestCardanoProvider* provider = test_content_browser_client_.GetProvider(
+        web_contents(browser())->GetPrimaryMainFrame());
+    auto cardano_api = std::make_unique<TestCardanoApi>();
+    ON_CALL(*provider, Enable(_, _))
+        .WillByDefault([&](mojo::PendingReceiver<mojom::CardanoApi> receiver,
+                           TestCardanoProvider::EnableCallback callback) {
+          cardano_api->BindReceiver(std::move(receiver));
+          std::move(callback).Run(nullptr);
+        });
+    ON_CALL(*cardano_api, GetUtxos(_, _, _))
+        .WillByDefault([&](const std::optional<std::string>& amount,
+                           mojom::CardanoProviderPaginationPtr paginate,
+                           TestCardanoApi::GetUtxosCallback callback) {
+          EXPECT_FALSE(amount);
+          EXPECT_FALSE(paginate);
+          std::move(callback).Run(std::vector<std::string>({"1", "2"}),
+                                  nullptr);
+        });
+
+    auto result =
+        EvalJs(web_contents(browser()),
+               "(async () => { return await (await "
+               "window.cardano.brave.enable()).getUtxos(undefined) })();");
+
+    base::Value::List list_value;
+    list_value.Append(base::Value("1"));
+    list_value.Append(base::Value("2"));
+    EXPECT_EQ(list_value, result);
+  }
+
+  // Amount undefined with defined pagination.
+  {
+    TestCardanoProvider* provider = test_content_browser_client_.GetProvider(
+        web_contents(browser())->GetPrimaryMainFrame());
+    auto cardano_api = std::make_unique<TestCardanoApi>();
+    ON_CALL(*provider, Enable(_, _))
+        .WillByDefault([&](mojo::PendingReceiver<mojom::CardanoApi> receiver,
+                           TestCardanoProvider::EnableCallback callback) {
+          cardano_api->BindReceiver(std::move(receiver));
+          std::move(callback).Run(nullptr);
+        });
+    ON_CALL(*cardano_api, GetUtxos(_, _, _))
+        .WillByDefault([&](const std::optional<std::string>& amount,
+                           mojom::CardanoProviderPaginationPtr paginate,
+                           TestCardanoApi::GetUtxosCallback callback) {
+          EXPECT_FALSE(amount);
+          EXPECT_EQ(2, paginate->page);
+          EXPECT_EQ(3, paginate->limit);
+          std::move(callback).Run(std::vector<std::string>({"1", "2"}),
+                                  nullptr);
+        });
+
+    auto result =
+        EvalJs(web_contents(browser()),
+               "(async () => { return await (await "
+               "window.cardano.brave.enable()).getUtxos(undefined, {page: "
+               "2, limit:3}) })();");
+
+    base::Value::List list_value;
+    list_value.Append(base::Value("1"));
+    list_value.Append(base::Value("2"));
+    EXPECT_EQ(list_value, result);
+  }
+
+  // Both undefined.
+  {
+    TestCardanoProvider* provider = test_content_browser_client_.GetProvider(
+        web_contents(browser())->GetPrimaryMainFrame());
+    auto cardano_api = std::make_unique<TestCardanoApi>();
+    ON_CALL(*provider, Enable(_, _))
+        .WillByDefault([&](mojo::PendingReceiver<mojom::CardanoApi> receiver,
+                           TestCardanoProvider::EnableCallback callback) {
+          cardano_api->BindReceiver(std::move(receiver));
+          std::move(callback).Run(nullptr);
+        });
+    ON_CALL(*cardano_api, GetUtxos(_, _, _))
+        .WillByDefault([&](const std::optional<std::string>& amount,
+                           mojom::CardanoProviderPaginationPtr paginate,
+                           TestCardanoApi::GetUtxosCallback callback) {
+          EXPECT_FALSE(amount);
+          EXPECT_FALSE(paginate);
+          std::move(callback).Run(std::vector<std::string>({"1", "2"}),
+                                  nullptr);
+        });
+
+    auto result = EvalJs(
+        web_contents(browser()),
+        "(async () => { return await (await "
+        "window.cardano.brave.enable()).getUtxos(undefined, undefined) })();");
+
+    base::Value::List list_value;
+    list_value.Append(base::Value("1"));
+    list_value.Append(base::Value("2"));
+    EXPECT_EQ(list_value, result);
+  }
+
+  // With amount, pagination not defined.
+  {
+    TestCardanoProvider* provider = test_content_browser_client_.GetProvider(
+        web_contents(browser())->GetPrimaryMainFrame());
+    auto cardano_api = std::make_unique<TestCardanoApi>();
+    ON_CALL(*provider, Enable(_, _))
+        .WillByDefault([&](mojo::PendingReceiver<mojom::CardanoApi> receiver,
+                           TestCardanoProvider::EnableCallback callback) {
+          cardano_api->BindReceiver(std::move(receiver));
+          std::move(callback).Run(nullptr);
+        });
+    ON_CALL(*cardano_api, GetUtxos(_, _, _))
+        .WillByDefault([&](const std::optional<std::string>& amount,
+                           mojom::CardanoProviderPaginationPtr paginate,
+                           TestCardanoApi::GetUtxosCallback callback) {
+          EXPECT_EQ("1", amount);
+          EXPECT_FALSE(paginate);
+          std::move(callback).Run(std::vector<std::string>({"1", "2"}),
+                                  nullptr);
+        });
+
+    auto result =
+        EvalJs(web_contents(browser()),
+               "(async () => { return await (await "
+               "window.cardano.brave.enable()).getUtxos(\"1\") })();");
+
+    base::Value::List list_value;
+    list_value.Append(base::Value("1"));
+    list_value.Append(base::Value("2"));
+
+    EXPECT_EQ(list_value, result);
+  }
+
+  // With amount, pagination is undefined.
+  {
+    TestCardanoProvider* provider = test_content_browser_client_.GetProvider(
+        web_contents(browser())->GetPrimaryMainFrame());
+    auto cardano_api = std::make_unique<TestCardanoApi>();
+    ON_CALL(*provider, Enable(_, _))
+        .WillByDefault([&](mojo::PendingReceiver<mojom::CardanoApi> receiver,
+                           TestCardanoProvider::EnableCallback callback) {
+          cardano_api->BindReceiver(std::move(receiver));
+          std::move(callback).Run(nullptr);
+        });
+    ON_CALL(*cardano_api, GetUtxos(_, _, _))
+        .WillByDefault([&](const std::optional<std::string>& amount,
+                           mojom::CardanoProviderPaginationPtr paginate,
+                           TestCardanoApi::GetUtxosCallback callback) {
+          EXPECT_EQ("1", amount);
+          EXPECT_FALSE(paginate);
+          std::move(callback).Run(std::vector<std::string>({"1", "2"}),
+                                  nullptr);
+        });
+
+    auto result = EvalJs(
+        web_contents(browser()),
+        "(async () => { return await (await "
+        "window.cardano.brave.enable()).getUtxos(\"1\", undefined) })();");
+
+    base::Value::List list_value;
+    list_value.Append(base::Value("1"));
+    list_value.Append(base::Value("2"));
+
+    EXPECT_EQ(list_value, result);
+  }
 }
 
 IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetUtxos_NoArgs) {
@@ -854,58 +1023,61 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetUtxos_NoArgs) {
   EXPECT_EQ(list_value, result);
 }
 
-IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetUtxos_NoPagination) {
-  TestCardanoProvider* provider = test_content_browser_client_.GetProvider(
-      web_contents(browser())->GetPrimaryMainFrame());
-  auto cardano_api = std::make_unique<TestCardanoApi>();
-  ON_CALL(*provider, Enable(_, _))
-      .WillByDefault([&](mojo::PendingReceiver<mojom::CardanoApi> receiver,
-                         TestCardanoProvider::EnableCallback callback) {
-        cardano_api->BindReceiver(std::move(receiver));
-        std::move(callback).Run(nullptr);
-      });
-  ON_CALL(*cardano_api, GetUtxos(_, _, _))
-      .WillByDefault([&](const std::optional<std::string>& amount,
-                         mojom::CardanoProviderPaginationPtr paginate,
-                         TestCardanoApi::GetUtxosCallback callback) {
-        EXPECT_EQ("1", amount);
-        EXPECT_FALSE(paginate);
-        std::move(callback).Run(std::vector<std::string>({"1", "2"}), nullptr);
-      });
-
-  auto result = EvalJs(web_contents(browser()),
-                       "(async () => { return await (await "
-                       "window.cardano.brave.enable()).getUtxos(\"1\") })();");
-
-  base::Value::List list_value;
-  list_value.Append(base::Value("1"));
-  list_value.Append(base::Value("2"));
-
-  EXPECT_EQ(list_value, result);
-}
-
 IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetUtxos_WrongArguments) {
-  TestCardanoProvider* provider = test_content_browser_client_.GetProvider(
-      web_contents(browser())->GetPrimaryMainFrame());
-  auto cardano_api = std::make_unique<TestCardanoApi>();
-  ON_CALL(*provider, Enable(_, _))
-      .WillByDefault([&](mojo::PendingReceiver<mojom::CardanoApi> receiver,
-                         TestCardanoProvider::EnableCallback callback) {
-        cardano_api->BindReceiver(std::move(receiver));
-        std::move(callback).Run(nullptr);
-      });
-  ON_CALL(*cardano_api, GetUtxos(_, _, _))
-      .WillByDefault([&](const std::optional<std::string>& amount,
-                         mojom::CardanoProviderPaginationPtr paginate,
-                         TestCardanoApi::GetUtxosCallback callback) {
-        std::move(callback).Run(std::vector<std::string>({"1", "2"}), nullptr);
-      });
-
+  // Wrong argument types.
   {
-    auto result = EvalJs(web_contents(browser()),
-                         "(async () => { return await (await "
-                         "window.cardano.brave.enable()).getUtxos(1, 2) })();");
-    EXPECT_FALSE(result.is_ok());
+    TestCardanoProvider* provider = test_content_browser_client_.GetProvider(
+        web_contents(browser())->GetPrimaryMainFrame());
+    auto cardano_api = std::make_unique<TestCardanoApi>();
+    ON_CALL(*provider, Enable(_, _))
+        .WillByDefault([&](mojo::PendingReceiver<mojom::CardanoApi> receiver,
+                           TestCardanoProvider::EnableCallback callback) {
+          cardano_api->BindReceiver(std::move(receiver));
+          std::move(callback).Run(nullptr);
+        });
+    ON_CALL(*cardano_api, GetUtxos(_, _, _))
+        .WillByDefault([&](const std::optional<std::string>& amount,
+                           mojom::CardanoProviderPaginationPtr paginate,
+                           TestCardanoApi::GetUtxosCallback callback) {
+          std::move(callback).Run(std::vector<std::string>({"1", "2"}),
+                                  nullptr);
+        });
+
+    {
+      auto result =
+          EvalJs(web_contents(browser()),
+                 "(async () => { return await (await "
+                 "window.cardano.brave.enable()).getUtxos(1, 2) })();");
+      EXPECT_FALSE(result.is_ok());
+    }
+  }
+
+  // Wrong arguments amount.
+  {
+    TestCardanoProvider* provider = test_content_browser_client_.GetProvider(
+        web_contents(browser())->GetPrimaryMainFrame());
+    auto cardano_api = std::make_unique<TestCardanoApi>();
+    ON_CALL(*provider, Enable(_, _))
+        .WillByDefault([&](mojo::PendingReceiver<mojom::CardanoApi> receiver,
+                           TestCardanoProvider::EnableCallback callback) {
+          cardano_api->BindReceiver(std::move(receiver));
+          std::move(callback).Run(nullptr);
+        });
+    ON_CALL(*cardano_api, GetUtxos(_, _, _))
+        .WillByDefault([&](const std::optional<std::string>& amount,
+                           mojom::CardanoProviderPaginationPtr paginate,
+                           TestCardanoApi::GetUtxosCallback callback) {
+          std::move(callback).Run(std::vector<std::string>({"1", "2"}),
+                                  nullptr);
+        });
+
+    {
+      auto result = EvalJs(web_contents(browser()),
+                           "(async () => { return await (await "
+                           "window.cardano.brave.enable()).getUtxos(undefined, "
+                           "undefined, undefined) })();");
+      EXPECT_FALSE(result.is_ok());
+    }
   }
 }
 
@@ -937,7 +1109,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetUtxos_WrongPagination) {
                          "window.cardano.brave.enable()).getUtxos() } "
                          "catch(error) {return error} })();");
     base::Value::Dict dict_value;
-    dict_value.Set("maxNumber", base::Value(2));
+    dict_value.Set("maxSize", base::Value(2));
 
     EXPECT_EQ(dict_value, result);
   }

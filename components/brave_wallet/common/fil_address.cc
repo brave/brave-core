@@ -71,10 +71,6 @@ bool FilAddress::operator==(const FilAddress& other) const {
   return IsEqual(other);
 }
 
-bool FilAddress::operator!=(const FilAddress& other) const {
-  return !IsEqual(other);
-}
-
 // static
 std::optional<mojom::FilecoinAddressProtocol>
 FilAddress::GetProtocolFromAddress(const std::string& address) {

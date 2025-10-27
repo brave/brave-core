@@ -245,8 +245,8 @@ where
     }
 
     #[instrument(err(level = Level::WARN), ret)]
-    // create_order_from_receipt allows for order creation with a vendor receipt, returning the
-    // order id of the created order
+    // create_order_from_receipt allows for order creation with a vendor receipt,
+    // returning the order id of the created order
     pub async fn create_order_from_receipt(&self, receipt: &str) -> Result<String, InternalError> {
         let request_with_retries = FutureRetry::new(
             || async {

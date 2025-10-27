@@ -1,0 +1,34 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/build/config.gni")
+import("//build/config/features.gni")
+
+source_set("brave_wallet") {
+  sources = [
+    "wallet_page_handler.h",
+    "wallet_page_handler.mm",
+    "wallet_page_ui.h",
+    "wallet_page_ui.mm",
+  ]
+
+  deps = [
+    "//brave/components/brave_wallet/browser",
+    "//brave/components/brave_wallet/browser:constants",
+    "//brave/components/brave_wallet/browser:wallet_handler",
+    "//brave/components/brave_wallet/common",
+    "//brave/components/brave_wallet_ui/page:brave_wallet_page_generated",
+    "//brave/components/constants",
+    "//brave/components/resources:static_resources_grit",
+    "//brave/ios/browser/brave_wallet",
+    "//brave/ios/web/webui",
+    "//ios/chrome/browser/shared/model/profile",
+    "//ios/web/public",
+    "//ios/web/public/webui",
+    "//ios/web/web_state",
+    "//mojo/public/cpp/bindings",
+    "//ui/base",
+  ]
+}

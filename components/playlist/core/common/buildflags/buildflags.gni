@@ -6,12 +6,5 @@
 import("//build/config/ui.gni")
 
 declare_args() {
-  enable_playlist = toolkit_views || is_android || is_ios
+  enable_playlist_webui = toolkit_views
 }
-
-declare_args() {
-  enable_playlist_webui = enable_playlist && toolkit_views
-}
-
-assert(!enable_playlist_webui || enable_playlist,
-       "Playlist buildflag should be enabled first")

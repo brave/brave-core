@@ -48,6 +48,10 @@ class SettingsWalletNetworksSubpage extends SettingsWalletNetworksSubpageBase {
         type: Boolean,
         value: false
       },
+      isPolkadotEnabled: {
+        type: Boolean,
+        value: false
+      },
       ethCoin: {
         type: Number,
         value: 60
@@ -71,6 +75,10 @@ class SettingsWalletNetworksSubpage extends SettingsWalletNetworksSubpageBase {
       adaCoin: {
         type: Number,
         value: 1815
+      },
+      dotCoin: {
+        type: Number,
+        value: 354
       }
     }
   }
@@ -78,12 +86,14 @@ class SettingsWalletNetworksSubpage extends SettingsWalletNetworksSubpageBase {
   private declare isZCashEnabled: boolean
   private declare isBitcoinEnabled: boolean
   private declare isCardanoEnabled: boolean
+  private declare isPolkadotEnabled: boolean
   private declare ethCoin: number
   private declare filCoin: number
   private declare solCoin: number
   private declare btcCoin: number
   private declare zecCoin: number
   private declare adaCoin: number
+  private declare dotCoin: number
 
   private browserProxy_: BraveWalletBrowserProxy =
     BraveWalletBrowserProxyImpl.getInstance()
@@ -101,6 +111,10 @@ class SettingsWalletNetworksSubpage extends SettingsWalletNetworksSubpageBase {
 
     this.browserProxy_.isCardanoEnabled().then((enabled: boolean) => {
       this.isCardanoEnabled = enabled
+    })
+
+    this.browserProxy_.isPolkadotEnabled().then((enabled: boolean) => {
+      this.isPolkadotEnabled = enabled
     })
   }
 }

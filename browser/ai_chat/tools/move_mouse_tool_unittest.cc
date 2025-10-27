@@ -29,9 +29,7 @@ class MoveMouseToolTest : public ContentAgentToolBaseTest {
     base::Value::Dict dict;
     dict.Set("target", target_dict.Clone());
 
-    std::string json;
-    base::JSONWriter::Write(dict, &json);
-    return json;
+    return *base::WriteJson(dict);
   }
 
   optimization_guide::proto::Action VerifySuccess(

@@ -30,10 +30,6 @@ bool EthAddress::operator==(const EthAddress& other) const {
   return bytes_ == other.bytes_;
 }
 
-bool EthAddress::operator!=(const EthAddress& other) const {
-  return !(*this == other);
-}
-
 // static
 EthAddress EthAddress::FromPublicKey(base::span<const uint8_t> public_key) {
   // TODO(apaymyshev): should be a fixed-size span.

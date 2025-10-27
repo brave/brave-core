@@ -101,11 +101,6 @@ EXTERN_C const IID IID_IBraveVpnWireguardManager;
         virtual HRESULT STDMETHODCALLTYPE DisableVpn( 
             /* [out] */ DWORD *last_error) = 0;
         
-        virtual HRESULT STDMETHODCALLTYPE GenerateKeypair( 
-            /* [out] */ BSTR *public_key,
-            /* [out] */ BSTR *private_key,
-            /* [out] */ DWORD *last_error) = 0;
-        
     };
     
     
@@ -144,13 +139,6 @@ EXTERN_C const IID IID_IBraveVpnWireguardManager;
             IBraveVpnWireguardManager * This,
             /* [out] */ DWORD *last_error);
         
-        DECLSPEC_XFGVIRT(IBraveVpnWireguardManager, GenerateKeypair)
-        HRESULT ( STDMETHODCALLTYPE *GenerateKeypair )( 
-            IBraveVpnWireguardManager * This,
-            /* [out] */ BSTR *public_key,
-            /* [out] */ BSTR *private_key,
-            /* [out] */ DWORD *last_error);
-        
         END_INTERFACE
     } IBraveVpnWireguardManagerVtbl;
 
@@ -179,9 +167,6 @@ EXTERN_C const IID IID_IBraveVpnWireguardManager;
 
 #define IBraveVpnWireguardManager_DisableVpn(This,last_error)	\
     ( (This)->lpVtbl -> DisableVpn(This,last_error) ) 
-
-#define IBraveVpnWireguardManager_GenerateKeypair(This,public_key,private_key,last_error)	\
-    ( (This)->lpVtbl -> GenerateKeypair(This,public_key,private_key,last_error) ) 
 
 #endif /* COBJMACROS */
 

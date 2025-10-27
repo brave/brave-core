@@ -106,13 +106,6 @@ class ContentAgentToolsTest : public InProcessBrowserTest {
     return nullptr;
   }
 
-  // Helper to create JSON input for tool calls
-  std::string CreateToolInput(const base::Value::Dict& input) {
-    std::string json_string;
-    base::JSONWriter::Write(input, &json_string);
-    return json_string;
-  }
-
   // Helper to execute a tool and wait for completion
   Tool::ToolResult ExecuteToolAndWait(base::WeakPtr<Tool> tool,
                                       const std::string& input_json,
@@ -193,7 +186,7 @@ IN_PROC_BROWSER_TEST_F(ContentAgentToolsTest, ClickTool_NodeIdTarget) {
   input.Set("click_type", "left");
   input.Set("click_count", "single");
 
-  auto result = ExecuteToolAndWait(click_tool, CreateToolInput(input));
+  auto result = ExecuteToolAndWait(click_tool, *base::WriteJson(input));
   EXPECT_GT(result.size(), 0u);
 
   // Verify the button was actually clicked
@@ -225,7 +218,7 @@ IN_PROC_BROWSER_TEST_F(ContentAgentToolsTest, TypeTool_NodeIdTarget) {
   input.Set("follow_by_enter", false);
   input.Set("mode", "replace");
 
-  auto result = ExecuteToolAndWait(type_tool, CreateToolInput(input));
+  auto result = ExecuteToolAndWait(type_tool, *base::WriteJson(input));
   EXPECT_GT(result.size(), 0u);
 
   // Verify the text content was actually entered
@@ -258,7 +251,7 @@ IN_PROC_BROWSER_TEST_F(ContentAgentToolsTest, ScrollTool_NodeIdTarget) {
   input.Set("direction", "down");
   input.Set("distance", 50);
 
-  auto result = ExecuteToolAndWait(scroll_tool, CreateToolInput(input));
+  auto result = ExecuteToolAndWait(scroll_tool, *base::WriteJson(input));
   EXPECT_GT(result.size(), 0u);
 
   // Verify the element was scrolled down
@@ -289,7 +282,7 @@ IN_PROC_BROWSER_TEST_F(ContentAgentToolsTest, ScrollTool_DocumentTarget) {
   input.Set("direction", "down");
   input.Set("distance", scroll_distance);
 
-  auto result = ExecuteToolAndWait(scroll_tool, CreateToolInput(input));
+  auto result = ExecuteToolAndWait(scroll_tool, *base::WriteJson(input));
   EXPECT_GT(result.size(), 0u);
 
   // Verify the element was scrolled down
@@ -319,7 +312,7 @@ IN_PROC_BROWSER_TEST_F(ContentAgentToolsTest, SelectTool_NodeIdTarget) {
   input.Set("target", target_dict.Clone());
   input.Set("value", "beta");
 
-  auto result = ExecuteToolAndWait(select_tool, CreateToolInput(input));
+  auto result = ExecuteToolAndWait(select_tool, *base::WriteJson(input));
   EXPECT_GT(result.size(), 0u);
 
   // Verify the correct value was selected
@@ -346,7 +339,7 @@ IN_PROC_BROWSER_TEST_F(ContentAgentToolsTest, NavigationTool_BasicNavigation) {
   base::Value::Dict input;
   input.Set("website_url", test_url.spec());
 
-  auto result = ExecuteToolAndWait(nav_tool, CreateToolInput(input));
+  auto result = ExecuteToolAndWait(nav_tool, *base::WriteJson(input));
   EXPECT_GT(result.size(), 0u);
 
   // Verify the page navigated to the new URL
@@ -380,7 +373,7 @@ IN_PROC_BROWSER_TEST_F(ContentAgentToolsTest,
   input.Set("from", from_target.Clone());
   input.Set("to", to_target.Clone());
 
-  auto result = ExecuteToolAndWait(drag_tool, CreateToolInput(input));
+  auto result = ExecuteToolAndWait(drag_tool, *base::WriteJson(input));
   EXPECT_GT(result.size(), 0u);
 
   // Verify the range value changed (exact value depends on drag implementation)
@@ -406,7 +399,7 @@ IN_PROC_BROWSER_TEST_F(ContentAgentToolsTest, HistoryTool_Back) {
 
   base::Value::Dict input;
   input.Set("direction", "back");
-  auto result = ExecuteToolAndWait(history_tool, CreateToolInput(input));
+  auto result = ExecuteToolAndWait(history_tool, *base::WriteJson(input));
   EXPECT_GT(result.size(), 0u);
   EXPECT_EQ(web_contents()->GetURL(), url_first);
 }

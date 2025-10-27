@@ -1,3 +1,8 @@
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
 extern crate reqwest;
 extern crate speedreader;
 extern crate url;
@@ -26,19 +31,10 @@ fn main() {
     let url = Url::parse(article_url).unwrap();
 
     let client = reqwest::blocking::Client::new();
-    let data = client
-        .get(article_url)
-        .header(reqwest::header::COOKIE, "")
-        .send()
-        .unwrap()
-        .text()
-        .unwrap();
+    let data =
+        client.get(article_url).header(reqwest::header::COOKIE, "").send().unwrap().text().unwrap();
 
-    let dir = format!(
-        "data/pages/{}/{}",
-        url.host().unwrap(),
-        calculate_hash(article_url)
-    );
+    let dir = format!("data/pages/{}/{}", url.host().unwrap(), calculate_hash(article_url));
     println!("Creating directory: {}", dir);
     fs::create_dir_all(&dir).unwrap_or_default();
 

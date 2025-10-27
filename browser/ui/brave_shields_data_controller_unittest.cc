@@ -11,10 +11,12 @@
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "build/build_config.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "chrome/test/base/testing_profile_manager.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "components/favicon/content/content_favicon_driver.h"
 #include "components/prefs/pref_service.h"
@@ -79,9 +81,10 @@ class BraveShieldsDataControllerTest : public testing::Test {
     return BraveShieldsTabHelper::FromWebContents(web_contents());
   }
 
-  ContentSetting GetContentSettingFor(ContentSettingsType type,
+  ContentSetting GetContentSettingFor(Profile* profile,
+                                      ContentSettingsType type,
                                       GURL secondary_url = GURL()) {
-    auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
+    auto* map = HostContentSettingsMapFactory::GetForProfile(profile);
     auto* controller = GetShieldsDataController();
 
     return map->GetContentSetting(controller->GetCurrentSiteURL(),
@@ -131,42 +134,65 @@ class BraveShieldsDataControllerTest : public testing::Test {
   std::unique_ptr<TestingProfileManager> profile_manager_;
 };
 
+TEST_F(BraveShieldsDataControllerTest, RegularVsIncognitoContentSettings) {
+  const GURL url("http://brave.com");
+  SetLastCommittedUrl(url);
+
+  Profile* otr_profile =
+      profile()->GetPrimaryOTRProfile(/*create_if_needed=*/true);
+  auto otr_web_contents =
+      content::WebContentsTester::CreateTestWebContents(otr_profile, nullptr);
+  favicon::ContentFaviconDriver::CreateForWebContents(otr_web_contents.get(),
+                                                      nullptr);
+  auto* incognito_controller =
+      BraveShieldsTabHelper::GetOrCreateForWebContents(otr_web_contents.get());
+  content::WebContentsTester::For(otr_web_contents.get())
+      ->SetLastCommittedURL(GURL("http://brave.com"));
+
+  incognito_controller->SetAdBlockMode(AdBlockMode::ALLOW);
+
+  EXPECT_EQ(GetContentSettingFor(profile(), ContentSettingsType::BRAVE_ADS),
+            CONTENT_SETTING_BLOCK);
+  EXPECT_EQ(GetContentSettingFor(otr_profile, ContentSettingsType::BRAVE_ADS),
+            CONTENT_SETTING_ALLOW);
+}
+
 TEST_F(BraveShieldsDataControllerTest, SetAdBlockMode_ForOrigin_1) {
   auto* controller = GetShieldsDataController();
   SetLastCommittedUrl(GURL("http://brave.com"));
 
   /* DEFAULT */
-  EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_ADS),
+  EXPECT_EQ(GetContentSettingFor(profile(), ContentSettingsType::BRAVE_ADS),
             CONTENT_SETTING_BLOCK);
   EXPECT_EQ(GetSettingForCosmeticFiltering(), ControlType::BLOCK_THIRD_PARTY);
 
   /* ALLOW */
   controller->SetAdBlockMode(AdBlockMode::ALLOW);
-  EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_ADS),
+  EXPECT_EQ(GetContentSettingFor(profile(), ContentSettingsType::BRAVE_ADS),
             CONTENT_SETTING_ALLOW);
   EXPECT_EQ(GetSettingForCosmeticFiltering(), ControlType::ALLOW);
 
   /* STANDARD */
   controller->SetAdBlockMode(AdBlockMode::STANDARD);
-  EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_ADS),
+  EXPECT_EQ(GetContentSettingFor(profile(), ContentSettingsType::BRAVE_ADS),
             CONTENT_SETTING_BLOCK);
   EXPECT_EQ(GetSettingForCosmeticFiltering(), ControlType::BLOCK_THIRD_PARTY);
 
   /* ALLOW */
   controller->SetAdBlockMode(AdBlockMode::ALLOW);
-  EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_ADS),
+  EXPECT_EQ(GetContentSettingFor(profile(), ContentSettingsType::BRAVE_ADS),
             CONTENT_SETTING_ALLOW);
   EXPECT_EQ(GetSettingForCosmeticFiltering(), ControlType::ALLOW);
 
   /* AGGRESSIVE */
   controller->SetAdBlockMode(AdBlockMode::AGGRESSIVE);
-  EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_ADS),
+  EXPECT_EQ(GetContentSettingFor(profile(), ContentSettingsType::BRAVE_ADS),
             CONTENT_SETTING_BLOCK);
   EXPECT_EQ(GetSettingForCosmeticFiltering(), ControlType::BLOCK);
 
   /* ALLOW */
   controller->SetAdBlockMode(AdBlockMode::ALLOW);
-  EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_ADS),
+  EXPECT_EQ(GetContentSettingFor(profile(), ContentSettingsType::BRAVE_ADS),
             CONTENT_SETTING_ALLOW);
   EXPECT_EQ(GetSettingForCosmeticFiltering(), ControlType::ALLOW);
 }
@@ -176,37 +202,37 @@ TEST_F(BraveShieldsDataControllerTest, SetAdBlockMode_ForOrigin_2) {
   SetLastCommittedUrl(GURL("http://brave.com"));
 
   /* DEFAULT */
-  EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_ADS),
+  EXPECT_EQ(GetContentSettingFor(profile(), ContentSettingsType::BRAVE_ADS),
             CONTENT_SETTING_BLOCK);
   EXPECT_EQ(GetSettingForCosmeticFiltering(), ControlType::BLOCK_THIRD_PARTY);
 
   /* STANDARD */
   controller->SetAdBlockMode(AdBlockMode::STANDARD);
-  EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_ADS),
+  EXPECT_EQ(GetContentSettingFor(profile(), ContentSettingsType::BRAVE_ADS),
             CONTENT_SETTING_BLOCK);
   EXPECT_EQ(GetSettingForCosmeticFiltering(), ControlType::BLOCK_THIRD_PARTY);
 
   /* ALLOW */
   controller->SetAdBlockMode(AdBlockMode::ALLOW);
-  EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_ADS),
+  EXPECT_EQ(GetContentSettingFor(profile(), ContentSettingsType::BRAVE_ADS),
             CONTENT_SETTING_ALLOW);
   EXPECT_EQ(GetSettingForCosmeticFiltering(), ControlType::ALLOW);
 
   /* STANDARD */
   controller->SetAdBlockMode(AdBlockMode::STANDARD);
-  EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_ADS),
+  EXPECT_EQ(GetContentSettingFor(profile(), ContentSettingsType::BRAVE_ADS),
             CONTENT_SETTING_BLOCK);
   EXPECT_EQ(GetSettingForCosmeticFiltering(), ControlType::BLOCK_THIRD_PARTY);
 
   /* AGGRESSIVE */
   controller->SetAdBlockMode(AdBlockMode::AGGRESSIVE);
-  EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_ADS),
+  EXPECT_EQ(GetContentSettingFor(profile(), ContentSettingsType::BRAVE_ADS),
             CONTENT_SETTING_BLOCK);
   EXPECT_EQ(GetSettingForCosmeticFiltering(), ControlType::BLOCK);
 
   /* STANDARD */
   controller->SetAdBlockMode(AdBlockMode::STANDARD);
-  EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_ADS),
+  EXPECT_EQ(GetContentSettingFor(profile(), ContentSettingsType::BRAVE_ADS),
             CONTENT_SETTING_BLOCK);
   EXPECT_EQ(GetSettingForCosmeticFiltering(), ControlType::BLOCK_THIRD_PARTY);
 }
@@ -216,37 +242,37 @@ TEST_F(BraveShieldsDataControllerTest, SetAdBlockMode_ForOrigin_3) {
   SetLastCommittedUrl(GURL("http://brave.com"));
 
   /* DEFAULT */
-  EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_ADS),
+  EXPECT_EQ(GetContentSettingFor(profile(), ContentSettingsType::BRAVE_ADS),
             CONTENT_SETTING_BLOCK);
   EXPECT_EQ(GetSettingForCosmeticFiltering(), ControlType::BLOCK_THIRD_PARTY);
 
   /* AGGRESSIVE */
   controller->SetAdBlockMode(AdBlockMode::AGGRESSIVE);
-  EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_ADS),
+  EXPECT_EQ(GetContentSettingFor(profile(), ContentSettingsType::BRAVE_ADS),
             CONTENT_SETTING_BLOCK);
   EXPECT_EQ(GetSettingForCosmeticFiltering(), ControlType::BLOCK);
 
   /* ALLOW */
   controller->SetAdBlockMode(AdBlockMode::ALLOW);
-  EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_ADS),
+  EXPECT_EQ(GetContentSettingFor(profile(), ContentSettingsType::BRAVE_ADS),
             CONTENT_SETTING_ALLOW);
   EXPECT_EQ(GetSettingForCosmeticFiltering(), ControlType::ALLOW);
 
   /* AGGRESSIVE */
   controller->SetAdBlockMode(AdBlockMode::AGGRESSIVE);
-  EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_ADS),
+  EXPECT_EQ(GetContentSettingFor(profile(), ContentSettingsType::BRAVE_ADS),
             CONTENT_SETTING_BLOCK);
   EXPECT_EQ(GetSettingForCosmeticFiltering(), ControlType::BLOCK);
 
   /* STANDARD */
   controller->SetAdBlockMode(AdBlockMode::STANDARD);
-  EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_ADS),
+  EXPECT_EQ(GetContentSettingFor(profile(), ContentSettingsType::BRAVE_ADS),
             CONTENT_SETTING_BLOCK);
   EXPECT_EQ(GetSettingForCosmeticFiltering(), ControlType::BLOCK_THIRD_PARTY);
 
   /* AGGRESSIVE */
   controller->SetAdBlockMode(AdBlockMode::AGGRESSIVE);
-  EXPECT_EQ(GetContentSettingFor(ContentSettingsType::BRAVE_ADS),
+  EXPECT_EQ(GetContentSettingFor(profile(), ContentSettingsType::BRAVE_ADS),
             CONTENT_SETTING_BLOCK);
   EXPECT_EQ(GetSettingForCosmeticFiltering(), ControlType::BLOCK);
 }
