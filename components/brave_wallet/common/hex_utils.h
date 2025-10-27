@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "base/containers/span.h"
+#include "base/containers/span_reader.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 
@@ -68,6 +69,48 @@ bool PrefixedHexStringToBytes(std::string_view input,
                               std::vector<uint8_t>* bytes);
 std::optional<std::vector<uint8_t>> PrefixedHexStringToBytes(
     std::string_view input);
+
+// Parse a hex string into a fixed-sized buffer, failing if the hex string's
+// size doesn't perfectly match the provided fixed size. This function works
+// in the presence of a leading `0x`, but will work equally fine if the string
+// does not contain it. If required, this function will append a leading 0 if
+// the supplied hex string contains an odd-number of characters (i.e. 0x123 will
+// be treated as 0x0123).
+template <size_t N>
+std::optional<std::array<uint8_t, N>> PrefixedHexStringToFixed(
+    std::string_view input) {
+  static_assert(N >= 1);
+
+  if (input.starts_with("0x")) {
+    input.remove_prefix(2);
+  }
+
+  if (input.empty()) {
+    return std::nullopt;
+  }
+
+  std::array<uint8_t, N> bytes = {};
+  base::SpanReader<uint8_t> reader(bytes);
+
+  // e.g. 0x123 => 0x0123
+  if (input.size() % 2 == 1) {
+    char tmp[2] = {'0', input[0]};
+    if (!base::HexStringToSpan(base::as_string_view(base::span(tmp)),
+                               *reader.Read(size_t{1}))) {
+      return std::nullopt;
+    }
+
+    input.remove_prefix(1);
+  }
+
+  if (!input.empty()) {
+    if (!base::HexStringToSpan(input, reader.remaining_span())) {
+      return std::nullopt;
+    }
+  }
+
+  return bytes;
+}
 
 }  // namespace brave_wallet
 

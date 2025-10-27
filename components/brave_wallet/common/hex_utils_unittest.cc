@@ -241,4 +241,30 @@ TEST(HexUtilsUnitTest, PrefixedHexStringToBytes) {
   EXPECT_FALSE(PrefixedHexStringToBytes(""));
 }
 
+TEST(HexUtilsUnitTest, PrefixedHexStringToFixed) {
+  EXPECT_FALSE(PrefixedHexStringToFixed<1>("0x"));
+  EXPECT_FALSE(PrefixedHexStringToFixed<1>(""));
+  EXPECT_FALSE(PrefixedHexStringToFixed<1>("0xxy"));
+
+  EXPECT_EQ(PrefixedHexStringToFixed<1>("0"), (std::array<uint8_t, 1>{0x00}));
+  EXPECT_EQ(PrefixedHexStringToFixed<1>("00"), (std::array<uint8_t, 1>{0x00}));
+  EXPECT_EQ(PrefixedHexStringToFixed<1>("0x0"), (std::array<uint8_t, 1>{0x00}));
+  EXPECT_EQ(PrefixedHexStringToFixed<1>("0x01"),
+            (std::array<uint8_t, 1>{0x01}));
+  EXPECT_EQ(PrefixedHexStringToFixed<2>("0x0123"),
+            (std::array<uint8_t, 2>{0x01, 0x23}));
+  EXPECT_EQ(PrefixedHexStringToFixed<2>("0x123"),
+            (std::array<uint8_t, 2>{0x01, 0x23}));
+  EXPECT_EQ(PrefixedHexStringToFixed<2>("123"),
+            (std::array<uint8_t, 2>{0x01, 0x23}));
+  EXPECT_EQ(PrefixedHexStringToFixed<4>("0xdeadbeef"),
+            (std::array<uint8_t, 4>{0xde, 0xad, 0xbe, 0xef}));
+  EXPECT_EQ(
+      PrefixedHexStringToFixed<8>("0x0123456789abcdef"),
+      (std::array<uint8_t, 8>{0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef}));
+  EXPECT_EQ(
+      PrefixedHexStringToFixed<8>("0xfedcba9876543210"),
+      (std::array<uint8_t, 8>{0xfe, 0xdc, 0xba, 0x98, 0x76, 0x54, 0x32, 0x10}));
+}
+
 }  // namespace brave_wallet
