@@ -102,8 +102,18 @@ export default class UntrustedConversationFrameAPI extends API<ConversationEntri
         ),
         this.conversationHandler.getConversationHistory(),
       ])
+
+    const allModels =
+      conversationEntriesState.conversationCapability
+      === Mojom.ConversationCapability.CONTENT_AGENT
+        ? conversationEntriesState.allModels.filter(
+            (model) => model.supportsTools,
+          )
+        : conversationEntriesState.allModels
+
     this.setPartialState({
       ...conversationEntriesState,
+      allModels,
       conversationHistory,
     })
     this.conversationObserver.onConversationHistoryUpdate.addListener(
