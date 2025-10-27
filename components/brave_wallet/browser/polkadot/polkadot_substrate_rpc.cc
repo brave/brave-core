@@ -209,6 +209,29 @@ std::optional<std::array<uint8_t, kPolkadotBlockHashSize>> ParseBlockHash(
   return bytes;
 }
 
+template <class RpcResponse>
+base::expected<RpcResponse, std::string> HandleRpcCall(
+    const APIRequestResult& api_result) {
+  if (!api_result.Is2XXResponseCode()) {
+    return base::unexpected(WalletInternalErrorMessage());
+  }
+
+  auto res = RpcResponse::FromValue(api_result.value_body());
+
+  if (!res) {
+    return base::unexpected(WalletParsingErrorMessage());
+  }
+
+  if (res->error) {
+    if (res->error->message) {
+      return base::unexpected(res->error->message.value());
+    }
+    return base::unexpected(WalletInternalErrorMessage());
+  }
+
+  return base::ok(std::move(*res));
+}
+
 }  // namespace
 
 PolkadotSubstrateRpc::PolkadotSubstrateRpc(
@@ -315,22 +338,12 @@ void PolkadotSubstrateRpc::GetAccountBalance(
 void PolkadotSubstrateRpc::OnGetAccountBalance(
     GetAccountBalanceCallback callback,
     APIRequestResult api_result) {
-  if (!api_result.Is2XXResponseCode()) {
-    return std::move(callback).Run(nullptr, WalletInternalErrorMessage());
-  }
+  auto res = HandleRpcCall<
+      polkadot_substrate_rpc_responses::PolkadotAccountBalanceResponse>(
+      api_result);
 
-  auto res = polkadot_substrate_rpc_responses::PolkadotAccountBalanceResponse::
-      FromValue(api_result.value_body());
-
-  if (!res) {
-    return std::move(callback).Run(nullptr, WalletParsingErrorMessage());
-  }
-
-  if (res->error) {
-    if (res->error->message) {
-      return std::move(callback).Run(nullptr, res->error->message.value());
-    }
-    return std::move(callback).Run(nullptr, WalletInternalErrorMessage());
+  if (!res.has_value()) {
+    return std::move(callback).Run(nullptr, res.error());
   }
 
   auto account = ParseAccountInfoFromJson(res->result);
@@ -357,22 +370,12 @@ void PolkadotSubstrateRpc::GetFinalizedHead(std::string_view chain_id,
 
 void PolkadotSubstrateRpc::OnGetFinalizedHead(GetFinalizedHeadCallback callback,
                                               APIRequestResult api_result) {
-  if (!api_result.Is2XXResponseCode()) {
-    return std::move(callback).Run(std::nullopt, WalletInternalErrorMessage());
-  }
+  auto res =
+      HandleRpcCall<polkadot_substrate_rpc_responses::PolkadotFinalizedHead>(
+          api_result);
 
-  auto res = polkadot_substrate_rpc_responses::PolkadotFinalizedHead::FromValue(
-      api_result.value_body());
-
-  if (!res) {
-    return std::move(callback).Run(std::nullopt, WalletParsingErrorMessage());
-  }
-
-  if (res->error) {
-    if (res->error->message) {
-      return std::move(callback).Run(std::nullopt, res->error->message.value());
-    }
-    return std::move(callback).Run(std::nullopt, WalletInternalErrorMessage());
+  if (!res.has_value()) {
+    return std::move(callback).Run(std::nullopt, res.error());
   }
 
   if (!res->result) {
