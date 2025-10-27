@@ -9,6 +9,7 @@ export { TopSite, TopSitesListKind }
 
 export interface TopSitesState {
   initialized: boolean
+  maxCustomTopSites: number
   showTopSites: boolean
   topSitesListKind: TopSitesListKind
   topSites: TopSite[]
@@ -17,6 +18,7 @@ export interface TopSitesState {
 export function defaultTopSitesState(): TopSitesState {
   return {
     initialized: false,
+    maxCustomTopSites: 48,
     showTopSites: true,
     topSitesListKind: TopSitesListKind.kMostVisited,
     topSites: []
