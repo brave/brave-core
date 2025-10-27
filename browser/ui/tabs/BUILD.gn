@@ -36,6 +36,7 @@ if (!is_android) {
       "//brave/components/psst/browser/content",
       "//chrome/browser/profiles",
       "//chrome/browser/ui/tabs:impl",
+      "//chrome/browser/ui/thumbnails",
     ]
 
     if (enable_ai_chat) {

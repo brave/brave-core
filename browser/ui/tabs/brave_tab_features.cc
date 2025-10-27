@@ -15,6 +15,7 @@
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/tabs/public/tab_features.h"
+#include "chrome/browser/ui/thumbnails/thumbnail_tab_helper.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "components/tabs/public/tab_interface.h"
 
@@ -59,6 +60,16 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
           std::make_unique<psst::PsstUiDelegateImpl>(), profile->GetPrefs(),
           ISOLATED_WORLD_ID_BRAVE_INTERNAL);
 #endif
+
+  // Chromium's creation of this helper is gated on
+  // features::kTabHoverCardImages, which we intentionally disable because we
+  // want it to work differently. But we want the helper to be always available
+  // so that we can switch hover modes via settings instead of having to restart
+  // the browser.
+  if (!thumbnail_tab_helper_) {
+    thumbnail_tab_helper_ =
+        GetUserDataFactory().CreateInstance<ThumbnailTabHelper>(tab, tab);
+  }
 }
 
 }  // namespace tabs

@@ -9,8 +9,6 @@
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/ui_features.h"
 
-// Enable ThumbnailTabHelper
-#define kWebUITabStrip kWebUITabStrip) || base::FeatureList::IsEnabled(tabs::kBraveSharedPinnedTabs
 #define BRAVE_TAB_HELPERS brave::AttachTabHelpers(web_contents);
 
 // Dummy class for avoiding some TabHelpers from being added to the WebContents.
@@ -37,4 +35,3 @@ class NoTabHelper {
 #undef FontPrewarmerTabHelper
 #undef chrome_browser_net
 #undef BRAVE_TAB_HELPERS
-#undef kWebUITabStrip
