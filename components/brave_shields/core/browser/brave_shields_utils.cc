@@ -11,7 +11,6 @@
 #include "base/debug/dump_without_crashing.h"
 #include "base/hash/hash.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
-#include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
