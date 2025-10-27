@@ -24,7 +24,6 @@
 #include "brave/components/brave_shields/core/browser/brave_shields_locale_utils.h"
 #include "brave/components/brave_shields/core/browser/filter_list_catalog_entry.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
-#include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "components/component_updater/component_updater_service.h"
@@ -246,7 +245,7 @@ bool AdBlockComponentServiceManager::IsFilterListEnabled(
   DCHECK(local_state_);
 
   if (IsAdBlockOnlyModeSupportedAndFeatureEnabled(locale_) &&
-      IsBraveShieldsAdBlockOnlyModeEnabled(local_state_) &&
+      local_state_->GetBoolean(prefs::kAdBlockOnlyModeEnabled) &&
       !IsAdBlockOnlyModeFilterList(uuid)) {
     return false;
   }
@@ -301,7 +300,7 @@ void AdBlockComponentServiceManager::EnableFilterList(const std::string& uuid,
   }
 
   if (IsAdBlockOnlyModeSupportedAndFeatureEnabled(locale_) &&
-      IsBraveShieldsAdBlockOnlyModeEnabled(local_state_) &&
+      local_state_->GetBoolean(prefs::kAdBlockOnlyModeEnabled) &&
       !IsAdBlockOnlyModeFilterList(uuid)) {
     return;
   }

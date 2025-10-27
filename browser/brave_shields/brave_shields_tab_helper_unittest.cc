@@ -8,7 +8,6 @@
 #include <memory>
 
 #include "base/test/scoped_feature_list.h"
-#include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"
@@ -107,7 +106,6 @@ class BraveShieldsTabHelperUnitTest
 TEST_F(BraveShieldsTabHelperUnitTest,
        DontTriggerOnRepeatedReloadsDetectedWhenFeatureDisabled) {
   feature_list_.InitAndDisableFeature(features::kAdblockOnlyMode);
-  SetBraveShieldsAdBlockOnlyModeEnabled(local_state(), false);
 
   EXPECT_CALL(*observer_, OnRepeatedReloadsDetected).Times(0);
 
@@ -120,7 +118,6 @@ TEST_F(BraveShieldsTabHelperUnitTest,
 TEST_F(BraveShieldsTabHelperUnitTest,
        DontTriggerOnRepeatedReloadsDetectedWhenLocaleNotSupported) {
   SetApplicationLocale("fr-FR");
-  SetBraveShieldsAdBlockOnlyModeEnabled(local_state(), false);
 
   EXPECT_CALL(*observer_, OnRepeatedReloadsDetected).Times(0);
 
@@ -139,7 +136,8 @@ TEST_F(BraveShieldsTabHelperUnitTest,
           {features::kAdblockOnlyModePromptAfterPageReloadsMax.name, "2"},
           {features::kAdblockOnlyModePromptAfterPageReloadsInterval.name, "1s"},
       });
-  SetBraveShieldsAdBlockOnlyModeEnabled(local_state(), true);
+  local_state()->SetBoolean(brave_shields::prefs::kAdBlockOnlyModeEnabled,
+                            true);
 
   EXPECT_CALL(*observer_, OnRepeatedReloadsDetected).Times(0);
 
@@ -158,7 +156,6 @@ TEST_F(BraveShieldsTabHelperUnitTest,
           {features::kAdblockOnlyModePromptAfterPageReloadsMax.name, "2"},
           {features::kAdblockOnlyModePromptAfterPageReloadsInterval.name, "1s"},
       });
-  SetBraveShieldsAdBlockOnlyModeEnabled(local_state(), false);
 
   EXPECT_CALL(*observer_, OnRepeatedReloadsDetected).Times(0);
 
@@ -178,7 +175,6 @@ TEST_F(BraveShieldsTabHelperUnitTest,
           {features::kAdblockOnlyModePromptAfterPageReloadsMax.name, "2"},
           {features::kAdblockOnlyModePromptAfterPageReloadsInterval.name, "1s"},
       });
-  SetBraveShieldsAdBlockOnlyModeEnabled(local_state(), false);
 
   EXPECT_CALL(*observer_, OnRepeatedReloadsDetected).Times(0);
 
@@ -197,7 +193,6 @@ TEST_F(BraveShieldsTabHelperUnitTest,
           {features::kAdblockOnlyModePromptAfterPageReloadsMax.name, "0"},
           {features::kAdblockOnlyModePromptAfterPageReloadsInterval.name, "1s"},
       });
-  SetBraveShieldsAdBlockOnlyModeEnabled(local_state(), false);
 
   EXPECT_CALL(*observer_, OnRepeatedReloadsDetected).Times(0);
 
@@ -217,7 +212,6 @@ TEST_F(BraveShieldsTabHelperUnitTest, TriggerOnRepeatedReloadsDetected) {
           {features::kAdblockOnlyModePromptAfterPageReloadsMax.name, "2"},
           {features::kAdblockOnlyModePromptAfterPageReloadsInterval.name, "1s"},
       });
-  SetBraveShieldsAdBlockOnlyModeEnabled(local_state(), false);
 
   EXPECT_CALL(*observer_, OnRepeatedReloadsDetected).Times(2);
 
@@ -253,7 +247,6 @@ TEST_F(BraveShieldsTabHelperUnitTest,
           {features::kAdblockOnlyModePromptAfterPageReloadsMax.name, "2"},
           {features::kAdblockOnlyModePromptAfterPageReloadsInterval.name, "1s"},
       });
-  SetBraveShieldsAdBlockOnlyModeEnabled(local_state(), false);
   brave_shields_tab_helper_->SetBraveShieldsAdBlockOnlyModePromptDismissed();
 
   EXPECT_CALL(*observer_, OnRepeatedReloadsDetected).Times(0);
@@ -269,7 +262,6 @@ TEST_F(BraveShieldsTabHelperUnitTest,
 TEST_F(BraveShieldsTabHelperUnitTest,
        DontShowShieldsDisabledAdBlockOnlyModePromptWhenFeatureDisabled) {
   feature_list_.InitAndDisableFeature(features::kAdblockOnlyMode);
-  SetBraveShieldsAdBlockOnlyModeEnabled(local_state(), false);
 
   // Default value of
   // `features::kAdblockOnlyModePromptAfterShieldsDisabledCount` is 5.
@@ -290,7 +282,6 @@ TEST_F(BraveShieldsTabHelperUnitTest,
 TEST_F(BraveShieldsTabHelperUnitTest,
        DontShowShieldsDisabledAdBlockOnlyModePromptWhenLocaleNotSupported) {
   SetApplicationLocale("fr-FR");
-  SetBraveShieldsAdBlockOnlyModeEnabled(local_state(), false);
 
   // Default value of
   // `features::kAdblockOnlyModePromptAfterShieldsDisabledCount` is 5.
@@ -315,7 +306,6 @@ TEST_F(BraveShieldsTabHelperUnitTest,
       {
           {features::kAdblockOnlyModePromptAfterShieldsDisabledCount.name, "2"},
       });
-  SetBraveShieldsAdBlockOnlyModeEnabled(local_state(), false);
   brave_shields_tab_helper_->SetBraveShieldsAdBlockOnlyModePromptDismissed();
 
   brave_shields_tab_helper_->SetBraveShieldsEnabled(false);
@@ -331,7 +321,6 @@ TEST_F(BraveShieldsTabHelperUnitTest,
       {
           {features::kAdblockOnlyModePromptAfterShieldsDisabledCount.name, "2"},
       });
-  SetBraveShieldsAdBlockOnlyModeEnabled(local_state(), false);
 
   brave_shields_tab_helper_->SetBraveShieldsEnabled(false);
   EXPECT_FALSE(brave_shields_tab_helper_

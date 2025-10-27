@@ -16,7 +16,6 @@
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_locale_utils.h"
-#include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
@@ -1326,7 +1325,7 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
 
   html_source->AddBoolean(
       "isAdBlockOnlyModeSupportedAndFeatureEnabled",
-      brave_shields::IsAdblockOnlyModeFeatureEnabled() &&
+      base::FeatureList::IsEnabled(brave_shields::features::kAdblockOnlyMode) &&
           brave_shields::IsAdblockOnlyModeSupportedForLocale(
               g_browser_process->GetApplicationLocale()));
 

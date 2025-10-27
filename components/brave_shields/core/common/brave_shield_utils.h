@@ -11,7 +11,6 @@
 #include "components/content_settings/core/common/content_settings.h"
 
 class GURL;
-class PrefService;
 
 namespace brave_shields {
 
@@ -36,12 +35,6 @@ ShieldsSettingCounts GetSettingCountFromRules(
 
 ShieldsSettingCounts GetSettingCountFromCosmeticFilteringRules(
     const ContentSettingsForOneType& fp_rules);
-
-bool IsAdblockOnlyModeFeatureEnabled();
-
-bool IsBraveShieldsAdBlockOnlyModeEnabled(PrefService* local_state);
-void SetBraveShieldsAdBlockOnlyModeEnabled(PrefService* local_state,
-                                           bool enabled);
 
 }  // namespace brave_shields
 
