@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/containers/span.h"
+#include "base/numerics/checked_math.h"
 #include "base/rand_util.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/bip39.h"
@@ -243,7 +244,7 @@ TEST_F(CardanoKnapsackSolverUnitTest, NoDustChangeGenerated) {
 TEST_F(CardanoKnapsackSolverUnitTest, DISABLED_RandomTest) {
   std::vector<CardanoTransaction::TxInput> inputs;
 
-  uint64_t total_inputs = 0;
+  base::CheckedNumeric<uint64_t> total_inputs = 0u;
 
   for (int i = 0; i < 100; ++i) {
     auto input =
@@ -252,7 +253,7 @@ TEST_F(CardanoKnapsackSolverUnitTest, DISABLED_RandomTest) {
     inputs.push_back(std::move(input));
   }
 
-  auto base_tx = MakeMockTransaction(total_inputs / 2);
+  auto base_tx = MakeMockTransaction((total_inputs / 2u).ValueOrDie());
 
   CardanoKnapsackSolver solver(base_tx, latest_epoch_parameters(), inputs);
   auto tx = solver.Solve();

@@ -152,6 +152,10 @@ void CardanoKnapsackSolver::RunSolverForTransaction(
         next_transaction.AddInput(inputs_[input_index]);
 
         if (next_transaction.ChangeOutput()) {
+          if (!next_transaction.MoveTokensToChangeOutput()) {
+            continue;
+          }
+
           // Calculate tx fee and move everything surplus to change output.
           // Throw away possible transaction if fee requirements could no be
           // satisfied.
