@@ -7,7 +7,6 @@ import("//brave/browser/shell_integrations/buildflags/buildflags.gni")
 import("//brave/browser/ui/config.gni")
 import("//brave/browser/updater/buildflags.gni")
 import("//brave/build/config.gni")
-import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/ai_rewriter/common/buildflags/buildflags.gni")
 import("//brave/components/brave_education/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
@@ -60,7 +59,6 @@ source_set("ui") {
     "//brave/browser/skus",
     "//brave/browser/ui/page_info",
     "//brave/browser/ui/webui/brave_account",
-    "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/brave_origin",
     "//brave/components/brave_private_cdn",
     "//brave/components/brave_shields/core/browser",
@@ -80,12 +78,6 @@ source_set("ui") {
   sources = [
     "brave_ui_features.cc",
     "brave_ui_features.h",
-    "webui/ai_chat/ai_chat_ui.cc",
-    "webui/ai_chat/ai_chat_ui.h",
-    "webui/ai_chat/ai_chat_ui_page_handler.cc",
-    "webui/ai_chat/ai_chat_ui_page_handler.h",
-    "webui/ai_chat/ai_chat_untrusted_conversation_ui.cc",
-    "webui/ai_chat/ai_chat_untrusted_conversation_ui.h",
     "webui/brave_adblock_internals_ui.cc",
     "webui/brave_adblock_internals_ui.h",
     "webui/brave_adblock_ui.cc",
@@ -155,6 +147,7 @@ source_set("ui") {
     ]
 
     deps += [
+      "//brave/browser/ui/webui/ai_chat",
       "//brave/components/ai_rewriter/common",
       "//brave/components/ai_rewriter/resources/page:generated_resources",
       "//components/web_modal",
@@ -783,12 +776,7 @@ source_set("ui") {
     # to pull in dependencies needed for the overwrite codes in chromium_src.
     "//brave/chromium_src/chrome/browser/ui",
     "//brave/common",
-    "//brave/components/ai_chat/content/browser",
     "//brave/components/ai_chat/core/browser",
-    "//brave/components/ai_chat/core/common",
-    "//brave/components/ai_chat/core/common/mojom",
-    "//brave/components/ai_chat/resources",
-    "//brave/components/ai_chat/resources/custom_site_distiller_scripts:generated_resources",
     "//brave/components/ai_rewriter/common/buildflags",
     "//brave/components/brave_adaptive_captcha",
     "//brave/components/brave_adblock_ui:generated_resources",
@@ -1374,10 +1362,6 @@ source_set("ui") {
       "//ui/events",
       "//ui/views",
     ]
-  }
-
-  if (enable_brave_ai_chat_agent_profile) {
-    deps += [ "//brave/browser/ai_chat:ai_chat_agent_profile" ]
   }
 
   if (enable_containers) {

@@ -13,8 +13,6 @@
 #include "base/scoped_observation.h"
 #include "base/task/cancelable_task_tracker.h"
 #include "brave/browser/ai_chat/upload_file_helper.h"
-#include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
-#include "brave/components/ai_chat/core/browser/associated_content_driver.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
@@ -23,11 +21,14 @@
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
-#include "services/data_decoder/public/cpp/data_decoder.h"
 #include "url/gurl.h"
 
 namespace content {
 class WebContents;
+}
+
+namespace data_decoder {
+class DataDecoder;
 }
 
 namespace favicon {
@@ -35,6 +36,9 @@ class FaviconService;
 }  // namespace favicon
 
 namespace ai_chat {
+
+class AIChatTabHelper;
+
 class AIChatUIPageHandler : public mojom::AIChatUIHandler,
                             public AssociatedContentDelegate::Observer,
                             public UploadFileHelper::Observer {

@@ -144,6 +144,8 @@ brave_chrome_browser_deps = [
   "//brave/browser/themes",
   "//brave/browser/ui",
   "//brave/browser/ui/webui/ads_internals",
+  "//brave/browser/ui/webui/ai_chat",
+  "//brave/browser/ui/webui/ai_chat:ai_chat_impl",
   "//brave/browser/ui/webui/brave_account",
   "//brave/browser/updater:buildflags",
   "//brave/common",
@@ -646,6 +648,10 @@ brave_chrome_browser_allow_circular_includes_from = [
   "//brave/browser/brave_ads/creatives/search_result_ad",
   "//brave/browser/brave_stats",
   "//brave/browser/ntp_background",
+
+  # Target is split up so does not have a circular dependency but we must depend
+  # on it so that it gets included in the build, creating a circular dependency.
+  "//brave/browser/ui/webui/ai_chat:ai_chat_impl",
 ]
 
 if (enable_brave_ai_chat_agent_profile) {

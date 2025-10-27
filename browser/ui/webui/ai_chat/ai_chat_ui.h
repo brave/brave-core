@@ -9,8 +9,6 @@
 #include <memory>
 #include <string>
 
-#include "brave/browser/ui/webui/ai_chat/ai_chat_ui_page_handler.h"
-#include "brave/components/ai_chat/core/browser/history_ui_handler.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/bookmarks.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
@@ -19,7 +17,6 @@
 #include "chrome/browser/ui/webui/top_chrome/top_chrome_web_ui_controller.h"
 #include "content/public/browser/web_ui_controller.h"
 #include "ui/webui/mojo_web_ui_controller.h"
-#include "ui/webui/untrusted_web_ui_controller.h"
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/ui/webui/top_chrome/top_chrome_webui_config.h"
@@ -28,8 +25,10 @@
 #endif  // #if !BUILDFLAG(IS_ANDROID)
 
 namespace ai_chat {
+class AIChatUIPageHandler;
 class AIChatUIPageHandlerBrowserTest;
 class BookmarksPageHandler;
+class HistoryUIHandler;
 }  // namespace ai_chat
 
 namespace content {
