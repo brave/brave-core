@@ -8,7 +8,7 @@
 
 #include <memory>
 
-#include "chrome/browser/ui/views/frame/browser_view_layout.h"
+#include "chrome/browser/ui/views/frame/layout/browser_view_layout_impl_old.h"
 
 class SidebarContainerView;
 
