@@ -80,7 +80,8 @@ class AIChatGlobalSidePanelBrowserTest
       return false;
     }
 
-    return side_panel_coordinator->IsSidePanelShowing() &&
+    return side_panel_coordinator->IsSidePanelShowing(
+               SidePanelEntry::PanelType::kContent) &&
            side_panel_coordinator->GetCurrentEntryId() ==
                SidePanelEntry::Id::kChatUI;
   }
