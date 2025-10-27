@@ -6,11 +6,20 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_BROWSER_VIEW_LAYOUT_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_BROWSER_VIEW_LAYOUT_H_
 
-// Make override-able
+// Make BrowserViewLayoutImplOld override-able
 #define LayoutTabStripRegion           \
   UnUsed();                            \
   friend class BraveBrowserViewLayout; \
   virtual void LayoutTabStripRegion
+
+// Make private members of BrowserViewLayout accessible
+// TODO(https://github.com/brave/brave-browser/issues/50488): There should be no
+// need to access these private members directly once the const-correctness
+// around these classes is resolved.
+#define ShouldDisplayVerticalTabs      \
+  UnUsed();                            \
+  friend class BraveBrowserViewLayout; \
+  bool ShouldDisplayVerticalTabs
 
 #define IsImmersiveModeEnabledWithoutToolbar \
   virtual IsImmersiveModeEnabledWithoutToolbar
@@ -33,5 +42,6 @@
 #undef LayoutBookmarkBar
 #undef IsImmersiveModeEnabledWithoutToolbar
 #undef LayoutTabStripRegion
+#undef ShouldDisplayVerticalTabs
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_BROWSER_VIEW_LAYOUT_H_

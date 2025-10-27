@@ -14,7 +14,7 @@
 // Double check if the tab strip is actually visible to calculate constraints.
 #define SupportsWindowFeature(FEATURE)                                       \
   SupportsWindowFeature(FEATURE) && (FEATURE != Browser::FEATURE_TABSTRIP || \
-                                     delegate_->ShouldDrawTabStrip());
+                                     delegate().ShouldDrawTabStrip());
 
 #include <chrome/browser/ui/views/frame/browser_view_layout.cc>
 #undef SupportsWindowFeature
