@@ -94,7 +94,8 @@ void BraveSidePanelCoordinator::OnViewVisibilityChanged(
   // See the comment of SidePanelCoordinator::OnViewVisibilityChanged()
   // about this condition.
   bool update_items_state = true;
-  if (observed_view->GetVisible() || !current_key()) {
+  if (observed_view->GetVisible() ||
+      !current_key(SidePanelEntry::PanelType::kContent)) {
     update_items_state = false;
   }
 
