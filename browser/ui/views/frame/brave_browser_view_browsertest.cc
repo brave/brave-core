@@ -38,6 +38,7 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "ui/compositor/layer.h"
 #include "ui/gfx/animation/animation.h"
 #include "ui/gfx/animation/animation_test_api.h"
 #include "ui/views/view_class_properties.h"
@@ -181,12 +182,9 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, LayoutWithVerticalTabTest) {
 
 class BraveBrowserViewWithRoundedCornersTest
     : public BraveBrowserViewTest,
-      public testing::WithParamInterface<std::tuple<bool, bool>> {
+      public testing::WithParamInterface<bool> {
  public:
-  BraveBrowserViewWithRoundedCornersTest() {
-    scoped_features_.InitWithFeatureStates(
-        {{features::kSideBySide, IsSideBySideEnabled()}});
-  }
+  BraveBrowserViewWithRoundedCornersTest() = default;
 
   void SetUpOnMainThread() override {
     BraveBrowserViewTest::SetUpOnMainThread();
@@ -199,11 +197,7 @@ class BraveBrowserViewWithRoundedCornersTest
                         split_tabs::SplitTabCreatedSource::kToolbarButton);
   }
 
-  bool IsRoundedCornersEnabled() const { return std::get<0>(GetParam()); }
-  bool IsSideBySideEnabled() const { return std::get<1>(GetParam()); }
-
- protected:
-  base::test::ScopedFeatureList scoped_features_;
+  bool IsRoundedCornersEnabled() const { return GetParam(); }
 };
 
 IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
@@ -226,10 +220,6 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
 
 IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
                        RoundedCornersForContentsTest) {
-  if (!IsSideBySideEnabled()) {
-    return;
-  }
-
   const gfx::AnimationTestApi::RenderModeResetter disable_rich_animations_ =
       gfx::AnimationTestApi::SetRichAnimationRenderMode(
           gfx::Animation::RichAnimationRenderMode::FORCE_DISABLED);
@@ -256,6 +246,8 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
               side_panel->GetProperty(views::kMarginsKey)->bottom());
     EXPECT_EQ(rounded_corners_margin,
               side_panel->GetProperty(views::kMarginsKey)->right());
+    EXPECT_EQ(gfx::RoundedCornersF(BraveContentsViewUtil::kBorderRadius),
+              side_panel->layer()->rounded_corner_radii());
   } else {
     // Check contents container doesn't have any margin. So, contents container
     // should have same left & bottom with main container.
@@ -268,6 +260,9 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
     EXPECT_EQ(0, side_panel->GetProperty(views::kMarginsKey)->left());
     EXPECT_EQ(0, side_panel->GetProperty(views::kMarginsKey)->bottom());
     EXPECT_EQ(0, side_panel->GetProperty(views::kMarginsKey)->right());
+
+    // Panel doesn't have layer when its shadow is not set.
+    EXPECT_FALSE(side_panel->layer());
   }
 
   // Create split tab and check contents container/sidebar has rounded corners
@@ -284,6 +279,8 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
             side_panel->GetProperty(views::kMarginsKey)->bottom());
   EXPECT_EQ(rounded_corners_margin,
             side_panel->GetProperty(views::kMarginsKey)->right());
+  EXPECT_EQ(gfx::RoundedCornersF(BraveContentsViewUtil::kBorderRadius),
+            side_panel->layer()->rounded_corner_radii());
 
   // Create new active tab to not have split tab as a active tab.
   // Check contents container doesn't have margin when rounded corners is
@@ -300,6 +297,8 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
               side_panel->GetProperty(views::kMarginsKey)->bottom());
     EXPECT_EQ(rounded_corners_margin,
               side_panel->GetProperty(views::kMarginsKey)->right());
+    EXPECT_EQ(gfx::RoundedCornersF(BraveContentsViewUtil::kBorderRadius),
+              side_panel->layer()->rounded_corner_radii());
   } else {
     EXPECT_EQ(contents_container->bounds().x(),
               main_container->GetLocalBounds().x());
@@ -308,13 +307,14 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
     EXPECT_EQ(0, side_panel->GetProperty(views::kMarginsKey)->left());
     EXPECT_EQ(0, side_panel->GetProperty(views::kMarginsKey)->bottom());
     EXPECT_EQ(0, side_panel->GetProperty(views::kMarginsKey)->right());
+    EXPECT_FALSE(side_panel->layer());
   }
 }
 
 INSTANTIATE_TEST_SUITE_P(
     /* no prefix */,
     BraveBrowserViewWithRoundedCornersTest,
-    ::testing::Combine(::testing::Bool(), ::testing::Bool()));
+    testing::Bool());
 
 // MacOS does not need views window scrim. We use sheet to show window modals
 // (-[NSWindow beginSheet:]), which natively draws a scrim since macOS 11.
