@@ -9,7 +9,7 @@ import("//build/config/ui.gni")
 
 brave_ui_allow_circular_includes_from = [
   "//brave/browser/ui/webui/ads_internals",
-  "//brave/browser/ui/webui/ai_chat:ai_chat_impl",
+  "//brave/browser/ui/webui/ai_chat",
 ]
 if (!is_android) {
   brave_ui_allow_circular_includes_from += [
