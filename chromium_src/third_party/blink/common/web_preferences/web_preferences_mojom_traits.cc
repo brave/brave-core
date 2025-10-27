@@ -25,6 +25,7 @@ bool StructTraits<blink::mojom::WebPreferencesDataView,
   out->force_cosmetic_filtering = data.force_cosmetic_filtering();
   out->page_in_reader_mode = data.page_in_reader_mode();
   out->is_tor_window = data.is_tor_window();
+  out->global_privacy_control_enabled = data.global_privacy_control_enabled();
   return true;
 }
 

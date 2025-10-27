@@ -35,6 +35,11 @@ struct BLINK_COMMON_EXPORT StructTraits<blink::mojom::WebPreferencesDataView,
     return r.is_tor_window;
   }
 
+  static bool global_privacy_control_enabled(
+      const blink::web_pref::WebPreferences& r) {
+    return r.global_privacy_control_enabled;
+  }
+
   static bool Read(blink::mojom::WebPreferencesDataView r,
                    blink::web_pref::WebPreferences* out);
 };
