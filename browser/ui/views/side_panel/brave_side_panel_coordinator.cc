@@ -70,7 +70,7 @@ void BraveSidePanelCoordinator::OnTabStripModelChanged(
 }
 
 void BraveSidePanelCoordinator::Toggle() {
-  if (IsSidePanelShowing() &&
+  if (IsSidePanelShowing(SidePanelEntry::PanelType::kContent) &&
       !browser_view_->contents_height_side_panel()->IsClosing()) {
     Close();
   } else if (const auto key = GetLastActiveEntryKey()) {
