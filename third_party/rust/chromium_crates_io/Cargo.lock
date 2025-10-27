@@ -451,7 +451,7 @@ version = "0.7.6"
 
 [[package]]
 name = "codespan-reporting"
-version = "0.12.0"
+version = "0.13.1"
 dependencies = [
  "serde",
  "termcolor",
@@ -647,7 +647,6 @@ dependencies = [
  "indexmap",
  "proc-macro2",
  "quote",
- "rustversion",
  "syn 2.0.108",
 ]
 
@@ -1913,6 +1912,7 @@ dependencies = [
 [[package]]
 name = "rustversion"
 version = "1.0.22"
+source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "ryu"
