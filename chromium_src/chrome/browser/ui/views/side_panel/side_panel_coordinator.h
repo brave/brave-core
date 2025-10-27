@@ -26,7 +26,11 @@
   friend class BraveSidePanelCoordinator; \
   void ClearCachedEntryViews
 
+#define SidePanel BraveSidePanel
+
 #include <chrome/browser/ui/views/side_panel/side_panel_coordinator.h>  // IWYU pragma: export
+
 #undef ClearCachedEntryViews
+#undef SidePanel
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_SIDE_PANEL_SIDE_PANEL_COORDINATOR_H_
