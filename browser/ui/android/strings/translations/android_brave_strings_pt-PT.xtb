@@ -5,6 +5,8 @@
 <translation id="3478449063771497234">As notificações estão desativadas</translation>
 <translation id="2862978891748913252">Selecione o seu país</translation>
 <translation id="3970520675790340955">Selecione o seu país para que possamos apresentar-lhe as opções e anúncios adequados à região.</translation>
+<translation id="721490496276866468">Importar senhas</translation>
+<translation id="8178175542325151321">Selecione um arquivo .csv que contenha suas senhas para importá-las para o gerenciador de senhas do Brave.</translation>
 <translation id="7301741773883122509">Pode agora obter recompensas ao ver anúncios. Está a ajudar a fazer da Internet um melhor lugar para todos. E isso é fantástico!</translation>
 <translation id="6439128034594289376">Pronto, já está!</translation>
 <translation id="370665806235115550">A carregar...</translation>
@@ -109,7 +111,6 @@
 <translation id="7304425663107214334">Mostrar sugestões no browser</translation>
 <translation id="8982438328166986164">Apresenta sugestões de sites com base nos marcadores e no histórico de navegação.</translation>
 <translation id="924029461438529367">Mostrar sugestões de pesquisa</translation>
-<translation id="5989135139219497991">Mostrar principais sugestões</translation>
 <translation id="6285118765755298263">Indexar outros motores de pesquisa</translation>
 <translation id="919715748352669592">Indexa automaticamente Web sites que seguem a especificação OpenSearch</translation>
 <translation id="9148058034647219655">Sair</translation>
@@ -297,6 +298,11 @@
 <translation id="4254029385847607686">DEZEMBRO</translation>
 <translation id="3960619311638643872">VPN Brave</translation>
 <translation id="1772301834467143364">Notícias Brave</translation>
+<translation id="2518692840036393666">Personalizar menu</translation>
+<translation id="5582839680698949063">Menu principal</translation>
+<translation id="7002271985859760052">Ações da página</translation>
+<translation id="7104487676473617844">Os seguintes itens só estarão visíveis no menu quando forem compatíveis com a página da web atual.</translation>
+<translation id="4159764849281393303">WebApp</translation>
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="8428213095426709021">Definições</translation>
 <translation id="6020176662032623904">Criador verificado</translation>
@@ -799,7 +805,6 @@ Se não aceitar este pedido, a VPN não voltará a ligar e a sua ligação à In
 <translation id="750843150060816463">Preço do Gas (GWEI)</translation>
 <translation id="1426320910664514906">Limite da gasolina</translation>
 <translation id="6389441740143786465">Desativar centro de partilha</translation>
-<translation id="9065203028668620118">Editar</translation>
 <translation id="473775607612524610">Atualizar</translation>
 <translation id="479795390141144417">Atualização da conta falhou.</translation>
 <translation id="8084782383392198011">O nome da conta não pode estar vazio.</translation>
@@ -1015,8 +1020,6 @@ Se não aceitar este pedido, a VPN não voltará a ligar e a sua ligação à In
 <translation id="8496335570810457">Commitment de simulação de transação:</translation>
 <translation id="5100124500279922001">Pular simulação de transação:</translation>
 <translation id="7152095322071766507">Site mais visitado</translation>
-<translation id="7230006500876504868">Pesquisar com o Brave</translation>
-<translation id="5888208462949095139">Pesquisar com <ph name="DEFAULT_SEARCH_ENGINE"/></translation>
 <translation id="5456039738087398178">Widget do ecrã inicial</translation>
 <translation id="703185154752046151">Widget adicionado ao ecrã inicial</translation>
 <translation id="4635094429202343515">Testar o widget Pesquisa Brave</translation>
@@ -1076,7 +1079,7 @@ Se não aceitar este pedido, a VPN não voltará a ligar e a sua ligação à In
 <translation id="7618347247876614969">Conta da tabela de pesquisa de endereços:</translation>
 <translation id="7659483790930268440">Índice da tabela de pesquisa de endereço:</translation>
 <translation id="5494920125229734069">Selecionar tudo</translation>
-<translation id="6129027151000961048">Leo</translation>
+<translation id="2361906291514218784">Leo AI</translation>
 <translation id="8613144770663526433">Iniciar sessão com a Carteira Brave</translation>
 <translation id="3696514931437952995">Está a iniciar sessão em <ph name="ORIGIN"/>. A carteira Brave irá partilhar o endereço da carteira com <ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">Consultar detalhes</translation>
@@ -1094,11 +1097,11 @@ Leo AI. Esta ação não pode ser revertida.</translation>
 <translation id="6742599753610126012">Limpar o histórico de conversas</translation>
 <translation id="3443052382074796867">Desativar o armazenamento de conversas irá eliminar permanentemente todas as conversas anteriormente guardadas. Esta ação não pode ser revertida.</translation>
 <translation id="3692772534525889713">Associe a compra na Play Store à sua conta Brave para utilizar o Brave Leo noutros dispositivos.</translation>
-<translation id="73236265316873967">Leo Premium</translation>
+<translation id="592831784390389506">Leo AI Premium</translation>
 <translation id="1028627582482425924">Um ano</translation>
 <translation id="2985392169397572983">MELHOR PREÇO</translation>
 <translation id="1166682575529520472">Mensalmente</translation>
-<translation id="451189393813405346">Perguntar ao Leo</translation>
+<translation id="2206846767762985925">Pergunte ao Leo AI</translation>
 <translation id="7322560193401221004">Memorizar a posição de reprodução do ficheiro</translation>
 <translation id="7505951907514709271">Nos ficheiros individuais, retomar a reprodução a partir do momento da última pausa</translation>
 <translation id="6835165453349969605">Memorizar a posição de reprodução da lista</translation>
@@ -1141,6 +1144,7 @@ Leo AI. Esta ação não pode ser revertida.</translation>
 <translation id="3861012838874771868">Abrir definições da lista de reprodução</translation>
 <translation id="5220099266891491416">Botão Ocultar lista de reprodução</translation>
 <translation id="7416347631175891923">Experimente!</translation>
+<translation id="9065203028668620118">Editar</translation>
 <translation id="1173894706177603556">Mudar nome</translation>
 <translation id="3596306474342941843">Eliminar lista de reprodução</translation>
 <translation id="7765158879357617694">Mover</translation>
@@ -1155,7 +1159,7 @@ Leo AI. Esta ação não pode ser revertida.</translation>
 <translation id="5319532905552885478">Conteúdo multimédia já adicionado à lista de reprodução predefenida</translation>
 <translation id="4802584673094436231">A preparar...</translation>
 <translation id="481455355267255546">Seguinte</translation>
-<translation id="5474757891469990756">Tire partido de toda a potência do Leo com o Premium:</translation>
+<translation id="3721790899869840343">Libere todo o poder do Leo AI com o Premium:</translation>
 <translation id="4173478269537830374">Explore vários modelos de IA</translation>
 <translation id="3453542753968940696">Acesso prioritário a modelos avançados com diversas competências.</translation>
 <translation id="3245401959451976966">Dê asas à criatividade</translation>
@@ -1223,7 +1227,6 @@ Leo AI. Esta ação não pode ser revertida.</translation>
 <translation id="4650851936784160359">Não foi possível atualizar a lista de filtros. Tente novamente</translation>
 <translation id="3098054327870766317">Mostrar o botão de desfazer quando os separadores são encerrados</translation>
 <translation id="1336494649091412226">Tem a certeza que quer sair do Brave?</translation>
-<translation id="2361906291514218784">Leo AI</translation>
 <translation id="7942415993090181327">Histórico de conversas</translation>
 <translation id="6859935199732075666">Mostrar erros de Navegação Segura</translation>
 <translation id="2735247450315842119">Permitir capturas de tela em abas privadas</translation>
@@ -1247,6 +1250,22 @@ Leo AI. Esta ação não pode ser revertida.</translation>
 <translation id="5139940364318403933">Saiba como utilizar o Google Drive</translation>
 <translation id="729975465115245577">O dispositivo não tem uma aplicação para armazenar o ficheiro de palavras-passe.</translation>
 <translation id="1129510026454351943">Detalhes: <ph name="ERROR_DESCRIPTION"/></translation>
+<translation id="5594899180331219722">Selecionar arquivo</translation>
+<translation id="3744219658596020825">Suas senhas não foram importadas</translation>
+<translation id="8258027225380843424">Importação bem sucedida!</translation>
+<translation id="766635563210446220">Não é possível importar senhas. Verifique <ph name="FILENAME"/> e certifique-se de que esteja corretamente formatado. <ph name="BEGIN_LINK"/>Saiba mais<ph name="END_LINK"/></translation>
+<translation id="6581356304040102696">Não é possível importar senhas. O tamanho do arquivo deve ser menor que 1 MB.</translation>
+<translation id="5895244669404288318">{COUNT, plural,
+        =1 {Não é possível importar passwords. Só é possível importar 1 password de cada vez.}
+        other {Não é possível importar passwords. Só é possível importar até <ph name="COUNT_MANY"/> passwords de cada vez.}}</translation>
+<translation id="3748424433435232460">Uma senha para esta conta já está salva neste dispositivo</translation>
+<translation id="6438475350605608554">Você já está importando senhas em outra guia</translation>
+<translation id="3482868954775580230">Falha ao ler o arquivo selecionado. <ph name="EXCEPTION_INFO"/></translation>
+<translation id="9162995380643712715">{IMPORT_COUNT, plural,
+        =1 {Importação de 1 password concluída com sucesso.}
+        other {Importação de <ph name="IMPORT_COUNT_MANY"/> passwords concluída com sucesso.}}</translation>
+<translation id="4637949129057123593">Falha ao importar.</translation>
+<translation id="4300452012226767715">Gerenciador de senhas não disponível.</translation>
 <translation id="6221633008163990886">Desbloqueie para exportar as palavras-passe.</translation>
 <translation id="5245792669563792664">palavras-passe</translation>
 <translation id="10614374240317010">Nunca guardadas</translation>

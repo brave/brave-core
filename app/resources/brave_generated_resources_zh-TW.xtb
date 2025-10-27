@@ -384,9 +384,10 @@
 <translation id="5436069931267876389">找不到容器</translation>
 <translation id="2263346047290834619">使用樹狀標籤</translation>
 <translation id="5860254591544742609">顯示標題列</translation>
-<translation id="5371926069408837914">收合時將滑鼠游標停留於上方，垂直分頁面板就會展開。</translation>
+<translation id="4691131445504068802">最小化時完全隱藏</translation>
+<translation id="4909269867860362936">最小化時滑鼠懸停時自動展開</translation>
 <translation id="3367129510799209147">索引標籤懸停模式</translation>
-<translation id="8527099657928614787">依視窗個別展開垂直分頁</translation>
+<translation id="8925055964134259461">依視窗個別展開垂直分頁</translation>
 <translation id="916373084491701212">顯示捲軸</translation>
 <translation id="515949045075831661">顯示於右側</translation>
 <translation id="3725395376319291415">顯示於左側</translation>
@@ -397,21 +398,21 @@
 <translation id="2396127686705429331">顯示書籤按鈕</translation>
 <translation id="2814998458708016836">使用寬網址列</translation>
 <translation id="4109670531935487117">在網址列顯示自動完成建議</translation>
-<translation id="3405901785709583668">熱門建議</translation>
+<translation id="4579877808890085926">裝置上的建議</translation>
 <translation id="7859704718976024901">瀏覽記錄</translation>
 <translation id="8820817407110198400">書籤列</translation>
 <translation id="4144468798716165316">快速指令</translation>
 <translation id="7310387888625228830">Leo 人工智慧助理</translation>
 <translation id="5222974844674487962">顯示 Brave News 按鈕</translation>
 <translation id="2085436423511121572">顯示 Leo AI 按鈕</translation>
-<translation id="383007806262310953">顯示書籤列</translation>
+<translation id="6156323911414505561">顯示書籤列</translation>
 <translation id="4054323497808446566">書籤列在所有頁面上都可見</translation>
 <translation id="8693858092251192712">書籤列在除索引標籤頁面之外的所有頁面上都為隱藏</translation>
 <translation id="7158817046543187970">書籤在所有頁面上都為隱藏</translation>
 <translation id="3416468988018290825">一律顯示完整 URL</translation>
 <translation id="5529693968082667490">顯示分頁搜尋按鈕</translation>
 <translation id="1013121820689882118">Speedreader</translation>
-<translation id="1467652519828052368">啟用快速閱讀功能</translation>
+<translation id="5522420266446076076">啟用快速閱讀功能。</translation>
 <translation id="5211997910936574251">在可能的情況下，自動使用快速閱讀</translation>
 <translation id="2025435450953474282">文章會自動以閱讀器模式載入，節省您的時間</translation>
 <translation id="7984721311211272523">在分頁喇叭圖示中停用靜音功能</translation>
@@ -435,7 +436,7 @@
 <translation id="5690973901138662477">Shields 向上</translation>
 <translation id="4697275813919189958">Shields 向下</translation>
 <translation id="6303294677342628402">防護</translation>
-<translation id="7133511168130368997">封鎖在整個網路上追蹤您的追蹤器與廣告。</translation>
+<translation id="5128768857590582420">封鎖在整個網路上追蹤您的追蹤器與廣告</translation>
 <translation id="2761825942249694703">這些是預設的防護設定。它們會套用到所有的網頁，除非您在特定的網頁上於防護面板中修改了某些東西才會有所不同。變更這些不會影響您既有的每個網站的設定。</translation>
 <translation id="8452536890042542134">這將封鎖網站上的大部分廣告。</translation>
 <translation id="4800195524776354947">在 Shields 圖示上顯示封鎖項目的數量</translation>
@@ -848,6 +849,9 @@
 <translation id="1721787502053471881">您確定要刪除此記憶嗎？此動作無法復原。</translation>
 <translation id="5239685926753073108">刪除所有記憶</translation>
 <translation id="2600803466586623124">您確定要刪除所有記憶嗎？此動作無法復原。</translation>
+<translation id="7311244614769792472">未找到結果。</translation>
+<translation id="1838374766361614909">清除搜尋</translation>
+<translation id="5126255551970171328">搜尋記憶項目</translation>
 <translation id="5985516785067818307">調查小組成員</translation>
 <translation id="8347743943525229984">允許 Brave 調查</translation>
 <translation id="3204080538332044581">允許 Brave 在新分頁中顯示私人調查的連結。調查有助於我們建立更好的功能，並衡量基於瀏覽器的廣告活動其有效性。 <ph name="BEGIN_LINK"/>進一步了解<ph name="END_LINK"/></translation>

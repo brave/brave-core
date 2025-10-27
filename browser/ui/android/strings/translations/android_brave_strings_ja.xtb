@@ -5,6 +5,8 @@
 <translation id="3478449063771497234">通知は無効です</translation>
 <translation id="2862978891748913252">国を選択</translation>
 <translation id="3970520675790340955">お住まいの国を選択すると、その地域に合ったオプションや広告が表示されます。</translation>
+<translation id="721490496276866468">パスワードをインポート</translation>
+<translation id="8178175542325151321">パスワードをインポートするには、パスワードを含む .csv ファイルを選択して、Brave のパスワードマネージャーに追加します。</translation>
 <translation id="7301741773883122509">広告を見るだけで報酬を獲得できるようになりました。参加していただくだけで、ウェブを誰にとってもより良い場所に変えていくことができます。これは素晴らしいことですよね！</translation>
 <translation id="6439128034594289376">準備完了です！</translation>
 <translation id="370665806235115550">Loading...</translation>
@@ -109,7 +111,6 @@
 <translation id="7304425663107214334">ブラウザのサジェスチョンを表示</translation>
 <translation id="8982438328166986164">ブックマークおよび閲覧履歴に基づきおすすめのウェブサイトを表示します。</translation>
 <translation id="924029461438529367">検索候補を表示</translation>
-<translation id="5989135139219497991">トップサイトのサジェスチョンを表示</translation>
 <translation id="6285118765755298263">他の検索エンジンインデックス</translation>
 <translation id="919715748352669592">OpenSearchの仕様に従うウェブサイトのインデックスを自動的に作成します。</translation>
 <translation id="9148058034647219655">終了</translation>
@@ -193,7 +194,7 @@
 <translation id="7142548388914389999">プライバシーを保護したプロダクト分析 (P3A) を許可する</translation>
 <translation id="5254037869598726291">匿名化されたP3A情報は、Braveが全体的な使用状況を推定し、よく使われている機能を改善するために役立ちます。</translation>
 <translation id="4174337572777167894">Web Discovery Project</translation>
-<translation id="8659271182272561965">Brave Search の改善のために匿名の検索ブラウジングデータを提供します。</translation>
+<translation id="8659271182272561965">Brave Searchの改善のために匿名の検索ブラウジングデータを提供します。</translation>
 <translation id="933652931229970927">診断レポートを自動送信する</translation>
 <translation id="5987838417172370108">Braveブラウザのクラッシュやフリーズ時に診断レポートを自動送信し、Brave製品の安定性向上に貢献します。</translation>
 <translation id="7977176350719484850">節約できた\n通信量 (推定)</translation>
@@ -297,6 +298,11 @@
 <translation id="4254029385847607686">12月</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="1772301834467143364">Brave News</translation>
+<translation id="2518692840036393666">メニューをカスタマイズ</translation>
+<translation id="5582839680698949063">メインメニュー</translation>
+<translation id="7002271985859760052">ページアクション</translation>
+<translation id="7104487676473617844">次の項目は、現在開いているウェブページが対応している場合のみメニューに表示されます。</translation>
+<translation id="4159764849281393303">WebApp</translation>
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> 米ドル</translation>
 <translation id="8428213095426709021">設定</translation>
 <translation id="6020176662032623904">認証済</translation>
@@ -799,7 +805,6 @@
 <translation id="750843150060816463">ガス価格 (Gwei)</translation>
 <translation id="1426320910664514906">Gasリミット</translation>
 <translation id="6389441740143786465">共有ハブを無効にする</translation>
-<translation id="9065203028668620118">編集</translation>
 <translation id="473775607612524610">更新</translation>
 <translation id="479795390141144417">アカウントの更新に失敗しました。</translation>
 <translation id="8084782383392198011">アカウント名を空にすることはできません。</translation>
@@ -1015,8 +1020,6 @@
 <translation id="8496335570810457">プリフライトコミットメント:</translation>
 <translation id="5100124500279922001">プリフライトをスキップ:</translation>
 <translation id="7152095322071766507">最もアクセスするサイト</translation>
-<translation id="7230006500876504868">Braveで検索</translation>
-<translation id="5888208462949095139"><ph name="DEFAULT_SEARCH_ENGINE"/>で検索</translation>
 <translation id="5456039738087398178">ホームスクリーンウィジェット</translation>
 <translation id="703185154752046151">ホーム画面にウィジェットを追加</translation>
 <translation id="4635094429202343515">Brave Searchウィジェットを試す</translation>
@@ -1076,7 +1079,7 @@
 <translation id="7618347247876614969">アドレス検索テーブルのアカウント:</translation>
 <translation id="7659483790930268440">アドレス検索テーブルのインデックス:</translation>
 <translation id="5494920125229734069">すべて選択する</translation>
-<translation id="6129027151000961048">Leo</translation>
+<translation id="2361906291514218784">Leo AI</translation>
 <translation id="8613144770663526433">Braveウォレットにサインイン</translation>
 <translation id="3696514931437952995"><ph name="ORIGIN"/>にサインインしています。Braveウォレットはあなたのウォレットのアドレスを<ph name="ORIGIN"/>に共有します。</translation>
 <translation id="1028781062521375153">詳細を表示</translation>
@@ -1094,11 +1097,11 @@
 <translation id="6742599753610126012">チャット履歴を消去</translation>
 <translation id="3443052382074796867">会話ストレージを無効にすると、以前に保存されていたすべての会話が永久に消去されます。この操作は元に戻すことができません。</translation>
 <translation id="3692772534525889713">Playストアでの購入をBraveアカウントにリンクすると、他のデバイスでBrave Leoを使用できます。</translation>
-<translation id="73236265316873967">Leoプレミアム</translation>
+<translation id="592831784390389506">Leo AIプレミアム</translation>
 <translation id="1028627582482425924">1年間</translation>
 <translation id="2985392169397572983">一番お得</translation>
 <translation id="1166682575529520472">毎月</translation>
-<translation id="451189393813405346">Leoに聞く</translation>
+<translation id="2206846767762985925">Leo AIに聞く</translation>
 <translation id="7322560193401221004">ファイルの再生位置を記憶</translation>
 <translation id="7505951907514709271">個別ファイルの場合、最後に一時停止したところから再生を開始します</translation>
 <translation id="6835165453349969605">リストの再生位置を記憶</translation>
@@ -1141,6 +1144,7 @@
 <translation id="3861012838874771868">プレイリスト設定を開く</translation>
 <translation id="5220099266891491416">プレイリスト非表示ボタン</translation>
 <translation id="7416347631175891923">試してみてください！</translation>
+<translation id="9065203028668620118">編集</translation>
 <translation id="1173894706177603556">名前を変更</translation>
 <translation id="3596306474342941843">プレイリストを削除する</translation>
 <translation id="7765158879357617694">移動</translation>
@@ -1155,7 +1159,7 @@
 <translation id="5319532905552885478">メディアコンテンツはすでにデフォルトのプレイリストに追加されています</translation>
 <translation id="4802584673094436231">準備中...</translation>
 <translation id="481455355267255546">次へ</translation>
-<translation id="5474757891469990756">プレミアムでLeoの全能力を引き出してください。</translation>
+<translation id="3721790899869840343">プレミアムでLeo AIの能力を最大限に引き出しましょう。</translation>
 <translation id="4173478269537830374">さまざまなAIモデルを探索</translation>
 <translation id="3453542753968940696">さまざまなスキルを持つパワフルなモデルへの優先アクセス。</translation>
 <translation id="3245401959451976966">クリエイティビティを発揮</translation>
@@ -1223,7 +1227,6 @@
 <translation id="4650851936784160359">フィルターリストを更新できませんでした。もう一度お試しください</translation>
 <translation id="3098054327870766317">タブを閉じるときに元に戻すボタンを表示する</translation>
 <translation id="1336494649091412226">Braveを 終了しますか？</translation>
-<translation id="2361906291514218784">Leo AI</translation>
 <translation id="7942415993090181327">チャット履歴</translation>
 <translation id="6859935199732075666">セーフ ブラウジングのエラーを表示</translation>
 <translation id="2735247450315842119">プライベートタブでスクリーンショットを許可</translation>
@@ -1247,6 +1250,18 @@
 <translation id="5139940364318403933">Brave ドライブの使い方を見る</translation>
 <translation id="729975465115245577">お使いのデバイスにはパスワード ファイルを保存するためのアプリがインストールされていません。</translation>
 <translation id="1129510026454351943">詳細: <ph name="ERROR_DESCRIPTION"/></translation>
+<translation id="5594899180331219722">ファイルを選択</translation>
+<translation id="3744219658596020825">パスワードをインポートできませんでした</translation>
+<translation id="8258027225380843424">インポート成功！</translation>
+<translation id="766635563210446220">パスワードをインポートできません。<ph name="FILENAME"/> を確認し、正しくフォーマットされていることを確認してください。<ph name="BEGIN_LINK"/>詳細はこちら<ph name="END_LINK"/></translation>
+<translation id="6581356304040102696">パスワードをインポートできません。ファイルサイズは1MB未満である必要があります。</translation>
+<translation id="5895244669404288318">{COUNT, plural,=1 {パスワードをインポートできません。一度にインポートできるパスワードは1件のみです。}other {パスワードをインポートできません。一度にインポートできるのは最大 <ph name="COUNT_MANY"/> 件までです。}}</translation>
+<translation id="3748424433435232460">このアカウントのパスワードはすでにこのデバイスに保存されています</translation>
+<translation id="6438475350605608554">別のタブでパスワードのインポートを実行中です</translation>
+<translation id="3482868954775580230">選択したファイルの読み取りに失敗しました。<ph name="EXCEPTION_INFO"/></translation>
+<translation id="9162995380643712715">{IMPORT_COUNT, plural,=1 {1件のパスワードを正常にインポートしました。}other {<ph name="IMPORT_COUNT_MANY"/> 件のパスワードを正常にインポートしました。}}</translation>
+<translation id="4637949129057123593">インポート失敗。</translation>
+<translation id="4300452012226767715">パスワードマネージャーを利用できません。</translation>
 <translation id="6221633008163990886">ロックを解除してパスワードをエクスポート</translation>
 <translation id="5245792669563792664">パスワード</translation>
 <translation id="10614374240317010">常に保存しない</translation>

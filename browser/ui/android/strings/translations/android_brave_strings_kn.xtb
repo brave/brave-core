@@ -5,6 +5,8 @@
 <translation id="3478449063771497234">ಅಧಿಸೂಚನೆಗಳನ್ನು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗುತ್ತದೆ</translation>
 <translation id="2862978891748913252">ನಿಮ್ಮ ದೇಶವನ್ನು ಆಯ್ಕೆಮಾಡಿ</translation>
 <translation id="3970520675790340955">ನಿಮ್ಮ ದೇಶವನ್ನು ಆಯ್ಕೆ ಮಾಡಿದರೆ ನಿಮ್ಮ ಪ್ರದೇಶಕ್ಕೆ ಸರಿಯಾದ ಆಯ್ಕೆಗಳನ್ನು ಮತ್ತು ಜಾಹೀರಾತುಗಳನ್ನು ನಾವು ನಿಮಗೆ ತೋರಿಸಬಹುದು.</translation>
+<translation id="721490496276866468">ಗುಪ್ತಪದಗಳನ್ನು ಆಮದುಮಾಡಿ</translation>
+<translation id="8178175542325151321">ಬ್ರೇವ್ ಗುಪ್ತಪದ ನಿರ್ವಾಹಕಕ್ಕೆ ಆಮದುಮಾಡಲು ನಿಮ್ಮ ಗುಪ್ತಪದಗಳನ್ನು ಹೊಂದಿರುವ .csv ಕಡತವನ್ನು ಆಯ್ಕೆಮಾಡಿ.</translation>
 <translation id="7301741773883122509">ಈಗ ನೀವು ಜಾಹೀರಾತುಗಳನ್ನು ವೀಕ್ಷಿಸಿದ್ದಕ್ಕಾಗಿ ಬಹುಮಾನವನ್ನು ಪಡೆಯಬಹುದು. ವೆಬ್ ಅನ್ನು ಎಲ್ಲರಿಗೂ ಉತ್ತಮ ಸ್ಥಳವನ್ನಾಗಿ ಮಾಡಲು ನೀವು ಸಹಾಯ ಮಾಡುತ್ತಿದ್ದೀರಿ. ಮತ್ತು ಅದು ಅದ್ಭುತವಾಗಿರುತ್ತದೆ!</translation>
 <translation id="6439128034594289376">ಓಹೋ! ನೀವೆಲ್ಲರೂ ಸಿದ್ಧರಾಗಿದ್ದೀರಿ!</translation>
 <translation id="370665806235115550">ಲೋಡ್ ಆಗುತ್ತಿದೆ...</translation>
@@ -109,7 +111,6 @@
 <translation id="7304425663107214334">ಬ್ರೌಸರ್ ಸಲಹೆಗಳನ್ನು ತೋರಿಸಿ</translation>
 <translation id="8982438328166986164">ನಿಮ್ಮ ಬುಕ್‌ಮಾರ್ಕ್‌ಗಳು ಮತ್ತು ಬ್ರೌಸಿಂಗ್ ಇತಿಹಾಸವನ್ನು ಆಧರಿಸಿ ವೆಬ್‌ಸೈಟ್ ಸಲಹೆಗಳನ್ನು ಪ್ರದರ್ಶಿಸುತ್ತದೆ.</translation>
 <translation id="924029461438529367">ಹುಡುಕಾಟ ಸಲಹೆಗಳನ್ನು ತೋರಿಸಿ</translation>
-<translation id="5989135139219497991">ಉನ್ನತ ಸಲಹೆಗಳನ್ನು ತೋರಿಸಿ</translation>
 <translation id="6285118765755298263">ಇತರ ಹುಡುಕಾಟ ಇಂಜಿನ್‌ಗಳನ್ನು ಇಂಡೆಕ್ಸ್ ಮಾಡಿ</translation>
 <translation id="919715748352669592">OpenSearch ನಿರ್ದಿಷ್ಟತೆಯನ್ನು ಅನುಸರಣೆ ಮಾಡುವ ವೆಬ್‌ಸೈಟ್‌ಗಳನ್ನು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಇಂಡೆಕ್ಸ್ ಮಾಡುತ್ತದೆ.</translation>
 <translation id="9148058034647219655">ನಿರ್ಗಮಿಸಿ</translation>
@@ -297,6 +298,11 @@
 <translation id="4254029385847607686">ಡಿಸೆಂಬರ್‌</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="1772301834467143364">Brave ಸುದ್ದಿ</translation>
+<translation id="2518692840036393666">ಮೆನುವನ್ನು ವೈಯಕ್ತಿಕಗೊಳಿಸಿ</translation>
+<translation id="5582839680698949063">ಮುಖ್ಯ ಮೆನು</translation>
+<translation id="7002271985859760052">ಪುಟ ಕ್ರಿಯೆಗಳು</translation>
+<translation id="7104487676473617844">ಕೆಳಗಿನ ಆಯ್ಕೆಗಳು ಪ್ರಸ್ತುತ ತೆರೆದಿರುವ ವೆಬ್ ಪುಟ ಬೆಂಬಲಿಸುತ್ತಿದರೆ ಮಾತ್ರ ಮೆನುದಲ್ಲಿ ಗೋಚರಿಸುತ್ತವೆ.</translation>
+<translation id="4159764849281393303">ವೆಬ್‌ಅ್ಯಾಪ್</translation>
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="8428213095426709021">ಸೆಟ್ಟಿಂಗ್‌ಗಳು</translation>
 <translation id="6020176662032623904">ಪರಿಶೀಲಿಸಲ್ಪಟ್ಟ ರಚನೆಕಾರ</translation>
@@ -799,7 +805,6 @@
 <translation id="750843150060816463">ಗ್ಯಾಸ್ ದರ (Gwei)</translation>
 <translation id="1426320910664514906">ಗ್ಯಾಸ್ ಮಿತಿ</translation>
 <translation id="6389441740143786465">ಹಂಚಿಕೊಳ್ಳುವಿಕೆ ಹಬ್ ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಿ</translation>
-<translation id="9065203028668620118">ಎಡಿಟ್</translation>
 <translation id="473775607612524610">ಅಪ್‌ಡೇಟ್‌‌</translation>
 <translation id="479795390141144417">ಖಾತೆ ಅಪ್‌ಡೇಟ್ ವಿಫಲಗೊಂಡಿದೆ.</translation>
 <translation id="8084782383392198011">ಖಾತೆ ಹೆಸರು ಖಾಲಿಯಾಗಿರಬಾರದು.</translation>
@@ -1015,8 +1020,6 @@
 <translation id="8496335570810457">ಪ್ರೀಫ್ಲೈಟ್ ಬದ್ಧತೆ:</translation>
 <translation id="5100124500279922001">ಪ್ರೀಫ್ಲೈಟ್ ಸ್ಕಿಪ್ ಮಾಡಿ:</translation>
 <translation id="7152095322071766507">ಪ್ರಮುಖವಾಗಿ ಭೇಟಿ ನೀಡಲಾದ ಸೈಟ್</translation>
-<translation id="7230006500876504868">Brave ಮೂಲಕ ಹುಡುಕಿ</translation>
-<translation id="5888208462949095139"><ph name="DEFAULT_SEARCH_ENGINE"/> ಮೂಲಕ ಹುಡುಕಿ</translation>
 <translation id="5456039738087398178">ಹೋಮ್ ಸ್ಕ್ರೀನ್ ವಿಜೆಟ್</translation>
 <translation id="703185154752046151">ವಿಜೆಟ್ ಅನ್ನು ಹೋಮ್ ಸ್ಕ್ರೀನ್‌ಗೆ ಸೇರಿಸಲಾಗಿದೆ</translation>
 <translation id="4635094429202343515">ಬ್ರೇವ್ ಸರ್ಚ್‌ ವಿಜೆಟ್ ಅನ್ನು ಪ್ರಯತ್ನಿಸಿ</translation>
@@ -1076,7 +1079,7 @@
 <translation id="7618347247876614969">ವಿಳಾಸ ಲುಕಪ್ ಕೋಷ್ಟಕ ಖಾತೆ:</translation>
 <translation id="7659483790930268440">ವಿಳಾಸ ಲುಕಪ್ ಕೋಷ್ಟಕ ಇಂಡೆಕ್ಸ್:</translation>
 <translation id="5494920125229734069">ಎಲ್ಲವನ್ನೂ ಆಯ್ಕೆ ಮಾಡಿ</translation>
-<translation id="6129027151000961048">ಲಿಯೋ</translation>
+<translation id="2361906291514218784">Leo AI</translation>
 <translation id="8613144770663526433">Brave ವ್ಯಾಲೆಟ್‍ ಮೂಲಕ ಸೈನ್ ಇನ್ ಮಾಡಿ</translation>
 <translation id="3696514931437952995">ನೀವು <ph name="ORIGIN"/> ಗೆ ಸೈನ್ ಇನ್ ಆಗುತ್ತಿರುವಿರಿ. <ph name="ORIGIN"/> ನೊಂದಿಗೆ ನಿಮ್ಮ ವ್ಯಾಲೆಟ್ ವಿಳಾಸವನ್ನು Brave ವ್ಯಾಲೆಟ್ ಹಂಚಿಕೊಳ್ಳುತ್ತದೆ.</translation>
 <translation id="1028781062521375153">ವಿವರಗಳನ್ನು ವೀಕ್ಷಿಸಿ</translation>
@@ -1093,11 +1096,11 @@
 <translation id="6742599753610126012">ಚಾಟ್ ಇತಿಹಾಸವನ್ನು ತೆರವುಗೊಳಿಸಿ</translation>
 <translation id="3443052382074796867">ಸಂವಾದ ಸಂಗ್ರಹಣೆಯನ್ನು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸುವುದರಿಂದ ಹಿಂದೆ ಸಂಗ್ರಹಿಸಿದ ಎಲ್ಲಾ ಸಂಭಾಷಣೆಗಳನ್ನು ಶಾಶ್ವತವಾಗಿ ಅಳಿಸಲಾಗುತ್ತದೆ. ಈ ಕ್ರಿಯೆಯನ್ನು ರದ್ದುಗೊಳಿಸಲಾಗುವುದಿಲ್ಲ.</translation>
 <translation id="3692772534525889713">ಇತರ ಸಾಧನಗಳಲ್ಲಿ Brave Leo ಬಳಸುವುದಕ್ಕಾಗಿ ನಿಮ್ಮ Play Store ಖರೀದಿಯನ್ನು ನಿಮ್ಮ Brave ಖಾತೆಗೆ ಲಿಂಕ್ ಮಾಡಿ.</translation>
-<translation id="73236265316873967">Leo ಪ್ರೀಮಿಯಂ</translation>
+<translation id="592831784390389506">Leo AI ಪ್ರೀಮಿಯಂ</translation>
 <translation id="1028627582482425924">ಒಂದು ವರ್ಷ</translation>
 <translation id="2985392169397572983">ಉತ್ತಮ ಮೌಲ್ಯ</translation>
 <translation id="1166682575529520472">ಮಾಸಿಕ</translation>
-<translation id="451189393813405346">Leo ಗೆ ಕೇಳಿ</translation>
+<translation id="2206846767762985925">Leo AI ಅನ್ನು ಕೇಳಿ</translation>
 <translation id="7322560193401221004">ಫೈಲ್ ಪ್ಲೇಬ್ಯಾಕ್ ಸ್ಥಿತಿಯನ್ನು ನೆನಪಿಡಿ</translation>
 <translation id="7505951907514709271">ಪ್ರತ್ಯೇಕ ಫೈಲ್‌ಗಳಿಗೆ, ಕೊನೆಯದಾಗಿ ವಿರಾಮಗೊಳಿಸಿರುವಲ್ಲಿಂದ ಪ್ಲೇ ಮಾಡುವುದನ್ನು ಪುನಾರಂಭಿಸಿ</translation>
 <translation id="6835165453349969605">ಪಟ್ಟಿ ಪ್ಲೇಬ್ಯಾಕ್ ಸ್ಥಿತಿಯನ್ನು ನೆನಪಿಡಿ</translation>
@@ -1140,6 +1143,7 @@
 <translation id="3861012838874771868">ಪ್ಲೇಪಟ್ಟಿ ಸೆಟ್ಟಂಗ್‌ಗಳನ್ನು ತೆರೆಯಿರಿ</translation>
 <translation id="5220099266891491416">ಪ್ಲೇಪಟ್ಟಿ ಬಟನ್ ಮರೆಮಾಡಿ</translation>
 <translation id="7416347631175891923">ಅದನ್ನು ಪ್ರಯತ್ನಿಸಿ!</translation>
+<translation id="9065203028668620118">ಎಡಿಟ್</translation>
 <translation id="1173894706177603556">ಮರುಹೆಸರಿಸು</translation>
 <translation id="3596306474342941843">ಪ್ಲೇಪಟ್ಟಿ ಅಳಿಸಿ</translation>
 <translation id="7765158879357617694">ಸರಿಸು</translation>
@@ -1154,7 +1158,7 @@
 <translation id="5319532905552885478">ಮೀಡಿಯಾ ವಿಷಯವನ್ನು ಈಗಾಗಲೇ ಡೀಫಾಲ್ಟ್ ಪ್ಲೇಪಟ್ಟಿಗೆ ಸೇರಿಸಲಾಗಿದೆ</translation>
 <translation id="4802584673094436231">ತಯಾರಿ ನಡೆಸಲಾಗುತ್ತಿದೆ...</translation>
 <translation id="481455355267255546">ಮುಂದೆ ಬರುವುದು</translation>
-<translation id="5474757891469990756">ಪ್ರೀಮಿಯಂ ಮೂಲಕ Leo ನ ಸಂಪೂರ್ಣ ಸಾಮರ್ಥ್ಯಗಳನ್ನು ಕಂಡುಕೊಳ್ಳಿ:</translation>
+<translation id="3721790899869840343">ಪ್ರೀಮಿಯಂ ನೊಂದಿಗೆ Leo AIಯ ಸಂಪೂರ್ಣ ಶಕ್ತಿಯನ್ನು ಬಿಡುಗಡೆ ಮಾಡಿ:</translation>
 <translation id="4173478269537830374">ವಿಭಿನ್ನ AI ಮಾಡೆಲ್‌ಗಳನ್ನು ಅನ್ವೇಷಿಸಿ</translation>
 <translation id="3453542753968940696">ವಿಭಿನ್ನ ಕೌಶಲ್ಯಗಳನ್ನು ಹೊಂದಿರುವ ಶಕ್ತಿಶಾಲಿ ಮಾಡೆಲ್‌ಗಳಿಗೆ ಆದ್ಯತೆಯ ಆ್ಯಕ್ಸೆಸ್.</translation>
 <translation id="3245401959451976966">ನಿಮ್ಮ ಸೃಜನಶೀಲತೆಯನ್ನು ಅನ್‌ಲಾಕ್ ಮಾಡಿ</translation>
@@ -1222,7 +1226,6 @@
 <translation id="4650851936784160359">ಫಿಲ್ಟರ್ ಪಟ್ಟಿಯನ್ನು ಅಪ್‌ಡೇಟ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ದಯವಿಟ್ಟು ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ</translation>
 <translation id="3098054327870766317">ಟ್ಯಾಬ್‌ಗಳನ್ನು ಮುಚ್ಚಿದಾಗ ಅನ್‌ ಡೂ ಬಟನ್ ತೋರಿಸಿ</translation>
 <translation id="1336494649091412226">ನೀವು ಬ್ರೇವ್‌ನಿಂದ ನಿರ್ಗಮಿಸಲು ಖಚಿತವಾಗಿ ಬಯಸುವಿರಾ?</translation>
-<translation id="2361906291514218784">Leo AI</translation>
 <translation id="7942415993090181327">ಚಾಟ್‌ ಇತಿಹಾಸ</translation>
 <translation id="6859935199732075666">ಸುರಕ್ಷಿತ ಬ್ರೌಸಿಂಗ್ ದೋಷಗಳನ್ನು ತೋರಿಸಿ</translation>
 <translation id="2735247450315842119">ಖಾಸಗಿ ಟ್ಯಾಬ್‌ಗಳಲ್ಲಿ ಸ್ಕ್ರೀನ್‌ಶಾಟ್‌ಗಳನ್ನು ಅನುಮತಿಸಿ</translation>
@@ -1246,6 +1249,16 @@
 <translation id="5139940364318403933">Brave ಡ್ರೈವ್‌‌ ಅನ್ನು ಹೇಗೆ ಬಳಸುವುದು ಎಂದು ತಿಳಿದುಕೊಳ್ಳಿ</translation>
 <translation id="729975465115245577">ನಿಮ್ಮ ಸಾಧನವು ಪಾಸ್‌ವರ್ಡ್‌ ಫೈಲ್ ಅನ್ನು ಸಂಗ್ರಹಿಸಿಡಲು ಆ್ಯಪ್ ಅನ್ನು ಹೊಂದಿಲ್ಲ.</translation>
 <translation id="1129510026454351943">ವಿವರಗಳು: <ph name="ERROR_DESCRIPTION"/></translation>
+<translation id="5594899180331219722">ಕಡತವನ್ನು ಆಯ್ಕೆಮಾಡಿ</translation>
+<translation id="3744219658596020825">ನಿಮ್ಮ ಗುಪ್ತಪದಗಳನ್ನು ಆಮದುಮಾಡಲಾಗಲಿಲ್ಲ</translation>
+<translation id="8258027225380843424">ಆಮದು ಯಶಸ್ವಿಯಾಯಿತು!</translation>
+<translation id="766635563210446220">ಗುಪ್ತಪದಗಳನ್ನು ಆಮದುಮಾಡಲಾಗುತ್ತಿಲ್ಲ. <ph name="FILENAME"/> ಅನ್ನು ಪರಿಶೀಲಿಸಿ ಮತ್ತು ಅದು ಸರಿಯಾದರೂ ಫಾರ್ಮ್ಯಾಟ್ ಮಾಡಲಾಗಿದೆ ಎಂಬುದನ್ನು ಖಚಿತಪಡಿಸಿ. <ph name="BEGIN_LINK"/>ಹೆಚ್ಚಿನ ಮಾಹಿತಿಗೆ<ph name="END_LINK"/></translation>
+<translation id="6581356304040102696">ಗುಪ್ತಪದಗಳನ್ನು ಆಮದುಮಾಡಲಾಗುತ್ತಿಲ್ಲ. ಕಡತದ ಗಾತ್ರವು 1 MB ಕ್ಕಿಂತ ಕಡಿಮೆ ಇರಬೇಕು.</translation>
+<translation id="3748424433435232460">ಈ ಖಾತೆಗೆ ಗುಪ್ತಪದ ಈಗಾಗಲೇ ಉಪಕರಣದಲ್ಲಿ ಉಳಿಸಲಾಗಿದೆಯೆಂದು.</translation>
+<translation id="6438475350605608554">ನೀವು ಇನ್ನೊಂದು ಟ್ಯಾಬ್‌ನಲ್ಲಿ ಈಗಾಗಲೇ ಗುಪ್ತಪದಗಳನ್ನು ಆಮದುಮಾಡುತ್ತಿದ್ದೀರಿ</translation>
+<translation id="3482868954775580230">ಆಯ್ಕೆಮಾಡಿದ ಕಡತವನ್ನು ಓದಲು ವಿಫಲವಾಯಿತು. <ph name="EXCEPTION_INFO"/></translation>
+<translation id="4637949129057123593">ಆಮದು ವಿಫಲವಾಗಿದೆ.</translation>
+<translation id="4300452012226767715">ಗುಪ್ತಪದ ನಿರ್ವಾಹಕ ಲಭ್ಯವಿಲ್ಲ.</translation>
 <translation id="6221633008163990886">ನಿಮ್ಮ ಪಾಸ್‌ವರ್ಡ್‌ಗಳನ್ನು ರಫ್ತುಮಾಡಲು ಅನ್‌ಲಾಕ್ ಮಾಡಿ</translation>
 <translation id="5245792669563792664">ಪಾಸ್‌ವರ್ಡ್‌ಗಳು</translation>
 <translation id="10614374240317010">ಉಳಿಸಿಯೇ ಇಲ್ಲ</translation>

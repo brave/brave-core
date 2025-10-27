@@ -419,9 +419,10 @@ Binance
 <translation id="5436069931267876389">कंटेनर नहीं मिला</translation>
 <translation id="2263346047290834619">ट्री टैब इस्तेमाल करें</translation>
 <translation id="5860254591544742609">टाइटल बार दिखाएँ</translation>
-<translation id="5371926069408837914">जब वर्टिकल पैनल पर माउस का कर्सर जाए तो वह खुल जाए</translation>
+<translation id="4691131445504068802">मिनिमाइज़ करने पर पूरी तरह छिपाएँ</translation>
+<translation id="4909269867860362936">मिनिमाइज़ होने पर होवर करने से स्वतः एक्सपैंड करें</translation>
 <translation id="3367129510799209147">टैब होवर मोड</translation>
-<translation id="8527099657928614787">हर विंडो में वर्टीकल टैब का एक्सपैंड करें</translation>
+<translation id="8925055964134259461">हर विंडो में वर्टीकल टैब का स्वतः एक्सपैंड अलग-अलग करें</translation>
 <translation id="916373084491701212">स्क्रॉलबार दिखाएँ</translation>
 <translation id="515949045075831661">दाईं ओर दिखाएं</translation>
 <translation id="3725395376319291415">बाईं ओर दिखाएं</translation>
@@ -432,21 +433,21 @@ Binance
 <translation id="2396127686705429331">बुकमार्क आइकन दिखाएँ</translation>
 <translation id="2814998458708016836">विस्तृत एड्रेस बार का उपयोग करें</translation>
 <translation id="4109670531935487117">एड्रेस बार में ऑटोकंप्लीट के सुझाव दिखाएँ</translation>
-<translation id="3405901785709583668">टॉप सुझाव</translation>
+<translation id="4579877808890085926">डिवाइस पर आधारित सुझाव</translation>
 <translation id="7859704718976024901">ब्राउज़िंग इतिहास</translation>
 <translation id="8820817407110198400">बुकमार्क बार</translation>
 <translation id="4144468798716165316">क्विक कमांड</translation>
 <translation id="7310387888625228830">लियो AI असिस्टेंट</translation>
 <translation id="5222974844674487962">Brave न्यूज़ का बटन दिखाएँ</translation>
 <translation id="2085436423511121572">Leo AI बटन दिखाएं</translation>
-<translation id="383007806262310953">बुकमार्क बार दिखाएं</translation>
+<translation id="6156323911414505561">बुकमार्क बार दिखाएं</translation>
 <translation id="4054323497808446566">बुकमार्क बार सभी पेज पर दिखाई देता है</translation>
 <translation id="8693858092251192712">नए टैब पेज को छोड़कर सभी पेज पर बुकमार्क बार छिपा हुआ रहता है</translation>
 <translation id="7158817046543187970">बुकमार्क बार सभी पेज छिपा हुआ रहता है</translation>
 <translation id="3416468988018290825">हमेशा पूरे URL दिखाएँ</translation>
 <translation id="5529693968082667490">टैब सर्च बटन दिखाएं</translation>
 <translation id="1013121820689882118">स्पीडरीडर</translation>
-<translation id="1467652519828052368">स्पीडरीडर सुविधा चालू करें</translation>
+<translation id="5522420266446076076">स्पीडरीडर सुविधा चालू करें।</translation>
 <translation id="5211997910936574251">जब संभव हो, तब अपने-आप स्पीडरीडर इस्तेमाल करें</translation>
 <translation id="2025435450953474282">लेख अपने आप रीडर मोड में लोड होते हैं, जिससे आपका समय बचता है</translation>
 <translation id="7984721311211272523">टैब स्पीकर के आइकन में म्यूट की सुविधा बंद करें</translation>
@@ -470,7 +471,7 @@ Binance
 <translation id="5690973901138662477">शील्ड चालू हैं</translation>
 <translation id="4697275813919189958">शील्ड बंद हैं</translation>
 <translation id="6303294677342628402">सुरक्षा कवच</translation>
-<translation id="7133511168130368997">पूरे वेब पर आपके साथ रहने वाले ट्रैकर्स और विज्ञापनों को ब्लॉक करें।</translation>
+<translation id="5128768857590582420">पूरे वेब पर आपके साथ रहने वाले ट्रैकर्स और विज्ञापनों को ब्लॉक करें।</translation>
 <translation id="2761825942249694703">ये डिफ़ॉल्ट शील्ड्स सेटिंग हैं। वे सभी वेबसाइटों पर लागू होते हैं जब तक आप किसी विशेष साइट के शील्ड्स पैनल मे कुछ बदलाव नही करते। इन्हें बदलने से आपकी मौजूदा प्रति-साइट सेटिंग प्रभावित नही होगी।</translation>
 <translation id="8452536890042542134">यह वेबसाइट पर ज़्यादातर आइकन को ब्लॉक कर देगा.</translation>
 <translation id="4800195524776354947">शील्ड्स आइकन पर ब्लॉक किए गए वस्तुओं की संख्या दिखाएँ</translation>
@@ -882,6 +883,9 @@ Binance
 <translation id="1721787502053471881">क्या आप वाकई इस मेमोरी को मिटाना चाहते हैं? एक बार मिटने पर ये वापस नहीं मिलेंगी।</translation>
 <translation id="5239685926753073108">सभी मेमोरीज़ मिटाएँ</translation>
 <translation id="2600803466586623124">क्या आप वाकई सभी मेमोरीज़ को मिटाना चाहते हैं? एक बार मिटने पर ये वापस नहीं मिलेंगी।</translation>
+<translation id="7311244614769792472">कोई परिणाम नहीं मिला</translation>
+<translation id="1838374766361614909">सर्च हटाएँ</translation>
+<translation id="5126255551970171328">मेमोरी सर्च करें</translation>
 <translation id="5985516785067818307">सर्वे पैनलिस्ट</translation>
 <translation id="8347743943525229984">Brave के सर्वे को अनुमति दें</translation>
 <translation id="3204080538332044581">Brave को नए टैब पेज में प्राइवेट सर्वे के लिंक दिखाने की अनुमति दें। सर्वे की मदद से, हम बेहतर सुविधाएँ बना सकते हैं और ब्राउज़र पर आधारित ऐड कैंपेन के असर को माप सकते हैं। <ph name="BEGIN_LINK"/>ज़्यादा जानें<ph name="END_LINK"/></translation>

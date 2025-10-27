@@ -3752,8 +3752,8 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_PASSWORD_MANAGER_UI_IMPORT_FILE_SIZE_EXCEEDED" desc="Message is shown on the dialog for importing passwords if no passwords were imported because file size exceeds 1 MB.">
       Can't import passwords. The file size should be less than 1 MB.
     </message>
+    <!-- Silences a build warning, If there is a better way to silence this, please change it. We should never be limiting to 1 password per import -->
     <message name="IDS_PASSWORD_MANAGER_UI_IMPORT_ERROR_LIMIT_EXCEEDED" desc="Message is shown on the dialog for importing passwords if no passwords were imported because user tried to import more than `NUMBER` passwords from a single file.">
-      <!-- Silences a build warning, If there is a better way to silence this, please change it. We should never be limiting to 1 password per import -->
       {COUNT, plural,
         =1 {Can't import passwords. You can only import 1 password at a time.}
         other {Can't import passwords. You can only import up to <ph name="COUNT_MANY"><ex>3000</ex>%1$d</ph> passwords at a time.}}

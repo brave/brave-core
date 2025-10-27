@@ -35,6 +35,7 @@
 <translation id="1062407476771304334">ተካ</translation>
 <translation id="1063822554756965137">ፋይሎች በተሳካ ሁኔታ ተሰርዘዋል</translation>
 <translation id="1064054731605354900">A3x5</translation>
+<translation id="2729345439181698540">Brave ከዚህ ጣቢያ ማሳወቂያዎችን እንደማይፈልጉ ያስባል። ስለዚህ መቆራረጦችን ለመቀነስ ጥያቄዎች ተደብቀዋል።</translation>
 <translation id="1066528211000788800">JSON</translation>
 <translation id="1067029985695494416">የፍለጋ ፕሮግራም ዝርዝሮች</translation>
 <translation id="1068467933609179019">የራስ-ሙላ አገልግሎቶች ቅንብሮች</translation>
@@ -49,6 +50,7 @@
 <translation id="1080116354587839789">ከስፋቱ ጋር አመጣጥን</translation>
 <translation id="1081061862829655580">መሳቢያ 19</translation>
 <translation id="1082026381988252344">ያሸብልሉ እና የተጋራውን ትር ይዘቶች ያጉሉ</translation>
+<translation id="108859316315249327">እንደገና ይሞክሩ</translation>
 <translation id="1088664500620117635">የ<ph name="PRODUCT_NAME"/> የተለመደው ዋጋ ከ<ph name="LOW_PRICE"/> - <ph name="HIGH_PRICE"/> ነው ነገር ግን አሁን በመላው ድሩ ላይ ያለው ዋጋ <ph name="CURRENT_PRICE"/> ነው።</translation>
 <translation id="1089439967362294234">የይለፍ ቃል ቀይር</translation>
 <translation id="807719392864780545">በBrave ቅንብሮች ውስጥ በማንኛውም ጊዜ ሐሳብዎን መቀየር ይችላሉ።</translation>
@@ -127,6 +129,7 @@
 <translation id="1212527389003717329">ማውረድ ተጀምሯል። ለማየት በ|<ph name="ACCELERATOR"/>| ላይ ተጭነው ይያዙ።</translation>
 <translation id="449113506387905750">የይለፍ ቃላት፣ የይለፍ ቁልፎች፣ አድራሻዎች፣ የመክፈያ ዘዴዎች እና ሌላ መረጃን በራስ-ሰር ለመሙላት Brave መለያዎ ውስጥ የተቀመጠ መረጃን ይጠቀሙ</translation>
 <translation id="1219129156119358924">የስርዓት ደህንነት</translation>
+<translation id="1219134100826635117">አስተዳዳሪዎ ይህንን እርምጃ አግዷል</translation>
 <translation id="1222060260947439312">የቀኝ መሳቢያ</translation>
 <translation id="1224330468394120478">A3x6</translation>
 <translation id="1225240795350945817">የካርድ ቁጥር፦</translation>
@@ -460,6 +463,7 @@
 <translation id="6072474764708015774"><ph name="BEGIN_BOLD"/>ይህን ውሂብ እንዴት ጥቅም ላይ እንደምናውል፦<ph name="END_BOLD"/> Brave እርስዎ እያሰሱ ሳለ የዝንባሌ ርዕሶችን ማስታወሻ ይይዛል። የርዕስ መሰየሚያዎች አስቀድመው የተገለጹ እና እንደ ስነ ጥበባት እና መዝናኛ፣ ሽመታ እና ስፖርት ያሉ ነገሮችን ያካትታል። በኋላ ላይ የሚጎበኙት ጣቢያ እርስዎ የሚያዩዋቸውን ማስታወቂያዎች ግላዊነት ለማላበስ Braveን ከእርስዎ ርዕሶች (ነገር ግን የአሰሳ ታሪክዎን ሳይሆን) ውስጥ ጥቂቶቹን ይጠይቃል።</translation>
 <translation id="1746113442205726301">የምስል Y ፈረቃ</translation>
 <translation id="1746531169546376413">0 ዲግሪ</translation>
+<translation id="1747777564644667857">በረራ</translation>
 <translation id="1748225549612934682">የጽሑፍ እርዳታ ለማግኘት ጽሑፎን ያሳጥሩ</translation>
 <translation id="1751544761369730824">ጣቢያ <ph name="SITE_NAME"/> ሰርዝ</translation>
 <translation id="1752021286346845558">የመልዕክት ሳጥን 8</translation>
@@ -528,7 +532,6 @@
 <translation id="1863257867908022953">መሳቢያ 12</translation>
 <translation id="1864927262126810325">ከ<ph name="SOURCE_NAME"/></translation>
 <translation id="186539747722034544">የኬብል እና ሳተላይት አቅራቢዎች</translation>
-<translation id="1866757068250903512"><ph name="READERNAME"/> ተብለው የተሰየሙ ማረጋገጫ መሣሪያዎችን እና ከእነሱ ጋር ጥቅም ላይ የሚውሉ ዘመናዊ ካርዶችን ይቆጣጠሩ</translation>
 <translation id="1870473978371099486">የግል አጋዥ አገልግሎቶች</translation>
 <translation id="1871208020102129563">የ.pac ስክሪፕት ዩአርኤል ሳይሆን ተኪ አገልጋዮችን እንዲጠቀም ነው ተኪ የተዋቀረው።</translation>
 <translation id="1871284979644508959">የሚያስፈልግ መስክ</translation>
@@ -634,7 +637,6 @@
 <translation id="2066969741541525119">ከፊት ያለው ጣቢያ በድርጅትዎ ታግዷል</translation>
 <translation id="2069913043427250781">የተሽከርካሪ እና የትራፊክ ደህንነት</translation>
 <translation id="2071156619270205202">ይህ ካርድ ለምናባዊ ካርድ ቁጥር ብቁ አይደለም።</translation>
-<translation id="2071692954027939183">ማሳወቂያዎች ብዙውን ጊዜ ስለማይፈቅዱሏቸው በራስ-ሰር ታግደዋል</translation>
 <translation id="2071852865256799872">የእርስዎ አሳሽ የሚተዳደረው በድርጅትዎ ነው እና የእርስዎ መገለጫ የሚተዳደረው በ<ph name="PROFILE_DOMAIN"/> ነው</translation>
 <translation id="4131219066342523581">Brave Jamboard</translation>
 <translation id="2074733626795553847">የ<ph name="TOPIC"/> እገዳውን አንሳ</translation>
@@ -711,6 +713,7 @@
 <translation id="2173302385160625112">የበይነመረብ ግኑኝነትዎን ይፈትሹ</translation>
 <translation id="2174875517416416684">ግብይትዎ አልተጠናቀቀም። ከመለያዎ ምንም ገንዘብ አልወጣም።</translation>
 <translation id="2175630235841878061">ከ100 ሜባ በላይ የሆኑ ፋይሎች ለማውረድ አይገኙም</translation>
+<translation id="217631816678106981">አትለጥፍ</translation>
 <translation id="7453373354666409887">Brave አዝራርን ያዘምኑ፣ Braveን ለማዘመን ከእርስዎ Brave ቅንብሮች ሆነው ያግብሩ</translation>
 <translation id="2178904466768126352">እርስዎ ለመጎብኘት በሞከሩት ጣቢያ ላይ ያሉ አጥቂዎች እንደ የእርስዎ የይለፍ ቃሎች፣ ፎቶዎች፣ መልዕክቶች ወይም የክሬዲት ካርድ ቁጥሮች ያሉ ነገሮችን የሚሰርቅ ወይም የሚሰርዝ ጎጂ ሶፍትዌርን ሊጭኑ ይችላሉ።</translation>
 <translation id="2179003720612888584"><ph name="SITE_TITLE"/> በ<ph name="SITE_DOMAIN_NAME"/> ላይ</translation>
@@ -835,6 +838,7 @@
 <translation id="23703388716193220">የጎልፍ መሣሪያዎች</translation>
 <translation id="2370368710215137370">የፋይሎች ሰቀላ</translation>
 <translation id="2370739752330685659">ምናልባት በኋላ</translation>
+<translation id="2371084566192454134">ትሮች እና ቡድኖች</translation>
 <translation id="2376455483361831781">አዲስ ሰንጠረዥ</translation>
 <translation id="2377241607395428273">የግራፊክስ እና የእነማ ሶፍትዌር</translation>
 <translation id="2378084239755710604">ካርድ አስቀምጥ ዝግ ነው።</translation>
@@ -914,7 +918,6 @@
 <translation id="2515629240566999685">በእርስዎ አካባቢ ያለውን ሲግናል መፈተሽ</translation>
 <translation id="2515761554693942801"><ph name="PROVIDER_ORIGIN"/>ን በሚጠቀሙ ድር ጣቢያዎች ላይ በTouch ID ማረጋገጥን መርጠዋል። ይህ አቅራቢ ስለእርስዎ የመክፈያ ዘዴ መረጃ አከማችቶ ሊሆን ይችላል። እርስዎ ይህንን <ph name="LINK_TEXT"/> ይችላሉ።</translation>
 <translation id="2518584823165598232">ይህ ካርድ አይገኝም። እባክዎ የእርስዎን ካርድ አቅራቢ ያነጋግሩ።</translation>
-<translation id="2519250377986324805">እንዴት እንደሆነ ይመልከቱ</translation>
 <translation id="2521385132275182522">ከግራጌ በቀኝ በኩል ስቴፕለር ምታ</translation>
 <translation id="2521736961081452453">ቅጽ ፍጠር</translation>
 <translation id="2524461107774643265">ተጨማሪ መረጃ ያክሉ</translation>
@@ -923,7 +926,6 @@
 <translation id="2527451058878391043">ካርድ ማረጋገጫ ኮድዎ በካርድዎ ፊት ለፊት ላይ ነው። ከላይ በስተቀኝ በኩል ከካርድዎ ቁጥር በላይ ባለ4 አሃዙ ኮድ ነው።</translation>
 <translation id="2529899080962247600">ይህ መስክ ከ<ph name="MAX_ITEMS_LIMIT"/> ግቤቶች በላይ ሊኖሩት አይገባም። ሁሉም ተጨማሪ ግቤቶች ችላ ይባላሉ።</translation>
 <translation id="2530042584066815841">የመዳፊት መቆለፊያ እና አጠቃቀም</translation>
-<translation id="2533649878691950253">እርስዎ ይህን አብዛኛው ጊዜ ስለማይፈቅዱ ይህ ጣቢያ ትክክለኛ አካባቢዎን እንዳያውቅ ታግዷል</translation>
 <translation id="253493526287553278">የማስተዋወቂያ ኮድ ዝርዝሮችን ይመልከቱ</translation>
 <translation id="2535659140340599600">{COUNT,plural, =1{እና 1 ተጨማሪ}one{እና # ተጨማሪ}other{እና # ተጨማሪ}}</translation>
 <translation id="2536110899380797252">አድራሻ ያክሉ</translation>
@@ -953,6 +955,7 @@
 <translation id="2573170131138724450">ቴሌቪዥኖች</translation>
 <translation id="257674075312929031">ቡድን</translation>
 <translation id="2580031090587209073">የማጋሪያ አማራጮች</translation>
+<translation id="258027838577899739">ከታሪክ ላይ ሁሉንም ሰርዝ</translation>
 <translation id="258135245577667916"><ph name="USER_DISPLAY_NAME"/> ትር አክለዋል</translation>
 <translation id="2586657967955657006">የቅንጥብ ሰሌዳ</translation>
 <translation id="2587841377698384444">የማውጫ የኤፒአይ መታወቂያ፦</translation>
@@ -968,13 +971,16 @@
 <translation id="2610561535971892504">ለመቅዳት ጠቅ ያድርጉ</translation>
 <translation id="2612676031748830579">የካርድ ቁጥር</translation>
 <translation id="686139377353794280">በእርስዎ መሣሪያ ላይ እና Brave መለያ ውስጥ የተቀመጡ ሁሉም የደህንነት ኮዶች ይሰረዛሉ</translation>
+<translation id="2614835674900828050">ለዚህ ግዢ አይገኝም</translation>
 <translation id="2616412942031748191">የፍለጋ ፕሮግራም ማመቻቸት እና ማሻሻጥ</translation>
 <translation id="2618206371527040026">ትምህርታዊ ጉባዔዎች እና ህትመቶች</translation>
 <translation id="2619052155095999743">አስገባ</translation>
+<translation id="2620436844016719705">ስርዓት</translation>
 <translation id="2622754869869445457">የእርስዎ በጣም የቅርብ ጊዜ ትር</translation>
 <translation id="2625385379895617796">የእርስዎ ሰዓት ገና የወደፊት ነው</translation>
 <translation id="262745152991669301">ከዩኤስቢ መሣሪያዎች ጋር ለመገናኘት መጠየቅ ይችላል</translation>
 <translation id="2627847595568876492">ከPDF ላይ ጽሁፍ በማውጣት ላይ...</translation>
+<translation id="6484547507342500969">ይህ አገልጋይ ለድር ትራፊክ ምሥጠራ በBrave ወይም በእርስዎ የሥርዓት ውቅረት ተዓማኒነት የሌለው የደኅንነት የዕውቅና ማረጋገጫ እየተጠቀመ ስለሆነ <ph name="DOMAIN"/> መሆኑን ማረጋገጥ አልቻለም። ይህ በተሳሳተ አወቃቀር ወይም አንድ አጥቂ ግንኙነትዎን በመጥለፉ የተከሰተ ሊሆን ይችላል።</translation>
 <translation id="2628224721443278970">ወደ Microsoft OneDrive ይግቡ</translation>
 <translation id="2634124572758952069">የ<ph name="HOST_NAME"/> አገልጋይ አይፒ አድራሻ ሊገኝ አልቻለም።</translation>
 <translation id="2638567100095052009">በመላው <ph name="FEATURED_SEARCH_LIST"/> ላይ ለመፈለግ @ ይተይቡ</translation>
@@ -1042,10 +1048,10 @@
 <translation id="2730326759066348565"><ph name="BEGIN_LINK"/>የግንኙነት መመርመሪያን በማሄድ ላይ<ph name="END_LINK"/></translation>
 <translation id="2731382536835015353">44 x 68 ኢንች</translation>
 <translation id="3163800392243881597">Brave ግላዊነት የተላበሱ ቅናሾችን ለመፈለግ ተሳቢዎችዎን እንዲጠቀምባቸው ይፍቀዱለት። ቅናሾች የሚገኙ ሲሆን በራስ-ሰር በተሳቢዎችዎ ላይ ይታያሉ።</translation>
+<translation id="2734797989819862638">አትቅዳ</translation>
 <translation id="273785062888389088">HVAC እና የአየር ንብረት ቁጥጥር</translation>
 <translation id="2740531572673183784">እሺ</translation>
 <translation id="2742128390261873684">የቤት ኦቶሜሽን</translation>
-<translation id="2742870351467570537">የተመረጡትን ንጥሎች አስወግድ</translation>
 <translation id="2743512410823092182">የዲጄ መርጃዎች እና መሣሪያዎች</translation>
 <translation id="2743934314332613923">የመንጃ ፈቃድ ይዘምን?</translation>
 <translation id="2759299890026163685">እንደገና ከመሞከርዎ በፊት የተረጋጋ የበይነመረብ ግንኙነት እንዳለዎት ያረጋግጡ።</translation>
@@ -1200,6 +1206,7 @@
 <translation id="3037605927509011580">ውይ፣ ተሰናከለ!</translation>
 <translation id="3039406992698062762">የቤተሰብ ጉዞ</translation>
 <translation id="3041176923638368519">የካርድ ጥቅማጥቅሞች ደንቦችን ይመልከቱ</translation>
+<translation id="3041584414879052436">የአሁን ይግዙ፣ በኋላ ይክፈሉ ሰጪዎች ዝርዝር ተዘግቷል።</translation>
 <translation id="3041612393474885105">የሰርቲፊኬት መረጃ</translation>
 <translation id="3045769629416806687">አደገኛ ስፖርቶች</translation>
 <translation id="8418829431154568330">የጊዜ ማህተሞች፣ አስተናጋጆች እና የደንበኛ ክፍለ-ጊዜ መታወቂያዎችን ጨምሮ Brave የርቀት ዴስክቶፕ ታሪክ</translation>
@@ -1219,6 +1226,8 @@
 <translation id="3086579638707268289">የእርስዎ በድር ላይ ያለ እንቅስቃሴ ክትትል እየተደረገበት ነው</translation>
 <translation id="3087734570205094154">ግርጌ</translation>
 <translation id="3090667236485488075">መስታወት</translation>
+<translation id="3093122472063815077">የአሁን ይግዙ፣ በኋላ ይክፈሉ ሂደት ማያ ገጽ በግማሽ ቁመት ተከፍቷል።</translation>
+<translation id="3898583945108784581">ድርጅትዎ ወደ Brave መለያዎ ማስቀመጥን ሲገድብ እርስዎ ትሮችን ማጋራት ወይም ከሌሎች ጋር መተባበር አይችሉም</translation>
 <translation id="3094051226187213523">በዚህ ጥቆማ የሰው ሠራሽ አስተውሎት ሁነታን ይክፈቱ።</translation>
 <translation id="3095940652251934233">መግለጫ</translation>
 <translation id="3098513225387949945">የአሰናክል ዝርዝሩ መመሪያውን ከማሰናከል ጋር እኩል የሆነ የ«*» ስርዓተ-ጥለት ስለያዘ ችላ ተብሏል።</translation>
@@ -1255,6 +1264,7 @@
 <translation id="3137507986424712703">{COUNT,plural, =0{ምንም}=1{የ1 መለያ የመለያ መግቢያ ውሂብ}one{የ# መለያዎች የመለያ መግቢያ ውሂብ}other{የ# መለያዎች የመለያ መግቢያ ውሂብ}}</translation>
 <translation id="3140646734028448730">የንግድ አገልግሎቶች</translation>
 <translation id="3141093262818886744">ለማንኛውም ክፈት</translation>
+<translation id="3141337053413339205">ወደዚህ ትር ቀይር።</translation>
 <translation id="3141641372357166056">ምንም የፈቃደኝነት ውሳኔ የለም</translation>
 <translation id="3144458715650412431">የሙከራ መመሪያዎች ተተግብረዋል። chrome://policy/test ላይ ይገምግሟቸው እና ዳግም ያስጀምሯቸው። የአስተዳዳሪ መመሪያዎች አይተገበሩም።</translation>
 <translation id="3145945101586104090">ምላሹን መግለጥ አልተሳካም</translation>
@@ -1380,7 +1390,6 @@
 <translation id="3349952286488694786">SRA2</translation>
 <translation id="3350450887151703713">10 ሰከንዶችን ዳግም አጫውት</translation>
 <translation id="3352881017886802007">የስፖርት ጨዋታዎች</translation>
-<translation id="3355823806454867987">የተኪ ቅንብሮችን በመቀየር ላይ...</translation>
 <translation id="335809815767823">ወደ ውጭ ተልኳል</translation>
 <translation id="3359565626472459400">ትዳር</translation>
 <translation id="3360103848165129075">የክፍያ ተቆጣጣሪ ሉህ</translation>
@@ -1589,6 +1598,7 @@
 <translation id="3678029195006412963">ጥያቄ ሊፈረም አልተቻለም</translation>
 <translation id="3678914302246317895">ባለ <ph name="OTP_LENGTH"/>-አሃዝ የማረጋገጫ ኮድ ያስገቡ</translation>
 <translation id="3681007416295224113">የሰርቲፊኬት መረጃ</translation>
+<translation id="318206792789506219">Brave በዚህ ጣቢያ ላይ አካባቢዎን መጠቀም እንደማይፈልጉ ያስባል። ስለዚህ መቆራረጦችን ለመቀነስ ጥያቄዎች ተደብቀዋል።</translation>
 <translation id="2659564324969662497">Brave በእርስዎ የቅርብ ጊዜ የአሰሳ ታሪክ ላይ በመመሥረት የዝንባሌ ርዕሶችን ማስታወሻ ይይዛል።</translation>
 <translation id="3681841880472207951">QuickTime ቪድዮ</translation>
 <translation id="3682094733650754138">የአድራሻ ይሙሉ ምርጫ ተመርጧል</translation>
@@ -1653,6 +1663,7 @@
 <translation id="3784372983762739446">የብሉቱዝ መሣሪያዎች</translation>
 <translation id="3243782951628874989">እርስዎ በተለምዶ ከጣቢያዎች ጋር ደህንነቱ በተጠበቀ መንገድ ይገናኛሉ፣ ነገር ግን Brave በዚህ ጊዜ ላይ የተመሰጠረ ግንኙነትን መጠቀም አልቻለም። አንድ አጥቂ የአውታረ መረብ ግንኙነትዎን በድብቅ ለመከታተል ወይም ለማስተካከል እየሞከረ ሊሆን ይችላል። <ph name="LEARN_MORE"/></translation>
 <translation id="378611282717571199">ለ«<ph name="SEARCH_QUERY"/>» የተሻለ ተዛማጆች</translation>
+<translation id="3787887386289385215"><ph name="ISSUER_1_NAME"/>፣ <ph name="ISSUER_2_NAME"/> ወይም <ph name="ISSUER_3_NAME"/></translation>
 <translation id="3789841737615482174">ጫን  </translation>
 <translation id="3791118028061680614">መተግበሪያዎችን ሳይቀይሩ ይክፈሉ</translation>
 <translation id="3792100426446126328"><ph name="NAME"/> (<ph name="WIDTH"/> x <ph name="HEIGHT"/> ኢንች)</translation>
@@ -1676,6 +1687,7 @@
 <translation id="3814865536373139791">ድርጅትዎ መመሪያዎችን እንዴት እንደሚያስተዳድር ያሳልጡ</translation>
 <translation id="3815434930383843058">8 x 12 ኢንች</translation>
 <translation id="3816482573645936981">እሴት (የተተካ)</translation>
+<translation id="3817524650114746564">የእርስዎን ኮምፒውተር ወኪል ቅንብሮች ይክፈቱ</translation>
 <translation id="382115839591654906">ለ<ph name="CARD_NAME"/> ካርድ ማረጋገጫ ኮድ</translation>
 <translation id="3822492359574576064">የመዳፊት መቆለፊያ እና አጠቃቀም</translation>
 <translation id="3823019343150397277">አይ ቢ ኤ ኤን</translation>
@@ -1707,6 +1719,8 @@
 <translation id="3869939189466884821">የእርስዎ አካባቢያዊ ፋይሎች በ<ph name="MINUTES"/> ደቂቃዎች ውስጥ ይሰረዛሉ</translation>
 <translation id="3872834068356954457">ሳይንስ</translation>
 <translation id="3875783148670536197">እንዴት እንደሆነ አሳየኝ</translation>
+<translation id="3877603629930976930">አታጋራ</translation>
+<translation id="3878445208930547646">ከዚህ ጣቢያ መቅዳት አይፈቀድም</translation>
 <translation id="3879748587602334249">የማውረድ አቀናባሪ</translation>
 <translation id="3880456882942693779">ሥነ ጥበባት እና መዝናኛ</translation>
 <translation id="3880589673277376494">በይነመረብ እና ቴሌኮም</translation>
@@ -1738,6 +1752,7 @@
 <translation id="3941630233824954464">የግዴታ ዳግም ማረጋገጥን አንቃ</translation>
 <translation id="3942048175062210325">ፋይሎችዎን እንደገና ለመክፈት ይሞክሩ</translation>
 <translation id="3943857333388298514">ለጥፍ</translation>
+<translation id="3945937463338223066">የ<ph name="READERNAME"/> ዓይነት እና ለእነሱ ተደራሽ የሆኑ ዘመናዊ ካርዶችን ማረጋገጫ መሣሪያዎች ይቆጣጠሩ</translation>
 <translation id="3946209740501886391">ሁልጊዜ በዚህ ጣቢያ ላይ ጠይቅ</translation>
 <translation id="3948588869002647271">ይህ መተግበሪያ ጎድሏል ወይም ጉዳት ደርሶበታል</translation>
 <translation id="3949297482798028668">ይህን ይዘት እዚህ መለጠፍ በአስተዳዳሪዎ ታግዷል።</translation>
@@ -1836,6 +1851,7 @@
 <translation id="4099048595830172239">ሚስጥራዊ ይዘት በሚታይበት ጊዜ የአስተዳዳሪ መመሪያ ማያ ገጽዎን ለ<ph name="APPLICATION_TITLE"/> ማጋራትን አይመከርም፦</translation>
 <translation id="5393384033795488834"><ph name="CUSTOMIZE_CHROME_FONTS_FOCUSED_FRIENDLY_MATCH_TEXT"/>፣ ከዚያ በBrave ውስጥ የቅርጸ-ቁምፊ መጠኖችን እና መልከ ቁምፊዎችን ለማበጀት ትርን ከዚያ አስገባን ይጫኑ</translation>
 <translation id="4101413244023615925">ጽሁፍ እና ግራፊክ</translation>
+<translation id="4101917550061398111">የተመረጡ ንጥሎችን ሰርዝ</translation>
 <translation id="4102567721634170493">አካባቢያዊ ዜና</translation>
 <translation id="4103249731201008433">የመሣሪያ መለያ ቁጥር ልክ ያልሆነ ነው</translation>
 <translation id="4103592298805904008">Cardboard (ነጠላ ግድግዳ)</translation>
@@ -1871,6 +1887,7 @@
 <translation id="4148925816941278100">American Express</translation>
 <translation id="4150099059797363385">#4 የቻይና ፖስታ</translation>
 <translation id="4152318981910038897">{COUNT,plural, =1{ገፅ 1}one{ገፅ {COUNT}}other{ገፅ {COUNT}}}</translation>
+<translation id="4152495263075154876">የአሁን ይግዙ፣ በኋላ ይክፈሉ ሂደት ማያ ገጽ ተዘግቷል።</translation>
 <translation id="4152670763139331043">{NUM_TABS,plural, =1{1 ትር}one{# ትሮች}other{# ትሮች}}</translation>
 <translation id="4153446078232988116"><ph name="SITE"/> በኤችቲቲፒኤስ የተመሰጠረ ግንኙነትን አይደግፍም</translation>
 <translation id="6923879007831202776">Brave የመክፈያ ዘዴዎችን ከመሞላቱ በፊት እርስዎ መሆንዎን ያረጋግጣል። በ<ph name="IDS_AUTOFILL_MANDATORY_REAUTH_CONFIRMATION_SETTINGS_LINK"/> ውስጥ በማንኛውም ጊዜ ይህ ማዘመን ይችላሉ።</translation>
@@ -2055,6 +2072,7 @@
 <translation id="4466576951214254884">የተማሪ ብድሮች እና የኮሌጅ ፋይናንስ</translation>
 <translation id="4467821340016922962">ከሙሉ ማያ ገጽ ለመውጣት እና ውርዱን ለማየት |<ph name="ACCELERATOR"/>|ን ይጫኑ</translation>
 <translation id="8294153737034342992">የBrave ከፍተኛ ደረጃ ጥበቃን ለማግኘት <ph name="BEGIN_ENHANCED_PROTECTION_LINK"/>የላቀ ጥበቃን ያብሩ<ph name="END_ENHANCED_PROTECTION_LINK"/></translation>
+<translation id="4475299370877036544">ይህ ድርጊት የድርጅታችሁን መመሪያዎች የሚጥስ ሊሆን ይችላል</translation>
 <translation id="447665707681730621"><ph name="BUBBLE_MESSAGE"/>። <ph name="LEARN_MORE_TEXT"/></translation>
 <translation id="4476953670630786061">ይህ ቅጽ ደህንነቱ የተጠበቀ አይደለም። ራስ-ሙላ ጠፍቷል።</translation>
 <translation id="4477350412780666475">ቀጣይ ትራክ</translation>
@@ -2508,6 +2526,7 @@
 <translation id="5255583962255635076">በስራ መገለጫዎ ውስጥ የተተገበሩ የአሳሽ መመሪያዎች</translation>
 <translation id="5255690596502591079">ለማንኛውም አንሳ</translation>
 <translation id="5255771248404149177">የካርድ አቅራቢዎ እርስዎ መሆንዎን ማረጋገጥ ይፈልጋል</translation>
+<translation id="525579853540851404">የአሁን ይግዙ፣ በኋላ ይክፈሉ ሂደት ማያ ገጽ። ቁልፍ ሰሌዳ ተደብቋል።</translation>
 <translation id="5255833070095767006">350 x 460 ሚሜ</translation>
 <translation id="5257739419779698609">{0,plural, =1{የአስተዳዳሪ መመሪያ ይህን ፋይል ወደ <ph name="DESTINATION_NAME"/> መቅዳትን አይመክርም}one{የአስተዳዳሪ መመሪያ ይህን ፋይል ወደ <ph name="DESTINATION_NAME"/> መቅዳትን አይመክርም}other{የአስተዳዳሪ መመሪያ እነዚህን ፋይሎች ወደ <ph name="DESTINATION_NAME"/> መቅዳትን አይመክርም}}</translation>
 <translation id="5258473597674772367">የ«<ph name="GROUP_NAME"/>» የትር ቡድን ከእንግዲህ አይገኝም</translation>
@@ -2599,6 +2618,7 @@
 <translation id="5412040515238827314">ልክ ያልኾነ ቅርጸት፦ የስርዓተ ጥለቶች ዝርዝር ተጠብቆ ነበር።</translation>
 <translation id="5412245327974352290"><ph name="TRADITIONAL_TEXT"/> - <ph name="ADDITIONAL_TEXT"/></translation>
 <translation id="541416427766103491">ቁልል 4</translation>
+<translation id="5414306071315087019">አሁን ይግዙ፣ በኋላ ይክፈሉ በGoogle Pay ይገኛል</translation>
 <translation id="5414446060143308245">ከማስተላለፍ በፊት ግምገማ ያስፈልጋል</translation>
 <translation id="5414511064953050917">ለማንኛውም አንቀሳቅስ</translation>
 <translation id="5418700249417444482">እርስዎ የሚጎበኟቸው ገፆች ዩአርኤሎች ወደ Brave ደመና ወይም ሦስተኛ ወገኖች ለትንታኔ ይላካሉ እና ለአስተዳዳሪዎ ሊታዩ ይችላሉ። ለምሳሌ በአስተዳዳሪው በተቀናበሩ ደንቦች ላይ በመመስረት ደህንነታቸው ያልተጠበቁ ድር ጣቢያዎችን ወይም ማጣሪያ ድር ጣቢያዎችን ለመለየት ሊቃኙ ይችላሉ።</translation>
@@ -2607,7 +2627,6 @@
 <translation id="5423269318075950257">ዋጋ ይከታተሉ</translation>
 <translation id="5425082381151187189">የቤት እና የቤት ውስጥ ማስጌጫ</translation>
 <translation id="5426179911063097041"><ph name="SITE"/> ማሳወቂያዎችን ለእርስዎ መላክ ይፈልጋል</translation>
-<translation id="5430298929874300616">ዕልባት አስወግድ</translation>
 <translation id="5431318178759467895">ቀለም</translation>
 <translation id="5433756542371550806">የትዕዛዝ መስመር አማራጭ ቅርጾች</translation>
 <translation id="8517215617486022589">Brave የሚከተሉትን<ph name="BEGIN_EMPHASIS"/>አያስቀምጥም<ph name="END_EMPHASIS"/>፦
@@ -2618,6 +2637,7 @@
           <ph name="END_LIST"/></translation>
 <translation id="5443468954631487277">ተቃራኒ ቅደም-ተከተል ፊቱ ወደ ላይ</translation>
 <translation id="5447235695608032700">ስለ እርስዎ ያስቀመጡትን መረጃ እንዲጠቀም <ph name="SITE"/> ለሚለው ይፍቀዱ</translation>
+<translation id="5447973833955560753">የመልሶ ማግኛ የይለፍ ቃል</translation>
 <translation id="6108397422772394696">የደህንነት ክስተቶች በBrave ሲጠቆሙ ስለ ክስተቶቹ አግባብነት ያለው ውሂብ ለአስተዳዳሪዎ ይላካል። ይህ በBrave ውስጥ የሚጎበኙትን ገጾች ዩአርኤሎች፣ ውሂብ የገለበጡባቸውን ገጾች ዩአርኤሎች፣ የፋይል ስሞች ወይም ዲበ ውሂብ፣ አይ ፒ አድራሻዎች፣ የአሳሽ ወይም የትር ብልሽቶች፣ እና በድር ላይ ለተመሠረቱ መተግበሪያዎች በመለያ ለመግባት የሚጠቀሙበት የተጠቃሚ ስም፣ መሣሪያዎ እና Braveን ሊያካትት ይችላል።</translation>
 <translation id="5452270690849572955">ይህ <ph name="HOST_NAME"/> ገፅ ሊገኝ አይችልም</translation>
 <translation id="5452923259299906094">በኢ-ኪስ ቦርሳ እና Pix ይክፈሉ</translation>
@@ -2716,6 +2736,7 @@
 <translation id="5595485650161345191">አድራሻ አርትዕ</translation>
 <translation id="5596939519753369075">2 x 3.5 ኢንች</translation>
 <translation id="5597254438174353289">ሰማያዊ 3</translation>
+<translation id="5603469469737324249"><ph name="ISSUER_1_NAME"/> ወይም <ph name="ISSUER_2_NAME"/></translation>
 <translation id="560412284261940334">አስተዳደር አይደገፍም</translation>
 <translation id="5605249000617390290">ስለ ዋጋ መከታተል የበለጠ ይወቁ</translation>
 <translation id="5605670050355397069">ሌጀር</translation>
@@ -2802,6 +2823,7 @@
 <translation id="5750869797196646528">የእጅ ክትትል</translation>
 <translation id="5752327398324808817">አንድ ወይም ሁለት ቃላት ያስገቡ</translation>
 <translation id="5752519522101347518">የባንክ ማረጋገጫ ድር ጣቢያን በመጫን ላይ</translation>
+<translation id="5753570386948603678">ከታሪክ ሰርዝ</translation>
 <translation id="5759751709240058861">የእርስዎን ካሜራ ይጠቀሙ እና ያንቀሳቅሱ</translation>
 <translation id="5763042198335101085">ትክክለኛ የኢሜይል አድራሻ ያስገቡ</translation>
 <translation id="5764725887548570807">ልክ ያልኾነ የመነሻ ቅርጸት።</translation>
@@ -3000,6 +3022,7 @@
 <translation id="6104072995492677441">JIS B6</translation>
 <translation id="6105460996796456817">ጣቢያን ፍጠር</translation>
 <translation id="8265004733555123045">ቀጣይ ጊዜ በቀጥታ Brave ውስጥ በPix ይክፈሉ</translation>
+<translation id="6105745639559695088">የጎን አሞሌን ቀያይር</translation>
 <translation id="6106989379647458772">በ<ph name="PAGE"/> ላይ ያለው ድረ-ገፅ ለጊዜው ተበላሽቶ ሊሆን ይችላል ወይም በቋሚነት ወደ አዲስ የድር አድራሻ ተንቀሳቅሶ ሊሆን ይችላል።</translation>
 <translation id="6107012941649240045">ለእዚህ ቀርቧል</translation>
 <translation id="6107864469867367783"><ph name="USER_DISPLAY_NAME"/> የቡድኑን ስም ለውጠዋል</translation>
@@ -3017,8 +3040,8 @@
 <translation id="6122181661879998141">የካርድዎ ፊት ለፊት</translation>
 <translation id="6124058285696691147">አባሪውን አውርድ</translation>
 <translation id="5972135347314259717">Brave Enterprise አያያዦች</translation>
+<translation id="6124996493718543728">የአሁን ይግዙ፣ በኋላ ይክፈሉ ሂደት ማያ ገጽ በሙሉ ቁመት ተከፍቷል።</translation>
 <translation id="6126565365696310362">#2 የቻይና ፖስታ</translation>
-<translation id="6127379762771434464">ንጥል ተወግዷል</translation>
 <translation id="6131824478727057281">አካባቢ</translation>
 <translation id="6133320744616005677">መፍቀድን ቀጥል</translation>
 <translation id="6133984428121856852">የፋይል ቅጥያው ባዶ ወይም የተበላሸ ነው።</translation>
@@ -3033,7 +3056,6 @@
 <translation id="6151417162996330722">የአገልጋይ እውቅና ማረጋገጫው በጣም ረጅም የሆነ የማረጋገጫ ጊዜ አለው።</translation>
 <translation id="6153243098246946146"><ph name="WIDTH"/> በ<ph name="HEIGHT"/> (<ph name="ORIENTATION"/>)ውስጥ</translation>
 <translation id="615506061184576470">ሩጫ እና እርምጃ</translation>
-<translation id="6157754950574419155">ሁሉንም ከታሪክ ያስወግዱ</translation>
 <translation id="6157877588268064908">የመላኪያ ዘዴዎችን እና መስፈርቶችን ለመመልከት አድራሻ ይምረጡ</translation>
 <translation id="6159554577634054750">የተባይ ቁጥጥር</translation>
 <translation id="6159908896951210943">መደበኛ</translation>
@@ -3148,7 +3170,6 @@
 <translation id="6340739886198108203">ሚስጥራዊ ይዘት በሚታይበት ጊዜ የአስተዳዳሪ መመሪያ ቅጽበታዊ ገፅ እይታዎችን ወይም ቅጂዎች መውሰድን አይመክርም፡-</translation>
 <translation id="6341434961864773665">{0,plural, =1{የአስተዳዳሪ መመሪያ ይህን ፋይል ወደ <ph name="DESTINATION_NAME"/> መስቀልን አይመክርም}one{የአስተዳዳሪ መመሪያ ይህን ፋይል ወደ <ph name="DESTINATION_NAME"/> መስቀልን አይመክርም}other{የአስተዳዳሪ መመሪያ እነዚህን ፋይሎች ወደ <ph name="DESTINATION_NAME"/> መስቀልን አይመክርም}}</translation>
 <translation id="6342069812937806050">ልክ አሁን</translation>
-<translation id="4707994291265138354">ይህን ማስጠንቀቂያ እያዩ ያሉት ይህ ጣቢያ ኤችቲቲፒኤስን ስለማይደግፍ እና እርስዎ ማንነት በማያሳውቅ ሁነታ ላይ ስላሉ ነው። <ph name="LEARN_MORE"/></translation>
 <translation id="634500758737709758">አቅጣጫዎች</translation>
 <translation id="6348220984832452017">ንቁ ተለዋዋጮች</translation>
 <translation id="6349101878882523185"><ph name="APP_NAME"/>ን ይጫኑ</translation>
@@ -3347,6 +3368,7 @@
 <translation id="6671169470640320959">ራስ ሰር ፋይናንሲንግ</translation>
 <translation id="6675846980676550611">የላቀ እውነታ አይፈቀድም</translation>
 <translation id="6677351035258626477">ፈጣን ምግብ</translation>
+<translation id="6677738644213083042">ወደዚህ ትር ቀይር</translation>
 <translation id="7691784300114873847">Brave አሳሽ የይለፍ ቃልዎን በ<ph name="APP_NAME"/> ላይ ለመሙላት እየሞከረ ነው።</translation>
 <translation id="6681790815630918386">ካርድ ማረጋገጫ ኮድ ተቀምጧል</translation>
 <translation id="6683022854667115063">የራስ ላይ ማዳመጫዎች</translation>
@@ -3395,6 +3417,7 @@
 <translation id="6740851646645036700">ለአሁን የመጻፍ እገዛ ገደብዎ ላይ ደርሰዋል። ቆይተው እንደገና ይሞክሩ።</translation>
 <translation id="674375294223700098">ያልታወቀ የአገልጋይ እውቅና ማረጋገጫ ስህተት።</translation>
 <translation id="6743841972744298686">ቅንብሮችን ያስምሩ</translation>
+<translation id="3792994947670632937">ከእርስዎ Brave መለያ የእርስዎን ስም እና የኢሜይል አድራሻ በራስ ይሙሉ</translation>
 <translation id="6745592621698551453">አሁን አዘምን</translation>
 <translation id="6751487147225428522">አርኦሲ 8ኬ</translation>
 <translation id="6752086006821653994">ቴሌኮንፈረንሲንግ</translation>
@@ -3479,7 +3502,6 @@
 <translation id="6898699227549475383">ድርጅት (O)</translation>
 <translation id="6900702165119149418">ዘግተው ወጥተዋል</translation>
 <translation id="6903907808598579934">ስምረትን አብራ</translation>
-<translation id="6905163627763043954">ሞክረው</translation>
 <translation id="6907458757809079309">ብቃት</translation>
 <translation id="691024665142758461">በርካታ ፋይሎችን ያወርዳል</translation>
 <translation id="691046363691324218">የማስተካከያ ቁጥር</translation>
@@ -3561,7 +3583,6 @@
 <translation id="7020464868401003526">የአቋራጭ ዩአርኤል ከሚፈቀደው ከፍተኛ የ<ph name="MAX_LENGTH"/> ቁምፊዎች ርዝመት ይበልጣል።</translation>
 <translation id="8683151724374457021">ይህ ጣቢያ እርስዎ የሚወዷቸውን ነገሮች ይወስናል እና ከዚያም ማስታወቂያዎችን ለሌሎች ጣቢያዎች ይጠቁማል። እንዲሁም ይህ ጣቢያ ይበልጥ አግባብነት ያላቸው ማስታወቂያዎችን ለእርስዎ ለማሳየት የእርስዎን የማስታወቂያ ርዕሶች ከBrave ያገኛል።</translation>
 <translation id="7023162328967545559">የአስተዳዳሪ ማስጠንቀቂያ</translation>
-<translation id="7023765275461720661">መለያ ይገናኝ እና በ<ph name="BNPL_ISSUER_NAME"/> ይከፈል?</translation>
 <translation id="7029809446516969842">የይለፍ ቃላት</translation>
 <translation id="7030164307377592766">የመክፈያ ዘዴዎችን ለመሙላት ቅንብሮችን ያስተካክሉ።</translation>
 <translation id="7031110846419387930">ስለ የእርስዎ አሳሽ፣ ስርዓተ ክወና፣ መሣሪያ፣ የተጫነ ሶፍትዌር፣ ፋይሎች እና አይ ፒ አድራሻዎች መረጃ</translation>
@@ -3587,6 +3608,7 @@
 <translation id="70705239631109039">የእርስዎ ግንኙነት ደህንነት ሙሉ ለሙሉ አይደለም የተጠበቀው</translation>
 <translation id="7071122206197538392">አዲስ የንጽጽር ሰንጠረዥ</translation>
 <translation id="7075452647191940183">ጥያቄ ከልክ በላይ ግዙፍ ነው</translation>
+<translation id="7075896597860500885">ከዚህ ጣቢያ መቅዳት አይመከርም</translation>
 <translation id="7078665357168027058">RA3</translation>
 <translation id="7079699498125013497">\u0020\u2022\u0020</translation>
 <translation id="7079783554682867524">ከ<ph name="TYPE_1"/> (የሠመሩ መሣሪያዎች ላይ ተጨማሪ)</translation>
@@ -3622,6 +3644,7 @@
 <translation id="7129809579943936035"><ph name="VALUE_PROP"/> <ph name="DETAILS"/></translation>
 <translation id="7130775116821607281">መስቀል ታግዷል</translation>
 <translation id="7132939140423847331">የእርስዎ አስተዳዳሪ ይህ ውሂብ እንዳይቀዳ ከልክሏል።</translation>
+<translation id="7134653428559514680">ከዚህ ጣቢያ ማጋራት አይመከርም</translation>
 <translation id="7135130955892390533">ሁኔታን አሳይ</translation>
 <translation id="7135814714616751706">የፍለጋ አቋራጮች</translation>
 <translation id="7138472120740807366">የማድረሻ ስልት</translation>
@@ -3705,10 +3728,12 @@
 <translation id="7275334191706090484">የተዳደሩ እልባቶች</translation>
 <translation id="7275808129217605899">ጤነኛ አመጋገብ</translation>
 <translation id="2837210582972105306"><ph name="CHANGE_GOOGLE_PASSWORD_FOCUSED_FRIENDLY_MATCH_TEXT"/>፣ የBrave መለያ የይለፍ ቃልዎን ለመቀየር ትርን ከዚያ አስገባን ይጫኑ</translation>
+<translation id="7286908876112207905">ይህንን ይዘት ወደዚህ ጣቢያ መለጠፍ አይፈቀድም</translation>
 <translation id="7291578327729322058">የመንጃ ፈቃድ ያክሉ</translation>
 <translation id="7292031607255951991">የተቀባይ ስም</translation>
 <translation id="7298195798382681320">የተመከሩ</translation>
 <translation id="7299471494012161875">የማሳያ ተቀጥላዎች ተያይዘዋል</translation>
+<translation id="7299721129597238157">ዕልባት ሰርዝ</translation>
 <translation id="7996735040909243152">Brave Wallet ውስጥ የታማኝነት ካርዶችን ያስተዳድሩ</translation>
 <translation id="7304030187361489308">ከፍ ያለ</translation>
 <translation id="244157907932852817">የBrave መለያ ግላዊነት ቅንብሮችን ያስተዳድሩ</translation>
@@ -3744,6 +3769,7 @@
 <translation id="7366117520888504990">198 x 275 ሚሜ</translation>
 <translation id="7366362069757178916">የክፍያ ተቆጣጣሪዎች</translation>
 <translation id="4662831882520898447">Brave እንዴት የይለፍ ቃላትዎን እንደሚጠብቅ ይወቁ</translation>
+<translation id="7370751048350026847">ይህንን ይዘት ወደዚህ ጣቢያ መለጠፍ አይመከርም</translation>
 <translation id="7372526636730851647">ፎቶ (አንጸባራቂ)</translation>
 <translation id="7372973238305370288">የፍለጋ ውጤት</translation>
 <translation id="7374461526650987610">የፕሮቶኮል ተቆጣጣሪዎች</translation>
@@ -3817,6 +3843,7 @@
 <translation id="745640750744109667">A0x3</translation>
 <translation id="7457071735008326060">የጭነት መኪናዎች እና ተጎታቾች</translation>
 <translation id="7461924472993315131">ሰካ</translation>
+<translation id="7463068149674892185">ይህ እርምጃ አይመከርም</translation>
 <translation id="746329643760972486">MacOS</translation>
 <translation id="746412105358554870">ጃቫስክሪፕት ማመቻቸት እና ደህንነት</translation>
 <translation id="7465036432780054056"><ph name="EMBEDDED_URL"/> <ph name="TOP_LEVEL_URL"/> የሚለውን እንደጎበኙ ያውቃል</translation>
@@ -3915,6 +3942,7 @@
 <translation id="7613889955535752492">የሚያበቃበት ጊዜ፦ <ph name="EXPIRATION_MONTH"/>/<ph name="EXPIRATION_YEAR"/></translation>
 <translation id="5704205738724476508"><ph name="MANAGE_PASSWORDS_FOCUSED_FRIENDLY_MATCH_TEXT"/>፣ ትር ይጫኑ በመቀጠል በBrave ቅንብሮች ውስጥ የእርስዎን የይለፍ ቃላት ለማየት እና ለማስተዳደር አስገባን ይጫኑ</translation>
 <translation id="7615932826417658001">የማንነት ካርድ ያክሉ</translation>
+<translation id="7616390733770379387">እነዚህ በዘፈቀደ ቅደም ተከተል ይታያሉ።</translation>
 <translation id="8565825862287624454">የእርስዎ አስተዳዳሪ በአሳሽዎ ላይ የBrave Enterprise አገናኞችን አብርቷል። እነዚህ አገናኞች የአንዳንድ ውሂብዎ መዳረሻ አላቸው።</translation>
 <translation id="7617825962482469577">ሲ7/ሲ6 ፖስታ</translation>
 <translation id="7618270539713451657">ማርሻል አርት</translation>
@@ -4127,6 +4155,7 @@
 <translation id="79682505114836835">እሴት «<ph name="VALUE"/>» ልክ ያልሆነ የአስራስድስትዮሽ ቀለም ነው።</translation>
 <translation id="7968982339740310781">ዝርዝሮችን ይመልከቱ</translation>
 <translation id="7975858430722947486">ወደ ንጽጽር ታክሏል</translation>
+<translation id="7976053965094442846">አሁን ይግዙ፣ በኋላ ይክፈሉ ሰጪዎች ለክፍያ በትርፍ ሰዓት ይገኛሉ። ቁልፍ ሰሌዳ ተደብቋል።</translation>
 <translation id="7976214039405368314">በጣም ብዙ ጥያቄዎች</translation>
 <translation id="7977538094055660992">የውጽዓት መሣሪያ</translation>
 <translation id="7979463492896063081">{TIME_DIMENSION,plural, =0{ከ<ph name="TIME_COUNT"/>ደ በፊት}=1{ከ<ph name="TIME_COUNT"/>ሰ በፊት}one{ከ<ph name="TIME_COUNT"/>ቀ በፊት}other{ከ<ph name="TIME_COUNT"/>ቀ በፊት}}</translation>
@@ -4135,10 +4164,12 @@
 <translation id="7983008347525536475">ኤስዩቪዎች</translation>
 <translation id="8896585555528145662">ድር ጣቢያው Brave ሊሰራባቸው የማይችላቸው የተዘበራረቁ ምስክርነቶችን ስለላከ <ph name="SITE"/>ን አሁን መጎብኘት ይችላሉ። የአውታረ መረብ ስህተቶች እና ጥቃቶች አብዛኛው ጊዜ ጊዜያዊ ናቸው፣ ስለዚህ ይህ ገፅ በኋላ ላይ ሊሰራ ይችላል።</translation>
 <translation id="7986319120639858961"><ph name="CARD_TITLE"/> <ph name="TIME"/> <ph name="BOOKMARKED"/> <ph name="TITLE"/> <ph name="DOMAIN"/></translation>
+<translation id="7987087088851949178">አሁን ይግዙ፣ በኋላ ይክፈሉ ሰጪዎች በሙሉ ከፍታ በመከፈት ለክፍያ በትርፍ ሰዓት ይገኛሉ።</translation>
 <translation id="799149739215780103">ጠርዝ</translation>
 <translation id="7992044431894087211">ከ <ph name="APPLICATION_TITLE"/> ጋር የማያ ገፅ መጋራት ከቆመበት ቀጥሏል</translation>
 <translation id="7995512525968007366">አልተጠቀሰም</translation>
 <translation id="7997855386298213183">የተጋሩ ትሮች</translation>
+<translation id="4065553278464642148">ይህ አገልጋይ ለድር ትራፊክ ምሥጠራ በBrave ወይም በእርስዎ የሥርዓት ውቅረት ተዓማኒነት የሌለው የደኅንነት የዕውቅና ማረጋገጫ እየተጠቀመ ስለሆነ <ph name="DOMAIN"/> መሆኑን ማረጋገጥ አልቻለም። ይህ በተሳሳተ አወቃቀር ወይም አንድ አጥቂ ግንኙነትዎን በመጥለፉ የተከሰተ ሊሆን ይችላል። <ph name="BEGIN_VIEW_CERTIFICATE_LINK"/>የዕውቅና ማረጋገጫን ይመልከቱ<ph name="END_VIEW_CERTIFICATE_LINK"/></translation>
 <translation id="800218591365569300">የማህደረ ትውስታ ቦታን ለማስለቀቅ ሌሎች ትሮችን ወይም ፕሮግራሞችን ዘግተው ይሞክሩ።</translation>
 <translation id="8002230960325005199">ተዛማጅ ጣቢያዎችን በአዲስ ትር ውስጥ ይመልከቱ</translation>
 <translation id="8003046808285812021">«<ph name="SEARCH_TERMS"/>»</translation>
@@ -4176,6 +4207,7 @@
 <translation id="8058603697124206642">አያስፈልግም</translation>
 <translation id="8061691770921837575">ሜክአፕ እና ኮስሜቲክስ</translation>
 <translation id="8063875539456488183">ያስቀምጡ እና ዋጋ ይከታተሉ</translation>
+<translation id="8065767681506419412">ይህ መመሪያ በእርስዎ የአሁን መሠረተ ሥርዓት የማይደገፉ የውሂብ ዓይነቶችን ይገልፃል፦ <ph name="TYPE_LIST"/>።</translation>
 <translation id="8066225060526005217">በኩኪዎች ቅንብሮች የሚተዳደር</translation>
 <translation id="5442778523450464826">አሁን የይለፍ ቃልዎን በአንድ አታላይ ጣቢያ ላይ አስገብተዋል። Brave ሊያግዝ ይችላል። የእርስዎን የይለፍ ቃል ለመለወጥ እና የእርስዎ መለያ ስጋት ውስጥ እንዳለ ለBrave ለማሳወቅ፣ መለያን ከጥቃት ተከላከል የሚለው ላይ ጠቅ ያድርጉ።</translation>
 <translation id="8070439594494267500">የመተግበሪያ አዶ</translation>
@@ -4477,6 +4509,7 @@
 <translation id="8564182942834072828">የተለዩ ሰነዶች/ያልተጣመሩ ቅጂዎች</translation>
 <translation id="8564466070529550495">ምናባዊ ካርድ አሁን አይገኝም፣ እባክዎ ቆይተው እንደገና ይሞክሩ።</translation>
 <translation id="8570895683659698018">ዝንባሌዎች እና ጊዜ ማሳለፊያ መዝናኛዎች</translation>
+<translation id="8574570240981266561">ንጥል ተሰርዟል</translation>
 <translation id="8574841453995331336">ማቀዥቀዣዎች እና በረዶ መስሪያዎች</translation>
 <translation id="8577192028579836704">ሁሉም አማራጮች መደበኛ <ph name="TYPICAL_PRICE"/></translation>
 <translation id="8577348305244205642">ምናባዊ ካርድ አይገኝም</translation>
@@ -4505,6 +4538,7 @@
 <translation id="8624354461147303341">ቅናሾችን ያግኙ</translation>
 <translation id="8634957317623797170">54 x 86 ሚሜ</translation>
 <translation id="1669370144926680379">Brave እያሰሱ ሳለ እርስዎን ለመጠበቅ ለመጎብኘት በሞከሩበት ጣቢያ ላይ እንደ የBrave ጥንቃቄ አሰሳ ያሉ — <ph name="BEGIN_LINK"/>በቅርብ ጊዜ ማስገር ያገኙ<ph name="END_LINK"/> ደህንነታቸው የተጠበቀ አብሮገነብ ባህሪያት አሉት። ማስገር የሚያደርጉ ጣቢያዎች እርስዎን ለመሸወድ ሌሎች ጣቢያዎችን እንደሆኑ ያስመስላሉ።<ph name="NEW_LINE"/>በተለምዶ ደህንነታቸው የተጠበቀ ጣቢያዎች እንኳን አንዳንድ ጊዜ በጥቃት አድራሾች ይጠለፋሉ። ስህተት ተፈጥሯል ብለው ካሰቡ እና ይህ ጣቢያ አደጋ የማያስከትል ከሆነ <ph name="BEGIN_ERROR_LINK"/>ያሳወቁን<ph name="END_ERROR_LINK"/>።</translation>
+<translation id="8294734273090232456">ትሮችን ለማጋራት እና ከሌሎች ጋር ለመተባበር ወደ Brave መግባት መቻል አለብዎ</translation>
 <translation id="8641131559425911240">ፖስታ (ቦንድ)</translation>
 <translation id="8643409044755049933">ካኩ 3 ፖስታ</translation>
 <translation id="8643846627971610148">ቡድን ሲዘጋ መቀላቀል የሚችለውን ሰው ይገድባል</translation>
@@ -4587,6 +4621,7 @@
 <translation id="8772387130037509473">ዮጋ እና ፒላቴስ</translation>
 <translation id="877348612833018844">{0,plural, =1{ምስጢራዊ ፋይሉ ይንቀሳቀስ?}one{ምስጢራዊ ፋይሉ ይንቀሳቀስ?}other{ምስጢራዊ ፋይሎቹ ይንቀሳቀሱ?}}</translation>
 <translation id="8775347646940100151">ወረቀት (የደብዳቤ ራስ)</translation>
+<translation id="8775863327608679820">አሁን ይግዙ፣ በኋላ ይክፈሉ ሰጪዎች በግማሽ ከፍታ በመከፈት ለክፍያ በትርፍ ሰዓት ይገኛሉ።</translation>
 <translation id="8776941011841875705">የሚታወቅ የተጓዥ ቁጥር ይቀመጥ?</translation>
 <translation id="877985182522063539">A4</translation>
 <translation id="514805123051954646">የገፅ መተርጎሚያ አዝራር፣ ይህን ገፅ በBrave ትርጉም ለመተርጎም ያግብሩ</translation>
@@ -4730,6 +4765,7 @@
 <translation id="9045525010788763347"><ph name="RESULT_MODIFIED_DATE"/> - <ph name="RESULT_PRODUCT_SOURCE"/></translation>
 <translation id="9046578823518542618"><ph name="URL"/> በአካባቢያዊ አውታረ መረብዎ ላይ ማንኛውንም መሣሪያ መፈለግ እና መገናኘት ይፈልጋል</translation>
 <translation id="9046864189129893978">ማይክሮፎኖች (<ph name="MICS_COUNT"/>)</translation>
+<translation id="9047528041803621289">ነባሪዎ ድርን እንዲፈልጉ ያስችልዎታል። ቅንብሮች ውስጥ ሊለውጡት ይችላሉ።</translation>
 <translation id="9048035366624198823">እነዚህ እርምጃዎች የ<ph name="POLICY_NAME"/> መመሪያው ወደ <ph name="POLICY_VALUE"/> እንዲቀናበር ይጠይቃሉ፦ <ph name="ACTION_LIST"/>።</translation>
 <translation id="9048662076076074925">24 x 36 ኢንች</translation>
 <translation id="9049981332609050619"><ph name="DOMAIN"/>ን ለመድረስ ሞክረው ነበር፣ ግን አገልጋዩ ልክ ያልሆነ የእውቅና ማረጋገጫ ነው ያሳየው።</translation>
@@ -4827,6 +4863,7 @@
 <translation id="9183425211371246419"><ph name="HOST_NAME"/> የማይጠቀም ፕሮቶኮል ይጠቀማል።</translation>
 <translation id="918454845714257218">በ<ph name="SIDE_OF_CARD"/> ላይ ያለውን ኮድ ይመልከቱ እና እንደገና ይሞክሩ</translation>
 <translation id="7202091195027070644">Braveን እንደ ነባሪ የአሳሽ አዝራር ያቀናብሩ፣ Braveን እንደ የሥርዓቱ ነባር አሳሽ ለማቀናበር ያግብሩ</translation>
+<translation id="9186371298532546532">ይህን አድራሻ በተጨማሪ ቦታዎች ላይ ይጠቀሙ</translation>
 <translation id="9189468832660648522"><ph name="MEMBER_FIRST_NAME"/> ይህን ትር ለውጠዋል</translation>
 <translation id="9189789270972826888">ካርዱ ካልተሞላ ለመቅዳት እና ለመለጠፍ የካርድ ዝርዝሮችን ከስር ጠቅ ያድርጉ። <ph name="IDS_AUTOFILL_FILLED_CARD_INFORMATION_BUBBLE_LEARN_MORE_LINK_LABEL"/></translation>
 <translation id="9190557999028587593">ከ4 ሳምንታት በላይ የቆዩ ርዕሶች በራስ-ሰር ይሰረዛሉ</translation>
@@ -4842,6 +4879,7 @@
 <translation id="920643408853370361">የጉዞ መድህን</translation>
 <translation id="9207861905230894330">ጽሁፍ ማከል አልተቻለም።</translation>
 <translation id="9209339767782560829">የመግቢያ የዕውቅና ማረጋገጫዎን በመጠቀም ላይ ስህተት ነበር።</translation>
+<translation id="9210152531668884481">ገብቼያለሁ</translation>
 <translation id="9210825002219699214">የአየር ጉዞ</translation>
 <translation id="9213433120051936369">ገጽታን ያብጁ</translation>
 <translation id="2206050430829841793">አንድ መተግበሪያ Brave ከዚህ ጣቢያ ጋር ደህንነቱ በተጠበቀ ሁኔታ እንዳይገናኝ እያቆመው ነው</translation>
@@ -4959,6 +4997,7 @@
     &lt;h4&gt;ደረጃ 5፦ ተጨማሪ እገዛ ያግኙ&lt;/h4&gt;
     &lt;p&gt;አሁንም ስህተቱ የሚያዩ ከሆኑ የድር ጣቢያውን ባለቤት ያነጋግሩ።&lt;/p&gt;</translation>
 <translation id="8169715168668926832">ይህን ማስጠንቀቂያ እያዩ ያሉት ይህ ጣቢያ ኤችቲቲፒኤስን ስለማይደግፍ እና እርስዎ ማንነት በማያሳውቅ ሁነታ ላይ ስላሉ ነው። <ph name="BEGIN_LEARN_MORE_LINK"/>ስለዚህ ማስጠንቀቂያ የበለጠ ይረዱ<ph name="END_LEARN_MORE_LINK"/></translation>
+<translation id="4707994291265138354">ይህን እማማው ምክንያቱም ይህ ጣቢያ የ HTTPS ድጋፍ አይደለም እና በግል ሁኔታ ነዎት። <ph name="LEARN_MORE"/></translation>
 <translation id="8108906085747235166">በግለ መገለጫ ይጠይቁ</translation>
 <translation id="317153861231603077">ከዛ ይልቅ በግለ መገለጫ ይጠይቁ</translation>
 </translationbundle>

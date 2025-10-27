@@ -35,6 +35,7 @@
 <translation id="1062407476771304334">Ganti</translation>
 <translation id="1063822554756965137">File berhasil dihapus</translation>
 <translation id="1064054731605354900">A3x5</translation>
+<translation id="2729345439181698540">Brave menganggap Anda tidak ingin menerima notifikasi dari situs ini. Jadi, permintaan disembunyikan untuk mengurangi gangguan.</translation>
 <translation id="1066528211000788800">JSON</translation>
 <translation id="1067029985695494416">Detail mesin telusur</translation>
 <translation id="1068467933609179019">Setelan layanan isi otomatis</translation>
@@ -49,6 +50,7 @@
 <translation id="1080116354587839789">Paskan dengan lebar</translation>
 <translation id="1081061862829655580">Baki 19</translation>
 <translation id="1082026381988252344">Scroll dan zoom konten tab yang dibagikan</translation>
+<translation id="108859316315249327">Coba lagi</translation>
 <translation id="1088664500620117635">Harga standar <ph name="PRODUCT_NAME"/> adalah <ph name="LOW_PRICE"/> - <ph name="HIGH_PRICE"/>, tetapi harga saat ini adalah <ph name="CURRENT_PRICE"/> di seluruh web.</translation>
 <translation id="1089439967362294234">Ubah Sandi</translation>
 <translation id="807719392864780545">Anda dapat mengubahnya kapan saja di setelan Brave.</translation>
@@ -127,6 +129,7 @@ Jika tidak, ini akan diblokir oleh setelan privasi Anda. Ini akan memungkinkan k
 <translation id="1212527389003717329">Download dimulai. Untuk melihatnya, tekan lama |<ph name="ACCELERATOR"/>|.</translation>
 <translation id="449113506387905750">Gunakan info yang disimpan di Akun Brave Anda untuk mengisi sandi, kunci sandi, alamat, metode pembayaran, dan info lainnya secara otomatis</translation>
 <translation id="1219129156119358924">Keamanan Sistem</translation>
+<translation id="1219134100826635117">Administrator Anda telah memblokir tindakan ini</translation>
 <translation id="1222060260947439312">Baki Kanan</translation>
 <translation id="1224330468394120478">A3x6</translation>
 <translation id="1225240795350945817">Nomor kartu:</translation>
@@ -461,6 +464,7 @@ disusupi oleh penyerang. Hanya buka <ph name="BEGIN_LINK"/>situs yang tidak aman
 <translation id="6072474764708015774"><ph name="BEGIN_BOLD"/>Cara kami menggunakan data ini:<ph name="END_BOLD"/> Brave mencatat topik minat saat Anda melakukan penjelajahan. Label topik sudah ditentukan sebelumnya dan mencakup hal-hal seperti Seni &amp; Hiburan, Belanja, dan Olahraga. Kemudian, situs yang Anda buka dapat meminta beberapa topik Anda (tetapi bukan histori penjelajahan) kepada Brave untuk mempersonalisasi iklan yang Anda lihat.</translation>
 <translation id="1746113442205726301">Perpindahan image Y</translation>
 <translation id="1746531169546376413">0 derajat</translation>
+<translation id="1747777564644667857">Penerbangan</translation>
 <translation id="1748225549612934682">Persingkat teks untuk mendapatkan bantuan penulisan</translation>
 <translation id="1751544761369730824">Hapus situs <ph name="SITE_NAME"/></translation>
 <translation id="1752021286346845558">Kotak surat 8</translation>
@@ -529,7 +533,6 @@ disusupi oleh penyerang. Hanya buka <ph name="BEGIN_LINK"/>situs yang tidak aman
 <translation id="1863257867908022953">Baki 12</translation>
 <translation id="1864927262126810325">Dari <ph name="SOURCE_NAME"/></translation>
 <translation id="186539747722034544">Penyedia Satelit &amp; Kabel</translation>
-<translation id="1866757068250903512">Kontrol perangkat autentikasi bernama <ph name="READERNAME"/> dan kartu smart yang digunakan dengan perangkat tersebut</translation>
 <translation id="1870473978371099486">Jasa Bimbingan Belajar Pribadi</translation>
 <translation id="1871208020102129563">Proxy disetel untuk menggunakan server proxy tetap, bukan URL skrip .pac.</translation>
 <translation id="1871284979644508959">Bidang wajib diisi</translation>
@@ -635,7 +638,6 @@ disusupi oleh penyerang. Hanya buka <ph name="BEGIN_LINK"/>situs yang tidak aman
 <translation id="2066969741541525119">Situs yang akan dibuka diblokir oleh organisasi Anda</translation>
 <translation id="2069913043427250781">Kendaraan &amp; Keselamatan Berlalu Lintas</translation>
 <translation id="2071156619270205202">Kartu ini tidak memenuhi syarat untuk nomor kartu virtual.</translation>
-<translation id="2071692954027939183">Notifikasi otomatis diblokir karena Anda biasanya tidak mengizinkannya</translation>
 <translation id="2071852865256799872">Browser dikelola oleh organisasi Anda dan profil Anda dikelola oleh <ph name="PROFILE_DOMAIN"/></translation>
 <translation id="4131219066342523581">Brave Jamboard</translation>
 <translation id="2074733626795553847">Berhenti memblokir <ph name="TOPIC"/></translation>
@@ -712,6 +714,7 @@ disusupi oleh penyerang. Hanya buka <ph name="BEGIN_LINK"/>situs yang tidak aman
 <translation id="2173302385160625112">Periksa koneksi internet Anda</translation>
 <translation id="2174875517416416684">Transaksi Anda tidak berhasil. Tidak ada dana yang ditarik dari rekening Anda.</translation>
 <translation id="2175630235841878061">File yang berukuran lebih dari 100 MB tidak dapat didownload</translation>
+<translation id="217631816678106981">Jangan tempel</translation>
 <translation id="7453373354666409887">Tombol Update Brave, aktifkan untuk mengupdate Brave dari setelan Brave</translation>
 <translation id="2178904466768126352">Penyerang di situs yang Anda coba kunjungi dapat menginstal software berbahaya yang mencuri atau menghapus hal-hal seperti sandi, foto, pesan, atau nomor kartu kredit Anda.</translation>
 <translation id="2179003720612888584"><ph name="SITE_TITLE"/> di <ph name="SITE_DOMAIN_NAME"/></translation>
@@ -836,6 +839,7 @@ disusupi oleh penyerang. Hanya buka <ph name="BEGIN_LINK"/>situs yang tidak aman
 <translation id="23703388716193220">Peralatan Golf</translation>
 <translation id="2370368710215137370">Upload file</translation>
 <translation id="2370739752330685659">Mungkin nanti</translation>
+<translation id="2371084566192454134">Tab dan grup tab</translation>
 <translation id="2376455483361831781">Tabel baru</translation>
 <translation id="2377241607395428273">Software Grafis &amp; Animasi</translation>
 <translation id="2378084239755710604">Simpan kartu ditutup.</translation>
@@ -915,7 +919,6 @@ disusupi oleh penyerang. Hanya buka <ph name="BEGIN_LINK"/>situs yang tidak aman
 <translation id="2515629240566999685">Periksa sinyal di area Anda</translation>
 <translation id="2515761554693942801">Anda memilih untuk memverifikasi dengan Touch ID di situs yang menggunakan <ph name="PROVIDER_ORIGIN"/>. Penyedia ini mungkin telah menyimpan informasi tentang metode pembayaran Anda, yang dapat Anda <ph name="LINK_TEXT"/>.</translation>
 <translation id="2518584823165598232">Kartu ini tidak tersedia. Hubungi penyedia kartu Anda.</translation>
-<translation id="2519250377986324805">Lihat caranya</translation>
 <translation id="2521385132275182522">Jepretan di kanan bawah</translation>
 <translation id="2521736961081452453">Buat formulir</translation>
 <translation id="2524461107774643265">Tambahkan Informasi Lainnya</translation>
@@ -924,7 +927,6 @@ disusupi oleh penyerang. Hanya buka <ph name="BEGIN_LINK"/>situs yang tidak aman
 <translation id="2527451058878391043">CVC Anda terletak di bagian depan kartu. CVC adalah kode 4 digit di kanan atas di atas nomor kartu Anda.</translation>
 <translation id="2529899080962247600">Kolom ini tidak boleh memiliki lebih dari <ph name="MAX_ITEMS_LIMIT"/> entri. Semua entri berikutnya akan diabaikan.</translation>
 <translation id="2530042584066815841">Kunci dan penggunaan mouse</translation>
-<translation id="2533649878691950253">Situs ini diblokir agar tidak mengetahui lokasi presisi karena Anda biasanya tidak mengizinkan ini</translation>
 <translation id="253493526287553278">Lihat detail kode promo</translation>
 <translation id="2535659140340599600">{COUNT,plural, =1{dan 1 lainnya}other{dan # lainnya}}</translation>
 <translation id="2536110899380797252">Tambahkan Alamat</translation>
@@ -954,6 +956,7 @@ disusupi oleh penyerang. Hanya buka <ph name="BEGIN_LINK"/>situs yang tidak aman
 <translation id="2573170131138724450">Televisi</translation>
 <translation id="257674075312929031">Grup</translation>
 <translation id="2580031090587209073">Opsi berbagi</translation>
+<translation id="258027838577899739">Hapus semua dari histori</translation>
 <translation id="258135245577667916"><ph name="USER_DISPLAY_NAME"/> menambahkan tab</translation>
 <translation id="2586657967955657006">Papan klip</translation>
 <translation id="2587841377698384444">ID API Direktori:</translation>
@@ -969,13 +972,16 @@ disusupi oleh penyerang. Hanya buka <ph name="BEGIN_LINK"/>situs yang tidak aman
 <translation id="2610561535971892504">Klik untuk menyalin</translation>
 <translation id="2612676031748830579">Nomor kartu</translation>
 <translation id="686139377353794280">Semua kode keamanan yang disimpan di perangkat Anda dan di Akun Brave akan dihapus</translation>
+<translation id="2614835674900828050">Tidak tersedia untuk pembelian ini</translation>
 <translation id="2616412942031748191">Pemasaran &amp; Pengoptimalan Mesin Telusur</translation>
 <translation id="2618206371527040026">Konferensi &amp; Publikasi Akademik</translation>
 <translation id="2619052155095999743">Insert</translation>
+<translation id="2620436844016719705">Sistem</translation>
 <translation id="2622754869869445457">Tab Terbaru Anda</translation>
 <translation id="2625385379895617796">Setelan jam terlalu cepat</translation>
 <translation id="262745152991669301">Dapat meminta untuk terhubung ke perangkat USB</translation>
 <translation id="2627847595568876492">Mengekstrak teks dari PDF...</translation>
+<translation id="6484547507342500969">Server ini tidak dapat membuktikan bahwa ini adalah <ph name="DOMAIN"/> karena menggunakan sertifikat keamanan yang tidak dipercaya oleh Brave atau konfigurasi sistem Anda untuk enkripsi traffic web. Hal ini mungkin disebabkan oleh kesalahan konfigurasi, atau ada penyerang yang menyadap koneksi Anda.</translation>
 <translation id="2628224721443278970">Login ke Microsoft OneDrive</translation>
 <translation id="2634124572758952069">Alamat IP server <ph name="HOST_NAME"/> tidak dapat ditemukan.</translation>
 <translation id="2638567100095052009">Ketik @ untuk menelusuri di <ph name="FEATURED_SEARCH_LIST"/></translation>
@@ -1043,10 +1049,10 @@ disusupi oleh penyerang. Hanya buka <ph name="BEGIN_LINK"/>situs yang tidak aman
 <translation id="2730326759066348565"><ph name="BEGIN_LINK"/>Jalankan Diagnostik Konektivitas<ph name="END_LINK"/></translation>
 <translation id="2731382536835015353">44 x 68 inci (111 x 172 cm)</translation>
 <translation id="3163800392243881597">Izinkan Brave menggunakan keranjang Anda untuk menelusuri diskon yang dipersonalisasi. Jika tersedia, diskon akan otomatis muncul di keranjang.</translation>
+<translation id="2734797989819862638">Jangan salin</translation>
 <translation id="273785062888389088">HVAC &amp; Kontrol Suhu Udara</translation>
 <translation id="2740531572673183784">Oke</translation>
 <translation id="2742128390261873684">Otomatisasi Rumah</translation>
-<translation id="2742870351467570537">Hapus item yang dipilih</translation>
 <translation id="2743512410823092182">Peralatan &amp; Perlengkapan DJ</translation>
 <translation id="2743934314332613923">Perbarui surat izin mengemudi?</translation>
 <translation id="2759299890026163685">Pastikan Anda memiliki koneksi internet yang stabil sebelum mencoba lagi</translation>
@@ -1201,6 +1207,7 @@ disusupi oleh penyerang. Hanya buka <ph name="BEGIN_LINK"/>situs yang tidak aman
 <translation id="3037605927509011580">Yah!</translation>
 <translation id="3039406992698062762">Wisata Keluarga</translation>
 <translation id="3041176923638368519">Lihat persyaratan manfaat kartu</translation>
+<translation id="3041584414879052436">Daftar penerbit Beli Sekarang Bayar Nanti ditutup.</translation>
 <translation id="3041612393474885105">Informasi Sertifikat</translation>
 <translation id="3045769629416806687">Olahraga Ekstrem</translation>
 <translation id="8418829431154568330">Histori Brave Desktop Jarak Jauh, termasuk stempel waktu, host, dan ID sesi klien</translation>
@@ -1220,6 +1227,8 @@ disusupi oleh penyerang. Hanya buka <ph name="BEGIN_LINK"/>situs yang tidak aman
 <translation id="3086579638707268289">Aktivitas Anda di web sedang dipantau</translation>
 <translation id="3087734570205094154">Bawah</translation>
 <translation id="3090667236485488075">Kaca</translation>
+<translation id="3093122472063815077">Layar progres Beli Sekarang Bayar Nanti terbuka setengah.</translation>
+<translation id="3898583945108784581">Jika organisasi membatasi penyimpanan ke Akun Brave Anda, Anda tidak dapat berbagi tab atau berkolaborasi dengan orang lain</translation>
 <translation id="3094051226187213523">Buka Mode AI dengan saran ini.</translation>
 <translation id="3095940652251934233">Statement</translation>
 <translation id="3098513225387949945">Diabaikan karena daftar "disable" berisi pola yang sama dengan '*', yang berarti menonaktifkan kebijakan.</translation>
@@ -1256,6 +1265,7 @@ disusupi oleh penyerang. Hanya buka <ph name="BEGIN_LINK"/>situs yang tidak aman
 <translation id="3137507986424712703">{COUNT,plural, =0{Tidak ada}=1{data login untuk 1 akun}other{data login untuk # akun}}</translation>
 <translation id="3140646734028448730">Layanan Bisnis</translation>
 <translation id="3141093262818886744">Tetap buka</translation>
+<translation id="3141337053413339205">Alihkan ke tab ini.</translation>
 <translation id="3141641372357166056">Tidak ada keputusan izin</translation>
 <translation id="3144458715650412431">Kebijakan pengujian telah diterapkan. Tinjau dan reset kebijakan di chrome://policy/test. Kebijakan admin tidak akan diterapkan.</translation>
 <translation id="3145945101586104090">Gagal mendekodekan tanggapan</translation>
@@ -1382,7 +1392,6 @@ disusupi oleh penyerang. Hanya buka <ph name="BEGIN_LINK"/>situs yang tidak aman
 <translation id="3349952286488694786">SRA2</translation>
 <translation id="3350450887151703713">Putar ulang 10 detik</translation>
 <translation id="3352881017886802007">Game Olahraga</translation>
-<translation id="3355823806454867987">Ubah setelan proxy...</translation>
 <translation id="335809815767823">Diekspor</translation>
 <translation id="3359565626472459400">Pernikahan</translation>
 <translation id="3360103848165129075">Lembar handler pembayaran</translation>
@@ -1590,6 +1599,7 @@ disusupi oleh penyerang. Hanya buka <ph name="BEGIN_LINK"/>situs yang tidak aman
 <translation id="3678029195006412963">Permintaan tidak dapat ditandatangani</translation>
 <translation id="3678914302246317895">Masukkan kode verifikasi <ph name="OTP_LENGTH"/> digit</translation>
 <translation id="3681007416295224113">Informasi sertifikat</translation>
+<translation id="318206792789506219">Brave menganggap Anda tidak ingin menggunakan lokasi Anda di situs ini. Jadi, permintaan disembunyikan untuk mengurangi gangguan.</translation>
 <translation id="2659564324969662497">Brave mencatat topik minat berdasarkan histori penjelajahan terbaru Anda.</translation>
 <translation id="3681841880472207951">Video Quicktime</translation>
 <translation id="3682094733650754138">Opsi isi alamat dipilih</translation>
@@ -1654,6 +1664,7 @@ disusupi oleh penyerang. Hanya buka <ph name="BEGIN_LINK"/>situs yang tidak aman
 <translation id="3784372983762739446">Perangkat bluetooth</translation>
 <translation id="3243782951628874989">Anda biasanya terhubung ke situs dengan aman, tetapi Brave tidak dapat menggunakan koneksi yang aman untuk saat ini. Penyerang mungkin mencoba menyadap atau mengubah koneksi jaringan Anda. <ph name="LEARN_MORE"/></translation>
 <translation id="378611282717571199">Kecocokan terbaik untuk "<ph name="SEARCH_QUERY"/>"</translation>
+<translation id="3787887386289385215"><ph name="ISSUER_1_NAME"/>, <ph name="ISSUER_2_NAME"/>, atau <ph name="ISSUER_3_NAME"/></translation>
 <translation id="3789841737615482174">Instal</translation>
 <translation id="3791118028061680614">Bayar tanpa perlu beralih aplikasi</translation>
 <translation id="3792100426446126328"><ph name="NAME"/> (<ph name="WIDTH"/> x <ph name="HEIGHT"/> inci)</translation>
@@ -1677,6 +1688,7 @@ disusupi oleh penyerang. Hanya buka <ph name="BEGIN_LINK"/>situs yang tidak aman
 <translation id="3814865536373139791">Sederhanakan cara organisasi Anda mengelola kebijakan</translation>
 <translation id="3815434930383843058">8 x 12 inci (20 x 30 cm)</translation>
 <translation id="3816482573645936981">Nilai (digantikan)</translation>
+<translation id="3817524650114746564">Buka setelan proxy komputer Anda</translation>
 <translation id="382115839591654906">CVC untuk <ph name="CARD_NAME"/></translation>
 <translation id="3822492359574576064">kunci dan penggunaan mouse</translation>
 <translation id="3823019343150397277">IBAN</translation>
@@ -1708,6 +1720,8 @@ disusupi oleh penyerang. Hanya buka <ph name="BEGIN_LINK"/>situs yang tidak aman
 <translation id="3869939189466884821">File lokal Anda akan dihapus dalam <ph name="MINUTES"/> menit</translation>
 <translation id="3872834068356954457">Sains</translation>
 <translation id="3875783148670536197">Lihat Caranya</translation>
+<translation id="3877603629930976930">Jangan bagikan</translation>
+<translation id="3878445208930547646">Menyalin dari situs ini tidak diizinkan</translation>
 <translation id="3879748587602334249">Pengelola download</translation>
 <translation id="3880456882942693779">Seni &amp; Hiburan</translation>
 <translation id="3880589673277376494">Internet &amp; Telekomunikasi</translation>
@@ -1739,6 +1753,7 @@ disusupi oleh penyerang. Hanya buka <ph name="BEGIN_LINK"/>situs yang tidak aman
 <translation id="3941630233824954464">Aktifkan autentikasi ulang wajib</translation>
 <translation id="3942048175062210325">Coba buka file lagi</translation>
 <translation id="3943857333388298514">Sisipkan</translation>
+<translation id="3945937463338223066">Kontrol perangkat autentikasi jenis <ph name="READERNAME"/> dan kartu smart yang dapat diakses oleh perangkat tersebut</translation>
 <translation id="3946209740501886391">Selalu tanyakan pada situs ini</translation>
 <translation id="3948588869002647271">Aplikasi ini tidak ada atau rusak</translation>
 <translation id="3949297482798028668">Administrator Anda memblokir penempelan konten ini ke sini.</translation>
@@ -1837,6 +1852,7 @@ disusupi oleh penyerang. Hanya buka <ph name="BEGIN_LINK"/>situs yang tidak aman
 <translation id="4099048595830172239">Kebijakan administrator tidak merekomendasikan berbagi layar dengan <ph name="APPLICATION_TITLE"/> saat konten rahasia terlihat:</translation>
 <translation id="5393384033795488834"><ph name="CUSTOMIZE_CHROME_FONTS_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Tekan tab lalu Enter untuk menyesuaikan ukuran font dan rupa huruf di Brave</translation>
 <translation id="4101413244023615925">Teks dan grafis</translation>
+<translation id="4101917550061398111">Hapus item yang dipilih</translation>
 <translation id="4102567721634170493">Berita Lokal</translation>
 <translation id="4103249731201008433">Nomor seri perangkat tidak valid</translation>
 <translation id="4103592298805904008">Kertas kardus (Lapis Tunggal)</translation>
@@ -1872,6 +1888,7 @@ disusupi oleh penyerang. Hanya buka <ph name="BEGIN_LINK"/>situs yang tidak aman
 <translation id="4148925816941278100">American Express</translation>
 <translation id="4150099059797363385">Envelope Chinese #4</translation>
 <translation id="4152318981910038897">{COUNT,plural, =1{Halaman 1}other{Halaman {COUNT}}}</translation>
+<translation id="4152495263075154876">Layar progres Beli Sekarang Bayar Nanti ditutup.</translation>
 <translation id="4152670763139331043">{NUM_TABS,plural, =1{1 tab}other{# tab}}</translation>
 <translation id="4153446078232988116"><ph name="SITE"/> tidak mendukung koneksi aman dengan HTTPS</translation>
 <translation id="6923879007831202776">Brave kini akan memverifikasi diri Anda sebelum mengisi metode pembayaran. Anda dapat memperbaruinya kapan saja di <ph name="IDS_AUTOFILL_MANDATORY_REAUTH_CONFIRMATION_SETTINGS_LINK"/>.</translation>
@@ -2056,6 +2073,7 @@ disusupi oleh penyerang. Hanya buka <ph name="BEGIN_LINK"/>situs yang tidak aman
 <translation id="4466576951214254884">Pinjaman Pelajar &amp; Pembiayaan Kuliah</translation>
 <translation id="4467821340016922962">Untuk keluar dari layar penuh dan melihat hasil download, tekan |<ph name="ACCELERATOR"/>|</translation>
 <translation id="8294153737034342992"><ph name="BEGIN_ENHANCED_PROTECTION_LINK"/>Aktifkan perlindungan yang ditingkatkan<ph name="END_ENHANCED_PROTECTION_LINK"/> untuk mendapatkan tingkat keamanan tertinggi Brave</translation>
+<translation id="4475299370877036544">Tindakan ini mungkin melanggar kebijakan organisasi Anda</translation>
 <translation id="447665707681730621"><ph name="BUBBLE_MESSAGE"/>. <ph name="LEARN_MORE_TEXT"/></translation>
 <translation id="4476953670630786061">Formulir ini tidak aman. Isi otomatis telah dinonaktifkan.</translation>
 <translation id="4477350412780666475">Lagu Berikutnya</translation>
@@ -2509,6 +2527,7 @@ disusupi oleh penyerang. Hanya buka <ph name="BEGIN_LINK"/>situs yang tidak aman
 <translation id="5255583962255635076">Kebijakan browser yang diterapkan di profil kerja Anda</translation>
 <translation id="5255690596502591079">Tetap ambil screenshot</translation>
 <translation id="5255771248404149177">Penyedia kartu Anda ingin memastikan bahwa ini memang Anda</translation>
+<translation id="525579853540851404">Layar progres Beli Sekarang Bayar Nanti. Keyboard disembunyikan.</translation>
 <translation id="5255833070095767006">350 x 460 mm</translation>
 <translation id="5257739419779698609">{0,plural, =1{Kebijakan administrator tidak merekomendasikan untuk menyalin file ini ke <ph name="DESTINATION_NAME"/>}other{Kebijakan administrator tidak merekomendasikan untuk menyalin file ini ke <ph name="DESTINATION_NAME"/>}}</translation>
 <translation id="5258473597674772367">Grup tab "<ph name="GROUP_NAME"/>" tidak lagi tersedia</translation>
@@ -2600,6 +2619,7 @@ disusupi oleh penyerang. Hanya buka <ph name="BEGIN_LINK"/>situs yang tidak aman
 <translation id="5412040515238827314">Format tidak valid: Format harus berupa daftar pola.</translation>
 <translation id="5412245327974352290"><ph name="TRADITIONAL_TEXT"/> - <ph name="ADDITIONAL_TEXT"/></translation>
 <translation id="541416427766103491">Tempat kertas 4</translation>
+<translation id="5414306071315087019">Beli sekarang, bayar nanti tersedia dengan Google Pay</translation>
 <translation id="5414446060143308245">Peninjauan diperlukan sebelum mentransfer</translation>
 <translation id="5414511064953050917">Tetap pindahkan</translation>
 <translation id="5418700249417444482">URL halaman yang Anda kunjungi akan dikirim ke Google Cloud atau pihak ketiga untuk dianalisis, dan dapat dilihat oleh administrator Anda. Misalnya, URL mungkin dipindai untuk mendeteksi situs yang tidak aman atau memfilter situs berdasarkan aturan yang ditetapkan oleh administrator.</translation>
@@ -2608,7 +2628,6 @@ disusupi oleh penyerang. Hanya buka <ph name="BEGIN_LINK"/>situs yang tidak aman
 <translation id="5423269318075950257">Pantau Harga</translation>
 <translation id="5425082381151187189">Dekorasi Rumah &amp; Interior</translation>
 <translation id="5426179911063097041"><ph name="SITE"/> ingin mengirimkan notifikasi kepada Anda</translation>
-<translation id="5430298929874300616">Buang bookmark</translation>
 <translation id="5431318178759467895">Warna</translation>
 <translation id="5433756542371550806">Variasi Command Line</translation>
 <translation id="8517215617486022589">Brave <ph name="BEGIN_EMPHASIS"/>tidak akan menyimpan<ph name="END_EMPHASIS"/>:
@@ -2619,6 +2638,7 @@ disusupi oleh penyerang. Hanya buka <ph name="BEGIN_LINK"/>situs yang tidak aman
           <ph name="END_LIST"/></translation>
 <translation id="5443468954631487277">Urutan yang berkebalikan menghadap ke atas</translation>
 <translation id="5447235695608032700">Izinkan <ph name="SITE"/> untuk menggunakan info tentang Anda yang telah disimpan situs</translation>
+<translation id="5447973833955560753">Sandi pemulihan</translation>
 <translation id="6108397422772394696">Saat peristiwa keamanan ditandai oleh Brave, data yang relevan dengan peristiwa tersebut akan dikirimkan kepada administrator Anda. Data ini dapat mencakup URL halaman yang Anda buka di Brave, URL halaman tempat Anda menyalin data, nama file atau metadata, alamat IP, error browser atau tab, serta nama pengguna yang Anda gunakan untuk login ke aplikasi berbasis web, perangkat, dan Brave.</translation>
 <translation id="5452270690849572955">Halaman <ph name="HOST_NAME"/> ini tidak dapat ditemukan</translation>
 <translation id="5452923259299906094">Bayar dengan eWallet dan Pix</translation>
@@ -2717,6 +2737,7 @@ disusupi oleh penyerang. Hanya buka <ph name="BEGIN_LINK"/>situs yang tidak aman
 <translation id="5595485650161345191">Edit alamat</translation>
 <translation id="5596939519753369075">2 x 3,5 inci (5 x 8 cm)</translation>
 <translation id="5597254438174353289">Biru 3</translation>
+<translation id="5603469469737324249"><ph name="ISSUER_1_NAME"/> atau <ph name="ISSUER_2_NAME"/></translation>
 <translation id="560412284261940334">Pengelolaan tidak didukung</translation>
 <translation id="5605249000617390290">Pelajari lebih lanjut pemantauan harga</translation>
 <translation id="5605670050355397069">Ledger</translation>
@@ -2803,6 +2824,7 @@ disusupi oleh penyerang. Hanya buka <ph name="BEGIN_LINK"/>situs yang tidak aman
 <translation id="5750869797196646528">Pelacakan tangan</translation>
 <translation id="5752327398324808817">Masukkan satu atau dua kata</translation>
 <translation id="5752519522101347518">Memuat situs verifikasi bank</translation>
+<translation id="5753570386948603678">Hapus dari histori</translation>
 <translation id="5759751709240058861">Menggunakan &amp; menggerakkan kamera Anda</translation>
 <translation id="5763042198335101085">Masukkan alamat email yang valid</translation>
 <translation id="5764725887548570807">Format asal tidak valid.</translation>
@@ -3001,6 +3023,7 @@ disusupi oleh penyerang. Hanya buka <ph name="BEGIN_LINK"/>situs yang tidak aman
 <translation id="6104072995492677441">JIS B6</translation>
 <translation id="6105460996796456817">Buat situs</translation>
 <translation id="8265004733555123045">Bayar dengan Pix langsung di Brave lain kali</translation>
+<translation id="6105745639559695088">Tombol sidebar</translation>
 <translation id="6106989379647458772">Halaman web di <ph name="PAGE"/> mungkin tidak aktif untuk sementara atau dipindahkan secara permanen ke alamat web baru.</translation>
 <translation id="6107012941649240045">Diterbitkan Untuk</translation>
 <translation id="6107864469867367783"><ph name="USER_DISPLAY_NAME"/> mengubah nama grup</translation>
@@ -3018,8 +3041,8 @@ disusupi oleh penyerang. Hanya buka <ph name="BEGIN_LINK"/>situs yang tidak aman
 <translation id="6122181661879998141">bagian depan kartu Anda</translation>
 <translation id="6124058285696691147">Download lampiran</translation>
 <translation id="5972135347314259717">Brave Enterprise Connectors</translation>
+<translation id="6124996493718543728">Layar progres Beli Sekarang Bayar Nanti terbuka sepenuhnya.</translation>
 <translation id="6126565365696310362">Envelope Chinese #2</translation>
-<translation id="6127379762771434464">Item dihapus</translation>
 <translation id="6131824478727057281">lokasi</translation>
 <translation id="6133320744616005677">Terus berikan izin</translation>
 <translation id="6133984428121856852">Ekstensi file kosong atau salah format.</translation>
@@ -3034,7 +3057,6 @@ disusupi oleh penyerang. Hanya buka <ph name="BEGIN_LINK"/>situs yang tidak aman
 <translation id="6151417162996330722">Sertifikat server memiliki masa berlaku yang terlalu panjang.</translation>
 <translation id="6153243098246946146"><ph name="WIDTH"/> × <ph name="HEIGHT"/> inci (<ph name="ORIENTATION"/>)</translation>
 <translation id="615506061184576470">Lari &amp; Jalan Kaki</translation>
-<translation id="6157754950574419155">Hapus semua dari histori</translation>
 <translation id="6157877588268064908">Untuk melihat persyaratan dan metode pengiriman, pilih alamat</translation>
 <translation id="6159554577634054750">Kendali Hama</translation>
 <translation id="6159908896951210943">Formal</translation>
@@ -3347,6 +3369,7 @@ disusupi oleh penyerang. Hanya buka <ph name="BEGIN_LINK"/>situs yang tidak aman
 <translation id="6671169470640320959">Pembiayaan Otomotif</translation>
 <translation id="6675846980676550611">AR tidak diizinkan</translation>
 <translation id="6677351035258626477">Makanan Cepat Saji</translation>
+<translation id="6677738644213083042">Alihkan ke tab ini</translation>
 <translation id="7691784300114873847">Browser Brave mencoba mengisi sandi Anda di <ph name="APP_NAME"/>.</translation>
 <translation id="6681790815630918386">CVC disimpan</translation>
 <translation id="6683022854667115063">Headphone</translation>
@@ -3395,6 +3418,7 @@ disusupi oleh penyerang. Hanya buka <ph name="BEGIN_LINK"/>situs yang tidak aman
 <translation id="6740851646645036700">Anda telah mencapai batas bantuan menulis untuk saat ini. Coba lagi nanti.</translation>
 <translation id="674375294223700098">Kesalahan sertifikat server tidak dikenal.</translation>
 <translation id="6743841972744298686">Setelan sinkronisasi</translation>
+<translation id="3792994947670632937">Isi otomatis nama dan alamat email Anda dari Akun Brave Anda</translation>
 <translation id="6745592621698551453">Perbarui sekarang</translation>
 <translation id="6751487147225428522">ROC 8K</translation>
 <translation id="6752086006821653994">Telekonferensi</translation>
@@ -3479,7 +3503,6 @@ disusupi oleh penyerang. Hanya buka <ph name="BEGIN_LINK"/>situs yang tidak aman
 <translation id="6898699227549475383">Organisasi (O)</translation>
 <translation id="6900702165119149418">Anda telah logout</translation>
 <translation id="6903907808598579934">Aktifkan sinkronisasi</translation>
-<translation id="6905163627763043954">Cobalah</translation>
 <translation id="6907458757809079309">Kebugaran</translation>
 <translation id="691024665142758461">Mendownload beberapa file</translation>
 <translation id="691046363691324218">Redress Number</translation>
@@ -3561,7 +3584,6 @@ disusupi oleh penyerang. Hanya buka <ph name="BEGIN_LINK"/>situs yang tidak aman
 <translation id="7020464868401003526">URL pintasan melebihi panjang maksimum yang diizinkan, yaitu <ph name="MAX_LENGTH"/> karakter.</translation>
 <translation id="8683151724374457021">Situs ini menentukan hal-hal yang Anda sukai, lalu menyarankan iklan ke situs lain. Situs ini juga mendapatkan topik iklan Anda dari Brave untuk menampilkan iklan yang lebih relevan.</translation>
 <translation id="7023162328967545559">Peringatan admin</translation>
-<translation id="7023765275461720661">Tautkan akun dan bayar dengan <ph name="BNPL_ISSUER_NAME"/>?</translation>
 <translation id="7029809446516969842">Sandi</translation>
 <translation id="7030164307377592766">mengubah setelan pengisian metode pembayaran</translation>
 <translation id="7031110846419387930">Informasi tentang browser, OS, perangkat, software terinstal, file, dan alamat IP</translation>
@@ -3587,6 +3609,7 @@ disusupi oleh penyerang. Hanya buka <ph name="BEGIN_LINK"/>situs yang tidak aman
 <translation id="70705239631109039">Koneksi Anda tidak sepenuhnya aman</translation>
 <translation id="7071122206197538392">Tabel perbandingan baru</translation>
 <translation id="7075452647191940183">Permintaan terlalu besar</translation>
+<translation id="7075896597860500885">Tidak disarankan menyalin dari situs ini</translation>
 <translation id="7078665357168027058">RA3</translation>
 <translation id="7079699498125013497">\u0020\u2022\u0020</translation>
 <translation id="7079783554682867524">Dari <ph name="TYPE_1"/> (lainnya di perangkat yang disinkronkan)</translation>
@@ -3622,6 +3645,7 @@ disusupi oleh penyerang. Hanya buka <ph name="BEGIN_LINK"/>situs yang tidak aman
 <translation id="7129809579943936035"><ph name="VALUE_PROP"/> <ph name="DETAILS"/></translation>
 <translation id="7130775116821607281">Upload yang diblokir</translation>
 <translation id="7132939140423847331">Admin Anda telah melarang data ini disalin.</translation>
+<translation id="7134653428559514680">Berbagi dari situs ini tidak direkomendasikan</translation>
 <translation id="7135130955892390533">Tampilkan status</translation>
 <translation id="7135814714616751706">Telusuri pintasan</translation>
 <translation id="7138472120740807366">Metode pengiriman</translation>
@@ -3703,10 +3727,12 @@ disusupi oleh penyerang. Hanya buka <ph name="BEGIN_LINK"/>situs yang tidak aman
 <translation id="7275334191706090484">Bookmark Terkelola</translation>
 <translation id="7275808129217605899">Pola Makan Sehat</translation>
 <translation id="2837210582972105306"><ph name="CHANGE_GOOGLE_PASSWORD_FOCUSED_FRIENDLY_MATCH_TEXT"/>, tekan Tab lalu Enter untuk mengubah sandi Akun Brave Anda</translation>
+<translation id="7286908876112207905">Menempel konten ini ke situs ini tidak diizinkan</translation>
 <translation id="7291578327729322058">Tambahkan surat izin mengemudi</translation>
 <translation id="7292031607255951991">Nama penerima</translation>
 <translation id="7298195798382681320">Direkomendasikan</translation>
 <translation id="7299471494012161875">Periferal layar terpasang</translation>
+<translation id="7299721129597238157">Hapus bookmark</translation>
 <translation id="7996735040909243152">Kelola kartu loyalitas di Brave Wallet</translation>
 <translation id="7304030187361489308">Tinggi</translation>
 <translation id="244157907932852817">Kelola setelan privasi Akun Brave</translation>
@@ -3742,6 +3768,7 @@ disusupi oleh penyerang. Hanya buka <ph name="BEGIN_LINK"/>situs yang tidak aman
 <translation id="7366117520888504990">198 x 275 mm</translation>
 <translation id="7366362069757178916">Pengendali pembayaran</translation>
 <translation id="4662831882520898447">Pelajari cara Brave melindungi sandi Anda</translation>
+<translation id="7370751048350026847">Tidak disarankan menempel konten ini ke situs ini</translation>
 <translation id="7372526636730851647">Foto (Mengilap)</translation>
 <translation id="7372973238305370288">hasil penelusuran</translation>
 <translation id="7374461526650987610">Penangan protokol</translation>
@@ -3815,6 +3842,7 @@ disusupi oleh penyerang. Hanya buka <ph name="BEGIN_LINK"/>situs yang tidak aman
 <translation id="745640750744109667">A0x3</translation>
 <translation id="7457071735008326060">Truk &amp; Trailer Kargo</translation>
 <translation id="7461924472993315131">Sematkan</translation>
+<translation id="7463068149674892185">Tindakan ini tidak direkomendasikan</translation>
 <translation id="746329643760972486">MacOS</translation>
 <translation id="746412105358554870">Pengoptimalan &amp; keamanan JavaScript</translation>
 <translation id="7465036432780054056"><ph name="EMBEDDED_URL"/> akan mengetahui bahwa Anda mengunjungi <ph name="TOP_LEVEL_URL"/></translation>
@@ -3913,6 +3941,7 @@ disusupi oleh penyerang. Hanya buka <ph name="BEGIN_LINK"/>situs yang tidak aman
 <translation id="7613889955535752492">Masa berlaku habis: <ph name="EXPIRATION_MONTH"/>/<ph name="EXPIRATION_YEAR"/></translation>
 <translation id="5704205738724476508"><ph name="MANAGE_PASSWORDS_FOCUSED_FRIENDLY_MATCH_TEXT"/>, tekan Tab lalu Enter untuk melihat dan mengelola sandi di setelan Brave</translation>
 <translation id="7615932826417658001">Tambahkan kartu identitas</translation>
+<translation id="7616390733770379387">Mesin telusur ditampilkan dalam urutan acak.</translation>
 <translation id="8565825862287624454">Administrator Anda telah mengaktifkan Brave Enterprise Connectors di browser Anda. Konektor ini memiliki akses ke beberapa data Anda.</translation>
 <translation id="7617825962482469577">Envelope C7/C6</translation>
 <translation id="7618270539713451657">Seni Bela Diri</translation>
@@ -4125,6 +4154,7 @@ disusupi oleh penyerang. Hanya buka <ph name="BEGIN_LINK"/>situs yang tidak aman
 <translation id="79682505114836835">Nilai "<ph name="VALUE"/>" adalah warna hex yang tidak valid.</translation>
 <translation id="7968982339740310781">Lihat detail</translation>
 <translation id="7975858430722947486">Ditambahkan ke Perbandingan</translation>
+<translation id="7976053965094442846">Penerbit Beli Sekarang Bayar Nanti tersedia untuk opsi pembayaran dengan cicilan. Keyboard disembunyikan.</translation>
 <translation id="7976214039405368314">Terlalu banyak permintaan</translation>
 <translation id="7977538094055660992">Perangkat keluaran</translation>
 <translation id="7979463492896063081">{TIME_DIMENSION,plural, =0{<ph name="TIME_COUNT"/> menit lalu}=1{<ph name="TIME_COUNT"/> jam lalu}other{<ph name="TIME_COUNT"/> hari lalu}}</translation>
@@ -4133,10 +4163,12 @@ disusupi oleh penyerang. Hanya buka <ph name="BEGIN_LINK"/>situs yang tidak aman
 <translation id="7983008347525536475">SUV</translation>
 <translation id="8896585555528145662">Anda tidak dapat mengunjungi <ph name="SITE"/> saat ini karena situs web tersebut mengirim kredensial kacau yang tidak dapat diproses oleh Brave. Kesalahan jaringan dan serangan biasanya bersifat sementara, jadi halaman ini mungkin akan bekerja nanti.</translation>
 <translation id="7986319120639858961"><ph name="CARD_TITLE"/> <ph name="TIME"/> <ph name="BOOKMARKED"/> <ph name="TITLE"/> <ph name="DOMAIN"/></translation>
+<translation id="7987087088851949178">Penerbit Beli Sekarang Bayar Nanti tersedia untuk opsi pembayaran dengan cicilan terbuka sepenuhnya.</translation>
 <translation id="799149739215780103">Jilid</translation>
 <translation id="7992044431894087211">Berbagi layar dengan <ph name="APPLICATION_TITLE"/> dilanjutkan</translation>
 <translation id="7995512525968007366">Tidak Ditentukan</translation>
 <translation id="7997855386298213183">tab bersama</translation>
+<translation id="4065553278464642148">Server ini tidak dapat membuktikan bahwa ini adalah <ph name="DOMAIN"/> karena menggunakan sertifikat keamanan yang tidak dipercaya oleh Brave atau konfigurasi sistem Anda untuk enkripsi traffic web. Hal ini mungkin disebabkan oleh kesalahan konfigurasi, atau ada penyerang yang menyadap koneksi Anda. <ph name="BEGIN_VIEW_CERTIFICATE_LINK"/>Lihat Sertifikat<ph name="END_VIEW_CERTIFICATE_LINK"/></translation>
 <translation id="800218591365569300">Coba tutup tab atau program lain untuk mengosongkan memori.</translation>
 <translation id="8002230960325005199">Lihat situs terkait di tab baru</translation>
 <translation id="8003046808285812021">“<ph name="SEARCH_TERMS"/>”</translation>
@@ -4174,6 +4206,7 @@ disusupi oleh penyerang. Hanya buka <ph name="BEGIN_LINK"/>situs yang tidak aman
 <translation id="8058603697124206642">Tidak perlu</translation>
 <translation id="8061691770921837575">Tata Rias &amp; Kosmetik</translation>
 <translation id="8063875539456488183">Simpan dan pantau harga</translation>
+<translation id="8065767681506419412">Kebijakan ini menentukan jenis data yang tidak didukung di platform Anda saat ini: <ph name="TYPE_LIST"/>.</translation>
 <translation id="8066225060526005217">Dikelola oleh setelan cookie</translation>
 <translation id="5442778523450464826">Anda baru saja memasukkan sandi ke situs tidak jujur. Brave dapat membantu. Untuk mengubah sandi dan memberi tahu Brave bahwa akun Anda mungkin berisiko, klik Lindungi Akun.</translation>
 <translation id="8070439594494267500">Ikon aplikasi</translation>
@@ -4473,6 +4506,7 @@ disusupi oleh penyerang. Hanya buka <ph name="BEGIN_LINK"/>situs yang tidak aman
 <translation id="8564182942834072828">Dokumen terpisah/Salinan tidak tersusun</translation>
 <translation id="8564466070529550495">Kartu virtual saat ini tidak tersedia, coba lagi nanti.</translation>
 <translation id="8570895683659698018">Hobi &amp; Waktu Luang</translation>
+<translation id="8574570240981266561">Item dihapus</translation>
 <translation id="8574841453995331336">Lemari Es &amp; Pembeku</translation>
 <translation id="8577192028579836704">Semua opsi berharga standar <ph name="TYPICAL_PRICE"/></translation>
 <translation id="8577348305244205642">Kartu virtual tidak tersedia</translation>
@@ -4500,6 +4534,7 @@ disusupi oleh penyerang. Hanya buka <ph name="BEGIN_LINK"/>situs yang tidak aman
 <translation id="8624354461147303341">Dapatkan diskon</translation>
 <translation id="8634957317623797170">54 x 86 mm</translation>
 <translation id="1669370144926680379">Brave memiliki fitur keamanan bawaan untuk melindungi Anda saat menjelajah — seperti Google Safe Browsing, yang <ph name="BEGIN_LINK"/>baru-baru ini menemukan phishing<ph name="END_LINK"/> di situs yang Anda coba kunjungi. Situs phishing berpura-pura menjadi situs lain untuk mengelabui Anda.<ph name="NEW_LINE"/>Bahkan situs yang biasanya aman terkadang disusupi oleh penyerang. <ph name="BEGIN_ERROR_LINK"/>Beri tahu kami<ph name="END_ERROR_LINK"/> jika menurut Anda hal ini merupakan kekeliruan dan situs ini tidak berbahaya.</translation>
+<translation id="8294734273090232456">Untuk berbagi tab dan berkolaborasi dengan orang lain, Anda harus dapat login ke Brave</translation>
 <translation id="8641131559425911240">Amplop (Bond)</translation>
 <translation id="8643409044755049933">Envelope Kaku 3</translation>
 <translation id="8643846627971610148">Jika grup ditutup, hanya orang tertentu yang dapat bergabung</translation>
@@ -4582,6 +4617,7 @@ disusupi oleh penyerang. Hanya buka <ph name="BEGIN_LINK"/>situs yang tidak aman
 <translation id="8772387130037509473">Yoga &amp; Pilates</translation>
 <translation id="877348612833018844">{0,plural, =1{Pindahkan file rahasia?}other{Pindahkan file rahasia?}}</translation>
 <translation id="8775347646940100151">Kertas (Kepala Surat)</translation>
+<translation id="8775863327608679820">Penerbit Beli Sekarang Bayar Nanti tersedia untuk opsi pembayaran dengan cicilan terbuka setengah.</translation>
 <translation id="8776941011841875705">Simpan Known Traveler Number?</translation>
 <translation id="877985182522063539">A4</translation>
 <translation id="514805123051954646">Tombol Terjemahkan halaman, aktifkan untuk menerjemahkan halaman ini dengan Brave Terjemahan</translation>
@@ -4725,6 +4761,7 @@ disusupi oleh penyerang. Hanya buka <ph name="BEGIN_LINK"/>situs yang tidak aman
 <translation id="9045525010788763347"><ph name="RESULT_MODIFIED_DATE"/> - <ph name="RESULT_PRODUCT_SOURCE"/></translation>
 <translation id="9046578823518542618"><ph name="URL"/> ingin mencari dan terhubung ke perangkat apa pun di jaringan lokal Anda</translation>
 <translation id="9046864189129893978">Mikrofon (<ph name="MICS_COUNT"/>)</translation>
+<translation id="9047528041803621289">Mesin telusur default memungkinkan Anda menelusuri web. Anda dapat mengubahnya di setelan.</translation>
 <translation id="9048035366624198823">Tindakan ini mengharuskan kebijakan <ph name="POLICY_NAME"/> disetel ke <ph name="POLICY_VALUE"/>: <ph name="ACTION_LIST"/>.</translation>
 <translation id="9048662076076074925">24 x 36 inci (60 x 91 cm)</translation>
 <translation id="9049981332609050619">Anda berupaya menjangkau <ph name="DOMAIN"/>, tetapi server menyajikan sertifikat yang tidak valid.</translation>
@@ -4822,6 +4859,7 @@ disusupi oleh penyerang. Hanya buka <ph name="BEGIN_LINK"/>situs yang tidak aman
 <translation id="9183425211371246419"><ph name="HOST_NAME"/> menggunakan protokol yang tidak didukung.</translation>
 <translation id="918454845714257218">Periksa kode di <ph name="SIDE_OF_CARD"/> dan coba lagi</translation>
 <translation id="7202091195027070644">Tombol Setel Brave sebagai browser default, aktifkan untuk menyetel Brave sebagai browser default sistem</translation>
+<translation id="9186371298532546532">Gunakan alamat ini di lebih banyak tempat</translation>
 <translation id="9189468832660648522"><ph name="MEMBER_FIRST_NAME"/> mengubah tab ini</translation>
 <translation id="9189789270972826888">Klik detail kartu di bawah untuk menyalin dan menempelkan jika kartu tidak terisi otomatis. <ph name="IDS_AUTOFILL_FILLED_CARD_INFORMATION_BUBBLE_LEARN_MORE_LINK_LABEL"/></translation>
 <translation id="9190557999028587593">Topik yang lebih lama dari 4 minggu akan dihapus otomatis</translation>
@@ -4837,6 +4875,7 @@ disusupi oleh penyerang. Hanya buka <ph name="BEGIN_LINK"/>situs yang tidak aman
 <translation id="920643408853370361">Asuransi Perjalanan</translation>
 <translation id="9207861905230894330">Gagal menambahkan artikel.</translation>
 <translation id="9209339767782560829">Terjadi masalah saat menggunakan sertifikat login Anda.</translation>
+<translation id="9210152531668884481">Aktifkan</translation>
 <translation id="9210825002219699214">Perjalanan Udara</translation>
 <translation id="9213433120051936369">Sesuaikan tampilan</translation>
 <translation id="2206050430829841793">Aplikasi membuat Brave tidak terhubung dengan aman ke situs ini</translation>

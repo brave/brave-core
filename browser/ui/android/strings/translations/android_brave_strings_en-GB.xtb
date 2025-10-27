@@ -5,6 +5,8 @@
 <translation id="3478449063771497234">Notifications are disabled</translation>
 <translation id="2862978891748913252">Select your country</translation>
 <translation id="3970520675790340955">Select your country so we can show you the right options and ads for your region.</translation>
+<translation id="721490496276866468">Import passwords</translation>
+<translation id="8178175542325151321">Select a .csv file that contains your passwords to import them into Brave's password manager.</translation>
 <translation id="7301741773883122509">Now you can get rewarded for viewing ads. You’re helping make the web a better place for everyone. And that’s awesome!</translation>
 <translation id="6439128034594289376">Woohoo! You’re all set!</translation>
 <translation id="370665806235115550">Loading...</translation>
@@ -109,7 +111,6 @@
 <translation id="7304425663107214334">Show browser suggestions</translation>
 <translation id="8982438328166986164">Displays website suggestions based on your bookmarks and browsing history.</translation>
 <translation id="924029461438529367">Show search suggestions</translation>
-<translation id="5989135139219497991">Show top suggestions</translation>
 <translation id="6285118765755298263">Index other search engines</translation>
 <translation id="919715748352669592">Automatically indexes websites that follow the OpenSearch spec.</translation>
 <translation id="9148058034647219655">Exit</translation>
@@ -297,6 +298,11 @@
 <translation id="4254029385847607686">DECEMBER</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="1772301834467143364">Brave News</translation>
+<translation id="2518692840036393666">Customise menu</translation>
+<translation id="5582839680698949063">Main menu</translation>
+<translation id="7002271985859760052">Page actions</translation>
+<translation id="7104487676473617844">The following items will only appear in the menu when supported by the currently open webpage.</translation>
+<translation id="4159764849281393303">WebApp</translation>
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="8428213095426709021">Settings</translation>
 <translation id="6020176662032623904">Verified creator</translation>
@@ -799,7 +805,6 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="750843150060816463">Gas Price (Gwei)</translation>
 <translation id="1426320910664514906">Gas Limit</translation>
 <translation id="6389441740143786465">Disable sharing hub</translation>
-<translation id="9065203028668620118">Edit</translation>
 <translation id="473775607612524610">Update</translation>
 <translation id="479795390141144417">Account update failed.</translation>
 <translation id="8084782383392198011">Account name can't be empty.</translation>
@@ -1015,8 +1020,6 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="8496335570810457">Preflight commitment:</translation>
 <translation id="5100124500279922001">Skip preflight:</translation>
 <translation id="7152095322071766507">Top visited site</translation>
-<translation id="7230006500876504868">Search with Brave</translation>
-<translation id="5888208462949095139">Search with <ph name="DEFAULT_SEARCH_ENGINE"/></translation>
 <translation id="5456039738087398178">Home screen widget</translation>
 <translation id="703185154752046151">Widget added to the home screen</translation>
 <translation id="4635094429202343515">Try the Brave Search widget</translation>
@@ -1076,7 +1079,7 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="7618347247876614969">Address look-up table account:</translation>
 <translation id="7659483790930268440">Address look-up table index:</translation>
 <translation id="5494920125229734069">Select all</translation>
-<translation id="6129027151000961048">Leo</translation>
+<translation id="2361906291514218784">Leo AI</translation>
 <translation id="8613144770663526433">Sign in with Brave Wallet</translation>
 <translation id="3696514931437952995">You are signing into <ph name="ORIGIN"/>. Brave wallet will share your wallet address with <ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">See details</translation>
@@ -1093,11 +1096,11 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="6742599753610126012">Clear chat history</translation>
 <translation id="3443052382074796867">Disabling conversation storage will permanently erase all previously stored conversations. This action cannot be undone.</translation>
 <translation id="3692772534525889713">Link your Play Store purchase to your Brave account to use Brave Leo on other devices.</translation>
-<translation id="73236265316873967">Leo Premium</translation>
+<translation id="592831784390389506">Leo AI Premium</translation>
 <translation id="1028627582482425924">One year</translation>
 <translation id="2985392169397572983">BEST VALUE</translation>
 <translation id="1166682575529520472">Monthly</translation>
-<translation id="451189393813405346">Ask Leo</translation>
+<translation id="2206846767762985925">Ask Leo AI</translation>
 <translation id="7322560193401221004">Remember file playback position</translation>
 <translation id="7505951907514709271">For individual files, resume playing from the point of last pause</translation>
 <translation id="6835165453349969605">Remember list playback position</translation>
@@ -1140,6 +1143,7 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="3861012838874771868">Open playlist Settings</translation>
 <translation id="5220099266891491416">Hide playlist button</translation>
 <translation id="7416347631175891923">Try it!</translation>
+<translation id="9065203028668620118">Edit</translation>
 <translation id="1173894706177603556">Rename</translation>
 <translation id="3596306474342941843">Delete playlist</translation>
 <translation id="7765158879357617694">Move</translation>
@@ -1154,7 +1158,7 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="5319532905552885478">Media content is already added to the default playlist</translation>
 <translation id="4802584673094436231">Preparing …</translation>
 <translation id="481455355267255546">Up next</translation>
-<translation id="5474757891469990756">Unleash Leo's full powers with Premium:</translation>
+<translation id="3721790899869840343">Unleash Leo AI's full powers with Premium:</translation>
 <translation id="4173478269537830374">Explore different AI models</translation>
 <translation id="3453542753968940696">Priority access to powerful models with different skills.</translation>
 <translation id="3245401959451976966">Unlock your creativity</translation>
@@ -1222,7 +1226,6 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="4650851936784160359">Filter list could not be updated. Please try again</translation>
 <translation id="3098054327870766317">Show undo button when tabs are closed</translation>
 <translation id="1336494649091412226">Are you sure you want to exit Brave?</translation>
-<translation id="2361906291514218784">Leo AI</translation>
 <translation id="7942415993090181327">Chat history</translation>
 <translation id="6859935199732075666">Show Safe Browsing errors</translation>
 <translation id="2735247450315842119">Allow screenshots in private tabs</translation>
@@ -1246,6 +1249,18 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="5139940364318403933">Learn how to use Google Drive</translation>
 <translation id="729975465115245577">Your device doesn’t have an app to store the passwords file.</translation>
 <translation id="1129510026454351943">Details: <ph name="ERROR_DESCRIPTION"/></translation>
+<translation id="5594899180331219722">Select file</translation>
+<translation id="3744219658596020825">Your passwords weren't imported</translation>
+<translation id="8258027225380843424">Import successful!</translation>
+<translation id="766635563210446220">Can't import passwords. Check <ph name="FILENAME"/> and make sure it's formatted correctly. <ph name="BEGIN_LINK"/>Learn more<ph name="END_LINK"/></translation>
+<translation id="6581356304040102696">Can't import passwords. The file size must be less than 1 MB.</translation>
+<translation id="5895244669404288318">{COUNT, plural,=1 {Can't import passwords. You can only import 1 password at a time.} other {Can't import passwords. You can only import up to <ph name="COUNT_MANY"/> passwords at a time.}}</translation>
+<translation id="3748424433435232460">A password for this account is already saved on this device</translation>
+<translation id="6438475350605608554">You're already importing passwords in another tab</translation>
+<translation id="3482868954775580230">Failed to read the selected file. <ph name="EXCEPTION_INFO"/></translation>
+<translation id="9162995380643712715">{IMPORT_COUNT, plural,=1 {Successfully imported 1 password.} other {Successfully imported <ph name="IMPORT_COUNT_MANY"/> passwords.}}</translation>
+<translation id="4637949129057123593">Import failed.</translation>
+<translation id="4300452012226767715">Password manager not available.</translation>
 <translation id="6221633008163990886">Unlock to export your passwords</translation>
 <translation id="5245792669563792664">passwords</translation>
 <translation id="10614374240317010">Never saved</translation>

@@ -384,9 +384,10 @@
 <translation id="5436069931267876389">컨테이너가 없습니다</translation>
 <translation id="2263346047290834619">트리 탭 사용</translation>
 <translation id="5860254591544742609">제목 바 표시</translation>
-<translation id="5371926069408837914">접혀 있을 때 마우스 커서를 올리면 세로 탭 패널 펼치기</translation>
+<translation id="4691131445504068802">최소화될 때 완전히 숨기기</translation>
+<translation id="4909269867860362936">최소화된 상태에서 마우스를 올리면 자동 확장</translation>
 <translation id="3367129510799209147">탭 호버 모드</translation>
-<translation id="8527099657928614787">페이지별로 독립적으로 세로 탭 펼치기</translation>
+<translation id="8925055964134259461">창별로 독립적으로 세로 탭 자동 확장</translation>
 <translation id="916373084491701212">스크롤바 표시</translation>
 <translation id="515949045075831661">오른쪽에 표시</translation>
 <translation id="3725395376319291415">왼쪽에 표시</translation>
@@ -397,21 +398,21 @@
 <translation id="2396127686705429331">북마크 버튼 표시</translation>
 <translation id="2814998458708016836">넓은 주소 표시줄 사용</translation>
 <translation id="4109670531935487117">주소 표시줄에 자동 완성 추천 표시</translation>
-<translation id="3405901785709583668">인기 추천 항목</translation>
+<translation id="4579877808890085926">기기 내 추천 항목</translation>
 <translation id="7859704718976024901">검색 내역</translation>
 <translation id="8820817407110198400">북마크</translation>
 <translation id="4144468798716165316">빠른 명령</translation>
 <translation id="7310387888625228830">레오 AI 어시스턴트</translation>
 <translation id="5222974844674487962">Brave News 버튼 표시</translation>
 <translation id="2085436423511121572">레오 AI 버튼 표시</translation>
-<translation id="383007806262310953">북마크바 표시</translation>
+<translation id="6156323911414505561">북마크바 표시</translation>
 <translation id="4054323497808446566">모든 페이지에서 북마크 바 표시</translation>
 <translation id="8693858092251192712">새 탭 페이지를 제외한 모든 페이지에서 북마크 바 숨김</translation>
 <translation id="7158817046543187970">모든 페이지에서 북마크 바 숨김</translation>
 <translation id="3416468988018290825">항상 URL 풀로 표시</translation>
 <translation id="5529693968082667490">탭 검색 버튼 표시</translation>
 <translation id="1013121820689882118">Speedreader</translation>
-<translation id="1467652519828052368">스피드리더 기능 활성화</translation>
+<translation id="5522420266446076076">스피드리더 기능 활성화.</translation>
 <translation id="5211997910936574251">가능한 경우 스피드리더 자동 사용</translation>
 <translation id="2025435450953474282">기사가 리더 모드로 자동 로드되어 시간 절약</translation>
 <translation id="7984721311211272523">탭 스피커 아이콘에서 음소거 기능 비활성화</translation>
@@ -435,7 +436,7 @@
 <translation id="5690973901138662477">Shields 올림</translation>
 <translation id="4697275813919189958">Shields 내림</translation>
 <translation id="6303294677342628402">보호</translation>
-<translation id="7133511168130368997">웹에서 귀하를 따라오는 추적기 및 광고를 차단하세요.</translation>
+<translation id="5128768857590582420">웹에서 귀하를 따라오는 추적기 및 광고를 차단하세요</translation>
 <translation id="2761825942249694703">이는 기본 Shields 설정입니다. 특정 사이트에 대해 Shields 패널에서 무언가를 바꾸지 않는 한 모든 웹사이트에 적용됩니다. 이를 바꾼다고 해도 기존 사이트별 설정에는 영향을 미치지 않습니다.</translation>
 <translation id="8452536890042542134">대부분의 광고가 웹사이트에서 차단됩니다.</translation>
 <translation id="4800195524776354947">방패 아이콘에 차단된 항목 수 표시</translation>
@@ -847,6 +848,9 @@
 <translation id="1721787502053471881">이 기억을 삭제하시겠습니까? 이 작업은 취소할 수 없습니다.</translation>
 <translation id="5239685926753073108">모든 기억 삭제</translation>
 <translation id="2600803466586623124">기억을 전부 삭제하시겠습니까? 이 작업은 취소할 수 없습니다.</translation>
+<translation id="7311244614769792472">결과가 없습니다</translation>
+<translation id="1838374766361614909">검색어 지우기</translation>
+<translation id="5126255551970171328">메모리 검색</translation>
 <translation id="5985516785067818307">설문조사 패널리스트</translation>
 <translation id="8347743943525229984">Brave 설문조사 허용</translation>
 <translation id="3204080538332044581">새 탭 페이지에서 비공개 설문조사 링크를 표시할 수 있도록 허용합니다. 설문조사는 더 나은 기능을 개발하고, 브라우저 기반 광고 캠페인의 효과를 측정하는 데 도움이 됩니다. <ph name="BEGIN_LINK"/>자세히 알아보기<ph name="END_LINK"/></translation>
