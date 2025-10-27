@@ -9,9 +9,11 @@
 
 #include "base/check.h"
 #include "base/check_op.h"
+#include "base/containers/span_reader.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
+#include "base/strings/string_view_util.h"
 
 namespace brave_wallet {
 
@@ -25,6 +27,42 @@ char NibbleToChar(uint8_t val) {
 }
 
 }  // namespace
+
+namespace internal {
+
+bool WritePrefixedHexStringToFixed(std::string_view input,
+                                   base::span<uint8_t> bytes) {
+  DCHECK(!bytes.empty());
+
+  input = base::RemovePrefix(input, "0x").value_or(input);
+  if (input.empty()) {
+    return false;
+  }
+
+  base::SpanReader<uint8_t> reader(bytes);
+
+  // e.g. 0x123 => 0x0123
+  if (input.size() % 2 == 1) {
+    char tmp[2] = {'0', input[0]};
+    auto s = reader.Read(size_t{1});
+    DCHECK(s);
+    if (!base::HexStringToSpan(base::as_string_view(base::span(tmp)), *s)) {
+      return false;
+    }
+
+    input.remove_prefix(1);
+  }
+
+  if (!input.empty()) {
+    if (!base::HexStringToSpan(input, reader.remaining_span())) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+}  // namespace internal
 
 std::string ToHex(std::string_view data) {
   if (data.empty()) {

@@ -12,12 +12,16 @@
 #include <vector>
 
 #include "base/containers/span.h"
-#include "base/containers/span_reader.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/strings/string_view_util.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 
 namespace brave_wallet {
+
+namespace internal {
+
+bool WritePrefixedHexStringToFixed(std::string_view input,
+                                   base::span<uint8_t> out);
+}
 
 // Equivalent to web3.utils.toHex(string);
 // TODO(apaymyshev): rename it to To0xHex or something like that.
@@ -82,34 +86,10 @@ std::optional<std::array<uint8_t, N>> PrefixedHexStringToFixed(
     std::string_view input) {
   static_assert(N >= 1);
 
-  if (input.starts_with("0x")) {
-    input.remove_prefix(2);
-  }
-
-  if (input.empty()) {
+  std::array<uint8_t, N> bytes = {};
+  if (!internal::WritePrefixedHexStringToFixed(input, bytes)) {
     return std::nullopt;
   }
-
-  std::array<uint8_t, N> bytes = {};
-  base::SpanReader<uint8_t> reader(bytes);
-
-  // e.g. 0x123 => 0x0123
-  if (input.size() % 2 == 1) {
-    char tmp[2] = {'0', input[0]};
-    if (!base::HexStringToSpan(base::as_string_view(base::span(tmp)),
-                               *reader.Read(size_t{1}))) {
-      return std::nullopt;
-    }
-
-    input.remove_prefix(1);
-  }
-
-  if (!input.empty()) {
-    if (!base::HexStringToSpan(input, reader.remaining_span())) {
-      return std::nullopt;
-    }
-  }
-
   return bytes;
 }
 
