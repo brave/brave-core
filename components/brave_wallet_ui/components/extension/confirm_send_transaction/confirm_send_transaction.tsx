@@ -10,6 +10,7 @@ import { BraveWallet } from '../../../constants/types'
 
 // Queries
 import {
+  useGetActiveOriginQuery,
   useGetDefaultFiatCurrencyQuery, //
 } from '../../../common/slices/api.slice'
 
@@ -51,6 +52,9 @@ import {
 import {
   ConfirmationError, //
 } from '../confirmation_error/confirmation_error'
+import {
+  OriginInfoCard, //
+} from '../origin_info_card/origin_info_card'
 
 // Styled Components
 import {
@@ -102,6 +106,9 @@ export function ConfirmSendTransaction() {
 
   // Queries
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
+  const { data: activeOrigin = { eTldPlusOne: '', originSpec: '' } } =
+    useGetActiveOriginQuery()
+  const originInfo = selectedPendingTransaction?.originInfo ?? activeOrigin
 
   // Memos
   const totalAmount = React.useMemo(() => {
@@ -143,6 +150,10 @@ export function ConfirmSendTransaction() {
     gasFee,
   ])
 
+  const isBraveWalletOrigin = React.useMemo(() => {
+    return originInfo.originSpec === 'chrome://wallet'
+  }, [originInfo])
+
   if (!selectedPendingTransaction || !transactionDetails) {
     return <LoadingPanel />
   }
@@ -176,13 +187,23 @@ export function ConfirmSendTransaction() {
             padding='0px 16px'
             gap='8px'
           >
-            <CreateAccountIcon
-              size='extra-huge'
-              account={fromAccount}
-            />
-            <Title textColor='primary'>
-              {getLocale('braveWalletPanelTitle')}
-            </Title>
+            {isBraveWalletOrigin ? (
+              <>
+                <CreateAccountIcon
+                  size='extra-huge'
+                  account={fromAccount}
+                />
+                <Title textColor='primary'>
+                  {getLocale('braveWalletPanelTitle')}
+                </Title>
+              </>
+            ) : (
+              <OriginInfoCard
+                origin={originInfo}
+                orientation='vertical'
+                noBackground={true}
+              />
+            )}
             <InfoBox width='100%'>
               {/* Swap details */}
               <Card
