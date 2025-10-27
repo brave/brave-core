@@ -57,9 +57,10 @@ END_METADATA
 }  // namespace
 
 BraveSidePanel::BraveSidePanel(BrowserView* browser_view,
+                               SidePanelEntry::PanelType type,
                                bool has_border,
                                HorizontalAlignment horizontal_alignment)
-    : browser_view_(browser_view) {
+    : browser_view_(browser_view), type_(type) {
   // If panel has layer by default, adjust its radius whenever
   // updating shadow at UpdateBorder() instead of destroying layer.
   CHECK(!layer());
