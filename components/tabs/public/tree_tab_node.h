@@ -12,6 +12,7 @@
 
 namespace tabs {
 
+class TabInterface;
 class TreeTabNodeTabCollection;
 
 // A class that represents metadata about a tree tab node.
@@ -33,6 +34,9 @@ class TreeTabNode {
 
   // Returns the height of the tree that this node belongs to.
   int GetTreeHeight() const;
+
+  // Returns the tab associated with this tree tab node.
+  const TabInterface* GetTab() const;
 
   // Exposes the calculation of level and height to TreeTabNodeTabCollection.
   int CalculateLevelAndHeightRecursively(

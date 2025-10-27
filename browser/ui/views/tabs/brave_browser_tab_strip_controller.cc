@@ -122,3 +122,23 @@ void BraveBrowserTabStripController::ExecuteCommandForTab(
 
   BrowserTabStripController::ExecuteCommandForTab(command_id, tab);
 }
+
+void BraveBrowserTabStripController::OnTreeTabChanged(
+    const TreeTabChange& change) {
+  switch (change.type) {
+    case TreeTabChange::Type::kNodeCreated: {
+      const auto& created_change = change.GetCreatedChange();
+      auto index = model_->GetIndexOfTab(created_change.node->GetTab());
+      CHECK_NE(index, TabStripModel::kNoTab);
+      tabstrip_->tab_at(index)->set_tree_tab_node(change.id);
+      break;
+    }
+    case TreeTabChange::Type::kNodeDestroyed: {
+      // auto index = model_->GetIndexOfTab(created_change.node->GetTab());
+      // CHECK_NE(index, TabStripModel::kNoTab);
+      // tabstrip_->tab_at(index)->set_tree_tab_node(tree_tab::TreeTabNodeId{
+      //     created_change.node->id()});
+      break;
+    }
+  }
+}

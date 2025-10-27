@@ -6,7 +6,6 @@
 #include "brave/browser/ui/tabs/brave_tree_tab_strip_collection_delegate.h"
 
 #include "base/functional/bind.h"
-#include "base/functional/callback_helpers.h"
 #include "brave/browser/ui/tabs/tree_tab_model.h"
 #include "brave/components/tabs/public/tree_tab_node_tab_collection.h"
 #include "components/tabs/public/unpinned_tab_collection.h"
@@ -65,11 +64,11 @@ void BraveTreeTabStripCollectionDelegate::AddTabRecursive(
             ->GetTopLevelAncestor()) {
       auto tree_tab_node = std::make_unique<tabs::TreeTabNodeTabCollection>(
           tree_tab::TreeTabNodeId::GenerateNew(), std::move(tab));
-      CHECK(tree_tab_model_);
-      tree_tab_model_->AddTreeTabNode(tree_tab_node->node());
-
+      auto tree_tab_node_ptr = tree_tab_node.get();
       opener_collection->AddCollection(std::move(tree_tab_node),
                                        opener_collection->ChildCount());
+      CHECK(tree_tab_model_);
+      tree_tab_model_->AddTreeTabNode(tree_tab_node_ptr->node());
       return;
     }
   }
@@ -91,7 +90,9 @@ void BraveTreeTabStripCollectionDelegate::AddTabRecursive(
   auto detached_tab = parent_collection->MaybeRemoveTab(added_tab);
   auto tree_tab_node = std::make_unique<tabs::TreeTabNodeTabCollection>(
       tree_tab::TreeTabNodeId::GenerateNew(), std::move(detached_tab));
-  CHECK(tree_tab_model_);
-  tree_tab_model_->AddTreeTabNode(tree_tab_node->node());
+  auto* tree_tab_node_ptr = tree_tab_node.get();
   parent_collection->AddCollection(std::move(tree_tab_node), *target_index);
+
+  CHECK(tree_tab_model_);
+  tree_tab_model_->AddTreeTabNode(tree_tab_node_ptr->node());
 }

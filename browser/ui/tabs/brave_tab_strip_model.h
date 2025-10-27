@@ -9,7 +9,9 @@
 #include <cstdint>
 #include <vector>
 
+#include "base/callback_list.h"
 #include "base/containers/span.h"
+#include "base/memory/weak_ptr.h"
 #include "brave/components/tabs/public/brave_tab_strip_collection.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -66,6 +68,9 @@ class BraveTabStripModel : public TabStripModel {
   void BuildTreeTabs();
   void FlattenTreeTabs();
 
+  void NotifyTreeTabNodeCreated(const tabs::TreeTabNode& node);
+  void NotifyTreeTabNodeDestroyed(const tree_tab::TreeTabNodeId& id);
+
   tabs::BraveTabStripCollection* contents_data() {
     return static_cast<tabs::BraveTabStripCollection*>(contents_data_.get());
   }
@@ -82,6 +87,11 @@ class BraveTabStripModel : public TabStripModel {
   // flag is disabled or the feature is turned off via related preferences,
   // this will be null.
   std::unique_ptr<TreeTabModel> tree_tab_model_;
+
+  std::unique_ptr<base::CallbackListSubscription>
+      tree_tab_node_created_subscription_;
+  std::unique_ptr<base::CallbackListSubscription>
+      tree_tab_node_destroyed_subscription_;
 };
 
 #endif  // BRAVE_BROWSER_UI_TABS_BRAVE_TAB_STRIP_MODEL_H_
