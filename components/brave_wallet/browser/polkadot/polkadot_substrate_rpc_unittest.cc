@@ -543,7 +543,7 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetFinalizedHead) {
     auto [hash, error] = future.Take();
 
     EXPECT_EQ(hash, std::nullopt);
-    EXPECT_EQ(error, WalletParsingErrorMessage());
+    EXPECT_EQ(error, std::nullopt);
   }
 
   {
@@ -554,7 +554,7 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetFinalizedHead) {
       {
         "id": 1,
         "jsonrpc": "2.0",
-        "data": 1234
+        "result": 1234
       })");
 
     polkadot_substrate_rpc_->GetFinalizedHead(chain_id, future.GetCallback());
@@ -580,6 +580,24 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetFinalizedHead) {
 
     EXPECT_EQ(hash, std::nullopt);
     EXPECT_EQ(error, WalletParsingErrorMessage());
+  }
+
+  {
+    // Chain contains no finalized head.
+
+    url_loader_factory_.AddResponse(testnet_url,
+                                    R"(
+      {
+        "id": 1,
+        "jsonrpc": "2.0",
+        "result": null
+      })");
+
+    polkadot_substrate_rpc_->GetFinalizedHead(chain_id, future.GetCallback());
+    auto [hash, error] = future.Take();
+
+    EXPECT_EQ(hash, std::nullopt);
+    EXPECT_EQ(error, std::nullopt);
   }
 }
 
