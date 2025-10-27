@@ -596,7 +596,7 @@ class SolanaProviderTest : public InProcessBrowserTest {
 
   mojom::AccountInfoPtr AddAccount(const std::string& name) {
     return keyring_service()->AddAccountSync(mojom::CoinType::SOL,
-                                             mojom::kSolanaKeyringId, name);
+                                             mojom::KeyringId::kSolana, name);
   }
 
   void SetSelectedAccount(const mojom::AccountIdPtr& account_id) {

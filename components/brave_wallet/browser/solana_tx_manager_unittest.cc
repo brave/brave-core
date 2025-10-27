@@ -146,7 +146,7 @@ class SolanaTxManagerUnitTest : public testing::Test {
 
   mojom::AccountInfoPtr AddAccount() {
     return keyring_service_->AddAccountSync(
-        mojom::CoinType::SOL, mojom::kSolanaKeyringId, "New Account");
+        mojom::CoinType::SOL, mojom::KeyringId::kSolana, "New Account");
   }
 
   AccountUtils GetAccountUtils() {

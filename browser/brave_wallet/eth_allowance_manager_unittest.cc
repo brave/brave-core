@@ -247,7 +247,7 @@ class EthAllowanceManagerUnitTest : public testing::Test {
 
   void AddEthAccount(const std::string& account_name) {
     keyring_service_->AddAccountSync(mojom::CoinType::ETH,
-                                     mojom::kDefaultKeyringId, account_name);
+                                     mojom::KeyringId::kDefault, account_name);
   }
 
   void CreateWallet() {

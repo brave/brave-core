@@ -53,7 +53,6 @@
 #include "brave/components/brave_wallet/common/bitcoin_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
-#include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/cardano_address.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
@@ -762,8 +761,8 @@ void MaybeMigratePBKDF2Iterations(PrefService* profile_prefs,
       !profile_prefs->HasPrefPath(kBraveWalletKeyringEncryptionKeysMigrated));
 
   for (auto keyring_id :
-       {mojom::kDefaultKeyringId, mojom::kFilecoinKeyringId,
-        mojom::kFilecoinTestnetKeyringId, mojom::kSolanaKeyringId}) {
+       {mojom::KeyringId::kDefault, mojom::KeyringId::kFilecoin,
+        mojom::KeyringId::kFilecoinTestnet, mojom::KeyringId::kSolana}) {
     auto deprecated_encrypted_mnemonic = GetPrefInBytesForKeyringDeprecated(
         profile_prefs, kEncryptedMnemonicDeprecated, keyring_id);
     auto deprecated_nonce = GetPrefInBytesForKeyringDeprecated(
@@ -806,7 +805,7 @@ void MaybeMigratePBKDF2Iterations(PrefService* profile_prefs,
                           encryptor->Encrypt(base::span(*mnemonic), nonce))),
                       keyring_id);
 
-    if (keyring_id == mojom::kDefaultKeyringId) {
+    if (keyring_id == mojom::KeyringId::kDefault) {
       profile_prefs->SetBoolean(kBraveWalletKeyringEncryptionKeysMigrated,
                                 true);
     }
@@ -1258,12 +1257,12 @@ void KeyringService::ClearKeyrings() {
 }
 
 void KeyringService::CreateDefaultAccounts() {
-  if (auto account =
-          AddHDAccountForKeyring(mojom::kDefaultKeyringId, GetAccountName(1))) {
+  if (auto account = AddHDAccountForKeyring(mojom::KeyringId::kDefault,
+                                            GetAccountName(1))) {
     SetSelectedAccountInternal(*account);
     NotifyAccountsAdded(*account);
   }
-  if (auto account = AddHDAccountForKeyring(mojom::kSolanaKeyringId,
+  if (auto account = AddHDAccountForKeyring(mojom::KeyringId::kSolana,
                                             "Solana " + GetAccountName(1))) {
     SetSelectedAccountInternal(*account);
     NotifyAccountsAdded(*account);
@@ -1775,7 +1774,7 @@ void KeyringService::ImportEthereumAccountFromJson(
     return;
   }
 
-  std::move(callback).Run(ImportAccountForKeyring(mojom::kDefaultKeyringId,
+  std::move(callback).Run(ImportAccountForKeyring(mojom::KeyringId::kDefault,
                                                   account_name, *private_key));
 }
 
@@ -1799,7 +1798,7 @@ void KeyringService::SetSelectedWalletAccountInternal(
     // TODO(apaymyshev): this should not be a part of KeyringService.
     if (account_id.coin == mojom::CoinType::FIL) {
       json_rpc_service_->SetNetwork(
-          account_id.keyring_id == mojom::kFilecoinKeyringId
+          account_id.keyring_id == mojom::KeyringId::kFilecoin
               ? mojom::kFilecoinMainnet
               : mojom::kFilecoinTestnet,
           account_id.coin, std::nullopt);
