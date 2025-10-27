@@ -208,6 +208,26 @@ base::expected<RpcResponse, std::string> HandleRpcCall(
   return base::ok(std::move(*res));
 }
 
+std::optional<PolkadotBlockHeader> ParseChainHeaderFromHex(
+    const polkadot_substrate_rpc_responses::PolkadotChainHeader& res) {
+  PolkadotBlockHeader header;
+
+  auto parent_hash =
+      PrefixedHexStringToFixed<kPolkadotBlockHashSize>(res.result->parent_hash);
+  if (!parent_hash) {
+    return std::nullopt;
+  }
+
+  header.parent_hash = *parent_hash;
+
+  std::string_view block_number = res.result->number;
+  if (!base::HexStringToUInt(block_number, &header.number)) {
+    return std::nullopt;
+  }
+
+  return header;
+}
+
 }  // namespace
 
 PolkadotSubstrateRpc::PolkadotSubstrateRpc(
@@ -365,6 +385,50 @@ void PolkadotSubstrateRpc::OnGetFinalizedHead(GetFinalizedHeadCallback callback,
   }
 
   return std::move(callback).Run(block_hash, std::nullopt);
+}
+
+void PolkadotSubstrateRpc::GetBlockHeader(
+    std::string_view chain_id,
+    std::optional<base::span<uint8_t, kPolkadotBlockHashSize>> blockhash,
+    GetBlockHeaderCallback callback) {
+  auto url = GetNetworkURL(chain_id);
+
+  base::ListValue params;
+
+  if (blockhash) {
+    params.Append(base::HexEncode(*blockhash));
+  }
+
+  auto payload =
+      base::WriteJson(MakeRpcRequestJson("chain_getHeader", std::move(params)));
+  CHECK(payload);
+
+  api_request_helper_.Request(
+      net::HttpRequestHeaders::kPostMethod, url, *payload, "application/json",
+      base::BindOnce(&PolkadotSubstrateRpc::OnGetBlockHeader,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void PolkadotSubstrateRpc::OnGetBlockHeader(GetBlockHeaderCallback callback,
+                                            APIRequestResult api_result) {
+  auto res =
+      HandleRpcCall<polkadot_substrate_rpc_responses::PolkadotChainHeader>(
+          api_result);
+
+  if (!res.has_value()) {
+    return std::move(callback).Run(std::nullopt, res.error());
+  }
+
+  if (!res->result) {
+    return std::move(callback).Run(std::nullopt, std::nullopt);
+  }
+
+  auto header = ParseChainHeaderFromHex(*res);
+  if (!header) {
+    return std::move(callback).Run(std::nullopt, WalletParsingErrorMessage());
+  }
+
+  std::move(callback).Run(std::move(*header), std::nullopt);
 }
 
 GURL PolkadotSubstrateRpc::GetNetworkURL(std::string_view chain_id) {
