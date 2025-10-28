@@ -8,8 +8,8 @@
 #include <string>
 #include <vector>
 
+#include "absl/container/flat_hash_set.h"
 #include "base/check.h"
-#include "base/containers/flat_set.h"
 #include "base/logging.h"
 #include "base/metrics/histogram_functions.h"
 #include "base/metrics/histogram_macros.h"
@@ -340,7 +340,7 @@ void NewsMetrics::OnPublishersChanged() {
 
 void NewsMetrics::OnChannelsChanged() {
   DVLOG(1) << __FUNCTION__;
-  base::flat_set<std::string> distinct_channels;
+  absl::flat_hash_set<std::string> distinct_channels;
   auto channels_map = pref_manager_->GetSubscriptions().channels();
   for (const auto& [locale, channels] : channels_map) {
     distinct_channels.insert(channels.begin(), channels.end());

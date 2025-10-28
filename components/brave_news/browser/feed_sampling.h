@@ -13,8 +13,8 @@
 #include <utility>
 #include <vector>
 
+#include "absl/container/flat_hash_set.h"
 #include "base/check.h"
-#include "base/containers/flat_set.h"
 #include "base/containers/span.h"
 #include "base/functional/callback_forward.h"
 #include "base/rand_util.h"
@@ -45,7 +45,7 @@ struct ArticleMetadata {
   bool discoverable = false;
 
   // All the channels this Article belongs to.
-  base::flat_set<std::string> channels;
+  absl::flat_hash_set<std::string> channels;
 
   ArticleMetadata();
   ArticleMetadata(const ArticleMetadata&) = delete;

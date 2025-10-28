@@ -13,6 +13,7 @@
 #include <utility>
 #include <vector>
 
+#include "absl/container/flat_hash_map.h"
 #include "base/check.h"
 #include "base/compiler_specific.h"
 #include "base/containers/contains.h"
@@ -180,7 +181,7 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlockFromContentGroups(
     return result;
   }
 
-  base::flat_map<std::string, std::vector<std::string>>
+  absl::flat_hash_map<std::string, std::vector<std::string>>
       publisher_id_to_channels;
   for (const auto& [publisher_id, publisher] : info.publishers()) {
     publisher_id_to_channels[publisher_id] =
@@ -193,12 +194,12 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlockFromContentGroups(
   auto get_weighting = base::BindRepeating(
       [](const std::string& locale,
          std::vector<ContentGroup> eligible_content_groups,
-         base::flat_map<std::string, std::vector<std::string>>
+         absl::flat_hash_map<std::string, std::vector<std::string>>
              publisher_id_to_channels,
          bool is_hero) {
         return base::BindRepeating(
             [](const bool is_hero, const ContentGroup& content_group,
-               const base::flat_map<std::string, std::vector<std::string>>&
+               const absl::flat_hash_map<std::string, std::vector<std::string>>&
                    publisher_id_to_channels,
                const std::string& locale,
                const mojom::FeedItemMetadataPtr& article,
@@ -767,10 +768,15 @@ void FeedV2Builder::GetSignals(const SubscriptionsSnapshot& subscriptions,
                    if (!builder) {
                      return;
                    }
-                   base::flat_map<std::string, Signal> signals;
-                   for (const auto& [key, value] : builder->signals_) {
-                     signals[key] = value->Clone();
-                   }
+                   std::vector<std::pair<std::string, Signal>> signals_vec;
+                   std::ranges::transform(
+                       builder->signals_, std::back_inserter(signals_vec),
+                       [](const auto& item) {
+                         return std::make_pair(item.first,
+                                               item.second->Clone());
+                       });
+                   base::flat_map<std::string, Signal> signals(
+                       std::move(signals_vec));
                    std::move(callback).Run(std::move(signals));
                  },
                  weak_ptr_factory_.GetWeakPtr(), std::move(callback)));

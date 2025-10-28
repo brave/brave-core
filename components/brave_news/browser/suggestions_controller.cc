@@ -10,6 +10,7 @@
 #include <utility>
 #include <vector>
 
+#include "absl/container/flat_hash_set.h"
 #include "base/containers/contains.h"
 #include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
@@ -47,10 +48,10 @@ double ProjectToRange(double value, double min, double max) {
   return value * range + min;
 }
 
-base::flat_map<std::string, double> GetVisitWeightings(
+absl::flat_hash_map<std::string, double> GetVisitWeightings(
     const history::QueryResults& history) {
   // Score hostnames from browsing history by how many times they appear
-  base::flat_map<std::string, double> weightings;
+  absl::flat_hash_map<std::string, double> weightings;
   for (const auto& entry : history) {
     weightings[entry.url().host()] += 1;
   }
@@ -62,9 +63,9 @@ base::flat_map<std::string, double> GetVisitWeightings(
   // Normalize (between 0 and 1) the visit counts by dividing
   // by the maximum number of visits.
   auto max_visits =
-      std::ranges::max(weightings, [](const auto& a, const auto& b) {
+      std::ranges::max_element(weightings, [](const auto& a, const auto& b) {
         return a.second < b.second;
-      }).second;
+      })->second;
 
   for (auto& it : weightings) {
     it.second /= max_visits;
@@ -75,7 +76,7 @@ base::flat_map<std::string, double> GetVisitWeightings(
 // Get score for having visited a source.
 double GetVisitWeighting(
     const mojom::PublisherPtr& publisher,
-    const base::flat_map<std::string, double>& visit_weightings) {
+    const absl::flat_hash_map<std::string, double>& visit_weightings) {
   const auto host_name = publisher->site_url.host();
   auto* weight = base::FindOrNull(visit_weightings, host_name);
   if (!weight) {
@@ -183,7 +184,7 @@ SuggestionsController::GetSuggestedPublisherIdsWithHistory(
     const Publishers& publishers,
     const history::QueryResults& history) {
   const auto visit_weightings = GetVisitWeightings(history);
-  base::flat_map<std::string, double> scores;
+  absl::flat_hash_map<std::string, double> scores;
 
   for (const auto& [publisher_id, publisher] : publishers) {
     std::vector<std::string> locales;

@@ -51,19 +51,20 @@ constexpr double kMaxCandidatesScorePercentCutoff = 0.7;
 constexpr char kEntertainmentChannel[] = "Entertainment";
 }  // namespace
 
-base::flat_set<std::string> GetTopStoryUrls(
+std::set<std::string> GetTopStoryUrls(
     const base::span<TopicAndArticles>& topics) {
-  std::vector<std::string> urls;
-  for (auto& [topic, articles] : topics) {
-    std::ranges::transform(articles, std::back_inserter(urls),
-                           [](const auto& article) { return article.url; });
+  std::set<std::string> urls;
+  for (const auto& [topic, articles] : topics) {
+    for (const auto& article : articles) {
+      urls.insert(article.url);
+    }
   }
-  return base::flat_set<std::string>(urls);
+  return std::set<std::string>(urls.begin(), urls.end());
 }
 
 std::optional<size_t> PickPeekingCardWithMax(
     SubscriptionsSnapshot subscriptions,
-    const base::flat_set<std::string>& top_story_urls,
+    const std::set<std::string>& top_story_urls,
     const ArticleInfos& articles,
     size_t max_candidates) {
   // Store now, so it's consistent for everything.
@@ -216,7 +217,7 @@ std::optional<size_t> PickPeekingCardWithMax(
 
 std::optional<size_t> PickPeekingCard(
     SubscriptionsSnapshot subscriptions,
-    const base::flat_set<std::string>& top_story_urls,
+    const std::set<std::string>& top_story_urls,
     const ArticleInfos& articles) {
   return PickPeekingCardWithMax(std::move(subscriptions), top_story_urls,
                                 articles, kMaxPeekingCardCandidates);

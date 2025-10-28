@@ -12,6 +12,7 @@
 #include <utility>
 #include <vector>
 
+#include "absl/container/flat_hash_set.h"
 #include "base/check.h"
 #include "base/check_op.h"
 #include "base/containers/contains.h"
@@ -107,8 +108,8 @@ ArticleMetadata GetArticleMetadata(const mojom::FeedItemMetadataPtr& article,
   metadata.visited = signals.at(0)->visit_weight != 0;
   metadata.subscribed = subscribed_weight != 0,
   metadata.discoverable = discoverable;
-  metadata.channels =
-      base::flat_set<std::string>(std::move(publisher_channels));
+  metadata.channels = absl::flat_hash_set<std::string>(
+      publisher_channels.begin(), publisher_channels.end());
   return metadata;
 }
 
@@ -117,8 +118,8 @@ ArticleInfos GetArticleInfos(const std::string& locale,
                              const Publishers& publishers,
                              const Signals& signals) {
   ArticleInfos articles;
-  base::flat_set<GURL> seen_articles;
-  base::flat_set<std::string> non_discoverable_publishers;
+  absl::flat_hash_set<std::string> seen_articles;
+  absl::flat_hash_set<std::string> non_discoverable_publishers;
 
   for (const auto& [publisher_id, publisher] : publishers) {
     auto channels = GetChannelsForPublisher(locale, publisher);
@@ -137,12 +138,12 @@ ArticleInfos GetArticleInfos(const std::string& locale,
     if (item->is_article()) {
       // Because we download feeds from multiple locales, it's possible there
       // will be duplicate articles, which we should filter out.
-      if (seen_articles.contains(item->get_article()->data->url)) {
+      if (seen_articles.contains(item->get_article()->data->url.spec())) {
         continue;
       }
       auto& article = item->get_article();
 
-      seen_articles.insert(article->data->url);
+      seen_articles.insert(article->data->url.spec());
 
       auto article_signals =
           GetSignals(locale, article->data, publishers, signals);

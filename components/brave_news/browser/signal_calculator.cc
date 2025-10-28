@@ -68,7 +68,7 @@ void SignalCalculator::OnGotHistory(
   // these values to normalize the boost we apply to articles within those
   // publishers/channels so we don't overwhelm the user with articles from
   // certain areas.
-  base::flat_map<std::string, uint32_t> article_counts;
+  absl::flat_hash_map<std::string, uint32_t> article_counts;
   for (const auto& article : articles) {
     auto* publisher = base::FindPtrOrNull(publishers, article->publisher_id);
     if (!publisher) {
@@ -86,7 +86,7 @@ void SignalCalculator::OnGotHistory(
     }
   }
 
-  base::flat_map<std::string, std::vector<std::string>> origin_visits;
+  absl::flat_hash_map<std::string, std::vector<std::string>> origin_visits;
   for (const auto& item : results) {
     auto host = item.url().host();
     origin_visits[host].push_back(item.url().spec());
@@ -97,8 +97,8 @@ void SignalCalculator::OnGotHistory(
   uint32_t total_publisher_visits = 1;
   uint32_t total_channel_visits = 1;
 
-  base::flat_map<std::string, std::vector<std::string>> publisher_visits;
-  base::flat_map<std::string, std::vector<std::string>> channel_visits;
+  absl::flat_hash_map<std::string, std::vector<std::string>> publisher_visits;
+  absl::flat_hash_map<std::string, std::vector<std::string>> channel_visits;
 
   for (auto& [publisher_id, publisher] : publishers) {
     auto host = publisher->site_url.host();
@@ -131,32 +131,36 @@ void SignalCalculator::OnGotHistory(
     }
   }
 
-  Signals signals;
+  std::vector<std::pair<std::string, Signal>> signals_vec;
 
   // Add publisher signals
   for (const auto& [id, publisher] : publishers) {
     const auto& visits = publisher_visits.at(publisher->publisher_id);
     auto disabled =
         publisher->user_enabled_status == mojom::UserEnabled::DISABLED;
-    signals[id] = mojom::Signal::New(
-        disabled, GetSubscribedWeight(publisher),
-        visits.size() / static_cast<double>(total_publisher_visits),
-        article_counts[id]);
+    signals_vec.emplace_back(
+        id, mojom::Signal::New(
+                disabled, GetSubscribedWeight(publisher),
+                visits.size() / static_cast<double>(total_publisher_visits),
+                article_counts[id]));
   }
 
   // Add channel signals
   for (const auto& channel : channels) {
     auto* channel_visit_vec = base::FindOrNull(channel_visits, channel.first);
     auto visit_count = channel_visit_vec ? channel_visit_vec->size() : 0;
-    signals[channel.first] = mojom::Signal::New(
-        /*disabled=*/false,
-        subscriptions.GetChannelSubscribed(locale, channel.first)
-            ? features::kBraveNewsChannelSubscribedBoost.Get()
-            : 0,
-        visit_count / static_cast<double>(total_channel_visits),
-        article_counts[channel.first]);
+    signals_vec.emplace_back(
+        channel.first,
+        mojom::Signal::New(
+            /*disabled=*/false,
+            subscriptions.GetChannelSubscribed(locale, channel.first)
+                ? features::kBraveNewsChannelSubscribedBoost.Get()
+                : 0,
+            visit_count / static_cast<double>(total_channel_visits),
+            article_counts[channel.first]));
   }
 
+  Signals signals(std::move(signals_vec));
   std::move(callback).Run(std::move(signals));
 }
 
