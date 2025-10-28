@@ -57,7 +57,7 @@ export const App = () => {
   }, [])
 
   return (
-    <div>
+    <>
       <div>
         <EngineInfo
           engine={state.default_engine}
@@ -100,6 +100,6 @@ export const App = () => {
           />
         </div>
       )}
-    </div>
+    </>
   )
 }
