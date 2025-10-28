@@ -387,6 +387,38 @@ TEST_F(BraveShieldsSettingsServiceTest, DefaultAutoShredMode) {
             AutoShredDictFrom(AutoShredMode::NEVER));
 }
 
+TEST_F(BraveShieldsSettingsServiceTest, GetDomainsWithAutoShredMode) {
+  const GURL kAppExitUrl1("https://example.com");
+  const GURL kAppExitUrl2("https://example-2.com");
+  const GURL kLastTabClosedUrl("https://example-3.com");
+  const GURL kNeverUrl("https://brave.com");
+
+  brave_shields_settings()->SetAutoShredMode(AutoShredMode::APP_EXIT,
+                                             kAppExitUrl1);
+  brave_shields_settings()->SetAutoShredMode(AutoShredMode::APP_EXIT,
+                                             kAppExitUrl2);
+  brave_shields_settings()->SetAutoShredMode(AutoShredMode::LAST_TAB_CLOSED,
+                                             kLastTabClosedUrl);
+  brave_shields_settings()->SetAutoShredMode(AutoShredMode::NEVER, kNeverUrl);
+
+  std::vector<GURL> app_exit_domains =
+      brave_shields_settings()->GetDomainsWithAutoShredMode(
+          AutoShredMode::APP_EXIT);
+  EXPECT_EQ(app_exit_domains.size(), 2u);
+
+  auto contains_url = [&app_exit_domains](const GURL& url) {
+    return std::find_if(app_exit_domains.begin(), app_exit_domains.end(),
+                        [&url](const GURL& domain) {
+                          return domain.host() == url.host();
+                        }) != app_exit_domains.end();
+  };
+
+  EXPECT_TRUE(contains_url(kAppExitUrl1));
+  EXPECT_TRUE(contains_url(kAppExitUrl2));
+  EXPECT_FALSE(contains_url(kLastTabClosedUrl));
+  EXPECT_FALSE(contains_url(kNeverUrl));
+}
+
 TEST_F(BraveShieldsSettingsServiceTest, GetJsContentSettingsOverriddenData) {
   const GURL url = GURL("https://brave.com");
   brave_shields::SetNoScriptControlType(GetHostContentSettingsMap(),

@@ -200,6 +200,36 @@ mojom::AutoShredMode BraveShieldsSettingsService::GetAutoShredMode(
           url, GURL(), AutoShredSetting::kContentSettingsType));
 }
 
+std::vector<GURL> BraveShieldsSettingsService::GetDomainsWithAutoShredMode(
+    mojom::AutoShredMode mode) {
+  std::vector<GURL> urls;
+
+  ContentSettingsForOneType all_auto_shred_settings =
+      host_content_settings_map_->GetSettingsForOneType(
+          AutoShredSetting::kContentSettingsType);
+
+  for (const auto& setting : all_auto_shred_settings) {
+    if (setting.primary_pattern.IsValid() &&
+        !setting.primary_pattern.MatchesAllHosts()) {
+      auto setting_mode = AutoShredSetting::FromValue(setting.setting_value);
+      if (setting_mode == mode) {
+        std::string pattern_string = setting.primary_pattern.ToString();
+        // Domain patterns are in the format [*.]domain.com
+        std::string domain = pattern_string;
+        if (domain.find("[*.]") == 0) {
+          domain = domain.substr(4);
+        }
+        GURL url("https://" + domain);
+        if (url.is_valid()) {
+          urls.push_back(url);
+        }
+      }
+    }
+  }
+
+  return urls;
+}
+
 bool BraveShieldsSettingsService::IsJsBlockingEnforced(const GURL& url) {
   const auto js_content_settings_overridden_data =
       GetJsContentSettingOverriddenData(url);

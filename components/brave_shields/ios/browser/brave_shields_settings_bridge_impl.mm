@@ -124,4 +124,21 @@
       static_cast<brave_shields::mojom::AutoShredMode>(autoShredMode), gurl);
 }
 
+- (NSArray<NSURL*>*)domainsWithAutoShredMode:
+    (BraveShieldsAutoShredMode)autoShredMode {
+  std::vector<GURL> gurls = _braveShieldsSettings->GetDomainsWithAutoShredMode(
+      static_cast<brave_shields::mojom::AutoShredMode>(autoShredMode));
+  NSMutableArray<NSURL*>* urls =
+      [NSMutableArray arrayWithCapacity:gurls.size()];
+
+  for (const auto& gurl : gurls) {
+    NSURL* url = net::NSURLWithGURL(gurl);
+    if (url) {
+      [urls addObject:url];
+    }
+  }
+
+  return [urls copy];
+}
+
 @end

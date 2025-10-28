@@ -41,6 +41,9 @@ NS_SWIFT_NAME(BraveShieldsSettings)
     NS_SWIFT_NAME(autoShredMode(for:));
 - (void)setAutoShredMode:(BraveShieldsAutoShredMode)autoShredMode
                   forURL:(NSURL*)url;
+
+- (NSArray<NSURL*>*)domainsWithAutoShredMode:
+    (BraveShieldsAutoShredMode)autoShredMode NS_SWIFT_NAME(domains(with:));
 @end
 
 #endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_IOS_BROWSER_BRAVE_SHIELDS_SETTINGS_BRIDGE_H_
