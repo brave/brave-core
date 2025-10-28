@@ -8,7 +8,6 @@
 #include "brave/components/ntp_background_images/common/infobar_constants.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/ntp_background_images/common/view_counter_pref_names.h"
-#include "brave/components/ntp_background_images/common/view_counter_theme_option_type.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
@@ -42,10 +41,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
                                 false);
   registry->RegisterBooleanPref(
       prefs::kNewTabPageShowSponsoredImagesBackgroundImage, true);
-  // Integer type is used because this pref is used by radio button group in
-  // appearance settings. Super referral is disabled when it is set to kDefault.
-  registry->RegisterIntegerPref(prefs::kNewTabPageSuperReferralThemesOption,
-                                static_cast<int>(ThemesOption::kSuperReferral));
+  registry->RegisterIntegerPref(prefs::kNewTabPageSuperReferralThemesOption, 0);
   registry->RegisterBooleanPref(prefs::kNewTabPageShowBackgroundImage, true);
   registry->RegisterIntegerPref(
       prefs::kNewTabTakeoverInfobarRemainingDisplayCount,

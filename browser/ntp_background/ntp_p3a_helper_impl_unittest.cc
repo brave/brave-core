@@ -18,7 +18,6 @@
 #include "brave/components/brave_ads/core/public/prefs/obsolete_pref_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_registry.h"
 #include "brave/components/brave_ads/core/public/user_engagement/site_visit/site_visit_feature.h"
-#include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_registry.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_images_data.h"
@@ -59,7 +58,6 @@ class NTPP3AHelperImplTest : public testing::Test {
   void SetUp() override {
     histogram_tester_ = std::make_unique<base::HistogramTester>();
 
-    brave::RegisterPrefsForBraveReferralsService(local_state_.registry());
     p3a::P3AService::RegisterPrefs(local_state_.registry(),
                                    /*first_run*/ false);
     brave_ads::RegisterLocalStatePrefs(local_state_.registry());
