@@ -76,16 +76,14 @@ std::optional<std::vector<uint8_t>> PrefixedHexStringToBytes(
     std::string_view input);
 
 // Parse a hex string into a fixed-sized buffer, failing if the hex string's
-// size doesn't perfectly match the provided fixed size. This function works
-// in the presence of a leading `0x`, but will work equally fine if the string
-// does not contain it. If required, this function will append a leading 0 if
-// the supplied hex string contains an odd-number of characters (i.e. 0x123 will
-// be treated as 0x0123).
+// size doesn't perfectly match the provided fixed size. This function requires
+// a leading "0x". If required, this function will append a leading 0 if the
+// supplied hex string contains an odd-number of characters (i.e. 0x123 will be
+// treated as 0x0123).
 template <size_t N>
+  requires(N > 0)
 std::optional<std::array<uint8_t, N>> PrefixedHexStringToFixed(
     std::string_view input) {
-  static_assert(N >= 1);
-
   std::array<uint8_t, N> bytes = {};
   if (!internal::WritePrefixedHexStringToFixed(input, bytes)) {
     return std::nullopt;

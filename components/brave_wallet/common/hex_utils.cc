@@ -34,29 +34,30 @@ bool WritePrefixedHexStringToFixed(std::string_view input,
                                    base::span<uint8_t> bytes) {
   DCHECK(!bytes.empty());
 
-  input = base::RemovePrefix(input, "0x").value_or(input);
+  input = base::RemovePrefix(input, "0x").value_or({});
   if (input.empty()) {
     return false;
   }
 
-  base::SpanReader<uint8_t> reader(bytes);
-
   // e.g. 0x123 => 0x0123
   if (input.size() % 2 == 1) {
-    char tmp[2] = {'0', input[0]};
-    auto s = reader.Read(size_t{1});
-    DCHECK(s);
-    if (!base::HexStringToSpan(base::as_string_view(base::span(tmp)), *s)) {
+    auto [before, after] = bytes.split_at(size_t{1});
+    bytes = after;
+
+    std::array<char, 2> tmp = {'0', input[0]};
+    if (!base::HexStringToSpan(base::as_string_view(tmp), before)) {
       return false;
     }
 
     input.remove_prefix(1);
   }
 
-  if (!input.empty()) {
-    if (!base::HexStringToSpan(input, reader.remaining_span())) {
-      return false;
-    }
+  if (2 * bytes.size() != input.size()) {
+    return false;
+  }
+
+  if (!input.empty() && !base::HexStringToSpan(input, bytes)) {
+    return false;
   }
 
   return true;
