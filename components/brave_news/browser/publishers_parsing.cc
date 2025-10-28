@@ -10,7 +10,7 @@
 #include <utility>
 #include <vector>
 
-#include "base/containers/flat_set.h"
+#include "absl/container/flat_hash_set.h"
 #include "base/logging.h"
 #include "base/values.h"
 #include "brave/components/brave_news/api/publisher.h"
@@ -73,7 +73,7 @@ std::optional<Publishers> ParseCombinedPublisherList(const base::Value& value) {
 
         // With migrations, it's possible we'll end up with duplicate channels,
         // so filter them out with a set.
-        base::flat_set<std::string> seen;
+        absl::flat_hash_set<std::string> seen;
         for (const auto& channel : locale.channels) {
           auto transformed = brave_news::GetMigratedChannel(channel);
           if (seen.contains(transformed)) {

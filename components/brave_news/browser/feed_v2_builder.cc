@@ -13,6 +13,7 @@
 #include <utility>
 #include <vector>
 
+#include "absl/container/flat_hash_map.h"
 #include "base/check.h"
 #include "base/compiler_specific.h"
 #include "base/containers/contains.h"
@@ -182,13 +183,13 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlockFromContentGroups(
   }
 
   using PublisherIdToChannels = base::RefCountedData<
-      base::flat_map<std::string, std::vector<std::string>>>;
+      absl::flat_hash_map<std::string, absl::flat_hash_set<std::string>>>;
   scoped_refptr<PublisherIdToChannels> publisher_id_to_channels =
       base::MakeRefCounted<PublisherIdToChannels>();
 
   for (const auto& [publisher_id, publisher] : info.publishers()) {
-    publisher_id_to_channels->data[publisher_id] =
-        GetChannelsForPublisher(info.locale(), publisher);
+    auto channels = GetChannelsForPublisher(info.locale(), publisher);
+    publisher_id_to_channels->data[publisher_id] = std::move(channels);
   }
 
   // Generates a GetWeighting function tied to a specific content group. Each
@@ -771,10 +772,15 @@ void FeedV2Builder::GetSignals(const SubscriptionsSnapshot& subscriptions,
                    if (!builder) {
                      return;
                    }
-                   base::flat_map<std::string, Signal> signals;
-                   for (const auto& [key, value] : builder->signals_) {
-                     signals[key] = value->Clone();
-                   }
+                   std::vector<std::pair<std::string, Signal>> signals_pairs;
+                   std::ranges::transform(
+                       builder->signals_, std::back_inserter(signals_pairs),
+                       [](const auto& item) {
+                         return std::make_pair(item.first,
+                                               item.second->Clone());
+                       });
+                   base::flat_map<std::string, Signal> signals(
+                       std::move(signals_pairs));
                    std::move(callback).Run(std::move(signals));
                  },
                  weak_ptr_factory_.GetWeakPtr(), std::move(callback)));

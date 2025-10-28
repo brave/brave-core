@@ -19,16 +19,16 @@
 
 namespace brave_news {
 
-std::vector<std::string> GetChannelsForPublisher(
+absl::flat_hash_set<std::string> GetChannelsForPublisher(
     const std::string& locale,
     const mojom::PublisherPtr& publisher) {
-  std::vector<std::string> result;
+  absl::flat_hash_set<std::string> result;
   for (const auto& locale_info : publisher->locales) {
     if (locale_info->locale != locale) {
       continue;
     }
     for (const auto& channel : locale_info->channels) {
-      result.push_back(channel);
+      result.insert(channel);
     }
   }
   return result;

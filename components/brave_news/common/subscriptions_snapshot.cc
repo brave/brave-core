@@ -15,6 +15,32 @@
 
 namespace brave_news {
 
+namespace {
+
+// Calculate set difference A - B and append results to output vector
+template <typename T>
+void SetDifference(const absl::flat_hash_set<T>& a,
+                   const absl::flat_hash_set<T>& b,
+                   std::vector<T>& output) {
+  for (const auto& item : a) {
+    if (!b.contains(item)) {
+      output.push_back(item);
+    }
+  }
+}
+
+// Calculate symmetric difference (A - B) ∪ (B - A) and append results to output
+// vector
+template <typename T>
+void SymmetricDifference(const absl::flat_hash_set<T>& a,
+                         const absl::flat_hash_set<T>& b,
+                         std::vector<T>& output) {
+  SetDifference(a, b, output);
+  SetDifference(b, a, output);
+}
+
+}  // namespace
+
 SubscriptionsDiff::SubscriptionsDiff() = default;
 SubscriptionsDiff::~SubscriptionsDiff() = default;
 SubscriptionsDiff& SubscriptionsDiff::operator=(SubscriptionsDiff&&) = default;
@@ -27,8 +53,8 @@ bool SubscriptionsDiff::IsEmpty() const {
 SubscriptionsSnapshot::SubscriptionsSnapshot() = default;
 
 SubscriptionsSnapshot::SubscriptionsSnapshot(
-    base::flat_set<std::string> enabled_publishers,
-    base::flat_set<std::string> disabled_publishers,
+    absl::flat_hash_set<std::string> enabled_publishers,
+    absl::flat_hash_set<std::string> disabled_publishers,
     std::vector<DirectFeed> direct_feeds,
     base::flat_map<std::string, std::vector<std::string>> channels)
     : enabled_publishers_(std::move(enabled_publishers)),
@@ -93,56 +119,53 @@ std::vector<std::string> SubscriptionsSnapshot::GetChannelsFromAllLocales()
 SubscriptionsDiff SubscriptionsSnapshot::DiffPublishers(
     const SubscriptionsSnapshot& old) const {
   SubscriptionsDiff result;
-  std::ranges::set_symmetric_difference(enabled_publishers_,
-                                        old.enabled_publishers_,
-                                        std::back_inserter(result.changed));
-  std::ranges::set_symmetric_difference(disabled_publishers_,
-                                        old.disabled_publishers_,
-                                        std::back_inserter(result.changed));
 
-  std::vector<std::string> direct_feeds_ids;
-  std::ranges::transform(direct_feeds_, std::back_inserter(direct_feeds_ids),
-                         &DirectFeed::id);
-  std::vector<std::string> old_direct_feed_ids;
-  std::ranges::transform(old.direct_feeds_,
-                         std::back_inserter(old_direct_feed_ids),
-                         &DirectFeed::id);
+  SymmetricDifference(enabled_publishers_, old.enabled_publishers_,
+                      result.changed);
+  SymmetricDifference(disabled_publishers_, old.disabled_publishers_,
+                      result.changed);
 
-  base::flat_set<std::string> direct_feed_set(std::move(direct_feeds_ids));
-  base::flat_set<std::string> old_direct_feed_set(
-      std::move(old_direct_feed_ids));
+  absl::flat_hash_set<std::string> direct_feed_ids;
+  direct_feed_ids.reserve(direct_feeds_.size());
+  for (const auto& feed : direct_feeds_) {
+    direct_feed_ids.insert(feed.id);
+  }
+
+  absl::flat_hash_set<std::string> old_direct_feed_ids;
+  old_direct_feed_ids.reserve(old.direct_feeds_.size());
+  for (const auto& feed : old.direct_feeds_) {
+    old_direct_feed_ids.insert(feed.id);
+  }
 
   // New direct feeds should be added to the changed set.
-  std::ranges::set_difference(direct_feed_set, old_direct_feed_set,
-                              std::back_inserter(result.changed));
+  SetDifference(direct_feed_ids, old_direct_feed_ids, result.changed);
 
   // Removed direct feeds should be marked as removed.
-  std::ranges::set_difference(old_direct_feed_set, direct_feed_set,
-                              std::back_inserter(result.removed));
+  SetDifference(old_direct_feed_ids, direct_feed_ids, result.removed);
+
   return result;
 }
 
 SubscriptionsDiff SubscriptionsSnapshot::DiffChannels(
     const SubscriptionsSnapshot& other) const {
   SubscriptionsDiff result;
-  std::vector<std::string> channel_ids;
+
+  absl::flat_hash_set<std::string> channel_ids;
   for (const auto& [locale, subscriptions] : channels_) {
     for (const auto& channel : subscriptions) {
-      channel_ids.push_back(channel);
+      channel_ids.insert(channel);
     }
   }
 
-  std::vector<std::string> other_channel_ids;
+  absl::flat_hash_set<std::string> other_channel_ids;
   for (const auto& [locale, subscriptions] : other.channels_) {
     for (const auto& channel : subscriptions) {
-      other_channel_ids.push_back(channel);
+      other_channel_ids.insert(channel);
     }
   }
-  base::flat_set<std::string> channels_set(std::move(channel_ids));
-  base::flat_set<std::string> other_channels_set(std::move(other_channel_ids));
 
-  std::ranges::set_symmetric_difference(channels_set, other_channels_set,
-                                        std::back_inserter(result.changed));
+  SymmetricDifference(channel_ids, other_channel_ids, result.changed);
+
   return result;
 }
 

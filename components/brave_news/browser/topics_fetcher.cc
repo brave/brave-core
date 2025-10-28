@@ -11,7 +11,7 @@
 #include <variant>
 #include <vector>
 
-#include "base/containers/flat_map.h"
+#include "absl/container/flat_hash_map.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/strings/strcat.h"
@@ -28,7 +28,7 @@ namespace {
 TopicsResult ParseTopics(const base::Value& topics_json,
                          const base::Value& topic_articles_json) {
   TopicsResult result;
-  base::flat_map<int, std::vector<api::topics::TopicArticle>> articles;
+  absl::flat_hash_map<int, std::vector<api::topics::TopicArticle>> articles;
 
   if (auto* list = topic_articles_json.GetIfList()) {
     for (const auto& a : *list) {

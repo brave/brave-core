@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "base/containers/flat_set.h"
+#include "absl/container/flat_hash_set.h"
 #include "brave/components/brave_news/browser/feed_fetcher.h"
 #include "brave/components/brave_news/browser/feed_sampling.h"
 #include "brave/components/brave_news/browser/topics_fetcher.h"
@@ -16,18 +16,19 @@
 
 namespace brave_news {
 
-base::flat_set<std::string> GetTopStoryUrls(
+// Iterate over all topics and articles and return a set of unique URLs.
+absl::flat_hash_set<std::string> GetTopStoryUrls(
     const base::span<TopicAndArticles>& topics);
 
 std::optional<size_t> PickPeekingCardWithMax(
     SubscriptionsSnapshot subscriptions,
-    const base::flat_set<std::string>& top_story_urls,
+    const absl::flat_hash_set<std::string>& top_story_urls,
     const ArticleInfos& articles,
     size_t max_candidates);
 
 std::optional<size_t> PickPeekingCard(
     SubscriptionsSnapshot subscriptions,
-    const base::flat_set<std::string>& top_story_urls,
+    const absl::flat_hash_set<std::string>& top_story_urls,
     const ArticleInfos& articles);
 
 }  // namespace brave_news

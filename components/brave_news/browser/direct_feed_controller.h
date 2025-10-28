@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "absl/container/flat_hash_map.h"
 #include "base/functional/callback_forward.h"
 #include "base/gtest_prod_util.h"
 #include "base/memory/scoped_refptr.h"
@@ -72,7 +73,8 @@ class DirectFeedController {
   // Witthout that, some heavy RSS feed parsing work will prevent new feeds from
   // detection and app from shutdown.
   std::queue<FindFeedRequest> pending_requests_;
-  base::flat_map<GURL, std::vector<FindFeedRequest>> ongoing_requests_;
+  absl::flat_hash_map<std::string, std::vector<FindFeedRequest>>
+      ongoing_requests_;
 
   base::WeakPtrFactory<DirectFeedController> weak_ptr_factory_{this};
 };

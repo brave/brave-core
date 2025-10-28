@@ -9,6 +9,7 @@
 #include <memory>
 #include <string>
 
+#include "absl/container/flat_hash_map.h"
 #include "base/functional/callback_forward.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
@@ -20,7 +21,8 @@
 
 namespace brave_news {
 
-using GetPublishersCallback = mojom::BraveNewsController::GetPublishersCallback;
+using GetPublishersCallback = base::OnceCallback<void(
+    absl::flat_hash_map<std::string, mojom::PublisherPtr>)>;
 using GetPublisherCallback = base::OnceCallback<void(mojom::PublisherPtr)>;
 
 class SubscriptionsSnapshot;

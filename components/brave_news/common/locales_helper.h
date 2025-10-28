@@ -11,10 +11,12 @@
 #include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
 
 namespace brave_news {
 
-using Publishers = base::flat_map<std::string, mojom::PublisherPtr>;
+using Publishers = absl::flat_hash_map<std::string, mojom::PublisherPtr>;
+using MojomPublishers = base::flat_map<std::string, mojom::PublisherPtr>;
 
 // Gets a list of all available locales from the publishers.
 base::flat_set<std::string> GetPublisherLocales(const Publishers& publishers);

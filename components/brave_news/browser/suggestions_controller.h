@@ -37,9 +37,8 @@ class SuggestionsController {
     std::string publisher_id;
     double score;
   };
-
   using PublisherSimilarities =
-      base::flat_map<std::string, std::vector<PublisherSimilarity>>;
+      absl::flat_hash_map<std::string, std::vector<PublisherSimilarity>>;
 
   explicit SuggestionsController(
       PublishersController* publishers_controller,
