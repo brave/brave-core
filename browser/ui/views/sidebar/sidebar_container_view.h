@@ -70,8 +70,8 @@ class SidebarContainerView
 
   bool IsSidebarVisible() const;
 
-  // Return false if this mouse event can't make sidebar UI visible.
-  bool PreHandleMouseEvent(const gfx::PointF& point_in_screen);
+  // Show sidebar if the hot corner contains |point_in_screen|.
+  void ShowSidebarOnMouseOver(const gfx::PointF& point_in_screen);
 
   BraveSidePanel* side_panel() { return side_panel_; }
 

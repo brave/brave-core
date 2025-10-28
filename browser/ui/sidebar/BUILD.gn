@@ -80,6 +80,7 @@ source_set("browser_tests") {
     "//components/prefs",
     "//content/test:test_support",
     "//ui/events",
+    "//ui/events:test_support",
     "//ui/gfx",
   ]
 }

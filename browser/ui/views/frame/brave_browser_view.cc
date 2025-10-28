@@ -1074,7 +1074,7 @@ void BraveBrowserView::HandleSidebarOnMouseOverMouseEvent(
   CHECK(event.type() == ui::EventType::kMouseMoved);
 
   if (sidebar_container_view_) {
-    sidebar_container_view_->PreHandleMouseEvent(event.root_location_f());
+    sidebar_container_view_->ShowSidebarOnMouseOver(event.root_location_f());
   }
 }
 

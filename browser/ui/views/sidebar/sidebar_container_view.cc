@@ -176,14 +176,14 @@ bool SidebarContainerView::IsSidebarVisible() const {
   return sidebar_control_view_ && sidebar_control_view_->GetVisible();
 }
 
-bool SidebarContainerView::PreHandleMouseEvent(
+void SidebarContainerView::ShowSidebarOnMouseOver(
     const gfx::PointF& point_in_screen) {
   if (IsSidebarVisible()) {
-    return false;
+    return;
   }
 
   if (show_sidebar_option_ != ShowSidebarOption::kShowOnMouseOver) {
-    return false;
+    return;
   }
 
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser_);
@@ -205,10 +205,8 @@ bool SidebarContainerView::PreHandleMouseEvent(
 
   if (mouse_event_detect_bounds.Contains(point_in_screen)) {
     ShowSidebarControlView();
-    return true;
+    return;
   }
-
-  return false;
 }
 
 void SidebarContainerView::WillShowSidePanel() {
