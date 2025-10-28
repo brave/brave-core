@@ -26,6 +26,7 @@
 #include "brave/browser/ui/views/frame/split_view/brave_contents_container_view.h"
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
 #include "brave/browser/ui/webui/speedreader/speedreader_toolbar_data_handler_impl.h"
+#include "brave/common/pref_names.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/constants/brave_paths.h"
@@ -1097,7 +1098,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ToolbarWithRoundedCorners) {
       tab_helper()->PageDistillState()));
 
   const bool rounded_contents =
-      BraveBrowser::IsBraveWebViewRoundedCornersEnabled(browser());
+      browser()->profile()->GetPrefs()->GetBoolean(kWebViewRoundedCorners);
 
   auto* browser_view = static_cast<BraveBrowserView*>(browser()->window());
   EXPECT_EQ(browser_view->reader_mode_toolbar()->rounded_corners_.IsEmpty(),

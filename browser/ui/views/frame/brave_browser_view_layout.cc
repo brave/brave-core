@@ -10,7 +10,7 @@
 #include <utility>
 
 #include "base/check.h"
-#include "brave/browser/ui/brave_browser.h"
+#include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
@@ -288,7 +288,7 @@ void BraveBrowserViewLayout::LayoutSideBar(gfx::Rect& contents_bounds) {
   }
 
   gfx::Insets panel_margins = GetContentsMargins();
-  if (BraveBrowser::ShouldUseBraveWebViewRoundedCornersForContents(
+  if (BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
           browser_view_->browser())) {
     // In rounded mode, there is already a gap between the sidebar and the main
     // contents view, so we only remove from the margin from that side (we need
@@ -378,7 +378,7 @@ void BraveBrowserViewLayout::UpdateContentsContainerInsets(
 }
 
 gfx::Insets BraveBrowserViewLayout::GetContentsMargins() const {
-  if (!BraveBrowser::ShouldUseBraveWebViewRoundedCornersForContents(
+  if (!BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
           browser_view_->browser())) {
     return {};
   }
