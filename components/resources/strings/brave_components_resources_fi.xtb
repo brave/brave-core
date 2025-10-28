@@ -688,7 +688,6 @@
 <translation id="3266055641283174315">Mainostyyppi</translation>
 <translation id="8706824117053903390">Katselukertoja tässä kuussa</translation>
 <translation id="5105890735834548623">Mainosasetukset</translation>
-<translation id="96989662637180657">Brave-haun mainokset näytetään <ph name="LINK_BEGIN"/>Brave-haussa<ph name="LINK_END"/>.</translation>
 <translation id="3138160233953903250">Mainosasetukset</translation>
 <translation id="2446517297521536638">Hallitse, millaisia Brave-mainoksia näet ja kuinka usein. Mitä enemmän mainoksia näet, sitä enemmän voit ansaita.</translation>
 <translation id="3479272537858623647">Tämä näyttää tässä kuussa näkemiesi BAT-ansioihin oikeuttavien Brave-mainosten määrän.</translation>
@@ -855,6 +854,11 @@
       other {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} vaihetta}
     }</translation>
 <translation id="8621264173374071200"><ph name="EXCHANGE_NAME"/> palveluntarjoajan <ph name="PROVIDER_NAME"/> kautta</translation>
+<translation id="646023614746251785">Vahvista vaihto</translation>
+<translation id="6264944956989873014">Vahvista siltayhteys</translation>
+<translation id="7067917728851842589">Vahvista lähetys</translation>
+<translation id="2351357639951873714">Vahvista suojaus</translation>
+<translation id="8332923694292360653">Käytä</translation>
 <translation id="3735740477244556633">Lajitteluperuste</translation>
 <translation id="6484605214219822434">Tarkista silta</translation>
 <translation id="3365052891357224017">Arvioitu aika</translation>
@@ -964,6 +968,7 @@
 <translation id="3451958544919449297">Säilytä ZEC Testnetin varat</translation>
 <translation id="8459631690385393533">Säilytä Cardano-varoja</translation>
 <translation id="4915057812371523845">Säilytä Cardano Testnet -varoja</translation>
+<translation id="5387140102951033657">Tukee Substrate-omaisuuksia Polkadotin reititysketjussa ja Substrate-paraketjuissa</translation>
 <translation id="8500387257977999003">Yksityinen avain <ph name="PROTOCOL"/></translation>
 <translation id="8275038454117074363">Tuo</translation>
 <translation id="232925166623833246">Tuo laitteiston lompakosta</translation>
@@ -1075,6 +1080,10 @@
 <translation id="8904889345035514635">Nykyinen varaus</translation>
 <translation id="7073918978411974168">Ehdotettu varaus</translation>
 <translation id="9019403281000653275">Rajoittamattoman hyväksyntää pyydetty</translation>
+<translation id="9108474191347769758">Käyttöraja</translation>
+<translation id="2102091845281366189">Hyväksynnän kohde</translation>
+<translation id="772196962479335292">Nykyinen hyväksyntäraja</translation>
+<translation id="8215431557133305629">Ehdotettu hyväksyntäraja</translation>
 <translation id="4717431746210146708">Anna tälle sivustolle lupa lisätä verkko?</translation>
 <translation id="2521480044079508357">Tämä mahdollistaa tämän verkon käytön Brave Wallet -lompakossa.</translation>
 <translation id="1982257600591932657">Verkon nimi</translation>
@@ -1091,7 +1100,7 @@
 <translation id="3948067511324628726">Gas-maksu</translation>
 <translation id="7163997622278957886">Tarjous</translation>
 <translation id="1074360622426001342">Summa ja Gas-maksu</translation>
-<translation id="2186011161688824046">Summa + maksu</translation>
+<translation id="7542099582407803878">Summa + verkkomaksu</translation>
 <translation id="7084089311475827950">Ei tietoja.</translation>
 <translation id="5821668936183240062">seuraava</translation>
 <translation id="793994607260936590">ensimmäinen</translation>
@@ -1417,6 +1426,8 @@
 <translation id="1908159733454294871">Turvallisuusriski havaittu</translation>
 <translation id="3621202678540785336">Tulo</translation>
 <translation id="3009178788565917040">Lähtö</translation>
+<translation id="7953669802889559161">Syötteet</translation>
+<translation id="4554024082642878647">Tulosteet</translation>
 <translation id="1965889974717516497">Toissijaiset verkot</translation>
 <translation id="7691821949666755802">Testiverkot</translation>
 <translation id="2816106784624007524">Gas-rajan on oltava kokonaisluku, joka on suurempi kuin 0</translation>
@@ -2139,7 +2150,6 @@
 <translation id="5872363163901278000">Lisää toistonopeutta</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8637805148029768813">Yhteenvetäjä-ominaisuus on tällä hetkellä saatavilla vain valituille artikkeleille ja muille pitkille verkkosivuille.</translation>
-<translation id="1223498995510244364">Tee yhteenveto</translation>
 <translation id="7491773233732232424">Tietoja Leosta</translation>
 <translation id="4611072979071082355">Brave Leo on älykäs yksityinen tekoälyavustaja, joka tehostaa verkon käyttöä. Leon rajoitettu käyttö on maksutonta. Brave Leo Premium tarjoaa enemmän malleja, korkeammat rajat ja tilaajille varhaisen pääsyn uusiin ominaisuuksiin. Oletusmalli vaihtuu aika ajoin. Katso lisätietoja <ph name="LINK_BEFORE"/>Brave-ohjekeskuksesta<ph name="LINK_AFTER"/>.</translation>
 <translation id="7297056998057521697">Kun kysyt Leolta kysymyksen katsomastasi verkkosivustosta tai sivusta, katsomasi verkkosivun sisältö tai sivulla korostamasi teksti sekä hakukyselysi lähetetään Brave-palvelimille, jotta Leo voi antaa vastauksen. Joissakin tapauksissa Leo lähettää syötteestäsi johdettuja kyselyjä Brave-hakuun ja käyttää hakutuloksia vastaamaan paremmin kysymykseesi. Brave ei takaa vastausten tarkkuutta, ja vastaukset voivat sisältää epätarkkoja, harhaanjohtavia tai vääriä tietoja. Älä lähetä Brave Leolle arkaluonteisia tai yksityisiä tietoja, ja ole varovainen terveyteen, talouteen, henkilökohtaiseen turvallisuuteen tai vastaavaan liittyvien vastausten kanssa. Voit säätää Leon asetuksia Asetuksissa milloin tahansa. Siirry kohtaan Asetukset &gt; Leo.</translation>
@@ -2173,7 +2183,7 @@
 <translation id="7127671672828944579">Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu Qwen 14B:hen, Alibaba Cloudin luomaan malliin, joka on suorituskykyinen ja soveltuu moniin käyttötarkoituksiin. Qwen on Brave-hostattu oman suojatun infrastruktuurimme kautta.<ph name="LINK_BEFORE"/>Lisätietoja<ph name="LINK_AFTER"/></translation>
 <translation id="2328524194917949829">Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu Gemma 3 12B:hen, Google DeepMindin luomaan malliin, joka on suorituskykyinen ja soveltuu moniin käyttötarkoituksiin. Gemma on Brave-hostattu oman suojatun infrastruktuurimme kautta.<ph name="LINK_BEFORE"/>Lisätietoja<ph name="LINK_AFTER"/></translation>
 <translation id="634682910381645550">Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu DeepSeek R1:een, DeepSeekin luomaan malliin, joka on suunniteltu syvien päätelmien tekemiseen. DeepSeek R1 on Brave-hostattu oman suojatun infrastruktuurimme kautta.<ph name="LINK_BEFORE"/>Lisätietoja<ph name="LINK_AFTER"/></translation>
-<translation id="8932568551552504373">Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu Claude Instant -malliin, jonka on luonut Anthropic keskustelu- ja tekstinkäsittelytehtäviin. Claude Instant on Brave-hostattu oman suojatun infrastruktuurimme kautta.<ph name="LINK_BEFORE"/>Lisätietoja<ph name="LINK_AFTER"/></translation>
+<translation id="8932568551552504373">Hei, olen Leo. Olen Braven tekoälyavustaja. Käytän Claude Instant -mallia, jonka on kehittänyt Anthropic keskustelu- ja tekstinkäsittelytehtäviin. Claude Instant toimii Braven isännöimänä turvallisessa infrastruktuurissamme.<ph name="LINK_BEFORE"/>Lue lisää<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu Claude Haiku -malliin, jonka on luonut Anthropic keskustelu- ja tekstinkäsittelytehtäviin. Claude Haiku on Brave-hostattu oman suojatun infrastruktuurimme kautta.<ph name="LINK_BEFORE"/>Lisätietoja<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu Claude Sonnet -malliin, jonka on luonut Anthropic keskustelu- ja tekstinkäsittelytehtäviin. Claude Sonnet on Brave-hostattu oman suojatun infrastruktuurimme kautta.<ph name="LINK_BEFORE"/>Lisätietoja<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
@@ -2186,6 +2196,7 @@
 <translation id="7557539689487606886">Siirry Premiumiin</translation>
 <translation id="1691256669639196606">Hallitse tilausta</translation>
 <translation id="3840096463915153852">Keskusteluhistoria</translation>
+<translation id="6761921176674289184">Hallitse muistoja</translation>
 <translation id="2304783958703511257">Lisäasetukset</translation>
 <translation id="3037594989275592390">Kielimallit</translation>
 <translation id="5543505256451301851">Kokeile 7 päivän ajan ilmaiseksi</translation>
@@ -2259,31 +2270,36 @@
 <translation id="7307396647043599949"><ph name="COUNT"/> muuta…</translation>
 <translation id="8103700533980268469">Sulje tämä ilmoitus</translation>
 <translation id="3417835166382867856">Etsi välilehdistä</translation>
+<translation id="7311244614769792472">Ei tuloksia</translation>
+<translation id="3112448569149476523">Kokeile toista hakua</translation>
 <translation id="1352836459737874921">Liitä sisältöä muista välilehdistä</translation>
-<translation id="3028258613451571431">Lähetä selaimen välilehtien sivujen sisältöä, jotta Leo saa lisää kontekstia keskusteluun.</translation>
-<translation id="4300920590112551536">Selaimen välilehdet</translation>
+<translation id="7039179822221107025">Lähetä selaimen välilehtien sivujen sisältöä, jotta Leo saa lisää kontekstia keskusteluun.</translation>
+<translation id="220541218939267992">Sivun sisältö lähetetään Leolle viestiesi mukana.</translation>
 <translation id="1446346932629101482">Lisää välilehden sisältö kontekstia varten. Sisältö lähetetään Leolle viestien mukana.</translation>
 <translation id="7193316103691252734">Ei vastaavia välilehtiä</translation>
 <translation id="2315654674554095762">Leo muistaa nyt keskustelusi, joten voit palata niihin. Ne tallennetaan salattuna laitteeseesi, ja voit poistaa ne milloin tahansa.</translation>
 <translation id="7821251979960635244">Keskusteluhistoriasi näkyy täällä, kun aloitat keskustelun.</translation>
 <translation id="887511360213807449">Historia on poistettu käytöstä</translation>
 <translation id="5380979378058584412">Voidaksesi tarkastella aiempia keskusteluja Leon kanssa sinun on otettava keskusteluhistoria käyttöön.</translation>
-<translation id="6291843235651817590">Yleiskäyttöinen chat</translation>
+<translation id="7348809809749151120">Nopea • Haku</translation>
 <translation id="3185367320601718531">Keskustelun ja tekstin tuottaminen</translation>
-<translation id="7979673624064378842">Salamannopea chatti</translation>
-<translation id="2836330653441111204">Tasapainotettu nopeus ja älykkyys</translation>
-<translation id="6695329447007213917">Yleistarkoitukseen tarkoitettu chatti, koodaus ja paljon muuta</translation>
-<translation id="7168072214482631597">Yleiskäyttöinen tekstin ja kuvien ymmärtäminen</translation>
-<translation id="7226508434216060960">Pohdintamalli</translation>
+<translation id="2793458212460902934">Nopea • Haku • Työkalut</translation>
+<translation id="8506027496671575183">Haku • Näkö • Työkalut</translation>
+<translation id="3213834013136637671">Haku • Näkö</translation>
+<translation id="7697693533305615127">Haku • Ajattelu</translation>
 <translation id="8782867266498869301">Malli vaihtuu dynaamisesti sellaiseksi, joka on paras kyseistä tehtävää varten</translation>
 <translation id="3965507912994218570">Leo-asetukset</translation>
-<translation id="1037324977127422019">Hei, olen Leo!</translation>
-<translation id="8930348081963284873">Tekoälyvetoinen älykäs avustaja, joka on sisäänrakennettu suoraan Braveen.</translation>
-<translation id="3528849152231418380">Tarvitsetko verkkosivustoon liittyvää apua?</translation>
-<translation id="1558192229187362674">Voin auttaa artikkeleiden tiivistämisessä, sivuston sisällön laajentamisessa ja monessa muussa.</translation>
-<translation id="861953757568623294">Voin auttaa artikkeleiden tiivistämisessä, sivuston sisällön laajentamisessa ja monessa muussa. Etkö tiedä, mistä aloittaa? Kokeile tätä:</translation>
-<translation id="5642775487085641191">Haluatko vain jutella?</translation>
-<translation id="8857222718794549840">Kysy minulta mitä vaan! Voimme puhua mistä tahansa haluamastasi aiheesta. Opiskelen ja kehityn koko ajan, jotta voisin antaa parempia vastauksia.</translation>
+<translation id="3754337604877048671">Esittelyssä Leo AI</translation>
+<translation id="5295261408976371809">Yksityinen tekoälyavustajasi <ph name="TEXT_BEFORE"/>rakennettu suoraan selaimeen<ph name="TEXT_AFTER"/>.</translation>
+<translation id="7452913484571004528">Todella yksityinen tekoäly</translation>
+<translation id="8525501048785085223">Leo ei säilytä tai jaa keskustelujasi, eikä käytä niitä mallien koulutukseen. Tiliä tai kirjautumista ei tarvita. Avaa vain keskustelu. Yksityisesti.</translation>
+<translation id="6401201054391523929">Keskustele välilehtiesi ja tiedostojesi kanssa</translation>
+<translation id="8522038408130089105">Haluatko tietää enemmän vierailemistasi sivuista? Lisää ne vain keskusteluun. Liitä välilehtiä ja paikallisia tiedostoja saadaksesi nopeita ja osuvia vastauksia.</translation>
+<translation id="3844955602461425647">Automatisoi tylsä työ</translation>
+<translation id="2196247864500723577">Anna Braven selata kanssasi ja olla vuorovaikutuksessa kaiken selaimessa tapahtuvan kanssa. Ulkoista tylsät tehtävät ja säästä aikasi tärkeämpiin asioihin.</translation>
+<translation id="235457946228076038">Tuo oma mallisi</translation>
+<translation id="7024005267156189454">Yhdistä omat tekoälymallisi, olivatpa ne paikallisesti tai etänä käynnissä. Räätälöi Leon toiminta, tulosteet ja kyvyt mieltymystesi mukaan.</translation>
+<translation id="7291578285403921288">Lue lisää Leo AI:sta</translation>
 <translation id="9051226419897869406">Juttele Brave Leon kanssa yksityisesti</translation>
 <translation id="2414904697165579184">Muotoile vastauksia välilehden (välilehtien) sisällön perusteella.</translation>
 <translation id="8258324391302611485">Tämän sivun sisältö lähetetään Leolle yhdessä viestiesi kanssa.</translation>
@@ -2292,6 +2308,7 @@
 <translation id="8732450785281947197">Leo-tekoälytyökalut</translation>
 <translation id="6535533770697728087">Pikatoiminnot</translation>
 <translation id="3237710083340813756">Uudelleenkirjoita</translation>
+<translation id="1223498995510244364">Tee yhteenveto</translation>
 <translation id="1252805982772190086">Lyhyt julkaisu</translation>
 <translation id="2087555497198267113">Pitkä julkaisu</translation>
 <translation id="4170307327863874820">Blogijulkaisu</translation>
@@ -2499,12 +2516,13 @@
 <translation id="6764845498618413165">Lisätietoja.</translation>
 <translation id="7818938154803162778">OK, haluan osallistua</translation>
 <translation id="7207456302801184289">Tervetuloa Braveen</translation>
-<translation id="6716580298071890302">Käytä tummempaa teemaa</translation>
+<translation id="293854220404217065">Keskiyön teema</translation>
 <translation id="2422927186524098759">Sivupalkki</translation>
 <translation id="2361906291514218784">Leo-tekoäly</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="8000020256436988724">Työkalupalkki</translation>
 <translation id="6225572914528673855">Osoitepalkki</translation>
+<translation id="6821966107067356137">Lisää RSS-syöte</translation>
 <translation id="8293206222192510085">Lisää kirjanmerkki</translation>
 <translation id="7758460733045216901">Kirjanmerkkipaneeli</translation>
 <translation id="958268166261124668">Brave VPN: Yhteys muodostettu</translation>

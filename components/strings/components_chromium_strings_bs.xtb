@@ -2,36 +2,36 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="bs">
 <translation id="130631256467250065">Vaše promjene će stupiti na snagu kada sljedeći put ponovo pokrenete uređaj.</translation>
+<translation id="6451924152958941455">Idite u
+          meni Bravea&gt;
+          <ph name="SETTINGS_TITLE"/>
+          &gt;
+          <ph name="SYSTEM_TITLE"/>
+          &gt;
+          <ph name="PROXIES_TITLE"/>
+          i provjerite je li vaša konfiguracija postavljena na "bez proksi servera" ili "direktno".</translation>
 <translation id="7999989146447764333">Izrada izvještaja o padovima aplikacije nije dostupna na Braveu.</translation>
 <translation id="1953231710324290369">Prikazana vam je sigurna stranica Bravea</translation>
 <translation id="907470742420136113">Brave pokušava izmijeniti postavke za popunjavanje načina plaćanja.</translation>
 <translation id="4847979153841887006">Logotip Bravea</translation>
 <translation id="336808635693308470">Brave pokušava urediti načine plaćanja.</translation>
 <translation id="7932149101545999102">Brave je dostupan zahvaljujući <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/> projektu otvorenog koda i drugom <ph name="BEGIN_LINK_OSS"/>softveru otvorenog koda<ph name="END_LINK_OSS"/>.</translation>
-<translation id="8746410156982274638">Idite na
-          Brave meni &gt;
-          <ph name="SETTINGS_TITLE"/>
-          &gt;
-          <ph name="ADVANCED_TITLE"/>
-          &gt;
-          <ph name="PROXIES_TITLE"/>
-          &gt;
-          LAN postavke
-          i poništite odabir u polju za potvrdu "Koristi proksi server za svoj LAN".</translation>
 <translation id="303960458633076466">Ovu stranicu je blokirao Brave</translation>
 <translation id="2017237562285586622">U postavkama zaštitnog zida ili antivirusnog programa dozvolite Braveu da pristupi
           mreži.</translation>
 <translation id="4949828774841497663">Idite u Aplikacije &gt; Postavke sistema &gt; Mreža, odaberite
           aktivnu mrežu, kliknite na dugme Detalji… i poništite odabir svih proksi servera
           koji su možda odabrani.</translation>
-<translation id="8619622797841001082">Idite u
-          meni Bravea&gt;
+<translation id="3269554930871094325">Idite u
+          meni Bravea &gt;
           <ph name="SETTINGS_TITLE"/>
           &gt;
-          <ph name="ADVANCED_TITLE"/>
+          <ph name="SYSTEM_TITLE"/>
           &gt;
           <ph name="PROXIES_TITLE"/>
-          i provjerite je li vaša konfiguracija postavljena na "bez proksi servera" ili "direktno".</translation>
+          &gt;
+          Mreža i internet &gt; Proksi server
+          i poništite odabir opcije "Automatski otkrivaj postavke".</translation>
 <translation id="6159073403999048272">Ove stranice su namijenjene za korištenje programerima Bravea i možda se neće aktivno održavati ili testirati. Da ih omogućite, idite na <ph name="BEGIN_LINK"/>chrome://chrome-urls<ph name="LINK_END"/>, kliknite na dugme da omogućite stranice za otklanjanje grešaka, zatim se vratite na ovu stranicu.</translation>
 <translation id="2765022094254723779">Brave su omogućili i drugi <ph name="BEGIN_LINK_OSS"/>softveri otvorenog koda<ph name="END_LINK_OSS"/>.</translation>
 <translation id="9156965752763025780">Vaše promjene će stupiti na snagu kada sljedeći put budete ponovo pokrenuli Brave.</translation>

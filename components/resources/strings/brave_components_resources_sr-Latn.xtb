@@ -688,7 +688,6 @@
 <translation id="3266055641283174315">Vrsta oglasa</translation>
 <translation id="8706824117053903390">Pregleda ovog meseca</translation>
 <translation id="5105890735834548623">Podešavanja oglasa</translation>
-<translation id="96989662637180657">Oglasi u Brave pretrazi pojavljuju se u <ph name="LINK_BEGIN"/>Brave pretrazi<ph name="LINK_END"/>.</translation>
 <translation id="3138160233953903250">Podešavanja oglasa</translation>
 <translation id="2446517297521536638">Kontrolišite koju vrstu Brave oglasa ćete videti i koliko često. Što više gledate to više zarađujete.</translation>
 <translation id="3479272537858623647">Prikazuje broj Brave oglasa koje ste videli ovog meseca, a koji se kvalifikuju za zarađivanje BAT-a.</translation>
@@ -855,6 +854,11 @@
       other {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} korak(a)}
     }</translation>
 <translation id="8621264173374071200"><ph name="EXCHANGE_NAME"/> preko <ph name="PROVIDER_NAME"/></translation>
+<translation id="646023614746251785">Potvrdi zamenu</translation>
+<translation id="6264944956989873014">Potvrdi bridž</translation>
+<translation id="7067917728851842589">Potvrdi slanje</translation>
+<translation id="2351357639951873714">Potvrdi zaštitu</translation>
+<translation id="8332923694292360653">Potroši</translation>
 <translation id="3735740477244556633">Sortiraj prema</translation>
 <translation id="6484605214219822434">Pregled mosta</translation>
 <translation id="3365052891357224017">Procenjeno vreme</translation>
@@ -964,6 +968,7 @@
 <translation id="3451958544919449297">Sačuvaj sredstva ZEC koja se nalaze na testnetu</translation>
 <translation id="8459631690385393533">Sačuvaj sredstva Cardano</translation>
 <translation id="4915057812371523845">Sačuvaj sredstva Cardano Testnet</translation>
+<translation id="5387140102951033657">Podržava Substrate sredstva na Polkadot relej lancu i Substrate parachain-ovima</translation>
 <translation id="8500387257977999003">Privatni ključ <ph name="PROTOCOL"/></translation>
 <translation id="8275038454117074363">Uvezi</translation>
 <translation id="232925166623833246">Uvezi iz hardverskog novčanika</translation>
@@ -1075,6 +1080,10 @@
 <translation id="8904889345035514635">Trenutni dozvoljeni iznos</translation>
 <translation id="7073918978411974168">Predloženi dozvoljeni iznos</translation>
 <translation id="9019403281000653275">Zatraženo je odobrenje za neograničeno trošenje</translation>
+<translation id="9108474191347769758">Limit potrošnje</translation>
+<translation id="2102091845281366189">Cilj odobravanja</translation>
+<translation id="772196962479335292">Trenutni limit odobravanja</translation>
+<translation id="8215431557133305629">Predloženi limit odobravanja</translation>
 <translation id="4717431746210146708">Želite li da dozvolite ovom sajtu da doda mrežu?</translation>
 <translation id="2521480044079508357">Time će se biti omogućeno da se ova mreža koristi u okviru Brave novčanika.</translation>
 <translation id="1982257600591932657">Naziv mreže</translation>
@@ -1091,7 +1100,7 @@
 <translation id="3948067511324628726">Naknada za gas</translation>
 <translation id="7163997622278957886">Ponuda</translation>
 <translation id="1074360622426001342">Iznos + gas</translation>
-<translation id="2186011161688824046">Iznos + naknada</translation>
+<translation id="7542099582407803878">Iznos + Naknada za mrežu</translation>
 <translation id="7084089311475827950">Nema podataka</translation>
 <translation id="5821668936183240062">sledeće</translation>
 <translation id="793994607260936590">prvo</translation>
@@ -1417,6 +1426,8 @@
 <translation id="1908159733454294871">Otkriven je bezbednosni rizik</translation>
 <translation id="3621202678540785336">Ulaz</translation>
 <translation id="3009178788565917040">Izlaz</translation>
+<translation id="7953669802889559161">Ulazi</translation>
+<translation id="4554024082642878647">Izlazi</translation>
 <translation id="1965889974717516497">Sekundarne mreže</translation>
 <translation id="7691821949666755802">Mreže za testiranje</translation>
 <translation id="2816106784624007524">Limit gasa mora da bude ceo broj veći od 0</translation>
@@ -2139,7 +2150,6 @@
 <translation id="5872363163901278000">Povećaj brinu puštanja</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8637805148029768813">Funkcija sažimanja trenutno je dostupna samo za odabrane članke i druge veb-stranice dugog formata.</translation>
-<translation id="1223498995510244364">Sažmi</translation>
 <translation id="7491773233732232424">O asistentu Leo</translation>
 <translation id="4611072979071082355">Brave Leo je privatni pametni asistent zasnovan na veštačkoj inteligenciji koji poboljšava vaše korišćenje veba. Leo je besplatan za korišćenje uz ograničen pristup. Brave Leo Premium nudi više modela, veće limite i daje pretplatnicima rani pristup novim funkcijama. Podrazumevani model će se povremeno menjati. Posetite <ph name="LINK_BEFORE"/>Brave-ov Centar za pomoć<ph name="LINK_AFTER"/> da pročitate više detalja.</translation>
 <translation id="7297056998057521697">Podrazumevano, kada postavite asistentu Leo pitanje o veb-sajtu ili stranici koju pregledate, sadržaj veb-stranice koju pregledate ili bilo koji tekst koji označite na stranici, kao i vaš upit za pretragu, biće poslati Brave serverima kako bi Leo mogao da pruži odgovor. U nekim slučajevima, Leo će poslati upite izvedene iz vašeg unosa u Brave pretragu i koristiti rezultate pretrage da bi bolje odgovorio na vaše pitanje. Brave ne garantuje tačnost odgovora i odgovori mogu sadržati netačne, obmanjujuće ili lažne informacije. Ne šaljite osetljive ili privatne informacije asistentu Brave Leo i budite oprezni sa svim odgovorima koji se odnose na zdravlje, finansije, ličnu bezbednost i slično. Opcije za asistenta Leo možete izmeniti u podešavanjima u bilo kom trenutku. Idite na Podešavanja &gt; Leo.</translation>
@@ -2173,7 +2183,7 @@
 <translation id="7127671672828944579">Zdravo, zovem se Leo. Ja sam asistent zasnovan na veštačkoj inteligenciji u potpunosti hostovan od strane kompanije Brave. Pokreće me Qwen 14B, model koji je kreirala kompanija Alibaba Cloud kako bih bio efikasan i primenljiv na mnoge slučajeve upotrebe. Qwen se hostuje na Brave-ovoj sopstvenoj bezbednoj infrastrukturi. <ph name="LINK_BEFORE"/>Saznajte više<ph name="LINK_AFTER"/></translation>
 <translation id="2328524194917949829">Zdravo, zovem se Leo. Ja sam asistent zasnovan na veštačkoj inteligenciji u potpunosti hostovan od strane kompanije Brave. Pokreće me Gemma 3 12B, model koji je kreirala kompanija Google DeepMind kako bih bio efikasan i primenljiv na mnoge slučajeve upotrebe. Gemma se hostuje na Brave-ovoj sopstvenoj bezbednoj infrastrukturi. <ph name="LINK_BEFORE"/>Saznajte više<ph name="LINK_AFTER"/></translation>
 <translation id="634682910381645550">Zdravo, zovem se Leo. Ja sam asistent zasnovan na veštačkoj inteligenciji u potpunosti hostovan od strane kompanije Brave. Pokreće me DeepSeek R1, model koji je kreirala kompanija DeepSeek kako bi izvodio dubinsko zaključivanje. DeepSeek R1 se hostuje na Brave-ovoj sopstvenoj bezbednoj infrastrukturi. <ph name="LINK_BEFORE"/>Saznajte više<ph name="LINK_AFTER"/></translation>
-<translation id="8932568551552504373">Zdravo, zovem se Leo. Brave mi je proksi, a pokreće me Claude Instant, model koji je kreirala kompanija Anthropic kako bi omogućila razgovorne zadatke i zadatke obrade teksta. Claude Instant se hostuje na Brave-ovoj sopstvenoj bezbednoj infrastrukturi. <ph name="LINK_BEFORE"/>Saznajte više<ph name="LINK_AFTER"/></translation>
+<translation id="8932568551552504373">Zdravo, ja sam Leo. Ja sam AI asistent kompanije Brave. Pokreće me Claude Instant, model koji je kreirala kompanija Anthropic za potrebe konverzacije i obrade teksta. Claude Instant se hostuje preko Brave infrastrukture.<ph name="LINK_BEFORE"/>Saznajte više<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Zdravo, zovem se Leo. Brave mi je proksi, a pokreće me Claude Haiku, model koji je kreirala kompanija Anthropic kako bi omogućila razgovorne zadatke i zadatke obrade teksta. Claude Haiku se hostuje na Brave-ovoj sopstvenoj bezbednoj infrastrukturi. <ph name="LINK_BEFORE"/>Saznajte više<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Zdravo, zovem se Leo. Brave mi je proksi, a pokreće me Claude Sonnet, model koji je kreirala kompanija Anthropic kako bi omogućila razgovorne zadatke i zadatke obrade teksta. Claude Sonnet se hostuje na Brave-ovoj sopstvenoj bezbednoj infrastrukturi. <ph name="LINK_BEFORE"/>Saznajte više<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premijum</translation>
@@ -2186,6 +2196,7 @@
 <translation id="7557539689487606886">Pređite na Premium</translation>
 <translation id="1691256669639196606">Upravljanje pretplatama</translation>
 <translation id="3840096463915153852">Istorija razgovora</translation>
+<translation id="6761921176674289184">Upravljaj memorijama</translation>
 <translation id="2304783958703511257">Napredna podešavanja</translation>
 <translation id="3037594989275592390">Jezički modeli</translation>
 <translation id="5543505256451301851">Isprobajte 7 dana besplatno</translation>
@@ -2259,31 +2270,36 @@
 <translation id="7307396647043599949"><ph name="COUNT"/> više…</translation>
 <translation id="8103700533980268469">Zatvori ovo obaveštenje</translation>
 <translation id="3417835166382867856">Pretraži kartice</translation>
+<translation id="7311244614769792472">Nisu pronađeni rezultati</translation>
+<translation id="3112448569149476523">Pokušajte drugu pretragu</translation>
 <translation id="1352836459737874921">Priložite sadržaj sa drugih kartica</translation>
-<translation id="3028258613451571431">Pošaljite sadržaj stranice sa kartica pregledača da biste asistentu Leo dali više konteksta za razgovor</translation>
-<translation id="4300920590112551536">Kartice pregledača</translation>
+<translation id="7039179822221107025">Pošaljite sadržaj stranice sa kartica pregledača da biste asistentu Leo dali više konteksta za razgovor.</translation>
+<translation id="220541218939267992">Sadržaj stranice će biti poslat Leu zajedno sa vašim porukama.</translation>
 <translation id="1446346932629101482">Dodajte sadržaj kartice zbog konteksta. Sadržaj će biti poslat asistentu Leo zajedno sa vašim porukama.</translation>
 <translation id="7193316103691252734">Nema odgovarajućih kartica</translation>
 <translation id="2315654674554095762">Leo će sada pamtiti vaše razgovore kako biste im se mogli vratiti. Oni se čuvaju šifrovani na vašem uređaju i možete ih izbrisati u bilo kom trenutku.</translation>
 <translation id="7821251979960635244">Vaša istorija razgovora će se pojaviti ovde kada započnete razgovor.</translation>
 <translation id="887511360213807449">Istorija je isključena</translation>
 <translation id="5380979378058584412">Da biste videli prethodne razgovore sa asistentom Leo, morate da uključite istoriju razgovora.</translation>
-<translation id="6291843235651817590">Ćaskanje opšte namene</translation>
+<translation id="7348809809749151120">Brzo • Pretraga</translation>
 <translation id="3185367320601718531">Razgovor i generisanje teksta</translation>
-<translation id="7979673624064378842">Munjevito brzo ćaskanje</translation>
-<translation id="2836330653441111204">Balansirana brzina i inteligencija</translation>
-<translation id="6695329447007213917">Ćaskanje za opštu svrhu, kodiranje i još toga</translation>
-<translation id="7168072214482631597">Razumevanje teksta i slika za opštu upotrebu</translation>
-<translation id="7226508434216060960">Model za rezonovanje</translation>
+<translation id="2793458212460902934">Brzo • Pretraga • Alatke</translation>
+<translation id="8506027496671575183">Pretraga • Vizija • Alatke</translation>
+<translation id="3213834013136637671">Pretraga • Vizija</translation>
+<translation id="7697693533305615127">Pretraga • Razmišljanje</translation>
 <translation id="8782867266498869301">Model se dinamički menja kako bi koristio najbolji za zadatak</translation>
 <translation id="3965507912994218570">Podešavanja asistenta Leo</translation>
-<translation id="1037324977127422019">Zdravo, zovem se Leo!</translation>
-<translation id="8930348081963284873">Inteligentni asistent zasnovan na veštačkoj inteligenciji, ugrađen direktno u Brave.</translation>
-<translation id="3528849152231418380">Treba vam pomoć oko veb-sajta?</translation>
-<translation id="1558192229187362674">Mogu vam pomoći da sumirate članke, proširite sadržaj sajta i još mnogo toga.</translation>
-<translation id="861953757568623294">Mogu vam pomoći da sumirate članke, proširite sadržaj sajta i još mnogo toga. Niste sigurni odakle da počnete? Probajte ovako:</translation>
-<translation id="5642775487085641191">Samo želite da ćaskate?</translation>
-<translation id="8857222718794549840">Pitajte me bilo šta! Možemo razgovarati o bilo kojoj temi koju želite. Uvek učim i usavršavam se da bih dao što bolje odgovore.</translation>
+<translation id="3754337604877048671">Predstavljamo Leo AI</translation>
+<translation id="5295261408976371809">Vaš <ph name="TEXT_BEFORE"/>privatni<ph name="TEXT_AFTER"/> AI asistent, ugrađen direktno u pregledač.</translation>
+<translation id="7452913484571004528">Zaista privatan AI</translation>
+<translation id="8525501048785085223">Leo ne čuva niti deli razgovore, niti koristi te podatke za obuku modela. Nalog ni prijava nisu potrebni. Samo otvorite i ćaskajte. Privatno.</translation>
+<translation id="6401201054391523929">Ćaskajte sa svojim karticama i fajlovima</translation>
+<translation id="8522038408130089105">Želite više informacija o sajtovima koje posećujete? Samo ih dodajte u ćaskanje. Priložite svoje kartice i lokalne fajlove za brze i relevantne odgovore.</translation>
+<translation id="3844955602461425647">Automatizuj dosadan posao</translation>
+<translation id="2196247864500723577">Dozvolite Brave-u da surfuje sa vama i interaguje sa svime što radite u pregledaču. Prepustite dosadne zadatke i sačuvajte vreme za ono što je važno.</translation>
+<translation id="235457946228076038">Donesite svoj model</translation>
+<translation id="7024005267156189454">Povežite sopstvene AI modele, bilo lokalno ili na daljinu. Prilagodite ponašanje, rezultate i mogućnosti Lea prema sopstvenim potrebama.</translation>
+<translation id="7291578285403921288">Saznajte više o Leo AI-u</translation>
 <translation id="9051226419897869406">Ćaskajte privatno sa asistentom Brave Leo</translation>
 <translation id="2414904697165579184">Oblikuj odgovore na osnovu sadržaja kartice</translation>
 <translation id="8258324391302611485">Sadržaj ove stranice će biti poslat asistentu Leo zajedno sa vašim porukama.</translation>
@@ -2292,6 +2308,7 @@
 <translation id="8732450785281947197">Leo AI alatke</translation>
 <translation id="6535533770697728087">Brze aktivnosti</translation>
 <translation id="3237710083340813756">Ponovo napiši</translation>
+<translation id="1223498995510244364">Sažmi</translation>
 <translation id="1252805982772190086">Kratka objava</translation>
 <translation id="2087555497198267113">Duga objava</translation>
 <translation id="4170307327863874820">Blog objava</translation>
@@ -2499,12 +2516,13 @@
 <translation id="6764845498618413165">Saznajte više.</translation>
 <translation id="7818938154803162778">Naravno, pomoći ću</translation>
 <translation id="7207456302801184289">Dobro došli u Brave</translation>
-<translation id="6716580298071890302">Koristi tamniju temu</translation>
+<translation id="293854220404217065">Ponoćna tema</translation>
 <translation id="2422927186524098759">Bočna traka</translation>
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="8000020256436988724">Traka sa alatkama</translation>
 <translation id="6225572914528673855">Traka za adresu</translation>
+<translation id="6821966107067356137">Dodaj RSS feed</translation>
 <translation id="8293206222192510085">Dodaj obeleživač</translation>
 <translation id="7758460733045216901">Panel za obeleživače</translation>
 <translation id="958268166261124668">Brave VPN: Povezan</translation>

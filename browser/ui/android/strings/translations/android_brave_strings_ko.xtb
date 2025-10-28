@@ -5,6 +5,8 @@
 <translation id="3478449063771497234">알림 비활성화됨</translation>
 <translation id="2862978891748913252">국가 선택</translation>
 <translation id="3970520675790340955">국가를 선택하세요. 그래야 지역에 맞는 옵션과 광고를 표시해드릴 수 있습니다.</translation>
+<translation id="721490496276866468">비밀번호 가져오기</translation>
+<translation id="8178175542325151321">비밀번호를 내보내기 위해 포함된 .csv 파일을 선택하여 Brave의 비밀번호 관리자에 가져오세요.</translation>
 <translation id="7301741773883122509">이제 광고를 보고 리워드를 받을 수 있습니다. 웹을 모두를 위한 더 나은 공간으로 만드는 데 일조하고 계십니다. 멋진 일이죠!</translation>
 <translation id="6439128034594289376">야호! 설정이 다 끝났습니다!</translation>
 <translation id="370665806235115550">로딩중...</translation>
@@ -109,7 +111,6 @@
 <translation id="7304425663107214334">브라우저 추천 항목 표시</translation>
 <translation id="8982438328166986164">북마크 및 인터넷 사용 기록을 기반으로 한 추천 웹사이트를 표시합니다.</translation>
 <translation id="924029461438529367">추천 검색어 표시</translation>
-<translation id="5989135139219497991">인기 추천 항목 표시</translation>
 <translation id="6285118765755298263">다른 검색 엔진 색인</translation>
 <translation id="919715748352669592">OpenSearch 사양을 준수하는 웹사이트를 자동으로 색인합니다.</translation>
 <translation id="9148058034647219655">나가기</translation>
@@ -297,6 +298,11 @@
 <translation id="4254029385847607686">12월</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="1772301834467143364">Brave News</translation>
+<translation id="2518692840036393666">메뉴 맞춤 설정</translation>
+<translation id="5582839680698949063">기본 메뉴</translation>
+<translation id="7002271985859760052">페이지 작업</translation>
+<translation id="7104487676473617844">다음 항목들은 현재 열린 웹페이지가 지원할 때만 메뉴에 표시됩니다.</translation>
+<translation id="4159764849281393303">웹앱</translation>
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="8428213095426709021">설정</translation>
 <translation id="6020176662032623904">인증된 제작자</translation>
@@ -799,7 +805,6 @@
 <translation id="750843150060816463">가스 가격(Gwei)</translation>
 <translation id="1426320910664514906">가스 한도</translation>
 <translation id="6389441740143786465">공유 허브 비활성화</translation>
-<translation id="9065203028668620118">수정</translation>
 <translation id="473775607612524610">업데이트</translation>
 <translation id="479795390141144417">계정 업데이트에 실패했습니다.</translation>
 <translation id="8084782383392198011">계정 이름은 비워 둘 수 없습니다.</translation>
@@ -1015,8 +1020,6 @@
 <translation id="8496335570810457">프리플라이트 약속:</translation>
 <translation id="5100124500279922001">프리플라이트 건너뛰기:</translation>
 <translation id="7152095322071766507">가장 자주 방문한 사이트</translation>
-<translation id="7230006500876504868">Brave로 검색</translation>
-<translation id="5888208462949095139"><ph name="DEFAULT_SEARCH_ENGINE"/>(으)로 검색</translation>
 <translation id="5456039738087398178">홈 화면 위젯</translation>
 <translation id="703185154752046151">홈 화면에 위젯 추가됨</translation>
 <translation id="4635094429202343515">Brave 검색 위젯을 사용해 보세요</translation>
@@ -1076,7 +1079,7 @@
 <translation id="7618347247876614969">주소 조회 테이블 계정:</translation>
 <translation id="7659483790930268440">주소 조회 테이블 색인:</translation>
 <translation id="5494920125229734069">모두 선택</translation>
-<translation id="6129027151000961048">레오</translation>
+<translation id="2361906291514218784">레오 AI</translation>
 <translation id="8613144770663526433">Brave 월렛으로 로그인</translation>
 <translation id="3696514931437952995"><ph name="ORIGIN"/>에 로그인합니다. Brave 월렛이 귀하의 월렛 주소를 <ph name="ORIGIN"/>에 공유합니다.</translation>
 <translation id="1028781062521375153">세부정보 보기</translation>
@@ -1093,11 +1096,11 @@
 <translation id="6742599753610126012">채팅 기록 지우기</translation>
 <translation id="3443052382074796867">대화 저장을 비활성화하면 이전에 저장된 모든 대화가 영구적으로 삭제됩니다. 이 작업은 번복할 수 없습니다.</translation>
 <translation id="3692772534525889713">다른 기기에서도 Brave 레오를 사용하려면 Play 스토어 구매 항목을 Brave 계정에 연결하세요.</translation>
-<translation id="73236265316873967">레오 프리미엄</translation>
+<translation id="592831784390389506">레오 AI 프리미엄</translation>
 <translation id="1028627582482425924">1년</translation>
 <translation id="2985392169397572983">최고 가성비</translation>
 <translation id="1166682575529520472">월간</translation>
-<translation id="451189393813405346">레오에게 묻기</translation>
+<translation id="2206846767762985925">레오 AI에게 묻기</translation>
 <translation id="7322560193401221004">파일 재생 위치 기억</translation>
 <translation id="7505951907514709271">개별 파일에서 마지막에 일시중지한 지점부터 재생이 재개됩니다.</translation>
 <translation id="6835165453349969605">목록 재생 위치 기억</translation>
@@ -1140,6 +1143,7 @@
 <translation id="3861012838874771868">재생목록 설정 열기</translation>
 <translation id="5220099266891491416">재생목록 버튼 숨기기</translation>
 <translation id="7416347631175891923">사용해보세요!</translation>
+<translation id="9065203028668620118">수정</translation>
 <translation id="1173894706177603556">이름 바꾸기</translation>
 <translation id="3596306474342941843">재생목록 삭제</translation>
 <translation id="7765158879357617694">이동</translation>
@@ -1154,7 +1158,7 @@
 <translation id="5319532905552885478">기본 재생목록에 이미 추가된 미디어 콘텐츠</translation>
 <translation id="4802584673094436231">준비 중...</translation>
 <translation id="481455355267255546">다음 내용</translation>
-<translation id="5474757891469990756">레오의 능력이 온전히 발휘되는 프리미엄:</translation>
+<translation id="3721790899869840343">레오 AI의 능력이 온전히 발휘되는 프리미엄:</translation>
 <translation id="4173478269537830374">다른 AI 모델 둘러보기</translation>
 <translation id="3453542753968940696">여러 스킬을 갖춘 강력한 모델에 우선 액세스.</translation>
 <translation id="3245401959451976966">제한 없이 창의성 발휘</translation>
@@ -1222,7 +1226,6 @@
 <translation id="4650851936784160359">필터 목록을 업데이트할 수 없습니다. 다시 시도하세요.</translation>
 <translation id="3098054327870766317">탭 종료 시 종료 취소 버튼 표시</translation>
 <translation id="1336494649091412226">Brave를 종료하시겠습니까?</translation>
-<translation id="2361906291514218784">레오 AI</translation>
 <translation id="7942415993090181327">대화 기록</translation>
 <translation id="6859935199732075666">안전한 브라우징 오류 표시</translation>
 <translation id="2735247450315842119">비공개 탭에서 스크린샷 허용</translation>
@@ -1246,6 +1249,18 @@
 <translation id="5139940364318403933">Google Drive 사용 방법 알아보기</translation>
 <translation id="729975465115245577">기기에 비밀번호 파일을 저장할 수 있는 앱이 없습니다.</translation>
 <translation id="1129510026454351943">세부정보: <ph name="ERROR_DESCRIPTION"/></translation>
+<translation id="5594899180331219722">파일 선택</translation>
+<translation id="3744219658596020825">비밀번호를 가져오지 못했습니다</translation>
+<translation id="8258027225380843424">가져오기 성공!</translation>
+<translation id="766635563210446220">비밀번호를 가져올 수 없습니다. <ph name="FILENAME"/>을(를) 확인하고 형식이 올바른지 확인하세요. <ph name="BEGIN_LINK"/>자세히 알아보기<ph name="END_LINK"/></translation>
+<translation id="6581356304040102696">비밀번호를 가져올 수 없습니다. 파일 크기는 1MB 미만이어야 합니다.</translation>
+<translation id="5895244669404288318">{COUNT, plural,=1 {비밀번호를 가져올 수 없습니다. 한 번에 1개의 비밀번호만 가져올 수 있습니다.}other {비밀번호를 가져올 수 없습니다. 한 번에 <ph name="COUNT_MANY"/>개의 비밀번호만 가져올 수 있습니다.}}</translation>
+<translation id="3748424433435232460">이 계정의 비밀번호는 이미 이 기기에 저장되어 있습니다</translation>
+<translation id="6438475350605608554">다른 탭에서 비밀번호를 가져오는 중입니다</translation>
+<translation id="3482868954775580230">선택한 파일을 읽지 못했습니다. <ph name="EXCEPTION_INFO"/></translation>
+<translation id="9162995380643712715">{IMPORT_COUNT, plural,=1 {비밀번호 1개를 성공적으로 가져왔습니다.}other {<ph name="IMPORT_COUNT_MANY"/>개의 비밀번호를 성공적으로 가져왔습니다.}}</translation>
+<translation id="4637949129057123593">가져오기 실패.</translation>
+<translation id="4300452012226767715">비밀번호 관리자를 사용할 수 없습니다.</translation>
 <translation id="6221633008163990886">비밀번호를 내보내려면 잠금 해제하세요</translation>
 <translation id="5245792669563792664">비밀번호</translation>
 <translation id="10614374240317010">저장하지 않음</translation>

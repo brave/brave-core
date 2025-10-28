@@ -5,6 +5,8 @@
 <translation id="3478449063771497234">As notificacións están desactivadas</translation>
 <translation id="2862978891748913252">Selecciona o teu país</translation>
 <translation id="3970520675790340955">Selecciona o teu país para que poidamos mostrarche as opcións e anuncios adecuados para a túa rexión.</translation>
+<translation id="721490496276866468">Importar contrasinais</translation>
+<translation id="8178175542325151321">Selecciona un ficheiro .csv que conteña os teus contrasinais para importalos ao xestor de contrasinais de Brave.</translation>
 <translation id="7301741773883122509">Agora, pode conseguir recompensas só por ver anuncios. A súa axuda fai que a web sexa un lugar mellor para todos, e iso é fantástico!</translation>
 <translation id="6439128034594289376">Ben! Xa está todo listo!</translation>
 <translation id="370665806235115550">Cargando...</translation>
@@ -109,7 +111,6 @@
 <translation id="7304425663107214334">Mostrar suxestións de navegadores</translation>
 <translation id="8982438328166986164">Amosa suxestións de sitios web baseadas nos teus marcadores e no teu historial de navegación.</translation>
 <translation id="924029461438529367">Mostrar suxestións de busca</translation>
-<translation id="5989135139219497991">Mostrar as suxestións principais</translation>
 <translation id="6285118765755298263">Indexa outros motores de busca</translation>
 <translation id="919715748352669592">Indexa automaticamente os sitios web que seguen a especificación OpenSearch.</translation>
 <translation id="9148058034647219655">Saír</translation>
@@ -297,6 +298,11 @@
 <translation id="4254029385847607686">Decembro</translation>
 <translation id="3960619311638643872">VPN de Brave</translation>
 <translation id="1772301834467143364">Noticias de Brave</translation>
+<translation id="2518692840036393666">Personalizar menú</translation>
+<translation id="5582839680698949063">Menú principal</translation>
+<translation id="7002271985859760052">Accións da páxina</translation>
+<translation id="7104487676473617844">Os seguintes elementos só serán visibles no menú cando sexan compatibles coa páxina web aberta.</translation>
+<translation id="4159764849281393303">WebApp</translation>
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> dólares estadounidenses</translation>
 <translation id="8428213095426709021">Configuración</translation>
 <translation id="6020176662032623904">Creador verificado</translation>
@@ -798,7 +804,6 @@ Se non aceptas esta solicitude, a VPN non se volverá conectar e a conexión a I
 <translation id="750843150060816463">Prezo do gas (Gwei)</translation>
 <translation id="1426320910664514906">Límite de gas</translation>
 <translation id="6389441740143786465">Desactivar menú para compartir</translation>
-<translation id="9065203028668620118">Editar</translation>
 <translation id="473775607612524610">Actualizar</translation>
 <translation id="479795390141144417">Non se puido actualizar a conta.</translation>
 <translation id="8084782383392198011">O nome da conta non pode quedar baleiro.</translation>
@@ -1014,8 +1019,6 @@ Se non aceptas esta solicitude, a VPN non se volverá conectar e a conexión a I
 <translation id="8496335570810457">Compromiso de simulación:</translation>
 <translation id="5100124500279922001">Omitir simulación:</translation>
 <translation id="7152095322071766507">Sitio visitado destacado</translation>
-<translation id="7230006500876504868">Buscar con Brave</translation>
-<translation id="5888208462949095139">Buscar con <ph name="DEFAULT_SEARCH_ENGINE"/></translation>
 <translation id="5456039738087398178">Widget da pantalla de inicio</translation>
 <translation id="703185154752046151">Engadiuse o widget á pantalla de inicio</translation>
 <translation id="4635094429202343515">Proba o widget de Busca de Brave</translation>
@@ -1075,7 +1078,7 @@ Se non aceptas esta solicitude, a VPN non se volverá conectar e a conexión a I
 <translation id="7618347247876614969">Conta de táboa de busca de enderezos:</translation>
 <translation id="7659483790930268440">Índice de táboa de busca de enderezos:</translation>
 <translation id="5494920125229734069">Seleccionar todo</translation>
-<translation id="6129027151000961048">Leo</translation>
+<translation id="2361906291514218784">IA de Leo</translation>
 <translation id="8613144770663526433">Inicie sesión con Carteira de Brave</translation>
 <translation id="3696514931437952995">Está iniciando sesión en <ph name="ORIGIN"/>. Carteira de Brave compartirá o enderezo da súa carteira con <ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">Ver detalles</translation>
@@ -1092,11 +1095,11 @@ Se non aceptas esta solicitude, a VPN non se volverá conectar e a conexión a I
 <translation id="6742599753610126012">Eliminar historial de conversas</translation>
 <translation id="3443052382074796867">Ao desactivar o almacenamento das conversas, eliminarás para sempre todas as conversas gardadas. Isto non se pode desfacer.</translation>
 <translation id="3692772534525889713">Vincula a túa compra de Play Store á túa conta de Brave para usar Brave Leo noutros dispositivos.</translation>
-<translation id="73236265316873967">Leo Premium</translation>
+<translation id="592831784390389506">Leo IA Premium</translation>
 <translation id="1028627582482425924">Un ano</translation>
 <translation id="2985392169397572983">MELLOR PREZO</translation>
 <translation id="1166682575529520472">Mensualmente</translation>
-<translation id="451189393813405346">Preguntar a Leo</translation>
+<translation id="2206846767762985925">Preguntar a Leo IA</translation>
 <translation id="7322560193401221004">Recordar onde se detivo a reprodución do ficheiro</translation>
 <translation id="7505951907514709271">Nos ficheiros individuais, retomar a reprodución onde se detivo por última vez</translation>
 <translation id="6835165453349969605">Recordar onde se detivo a reprodución da lista</translation>
@@ -1139,6 +1142,7 @@ Se non aceptas esta solicitude, a VPN non se volverá conectar e a conexión a I
 <translation id="3861012838874771868">Abrir Configuración de Lista de reprodución</translation>
 <translation id="5220099266891491416">Ocultar Configuración de Lista de reprodución</translation>
 <translation id="7416347631175891923">Próbao!</translation>
+<translation id="9065203028668620118">Editar</translation>
 <translation id="1173894706177603556">Cambiar o nome</translation>
 <translation id="3596306474342941843">Eliminar lista de reprodución</translation>
 <translation id="7765158879357617694">Mover</translation>
@@ -1153,7 +1157,7 @@ Se non aceptas esta solicitude, a VPN non se volverá conectar e a conexión a I
 <translation id="5319532905552885478">Xa se engadiu contido multimedia á lista de reprodución predeterminada</translation>
 <translation id="4802584673094436231">Preparando...</translation>
 <translation id="481455355267255546">A continuación</translation>
-<translation id="5474757891469990756">Desata todo o poder de Leo con Premium.</translation>
+<translation id="3721790899869840343">Libera todo o potencial de Leo IA con Premium:</translation>
 <translation id="4173478269537830374">Explorar diferentes modelos de IA</translation>
 <translation id="3453542753968940696">Acceso prioritario a modelos potentes con diferentes habilidades.</translation>
 <translation id="3245401959451976966">Desbloquea a túa creatividade</translation>
@@ -1221,7 +1225,6 @@ Se non aceptas esta solicitude, a VPN non se volverá conectar e a conexión a I
 <translation id="4650851936784160359">Non se puido actualizar a lista de filtros. Téntao de novo</translation>
 <translation id="3098054327870766317">Amosar o botón de desfacer cando se pechan os separadores</translation>
 <translation id="1336494649091412226">Queres saír de Brave?</translation>
-<translation id="2361906291514218784">IA de Leo</translation>
 <translation id="7942415993090181327">Historial de conversas</translation>
 <translation id="6859935199732075666">Mostrar erros de Navegación segura</translation>
 <translation id="2735247450315842119">Permitir capturas de pantalla nos separadores privados</translation>
@@ -1245,6 +1248,18 @@ Se non aceptas esta solicitude, a VPN non se volverá conectar e a conexión a I
 <translation id="5139940364318403933">Aprender a utilizar Google Drive</translation>
 <translation id="729975465115245577">O dispositivo non ten unha aplicación para almacenar o ficheiro de contrasinais.</translation>
 <translation id="1129510026454351943">Detalles: <ph name="ERROR_DESCRIPTION"/></translation>
+<translation id="5594899180331219722">Seleccionar ficheiro</translation>
+<translation id="3744219658596020825">Non se importaron os teus contrasinais</translation>
+<translation id="8258027225380843424">Importación correcta!</translation>
+<translation id="766635563210446220">Non se poden importar os contrasinais. Comproba <ph name="FILENAME"/> e asegúrate de que está correctamente formatado. <ph name="BEGIN_LINK"/>Saber máis<ph name="END_LINK"/></translation>
+<translation id="6581356304040102696">Non se poden importar os contrasinais. O tamaño do ficheiro debe ser inferior a 1 MB.</translation>
+<translation id="5895244669404288318">{COUNT, plural, =1 {Non se poden importar contrasinais. Só podes importar 1 contrasinal á vez.} other {Non se poden importar contrasinais. Só podes importar até <ph name="COUNT_MANY"/> contrasinais á vez.}}</translation>
+<translation id="3748424433435232460">Xa se gardou un contrasinal para esta conta neste dispositivo</translation>
+<translation id="6438475350605608554">Xa estás a importar contrasinais noutra pestana</translation>
+<translation id="3482868954775580230">Produciuse un erro ao ler o ficheiro seleccionado. <ph name="EXCEPTION_INFO"/></translation>
+<translation id="9162995380643712715">{IMPORT_COUNT, plural, =1 {Importouse correctamente 1 contrasinal.} other {Importáronse correctamente <ph name="IMPORT_COUNT_MANY"/> contrasinais.}}</translation>
+<translation id="4637949129057123593">Erro na importación.</translation>
+<translation id="4300452012226767715">O xestor de contrasinais non está dispoñible.</translation>
 <translation id="6221633008163990886">Desbloquea a pantalla para exportar os teus contrasinais</translation>
 <translation id="5245792669563792664">contrasinais</translation>
 <translation id="10614374240317010">Contrasinais que non se gardan nunca</translation>

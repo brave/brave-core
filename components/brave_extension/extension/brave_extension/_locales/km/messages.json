@@ -1,6 +1,6 @@
 {
   "appName": {
-    "message": "The Brave Extension",
+    "message": "កម្មវិធីបន្ថែម Brave",
     "description": "The name of the extension."
   },
   "shields": {
@@ -8,23 +8,23 @@
     "description": "The Shields feature name"
   },
   "up": {
-    "message": "up",
+    "message": "ឡើង",
     "description": "Message for when shields is enabled"
   },
   "down": {
-    "message": "down",
+    "message": "ចុះ",
     "description": "Message for when shields is disabled"
   },
   "forThisSite": {
-    "message": "for this site",
+    "message": "សម្រាប់គេហទំព័រនេះ",
     "description": "Partial string for the phrase `shields is up *for this site*`"
   },
   "enabledMessage": {
-    "message": "If a site appears broken, try shields down",
+    "message": "ប្រសិនបើគេហទំព័រមានបញ្ហា ព្យាយាមបិទខែលការពារ ",
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "You’re browsing this site without Brave’s privacy and security protections. Does it not work right with Shields up?",
+    "message": "អ្នកកំពុងរុករកគេហទំព័រនេះដោយគ្មានការការពារសុវត្ថិភាពនិងឯកជនភាពរបស់ Brave។ តើវាមិនដំណើរការល្អជាមួយខែលការពារឡើងទេ?",
     "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
   },
   "reportBrokenSite": {
@@ -32,27 +32,27 @@
     "description": "Message for the button allowing users to report a broken site to Brave developers"
   },
   "itemsBlocked": {
-    "message": "Items blocked",
+    "message": "ធាតុត្រូវបានរារាំង",
     "description": "Message for the main blocked resources text when there is more than one ad/track/script blocked (plural)"
   },
   "itemBlocked": {
-    "message": "Item blocked",
+    "message": "ធាតុត្រូវបានរារាំង",
     "description": "Message for the main blocked resources text when there is one ad/track/script blocked (singular)"
   },
   "and": {
-    "message": "and",
+    "message": "និង",
     "description": "Message for the `and` conjunction. Used to connect grammatically the `item blocked and connection upgrades` and its variant phrases"
   },
   "connectionsUpgraded": {
-    "message": "connections upgraded",
+    "message": "ការភ្ជាប់ត្រូវបានលើកកម្រិត",
     "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and more than one connection upgrade (plural)"
   },
   "connectionUpgraded": {
-    "message": "connection upgraded",
+    "message": "ការភ្ជាប់ត្រូវបានលើកកម្រិត",
     "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
   },
   "thirdPartyTrackersBlocked": {
-    "message": "Cross-site trackers blocked",
+    "message": "ឧបករណ៍តាមដានតាមគេហទំព័រត្រូវបានរារាំង",
     "description": "Message for the scripts blocked row label"
   },
   "readOnlyAdsTrackersBlocking": {
@@ -60,11 +60,11 @@
     "description": "Message for the option in the ads and trackers blocking select field in read only view"
   },
   "aggressiveAdsTrackersBlocking": {
-    "message": "Trackers & ads blocked (aggressive)",
+    "message": "ការផ្សាយពាណិជ្ជកម្មនិងឧបករណ៍តាមដានត្រូវបានរារាំង (ឆ្កួត)",
     "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
   },
   "standardAdsTrackersBlocking": {
-    "message": "Trackers & ads blocked (standard)",
+    "message": "ការផ្សាយពាណិជ្ជកម្មនិងឧបករណ៍តាមដានត្រូវបានរារាំង (ស្តង់ដារ)",
     "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with standard heuristics"
   },
   "allowAdsTrackers": {
@@ -72,19 +72,19 @@
     "description": "Message for the option in the ads and trackers blocking select field to allow all ads and trackers"
   },
   "connectionsUpgradedHTTPS": {
-    "message": "Connections upgraded to HTTPS",
+    "message": "ការភ្ជាប់បានលើកកម្រិតទៅ HTTP",
     "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"
   },
   "connectionUpgradedHTTPS": {
-    "message": "Connection upgraded to HTTPS",
+    "message": "ការភ្ជាប់បានលើកកម្រិតទៅ HTTP",
     "description": "Message for the main blocked resources text when there is one connection upgraded (singular) and no other ads/trackers blocked"
   },
   "scriptsBlocked": {
-    "message": "Scripts blocked",
+    "message": "ស្គ្រីបត្រូវបានរារាំង",
     "description": "Message for the scripts blocked row label"
   },
   "thirdPartyCookiesBlocked": {
-    "message": "Cross-site cookies blocked",
+    "message": "ខូគីសាមីមេសត្រូវបានរារាំង",
     "description": "Message for the option in the cookies select field to block all 3rd party cookies"
   },
   "allCookiesBlocked": {
@@ -92,11 +92,11 @@
     "description": "Message for the option in the cookies select field to block all cookies"
   },
   "allCookiesAllowed": {
-    "message": "All cookies allowed",
+    "message": "អនុញ្ញាតខូគីទាំងអស់",
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "readOnlyFingerprinting": {
-    "message": "Fingerprinting blocked",
+    "message": "បានទប់ស្កាត់ការចាប់សម្គាល់ម្រាមដៃ",
     "description": "Message for the option in the fingerprinting field in read only view"
   },
   "standardFingerprinting": {
@@ -112,27 +112,27 @@
     "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {
-    "message": "Fingerprinting attempts",
+    "message": "មិនភាពម៉ាញទាន់ពេលវេលា",
     "description": "Message for the fingerprinting attempts blocked panel"
   },
   "scriptsOnThisSite": {
-    "message": "Scripts on this site",
+    "message": "ស្គ្រីបនៅគេហទំព័រនេះ",
     "description": "Message for the script resources blocked panel"
   },
   "blockedScripts": {
-    "message": "Blocked scripts",
+    "message": "ស្គ្រីបដែលបានបិទ",
     "description": "Message for the script resources blocked"
   },
   "allowedScripts": {
-    "message": "Allowed scripts",
+    "message": "ស្គ្រីបដែលបានអនុញ្ញាត",
     "description": "Message for the script resources allowed"
   },
   "blockAll": {
-    "message": "Block all",
+    "message": "ទប់ស្កាត់ចំពោះអ្វីៗទាំងអស់",
     "description": "Message for the resources blocked *block all* option"
   },
   "allowAll": {
-    "message": "Allow all",
+    "message": "អនុញ្ញាតចំពោះអ្វីៗទាំងអស់",
     "description": "Message for the resources blocked *allow all* option"
   },
   "block": {
@@ -144,15 +144,15 @@
     "description": "Message for the resources blocked *allow* option"
   },
   "blockedOnce": {
-    "message": "Blocked once",
+    "message": "ត្រូវបានរារាំងម្តង",
     "description": "Message for the resources blocked *blocked once* option"
   },
   "allowedOnce": {
-    "message": "Allowed once",
+    "message": "ត្រូវបានអនុញ្ញាតម្តង",
     "description": "Message for the resources blocked *allowed once* option"
   },
   "allowScriptsOnce": {
-    "message": "Allow scripts once",
+    "message": "អនុញ្ញាតស្គ្រីបម្តង",
     "description": "Message for the shortcut in the main interface to allow all scripts once"
   },
   "cancel": {
@@ -164,15 +164,15 @@
     "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
   },
   "applyOnce": {
-    "message": "Apply once",
+    "message": "អនុវត្តម្តង",
     "description": "Message for action in dynamic list of resources blocked to *apply once*"
   },
   "changeDefaults": {
-    "message": "Change global shield defaults",
+    "message": "ផ្លាស់ប្តូរការកំណត់ស្ដង់ដារខែលការពារសាកល",
     "description": "Message for the button action linking to the settings page"
   },
   "manageCustomFilters": {
-    "message": "Manage custom filters",
+    "message": "គ្រប់គ្រងតម្រងផ្ទាល់ខ្លួន",
     "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
   },
   "elementPickerMode": {
@@ -180,23 +180,23 @@
     "description": "Message for context menu that enables the element picker UI to apply cosmetic filter rules to the page."
   },
   "advancedView": {
-    "message": "Advanced View",
+    "message": "ទិដ្ឋភាពកម្រិតខ្ពស់",
     "description": "Message for the advanced view option"
   },
   "simpleView": {
-    "message": "Simple View",
+    "message": "ទិដ្ឋភាពធម្មតា",
     "description": "Message for the simple view option"
   },
   "shieldsExplanation": {
-    "message": "Sites often include cookies and scripts which try to identify you and your device (often embedded into ads). They want to work out who you are and follow you across the web — tracking what you do on every site. Brave blocks these things so that you can browse without being followed around.",
+    "message": "គេហទំព័រច្រើនរួមបញ្ចូលខូគីនិងស្គ្រីបដែលព្យាយាមកំណត់អត្តសញ្ញាណអ្នកនិងឧបករណ៍របស់អ្នក (ឆ្លាក់ក្នុងការផ្សាយពាណិជ្ជកម្ម)។ ពួកគេចង់ដឹងថាតើអ្នកជាវិញ្ញាបនបត្រមឺងនិងតាមដានអ្នកនៅលើបណ្តាញគឺ…តាមដាណាមេកាប្ទាប់ ឬកត់ម្តងពីទីមួយទៅទីបញ្ឈប់ដោយបានកំណត់ពីអត្តសញ្ញាណមួយ។ Brave រារាំងនូវភូមិក្រែងរុក្ខជាតិនិងចឹងអ្នកអាចរិក្កិយោតេស្តាយដោយគ្មានក្ិាស់។",
     "description": "Message in read-only view explaining what Brave Shields do"
   },
   "blockedResoucesExplanation": {
-    "message": "Cross-site trackers and other creepy things blocked",
+    "message": "ឧបករណ៍តាមដានតាមគេហទំព័រនិងរាយនូវអ្វីដែលមានតម្លៃ",
     "description": "Message for the main trackers count in Shields simple view"
   },
   "webCompatWarning": {
-    "message": "Changing Shield settings in this view may affect web compatibility on this site.",
+    "message": "ការផ្លាស់ប្តូរខែលការពារនៅក្នុងទិដ្ឋភាពនេះអាចប៉ះពាល់ការភ្ជាប់គេហទំព័រ។",
     "description": "Message for web compat warning when switching from simple to advanced view"
   },
   "gotIt": {
@@ -208,7 +208,7 @@
     "description": "Message inviting the user to learn more about Shields"
   },
   "addToBrave": {
-    "message": "Add to Brave",
+    "message": "បន្ថែមទៅ Brave",
     "description": "Message for adding an extension to Brave"
   },
   "removeFromBrave": {

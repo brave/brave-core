@@ -1,11 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="de">
-<translation id="3586180167003092914">In den <ph name="BEGIN_LINK1"/>Android-Einstellungen<ph name="END_LINK1"/> verwalten
-
-Diese Brave-Einstellungen werden durch das erweiterte Sicherheitsprogramm gesteuert:
-• „Immer verschlüsselte Verbindungen verwenden“ ist aktiviert.
-• „JavaScript-Optimierungstool“ ist deaktiviert. <ph name="BEGIN_LINK2"/>Ausnahmen für Websites verwalten<ph name="END_LINK2"/></translation>
 <translation id="1006017844123154345">Online öffnen</translation>
 <translation id="1036348656032585052">Deaktivieren</translation>
 <translation id="1070329623210597193">Dateien, die von dieser Website aufgerufen oder bearbeitet werden können</translation>
@@ -45,6 +40,7 @@ Diese Brave-Einstellungen werden durch das erweiterte Sicherheitsprogramm gesteu
 <translation id="1500473259453106018">Karte „Preissenkungen auf Tabs“ ausblenden</translation>
 <translation id="1508931164824684991">Websites dürfen JavaScript verwenden</translation>
 <translation id="1510341833810331442">Websites dürfen keine Daten auf deinem Gerät speichern</translation>
+<translation id="1532175480576580256">Die Ansicht „Meine Verknüpfungen“ am unteren Rand ist vollständig geöffnet</translation>
 <translation id="1538031354170655462">Websites verwenden Nahfeldkommunikation für gewöhnlich dazu, mit Tags oder Geräten in der Nähe zu interagieren, z. B. beim Scannen von Preisetiketten oder kontaktlosen Bezahlen</translation>
 <translation id="1547123415014299762">Drittanbieter-Cookies werden zugelassen</translation>
 <translation id="3665719978526894928">Websites mit der V8-Engine von Brave beschleunigen (dadurch wird Brave etwas anfälliger für Angriffe)</translation>
@@ -74,6 +70,7 @@ Diese Brave-Einstellungen werden durch das erweiterte Sicherheitsprogramm gesteu
 <translation id="6704867734300244173">Wenn diese Option aktiviert ist, wird Brave schneller ausgeführt und Funktionen, die JavaScript verwenden, sollten wie vorgesehen laufen. Ist sie deaktiviert, wird die Leistung reduziert, V8 ist dafür aber widerstandsfähiger gegen Angriffe.</translation>
 <translation id="1818308510395330587">Damit <ph name="APP_NAME"/> AR verwenden kann, muss die Kameraberechtigung auch in den <ph name="BEGIN_LINK"/>Android-Einstellungen<ph name="END_LINK"/> aktiviert sein.</translation>
 <translation id="1848033246551405023">Schriftart Sans Serif</translation>
+<translation id="1861262398884155592">Dieser Ordner ist leer</translation>
 <translation id="1881806992065048905">Ansicht am unteren Rand – Darstellung „Neuer Tab“-Seite</translation>
 <translation id="1887786770086287077">Der Standortzugriff ist für dieses Gerät deaktiviert. Du kannst ihn in den <ph name="BEGIN_LINK"/>Android-Einstellungen<ph name="END_LINK"/> aktivieren.</translation>
 <translation id="1906181697255754968">Websites greifen normalerweise auf Dateien und Ordner auf deinem Gerät zu, um Funktionen wie die automatische Speicherung deiner Arbeit umsetzen zu können</translation>
@@ -119,6 +116,7 @@ Diese Brave-Einstellungen werden durch das erweiterte Sicherheitsprogramm gesteu
 <translation id="228293613124499805">Die meisten Websites, die du besuchst, speichern wahrscheinlich Daten auf deinem Gerät. Damit du bequemer im Internet surfen kannst, werden häufig Einstellungen oder Informationen gespeichert, die du an die jeweiligen Websites weitergibst. Wir empfehlen, diese Einstellung aktiviert zu lassen.</translation>
 <translation id="2289270750774289114">Nachfragen, wenn eine Website nach Bluetooth-Geräten in der Nähe suchen möchte (empfohlen)</translation>
 <translation id="2315043854645842844">Die clientseitige Zertifikatauswahl wird vom Betriebssystem nicht unterstützt.</translation>
+<translation id="2347601491101454548">Die Ansicht „Meine Verknüpfungen“ am unteren Rand ist halb geöffnet</translation>
 <translation id="2359808026110333948">Weiter</translation>
 <translation id="904887679952026733">Sofern möglich, dunkles Design auf Websites anwenden, wenn Brave das dunkle Design verwendet</translation>
 <translation id="2390272837142897736">Heranzoomen</translation>
@@ -149,6 +147,11 @@ Diese Brave-Einstellungen werden durch das erweiterte Sicherheitsprogramm gesteu
 <translation id="2588271083332682494">Überblick dank Tabgruppen</translation>
 <translation id="2597457036804169544">Dunkles Design nicht auf Websites anwenden</translation>
 <translation id="2606760465469169465">Automatische Bestätigung</translation>
+<translation id="7615153661410655750">In den <ph name="BEGIN_LINK1"/>Android-Einstellungen<ph name="END_LINK1"/> verwalten
+
+Diese Brave-Einstellungen werden durch das erweiterte Sicherheitsprogramm gesteuert:
+• „Immer verschlüsselte Verbindungen verwenden“ ist aktiviert.
+• „JavaScript-Optimierungstool“ ist deaktiviert. <ph name="BEGIN_LINK2"/>Ausnahmen für Websites verwalten<ph name="END_LINK2"/></translation>
 <translation id="2621115761605608342">JavaScript für eine bestimmte Website zulassen.</translation>
 <translation id="2626708220538466178">Ansicht am unteren Rand des Standardbrowsers geschlossen</translation>
 <translation id="2653659639078652383">Senden</translation>
@@ -306,6 +309,7 @@ Diese Brave-Einstellungen werden durch das erweiterte Sicherheitsprogramm gesteu
 <translation id="4338831206024587507">Alle Websites unter <ph name="DOMAIN"/></translation>
 <translation id="4340799661701629185">Websites dürfen keine Benachrichtigungen senden</translation>
 <translation id="4402755511846832236">Websites daran hindern, Informationen zu deiner aktiven Nutzung dieses Geräts abzurufen</translation>
+<translation id="8382883799082236806">Die Ansicht am unteren Rand zu Brave-Farben ist halb geöffnet</translation>
 <translation id="4412992751769744546">Drittanbieter-Cookies zulassen</translation>
 <translation id="1675197434085185531">Brave verhindert, dass Websites Drittanbieter-Cookies verwenden, um deine Aktivitäten während des Surfens zu erfassen. Rufe die Einstellungen auf, um den <ph name="BEGIN_LINK"/>Zugriff auf Drittanbieter-Cookies zu verwalten<ph name="END_LINK"/>.</translation>
 <translation id="4425416282877905577">Schriftart Serif</translation>
@@ -338,6 +342,7 @@ Diese Brave-Einstellungen werden durch das erweiterte Sicherheitsprogramm gesteu
 <translation id="4816495437032298535">Gespeicherter Zoom für Websites</translation>
 <translation id="4836046166855586901">Nachfragen, wenn eine Website Informationen zu deiner aktiven Nutzung dieses Geräts abrufen möchte</translation>
 <translation id="483914009762354899">Alle Websites unter dieser Domain einschließen</translation>
+<translation id="4852997963351138624">Hintergrundfarbe (Hex-Code)</translation>
 <translation id="4882919381756638075">Websites verwenden normalerweise dein Mikrofon für Kommunikationsfunktionen wie Videochats</translation>
 <translation id="4883854917563148705">Verwaltete Einstellungen können nicht zurückgesetzt werden</translation>
 <translation id="4887024562049524730">Nachfragen, bevor Websites erlaubt wird, mein Virtual-Reality-Gerät und meine Virtual-Reality-Daten zu verwenden (empfohlen)</translation>
@@ -367,6 +372,7 @@ Diese Brave-Einstellungen werden durch das erweiterte Sicherheitsprogramm gesteu
 <translation id="5100237604440890931">Minimiert – zum Maximieren klicken</translation>
 <translation id="7143053178237996319">Du kannst Brave jederzeit nutzen, wenn du in Nachrichten, Dokumenten und anderen Apps auf Links tippst.</translation>
 <translation id="512938610812707830">Die Ansicht am unteren Rand mit Designsammlungen für die Seite „Neuer Tab“ ist vollständig geöffnet</translation>
+<translation id="5137460097045297858">Die Ansicht am unteren Rand für den Discover-Feed ist halb geöffnet</translation>
 <translation id="5139253256813381453">{PRICE_DROP_COUNT,plural, =1{Preissenkung auf deinen geöffneten Tabs}other{Preissenkungen auf deinen geöffneten Tabs}}</translation>
 <translation id="5186036860380548585">Option ist oben auf dem Bildschirm verfügbar</translation>
 <translation id="5197729504361054390">Die von dir ausgewählten Kontakte werden mit <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> geteilt.</translation>
@@ -385,7 +391,6 @@ Diese Brave-Einstellungen werden durch das erweiterte Sicherheitsprogramm gesteu
 <translation id="5335288049665977812">Ausführung von JavaScript durch Websites zulassen (empfohlen)</translation>
 <translation id="534295439873310000">NFC-Geräte</translation>
 <translation id="5344522958567249764">Datenschutz bei Anzeigen verwalten</translation>
-<translation id="5371407439562620893">JavaScript-Optimierung und -Sicherheit</translation>
 <translation id="5373874281522292782">Deine Tabgruppen sind gespeichert</translation>
 <translation id="5394307150471348411">{DETAIL_COUNT,plural, =1{(+ 1 weitere)}other{(+ # weitere)}}</translation>
 <translation id="5403592356182871684">Namen</translation>
@@ -467,6 +472,7 @@ Diese Brave-Einstellungen werden durch das erweiterte Sicherheitsprogramm gesteu
 <translation id="6207207788774442484">Daten löschen und Berechtigungen zurücksetzen</translation>
 <translation id="6231752747840485235">„<ph name="APP_NAME"/>“ deinstallieren?</translation>
 <translation id="4789073065838177382">Tippe auf „Browser-App“ &gt; „Brave“</translation>
+<translation id="6260830281887654268">Die Ansicht am unteren Rand mit Designsammlungen für die Seite „Neuer Tab“ ist halb geöffnet</translation>
 <translation id="6262191102408817757">Basierend auf deinem letzten Tab</translation>
 <translation id="6262279340360821358"><ph name="PERMISSION_1"/> und <ph name="PERMISSION_2"/> blockiert</translation>
 <translation id="6270391203985052864">Websites können fragen, ob du Benachrichtigungen erhalten möchtest</translation>
@@ -498,8 +504,10 @@ Diese Brave-Einstellungen werden durch das erweiterte Sicherheitsprogramm gesteu
 <translation id="6608650720463149374"><ph name="GIGABYTES"/> GB</translation>
 <translation id="6612358246767739896">Geschützte Inhalte</translation>
 <translation id="662080504995468778">Bleiben</translation>
+<translation id="6630443592285535486">Hex-Code eingeben</translation>
 <translation id="6635327442719709864">Wenn diese Funktion aktiviert ist, können Websites anfragen, ob sie serielle Ports verwenden dürfen. Ist sie deaktiviert, können Websites keine seriellen Ports verwenden.</translation>
 <translation id="6678072580827808850">Sicherheitscheck aufrufen</translation>
+<translation id="6682057173375416470">Vorgeschlagene Artikel auf der Seite „Neuer Tab“ abrufen</translation>
 <translation id="6683865262523156564">Diese Website ist einer Gruppe zugeordnet, die deine Aktivitäten sehen kann. Die Gruppe wird durch <ph name="RWS_OWNER"/> definiert.</translation>
 <translation id="6689172468748959065">Profilfotos</translation>
 <translation id="6697925417670533197">Aktive Downloads</translation>
@@ -549,13 +557,16 @@ Diese Brave-Einstellungen werden durch das erweiterte Sicherheitsprogramm gesteu
 <translation id="728412880473384942">Websites sind schneller, aber weniger sicher</translation>
 <translation id="7366415735885268578">Website hinzufügen</translation>
 <translation id="7368695150573390554">Sämtliche Offlinedaten werden gelöscht</translation>
+<translation id="7369678931043226462">Die Ansicht am unteren Rand für „Seite ‚Neuer Tab‘ anpassen“ ist halb geöffnet</translation>
 <translation id="7383715096023715447">Einstellungen für <ph name="DOMAIN"/></translation>
 <translation id="7399802613464275309">Sicherheitscheck</translation>
 <translation id="7406113532070524618">Diese Einstellung funktioniert, ohne dass dabei deine Identität preisgegeben oder Websites erlaubt wird, deinen Browserverlauf einzusehen; allerdings können Websites bei der Überprüfung eine kleine Datenmenge weitergeben</translation>
 <translation id="7409735910987429903">Websites senden möglicherweise Pop-ups zum Anzeigen von Werbung oder bringen dich mithilfe von Weiterleitungen zu Websites, die du möglicherweise gar nicht besuchen möchtest</translation>
+<translation id="7412160840120117304">Primäre Farbe (Hex-Code)</translation>
 <translation id="7423098979219808738">Zuerst fragen</translation>
 <translation id="7423538860840206698">Es dürfen keine Dateien aus der Zwischenablage abgerufen werden</translation>
 <translation id="7425915948813553151">Dunkles Design für Websites</translation>
+<translation id="746412105358554870">JavaScript-Optimierung und -Sicherheit</translation>
 <translation id="7478658909253570368">Websites dürfen keine Verbindung mit seriellen Ports herstellen</translation>
 <translation id="7488573225650545859">„Tabs in App-Liste anzeigen“ ausblenden</translation>
 <translation id="7521387064766892559">JavaScript</translation>
@@ -585,6 +596,7 @@ Diese Brave-Einstellungen werden durch das erweiterte Sicherheitsprogramm gesteu
 <translation id="7804248752222191302">Eine Website verwendet deine Kamera</translation>
 <translation id="7805832099057502789">Ansicht am unteren Rand – Darstellung „Neuer Tab“-Seite – in vollständiger Höhe geöffnet</translation>
 <translation id="6720480757902085971">Von Brave bereitgestellt</translation>
+<translation id="7809029041571842593">Die Ansicht am unteren Rand mit den Karten auf der Seite „Neuer Tab“ ist halb geöffnet</translation>
 <translation id="7815680994978050279">Gefährlicher Download blockiert</translation>
 <translation id="7835852323729233924">Medien werden wiedergegeben</translation>
 <translation id="783819812427904514">Stummschaltung des Videos aufheben</translation>
@@ -642,6 +654,7 @@ Diese Brave-Einstellungen werden durch das erweiterte Sicherheitsprogramm gesteu
 <translation id="8441146129660941386">Zurück navigieren</translation>
 <translation id="8444433999583714703">Um <ph name="APP_NAME"/> Zugriff auf deinen Standort zu gewähren, musst du die Standortberechtigung auch in den <ph name="BEGIN_LINK"/>Android-Einstellungen<ph name="END_LINK"/> aktivieren.</translation>
 <translation id="8447861592752582886">Zugriffsberechtigung auf Gerät widerrufen</translation>
+<translation id="8467359479529706065">Die Ansicht am unteren Rand zur Darstellung der Seite „Neuer Tab“ ist halb geöffnet</translation>
 <translation id="8471525937465764768">Websites verwenden normalerweise USB-Geräte für Funktionen wie das Drucken eines Dokuments oder das Speichern auf einem Speichergerät</translation>
 <translation id="8473055640493819707"><ph name="APP_NAME"/> ist veraltet. Bitte installiere die App neu.</translation>
 <translation id="847433688444405067">Geräteübergreifend surfen</translation>
@@ -657,7 +670,6 @@ Diese Brave-Einstellungen werden durch das erweiterte Sicherheitsprogramm gesteu
 <translation id="8549127125482561383">Wie sollen Anfragen angezeigt werden?</translation>
 <translation id="4273503381657013953">Du kannst jetzt Brave jederzeit nutzen, wenn du surfst oder auf Links in Nachrichten, Dokumenten und anderen Apps tippst.</translation>
 <translation id="857943718398505171">Zugelassen (empfohlen)</translation>
-<translation id="8580511488901768832">Ansicht „Meine Verknüpfungen“ am unteren Rand ist vollständig geöffnet</translation>
 <translation id="8593422116412089302">Wenn dieser Schalter aktiviert ist, können Websites anfragen, ob sie Informationen verwenden dürfen, die sie über dich gespeichert haben. Wenn er deaktiviert ist, können Websites nicht anfragen, ob sie Informationen verwenden dürfen, die sie über dich gespeichert haben.</translation>
 <translation id="8609465669617005112">Nach oben</translation>
 <translation id="8617611086246832542">Wenn dieser Schalter aktiviert ist, wird die Desktop-Ansicht von Websites angezeigt. Wenn er deaktiviert ist, wird die mobile Ansicht von Websites angezeigt.</translation>
@@ -675,6 +687,7 @@ Diese Brave-Einstellungen werden durch das erweiterte Sicherheitsprogramm gesteu
 <translation id="8730621377337864115">Fertig</translation>
 <translation id="8737426583868847403">Websites, für die du eine benutzerdefinierte Zoomstufe speicherst, werden hier angezeigt</translation>
 <translation id="8751914237388039244">Bild auswählen</translation>
+<translation id="8775741625735357092">Du kannst die Lesezeichenleiste in den Einstellungen &gt; „Darstellung“ aktivieren</translation>
 <translation id="8800034312320686233">Website funktioniert nicht?</translation>
 <translation id="8801436777607969138">Hier kannst du Websites angeben, für die JavaScript blockiert werden soll.</translation>
 <translation id="2026315747406172223">V8 ist die JavaScript- und WebAssembly-Engine von Brave, mit der die Websiteleistung verbessert wird</translation>
@@ -701,6 +714,7 @@ Diese Brave-Einstellungen werden durch das erweiterte Sicherheitsprogramm gesteu
 <translation id="9019902583201351841">Von deinen Eltern verwaltet</translation>
 <translation id="902236149563113779">Websites verfolgen deine Kameraposition normalerweise, um AR-Funktionen beispielsweise in Spielen oder die Wegbeschreibung auf dem Display umzusetzen</translation>
 <translation id="9039697262778250930">Du wirst möglicherweise von diesen Websites abgemeldet</translation>
+<translation id="9065203028668620118">Bearbeiten</translation>
 <translation id="9074739597929991885">Bluetooth</translation>
 <translation id="9106233582039520022">Cookies löschen?</translation>
 <translation id="9109747640384633967">{PERMISSIONS_SUMMARY_MIXED,plural, =1{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> und <ph name="NUM_MORE"/> weitere}other{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> und <ph name="NUM_MORE"/> weitere}}</translation>

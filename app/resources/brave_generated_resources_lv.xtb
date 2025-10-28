@@ -383,9 +383,10 @@
 <translation id="5436069931267876389">Konteineris nav atrasts</translation>
 <translation id="2263346047290834619">Izmantot koka stila cilnes</translation>
 <translation id="5860254591544742609">Rādīt virsrakstjoslu</translation>
-<translation id="5371926069408837914">Ja vertikālo ciļņu panelis ir savērsts, izvērsiet to, pakustinot peli</translation>
+<translation id="4691131445504068802">Pilnībā paslēpt, kad minimizēts</translation>
+<translation id="4909269867860362936">Automātiski izvērst, turot peli virs, kad minimizēts</translation>
 <translation id="3367129510799209147">Tabulācijas kursora režīms</translation>
-<translation id="8527099657928614787">Izvērst vertikālās cilnes atsevišķi katrā logā</translation>
+<translation id="8925055964134259461">Izvērst vertikālās cilnes atsevišķi katrā logā</translation>
 <translation id="916373084491701212">Parādīt ritjoslu</translation>
 <translation id="515949045075831661">Parādīt labajā pusē</translation>
 <translation id="3725395376319291415">Parādīt kreisajā pusē</translation>
@@ -396,21 +397,21 @@
 <translation id="2396127686705429331">Parādīt grāmatzīmju pogu</translation>
 <translation id="2814998458708016836">Izmantot platu adreses joslu</translation>
 <translation id="4109670531935487117">Rādīt automātiskās pabeigšanas ieteikumus adrešu joslā</translation>
-<translation id="3405901785709583668">Populārākie ieteikumi</translation>
+<translation id="4579877808890085926">Ierīces ieteikumi</translation>
 <translation id="7859704718976024901">Pārlūkošanas vēsture</translation>
 <translation id="8820817407110198400">Grāmatzīmju josla</translation>
 <translation id="4144468798716165316">Ātrās komandas</translation>
 <translation id="7310387888625228830">Leo AI asistents</translation>
 <translation id="5222974844674487962">Rādīt Brave ziņu pogu</translation>
 <translation id="2085436423511121572">Rādīt Leo MI pogu</translation>
-<translation id="383007806262310953">Rādīt grāmatzīmes</translation>
+<translation id="6156323911414505561">Rādīt grāmatzīmju joslu</translation>
 <translation id="4054323497808446566">Grāmatzīmju josla ir redzama visās lapās</translation>
 <translation id="8693858092251192712">Grāmatzīmju josla ir noslēpta visās lapās, izņemot jaunās cilnes lapu</translation>
 <translation id="7158817046543187970">Grāmatzīmju josla ir noslēpta visās lapās</translation>
 <translation id="3416468988018290825">Vienmēr rādīt pilnus URL vietrāžus</translation>
 <translation id="5529693968082667490">Rādīt pogu "Meklēt cilnes"</translation>
 <translation id="1013121820689882118">Ātrlasītājs</translation>
-<translation id="1467652519828052368">Iespējot funkciju Speedreader</translation>
+<translation id="5522420266446076076">Iespējot funkciju Speedreader.</translation>
 <translation id="5211997910936574251">Automātiski izmantot Speedreader, kad tas ir iespējams</translation>
 <translation id="2025435450953474282">Raksti tiek automātiski ielādēti lasītāja režīmā, ietaupot jūsu laiku</translation>
 <translation id="7984721311211272523">Atspējot skaņas izslēgšanas funkciju skaļruņu ikonu cilnē</translation>
@@ -434,7 +435,7 @@
 <translation id="5690973901138662477">Aizsargi ieslēgti</translation>
 <translation id="4697275813919189958">Aizsargi izslēgti</translation>
 <translation id="6303294677342628402">Aizsargi</translation>
-<translation id="7133511168130368997">Bloķēt izsekotājus un reklāmas, kas seko jums tīmeklī.</translation>
+<translation id="5128768857590582420">Bloķēt izsekotājus un reklāmas, kas seko jums tīmeklī</translation>
 <translation id="2761825942249694703">Šie ir noklusējuma aizsargu iestatījumi. Tie ir attiecināmi uz visām tīmekļa vietnēm, ja vien jūs konkrētai vietnei aizsargu panelī kaut ko neizmainīsiet. Šīs izmaiņas neietekmēs jūsu esošo vietņu iestatījumus.</translation>
 <translation id="8452536890042542134">Tādējādi tiks bloķēta lielākā daļa reklāmu tīmekļa vietnēs.</translation>
 <translation id="4800195524776354947">Rādīt bloķēto vienumu skaitu uz aizsargu ikonas</translation>
@@ -846,6 +847,9 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="1721787502053471881">Vai tiešām vēlaties dzēst šo atmiņu? Šo darbību nevar atsaukt.</translation>
 <translation id="5239685926753073108">Dzēst visas atmiņas</translation>
 <translation id="2600803466586623124">Vai tiešām vēlaties dzēst visas atmiņas? Šo darbību nevar atsaukt.</translation>
+<translation id="7311244614769792472">Netika atrasts neviens rezultāts</translation>
+<translation id="1838374766361614909">Notīrīt meklēšanu</translation>
+<translation id="5126255551970171328">Meklēt atmiņā</translation>
 <translation id="5985516785067818307">Aptaujas dalībnieks</translation>
 <translation id="8347743943525229984">Atļaut Brave aptaujas</translation>
 <translation id="3204080538332044581">Ļauj Brave rādīt saites uz privātām aptaujām jaunas cilnes lapā. Aptaujas palīdz mums veidot labākas funkcijas un izvērtēt pārlūkprogrammā balstītu reklāmas kampaņu efektivitāti. <ph name="BEGIN_LINK"/>Uzzināt vairāk<ph name="END_LINK"/></translation>

@@ -1,11 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="iw">
-<translation id="3586180167003092914">‏ניהול ב<ph name="BEGIN_LINK1"/>הגדרות Android<ph name="END_LINK1"/>
-
-ההגנה המתקדמת שולטת בהגדרות האלה של Brave:
-‫• האפשרות "להשתמש תמיד בחיבורים מאובטחים" מופעלת.
-‫• כלי האופטימיזציה של JavaScript מושבת. <ph name="BEGIN_LINK2"/>ניהול החריגים של האתר<ph name="END_LINK2"/></translation>
 <translation id="1006017844123154345">פתיחת גרסה אונליין</translation>
 <translation id="1036348656032585052">כיבוי</translation>
 <translation id="1070329623210597193">קבצים שהאתר יכול לראות או לערוך</translation>
@@ -45,6 +40,7 @@
 <translation id="1500473259453106018">הסתרת הכרטיס 'הנחות בכרטיסיות'</translation>
 <translation id="1508931164824684991">‏אתרים יכולים להשתמש ב-JavaScript</translation>
 <translation id="1510341833810331442">לאתרים אין הרשאה לשמור נתונים במכשיר שלך</translation>
+<translation id="1532175480576580256">הגיליון התחתון של "קיצורי הדרך שלי" נפתח בגובה מלא</translation>
 <translation id="1538031354170655462">‏אתרים משתמשים בדרך כלל בתקשורת מטווח קצר (NFC) כדי לעבוד עם תגים או מכשירים בקרבת מקום, כמו סריקה של תגים או תשלום בטאץ'</translation>
 <translation id="1547123415014299762">‏מותר להשתמש בקובצי cookie של צד שלישי</translation>
 <translation id="3665719978526894928">‏אפשר להאיץ ביצועים של אתרים באמצעות מנוע V8 של Brave, אבל Brave יהיה קצת פחות עמיד בפני מתקפות</translation>
@@ -74,6 +70,7 @@
 <translation id="6704867734300244173">‏כשהאפשרות הזו מופעלת, דפדפן Brave פועל מהר יותר ותכונות שמתבססות על JavaScript אמורות לפעול כמו שצריך. כשהאפשרות הזו מושבתת, יש ירידה ברמת הביצועים בתמורה להגברת העמידות של V8 בפני מתקפות.</translation>
 <translation id="1818308510395330587">‏כדי לאפשר ל-<ph name="APP_NAME"/> להשתמש ב-AR, צריך להפעיל את המצלמה גם ב<ph name="BEGIN_LINK"/>הגדרות Android<ph name="END_LINK"/>.</translation>
 <translation id="1848033246551405023">‏גופן Sans Serif</translation>
+<translation id="1861262398884155592">התיקייה הזו ריקה</translation>
 <translation id="1881806992065048905">הגיליון התחתון של המראה של דף הכרטיסייה החדשה</translation>
 <translation id="1887786770086287077">‏הגישה למיקום כבויה בשביל המכשיר הזה. יש להפעיל אותה ב<ph name="BEGIN_LINK"/>הגדרות Android<ph name="END_LINK"/>.</translation>
 <translation id="1906181697255754968">אתרים ניגשים בדרך כלל לקבצים ולתיקיות כדי לתמוך בתכונות כמו שמירה אוטומטית של עבודה</translation>
@@ -119,6 +116,7 @@
 <translation id="228293613124499805">סביר להניח שרוב האתרים שבהם מבקרים שומרים נתונים במכשיר, לרוב כדי לשפר את החוויה בהם. הנתונים שנשמרים הם ההעדפות או המידע שמשתפים עם האתר. מומלץ להשאיר את ההגדרה הזו פועלת.</translation>
 <translation id="2289270750774289114">‏המערכת מבקשת אישור כשאתר רוצה לאתר התקני Bluetooth קרובים (מומלץ)</translation>
 <translation id="2315043854645842844">מערכת ההפעלה אינה תומכת בבחירת אישור בצד הלקוח.</translation>
+<translation id="2347601491101454548">הגיליון התחתון של "קיצורי הדרך שלי" נפתח בחצי מגובה המסך</translation>
 <translation id="2359808026110333948">המשך</translation>
 <translation id="904887679952026733">‏העיצוב הכהה יוחל על אתרים כש-Brave ישתמש בעיצוב הכהה, כשהפעולה תתאפשר</translation>
 <translation id="2390272837142897736">הגדלת הזום</translation>
@@ -149,6 +147,11 @@
 <translation id="2588271083332682494">קבוצות של כרטיסיות עוזרות לשמור על סדר</translation>
 <translation id="2597457036804169544">אין להחיל עיצוב כהה על אתרים</translation>
 <translation id="2606760465469169465">אימות אוטומטי</translation>
+<translation id="7615153661410655750">‏ניהול ב<ph name="BEGIN_LINK1"/>הגדרות Android<ph name="END_LINK1"/>
+
+ההגנה המתקדמת שולטת בהגדרות האלה של Brave:
+‫• האפשרות "להשתמש תמיד בחיבורים מאובטחים" מופעלת.
+‫• כלי האופטימיזציה של JavaScript מושבת. <ph name="BEGIN_LINK2"/>לניהול רשימת האתרים החריגים<ph name="END_LINK2"/></translation>
 <translation id="2621115761605608342">‏אישור JavaScript לאתר ספציפי.</translation>
 <translation id="2626708220538466178">הגיליון התחתון של דפדפן ברירת המחדל נסגר</translation>
 <translation id="2653659639078652383">שליחה</translation>
@@ -297,7 +300,7 @@
 <translation id="4226663524361240545">רטט של המכשיר אפשרי כשמתקבלת הודעה</translation>
 <translation id="4259722352634471385">הניווט חסום: <ph name="URL"/></translation>
 <translation id="4274673989874969668">לאחר יציאה מאתרים, ייתכן שפעולות סנכרון שלהם ימשיכו כדי להשלים משימות, כמו העלאת תמונות או שליחת הודעות צ'אט</translation>
-<translation id="4278390842282768270">מותר</translation>
+<translation id="4278390842282768270">יש אישור</translation>
 <translation id="4290791284969893584">לאחר סגירת דף, ייתכן שמשימות שהתחלת לא יסתיימו</translation>
 <translation id="429312253194641664">אתר מסוים מפעיל מדיה</translation>
 <translation id="42981349822642051">הרחבה</translation>
@@ -306,6 +309,7 @@
 <translation id="4338831206024587507">כל האתרים בדומיין <ph name="DOMAIN"/></translation>
 <translation id="4340799661701629185">לא לאפשר לאתרים לשלוח התראות</translation>
 <translation id="4402755511846832236">אתרים לא יוכלו לדעת מתי המכשיר הזה משמש אותך באופן פעיל</translation>
+<translation id="8382883799082236806">‏הגיליון התחתון של צבעי Brave נפתח בחצי מגובה המסך</translation>
 <translation id="4412992751769744546">‏אישור לקובצי Cookie של צד שלישי
 </translation>
 <translation id="1675197434085185531">‏‫Brave מונע מאתרים לעשות שימוש בקובצי Cookie של צד שלישי כדי לעקוב אחריך במהלך הגלישה. בהגדרות ניתן <ph name="BEGIN_LINK"/>לנהל את הגישה לקובצי Cookie של צד שלישי<ph name="END_LINK"/>.</translation>
@@ -339,6 +343,7 @@
 <translation id="4816495437032298535">רמת הזום שנשמרה באתרים</translation>
 <translation id="4836046166855586901">תוצג שאלה כשאתר יבקש לדעת מתי המכשיר הזה משמש אותך באופן פעיל</translation>
 <translation id="483914009762354899">יש לכלול את כל האתרים בדומיין הזה</translation>
+<translation id="4852997963351138624">קוד הקסדצימלי של צבע הרקע</translation>
 <translation id="4882919381756638075">אתרים משתמשים בדרך כלל במיקרופון של המכשיר כדי לתמוך בתכונות תקשורת כמו וידאו צ'אט</translation>
 <translation id="4883854917563148705">לא ניתן לאפס הגדרות מנוהלות</translation>
 <translation id="4887024562049524730">תוצג שאלה לפני מתן הרשאה לאתרים להשתמש במכשיר המציאות המדומה ובנתוני המציאות המדומה שלך (מומלץ)</translation>
@@ -368,6 +373,7 @@
 <translation id="5100237604440890931">מכווץ – יש ללחוץ כדי להרחיב.</translation>
 <translation id="7143053178237996319">‏אפשר להשתמש ב-Brave בכל פעם שלוחצים על קישורים בהודעות, במסמכים ובאפליקציות אחרות.</translation>
 <translation id="512938610812707830">הגיליון התחתון של אוספי העיצובים של דף הכרטיסייה החדשה נפתח בגובה מלא</translation>
+<translation id="5137460097045297858">‏הגיליון התחתון של פיד Discover נפתח בחצי מגובה המסך</translation>
 <translation id="5139253256813381453">{PRICE_DROP_COUNT,plural, =1{זוהתה ירידה במחיר בכרטיסיות הפתוחות}one{זוהו ירידות במחירים בכרטיסיות הפתוחות}two{זוהו ירידות במחירים בכרטיסיות הפתוחות}other{זוהו ירידות במחירים בכרטיסיות הפתוחות}}</translation>
 <translation id="5186036860380548585">האפשרות זמינה בחלק העליון של המסך</translation>
 <translation id="5197729504361054390">אנשי הקשר שייבחרו ישותפו עם <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/>.</translation>
@@ -386,7 +392,6 @@
 <translation id="5335288049665977812">‏התרה לאתרים להריץ JavaScript (מומלץ)</translation>
 <translation id="534295439873310000">‏מכשירי NFC</translation>
 <translation id="5344522958567249764">ניהול של הגדרות הפרטיות בפרסום</translation>
-<translation id="5371407439562620893">‏אופטימיזציה ואבטחה של JavaScript</translation>
 <translation id="5373874281522292782">קבוצות הכרטיסיות שלך נשמרות</translation>
 <translation id="5394307150471348411">{DETAIL_COUNT,plural, =1{(ועוד 1)}one{(ועוד #)}two{(ועוד #)}other{(ועוד #)}}</translation>
 <translation id="5403592356182871684">שמות</translation>
@@ -468,6 +473,7 @@
 <translation id="6207207788774442484">מחיקת הנתונים ואיפוס ההרשאות</translation>
 <translation id="6231752747840485235">להסיר את '<ph name="APP_NAME"/>'?</translation>
 <translation id="4789073065838177382">‏לוחצים על אפליקציית הדפדפן &gt; Brave</translation>
+<translation id="6260830281887654268">הגיליון התחתון של אוספי העיצובים בדף הכרטיסייה החדשה נפתח בחצי מגובה המסך</translation>
 <translation id="6262191102408817757">על סמך הכרטיסייה האחרונה שלך</translation>
 <translation id="6262279340360821358">ההרשאות <ph name="PERMISSION_1"/> וגם <ph name="PERMISSION_2"/> חסומות</translation>
 <translation id="6270391203985052864">אתרים יכולים לבקש לשלוח התראות</translation>
@@ -499,8 +505,10 @@
 <translation id="6608650720463149374"><ph name="GIGABYTES"/>GB</translation>
 <translation id="6612358246767739896">תוכן מוגן</translation>
 <translation id="662080504995468778">להמשיך במצב אנונימי</translation>
+<translation id="6630443592285535486">כאן מכניסים את הקוד ההקסדצימאלי</translation>
 <translation id="6635327442719709864">כשהאפשרות מופעלת, אתרים יכולים לבקש הרשאה להשתמש ביציאות טוריות. כשהאפשרות מושבתת, אתרים לא יכולים להשתמש ביציאות טוריות.</translation>
 <translation id="6678072580827808850">לבדיקת האבטחה</translation>
+<translation id="6682057173375416470">קבלת הצעות למאמרים בדף הכרטיסייה החדשה</translation>
 <translation id="6683865262523156564">האתר הזה שייך לקבוצה שיש לה הרשאה לראות את הפעילות שלך. הקבוצה הוגדרה על ידי <ph name="RWS_OWNER"/></translation>
 <translation id="6689172468748959065">תמונות פרופיל</translation>
 <translation id="6697925417670533197">הורדות פעילות</translation>
@@ -550,13 +558,16 @@
 <translation id="728412880473384942">האתרים מהירים יותר אבל פחות מאובטחים</translation>
 <translation id="7366415735885268578">הוספת אתר</translation>
 <translation id="7368695150573390554">המערכת תמחק את כל הנתונים ששמורים אופליין.</translation>
+<translation id="7369678931043226462">הגיליון התחתון של ההתאמה האישית בדף הכרטיסייה החדשה נפתח בחצי מגובה המסך</translation>
 <translation id="7383715096023715447">ההגדרות של <ph name="DOMAIN"/></translation>
 <translation id="7399802613464275309">בדיקת אבטחה</translation>
 <translation id="7406113532070524618">ההגדרה הזו פועלת ללא זיהוי שלך ובלי לתת לאתרים גישה להיסטוריית הגלישה, אבל אתרים יכולים לשתף ביניהם כמות נתונים קטנה במסגרת האימות.</translation>
 <translation id="7409735910987429903">אתרים עשויים להציג חלונות קופצים עם מודעות, או להשתמש בהפניות אוטומטיות כדי להוביל אותך לאתרים שלא כדאי לבקר בהם</translation>
+<translation id="7412160840120117304">קוד הקסדצימלי של הצבע הראשי</translation>
 <translation id="7423098979219808738">תופיע בקשת אישור</translation>
 <translation id="7423538860840206698">הגישה לקריאה מלוח העריכה נחסמה</translation>
 <translation id="7425915948813553151">עיצוב כהה באתרים</translation>
+<translation id="746412105358554870">‏אופטימיזציה ואבטחה של JavaScript</translation>
 <translation id="7478658909253570368">אין לאפשר לאתרים להתחבר ליציאות טוריות</translation>
 <translation id="7488573225650545859">הסתרת הכרטיסיות "צפייה" ברשימת האפליקציות</translation>
 <translation id="7521387064766892559">JavaScript</translation>
@@ -586,6 +597,7 @@
 <translation id="7804248752222191302">אתר כלשהו משתמש במצלמה שלך</translation>
 <translation id="7805832099057502789">הגיליון התחתון של הכרטיסים בדף הכרטיסייה החדשה נפתח בגובה מלא</translation>
 <translation id="6720480757902085971">‏סופק על ידי Brave</translation>
+<translation id="7809029041571842593">הגיליון התחתון של הכרטיסים בדף הכרטיסייה החדשה נפתח בחצי מגובה המסך</translation>
 <translation id="7815680994978050279">הורדה מסוכנת נחסמה</translation>
 <translation id="7835852323729233924">מדיה פועלת</translation>
 <translation id="783819812427904514">ביטול ההשתקה של הסרטון</translation>
@@ -643,6 +655,7 @@
 <translation id="8441146129660941386">הרצה לאחור</translation>
 <translation id="8444433999583714703">‏כדי לאפשר ל-<ph name="APP_NAME"/> לגשת אל המיקום, צריך להפעיל את המיקום גם ב<ph name="BEGIN_LINK"/>הגדרות Android<ph name="END_LINK"/>.</translation>
 <translation id="8447861592752582886">שלילת הרשאות מכשיר</translation>
+<translation id="8467359479529706065">הגיליון התחתון של דף הכרטיסייה החדשה נפתח בחצי מגובה המסך</translation>
 <translation id="8471525937465764768">‏אתרים מתחברים בדרך כלל להתקני USB כדי לתמוך בתכונות כמו הדפסת מסמכים או שמירה בהתקן אחסון</translation>
 <translation id="8473055640493819707">האפליקציה <ph name="APP_NAME"/> לא מעודכנת. צריך להתקין אותה מחדש.</translation>
 <translation id="847433688444405067">גלישה בכמה מכשירים</translation>
@@ -658,7 +671,6 @@
 <translation id="8549127125482561383">איך להציג בקשות</translation>
 <translation id="4273503381657013953">‏אפשר עכשיו להשתמש ב-Brave בכל פעם שגולשים או לוחצים על קישורים בהודעות, במסמכים ובאפליקציות אחרות.</translation>
 <translation id="857943718398505171">מותרת (מומלץ)</translation>
-<translation id="8580511488901768832">הגיליון התחתון של "קיצורי הדרך שלי" נפתח בגובה מלא</translation>
 <translation id="8593422116412089302">כשהאפשרות מופעלת, אתרים יכולים לבקש הרשאה להשתמש במידע שנשמר עליך. כשהאפשרות מושבתת, אתרים לא יכולים לבקש הרשאה להשתמש במידע שנשמר עליך.</translation>
 <translation id="8609465669617005112">הזזה למעלה</translation>
 <translation id="8617611086246832542">כשהאפשרות מופעלת, אפשר לראות אתרים בתצוגה למחשב. כשהאפשרות מושבתת, אפשר לראות אתרים בתצוגה לנייד.</translation>
@@ -676,6 +688,7 @@
 <translation id="8730621377337864115">בוצע</translation>
 <translation id="8737426583868847403">כאן יופיעו אתרים ששמרת בהם רמת זום מותאמת אישית</translation>
 <translation id="8751914237388039244">בחירת תמונה</translation>
+<translation id="8775741625735357092">אפשר להפעיל את סרגל הסימניות ב"הגדרות" &gt; "מראה"</translation>
 <translation id="8800034312320686233">האתר לא פועל?</translation>
 <translation id="8801436777607969138">‏חסימת JavaScript באתר ספציפי.</translation>
 <translation id="2026315747406172223">‏‫V8 הוא מנוע WebAssembly ו-JavaScript של Brave שמשמש לשיפור ביצועי האתרים</translation>
@@ -702,6 +715,7 @@
 <translation id="9019902583201351841">מנוהל על-ידי ההורים שלך</translation>
 <translation id="902236149563113779">‏אתרים עוקבים בדרך כלל אחר מיקום המצלמה כדי לתמוך בתכונות AR כמו משחקים או הנחיות בתצוגה עילית</translation>
 <translation id="9039697262778250930">יכול להיות שתבוצע יציאה מהחשבון באתרים האלה</translation>
+<translation id="9065203028668620118">עריכה</translation>
 <translation id="9074739597929991885">Bluetooth</translation>
 <translation id="9106233582039520022">‏למחוק קובצי cookie?</translation>
 <translation id="9109747640384633967">{PERMISSIONS_SUMMARY_MIXED,plural, =1{<ph name="PERMISSION_1"/>,‏ <ph name="PERMISSION_2"/> ועוד הרשאה אחת (<ph name="NUM_MORE"/>)}one{<ph name="PERMISSION_1"/>,‏ <ph name="PERMISSION_2"/> ועוד <ph name="NUM_MORE"/>}two{<ph name="PERMISSION_1"/>,‏ <ph name="PERMISSION_2"/> ועוד <ph name="NUM_MORE"/>}other{<ph name="PERMISSION_1"/>,‏ <ph name="PERMISSION_2"/> ועוד <ph name="NUM_MORE"/>}}</translation>

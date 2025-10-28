@@ -8,23 +8,23 @@
     "description": "The Shields feature name"
   },
   "up": {
-    "message": "up",
+    "message": "ઉપર",
     "description": "Message for when shields is enabled"
   },
   "down": {
-    "message": "down",
+    "message": "નીચે",
     "description": "Message for when shields is disabled"
   },
   "forThisSite": {
-    "message": "for this site",
+    "message": "આ સાઇટ માટે",
     "description": "Partial string for the phrase `shields is up *for this site*`"
   },
   "enabledMessage": {
-    "message": "If a site appears broken, try shields down",
+    "message": "જો સાઇટ તૂટી જાય છે, તો શિલ્ડ્સને નીચે કરો",
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "You’re browsing this site without Brave’s privacy and security protections. Does it not work right with Shields up?",
+    "message": "તમે આ સાઇટ Braveની ગોપ્નીયતા અને સુરક્ષા સંરક્ષણો વિના બ્રાઉઝ કરી રહ્યા છો. શિલ્ડ્સ સાથે આ કાર્ય કરતું નથી?",
     "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
   },
   "reportBrokenSite": {
@@ -32,27 +32,27 @@
     "description": "Message for the button allowing users to report a broken site to Brave developers"
   },
   "itemsBlocked": {
-    "message": "Items blocked",
+    "message": "આઇટમ્સ અવરોધિત",
     "description": "Message for the main blocked resources text when there is more than one ad/track/script blocked (plural)"
   },
   "itemBlocked": {
-    "message": "Item blocked",
+    "message": "આઇટમ અવરોધિત",
     "description": "Message for the main blocked resources text when there is one ad/track/script blocked (singular)"
   },
   "and": {
-    "message": "and",
+    "message": "અને",
     "description": "Message for the `and` conjunction. Used to connect grammatically the `item blocked and connection upgrades` and its variant phrases"
   },
   "connectionsUpgraded": {
-    "message": "connections upgraded",
+    "message": "કનેક્શન્સ અપગ્રેડ કરવામાં આવ્યા",
     "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and more than one connection upgrade (plural)"
   },
   "connectionUpgraded": {
-    "message": "connection upgraded",
+    "message": "...",
     "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
   },
   "thirdPartyTrackersBlocked": {
-    "message": "Cross-site trackers blocked",
+    "message": "ક્રોસ-સાઇટ ટ્રેકર્સ અવરોધિત",
     "description": "Message for the scripts blocked row label"
   },
   "readOnlyAdsTrackersBlocking": {
@@ -60,11 +60,11 @@
     "description": "Message for the option in the ads and trackers blocking select field in read only view"
   },
   "aggressiveAdsTrackersBlocking": {
-    "message": "Trackers & ads blocked (aggressive)",
+    "message": "ટ્રેકર્સ અને એડ્સ અવરોધિત (આક્રમક)",
     "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
   },
   "standardAdsTrackersBlocking": {
-    "message": "Trackers & ads blocked (standard)",
+    "message": "ટ્રેકર્સ અને એડ્સ અવરોધિત (વાલુક)",
     "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with standard heuristics"
   },
   "allowAdsTrackers": {
@@ -72,19 +72,19 @@
     "description": "Message for the option in the ads and trackers blocking select field to allow all ads and trackers"
   },
   "connectionsUpgradedHTTPS": {
-    "message": "Connections upgraded to HTTPS",
+    "message": "HTTPS પર કનેક્શન્સ અપગ્રેડ કરી",
     "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"
   },
   "connectionUpgradedHTTPS": {
-    "message": "Connection upgraded to HTTPS",
+    "message": "HTTPS માટે કનેક્શન અપગ્રેડ",
     "description": "Message for the main blocked resources text when there is one connection upgraded (singular) and no other ads/trackers blocked"
   },
   "scriptsBlocked": {
-    "message": "Scripts blocked",
+    "message": "સ્ક્રિપ્ટ્સ અવરોધિત",
     "description": "Message for the scripts blocked row label"
   },
   "thirdPartyCookiesBlocked": {
-    "message": "Cross-site cookies blocked",
+    "message": "ક્રોસ-સાઇટ કૂકીઝ અવરોધિત",
     "description": "Message for the option in the cookies select field to block all 3rd party cookies"
   },
   "allCookiesBlocked": {
@@ -92,11 +92,11 @@
     "description": "Message for the option in the cookies select field to block all cookies"
   },
   "allCookiesAllowed": {
-    "message": "All cookies allowed",
+    "message": "તમામ કૂકીઝ મંજૂર",
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "readOnlyFingerprinting": {
-    "message": "Fingerprinting blocked",
+    "message": "ફિંગરપ્રિન્ટીંગ બ્લોક કર્યું",
     "description": "Message for the option in the fingerprinting field in read only view"
   },
   "standardFingerprinting": {
@@ -112,27 +112,27 @@
     "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {
-    "message": "Fingerprinting attempts",
+    "message": "ફિંગરપ્રિન્ટિગ પ્રયાસો",
     "description": "Message for the fingerprinting attempts blocked panel"
   },
   "scriptsOnThisSite": {
-    "message": "Scripts on this site",
+    "message": "આ સાઇટ પરના સ્ક્રિપ્ટ્સ",
     "description": "Message for the script resources blocked panel"
   },
   "blockedScripts": {
-    "message": "Blocked scripts",
+    "message": "બ્લોક કરેલા સ્ક્રિપ્ટ્સ",
     "description": "Message for the script resources blocked"
   },
   "allowedScripts": {
-    "message": "Allowed scripts",
+    "message": "મંજૂર કરેલી સ્ક્રિપ્ટ્સ",
     "description": "Message for the script resources allowed"
   },
   "blockAll": {
-    "message": "Block all",
+    "message": "બધા બ્લોક કરો",
     "description": "Message for the resources blocked *block all* option"
   },
   "allowAll": {
-    "message": "Allow all",
+    "message": "બધા માટે મંજૂરી આપો",
     "description": "Message for the resources blocked *allow all* option"
   },
   "block": {
@@ -144,15 +144,15 @@
     "description": "Message for the resources blocked *allow* option"
   },
   "blockedOnce": {
-    "message": "Blocked once",
+    "message": "એક વખત અવરોધિત",
     "description": "Message for the resources blocked *blocked once* option"
   },
   "allowedOnce": {
-    "message": "Allowed once",
+    "message": "એક વખત મંજૂર",
     "description": "Message for the resources blocked *allowed once* option"
   },
   "allowScriptsOnce": {
-    "message": "Allow scripts once",
+    "message": "સ્ક્રિપ્ટ્સને એક વખત મંજૂર કરો",
     "description": "Message for the shortcut in the main interface to allow all scripts once"
   },
   "cancel": {
@@ -164,15 +164,15 @@
     "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
   },
   "applyOnce": {
-    "message": "Apply once",
+    "message": "એક વખત લાગુ કરો",
     "description": "Message for action in dynamic list of resources blocked to *apply once*"
   },
   "changeDefaults": {
-    "message": "Change global shield defaults",
+    "message": "વૈશ્વિક શિલ્ડસ ડિફૉલ્ટ્સ બદલો",
     "description": "Message for the button action linking to the settings page"
   },
   "manageCustomFilters": {
-    "message": "Manage custom filters",
+    "message": "કસ્ટમ ફિલ્ટર્સ મેનેજ કરો",
     "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
   },
   "elementPickerMode": {
@@ -180,23 +180,23 @@
     "description": "Message for context menu that enables the element picker UI to apply cosmetic filter rules to the page."
   },
   "advancedView": {
-    "message": "Advanced View",
+    "message": "ઊન્નત दृश्य",
     "description": "Message for the advanced view option"
   },
   "simpleView": {
-    "message": "Simple View",
+    "message": "સાદું दृश्य",
     "description": "Message for the simple view option"
   },
   "shieldsExplanation": {
-    "message": "Sites often include cookies and scripts which try to identify you and your device (often embedded into ads). They want to work out who you are and follow you across the web — tracking what you do on every site. Brave blocks these things so that you can browse without being followed around.",
+    "message": "સાઇટ્સમાં કૂકીઝ અને સ્ક્રિપ્ટ્સ હોય છે જે તમమ్మારા ઉપકરણની ઓળખ કરવાનો પ્રયાસ કરે છે (મોટેથી જાહેરાતોમાં ઍમ્બેડ થયેલું). તેઓ જાણવું ઈચ્છે છે કે તમે કોણ છો અને તમારું વેબ પર અનુસરણ કરે છે, જાઓ તે સમયે તમે દરેક સાઇટ પર શું કરો છો તે અનુક્રમણ કરે છે. Brave આ વસ્તુઓને અવરોધિત કરે છે જેથી તમે અનુસરાયેલા વગર બ્રાઉઝ કરી શકો.",
     "description": "Message in read-only view explaining what Brave Shields do"
   },
   "blockedResoucesExplanation": {
-    "message": "Cross-site trackers and other creepy things blocked",
+    "message": "ક્રોસ-સાઇટ ટ્રેકર્સ અને બાકીની અમુક બધી વસ્તુઓ અવરોધિત",
     "description": "Message for the main trackers count in Shields simple view"
   },
   "webCompatWarning": {
-    "message": "Changing Shield settings in this view may affect web compatibility on this site.",
+    "message": "આ દૃશ્યમાં શિલ્ડસ સેટિંગ્સ બદલવાથી આ સાઇટની વેબ યોગ્યતા પર અસર પડી શકે છે.",
     "description": "Message for web compat warning when switching from simple to advanced view"
   },
   "gotIt": {

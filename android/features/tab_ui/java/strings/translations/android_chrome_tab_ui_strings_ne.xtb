@@ -16,7 +16,6 @@
 <translation id="1403729629346559879">{NUMBER_OF_TABS,plural, =1{<ph name="TABS_COUNT_ONE"/> ट्याब, <ph name="COLOR_NAME"/> रङ र <ph name="CARD_LABEL"/> लेबल भएको <ph name="TITLE_OF_GROUP"/> साझा ट्याब समूह एक्स्पान्ड गर्नुहोस्।}other{<ph name="TABS_COUNT_MANY"/> वटा ट्याब, <ph name="COLOR_NAME"/> रङ र <ph name="CARD_LABEL"/> लेबल भएको <ph name="TITLE_OF_GROUP"/> साझा ट्याब समूह एक्स्पान्ड गर्नुहोस्।}}</translation>
 <translation id="1486715732399361704">तपाईं आफ्ना सबै ट्याब समूहहरू यहाँ भेट्टाउन सक्नुहुन्छ</translation>
 <translation id="149054111719651807">{NUM_MINS,plural, =1{<ph name="NUM_MINS_ONE"/> मिनेटअघि बनाइएको}other{<ph name="NUM_MINS_MANY"/> मिनेटअघि बनाइएको}}</translation>
-<translation id="3228718275011575753">सबै इन्कोग्निटो ट्याबहरू बन्द गर्ने हो?</translation>
 <translation id="1501480321619201731">समूह मेट्नुहोस्</translation>
 <translation id="1553638665176794706">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> निष्क्रिय आइटम}other{<ph name="TABS_COUNT_MANY"/> वटा निष्क्रिय आइटम}}</translation>
 <translation id="1645759014353344461"><ph name="TABS_COUNT_MANY"/> वटा ट्याब समूहबद्ध गरिएका छन्</translation>
@@ -34,7 +33,7 @@
 <translation id="2055057176188061528">ट्याब समूह चयन गर्नुहोस् वा नयाँ ट्याब समूह बनाउनुहोस्</translation>
 <translation id="2074527029802029717">ट्याब अनपिन गर्नुहोस्</translation>
 <translation id="2118649612461486615">स्टोरसम्बन्धी जानकारी</translation>
-<translation id="6086127758480584723">{INCOGNITO_TABS_COUNT,plural, =1{तपाईंका बन्द गरिएका ट्याब र समूहहरू "हालसालैका ट्याबहरू" खण्ड र "ट्याब समूहहरू" खण्डमा गई फेरि खोल्न सकिन्छ। तपाईंको इन्कोग्निटो ट्याब उपलब्ध हुने छैन।}other{तपाईंका बन्द गरिएका ट्याब र समूहहरू "हालसालैका ट्याबहरू" खण्ड र "ट्याब समूहहरू" खण्डमा गई फेरि खोल्न सकिन्छ। तपाईंका # वटा इन्कोग्निटो ट्याब उपलब्ध हुने छैनन्।}}</translation>
+<translation id="2153899164605463849">{TAB_COUNT,plural, =1{साइट अनम्युट गर्नुहोस्}other{साइटहरू अनम्युट गर्नुहोस्}}</translation>
 <translation id="2162620598375156287">अहिले <ph name="SOURCE_WEBSITE"/> मा <ph name="CURRENT_PRICE"/> मा उपलब्ध छ</translation>
 <translation id="22623456902492423">{TABS_COUNT,plural, =1{समूहबाट ट्याब हटाउनुहोस्}other{समूहबाट ट्याबहरू हटाउनुहोस्}}</translation>
 <translation id="2271452184061378400">तपाईंका ट्याब समूहहरू यहाँ सेभ गरिएका छन्</translation>
@@ -92,6 +91,7 @@
 <translation id="4371591986692297148">निष्क्रिय</translation>
 <translation id="4429658455677831355">{TAB_COUNT,plural, =1{आइटम रिस्टोर गर्नुहोस्}other{आइटमहरू रिस्टोर गर्नुहोस्}}</translation>
 <translation id="4453940245650019914">{NUM_DAYS,plural, =1{<ph name="NUM_DAYS_ONE"/> दिनअघि अपडेट गरिएको}other{<ph name="NUM_DAYS_MANY"/> दिनअघि अपडेट गरिएको}}</translation>
+<translation id="4653140634010630594">{TAB_COUNT,plural, =1{साइट म्युट गर्नुहोस्}other{साइटहरू म्युट गर्नुहोस्}}</translation>
 <translation id="4686942373615810936">भर्खरै बनाइएको</translation>
 <translation id="4783638485675352219">यो डिभाइसमा खोलिएका ट्याबका शीर्षक तथा URL हरू अपरेटिङ सिस्टमसँग सेयर गर्नुहोस्</translation>
 <translation id="4788280460033928884">{REVIEWS,plural, =1{(<ph name="REVIEWS_COUNT_ONE"/> समीक्षा)}other{(<ph name="REVIEWS_COUNT_MANY"/> वटा समीक्षा)}}</translation>
@@ -206,7 +206,6 @@
 <translation id="8712637175834984815">भयो</translation>
 <translation id="8714939927607906138">अझ कम मूल्य</translation>
 <translation id="8730621377337864115">गरियो</translation>
-<translation id="6687920250729800417">तपाईंले यी इन्कोग्निटो ट्याबबाट गर्नुभएको क्रियाकलापको विवरण यो डिभाइसबाट हटाइने छ</translation>
 <translation id="875848103419578654">{NUM_MONTHS,plural, =1{<ph name="NUM_MONTHS_ONE"/> महिनाअघि बनाइएको}other{<ph name="NUM_MONTHS_MANY"/> महिनाअघि बनाइएको}}</translation>
 <translation id="8813708480179818649">समूहबाट ट्याब हटाउनुहोस्</translation>
 <translation id="8820741577754260431">आफ्ना ट्याबहरूमा मूल्य घटेको कुरासम्बन्धी जानकारी हेर्नुहोस्</translation>
@@ -219,4 +218,7 @@
 <translation id="927441551066996669">{NUMBER_OF_TABS,plural, =1{<ph name="TABS_COUNT_ONE"/> ट्याब भएको <ph name="COLOR_NAME"/> रङको ट्याब समूह एक्स्पान्ड गर्नुहोस्।}other{<ph name="TABS_COUNT_MANY"/> वटा ट्याब भएको <ph name="COLOR_NAME"/> रङको ट्याब समूह एक्स्पान्ड गर्नुहोस्।}}</translation>
 <translation id="945522503751344254">पृष्ठपोषण पठाउनुहोस्</translation>
 <translation id="994514002078791059">{TAB_COUNT,plural, =1{एउटा निष्क्रिय आइटम बन्द गर्ने हो?}other{<ph name="TAB_COUNT_MANY"/> वटा निष्क्रिय आइटम बन्द गर्ने हो?}}</translation>
+<translation id="3228718275011575753">सबै निजी ट्याबहरू बन्द गर्नुहुन्छ?</translation>
+<translation id="6687920250729800417">यी निजी ट्याबहरूमा तपाईँको क्रियाकलाप यो उपकरणबाट हटाइनेछ।</translation>
+<translation id="6086127758480584723">{INCOGNITO_TABS_COUNT, plural, =1 {तपाईंको बन्द भएका ट्याबहरू र समूहहरू हालका ट्याबहरू खण्ड र ट्याब समूहहरू खण्डबाट पुनः खोल्न सकिन्छ। तपाईंको निजी ट्याब उपलब्ध हुनेछैन।} other {तपाईंको बन्द भएका ट्याबहरू र समूहहरू हालका ट्याबहरू खण्ड र ट्याब समूहहरू खण्डबाट पुनः खोल्न सकिन्छ। तपाईंका # निजी ट्याबहरू उपलब्ध हुनेछैन।}}</translation>
 </translationbundle>

@@ -688,7 +688,6 @@
 <translation id="3266055641283174315">Jenis iklan</translation>
 <translation id="8706824117053903390">Tontonan bulan ini</translation>
 <translation id="5105890735834548623">Tetapan Iklan</translation>
-<translation id="96989662637180657">Iklan Brave Search dipaparkan di <ph name="LINK_BEGIN"/>Brave Search<ph name="LINK_END"/>.</translation>
 <translation id="3138160233953903250">Tetapan iklan</translation>
 <translation id="2446517297521536638">Kawal jenis Brave Ads yang anda lihat dan kekerapan iklan tersebut. Lebih banyak iklan yang anda lihat, lebih banyak pendapatan yang boleh anda peroleh.</translation>
 <translation id="3479272537858623647">Ini menunjukkan jumlah Iklan Brave yang anda lihat bulan ini dan layak memperoleh BAT.</translation>
@@ -855,6 +854,11 @@
       other {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} langkah}
     }</translation>
 <translation id="8621264173374071200"><ph name="EXCHANGE_NAME"/> melalui <ph name="PROVIDER_NAME"/></translation>
+<translation id="646023614746251785">Sahkan pertukaran</translation>
+<translation id="6264944956989873014">Sahkan jambatan</translation>
+<translation id="7067917728851842589">Sahkan penghantaran</translation>
+<translation id="2351357639951873714">Sahkan pelindungan</translation>
+<translation id="8332923694292360653">Belanja</translation>
 <translation id="3735740477244556633">Isih mengikut</translation>
 <translation id="6484605214219822434">Semak penyambung</translation>
 <translation id="3365052891357224017">Anggaran masa</translation>
@@ -964,6 +968,7 @@
 <translation id="3451958544919449297">Simpan aset ZEC Testnet</translation>
 <translation id="8459631690385393533">Simpan aset Cardano</translation>
 <translation id="4915057812371523845">Simpan aset Testnet Cardano</translation>
+<translation id="5387140102951033657">Menyokong aset Substrate pada rangkaian penyampai Polkadot dan parachain Substrate</translation>
 <translation id="8500387257977999003">Kunci peribadi <ph name="PROTOCOL"/></translation>
 <translation id="8275038454117074363">Import</translation>
 <translation id="232925166623833246">Import daripada dompet perkakasan</translation>
@@ -1075,6 +1080,10 @@
 <translation id="8904889345035514635">Elaun semasa</translation>
 <translation id="7073918978411974168">Elaun yang dicadangkan</translation>
 <translation id="9019403281000653275">Kelulusan tanpa had telah diminta</translation>
+<translation id="9108474191347769758">Had perbelanjaan</translation>
+<translation id="2102091845281366189">Sasaran kelulusan</translation>
+<translation id="772196962479335292">Had kelulusan semasa</translation>
+<translation id="8215431557133305629">Cadangan had kelulusan</translation>
 <translation id="4717431746210146708">Benarkan laman ini untuk menambah rangkaian?</translation>
 <translation id="2521480044079508357">Ini akan membenarkan rangkaian ini untuk digunakan dalam Brave Wallet.</translation>
 <translation id="1982257600591932657">Nama rangkaian</translation>
@@ -1091,7 +1100,7 @@
 <translation id="3948067511324628726">Fi gas</translation>
 <translation id="7163997622278957886">Bida</translation>
 <translation id="1074360622426001342">Amaun + gas</translation>
-<translation id="2186011161688824046">Jumlah + yuran</translation>
+<translation id="7542099582407803878">Jumlah + Yuran rangkaian</translation>
 <translation id="7084089311475827950">Tiada data.</translation>
 <translation id="5821668936183240062">seterusnya</translation>
 <translation id="793994607260936590">pertama</translation>
@@ -1417,6 +1426,8 @@
 <translation id="1908159733454294871">Risiko keselamatan dikesan</translation>
 <translation id="3621202678540785336">Input</translation>
 <translation id="3009178788565917040">Output</translation>
+<translation id="7953669802889559161">Input</translation>
+<translation id="4554024082642878647">Output</translation>
 <translation id="1965889974717516497">Rangkaian kedua</translation>
 <translation id="7691821949666755802">Uji rangkaian</translation>
 <translation id="2816106784624007524">Had gas mestilah dalam bentuk nombor bulat yang lebih besar daripada 0</translation>
@@ -2139,7 +2150,6 @@
 <translation id="5872363163901278000">Tambah kelajuan main semula</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8637805148029768813">Ciri peringkas kini hanya tersedia untuk artikel terpilih dan halaman web bentuk panjang yang lain</translation>
-<translation id="1223498995510244364">Ringkaskan</translation>
 <translation id="7491773233732232424">Perihal Leo</translation>
 <translation id="4611072979071082355">Brave Leo ialah pembantu AI peribadi yang menjadikan pelayaran web anda lebih baik. Leo percuma untuk digunakan dengan akses terhad. Brave Leo Premium menawarkan lebih banyak model, had lebih tinggi dan akses awal ke ciri baharu. Model lalai mungkin berubah dari masa ke masa. Rujuk <ph name="LINK_BEFORE"/>Pusat Bantuan Brave<ph name="LINK_AFTER"/> untuk maklumat lanjut.</translation>
 <translation id="7297056998057521697">Secara lalai, apabila anda mengemukakan soalan kepada Leo tentang laman web atau halaman yang sedang anda lihat, kandungan halaman tersebut atau sebarang teks yang anda serlahkan, dan pertanyaan carian anda akan dihantar ke pelayan Brave untuk membolehkan Leo memberikan jawapan. Dalam sesetengah kes, Leo akan menghantar pertanyaan yang diperoleh daripada input anda ke Brave Search dan menggunakan hasil carian untuk menjawab dengan lebih baik. Brave tidak menjamin ketepatan jawapan, dan jawapan mungkin mengandungi maklumat yang tidak tepat, mengelirukan atau palsu. Jangan serahkan maklumat sensitif atau peribadi kepada Brave Leo, dan berhati-hati dengan jawapan berkaitan kesihatan, kewangan, keselamatan diri, atau seumpamanya. Anda boleh melaraskan pilihan Leo pada bila-bila masa dalam Tetapan. Pergi ke Tetapan &gt; Leo.</translation>
@@ -2173,7 +2183,7 @@
 <translation id="7127671672828944579">Hai, saya Leo. Saya pembantu AI yang dihoskan sepenuhnya oleh Brave. Saya dikuasakan oleh Qwen 14B, model ciptaan Alibaba Cloud yang berprestasi tinggi dan sesuai untuk pelbagai kegunaan. Qwen dihoskan secara selamat oleh Brave melalui infrastruktur kami sendiri.<ph name="LINK_BEFORE"/>Ketahui lebih lanjut<ph name="LINK_AFTER"/></translation>
 <translation id="2328524194917949829">Hai, saya Leo. Saya pembantu AI yang dihoskan sepenuhnya oleh Brave. Saya dikuasakan oleh Gemma 3 12B, model ciptaan Google DeepMind yang berprestasi tinggi dan sesuai untuk pelbagai kegunaan. Gemma dihoskan secara selamat oleh Brave melalui infrastruktur kami sendiri.<ph name="LINK_BEFORE"/>Ketahui lebih lanjut<ph name="LINK_AFTER"/></translation>
 <translation id="634682910381645550">Hai, saya Leo. Saya pembantu AI yang dihoskan sepenuhnya oleh Brave. Saya dikuasakan oleh DeepSeek R1, model ciptaan DeepSeek untuk melaksanakan tugasan penaakulan mendalam. DeepSeek R1 dihoskan secara selamat oleh Brave melalui infrastruktur kami sendiri.<ph name="LINK_BEFORE"/>Ketahui lebih lanjut<ph name="LINK_AFTER"/></translation>
-<translation id="8932568551552504373">Hai, saya Leo. Saya pembantu AI yang dihoskan sepenuhnya oleh Brave. Saya dikuasakan oleh Claude Instant, model ciptaan Anthropic untuk menjalankan tugasan perbualan dan pemprosesan teks. Claude Instant dihoskan secara selamat oleh Brave melalui infrastruktur kami sendiri.<ph name="LINK_BEFORE"/>Ketahui lebih lanjut<ph name="LINK_AFTER"/></translation>
+<translation id="8932568551552504373">Hai, saya Leo. Saya pembantu AI oleh Brave. Saya dikuasakan oleh Claude Instant, model yang dicipta oleh Anthropic untuk tugas perbualan dan pemprosesan teks. Claude Instant dihoskan oleh Brave melalui infrastruktur selamat kami sendiri.<ph name="LINK_BEFORE"/>Ketahui lebih lanjut<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Hai, saya Leo. Saya pembantu AI yang dihoskan sepenuhnya oleh Brave. Saya dikuasakan oleh Claude Haiku, model ciptaan Anthropic untuk menjalankan tugasan perbualan dan pemprosesan teks. Claude Haiku dihoskan secara selamat oleh Brave melalui infrastruktur kami sendiri.<ph name="LINK_BEFORE"/>Ketahui lebih lanjut<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Hai, saya Leo. Saya pembantu AI yang dihoskan sepenuhnya oleh Brave. Saya dikuasakan oleh Claude Sonnet, model ciptaan Anthropic untuk menjalankan tugasan perbualan dan pemprosesan teks. Claude Sonnet dihoskan secara selamat oleh Brave melalui infrastruktur kami sendiri.<ph name="LINK_BEFORE"/>Ketahui lebih lanjut<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
@@ -2186,6 +2196,7 @@
 <translation id="7557539689487606886">Sertai Premium</translation>
 <translation id="1691256669639196606">Urus langganan</translation>
 <translation id="3840096463915153852">Sejarah perbualan</translation>
+<translation id="6761921176674289184">Urus memori</translation>
 <translation id="2304783958703511257">Tetapan Lanjutan</translation>
 <translation id="3037594989275592390">Model bahasa</translation>
 <translation id="5543505256451301851">Cuba 7 hari secara percuma</translation>
@@ -2259,31 +2270,36 @@
 <translation id="7307396647043599949"><ph name="COUNT"/> banyak lagi…</translation>
 <translation id="8103700533980268469">Tutup notis</translation>
 <translation id="3417835166382867856">Tab carian</translation>
+<translation id="7311244614769792472">Tiada hasil ditemui</translation>
+<translation id="3112448569149476523">Sila cuba carian lain</translation>
 <translation id="1352836459737874921">Lampirkan kandungan daripada tab lain</translation>
-<translation id="3028258613451571431">Hantar kandungan halaman dari tab pelayar anda untuk memberikan lebih konteks kepada Leo dalam perbualan</translation>
-<translation id="4300920590112551536">Tab penyemak imbas</translation>
+<translation id="7039179822221107025">Hantar kandungan halaman dari tab pelayar anda untuk memberikan lebih konteks kepada Leo dalam perbualan.</translation>
+<translation id="220541218939267992">Kandungan halaman akan dihantar kepada Leo bersama dengan mesej anda.</translation>
 <translation id="1446346932629101482">Tambah kandungan tab untuk konteks, yang akan dihantar kepada Leo bersama mesej anda.</translation>
 <translation id="7193316103691252734">Tiada tab sepadan</translation>
 <translation id="2315654674554095762">Leo kini boleh menyimpan perbualan anda, membolehkan anda mengaksesnya semula. Perbualan ini disimpan secara terenkripsi pada peranti anda, dan anda boleh memadamkannya pada bila-bila masa.</translation>
 <translation id="7821251979960635244">Sejarah perbualan anda akan muncul di sini setelah anda memulakan perbualan.</translation>
 <translation id="887511360213807449">Sejarah dimatikan</translation>
 <translation id="5380979378058584412">Untuk melihat perbualan anda sebelum ini dengan Leo, anda perlu menghidupkan sejarah perbualan.</translation>
-<translation id="6291843235651817590">Sembang tujuan umum</translation>
+<translation id="7348809809749151120">Pantas • Carian</translation>
 <translation id="3185367320601718531">Perbualan dan penjanaan teks</translation>
-<translation id="7979673624064378842">Sembang sepantas kilat</translation>
-<translation id="2836330653441111204">Kepantasan dan kecerdasan yang seimbang</translation>
-<translation id="6695329447007213917">Sembang tujuan umum, pengekodan dan banyak lagi</translation>
-<translation id="7168072214482631597">Pemahaman umum teks dan imej</translation>
-<translation id="7226508434216060960">Model penaakulan</translation>
+<translation id="2793458212460902934">Pantas • Carian • Alat</translation>
+<translation id="8506027496671575183">Carian • Visi • Alat</translation>
+<translation id="3213834013136637671">Carian • Visi</translation>
+<translation id="7697693533305615127">Carian • Pemikiran</translation>
 <translation id="8782867266498869301">Model berubah secara dinamik untuk menggunakan yang terbaik bagi tugasan tersebut</translation>
 <translation id="3965507912994218570">Tetapan Leo</translation>
-<translation id="1037324977127422019">Hai, saya Leo!</translation>
-<translation id="8930348081963284873">Pembantu pintar dikuasakan AI, dibina terus dalam Brave.</translation>
-<translation id="3528849152231418380">Perlukan bantuan berkenaan dengan laman web?</translation>
-<translation id="1558192229187362674">Saya boleh membantu anda meringkaskan artikel, mengembangkan kandungan laman dan pelbagai lagi.</translation>
-<translation id="861953757568623294">Saya boleh membantu anda meringkaskan artikel, mengembangkan kandungan tapak dan pelbagai lagi. Tidak pasti dari mana hendak bermula? Cuba langkah ini:</translation>
-<translation id="5642775487085641191">Hanya mahu bersembang?</translation>
-<translation id="8857222718794549840">Tanya apa-apa sahaja! Kita boleh bercakap tentang sebarang topik yang anda mahukan. Saya sentiasa belajar dan menambah baik untuk memberikan jawapan yang lebih baik.</translation>
+<translation id="3754337604877048671">Memperkenalkan Leo AI</translation>
+<translation id="5295261408976371809">Pembantu AI <ph name="TEXT_BEFORE"/>peribadi<ph name="TEXT_AFTER"/>, dibina terus dalam pelayar.</translation>
+<translation id="7452913484571004528">AI benar-benar peribadi</translation>
+<translation id="8525501048785085223">Leo tidak menyimpan atau berkongsi perbualan, atau menggunakannya untuk latihan model. Tiada akaun atau log masuk diperlukan. Hanya buka dan berbual. Secara peribadi.</translation>
+<translation id="6401201054391523929">Bual dengan tab dan fail anda</translation>
+<translation id="8522038408130089105">Perlu tahu lebih lanjut tentang laman yang anda lawati? Hanya tambahkan ke dalam bualan. Lampirkan tab dan fail tempatan anda untuk jawapan yang pantas dan relevan.</translation>
+<translation id="3844955602461425647">Automatikkan kerja membosankan</translation>
+<translation id="2196247864500723577">Biarkan Brave melayari bersama anda dan berinteraksi dengan semua yang anda lakukan dalam pelayar. Alihkan tugas menjengkelkan, dan simpan masa anda untuk perkara yang penting.</translation>
+<translation id="235457946228076038">Bawa model anda sendiri</translation>
+<translation id="7024005267156189454">Sambungkan model AI anda sendiri, sama ada dijalankan secara tempatan atau jauh. Sesuaikan tingkah laku, input dan keupayaan Leo mengikut keutamaan anda.</translation>
+<translation id="7291578285403921288">Ketahui lebih lanjut tentang Leo AI</translation>
 <translation id="9051226419897869406">Bersembang secara Tertutup dengan Brave Leo</translation>
 <translation id="2414904697165579184">Bentuk jawapan berdasarkan kandungan tab</translation>
 <translation id="8258324391302611485">Kandungan halaman ini akan dihantar kepada Leo bersama mesej anda.</translation>
@@ -2292,6 +2308,7 @@
 <translation id="8732450785281947197">Alatan Leo AI</translation>
 <translation id="6535533770697728087">Tindakan pantas</translation>
 <translation id="3237710083340813756">Tulis semula</translation>
+<translation id="1223498995510244364">Ringkaskan</translation>
 <translation id="1252805982772190086">Siaran pendek</translation>
 <translation id="2087555497198267113">Siaran panjang</translation>
 <translation id="4170307327863874820">Siaran blog</translation>
@@ -2499,12 +2516,13 @@
 <translation id="6764845498618413165">Ketahui Lebih Lanjut.</translation>
 <translation id="7818938154803162778">Sudah tentu, saya akan membantu</translation>
 <translation id="7207456302801184289">Selamat Datang ke Brave</translation>
-<translation id="6716580298071890302">Gunakan tema yang lebih gelap</translation>
+<translation id="293854220404217065">Tema tengah malam</translation>
 <translation id="2422927186524098759">Bar sisi</translation>
 <translation id="2361906291514218784">AI Leo</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="8000020256436988724">Bar alat</translation>
 <translation id="6225572914528673855">Bar alamat</translation>
+<translation id="6821966107067356137">Tambah suapan RSS</translation>
 <translation id="8293206222192510085">Tambah Penanda Halaman</translation>
 <translation id="7758460733045216901">Panel Penanda Halaman</translation>
 <translation id="958268166261124668">VPN Brave: Disambungkan</translation>
