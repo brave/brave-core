@@ -5,6 +5,9 @@
 
 #include "brave/browser/ui/email_aliases/email_aliases_controller.h"
 
+#include "base/check_is_test.h"
+#include "brave/browser/ui/webui/email_aliases/email_aliases_panel_ui.h"
+#include "brave/components/email_aliases/features.h"
 #include "chrome/browser/ui/singleton_tabs.h"
 #include "chrome/browser/ui/views/bubble/webui_bubble_manager.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
@@ -54,7 +57,6 @@ void EmailAliasesController::ShowBubble(content::RenderFrameHost* render_frame,
 
   CloseBubble();
 
-
   const auto url_with_field =
       base::StrCat({kEmailAliasesPanelURL,
                     "?field=", base::NumberToString(field_renderer_id)});
@@ -64,6 +66,10 @@ void EmailAliasesController::ShowBubble(content::RenderFrameHost* render_frame,
   bubble_ = WebUIBubbleManager::Create<EmailAliasesPanelUI>(
       anchor_view, browser_view_->browser(), GURL(url_with_field),
       IDS_SETTINGS_EMAIL_ALIASES_LABEL);
+  if (g_autoclose_bubble_for_testing) {
+    CHECK_IS_TEST();
+    bubble_->DisableCloseBubbleHelperForTesting();  // IN-TEST
+  }
 
   bubble_->ShowBubble(std::nullopt, views::BubbleBorder::TOP_CENTER);
   if (bubble_->GetBubbleWidget()) {
