@@ -14,6 +14,8 @@
 
 namespace brave_account::endpoint_client::detail {
 
+namespace {
+
 struct RequestBodyNoToValue {
   static constexpr char kName[] = "RequestBodyNoToValue";
 };
@@ -47,6 +49,8 @@ using RequestBodyTestTypes = testing::Types<
     std::tuple<RequestBodyToValueWithWrongReturnType, std::false_type>,
     std::tuple<RequestBodyToValueWithWrongParameterType, std::false_type>,
     std::tuple<ValidRequestBody, std::true_type>>;
+
+}  // namespace
 
 TYPED_TEST_SUITE(IsRequestBodyConceptTest,
                  RequestBodyTestTypes,

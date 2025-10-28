@@ -15,6 +15,8 @@
 
 namespace brave_account::endpoint_client::detail {
 
+namespace {
+
 struct ResponseBodyNoFromValue {
   static constexpr char kName[] = "ResponseBodyNoFromValue";
 };
@@ -49,6 +51,8 @@ using ResponseBodyTestTypes = testing::Types<
     std::tuple<ResponseBodyFromValueWithWrongReturnType, std::false_type>,
     std::tuple<ResponseBodyFromValueWithWrongParameterType, std::false_type>,
     std::tuple<ValidResponseBody, std::true_type>>;
+
+}  // namespace
 
 TYPED_TEST_SUITE(IsResponseBodyConceptTest,
                  ResponseBodyTestTypes,
