@@ -131,7 +131,7 @@ class BraveShieldsWebContentsObserverManagedPolicyBrowserTest
   void SetUpOnMainThread() override {
     BraveShieldsWebContentsObserverBrowserTest::SetUpOnMainThread();
 
-    // Enable JavaScript blocking globally.
+    // Disable JavaScript blocking globally.
     content_settings()->SetContentSettingCustomScope(
         ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),
         ContentSettingsType::JAVASCRIPT, CONTENT_SETTING_ALLOW);
