@@ -716,7 +716,8 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
   if (base::FeatureList::IsEnabled(email_aliases::features::kEmailAliases)) {
     registry.ForWebUI<EmailAliasesPanelUI>()
         .Add<color_change_listener::mojom::PageHandler>()
-        .Add<email_aliases::mojom::EmailAliasesService>();
+        .Add<email_aliases::mojom::EmailAliasesService>()
+        .Add<email_aliases::mojom::EmailAliasesPanelHandler>();
   }
 
 #else   // !BUILDFLAG(IS_ANDROID)

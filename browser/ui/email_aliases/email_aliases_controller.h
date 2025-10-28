@@ -7,7 +7,6 @@
 #define BRAVE_BROWSER_UI_EMAIL_ALIASES_EMAIL_ALIASES_CONTROLLER_H_
 
 #include "base/memory/raw_ptr.h"
-#include "base/scoped_observation.h"
 #include "brave/components/email_aliases/email_aliases_service.h"
 
 class BrowserView;
@@ -17,29 +16,13 @@ namespace content {
 struct ContextMenuParams;
 }
 
-namespace base {
-template <>
-struct ScopedObservationTraits<email_aliases::EmailAliasesService,
-                               email_aliases::EmailAliasesBubbleObserver> {
-  static void AddObserver(email_aliases::EmailAliasesService* source,
-                          email_aliases::EmailAliasesBubbleObserver* observer) {
-    source->AddBubbleObserver(observer);
-  }
-  static void RemoveObserver(
-      email_aliases::EmailAliasesService* source,
-      email_aliases::EmailAliasesBubbleObserver* observer) {
-    source->RemoveBubbleObserver(observer);
-  }
-};
-}  // namespace base
-
 namespace email_aliases {
 
-class EmailAliasesController : public EmailAliasesBubbleObserver {
+class EmailAliasesController {
  public:
   EmailAliasesController(BrowserView* browser_view,
                          EmailAliasesService* email_aliases_service);
-  ~EmailAliasesController() override;
+  ~EmailAliasesController();
   EmailAliasesController(const EmailAliasesController&) = delete;
   EmailAliasesController& operator=(const EmailAliasesController&) = delete;
 
@@ -49,20 +32,15 @@ class EmailAliasesController : public EmailAliasesBubbleObserver {
   void CloseBubble();
   void OpenSettingsPage();
 
+  void OnAliasCreationComplete(const std::string& email);
+
   WebUIBubbleManager* GetBubbleForTesting();
 
  private:
-  // EmailAliasesBubbleObserver:
-  void OnAliasCreationComplete(
-      const std::optional<std::string>& email) override;
-  void OnInvokeManageAliases() override;
-
   raw_ptr<BrowserView> browser_view_ = nullptr;
   raw_ptr<EmailAliasesService> email_aliases_service_ = nullptr;
 
   std::unique_ptr<WebUIBubbleManager> bubble_;
-  base::ScopedObservation<EmailAliasesService, EmailAliasesBubbleObserver>
-      observation_{this};
 };
 
 }  // namespace email_aliases

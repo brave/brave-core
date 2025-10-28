@@ -32,15 +32,6 @@ class SimpleURLLoader;
 
 namespace email_aliases {
 
-class EmailAliasesBubbleObserver : public base::CheckedObserver {
- public:
-  ~EmailAliasesBubbleObserver() override = default;
-
-  virtual void OnAliasCreationComplete(
-      const std::optional<std::string>& email) {}
-  virtual void OnInvokeManageAliases() {}
-};
-
 // The EmailAliasesService is responsible for managing the email aliases for a
 // user. It is used to request authentication, generate aliases, update aliases,
 // and delete aliases. It also provides a way to observe the authentication
@@ -91,10 +82,6 @@ class EmailAliasesService : public KeyedService,
 
   // Returns true if the user is ready to create a new alias.
   bool IsReadyToCreate() const;
-
-  // Registers/unregisters a bubble observer for alias creation completion.
-  void AddBubbleObserver(EmailAliasesBubbleObserver* observer);
-  void RemoveBubbleObserver(EmailAliasesBubbleObserver* observer);
 
   // Binds the mojom interface to this service
   // Adds a new receiver for the EmailAliasesService Mojo interface.
@@ -181,13 +168,6 @@ class EmailAliasesService : public KeyedService,
       bool update_expected,
       std::optional<std::string> response_body);
 
-  // Called by the UI to indicate alias creation flow completed.
-  void NotifyAliasCreationComplete(
-      const std::optional<std::string>& email) override;
-
-  // Called by the UI to show the settings page.
-  void InvokeManageAliases() override;
-
   // Bound Mojo receivers for the EmailAliasesService interface.
   mojo::ReceiverSet<mojom::EmailAliasesService> receivers_;
 
@@ -233,10 +213,6 @@ class EmailAliasesService : public KeyedService,
 
   // Maximum number of aliases allowed for the user.
   const int max_aliases_ = 5;
-
-  // Observers that receive email alias creation updates.
-  base::ObserverList<EmailAliasesBubbleObserver>
-      email_aliases_bubble_observers_;
 
   // WeakPtrFactory to safely bind callbacks across async network operations.
   base::WeakPtrFactory<EmailAliasesService> weak_factory_{this};

@@ -257,6 +257,8 @@ source_set("ui") {
       "webui/brave_shields/shields_panel_handler.h",
       "webui/brave_shields/shields_panel_ui.cc",
       "webui/brave_shields/shields_panel_ui.h",
+      "webui/email_aliases/email_aliases_panel_handler.cc",
+      "webui/email_aliases/email_aliases_panel_handler.h",
       "webui/email_aliases/email_aliases_panel_ui.cc",
       "webui/email_aliases/email_aliases_panel_ui.h",
       "webui/navigation_bar_data_provider.cc",

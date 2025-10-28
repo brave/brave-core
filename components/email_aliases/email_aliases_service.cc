@@ -522,29 +522,4 @@ bool EmailAliasesService::IsReadyToCreate() const {
   return !auth_token_.empty() && number_of_aliases_ < max_aliases_;
 }
 
-void EmailAliasesService::NotifyAliasCreationComplete(
-    const std::optional<std::string>& email) {
-  for (auto& observer : email_aliases_bubble_observers_) {
-    observer.OnAliasCreationComplete(email);
-  }
-}
-
-void EmailAliasesService::InvokeManageAliases() {
-  for (auto& observer : email_aliases_bubble_observers_) {
-    observer.OnInvokeManageAliases();
-  }
-}
-
-void EmailAliasesService::AddBubbleObserver(
-    EmailAliasesBubbleObserver* observer) {
-  CHECK(observer);
-  email_aliases_bubble_observers_.AddObserver(observer);
-}
-
-void EmailAliasesService::RemoveBubbleObserver(
-    EmailAliasesBubbleObserver* observer) {
-  CHECK(observer);
-  email_aliases_bubble_observers_.RemoveObserver(observer);
-}
-
 }  // namespace email_aliases

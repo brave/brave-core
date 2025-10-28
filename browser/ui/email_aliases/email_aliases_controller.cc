@@ -31,8 +31,6 @@ EmailAliasesController::EmailAliasesController(
   CHECK(base::FeatureList::IsEnabled(email_aliases::features::kEmailAliases));
   CHECK(browser_view_);
   CHECK(email_aliases_service_.get());
-
-  observation_.Observe(email_aliases_service_.get());
 }
 
 EmailAliasesController::~EmailAliasesController() = default;
@@ -77,6 +75,7 @@ void EmailAliasesController::CloseBubble() {
 }
 
 void EmailAliasesController::OpenSettingsPage() {
+  CloseBubble();
   ShowSingletonTabOverwritingNTP(browser_view_->browser(),
                                  GURL(kEmailAliasesSettingsURL));
 }
@@ -85,19 +84,12 @@ WebUIBubbleManager* EmailAliasesController::GetBubbleForTesting() {
   return bubble_.get();
 }
 
-void EmailAliasesController::OnAliasCreationComplete(
-    const std::optional<std::string>& email) {
+void EmailAliasesController::OnAliasCreationComplete(const std::string& email) {
   CloseBubble();
-  if (email.has_value() && !email->empty() &&
-      browser_view_->GetActiveWebContents()) {
+  if (!email.empty() && browser_view_->GetActiveWebContents()) {
     // In future: consider to use AutofillDriver::ApplyFieldAction.
-    browser_view_->GetActiveWebContents()->Replace(
-        base::UTF8ToUTF16(email.value()));
+    browser_view_->GetActiveWebContents()->Replace(base::UTF8ToUTF16(email));
   }
-}
-
-void EmailAliasesController::OnInvokeManageAliases() {
-  OpenSettingsPage();
 }
 
 }  // namespace email_aliases
