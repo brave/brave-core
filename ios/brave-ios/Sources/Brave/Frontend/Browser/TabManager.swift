@@ -1000,7 +1000,9 @@ class TabManager: NSObject {
       historyAPI.removeHistory(for: nodes)
     }
 
-    RecentlyClosed.remove(baseDomains: baseDomains)
+    if Preferences.Shields.shredHistoryItems.value {
+      RecentlyClosed.remove(baseDomains: baseDomains)
+    }
 
     for url in urls {
       await FaviconFetcher.deleteCache(for: url)
