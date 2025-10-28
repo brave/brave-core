@@ -25,6 +25,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/renderer_configuration.mojom.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "components/content_settings/core/common/content_settings.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
@@ -51,17 +52,16 @@ namespace {
 
 BraveShieldsWebContentsObserver* g_receiver_impl_for_testing = nullptr;
 
-brave_shields::mojom::ContentSettingsOverriddenDataPtr
-GetJsContentSettingsOverriddenData(content::BrowserContext* browser_context,
-                                   const GURL& url) {
+bool IsScriptBlockingEnforced(content::BrowserContext* browser_context,
+                              const GURL& url) {
   Profile* profile = Profile::FromBrowserContext(browser_context);
   auto* settings_service =
       BraveShieldsSettingsServiceFactory::GetForProfile(profile);
   if (!settings_service) {
-    return nullptr;
+    return false;
   }
 
-  return settings_service->GetJsContentSettingsOverriddenData(url);
+  return settings_service->IsScriptBlockingEnforced(url);
 }
 
 }  // namespace
@@ -320,8 +320,6 @@ void BraveShieldsWebContentsObserver::SendShieldsSettings(
           ? brave_shields::GetFarblingToken(host_content_settings_map,
                                             primary_url)
           : base::Token();
-  auto scripts_blocked_override_data =
-      GetJsContentSettingsOverriddenData(rfh->GetBrowserContext(), primary_url);
   PrefService* pref_service =
       user_prefs::UserPrefs::Get(rfh->GetBrowserContext());
 
@@ -330,7 +328,7 @@ void BraveShieldsWebContentsObserver::SendShieldsSettings(
   agent->SetShieldsSettings(brave_shields::mojom::ShieldsSettings::New(
       farbling_level, farbling_token, allowed_scripts_,
       brave_shields::IsReduceLanguageEnabledForProfile(pref_service),
-      std::move(scripts_blocked_override_data)));
+      IsScriptBlockingEnforced(rfh->GetBrowserContext(), primary_url)));
 }
 
 void BraveShieldsWebContentsObserver::BindReceiver(

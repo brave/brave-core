@@ -14,17 +14,16 @@
 
 namespace {
 
-brave_shields::mojom::ContentSettingsOverriddenDataPtr
-GetJsContentSettingsOverriddenData(content::BrowserContext* browser_context,
-                                   const GURL& url) {
+bool IsScriptBlockingEnforced(content::BrowserContext* browser_context,
+                              const GURL& url) {
   Profile* profile = Profile::FromBrowserContext(browser_context);
   auto* settings_service =
       BraveShieldsSettingsServiceFactory::GetForProfile(profile);
   if (!settings_service) {
-    return nullptr;
+    return false;
   }
 
-  return settings_service->GetJsContentSettingsOverriddenData(url);
+  return settings_service->IsScriptBlockingEnforced(url);
 }
 
 brave_shields::mojom::ShieldsSettingsPtr GetBraveShieldsSettingsOnUI(
@@ -52,14 +51,12 @@ brave_shields::mojom::ShieldsSettingsPtr GetBraveShieldsSettingsOnUI(
                 HostContentSettingsMapFactory::GetForProfile(browser_context),
                 top_frame_url)
           : base::Token();
-  auto scripts_blocked_override_data =
-      GetJsContentSettingsOverriddenData(browser_context, top_frame_url);
   PrefService* pref_service = user_prefs::UserPrefs::Get(browser_context);
 
   return brave_shields::mojom::ShieldsSettings::New(
       farbling_level, farbling_token, std::vector<std::string>(),
       brave_shields::IsReduceLanguageEnabledForProfile(pref_service),
-      std::move(scripts_blocked_override_data));
+      IsScriptBlockingEnforced(browser_context, top_frame_url));
 }
 
 }  // namespace

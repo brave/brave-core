@@ -5,7 +5,6 @@
 
 module brave_shields.mojom;
 
-import "components/content_settings/core/common/content_settings.mojom";
 import "mojo/public/mojom/base/token.mojom";
 
 enum FarblingLevel {
@@ -29,18 +28,12 @@ enum ContentSettingSource {
   kTest,
 };
 
-struct ContentSettingsOverriddenData {
-  content_settings.mojom.ContentSetting status
-          = content_settings.mojom.ContentSetting.DEFAULT;
-  ContentSettingSource override_source = kNone;
-};
-
 struct ShieldsSettings {
   FarblingLevel farbling_level;
   mojo_base.mojom.Token farbling_token;
   array<string> origins_to_allow_scripts;
   bool reduce_language;
-  ContentSettingsOverriddenData scripts_blocked_override_status;
+  bool enforced_script_blocking = false;
 };
 
 enum AdBlockMode {

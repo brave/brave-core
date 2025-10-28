@@ -231,6 +231,14 @@ mojom::AutoShredMode BraveShieldsSettingsService::GetAutoShredMode(
           url, GURL(), AutoShredSetting::kContentSettingsType));
 }
 
+bool BraveShieldsSettingsService::IsScriptBlockingEnforced(const GURL& url) {
+  const auto js_content_settings_overridden_data =
+      GetJsContentSettingsOverriddenData(url);
+  return js_content_settings_overridden_data &&
+         js_content_settings_overridden_data->status ==
+             ::ContentSetting::CONTENT_SETTING_BLOCK;
+}
+
 mojom::ContentSettingsOverriddenDataPtr
 BraveShieldsSettingsService::GetJsContentSettingsOverriddenData(
     const GURL& url) {

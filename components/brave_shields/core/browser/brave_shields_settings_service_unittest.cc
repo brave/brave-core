@@ -395,7 +395,8 @@ TEST_F(BraveShieldsSettingsServiceTest, GetJsContentSettingsOverriddenData) {
   // No override
   auto content_settings_overridden_data =
       brave_shields_settings()->GetJsContentSettingsOverriddenData(url);
-  EXPECT_EQ(brave_shields::mojom::ContentSettingsOverriddenStatus::kNotSet,
+  EXPECT_FALSE(brave_shields_settings()->IsScriptBlockingEnforced(url));
+  EXPECT_EQ(::ContentSetting::CONTENT_SETTING_DEFAULT,
             content_settings_overridden_data->status);
   EXPECT_EQ(brave_shields::mojom::ContentSettingSource::kUser,
             content_settings_overridden_data->override_source);
@@ -413,7 +414,8 @@ TEST_F(BraveShieldsSettingsServiceTest, GetJsContentSettingsOverriddenData) {
 
   content_settings_overridden_data =
       brave_shields_settings()->GetJsContentSettingsOverriddenData(url);
-  EXPECT_EQ(brave_shields::mojom::ContentSettingsOverriddenStatus::kAllowed,
+  EXPECT_FALSE(brave_shields_settings()->IsScriptBlockingEnforced(url));
+  EXPECT_EQ(::ContentSetting::CONTENT_SETTING_ALLOW,
             content_settings_overridden_data->status);
   EXPECT_EQ(brave_shields::mojom::ContentSettingSource::kExtension,
             content_settings_overridden_data->override_source);
@@ -425,7 +427,8 @@ TEST_F(BraveShieldsSettingsServiceTest, DefaultContentSettingsOverriddenData) {
   auto content_settings_overridden_data =
       brave_shields_settings()->GetJsContentSettingsOverriddenData(url);
   EXPECT_TRUE(content_settings_overridden_data);
-  EXPECT_EQ(brave_shields::mojom::ContentSettingsOverriddenStatus::kNotSet,
+  EXPECT_FALSE(brave_shields_settings()->IsScriptBlockingEnforced(url));
+  EXPECT_EQ(::ContentSetting::CONTENT_SETTING_DEFAULT,
             content_settings_overridden_data->status);
   EXPECT_EQ(brave_shields::mojom::ContentSettingSource::kUser,
             content_settings_overridden_data->override_source);

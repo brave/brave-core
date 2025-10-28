@@ -8,7 +8,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/raw_ref.h"
-#include "brave/components/brave_shields/core/common/brave_shields_panel.mojom-data-view.h"
+#include "brave/components/brave_shields/core/common/brave_shields_panel.mojom.h"
 #include "brave/components/brave_shields/core/common/shields_settings.mojom.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -60,6 +60,19 @@ class BraveShieldsSettingsService : public KeyedService {
   void SetAutoShredMode(mojom::AutoShredMode mode, const GURL& url);
   mojom::AutoShredMode GetAutoShredMode(const GURL& url);
 
+  void SetDefaultAutoShredMode(mojom::AutoShredMode mode);
+  mojom::AutoShredMode GetDefaultAutoShredMode();
+
+  void SetAutoShredMode(mojom::AutoShredMode mode, const GURL& url);
+  mojom::AutoShredMode GetAutoShredMode(const GURL& url);
+
+  void SetDefaultAutoShredMode(mojom::AutoShredMode mode);
+  mojom::AutoShredMode GetDefaultAutoShredMode();
+
+  void SetAutoShredMode(mojom::AutoShredMode mode, const GURL& url);
+  mojom::AutoShredMode GetAutoShredMode(const GURL& url);
+
+  bool IsScriptBlockingEnforced(const GURL& url);
   mojom::ContentSettingsOverriddenDataPtr GetJsContentSettingsOverriddenData(
       const GURL& url);
 
