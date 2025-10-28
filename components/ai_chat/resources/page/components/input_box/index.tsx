@@ -23,7 +23,7 @@ import { ModelSelector } from '../model_selector'
 import usePromise from '$web-common/usePromise'
 import { isImageFile } from '../../constants/file_types'
 import { convertFileToUploadedFile } from '../../utils/file_utils'
-import * as Mojom from '../../../common/mojom'
+import { stringifyContent } from './editable_content'
 
 type Props = Pick<
   ConversationContext,
@@ -55,7 +55,6 @@ type Props = Pick<
   | 'unassociatedTabs'
   | 'handleSkillClick'
   | 'selectedSkill'
-  | 'resetSelectedSkill'
 >
   & Pick<
     AIChatContext,
@@ -94,55 +93,7 @@ function usePlaceholderText(
   return getLocale(S.CHAT_UI_INITIAL_PLACEHOLDER_LABEL)
 }
 
-// Skill regex patterns - currently limited to start of input only.
-// We plan to support it at anywhere after
-// https://github.com/brave/brave-browser/issues/48610 is resolved.
-const SKILL_DETECTION_REGEX = /^\/([a-zA-Z0-9_-]+)/
-
 function InputBox(props: InputBoxProps) {
-  const detectAndSetSkill = React.useCallback(
-    (value: string) => {
-      const match = value.match(SKILL_DETECTION_REGEX)
-
-      if (!match) {
-        return
-      }
-
-      const shortcut = match[1]
-      const foundSkill = props.context.skills.find(
-        (skill: Mojom.Skill) =>
-          skill.shortcut.toLowerCase() === shortcut.toLowerCase(),
-      )
-
-      // Only set if different from current selection
-      if (foundSkill) {
-        props.context.handleSkillClick(foundSkill)
-      }
-    },
-    [props.context.skills, props.context.handleSkillClick],
-  )
-
-  const onInputChange = React.useCallback(
-    (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-      const newValue = e.target.value
-      props.context.setInputText(newValue)
-
-      if (props.context.selectedSkill) {
-        // Check if current skill shortcut is still valid
-        const currentSkillShortcut = `/${props.context.selectedSkill.shortcut}`
-        if (!newValue.startsWith(currentSkillShortcut)) {
-          props.context.resetSelectedSkill()
-        }
-        return
-      }
-      if (newValue.startsWith('/') && props.context.skills.length > 0) {
-        // No skill selected, but input starts with /, try to detect
-        detectAndSetSkill(newValue)
-      }
-    },
-    [props.context.selectedSkill, props.context.skills, detectAndSetSkill],
-  )
-
   const querySubmitted = React.useRef(false)
   const attachmentWrapperRef = React.useRef<HTMLDivElement>(null)
   const [attachmentWrapperHeight, setAttachmentWrapperHeight] =
@@ -172,7 +123,7 @@ function InputBox(props: InputBoxProps) {
 
     if (
       e.key === 'Backspace'
-      && props.context.inputText === ''
+      && stringifyContent(props.context.inputText) === ''
       && props.context.selectedActionType
     ) {
       props.context.resetSelectedActionType()
@@ -249,7 +200,8 @@ function InputBox(props: InputBoxProps) {
     (c) => !c.conversationTurnUuid,
   )
   const isSendButtonDisabled =
-    props.context.shouldDisableUserInput || props.context.inputText === ''
+    props.context.shouldDisableUserInput
+    || stringifyContent(props.context.inputText) === ''
 
   return (
     <form className={styles.form}>
@@ -297,10 +249,12 @@ function InputBox(props: InputBoxProps) {
         <textarea
           ref={maybeAutofocus}
           placeholder={placeholderText}
-          onChange={onInputChange}
+          onChange={(e) => {
+            props.context.setInputText([e.target.value])
+          }}
           onKeyDown={handleOnKeyDown}
           onPaste={handleOnPaste}
-          value={props.context.inputText}
+          value={stringifyContent(props.context.inputText)}
           autoFocus
           rows={1}
         />

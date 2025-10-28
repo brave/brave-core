@@ -119,7 +119,7 @@ describe('input box', () => {
       <InputBox
         context={{
           ...testContext,
-          inputText: '',
+          inputText: [''],
         }}
         conversationStarted={false}
       />,
@@ -135,7 +135,7 @@ describe('input box', () => {
       <InputBox
         context={{
           ...testContext,
-          inputText: 'test',
+          inputText: ['test'],
         }}
         conversationStarted={false}
       />,

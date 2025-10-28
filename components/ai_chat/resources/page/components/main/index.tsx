@@ -50,6 +50,7 @@ import Attachments from '../attachments'
 import useHasConversationStarted from '../../hooks/useHasConversationStarted'
 import { useExtractedQuery } from '../filter_menu/query'
 import TabsMenu from '../filter_menu/attachments_menu'
+import { stringifyContent } from '../input_box/editable_content'
 
 // Amount of pixels user has to scroll up to break out of
 // automatic scroll to bottom when new response lines are generated.
@@ -213,10 +214,13 @@ function Main() {
     return false
   }
 
-  const extractedQuery = useExtractedQuery(conversationContext.inputText, {
-    onlyAtStart: true,
-    triggerCharacter: '/',
-  })
+  const extractedQuery = useExtractedQuery(
+    stringifyContent(conversationContext.inputText),
+    {
+      onlyAtStart: true,
+      triggerCharacter: '/',
+    },
+  )
 
   // Transform skills into ActionGroup format and append to actionList
   const categoriesWithSkills = React.useMemo(() => {
@@ -251,7 +255,7 @@ function Main() {
   }
 
   const handleNewSkillClick = React.useCallback(() => {
-    const inputText = conversationContext.inputText
+    const inputText = stringifyContent(conversationContext.inputText)
     aiChatContext.setSkillDialog({
       id: '',
       shortcut: inputText.startsWith('/') ? inputText.substring(1) : inputText,

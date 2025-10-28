@@ -80,7 +80,7 @@ describe('TabsMenu', () => {
       <MockContext
         associatedContentInfo={[
           {
-            conversationTurnUuid: undefined,
+            conversationTurnUuid: '1',
             contentId: 1,
             title: 'Test 1',
             url: {
@@ -120,7 +120,7 @@ describe('TabsMenu', () => {
 
   it('should be open when query starts with @', () => {
     const { container } = render(
-      <MockContext inputText='@'>
+      <MockContext inputText={['@']}>
         <TabsMenu />
       </MockContext>,
     )
@@ -132,13 +132,13 @@ describe('TabsMenu', () => {
 
   it('should be close when @ is removed', () => {
     render(
-      <MockContext inputText='@'>
+      <MockContext inputText={['@']}>
         <TabsMenu />
       </MockContext>,
     )
 
     const { container } = render(
-      <MockContext inputText='hi'>
+      <MockContext inputText={['hi']}>
         <TabsMenu />
       </MockContext>,
     )
@@ -151,7 +151,7 @@ describe('TabsMenu', () => {
   it('should filter by text after @', () => {
     const { queryByText } = render(
       <MockContext
-        inputText='@2'
+        inputText={['@2']}
         tabs={[
           {
             contentId: 1,
@@ -192,7 +192,7 @@ describe('TabsMenu', () => {
     const { queryByText } = render(
       <MockContext
         conversationUuid='1'
-        inputText='@'
+        inputText={['@']}
         uiHandler={
           // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
           {
@@ -251,7 +251,7 @@ describe('TabsMenu', () => {
   it('should filter bookmarks by query', async () => {
     const { findByText, queryByText } = render(
       <MockContext
-        inputText='@brave'
+        inputText={['@brave']}
         getBookmarks={() =>
           Promise.resolve([
             {
@@ -304,7 +304,7 @@ describe('TabsMenu', () => {
   it('should filter history by query', async () => {
     const { findByText, queryByText } = render(
       <MockContext
-        inputText='@search'
+        inputText={['@search']}
         getHistory={() =>
           Promise.resolve([
             {
@@ -341,7 +341,7 @@ describe('TabsMenu', () => {
 
     render(
       <MockContext
-        inputText='@ab'
+        inputText={['@ab']}
         getHistory={getHistory}
       >
         <TabsMenu />

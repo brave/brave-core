@@ -51,6 +51,10 @@ import { createTextContentBlock } from '../../common/content_block'
 import ToolEvent from '../../untrusted_conversation_frame/components/assistant_response/tool_event'
 import { taskConversationEntries } from './story_utils/history'
 import { toolUseCompleteAssistantDetailStorage } from './story_utils/events'
+import {
+  Content,
+  stringifyContent,
+} from '../components/input_box/editable_content'
 
 // TODO(https://github.com/brave/brave-browser/issues/47810): Attempt to split this file up
 
@@ -938,7 +942,7 @@ type CustomArgs = {
   initialized: boolean
   currentErrorState: keyof typeof Mojom.APIError
   model: string
-  inputText: string
+  inputText: Content
   hasConversation: boolean
   editingConversationId: string | null
   deletingConversationId: string | null
@@ -981,7 +985,9 @@ type CustomArgs = {
 
 const args: CustomArgs = {
   initialized: true,
-  inputText: `Write a Star Trek poem about Data's life on board the Enterprise`,
+  inputText: [
+    `Write a Star Trek poem about Data's life on board the Enterprise`,
+  ],
   hasConversation: true,
   conversationListCount: CONVERSATIONS.length,
   hasSuggestedQuestions: true,
@@ -1106,10 +1112,6 @@ function StoryContext(
         model.options.leoModelOptions?.access === Mojom.ModelAccess.BASIC,
     )
     setArgs({ model: nonPremiumModel?.key })
-  }
-
-  const setInputText = (inputText: string) => {
-    setArgs({ inputText })
   }
 
   const [showSidebar, setShowSidebar] = React.useState(isSmall)
@@ -1297,7 +1299,7 @@ function StoryContext(
     ratingTurnUuid: options.args.ratingTurnUuid,
     isUploadingFiles: false,
     isTemporaryChat: options.args.isTemporaryChat,
-    setInputText,
+    setInputText: (content) => setArgs({ inputText: content }),
     setCurrentModel: () => {},
     switchToBasicModel,
     generateSuggestedQuestions: () => {},
@@ -1307,15 +1309,15 @@ function StoryContext(
     handleStopGenerating: async () => {},
     submitInputTextToAPI: () => {},
     resetSelectedActionType: () => setArgs({ selectedActionType: undefined }),
-    resetSelectedSkill: () => setArgs({ selectedSkill: undefined }),
     handleActionTypeClick: (actionType: Mojom.ActionType) => {
       const update: Partial<CustomArgs> = {
         selectedActionType: actionType,
         selectedSkill: undefined,
       }
 
-      if (options.args.inputText.startsWith('/')) {
-        update.inputText = ''
+      const content = stringifyContent(options.args.inputText)
+      if (content.startsWith('/')) {
+        update.inputText = ['']
       }
 
       setArgs(update)
@@ -1325,7 +1327,9 @@ function StoryContext(
       setArgs({
         selectedSkill: skill,
         selectedActionType: undefined,
-        inputText: `/${skill.shortcut} `,
+        inputText: [
+          { type: 'skill', id: skill.shortcut, text: `/${skill.shortcut}` },
+        ],
       })
       setIsToolsMenuOpen(false)
     },

@@ -23,6 +23,10 @@ import {
 } from '../../common/conversation_history_utils'
 import useHasConversationStarted from '../hooks/useHasConversationStarted'
 import { useIsDragging } from '../hooks/useIsDragging'
+import {
+  Content,
+  stringifyContent,
+} from '../components/input_box/editable_content'
 
 const MAX_INPUT_CHAR = 20000
 const CHAR_LIMIT_THRESHOLD = MAX_INPUT_CHAR * 0.8
@@ -52,7 +56,7 @@ export type ConversationContext = SendFeedbackState
     shouldDisableUserInput: boolean
     shouldShowLongPageWarning: boolean
     shouldShowLongConversationInfo: boolean
-    inputText: string
+    inputText: Content
     selectedActionType: Mojom.ActionType | undefined
     selectedSkill: Mojom.Skill | undefined
     isToolsMenuOpen: boolean
@@ -69,10 +73,9 @@ export type ConversationContext = SendFeedbackState
     retryAPIRequest: () => void
     handleResetError: () => void
     handleStopGenerating: () => Promise<void>
-    setInputText: (text: string) => void
+    setInputText: (text: Content) => void
     submitInputTextToAPI: () => void
     resetSelectedActionType: () => void
-    resetSelectedSkill: () => void
     handleActionTypeClick: (actionType: Mojom.ActionType) => void
     handleSkillClick: (skill: Mojom.Skill) => void
     handleSkillEdit: (skill: Mojom.Skill) => void
@@ -117,7 +120,7 @@ export const defaultContext: ConversationContext = {
   currentError: Mojom.APIError.None,
   shouldShowLongPageWarning: false,
   shouldShowLongConversationInfo: false,
-  inputText: '',
+  inputText: [],
   selectedActionType: undefined,
   selectedSkill: undefined,
   isToolsMenuOpen: false,
@@ -137,7 +140,6 @@ export const defaultContext: ConversationContext = {
   setInputText: () => {},
   submitInputTextToAPI: () => {},
   resetSelectedActionType: () => {},
-  resetSelectedSkill: () => {},
   handleActionTypeClick: () => {},
   handleSkillClick: () => {},
   handleSkillEdit: () => {},
@@ -464,12 +466,6 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     })
   }
 
-  const resetSelectedSkill = () => {
-    setPartialContext({
-      selectedSkill: undefined,
-    })
-  }
-
   React.useEffect(() => {
     try {
       getAPI().metrics.onQuickActionStatusChange(!!context.selectedActionType)
@@ -483,8 +479,11 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
       isToolsMenuOpen: false,
     }
 
-    if (context.inputText.startsWith('/')) {
-      update.inputText = ''
+    const firstContent = context.inputText[0]
+    if (typeof firstContent === 'string' && firstContent.startsWith('/')) {
+      setPartialContext({
+        inputText: [],
+      })
     }
 
     setPartialContext(update)
@@ -495,7 +494,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
       selectedActionType: undefined,
       selectedSkill: skill,
       isToolsMenuOpen: false,
-      inputText: `/${skill.shortcut} `,
+      inputText: [`/${skill.shortcut} `],
     }
 
     setPartialContext(update)
@@ -531,27 +530,27 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
 
     if (context.selectedSkill) {
       conversationHandler.submitHumanConversationEntryWithSkill(
-        context.inputText,
+        stringifyContent(context.inputText),
         context.selectedSkill.id,
       )
     } else if (context.selectedActionType) {
       conversationHandler.submitHumanConversationEntryWithAction(
-        context.inputText,
+        stringifyContent(context.inputText),
         context.selectedActionType,
       )
     } else {
       conversationHandler.submitHumanConversationEntry(
-        context.inputText,
+        stringifyContent(context.inputText),
         context.pendingMessageFiles,
       )
     }
 
     setPartialContext({
-      inputText: '',
+      inputText: [],
       pendingMessageFiles: [],
+      selectedSkill: undefined,
     })
     resetSelectedActionType()
-    resetSelectedSkill()
   }
 
   const disassociateContent = (content: Mojom.AssociatedContent) => {
@@ -599,7 +598,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
   const handleResetError = async () => {
     const { turn } = await conversationHandler.clearErrorAndGetFailedMessage()
     setPartialContext({
-      inputText: turn.text,
+      inputText: [turn.text],
     })
   }
 
@@ -608,7 +607,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
       await conversationHandler.stopGenerationAndMaybeGetHumanEntry()
     if (humanEntry) {
       setPartialContext({
-        inputText: humanEntry.text,
+        inputText: [humanEntry.text],
       })
     }
   }
@@ -697,6 +696,24 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
       getAPI().uiObserver.removeListener(listenerId)
     }
   }, [])
+
+  React.useEffect(() => {
+    if (!context.selectedSkill) return
+
+    // If we still have the skill selected there's nothing to do.
+    if (
+      stringifyContent(context.inputText).startsWith(
+        `/${context.selectedSkill.shortcut}`,
+      )
+    ) {
+      return
+    }
+
+    // Otherwise, the user has cleared it:
+    setPartialContext({
+      selectedSkill: undefined,
+    })
+  }, [context.inputText, context.selectedSkill])
 
   const ignoreExternalLinkWarningFromLocalStorage = React.useMemo(() => {
     return JSON.parse(
@@ -796,7 +813,6 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     setCurrentModel: (model) => conversationHandler.changeModel(model.key),
     generateSuggestedQuestions: () => conversationHandler.generateQuestions(),
     resetSelectedActionType,
-    resetSelectedSkill,
     setInputText: (inputText) => setPartialContext({ inputText }),
     handleActionTypeClick,
     handleSkillClick,
