@@ -143,6 +143,10 @@ SyncDeviceFormFactor const SyncDeviceFormFactorTablet =
         &session_tab.navigations[index];
     std::string tab_title = base::UTF16ToUTF8(navigation->title());
     GURL virtual_url = navigation->virtual_url();
+    if (virtual_url.is_empty() || !virtual_url.is_valid()) {
+      // Skip any tab that doesn't have a valid url
+      return;
+    }
 
     if (tab_title.empty()) {
       tab_title = navigation->virtual_url().spec();
