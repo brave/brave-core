@@ -1,0 +1,14 @@
+<!-- Copyright (c) 2025 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+<settings-subpage page-title="$i18n{siteSettingsCardano}">
+  <settings-category-default-radio-group id="cardanoDefault" category="[[contentSettingsTypesEnum_.CARDANO]]"
+    block-option-label="$i18n{siteSettingsCardanoBlock}" allow-option-label="$i18n{siteSettingsCardanoAsk}"
+    allow-option-icon="cardano-on" block-option-icon="cardano-off">
+  </settings-category-default-radio-group>
+  <category-setting-exceptions id="cardanoExceptions" category="[[contentSettingsTypesEnum_.CARDANO]]"
+    block-header="$i18n{siteSettingsBlock}" allow-header="$i18n{siteSettingsAllow}" read-only-list>
+  </category-setting-exceptions>
+</settings-subpage>
