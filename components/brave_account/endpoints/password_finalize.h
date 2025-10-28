@@ -8,7 +8,7 @@
 
 #include <string_view>
 
-#include "brave/components/brave_account/endpoint_client/concepts.h"
+#include "brave/components/brave_account/endpoint_client/is_endpoint.h"
 #include "brave/components/brave_account/endpoints/error.h"
 #include "brave/components/brave_account/endpoints/password_finalize_request.h"
 #include "brave/components/brave_account/endpoints/password_finalize_response.h"
@@ -24,7 +24,7 @@ struct PasswordFinalize {
   static std::string_view Method();
 };
 
-static_assert(endpoint_client::concepts::Endpoint<PasswordFinalize>);
+static_assert(endpoint_client::IsEndpoint<PasswordFinalize>);
 
 }  // namespace brave_account::endpoints
 

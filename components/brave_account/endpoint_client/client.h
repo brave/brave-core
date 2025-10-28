@@ -20,7 +20,7 @@
 #include "base/types/is_instantiation.h"
 #include "base/values.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
-#include "brave/components/brave_account/endpoint_client/concepts.h"
+#include "brave/components/brave_account/endpoint_client/is_endpoint.h"
 #include "brave/components/brave_account/endpoint_client/maybe_strip_with_headers.h"
 #include "brave/components/brave_account/endpoint_client/with_headers.h"
 #include "net/http/http_request_headers.h"
@@ -30,7 +30,7 @@
 
 namespace brave_account::endpoint_client {
 
-template <concepts::Endpoint T>
+template <IsEndpoint T>
 class Client {
   using Response = typename T::Response;
   using Error = typename T::Error;
