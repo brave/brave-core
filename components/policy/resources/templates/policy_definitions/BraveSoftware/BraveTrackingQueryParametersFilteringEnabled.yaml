@@ -1,7 +1,7 @@
 caption: Control tracking query parameters filtering
 default: null
 desc: |-
-  This policy controls whether Brave automatically strips known tracking query parameters from URLs.
+  This policy controls whether Brave automatically strips known tracking query parameters from URLs when Brave Shields is enabled. It has no affect when Brave Shields are disabled.
 
             If this policy is set to true, known tracking query parameters will be filtered when Brave Shields is enabled.
 
