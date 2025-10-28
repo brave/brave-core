@@ -6,16 +6,13 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_BRAVE_ACCOUNT_BRAVE_ACCOUNT_UI_DESKTOP_H_
 #define BRAVE_BROWSER_UI_WEBUI_BRAVE_ACCOUNT_BRAVE_ACCOUNT_UI_DESKTOP_H_
 
-#include "base/memory/raw_ptr.h"
 #include "brave/browser/brave_account/brave_account_service_factory.h"
 #include "brave/components/brave_account/brave_account_ui_base.h"
 #include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
-#include "components/prefs/pref_change_registrar.h"
+#include "components/prefs/pref_member.h"
 #include "content/public/browser/web_ui_controller.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/browser/webui_config.h"
-
-class PrefService;
 
 namespace content {
 class WebUI;
@@ -33,8 +30,7 @@ class BraveAccountUIDesktop
  private:
   void OnVerificationTokenChanged();
 
-  const raw_ptr<PrefService> pref_service_;
-  PrefChangeRegistrar pref_change_registrar_;
+  StringPrefMember pref_verification_token_;
 
   WEB_UI_CONTROLLER_TYPE_DECL();
 };
