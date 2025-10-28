@@ -14,34 +14,24 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import org.chromium.base.Log;
+import org.chromium.brave_wallet.mojom.BraveWalletService;
+import org.chromium.brave_wallet.mojom.JsonRpcService;
+import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.SignMessageError;
+import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.domain.WalletModel;
+import org.chromium.chrome.browser.crypto_wallet.fragments.WalletBottomSheetDialogFragment;
 
 /** Fragment used by DApps for sign-in error message */
-public class SignMessageErrorFragment extends BaseDAppsBottomSheetDialogFragment {
-    private static final String TAG = "SMEF";
+@NullMarked
+public class SignMessageErrorFragment extends WalletBottomSheetDialogFragment {
 
-    private WalletModel mWalletModel;
     private SignMessageError mCurrentSignMessageError;
     private Button mBtClose;
     private TextView mTextViewUrl;
     private TextView mTextViewHost;
     private TextView mTextViewReason;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        try {
-            BraveActivity activity = BraveActivity.getBraveActivity();
-            mWalletModel = activity.getWalletModel();
-            registerKeyringObserver(mWalletModel.getKeyringModel());
-        } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "onCreate ", e);
-        }
-    }
 
     @Override
     public View onCreateView(
@@ -52,24 +42,21 @@ public class SignMessageErrorFragment extends BaseDAppsBottomSheetDialogFragment
         mTextViewUrl = view.findViewById(R.id.fragment_sign_msg_err_tv_url);
         mTextViewHost = view.findViewById(R.id.fragment_sign_msg_err_tv_host);
         mTextViewReason = view.findViewById(R.id.fragment_sign_msg_err_tv_reason);
+        mBtClose.setOnClickListener(v -> notifySignMessageErrorProcessed());
 
-        initComponents();
+        fillSignMessageErrorInfo();
 
         return view;
     }
 
-    private void initComponents() {
-        fillSignMessageErrorInfo(true);
-    }
-
-    private void fillSignMessageErrorInfo(boolean init) {
+    private void fillSignMessageErrorInfo() {
         getBraveWalletService()
                 .getPendingSignMessageErrors(
                         errors -> {
                             if (errors == null || errors.length == 0) {
                                 Intent intent = new Intent();
-                                getActivity().setResult(Activity.RESULT_OK, intent);
-                                getActivity().finish();
+                                requireActivity().setResult(Activity.RESULT_OK, intent);
+                                requireActivity().finish();
                                 return;
                             }
 
@@ -78,18 +65,11 @@ public class SignMessageErrorFragment extends BaseDAppsBottomSheetDialogFragment
                             mTextViewUrl.setText(mCurrentSignMessageError.originInfo.originSpec);
                             mTextViewHost.setText(mCurrentSignMessageError.originInfo.eTldPlusOne);
                             mTextViewReason.setText(mCurrentSignMessageError.localizedErrMsg);
-
-                            if (init) {
-                                mBtClose.setOnClickListener(
-                                        v -> {
-                                            notifySignMessageErrorProcessed();
-                                        });
-                            }
                         });
     }
 
     private void notifySignMessageErrorProcessed() {
         getBraveWalletService().notifySignMessageErrorProcessed(mCurrentSignMessageError.id);
-        fillSignMessageErrorInfo(false);
+        fillSignMessageErrorInfo();
     }
 }

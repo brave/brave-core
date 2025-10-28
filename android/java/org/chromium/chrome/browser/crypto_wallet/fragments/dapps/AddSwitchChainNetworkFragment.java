@@ -7,8 +7,11 @@ package org.chromium.chrome.browser.crypto_wallet.fragments.dapps;
 
 import static org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActivity.ActivityType.ADD_ETHEREUM_CHAIN;
 import static org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActivity.ActivityType.SWITCH_ETHEREUM_CHAIN;
+import static org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActivity.EXTRA_ACTIVITY_TYPE;
 
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
@@ -32,6 +35,8 @@ import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.OriginInfo;
 import org.chromium.brave_wallet.mojom.SwitchChainRequest;
+import org.chromium.build.annotations.MonotonicNonNull;
+import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletBaseActivity;
@@ -51,39 +56,65 @@ import org.chromium.url.GURL;
 import java.util.ArrayList;
 import java.util.List;
 
+@NullMarked
 public class AddSwitchChainNetworkFragment extends BaseDAppsFragment {
+
     private final List<NavigationItem> mTabTitles;
-    private final ActivityType mPanelType;
+    private final List<TwoLineItem> mNetworks;
+    private final List<TwoLineItem> mDetails;
+
+    @MonotonicNonNull
+    private ActivityType mPanelType;
+    @MonotonicNonNull
+    private AddSwitchRequestProcessListener mAddSwitchRequestProcessListener;
+
     private NetworkInfo mNetworkInfo;
     private BraveWalletBaseActivity mBraveWalletBaseActivity;
     private SwitchChainRequest mSwitchChainRequest;
     private AddChainRequest mAddChainRequest;
-    private AddSwitchRequestProcessListener mAddSwitchRequestProcessListener;
     private boolean mHasMultipleAddSwitchChainRequest;
-    private final List<TwoLineItem> mNetworks;
-    private final List<TwoLineItem> mDetails;
     private ImageView mFavicon;
     private TextView mSiteTv;
     private FaviconHelper mFaviconHelper;
     private DefaultFaviconHelper mDefaultFaviconHelper;
 
-    public AddSwitchChainNetworkFragment(ActivityType panelType) {
-        mPanelType = panelType;
+    public static AddSwitchChainNetworkFragment newInstance(final ActivityType panelType) {
+        final Bundle args = new Bundle();
+        args.putSerializable(EXTRA_ACTIVITY_TYPE, panelType);
+
+        final AddSwitchChainNetworkFragment fragment = new AddSwitchChainNetworkFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public AddSwitchChainNetworkFragment() {
         mTabTitles = new ArrayList<>();
         mNetworks = new ArrayList<>();
         mDetails = new ArrayList<>();
     }
 
-    public AddSwitchChainNetworkFragment(
-            ActivityType panelType,
-            AddSwitchRequestProcessListener addSwitchRequestProcessListener) {
-        this(panelType);
-        mAddSwitchRequestProcessListener = addSwitchRequestProcessListener;
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        if (context instanceof AddSwitchRequestProcessListener) {
+            mAddSwitchRequestProcessListener = (AddSwitchRequestProcessListener) context;
+        } else {
+            throw new IllegalStateException("Host activity must implement AddSwitchRequestProcessListener");
+        }
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        final Bundle bundle = requireArguments();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            mPanelType = bundle.getSerializable(EXTRA_ACTIVITY_TYPE, ActivityType.class);
+        } else {
+            mPanelType = (ActivityType) bundle.getSerializable(EXTRA_ACTIVITY_TYPE);
+        }
+
         mTabTitles.add(
                 new NavigationItem(
                         getString(R.string.network_text), new TwoLineItemFragment(mNetworks)));
@@ -335,8 +366,8 @@ public class AddSwitchChainNetworkFragment extends BaseDAppsFragment {
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDetach() {
+        super.onDetach();
         if (mFaviconHelper != null) mFaviconHelper.destroy();
         if (mDefaultFaviconHelper != null) mDefaultFaviconHelper.clearCache();
     }

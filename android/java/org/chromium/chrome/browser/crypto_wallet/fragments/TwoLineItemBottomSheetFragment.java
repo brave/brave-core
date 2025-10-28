@@ -19,8 +19,10 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.chromium.base.Log;
+import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.app.domain.KeyringModel;
 import org.chromium.chrome.browser.crypto_wallet.adapters.TwoLineItemRecyclerViewAdapter;
 import org.chromium.chrome.browser.crypto_wallet.adapters.TwoLineItemRecyclerViewAdapter.TwoLineItem;
 
@@ -30,52 +32,32 @@ import java.util.List;
  * A general purpose fragment representing a list of Items where each item containing a title and
  * sub-title.
  */
+@NullMarked
 public class TwoLineItemBottomSheetFragment extends WalletBottomSheetDialogFragment {
-    private static final String TAG = "TwoLineItemSheetFrag";
-    private List<TwoLineItem> items;
+    @Nullable
+    private List<TwoLineItem> mItems;
     private TwoLineItemRecyclerViewAdapter mAdapter;
     public String mTitle;
     private TextView mTvTitle;
     private ImageButton mIbClose;
 
-    private TwoLineItemBottomSheetFragment() {}
-
-    public TwoLineItemBottomSheetFragment(List<TwoLineItem> items) {
-        this.items = items;
-    }
-
-    public static TwoLineItemBottomSheetFragment newInstance(List<TwoLineItem> items) {
-        TwoLineItemBottomSheetFragment fragment = new TwoLineItemBottomSheetFragment(items);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        try {
-            BraveActivity activity = BraveActivity.getBraveActivity();
-            registerKeyringObserver(activity.getWalletModel().getKeyringModel());
-        } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "onCreate ", e);
-        }
-    }
-
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        if (mItems == null) {
+            dismissNow();
+        }
         View view = inflater.inflate(R.layout.fragment_two_line_item_sheet, container, false);
         RecyclerView recyclerView = view.findViewById(R.id.frag_two_line_sheet_list);
         mAdapter =
                 new TwoLineItemRecyclerViewAdapter(
-                        items, TwoLineItemRecyclerViewAdapter.AdapterViewOrientation.HORIZONTAL);
+                        mItems, TwoLineItemRecyclerViewAdapter.AdapterViewOrientation.HORIZONTAL);
         mAdapter.mSubTextAlignment = View.TEXT_ALIGNMENT_TEXT_START;
         recyclerView.setAdapter(mAdapter);
         mIbClose = view.findViewById(R.id.frag_two_line_sheet_ib_close);
         mIbClose.setOnClickListener(
-                v -> {
-                    dismiss();
-                });
+                v -> dismiss());
         recyclerView.setOnTouchListener(
                 (v, event) -> {
                     int action = event.getAction();
@@ -102,10 +84,7 @@ public class TwoLineItemBottomSheetFragment extends WalletBottomSheetDialogFragm
         return view;
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    public void invalidateData() {
-        if (mAdapter != null) {
-            mAdapter.notifyDataSetChanged();
-        }
+    public void setItems(List<TwoLineItem> items) {
+        mItems = items;
     }
 }

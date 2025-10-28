@@ -22,18 +22,17 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountId;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.SignDataUnion;
 import org.chromium.brave_wallet.mojom.SignMessageRequest;
 import org.chromium.build.annotations.Nullable;
+import org.chromium.brave_wallet.mojom.NetworkInfo;
+import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.app.BraveActivity;
-import org.chromium.chrome.browser.app.domain.WalletModel;
+import org.chromium.chrome.browser.crypto_wallet.fragments.WalletBottomSheetDialogFragment;
 import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
-import org.chromium.chrome.browser.crypto_wallet.util.JavaUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.Validations;
 
@@ -41,8 +40,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /** Fragment used by DApps sign operation */
-public class SignMessageFragment extends BaseDAppsBottomSheetDialogFragment {
-    private static final String TAG = "SignMessageFragment";
+@NullMarked
+public class SignMessageFragment extends WalletBottomSheetDialogFragment {
+    private final ExecutorService mExecutor;
+    private final Handler mHandler;
 
     private SignMessageRequest mCurrentSignMessageRequest;
     private boolean mUnicodeEscapeVersion;
@@ -53,22 +54,11 @@ public class SignMessageFragment extends BaseDAppsBottomSheetDialogFragment {
     private Button mBtCancel;
     protected Button mBtSign;
     private TextView mWebSite;
-    private ExecutorService mExecutor;
-    private Handler mHandler;
-    private WalletModel mWalletModel;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public SignMessageFragment() {
+        super();
         mExecutor = Executors.newSingleThreadExecutor();
         mHandler = new Handler(Looper.getMainLooper());
-        try {
-            BraveActivity activity = BraveActivity.getBraveActivity();
-            mWalletModel = activity.getWalletModel();
-            registerKeyringObserver(mWalletModel.getKeyringModel());
-        } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "onCreate ", e);
-        }
     }
 
     @Override
@@ -83,8 +73,11 @@ public class SignMessageFragment extends BaseDAppsBottomSheetDialogFragment {
         mBtCancel = view.findViewById(R.id.fragment_sign_msg_btn_cancel);
         mBtSign = view.findViewById(R.id.fragment_sign_msg_btn_sign);
         mWebSite = view.findViewById(R.id.domain);
-        initComponents();
 
+        mBtCancel.setOnClickListener(v -> notifySignMessageRequestProcessed(false));
+        mBtSign.setOnClickListener(v -> notifySignMessageRequestProcessed(true));
+
+        fillSignMessageInfo();
         return view;
     }
 
@@ -92,23 +85,16 @@ public class SignMessageFragment extends BaseDAppsBottomSheetDialogFragment {
         getBraveWalletService()
                 .notifySignMessageRequestProcessed(
                         approved, mCurrentSignMessageRequest.id, null, null);
-        fillSignMessageInfo(false);
+        fillSignMessageInfo();
     }
 
-    private void initComponents() {
-        fillSignMessageInfo(true);
-    }
-
-    private void fillSignMessageInfo(final boolean init) {
+    private void fillSignMessageInfo() {
         getBraveWalletService()
                 .getPendingSignMessageRequests(
-                        requests -> {
-                            maybeHandlePendingRequests(init, requests);
-                        });
+                        this::maybeHandlePendingRequests);
     }
 
-    private void maybeHandlePendingRequests(
-            final boolean init, @Nullable SignMessageRequest[] requests) {
+    private void maybeHandlePendingRequests(@Nullable final SignMessageRequest[] requests) {
         if (requests == null || requests.length == 0) {
             Intent intent = new Intent();
             getActivity().setResult(Activity.RESULT_OK, intent);
@@ -162,17 +148,6 @@ public class SignMessageFragment extends BaseDAppsBottomSheetDialogFragment {
                         });
             }
         }
-
-        if (init) {
-            mBtCancel.setOnClickListener(
-                    v -> {
-                        notifySignMessageRequestProcessed(false);
-                    });
-            mBtSign.setOnClickListener(
-                    v -> {
-                        notifySignMessageRequestProcessed(true);
-                    });
-        }
         if (mCurrentSignMessageRequest.originInfo != null
                 && URLUtil.isValidUrl(mCurrentSignMessageRequest.originInfo.originSpec)) {
             mWebSite.setText(Utils.geteTldSpanned(mCurrentSignMessageRequest.originInfo));
@@ -182,37 +157,26 @@ public class SignMessageFragment extends BaseDAppsBottomSheetDialogFragment {
     }
 
     private void updateAccount(AccountId accountId) {
-        if (accountId == null) {
-            return;
-        }
         assert (accountId.coin == CoinType.ETH || accountId.coin == CoinType.SOL);
+        getKeyringModel()
+                .getAccounts(
+                        accountInfos -> {
+                            AccountInfo accountInfo =
+                                    Utils.findAccount(accountInfos, accountId);
+                            if (accountInfo == null) {
+                                return;
+                            }
+                            assert (accountInfo.address != null);
 
-        try {
-            BraveActivity activity = BraveActivity.getBraveActivity();
-            activity.getWalletModel()
-                    .getKeyringModel()
-                    .getAccounts(
-                            accountInfos -> {
-                                AccountInfo accountInfo =
-                                        Utils.findAccount(accountInfos, accountId);
-                                if (accountInfo == null) {
-                                    return;
-                                }
-                                assert (accountInfo.address != null);
-
-                                Utils.setBlockiesBitmapResourceFromAccount(
-                                        mExecutor, mHandler, mAccountImage, accountInfo, true);
-                                String accountText = accountInfo.name + "\n" + accountInfo.address;
-                                mAccountName.setText(accountText);
-                            });
-        } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "updateAccount " + e);
-        }
+                            Utils.setBlockiesBitmapResourceFromAccount(
+                                    mExecutor, mHandler, mAccountImage, accountInfo, true);
+                            String accountText = accountInfo.name + "\n" + accountInfo.address;
+                            mAccountName.setText(accountText);
+                        });
     }
 
     private void updateNetwork(String chainId) {
-        if (JavaUtils.anyNull(mWalletModel, chainId)) return;
-        var selectedNetwork = mWalletModel.getNetworkModel().getNetwork(chainId);
+        NetworkInfo selectedNetwork = getWalletModel().getNetworkModel().getNetwork(chainId);
         mNetworkName.setText(selectedNetwork.chainName);
     }
 

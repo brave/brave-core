@@ -5,37 +5,76 @@
 
 package org.chromium.chrome.browser.crypto_wallet.fragments;
 
+import android.content.Context;
 import android.content.DialogInterface;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
+import org.chromium.brave_wallet.mojom.BraveWalletService;
+import org.chromium.brave_wallet.mojom.JsonRpcService;
+import org.chromium.brave_wallet.mojom.KeyringService;
+import org.chromium.build.annotations.MonotonicNonNull;
+import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.browser.app.domain.KeyringModel;
+import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.observers.KeyringServiceObserverImpl;
 
 /**
  * Base class for {@code BottomSheetDialogFragment} with wallet specific implementation
  * (auto-dismiss when locked, clean up etc).
  */
+@NullMarked
 public class WalletBottomSheetDialogFragment extends BottomSheetDialogFragment
         implements KeyringServiceObserverImpl.KeyringServiceObserverImplDelegate {
-    private KeyringServiceObserverImpl mKeyringObserver;
+
+    private final KeyringServiceObserverImpl mKeyringObserver;
+
+    @MonotonicNonNull
+    private WalletModel mWalletModel;
+    @MonotonicNonNull
+    private KeyringModel mKeyringModel;
+
+    public WalletBottomSheetDialogFragment() {
+        mKeyringObserver = new KeyringServiceObserverImpl(this);
+    }
+
+    protected KeyringModel getKeyringModel() {
+        return mKeyringModel;
+    }
+
+    protected WalletModel getWalletModel() {
+        return mWalletModel;
+    }
+
+    protected BraveWalletService getBraveWalletService() {
+        return mWalletModel.getBraveWalletService();
+    }
+
+    protected KeyringService getKeyringService() {
+        return mWalletModel.getKeyringService();
+    }
+
+    protected JsonRpcService getJsonRpcService() {
+        return mWalletModel.getJsonRpcService();
+    }
 
     @Override
-    public void onDismiss(@NonNull DialogInterface dialog) {
-        super.onDismiss(dialog);
-        if (mKeyringObserver != null) {
-            mKeyringObserver.close();
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        if (context instanceof WalletFragmentCallback walletFragmentCallback) {
+            mWalletModel = walletFragmentCallback.getWalletModel();
+            mKeyringModel = mWalletModel.getKeyringModel();
+            mKeyringModel.registerKeyringObserver(mKeyringObserver);
+        } else {
+            throw new IllegalStateException("Host activity must implement WalletFragmentCallback.");
         }
     }
 
-    protected void registerKeyringObserver(@Nullable final KeyringModel keyringModel) {
-        if (keyringModel == null || mKeyringObserver != null) return;
-
-        mKeyringObserver = new KeyringServiceObserverImpl(this);
-        keyringModel.registerKeyringObserver(mKeyringObserver);
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        mKeyringObserver.close();
+        super.onDismiss(dialog);
     }
 
     @Override

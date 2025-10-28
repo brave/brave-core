@@ -24,6 +24,7 @@ import android.widget.TextView;
 import androidx.annotation.StringRes;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.chromium.chrome.browser.app.domain.KeyringModel;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -78,8 +79,6 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
     protected Button mBtSign;
     private ExecutorService mExecutor;
     private Handler mHandler;
-    @Nullable private WalletModel mWalletModel;
-    @Nullable private DappsModel mDappsModel;
     private View mIvFavNetworkContainer;
     private RecyclerView mRvDetails;
     private TwoLineItemRecyclerViewAdapter mTwoLineAdapter;
@@ -89,16 +88,6 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
         super.onCreate(savedInstanceState);
         mExecutor = Executors.newSingleThreadExecutor();
         mHandler = new Handler(Looper.getMainLooper());
-        try {
-            BraveActivity activity = BraveActivity.getBraveActivity();
-            mWalletModel = activity.getWalletModel();
-            if (mWalletModel != null) {
-                mDappsModel = mWalletModel.getDappsModel();
-                registerKeyringObserver(mWalletModel.getKeyringModel());
-            }
-        } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "onCreate ", e);
-        }
     }
 
     @Override
@@ -126,14 +115,13 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
     }
 
     private void notifySignMessageRequestProcessed(boolean isApproved) {
-        if (mDappsModel == null || mCurrentSignMessageRequest == null) return;
-        mDappsModel.notifySignMessageRequestProcessed(isApproved, mCurrentSignMessageRequest.id);
+        if (mCurrentSignMessageRequest == null) return;
+        getWalletModel().getDappsModel().notifySignMessageRequestProcessed(isApproved, mCurrentSignMessageRequest.id);
         fillSignMessageInfo(false);
     }
 
     private void fillSignMessageInfo(boolean init) {
-        if (mDappsModel == null) return;
-        mDappsModel.getPendingSignMessageRequests(
+        getWalletModel().getDappsModel().getPendingSignMessageRequests(
                 requests -> {
                     if (requests == null || requests.length == 0) {
                         Intent intent = new Intent();
@@ -171,13 +159,13 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
     }
 
     private void updateDetails(String chainId, AccountId accountId) {
-        if (mWalletModel == null || TextUtils.isEmpty(chainId)) {
+        if (TextUtils.isEmpty(chainId)) {
             return;
         }
-        NetworkInfo network = mWalletModel.getNetworkModel().getNetwork(chainId);
+        NetworkInfo network = getWalletModel().getNetworkModel().getNetwork(chainId);
         if (network == null || accountId == null) return;
         assert (accountId.coin == CoinType.ETH);
-        AccountInfo accountInfo = mWalletModel.getKeyringModel().getAccount(accountId.address);
+        AccountInfo accountInfo = getKeyringModel().getAccount(accountId.address);
         if (accountInfo == null) return;
         assert (accountInfo.address != null);
 
@@ -259,10 +247,10 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
     }
 
     private void updateNetwork(String chainId) {
-        if (mWalletModel == null || TextUtils.isEmpty(chainId)) {
+        if (TextUtils.isEmpty(chainId)) {
             return;
         }
-        NetworkInfo network = mWalletModel.getNetworkModel().getNetwork(chainId);
+        NetworkInfo network = getWalletModel().getNetworkModel().getNetwork(chainId);
         if (network == null) return;
         String tokensPath = BlockchainRegistryFactory.getInstance().getTokensIconsLocation();
         String logo = Utils.getNetworkIconName(network);
@@ -299,7 +287,8 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
         addDetail(items, R.string.brave_wallet_not_before, mSiweMessageData.notBefore);
         addDetail(items, R.string.brave_wallet_request_id, mSiweMessageData.requestId);
         addDetail(items, R.string.resources, getSiweResources(mSiweMessageData.resources));
-        TwoLineItemBottomSheetFragment fragment = TwoLineItemBottomSheetFragment.newInstance(items);
+        TwoLineItemBottomSheetFragment fragment = new TwoLineItemBottomSheetFragment();
+        fragment.setItems(items);
         fragment.mTitle = getString(R.string.brave_wallet_see_details);
         fragment.show(getParentFragmentManager(), TAG);
     }
