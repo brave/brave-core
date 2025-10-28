@@ -16,7 +16,10 @@ class TabGridCollectionViewLayout: UICollectionViewCompositionalLayout {
       let padding: Double = 16
       let numberOfColumns: Int = max(
         2,
-        Int(floor((containerSize.width - (padding * 2)) / (175 + spacing)))
+        min(
+          4,
+          Int(floor((containerSize.width - (padding * 2)) / (175 + spacing)))
+        )
       )
       let aspectRatio: Double = max(0.8, min(1.3, containerSize.height / containerSize.width))
       let item = NSCollectionLayoutItem(
