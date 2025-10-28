@@ -25,6 +25,7 @@ import useHasConversationStarted from '../hooks/useHasConversationStarted'
 import { useIsDragging } from '../hooks/useIsDragging'
 import {
   Content,
+  makeEdit,
   stringifyContent,
 } from '../components/input_box/editable_content'
 
@@ -496,6 +497,14 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
       isToolsMenuOpen: false,
       inputText: [`/${skill.shortcut} `],
     }
+
+    makeEdit(document.querySelector('[data-editor="true"]')!)
+      .selectRangeToTriggerChar('/')
+      .replaceSelectedRange({
+        type: 'skill',
+        id: skill.shortcut,
+        text: `/${skill.shortcut}`,
+      })
 
     setPartialContext(update)
   }
