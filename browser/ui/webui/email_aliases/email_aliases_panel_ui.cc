@@ -6,6 +6,7 @@
 #include "brave/browser/ui/webui/email_aliases/email_aliases_panel_ui.h"
 
 #include "brave/browser/email_aliases/email_aliases_service_factory.h"
+#include "brave/browser/ui/webui/email_aliases/email_aliases_panel_handler.h"
 #include "brave/browser/ui/webui/settings/brave_settings_localized_strings_provider.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/email_aliases/resources/grit/email_aliases_panel_generated_map.h"
@@ -48,6 +49,13 @@ void EmailAliasesPanelUI::BindInterface(
   auto* profile = Profile::FromWebUI(web_ui());
   email_aliases::EmailAliasesServiceFactory::BindForProfile(
       profile, std::move(receiver));
+}
+
+void EmailAliasesPanelUI ::BindInterface(
+    mojo::PendingReceiver<email_aliases::mojom::EmailAliasesPanelHandler>
+        receiver) {
+  panel_handler_ =
+      std::make_unique<EmailAliasesPanelHandler>(this, std::move(receiver));
 }
 
 void EmailAliasesPanelUI::BindInterface(

@@ -7,7 +7,6 @@
 #define BRAVE_BROWSER_UI_EMAIL_ALIASES_EMAIL_ALIASES_CONTROLLER_H_
 
 #include "base/memory/raw_ptr.h"
-#include "base/memory/weak_ptr.h"
 #include "brave/components/email_aliases/email_aliases_service.h"
 #include "content/public/browser/global_routing_id.h"
 
@@ -49,7 +48,6 @@ class EmailAliasesController {
   uint64_t field_renderer_id_ = 0;
 
   std::unique_ptr<WebUIBubbleManager> bubble_;
-  base::WeakPtrFactory<EmailAliasesController> weak_factory_{this};
 };
 
 }  // namespace email_aliases
