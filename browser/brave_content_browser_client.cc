@@ -713,6 +713,12 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
         .Add<brave_account::mojom::Authentication>()
         .Add<password_strength_meter::mojom::PasswordStrengthMeter>();
   }
+  if (base::FeatureList::IsEnabled(email_aliases::features::kEmailAliases)) {
+    registry.ForWebUI<EmailAliasesPanelUI>()
+        .Add<color_change_listener::mojom::PageHandler>()
+        .Add<email_aliases::mojom::EmailAliasesService>();
+  }
+
 #else   // !BUILDFLAG(IS_ANDROID)
   registry.ForWebUI<NewTabTakeoverUI>()
       .Add<new_tab_takeover::mojom::NewTabTakeover>();
@@ -919,8 +925,7 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
 
   if (base::FeatureList::IsEnabled(email_aliases::features::kEmailAliases)) {
     content::RegisterWebUIControllerInterfaceBinder<
-        email_aliases::mojom::EmailAliasesService, BraveSettingsUI,
-        EmailAliasesPanelUI>(map);
+        email_aliases::mojom::EmailAliasesService, BraveSettingsUI>(map);
   }
 
   map->Add<color_change_listener::mojom::PageHandler>(
