@@ -123,6 +123,9 @@ class BraveAdblockInternalsMessageHandler
                       base::Value::Dict mem_info,
                       base::Value::Dict default_engine_info,
                       base::Value::Dict additional_engine_info) {
+    if (!IsJavascriptAllowed()) {
+      return;
+    }
     base::Value::Dict result;
     result.Set("default_engine", std::move(default_engine_info));
     result.Set("additional_engine", std::move(additional_engine_info));

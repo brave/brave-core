@@ -190,6 +190,8 @@ base::Value::Dict AdBlockEngine::GetDebugInfo() {
   base::Value::Dict result;
   result.Set("compiled_regex_count",
              static_cast<int>(debug_info_struct.compiled_regex_count));
+  result.Set("flatbuffer_size",
+             static_cast<int>(debug_info_struct.flatbuffer_size));
   result.Set("regex_data", std::move(regex_list));
   return result;
 }

@@ -6,7 +6,7 @@
 import * as React from 'react'
 import { sendWithPromise } from 'chrome://resources/js/cr.js'
 import { MemoryInfo } from './memory_info'
-import { Engine, EngineDebugInfo } from './engine'
+import { EngineRegexList, EngineDebugInfo } from './engine'
 import { discardRegexs, saveRegexTexts } from './regex'
 
 class AppState {
@@ -15,38 +15,91 @@ class AppState {
   memory: { [key: string]: string } = {}
 }
 
-export class App extends React.Component<{}, AppState> {
-  constructor (props: {}) {
-    super(props)
-    this.state = new AppState()
-    this.getDebugInfo()
-    setInterval(() => { this.getDebugInfo() }, 2000)
-  }
-
-  getDebugInfo () {
-    return sendWithPromise('brave_adblock_internals.getDebugInfo').then(
-      this.onGetDebugInfo.bind(this))
-  }
-
-  onGetDebugInfo (state: AppState) {
-    saveRegexTexts(state.default_engine.regex_data)
-    saveRegexTexts(state.additional_engine.regex_data)
-    this.setState(state)
-  }
-
-  discardAll () {
-    discardRegexs(this.state.default_engine.regex_data)
-    discardRegexs(this.state.additional_engine.regex_data)
-  }
-
-  render () {
-    return (
+const EngineInfo = (props: { engine: EngineDebugInfo; caption: string }) => {
+  return (
+    <div>
+      <h2>{props.caption}</h2>
       <div>
-        <MemoryInfo key="memory" caption="Browser process memory" memory={this.state.memory} />
-        <input type="button" value="Discard All Regex" onClick={() => { this.discardAll() }} />
-        <Engine key="default_engine" caption="Default engine" info={this.state.default_engine} />
-        <Engine key="additional_engine" caption="Additional engine" info={this.state.additional_engine} />
+        Flatbuffer size:{' '}
+        {(props.engine.flatbuffer_size / 1024 / 1024).toFixed(2)} MB
       </div>
+      <div>Compiled regexes: {props.engine.compiled_regex_count}</div>
+    </div>
+  )
+}
+
+export const App = () => {
+  const [state, setState] = React.useState(new AppState())
+  const [showRegexes, setShowRegexes] = React.useState(false)
+  const getDebugInfo = () => {
+    return sendWithPromise('brave_adblock_internals.getDebugInfo').then(
+      (newState: AppState) => {
+        saveRegexTexts(newState.default_engine.regex_data)
+        saveRegexTexts(newState.additional_engine.regex_data)
+        setState(newState)
+      },
     )
   }
+
+  const discardAll = () => {
+    discardRegexs(state.default_engine.regex_data)
+    discardRegexs(state.additional_engine.regex_data)
+  }
+
+  React.useEffect(() => {
+    getDebugInfo()
+    const interval = setInterval(() => {
+      getDebugInfo()
+    }, 2000)
+    return () => {
+      clearInterval(interval)
+    }
+  }, [])
+
+  return (
+    <>
+      <div>
+        <EngineInfo
+          engine={state.default_engine}
+          caption='Default engine'
+        />
+        <EngineInfo
+          engine={state.additional_engine}
+          caption='Additional engine'
+        />
+        <MemoryInfo
+          key='memory'
+          caption='Browser process general memory'
+          memory={state.memory}
+        />
+        <input
+          type='button'
+          value={`${showRegexes ? 'Hide' : 'Show'} Regexes`}
+          onClick={() => {
+            setShowRegexes(!showRegexes)
+          }}
+        />
+        <input
+          type='button'
+          value='Discard All Regexes'
+          onClick={() => {
+            discardAll()
+          }}
+        />
+      </div>
+
+      {showRegexes && (
+        <div>
+          <EngineRegexList
+            info={state.default_engine}
+            caption='Default engine'
+          />
+          <EngineRegexList
+            info={state.additional_engine}
+            caption='Additional engine'
+          />
+        </div>
+      )}
+    </>
+  )
 }
