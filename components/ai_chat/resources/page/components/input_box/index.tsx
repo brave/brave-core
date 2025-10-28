@@ -8,7 +8,8 @@ import Button from '@brave/leo/react/button'
 import Tooltip from '@brave/leo/react/tooltip'
 import * as React from 'react'
 import classnames from '$web-common/classnames'
-import { getLocale } from '$web-common/locale'
+import { getLocale, formatLocale } from '$web-common/locale'
+import { Url } from 'gen/url/mojom/url.mojom.m.js'
 import ActionTypeLabel from '../../../common/components/action_type_label'
 import { AIChatContext } from '../../state/ai_chat_context'
 import { ConversationContext } from '../../state/conversation_context'
@@ -24,6 +25,9 @@ import usePromise from '$web-common/usePromise'
 import { isImageFile } from '../../constants/file_types'
 import { convertFileToUploadedFile } from '../../utils/file_utils'
 import * as Mojom from '../../../common/mojom'
+
+const LEARN_MORE_CONTENT_AGENT_URL =
+  'https://support.brave.app/hc/en-us/sections/20991947768717-Leo-AI'
 
 type Props = Pick<
   ConversationContext,
@@ -66,6 +70,7 @@ type Props = Pick<
     | 'getPluralString'
     | 'openAIChatAgentProfile'
     | 'skills'
+    | 'uiHandler'
   >
 
 export interface InputBoxProps {
@@ -251,6 +256,12 @@ function InputBox(props: InputBoxProps) {
   const isSendButtonDisabled =
     props.context.shouldDisableUserInput || props.context.inputText === ''
 
+  const handleLearnMoreClicked = React.useCallback(() => {
+    const mojomUrl = new Url()
+    mojomUrl.url = LEARN_MORE_CONTENT_AGENT_URL
+    props.context.uiHandler?.openURL(mojomUrl)
+  }, [props.context.uiHandler])
+
   return (
     <form className={styles.form}>
       {props.context.selectedActionType && (
@@ -262,6 +273,33 @@ function InputBox(props: InputBoxProps) {
           />
         </div>
       )}
+      {props.context.isAIChatAgentProfileFeatureEnabled
+        && props.context.isAIChatAgentProfile
+        && !props.conversationStarted && (
+          <div className={styles.contentAgentWarning}>
+            <div className={styles.contentAgentWarningIcon}>
+              <Icon name='leo-cursor-filled' />
+            </div>
+            <div className={styles.contentAgentWarningText}>
+              {formatLocale(S.CHAT_UI_CONTENT_AGENT_WARNING_TEXT, {
+                $1: (content) => (
+                  <a
+                    // While we preventDefault onClick, we still need to pass
+                    // the href here so we can show link preview.
+                    href={LEARN_MORE_CONTENT_AGENT_URL}
+                    className={styles.learnMoreLink}
+                    onClick={(e) => {
+                      e.preventDefault()
+                      handleLearnMoreClicked()
+                    }}
+                  >
+                    {content}
+                  </a>
+                ),
+              })}
+            </div>
+          </div>
+        )}
       {(showUploadedFiles || pendingContent.length > 0) && (
         <div
           className={classnames({
