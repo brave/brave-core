@@ -130,11 +130,6 @@ class BraveShieldsWebContentsObserverManagedPolicyBrowserTest
 
   void SetUpOnMainThread() override {
     BraveShieldsWebContentsObserverBrowserTest::SetUpOnMainThread();
-
-    // Disable JavaScript blocking globally.
-    content_settings()->SetContentSettingCustomScope(
-        ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),
-        ContentSettingsType::JAVASCRIPT, CONTENT_SETTING_ALLOW);
   }
 
   void SetUpInProcessBrowserTestFixture() override {
@@ -147,7 +142,7 @@ class BraveShieldsWebContentsObserverManagedPolicyBrowserTest
     policies.Set(policy::key::kJavaScriptAllowedForUrls,
                  policy::POLICY_LEVEL_MANDATORY, policy::POLICY_SCOPE_USER,
                  policy::POLICY_SOURCE_PLATFORM, base::Value(), nullptr);
-    auto blocked_list = base::Value::List().Append("[*.]a.com");
+    auto blocked_list = base::Value::List().Append("http://a.com");
     policies.Set(policy::key::kJavaScriptBlockedForUrls,
                  policy::POLICY_LEVEL_MANDATORY, policy::POLICY_SCOPE_USER,
                  policy::POLICY_SOURCE_PLATFORM,
@@ -161,18 +156,23 @@ class BraveShieldsWebContentsObserverManagedPolicyBrowserTest
 
 IN_PROC_BROWSER_TEST_F(BraveShieldsWebContentsObserverManagedPolicyBrowserTest,
                        JavaScriptBlockedEvents) {
-  const GURL& url = GURL("a.com");
+  auto first_url = GURL("http://a.com");
+  auto second_url = GURL("http://b.com");
 
-  // Try to check if JavaScript is blocked for user provider
-  ContentSetting block_javascript_setting =
-      content_settings()->GetContentSetting(url, url,
+  // Verify that the policy is applied correctly
+  ContentSetting first_block_javascript_setting =
+      content_settings()->GetContentSetting(first_url, first_url,
                                             ContentSettingsType::JAVASCRIPT);
-  EXPECT_EQ(CONTENT_SETTING_ALLOW, block_javascript_setting);
+  EXPECT_EQ(CONTENT_SETTING_BLOCK, first_block_javascript_setting);
+  ContentSetting second_block_javascript_setting =
+      content_settings()->GetContentSetting(second_url, second_url,
+                                            ContentSettingsType::JAVASCRIPT);
+  EXPECT_EQ(CONTENT_SETTING_ALLOW, second_block_javascript_setting);
+
+  // Navigate to the first URL which has JavaScript blocked by policy
   EXPECT_TRUE(ui_test_utils::NavigateToURL(
       browser(), embedded_test_server()->GetURL("a.com", "/load_js.html")));
   EXPECT_TRUE(WaitForLoadStop(GetWebContents()));
-  // Scripts are blocked as per policy, which enforces blocking over user
-  // setting
   EXPECT_EQ(brave_shields_web_contents_observer()->block_javascript_count(), 5);
   EXPECT_EQ(GetBlockedJsList().size(), 3u);
 }
