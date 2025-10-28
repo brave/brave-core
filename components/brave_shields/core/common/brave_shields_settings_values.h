@@ -50,7 +50,7 @@ struct SettingTraits<mojom::AutoShredMode> {
   static std::optional<mojom::AutoShredMode> From(
       std::underlying_type_t<mojom::AutoShredMode> v) {
     if (v >= static_cast<int>(mojom::AutoShredMode::NEVER) &&
-        v <= static_cast<int>(mojom::AutoShredMode::APP_EXIT)) {
+        v <= static_cast<int>(mojom::AutoShredMode::kMaxValue)) {
       return static_cast<mojom::AutoShredMode>(v);
     }
     return std::nullopt;
