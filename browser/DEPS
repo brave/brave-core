@@ -64,6 +64,7 @@ include_rules += [
   "+brave/components/psst/browser/content",
   "+brave/components/psst/common",
   "+brave/components/psst/buildflags",
+  "+brave/components/query_filter",
   "+brave/components/skus/browser",
   "+brave/components/skus/common",
   "+brave/components/speedreader",

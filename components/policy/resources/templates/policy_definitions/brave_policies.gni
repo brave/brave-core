@@ -19,6 +19,7 @@ _brave_policies = [
   "BraveSoftware/BraveStatsPingEnabled.yaml",
   "BraveSoftware/BraveSyncUrl.yaml",
   "BraveSoftware/BraveTalkDisabled.yaml",
+  "BraveSoftware/BraveTrackingQueryParametersFilteringEnabled.yaml",
   "BraveSoftware/BraveVPNDisabled.yaml",
   "BraveSoftware/BraveWebDiscoveryEnabled.yaml",
   "BraveSoftware/BraveWalletDisabled.yaml",

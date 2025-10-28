@@ -17,6 +17,7 @@
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/p3a/pref_names.h"
 #include "brave/components/playlist/core/common/pref_names.h"
+#include "brave/components/query_filter/pref_names.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "build/build_config.h"
@@ -109,6 +110,9 @@ inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
      base::Value::Type::BOOLEAN},
     {policy::key::kDefaultBraveFingerprintingV2Setting,
      kManagedDefaultBraveFingerprintingV2, base::Value::Type::INTEGER},
+    {policy::key::kBraveTrackingQueryParametersFilteringEnabled,
+     query_filter::kTrackingQueryParametersFilteringEnabled,
+     base::Value::Type::BOOLEAN},
 };
 
 }  // namespace policy
