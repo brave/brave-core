@@ -688,7 +688,6 @@
 <translation id="3266055641283174315">Тип рекламного оголошення</translation>
 <translation id="8706824117053903390">Переглядів цього місяця</translation>
 <translation id="5105890735834548623">Налаштування рекламних оголошень</translation>
-<translation id="96989662637180657">Рекламні оголошення в пошуковій службі Brave з’являються в <ph name="LINK_BEGIN"/>Пошуку Brave<ph name="LINK_END"/>.</translation>
 <translation id="3138160233953903250">Налаштування рекламних оголошень</translation>
 <translation id="2446517297521536638">Налаштуйте, які типи реклами Brave мають для вас відображатися та як часто. Що більше оголошень ви бачите, то більше можете заробити.</translation>
 <translation id="3479272537858623647">Тут показано кількість оголошень Brave, які ви побачили цього місяця і за які можна заробити BAT.</translation>
@@ -855,6 +854,11 @@
       other {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} кроків}
     }</translation>
 <translation id="8621264173374071200"><ph name="EXCHANGE_NAME"/> через <ph name="PROVIDER_NAME"/></translation>
+<translation id="646023614746251785">Підтвердити обмін</translation>
+<translation id="6264944956989873014">Підтвердити міст</translation>
+<translation id="7067917728851842589">Підтвердити надсилання</translation>
+<translation id="2351357639951873714">Підтвердити захист</translation>
+<translation id="8332923694292360653">Витратити</translation>
 <translation id="3735740477244556633">Параметри сортування</translation>
 <translation id="6484605214219822434">Перевірити міст</translation>
 <translation id="3365052891357224017">Розрахунковий час</translation>
@@ -964,6 +968,7 @@
 <translation id="3451958544919449297">Зберегти активи ZEC Testnet</translation>
 <translation id="8459631690385393533">Зберігайте активи Cardano</translation>
 <translation id="4915057812371523845">Зберегти активи Cardano Testnet</translation>
+<translation id="5387140102951033657">Підтримує активи Substrate у мережі-шлюзі Polkadot та парачейнах Substrate</translation>
 <translation id="8500387257977999003">Приватний ключ <ph name="PROTOCOL"/></translation>
 <translation id="8275038454117074363">Імпортувати</translation>
 <translation id="232925166623833246">Імпортувати з апаратного гаманця</translation>
@@ -1075,6 +1080,10 @@
 <translation id="8904889345035514635">Поточна квота</translation>
 <translation id="7073918978411974168">Пропонована квота</translation>
 <translation id="9019403281000653275">Запит на необмежену кількість схвалень</translation>
+<translation id="9108474191347769758">Ліміт витрат</translation>
+<translation id="2102091845281366189">Ціль підтвердження</translation>
+<translation id="772196962479335292">Поточний ліміт підтвердження</translation>
+<translation id="8215431557133305629">Запропонований ліміт підтвердження</translation>
 <translation id="4717431746210146708">Дозволити цьому сайту додати мережу?</translation>
 <translation id="2521480044079508357">Це дасть можливість використовувати цю мережу в гаманці Brave.</translation>
 <translation id="1982257600591932657">Назва мережі</translation>
@@ -1091,7 +1100,7 @@
 <translation id="3948067511324628726">Комісія за gas</translation>
 <translation id="7163997622278957886">Ставка</translation>
 <translation id="1074360622426001342">Сума + gas</translation>
-<translation id="2186011161688824046">Сума + комісія</translation>
+<translation id="7542099582407803878">Сума + Комісія мережі</translation>
 <translation id="7084089311475827950">Даних немає.</translation>
 <translation id="5821668936183240062">далі</translation>
 <translation id="793994607260936590">перша</translation>
@@ -1417,6 +1426,8 @@
 <translation id="1908159733454294871">Виявлено загрозу безпеці</translation>
 <translation id="3621202678540785336">Ввід</translation>
 <translation id="3009178788565917040">Вивід</translation>
+<translation id="7953669802889559161">Вхідні дані</translation>
+<translation id="4554024082642878647">Вихідні дані</translation>
 <translation id="1965889974717516497">Додаткові мережі</translation>
 <translation id="7691821949666755802">Тестові мережі</translation>
 <translation id="2816106784624007524">Ліміт газу повинен бути цілими числом, більшим за 0</translation>
@@ -2139,7 +2150,6 @@
 <translation id="5872363163901278000">Збільшити швидкість відтворення</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8637805148029768813">Зведення наразі доступне лише для обраних статей і вебсторінок із довгим вмістом.</translation>
-<translation id="1223498995510244364">Створити зведення</translation>
 <translation id="7491773233732232424">Про Leo</translation>
 <translation id="4611072979071082355">Brave Leo – це приватний розумний помічник на базі ШІ, який оптимізує використання вами Інтернету. Leo можна використовувати безкоштовно з обмеженим доступом. Brave Leo Premium пропонує більше моделей, вищі ліміти й надає підписникам ранній доступ до нових функцій. Стандартна модель може змінюватися. Детальнішу інформацію дивіться у <ph name="LINK_BEFORE"/>Центрі підтримки Brave<ph name="LINK_AFTER"/>.</translation>
 <translation id="7297056998057521697">За замовчуванням, коли ви ставите Leo запитання про вебсайт або сторінку, яку переглядаєте, вміст цієї сторінки або виділений вами текст, а також пошуковий запит надсилаються на сервери Brave, щоб Leo міг надати відповідь. У деяких випадках Leo формує додаткові запити на основі вашого вводу та надсилає їх у Пошук Brave, використовуючи результати для точнішої відповіді. Brave не гарантує точність відповідей, і вони можуть містити недостовірну, оманливу або хибну інформацію. Не надсилайте Leo конфіденційні чи приватні дані, особливо в питаннях, пов’язаних зі здоров’ям, фінансами, особистою безпекою тощо. Налаштування Leo можна змінити у будь-який момент у меню: Налаштування &gt; Leo.</translation>
@@ -2177,7 +2187,7 @@
 <translation id="7127671672828944579">Привіт, я — Лео, вбудований AI-асистент від Brave. Мене створено на базі моделі Qwen 14B від Alibaba Cloud для високої продуктивності та широкого спектру застосування. Brave розміщує Qwen на власній захищеній інфраструктурі. <ph name="LINK_BEFORE"/>Дізнатися більше<ph name="LINK_AFTER"/></translation>
 <translation id="2328524194917949829">Привіт, я — Leo, вбудований AI-асистент від Brave. Я працюю на базі моделі Gemma 3 12B, створеної компанією Google DeepMind для ефективної роботи й застосування в багатьох сценаріях використання. Brave розміщує Gemma на власній безпечній інфраструктурі. <ph name="LINK_BEFORE"/>Докладніше<ph name="LINK_AFTER"/></translation>
 <translation id="634682910381645550">Привіт, я — Лео, вбудований AI-асистент від Brave. Я працюю на базі моделі DeepSeek R1, створеної компанією DeepSeek для виконання завдань глибокого аналізу. Brave розміщує DeepSeek R1 на власній безпечній інфраструктурі. <ph name="LINK_BEFORE"/>Докладніше<ph name="LINK_AFTER"/></translation>
-<translation id="8932568551552504373">Привіт, я — Лео, вбудований AI-асистент від Brave. Працюю на моделі Claude Instant від Anthropic, яка оптимізована для діалогів та обробки тексту. Brave розміщує її через власну інфраструктуру.<ph name="LINK_BEFORE"/>Дізнатися більше<ph name="LINK_AFTER"/></translation>
+<translation id="8932568551552504373">Привіт, я Лео. Я AI-помічник від Brave. Мене підтримує Claude Instant — модель, створена компанією Anthropic для виконання завдань у розмовній та текстовій формі. Claude Instant працює на сервері Brave через нашу власну безпечну інфраструктуру.<ph name="LINK_BEFORE"/>Дізнатися більше<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Привіт, я — Лео, вбудований AI-асистент від Brave. Працюю на моделі Claude Haiku від Anthropic, яка оптимізована для діалогів та обробки тексту. Brave розміщує її через власну інфраструктуру.<ph name="LINK_BEFORE"/>Дізнатися більше<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Привіт, я — Лео, вбудований AI-асистент від Brave. Працюю на моделі Claude Sonnet від Anthropic, яка оптимізована для діалогів та обробки тексту. Brave розміщує її через власну інфраструктуру.<ph name="LINK_BEFORE"/>Дізнатися більше<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Преміум</translation>
@@ -2190,6 +2200,7 @@
 <translation id="7557539689487606886">Перейти на версію Premium</translation>
 <translation id="1691256669639196606">Керувати підпискою</translation>
 <translation id="3840096463915153852">Історія розмов</translation>
+<translation id="6761921176674289184">Керувати пам’яттю</translation>
 <translation id="2304783958703511257">Розширені налаштування</translation>
 <translation id="3037594989275592390">Мовні моделі</translation>
 <translation id="5543505256451301851">Випробувати 7 днів безкоштовно</translation>
@@ -2264,31 +2275,36 @@
 <translation id="7307396647043599949"><ph name="COUNT"/> більше…</translation>
 <translation id="8103700533980268469">Закрити це повідомлення</translation>
 <translation id="3417835166382867856">Пошук у вкладках</translation>
+<translation id="7311244614769792472">Немає результатів</translation>
+<translation id="3112448569149476523">Спробуйте інший запит</translation>
 <translation id="1352836459737874921">Додати вміст з інших вкладок</translation>
-<translation id="3028258613451571431">Надішліть вміст вкладок браузера, щоб дати Leo більше контексту для розмови</translation>
-<translation id="4300920590112551536">Вкладки браузера</translation>
+<translation id="7039179822221107025">Надішліть вміст вкладок браузера, щоб дати Leo більше контексту для розмови.</translation>
+<translation id="220541218939267992">Вміст сторінки буде надіслано Лео разом із вашими повідомленнями.</translation>
 <translation id="1446346932629101482">Додайте вміст вкладки для контексту. Вміст буде надіслано Leo разом з вашими повідомленнями.</translation>
 <translation id="7193316103691252734">Немає однакових вкладок</translation>
 <translation id="2315654674554095762">Leo тепер зберігатиме історію ваших бесід, щоб ви могли їх переглядати. Всі дані зашифровані та залишаються тільки на вашому пристрої – ви можете їх видалити у будь-який час.</translation>
 <translation id="7821251979960635244">Історія ваших чатів з’явиться тут, коли ви почнете діалог.</translation>
 <translation id="887511360213807449">Історія вимкнена</translation>
 <translation id="5380979378058584412">Щоб переглянути ваші попередні розмови з Leo, вам потрібно увімкнути історію розмов.</translation>
-<translation id="6291843235651817590">Загальний чат</translation>
+<translation id="7348809809749151120">Швидко • Пошук</translation>
 <translation id="3185367320601718531">Розмова й генерація тексту</translation>
-<translation id="7979673624064378842">Блискавично швидкий чат</translation>
-<translation id="2836330653441111204">Збалансована швидкість і розум</translation>
-<translation id="6695329447007213917">Чат для різних задач, програмування та іншого</translation>
-<translation id="7168072214482631597">Розуміння тексту та зображень загального призначення</translation>
-<translation id="7226508434216060960">Модель міркувань</translation>
+<translation id="2793458212460902934">Швидко • Пошук • Інструменти</translation>
+<translation id="8506027496671575183">Пошук • Зір • Інструменти</translation>
+<translation id="3213834013136637671">Пошук • Зір</translation>
+<translation id="7697693533305615127">Пошук • Мислення</translation>
 <translation id="8782867266498869301">Модель змінюється динамічно для використання найкращої для завдання</translation>
 <translation id="3965507912994218570">Налаштування Leo</translation>
-<translation id="1037324977127422019">Привіт, я Leo!</translation>
-<translation id="8930348081963284873">Розумний асистент на базі штучного інтелекту, вбудований безпосередньо в Brave.</translation>
-<translation id="3528849152231418380">Потрібна допомога з вебсайтом?</translation>
-<translation id="1558192229187362674">Я допоможу вам створити резюме статей, розширити контент вебсайту та виконати інші дії.</translation>
-<translation id="861953757568623294">Я допоможу вам створити резюме статей, розширити контент вебсайту та виконати інші дії. Не знаєте, з чого почати? Спробуйте зробити це:</translation>
-<translation id="5642775487085641191">Хочете просто поспілкуватися?</translation>
-<translation id="8857222718794549840">Запитайте в мене що завгодно! Ми можемо обговорити будь-яку тему. Я постійно навчаюся та вдосконалююся, щоб давати кращі відповіді.</translation>
+<translation id="3754337604877048671">Знайомимо вас із Leo AI</translation>
+<translation id="5295261408976371809">Ваш <ph name="TEXT_BEFORE"/>приватний<ph name="TEXT_AFTER"/> AI-помічник, вбудований у браузер.</translation>
+<translation id="7452913484571004528">Справді приватний AI</translation>
+<translation id="8525501048785085223">Лео не зберігає та не передає ваші чати, а також не використовує їх для тренування моделей. Не потрібен обліковий запис або вхід. Просто відкрийте чат. Приватно.</translation>
+<translation id="6401201054391523929">Чат з вашими вкладками та файлами</translation>
+<translation id="8522038408130089105">Потрібно дізнатися більше про сайти, які ви відвідуєте? Просто додайте їх у чат. Долучіть вкладки та локальні файли для швидких і релевантних відповідей.</translation>
+<translation id="3844955602461425647">Автоматизуйте рутинні задачі</translation>
+<translation id="2196247864500723577">Нехай Brave переглядає інтернет разом з вами та взаємодіє з усім, що ви робите у браузері. Звільніться від одноманітних задач і зекономте час на важливі речі.</translation>
+<translation id="235457946228076038">Додайте власну модель</translation>
+<translation id="7024005267156189454">Під’єднайте власні AI-моделі — локальні або віддалені. Налаштуйте поведінку, відповіді та можливості Лео під ваші потреби.</translation>
+<translation id="7291578285403921288">Дізнатися більше про Leo AI</translation>
 <translation id="9051226419897869406">Приватно спілкуйтеся з Brave Leo</translation>
 <translation id="2414904697165579184">Формувати відповіді на основі вмісту вкладки (-ок)</translation>
 <translation id="8258324391302611485">Вміст цієї сторінки буде надіслано Leo разом з вашими повідомленнями.</translation>
@@ -2297,6 +2313,7 @@
 <translation id="8732450785281947197">Інструменти Leo на базі ШІ</translation>
 <translation id="6535533770697728087">Швидкі дії</translation>
 <translation id="3237710083340813756">Перезаписати</translation>
+<translation id="1223498995510244364">Створити зведення</translation>
 <translation id="1252805982772190086">Короткий допис</translation>
 <translation id="2087555497198267113">Довгий допис</translation>
 <translation id="4170307327863874820">Допис для блогу</translation>
@@ -2506,12 +2523,13 @@
 <translation id="6764845498618413165">Докладніше.</translation>
 <translation id="7818938154803162778">Звісно, я допоможу</translation>
 <translation id="7207456302801184289">Вітаємо у Brave!</translation>
-<translation id="6716580298071890302">Встановити темнішу тему</translation>
+<translation id="293854220404217065">Нічна тема</translation>
 <translation id="2422927186524098759">Бічна панель</translation>
 <translation id="2361906291514218784">ШІ Leo</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="8000020256436988724">Панель інструментів</translation>
 <translation id="6225572914528673855">Адресний рядок</translation>
+<translation id="6821966107067356137">Додати RSS-стрічку</translation>
 <translation id="8293206222192510085">Додати закладку</translation>
 <translation id="7758460733045216901">Панель закладок</translation>
 <translation id="958268166261124668">VPN Brave: під’єднано</translation>

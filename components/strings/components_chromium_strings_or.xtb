@@ -2,31 +2,32 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="or">
 <translation id="130631256467250065">ପରବର୍ତ୍ତୀ ସମୟରେ ଆପଣ ଆପଣଙ୍କ ଡିଭାଇସ୍‍କୁ ରିଷ୍ଟାର୍ଟ କଲେ ଆପଣଙ୍କର ଥିବା ପରିବର୍ତ୍ତନଗୁଡ଼ିକ କାର୍ଯ୍ୟକାରୀ ହେବ।</translation>
+<translation id="6451924152958941455">Brave ମେନୁ &gt;
+          <ph name="SETTINGS_TITLE"/>
+          &gt;
+          <ph name="SYSTEM_TITLE"/>
+          &gt;
+          <ph name="PROXIES_TITLE"/>କୁ ଯାଆନ୍ତୁ
+          ଏବଂ ଏହା ସୁନିଶ୍ଚିତ କରନ୍ତୁ ଯେ, ଆପଣଙ୍କ କନଫିଗରେସନ "ପ୍ରକ୍ସି ନୁହେଁ" କିମ୍ବା "ପ୍ରତ୍ୟେକ୍ଷ"ରେ ସେଟ କରାଯାଇଛି।</translation>
 <translation id="7999989146447764333">Braveରେ କ୍ରାସ୍ ରିପୋର୍ଟିଂ ଉପଲବ୍ଧ ନାହିଁ।</translation>
 <translation id="1953231710324290369">ଆପଣ ଏକ ସୁରକ୍ଷିତ Brave ପୃଷ୍ଠା ଦେଖୁଛନ୍ତି</translation>
 <translation id="907470742420136113">ପେମେଣ୍ଟ ପଦ୍ଧତି ପୂରଣ କରିବା ପାଇଁ Brave ସେଟିଂସ ପରିବର୍ତ୍ତନ କରିବା ପାଇଁ ଚେଷ୍ଟା କରୁଛି।</translation>
 <translation id="4847979153841887006">Brave ଲୋଗୋ</translation>
 <translation id="336808635693308470">Brave ପେମେଣ୍ଟ ପଦ୍ଧତିଗୁଡ଼ିକୁ ଏଡିଟ କରିବା ପାଇଁ ଚେଷ୍ଟା କରୁଛି।</translation>
 <translation id="7932149101545999102"><ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/> ଭଳି ମୁକ୍ତ ଉତ୍ସ ପ୍ରୋଜେକ୍ଟ ଏବଂ ଅନ୍ୟ <ph name="BEGIN_LINK_OSS"/>ମୁକ୍ତ ଉତ୍ସ ସଫ୍ଟୱେର୍<ph name="END_LINK_OSS"/> ଦ୍ୱାରା Braveକୁ ତିଆରି କରିବା ସମ୍ଭବ କରାଯାଇଛି।</translation>
-<translation id="8746410156982274638">Brave ମେନୁ &gt;
-          <ph name="SETTINGS_TITLE"/>
-          &gt;
-          <ph name="ADVANCED_TITLE"/>
-          &gt;
-          <ph name="PROXIES_TITLE"/>
-          &gt;
-          LAN ସେଟିଂସ୍‌କୁ
-          ଯାଆନ୍ତୁ ଏବଂ "ଆପଣଙ୍କର LAN ପାଇଁ ଏକ ପ୍ରକ୍ସି ସର୍ଭର ବ୍ୟବହାର କରନ୍ତୁ" ଚେକ୍‌ବକ୍ସକୁ ଅଚୟନିତ କରନ୍ତୁ।</translation>
 <translation id="303960458633076466">ଏହି ପୃଷ୍ଠାକୁ Brave ଦ୍ୱାରା ବ୍ଲକ୍ କରାଯାଇଛି</translation>
 <translation id="2017237562285586622">Braveକୁ ଆପଣଙ୍କର ଫାୟାରୱାଲ୍ କିମ୍ବା ଆଣ୍ଟିଭାଇରସ୍ ସେଟିଂସ୍‍‍ରେ ନେଟ୍‍ୱର୍କକୁ ଆକ୍ସେସ୍ କରିବା ପାଇଁ ଅନୁମତି ଦିଅନ୍ତୁ।</translation>
 <translation id="4949828774841497663">ଆପ୍ଲିକେସନ &gt; ସିଷ୍ଟମ ସେଟିଂସ &gt; ନେଟୱାର୍କକୁ ଯାଆନ୍ତୁ, ସକ୍ରିୟ ନେଟୱାର୍କ ଚୟନ କରନ୍ତୁ, ବିବରଣୀ... ବଟନ କ୍ଲିକ କରନ୍ତୁ ଏବଂ ଚୟନ କରାଯାଇଥିବା ଯେ କୌଣସି ପ୍ରକ୍ସିକୁ ଅଚୟନ କରନ୍ତୁ।</translation>
-<translation id="8619622797841001082">Brave ମେନୁ &gt;
+<translation id="3269554930871094325">Brave menu &gt;
           <ph name="SETTINGS_TITLE"/>
           &gt;
-          <ph name="ADVANCED_TITLE"/>
+          <ph name="SYSTEM_TITLE"/>
           &gt;
           <ph name="PROXIES_TITLE"/>
-          ଯାଆନ୍ତୁ ଏବଂ ଏହା ସୁନିଶ୍ଚିତ କରନ୍ତୁ ଯେ, ଆପଣଙ୍କ କନ୍‍ଫିଗ୍‍ରେସନ୍ "ପ୍ରକ୍ସି ନୁହେଁ" କିମ୍ବା "ପ୍ରତ୍ୟେକ୍ଷ"ରେ ସେଟ୍ ହୋଇଛି।</translation>
+          &gt;
+          ନେଟୱାର୍କ ଓ ଇଣ୍ଟର୍ନେଟ &gt; ପ୍ରକ୍ସିକୁ
+ଯାଆନ୍ତୁ
+          ଏବଂ "ସ୍ୱତଃ ସେଟିଂସ ଚିହ୍ନଟ କରନ୍ତୁ"କୁ ଅଚୟନ କରନ୍ତୁ।</translation>
 <translation id="6159073403999048272">ଏହି ପୃଷ୍ଠାଗୁଡ଼ିକ Brave ଡେଭେଲପରମାନଙ୍କ ଦ୍ୱାରା ବ୍ୟବହାର ପାଇଁ ଉଦ୍ଦିଷ୍ଟ ଏବଂ ଏଗୁଡ଼ିକୁ ସକ୍ରିୟ ଭାବରେ ପରିଚାଳନା କିମ୍ବା ପରୀକ୍ଷା କରାଯାଇନପାରେ। ସେଗୁଡ଼ିକୁ ସକ୍ଷମ କରିବା ପାଇଁ <ph name="BEGIN_LINK"/>chrome://chrome-urls<ph name="LINK_END"/>କୁ ନାଭିଗେଟ କରନ୍ତୁ, ଡିବଗ ପୃଷ୍ଠାଗୁଡ଼ିକୁ ସକ୍ଷମ କରିବା ପାଇଁ ବଟନରେ କ୍ଲିକ କରନ୍ତୁ ଏବଂ ତା'ପରେ ପୁଣି ଏହି ପୃଷ୍ଠାକୁ ନାଭିଗେଟ କରନ୍ତୁ।</translation>
 <translation id="2765022094254723779">Brave ଅନ୍ୟ <ph name="BEGIN_LINK_OSS"/>ଓପନ ସୋର୍ସ ସଫ୍ଟୱେର<ph name="END_LINK_OSS"/> ଦ୍ୱାରା ମଧ୍ୟ ସମ୍ଭବପର ହୋଇଥାଏ।</translation>
 <translation id="9156965752763025780">ପରବର୍ତ୍ତୀ ସମୟରେ Braveକୁ ପୁଣି ଲଞ୍ଚ କରିବାବେଳେ ଆପଣ କରିଥିବା ପରିବର୍ତ୍ତନଗୁଡ଼ିକ ଲାଗୁ ହେବ।</translation>

@@ -5,6 +5,8 @@
 <translation id="3478449063771497234">Njoftimet janë të çaktivizuara</translation>
 <translation id="2862978891748913252">Zgjidhni vendin tuaj</translation>
 <translation id="3970520675790340955">Zgjidhni vendin tuaj që të mund t’ju tregojmë mundësitë e duhura dhe reklamat për rajonin tuaj.</translation>
+<translation id="721490496276866468">Importo fjalëkalimet</translation>
+<translation id="8178175542325151321">Zgjidh një skedar .csv që përmban fjalëkalimet e tua për t’i importuar në menaxherin e fjalëkalimeve të Brave.</translation>
 <translation id="7301741773883122509">Tani mund të shpërbleheni për shikimin e reklamave. Po ndihmoni në krijimin e një vendi më të mirë për të gjithë në web. Dhe kjo është fantastike!</translation>
 <translation id="6439128034594289376">Woohoo! Jeni gati!</translation>
 <translation id="370665806235115550">Po ngarkohet…</translation>
@@ -109,7 +111,6 @@
 <translation id="7304425663107214334">Trego sugjerimet e shfletuesit</translation>
 <translation id="8982438328166986164">Tregon sugjerimet e faqeve të internetit bazuar në faqeshënuesit dhe historikun tënd të shfletimit.</translation>
 <translation id="924029461438529367">Trego sugjerimet e kërkimit</translation>
-<translation id="5989135139219497991">Trego sugjerimet më të mira</translation>
 <translation id="6285118765755298263">Indekso motorët e tjerë të kërkimit</translation>
 <translation id="919715748352669592">Indekson automatikisht faqet që ndjekin specifikimet OpenSearch.</translation>
 <translation id="9148058034647219655">Dil</translation>
@@ -297,6 +298,11 @@
 <translation id="4254029385847607686">DHJETOR</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="1772301834467143364">Lajmet Brave</translation>
+<translation id="2518692840036393666">Përshtat menynë</translation>
+<translation id="5582839680698949063">Menuja kryesore</translation>
+<translation id="7002271985859760052">Veprimet e faqes</translation>
+<translation id="7104487676473617844">Elementet në vijim do të duken në menu vetëm kur mbështeten nga faqja aktuale e hapur.</translation>
+<translation id="4159764849281393303">WebApp</translation>
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="8428213095426709021">Konfigurime</translation>
 <translation id="6020176662032623904">Krijues i Verifikuar</translation>
@@ -759,6 +765,8 @@ Nëse nuk e pranoni këtë kërkesë, VPN nuk do të rindërlidhet dhe lidhja ju
 <translation id="1279441577056010362">Vazhdoni te Email-i</translation>
 <translation id="7125582363614011660">Mbështetja ofrohet me ndihmën e ekipit të Guardian.\n\nJu lutemi zgjidhni informacionet që jeni të kënaqur të ndajnë më ne.\n\nSa më shumë informacion të ndani fillimisht me ne, aq më e lehtë do të jetë për stafin tonë të mbështetjes që të ju ndihmojnë të zgjidhni problemin tuaj.</translation>
 <translation id="8813171284214934811">Zgjidhni Automatikisht rajonin e serverit VPN më të afërt bazuar në orarin tuaj. Kjo opsion është i rekomanduar për të maksimizuar shpejtësitë e internetit.</translation>
+<translation id="4636153103822002055">{CITY_COUNT,plural,=1{<ph name="CITY_COUNT_ONE"/> qytet - }other{<ph name="CITY_COUNT_MANY"/> qytete - }}</translation>
+<translation id="2509734936997119836">{SERVER_COUNT,plural,=1{<ph name="SERVER_COUNT_ONE"/> server}other{<ph name="SERVER_COUNT_MANY"/> serverë}}</translation>
 <translation id="3199127022143353223">Serverë</translation>
 <translation id="5431902940483264007">Optimal</translation>
 <translation id="6527596624419285047">Përdor serverin më të mirë të disponueshëm</translation>
@@ -795,7 +803,6 @@ Nëse nuk e pranoni këtë kërkesë, VPN nuk do të rindërlidhet dhe lidhja ju
 <translation id="750843150060816463">Çmimi i Gazit (Gwei)</translation>
 <translation id="1426320910664514906">Kufiri i Gazit</translation>
 <translation id="6389441740143786465">Çaktivizo Qendrën e Shpërndarjes</translation>
-<translation id="9065203028668620118">Përpunojeni</translation>
 <translation id="473775607612524610">Përditësoje</translation>
 <translation id="479795390141144417">Përditësimi i llogarisë dështoi.</translation>
 <translation id="8084782383392198011">Emri i llogarisë nuk mund të jetë bosh.</translation>
@@ -936,6 +943,7 @@ Nëse nuk e pranoni këtë kërkesë, VPN nuk do të rindërlidhet dhe lidhja ju
  <ph name="VALUE"/></translation>
 <translation id="2282835936933247509">Zona Kohore</translation>
 <translation id="8107843365677337047">Lloji i Rrjetit</translation>
+<translation id="5334952096674914470">\n\nËshtë bërë\n</translation>
 <translation id="5393042357629679588">Çështje të tjera</translation>
 <translation id="8095666712177294104">Platforma</translation>
 <translation id="7080614857771109950">Mbështet asetet kompatibile me EVM në bllokun e Ethereum (ERC-20, ERC-721, ERC-1551, ERC-1155)</translation>
@@ -1014,8 +1022,6 @@ Nëse nuk e pranoni këtë kërkesë, VPN nuk do të rindërlidhet dhe lidhja ju
 <translation id="8496335570810457">Përkushtim Preflight:</translation>
 <translation id="5100124500279922001">Shmang Preflight:</translation>
 <translation id="7152095322071766507">Saidi më i vizituar</translation>
-<translation id="7230006500876504868">Kërko me Brave</translation>
-<translation id="5888208462949095139">Kërko me <ph name="DEFAULT_SEARCH_ENGINE"/></translation>
 <translation id="5456039738087398178">Mini-aplikacion i ekranit bazë</translation>
 <translation id="703185154752046151">Widget-i shtua në ekranin kryesor</translation>
 <translation id="4635094429202343515">Provo widget-in e Kërkimit Brave</translation>
@@ -1075,7 +1081,7 @@ Nëse nuk e pranoni këtë kërkesë, VPN nuk do të rindërlidhet dhe lidhja ju
 <translation id="7618347247876614969">Llogaria e Tavolinës së Kërkimit të Adresave:</translation>
 <translation id="7659483790930268440">Indeksi i Tavolinës së Kërkimit të Adresave:</translation>
 <translation id="5494920125229734069">Zgjidh të gjitha</translation>
-<translation id="6129027151000961048">Leo</translation>
+<translation id="2361906291514218784">Leo AI</translation>
 <translation id="8613144770663526433">Identifikohu me Brave Wallet</translation>
 <translation id="3696514931437952995">Po lidhesh me <ph name="ORIGIN"/>. Kuleta Brave do të ndajë adresën tënde të kuletës me <ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">Shih detajet</translation>
@@ -1093,11 +1099,11 @@ mbështetet nga IA dhe është ndërtuar drejt e në shfletues</translation>
 <translation id="6742599753610126012">Pastro historinë e bisedës</translation>
 <translation id="3443052382074796867">Çaktivizimi i ruajtjes së bisedave do të fshijë përfundimisht të gjitha bisedat e ruajtura më parë. Ky veprim nuk mund të kthehet mbrapsht.</translation>
 <translation id="3692772534525889713">Lidh blerjen në Play Store me llogarinë tënde Brave për të përdorur Leo Brave në pajisje të tjera.</translation>
-<translation id="73236265316873967">Leo Premium</translation>
+<translation id="592831784390389506">Leo AI Premium</translation>
 <translation id="1028627582482425924">Një vit</translation>
 <translation id="2985392169397572983">VLERA MË E MIRË</translation>
 <translation id="1166682575529520472">Çdo Muaj</translation>
-<translation id="451189393813405346">Pyete Leo</translation>
+<translation id="2206846767762985925">Pyet Leo AI</translation>
 <translation id="7322560193401221004">Kujto pozitën e riprodhimit të skedarëve</translation>
 <translation id="7505951907514709271">Për skedarë individualë, rifillo luajtjen nga pika e pauzës së fundit</translation>
 <translation id="6835165453349969605">Mbaj mend pozicionin e luajtjes së listës</translation>
@@ -1140,6 +1146,7 @@ mbështetet nga IA dhe është ndërtuar drejt e në shfletues</translation>
 <translation id="3861012838874771868">Hap Cilësimet e Listës</translation>
 <translation id="5220099266891491416">Fshih butonin e Listës</translation>
 <translation id="7416347631175891923">Provoje!</translation>
+<translation id="9065203028668620118">Përpunojeni</translation>
 <translation id="1173894706177603556">Riemërtojeni</translation>
 <translation id="3596306474342941843">Fshi listën</translation>
 <translation id="7765158879357617694">Zhvendos</translation>
@@ -1154,7 +1161,7 @@ mbështetet nga IA dhe është ndërtuar drejt e në shfletues</translation>
 <translation id="5319532905552885478">Përmbajtjet mediatike janë shtuar tashmë në listën e parazgjedhur</translation>
 <translation id="4802584673094436231">Duke u përgatitur…</translation>
 <translation id="481455355267255546">Në vijim</translation>
-<translation id="5474757891469990756">Çliroje fuqinë e plotë të Leo me Premium:</translation>
+<translation id="3721790899869840343">Zhblloko fuqinë e plotë të Leo AI me Premium:</translation>
 <translation id="4173478269537830374">Zbulo modele të ndryshme IA</translation>
 <translation id="3453542753968940696">Qasje me përparësi në modele të fuqishme me aftësi të ndryshme.</translation>
 <translation id="3245401959451976966">Zhblloko krijimtarinë</translation>
@@ -1222,7 +1229,6 @@ mbështetet nga IA dhe është ndërtuar drejt e në shfletues</translation>
 <translation id="4650851936784160359">Lista e filtrave nuk mund të përditësohej. Ju lutemi provoni përsëri</translation>
 <translation id="3098054327870766317">Trego butonin e kthimit mbrapsht kur skedat janë mbyllur</translation>
 <translation id="1336494649091412226">Jeni i sigurt se doni të dilni nga Brave?</translation>
-<translation id="2361906291514218784">Leo AI</translation>
 <translation id="7942415993090181327">Historiku i bisedave</translation>
 <translation id="6859935199732075666">Trego gabimet e Sigurimit të Shfletimit</translation>
 <translation id="2735247450315842119">Lejo bëj screenshot në skeda private</translation>
@@ -1246,6 +1252,18 @@ mbështetet nga IA dhe është ndërtuar drejt e në shfletues</translation>
 <translation id="5139940364318403933">Mëso se si të përdorësh "Diskun e Brave Software"</translation>
 <translation id="729975465115245577">Pajisja jote nuk ka një aplikacion për të ruajtur skedarin e fjalëkalimeve.</translation>
 <translation id="1129510026454351943">Detajet: <ph name="ERROR_DESCRIPTION"/></translation>
+<translation id="5594899180331219722">Zgjidh skedarin</translation>
+<translation id="3744219658596020825">Fjalëkalimet e tua nuk u importuan</translation>
+<translation id="8258027225380843424">Import i suksesshëm!</translation>
+<translation id="766635563210446220">Nuk mund të importohen fjalëkalimet. Kontrollo <ph name="FILENAME"/> dhe sigurohu që është formatuar saktë. <ph name="BEGIN_LINK"/>Mëso më shumë<ph name="END_LINK"/></translation>
+<translation id="6581356304040102696">Nuk mund të importohen fjalëkalimet. Madhësia e skedarit duhet të jetë më pak se 1 MB.</translation>
+<translation id="5895244669404288318">{COUNT, plural,=1 {Nuk mund të importohen fjalëkalimet. Ju mund të importoni vetëm 1 fjalëkalim njëherësh.} other {Nuk mund të importohen fjalëkalimet. Ju mund të importoni deri në <ph name="COUNT_MANY"/> fjalëkalime njëherësh.}}</translation>
+<translation id="3748424433435232460">Një fjalëkalim për këtë llogari është tashmë i ruajtur në këtë pajisje</translation>
+<translation id="6438475350605608554">Je duke importuar fjalëkalime tashmë në një skedë tjetër</translation>
+<translation id="3482868954775580230">Dështoi leximi i skedarit të përzgjedhur. <ph name="EXCEPTION_INFO"/></translation>
+<translation id="9162995380643712715">{IMPORT_COUNT, plural,=1 {U importua me sukses 1 fjalëkalim.} other {U importuan me sukses <ph name="IMPORT_COUNT_MANY"/> fjalëkalime.}}</translation>
+<translation id="4637949129057123593">Importimi dështoi.</translation>
+<translation id="4300452012226767715">Menaxheri i fjalëkalimeve nuk është i disponueshëm.</translation>
 <translation id="6221633008163990886">Shkyç për të eksportuar fjalëkalimet e tua</translation>
 <translation id="5245792669563792664">fjalëkalime</translation>
 <translation id="10614374240317010">Nuk u ruaj asnjëherë</translation>

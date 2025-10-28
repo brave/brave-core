@@ -688,7 +688,6 @@
 <translation id="3266055641283174315">نوع الإعلان</translation>
 <translation id="8706824117053903390">عدد المشاهدات هذا الشهر</translation>
 <translation id="5105890735834548623">إعدادات الإعلانات</translation>
-<translation id="96989662637180657">تظهر إعلانات Brave Search على <ph name="LINK_BEGIN"/>Brave Search<ph name="LINK_END"/>.</translation>
 <translation id="3138160233953903250">إعدادات الإعلانات</translation>
 <translation id="2446517297521536638">يمكنك التحكم في أنواع إعلانات Brave التي تشاهدها وعدد مرات ظهورها. حيث كلما زاد عدد الإعلانات التي تشاهدها، زادت أرباحك.</translation>
 <translation id="3479272537858623647">يعرض هذا عدد إعلانات Brave التي شاهدتها هذا الشهر والمؤهلة لكسب BAT.</translation>
@@ -855,6 +854,11 @@
       other {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} خطوات}
     }</translation>
 <translation id="8621264173374071200"><ph name="EXCHANGE_NAME"/> عبر <ph name="PROVIDER_NAME"/></translation>
+<translation id="646023614746251785">تأكيد المبادلة</translation>
+<translation id="6264944956989873014">تأكيد الجسر</translation>
+<translation id="7067917728851842589">تأكيد الإرسال</translation>
+<translation id="2351357639951873714">تأكيد الحماية</translation>
+<translation id="8332923694292360653">إنفاق</translation>
 <translation id="3735740477244556633">ترتيب بحسب</translation>
 <translation id="6484605214219822434">مراجعة الاتصال</translation>
 <translation id="3365052891357224017">الوقت المقدر</translation>
@@ -964,6 +968,7 @@
 <translation id="3451958544919449297">تخزين أصول ZEC Testnet</translation>
 <translation id="8459631690385393533">تخزين أصول Cardano</translation>
 <translation id="4915057812371523845">تخزين أصول Cardano Testnet</translation>
+<translation id="5387140102951033657">يدعم أصول Substrate على سلسلة Polkadot الرئيسية و Parachains التابعة لها</translation>
 <translation id="8500387257977999003">المفتاح الخاص لـ<ph name="PROTOCOL"/></translation>
 <translation id="8275038454117074363">الاستيراد</translation>
 <translation id="232925166623833246">الاستيراد من محفظة الأجهزة</translation>
@@ -1075,6 +1080,10 @@
 <translation id="8904889345035514635">البدل الحالي</translation>
 <translation id="7073918978411974168">البدل المقترح</translation>
 <translation id="9019403281000653275">طلب موافقة غير محدودة</translation>
+<translation id="9108474191347769758">حد الإنفاق</translation>
+<translation id="2102091845281366189">هدف الموافقة</translation>
+<translation id="772196962479335292">حد الموافقة الحالي</translation>
+<translation id="8215431557133305629">حد الموافقة المقترح</translation>
 <translation id="4717431746210146708">هل تسمح لهذا الموقع بإضافة شبكة؟</translation>
 <translation id="2521480044079508357">سيسمح هذا باستخدام هذه الشبكة داخل Brave Wallet.</translation>
 <translation id="1982257600591932657">اسم الشبكة</translation>
@@ -1091,7 +1100,7 @@
 <translation id="3948067511324628726">رسوم الغاز</translation>
 <translation id="7163997622278957886">عطاء</translation>
 <translation id="1074360622426001342">القيمة + الغاز</translation>
-<translation id="2186011161688824046">المبلغ + الرسوم</translation>
+<translation id="7542099582407803878">المبلغ + رسوم الشبكة</translation>
 <translation id="7084089311475827950">لا يوجد بيانات</translation>
 <translation id="5821668936183240062">التالي</translation>
 <translation id="793994607260936590">أولا</translation>
@@ -1418,6 +1427,8 @@
 <translation id="1908159733454294871">تم اكتشاف المخاطر الأمنية</translation>
 <translation id="3621202678540785336">الإدخال</translation>
 <translation id="3009178788565917040">الناتج</translation>
+<translation id="7953669802889559161">المدخلات</translation>
+<translation id="4554024082642878647">المخرجات</translation>
 <translation id="1965889974717516497">شبكات ثانوية</translation>
 <translation id="7691821949666755802">شبكات اختبار</translation>
 <translation id="2816106784624007524">حد الغاز يجب أن يكون عددًا صحيحًا أكبر من 0</translation>
@@ -2140,7 +2151,6 @@
 <translation id="5872363163901278000">زيادة سرعة التشغيل</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8637805148029768813">تتاح ميزة الملخص في الوقت الراهن لمقالات مختارة وصفحات ويب طويلة أخرى فقط.</translation>
-<translation id="1223498995510244364">تلخيص</translation>
 <translation id="7491773233732232424">نبذة عن Leo</translation>
 <translation id="4611072979071082355">Brave Leo هو مساعد ذكي خاص يعمل بالذكاء الاصطناعي ويعمل على تحسين استخدامك للإنترنت. تستطيع استخدام Leo مجانًا مع إمكانيات وصول محدودة. يقدم Brave Leo Premium المزيد من النماذج وحدود أعلى ويمنح المشتركين إمكانية الوصول المبكر إلى الميزات الجديدة. يتغير النموذج الافتراضي من حين لآخر. راجع <ph name="LINK_BEFORE"/> مركز مساعدة Brave<ph name="LINK_AFTER"/> لمزيد من التفاصيل.</translation>
 <translation id="7297056998057521697">افتراضيًا، عندما تطرح على Leo سؤالاً بشأن موقع أو صفحة تتشاهدها، فإنه قد يرسل ويستخدم محتوى صفحة الويب التي تشاهدها أو أي نص تبرزه في الصفحة بالإضافة إلى استعلام البحث الخاص بك إلى خوادم Brave ليقدم Leo إجابة. في بعض الأحيان، قد يرسل Leo استعلامات انطلاقًا من مدخلاتك على Brave Search ويستخدم نتائج البحث لتوفير ردود أفضل على أسئلتك. لا يضمن Brave دقة الردود ، وقد تتضمن معلومات غير دقيقة أو مضللة أو خاطئة. يستخدم Leo بيانات من Brave Search لتحسين جودة الاستجابة. لا ترسل معلومات حساسة أو خاصة إلى Brave Leo، وتوخي الحذر مع أي إجابات تتعلق بالصحة أو الماليات أو السلامة الشخصية أو ما شابه ذلك. يمكنك ضبط خيارات Leo في الإعدادات في أي وقت. انتقل إلى الإعدادات &gt; Leo.</translation>
@@ -2174,7 +2184,7 @@
 <translation id="7127671672828944579">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Qwen 14B، وهو نموذج تم إنشاؤه من طرف Alibaba Cloud ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة Llama من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="2328524194917949829">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Gemma 3 12B، وهو نموذج تم إنشاؤه من طرف Google DeepMind ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة Gemma من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="634682910381645550">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة DeepSeek R1، وهو نموذج تم إنشاؤه من طرف DeepSeek لتنفيذ مهام الاستدلال العميق. يتم استضافة DeepSeek R1 من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
-<translation id="8932568551552504373">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Claude Instant، وهو نموذج تم إنشاؤه بواسطة Anthropic لتشغيل المهام الحوارية ومعالجة النصوص. يتم استضافة Claude Instant من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
+<translation id="8932568551552504373">مرحبًا، أنا ليو. أنا مساعد ذكي من Brave. أعمل بواسطة Claude Instant، نموذج طورته Anthropic لأداء مهام المحادثة ومعالجة النصوص. يتم تشغيل Claude Instant عبر بنية Brave التحتية الآمنة الخاصة.<ph name="LINK_BEFORE"/>اعرف المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Claude Haiku، وهو نموذج تم إنشاؤه بواسطة Anthropic لتشغيل المهام الحوارية ومعالجة النصوص. يتم استضافة Claude Haiku من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Claude Sonnet، وهو نموذج تم إنشاؤه بواسطة Anthropic لتشغيل المهام الحوارية ومعالجة النصوص. يتم استضافة Claude Sonnet من خلال البنية التحتية الآمنة الخاصة بـ Brave.<ph name="LINK_BEFORE"/>تعرف على المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
@@ -2187,6 +2197,7 @@
 <translation id="7557539689487606886">الاشتراك الحصري (Premium)</translation>
 <translation id="1691256669639196606">إدارة الاشتراك</translation>
 <translation id="3840096463915153852">سجل المحادثة</translation>
+<translation id="6761921176674289184">إدارة الذكريات</translation>
 <translation id="2304783958703511257">الإعدادات المتقدمة</translation>
 <translation id="3037594989275592390">نماذج اللغة</translation>
 <translation id="5543505256451301851">المحاولة مجانًا لمدة 7 أيام</translation>
@@ -2260,31 +2271,36 @@
 <translation id="7307396647043599949"><ph name="COUNT"/> المزيد…</translation>
 <translation id="8103700533980268469">إغلاق هذا الإشعار</translation>
 <translation id="3417835166382867856">علامات تبويب البحث</translation>
+<translation id="7311244614769792472">لم يتم العثور على نتائج</translation>
+<translation id="3112448569149476523">يرجى تجربة بحث مختلف</translation>
 <translation id="1352836459737874921">إرفاق محتوى من علامات تبويب أخرى</translation>
-<translation id="3028258613451571431">إرسال محتوى الصفحة من علامات تبويب المتصفح لإعطاء Leo المزيد من السياق للمحادثة</translation>
-<translation id="4300920590112551536">علامة تبويب متصفح جديدة</translation>
+<translation id="7039179822221107025">إرسال محتوى الصفحة من علامات تبويب المتصفح لإعطاء Leo المزيد من السياق للمحادثة.</translation>
+<translation id="220541218939267992">سيتم إرسال محتوى الصفحة إلى ليو مع رسائلك.</translation>
 <translation id="1446346932629101482">إضافة محتوايت علامة التبويب للسياق. سيتم إرسال المحتويات إلى Leo إلى جانب رسائلك.</translation>
 <translation id="7193316103691252734">لا توجد علامات تبويب مطابقة</translation>
 <translation id="2315654674554095762">سيتذكر Leo الآن محادثاتك حتى تتمكن من العودة إليها. يتم تخزينها مشفرة على جهازك، ويمكنك حذفها في أي وقت.</translation>
 <translation id="7821251979960635244">سيظهر سجل المحادثة الخاص بك هنا بمجرد بدء محادثة.</translation>
 <translation id="887511360213807449">تم تعطيل السجل</translation>
 <translation id="5380979378058584412">لعرض محادثاتك السابقة مع Leo، تحتاج إلى تمكين سجل المحادثة.</translation>
-<translation id="6291843235651817590">دردشة حول أغراض عامة</translation>
+<translation id="7348809809749151120">سريع • Search</translation>
 <translation id="3185367320601718531">إنشاء المحادثات والنصوص</translation>
-<translation id="7979673624064378842">دردشة بسرعة البرق</translation>
-<translation id="2836330653441111204">سرعة وذكاء متوازنان</translation>
-<translation id="6695329447007213917">الدردشة العامة و البرمجة و المزيد</translation>
-<translation id="7168072214482631597">فهم النص والصورة للأغراض العامة</translation>
-<translation id="7226508434216060960">نموذج التعليل</translation>
+<translation id="2793458212460902934">سريع • Search • أدوات</translation>
+<translation id="8506027496671575183">Search • رؤية • أدوات</translation>
+<translation id="3213834013136637671">Search • رؤية</translation>
+<translation id="7697693533305615127">Search • تفكير</translation>
 <translation id="8782867266498869301">يتغير النموذج ديناميكيًا لاستخدام الأفضل للمهمة</translation>
 <translation id="3965507912994218570">إعدادات Leo</translation>
-<translation id="1037324977127422019">مرحبًا، أدعى ليو!</translation>
-<translation id="8930348081963284873">مساعد ذكاء مدعوم من الذكاء الاصطناعي، تم إنشاؤه مباشرة في متصفح Brave.</translation>
-<translation id="3528849152231418380">هل تحتاج إلى مساعدة في موقع ويب معين؟</translation>
-<translation id="1558192229187362674">يمكنني مساعدتك على تلخيص مقالاتك، ما يؤدي إلى التوسع في محتوى موقعك وغير ذلك الكثير.</translation>
-<translation id="861953757568623294">يمكنني مساعدتك على تلخيص المقالات، ما يؤدي إلى التوسع في محتوى موقعك وغير ذلك الكثير. ألست متأكدًا من البدء؟ جرِّب ذلك:</translation>
-<translation id="5642775487085641191">هل تريد إجراء محادثة فقط؟</translation>
-<translation id="8857222718794549840">اسألني على أي شيء! يمكننا التحدُّث حول أي موضوع تريده. أنا أتعلم دومًا وأحرص على التحسُّن لتقديم أفضل الإجابات.</translation>
+<translation id="3754337604877048671">تعرف على Leo AI</translation>
+<translation id="5295261408976371809">مساعدك الذكي <ph name="TEXT_BEFORE"/>الخاص<ph name="TEXT_AFTER"/>، مدمج مباشرة في المتصفح.</translation>
+<translation id="7452913484571004528">مساعد ذكي خاص حقًا</translation>
+<translation id="8525501048785085223">ليو لا يحتفظ بالمحادثات أو يشاركها أو يستخدمها لتدريب النموذج. لا حاجة لحساب أو تسجيل دخول. فقط افتح وابدأ الدردشة. بكل خصوصية.</translation>
+<translation id="6401201054391523929">الدردشة مع علامات التبويب والملفات</translation>
+<translation id="8522038408130089105">هل تحتاج إلى معرفة المزيد عن المواقع التي تزورها؟ فقط أضفها إلى الدردشة. أرفق علامات التبويب والملفات المحلية للحصول على إجابات سريعة وذات صلة.</translation>
+<translation id="3844955602461425647">أتمتة المهام المملة</translation>
+<translation id="2196247864500723577">دع Brave يتصفح معك ويتفاعل مع كل ما تفعله في المتصفح. وزّع المهام المملة ووفّر وقتك لأمور أكثر أهمية.</translation>
+<translation id="235457946228076038">أحضر النموذج الخاص بك</translation>
+<translation id="7024005267156189454">اربط نماذج الذكاء الاصطناعي الخاصة بك، سواء محليًا أو عن بُعد. صمّم سلوك وليو ومخرجاته وقدراته وفقًا لتفضيلاتك.</translation>
+<translation id="7291578285403921288">اعرف المزيد عن Leo AI</translation>
 <translation id="9051226419897869406">الدردشة بخصوصية مع Brave Leo</translation>
 <translation id="2414904697165579184">قم بصياغة الإجابات بناءً على محتويات علامة (علامات) التوبيب</translation>
 <translation id="8258324391302611485">سيتم إرسال محتوى هذه الصفحة إلى Leo إلى جانب رسائلك.</translation>
@@ -2293,6 +2309,7 @@
 <translation id="8732450785281947197">أدوات Leo للذكاء الاصطناعي</translation>
 <translation id="6535533770697728087">إجراءات سريعة</translation>
 <translation id="3237710083340813756">إعادة الكتابة</translation>
+<translation id="1223498995510244364">تلخيص</translation>
 <translation id="1252805982772190086">منشور قصير</translation>
 <translation id="2087555497198267113">منشور طويل</translation>
 <translation id="4170307327863874820">منشور مدونة</translation>
@@ -2499,12 +2516,13 @@
 <translation id="6764845498618413165">اطلع على المزيد من المعلومات.</translation>
 <translation id="7818938154803162778">بالتأكيد، سأقدم المساعدة.</translation>
 <translation id="7207456302801184289">مرحباً بك في Brave</translation>
-<translation id="6716580298071890302">استخدام المظهر الداكن</translation>
+<translation id="293854220404217065">سمة منتصف الليل</translation>
 <translation id="2422927186524098759">الشريط الجانبي</translation>
 <translation id="2361906291514218784">Leo الذكاء الاصطناعي</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="8000020256436988724">شريط الأدوات</translation>
 <translation id="6225572914528673855">شريط العناوين</translation>
+<translation id="6821966107067356137">إضافة موجز RSS</translation>
 <translation id="8293206222192510085">إضافة إشارة مرجعية</translation>
 <translation id="7758460733045216901">لوحة الإشارات المرجعية</translation>
 <translation id="958268166261124668">Brave VPN: متصل</translation>

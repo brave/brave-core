@@ -5,6 +5,8 @@
 <translation id="3478449063771497234">नोटिफ़िकेशन अक्षम किए गए हैं</translation>
 <translation id="2862978891748913252">अपना देश चुनें</translation>
 <translation id="3970520675790340955">अपना देश चुनें ताकि हम आपके क्षेत्र के हिसाब से आपको सही विकल्प और विज्ञापन दिखा सकें.</translation>
+<translation id="721490496276866468">पासवर्ड इंपोर्ट करें</translation>
+<translation id="8178175542325151321">Brave के पासवर्ड मैनेजर में पासवर्ड इंपोर्ट करने के लिए एक .csv फ़ाइल चुनें जिसमें आपके पासवर्ड शामिल हों।</translation>
 <translation id="7301741773883122509">अब आपको विज्ञापन देखने पर रिवॉर्ड मिल सकते हैं. वेब को सभी के लिए एक सुरक्षित जगह बनाने में आप अपना योगदान दे रहे हैं. यह बहुत ही शानदार काम है!</translation>
 <translation id="6439128034594289376">वाह, आप पूरी तरह से तैयार हैं!</translation>
 <translation id="370665806235115550">लोड हो रही हैं...</translation>
@@ -109,7 +111,6 @@
 <translation id="7304425663107214334">ब्राउज़र सुझाव दिखाएं</translation>
 <translation id="8982438328166986164">आपके बुकमार्क और पिछली ब्राउज़िंग के आधार पर वेबसाइट के सुझाव दिखाता है.</translation>
 <translation id="924029461438529367">सर्च के सुझाव दिखाएं</translation>
-<translation id="5989135139219497991">टॉप सुझाव दिखाएँ</translation>
 <translation id="6285118765755298263">अन्य सर्च इंजन इंडेक्स करें</translation>
 <translation id="919715748352669592">अपने आप उन वेबसाइटों को इंडेक्स करता है जो OpenSearch निर्देशों का पालन करती हैं.</translation>
 <translation id="9148058034647219655">बाहर निकलें</translation>
@@ -297,6 +298,11 @@
 <translation id="4254029385847607686">दिसम्बर</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="1772301834467143364">Brave News</translation>
+<translation id="2518692840036393666">मेनू को कस्टमाइज़ करें</translation>
+<translation id="5582839680698949063">मुख्य मेनू</translation>
+<translation id="7002271985859760052">पेज क्रियाएँ</translation>
+<translation id="7104487676473617844">निम्न आइटम केवल तब मेनू पर दिखाई देंगे जब वर्तमान खुला वेबपेज उन्हें सपोर्ट करता हो।</translation>
+<translation id="4159764849281393303">वेबऐप</translation>
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="8428213095426709021">सेटिंग</translation>
 <translation id="6020176662032623904">वेरिफ़ाइड क्रिएटर</translation>
@@ -798,7 +804,6 @@
 <translation id="750843150060816463">गैस की कीमत (Gwei)</translation>
 <translation id="1426320910664514906">गैस की सीमा\n</translation>
 <translation id="6389441740143786465">शेयरिंग हब बंद करें</translation>
-<translation id="9065203028668620118">बदलाव करें</translation>
 <translation id="473775607612524610">अपडेट करें</translation>
 <translation id="479795390141144417">अकाउंट अपडेट नहीं हो सका.</translation>
 <translation id="8084782383392198011">अकाउंट नेम खाली नहीं हो सकता.</translation>
@@ -1014,8 +1019,6 @@
 <translation id="8496335570810457">प्रीफ़्लाइट संकल्प :</translation>
 <translation id="5100124500279922001">प्रीफ़्लाइट को छोड़ें :</translation>
 <translation id="7152095322071766507">सबसे ज़्यादा देखी गई साइट</translation>
-<translation id="7230006500876504868">Brave पर सर्च करें</translation>
-<translation id="5888208462949095139"><ph name="DEFAULT_SEARCH_ENGINE"/> पर सर्च करें</translation>
 <translation id="5456039738087398178">होम स्क्रीन विजेट</translation>
 <translation id="703185154752046151">विजेट होम स्क्रीन पर जोड़ दिया गया है</translation>
 <translation id="4635094429202343515">Brave Search विजेट आज़माएँ</translation>
@@ -1075,7 +1078,7 @@
 <translation id="7618347247876614969">एड्रेस लुकअप टेबल अकाउंट</translation>
 <translation id="7659483790930268440">एड्रेस लुकअप टेबल इंडेक्स</translation>
 <translation id="5494920125229734069">सभी को चुनें</translation>
-<translation id="6129027151000961048">लियो</translation>
+<translation id="2361906291514218784">लियो AI</translation>
 <translation id="8613144770663526433">Brave वॉलेट के साथ साइन इन करें</translation>
 <translation id="3696514931437952995">आप <ph name="ORIGIN"/> में साइन इन कर रहे हैं. Brave वॉलेट आपका पता <ph name="ORIGIN"/> के साथ शेयर करेगा.</translation>
 <translation id="1028781062521375153">विवरण देखें</translation>
@@ -1092,11 +1095,11 @@
 <translation id="6742599753610126012">चैट का इतिहास मिटाएँ</translation>
 <translation id="3443052382074796867">बातचीत की स्टोरेज को बंद करने से, पहले स्टोर की गई सभी बातचीतें हमेशा के लिए मिट जाएँगी। इस कार्रवाई को पहले जैसा नहीं किया जा सकता।</translation>
 <translation id="3692772534525889713">अन्य डिवाइस पर Brave Leo का उपयोग करने के लिए अपनी Play Store खरीदारी को अपने Brave अकाउंट से लिंक करें।</translation>
-<translation id="73236265316873967">Leo प्रीमियम</translation>
+<translation id="592831784390389506">Leo AI प्रीमियम</translation>
 <translation id="1028627582482425924">एक साल</translation>
 <translation id="2985392169397572983">बेस्ट वैल्यू</translation>
 <translation id="1166682575529520472">मासिक</translation>
-<translation id="451189393813405346">लियो से पूछें</translation>
+<translation id="2206846767762985925">Leo AI से पूछें</translation>
 <translation id="7322560193401221004">फ़ाइल की प्लेबैक की स्थिति को याद रखें</translation>
 <translation id="7505951907514709271">जब कोई एक फ़ाइल हो, तो पिछली बार जहाँ रोका गया था, वहीं से चलाएँ</translation>
 <translation id="6835165453349969605">प्लेबैक के क्रम को याद रखें</translation>
@@ -1139,6 +1142,7 @@
 <translation id="3861012838874771868">प्लेलिस्ट की सेटिंग खोलें</translation>
 <translation id="5220099266891491416">'प्लेलिस्ट' बटन छिपाएँ</translation>
 <translation id="7416347631175891923">इसे आज़माएँ!</translation>
+<translation id="9065203028668620118">बदलाव करें</translation>
 <translation id="1173894706177603556">नाम बदलें</translation>
 <translation id="3596306474342941843">प्लेलिस्ट हटाएँ</translation>
 <translation id="7765158879357617694">ले जाएं</translation>
@@ -1153,7 +1157,7 @@
 <translation id="5319532905552885478">मीडिया कंटेंट को पहले से ही डिफ़ॉल्ट प्लेलिस्ट में जोड़ा गया है</translation>
 <translation id="4802584673094436231">तैयार कर रहा है…</translation>
 <translation id="481455355267255546">अगला</translation>
-<translation id="5474757891469990756">प्रीमियम के साथ Leo की पूरी ताकत दिखाएँ:</translation>
+<translation id="3721790899869840343">प्रीमियम के साथ Leo AI की पूरी शक्ति का उपयोग करें:</translation>
 <translation id="4173478269537830374">विभिन्न AI मॉडल खोजें</translation>
 <translation id="3453542753968940696">विभिन्न कौशल वाले ताकतवर मॉडलों तक प्राथमिकता वाली एक्सेस।</translation>
 <translation id="3245401959451976966">अपनी रचनात्मकता को अनलॉक करें</translation>
@@ -1221,7 +1225,6 @@
 <translation id="4650851936784160359">फ़िल्टर लिस्ट अपडेट नहीं की जा सकी. कृपया दोबारा कोशिश करें.</translation>
 <translation id="3098054327870766317">टैब बंद होने पर, अनडू बटन दिखाएँ</translation>
 <translation id="1336494649091412226">क्या आप वाकई Brave से बाहर जाना चाहते हैं?</translation>
-<translation id="2361906291514218784">लियो AI</translation>
 <translation id="7942415993090181327">चैट का इतिहास</translation>
 <translation id="6859935199732075666">सुरक्षित ब्राउज़िक की गड़बड़ियाँ दिखाएँ</translation>
 <translation id="2735247450315842119">निजी टैब में स्क्रीनशॉट की अनुमति दें</translation>
@@ -1245,6 +1248,18 @@
 <translation id="5139940364318403933">Brave डिस्क के इस्तेमाल का तरीका जानें</translation>
 <translation id="729975465115245577">आपके डिवाइस में पासवर्ड फ़ाइल को स्टोर करने वाला कोई ऐप्लिकेशन नहीं है.</translation>
 <translation id="1129510026454351943">विवरण: <ph name="ERROR_DESCRIPTION"/></translation>
+<translation id="5594899180331219722">फ़ाइल चुनें</translation>
+<translation id="3744219658596020825">आपके पासवर्ड इंपोर्ट नहीं किए गए</translation>
+<translation id="8258027225380843424">आयात सफल!</translation>
+<translation id="766635563210446220">पासवर्ड इंपोर्ट नहीं किए जा सके। <ph name="FILENAME"/> जांचें और सुनिश्चित करें कि यह सही फॉर्मैट में है। <ph name="BEGIN_LINK"/>अधिक जानें<ph name="END_LINK"/></translation>
+<translation id="6581356304040102696">पासवर्ड इंपोर्ट नहीं किए जा सके। फ़ाइल का आकार 1 MB से कम होना चाहिए।</translation>
+<translation id="5895244669404288318">{COUNT, plural,=1 {पासवर्ड आयात नहीं किया जा सकता। आप एक बार में केवल 1 पासवर्ड ही आयात कर सकते हैं।}other {पासवर्ड आयात नहीं किया जा सकता। आप एक बार में अधिकतम <ph name="COUNT_MANY"/> पासवर्ड आयात कर सकते हैं।}}</translation>
+<translation id="3748424433435232460">इस खाते के लिए पासवर्ड इस डिवाइस पर पहले से सेव है</translation>
+<translation id="6438475350605608554">आप पहले से ही किसी अन्य टैब में पासवर्ड इंपोर्ट कर रहे हैं</translation>
+<translation id="3482868954775580230">चयनित फ़ाइल को पढ़ने में विफल रहा। <ph name="EXCEPTION_INFO"/></translation>
+<translation id="9162995380643712715">{IMPORT_COUNT, plural,=1 {1 पासवर्ड सफलतापूर्वक आयात किया गया।}other {<ph name="IMPORT_COUNT_MANY"/> पासवर्ड सफलतापूर्वक आयात किए गए।}}</translation>
+<translation id="4637949129057123593">आयात विफल।</translation>
+<translation id="4300452012226767715">पासवर्ड मैनेजर उपलब्ध नहीं है।</translation>
 <translation id="6221633008163990886">अपने पासवर्ड निर्यात करने के लिए अनलॉक करें</translation>
 <translation id="5245792669563792664">पासवर्ड</translation>
 <translation id="10614374240317010">कभी नहीं सेव किया गया</translation>

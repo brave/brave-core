@@ -73,7 +73,7 @@
 <translation id="3446024864193919737">Brave Rewardsを表示する</translation>
 <translation id="5585019845078534178">カード</translation>
 <translation id="3870475560794762985">スポンサー画像を表示する</translation>
-<translation id="5684562942023496754">スポンサー画像を閲覧すると稼ぐことができます。</translation>
+<translation id="5684562942023496754">スポンサー画像を閲覧して収入を得ることができます。</translation>
 <translation id="6168679340384667457">閲覧したスポンサー画像に対してBATを獲得することができます。スポンサー画像を無効にすると、獲得量が減ります。</translation>
 <translation id="6165508094623778733">詳しく知る</translation>
 <translation id="2414654907269324670">スポンサー画像に対してBATを獲得しています。</translation>
@@ -691,7 +691,6 @@
 <translation id="3266055641283174315">広告タイプ</translation>
 <translation id="8706824117053903390">今月のビュー数</translation>
 <translation id="5105890735834548623">広告設定</translation>
-<translation id="96989662637180657">Brave検索広告は、<ph name="LINK_BEGIN"/>Brave検索<ph name="LINK_END"/>上に表示されます。</translation>
 <translation id="3138160233953903250">広告設定</translation>
 <translation id="2446517297521536638">表示されるBrave広告の種類と頻度を管理しましょう。より多くの広告を見れば見るほど、より多くの収入を得ることができます。</translation>
 <translation id="3479272537858623647">今月あなたがご覧になった、BAT獲得の対象となるBrave Adsの数を表示しています。</translation>
@@ -858,6 +857,11 @@
       other {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} ステップ}
     }</translation>
 <translation id="8621264173374071200"><ph name="EXCHANGE_NAME"/> 経由 <ph name="PROVIDER_NAME"/></translation>
+<translation id="646023614746251785">スワップを確認</translation>
+<translation id="6264944956989873014">ブリッジを確認</translation>
+<translation id="7067917728851842589">送信を確認</translation>
+<translation id="2351357639951873714">Shields を確認</translation>
+<translation id="8332923694292360653">支払う</translation>
 <translation id="3735740477244556633">並べ替え</translation>
 <translation id="6484605214219822434">ブリッジをレビュー</translation>
 <translation id="3365052891357224017">推定時間</translation>
@@ -967,6 +971,7 @@
 <translation id="3451958544919449297">ZECテストネットアセットを保管</translation>
 <translation id="8459631690385393533">カルダノのアセットを保管</translation>
 <translation id="4915057812371523845">カルダノのテストネットアセットを保管</translation>
+<translation id="5387140102951033657">PolkadotリレーチェーンおよびSubstrateパラチェーン上のSubstrate資産をサポート</translation>
 <translation id="8500387257977999003">プライベートキー<ph name="PROTOCOL"/></translation>
 <translation id="8275038454117074363">追加</translation>
 <translation id="232925166623833246">ハードウェアウォレットからインポート</translation>
@@ -1078,6 +1083,10 @@
 <translation id="8904889345035514635">現在の許可設定</translation>
 <translation id="7073918978411974168">提案された許可設定</translation>
 <translation id="9019403281000653275">無制限の承認をリクエスト済み</translation>
+<translation id="9108474191347769758">支払い上限</translation>
+<translation id="2102091845281366189">承認対象</translation>
+<translation id="772196962479335292">現在の承認限度額</translation>
+<translation id="8215431557133305629">提案された承認限度額</translation>
 <translation id="4717431746210146708">このサイトにネットワークの追加を許可しますか？</translation>
 <translation id="2521480044079508357">これにより、このネットワークを Brave Wallet 内で使用できるようになります。</translation>
 <translation id="1982257600591932657">ネットワーク名</translation>
@@ -1094,7 +1103,7 @@
 <translation id="3948067511324628726">ガス料金</translation>
 <translation id="7163997622278957886">入札</translation>
 <translation id="1074360622426001342">金額 + ガス</translation>
-<translation id="2186011161688824046">金額 + 手数料</translation>
+<translation id="7542099582407803878">金額 + ネットワーク手数料</translation>
 <translation id="7084089311475827950">データがありません。</translation>
 <translation id="5821668936183240062">次へ</translation>
 <translation id="793994607260936590">first</translation>
@@ -1420,6 +1429,8 @@
 <translation id="1908159733454294871">セキュリティリスクを検知しました</translation>
 <translation id="3621202678540785336">入力</translation>
 <translation id="3009178788565917040">出力</translation>
+<translation id="7953669802889559161">入力</translation>
+<translation id="4554024082642878647">出力</translation>
 <translation id="1965889974717516497">セカンダリネットワーク</translation>
 <translation id="7691821949666755802">テストネットワーク</translation>
 <translation id="2816106784624007524">ガスリミットは、0以上の整数である必要があります</translation>
@@ -2142,7 +2153,6 @@
 <translation id="5872363163901278000">再生速度を上げる</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8637805148029768813">コンテンツ要約機能は、現在一部の記事とその他の縦長のWebページのみで利用可能です。</translation>
-<translation id="1223498995510244364">要約</translation>
 <translation id="7491773233732232424">Leoについて</translation>
 <translation id="4611072979071082355">Brave Leoは、ウェブの使い方をより強化する、プライベートなAIスマートアシスタントです。Leoは無料で一定のアクセスをご利用いただけます。Brave Leoプレミアムでは、より多くのモデルが利用できるほか、アクセス上限が高くなり、新機能への早期アクセスが提供されます。デフォルトモデルは随時変更されます。詳細は<ph name="LINK_BEFORE"/>Braveヘルプセンター<ph name="LINK_AFTER"/>をご覧ください。</translation>
 <translation id="7297056998057521697">デフォルトでは、閲覧中のウェブサイトやページについてLeoに質問すると、あなたの検察クエリとともに閲覧中のウェブページのコンテンツやページ上でハイライトされたテキストがBraveサーバーに送信され、Leoが回答を提供するのに使われます。また回答の質を高めるために、Leoがお客様の入力から派生したクエリをBrave検索に送信し、その検索結果を使用することもあります。Braveは回答の正確性を保証せず、回答には不正確、誤解を招く、または虚偽の情報が含まれる場合があります。Brave Leoに機密情報や個人情報を送信しないでください。また、健康、金融、個人の安全などに関連する回答には慎重を期してください。Leoのオプションはいつでも設定で調整できます。設定 &gt; Leo にアクセスして行ってください。</translation>
@@ -2189,6 +2199,7 @@
 <translation id="7557539689487606886">プレミアムプラン</translation>
 <translation id="1691256669639196606">サブスクリプションを管理</translation>
 <translation id="3840096463915153852">会話履歴</translation>
+<translation id="6761921176674289184">記憶を管理</translation>
 <translation id="2304783958703511257">詳細設定</translation>
 <translation id="3037594989275592390">言語モデル</translation>
 <translation id="5543505256451301851">7日間無料でお試し</translation>
@@ -2262,31 +2273,36 @@
 <translation id="7307396647043599949"><ph name="COUNT"/>もっと見る</translation>
 <translation id="8103700533980268469">この通知を閉じる</translation>
 <translation id="3417835166382867856">検索タブ</translation>
+<translation id="7311244614769792472">結果が見つかりませんでした。</translation>
+<translation id="3112448569149476523">別の検索をお試しください</translation>
 <translation id="1352836459737874921">他のタブからコンテンツを添付</translation>
-<translation id="3028258613451571431">ブラウザからページの内容を送信して、会話のコンテキストをLeoに教えます</translation>
-<translation id="4300920590112551536">ブラウザのタブ</translation>
+<translation id="7039179822221107025">ブラウザからページの内容を送信して、会話のコンテキストをLeoに教えます。</translation>
+<translation id="220541218939267992">このページの内容は、メッセージとともにLeoに送信されます。</translation>
 <translation id="1446346932629101482">タブコンテンツを追加してコンテキストを与えます。コンテンツはあなたのメッセージとともにLeoに送信されます。</translation>
 <translation id="7193316103691252734">一致するタブがありません</translation>
 <translation id="2315654674554095762">Leoが会話履歴を保存するので、同じ会話に戻ることができます。会話は暗号化されてあなたのデバイスに保存され、いつでも削除できます。</translation>
 <translation id="7821251979960635244">会話を開始すると、会話履歴がここに表示されます。</translation>
 <translation id="887511360213807449">履歴が無効になりました</translation>
 <translation id="5380979378058584412">Leoとの以前の会話を表示するには、会話履歴を有効にする必要があります。</translation>
-<translation id="6291843235651817590">一般チャット</translation>
+<translation id="7348809809749151120">高速 • Search</translation>
 <translation id="3185367320601718531">会話・テキスト生成</translation>
-<translation id="7979673624064378842">超高速チャット</translation>
-<translation id="2836330653441111204">均整の取れたスピード＆インテリジェンス</translation>
-<translation id="6695329447007213917">汎用系チャット、コーディングなど</translation>
-<translation id="7168072214482631597">汎用目的のテキストと画像の理解</translation>
-<translation id="7226508434216060960">推論モデル</translation>
+<translation id="2793458212460902934">高速 • Search • ツール</translation>
+<translation id="8506027496671575183">Search • ビジョン • ツール</translation>
+<translation id="3213834013136637671">Search • ビジョン</translation>
+<translation id="7697693533305615127">Search • 思考</translation>
 <translation id="8782867266498869301">モデルはタスクに最適なものに動的に変わります</translation>
 <translation id="3965507912994218570">Leoの設定</translation>
-<translation id="1037324977127422019">こんにちは、私はLeoです。</translation>
-<translation id="8930348081963284873">Braveに組み込まれた、AI搭載型のインテリジェント・アシスタントです。</translation>
-<translation id="3528849152231418380">ウェブサイトのヘルプが必要ですか？</translation>
-<translation id="1558192229187362674">記事を要約したり、サイトのコンテンツを充実させたり、その他いろいろお手伝いします。</translation>
-<translation id="861953757568623294">記事を要約したり、サイトのコンテンツを充実させたり、その他いろいろお手伝いします。はじめ方が分からないという方は、こちらを試してみてください:</translation>
-<translation id="5642775487085641191">チャットを開始しますか？</translation>
-<translation id="8857222718794549840">何でも聞いてください！どんな話題でも構いません。より良い答えを提供するために、Leoは常に学び、向上しています。</translation>
+<translation id="3754337604877048671">Leo AI を紹介</translation>
+<translation id="5295261408976371809">ブラウザに組み込まれたあなたの<ph name="TEXT_BEFORE"/>プライベート<ph name="TEXT_AFTER"/>AIアシスタント</translation>
+<translation id="7452913484571004528">真のプライベートAI</translation>
+<translation id="8525501048785085223">Leoはチャットを保持・共有せず、モデルの学習にも使用しません。アカウントやログインも不要です。すぐにチャットが始められます。プライベートに。</translation>
+<translation id="6401201054391523929">タブやファイルとチャット</translation>
+<translation id="8522038408130089105">現在閲覧中のサイトについて詳しく知りたい場合は、それらをチャットに追加するだけでOK。タブやローカルファイルを添付して迅速で的確な回答を得られます。</translation>
+<translation id="3844955602461425647">面倒な作業を自動化</translation>
+<translation id="2196247864500723577">Braveと一緒にウェブをブラウズして、ブラウザ上のあらゆる操作に対応させることができます。退屈な作業はBraveにお任せして、重要なことに時間を使いましょう。</translation>
+<translation id="235457946228076038">モデルを自由にカスタマイズ</translation>
+<translation id="7024005267156189454">お好みのAIモデルを接続 — ローカルでもリモートでもOK。Leoの挙動、出力、機能をあなた好みに調整できます。</translation>
+<translation id="7291578285403921288">Leo AI について詳しくはこちら</translation>
 <translation id="9051226419897869406">Brave Leoとプライベートチャット</translation>
 <translation id="2414904697165579184">タブのコンテンツに基づいて回答を作成</translation>
 <translation id="8258324391302611485">このページの内容は、メッセージとともにLeoに送信されます。</translation>
@@ -2295,6 +2311,7 @@
 <translation id="8732450785281947197">LeoのAIツール</translation>
 <translation id="6535533770697728087">クイックアクション</translation>
 <translation id="3237710083340813756">リライト</translation>
+<translation id="1223498995510244364">要約</translation>
 <translation id="1252805982772190086">短文投稿</translation>
 <translation id="2087555497198267113">長文投稿</translation>
 <translation id="4170307327863874820">ブログ投稿</translation>
@@ -2502,12 +2519,13 @@
 <translation id="6764845498618413165">詳細はこちら</translation>
 <translation id="7818938154803162778">はい、協力します</translation>
 <translation id="7207456302801184289">Braveへようこそ</translation>
-<translation id="6716580298071890302">ダークテーマを使用</translation>
+<translation id="293854220404217065">ミッドナイトテーマ</translation>
 <translation id="2422927186524098759">サイドバー</translation>
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="8000020256436988724">ツールバー</translation>
 <translation id="6225572914528673855">アドレスバー</translation>
+<translation id="6821966107067356137">RSSフィードを追加</translation>
 <translation id="8293206222192510085">ブックマークに追加</translation>
 <translation id="7758460733045216901">ブックマークパネル</translation>
 <translation id="958268166261124668">Brave VPN: 接続済み</translation>
