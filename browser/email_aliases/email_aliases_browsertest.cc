@@ -123,6 +123,49 @@ std::unique_ptr<net::test_server::HttpResponse> SessionHandler(
   return nullptr;
 }
 
+std::unique_ptr<net::test_server::HttpResponse> ManageHandler(
+    const net::test_server::HttpRequest& request) {
+  if (!request.GetURL().has_path() ||
+      !request.GetURL().path_piece().starts_with("/manage")) {
+    return nullptr;
+  }
+
+  auto response = std::make_unique<net::test_server::BasicHttpResponse>();
+
+  if (request.method == net::test_server::HttpMethod::METHOD_GET) {
+    auto make_entry = [](const std::string& alias) {
+      email_aliases::AliasListEntry le;
+      le.alias = alias;
+      le.email = kSuccessEmail;
+      le.status = "active";
+      return le;
+    };
+    email_aliases::AliasListResponse list;
+    list.result.push_back(make_entry("first@alias.com"));
+    list.result.push_back(make_entry("second@alias.com"));
+    list.result.push_back(make_entry("third@alias.com"));
+
+    response->set_code(net::HTTP_OK);
+    response->set_content_type("application/json");
+    response->set_content(*base::WriteJson(list.ToValue()));
+  } else if (request.method == net::test_server::HttpMethod::METHOD_POST) {
+    response->set_code(net::HTTP_OK);
+    response->set_content_type("application/json");
+    email_aliases::GenerateAliasResponse generate;
+    generate.alias = "new@alias.com";
+    generate.message = "created";
+    response->set_content(*base::WriteJson(generate.ToValue()));
+  } else if (request.method == net::test_server::HttpMethod::METHOD_PUT) {
+    response->set_code(net::HTTP_OK);
+    response->set_content_type("application/json");
+    email_aliases::AliasEditedResponse save;
+    save.message = "updated";
+    response->set_content(*base::WriteJson(save.ToValue()));
+  }
+
+  return response;
+}
+
 void ExecuteNewEmailAliasCommand(RenderViewContextMenu* context_menu,
                                  base::OnceClosure quit_closure) {
   // Calls EngineConsumer::GenerateRewriteSuggestion
@@ -148,6 +191,7 @@ class EmailAliasesBrowserTest : public InProcessBrowserTest {
     https_server_.RegisterRequestHandler(
         base::BindRepeating(&AuthenticationHandler));
     https_server_.RegisterRequestHandler(base::BindRepeating(&SessionHandler));
+    https_server_.RegisterRequestHandler(base::BindRepeating(&ManageHandler));
     https_server_.ServeFilesFromDirectory(
         base::PathService::CheckedGet(brave::DIR_TEST_DATA));
 
@@ -189,11 +233,32 @@ class EmailAliasesBrowserTest : public InProcessBrowserTest {
     return ActiveWebContents();
   }
 
+  void InjectHelpers(content::WebContents* contents) {
+    constexpr char kDeepQuery[] = R"js(
+      function deepQuery(selector) {
+        const query = (root, selector) =>{
+          const e = root.querySelector(selector);
+          if (e) return e;
+          for (const el of root.querySelectorAll('*')) {
+            if (!el.shadowRoot) continue;
+            const found = query(el.shadowRoot, selector);
+            if (found) return found;
+          }
+          return null;
+        }
+
+        return query(document, selector);
+      };
+    )js";
+
+    ASSERT_TRUE(content::ExecJs(contents, kDeepQuery));
+  }
+
   void Wait(const std::string& id, content::WebContents* contents = nullptr) {
     constexpr const char kScript[] = R"js(
       (async () => {
         let waiter = () => {
-          return !window.testing.emailAliases.getElementById($1)
+          return !deepQuery($1)
         };
         while (waiter()) {
           await new Promise(r => setTimeout(r, 10));
@@ -211,7 +276,7 @@ class EmailAliasesBrowserTest : public InProcessBrowserTest {
                content::WebContents* contents = nullptr) {
     constexpr char kSetText[] = R"js(
       (() => {
-        const element = window.testing.emailAliases.getElementById($1);
+        const element = deepQuery($1);
         element.value = $2;
         element.dispatchEvent(new Event('input', {bubbles: true}));
         element.dispatchEvent(new Event('change', {bubbles: true}));
@@ -222,13 +287,17 @@ class EmailAliasesBrowserTest : public InProcessBrowserTest {
                                     content::JsReplace(kSetText, id, text)));
   }
 
+  std::string GetText(const std::string& id) {
+    constexpr char kGetText[] = R"js( deepQuery($1).value )js";
+    return content::EvalJs(ActiveWebContents(),
+                           content::JsReplace(kGetText, id))
+        .ExtractString();
+  }
+
   void Click(const std::string& id, content::WebContents* contents = nullptr) {
-    constexpr char kSetText[] = R"js(
-      const element = window.testing.emailAliases.getElementById($1);
-      element.click();
-    )js";
-    ASSERT_TRUE(content::ExecJs((contents ? contents : ActiveWebContents()),
-                                content::JsReplace(kSetText, id)));
+    constexpr char kClick[] = R"js( deepQuery($1).onClick() )js";
+    auto ignore = content::ExecJs((contents ? contents : ActiveWebContents()),
+                                  content::JsReplace(kClick, id));
   }
 
   EmailAliasesService* email_aliases_service() {
@@ -245,6 +314,10 @@ class EmailAliasesBrowserTest : public InProcessBrowserTest {
         content::EvalJs(ActiveWebContents(),
                         content::JsReplace("getElementY($1)", element_id))
             .ExtractInt();
+
+    ASSERT_TRUE(content::ExecJs(
+        ActiveWebContents(),
+        content::JsReplace("document.getElementById($1).focus()", element_id)));
 
     base::RunLoop loop;
     RenderViewContextMenu::RegisterMenuShownCallbackForTesting(
@@ -290,6 +363,9 @@ IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserTest, ContextMenuAuthorized) {
   }));
 
   Navigate(GURL("https://a.test/email_aliases/inputs.html"));
+  InjectHelpers(ActiveWebContents());
+
+  EmailAliasesController::DisableAutoCloseBubbleForTesting(true);
 
   auto* email_aliases_controller =
       browser()->GetFeatures().email_aliases_controller();
@@ -297,6 +373,19 @@ IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserTest, ContextMenuAuthorized) {
   // Wait for bubble.
   ASSERT_TRUE(base::test::RunUntil(
       [&]() { return !!email_aliases_controller->GetBubbleForTesting(); }));
+
+  auto* bubble = email_aliases_controller->GetBubbleForTesting();
+  auto* bubble_web_contents =
+      bubble->GetContentsWrapperForTesting()->web_contents();
+  InjectHelpers(bubble_web_contents);
+  Wait("#create-alias-button:not([isDisabled=\"true\"])", bubble_web_contents);
+  Click("#create-alias-button:not([isDisabled=\"true\"])", bubble_web_contents);
+
+  // Wait for bubble close
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return !email_aliases_controller->GetBubbleForTesting(); }));
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return GetText("#type-email") == "new@alias.com"; }));
 }
 
 }  // namespace email_aliases
