@@ -17,8 +17,13 @@ extension BrowserViewController {
     switch action {
     case .handleVoiceRecognitionRequest(let completion):
       handleVoiceRecognitionRequest(completion)
-    case .handleFileUploadRequest(_, let completion):
-      completion(nil)
+    case .handleFileUploadRequest(let mode, let completion):
+      switch mode {
+      case .camera:
+        self.presentCamera(completion)
+      case .photos:
+        self.presentPhotoPicker(completion)
+      }
     case .presentSettings:
       break
     case .presentPremiumPaywall:
@@ -106,6 +111,147 @@ extension BrowserViewController {
 
         present(alertController, animated: true)
       }
+    }
+  }
+
+  private func presentCamera(_ completion: @escaping ([AiChat.UploadedFile]?) -> Void) {
+    class CameraDelegate: NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate
+    {
+      var continuation: CheckedContinuation<UIImage?, Never>?
+      func imagePickerController(
+        _ picker: UIImagePickerController,
+        didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]
+      ) {
+        let image = info[.originalImage] as? UIImage
+        continuation?.resume(returning: image)
+        picker.dismiss(animated: true)
+      }
+      func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        continuation?.resume(returning: nil)
+        picker.dismiss(animated: true)
+      }
+    }
+
+    guard UIImagePickerController.isSourceTypeAvailable(.camera) else {
+      completion(nil)
+      return
+    }
+
+    let controller = UIImagePickerController()
+    controller.sourceType = .camera
+    controller.cameraCaptureMode = .photo
+    controller.mediaTypes = ["public.image"]
+
+    Task { @MainActor in
+      let delegate = CameraDelegate()
+      controller.delegate = delegate
+      let image: UIImage? = await withCheckedContinuation { continuation in
+        delegate.continuation = continuation
+        present(controller, animated: true)
+      }
+
+      let data = await image?.imageDataForLeo
+      guard let data else {
+        completion(nil)
+        return
+      }
+
+      let filename = "image.png"
+      let filesize = UInt32(data.count)
+      let dataArray = [UInt8](data).map { NSNumber(value: $0) }
+
+      let uploadedFile = AiChat.UploadedFile(
+        filename: filename,
+        filesize: filesize,
+        data: dataArray,
+        type: .image
+      )
+
+      completion([uploadedFile])
+    }
+  }
+
+  private func presentPhotoPicker(_ completion: @escaping ([AiChat.UploadedFile]?) -> Void) {
+    class ImageUploadDelegate: NSObject, PHPickerViewControllerDelegate {
+      var continuation: CheckedContinuation<[PHPickerResult], Never>?
+      func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        continuation?.resume(returning: results)
+        picker.dismiss(animated: true)
+      }
+    }
+    var configuration = PHPickerConfiguration()
+    configuration.preferredAssetRepresentationMode = .compatible
+    let controller = PHPickerViewController(configuration: configuration)
+    Task { @MainActor in
+      let delegate = ImageUploadDelegate()
+      controller.delegate = delegate
+      let results: [PHPickerResult] = await withCheckedContinuation { continuation in
+        delegate.continuation = continuation
+        present(controller, animated: true)
+      }
+
+      if results.isEmpty {
+        completion(nil)
+        return
+      }
+
+      let uploadedFiles = await withTaskGroup(of: AiChat.UploadedFile?.self) { group in
+        for result in results {
+          group.addTask {
+            return await AiChat.UploadedFile(provider: result.itemProvider)
+          }
+        }
+
+        var files: [AiChat.UploadedFile] = []
+        for await file in group {
+          if let file = file {
+            files.append(file)
+          }
+        }
+        return files
+      }
+
+      completion(uploadedFiles.isEmpty ? nil : uploadedFiles)
+    }
+  }
+}
+
+extension AiChat.UploadedFile {
+  convenience init?(provider: NSItemProvider) async {
+    guard provider.hasItemConformingToTypeIdentifier(UTType.image.identifier) else {
+      return nil
+    }
+
+    do {
+      let data = try await withCheckedThrowingContinuation { continuation in
+        _ = provider.loadDataRepresentation(for: .image) { data, error in
+          if let data {
+            continuation.resume(returning: data)
+          } else if let error {
+            continuation.resume(throwing: error)
+          }
+        }
+      }
+      let filename = provider.suggestedName ?? "image"
+      let filesize = UInt32(data.count)
+      let dataArray = [UInt8](data).map { NSNumber(value: $0) }
+
+      self.init(
+        filename: filename,
+        filesize: filesize,
+        data: dataArray,
+        type: .image
+      )
+    } catch {
+      return nil
+    }
+  }
+}
+
+extension UIImage {
+  fileprivate var imageDataForLeo: Data? {
+    get async {
+      return self.pngData()
     }
   }
 }
