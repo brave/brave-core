@@ -156,20 +156,20 @@ class BraveShieldsWebContentsObserverManagedPolicyBrowserTest
 
 IN_PROC_BROWSER_TEST_F(BraveShieldsWebContentsObserverManagedPolicyBrowserTest,
                        JavaScriptBlockedEvents) {
-  auto first_url = GURL("http://a.com");
-  auto second_url = GURL("http://b.com");
+  auto a_com_url = GURL("http://a.com");
+  auto b_com_url = GURL("http://b.com");
 
   // Verify that the policy is applied correctly
-  ContentSetting first_block_javascript_setting =
-      content_settings()->GetContentSetting(first_url, first_url,
+  ContentSetting a_com_javascript_setting =
+      content_settings()->GetContentSetting(a_com_url, a_com_url,
                                             ContentSettingsType::JAVASCRIPT);
-  EXPECT_EQ(CONTENT_SETTING_BLOCK, first_block_javascript_setting);
-  ContentSetting second_block_javascript_setting =
-      content_settings()->GetContentSetting(second_url, second_url,
+  EXPECT_EQ(CONTENT_SETTING_BLOCK, a_com_javascript_setting);
+  ContentSetting b_com_javascript_setting =
+      content_settings()->GetContentSetting(b_com_url, b_com_url,
                                             ContentSettingsType::JAVASCRIPT);
-  EXPECT_EQ(CONTENT_SETTING_ALLOW, second_block_javascript_setting);
+  EXPECT_EQ(CONTENT_SETTING_ALLOW, b_com_javascript_setting);
 
-  // Navigate to the first URL which has JavaScript blocked by policy
+  // Navigate to the to the a.com URL which has JavaScript blocked by policy
   EXPECT_TRUE(ui_test_utils::NavigateToURL(
       browser(), embedded_test_server()->GetURL("a.com", "/load_js.html")));
   EXPECT_TRUE(WaitForLoadStop(GetWebContents()));

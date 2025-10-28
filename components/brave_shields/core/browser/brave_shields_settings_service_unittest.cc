@@ -394,7 +394,7 @@ TEST_F(BraveShieldsSettingsServiceTest, GetJsContentSettingsOverriddenData) {
 
   // No override
   auto content_settings_overridden_data =
-      brave_shields_settings()->GetJsContentSettingsOverriddenData(url);
+      brave_shields_settings()->GetJsContentSettingOverriddenData(url);
   EXPECT_FALSE(brave_shields_settings()->IsJsBlockingEnforced(url));
   EXPECT_FALSE(content_settings_overridden_data);
 
@@ -410,7 +410,7 @@ TEST_F(BraveShieldsSettingsServiceTest, GetJsContentSettingsOverriddenData) {
       content_settings::ProviderType::kCustomExtensionProvider);
 
   content_settings_overridden_data =
-      brave_shields_settings()->GetJsContentSettingsOverriddenData(url);
+      brave_shields_settings()->GetJsContentSettingOverriddenData(url);
   EXPECT_FALSE(brave_shields_settings()->IsJsBlockingEnforced(url));
   EXPECT_TRUE(content_settings_overridden_data);
   EXPECT_EQ(::ContentSetting::CONTENT_SETTING_ALLOW,

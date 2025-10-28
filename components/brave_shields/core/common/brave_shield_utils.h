@@ -39,6 +39,7 @@ ShieldsSettingCounts GetSettingCountFromCosmeticFilteringRules(
 
 mojom::ContentSettingSource ConvertSettingsSource(
     const content_settings::SettingSource source);
+
 }  // namespace brave_shields
 
 #endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_COMMON_BRAVE_SHIELD_UTILS_H_

@@ -297,14 +297,14 @@ mojom::AutoShredMode BraveShieldsSettingsService::GetAutoShredMode(
 
 bool BraveShieldsSettingsService::IsJsBlockingEnforced(const GURL& url) {
   const auto js_content_settings_overridden_data =
-      GetJsContentSettingsOverriddenData(url);
+      GetJsContentSettingOverriddenData(url);
   return js_content_settings_overridden_data &&
          js_content_settings_overridden_data->status ==
              ::ContentSetting::CONTENT_SETTING_BLOCK;
 }
 
 mojom::ContentSettingsOverriddenDataPtr
-BraveShieldsSettingsService::GetJsContentSettingsOverriddenData(
+BraveShieldsSettingsService::GetJsContentSettingOverriddenData(
     const GURL& url) {
   content_settings::SettingInfo info;
   const auto rule = host_content_settings_map_->GetContentSetting(
@@ -317,9 +317,7 @@ BraveShieldsSettingsService::GetJsContentSettingsOverriddenData(
   }
 
   return mojom::ContentSettingsOverriddenData::New(
-      rule == CONTENT_SETTING_BLOCK ? ::ContentSetting::CONTENT_SETTING_BLOCK
-                                    : ::ContentSetting::CONTENT_SETTING_ALLOW,
-      ConvertSettingsSource(info.source));
+      rule, ConvertSettingsSource(info.source));
 }
 
 }  // namespace brave_shields

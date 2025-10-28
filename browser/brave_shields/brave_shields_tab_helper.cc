@@ -386,7 +386,7 @@ bool BraveShieldsTabHelper::GetNoScriptEnabled() {
 
 mojom::ContentSettingsOverriddenDataPtr
 BraveShieldsTabHelper::GetJsContentSettingsOverriddenData() {
-  return brave_shields_settings_->GetJsContentSettingsOverriddenData(
+  return brave_shields_settings_->GetJsContentSettingOverriddenData(
       GetCurrentSiteURL());
 }
 
