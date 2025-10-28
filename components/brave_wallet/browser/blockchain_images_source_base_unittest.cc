@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/brave_wallet/blockchain_images_source.h"
+#include "brave/components/brave_wallet/browser/blockchain_images_source_base.h"
 
 #include <memory>
 #include <string_view>
@@ -14,32 +14,34 @@
 #include "base/path_service.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
+#include "content/public/browser/url_data_source.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
 
-class BlockchainImagesSourceTest : public testing::Test {
+class BlockchainImagesSourceBaseTest : public testing::Test {
  public:
-  BlockchainImagesSourceTest(const BlockchainImagesSourceTest&) = delete;
-  BlockchainImagesSourceTest& operator=(const BlockchainImagesSourceTest&) =
+  BlockchainImagesSourceBaseTest(const BlockchainImagesSourceBaseTest&) =
       delete;
+  BlockchainImagesSourceBaseTest& operator=(
+      const BlockchainImagesSourceBaseTest&) = delete;
 
  protected:
-  BlockchainImagesSourceTest()
+  BlockchainImagesSourceBaseTest()
       : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
-  ~BlockchainImagesSourceTest() override = default;
+  ~BlockchainImagesSourceBaseTest() override = default;
 
   void SetUp() override {
     base::FilePath test_dir;
     // brave/test/data/brave_wallet/1.0.1
     brave_wallet::SetLastInstalledWalletVersionForTest(base::Version("1.0.1"));
-    source_ =
-        std::make_unique<BlockchainImagesSource>(BraveWalletTestDataFolder());
+    source_ = std::make_unique<BlockchainImagesSourceBase>(
+        BraveWalletTestDataFolder());
   }
   void TearDown() override { source_.reset(); }
 
-  BlockchainImagesSource* source() const { return source_.get(); }
+  BlockchainImagesSourceBase* source() const { return source_.get(); }
 
   bool data_received() const { return data_received_; }
   std::string data() const { return data_; }
@@ -47,11 +49,10 @@ class BlockchainImagesSourceTest : public testing::Test {
   void StartRequest(GURL url) {
     data_received_ = false;
     data_.clear();
-    content::WebContents::Getter wc_getter;
-    source()->StartDataRequest(
-        url, std::move(wc_getter),
-        base::BindOnce(&BlockchainImagesSourceTest::OnDataReceived,
-                       base::Unretained(this)));
+    const std::string path = content::URLDataSource::URLToRequestPath(url);
+    source()->HandleImageRequest(
+        path, base::BindOnce(&BlockchainImagesSourceBaseTest::OnDataReceived,
+                             base::Unretained(this)));
   }
 
   content::BrowserTaskEnvironment task_environment_;
@@ -65,27 +66,27 @@ class BlockchainImagesSourceTest : public testing::Test {
     }
   }
 
-  std::unique_ptr<BlockchainImagesSource> source_;
+  std::unique_ptr<BlockchainImagesSourceBase> source_;
   bool data_received_ = false;
   std::string data_;
 };
 
-TEST_F(BlockchainImagesSourceTest, GetMimeType) {
-  EXPECT_EQ(source()->GetMimeType(GURL("brave://test/img1.png")), "image/png");
-  EXPECT_EQ(source()->GetMimeType(GURL("brave://test/img1.gif")), "image/gif");
-  EXPECT_EQ(source()->GetMimeType(GURL("brave://test/img1.jpg")), "image/jpg");
-  EXPECT_EQ(source()->GetMimeType(GURL("brave://test/img1.svg")),
+TEST_F(BlockchainImagesSourceBaseTest, GetMimeTypeForPath) {
+  EXPECT_EQ(source()->GetMimeTypeForPath("brave://test/img1.png"), "image/png");
+  EXPECT_EQ(source()->GetMimeTypeForPath("brave://test/img1.gif"), "image/gif");
+  EXPECT_EQ(source()->GetMimeTypeForPath("brave://test/img1.jpg"), "image/jpg");
+  EXPECT_EQ(source()->GetMimeTypeForPath("brave://test/img1.svg"),
             "image/svg+xml");
 }
 
-TEST_F(BlockchainImagesSourceTest, StartDataRequest) {
+TEST_F(BlockchainImagesSourceBaseTest, HandleImageRequest) {
   StartRequest(GURL("chrome://erc-token-images/logo.png"));
   task_environment_.RunUntilIdle();
   EXPECT_TRUE(data_received());
   EXPECT_FALSE(data().empty());
 }
 
-TEST_F(BlockchainImagesSourceTest, StartDataRequestImageNotExist) {
+TEST_F(BlockchainImagesSourceBaseTest, HandleImageRequestImageNotExist) {
   StartRequest(GURL("chrome://erc-token-images/ent.svg"));
   task_environment_.RunUntilIdle();
   EXPECT_TRUE(data_received());

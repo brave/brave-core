@@ -10,19 +10,16 @@
 
 #include "base/files/file_path.h"
 #include "base/memory/weak_ptr.h"
+#include "brave/components/brave_wallet/browser/blockchain_images_source_base.h"
 #include "ios/web/public/webui/url_data_source_ios.h"
 
 namespace brave_wallet {
 
 // This serves background image data.
-class BlockchainImagesSource : public web::URLDataSourceIOS {
+class BlockchainImagesSource : public web::URLDataSourceIOS,
+                               public BlockchainImagesSourceBase {
  public:
   explicit BlockchainImagesSource(const base::FilePath& base_path);
-
-  ~BlockchainImagesSource() override;
-
-  BlockchainImagesSource(const BlockchainImagesSource&) = delete;
-  BlockchainImagesSource& operator=(const BlockchainImagesSource&) = delete;
 
   // web::URLDataSourceIOS overrides:
   std::string GetSource() const override;
@@ -33,9 +30,6 @@ class BlockchainImagesSource : public web::URLDataSourceIOS {
 
   void OnGotImageFile(GotDataCallback callback,
                       std::optional<std::string> input);
-
-  base::FilePath base_path_;
-  base::WeakPtrFactory<BlockchainImagesSource> weak_factory_;
 };
 
 }  // namespace brave_wallet
