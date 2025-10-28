@@ -176,7 +176,7 @@ void NewTabPageInitializer::AddStrings() {
       {"rewardsAdsViewedTooltip", IDS_REWARDS_ADS_VIEWED_TOOLTIP},
       {"rewardsFeatureText1", IDS_REWARDS_ONBOARDING_TEXT_ITEM_1},
       {"rewardsFeatureText2", IDS_REWARDS_ONBOARDING_TEXT_ITEM_2},
-      {"rewardsPayoutCompleteText", IDS_REWARDS_PAYMENT_COMPLETED},
+      {"rewardsPayoutCompletedText", IDS_REWARDS_PAYMENT_COMPLETED},
       {"rewardsPayoutProcessingText", IDS_REWARDS_PAYMENT_PROCESSING},
       {"rewardsTosUpdateButtonLabel", IDS_REWARDS_TOS_UPDATE_NTP_BUTTON_LABEL},
       {"rewardsTosUpdateText", IDS_REWARDS_TOS_UPDATE_NTP_TEXT},
