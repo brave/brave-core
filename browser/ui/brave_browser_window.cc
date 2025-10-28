@@ -50,8 +50,3 @@ bool BraveBrowserWindow::ShowBraveHelpBubbleView(const std::string& text) {
 bool BraveBrowserWindow::IsInTabDragging() const {
   return false;
 }
-
-bool BraveBrowserWindow::PreHandleMouseEvent(
-    const blink::WebMouseEvent& event) {
-  return false;
-}

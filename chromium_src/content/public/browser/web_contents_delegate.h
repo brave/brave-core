@@ -6,10 +6,6 @@
 #ifndef BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_BROWSER_WEB_CONTENTS_DELEGATE_H_
 #define BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_BROWSER_WEB_CONTENTS_DELEGATE_H_
 
-namespace blink {
-class WebMouseEvent;
-}  // namespace blink
-
 #define AddNewContents                                                        \
   AddNewContents_ChromiumImpl(                                                \
       WebContents* source, std::unique_ptr<WebContents> new_contents,         \
@@ -18,18 +14,8 @@ class WebMouseEvent;
       bool* was_blocked);                                                     \
   virtual WebContents* AddNewContents
 
-// Allows delegates to handle mouse events before sending to the renderer.
-// Returns true if the event was handled, false otherwise. A true value means
-// no more processing should happen on the event. The default return value is
-// false.
-#define PreHandleKeyboardEvent(...)                     \
-  PreHandleKeyboardEvent(__VA_ARGS__);                  \
-  virtual bool PreHandleMouseEvent(WebContents* source, \
-                                   const blink::WebMouseEvent& event)
-
 #include <content/public/browser/web_contents_delegate.h>  // IWYU pragma: export
 
-#undef PreHandleKeyboardEvent
 #undef AddNewContents
 
 #endif  // BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_BROWSER_WEB_CONTENTS_DELEGATE_H_
