@@ -1,0 +1,12 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# This substitution matches with the `grit_strings("generated_resources")`
+# block, and adds our line just as the last line before the block closes.
+[[substitution]]
+description = "Adding brave_generated_resources_grit to Chromium's resources."
+re_pattern = '''(grit_strings\("generated_resources"\) {[\s\S]*?)(^})'''
+replace = '''\1  deps = [ "//brave/app:brave_generated_resources_grit" ]\n\2'''
+re_flags = ['MULTILINE']
