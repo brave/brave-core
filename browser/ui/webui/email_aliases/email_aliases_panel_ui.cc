@@ -9,7 +9,9 @@
 #include "brave/browser/ui/webui/settings/brave_settings_localized_strings_provider.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/email_aliases/resources/grit/email_aliases_panel_generated_map.h"
+#include "brave/ui/webui/brave_color_change_listener/brave_color_change_handler.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/webui/theme_source.h"
 #include "components/grit/brave_components_resources.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
@@ -29,6 +31,7 @@ EmailAliasesPanelUI::EmailAliasesPanelUI(content::WebUI* web_ui)
       "style-src 'self' 'unsafe-inline' chrome://resources chrome://theme;");
   webui::SetupWebUIDataSource(source, kEmailAliasesPanelGenerated,
                               IDR_EMAIL_ALIASES_PANEL_HTML);
+  content::URLDataSource::Add(profile, std::make_unique<ThemeSource>(profile));
 
   // Ensure the bubble auto-resizes to content like other panels.
   if (auto embedder_ptr = embedder()) {
@@ -45,6 +48,13 @@ void EmailAliasesPanelUI::BindInterface(
   auto* profile = Profile::FromWebUI(web_ui());
   email_aliases::EmailAliasesServiceFactory::BindForProfile(
       profile, std::move(receiver));
+}
+
+void EmailAliasesPanelUI::BindInterface(
+    mojo::PendingReceiver<color_change_listener::mojom::PageHandler>
+        pending_receiver) {
+  ui::BraveColorChangeHandler::BindInterface(web_ui()->GetWebContents(),
+                                             std::move(pending_receiver));
 }
 
 bool EmailAliasesPanelUIConfig::ShouldAutoResizeHost() {
