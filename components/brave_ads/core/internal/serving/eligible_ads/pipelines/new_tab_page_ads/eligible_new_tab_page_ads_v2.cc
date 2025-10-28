@@ -13,13 +13,17 @@
 #include <vector>
 
 #include "base/containers/flat_set.h"
+#include "base/debug/crash_logging.h"
 #include "base/functional/bind.h"
+#include "base/notreached.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
+#include "base/time/time.h"
 #include "base/trace_event/trace_event.h"
 #include "base/trace_event/trace_id_helper.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
+#include "brave/components/brave_ads/core/internal/common/time/time_util.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/eligible_ads_feature.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/exclusion_rules_util.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/new_tab_page_ads/new_tab_page_ad_exclusion_rules.h"
@@ -164,6 +168,30 @@ void EligibleNewTabPageAdsV2::GetEligibleAdsCallback(
   if (!success) {
     BLOG(0, "Failed to get ads");
     return std::move(callback).Run(/*eligible_ads=*/{});
+  }
+
+  for (const auto& creative_ad : creative_ads) {
+    if (base::Time::Now() < creative_ad.start_at ||
+        base::Time::Now() > creative_ad.end_at) {
+      SCOPED_CRASH_KEY_STRING64("Issue50267", "creative_instance_id",
+                                creative_ad.creative_instance_id);
+      SCOPED_CRASH_KEY_NUMBER("Issue50267", "wallpaper_type",
+                              static_cast<int>(creative_ad.wallpaper_type));
+      SCOPED_CRASH_KEY_NUMBER("Issue50267", "metric_type",
+                              static_cast<int>(creative_ad.metric_type));
+      SCOPED_CRASH_KEY_STRING64("Issue50267", "failure_reason",
+                                "Campaign is not active");
+      SCOPED_CRASH_KEY_STRING64(
+          "Issue50267", "start_at",
+          TimeToPrivacyPreservingIso8601(creative_ad.start_at));
+      SCOPED_CRASH_KEY_STRING64(
+          "Issue50267", "end_at",
+          TimeToPrivacyPreservingIso8601(creative_ad.end_at));
+      SCOPED_CRASH_KEY_STRING64(
+          "Issue50267", "now",
+          TimeToPrivacyPreservingIso8601(base::Time::Now()));
+      DUMP_WILL_BE_NOTREACHED();
+    }
   }
 
   FilterAndMaybePredictCreativeAd(std::move(user_model),
