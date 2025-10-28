@@ -35,6 +35,7 @@ class EmailAliasesController {
   void OnAliasCreationComplete(const std::string& email);
 
   WebUIBubbleManager* GetBubbleForTesting();
+  static void DisableAutoCloseBubbleForTesting(bool disale_autoclose);
 
  private:
   raw_ptr<BrowserView> browser_view_ = nullptr;

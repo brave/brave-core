@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/email_aliases/email_aliases_controller.h"
 
+#include "base/check_is_test.h"
 #include "brave/browser/ui/webui/email_aliases/email_aliases_panel_ui.h"
 #include "brave/components/email_aliases/features.h"
 #include "chrome/browser/ui/singleton_tabs.h"
@@ -19,7 +20,10 @@
 
 namespace {
 constexpr char kEmailAliasesSettingsURL[] = "brave://settings/email-aliases";
-}
+
+static bool g_autoclose_bubble_for_testing = false;
+
+}  // namespace
 
 namespace email_aliases {
 
@@ -63,6 +67,10 @@ void EmailAliasesController::ShowBubble(uint64_t field_renderer_id) {
   bubble_ = WebUIBubbleManager::Create<EmailAliasesPanelUI>(
       anchor_view, browser_view_->browser(), GURL(url_with_field),
       IDS_SETTINGS_EMAIL_ALIASES_LABEL);
+  if (g_autoclose_bubble_for_testing) {
+    CHECK_IS_TEST();
+    bubble_->DisableCloseBubbleHelperForTesting();  // IN-TEST
+  }
 
   bubble_->ShowBubble(std::nullopt, views::BubbleBorder::TOP_CENTER);
   if (bubble_->GetBubbleWidget()) {
@@ -90,6 +98,12 @@ void EmailAliasesController::OnAliasCreationComplete(const std::string& email) {
     // In future: consider to use AutofillDriver::ApplyFieldAction.
     browser_view_->GetActiveWebContents()->Replace(base::UTF8ToUTF16(email));
   }
+}
+
+// static
+void EmailAliasesController::DisableAutoCloseBubbleForTesting(
+    bool disale_autoclose) {
+  g_autoclose_bubble_for_testing = disale_autoclose;
 }
 
 }  // namespace email_aliases

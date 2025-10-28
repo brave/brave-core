@@ -46,7 +46,12 @@ source_set("browser_tests") {
 
   deps = [
     ":email_aliases",
+    "//brave/browser/ui/email_aliases",
+    "//brave/components/email_aliases:email_aliases_api_types",
+    "//brave/components/email_aliases:features",
+    "//brave/components/email_aliases:service",
     "//chrome/browser",
+    "//chrome/browser/ui/views/bubble",
     "//chrome/test:test_support",
   ]
 }

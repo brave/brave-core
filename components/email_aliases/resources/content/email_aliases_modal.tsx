@@ -276,9 +276,7 @@ export const EmailAliasModal = ({
       // JSDoc generation issue so that this cast is not needed.
       const response = await emailAliasesService.generateAlias()
       const proposedEmail =
-        typeof response === 'string'
-          ? (response as string)
-          : (response.result.success as string)
+        typeof response === 'string' ? response : response.result.success!
       setGenerateAliasResult({
         aliasEmail: proposedEmail,
         errorMessage: undefined,
@@ -362,6 +360,7 @@ export const EmailAliasModal = ({
         <span>
           {bubble && (
             <Button
+              id='manage-button'
               onClick={() => {
                 onReturnToMain({ type: EmailAliasModalActionType.Manage })
               }}
@@ -371,6 +370,7 @@ export const EmailAliasModal = ({
             </Button>
           )}
           <Button
+            id='cancel-button'
             onClick={() =>
               onReturnToMain({ type: EmailAliasModalActionType.Cancel })
             }
@@ -379,6 +379,7 @@ export const EmailAliasModal = ({
             {getLocale('emailAliasesCancelButton')}
           </Button>
           <Button
+            id='create-alias-button'
             kind='filled'
             isDisabled={
               awaitingUpdate
