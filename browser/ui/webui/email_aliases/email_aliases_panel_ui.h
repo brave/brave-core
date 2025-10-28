@@ -12,6 +12,7 @@
 #include "chrome/browser/ui/webui/top_chrome/top_chrome_webui_config.h"
 #include "content/public/common/url_constants.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
+#include "ui/webui/resources/cr_components/color_change_listener/color_change_listener.mojom.h"
 
 class EmailAliasesPanelUI : public TopChromeWebUIController {
  public:
@@ -24,6 +25,10 @@ class EmailAliasesPanelUI : public TopChromeWebUIController {
   void BindInterface(
       mojo::PendingReceiver<email_aliases::mojom::EmailAliasesService>
           receiver);
+
+  void BindInterface(
+      mojo::PendingReceiver<color_change_listener::mojom::PageHandler>
+          pending_receiver);
 
   static constexpr std::string_view GetWebUIName() {
     return "EmailAliasesPanel";
