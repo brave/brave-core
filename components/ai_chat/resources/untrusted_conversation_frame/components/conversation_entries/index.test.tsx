@@ -356,10 +356,14 @@ describe('ConversationEntries visualContentUsedPercentage handling', () => {
     events: [{ completionEvent: { completion: 'Assistant response' } }],
   })
 
-  const createHumanTurn = (): Partial<Mojom.ConversationTurn> => ({
-    characterType: Mojom.CharacterType.HUMAN,
-    text: 'Human question',
-  })
+  const createHumanTurn = (
+    overrides: Partial<Mojom.ConversationTurn> = {},
+  ): Mojom.ConversationTurn =>
+    ({
+      characterType: Mojom.CharacterType.HUMAN,
+      text: 'Human question',
+      ...overrides,
+    }) as Mojom.ConversationTurn
 
   beforeEach(() => {
     assistantResponseMock.mockClear()
@@ -489,5 +493,28 @@ describe('ConversationEntries visualContentUsedPercentage handling', () => {
     // Should not show warnings for human-only conversation
     const infoElement = container.querySelector('leo-icon[name="info-outline"]')
     expect(infoElement).not.toBeInTheDocument()
+  })
+
+  test('should highlight skill shortcuts in text', () => {
+    const { container } = render(
+      <MockContext
+        conversationHistory={[
+          createHumanTurn({
+            text: '/shortcut and additional text',
+            uuid: '111',
+            skill: { shortcut: 'shortcut', prompt: 'prompt' },
+          }),
+        ]}
+      >
+        <ConversationEntries />
+      </MockContext>,
+    )
+    expect(container.querySelector('.skillLabel')).toBeInTheDocument()
+    expect(container.querySelector('.skillLabel')).toHaveTextContent(
+      '/shortcut',
+    )
+    expect(container.querySelector('.skillLabel')).not.toHaveTextContent(
+      'and additional text',
+    )
   })
 })

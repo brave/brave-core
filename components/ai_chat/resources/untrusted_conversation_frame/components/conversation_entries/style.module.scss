@@ -101,3 +101,8 @@
   --leo-progressring-size: 15px;
   --leo-icon-size: 20px;
 }
+
+.skillLabel {
+  --leo-label-font-text: var(--leo-font-large-regular);
+  --leo-label-padding: var(--leo-spacing-xs) var(--leo-spacing-s);
+}
