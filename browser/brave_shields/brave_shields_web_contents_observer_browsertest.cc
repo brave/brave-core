@@ -7,6 +7,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
+#include "base/values.h"
 #include "brave/browser/brave_shields/brave_shields_tab_helper.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -18,6 +19,10 @@
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_types.h"
+#include "components/policy/core/browser/browser_policy_connector.h"
+#include "components/policy/core/common/mock_configuration_policy_provider.h"
+#include "components/policy/core/common/policy_map.h"
+#include "components/policy/policy_constants.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
@@ -117,6 +122,60 @@ class BraveShieldsWebContentsObserverBrowserTest : public InProcessBrowserTest {
   raw_ptr<TestBraveShieldsWebContentsObserver>
       brave_shields_web_contents_observer_ = nullptr;
 };
+
+class BraveShieldsWebContentsObserverManagedPolicyBrowserTest
+    : public BraveShieldsWebContentsObserverBrowserTest {
+ public:
+  BraveShieldsWebContentsObserverManagedPolicyBrowserTest() = default;
+
+  void SetUpOnMainThread() override {
+    BraveShieldsWebContentsObserverBrowserTest::SetUpOnMainThread();
+
+    // Enable JavaScript blocking globally.
+    content_settings()->SetContentSettingCustomScope(
+        ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),
+        ContentSettingsType::JAVASCRIPT, CONTENT_SETTING_ALLOW);
+  }
+
+  void SetUpInProcessBrowserTestFixture() override {
+    EXPECT_CALL(provider_, IsInitializationComplete(testing::_))
+        .WillRepeatedly(testing::Return(true));
+    policy::BrowserPolicyConnector::SetPolicyProviderForTesting(&provider_);
+    policy::PolicyMap policies;
+
+    // Set JavaScript blocked for URLs policy
+    policies.Set(policy::key::kJavaScriptAllowedForUrls,
+                 policy::POLICY_LEVEL_MANDATORY, policy::POLICY_SCOPE_USER,
+                 policy::POLICY_SOURCE_PLATFORM, base::Value(), nullptr);
+    auto blocked_list = base::Value::List().Append("[*.]a.com");
+    policies.Set(policy::key::kJavaScriptBlockedForUrls,
+                 policy::POLICY_LEVEL_MANDATORY, policy::POLICY_SCOPE_USER,
+                 policy::POLICY_SOURCE_PLATFORM,
+                 base::Value(std::move(blocked_list)), nullptr);
+    provider_.UpdateChromePolicy(policies);
+  }
+
+ private:
+  policy::MockConfigurationPolicyProvider provider_;
+};
+
+IN_PROC_BROWSER_TEST_F(BraveShieldsWebContentsObserverManagedPolicyBrowserTest,
+                       JavaScriptBlockedEvents) {
+  const GURL& url = GURL("a.com");
+
+  // try to enable JavaScript for user provider
+  ContentSetting block_javascript_setting =
+      content_settings()->GetContentSetting(url, url,
+                                            ContentSettingsType::JAVASCRIPT);
+  EXPECT_EQ(CONTENT_SETTING_ALLOW, block_javascript_setting);
+  EXPECT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), embedded_test_server()->GetURL("a.com", "/load_js.html")));
+  EXPECT_TRUE(WaitForLoadStop(GetWebContents()));
+  // Scripts are blocked as per policy, which enforces blocking over user
+  // setting
+  EXPECT_EQ(brave_shields_web_contents_observer()->block_javascript_count(), 5);
+  EXPECT_EQ(GetBlockedJsList().size(), 3u);
+}
 
 IN_PROC_BROWSER_TEST_F(BraveShieldsWebContentsObserverBrowserTest,
                        JavaScriptBlockedEvents) {
