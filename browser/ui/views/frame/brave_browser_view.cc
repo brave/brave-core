@@ -163,6 +163,38 @@ void BraveBrowserView::SetDownloadConfirmReturnForTesting(bool allow) {
   g_download_confirm_return_allow_for_testing = allow;
 }
 
+class BraveBrowserView::SidebarOnMouseOverEventHandler
+    : public ui::EventObserver {
+ public:
+  explicit SidebarOnMouseOverEventHandler(BraveBrowserView* browser_view)
+      : browser_view_(browser_view) {
+    auto* widget = browser_view_->GetWidget();
+    if (widget->GetNativeWindow()) {
+      monitor_ = views::EventMonitor::CreateWindowMonitor(
+          this, widget->GetNativeWindow(), {ui::EventType::kMouseMoved});
+    }
+  }
+
+  ~SidebarOnMouseOverEventHandler() override = default;
+
+  SidebarOnMouseOverEventHandler(const SidebarOnMouseOverEventHandler&) =
+      delete;
+  SidebarOnMouseOverEventHandler& operator=(
+      const SidebarOnMouseOverEventHandler&) = delete;
+
+ private:
+  // ui::EventObserver overrides:
+  void OnEvent(const ui::Event& event) override {
+    if (event.type() == ui::EventType::kMouseMoved) {
+      browser_view_->HandleSidebarOnMouseOverMouseEvent(*event.AsMouseEvent());
+      return;
+    }
+  }
+
+  raw_ptr<BraveBrowserView> browser_view_ = nullptr;
+  std::unique_ptr<views::EventMonitor> monitor_;
+};
+
 class BraveBrowserView::TabCyclingEventHandler : public ui::EventObserver,
                                                  public views::WidgetObserver {
  public:
@@ -668,6 +700,10 @@ void BraveBrowserView::CloseWalletBubble() {
 
 void BraveBrowserView::AddedToWidget() {
   BrowserView::AddedToWidget();
+
+  sidebar_on_mouse_over_event_handler_ =
+      std::make_unique<SidebarOnMouseOverEventHandler>(this);
+
   // we must call all new views once BraveBrowserView is added to widget
 
   GetBrowserViewLayout()->set_contents_background(contents_background_view_);
@@ -1033,31 +1069,12 @@ void BraveBrowserView::StopListeningFullscreenChanges() {
   }
 }
 
-bool BraveBrowserView::PreHandleMouseEvent(const blink::WebMouseEvent& event) {
-  if (event.GetTypeAsUiEventType() == ui::EventType::kMouseMoved &&
-      sidebar_container_view_) {
-    return sidebar_container_view_->PreHandleMouseEvent(
-        event.PositionInScreen());
-  }
+void BraveBrowserView::HandleSidebarOnMouseOverMouseEvent(
+    const ui::MouseEvent& event) {
+  CHECK(event.type() == ui::EventType::kMouseMoved);
 
-  return false;
-}
-
-void BraveBrowserView::OnMouseMoved(const ui::MouseEvent& event) {
-  BrowserView::OnMouseMoved(event);
-
-  // To make sidebar UI visible when mouse moved to space between window border
-  // & contents. This space exists when rounded corners feature is enabled. As
-  // BraveBrowserView::PreHandleMouseEvent() is only called from web contents,
-  // we need to handle move event from browser view.
-  // This handling is useful when it's in fullscreen. If move the mouse point to
-  // window edge quickly BraveBrowserView::PreHandleMouseEvent() is not called.
-  if (sidebar_container_view_ && event.type() == ui::EventType::kMouseMoved &&
-      ShouldUseBraveWebViewRoundedCornersForContents(browser_.get())) {
-    gfx::Point position_in_screen = event.location();
-    views::View::ConvertPointToScreen(this, &position_in_screen);
-    sidebar_container_view_->PreHandleMouseEvent(
-        gfx::PointF(position_in_screen));
+  if (sidebar_container_view_) {
+    sidebar_container_view_->PreHandleMouseEvent(event.root_location_f());
   }
 }
 
