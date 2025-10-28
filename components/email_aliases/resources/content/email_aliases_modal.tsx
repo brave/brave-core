@@ -204,6 +204,17 @@ export const DeleteAliasModal = ({
   )
 }
 
+export enum EmailAliasModalActionType {
+  Cancel,
+  Manage,
+  Alias,
+}
+
+export type EmailAliasModalAction =
+  | { type: EmailAliasModalActionType.Cancel }
+  | { type: EmailAliasModalActionType.Manage }
+  | { type: EmailAliasModalActionType.Alias; email: string }
+
 export const EmailAliasModal = ({
   onReturnToMain,
   editing,
@@ -213,7 +224,7 @@ export const EmailAliasModal = ({
   emailAliasesService,
   bubble,
 }: {
-  onReturnToMain: (email?: string) => void
+  onReturnToMain: (action: EmailAliasModalAction) => void
   editing: boolean
   editAlias?: Alias
   bubble?: boolean
@@ -246,7 +257,10 @@ export const EmailAliasModal = ({
         generateAliasResult.aliasEmail,
         proposedNote,
       )
-      onReturnToMain(bubble ? generateAliasResult.aliasEmail : undefined)
+      onReturnToMain({
+        type: EmailAliasModalActionType.Alias,
+        email: generateAliasResult.aliasEmail,
+      })
     } catch (errorMessage) {
       setUpdateErrorMessage(errorMessage as string)
     }
@@ -349,8 +363,7 @@ export const EmailAliasModal = ({
           {bubble && (
             <Button
               onClick={() => {
-                emailAliasesService.invokeManageAliases()
-                onReturnToMain(undefined)
+                onReturnToMain({ type: EmailAliasModalActionType.Manage })
               }}
               kind='plain'
             >
@@ -358,7 +371,9 @@ export const EmailAliasModal = ({
             </Button>
           )}
           <Button
-            onClick={() => onReturnToMain(undefined)}
+            onClick={() =>
+              onReturnToMain({ type: EmailAliasModalActionType.Cancel })
+            }
             kind='plain-faint'
           >
             {getLocale('emailAliasesCancelButton')}
