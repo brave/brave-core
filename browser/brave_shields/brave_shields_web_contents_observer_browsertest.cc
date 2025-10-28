@@ -163,7 +163,7 @@ IN_PROC_BROWSER_TEST_F(BraveShieldsWebContentsObserverManagedPolicyBrowserTest,
                        JavaScriptBlockedEvents) {
   const GURL& url = GURL("a.com");
 
-  // try to enable JavaScript for user provider
+  // Try to check if JavaScript is blocked for user provider
   ContentSetting block_javascript_setting =
       content_settings()->GetContentSetting(url, url,
                                             ContentSettingsType::JAVASCRIPT);
