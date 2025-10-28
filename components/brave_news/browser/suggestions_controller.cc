@@ -10,6 +10,7 @@
 #include <utility>
 #include <vector>
 
+#include "absl/container/flat_hash_set.h"
 #include "base/containers/contains.h"
 #include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
@@ -63,9 +64,9 @@ base::flat_map<std::string_view, double> GetVisitWeightings(
   // Normalize (between 0 and 1) the visit counts by dividing
   // by the maximum number of visits.
   auto max_visits =
-      std::ranges::max(weightings, [](const auto& a, const auto& b) {
+      std::ranges::max_element(weightings, [](const auto& a, const auto& b) {
         return a.second < b.second;
-      }).second;
+      })->second;
 
   for (auto& it : weightings) {
     it.second /= max_visits;
