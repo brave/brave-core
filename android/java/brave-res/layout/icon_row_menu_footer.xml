@@ -9,52 +9,101 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/app_menu_padding"
-    android:background="@color/menu_action_bar_bg_color_baseline" >
-
-    <View style="@style/HorizontalDivider" />
+    android:paddingBottom="@dimen/app_menu_padding">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="?android:attr/listPreferredItemHeightSmall"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|start"
         android:orientation="horizontal"
+        android:baselineAligned="false"
+        android:padding="?attr/appMenuIconRowPadding"
         android:id="@+id/menu_items" >
 
-        <org.chromium.ui.widget.ChromeImageButton
-            android:id="@+id/forward_menu_id"
-            style="@style/BraveOverflowMenuButton"
-            android:src="@drawable/btn_forward"
-            android:contentDescription="@string/accessibility_menu_forward" />
+        <!-- The icons will be set in onFinishInflate. -->
+        <!-- Using weight = 1, evenly distribute the buttons along the width of the space. -->
+        <FrameLayout
+            android:id="@+id/button_wrapper_forward"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/forward_menu_id"
+                android:layout_width="?attr/minInteractTargetSize"
+                android:layout_height="?attr/minInteractTargetSize"
+                android:layout_gravity="center"
+                style="?attr/overflowMenuButtonStyle"
+                android:contentDescription="@string/accessibility_menu_forward" />
+        </FrameLayout>
         
-        <org.chromium.ui.widget.ChromeImageButton
-            android:id="@+id/share_menu_id"
-            style="@style/BraveOverflowMenuButton"
-            android:src="@drawable/share_icon"
-            android:contentDescription="@string/share" />
+        <FrameLayout
+            android:id="@+id/button_wrapper_share"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/share_menu_id"
+                android:layout_width="?attr/minInteractTargetSize"
+                android:layout_height="?attr/minInteractTargetSize"
+                android:layout_gravity="center"
+                style="?attr/overflowMenuButtonStyle"
+                android:contentDescription="@string/share" />
+        </FrameLayout>
 
-        <org.chromium.ui.widget.ChromeImageButton
-            android:id="@+id/home_menu_id"
-            style="@style/BraveOverflowMenuButton"
-            android:src="@drawable/btn_toolbar_home"
-            android:contentDescription="@string/accessibility_toolbar_btn_home" />
+        <FrameLayout
+            android:id="@+id/button_wrapper_home"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/home_menu_id"
+                android:layout_width="?attr/minInteractTargetSize"
+                android:layout_height="?attr/minInteractTargetSize"
+                android:layout_gravity="center"
+                style="?attr/overflowMenuButtonStyle"
+                android:contentDescription="@string/accessibility_toolbar_btn_home" />
+        </FrameLayout>
 
-        <org.chromium.ui.widget.ChromeImageButton
-            android:id="@+id/bookmark_this_page_id"
-            style="@style/BraveOverflowMenuButton"
-            android:src="@drawable/star_outline_24dp"
-            android:contentDescription="@string/accessibility_menu_bookmark" />
+        <FrameLayout
+            android:id="@+id/button_wrapper_bookmark"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/bookmark_this_page_id"
+                android:layout_width="?attr/minInteractTargetSize"
+                android:layout_height="?attr/minInteractTargetSize"
+                android:layout_gravity="center"
+                style="?attr/overflowMenuButtonStyle"
+                android:contentDescription="@string/accessibility_menu_bookmark" />
+        </FrameLayout>
 
-        <org.chromium.ui.widget.ChromeImageButton
-            android:id="@+id/offline_page_id"
-            style="@style/BraveOverflowMenuButton"
-            android:src="@drawable/ic_file_download_white_24dp"
-            android:contentDescription="@string/download_page" />
+        <FrameLayout
+            android:id="@+id/button_wrapper_download"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/offline_page_id"
+                android:layout_width="?attr/minInteractTargetSize"
+                android:layout_height="?attr/minInteractTargetSize"
+                android:layout_gravity="center"
+                style="?attr/overflowMenuButtonStyle"
+                android:contentDescription="@string/download_page" />
+        </FrameLayout>
 
-        <!-- The src will be set in onFinishInflate. -->
-        <org.chromium.ui.widget.ChromeImageButton
-            android:id="@+id/reload_menu_id"
-            style="@style/BraveOverflowMenuButton"
-            android:contentDescription="@string/accessibility_btn_refresh"
-            tools:src="@drawable/btn_reload_stop" />
+        <FrameLayout
+            android:id="@+id/button_wrapper_reload"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/reload_menu_id"
+                android:layout_width="?attr/minInteractTargetSize"
+                android:layout_height="?attr/minInteractTargetSize"
+                android:layout_gravity="center"
+                style="?attr/overflowMenuButtonStyle"
+                android:contentDescription="@string/accessibility_btn_refresh" />
+        </FrameLayout>
     </LinearLayout>
 </org.chromium.chrome.browser.app.appmenu.AppMenuIconRowFooter>
