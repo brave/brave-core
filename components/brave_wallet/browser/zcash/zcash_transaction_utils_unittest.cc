@@ -13,25 +13,28 @@
 namespace brave_wallet {
 
 TEST(ZCashTransactionUtilsUnitTest, PickZCashTransparentInputs) {
-  // Max amount, but fee is greater
+  // Max amount, but fee is greater.
   {
     ZCashWalletService::UtxoMap utxo_map;
     utxo_map["1"] = GetZCashUtxo(1);
     utxo_map["2"] = GetZCashUtxo(2);
     utxo_map["3"] = GetZCashUtxo(3);
-    auto result = PickZCashTransparentInputs(utxo_map, kZCashFullAmount, 2);
+    auto result = PickZCashTransparentInputs(
+        utxo_map, kZCashFullAmount, ZCashTargetOutputType::kTransparent);
     EXPECT_FALSE(result);
   }
 
-  // Max amount
+  // Max amount.
   {
     ZCashWalletService::UtxoMap utxo_map;
     utxo_map["10000"] = GetZCashUtxo(10000);
     utxo_map["20000"] = GetZCashUtxo(20000);
     utxo_map["30000"] = GetZCashUtxo(30000);
-    auto result = PickZCashTransparentInputs(utxo_map, kZCashFullAmount, 2);
+    auto result = PickZCashTransparentInputs(
+        utxo_map, kZCashFullAmount, ZCashTargetOutputType::kTransparent);
     EXPECT_EQ(result->change, 0u);
-    EXPECT_EQ(result->fee, CalculateZCashTxFee(3, 2).ValueOrDie());
+    // max(2, max(3, 1)) * 5000.
+    EXPECT_EQ(result->fee, 15000u);
     EXPECT_EQ(result->inputs[0].utxo_address, "10000");
     EXPECT_EQ(result->inputs[0].utxo_value, 10000u);
 
@@ -42,17 +45,49 @@ TEST(ZCashTransactionUtilsUnitTest, PickZCashTransparentInputs) {
     EXPECT_EQ(result->inputs[2].utxo_value, 30000u);
   }
 
-  // Not enough funds
+  // Change is 0, but amount is not max.
   {
     ZCashWalletService::UtxoMap utxo_map;
-    utxo_map["1"] = GetZCashUtxo(1);
-    utxo_map["2"] = GetZCashUtxo(2);
-    utxo_map["3"] = GetZCashUtxo(3);
-    auto result = PickZCashTransparentInputs(utxo_map, 10, 2);
-    EXPECT_FALSE(result);
+    utxo_map["10000"] = GetZCashUtxo(10000);
+    utxo_map["20000"] = GetZCashUtxo(20000);
+    utxo_map["30000"] = GetZCashUtxo(30000);
+    auto result = PickZCashTransparentInputs(
+        utxo_map, 60000u - 15000u, ZCashTargetOutputType::kTransparent);
+    EXPECT_EQ(result->change, 0u);
+    // max(2, max(3, 0)) * 5000.
+    EXPECT_EQ(result->fee, 15000u);
+    EXPECT_EQ(result->inputs[0].utxo_address, "10000");
+    EXPECT_EQ(result->inputs[0].utxo_value, 10000u);
+
+    EXPECT_EQ(result->inputs[1].utxo_address, "20000");
+    EXPECT_EQ(result->inputs[1].utxo_value, 20000u);
+
+    EXPECT_EQ(result->inputs[2].utxo_address, "30000");
+    EXPECT_EQ(result->inputs[2].utxo_value, 30000u);
   }
 
-  // With change
+  // Change is 0, but amount is not max, Orchard output.
+  {
+    ZCashWalletService::UtxoMap utxo_map;
+    utxo_map["10000"] = GetZCashUtxo(10000);
+    utxo_map["20000"] = GetZCashUtxo(20000);
+    utxo_map["30000"] = GetZCashUtxo(30000);
+    auto result = PickZCashTransparentInputs(utxo_map, 60000u - 25000u,
+                                             ZCashTargetOutputType::kOrchard);
+    EXPECT_EQ(result->change, 0u);
+    // max(2, max(3, 1) + max(0, 1, 2)) * 5000.
+    EXPECT_EQ(result->fee, 25000u);
+    EXPECT_EQ(result->inputs[0].utxo_address, "10000");
+    EXPECT_EQ(result->inputs[0].utxo_value, 10000u);
+
+    EXPECT_EQ(result->inputs[1].utxo_address, "20000");
+    EXPECT_EQ(result->inputs[1].utxo_value, 20000u);
+
+    EXPECT_EQ(result->inputs[2].utxo_address, "30000");
+    EXPECT_EQ(result->inputs[2].utxo_value, 30000u);
+  }
+
+  // With change.
   {
     ZCashWalletService::UtxoMap utxo_map;
     utxo_map["10000"] = GetZCashUtxo(10000);
@@ -60,10 +95,12 @@ TEST(ZCashTransactionUtilsUnitTest, PickZCashTransparentInputs) {
     utxo_map["30000"] = GetZCashUtxo(30000);
     utxo_map["40000"] = GetZCashUtxo(40000);
 
-    auto result = PickZCashTransparentInputs(utxo_map, 30000, 0);
+    auto result = PickZCashTransparentInputs(
+        utxo_map, 30000, ZCashTargetOutputType::kTransparent);
     EXPECT_TRUE(result);
+    // max(2, max(3, 1)) * 5000.
     EXPECT_EQ(result->change, 15000u);
-    EXPECT_EQ(result->fee, CalculateZCashTxFee(3, 0).ValueOrDie());
+    EXPECT_EQ(result->fee, CalculateZCashTxFee(3, 2, 0, 0).ValueOrDie());
     EXPECT_EQ(result->inputs[0].utxo_address, "10000");
     EXPECT_EQ(result->inputs[0].utxo_value, 10000u);
 
@@ -73,21 +110,78 @@ TEST(ZCashTransactionUtilsUnitTest, PickZCashTransparentInputs) {
     EXPECT_EQ(result->inputs[2].utxo_address, "30000");
     EXPECT_EQ(result->inputs[2].utxo_value, 30000u);
   }
+
+  // With change, Orchard output.
+  {
+    ZCashWalletService::UtxoMap utxo_map;
+    utxo_map["10000"] = GetZCashUtxo(10000);
+    utxo_map["20000"] = GetZCashUtxo(20000);
+    utxo_map["30000"] = GetZCashUtxo(30000);
+    utxo_map["40000"] = GetZCashUtxo(40000);
+
+    auto result = PickZCashTransparentInputs(utxo_map, 30000,
+                                             ZCashTargetOutputType::kOrchard);
+    EXPECT_TRUE(result);
+    EXPECT_EQ(result->change, 5000u);
+    // max(2, max(3, 1) + max(0, 1, 2)) * 5000.
+    EXPECT_EQ(result->fee, 25000u);
+    EXPECT_EQ(result->inputs[0].utxo_address, "10000");
+    EXPECT_EQ(result->inputs[0].utxo_value, 10000u);
+
+    EXPECT_EQ(result->inputs[1].utxo_address, "20000");
+    EXPECT_EQ(result->inputs[1].utxo_value, 20000u);
+
+    EXPECT_EQ(result->inputs[2].utxo_address, "30000");
+    EXPECT_EQ(result->inputs[2].utxo_value, 30000u);
+  }
+
+  // Max amount, Orchard output.
+  {
+    ZCashWalletService::UtxoMap utxo_map;
+    utxo_map["10000"] = GetZCashUtxo(10000);
+    utxo_map["20000"] = GetZCashUtxo(20000);
+    utxo_map["30000"] = GetZCashUtxo(30000);
+    auto result = PickZCashTransparentInputs(utxo_map, kZCashFullAmount,
+                                             ZCashTargetOutputType::kOrchard);
+    EXPECT_EQ(result->change, 0u);
+    // max(2, max(3, 0) + max(0, 1, 2)) * 5000.
+    EXPECT_EQ(result->fee, 25000u);
+    EXPECT_EQ(result->inputs[0].utxo_address, "10000");
+    EXPECT_EQ(result->inputs[0].utxo_value, 10000u);
+
+    EXPECT_EQ(result->inputs[1].utxo_address, "20000");
+    EXPECT_EQ(result->inputs[1].utxo_value, 20000u);
+
+    EXPECT_EQ(result->inputs[2].utxo_address, "30000");
+    EXPECT_EQ(result->inputs[2].utxo_value, 30000u);
+  }
+
+  // Not enough funds.
+  {
+    ZCashWalletService::UtxoMap utxo_map;
+    utxo_map["1"] = GetZCashUtxo(1);
+    utxo_map["2"] = GetZCashUtxo(2);
+    utxo_map["3"] = GetZCashUtxo(3);
+    auto result = PickZCashTransparentInputs(utxo_map, 10,
+                                             ZCashTargetOutputType::kOrchard);
+    EXPECT_FALSE(result);
+  }
 }
 
 #if BUILDFLAG(ENABLE_ORCHARD)
 TEST(ZCashTransactionUtilsUnitTest, PickZCashOrchardInputs) {
-  // Able to select inputs
+  // Able to select inputs.
   {
     std::vector<OrchardNote> notes;
     notes.push_back(OrchardNote{{}, 1u, {}, 100000u, 0, {}, {}});
     notes.push_back(OrchardNote{{}, 2u, {}, 200000u, 0, {}, {}});
     notes.push_back(OrchardNote{{}, 3u, {}, 70000u, 0, {}, {}});
-    auto result = PickZCashOrchardInputs(notes, 150000u);
+    auto result =
+        PickZCashOrchardInputs(notes, 150000u, ZCashTargetOutputType::kOrchard);
     EXPECT_TRUE(result.has_value());
-    EXPECT_EQ(result->change, 170000u - 150000u - result->fee);  // 17 - 15
+    EXPECT_EQ(result->change, 170000u - 150000u - result->fee);
     EXPECT_EQ(result->inputs.size(), 2u);
-    EXPECT_EQ(result->fee, 15000u);
+    EXPECT_EQ(result->fee, 10000u);
     EXPECT_EQ(result->inputs.size(), 2u);
     EXPECT_EQ(result->inputs[0].amount, 70000u);
     EXPECT_EQ(result->inputs[0].block_id, 3u);
@@ -95,17 +189,20 @@ TEST(ZCashTransactionUtilsUnitTest, PickZCashOrchardInputs) {
     EXPECT_EQ(result->inputs[1].block_id, 1u);
   }
 
-  // Full amount
+  // Full amount.
   {
     std::vector<OrchardNote> notes;
     notes.push_back(OrchardNote{{}, 1u, {}, 100000u, 0, {}, {}});
     notes.push_back(OrchardNote{{}, 2u, {}, 200000u, 0, {}, {}});
     notes.push_back(OrchardNote{{}, 3u, {}, 70000u, 0, {}, {}});
-    auto result = PickZCashOrchardInputs(notes, kZCashFullAmount);
+    auto result = PickZCashOrchardInputs(notes, kZCashFullAmount,
+                                         ZCashTargetOutputType::kOrchard);
     EXPECT_TRUE(result.has_value());
-    EXPECT_EQ(result->change, 0u);  // 17 - 15
+
+    EXPECT_EQ(result->change, 0u);
     EXPECT_EQ(result->inputs.size(), 3u);
-    EXPECT_EQ(result->fee, 20000u);
+    EXPECT_EQ(result->fee, 15000u);
+
     EXPECT_EQ(result->inputs[0].amount, 100000u);
     EXPECT_EQ(result->inputs[0].block_id, 1u);
     EXPECT_EQ(result->inputs[1].amount, 200000u);
@@ -114,43 +211,139 @@ TEST(ZCashTransactionUtilsUnitTest, PickZCashOrchardInputs) {
     EXPECT_EQ(result->inputs[2].block_id, 3u);
   }
 
-  // Unable to pick inputs
+  // Change is 0, but amount is not max.
   {
     std::vector<OrchardNote> notes;
     notes.push_back(OrchardNote{{}, 1u, {}, 100000u, 0, {}, {}});
     notes.push_back(OrchardNote{{}, 2u, {}, 200000u, 0, {}, {}});
-    auto result = PickZCashOrchardInputs(notes, 300000u);
+    notes.push_back(OrchardNote{{}, 3u, {}, 70000u, 0, {}, {}});
+    auto result = PickZCashOrchardInputs(notes, 370000u - 15000u,
+                                         ZCashTargetOutputType::kOrchard);
+    EXPECT_TRUE(result.has_value());
+
+    EXPECT_EQ(result->change, 0u);
+    EXPECT_EQ(result->inputs.size(), 3u);
+    // max(2, max(0, 0) + max(3, 1, 2)) * 5000.
+    EXPECT_EQ(result->fee, 15000u);
+
+    EXPECT_EQ(result->inputs[0].amount, 70000u);
+    EXPECT_EQ(result->inputs[0].block_id, 3u);
+    EXPECT_EQ(result->inputs[1].amount, 100000u);
+    EXPECT_EQ(result->inputs[1].block_id, 1u);
+    EXPECT_EQ(result->inputs[2].amount, 200000u);
+    EXPECT_EQ(result->inputs[2].block_id, 2u);
+  }
+
+  // Change is 0, but amount is not max, transparent output.
+  {
+    std::vector<OrchardNote> notes;
+    notes.push_back(OrchardNote{{}, 1u, {}, 100000u, 0, {}, {}});
+    notes.push_back(OrchardNote{{}, 2u, {}, 200000u, 0, {}, {}});
+    notes.push_back(OrchardNote{{}, 3u, {}, 70000u, 0, {}, {}});
+    auto result = PickZCashOrchardInputs(notes, 370000u - 20000u,
+                                         ZCashTargetOutputType::kTransparent);
+    EXPECT_TRUE(result.has_value());
+
+    EXPECT_EQ(result->change, 0u);
+    EXPECT_EQ(result->inputs.size(), 3u);
+    // max(2, max(0, 1) + max(3, 0, 2)) * 5000.
+    EXPECT_EQ(result->fee, 20000u);
+
+    EXPECT_EQ(result->inputs[0].amount, 70000u);
+    EXPECT_EQ(result->inputs[0].block_id, 3u);
+    EXPECT_EQ(result->inputs[1].amount, 100000u);
+    EXPECT_EQ(result->inputs[1].block_id, 1u);
+    EXPECT_EQ(result->inputs[2].amount, 200000u);
+    EXPECT_EQ(result->inputs[2].block_id, 2u);
+  }
+
+  // Transparent output.
+  {
+    std::vector<OrchardNote> notes;
+    notes.push_back(OrchardNote{{}, 1u, {}, 100000u, 0, {}, {}});
+    notes.push_back(OrchardNote{{}, 2u, {}, 200000u, 0, {}, {}});
+    notes.push_back(OrchardNote{{}, 3u, {}, 70000u, 0, {}, {}});
+
+    auto result = PickZCashOrchardInputs(notes, 150000u,
+                                         ZCashTargetOutputType::kTransparent);
+    EXPECT_TRUE(result.has_value());
+    EXPECT_EQ(result->change, 170000u - 150000u - result->fee);
+    EXPECT_EQ(result->inputs.size(), 2u);
+    // max(2, max(0, 1) + max(2, 1, 2)) * 5000.
+    EXPECT_EQ(result->fee, 15000u);
+
+    EXPECT_EQ(result->inputs.size(), 2u);
+    EXPECT_EQ(result->inputs[0].amount, 70000u);
+    EXPECT_EQ(result->inputs[0].block_id, 3u);
+    EXPECT_EQ(result->inputs[1].amount, 100000u);
+    EXPECT_EQ(result->inputs[1].block_id, 1u);
+  }
+
+  // Transparent output, full amount.
+  {
+    std::vector<OrchardNote> notes;
+    notes.push_back(OrchardNote{{}, 1u, {}, 100000u, 0, {}, {}});
+    notes.push_back(OrchardNote{{}, 2u, {}, 200000u, 0, {}, {}});
+    notes.push_back(OrchardNote{{}, 3u, {}, 70000u, 0, {}, {}});
+    auto result = PickZCashOrchardInputs(notes, kZCashFullAmount,
+                                         ZCashTargetOutputType::kTransparent);
+    EXPECT_TRUE(result.has_value());
+
+    EXPECT_EQ(result->change, 0u);
+    EXPECT_EQ(result->inputs.size(), 3u);
+    // max(2, max(0, 1) + max(3, 0, 2)) * 5000.
+    EXPECT_EQ(result->fee, 20000u);
+
+    EXPECT_EQ(result->inputs[0].amount, 100000u);
+    EXPECT_EQ(result->inputs[0].block_id, 1u);
+    EXPECT_EQ(result->inputs[1].amount, 200000u);
+    EXPECT_EQ(result->inputs[1].block_id, 2u);
+    EXPECT_EQ(result->inputs[2].amount, 70000u);
+    EXPECT_EQ(result->inputs[2].block_id, 3u);
+  }
+
+  // Unable to pick inputs.
+  {
+    std::vector<OrchardNote> notes;
+    notes.push_back(OrchardNote{{}, 1u, {}, 100000u, 0, {}, {}});
+    notes.push_back(OrchardNote{{}, 2u, {}, 200000u, 0, {}, {}});
+    auto result =
+        PickZCashOrchardInputs(notes, 300000u, ZCashTargetOutputType::kOrchard);
     EXPECT_FALSE(result.has_value());
   }
 
-  // Empty inputs
+  // Empty inputs.
   {
     auto result =
-        PickZCashOrchardInputs(std::vector<OrchardNote>(), kZCashFullAmount);
+        PickZCashOrchardInputs(std::vector<OrchardNote>(), kZCashFullAmount,
+                               ZCashTargetOutputType::kOrchard);
     EXPECT_FALSE(result.has_value());
   }
 
-  // Empty inputs
+  // Empty inputs.
   {
-    auto result = PickZCashOrchardInputs(std::vector<OrchardNote>(), 10000u);
+    auto result = PickZCashOrchardInputs(std::vector<OrchardNote>(), 10000u,
+                                         ZCashTargetOutputType::kOrchard);
     EXPECT_FALSE(result.has_value());
   }
 
-  // Inputs overflow
+  // Inputs overflow.
   {
     std::vector<OrchardNote> notes;
     notes.push_back(OrchardNote{{}, 1u, {}, 0xFFFFFFFFFFFFFFFF, 0, {}, {}});
     notes.push_back(OrchardNote{{}, 2u, {}, 0xFFFFFFFFFFFFFFFF, 0, {}, {}});
-    auto result = PickZCashOrchardInputs(notes, kZCashFullAmount);
+    auto result = PickZCashOrchardInputs(notes, kZCashFullAmount,
+                                         ZCashTargetOutputType::kOrchard);
     EXPECT_FALSE(result.has_value());
   }
 
-  // Inputs overflow
+  // Inputs overflow.
   {
     std::vector<OrchardNote> notes;
     notes.push_back(OrchardNote{{}, 1u, {}, 0xAAAAAAAAAAAAAAAA, 0, {}, {}});
     notes.push_back(OrchardNote{{}, 2u, {}, 0x8888888888888888, 0, {}, {}});
-    auto result = PickZCashOrchardInputs(notes, kZCashFullAmount);
+    auto result = PickZCashOrchardInputs(notes, kZCashFullAmount,
+                                         ZCashTargetOutputType::kOrchard);
     EXPECT_FALSE(result.has_value());
   }
 }

@@ -89,7 +89,8 @@ void ZCashCreateTransparentTransactionTask::WorkOnTask() {
   // https://github.com/bitcoin/bitcoin/blob/v24.0/src/wallet/spend.cpp#L739-L747
   transaction_.set_locktime(chain_height_.value());
 
-  auto pick_inputs_result = PickZCashTransparentInputs(*utxo_map_, amount_, 0);
+  auto pick_inputs_result = PickZCashTransparentInputs(
+      *utxo_map_, amount_, ZCashTargetOutputType::kTransparent);
   if (!pick_inputs_result) {
     // TODO(cypt4) : switch to IDS_BRAVE_WALLET_INSUFFICIENT_BALANCE when ready
     SetError(l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
