@@ -27,6 +27,8 @@ enum ContentSettingsType {
   // Allow a site to open AI Chat (in side panel on Desktop).
   // This is limited to Brave Search only.
   BRAVE_OPEN_AI_CHAT,
+  // Allow a site data to be cleared on last tab closed, or app exit.
+  BRAVE_AUTO_SHRED,
 
   BRAVE_WEBCOMPAT_NONE,
   BRAVE_WEBCOMPAT_AUDIO,

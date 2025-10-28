@@ -82,7 +82,8 @@ using ControlTypeAllShieldsSettingsValuesChecker =
         ContentSettingsType::BRAVE_SHIELDS,
         ContentSettingsType::BRAVE_SHIELDS_METADATA,
         ContentSettingsType::BRAVE_REFERRERS,
-        ContentSettingsType::BRAVE_COOKIES>;
+        ContentSettingsType::BRAVE_COOKIES,
+        ContentSettingsType::BRAVE_AUTO_SHRED>;
 
 TEST_F(ShieldsSettingsValuesTest, ControlTypeSettingTypeSuccess) {
   ControlTypeAllShieldsSettingsValuesChecker checker;
