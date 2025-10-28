@@ -10,7 +10,6 @@ import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,6 +17,8 @@ import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
+
+import com.google.android.material.button.MaterialButton;
 
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
@@ -141,21 +142,26 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         }
 
         // Hide bookmark button if bottom toolbar is enabled and address bar is on top.
-        ImageButton bookmarkButton = view.findViewById(R.id.bookmark_this_page_id);
+        View bookmarkWrapper = view.findViewById(R.id.button_wrapper_bookmark);
+        MaterialButton bookmarkButton = view.findViewById(R.id.bookmark_this_page_id);
         if (bookmarkButton != null
                 && BottomToolbarConfiguration.isBraveBottomControlsEnabled()
                 && BottomToolbarConfiguration.isToolbarTopAnchored()) {
-            bookmarkButton.setVisibility(View.GONE);
+            if (bookmarkWrapper != null) bookmarkWrapper.setVisibility(View.GONE);
         }
 
         boolean showForwardButton = BottomToolbarConfiguration.isToolbarTopAnchored();
-        ImageButton forwardButton = view.findViewById(R.id.forward_menu_id);
+        View forwardWrapper = view.findViewById(R.id.button_wrapper_forward);
+        MaterialButton forwardButton = view.findViewById(R.id.forward_menu_id);
         if (forwardButton != null) {
             showForwardButton = showForwardButton || forwardButton.isEnabled();
-            forwardButton.setVisibility(showForwardButton ? View.VISIBLE : View.GONE);
+            if (forwardWrapper != null) {
+                forwardWrapper.setVisibility(showForwardButton ? View.VISIBLE : View.GONE);
+            }
         }
 
-        ImageButton shareButton = view.findViewById(R.id.share_menu_id);
+        View shareWrapper = view.findViewById(R.id.button_wrapper_share);
+        MaterialButton shareButton = view.findViewById(R.id.share_menu_id);
         boolean showShareButton =
                 BottomToolbarConfiguration.isToolbarTopAnchored() || !showForwardButton;
         if (shareButton != null) {
@@ -163,16 +169,20 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
             if (currentTab != null && UrlUtilities.isNtpUrl(currentTab.getUrl().getSpec())) {
                 shareButton.setEnabled(false);
             }
-            shareButton.setVisibility(showShareButton ? View.VISIBLE : View.GONE);
+            if (shareWrapper != null) {
+                shareWrapper.setVisibility(showShareButton ? View.VISIBLE : View.GONE);
+            }
         }
 
-        ImageButton homeButton = view.findViewById(R.id.home_menu_id);
+        View homeWrapper = view.findViewById(R.id.button_wrapper_home);
+        MaterialButton homeButton = view.findViewById(R.id.home_menu_id);
         if (homeButton != null && HomepageManager.getInstance() != null) {
-            homeButton.setVisibility(
+            boolean showHome =
                     BottomToolbarConfiguration.isToolbarBottomAnchored()
-                                    && HomepageManager.getInstance().isHomepageEnabled()
-                            ? View.VISIBLE
-                            : View.GONE);
+                            && HomepageManager.getInstance().isHomepageEnabled();
+            if (homeWrapper != null) {
+                homeWrapper.setVisibility(showHome ? View.VISIBLE : View.GONE);
+            }
         }
     }
 
