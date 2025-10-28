@@ -18,8 +18,8 @@ source_set("endpoint_client") {
 
   deps = [
     "//base",
-    "//brave/components/api_request_helper",
     "//net",
+    "//services/network/public/cpp",
     "//url",
   ]
 }
@@ -40,14 +40,11 @@ source_set("unit_tests") {
   deps = [
     "//base",
     "//base/test:test_support",
-    "//brave/components/api_request_helper",
     "//brave/components/brave_account/endpoint_client",
     "//net",
-    "//net/traffic_annotation:test_support",
     "//services/network:test_support",
     "//services/network/public/cpp",
     "//services/network/public/mojom",
-    "//testing/gmock",
     "//testing/gtest",
     "//url",
   ]

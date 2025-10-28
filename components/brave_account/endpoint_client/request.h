@@ -10,6 +10,7 @@
 
 #include "brave/components/brave_account/endpoint_client/is_request_body.h"
 #include "net/http/http_request_headers.h"
+#include "net/traffic_annotation/network_traffic_annotation.h"
 
 namespace brave_account::endpoint_client::detail {
 
@@ -57,6 +58,8 @@ struct Request : T {
       static_assert(false, "Unhandled Method enumerator!");
     }
   }
+
+  net::MutableNetworkTrafficAnnotationTag network_traffic_annotation_tag;
 };
 
 }  // namespace brave_account::endpoint_client::detail

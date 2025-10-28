@@ -59,14 +59,11 @@ source_set("unit_tests") {
   deps = [
     "//base",
     "//base/test:test_support",
-    "//brave/components/api_request_helper",
     "//brave/components/brave_account/endpoint_client",
     "//brave/components/brave_account/endpoints",
     "//net",
-    "//net/traffic_annotation:test_support",
     "//services/network:test_support",
     "//services/network/public/cpp",
-    "//testing/gmock",
     "//testing/gtest",
     "//url",
   ]

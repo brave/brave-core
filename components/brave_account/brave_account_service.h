@@ -17,7 +17,6 @@
 #include "base/time/time.h"
 #include "base/timer/timer.h"
 #include "base/types/expected.h"
-#include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_account/endpoints/error.h"
 #include "brave/components/brave_account/endpoints/password_finalize.h"
 #include "brave/components/brave_account/endpoints/password_init.h"
@@ -60,7 +59,7 @@ class BraveAccountService : public KeyedService, public mojom::Authentication {
   // Provides dependency injection for testing.
   BraveAccountService(
       PrefService* pref_service,
-      std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper,
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       OSCryptCallback encrypt_callback,
       OSCryptCallback decrypt_callback,
       std::unique_ptr<base::OneShotTimer> verify_result_timer);
@@ -105,7 +104,7 @@ class BraveAccountService : public KeyedService, public mojom::Authentication {
                      std::optional<endpoints::VerifyResult::Error>> reply);
 
   const raw_ptr<PrefService> pref_service_;
-  std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
+  scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   OSCryptCallback encrypt_callback_;
   OSCryptCallback decrypt_callback_;
   mojo::ReceiverSet<mojom::Authentication> authentication_receivers_;
