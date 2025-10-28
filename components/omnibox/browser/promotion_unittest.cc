@@ -119,9 +119,10 @@ class OmniboxPromotionTest : public testing::Test {
     client_fake->set_template_url_service(template_url_service);
     ON_CALL(*client_fake, GetPrefs()).WillByDefault(Return(client_prefs));
     ON_CALL(*client_fake, IsOffTheRecord()).WillByDefault(Return(incognito));
-    std::unique_ptr<AutocompleteController> controller =
-        std::make_unique<AutocompleteController>(
-            std::move(client_fake), AutocompleteProvider::TYPE_SEARCH);
+    auto controller = std::make_unique<AutocompleteController>(
+        std::move(client_fake),
+        AutocompleteControllerConfig{.provider_types =
+                                         AutocompleteProvider::TYPE_SEARCH});
     controller->providers_.push_back(
         new DummyProvider(AutocompleteProvider::TYPE_SEARCH));
     controller->providers_.push_back(
