@@ -105,7 +105,8 @@ void ZCashCreateOrchardToOrchardTransactionTask::OnGetSpendableNotes(
 void ZCashCreateOrchardToOrchardTransactionTask::CreateTransaction() {
   CHECK(spendable_notes_);
   auto pick_result =
-      PickZCashOrchardInputs(spendable_notes_->spendable_notes, amount_);
+      PickZCashOrchardInputs(spendable_notes_->spendable_notes, amount_,
+                             ZCashTargetOutputType::kOrchard);
   if (!pick_result) {
     error_ = "Can't pick inputs";
     ScheduleWorkOnTask();

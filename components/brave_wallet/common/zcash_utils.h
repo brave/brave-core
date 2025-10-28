@@ -184,7 +184,9 @@ bool OutputZCashTransparentAddressSupported(const std::string& address,
 // https://zips.z.cash/zip-0317
 base::CheckedNumeric<uint64_t> CalculateZCashTxFee(
     const uint32_t tx_input_count,
-    const uint32_t orchard_actions_count);
+    const uint32_t tx_output_count,
+    const uint32_t orchard_input_notes,
+    const uint32_t orchard_output_notes);
 bool IsUnifiedAddress(const std::string& address);
 bool IsUnifiedTestnetAddress(const std::string& address);
 

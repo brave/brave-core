@@ -213,7 +213,7 @@ TEST_F(ZCashCreateOrchardToOrchardTransactionTaskTest, TransactionCreated) {
   EXPECT_EQ(tx_result.value().orchard_part().inputs[0].note.amount, 70000u);
   EXPECT_EQ(tx_result.value().orchard_part().inputs[1].note.amount, 80000u);
 
-  EXPECT_EQ(tx_result.value().orchard_part().outputs[0].value, 35000u);
+  EXPECT_EQ(tx_result.value().orchard_part().outputs[0].value, 40000u);
   EXPECT_EQ(tx_result.value().orchard_part().outputs[1].value, 100000u);
 
   EXPECT_EQ(tx_result.value().orchard_part().anchor_block_height.value(), 10u);
@@ -287,7 +287,7 @@ TEST_F(ZCashCreateOrchardToOrchardTransactionTaskTest,
   EXPECT_EQ(tx_result.value().orchard_part().inputs[0].note.amount, 70000u);
   EXPECT_EQ(tx_result.value().orchard_part().inputs[1].note.amount, 80000u);
 
-  EXPECT_EQ(tx_result.value().orchard_part().outputs[0].value, 35000u);
+  EXPECT_EQ(tx_result.value().orchard_part().outputs[0].value, 40000u);
   EXPECT_EQ(tx_result.value().orchard_part().outputs[1].value, 100000u);
 
   EXPECT_EQ(tx_result.value().orchard_part().anchor_block_height.value(), 10u);
@@ -358,7 +358,7 @@ TEST_F(ZCashCreateOrchardToOrchardTransactionTaskTest,
             80000000000u);
 
   EXPECT_EQ(tx_result.value().orchard_part().outputs[0].value,
-            70000000000u + 80000000000u - 110000000000u - 5000u * 3);
+            70000000000u + 80000000000u - 110000000000u - 5000u * 2);
   EXPECT_EQ(tx_result.value().orchard_part().outputs[1].value, 110000000000u);
 
   EXPECT_EQ(tx_result.value().orchard_part().anchor_block_height.value(), 10u);
@@ -530,7 +530,7 @@ TEST_F(ZCashCreateOrchardToOrchardTransactionTaskTest,
   EXPECT_EQ(tx_result.value().orchard_part().inputs[0].note.amount, 70000u);
   EXPECT_EQ(tx_result.value().orchard_part().inputs[1].note.amount, 80000u);
 
-  EXPECT_EQ(tx_result.value().orchard_part().outputs[0].value, 135000u);
+  EXPECT_EQ(tx_result.value().orchard_part().outputs[0].value, 140000u);
 
   EXPECT_EQ(tx_result.value().orchard_part().anchor_block_height.value(), 10u);
 
@@ -597,7 +597,7 @@ TEST_F(ZCashCreateOrchardToOrchardTransactionTaskTest,
             80000000000u);
 
   EXPECT_EQ(tx_result.value().orchard_part().outputs[0].value,
-            70000000000u + 80000000000u - 3 * 5000u);
+            70000000000u + 80000000000u - 2 * 5000u);
 
   EXPECT_EQ(tx_result.value().orchard_part().anchor_block_height.value(), 10u);
 
