@@ -146,7 +146,7 @@ bool BraveContentSettingsAgentImpl::IsReduceLanguageEnabled() {
   return shields_settings_->reduce_language;
 }
 
-bool BraveContentSettingsAgentImpl::IsScriptBlockingEnforced() const {
+bool BraveContentSettingsAgentImpl::IsJsBlockingEnforced() const {
   if (!shields_settings_) {
     return false;
   }
@@ -191,7 +191,7 @@ bool BraveContentSettingsAgentImpl::AllowScript(bool enabled_per_settings) {
     }
   }
 
-  return IsScriptBlockingEnforced() ? false : allow;
+  return IsJsBlockingEnforced() ? false : allow;
 }
 
 void BraveContentSettingsAgentImpl::DidNotAllowScript() {
@@ -236,7 +236,7 @@ bool BraveContentSettingsAgentImpl::AllowScriptFromSource(
     }
   }
 
-  return IsScriptBlockingEnforced() ? false : allow;
+  return IsJsBlockingEnforced() ? false : allow;
 }
 
 blink::WebSecurityOrigin

@@ -120,7 +120,11 @@ function AdvancedControlsContent () {
   }
 
   const getEnforcedDescription = () => {
-    switch (siteSettings?.scriptsBlockedOverrideStatus.overrideSource) {
+    if (!siteSettings?.scriptsBlockedOverrideStatus) {
+      return getLocale('braveShieldsScriptsBlockedOverridden')
+    }
+
+    switch (siteSettings.scriptsBlockedOverrideStatus.overrideSource) {
       case ContentSettingSource.kExtension:
         return getLocale('braveShieldsScriptsBlockedOverriddenByExt')
       case ContentSettingSource.kPolicy:
@@ -147,12 +151,12 @@ function AdvancedControlsContent () {
     'isBraveForgetFirstPartyStorageFeatureEnabled'
   )
   const isEnforced =
-    siteSettings?.scriptsBlockedOverrideStatus.overrideSource !== undefined
-    && siteSettings?.scriptsBlockedOverrideStatus.status
+    siteSettings?.scriptsBlockedOverrideStatus?.overrideSource !== undefined
+    && siteSettings?.scriptsBlockedOverrideStatus?.status
       !== ContentSetting.DEFAULT
-    && siteSettings?.scriptsBlockedOverrideStatus.overrideSource
+    && siteSettings?.scriptsBlockedOverrideStatus?.overrideSource
       !== ContentSettingSource.kUser
-    && siteSettings?.scriptsBlockedOverrideStatus.overrideSource
+    && siteSettings?.scriptsBlockedOverrideStatus?.overrideSource
       !== ContentSettingSource.kNone
 
   return (

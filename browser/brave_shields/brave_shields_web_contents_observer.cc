@@ -52,8 +52,8 @@ namespace {
 
 BraveShieldsWebContentsObserver* g_receiver_impl_for_testing = nullptr;
 
-bool IsScriptBlockingEnforced(content::BrowserContext* browser_context,
-                              const GURL& url) {
+bool IsJsBlockingEnforced(content::BrowserContext* browser_context,
+                          const GURL& url) {
   Profile* profile = Profile::FromBrowserContext(browser_context);
   auto* settings_service =
       BraveShieldsSettingsServiceFactory::GetForProfile(profile);
@@ -61,7 +61,7 @@ bool IsScriptBlockingEnforced(content::BrowserContext* browser_context,
     return false;
   }
 
-  return settings_service->IsScriptBlockingEnforced(url);
+  return settings_service->IsJsBlockingEnforced(url);
 }
 
 }  // namespace
@@ -328,7 +328,7 @@ void BraveShieldsWebContentsObserver::SendShieldsSettings(
   agent->SetShieldsSettings(brave_shields::mojom::ShieldsSettings::New(
       farbling_level, farbling_token, allowed_scripts_,
       brave_shields::IsReduceLanguageEnabledForProfile(pref_service),
-      IsScriptBlockingEnforced(rfh->GetBrowserContext(), primary_url)));
+      IsJsBlockingEnforced(rfh->GetBrowserContext(), primary_url)));
 }
 
 void BraveShieldsWebContentsObserver::BindReceiver(

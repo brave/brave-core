@@ -83,9 +83,8 @@ struct SiteBlockInfo {
 };
 
 struct ContentSettingsOverriddenData {
-  content_settings.mojom.ContentSetting status
-          = content_settings.mojom.ContentSetting.DEFAULT;
-  ContentSettingSource override_source = kNone;
+  content_settings.mojom.ContentSetting status;
+  ContentSettingSource override_source;
 };
 
 struct SiteSettings {
@@ -95,6 +94,6 @@ struct SiteSettings {
   HttpsUpgradeMode https_upgrade_mode;
   bool is_noscript_enabled;
   bool is_forget_first_party_storage_enabled;
-  ContentSettingsOverriddenData scripts_blocked_override_status;
+  ContentSettingsOverriddenData? scripts_blocked_override_status;
   map<content_settings.mojom.ContentSettingsType, bool> webcompat_settings;
 };

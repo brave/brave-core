@@ -231,7 +231,71 @@ mojom::AutoShredMode BraveShieldsSettingsService::GetAutoShredMode(
           url, GURL(), AutoShredSetting::kContentSettingsType));
 }
 
-bool BraveShieldsSettingsService::IsScriptBlockingEnforced(const GURL& url) {
+void BraveShieldsSettingsService::SetDefaultAutoShredMode(
+    mojom::AutoShredMode mode) {
+  SetAutoShredMode(mode, GURL());
+}
+
+mojom::AutoShredMode BraveShieldsSettingsService::GetDefaultAutoShredMode() {
+  return GetAutoShredMode(GURL());
+}
+
+void BraveShieldsSettingsService::SetAutoShredMode(mojom::AutoShredMode mode,
+                                                   const GURL& url) {
+  // Shred and AutoShred delete data at the eTLD+1 boundary, because that’s
+  // the Web’s cookie boundary, so we must use the domain pattern to align
+  // with how browsers enforce storage boundaries.
+  auto primary_pattern = content_settings::CreateDomainPattern(url);
+
+  if (!primary_pattern.IsValid()) {
+    return;
+  }
+
+  host_content_settings_map_->SetWebsiteSettingCustomScope(
+      primary_pattern, ContentSettingsPattern::Wildcard(),
+      AutoShredSetting::kContentSettingsType, AutoShredSetting::ToValue(mode));
+}
+
+mojom::AutoShredMode BraveShieldsSettingsService::GetAutoShredMode(
+    const GURL& url) {
+  return AutoShredSetting::FromValue(
+      host_content_settings_map_->GetWebsiteSetting(
+          url, GURL(), AutoShredSetting::kContentSettingsType));
+}
+
+void BraveShieldsSettingsService::SetDefaultAutoShredMode(
+    mojom::AutoShredMode mode) {
+  SetAutoShredMode(mode, GURL());
+}
+
+mojom::AutoShredMode BraveShieldsSettingsService::GetDefaultAutoShredMode() {
+  return GetAutoShredMode(GURL());
+}
+
+void BraveShieldsSettingsService::SetAutoShredMode(mojom::AutoShredMode mode,
+                                                   const GURL& url) {
+  // Shred and AutoShred delete data at the eTLD+1 boundary, because that’s
+  // the Web’s cookie boundary, so we must use the domain pattern to align
+  // with how browsers enforce storage boundaries.
+  auto primary_pattern = content_settings::CreateDomainPattern(url);
+
+  if (!primary_pattern.IsValid()) {
+    return;
+  }
+
+  host_content_settings_map_->SetWebsiteSettingCustomScope(
+      primary_pattern, ContentSettingsPattern::Wildcard(),
+      AutoShredSetting::kContentSettingsType, AutoShredSetting::ToValue(mode));
+}
+
+mojom::AutoShredMode BraveShieldsSettingsService::GetAutoShredMode(
+    const GURL& url) {
+  return AutoShredSetting::FromValue(
+      host_content_settings_map_->GetWebsiteSetting(
+          url, GURL(), AutoShredSetting::kContentSettingsType));
+}
+
+bool BraveShieldsSettingsService::IsJsBlockingEnforced(const GURL& url) {
   const auto js_content_settings_overridden_data =
       GetJsContentSettingsOverriddenData(url);
   return js_content_settings_overridden_data &&
@@ -247,10 +311,9 @@ BraveShieldsSettingsService::GetJsContentSettingsOverriddenData(
       url, GURL(), content_settings::mojom::ContentSettingsType::JAVASCRIPT,
       &info);
 
+  // No override
   if (info.source == content_settings::SettingSource::kUser) {
-    return mojom::ContentSettingsOverriddenData::New(
-        ::ContentSetting::CONTENT_SETTING_DEFAULT,
-        ConvertSettingsSource(info.source));
+    return nullptr;
   }
 
   return mojom::ContentSettingsOverriddenData::New(
