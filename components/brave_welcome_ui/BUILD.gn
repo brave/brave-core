@@ -13,6 +13,8 @@ transpile_web_ui("brave_welcome_ui") {
       ] ]
 
   resource_name = "brave_welcome"
+
+  imports_from = [ "//brave/components/brave_welcome_ui/" ]
 }
 
 pack_web_resources("generated_resources") {

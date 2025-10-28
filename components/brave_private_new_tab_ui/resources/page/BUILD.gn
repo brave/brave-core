@@ -12,6 +12,8 @@ transpile_web_ui("brave_private_new_tab_ui") {
         rebase_path("private_new_tab.tsx"),
       ] ]
   resource_name = "brave_private_new_tab"
+  imports_from =
+      [ "//brave/components/brave_private_new_tab_ui/resources/page/" ]
   deps = [ "//brave/components/brave_private_new_tab_ui/common:mojom_js" ]
 }
 

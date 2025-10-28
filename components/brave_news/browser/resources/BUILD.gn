@@ -12,6 +12,8 @@ transpile_web_ui("brave_news_internals") {
         rebase_path("internals.tsx"),
       ] ]
 
+  imports_from = [ "//brave/components/brave_news/browser/resources/" ]
+
   deps = [
     "//brave/components/brave_news/common",
     "//brave/components/brave_news/common:mojom",

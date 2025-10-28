@@ -13,4 +13,5 @@ transpile_web_ui("internals") {
       ] ]
 
   resource_name = "tor_internals"
+  imports_from = [ "//brave/components/tor/resources/internals/" ]
 }

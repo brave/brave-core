@@ -18,6 +18,7 @@ transpile_web_ui("skus_internals_ui") {
   ]
 
   resource_name = "skus_internals"
+  imports_from = [ "//brave/components/skus/browser/resources/" ]
 }
 
 pack_web_resources("generated_resources") {

@@ -18,6 +18,11 @@ transpile_web_ui("brave_wallet_deposit_page_ui") {
     "//brave/components/brave_wallet/common:mojom_js",
     "//brave/components/brave_wallet/common:preprocess_mojo",
   ]
+  imports_from = [
+    "//brave/components/brave_wallet_ui/",
+    "//brave/components/brave_rewards/resources/rewards_page/",
+    "//brave/components/",
+  ]
 }
 
 pack_web_resources("brave_wallet_deposit_page_generated") {
