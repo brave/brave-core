@@ -1,0 +1,111 @@
+<!doctype html>
+<html>
+<head>
+<script type="module">
+
+setupEventButton()
+setupSearchInput()
+
+window.addEventListener('message', (event) => {
+  if (event.origin === location.origin) {
+    switch (event.data.type) {
+      case 'richMediaSafeRect': {
+        const { style } = document.getElementById('safe-area')
+        style.top = event.data.value.y + 'px'
+        style.left = event.data.value.x + 'px'
+        style.width = event.data.value.width + 'px'
+        style.height = event.data.value.height + 'px'
+        break
+      }
+      case 'richMediaSearchMatches': {
+        document.querySelector('.search-matches').replaceChildren(
+          elemWithText('div', `Search results update time: ${Date.now()}`),
+          ...event.data.value.map((entry) => {
+            const contents = decodeString16(entry.contents)
+            const description = decodeString16(entry.description)
+            return elemWithText('div', `${contents}: ${description}`)
+          })
+        )
+        break
+      }
+    }
+  }
+})
+
+function elemWithText(tag, text) {
+  const elem = document.createElement(tag)
+  elem.innerText = text
+  return elem
+}
+
+function decodeString16(string16) {
+  return String.fromCodePoint(...string16.data);
+}
+
+function setupEventButton() {
+  const typeInput = document.querySelector('.event-input .event-type')
+  const valueInput = document.querySelector('.event-input .event-value')
+  const sendEventButton = document.querySelector('.event-input button')
+  sendEventButton.addEventListener('click', () => {
+    window.parent.postMessage({
+      type: typeInput.value,
+      value: valueInput.value
+    }, location.origin)
+    valueInput.value = ''
+  })
+}
+
+function setupSearchInput() {
+  const input = document.querySelector('.search-input input')
+  input.addEventListener('input', () => {
+    if (input.value) {
+      window.parent.postMessage({
+        type: 'richMediaQueryBraveSearchAutocomplete',
+        value: input.value
+      }, location.origin)
+    }
+  })
+}
+
+</script>
+<style>
+
+  html {
+    background: #999;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  #safe-area {
+    border: solid 2px green;
+    border-radius: 8px;
+    background-color: #eee;
+    position: absolute;
+    width: 0;
+    height: 0;
+    overflow: auto;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+</style>
+</head>
+<body>
+  <div id="safe-area">
+    <div class="event-input">
+      <input class="event-type" type="text" value="richMediaEvent">
+      <input class="event-value" type="text">
+      <button>Send Event</button>
+    </div>
+    <div class="search-input">
+      <input type="text">
+    </div>
+    <div class="search-matches">
+    </div>
+  </div>
+</body>
+</html>

@@ -11,6 +11,8 @@ import {
   NewTabPageAdMetricType,
   SelectedBackgroundType } from '../state/background_state'
 
+import { StorybookArgs } from './storybook_args'
+
 function delay(ms: number) {
   return new Promise((resolve) => {
     setTimeout(resolve, ms)
@@ -37,7 +39,7 @@ const sponsoredBackgrounds = {
 
   richMedia: {
     wallpaperType: 'richMedia',
-    imageUrl: 'https://en.wikipedia.org/wiki/Main_Page',
+    imageUrl: './ntp-assets/fake_rich_media_background.html',
     campaignId: '1234',
     creativeInstanceId: '',
     wallpaperId: '',
@@ -53,7 +55,8 @@ const sponsoredBackgrounds = {
 }
 
 export function createBackgroundHandler(
-  store: Store<BackgroundState>
+  store: Store<BackgroundState>,
+  args: StorybookArgs
 ): BackgroundActions {
   store.update({
     initialized: true,
@@ -65,12 +68,14 @@ export function createBackgroundHandler(
       }
     ],
     backgroundRandomValue: Math.random(),
-    sponsoredImageBackground: sponsoredBackgrounds.none
+    sponsoredImageBackground:
+      args.sponsoredBackgroundType === 'rich' ? sponsoredBackgrounds.richMedia :
+      args.sponsoredBackgroundType === 'image' ? sponsoredBackgrounds.image :
+      sponsoredBackgrounds.none
   })
 
   store.update({
-    sponsoredRichMediaBaseUrl:
-      new URL(sponsoredBackgrounds.richMedia.imageUrl).origin
+    sponsoredRichMediaBaseUrl: location.origin
   })
 
   return {
