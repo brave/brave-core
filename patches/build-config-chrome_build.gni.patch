@@ -1,5 +1,5 @@
 diff --git a/build/config/chrome_build.gni b/build/config/chrome_build.gni
-index 75a22b279877124c683a8935624b2795093724ed..156bf539f28c3b98c54c3037973fd2d55b202bb7 100644
+index 99758f6df440fbbadcf639c164f5d137b7f5652e..e1900fef458a1cb0c79cabc62b2ac5e412d90416 100644
 --- a/build/config/chrome_build.gni
 +++ b/build/config/chrome_build.gni
 @@ -1,6 +1,7 @@
@@ -9,4 +9,4 @@ index 75a22b279877124c683a8935624b2795093724ed..156bf539f28c3b98c54c3037973fd2d5
 +import("//brave/build/config/brave_build.gni")
  
  import("//build/config/gclient_args.gni")
- 
+ import("//build_overrides/build.gni")
