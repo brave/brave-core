@@ -3,9 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import * as React from 'react'
-import { ManagePageConnected } from '../email_aliases'
-import { EmailAliasModal } from '../content/email_aliases_modal'
 import { getLocale } from '$web-common/locale'
 import {
   Alias,
@@ -20,11 +17,7 @@ import {
   EmailAliasesService_RequestAuthentication_ResponseParam_Result,
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
 
-export default {
-  title: 'Email Aliases',
-}
-
-const demoData = {
+export const demoData = {
   email: 'aguscr182@gmail.com',
   aliases: [
     {
@@ -45,7 +38,7 @@ const demoData = {
   ],
 } satisfies { email: string; aliases: Alias[] }
 
-class StubEmailAliasesService implements EmailAliasesServiceInterface {
+export class StubEmailAliasesService implements EmailAliasesServiceInterface {
   aliases: Map<string, Alias>
   authState: AuthState
   accountRequestId: number
@@ -79,9 +72,7 @@ class StubEmailAliasesService implements EmailAliasesServiceInterface {
     note: string | null,
   ): Promise<{ result: EmailAliasesService_UpdateAlias_ResponseParam_Result }> {
     if (Math.random() < 1 / 3) {
-      return Promise.reject(
-        getLocale(S.SETTINGS_EMAIL_ALIASES_UPDATE_ALIAS_ERROR),
-      )
+      return Promise.reject(getLocale('emailAliasesUpdateAliasError'))
     }
     const alias = { email: aliasEmail, note: note ?? '', domains: undefined }
     this.aliases.set(aliasEmail, alias)
@@ -95,9 +86,7 @@ class StubEmailAliasesService implements EmailAliasesServiceInterface {
     aliasEmail: string,
   ): Promise<{ result: EmailAliasesService_DeleteAlias_ResponseParam_Result }> {
     if (Math.random() < 1 / 3) {
-      return Promise.reject(
-        getLocale(S.SETTINGS_EMAIL_ALIASES_DELETE_ALIAS_ERROR),
-      )
+      return Promise.reject(getLocale('emailAliasesDeleteAliasError'))
     }
     this.aliases.delete(aliasEmail)
     this.observers.forEach((observer) => {
@@ -111,7 +100,7 @@ class StubEmailAliasesService implements EmailAliasesServiceInterface {
   }> {
     await new Promise((resolve) => setTimeout(resolve, 1000))
     if (Math.random() < 1 / 3) {
-      return Promise.reject(getLocale(S.SETTINGS_EMAIL_ALIASES_GENERATE_ERROR))
+      return Promise.reject(getLocale('emailAliasesGenerateError'))
     }
     let aliasEmail: string = ''
     do {
@@ -126,9 +115,7 @@ class StubEmailAliasesService implements EmailAliasesServiceInterface {
     result: EmailAliasesService_RequestAuthentication_ResponseParam_Result
   }> {
     if (Math.random() < 1 / 3) {
-      return Promise.reject(
-        getLocale(S.SETTINGS_EMAIL_ALIASES_REQUEST_AUTHENTICATION_ERROR),
-      )
+      return Promise.reject(getLocale('emailAliasesRequestAuthenticationError'))
     }
     this.observers.forEach((observer) => {
       observer.onAuthStateChanged({
@@ -163,65 +150,4 @@ class StubEmailAliasesService implements EmailAliasesServiceInterface {
   showSettingsPage() {
     // Do nothing in this mock implementation.
   }
-}
-
-const stubEmailAliasesServiceNoAccountInstance = new StubEmailAliasesService({
-  status: AuthenticationStatus.kUnauthenticated,
-  email: '',
-  errorMessage: undefined,
-})
-
-const stubEmailAliasesServiceAccountReadyInstance = new StubEmailAliasesService(
-  {
-    status: AuthenticationStatus.kAuthenticated,
-    email: demoData.email,
-    errorMessage: undefined,
-  },
-)
-
-const bindNoAccountObserver = (
-  observer: EmailAliasesServiceObserverInterface,
-) => {
-  stubEmailAliasesServiceNoAccountInstance.addObserver(observer)
-  return () => {} // Do nothing in this mock implementation.
-}
-
-const bindAccountReadyObserver = (
-  observer: EmailAliasesServiceObserverInterface,
-) => {
-  stubEmailAliasesServiceAccountReadyInstance.addObserver(observer)
-  return () => {} // Do nothing in this mock implementation.
-}
-
-export const SignInPage = () => {
-  return (
-    <ManagePageConnected
-      emailAliasesService={stubEmailAliasesServiceNoAccountInstance}
-      bindObserver={bindNoAccountObserver}
-    />
-  )
-}
-
-export const SettingsPage = () => {
-  return (
-    <ManagePageConnected
-      emailAliasesService={stubEmailAliasesServiceAccountReadyInstance}
-      bindObserver={bindAccountReadyObserver}
-    />
-  )
-}
-
-export const Bubble = () => {
-  return (
-    <div style={{ width: '420px', margin: '0 auto' }}>
-      <EmailAliasModal
-        aliasCount={demoData.aliases.length}
-        onReturnToMain={() => {}}
-        editing={false}
-        mainEmail={demoData.email}
-        bubble={true}
-        emailAliasesService={stubEmailAliasesServiceAccountReadyInstance}
-      />
-    </div>
-  )
 }
