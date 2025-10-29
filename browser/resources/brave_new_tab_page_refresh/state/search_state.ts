@@ -3,8 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import * as mojom from 'chrome://resources/mojo/components/omnibox/browser/searchbox.mojom-webui.js'
-
 export const braveSearchHost = 'search.brave.com'
 
 export interface SearchEngineInfo {
@@ -15,16 +13,14 @@ export interface SearchEngineInfo {
   faviconUrl: string
 }
 
-// In order to isolate ourselves from the large number of properties in the
-// mojo type for testing/mocking purposes, we pick out only the fields that we
-// require.
-export type AutocompleteMatch = Pick<mojom.AutocompleteMatch,
-  'allowedToBeDefaultMatch' |
-  'contents' |
-  'description' |
-  'iconUrl' |
-  'imageUrl' |
-  'destinationUrl'>
+export interface AutocompleteMatch {
+  allowedToBeDefaultMatch: boolean
+  contents: string
+  description: string
+  iconUrl: string
+  imageUrl: string
+  destinationUrl: string
+}
 
 export interface SearchState {
   initialized: boolean

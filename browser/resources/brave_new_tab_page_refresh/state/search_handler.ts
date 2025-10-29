@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { stringToMojoString16 } from 'chrome://resources/js/mojo_type_util.js'
+import { stringToMojoString16, mojoString16ToString } from 'chrome://resources/js/mojo_type_util.js'
 
 import { loadTimeData } from '$web-common/loadTimeData'
 import { SearchBoxProxy } from './search_box_proxy'
@@ -126,7 +126,14 @@ export function createSearchHandler(
           match.contents = match.description
           match.description = contents
         }
-        return match
+        return {
+          allowedToBeDefaultMatch: match.allowedToBeDefaultMatch,
+          contents: mojoString16ToString(match.contents),
+          description: mojoString16ToString(match.description),
+          iconUrl: match.iconUrl.url,
+          imageUrl: match.imageUrl,
+          destinationUrl: match.destinationUrl.url,
+        }
       })
       store.update({ searchMatches })
     }
@@ -212,7 +219,7 @@ export function createSearchHandler(
       }
       searchProxy.handler.openAutocompleteMatch(
           index,
-          match.destinationUrl,
+          stringToMojoString16(match.destinationUrl),
           true,
           event.button,
           event.altKey,

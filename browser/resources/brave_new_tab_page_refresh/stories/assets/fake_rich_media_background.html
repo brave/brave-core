@@ -21,8 +21,7 @@ window.addEventListener('message', (event) => {
         document.querySelector('.search-matches').replaceChildren(
           elemWithText('div', `Search results update time: ${Date.now()}`),
           ...event.data.value.map((entry) => {
-            const contents = decodeString16(entry.contents)
-            const description = decodeString16(entry.description)
+            const { contents, description } = entry
             return elemWithText('div', `${contents}: ${description}`)
           })
         )
@@ -36,10 +35,6 @@ function elemWithText(tag, text) {
   const elem = document.createElement(tag)
   elem.innerText = text
   return elem
-}
-
-function decodeString16(string16) {
-  return String.fromCodePoint(...string16.data);
 }
 
 function setupEventButton() {
