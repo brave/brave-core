@@ -33,9 +33,6 @@ class BlockchainImagesSource : public content::URLDataSource,
                         GotDataCallback callback) override;
   std::string GetMimeType(const GURL& url) override;
   bool AllowCaching() override;
-
-  void OnGotImageFile(GotDataCallback callback,
-                      std::optional<std::string> input);
 };
 
 }  // namespace brave_wallet

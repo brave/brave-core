@@ -598,10 +598,6 @@ source_set("blockchain_images_source") {
     "//base",
     "//brave/components/brave_wallet/browser",
   ]
-
-  if (!is_ios) {
-    deps += [ "//content/public/browser" ]
-  }
 }
 
 generated_types("generated_blockchain_list_schemas") {
@@ -858,13 +854,6 @@ source_set("unit_tests") {
     "//ui/base",
     "//url",
   ]
-
-  if (!is_ios) {
-    deps += [
-      "//content/public/browser",
-      "//content/test:test_support",
-    ]
-  }
 
   if (enable_orchard) {
     sources += [
