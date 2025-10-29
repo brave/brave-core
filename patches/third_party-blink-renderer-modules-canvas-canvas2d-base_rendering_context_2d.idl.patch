@@ -1,15 +1,15 @@
 diff --git a/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.idl b/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.idl
-index 3e7bc3df8885c484a110bed0ac6428354c1539df..f75bdfdc61625b8f442a5377bbafb56105d3302e 100644
+index 870ef9f8fc63390c7315efb57f58ea08dd8b19aa..875c00ee3e13cccad4f944c3a5852d30a6229a99 100644
 --- a/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.idl
 +++ b/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.idl
 @@ -25,8 +25,8 @@ interface mixin BaseRenderingContext2D {
      [RaisesException] ImageData createImageData(ImageData imagedata);
      [RaisesException] ImageData createImageData([EnforceRange] long sw, [EnforceRange] long sh);
      [RaisesException] ImageData createImageData([EnforceRange] long sw, [EnforceRange] long sh, ImageDataSettings imageDataSettings);
--    [HighEntropy, MeasureAs=Canvas2DGetImageData, RaisesException] ImageData getImageData([EnforceRange] long sx, [EnforceRange] long sy, [EnforceRange] long sw, [EnforceRange] long sh);
--    [HighEntropy, MeasureAs=Canvas2DGetImageData, RaisesException] ImageData getImageData([EnforceRange] long sx, [EnforceRange] long sy, [EnforceRange] long sw, [EnforceRange] long sh, ImageDataSettings imageDataSettings);
-+    [CallWith=ScriptState, HighEntropy, MeasureAs=Canvas2DGetImageData, RaisesException] ImageData getImageData([EnforceRange] long sx, [EnforceRange] long sy, [EnforceRange] long sw, [EnforceRange] long sh);
-+    [CallWith=ScriptState, HighEntropy, MeasureAs=Canvas2DGetImageData, RaisesException] ImageData getImageData([EnforceRange] long sx, [EnforceRange] long sy, [EnforceRange] long sw, [EnforceRange] long sh, ImageDataSettings imageDataSettings);
+-    [MeasureAs=Canvas2DGetImageData, RaisesException] ImageData getImageData([EnforceRange] long sx, [EnforceRange] long sy, [EnforceRange] long sw, [EnforceRange] long sh);
+-    [MeasureAs=Canvas2DGetImageData, RaisesException] ImageData getImageData([EnforceRange] long sx, [EnforceRange] long sy, [EnforceRange] long sw, [EnforceRange] long sh, ImageDataSettings imageDataSettings);
++    [CallWith=ScriptState, MeasureAs=Canvas2DGetImageData, RaisesException] ImageData getImageData([EnforceRange] long sx, [EnforceRange] long sy, [EnforceRange] long sw, [EnforceRange] long sh);
++    [CallWith=ScriptState, MeasureAs=Canvas2DGetImageData, RaisesException] ImageData getImageData([EnforceRange] long sx, [EnforceRange] long sy, [EnforceRange] long sw, [EnforceRange] long sh, ImageDataSettings imageDataSettings);
      [NoAllocDirectCall, RaisesException] void putImageData(ImageData imagedata, [EnforceRange] long dx, [EnforceRange] long dy);
      [NoAllocDirectCall, RaisesException] void putImageData(ImageData imagedata, [EnforceRange] long dx, [EnforceRange] long dy, [EnforceRange] long dirtyX, [EnforceRange] long dirtyY, [EnforceRange] long dirtyWidth, [EnforceRange] long dirtyHeight);
  

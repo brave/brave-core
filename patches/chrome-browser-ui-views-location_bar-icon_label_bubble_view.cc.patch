@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/ui/views/location_bar/icon_label_bubble_view.cc b/chrome/browser/ui/views/location_bar/icon_label_bubble_view.cc
-index e267dfd4d8b245be9103f0b29176f877b4bc9c50..67d6efa2652586be474d2c6400efcb3be746d989 100644
+index 3544f1b569ee1629933deb89657d25278d754de6..80d222844d645c38219bf3648003a7470682f12d 100644
 --- a/chrome/browser/ui/views/location_bar/icon_label_bubble_view.cc
 +++ b/chrome/browser/ui/views/location_bar/icon_label_bubble_view.cc
-@@ -825,6 +825,7 @@ SkPath IconLabelBubbleView::GetHighlightPath() const {
-       SkIntToScalar(radii.lower_right()), SkIntToScalar(radii.lower_right()),
-       SkIntToScalar(radii.lower_left()),  SkIntToScalar(radii.lower_left())};
+@@ -826,6 +826,7 @@ SkPath IconLabelBubbleView::GetHighlightPath() const {
+                                 {radii.lower_right(), radii.lower_right()},
+                                 {radii.lower_left(), radii.lower_left()}};
  
 +  BRAVE_ICON_LABEL_BUBBLE_VIEW_GET_HIGHLIGHT_PATH
-   return SkPath().addRoundRect(rect, sk_radii);
+   return SkPath::RRect(SkRRect::MakeRectRadii(rect, sk_radii));
  }
  

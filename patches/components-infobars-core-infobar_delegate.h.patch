@@ -1,11 +1,11 @@
 diff --git a/components/infobars/core/infobar_delegate.h b/components/infobars/core/infobar_delegate.h
-index 20a8371d17c74787a7f1307b76d986ecc35fc092..df77f37857aa5c85cea22230ffaa5e85b3408446 100644
+index d2682c122b10a0aaff2eb42c818d48f654dab821..c62309acbc723f8453425b1223f83d2fd1363ec3 100644
 --- a/components/infobars/core/infobar_delegate.h
 +++ b/components/infobars/core/infobar_delegate.h
-@@ -195,6 +195,7 @@ class InfoBarDelegate {
-     PIN_INFOBAR_DELEGATE = 127,
+@@ -212,6 +212,7 @@ class InfoBarDelegate {
      SESSION_RESTORE_INFOBAR_DELEGATE = 128,
      ROLL_BACK_MODE_B_INFOBAR_DELEGATE = 129,
+     DEV_TOOLS_REMOTE_DEBUGGING_INFOBAR_DELEGATE = 130,
 +    BRAVE_INFOBAR_DELEGATE_IDENTIFIERS
    };
    // LINT.ThenChange(//tools/metrics/histograms/metadata/browser/enums.xml:InfoBarIdentifier)

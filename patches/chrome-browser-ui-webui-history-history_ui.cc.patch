@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/ui/webui/history/history_ui.cc b/chrome/browser/ui/webui/history/history_ui.cc
-index f13c85b49910ad80921753eaa2be32063e0c852c..4fdd77f596f8b285c265d0d1178591a5e253f3e4 100644
+index edc6ec2eb41abd10fb35fa6469e6aa2e7e755a3b..892bf4b631e7a8b00d0649101d0beb83f02cc693 100644
 --- a/chrome/browser/ui/webui/history/history_ui.cc
 +++ b/chrome/browser/ui/webui/history/history_ui.cc
-@@ -83,6 +83,7 @@ content::WebUIDataSource* CreateAndAddHistoryUIHTMLSource(Profile* profile) {
-       base::FeatureList::IsEnabled(syncer::kReplaceSyncPromosWithSignInPromos));
+@@ -88,6 +88,7 @@ content::WebUIDataSource* CreateAndAddHistoryUIHTMLSource(Profile* profile) {
+ #endif  // BUILDFLAG!(IS_CHROMEOS)
  
    HistoryUtil::PopulateCommonSourceForHistory(source, profile);
 +  BRAVE_CREATE_HISTORY_UI_HTML_SOURCE
