@@ -30,7 +30,7 @@ BASE_FEATURE(kInProcessBraveAdsServiceFeature,
              base::FEATURE_ENABLED_BY_DEFAULT);
 
 constexpr base::FeatureParam<base::TimeDelta> kBraveAdsServiceStartupDelay{
-    &kInProcessBraveAdsServiceFeature, "startup_delay", base::Seconds(3)};
+    &kInProcessBraveAdsServiceFeature, "startup_delay", base::Seconds(0)};
 
 // Binds the `receiver` to a new provider on a background task runner.
 void BindInProcessBatAdsService(
