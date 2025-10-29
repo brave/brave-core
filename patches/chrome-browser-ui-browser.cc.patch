@@ -1,17 +1,17 @@
 diff --git a/chrome/browser/ui/browser.cc b/chrome/browser/ui/browser.cc
-index e550b21eba674396ba97b9ec21535964502d1b36..70e8c41181918dd68b41d29889ddc653f82ae2ba 100644
+index b3eb633c290c5385a58b66a97b1a57b3fe080ab2..8774dc508715f709b02ccf8e23c9ded20373cc17 100644
 --- a/chrome/browser/ui/browser.cc
 +++ b/chrome/browser/ui/browser.cc
-@@ -549,7 +549,7 @@ Browser* Browser::Create(const CreateParams& params) {
+@@ -553,7 +553,7 @@ Browser* Browser::Create(const CreateParams& params) {
    // should handle this; see e.g. crbug.com/1141608 and crbug.com/1261628.
    CHECK_EQ(CreationStatus::kOk, GetCreationStatusForProfile(params.profile));
- 
+
 -  std::unique_ptr<Browser> browser = base::WrapUnique(new Browser(params));
 +  std::unique_ptr<Browser> browser = base::WrapUnique(new BraveBrowser(params));
    Browser* const browser_ptr = browser.get();
    BrowserManagerServiceFactory::GetForProfile(params.profile)
        ->AddBrowser(std::move(browser));
-@@ -574,7 +574,7 @@ Browser::Browser(const CreateParams& params)
+@@ -578,7 +578,7 @@ Browser::Browser(const CreateParams& params)
        window_(nullptr),
        tab_strip_model_delegate_(
            std::make_unique<chrome::BrowserTabStripModelDelegate>(this)),
@@ -20,11 +20,11 @@ index e550b21eba674396ba97b9ec21535964502d1b36..70e8c41181918dd68b41d29889ddc653
            tab_strip_model_delegate_.get(),
            params.profile,
            // Tab groups are disabled for app browsers.
-@@ -1336,6 +1336,7 @@ void Browser::OnWindowClosing() {
+@@ -1343,6 +1343,7 @@ void Browser::OnWindowClosing() {
    if (tab_restore_service && notify_restore_service) {
      tab_restore_service->BrowserClosing(GetFeatures().live_tab_context());
    }
 +  BRAVE_BROWSER_ON_WINDOW_CLOSING
- 
-   BrowserList::NotifyBrowserCloseStarted(this);
- 
+
+   if (!tab_strip_model_->empty()) {
+     // Closing all the tabs results in eventually calling back to
