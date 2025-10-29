@@ -653,9 +653,14 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithSplitViewTest,
       SidebarService::ShowSidebarOption::kShowOnMouseOver);
 
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
-  auto* contents_container = browser_view->contents_container();
+  auto* main_container = browser_view->main_container();
   auto* prefs = browser()->profile()->GetPrefs();
   auto* sidebar_container = GetSidebarContainerView();
+
+  // We assume main container is outer-most view for contents.
+  // Its width should be same with browser view.
+  // This test verifies mouse hover test based on that assumption.
+  EXPECT_EQ(browser_view->width(), main_container->width());
 
   ui::test::EventGenerator event_generator(
       views::GetRootWindow(browser_view->GetWidget()));
@@ -666,10 +671,10 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithSplitViewTest,
 
   // Set mouse position inside the mouse hover area to check sidebar UI is shown
   // with that mouse position when sidebar is on right side.
-  auto contents_container_rect = contents_container->GetLocalBounds();
-  gfx::Point mouse_position = contents_container_rect.top_right();
+  auto main_container_rect = main_container->GetLocalBounds();
+  gfx::Point mouse_position = main_container_rect.top_right();
   mouse_position.Offset(-2, 2);
-  views::View::ConvertPointToWidget(contents_container, &mouse_position);
+  views::View::ConvertPointToWidget(main_container, &mouse_position);
   event_generator.MoveMouseToInHost(mouse_position);
   EXPECT_TRUE(sidebar_container->IsSidebarVisible());
 
@@ -680,13 +685,13 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithSplitViewTest,
   HideSidebar(true);
   ASSERT_TRUE(base::test::RunUntil(
       [&]() { return !sidebar_container->IsSidebarVisible(); }));
-  contents_container_rect = contents_container->GetLocalBounds();
-  mouse_position = contents_container_rect.origin();
+  main_container_rect = main_container->GetLocalBounds();
+  mouse_position = main_container_rect.origin();
 
   // Set mouse position inside the mouse hover area to check sidebar UI is shown
   // with that mouse position when sidebar is on left side.
   mouse_position.Offset(2, 2);
-  views::View::ConvertPointToWidget(contents_container, &mouse_position);
+  views::View::ConvertPointToWidget(main_container, &mouse_position);
   event_generator.MoveMouseToInHost(mouse_position);
   EXPECT_TRUE(sidebar_container->IsSidebarVisible());
 
@@ -695,15 +700,15 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithSplitViewTest,
   ASSERT_TRUE(base::test::RunUntil(
       [&]() { return !sidebar_container->IsSidebarVisible(); }));
 
-  contents_container_rect = contents_container->GetLocalBounds();
-  contents_container_rect.Outset(
+  main_container_rect = main_container->GetLocalBounds();
+  main_container_rect.Outset(
       BraveContentsViewUtil::GetRoundedCornersWebViewMargin(browser()));
 
   // Check with the space between window border and contents.
   // We have that space with rounded corners.
   // When mouse moves into that space, sidebar should be visible.
-  mouse_position = contents_container_rect.origin();
-  views::View::ConvertPointToWidget(contents_container, &mouse_position);
+  mouse_position = main_container_rect.origin();
+  views::View::ConvertPointToWidget(main_container, &mouse_position);
   event_generator.MoveMouseToInHost(mouse_position);
   EXPECT_TRUE(sidebar_container->IsSidebarVisible());
 

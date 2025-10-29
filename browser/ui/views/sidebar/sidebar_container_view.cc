@@ -188,13 +188,8 @@ void SidebarContainerView::ShowSidebarOnMouseOver(
 
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser_);
   gfx::RectF mouse_event_detect_bounds(
-      browser_view->contents_container()->GetBoundsInScreen());
+      browser_view->main_container()->GetBoundsInScreen());
 
-  // Detect bounds should include rounded corners margin to make sidebar
-  // visible from that padding also.
-  const auto web_view_margin =
-      BraveContentsViewUtil::GetRoundedCornersWebViewMargin(browser_);
-  mouse_event_detect_bounds.Outset(web_view_margin);
   constexpr int kHotCornerWidth = 7;
   const int inset = mouse_event_detect_bounds.width() - kHotCornerWidth;
   if (sidebar_on_left_) {

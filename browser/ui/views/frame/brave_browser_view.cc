@@ -89,6 +89,7 @@
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/compositor/layer.h"
+#include "ui/display/screen.h"
 #include "ui/events/event.h"
 #include "ui/events/event_observer.h"
 #include "ui/gfx/geometry/rounded_corners_f.h"
@@ -1073,7 +1074,11 @@ void BraveBrowserView::HandleSidebarOnMouseOverMouseEvent(
   CHECK(event.type() == ui::EventType::kMouseMoved);
 
   if (sidebar_container_view_) {
-    sidebar_container_view_->ShowSidebarOnMouseOver(event.root_location_f());
+    // Use GetCursorScreenPoint() to get current mouse position in screen.
+    // event.root_location_f() could not give in screen coordinate in some
+    // situation.
+    sidebar_container_view_->ShowSidebarOnMouseOver(
+        gfx::PointF(display::Screen::Get()->GetCursorScreenPoint()));
   }
 }
 
