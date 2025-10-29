@@ -80,6 +80,7 @@ class NTPBackgroundImagesService {
   NTPSponsoredImagesData* GetSponsoredImagesData(
       bool super_referral,
       bool supports_rich_media) const;
+  virtual void RegisterSponsoredImagesComponent();
 
   bool IsSuperReferral() const;
   std::string GetSuperReferralThemeName() const;
@@ -202,7 +203,6 @@ class NTPBackgroundImagesService {
   // virtual for test.
   virtual void CheckSuperReferralComponent();
   virtual void RegisterBackgroundImagesComponent();
-  virtual void RegisterSponsoredImagesComponent();
   virtual void RegisterSuperReferralComponent();
   virtual void DownloadSuperReferralMappingTable();
   virtual void MonitorReferralPromoCodeChange();
