@@ -7,25 +7,11 @@
 
 #include <optional>
 
-#include "base/feature_list.h"
-#include "brave/components/ntp_background_images/browser/features.h"
 #include "build/build_config.h"
 
 namespace ntp_background_images {
 
 namespace {
-
-constexpr SponsoredImagesComponentData kDemoData = {
-    "DEMO",
-    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAw+cUN/"
-    "flbETi5zyjp4tRW4ustichzvFqeY4ayWpi/"
-    "r+TwRgUaf0IyK2GYZF1xBsiuGO3B321ptcF7lpru32dxc2GUX7GLVHnYw+"
-    "kM9bfw3WVqLPXVozCbyjqCW8IQXuUljOJ4tD9gJe8xvBeZ/"
-    "WKg2K+7sYuhov6mcbBoUd4WLZW+89ryuBfZFi/4U6MX4Hemsw40Z3KHf/"
-    "gAHpXXeU65Sqb8AhVMp0nckaX5u4vN09OTHLPAmCZmps5TcExoYwSPQaFK+6HrUV0/"
-    "66Xw3kqo05CvN3bCC1UlDk3KAffg3LZ8u1E3gFcwK6xSjHYknGOuxabTVS6cNGECOEWKVs"
-    "URwIDAQAB",
-    "bejfdgcfgammhkbdmbaohoknehcdnbmn"};
 
 // This list should be synced with the list of generateNTPSponsoredImages.js
 // and packageNTPSponsoredImagesComponents.js in brave-core-crx-packager.
@@ -7121,10 +7107,6 @@ constexpr SponsoredImagesComponentData kRegionalData[] = {
 
 std::optional<SponsoredImagesComponentData> GetSponsoredImagesComponentData(
     const std::string& region) {
-  if (base::FeatureList::IsEnabled(features::kBraveNTPBrandedWallpaperDemo)) {
-    return kDemoData;
-  }
-
   for (const auto& data : kRegionalData) {
     if (data.region == region) {
       return data;
