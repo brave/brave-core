@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import '../brave_appearance_page/super_referral.js'
 import '../brave_appearance_page/toolbar.js'
 
 import {
@@ -14,38 +13,8 @@ import {
 import { loadTimeData } from '../i18n_setup.js'
 
 
-const superReferralStringId = 'superReferralThemeName'
-
 RegisterPolymerTemplateModifications({
   'settings-appearance-page': (templateContent) => {
-    // Super-referral
-    // W/o super referral, we don't need to themes link option with themes sub
-    // page.
-    const hasSuperReferral = (
-      loadTimeData.valueExists(superReferralStringId) &&
-      loadTimeData.getString(superReferralStringId) !== ''
-    )
-    if (hasSuperReferral) {
-      // Subpage
-      const pages = templateContent.getElementById('pages')
-      if (!pages) {
-        console.error(
-          `[Settings] Couldn't find appearance_page #pages`)
-      } else {
-        pages.appendChild(
-          html`
-            <template is="dom-if" route-path="/themes">
-              <settings-subpage
-                associated-control="[[$$('#themes-subpage-trigger')]]"
-                page-title="${loadTimeData.getString('themes')}">
-                <settings-brave-appearance-super-referral prefs="{{prefs}}">
-                </settings-brave-appearance-super-referral>
-              </settings-subpage>
-            </template>
-          `)
-      }
-    }
-
     // Remove home button toggle & options template as it's moved into
     // address bar sub section
     const homeButtonToggle = templateContent.querySelector(

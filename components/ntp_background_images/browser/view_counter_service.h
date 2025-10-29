@@ -34,10 +34,6 @@ namespace brave_ads {
 class AdsService;
 }  // namespace brave_ads
 
-namespace content {
-class WebUIDataSource;
-}  // namespace content
-
 class HostContentSettingsMap;
 class WeeklyStorage;
 
@@ -98,8 +94,6 @@ class ViewCounterService : public KeyedService,
   std::string GetSuperReferralCode() const;
 
   NTPSponsoredImagesData* GetSponsoredImagesData() const;
-
-  void InitializeWebUIDataSource(content::WebUIDataSource* html_source);
 
   void OnTabURLChanged(const GURL& url);
 

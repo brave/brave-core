@@ -36,7 +36,6 @@
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/prefs/pref_service.h"
-#include "content/public/browser/web_ui_data_source.h"
 #include "url/gurl.h"
 
 namespace ntp_background_images {
@@ -424,11 +423,6 @@ bool ViewCounterService::ShouldShowCustomBackgroundImages() const {
 #else
   return false;
 #endif
-}
-
-void ViewCounterService::InitializeWebUIDataSource(
-    content::WebUIDataSource* html_source) {
-  html_source->AddString("superReferralThemeName", GetSuperReferralThemeName());
 }
 
 void ViewCounterService::OnTabURLChanged(const GURL& url) {

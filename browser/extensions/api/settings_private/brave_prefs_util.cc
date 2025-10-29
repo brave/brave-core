@@ -65,7 +65,6 @@ namespace extensions {
 using ntp_background_images::prefs::kNewTabPageShowBackgroundImage;
 using ntp_background_images::prefs::
     kNewTabPageShowSponsoredImagesBackgroundImage;
-using ntp_background_images::prefs::kNewTabPageSuperReferralThemesOption;
 
 namespace settings_api = api::settings_private;
 
@@ -141,8 +140,6 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[omnibox::kCommanderSuggestionsEnabled] =
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[kAskEnableWidvine] = settings_api::PrefType::kBoolean;
-  (*s_brave_allowlist)[kNewTabPageSuperReferralThemesOption] =
-      settings_api::PrefType::kNumber;
   (*s_brave_allowlist)[kTabsSearchShow] = settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[brave_tabs::kTabHoverMode] =
       settings_api::PrefType::kNumber;
