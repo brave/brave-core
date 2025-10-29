@@ -13,6 +13,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringService;
+import org.chromium.build.annotations.EnsuresNonNull;
 import org.chromium.build.annotations.MonotonicNonNull;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.browser.app.domain.KeyringModel;
@@ -36,23 +37,30 @@ public class WalletBottomSheetDialogFragment extends BottomSheetDialogFragment
         mKeyringObserver = new KeyringServiceObserverImpl(this);
     }
 
+    @EnsuresNonNull("mKeyringModel")
     protected KeyringModel getKeyringModel() {
+        assert mKeyringModel != null;
         return mKeyringModel;
     }
 
+    @EnsuresNonNull("mWalletModel")
     protected WalletModel getWalletModel() {
+        assert mWalletModel != null;
         return mWalletModel;
     }
 
     protected BraveWalletService getBraveWalletService() {
+        assert mWalletModel != null;
         return mWalletModel.getBraveWalletService();
     }
 
     protected KeyringService getKeyringService() {
+        assert mWalletModel != null;
         return mWalletModel.getKeyringService();
     }
 
     protected JsonRpcService getJsonRpcService() {
+        assert mWalletModel != null;
         return mWalletModel.getJsonRpcService();
     }
 

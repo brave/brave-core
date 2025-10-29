@@ -34,7 +34,9 @@ import org.chromium.brave_wallet.mojom.OriginInfo;
 import org.chromium.brave_wallet.mojom.SignSolTransactionsRequest;
 import org.chromium.brave_wallet.mojom.SolanaInstruction;
 import org.chromium.brave_wallet.mojom.SolanaTxData;
+import org.chromium.build.annotations.MonotonicNonNull;
 import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.adapters.FragmentNavigationItemAdapter;
 import org.chromium.chrome.browser.crypto_wallet.adapters.TwoLineItemRecyclerViewAdapter;
@@ -75,12 +77,12 @@ public class SignSolTransactionsFragment extends WalletBottomSheetDialogFragment
     private TextView mTvTxCounter;
     private SignTx mSignTxStep = SignTx.SIGN_RISK;
     private int mTxRequestNumber;
-    private SignSolTransactionsRequest mSignSolTransactionsRequest;
+    @MonotonicNonNull private SignSolTransactionsRequest mSignSolTransactionsRequest;
     private Button mBtnCounterNext;
-    private List<SolanaTxData> mTxData;
+    @Nullable private List<SolanaTxData> mTxData;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mExecutor = Executors.newSingleThreadExecutor();
         mHandler = new Handler(Looper.getMainLooper());
@@ -93,7 +95,9 @@ public class SignSolTransactionsFragment extends WalletBottomSheetDialogFragment
 
     @Override
     public View onCreateView(
-            LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            LayoutInflater inflater,
+            @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_sign_tx_message, container, false);
         mViewPager = view.findViewById(R.id.fragment_sign_tx_msg_tv_message_view_pager);
         mTabLayout = view.findViewById(R.id.fragment_sign_tx_msg_tv_message_tabs);
@@ -269,6 +273,9 @@ public class SignSolTransactionsFragment extends WalletBottomSheetDialogFragment
     }
 
     private void processRequest(boolean isApproved) {
+        if (mSignSolTransactionsRequest == null) {
+            return;
+        }
         if (isApproved && mSignTxStep == SignTx.SIGN_RISK) {
             // Continue clicked, update ui
             mSignTxStep = SignTx.SIGN_TX;
@@ -289,14 +296,12 @@ public class SignSolTransactionsFragment extends WalletBottomSheetDialogFragment
         assert (fromAccountId.coin == CoinType.SOL);
         getKeyringModel()
                 .getAccounts(
-                        accountInfos -> {
+                        accounts -> {
                             AccountInfo accountInfo =
-                                    Utils.findAccount(accountInfos, fromAccountId);
+                                    Utils.findAccount(accounts, fromAccountId);
                             if (accountInfo == null) {
                                 return;
                             }
-                            assert (accountInfo.address != null);
-
                             Utils.setBlockiesBitmapResourceFromAccount(
                                     mExecutor, mHandler, mAccountImage, accountInfo, true);
                             String accountText = accountInfo.name + "\n" + accountInfo.address;

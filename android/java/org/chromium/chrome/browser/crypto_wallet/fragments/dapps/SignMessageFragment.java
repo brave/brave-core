@@ -5,6 +5,8 @@
 
 package org.chromium.chrome.browser.crypto_wallet.fragments.dapps;
 
+import static org.chromium.build.NullUtil.assumeNonNull;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,6 +30,7 @@ import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.SignDataUnion;
 import org.chromium.brave_wallet.mojom.SignMessageRequest;
+import org.chromium.build.annotations.MonotonicNonNull;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
@@ -45,7 +48,7 @@ public class SignMessageFragment extends WalletBottomSheetDialogFragment {
     private final ExecutorService mExecutor;
     private final Handler mHandler;
 
-    private SignMessageRequest mCurrentSignMessageRequest;
+    @MonotonicNonNull private SignMessageRequest mCurrentSignMessageRequest;
     private boolean mUnicodeEscapeVersion;
     private TextView mSignMessageText;
     private ImageView mAccountImage;
@@ -63,7 +66,9 @@ public class SignMessageFragment extends WalletBottomSheetDialogFragment {
 
     @Override
     public View onCreateView(
-            LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            LayoutInflater inflater,
+            @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_sign_message, container, false);
         mSignMessageText = view.findViewById(R.id.sign_message_text);
         mAccountImage = view.findViewById(R.id.fragment_sign_msg_cv_iv_account);
@@ -82,17 +87,19 @@ public class SignMessageFragment extends WalletBottomSheetDialogFragment {
     }
 
     private void notifySignMessageRequestProcessed(final boolean approved) {
-        getBraveWalletService()
-                .notifySignMessageRequestProcessed(
-                        approved, mCurrentSignMessageRequest.id, null, null);
-        fillSignMessageInfo();
+        if (mCurrentSignMessageRequest != null) {
+            getBraveWalletService()
+                    .notifySignMessageRequestProcessed(
+                            approved, mCurrentSignMessageRequest.id, null, null);
+            fillSignMessageInfo();
+        }
     }
 
     private void fillSignMessageInfo() {
         getBraveWalletService().getPendingSignMessageRequests(this::maybeHandlePendingRequests);
     }
 
-    private void maybeHandlePendingRequests(@Nullable final SignMessageRequest[] requests) {
+    private void maybeHandlePendingRequests(final SignMessageRequest @Nullable [] requests) {
         if (requests == null || requests.length == 0) {
             Intent intent = new Intent();
             getActivity().setResult(Activity.RESULT_OK, intent);
@@ -125,7 +132,11 @@ public class SignMessageFragment extends WalletBottomSheetDialogFragment {
             isEip712 = false;
         }
 
-        updateTextEthSign(mUnicodeEscapeVersion, message, isEip712);
+        updateTextEthSign(
+                mCurrentSignMessageRequest.signData,
+                mUnicodeEscapeVersion,
+                assumeNonNull(message),
+                isEip712);
 
         if (Validations.hasUnicode(message)) {
             mSignMessageText.setLines(12);
@@ -142,7 +153,11 @@ public class SignMessageFragment extends WalletBottomSheetDialogFragment {
                                             : getString(
                                                     R.string.wallet_non_ascii_characters_ascii));
                             mUnicodeEscapeVersion = !mUnicodeEscapeVersion;
-                            updateTextEthSign(mUnicodeEscapeVersion, message, isEip712);
+                            updateTextEthSign(
+                                    mCurrentSignMessageRequest.signData,
+                                    mUnicodeEscapeVersion,
+                                    message,
+                                    isEip712);
                         });
             }
         }
@@ -178,10 +193,13 @@ public class SignMessageFragment extends WalletBottomSheetDialogFragment {
     }
 
     private void updateTextEthSign(
-            final boolean unicodeEscape, final String message, final boolean isEip712) {
+            final SignDataUnion signData,
+            final boolean unicodeEscape,
+            final String message,
+            final boolean isEip712) {
         String escapedDomain = "";
         if (isEip712) {
-            String domain = mCurrentSignMessageRequest.signData.getEthSignTypedData().domainJson;
+            String domain = signData.getEthSignTypedData().domainJson;
             escapedDomain = unicodeEscape ? Validations.unicodeEscape(domain) : domain;
         }
         String escapedMessage = unicodeEscape ? Validations.unicodeEscape(message) : message;

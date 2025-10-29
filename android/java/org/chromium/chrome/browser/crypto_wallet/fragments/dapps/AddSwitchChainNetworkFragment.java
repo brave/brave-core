@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.crypto_wallet.fragments.dapps;
 
+import static org.chromium.build.NullUtil.assertNonNull;
 import static org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActivity.ActivityType.ADD_ETHEREUM_CHAIN;
 import static org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActivity.ActivityType.SWITCH_ETHEREUM_CHAIN;
 import static org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActivity.EXTRA_ACTIVITY_TYPE;
@@ -23,8 +24,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
@@ -37,6 +36,7 @@ import org.chromium.brave_wallet.mojom.OriginInfo;
 import org.chromium.brave_wallet.mojom.SwitchChainRequest;
 import org.chromium.build.annotations.MonotonicNonNull;
 import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletBaseActivity;
@@ -62,19 +62,19 @@ public class AddSwitchChainNetworkFragment extends BaseDAppsFragment {
     private final List<NavigationItem> mTabTitles;
     private final List<TwoLineItem> mNetworks;
     private final List<TwoLineItem> mDetails;
+    private final FaviconHelper mFaviconHelper;
+    private final DefaultFaviconHelper mDefaultFaviconHelper;
 
-    @MonotonicNonNull private ActivityType mPanelType;
     @MonotonicNonNull private AddSwitchRequestProcessListener mAddSwitchRequestProcessListener;
 
-    private NetworkInfo mNetworkInfo;
+    private ActivityType mPanelType;
     private BraveWalletBaseActivity mBraveWalletBaseActivity;
-    private SwitchChainRequest mSwitchChainRequest;
-    private AddChainRequest mAddChainRequest;
     private boolean mHasMultipleAddSwitchChainRequest;
     private ImageView mFavicon;
     private TextView mSiteTv;
-    private FaviconHelper mFaviconHelper;
-    private DefaultFaviconHelper mDefaultFaviconHelper;
+
+    @Nullable private SwitchChainRequest mSwitchChainRequest;
+    @Nullable private NetworkInfo mNetworkInfo;
 
     public static AddSwitchChainNetworkFragment newInstance(final ActivityType panelType) {
         final Bundle args = new Bundle();
@@ -89,6 +89,8 @@ public class AddSwitchChainNetworkFragment extends BaseDAppsFragment {
         mTabTitles = new ArrayList<>();
         mNetworks = new ArrayList<>();
         mDetails = new ArrayList<>();
+        mFaviconHelper = new FaviconHelper();
+        mDefaultFaviconHelper = new DefaultFaviconHelper();
     }
 
     @Override
@@ -108,11 +110,13 @@ public class AddSwitchChainNetworkFragment extends BaseDAppsFragment {
         super.onCreate(savedInstanceState);
 
         final Bundle bundle = requireArguments();
+        final ActivityType panelType;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            mPanelType = bundle.getSerializable(EXTRA_ACTIVITY_TYPE, ActivityType.class);
+            panelType = bundle.getSerializable(EXTRA_ACTIVITY_TYPE, ActivityType.class);
         } else {
-            mPanelType = (ActivityType) bundle.getSerializable(EXTRA_ACTIVITY_TYPE);
+            panelType = (ActivityType) bundle.getSerializable(EXTRA_ACTIVITY_TYPE);
         }
+        mPanelType = assertNonNull(panelType);
 
         mTabTitles.add(
                 new NavigationItem(
@@ -123,7 +127,9 @@ public class AddSwitchChainNetworkFragment extends BaseDAppsFragment {
 
     @Override
     public View onCreateView(
-            @NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            LayoutInflater inflater,
+            @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_switch_ethereum_chain, container, false);
         ViewPager2 viewPager =
                 view.findViewById(R.id.fragment_switch_eth_chain_tv_message_view_pager);
@@ -185,7 +191,6 @@ public class AddSwitchChainNetworkFragment extends BaseDAppsFragment {
     }
 
     private void showFavIcon(GURL url) {
-        mFaviconHelper = new FaviconHelper();
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
             FaviconImageCallback imageCallback =
@@ -201,7 +206,6 @@ public class AddSwitchChainNetworkFragment extends BaseDAppsFragment {
 
     private void setBitmapOnImageView(GURL pageUrl, Bitmap iconBitmap) {
         if (iconBitmap == null) {
-            if (mDefaultFaviconHelper == null) mDefaultFaviconHelper = new DefaultFaviconHelper();
             iconBitmap =
                     mDefaultFaviconHelper.getDefaultFaviconBitmap(
                             getActivity(), pageUrl, true, false);
@@ -211,7 +215,7 @@ public class AddSwitchChainNetworkFragment extends BaseDAppsFragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         fetchNetworkInfo();
     }
@@ -227,11 +231,11 @@ public class AddSwitchChainNetworkFragment extends BaseDAppsFragment {
                                 if (addChainRequests == null || addChainRequests.length == 0) {
                                     return;
                                 }
-                                mAddChainRequest = addChainRequests[0];
-                                mNetworkInfo = mAddChainRequest.networkInfo;
+                                final AddChainRequest addChainRequest = addChainRequests[0];
+                                mNetworkInfo = addChainRequest.networkInfo;
                                 mHasMultipleAddSwitchChainRequest = addChainRequests.length > 1;
                                 updateState();
-                                fillOriginInfo(mAddChainRequest.originInfo);
+                                fillOriginInfo(addChainRequest.originInfo);
                             });
         } else if (mPanelType == SWITCH_ETHEREUM_CHAIN) {
             mBraveWalletBaseActivity
@@ -240,6 +244,10 @@ public class AddSwitchChainNetworkFragment extends BaseDAppsFragment {
                             switchChainRequests -> {
                                 mSwitchChainRequest = switchChainRequests[0];
                                 mHasMultipleAddSwitchChainRequest = switchChainRequests.length > 1;
+                                if (mSwitchChainRequest == null) {
+                                    return;
+                                }
+                                final String chainId = mSwitchChainRequest.chainId;
                                 mBraveWalletBaseActivity
                                         .getJsonRpcService()
                                         .getAllNetworks(
@@ -248,8 +256,7 @@ public class AddSwitchChainNetworkFragment extends BaseDAppsFragment {
                                                         if (network.coin != CoinType.ETH) {
                                                             continue;
                                                         }
-                                                        if (mSwitchChainRequest.chainId.equals(
-                                                                network.chainId)) {
+                                                        if (chainId.equals(network.chainId)) {
                                                             mNetworkInfo = network;
                                                             updateState();
                                                             break;
@@ -291,13 +298,20 @@ public class AddSwitchChainNetworkFragment extends BaseDAppsFragment {
     }
 
     private void processSwitchChainRequest(
-            SwitchChainRequest switchChainRequest, boolean isApproved) {
+            @Nullable final SwitchChainRequest switchChainRequest, final boolean isApproved) {
+        if (switchChainRequest == null) {
+            return;
+        }
         mBraveWalletBaseActivity
                 .getJsonRpcService()
                 .notifySwitchChainRequestProcessed(switchChainRequest.requestId, isApproved);
     }
 
-    private void processAddChainRequest(NetworkInfo networkInfo, boolean isApproved) {
+    private void processAddChainRequest(
+            @Nullable final NetworkInfo networkInfo, final boolean isApproved) {
+        if (networkInfo == null) {
+            return;
+        }
         mBraveWalletBaseActivity
                 .getJsonRpcService()
                 .addEthereumChainRequestCompleted(networkInfo.chainId, isApproved);
@@ -366,8 +380,8 @@ public class AddSwitchChainNetworkFragment extends BaseDAppsFragment {
 
     @Override
     public void onDetach() {
+        mFaviconHelper.destroy();
+        mDefaultFaviconHelper.clearCache();
         super.onDetach();
-        if (mFaviconHelper != null) mFaviconHelper.destroy();
-        if (mDefaultFaviconHelper != null) mDefaultFaviconHelper.clearCache();
     }
 }

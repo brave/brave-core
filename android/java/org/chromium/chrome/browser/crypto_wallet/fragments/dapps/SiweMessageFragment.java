@@ -295,7 +295,6 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
         addDetail(items, R.string.resources, getSiweResources(mSiweMessageData.resources));
         TwoLineItemBottomSheetFragment fragment = new TwoLineItemBottomSheetFragment();
         fragment.setItems(items);
-        fragment.mTitle = getString(R.string.brave_wallet_see_details);
         fragment.show(getParentFragmentManager(), TAG);
     }
 

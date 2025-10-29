@@ -15,7 +15,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import org.chromium.brave_wallet.mojom.SignMessageError;
+import org.chromium.build.annotations.MonotonicNonNull;
 import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.fragments.WalletBottomSheetDialogFragment;
 
@@ -23,7 +25,7 @@ import org.chromium.chrome.browser.crypto_wallet.fragments.WalletBottomSheetDial
 @NullMarked
 public class SignMessageErrorFragment extends WalletBottomSheetDialogFragment {
 
-    private SignMessageError mCurrentSignMessageError;
+    @MonotonicNonNull private SignMessageError mCurrentSignMessageError;
     private Button mBtClose;
     private TextView mTextViewUrl;
     private TextView mTextViewHost;
@@ -31,7 +33,9 @@ public class SignMessageErrorFragment extends WalletBottomSheetDialogFragment {
 
     @Override
     public View onCreateView(
-            LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            LayoutInflater inflater,
+            @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_sign_message_error, container, false);
 
         mBtClose = view.findViewById(R.id.fragment_sign_msg_err_btn_close);
@@ -65,7 +69,9 @@ public class SignMessageErrorFragment extends WalletBottomSheetDialogFragment {
     }
 
     private void notifySignMessageErrorProcessed() {
-        getBraveWalletService().notifySignMessageErrorProcessed(mCurrentSignMessageError.id);
-        fillSignMessageErrorInfo();
+        if (mCurrentSignMessageError != null) {
+            getBraveWalletService().notifySignMessageErrorProcessed(mCurrentSignMessageError.id);
+            fillSignMessageErrorInfo();
+        }
     }
 }
