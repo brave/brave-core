@@ -64,6 +64,7 @@ source_set("ui") {
     "//brave/components/brave_shields/core/browser",
     "//brave/components/webcompat/core/common",
     "//chrome/browser/history",
+    "//chrome/browser/image_fetcher",
     "//chrome/browser/ui:browser_navigator_params_headers",
     "//chrome/browser/ui/startup",
     "//chrome/browser/ui/tabs:tabs_public",
@@ -418,10 +419,7 @@ source_set("ui") {
         "webui/settings/brave_tor_handler.h",
       ]
 
-      deps += [
-        "//brave/browser/tor",
-        "//chrome/browser/image_fetcher",
-      ]
+      deps += [ "//brave/browser/tor" ]
     }
     if (enable_extensions) {
       sources += [
@@ -977,7 +975,6 @@ source_set("ui") {
 
     deps += [
       "//chrome/browser/favicon",
-      "//chrome/browser/image_fetcher",
       "//chrome/browser/signin",
       "//components/favicon/core",
       "//components/favicon_base",
