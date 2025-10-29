@@ -13,6 +13,7 @@ source_set("ai_chat") {
   deps = [
     "//base",
     "//brave/browser/ai_chat",
+    "//brave/browser/ui/webui/ai_chat",
     "//brave/components/ai_chat/core/common",
     "//brave/components/constants",
     "//brave/components/resources:strings_grit",

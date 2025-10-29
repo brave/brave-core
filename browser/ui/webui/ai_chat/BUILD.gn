@@ -3,10 +3,61 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+
+source_set("ai_chat") {
+  sources = [
+    "ai_chat_ui.cc",
+    "ai_chat_ui.h",
+    "ai_chat_ui_page_handler.cc",
+    "ai_chat_ui_page_handler.h",
+    "ai_chat_untrusted_conversation_ui.cc",
+    "ai_chat_untrusted_conversation_ui.h",
+  ]
+
+  deps = [
+    "//brave/browser/ai_chat",
+    "//brave/browser/misc_metrics",
+    "//brave/components/ai_chat/content/browser",
+    "//brave/components/ai_chat/core/browser",
+    "//brave/components/ai_chat/core/common",
+    "//brave/components/ai_chat/core/common/buildflags",
+    "//brave/components/ai_chat/core/common/mojom",
+    "//brave/components/ai_chat/resources",
+    "//brave/components/ai_chat/resources/custom_site_distiller_scripts:generated_resources",
+    "//brave/components/resources:strings_grit",
+    "//chrome/browser/favicon",
+    "//chrome/browser/history",
+    "//chrome/browser/profiles:profile",
+    "//components/favicon/core",
+    "//components/prefs",
+    "//components/strings:components_strings",
+    "//components/user_prefs",
+    "//content/public/browser",
+    "//ui/webui",
+  ]
+
+  if (!is_android) {
+    deps += [
+      "//chrome/browser/ui/tabs:tab_model",
+      "//chrome/browser/ui/thumbnails",
+      "//chrome/browser/ui/webui/top_chrome",
+      "//chrome/browser/ui/webui/util",
+    ]
+  } else {
+    deps += [ "//chrome/browser/ui/android/tab_model" ]
+  }
+
+  if (enable_brave_ai_chat_agent_profile) {
+    deps += [ "//brave/browser/ai_chat:ai_chat_agent_profile" ]
+  }
+}
+
 source_set("unit_tests") {
   testonly = true
 
   deps = [
+    ":ai_chat",
     "//brave/browser/ai_chat",
     "//brave/components/ai_chat/content/browser",
     "//brave/components/ai_chat/core/browser",
@@ -25,6 +76,7 @@ source_set("browser_tests") {
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
   deps = [
+    ":ai_chat",
     "//brave/browser/ai_chat",
     "//brave/components/ai_chat/core/browser",
     "//brave/components/ai_chat/core/common",
