@@ -5,8 +5,8 @@
 
 #include "brave/components/email_aliases/features.h"
 
-namespace email_aliases {
+namespace email_aliases::features {
 
 BASE_FEATURE(kEmailAliases, base::FEATURE_DISABLED_BY_DEFAULT);
 
-}  // namespace email_aliases
+}  // namespace email_aliases::features

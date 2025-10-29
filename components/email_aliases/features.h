@@ -8,10 +8,10 @@
 
 #include "base/feature_list.h"
 
-namespace email_aliases {
+namespace email_aliases::features {
 
 BASE_DECLARE_FEATURE(kEmailAliases);
 
-}  // namespace email_aliases
+}  // namespace email_aliases::features
 
 #endif  // BRAVE_COMPONENTS_EMAIL_ALIASES_FEATURES_H_

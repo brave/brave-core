@@ -156,7 +156,7 @@ class StubEmailAliasesService implements EmailAliasesServiceInterface {
     note: string | null,
   ): Promise<{ result: EmailAliasesService_UpdateAlias_ResponseParam_Result }> {
     if (Math.random() < 1 / 3) {
-      throw new Error(getLocale('emailAliasesUpdateAliasError'))
+      return Promise.reject(getLocale('emailAliasesUpdateAliasError'))
     }
     const alias = { email: aliasEmail, note: note ?? '', domains: undefined }
     this.aliases.set(aliasEmail, alias)
@@ -170,7 +170,7 @@ class StubEmailAliasesService implements EmailAliasesServiceInterface {
     aliasEmail: string,
   ): Promise<{ result: EmailAliasesService_DeleteAlias_ResponseParam_Result }> {
     if (Math.random() < 1 / 3) {
-      throw new Error(getLocale('emailAliasesDeleteAliasError'))
+      return Promise.reject(getLocale('emailAliasesDeleteAliasError'))
     }
     this.aliases.delete(aliasEmail)
     this.observers.forEach((observer) => {
@@ -184,7 +184,7 @@ class StubEmailAliasesService implements EmailAliasesServiceInterface {
   }> {
     await new Promise((resolve) => setTimeout(resolve, 1000))
     if (Math.random() < 1 / 3) {
-      throw new Error(getLocale('emailAliasesGenerateError'))
+      return Promise.reject(getLocale('emailAliasesGenerateError'))
     }
     let aliasEmail: string = ''
     do {
@@ -199,7 +199,7 @@ class StubEmailAliasesService implements EmailAliasesServiceInterface {
     result: EmailAliasesService_RequestAuthentication_ResponseParam_Result
   }> {
     if (Math.random() < 1 / 3) {
-      throw new Error(getLocale('emailAliasesRequestAuthenticationError'))
+      return Promise.reject(getLocale('emailAliasesRequestAuthenticationError'))
     }
     this.observers.forEach((observer) => {
       observer.onAuthStateChanged({
@@ -231,9 +231,9 @@ class StubEmailAliasesService implements EmailAliasesServiceInterface {
     })
   }
 
-  showSettingsPage() {
-    // Do nothing in this mock implementation.
-  }
+  notifyAliasCreationComplete(email: string | null) {}
+
+  invokeManageAliases() {}
 }
 
 const stubEmailAliasesServiceNoAccountInstance = new StubEmailAliasesService({
@@ -284,13 +284,15 @@ export const SettingsPage = () => {
 
 export const Bubble = () => {
   return (
-    <EmailAliasModal
-      aliasCount={demoData.aliases.length}
-      onReturnToMain={() => {}}
-      editing={false}
-      mainEmail={demoData.email}
-      bubble={true}
-      emailAliasesService={stubEmailAliasesServiceAccountReadyInstance}
-    />
+    <div style={{ width: '420px', margin: '0 auto' }}>
+      <EmailAliasModal
+        aliasCount={demoData.aliases.length}
+        onReturnToMain={() => {}}
+        editing={false}
+        mainEmail={demoData.email}
+        bubble={true}
+        emailAliasesService={stubEmailAliasesServiceAccountReadyInstance}
+      />
+    </div>
   )
 }

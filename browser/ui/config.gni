@@ -34,6 +34,7 @@ if (toolkit_views) {
     "//brave/browser/ui/views/page_info",
     "//brave/browser/ui/views/side_panel/ai_chat",
     "//brave/browser/ui/sidebar",
+    "//brave/browser/ui/email_aliases",
   ]
 
   if (enable_containers) {

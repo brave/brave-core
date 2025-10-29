@@ -13,7 +13,6 @@
 #include "base/feature_list.h"
 #include "base/logging.h"
 #include "base/notimplemented.h"
-#include "base/strings/strcat.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/autocomplete/brave_autocomplete_scheme_classifier.h"
 #include "brave/browser/brave_shields/brave_shields_tab_helper.h"
@@ -25,6 +24,7 @@
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/browser_dialogs.h"
+#include "brave/browser/ui/email_aliases/email_aliases_controller.h"
 #include "brave/components/ai_rewriter/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/grit/brave_theme_resources.h"
@@ -409,6 +409,9 @@ bool BraveRenderViewContextMenu::IsCommandIdEnabled(int id) const {
 #endif
     case IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENTS:
       return true;
+    case IDC_NEW_EMAIL_ALIAS:
+      return GetBrowser() &&
+             GetBrowser()->GetFeatures().email_aliases_controller();
     case IDC_OPEN_IN_CONTAINER:
       return true;
     default:
@@ -480,6 +483,15 @@ void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
       cosmetic_filters::CosmeticFiltersTabHelper::LaunchContentPicker(
           source_web_contents_);
       break;
+    case IDC_NEW_EMAIL_ALIAS:
+      if (auto* browser = GetBrowser()) {
+        if (auto* email_aliases =
+                browser->GetFeatures().email_aliases_controller()) {
+          email_aliases->ShowBubble(params_.field_renderer_id);
+        }
+      }
+      break;
+
     default:
       RenderViewContextMenu_Chromium::ExecuteCommand(id, event_flags);
   }
@@ -742,6 +754,15 @@ void BraveRenderViewContextMenu::AppendDeveloperItems() {
     } else {
       menu_model_.AddItemWithStringId(IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENTS,
                                       IDS_ADBLOCK_CONTEXT_BLOCK_ELEMENTS);
+    }
+  }
+
+  if (auto* browser = GetBrowser()) {
+    if (auto* email_aliases = browser->GetFeatures().email_aliases_controller();
+        email_aliases && email_aliases->IsAvailableFor(params_)) {
+      menu_model_.AddSeparator(ui::NORMAL_SEPARATOR);
+      menu_model_.AddItemWithStringId(IDC_NEW_EMAIL_ALIAS,
+                                      IDS_IDC_NEW_EMAIL_ALIAS);
     }
   }
 }

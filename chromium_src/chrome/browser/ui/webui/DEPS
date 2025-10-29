@@ -11,4 +11,5 @@ include_rules = [
   "+brave/components/ai_chat/core/common",
   "+brave/components/brave_education/buildflags.h",
   "+brave/components/speedreader/common/buildflags",
+  "+brave/components/email_aliases",
 ]

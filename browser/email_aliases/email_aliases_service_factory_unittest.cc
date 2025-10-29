@@ -38,7 +38,7 @@ class EmailAliasesServiceFactoryTest : public ::testing::Test {
 
 TEST_F(EmailAliasesServiceFactoryTest, NoServiceWhenFeatureDisabled) {
   scoped_feature_list_.Reset();
-  scoped_feature_list_.InitAndDisableFeature(kEmailAliases);
+  scoped_feature_list_.InitAndDisableFeature(features::kEmailAliases);
   auto* profile = profile_manager_.CreateTestingProfile("test");
   auto* service = EmailAliasesServiceFactory::GetServiceForProfile(profile);
   EXPECT_EQ(service, nullptr);
@@ -46,7 +46,7 @@ TEST_F(EmailAliasesServiceFactoryTest, NoServiceWhenFeatureDisabled) {
 
 #if !BUILDFLAG(IS_ANDROID)
 TEST_F(EmailAliasesServiceFactoryTest, NoServiceForGuestOrSystemProfile) {
-  scoped_feature_list_.InitAndEnableFeature(kEmailAliases);
+  scoped_feature_list_.InitAndEnableFeature(features::kEmailAliases);
   auto* guest_profile = profile_manager_.CreateGuestProfile();
   auto* system_profile = profile_manager_.CreateSystemProfile();
   auto* service_guest =
@@ -59,7 +59,7 @@ TEST_F(EmailAliasesServiceFactoryTest, NoServiceForGuestOrSystemProfile) {
 #endif
 
 TEST_F(EmailAliasesServiceFactoryTest, SameServiceForRegularAndIncognito) {
-  scoped_feature_list_.InitAndEnableFeature(kEmailAliases);
+  scoped_feature_list_.InitAndEnableFeature(features::kEmailAliases);
   [[maybe_unused]] auto* profile =
       profile_manager_.CreateTestingProfile("test");
   [[maybe_unused]] auto* incognito =

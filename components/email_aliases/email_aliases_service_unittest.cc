@@ -63,7 +63,7 @@ class TestObserver : public email_aliases::mojom::EmailAliasesServiceObserver {
 class EmailAliasesServiceTest : public ::testing::Test {
  protected:
   EmailAliasesServiceTest() {
-    feature_list_.InitAndEnableFeature(email_aliases::kEmailAliases);
+    feature_list_.InitAndEnableFeature(email_aliases::features::kEmailAliases);
   }
 
   void SetUp() override {
@@ -242,7 +242,7 @@ TEST_F(EmailAliasesServiceTest,
 class EmailAliasesServiceTimingTest : public ::testing::Test {
  protected:
   void SetUp() override {
-    feature_list_.InitAndEnableFeature(email_aliases::kEmailAliases);
+    feature_list_.InitAndEnableFeature(email_aliases::features::kEmailAliases);
     service_ = std::make_unique<EmailAliasesService>(
         url_loader_factory_.GetSafeWeakWrapper());
     observer_ = std::make_unique<TestObserver>();
@@ -454,7 +454,7 @@ class EmailAliasesAPITest : public ::testing::Test {
     service_->AddObserver(std::move(remote));
   }
 
-  base::test::ScopedFeatureList feature_list_{kEmailAliases};
+  base::test::ScopedFeatureList feature_list_{features::kEmailAliases};
   base::test::TaskEnvironment task_environment_;
   network::TestURLLoaderFactory url_loader_factory_;
   std::unique_ptr<EmailAliasesService> service_;
