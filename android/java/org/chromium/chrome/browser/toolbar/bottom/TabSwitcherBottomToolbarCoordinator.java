@@ -5,13 +5,12 @@
 
 package org.chromium.chrome.browser.toolbar.bottom;
 
-import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewStub;
+import android.widget.Button;
 
-import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneShotCallback;
 import org.chromium.chrome.R;
@@ -38,7 +37,7 @@ public class TabSwitcherBottomToolbarCoordinator {
     private final TabSwitcherBottomToolbarMediator mMediator;
 
     /** The new tab button that lives in the tab switcher bottom toolbar. */
-    private final BottomToolbarNewTabButton mNewTabButton;
+    private final Button mNewTabButton;
 
     /** The menu button that lives in the tab switcher bottom toolbar. */
     private final MenuButton mMenuButton;
@@ -86,14 +85,7 @@ public class TabSwitcherBottomToolbarCoordinator {
         mMediator = new TabSwitcherBottomToolbarMediator(mModel, themeColorProvider);
 
         mNewTabButton = root.findViewById(R.id.tab_switcher_new_tab_button);
-        Drawable background =
-                ApiCompatibilityUtils.getDrawable(
-                        root.getResources(), R.drawable.home_surface_search_box_background);
-        background.mutate();
-        mNewTabButton.setBackground(background);
         mNewTabButton.setOnClickListener(newTabClickListener);
-        mNewTabButton.setIncognitoStateProvider(incognitoStateProvider);
-        mNewTabButton.setThemeColorProvider(themeColorProvider);
 
         mMenuButton = root.findViewById(R.id.menu_button_wrapper);
         if (mMenuButton != null) {
@@ -124,11 +116,8 @@ public class TabSwitcherBottomToolbarCoordinator {
         mModel.set(TabSwitcherBottomToolbarModel.IS_VISIBLE, visible);
     }
 
-    /**
-     * Clean up any state when the bottom toolbar is destroyed.
-     */
+    /** Clean up any state when the bottom toolbar is destroyed. */
     public void destroy() {
         mMediator.destroy();
-        mNewTabButton.destroy();
     }
 }
