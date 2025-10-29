@@ -25,7 +25,6 @@ android_test_exception_sources = [
   "//brave/browser/brave_wallet/wallet_watch_asset_browsertest.cc",
   "//brave/browser/content_settings/brave_content_settings_browsertest.cc",
   "//brave/browser/debounce/debounce_browsertest.cc",
-  "//brave/browser/extensions/api/brave_theme_api_browsertest.cc",
   "//brave/browser/extensions/brave_crx_generation_browsertest.cc",
   "//brave/browser/extensions/brave_extension_functional_test.cc",
   "//brave/browser/extensions/brave_extension_functional_test.h",
