@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_TABS_PUBLIC_BRAVE_TAB_STRIP_COLLECTION_H_
 #define BRAVE_COMPONENTS_TABS_PUBLIC_BRAVE_TAB_STRIP_COLLECTION_H_
 
+#include <cstddef>
+
 #include "components/tabs/public/tab_strip_collection.h"
 
 namespace tabs {
@@ -28,11 +30,13 @@ class BraveTabStripCollection : public TabStripCollection {
   tabs::TabCollection* GetParentCollection(
       TabInterface* tab,
       base::PassKey<BraveTabStripCollectionDelegate> pass_key) const;
-  void AddTabRecursive(
-      std::unique_ptr<TabInterface> tab,
+  void AddTabRecursive(std::unique_ptr<TabInterface> tab,
+                       size_t index,
+                       std::optional<tab_groups::TabGroupId> new_group_id,
+                       bool new_pinned_state,
+                       base::PassKey<BraveTabStripCollectionDelegate> pass_key);
+  std::unique_ptr<TabInterface> RemoveTabAtIndexRecursive(
       size_t index,
-      std::optional<tab_groups::TabGroupId> new_group_id,
-      bool new_pinned_state,
       base::PassKey<BraveTabStripCollectionDelegate> pass_key);
 
   // TabStripCollection:
