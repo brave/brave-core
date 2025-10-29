@@ -234,17 +234,16 @@ void NTPBackgroundImagesService::RegisterBackgroundImagesComponent() {
 }
 
 void NTPBackgroundImagesService::RegisterSponsoredImagesComponent() {
-  const std::string country_code =
+  const std::string variations_country_code =
       GetVariationsCountryCode(variations_service_);
-  const std::optional<SponsoredImagesComponentData> data =
-      GetSponsoredImagesComponentData(country_code);
-  if (!data) {
-    VLOG(6) << "NTP Sponsored Images component is not supported in "
-            << country_code;
+  const std::optional<SponsoredImagesComponentInfo> sponsored_images_component =
+      GetSponsoredImagesComponent(variations_country_code);
+  if (!sponsored_images_component) {
+    // Unsupported.
     return;
   }
 
-  if (sponsored_images_component_id_ == data->component_id) {
+  if (sponsored_images_component_id_ == sponsored_images_component->id) {
     // Already registered.
     return;
   }
@@ -254,14 +253,16 @@ void NTPBackgroundImagesService::RegisterSponsoredImagesComponent() {
     component_update_service_->UnregisterComponent(
         *sponsored_images_component_id_);
   }
-  sponsored_images_component_id_ = data->component_id;
+  sponsored_images_component_id_ = sponsored_images_component->id;
 
-  VLOG(0) << "Registering NTP Sponsored Images component for " << country_code
-          << " with ID " << data->component_id;
+  VLOG(0) << "Registering NTP Sponsored Images component for "
+          << variations_country_code << " with ID "
+          << *sponsored_images_component_id_;
   RegisterNTPSponsoredImagesComponent(
-      component_update_service_, std::string(data->component_base64_public_key),
-      std::string(data->component_id),
-      absl::StrFormat("NTP Sponsored Images (%s)", data->region),
+      component_update_service_,
+      std::string(sponsored_images_component->public_key_base64),
+      *sponsored_images_component_id_,
+      absl::StrFormat("NTP Sponsored Images (%s)", variations_country_code),
       base::BindRepeating(
           &NTPBackgroundImagesService::OnSponsoredComponentReady,
           weak_factory_.GetWeakPtr(), false));
@@ -270,7 +271,7 @@ void NTPBackgroundImagesService::RegisterSponsoredImagesComponent() {
   // However, this background interval is too long for SI. Use 15mins interval.
   sponsored_images_update_check_callback_ = base::BindRepeating(
       &NTPBackgroundImagesService::CheckSponsoredImagesComponentUpdate,
-      weak_factory_.GetWeakPtr(), std::string(data->component_id));
+      weak_factory_.GetWeakPtr(), *sponsored_images_component_id_);
 
   last_updated_at_ = base::Time::Now();
 

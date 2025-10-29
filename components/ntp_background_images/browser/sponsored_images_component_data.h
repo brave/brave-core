@@ -7,20 +7,20 @@
 #define BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_SPONSORED_IMAGES_COMPONENT_DATA_H_
 
 #include <optional>
-#include <string>
 #include <string_view>
-
 
 namespace ntp_background_images {
 
-struct SponsoredImagesComponentData {
-  std::string_view region;
-  std::string_view component_base64_public_key;
-  std::string_view component_id;
+struct SponsoredImagesComponentInfo {
+  std::string_view public_key_base64;
+  std::string_view id;
 };
 
-std::optional<SponsoredImagesComponentData> GetSponsoredImagesComponentData(
-    const std::string& region);
+// Returns sponsored images component info for the given country code (ISO
+// 3166-1 alpha-2). If no component is available for the specified country,
+// returns `std::nullopt`.
+std::optional<SponsoredImagesComponentInfo> GetSponsoredImagesComponent(
+    std::string_view country_code);
 
 }  // namespace ntp_background_images
 
