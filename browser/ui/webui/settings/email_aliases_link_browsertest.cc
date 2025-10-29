@@ -20,8 +20,8 @@ class BraveSettingsEmailAliasesRowBrowserTest
       public testing::WithParamInterface<bool> {
  public:
   BraveSettingsEmailAliasesRowBrowserTest() {
-    scoped_feature_list_.InitWithFeatureState(email_aliases::kEmailAliases,
-                                              GetParam());
+    scoped_feature_list_.InitWithFeatureState(
+        email_aliases::features::kEmailAliases, GetParam());
   }
 
  protected:

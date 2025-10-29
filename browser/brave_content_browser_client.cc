@@ -888,7 +888,7 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
         map);
   }
 
-  if (base::FeatureList::IsEnabled(email_aliases::kEmailAliases)) {
+  if (base::FeatureList::IsEnabled(email_aliases::features::kEmailAliases)) {
     content::RegisterWebUIControllerInterfaceBinder<
         email_aliases::mojom::EmailAliasesService, BraveSettingsUI>(map);
   }
