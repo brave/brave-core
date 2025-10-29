@@ -9,8 +9,6 @@ import DefaultDarkTheme from 'brave-ui/theme/brave-dark'
 import IBraveTheme from 'brave-ui/theme/theme-interface'
 
 export type Props = {
-  // `initialThemeType` is not used!
-  initialThemeType?: any
   dark?: IBraveTheme
   light?: IBraveTheme
 }
