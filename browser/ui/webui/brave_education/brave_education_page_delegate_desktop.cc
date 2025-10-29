@@ -8,11 +8,15 @@
 #include "base/check.h"
 #include "brave/browser/ui/brave_rewards/rewards_panel_coordinator.h"
 #include "brave/browser/ui/brave_vpn/brave_vpn_controller.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
 #include "chrome/browser/ui/views/side_panel/side_panel_entry.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
+#endif
 
 namespace brave_education {
 
@@ -44,9 +48,11 @@ void BraveEducationPageDelegateDesktop::OpenVPNPanel() {
 #endif
 }
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
 void BraveEducationPageDelegateDesktop::OpenAIChat() {
   window_interface_->GetFeatures().side_panel_ui()->Show(
       SidePanelEntry::Key(SidePanelEntryId::kChatUI));
 }
+#endif
 
 }  // namespace brave_education

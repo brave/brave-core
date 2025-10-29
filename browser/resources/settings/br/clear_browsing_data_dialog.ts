@@ -122,6 +122,7 @@ RegisterPolymerTemplateModifications({
     }
 
     // Append Leo reset checkbox
+// <if expr="enable_ai_chat">
     const isLeoAssistantAndHistoryAllowed =
       loadTimeData.getBoolean('isLeoAssistantAllowed')
         && loadTimeData.getBoolean('isLeoAssistantHistoryAllowed')
@@ -151,5 +152,6 @@ RegisterPolymerTemplateModifications({
         console.error('[Settings] missing Leo reset link')
       }
     }
+// </if>
   }
 })

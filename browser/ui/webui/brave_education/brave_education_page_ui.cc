@@ -16,6 +16,7 @@
 #include "brave/browser/ui/webui/brave_education/brave_education_handler.h"
 #include "brave/browser/ui/webui/brave_education/brave_education_page_delegate_desktop.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_education/education_urls.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/grit/brave_education_resources.h"
@@ -102,10 +103,14 @@ void BraveEducationPageUI::CreateBrowserCommandHandler(
 
   supported_commands.insert(
       supported_commands.end(),
-      {brave_browser_command::mojom::Command::kOpenRewardsOnboarding,
-       brave_browser_command::mojom::Command::kOpenWalletOnboarding,
-       brave_browser_command::mojom::Command::kOpenVPNOnboarding,
-       brave_browser_command::mojom::Command::kOpenAIChat});
+      {
+          brave_browser_command::mojom::Command::kOpenRewardsOnboarding,
+          brave_browser_command::mojom::Command::kOpenWalletOnboarding,
+          brave_browser_command::mojom::Command::kOpenVPNOnboarding,
+#if BUILDFLAG(ENABLE_AI_CHAT)
+          brave_browser_command::mojom::Command::kOpenAIChat,
+#endif
+      });
 
   auto* web_contents = web_ui()->GetWebContents();
   auto* tab = tabs::TabInterface::GetFromContents(web_contents);

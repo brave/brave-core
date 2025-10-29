@@ -99,6 +99,7 @@ RegisterPolymerTemplateModifications({
         }
         curChild++
       }
+      // <if expr="enable_ai_chat">
       // AI Chat feature
       const isOpenAIChatFromBraveSearchEnabled =
         loadTimeData.getBoolean('isOpenAIChatFromBraveSearchEnabled')
@@ -117,6 +118,7 @@ RegisterPolymerTemplateModifications({
         }
         curChild++
       }
+      // </if>
 
       const isNativeBraveWalletEnabled =
           loadTimeData.getBoolean('isNativeBraveWalletFeatureEnabled')

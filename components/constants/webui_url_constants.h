@@ -9,6 +9,7 @@
 #include <string_view>
 
 #include "base/containers/fixed_flat_set.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "build/build_config.h"
 
 inline constexpr char kBraveAccountHost[] = "account";
@@ -106,8 +107,10 @@ inline constexpr char kBraveUINewTabTakeoverURL[] =
 // a blocked action for WebUIs. In Chromium, the "password-manager" host
 // is already allowed.
 inline constexpr auto kInstallablePWAWebUIHosts =
-    base::MakeFixedFlatSet<std::string_view>({
-        kAIChatUIHost,
-    });
+#if BUILDFLAG(ENABLE_AI_CHAT)
+    base::MakeFixedFlatSet<std::string_view>({kAIChatUIHost});
+#else
+    base::fixed_flat_set<std::string_view, 0>{};
+#endif
 
 #endif  // BRAVE_COMPONENTS_CONSTANTS_WEBUI_URL_CONSTANTS_H_

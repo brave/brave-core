@@ -87,12 +87,14 @@
         label="$i18n{appearanceSettingsUseCommanderSuggestions}">
       </settings-checkbox>
     </template>
+    <if expr="enable_ai_chat">
     <template is="dom-if" if="[[showLeoAssistant_()]]">
       <settings-checkbox class="cr-row list-item"
         pref="{{prefs.brave.ai_chat.autocomplete_provider_enabled}}"
         label="$i18n{appearanceSettingsUseLeoSuggestions}">
       </settings-checkbox>
     </template>
+    </if>
   </div>
 </template>
 <settings-toggle-button

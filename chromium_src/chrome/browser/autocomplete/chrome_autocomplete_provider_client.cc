@@ -5,6 +5,16 @@
 
 #include "base/check.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/commander/common/buildflags/buildflags.h"
+#include "build/build_config.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "content/public/browser/web_contents.h"
+#include "ui/base/page_transition_types.h"
+#include "ui/base/window_open_disposition.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
@@ -13,13 +23,7 @@
 #include "brave/components/ai_chat/core/common/ai_chat_urls.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
-#include "brave/components/commander/common/buildflags/buildflags.h"
-#include "build/build_config.h"
-#include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
-#include "content/public/browser/web_contents.h"
-#include "ui/base/page_transition_types.h"
-#include "ui/base/window_open_disposition.h"
+#endif
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
@@ -42,6 +46,7 @@ ChromeAutocompleteProviderClient::GetCommanderDelegate() {
 }
 #endif  // BUILDFLAG(ENABLE_COMMANDER)
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
 void ChromeAutocompleteProviderClient::OpenLeo(const std::u16string& query) {
 #if !BUILDFLAG(IS_ANDROID)
   ai_chat::AIChatService* ai_chat_service =
@@ -135,3 +140,4 @@ bool ChromeAutocompleteProviderClient::IsLeoProviderEnabled() {
              ai_chat::prefs::kBraveChatAutocompleteProviderEnabled);
 #endif
 }
+#endif

@@ -6,12 +6,18 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_BROWSING_DATA_CORE_BROWSING_DATA_UTILS_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_BROWSING_DATA_CORE_BROWSING_DATA_UTILS_H_
 
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+
 // LINT.IfChange(BrowsingDataType)
+#if BUILDFLAG(ENABLE_AI_CHAT)
 #define MAX_VALUE BRAVE_AI_CHAT = 9, MAX_VALUE = BRAVE_AI_CHAT, UNUSED
+#endif
 // LINT.ThenChange(/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_browser_proxy.ts:BrowsingDataType)
 
 #include <components/browsing_data/core/browsing_data_utils.h>  // IWYU pragma: export
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
 #undef MAX_VALUE
+#endif
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_BROWSING_DATA_CORE_BROWSING_DATA_UTILS_H_

@@ -113,7 +113,9 @@ export class BraveEducationAppElement extends CrLitElement {
         'open-rewards-onboarding': Command.kOpenRewardsOnboarding,
         'open-wallet-onboarding': Command.kOpenWalletOnboarding,
         'open-vpn-onboarding': Command.kOpenVPNOnboarding,
+        // <if expr="enable_ai_chat">
         'open-ai-chat': Command.kOpenAIChat,
+        // </if>
       }),
     )
 

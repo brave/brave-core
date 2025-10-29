@@ -9,8 +9,7 @@
 #include <utility>
 
 #include "base/feature_list.h"
-#include "brave/components/ai_chat/core/common/features.h"
-#include "brave/components/ai_chat/renderer/page_content_extractor.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_rewriter/common/buildflags/buildflags.h"
 #include "brave/components/brave_search/common/brave_search_utils.h"
 #include "brave/components/brave_search/renderer/brave_search_render_frame_observer.h"
@@ -42,6 +41,11 @@
 #include "third_party/blink/public/web/web_script_controller.h"
 #include "third_party/widevine/cdm/buildflags.h"
 #include "url/gurl.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/ai_chat/renderer/page_content_extractor.h"
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 #if BUILDFLAG(ENABLE_AI_REWRITER)
 #include "brave/components/ai_rewriter/common/features.h"
@@ -179,8 +183,11 @@ void BraveContentRendererClient::RenderFrameCreated(
   }
 
 #if BUILDFLAG(IS_ANDROID)
-  if (brave_vpn::IsBraveVPNFeatureEnabled() ||
-      ai_chat::features::IsAIChatHistoryEnabled()) {
+  if (brave_vpn::IsBraveVPNFeatureEnabled()
+#if BUILDFLAG(ENABLE_AI_CHAT)
+      || ai_chat::features::IsAIChatHistoryEnabled()
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
+  ) {
     new brave_subscription::SubscriptionRenderFrameObserver(
         render_frame, content::ISOLATED_WORLD_ID_GLOBAL);
   }
@@ -203,12 +210,14 @@ void BraveContentRendererClient::RenderFrameCreated(
         ISOLATED_WORLD_ID_BRAVE_INTERNAL);
   }
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
   if (ai_chat::features::IsAIChatEnabled() &&
       !process_state::IsIncognitoProcess()) {
     new ai_chat::PageContentExtractor(render_frame, registry,
                                       content::ISOLATED_WORLD_ID_GLOBAL,
                                       ISOLATED_WORLD_ID_BRAVE_INTERNAL);
   }
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 #if BUILDFLAG(ENABLE_AI_REWRITER)
   if (ai_rewriter::features::IsAIRewriterEnabled()) {

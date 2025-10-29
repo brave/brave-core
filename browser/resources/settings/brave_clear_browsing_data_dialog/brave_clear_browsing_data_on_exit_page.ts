@@ -58,6 +58,7 @@ extends SettingsBraveClearBrowsingDataOnExitPageElementBase {
         },
       },
 
+// <if expr="enable_ai_chat">
       isAIChatAndHistoryAllowed_: {
         type: Boolean,
         value() {
@@ -65,6 +66,7 @@ extends SettingsBraveClearBrowsingDataOnExitPageElementBase {
               && loadTimeData.getBoolean('isLeoAssistantHistoryAllowed')
         },
       }
+// </if>
     }
   }
 
@@ -72,7 +74,9 @@ extends SettingsBraveClearBrowsingDataOnExitPageElementBase {
 
   private counters: {[k: string]: string} = {}
   private isChildAccount_: boolean
+// <if expr="enable_ai_chat">
   private isAIChatAndHistoryAllowed_: boolean
+// </if>
 
   override ready() {
     super.ready()

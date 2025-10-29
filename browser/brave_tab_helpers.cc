@@ -12,8 +12,6 @@
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
-#include "brave/browser/ai_chat/ai_chat_service_factory.h"
-#include "brave/browser/ai_chat/ai_chat_utils.h"
 #include "brave/browser/brave_ads/creatives/search_result_ad/creative_search_result_ad_tab_helper.h"
 #include "brave/browser/brave_ads/tabs/ads_tab_helper.h"
 #include "brave/browser/brave_browser_process.h"
@@ -27,7 +25,7 @@
 #include "brave/browser/ntp_background/ntp_tab_helper.h"
 #include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/browser/ui/brave_ui_features.h"
-#include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/playlist/content/browser/playlist_tab_helper.h"
@@ -49,6 +47,12 @@
 #include "printing/buildflags/buildflags.h"
 #include "third_party/widevine/cdm/buildflags.h"
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/browser/ai_chat/ai_chat_service_factory.h"
+#include "brave/browser/ai_chat/ai_chat_utils.h"
+#include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
+#endif
+
 #if BUILDFLAG(IS_ANDROID)
 #include "brave/browser/android/youtube_script_injector/youtube_script_injector_tab_helper.h"
 #endif
@@ -64,8 +68,12 @@
 #endif
 
 #if BUILDFLAG(ENABLE_PRINT_PREVIEW)
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/ai_chat/print_preview_extractor.h"
 #include "brave/browser/ai_chat/print_preview_extractor_internal.h"
+#endif
+
 #include "chrome/browser/ui/webui/print_preview/print_preview_ui.h"
 #endif  // BUILDFLAG(ENABLE_PRINT_PREVIEW)
 
@@ -124,6 +132,7 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 
   brave_rewards::RewardsTabHelper::CreateForWebContents(web_contents);
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
   content::BrowserContext* context = web_contents->GetBrowserContext();
   if (ai_chat::IsAllowedForContext(context)) {
     ai_chat::AIChatTabHelper::CreateForWebContents(
@@ -159,6 +168,7 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 #endif
     );
   }
+#endif
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
   BraveDrmTabHelper::CreateForWebContents(web_contents);

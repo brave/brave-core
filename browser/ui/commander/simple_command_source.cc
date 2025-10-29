@@ -18,18 +18,23 @@
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/browser/ui/commander/command_source.h"
 #include "brave/browser/ui/commander/fuzzy_finder.h"
-#include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/accelerator_utils.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "ui/base/accelerators/accelerator.h"
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
+
 namespace commander {
 
 namespace {
 
 void MaybeReportCommandExecution(Browser* browser, int command_id) {
+#if BUILDFLAG(ENABLE_AI_CHAT)
   if (command_id == IDC_TOGGLE_AI_CHAT) {
     auto* profile_metrics =
         misc_metrics::ProfileMiscMetricsServiceFactory::GetServiceForContext(
@@ -44,6 +49,7 @@ void MaybeReportCommandExecution(Browser* browser, int command_id) {
     ai_chat_metrics->HandleOpenViaEntryPoint(
         ai_chat::EntryPoint::kOmniboxCommand);
   }
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 }
 
 }  // namespace

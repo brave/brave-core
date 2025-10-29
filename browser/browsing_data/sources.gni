@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//extensions/buildflags/buildflags.gni")
 
 brave_browser_browsing_data_sources = [
@@ -14,8 +15,7 @@ brave_browser_browsing_data_sources = [
 
 brave_browser_browsing_data_deps = [
   "//base",
-  "//brave/browser/ai_chat",
-  "//brave/components/ai_chat/core/browser",
+  "//brave/components/ai_chat/core/common/buildflags",
   "//brave/components/content_settings/core/common",
   "//chrome/browser:browser_process",
   "//chrome/browser/browsing_data:constants",
@@ -27,6 +27,13 @@ brave_browser_browsing_data_deps = [
   "//components/prefs",
   "//content/public/browser",
 ]
+
+if (enable_ai_chat) {
+  brave_browser_browsing_data_deps += [
+    "//brave/browser/ai_chat",
+    "//brave/components/ai_chat/core/browser",
+  ]
+}
 
 if (enable_extensions) {
   brave_browser_browsing_data_deps += [

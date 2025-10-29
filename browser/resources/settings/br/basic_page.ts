@@ -25,9 +25,12 @@ import '../brave_web3_domains_page/brave_web3_domains_page.js'
 import '../default_brave_shields_page/default_brave_shields_page.js'
 import '../getting_started_page/getting_started.js'
 import '../social_blocking_page/social_blocking_page.js'
+
+// <if expr="enable_ai_chat">
 import '../brave_leo_assistant_page/brave_leo_assistant_page.js'
 import '../brave_leo_assistant_page/model_list_section.js'
 import '../brave_leo_assistant_page/personalization.js'
+// </if>
 
 // <if expr="enable_containers">
 import '../brave_content_page/containers.js'

@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 
 source_set("customize_chrome") {
@@ -15,8 +16,7 @@ source_set("customize_chrome") {
   deps = [
     "//base",
     "//brave/browser/brave_rewards:util",
-    "//brave/components/ai_chat/core/browser",
-    "//brave/components/ai_chat/core/common",
+    "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/brave_news/common",
     "//brave/components/brave_rewards/core",
     "//brave/components/brave_vpn/common/buildflags",
@@ -32,6 +32,13 @@ source_set("customize_chrome") {
     "//components/user_prefs",
     "//content/public/browser",
   ]
+
+  if (enable_ai_chat) {
+    deps += [
+      "//brave/components/ai_chat/core/browser",
+      "//brave/components/ai_chat/core/common",
+    ]
+  }
 
   if (enable_brave_vpn_panel) {
     deps += [
@@ -66,8 +73,7 @@ source_set("unit_tests") {
     ":customize_chrome",
     "//base",
     "//brave/browser/brave_rewards:util",
-    "//brave/components/ai_chat/core/browser",
-    "//brave/components/ai_chat/core/common",
+    "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/brave_news/common",
     "//brave/components/brave_rewards/core",
     "//brave/components/brave_vpn/common/buildflags",
@@ -85,6 +91,13 @@ source_set("unit_tests") {
     "//testing/gtest",
     "//ui/base",
   ]
+
+  if (enable_ai_chat) {
+    deps += [
+      "//brave/components/ai_chat/core/browser",
+      "//brave/components/ai_chat/core/common",
+    ]
+  }
 
   if (enable_brave_vpn_panel) {
     deps += [

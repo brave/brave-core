@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/memory/weak_ptr.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_education/education_urls.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -132,6 +133,7 @@ IN_PROC_BROWSER_TEST_F(BraveEducationPageUIBrowserTest, OpenVPNOnboarding) {
 
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
 IN_PROC_BROWSER_TEST_F(BraveEducationPageUIBrowserTest, OpenAPIChat) {
   NavigateToEducationPage(EducationPageType::kGettingStarted);
 
@@ -145,5 +147,6 @@ IN_PROC_BROWSER_TEST_F(BraveEducationPageUIBrowserTest, OpenAPIChat) {
   EXPECT_TRUE(
       new_web_contents->GetVisibleURL().spec().starts_with(kAIChatUIURL));
 }
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 }  // namespace brave_education

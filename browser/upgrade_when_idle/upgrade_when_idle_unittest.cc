@@ -15,6 +15,7 @@
 #include "base/test/mock_callback.h"
 #include "base/time/time.h"
 #include "base/values.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "chrome/browser/first_run/scoped_relaunch_chrome_browser_override.h"
 #include "chrome/browser/first_run/upgrade_util.h"
 #include "chrome/browser/profiles/profile_manager.h"
@@ -167,10 +168,12 @@ TEST_F(UpgradeWhenIdleTest, NoUpgradeWhenDeleteSiteSettingsOnExit) {
   RunImplementation(ui::IDLE_STATE_IDLE, /*expect_upgrade=*/false);
 }
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
 TEST_F(UpgradeWhenIdleTest, NoUpgradeWhenDeleteBraveLeoHistoryOnExit) {
   SetPref(browsing_data::prefs::kDeleteBraveLeoHistoryOnExit);
   RunImplementation(ui::IDLE_STATE_IDLE, /*expect_upgrade=*/false);
 }
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 TEST_F(UpgradeWhenIdleTest, NoUpgradeWhenClearBrowsingDataOnExitList) {
   SetClearBrowsingDataOnExitList(

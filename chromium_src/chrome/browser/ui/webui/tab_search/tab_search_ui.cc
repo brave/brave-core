@@ -5,10 +5,14 @@
 
 #include "chrome/browser/ui/webui/tab_search/tab_search_ui.h"
 
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/grit/brave_generated_resources.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
-#include "brave/grit/brave_generated_resources.h"
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 #define TabSearchUI TabSearchUI_ChromiumImpl
 #include <chrome/browser/ui/webui/tab_search/tab_search_ui.cc>
@@ -19,6 +23,7 @@ TabSearchUI::TabSearchUI(content::WebUI* web_ui)
   Profile* profile = Profile::FromWebUI(web_ui);
   base::Value::Dict update_data;
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
   update_data.Set(
       "tabOrganizationEnabled",
       ai_chat::AIChatServiceFactory::GetForBrowserContext(profile) &&
@@ -30,6 +35,10 @@ TabSearchUI::TabSearchUI(content::WebUI* web_ui)
   update_data.Set("showTabOrganizationFRE",
                   !profile->GetPrefs()->HasPrefPath(
                       ai_chat::prefs::kBraveAIChatTabOrganizationEnabled));
+#else
+  update_data.Set("tabOrganizationEnabled", false);
+  update_data.Set("showTabOrganizationFRE", false);
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
   update_data.Set("autoTabGroupsSelectorHeading",
                   l10n_util::GetStringUTF16(IDS_BRAVE_ORGANIZE_TAB_TITLE));
