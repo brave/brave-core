@@ -7,8 +7,6 @@ import * as React from 'react'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 
-import { mojoString16ToString } from 'chrome://resources/js/mojo_type_util.js'
-
 import { AutocompleteMatch, ClickEvent } from '../../state/search_state'
 import { useSearchState, useSearchActions } from '../../context/search_context'
 import { getString } from '../../lib/strings'
@@ -17,22 +15,17 @@ import { SafeImage } from '../common/safe_image'
 
 import { style } from './search_results.style'
 
-function useMojoString16<T>(value: T) {
-  return React.useMemo(() => mojoString16ToString(value), [value])
-}
-
 function MatchImage(props: { match: AutocompleteMatch }) {
-  const { imageUrl, iconUrl } = props.match
-  const description = useMojoString16(props.match.description)
+  const { imageUrl, iconUrl, description } = props.match
 
   if (description === getString('searchAskLeoDescription')) {
     return <Icon name='product-brave-leo' className='brave-leo-icon' />
   }
   if (!imageUrl) {
-    if (!iconUrl.url) {
+    if (!iconUrl) {
       return <Icon name='search' className='search-icon' />
     }
-    return <img className='icon' src={iconUrl.url} />
+    return <img className='icon' src={iconUrl} />
   }
   if (imageUrl.startsWith('chrome:')) {
     return <img src={imageUrl} />
@@ -41,12 +34,10 @@ function MatchImage(props: { match: AutocompleteMatch }) {
 }
 
 function MatchText(props: { match: AutocompleteMatch }) {
-  const contents = useMojoString16(props.match.contents)
-  const description = useMojoString16(props.match.description)
   return <>
-    {contents}
+    {props.match.contents}
     <span className='description'>
-      {description}
+      {props.match.description}
     </span>
   </>
 }

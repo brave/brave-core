@@ -26,8 +26,6 @@ interface SafeRectMessage {
 
 interface SearchMatchesMessage {
   type: 'richMediaSearchMatches'
-  // TODO(https://github.com/brave/brave-browser/issues/50424): This should be
-  // a type defined by the protocol.
   value: AutocompleteMatch[]
 }
 
