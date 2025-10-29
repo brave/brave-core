@@ -298,6 +298,7 @@ leo_icons = [
   "launch-off.svg",
   "launch.svg",
   "leo-cursor.svg",
+  "leo-cursor-filled.svg",
   "link-broken.svg",
   "link-normal.svg",
   "list-bullet-default.svg",
