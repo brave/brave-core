@@ -9,7 +9,7 @@
 
 #include "base/check.h"
 #include "base/debug/crash_logging.h"
-#include "base/debug/dump_without_crashing.h"
+#include "base/notreached.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "v8/include/v8-context.h"
 #include "v8/include/v8-exception.h"
@@ -158,7 +158,7 @@ class ExtensionImpl : public v8::Extension {
     SCOPED_CRASH_KEY_STRING64(
         "GetNativeFunctionTemplate", "name",
         std::string(*v8::String::Utf8Value(isolate, name)));
-    base::debug::DumpWithoutCrashing();
+    DUMP_WILL_BE_NOTREACHED();
     return v8::Local<v8::FunctionTemplate>();
   }
 

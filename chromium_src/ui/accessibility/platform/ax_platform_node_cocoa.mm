@@ -4,8 +4,8 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "base/debug/alias.h"
-#include "base/debug/dump_without_crashing.h"
 #include "base/logging.h"
+#include "base/notreached.h"
 
 // Assumed to be a temporary fix for
 // https://github.com/brave/brave-browser/issues/13778
@@ -20,13 +20,13 @@
     LOG(ERROR) << "Trying to get a range from a non-string object." \
                << " Role: " << static_cast<int>(role)               \
                << " Name: " << _node->GetName();                    \
-    base::debug::DumpWithoutCrashing();                             \
+    DUMP_WILL_BE_NOTREACHED();                                      \
     return nil;                                                     \
   }                                                                 \
   NSString* str = value;                                            \
   if (range.location == NSNotFound ||                               \
       range.location + range.length > str.length) {                 \
-    base::debug::DumpWithoutCrashing();                             \
+    DUMP_WILL_BE_NOTREACHED();                                      \
     return nil;                                                     \
   }
 

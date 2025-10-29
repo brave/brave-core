@@ -20,7 +20,6 @@
 #include "base/containers/fixed_flat_map.h"
 #include "base/containers/map_util.h"
 #include "base/debug/crash_logging.h"
-#include "base/debug/dump_without_crashing.h"
 #include "base/no_destructor.h"
 #include "base/not_fatal_until.h"
 #include "base/notreached.h"
@@ -122,22 +121,22 @@ std::string MakeChainIdLowerCase(std::string_view chain_id,
     SCOPED_CRASH_KEY_STRING256("wallet", "MakeChainIdLowerCaseChain", chain_id);
     switch (reason) {
       case ToLowerCaseReason::kGetURLForKnownChainId:
-        base::debug::DumpWithoutCrashing();
+        DUMP_WILL_BE_NOTREACHED();
         break;
       case ToLowerCaseReason::kGetCurrentChainIdFromPrefs:
-        base::debug::DumpWithoutCrashing();
+        DUMP_WILL_BE_NOTREACHED();
         break;
       case ToLowerCaseReason::kIsEip1559Chain:
-        base::debug::DumpWithoutCrashing();
+        DUMP_WILL_BE_NOTREACHED();
         break;
       case ToLowerCaseReason::kSetEip1559ForCustomChain:
-        base::debug::DumpWithoutCrashing();
+        DUMP_WILL_BE_NOTREACHED();
         break;
       case ToLowerCaseReason::kGetHiddenNetworks:
-        base::debug::DumpWithoutCrashing();
+        DUMP_WILL_BE_NOTREACHED();
         break;
       case ToLowerCaseReason::kAddHiddenNetwork:
-        base::debug::DumpWithoutCrashing();
+        DUMP_WILL_BE_NOTREACHED();
         break;
     }
   }

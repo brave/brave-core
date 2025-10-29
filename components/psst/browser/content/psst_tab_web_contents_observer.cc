@@ -9,9 +9,9 @@
 #include <utility>
 
 #include "base/debug/crash_logging.h"
-#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "base/json/json_writer.h"
+#include "base/notreached.h"
 #include "base/strings/strcat.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
@@ -62,7 +62,7 @@ std::string MaybeAddParamsToScript(std::unique_ptr<MatchedRule> rule,
   if (!params_json) {
     SCOPED_CRASH_KEY_STRING64("Psst", "rule_name", rule->name());
     SCOPED_CRASH_KEY_NUMBER("Psst", "rule_version", rule->version());
-    base::debug::DumpWithoutCrashing();
+    DUMP_WILL_BE_NOTREACHED();
     return rule->policy_script();
   }
 

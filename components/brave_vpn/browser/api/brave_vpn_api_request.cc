@@ -8,9 +8,9 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/debug/dump_without_crashing.h"
 #include "base/json/json_writer.h"
 #include "base/logging.h"
+#include "base/notreached.h"
 #include "brave/components/brave_vpn/browser/api/brave_vpn_api_helper.h"
 #include "brave/components/brave_vpn/browser/api/vpn_response_parser.h"
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
@@ -89,7 +89,7 @@ void BraveVpnAPIRequest::GetHostnamesForRegion(
   DCHECK(!region.empty());
   static bool dump_sent = false;
   if (!dump_sent && region.empty()) {
-    base::debug::DumpWithoutCrashing();
+    DUMP_WILL_BE_NOTREACHED();
     dump_sent = true;
   }
 

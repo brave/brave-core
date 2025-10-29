@@ -24,7 +24,6 @@
 
 #include "base/base64.h"
 #include "base/check.h"
-#include "base/debug/dump_without_crashing.h"
 #include "base/debug/stack_trace.h"
 #include "base/json/json_string_value_serializer.h"
 #include "base/logging.h"
@@ -420,7 +419,7 @@ PageGraph::PageGraph(LocalFrame& local_frame)
   if (!page->IsOrdinary()) {
     LOG(ERROR) << "PageGraph is ignoring non-ordinary page, some parts of the "
                   "web page may not be captured.";
-    base::debug::DumpWithoutCrashing();
+    DUMP_WILL_BE_NOTREACHED();
     return;
   }
 

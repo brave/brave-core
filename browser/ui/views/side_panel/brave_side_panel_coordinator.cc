@@ -11,8 +11,8 @@
 
 #include "base/check.h"
 #include "base/debug/crash_logging.h"
-#include "base/debug/dump_without_crashing.h"
 #include "base/logging.h"
+#include "base/notreached.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
@@ -164,7 +164,7 @@ void BraveSidePanelCoordinator::PopulateSidePanel(
     const std::string entry_id = SidePanelEntryIdToString(entry->key().id());
     LOG(ERROR) << __func__ << " no side panel action item for " << entry_id;
     SCOPED_CRASH_KEY_STRING64("SidePanel", "entry_id", entry_id);
-    base::debug::DumpWithoutCrashing();
+    DUMP_WILL_BE_NOTREACHED();
     return;
   }
 

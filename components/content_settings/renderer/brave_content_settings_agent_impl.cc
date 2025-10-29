@@ -14,9 +14,9 @@
 #include "base/check.h"
 #include "base/containers/contains.h"
 #include "base/debug/crash_logging.h"
-#include "base/debug/dump_without_crashing.h"
 #include "base/feature_list.h"
 #include "base/logging.h"
+#include "base/notreached.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 #include "brave/components/brave_shields/core/common/brave_shields_settings_values.h"
@@ -405,7 +405,7 @@ BraveContentSettingsAgentImpl::GetBraveShieldsSettings(
         url::Origin(frame->GetSecurityOrigin()).GetDebugString(false));
     SCOPED_CRASH_KEY_BOOL("BraveShieldsSettings", "has_cs_rules",
                           HasContentSettingsRules());
-    base::debug::DumpWithoutCrashing();
+    DUMP_WILL_BE_NOTREACHED();
     return brave_shields::mojom::ShieldsSettings::New(
         farbling_level, base::Token(), std::vector<std::string>(), false,
         false);

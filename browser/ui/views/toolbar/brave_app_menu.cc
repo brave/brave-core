@@ -10,9 +10,9 @@
 #include "base/check.h"
 #include "base/check_op.h"
 #include "base/debug/crash_logging.h"
-#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
+#include "base/notreached.h"
 #include "base/scoped_observation.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/brave_browser_process.h"
@@ -217,7 +217,7 @@ void BraveAppMenu::ExecuteCommand(int command_id, int mouse_event_flags) {
       command_id_to_entry_.find(command_id) == command_id_to_entry_.end()) {
     LOG(ERROR) << __func__ << " entry should exist for " << command_id;
     SCOPED_CRASH_KEY_NUMBER("BraveAppMenu", "command_id", command_id);
-    base::debug::DumpWithoutCrashing();
+    DUMP_WILL_BE_NOTREACHED();
     return;
   }
   AppMenu::ExecuteCommand(command_id, mouse_event_flags);
