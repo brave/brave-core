@@ -169,10 +169,9 @@ class BraveBrowserView::SidebarOnMouseOverEventHandler
   explicit SidebarOnMouseOverEventHandler(BraveBrowserView* browser_view)
       : browser_view_(browser_view) {
     auto* widget = browser_view_->GetWidget();
-    if (widget->GetNativeWindow()) {
-      monitor_ = views::EventMonitor::CreateWindowMonitor(
-          this, widget->GetNativeWindow(), {ui::EventType::kMouseMoved});
-    }
+    CHECK(widget && widget->GetNativeWindow());
+    monitor_ = views::EventMonitor::CreateWindowMonitor(
+        this, widget->GetNativeWindow(), {ui::EventType::kMouseMoved});
   }
 
   ~SidebarOnMouseOverEventHandler() override = default;
