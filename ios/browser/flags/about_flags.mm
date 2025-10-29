@@ -231,16 +231,6 @@
           FEATURE_VALUE_TYPE(brave::features::kUseChromiumWebViews),           \
       },                                                                       \
       {                                                                        \
-          "brave-ntp-branded-wallpaper-demo",                                  \
-          "New Tab Page Demo Branded Wallpaper",                               \
-          "Force dummy data for the Branded Wallpaper New Tab Page "           \
-          "Experience. View rate and user opt-in conditionals will still be "  \
-          "followed to decide when to display the Branded Wallpaper.",         \
-          flags_ui::kOsIos,                                                    \
-          FEATURE_VALUE_TYPE(                                                  \
-              ntp_background_images::features::kBraveNTPBrandedWallpaperDemo), \
-      },                                                                       \
-      {                                                                        \
           "brave-debounce",                                                    \
           "Enable debouncing",                                                 \
           "Enable support for skipping top-level redirect tracking URLs",      \
