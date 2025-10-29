@@ -50,17 +50,13 @@ bool WritePrefixedHexStringToFixed(std::string_view input,
     }
 
     input.remove_prefix(1);
+    if (input.empty()) {
+      // We only have a valid parse here if there is no more expected output.
+      return bytes.empty();
+    }
   }
 
-  if (2 * bytes.size() != input.size()) {
-    return false;
-  }
-
-  if (!input.empty() && !base::HexStringToSpan(input, bytes)) {
-    return false;
-  }
-
-  return true;
+  return base::HexStringToSpan(input, bytes);
 }
 
 }  // namespace internal
