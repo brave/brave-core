@@ -25,6 +25,8 @@ class BraveTreeTabStripCollectionDelegate
                        std::optional<tab_groups::TabGroupId> new_group_id,
                        bool new_pinned_state,
                        tabs::TabInterface* opener) const override;
+  std::unique_ptr<tabs::TabInterface> RemoveTabAtIndexRecursive(
+      size_t index) const override;
 
  private:
   bool in_desturction_ = false;

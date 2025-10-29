@@ -36,6 +36,8 @@ class BraveTabStripCollectionDelegate {
       std::optional<tab_groups::TabGroupId> new_group_id,
       bool new_pinned_state,
       TabInterface* opener) const = 0;
+  virtual std::unique_ptr<TabInterface> RemoveTabAtIndexRecursive(
+      size_t index) const = 0;
 
  protected:
   // owner of this delegate.

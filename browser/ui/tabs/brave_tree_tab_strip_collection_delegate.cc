@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/tabs/brave_tree_tab_strip_collection_delegate.h"
 
+#include "third_party/abseil-cpp/absl/functional/overload.h"
+#include "base/containers/adapters.h"
 #include "base/functional/bind.h"
 #include "brave/browser/ui/tabs/tree_tab_model.h"
 #include "brave/components/tabs/public/tree_tab_node_tab_collection.h"
@@ -77,7 +79,7 @@ void BraveTreeTabStripCollectionDelegate::AddTabRecursive(
   // it with a tabs::TreeTabNodeTabCollection.
   auto* added_tab = tab.get();
   collection_->AddTabRecursive(std::move(tab), index, new_group_id,
-                                   new_pinned_state, GetPassKey());
+                               new_pinned_state, GetPassKey());
 
   auto* parent_collection =
       collection_->GetParentCollection(added_tab, GetPassKey());
@@ -95,4 +97,57 @@ void BraveTreeTabStripCollectionDelegate::AddTabRecursive(
 
   CHECK(tree_tab_model_);
   tree_tab_model_->AddTreeTabNode(tree_tab_node_ptr->node());
+}
+
+std::unique_ptr<tabs::TabInterface>
+BraveTreeTabStripCollectionDelegate::RemoveTabAtIndexRecursive(
+    size_t index) const {
+  auto* target_tab = collection_->GetTabAtIndexRecursive(index);
+  auto* parent_collection =
+      collection_->GetParentCollection(target_tab, GetPassKey());
+  CHECK(parent_collection);
+
+  if (parent_collection->type() == tabs::TabCollection::Type::TREE_NODE) {
+    auto* tree_tab_node_collection =
+        static_cast<tabs::TreeTabNodeTabCollection*>(parent_collection);
+
+    auto* tree_node_owner_collection = tree_tab_node_collection->GetParentCollection();
+    
+    // Remove the tab first so that we can keep the |index| correct.
+    auto tab = collection_->RemoveTabAtIndexRecursive(index, GetPassKey());
+
+    // Get direct children of |tree_tab_node_collection| and re-add them to the owner
+    // collection to preserve the tree structure.
+    auto local_index = tree_node_owner_collection->GetIndexOfCollection(tree_tab_node_collection);
+    CHECK(local_index.has_value());
+
+    auto children = tree_tab_node_collection->GetTreeNodeChildren();
+    for (auto& child : base::Reversed(children)) {
+      std::visit(absl::Overload{
+                     [&](tabs::TabInterface* tab) {
+                       tree_node_owner_collection->AddTab(
+                           tree_tab_node_collection->MaybeRemoveTab(tab),
+                           *local_index);
+                     },
+                     [&](tabs::TabCollection* collection) {
+                       tree_node_owner_collection->AddCollection(
+                           tree_tab_node_collection->MaybeRemoveCollection(
+                               collection),
+                           *local_index);
+                     }},
+                 child);
+    }
+
+    // Remove the tree tab node collection form owner
+    CHECK(tree_tab_model_);
+    tree_tab_model_->RemoveTreeTabNode(tree_tab_node_collection->node().id());
+
+    CHECK(tree_node_owner_collection);
+    auto removed_collection = tree_node_owner_collection->MaybeRemoveCollection(
+        tree_tab_node_collection);
+    return tab;
+  }
+
+  // Just remove the tab.
+  return collection_->RemoveTabAtIndexRecursive(index, GetPassKey());
 }

@@ -8,6 +8,7 @@
 #include "base/notimplemented.h"
 #include "brave/components/tabs/public/brave_tab_strip_collection_delegate.h"
 #include "components/tabs/public/tab_collection.h"
+#include "components/tabs/public/tab_interface.h"
 
 namespace tabs {
 
@@ -35,6 +36,13 @@ void BraveTabStripCollection::AddTabRecursive(
     base::PassKey<BraveTabStripCollectionDelegate> pass_key) {
   TabStripCollection::AddTabRecursive(std::move(tab), index, new_group_id,
                                       new_pinned_state);
+}
+
+std::unique_ptr<TabInterface>
+BraveTabStripCollection::RemoveTabAtIndexRecursive(
+    size_t index,
+    base::PassKey<BraveTabStripCollectionDelegate> pass_key) {
+  return TabStripCollection::RemoveTabAtIndexRecursive(index);
 }
 
 void BraveTabStripCollection::AddTabRecursive(
@@ -92,12 +100,9 @@ void BraveTabStripCollection::MoveTabsRecursive(
 std::unique_ptr<TabInterface>
 BraveTabStripCollection::RemoveTabAtIndexRecursive(size_t index) {
   if (delegate_ && delegate_->ShouldHandleTabManipulation()) {
-    // delegate_->OnBeforeRemoveTabAtIndexRecursive(index);
+    return delegate_->RemoveTabAtIndexRecursive(index);
   }
 
-  // TODO(https://github.com/brave/brave-browser/issues/49789) Handle tree tab
-  // removal properly.
-  NOTIMPLEMENTED();
   return TabStripCollection::RemoveTabAtIndexRecursive(index);
 }
 
