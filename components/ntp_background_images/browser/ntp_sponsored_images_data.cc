@@ -28,7 +28,6 @@ constexpr int kExpectedSchemaVersion = 2;
 constexpr int kExpectedCampaignVersion = 1;
 
 constexpr char kCampaignVersionKey[] = "version";
-constexpr char kGracePeriodKey[] = "gracePeriod";
 constexpr char kCreativeSetsKey[] = "creativeSets";
 constexpr char kCreativeSetIdKey[] = "creativeSetId";
 constexpr char kCreativesKey[] = "creatives";
@@ -152,10 +151,6 @@ NTPSponsoredImagesData::NTPSponsoredImagesData(
     url_prefix += kSuperReferralPath;
   } else {
     url_prefix += kSponsoredImagesPath;
-  }
-
-  if (const std::string* const value = dict.FindString(kGracePeriodKey)) {
-    grace_period = base::TimeDeltaFromString(*value);
   }
 
   if (const base::Value::List* const value = dict.FindList(kCampaignsKey)) {

@@ -22,14 +22,12 @@ NS_ASSUME_NONNULL_BEGIN
 OBJC_EXPORT
 @interface NTPSponsoredImageData : NSObject
 @property(readonly) NSArray<NTPSponsoredImageCampaign*>* campaigns;
-@property(readonly, nullable) NSNumber* gracePeriod;
 @property(readonly) BOOL isSuperReferral;
 @property(readonly, nullable) NSString* themeName;
 @property(readonly, nullable) NSArray<NTPSponsoredImageTopSite*>* topSites;
 - (instancetype)init NS_UNAVAILABLE;
 - (instancetype)
     initWithCampaigns:(NSArray<NTPSponsoredImageCampaign*>*)campaigns
-          gracePeriod:(nullable NSNumber*)gracePeriod
       isSuperReferral:(BOOL)isSuperReferral
             themeName:(nullable NSString*)themeName
              topSites:(nullable NSArray<NTPSponsoredImageTopSite*>*)topSites

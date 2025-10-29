@@ -158,8 +158,6 @@ struct NTPSponsoredImagesData {
 
   std::string url_prefix;
 
-  std::optional<base::TimeDelta> grace_period;
-
   std::vector<Campaign> campaigns;
 
   // SR only properties.
