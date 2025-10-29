@@ -213,13 +213,15 @@ export const SettingsPage = () => {
 
 export const Bubble = () => {
   return (
-    <EmailAliasModal
-      aliasCount={demoData.aliases.length}
-      onReturnToMain={() => {}}
-      editing={false}
-      mainEmail={demoData.email}
-      bubble={true}
-      emailAliasesService={stubEmailAliasesServiceAccountReadyInstance}
-    />
+    <div style={{ width: '420px', margin: '0 auto' }}>
+      <EmailAliasModal
+        aliasCount={demoData.aliases.length}
+        onReturnToMain={() => {}}
+        editing={false}
+        mainEmail={demoData.email}
+        bubble={true}
+        emailAliasesService={stubEmailAliasesServiceAccountReadyInstance}
+      />
+    </div>
   )
 }

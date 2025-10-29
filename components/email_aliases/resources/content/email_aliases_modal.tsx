@@ -208,6 +208,17 @@ export const DeleteAliasModal = ({
   )
 }
 
+export enum EmailAliasModalActionType {
+  Complete,
+  Manage,
+  Cancel,
+}
+
+export type EmailAliasModalAction =
+  | { type: EmailAliasModalActionType.Cancel }
+  | { type: EmailAliasModalActionType.Manage }
+  | { type: EmailAliasModalActionType.Complete; email: string }
+
 export const EmailAliasModal = ({
   onReturnToMain,
   editing,
@@ -217,7 +228,7 @@ export const EmailAliasModal = ({
   emailAliasesService,
   bubble,
 }: {
-  onReturnToMain: () => void
+  onReturnToMain: (action: EmailAliasModalAction) => void
   editing: boolean
   editAlias?: Alias
   bubble?: boolean
@@ -250,7 +261,10 @@ export const EmailAliasModal = ({
         generateAliasResult.aliasEmail,
         proposedNote,
       )
-      onReturnToMain()
+      onReturnToMain({
+        type: EmailAliasModalActionType.Complete,
+        email: generateAliasResult.aliasEmail,
+      })
     } catch (errorMessage) {
       setUpdateErrorMessage(errorMessage as string)
     }
@@ -264,8 +278,9 @@ export const EmailAliasModal = ({
       // wrong type in its JSDoc.
       // TODO(https://github.com/brave/brave-browser/issues/48960): fix the
       // JSDoc generation issue so that this cast is not needed.
+      const response = await emailAliasesService.generateAlias()
       const proposedEmail =
-        (await emailAliasesService.generateAlias()) as unknown as string
+        typeof response === 'string' ? response : response.result.success!
       setGenerateAliasResult({
         aliasEmail: proposedEmail,
         errorMessage: undefined,
@@ -358,8 +373,20 @@ export const EmailAliasModal = ({
       )}
       <ButtonRow bubble={bubble}>
         <span>
+          {bubble && (
+            <Button
+              onClick={() => {
+                onReturnToMain({ type: EmailAliasModalActionType.Manage })
+              }}
+              kind='plain'
+            >
+              {getLocale('emailAliasesManageButton')}
+            </Button>
+          )}
           <Button
-            onClick={onReturnToMain}
+            onClick={() =>
+              onReturnToMain({ type: EmailAliasModalActionType.Cancel })
+            }
             kind='plain-faint'
           >
             {getLocale(S.SETTINGS_EMAIL_ALIASES_CANCEL_BUTTON)}
