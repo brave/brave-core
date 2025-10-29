@@ -44,6 +44,11 @@ enum class SpeedreaderBubbleLocation : int;
 }  // namespace speedreader
 #endif
 
+namespace sidebar {
+FORWARD_DECLARE_TEST(SidebarBrowserWithSplitViewTest,
+                     ShowSidebarOnMouseOverTest);
+}  // namespace sidebar
+
 namespace content {
 class WebContents;
 }  // namespace content
@@ -173,6 +178,8 @@ class BraveBrowserView : public BrowserView,
                            ContentsBackgroundEventHandleTest);
   FRIEND_TEST_ALL_PREFIXES(SideBySideWithRoundedCornersTest,
                            ContentsShadowTest);
+  FRIEND_TEST_ALL_PREFIXES(sidebar::SidebarBrowserWithSplitViewTest,
+                           ShowSidebarOnMouseOverTest);
 
   static void SetDownloadConfirmReturnForTesting(bool allow);
 
