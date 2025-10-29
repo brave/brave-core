@@ -230,7 +230,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->key = "chat-qwen";
       model->display_name = "Qwen 14B";
       model->vision_support = false;
-      model->supports_tools = true;
+      model->supports_tools = false;
       model->is_suggested_model = false;
       model->is_near_model = false;
       model->options =
@@ -279,7 +279,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->key = "chat-llama-4-scout";
       model->display_name = "Llama 4 Scout";
       model->vision_support = true;
-      model->supports_tools = true;
+      model->supports_tools = false;
       model->is_suggested_model = false;
       model->options =
           mojom::ModelOptions::NewLeoModelOptions(std::move(options));
@@ -303,7 +303,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->key = "chat-llama-4-maverick";
       model->display_name = "Llama 4 Maverick";
       model->vision_support = true;
-      model->supports_tools = true;
+      model->supports_tools = false;
       model->is_suggested_model = false;
       model->options =
           mojom::ModelOptions::NewLeoModelOptions(std::move(options));
@@ -327,7 +327,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->key = "chat-gpt-oss-20b";
       model->display_name = "GPT OSS 20B";
       model->vision_support = false;
-      model->supports_tools = true;
+      model->supports_tools = false;
       model->is_suggested_model = false;
       model->options =
           mojom::ModelOptions::NewLeoModelOptions(std::move(options));
@@ -349,7 +349,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->key = "chat-gpt-oss-120b";
       model->display_name = "GPT OSS 120B";
       model->vision_support = false;
-      model->supports_tools = true;
+      model->supports_tools = false;
       model->is_suggested_model = false;
       model->options =
           mojom::ModelOptions::NewLeoModelOptions(std::move(options));
@@ -371,7 +371,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->key = "chat-mistral-large";
       model->display_name = "Mistral Large";
       model->vision_support = true;
-      model->supports_tools = true;
+      model->supports_tools = false;
       model->is_suggested_model = false;
       model->options =
           mojom::ModelOptions::NewLeoModelOptions(std::move(options));
@@ -393,7 +393,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->key = "chat-pixtral-large";
       model->display_name = "Pixtral Large";
       model->vision_support = true;
-      model->supports_tools = true;
+      model->supports_tools = false;
       model->is_suggested_model = false;
       model->options =
           mojom::ModelOptions::NewLeoModelOptions(std::move(options));
@@ -415,7 +415,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->key = "chat-qwen-3-235b";
       model->display_name = "Qwen 3 235B";
       model->vision_support = false;
-      model->supports_tools = true;
+      model->supports_tools = false;
       model->is_suggested_model = false;
       model->options =
           mojom::ModelOptions::NewLeoModelOptions(std::move(options));
@@ -459,7 +459,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->key = "chat-qwen-3-coder-480b";
       model->display_name = "Qwen 3 Coder 480B";
       model->vision_support = false;
-      model->supports_tools = true;
+      model->supports_tools = false;
       model->is_suggested_model = false;
       model->options =
           mojom::ModelOptions::NewLeoModelOptions(std::move(options));
@@ -481,7 +481,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->key = "chat-claude-opus";
       model->display_name = "Claude Opus";
       model->vision_support = true;
-      model->supports_tools = true;
+      model->supports_tools = false;
       model->is_suggested_model = false;
       model->options =
           mojom::ModelOptions::NewLeoModelOptions(std::move(options));
