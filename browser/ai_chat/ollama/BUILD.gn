@@ -4,6 +4,8 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 static_library("ollama") {
+  visibility = [ "//chrome/browser" ]
+
   sources = [
     "ollama_service_factory.cc",
     "ollama_service_factory.h",

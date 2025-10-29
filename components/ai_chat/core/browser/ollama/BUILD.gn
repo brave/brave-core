@@ -4,6 +4,12 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 static_library("ollama") {
+  visibility = [
+    ":unit_tests",
+    "//brave/browser/ai_chat/ollama",
+    "//brave/components/ai_chat/content/browser",
+  ]
+
   sources = [
     "ollama_service.cc",
     "ollama_service.h",
