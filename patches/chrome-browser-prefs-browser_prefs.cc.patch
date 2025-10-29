@@ -1,24 +1,24 @@
 diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
-index e6b21e08c48d11a1d474595e164f807998317287..d8c7c2db0afca3dbc0a1c127aaca10f2ceb2c192 100644
+index b63faf9b5e446576d788ce931a3df9a154ec8f40..7981f4e6c44dbcb967484e5a172a501489c51faa 100644
 --- a/chrome/browser/prefs/browser_prefs.cc
 +++ b/chrome/browser/prefs/browser_prefs.cc
-@@ -2026,6 +2026,7 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
+@@ -1841,6 +1841,7 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
  #endif  // !BUILDFLAG(IS_ANDROID)
-
+ 
    // This is intentionally last.
 +  brave::RegisterLocalStatePrefs(registry);
    RegisterLocalStatePrefsForMigration(registry);
  }
-
-@@ -2492,6 +2493,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
+ 
+@@ -2307,6 +2308,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
                                  true);
-
+ 
    registry->RegisterBooleanPref(ntp_tiles::prefs::kTipsHomeModuleEnabled, true);
 +  brave::RegisterProfilePrefs(registry);
  }
-
+ 
  void RegisterUserProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -3081,6 +3083,7 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
+@@ -2808,6 +2810,7 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
    profile_prefs->ClearPref(kObsoletePasswordsUseUPMLocalAndSeparateStores);
    profile_prefs->ClearPref(kObsoleteEmptyProfileStoreLoginDatabase);
    profile_prefs->ClearPref(kObsoleteUpmAutoExportCsvNeedsDeletion);
@@ -26,11 +26,11 @@ index e6b21e08c48d11a1d474595e164f807998317287..d8c7c2db0afca3dbc0a1c127aaca10f2
    base::DeleteFile(profile_path.Append(FILE_PATH_LITERAL("Login Data")));
    base::DeleteFile(
        profile_path.Append(FILE_PATH_LITERAL("Login Data For Account")));
-@@ -3088,6 +3091,7 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
+@@ -2815,6 +2818,7 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
        profile_path.Append(FILE_PATH_LITERAL("Login Data-journal")));
    base::DeleteFile(
        profile_path.Append(FILE_PATH_LITERAL("Login Data For Account-journal")));
 +#endif
  #endif  // BUILDFLAG(IS_ANDROID)
-
+ 
    // Added 09/2025.
