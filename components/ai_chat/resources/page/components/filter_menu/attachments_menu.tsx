@@ -12,6 +12,7 @@ import { useAIChat } from '../../state/ai_chat_context'
 import { useConversation } from '../../state/conversation_context'
 import { getLocale } from '$web-common/locale'
 import usePromise from '$web-common/usePromise'
+import { stringifyContent } from '../input_box/editable_content'
 
 type Attachment = TabData | Bookmark
 
@@ -23,7 +24,7 @@ export default function TabsMenu() {
   const aiChat = useAIChat()
   const conversation = useConversation()
 
-  const query = useExtractedQuery(conversation.inputText, {
+  const query = useExtractedQuery(stringifyContent(conversation.inputText), {
     onlyAtStart: true,
     triggerCharacter: '@',
   })
@@ -33,8 +34,8 @@ export default function TabsMenu() {
   const setIsOpen = React.useCallback(
     (isOpen: boolean) => {
       if (!isOpen) {
-        conversation.setInputText('')
-        document.querySelector('textarea')?.focus()
+        conversation.setInputText([])
+        document.querySelector<HTMLElement>('textarea')?.focus()
       }
     },
     [conversation.setInputText],
