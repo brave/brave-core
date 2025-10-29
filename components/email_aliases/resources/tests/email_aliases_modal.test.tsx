@@ -8,12 +8,14 @@ import { render, screen, waitFor } from '@testing-library/react'
 import {
   EmailAliasModal,
   DeleteAliasModal,
+  EmailAliasModalActionType
 } from '../content/email_aliases_modal'
 
 import { clickLeoButton } from './test_utils'
 import {
   Alias,
   EmailAliasesServiceInterface,
+  EmailAliasesPanelHandler
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
 
 const emptyResultPromise = Promise.resolve({})
@@ -26,6 +28,12 @@ const mockEmailAliasesService: EmailAliasesServiceInterface = {
   requestAuthentication: jest.fn(),
   cancelAuthenticationOrLogout: jest.fn(),
   addObserver: jest.fn(),
+}
+
+const mockEmailAliasesHandler: EmailAliasesPanelHandler {
+  onComplete: jest.fn(),
+  onManage: jest.fn(),
+  onCancel: jest.fn()
 }
 
 describe('EmailAliasModal', () => {
@@ -454,6 +462,28 @@ describe('EmailAliasModal', () => {
       expect(
         screen.getByText(S.SETTINGS_EMAIL_ALIASES_DELETE_ALIAS_ERROR),
       ).toBeInTheDocument()
+    })
+  })
+
+  it('manage button in panel', async () => {
+      render(
+        <EmailAliasModal
+          editing={false}
+          mainEmail={mockEmail}
+          aliasCount={0}
+          onReturnToMain={mockOnReturnToMain}
+          emailAliasesService={mockEmailAliasesService}
+          bubble={true}
+        />,
+      )
+
+    const manageButton = screen.getByText('emailAliasesManageButton')
+    clickLeoButton(manageButton)
+
+    await waitFor(() => {
+      expect(mockOnReturnToMain).toHaveBeenCalledWith(
+        {type:EmailAliasModalActionType.Manage}
+      )
     })
   })
 })
