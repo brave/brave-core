@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/notifications/android/java/src/org/chromium/chrome/browser/notifications/channels/ChromeChannelDefinitions.java b/chrome/browser/notifications/android/java/src/org/chromium/chrome/browser/notifications/channels/ChromeChannelDefinitions.java
-index 8ab66d5cdac73da4c5428f3df17e5442054c03e4..71b3c6b388efd020200e50a64d640038d036408f 100644
+index f76e0f2d17879c0b5d9f357db61681b1cdbd6523..c99a7cf7b5ab33b73a214d7db70b88e723ce3105 100644
 --- a/chrome/browser/notifications/android/java/src/org/chromium/chrome/browser/notifications/channels/ChromeChannelDefinitions.java
 +++ b/chrome/browser/notifications/android/java/src/org/chromium/chrome/browser/notifications/channels/ChromeChannelDefinitions.java
-@@ -73,6 +73,7 @@ public class ChromeChannelDefinitions extends ChannelDefinitions {
+@@ -74,6 +74,7 @@ public class ChromeChannelDefinitions extends ChannelDefinitions {
          ChannelId.COLLABORATION,
          ChannelId.DOWNLOADS,
          ChannelId.INCOGNITO,
@@ -10,17 +10,16 @@ index 8ab66d5cdac73da4c5428f3df17e5442054c03e4..71b3c6b388efd020200e50a64d640038
          ChannelId.MEDIA_PLAYBACK,
          ChannelId.SCREEN_CAPTURE,
          ChannelId.CONTENT_SUGGESTIONS,
-@@ -132,7 +133,8 @@ public class ChromeChannelDefinitions extends ChannelDefinitions {
-         String TIPS = "tips";
-     }
+@@ -136,7 +137,7 @@ public class ChromeChannelDefinitions extends ChannelDefinitions {
+     // LINT.ThenChange(//tools/metrics/histograms/metadata/mobile/histograms.xml:NotificationChannelId)
+     // LINT.ThenChange(//chrome/browser/notifications/android/java/src/org/chromium/chrome/browser/notifications/NotificationUmaTracker.java:NotificationChannelId)
  
 -    @StringDef({ChannelGroupId.GENERAL, ChannelGroupId.SITES})
-+    @StringDef({BraveChannelDefinitions.ChannelGroupId.BRAVE_ADS, ChannelGroupId.GENERAL,
-+            ChannelGroupId.SITES})
++    @StringDef({BraveChannelDefinitions.ChannelGroupId.BRAVE_ADS, ChannelGroupId.GENERAL, ChannelGroupId.SITES})
      @Retention(RetentionPolicy.SOURCE)
      public @interface ChannelGroupId {
          String SITES = "sites";
-@@ -160,6 +162,7 @@ public class ChromeChannelDefinitions extends ChannelDefinitions {
+@@ -164,6 +165,7 @@ public class ChromeChannelDefinitions extends ChannelDefinitions {
              Map<String, PredefinedChannel> map = new HashMap<>();
              Set<String> startup = new HashSet<>();
  
@@ -28,7 +27,7 @@ index 8ab66d5cdac73da4c5428f3df17e5442054c03e4..71b3c6b388efd020200e50a64d640038
              map.put(
                      ChannelId.BROWSER,
                      PredefinedChannel.create(
-@@ -393,6 +396,7 @@ public class ChromeChannelDefinitions extends ChannelDefinitions {
+@@ -400,6 +402,7 @@ public class ChromeChannelDefinitions extends ChannelDefinitions {
  
          static {
              Map<String, PredefinedChannelGroup> map = new HashMap<>();

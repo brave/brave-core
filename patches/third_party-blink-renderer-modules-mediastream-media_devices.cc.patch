@@ -1,12 +1,12 @@
 diff --git a/third_party/blink/renderer/modules/mediastream/media_devices.cc b/third_party/blink/renderer/modules/mediastream/media_devices.cc
-index 4b634e717049aef8bce3dd4f446df9bf8f28fbd6..30ea9b5069a9078b8e90bf85dcb63d8bb420b856 100644
+index c458aeb51d09feb929abe97944e6cd47abbb95c6..3960f989e744a41ccf1e821ad79bdedab93063f6 100644
 --- a/third_party/blink/renderer/modules/mediastream/media_devices.cc
 +++ b/third_party/blink/renderer/modules/mediastream/media_devices.cc
-@@ -1382,6 +1382,7 @@ void MediaDevices::DevicesEnumerated(
+@@ -1344,6 +1344,7 @@ void MediaDevices::DevicesEnumerated(
      }
    }
  
 +  BRAVE_MEDIA_DEVICES_DEVICES_ENUMERATED
-   RecordEnumeratedDevices(result_tracker->GetScriptState(), media_devices);
    ReportCompletedEnumerateDevices(result_contains_nonempty_input_device_ids);
    result_tracker->Resolve(media_devices);
+   tracer->End();
