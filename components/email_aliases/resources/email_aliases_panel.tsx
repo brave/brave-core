@@ -24,7 +24,7 @@ import {
   EmailAliasesPanelHandler,
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
 
-const EmailAliasesPanelConnected = ({
+export const EmailAliasesPanelConnected = ({
   emailAliasesService,
   emailAliasesPanelHandler,
   bindObserver,
