@@ -33,7 +33,6 @@ using brave_shields::ControlTypeFromString;
 using brave_shields::ControlTypeToString;
 
 DefaultBraveShieldsHandler::DefaultBraveShieldsHandler() = default;
-
 DefaultBraveShieldsHandler::~DefaultBraveShieldsHandler() = default;
 
 void DefaultBraveShieldsHandler::RegisterMessages() {
