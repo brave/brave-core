@@ -14,6 +14,8 @@ import android.view.ViewStub;
 
 import androidx.core.content.ContextCompat;
 
+import com.google.android.material.button.MaterialButton;
+
 import org.chromium.base.Callback;
 import org.chromium.base.CallbackController;
 import org.chromium.base.ContextUtils;
@@ -75,7 +77,7 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
     private final BraveScrollingBottomViewResourceFrameLayout mScrollingBottomView;
     private HomeButton mHomeButton;
     private BookmarksButton mBookmarksButton;
-    private BottomToolbarNewTabButton mNewTabButton;
+    private MaterialButton mNewTabButton;
     private final View mBottomContainerTopShadow;
     private boolean mBookmarkButtonFilled;
     private final ObservableSupplier<BookmarkModel> mBookmarkModelSupplier;
