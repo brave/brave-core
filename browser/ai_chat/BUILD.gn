@@ -27,11 +27,10 @@ static_library("ai_chat") {
     "upload_file_helper.h",
   ]
 
-  public_deps = [ "//brave/browser/ai_chat/ollama" ]
-
   deps = [
     "//brave/brave_domains",
     "//brave/browser:browser_process",
+    "//brave/browser/ai_chat/ollama",
     "//brave/browser/misc_metrics",
     "//brave/browser/skus",
     "//brave/components/ai_chat/content/browser",
