@@ -19,6 +19,7 @@ import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.assertThat;
 import static androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withParent;
@@ -46,6 +47,7 @@ import android.graphics.ColorFilter;
 import android.graphics.drawable.Drawable;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import androidx.annotation.IdRes;
@@ -433,6 +435,29 @@ public class PasswordSettingsSearchTest {
                 });
     }
 
+    /** Check that closing the search via back button brings back all non-password prefs. */
+    @Test
+    @SmallTest
+    @Feature({"Preferences"})
+    public void testNoDuplicatesOnMainScreenAfterSearch() {
+        mTestHelper.setPasswordSourceWithMultipleEntries(GREEK_GODS);
+        mTestHelper.startPasswordSettingsFromMainSettings(mSettingsActivityTestRule);
+
+        // Open search
+        onView(withSearchMenuIdOrText()).perform(click());
+        onView(withId(R.id.search_src_text)).perform(click(), closeSoftKeyboard());
+
+        onView(withText(R.string.password_settings_save_passwords)).check(doesNotExist());
+
+        // Go back from search results to main passwords preferences
+        onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click());
+        onViewWaiting(withText(R.string.password_settings_save_passwords));
+
+        // Here at the test duplicates never appear, even without the original issue fix.
+        // TODO(https://github.com/brave/brave-browser/issues/50538): AlexeyBarabash
+        assertViewCount(withText(ZEUS_ON_EARTH.getUserName()), 1);
+    }
+
     /**
      * Looks for the search icon by id or by its title.
      *
@@ -458,5 +483,39 @@ public class PasswordSettingsSearchTest {
                     InstrumentationRegistry.getInstrumentation().getTargetContext());
             return withText(actionLabel);
         }
+    }
+
+    /**
+     * Asserts that the number of views in the hierarchy matching the given matcher equals the
+     * expected count.
+     *
+     * <p>Example:
+     *
+     * <pre>
+     *   assertViewCount(withText("Hello"), 2);
+     * </pre>
+     */
+    public static void assertViewCount(Matcher<View> matcher, int expectedCount) {
+        onView(isRoot())
+                .check(
+                        (root, e) -> {
+                            if (e != null) throw e;
+                            int count = countMatches(root, matcher);
+                            assertThat(
+                                    "Number of views matching: " + matcher,
+                                    count,
+                                    is(expectedCount));
+                        });
+    }
+
+    private static int countMatches(View view, Matcher<View> matcher) {
+        int result = matcher.matches(view) ? 1 : 0;
+        if (view instanceof ViewGroup) {
+            ViewGroup group = (ViewGroup) view;
+            for (int i = 0; i < group.getChildCount(); i++) {
+                result += countMatches(group.getChildAt(i), matcher);
+            }
+        }
+        return result;
     }
 }
