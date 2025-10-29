@@ -19,6 +19,9 @@ transpile_web_ui("js_resources") {
         "ai_chat_agent_new_tab_page",
         rebase_path("ai_chat_agent_new_tab_page.tsx"),
       ] ]
+
+  imports_from = [ "//brave/browser/resources/ai_chat_agent_new_tab_page/" ]
+
   resource_name = resource_name
 
   deps = [ "//brave/components/resources:strings" ]
