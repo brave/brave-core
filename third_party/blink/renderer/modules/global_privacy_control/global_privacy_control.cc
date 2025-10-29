@@ -7,11 +7,13 @@
 
 #include "base/feature_list.h"
 #include "third_party/blink/public/common/features.h"
+#include "third_party/blink/renderer/platform/runtime_enabled_features.h"
 
 namespace blink {
 
 bool GlobalPrivacyControl::globalPrivacyControl(NavigatorBase& navigator) {
-  return base::FeatureList::IsEnabled(features::kBraveGlobalPrivacyControl);
+  return base::FeatureList::IsEnabled(features::kBraveGlobalPrivacyControl) &&
+         RuntimeEnabledFeatures::BraveGlobalPrivacyControlEnabled();
 }
 
 }  // namespace blink

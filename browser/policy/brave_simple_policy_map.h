@@ -14,6 +14,7 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/de_amp/common/pref_names.h"
 #include "brave/components/debounce/core/common/pref_names.h"
+#include "brave/components/global_privacy_control/pref_names.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/p3a/pref_names.h"
 #include "brave/components/playlist/core/common/pref_names.h"
@@ -112,6 +113,9 @@ inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
      kManagedDefaultBraveFingerprintingV2, base::Value::Type::INTEGER},
     {policy::key::kBraveTrackingQueryParametersFilteringEnabled,
      query_filter::kTrackingQueryParametersFilteringEnabled,
+     base::Value::Type::BOOLEAN},
+    {policy::key::kBraveGlobalPrivacyControlEnabled,
+     global_privacy_control::kGlobalPrivacyControlEnabled,
      base::Value::Type::BOOLEAN},
 };
 
