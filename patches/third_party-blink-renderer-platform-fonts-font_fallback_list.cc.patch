@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/platform/fonts/font_fallback_list.cc b/third_party/blink/renderer/platform/fonts/font_fallback_list.cc
-index 2fccbd5f6fdad773bfa73500a646b66a59ce8891..909412b30666199f63f9dd2f8fa33da0eb44feaf 100644
+index 72dd68cba0ce134e9f4c3877058f68f1e079cd90..8204fcb3adb572c3217a788858a57d08b769020c 100644
 --- a/third_party/blink/renderer/platform/fonts/font_fallback_list.cc
 +++ b/third_party/blink/renderer/platform/fonts/font_fallback_list.cc
 @@ -173,6 +173,7 @@ const FontData* FontFallbackList::GetFontData(
@@ -9,4 +9,4 @@ index 2fccbd5f6fdad773bfa73500a646b66a59ce8891..909412b30666199f63f9dd2f8fa33da0
 +      BRAVE_GET_FONT_DATA
      }
      if (result) {
-       font_selector_->ReportSuccessfulFontFamilyMatch(
+       return result;

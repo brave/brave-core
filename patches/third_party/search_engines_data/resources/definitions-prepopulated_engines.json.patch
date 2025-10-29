@@ -1,5 +1,5 @@
 diff --git a/definitions/prepopulated_engines.json b/definitions/prepopulated_engines.json
-index 35ad4c08913a24dca1b97410cb36f1f0ee2dfb33..0a732bb404fe6f774a741b2d8aff063ee94d9b58 100644
+index cad62324df4ec2f9ee3825aec8a13cbec7f0effe..fa50a57978878bf6547aaaff201c092ebbc699dc 100644
 --- a/definitions/prepopulated_engines.json
 +++ b/definitions/prepopulated_engines.json
 @@ -117,25 +117,6 @@
@@ -11,7 +11,7 @@ index 35ad4c08913a24dca1b97410cb36f1f0ee2dfb33..0a732bb404fe6f774a741b2d8aff063e
 -      "keyword": "duckduckgo.com",
 -      "favicon_url": "https://duckduckgo.com/favicon.ico",
 -      "base_builtin_resource_id": "SEARCH_ENGINE_DUCKDUCKGO",
--      "logo_url": "https://staticcdn.duckduckgo.com/serp-fe/www/logos/dynamic/DuckDuckGoLogo.png",
+-      "logo_url": "https://staticcdn.duckduckgo.com/android/DuckDuckGoLogo.png",
 -      "search_url": "https://duckduckgo.com/?q={searchTerms}",
 -      "suggest_url": "https://duckduckgo.com/ac/?q={searchTerms}&type=list",
 -      "new_tab_url": "https://duckduckgo.com/chrome_newtab",
