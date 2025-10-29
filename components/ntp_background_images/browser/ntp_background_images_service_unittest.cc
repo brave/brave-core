@@ -452,8 +452,8 @@ class NTPBackgroundImagesServiceTest : public testing::Test {
 
 TEST_F(NTPBackgroundImagesServiceTest, BasicTest) {
   Init();
-  // NTP SI Component is registered always at start.
-  EXPECT_TRUE(service_->sponsored_images_component_started);
+  // NTP SI Component is registered after ads is initialized.
+  EXPECT_FALSE(service_->sponsored_images_component_started);
   // If ENABLE_NTP_BACKGROUND_IMAGES then BI shall be registered
   EXPECT_TRUE(service_->background_images_component_started);
 }
@@ -790,7 +790,7 @@ TEST_F(NTPBackgroundImagesServiceTest, SponsoredImageWithMissingImageUrlTest) {
 TEST_F(NTPBackgroundImagesServiceTest, TestOnNonReferralService) {
   Init();
 
-  EXPECT_TRUE(service_->sponsored_images_component_started);
+  EXPECT_FALSE(service_->sponsored_images_component_started);
   EXPECT_FALSE(service_->mapping_table_requested);
   EXPECT_FALSE(service_->referral_promo_code_change_monitored);
   EXPECT_FALSE(service_->super_referral_component_started);
@@ -898,7 +898,7 @@ TEST_F(NTPBackgroundImagesServiceTest, WithDefaultReferralCodeTest1) {
   Init();
 
   // Initially, only SI is started and pref is monitored to get referral code.
-  EXPECT_TRUE(service_->sponsored_images_component_started);
+  EXPECT_FALSE(service_->sponsored_images_component_started);
   EXPECT_TRUE(service_->referral_promo_code_change_monitored);
   EXPECT_TRUE(service_->checked_super_referral_component);
   EXPECT_FALSE(service_->mapping_table_requested);
@@ -924,7 +924,7 @@ TEST_F(NTPBackgroundImagesServiceTest, WithDefaultReferralCodeTest2) {
   // Initially, SI is started and SR checking is done.
   // This will not monitor prefs change because we already marked this is not
   // the super referral.
-  EXPECT_TRUE(service_->sponsored_images_component_started);
+  EXPECT_FALSE(service_->sponsored_images_component_started);
   EXPECT_TRUE(service_->checked_super_referral_component);
   EXPECT_FALSE(service_->mapping_table_requested);
   EXPECT_FALSE(service_->referral_promo_code_change_monitored);
@@ -936,7 +936,7 @@ TEST_F(NTPBackgroundImagesServiceTest, WithDefaultReferralCodeTest2) {
 TEST_F(NTPBackgroundImagesServiceTest, WithNonSuperReferralCodeTest) {
   Init();
 
-  EXPECT_TRUE(service_->sponsored_images_component_started);
+  EXPECT_FALSE(service_->sponsored_images_component_started);
   EXPECT_TRUE(service_->checked_super_referral_component);
   EXPECT_TRUE(service_->referral_promo_code_change_monitored);
   EXPECT_FALSE(service_->mapping_table_requested);
@@ -972,7 +972,7 @@ TEST_F(NTPBackgroundImagesServiceTest, WithSuperReferralCodeTest) {
 
   Init();
 
-  EXPECT_TRUE(service_->sponsored_images_component_started);
+  EXPECT_FALSE(service_->sponsored_images_component_started);
   EXPECT_TRUE(service_->checked_super_referral_component);
   EXPECT_TRUE(service_->referral_promo_code_change_monitored);
   EXPECT_FALSE(service_->mapping_table_requested);
