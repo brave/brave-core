@@ -36,6 +36,8 @@
 
 #if BUILDFLAG(IS_ANDROID)
 #include "ui/android/view_android.h"
+#else
+#include "ui/gfx/geometry/rect.h"
 #endif
 
 namespace brave_search {
