@@ -39,7 +39,7 @@ RegisterPolymerTemplateModifications({
       'afterend',
       getTrustedHTML`
         <div class="cr-row first line-only">
-          <h2 id="siteSettingsShields"></h2>
+          <h2 id="braveShields"></h2>
         </div>
         <settings-site-settings-list id="basicShieldsList"
           category-list="[[lists_.shieldsBasic]]"
@@ -47,7 +47,7 @@ RegisterPolymerTemplateModifications({
         </settings-site-settings-list>
       `)
     const siteSettingsShieldsTitle =
-      templateContent.getElementById('siteSettingsShields')
+      templateContent.getElementById('braveShields')
     if (!siteSettingsShieldsTitle) {
       console.error('[Settings] Couldn\'t find shields title')
     } else {
@@ -212,6 +212,12 @@ RegisterPolymerComponentReplacement(
         return lists
       }
       return properties
+    }
+
+    override getAssociatedControlFor(childViewId: string): HTMLElement {
+      // Note: We use the ContentSettingsTypes.XXX as the childViewId and the id to the link for opening it.
+      const maybeChild = this.shadowRoot?.querySelector(`#${childViewId}`) as HTMLElement | null
+      return maybeChild ?? super.getAssociatedControlFor(childViewId)
     }
   }
 )
