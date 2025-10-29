@@ -224,12 +224,6 @@ std::optional<Campaign> NTPSponsoredImagesData::MaybeParseCampaign(
       metric_type = brave_ads::mojom::NewTabPageAdMetricType::kConfirmation;
     } else if (*metrics == "p3a") {
       metric_type = brave_ads::mojom::NewTabPageAdMetricType::kP3A;
-    } else {
-      SCOPED_CRASH_KEY_STRING64("Issue50267", "campaign_id",
-                                campaign.campaign_id);
-      SCOPED_CRASH_KEY_STRING64("Issue50267", "failure_reason",
-                                "Invalid new tab page ad metric type");
-      base::debug::DumpWithoutCrashing();
     }
   }
 
