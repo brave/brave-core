@@ -268,11 +268,6 @@ ViewCounterService::GetCurrentBrandedWallpaperFromAdsService() const {
   if (!images_data) {
     ads_service_->OnFailedToPrefetchNewTabPageAd(ad->placement_id,
                                                  ad->creative_instance_id);
-    SCOPED_CRASH_KEY_STRING64("Issue50267", "creative_instance_id",
-                              ad->creative_instance_id);
-    SCOPED_CRASH_KEY_STRING64("Issue50267", "failure_reason",
-                              "No sponsored images data after prefetching");
-    base::debug::DumpWithoutCrashing();
     return std::nullopt;
   }
 

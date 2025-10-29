@@ -188,11 +188,6 @@ void NTPBackgroundImagesService::MaybeCheckForSponsoredComponentUpdate() {
       features::kSponsoredImagesUpdateCheckAfter.Get()) {
     if (sponsored_images_update_check_callback_) {
       sponsored_images_update_check_callback_.Run();
-    } else {
-      SCOPED_CRASH_KEY_STRING64(
-          "Issue50267", "failure_reason",
-          "sponsored_images_update_check_callback_ is null");
-      base::debug::DumpWithoutCrashing();
     }
   }
 }
@@ -204,10 +199,6 @@ void NTPBackgroundImagesService::ForceSponsoredComponentUpdate() {
 
 void NTPBackgroundImagesService::ScheduleNextSponsoredImagesComponentUpdate() {
   if (!sponsored_images_update_check_callback_) {
-    SCOPED_CRASH_KEY_STRING64(
-        "Issue50267", "failure_reason",
-        "sponsored_images_update_check_callback_ is null");
-    base::debug::DumpWithoutCrashing();
     return;
   }
 
