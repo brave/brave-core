@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
+import Label from '@brave/leo/react/label'
 import ProgressRing from '@brave/leo/react/progressRing'
 import classnames from '$web-common/classnames'
 import { getLocale } from '$web-common/locale'
@@ -35,6 +36,30 @@ import {
 import useConversationEventClipboardCopyHandler from './use_conversation_event_clipboard_copy_handler'
 import styles from './style.module.scss'
 import AssistantTask from '../assistant_task/assistant_task'
+
+// Function to highlight skill shortcuts in text
+const maybeHighlightSkillText = (text: string, skill?: Mojom.SkillEntry) => {
+  if (!skill) return text
+
+  const shortcutPattern = `/${skill.shortcut}`
+  const index = text.indexOf(shortcutPattern)
+
+  if (index === -1) return text
+
+  return (
+    <span>
+      {text.substring(0, index)}
+      <Label
+        className={styles.skillLabel}
+        color='primary'
+        mode='default'
+      >
+        {shortcutPattern}
+      </Label>
+      {text.substring(index + shortcutPattern.length)}
+    </span>
+  )
+}
 
 function ConversationEntries() {
   const conversationContext = useUntrustedConversationContext()
@@ -242,7 +267,10 @@ function ConversationEntries() {
                                 )}
                                 <div className={styles.humanMessageBubble}>
                                   <div className={styles.humanTextRow}>
-                                    {currentEntryEdit.text}
+                                    {maybeHighlightSkillText(
+                                      currentEntryEdit.text,
+                                      currentEntryEdit.skill,
+                                    )}
                                     {!!entry.edits?.length && (
                                       <div className={styles.editLabel}>
                                         <span className={styles.editLabelText}>
