@@ -12,10 +12,10 @@
 #include "base/files/file_path.h"
 #include "base/memory/ref_counted_memory.h"
 #include "base/path_service.h"
+#include "base/test/bind.h"
+#include "base/test/task_environment.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
-#include "content/public/browser/url_data_source.h"
-#include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
@@ -46,18 +46,8 @@ class BlockchainImagesSourceBaseTest : public testing::Test {
   bool data_received() const { return data_received_; }
   std::string data() const { return data_; }
 
-  void StartRequest(GURL url) {
-    data_received_ = false;
-    data_.clear();
-    const std::string path = content::URLDataSource::URLToRequestPath(url);
-    source()->HandleImageRequest(
-        path, base::BindOnce(&BlockchainImagesSourceBaseTest::OnDataReceived,
-                             base::Unretained(this)));
-  }
+  base::test::TaskEnvironment task_environment_;
 
-  content::BrowserTaskEnvironment task_environment_;
-
- private:
   void OnDataReceived(scoped_refptr<base::RefCountedMemory> bytes) {
     data_received_ = true;
     if (bytes) {
@@ -72,23 +62,42 @@ class BlockchainImagesSourceBaseTest : public testing::Test {
 };
 
 TEST_F(BlockchainImagesSourceBaseTest, GetMimeTypeForPath) {
-  EXPECT_EQ(source()->GetMimeTypeForPath("brave://test/img1.png"), "image/png");
-  EXPECT_EQ(source()->GetMimeTypeForPath("brave://test/img1.gif"), "image/gif");
-  EXPECT_EQ(source()->GetMimeTypeForPath("brave://test/img1.jpg"), "image/jpg");
-  EXPECT_EQ(source()->GetMimeTypeForPath("brave://test/img1.svg"),
-            "image/svg+xml");
+  EXPECT_EQ(source()->GetMimeTypeForPath("img1.png"), "image/png");
+  EXPECT_EQ(source()->GetMimeTypeForPath("img1.gif"), "image/gif");
+  EXPECT_EQ(source()->GetMimeTypeForPath("img1.jpg"), "image/jpg");
+  EXPECT_EQ(source()->GetMimeTypeForPath("img1.svg"), "image/svg+xml");
 }
 
 TEST_F(BlockchainImagesSourceBaseTest, HandleImageRequest) {
-  StartRequest(GURL("chrome://erc-token-images/logo.png"));
-  task_environment_.RunUntilIdle();
+  base::RunLoop run_loop;
+  data_received_ = false;
+  data_.clear();
+
+  source()->HandleImageRequest(
+      "logo.png", base::BindLambdaForTesting(
+                      [&](scoped_refptr<base::RefCountedMemory> bytes) {
+                        OnDataReceived(std::move(bytes));
+                        run_loop.Quit();
+                      }));
+
+  run_loop.Run();
   EXPECT_TRUE(data_received());
   EXPECT_FALSE(data().empty());
 }
 
 TEST_F(BlockchainImagesSourceBaseTest, HandleImageRequestImageNotExist) {
-  StartRequest(GURL("chrome://erc-token-images/ent.svg"));
-  task_environment_.RunUntilIdle();
+  base::RunLoop run_loop;
+  data_received_ = false;
+  data_.clear();
+
+  source()->HandleImageRequest(
+      "ent.svg", base::BindLambdaForTesting(
+                     [&](scoped_refptr<base::RefCountedMemory> bytes) {
+                       OnDataReceived(std::move(bytes));
+                       run_loop.Quit();
+                     }));
+
+  run_loop.Run();
   EXPECT_TRUE(data_received());
   EXPECT_TRUE(data().empty());
 }

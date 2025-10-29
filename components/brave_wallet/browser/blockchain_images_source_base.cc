@@ -15,8 +15,6 @@
 #include "base/strings/string_util.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
-#include "content/public/browser/browser_task_traits.h"
-#include "content/public/browser/browser_thread.h"
 
 namespace brave_wallet {
 
