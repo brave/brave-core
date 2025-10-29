@@ -1,0 +1,12 @@
+diff --git a/components/search_engines/BUILD.gn b/components/search_engines/BUILD.gn
+index cdf50752a97669d481946fc7289744334fa5bdc0..cfa2f3b05b8a1c095f7cad4b051c00b86937f8cf 100644
+--- a/components/search_engines/BUILD.gn
++++ b/components/search_engines/BUILD.gn
+@@ -152,6 +152,7 @@ static_library("search_engines") {
+       "enterprise/site_search_policy_handler.h",
+     ]
+   }
++  import("//brave/components/search_engines/sources.gni") deps += brave_components_search_engines_deps
+ }
+ 
+ source_set("search_engine_utils") {

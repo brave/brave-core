@@ -651,6 +651,10 @@
 -WebRtcEventLogManagerTestPolicy.*
 -WebRtcEventLogUploaderImplTest.*
 
+# The following test uses Chromium's list of "starter pack engines", which
+# includes entries not supported by Brave (i.e. "@gemini").
+-OmniboxEditModelPopupTest.GetPopupAccessibilityLabelForCurrentSelection_KeywordMode
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
 -AboutFlagsTest.EveryFlagHasMetadata

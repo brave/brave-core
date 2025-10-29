@@ -34,8 +34,13 @@
 # https://github.com/brave/brave-browser/issues/47218
 -OmniboxTextUtilTest.AdjustTextForCopy
 
-# This test fails because we disable @aimode search keyword
--FeaturedSearchProviderTest.StarterPack
+# The following tests use Chromium's list of "starter pack engines", which
+# includes entries not supported by Brave (i.e. "@gemini" and "@aimode").
+-AutocompleteControllerTest.ContextualSearchActionAttachedPageKeywordMode
+-AutocompleteControllerTest.ContextualSearchOpenLensActionAttachedPageKeywordMode
+-AutocompleteControllerTest.ExtraHeaders
+-AutocompleteControllerTest.ShouldRunProvider_StarterPack
+-FeaturedSearchProviderTest.*
 
 # These tests pass locally but fail on CI (flaky).
 -SupervisedUserServiceTest.CantEnableFilteringUsingUserControls
@@ -110,7 +115,6 @@
 -All/PasswordFormManagerTest.Autofill/*
 -All/PrivacySandboxAttestationsTest.*
 -All/WellKnownChangePasswordStateTest.PrefetchCallbackTriggersOnProcessingFinished/*
--AutocompleteControllerTest.ExtraHeaders
 -AutocompleteProviderTest.AllowExactKeywordMatch
 -AutocompleteProviderTest.CurbDefaultSuggestions
 -AutocompleteProviderTest.ExtraQueryParams
@@ -150,7 +154,6 @@
 -FCMNetworkHandlerTest.*
 -FCMNetworkHandlerTestWithTTL.ShouldNotProvideTTLWithFakeSenderID
 -FCMNetworkHandlerTestWithTTL.ShouldProvideTTLWithPolicySenderID
--FeaturedSearchProviderTest.HistoryEmbedding_Iphs
 -FeedbackUploaderDispatchTest.VariationHeaders
 -FeedbackUploaderDispatchTest.VariationHeadersForProductID
 -GetUserPopulationTest.PopulatesPopulation
