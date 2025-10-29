@@ -25,6 +25,7 @@ static_library("common") {
   deps = [
     "//base",
     "//brave/components/brave_shields/core/common:mojom",
+    "//brave/components/brave_shields/core/common:mojom_shared__generator",
     "//brave/components/webcompat/core/common",
     "//components/content_settings/core/common",
     "//net",
@@ -45,7 +46,10 @@ mojom_component("mojom") {
     "shields_settings.mojom",
   ]
 
-  deps = [ "//components/content_settings/core/common:content_settings_types" ]
+  deps = [
+    "//components/content_settings/core/common:content_settings_types",
+    "//components/content_settings/core/common:mojo_bindings",
+  ]
 
   public_deps = [
     "//mojo/public/mojom/base",

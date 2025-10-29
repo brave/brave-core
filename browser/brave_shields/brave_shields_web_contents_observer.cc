@@ -13,7 +13,9 @@
 #include "base/check.h"
 #include "base/feature_list.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
@@ -23,6 +25,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/renderer_configuration.mojom.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "components/content_settings/core/common/content_settings.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
@@ -48,6 +51,18 @@ namespace brave_shields {
 namespace {
 
 BraveShieldsWebContentsObserver* g_receiver_impl_for_testing = nullptr;
+
+bool IsJsBlockingEnforced(content::BrowserContext* browser_context,
+                          const GURL& url) {
+  Profile* profile = Profile::FromBrowserContext(browser_context);
+  auto* settings_service =
+      BraveShieldsSettingsServiceFactory::GetForProfile(profile);
+  if (!settings_service) {
+    return false;
+  }
+
+  return settings_service->IsJsBlockingEnforced(url);
+}
 
 }  // namespace
 
@@ -305,7 +320,6 @@ void BraveShieldsWebContentsObserver::SendShieldsSettings(
           ? brave_shields::GetFarblingToken(host_content_settings_map,
                                             primary_url)
           : base::Token();
-
   PrefService* pref_service =
       user_prefs::UserPrefs::Get(rfh->GetBrowserContext());
 
@@ -313,7 +327,8 @@ void BraveShieldsWebContentsObserver::SendShieldsSettings(
   rfh->GetRemoteAssociatedInterfaces()->GetInterface(&agent);
   agent->SetShieldsSettings(brave_shields::mojom::ShieldsSettings::New(
       farbling_level, farbling_token, allowed_scripts_,
-      brave_shields::IsReduceLanguageEnabledForProfile(pref_service)));
+      brave_shields::IsReduceLanguageEnabledForProfile(pref_service),
+      IsJsBlockingEnforced(rfh->GetBrowserContext(), primary_url)));
 }
 
 void BraveShieldsWebContentsObserver::BindReceiver(

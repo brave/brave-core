@@ -27,6 +27,7 @@
 #include "brave/browser/brave_search/backup_results_navigation_throttle.h"
 #include "brave/browser/brave_search/backup_results_service_factory.h"
 #include "brave/browser/brave_shields/brave_farbling_service_factory.h"
+#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl.h"
@@ -79,8 +80,10 @@
 #include "brave/components/brave_shields/content/browser/brave_farbling_service.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/content/browser/domain_block_navigation_throttle.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/features.h"
+#include "brave/components/brave_shields/core/common/shields_settings.mojom.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_p3a_private.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
@@ -484,6 +487,18 @@ void MaybeBindColorChangeHandler(
 }
 #endif
 
+bool IsJsBlockingEnforced(content::BrowserContext* browser_context,
+                          const GURL& url) {
+  Profile* profile = Profile::FromBrowserContext(browser_context);
+  auto* settings_service =
+      BraveShieldsSettingsServiceFactory::GetForProfile(profile);
+  if (!settings_service) {
+    return false;
+  }
+
+  return settings_service->IsJsBlockingEnforced(url);
+}
+
 }  // namespace
 
 BraveContentBrowserClient::BraveContentBrowserClient() = default;
@@ -763,7 +778,8 @@ BraveContentBrowserClient::WorkerGetBraveShieldSettings(
 
   return brave_shields::mojom::ShieldsSettings::New(
       farbling_level, farbling_token, std::vector<std::string>(),
-      brave_shields::IsReduceLanguageEnabledForProfile(pref_service));
+      brave_shields::IsReduceLanguageEnabledForProfile(pref_service),
+      IsJsBlockingEnforced(browser_context, url));
 }
 
 content::ContentBrowserClient::AllowWebBluetoothResult

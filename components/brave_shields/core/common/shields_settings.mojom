@@ -13,11 +13,27 @@ enum FarblingLevel {
   MAXIMUM,
 };
 
+// Maps to content_settings::SettingSource
+enum ContentSettingSource {
+  kNone = 0,
+  kPolicy,
+  kExtension,
+  kUser,
+  kAllowList,
+  kRemoteList,
+  kSupervised,
+  kInstalledWebApp,
+  kTpcdGrant,
+  kOsJavascriptOptimizer,
+  kTest,
+};
+
 struct ShieldsSettings {
   FarblingLevel farbling_level;
   mojo_base.mojom.Token farbling_token;
   array<string> origins_to_allow_scripts;
   bool reduce_language;
+  bool enforced_script_blocking;
 };
 
 enum AdBlockMode {

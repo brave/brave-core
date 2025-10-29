@@ -83,6 +83,8 @@ class BraveContentSettingsAgentImpl
 
   bool IsScriptTemporarilyAllowed(const GURL& script_url);
 
+  bool IsJsBlockingEnforced() const;
+
   // brave_shields::mojom::BraveShields.
   void SetShieldsSettings(
       brave_shields::mojom::ShieldsSettingsPtr settings) override;

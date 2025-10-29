@@ -12,5 +12,6 @@ ios_objc_mojom_wrappers("mojom") {
   exclude_types = [
     "FarblingLevel",
     "ShieldsSettings",
+    "ContentSettingsOverriddenData",
   ]
 }
