@@ -15,7 +15,6 @@ struct NTPSponsoredImagesData;
 struct Campaign;
 struct Creative;
 struct Logo;
-struct TopSite;
 }  // namespace ntp_background_images
 
 @interface NTPSponsoredImageData (Private)
@@ -35,10 +34,6 @@ struct TopSite;
 
 @interface NTPSponsoredImageLogo (Private)
 - (instancetype)initWithLogo:(const ntp_background_images::Logo&)log;
-@end
-
-@interface NTPSponsoredImageTopSite (Private)
-- (instancetype)initWithTopSite:(const ntp_background_images::TopSite&)topSite;
 @end
 
 NS_ASSUME_NONNULL_END

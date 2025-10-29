@@ -310,11 +310,6 @@ extension Preferences {
     static let preloadedFavoritiesInitialized =
       Option<Bool>(key: "newtabpage.favorites-initialized", default: false)
 
-    /// When super referrer fails to download and user hasn't changed their default favorites we might want to try to replace them
-    /// with the ones provided super referrer once available.This should be done only once.
-    static let initialFavoritesHaveBeenReplaced =
-      Option<Bool>(key: "newtabpage.initial-favorites-replaced", default: false)
-
     /// Custom theme used in app. Nil if default theme is used.
     static let selectedCustomTheme =
       Option<String?>(key: "newtabpage.selected-custom-theme", default: nil)

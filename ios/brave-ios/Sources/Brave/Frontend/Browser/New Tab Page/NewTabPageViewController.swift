@@ -89,7 +89,6 @@ protocol NewTabPageDelegate: AnyObject {
   func navigateToInput(_ input: String, inNewTab: Bool, switchingToPrivateMode: Bool)
   func handleFavoriteAction(favorite: Favorite, action: BookmarksAction)
   func brandedImageCalloutActioned(_ state: BrandedImageCalloutState)
-  func tappedQRCodeButton(url: URL)
   func showNTPOnboarding()
   func showNewTabTakeoverInfoBarIfNeeded()
 }
@@ -482,7 +481,7 @@ class NewTabPageViewController: UIViewController {
         return
       }
       switch background {
-      case .image, .superReferral:
+      case .image:
         hideNotification()
       case .sponsoredMedia:
         // Current background is still a sponsored image so it can stay
@@ -626,8 +625,6 @@ class NewTabPageViewController: UIViewController {
         }
       case .sponsoredMedia(let background):
         backgroundButtonsView.activeButton = .brandLogo(background.logo)
-      case .superReferral:
-        backgroundButtonsView.activeButton = .qrCode
       }
     } else {
       backgroundButtonsView.activeButton = .none
@@ -1113,8 +1110,6 @@ class NewTabPageViewController: UIViewController {
       presentImageCredit(sender)
     case .sponsoredMedia(let background):
       tappedSponsorButton(background.logo)
-    case .superReferral(_, let code):
-      tappedQRCode(code)
     }
   }
 
@@ -1125,16 +1120,6 @@ class NewTabPageViewController: UIViewController {
     }
 
     reportSponsoredBackgroundEvent(.clicked)
-  }
-
-  private func tappedQRCode(_ code: String) {
-    // Super referrer websites come in format https://brave.com/r/REF_CODE
-    let refUrl = URL(string: "https://brave.com/")?
-      .appendingPathComponent("r")
-      .appendingPathComponent(code)
-
-    guard let url = refUrl else { return }
-    delegate?.tappedQRCodeButton(url: url)
   }
 
   private func handleFavoriteAction(favorite: Favorite, action: BookmarksAction) {

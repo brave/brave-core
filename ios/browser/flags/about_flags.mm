@@ -14,7 +14,6 @@
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/de_amp/common/features.h"
 #include "brave/components/debounce/core/common/features.h"
-#include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/ios/browser/api/translate/features.h"
 #include "brave/ios/browser/brave_wallet/features.h"
@@ -243,14 +242,6 @@
           "Enable De-AMPing feature",                                          \
           flags_ui::kOsIos,                                                    \
           FEATURE_VALUE_TYPE(de_amp::features::kBraveDeAMP),                   \
-      },                                                                       \
-      {                                                                        \
-          "brave-super-referral",                                              \
-          "Enable Brave Super Referral",                                       \
-          "Use custom theme for Brave Super Referral",                         \
-          flags_ui::kOsIos,                                                    \
-          FEATURE_VALUE_TYPE(ntp_background_images::features::                 \
-                                 kBraveNTPSuperReferralWallpaper),             \
       },                                                                       \
       {                                                                        \
           "brave-rewards-verbose-logging",                                     \

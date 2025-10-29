@@ -43,7 +43,6 @@ OBJC_EXPORT
 @property(class, nonatomic, readonly) Feature* kBraveDomainBlock1PES;
 @property(class, nonatomic, readonly) Feature* kBraveLocalhostAccessPermission;
 @property(class, nonatomic, readonly) Feature* kBraveNTPBrandedWallpaper;
-@property(class, nonatomic, readonly) Feature* kBraveNTPSuperReferralWallpaper;
 @property(class, nonatomic, readonly)
     Feature* kBraveNTPBrandedWallpaperSurveyPanelist;
 @property(class, nonatomic, readonly) Feature* kBraveNewsCardPeekFeature;
