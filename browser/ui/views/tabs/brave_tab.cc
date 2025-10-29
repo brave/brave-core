@@ -140,7 +140,7 @@ void BraveTab::EnterRenameMode() {
 }
 
 const tabs::TreeTabNode* BraveTab::GetTreeTabNode() const {
-  if (tree_tab_node().has_value()) {
+  if (!closing() && tree_tab_node().has_value()) {
     return &controller_->GetTreeTabNode(*tree_tab_node());
   }
 
@@ -314,7 +314,7 @@ bool BraveTab::IsActive() const {
 
 TabNestingInfo BraveTab::GetTabNestingInfo() const {
   // It might be still in progress updating tab node info.
-  if (!tree_tab_node().has_value()) {
+  if (closing() || !tree_tab_node().has_value()) {
     return TabNestingInfo{};
   }
 
