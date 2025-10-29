@@ -70,7 +70,7 @@ BraveShieldsTabHelper::BraveShieldsTabHelper(content::WebContents* web_contents)
   favicon::ContentFaviconDriver::FromWebContents(web_contents)
       ->AddObserver(this);
   observation_.Observe(&*host_content_settings_map_);
-  local_state_change_registrar_.Init(g_browser_process->local_state());
+    local_state_change_registrar_.Init(g_browser_process->local_state());
   local_state_change_registrar_.Add(
       brave_shields::prefs::kAdBlockOnlyModeEnabled,
       base::BindRepeating(
