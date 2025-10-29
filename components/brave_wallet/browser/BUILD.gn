@@ -658,8 +658,8 @@ source_set("blockchain_images_srouce_base_unit_tests") {
     ":test_support",
     "//base",
     "//base/test:test_support",
-    "//testing/gtest",
     "//brave/components/brave_wallet/browser:blockchain_images_source",
+    "//testing/gtest",
   ]
 }
 
