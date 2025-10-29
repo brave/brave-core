@@ -29,7 +29,6 @@
 #include "brave/components/de_amp/common/features.h"
 #include "brave/components/debounce/core/common/features.h"
 #include "brave/components/google_sign_in_permission/features.h"
-#include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/playlist/core/common/features.h"
 #include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
@@ -725,16 +724,6 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           FEATURE_VALUE_TYPE(brave_component_updater::kUseDevUpdaterUrl),      \
       },                                                                       \
       {                                                                        \
-          "brave-ntp-branded-wallpaper-demo",                                  \
-          "New Tab Page Demo Branded Wallpaper",                               \
-          "Force dummy data for the Branded Wallpaper New Tab Page "           \
-          "Experience. View rate and user opt-in conditionals will still be "  \
-          "followed to decide when to display the Branded Wallpaper.",         \
-          kOsAll,                                                              \
-          FEATURE_VALUE_TYPE(                                                  \
-              ntp_background_images::features::kBraveNTPBrandedWallpaperDemo), \
-      },                                                                       \
-      {                                                                        \
           "brave-ntp-search-widget",                                           \
           "Brave Search Widget on the NTP",                                    \
           "Enables searching directly from the New Tab Page",                  \
@@ -959,14 +948,6 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(                                                  \
               net::features::kBraveProvisionalTLDEphemeralLifetime),           \
-      },                                                                       \
-      {                                                                        \
-          "brave-super-referral",                                              \
-          "Enable Brave Super Referral",                                       \
-          "Use custom theme for Brave Super Referral",                         \
-          flags_ui::kOsMac | flags_ui::kOsWin | flags_ui::kOsAndroid,          \
-          FEATURE_VALUE_TYPE(ntp_background_images::features::                 \
-                                 kBraveNTPSuperReferralWallpaper),             \
       },                                                                       \
       {                                                                        \
           "brave-ephemeral-storage",                                           \
