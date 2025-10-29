@@ -201,7 +201,7 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
     brave_account::BraveAccountServiceFactory::GetInstance();
   }
 
-  if (base::FeatureList::IsEnabled(email_aliases::kEmailAliases)) {
+  if (base::FeatureList::IsEnabled(email_aliases::features::kEmailAliases)) {
     email_aliases::EmailAliasesServiceFactory::GetInstance();
   }
 
