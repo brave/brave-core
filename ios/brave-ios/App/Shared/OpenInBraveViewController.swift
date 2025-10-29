@@ -1,13 +1,14 @@
-// Copyright 2024 The Brave Authors. All rights reserved.
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
-// License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import MobileCoreServices
 import UIKit
 import UniformTypeIdentifiers
 
-class ActionToBraveViewController: UIViewController {
+/// A shared view controller used for both the share extension and action extension
+class OpenInBraveViewController: UIViewController {
 
   private enum SchemeType {
     case url, query

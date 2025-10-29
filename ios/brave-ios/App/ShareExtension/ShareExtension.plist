@@ -39,7 +39,7 @@
 		<key>NSExtensionPointIdentifier</key>
 		<string>com.apple.share-services</string>
 		<key>NSExtensionPrincipalClass</key>
-		<string>ShareExtension.ShareToBraveViewController</string>
+		<string>ShareExtension.OpenInBraveViewController</string>
 	</dict>
 </dict>
 </plist>
