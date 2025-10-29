@@ -482,38 +482,38 @@
   </message>
 
   <!-- Shortcuts Page UI Strings -->
-  <message name="IDS_SHORTCUTS_PAGE_SEARCH_PLACEHOLDER" desc="Placeholder text in the search box">
+  <message name="IDS_SHORTCUTS_PAGE_SEARCH_PLACEHOLDER" desc="Placeholder text in the search box" formatter_data="webui=Shortcuts">
     Search for a command or shortcut
   </message>
-  <message name="IDS_SHORTCUTS_PAGE_RESET_ALL" desc="Text for the button which resets all shortcuts to their defaults">
+  <message name="IDS_SHORTCUTS_PAGE_RESET_ALL" desc="Text for the button which resets all shortcuts to their defaults" formatter_data="webui=Shortcuts">
     Reset all to defaults
   </message>
-  <message name="IDS_SHORTCUTS_PAGE_RESET_COMMAND" desc="Text for the button which resets the shortcuts for a command to their defaults">
+  <message name="IDS_SHORTCUTS_PAGE_RESET_COMMAND" desc="Text for the button which resets the shortcuts for a command to their defaults" formatter_data="webui=Shortcuts">
     Reset
   </message>
-  <message name="IDS_SHORTCUTS_PAGE_SHORTCUT_HINT" desc="Hint text for prompting a user to enter a shortcut">
+  <message name="IDS_SHORTCUTS_PAGE_SHORTCUT_HINT" desc="Hint text for prompting a user to enter a shortcut" formatter_data="webui=Shortcuts">
     Create a new shortcut. Press the desired keys to create a new binding
   </message>
-  <message name="IDS_SHORTCUTS_PAGE_SHORTCUT_IN_USE" desc="Message explaining that a shortcut is already in use by another command">
+  <message name="IDS_SHORTCUTS_PAGE_SHORTCUT_IN_USE" desc="Message explaining that a shortcut is already in use by another command" formatter_data="webui=Shortcuts">
     This combination is being used for <ph name="COMMAND">$1<ex>"New window"</ex></ph>. Saving will override that shortcut.
   </message>
   <if expr="not is_macosx">
-    <message name="IDS_SHORTCUTS_PAGE_SHORTCUT_UNMODIFIABLE" desc="Message explaining that a shortcut cannot be used because the command it is already being used for cannot be modified">
+    <message name="IDS_SHORTCUTS_PAGE_SHORTCUT_UNMODIFIABLE" desc="Message explaining that a shortcut cannot be used because the command it is already being used for cannot be modified" formatter_data="webui=Shortcuts">
       This combination is being used for <ph name="COMMAND">$1<ex>"New window"</ex></ph> and cannot be modified.
     </message>
   </if>
   <if expr="is_macosx">
-    <message name="IDS_SHORTCUTS_PAGE_SHORTCUT_UNMODIFIABLE" desc="Message explaining that a shortcut cannot be used because the command it is already being used for cannot be modified">
+    <message name="IDS_SHORTCUTS_PAGE_SHORTCUT_UNMODIFIABLE" desc="Message explaining that a shortcut cannot be used because the command it is already being used for cannot be modified" formatter_data="webui=Shortcuts">
       This combination is being used for <ph name="COMMAND">$1<ex>"New window"</ex></ph> and cannot be modified. Try modifying it through the `App Shortcuts` in System Settings.
     </message>
   </if>
-  <message name="IDS_SHORTCUTS_PAGE_CANCEL_ADD_SHORTCUT" desc="Text for the button to cancel adding a new shortcut">
+  <message name="IDS_SHORTCUTS_PAGE_CANCEL_ADD_SHORTCUT" desc="Text for the button to cancel adding a new shortcut" formatter_data="webui=Shortcuts">
     Cancel
   </message>
-  <message name="IDS_SHORTCUTS_PAGE_SAVE_ADD_SHORTCUT" desc="Text for the button to save a new shortcut">
+  <message name="IDS_SHORTCUTS_PAGE_SAVE_ADD_SHORTCUT" desc="Text for the button to save a new shortcut" formatter_data="webui=Shortcuts">
     Save
   </message>
-  <message name="IDS_SHORTCUTS_PAGE_ADD_SHORTCUT" desc="Text for the button to add a new shortcut">
+  <message name="IDS_SHORTCUTS_PAGE_ADD_SHORTCUT" desc="Text for the button to add a new shortcut" formatter_data="webui=Shortcuts">
     Add
   </message>
 
