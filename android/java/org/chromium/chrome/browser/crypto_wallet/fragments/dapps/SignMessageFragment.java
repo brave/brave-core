@@ -25,11 +25,11 @@ import android.widget.TextView;
 import org.chromium.brave_wallet.mojom.AccountId;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.CoinType;
+import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.SignDataUnion;
 import org.chromium.brave_wallet.mojom.SignMessageRequest;
-import org.chromium.build.annotations.Nullable;
-import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.fragments.WalletBottomSheetDialogFragment;
 import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
@@ -89,9 +89,7 @@ public class SignMessageFragment extends WalletBottomSheetDialogFragment {
     }
 
     private void fillSignMessageInfo() {
-        getBraveWalletService()
-                .getPendingSignMessageRequests(
-                        this::maybeHandlePendingRequests);
+        getBraveWalletService().getPendingSignMessageRequests(this::maybeHandlePendingRequests);
     }
 
     private void maybeHandlePendingRequests(@Nullable final SignMessageRequest[] requests) {
@@ -161,8 +159,7 @@ public class SignMessageFragment extends WalletBottomSheetDialogFragment {
         getKeyringModel()
                 .getAccounts(
                         accountInfos -> {
-                            AccountInfo accountInfo =
-                                    Utils.findAccount(accountInfos, accountId);
+                            AccountInfo accountInfo = Utils.findAccount(accountInfos, accountId);
                             if (accountInfo == null) {
                                 return;
                             }

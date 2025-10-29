@@ -24,7 +24,6 @@ import android.widget.TextView;
 import androidx.annotation.StringRes;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.chromium.chrome.browser.app.domain.KeyringModel;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -40,9 +39,6 @@ import org.chromium.brave_wallet.mojom.SiweMessage;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.app.BraveActivity;
-import org.chromium.chrome.browser.app.domain.DappsModel;
-import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.app.helpers.ImageLoader;
 import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.adapters.TwoLineItemRecyclerViewAdapter;
@@ -116,46 +112,56 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
 
     private void notifySignMessageRequestProcessed(boolean isApproved) {
         if (mCurrentSignMessageRequest == null) return;
-        getWalletModel().getDappsModel().notifySignMessageRequestProcessed(isApproved, mCurrentSignMessageRequest.id);
+        getWalletModel()
+                .getDappsModel()
+                .notifySignMessageRequestProcessed(isApproved, mCurrentSignMessageRequest.id);
         fillSignMessageInfo(false);
     }
 
     private void fillSignMessageInfo(boolean init) {
-        getWalletModel().getDappsModel().getPendingSignMessageRequests(
-                requests -> {
-                    if (requests == null || requests.length == 0) {
-                        Intent intent = new Intent();
-                        final Activity activity = getActivity();
-                        if (activity != null) {
-                            activity.setResult(Activity.RESULT_OK, intent);
-                            activity.finish();
-                        }
-                        return;
-                    }
+        getWalletModel()
+                .getDappsModel()
+                .getPendingSignMessageRequests(
+                        requests -> {
+                            if (requests == null || requests.length == 0) {
+                                Intent intent = new Intent();
+                                final Activity activity = getActivity();
+                                if (activity != null) {
+                                    activity.setResult(Activity.RESULT_OK, intent);
+                                    activity.finish();
+                                }
+                                return;
+                            }
 
-                    mCurrentSignMessageRequest = requests[0];
-                    if (mCurrentSignMessageRequest.signData.which()
-                            == SignDataUnion.Tag.EthSiweData) {
-                        mSiweMessageData = mCurrentSignMessageRequest.signData.getEthSiweData();
-                    }
-                    if (init) {
-                        mBtCancel.setOnClickListener(v -> notifySignMessageRequestProcessed(false));
-                        mBtSign.setOnClickListener(v -> notifySignMessageRequestProcessed(true));
-                    }
-                    if (mCurrentSignMessageRequest.originInfo != null
-                            && URLUtil.isValidUrl(
-                                    mCurrentSignMessageRequest.originInfo.originSpec)) {
-                        mTvOrigin.setText(mCurrentSignMessageRequest.originInfo.eTldPlusOne);
-                        mTvUrl.setText(Utils.geteTldSpanned(mCurrentSignMessageRequest.originInfo));
-                    }
-                    updateDetails(
-                            mCurrentSignMessageRequest.chainId,
-                            mCurrentSignMessageRequest.accountId);
-                    updateNetwork(mCurrentSignMessageRequest.chainId);
-                    updateFavIcon(
-                            mCurrentSignMessageRequest.originInfo,
-                            mCurrentSignMessageRequest.accountId.address);
-                });
+                            mCurrentSignMessageRequest = requests[0];
+                            if (mCurrentSignMessageRequest.signData.which()
+                                    == SignDataUnion.Tag.EthSiweData) {
+                                mSiweMessageData =
+                                        mCurrentSignMessageRequest.signData.getEthSiweData();
+                            }
+                            if (init) {
+                                mBtCancel.setOnClickListener(
+                                        v -> notifySignMessageRequestProcessed(false));
+                                mBtSign.setOnClickListener(
+                                        v -> notifySignMessageRequestProcessed(true));
+                            }
+                            if (mCurrentSignMessageRequest.originInfo != null
+                                    && URLUtil.isValidUrl(
+                                            mCurrentSignMessageRequest.originInfo.originSpec)) {
+                                mTvOrigin.setText(
+                                        mCurrentSignMessageRequest.originInfo.eTldPlusOne);
+                                mTvUrl.setText(
+                                        Utils.geteTldSpanned(
+                                                mCurrentSignMessageRequest.originInfo));
+                            }
+                            updateDetails(
+                                    mCurrentSignMessageRequest.chainId,
+                                    mCurrentSignMessageRequest.accountId);
+                            updateNetwork(mCurrentSignMessageRequest.chainId);
+                            updateFavIcon(
+                                    mCurrentSignMessageRequest.originInfo,
+                                    mCurrentSignMessageRequest.accountId.address);
+                        });
     }
 
     private void updateDetails(String chainId, AccountId accountId) {

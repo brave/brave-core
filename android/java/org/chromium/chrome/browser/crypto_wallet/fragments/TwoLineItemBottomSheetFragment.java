@@ -18,11 +18,8 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.chromium.base.Log;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.app.BraveActivity;
-import org.chromium.chrome.browser.app.domain.KeyringModel;
 import org.chromium.chrome.browser.crypto_wallet.adapters.TwoLineItemRecyclerViewAdapter;
 import org.chromium.chrome.browser.crypto_wallet.adapters.TwoLineItemRecyclerViewAdapter.TwoLineItem;
 
@@ -34,8 +31,7 @@ import java.util.List;
  */
 @NullMarked
 public class TwoLineItemBottomSheetFragment extends WalletBottomSheetDialogFragment {
-    @Nullable
-    private List<TwoLineItem> mItems;
+    @Nullable private List<TwoLineItem> mItems;
     private TwoLineItemRecyclerViewAdapter mAdapter;
     public String mTitle;
     private TextView mTvTitle;
@@ -56,8 +52,7 @@ public class TwoLineItemBottomSheetFragment extends WalletBottomSheetDialogFragm
         mAdapter.mSubTextAlignment = View.TEXT_ALIGNMENT_TEXT_START;
         recyclerView.setAdapter(mAdapter);
         mIbClose = view.findViewById(R.id.frag_two_line_sheet_ib_close);
-        mIbClose.setOnClickListener(
-                v -> dismiss());
+        mIbClose.setOnClickListener(v -> dismiss());
         recyclerView.setOnTouchListener(
                 (v, event) -> {
                     int action = event.getAction();

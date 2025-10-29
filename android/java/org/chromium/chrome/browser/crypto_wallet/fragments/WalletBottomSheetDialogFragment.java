@@ -29,10 +29,8 @@ public class WalletBottomSheetDialogFragment extends BottomSheetDialogFragment
 
     private final KeyringServiceObserverImpl mKeyringObserver;
 
-    @MonotonicNonNull
-    private WalletModel mWalletModel;
-    @MonotonicNonNull
-    private KeyringModel mKeyringModel;
+    @MonotonicNonNull private WalletModel mWalletModel;
+    @MonotonicNonNull private KeyringModel mKeyringModel;
 
     public WalletBottomSheetDialogFragment() {
         mKeyringObserver = new KeyringServiceObserverImpl(this);

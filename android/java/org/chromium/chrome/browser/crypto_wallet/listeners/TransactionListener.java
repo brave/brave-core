@@ -6,10 +6,12 @@
 package org.chromium.chrome.browser.crypto_wallet.listeners;
 
 import org.chromium.brave_wallet.mojom.TransactionInfo;
+import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 
 import java.util.List;
 
+@NullMarked
 public interface TransactionListener {
     void onNextTransaction();
 
@@ -19,6 +21,5 @@ public interface TransactionListener {
 
     List<TransactionInfo> getPendingTransactions();
 
-    @Nullable
-    TransactionInfo getCurrentTransaction();
+    @Nullable TransactionInfo getCurrentTransaction();
 }

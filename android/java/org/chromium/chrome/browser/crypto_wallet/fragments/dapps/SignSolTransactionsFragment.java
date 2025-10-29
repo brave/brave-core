@@ -28,10 +28,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
 
 import org.chromium.brave_wallet.mojom.AccountId;
 import org.chromium.brave_wallet.mojom.AccountInfo;
-import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.CoinType;
-import org.chromium.brave_wallet.mojom.JsonRpcService;
-import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.OriginInfo;
 import org.chromium.brave_wallet.mojom.SignSolTransactionsRequest;
@@ -39,7 +36,6 @@ import org.chromium.brave_wallet.mojom.SolanaInstruction;
 import org.chromium.brave_wallet.mojom.SolanaTxData;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.adapters.FragmentNavigationItemAdapter;
 import org.chromium.chrome.browser.crypto_wallet.adapters.TwoLineItemRecyclerViewAdapter;
 import org.chromium.chrome.browser.crypto_wallet.adapters.TwoLineItemRecyclerViewAdapter.TwoLineItem;
@@ -230,8 +226,11 @@ public class SignSolTransactionsFragment extends WalletBottomSheetDialogFragment
         mBtSign.setEnabled(isEnabled);
         mBtSign.setBackgroundTintList(
                 ColorStateList.valueOf(
-                        ContextCompat.getColor(requireContext(),
-                                isEnabled ? R.color.brave_action_color : R.color.baseline_neutral_30)));
+                        ContextCompat.getColor(
+                                requireContext(),
+                                isEnabled
+                                        ? R.color.brave_action_color
+                                        : R.color.baseline_neutral_30)));
     }
 
     private void fetchSignRequestData() {
@@ -288,21 +287,21 @@ public class SignSolTransactionsFragment extends WalletBottomSheetDialogFragment
             return;
         }
         assert (fromAccountId.coin == CoinType.SOL);
-            getKeyringModel()
-                    .getAccounts(
-                            accountInfos -> {
-                                AccountInfo accountInfo =
-                                        Utils.findAccount(accountInfos, fromAccountId);
-                                if (accountInfo == null) {
-                                    return;
-                                }
-                                assert (accountInfo.address != null);
+        getKeyringModel()
+                .getAccounts(
+                        accountInfos -> {
+                            AccountInfo accountInfo =
+                                    Utils.findAccount(accountInfos, fromAccountId);
+                            if (accountInfo == null) {
+                                return;
+                            }
+                            assert (accountInfo.address != null);
 
-                                Utils.setBlockiesBitmapResourceFromAccount(
-                                        mExecutor, mHandler, mAccountImage, accountInfo, true);
-                                String accountText = accountInfo.name + "\n" + accountInfo.address;
-                                mAccountName.setText(accountText);
-                            });
+                            Utils.setBlockiesBitmapResourceFromAccount(
+                                    mExecutor, mHandler, mAccountImage, accountInfo, true);
+                            String accountText = accountInfo.name + "\n" + accountInfo.address;
+                            mAccountName.setText(accountText);
+                        });
     }
 
     private void updateNetwork(@CoinType.EnumType int coin, String chainId) {

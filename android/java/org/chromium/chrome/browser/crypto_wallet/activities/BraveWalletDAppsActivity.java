@@ -44,15 +44,15 @@ import java.util.List;
 
 /** Base activity for all DApps-related activities */
 public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
-        implements TransactionListener, WalletFragmentCallback,
+        implements TransactionListener,
+                WalletFragmentCallback,
                 AddSwitchChainNetworkFragment.AddSwitchRequestProcessListener {
     public static final String EXTRA_ACTIVITY_TYPE =
             "org.chromium.chrome.browser.crypto_wallet.activities.ACTIVITY_TYPE";
 
     private static final String TAG = "BraveWalletDApps";
     private final List<TransactionInfo> mPendingTransactions = new ArrayList<>();
-    @Nullable
-    private TransactionInfo mCurrentTransaction;
+    @Nullable private TransactionInfo mCurrentTransaction;
     private ApproveTxBottomSheetDialogFragment mApproveTxBottomSheetDialogFragment;
     private PendingTxHelper mPendingTxHelper;
     private Fragment mFragment;
@@ -245,7 +245,8 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
                                     }
                                     mCurrentTransaction = transactionInfo;
                                     mPendingTransactions.clear();
-                                    mPendingTransactions.addAll(mPendingTxHelper.getPendingTransactions());
+                                    mPendingTransactions.addAll(
+                                            mPendingTxHelper.getPendingTransactions());
                                     mApproveTxBottomSheetDialogFragment =
                                             new ApproveTxBottomSheetDialogFragment();
                                     mApproveTxBottomSheetDialogFragment.show(

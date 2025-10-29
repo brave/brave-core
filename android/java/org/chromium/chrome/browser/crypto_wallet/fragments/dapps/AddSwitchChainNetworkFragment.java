@@ -63,10 +63,8 @@ public class AddSwitchChainNetworkFragment extends BaseDAppsFragment {
     private final List<TwoLineItem> mNetworks;
     private final List<TwoLineItem> mDetails;
 
-    @MonotonicNonNull
-    private ActivityType mPanelType;
-    @MonotonicNonNull
-    private AddSwitchRequestProcessListener mAddSwitchRequestProcessListener;
+    @MonotonicNonNull private ActivityType mPanelType;
+    @MonotonicNonNull private AddSwitchRequestProcessListener mAddSwitchRequestProcessListener;
 
     private NetworkInfo mNetworkInfo;
     private BraveWalletBaseActivity mBraveWalletBaseActivity;
@@ -100,7 +98,8 @@ public class AddSwitchChainNetworkFragment extends BaseDAppsFragment {
         if (context instanceof AddSwitchRequestProcessListener) {
             mAddSwitchRequestProcessListener = (AddSwitchRequestProcessListener) context;
         } else {
-            throw new IllegalStateException("Host activity must implement AddSwitchRequestProcessListener");
+            throw new IllegalStateException(
+                    "Host activity must implement AddSwitchRequestProcessListener");
         }
     }
 
