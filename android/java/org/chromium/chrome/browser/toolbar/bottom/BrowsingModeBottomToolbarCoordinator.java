@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 
+import com.google.android.material.button.MaterialButton;
+
 import org.chromium.base.Callback;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
@@ -50,7 +52,7 @@ public class BrowsingModeBottomToolbarCoordinator {
     private final BraveHomeButton mBraveHomeButton;
 
     /** The new tab button that lives in the bottom toolbar. */
-    private final BottomToolbarNewTabButton mNewTabButton;
+    private final MaterialButton mNewTabButton;
 
     /** The search accelerator that lives in the bottom toolbar. */
     private final SearchAccelerator mSearchAccelerator;
@@ -192,12 +194,6 @@ public class BrowsingModeBottomToolbarCoordinator {
         }
         if (BottomToolbarVariationManager.isNewTabButtonOnBottomControls()) {
             mNewTabButton.setOnClickListener(newTabListener);
-            mNewTabButton.setThemeColorProvider(themeColorProvider);
-            mNewTabButton.setIncognitoStateProvider(incognitoStateProvider);
-            mNewTabButton.onTintChanged(
-                    mThemeColorProvider.getTint(),
-                    mThemeColorProvider.getTint(),
-                    mThemeColorProvider.getBrandedColorScheme());
         }
 
         if (BottomToolbarVariationManager.isHomeButtonOnBottomControls()) {

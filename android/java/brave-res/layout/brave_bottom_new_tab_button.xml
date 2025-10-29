@@ -7,15 +7,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content" >
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical" >
 
-    <org.chromium.chrome.browser.toolbar.bottom.BottomToolbarNewTabButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/bottom_new_tab_button"
+        android:layout_width="@dimen/hub_toolbar_action_button_size"
+        android:layout_height="@dimen/hub_toolbar_action_button_size"
         android:contentDescription="@string/accessibility_toolbar_btn_new_tab"
-        app:tint="@color/default_icon_color_tint_list"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        app:srcCompat="@drawable/new_tab_icon"
         android:visibility="gone"
-        style="@style/SplitToolbarButton" />
+        app:icon="@drawable/new_tab_icon"
+        app:iconGravity="textStart"
+        style="?attr/newTabButtonStyle" />
 
 </LinearLayout>
