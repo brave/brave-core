@@ -273,8 +273,10 @@ bool AdBlockComponentServiceManager::IsFilterListEnabled(
       return false;
     }
     // prefer any user setting for a default-enabled list, unless it's hidden
+    const bool show_hidden = base::FeatureList::IsEnabled(
+        brave_shields::features::kBraveAdblockShowHiddenComponents);
     if (catalog_entry->default_enabled &&
-        (!list_touched || catalog_entry->hidden)) {
+        (!list_touched || (!show_hidden && catalog_entry->hidden))) {
       return true;
     }
   }
