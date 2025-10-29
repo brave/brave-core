@@ -396,7 +396,7 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
             // We wiped all preferences to show the search result, add them again
             SettingsUtils.addPreferencesFromResource(
                     this, R.xml.brave_password_settings_preferences);
-            // And with the listeners
+            // And add the listeners
             setupPreferenceListeners();
         }
 
