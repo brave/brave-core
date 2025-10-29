@@ -5,11 +5,7 @@
 
 import * as React from 'react'
 import Editable from './editable'
-import {
-  replaceRange,
-  getRangeToTriggerChar,
-  Content,
-} from './editable_content'
+import { makeEdit, Content } from './editable_content'
 import { Meta } from '@storybook/react'
 
 export const _Editable = {
@@ -23,25 +19,28 @@ export const _Editable = {
       },
       'World',
     ])
+    const ref = React.useRef<HTMLDivElement>(null)
 
     return (
       <div
         onKeyDown={(e) => {
           if (e.key === 'Tab') {
             e.preventDefault()
-            const range = getRangeToTriggerChar('/')
-            if (!range) return
-            replaceRange(range, {
-              type: 'skill',
-              id: '1',
-              text: range.extractContents().textContent ?? '',
-            })
+
+            makeEdit(ref.current!)
+              .selectRangeToTriggerChar('/')
+              .replaceSelectedRange({
+                type: 'skill',
+                id: '1',
+                text: document.getSelection()?.toString() ?? '',
+              })
           }
         }}
       >
         <span>Type /xxxx&lt;tab&gt; to insert a tag</span>
         <hr />
         <Editable
+          ref={ref}
           placeholder='Type something...'
           content={content}
           onContentChange={setContent}
