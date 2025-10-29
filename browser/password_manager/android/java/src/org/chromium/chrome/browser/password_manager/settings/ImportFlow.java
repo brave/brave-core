@@ -313,6 +313,7 @@ public class ImportFlow {
                                     result == ImportStatusResult.NUM_PASSWORDS_EXCEEDED
                                             ? res.getQuantityString(
                                                     result.locStrId(),
+                                                    handler.getMaxPasswordsPerCsvFile(),
                                                     handler.getMaxPasswordsPerCsvFile())
                                             : res.getString(result.locStrId()));
                         });
@@ -352,7 +353,9 @@ public class ImportFlow {
                 .setTitle(res.getString(R.string.password_manager_ui_import_success_title))
                 .setMessage(
                         res.getQuantityString(
-                                R.plurals.password_settings_import_file_success_count, count))
+                                R.plurals.password_settings_import_file_success_count,
+                                count,
+                                count))
                 .setPositiveButton(
                         res.getString(R.string.ok),
                         (dialog, which) -> {
