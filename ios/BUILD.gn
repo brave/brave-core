@@ -89,6 +89,8 @@ brave_core_public_headers = [
   "//brave/ios/browser/ai_chat/ai_chat_ui_handler_bridge.h",
   "//brave/ios/browser/brave_account/brave_account_authentication_bridge.h",
   "//brave/ios/browser/brave_account/brave_account_authentication_bridge_impl.h",
+  "//brave/ios/browser/brave_origin/brave_origin_service_bridge.h",
+  "//brave/ios/browser/brave_origin/brave_origin_service_factory_bridge.h",
   "//brave/ios/browser/brave_news/brave_news_pref_names_bridge.h",
   "//brave/ios/browser/brave_vpn/brave_vpn_pref_names_bridge.h",
   "//brave/ios/browser/brave_wallet/brave_wallet_factory_wrappers.h",
