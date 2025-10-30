@@ -32,8 +32,9 @@ ThemeService::BrowserColorScheme ConvertToBrowserColorScheme(
 
 namespace extensions::api {
 
-// TODO(): Remove this. Only Welcome UI uses this api.
-// Welcome UI can use CustomizeColorSchemeModeHandler instead.
+// TODO(https://github.com/brave/brave-browser/issues/50556): Remove this. Only
+// Welcome UI uses this api. Welcome UI can use CustomizeColorSchemeModeHandler
+// instead.
 ExtensionFunction::ResponseAction BraveThemeSetBraveThemeTypeFunction::Run() {
   std::optional<brave_theme::SetBraveThemeType::Params> params =
       brave_theme::SetBraveThemeType::Params::Create(args());
