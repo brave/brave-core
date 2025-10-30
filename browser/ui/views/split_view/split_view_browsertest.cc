@@ -418,11 +418,11 @@ class SplitViewCommonBrowserTest : public InProcessBrowserTest {
   }
 
   void SwapActiveSplitTab() {
-      auto* tab_strip_model = browser()->tab_strip_model();
-      auto split_id =
-          tab_strip_model->GetSplitForTab(tab_strip_model->active_index());
-      ASSERT_TRUE(split_id);
-      tab_strip_model->ReverseTabsInSplit(split_id.value());
+    auto* tab_strip_model = browser()->tab_strip_model();
+    auto split_id =
+        tab_strip_model->GetSplitForTab(tab_strip_model->active_index());
+    ASSERT_TRUE(split_id);
+    tab_strip_model->ReverseTabsInSplit(split_id.value());
   }
 
   bool IsSplitWebContents(content::WebContents* web_contents) {
@@ -688,7 +688,7 @@ IN_PROC_BROWSER_TEST_F(SplitViewCommonBrowserTest, InactiveSplitTabTest) {
   EXPECT_TRUE(tab_strip_model->GetTabAtIndex(1)->IsActivated());
   EXPECT_TRUE(GetIsTabHiddenFromPermissionManagerFromTabAt(0));
 
-  // Final state is arrived in async sometimes.
+  // Final state can be set asynchronously sometimes.
   ASSERT_TRUE(base::test::RunUntil(
       [&]() { return !GetIsTabHiddenFromPermissionManagerFromTabAt(1); }));
 
@@ -711,7 +711,8 @@ IN_PROC_BROWSER_TEST_F(SplitViewCommonBrowserTest, InactiveSplitTabTest) {
       [&]() { return !GetIsTabHiddenFromPermissionManagerFromTabAt(1); }));
   EXPECT_TRUE(GetIsTabHiddenFromPermissionManagerFromTabAt(2));
 
-  // Check proper state is set after restored.
+  // Check that the proper state is set after the browser window is restored
+  // from minimized state.
   browser()->window()->Minimize();
   browser()->window()->Restore();
   EXPECT_TRUE(GetIsTabHiddenFromPermissionManagerFromTabAt(0));
@@ -730,20 +731,9 @@ IN_PROC_BROWSER_TEST_F(SplitViewCommonBrowserTest, InactiveSplitTabTest) {
       content::JAVASCRIPT_DIALOG_TYPE_ALERT, std::u16string(), std::u16string(),
       base::BindOnce([](bool, const std::u16string&) {}), &did_suppress);
 
-    // True because tab modal manager will active the tab when showing a dialog.
-    EXPECT_EQ(0, tab_strip_model->active_index());
-    EXPECT_TRUE(GetTabModalDialogManagerAt(0)->IsShowingDialogForTesting());
-    EXPECT_TRUE(GetWebModalDialogManagerAt(0)->IsDialogActive());
-    EXPECT_TRUE(GetIsWebContentsBlockedFromTabAt(0));
-
-  // Activate split tab at 1.
-  tab_strip_model->ActivateTabAt(1);
-
-    // In SideBySide, active tab is still tab at 0 because it's not allowed to
-    // activate another split tab when curren split tab has dialog.
-    EXPECT_EQ(0, tab_strip_model->active_index());
-
-  // still true as modal was created.
+  // Active tab is still tab at 1 because tab modal manager will not active the
+  // tab when showing a dialog.
+  EXPECT_EQ(1, tab_strip_model->active_index());
   EXPECT_TRUE(GetTabModalDialogManagerAt(0)->IsShowingDialogForTesting());
   EXPECT_TRUE(GetWebModalDialogManagerAt(0)->IsDialogActive());
   EXPECT_TRUE(GetIsWebContentsBlockedFromTabAt(0));
