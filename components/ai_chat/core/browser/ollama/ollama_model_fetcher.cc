@@ -14,6 +14,7 @@
 
 #include "base/json/json_reader.h"
 #include "base/logging.h"
+#include "base/task/sequenced_task_runner.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/ollama/ollama_service.h"
@@ -45,6 +46,14 @@ OllamaModelFetcher::OllamaModelFetcher(
       prefs::kBraveAIChatOllamaFetchEnabled,
       base::BindRepeating(&OllamaModelFetcher::OnOllamaFetchEnabledChanged,
                           weak_ptr_factory_.GetWeakPtr()));
+
+  // Trigger initial Ollama fetch if enabled
+  if (prefs_->GetBoolean(prefs::kBraveAIChatOllamaFetchEnabled)) {
+    DVLOG(1) << "Ollama fetch is enabled on startup - triggering initial fetch";
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE, base::BindOnce(&OllamaModelFetcher::FetchModels,
+                                  weak_ptr_factory_.GetWeakPtr()));
+  }
 }
 
 OllamaModelFetcher::~OllamaModelFetcher() = default;
