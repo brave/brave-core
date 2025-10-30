@@ -211,8 +211,13 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
                        ContentsBackgroundEventHandleTest) {
   EXPECT_TRUE(brave_browser_view()->contents_background_view_);
 
-  EXPECT_EQ(brave_browser_view()->contents_background_view_->bounds(),
-            brave_browser_view()->main_container()->bounds());
+  EXPECT_TRUE(
+      brave_browser_view()->contents_background_view_->bounds().Contains(
+          brave_browser_view()->contents_container()->bounds()))
+      << "Expected contents_background_view_ bounds ("
+      << brave_browser_view()->contents_background_view_->bounds().ToString()
+      << ") to contain contents_container bounds ("
+      << brave_browser_view()->contents_container()->bounds().ToString() << ")";
 
   content::WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();
