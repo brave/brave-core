@@ -5,6 +5,8 @@
 
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 
+#include "brave/components/tabs/public/tree_tab_node.h"
+
 #include <chrome/browser/ui/tabs/tab_strip_model_observer.cc>
 
 TreeTabChange::CreatedChange::CreatedChange(const tabs::TreeTabNode& node)
@@ -12,9 +14,11 @@ TreeTabChange::CreatedChange::CreatedChange(const tabs::TreeTabNode& node)
 
 TreeTabChange::CreatedChange::~CreatedChange() = default;
 
-TreeTabChange::DestroyedChange::DestroyedChange() = default;
+TreeTabChange::WillBeDestroyedChange::WillBeDestroyedChange(
+    const tabs::TreeTabNode& node)
+    : node(node) {}
 
-TreeTabChange::DestroyedChange::~DestroyedChange() = default;
+TreeTabChange::WillBeDestroyedChange::~WillBeDestroyedChange() = default;
 
 TreeTabChange::TreeTabChange(Type type,
                              tree_tab::TreeTabNodeId id,
@@ -28,10 +32,11 @@ TreeTabChange::TreeTabChange(tree_tab::TreeTabNodeId id,
                     std::make_unique<CreatedChange>(created_change)) {}
 
 TreeTabChange::TreeTabChange(tree_tab::TreeTabNodeId id,
-                             const DestroyedChange& destroyed_change)
-    : TreeTabChange(Type::kNodeDestroyed,
+                             const WillBeDestroyedChange& destroyed_change)
+    : TreeTabChange(Type::kNodeWillBeDestroyed,
                     id,
-                    std::make_unique<DestroyedChange>(destroyed_change)) {}
+                    std::make_unique<WillBeDestroyedChange>(destroyed_change)) {
+}
 
 TreeTabChange::~TreeTabChange() = default;
 
@@ -40,10 +45,10 @@ const TreeTabChange::CreatedChange& TreeTabChange::GetCreatedChange() const {
   return *static_cast<CreatedChange*>(delta.get());
 }
 
-const TreeTabChange::DestroyedChange& TreeTabChange::GetDestroyedChange()
-    const {
-  CHECK_EQ(type, Type::kNodeDestroyed);
-  return *static_cast<DestroyedChange*>(delta.get());
+const TreeTabChange::WillBeDestroyedChange&
+TreeTabChange::GetWillBeDestroyedChange() const {
+  CHECK_EQ(type, Type::kNodeWillBeDestroyed);
+  return *static_cast<WillBeDestroyedChange*>(delta.get());
 }
 
 void TabStripModelObserver::OnTreeTabChanged(const TreeTabChange& change) {}
