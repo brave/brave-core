@@ -5,6 +5,8 @@
 
 package org.chromium.chrome.browser.autofill;
 
+import static org.chromium.build.NullUtil.assertNonNull;
+
 import android.app.assist.AssistStructure;
 import android.app.assist.AssistStructure.ViewNode;
 import android.content.Context;
@@ -16,17 +18,17 @@ import android.service.autofill.FillResponse;
 import android.service.autofill.SaveCallback;
 import android.service.autofill.SaveInfo;
 import android.service.autofill.SaveRequest;
-import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.autofill.AutofillId;
 import android.view.autofill.AutofillValue;
 import android.view.inputmethod.EditorInfo;
 import android.widget.RemoteViews;
 
-import androidx.annotation.NonNull;
 import androidx.collection.ArrayMap;
 
 import org.chromium.base.ContextUtils;
+import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.ChromeBackgroundServiceImpl;
 import org.chromium.chrome.browser.init.BrowserParts;
 import org.chromium.chrome.browser.init.ChromeBrowserInitializer;
@@ -43,30 +45,29 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+@NullMarked
 public class BraveAutofillBackgroundServiceImpl extends ChromeBackgroundServiceImpl {
 
     private final String mPackageName = ContextUtils.getApplicationContext().getPackageName();
-    private FillRequest mFillRequest;
-    private FillCallback mFillCallback;
-    private SaveRequest mSaveRequest;
-    private SaveCallback mSaveCallback;
+    @Nullable private FillRequest mFillRequest;
+    @Nullable private FillCallback mFillCallback;
+    @Nullable private SaveRequest mSaveRequest;
+    @Nullable private SaveCallback mSaveCallback;
     private boolean mIsSaveRequest;
 
-    public BraveAutofillBackgroundServiceImpl(
-            @NonNull FillRequest request, @NonNull FillCallback callback) {
+    public BraveAutofillBackgroundServiceImpl(FillRequest request, FillCallback callback) {
         mFillRequest = request;
         mFillCallback = callback;
     }
 
-    public BraveAutofillBackgroundServiceImpl(
-            @NonNull SaveRequest request, @NonNull SaveCallback callback) {
+    public BraveAutofillBackgroundServiceImpl(SaveRequest request, SaveCallback callback) {
         mSaveRequest = request;
         mSaveCallback = callback;
         mIsSaveRequest = true;
     }
 
     @Override
-    protected void launchBrowser(Context context, String tag) {
+    protected void launchBrowser(@Nullable Context context, @Nullable String tag) {
         final BrowserParts parts =
                 new EmptyBrowserParts() {
                     @Override
@@ -74,9 +75,9 @@ public class BraveAutofillBackgroundServiceImpl extends ChromeBackgroundServiceI
                         Context context = ContextUtils.getApplicationContext();
                         if (context == null) {
                             if (mIsSaveRequest) {
-                                mSaveCallback.onSuccess();
+                                assertNonNull(mSaveCallback).onSuccess();
                             } else {
-                                mFillCallback.onSuccess(null);
+                                assertNonNull(mFillCallback).onSuccess(null);
                             }
                             return;
                         }
@@ -98,7 +99,8 @@ public class BraveAutofillBackgroundServiceImpl extends ChromeBackgroundServiceI
     }
 
     private void startsAutoFill(Context context) {
-        List<FillContext> fillContexts = mFillRequest.getFillContexts();
+        List<FillContext> fillContexts = assertNonNull(mFillRequest).getFillContexts();
+        assertNonNull(mFillCallback);
         if (fillContexts.isEmpty()) {
             mFillCallback.onSuccess(null);
             return;
@@ -235,11 +237,13 @@ public class BraveAutofillBackgroundServiceImpl extends ChromeBackgroundServiceI
         ids.toArray(requiredIds);
         fillResponse.setSaveInfo(
                 new SaveInfo.Builder(SaveInfo.SAVE_DATA_TYPE_ADDRESS, requiredIds).build());
-        mFillCallback.onSuccess(fillResponse.build());
+        assertNonNull(mFillCallback).onSuccess(fillResponse.build());
     }
 
     private void startsAutoSave(Context context) {
-        List<FillContext> fillContexts = mSaveRequest.getFillContexts();
+        List<FillContext> fillContexts = assertNonNull(mSaveRequest).getFillContexts();
+
+        assertNonNull(mSaveCallback);
         if (fillContexts.isEmpty()) {
             mSaveCallback.onSuccess();
             return;
@@ -314,13 +318,12 @@ public class BraveAutofillBackgroundServiceImpl extends ChromeBackgroundServiceI
     }
 
     private String getAutofillValueForSave(
-            @NonNull Map<String, AutofillId> fields,
-            Map<AutofillId, ViewNode> nodesMap,
-            String key) {
+            Map<String, AutofillId> fields, Map<AutofillId, ViewNode> nodesMap, String key) {
         String autofillData = "";
         if (fields.containsKey(key)) {
             AutofillId autofillId = fields.get(key);
             ViewNode node = nodesMap.get(autofillId);
+            assertNonNull(node);
             int autofillType = node.getAutofillType();
             AutofillValue autofillValue = node.getAutofillValue();
             if (autofillType == View.AUTOFILL_TYPE_TEXT) {
@@ -333,8 +336,8 @@ public class BraveAutofillBackgroundServiceImpl extends ChromeBackgroundServiceI
 
     private void addAutofillableFields(
             Context context,
-            @NonNull Map<String, AutofillId> fields,
-            @NonNull ViewNode node,
+            Map<String, AutofillId> fields,
+            ViewNode node,
             @Nullable Map<AutofillId, ViewNode> nodesMap) {
 
         String hint = getHint(context, node);
@@ -352,7 +355,7 @@ public class BraveAutofillBackgroundServiceImpl extends ChromeBackgroundServiceI
     }
 
     @Nullable
-    private String getHint(Context context, @NonNull ViewNode node) {
+    private String getHint(Context context, ViewNode node) {
         // First try the explicit autofill hints...
 
         String[] hints = node.getAutofillHints();
