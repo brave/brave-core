@@ -77,15 +77,13 @@ export const EmailAliasesPanelConnected = ({
       mainEmail={authState.email}
       aliasCount={aliasesState.length}
       emailAliasesService={emailAliasesService}
-      bubble={true}
+      bubble
     />
   )
 }
 
 const mount = () => {
-  const rootElement = document
-    .getElementById('mountPoint')!
-    .attachShadow({ mode: 'open' })
+  const rootElement = document.getElementById('mountPoint')!
   const emailAliasesService = EmailAliasesService.getRemote()
   const emailAliasesPanelHandler = EmailAliasesPanelHandler.getRemote()
   const bindObserver = (observer: EmailAliasesServiceObserverInterface) => {
@@ -95,7 +93,7 @@ const mount = () => {
     return () => observerReceiver.$.close()
   }
   createRoot(rootElement).render(
-    <StyleSheetManager target={rootElement.getRootNode() as ShadowRoot}>
+    <StyleSheetManager>
       <BraveCoreThemeProvider>
         <EmailAliasesPanelConnected
           emailAliasesService={emailAliasesService}

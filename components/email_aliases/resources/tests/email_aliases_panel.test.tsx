@@ -53,7 +53,7 @@ describe('PanelConnected', () => {
       />,
     )
 
-    const button = screen.getByText('emailAliasesManageButton')
+    const button = screen.getByText(S.SETTINGS_EMAIL_ALIASES_MANAGE_BUTTON)
     clickLeoButton(button)
 
     await waitFor(() => {
@@ -72,7 +72,7 @@ describe('PanelConnected', () => {
       />,
     )
 
-    const button = screen.getByText('emailAliasesCancelButton')
+    const button = screen.getByText(S.SETTINGS_EMAIL_ALIASES_CANCEL_BUTTON)
     clickLeoButton(button)
 
     await waitFor(() => {
@@ -99,7 +99,9 @@ describe('PanelConnected', () => {
       expect(generatedEmailContainer).toHaveTextContent('generated@brave.com')
     })
 
-    const button = screen.getByText('emailAliasesCreateAliasButton')
+    const button = screen.getByText(
+      S.SETTINGS_EMAIL_ALIASES_CREATE_ALIAS_BUTTON,
+    )
     expect(button).toHaveAttribute('isdisabled', 'false')
     clickLeoButton(button)
 

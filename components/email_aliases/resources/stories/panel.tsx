@@ -25,6 +25,7 @@ export const Panel = () => {
         editing={false}
         mainEmail={demoData.email}
         bubble={true}
+        // @ts-ignore https://github.com/brave/brave-browser/issues/48960
         emailAliasesService={stubEmailAliasesServiceAccountReadyInstance}
       />
     </div>

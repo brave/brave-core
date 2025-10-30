@@ -278,9 +278,8 @@ export const EmailAliasModal = ({
       // wrong type in its JSDoc.
       // TODO(https://github.com/brave/brave-browser/issues/48960): fix the
       // JSDoc generation issue so that this cast is not needed.
-      const response = await emailAliasesService.generateAlias()
       const proposedEmail =
-        typeof response === 'string' ? response : response.result.success!
+        (await emailAliasesService.generateAlias()) as unknown as string
       setGenerateAliasResult({
         aliasEmail: proposedEmail,
         errorMessage: undefined,
@@ -380,7 +379,7 @@ export const EmailAliasModal = ({
               }}
               kind='plain'
             >
-              {getLocale('emailAliasesManageButton')}
+              {getLocale(S.SETTINGS_EMAIL_ALIASES_MANAGE_BUTTON)}
             </Button>
           )}
           <Button
