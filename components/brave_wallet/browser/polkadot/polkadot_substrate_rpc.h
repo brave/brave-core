@@ -56,10 +56,8 @@ class PolkadotSubstrateRpc {
   // This hash defines the start of the mortality period, described as H(B):
   // https://spec.polkadot.network/id-extrinsics#defn-extrinsic-signature
   //
-  // This function invokes the provided callback with the hex-encoded hash from
-  // the RPC nodes, but with the leading `0x` removed for the sake of
-  // convenience and composability when assembling the final payload for
-  // signing.
+  // This function invokes the provided callback with the raw bytes of the block
+  // hash.
   void GetFinalizedHead(std::string_view chain_id,
                         GetFinalizedHeadCallback callback);
 
