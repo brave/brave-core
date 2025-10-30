@@ -6,15 +6,16 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_PREFS_OBSOLETE_PREF_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_PREFS_OBSOLETE_PREF_UTIL_H_
 
-class PrefService;
-
 class PrefRegistrySimple;
+class PrefService;
 
 namespace brave_ads {
 
 void RegisterProfilePrefsForMigration(PrefRegistrySimple* registry);
-
 void MigrateObsoleteProfilePrefs(PrefService* prefs);
+
+void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry);
+void MigrateObsoleteLocalStatePrefs(PrefService* local_state);
 
 }  // namespace brave_ads
 

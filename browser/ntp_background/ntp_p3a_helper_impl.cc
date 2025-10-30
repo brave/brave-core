@@ -27,7 +27,6 @@
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_images_data.h"
 #include "brave/components/p3a/metric_log_type.h"
 #include "brave/components/p3a/p3a_service.h"
-#include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 
@@ -35,8 +34,6 @@ namespace ntp_background_images {
 
 namespace {
 
-constexpr char kNewTabPageEventCountDictPref[] =
-    "brave.brave_ads.p3a.ntp_event_count";  // DEPRECATED
 constexpr char kNewTabPageEventCountConstellationDictPref[] =
     "brave.brave_ads.p3a.ntp_event_count_constellation";
 constexpr char kNewTabPageKnownCampaignsDictPref[] =
@@ -127,22 +124,6 @@ NTPP3AHelperImpl::NTPP3AHelperImpl(
 }
 
 NTPP3AHelperImpl::~NTPP3AHelperImpl() = default;
-
-void NTPP3AHelperImpl::RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
-  registry->RegisterDictionaryPref(kNewTabPageEventCountConstellationDictPref);
-  registry->RegisterDictionaryPref(kNewTabPageKnownCampaignsDictPref);
-}
-
-void NTPP3AHelperImpl::RegisterLocalStatePrefsForMigration(
-    PrefRegistrySimple* registry) {
-  // Added 06/2025
-  registry->RegisterDictionaryPref(kNewTabPageEventCountDictPref);
-}
-
-void NTPP3AHelperImpl::MigrateObsoleteLocalStatePrefs(
-    PrefService* local_state) {
-  local_state->ClearPref(kNewTabPageEventCountDictPref);
-}
 
 void NTPP3AHelperImpl::RecordView(const std::string& creative_instance_id,
                                   const std::string& campaign_id) {

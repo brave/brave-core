@@ -14,13 +14,13 @@
 #include "brave/browser/metrics/metrics_reporting_util.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/misc_metrics/uptime_monitor_impl.h"
-#include "brave/browser/ntp_background/ntp_p3a_helper_impl.h"
 #include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/browser/search_engines/search_engine_tracker.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/updater/buildflags.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
+#include "brave/components/brave_ads/core/public/prefs/obsolete_pref_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_registry.h"
 #include "brave/components/brave_origin/brave_origin_prefs.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
@@ -113,8 +113,7 @@ void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry) {
   brave_stats::RegisterLocalStatePrefsForMigration(registry);
   p3a::MetricLogStore::RegisterLocalStatePrefsForMigration(registry);
   p3a::RotationScheduler::RegisterLocalStatePrefsForMigration(registry);
-  ntp_background_images::NTPP3AHelperImpl::RegisterLocalStatePrefsForMigration(
-      registry);
+  brave_ads::RegisterLocalStatePrefsForMigration(registry);
 }
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
@@ -191,8 +190,6 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 #endif
 
   registry->RegisterStringPref(::prefs::kBraveVpnDnsConfig, std::string());
-
-  ntp_background_images::NTPP3AHelperImpl::RegisterLocalStatePrefs(registry);
 
   brave_wallet::RegisterLocalStatePrefs(registry);
 
