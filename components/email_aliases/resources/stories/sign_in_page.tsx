@@ -10,9 +10,6 @@ import {
   AuthenticationStatus,
   EmailAliasesServiceObserverInterface,
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
-import { SetupEmailAliasesStrings } from './utils/strings'
-
-SetupEmailAliasesStrings()
 
 const stubEmailAliasesServiceNoAccountInstance = new StubEmailAliasesService({
   status: AuthenticationStatus.kUnauthenticated,
@@ -30,6 +27,7 @@ const bindNoAccountObserver = (
 export const SignInPage = () => {
   return (
     <ManagePageConnected
+      // @ts-ignore https://github.com/brave/brave-browser/issues/48960
       emailAliasesService={stubEmailAliasesServiceNoAccountInstance}
       bindObserver={bindNoAccountObserver}
     />

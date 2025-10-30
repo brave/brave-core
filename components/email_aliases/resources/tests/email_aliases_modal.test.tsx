@@ -458,7 +458,7 @@ describe('EmailAliasModal', () => {
     })
   })
 
-  it('manage button in panel', async () => {
+  it('shows manage button in panel when rendering as a bubble', async () => {
     render(
       <EmailAliasModal
         editing={false}
@@ -470,7 +470,9 @@ describe('EmailAliasModal', () => {
       />,
     )
 
-    const manageButton = screen.getByText('emailAliasesManageButton')
+    const manageButton = screen.getByText(
+      S.SETTINGS_EMAIL_ALIASES_MANAGE_BUTTON,
+    )
     clickLeoButton(manageButton)
 
     await waitFor(() => {
