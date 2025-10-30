@@ -77,7 +77,6 @@ export const WalletPageStory: React.FC<
   // render
   return (
     <LightDarkThemeProvider
-      initialThemeType={'Light'}
       dark={walletDarkTheme}
       light={walletLightTheme}
     >
