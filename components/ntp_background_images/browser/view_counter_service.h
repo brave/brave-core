@@ -109,7 +109,6 @@ class ViewCounterService : public KeyedService,
   friend class ViewCounterServiceTest;
   friend class NTPBackgroundImagesServiceTest;
   FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest, CanShowSponsoredImages);
-  FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest, CannotShowSponsoredImages);
   FRIEND_TEST_ALL_PREFIXES(
       ViewCounterServiceTest,
       AllowNewTabTakeoverWithRichMediaIfJavaScriptContentSettingIsSetToAllowed);

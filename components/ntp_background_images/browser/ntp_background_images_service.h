@@ -93,18 +93,6 @@ class NTPBackgroundImagesService {
   friend class NTPBackgroundImagesServiceForTesting;
   friend class NTPBackgroundImagesServiceTest;
   friend class ViewCounterServiceTest;
-  FRIEND_TEST_ALL_PREFIXES(
-      ViewCounterServiceTest,
-      AllowNewTabTakeoverWithRichMediaIfJavaScriptContentSettingIsSetToAllowed);
-  FRIEND_TEST_ALL_PREFIXES(
-      ViewCounterServiceTest,
-      BlockNewTabTakeoverWithRichMediaIfJavaScriptContentSettingIsSetToBlocked);
-  FRIEND_TEST_ALL_PREFIXES(
-      ViewCounterServiceTest,
-      AllowNewTabTakeoverWithImageIfJavaScriptContentSettingIsSetToAllowed);
-  FRIEND_TEST_ALL_PREFIXES(
-      ViewCounterServiceTest,
-      AllowNewTabTakeoverWithImageIfJavaScriptContentSettingIsSetToBlocked);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest, InternalDataTest);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest,
                            MultipleCampaignsTest);
@@ -140,29 +128,21 @@ class NTPBackgroundImagesService {
   FRIEND_TEST_ALL_PREFIXES(
       NTPBackgroundImagesServiceTest,
       CheckRecoverShutdownWhileMappingTableFetchingWithNonDefaultCode);
-  FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest, CanShowSponsoredImages);
-  FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest, CannotShowSponsoredImages);
-  FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest,
-                           CannotShowSponsoredImagesIfUninitialized);
-  FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest,
-                           CannotShowSponsoredImagesIfMalformed);
-  FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest,
-                           CannotShowSponsoredImagesIfOptedOut);
-  FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest, IsActiveOptedIn);
-  FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest, ActiveInitiallyOptedIn);
-  FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest,
-                           ActiveOptedInWithNTPBackgoundOption);
-  FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest, ModelTest);
-  FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest, CanShowBackgroundImages);
-  FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest, CannotShowBackgroundImages);
-  FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest,
-                           CannotShowBackgroundImagesIfUninitialized);
-  FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest,
-                           CannotShowBackgroundImagesIfMalformed);
-  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesSourceTest, SponsoredImagesTest);
-  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesSourceTest,
-                           BasicSuperReferralDataTest);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesSourceTest, BackgroundImagesTest);
+
+  FRIEND_TEST_ALL_PREFIXES(
+      ViewCounterServiceTest,
+      AllowNewTabTakeoverWithRichMediaIfJavaScriptContentSettingIsSetToAllowed);
+  FRIEND_TEST_ALL_PREFIXES(
+      ViewCounterServiceTest,
+      BlockNewTabTakeoverWithRichMediaIfJavaScriptContentSettingIsSetToBlocked);
+  FRIEND_TEST_ALL_PREFIXES(
+      ViewCounterServiceTest,
+      AllowNewTabTakeoverWithImageIfJavaScriptContentSettingIsSetToAllowed);
+  FRIEND_TEST_ALL_PREFIXES(
+      ViewCounterServiceTest,
+      AllowNewTabTakeoverWithImageIfJavaScriptContentSettingIsSetToBlocked);
+  FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest, ModelTest);
 
   void OnSponsoredComponentReady(bool is_super_referral,
                                  const base::FilePath& installed_dir);
