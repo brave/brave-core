@@ -5,37 +5,32 @@
 
 package org.chromium.chrome.browser.ntp;
 
-import org.chromium.base.BraveFeatureList;
 import org.chromium.build.annotations.NullMarked;
-import org.chromium.chrome.browser.flags.ChromeFeatureList;
+import org.chromium.chrome.browser.app.flags.BraveCachedFlags;
 
 /**
  * Helper class for managing fresh NTP after idle expiration feature. This feature shows a refreshed
- * NTP when the app has been idle for a specified duration.
+ * NTP when the app has been idle for a specified duration. Uses cached feature params to safely
+ * access values before native is ready.
  */
 @NullMarked
 public class BraveFreshNtpHelper {
-    private static final String PARAM_VARIANT = "variant";
-
     /**
-     * @return Whether the fresh NTP after idle expiration feature is enabled.
+     * @return Whether the fresh NTP after idle expiration feature is enabled. This uses a cached
+     *     flag, so it's safe to call even before native is ready.
      */
     public static boolean isEnabled() {
-        return ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_FRESH_NTP_AFTER_IDLE_EXPIREMENT);
+        return BraveCachedFlags.sBraveFreshNtpAfterIdleExpirementEnabled.isEnabled();
     }
 
     /**
      * Gets the variant of the fresh NTP experiment (e.g., "A", "B", "C"). Returns empty string if
-     * no variant is set.
+     * no variant is set. This uses a cached param, so it's safe to call even before native is
+     * ready.
      *
      * @return The variant string.
      */
     public static String getVariant() {
-        if (!isEnabled()) {
-            return "";
-        }
-
-        return ChromeFeatureList.getFieldTrialParamByFeature(
-                BraveFeatureList.BRAVE_FRESH_NTP_AFTER_IDLE_EXPIREMENT, PARAM_VARIANT);
+        return BraveCachedFlags.sBraveFreshNtpAfterIdleExpirementVariant.getValue();
     }
 }

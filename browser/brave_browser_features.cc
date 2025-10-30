@@ -81,7 +81,7 @@ const base::FeatureParam<std::string> kBraveDayZeroExperimentVariant{
 const base::FeatureParam<std::string> kBraveFreshNtpAfterIdleExpirementVariant{
     &kBraveFreshNtpAfterIdleExpirement,
     /*name=*/"variant",
-    /*default_value=*/""};
+    /*default_value=*/"A"};
 #endif  // BUILDFLAG(IS_ANDROID)
 
 }  // namespace features
