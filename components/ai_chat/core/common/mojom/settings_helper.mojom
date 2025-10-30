@@ -16,11 +16,6 @@ enum OperationResult {
   UrlValidAsPrivateEndpoint,
 };
 
-struct OllamaConnectionResult {
-  bool connected;
-  string error;
-};
-
 interface AIChatSettingsHelper {
   GetPremiumStatus() => (PremiumStatus status, PremiumInfo? info);
   GetModelsWithSubtitles() => (array<ModelWithSubtitle> models);
@@ -33,7 +28,6 @@ interface AIChatSettingsHelper {
   GetDefaultModelKey() => (string key);
   SetClientPage(pending_remote<SettingsPage> page);
   DeleteConversations(int32 time_period);
-  CheckOllamaConnection() => (OllamaConnectionResult result);
 
   [EnableIf=is_android]
   CreateOrderId() => (string order_id);

@@ -16,7 +16,6 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/model_validator.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/net/base/url_util.h"
 #include "chrome/browser/browser_process.h"
@@ -26,11 +25,6 @@
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_context.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
-#include "net/traffic_annotation/network_traffic_annotation.h"
-#include "services/network/public/cpp/resource_request.h"
-#include "services/network/public/cpp/shared_url_loader_factory.h"
-#include "services/network/public/cpp/simple_url_loader.h"
-#include "services/network/public/mojom/url_response_head.mojom.h"
 #include "ui/base/l10n/l10n_util.h"
 
 #if BUILDFLAG(IS_ANDROID)
@@ -42,23 +36,6 @@ namespace ai_chat {
 
 namespace {
 constexpr char kAccountHostnamePart[] = "account";
-
-constexpr net::NetworkTrafficAnnotationTag kOllamaConnectionAnnotation =
-    net::DefineNetworkTrafficAnnotation("ai_chat_ollama_connection_check", R"(
-        semantics {
-          sender: "Brave Leo Assistant Settings"
-          description:
-            "Check if Ollama is running on localhost to enable model sync."
-          trigger:
-            "User accesses Leo Assistant settings with Ollama sync."
-          data:
-            "HTTP request to localhost:11434 to check Ollama availability."
-          destination: LOCAL
-        }
-        policy {
-          cookies_allowed: NO
-          setting: "This feature can be controlled in Leo Assistant settings."
-        })");
 
 std::vector<mojom::ModelPtr> GetCustomModelsFromService(
     ModelService* model_service) {
@@ -248,41 +225,6 @@ void AIChatSettingsHelper::DeleteConversations(int time_period) {
       static_cast<browsing_data::TimePeriod>(time_period);
   service->DeleteConversations(browsing_data::CalculateBeginDeleteTime(period),
                                browsing_data::CalculateEndDeleteTime(period));
-}
-
-void AIChatSettingsHelper::CheckOllamaConnection(
-    CheckOllamaConnectionCallback callback) {
-  auto request = std::make_unique<network::ResourceRequest>();
-  request->url = GURL(ai_chat::mojom::kOllamaBaseUrl);
-  request->method = "GET";
-
-  auto loader = network::SimpleURLLoader::Create(std::move(request),
-                                                 kOllamaConnectionAnnotation);
-
-  auto* loader_ptr = loader.get();
-  loader_ptr->DownloadToString(
-      profile_->GetURLLoaderFactory().get(),
-      base::BindOnce(
-          [](CheckOllamaConnectionCallback callback,
-             std::unique_ptr<network::SimpleURLLoader> loader,
-             std::unique_ptr<std::string> response) {
-            auto result = mojom::OllamaConnectionResult::New();
-
-            if (response &&
-                response->find("Ollama is running") != std::string::npos &&
-                loader->ResponseInfo() && loader->ResponseInfo()->headers &&
-                loader->ResponseInfo()->headers->response_code() == 200) {
-              result->connected = true;
-              result->error = "";
-            } else {
-              result->connected = false;
-              result->error = "Ollama is not running at localhost:11434";
-            }
-
-            std::move(callback).Run(std::move(result));
-          },
-          std::move(callback), std::move(loader)),
-      1024);  // Small response expected
 }
 
 void AIChatSettingsHelper::SetClientPage(
