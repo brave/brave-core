@@ -47,7 +47,6 @@ source_set("browser_tests") {
   deps = [
     "//brave/components/ai_chat/core/common",
     "//brave/components/brave_mobile_subscription/renderer/android",
-    "//brave/components/brave_vpn/common",
     "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/skus/common",
     "//chrome/common",
@@ -55,6 +54,13 @@ source_set("browser_tests") {
     "//content/test:test_support",
     "//url",
   ]
+
+  if (enable_brave_vpn) {
+    deps += [
+      "//brave/components/brave_vpn/common",
+      "//brave/components/brave_vpn/common/mojom",
+    ]
+  }
 }
 
 source_set("unit_tests") {

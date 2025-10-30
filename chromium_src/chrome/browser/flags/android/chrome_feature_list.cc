@@ -15,7 +15,7 @@
 #include "brave/components/brave_rewards/core/features.h"
 #include "brave/components/brave_search_conversion/features.h"
 #include "brave/components/brave_shields/core/common/features.h"
-#include "brave/components/brave_vpn/common/features.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/debounce/core/common/features.h"
 #include "brave/components/google_sign_in_permission/features.h"
@@ -26,6 +26,10 @@
 #include "brave/components/webcompat/core/common/features.h"
 #include "net/base/features.h"
 #include "third_party/blink/public/common/features.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/components/brave_vpn/common/features.h"
+#endif
 
 #define BRAVE_AI_CHAT_FLAGS \
   &ai_chat::features::kAIChat, &ai_chat::features::kAIChatHistory,
@@ -38,13 +42,19 @@
 #define BRAVE_WEB_DISCOVERY_FLAG
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#define BRAVE_VPN_FLAG &brave_vpn::features::kBraveVPNLinkSubscriptionAndroidUI,
+#else
+#define BRAVE_VPN_FLAG
+#endif
+
 // clang-format off
 #define kForceWebContentsDarkMode kForceWebContentsDarkMode,                   \
     BRAVE_AI_CHAT_FLAGS                                                        \
     BRAVE_WEB_DISCOVERY_FLAG                                                   \
+    BRAVE_VPN_FLAG                                                             \
     &brave_rewards::features::kBraveRewards,                                   \
     &brave_search_conversion::features::kOmniboxBanner,                        \
-    &brave_vpn::features::kBraveVPNLinkSubscriptionAndroidUI,                  \
     &brave_wallet::features::kNativeBraveWalletFeature,                        \
     &playlist::features::kPlaylist,                                            \
     &download::features::kParallelDownloading,                                 \
@@ -76,6 +86,7 @@
 #undef kForceWebContentsDarkMode
 #undef BRAVE_AI_CHAT_FLAGS
 #undef BRAVE_WEB_DISCOVERY_FLAG
+#undef BRAVE_VPN_FLAG
 
 namespace chrome {
 namespace android {
