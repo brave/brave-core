@@ -12,9 +12,10 @@
 #include "chrome/browser/ui/views/side_panel/side_panel.h"
 
 // Double check if the tab strip is actually visible to calculate constraints.
-#define SupportsWindowFeature(FEATURE)                                       \
-  SupportsWindowFeature(FEATURE) && (FEATURE != Browser::FEATURE_TABSTRIP || \
-                                     delegate().ShouldDrawTabStrip());
+#define SupportsWindowFeature(FEATURE)                        \
+  SupportsWindowFeature(FEATURE) &&                           \
+      (FEATURE != Browser::WindowFeature::kFeatureTabStrip || \
+       delegate().ShouldDrawTabStrip());
 
 #include <chrome/browser/ui/views/frame/layout/browser_view_layout_impl_old.cc>
 
