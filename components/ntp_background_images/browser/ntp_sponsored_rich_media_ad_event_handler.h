@@ -18,13 +18,11 @@ class AdsService;
 
 namespace ntp_background_images {
 
-class NTPP3AHelper;
-
 class NTPSponsoredRichMediaAdEventHandler
     : public mojom::SponsoredRichMediaAdEventHandler {
  public:
-  NTPSponsoredRichMediaAdEventHandler(brave_ads::AdsService* ads_service,
-                                      NTPP3AHelper* ntp_p3a_helper);
+  explicit NTPSponsoredRichMediaAdEventHandler(
+      brave_ads::AdsService* ads_service);
 
   NTPSponsoredRichMediaAdEventHandler(
       const NTPSponsoredRichMediaAdEventHandler&) = delete;
@@ -48,8 +46,6 @@ class NTPSponsoredRichMediaAdEventHandler
       brave_ads::mojom::NewTabPageAdEventType mojom_ad_event_type) const;
 
   const raw_ptr<brave_ads::AdsService> ads_service_ = nullptr;  // Not owned.
-
-  const raw_ptr<NTPP3AHelper> ntp_p3a_helper_ = nullptr;  // Not owned.
 
   mojo::Receiver<mojom::SponsoredRichMediaAdEventHandler> receiver_{this};
 };

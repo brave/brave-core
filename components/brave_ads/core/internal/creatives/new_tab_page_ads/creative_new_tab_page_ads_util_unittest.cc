@@ -459,9 +459,6 @@ TEST(BraveAdsNewTabPageAdMetricTypeUtilTest, ToMojomNewTabPageAdMetricType) {
   EXPECT_EQ(ToMojomNewTabPageAdMetricType("confirmation"),
             mojom::NewTabPageAdMetricType::kConfirmation);
 
-  EXPECT_EQ(ToMojomNewTabPageAdMetricType("p3a"),
-            mojom::NewTabPageAdMetricType::kP3A);
-
   EXPECT_EQ(ToMojomNewTabPageAdMetricType("foobar"), std::nullopt);
 }
 
@@ -473,8 +470,6 @@ TEST(BraveAdsNewTabPageAdMetricTypeUtilTest, ToString) {
 
   EXPECT_EQ(ToString(mojom::NewTabPageAdMetricType::kConfirmation),
             "confirmation");
-
-  EXPECT_EQ(ToString(mojom::NewTabPageAdMetricType::kP3A), "p3a");
 }
 
 }  // namespace brave_ads

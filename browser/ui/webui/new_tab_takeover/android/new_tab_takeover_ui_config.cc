@@ -13,9 +13,7 @@
 #include "brave/browser/ntp_background/view_counter_service_factory.h"
 #include "brave/browser/ui/webui/new_tab_takeover/android/new_tab_takeover_ui.h"
 #include "brave/components/constants/webui_url_constants.h"
-#include "brave/components/ntp_background_images/browser/ntp_p3a_helper.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_rich_media_ad_event_handler.h"
-#include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/common/url_constants.h"
@@ -29,16 +27,9 @@ NewTabTakeoverUIConfig::CreateWebUIController(content::WebUI* web_ui,
                                               const GURL& url) {
   Profile* profile = Profile::FromWebUI(web_ui);
 
-  ntp_background_images::ViewCounterService* view_counter_service =
-      ntp_background_images::ViewCounterServiceFactory::GetForProfile(profile);
-  ntp_background_images::NTPP3AHelper* ntp_p3a_helper = nullptr;
-  if (view_counter_service != nullptr) {
-    ntp_p3a_helper = view_counter_service->GetP3AHelper();
-  }
-
   auto rich_media_ad_event_handler = std::make_unique<
       ntp_background_images::NTPSponsoredRichMediaAdEventHandler>(
-      brave_ads::AdsServiceFactory::GetForProfile(profile), ntp_p3a_helper);
+      brave_ads::AdsServiceFactory::GetForProfile(profile));
 
   ntp_background_images::NTPBackgroundImagesService*
       ntp_background_images_service =

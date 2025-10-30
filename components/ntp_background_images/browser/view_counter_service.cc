@@ -8,7 +8,6 @@
 #include <memory>
 #include <optional>
 #include <string>
-#include <utility>
 #include <vector>
 
 #include "base/check.h"
@@ -23,7 +22,6 @@
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/ntp_background_images/browser/brave_ntp_custom_background_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
-#include "brave/components/ntp_background_images/browser/ntp_p3a_helper.h"
 #include "brave/components/ntp_background_images/browser/ntp_p3a_util.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_images_data.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
@@ -37,7 +35,6 @@
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_ui_data_source.h"
-#include "url/gurl.h"
 
 namespace ntp_background_images {
 
@@ -60,7 +57,6 @@ ViewCounterService::ViewCounterService(
     brave_ads::AdsService* ads_service,
     PrefService* prefs,
     PrefService* local_state,
-    std::unique_ptr<NTPP3AHelper> ntp_p3a_helper,
     bool is_supported_locale)
     : host_content_settings_map_(host_content_settings_map),
       background_images_service_(background_images_service),
@@ -69,8 +65,7 @@ ViewCounterService::ViewCounterService(
       local_state_(local_state),
       is_supported_locale_(is_supported_locale),
       model_(prefs),
-      custom_background_service_(custom_background_service),
-      ntp_p3a_helper_(std::move(ntp_p3a_helper)) {
+      custom_background_service_(custom_background_service) {
   DCHECK(background_images_service_);
   ntp_background_images_service_observation_.Observe(
       background_images_service_);
@@ -143,15 +138,9 @@ void ViewCounterService::RecordViewedAdEvent(
     const std::string& campaign_id,
     const std::string& creative_instance_id,
     brave_ads::mojom::NewTabPageAdMetricType mojom_ad_metric_type) {
-  if (ntp_p3a_helper_ &&
-      mojom_ad_metric_type == brave_ads::mojom::NewTabPageAdMetricType::kP3A) {
-    ntp_p3a_helper_->RecordView(creative_instance_id, campaign_id);
-  }
   branded_new_tab_count_state_->AddDelta(1);
   UpdateP3AValues();
 
-  // Ads component skips confirmations for P3A and disabled metrics. Still
-  // trigger the ad event so dependent logic runs.
   MaybeTriggerNewTabPageAdEvent(
       placement_id, creative_instance_id, mojom_ad_metric_type,
       brave_ads::mojom::NewTabPageAdEventType::kViewedImpression);
@@ -162,15 +151,6 @@ void ViewCounterService::RecordClickedAdEvent(
     const std::string& creative_instance_id,
     const std::string& /*target_url*/,
     brave_ads::mojom::NewTabPageAdMetricType mojom_ad_metric_type) {
-  if (ntp_p3a_helper_ &&
-      mojom_ad_metric_type == brave_ads::mojom::NewTabPageAdMetricType::kP3A) {
-    ntp_p3a_helper_->RecordNewTabPageAdEvent(
-        brave_ads::mojom::NewTabPageAdEventType::kClicked,
-        creative_instance_id);
-  }
-
-  // Ads component skips confirmations for P3A and disabled metrics. Still
-  // trigger the ad event so dependent logic runs.
   MaybeTriggerNewTabPageAdEvent(
       placement_id, creative_instance_id, mojom_ad_metric_type,
       brave_ads::mojom::NewTabPageAdEventType::kClicked);
@@ -424,16 +404,6 @@ bool ViewCounterService::ShouldShowCustomBackgroundImages() const {
 void ViewCounterService::InitializeWebUIDataSource(
     content::WebUIDataSource* html_source) {
   html_source->AddString("superReferralThemeName", GetSuperReferralThemeName());
-}
-
-void ViewCounterService::OnTabURLChanged(const GURL& url) {
-  if (ntp_p3a_helper_) {
-    ntp_p3a_helper_->OnNavigationDidFinish(url);
-  }
-}
-
-NTPP3AHelper* ViewCounterService::GetP3AHelper() const {
-  return ntp_p3a_helper_.get();
 }
 
 bool ViewCounterService::CanShowSponsoredImages() const {

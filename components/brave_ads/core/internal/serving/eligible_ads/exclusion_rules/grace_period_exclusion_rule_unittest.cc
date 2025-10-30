@@ -121,38 +121,4 @@ TEST_F(BraveAdsGracePeriodExclusionRuleTest,
   EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad));
 }
 
-TEST_F(BraveAdsGracePeriodExclusionRuleTest,
-       ShouldExcludeIfWithinGracePeriodForP3aMetrics) {
-  // Arrange
-  CreativeAdInfo creative_ad;
-  creative_ad.metric_type = mojom::NewTabPageAdMetricType::kP3A;
-
-  // Act & Assert
-  EXPECT_FALSE(exclusion_rule_.ShouldInclude(creative_ad));
-}
-
-TEST_F(BraveAdsGracePeriodExclusionRuleTest,
-       ShouldExcludeIfOutsideGracePeriodOnTheCuspForP3aMetrics) {
-  // Arrange
-  FastForwardClockBy(kGracePeriod - base::Milliseconds(1));
-
-  CreativeAdInfo creative_ad;
-  creative_ad.metric_type = mojom::NewTabPageAdMetricType::kP3A;
-
-  // Act & Assert
-  EXPECT_FALSE(exclusion_rule_.ShouldInclude(creative_ad));
-}
-
-TEST_F(BraveAdsGracePeriodExclusionRuleTest,
-       ShouldIncludeIfOutsideGracePeriodForP3aMetrics) {
-  // Arrange
-  FastForwardClockBy(kGracePeriod);
-
-  CreativeAdInfo creative_ad;
-  creative_ad.metric_type = mojom::NewTabPageAdMetricType::kP3A;
-
-  // Act & Assert
-  EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad));
-}
-
 }  // namespace brave_ads

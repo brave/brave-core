@@ -6,10 +6,6 @@
 import("//brave/components/ntp_background_images/buildflags/buildflags.gni")
 
 brave_browser_ntp_background_images_sources = [
-  "//brave/browser/ntp_background_images/ntp_p3a_helper_impl.cc",
-  "//brave/browser/ntp_background_images/ntp_p3a_helper_impl.h",
-  "//brave/browser/ntp_background_images/ntp_tab_helper.cc",
-  "//brave/browser/ntp_background_images/ntp_tab_helper.h",
   "//brave/browser/ntp_background_images/view_counter_service_factory.cc",
   "//brave/browser/ntp_background_images/view_counter_service_factory.h",
 ]

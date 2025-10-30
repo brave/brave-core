@@ -24,7 +24,6 @@
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
 #include "brave/browser/misc_metrics/page_metrics_tab_helper.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
-#include "brave/browser/ntp_background/ntp_tab_helper.h"
 #include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/browser/ui/brave_ui_features.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
@@ -197,7 +196,6 @@ void AttachTabHelpers(content::WebContents* web_contents) {
   brave_wallet::BraveWalletTabHelper::CreateForWebContents(web_contents);
 
   if (!web_contents->GetBrowserContext()->IsOffTheRecord()) {
-    ntp_background_images::NTPTabHelper::CreateForWebContents(web_contents);
     misc_metrics::PageMetricsTabHelper::CreateForWebContents(web_contents);
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
     if (base::FeatureList::IsEnabled(

@@ -50,6 +50,13 @@ constexpr const char* kObsoleteP2APrefPaths[] = {
     R"(brave.weekly_storage.Brave.P2A.inline_content_ad.opportunities)",
     R"(brave.weekly_storage.Brave.P2A.new_tab_page_ad.opportunities)"};
 
+constexpr std::string_view kNewTabPageEventCountDictPref =
+    "brave.brave_ads.p3a.ntp_event_count";
+constexpr std::string_view kNewTabPageEventCountConstellationDictPref =
+    "brave.brave_ads.p3a.ntp_event_count_constellation";
+constexpr std::string_view kNewTabPageKnownCampaignsDictPref =
+    "brave.brave_ads.p3a.ntp_known_campaigns";
+
 void MaybeMigrateShouldShowSearchResultAdClickedInfoBarProfilePref(
     PrefService* const prefs) {
   if (!prefs->HasPrefPath(kObsoleteShouldShowSearchResultAdClickedInfoBar)) {
@@ -83,6 +90,24 @@ void MigrateObsoleteProfilePrefs(PrefService* const prefs) {
   for (const auto* path : kObsoleteP2APrefPaths) {
     prefs->ClearPref(path);
   }
+}
+
+void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry) {
+  // Added 06/2025
+  registry->RegisterDictionaryPref(kNewTabPageEventCountDictPref);
+
+  // Added 10/2025
+  registry->RegisterDictionaryPref(kNewTabPageEventCountConstellationDictPref);
+  registry->RegisterDictionaryPref(kNewTabPageKnownCampaignsDictPref);
+}
+
+void MigrateObsoleteLocalStatePrefs(PrefService* local_state) {
+  // Added 06/2025
+  local_state->ClearPref(kNewTabPageEventCountDictPref);
+
+  // Added 10/2025
+  local_state->ClearPref(kNewTabPageEventCountConstellationDictPref);
+  local_state->ClearPref(kNewTabPageKnownCampaignsDictPref);
 }
 
 }  // namespace brave_ads

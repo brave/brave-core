@@ -141,7 +141,6 @@ enum NewTabPageAdMetricType {
   kUndefined = 0,
   kDisabled,
   kConfirmation,
-  kP3A,
 };
 
 enum NewTabPageAdEventType {
