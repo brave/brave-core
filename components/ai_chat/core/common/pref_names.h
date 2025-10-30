@@ -117,6 +117,8 @@ inline constexpr char kBraveAIChatUserMemories[] =
 // Note: Pref key kept as 'smart_modes' for backward compatibility
 // (feature is now called 'skills').
 inline constexpr char kBraveAIChatSkills[] = "brave.ai_chat.smart_modes";
+inline constexpr char kBraveAIChatOllamaFetchEnabled[] =
+    "brave.ai_chat.ollama_fetch_enabled";
 
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 void RegisterProfilePrefs(PrefRegistrySimple* registry);
