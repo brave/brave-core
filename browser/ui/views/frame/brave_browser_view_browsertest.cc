@@ -31,6 +31,7 @@
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/multi_contents_view.h"
 #include "chrome/browser/ui/views/frame/scrim_view.h"
+#include "chrome/browser/ui/views/frame/top_container_view.h"
 #include "chrome/browser/ui/views/infobars/infobar_container_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -117,9 +118,19 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, LayoutWithVerticalTabTest) {
   ASSERT_TRUE(base::test::RunUntil(
       [&]() { return infobar_container()->GetVisible(); }));
 
+  // The layout of the Main Container is currently:
+  // |----------------------------------------------------------|
+  // | Top container                                            |
+  // |----------------------------------------------------------|
+  // |  Vertical  | Info bar                                    |
+  // |  Tab Strip |---------------------------------------------|
+  // |            | Contents area                               |
+
   auto contents_area_origin = [&]() {
-    return gfx::Point(contents_container()->bounds().x() - contents_margin,
-                      main_container()->bounds().y());
+    return gfx::Point(
+        browser_view()->contents_container()->bounds().origin().x() -
+            contents_margin,
+        browser_view()->contents_container()->bounds().origin().y());
   };
 
   ASSERT_TRUE(base::test::RunUntil([&]() {
@@ -211,8 +222,13 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
                        ContentsBackgroundEventHandleTest) {
   EXPECT_TRUE(brave_browser_view()->contents_background_view_);
 
-  EXPECT_EQ(brave_browser_view()->contents_background_view_->bounds(),
-            brave_browser_view()->main_container()->bounds());
+  EXPECT_TRUE(
+      brave_browser_view()->contents_background_view_->bounds().Contains(
+          brave_browser_view()->contents_container()->bounds()))
+      << "Expected contents_background_view_ bounds ("
+      << brave_browser_view()->contents_background_view_->bounds().ToString()
+      << ") to contain contents_container bounds ("
+      << brave_browser_view()->contents_container()->bounds().ToString() << ")";
 
   content::WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();
