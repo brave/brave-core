@@ -17,10 +17,4 @@ WebContents* WebContentsDelegate::AddNewContents_ChromiumImpl(
   return nullptr;
 }
 
-bool WebContentsDelegate::PreHandleMouseEvent(
-    WebContents* source,
-    const blink::WebMouseEvent& event) {
-  return false;
-}
-
 }  // namespace content

@@ -44,8 +44,6 @@ class BraveBrowser : public Browser {
   bool NormalBrowserSupportsWindowFeature(
       WindowFeature feature,
       bool check_can_support) const override;
-  bool PreHandleMouseEvent(content::WebContents* source,
-                           const blink::WebMouseEvent& event) override;
 
   // This overrides ChromeWebModalDialogManagerDelegate::IsWebContentsVisible()
   // and it's called from WebContentsModalDialogManager.

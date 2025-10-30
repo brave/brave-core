@@ -289,11 +289,6 @@ bool BraveBrowser::NormalBrowserSupportsWindowFeature(
                                                      check_can_support);
 }
 
-bool BraveBrowser::PreHandleMouseEvent(content::WebContents* source,
-                                       const blink::WebMouseEvent& event) {
-  return brave_window()->PreHandleMouseEvent(event);
-}
-
 bool BraveBrowser::IsWebContentsVisible(content::WebContents* web_contents) {
   const auto original_visible = Browser::IsWebContentsVisible(web_contents);
   auto* tab = tabs::TabInterface::MaybeGetFromContents(web_contents);
