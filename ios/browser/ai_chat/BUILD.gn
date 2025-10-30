@@ -10,6 +10,8 @@ source_set("ai_chat") {
   sources = [
     "ai_chat_service_factory.h",
     "ai_chat_service_factory.mm",
+    "ai_chat_settings_helper.h",
+    "ai_chat_settings_helper.mm",
     "ai_chat_utils.h",
     "ai_chat_utils.mm",
     "model_service_factory.h",
@@ -22,6 +24,7 @@ source_set("ai_chat") {
     "//brave/components/ai_chat/core/common",
     "//brave/components/ai_chat/ios/browser",
     "//brave/components/ai_chat/ios/common:mojom",
+    "//brave/ios/browser/api/profile",
     "//brave/ios/browser/misc_metrics",
     "//brave/ios/browser/skus",
     "//brave/ios/components/prefs",
