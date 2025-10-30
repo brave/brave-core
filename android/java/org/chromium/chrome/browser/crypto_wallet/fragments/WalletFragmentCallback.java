@@ -7,8 +7,12 @@ package org.chromium.chrome.browser.crypto_wallet.fragments;
 
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.browser.app.domain.WalletModel;
+import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActivity;
 
-/** Created by Simone on 10/24/25. */
+/**
+ * Contract that exposes the shared {@link WalletModel} to wallet fragments so they can
+ * access services and state managed by the hosting activity {@link BraveWalletDAppsActivity}.
+ */
 @NullMarked
 public interface WalletFragmentCallback {
     WalletModel getWalletModel();
