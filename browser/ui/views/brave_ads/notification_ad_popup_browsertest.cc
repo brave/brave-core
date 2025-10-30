@@ -13,6 +13,8 @@
 #include "brave/components/brave_ads/browser/ad_units/notification_ad/custom_notification_ad_feature.h"
 #include "brave/test/views/snapshot/widget_snapshot_checker.h"
 #include "chrome/browser/platform_util.h"
+#include "chrome/browser/themes/theme_service.h"
+#include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -60,9 +62,11 @@ class NotificationAdPopupBrowserTest
 
 IN_PROC_BROWSER_TEST_P(NotificationAdPopupBrowserTest,
                        DISABLED_CheckThemeChanged) {
-  // Check appearance in light theme.
-  //   dark_mode::SetBraveDarkModeType(
-  //       dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT);
+  auto* theme_service =
+      ThemeServiceFactory::GetForProfile(browser()->profile());
+  CHECK(theme_service);
+  theme_service->SetBrowserColorScheme(
+      ThemeService::BrowserColorScheme::kLight);
 
   const std::string notification_id = "notification_id";
   const auto& [_, notification_title, notification_body] = GetParam();
@@ -89,8 +93,7 @@ IN_PROC_BROWSER_TEST_P(NotificationAdPopupBrowserTest,
   EXPECT_NO_FATAL_FAILURE(
       widget_snapshot_checker.CaptureAndCheckSnapshot(popup->GetWidget()));
 
-  //   dark_mode::SetBraveDarkModeType(
-  //       dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK);
+  theme_service->SetBrowserColorScheme(ThemeService::BrowserColorScheme::kDark);
   // Check appearance in dark theme.
   EXPECT_NO_FATAL_FAILURE(
       widget_snapshot_checker.CaptureAndCheckSnapshot(popup->GetWidget()));

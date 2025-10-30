@@ -16,7 +16,6 @@
 #include "brave/browser/misc_metrics/uptime_monitor_impl.h"
 #include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/browser/search_engines/search_engine_tracker.h"
-#include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/updater/buildflags.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
@@ -65,6 +64,7 @@
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/p3a/p3a_core_metrics.h"
 #include "brave/browser/search_engines/pref_names.h"
+#include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/ui/whats_new/whats_new_util.h"
 #include "chrome/browser/first_run/first_run.h"
 #endif  // !BUILDFLAG(IS_ANDROID)

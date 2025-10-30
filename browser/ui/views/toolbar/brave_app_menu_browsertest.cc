@@ -11,6 +11,8 @@
 #include "brave/browser/ui/views/toolbar/brave_browser_app_menu_button.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/skus/common/features.h"
+#include "chrome/browser/themes/theme_service.h"
+#include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/browser/ui/toolbar/app_menu_icon_controller.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/toolbar/app_menu.h"
@@ -77,10 +79,10 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, AppMenuButtonUpgradeAlertTest) {
   EXPECT_TRUE(brave_menu_button->ShouldBlendHighlightColor());
 
   // Check our highlight color.
-  // dark_mode::SetBraveDarkModeType(
-  //     dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT);
-  // EXPECT_EQ(dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT,
-  //           dark_mode::GetActiveBraveDarkModeType());
+  auto* theme_service =
+      ThemeServiceFactory::GetForProfile(browser()->profile());
+  theme_service->SetBrowserColorScheme(
+      ThemeService::BrowserColorScheme::kLight);
   EXPECT_EQ(brave_menu_button->GetHighlightColor(), std::nullopt);
   brave_menu_button->SetTypeAndSeverity(
       {AppMenuIconController::IconType::UPGRADE_NOTIFICATION,

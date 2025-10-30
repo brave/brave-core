@@ -9,7 +9,6 @@
 #include "brave/browser/brave_rewards/rewards_prefs_util.h"
 #include "brave/browser/brave_stats/brave_stats_updater.h"
 #include "brave/browser/misc_metrics/uptime_monitor_impl.h"
-#include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/translate/brave_translate_prefs_migration.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/brave_adaptive_captcha/prefs_util.h"

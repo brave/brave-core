@@ -3,7 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/browser/themes/brave_dark_mode_utils.h"
+#include "chrome/browser/themes/theme_service.h"
+#include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/common/webui_url_constants.h"
@@ -32,9 +33,11 @@ class BackgroundColorTabHelperBrowserTest
 
 IN_PROC_BROWSER_TEST_P(BackgroundColorTabHelperBrowserTest,
                        PRE_BackgroundColorIsSet) {
-  dark_mode::SetBraveDarkModeType(
-      IsDarkMode() ? dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK
-                   : dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT);
+  auto* theme_service =
+      ThemeServiceFactory::GetForProfile(browser()->profile());
+  theme_service->SetBrowserColorScheme(
+      IsDarkMode() ? ThemeService::BrowserColorScheme::kDark
+                   : ThemeService::BrowserColorScheme::kLight);
 }
 
 IN_PROC_BROWSER_TEST_P(BackgroundColorTabHelperBrowserTest,

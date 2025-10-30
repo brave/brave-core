@@ -9,7 +9,6 @@ brave_browser_themes_deps = []
 
 if (!is_android) {
   brave_browser_themes_sources += [
-    "//brave/browser/themes/brave_dark_mode_utils.cc",
     "//brave/browser/themes/brave_private_window_theme_supplier.cc",
     "//brave/browser/themes/brave_private_window_theme_supplier.h",
     "//brave/browser/themes/brave_theme_service.cc",
