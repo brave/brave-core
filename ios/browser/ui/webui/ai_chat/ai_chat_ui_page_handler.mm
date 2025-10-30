@@ -175,7 +175,7 @@ void AIChatUIPageHandler::ProcessImageFile(
     ProcessImageFileCallback callback) {
   DecodeImageUsingServiceProcess(
       &data_decoder_, file_data, data_decoder::mojom::ImageCodec::kDefault,
-      true, kDataDecoderDefaultMaxSizeInBytes, gfx::Size(),
+      /*shrink_to_fit=*/true, kDataDecoderDefaultMaxSizeInBytes, gfx::Size(),
       base::BindOnce(
           &OnImageDecoded,
           base::BindOnce(
