@@ -45,10 +45,9 @@ namespace {
 // So for iOS, this function will strip the trailing slashes so the CSPs apply
 // correctly
 std::string StripTrailingSlash(std::string_view url) {
-  if (!url.empty() && url.back() == '/') {
-    return std::string(url.substr(0, url.size() - 1));
-  }
-  return std::string(url);
+  std::string result(url);
+  base::TrimString(result, "/", &result);
+  return result;
 }
 }  // namespace
 
