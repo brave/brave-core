@@ -33,7 +33,6 @@ class BlockchainImagesSourceBaseTest : public testing::Test {
   ~BlockchainImagesSourceBaseTest() override = default;
 
   void SetUp() override {
-    base::FilePath test_dir;
     // brave/test/data/brave_wallet/1.0.1
     brave_wallet::SetLastInstalledWalletVersionForTest(base::Version("1.0.1"));
     source_ = std::make_unique<BlockchainImagesSourceBase>(
