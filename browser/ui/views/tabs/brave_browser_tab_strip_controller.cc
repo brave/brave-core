@@ -134,11 +134,11 @@ void BraveBrowserTabStripController::OnTreeTabChanged(
       tabstrip_->tab_at(index)->set_tree_tab_node(change.id);
       break;
     }
-    case TreeTabChange::Type::kNodeDestroyed: {
-      // auto index = model_->GetIndexOfTab(created_change.node->GetTab());
-      // CHECK_NE(index, TabStripModel::kNoTab);
-      // tabstrip_->tab_at(index)->set_tree_tab_node(tree_tab::TreeTabNodeId{
-      //     created_change.node->id()});
+    case TreeTabChange::Type::kNodeWillBeDestroyed: {
+      auto index = model_->GetIndexOfTab(
+          change.GetWillBeDestroyedChange().node->GetTab());
+      CHECK_NE(index, TabStripModel::kNoTab);
+      tabstrip_->tab_at(index)->set_tree_tab_node(std::nullopt);
       break;
     }
   }

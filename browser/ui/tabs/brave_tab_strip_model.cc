@@ -212,7 +212,9 @@ void BraveTabStripModel::NotifyTreeTabNodeCreated(
 
 void BraveTabStripModel::NotifyTreeTabNodeDestroyed(
     const tree_tab::TreeTabNodeId& id) {
-  auto change = TreeTabChange(id, TreeTabChange::DestroyedChange());
+  auto* node = tree_tab_model_->GetNode(id);
+  CHECK(node);
+  auto change = TreeTabChange(id, TreeTabChange::WillBeDestroyedChange(*node));
   for (auto& observer : observers_) {
     observer.OnTreeTabChanged(change);
   }

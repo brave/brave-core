@@ -6,6 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_TABS_TAB_STRIP_MODEL_OBSERVER_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_TABS_TAB_STRIP_MODEL_OBSERVER_H_
 
+#include "base/memory/raw_ref.h"
 #include "brave/components/tabs/public/tree_tab_node.h"
 #include "brave/components/tabs/public/tree_tab_node_id.h"
 
@@ -21,7 +22,7 @@
 struct TreeTabChange {
   enum Type {
     kNodeCreated,
-    kNodeDestroyed,
+    kNodeWillBeDestroyed,
   };
 
   struct Delta {
@@ -35,9 +36,11 @@ struct TreeTabChange {
     raw_ref<const tabs::TreeTabNode> node;
   };
 
-  struct DestroyedChange : public Delta {
-    DestroyedChange();
-    ~DestroyedChange() override;
+  struct WillBeDestroyedChange : public Delta {
+    explicit WillBeDestroyedChange(const tabs::TreeTabNode& node);
+    ~WillBeDestroyedChange() override;
+
+    raw_ref<const tabs::TreeTabNode> node;
   };
 
   TreeTabChange(Type type,
@@ -46,13 +49,13 @@ struct TreeTabChange {
   TreeTabChange(tree_tab::TreeTabNodeId id,
                 const CreatedChange& created_change);
   TreeTabChange(tree_tab::TreeTabNodeId id,
-                const DestroyedChange& destroyed_change);
+                const WillBeDestroyedChange& destroyed_change);
   TreeTabChange(const TreeTabChange& other) = delete;
   TreeTabChange& operator=(const TreeTabChange& other) = delete;
   ~TreeTabChange();
 
   const CreatedChange& GetCreatedChange() const;
-  const DestroyedChange& GetDestroyedChange() const;
+  const WillBeDestroyedChange& GetWillBeDestroyedChange() const;
 
   Type type;
   tree_tab::TreeTabNodeId id;
