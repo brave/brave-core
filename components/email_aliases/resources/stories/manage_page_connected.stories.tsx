@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { StubEmailAliasesService } from './utils/stubs'
+import { StubEmailAliasesService, demoData } from './utils/stubs'
 import { ManagePageConnected } from '../email_aliases'
 import {
   AuthenticationStatus,
@@ -17,10 +17,25 @@ const stubEmailAliasesServiceNoAccountInstance = new StubEmailAliasesService({
   errorMessage: undefined,
 })
 
+const stubEmailAliasesServiceAccountReadyInstance = new StubEmailAliasesService(
+  {
+    status: AuthenticationStatus.kAuthenticated,
+    email: demoData.email,
+    errorMessage: undefined,
+  },
+)
+
 const bindNoAccountObserver = (
   observer: EmailAliasesServiceObserverInterface,
 ) => {
   stubEmailAliasesServiceNoAccountInstance.addObserver(observer)
+  return () => {} // Do nothing in this mock implementation.
+}
+
+const bindAccountReadyObserver = (
+  observer: EmailAliasesServiceObserverInterface,
+) => {
+  stubEmailAliasesServiceAccountReadyInstance.addObserver(observer)
   return () => {} // Do nothing in this mock implementation.
 }
 
@@ -34,6 +49,16 @@ export const SignInPage = () => {
   )
 }
 
+export const ManageAliasesPage = () => {
+  return (
+    <ManagePageConnected
+      // @ts-expect-error https://github.com/brave/brave-browser/issues/48960
+      emailAliasesService={stubEmailAliasesServiceAccountReadyInstance}
+      bindObserver={bindAccountReadyObserver}
+    />
+  )
+}
+
 export default {
-  title: 'Email Aliases/Sign-in Page',
+  title: 'Email Aliases/ManagePageConnected',
 }
