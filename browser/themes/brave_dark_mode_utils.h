@@ -10,6 +10,7 @@ class PrefRegistrySimple;
 
 namespace dark_mode {
 
+// Don't use this enum anymore. It's deprecated and only used for migration.
 enum class BraveDarkModeType {
   // DEFAULT type acts as two ways depends on system theme mode.
   // If system dark mode is not supported, we override it with channel based

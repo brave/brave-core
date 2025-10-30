@@ -4,14 +4,14 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 source_set("themes") {
-  sources = [ "brave_dark_mode_utils.h" ]
+  sources = [
+    "brave_dark_mode_utils.cc",
+    "brave_dark_mode_utils.h",
+  ]
 
   deps = [
     "//base",
     "//brave/components/constants",
+    "//components/prefs",
   ]
-
-  if (is_android) {
-    sources += [ "brave_dark_mode_utils_android.cc" ]
-  }
 }

@@ -12,7 +12,6 @@
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "brave/browser/brave_news/brave_news_tab_helper.h"
-#include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/ui/views/brave_news/brave_news_bubble_controller.h"
 #include "brave/browser/ui/views/brave_news/brave_news_feed_item_view.h"
 #include "brave/browser/ui/views/brave_news/brave_news_feeds_container_view.h"
@@ -33,6 +32,7 @@
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/mojom/dialog_button.mojom.h"
 #include "ui/base/page_transition_types.h"
+#include "ui/color/color_provider_key.h"
 #include "ui/gfx/font.h"
 #include "ui/gfx/font_list.h"
 #include "ui/gfx/geometry/insets.h"
@@ -165,8 +165,9 @@ void BraveNewsBubbleView::OnWidgetDestroyed(views::Widget*) {
 void BraveNewsBubbleView::OnThemeChanged() {
   views::BubbleDialogDelegateView::OnThemeChanged();
 
-  // Move color to color mixer.
-  auto is_dark = false;
+  auto is_dark =
+      contents_->GetColorMode() == ui::ColorProviderKey::ColorMode::kDark;
+
   SetBackgroundColor(is_dark ? kBackgroundColorDark : kBackgroundColorLight);
   subtitle_label_->SetEnabledColor(is_dark ? kSubtitleColorDark
                                            : kSubtitleColorLight);
