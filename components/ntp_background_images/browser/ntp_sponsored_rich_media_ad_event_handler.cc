@@ -39,12 +39,6 @@ void NTPSponsoredRichMediaAdEventHandler::MaybeReportRichMediaAdEvent(
     return;
   }
 
-  if (mojom_ad_metric_type == brave_ads::mojom::NewTabPageAdMetricType::kP3A &&
-      ntp_p3a_helper_) {
-    ntp_p3a_helper_->RecordNewTabPageAdEvent(mojom_ad_event_type,
-                                             creative_instance_id);
-  }
-
   if (ads_service_) {
     // Ads service will handle the case when we should fallback to P3A and no-op
     // if the campaign should report using P3A.

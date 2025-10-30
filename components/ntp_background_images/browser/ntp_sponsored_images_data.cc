@@ -217,8 +217,6 @@ std::optional<Campaign> NTPSponsoredImagesData::MaybeParseCampaign(
       metric_type = brave_ads::mojom::NewTabPageAdMetricType::kDisabled;
     } else if (*metrics == "confirmation") {
       metric_type = brave_ads::mojom::NewTabPageAdMetricType::kConfirmation;
-    } else if (*metrics == "p3a") {
-      metric_type = brave_ads::mojom::NewTabPageAdMetricType::kP3A;
     }
   }
 
