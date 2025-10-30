@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_EPHEMERAL_STORAGE_EPHEMERAL_STORAGE_SERVICE_DELEGATE_H_
 #define BRAVE_COMPONENTS_EPHEMERAL_STORAGE_EPHEMERAL_STORAGE_SERVICE_DELEGATE_H_
 
+#include <string_view>
+
 #include "base/functional/callback.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_types.h"
 
@@ -23,6 +25,10 @@ class EphemeralStorageServiceDelegate {
   // Registers a callback to be called when the first window is opened.
   virtual void RegisterFirstWindowOpenedCallback(
       base::OnceClosure callback) = 0;
+  virtual void CloseTabsForDomainAndSubdomains(
+      std::string_view ephemeral_domain) = 0;
+  virtual bool IsShieldsDisabledOnAnyHostMatchingDomainOf(
+      const std::string_view ephemeral_domain) const = 0;
 };
 
 }  // namespace ephemeral_storage

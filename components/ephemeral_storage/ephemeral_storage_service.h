@@ -82,6 +82,10 @@ class EphemeralStorageService : public KeyedService {
   void AddObserver(EphemeralStorageServiceObserver* observer);
   void RemoveObserver(EphemeralStorageServiceObserver* observer);
 
+  void TLDEphemeralStorageShred(const std::string& ephemeral_domain,
+    const content::StoragePartitionConfig& storage_partition_config,
+      const bool enforced_by_user);
+
  private:
   friend EphemeralStorageBrowserTest;
   friend EphemeralStorageQaBrowserTest;
