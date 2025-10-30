@@ -29,18 +29,13 @@ namespace brave_vpn {
 
 namespace wireguard {
 
-std::string EncodeBase64(const std::vector<uint8_t>& in, size_t& size) {
-  size = 0;
+std::string EncodeBase64(base::span<const uint8_t> in) {
+  size_t size = 0;
   CHECK(EVP_EncodedLength(&size, in.size()));
   std::vector<uint8_t> out(size);
   size_t bytes_encoded = EVP_EncodeBlock(&out.front(), &in.front(), in.size());
   return std::string(
       base::as_string_view(base::span(out).first(bytes_encoded)));
-}
-
-std::string EncodeBase64(const std::vector<uint8_t>& in) {
-  size_t size;
-  return EncodeBase64(in, size);
 }
 
 namespace {
