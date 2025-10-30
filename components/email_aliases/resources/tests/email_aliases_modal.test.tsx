@@ -8,7 +8,6 @@ import { render, screen, waitFor } from '@testing-library/react'
 import {
   EmailAliasModal,
   DeleteAliasModal,
-  EmailAliasModalActionType,
   EmailAliasModalResultType,
 } from '../content/email_aliases_modal'
 
