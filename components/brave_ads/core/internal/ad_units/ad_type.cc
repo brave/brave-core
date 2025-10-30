@@ -16,14 +16,14 @@ namespace {
 
 // Do not change the following string values as they are used for persisting and
 // restoring state.
-constexpr char kUndefinedType[] = "";
-constexpr char kNotificationAdType[] = "ad_notification";
-constexpr char kNewTabPageAdType[] = "new_tab_page_ad";
-constexpr char kPromotedContentAdType[] = "promoted_content_ad";
-constexpr char kInlineContentAdType[] = "inline_content_ad";
-constexpr char kSearchResultAdType[] = "search_result_ad";
+constexpr std::string_view kUndefinedType;
+constexpr std::string_view kNotificationAdType = "ad_notification";
+constexpr std::string_view kNewTabPageAdType = "new_tab_page_ad";
+constexpr std::string_view kPromotedContentAdType = "promoted_content_ad";
+constexpr std::string_view kInlineContentAdType = "inline_content_ad";
+constexpr std::string_view kSearchResultAdType = "search_result_ad";
 
-constexpr auto kStringToMojomAdTypeMap =
+constexpr auto kStringToMojomMap =
     base::MakeFixedFlatMap<std::string_view, mojom::AdType>(
         {{kUndefinedType, mojom::AdType::kUndefined},
          {kNotificationAdType, mojom::AdType::kNotificationAd},
@@ -32,7 +32,7 @@ constexpr auto kStringToMojomAdTypeMap =
          {kInlineContentAdType, mojom::AdType::kInlineContentAd},
          {kSearchResultAdType, mojom::AdType::kSearchResultAd}});
 
-constexpr auto kMojomAdTypeToStringMap =
+constexpr auto kMojomToStringMap =
     base::MakeFixedFlatMap<mojom::AdType, std::string_view>(
         {{mojom::AdType::kUndefined, kUndefinedType},
          {mojom::AdType::kNotificationAd, kNotificationAdType},
@@ -44,24 +44,22 @@ constexpr auto kMojomAdTypeToStringMap =
 }  // namespace
 
 mojom::AdType ToMojomAdType(std::string_view value) {
-  const auto iter = kStringToMojomAdTypeMap.find(value);
-  if (iter != kStringToMojomAdTypeMap.cend()) {
-    const auto [_, mojom_ad_type] = *iter;
-    return mojom_ad_type;
+  const auto iter = kStringToMojomMap.find(value);
+  if (iter != kStringToMojomMap.cend()) {
+    return iter->second;
   }
 
   NOTREACHED() << "Unexpected value for mojom::AdType: " << value;
 }
 
-const char* ToString(mojom::AdType mojom_ad_type) {
-  const auto iter = kMojomAdTypeToStringMap.find(mojom_ad_type);
-  if (iter != kMojomAdTypeToStringMap.cend()) {
-    const auto [_, ad_type] = *iter;
-    return ad_type.data();
+std::string_view ToString(mojom::AdType value) {
+  const auto iter = kMojomToStringMap.find(value);
+  if (iter != kMojomToStringMap.cend()) {
+    return iter->second;
   }
 
   NOTREACHED() << "Unexpected value for mojom::AdType: "
-               << base::to_underlying(mojom_ad_type);
+               << base::to_underlying(value);
 }
 
 }  // namespace brave_ads

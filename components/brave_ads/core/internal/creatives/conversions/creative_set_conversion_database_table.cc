@@ -218,8 +218,8 @@ void CreativeSetConversions::GetActive(
             $2 < expire_at
             AND ad_events.confirmation_type IN ('$3', '$4'))",
       {GetTableName(), TimeToSqlValueAsString(base::Time::Now()),
-       ToString(mojom::ConfirmationType::kViewedImpression),
-       ToString(mojom::ConfirmationType::kClicked)},
+       std::string(ToString(mojom::ConfirmationType::kViewedImpression)),
+       std::string(ToString(mojom::ConfirmationType::kClicked))},
       nullptr);
   BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));

@@ -186,14 +186,14 @@ bool ColumnBool(const mojom::DBRowInfoPtr& mojom_db_row, size_t column) {
 
 void BindColumnString(const mojom::DBActionInfoPtr& mojom_db_action,
                       int32_t index,
-                      const std::string& value) {
+                      std::string_view value) {
   CHECK(mojom_db_action);
 
   mojom::DBBindColumnInfoPtr mojom_db_bind_column =
       mojom::DBBindColumnInfo::New();
   mojom_db_bind_column->index = index;
   mojom_db_bind_column->value_union =
-      mojom::DBColumnValueUnion::NewStringValue(value);
+      mojom::DBColumnValueUnion::NewStringValue(std::string(value));
 
   mojom_db_action->bind_columns.push_back(std::move(mojom_db_bind_column));
 }

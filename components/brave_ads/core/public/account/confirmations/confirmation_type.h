@@ -16,7 +16,7 @@ namespace brave_ads {
 mojom::ConfirmationType ToMojomConfirmationType(std::string_view value);
 
 // Returns a string constant for a given `mojom::ConfirmationType` value.
-const char* ToString(mojom::ConfirmationType mojom_confirmation_type);
+std::string_view ToString(mojom::ConfirmationType value);
 
 }  // namespace brave_ads
 

@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/browser/component_updater/resource_component_registrar.h"
 
+#include <string_view>
+
 #include "base/check.h"
 #include "base/files/file_path.h"
 #include "base/logging.h"
@@ -15,7 +17,7 @@
 namespace brave_ads {
 
 namespace {
-constexpr char kComponentName[] = "Brave Ads Resources ($1)";
+constexpr std::string_view kComponentName = "Brave Ads Resources ($1)";
 }  // namespace
 
 ResourceComponentRegistrar::ResourceComponentRegistrar(
@@ -33,7 +35,7 @@ void ResourceComponentRegistrar::RegisterResourceComponent(
     const std::string& resource_id) {
   CHECK(!resource_id.empty());
 
-  std::optional<ComponentInfo> component = GetComponentInfo(resource_id);
+  std::optional<ComponentInfo> component = GetComponent(resource_id);
   if (!component) {
     return VLOG(1) << "Ads resource not supported for " << resource_id;
   }
@@ -44,15 +46,14 @@ void ResourceComponentRegistrar::RegisterResourceComponent(
   }
   resource_component_id_ = component->id;
 
-  const std::string resource_component_public_key{component->public_key};
-
   const std::string component_name =
       base::ReplaceStringPlaceholders(kComponentName, {resource_id}, nullptr);
 
-  VLOG(1) << "Registering " << component_name << " with id " << component->id;
+  VLOG(1) << "Registering " << component_name << " with id "
+          << *resource_component_id_;
 
   Register(component_name, *resource_component_id_,
-           resource_component_public_key);
+           std::string(component->public_key_base64));
 }
 
 ///////////////////////////////////////////////////////////////////////////////

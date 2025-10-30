@@ -7,6 +7,7 @@
 
 #include <memory>
 #include <string>
+#include <string_view>
 #include <utility>
 
 #include "base/memory/raw_ptr.h"
@@ -28,7 +29,7 @@ namespace brave_ads {
 
 class VirtualPrefProviderDelegateMock : public VirtualPrefProvider::Delegate {
  public:
-  MOCK_METHOD(std::string, GetChannel, (), (const));
+  MOCK_METHOD(std::string_view, GetChannel, (), (const));
 
   MOCK_METHOD(std::string, GetDefaultSearchEngineName, (), (const));
 };

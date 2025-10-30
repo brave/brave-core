@@ -8,6 +8,8 @@
 #include <string_view>
 
 #include "base/containers/fixed_flat_map.h"
+#include "base/containers/map_util.h"
+#include "base/types/optional_util.h"
 
 namespace brave_ads {
 
@@ -5077,13 +5079,8 @@ constexpr auto kComponents =
 
 }  // namespace
 
-std::optional<ComponentInfo> GetComponentInfo(std::string_view id) {
-  const auto iter = kComponents.find(id);
-  if (iter == kComponents.cend()) {
-    return std::nullopt;
-  }
-
-  return iter->second;
+std::optional<ComponentInfo> GetComponent(std::string_view id) {
+  return base::OptionalFromPtr(base::FindOrNull(kComponents, id));
 }
 
 }  // namespace brave_ads

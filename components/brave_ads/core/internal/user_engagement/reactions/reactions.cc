@@ -93,8 +93,7 @@ mojom::ReactionType Reactions::AdReactionTypeForId(
     return mojom::ReactionType::kNeutral;
   }
   // Reaction found.
-  const auto& [_, reaction_type] = *iter;
-  return reaction_type;
+  return iter->second;
 }
 
 void Reactions::ToggleLikeSegment(mojom::ReactionInfoPtr mojom_reaction,
@@ -160,8 +159,7 @@ mojom::ReactionType Reactions::SegmentReactionTypeForId(
     // No reaction, so neutral.
     return mojom::ReactionType::kNeutral;
   }
-  const auto [_, reaction_type] = *iter;
-  return reaction_type;
+  return iter->second;
 }
 
 void Reactions::ToggleSaveAd(mojom::ReactionInfoPtr mojom_reaction,

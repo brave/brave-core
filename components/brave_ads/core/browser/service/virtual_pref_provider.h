@@ -8,6 +8,7 @@
 
 #include <memory>
 #include <string>
+#include <string_view>
 
 #include "base/memory/raw_ptr.h"
 #include "base/values.h"
@@ -22,7 +23,7 @@ class VirtualPrefProvider final {
    public:
     virtual ~Delegate() = default;
 
-    virtual std::string GetChannel() const = 0;
+    virtual std::string_view GetChannel() const = 0;
 
     virtual std::string GetDefaultSearchEngineName() const = 0;
   };
