@@ -316,7 +316,7 @@ std::string MakeGetTransactionParams(const std::string& tx_hash) {
 
 std::string MakeSendTransactionParams(base::span<const uint8_t> data) {
   ::zcash::RawTransaction request;
-  request.set_data(reinterpret_cast<const char*>(data.data()), data.size());
+  request.set_data(data.data(), data.size());
   return GetPrefixedProtobuf(request.SerializeAsString());
 }
 

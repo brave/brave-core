@@ -10,6 +10,7 @@
 
 #include "base/base64.h"
 #include "base/check.h"
+#include "base/strings/string_view_util.h"
 #include "brave/components/brave_ads/core/internal/common/crypto/crypto_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/verifiable_conversion/envelope/verifiable_conversion_envelope_info.h"
 #include "tweetnacl.h"  // NOLINT
@@ -53,11 +54,9 @@ std::optional<std::string> OpenVerifiableConversionEnvelope(
     return std::nullopt;
   }
 
-  const std::vector<uint8_t> plaintext =
+  return std::string(base::as_string_view(
       crypto::Decrypt(*ciphertext, *nonce, *ephemeral_public_key,
-                      *verifiable_conversion_advertiser_secret_key);
-
-  return std::string(reinterpret_cast<const char*>(plaintext.data()));
+                      *verifiable_conversion_advertiser_secret_key)));
 }
 
 }  // namespace brave_ads::test
