@@ -71,12 +71,12 @@ interface EmailAliasesService {
 
 interface EmailAliasesPanelHandler {
   // Notify alias creation complete (the bubble can close). Fire and forget.
-  OnComplete(string email);
+  OnAliasCreated(string email);
 
   // Invoke manage aliases (show settings page)
-  OnManage();
+  OnManageAliases();
 
   // Dialog closed without action.
-  OnCancel();
+  OnCancelAliasCreation();
 };
 

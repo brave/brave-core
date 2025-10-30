@@ -208,16 +208,16 @@ export const DeleteAliasModal = ({
   )
 }
 
-export enum EmailAliasModalActionType {
-  Complete,
-  Manage,
-  Cancel,
+export enum EmailAliasModalResultType {
+  AliasCreated,
+  ShouldManageAliases,
+  Cancelled,
 }
 
-export type EmailAliasModalAction =
-  | { type: EmailAliasModalActionType.Cancel }
-  | { type: EmailAliasModalActionType.Manage }
-  | { type: EmailAliasModalActionType.Complete; email: string }
+export type EmailAliasModalResult =
+  | { type: EmailAliasModalResultType.Cancelled }
+  | { type: EmailAliasModalResultType.ShouldManageAliases }
+  | { type: EmailAliasModalResultType.AliasCreated; email: string }
 
 export const EmailAliasModal = ({
   onReturnToMain,
@@ -228,7 +228,7 @@ export const EmailAliasModal = ({
   emailAliasesService,
   bubble,
 }: {
-  onReturnToMain: (action: EmailAliasModalAction) => void
+  onReturnToMain: (action: EmailAliasModalResult) => void
   editing: boolean
   editAlias?: Alias
   bubble?: boolean
@@ -262,7 +262,7 @@ export const EmailAliasModal = ({
         proposedNote,
       )
       onReturnToMain({
-        type: EmailAliasModalActionType.Complete,
+        type: EmailAliasModalResultType.AliasCreated,
         email: generateAliasResult.aliasEmail,
       })
     } catch (errorMessage) {
@@ -375,7 +375,9 @@ export const EmailAliasModal = ({
           {bubble && (
             <Button
               onClick={() => {
-                onReturnToMain({ type: EmailAliasModalActionType.Manage })
+                onReturnToMain({
+                  type: EmailAliasModalResultType.ShouldManageAliases,
+                })
               }}
               kind='plain'
             >
@@ -384,7 +386,7 @@ export const EmailAliasModal = ({
           )}
           <Button
             onClick={() =>
-              onReturnToMain({ type: EmailAliasModalActionType.Cancel })
+              onReturnToMain({ type: EmailAliasModalResultType.Cancelled })
             }
             kind='plain-faint'
           >

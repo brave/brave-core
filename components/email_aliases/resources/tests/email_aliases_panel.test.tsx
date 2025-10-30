@@ -14,9 +14,9 @@ import {
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
 
 const mockEmailAliasesPanelHandler: EmailAliasesPanelHandlerInterface = {
-  onComplete: jest.fn(),
-  onManage: jest.fn(),
-  onCancel: jest.fn(),
+  onAliaseCreated: jest.fn(),
+  onManageAliases: jest.fn(),
+  onCancelAliasCreation: jest.fn(),
 }
 
 const mockEmailAliasesService: EmailAliasesServiceInterface = {
@@ -43,7 +43,7 @@ describe('PanelConnected', () => {
   })
 
   it('manage button', async () => {
-    mockEmailAliasesPanelHandler.onManage = jest.fn()
+    mockEmailAliasesPanelHandler.onManageAliases = jest.fn()
 
     render(
       <EmailAliasesPanelConnected
@@ -57,12 +57,12 @@ describe('PanelConnected', () => {
     clickLeoButton(button)
 
     await waitFor(() => {
-      expect(mockEmailAliasesPanelHandler.onManage).toHaveBeenCalled()
+      expect(mockEmailAliasesPanelHandler.onManageAliases).toHaveBeenCalled()
     })
   })
 
   it('cancel button', async () => {
-    mockEmailAliasesPanelHandler.onCancel = jest.fn()
+    mockEmailAliasesPanelHandler.onCancelAliasCreation = jest.fn()
 
     render(
       <EmailAliasesPanelConnected
@@ -76,12 +76,14 @@ describe('PanelConnected', () => {
     clickLeoButton(button)
 
     await waitFor(() => {
-      expect(mockEmailAliasesPanelHandler.onCancel).toHaveBeenCalled()
+      expect(
+        mockEmailAliasesPanelHandler.onCancelAliasCreation,
+      ).toHaveBeenCalled()
     })
   })
 
   it('create button', async () => {
-    mockEmailAliasesPanelHandler.onComplete = jest.fn()
+    mockEmailAliasesPanelHandler.onAliasCreated = jest.fn()
 
     render(
       <EmailAliasesPanelConnected
@@ -106,7 +108,7 @@ describe('PanelConnected', () => {
     clickLeoButton(button)
 
     await waitFor(() => {
-      expect(mockEmailAliasesPanelHandler.onComplete).toHaveBeenCalledWith(
+      expect(mockEmailAliasesPanelHandler.onAliasCreated).toHaveBeenCalledWith(
         'generated@brave.com',
       )
     })
