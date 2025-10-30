@@ -9,17 +9,28 @@
 #include <string>
 #include <string_view>
 #include <tuple>
+#include <utility>
 #include <vector>
 
+#include "base/check.h"
+#include "base/check_deref.h"
+#include "base/functional/bind.h"
+#include "base/functional/callback.h"
 #include "base/json/json_reader.h"
+#include "base/location.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/memory/weak_ptr.h"
 #include "base/strings/string_util.h"
 #include "base/strings/to_string.h"
+#include "base/task/single_thread_task_runner.h"
 #include "base/test/bind.h"
+#include "base/test/run_until.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
+#include "base/threading/thread.h"
 #include "base/types/expected.h"
 #include "base/values.h"
+#include "brave/components/brave_account/endpoint_client/request_handle.h"
 #include "brave/components/brave_account/endpoint_client/request_types.h"
 #include "brave/components/brave_account/endpoint_client/with_headers.h"
 #include "net/http/http_request_headers.h"
@@ -27,6 +38,7 @@
 #include "services/network/public/cpp/data_element.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/resource_request_body.h"
+#include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/public/mojom/url_request.mojom-shared.h"
 #include "services/network/test/test_url_loader_factory.h"
@@ -207,5 +219,61 @@ INSTANTIATE_TEST_SUITE_P(
                          " ", "_", &name);
       return name;
     });
+
+namespace {
+
+enum class CancelRequestOn { kSameSequence, kDifferentSequence };
+
+class ClientCancelTest : public testing::TestWithParam<CancelRequestOn> {
+ protected:
+  base::test::TaskEnvironment task_environment_;
+  network::TestURLLoaderFactory test_url_loader_factory_;
+};
+
+}  // namespace
+
+TEST_P(ClientCancelTest, Cancel) {
+  base::test::TestFuture<int, Expected> future;
+  RequestHandle request_handle =
+      Client<TestEndpoint>::Send<RequestCancelability::kCancelable>(
+          test_url_loader_factory_.GetSafeWeakWrapper(),
+          TestRequest{{"cancel me"}}, future.GetCallback());
+
+  auto weak_simple_url_loader =
+      CHECK_DEREF(static_cast<network::SimpleURLLoader*>(request_handle.get()))
+          .GetWeakPtr();
+  EXPECT_TRUE(weak_simple_url_loader);
+
+  // We intentionally don't add a response for this request.
+  // It will hang, so the only way it completes is
+  // by explicitly canceling via |request_handle|.
+  if (GetParam() == CancelRequestOn::kSameSequence) {
+    request_handle.reset();
+  } else {
+    base::Thread thread("cancel-thread");
+    CHECK(thread.Start());
+    thread.task_runner()->PostTask(
+        FROM_HERE,
+        base::BindOnce(
+            [](RequestHandle request_handle) { request_handle.reset(); },
+            std::move(request_handle)));
+    thread.FlushForTesting();  // ensures request_handle.reset() ran
+  }
+
+  // The deleter uses `SequencedTaskRunner::DeleteSoon()`
+  // on the owning sequence, so wait for it to run.
+  EXPECT_TRUE(base::test::RunUntil([&] { return !weak_simple_url_loader; }));
+  EXPECT_FALSE(future.IsReady());
+}
+
+INSTANTIATE_TEST_SUITE_P(Cancelation,
+                         ClientCancelTest,
+                         testing::Values(CancelRequestOn::kSameSequence,
+                                         CancelRequestOn::kDifferentSequence),
+                         [](const auto& info) {
+                           return info.param == CancelRequestOn::kSameSequence
+                                      ? "SameSequence"
+                                      : "DifferentSequence";
+                         });
 
 }  // namespace brave_account::endpoint_client

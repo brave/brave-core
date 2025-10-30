@@ -10,8 +10,8 @@
 #include <memory>
 #include <optional>
 #include <string>
-#include <string_view>
 #include <utility>
+#include <variant>
 
 #include "base/check.h"
 #include "base/check_is_test.h"
@@ -20,11 +20,13 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/task/sequenced_task_runner.h"
 #include "base/types/expected.h"
 #include "base/types/is_instantiation.h"
 #include "base/values.h"
 #include "brave/components/brave_account/endpoint_client/is_endpoint.h"
 #include "brave/components/brave_account/endpoint_client/maybe_strip_with_headers.h"
+#include "brave/components/brave_account/endpoint_client/request_handle.h"
 #include "brave/components/brave_account/endpoint_client/with_headers.h"
 #include "net/base/load_flags.h"
 #include "net/http/http_request_headers.h"
@@ -42,6 +44,8 @@
 
 namespace brave_account::endpoint_client {
 
+enum class RequestCancelability { kNonCancelable, kCancelable };
+
 template <IsEndpoint T>
 class Client {
   using Response = typename T::Response;
@@ -50,11 +54,35 @@ class Client {
       base::expected<std::optional<Response>, std::optional<Error>>;
   using Callback = base::OnceCallback<void(int, Expected)>;
 
+  template <RequestCancelability C>
+  static auto MaybeMoveLoader(
+      std::unique_ptr<network::SimpleURLLoader>& simple_url_loader) {
+    if constexpr (C == RequestCancelability::kNonCancelable) {
+      return std::move(simple_url_loader);
+    } else {
+      return simple_url_loader.get();
+    }
+  }
+
+  template <RequestCancelability C>
+  static auto MaybeMakeHandle(
+      std::unique_ptr<network::SimpleURLLoader>& simple_url_loader) {
+    if constexpr (C == RequestCancelability::kNonCancelable) {
+      CHECK(!simple_url_loader);
+    } else {
+      CHECK(simple_url_loader);
+      return RequestHandle(simple_url_loader.release(),
+                           detail::RequestHandleDeleter(
+                               base::SequencedTaskRunner::GetCurrentDefault()));
+    }
+  }
+
  public:
-  template <typename Request>
+  template <RequestCancelability C = RequestCancelability::kNonCancelable,
+            typename Request>
     requires(std::same_as<detail::MaybeStripWithHeaders<Request>,
                           typename T::Request>)
-  static void Send(
+  [[nodiscard]] static auto Send(
       const scoped_refptr<network::SharedURLLoaderFactory>& url_loader_factory,
       Request request,
       Callback callback) {
@@ -93,15 +121,19 @@ class Client {
     simple_url_loader->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
         url_loader_factory.get(),
         base::BindOnce(OnResponse, std::move(callback),
-                       std::move(simple_url_loader)));
+                       MaybeMoveLoader<C>(simple_url_loader)));
+
+    return MaybeMakeHandle<C>(simple_url_loader);
   }
 
  private:
   static void OnResponse(
       Callback callback,
-      std::unique_ptr<network::SimpleURLLoader> simple_url_loader,
+      std::variant<std::unique_ptr<network::SimpleURLLoader>,
+                   network::SimpleURLLoader*> simple_url_loader,
       std::optional<std::string> response_body) {
-    auto* const response_info = simple_url_loader->ResponseInfo();
+    auto* const response_info = std::visit(
+        [](const auto& ptr) { return ptr->ResponseInfo(); }, simple_url_loader);
     const auto headers = response_info ? response_info->headers : nullptr;
     if (!headers) {
       return std::move(callback).Run(-1, base::unexpected(std::nullopt));
