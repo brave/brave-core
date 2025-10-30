@@ -9,6 +9,7 @@ import {
   EmailAliasModal,
   DeleteAliasModal,
   EmailAliasModalActionType,
+  EmailAliasModalResultType,
 } from '../content/email_aliases_modal'
 
 import { clickLeoButton } from './test_utils'
@@ -477,7 +478,7 @@ describe('EmailAliasModal', () => {
 
     await waitFor(() => {
       expect(mockOnReturnToMain).toHaveBeenCalledWith({
-        type: EmailAliasModalActionType.Manage,
+        type: EmailAliasModalResultType.ShouldManageAliases,
       })
     })
   })

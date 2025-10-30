@@ -8,8 +8,8 @@ import * as React from 'react'
 import { StyleSheetManager } from 'styled-components'
 import {
   EmailAliasModal,
-  EmailAliasModalActionType,
-  EmailAliasModalAction,
+  EmailAliasModalResultType,
+  EmailAliasModalResult,
 } from './content/email_aliases_modal'
 import BraveCoreThemeProvider from '$web-common/BraveCoreThemeProvider'
 import {
@@ -60,16 +60,16 @@ export const EmailAliasesPanelConnected = ({
   }, [])
   return (
     <EmailAliasModal
-      onReturnToMain={(action: EmailAliasModalAction) => {
+      onReturnToMain={(action: EmailAliasModalResult) => {
         switch (action.type) {
-          case EmailAliasModalActionType.Cancel:
-            emailAliasesPanelHandler.onCancel()
+          case EmailAliasModalResultType.Cancelled:
+            emailAliasesPanelHandler.onCancelAliasCreation()
             break
-          case EmailAliasModalActionType.Manage:
-            emailAliasesPanelHandler.onManage()
+          case EmailAliasModalResultType.ShouldManageAliases:
+            emailAliasesPanelHandler.onManageAliases()
             break
-          case EmailAliasModalActionType.Complete:
-            emailAliasesPanelHandler.onComplete(action.email)
+          case EmailAliasModalResultType.AliasCreated:
+            emailAliasesPanelHandler.onAliasCreated(action.email)
             break
         }
       }}
