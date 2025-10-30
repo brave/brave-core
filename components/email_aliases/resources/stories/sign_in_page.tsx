@@ -27,7 +27,7 @@ const bindNoAccountObserver = (
 export const SignInPage = () => {
   return (
     <ManagePageConnected
-      // @ts-ignore https://github.com/brave/brave-browser/issues/48960
+      // @ts-expect-error https://github.com/brave/brave-browser/issues/48960
       emailAliasesService={stubEmailAliasesServiceNoAccountInstance}
       bindObserver={bindNoAccountObserver}
     />

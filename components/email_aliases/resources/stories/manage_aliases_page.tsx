@@ -31,7 +31,7 @@ const bindAccountReadyObserver = (
 export const ManageAliasesPage = () => {
   return (
     <ManagePageConnected
-      // @ts-ignore https://github.com/brave/brave-browser/issues/48960
+      // @ts-expect-error https://github.com/brave/brave-browser/issues/48960
       emailAliasesService={stubEmailAliasesServiceAccountReadyInstance}
       bindObserver={bindAccountReadyObserver}
     />

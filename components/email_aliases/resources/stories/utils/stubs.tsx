@@ -63,7 +63,7 @@ export class StubEmailAliasesService implements EmailAliasesServiceInterface {
     observer.onAliasesUpdated([...this.aliases.values()])
   }
 
-  // @ts-ignore https://github.com/brave/brave-browser/issues/48960
+  // @ts-expect-error https://github.com/brave/brave-browser/issues/48960
   async updateAlias(aliasEmail: string, note: string | null): Promise<void> {
     if (Math.random() < 1 / 3) {
       return Promise.reject(
@@ -78,7 +78,7 @@ export class StubEmailAliasesService implements EmailAliasesServiceInterface {
     return Promise.resolve()
   }
 
-  // @ts-ignore https://github.com/brave/brave-browser/issues/48960
+  // @ts-expect-error https://github.com/brave/brave-browser/issues/48960
   async deleteAlias(aliasEmail: string): Promise<void> {
     if (Math.random() < 1 / 3) {
       return Promise.reject(
@@ -92,7 +92,7 @@ export class StubEmailAliasesService implements EmailAliasesServiceInterface {
     return Promise.resolve()
   }
 
-  // @ts-ignore https://github.com/brave/brave-browser/issues/48960
+  // @ts-expect-error https://github.com/brave/brave-browser/issues/48960
   async generateAlias(): Promise<string> {
     await new Promise((resolve) => setTimeout(resolve, 1000))
     if (Math.random() < 1 / 3) {
@@ -107,7 +107,7 @@ export class StubEmailAliasesService implements EmailAliasesServiceInterface {
     return aliasEmail
   }
 
-  // @ts-ignore https://github.com/brave/brave-browser/issues/48960
+  // @ts-expect-error https://github.com/brave/brave-browser/issues/48960
   async requestAuthentication(authEmail: string): Promise<void> {
     if (Math.random() < 1 / 3) {
       return Promise.reject(
@@ -133,7 +133,6 @@ export class StubEmailAliasesService implements EmailAliasesServiceInterface {
     return Promise.resolve()
   }
 
-  // @ts-ignore https://github.com/brave/brave-browser/issues/48960
   async cancelAuthenticationOrLogout() {
     window.clearTimeout(this.accountRequestId)
     this.observers.forEach((observer) => {
