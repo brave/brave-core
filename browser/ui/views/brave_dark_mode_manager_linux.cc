@@ -12,26 +12,27 @@ namespace ui {
 
 BraveDarkModeManagerLinux::BraveDarkModeManagerLinux()
     : DarkModeManagerLinux() {
-  // In base class' ctor, |prefer_dark_theme_| is set by calling
+  // In base class' ctor, |preferred_color_scheme_| is set by calling
   // SetColorScheme() when ui::GetDefaultLinuxUiTheme()
   if (ui::GetDefaultLinuxUiTheme()) {
-    dark_mode::CacheSystemDarkModePrefs(prefer_dark_theme_);
+    dark_mode::CacheSystemDarkModePrefs(preferred_color_scheme_);
   }
 }
 
 BraveDarkModeManagerLinux::~BraveDarkModeManagerLinux() = default;
 
-void BraveDarkModeManagerLinux::SetColorScheme(bool prefer_dark_theme,
-                                               bool from_toolkit_theme) {
-  dark_mode::CacheSystemDarkModePrefs(prefer_dark_theme);
+void BraveDarkModeManagerLinux::SetColorScheme(
+    NativeTheme::PreferredColorScheme color_scheme,
+    bool from_toolkit_theme) {
+  dark_mode::CacheSystemDarkModePrefs(color_scheme);
   if (dark_mode::GetBraveDarkModeType() ==
       dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DEFAULT) {
-    DarkModeManagerLinux::SetColorScheme(prefer_dark_theme, from_toolkit_theme);
+    DarkModeManagerLinux::SetColorScheme(color_scheme, from_toolkit_theme);
   } else {
-    // Make |prefer_dark_theme_| stores latest system theme even brave theme(
-    // dark or light) is set. If not, system theme change could not be applied
-    // properly later.
-    prefer_dark_theme_ = prefer_dark_theme;
+    // Make |preferred_color_scheme_| stores latest system theme even brave
+    // theme( dark or light) is set. If not, system theme change could not be
+    // applied properly later.
+    preferred_color_scheme_ = color_scheme;
   }
 }
 

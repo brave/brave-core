@@ -13,21 +13,25 @@
 namespace dark_mode {
 
 namespace {
-std::optional<bool> g_system_dark_mode_prefs;
+std::optional<ui::NativeTheme::PreferredColorScheme>
+    g_system_color_scheme_prefs;
 }  // namespace
 
-void CacheSystemDarkModePrefs(bool prefer_dark_theme) {
-  g_system_dark_mode_prefs = prefer_dark_theme;
+void CacheSystemDarkModePrefs(
+    ui::NativeTheme::PreferredColorScheme color_scheme) {
+  g_system_color_scheme_prefs = color_scheme;
 }
 
 bool HasCachedSystemDarkModeType() {
-  return g_system_dark_mode_prefs.has_value();
+  return g_system_color_scheme_prefs.has_value();
 }
 
 void SetSystemDarkMode(BraveDarkModeType type) {
   if (type == BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DEFAULT) {
-    if (g_system_dark_mode_prefs.has_value()) {
-      internal::SetSystemDarkModeForNonDefaultMode(*g_system_dark_mode_prefs);
+    if (g_system_color_scheme_prefs.has_value()) {
+      internal::SetSystemDarkModeForNonDefaultMode(
+          *g_system_color_scheme_prefs ==
+          ui::NativeTheme::PreferredColorScheme::kDark);
     }
     return;
   }
