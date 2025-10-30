@@ -57,6 +57,8 @@ public class AppMenuIconRowFooter extends LinearLayout implements View.OnClickLi
 
         mBookmarkButton = findViewById(R.id.bookmark_this_page_id);
         mBookmarkButton.setOnClickListener(this);
+        // Make the button checkable so it can show the tonal background when checked
+        mBookmarkButton.setCheckable(true);
         Drawable bookmarkIcon =
                 AppCompatResources.getDrawable(getContext(), R.drawable.star_outline_24dp);
         DrawableCompat.setTintList(
@@ -161,14 +163,16 @@ public class AppMenuIconRowFooter extends LinearLayout implements View.OnClickLi
             mBookmarkButton.setIcon(
                     AppCompatResources.getDrawable(getContext(), R.drawable.btn_star_filled));
             mBookmarkButton.setContentDescription(getContext().getString(R.string.edit_bookmark));
-            mBookmarkButton.setIconTint(
-                    AppCompatResources.getColorStateList(
-                            getContext(), R.color.default_icon_color_accent1_tint_list));
+            // Set checked state - this automatically applies the tonal background
+            // just like upstream does
+            mBookmarkButton.setChecked(true);
         } else {
             mBookmarkButton.setIcon(
                     AppCompatResources.getDrawable(getContext(), R.drawable.star_outline_24dp));
             mBookmarkButton.setContentDescription(
                     getContext().getString(R.string.accessibility_menu_bookmark));
+            // Set unchecked state - this removes the tonal background
+            mBookmarkButton.setChecked(false);
         }
     }
 }
