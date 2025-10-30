@@ -10,19 +10,19 @@
 #include "ui/views/view.h"
 
 // Add a method to TreeTabNodeId to TabSlotView.
-#define SetGroup(...)                                                   \
-  SetGroup_Unused() const {}                                            \
-  void set_tree_tab_node(const tree_tab::TreeTabNodeId& id) {           \
-    tree_tab_node_id_ = id;                                             \
-  }                                                                     \
-  const std::optional<tree_tab::TreeTabNodeId>& tree_tab_node() const { \
-    return tree_tab_node_id_;                                           \
-  }                                                                     \
-                                                                        \
- private:                                                               \
-  std::optional<tree_tab::TreeTabNodeId> tree_tab_node_id_;             \
-                                                                        \
- public:                                                                \
+#define SetGroup(...)                                                        \
+  SetGroup_Unused() const {}                                                 \
+  void set_tree_tab_node(const std::optional<tree_tab::TreeTabNodeId>& id) { \
+    tree_tab_node_id_ = id;                                                  \
+  }                                                                          \
+  const std::optional<tree_tab::TreeTabNodeId>& tree_tab_node() const {      \
+    return tree_tab_node_id_;                                                \
+  }                                                                          \
+                                                                             \
+ private:                                                                    \
+  std::optional<tree_tab::TreeTabNodeId> tree_tab_node_id_;                  \
+                                                                             \
+ public:                                                                     \
   virtual void SetGroup(__VA_ARGS__)
 
 // Add a method to get TabNestingInfo in addition to TabSizeINfo.
