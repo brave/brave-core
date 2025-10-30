@@ -7,10 +7,12 @@
  import * as mojom from '../settings_helper.mojom-webui.js'
  import * as mojomCustomizationSettings from
    '../customization_settings.mojom-webui.js'
+ import {OllamaService, OLLAMA_BASE_URL} from '../ollama.mojom-webui.js'
  export * from '../ai_chat.mojom-webui.js'
  export * from '../common.mojom-webui.js'
  export * from '../settings_helper.mojom-webui.js'
  export * from '../customization_settings.mojom-webui.js'
+ export {OLLAMA_BASE_URL} from '../ollama.mojom-webui.js'
 
  export interface BraveLeoAssistantBrowserProxy {
   resetLeoData(): void
@@ -22,7 +24,7 @@
     mojomCustomizationSettings.CustomizationSettingsHandlerRemote
   getCustomizationSettingsCallbackRouter():
     mojomCustomizationSettings.CustomizationSettingsUICallbackRouter
-  checkOllamaConnection(): Promise<{connected: boolean, error: string}>
+  checkOllamaConnection(): Promise<{connected: boolean}>
  }
 
  export class BraveLeoAssistantBrowserProxyImpl
@@ -33,6 +35,7 @@
      mojomCustomizationSettings.CustomizationSettingsHandlerRemote
    customizationSettingsCallbackRouter:
      mojomCustomizationSettings.CustomizationSettingsUICallbackRouter
+   ollamaService: ReturnType<typeof OllamaService.getRemote>
 
    private constructor() {
       this.settingsHelper = mojom.AIChatSettingsHelper.getRemote()
@@ -46,6 +49,8 @@
         new mojomCustomizationSettings.CustomizationSettingsUICallbackRouter()
       this.customizationSettingsHandler.bindUI(
         this.customizationSettingsCallbackRouter.$.bindNewPipeAndPassRemote())
+
+      this.ollamaService = OllamaService.getRemote()
    }
 
    static getInstance(): BraveLeoAssistantBrowserProxyImpl {
@@ -81,10 +86,9 @@
    }
 
    async checkOllamaConnection() {
-     const result = await this.settingsHelper.checkOllamaConnection()
+     const result = await this.ollamaService.isConnected()
      return {
-       connected: result.result.connected,
-       error: result.result.error
+       connected: result.connected
      }
    }
  }

@@ -20,7 +20,7 @@ import {
   type Model,
   OperationResult,
   BraveLeoAssistantBrowserProxyImpl,
-  OLLAMA_ENDPOINT
+  OLLAMA_BASE_URL
 } from './brave_leo_assistant_browser_proxy.js'
 
 const ModelListSectionBase = PrefsMixin(I18nMixin(BaseMixin(PolymerElement)))
@@ -168,7 +168,7 @@ class ModelListSection extends ModelListSectionBase {
     // 1. It points to Ollama endpoint
     // 2. Ollama sync preference is enabled
     const isOllamaEndpoint =
-        model.options.customModelOptions?.endpoint.url === OLLAMA_ENDPOINT
+        model.options.customModelOptions?.endpoint.url === OLLAMA_BASE_URL
     const isSyncEnabled =
         this.getPref('brave.ai_chat.ollama_sync_enabled').value
     return !!(isOllamaEndpoint && isSyncEnabled)

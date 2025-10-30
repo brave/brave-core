@@ -23,7 +23,7 @@ const fallbackModelIcon = 'product-brave-leo'
 export function getModelIcon(model: Mojom.Model): string {
   // Check if it's an Ollama model by endpoint
   if (
-    model.options?.customModelOptions?.endpoint?.url === Mojom.OLLAMA_ENDPOINT
+    model.options?.customModelOptions?.endpoint?.url === Mojom.OLLAMA_BASE_URL
   ) {
     return 'ollama'
   }

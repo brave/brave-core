@@ -23,7 +23,7 @@ describe('getModelIcon', () => {
       options: {
         customModelOptions: {
           endpoint: {
-            url: Mojom.OLLAMA_ENDPOINT,
+            url: Mojom.OLLAMA_BASE_URL,
           },
         },
       },

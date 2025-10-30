@@ -24,7 +24,7 @@ const ModelContent = (props: ModelContentProps) => {
 
   const isCustomModel = model.options.customModelOptions
   const isOllamaModel = !!(
-    model.options.customModelOptions?.endpoint.url === Mojom.OLLAMA_ENDPOINT
+    model.options.customModelOptions?.endpoint.url === Mojom.OLLAMA_BASE_URL
   )
 
   const label = React.useMemo(() => {
