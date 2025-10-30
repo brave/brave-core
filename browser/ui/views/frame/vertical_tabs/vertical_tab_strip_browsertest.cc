@@ -1199,9 +1199,12 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripHideCompletelyTest, GetMinimumWidth) {
 
   // When the preference is disabled, the minimum width should be back to 41px.
   SetHideCompletelyWhenCollapsed(false);
-  const int contents_margin =
-      BraveContentsViewUtil::GetRoundedCornersWebViewMargin(browser());
-  EXPECT_EQ(41 - contents_margin, region_view->GetMinimumSize().width());
+
+  // With rounded corners, we need
+  // distance(tabs::kMarginForVerticalTabContainers) between vertical tab and
+  // contents. Each side has half of it as a margin.
+  const int vertical_tab_margin = tabs::kMarginForVerticalTabContainers / 2;
+  EXPECT_EQ(41 - vertical_tab_margin, region_view->GetMinimumSize().width());
 }
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripHideCompletelyTest, ShouldBeInvisible) {
