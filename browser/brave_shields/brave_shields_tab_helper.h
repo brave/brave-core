@@ -24,6 +24,7 @@
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 #include "url/gurl.h"
+#include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
 
 namespace brave_shields {
 
@@ -86,6 +87,7 @@ class BraveShieldsTabHelper
   void SetHttpsUpgradeMode(mojom::HttpsUpgradeMode mode);
   void SetIsNoScriptEnabled(bool is_enabled);
   void SetForgetFirstPartyStorageEnabled(bool is_enabled);
+  void ShredSiteData();
   void AllowScriptsOnce(const std::vector<std::string>& origins);
   void BlockAllowedScripts(const std::vector<std::string>& origins);
   void SetWebcompatEnabled(ContentSettingsType webcompat_settings_type,
@@ -145,6 +147,8 @@ class BraveShieldsTabHelper
   const raw_ref<BraveShieldsSettingsService> brave_shields_settings_;
 
   PrefChangeRegistrar local_state_change_registrar_;
+  const raw_ref<ephemeral_storage::EphemeralStorageService>
+      ephemeral_storage_service_;
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };

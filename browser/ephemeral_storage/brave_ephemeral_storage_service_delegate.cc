@@ -9,10 +9,14 @@
 
 #include "base/check.h"
 #include "base/logging.h"
+#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
+#include "brave/browser/ui/tabs/brave_tab_strip_model.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "base/memory/scoped_refptr.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "chrome/browser/browsing_data/chrome_browsing_data_remover_constants.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser_finder.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browsing_data_filter_builder.h"
@@ -20,6 +24,7 @@
 #include "content/public/browser/dom_storage_context.h"
 #include "net/base/features.h"
 #include "net/base/schemeful_site.h"
+#include "net/base/url_util.h"
 #include "url/origin.h"
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -144,5 +149,28 @@ void BraveEphemeralStorageServiceDelegate::OnBrowserAdded(Browser* browser) {
   BrowserList::RemoveObserver(this);
 }
 #endif
+
+void BraveEphemeralStorageServiceDelegate::CloseTabsForDomainAndSubdomains(
+    const std::string_view ephemeral_domain) {
+  const Browser* browser =
+      chrome::FindBrowserWithProfile(Profile::FromBrowserContext(context_));
+  if (!browser) {
+    return;
+  }
+  static_cast<BraveTabStripModel*>(browser->tab_strip_model())
+      ->CloseTabsWithTLD(ephemeral_domain);
+}
+
+bool BraveEphemeralStorageServiceDelegate::
+    IsShieldsDisabledOnAnyHostMatchingDomainOf(
+        const std::string_view ephemeral_domain) const {
+  Profile* profile = Profile::FromBrowserContext(context_);
+  CHECK(profile);
+  auto* settings_service =
+      BraveShieldsSettingsServiceFactory::GetForProfile(profile);
+  CHECK(settings_service);
+  return settings_service->IsShieldsDisabledOnAnyHostMatchingDomainOf(
+      ephemeral_domain);
+}
 
 }  // namespace ephemeral_storage

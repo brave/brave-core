@@ -14,6 +14,7 @@
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "components/prefs/pref_service.h"
+#include "net/base/url_util.h"
 #include "url/gurl.h"
 
 namespace brave_shields {
@@ -254,6 +255,53 @@ BraveShieldsSettingsService::GetJsContentSettingOverriddenData(
 
   return mojom::ContentSettingsOverriddenData::New(
       rule, ConvertSettingsSource(info.source));
+}
+
+bool BraveShieldsSettingsService::IsShieldsDisabledOnAnyHostMatchingDomainOf(
+    const std::string_view ephemeral_domain) const {
+  // First check the exact domain
+  if (const auto url =
+          GURL(base::StrCat({url::kHttpsScheme, "://", ephemeral_domain}));
+      CONTENT_SETTING_BLOCK ==
+      host_content_settings_map_->GetContentSetting(
+          url, GURL(), ContentSettingsType::BRAVE_SHIELDS)) {
+    return true;
+  }
+
+  // Check parent domains by iterating through all shield settings
+  ContentSettingsForOneType all_shield_settings =
+      host_content_settings_map_->GetSettingsForOneType(
+          ContentSettingsType::BRAVE_SHIELDS);
+
+  bool result = false;
+  for (const auto& setting : all_shield_settings) {
+    // Skip invalid patterns or settings that don't disable shields
+    if (!setting.primary_pattern.IsValid() ||
+        setting.setting_value != CONTENT_SETTING_BLOCK) {
+      continue;
+    }
+
+    // Skip wildcard patterns that match all hosts
+    if (setting.primary_pattern.MatchesAllHosts()) {
+      result = true;
+      continue;
+    }
+
+    // Convert ContentSettingsPattern to GURL to extract ephemeral domain
+    std::string pattern_host = setting.primary_pattern.GetHost();
+    if (pattern_host.empty()) {
+      continue;
+    }
+
+    if (const GURL pattern_url(
+            base::StrCat({url::kHttpsScheme, "://", pattern_host}));
+        pattern_url.is_valid() &&
+        ephemeral_domain == net::URLToEphemeralStorageDomain(pattern_url)) {
+      return true;
+    }
+  }
+
+  return result;
 }
 
 }  // namespace brave_shields

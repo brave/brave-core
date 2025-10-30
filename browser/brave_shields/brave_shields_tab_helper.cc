@@ -17,6 +17,8 @@
 #include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_locale_utils.h"
+#include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
+#include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
@@ -26,6 +28,9 @@
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/resource_coordinator/tab_manager.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_finder.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/favicon/content/content_favicon_driver.h"
@@ -65,8 +70,10 @@ BraveShieldsTabHelper::BraveShieldsTabHelper(content::WebContents* web_contents)
               web_contents->GetBrowserContext()))),
       brave_shields_settings_(
           CHECK_DEREF(BraveShieldsSettingsServiceFactory::GetForProfile(
-              Profile::FromBrowserContext(
-                  web_contents->GetBrowserContext())))) {
+              Profile::FromBrowserContext(web_contents->GetBrowserContext())))),
+      ephemeral_storage_service_(
+          CHECK_DEREF(EphemeralStorageServiceFactory::GetForContext(
+              web_contents->GetBrowserContext()))) {
   favicon::ContentFaviconDriver::FromWebContents(web_contents)
       ->AddObserver(this);
   observation_.Observe(&*host_content_settings_map_);
@@ -460,6 +467,7 @@ void BraveShieldsTabHelper::SetForgetFirstPartyStorageEnabled(bool is_enabled) {
       is_enabled, GetCurrentSiteURL());
 }
 
+
 void BraveShieldsTabHelper::BlockAllowedScripts(
     const std::vector<std::string>& origins) {
   BraveShieldsWebContentsObserver* observer =
@@ -469,6 +477,14 @@ void BraveShieldsTabHelper::BlockAllowedScripts(
   }
   observer->BlockAllowedScripts(origins);
   ReloadWebContents();
+}
+
+void BraveShieldsTabHelper::ShredSiteData() {
+  std::string domain = net::URLToEphemeralStorageDomain(GetCurrentSiteURL());
+  auto* site_instance = web_contents()->GetSiteInstance();
+  // Start manual shredding.
+  ephemeral_storage_service_->TLDEphemeralStorageShred(
+      domain, site_instance->GetStoragePartitionConfig(), true);
 }
 
 void BraveShieldsTabHelper::AllowScriptsOnce(

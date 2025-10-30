@@ -52,6 +52,7 @@ class ShieldsPanelDataHandler
   void SetBraveShieldsAdBlockOnlyModeEnabled(bool is_enabled) override;
   void SetBraveShieldsAdBlockOnlyModePromptDismissed() override;
   void SetForgetFirstPartyStorageEnabled(bool is_enabled) override;
+  void SetShredMode(ShredMode mode) override;
   void OpenWebCompatWindow() override;
   void UpdateFavicon() override;
   void AllowScriptsOnce(const std::vector<std::string>& origins) override;

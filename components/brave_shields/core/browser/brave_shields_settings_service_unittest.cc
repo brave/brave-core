@@ -432,3 +432,186 @@ TEST_F(BraveShieldsSettingsServiceTest,
             CONTENT_SETTING_BLOCK);
 }
 #endif
+
+TEST_F(BraveShieldsSettingsServiceTest,
+       IsShieldsDisabledOnAnyHostMatchingDomainOf_NoSettings) {
+  // With no shield settings, should return false
+  EXPECT_FALSE(
+      brave_shields_settings()->IsShieldsDisabledOnAnyHostMatchingDomainOf(
+          "example.com"));
+  EXPECT_FALSE(
+      brave_shields_settings()->IsShieldsDisabledOnAnyHostMatchingDomainOf(
+          "test.com"));
+}
+
+TEST_F(BraveShieldsSettingsServiceTest,
+       IsShieldsDisabledOnAnyHostMatchingDomainOf_ExactDomainMatch) {
+  // Tests exact domain matching
+  const auto example_com_url = GURL("https://example.com");
+  brave_shields_settings()->SetBraveShieldsEnabled(false, example_com_url);
+  EXPECT_TRUE(
+      brave_shields_settings()->IsShieldsDisabledOnAnyHostMatchingDomainOf(
+          "example.com"));
+  EXPECT_FALSE(
+      brave_shields_settings()->IsShieldsDisabledOnAnyHostMatchingDomainOf(
+          "test.com"));
+}
+
+TEST_F(BraveShieldsSettingsServiceTest,
+       IsShieldsDisabledOnAnyHostMatchingDomainOf_WildcardPattern) {
+  // Set shields to BLOCK for wildcard pattern
+  GetHostContentSettingsMap()->SetContentSettingCustomScope(
+      ContentSettingsPattern::FromString("[*.]example.com"),
+      ContentSettingsPattern::Wildcard(), ContentSettingsType::BRAVE_SHIELDS,
+      CONTENT_SETTING_BLOCK);
+
+  EXPECT_TRUE(
+      brave_shields_settings()->IsShieldsDisabledOnAnyHostMatchingDomainOf(
+          "example.com"));
+  EXPECT_FALSE(
+      brave_shields_settings()->IsShieldsDisabledOnAnyHostMatchingDomainOf(
+          "test.com"));
+}
+
+TEST_F(BraveShieldsSettingsServiceTest,
+       IsShieldsDisabledOnAnyHostMatchingDomainOf_SubdomainPattern) {
+  // Tests specific subdomain patterns
+  GetHostContentSettingsMap()->SetContentSettingCustomScope(
+      ContentSettingsPattern::FromString("sub.example.com"),
+      ContentSettingsPattern::Wildcard(), ContentSettingsType::BRAVE_SHIELDS,
+      CONTENT_SETTING_BLOCK);
+
+  EXPECT_TRUE(
+      brave_shields_settings()->IsShieldsDisabledOnAnyHostMatchingDomainOf(
+          "example.com"));
+  EXPECT_FALSE(
+      brave_shields_settings()->IsShieldsDisabledOnAnyHostMatchingDomainOf(
+          "test.com"));
+}
+
+TEST_F(BraveShieldsSettingsServiceTest,
+       IsShieldsDisabledOnAnyHostMatchingDomainOf_AllowSettingIgnored) {
+  // Set shields to ALLOW (not BLOCK) - should be ignored
+  GetHostContentSettingsMap()->SetContentSettingCustomScope(
+      ContentSettingsPattern::FromString("example.com"),
+      ContentSettingsPattern::Wildcard(), ContentSettingsType::BRAVE_SHIELDS,
+      CONTENT_SETTING_ALLOW);
+
+  EXPECT_FALSE(
+      brave_shields_settings()->IsShieldsDisabledOnAnyHostMatchingDomainOf(
+          "example.com"));
+}
+
+TEST_F(BraveShieldsSettingsServiceTest,
+       IsShieldsDisabledOnAnyHostMatchingDomainOf_AllHostsPatternIgnored) {
+  // Test whildcard hosts pattern
+  GetHostContentSettingsMap()->SetContentSettingCustomScope(
+      ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),
+      ContentSettingsType::BRAVE_SHIELDS, CONTENT_SETTING_BLOCK);
+
+  EXPECT_TRUE(
+      brave_shields_settings()->IsShieldsDisabledOnAnyHostMatchingDomainOf(
+          "example.com"));
+}
+
+TEST_F(BraveShieldsSettingsServiceTest,
+       IsShieldsDisabledOnAnyHostMatchingDomainOf_MultipleSettings) {
+  // Set multiple settings - some matching, some not
+  GetHostContentSettingsMap()->SetContentSettingCustomScope(
+      ContentSettingsPattern::FromString("test.com"),
+      ContentSettingsPattern::Wildcard(), ContentSettingsType::BRAVE_SHIELDS,
+      CONTENT_SETTING_BLOCK);
+
+  GetHostContentSettingsMap()->SetContentSettingCustomScope(
+      ContentSettingsPattern::FromString("other.com"),
+      ContentSettingsPattern::Wildcard(), ContentSettingsType::BRAVE_SHIELDS,
+      CONTENT_SETTING_ALLOW);
+
+  GetHostContentSettingsMap()->SetContentSettingCustomScope(
+      ContentSettingsPattern::FromString("[*.]example.com"),
+      ContentSettingsPattern::Wildcard(), ContentSettingsType::BRAVE_SHIELDS,
+      CONTENT_SETTING_BLOCK);
+
+  EXPECT_TRUE(
+      brave_shields_settings()->IsShieldsDisabledOnAnyHostMatchingDomainOf(
+          "example.com"));
+  EXPECT_TRUE(
+      brave_shields_settings()->IsShieldsDisabledOnAnyHostMatchingDomainOf(
+          "test.com"));
+  EXPECT_FALSE(
+      brave_shields_settings()->IsShieldsDisabledOnAnyHostMatchingDomainOf(
+          "other.com"));
+  EXPECT_FALSE(
+      brave_shields_settings()->IsShieldsDisabledOnAnyHostMatchingDomainOf(
+          "unrelated.com"));
+}
+
+TEST_F(BraveShieldsSettingsServiceTest,
+       IsShieldsDisabledOnAnyHostMatchingDomainOf_DifferentSubdomains) {
+  // Set shields to BLOCK for specific subdomain
+  GetHostContentSettingsMap()->SetContentSettingCustomScope(
+      ContentSettingsPattern::FromString("mail.test.com"),
+      ContentSettingsPattern::Wildcard(), ContentSettingsType::BRAVE_SHIELDS,
+      CONTENT_SETTING_BLOCK);
+
+  // Should match for test.com ephemeral domain
+  EXPECT_TRUE(
+      brave_shields_settings()->IsShieldsDisabledOnAnyHostMatchingDomainOf(
+          "test.com"));
+  EXPECT_FALSE(
+      brave_shields_settings()->IsShieldsDisabledOnAnyHostMatchingDomainOf(
+          "example.com"));
+}
+
+TEST_F(BraveShieldsSettingsServiceTest,
+       IsShieldsDisabledOnAnyHostMatchingDomainOf_PortsInPatterns) {
+  // Test with patterns that include ports
+  GetHostContentSettingsMap()->SetContentSettingCustomScope(
+      ContentSettingsPattern::FromString("example.com:8080"),
+      ContentSettingsPattern::Wildcard(), ContentSettingsType::BRAVE_SHIELDS,
+      CONTENT_SETTING_BLOCK);
+
+  EXPECT_TRUE(
+      brave_shields_settings()->IsShieldsDisabledOnAnyHostMatchingDomainOf(
+          "example.com"));
+  EXPECT_FALSE(
+      brave_shields_settings()->IsShieldsDisabledOnAnyHostMatchingDomainOf(
+          "test.com"));
+}
+
+TEST_F(BraveShieldsSettingsServiceTest,
+       IsShieldsDisabledOnAnyHostMatchingDomainOf_MixedSchemePatterns) {
+  // Test with different scheme patterns
+  GetHostContentSettingsMap()->SetContentSettingCustomScope(
+      ContentSettingsPattern::FromString("http://example.com"),
+      ContentSettingsPattern::Wildcard(), ContentSettingsType::BRAVE_SHIELDS,
+      CONTENT_SETTING_BLOCK);
+
+  GetHostContentSettingsMap()->SetContentSettingCustomScope(
+      ContentSettingsPattern::FromString("https://test.com"),
+      ContentSettingsPattern::Wildcard(), ContentSettingsType::BRAVE_SHIELDS,
+      CONTENT_SETTING_BLOCK);
+
+  EXPECT_TRUE(
+      brave_shields_settings()->IsShieldsDisabledOnAnyHostMatchingDomainOf(
+          "example.com"));
+  EXPECT_TRUE(
+      brave_shields_settings()->IsShieldsDisabledOnAnyHostMatchingDomainOf(
+          "test.com"));
+}
+
+TEST_F(BraveShieldsSettingsServiceTest,
+       IsShieldsDisabledOnAnyHostMatchingDomainOf_DeepSubdomainHierarchy) {
+  // Test with deeply nested subdomains
+  GetHostContentSettingsMap()->SetContentSettingCustomScope(
+      ContentSettingsPattern::FromString("a.b.c.d.example.com"),
+      ContentSettingsPattern::Wildcard(), ContentSettingsType::BRAVE_SHIELDS,
+      CONTENT_SETTING_BLOCK);
+
+  EXPECT_TRUE(
+      brave_shields_settings()->IsShieldsDisabledOnAnyHostMatchingDomainOf(
+          "example.com"));
+  EXPECT_FALSE(
+      brave_shields_settings()->IsShieldsDisabledOnAnyHostMatchingDomainOf(
+          "other.com"));
+}

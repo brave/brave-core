@@ -15,6 +15,7 @@
 #include "base/task/sequenced_task_runner.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
+#include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_pref_names.h"
 #include "brave/components/ephemeral_storage/url_storage_checker.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
@@ -254,6 +255,27 @@ void EphemeralStorageService::AddObserver(
 void EphemeralStorageService::RemoveObserver(
     EphemeralStorageServiceObserver* observer) {
   observer_list_.RemoveObserver(observer);
+}
+
+void EphemeralStorageService::TLDEphemeralStorageShred(
+    const std::string& ephemeral_domain,
+    const content::StoragePartitionConfig& storage_partition_config,
+    const bool enforced_by_user) {
+  if (!base::FeatureList::IsEnabled(
+          brave_shields::features::kBraveShredFeature)) {
+    return;
+  }
+
+  if (!enforced_by_user &&
+      delegate_->IsShieldsDisabledOnAnyHostMatchingDomainOf(ephemeral_domain)) {
+    // Do not start auto shred if shields is disabled on any host matching the
+    // domain.
+    return;
+  }
+
+  delegate_->CloseTabsForDomainAndSubdomains(ephemeral_domain);
+  const TLDEphemeralAreaKey key(ephemeral_domain, storage_partition_config);
+  CleanupTLDEphemeralArea(key, true, true);
 }
 
 void EphemeralStorageService::FirstPartyStorageAreaInUse(

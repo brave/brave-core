@@ -1,5 +1,6 @@
 include_rules = [
   "+brave/components/brave_shields/core/browser",
+  "+brave/components/ephemeral_storage",
   "+brave/components/brave_shields/content/test",
   "+services/network/host_resolver.h",
 ]
