@@ -7,6 +7,7 @@
 #define BRAVE_IOS_BROWSER_BRAVE_ADS_VIRTUAL_PREF_PROVIDER_DELEGATE_IOS_H_
 
 #include <string>
+#include <string_view>
 
 #include "base/memory/raw_ref.h"
 #include "brave/components/brave_ads/core/browser/service/virtual_pref_provider.h"
@@ -26,7 +27,7 @@ class VirtualPrefProviderDelegateIOS : public VirtualPrefProvider::Delegate {
 
   ~VirtualPrefProviderDelegateIOS() override;
 
-  std::string GetChannel() const override;
+  std::string_view GetChannel() const override;
 
   std::string GetDefaultSearchEngineName() const override;
 

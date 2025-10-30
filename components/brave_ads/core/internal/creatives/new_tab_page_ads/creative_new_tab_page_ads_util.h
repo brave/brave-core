@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_NEW_TAB_PAGE_ADS_CREATIVE_NEW_TAB_PAGE_ADS_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_NEW_TAB_PAGE_ADS_CREATIVE_NEW_TAB_PAGE_ADS_UTIL_H_
 
-#include <string>
 #include <string_view>
 
 #include "base/values.h"
@@ -20,7 +19,7 @@ void ParseAndSaveNewTabPageAds(base::Value::Dict dict, ResultCallback callback);
 std::optional<mojom::NewTabPageAdMetricType> ToMojomNewTabPageAdMetricType(
     std::string_view value);
 
-std::string ToString(const mojom::NewTabPageAdMetricType& value);
+std::string_view ToString(mojom::NewTabPageAdMetricType value);
 
 }  // namespace brave_ads
 

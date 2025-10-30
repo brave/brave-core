@@ -13,7 +13,7 @@
 
 namespace brave_ads {
 
-std::optional<ComponentInfo> GetComponentInfo(std::string_view id);
+std::optional<ComponentInfo> GetComponent(std::string_view id);
 
 }  // namespace brave_ads
 

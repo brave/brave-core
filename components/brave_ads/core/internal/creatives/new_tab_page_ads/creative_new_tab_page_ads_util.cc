@@ -12,11 +12,13 @@
 
 #include "base/containers/fixed_flat_map.h"
 #include "base/containers/flat_set.h"
+#include "base/containers/map_util.h"
 #include "base/functional/bind.h"
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time_delta_from_string.h"
 #include "base/types/cxx23_to_underlying.h"
+#include "base/types/optional_util.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/ads_core/ads_core_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
@@ -37,10 +39,10 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kUndefinedAdMetricType[] = "";
-constexpr char kDisabledAdMetricType[] = "disabled";
-constexpr char kConfirmationAdMetricType[] = "confirmation";
-constexpr char kP3AAdMetricType[] = "p3a";
+constexpr std::string_view kUndefinedAdMetricType;
+constexpr std::string_view kDisabledAdMetricType = "disabled";
+constexpr std::string_view kConfirmationAdMetricType = "confirmation";
+constexpr std::string_view kP3AAdMetricType = "p3a";
 
 constexpr auto kStringToMojomMap =
     base::MakeFixedFlatMap<std::string_view, mojom::NewTabPageAdMetricType>(
@@ -583,20 +585,13 @@ void ParseAndSaveNewTabPageAds(base::Value::Dict dict,
 
 std::optional<mojom::NewTabPageAdMetricType> ToMojomNewTabPageAdMetricType(
     std::string_view value) {
-  const auto iter = kStringToMojomMap.find(value);
-  if (iter == kStringToMojomMap.cend()) {
-    return std::nullopt;
-  }
-
-  const auto [_, mojom_confirmation_type] = *iter;
-  return mojom_confirmation_type;
+  return base::OptionalFromPtr(base::FindOrNull(kStringToMojomMap, value));
 }
 
-std::string ToString(const mojom::NewTabPageAdMetricType& value) {
+std::string_view ToString(mojom::NewTabPageAdMetricType value) {
   const auto iter = kMojomToStringMap.find(value);
   if (iter != kMojomToStringMap.cend()) {
-    const auto [_, metric_type] = *iter;
-    return std::string(metric_type);
+    return iter->second;
   }
 
   NOTREACHED() << "Unexpected value for mojom::NewTabPageAdMetricType: "

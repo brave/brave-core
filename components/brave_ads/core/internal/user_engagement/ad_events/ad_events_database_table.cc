@@ -282,7 +282,8 @@ void AdEvents::IsFirstTime(const std::string& campaign_id,
               THEN 1
               ELSE 0
             END AS is_first_time;)",
-      {GetTableName(), ToString(confirmation_type), campaign_id}, nullptr);
+      {GetTableName(), std::string(ToString(confirmation_type)), campaign_id},
+      nullptr);
   mojom_db_action->bind_column_types = {
       mojom::DBBindColumnType::kBool  // is_first_time
   };
@@ -369,8 +370,8 @@ void AdEvents::Get(mojom::AdType mojom_ad_type,
             AND created_at > $4
           ORDER BY
             created_at ASC)",
-      {GetTableName(), ToString(mojom_ad_type),
-       ToString(mojom_confirmation_type),
+      {GetTableName(), std::string(ToString(mojom_ad_type)),
+       std::string(ToString(mojom_confirmation_type)),
        TimeToSqlValueAsString(base::Time::Now() - time_window)},
       nullptr);
   BindColumnTypes(mojom_db_action);
@@ -545,7 +546,7 @@ void AdEvents::GetUnexpired(mojom::AdType mojom_ad_type,
             )
           ORDER BY
             created_at ASC)",
-      {GetTableName(), ToString(mojom_ad_type),
+      {GetTableName(), std::string(ToString(mojom_ad_type)),
        TimeToSqlValueAsString(base::Time::Now() - base::Days(90))},
       nullptr);
   BindColumnTypes(mojom_db_action);
@@ -609,7 +610,7 @@ void AdEvents::PurgeForAdType(mojom::AdType ad_type,
               $1
             WHERE
               type = '$2')",
-          {GetTableName(), ToString(ad_type)});
+          {GetTableName(), std::string(ToString(ad_type))});
 
   RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
                  std::move(callback));
@@ -619,7 +620,8 @@ void AdEvents::PurgeOrphaned(mojom::AdType mojom_ad_type,
                              ResultCallback callback) const {
   mojom::DBTransactionInfoPtr mojom_db_transaction =
       mojom::DBTransactionInfo::New();
-  Execute(mojom_db_transaction, R"(
+  Execute(
+      mojom_db_transaction, R"(
         DELETE FROM
           $1
         WHERE
@@ -635,7 +637,7 @@ void AdEvents::PurgeOrphaned(mojom::AdType mojom_ad_type,
           )
           AND confirmation_type = 'served'
           AND type = '$3')",
-          {GetTableName(), GetTableName(), ToString(mojom_ad_type)});
+      {GetTableName(), GetTableName(), std::string(ToString(mojom_ad_type))});
 
   RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
                  std::move(callback));

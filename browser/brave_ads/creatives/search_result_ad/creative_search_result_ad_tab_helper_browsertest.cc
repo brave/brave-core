@@ -12,6 +12,7 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
+#include "base/types/optional_util.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service_mock.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
@@ -189,10 +190,8 @@ class SampleBraveAdsCreativeSearchResultAdTabHelperTest
 
   std::optional<size_t> GetIndexByPlacementId(
       const std::string& placement_id) const {
-    const auto iter = kCreativeAdPlacementIdToIndex.find(placement_id);
-    return iter != kCreativeAdPlacementIdToIndex.cend()
-               ? std::optional<size_t>(iter->second)
-               : std::nullopt;
+    return base::OptionalFromPtr(
+        base::FindOrNull(kCreativeAdPlacementIdToIndex, placement_id));
   }
 
   mojom::CreativeSearchResultAdInfoPtr GenerateCreativeSearchResultAd(

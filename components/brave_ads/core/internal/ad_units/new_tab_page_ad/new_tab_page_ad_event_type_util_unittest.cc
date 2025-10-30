@@ -40,35 +40,23 @@ TEST(BraveAdsNewTabPageAdEventTypeUtilTest, ToMojomNewTabPageAdEventType) {
   EXPECT_EQ(ToMojomNewTabPageAdEventType("foobar"), std::nullopt);
 }
 
-TEST(BraveAdsNewTabPageAdEventTypeUtilTest, FromMojomNewTabPageAdEventType) {
+TEST(BraveAdsNewTabPageAdEventTypeUtilTest, ToString) {
   // Act & Assert
-  EXPECT_EQ(FromMojomNewTabPageAdEventType(
-                mojom::NewTabPageAdEventType::kServedImpression),
+  EXPECT_EQ(ToString(mojom::NewTabPageAdEventType::kServedImpression),
             "served");
 
-  EXPECT_EQ(FromMojomNewTabPageAdEventType(
-                mojom::NewTabPageAdEventType::kViewedImpression),
-            "view");
+  EXPECT_EQ(ToString(mojom::NewTabPageAdEventType::kViewedImpression), "view");
 
-  EXPECT_EQ(
-      FromMojomNewTabPageAdEventType(mojom::NewTabPageAdEventType::kClicked),
-      "click");
+  EXPECT_EQ(ToString(mojom::NewTabPageAdEventType::kClicked), "click");
 
-  EXPECT_EQ(FromMojomNewTabPageAdEventType(
-                mojom::NewTabPageAdEventType::kInteraction),
+  EXPECT_EQ(ToString(mojom::NewTabPageAdEventType::kInteraction),
             "interaction");
 
-  EXPECT_EQ(
-      FromMojomNewTabPageAdEventType(mojom::NewTabPageAdEventType::kMediaPlay),
-      "media_play");
+  EXPECT_EQ(ToString(mojom::NewTabPageAdEventType::kMediaPlay), "media_play");
 
-  EXPECT_EQ(
-      FromMojomNewTabPageAdEventType(mojom::NewTabPageAdEventType::kMedia25),
-      "media_25");
+  EXPECT_EQ(ToString(mojom::NewTabPageAdEventType::kMedia25), "media_25");
 
-  EXPECT_EQ(
-      FromMojomNewTabPageAdEventType(mojom::NewTabPageAdEventType::kMedia100),
-      "media_100");
+  EXPECT_EQ(ToString(mojom::NewTabPageAdEventType::kMedia100), "media_100");
 }
 
 }  // namespace brave_ads

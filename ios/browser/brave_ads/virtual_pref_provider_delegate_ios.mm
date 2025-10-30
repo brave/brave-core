@@ -22,8 +22,8 @@ VirtualPrefProviderDelegateIOS::VirtualPrefProviderDelegateIOS(
 
 VirtualPrefProviderDelegateIOS::~VirtualPrefProviderDelegateIOS() = default;
 
-std::string VirtualPrefProviderDelegateIOS::GetChannel() const {
-  return std::string(version_info::GetChannelString(::GetChannel()));
+std::string_view VirtualPrefProviderDelegateIOS::GetChannel() const {
+  return version_info::GetChannelString(::GetChannel());
 }
 
 std::string VirtualPrefProviderDelegateIOS::GetDefaultSearchEngineName() const {

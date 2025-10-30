@@ -16,9 +16,7 @@ namespace brave_ads {
 mojom::AdType ToMojomAdType(std::string_view value);
 
 // Returns a string constant for a given `mojom::AdType` value.
-const char* ToString(mojom::AdType mojom_ad_type);
-
-// std::ostream& operator<<(std::ostream& os, mojom::AdType mojom_ad_type);
+std::string_view ToString(mojom::AdType value);
 
 }  // namespace brave_ads
 

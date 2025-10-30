@@ -20,8 +20,8 @@ VirtualPrefProviderDelegate::VirtualPrefProviderDelegate(Profile& profile)
 
 VirtualPrefProviderDelegate::~VirtualPrefProviderDelegate() = default;
 
-std::string VirtualPrefProviderDelegate::GetChannel() const {
-  return std::string(version_info::GetChannelString(chrome::GetChannel()));
+std::string_view VirtualPrefProviderDelegate::GetChannel() const {
+  return version_info::GetChannelString(chrome::GetChannel());
 }
 
 std::string VirtualPrefProviderDelegate::GetDefaultSearchEngineName() const {
