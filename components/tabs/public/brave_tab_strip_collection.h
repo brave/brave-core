@@ -30,6 +30,9 @@ class BraveTabStripCollection : public TabStripCollection {
   tabs::TabCollection* GetParentCollection(
       TabInterface* tab,
       base::PassKey<BraveTabStripCollectionDelegate> pass_key) const;
+  const ChildrenVector& GetChildren(
+      const TabCollection& collection,
+      base::PassKey<BraveTabStripCollectionDelegate> pass_key) const;
   void AddTabRecursive(std::unique_ptr<TabInterface> tab,
                        size_t index,
                        std::optional<tab_groups::TabGroupId> new_group_id,

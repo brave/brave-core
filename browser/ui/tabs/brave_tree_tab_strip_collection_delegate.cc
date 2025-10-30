@@ -5,12 +5,14 @@
 
 #include "brave/browser/ui/tabs/brave_tree_tab_strip_collection_delegate.h"
 
-#include "third_party/abseil-cpp/absl/functional/overload.h"
+#include <variant>
+
 #include "base/containers/adapters.h"
 #include "base/functional/bind.h"
 #include "brave/browser/ui/tabs/tree_tab_model.h"
 #include "brave/components/tabs/public/tree_tab_node_tab_collection.h"
 #include "components/tabs/public/unpinned_tab_collection.h"
+#include "third_party/abseil-cpp/absl/functional/overload.h"
 
 BraveTreeTabStripCollectionDelegate::BraveTreeTabStripCollectionDelegate(
     tabs::BraveTabStripCollection& collection,
@@ -64,14 +66,52 @@ void BraveTreeTabStripCollectionDelegate::AddTabRecursive(
             ->GetTopLevelAncestor() ==
         static_cast<tabs::TreeTabNodeTabCollection*>(previous_tab_collection)
             ->GetTopLevelAncestor()) {
-      auto tree_tab_node = std::make_unique<tabs::TreeTabNodeTabCollection>(
-          tree_tab::TreeTabNodeId::GenerateNew(), std::move(tab));
-      auto tree_tab_node_ptr = tree_tab_node.get();
-      opener_collection->AddCollection(std::move(tree_tab_node),
-                                       opener_collection->ChildCount());
-      CHECK(tree_tab_model_);
-      tree_tab_model_->AddTreeTabNode(tree_tab_node_ptr->node());
-      return;
+      // Find insertion index among the opener collection
+      const auto opener_index = *collection_->GetIndexOfTabRecursive(
+          static_cast<tabs::TreeTabNodeTabCollection*>(opener_collection)
+              ->current_tab());
+      auto target_index = 0;
+      auto tab_count = 0;
+
+      for (auto& child :
+           collection_->GetChildren(*opener_collection, GetPassKey())) {
+        if (opener_index + tab_count == index) {
+          break;
+        }
+
+        CHECK(opener_index + tab_count < index)
+            << "We don't assume target index exceed the specified index.";
+
+        target_index++;
+        std::visit(
+            absl::Overload{
+                [&](const std::unique_ptr<tabs::TabInterface>& tab) {
+                  tab_count++;
+                },
+                [&](const std::unique_ptr<tabs::TabCollection>& collection) {
+                  tab_count += collection->TabCountRecursive();
+                }},
+            child);
+      }
+
+      // Check if specified |index| matches the calculated target index.
+      // When opening a empty new tab, it is possible that they don't match.
+      // In that case, we just add the new tab to the current collection below.
+      if (opener_index + tab_count == index) {
+        auto* tab_ptr = tab.get();
+        auto tree_tab_node = std::make_unique<tabs::TreeTabNodeTabCollection>(
+            tree_tab::TreeTabNodeId::GenerateNew(), std::move(tab));
+        auto tree_tab_node_ptr = tree_tab_node.get();
+
+        opener_collection->AddCollection(std::move(tree_tab_node),
+                                         target_index);
+        CHECK_EQ(index, *collection_->GetIndexOfTabRecursive(tab_ptr))
+            << "This must be match so we make sure that we inserted the tab at "
+               "the specified |index|.";
+        CHECK(tree_tab_model_);
+        tree_tab_model_->AddTreeTabNode(tree_tab_node_ptr->node());
+        return;
+      }
     }
   }
 
@@ -111,31 +151,33 @@ BraveTreeTabStripCollectionDelegate::RemoveTabAtIndexRecursive(
     auto* tree_tab_node_collection =
         static_cast<tabs::TreeTabNodeTabCollection*>(parent_collection);
 
-    auto* tree_node_owner_collection = tree_tab_node_collection->GetParentCollection();
-    
+    auto* tree_node_owner_collection =
+        tree_tab_node_collection->GetParentCollection();
+
     // Remove the tab first so that we can keep the |index| correct.
     auto tab = collection_->RemoveTabAtIndexRecursive(index, GetPassKey());
 
-    // Get direct children of |tree_tab_node_collection| and re-add them to the owner
-    // collection to preserve the tree structure.
-    auto local_index = tree_node_owner_collection->GetIndexOfCollection(tree_tab_node_collection);
+    // Get direct children of |tree_tab_node_collection| and re-add them to the
+    // owner collection to preserve the tree structure.
+    auto local_index = tree_node_owner_collection->GetIndexOfCollection(
+        tree_tab_node_collection);
     CHECK(local_index.has_value());
 
     auto children = tree_tab_node_collection->GetTreeNodeChildren();
     for (auto& child : base::Reversed(children)) {
-      std::visit(absl::Overload{
-                     [&](tabs::TabInterface* tab) {
-                       tree_node_owner_collection->AddTab(
-                           tree_tab_node_collection->MaybeRemoveTab(tab),
-                           *local_index);
-                     },
-                     [&](tabs::TabCollection* collection) {
-                       tree_node_owner_collection->AddCollection(
-                           tree_tab_node_collection->MaybeRemoveCollection(
-                               collection),
-                           *local_index);
-                     }},
-                 child);
+      std::visit(
+          absl::Overload{
+              [&](tabs::TabInterface* tab) {
+                tree_node_owner_collection->AddTab(
+                    tree_tab_node_collection->MaybeRemoveTab(tab),
+                    *local_index);
+              },
+              [&](tabs::TabCollection* collection) {
+                tree_node_owner_collection->AddCollection(
+                    tree_tab_node_collection->MaybeRemoveCollection(collection),
+                    *local_index);
+              }},
+          child);
     }
 
     // Remove the tree tab node collection form owner
