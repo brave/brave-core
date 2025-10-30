@@ -44,6 +44,10 @@ class BraveEphemeralStorageServiceDelegate :
   void CleanupTLDEphemeralArea(const TLDEphemeralAreaKey& key) override;
   void CleanupFirstPartyStorageArea(const TLDEphemeralAreaKey& key) override;
   void RegisterFirstWindowOpenedCallback(base::OnceClosure callback) override;
+  void CloseTabsForDomainAndSubdomains(
+      const std::string_view ephemeral_domain) override;
+  bool IsShieldsDisabledOnAnyHostMatchingDomainOf(
+      const std::string_view ephemeral_domain) const override;
 
  private:
   raw_ptr<content::BrowserContext> context_ = nullptr;
