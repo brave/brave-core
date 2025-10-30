@@ -16,13 +16,13 @@ RegisterPolymerTemplateModifications({
       return
     }
 
-    const permissionsLinkRow =
-      templateContent.getElementById('permissionsLinkRow')
-    if (!permissionsLinkRow) {
+    const siteSettingsLinkRow =
+      templateContent.getElementById('siteSettingsLinkRow')
+    if (!siteSettingsLinkRow) {
       console.error(
-        '[Brave Settings Overrides] Couldn\'t find permissionsLinkRow')
+        '[Brave Settings Overrides] Couldn\'t find siteSettingsLinkRow')
     } else {
-      permissionsLinkRow.insertAdjacentHTML(
+      siteSettingsLinkRow.insertAdjacentHTML(
         'afterend',
         getTrustedHTML`
           <settings-brave-personalization-options prefs="{{prefs}}">
