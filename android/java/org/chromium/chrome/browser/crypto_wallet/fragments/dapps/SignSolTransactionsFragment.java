@@ -297,8 +297,7 @@ public class SignSolTransactionsFragment extends WalletBottomSheetDialogFragment
         getKeyringModel()
                 .getAccounts(
                         accounts -> {
-                            AccountInfo accountInfo =
-                                    Utils.findAccount(accounts, fromAccountId);
+                            AccountInfo accountInfo = Utils.findAccount(accounts, fromAccountId);
                             if (accountInfo == null) {
                                 return;
                             }

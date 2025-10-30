@@ -13,9 +13,9 @@ import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActi
 import java.util.List;
 
 /**
- * Listener that exposes wallet transactions and actions to approval UI components.
- * Implemented by host activity {@link BraveWalletDAppsActivity} so fragments can step through
- * pending transactions and react to user decisions.
+ * Listener that exposes wallet transactions and actions to approval UI components. Implemented by
+ * host activity {@link BraveWalletDAppsActivity} so fragments can step through pending transactions
+ * and react to user decisions.
  */
 @NullMarked
 public interface TransactionListener {

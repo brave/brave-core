@@ -10,8 +10,8 @@ import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActivity;
 
 /**
- * Contract that exposes the shared {@link WalletModel} to wallet fragments so they can
- * access services and state managed by the hosting activity {@link BraveWalletDAppsActivity}.
+ * Contract that exposes the shared {@link WalletModel} to wallet fragments so they can access
+ * services and state managed by the hosting activity {@link BraveWalletDAppsActivity}.
  */
 @NullMarked
 public interface WalletFragmentCallback {
