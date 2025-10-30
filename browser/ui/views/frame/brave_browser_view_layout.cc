@@ -338,14 +338,22 @@ void BraveBrowserViewLayout::UpdateContentsContainerInsets(
       BraveContentsViewUtil::GetRoundedCornersWebViewMargin(
           browser_view_->browser());
 
-  // Don't need contents container's left or right margin with vertical tab as
-  // vertical tab itself has sufficient padding.
+  // In vertical tab mode, we don't need to have margin to the vertical tab side
+  // because vertical tab has its
+  // padding(tabs::kMarginForVerticalTabContainers). However, If we don't have
+  // margin from contents, vertical tab side contents shadow isn't visible. So,
+  // having half or margin from vertical tab and half from contents.
   if (tabs::utils::ShouldShowVerticalTabs(browser_view_->browser()) &&
       !IsFullscreenForBrowser()) {
+    const int margin_with_vertical_tab =
+        BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
+            browser_view_->browser())
+            ? (tabs::kMarginForVerticalTabContainers / 2)
+            : 0;
     if (tabs::utils::IsVerticalTabOnRight(browser_view_->browser())) {
-      contents_margins.set_right(contents_margin_for_rounded_corners);
+      contents_margins.set_right(margin_with_vertical_tab);
     } else {
-      contents_margins.set_left(contents_margin_for_rounded_corners);
+      contents_margins.set_left(margin_with_vertical_tab);
     }
   }
 

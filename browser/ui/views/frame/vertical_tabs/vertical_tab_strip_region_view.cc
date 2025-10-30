@@ -1109,19 +1109,34 @@ void BraveVerticalTabStripRegionView::UpdateBorder() {
   bool is_on_right =
       !vertical_tab_on_right_.GetPrefName().empty() && *vertical_tab_on_right_;
   bool sidebar_on_same_side = sidebar_side_.GetValue() == is_on_right;
-  int inset =
-      1 -
-      (sidebar_on_same_side
-           ? 0
-           : BraveContentsViewUtil::GetRoundedCornersWebViewMargin(browser_));
-  gfx::Insets border_insets = (is_on_right) ? gfx::Insets::TLBR(0, inset, 0, 0)
-                                            : gfx::Insets::TLBR(0, 0, 0, inset);
 
+  constexpr int kBorderThickess = 1;
+  gfx::Insets border_insets;
+  if (is_on_right) {
+    border_insets.set_left(kBorderThickess);
+  } else {
+    border_insets.set_right(kBorderThickess);
+  }
+
+  // When show vertical tab's border line, vertical tab can have its whole
+  // padding.
   if (show_visible_border()) {
     SetBorder(views::CreateSolidSidedBorder(
         border_insets,
         GetColorProvider()->GetColor(kColorBraveVerticalTabSeparator)));
   } else {
+    // When vertical tab's border line is not shown, vertical tab should have
+    // only half of its padding because contents has half or margin to draw its
+    // shadow.
+    if (!sidebar_on_same_side) {
+      if (is_on_right) {
+        border_insets.set_left(kBorderThickess -
+                               (tabs::kMarginForVerticalTabContainers / 2));
+      } else {
+        border_insets.set_right(kBorderThickess -
+                                (tabs::kMarginForVerticalTabContainers / 2));
+      }
+    }
     SetBorder(views::CreateEmptyBorder(border_insets));
   }
 
