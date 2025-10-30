@@ -21,6 +21,7 @@ source_set("ai_chat") {
     "//brave/components/ai_chat/core/common",
     "//brave/components/ai_chat/core/common/mojom",
     "//brave/components/ai_chat/ios/browser",
+    "//brave/components/ai_chat/ios/common:mojom",
     "//brave/components/ai_chat/resources",
     "//brave/components/constants",
     "//brave/components/resources:static_resources",
@@ -45,6 +46,8 @@ source_set("ai_chat") {
     "//ios/web/webui",
     "//mojo/public/cpp/bindings",
     "//mojo/public/js:resources",
+    "//services/data_decoder/public/cpp",
+    "//ui/gfx/codec",
   ]
 }
 

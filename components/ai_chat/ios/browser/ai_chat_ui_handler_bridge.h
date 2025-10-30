@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+@class AiChatUploadedFile;
+
 NS_ASSUME_NONNULL_BEGIN
 
 /// Browser-side handler for general AI Chat UI functions
@@ -23,6 +25,12 @@ NS_SWIFT_NAME(AIChatUIHandler)
 /// cancelled or rejected the microphone permission
 - (void)handleVoiceRecognitionRequest:
     (void (^)(NSString* _Nullable query))completion;
+
+/// Handle when the user taps the element to upload files to Leo.
+- (void)handleFileUploadRequest:(BOOL)useMediaCapture
+              completionHandler:
+                  (void (^)(NSArray<AiChatUploadedFile*>* _Nullable files))
+                      completion;
 
 /// Open the AI chat settings UI
 - (void)openAIChatSettings;

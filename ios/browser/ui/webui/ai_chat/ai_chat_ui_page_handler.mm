@@ -5,6 +5,8 @@
 
 #include "brave/ios/browser/ui/webui/ai_chat/ai_chat_ui_page_handler.h"
 
+#import <Foundation/Foundation.h>
+
 #include <memory>
 #include <string>
 #include <vector>
@@ -15,13 +17,17 @@
 #include "base/functional/callback_helpers.h"
 #include "base/notimplemented.h"
 #include "base/strings/sys_string_conversions.h"
+#include "base/task/task_traits.h"
+#include "base/task/thread_pool.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
+#include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/ai_chat_urls.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/ios/common.mojom.objc+private.h"
 #include "brave/components/ai_chat/core/common/mojom/tab_tracker.mojom.h"
 #include "brave/components/ai_chat/ios/browser/ai_chat_ui_handler_bridge.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -36,10 +42,72 @@
 #include "ios/web/public/web_state.h"
 #include "ios/web/public/web_state_id.h"
 #include "net/base/apple/url_conversions.h"
+#include "services/data_decoder/public/cpp/data_decoder.h"
+#include "services/data_decoder/public/mojom/data_decoder_service.mojom.h"
+#include "services/data_decoder/public/mojom/image_decoder.mojom.h"
+#include "third_party/skia/include/core/SkBitmap.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/page_transition_types.h"
+#include "ui/gfx/codec/png_codec.h"
 
 namespace ai_chat {
+
+namespace {
+
+void OnImageDecoded(
+    base::OnceCallback<void(std::optional<std::vector<uint8_t>>)> callback,
+    const SkBitmap& decoded_bitmap) {
+  if (decoded_bitmap.drawsNothing()) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+  auto encode_image = base::BindOnce(
+      [](const SkBitmap& decoded_bitmap) {
+        return gfx::PNGCodec::EncodeBGRASkBitmap(
+            ScaleDownBitmap(decoded_bitmap), false);
+      },
+      decoded_bitmap);
+  base::ThreadPool::PostTaskAndReplyWithResult(FROM_HERE, {base::MayBlock()},
+                                               std::move(encode_image),
+                                               std::move(callback));
+}
+
+// A constant defined in services/data_decoder/public/cpp/decode_image.h
+const uint64_t kDataDecoderDefaultMaxSizeInBytes = 128 * 1024 * 1024;
+
+// iOS can't access the standard cpp image decoder in the data_decoder as its
+// only compiled with use_blink=true, so we must use the mojom API instead to
+// use the in-process service
+//
+// The implementation of this method matches the one in
+// services/data_decoder/public/cpp/decode_image.cc
+void DecodeImageUsingServiceProcess(
+    data_decoder::DataDecoder* data_decoder,
+    base::span<const uint8_t> encoded_bytes,
+    data_decoder::mojom::ImageCodec codec,
+    bool shrink_to_fit,
+    uint64_t max_size_in_bytes,
+    const gfx::Size& desired_image_frame_size,
+    base::OnceCallback<void(const SkBitmap& decoded_bitmap)> callback) {
+  mojo::Remote<data_decoder::mojom::ImageDecoder> decoder;
+  data_decoder->GetService()->BindImageDecoder(
+      decoder.BindNewPipeAndPassReceiver());
+
+  // `callback` will be run exactly once. Disconnect implies no response, and
+  // OnDecodeImage promptly discards the decoder preventing further disconnect
+  // calls.
+  auto callback_pair = base::SplitOnceCallback(std::move(callback));
+  decoder.set_disconnect_handler(
+      base::BindOnce(std::move(callback_pair.first), SkBitmap()));
+
+  data_decoder::mojom::ImageDecoder* raw_decoder = decoder.get();
+  raw_decoder->DecodeImage(
+      encoded_bytes, codec, shrink_to_fit, max_size_in_bytes,
+      desired_image_frame_size,
+      base::IgnoreArgs<base::TimeDelta>(std::move(callback_pair.second)));
+}
+
+}  // namespace
 
 AIChatUIPageHandler::AIChatUIPageHandler(
     web::WebState* owner_web_state,
@@ -105,18 +173,49 @@ void AIChatUIPageHandler::ProcessImageFile(
     const std::vector<uint8_t>& file_data,
     const std::string& filename,
     ProcessImageFileCallback callback) {
-  // TODO: https://github.com/brave/brave-browser/issues/49453 Implement helper
-  // to handle processing image files
-  NOTIMPLEMENTED();
-  std::move(callback).Run(nullptr);
+  DecodeImageUsingServiceProcess(
+      &data_decoder_, file_data, data_decoder::mojom::ImageCodec::kDefault,
+      /*shrink_to_fit=*/true, kDataDecoderDefaultMaxSizeInBytes, gfx::Size(),
+      base::BindOnce(
+          &OnImageDecoded,
+          base::BindOnce(
+              [](const std::string& filename, ProcessImageFileCallback callback,
+                 std::optional<std::vector<uint8_t>> processed_data) {
+                if (!processed_data) {
+                  std::move(callback).Run(nullptr);
+                  return;
+                }
+                auto uploaded_file = ai_chat::mojom::UploadedFile::New(
+                    filename, processed_data->size(), *processed_data,
+                    ai_chat::mojom::UploadedFileType::kImage);
+                std::move(callback).Run(std::move(uploaded_file));
+              },
+              filename, std::move(callback))));
 }
 
 void AIChatUIPageHandler::UploadFile(bool use_media_capture,
                                      UploadFileCallback callback) {
-  // TODO: https://github.com/brave/brave-browser/issues/49453 Implement helper
-  // to handle processing image files
-  NOTIMPLEMENTED();
-  std::move(callback).Run(std::nullopt);
+  id<AIChatUIHandlerBridge> bridge =
+      UIHandlerBridgeHolder::GetOrCreateForWebState(owner_web_state_)->bridge();
+  if (!bridge) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+
+  auto handler = base::CallbackToBlock(base::BindOnce(
+      [](UploadFileCallback callback, NSArray<AiChatUploadedFile*>* files) {
+        if (!files || [files count] == 0) {
+          std::move(callback).Run(std::nullopt);
+          return;
+        }
+        std::vector<ai_chat::mojom::UploadedFilePtr> uploaded_files;
+        for (AiChatUploadedFile* file in files) {
+          uploaded_files.emplace_back(file.cppObjPtr);
+        }
+        std::move(callback).Run(std::move(uploaded_files));
+      },
+      std::move(callback)));
+  [bridge handleFileUploadRequest:use_media_capture completionHandler:handler];
 }
 
 void AIChatUIPageHandler::GetPluralString(const std::string& key,
