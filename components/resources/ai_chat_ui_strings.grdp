@@ -568,7 +568,7 @@
     Search • Vision • Tools
   </message>
   <message name="IDS_CHAT_UI_CHAT_QWEN_SUBTITLE" desc="A description for qwen model" formatter_data="webui=AiChat">
-    Fast • Search • Tools
+    Fast • Search
   </message>
   <message name="IDS_CHAT_UI_CHAT_GEMMA_SUBTITLE" desc="A description for gemma model" formatter_data="webui=AiChat">
     Search • Vision
@@ -580,34 +580,34 @@
     Model changes dynamically to use the best one for the task
   </message>
   <message name="IDS_CHAT_UI_CHAT_LLAMA_4_SCOUT_SUBTITLE" desc="A description for llama-4-scout model" formatter_data="webui=AiChat">
-    Search • Vision • Tools
+    Search • Vision
   </message>
   <message name="IDS_CHAT_UI_CHAT_LLAMA_4_MAVERICK_SUBTITLE" desc="A description for llama-4-maverick model" formatter_data="webui=AiChat">
-    Search • Vision • Tools
+    Search • Vision
   </message>
   <message name="IDS_CHAT_UI_CHAT_GPT_OSS_20B_SUBTITLE" desc="A description for gpt-oss-20b model" formatter_data="webui=AiChat">
-    Fast • Search • Tools
+    Fast • Search
   </message>
   <message name="IDS_CHAT_UI_CHAT_GPT_OSS_120B_SUBTITLE" desc="A description for gpt-oss-120b model" formatter_data="webui=AiChat">
-    Search • Tools
+    Search
   </message>
   <message name="IDS_CHAT_UI_CHAT_MISTRAL_LARGE_SUBTITLE" desc="A description for mistral-large model" formatter_data="webui=AiChat">
-    Search • Tools
+    Search
   </message>
   <message name="IDS_CHAT_UI_CHAT_PIXTRAL_LARGE_SUBTITLE" desc="A description for pixtral-large model" formatter_data="webui=AiChat">
-    Search • Vision • Tools
+    Search • Vision
   </message>
   <message name="IDS_CHAT_UI_CHAT_QWEN_3_235B_SUBTITLE" desc="A description for qwen-3-235b model" formatter_data="webui=AiChat">
-    Search • Tools
+    Search
   </message>
   <message name="IDS_CHAT_UI_CHAT_DEEPSEEK_V3_1_SUBTITLE" desc="A description for deepseek-v3-1 model" formatter_data="webui=AiChat">
     Search
   </message>
   <message name="IDS_CHAT_UI_CHAT_QWEN_3_CODER_480B_SUBTITLE" desc="A description for qwen-3-coder-480b model" formatter_data="webui=AiChat">
-    Search • Tools
+    Search
   </message>
   <message name="IDS_CHAT_UI_CHAT_CLAUDE_OPUS_SUBTITLE" desc="A description for claude-opus model" formatter_data="webui=AiChat">
-    Search • Vision • Tools
+    Search • Vision
   </message>
   <message name="IDS_CHAT_UI_LEO_SETTINGS_TOOLTIP_LABEL" desc="A label for leo settings tooltip" formatter_data="webui=AiChat">
     Leo settings
