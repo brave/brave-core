@@ -11,10 +11,6 @@ import {
   EmailAliasesServiceInterface,
   EmailAliasesServiceObserverInterface,
   EmailAliasesServiceObserverRemote,
-  EmailAliasesService_UpdateAlias_ResponseParam_Result,
-  EmailAliasesService_DeleteAlias_ResponseParam_Result,
-  EmailAliasesService_GenerateAlias_ResponseParam_Result,
-  EmailAliasesService_RequestAuthentication_ResponseParam_Result,
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
 
 export const demoData = {
@@ -67,40 +63,40 @@ export class StubEmailAliasesService implements EmailAliasesServiceInterface {
     observer.onAliasesUpdated([...this.aliases.values()])
   }
 
-  async updateAlias(
-    aliasEmail: string,
-    note: string | null,
-  ): Promise<{ result: EmailAliasesService_UpdateAlias_ResponseParam_Result }> {
+  // @ts-ignore https://github.com/brave/brave-browser/issues/48960
+  async updateAlias(aliasEmail: string, note: string | null): Promise<void> {
     if (Math.random() < 1 / 3) {
-      return Promise.reject(getLocale('emailAliasesUpdateAliasError'))
+      return Promise.reject(
+        getLocale(S.SETTINGS_EMAIL_ALIASES_UPDATE_ALIAS_ERROR),
+      )
     }
     const alias = { email: aliasEmail, note: note ?? '', domains: undefined }
     this.aliases.set(aliasEmail, alias)
     this.observers.forEach((observer) => {
       observer.onAliasesUpdated([...this.aliases.values()])
     })
-    return { result: { success: {} as any, failure: undefined } }
+    return Promise.resolve()
   }
 
-  async deleteAlias(
-    aliasEmail: string,
-  ): Promise<{ result: EmailAliasesService_DeleteAlias_ResponseParam_Result }> {
+  // @ts-ignore https://github.com/brave/brave-browser/issues/48960
+  async deleteAlias(aliasEmail: string): Promise<void> {
     if (Math.random() < 1 / 3) {
-      return Promise.reject(getLocale('emailAliasesDeleteAliasError'))
+      return Promise.reject(
+        getLocale(S.SETTINGS_EMAIL_ALIASES_DELETE_ALIAS_ERROR),
+      )
     }
     this.aliases.delete(aliasEmail)
     this.observers.forEach((observer) => {
       observer.onAliasesUpdated([...this.aliases.values()])
     })
-    return { result: { success: {} as any, failure: undefined } }
+    return Promise.resolve()
   }
 
-  async generateAlias(): Promise<{
-    result: EmailAliasesService_GenerateAlias_ResponseParam_Result
-  }> {
+  // @ts-ignore https://github.com/brave/brave-browser/issues/48960
+  async generateAlias(): Promise<string> {
     await new Promise((resolve) => setTimeout(resolve, 1000))
     if (Math.random() < 1 / 3) {
-      return Promise.reject(getLocale('emailAliasesGenerateError'))
+      return Promise.reject(getLocale(S.SETTINGS_EMAIL_ALIASES_GENERATE_ERROR))
     }
     let aliasEmail: string = ''
     do {
@@ -108,14 +104,15 @@ export class StubEmailAliasesService implements EmailAliasesServiceInterface {
         'mock-' + Math.random().toString().slice(2, 6) + '@bravealias.com'
     } while (this.aliases.has(aliasEmail))
 
-    return { result: { success: aliasEmail, failure: undefined } }
+    return aliasEmail
   }
 
-  async requestAuthentication(authEmail: string): Promise<{
-    result: EmailAliasesService_RequestAuthentication_ResponseParam_Result
-  }> {
+  // @ts-ignore https://github.com/brave/brave-browser/issues/48960
+  async requestAuthentication(authEmail: string): Promise<void> {
     if (Math.random() < 1 / 3) {
-      return Promise.reject(getLocale('emailAliasesRequestAuthenticationError'))
+      return Promise.reject(
+        getLocale(S.SETTINGS_EMAIL_ALIASES_REQUEST_AUTHENTICATION_ERROR),
+      )
     }
     this.observers.forEach((observer) => {
       observer.onAuthStateChanged({
@@ -133,9 +130,10 @@ export class StubEmailAliasesService implements EmailAliasesServiceInterface {
         })
       })
     }, 5000)
-    return { result: { success: {} as any, failure: undefined } }
+    return Promise.resolve()
   }
 
+  // @ts-ignore https://github.com/brave/brave-browser/issues/48960
   async cancelAuthenticationOrLogout() {
     window.clearTimeout(this.accountRequestId)
     this.observers.forEach((observer) => {
@@ -145,9 +143,5 @@ export class StubEmailAliasesService implements EmailAliasesServiceInterface {
         errorMessage: undefined,
       })
     })
-  }
-
-  showSettingsPage() {
-    // Do nothing in this mock implementation.
   }
 }
