@@ -28,15 +28,11 @@ class BraveAppearanceHandler : public settings::SettingsPageUIHandler {
   void OnJavascriptAllowed() override {}
   void OnJavascriptDisallowed() override {}
 
-  void OnBraveDarkModeChanged();
   void OnPreferenceChanged(const std::string& pref_name);
-  void SetBraveThemeType(const base::Value::List& args);
-  void GetBraveThemeType(const base::Value::List& args);
   void GetNewTabShowsOptionsList(const base::Value::List& args);
   void ShouldShowNewTabDashboardSettings(const base::Value::List& args);
 
   raw_ptr<Profile> profile_ = nullptr;
-  PrefChangeRegistrar local_state_change_registrar_;
   PrefChangeRegistrar profile_state_change_registrar_;
 };
 

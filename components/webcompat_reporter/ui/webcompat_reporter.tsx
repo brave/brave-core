@@ -59,24 +59,17 @@ function initialize () {
 
   setViewPortChangeListener(onViewPortSizeChanged)
 
-  new Promise(resolve => chrome.braveTheme.getBraveThemeType(resolve))
-  .then((themeType: chrome.braveTheme.ThemeType) => {
-    render(
-      <Provider store={store}>
-        <BraveCoreThemeProvider
-          initialThemeType={themeType}
-          dark={DarkTheme}
-          light={Theme}
-        >
-          <App />
-        </BraveCoreThemeProvider>
-      </Provider>,
-      document.getElementById('root')
-    )
-  })
-  .catch(error => {
-    console.error('Problem mounting webcompat reporter modal', error)
-  })
+  render(
+    <Provider store={store}>
+      <BraveCoreThemeProvider
+        dark={DarkTheme}
+        light={Theme}
+      >
+        <App />
+      </BraveCoreThemeProvider>
+    </Provider>,
+    document.getElementById('root')
+  )
 }
 
 document.addEventListener('DOMContentLoaded', initialize)
