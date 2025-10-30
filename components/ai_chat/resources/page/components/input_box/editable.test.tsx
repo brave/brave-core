@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { render, fireEvent, waitFor } from '@testing-library/react'
+import { render, fireEvent, act } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import Editable from './editable'
 import { Content, ContentNode } from './editable_content'
@@ -142,9 +142,7 @@ describe('Editable component', () => {
       />,
     )
 
-    await waitFor(() => {
-      expect(editable).toHaveTextContent('Updated content')
-    })
+    expect(editable).toHaveTextContent('Updated content')
   })
 
   it('updates content when prop changes from parent', async () => {
@@ -168,9 +166,7 @@ describe('Editable component', () => {
       />,
     )
 
-    await waitFor(() => {
-      expect(editable).toHaveTextContent('Second')
-    })
+    expect(editable).toHaveTextContent('Second')
   })
 
   it('forwards ref correctly', () => {
@@ -280,19 +276,19 @@ describe('Editable component', () => {
     editable.appendChild(textNode2)
 
     // Trigger DOM mutation
-    triggerDOMMutation(editable)
-
-    await waitFor(() => {
-      expect(onContentChange).toHaveBeenCalledWith([
-        'Hello ',
-        {
-          type: 'skill',
-          id: 'user-1',
-          text: 'Alice',
-        },
-        ' welcome!',
-      ])
+    await act(() => {
+      triggerDOMMutation(editable)
     })
+
+    expect(onContentChange).toHaveBeenCalledWith([
+      'Hello ',
+      {
+        type: 'skill',
+        id: 'user-1',
+        text: 'Alice',
+      },
+      ' welcome!',
+    ])
   })
 
   it('onContentChange handles empty content correctly', async () => {
@@ -311,11 +307,11 @@ describe('Editable component', () => {
     editable.innerHTML = ''
 
     // Trigger DOM mutation
-    triggerDOMMutation(editable)
-
-    await waitFor(() => {
-      expect(onContentChange).toHaveBeenCalledWith([])
+    await act(() => {
+      triggerDOMMutation(editable)
     })
+
+    expect(onContentChange).toHaveBeenCalledWith([])
   })
 
   it('deletes skill nodes', async () => {
@@ -330,10 +326,10 @@ describe('Editable component', () => {
     onContentChange.mockClear()
 
     editable.querySelector('span[data-type="skill"]')!.remove()
-    triggerDOMMutation(editable)
-
-    await waitFor(() => {
-      expect(onContentChange).toHaveBeenCalledWith(['Hi ', ' there'])
+    await act(() => {
+      triggerDOMMutation(editable)
     })
+
+    expect(onContentChange).toHaveBeenCalledWith(['Hi ', ' there'])
   })
 })
