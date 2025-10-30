@@ -566,7 +566,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, DefaultEntryTest) {
   WaitUntil(base::BindLambdaForTesting(
       [&]() { return controller()->IsActiveIndex(bookmark_item_index); }));
 
-  panel_ui->Close();
+  panel_ui->Close(SidePanelEntry::PanelType::kContent);
   WaitUntil(base::BindLambdaForTesting(
       [&]() { return !panel_ui->GetCurrentEntryId().has_value(); }));
 
@@ -825,7 +825,7 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithWebPanelTest, WebPanelTest) {
     panel_ui->Show(SidePanelEntryId::kCustomizeChrome);
     ASSERT_TRUE(
         base::test::RunUntil([&]() { return GetSidePanel()->GetVisible(); }));
-    panel_ui->Close();
+    panel_ui->Close(SidePanelEntry::PanelType::kContent);
     ASSERT_TRUE(
         base::test::RunUntil([&]() { return !GetSidePanel()->GetVisible(); }));
     return;
@@ -1119,7 +1119,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, UnManagedPanelEntryTest) {
 
   // Close panel and wait till panel closing animation ends. Panel is hidden
   // when closing completes.
-  panel_ui->Close();
+  panel_ui->Close(SidePanelEntry::PanelType::kContent);
   WaitUntil(base::BindLambdaForTesting(
       [&]() { return !GetSidePanel()->GetVisible(); }));
   EXPECT_FALSE(!!panel_ui->GetCurrentEntryId());
@@ -1335,7 +1335,7 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserTestWithkSidebarShowAlwaysOnStable,
   }
   testing::Mock::VerifyAndClearExpectations(&observer_);
 
-  panel_ui->Close();
+  panel_ui->Close(SidePanelEntry::PanelType::kContent);
   EXPECT_FALSE(
       panel_ui->IsSidePanelShowing(SidePanelEntry::PanelType::kContent));
 
