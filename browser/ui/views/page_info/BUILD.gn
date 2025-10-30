@@ -9,11 +9,17 @@ source_set("page_info") {
   sources = [
     "brave_page_info_bubble_view.cc",
     "brave_page_info_bubble_view.h",
+    "brave_page_info_tab_switcher.cc",
+    "brave_page_info_tab_switcher.h",
+    "brave_page_info_view_ids.h",
   ]
 
   deps = [
     "//brave/browser/ui/page_info",
+    "//brave/components/resources:strings",
+    "//brave/components/vector_icons",
     "//chrome/browser/ui/views/page_info",
+    "//components/strings:components_strings",
     "//ui/base",
   ]
 }
