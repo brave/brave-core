@@ -209,6 +209,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 import java.util.function.DoubleConsumer;
@@ -342,6 +343,8 @@ public class BytecodeTest {
         Assert.assertTrue(classExists("org/chromium/chrome/browser/tasks/ReturnToChromeUtil"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/IntentHandler"));
         Assert.assertTrue(classExists("org/chromium/components/cached_flags/CachedFlag"));
+        Assert.assertTrue(classExists("org/chromium/components/cached_flags/CachedFeatureParam"));
+        Assert.assertTrue(classExists("org/chromium/components/cached_flags/CachedFlagUtils"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/logo/LogoMediator"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/tracing/settings/DeveloperSettings"));
@@ -417,6 +420,7 @@ public class BytecodeTest {
                 classExists(
                         "org/chromium/chrome/browser/quickactionsearchwidget/BraveQuickActionSearchWidgetProvider")); // presubmit: ignore-long-line
         Assert.assertTrue(classExists("org/chromium/chrome/browser/tab_group_sync/StartupHelper"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/app/flags/ChromeCachedFlags"));
     }
 
     @Test
@@ -1046,6 +1050,40 @@ public class BytecodeTest {
                         "buildUiStateForStats",
                         MethodModifier.REGULAR,
                         UiState.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/components/cached_flags/CachedFeatureParam",
+                        "getAllInstances",
+                        MethodModifier.STATIC,
+                        Set.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/components/cached_flags/CachedFlagUtils",
+                        "cacheNativeFlags",
+                        MethodModifier.STATIC,
+                        void.class,
+                        List.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/components/cached_flags/CachedFlagUtils",
+                        "cacheFeatureParams",
+                        MethodModifier.STATIC,
+                        void.class,
+                        List.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/components/cached_flags/CachedFlagUtils",
+                        "setFullListOfFlags",
+                        MethodModifier.STATIC,
+                        void.class,
+                        List.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/components/cached_flags/CachedFlagUtils",
+                        "setFullListOfFeatureParams",
+                        MethodModifier.STATIC,
+                        void.class,
+                        List.class));
     }
 
     @Test
@@ -1645,6 +1683,10 @@ public class BytecodeTest {
                 constructorsMatch(
                         "org/chromium/chrome/browser/AppHooks",
                         "org/chromium/chrome/browser/BraveAppHooks"));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/app/flags/ChromeCachedFlags",
+                        "org/chromium/chrome/browser/app/flags/BraveCachedFlags"));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/components/cached_flags/CachedFlag",
