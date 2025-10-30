@@ -15,6 +15,10 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+namespace brave_vpn::wireguard {
+extern std::string EncodeBase64(const std::vector<uint8_t>& in, size_t& size);
+}
+
 TEST(BraveVPNWireGuardUtilsUnitTest, ValidateKey) {
   // Invalid.
   // > empty
@@ -102,4 +106,20 @@ TEST(BraveVPNWireGuardUtilsUnitTest, ValidateEndpoint) {
   EXPECT_TRUE(brave_vpn::wireguard::ValidateEndpoint(
                   "france-ipsec-1.sudosecuritygroup.com")
                   .has_value());
+}
+
+// https://github.com/brave/brave-browser/issues/50569
+TEST(BraveVPNWireGuardUtilsUnitTest, EncodeBase64) {
+  size_t last_allocation_size = 0;
+
+  std::vector<unsigned char> key_data(32, 0);
+  std::string dangling_key =
+      brave_vpn::wireguard::EncodeBase64(key_data, last_allocation_size);
+
+  std::vector<uint8_t> overwrite_buffer(last_allocation_size, 1);
+  overwrite_buffer.back() = '\0';
+
+  EXPECT_EQ(last_allocation_size, 45u);
+  EXPECT_EQ(dangling_key, "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=");
+  EXPECT_EQ(dangling_key.length(), 44u);
 }
