@@ -224,7 +224,7 @@ INSTANTIATE_TEST_SUITE_P(
                  .server_reply = R"({"invalid": error})",
                  .expected_reply = base::unexpected(
                      ParseError("expected value at line 1 column 13"))},
-        TestCase{.request = TestRequest("invalid error structure"),
+        TestCase{.request = TestRequest{"invalid error structure"},
                  .with_headers = false,
                  .status_code = net::HTTP_UNAUTHORIZED,
                  .server_reply = R"({"invalid": "error"})",
