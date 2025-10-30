@@ -32,7 +32,7 @@ class BraveMultiContentsView : public MultiContentsView {
 
   void UpdateCornerRadius();
   void UseContentsContainerViewForWebPanel();
-  void SetWebPanelVisible(bool visible);
+  void SetWebPanelContents(content::WebContents* web_contents);
   bool IsWebPanelVisible() const;
 
   void SetWebPanelWidth(int width);
@@ -54,6 +54,7 @@ class BraveMultiContentsView : public MultiContentsView {
   views::ProposedLayout CalculateProposedLayout(
       const views::SizeBounds& size_bounds) const override;
   void ResetResizeArea() override;
+  void UpdateContentsBorderAndOverlay() override;
 
   int GetWebPanelWidth() const;
 

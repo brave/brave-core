@@ -89,6 +89,7 @@ bool SidebarController::DoesBrowserHaveOpenedTabForItem(
 }
 
 void SidebarController::TearDownPreBrowserWindowDestruction() {
+  web_panel_controller_.reset();
   sidebar_service_observed_.Reset();
   sidebar_ = nullptr;
 }
@@ -105,12 +106,10 @@ void SidebarController::ActivateItemAt(std::optional<size_t> index,
 
   const auto& item = sidebar_model_->GetAllSidebarItems()[*index];
 
-  if (item.is_web_panel_type()) {
+  if (sidebar::IsWebPanelFeatureEnabled() && item.is_web_panel_type()) {
     // TODO(https://github.com/brave/brave-browser/issues/33533): web panel item
     // also should be activated.
-    GetWebPanelController()->IsShowingWebPanel()
-        ? GetWebPanelController()->CloseWebPanel()
-        : GetWebPanelController()->OpenWebPanel(item);
+    GetWebPanelController()->ToggleWebPanel(item);
     return;
   }
 
@@ -273,6 +272,12 @@ void SidebarController::SetSidebar(Sidebar* sidebar) {
 
 SidebarWebPanelController* SidebarController::GetWebPanelController() {
   CHECK(IsWebPanelFeatureEnabled());
+
+  // It's too early or late to get web panel controller.
+  if (!sidebar_) {
+    return nullptr;
+  }
+
   if (!web_panel_controller_) {
     web_panel_controller_ =
         std::make_unique<SidebarWebPanelController>(browser_->GetBrowserView());
