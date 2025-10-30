@@ -6,6 +6,7 @@
 source_set("endpoint_client") {
   sources = [
     "client.h",
+    "functions.h",
     "is_endpoint.h",
     "is_request.h",
     "is_request_body.h",
@@ -14,7 +15,6 @@ source_set("endpoint_client") {
     "request.h",
     "request_types.h",
     "with_headers.h",
-    "functions.h",
   ]
 
   deps = [

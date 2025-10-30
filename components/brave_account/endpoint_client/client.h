@@ -42,7 +42,6 @@
 
 namespace brave_account::endpoint_client {
 
-
 struct NetworkError {
   int response_code;
   std::string error_message;
@@ -56,10 +55,10 @@ struct ParseError {
   bool operator==(const ParseError&) const = default;
 };
 
-template <concepts::Error EndpointErrorType>
+template <detail::IsResponseBody EndpointErrorType>
 using Error = std::variant<NetworkError, ParseError, EndpointErrorType>;
 
-template <concepts::Endpoint EndpointType>
+template <IsEndpoint EndpointType>
 using Reply = base::expected<typename EndpointType::Response,
                              Error<typename EndpointType::Error>>;
 

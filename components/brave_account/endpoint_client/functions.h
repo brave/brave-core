@@ -6,11 +6,32 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ACCOUNT_ENDPOINT_CLIENT_FUNCTIONS_H_
 #define BRAVE_COMPONENTS_BRAVE_ACCOUNT_ENDPOINT_CLIENT_FUNCTIONS_H_
 
+#include <concepts>
 #include <variant>
 
-#include "brave/components/brave_account/endpoint_client/concepts.h"
+#include "base/types/expected.h"
 
 namespace brave_account::endpoint_client::functions::detail {
+
+template <typename T>
+concept IsExpected = requires(T expected) {
+  typename T::value_type;
+  typename T::error_type;
+  requires std::same_as<
+      T, base::expected<typename T::value_type, typename T::error_type>>;
+};
+
+template <typename F, typename ResponseType>
+concept ResponseTransformer = requires(F f, ResponseType param) {
+  requires std::invocable<F, decltype(param)>;
+  requires IsExpected<std::invoke_result_t<F, ResponseType>>;
+};
+
+template <typename F, typename ErrorType>
+concept ErrorTransformer = requires(F f) {
+  requires std::invocable<F>;
+  requires std::convertible_to<std::invoke_result_t<F>, ErrorType>;
+};
 
 template <typename Handler, typename T>
 concept CanTransform = requires(Handler&& h, T&& value) {
@@ -40,8 +61,8 @@ constexpr auto TransformError(Error&& errors,
                           std::forward<ErrorType>(value));
                     };
                     static_assert(
-                        concepts::ErrorTransformer<decltype(invoke_on_error),
-                                                   ErrorReturnType>,
+                        detail::ErrorTransformer<decltype(invoke_on_error),
+                                                 ErrorReturnType>,
                         "Error handler should return a value which is "
                         "convertible to |on_reposnse| error type.");
 
@@ -113,10 +134,10 @@ namespace brave_account::endpoint_client::functions {
 //    }
 //  );
 
-template <typename Reply,
-          concepts::ResponseTransformer<typename Reply::value_type>
-              ResponseTransformer,
-          typename... ErrorTransformer>
+template <
+    typename Reply,
+    detail::ResponseTransformer<typename Reply::value_type> ResponseTransformer,
+    typename... ErrorTransformer>
 constexpr auto TransformReply(Reply&& reply,
                               ResponseTransformer&& on_response,
                               ErrorTransformer&&... on_error) noexcept {
@@ -126,7 +147,7 @@ constexpr auto TransformReply(Reply&& reply,
   };
 
   using ResultType = decltype(invoke_on_response());
-  static_assert(concepts::IsExpected<ResultType>,
+  static_assert(detail::IsExpected<ResultType>,
                 "|on_response| should return base::expected<T,E>");
   using ErrorType = typename ResultType::error_type;
 
