@@ -91,6 +91,12 @@ class BravePageInfoBubbleViewBrowserTestBase : public InProcessBrowserTest {
         PageInfoViewFactory::VIEW_ID_PAGE_INFO_CURRENT_VIEW);
     return site_settings_view && site_settings_view->IsDrawn();
   }
+
+  bool IsShieldsViewDrawn(views::View* bubble_view) {
+    auto* shields_view = bubble_view->GetViewByID(
+        static_cast<int>(BravePageInfoViewID::kShieldsWebView));
+    return shields_view && shields_view->IsDrawn();
+  }
 };
 
 class BravePageInfoBubbleViewBrowserTest
@@ -128,6 +134,7 @@ IN_PROC_BROWSER_TEST_F(BravePageInfoBubbleViewBrowserTest,
   ASSERT_TRUE(bubble_view);
 
   EXPECT_FALSE(IsSiteSettingsViewDrawn(bubble_view));
+  EXPECT_TRUE(IsShieldsViewDrawn(bubble_view));
 }
 
 // Test that the site settings tab is active and the site settings are displayed
@@ -139,8 +146,10 @@ IN_PROC_BROWSER_TEST_F(BravePageInfoBubbleViewBrowserTest,
   ASSERT_TRUE(bubble_view);
   bubble_view->OpenPermissionPage(ContentSettingsType::GEOLOCATION);
 
-  // The site settings UI should be visible.
+  // The site settings UI should be visible and the shields view should not be
+  // visible.
   EXPECT_TRUE(IsSiteSettingsViewDrawn(bubble_view));
+  EXPECT_FALSE(IsShieldsViewDrawn(bubble_view));
 }
 
 // Test the behavior of the tab switcher.
@@ -156,17 +165,19 @@ IN_PROC_BROWSER_TEST_F(BravePageInfoBubbleViewBrowserTest, TabSwitching) {
       static_cast<int>(BravePageInfoViewID::kTabSwitcherSiteSettingsButton)));
 
   // After clicking the Site Settings button, the site settings view should be
-  // visible.
+  // visible and the shields view should be hidden.
   ClickButton(
       bubble_view,
       static_cast<int>(BravePageInfoViewID::kTabSwitcherSiteSettingsButton));
   EXPECT_TRUE(IsSiteSettingsViewDrawn(bubble_view));
+  EXPECT_FALSE(IsShieldsViewDrawn(bubble_view));
 
   // After clicking the Shields button, the site settings view should be hidden
-  // again.
+  // again and the shields view should be visible.
   ClickButton(bubble_view,
               static_cast<int>(BravePageInfoViewID::kTabSwitcherShieldsButton));
   EXPECT_FALSE(IsSiteSettingsViewDrawn(bubble_view));
+  EXPECT_TRUE(IsShieldsViewDrawn(bubble_view));
 }
 
 class BravePageInfoBubbleViewFlagDisabledBrowserTest
@@ -212,4 +223,7 @@ IN_PROC_BROWSER_TEST_F(BravePageInfoBubbleViewFlagDisabledBrowserTest,
 
   // Verify that the site settings pages are visible.
   EXPECT_TRUE(IsSiteSettingsViewDrawn(bubble_view));
+
+  // Verify that the shields web UI is not visible.
+  EXPECT_FALSE(IsShieldsViewDrawn(bubble_view));
 }
