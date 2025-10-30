@@ -15,16 +15,13 @@
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "base/types/expected.h"
-#include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_account/endpoint_client/client.h"
 #include "brave/components/brave_account/endpoint_client/is_endpoint.h"
 #include "brave/components/brave_account/endpoints/error.h"
 #include "net/http/http_status_code.h"
-#include "net/traffic_annotation/network_traffic_annotation_test_helper.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
-#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
@@ -64,17 +61,15 @@ class EndpointTest : public testing::TestWithParam<const EndpointTestCase<T>*> {
         }));
 
     base::test::TestFuture<int, typename EndpointTestCase<T>::Expected> future;
-    endpoint_client::Client<T>::Send(api_request_helper_, typename T::Request(),
-                                     future.GetCallback());
+    endpoint_client::Client<T>::Send(
+        test_url_loader_factory_.GetSafeWeakWrapper(), typename T::Request(),
+        future.GetCallback());
     EXPECT_EQ(future.Take(),
               std::tie(test_case.http_status_code, test_case.reply));
   }
 
   base::test::TaskEnvironment task_environment_;
   network::TestURLLoaderFactory test_url_loader_factory_;
-  api_request_helper::APIRequestHelper api_request_helper_{
-      TRAFFIC_ANNOTATION_FOR_TESTS,
-      test_url_loader_factory_.GetSafeWeakWrapper()};
 };
 
 }  // namespace brave_account::endpoints

@@ -9,22 +9,20 @@
 #include <concepts>
 #include <optional>
 
-#include "brave/components/api_request_helper/api_request_helper.h"
+#include "base/values.h"
 
 namespace brave_account::endpoint_client::detail {
 
 // Concept that checks whether `T` defines a static, accessible member
 // function `FromValue()` such that:
-//   - `result.value_body()` can be passed to `T::FromValue()`,
-//      where `result` is an `api_request_helper::APIRequestResult`,
+//   - `T::FromValue(value)` is a valid expression,
 //      and that call yields `std::optional<T>`
 //
 // In short: models any type with a proper static `FromValue()` function
-// whose result is a `std::optional<T>`, constructed from the
-// `value_body()` of an `api_request_helper::APIRequestResult`.
+// whose result is a `std::optional<T>`.
 template <typename T>
-concept IsResponseBody = requires(api_request_helper::APIRequestResult result) {
-  { T::FromValue(result.value_body()) } -> std::same_as<std::optional<T>>;
+concept IsResponseBody = requires(const base::Value& value) {
+  { T::FromValue(value) } -> std::same_as<std::optional<T>>;
 };
 
 }  // namespace brave_account::endpoint_client::detail
