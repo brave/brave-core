@@ -38,7 +38,7 @@ UpdateObserver::UpdateObserver(PrefService& pref_service,
   AddPrefListener(brave_search_conversion::prefs::kDismissed, Source::kSearch);
 
   AddPrefListener(ntp_prefs::kNtpShortcutsVisible, Source::kTopSites);
-  AddPrefListener(ntp_prefs::kNtpUseMostVisitedTiles, Source::kTopSites);
+  AddPrefListener(ntp_prefs::kNtpShortcutsType, Source::kTopSites);
 
   AddPrefListener(kNewTabPageShowClock, Source::kClock);
   AddPrefListener(kNewTabPageClockFormat, Source::kClock);
