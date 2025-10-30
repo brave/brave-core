@@ -52,8 +52,10 @@ PrefixListReader::ParseError PrefixListReader::Parse(
       break;
     }
     case publishers_pb::PublisherPrefixList::BROTLI_COMPRESSION: {
-      bool decoded = util::DecodeBrotliString(message.prefixes(),
-                                              uncompressed_size, &uncompressed);
+      uncompressed.resize(uncompressed_size);
+      bool decoded = util::DecodeBrotliString(
+          message.prefixes(),
+          base::as_writable_bytes(base::span(uncompressed)));
 
       if (!decoded) {
         return ParseError::kUnableToDecompress;

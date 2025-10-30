@@ -8,6 +8,7 @@
 
 #include <map>
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include "brave/components/brave_ads/core/internal/common/resources/flat/text_classification_neural_model_generated.h"
@@ -35,7 +36,7 @@ class NeuralPipelineBufferBuilder final {
       const std::map<std::string, std::vector<uint16_t>>&
           token_categories_mapping);
 
-  std::string Build(const std::string& language);
+  std::string Build(std::string_view language);
 
  private:
   flatbuffers::FlatBufferBuilder builder_;

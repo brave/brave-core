@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/ml/pipeline/linear_pipeline_test_util.h"
 
+#include "base/strings/string_view_util.h"
 #include "brave/components/brave_ads/core/internal/common/resources/flat/text_classification_linear_model_generated.h"
 #include "brave/components/brave_ads/core/internal/common/resources/flat/text_classification_linear_transformation_generated.h"
 
@@ -82,7 +83,7 @@ LinearPipelineBufferBuilder::AddHashedNGramsTransformation(
   return *this;
 }
 
-std::string LinearPipelineBufferBuilder::Build(const std::string& language) {
+std::string LinearPipelineBufferBuilder::Build(std::string_view language) {
   auto transformations = builder_.CreateVector(transformations_);
   const auto language_offset = builder_.CreateString(language);
 
@@ -91,10 +92,7 @@ std::string LinearPipelineBufferBuilder::Build(const std::string& language) {
   neural_model_builder.add_classifier(classifier_);
   neural_model_builder.add_transformations(transformations);
   builder_.Finish(neural_model_builder.Finish());
-
-  std::string buffer(reinterpret_cast<char*>(builder_.GetBufferPointer()),
-                     builder_.GetSize());
-  return buffer;
+  return std::string(base::as_string_view(builder_.GetBufferSpan()));
 }
 
 }  // namespace brave_ads::ml::pipeline
