@@ -41,7 +41,6 @@
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/conversation_tools.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
-#include "brave/components/ai_chat/core/browser/ollama/ollama_model_sync.h"
 #include "brave/components/ai_chat/core/browser/tab_tracker_service.h"
 #include "brave/components/ai_chat/core/browser/tools/memory_storage_tool.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
@@ -162,22 +161,10 @@ AIChatService::AIChatService(
       base::BindRepeating(&AIChatService::OnSkillsChanged,
                           weak_ptr_factory_.GetWeakPtr()));
 
-  // Initialize Ollama model sync
-  ollama_model_sync_ = std::make_unique<OllamaModelSync>(
-      *model_service_, profile_prefs_, url_loader_factory_);
-
   MaybeInitStorage();
 
   // Get current premium status to report metrics
   GetPremiumStatus(base::DoNothing());
-
-  // Trigger initial Ollama sync if enabled
-  if (profile_prefs_->GetBoolean(prefs::kBraveAIChatOllamaSyncEnabled)) {
-    DVLOG(1) << "Ollama sync is enabled on startup - triggering initial sync";
-    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-        FROM_HERE, base::BindOnce(&OllamaModelSync::SyncModels,
-                                  base::Unretained(ollama_model_sync_.get())));
-  }
 }
 
 AIChatService::~AIChatService() = default;

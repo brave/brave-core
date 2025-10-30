@@ -59,7 +59,6 @@ class ModelService;
 class TabTrackerService;
 class AIChatMetrics;
 class MemoryStorageTool;
-class OllamaModelSync;
 
 // Main entry point for creating and consuming AI Chat conversations
 class AIChatService : public KeyedService,
@@ -358,9 +357,6 @@ class AIChatService : public KeyedService,
 
   // Memory tool that is available and shared across all conversations.
   std::unique_ptr<MemoryStorageTool> memory_tool_;
-
-  // Manages Ollama model synchronization
-  std::unique_ptr<OllamaModelSync> ollama_model_sync_;
 
   base::FilePath profile_path_;
 
