@@ -118,7 +118,7 @@ class PlaylistServiceDelegateImpl : public PlaylistService::Delegate {
         continue;
       }
 
-      side_panel_ui->Close();
+      side_panel_ui->Close(SidePanelEntry::PanelType::kContent);
     }
 #endif  // !BUILDFLAG(IS_ANDROID)
 
