@@ -27,6 +27,9 @@ import org.chromium.components.browser_ui.widget.RadioButtonWithEditText;
 public final class BraveRadioButtonGroupHomepagePreference
         extends BraveRadioButtonGroupHomepagePreferenceDummySuper {
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    static final String BOOKMARKS_NATIVE_URL_PREFIX = "chrome-native://bookmarks/";
+
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     static final String MOBILE_BOOKMARKS_PATH = "chrome-native://bookmarks/folder/3";
 
     @Nullable private RadioButtonWithDescription mMobileBookmarks;
@@ -86,7 +89,7 @@ public final class BraveRadioButtonGroupHomepagePreference
         // selected.
         mMobileBookmarksSelectedInitially =
                 value.getCheckedOption() == HomepageOption.ENTRY_CUSTOM_URI
-                        && value.getCustomURI().equals(MOBILE_BOOKMARKS_PATH);
+                        && isBookmarksUri(value.getCustomURI());
 
         maybeSelectMobileBookmarks(false);
         maybeClearCustomUri();
@@ -106,7 +109,7 @@ public final class BraveRadioButtonGroupHomepagePreference
         // the text.
         if (mCustomUri != null
                 && !mCustomUri.isChecked()
-                && mCustomUri.getPrimaryText().toString().equals(MOBILE_BOOKMARKS_PATH)) {
+                && isBookmarksUri(mCustomUri.getPrimaryText().toString())) {
             // We only want to clear the text box without triggering home page change.
             mIgnoreEmptyTextChange = true;
             mCustomUri.setPrimaryText("");
@@ -132,5 +135,11 @@ public final class BraveRadioButtonGroupHomepagePreference
     @VisibleForTesting
     public static Class getPreferenceValuesClass() {
         return PreferenceValues.class;
+    }
+
+    // We don't care about exact bookmarks url - it is at bookmarks, we'll consider it as a Mobile
+    // bookmarks folder
+    boolean isBookmarksUri(String uri) {
+        return uri != null && uri.startsWith(BOOKMARKS_NATIVE_URL_PREFIX);
     }
 }
