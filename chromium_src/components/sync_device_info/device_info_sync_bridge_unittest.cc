@@ -10,35 +10,11 @@
 #include "base/test/task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-namespace base::test {
-namespace {
-
-// This trick substitutes TaskEnvironment to make the test
-// LocalDeleteWhenOffline avoid wait 6 sec for real
-class TaskEnvironmentOptionalMockTime : public TaskEnvironment {
- public:
-  TaskEnvironmentOptionalMockTime()
-      : TaskEnvironment(
-            IsMockTimedTest(
-                testing::UnitTest::GetInstance()->current_test_info()->name())
-                ? TimeSource::MOCK_TIME
-                : TimeSource::DEFAULT) {}
-
-  static bool IsMockTimedTest(std::string_view test_name) {
-    return test_name == "LocalDeleteWhenOffline";
-  }
-};
-
-}  // namespace
-}  // namespace base::test
-
-#define TaskEnvironment TaskEnvironmentOptionalMockTime
 #define ShouldReuploadOnceAfterLocalDeviceInfoTombstone \
   DISABLED_ShouldReuploadOnceAfterLocalDeviceInfoTombstone
 
 #include <components/sync_device_info/device_info_sync_bridge_unittest.cc>
 
-#undef TaskEnvironment
 #undef ShouldReuploadOnceAfterLocalDeviceInfoTombstone
 
 namespace syncer {
