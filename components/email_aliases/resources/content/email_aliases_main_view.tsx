@@ -38,7 +38,9 @@ export const MainView = ({
   authState.status === AuthenticationStatus.kStartup ? (
     <SpacedRow>
       <ProgressRing />
-      <div>{getLocale('emailAliasesConnectingToBraveAccount')}</div>
+      <div>
+        {getLocale(S.SETTINGS_EMAIL_ALIASES_CONNECTING_TO_BRAVE_ACCOUNT)}
+      </div>
     </SpacedRow>
   ) : (
     <span>

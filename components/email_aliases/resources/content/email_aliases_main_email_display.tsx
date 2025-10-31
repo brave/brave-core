@@ -59,17 +59,19 @@ export const MainEmailDisplay = ({
           <MainEmailTextContainer>
             <MainEmail>
               {email === ''
-                ? getLocale('emailAliasesConnectingToBraveAccount')
+                ? getLocale(
+                    S.SETTINGS_EMAIL_ALIASES_CONNECTING_TO_BRAVE_ACCOUNT,
+                  )
                 : email}
             </MainEmail>
             <MainEmailDescription>
-              {getLocale('emailAliasesBraveAccount')}
+              {getLocale(S.SETTINGS_EMAIL_ALIASES_BRAVE_ACCOUNT)}
             </MainEmailDescription>
           </MainEmailTextContainer>
         </Row>
         <Button
           kind='plain-faint'
-          title={getLocale('emailAliasesSignOutTitle')}
+          title={getLocale(S.SETTINGS_EMAIL_ALIASES_SIGN_OUT_TITLE)}
           size='small'
           disabled={cancelAuthenticationOrLogoutPending}
           onClick={async () => {
@@ -82,7 +84,7 @@ export const MainEmailDisplay = ({
             slot='icon-before'
             name='outside'
           />
-          <span>{getLocale('emailAliasesSignOut')}</span>
+          <span>{getLocale(S.SETTINGS_EMAIL_ALIASES_SIGN_OUT)}</span>
         </Button>
       </AccountRow>
     </Card>

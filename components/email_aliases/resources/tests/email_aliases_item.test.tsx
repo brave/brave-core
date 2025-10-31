@@ -92,7 +92,7 @@ describe('AliasItem', () => {
     )
 
     // Click delete button
-    const deleteButton = screen.getByText('emailAliasesDelete')
+    const deleteButton = screen.getByText(S.SETTINGS_EMAIL_ALIASES_DELETE)
     fireEvent.click(deleteButton)
 
     // Check if callback was called
@@ -109,7 +109,7 @@ describe('AliasItem', () => {
     )
 
     // Click edit button
-    const editButton = screen.getByText('emailAliasesEdit')
+    const editButton = screen.getByText(S.SETTINGS_EMAIL_ALIASES_EDIT)
     fireEvent.click(editButton)
 
     // Check if callback was called

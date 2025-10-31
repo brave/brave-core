@@ -9,6 +9,7 @@ import * as React from 'react'
 import Card from './styles/Card'
 import SecureLink from '$web-common/SecureLink'
 import styled from 'styled-components'
+import './strings'
 
 const SectionTitle = styled(Card)`
   border-radius: ${radius.m};
@@ -21,17 +22,17 @@ const SectionTitle = styled(Card)`
 export const Introduction = () => (
   <SectionTitle>
     <div>
-      <h4>{getLocale('emailAliasesShortDescription')}</h4>
+      <h4>{getLocale(S.SETTINGS_EMAIL_ALIASES_SHORT_DESCRIPTION)}</h4>
     </div>
     <div>
-      {getLocale('emailAliasesDescription')}{' '}
+      {getLocale(S.SETTINGS_EMAIL_ALIASES_DESCRIPTION)}{' '}
       {/* TODO(https://github.com/brave/brave-browser/issues/45408):
            // Link to the email aliases support page */}
       <SecureLink
         href='https://support.brave.app'
         target='_blank'
       >
-        {getLocale('emailAliasesLearnMore')}
+        {getLocale(S.SETTINGS_EMAIL_ALIASES_LEARN_MORE)}
       </SecureLink>
     </div>
   </SectionTitle>

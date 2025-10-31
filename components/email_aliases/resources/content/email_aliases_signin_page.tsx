@@ -63,8 +63,10 @@ const BeforeSendingEmailForm = ({
   }
   return (
     <SpacedCol>
-      <h4>{getLocale('emailAliasesSignInOrCreateAccount')}</h4>
-      <div>{getLocale('emailAliasesEnterEmailToGetLoginLink')}</div>
+      <h4>{getLocale(S.SETTINGS_EMAIL_ALIASES_SIGN_IN_OR_CREATE_ACCOUNT)}</h4>
+      <div>
+        {getLocale(S.SETTINGS_EMAIL_ALIASES_ENTER_EMAIL_TO_GET_LOGIN_LINK)}
+      </div>
       <LoginRow>
         <StretchyInput
           autofocus
@@ -72,7 +74,9 @@ const BeforeSendingEmailForm = ({
           onKeyDown={onEnterKeyForInput(requestAuthentication)}
           name='email'
           type='text'
-          placeholder={getLocale('emailAliasesEmailAddressPlaceholder')}
+          placeholder={getLocale(
+            S.SETTINGS_EMAIL_ALIASES_EMAIL_ADDRESS_PLACEHOLDER,
+          )}
           value={email}
         />
         <Button
@@ -80,7 +84,7 @@ const BeforeSendingEmailForm = ({
           type='submit'
           kind='filled'
         >
-          {getLocale('emailAliasesGetLoginLinkButton')}
+          {getLocale(S.SETTINGS_EMAIL_ALIASES_GET_LOGIN_LINK_BUTTON)}
         </Button>
       </LoginRow>
       {errorMessage && <Alert>{errorMessage}</Alert>}
@@ -100,17 +104,19 @@ const AfterSendingEmailMessage = ({
   return (
     <SpacedCol>
       <h4>
-        {formatLocale('emailAliasesLoginEmailOnTheWay', { $1: authEmail })}
+        {formatLocale(S.SETTINGS_EMAIL_ALIASES_LOGIN_EMAIL_ON_THE_WAY, {
+          $1: authEmail,
+        })}
       </h4>
-      <div>{getLocale('emailAliasesClickOnSecureLogin')}</div>
-      <div>{getLocale('emailAliasesDontSeeEmail')}</div>
+      <div>{getLocale(S.SETTINGS_EMAIL_ALIASES_CLICK_ON_SECURE_LOGIN)}</div>
+      <div>{getLocale(S.SETTINGS_EMAIL_ALIASES_DONT_SEE_EMAIL)}</div>
       {errorMessage && <Alert>{errorMessage}</Alert>}
       <div>
         <Button
           onClick={() => emailAliasesService.cancelAuthenticationOrLogout()}
           kind='filled'
         >
-          {getLocale('emailAliasesAuthTryAgainButton')}
+          {getLocale(S.SETTINGS_EMAIL_ALIASES_AUTH_TRY_AGAIN_BUTTON)}
         </Button>
       </div>
     </SpacedCol>

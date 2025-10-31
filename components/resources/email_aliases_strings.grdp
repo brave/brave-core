@@ -1,144 +1,144 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <grit-part>
-  <message name="IDS_SETTINGS_EMAIL_ALIASES_SHORT_DESCRIPTION" desc="The short description for the Email Aliases page">
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_SHORT_DESCRIPTION" desc="The short description for the Email Aliases page" formatter_data="webui=EmailAliases">
     Keep your personal email address private
   </message>
-  <message name="IDS_SETTINGS_EMAIL_ALIASES_DESCRIPTION" desc="The description for the Email Aliases page">
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_DESCRIPTION" desc="The description for the Email Aliases page" formatter_data="webui=EmailAliases">
     Create unique, random addresses that forward to your Brave account email and can be deleted at any time. Keep your actual email address from being disclosed or used by advertisers.
   </message>
-  <message name="IDS_SETTINGS_EMAIL_ALIASES_LEARN_MORE" desc="The label for the learn more link">
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_LEARN_MORE" desc="The label for the learn more link" formatter_data="webui=EmailAliases">
     Learn more
   </message>
-  <message name="IDS_SETTINGS_EMAIL_ALIASES_SIGN_OUT" desc="The label for the sign out link">
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_SIGN_OUT" desc="The label for the sign out link" formatter_data="webui=EmailAliases">
     Sign out
   </message>
-  <message name="IDS_SETTINGS_EMAIL_ALIASES_SIGN_OUT_TITLE" desc="The title for the sign out link">
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_SIGN_OUT_TITLE" desc="The title for the sign out link" formatter_data="webui=EmailAliases">
     Sign out of Email Aliases
   </message>
-  <message name="IDS_SETTINGS_EMAIL_ALIASES_CONNECTING_TO_BRAVE_ACCOUNT" desc="The label for the connecting to Brave Account">
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_CONNECTING_TO_BRAVE_ACCOUNT" desc="The label for the connecting to Brave Account" formatter_data="webui=EmailAliases">
     Connecting to Brave Account...
   </message>
-  <message name="IDS_SETTINGS_EMAIL_ALIASES_LABEL" desc="The label for the email aliases">
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_LABEL" desc="The label for the email aliases" formatter_data="webui=EmailAliases">
     Email Aliases
   </message>
-  <message name="IDS_SETTINGS_EMAIL_ALIASES_BRAVE_ACCOUNT" desc="The label for the Brave Account">
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_BRAVE_ACCOUNT" desc="The label for the Brave Account" formatter_data="webui=EmailAliases">
     Brave Account
   </message>
-  <message name="IDS_SETTINGS_EMAIL_ALIASES_COPIED_TO_CLIPBOARD" desc="The label for the copied to clipboard">
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_COPIED_TO_CLIPBOARD" desc="The label for the copied to clipboard" formatter_data="webui=EmailAliases">
     Copied to clipboard
   </message>
-  <message name="IDS_SETTINGS_EMAIL_ALIASES_CLICK_TO_COPY_ALIAS" desc="The label for the click to copy alias">
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_CLICK_TO_COPY_ALIAS" desc="The label for the click to copy alias" formatter_data="webui=EmailAliases">
     Click to copy alias
   </message>
-  <message name="IDS_SETTINGS_EMAIL_ALIASES_USED_BY" desc="The label for the used by">
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_USED_BY" desc="The label for the used by" formatter_data="webui=EmailAliases">
     Used by <ph name="DOMAINS">$1<ex>example.com, example.org</ex></ph>
   </message>
-  <message name="IDS_SETTINGS_EMAIL_ALIASES_EDIT" desc="The label for the edit link">
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_EDIT" desc="The label for the edit link" formatter_data="webui=EmailAliases">
     Edit
   </message>
-  <message name="IDS_SETTINGS_EMAIL_ALIASES_DELETE" desc="The label for the delete link">
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_DELETE" desc="The label for the delete link" formatter_data="webui=EmailAliases">
     Delete
   </message>
-  <message name="IDS_SETTINGS_EMAIL_ALIASES_CREATE_DESCRIPTION" desc="The description for the create email alias">
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_CREATE_DESCRIPTION" desc="The description for the create email alias" formatter_data="webui=EmailAliases">
     Create up to 5 free email aliases to protect your real email address.
   </message>
-  <message name="IDS_SETTINGS_EMAIL_ALIASES_LIST_TITLE" desc="The title for the email alias list">
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_LIST_TITLE" desc="The title for the email alias list" formatter_data="webui=EmailAliases">
     Your Email aliases
   </message>
-  <message name="IDS_SETTINGS_EMAIL_ALIASES_CREATE_ALIAS_TITLE" desc="The title for the create alias">
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_CREATE_ALIAS_TITLE" desc="The title for the create alias" formatter_data="webui=EmailAliases">
     New email alias
   </message>
-  <message name="IDS_SETTINGS_EMAIL_ALIASES_BUBBLE_DESCRIPTION" desc="The description for the email alias bubble">
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_BUBBLE_DESCRIPTION" desc="The description for the email alias bubble" formatter_data="webui=EmailAliases">
     Create a random email address that forwards to your inbox while keeping your personal email private.
   </message>
-  <message name="IDS_SETTINGS_EMAIL_ALIASES_BUBBLE_LIMIT_REACHED" desc="The description for the email alias bubble when the limit is reached">
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_BUBBLE_LIMIT_REACHED" desc="The description for the email alias bubble when the limit is reached" formatter_data="webui=EmailAliases">
     You have reached the limit of 5 free email aliases. Click "Manage" to re-use or delete an alias.
   </message>
-  <message name="IDS_SETTINGS_EMAIL_ALIASES_CREATE_ALIAS_LABEL" desc="The label for the create alias">
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_CREATE_ALIAS_LABEL" desc="The label for the create alias" formatter_data="webui=EmailAliases">
     New alias
   </message>
-  <message name="IDS_SETTINGS_EMAIL_ALIASES_REFRESH_BUTTON_TITLE" desc="The title for the refresh button">
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_REFRESH_BUTTON_TITLE" desc="The title for the refresh button" formatter_data="webui=EmailAliases">
     Suggest another email alias
   </message>
-  <message name="IDS_SETTINGS_EMAIL_ALIASES_GENERATING_NEW_ALIAS" desc="The label for the generating new alias">
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_GENERATING_NEW_ALIAS" desc="The label for the generating new alias" formatter_data="webui=EmailAliases">
     Generating new alias...
   </message>
-  <message name="IDS_SETTINGS_EMAIL_ALIASES_GENERATE_ERROR" desc="The label for the generate error">
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_GENERATE_ERROR" desc="The label for the generate error" formatter_data="webui=EmailAliases">
     Error generating alias. Check your internet connection and try again.
   </message>
-  <message name="IDS_SETTINGS_EMAIL_ALIASES_NOTE_LABEL" desc="The label for the note">
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_NOTE_LABEL" desc="The label for the note" formatter_data="webui=EmailAliases">
     Note
   </message>
-  <message name="IDS_SETTINGS_EMAIL_ALIASES_EDIT_NOTE_PLACEHOLDER" desc="The placeholder for the edit note">
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_EDIT_NOTE_PLACEHOLDER" desc="The placeholder for the edit note" formatter_data="webui=EmailAliases">
     Enter a note for your address (optional)
   </message>
-  <message name="IDS_SETTINGS_EMAIL_ALIASES_CANCEL_BUTTON" desc="The label for the cancel button">
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_CANCEL_BUTTON" desc="The label for the cancel button" formatter_data="webui=EmailAliases">
     Cancel
   </message>
-  <message name="IDS_SETTINGS_EMAIL_ALIASES_MANAGE_BUTTON" desc="The label for the manage button">
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_MANAGE_BUTTON" desc="The label for the manage button" formatter_data="webui=EmailAliases">
     Manage
   </message>
-  <message name="IDS_SETTINGS_EMAIL_ALIASES_ALIAS_LABEL" desc="The label for the alias">
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_ALIAS_LABEL" desc="The label for the alias" formatter_data="webui=EmailAliases">
     Email alias
   </message>
-  <message name="IDS_SETTINGS_EMAIL_ALIASES_EMAILS_WILL_BE_FORWARDED_TO" desc="The label explaining where emails will be forwarded">
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_EMAILS_WILL_BE_FORWARDED_TO" desc="The label explaining where emails will be forwarded" formatter_data="webui=EmailAliases">
     Emails will be forwarded to <ph name="MAIN_EMAIL">$1<ex>address@example.com</ex></ph>
   </message>
-  <message name="IDS_SETTINGS_EMAIL_ALIASES_EDIT_ALIAS_TITLE" desc="The title for the edit alias">
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_EDIT_ALIAS_TITLE" desc="The title for the edit alias" formatter_data="webui=EmailAliases">
     Edit email alias
   </message>
-  <message name="IDS_SETTINGS_EMAIL_ALIASES_CREATE_ALIAS_BUTTON" desc="The label for the create alias button">
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_CREATE_ALIAS_BUTTON" desc="The label for the create alias button" formatter_data="webui=EmailAliases">
     Create alias
   </message>
-  <message name="IDS_SETTINGS_EMAIL_ALIASES_UPDATE_ALIAS_ERROR" desc="The label for the update alias error">
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_UPDATE_ALIAS_ERROR" desc="The label for the update alias error" formatter_data="webui=EmailAliases">
     Error saving alias. Check your internet connection and try again.
   </message>
-  <message name="IDS_SETTINGS_EMAIL_ALIASES_SAVE_ALIAS_BUTTON" desc="The label for the save alias button">
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_SAVE_ALIAS_BUTTON" desc="The label for the save alias button" formatter_data="webui=EmailAliases">
     Save
   </message>
-  <message name="IDS_SETTINGS_EMAIL_ALIASES_DELETE_ALIAS_TITLE" desc="The title for the delete alias">
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_DELETE_ALIAS_TITLE" desc="The title for the delete alias" formatter_data="webui=EmailAliases">
     Delete email alias
   </message>
-  <message name="IDS_SETTINGS_EMAIL_ALIASES_DELETE_ALIAS_DESCRIPTION" desc="The description for the delete alias">
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_DELETE_ALIAS_DESCRIPTION" desc="The description for the delete alias" formatter_data="webui=EmailAliases">
     Removing <ph name="ALIAS">$1<ex>alias@example.com</ex></ph> as an alias will result in the loss of your ability to receive emails.
   </message>
-  <message name="IDS_SETTINGS_EMAIL_ALIASES_DELETE_ALIAS_BUTTON" desc="The label for the delete alias button">
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_DELETE_ALIAS_BUTTON" desc="The label for the delete alias button" formatter_data="webui=EmailAliases">
     Delete
   </message>
-  <message name="IDS_SETTINGS_EMAIL_ALIASES_DELETE_ALIAS_ERROR" desc="The label for the delete alias error">
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_DELETE_ALIAS_ERROR" desc="The label for the delete alias error" formatter_data="webui=EmailAliases">
     Error deleting alias. Check your internet connection and try again.
   </message>
-  <message name="IDS_SETTINGS_EMAIL_ALIASES_DELETE_WARNING" desc="The warning for the delete alias">
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_DELETE_WARNING" desc="The warning for the delete alias" formatter_data="webui=EmailAliases">
     This action is irreversible. Are you sure you want to proceed?
   </message>
-  <message name="IDS_SETTINGS_EMAIL_ALIASES_SIGN_IN_OR_CREATE_ACCOUNT" desc="The label for the sign in or create account">
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_SIGN_IN_OR_CREATE_ACCOUNT" desc="The label for the sign in or create account" formatter_data="webui=EmailAliases">
     To get started, sign in or create a Brave account
   </message>
-  <message name="IDS_SETTINGS_EMAIL_ALIASES_ENTER_EMAIL_TO_GET_LOGIN_LINK" desc="The label for the enter email to get login link">
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_ENTER_EMAIL_TO_GET_LOGIN_LINK" desc="The label for the enter email to get login link" formatter_data="webui=EmailAliases">
     Enter your email address to get a secure login link sent to your email. Clicking this link will either create or access a Brave Account and let you use the free Email Aliases service.
   </message>
-  <message name="IDS_SETTINGS_EMAIL_ALIASES_GET_LOGIN_LINK_BUTTON" desc="The label for the get login link button">
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_GET_LOGIN_LINK_BUTTON" desc="The label for the get login link button" formatter_data="webui=EmailAliases">
     Get login link
   </message>
-  <message name="IDS_SETTINGS_EMAIL_ALIASES_REQUEST_AUTHENTICATION_ERROR" desc="The label for the request authentication error">
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_REQUEST_AUTHENTICATION_ERROR" desc="The label for the request authentication error" formatter_data="webui=EmailAliases">
     Error requesting authentication. Check your internet connection and try again.
   </message>
-  <message name="IDS_SETTINGS_EMAIL_ALIASES_EMAIL_ADDRESS_PLACEHOLDER" desc="The placeholder for the email address">
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_EMAIL_ADDRESS_PLACEHOLDER" desc="The placeholder for the email address" formatter_data="webui=EmailAliases">
     Email address
   </message>
-  <message name="IDS_SETTINGS_EMAIL_ALIASES_LOGIN_EMAIL_ON_THE_WAY" desc="The label for the login email on the way">
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_LOGIN_EMAIL_ON_THE_WAY" desc="The label for the login email on the way" formatter_data="webui=EmailAliases">
     A login email is on the way to <ph name="MAIN_EMAIL">$1<ex>address@example.com</ex></ph>
   </message>
-  <message name="IDS_SETTINGS_EMAIL_ALIASES_CLICK_ON_SECURE_LOGIN" desc="The label for the click on secure login">
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_CLICK_ON_SECURE_LOGIN" desc="The label for the click on secure login" formatter_data="webui=EmailAliases">
     Click on the secure login link in the email to access your account.
   </message>
-  <message name="IDS_SETTINGS_EMAIL_ALIASES_DONT_SEE_EMAIL" desc="The label for the don't see email">
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_DONT_SEE_EMAIL" desc="The label for the don't see email" formatter_data="webui=EmailAliases">
     Don't see the email? Check your spam folder or try again.
   </message>
-  <message name="IDS_SETTINGS_EMAIL_ALIASES_AUTH_ERROR" desc="The label for the auth error">
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_AUTH_ERROR" desc="The label for the auth error" formatter_data="webui=EmailAliases">
     Error authenticating with Brave Account. Please try again.
   </message>
-  <message name="IDS_SETTINGS_EMAIL_ALIASES_AUTH_TRY_AGAIN_BUTTON" desc="The label for the auth try again button">
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_AUTH_TRY_AGAIN_BUTTON" desc="The label for the auth try again button" formatter_data="webui=EmailAliases">
     Start over
   </message>
   <message name="IDS_EMAIL_ALIASES_ERROR_NO_EMAIL_PROVIDED">

@@ -117,7 +117,7 @@ describe('ManagePageConnected', () => {
     await waitFor(() => {
       expect(document.querySelector('leo-progressring')).toBeInTheDocument()
       expect(
-        screen.getByText('emailAliasesConnectingToBraveAccount'),
+        screen.getByText(S.SETTINGS_EMAIL_ALIASES_CONNECTING_TO_BRAVE_ACCOUNT),
       ).toBeInTheDocument()
     })
   })
@@ -128,10 +128,12 @@ describe('ManagePageConnected', () => {
 
     await waitFor(() => {
       expect(
-        screen.getByText('emailAliasesSignInOrCreateAccount'),
+        screen.getByText(S.SETTINGS_EMAIL_ALIASES_SIGN_IN_OR_CREATE_ACCOUNT),
       ).toBeInTheDocument()
       expect(
-        screen.getByPlaceholderText('emailAliasesEmailAddressPlaceholder'),
+        screen.getByPlaceholderText(
+          S.SETTINGS_EMAIL_ALIASES_EMAIL_ADDRESS_PLACEHOLDER,
+        ),
       ).toBeInTheDocument()
     })
   })
@@ -142,8 +144,12 @@ describe('ManagePageConnected', () => {
 
     await waitFor(() => {
       expect(screen.getByText(mockEmail)).toBeInTheDocument()
-      expect(screen.getByText('emailAliasesBraveAccount')).toBeInTheDocument()
-      expect(screen.getByText('emailAliasesSignOut')).toBeInTheDocument()
+      expect(
+        screen.getByText(S.SETTINGS_EMAIL_ALIASES_BRAVE_ACCOUNT),
+      ).toBeInTheDocument()
+      expect(
+        screen.getByText(S.SETTINGS_EMAIL_ALIASES_SIGN_OUT),
+      ).toBeInTheDocument()
     })
   })
 
@@ -153,12 +159,14 @@ describe('ManagePageConnected', () => {
 
     await waitFor(() => {
       expect(
-        screen.getByText('emailAliasesLoginEmailOnTheWay'),
+        screen.getByText(S.SETTINGS_EMAIL_ALIASES_LOGIN_EMAIL_ON_THE_WAY),
       ).toBeInTheDocument()
       expect(
-        screen.getByText('emailAliasesClickOnSecureLogin'),
+        screen.getByText(S.SETTINGS_EMAIL_ALIASES_CLICK_ON_SECURE_LOGIN),
       ).toBeInTheDocument()
-      expect(screen.getByText('emailAliasesDontSeeEmail')).toBeInTheDocument()
+      expect(
+        screen.getByText(S.SETTINGS_EMAIL_ALIASES_DONT_SEE_EMAIL),
+      ).toBeInTheDocument()
     })
   })
 
