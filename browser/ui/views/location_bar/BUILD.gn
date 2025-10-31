@@ -3,6 +3,67 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/tor/buildflags/buildflags.gni")
+import("//build/config/features.gni")
+
+assert(toolkit_views)
+
+source_set("location_bar") {
+  sources = [
+    "brave_location_bar_view.cc",
+    "brave_location_bar_view.h",
+    "brave_search_conversion/promotion_button_controller.cc",
+    "brave_search_conversion/promotion_button_controller.h",
+    "brave_search_conversion/promotion_button_view.cc",
+    "brave_search_conversion/promotion_button_view.h",
+    "brave_selected_keyword_view_util.cc",
+    "brave_selected_keyword_view_util.h",
+    "brave_star_view.cc",
+    "brave_star_view.h",
+  ]
+
+  deps = [
+    "//brave/app:brave_generated_resources_grit",
+    "//brave/app/theme:brave_theme_resources",
+    "//brave/app/vector_icons",
+    "//brave/browser/ui:brave_tab_features",
+    "//brave/browser/ui:brave_tab_prefs",
+    "//brave/components/brave_search_conversion",
+    "//brave/components/commander/browser",
+    "//brave/components/commander/common",
+    "//brave/components/resources:strings",
+    "//brave/components/tor/buildflags",
+    "//brave/components/vector_icons",
+    "//chrome/browser/image_fetcher",
+    "//chrome/browser/profiles",
+    "//chrome/browser/search_engines",
+    "//chrome/browser/themes",
+    "//chrome/browser/ui:layout_constants",
+    "//chrome/browser/ui/color:mixers",
+    "//chrome/browser/ui/omnibox",
+    "//chrome/browser/ui/tabs:tab_strip",
+    "//chrome/browser/ui/views/location_bar",
+    "//chrome/browser/ui/views/page_action",
+    "//components/image_fetcher/core",
+    "//components/search_engines",
+    "//components/version_info:channel",
+    "//ui/gfx",
+    "//ui/views",
+  ]
+
+  if (enable_tor) {
+    sources += [
+      "onion_location_view.cc",
+      "onion_location_view.h",
+    ]
+
+    deps += [
+      "//brave/browser/tor",
+      "//brave/components/tor",
+    ]
+  }
+}
+
 source_set("browser_tests") {
   testonly = true
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
@@ -10,6 +71,7 @@ source_set("browser_tests") {
   sources = [ "//brave/browser/ui/views/location_bar/brave_location_bar_view_browsertest.cc" ]
 
   deps = [
+    ":location_bar",
     "//base",
     "//brave/components/brave_search_conversion",
     "//chrome/browser",

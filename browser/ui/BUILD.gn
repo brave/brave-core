@@ -609,6 +609,7 @@ source_set("ui") {
     deps += [
       "//brave/browser/ui/darker_theme",
       "//brave/browser/ui/side_panel",
+      "//brave/browser/ui/views/location_bar",
       "//chrome/browser:shell_integration",
       "//chrome/browser/devtools",
       "//chrome/browser/enterprise/watermark:watermark_view_lib",
@@ -1108,16 +1109,6 @@ source_set("ui") {
       "views/brave_news/brave_news_action_icon_view.h",
       "views/brave_news/brave_news_bubble_controller.cc",
       "views/brave_news/brave_news_bubble_controller.h",
-      "views/location_bar/brave_location_bar_view.cc",
-      "views/location_bar/brave_location_bar_view.h",
-      "views/location_bar/brave_search_conversion/promotion_button_controller.cc",
-      "views/location_bar/brave_search_conversion/promotion_button_controller.h",
-      "views/location_bar/brave_search_conversion/promotion_button_view.cc",
-      "views/location_bar/brave_search_conversion/promotion_button_view.h",
-      "views/location_bar/brave_selected_keyword_view_util.cc",
-      "views/location_bar/brave_selected_keyword_view_util.h",
-      "views/location_bar/brave_star_view.cc",
-      "views/location_bar/brave_star_view.h",
       "views/profiles/brave_avatar_toolbar_button.cc",
       "views/profiles/brave_avatar_toolbar_button.h",
       "views/tabs/brave_new_tab_button.cc",
@@ -1146,11 +1137,6 @@ source_set("ui") {
     }
 
     if (enable_tor) {
-      sources += [
-        "views/location_bar/onion_location_view.cc",
-        "views/location_bar/onion_location_view.h",
-      ]
-
       deps += [
         "//brave/browser/tor",
         "//brave/components/tor",
