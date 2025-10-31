@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//build/rust/rust_static_library.gni")
 import("//tools/json_schema_compiler/json_schema_api.gni")
 
 generated_types("generated_polkadot_substrate_rpc_responses") {
@@ -14,4 +15,16 @@ generated_types("generated_polkadot_substrate_rpc_responses") {
     "//brave/components/brave_wallet/browser:test_support",
     "//brave/components/brave_wallet/browser:unit_tests",
   ]
+}
+
+rust_static_library("polkadot_extrinsic_rs") {
+  visibility = [ "//brave/components/brave_wallet/browser:*" ]
+
+  crate_name = "polkadot_extrinsic"
+  crate_root = "polkadot_extrinsic.rs"
+  allow_unsafe = true
+  sources = [ "polkadot_extrinsic.rs" ]
+  cxx_bindings = [ "polkadot_extrinsic.rs" ]
+
+  deps = [ "//brave/third_party/rust/parity_scale_codec/v3:lib" ]
 }
