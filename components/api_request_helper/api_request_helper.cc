@@ -162,10 +162,6 @@ std::string APIRequestResult::SerializeBodyToString() const {
   return safe_json;
 }
 
-std::string APIRequestResult::TakeErrorMessage() && {
-  return std::move(error_message_);
-}
-
 APIRequestHelper::APIRequestHelper(
     net::NetworkTrafficAnnotationTag annotation_tag,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
@@ -446,7 +442,6 @@ void APIRequestHelper::URLLoaderHandler::OnResponse(
   APIRequestResult result = ToAPIRequestResult(std::move(url_loader_));
 
   if (!response_body) {
-    result.error_message_ = "No response";
     std::move(result_callback_).Run(std::move(result));
     return;
   }
@@ -455,7 +450,6 @@ void APIRequestHelper::URLLoaderHandler::OnResponse(
     auto converted_body = std::move(conversion_callback).Run(raw_body);
     if (!converted_body) {
       result.response_code_ = 422;
-      result.error_message_ = "Body conversion failed";
       std::move(result_callback_).Run(std::move(result));
       return;
     }
@@ -486,13 +480,11 @@ void APIRequestHelper::URLLoaderHandler::OnParseJsonResponse(
       DEBUG_ALIAS_FOR_CSTR(result_str, result_value.error().c_str(), 1024);
       base::debug::DumpWithoutCrashing();
     }
-    result.error_message_ = std::move(result_value).error();
     std::move(result_callback_).Run(std::move(result));
     return;
   }
   if (!result_value.value().is_dict() && !result_value.value().is_list()) {
     VLOG(1) << "Response validation error: Invalid top-level type";
-    result.error_message_ = "Response validation error: Invalid top-level type";
     std::move(result_callback_).Run(std::move(result));
     return;
   }
