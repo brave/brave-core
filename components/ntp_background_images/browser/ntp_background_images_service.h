@@ -57,7 +57,8 @@ class NTPBackgroundImagesService {
     virtual ~Observer() = default;
   };
 
-  static void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
+  static void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry);
+  static void MigrateObsoleteLocalStatePrefs(PrefService* local_state);
 
   NTPBackgroundImagesService(
       variations::VariationsService* variations_service,
