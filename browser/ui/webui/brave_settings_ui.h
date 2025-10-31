@@ -6,8 +6,6 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_BRAVE_SETTINGS_UI_H_
 #define BRAVE_BROWSER_UI_WEBUI_BRAVE_SETTINGS_UI_H_
 
-#include <memory>
-
 #include "brave/components/ai_chat/core/common/mojom/customization_settings.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/settings_helper.mojom.h"
 #include "brave/components/brave_account/mojom/brave_account_settings_handler.mojom.h"
@@ -24,10 +22,6 @@
 #endif
 
 class BraveSettingsUI;
-
-namespace brave_account {
-class BraveAccountSettingsHandler;
-}
 
 namespace content {
 class WebUIDataSource;
@@ -78,10 +72,6 @@ class BraveSettingsUI : public settings::SettingsUI {
   void BindInterface(
       mojo::PendingReceiver<brave_origin::mojom::BraveOriginSettingsHandler>
           pending_receiver);
-
- private:
-  std::unique_ptr<brave_account::BraveAccountSettingsHandler>
-      brave_account_settings_handler_;
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_SETTINGS_UI_H_

@@ -12,6 +12,9 @@ import {
 import { getCss } from './brave_account_row.css.js'
 import { getHtml } from './brave_account_row.html.js'
 
+export type State =
+  | 'LOGGED_OUT' | 'VERIFICATION' | 'LOGGED_IN'
+
 export class SettingsBraveAccountRow extends CrLitElement {
   static get is() {
     return 'settings-brave-account-row'
@@ -27,7 +30,7 @@ export class SettingsBraveAccountRow extends CrLitElement {
 
   static override get properties() {
     return {
-      signedIn: { type: Boolean, reflect: true },
+      state: { type: Object, reflect: true },
     }
   }
 
@@ -37,7 +40,15 @@ export class SettingsBraveAccountRow extends CrLitElement {
 
   private browserProxy: BraveAccountBrowserProxy =
     BraveAccountBrowserProxyImpl.getInstance()
-  protected accessor signedIn: boolean = false
+  protected accessor state: State = 'LOGGED_OUT'
+
+  override connectedCallback() {
+    super.connectedCallback()
+    this.browserProxy.callbackRouter.onVerificationTokenChanged.addListener(
+      () => { this.state = 'VERIFICATION'; });
+    this.browserProxy.callbackRouter.onAuthenticationTokenChanged.addListener(
+      () => { this.state = 'LOGGED_IN'; });
+  }
 }
 
 declare global {
