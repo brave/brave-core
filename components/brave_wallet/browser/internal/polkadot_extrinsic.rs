@@ -7,8 +7,11 @@ use ffi::CxxPolkadotDecodeUnsignedTransfer;
 use parity_scale_codec::{Compact, Decode, Encode};
 use std::fmt;
 
-const EXTRINSIC_VERSION: u8 = 4;
-const MULTIADDRESS_TYPE: u8 = 0;
+const SIGNED_EXTRINSIC: u8 = 0x80;
+const EXTRINSIC_VERSION: u8 = 0x04;
+const MULTIADDRESS_TYPE: u8 = 0x00;
+const SR25519_SIGNATURE: u8 = 0x01;
+const PERIOD: u32 = 64;
 
 // "Balances" pallet lives at index 4:
 // https://github.com/polkadot-js/api/blob/f45dfc72ec320cab7d69f08010c9921d2a21065f/packages/types-support/src/metadata/v15/kusama-json.json#L921
@@ -75,6 +78,28 @@ mod ffi {
             chain_metadata: &CxxPolkadotChainMetadata,
             mut input: &[u8],
         ) -> Box<CxxPolkadotDecodeUnsignedTransferResult>;
+
+        fn generate_extrinsic_signature_payload(
+            chain_metadata: &CxxPolkadotChainMetadata,
+            sender_nonce: u32,
+            send_amount_bytes: &mut [u8; 16],
+            recipient: &[u8; 32],
+            spec_version: u32,
+            transaction_version: u32,
+            block_number: u32,
+            genesis_hash: &[u8; 32],
+            block_hash: &[u8; 32],
+        ) -> Vec<u8>;
+
+        fn make_signed_extrinsic(
+            chain_metadata: &CxxPolkadotChainMetadata,
+            sender_pubkey: &[u8; 32],
+            recipient_pubkey: &[u8; 32],
+            send_amount_bytes: &[u8; 16],
+            signature: &[u8; 64],
+            block_number: u32,
+            sender_nonce: u32,
+        ) -> Vec<u8>;
     }
 }
 
@@ -244,4 +269,157 @@ fn decode_unsigned_transfer_allow_death(
 ) -> Box<CxxPolkadotDecodeUnsignedTransferResult> {
     let r = decode_unsigned_transfer_allow_death_impl(chain_metadata, input);
     Box::new(CxxPolkadotDecodeUnsignedTransferResult(r))
+}
+
+// Mortality tells the blockchain what range of blocks an extrinsic is valid
+// for. Validators use the period and phase to find the block hash included in
+// the payload, which they use to determine signature validity (and thus
+// transaction validity).
+//
+// We use a period of 64, as send thransactions should be of "high priority" and
+// thus subject to smaller mortality windows, i.e. we don't want an extrinsic
+// sitting in the memory pool while the world outside it continues to change.
+//
+// For information on how mortality is encoded, see the documentation at:
+// https://spec.polkadot.network/id-extrinsics#id-mortality
+//
+// Reference implementation:
+// https://github.com/polkadot-js/api/blob/9f6a9c53e6822d20e8556649c9b68d31cffc465d/packages/types/src/extrinsic/ExtrinsicEra.ts#L179-L204
+fn scale_encode_mortality(number: u32, period: u32) -> [u8; 2] {
+    let phase = number % period;
+    let factor = (period >> 12).max(1);
+
+    let left = 15.min((period.trailing_zeros() - 1).max(1));
+    let right = (phase / factor) << 4;
+    let encoded = u16::try_from(left | right).unwrap();
+
+    [(encoded & 0xff) as u8, (encoded >> 8) as u8]
+}
+
+// The definition for the extrinsic signature can be found here:
+// https://spec.polkadot.network/id-extrinsics#defn-extrinsic-signature
+//
+// Extrinsic signatures are created using the following data:
+// P = { Raw if ||Raw|| <= 256, Blake2(Raw) if ||Raw|| > 256 }
+// Raw = (M_i, F_i(m), E, R_v, F_v, H_h(G), H_h(B))
+//
+// M_i = module indicator of the extrinsic (i.e. System, Balances, ...).
+// F_i(m) = function indicator of the module (i.e. call index, parameters).
+// E = extra data (mortality, nonce of sender, tip, mode).
+// R_v = spec_version of the runtime (fetched via state_getRuntimeVersion).
+// F_v = transaction version of the runtime (fetched via
+//       state_getRuntimeVersion).
+// H_h(G) = block hash of the genesis block.
+// H_h(B) = block hash of the block which starts the extrinsic's mortality.
+//
+// We return a binary blob containing all of these fields so that it's suitable
+// for cryptographic signing.
+//
+// The formal spec doesn't define it but here:
+// https://wiki.polkadot.com/learn/learn-transaction-construction/
+// we learn that metadata hashing can be applied to extrinsics but we disable
+// this verification by setting the mode to 0.
+// See also:
+// https://github.com/polkadot-fellows/RFCs/blob/85ca3ff275ded2e690c4c175d5333d12b139d863/text/0078-merkleized-metadata.md
+fn generate_extrinsic_signature_payload(
+    chain_metadata: &CxxPolkadotChainMetadata,
+    sender_nonce: u32,
+    send_amount_bytes: &mut [u8; 16],
+    recipient: &[u8; 32],
+    spec_version: u32,
+    transaction_version: u32,
+    block_number: u32,
+    genesis_hash: &[u8; 32],
+    block_hash: &[u8; 32],
+) -> Vec<u8> {
+    let CxxPolkadotChainMetadata { balances_pallet_index, transfer_allow_death_call_index } =
+        chain_metadata;
+
+    let mut buf = Vec::<u8>::with_capacity(256);
+
+    buf.extend_from_slice(&[
+        /* Write module indicator, M_i. */
+        *balances_pallet_index,
+        /* Write function indicator (call index + call parameters). */
+        *transfer_allow_death_call_index,
+        MULTIADDRESS_TYPE,
+    ]);
+
+    buf.extend_from_slice(recipient);
+    Compact(u128::from_le_bytes(*send_amount_bytes)).encode_to(&mut buf);
+
+    // Write extra data, E.
+    buf.extend_from_slice(&scale_encode_mortality(block_number, PERIOD));
+    Compact(sender_nonce).encode_to(&mut buf);
+    buf.extend_from_slice(&[
+        0x00, /* tip */
+        0x00, /* mode (disable metadata hash verification) */
+    ]);
+
+    // Write R_v.
+    buf.extend_from_slice(&spec_version.to_le_bytes());
+
+    // Write F_v.
+    buf.extend_from_slice(&transaction_version.to_le_bytes());
+
+    // Write H_h(G).
+    buf.extend_from_slice(genesis_hash);
+
+    // Write H_h(B)
+    buf.extend_from_slice(block_hash);
+
+    // Write metadata hash (nullary).
+    buf.extend_from_slice(&[0x00]);
+
+    // If our payload exceeds 256 bytes, hash it down to 32 bytes as demonstarted by
+    // the polkadot-js implementation here:
+    // https://github.com/polkadot-js/api/blob/9f6a9c53e6822d20e8556649c9b68d31cffc465d/packages/types/src/extrinsic/util.ts#L10-L17
+    // https://github.com/polkadot-js/common/blob/bf63a0ebf655312f54aa37350d244df3d05e4e32/packages/util-crypto/src/blake2/asU8a.ts#L25-L34
+    if buf.len() > 256 {
+        let hash = blake2b_simd::Params::new().hash_length(32).hash(&buf);
+        buf.clear();
+        buf.extend_from_slice(hash.as_bytes());
+    }
+
+    assert!(buf.len() <= 256);
+    buf
+}
+
+fn make_signed_extrinsic(
+    chain_metadata: &CxxPolkadotChainMetadata,
+    sender_pubkey: &[u8; 32],
+    recipient_pubkey: &[u8; 32],
+    send_amount_bytes: &[u8; 16],
+    signature: &[u8; 64],
+    block_number: u32,
+    sender_nonce: u32,
+) -> Vec<u8> {
+    let CxxPolkadotChainMetadata { balances_pallet_index, transfer_allow_death_call_index } =
+        chain_metadata;
+
+    let mut buf = Vec::<u8>::with_capacity(512);
+
+    buf.extend_from_slice(&[SIGNED_EXTRINSIC | EXTRINSIC_VERSION, MULTIADDRESS_TYPE]);
+    buf.extend_from_slice(sender_pubkey);
+    buf.extend_from_slice(&[SR25519_SIGNATURE]);
+    buf.extend_from_slice(signature);
+    buf.extend_from_slice(&scale_encode_mortality(block_number, PERIOD));
+    Compact(sender_nonce).encode_to(&mut buf);
+    buf.extend_from_slice(&[0x00 /* tip */, 0x00 /* mode */]);
+
+    buf.extend_from_slice(&[
+        *balances_pallet_index,
+        *transfer_allow_death_call_index,
+        MULTIADDRESS_TYPE,
+    ]);
+
+    buf.extend_from_slice(recipient_pubkey);
+
+    Compact(u128::from_le_bytes(*send_amount_bytes)).encode_to(&mut buf);
+
+    Compact(buf.len() as u64).using_encoded(|encoded_len| {
+        buf.splice(0..0, encoded_len.iter().copied());
+    });
+
+    buf
 }
