@@ -71,23 +71,6 @@ struct Message {
   std::string text;
 };
 
-template <typename Reply>
-std::string GetErrorMessage(const Reply& r) {
-  if (r.has_value()) {
-    return {};
-  }
-  if (const auto* network =
-          std::get_if<brave_account::endpoint_client::NetworkError>(
-              &r.error())) {
-    return network->error_message;
-  } else if (const auto* parse =
-                 std::get_if<brave_account::endpoint_client::ParseError>(
-                     &r.error())) {
-    return parse->error_message;
-  }
-  return "Invalid endpoint error";
-}
-
 inline constexpr char kRequestKey[] = "request";
 inline constexpr char kResponseKey[] = "response";
 inline constexpr char kErrorKey[] = "error";
@@ -224,7 +207,7 @@ INSTANTIATE_TEST_SUITE_P(
                  .server_reply = R"({"invalid": error})",
                  .expected_reply = base::unexpected(
                      ParseError("expected value at line 1 column 13"))},
-        TestCase{.request = TestRequest{"invalid error structure"},
+        TestCase{.request = TestRequest{{"invalid error structure"}},
                  .with_headers = false,
                  .status_code = net::HTTP_UNAUTHORIZED,
                  .server_reply = R"({"invalid": "error"})",
