@@ -44,6 +44,12 @@ namespace {
 constexpr uint64_t zero = 0;
 constexpr double maxUInt64AsDouble = static_cast<double>(UINT64_MAX);
 
+constexpr int kFarbledUserAgentMaxExtraSpaces = 5;
+
+// acceptable letters for generating random strings
+constexpr std::string_view kLettersForRandomStrings =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
 inline uint64_t lfsr_next(uint64_t v) {
   return ((v >> 1) | (((v << 62) ^ (v << 61)) & (~(~zero << 63) << 62)));
 }
@@ -94,13 +100,6 @@ const blink::BlinkStorageKey* GetStorageKey(blink::ExecutionContext* context) {
 namespace brave {
 
 constexpr char BraveSessionCache::kSupplementName[] = "BraveSessionCache";
-constexpr int kFarbledUserAgentMaxExtraSpaces = 5;
-
-// acceptable letters for generating random strings
-const char kLettersForRandomStrings[] =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-// length of kLettersForRandomStrings array
-const size_t kLettersForRandomStringsLength = 62;
 
 blink::WebContentSettingsClient* GetContentSettingsClientFor(
     ExecutionContext* context) {
@@ -350,21 +349,20 @@ void BraveSessionCache::PerturbPixelsInternal(base::span<uint8_t> data) {
 }
 
 blink::String BraveSessionCache::GenerateRandomString(
-    std::string seed,
+    std::string_view seed,
     blink::wtf_size_t length) {
   uint8_t key[32];
   crypto::HMAC h(crypto::HMAC::SHA256);
   const auto farbling_token_bytes =
       default_shields_settings_->farbling_token.AsBytes();
-  CHECK(h.Init(farbling_token_bytes.data(), farbling_token_bytes.size()));
-  CHECK(h.Sign(seed, key, sizeof key));
+  CHECK(h.Init(farbling_token_bytes));
+  CHECK(h.Sign(base::as_byte_span(seed), key));
   // initial PRNG seed based on session key and passed-in seed string
-  uint64_t v = *reinterpret_cast<uint64_t*>(key);
+  uint64_t v = base::U64FromNativeEndian(base::span(key).first<8u>());
   base::span<UChar> destination;
   blink::String value = blink::String::CreateUninitialized(length, destination);
   for (auto& c : destination) {
-    c = UNSAFE_TODO(
-        kLettersForRandomStrings[v % kLettersForRandomStringsLength]);
+    c = kLettersForRandomStrings.at(v % kLettersForRandomStrings.size());
     v = lfsr_next(v);
   }
   return value;
