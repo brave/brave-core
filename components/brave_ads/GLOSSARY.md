@@ -7,7 +7,7 @@ A place to define all specific terms and vocabulary for the Brave Ads component,
 | Ad unit  | An ad unit is displayed to the user. Also known as an ad placement.  |
 | Advertiser  | An advertiser is someone or a company that promotes products, services, or ideas through various mediums to reach and persuade potential customers or target audiences.  |
 | Advertisement  | An advertisement is a promotional message or content created to promote a product, service, or idea to a target audience, also known as an Ad.  |
-| Analytics  | Examine data to uncover meaningful insights, trends, and patterns that can inform decision-making and improve understanding of a given subject or domain. See P3A.  |
+| Analytics  | Examine data to uncover meaningful insights, trends, and patterns that can inform decision-making and improve understanding of a given subject or domain.  |
 | Anti-targeting  | Exclude users from receiving targeted advertisements based on specific attributes such as demographics, interests, or behaviors.  |
 | Basic Attention Token  | See the [whitepaper](https://basicattentiontoken.org/static-assets/documents/BasicAttentionTokenWhitePaper-4.pdf). Also known as BAT.  |
 | Behavioral  | Behavioral advertising targets ads based on the user's previous online behavior, such as browsing history and interactions, to deliver relevant and personalized advertisements.  |
@@ -29,7 +29,6 @@ A place to define all specific terms and vocabulary for the Brave Ads component,
 | Impression  | An impression is when an ad is served or viewed by a user.  |
 | Issuers  | Refers to public keys used to sign privacy-preserving Blinded Tokens. See [challenge-bypass-ristretto](https://github.com/brave-intl/challenge-bypass-ristretto) and [privacy pass cryptographic protocol](https://www.petsymposium.org/2018/files/papers/issue3/popets-2018-0026.pdf).  |
 | Non-Brave Rewards user  | Refers to a user who has not joined Brave Rewards and will not be rewarded BAT for viewing ads.  |
-| P3A  | Privacy-Preserving Product Analytics. See [P3A](https://brave.com/privacy-preserving-product-analytics-p3a/).  |
 | Pacing  | Rate at which an ad campaign uses up its pre-set number of impressions.  |
 | Page land  | A user's arrival on the advertiser's website, i.e., the pages after the user clicks on an ad, also known as a site visit.  |
 | Placement  | The location at which an ad is displayed to the user. Also known as an ad unit.  |

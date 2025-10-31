@@ -141,23 +141,6 @@ TEST_F(
 }
 
 TEST_F(BraveAdsAccountUtilTest,
-       DoNotAllowNewTabPageAdDepositsForNonRewardsUserWhenMetricTypeIsP3A) {
-  // Arrange
-  test::DisableBraveRewards();
-
-  UpdateReportMetricState(test::kCreativeInstanceId,
-                          mojom::NewTabPageAdMetricType::kP3A);
-
-  // Act & Assert
-  for (int i = 0; i < static_cast<int>(mojom::ConfirmationType::kMaxValue);
-       ++i) {
-    EXPECT_FALSE(IsAllowedToDeposit(test::kCreativeInstanceId,
-                                    mojom::AdType::kNewTabPageAd,
-                                    static_cast<mojom::ConfirmationType>(i)));
-  }
-}
-
-TEST_F(BraveAdsAccountUtilTest,
        DoNotAllowNotificationAdDepositsForNonRewardsUser) {
   // Arrange
   test::DisableBraveRewards();

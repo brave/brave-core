@@ -39,18 +39,16 @@ namespace brave_ads {
 
 namespace {
 
-constexpr std::string_view kUndefinedAdMetricType;
-constexpr std::string_view kDisabledAdMetricType = "disabled";
-constexpr std::string_view kConfirmationAdMetricType = "confirmation";
-constexpr std::string_view kP3AAdMetricType = "p3a";
+constexpr char kUndefinedAdMetricType[] = "";
+constexpr char kDisabledAdMetricType[] = "disabled";
+constexpr char kConfirmationAdMetricType[] = "confirmation";
 
 constexpr auto kStringToMojomMap =
     base::MakeFixedFlatMap<std::string_view, mojom::NewTabPageAdMetricType>(
         {{kUndefinedAdMetricType, mojom::NewTabPageAdMetricType::kUndefined},
          {kDisabledAdMetricType, mojom::NewTabPageAdMetricType::kDisabled},
          {kConfirmationAdMetricType,
-          mojom::NewTabPageAdMetricType::kConfirmation},
-         {kP3AAdMetricType, mojom::NewTabPageAdMetricType::kP3A}});
+          mojom::NewTabPageAdMetricType::kConfirmation}});
 
 constexpr auto kMojomToStringMap =
     base::MakeFixedFlatMap<mojom::NewTabPageAdMetricType, std::string_view>({
@@ -58,7 +56,6 @@ constexpr auto kMojomToStringMap =
         {mojom::NewTabPageAdMetricType::kDisabled, kDisabledAdMetricType},
         {mojom::NewTabPageAdMetricType::kConfirmation,
          kConfirmationAdMetricType},
-        {mojom::NewTabPageAdMetricType::kP3A, kP3AAdMetricType},
     });
 
 // Schema keys.

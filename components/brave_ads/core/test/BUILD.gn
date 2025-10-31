@@ -674,7 +674,6 @@ source_set("brave_ads_unit_tests") {
     "//brave/components/l10n/common",
     "//brave/components/l10n/common:test_support",
     "//brave/components/ntp_background_images/common",
-    "//brave/components/p3a",
     "//brave/components/version_info",
     "//brave/vendor/bat-native-tweetnacl:tweetnacl",
     "//components/variations",

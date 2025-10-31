@@ -142,15 +142,9 @@ void ViewCounterService::RecordViewedAdEvent(
     const std::string& campaign_id,
     const std::string& creative_instance_id,
     brave_ads::mojom::NewTabPageAdMetricType mojom_ad_metric_type) {
-  if (ntp_p3a_helper_ &&
-      mojom_ad_metric_type == brave_ads::mojom::NewTabPageAdMetricType::kP3A) {
-    ntp_p3a_helper_->RecordView(creative_instance_id, campaign_id);
-  }
   branded_new_tab_count_state_->AddDelta(1);
   UpdateP3AValues();
 
-  // Ads component skips confirmations for P3A and disabled metrics. Still
-  // trigger the ad event so dependent logic runs.
   MaybeTriggerNewTabPageAdEvent(
       placement_id, creative_instance_id, mojom_ad_metric_type,
       brave_ads::mojom::NewTabPageAdEventType::kViewedImpression);
@@ -161,15 +155,6 @@ void ViewCounterService::RecordClickedAdEvent(
     const std::string& creative_instance_id,
     const std::string& /*target_url*/,
     brave_ads::mojom::NewTabPageAdMetricType mojom_ad_metric_type) {
-  if (ntp_p3a_helper_ &&
-      mojom_ad_metric_type == brave_ads::mojom::NewTabPageAdMetricType::kP3A) {
-    ntp_p3a_helper_->RecordNewTabPageAdEvent(
-        brave_ads::mojom::NewTabPageAdEventType::kClicked,
-        creative_instance_id);
-  }
-
-  // Ads component skips confirmations for P3A and disabled metrics. Still
-  // trigger the ad event so dependent logic runs.
   MaybeTriggerNewTabPageAdEvent(
       placement_id, creative_instance_id, mojom_ad_metric_type,
       brave_ads::mojom::NewTabPageAdEventType::kClicked);

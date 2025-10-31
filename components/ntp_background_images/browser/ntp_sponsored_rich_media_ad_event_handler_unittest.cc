@@ -41,16 +41,7 @@ class NTPSponsoredRichMediaAdEventHandlerTest : public testing::Test {
                                    mojom_ad_metric_type, mojom_ad_event_type,
                                    /*callback=*/::testing::_));
 
-      if (mojom_ad_metric_type ==
-          brave_ads::mojom::NewTabPageAdMetricType::kP3A) {
-        EXPECT_CALL(
-            *ntp_p3a_helper,
-            RecordNewTabPageAdEvent(mojom_ad_event_type, kCreativeInstanceId));
-      } else {
-        EXPECT_CALL(*ntp_p3a_helper, RecordNewTabPageAdEvent).Times(0);
-      }
     } else {
-      EXPECT_CALL(*ntp_p3a_helper, RecordNewTabPageAdEvent).Times(0);
       EXPECT_CALL(ads_service, TriggerNewTabPageAdEvent).Times(0);
     }
 
@@ -59,42 +50,6 @@ class NTPSponsoredRichMediaAdEventHandlerTest : public testing::Test {
         mojom_ad_event_type);
   }
 };
-
-TEST_F(NTPSponsoredRichMediaAdEventHandlerTest,
-       ReportAdEventWhenMetricTypeIsP3A) {
-  VerifyReportAdEventExpectation(
-      brave_ads::mojom::NewTabPageAdEventType::kClicked,
-      brave_ads::mojom::NewTabPageAdMetricType::kP3A,
-      /*should_report=*/true);
-  VerifyReportAdEventExpectation(
-      brave_ads::mojom::NewTabPageAdEventType::kInteraction,
-      brave_ads::mojom::NewTabPageAdMetricType::kP3A,
-      /*should_report=*/true);
-  VerifyReportAdEventExpectation(
-      brave_ads::mojom::NewTabPageAdEventType::kMediaPlay,
-      brave_ads::mojom::NewTabPageAdMetricType::kP3A,
-      /*should_report=*/true);
-  VerifyReportAdEventExpectation(
-      brave_ads::mojom::NewTabPageAdEventType::kMedia25,
-      brave_ads::mojom::NewTabPageAdMetricType::kP3A,
-      /*should_report=*/true);
-  VerifyReportAdEventExpectation(
-      brave_ads::mojom::NewTabPageAdEventType::kMedia100,
-      brave_ads::mojom::NewTabPageAdMetricType::kP3A,
-      /*should_report=*/true);
-}
-
-TEST_F(NTPSponsoredRichMediaAdEventHandlerTest,
-       DoNotReportAdEventWhenMetricTypeIsP3a) {
-  VerifyReportAdEventExpectation(
-      brave_ads::mojom::NewTabPageAdEventType::kServedImpression,
-      brave_ads::mojom::NewTabPageAdMetricType::kP3A,
-      /*should_report=*/false);
-  VerifyReportAdEventExpectation(
-      brave_ads::mojom::NewTabPageAdEventType::kViewedImpression,
-      brave_ads::mojom::NewTabPageAdMetricType::kP3A,
-      /*should_report=*/false);
-}
 
 TEST_F(NTPSponsoredRichMediaAdEventHandlerTest,
        ReportAdEventWhenMetricTypeIsConfirmation) {
