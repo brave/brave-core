@@ -138,7 +138,7 @@ const RefreshButton = ({
         <LoadingIcon />
       ) : (
         <Button
-          title={getLocale('emailAliasesRefreshButtonTitle')}
+          title={getLocale(S.SETTINGS_EMAIL_ALIASES_REFRESH_BUTTON_TITLE)}
           onClick={onClick}
           kind='plain'
         >
@@ -175,27 +175,31 @@ export const DeleteAliasModal = ({
   }
   return (
     <ModalCol>
-      <ModalTitle>{getLocale('emailAliasesDeleteAliasTitle')}</ModalTitle>
+      <ModalTitle>
+        {getLocale(S.SETTINGS_EMAIL_ALIASES_DELETE_ALIAS_TITLE)}
+      </ModalTitle>
       <ModalDescription>
-        {formatLocale('emailAliasesDeleteAliasDescription', {
+        {formatLocale(S.SETTINGS_EMAIL_ALIASES_DELETE_ALIAS_DESCRIPTION, {
           $1: <b>{alias.email}</b>,
         })}
       </ModalDescription>
-      <Alert type='warning'>{getLocale('emailAliasesDeleteWarning')}</Alert>
+      <Alert type='warning'>
+        {getLocale(S.SETTINGS_EMAIL_ALIASES_DELETE_WARNING)}
+      </Alert>
       <ButtonRow>
         <span>
           <Button
             onClick={onReturnToMain}
             kind='plain-faint'
           >
-            {getLocale('emailAliasesCancelButton')}
+            {getLocale(S.SETTINGS_EMAIL_ALIASES_CANCEL_BUTTON)}
           </Button>
           <Button
             onClick={onDeleteAlias}
             kind='filled'
             isDisabled={deleting}
           >
-            {getLocale('emailAliasesDeleteAliasButton')}
+            {getLocale(S.SETTINGS_EMAIL_ALIASES_DELETE_ALIAS_BUTTON)}
           </Button>
         </span>
       </ButtonRow>
@@ -203,6 +207,17 @@ export const DeleteAliasModal = ({
     </ModalCol>
   )
 }
+
+export enum EmailAliasModalResultType {
+  AliasCreated,
+  ShouldManageAliases,
+  Cancelled,
+}
+
+export type EmailAliasModalResult =
+  | { type: EmailAliasModalResultType.Cancelled }
+  | { type: EmailAliasModalResultType.ShouldManageAliases }
+  | { type: EmailAliasModalResultType.AliasCreated; email: string }
 
 export const EmailAliasModal = ({
   onReturnToMain,
@@ -213,7 +228,7 @@ export const EmailAliasModal = ({
   emailAliasesService,
   bubble,
 }: {
-  onReturnToMain: () => void
+  onReturnToMain: (action: EmailAliasModalResult) => void
   editing: boolean
   editAlias?: Alias
   bubble?: boolean
@@ -246,7 +261,10 @@ export const EmailAliasModal = ({
         generateAliasResult.aliasEmail,
         proposedNote,
       )
-      onReturnToMain()
+      onReturnToMain({
+        type: EmailAliasModalResultType.AliasCreated,
+        email: generateAliasResult.aliasEmail,
+      })
     } catch (errorMessage) {
       setUpdateErrorMessage(errorMessage as string)
     }
@@ -286,20 +304,24 @@ export const EmailAliasModal = ({
     <ModalCol>
       <ModalTitle>
         {!editing
-          ? getLocale('emailAliasesCreateAliasTitle')
-          : getLocale('emailAliasesEditAliasTitle')}
+          ? getLocale(S.SETTINGS_EMAIL_ALIASES_CREATE_ALIAS_TITLE)
+          : getLocale(S.SETTINGS_EMAIL_ALIASES_EDIT_ALIAS_TITLE)}
       </ModalTitle>
       {bubble && (
         <ModalDescription>
-          {getLocale('emailAliasesBubbleDescription')}
+          {getLocale(S.SETTINGS_EMAIL_ALIASES_BUBBLE_DESCRIPTION)}
         </ModalDescription>
       )}
       {bubble && limitReached ? (
-        <WarningText>{getLocale('emailAliasesBubbleLimitReached')}</WarningText>
+        <WarningText>
+          {getLocale(S.SETTINGS_EMAIL_ALIASES_BUBBLE_LIMIT_REACHED)}
+        </WarningText>
       ) : (
         <ModalCol>
           <ModalSectionCol>
-            <ModalLabel>{getLocale('emailAliasesAliasLabel')}</ModalLabel>
+            <ModalLabel>
+              {getLocale(S.SETTINGS_EMAIL_ALIASES_ALIAS_LABEL)}
+            </ModalLabel>
             <GeneratedEmailContainer>
               <div data-testid='generated-email'>
                 {generateAliasResult.aliasEmail}
@@ -316,16 +338,23 @@ export const EmailAliasModal = ({
               <Alert>{generateAliasResult.errorMessage}</Alert>
             )}
             <ModalDetails>
-              {formatLocale('emailAliasesEmailsWillBeForwardedTo', {
-                $1: mainEmail,
-              })}
+              {formatLocale(
+                S.SETTINGS_EMAIL_ALIASES_EMAILS_WILL_BE_FORWARDED_TO,
+                {
+                  $1: mainEmail,
+                },
+              )}
             </ModalDetails>
           </ModalSectionCol>
           <ModalSectionCol>
-            <ModalLabel>{getLocale('emailAliasesNoteLabel')}</ModalLabel>
+            <ModalLabel>
+              {getLocale(S.SETTINGS_EMAIL_ALIASES_NOTE_LABEL)}
+            </ModalLabel>
             <NoteInput
               type='text'
-              placeholder={getLocale('emailAliasesEditNotePlaceholder')}
+              placeholder={getLocale(
+                S.SETTINGS_EMAIL_ALIASES_EDIT_NOTE_PLACEHOLDER,
+              )}
               maxlength={255}
               value={proposedNote}
               onInput={(detail) => setProposedNote(detail.value)}
@@ -333,7 +362,7 @@ export const EmailAliasModal = ({
             ></NoteInput>
             {editing && editAlias?.domains && (
               <div>
-                {formatLocale('emailAliasesUsedBy', {
+                {formatLocale(S.SETTINGS_EMAIL_ALIASES_USED_BY, {
                   $1: editAlias?.domains?.join(', '),
                 })}
               </div>
@@ -343,11 +372,25 @@ export const EmailAliasModal = ({
       )}
       <ButtonRow bubble={bubble}>
         <span>
+          {bubble && (
+            <Button
+              onClick={() => {
+                onReturnToMain({
+                  type: EmailAliasModalResultType.ShouldManageAliases,
+                })
+              }}
+              kind='plain'
+            >
+              {getLocale(S.SETTINGS_EMAIL_ALIASES_MANAGE_BUTTON)}
+            </Button>
+          )}
           <Button
-            onClick={onReturnToMain}
+            onClick={() =>
+              onReturnToMain({ type: EmailAliasModalResultType.Cancelled })
+            }
             kind='plain-faint'
           >
-            {getLocale('emailAliasesCancelButton')}
+            {getLocale(S.SETTINGS_EMAIL_ALIASES_CANCEL_BUTTON)}
           </Button>
           <Button
             kind='filled'
@@ -361,8 +404,8 @@ export const EmailAliasModal = ({
             onClick={createOrSave}
           >
             {!editing
-              ? getLocale('emailAliasesCreateAliasButton')
-              : getLocale('emailAliasesSaveAliasButton')}
+              ? getLocale(S.SETTINGS_EMAIL_ALIASES_CREATE_ALIAS_BUTTON)
+              : getLocale(S.SETTINGS_EMAIL_ALIASES_SAVE_ALIAS_BUTTON)}
           </Button>
         </span>
       </ButtonRow>

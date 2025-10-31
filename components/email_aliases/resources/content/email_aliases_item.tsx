@@ -87,7 +87,7 @@ const CopyToast = ({
     >
       {copied ? (
         <Tooltip
-          text={getLocale('emailAliasesCopiedToClipboard')}
+          text={getLocale(S.SETTINGS_EMAIL_ALIASES_COPIED_TO_CLIPBOARD)}
           mode='mini'
         >
           {children}
@@ -111,7 +111,9 @@ export const AliasItem = ({
   <AliasItemRow>
     <Col>
       <CopyToast text={alias.email}>
-        <EmailContainer title={getLocale('emailAliasesClickToCopyAlias')}>
+        <EmailContainer
+          title={getLocale(S.SETTINGS_EMAIL_ALIASES_CLICK_TO_COPY_ALIAS)}
+        >
           {alias.email}
         </EmailContainer>
       </CopyToast>
@@ -120,7 +122,7 @@ export const AliasItem = ({
           {alias.note}
           {alias.domains && alias.note && <span>. </span>}
           {alias.domains
-            && formatLocale('emailAliasesUsedBy', {
+            && formatLocale(S.SETTINGS_EMAIL_ALIASES_USED_BY, {
               $1: alias.domains?.join(', '),
             })}
         </AliasAnnotation>
@@ -133,7 +135,7 @@ export const AliasItem = ({
       >
         <Button
           fab
-          title={getLocale('emailAliasesClickToCopyAlias')}
+          title={getLocale(S.SETTINGS_EMAIL_ALIASES_CLICK_TO_COPY_ALIAS)}
           kind='plain-faint'
           size='medium'
         >
@@ -152,12 +154,12 @@ export const AliasItem = ({
         </Button>
         <AliasMenuItem
           iconName='edit-pencil'
-          text={getLocale('emailAliasesEdit')}
+          text={getLocale(S.SETTINGS_EMAIL_ALIASES_EDIT)}
           onClick={onEdit}
         />
         <AliasMenuItem
           iconName='trash'
-          text={getLocale('emailAliasesDelete')}
+          text={getLocale(S.SETTINGS_EMAIL_ALIASES_DELETE)}
           onClick={onDelete}
         />
       </ButtonMenu>

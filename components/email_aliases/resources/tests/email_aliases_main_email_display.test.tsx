@@ -31,7 +31,9 @@ describe('MainEmailDisplay', () => {
 
     expect(screen.getByText('test@example.com')).toBeInTheDocument()
 
-    const signOutButton = screen.getByTitle('emailAliasesSignOutTitle')
+    const signOutButton = screen.getByTitle(
+      S.SETTINGS_EMAIL_ALIASES_SIGN_OUT_TITLE,
+    )
 
     await act(async () => {
       clickLeoButton(signOutButton)
