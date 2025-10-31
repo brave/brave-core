@@ -1,13 +1,2 @@
 # This file contains supported CI features in the current checkout to
 # conditionally enable them on CI. Use lower_snake_case naming.
-
-gn_check_supports_checkdeps_only
-test_report_lists
-android_output_xml
-ios_output_xml
-
-# TODO(https://github.com/brave/brave-browser/issues/48001): Remove this CI
-# feature when `1.82.x` is retired.
-brave_all_build
-
-android_component_unittests
