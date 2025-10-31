@@ -5,6 +5,7 @@
 
 #include "brave/components/tabs/public/brave_tab_strip_collection.h"
 
+#include "base/logging.h"
 #include "base/notimplemented.h"
 #include "brave/components/tabs/public/brave_tab_strip_collection_delegate.h"
 #include "components/tabs/public/tab_collection.h"
@@ -73,6 +74,7 @@ void BraveTabStripCollection::MoveTabRecursive(
     std::optional<tab_groups::TabGroupId> new_group_id,
     bool new_pinned_state) {
   if (delegate_ && delegate_->ShouldHandleTabManipulation()) {
+    LOG(ERROR) << initial_index << " -> " << final_index;
     // delegate_->OnBeforeMoveTabRecursive(initial_index, final_index);
   }
 
@@ -90,9 +92,9 @@ void BraveTabStripCollection::MoveTabsRecursive(
     bool new_pinned_state,
     const std::set<TabCollection::Type>& retain_collection_types) {
   if (delegate_ && delegate_->ShouldHandleTabManipulation()) {
-    TabStripCollection::MoveTabsRecursive(tab_indices, destination_index,
-                                          new_group_id, new_pinned_state,
-                                          retain_collection_types);
+    delegate_->MoveTabsRecursive(tab_indices, destination_index, new_group_id,
+                                 new_pinned_state, retain_collection_types);
+    return;
   }
 
   // TODO(https://github.com/brave/brave-browser/issues/49790) Handle tree tab
