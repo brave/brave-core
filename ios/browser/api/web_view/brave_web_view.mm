@@ -104,11 +104,14 @@ class BraveWebViewHolder : public web::WebStateUserData<BraveWebViewHolder> {
 @end
 
 @interface CWVWebView ()
+@property(nonatomic, readwrite) BOOL loading;
 - (void)resetWebStateWithCoder:(NSCoder*)coder
                WKConfiguration:(WKWebViewConfiguration*)wkConfiguration
                 createdWebView:(WKWebView**)createdWebView;
 - (void)attachSecurityInterstitialHelpersToWebStateIfNecessary;
 - (void)updateCurrentURLs;
+- (void)updateVisibleSSLStatus;
+- (void)updateNavigationAvailability;
 @end
 
 @implementation BraveWebView {
@@ -159,6 +162,17 @@ class BraveWebViewHolder : public web::WebStateUserData<BraveWebViewHolder> {
 - (void)attachSecurityInterstitialHelpersToWebStateIfNecessary {
   [super attachSecurityInterstitialHelpersToWebStateIfNecessary];
   AttachTabHelpers(self.webState);
+}
+
+- (void)updateForOnDownloadCreated {
+  // There is a bug in Chromium where OnNavigationFinished is not called when a
+  // root navigation turns into a download, this workaround ensures that the
+  // info typically updated in that observer method are updated when a download
+  // task is created.
+  [self updateNavigationAvailability];
+  [self updateCurrentURLs];
+  [self updateVisibleSSLStatus];
+  self.loading = self.webState->IsLoading();
 }
 
 - (CWVAutofillController*)autofillController {

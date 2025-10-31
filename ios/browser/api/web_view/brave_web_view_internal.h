@@ -19,6 +19,9 @@ class WebState;
 NS_ASSUME_NONNULL_BEGIN
 
 @interface BraveWebView (Internal)
+/// A method to call when a download task is created to ensure properties are
+/// updated
+- (void)updateForOnDownloadCreated;
 /// The original method marked as unavailable because it is unsafe as it doesn't
 /// ensure the WebViewHolder exists in the WebState
 + (CWVWebView*)webViewForWebState:(web::WebState*)webState NS_UNAVAILABLE;
