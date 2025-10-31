@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/tor/buildflags/buildflags.gni")
+import("//build/config/features.gni")
 import("//extensions/buildflags/buildflags.gni")
 
 assert(enable_tor)
@@ -85,6 +86,10 @@ source_set("browser_tests") {
       "//extensions/browser",
       "//extensions/common",
     ]
+  }
+
+  if (toolkit_views) {
+    deps += [ "//brave/browser/ui/views/location_bar" ]
   }
 
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
