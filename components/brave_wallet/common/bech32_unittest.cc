@@ -110,7 +110,7 @@ TEST(Bech32UnitTest, TestVectors_BIP173) {
     // Test that we can encode/decode it as a bitcoin bech32 address.
     auto decoded = DecodeForBitcoin(address);
     ASSERT_TRUE(decoded);
-    EXPECT_EQ(HexEncodeLower(decoded->data), bytes_hex);
+    EXPECT_EQ(brave_wallet::HexEncodeLower(decoded->data), bytes_hex);
     EXPECT_EQ(EncodeForBitcoin(decoded->data, decoded->hrp, decoded->witness),
               address);
   }
@@ -213,7 +213,7 @@ TEST(Bech32UnitTest, TestVectors_BIP350) {
     // Test that we can encode/decode it as a bitcoin bech32 address.
     auto decoded = DecodeForBitcoin(address);
     ASSERT_TRUE(decoded);
-    EXPECT_EQ(HexEncodeLower(decoded->data), bytes_hex);
+    EXPECT_EQ(brave_wallet::HexEncodeLower(decoded->data), bytes_hex);
     EXPECT_EQ(EncodeForBitcoin(decoded->data, decoded->hrp, decoded->witness),
               address);
   }

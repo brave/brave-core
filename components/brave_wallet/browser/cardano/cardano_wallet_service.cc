@@ -282,7 +282,7 @@ void CardanoWalletService::OnGetTransactionStatus(
     return;
   }
 
-  if (HexEncodeLower(transaction.value()->tx_hash) != txid) {
+  if (brave_wallet::HexEncodeLower(transaction.value()->tx_hash) != txid) {
     std::move(callback).Run(base::unexpected(WalletInternalErrorMessage()));
     return;
   }
