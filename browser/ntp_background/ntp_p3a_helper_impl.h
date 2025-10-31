@@ -17,7 +17,6 @@
 #include "brave/components/ntp_background_images/browser/ntp_p3a_helper.h"
 
 class GURL;
-class PrefRegistrySimple;
 class PrefService;
 
 namespace p3a {
@@ -35,10 +34,6 @@ class NTPP3AHelperImpl : public NTPP3AHelper,
                    NTPBackgroundImagesService* ntp_background_images_service,
                    PrefService* prefs);
   ~NTPP3AHelperImpl() override;
-
-  static void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
-  static void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry);
-  static void MigrateObsoleteLocalStatePrefs(PrefService* local_state);
 
   void RecordView(const std::string& creative_instance_id,
                   const std::string& campaign_id) override;
