@@ -27,9 +27,15 @@ BASE_DECLARE_FEATURE(kBraveV8JitlessMode);
 #if BUILDFLAG(IS_ANDROID)
 BASE_DECLARE_FEATURE(kBraveAndroidDynamicColors);
 BASE_DECLARE_FEATURE(kNewAndroidOnboarding);
+BASE_DECLARE_FEATURE(kBraveFreshNtpAfterIdleExpirement);
 #endif  // BUILDFLAG(IS_ANDROID)
 
 extern const base::FeatureParam<std::string> kBraveDayZeroExperimentVariant;
+
+#if BUILDFLAG(IS_ANDROID)
+extern const base::FeatureParam<std::string>
+    kBraveFreshNtpAfterIdleExpirementVariant;
+#endif  // BUILDFLAG(IS_ANDROID)
 
 }  // namespace features
 

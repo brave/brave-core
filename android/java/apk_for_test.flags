@@ -667,6 +667,25 @@
     <init>(...);
 }
 
+-keep class org.chromium.components.cached_flags.CachedFeatureParam {
+    *** getAllInstances(...);
+}
+
+-keep class org.chromium.components.cached_flags.CachedFlagUtils {
+    *** cacheNativeFlags(...);
+    *** cacheFeatureParams(...);
+    *** setFullListOfFlags(...);
+    *** setFullListOfFeatureParams(...);
+}
+
+-keep class org.chromium.chrome.browser.app.flags.ChromeCachedFlags {
+    <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.app.flags.BraveCachedFlags {
+    <init>(...);
+}
+
 -keep class org.chromium.chrome.browser.logo.LogoMediator {
     <init>(...);
     *** mLogoModel;

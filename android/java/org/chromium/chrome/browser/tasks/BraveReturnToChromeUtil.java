@@ -9,12 +9,29 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import org.chromium.chrome.browser.ChromeInactivityTracker;
+import org.chromium.chrome.browser.ntp.BraveFreshNtpHelper;
 
 public final class BraveReturnToChromeUtil {
     /** Returns whether should show a NTP as the home surface at startup. */
     public static boolean shouldShowNtpAsHomeSurfaceAtStartup(
             Intent intent, Bundle bundle, ChromeInactivityTracker inactivityTracker) {
-        // We do not want to show the NTP at start up in Brave.
+        // When feature is disabled, use Brave's default behavior
+        if (!BraveFreshNtpHelper.isEnabled()) {
+            return false;
+        }
+
+        // Uncomment this when the experiment is ready
+        // When feature is enabled, check the variant
+        // String variant = BraveFreshNtpHelper.getVariant();
+        // switch (variant) {
+        //     case "A":
+        //         // Variant A: Brave's default behavior (no NTP at startup)
+        //         return false;
+        //     default:
+        //         // All other variants: fallback to upstream behavior
+        //         //return ReturnToChromeUtil.shouldShowNtpAsHomeSurfaceAtStartup(
+        //         //        intent, bundle, inactivityTracker);
+        // }
         return false;
     }
 }
