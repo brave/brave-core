@@ -7,7 +7,6 @@ source_set("services") {
   sources = [
     "bat_ads_service_factory_impl.cc",
     "bat_ads_service_factory_impl.h",
-    "service_sandbox_type.h",
   ]
 
   deps = [
