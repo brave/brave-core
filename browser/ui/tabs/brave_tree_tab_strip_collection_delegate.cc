@@ -9,8 +9,11 @@
 
 #include "base/containers/adapters.h"
 #include "base/functional/bind.h"
+#include "base/logging.h"
+#include "base/strings/string_number_conversions.h"
 #include "brave/browser/ui/tabs/tree_tab_model.h"
 #include "brave/components/tabs/public/tree_tab_node_tab_collection.h"
+#include "components/tabs/public/tab_collection.h"
 #include "components/tabs/public/unpinned_tab_collection.h"
 #include "third_party/abseil-cpp/absl/functional/overload.h"
 
@@ -192,4 +195,99 @@ BraveTreeTabStripCollectionDelegate::RemoveTabAtIndexRecursive(
 
   // Just remove the tab.
   return collection_->RemoveTabAtIndexRecursive(index, GetPassKey());
+}
+
+void BraveTreeTabStripCollectionDelegate::MoveTabsRecursive(
+    const std::vector<int>& tab_indices,
+    size_t destination_index,
+    std::optional<tab_groups::TabGroupId> new_group_id,
+    bool new_pinned_state,
+    const std::set<tabs::TabCollection::Type>& retain_collection_types) const {
+  CHECK(!tab_indices.empty());
+  LOG(ERROR) << __FUNCTION__ << " moving tab from " << tab_indices[0] << " to "
+             << destination_index;
+
+  // Find the nearest tree tab node collection of the first tab.
+  auto* moving_tab = collection_->GetTabAtIndexRecursive(tab_indices[0]);
+  CHECK(moving_tab);
+
+  auto find_nearest_parent_tree_node = [&](tabs::TabInterface* tab) {
+    auto* parent_collection =
+        collection_->GetParentCollection(tab, GetPassKey());
+    CHECK(parent_collection);
+    while (parent_collection->type() != tabs::TabCollection::Type::TREE_NODE) {
+      parent_collection = parent_collection->GetParentCollection();
+      CHECK(parent_collection);
+    }
+    return parent_collection;
+  };
+  auto* moving_tab_tree_node = find_nearest_parent_tree_node(moving_tab);
+
+  // Remove the moving tab first from the original parent.
+  auto* moving_tab_parent_node = moving_tab_tree_node->GetParentCollection();
+  while (
+      moving_tab_parent_node->type() != tabs::TabCollection::Type::TREE_NODE &&
+      moving_tab_parent_node->type() != tabs::TabCollection::Type::UNPINNED) {
+    moving_tab_parent_node = moving_tab_parent_node->GetParentCollection();
+    CHECK(moving_tab_parent_node);
+  };
+
+  CHECK(moving_tab_parent_node->ContainsCollection(moving_tab_tree_node));
+  auto unique_moving_tab_collection =
+      moving_tab_parent_node->MaybeRemoveCollection(moving_tab_tree_node);
+
+  // ----------------
+
+  // We'll move the parent collection into the collection of the destination
+  // index.
+  const auto tab_count = collection_->TabCountRecursive();
+  auto* destination_tab = collection_->GetTabAtIndexRecursive(
+      destination_index >= tab_count ? tab_count - 1 : destination_index);
+
+  auto* destination_tree_node = find_nearest_parent_tree_node(destination_tab);
+  // LOG(ERROR) << "destination tab index: "
+  //            << *collection_->GetIndexOfTabRecursive(destination_tab);
+
+  // Insert the parent tree node collection to the destination parent collection
+  // so that the parent tree node could be located before the destination parent
+  // collection.
+  // TODO(sko) Handle the case where we'd like to put the tabs "under the
+  // destination"
+  auto* new_parent_node_for_moving_tab =
+      destination_tree_node->GetParentCollection();
+  CHECK(new_parent_node_for_moving_tab);
+  while (new_parent_node_for_moving_tab->type() !=
+             tabs::TabCollection::Type::TREE_NODE &&
+         new_parent_node_for_moving_tab->type() !=
+             tabs::TabCollection::Type::UNPINNED) {
+    new_parent_node_for_moving_tab =
+        new_parent_node_for_moving_tab->GetParentCollection();
+    CHECK(new_parent_node_for_moving_tab);
+  }
+  if (new_parent_node_for_moving_tab->type() ==
+      tabs::TabCollection::Type::UNPINNED) {
+    LOG(ERROR) << "new parent node for moving tab found: "
+                  "Unpinned ";
+  } else if (new_parent_node_for_moving_tab->type() ==
+             tabs::TabCollection::Type::TREE_NODE) {
+    auto index = collection_->GetIndexOfTabRecursive(
+        static_cast<tabs::TreeTabNodeTabCollection*>(
+            new_parent_node_for_moving_tab)
+            ->current_tab());
+    CHECK(index.has_value());
+    LOG(ERROR) << "new parent node for moving tab found: "
+               << base::NumberToString(*index);
+  } else {
+    NOTREACHED();
+  }
+
+  // Insert the moving tab collection into the new parent collection.
+  auto index = new_parent_node_for_moving_tab->GetIndexOfCollection(
+      destination_tree_node);
+  // TODO() When group/split is involved, this check will fail.
+  CHECK(index.has_value());
+  new_parent_node_for_moving_tab->AddCollection(
+      std::move(unique_moving_tab_collection), *index);
+  LOG(ERROR) << "Result  among tabstrip: "
+             << *collection_->GetIndexOfTabRecursive(moving_tab);
 }
