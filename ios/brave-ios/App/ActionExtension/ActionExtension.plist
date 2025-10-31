@@ -39,7 +39,7 @@
 		<key>NSExtensionPointIdentifier</key>
 		<string>com.apple.ui-services</string>
 		<key>NSExtensionPrincipalClass</key>
-		<string>ActionExtension.ActionToBraveViewController</string>
+		<string>ActionExtension.OpenInBraveViewController</string>
 	</dict>
 </dict>
 </plist>
