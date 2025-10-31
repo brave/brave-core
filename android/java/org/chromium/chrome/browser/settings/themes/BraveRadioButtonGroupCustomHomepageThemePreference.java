@@ -15,7 +15,6 @@ import androidx.preference.PreferenceViewHolder;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.night_mode.R;
 import org.chromium.chrome.browser.night_mode.settings.RadioButtonGroupThemePreference;
-import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.profiles.ProfileManager;
@@ -25,12 +24,9 @@ import org.chromium.components.user_prefs.UserPrefs;
 public class BraveRadioButtonGroupCustomHomepageThemePreference
         extends RadioButtonGroupThemePreference {
 
-    private final NTPBackgroundImagesBridge mNTPBackgroundImagesBridge;
-
     public BraveRadioButtonGroupCustomHomepageThemePreference(Context context, AttributeSet attrs) {
         super(context, attrs);
         Profile mProfile = ProfileManager.getLastUsedRegularProfile();
-        mNTPBackgroundImagesBridge = NTPBackgroundImagesBridge.getInstance(mProfile);
     }
 
     @Override
@@ -39,20 +35,10 @@ public class BraveRadioButtonGroupCustomHomepageThemePreference
 
         holder.findViewById(R.id.system_default).setVisibility(View.GONE);
 
-        RadioButtonWithDescription braveDefaultView = (RadioButtonWithDescription)holder.findViewById(R.id.light);
-        RadioButtonWithDescription refView = (RadioButtonWithDescription)holder.findViewById(R.id.dark);
-        if (mNTPBackgroundImagesBridge != null && mNTPBackgroundImagesBridge.isSuperReferral()) {
-            refView.setPrimaryText(mNTPBackgroundImagesBridge.getSuperReferralThemeName());
-            if (UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
-                            .getInteger(BravePref.NEW_TAB_PAGE_SUPER_REFERRAL_THEMES_OPTION)
-                    == 1) {
-                refView.setChecked(true);
-                braveDefaultView.setChecked(false);
-            } else {
-                refView.setChecked(false);
-                braveDefaultView.setChecked(true);
-            }
-        }
+        RadioButtonWithDescription braveDefaultView =
+                (RadioButtonWithDescription) holder.findViewById(R.id.light);
+        RadioButtonWithDescription refView =
+                (RadioButtonWithDescription) holder.findViewById(R.id.dark);
         braveDefaultView.setPrimaryText(
                 getContext().getResources().getString(org.chromium.chrome.R.string.brave_default));
     }

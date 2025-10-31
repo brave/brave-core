@@ -19,11 +19,7 @@ import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBrid
 import org.chromium.chrome.browser.ntp_background_images.model.BackgroundImage;
 import org.chromium.chrome.browser.ntp_background_images.model.NTPImage;
 import org.chromium.chrome.browser.ntp_background_images.model.Wallpaper;
-import org.chromium.chrome.browser.preferences.BravePref;
-import org.chromium.chrome.browser.profiles.Profile;
-import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.util.ImageUtils;
-import org.chromium.components.user_prefs.UserPrefs;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -249,17 +245,6 @@ public class NTPImageUtil {
         } else {
             return SponsoredImageUtil.getBackgroundImage();
         }
-    }
-
-    public static boolean isReferralEnabled() {
-        Profile mProfile = ProfileManager.getLastUsedRegularProfile();
-        NTPBackgroundImagesBridge mNTPBackgroundImagesBridge =
-                NTPBackgroundImagesBridge.getInstance(mProfile);
-        boolean isReferralEnabled =
-                UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
-                                .getInteger(BravePref.NEW_TAB_PAGE_SUPER_REFERRAL_THEMES_OPTION)
-                        == 1;
-        return mNTPBackgroundImagesBridge.isSuperReferral() && isReferralEnabled;
     }
 
     public static int getViewHeight(View view) {
