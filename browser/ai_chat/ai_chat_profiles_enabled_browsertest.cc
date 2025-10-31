@@ -11,6 +11,7 @@
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/sidebar/browser/sidebar_item.h"
+#include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile_window.h"
 #include "chrome/browser/renderer_context_menu/render_view_context_menu_test_util.h"
@@ -166,6 +167,7 @@ IN_PROC_BROWSER_TEST_P(AIChatProfilesEnabledTest, SidePanelRegistry) {
   }
 }
 
+#if BUILDFLAG(ENABLE_SPEEDREADER)
 IN_PROC_BROWSER_TEST_P(AIChatProfilesEnabledTest, SpeedreaderToolbar) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(
       browser_, GURL(base::StrCat({content::kChromeUIScheme, "://",
@@ -179,6 +181,7 @@ IN_PROC_BROWSER_TEST_P(AIChatProfilesEnabledTest, SpeedreaderToolbar) {
     EXPECT_EQ(result, false);
   }
 }
+#endif  // BUILDFLAG(ENABLE_SPEEDREADER)
 
 INSTANTIATE_TEST_SUITE_P(
     All,

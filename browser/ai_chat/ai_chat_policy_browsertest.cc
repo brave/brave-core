@@ -15,6 +15,7 @@
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/sidebar/browser/sidebar_item.h"
+#include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/renderer_context_menu/render_view_context_menu_test_util.h"
 #include "chrome/browser/ui/browser.h"
@@ -180,6 +181,7 @@ IN_PROC_BROWSER_TEST_P(AIChatPolicyTest, SidePanelRegistry) {
   }
 }
 
+#if BUILDFLAG(ENABLE_SPEEDREADER)
 IN_PROC_BROWSER_TEST_P(AIChatPolicyTest, SpeedreaderToolbar) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(
       browser(), GURL(base::StrCat({content::kChromeUIScheme, "://",
@@ -193,6 +195,7 @@ IN_PROC_BROWSER_TEST_P(AIChatPolicyTest, SpeedreaderToolbar) {
     EXPECT_EQ(result, false);
   }
 }
+#endif  // BUILDFLAG(ENABLE_SPEEDREADER)
 
 IN_PROC_BROWSER_TEST_P(AIChatPolicyTest, Command) {
   chrome::BrowserCommandController* command_controller =

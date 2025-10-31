@@ -178,7 +178,7 @@ void BraveContentRendererClient::RenderFrameCreated(
     skus::SkusRenderFrameObserver::Create(render_frame);
   }
 
-#if BUILDFLAG(IS_ANDROID)
+#if BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_BRAVE_VPN)
   if (brave_vpn::IsBraveVPNFeatureEnabled() ||
       ai_chat::features::IsAIChatHistoryEnabled()) {
     new brave_subscription::SubscriptionRenderFrameObserver(

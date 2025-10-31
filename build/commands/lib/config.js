@@ -325,6 +325,7 @@ const Config = function () {
     'zebpay_sandbox_oauth_url',
     'use_clang_coverage',
     'coverage_instrumentation_input_file',
+    'is_brave_origin_branded',
   ]
 }
 
