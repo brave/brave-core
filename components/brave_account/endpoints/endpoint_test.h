@@ -33,8 +33,7 @@ inline bool operator==(const Error& lhs, const Error& rhs) {
 
 template <endpoint_client::IsEndpoint T>
 struct EndpointTestCase {
-  using Expected = base::expected<std::optional<typename T::Response>,
-                                  std::optional<typename T::Error>>;
+  using Expected = brave_account::endpoint_client::Reply<T>;
 
   std::string test_name;
   net::HttpStatusCode http_status_code;
@@ -64,8 +63,26 @@ class EndpointTest : public testing::TestWithParam<const EndpointTestCase<T>*> {
     endpoint_client::Client<T>::Send(
         test_url_loader_factory_.GetSafeWeakWrapper(), typename T::Request(),
         future.GetCallback());
-    EXPECT_EQ(future.Take(),
-              std::tie(test_case.http_status_code, test_case.reply));
+    EXPECT_EQ(future.Get(),
+              std::tie(test_case.http_status_code, test_case.reply))
+        << GetErrorMessage(std::get<1>(future.Take()));
+  }
+
+  template <typename Reply>
+  std::string GetErrorMessage(const Reply& r) {
+    if (r.has_value()) {
+      return {};
+    }
+    if (const auto* network =
+            std::get_if<brave_account::endpoint_client::NetworkError>(
+                &r.error())) {
+      return network->error_message;
+    } else if (const auto* parse =
+                   std::get_if<brave_account::endpoint_client::ParseError>(
+                       &r.error())) {
+      return parse->error_message;
+    }
+    return "Invalid endpoint error";
   }
 
   base::test::TaskEnvironment task_environment_;

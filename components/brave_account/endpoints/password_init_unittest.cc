@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_account/endpoints/password_init.h"
 
-#include <optional>
 #include <string>
 
 #include "base/no_destructor.h"
@@ -79,7 +78,8 @@ const PasswordInitTestCase* NonApplicationJsonError() {
           {.test_name = "non_application_json_error",
            .http_status_code = net::HTTP_INTERNAL_SERVER_ERROR,
            .raw_reply = "non-application/json error",
-           .reply = base::unexpected(std::nullopt)});
+           .reply = base::unexpected(endpoint_client::ParseError(
+               "expected ident at line 1 column 2"))});
   return kNonApplicationJsonError.get();
 }
 
