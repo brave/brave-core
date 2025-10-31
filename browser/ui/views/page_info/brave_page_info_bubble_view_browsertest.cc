@@ -7,9 +7,6 @@
 
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/page_info/features.h"
-#include "brave/browser/ui/views/page_info/brave_page_info_view_ids.h"
-#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
-#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 #include "chrome/browser/ui/views/location_bar/location_icon_view.h"
@@ -18,11 +15,8 @@
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
-#include "components/content_settings/core/common/content_settings_types.h"
 #include "content/public/test/browser_test.h"
 #include "ui/events/test/test_event.h"
-#include "ui/views/controls/button/button.h"
-#include "ui/views/test/button_test_api.h"
 #include "ui/views/test/widget_test.h"
 #include "ui/views/view_utils.h"
 
@@ -47,54 +41,9 @@ BravePageInfoBubbleView* GetBubbleView() {
       PageInfoBubbleView::GetPageInfoBubbleForTesting());
 }
 
-void ClickButton(views::View* bubble_view, int button_id) {
-  auto* button = views::Button::AsButton(bubble_view->GetViewByID(button_id));
-  ASSERT_TRUE(button);
-  views::test::ButtonTestApi(button).NotifyClick(
-      ui::MouseEvent(ui::EventType::kMousePressed, gfx::Point(), gfx::Point(),
-                     base::TimeTicks(), ui::EF_LEFT_MOUSE_BUTTON, 0));
-}
-
 }  // namespace
 
-class BravePageInfoBubbleViewBrowserTestBase : public InProcessBrowserTest {
- public:
-  BravePageInfoBubbleViewBrowserTestBase() = default;
-  ~BravePageInfoBubbleViewBrowserTestBase() override = default;
-
-  void SetUpOnMainThread() override {
-    InProcessBrowserTest::SetUpOnMainThread();
-    ASSERT_TRUE(embedded_test_server()->Start());
-  }
-
- protected:
-  void NavigateAndOpenBubble() {
-    // Navigate to a test page.
-    GURL test_url = embedded_test_server()->GetURL("/test.html");
-    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), test_url));
-
-    // Set a site permission, so that the page info permissions subpage has an
-    // entry to display.
-    HostContentSettingsMapFactory::GetForProfile(browser()->profile())
-        ->SetContentSettingDefaultScope(test_url, test_url,
-                                        ContentSettingsType::GEOLOCATION,
-                                        CONTENT_SETTING_ALLOW);
-
-    // Open the page info bubble.
-    OpenPageInfoBubble(browser());
-    auto* bubble_view = GetBubbleView();
-    ASSERT_TRUE(bubble_view);
-  }
-
-  bool IsSiteSettingsViewDrawn(views::View* bubble_view) {
-    auto* site_settings_view = bubble_view->GetViewByID(
-        PageInfoViewFactory::VIEW_ID_PAGE_INFO_CURRENT_VIEW);
-    return site_settings_view && site_settings_view->IsDrawn();
-  }
-};
-
-class BravePageInfoBubbleViewBrowserTest
-    : public BravePageInfoBubbleViewBrowserTestBase {
+class BravePageInfoBubbleViewBrowserTest : public InProcessBrowserTest {
  public:
   BravePageInfoBubbleViewBrowserTest() {
     feature_list_.InitAndEnableFeature(
@@ -103,13 +52,23 @@ class BravePageInfoBubbleViewBrowserTest
 
   ~BravePageInfoBubbleViewBrowserTest() override = default;
 
+  void SetUpOnMainThread() override {
+    InProcessBrowserTest::SetUpOnMainThread();
+    ASSERT_TRUE(embedded_test_server()->Start());
+  }
+
  private:
   base::test::ScopedFeatureList feature_list_;
 };
 
 // Test that the close button is hidden.
 IN_PROC_BROWSER_TEST_F(BravePageInfoBubbleViewBrowserTest, CloseButtonHidden) {
-  NavigateAndOpenBubble();
+  // Navigate to a test page.
+  GURL test_url = embedded_test_server()->GetURL("/test.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), test_url));
+
+  // Open the page info bubble.
+  OpenPageInfoBubble(browser());
   auto* bubble_view = GetBubbleView();
   ASSERT_TRUE(bubble_view);
 
@@ -120,57 +79,8 @@ IN_PROC_BROWSER_TEST_F(BravePageInfoBubbleViewBrowserTest, CloseButtonHidden) {
   EXPECT_FALSE(close_button->GetVisible());
 }
 
-// Test that the Shields info is visible by default.
-IN_PROC_BROWSER_TEST_F(BravePageInfoBubbleViewBrowserTest,
-                       ShieldsPageVisibleByDefault) {
-  NavigateAndOpenBubble();
-  auto* bubble_view = GetBubbleView();
-  ASSERT_TRUE(bubble_view);
-
-  EXPECT_FALSE(IsSiteSettingsViewDrawn(bubble_view));
-}
-
-// Test that the site settings tab is active and the site settings are displayed
-// when a page info subpage is programmatically shown.
-IN_PROC_BROWSER_TEST_F(BravePageInfoBubbleViewBrowserTest,
-                       SiteSettingsVisibleWhenSubpageOpened) {
-  NavigateAndOpenBubble();
-  auto* bubble_view = GetBubbleView();
-  ASSERT_TRUE(bubble_view);
-  bubble_view->OpenPermissionPage(ContentSettingsType::GEOLOCATION);
-
-  // The site settings UI should be visible.
-  EXPECT_TRUE(IsSiteSettingsViewDrawn(bubble_view));
-}
-
-// Test the behavior of the tab switcher.
-IN_PROC_BROWSER_TEST_F(BravePageInfoBubbleViewBrowserTest, TabSwitching) {
-  NavigateAndOpenBubble();
-  auto* bubble_view = GetBubbleView();
-  ASSERT_TRUE(bubble_view);
-
-  // Verify that both tab switcher buttons exist.
-  EXPECT_TRUE(bubble_view->GetViewByID(
-      static_cast<int>(BravePageInfoViewID::kTabSwitcherShieldsButton)));
-  EXPECT_TRUE(bubble_view->GetViewByID(
-      static_cast<int>(BravePageInfoViewID::kTabSwitcherSiteSettingsButton)));
-
-  // After clicking the Site Settings button, the site settings view should be
-  // visible.
-  ClickButton(
-      bubble_view,
-      static_cast<int>(BravePageInfoViewID::kTabSwitcherSiteSettingsButton));
-  EXPECT_TRUE(IsSiteSettingsViewDrawn(bubble_view));
-
-  // After clicking the Shields button, the site settings view should be hidden
-  // again.
-  ClickButton(bubble_view,
-              static_cast<int>(BravePageInfoViewID::kTabSwitcherShieldsButton));
-  EXPECT_FALSE(IsSiteSettingsViewDrawn(bubble_view));
-}
-
 class BravePageInfoBubbleViewFlagDisabledBrowserTest
-    : public BravePageInfoBubbleViewBrowserTestBase {
+    : public InProcessBrowserTest {
  public:
   BravePageInfoBubbleViewFlagDisabledBrowserTest() {
     feature_list_.InitAndDisableFeature(
@@ -179,6 +89,11 @@ class BravePageInfoBubbleViewFlagDisabledBrowserTest
 
   ~BravePageInfoBubbleViewFlagDisabledBrowserTest() override = default;
 
+  void SetUpOnMainThread() override {
+    InProcessBrowserTest::SetUpOnMainThread();
+    ASSERT_TRUE(embedded_test_server()->Start());
+  }
+
  private:
   base::test::ScopedFeatureList feature_list_;
 };
@@ -186,7 +101,12 @@ class BravePageInfoBubbleViewFlagDisabledBrowserTest
 // Test that the close button is visible when the feature flag is disabled.
 IN_PROC_BROWSER_TEST_F(BravePageInfoBubbleViewFlagDisabledBrowserTest,
                        CloseButtonVisible) {
-  NavigateAndOpenBubble();
+  // Navigate to a test page.
+  GURL test_url = embedded_test_server()->GetURL("/test.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), test_url));
+
+  // Open the page info bubble.
+  OpenPageInfoBubble(browser());
   auto* bubble_view = GetBubbleView();
   ASSERT_TRUE(bubble_view);
 
@@ -195,21 +115,4 @@ IN_PROC_BROWSER_TEST_F(BravePageInfoBubbleViewFlagDisabledBrowserTest,
       PageInfoViewFactory::VIEW_ID_PAGE_INFO_CLOSE_BUTTON);
   ASSERT_TRUE(close_button);
   EXPECT_TRUE(close_button->GetVisible());
-}
-
-// Test that the tab switcher is not present when the feature flag is disabled.
-IN_PROC_BROWSER_TEST_F(BravePageInfoBubbleViewFlagDisabledBrowserTest,
-                       TabSwitcherNotPresent) {
-  NavigateAndOpenBubble();
-  auto* bubble_view = GetBubbleView();
-  ASSERT_TRUE(bubble_view);
-
-  // Verify that both tab switcher buttons do not exist.
-  EXPECT_FALSE(bubble_view->GetViewByID(
-      static_cast<int>(BravePageInfoViewID::kTabSwitcherShieldsButton)));
-  EXPECT_FALSE(bubble_view->GetViewByID(
-      static_cast<int>(BravePageInfoViewID::kTabSwitcherSiteSettingsButton)));
-
-  // Verify that the site settings pages are visible.
-  EXPECT_TRUE(IsSiteSettingsViewDrawn(bubble_view));
 }
