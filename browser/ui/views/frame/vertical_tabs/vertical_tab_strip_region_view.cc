@@ -789,7 +789,7 @@ gfx::Size BraveVerticalTabStripRegionView::GetMinimumSize() const {
   auto size = GetPreferredSizeForState(target_state,
                                        /*include_border=*/false,
                                        /*ignore_animation=*/true);
-  if (size.IsEmpty()) {
+  if (size.IsZero()) {
     return size;
   }
 
@@ -806,8 +806,7 @@ gfx::Size BraveVerticalTabStripRegionView::GetMinimumSize() const {
   // Append same border width to |size|.
   if (BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
           browser_)) {
-    size.Enlarge(kBorderThickness - (tabs::kMarginForVerticalTabContainers / 2),
-                 0);
+    size.Enlarge(-(tabs::kMarginForVerticalTabContainers / 2), 0);
   } else {
     size.Enlarge(kBorderThickness, 0);
   }
@@ -1159,11 +1158,9 @@ void BraveVerticalTabStripRegionView::UpdateBorder() {
     // shadow.
     if (!sidebar_on_same_side) {
       if (is_on_right) {
-        border_insets.set_left(kBorderThickness -
-                               (tabs::kMarginForVerticalTabContainers / 2));
+        border_insets.set_left(-(tabs::kMarginForVerticalTabContainers / 2));
       } else {
-        border_insets.set_right(kBorderThickness -
-                                (tabs::kMarginForVerticalTabContainers / 2));
+        border_insets.set_right(-(tabs::kMarginForVerticalTabContainers / 2));
       }
     }
     SetBorder(views::CreateEmptyBorder(border_insets));
