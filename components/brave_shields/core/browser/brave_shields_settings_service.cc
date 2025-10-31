@@ -200,6 +200,31 @@ mojom::AutoShredMode BraveShieldsSettingsService::GetAutoShredMode(
           url, GURL(), AutoShredSetting::kContentSettingsType));
 }
 
+bool BraveShieldsSettingsService::IsShieldsDisabledForAnyMatchingUrl(
+    const GURL& url) {
+  auto domain_pattern = content_settings::CreateDomainPattern(url);
+  if (!domain_pattern.IsValid()) {
+    return false;
+  }
+
+  // All content settings for shields enabled/disabled
+  ContentSettingsForOneType all_shields_settings =
+      host_content_settings_map_->GetSettingsForOneType(
+          ContentSettingsType::BRAVE_SHIELDS);
+
+  for (const auto& setting : all_shields_settings) {
+    if (setting.primary_pattern.Matches(url) ||
+        domain_pattern.Matches(GURL(setting.primary_pattern.ToString()))) {
+      if (!GetBraveShieldsEnabled(
+              GURL("https://" + setting.primary_pattern.ToString()))) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
 bool BraveShieldsSettingsService::IsJsBlockingEnforced(const GURL& url) {
   const auto js_content_settings_overridden_data =
       GetJsContentSettingOverriddenData(url);

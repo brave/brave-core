@@ -387,6 +387,16 @@ TEST_F(BraveShieldsSettingsServiceTest, DefaultAutoShredMode) {
             AutoShredDictFrom(AutoShredMode::NEVER));
 }
 
+TEST_F(BraveShieldsSettingsServiceTest, IsShieldsDisabledForAnyMatchingUrl) {
+  brave_shields_settings()->SetBraveShieldsEnabled(false, GURL("https://one.example.com"));
+  EXPECT_FALSE(brave_shields_settings()->GetBraveShieldsEnabled(GURL("https://one.example.com")));
+  brave_shields_settings()->SetBraveShieldsEnabled(false, GURL("https://two.example.com"));
+  EXPECT_FALSE(brave_shields_settings()->GetBraveShieldsEnabled(GURL("https://two.example.com")));
+
+  EXPECT_TRUE(brave_shields_settings()->IsShieldsDisabledForAnyMatchingUrl(GURL("https://example.com")));
+}
+
+
 TEST_F(BraveShieldsSettingsServiceTest, GetJsContentSettingsOverriddenData) {
   const GURL url = GURL("https://brave.com");
   brave_shields::SetNoScriptControlType(GetHostContentSettingsMap(),
