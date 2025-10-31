@@ -86,6 +86,8 @@ class BraveSidePanel : public views::View,
   void AddedToWidget() override;
   void Layout(PassKey) override;
 
+  SidePanelEntry::PanelType type() const { return type_; }
+
   // Reflects the current state of the visibility of the side panel.
   enum class State { kClosed, kOpening, kOpen, kClosing };
   State state() { return state_; }
