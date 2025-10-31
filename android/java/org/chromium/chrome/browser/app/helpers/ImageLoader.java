@@ -38,7 +38,6 @@ import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 import org.xmlpull.v1.XmlSerializer;
 
-import org.chromium.base.Callbacks;
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.content.WebContentsFactory;
@@ -430,11 +429,21 @@ public class ImageLoader {
         return url.endsWith(".gif") || url.endsWith("=gif");
     }
 
+    /**
+     * A generic 1-argument callback.
+     *
+     * @param <T1> The type of the first argument.
+     */
+    public interface Callback1<T1> {
+        /** Call the callback. */
+        void call(T1 arg1);
+    }
+
     public static void fetchFavIcon(
             String originSpecUrl,
             boolean useIncognitoNtpIcon,
             WeakReference<Context> context,
-            Callbacks.Callback1<Bitmap> callback) {
+            Callback1<Bitmap> callback) {
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
             FaviconHelper.FaviconImageCallback imageCallback =

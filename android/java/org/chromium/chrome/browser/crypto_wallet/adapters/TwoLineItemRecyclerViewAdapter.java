@@ -17,7 +17,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.chromium.base.Callbacks;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
@@ -28,6 +27,27 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class TwoLineItemRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    /**
+     * A generic 1-argument callback.
+     *
+     * @param <T1> The type of the first argument.
+     */
+    public interface Callback1<T1> {
+        /** Call the callback. */
+        void call(T1 arg1);
+    }
+
+    /**
+     * A generic 2-argument callback.
+     *
+     * @param <T1> The type of the first argument.
+     * @param <T2> The type of the second argument.
+     */
+    public interface Callback2<T1, T2> {
+        /** Call the callback. */
+        void call(T1 arg1, T2 arg2);
+    }
+
     private List<TwoLineItem> mValues;
     private final ExecutorService mExecutor;
     private final Handler mHandler;
@@ -199,12 +219,10 @@ public class TwoLineItemRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
         public ImageType imageType;
         public String imgData;
 
-        public Callbacks.Callback2<TextView, TextView> updateViewCb;
+        public Callback2<TextView, TextView> updateViewCb;
 
         public TwoLineItemText(
-                String title,
-                String subTitle,
-                Callbacks.Callback2<TextView, TextView> customUiChanges) {
+                String title, String subTitle, Callback2<TextView, TextView> customUiChanges) {
             this(title, subTitle);
             this.updateViewCb = customUiChanges;
         }
@@ -250,7 +268,7 @@ public class TwoLineItemRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
 
     public static class TwoLineSingleText implements TwoLineItem {
         public String mText;
-        public Callbacks.Callback1<TextView> updateViewCb;
+        public Callback1<TextView> updateViewCb;
 
         public TwoLineSingleText() {
             mText = "";

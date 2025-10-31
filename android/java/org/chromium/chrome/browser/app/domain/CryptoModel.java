@@ -11,7 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import org.chromium.base.Callbacks.Callback1;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
@@ -43,6 +42,16 @@ import java.util.List;
 // - mAssetRatioService
 @SuppressWarnings("UnusedVariable")
 public class CryptoModel {
+    /**
+     * A generic 1-argument callback.
+     *
+     * @param <T1> The type of the first argument.
+     */
+    public interface Callback1<T1> {
+        /** Call the callback. */
+        void call(T1 arg1);
+    }
+
     private TxService mTxService;
     private final PendingTxHelper mPendingTxHelper;
     private KeyringService mKeyringService;

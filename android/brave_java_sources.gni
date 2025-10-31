@@ -535,7 +535,6 @@ brave_java_base_sources = [
   "//brave/android/java/org/chromium/base/BravePreferenceKeys.java",
   "//brave/android/java/org/chromium/base/BraveReflectionUtil.java",
   "//brave/android/java/org/chromium/base/BraveUrlConstants.java",
-  "//brave/android/java/org/chromium/base/Callbacks.java",
 ]
 
 brave_java_base_module_sources = [
