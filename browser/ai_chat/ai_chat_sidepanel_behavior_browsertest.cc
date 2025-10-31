@@ -82,7 +82,8 @@ class AIChatGlobalSidePanelBrowserTest
 
     return side_panel_coordinator->IsSidePanelShowing(
                SidePanelEntry::PanelType::kContent) &&
-           side_panel_coordinator->GetCurrentEntryId() ==
+           side_panel_coordinator->GetCurrentEntryId(
+               SidePanelEntry::PanelType::kContent) ==
                SidePanelEntry::Id::kChatUI;
   }
 
