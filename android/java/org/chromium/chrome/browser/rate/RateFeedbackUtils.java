@@ -18,9 +18,6 @@ import org.chromium.base.ThreadUtils;
 import org.chromium.base.task.AsyncTask;
 import org.chromium.chrome.browser.about_settings.AboutChromeSettings;
 import org.chromium.chrome.browser.about_settings.AboutSettingsBridge;
-import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
-import org.chromium.chrome.browser.profiles.Profile;
-import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.net.ChromiumNetworkAdapter;
 import org.chromium.net.NetworkTrafficAnnotationTag;
 
@@ -74,10 +71,6 @@ public class RateFeedbackUtils {
                         context, AboutSettingsBridge.getApplicationVersion());
         StringBuilder sb = new StringBuilder();
 
-        Profile mProfile = ProfileManager.getLastUsedRegularProfile();
-        NTPBackgroundImagesBridge mNTPBackgroundImagesBridge =
-                NTPBackgroundImagesBridge.getInstance(mProfile);
-
         HttpURLConnection urlConnection = null;
         try {
             URL url = new URL(RATE_URL);
@@ -100,7 +93,6 @@ public class RateFeedbackUtils {
             jsonParam.put("phone_arch", Build.CPU_ABI);
             jsonParam.put("user_feedback", userFeedback);
             jsonParam.put("app_version", appVersion);
-            jsonParam.put("api_key", mNTPBackgroundImagesBridge.getReferralApiKey());
 
             OutputStream outputStream = urlConnection.getOutputStream();
             byte[] input = jsonParam.toString().getBytes(StandardCharsets.UTF_8.name());

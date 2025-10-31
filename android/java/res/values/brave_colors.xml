@@ -251,8 +251,6 @@
     <color name="brave_stats_share_trackers_ads_no">@color/onboarding_indicator_selected_color</color>
     <color name="brave_stats_ic_clock_color">#399FFF</color>
 
-    <color name="topsite_bg_color">#DADCE8</color>
-
     <color name="white_alpha_50">#80FFFFFF</color>
 
     <color name="brave_rewards_modal_text_color">#495057</color>
