@@ -12,6 +12,8 @@ source_set("endpoint_client") {
     "is_response_body.h",
     "maybe_strip_with_headers.h",
     "request.h",
+    "request_handle.cc",
+    "request_handle.h",
     "request_types.h",
     "with_headers.h",
   ]
