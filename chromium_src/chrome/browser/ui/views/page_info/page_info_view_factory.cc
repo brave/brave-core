@@ -9,6 +9,9 @@
 #define BRAVE_PAGE_INFO_VIEW_FACTORY_GET_PERMISSION_ICON \
   case ContentSettingsType::AUTOPLAY:                    \
     icon = &kAutoplayStatusIcon;                         \
+    break;                                               \
+  case ContentSettingsType::JAVASCRIPT_OPTIMIZER:        \
+    icon = &kPerformanceSpeedometerIcon;                 \
     break;
 
 #include <chrome/browser/ui/views/page_info/page_info_view_factory.cc>

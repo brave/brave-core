@@ -6,9 +6,10 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_PAGE_INFO_PAGE_INFO_DELEGATE_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_PAGE_INFO_PAGE_INFO_DELEGATE_H_
 
-#define IsContentDisplayedInVrHeadset                      \
-  BraveShouldShowPermission(ContentSettingsType type) = 0; \
-  virtual bool IsContentDisplayedInVrHeadset
+#define IsContentDisplayedInVrHeadset                              \
+  IsContentDisplayedInVrHeadset() = 0;                             \
+  virtual int BraveShouldShowPermission(ContentSettingsType type); \
+  virtual bool _Unused_
 
 #include <components/page_info/page_info_delegate.h>  // IWYU pragma: export
 #undef IsContentDisplayedInVrHeadset
