@@ -10,7 +10,10 @@
 
 #include "base/values.h"
 #include "build/build_config.h"
+
+#if !BUILDFLAG(IS_ANDROID)
 #include "ui/native_theme/native_theme.h"
+#endif
 
 class PrefRegistrySimple;
 
