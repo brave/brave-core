@@ -146,6 +146,13 @@ void ViewCounterService::RecordViewedAdEvent(
       mojom_ad_metric_type == brave_ads::mojom::NewTabPageAdMetricType::kP3A) {
     ntp_p3a_helper_->RecordView(creative_instance_id, campaign_id);
   }
+  // IPF campaigns are the only ones to use a metric type of kDisabled, but
+  // this condition should be changed if that expectation changes.
+  if (mojom_ad_metric_type ==
+      brave_ads::mojom::NewTabPageAdMetricType::kDisabled) {
+    RecordInProductFeatureView();
+  }
+
   branded_new_tab_count_state_->AddDelta(1);
   UpdateP3AValues();
 
@@ -166,6 +173,12 @@ void ViewCounterService::RecordClickedAdEvent(
     ntp_p3a_helper_->RecordNewTabPageAdEvent(
         brave_ads::mojom::NewTabPageAdEventType::kClicked,
         creative_instance_id);
+  }
+  // IPF campaigns are the only ones to use a metric type of kDisabled, but
+  // this condition should be changed if that expectation changes.
+  if (mojom_ad_metric_type ==
+      brave_ads::mojom::NewTabPageAdMetricType::kDisabled) {
+    RecordInProductFeatureClick();
   }
 
   // Ads component skips confirmations for P3A and disabled metrics. Still
