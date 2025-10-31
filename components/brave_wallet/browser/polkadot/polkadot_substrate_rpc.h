@@ -33,6 +33,10 @@ class PolkadotSubstrateRpc {
       base::OnceCallback<void(mojom::PolkadotAccountInfoPtr,
                               const std::optional<std::string>&)>;
 
+  using GetFinalizedHeadCallback = base::OnceCallback<void(
+      std::optional<std::array<uint8_t, kPolkadotBlockHashSize>>,
+      std::optional<std::string>)>;
+
   // Get the name of the chain pointed to by the current network configuration.
   // "Westend" or "Paseo" for the testnets, "Polkadot" for the mainnet.
   void GetChainName(std::string_view chain_id, GetChainNameCallback callback);
@@ -41,6 +45,21 @@ class PolkadotSubstrateRpc {
       std::string_view chain_id,
       base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> pubkey,
       GetAccountBalanceCallback callback);
+
+  // Get the hash of the last finalized block in the canon chain. This is used
+  // during extrinsic creation where the blockhash is used as a portion of the
+  // payload. Note, the finalized block's hash is only used when the current
+  // head is within the MAX_FINALITY_LAG of the finalized block, as described
+  // here:
+  // https://github.com/polkadot-js/api/blob/f45dfc72ec320cab7d69f08010c9921d2a21065f/packages/api-derive/src/tx/signingInfo.ts#L41-L71
+  //
+  // This hash defines the start of the mortality period, described as H(B):
+  // https://spec.polkadot.network/id-extrinsics#defn-extrinsic-signature
+  //
+  // This function invokes the provided callback with the raw bytes of the block
+  // hash.
+  void GetFinalizedHead(std::string_view chain_id,
+                        GetFinalizedHeadCallback callback);
 
  private:
   using APIRequestResult = api_request_helper::APIRequestResult;
@@ -51,6 +70,7 @@ class PolkadotSubstrateRpc {
   GURL GetNetworkURL(std::string_view chain_id);
   void OnGetChainName(GetChainNameCallback callback, APIRequestResult res);
   void OnGetAccountBalance(GetAccountBalanceCallback, APIRequestResult res);
+  void OnGetFinalizedHead(GetFinalizedHeadCallback, APIRequestResult res);
 
   const raw_ref<NetworkManager> network_manager_;
   api_request_helper::APIRequestHelper api_request_helper_;

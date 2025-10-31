@@ -15,6 +15,7 @@
 #include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_substrate_rpc_responses.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
+#include "brave/components/brave_wallet/common/hex_utils.h"
 
 namespace brave_wallet {
 
@@ -171,28 +172,40 @@ mojom::PolkadotAccountInfoPtr ParseAccountInfoFromJson(
 
   std::string_view sv = *str;
 
-  // Leading 0x, 160 hex chars worth of data.
-  if (sv.size() != 162) {
+  auto hex_bytes = PrefixedHexStringToFixed<80>(sv);
+  if (!hex_bytes) {
     return nullptr;
   }
 
-  if (!sv.starts_with("0x")) {
-    return nullptr;
-  }
-
-  sv.remove_prefix(2);  // Remove leading 0x.
-
-  std::array<uint8_t, 80> hex_bytes = {};
-  if (!base::HexStringToSpan(sv, hex_bytes)) {
-    return nullptr;
-  }
-
-  auto account = ParseAccountInfoAsHex(hex_bytes);
+  auto account = ParseAccountInfoAsHex(*hex_bytes);
   if (account) {
     return account;
   }
 
   return nullptr;
+}
+
+template <class RpcResponse>
+base::expected<RpcResponse, std::string> HandleRpcCall(
+    const APIRequestResult& api_result) {
+  if (!api_result.Is2XXResponseCode()) {
+    return base::unexpected(WalletInternalErrorMessage());
+  }
+
+  auto res = RpcResponse::FromValue(api_result.value_body());
+
+  if (!res) {
+    return base::unexpected(WalletParsingErrorMessage());
+  }
+
+  if (res->error) {
+    if (res->error->message) {
+      return base::unexpected(res->error->message.value());
+    }
+    return base::unexpected(WalletInternalErrorMessage());
+  }
+
+  return base::ok(std::move(*res));
 }
 
 }  // namespace
@@ -301,22 +314,12 @@ void PolkadotSubstrateRpc::GetAccountBalance(
 void PolkadotSubstrateRpc::OnGetAccountBalance(
     GetAccountBalanceCallback callback,
     APIRequestResult api_result) {
-  if (!api_result.Is2XXResponseCode()) {
-    return std::move(callback).Run(nullptr, WalletInternalErrorMessage());
-  }
+  auto res = HandleRpcCall<
+      polkadot_substrate_rpc_responses::PolkadotAccountBalanceResponse>(
+      api_result);
 
-  auto res = polkadot_substrate_rpc_responses::PolkadotAccountBalanceResponse::
-      FromValue(api_result.value_body());
-
-  if (!res) {
-    return std::move(callback).Run(nullptr, WalletParsingErrorMessage());
-  }
-
-  if (res->error) {
-    if (res->error->message) {
-      return std::move(callback).Run(nullptr, res->error->message.value());
-    }
-    return std::move(callback).Run(nullptr, WalletInternalErrorMessage());
+  if (!res.has_value()) {
+    return std::move(callback).Run(nullptr, res.error());
   }
 
   auto account = ParseAccountInfoFromJson(res->result);
@@ -325,6 +328,43 @@ void PolkadotSubstrateRpc::OnGetAccountBalance(
   }
 
   return std::move(callback).Run(nullptr, WalletParsingErrorMessage());
+}
+
+void PolkadotSubstrateRpc::GetFinalizedHead(std::string_view chain_id,
+                                            GetFinalizedHeadCallback callback) {
+  auto url = GetNetworkURL(chain_id);
+
+  auto payload = base::WriteJson(
+      MakeRpcRequestJson("chain_getFinalizedHead", base::ListValue()));
+  CHECK(payload);
+
+  api_request_helper_.Request(
+      net::HttpRequestHeaders::kPostMethod, url, *payload, "application/json",
+      base::BindOnce(&PolkadotSubstrateRpc::OnGetFinalizedHead,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void PolkadotSubstrateRpc::OnGetFinalizedHead(GetFinalizedHeadCallback callback,
+                                              APIRequestResult api_result) {
+  auto res =
+      HandleRpcCall<polkadot_substrate_rpc_responses::PolkadotFinalizedHead>(
+          api_result);
+
+  if (!res.has_value()) {
+    return std::move(callback).Run(std::nullopt, res.error());
+  }
+
+  if (!res->result) {
+    return std::move(callback).Run(std::nullopt, std::nullopt);
+  }
+
+  auto block_hash =
+      PrefixedHexStringToFixed<kPolkadotBlockHashSize>(*res->result);
+  if (!block_hash) {
+    return std::move(callback).Run(std::nullopt, WalletParsingErrorMessage());
+  }
+
+  return std::move(callback).Run(block_hash, std::nullopt);
 }
 
 GURL PolkadotSubstrateRpc::GetNetworkURL(std::string_view chain_id) {

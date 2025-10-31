@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 // Schema for the polkadot_substrate_rpc.
+[none_as_absent_optional]
 namespace polkadot_substrate_rpc_responses {
   dictionary Error {
     long code;
@@ -29,6 +30,13 @@ namespace polkadot_substrate_rpc_responses {
     DOMString jsonrpc;
     long id;
     AccountInfo[]? result;
+    Error? error;
+  };
+
+  dictionary PolkadotFinalizedHead {
+    DOMString jsonrpc;
+    long id;
+    DOMString? result;
     Error? error;
   };
 };
