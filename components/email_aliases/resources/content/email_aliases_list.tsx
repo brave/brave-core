@@ -56,18 +56,20 @@ export const ListIntroduction = ({
 }) => (
   <AliasListIntro>
     <Col>
-      <h4>{getLocale('emailAliasesListTitle')}</h4>
-      <Description>{getLocale('emailAliasesCreateDescription')}</Description>
+      <h4>{getLocale(S.SETTINGS_EMAIL_ALIASES_LIST_TITLE)}</h4>
+      <Description>
+        {getLocale(S.SETTINGS_EMAIL_ALIASES_CREATE_DESCRIPTION)}
+      </Description>
     </Col>
     <Button
       isDisabled={aliasesCount >= MAX_ALIASES}
       kind='filled'
       size='small'
       name='create-alias'
-      title={getLocale('emailAliasesCreateAliasTitle')}
+      title={getLocale(S.SETTINGS_EMAIL_ALIASES_CREATE_ALIAS_TITLE)}
       onClick={onCreateClicked}
     >
-      {getLocale('emailAliasesCreateAliasLabel')}
+      {getLocale(S.SETTINGS_EMAIL_ALIASES_CREATE_ALIAS_LABEL)}
     </Button>
   </AliasListIntro>
 )

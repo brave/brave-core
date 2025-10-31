@@ -41,9 +41,11 @@ describe('MainEmailEntryForm', () => {
       />,
     )
 
-    const signUpButton = screen.getByText('emailAliasesGetLoginLinkButton')
+    const signUpButton = screen.getByText(
+      S.SETTINGS_EMAIL_ALIASES_GET_LOGIN_LINK_BUTTON,
+    )
     const emailInput = screen.getByPlaceholderText(
-      'emailAliasesEmailAddressPlaceholder',
+      S.SETTINGS_EMAIL_ALIASES_EMAIL_ADDRESS_PLACEHOLDER,
     )
     fireEvent.change(emailInput, { target: { value: mockAuthEmail } })
     clickLeoButton(signUpButton)
@@ -72,9 +74,11 @@ describe('MainEmailEntryForm', () => {
       />,
     )
 
-    const signUpButton = screen.getByText('emailAliasesGetLoginLinkButton')
+    const signUpButton = screen.getByText(
+      S.SETTINGS_EMAIL_ALIASES_GET_LOGIN_LINK_BUTTON,
+    )
     const emailInput = screen.getByPlaceholderText(
-      'emailAliasesEmailAddressPlaceholder',
+      S.SETTINGS_EMAIL_ALIASES_EMAIL_ADDRESS_PLACEHOLDER,
     )
     fireEvent.change(emailInput, { target: { value: mockAuthEmail } })
     clickLeoButton(signUpButton)

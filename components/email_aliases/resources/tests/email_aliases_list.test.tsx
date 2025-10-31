@@ -105,7 +105,9 @@ describe('AliasList', () => {
     )
 
     // Check if create button is disabled
-    const createButton = screen.getByText('emailAliasesCreateAliasLabel')
+    const createButton = screen.getByText(
+      S.SETTINGS_EMAIL_ALIASES_CREATE_ALIAS_LABEL,
+    )
     expect(createButton).toHaveAttribute('isdisabled', 'true')
   })
 
@@ -119,7 +121,9 @@ describe('AliasList', () => {
       />,
     )
 
-    const createButton = screen.getByText('emailAliasesCreateAliasLabel')
+    const createButton = screen.getByText(
+      S.SETTINGS_EMAIL_ALIASES_CREATE_ALIAS_LABEL,
+    )
     clickLeoButton(createButton)
 
     expect(mockOnCreateClicked).toHaveBeenCalled()
@@ -128,27 +132,29 @@ describe('AliasList', () => {
   it('shows Edit Alias Modal when edit button is clicked', async () => {
     renderAliasList()
 
-    await clickMenuItem('emailAliasesEdit')
+    await clickMenuItem(S.SETTINGS_EMAIL_ALIASES_EDIT)
 
     await waitForTexts([
-      'emailAliasesEditAliasTitle',
-      'emailAliasesCancelButton',
-      'emailAliasesSaveAliasButton',
+      S.SETTINGS_EMAIL_ALIASES_EDIT_ALIAS_TITLE,
+      S.SETTINGS_EMAIL_ALIASES_CANCEL_BUTTON,
+      S.SETTINGS_EMAIL_ALIASES_SAVE_ALIAS_BUTTON,
     ])
     expect(
-      screen.getByPlaceholderText('emailAliasesEditNotePlaceholder'),
+      screen.getByPlaceholderText(
+        S.SETTINGS_EMAIL_ALIASES_EDIT_NOTE_PLACEHOLDER,
+      ),
     ).toBeInTheDocument()
   })
 
   it('shows Delete Alias Modal when delete button is clicked', async () => {
     renderAliasList()
 
-    await clickMenuItem('emailAliasesDelete')
+    await clickMenuItem(S.SETTINGS_EMAIL_ALIASES_DELETE)
 
     await waitForTexts([
-      'emailAliasesDeleteAliasTitle',
-      'emailAliasesCancelButton',
-      'emailAliasesDeleteAliasButton',
+      S.SETTINGS_EMAIL_ALIASES_DELETE_ALIAS_TITLE,
+      S.SETTINGS_EMAIL_ALIASES_CANCEL_BUTTON,
+      S.SETTINGS_EMAIL_ALIASES_DELETE_ALIAS_BUTTON,
     ])
   })
 })

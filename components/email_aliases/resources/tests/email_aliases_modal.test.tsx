@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { render, screen, waitFor, act } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import {
   EmailAliasModal,
   DeleteAliasModal,
@@ -65,7 +65,9 @@ describe('EmailAliasModal', () => {
     )
 
     // Check title and description
-    expect(screen.getByText('emailAliasesCreateAliasTitle')).toBeInTheDocument()
+    expect(
+      screen.getByText(S.SETTINGS_EMAIL_ALIASES_CREATE_ALIAS_TITLE),
+    ).toBeInTheDocument()
 
     // Check that generate alias was called
     await waitFor(() => {
@@ -92,12 +94,16 @@ describe('EmailAliasModal', () => {
     )
 
     // Check title
-    expect(screen.getByText('emailAliasesEditAliasTitle')).toBeInTheDocument()
+    expect(
+      screen.getByText(S.SETTINGS_EMAIL_ALIASES_EDIT_ALIAS_TITLE),
+    ).toBeInTheDocument()
 
     // Check that existing alias is displayed
     expect(screen.getByText(/existing@brave\.com/)).toBeInTheDocument()
     expect(
-      screen.getByPlaceholderText('emailAliasesEditNotePlaceholder'),
+      screen.getByPlaceholderText(
+        S.SETTINGS_EMAIL_ALIASES_EDIT_NOTE_PLACEHOLDER,
+      ),
     ).toHaveValue('Existing Alias')
   })
 
@@ -120,21 +126,23 @@ describe('EmailAliasModal', () => {
 
       // Check expected strings
       expect(
-        screen.getByText('emailAliasesDeleteAliasTitle'),
+        screen.getByText(S.SETTINGS_EMAIL_ALIASES_DELETE_ALIAS_TITLE),
       ).toBeInTheDocument()
       expect(
-        screen.getByText('emailAliasesDeleteAliasDescription'),
+        screen.getByText(S.SETTINGS_EMAIL_ALIASES_DELETE_ALIAS_DESCRIPTION),
       ).toBeInTheDocument()
       expect(
-        screen.getByText('emailAliasesDeleteAliasButton'),
+        screen.getByText(S.SETTINGS_EMAIL_ALIASES_DELETE_ALIAS_BUTTON),
       ).toBeInTheDocument()
-      expect(screen.getByText('emailAliasesDeleteWarning')).toBeInTheDocument()
+      expect(
+        screen.getByText(S.SETTINGS_EMAIL_ALIASES_DELETE_WARNING),
+      ).toBeInTheDocument()
 
       // Click delete button
-      const deleteButton = screen.getByText('emailAliasesDeleteAliasButton')
-      await act(async () => {
-        clickLeoButton(deleteButton)
-      })
+      const deleteButton = screen.getByText(
+        S.SETTINGS_EMAIL_ALIASES_DELETE_ALIAS_BUTTON,
+      )
+      clickLeoButton(deleteButton)
 
       // Check that deleteAlias was called
       await waitFor(() => {
@@ -163,7 +171,9 @@ describe('EmailAliasModal', () => {
     // Wait for loading to complete and alias to be generated
     await waitFor(() => {
       expect(
-        screen.getByPlaceholderText('emailAliasesEditNotePlaceholder'),
+        screen.getByPlaceholderText(
+          S.SETTINGS_EMAIL_ALIASES_EDIT_NOTE_PLACEHOLDER,
+        ),
       ).toBeInTheDocument()
       expect(screen.queryByTestId('loading-icon')).not.toBeInTheDocument()
       const generatedEmailContainer = screen.getByTestId('generated-email')
@@ -171,7 +181,9 @@ describe('EmailAliasModal', () => {
     })
 
     // Ensure the save button is enabled
-    const saveButton = screen.getByText('emailAliasesCreateAliasButton')
+    const saveButton = screen.getByText(
+      S.SETTINGS_EMAIL_ALIASES_CREATE_ALIAS_BUTTON,
+    )
     expect(saveButton).toHaveAttribute('isdisabled', 'false')
 
     // Click save button
@@ -199,12 +211,14 @@ describe('EmailAliasModal', () => {
     await waitFor(() => {
       expect(mockEmailAliasesService.generateAlias).toHaveBeenCalled()
       expect(
-        screen.getByTitle('emailAliasesRefreshButtonTitle'),
+        screen.getByTitle(S.SETTINGS_EMAIL_ALIASES_REFRESH_BUTTON_TITLE),
       ).toBeInTheDocument()
     })
 
     // Click regenerate button
-    const regenerateButton = screen.getByTitle('emailAliasesRefreshButtonTitle')
+    const regenerateButton = screen.getByTitle(
+      S.SETTINGS_EMAIL_ALIASES_REFRESH_BUTTON_TITLE,
+    )
     clickLeoButton(regenerateButton)
 
     // Check that generateAlias was called again
@@ -228,7 +242,7 @@ describe('EmailAliasModal', () => {
     // Wait for limit check
     await waitFor(() => {
       expect(
-        screen.getByText('emailAliasesBubbleLimitReached'),
+        screen.getByText(S.SETTINGS_EMAIL_ALIASES_BUBBLE_LIMIT_REACHED),
       ).toBeInTheDocument()
     })
   })
@@ -253,7 +267,7 @@ describe('EmailAliasModal', () => {
     const loadingIcon = document.querySelector('leo-progressring')
     expect(loadingIcon).toBeInTheDocument()
     const regenerateButton = screen.queryByTitle(
-      'emailAliasesRefreshButtonTitle',
+      S.SETTINGS_EMAIL_ALIASES_REFRESH_BUTTON_TITLE,
     )
     expect(regenerateButton).not.toBeInTheDocument()
 
@@ -261,10 +275,12 @@ describe('EmailAliasModal', () => {
     await waitFor(() => {
       expect(loadingIcon).not.toBeInTheDocument()
       const regenerateButton = screen.queryByTitle(
-        'emailAliasesRefreshButtonTitle',
+        S.SETTINGS_EMAIL_ALIASES_REFRESH_BUTTON_TITLE,
       )
       expect(regenerateButton).toBeInTheDocument()
-      const saveButton = screen.getByText('emailAliasesCreateAliasButton')
+      const saveButton = screen.getByText(
+        S.SETTINGS_EMAIL_ALIASES_CREATE_ALIAS_BUTTON,
+      )
       expect(saveButton).toHaveAttribute('isdisabled', 'false')
       const aliasEmailBox = screen.getByTestId('generated-email')
       expect(aliasEmailBox).toHaveTextContent(aliasEmail)
@@ -274,7 +290,9 @@ describe('EmailAliasModal', () => {
   it('shows error message when generating alias fails', async () => {
     mockEmailAliasesService.generateAlias = jest
       .fn()
-      .mockImplementation(() => Promise.reject('emailAliasesGenerateError'))
+      .mockImplementation(() =>
+        Promise.reject(S.SETTINGS_EMAIL_ALIASES_GENERATE_ERROR),
+      )
 
     render(
       <EmailAliasModal
@@ -291,11 +309,15 @@ describe('EmailAliasModal', () => {
       const loadingIcon = document.querySelector('leo-progressring')
       expect(loadingIcon).not.toBeInTheDocument()
       const regenerateButton = screen.queryByTitle(
-        'emailAliasesRefreshButtonTitle',
+        S.SETTINGS_EMAIL_ALIASES_REFRESH_BUTTON_TITLE,
       )
       expect(regenerateButton).toBeInTheDocument()
-      expect(screen.getByText('emailAliasesGenerateError')).toBeInTheDocument()
-      const saveButton = screen.getByText('emailAliasesCreateAliasButton')
+      expect(
+        screen.getByText(S.SETTINGS_EMAIL_ALIASES_GENERATE_ERROR),
+      ).toBeInTheDocument()
+      const saveButton = screen.getByText(
+        S.SETTINGS_EMAIL_ALIASES_CREATE_ALIAS_BUTTON,
+      )
       expect(saveButton).toHaveAttribute('isdisabled', 'true')
       const aliasEmailBox = screen.getByTestId('generated-email')
       expect(aliasEmailBox).toHaveTextContent('')
@@ -324,18 +346,20 @@ describe('EmailAliasModal', () => {
     await waitFor(() => {
       expect(screen.getByText(/existing@brave\.com/)).toBeInTheDocument()
       expect(
-        screen.getByPlaceholderText('emailAliasesEditNotePlaceholder'),
+        screen.getByPlaceholderText(
+          S.SETTINGS_EMAIL_ALIASES_EDIT_NOTE_PLACEHOLDER,
+        ),
       ).toHaveValue('Existing Alias')
     })
 
     // Ensure the save button is enabled
-    const saveButton = screen.getByText('emailAliasesSaveAliasButton')
+    const saveButton = screen.getByText(
+      S.SETTINGS_EMAIL_ALIASES_SAVE_ALIAS_BUTTON,
+    )
     expect(saveButton).toHaveAttribute('isdisabled', 'false')
 
-    await act(async () => {
-      // Click save button
-      saveButton.shadowRoot?.querySelector('button')?.click()
-    })
+    // Click save button
+    clickLeoButton(saveButton)
 
     // Check that updateAlias was called
     await waitFor(() => {
@@ -365,12 +389,14 @@ describe('EmailAliasModal', () => {
       mockEmailAliasesService.updateAlias = jest
         .fn()
         .mockImplementation(() =>
-          Promise.reject('emailAliasesUpdateAliasError'),
+          Promise.reject(S.SETTINGS_EMAIL_ALIASES_UPDATE_ALIAS_ERROR),
         )
+
+      const isEditing = alias.email === 'existing@brave.com'
 
       render(
         <EmailAliasModal
-          editing={alias.email === 'existing@brave.com'}
+          editing={isEditing}
           editAlias={alias}
           mainEmail={mockEmail}
           aliasCount={0}
@@ -380,23 +406,22 @@ describe('EmailAliasModal', () => {
       )
 
       // Wait for error message to appear. Create/Edit button should be enabled.
-      const saveButton = screen.getByText(
-        /emailAliasesCreateAliasButton|emailAliasesSaveAliasButton/,
-      )
+      const saveButton = isEditing
+        ? screen.getByText(S.SETTINGS_EMAIL_ALIASES_SAVE_ALIAS_BUTTON)
+        : screen.getByText(S.SETTINGS_EMAIL_ALIASES_CREATE_ALIAS_BUTTON)
+
       await waitFor(() => {
         expect(saveButton).toHaveAttribute('isdisabled', 'false')
       })
 
-      await act(async () => {
-        // Click save button
-        saveButton.shadowRoot?.querySelector('button')?.click()
-      })
+      // Click save button
+      clickLeoButton(saveButton)
 
       // Check that updateAlias was called and error message is displayed.
       await waitFor(() => {
         expect(mockEmailAliasesService.updateAlias).toHaveBeenCalled()
         expect(
-          screen.getByText('emailAliasesUpdateAliasError'),
+          screen.getByText(S.SETTINGS_EMAIL_ALIASES_UPDATE_ALIAS_ERROR),
         ).toBeInTheDocument()
       })
     })
@@ -405,7 +430,9 @@ describe('EmailAliasModal', () => {
   it('shows error message when deleting alias fails', async () => {
     mockEmailAliasesService.deleteAlias = jest
       .fn()
-      .mockImplementation(() => Promise.reject('emailAliasesDeleteAliasError'))
+      .mockImplementation(() =>
+        Promise.reject(S.SETTINGS_EMAIL_ALIASES_DELETE_ALIAS_ERROR),
+      )
 
     render(
       <DeleteAliasModal
@@ -416,14 +443,16 @@ describe('EmailAliasModal', () => {
     )
 
     // Click delete button
-    const deleteButton = screen.getByText('emailAliasesDeleteAliasButton')
+    const deleteButton = screen.getByText(
+      S.SETTINGS_EMAIL_ALIASES_DELETE_ALIAS_BUTTON,
+    )
     clickLeoButton(deleteButton)
 
     // Wait for error message to appear. Delete button should be enabled.
     await waitFor(() => {
       expect(mockEmailAliasesService.deleteAlias).toHaveBeenCalled()
       expect(
-        screen.getByText('emailAliasesDeleteAliasError'),
+        screen.getByText(S.SETTINGS_EMAIL_ALIASES_DELETE_ALIAS_ERROR),
       ).toBeInTheDocument()
     })
   })

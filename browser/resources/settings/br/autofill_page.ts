@@ -62,7 +62,7 @@ RegisterPolymerTemplateModifications({
         <cr-link-row id="emailAliasesLinkRow"
                      class="hr"
                      start-icon="email-shield"
-                     label="${loadTimeData.getString('emailAliasesLabel')}"
+                     label="${loadTimeData.getString('SETTINGS_EMAIL_ALIASES_LABEL')}"
                      on-click="onEmailAliasesClick"
                      role="link">
         </cr-link-row>
