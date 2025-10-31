@@ -58,6 +58,8 @@ inline constexpr net::NetworkTrafficAnnotationTag kTrafficAnnotation =
 }  // namespace
 
 using endpoint_client::Client;
+using endpoint_client::RequestCancelability;
+using endpoint_client::RequestHandle;
 using endpoint_client::WithHeaders;
 using endpoints::Error;
 using endpoints::PasswordFinalize;
@@ -279,14 +281,18 @@ void BraveAccountService::OnVerificationTokenChanged() {
   ScheduleVerifyResult();
 }
 
-void BraveAccountService::ScheduleVerifyResult(base::TimeDelta delay) {
+void BraveAccountService::ScheduleVerifyResult(base::TimeDelta delay,
+                                               RequestHandle previous_request) {
   CHECK_DEREF(verify_result_timer_.get())
-      .Start(FROM_HERE, delay,
-             base::BindOnce(&BraveAccountService::VerifyResult,
-                            base::Unretained(this)));
+      .Start(
+          FROM_HERE, delay,
+          base::BindOnce(&BraveAccountService::VerifyResult,
+                         base::Unretained(this), std::move(previous_request)));
 }
 
-void BraveAccountService::VerifyResult() {
+void BraveAccountService::VerifyResult(RequestHandle previous_request) {
+  previous_request.reset();
+
   const auto encrypted_verification_token =
       pref_service_->GetString(prefs::kVerificationToken);
   if (encrypted_verification_token.empty()) {
@@ -307,13 +313,15 @@ void BraveAccountService::VerifyResult() {
   request.wait = false;
   request.headers.SetHeader("Authorization",
                             base::StrCat({"Bearer ", verification_token}));
-  Client<endpoints::VerifyResult>::Send(
-      url_loader_factory_, std::move(request),
-      base::BindOnce(&BraveAccountService::OnVerifyResult,
-                     weak_factory_.GetWeakPtr()));
+  previous_request =
+      Client<endpoints::VerifyResult>::Send<RequestCancelability::kCancelable>(
+          url_loader_factory_, std::move(request),
+          base::BindOnce(&BraveAccountService::OnVerifyResult,
+                         weak_factory_.GetWeakPtr()));
 
   // Replace normal cadence with the watchdog timer.
-  ScheduleVerifyResult(kVerifyResultWatchdogInterval);
+  ScheduleVerifyResult(kVerifyResultWatchdogInterval,
+                       std::move(previous_request));
 }
 
 void BraveAccountService::OnVerifyResult(

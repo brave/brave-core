@@ -15,6 +15,8 @@
 
 namespace brave_account::endpoint_client::detail {
 
+RequestHandleDeleter::RequestHandleDeleter() = default;
+
 RequestHandleDeleter::RequestHandleDeleter(RequestHandleDeleter&&) = default;
 
 RequestHandleDeleter& RequestHandleDeleter::operator=(RequestHandleDeleter&&) =
@@ -24,6 +26,7 @@ RequestHandleDeleter::~RequestHandleDeleter() = default;
 
 void RequestHandleDeleter::operator()(void* ptr) const {
   if (ptr) {
+    CHECK(task_runner_);
     task_runner_->DeleteSoon(FROM_HERE,
                              static_cast<network::SimpleURLLoader*>(ptr));
   }
@@ -31,8 +34,6 @@ void RequestHandleDeleter::operator()(void* ptr) const {
 
 RequestHandleDeleter::RequestHandleDeleter(
     scoped_refptr<base::SequencedTaskRunner> task_runner)
-    : task_runner_(std::move(task_runner)) {
-  CHECK(task_runner_);
-}
+    : task_runner_(std::move(task_runner)) {}
 
 }  // namespace brave_account::endpoint_client::detail
