@@ -100,7 +100,6 @@ public class RateFeedbackUtils {
             jsonParam.put("phone_arch", Build.CPU_ABI);
             jsonParam.put("user_feedback", userFeedback);
             jsonParam.put("app_version", appVersion);
-            jsonParam.put("api_key", mNTPBackgroundImagesBridge.getReferralApiKey());
 
             OutputStream outputStream = urlConnection.getOutputStream();
             byte[] input = jsonParam.toString().getBytes(StandardCharsets.UTF_8.name());
