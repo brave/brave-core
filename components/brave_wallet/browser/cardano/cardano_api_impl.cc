@@ -212,7 +212,8 @@ void CardanoApiImpl::GetUsedAddresses(GetUsedAddressesCallback callback) {
     auto cardano_address = CardanoAddress::FromString(address->address_string);
     CHECK(cardano_address);
 
-    result.push_back(HexEncodeLower(cardano_address->ToCborBytes()));
+    result.push_back(
+        brave_wallet::HexEncodeLower(cardano_address->ToCborBytes()));
   }
 
   std::move(callback).Run(std::move(result), nullptr);
@@ -234,7 +235,8 @@ void CardanoApiImpl::GetUnusedAddresses(GetUnusedAddressesCallback callback) {
     auto cardano_address = CardanoAddress::FromString(address->address_string);
     CHECK(cardano_address);
 
-    result.push_back(HexEncodeLower(cardano_address->ToCborBytes()));
+    result.push_back(
+        brave_wallet::HexEncodeLower(cardano_address->ToCborBytes()));
   }
 
   std::move(callback).Run(std::move(result), nullptr);
@@ -263,8 +265,8 @@ void CardanoApiImpl::GetChangeAddress(GetChangeAddressCallback callback) {
   auto cardano_address = CardanoAddress::FromString(address->address_string);
   CHECK(cardano_address);
 
-  std::move(callback).Run(HexEncodeLower(cardano_address->ToCborBytes()),
-                          nullptr);
+  std::move(callback).Run(
+      brave_wallet::HexEncodeLower(cardano_address->ToCborBytes()), nullptr);
 }
 
 void CardanoApiImpl::GetRewardAddresses(GetRewardAddressesCallback callback) {

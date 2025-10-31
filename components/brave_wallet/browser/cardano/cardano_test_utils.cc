@@ -228,7 +228,7 @@ CardanoTestRpcServer::GetUtxos() {
 void CardanoTestRpcServer::AddUtxo(const std::string& address,
                                    uint64_t amount) {
   auto& utxo = utxos_map_[address].emplace_back();
-  utxo.tx_hash = HexEncodeLower(CreateNewTxHash());
+  utxo.tx_hash = brave_wallet::HexEncodeLower(CreateNewTxHash());
   utxo.output_index = "13";
   utxo.amount.emplace_back();
   utxo.amount.back().quantity = base::NumberToString(amount);
