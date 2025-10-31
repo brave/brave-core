@@ -29,6 +29,7 @@
 #include "brave/ios/browser/api/sync/brave_sync_api+private.h"
 #include "brave/ios/browser/api/sync/driver/brave_sync_profile_service+private.h"
 #include "brave/ios/browser/api/web_image/web_image+private.h"
+#include "brave/ios/browser/api/web_view/brave_web_view_download_manager.h"
 #include "brave/ios/browser/application_context/brave_application_context_impl.h"
 #include "brave/ios/browser/brave_ads/ads_service_factory_ios.h"
 #include "brave/ios/browser/brave_ads/ads_service_impl_ios.h"
@@ -69,7 +70,6 @@
 #include "ios/web/public/thread/web_thread.h"
 #include "ios/web_view/internal/cwv_web_view_configuration_internal.h"
 #include "ios/web_view/internal/web_view_browser_state.h"
-#include "ios/web_view/internal/web_view_download_manager.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 #if BUILDFLAG(IOS_CREDENTIAL_PROVIDER_ENABLED)
@@ -85,8 +85,8 @@
   std::unique_ptr<Browser> _otr_browser;
   raw_ptr<BrowserList> _browserList;
   raw_ptr<BrowserList> _otr_browserList;
-  std::unique_ptr<ios_web_view::WebViewDownloadManager> _downloadManager;
-  std::unique_ptr<ios_web_view::WebViewDownloadManager> _otrDownloadManager;
+  std::unique_ptr<BraveWebViewDownloadManager> _downloadManager;
+  std::unique_ptr<BraveWebViewDownloadManager> _otrDownloadManager;
 }
 @property(nonatomic) BraveBookmarksAPI* bookmarksAPI;
 @property(nonatomic) BraveHistoryAPI* historyAPI;
@@ -145,11 +145,9 @@
 #endif
 
     // Setup download managers for CWVWebView
-    _downloadManager =
-        std::make_unique<ios_web_view::WebViewDownloadManager>(_profile);
-    _otrDownloadManager =
-        std::make_unique<ios_web_view::WebViewDownloadManager>(
-            _profile->GetOffTheRecordProfile());
+    _downloadManager = std::make_unique<BraveWebViewDownloadManager>(_profile);
+    _otrDownloadManager = std::make_unique<BraveWebViewDownloadManager>(
+        _profile->GetOffTheRecordProfile());
 
     _backgroundImagesService = [[NTPBackgroundImagesService alloc]
         initWithBackgroundImagesService:
