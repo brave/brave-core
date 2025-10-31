@@ -8,6 +8,12 @@ import("//build/config/features.gni")
 
 source_set("brave_wallet") {
   sources = [
+    "line_chart_ui.h",
+    "line_chart_ui.mm",
+    "market_ui.h",
+    "market_ui.mm",
+    "nft_ui.h",
+    "nft_ui.mm",
     "wallet_page_handler.h",
     "wallet_page_handler.mm",
     "wallet_page_ui.h",
@@ -19,10 +25,14 @@ source_set("brave_wallet") {
     "//brave/components/brave_wallet/browser:constants",
     "//brave/components/brave_wallet/browser:wallet_handler",
     "//brave/components/brave_wallet/common",
+    "//brave/components/brave_wallet_ui/line_chart:line_chart_display_generated",
+    "//brave/components/brave_wallet_ui/market:market_display_generated",
+    "//brave/components/brave_wallet_ui/nft:nft_display_generated",
     "//brave/components/brave_wallet_ui/page:brave_wallet_page_generated",
     "//brave/components/constants",
     "//brave/components/resources:static_resources_grit",
     "//brave/ios/browser/brave_wallet",
+    "//brave/ios/browser/ui/webui:data_sources",
     "//brave/ios/web/webui",
     "//ios/chrome/browser/shared/model/profile",
     "//ios/web/public",
@@ -30,5 +40,6 @@ source_set("brave_wallet") {
     "//ios/web/web_state",
     "//mojo/public/cpp/bindings",
     "//ui/base",
+    "//ui/webui/resources:resources_grit",
   ]
 }
