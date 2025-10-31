@@ -86,6 +86,7 @@ namespace {
 
 constexpr int kHeaderInset = tabs::kMarginForVerticalTabContainers;
 constexpr int kSeparatorHeight = 1;
+constexpr int kBorderThickness = 1;
 
 // Use toolbar button's ink drop effect.
 class ToggleButton : public ToolbarButton {
@@ -775,14 +776,43 @@ gfx::Size BraveVerticalTabStripRegionView::GetMinimumSize() const {
     return {};
   }
 
+  auto target_state = state_;
+
+  // Minimum size is used for host view's preferred size.
+  // See VerticalTabStripWidgetDelegateView::ChildPreferredSizeChanged().
+  // When floating, host view's size should not be changed during the floating.
   if (state_ == State::kFloating) {
-    return GetPreferredSizeForState(State::kCollapsed,
-                                    /*include_border=*/true,
-                                    /*ignore_animation=*/true);
+    target_state = State::kCollapsed;
   }
 
-  return GetPreferredSizeForState(state_, /*include_border=*/true,
-                                  /*ignore_animation=*/true);
+  // Get size w/o border. Consider border width later.
+  auto size = GetPreferredSizeForState(target_state,
+                                       /*include_border=*/false,
+                                       /*ignore_animation=*/true);
+  if (size.IsEmpty()) {
+    return size;
+  }
+
+  // No border for hide completely mode.
+  if (tabs::utils::ShouldHideVerticalTabsCompletelyWhenCollapsed(browser_)) {
+    return size;
+  }
+
+  // In rounded corners, border is changed on floating.
+  // If we calculated preferred size with |include_border|,
+  // it gives different size because of border change.
+  // If minumum size changes during the floating, it could affect
+  // contents size. It could cause contents area flickering.
+  // Append same border width to |size|.
+  if (BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
+          browser_)) {
+    size.Enlarge(kBorderThickness - (tabs::kMarginForVerticalTabContainers / 2),
+                 0);
+  } else {
+    size.Enlarge(kBorderThickness, 0);
+  }
+
+  return size;
 }
 
 void BraveVerticalTabStripRegionView::Layout(PassKey) {
@@ -1110,12 +1140,11 @@ void BraveVerticalTabStripRegionView::UpdateBorder() {
       !vertical_tab_on_right_.GetPrefName().empty() && *vertical_tab_on_right_;
   bool sidebar_on_same_side = sidebar_side_.GetValue() == is_on_right;
 
-  constexpr int kBorderThickess = 1;
   gfx::Insets border_insets;
   if (is_on_right) {
-    border_insets.set_left(kBorderThickess);
+    border_insets.set_left(kBorderThickness);
   } else {
-    border_insets.set_right(kBorderThickess);
+    border_insets.set_right(kBorderThickness);
   }
 
   // When show vertical tab's border line, vertical tab can have its whole
@@ -1130,10 +1159,10 @@ void BraveVerticalTabStripRegionView::UpdateBorder() {
     // shadow.
     if (!sidebar_on_same_side) {
       if (is_on_right) {
-        border_insets.set_left(kBorderThickess -
+        border_insets.set_left(kBorderThickness -
                                (tabs::kMarginForVerticalTabContainers / 2));
       } else {
-        border_insets.set_right(kBorderThickess -
+        border_insets.set_right(kBorderThickness -
                                 (tabs::kMarginForVerticalTabContainers / 2));
       }
     }
