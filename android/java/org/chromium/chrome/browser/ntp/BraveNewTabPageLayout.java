@@ -17,17 +17,13 @@ import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
-import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.view.ContextMenu;
 import android.view.Display;
 import android.view.GestureDetector;
-import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,19 +70,13 @@ import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 import org.chromium.chrome.browser.feed.FeedSurfaceScrollDelegate;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.local_database.DatabaseHelper;
-import org.chromium.chrome.browser.local_database.TopSiteTable;
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 import org.chromium.chrome.browser.ntp_background_images.model.NTPImage;
 import org.chromium.chrome.browser.ntp_background_images.model.SponsoredTab;
-import org.chromium.chrome.browser.ntp_background_images.model.TopSite;
 import org.chromium.chrome.browser.ntp_background_images.model.Wallpaper;
 import org.chromium.chrome.browser.ntp_background_images.util.FetchWallpaperWorkerTask;
 import org.chromium.chrome.browser.ntp_background_images.util.NTPImageUtil;
-import org.chromium.chrome.browser.ntp_background_images.util.NewTabPageListener;
 import org.chromium.chrome.browser.ntp_background_images.util.SponsoredImageUtil;
-import org.chromium.chrome.browser.offlinepages.DownloadUiActionFlags;
-import org.chromium.chrome.browser.offlinepages.OfflinePageBridge;
-import org.chromium.chrome.browser.offlinepages.RequestCoordinatorBridge;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
@@ -103,7 +93,6 @@ import org.chromium.chrome.browser.suggestions.tile.TileGroup.Delegate;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabAttributes;
 import org.chromium.chrome.browser.ui.native_page.TouchEnabledDelegate;
-import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.components.browser_ui.settings.SettingsNavigation;
 import org.chromium.components.browser_ui.widget.displaystyle.UiConfig;
 import org.chromium.components.user_prefs.UserPrefs;
@@ -158,7 +147,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
 
     private Tab mTab;
     private Activity mActivity;
-    private LinearLayout mSuperReferralSitesLayout;
 
     private BraveNtpAdapter mNtpAdapter;
     private Bitmap mSponsoredLogo;
@@ -206,12 +194,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
 
     protected void updateTileGridPlaceholderVisibility() {
         // This function is kept empty to avoid placeholder implementation
-    }
-
-    private boolean shouldShowSuperReferral() {
-        return mNTPBackgroundImagesBridge.isSuperReferral()
-                && NTPBackgroundImagesBridge.enableSponsoredImages()
-                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
     }
 
     @Override
@@ -280,7 +262,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
             initilizeSponsoredTab();
         }
         checkAndShowNTPImage(false);
-        mNTPBackgroundImagesBridge.addObserver(mNTPBackgroundImageServiceObserver);
 
         if (OnboardingPrefManager.getInstance().isFromNotification() ) {
             ((BraveActivity)mActivity).showOnboardingV2(false);
@@ -914,7 +895,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
                 mImageDrawable.getBitmap().recycle();
             }
         }
-        mNTPBackgroundImagesBridge.removeObserver(mNTPBackgroundImageServiceObserver);
 
         if (mNewsItemsFeedCard != null && mNewsItemsFeedCard.size() > 0) {
             try {
@@ -1212,7 +1192,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
                 tabStripHeightSupplier,
                 composeplateUrlSupplier);
         mNTPBackgroundImagesBridge = NTPBackgroundImagesBridge.getInstance(mProfile);
-        mNTPBackgroundImagesBridge.setNewTabPageListener(mNewTabPageListener);
         mWindowAndroid = windowAndroid;
 
         assert mMvTilesContainerLayout != null : "Something has changed in the upstream!";
@@ -1266,11 +1245,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
         } else {
             maybeResetSponsoredRichMediaBackground();
 
-            if (ntpImage instanceof Wallpaper
-                    && NTPImageUtil.isReferralEnabled()
-                    && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                setBackgroundImage(ntpImage);
-            } else if (UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+            if (UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                             .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)
                     && mSponsoredTab != null
                     && NTPImageUtil.shouldEnableNTPFeature()) {
@@ -1375,58 +1350,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
             TabAttributes.from(getTab()).set(String.valueOf(getTab().getId()), sponsoredTab);
         }
         mSponsoredTab = TabAttributes.from(getTab()).get(String.valueOf(getTab().getId()));
-        if (shouldShowSuperReferral()) mNTPBackgroundImagesBridge.getTopSites();
     }
-
-    private final NewTabPageListener mNewTabPageListener =
-            new NewTabPageListener() {
-                @Override
-                public void updateInteractableFlag(boolean isBottomSheet) {
-                    mIsFromBottomSheet = isBottomSheet;
-                }
-
-                @Override
-                public void updateNTPImage() {
-                    if (mSponsoredTab == null) {
-                        initilizeSponsoredTab();
-                    }
-                    checkAndShowNTPImage(false);
-                }
-
-                @Override
-                public void updateTopSites(List<TopSite> topSites) {
-                    new AsyncTask<List<TopSiteTable>>() {
-                        @Override
-                        protected List<TopSiteTable> doInBackground() {
-                            for (TopSite topSite : topSites) {
-                                mDatabaseHelper.insertTopSite(topSite);
-                            }
-                            return mDatabaseHelper.getAllTopSites();
-                        }
-
-                        @Override
-                        protected void onPostExecute(List<TopSiteTable> topSites) {
-                            assert ThreadUtils.runningOnUiThread();
-                            if (isCancelled()) return;
-                            loadTopSites(topSites);
-                        }
-                    }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-                }
-            };
-
-    private final NTPBackgroundImagesBridge.NTPBackgroundImageServiceObserver
-            mNTPBackgroundImageServiceObserver =
-                    new NTPBackgroundImagesBridge.NTPBackgroundImageServiceObserver() {
-                        @Override
-                        public void onUpdated() {
-                            if (NTPImageUtil.isReferralEnabled()) {
-                                checkAndShowNTPImage(true);
-                                if (shouldShowSuperReferral()) {
-                                    mNTPBackgroundImagesBridge.getTopSites();
-                                }
-                            }
-                        }
-                    };
 
     private final FetchWallpaperWorkerTask.WallpaperRetrievedCallback mWallpaperRetrievedCallback =
             new FetchWallpaperWorkerTask.WallpaperRetrievedCallback() {
@@ -1439,123 +1363,13 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
 
                 @Override
                 public void logoRetrieved(Wallpaper wallpaper, Bitmap logoWallpaper) {
-                    if (!NTPImageUtil.isReferralEnabled()) {
-                        mWallpaper = wallpaper;
-                        mSponsoredLogo = logoWallpaper;
-                        if (mNtpAdapter != null) {
-                            mNtpAdapter.setSponsoredLogo(mWallpaper, logoWallpaper);
-                        }
+                    mWallpaper = wallpaper;
+                    mSponsoredLogo = logoWallpaper;
+                    if (mNtpAdapter != null) {
+                        mNtpAdapter.setSponsoredLogo(mWallpaper, logoWallpaper);
                     }
                 }
             };
-
-    private void loadTopSites(List<TopSiteTable> topSites) {
-        mSuperReferralSitesLayout = new LinearLayout(mActivity);
-        mSuperReferralSitesLayout.setWeightSum(1f);
-        mSuperReferralSitesLayout.setOrientation(LinearLayout.HORIZONTAL);
-        mSuperReferralSitesLayout.setBackgroundColor(mActivity.getColor(R.color.topsite_bg_color));
-
-        LayoutInflater inflater =
-                (LayoutInflater) mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        for (TopSiteTable topSite : topSites) {
-            final View tileView = inflater.inflate(R.layout.suggestions_tile_view, null);
-
-            TextView tileViewTitleTv = tileView.findViewById(R.id.tile_view_title);
-            tileViewTitleTv.setText(topSite.getName());
-            tileViewTitleTv.setTextAppearance(R.style.BraveSuggestionsTilesText);
-
-            ImageView iconIv = tileView.findViewById(R.id.tile_view_icon);
-            if (NTPImageUtil.imageCache.get(topSite.getDestinationUrl()) == null) {
-                NTPImageUtil.imageCache.put(
-                        topSite.getDestinationUrl(),
-                        new java.lang.ref.SoftReference(
-                                NTPImageUtil.getTopSiteBitmap(topSite.getImagePath())));
-            }
-            iconIv.setImageBitmap(NTPImageUtil.imageCache.get(topSite.getDestinationUrl()).get());
-            iconIv.setBackgroundColor(mActivity.getColor(android.R.color.white));
-            iconIv.setClickable(false);
-
-            tileView.setOnClickListener(
-                    view -> { TabUtils.openUrlInSameTab(topSite.getDestinationUrl()); });
-
-            tileView.setPadding(0, dpToPx(mActivity, 12), 0, 0);
-
-            LinearLayout.LayoutParams layoutParams =
-                    new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT);
-            layoutParams.weight = 0.25f;
-            layoutParams.gravity = Gravity.CENTER;
-            tileView.setLayoutParams(layoutParams);
-            tileView.setOnCreateContextMenuListener(
-                    new View.OnCreateContextMenuListener() {
-                        @Override
-                        public void onCreateContextMenu(
-                                ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-                            menu.add(R.string.contextmenu_open_in_new_tab)
-                                    .setOnMenuItemClickListener(
-                                            new MenuItem.OnMenuItemClickListener() {
-                                                @Override
-                                                public boolean onMenuItemClick(MenuItem item) {
-                                                    TabUtils.openUrlInNewTab(
-                                                            false, topSite.getDestinationUrl());
-                                                    return true;
-                                                }
-                                            });
-                            menu.add(R.string.contextmenu_open_in_incognito_tab)
-                                    .setOnMenuItemClickListener(
-                                            new MenuItem.OnMenuItemClickListener() {
-                                                @Override
-                                                public boolean onMenuItemClick(MenuItem item) {
-                                                    TabUtils.openUrlInNewTab(
-                                                            true, topSite.getDestinationUrl());
-                                                    return true;
-                                                }
-                                            });
-                            menu.add(R.string.contextmenu_save_link)
-                                    .setOnMenuItemClickListener(
-                                            new MenuItem.OnMenuItemClickListener() {
-                                                @Override
-                                                public boolean onMenuItemClick(MenuItem item) {
-                                                    if (getTab() != null) {
-                                                        OfflinePageBridge.getForProfile(mProfile)
-                                                                .scheduleDownload(
-                                                                        getTab().getWebContents(),
-                                                                        OfflinePageBridge
-                                                                                .NTP_SUGGESTIONS_NAMESPACE,
-                                                                        topSite.getDestinationUrl(),
-                                                                        DownloadUiActionFlags.ALL);
-                                                    } else {
-                                                        RequestCoordinatorBridge.getForProfile(
-                                                                        mProfile)
-                                                                .savePageLater(
-                                                                        topSite.getDestinationUrl(),
-                                                                        OfflinePageBridge
-                                                                                .NTP_SUGGESTIONS_NAMESPACE,
-                                                                        true /* userRequested */);
-                                                    }
-                                                    return true;
-                                                }
-                                            });
-                            menu.add(R.string.remove)
-                                    .setOnMenuItemClickListener(
-                                            new MenuItem.OnMenuItemClickListener() {
-                                                @Override
-                                                public boolean onMenuItemClick(MenuItem item) {
-                                                    NTPImageUtil.imageCache.remove(
-                                                            topSite.getDestinationUrl());
-                                                    mDatabaseHelper.deleteTopSite(
-                                                            topSite.getDestinationUrl());
-                                                    NTPImageUtil.addToRemovedTopSite(
-                                                            topSite.getDestinationUrl());
-                                                    mSuperReferralSitesLayout.removeView(tileView);
-                                                    return true;
-                                                }
-                                            });
-                        }
-                    });
-            mSuperReferralSitesLayout.addView(tileView);
-        }
-    }
 
     public void setTab(Tab tab) {
         mTab = tab;
