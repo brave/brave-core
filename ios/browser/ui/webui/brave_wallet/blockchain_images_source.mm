@@ -20,9 +20,6 @@
 
 namespace brave_wallet {
 
-BlockchainImagesSource::BlockchainImagesSource(const base::FilePath& base_path)
-    : BlockchainImagesSourceBase(base_path) {}
-
 std::string BlockchainImagesSource::GetSource() const {
   return kImageSourceHost;
 }
