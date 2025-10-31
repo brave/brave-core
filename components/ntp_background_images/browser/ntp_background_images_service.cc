@@ -20,6 +20,7 @@
 #include "base/i18n/time_formatting.h"
 #include "base/json/json_reader.h"
 #include "base/logging.h"
+#include "base/notreached.h"
 #include "base/path_service.h"
 #include "base/strings/string_util.h"
 #include "base/task/thread_pool.h"
@@ -78,6 +79,14 @@ std::string HandleComponentData(const base::FilePath& installed_dir,
   std::string contents;
   const bool success = base::ReadFileToString(file_path, &contents);
   if (!success || contents.empty()) {
+    SCOPED_CRASH_KEY_BOOL("Issue50267", "success", success);
+    SCOPED_CRASH_KEY_BOOL("Issue50267", "empty_contents", contents.empty());
+    SCOPED_CRASH_KEY_BOOL("Issue50267", "path_exists",
+                          base::PathExists(file_path));
+    SCOPED_CRASH_KEY_STRING64("Issue50267", "filename",
+                              file_path.BaseName().AsUTF8Unsafe());
+    SCOPED_CRASH_KEY_STRING64("Issue50267", "failure_reason", "Invalid JSON");
+    DUMP_WILL_BE_NOTREACHED();
     VLOG(6) << "Cannot read NTP component " << manifest_file
             << " manifest file";
   }
@@ -619,6 +628,7 @@ void NTPBackgroundImagesService::OnGetSponsoredComponentJsonData(
     SCOPED_CRASH_KEY_STRING64("Issue50267", "variations_country_code",
                               GetVariationsCountryCode(variations_service_));
     SCOPED_CRASH_KEY_STRING64("Issue50267", "json_string", json_string);
+    SCOPED_CRASH_KEY_BOOL("Issue50267", "empty_json", json_string.empty());
     SCOPED_CRASH_KEY_STRING64("Issue50267", "failure_reason", "Invalid JSON");
     base::debug::DumpWithoutCrashing();
     DVLOG(2) << "Read json data failed. Invalid JSON data";
