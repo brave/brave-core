@@ -97,9 +97,10 @@ class BraveAccountService : public KeyedService, public mojom::Authentication {
 
   void ScheduleVerifyResult(
       base::TimeDelta delay = base::Seconds(0),
-      endpoint_client::RequestHandle previous_request = {});
+      endpoint_client::RequestHandle current_verify_result_request = {});
 
-  void VerifyResult(endpoint_client::RequestHandle previous_request);
+  void VerifyResult(
+      endpoint_client::RequestHandle current_verify_result_request);
 
   void OnVerifyResult(
       int response_code,
