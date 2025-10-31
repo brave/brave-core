@@ -1,0 +1,51 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+.editable {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: var(--editable-padding);
+  max-height: var(--editable-max-height, unset);
+  overflow-y: auto;
+
+  &:focus {
+    outline: none;
+  }
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--leo-color-neutral-20);
+    border-radius: var(--leo-spacing-m);
+  }
+
+  & span {
+    display: inline-block;
+  }
+}
+
+.editable:not(:empty)::before {
+  display: none;
+}
+
+.editable::before {
+  position: absolute;
+  inset: var(--editable-padding);
+
+  content: attr(data-placeholder);
+  color: var(--leo-color-text-tertiary);
+}
+
+.editable {
+  & [data-type='skill'] {
+    background-color: var(--leo-color-primary-10);
+    color: var(--leo-color-primary-60);
+    border-radius: 6px;
+    padding: 0 var(--leo-spacing-s);
+  }
+}

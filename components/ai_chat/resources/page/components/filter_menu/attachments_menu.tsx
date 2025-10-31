@@ -35,7 +35,7 @@ export default function TabsMenu() {
     (isOpen: boolean) => {
       if (!isOpen) {
         conversation.setInputText([])
-        document.querySelector<HTMLElement>('textarea')?.focus()
+        document.querySelector<HTMLElement>('[data-editor]')?.focus()
       }
     },
     [conversation.setInputText],

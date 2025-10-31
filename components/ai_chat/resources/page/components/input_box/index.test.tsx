@@ -387,7 +387,7 @@ describe('input box', () => {
         />,
       )
 
-      const textarea = container.querySelector('textarea')!
+      const textarea = container.querySelector('[data-editor]')!
       const imageFile = createMockFile('test.png', 'image/png')
       const textFile = createMockFile('test.txt', 'text/plain')
 
