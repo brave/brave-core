@@ -40,9 +40,7 @@ void AddSpeechToTextBraveHeaders(network::ResourceRequest* request) {
   const auto authorization = brave_service_keys::GetAuthorizationHeader(
       BUILDFLAG(SERVICE_KEY_STT), headers, request->url, request->method,
       {kRequestKey, kRequestDate});
-  if (authorization) {
-    request->headers.SetHeader(authorization->first, authorization->second);
-  }
+  request->headers.SetHeader(authorization.first, authorization.second);
 }
 
 }  // namespace
