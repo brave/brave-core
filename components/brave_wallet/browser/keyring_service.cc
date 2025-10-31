@@ -2929,13 +2929,13 @@ KeyringService::SignCip30MessageByCardanoKeyring(
   }
 
   base::Value::Dict result;
-  result.Set("key",
-             HexEncodeLower(CardanoCip30Serializer::SerializeSignedDataKey(
-                 *cardano_address, signature_pair->pubkey)));
-  result.Set(
-      "signature",
-      HexEncodeLower(CardanoCip30Serializer::SerializeSignedDataSignature(
-          *cardano_address, message, signature_pair->signature)));
+  result.Set("key", brave_wallet::HexEncodeLower(
+                        CardanoCip30Serializer::SerializeSignedDataKey(
+                            *cardano_address, signature_pair->pubkey)));
+  result.Set("signature",
+             brave_wallet::HexEncodeLower(
+                 CardanoCip30Serializer::SerializeSignedDataSignature(
+                     *cardano_address, message, signature_pair->signature)));
   return result;
 }
 
