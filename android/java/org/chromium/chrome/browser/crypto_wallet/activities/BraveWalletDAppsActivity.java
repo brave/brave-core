@@ -19,10 +19,12 @@ import org.chromium.base.Log;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.build.annotations.MonotonicNonNull;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.fragments.ApproveTxBottomSheetDialogFragment;
+import org.chromium.chrome.browser.crypto_wallet.fragments.WalletFragmentCallback;
 import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.AddSwitchChainNetworkFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.AddTokenFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.ConnectAccountFragment;
@@ -31,19 +33,26 @@ import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.SignMessageErro
 import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.SignMessageFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.SignSolTransactionsFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.SiweMessageFragment;
-import org.chromium.chrome.browser.crypto_wallet.listeners.TransactionConfirmationListener;
+import org.chromium.chrome.browser.crypto_wallet.listeners.TransactionListener;
 import org.chromium.chrome.browser.crypto_wallet.util.PendingTxHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.TransactionUtils;
 import org.chromium.chrome.browser.init.ActivityProfileProvider;
 import org.chromium.chrome.browser.profiles.ProfileProvider;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /** Base activity for all DApps-related activities */
 public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
-        implements TransactionConfirmationListener,
+        implements TransactionListener,
+                WalletFragmentCallback,
                 AddSwitchChainNetworkFragment.AddSwitchRequestProcessListener {
-    private static final String TAG = "BraveWalletDApps";
-    private static final String EXTRA_ACTIVITY_TYPE =
+    public static final String EXTRA_ACTIVITY_TYPE =
             "org.chromium.chrome.browser.crypto_wallet.activities.ACTIVITY_TYPE";
+
+    private static final String TAG = "BraveWalletDApps";
+    private final List<TransactionInfo> mPendingTransactions = new ArrayList<>();
+    @Nullable private TransactionInfo mCurrentTransaction;
     private ApproveTxBottomSheetDialogFragment mApproveTxBottomSheetDialogFragment;
     private PendingTxHelper mPendingTxHelper;
     private Fragment mFragment;
@@ -165,6 +174,22 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
         finish();
     }
 
+    @Override
+    public WalletModel getWalletModel() {
+        return mWalletModel;
+    }
+
+    @Override
+    public List<TransactionInfo> getPendingTransactions() {
+        return mPendingTransactions;
+    }
+
+    @Override
+    @Nullable
+    public TransactionInfo getCurrentTransaction() {
+        return mCurrentTransaction;
+    }
+
     /*
      * Process the next request by reloading the AddSwitchChainNetworkFragment
      * which will load the next pending request
@@ -218,11 +243,12 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
                                         //  onNextTransaction implementation is done
                                         mApproveTxBottomSheetDialogFragment.dismiss();
                                     }
+                                    mCurrentTransaction = transactionInfo;
+                                    mPendingTransactions.clear();
+                                    mPendingTransactions.addAll(
+                                            mPendingTxHelper.getPendingTransactions());
                                     mApproveTxBottomSheetDialogFragment =
-                                            ApproveTxBottomSheetDialogFragment.newInstance(
-                                                    mPendingTxHelper.getPendingTransactions(),
-                                                    transactionInfo,
-                                                    this);
+                                            new ApproveTxBottomSheetDialogFragment();
                                     mApproveTxBottomSheetDialogFragment.show(
                                             getSupportFragmentManager());
                                     mPendingTxHelper.mTransactionInfoLd.observe(
@@ -236,9 +262,9 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
                     });
         } else if (mActivityType == ActivityType.ADD_ETHEREUM_CHAIN
                 || mActivityType == ActivityType.SWITCH_ETHEREUM_CHAIN) {
-            mFragment = new AddSwitchChainNetworkFragment(mActivityType, this);
+            mFragment = AddSwitchChainNetworkFragment.newInstance(mActivityType);
         } else if (mActivityType == ActivityType.SIGN_SOL_TRANSACTIONS) {
-            mFragment = SignSolTransactionsFragment.newInstance();
+            mFragment = new SignSolTransactionsFragment();
         } else if (mActivityType == ActivityType.CONNECT_ACCOUNT) {
             mFragment = new ConnectAccountFragment();
         } else if (mActivityType == GET_ENCRYPTION_PUBLIC_KEY_REQUEST
@@ -269,7 +295,7 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
                 walletModel.getDappsModel().clearDappsState();
             }
         } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "onDestroy " + e);
+            Log.e(TAG, "onDestroy", e);
         }
 
         if (mPendingTxHelper != null) {

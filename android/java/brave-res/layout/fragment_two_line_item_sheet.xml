@@ -15,6 +15,7 @@
     <TextView
         android:id="@+id/frag_two_line_sheet_title"
         style="@style/BraveWalletTextViewTitle"
+        android:text="@string/brave_wallet_see_details"
         android:layout_width="match_parent"
         android:layout_margin="12dp"
         android:textSize="22sp"
