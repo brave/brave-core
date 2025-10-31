@@ -168,11 +168,6 @@
                                               kBraveNTPBrandedWallpaper];
 }
 
-+ (Feature*)kBraveNTPSuperReferralWallpaper {
-  return [[Feature alloc] initWithFeature:&ntp_background_images::features::
-                                              kBraveNTPSuperReferralWallpaper];
-}
-
 + (Feature*)kBraveNTPBrandedWallpaperSurveyPanelist {
   return [[Feature alloc]
       initWithFeature:&ntp_background_images::features::

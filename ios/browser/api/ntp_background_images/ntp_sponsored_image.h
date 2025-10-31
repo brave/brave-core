@@ -15,23 +15,16 @@
 #endif
 
 @class NTPSponsoredImageCampaign, NTPSponsoredImageBackground,
-    NTPSponsoredImageLogo, NTPSponsoredImageTopSite;
+    NTPSponsoredImageLogo;
 
 NS_ASSUME_NONNULL_BEGIN
 
 OBJC_EXPORT
 @interface NTPSponsoredImageData : NSObject
 @property(readonly) NSArray<NTPSponsoredImageCampaign*>* campaigns;
-@property(readonly) BOOL isSuperReferral;
-@property(readonly, nullable) NSString* themeName;
-@property(readonly, nullable) NSArray<NTPSponsoredImageTopSite*>* topSites;
 - (instancetype)init NS_UNAVAILABLE;
-- (instancetype)
-    initWithCampaigns:(NSArray<NTPSponsoredImageCampaign*>*)campaigns
-      isSuperReferral:(BOOL)isSuperReferral
-            themeName:(nullable NSString*)themeName
-             topSites:(nullable NSArray<NTPSponsoredImageTopSite*>*)topSites
-    NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithCampaigns:
+    (NSArray<NTPSponsoredImageCampaign*>*)campaigns NS_DESIGNATED_INITIALIZER;
 @end
 
 OBJC_EXPORT
@@ -73,19 +66,6 @@ OBJC_EXPORT
                    destinationURL:(NSURL*)destinationURL
                       companyName:(NSString*)companyName
     NS_DESIGNATED_INITIALIZER;
-@end
-
-OBJC_EXPORT
-@interface NTPSponsoredImageTopSite : NSObject
-@property(readonly) NSString* name;
-@property(readonly, nullable) NSURL* destinationURL;
-@property(readonly) NSString* backgroundColor;
-@property(readonly) NSURL* imagePath;
-- (instancetype)init NS_UNAVAILABLE;
-- (instancetype)initWithName:(NSString*)name
-              destinationURL:(NSURL*)destinationURL
-             backgroundColor:(NSString*)backgroundColor
-                   imagePath:(NSURL*)imagePath NS_DESIGNATED_INITIALIZER;
 @end
 
 NS_ASSUME_NONNULL_END

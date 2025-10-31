@@ -8,7 +8,6 @@
 #include <memory>
 
 #include "base/memory/raw_ptr.h"
-#include "base/strings/sys_string_conversions.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service_observer.h"
 #include "brave/components/ntp_background_images/browser/features.h"
@@ -133,15 +132,6 @@ class AdsServiceObserverBridge : public brave_ads::AdsServiceObserver {
   return [[NTPSponsoredImageData alloc] initWithData:*data];
 }
 
-- (NTPSponsoredImageData*)superReferralImageData {
-  auto* data = _service->GetSponsoredImagesData(/* super_referral=*/true,
-                                                /*supports_rich_media=*/false);
-  if (data == nullptr) {
-    return nil;
-  }
-  return [[NTPSponsoredImageData alloc] initWithData:*data];
-}
-
 - (NSInteger)initialCountToBrandedWallpaper {
   return ntp_background_images::features::kInitialCountToBrandedWallpaper.Get();
 }
@@ -152,10 +142,6 @@ class AdsServiceObserverBridge : public brave_ads::AdsServiceObserver {
 
 - (void)updateSponsoredImageComponentIfNeeded {
   _service->MaybeCheckForSponsoredComponentUpdate();
-}
-
-- (NSString*)superReferralCode {
-  return base::SysUTF8ToNSString(_service->GetSuperReferralCode());
 }
 
 - (void)onUpdatedNTPBackgroundImagesData:
