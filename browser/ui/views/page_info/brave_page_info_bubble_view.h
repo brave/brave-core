@@ -14,6 +14,8 @@
 #include "chrome/browser/ui/views/page_info/page_info_bubble_view.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 
+class BraveShieldsPageInfoView;
+
 // Brave-customized version of Chromium's page info bubble, which displays
 // shields, permission, and security information for the current site.
 class BravePageInfoBubbleView
@@ -27,6 +29,9 @@ class BravePageInfoBubbleView
 
   ~BravePageInfoBubbleView() override;
 
+  // Opens the Shields page after Shields has detected repeated reloads.
+  void OpenShieldsPageAfterRepeatedReloads();
+
   // PageInfoBubbleView:
   void OpenMainPage(base::OnceClosure initialized_callback) override;
   void AnnouncePageOpened(std::u16string announcement) override;
@@ -36,6 +41,11 @@ class BravePageInfoBubbleView
   gfx::Size CalculatePreferredSize(
       const views::SizeBounds& available_size) const override;
   void ChildPreferredSizeChanged(View* child) override;
+
+  // WebContentsObserver:
+  void PrimaryPageChanged(content::Page& page) override;
+  void DidFinishNavigation(
+      content::NavigationHandle* navigation_handle) override;
 
   // brave_shields::BraveShieldsTabHelper::Observer:
   void OnResourcesChanged() override;
@@ -75,6 +85,7 @@ class BravePageInfoBubbleView
 
   // UI components.
   raw_ptr<BravePageInfoTabSwitcher> tab_switcher_ = nullptr;
+  raw_ptr<BraveShieldsPageInfoView> shields_page_view_ = nullptr;
 
   base::ScopedObservation<brave_shields::BraveShieldsTabHelper,
                           brave_shields::BraveShieldsTabHelper::Observer>

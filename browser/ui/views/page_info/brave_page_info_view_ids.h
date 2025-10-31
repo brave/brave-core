@@ -11,7 +11,8 @@
 // conflicts with Chromium's page info view IDs.
 enum class BravePageInfoViewID {
   kTabSwitcherShieldsButton = 10000,
-  kTabSwitcherSiteSettingsButton
+  kTabSwitcherSiteSettingsButton,
+  kShieldsWebView
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_PAGE_INFO_BRAVE_PAGE_INFO_VIEW_IDS_H_

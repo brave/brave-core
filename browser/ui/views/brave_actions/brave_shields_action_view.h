@@ -44,9 +44,7 @@ class BraveShieldsActionView
   void OnThemeChanged() override;
 
   SkPath GetHighlightPath() const;
-  views::Widget* GetBubbleWidget() {
-    return webui_bubble_manager_->GetBubbleWidget();
-  }
+  views::Widget* GetBubbleWidget();
 
  private:
   void ButtonPressed(BrowserWindowInterface* browser_window_interface);
