@@ -54,6 +54,9 @@ class Client {
       base::expected<std::optional<Response>, std::optional<Error>>;
   using Callback = base::OnceCallback<void(int, Expected)>;
 
+  // Depending on |C|, either takes ownership of (moves out) |simple_url_loader|
+  // (non-cancelable case), or returns a raw pointer to the loader (cancelable
+  // case).
   template <RequestCancelability C>
   static auto MaybeMoveLoader(
       std::unique_ptr<network::SimpleURLLoader>& simple_url_loader) {
@@ -64,6 +67,10 @@ class Client {
     }
   }
 
+  // Depending on |C|, either verifies that ownership of |simple_url_loader| has
+  // already been transferred (non-cancelable case), or wraps the loader in a
+  // RequestHandle that safely deletes it on its owning sequence when the handle
+  // is reset (cancelable case).
   template <RequestCancelability C>
   static auto MaybeMakeHandle(
       std::unique_ptr<network::SimpleURLLoader>& simple_url_loader) {
@@ -78,6 +85,9 @@ class Client {
   }
 
  public:
+  // [[nodiscard]] enforces that callers retain the returned handle in
+  // the cancelable case. It has no effect in the non-cancelable case,
+  // where the return type is void.
   template <RequestCancelability C = RequestCancelability::kNonCancelable,
             typename Request>
     requires(std::same_as<detail::MaybeStripWithHeaders<Request>,

@@ -44,6 +44,9 @@ class RequestHandleDeleter {
 
 }  // namespace detail
 
+// RequestHandle is intentionally opaque: it hides the managed SimpleURLLoader
+// to prevent direct API access. Callers should only be able to hold, move, or
+// reset the handle to cancel a request - hence the type erasure.
 using RequestHandle = std::unique_ptr<void, detail::RequestHandleDeleter>;
 
 }  // namespace brave_account::endpoint_client
