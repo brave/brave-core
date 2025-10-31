@@ -19,6 +19,7 @@ import org.junit.runner.RunWith;
 
 import org.chromium.base.ThreadUtils;
 import org.chromium.base.test.util.Batch;
+import org.chromium.chrome.browser.homepage.settings.RadioButtonGroupHomepagePreference.HomepageOption;
 import org.chromium.chrome.browser.settings.SettingsActivityTestRule;
 import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 
@@ -76,6 +77,26 @@ public class BraveHomepageSettingsTest {
                                     .equals(
                                             BraveRadioButtonGroupHomepagePreference
                                                     .MOBILE_BOOKMARKS_PATH));
+                });
+    }
+
+    @Test
+    @SmallTest
+    public void testAnyBookmarksCustomUrlIsMobileBookamrks() {
+        ThreadUtils.runOnUiThreadBlocking(
+                () -> {
+                    BraveRadioButtonGroupHomepagePreference homepageRadioGroup =
+                            mFragment.findPreference(PREF_HOMEPAGE_RADIO_GROUP);
+
+                    homepageRadioGroup.setupPreferenceValues(
+                            new RadioButtonGroupHomepagePreference.PreferenceValues(
+                                    /* checkedOption= */ HomepageOption.ENTRY_CUSTOM_URI,
+                                    /* customizedText= */ "chrome-native://bookmarks/folder/42",
+                                    /* isEnabled= */ true,
+                                    /* isNtpButtonVisible= */ true,
+                                    /* isCustomizedOptionVisible= */ true));
+
+                    assertTrue(homepageRadioGroup.getMobileBookmarksRadioButton().isChecked());
                 });
     }
 }
