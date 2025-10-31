@@ -13,12 +13,16 @@
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
+#include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/ios/ai_chat.mojom.objc+private.h"
 #include "brave/components/ai_chat/core/common/mojom/ios/common.mojom.objc+private.h"
+#include "brave/components/ai_chat/core/common/prefs.h"
 #include "brave/ios/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/ios/browser/ai_chat/model_service_factory.h"
 #include "brave/ios/browser/api/profile/profile_bridge_impl.h"
+#include "components/prefs/pref_service.h"
+#include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 
 namespace {
 
@@ -47,6 +51,7 @@ class SettingsHelperDelegateBridge : public ai_chat::ModelService::Observer {
   std::unique_ptr<SettingsHelperDelegateBridge> _bridge;
   raw_ptr<ai_chat::ModelService> _modelService;
   raw_ptr<ai_chat::AIChatService> _aiChatService;
+  raw_ptr<PrefService> _profilePrefs;
 }
 @end
 
@@ -63,6 +68,8 @@ class SettingsHelperDelegateBridge : public ai_chat::ModelService::Observer {
     _modelService->AddObserver(_bridge.get());
 
     _aiChatService = ai_chat::AIChatServiceFactory::GetForProfile(profile);
+
+    _profilePrefs = profile->GetPrefs();
   }
   return self;
 }
@@ -79,13 +86,13 @@ class SettingsHelperDelegateBridge : public ai_chat::ModelService::Observer {
   _bridge->set_delegate(delegate);
 }
 
-- (NSArray<AiChatModel*>*)models {
-  const std::vector<ai_chat::mojom::ModelPtr>& models =
-      _modelService->GetModels();
+- (NSArray<AiChatModelWithSubtitle*>*)modelsWithSubtitles {
+  std::vector<ai_chat::mojom::ModelWithSubtitlePtr> models =
+      _modelService->GetModelsWithSubtitles();
   NSMutableArray* bridgedModels = [[NSMutableArray alloc] init];
-  for (const ai_chat::mojom::ModelPtr& model : models) {
-    [bridgedModels
-        addObject:[[AiChatModel alloc] initWithModelPtr:model->Clone()]];
+  for (const ai_chat::mojom::ModelWithSubtitlePtr& model : models) {
+    [bridgedModels addObject:[[AiChatModelWithSubtitle alloc]
+                                 initWithModelWithSubtitlePtr:model->Clone()]];
   }
   return [bridgedModels copy];
 }
@@ -106,6 +113,13 @@ class SettingsHelperDelegateBridge : public ai_chat::ModelService::Observer {
     handler(static_cast<AiChatPremiumStatus>(status),
             [[AiChatPremiumInfo alloc] initWithPremiumInfoPtr:std::move(info)]);
   }));
+}
+
+- (void)resetLeoData {
+  _aiChatService->DeleteConversations();
+  ai_chat::SetUserOptedIn(_profilePrefs, false);
+  ai_chat::prefs::DeleteAllMemoriesFromPrefs(*_profilePrefs);
+  ai_chat::prefs::ResetCustomizationsPref(*_profilePrefs);
 }
 
 @end

@@ -28,6 +28,7 @@ source_set("ai_chat") {
     "//brave/ios/browser/misc_metrics",
     "//brave/ios/browser/skus",
     "//brave/ios/components/prefs",
+    "//components/prefs",
     "//components/user_prefs",
     "//components/version_info",
     "//ios/chrome/browser/shared/model/application_context",

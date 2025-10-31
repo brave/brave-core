@@ -28,12 +28,14 @@ NS_ASSUME_NONNULL_BEGIN
 /// A delegate to watch for updates to the models
 @property(nonatomic, weak, nullable) id<AIChatSettingsHelperDelegate> delegate;
 /// The set of available models
-@property(readonly) NSArray<AiChatModel*>* models;
+@property(readonly) NSArray<AiChatModelWithSubtitle*>* modelsWithSubtitles;
 /// The current default model key being used
 @property(nonatomic) NSString* defaultModelKey;
 /// Fetch the premium status of the user
 - (void)fetchPremiumStatus:(void (^)(AiChatPremiumStatus status,
                                      AiChatPremiumInfo* _Nullable info))handler;
+/// Deletes user preferences & data related to Leo
+- (void)resetLeoData;
 @end
 
 /// A concrete implementation of the AIChatSettingsHelper
