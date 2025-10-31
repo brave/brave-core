@@ -317,19 +317,12 @@ void BraveSessionCache::PerturbPixelsInternal(base::span<uint8_t> data) {
   // limited to 32,767 pixels.)
   // Four bits per pixel
   const size_t pixel_count = data.size() / 4;
+
   // calculate initial seed to find first pixel to perturb, based on session
   // key, domain key, and canvas contents
-  crypto::HMAC h(crypto::HMAC::SHA256);
-  const auto farbling_token_bytes =
-      default_shields_settings_->farbling_token.AsBytes();
-  CHECK(h.Init(farbling_token_bytes));
-  uint8_t canvas_key_buffer[32];
-  auto canvas_key = base::as_writable_byte_span(canvas_key_buffer);
-  CHECK(h.Sign(data, canvas_key));
-  uint64_t v = base::U64FromNativeEndian(canvas_key.first<8u>());
-  uint64_t pixel_index;
-  // choose which channel (R, G, or B) to perturb
-  uint8_t channel;
+  auto canvas_key = crypto::hmac::SignSha256(
+      default_shields_settings_->farbling_token.AsBytes(), data);
+  uint64_t v = base::U64FromNativeEndian(base::span(canvas_key).first<8u>());
   // iterate through 32-byte canvas key and use each bit to determine how to
   // perturb the current pixel
   for (uint8_t key : canvas_key) {
@@ -338,8 +331,9 @@ void BraveSessionCache::PerturbPixelsInternal(base::span<uint8_t> data) {
       if (j % 8 == 0) {
         bit = key;
       }
-      channel = v % 3;
-      pixel_index = 4 * (v % pixel_count) + channel;
+      // choose which channel (R, G, or B) to perturb
+      uint8_t channel = v % 3;
+      uint64_t pixel_index = 4 * (v % pixel_count) + channel;
       data[pixel_index] = data[pixel_index] ^ (bit & 0x1);
       bit = bit >> 1;
       // find next pixel to perturb
@@ -351,12 +345,9 @@ void BraveSessionCache::PerturbPixelsInternal(base::span<uint8_t> data) {
 blink::String BraveSessionCache::GenerateRandomString(
     std::string_view seed,
     blink::wtf_size_t length) {
-  uint8_t key[32];
-  crypto::HMAC h(crypto::HMAC::SHA256);
-  const auto farbling_token_bytes =
-      default_shields_settings_->farbling_token.AsBytes();
-  CHECK(h.Init(farbling_token_bytes));
-  CHECK(h.Sign(base::as_byte_span(seed), key));
+  auto key = crypto::hmac::SignSha256(
+      default_shields_settings_->farbling_token.AsBytes(),
+      base::as_byte_span(seed));
   // initial PRNG seed based on session key and passed-in seed string
   uint64_t v = base::U64FromNativeEndian(base::span(key).first<8u>());
   base::span<UChar> destination;
