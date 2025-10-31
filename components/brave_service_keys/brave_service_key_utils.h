@@ -19,7 +19,7 @@ namespace brave_service_keys {
 // Calculates the SHA-256 hash of the supplied payload and returns a pair
 // comprising of the digest header field, and header value in the format
 // "SHA-256=<base64_encoded_hash>".
-std::pair<std::string, std::string> GetDigestHeader(const std::string& payload);
+std::pair<std::string, std::string> GetDigestHeader(std::string_view payload);
 
 // Generates the the string to be signed over and included in the authorization
 // header. See
@@ -27,16 +27,16 @@ std::pair<std::string, std::string> GetDigestHeader(const std::string& payload);
 std::pair<std::string, std::string> CreateSignatureString(
     const base::flat_map<std::string, std::string>& headers,
     const GURL& url,
-    const std::string& method,
+    std::string_view method,
     const std::vector<std::string>& headers_to_sign);
 
 // Generates an authorization header field and value pair using the provided
 // service key to sign over specified headers.
-std::optional<std::pair<std::string, std::string>> GetAuthorizationHeader(
-    const std::string& service_key,
+std::pair<std::string, std::string> GetAuthorizationHeader(
+    std::string_view service_key,
     const base::flat_map<std::string, std::string>& headers,
     const GURL& url,
-    const std::string& method,
+    std::string_view method,
     const std::vector<std::string>& headers_to_sign);
 
 }  // namespace brave_service_keys

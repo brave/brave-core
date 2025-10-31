@@ -190,15 +190,9 @@ constexpr bool HasNoSubmaskingOnInvalidAddresses() {
 static_assert(HasNoSubmaskingOnInvalidAddresses(),
               "Invalid MAC addresses must not be submasked");
 
-std::optional<std::string> ComputeHmacSha256(std::string_view key,
-                                             std::string_view text) {
-  crypto::HMAC hmac(crypto::HMAC::SHA256);
-  std::array<uint8_t, 32U> digest;
-  if (!hmac.Init(key) || !hmac.Sign(base::as_byte_span(text), digest)) {
-    return std::nullopt;
-  }
-
-  return base::ToLowerASCII(base::HexEncode(digest));
+std::string ComputeHmacSha256(std::string_view key, std::string_view text) {
+  return base::ToLowerASCII(base::HexEncode(crypto::hmac::SignSha256(
+      base::as_byte_span(key), base::as_byte_span(text))));
 }
 
 void GetRawDeviceIdCallback(DeviceIdCallback callback,
@@ -209,8 +203,7 @@ void GetRawDeviceIdCallback(DeviceIdCallback callback,
     return std::move(callback).Run({});
   }
 
-  std::move(callback).Run(
-      ComputeHmacSha256(raw_device_id, "FOOBAR").value_or(std::string()));
+  std::move(callback).Run(ComputeHmacSha256(raw_device_id, "FOOBAR"));
 }
 
 }  // namespace
