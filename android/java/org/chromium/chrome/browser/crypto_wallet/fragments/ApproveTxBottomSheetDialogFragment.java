@@ -98,8 +98,7 @@ public class ApproveTxBottomSheetDialogFragment extends WalletBottomSheetDialogF
             mTxInfo = mTransactionListener.getCurrentTransaction();
             mPendingTransactions = mTransactionListener.getPendingTransactions();
         } else {
-            throw new IllegalStateException(
-                    "Host activity must implement TransactionListener.");
+            throw new IllegalStateException("Host activity must implement TransactionListener.");
         }
     }
 
