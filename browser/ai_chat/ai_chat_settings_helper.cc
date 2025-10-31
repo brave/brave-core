@@ -21,11 +21,9 @@
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/browsing_data/core/browsing_data_utils.h"
-#include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_context.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
-#include "ui/base/l10n/l10n_util.h"
 
 #if BUILDFLAG(IS_ANDROID)
 #include "chrome/android/chrome_jni_headers/BraveLeoMojomHelper_jni.h"
@@ -102,49 +100,7 @@ void AIChatSettingsHelper::OnDefaultModelChanged(const std::string& old_key,
 
 void AIChatSettingsHelper::GetModelsWithSubtitles(
     GetModelsWithSubtitlesCallback callback) {
-  const auto& all_models = model_service_->GetModels();
-  std::vector<mojom::ModelWithSubtitlePtr> models;
-
-  for (const auto& model : all_models) {
-    mojom::ModelWithSubtitle modelWithSubtitle;
-    modelWithSubtitle.model = model->Clone();
-
-    if (model->options->is_leo_model_options()) {
-      if (model->key == "chat-basic") {
-        modelWithSubtitle.subtitle =
-            l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_BASIC_SUBTITLE);
-      } else if (model->key == "chat-claude-instant") {
-        modelWithSubtitle.subtitle =
-            l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_CLAUDE_INSTANT_SUBTITLE);
-      } else if (model->key == "chat-claude-haiku") {
-        modelWithSubtitle.subtitle =
-            l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_CLAUDE_HAIKU_SUBTITLE);
-      } else if (model->key == "chat-claude-sonnet") {
-        modelWithSubtitle.subtitle =
-            l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_CLAUDE_SONNET_SUBTITLE);
-      } else if (model->key == "chat-qwen") {
-        modelWithSubtitle.subtitle =
-            l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_QWEN_SUBTITLE);
-      } else if (model->key == "chat-deepseek-r1") {
-        modelWithSubtitle.subtitle =
-            l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_DEEPSEEK_R1_SUBTITLE);
-      } else if (model->key == "chat-automatic") {
-        modelWithSubtitle.subtitle =
-            l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_AUTOMATIC_SUBTITLE);
-      } else if (model->key == "chat-gemma") {
-        modelWithSubtitle.subtitle =
-            l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_GEMMA_SUBTITLE);
-      }
-    }
-
-    if (model->options->is_custom_model_options()) {
-      modelWithSubtitle.subtitle = "";
-    }
-
-    models.emplace_back(modelWithSubtitle.Clone());
-  }
-
-  std::move(callback).Run(std::move(models));
+  std::move(callback).Run(model_service_->GetModelsWithSubtitles());
 }
 
 void AIChatSettingsHelper::GetManageUrl(GetManageUrlCallback callback) {
