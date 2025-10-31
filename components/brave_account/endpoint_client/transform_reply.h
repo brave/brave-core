@@ -3,15 +3,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ACCOUNT_ENDPOINT_CLIENT_FUNCTIONS_H_
-#define BRAVE_COMPONENTS_BRAVE_ACCOUNT_ENDPOINT_CLIENT_FUNCTIONS_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ACCOUNT_ENDPOINT_CLIENT_TRANSFORM_REPLY_H_
+#define BRAVE_COMPONENTS_BRAVE_ACCOUNT_ENDPOINT_CLIENT_TRANSFORM_REPLY_H_
 
 #include <concepts>
 #include <variant>
 
 #include "base/types/expected.h"
+#include "brave/components/brave_account/endpoint_client/is_response_body.h"
 
-namespace brave_account::endpoint_client::functions::detail {
+namespace brave_account::endpoint_client::detail {
 
 template <typename T>
 concept IsExpected = requires(T expected) {
@@ -19,6 +20,12 @@ concept IsExpected = requires(T expected) {
   typename T::error_type;
   requires std::same_as<
       T, base::expected<typename T::value_type, typename T::error_type>>;
+};
+
+template <typename T>
+concept IsReply = requires(T expected) {
+  requires IsExpected<T>;
+  requires IsResponseBody<typename T::value_type>;
 };
 
 template <typename F, typename ResponseType>
@@ -79,9 +86,9 @@ constexpr auto TransformError(Error&& errors,
   }
 }
 
-}  // namespace brave_account::endpoint_client::functions::detail
+}  // namespace brave_account::endpoint_client::detail
 
-namespace brave_account::endpoint_client::functions {
+namespace brave_account::endpoint_client {
 
 //  This function provides a unified way to handle expected-type replies where
 //  you want to:
@@ -135,7 +142,7 @@ namespace brave_account::endpoint_client::functions {
 //  );
 
 template <
-    typename Reply,
+    detail::IsReply Reply,
     detail::ResponseTransformer<typename Reply::value_type> ResponseTransformer,
     typename... ErrorTransformer>
 constexpr auto TransformReply(Reply&& reply,
@@ -160,6 +167,6 @@ constexpr auto TransformReply(Reply&& reply,
   return invoke_on_response();
 }
 
-}  // namespace brave_account::endpoint_client::functions
+}  // namespace brave_account::endpoint_client
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ACCOUNT_ENDPOINT_CLIENT_FUNCTIONS_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ACCOUNT_ENDPOINT_CLIENT_TRANSFORM_REPLY_H_

@@ -14,7 +14,7 @@
 #include "base/strings/strcat.h"
 #include "brave/components/brave_account/brave_account_service_constants.h"
 #include "brave/components/brave_account/endpoint_client/client.h"
-#include "brave/components/brave_account/endpoint_client/functions.h"
+#include "brave/components/brave_account/endpoint_client/transform_reply.h"
 #include "brave/components/brave_account/endpoint_client/with_headers.h"
 #include "brave/components/brave_account/pref_names.h"
 #include "components/os_crypt/sync/os_crypt.h"
@@ -191,7 +191,7 @@ void BraveAccountService::OnRegisterInitialize(
     RegisterInitializeCallback callback,
     int response_code,
     endpoint_client::Reply<endpoints::PasswordInit> reply) {
-  auto result = endpoint_client::functions::TransformReply(
+  auto result = endpoint_client::TransformReply(
       std::move(reply),
       [&](auto response) -> base::expected<mojom::RegisterInitializeResultPtr,
                                            mojom::RegisterErrorPtr> {
@@ -229,7 +229,7 @@ void BraveAccountService::OnRegisterFinalize(
     const std::string& encrypted_verification_token,
     int response_code,
     endpoint_client::Reply<PasswordFinalize> reply) {
-  auto result = endpoint_client::functions::TransformReply(
+  auto result = endpoint_client::TransformReply(
       std::move(reply),
       [&](auto response) -> base::expected<mojom::RegisterFinalizeResultPtr,
                                            mojom::RegisterErrorPtr> {
@@ -309,7 +309,7 @@ void BraveAccountService::OnVerifyResult(
     int response_code,
     endpoint_client::Reply<endpoints::VerifyResult> reply) {
   const auto authentication_token =
-      endpoint_client::functions::TransformReply(
+      endpoint_client::TransformReply(
           std::move(reply),
           [&](auto response) -> base::expected<std::string, bool> {
             if (auto* auth_token = response.auth_token.GetIfString();
