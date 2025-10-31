@@ -71,7 +71,7 @@ void AdsServiceDelegate::OpenNewTabWithUrl(const GURL& url) {
   }
   NavigateParams nav_params(browser, url, ui::PAGE_TRANSITION_LINK);
   nav_params.disposition = WindowOpenDisposition::SINGLETON_TAB;
-  nav_params.window_action = NavigateParams::SHOW_WINDOW;
+  nav_params.window_action = NavigateParams::WindowAction::kShowWindow;
   nav_params.path_behavior = NavigateParams::RESPECT;
   Navigate(&nav_params);
 #endif
