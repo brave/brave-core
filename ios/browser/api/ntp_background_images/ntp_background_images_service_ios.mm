@@ -57,6 +57,7 @@ class NTPBackgroundImagesServiceObserverBridge
 
 @protocol AdsServiceObserverIOS <NSObject>
 @required
+- (void)onDidInitializeAdsService;
 - (void)onDidClearAdsServiceData;
 @end
 
@@ -66,6 +67,10 @@ class AdsServiceObserverBridge : public brave_ads::AdsServiceObserver {
       : bridge_(bridge) {}
 
   ~AdsServiceObserverBridge() override = default;
+
+  void OnDidInitializeAdsService() override {
+    [bridge_ onDidInitializeAdsService];
+  }
 
   void OnDidClearAdsServiceData() override {
     [bridge_ onDidClearAdsServiceData];
@@ -169,6 +174,10 @@ class AdsServiceObserverBridge : public brave_ads::AdsServiceObserver {
     _adsService->ParseAndSaveNewTabPageAds(data.Clone(),
                                            /*intentional*/ base::DoNothing());
   }
+}
+
+- (void)onDidInitializeAdsService {
+  _service->RegisterSponsoredImagesComponent();
 }
 
 - (void)onDidClearAdsServiceData {
