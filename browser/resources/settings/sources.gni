@@ -21,7 +21,6 @@ brave_settings_web_component_files = [
   "ad_block_only_mode_page/ad_block_only_mode_page.ts",
   "brave_appearance_page/bookmark_bar.ts",
   "brave_appearance_page/sidebar.ts",
-  "brave_appearance_page/super_referral.ts",
   "brave_appearance_page/tabs.ts",
   "brave_appearance_page/toolbar.ts",
   "brave_clear_browsing_data_dialog/brave_clear_browsing_data_on_exit_page.ts",

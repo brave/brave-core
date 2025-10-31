@@ -16,7 +16,6 @@
 #include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/email_aliases/email_aliases_service_factory.h"
-#include "brave/browser/ntp_background/view_counter_service_factory.h"
 #include "brave/browser/resources/settings/grit/brave_settings_resources.h"
 #include "brave/browser/resources/settings/grit/brave_settings_resources_map.h"
 #include "brave/browser/shell_integrations/buildflags/buildflags.h"
@@ -49,7 +48,6 @@
 #include "brave/components/email_aliases/email_aliases.mojom.h"
 #include "brave/components/email_aliases/features.h"
 #include "brave/components/ntp_background_images/browser/features.h"
-#include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/playlist/core/common/features.h"
 #include "brave/components/playlist/core/common/pref_names.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
@@ -122,8 +120,6 @@ bool IsLocaleJapan(Profile* profile) {
 
 }  // namespace
 
-using ntp_background_images::ViewCounterServiceFactory;
-
 BraveSettingsUI::BraveSettingsUI(content::WebUI* web_ui) : SettingsUI(web_ui) {
   web_ui->AddMessageHandler(
       std::make_unique<settings::MetricsReportingHandler>());
@@ -172,9 +168,6 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
       "braveProductVersion",
       version_info::GetBraveVersionWithoutChromiumMajorVersion());
   NavigationBarDataProvider::Initialize(html_source, profile);
-  if (auto* service = ViewCounterServiceFactory::GetForProfile(profile)) {
-    service->InitializeWebUIDataSource(html_source);
-  }
   html_source->AddBoolean(
       "isIdleDetectionFeatureEnabled",
       base::FeatureList::IsEnabled(features::kIdleDetection));
