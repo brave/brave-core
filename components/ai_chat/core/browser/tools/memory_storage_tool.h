@@ -40,7 +40,6 @@ class MemoryStorageTool : public Tool {
   std::string_view Description() const override;
   std::optional<base::Value::Dict> InputProperties() const override;
   std::optional<std::vector<std::string>> RequiredProperties() const override;
-  bool RequiresUserInteractionBeforeHandling() const override;
   bool SupportsConversation(
       bool is_temporary,
       bool has_untrusted_content,

@@ -34,8 +34,14 @@ bool Tool::IsSupportedByModel(const mojom::Model& model) const {
   return model.supports_tools;
 }
 
-bool Tool::RequiresUserInteractionBeforeHandling() const {
+bool Tool::RequiresUserInteractionBeforeHandling(
+    const mojom::ToolUseEvent& tool_use,
+    mojom::PermissionChallengePtr& out_challenge) const {
   return false;
+}
+
+void Tool::UserPermissionGranted(const std::string& tool_use_id) {
+  // Default: no-op. Tools can override if they need to track permission state.
 }
 
 bool Tool::SupportsConversation(

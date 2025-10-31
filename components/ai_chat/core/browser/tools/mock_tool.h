@@ -40,7 +40,6 @@ class MockTool : public Tool {
   std::optional<base::Value::Dict> InputProperties() const override;
   std::optional<std::vector<std::string>> RequiredProperties() const override;
   std::optional<base::Value::Dict> ExtraParams() const override;
-  bool RequiresUserInteractionBeforeHandling() const override;
   bool IsSupportedByModel(const mojom::Model& model) const override;
   bool SupportsConversation(
       bool is_temporary,
@@ -60,6 +59,12 @@ class MockTool : public Tool {
   void set_supports_conversation(bool supports_conversation) {
     supports_conversation_ = supports_conversation;
   }
+
+  MOCK_METHOD(bool,
+              RequiresUserInteractionBeforeHandling,
+              (const mojom::ToolUseEvent& tool_use,
+               mojom::PermissionChallengePtr& out_challenge),
+              (const, override));
 
   MOCK_METHOD(void,
               UseTool,

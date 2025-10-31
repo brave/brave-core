@@ -76,7 +76,22 @@ class Tool {
   // If this tool requires a user to interact with it before a response will
   // be sent to the Assistant. This can be for permission or because
   // the tool requires the user to take some action to provide the result.
-  virtual bool RequiresUserInteractionBeforeHandling() const;
+  //
+  // Tools that need permission should return true and populate out_challenge
+  // with assessment/plan explaining why permission is needed.
+  //
+  // Tools that need user to provide output (e.g. UserChoiceTool) should
+  // return true and leave out_challenge as nullptr.
+  //
+  // Returns true if user interaction is required, false otherwise.
+  virtual bool RequiresUserInteractionBeforeHandling(
+      const mojom::ToolUseEvent& tool_use,
+      mojom::PermissionChallengePtr& out_challenge) const;
+
+  // Called after user grants permission for a tool that returned a
+  // PermissionChallenge. Tools can override to perform any setup needed
+  // before UseTool is called.
+  virtual void UserPermissionGranted(const std::string& tool_use_id);
 
   // Whether this tool supports the given conversation. Can be used to filter
   // tools based on conversation properties like temporary status.

@@ -2649,7 +2649,7 @@ TEST_F(ConversationHandlerUnitTest,
                     mojom::ConversationEntryEvent::NewToolUseEvent(
                         mojom::ToolUseEvent::New("weather_tool", "tool_id_1",
                                                  "{\"location\":\"New York\"}",
-                                                 std::nullopt)),
+                                                 std::nullopt, nullptr)),
                     std::nullopt));
               }),
           testing::WithArg<8>(
@@ -2768,7 +2768,8 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_PartialEventsGetCombined) {
                 callback.Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewToolUseEvent(
                         mojom::ToolUseEvent::New("test_tool", "id1",
-                                                 "{\"param\":", std::nullopt)),
+                                                 "{\"param\":", std::nullopt,
+                                                 nullptr)),
                     std::nullopt));
               }),
           // Then send a partial tool use event with no name
@@ -2777,7 +2778,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_PartialEventsGetCombined) {
                 callback.Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewToolUseEvent(
                         mojom::ToolUseEvent::New("", "", "\"value\"}",
-                                                 std::nullopt)),
+                                                 std::nullopt, nullptr)),
                     std::nullopt));
               }),
           // Then send another tool use event with a name
@@ -2787,7 +2788,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_PartialEventsGetCombined) {
                     mojom::ConversationEntryEvent::NewToolUseEvent(
                         mojom::ToolUseEvent::New("test_tool2", "id2",
                                                  "{\"other\":true}",
-                                                 std::nullopt)),
+                                                 std::nullopt, nullptr)),
                     std::nullopt));
               }),
           // Complete the request
@@ -2876,7 +2877,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_CorrectToolCalled) {
                     mojom::ConversationEntryEvent::NewToolUseEvent(
                         mojom::ToolUseEvent::New("weather_tool", "tool_id_1",
                                                  "{\"location\":\"New York\"}",
-                                                 std::nullopt)),
+                                                 std::nullopt, nullptr)),
                     std::nullopt));
               }),
           testing::WithArg<8>(
@@ -2897,7 +2898,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_CorrectToolCalled) {
   // available.
   auto expected_tool_use_event = mojom::ToolUseEvent::New(
       "weather_tool", "tool_id_1", "{\"location\":\"New York\"}",
-      CreateContentBlocksForText("Weather in New York: 72°F"));
+      CreateContentBlocksForText("Weather in New York: 72°F"), nullptr);
 
   EXPECT_CALL(untrusted_client, OnToolUseEventOutput)
       .WillOnce(testing::WithArg<1>([&](mojom::ToolUseEventPtr tool_use_event) {
@@ -3017,7 +3018,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolsCalled) {
                     mojom::ConversationEntryEvent::NewToolUseEvent(
                         mojom::ToolUseEvent::New("test_tool", "tool_id_1",
                                                  "{\"location\":\"NYC\"}",
-                                                 std::nullopt)),
+                                                 std::nullopt, nullptr)),
                     std::nullopt));
               }),
           testing::WithArg<7>(
@@ -3026,7 +3027,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolsCalled) {
                     mojom::ConversationEntryEvent::NewToolUseEvent(
                         mojom::ToolUseEvent::New("test_tool2", "tool_id_2",
                                                  "{\"input1\":\"val1\"}",
-                                                 std::nullopt)),
+                                                 std::nullopt, nullptr)),
                     std::nullopt));
               }),
           testing::WithArg<8>(
@@ -3148,7 +3149,7 @@ TEST_F(ConversationHandlerUnitTest,
                     mojom::ConversationEntryEvent::NewToolUseEvent(
                         mojom::ToolUseEvent::New("test_tool", "tool_id_1",
                                                  "{\"param\":\"value\"}",
-                                                 std::nullopt)),
+                                                 std::nullopt, nullptr)),
                     std::nullopt));
               }),
           testing::WithArg<8>(
@@ -3262,7 +3263,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolIterations) {
                     mojom::ConversationEntryEvent::NewToolUseEvent(
                         mojom::ToolUseEvent::New("tool1", "tool_id_1",
                                                  "{\"param1\":\"value1\"}",
-                                                 std::nullopt)),
+                                                 std::nullopt, nullptr)),
                     std::nullopt));
               }),
           testing::WithArg<8>(
@@ -3300,7 +3301,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolIterations) {
                     mojom::ConversationEntryEvent::NewToolUseEvent(
                         mojom::ToolUseEvent::New("tool2", "tool_id_2",
                                                  "{\"param2\":\"value2\"}",
-                                                 std::nullopt)),
+                                                 std::nullopt, nullptr)),
                     std::nullopt));
               }),
           testing::WithArg<8>(
@@ -3415,7 +3416,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_ToolNotFound) {
                     mojom::ConversationEntryEvent::NewToolUseEvent(
                         mojom::ToolUseEvent::New("nonexistent_tool",
                                                  "test_tool_id", "{}",
-                                                 std::nullopt)),
+                                                 std::nullopt, nullptr)),
                     std::nullopt));
               }),
           // Complete with empty completion event (like working test)
@@ -4591,6 +4592,422 @@ TEST_F(ConversationHandlerUnitTest,
 
   // Verify model remained the same
   EXPECT_EQ(conversation_handler_->GetCurrentModel().key, current_model);
+}
+
+TEST_F(ConversationHandlerUnitTest,
+       PermissionChallenge_ExistingChallengeHaltsExecution) {
+  // Test that if a ToolUseEvent already has a permission_challenge that hasn't
+  // been granted, tool execution is halted at that tool.
+  conversation_handler_->associated_content_manager()->ClearContent();
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+
+  auto tool1 = std::make_unique<NiceMock<MockTool>>("test_tool", "Test tool");
+
+  ON_CALL(*mock_tool_provider_, GetTools()).WillByDefault([&]() {
+    std::vector<base::WeakPtr<Tool>> tools;
+    tools.push_back(tool1->GetWeakPtr());
+    return tools;
+  });
+
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+
+  base::RunLoop run_loop;
+
+  // Engine returns tool use event with permission challenge already set
+  // (simulating server alignment check blocking the tool)
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .WillOnce(testing::DoAll(
+          testing::WithArg<7>(
+              [](EngineConsumer::GenerationDataCallback callback) {
+                auto tool_use = mojom::ToolUseEvent::New(
+                    "test_tool", "tool_id_1", "{\"param\":\"value\"}",
+                    std::nullopt,
+                    mojom::PermissionChallenge::New(
+                        false,  // user_allows
+                        "Server determined this tool use "
+                        "is off-topic",  // assessment
+                        std::nullopt));  // plan
+                callback.Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewToolUseEvent(
+                        std::move(tool_use)),
+                    std::nullopt));
+              }),
+          testing::WithArg<8>(
+              [&](EngineConsumer::GenerationCompletedCallback callback) {
+                std::move(callback).Run(
+                    base::ok(EngineConsumer::GenerationResultData(
+                        mojom::ConversationEntryEvent::NewCompletionEvent(
+                            mojom::CompletionEvent::New("")),
+                        std::nullopt)));
+                run_loop.QuitWhenIdle();
+              })));
+
+  // Tool should NOT be called since permission challenge is blocking
+  EXPECT_CALL(*tool1, UseTool).Times(0);
+
+  conversation_handler_->SubmitHumanConversationEntry("Test question",
+                                                      std::nullopt);
+  run_loop.Run();
+
+  // Verify the tool use event exists with permission challenge
+  const auto& history = conversation_handler_->GetConversationHistory();
+  ASSERT_EQ(history.size(), 2u);
+  auto& assistant_entry = history.back();
+  ASSERT_TRUE(assistant_entry->events.has_value());
+  auto& events = assistant_entry->events.value();
+  ASSERT_EQ(events.size(), 1u);
+  EXPECT_TRUE(events[0]->is_tool_use_event());
+  auto& tool_event = events[0]->get_tool_use_event();
+  EXPECT_FALSE(tool_event->output.has_value());  // No output yet
+  ASSERT_TRUE(tool_event->permission_challenge);
+  EXPECT_FALSE(tool_event->permission_challenge->user_allows);
+  EXPECT_EQ(tool_event->permission_challenge->assessment,
+            "Server determined this tool use is off-topic");
+}
+
+TEST_F(ConversationHandlerUnitTest, PermissionChallenge_ToolReturnsChallenge) {
+  // Test that when a tool's RequiresUserInteractionBeforeHandling returns
+  // a permission challenge, tool execution is halted.
+  conversation_handler_->associated_content_manager()->ClearContent();
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+
+  // Create a tool that returns a permission challenge
+  auto tool1 = std::make_unique<NiceMock<MockTool>>("test_tool", "Test tool");
+
+  // Mock RequiresUserInteractionBeforeHandling to return true with a challenge
+  ON_CALL(*tool1, RequiresUserInteractionBeforeHandling)
+      .WillByDefault([](const mojom::ToolUseEvent& tool_use,
+                        mojom::PermissionChallengePtr& out_challenge) {
+        out_challenge = mojom::PermissionChallenge::New(
+            false,                                   // user_allows
+            std::nullopt,                            // assessment
+            "This tool needs to manage your tabs");  // plan
+        return true;
+      });
+
+  ON_CALL(*mock_tool_provider_, GetTools()).WillByDefault([&]() {
+    std::vector<base::WeakPtr<Tool>> tools;
+    tools.push_back(tool1->GetWeakPtr());
+    return tools;
+  });
+
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+
+  base::RunLoop run_loop;
+
+  // Engine returns tool use event without permission challenge
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .WillOnce(testing::DoAll(
+          testing::WithArg<7>(
+              [](EngineConsumer::GenerationDataCallback callback) {
+                callback.Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewToolUseEvent(
+                        mojom::ToolUseEvent::New("test_tool", "tool_id_1",
+                                                 "{\"param\":\"value\"}",
+                                                 std::nullopt, nullptr)),
+                    std::nullopt));
+              }),
+          testing::WithArg<8>(
+              [&](EngineConsumer::GenerationCompletedCallback callback) {
+                std::move(callback).Run(
+                    base::ok(EngineConsumer::GenerationResultData(
+                        mojom::ConversationEntryEvent::NewCompletionEvent(
+                            mojom::CompletionEvent::New("")),
+                        std::nullopt)));
+                run_loop.QuitWhenIdle();
+              })));
+
+  // Tool should NOT be called since permission challenge is returned
+  EXPECT_CALL(*tool1, UseTool).Times(0);
+
+  conversation_handler_->SubmitHumanConversationEntry("Test question",
+                                                      std::nullopt);
+  run_loop.Run();
+
+  // Verify the tool use event now has permission challenge
+  const auto& history = conversation_handler_->GetConversationHistory();
+  ASSERT_EQ(history.size(), 2u);
+  auto& assistant_entry = history.back();
+  ASSERT_TRUE(assistant_entry->events.has_value());
+  auto& events = assistant_entry->events.value();
+  ASSERT_EQ(events.size(), 1u);
+  EXPECT_TRUE(events[0]->is_tool_use_event());
+  auto& tool_event = events[0]->get_tool_use_event();
+  EXPECT_FALSE(tool_event->output.has_value());  // No output yet
+  ASSERT_TRUE(tool_event->permission_challenge);
+  EXPECT_FALSE(tool_event->permission_challenge->user_allows);
+  EXPECT_EQ(tool_event->permission_challenge->plan,
+            "This tool needs to manage your tabs");
+}
+
+TEST_F(ConversationHandlerUnitTest, PermissionChallenge_UserDeniesPermission) {
+  // Test that when user denies permission, a denial response is sent to the
+  // engine and pending tool requests are not processed.
+  conversation_handler_->associated_content_manager()->ClearContent();
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+
+  auto tool1 = std::make_unique<NiceMock<MockTool>>("tool1", "Tool 1");
+  auto tool2 = std::make_unique<NiceMock<MockTool>>("tool2", "Tool 2");
+
+  ON_CALL(*mock_tool_provider_, GetTools()).WillByDefault([&]() {
+    std::vector<base::WeakPtr<Tool>> tools;
+    tools.push_back(tool1->GetWeakPtr());
+    tools.push_back(tool2->GetWeakPtr());
+    return tools;
+  });
+
+  // Tool1 requires permission
+  ON_CALL(*tool1, RequiresUserInteractionBeforeHandling)
+      .WillByDefault([](const mojom::ToolUseEvent& tool_use,
+                        mojom::PermissionChallengePtr& out_challenge) {
+        out_challenge = mojom::PermissionChallenge::New(false, std::nullopt,
+                                                        "Needs permission");
+        return true;
+      });
+
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+
+  base::RunLoop first_loop;
+  testing::Sequence seq;
+
+  // Engine returns two tool use events
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .InSequence(seq)
+      .WillOnce(testing::DoAll(
+          testing::WithArg<7>(
+              [](EngineConsumer::GenerationDataCallback callback) {
+                // First tool use
+                callback.Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewToolUseEvent(
+                        mojom::ToolUseEvent::New("tool1", "tool_id_1", "{}",
+                                                 std::nullopt, nullptr)),
+                    std::nullopt));
+                // Second tool use
+                callback.Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewToolUseEvent(
+                        mojom::ToolUseEvent::New("tool2", "tool_id_2", "{}",
+                                                 std::nullopt, nullptr)),
+                    std::nullopt));
+              }),
+          testing::WithArg<8>(
+              [&](EngineConsumer::GenerationCompletedCallback callback) {
+                std::move(callback).Run(
+                    base::ok(EngineConsumer::GenerationResultData(
+                        mojom::ConversationEntryEvent::NewCompletionEvent(
+                            mojom::CompletionEvent::New("")),
+                        std::nullopt)));
+                first_loop.Quit();
+              })));
+
+  conversation_handler_->SubmitHumanConversationEntry("Test", std::nullopt);
+  first_loop.Run();
+
+  // Verify first tool has permission challenge, second tool has no output yet
+  const auto& history_before = conversation_handler_->GetConversationHistory();
+  ASSERT_EQ(history_before.size(), 2u);
+  auto& assistant_before = history_before.back();
+  ASSERT_TRUE(assistant_before->events.has_value());
+  auto& events_before = assistant_before->events.value();
+  ASSERT_EQ(events_before.size(), 2u);
+  EXPECT_TRUE(events_before[0]->get_tool_use_event()->permission_challenge);
+  EXPECT_FALSE(events_before[1]->get_tool_use_event()->output.has_value());
+
+  // User denies permission
+  base::RunLoop second_loop;
+
+  // Engine should be called with the denial response and perform next
+  // generation
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .InSequence(seq)
+      .WillOnce(testing::DoAll(
+          testing::WithArg<7>(
+              [](EngineConsumer::GenerationDataCallback callback) {
+                callback.Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewCompletionEvent(
+                        mojom::CompletionEvent::New(
+                            "Understood, I won't proceed.")),
+                    std::nullopt));
+              }),
+          testing::WithArg<8>(
+              [&](EngineConsumer::GenerationCompletedCallback callback) {
+                std::move(callback).Run(
+                    base::ok(EngineConsumer::GenerationResultData(
+                        mojom::ConversationEntryEvent::NewCompletionEvent(
+                            mojom::CompletionEvent::New("")),
+                        std::nullopt)));
+                second_loop.Quit();
+              })));
+
+  // Neither tool should be called
+  EXPECT_CALL(*tool1, UseTool).Times(0);
+  EXPECT_CALL(*tool2, UseTool).Times(0);
+
+  // User denies permission
+  conversation_handler_->ProcessPermissionChallenge("tool_id_1", false);
+  second_loop.Run();
+
+  // Verify first tool has denial output, second tool was not processed
+  const auto& history_after = conversation_handler_->GetConversationHistory();
+  auto& assistant_after = history_after[1];
+  ASSERT_TRUE(assistant_after->events.has_value());
+  auto& events_after = assistant_after->events.value();
+
+  // First tool should have denial output
+  ASSERT_TRUE(events_after[0]->get_tool_use_event()->output.has_value());
+  auto& output = events_after[0]->get_tool_use_event()->output.value();
+  EXPECT_EQ(output.size(), 1u);
+  EXPECT_TRUE(output[0]->is_text_content_block());
+  EXPECT_EQ(output[0]->get_text_content_block()->text,
+            "Permission to use this tool with these arguments was denied by "
+            "the user.");
+
+  // Second tool should not have output (was not processed)
+  EXPECT_FALSE(events_after[1]->get_tool_use_event()->output.has_value());
+}
+
+TEST_F(ConversationHandlerUnitTest,
+       PermissionChallenge_UserAllowsPermissionContinuesExecution) {
+  // Test that when user allows permission, the tool is executed and
+  // subsequent tool use requests are processed.
+  conversation_handler_->associated_content_manager()->ClearContent();
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+
+  auto tool1 = std::make_unique<NiceMock<MockTool>>("tool1", "Tool 1");
+  auto tool2 = std::make_unique<NiceMock<MockTool>>("tool2", "Tool 2");
+
+  ON_CALL(*mock_tool_provider_, GetTools()).WillByDefault([&]() {
+    std::vector<base::WeakPtr<Tool>> tools;
+    tools.push_back(tool1->GetWeakPtr());
+    tools.push_back(tool2->GetWeakPtr());
+    return tools;
+  });
+
+  // Tool1 requires permission
+  ON_CALL(*tool1, RequiresUserInteractionBeforeHandling)
+      .WillByDefault([](const mojom::ToolUseEvent& tool_use,
+                        mojom::PermissionChallengePtr& out_challenge) {
+        out_challenge = mojom::PermissionChallenge::New(false, std::nullopt,
+                                                        "Needs permission");
+        return true;
+      });
+
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+
+  base::RunLoop first_loop;
+  testing::Sequence seq;
+
+  // Engine returns two tool use events
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .InSequence(seq)
+      .WillOnce(testing::DoAll(
+          testing::WithArg<7>(
+              [](EngineConsumer::GenerationDataCallback callback) {
+                // First tool use
+                callback.Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewToolUseEvent(
+                        mojom::ToolUseEvent::New("tool1", "tool_id_1",
+                                                 "{\"input\":\"test1\"}",
+                                                 std::nullopt, nullptr)),
+                    std::nullopt));
+                // Second tool use
+                callback.Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewToolUseEvent(
+                        mojom::ToolUseEvent::New("tool2", "tool_id_2",
+                                                 "{\"input\":\"test2\"}",
+                                                 std::nullopt, nullptr)),
+                    std::nullopt));
+              }),
+          testing::WithArg<8>(
+              [&](EngineConsumer::GenerationCompletedCallback callback) {
+                std::move(callback).Run(
+                    base::ok(EngineConsumer::GenerationResultData(
+                        mojom::ConversationEntryEvent::NewCompletionEvent(
+                            mojom::CompletionEvent::New("")),
+                        std::nullopt)));
+                first_loop.Quit();
+              })));
+
+  conversation_handler_->SubmitHumanConversationEntry("Test", std::nullopt);
+  first_loop.Run();
+
+  // Setup tool responses
+  base::RunLoop second_loop;
+
+  // Tool1 should be called after permission is granted
+  EXPECT_CALL(*tool1, UseTool(StrEq("{\"input\":\"test1\"}"), _))
+      .InSequence(seq)
+      .WillOnce(testing::WithArg<1>([](Tool::UseToolCallback callback) {
+        std::vector<mojom::ContentBlockPtr> result;
+        result.push_back(mojom::ContentBlock::NewTextContentBlock(
+            mojom::TextContentBlock::New("Result from tool1")));
+        std::move(callback).Run(std::move(result));
+      }));
+
+  // Tool2 should be called automatically after tool1 completes
+  EXPECT_CALL(*tool2, UseTool(StrEq("{\"input\":\"test2\"}"), _))
+      .InSequence(seq)
+      .WillOnce(testing::WithArg<1>([](Tool::UseToolCallback callback) {
+        std::vector<mojom::ContentBlockPtr> result;
+        result.push_back(mojom::ContentBlock::NewTextContentBlock(
+            mojom::TextContentBlock::New("Result from tool2")));
+        std::move(callback).Run(std::move(result));
+      }));
+
+  // Final generation after both tools complete
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .InSequence(seq)
+      .WillOnce(testing::DoAll(
+          testing::WithArg<7>(
+              [](EngineConsumer::GenerationDataCallback callback) {
+                callback.Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewCompletionEvent(
+                        mojom::CompletionEvent::New("Final response")),
+                    std::nullopt));
+              }),
+          testing::WithArg<8>(
+              [&](EngineConsumer::GenerationCompletedCallback callback) {
+                std::move(callback).Run(
+                    base::ok(EngineConsumer::GenerationResultData(
+                        mojom::ConversationEntryEvent::NewCompletionEvent(
+                            mojom::CompletionEvent::New("")),
+                        std::nullopt)));
+                second_loop.Quit();
+              })));
+
+  // User approves permission
+  conversation_handler_->ProcessPermissionChallenge("tool_id_1", true);
+  second_loop.Run();
+
+  // Verify both tools were executed and have outputs
+  const auto& history = conversation_handler_->GetConversationHistory();
+  auto& assistant_entry = history[1];
+  ASSERT_TRUE(assistant_entry->events.has_value());
+  auto& events = assistant_entry->events.value();
+  ASSERT_EQ(events.size(), 2u);
+
+  // First tool should have output
+  ASSERT_TRUE(events[0]->get_tool_use_event()->output.has_value());
+  EXPECT_MOJOM_EQ(events[0]->get_tool_use_event()->output->at(0),
+                  mojom::ContentBlock::NewTextContentBlock(
+                      mojom::TextContentBlock::New("Result from tool1")));
+
+  // Second tool should have output
+  ASSERT_TRUE(events[1]->get_tool_use_event()->output.has_value());
+  EXPECT_MOJOM_EQ(events[1]->get_tool_use_event()->output->at(0),
+                  mojom::ContentBlock::NewTextContentBlock(
+                      mojom::TextContentBlock::New("Result from tool2")));
+
+  // Permission challenge should be marked as granted
+  ASSERT_TRUE(events[0]->get_tool_use_event()->permission_challenge);
+  EXPECT_TRUE(
+      events[0]->get_tool_use_event()->permission_challenge->user_allows);
+
+  // Final response should be present
+  EXPECT_EQ(history.back()->text, "Final response");
 }
 
 }  // namespace ai_chat

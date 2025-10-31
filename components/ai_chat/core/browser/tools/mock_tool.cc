@@ -7,6 +7,8 @@
 
 #include <utility>
 
+#include "testing/gmock/include/gmock/gmock.h"
+
 namespace ai_chat {
 
 MockTool::MockTool(std::string_view name,
@@ -23,7 +25,16 @@ MockTool::MockTool(std::string_view name,
       required_properties_(std::move(required_properties)),
       extra_params_(std::move(extra_params)),
       requires_user_interaction_before_handling_(
-          requires_user_interaction_before_handling) {}
+          requires_user_interaction_before_handling) {
+  // Set up default behavior for RequiresUserInteractionBeforeHandling
+  ON_CALL(*this, RequiresUserInteractionBeforeHandling)
+      .WillByDefault([requires_user_interaction_before_handling](
+                         const mojom::ToolUseEvent& tool_use,
+                         mojom::PermissionChallengePtr& out_challenge) {
+        out_challenge = nullptr;
+        return requires_user_interaction_before_handling;
+      });
+}
 
 MockTool::~MockTool() = default;
 
@@ -55,10 +66,6 @@ std::optional<base::Value::Dict> MockTool::ExtraParams() const {
     return extra_params_->Clone();
   }
   return std::nullopt;
-}
-
-bool MockTool::RequiresUserInteractionBeforeHandling() const {
-  return requires_user_interaction_before_handling_;
 }
 
 bool MockTool::IsSupportedByModel(const mojom::Model& model) const {

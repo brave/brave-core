@@ -23,6 +23,7 @@
 #include "base/files/file_path.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
+#include "base/json/json_reader.h"
 #include "base/logging.h"
 #include "base/memory/weak_ptr.h"
 #include "base/numerics/safe_math.h"
@@ -1083,6 +1084,72 @@ void ConversationHandler::RespondToToolUseRequest(
   }
 }
 
+void ConversationHandler::ProcessPermissionChallenge(
+    const std::string& tool_use_id,
+    bool user_result) {
+  auto* tool_use = GetToolUseEventForLastResponse(tool_use_id);
+  if (!tool_use) {
+    DLOG(ERROR) << "Tool use event not found: " << tool_use_id;
+    return;
+  }
+
+  if (!tool_use->permission_challenge) {
+    DLOG(ERROR) << "No permission challenge for tool use: " << tool_use_id;
+    return;
+  }
+
+  DVLOG(0) << __func__ << " user " << (user_result ? "approved" : "denied")
+           << " permission for: " << tool_use->tool_name;
+
+  if (!user_result) {
+    // User declined - send rejection output and stop tool loop
+    std::vector<mojom::ContentBlockPtr> result;
+    result.push_back(mojom::ContentBlock::NewTextContentBlock(
+        mojom::TextContentBlock::New("Permission to use this tool with these "
+                                     "arguments was denied by the user.")));
+
+    // Set output and notify UI
+    tool_use->output = std::move(result);
+    OnToolUseEventOutput(chat_history_.back().get(), tool_use);
+
+    // Directly call generation, bypassing the normal tool loop continuation
+    // This stops processing of any remaining tools in this turn
+    DVLOG(0)
+        << "Permission denied, stopping tool loop and performing generation";
+    is_request_in_progress_ = true;
+    is_tool_use_in_progress_ = false;
+    OnAPIRequestInProgressChanged();
+    PerformAssistantGenerationWithPossibleContent();
+    return;
+  }
+
+  // User approved - mark as granted
+  tool_use->permission_challenge->user_allows = true;
+
+  // Notify UI of the state change
+  OnToolUseEventOutput(chat_history_.back().get(), tool_use);
+
+  // Find the tool and notify it
+  base::WeakPtr<Tool> tool_ptr;
+  for (auto& tool : GetTools()) {
+    if (tool && tool->Name() == tool_use->tool_name) {
+      tool_ptr = tool;
+      break;
+    }
+  }
+
+  if (!tool_ptr) {
+    DLOG(ERROR) << "Tool not found: " << tool_use->tool_name;
+    return;
+  }
+
+  // Notify tool that permission was granted
+  tool_ptr->UserPermissionGranted(tool_use_id);
+
+  // Continue with tool execution
+  MaybeRespondToNextToolUseRequest();
+}
+
 void ConversationHandler::AddToConversationHistory(
     mojom::ConversationTurnPtr turn) {
   if (!turn) {
@@ -1865,8 +1932,9 @@ void ConversationHandler::MaybeRespondToNextToolUseRequest() {
   // Continue the loop of tool use handling and completion continuing until
   // either:
   // - A response comes back with no tool use requests
-  // - Any tool use requests require user interaction (e.g. permission or
-  // providing the answer)
+  // - Any tool use requests require user interaction (permission challenge
+  //   or providing output via UI)
+
   is_tool_use_in_progress_ = false;
   OnAPIRequestInProgressChanged();
 
@@ -1879,7 +1947,7 @@ void ConversationHandler::MaybeRespondToNextToolUseRequest() {
     return;
   }
 
-  // Handle one tool at a time and wait for its reponse
+  // Handle one tool at a time and wait for its response
   // before handling the next one
   for (auto& event : *last_entry->events) {
     if (event->is_tool_use_event()) {
@@ -1889,6 +1957,18 @@ void ConversationHandler::MaybeRespondToNextToolUseRequest() {
         continue;
       }
 
+      // Gate 1: Check for existing permission challenge that hasn't been
+      // granted
+      if (tool_use_event->permission_challenge &&
+          !tool_use_event->permission_challenge->user_allows) {
+        DVLOG(0) << __func__ << " tool waiting for permission: "
+                 << tool_use_event->tool_name;
+        OnToolUseEventOutput(last_entry.get(), tool_use_event.get());
+        break;
+      }
+
+      // Find the tool
+      base::WeakPtr<Tool> tool_ptr;
       bool tool_found = false;
       for (auto& tool : GetTools()) {
         if (!tool) {
@@ -1900,18 +1980,7 @@ void ConversationHandler::MaybeRespondToNextToolUseRequest() {
         if (!tool_use_event->tool_name.empty() &&
             tool->Name() == tool_use_event->tool_name) {
           tool_found = true;
-          if (!tool->RequiresUserInteractionBeforeHandling()) {
-            is_tool_use_in_progress_ = true;
-            OnAPIRequestInProgressChanged();
-            // Tool use will be handled by the Tool itself
-            DVLOG(0) << __func__
-                     << " calling UseTool for tool: " << tool->Name();
-            tool->UseTool(
-                tool_use_event->arguments_json,
-                base::BindOnce(&ConversationHandler::RespondToToolUseRequest,
-                               weak_ptr_factory_.GetWeakPtr(),
-                               tool_use_event->id));
-          }
+          tool_ptr = tool;
           break;
         }
       }
@@ -1920,10 +1989,6 @@ void ConversationHandler::MaybeRespondToNextToolUseRequest() {
         DVLOG(1) << "Tool not found or unavailable: "
                  << tool_use_event->tool_name;
 
-        // Set these to mark that we're in progress of handling this event, and
-        // follow the same code path as the tool found case above, which calls
-        // RespondToToolUseRequest, just with the error message being the
-        // result.
         is_tool_use_in_progress_ = true;
         OnAPIRequestInProgressChanged();
 
@@ -1934,11 +1999,47 @@ void ConversationHandler::MaybeRespondToNextToolUseRequest() {
                               " tool is not available."}))));
 
         RespondToToolUseRequest(tool_use_event->id, std::move(result));
-      }
-
-      if (is_tool_use_in_progress_) {
         break;
       }
+
+      // Gate 2: Check if tool requires user interaction
+      // Only check if there isn't already a permission_challenge that was
+      // granted
+      if (!tool_use_event->permission_challenge) {
+        mojom::PermissionChallengePtr permission_challenge;
+        bool requires_interaction =
+            tool_ptr->RequiresUserInteractionBeforeHandling(
+                *tool_use_event, permission_challenge);
+
+        if (requires_interaction) {
+          if (permission_challenge) {
+            // Tool needs permission challenge
+            DVLOG(0) << __func__ << " tool requires permission: "
+                     << tool_use_event->tool_name;
+            tool_use_event->permission_challenge =
+                std::move(permission_challenge);
+            OnToolUseEventOutput(last_entry.get(), tool_use_event.get());
+            break;
+          } else {
+            // Tool needs user to provide output via UI (e.g. UserChoiceTool)
+            DVLOG(0) << __func__ << " tool requires user output: "
+                     << tool_use_event->tool_name;
+            OnToolUseEventOutput(last_entry.get(), tool_use_event.get());
+            break;
+          }
+        }
+      }
+
+      // No user interaction needed - execute tool
+      is_tool_use_in_progress_ = true;
+      OnAPIRequestInProgressChanged();
+      DVLOG(0) << __func__ << " calling UseTool for tool: " << tool_ptr->Name();
+
+      tool_ptr->UseTool(
+          tool_use_event->arguments_json,
+          base::BindOnce(&ConversationHandler::RespondToToolUseRequest,
+                         weak_ptr_factory_.GetWeakPtr(), tool_use_event->id));
+      break;
     }
   }
 }

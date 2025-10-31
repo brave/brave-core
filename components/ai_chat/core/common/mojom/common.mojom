@@ -129,6 +129,16 @@ union ContentBlock {
   TextContentBlock text_content_block;
 };
 
+// Permission challenge that blocks tool execution until user approves
+struct PermissionChallenge {
+  // Whether user has granted permission
+  bool user_allows = false;
+  // Server alignment reasoning (when server blocks the tool)
+  string? assessment;
+  // Tool's explanation for why it needs permission
+  string? plan;
+};
+
 struct ToolUseEvent {
   // Name of the tool, used to identify which
   // tool to run in order to produce the output
@@ -147,6 +157,10 @@ struct ToolUseEvent {
   // Output from the Tool. When null, the Tool
   // has not yet run or completed.
   array<ContentBlock>? output;
+
+  // Permission challenge that blocks execution until user approves.
+  // Can be set by server (alignment check) or client tool.
+  PermissionChallenge? permission_challenge;
 };
 
 struct SearchQueriesEvent {

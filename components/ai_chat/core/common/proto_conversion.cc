@@ -68,7 +68,8 @@ mojom::ToolUseEventPtr DeserializeToolUseEvent(
     const store::ToolUseEventProto& proto_event) {
   auto mojom_event =
       mojom::ToolUseEvent::New(proto_event.tool_name(), proto_event.id(),
-                               proto_event.arguments_json(), std::nullopt);
+                               proto_event.arguments_json(), std::nullopt,
+                               nullptr);  // permission_challenge
 
   // Convert output ContentBlocks
   if (proto_event.output_size() > 0) {

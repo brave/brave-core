@@ -72,10 +72,6 @@ std::optional<std::vector<std::string>> MemoryStorageTool::RequiredProperties()
   return std::vector<std::string>{"memory"};
 }
 
-bool MemoryStorageTool::RequiresUserInteractionBeforeHandling() const {
-  return false;
-}
-
 bool MemoryStorageTool::SupportsConversation(
     bool is_temporary,
     bool has_untrusted_content,
