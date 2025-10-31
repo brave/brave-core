@@ -9,9 +9,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/scoped_observation.h"
 #include "chrome/browser/themes/theme_service_observer.h"
-#include "components/prefs/pref_change_registrar.h"
 
-class PrefService;
 class ThemeService;
 
 namespace misc_metrics {
@@ -36,7 +34,6 @@ class ThemeMetrics : public ThemeServiceObserver {
   void OnThemeChanged() override;
 
   raw_ptr<ThemeService> theme_service_;
-  PrefChangeRegistrar pref_change_registrar_;
   base::ScopedObservation<ThemeService, ThemeServiceObserver> theme_observer_{
       this};
 };

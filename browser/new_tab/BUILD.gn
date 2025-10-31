@@ -9,10 +9,10 @@ source_set("browser_tests") {
   if (is_win) {
     sources = [ "background_color_tab_helper_browsertest.cc" ]
     deps = [
-      "//brave/browser/themes",
       "//chrome/browser",
       "//chrome/browser:browser_process",
       "//chrome/browser/profiles:profile",
+      "//chrome/browser/themes",
       "//chrome/browser/ui",
       "//chrome/test:test_support",
       "//chrome/test:test_support_ui",

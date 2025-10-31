@@ -5,7 +5,6 @@
 
 #include "chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_ui.h"
 
-#include "brave/browser/ui/webui/cr_components/customize_color_scheme_mode/brave_customize_color_scheme_mode_handler.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/grit/brave_components_webui_strings.h"
 #include "components/search/ntp_features.h"
@@ -26,8 +25,6 @@
   SetupWebUIDataSource(__VA_ARGS__); \
   source->AddBoolean("showDeviceThemeToggle", false)
 #define CreatePageHandler CreatePageHandlerChromium
-#define CreateCustomizeColorSchemeModeHandler \
-  CreateCustomizeColorSchemeModeHandler_Unused
 
 // Replaces IDS_NTP_CUSTOMIZE_APPEARANCE_LABEL with a Brave-specific label.
 #undef IDS_NTP_CUSTOMIZE_APPEARANCE_LABEL
@@ -48,7 +45,6 @@
 #undef kNtpFooter
 #endif  // defined(TOOLKIT_VIEWS)
 #undef IDS_NTP_CUSTOMIZE_APPEARANCE_LABEL
-#undef CreateCustomizeColorSchemeModeHandler
 #undef CreatePageHandler
 #undef SetupWebUIDataSource
 #undef AddLocalizedStrings
@@ -62,18 +58,6 @@ void CustomizeChromeUI::CreatePageHandler(
   CHECK(customize_chrome_page_handler_);
   customize_chrome_page_handler_->set_customize_chrome_ui(
       weak_ptr_factory_.GetWeakPtr());
-}
-
-void CustomizeChromeUI::CreateCustomizeColorSchemeModeHandler(
-    mojo::PendingRemote<
-        customize_color_scheme_mode::mojom::CustomizeColorSchemeModeClient>
-        client,
-    mojo::PendingReceiver<
-        customize_color_scheme_mode::mojom::CustomizeColorSchemeModeHandler>
-        handler) {
-  customize_color_scheme_mode_handler_ =
-      std::make_unique<BraveCustomizeColorSchemeModeHandler>(
-          std::move(client), std::move(handler), profile_);
 }
 
 void CustomizeChromeUI::SetClosePanelCallback(
