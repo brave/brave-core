@@ -370,6 +370,14 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, VisualState) {
   ASSERT_TRUE(region_view);
   ASSERT_EQ(State::kExpanded, region_view->state());
 
+  // When rounded corners is on(it's default now),
+  // region view's border inset is changed during the floating.
+  // See BraveVerticalTabStripRegionView::UpdateBorder() for
+  // border inset calculation.
+  const int inset_for_expanded_collapsed = -1;
+  const int inset_for_floating = 1;
+  EXPECT_EQ(inset_for_expanded_collapsed, region_view->GetInsets().width());
+
   // Try Expanding / collapsing
   auto* prefs = browser()->profile()->GetOriginalProfile()->GetPrefs();
   prefs->SetBoolean(brave_tabs::kVerticalTabsCollapsed, true);
@@ -385,6 +393,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, VisualState) {
                          gfx::PointF(), {}, {}, {});
     region_view->OnMouseEntered(event);
     EXPECT_EQ(State::kFloating, region_view->state());
+    EXPECT_EQ(inset_for_floating, region_view->GetInsets().width());
   }
 
   // Check if mouse exiting make tab strip collapsed.
@@ -394,6 +403,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, VisualState) {
                          gfx::PointF(), {}, {}, {});
     region_view->OnMouseExited(event);
     EXPECT_EQ(State::kCollapsed, region_view->state());
+    EXPECT_EQ(inset_for_expanded_collapsed, region_view->GetInsets().width());
   }
 
   // When floating mode is disabled, it shouldn't be triggered.
