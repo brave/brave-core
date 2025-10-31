@@ -125,7 +125,6 @@ bool IsLocaleJapan(Profile* profile) {
 using ntp_background_images::ViewCounterServiceFactory;
 
 BraveSettingsUI::BraveSettingsUI(content::WebUI* web_ui) : SettingsUI(web_ui) {
-  Profile* profile = Profile::FromWebUI(web_ui);
   web_ui->AddMessageHandler(
       std::make_unique<settings::MetricsReportingHandler>());
   web_ui->AddMessageHandler(std::make_unique<BravePrivacyHandler>());
