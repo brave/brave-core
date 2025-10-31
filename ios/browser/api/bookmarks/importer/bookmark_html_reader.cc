@@ -73,10 +73,9 @@ void DataURLToFaviconUsage(const GURL& link_url,
     return;
 
   favicon_base::FaviconUsageData usage;
-  if (!importer::ReencodeFavicon(
-          reinterpret_cast<const unsigned char*>(&data[0]),
-          data.size(), &usage.png_data))
+  if (!importer::ReencodeFavicon(base::as_byte_span(data), usage.png_data)) {
     return;  // Unable to decode.
+  }
 
   // We need to make up a URL for the favicon. We use a version of the page's
   // URL so that we can be sure it will not collide.

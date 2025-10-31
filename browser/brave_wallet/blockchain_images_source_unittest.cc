@@ -12,6 +12,7 @@
 #include "base/files/file_path.h"
 #include "base/memory/ref_counted_memory.h"
 #include "base/path_service.h"
+#include "base/strings/string_view_util.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
 #include "content/public/test/browser_task_environment.h"
@@ -60,8 +61,7 @@ class BlockchainImagesSourceTest : public testing::Test {
   void OnDataReceived(scoped_refptr<base::RefCountedMemory> bytes) {
     data_received_ = true;
     if (bytes) {
-      data_ = std::string(std::string_view(
-          reinterpret_cast<const char*>(bytes->front()), bytes->size()));
+      data_ = std::string(base::as_string_view(*bytes));
     }
   }
 
