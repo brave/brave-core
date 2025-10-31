@@ -111,8 +111,7 @@ TEST(BraveVPNWireGuardUtilsUnitTest, ValidateEndpoint) {
 // https://github.com/brave/brave-browser/issues/50569
 TEST(BraveVPNWireGuardUtilsUnitTest, EncodeBase64) {
   std::vector<unsigned char> key_data(32, 0);
-  std::string dangling_key =
-      brave_vpn::wireguard::EncodeBase64(key_data);
+  std::string dangling_key = brave_vpn::wireguard::EncodeBase64(key_data);
 
   std::vector<uint8_t> overwrite_buffer(45, 1);
   overwrite_buffer.back() = '\0';
