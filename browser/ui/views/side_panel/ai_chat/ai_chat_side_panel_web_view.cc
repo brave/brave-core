@@ -103,7 +103,7 @@ content::WebContents* AIChatSidePanelWebView::AddNewContents(
   params.source_contents = active_tab;
   params.disposition = WindowOpenDisposition::CURRENT_TAB;
 
-  params.window_action = NavigateParams::NO_ACTION;
+  params.window_action = NavigateParams::WindowAction::kNoAction;
   params.user_gesture = user_gesture;
 
   Navigate(&params);
