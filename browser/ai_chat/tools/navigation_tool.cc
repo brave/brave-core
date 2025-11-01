@@ -48,6 +48,7 @@ std::optional<std::vector<std::string>> NavigationTool::RequiredProperties()
 }
 
 void NavigationTool::UseTool(const std::string& input_json,
+                             std::optional<base::Value> client_data,
                              UseToolCallback callback) {
   auto input = base::JSONReader::ReadDict(input_json,
                                           base::JSON_PARSE_CHROMIUM_EXTENSIONS);

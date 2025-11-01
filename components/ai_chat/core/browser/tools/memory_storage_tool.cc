@@ -88,6 +88,7 @@ bool MemoryStorageTool::SupportsConversation(
 }
 
 void MemoryStorageTool::UseTool(const std::string& input_json,
+                                std::optional<base::Value> client_data,
                                 UseToolCallback callback) {
   // Parse the input JSON
   auto input_dict = base::JSONReader::ReadDict(
