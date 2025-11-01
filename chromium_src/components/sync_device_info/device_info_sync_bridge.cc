@@ -84,6 +84,7 @@ std::unique_ptr<BraveDeviceInfo> BraveSpecificsToModel(
 
 void DeviceInfoSyncBridge::DeleteDeviceInfo(const std::string& client_id,
                                             base::OnceClosure callback) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   TRACE_EVENT0("sync", "DeviceInfoSyncBridge::DeleteDeviceInfo");
   CHECK(store_);
   std::unique_ptr<WriteBatch> batch = store_->CreateWriteBatch();
@@ -119,6 +120,7 @@ void DeviceInfoSyncBridge::OnDeviceInfoDeleted(const std::string& client_id,
 
 std::vector<std::unique_ptr<BraveDeviceInfo>>
 DeviceInfoSyncBridge::GetAllBraveDeviceInfo() const {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   TRACE_EVENT0("sync", "DeviceInfoSyncBridge::GetAllBraveDeviceInfo");
   std::vector<std::unique_ptr<BraveDeviceInfo>> list;
   for (const auto& data : all_data_) {
@@ -128,6 +130,7 @@ DeviceInfoSyncBridge::GetAllBraveDeviceInfo() const {
 }
 
 void DeviceInfoSyncBridge::RefreshLocalDeviceInfoIfNeeded() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   TRACE_EVENT0("sync", "DeviceInfoSyncBridge::RefreshLocalDeviceInfoIfNeeded");
   const DeviceInfo* current_info =
       local_device_info_provider_->GetLocalDeviceInfo();
