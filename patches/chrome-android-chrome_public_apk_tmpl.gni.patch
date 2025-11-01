@@ -1,5 +1,5 @@
 diff --git a/chrome/android/chrome_public_apk_tmpl.gni b/chrome/android/chrome_public_apk_tmpl.gni
-index eb45f6da579aaf099d848ab0f5e98b8d0c9b0b71..6a3a079741b37a5c7cb94bd085e7636465609be8 100644
+index eb45f6da579aaf099d848ab0f5e98b8d0c9b0b71..f5832477a010fe6fd9d35beeedda983b1570d747 100644
 --- a/chrome/android/chrome_public_apk_tmpl.gni
 +++ b/chrome/android/chrome_public_apk_tmpl.gni
 @@ -330,6 +330,7 @@ template("chrome_common_apk_or_module_tmpl") {
@@ -18,11 +18,21 @@ index eb45f6da579aaf099d848ab0f5e98b8d0c9b0b71..6a3a079741b37a5c7cb94bd085e76364
        if (_is_monochrome) {
          proguard_configs +=
              [ "//android_webview/nonembedded/java/proguard.flags" ]
-@@ -763,6 +765,7 @@ template("chrome_common_apk_or_module_tmpl") {
+@@ -763,6 +765,17 @@ template("chrome_common_apk_or_module_tmpl") {
                                   "version_code",
                                   "version_name",
                                 ])
-+    _wireguard_target = "//brave/third_party/android_deps:com_wireguard_android_J__unpack_aar" deps += [ _wireguard_target] _libwireguard_dir = get_label_info("//brave/third_party/android_deps:com_wireguard_android($default_toolchain)","target_out_dir") + "/com_wireguard_android_java/jni" loadable_modules +=[ "$_libwireguard_dir/$android_app_abi/libwg-go.so" ]
++    # WireGuard native libraries built from source
++    deps += [
++      "//brave/third_party/wireguard-android:libwg",
++      "//brave/third_party/wireguard-android:libwg-quick",
++      "//brave/third_party/wireguard-android:libwg-go",
++    ]
++    loadable_modules += [
++      "$root_out_dir/obj/brave/third_party/wireguard-android/$target_cpu/libwg.so",
++      "$root_out_dir/obj/brave/third_party/wireguard-android/$target_cpu/libwg-quick.so",
++      "$root_out_dir/obj/brave/third_party/wireguard-android/$target_cpu/libwg-go.so",
++    ]
    }
  }
  
