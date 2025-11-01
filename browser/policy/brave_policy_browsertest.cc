@@ -12,11 +12,14 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "chrome/test/base/ui_test_utils.h"
 #include "components/policy/core/browser/browser_policy_connector.h"
 #include "components/policy/core/common/mock_configuration_policy_provider.h"
 #include "components/policy/policy_constants.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
+#include "content/public/test/browser_test_utils.h"
 
 using testing::_;
 using testing::Return;
@@ -83,6 +86,53 @@ IN_PROC_BROWSER_TEST_F(TorEnabledPolicyBrowserTest, TorDisabledPrefValueTest) {
   // When policy is set, explicit setting doesn't change its pref value.
   TorProfileServiceFactory::SetTorDisabled(true);
   EXPECT_FALSE(TorProfileServiceFactory::IsTorDisabled(browser()->profile()));
+}
+
+// Test that Tor settings are hidden in chrome://settings when disabled by
+// policy
+IN_PROC_BROWSER_TEST_F(TorDisabledPolicyBrowserTest,
+                       TorSettingsHiddenByPolicy) {
+  // Verify Tor is disabled by policy
+  ASSERT_TRUE(TorProfileServiceFactory::IsTorDisabled(browser()->profile()));
+  ASSERT_TRUE(TorProfileServiceFactory::IsTorManaged(browser()->profile()));
+
+  // Navigate to settings page
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), GURL("chrome://settings/")));
+
+  content::WebContents* web_contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(web_contents);
+
+  // Check that braveTorDisabledByPolicy is true when disabled by policy
+  std::string script = R"(
+    loadTimeData.getBoolean('braveTorDisabledByPolicy');
+  )";
+
+  EXPECT_EQ(true, content::EvalJs(web_contents, script));
+}
+
+// Test that Tor settings are visible when enabled by policy
+IN_PROC_BROWSER_TEST_F(TorEnabledPolicyBrowserTest,
+                       TorSettingsVisibleWhenEnabledByPolicy) {
+  // Verify Tor is enabled (not disabled) by policy
+  EXPECT_FALSE(TorProfileServiceFactory::IsTorDisabled(browser()->profile()));
+  EXPECT_TRUE(TorProfileServiceFactory::IsTorManaged(browser()->profile()));
+
+  // Navigate to settings page
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), GURL("chrome://settings/")));
+
+  content::WebContents* web_contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(web_contents);
+
+  // Check that braveTorDisabledByPolicy is false when enabled by policy
+  std::string script = R"(
+    loadTimeData.getBoolean('braveTorDisabledByPolicy');
+  )";
+
+  EXPECT_EQ(false, content::EvalJs(web_contents, script));
 }
 #endif
 

@@ -552,3 +552,31 @@ IN_PROC_BROWSER_TEST_P(BraveTorBrowserTest_EnableTorHttpsOnlyFlag,
 INSTANTIATE_TEST_SUITE_P(BraveTorBrowserTest_EnableTorHttpsOnlyFlag,
                          BraveTorBrowserTest_EnableTorHttpsOnlyFlag,
                          ::testing::Bool());
+
+// Test that Tor settings are visible when Tor is disabled by user preference
+// but not by admin policy.
+IN_PROC_BROWSER_TEST_F(BraveTorBrowserTest,
+                       TorSettingsVisibleWhenUserDisabled) {
+  // Disable Tor via user preference (not policy)
+  TorProfileServiceFactory::SetTorDisabled(true);
+
+  // Verify Tor is disabled but NOT managed by policy
+  EXPECT_TRUE(TorProfileServiceFactory::IsTorDisabled(browser()->profile()));
+  EXPECT_FALSE(TorProfileServiceFactory::IsTorManaged(browser()->profile()));
+
+  // Navigate to settings page
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), GURL("chrome://settings/")));
+
+  content::WebContents* web_contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(web_contents);
+
+  // Check that braveTorDisabledByPolicy is false when disabled by user (not
+  // policy)
+  std::string script = R"(
+    loadTimeData.getBoolean('braveTorDisabledByPolicy');
+  )";
+
+  EXPECT_EQ(false, content::EvalJs(web_contents, script));
+}
