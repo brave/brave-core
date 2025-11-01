@@ -24,6 +24,7 @@ source_set("webui") {
     "//brave/ios/browser/ui/webui/ai_chat:features",
     "//brave/ios/browser/ui/webui/brave_account",
     "//brave/ios/browser/ui/webui/brave_wallet",
+    "//brave/ios/browser/ui/webui/new_tab_takeover_ui",
     "//brave/ios/browser/ui/webui/skus",
     "//brave/ios/web/webui",
     "//components/prefs",
