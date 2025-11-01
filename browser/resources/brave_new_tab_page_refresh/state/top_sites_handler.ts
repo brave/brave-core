@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import { loadTimeData } from '$web-common/loadTimeData'
 import { NewTabPageProxy } from './new_tab_page_proxy'
 import { TopSitesState, TopSitesActions, TopSitesListKind } from './top_sites_state'
 import { Store } from '../lib/store'
@@ -14,6 +15,10 @@ export function createTopSitesHandler(
   const newTabProxy = NewTabPageProxy.getInstance()
   const { handler } = newTabProxy
   let lastExcludedMostVisitedSite = ''
+
+  store.update({
+    maxCustomTopSites: loadTimeData.getInteger('maxCustomTopSites')
+  })
 
   async function updatePrefs() {
     const [

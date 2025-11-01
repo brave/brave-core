@@ -36,6 +36,7 @@
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/grit/brave_components_webui_strings.h"
+#include "components/ntp_tiles/constants.h"
 #include "components/prefs/pref_service.h"
 #include "components/regional_capabilities/regional_capabilities_country_id.h"
 #include "components/regional_capabilities/regional_capabilities_service.h"
@@ -169,6 +170,8 @@ void NewTabPageInitializer::AddLoadTimeValues() {
 
   source_->AddBoolean("talkFeatureEnabled",
                       !prefs->GetBoolean(kBraveTalkDisabledByPolicy));
+
+  source_->AddInteger("maxCustomTopSites", ntp_tiles::kMaxNumCustomLinks);
 }
 
 void NewTabPageInitializer::AddStrings() {
