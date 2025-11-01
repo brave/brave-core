@@ -589,6 +589,17 @@ source_set("wallet_handler") {
   ]
 }
 
+source_set("blockchain_images_source") {
+  sources = [
+    "blockchain_images_source_base.cc",
+    "blockchain_images_source_base.h",
+  ]
+  deps = [
+    "//base",
+    "//brave/components/brave_wallet/browser",
+  ]
+}
+
 generated_types("generated_blockchain_list_schemas") {
   sources = [ "blockchain_list_schemas.idl" ]
   root_namespace = "brave_wallet::%(namespace)s"
@@ -636,6 +647,19 @@ generated_types("meld_integration_responses") {
   visibility = [
     ":browser",
     ":unit_tests",
+  ]
+}
+
+source_set("blockchain_images_srouce_base_unit_tests") {
+  testonly = true
+  sources = [ "blockchain_images_source_base_unittest.cc" ]
+  deps = [
+    ":browser",
+    ":test_support",
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/brave_wallet/browser:blockchain_images_source",
+    "//testing/gtest",
   ]
 }
 
@@ -785,7 +809,6 @@ source_set("unit_tests") {
     ":test_support",
     ":transaction",
     ":utils",
-    "//base/test:test_support",
     "//brave/components/brave_component_updater/browser:test_support",
     "//brave/components/brave_wallet/browser/bitcoin:generated_bitcoin_rpc_responses",
     "//brave/components/brave_wallet/browser/cardano:generated_cardano_rpc_blockfrost_api",

@@ -32,6 +32,7 @@ test("brave_components_unittests") {
     "//brave/components/brave_policy/ad_block_only_mode:unit_tests",
     "//brave/components/brave_shields/core/browser:unit_tests",
     "//brave/components/brave_shields/core/common:unit_tests",
+    "//brave/components/brave_wallet/browser:blockchain_images_srouce_base_unit_tests",
     "//brave/components/brave_wallet/common:unit_tests",
     "//brave/components/component_updater:unit_tests",
     "//brave/components/email_aliases:unit_tests",
@@ -67,6 +68,7 @@ test("brave_components_unittests") {
 
   if (is_ios) {
     bundle_deps = [
+      ":brave_wallet_test_data_bundle",
       ":components_tests_pak_bundle_data",
       "//components:components_tests_pak_bundle_data",
     ]
@@ -132,6 +134,11 @@ if (is_ios) {
       "$root_out_dir/brave_components_tests_resources.pak",
     ]
     outputs = [ "{{bundle_resources_dir}}/{{source_file_part}}" ]
+  }
+  bundle_data("brave_wallet_test_data_bundle") {
+    testonly = true
+    sources = [ "//brave/test/data/brave_wallet/1.0.1/images/logo.png" ]
+    outputs = [ "{{bundle_resources_dir}}/brave/test/data/brave_wallet/1.0.1/images/{{source_file_part}}" ]
   }
 }
 
