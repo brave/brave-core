@@ -67,12 +67,12 @@ TEST_F(CardanoTxStateManagerUnitTest, CardanoTxMetaAndValue) {
 
   CardanoTransaction::TxInput input;
   input.utxo_address = *CardanoAddress::FromString(kMockCardanoAddress1);
-  input.utxo_value = 200000;
+  input.utxo_value = 200000u;
   tx->AddInput(std::move(input));
 
   CardanoTransaction::TxOutput output;
   output.address = *CardanoAddress::FromString(kMockCardanoAddress2);
-  output.amount = 200000 - 1000;
+  output.amount = 200000u - 1000u;
   tx->AddOutput(std::move(output));
 
   CardanoTxMeta meta(cardano_account_id, std::move(tx));

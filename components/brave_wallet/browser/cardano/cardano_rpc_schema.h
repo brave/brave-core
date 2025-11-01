@@ -12,6 +12,8 @@
 #include <optional>
 #include <vector>
 
+#include "base/containers/flat_map.h"
+#include "base/numerics/safe_conversions.h"
 #include "brave/components/brave_wallet/common/cardano_address.h"
 
 namespace brave_wallet::cardano_rpc {
@@ -48,12 +50,36 @@ struct Block {
 
 // Adapter of Blockfrost's UnspentOutput struct for wallet's use.
 struct UnspentOutput {
-  bool operator==(const UnspentOutput& other) const = default;
+  struct Token {
+    Token();
+    Token(const Token&);
+    Token(Token&&);
+    Token& operator=(const Token&);
+    Token& operator=(Token&&);
+    ~Token();
 
-  CardanoAddress address_to;
+    auto operator<=>(const Token& other) const = default;
+
+    std::array<uint8_t, 28> policy_id = {};
+    std::vector<uint8_t> name;
+  };
+
+  using Tokens = base::flat_map<Token, base::StrictNumeric<uint64_t>>;
+
+  UnspentOutput();
+  UnspentOutput(const UnspentOutput&);
+  UnspentOutput(UnspentOutput&&);
+  UnspentOutput& operator=(const UnspentOutput&);
+  UnspentOutput& operator=(UnspentOutput&&);
+  ~UnspentOutput();
+
+  bool operator<=>(const UnspentOutput& other) const = default;
+
   std::array<uint8_t, 32> tx_hash = {};
   uint32_t output_index = 0;
   uint64_t lovelace_amount = 0;
+  Tokens tokens;
+  CardanoAddress address_to;
 
   static std::optional<UnspentOutput> FromBlockfrostApiValue(
       CardanoAddress address_to,

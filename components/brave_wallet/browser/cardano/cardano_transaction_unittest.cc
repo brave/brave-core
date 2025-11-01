@@ -47,7 +47,7 @@ TEST(CardanoTransaction, TxInput_Value) {
   input.utxo_address = *CardanoAddress::FromString(kAddress1);
   input.utxo_outpoint.index = 123;
   base::HexStringToSpan(kTxid1, input.utxo_outpoint.txid);
-  input.utxo_value = 555666777;
+  input.utxo_value = 555666777u;
 
   auto parsed = input.FromValue(input.ToValue());
   ASSERT_TRUE(parsed);
@@ -92,14 +92,14 @@ TEST(CardanoTransaction, Value) {
   input1.utxo_address = *CardanoAddress::FromString(kAddress1);
   input1.utxo_outpoint.index = 123;
   base::HexStringToSpan(kTxid1, input1.utxo_outpoint.txid);
-  input1.utxo_value = 555666777;
+  input1.utxo_value = 555666777u;
   tx.AddInput(std::move(input1));
 
   CardanoTransaction::TxInput input2;
   input2.utxo_address = *CardanoAddress::FromString(kAddress2);
   input2.utxo_outpoint.index = 7;
   base::HexStringToSpan(kTxid2, input2.utxo_outpoint.txid);
-  input2.utxo_value = 555;
+  input2.utxo_value = 555u;
   tx.AddInput(std::move(input2));
 
   CardanoTransaction::TxOutput output1;
@@ -143,7 +143,7 @@ TEST(CardanoTransaction, IsSigned) {
   input1.utxo_address = *CardanoAddress::FromString(kAddress1);
   input1.utxo_outpoint.index = 123;
   base::HexStringToSpan(kTxid1, input1.utxo_outpoint.txid);
-  input1.utxo_value = 555666777;
+  input1.utxo_value = 555666777u;
   tx.AddInput(std::move(input1));
 
   EXPECT_FALSE(tx.IsSigned());
@@ -154,7 +154,7 @@ TEST(CardanoTransaction, IsSigned) {
   input2.utxo_address = *CardanoAddress::FromString(kAddress2);
   input2.utxo_outpoint.index = 7;
   base::HexStringToSpan(kTxid2, input2.utxo_outpoint.txid);
-  input2.utxo_value = 555;
+  input2.utxo_value = 555u;
 
   tx.AddInput(std::move(input2));
 
@@ -172,7 +172,7 @@ TEST(CardanoTransaction, TotalInputsAmount) {
   input1.utxo_address = *CardanoAddress::FromString(kAddress1);
   input1.utxo_outpoint.index = 123;
   base::HexStringToSpan(kTxid1, input1.utxo_outpoint.txid);
-  input1.utxo_value = 555666777;
+  input1.utxo_value = 555666777u;
   tx.AddInput(std::move(input1));
   EXPECT_EQ(tx.TotalInputsAmount(), 555666777u);
 
@@ -180,7 +180,7 @@ TEST(CardanoTransaction, TotalInputsAmount) {
   input2.utxo_address = *CardanoAddress::FromString(kAddress2);
   input2.utxo_outpoint.index = 7;
   base::HexStringToSpan(kTxid2, input2.utxo_outpoint.txid);
-  input2.utxo_value = 555;
+  input2.utxo_value = 555u;
   tx.AddInput(std::move(input2));
   EXPECT_EQ(tx.TotalInputsAmount(), 555666777u + 555u);
 }
@@ -210,7 +210,7 @@ TEST(CardanoTransaction, EffectiveFeeAmount) {
   input1.utxo_address = *CardanoAddress::FromString(kAddress1);
   input1.utxo_outpoint.index = 123;
   base::HexStringToSpan(kTxid1, input1.utxo_outpoint.txid);
-  input1.utxo_value = 555666777;
+  input1.utxo_value = 555666777u;
   tx.AddInput(std::move(input1));
   EXPECT_EQ(tx.EffectiveFeeAmount(), 555666777u);
 
@@ -218,7 +218,7 @@ TEST(CardanoTransaction, EffectiveFeeAmount) {
   input2.utxo_address = *CardanoAddress::FromString(kAddress2);
   input2.utxo_outpoint.index = 7;
   base::HexStringToSpan(kTxid2, input2.utxo_outpoint.txid);
-  input2.utxo_value = 555;
+  input2.utxo_value = 555u;
   tx.AddInput(std::move(input2));
   EXPECT_EQ(tx.EffectiveFeeAmount(), 555666777u + 555u);
 
@@ -243,14 +243,14 @@ TEST(CardanoTransaction, MoveSurplusFeeToChangeOutput) {
   input1.utxo_address = *CardanoAddress::FromString(kAddress1);
   input1.utxo_outpoint.index = 123;
   base::HexStringToSpan(kTxid1, input1.utxo_outpoint.txid);
-  input1.utxo_value = 1000;
+  input1.utxo_value = 1000u;
   tx.AddInput(std::move(input1));
 
   CardanoTransaction::TxInput input2;
   input2.utxo_address = *CardanoAddress::FromString(kAddress2);
   input2.utxo_outpoint.index = 7;
   base::HexStringToSpan(kTxid2, input2.utxo_outpoint.txid);
-  input2.utxo_value = 2000;
+  input2.utxo_value = 2000u;
   tx.AddInput(std::move(input2));
 
   CardanoTransaction::TxOutput output1;
