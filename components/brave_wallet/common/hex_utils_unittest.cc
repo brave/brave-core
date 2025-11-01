@@ -27,7 +27,7 @@ TEST(HexUtilsUnitTest, ToHex) {
 
 TEST(HexUtilsUnitTest, HexEncodeLower) {
   std::string test_string = "hello world";
-  ASSERT_EQ(HexEncodeLower(base::as_byte_span(test_string)),
+  ASSERT_EQ(brave_wallet::HexEncodeLower(base::as_byte_span(test_string)),
             "68656c6c6f20776f726c64");
 }
 

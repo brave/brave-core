@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/frame/browser_view.cc b/chrome/browser/ui/views/frame/browser_view.cc
-index 113ef3c6f9ab190fd778c8116781ff221e362c72..adfff012c8ade016469770ec16257b7cb40f0cf1 100644
+index 21c0f3d45483a610b5945f299c9cbb16ef23488c..e77a63663170a89a979c915a4398c63c01d9c585 100644
 --- a/chrome/browser/ui/views/frame/browser_view.cc
 +++ b/chrome/browser/ui/views/frame/browser_view.cc
-@@ -602,6 +602,7 @@ bool ConvertedHitTest(views::View* src, views::View* dst, gfx::Point* point) {
+@@ -603,6 +603,7 @@ bool ConvertedHitTest(views::View* src, views::View* dst, gfx::Point* point) {
    DCHECK(src);
    DCHECK(dst);
    DCHECK(point);
@@ -10,7 +10,7 @@ index 113ef3c6f9ab190fd778c8116781ff221e362c72..adfff012c8ade016469770ec16257b7c
    views::View::ConvertPointToTarget(src, dst, point);
    return dst->HitTestPoint(*point);
  }
-@@ -715,6 +716,7 @@ class BrowserView::ExclusiveAccessContextImpl
+@@ -716,6 +717,7 @@ class BrowserView::ExclusiveAccessContextImpl
    void UpdateExclusiveAccessBubble(
        const ExclusiveAccessBubbleParams& params,
        ExclusiveAccessBubbleHideCallback first_hide_callback) override {

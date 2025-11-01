@@ -556,9 +556,11 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, DefaultEntryTest) {
   WaitUntil(base::BindLambdaForTesting(
       [&]() { return controller()->IsActiveIndex(bookmark_item_index); }));
 
-  panel_ui->Close();
-  WaitUntil(base::BindLambdaForTesting(
-      [&]() { return !panel_ui->GetCurrentEntryId().has_value(); }));
+  panel_ui->Close(SidePanelEntry::PanelType::kContent);
+  WaitUntil(base::BindLambdaForTesting([&]() {
+    return !panel_ui->GetCurrentEntryId(SidePanelEntry::PanelType::kContent)
+                .has_value();
+  }));
 
   // Remove bookmarks and check it's gone.
   SidebarServiceFactory::GetForProfile(browser()->profile())
@@ -567,10 +569,13 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, DefaultEntryTest) {
 
   // Open panel w/o entry id.
   panel_ui->Toggle();
-  WaitUntil(base::BindLambdaForTesting(
-      [&]() { return panel_ui->GetCurrentEntryId().has_value(); }));
+  WaitUntil(base::BindLambdaForTesting([&]() {
+    return panel_ui->GetCurrentEntryId(SidePanelEntry::PanelType::kContent)
+        .has_value();
+  }));
   // Check bookmark panel is not opened again as it's deleted item.
-  EXPECT_NE(SidePanelEntryId::kBookmarks, panel_ui->GetCurrentEntryId());
+  EXPECT_NE(SidePanelEntryId::kBookmarks,
+            panel_ui->GetCurrentEntryId(SidePanelEntry::PanelType::kContent));
 }
 
 // Test sidebar's initial horizontal option is set properly.
@@ -815,7 +820,7 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithWebPanelTest, WebPanelTest) {
     panel_ui->Show(SidePanelEntryId::kCustomizeChrome);
     ASSERT_TRUE(
         base::test::RunUntil([&]() { return GetSidePanel()->GetVisible(); }));
-    panel_ui->Close();
+    panel_ui->Close(SidePanelEntry::PanelType::kContent);
     ASSERT_TRUE(
         base::test::RunUntil([&]() { return !GetSidePanel()->GetVisible(); }));
     return;
@@ -1109,10 +1114,11 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, UnManagedPanelEntryTest) {
 
   // Close panel and wait till panel closing animation ends. Panel is hidden
   // when closing completes.
-  panel_ui->Close();
+  panel_ui->Close(SidePanelEntry::PanelType::kContent);
   WaitUntil(base::BindLambdaForTesting(
       [&]() { return !GetSidePanel()->GetVisible(); }));
-  EXPECT_FALSE(!!panel_ui->GetCurrentEntryId());
+  EXPECT_FALSE(
+      !!panel_ui->GetCurrentEntryId(SidePanelEntry::PanelType::kContent));
 
   // Remove bookmarks and check it's gone.
   SidebarServiceFactory::GetForProfile(browser()->profile())
@@ -1123,7 +1129,8 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, UnManagedPanelEntryTest) {
   panel_ui->Show(SidePanelEntryId::kBookmarks);
   WaitUntil(base::BindLambdaForTesting(
       [&]() { return GetSidePanel()->GetVisible(); }));
-  EXPECT_EQ(SidePanelEntryId::kBookmarks, panel_ui->GetCurrentEntryId());
+  EXPECT_EQ(SidePanelEntryId::kBookmarks,
+            panel_ui->GetCurrentEntryId(SidePanelEntry::PanelType::kContent));
 }
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
@@ -1172,19 +1179,22 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, TabSpecificAndGlobalPanelsTest) {
   // Open global panel when active tab index is 1.
   panel_ui->Show(SidePanelEntryId::kBookmarks);
   WaitUntil(base::BindLambdaForTesting([&]() {
-    return panel_ui->GetCurrentEntryId() == SidePanelEntryId::kBookmarks;
+    return panel_ui->GetCurrentEntryId(SidePanelEntry::PanelType::kContent) ==
+           SidePanelEntryId::kBookmarks;
   }));
 
   // Contextual panel should be set when activate tab at 0.
   tab_model()->ActivateTabAt(0);
   WaitUntil(base::BindLambdaForTesting([&]() {
-    return panel_ui->GetCurrentEntryId() == SidePanelEntryId::kChatUI;
+    return panel_ui->GetCurrentEntryId(SidePanelEntry::PanelType::kContent) ==
+           SidePanelEntryId::kChatUI;
   }));
 
   // Global panel should be set when activate tab at 1.
   tab_model()->ActivateTabAt(1);
   WaitUntil(base::BindLambdaForTesting([&]() {
-    return panel_ui->GetCurrentEntryId() == SidePanelEntryId::kBookmarks;
+    return panel_ui->GetCurrentEntryId(SidePanelEntry::PanelType::kContent) ==
+           SidePanelEntryId::kBookmarks;
   }));
 }
 
@@ -1316,14 +1326,16 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserTestWithkSidebarShowAlwaysOnStable,
   auto* panel_ui = browser()->GetFeatures().side_panel_ui();
   if (GetParam()) {
     // Wait till browser has active panel.
-    WaitUntil(base::BindLambdaForTesting(
-        [&]() { return !!panel_ui->GetCurrentEntryId(); }));
+    WaitUntil(base::BindLambdaForTesting([&]() {
+      return !!panel_ui->GetCurrentEntryId(SidePanelEntry::PanelType::kContent);
+    }));
 
-    EXPECT_EQ(SidePanelEntryId::kChatUI, panel_ui->GetCurrentEntryId());
+    EXPECT_EQ(SidePanelEntryId::kChatUI,
+              panel_ui->GetCurrentEntryId(SidePanelEntry::PanelType::kContent));
   }
   testing::Mock::VerifyAndClearExpectations(&observer_);
 
-  panel_ui->Close();
+  panel_ui->Close(SidePanelEntry::PanelType::kContent);
   EXPECT_FALSE(
       panel_ui->IsSidePanelShowing(SidePanelEntry::PanelType::kContent));
 
@@ -1487,21 +1499,24 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithAIChat,
   // Open a "tab specific" panel from Tab 1
   tab_model()->ActivateTabAt(1);
   SimulateSidebarItemClickAt(tab_specific_item_index.value());
-  EXPECT_EQ(SidePanelEntryId::kChatUI, panel_ui->GetCurrentEntryId());
+  EXPECT_EQ(SidePanelEntryId::kChatUI,
+            panel_ui->GetCurrentEntryId(SidePanelEntry::PanelType::kContent));
   EXPECT_TRUE(GetSidePanel()->GetVisible());
   // Tab Specific panel should be open when Tab 1 is active
   EXPECT_EQ(model()->active_index(), tab_specific_item_index);
 
   // Global panel should be open when Tab 0 is active
   tab_model()->ActivateTabAt(0);
-  EXPECT_EQ(SidePanelEntryId::kBookmarks, panel_ui->GetCurrentEntryId());
+  EXPECT_EQ(SidePanelEntryId::kBookmarks,
+            panel_ui->GetCurrentEntryId(SidePanelEntry::PanelType::kContent));
   EXPECT_TRUE(model()->active_index().has_value());
   EXPECT_EQ(model()->active_index(),
             model()->GetIndexOf(SidebarItem::BuiltInItemType::kBookmarks));
 
   // Global panel should be open when Tab 2 is active
   tab_model()->ActivateTabAt(2);
-  EXPECT_EQ(SidePanelEntryId::kBookmarks, panel_ui->GetCurrentEntryId());
+  EXPECT_EQ(SidePanelEntryId::kBookmarks,
+            panel_ui->GetCurrentEntryId(SidePanelEntry::PanelType::kContent));
   EXPECT_TRUE(model()->active_index().has_value());
   EXPECT_EQ(model()->active_index(),
             model()->GetIndexOf(SidebarItem::BuiltInItemType::kBookmarks));

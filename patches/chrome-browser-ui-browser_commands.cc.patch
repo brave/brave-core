@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/browser_commands.cc b/chrome/browser/ui/browser_commands.cc
-index 14747af8a2ee46ba29d6b7f38ad8142269ef7920..cae10fc97cd6d1e19cd0ce1f1898769618876c32 100644
+index ecd4ffa3497588c09e2f3fb2f433e77d37d5271d..b0f31cda02a43ab7e7bf602344cdec2f64b516bb 100644
 --- a/chrome/browser/ui/browser_commands.cc
 +++ b/chrome/browser/ui/browser_commands.cc
-@@ -588,6 +588,7 @@ void ReloadInternal(BrowserWindowInterface* browser,
+@@ -590,6 +590,7 @@ void ReloadInternal(BrowserWindowInterface* browser,
            tab_strip_model->GetWebContentsAt(selected_index));
      }
    }

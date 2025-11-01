@@ -11,6 +11,10 @@
 #include "base/values.h"
 #include "build/build_config.h"
 
+#if !BUILDFLAG(IS_ANDROID)
+#include "ui/native_theme/native_theme.h"
+#endif
+
 class PrefRegistrySimple;
 
 namespace dark_mode {
@@ -52,7 +56,8 @@ void SetSystemDarkMode(BraveDarkModeType type);
 #if BUILDFLAG(IS_LINUX)
 // Cache system preference from DarkModeManagerLinux.
 // This cached value is used whenever user chooses "Same as Linux" option.
-void CacheSystemDarkModePrefs(bool prefer_dark_theme);
+void CacheSystemDarkModePrefs(
+    ui::NativeTheme::PreferredColorScheme color_scheme);
 bool HasCachedSystemDarkModeType();
 #endif
 

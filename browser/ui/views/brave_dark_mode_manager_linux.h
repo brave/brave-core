@@ -17,7 +17,8 @@ class BraveDarkModeManagerLinux : public DarkModeManagerLinux {
 
  private:
   // DarkModeManagerLinux overrides:
-  void SetColorScheme(bool prefer_dark_theme, bool from_toolkit_theme) override;
+  void SetColorScheme(ui::NativeTheme::PreferredColorScheme color_scheme,
+                      bool from_toolkit_theme) override;
 };
 
 }  // namespace ui

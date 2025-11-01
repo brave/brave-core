@@ -1,5 +1,5 @@
 diff --git a/content/app_shim_remote_cocoa/render_widget_host_view_cocoa.mm b/content/app_shim_remote_cocoa/render_widget_host_view_cocoa.mm
-index 63ecc872cd8ef58ebc3decb2aa0f88885bc76ca5..5ff585cb9c35b8bec343830f8e7ad927a9d84e8b 100644
+index 84fabfc88085ab5c4d3e19db4bc472316e56f2f1..61b8da2ffa3bd5823fadabe8f7da51b004e3e71f 100644
 --- a/content/app_shim_remote_cocoa/render_widget_host_view_cocoa.mm
 +++ b/content/app_shim_remote_cocoa/render_widget_host_view_cocoa.mm
 @@ -1988,6 +1988,7 @@ void ExtractUnderlines(NSAttributedString* string,

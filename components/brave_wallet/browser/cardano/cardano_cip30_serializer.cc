@@ -122,7 +122,7 @@ std::optional<std::string> CardanoCip30Serializer::SerializeAmount(
   auto amount_serialized =
       cbor::Writer::Write(cbor::Value(amount_to_serialize));
   CHECK(amount_serialized);
-  return HexEncodeLower(*amount_serialized);
+  return brave_wallet::HexEncodeLower(*amount_serialized);
 }
 
 // static
@@ -175,7 +175,8 @@ std::optional<std::vector<std::string>> CardanoCip30Serializer::SerializeUtxos(
         cbor::Writer::Write(cbor::Value(std::move(cbor_utxo)));
     CHECK(cbor_utxo_serialized);
 
-    serialized_utxos.push_back(HexEncodeLower(*cbor_utxo_serialized));
+    serialized_utxos.push_back(
+        brave_wallet::HexEncodeLower(*cbor_utxo_serialized));
   }
   return serialized_utxos;
 }
