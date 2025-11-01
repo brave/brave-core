@@ -8,7 +8,6 @@
 #include <string_view>
 
 #include "base/check.h"
-#include "base/memory/ref_counted.h"
 #include "base/time/time.h"
 #include "net/base/net_export.h"
 #include "net/cert/ct_objects_extractor.h"

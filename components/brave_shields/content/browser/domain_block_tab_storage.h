@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_CONTENT_BROWSER_DOMAIN_BLOCK_TAB_STORAGE_H_
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_CONTENT_BROWSER_DOMAIN_BLOCK_TAB_STORAGE_H_
 
-#include "base/memory/ref_counted.h"
 #include "brave/components/brave_shields/content/browser/blocked_domain_1pes_lifetime.h"
 #include "content/public/browser/web_contents_user_data.h"
 

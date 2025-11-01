@@ -9,7 +9,6 @@
 #include <string>
 
 #include "base/check.h"
-#include "base/memory/ref_counted.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "content/browser/blob_storage/chrome_blob_storage_context.h"
 #include "content/browser/dom_storage/dom_storage_context_wrapper.h"

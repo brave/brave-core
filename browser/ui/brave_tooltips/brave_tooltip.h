@@ -10,7 +10,6 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/memory/ref_counted.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/ui/brave_tooltips/brave_tooltip_attributes.h"
 #include "brave/browser/ui/brave_tooltips/brave_tooltip_delegate.h"
