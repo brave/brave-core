@@ -20,7 +20,6 @@
 #include "base/i18n/icu_util.h"
 #include "base/logging.h"
 #include "base/logging/log_severity.h"
-#include "base/memory/ref_counted.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/path_service.h"
 #include "base/strings/sys_string_conversions.h"

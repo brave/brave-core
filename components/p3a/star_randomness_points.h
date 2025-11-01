@@ -12,7 +12,6 @@
 #include "base/containers/flat_map.h"
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
-#include "base/memory/ref_counted.h"
 #include "brave/components/p3a/constellation/rs/cxx/src/lib.rs.h"
 #include "brave/components/p3a/metric_log_type.h"
 #include "brave/components/p3a/star_randomness_meta.h"

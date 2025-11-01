@@ -9,7 +9,6 @@
 #include <string>
 #include <vector>
 
-#include "base/memory/ref_counted.h"
 #include "base/time/time.h"
 #include "net/cert/signed_certificate_timestamp.h"
 #include "third_party/boringssl/src/include/openssl/base.h"

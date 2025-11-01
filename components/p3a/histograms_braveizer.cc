@@ -9,7 +9,6 @@
 #include <string>
 
 #include "base/functional/bind.h"
-#include "base/memory/ref_counted.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/metrics/statistics_recorder.h"
 #include "brave/components/p3a_utils/bucket.h"
