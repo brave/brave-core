@@ -1,0 +1,22 @@
+[package]
+name = "getrandom_or_panic"
+version = "0.0.3"
+edition = "2021"
+readme = "README.md"
+license = "BSD-3-Clause"
+repository = "https://github.com/burdges/getrandom_or_panic"
+documentation = "https://docs.rs/getrandom_or_panic"
+keywords = ["cryptography", "random"]
+categories = ["cryptography", "no-std"]
+description = " Implements a RngCore which panics unless getrandom exists "
+exclude = [".gitignore"]
+
+[dependencies]
+rand_core = { version = "0.6.4", default-features = false }
+rand = { version = "0.8.5", optional = true }
+
+[features]
+default = ["std", "getrandom"]
+alloc = ["rand_core/alloc"]
+std = ["alloc", "getrandom", "rand"]
+getrandom = ["rand_core/getrandom"]
