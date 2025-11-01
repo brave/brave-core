@@ -1,8 +1,8 @@
 diff --git a/front_end/core/protocol_client/InspectorBackend.ts b/front_end/core/protocol_client/InspectorBackend.ts
-index 9bb4def11a29ba577afcab3ae64389e8d4f6e927..b7c0f849f7306fb56c7e3af44756bf08a7729d22 100644
+index db375c40c32b26097b1c6def7aab7524d913cda5..d86e579cd5f8c25573b9dcee2bd85e5e962e1dcc 100644
 --- a/front_end/core/protocol_client/InspectorBackend.ts
 +++ b/front_end/core/protocol_client/InspectorBackend.ts
-@@ -86,6 +86,7 @@ export class InspectorBackend {
+@@ -90,6 +90,7 @@ export class InspectorBackend {
      globalThis.Protocol ||= {};
  
      InspectorBackendCommands.registerCommands(this);
