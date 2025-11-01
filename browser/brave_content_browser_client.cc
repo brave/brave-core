@@ -927,6 +927,8 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
         ai_chat::mojom::AIChatSettingsHelper, BraveSettingsUI>(map);
     content::RegisterWebUIControllerInterfaceBinder<
         ai_chat::mojom::CustomizationSettingsHandler, BraveSettingsUI>(map);
+    content::RegisterWebUIControllerInterfaceBinder<
+        ai_chat::mojom::OllamaService, BraveSettingsUI>(map);
 #endif
   }
 #if BUILDFLAG(IS_ANDROID)
