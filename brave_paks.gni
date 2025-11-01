@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//build/config/locales.gni")
 import("//chrome/common/features.gni")
@@ -83,6 +84,12 @@ template("brave_extra_paks") {
         "//brave/browser/resources/settings:resources",
         "//brave/components/resources:strings",
       ]
+    }
+
+    if (enable_brave_ai_chat_agent_profile) {
+      sources += [ "$root_gen_dir/brave/browser/resources/ai_chat_agent_new_tab_page/ai_chat_agent_new_tab_page_all.pak" ]
+
+      deps += [ "//brave/browser/resources/ai_chat_agent_new_tab_page" ]
     }
 
     if (enable_tor) {
