@@ -195,7 +195,7 @@ float BraveContentsContainerView::GetCornerRadius(bool for_border) const {
 
   return BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
              browser_view_->browser())
-             ? BraveContentsViewUtil::kBorderRadius +
+             ? BraveContentsViewUtil::GetBorderRadius() +
                    (for_border ? kBorderThickness : 0)
              : 0;
 }
