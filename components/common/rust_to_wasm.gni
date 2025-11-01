@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/tools/crates/config.gni")
+import("//build/config/rust.gni")
 
 template("rust_to_wasm") {
   assert(defined(invoker.rust_packages),
@@ -41,6 +42,8 @@ template("rust_to_wasm") {
     # - causes a race condition between the processes (that action_foreach forks) for wasm-pack's cache directory (if wasm-pack is run for the first time),
     # - makes our approach less self-contained.
     args = [
+      "--rust_path",
+      rebase_path("$rust_sysroot/bin"),
       "--wasm_bindgen_cli_path",
       get_path_info(rebase_path(wasm_bindgen_cli_exe), "dir"),
       "--wasm_opt_path",

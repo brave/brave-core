@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//build/config/rust.gni")
+
 template("build_crate") {
   crate = target_name
   assert(
@@ -18,7 +20,8 @@ template("build_crate") {
 
     script = "//brave/script/build_crate.py"
 
-    cargo_exe = "//third_party/rust-toolchain/bin/cargo"
+    rust_path = "$rust_sysroot/bin"
+    cargo_exe = "$rust_path/cargo"
     if (host_os == "win") {
       cargo_exe += ".exe"
     }
@@ -44,6 +47,8 @@ template("build_crate") {
     args = [
       "--temp_dir_path",
       rebase_path(crate_target_dir),
+      "--rust_path",
+      rebase_path(rust_path),
       rebase_path(cargo_exe),
       "build",
       "--quiet",
