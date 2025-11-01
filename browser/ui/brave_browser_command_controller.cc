@@ -317,6 +317,9 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   UpdateCommandEnabled(IDC_TOGGLE_ALL_BOOKMARKS_BUTTON_VISIBILITY, true);
   UpdateCommandEnabled(IDC_EXPORT_ALL_BOOKMARKS, true);
 
+  // Email Aliases command
+  UpdateCommandEnabled(IDC_SHOW_EMAIL_ALIASES, true);
+
   if (browser_->is_type_normal()) {
     // Delete these when upstream enables by default.
     UpdateCommandEnabled(IDC_READING_LIST_MENU, true);
@@ -665,6 +668,9 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       break;
     case IDC_SHOW_APPS_PAGE:
       brave::ShowAppsPage(&*browser_);
+      break;
+    case IDC_SHOW_EMAIL_ALIASES:
+      brave::ShowEmailAliases(&*browser_);
       break;
     case IDC_WINDOW_GROUP_UNGROUPED_TABS:
       brave::GroupUngroupedTabs(&*browser_);

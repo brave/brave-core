@@ -66,6 +66,10 @@ class BraveAppMenuModel : public AppMenuModel {
   // sub menu.
   void BuildMoreToolsSubMenu();
 
+  // Inserts Email Aliases item under Passwords and Autofill submenu when
+  // the feature is enabled.
+  void InsertEmailAliasesItem();
+
   // About brave, help center and report broken site items.
   void BuildHelpSubMenu();
 

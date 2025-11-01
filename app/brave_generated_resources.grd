@@ -237,6 +237,9 @@
            Only on the new tab page
         </message>
       </if>
+      <message name="IDS_SHOW_EMAIL_ALIASES" desc="The show Email Aliases menu in the app menu">
+        Email Aliases
+      </message>
       <message name="IDS_SHOW_BRAVE_SYNC" desc="The show brave sync menu in the app menu">
         Sync
       </message>

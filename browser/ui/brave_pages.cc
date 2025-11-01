@@ -90,6 +90,10 @@ void ShowWalletSettings(Browser* browser) {
   ShowSingletonTabOverwritingNTP(browser, GURL(kWalletSettingsURL));
 }
 
+void ShowEmailAliases(Browser* browser) {
+  ShowSingletonTabOverwritingNTP(browser, GURL(kEmailAliasesSettingsURL));
+}
+
 void ShowAppsPage(Browser* browser) {
   ShowSingletonTabOverwritingNTP(browser, GURL(chrome::kChromeUIAppsURL));
 }
