@@ -117,6 +117,7 @@ class NewTabPageViewController: UIViewController {
   private let layout = NewTabPageFlowLayout()
   private let collectionView: NewTabCollectionView
   private weak var browserTab: (any TabState)?
+  private let braveCore: BraveCoreMain
   private let rewards: BraveRewards
 
   private var background: NewTabPageBackground
@@ -124,7 +125,9 @@ class NewTabPageViewController: UIViewController {
   private let backgroundButtonsView: NewTabPageBackgroundButtonsView
   private var videoAdPlayer: NewTabPageVideoAdPlayer?
   private var videoButtonsView = NewTabPageVideoAdButtonsView()
+  //private var webUIController: ChromeWebUIController?
 
+  private var chromeView: UIView?
   var onboardingYouTubeFavoriteInfo: (favorite: Favorite, cell: UIView)? {
     // Get the cell for the youtube from the favs section
     let frc = Favorite.frc()
@@ -169,12 +172,14 @@ class NewTabPageViewController: UIViewController {
   init(
     tab: some TabState,
     profilePrefs: any PrefService,
+    braveCore: BraveCoreMain,
     dataSource: NTPDataSource,
     feedDataSource: FeedDataSource,
     rewards: BraveRewards,
     privateBrowsingManager: PrivateBrowsingManager
   ) {
     self.browserTab = tab
+    self.braveCore = braveCore
     self.profilePrefs = profilePrefs
     self.rewards = rewards
     self.feedDataSource = feedDataSource
@@ -330,6 +335,18 @@ class NewTabPageViewController: UIViewController {
 
     view.addSubview(backgroundView)
     view.insertSubview(gradientView, aboveSubview: backgroundView)
+
+    // if braveCore.profileController != nil && !privateBrowsingManager.isPrivateBrowsing {
+    //   webUIController = ChromeWebUIController(braveCore: braveCore.profileController!, isPrivateBrowsing: false).then {
+    //     $0.webView.load(URLRequest(url: URL(string: "brave://ads-internals")!))
+    //     addChild($0)
+    //     view.addSubview($0.view)
+    //     $0.view.snp.makeConstraints {
+    //       $0.edges.equalToSuperview()
+    //     }
+    //   }
+    // }
+
     view.addSubview(videoButtonsView)
     view.addSubview(collectionView)
     view.addSubview(feedOverlayView)
@@ -362,6 +379,8 @@ class NewTabPageViewController: UIViewController {
 
     setupBackgroundImage()
     setupBackgroundVideoIfNeeded(shouldCreatePlayer: true)
+    setupRichNewTabTakeoverIfNeeded()
+
     backgroundView.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
@@ -515,6 +534,19 @@ class NewTabPageViewController: UIViewController {
         self?.collectionView.alpha = 1
         self?.videoAdPlayer?.seekToStopFrame()
       }
+    )
+  }
+
+  func setupRichNewTabTakeoverIfNeeded() {
+    guard let braveProfileController = braveCore.profileController,
+      let richNewTabTakeoverURL = background.richNewTabTakeoverURL
+    else {
+      return
+    }
+    gradientView.isHidden = true
+    backgroundView.setupRichNewTabTakeoverLayer(
+      braveProileController: braveProfileController,
+      richNewTabTakeoverURL: richNewTabTakeoverURL
     )
   }
 

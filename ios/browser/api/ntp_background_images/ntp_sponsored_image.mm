@@ -88,7 +88,9 @@
                              logo:(NTPSponsoredImageLogo*)logo
                        metricType:(BraveAdsNewTabPageAdMetricType)metricType {
   if ((self = [super init])) {
-    self.imagePath = imagePath;
+    // self.imagePath = imagePath;
+    self.imagePath =
+        [NSURL URLWithString:base::SysUTF8ToNSString("brave://ads-internals")];
     self.focalPoint = focalPoint;
     self.creativeInstanceId = creativeInstanceId;
     self.logo = logo;
