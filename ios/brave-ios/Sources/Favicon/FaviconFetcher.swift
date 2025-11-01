@@ -95,23 +95,11 @@ public class FaviconFetcher {
       return favicon
     }
 
-    // Render the Monogram on a UIImage
-    guard let attributes = BraveCore.FaviconAttributes.withDefaultImage() else {
-      throw FaviconError.noImagesFound
-    }
-
-    let textColor = !attributes.isDefaultBackgroundColor ? attributes.textColor : nil
-    let backColor = !attributes.isDefaultBackgroundColor ? attributes.backgroundColor : nil
-    var monogramText = attributes.monogramString
-    if let monogramString = monogramString ?? url.baseDomain?.first {
-      monogramText = String(monogramString)
-    }
-
     let favicon = await UIImage.renderMonogram(
       url,
-      textColor: textColor,
-      backgroundColor: backColor,
-      monogramString: monogramText
+      textColor: nil,
+      backgroundColor: nil,
+      monogramString: url.baseDomain?.first.map(String.init)
     )
     await storeInCache(favicon, for: url, persistent: persistent)
     try Task.checkCancellation()
