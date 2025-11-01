@@ -99,6 +99,7 @@
 #include "brave/components/debounce/content/browser/debounce_navigation_throttle.h"
 #include "brave/components/decentralized_dns/content/decentralized_dns_navigation_throttle.h"
 #include "brave/components/email_aliases/features.h"
+#include "brave/components/global_privacy_control/global_privacy_control_utils.h"
 #include "brave/components/google_sign_in_permission/google_sign_in_permission_throttle.h"
 #include "brave/components/google_sign_in_permission/google_sign_in_permission_util.h"
 #include "brave/components/ntp_background_images/browser/mojom/ntp_background_images.mojom.h"
@@ -1311,6 +1312,25 @@ void BraveContentBrowserClient::CreateThrottlesForNavigation(
   brave_search::BackupResultsNavigationThrottle::MaybeCreateAndAdd(registry);
 }
 
+// Updates the global privacy control web preference and returns true if it is
+// changed.
+bool UpdateGlobalPrivacyControlWebPreference(WebContents* web_contents,
+                                             WebPreferences* prefs) {
+  Profile* profile =
+      Profile::FromBrowserContext(web_contents->GetBrowserContext());
+  CHECK(profile);
+
+  const bool global_privacy_control_enabled =
+      global_privacy_control::IsGlobalPrivacyControlEnabled(
+          profile->GetPrefs());
+  if (prefs->global_privacy_control_enabled == global_privacy_control_enabled) {
+    return false;
+  }
+
+  prefs->global_privacy_control_enabled = global_privacy_control_enabled;
+  return true;
+}
+
 bool PreventDarkModeFingerprinting(WebContents* web_contents,
                                    content::SiteInstance& main_frame_site,
                                    WebPreferences* prefs) {
@@ -1371,7 +1391,9 @@ bool BraveContentBrowserClient::OverrideWebPreferencesAfterNavigation(
   bool changed =
       ChromeContentBrowserClient::OverrideWebPreferencesAfterNavigation(
           web_contents, main_frame_site, prefs);
+
   return PreventDarkModeFingerprinting(web_contents, main_frame_site, prefs) ||
+         UpdateGlobalPrivacyControlWebPreference(web_contents, prefs) ||
          changed;
 }
 
@@ -1382,6 +1404,7 @@ void BraveContentBrowserClient::OverrideWebPreferences(
   ChromeContentBrowserClient::OverrideWebPreferences(
       web_contents, main_frame_site, web_prefs);
   PreventDarkModeFingerprinting(web_contents, main_frame_site, web_prefs);
+  UpdateGlobalPrivacyControlWebPreference(web_contents, web_prefs);
 
   if (playlist::PlaylistBackgroundWebContentsHelper::FromWebContents(
           web_contents)) {

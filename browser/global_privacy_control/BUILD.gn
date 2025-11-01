@@ -1,0 +1,38 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("browser_tests") {
+  testonly = true
+
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+  sources = [ "global_privacy_control_browsertest.cc" ]
+
+  deps = [
+    "//base",
+    "//chrome/test:test_support",
+    "//components/policy:generated",
+    "//components/policy/core/browser",
+    "//components/policy/core/common",
+    "//components/policy/core/common:test_support",
+    "//content/test:test_support",
+    "//net:test_support",
+    "//third_party/blink/public/common",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "global_privacy_control_utils_unittest.cc" ]
+
+  deps = [
+    "//brave/components/global_privacy_control",
+    "//chrome/test:test_support",
+    "//components/sync_preferences",
+    "//content/test:test_support",
+    "//testing/gtest",
+  ]
+}

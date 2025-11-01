@@ -13,4 +13,5 @@ struct WebPreferences {
   bool force_cosmetic_filtering;
   bool page_in_reader_mode = false;
   bool is_tor_window = false;
+  bool global_privacy_control_enabled = true;
 };

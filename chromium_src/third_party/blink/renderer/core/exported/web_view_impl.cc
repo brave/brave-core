@@ -11,13 +11,15 @@
 
 // not a funtions because Set* methods are protected and WebView is a friend of
 // RuntimeEnabledFeatures.
-#define BRAVE_APPLY_WEB_PREFERENCES(prefs)                 \
-  {                                                        \
-    RuntimeEnabledFeatures::SetBraveIsInTorContextEnabled( \
-        prefs.is_tor_window);                              \
-    if (prefs.is_tor_window) {                             \
-      RuntimeEnabledFeatures::SetWebShareEnabled(false);   \
-    }                                                      \
+#define BRAVE_APPLY_WEB_PREFERENCES(prefs)                       \
+  {                                                              \
+    RuntimeEnabledFeatures::SetBraveIsInTorContextEnabled(       \
+        prefs.is_tor_window);                                    \
+    if (prefs.is_tor_window) {                                   \
+      RuntimeEnabledFeatures::SetWebShareEnabled(false);         \
+    }                                                            \
+    RuntimeEnabledFeatures::SetBraveGlobalPrivacyControlEnabled( \
+        prefs.global_privacy_control_enabled);                   \
   }
 
 #define SetAccelerated2dCanvasEnabled(...)    \
