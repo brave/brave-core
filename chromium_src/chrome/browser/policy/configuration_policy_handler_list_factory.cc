@@ -4,8 +4,10 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "chrome/browser/policy/configuration_policy_handler_list_factory.h"
+
 #include "brave/browser/policy/brave_simple_policy_map.h"
-#include "components/policy/core/browser/configuration_policy_handler.h"
+#include "brave/components/brave_policy/static_simple_policy_handler.h"
+#include "components/policy/core/browser/configuration_policy_handler.h"  // nogncheck
 
 #define BuildHandlerList BuildHandlerList_ChromiumImpl
 #include <chrome/browser/policy/configuration_policy_handler_list_factory.cc>
@@ -20,6 +22,11 @@ std::unique_ptr<ConfigurationPolicyHandlerList> BuildHandlerList(
 
   for (const auto& entry : kBraveSimplePolicyMap) {
     handlers->AddHandler(std::make_unique<SimplePolicyHandler>(
+        entry.policy_name, entry.preference_path, entry.value_type));
+  }
+
+  for (const auto& entry : kBraveStaticSimplePolicyMap) {
+    handlers->AddHandler(std::make_unique<StaticSimplePolicyHandler>(
         entry.policy_name, entry.preference_path, entry.value_type));
   }
 

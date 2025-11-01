@@ -216,12 +216,20 @@ BraveOriginPolicyMap BraveOriginServiceFactory::GetBrowserPolicyDefinitions() {
        policy::kBraveSimplePolicyMap) {
     if (const auto* metadata =
             base::FindOrNull(kBraveOriginBrowserMetadata, pref_name)) {
-      std::string brave_origin_pref_key = pref_name;
-
       browser_policy_definitions.emplace(
-          policy_key, BraveOriginPolicyInfo(
-                          pref_name, metadata->origin_default_value,
-                          metadata->user_settable, brave_origin_pref_key));
+          policy_key,
+          BraveOriginPolicyInfo(pref_name, metadata->origin_default_value,
+                                metadata->user_settable, pref_name));
+    }
+  }
+  for (const auto& [policy_key, pref_name, type] :
+       policy::kBraveStaticSimplePolicyMap) {
+    if (const auto* metadata =
+            base::FindOrNull(kBraveOriginBrowserMetadata, pref_name)) {
+      browser_policy_definitions.emplace(
+          policy_key,
+          BraveOriginPolicyInfo(pref_name, metadata->origin_default_value,
+                                metadata->user_settable, pref_name));
     }
   }
 
@@ -237,12 +245,20 @@ BraveOriginPolicyMap BraveOriginServiceFactory::GetProfilePolicyDefinitions() {
        policy::kBraveSimplePolicyMap) {
     if (const auto* metadata =
             base::FindOrNull(kBraveOriginProfileMetadata, pref_name)) {
-      std::string brave_origin_pref_key = pref_name;
-
       profile_policy_definitions.emplace(
-          policy_key, BraveOriginPolicyInfo(
-                          pref_name, metadata->origin_default_value,
-                          metadata->user_settable, brave_origin_pref_key));
+          policy_key,
+          BraveOriginPolicyInfo(pref_name, metadata->origin_default_value,
+                                metadata->user_settable, pref_name));
+    }
+  }
+  for (const auto& [policy_key, pref_name, type] :
+       policy::kBraveStaticSimplePolicyMap) {
+    if (const auto* metadata =
+            base::FindOrNull(kBraveOriginProfileMetadata, pref_name)) {
+      profile_policy_definitions.emplace(
+          policy_key,
+          BraveOriginPolicyInfo(pref_name, metadata->origin_default_value,
+                                metadata->user_settable, pref_name));
     }
   }
 
