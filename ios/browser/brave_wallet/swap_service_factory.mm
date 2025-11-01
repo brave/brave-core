@@ -34,9 +34,9 @@ SwapServiceFactory* SwapServiceFactory::GetInstance() {
 
 SwapServiceFactory::SwapServiceFactory()
     : ProfileKeyedServiceFactoryIOS("SwapService",
-                                    ProfileSelection::kRedirectedInIncognito,
+                                    ProfileSelection::kNoInstanceInIncognito,
                                     ServiceCreation::kCreateLazily,
-                                    TestingCreation::kNoServiceForTests) {}
+                                    TestingCreation::kCreateService) {}
 
 SwapServiceFactory::~SwapServiceFactory() = default;
 
