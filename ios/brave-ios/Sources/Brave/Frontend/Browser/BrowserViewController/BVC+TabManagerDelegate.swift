@@ -300,6 +300,10 @@ extension BrowserViewController: TabManagerDelegate {
     show(toast: toast, afterWaiting: ButtonToastUX.toastDelay)
   }
 
+  func tabManagerDidAddAndSelectNTP(_ tabManager: TabManager) {
+    topToolbar.enterOverlayMode(nil, pasted: false, search: false)
+  }
+
   func updateToolbarUsingTabManager(_ tabManager: TabManager) {
     // Update Tab Count on Tab-Tray Button
     let count = tabManager.tabsForCurrentMode.count
