@@ -50,14 +50,12 @@ class NTPBackgroundImagesService {
     // Called when the sponsored content component is updated.
     virtual void OnSponsoredContentDidUpdate(const base::Value::Dict& data) {}
 
-    // Called when the super referral campaign ends.
-    virtual void OnSuperReferralCampaignDidEnd() {}
-
    protected:
     virtual ~Observer() = default;
   };
 
-  static void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
+  static void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry);
+  static void MigrateObsoleteLocalStatePrefs(PrefService* local_state);
 
   NTPBackgroundImagesService(
       variations::VariationsService* variations_service,
@@ -78,13 +76,8 @@ class NTPBackgroundImagesService {
 
   NTPBackgroundImagesData* GetBackgroundImagesData() const;
   NTPSponsoredImagesData* GetSponsoredImagesData(
-      bool super_referral,
       bool supports_rich_media) const;
   virtual void RegisterSponsoredImagesComponent();
-
-  bool IsSuperReferral() const;
-  std::string GetSuperReferralThemeName() const;
-  std::string GetSuperReferralCode() const;
 
   void MaybeCheckForSponsoredComponentUpdate();
   void ForceSponsoredComponentUpdate();
@@ -115,12 +108,6 @@ class NTPBackgroundImagesService {
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest,
                            WithDefaultReferralCodeTest2);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest,
-                           WithNonSuperReferralCodeTest);
-  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest,
-                           WithSuperReferralCodeTest);
-  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest,
-                           BasicSuperReferralTest);
-  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest,
                            CheckReferralServiceInitStatusTest);
   FRIEND_TEST_ALL_PREFIXES(
       NTPBackgroundImagesServiceTest,
@@ -150,26 +137,14 @@ class NTPBackgroundImagesService {
                                        const std::string& json_string);
   void OnComponentReady(const base::FilePath& installed_dir);
   void OnGetComponentJsonData(const std::string& json_string);
-  void OnMappingTableComponentReady(const base::FilePath& installed_dir);
-  void OnPreferenceChanged(const std::string& pref_name);
   void OnVariationsCountryPrefChanged();
-  void OnGetMappingTableData(const std::string& json_string);
-
-  std::string GetReferralPromoCode() const;
-  bool IsValidSuperReferralComponentInfo(
-      const base::Value::Dict& component_info) const;
 
   void ScheduleNextSponsoredImagesComponentUpdate();
   void CheckSponsoredImagesComponentUpdate(const std::string& component_id);
 
   // virtual for test.
-  virtual void CheckSuperReferralComponent();
   virtual void RegisterBackgroundImagesComponent();
-  virtual void RegisterSuperReferralComponent();
-  virtual void DownloadSuperReferralMappingTable();
-  virtual void MonitorReferralPromoCodeChange();
-  virtual void UnRegisterSuperReferralComponent();
-  virtual void MarkThisInstallIsNotSuperReferralForever();
+  virtual void RegisterSponsoredImagesComponent();
 
   std::optional<base::Time> last_updated_at_;
 
@@ -193,21 +168,6 @@ class NTPBackgroundImagesService {
   std::unique_ptr<NTPSponsoredImagesData> sponsored_images_data_;
   std::unique_ptr<NTPSponsoredImagesData>
       sponsored_images_data_excluding_rich_media_;
-
-  base::FilePath super_referrals_installed_dir_;
-  std::unique_ptr<NTPSponsoredImagesData> super_referrals_images_data_;
-  // This is only used for registration during initial(first) SR component
-  // download. After initial download is done, it's cached to
-  // |kNewTabPageCachedSuperReferralComponentInfo|. At next launch, this cached
-  // info is used for registering SR component. Why component info is
-  // temporarily stored to |initial_super_referrals_component_info_| when
-  // mapping table is fetched instead of directly store it into that prefs? The
-  // reason is |kNewTabPageCachedSuperReferralComponentInfo| is used to check
-  // whether initial download is finished or not. Knowing initial download is
-  // done is important for super referral. If this is SR install, we should not
-  // show SI images until user chooses Brave default images. So, we should know
-  // the exact timing whether SR assets is ready to use or not.
-  std::optional<base::Value::Dict> initial_super_referrals_component_info_;
 
   base::ObserverList<Observer>::Unchecked observers_;
 

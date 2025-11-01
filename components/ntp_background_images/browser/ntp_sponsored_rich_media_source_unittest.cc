@@ -10,19 +10,12 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/command_line.h"
 #include "base/containers/span.h"
-#include "base/files/file_path.h"
 #include "base/memory/ref_counted_memory.h"
-#include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/strings/string_view_util.h"
-#include "base/test/scoped_feature_list.h"
-#include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service_waiter.h"
-#include "brave/components/ntp_background_images/browser/ntp_sponsored_source_test_util.h"
-#include "brave/components/ntp_background_images/browser/switches.h"
 #include "components/prefs/testing_pref_service.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -30,24 +23,10 @@
 
 namespace ntp_background_images {
 
-namespace {
-
-base::FilePath GetComponentPath() {
-  return test::GetSponsoredImagesComponentPath().AppendASCII("rich_media");
-}
-
-}  // namespace
-
 class NTPSponsoredRichMediaSourceTest : public testing::Test {
  protected:
   void SetUp() override {
-    // Disable the super referral wallpaper feature, as it relies on referral
-    // codes that are not initialized. Note: Super Referrals are being
-    // deprecated, see https://github.com/brave/brave-browser/issues/44403.
-    feature_list_.InitAndDisableFeature(
-        features::kBraveNTPSuperReferralWallpaper);
-
-    NTPBackgroundImagesService::RegisterLocalStatePrefs(
+    NTPBackgroundImagesService::RegisterLocalStatePrefsForMigration(
         pref_service_.registry());
 
     background_images_service_ = std::make_unique<NTPBackgroundImagesService>(
@@ -88,16 +67,12 @@ class NTPSponsoredRichMediaSourceTest : public testing::Test {
 
  private:
   void SimulateOnSponsoredImagesDataDidUpdate() {
-    base::CommandLine::ForCurrentProcess()->AppendSwitchPath(
-        switches::kOverrideSponsoredImagesComponentPath, GetComponentPath());
-
     NTPBackgroundImagesServiceWaiter waiter(*background_images_service_);
     background_images_service_->Init();
     waiter.WaitForOnSponsoredImagesDataDidUpdate();
   }
 
   content::BrowserTaskEnvironment task_environment_;
-  base::test::ScopedFeatureList feature_list_;
   TestingPrefServiceSimple pref_service_;
 
   std::unique_ptr<NTPBackgroundImagesService> background_images_service_;

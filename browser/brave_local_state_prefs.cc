@@ -114,14 +114,14 @@ void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry) {
   p3a::MetricLogStore::RegisterLocalStatePrefsForMigration(registry);
   p3a::RotationScheduler::RegisterLocalStatePrefsForMigration(registry);
   brave_ads::RegisterLocalStatePrefsForMigration(registry);
+  ntp_background_images::NTPBackgroundImagesService::
+      RegisterLocalStatePrefsForMigration(registry);
 }
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   brave_shields::RegisterPrefsForAdBlockService(registry);
   brave_stats::RegisterLocalStatePrefs(registry);
   brave_origin::RegisterLocalStatePrefs(registry);
-  ntp_background_images::NTPBackgroundImagesService::RegisterLocalStatePrefs(
-      registry);
   ntp_background_images::RegisterLocalStatePrefs(registry);
   RegisterPrefsForBraveReferralsService(registry);
   brave_l10n::RegisterLocalStatePrefsForMigration(registry);
