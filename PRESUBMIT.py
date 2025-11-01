@@ -57,6 +57,8 @@ def CheckPatchFormatted(input_api, output_api):
         brave_chromium_utils.wspath(
             '//brave/build/commands/scripts/format.js'), '--presubmit'
     ]
+    if input_api.change.UpstreamBranch():
+        cmd.extend(['--base', input_api.change.UpstreamBranch()])
     if not input_api.PRESUBMIT_FIX:
         cmd.append('--dry-run')
     try:
