@@ -13,8 +13,6 @@
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/constants/pref_names.h"
-#include "brave/components/de_amp/common/features.h"
-#include "brave/components/debounce/core/common/features.h"
 #include "brave/components/google_sign_in_permission/google_sign_in_permission_util.h"
 #include "brave/components/p3a/pref_names.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
@@ -109,12 +107,6 @@ void BravePrivacyHandler::AddLoadTimeData(content::WebUIDataSource* data_source,
   data_source->AddBoolean("pushMessagingEnabledAtStartup",
                           gcm_channel_status->IsGCMEnabled());
 #endif
-  data_source->AddBoolean(
-      "isDeAmpFeatureEnabled",
-      base::FeatureList::IsEnabled(de_amp::features::kBraveDeAMP));
-  data_source->AddBoolean(
-      "isDebounceFeatureEnabled",
-      base::FeatureList::IsEnabled(debounce::features::kBraveDebounce));
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
   data_source->AddBoolean(
       "isRequestOTRFeatureEnabled",
