@@ -25,7 +25,6 @@
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
-#include "brave/components/ntp_background_images/browser/ntp_p3a_helper.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_images_data.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "brave/components/ntp_background_images/browser/view_counter_model.h"
@@ -230,7 +229,6 @@ class ViewCounterServiceTest : public testing::Test {
     view_counter_service_ = std::make_unique<ViewCounterService>(
         host_content_settings_map_.get(), background_images_service_.get(),
         custom_background_service, &ads_service_mock_, &prefs_, &local_state_,
-        std::unique_ptr<NTPP3AHelper>(),
         /*is_supported_locale=*/true);
 
     // Set referral service is properly initialized sr component is set.
