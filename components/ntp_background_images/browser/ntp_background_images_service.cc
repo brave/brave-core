@@ -117,16 +117,28 @@ std::string GetVariationsCountryCode(
 }  // namespace
 
 // static
-void NTPBackgroundImagesService::RegisterLocalStatePrefs(
+void NTPBackgroundImagesService::RegisterLocalStatePrefsForMigration(
     PrefRegistrySimple* registry) {
+  // Added 10/2025
   registry->RegisterDictionaryPref(
       prefs::kNewTabPageCachedSuperReferralComponentInfo);
   registry->RegisterStringPref(
       prefs::kNewTabPageCachedSuperReferralComponentData, std::string());
-  registry->RegisterStringPref(
-      prefs::kNewTabPageCachedSuperReferralCode, std::string());
+  registry->RegisterStringPref(prefs::kNewTabPageCachedSuperReferralCode,
+                               std::string());
   registry->RegisterBooleanPref(
       prefs::kNewTabPageGetInitialSuperReferralComponentInProgress, false);
+}
+
+// static
+void NTPBackgroundImagesService::MigrateObsoleteLocalStatePrefs(
+    PrefService* local_state) {
+  // Added 10/2025
+  local_state->ClearPref(prefs::kNewTabPageCachedSuperReferralComponentInfo);
+  local_state->ClearPref(prefs::kNewTabPageCachedSuperReferralComponentData);
+  local_state->ClearPref(prefs::kNewTabPageCachedSuperReferralCode);
+  local_state->ClearPref(
+      prefs::kNewTabPageGetInitialSuperReferralComponentInProgress);
 }
 
 NTPBackgroundImagesService::NTPBackgroundImagesService(

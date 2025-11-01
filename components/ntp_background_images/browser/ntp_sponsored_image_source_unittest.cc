@@ -47,7 +47,7 @@ class NTPSponsoredImageSourceTest : public testing::Test {
     feature_list_.InitAndDisableFeature(
         features::kBraveNTPSuperReferralWallpaper);
 
-    NTPBackgroundImagesService::RegisterLocalStatePrefs(
+    NTPBackgroundImagesService::RegisterLocalStatePrefsForMigration(
         pref_service_.registry());
 
     background_images_service_ = std::make_unique<NTPBackgroundImagesService>(

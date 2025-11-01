@@ -417,7 +417,8 @@ class NTPBackgroundImagesServiceTest : public testing::Test {
 
   void SetUp() override {
     PrefRegistrySimple* const pref_registry = pref_service_.registry();
-    NTPBackgroundImagesService::RegisterLocalStatePrefs(pref_registry);
+    NTPBackgroundImagesService::RegisterLocalStatePrefsForMigration(
+        pref_registry);
     brave::RegisterPrefsForBraveReferralsService(pref_registry);
   }
 
