@@ -10,8 +10,10 @@ import os
 import shutil
 import sys
 
-from os.path import abspath, dirname
 from lib.util import execute
+from os.path import abspath, dirname
+from subprocess import CalledProcessError
+from time import sleep
 
 cert = os.environ.get('CERT')
 cert_hash = os.environ.get('AUTHENTICODE_HASH')
@@ -32,6 +34,27 @@ assert cert or cert_hash or signtool_args, \
     'CERT is a part of the name in the //CurrentUser/My Windows Certificate ' \
     'Store. It is ambiguous and will likely be deprecated in the future.'
 
+
+# pylint: disable=no-else-raise
+def execute_with_retry(cmd, max_attempts=5, base_sleep_sec=1, backoff_mult=2):
+    """Execute a command, retry on failure with exponential backoff"""
+
+    for attempt in range(max_attempts + 1):
+        try:
+            execute(cmd)
+        except (RuntimeError, CalledProcessError):
+            err = f"Command `{cmd}' failed."
+            if attempt == max_attempts:
+                print(f"{err} Max number of retries reached.", file=sys.stderr)
+                raise
+            else:
+                sleep_sec = base_sleep_sec * backoff_mult**attempt
+                print(
+                    f"{err} Retry in {sleep_sec}s ({attempt}/{max_attempts}).",
+                    file=sys.stderr)
+                sleep(sleep_sec)
+                continue
+        break
 
 def get_sign_cmd(file):
     # https://docs.microsoft.com/en-us/dotnet/framework/tools/signtool-exe
@@ -55,15 +78,13 @@ def sign_binaries(base_dir, endswidth=('.exe', '.dll')):
     for binary in matches:
         sign_binary(binary)
 
-
 def sign_binary(binary, out_file=None):
     if out_file:
         os.makedirs(dirname(abspath(out_file)), exist_ok=True)
         shutil.copy(binary, out_file)
         binary = out_file
     cmd = get_sign_cmd(binary)
-    execute(cmd)
-
+    execute_with_retry(cmd)
 
 def main():
     parser = argparse.ArgumentParser()
