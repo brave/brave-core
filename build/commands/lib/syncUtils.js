@@ -9,6 +9,11 @@ const fs = require('fs')
 const path = require('path')
 const Log = require('./logging')
 const util = require('./util')
+const applyReverts = require('./applyReverts')
+
+const REVERT_UPSTREAM_UNTIL_WINDOWS_HAS_OMAHA_4 = [
+  'a4d120daa3b09272d0dfe4a7ce20157dc18cb74e',
+]
 
 function toGClientConfigItem(name, value, pretty = true) {
   const valueMap = {
@@ -80,9 +85,9 @@ function shouldUpdateChromium(latestSyncInfo, expectedSyncInfo) {
   const headSHA = util.runGit(config.srcDir, ['rev-parse', 'HEAD'], true)
   const targetSHA = util.runGit(config.srcDir, ['rev-parse', chromiumRef], true)
   const needsUpdate =
-    targetSHA !== headSHA
-    || (!headSHA && !targetSHA)
-    || JSON.stringify(latestSyncInfo) !== JSON.stringify(expectedSyncInfo)
+    (!headSHA && !targetSHA) ||
+    JSON.stringify(latestSyncInfo) !== JSON.stringify(expectedSyncInfo) ||
+    applyReverts(config.srcDir, REVERT_UPSTREAM_UNTIL_WINDOWS_HAS_OMAHA_4, true)
   if (needsUpdate) {
     const currentRef = util.getGitReadableLocalRef(config.srcDir)
     console.log(
@@ -105,7 +110,7 @@ function shouldUpdateChromium(latestSyncInfo, expectedSyncInfo) {
       chalk.green.bold(
         `Chromium repo does not need sync as it is already ${chalk.italic(
           chromiumRef,
-        )} at commit ${targetSHA || '[missing]'}.`,
+        )} at commit ${headSHA || '[missing]'}.`,
       ),
     )
   }
@@ -215,6 +220,7 @@ function syncChromium(program) {
   util.writeJSON(latestSyncInfoFilePath, expectedSyncInfo)
 
   const postSyncChromiumRef = util.getGitReadableLocalRef(config.srcDir)
+  applyReverts(config.srcDir, REVERT_UPSTREAM_UNTIL_WINDOWS_HAS_OMAHA_4)
   Log.status(`Chromium is now at ${postSyncChromiumRef || '[unknown]'}`)
   return true
 }
