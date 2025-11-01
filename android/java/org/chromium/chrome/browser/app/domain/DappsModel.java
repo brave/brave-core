@@ -8,7 +8,6 @@ package org.chromium.chrome.browser.app.domain;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import org.chromium.base.Callbacks;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.CoinType;
@@ -33,6 +32,16 @@ import java.util.Collections;
 import java.util.List;
 
 public class DappsModel implements KeyringServiceObserver {
+    /**
+     * A generic 1-argument callback.
+     *
+     * @param <T1> The type of the first argument.
+     */
+    public interface Callback1<T1> {
+        /** Call the callback. */
+        void call(T1 arg1);
+    }
+
     private JsonRpcService mJsonRpcService;
     private final KeyringService mKeyringService;
     private BraveWalletService mBraveWalletService;
@@ -71,8 +80,9 @@ public class DappsModel implements KeyringServiceObserver {
         mKeyringService.addObserver(this);
     }
 
-    public void fetchAccountsForConnectionReq(@CoinType.EnumType int coinType,
-            Callbacks.Callback1<Pair<AccountInfo, List<AccountInfo>>> callback) {
+    public void fetchAccountsForConnectionReq(
+            @CoinType.EnumType int coinType,
+            Callback1<Pair<AccountInfo, List<AccountInfo>>> callback) {
         if (coinType != CoinType.ETH && coinType != CoinType.SOL) {
             callback.call(new Pair<>(null, Collections.emptyList()));
             return;
@@ -213,7 +223,7 @@ public class DappsModel implements KeyringServiceObserver {
         mBraveWalletService.notifySignMessageRequestProcessed(isApproved, id, null, error);
     }
 
-    public void getPendingSignMessageRequests(Callbacks.Callback1<SignMessageRequest[]> callback) {
+    public void getPendingSignMessageRequests(Callback1<SignMessageRequest[]> callback) {
         mBraveWalletService.getPendingSignMessageRequests(callback::call);
     }
 

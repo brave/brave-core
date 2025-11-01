@@ -41,7 +41,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import org.chromium.base.ApiCompatibilityUtils;
-import org.chromium.base.Callbacks;
 import org.chromium.base.CommandLine;
 import org.chromium.base.Log;
 import org.chromium.base.shared_preferences.SharedPreferencesManager;
@@ -1124,7 +1123,7 @@ public class Utils {
             AccountInfo[] accountInfos,
             BlockchainToken[] filterByTokens,
             boolean userAssetsOnly,
-            Callbacks.Callback4<
+            AsyncUtils.Callback4<
                             List<AssetPrice>,
                             BlockchainToken[],
                             HashMap<String, Double>,
@@ -1222,7 +1221,7 @@ public class Utils {
      * @param callback Callback containing a filtered list of P3A networks.
      */
     public static void getP3ANetworks(
-            List<NetworkInfo> allNetworks, Callbacks.Callback1<List<NetworkInfo>> callback) {
+            List<NetworkInfo> allNetworks, AsyncUtils.Callback1<List<NetworkInfo>> callback) {
         ArrayList<NetworkInfo> relevantNetworks = new ArrayList<NetworkInfo>();
         boolean countTestNetworks =
                 CommandLine.getInstance()

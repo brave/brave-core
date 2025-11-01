@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.chromium.base.Callback;
-import org.chromium.base.Callbacks;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
@@ -35,6 +34,19 @@ import java.util.Arrays;
  */
 public class BraveWalletNetworksPreference extends Preference
         implements ConnectionErrorHandler, NetworkPreferenceAdapter.ItemClickListener {
+
+    /**
+     * A generic 4-argument callback.
+     *
+     * @param <T1> The type of the first argument.
+     * @param <T2> The type of the second argument.
+     * @param <T3> The type of the third argument.
+     * @param <T4> The type of the fourth argument.
+     */
+    public interface Callback4<T1, T2, T3, T4> {
+        /** Call the callback. */
+        void call(T1 arg1, T2 arg2, T3 arg3, T4 arg4);
+    }
 
     private AppCompatButton mAddNetwork;
     private RecyclerView mRecyclerView;
@@ -211,8 +223,7 @@ public class BraveWalletNetworksPreference extends Preference
      */
     private void getAvailableChainIds(
             @CoinType.EnumType final int coinType,
-            @NonNull
-                    final Callbacks.Callback4<String, NetworkInfo[], String[], String[]> callback) {
+            @NonNull final Callback4<String, NetworkInfo[], String[], String[]> callback) {
         mJsonRpcService.getDefaultChainId(
                 coinType,
                 defaultChainId ->
