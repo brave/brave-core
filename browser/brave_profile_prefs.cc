@@ -66,6 +66,7 @@
 #include "components/content_settings/core/common/pref_names.h"
 #include "components/embedder_support/pref_names.h"
 #include "components/gcm_driver/gcm_buildflags.h"
+#include "components/ntp_tiles/tile_type.h"
 #include "components/omnibox/browser/omnibox_prefs.h"
 #include "components/password_manager/core/common/password_manager_pref_names.h"
 #include "components/policy/core/common/policy_pref_names.h"
@@ -174,8 +175,9 @@ void OverrideDefaultPrefValues(user_prefs::PrefRegistrySyncable* registry) {
 #else
   // Turn on most visited mode on NTP by default.
   // We can turn customization mode on when we have add-shortcut feature.
-  registry->SetDefaultPrefValue(ntp_prefs::kNtpUseMostVisitedTiles,
-                                base::Value(true));
+  registry->SetDefaultPrefValue(
+      ntp_prefs::kNtpShortcutsType,
+      base::Value(static_cast<int>(ntp_tiles::TileType::kTopSites)));
 
   registry->SetDefaultPrefValue(
       bookmarks_webui::prefs::kBookmarksViewType,

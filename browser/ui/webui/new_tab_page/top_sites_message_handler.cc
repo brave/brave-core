@@ -25,6 +25,7 @@
 #include "chrome/browser/ui/webui/new_tab_page/ntp_pref_names.h"
 #include "components/ntp_tiles/constants.h"
 #include "components/ntp_tiles/most_visited_sites.h"
+#include "components/ntp_tiles/tile_type.h"
 #include "components/prefs/pref_service.h"
 
 using ntp_background_images::ViewCounterServiceFactory;
@@ -172,7 +173,9 @@ int TopSitesMessageHandler::GetCustomLinksNum() const {
 }
 
 bool TopSitesMessageHandler::IsCustomLinksEnabled() const {
-  return !profile_->GetPrefs()->GetBoolean(ntp_prefs::kNtpUseMostVisitedTiles);
+  auto tile_type = static_cast<ntp_tiles::TileType>(
+      profile_->GetPrefs()->GetInteger(ntp_prefs::kNtpShortcutsType));
+  return tile_type == ntp_tiles::TileType::kCustomLinks;
 }
 
 bool TopSitesMessageHandler::IsShortcutsVisible() const {
@@ -284,8 +287,11 @@ void TopSitesMessageHandler::HandleSetMostVisitedSettings(
 
   bool old_custom_links_enabled = IsCustomLinksEnabled();
   if (old_custom_links_enabled != custom_links_enabled) {
-    profile_->GetPrefs()->SetBoolean(ntp_prefs::kNtpUseMostVisitedTiles,
-                                     !custom_links_enabled);
+    profile_->GetPrefs()->SetInteger(
+        ntp_prefs::kNtpShortcutsType,
+        static_cast<int>(custom_links_enabled
+                             ? ntp_tiles::TileType::kCustomLinks
+                             : ntp_tiles::TileType::kTopSites));
     most_visited_sites_->EnableTileTypes(
         ntp_tiles::MostVisitedSites::EnableTileTypesOptions().with_custom_links(
             IsCustomLinksEnabled()));
@@ -317,7 +323,9 @@ void TopSitesMessageHandler::HandleEditTopSite(const base::Value::List& args) {
 
   // when user modifies current top sites, change to favorite mode.
   if (!most_visited_sites_->IsCustomLinksEnabled()) {
-    profile_->GetPrefs()->SetBoolean(ntp_prefs::kNtpUseMostVisitedTiles, false);
+    profile_->GetPrefs()->SetInteger(
+        ntp_prefs::kNtpShortcutsType,
+        static_cast<int>(ntp_tiles::TileType::kCustomLinks));
     most_visited_sites_->EnableTileTypes(
         ntp_tiles::MostVisitedSites::EnableTileTypesOptions().with_custom_links(
             IsCustomLinksEnabled()));
@@ -357,7 +365,9 @@ void TopSitesMessageHandler::HandleAddNewTopSite(
   // If the user tries to add a new site in top sites mode, change to favorite
   // mode.
   if (!most_visited_sites_->IsCustomLinksEnabled()) {
-    profile_->GetPrefs()->SetBoolean(ntp_prefs::kNtpUseMostVisitedTiles, false);
+    profile_->GetPrefs()->SetInteger(
+        ntp_prefs::kNtpShortcutsType,
+        static_cast<int>(ntp_tiles::TileType::kCustomLinks));
     most_visited_sites_->EnableTileTypes(
         ntp_tiles::MostVisitedSites::EnableTileTypesOptions().with_custom_links(
             IsCustomLinksEnabled()));
