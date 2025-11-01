@@ -2374,6 +2374,7 @@ void KeyringService::Unlock(const std::string& password,
   request_unlock_pending_ = false;
   for (const auto& observer : observers_) {
     observer->Unlocked();
+    observer->GenerateWasmKeyrings(keyring_seed->seed);
   }
   ResetAutoLockTimer();
 

@@ -93,6 +93,7 @@ WalletPanelUI::WalletPanelUI(content::WebUI* web_ui)
           " "));
   source->AddString("braveWalletTrezorBridgeUrl", kUntrustedTrezorURL);
   source->AddString("braveWalletNftBridgeUrl", kUntrustedNftURL);
+  source->AddString("braveWalletPolkadotBridgeUrl", kUntrustedPolkadotURL);
   source->AddString("braveWalletLineChartBridgeUrl", kUntrustedLineChartURL);
   source->AddString("braveWalletMarketUiBridgeUrl", kUntrustedMarketURL);
   source->AddBoolean("isMobile", false);

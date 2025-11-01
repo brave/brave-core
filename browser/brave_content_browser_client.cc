@@ -47,6 +47,7 @@
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_untrusted_conversation_ui.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_ui.h"
+#include "brave/browser/ui/webui/brave_wallet/polkadot/polkadot_ui.h"
 #include "brave/browser/ui/webui/skus_internals_ui.h"
 #include "brave/browser/updater/buildflags.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
@@ -664,6 +665,9 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
   registry.ForWebUI<WalletPanelUI>()
       .Add<brave_wallet::mojom::PanelHandlerFactory>()
       .Add<brave_rewards::mojom::RewardsPageHandler>();
+
+  registry.ForWebUI<brave_wallet::UntrustedPolkadotUI>()
+      .Add<brave_wallet::mojom::PageHandlerFactory>();
 
   auto ntp_refresh_registration =
       registry.ForWebUI<BraveNewTabPageUI>()

@@ -47,6 +47,7 @@
       <!-- WebUI wallet resources -->
       <include name="IDR_WALLET_PAGE_HTML" file="${root_gen_dir}/brave/components/brave_wallet_ui/page/preprocessed/wallet_page.html" use_base_dir="false" type="BINDATA" />
       <include name="IDR_BRAVE_WALLET_NFT_DISPLAY_HTML" file="../brave_wallet_ui/nft/nft.html" type="BINDATA" />
+      <include name="IDR_BRAVE_WALLET_POLKADOT_BRIDGE_HTML" file="../brave_wallet_ui/polkadot/polkadot.html" type="BINDATA" />
       <include name="IDR_BRAVE_WALLET_MARKET_DISPLAY_HTML" file="../brave_wallet_ui/market/market.html" type="BINDATA" />
       <include name="IDR_BRAVE_WALLET_LINE_CHART_DISPLAY_HTML" file="../brave_wallet_ui/line_chart/line_chart.html" type="BINDATA" />
       <if expr="not is_android and not is_ios">

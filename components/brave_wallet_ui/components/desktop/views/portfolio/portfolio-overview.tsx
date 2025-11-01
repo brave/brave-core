@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
-import { useHistory, useLocation } from 'react-router'
+import { useHistory, useLocation, } from 'react-router'
 import { Route, Switch } from 'react-router-dom'
 
 // Selectors
@@ -132,6 +132,54 @@ import {
 import {
   selectAllVisibleFungibleUserAssetsFromQueryResult, //
 } from '../../../../common/slices/entities/blockchain-token.entity'
+
+import { loadTimeData } from '../../../../../common/loadTimeData'
+
+const kPolkadotBridgeUrl = loadTimeData.getString(
+  'braveWalletPolkadotBridgeUrl',
+)
+
+const frameId = crypto.randomUUID();
+let polkadotIFrame = document.createElement('iframe');
+polkadotIFrame.id = frameId;
+polkadotIFrame.src = kPolkadotBridgeUrl;
+polkadotIFrame.style.display = 'none'
+polkadotIFrame.onload = () => {
+  if (!polkadotIFrame || !polkadotIFrame.contentWindow) { return; }
+}
+document.body.appendChild(polkadotIFrame)
+
+let msgHandler: any = null;
+
+window.addEventListener('message', (msgEvent) => {
+  if (!msgHandler) {
+    return;
+  }
+
+  msgHandler(msgEvent.data);
+});
+
+function SchnorrDemoButton() {
+  const [pubkey, setPubKey] = React.useState('');
+
+  msgHandler = setPubKey;
+
+  const onClick = () => {
+    if (!polkadotIFrame || !polkadotIFrame.contentWindow) {
+      setPubKey('invalid polkadot-bridge');
+      return;
+    }
+
+    polkadotIFrame.contentWindow.postMessage('rawrawrawr', kPolkadotBridgeUrl);
+    // setPubKey(/* get_signature() */ 'dummy key');
+  };
+
+  return (<>
+    <button onClick={onClick}>Click to generate your Schnorr-derived pubkey!</button>
+    <button onClick={() => { setPubKey('') }}>Clear pubkey</button>
+    <span style={{ color: '#ffffff' }}>{pubkey}</span>
+  </>);
+}
 
 export const PortfolioOverview = () => {
   // routing
@@ -267,9 +315,9 @@ export const PortfolioOverview = () => {
         || visiblePortfolioNetworks.length === 0
         ? skipToken
         : {
-            accounts: usersFilteredAccounts,
-            networks: visiblePortfolioNetworks,
-          },
+          accounts: usersFilteredAccounts,
+          networks: visiblePortfolioNetworks,
+        },
     )
 
   // This will scrape all the user's accounts and combine the asset balances
@@ -319,8 +367,8 @@ export const PortfolioOverview = () => {
         assetBalance:
           getIsRewardsToken(asset) && rewardsBalance
             ? new Amount(rewardsBalance)
-                .multiplyByDecimals(asset.decimals)
-                .format()
+              .multiplyByDecimals(asset.decimals)
+              .format()
             : fullAssetBalance(asset),
       }
     })
@@ -359,11 +407,11 @@ export const PortfolioOverview = () => {
       && defaultFiat
       && !hidePortfolioGraph
       ? {
-          tokens: visibleTokensForFilteredChains,
-          timeframe: selectedTimeframe,
-          vsAsset: defaultFiat,
-          tokenBalancesRegistry,
-        }
+        tokens: visibleTokensForFilteredChains,
+        timeframe: selectedTimeframe,
+        vsAsset: defaultFiat,
+        tokenBalancesRegistry,
+      }
       : skipToken,
   )
 
@@ -492,12 +540,12 @@ export const PortfolioOverview = () => {
               !tokenBalancesRegistry
                 ? ''
                 : selectedGroupAssetsByItem === AccountsGroupByOption.id
-                    && !getIsRewardsToken(item.asset)
+                  && !getIsRewardsToken(item.asset)
                   ? getBalance(
-                      account?.accountId,
-                      item.asset,
-                      tokenBalancesRegistry,
-                    )
+                    account?.accountId,
+                    item.asset,
+                    tokenBalancesRegistry,
+                  )
                   : item.assetBalance
             }
             account={
@@ -510,9 +558,9 @@ export const PortfolioOverview = () => {
             spotPrice={
               spotPrices
                 ? getTokenPriceAmountFromRegistry(
-                    spotPrices,
-                    item.asset,
-                  ).format()
+                  spotPrices,
+                  item.asset,
+                ).format()
                 : tokenBalancesRegistry
                   ? '0'
                   : ''
@@ -559,6 +607,7 @@ export const PortfolioOverview = () => {
         >
           <Banners />
         </Column>
+        <SchnorrDemoButton />
         {!isCollectionView && (
           <>
             <BalanceAndLineChartWrapper
