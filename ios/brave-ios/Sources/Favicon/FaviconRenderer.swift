@@ -20,7 +20,7 @@ public class FaviconRenderer {
       ) { _, attributes in
 
         // If the completion block was called with the `default` image, do nothing
-        if attributes.usesDefaultImage {
+        if attributes.faviconImage == nil {
           return
         }
 
