@@ -310,14 +310,21 @@ bool OutputZCashTransparentAddressSupported(const std::string& address,
 // https://zips.z.cash/zip-0317
 base::CheckedNumeric<uint64_t> CalculateZCashTxFee(
     const uint32_t tx_input_count,
-    const uint32_t orchard_actions_count) {
-  // Use simplified calculation fee form since we don't support p2psh
-  // and shielded addresses
-  auto actions_count = base::CheckMax(
-      base::CheckAdd<uint32_t>(tx_input_count, orchard_actions_count),
-      kDefaultTransparentOutputsCount);
+    const uint32_t tx_output_count,
+    const uint32_t orchard_input_notes,
+    const uint32_t orchard_output_notes) {
+  // https://github.com/zcash/orchard/blob/9d89b504c52dc69064ca431e8311a4cd1c279b44/src/builder.rs#L93-L94
+  base::CheckedNumeric<uint32_t> orchard_actions_count =
+      (orchard_input_notes != 0u) || (orchard_output_notes != 0u)
+          ? base::CheckMax<uint32_t>(orchard_input_notes, orchard_output_notes,
+                                     2u)
+          : 0u;
+  // https://github.com/zcash/librustzcash/blob/8eb78dfae38ca1c91a108a86a4a3b5505766c3f6/zcash_primitives/src/transaction/fees/zip317.rs#L188
+  base::CheckedNumeric<uint32_t> logical_actions_count =
+      base::CheckMax<uint32_t>(tx_input_count, tx_output_count) +
+      orchard_actions_count;
   return base::CheckMul<uint64_t>(
-      kMarginalFee, base::CheckMax(kGraceActionsCount, actions_count));
+      kMarginalFee, base::CheckMax(kGraceActionsCount, logical_actions_count));
 }
 
 bool IsUnifiedAddress(const std::string& address) {

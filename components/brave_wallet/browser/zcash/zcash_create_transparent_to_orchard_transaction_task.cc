@@ -87,11 +87,8 @@ void ZCashCreateTransparentToOrchardTransactionTask::CreateTransaction() {
   CHECK(utxo_map_);
   ZCashTransaction zcash_transaction;
 
-  // Pick transparent inputs
-  // TODO(cypt4): Calculate orchard actions count
   auto pick_transparent_inputs_result = PickZCashTransparentInputs(
-      *utxo_map_, amount_,
-      2 /* actions count for 1 orchard output no orchard inputs */);
+      *utxo_map_, amount_, ZCashTargetOutputType::kOrchard);
   if (!pick_transparent_inputs_result) {
     error_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
     ScheduleWorkOnTask();
