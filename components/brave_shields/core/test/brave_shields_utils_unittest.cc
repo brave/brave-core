@@ -442,6 +442,22 @@ TEST_F(BraveShieldsUtilTest, GetAdControlType_ForOrigin) {
   EXPECT_EQ(ControlType::ALLOW, setting);
 }
 
+TEST_F(BraveShieldsUtilTest, GetAdControlType_ManagedPref) {
+  auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
+
+  profile()->GetTestingPrefService()->SetManagedPref(
+      kManagedDefaultBraveAds, base::Value(CONTENT_SETTING_ALLOW));
+  EXPECT_EQ(ControlType::ALLOW, brave_shields::GetAdControlType(map, GURL()));
+  EXPECT_EQ(ControlType::ALLOW,
+            brave_shields::GetAdControlType(map, GURL("http://brave.com")));
+
+  profile()->GetTestingPrefService()->SetManagedPref(
+      kManagedDefaultBraveAds, base::Value(CONTENT_SETTING_BLOCK));
+  EXPECT_EQ(ControlType::BLOCK, brave_shields::GetAdControlType(map, GURL()));
+  EXPECT_EQ(ControlType::BLOCK,
+            brave_shields::GetAdControlType(map, GURL("http://brave.com")));
+}
+
 /* COOKIE CONTROL */
 TEST_F(BraveShieldsUtilTest, SetCookieControlType_Default) {
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
