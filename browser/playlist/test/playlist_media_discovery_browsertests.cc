@@ -161,9 +161,9 @@ class PlaylistMediaDiscoveryBrowserTest : public PlatformBrowserTest {
     return response;
   }
 
-  void OnGetMedia(const char* test_name,
+  void OnGetMedia(std::string_view test_name,
                   std::vector<ExpectedData> expected_data,
-                  const std::string& requested_host,
+                  std::string_view requested_host,
                   std::vector<playlist::mojom::PlaylistItemPtr> actual_items) {
     VLOG(2) << test_name << ": " << __func__;
 

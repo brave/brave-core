@@ -56,11 +56,11 @@ class BraveReferralsServiceTest : public testing::Test {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
         [&](const network::ResourceRequest& request) {
           std::string response_body;
-          if (request.url.path_piece().starts_with("/promo/initialize")) {
+          if (request.url.path().starts_with("/promo/initialize")) {
             // Respond with a successful init response
             response_body =
                 "{\"download_id\":\"" + std::string(kTestDownloadId) + "\"}";
-          } else if (request.url.path_piece() == "/promo/activity") {
+          } else if (request.url.path() == "/promo/activity") {
             // Respond with a successful finalization check response
             response_body = "{\"finalized\":true}";
           }

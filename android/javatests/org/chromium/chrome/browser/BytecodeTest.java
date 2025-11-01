@@ -12,9 +12,9 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -154,6 +154,7 @@ import org.chromium.chrome.browser.undo_tab_close_snackbar.UndoBarThrottle;
 import org.chromium.chrome.browser.user_education.UserEducationHelper;
 import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 import org.chromium.components.bookmarks.BookmarkItem;
+import org.chromium.components.browser_ui.accessibility.PageZoomIndicatorCoordinator;
 import org.chromium.components.browser_ui.accessibility.PageZoomManager;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.components.browser_ui.desktop_windowing.DesktopWindowStateManager;
@@ -577,7 +578,8 @@ public class BytecodeTest {
                         Callback.class,
                         boolean.class,
                         BookmarkManagerOpener.class,
-                        PriceDropNotificationManager.class));
+                        PriceDropNotificationManager.class,
+                        boolean.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/components/permissions/PermissionDialogModelFactory",
@@ -698,12 +700,6 @@ public class BytecodeTest {
                         "updateButtonVisibility",
                         MethodModifier.REGULAR,
                         void.class));
-        Assert.assertTrue(
-                methodExists(
-                        "org/chromium/chrome/browser/omnibox/LocationBarMediator",
-                        "shouldShowDeleteButton",
-                        MethodModifier.REGULAR,
-                        boolean.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/tasks/ReturnToChromeUtil",
@@ -893,6 +889,16 @@ public class BytecodeTest {
                         Context.class,
                         String.class,
                         Bundle.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/settings/SettingsIntentUtil",
+                        "createIntent",
+                        MethodModifier.STATIC,
+                        Intent.class,
+                        Context.class,
+                        String.class,
+                        Bundle.class,
+                        boolean.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/components/browser_ui/media/MediaSessionHelper",
@@ -1377,7 +1383,8 @@ public class BytecodeTest {
                         MenuButtonCoordinator.VisibilityDelegate.class,
                         TopControlsStacker.class,
                         ObservableSupplier.class,
-                        ObservableSupplier.class));
+                        ObservableSupplier.class,
+                        PageZoomManager.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
@@ -1453,7 +1460,8 @@ public class BytecodeTest {
                         OneshotSupplier.class,
                         ObservableSupplier.class,
                         ObservableSupplier.class,
-                        StartupMetricsTracker.class));
+                        StartupMetricsTracker.class,
+                        MultiInstanceManager.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator", // presubmit: ignore-long-line
@@ -1491,7 +1499,8 @@ public class BytecodeTest {
                         ForwardButtonCoordinator.class,
                         HomeButtonDisplay.class,
                         ExtensionToolbarCoordinator.class,
-                        TopControlsStacker.class));
+                        TopControlsStacker.class,
+                        BrowserControlsStateProvider.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/toolbar/menu_button/MenuButtonCoordinator", // presubmit: ignore-long-line
@@ -1537,8 +1546,6 @@ public class BytecodeTest {
                         Supplier.class,
                         LocationBarDataProvider.class,
                         Callback.class,
-                        Callback.class,
-                        Supplier.class,
                         BookmarkState.class,
                         OmniboxActionDelegate.class,
                         ActivityLifecycleDispatcher.class,
@@ -1589,7 +1596,7 @@ public class BytecodeTest {
                 constructorsMatch(
                         "org/chromium/chrome/browser/suggestions/tile/MostVisitedTilesMediator",
                         "org/chromium/chrome/browser/suggestions/tile/BraveMostVisitedTilesMediator",
-                        Resources.class,
+                        Context.class,
                         UiConfig.class,
                         MostVisitedTilesLayout.class,
                         TileRenderer.class,
@@ -1613,7 +1620,7 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/omnibox/suggestions/BraveDropdownItemViewInfoListBuilder", // presubmit: ignore-long-line
                         Supplier.class,
                         BookmarkState.class,
-                        Supplier.class));
+                        ObservableSupplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListManager",
@@ -1639,9 +1646,7 @@ public class BytecodeTest {
                         BackKeyBehaviorDelegate.class,
                         PageInfoAction.class,
                         Callback.class,
-                        Callback.class,
                         BraveLocationBarMediator.getOmniboxUmaClass(),
-                        Supplier.class,
                         BookmarkState.class,
                         BooleanSupplier.class,
                         Supplier.class,
@@ -1655,7 +1660,9 @@ public class BytecodeTest {
                         Supplier.class,
                         OnLongClickListener.class,
                         BrowserControlsStateProvider.class,
-                        boolean.class));
+                        boolean.class,
+                        PageZoomManager.class,
+                        Function.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/omnibox/LocationBarMediator",
@@ -1678,7 +1685,8 @@ public class BytecodeTest {
                         ObservableSupplier.class,
                         BrowserControlsStateProvider.class,
                         Supplier.class,
-                        ObservableSupplier.class));
+                        ObservableSupplier.class,
+                        PageZoomIndicatorCoordinator.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/AppHooks",
@@ -1712,7 +1720,8 @@ public class BytecodeTest {
                         PropertyModel.class,
                         Callback.class,
                         LogoCoordinator.VisibilityObserver.class,
-                        CachedTintedBitmap.class));
+                        CachedTintedBitmap.class,
+                        Drawable.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/notifications/permissions/NotificationPermissionRationaleDialogController",
@@ -2776,14 +2785,15 @@ public class BytecodeTest {
         if (c == null) {
             return false;
         }
+        // Iterate through all methods in the class to handle the case where the class has several
+        // versions of the same method.
         for (Method m : c.getDeclaredMethods()) {
-            boolean didMethodParamsMatch = true;
             if (m.getName().equals(methodName)) {
                 Class<?> type = m.getReturnType();
                 if ((type == null && returnType != null)
                         || (type != null && returnType == null)
                         || (type != null && returnType != null && !type.equals(returnType))) {
-                    return false;
+                    continue;
                 }
                 Class<?>[] types = m.getParameterTypes();
                 if ((types == null && parameterTypes != null)
@@ -2791,30 +2801,27 @@ public class BytecodeTest {
                         || (types != null
                                 && parameterTypes != null
                                 && types.length != parameterTypes.length)) {
-                    return false;
+                    continue;
                 }
+                boolean paramsMatch = true;
                 for (int i = 0; i < (types == null ? 0 : types.length); i++) {
                     if (!types[i].equals(parameterTypes[i])) {
-                        // Handle case when class has overridden methods, see
-                        // MultiInstanceManagerApi31 class with
-                        //    moveTabToWindow(Activity, Tab, int) and
-                        //    moveTabToWindow(InstanceInfo, Tab, int)
-                        didMethodParamsMatch = false;
+                        paramsMatch = false;
+                        break;
                     }
                 }
-
-                if (!didMethodParamsMatch) {
+                if (!paramsMatch) {
                     continue;
                 }
 
                 if (methodModifier == MethodModifier.STATIC
                         && !Modifier.isStatic(m.getModifiers())) {
-                    return false;
+                    continue;
                 }
 
                 if (methodModifier == MethodModifier.REGULAR
                         && Modifier.isStatic(m.getModifiers())) {
-                    return false;
+                    continue;
                 }
 
                 return true;

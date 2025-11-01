@@ -21,7 +21,7 @@
 @implementation NSURL (Utilities)
 
 std::string GetRegistry(const GURL& url) {
-  if (url.host_piece().empty() || url.HostIsIPAddress()) {
+  if (url.host().empty() || url.HostIsIPAddress()) {
     return std::string();  // No registry.
   }
 

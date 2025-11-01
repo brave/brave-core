@@ -23,7 +23,7 @@
 namespace {
 
 void CustomizeWebUIHTMLSource(web::WebUIIOS* web_ui,
-                              const std::string& name,
+                              std::string_view name,
                               web::WebUIIOSDataSource* source) {
   source->AddResourcePaths(brave::GetWebUIResources(name));
   source->AddLocalizedStrings(brave::GetWebUILocalizedStrings(name));
@@ -35,12 +35,12 @@ namespace brave {
 
 BraveWebUIIOSDataSource* CreateAndAddWebUIDataSource(
     web::WebUIIOS* web_ui,
-    const std::string& name,
+    std::string_view name,
     base::span<const webui::ResourcePath> resource_paths,
     int html_resource_id,
     bool disable_trusted_types_csp) {
   auto* source = BraveWebUIIOSDataSource::CreateAndAdd(
-      ProfileIOS::FromWebUIIOS(web_ui), name);
+      ProfileIOS::FromWebUIIOS(web_ui), std::string(name));
 
   source->AddResourcePaths(resource_paths);
   source->SetDefaultResource(html_resource_id);

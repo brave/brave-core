@@ -41,7 +41,7 @@ class BraveNewTabUI : public ui::MojoWebUIController,
                       public brave_new_tab_page::mojom::PageHandlerFactory {
  public:
   BraveNewTabUI(content::WebUI* web_ui,
-                const std::string& name,
+                std::string_view name,
                 brave_ads::AdsService* ads_service,
                 ntp_background_images::ViewCounterService* view_counter_service,
                 regional_capabilities::RegionalCapabilitiesService*

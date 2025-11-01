@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.build.annotations.NullUnmarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
 import org.chromium.chrome.browser.feed.BraveFeedSurfaceCoordinator;
@@ -21,6 +22,7 @@ import org.chromium.chrome.browser.feed.FeedSwipeRefreshLayout;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.magic_stack.ModuleRegistry;
 import org.chromium.chrome.browser.metrics.StartupMetricsTracker;
+import org.chromium.chrome.browser.multiwindow.MultiInstanceManager;
 import org.chromium.chrome.browser.ntp_customization.edge_to_edge.TopInsetCoordinator;
 import org.chromium.chrome.browser.privacy.settings.PrivacyPreferencesManagerImpl;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -57,12 +59,12 @@ public class BraveNewTabPage extends NewTabPage {
     public BraveNewTabPage(
             Activity activity,
             BrowserControlsStateProvider browserControlsStateProvider,
-            Supplier<Tab> activityTabProvider,
+            Supplier<@Nullable Tab> activityTabProvider,
             SnackbarManager snackbarManager,
             ActivityLifecycleDispatcher lifecycleDispatcher,
             TabModelSelector tabModelSelector,
             boolean isTablet,
-            NewTabPageCreationTracker mNewTabPageCreationTracker,
+            NewTabPageCreationTracker tabCreationTracker,
             boolean isInNightMode,
             NativePageHost nativePageHost,
             Tab tab,
@@ -71,13 +73,14 @@ public class BraveNewTabPage extends NewTabPage {
             Supplier<ShareDelegate> shareDelegateSupplier,
             WindowAndroid windowAndroid,
             Supplier<Toolbar> toolbarSupplier,
-            HomeSurfaceTracker homeSurfaceTracker,
+            @Nullable HomeSurfaceTracker homeSurfaceTracker,
             ObservableSupplier<TabContentManager> tabContentManagerSupplier,
             ObservableSupplier<Integer> tabStripHeightSupplier,
             OneshotSupplier<ModuleRegistry> moduleRegistrySupplier,
             ObservableSupplier<EdgeToEdgeController> edgeToEdgeControllerSupplier,
             ObservableSupplier<TopInsetCoordinator> topInsetCoordinatorSupplier,
-            StartupMetricsTracker startupMetricsTracker) {
+            StartupMetricsTracker startupMetricsTracker,
+            MultiInstanceManager multiInstanceManager) {
         super(
                 activity,
                 browserControlsStateProvider,
@@ -86,7 +89,7 @@ public class BraveNewTabPage extends NewTabPage {
                 lifecycleDispatcher,
                 tabModelSelector,
                 isTablet,
-                mNewTabPageCreationTracker,
+                tabCreationTracker,
                 isInNightMode,
                 nativePageHost,
                 tab,
@@ -101,7 +104,8 @@ public class BraveNewTabPage extends NewTabPage {
                 moduleRegistrySupplier,
                 edgeToEdgeControllerSupplier,
                 topInsetCoordinatorSupplier,
-                startupMetricsTracker);
+                startupMetricsTracker,
+                multiInstanceManager);
 
         assert mNewTabPageLayout instanceof BraveNewTabPageLayout;
         if (mNewTabPageLayout instanceof BraveNewTabPageLayout) {

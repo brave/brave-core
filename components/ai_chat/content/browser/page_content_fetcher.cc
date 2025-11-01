@@ -29,6 +29,7 @@
 #include "brave/components/ai_chat/core/common/yt_util.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/text_recognition/common/buildflags/buildflags.h"
+#include "components/viz/common/frame_sinks/copy_output_result.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/storage_partition.h"
@@ -465,8 +466,10 @@ class PageContentFetcherInternal {
 };
 
 #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
-void OnScreenshot(FetchPageContentCallback callback, const SkBitmap& image) {
-  GetOCRText(image,
+void OnScreenshot(FetchPageContentCallback callback,
+                  const viz::CopyOutputBitmapWithMetadata& result) {
+  const SkBitmap& bitmap = result.bitmap;
+  GetOCRText(bitmap,
              base::BindOnce(
                  [](FetchPageContentCallback callback, std::string text) {
                    std::move(callback).Run(std::move(text), false, "");
@@ -555,7 +558,7 @@ void PageContentFetcher::FetchPageContent(std::string_view invalidation_token,
 
   auto url = web_contents_->GetLastCommittedURL();
 #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
-  if (kScreenshotRetrievalHosts.contains(url.host_piece())) {
+  if (kScreenshotRetrievalHosts.contains(url.host())) {
     content::RenderWidgetHostView* view =
         web_contents_->GetRenderWidgetHostView();
     if (view) {

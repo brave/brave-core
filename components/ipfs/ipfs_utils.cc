@@ -11,6 +11,7 @@
 #include "base/check.h"
 #include "base/check_op.h"
 #include "base/logging.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "brave/components/filecoin/rs/src/lib.rs.h"
 #include "components/base32/base32.h"
@@ -102,15 +103,16 @@ bool TranslateIPFSURI(const GURL& url, GURL* new_url, bool use_subdomain) {
     // https://dweb.link/ipfs/[cid]//wiki/Vincent_van_Gogh.html
     if (new_url) {
       GURL::Replacements replacements;
-      replacements.SetSchemeStr(gateway_url.scheme_piece());
-      replacements.SetPortStr(gateway_url.port_piece());
-      std::string new_host = gateway_url.host();
+      replacements.SetSchemeStr(gateway_url.scheme());
+      replacements.SetPortStr(gateway_url.port());
+      std::string new_host;
       std::string new_path = path;
       if (use_subdomain) {
         new_host = absl::StrFormat(
             "%s.%s.%s", cid, ipfs_scheme ? "ipfs" : "ipns", gateway_url.host());
       } else {
-        new_path = (ipfs_scheme ? "ipfs/" : "ipns/") + cid + path;
+        new_host = std::string(gateway_url.host());
+        new_path = base::StrCat({(ipfs_scheme ? "ipfs/" : "ipns/"), cid, path});
       }
       replacements.SetHostStr(new_host);
       replacements.SetPathStr(new_path);

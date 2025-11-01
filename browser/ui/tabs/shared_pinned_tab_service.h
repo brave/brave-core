@@ -65,7 +65,6 @@ class SharedPinnedTabService : public KeyedService,
   // BrowserListObserver:
   void OnBrowserAdded(Browser* browser) override;
   void OnBrowserSetLastActive(Browser* browser) override;
-  void OnBrowserClosing(Browser* browser) override;
   void OnBrowserRemoved(Browser* browser) override;
 
   // TabStripModelObserver:
@@ -79,6 +78,7 @@ class SharedPinnedTabService : public KeyedService,
   void TabChangedAt(content::WebContents* contents,
                     int index,
                     TabChangeType change_type) override;
+  void WillCloseAllTabs(TabStripModel* tab_strip_model) override;
 
   // ProfileWillBeDestroyed;
   void OnProfileWillBeDestroyed(Profile* profile) override;

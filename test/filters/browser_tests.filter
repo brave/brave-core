@@ -129,6 +129,7 @@
 -PageInfoBubbleViewMerchantTrustDialogBrowserTest.*
 -PageInfoBubbleViewMerchantTrustHatsDialogBrowserTest.InvokeUi_MerchantTrustSubpage
 -PasswordChangeBrowserTest.*
+-PasswordChangeBrowserTestShowHiddenTab.*
 -PasswordChangeBrowserTestWithLoginCheck.*
 -PasswordChangeUiBrowserTest.InvokeUi_LeakBubble
 -ProactivePersonalizationHintsFetcherBrowserTest.*
@@ -167,6 +168,7 @@
 -All/ContextMenuBrowserTest.ShowToastOnSidePanelContextMenus/LinkPreviewEnabled
 -ReadAnythingAppControllerScreen2xDataCollectionModeTest.*
 -ReadAnythingAppControllerTest.*
+-ReadAnythingAppControllerV8SegmentationTest.*
 -ReadAnythingAppModelNoInitTest.*
 -ReadAnythingAppModelTest.*
 -ReadAnythingReadAloudAppModelTest.*
@@ -482,6 +484,7 @@
 -PreloadBookmarkBarPrefetchEnabledPrerenderEnabledNavigationTest.*
 -PreloadingConfigHoldbackSearchPreloadUnifiedBrowserTest.PrerenderDSEHoldbackTest
 -PrerenderDataSaverProtocolTest.CheckReportedDisabledByDataSaverPreloadingState
+-PrerenderUntilScriptBrowserTest.UseCounter
 -RealboxSearchPreloadBrowserTest.SearchPreloadSuccess
 -RealboxSearchPreloadWithSearchStatsBrowserTest.SearchPreloadSuccess
 -RealboxSearchPreloadWithoutSearchStatsBrowserTest.SearchPreloadSuccess
@@ -1094,6 +1097,7 @@
 -PredictionManagerModelPackageOverrideTest.*
 -PredictionModelStoreBrowserTest.*
 -PredictionModelStoreMigrationBrowserTest.*
+-PredictionServiceAIP92Test/PredictionServiceAIP92BrowserTest.*/*
 -PredictionServiceBrowserTest.*
 -PredictionServiceBrowserTestBase.*
 -PredictionServiceHoldbackTest/PredictionServiceHoldbackBrowserTest.TestOverallTimeout/*
@@ -1447,6 +1451,7 @@
 -ProfileMenuClickTest_WithPendingAccount_UnoEnabled.ProfileMenuClickTest_WithPendingAccount_UnoEnabled/*
 -ProfileMenuViewSigninPendingTest.OpenReauthTab
 -ProfileMenuViewWebOnlyTest.ContinueAs
+-SaveCardBubbleViewsFullFormBrowserTest.Upload_ClickingSave_DisablesCardholderNameField
 -SaveCardBubbleViewsFullFormBrowserTest.Upload_ClickingSave_ShowsLoadingView
 -SaveCardBubbleViewsFullFormBrowserTest.Upload_InProgress_ShowsLoadingView
 -SaveCardBubbleViewsFullFormBrowserTest/SaveCardBubbleViewsFullFormBrowserTestWithAutofillUpstream.*/*
@@ -1461,6 +1466,7 @@
 # This test fails because of the following CHECK in identity_test_utils.cc:
 # !primary_account_info.IsEmpty()
 -All/OptimizationGuideKeyedServiceBrowserWithModelExecutionFeatureDisabledTest.SettingsNotVisible/*
+-All/SigninInterceptFirstRunExperienceDialogBrowserTest.*/*
 -All/SigninInterceptFirstRunExperienceDialogWithUnoParamBrowserTest.*
 -All/SupervisedUserExtensionWebstorePrivateApiTest.*
 -All/SupervisedUserRegionalURLFilterTest.RegionIsAdded/*
@@ -1584,6 +1590,7 @@
 # These tests fail because we do not show the profile type selection screen in
 # the profile picker.
 -ProfileTypeChoiceUIPixelTest.InvokeUi_default/CR2023
+-ProfileTypeChoiceUIPixelTest.InvokeUi_default/DarkDeclineSigninCTAExperiment
 -ProfileTypeChoiceUIPixelTest.InvokeUi_default/DarkRtlSmall
 -ProfileTypeChoiceUIPixelTest.InvokeUi_default/DarkRtlSmallTS
 -ProfileTypeChoiceUIPixelTest.InvokeUi_default/Default
@@ -1709,13 +1716,13 @@
 -RequestStorageAccessForWithFirstPartySetsBrowserTest.RequestStorageAccessForTopLevelScoping
 -RequestStorageAccessForWithFirstPartySetsBrowserTest.RequestStorageAccessForTopLevelScopingWhenRequestedFromSubdomain
 -StorageAccessAPIOriginIsolationBrowserTest.*
--StorageAccessHeadersBrowserTest.NonCookieStorage_Subresource
+-StorageAccessHeadersBrowserTest.NonCookieStorage_Subresource/*
 -StorageAccessHeadersBrowserTest.RequestHeadersCookiesBlocked
--StorageAccessHeadersBrowserTest.RequestHeaderCrossOriginRedirect
--StorageAccessHeadersBrowserTest.RequestHeaderRetryToActive
--StorageAccessHeadersBrowserTest.RequestHeadersInactive
--StorageAccessHeadersBrowserTest.RequestHeaderSameOriginRedirect
--StorageAccessHeadersBrowserTest.TopFrameRedirectToFirstPartyPage
+-StorageAccessHeadersBrowserTest.RequestHeaderCrossOriginRedirect/*
+-StorageAccessHeadersBrowserTest.RequestHeaderRetryToActive/*
+-StorageAccessHeadersBrowserTest.RequestHeadersInactive/*
+-StorageAccessHeadersBrowserTest.RequestHeaderSameOriginRedirect/*
+-StorageAccessHeadersBrowserTest.TopFrameRedirectToFirstPartyPage/*
 
 # SignedExchange is disabled.
 -SignedExchangePageLoadMetricsBrowserTest.*
@@ -1802,6 +1809,7 @@
 -LensOverlayControllerSideBySideBrowserTest.SidePanelRoundedCornerRegularTab
 -LensOverlayControllerSideBySideBrowserTest.SidePanelRoundedCornerSplitTab
 -LensOverlayControllerZeroStateCsbTest.*
+-SidePanelCoordinatorLensOverlayTest.*
 
 # These tests fail since upstream transitioned to ChromeRefresh2023 by default;
 # some of them may require further investigation, while some we may continue to
@@ -1992,6 +2000,7 @@
 # These tests fail because we stub out the ThirdPartyCookieDeprecation component
 # (the component loads but does nothing)
 -ThirdPartyCookieDeprecationObserverCookieReadBrowserTest.*
+-ThirdPartyCookieDeprecationObserverCookieReadNotOnboardedBrowserTest.*
 
 # This test fails because we disable some child views in the page info bubble.
 -All/PageInfoBubbleViewBrowserTestCookiesSubpage.ClickingCookieDialogButton/0
@@ -2052,6 +2061,7 @@
 -ChromeDirectSocketsUdpIsolatedWebAppTest.UdpServerFailsWithoutPNAPermission
 -ChromeDirectSocketsUdpIsolatedWebAppTest.UdpServerPortRestrictions
 -ChromeDirectSocketsUdpIsolatedWebAppTest.UdpServerReadWrite
+-CleanupOrphanedBundlesTest.CleanUpSuccessfulOnSessionStart/0
 -ComputeAppSizeCommandForIsolatedWebAppBrowserTest.RetrieveWebAppSize
 -ControlledFrameDisabledTest.*
 -ControlledFrameNotAvailableChannels/ControlledFrameNotAvailableChannelTest.*
@@ -2070,11 +2080,9 @@
 -IsolatedWebAppBrowserServiceWorkerTest.ServiceWorkerPartitioned
 -IsolatedWebAppBrowsingDataClearingTest.*
 -IsolatedWebAppCspBrowserTest.*
--IsolatedWebAppDevToolsTest.ErrorPage
--IsolatedWebAppDevToolsTest.IwaIdentifiedAsApp
--IsolatedWebAppDevToolsTest.IwaWithCorrectTitle
--IsolatedWebAppErrorPageTest.SetsCorrectMessageForErrorCode
--IsolatedWebAppErrorPageTest.UsesWebAppErrorPage
+-IsolatedWebAppDevToolsTest.*
+-IsolatedWebAppDevToolsTestWithPolicy.*/*
+-IsolatedWebAppErrorPageTest.*
 -IsolatedWebAppExtensionBrowserTest.*
 -IsolatedWebAppFileHandlingBrowserTest.*
 -IsolatedWebAppFrameToolbarBrowserTest.NoExtensionsInToolbarOrMenu
@@ -2082,6 +2090,7 @@
 -IsolatedWebAppInstallerViewUiPixelTest.*
 -IsolatedWebAppInstallPrepareApplyUpdateCommandBrowserTest.*
 -IsolatedWebAppLaunchHandlingBrowserTest.*
+-IsolatedWebAppPolicyManagerBrowserTest.*/*
 -IsolatedWebAppsCloseWindowBrowserTest.*
 -IsolatedWebAppsOpenedTabsCounterServiceBrowserTest.*
 -IsolatedWebAppUninstallBrowserTest.*
@@ -2100,14 +2109,9 @@
 -SubAppsServiceImplBrowserTest.*
 -TabDesktopMediaListIwaTest.*
 -TabDesktopMediaListWithIwaIncludedTest.*
--WebAppInternalsIwaInstallationBrowserTest.FetchUpdateManifestAndInstallIwa
--WebAppInternalsIwaInstallationBrowserTest.FetchUpdateManifestAndInstallIwaAndUpdate
--WebAppInternalsIwaInstallationBrowserTest.FetchUpdateManifestAndInstallIwaAndUpdateInvalidPinnedVersion
--WebAppInternalsIwaInstallationBrowserTest.InstallIsolatedWebAppFromBundleUrlFailsWithIncorrectUrl
--WebAppInternalsIwaInstallationBrowserTest.ParseUpdateManifestFromUrlFailsWithIncorrectUrl
+-WebAppInternalsIwaInstallationBrowserTest.*
 -WebAppMenuBrowserTest.InvokeUi_main_isolated
--WebAppTagIsolatedWebAppTest.IsolatedWebAppTaskCreated
--WebAppTagIsolatedWebAppTest.IsolatedWebAppTaskTitleFallbackToAppName
+-WebAppTagIsolatedWebAppTest.*
 
 # These tests fail because we disable kPermissionStorageAccessAPI
 -StorageAccessAPIAutograntsWithFedCMBrowserTest.FedCMGrantsAllowCookieAccess*
@@ -2204,8 +2208,9 @@
 -FileSystemObserverStorageAccessTest.StorageAccess*
 -WebViewFileSystemAccessTest.Shim_TestEnabledInTabAndWebView/InnerWebContents
 
-# This test is disabled because it fails when it encounters unrecognized (Brave)
-# WebUI URL hashes.
+# These tests are disabled because they fail when they encounter unrecognized
+# (Brave) WebUI URL hashes.
+-WebUIUrlHashesBrowserTest.HostsInHistogram
 -WebUIUrlHashesBrowserTest.UrlsInHistogram
 
 # We show tab search on the right side of the tab strip, which this test does
@@ -2507,6 +2512,9 @@
 # This test fails because it requires a mojom interface which is bound in Brave
 # but not the upstream tests
 -WebUIBrowserTest.NavigatePage
+
+# These tests fail because we disable features::kWebOTP
+-OtpManagerWithWebOtpApiBrowserTest.SmsOtpAutofillIntegrationTest/1
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestPolicyEnabled.*

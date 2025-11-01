@@ -7,11 +7,11 @@ package org.chromium.chrome.browser.bookmarks;
 
 import android.app.Activity;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.chromium.base.Callback;
 import org.chromium.base.Log;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.price_tracking.PriceDropNotificationManager;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.components.bookmarks.BookmarkId;
@@ -32,10 +32,11 @@ public class BraveBookmarkUtils extends BookmarkUtils {
             BottomSheetController bottomSheetController,
             Activity activity,
             @BookmarkType int bookmarkType,
-            Callback<BookmarkId> callback,
+            Callback<@Nullable BookmarkId> callback,
             boolean fromExplicitTrackUi,
             BookmarkManagerOpener bookmarkManagerOpener,
-            PriceDropNotificationManager priceDropNotificationManager) {
+            PriceDropNotificationManager priceDropNotificationManager,
+            boolean isBookmarkBarVisible) {
         assert bookmarkModel.isBookmarkModelLoaded();
         if (existingBookmarkItem != null) {
             bookmarkModel.deleteBookmark(existingBookmarkItem.getId());
@@ -53,7 +54,8 @@ public class BraveBookmarkUtils extends BookmarkUtils {
                 callback,
                 fromExplicitTrackUi,
                 bookmarkManagerOpener,
-                priceDropNotificationManager);
+                priceDropNotificationManager,
+                isBookmarkBarVisible);
     }
 
     public static void showBookmarkImportExportDialog(

@@ -85,12 +85,12 @@ class BackupResultsServiceBrowserTest : public InProcessBrowserTest {
     response->set_code(net::HTTP_OK);
     response->set_content_type("text/html");
 
-    auto path = request.GetURL().path();
-    if (path == kTestInitPath) {
+    auto url = request.GetURL();
+    if (url.path() == kTestInitPath) {
       response->set_content(redirect_to_invalid_domain_
                                 ? kTestInitInvalidRedirectHtml
                                 : kTestInitHtml);
-    } else if (path == kTestFinalPath) {
+    } else if (url.path() == kTestFinalPath) {
       auto cookie_it = request.headers.find(net::HttpRequestHeaders::kCookie);
       bool has_cookie =
           cookie_it != request.headers.end() &&

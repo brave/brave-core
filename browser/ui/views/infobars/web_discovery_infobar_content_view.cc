@@ -17,7 +17,8 @@
 #include "brave/components/constants/url_constants.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/grit/brave_theme_resources.h"
-#include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
 #include "chrome/browser/ui/singleton_tabs.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -49,8 +50,10 @@ constexpr int kWideLayoutHorizontalPadding = 67;
 constexpr int kNarrowLayoutHorizontalPadding = 10;
 
 void OpenMoreInfoPage() {
-  if (auto* browser = BrowserList::GetInstance()->GetLastActive())
-    ShowSingletonTab(browser, GURL(kWebDiscoveryLearnMoreUrl));
+  if (auto* browser = GetLastActiveBrowserWindowInterfaceWithAnyProfile()) {
+    ShowSingletonTab(browser->GetBrowserForMigrationOnly(),
+                     GURL(kWebDiscoveryLearnMoreUrl));
+  }
 }
 
 // Customize min size as half size of preferred.

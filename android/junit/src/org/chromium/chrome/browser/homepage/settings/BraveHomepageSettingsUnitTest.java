@@ -154,7 +154,7 @@ public class BraveHomepageSettingsUnitTest {
         finishSettingsActivity();
         Assert.assertEquals(
                 "chrome-native://bookmarks/folder/" + TEST_BOOKMARK_ID,
-                homepageManager.getHomepageGurl().getSpec());
+                homepageManager.getHomepageGurl(false).getSpec());
     }
 
     private void checkRadioButtonAndWait(RadioButtonWithDescription radioButton) {

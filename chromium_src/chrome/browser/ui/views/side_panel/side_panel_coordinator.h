@@ -21,19 +21,16 @@
 #include "chrome/browser/ui/views/side_panel/side_panel_util.h"
 #include "ui/views/view_observer.h"
 
-#define CreateHeader                      \
-  CreateHeader_UnUsed() {                 \
-    return nullptr;                       \
-  }                                       \
+#define ClearCachedEntryViews             \
+  ClearCachedEntryViews_UnUsed();         \
   friend class BraveSidePanelCoordinator; \
-  virtual std::unique_ptr<views::View> CreateHeader
+  void ClearCachedEntryViews
 
-#define NotifyPinnedContainerOfActiveStateChange \
-  virtual NotifyPinnedContainerOfActiveStateChange
+#define SidePanel BraveSidePanel
 
 #include <chrome/browser/ui/views/side_panel/side_panel_coordinator.h>  // IWYU pragma: export
 
-#undef NotifyPinnedContainerOfActiveStateChange
-#undef CreateHeader
+#undef ClearCachedEntryViews
+#undef SidePanel
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_SIDE_PANEL_SIDE_PANEL_COORDINATOR_H_

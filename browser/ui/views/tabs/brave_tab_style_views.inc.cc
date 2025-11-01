@@ -49,9 +49,7 @@ class BraveVerticalTabStyle : public TabStyleViewsImpl {
   // TabStyleViewsImpl:
   SkPath GetPath(TabStyle::PathType path_type,
                  float scale,
-                 bool force_active = false,
-                 TabStyle::RenderUnits render_units =
-                     TabStyle::RenderUnits::kPixels) const override;
+                 const TabPathFlags& flags) const override;
 
   gfx::Insets GetContentsInsets() const override;
   TabStyle::SeparatorBounds GetSeparatorBounds(float scale) const override;
@@ -77,14 +75,11 @@ class BraveVerticalTabStyle : public TabStyleViewsImpl {
 BraveVerticalTabStyle::BraveVerticalTabStyle(Tab* tab)
     : TabStyleViewsImpl(tab) {}
 
-SkPath BraveVerticalTabStyle::GetPath(
-    TabStyle::PathType path_type,
-    float scale,
-    bool force_active,
-    TabStyle::RenderUnits render_units) const {
+SkPath BraveVerticalTabStyle::GetPath(TabStyle::PathType path_type,
+                                      float scale,
+                                      const TabPathFlags& flags) const {
   if (!HorizontalTabsUpdateEnabled() && !ShouldShowVerticalTabs()) {
-    return TabStyleViewsImpl::GetPath(path_type, scale, force_active,
-                                      render_units);
+    return TabStyleViewsImpl::GetPath(path_type, scale, flags);
   }
 
   const int stroke_thickness = GetStrokeThickness();
@@ -225,7 +220,7 @@ SkPath BraveVerticalTabStyle::GetPath(
   path.offset(-origin.x(), -origin.y());
 
   // Possibly convert back to DIPs.
-  if (render_units == TabStyle::RenderUnits::kDips && scale != 1.0f) {
+  if (flags.render_units == TabStyle::RenderUnits::kDips && scale != 1.0f) {
     path.transform(SkMatrix::Scale(1.0f / scale, 1.0f / scale));
   }
 
@@ -378,8 +373,8 @@ void BraveVerticalTabStyle::PaintTab(gfx::Canvas* canvas) const {
       color_id = kColorBraveVerticalTabSeparator;
     }
 
-    SkPath stroke_path =
-        GetPath(TabStyle::PathType::kBorder, canvas->image_scale(), false);
+    SkPath stroke_path = GetPath(TabStyle::PathType::kBorder,
+                                 canvas->image_scale(), /*flags=*/{});
 
     gfx::ScopedCanvas scoped_canvas(canvas);
     float scale = canvas->UndoDeviceScaleFactor();

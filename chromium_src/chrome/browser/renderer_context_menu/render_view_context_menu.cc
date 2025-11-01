@@ -89,7 +89,9 @@ AutocompleteMatch GetAutocompleteMatchForText(Profile* profile,
   AutocompleteClassifier classifier(
       std::make_unique<AutocompleteController>(
           std::make_unique<ChromeAutocompleteProviderClient>(profile),
-          AutocompleteClassifier::DefaultOmniboxProviders()),
+          AutocompleteControllerConfig{
+              .provider_types =
+                  AutocompleteClassifier::DefaultOmniboxProviders()}),
       std::make_unique<BraveAutocompleteSchemeClassifier>(profile));
   classifier.Classify(text, false, false,
                       metrics::OmniboxEventProto::INVALID_SPEC, &match, NULL);

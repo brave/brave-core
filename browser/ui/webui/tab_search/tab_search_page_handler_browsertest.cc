@@ -33,6 +33,7 @@
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
 #include "chrome/browser/ui/test/test_browser_closed_waiter.h"
 #include "chrome/browser/ui/webui/tab_search/tab_search.mojom-forward.h"
 #include "chrome/browser/ui/webui/tab_search/tab_search_ui.h"
@@ -171,7 +172,7 @@ class TabSearchPageHandlerBrowserTest : public InProcessBrowserTest {
                           const GURL& url,
                           const std::string& title,
                           ui_test_utils::BrowserTestWaitFlags wait_flags =
-                              ui_test_utils::BROWSER_TEST_NO_WAIT) {
+                              ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP) {
     ui_test_utils::NavigateToURLWithDisposition(
         browser, url, WindowOpenDisposition::NEW_FOREGROUND_TAB, wait_flags);
     content::WebContents* web_contents =
@@ -306,14 +307,12 @@ IN_PROC_BROWSER_TEST_F(TabSearchPageHandlerBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(TabSearchPageHandlerBrowserTest, GetFocusTabs) {
   // Create another browser with the default profile.
+  ui_test_utils::BrowserCreatedObserver browser_created_observer;
   chrome::NewEmptyWindow(profile1(), false);
+  Browser* browser2 = browser_created_observer.Wait();
 
   // Test Engine's GetFocusTabs is called with expected tabs info and topic.
   auto* mock_engine = SetMockTabOrganizationEngine();
-
-  BrowserList* browser_list = BrowserList::GetInstance();
-  ASSERT_EQ(browser_list->size(), 2u);
-  Browser* browser2 = browser_list->get(1);
 
   // Add tabs in windows with the default profile.
   AppendTabWithTitle(browser(), GURL(kFooDotComUrl1), kFooDotComTitle1);
@@ -323,16 +322,16 @@ IN_PROC_BROWSER_TEST_F(TabSearchPageHandlerBrowserTest, GetFocusTabs) {
 
   // size is 3 because a blank tab is added by default when creating windows.
   ASSERT_EQ(browser()->tab_strip_model()->count(), 3);
-  ASSERT_EQ(browser2->tab_strip_model()->count(), 3);
+  ASSERT_EQ(browser2->GetTabStripModel()->count(), 3);
 
   const int tab_id1 =
       browser()->tab_strip_model()->GetTabAtIndex(1)->GetHandle().raw_value();
   const int tab_id2 =
       browser()->tab_strip_model()->GetTabAtIndex(2)->GetHandle().raw_value();
   const int tab_id3 =
-      browser2->tab_strip_model()->GetTabAtIndex(1)->GetHandle().raw_value();
+      browser2->GetTabStripModel()->GetTabAtIndex(1)->GetHandle().raw_value();
   const int tab_id4 =
-      browser2->tab_strip_model()->GetTabAtIndex(2)->GetHandle().raw_value();
+      browser2->GetTabStripModel()->GetTabAtIndex(2)->GetHandle().raw_value();
 
   std::vector<ai_chat::Tab> expected_tabs = {
       {base::NumberToString(tab_id1), kFooDotComTitle1,
@@ -360,22 +359,22 @@ IN_PROC_BROWSER_TEST_F(TabSearchPageHandlerBrowserTest, GetFocusTabs) {
                                          run_loop1.Quit();
                                        }));
   run_loop1.Run();
-
-  Browser* active_browser = browser_list->GetLastActive();
+  BrowserList* browser_list = BrowserList::GetInstance();
   ASSERT_EQ(browser_list->size(), 3u) << "A new window should be created.";
-  ASSERT_EQ(active_browser, browser_list->get(2))
-      << "The new window should be active.";
-  EXPECT_EQ(active_browser->tab_strip_model()->count(), 2)
+  Browser* focus_tabs_browser =
+      GetLastActiveBrowserWindowInterfaceWithAnyProfile()
+          ->GetBrowserForMigrationOnly();
+  EXPECT_EQ(focus_tabs_browser->GetTabStripModel()->count(), 2)
       << "The new window should have 2 tabs.";
-  EXPECT_EQ(active_browser->user_title(), "topic");
+  EXPECT_EQ(focus_tabs_browser->user_title(), "topic");
 
   // Check the tabs are moved to the new window as expected.
-  EXPECT_EQ(active_browser->tab_strip_model()
+  EXPECT_EQ(focus_tabs_browser->GetTabStripModel()
                 ->GetTabAtIndex(0)
                 ->GetHandle()
                 .raw_value(),
             tab_id1);
-  EXPECT_EQ(active_browser->tab_strip_model()
+  EXPECT_EQ(focus_tabs_browser->GetTabStripModel()
                 ->GetTabAtIndex(1)
                 ->GetHandle()
                 .raw_value(),
@@ -386,20 +385,17 @@ IN_PROC_BROWSER_TEST_F(TabSearchPageHandlerBrowserTest, GetFocusTabs) {
   handler()->UndoFocusTabs(base::BindLambdaForTesting([&]() {
     // Wait for the new window to be closed.
     ASSERT_EQ(browser_list->size(), 3u);
-    ASSERT_TRUE(
-        TestBrowserClosedWaiter(browser_list->get(2)).WaitUntilClosed());
+    ASSERT_TRUE(TestBrowserClosedWaiter(focus_tabs_browser).WaitUntilClosed());
 
-    Browser* browser1 = browser_list->get(0);
-    EXPECT_EQ(browser1->tab_strip_model()->count(), 3)
+    EXPECT_EQ(browser()->tab_strip_model()->count(), 3)
         << "The tabs should be moved back to the previous active window.";
     EXPECT_EQ(
-        browser1->tab_strip_model()->GetTabAtIndex(1)->GetHandle().raw_value(),
+        browser()->tab_strip_model()->GetTabAtIndex(1)->GetHandle().raw_value(),
         tab_id1);
-    Browser* browser2 = browser_list->get(1);
-    EXPECT_EQ(browser2->tab_strip_model()->count(), 3)
+    EXPECT_EQ(browser2->GetTabStripModel()->count(), 3)
         << "The tabs should be moved back to the previous active window.";
     EXPECT_EQ(
-        browser2->tab_strip_model()->GetTabAtIndex(2)->GetHandle().raw_value(),
+        browser2->GetTabStripModel()->GetTabAtIndex(2)->GetHandle().raw_value(),
         tab_id4);
     run_loop2.Quit();
   }));

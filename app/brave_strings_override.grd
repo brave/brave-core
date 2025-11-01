@@ -364,7 +364,11 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
         <if expr="not use_titlecase">
           </if>
 
+        <if expr="use_titlecase">
+          </if>
+        <if expr="not use_titlecase">
         </if>
+      </if>
 
       <if expr="is_chromeos">
         </if>
@@ -384,6 +388,12 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
               =0 {Your administrator requires that you relaunch Brave to apply an update}
               =1 {Your administrator requires that you relaunch Brave to apply an update. Your Private window won't reopen.}
               other {Your administrator requires that you relaunch Brave to apply an update. Your # Private windows won't reopen.}}
+          </message>
+             <message name="IDS_ADVANCED_PROTECTION_RELAUNCH_REQUIRED_BODY" desc="The body text of a dialog that tells Advanced Protection users the browser must be relaunched with Private counter">
+             {COUNT, plural,
+              =0 {Advanced Protection requires that you relaunch Brave to apply an update}
+              =1 {Advanced Protection requires that you relaunch Brave to apply an update. Your Private window won't reopen.}
+              other {Advanced Protection requires that you relaunch Brave to apply an update. Your # Private windows won't reopen.}}
           </message>
         </if>
       </if>
@@ -451,6 +461,7 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
 
       <if expr="not is_android">
         </if>
-    </messages>
+
+      </messages>
   </release>
 </grit>

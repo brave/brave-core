@@ -60,11 +60,11 @@ constexpr char kEmbeddedTestServerDirectory[] = "leo";
 std::unique_ptr<net::test_server::HttpResponse> HandleSearchQuerySummaryRequest(
     const net::test_server::HttpRequest& request) {
   const GURL url = request.GetURL();
-  if (url.path_piece() != "/api/chatllm/raw_data") {
+  if (url.path() != "/api/chatllm/raw_data") {
     return nullptr;
   }
 
-  auto query = url.query_piece();
+  auto query = url.query();
   if (query == "key=%7Btest_key%7D") {
     auto response = std::make_unique<net::test_server::BasicHttpResponse>();
     response->set_code(net::HTTP_OK);

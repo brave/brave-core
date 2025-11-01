@@ -64,7 +64,7 @@ ShouldBlockDomainOnTaskRunner(brave_shields::AdBlockService* ad_block_service,
   // necessary.
   bool aggressive_for_engine = true;
   auto result = ad_block_service->ShouldStartRequest(
-      url, blink::mojom::ResourceType::kMainFrame, url.host(),
+      url, blink::mojom::ResourceType::kMainFrame, std::string(url.host()),
       aggressive_for_engine, false, false, false);
 
   block_result.should_block =

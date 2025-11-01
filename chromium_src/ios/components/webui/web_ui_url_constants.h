@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_IOS_COMPONENTS_WEBUI_WEB_UI_URL_CONSTANTS_H_
 #define BRAVE_CHROMIUM_SRC_IOS_COMPONENTS_WEBUI_WEB_UI_URL_CONSTANTS_H_
 
-extern const char kChromeUIUntrustedScheme[];
+inline constexpr char kChromeUIUntrustedScheme[] = "chrome-untrusted";
 
 #include <ios/components/webui/web_ui_url_constants.h>  // IWYU pragma: export
 

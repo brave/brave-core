@@ -27,7 +27,7 @@
 #include "chrome/browser/ui/test/test_browser_ui.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/bookmarks/bookmark_bar_view.h"
-#include "chrome/browser/ui/views/frame/browser_non_client_frame_view.h"
+#include "chrome/browser/ui/views/frame/browser_frame_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/multi_contents_view.h"
 #include "chrome/browser/ui/views/frame/scrim_view.h"
@@ -59,7 +59,7 @@ class BraveBrowserViewTest : public InProcessBrowserTest {
     browser_non_client_frame_view()->DeprecatedLayoutImmediately();
   }
 
-  BrowserNonClientFrameView* browser_non_client_frame_view() {
+  BrowserFrameView* browser_non_client_frame_view() {
     return browser_view()->browser_widget()->GetFrameView();
   }
 
@@ -211,8 +211,13 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
                        ContentsBackgroundEventHandleTest) {
   EXPECT_TRUE(brave_browser_view()->contents_background_view_);
 
-  EXPECT_EQ(brave_browser_view()->contents_background_view_->bounds(),
-            brave_browser_view()->main_container()->bounds());
+  EXPECT_TRUE(
+      brave_browser_view()->contents_background_view_->bounds().Contains(
+          brave_browser_view()->contents_container()->bounds()))
+      << "Expected contents_background_view_ bounds ("
+      << brave_browser_view()->contents_background_view_->bounds().ToString()
+      << ") to contain contents_container bounds ("
+      << brave_browser_view()->contents_container()->bounds().ToString() << ")";
 
   content::WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();

@@ -20,10 +20,10 @@ class BrowserState;
 
 class BraveWebUIIOSDataSource : public web::WebUIIOSDataSourceImpl {
  public:
-  static BraveWebUIIOSDataSource* Create(const std::string& source_name);
+  static BraveWebUIIOSDataSource* Create(std::string_view source_name);
 
   static BraveWebUIIOSDataSource* CreateAndAdd(web::BrowserState* browser_state,
-                                               const std::string& source_name);
+                                               std::string_view source_name);
 
   BraveWebUIIOSDataSource(const BraveWebUIIOSDataSource&) = delete;
   BraveWebUIIOSDataSource& operator=(const BraveWebUIIOSDataSource&) = delete;
@@ -33,7 +33,7 @@ class BraveWebUIIOSDataSource : public web::WebUIIOSDataSourceImpl {
 
   virtual void OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName directive,
-      const std::string& value);
+      std::string_view value);
 
   virtual void AddFrameAncestor(const GURL& frame_ancestor);
   virtual void DisableTrustedTypesCSP();
@@ -41,13 +41,13 @@ class BraveWebUIIOSDataSource : public web::WebUIIOSDataSourceImpl {
  protected:
   ~BraveWebUIIOSDataSource() override;
 
-  virtual std::string GetMimeType(const std::string& path) const;
+  virtual std::string GetMimeType(std::string_view path) const;
 
  private:
   class BraveInternalDataSource;
   friend class BraveInternalDataSource;
 
-  explicit BraveWebUIIOSDataSource(const std::string& source_name);
+  explicit BraveWebUIIOSDataSource(std::string_view source_name);
 
   // Brave CSP's & Security variables:
   base::flat_map<network::mojom::CSPDirectiveName, std::string> csp_overrides_;

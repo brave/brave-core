@@ -3,9 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "components/os_crypt/common/keychain_password_mac.h"
+
 #include "base/command_line.h"
 #include "chrome/test/base/in_process_browser_test.h"
-#include "components/os_crypt/sync/keychain_password_mac.h"
 #include "content/public/test/browser_test.h"
 
 namespace {

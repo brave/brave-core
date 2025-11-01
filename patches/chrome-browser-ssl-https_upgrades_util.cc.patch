@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ssl/https_upgrades_util.cc b/chrome/browser/ssl/https_upgrades_util.cc
-index f03fb1f966d8616f58ff643f5eec70d8f5b2c673..3664337249582a1bcac42b1457b9777c1b49f773 100644
+index 330ce07feb36770d4604155266b375794c836ad0..92e98c0f61aea89279815e80b58fd438bffecca2 100644
 --- a/chrome/browser/ssl/https_upgrades_util.cc
 +++ b/chrome/browser/ssl/https_upgrades_util.cc
 @@ -72,11 +72,11 @@ ComputeInterstitialState(content::WebContents* web_contents, const GURL& url) {
