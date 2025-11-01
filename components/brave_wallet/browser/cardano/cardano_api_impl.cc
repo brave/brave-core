@@ -276,10 +276,14 @@ void CardanoApiImpl::GetRewardAddresses(GetRewardAddressesCallback callback) {
 
   delegate_->WalletInteractionDetected();
 
-  NOTIMPLEMENTED_LOG_ONCE();
-  std::move(callback).Run(
-      std::nullopt, mojom::CardanoProviderErrorBundle::New(
-                        kAPIErrorInternalError, kNotImplemented, nullptr));
+  std::vector<std::string> result;
+  if (auto address =
+          brave_wallet_service_->GetCardanoWalletService()->GetStakeAddress(
+              selected_account_)) {
+    result.push_back(HexEncodeLower(address->ToCborBytes()));
+  }
+
+  std::move(callback).Run(std::move(result), nullptr);
 }
 
 void CardanoApiImpl::GetBalance(GetBalanceCallback callback) {

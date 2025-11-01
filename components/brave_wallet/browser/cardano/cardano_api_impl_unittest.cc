@@ -357,6 +357,35 @@ TEST_F(CardanoApiImplTest, GetChangeAddress) {
   EXPECT_FALSE(error);
 }
 
+TEST_F(CardanoApiImplTest, GetRewardAddress) {
+  CreateWallet();
+  auto added_account = AddAccount();
+
+  ON_CALL(*delegate(), GetAllowedAccounts(_, _))
+      .WillByDefault(
+          [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
+            EXPECT_EQ(coin, mojom::CoinType::ADA);
+            EXPECT_EQ(accounts.size(), 1u);
+            EXPECT_EQ(accounts[0], added_account->account_id->unique_key);
+            return std::vector<std::string>(
+                {added_account->account_id->unique_key});
+          });
+
+  TestFuture<const std::optional<std::vector<std::string>>&,
+             mojom::CardanoProviderErrorBundlePtr>
+      future;
+
+  provider()->GetRewardAddresses(future.GetCallback());
+
+  auto& address = future.Get<0>();
+  auto& error = future.Get<1>();
+
+  EXPECT_EQ(address,
+            std::vector<std::string>{
+                "e1e557890352095f1cf6fd2b7d1a28e3c3cb029f48cf34ff890a28d176"});
+  EXPECT_FALSE(error);
+}
+
 TEST_F(CardanoApiImplTest, SignData_Approved) {
   CreateWallet();
   auto added_account = AddAccount();
@@ -784,7 +813,7 @@ TEST_F(CardanoApiImplTest, MethodReturnsSuccess_WhenHasPermission) {
         future;
     provider()->GetRewardAddresses(future.GetCallback());
     auto [addrs, error] = future.Take();
-    EXPECT_EQ(error->error_message, "Not implemented");
+    EXPECT_FALSE(error);
   }
 
   {

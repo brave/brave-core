@@ -6,12 +6,13 @@
 #include "brave/components/brave_wallet/common/cardano_address.h"
 
 #include <optional>
-#include <utility>
+#include <string_view>
 
 #include "base/check.h"
 #include "base/check_op.h"
+#include "base/containers/span.h"
 #include "base/containers/span_writer.h"
-#include "base/containers/to_vector.h"
+#include "base/types/cxx23_to_underlying.h"
 #include "brave/components/brave_wallet/common/bech32.h"
 
 namespace brave_wallet {
@@ -21,14 +22,47 @@ namespace {
 // https://cips.cardano.org/cip/CIP-0019#shelley-addresses
 constexpr char kMainnetHrp[] = "addr";
 constexpr char kTestnetHrp[] = "addr_test";
+constexpr char kStakeMainnetHrp[] = "stake";
+constexpr char kStakeTestnetHrp[] = "stake_test";
 
-uint8_t GetShellyPaymentStakeHeader(bool testnet) {
-  // https://cips.cardano.org/cip/CIP-0019#shelley-addresses
-  const uint8_t shelly_type = 0;  // PaymentKeyHash | StakeKeyHash
-  const uint8_t network_tag = testnet ? 0 : 1;
+uint8_t MakeHeaderByte(CardanoAddress::AddressType address_type,
+                       CardanoAddress::NetworkTag network_tag) {
+  return base::to_underlying(address_type) << 4 |
+         base::to_underlying(network_tag);
+}
 
-  const uint8_t header = (shelly_type << 4) | network_tag;
-  return header;
+CardanoAddress::NetworkTag GetNetworkTagFromHeaderByte(uint8_t header) {
+  return static_cast<CardanoAddress::NetworkTag>(header & 0b00001111);
+}
+
+CardanoAddress::AddressType GetAddressTypeFromHeaderByte(uint8_t header) {
+  return static_cast<CardanoAddress::AddressType>(header >> 4);
+}
+
+bool IsPaymentAndDelegationAddressType(
+    CardanoAddress::AddressType address_type) {
+  return address_type ==
+             CardanoAddress::AddressType::kPaymentKeyHashStakeKeyHash ||
+         address_type == CardanoAddress::AddressType::kScriptHashStakeKeyHash ||
+         address_type ==
+             CardanoAddress::AddressType::kPaymentKeyHashScriptHash ||
+         address_type == CardanoAddress::AddressType::kScriptHashScriptHash;
+}
+
+bool IsPaymentAndPointerAddressType(CardanoAddress::AddressType address_type) {
+  return address_type == CardanoAddress::AddressType::kPaymentKeyHashPointer ||
+         address_type == CardanoAddress::AddressType::kScriptHashPointer;
+}
+
+bool IsPaymentOnlyAddressType(CardanoAddress::AddressType address_type) {
+  return address_type ==
+             CardanoAddress::AddressType::kPaymentKeyHashNoDelegation ||
+         address_type == CardanoAddress::AddressType::kScriptHashNoDelegation;
+}
+
+bool IsDelegationOnlyAddressType(CardanoAddress::AddressType address_type) {
+  return address_type == CardanoAddress::AddressType::kNoPaymentStakeHash ||
+         address_type == CardanoAddress::AddressType::kNoPaymentScriptHash;
 }
 
 }  // namespace
@@ -47,37 +81,44 @@ std::optional<CardanoAddress> CardanoAddress::FromString(std::string_view sv) {
     return std::nullopt;
   }
 
-  if (decoded->hrp != kMainnetHrp && decoded->hrp != kTestnetHrp) {
+  auto address = FromCborBytes(decoded->data);
+  if (!address) {
     return std::nullopt;
   }
 
-  if (decoded->data.size() != 1 + kPaymentKeyHashLength + kStakeKeyHashLength) {
+  if (address->GetHrp() != decoded->hrp) {
     return std::nullopt;
   }
 
-  if (decoded->data[0] !=
-      GetShellyPaymentStakeHeader(decoded->hrp == kTestnetHrp)) {
-    return std::nullopt;
-  }
-
-  CardanoAddress result;
-  result.bytes_ = std::move(decoded->data);
-
-  return result;
+  return address;
 }
 
 // static
-CardanoAddress CardanoAddress::FromParts(
-    bool testnet,
-    base::span<const uint8_t, kPaymentKeyHashLength> payment_part,
-    base::span<const uint8_t, kStakeKeyHashLength> delegation_part) {
+std::optional<CardanoAddress> CardanoAddress::FromPayload(
+    AddressType address_type,
+    NetworkTag network_tag,
+    base::span<const uint8_t> payload) {
+  if (IsPaymentAndDelegationAddressType(address_type) &&
+      payload.size() != 2 * kCardanoKeyHashLength) {
+    return std::nullopt;
+  }
+  if ((IsPaymentOnlyAddressType(address_type) ||
+       IsDelegationOnlyAddressType(address_type)) &&
+      payload.size() != kCardanoKeyHashLength) {
+    return std::nullopt;
+  }
+  // Pointer part has varying length.
+  if (IsPaymentAndPointerAddressType(address_type) &&
+      payload.size() <= kCardanoKeyHashLength) {
+    return std::nullopt;
+  }
+
   CardanoAddress result;
-  result.bytes_.resize(1 + kPaymentKeyHashLength + kStakeKeyHashLength);
+  result.bytes_.resize(1 + payload.size());
 
   auto span_writer = base::SpanWriter(base::span(result.bytes_));
-  span_writer.Write(GetShellyPaymentStakeHeader(testnet));
-  span_writer.Write(payment_part);
-  span_writer.Write(delegation_part);
+  span_writer.Write(MakeHeaderByte(address_type, network_tag));
+  span_writer.Write(payload);
   DCHECK_EQ(span_writer.remaining(), 0u);
 
   return result;
@@ -85,13 +126,11 @@ CardanoAddress CardanoAddress::FromParts(
 
 // https://cips.cardano.org/cip/CIP-0019#user-facing-encoding
 std::string CardanoAddress::ToString() const {
-  return bech32::Encode(bytes_, IsTestnet() ? kTestnetHrp : kMainnetHrp,
-                        bech32::Encoding::kBech32);
+  return bech32::Encode(bytes_, GetHrp(), bech32::Encoding::kBech32);
 }
 
 bool CardanoAddress::IsTestnet() const {
-  CHECK(!bytes_.empty());
-  return (bytes_[0] & 0b00001111) == 0;
+  return GetNetworkTag() == NetworkTag::kTestnets;
 }
 
 std::vector<uint8_t> CardanoAddress::ToCborBytes() const {
@@ -101,9 +140,41 @@ std::vector<uint8_t> CardanoAddress::ToCborBytes() const {
 // static
 std::optional<CardanoAddress> CardanoAddress::FromCborBytes(
     base::span<const uint8_t> bytes) {
-  CardanoAddress result;
-  result.bytes_ = base::ToVector(bytes);
-  return result;
+  if (bytes.empty()) {
+    return std::nullopt;
+  }
+
+  auto network_tag = GetNetworkTagFromHeaderByte(bytes[0]);
+  if (network_tag != NetworkTag::kMainnet &&
+      network_tag != NetworkTag::kTestnets) {
+    return std::nullopt;
+  }
+
+  return FromPayload(GetAddressTypeFromHeaderByte(bytes[0]), network_tag,
+                     base::span(bytes).subspan(1u));
+}
+
+bool CardanoAddress::IsStakeOnlyAddress() const {
+  auto type = GetAddressType();
+  return type == AddressType::kNoPaymentStakeHash ||
+         type == AddressType::kNoPaymentScriptHash;
+}
+
+CardanoAddress::NetworkTag CardanoAddress::GetNetworkTag() const {
+  CHECK(!bytes_.empty());
+  return GetNetworkTagFromHeaderByte(bytes_[0]);
+}
+
+CardanoAddress::AddressType CardanoAddress::GetAddressType() const {
+  CHECK(!bytes_.empty());
+  return GetAddressTypeFromHeaderByte(bytes_[0]);
+}
+
+std::string_view CardanoAddress::GetHrp() const {
+  if (IsStakeOnlyAddress()) {
+    return IsTestnet() ? kStakeTestnetHrp : kStakeMainnetHrp;
+  }
+  return IsTestnet() ? kTestnetHrp : kMainnetHrp;
 }
 
 }  // namespace brave_wallet

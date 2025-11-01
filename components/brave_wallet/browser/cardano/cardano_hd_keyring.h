@@ -14,6 +14,7 @@
 #include "base/containers/span.h"
 #include "brave/components/brave_wallet/browser/internal/hd_key_ed25519_slip23.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/cardano_address.h"
 
 namespace brave_wallet {
 
@@ -34,6 +35,8 @@ class CardanoHDKeyring {
   mojom::CardanoAddressPtr GetAddress(
       uint32_t account,
       const mojom::CardanoKeyId& payment_key_id);
+
+  std::optional<CardanoAddress> GetStakeAddress(uint32_t account);
 
   std::optional<std::string> AddNewHDAccount(uint32_t index);
 
