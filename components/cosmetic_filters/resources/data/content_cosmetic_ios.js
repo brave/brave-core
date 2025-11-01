@@ -186,32 +186,13 @@ import { applyCompiledSelector, compileProceduralSelector } from './procedural_f
   }
 
   /**
-   * The timer for sending selectors to the browser
-   */
-  let sendPendingSelectorsTimerId
-
-  /**
    * Send any pending id and class selectors to iOS so we can determine
    * which selectors to hide. Do this throttled so we don't send
    * selectors too often.
    */
-  const sendPendingSelectorsThrottled = () => {
-    if (!args.fetchNewClassIdRulesThrottlingMs) {
-      sendPendingSelectorsIfNeeded()
-      return
-    }
-
-    // Ensure we are not already waiting on a timer
-    if (sendPendingSelectorsTimerId) {
-      // Each time this is called cancel the timer and allow a new one to start
-      window.clearTimeout(sendPendingSelectorsTimerId)
-    }
-
-    sendPendingSelectorsTimerId = window.setTimeout(() => {
-      sendPendingSelectorsIfNeeded()
-      sendPendingSelectorsTimerId = undefined
-    }, args.fetchNewClassIdRulesThrottlingMs)
-  }
+  const sendPendingSelectorsThrottled = throttle(
+    sendPendingSelectorsIfNeeded,
+    args.fetchNewClassIdRulesThrottlingMs || 200);
 
   /**
    * Extract any new id selector from the element
