@@ -663,9 +663,17 @@ if (enable_brave_ai_chat_agent_profile) {
 }
 
 if (toolkit_views) {
-  brave_chrome_browser_deps += [ "//brave/browser/ui/sidebar" ]
-  brave_chrome_browser_allow_circular_includes_from +=
-      [ "//brave/browser/ui/sidebar" ]
+  brave_chrome_browser_deps += [
+    "//brave/browser/ui/sidebar",
+    "//brave/browser/ui/views/page_info",
+  ]
+  brave_chrome_browser_allow_circular_includes_from += [
+    "//brave/browser/ui/sidebar",
+
+    # TODO(https://github.com/brave/brave-browser/issues/50542): Remove this
+    # once a target has been created for `//brave/browser/brave_shields`.
+    "//brave/browser/ui/views/page_info",
+  ]
 }
 
 # https://github.com/brave/brave-browser/issues/41418
