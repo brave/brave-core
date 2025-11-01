@@ -25,6 +25,8 @@ namespace detail {
 // Sequence-aware deleter (marshals destruction to |task_runner_|).
 class RequestHandleDeleter {
  public:
+  RequestHandleDeleter();
+
   RequestHandleDeleter(RequestHandleDeleter&&);
   RequestHandleDeleter& operator=(RequestHandleDeleter&&);
 

@@ -17,6 +17,7 @@
 #include "base/time/time.h"
 #include "base/timer/timer.h"
 #include "base/types/expected.h"
+#include "brave/components/brave_account/endpoint_client/request_handle.h"
 #include "brave/components/brave_account/endpoints/error.h"
 #include "brave/components/brave_account/endpoints/password_finalize.h"
 #include "brave/components/brave_account/endpoints/password_init.h"
@@ -94,9 +95,12 @@ class BraveAccountService : public KeyedService, public mojom::Authentication {
 
   void OnVerificationTokenChanged();
 
-  void ScheduleVerifyResult(base::TimeDelta delay = base::Seconds(0));
+  void ScheduleVerifyResult(
+      base::TimeDelta delay = base::Seconds(0),
+      endpoint_client::RequestHandle current_verify_result_request = {});
 
-  void VerifyResult();
+  void VerifyResult(
+      endpoint_client::RequestHandle current_verify_result_request);
 
   void OnVerifyResult(
       int response_code,
