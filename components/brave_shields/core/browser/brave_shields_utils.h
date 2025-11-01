@@ -118,13 +118,6 @@ void SetNoScriptControlType(HostContentSettingsMap* map,
 ControlType GetNoScriptControlType(HostContentSettingsMap* map,
                                    const GURL& url);
 
-void SetForgetFirstPartyStorageEnabled(HostContentSettingsMap* map,
-                                       bool is_enabled,
-                                       const GURL& url,
-                                       PrefService* local_state = nullptr);
-bool GetForgetFirstPartyStorageEnabled(HostContentSettingsMap* map,
-                                       const GURL& url);
-
 // Enables a webcompat exception for a specific URL.
 void SetWebcompatEnabled(HostContentSettingsMap* map,
                          ContentSettingsType webcompat_settings_type,

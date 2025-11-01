@@ -187,17 +187,4 @@ TEST_F(BraveShieldsUtilProfilesTest, SetNoScriptControlType) {
   RunTest<ControlType>(kExpects, std::move(set), std::move(get));
 }
 
-TEST_F(BraveShieldsUtilProfilesTest, SetForgetFirstPartyStorageEnabled) {
-  constexpr std::pair<bool, bool> kExpects[] = {{true, true}, {false, false}};
-
-  auto set = [this](HostContentSettingsMap* map, bool value) {
-    SetForgetFirstPartyStorageEnabled(map, value, kTestUrl);
-  };
-  auto get = [this](HostContentSettingsMap* map) {
-    return GetForgetFirstPartyStorageEnabled(map, kTestUrl);
-  };
-
-  RunTest<bool>(kExpects, std::move(set), std::move(get));
-}
-
 }  // namespace brave_shields

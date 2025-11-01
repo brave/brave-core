@@ -783,32 +783,6 @@ ControlType GetNoScriptControlType(HostContentSettingsMap* map,
                                           : ControlType::BLOCK;
 }
 
-void SetForgetFirstPartyStorageEnabled(HostContentSettingsMap* map,
-                                       bool is_enabled,
-                                       const GURL& url,
-                                       PrefService* local_state) {
-  auto primary_pattern = content_settings::CreateDomainPattern(url);
-
-  if (!primary_pattern.IsValid()) {
-    return;
-  }
-
-  map->SetContentSettingCustomScope(
-      primary_pattern, ContentSettingsPattern::Wildcard(),
-      ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE,
-      is_enabled ? CONTENT_SETTING_BLOCK : CONTENT_SETTING_ALLOW);
-  RecordShieldsSettingChanged(local_state);
-  RecordForgetFirstPartySetting(map);
-}
-
-bool GetForgetFirstPartyStorageEnabled(HostContentSettingsMap* map,
-                                       const GURL& url) {
-  ContentSetting setting = map->GetContentSetting(
-      url, url, ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE);
-
-  return setting == CONTENT_SETTING_BLOCK;
-}
-
 void SetWebcompatEnabled(HostContentSettingsMap* map,
                          ContentSettingsType webcompat_settings_type,
                          bool enabled,

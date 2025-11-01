@@ -11,7 +11,9 @@
 #include "base/android/jni_string.h"
 #include "base/check.h"
 #include "brave/browser/brave_browser_process.h"
+#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "chrome/android/chrome_jni_headers/BraveShieldsContentSettings_jni.h"
 #include "chrome/browser/browser_process.h"
@@ -296,20 +298,21 @@ void JNI_BraveShieldsContentSettings_SetForgetFirstPartyStorageEnabled(
     jboolean enabled,
     const base::android::JavaParamRef<jstring>& url,
     const base::android::JavaParamRef<jobject>& j_profile) {
-  brave_shields::SetForgetFirstPartyStorageEnabled(
-      HostContentSettingsMapFactory::GetForProfile(
-          Profile::FromJavaObject(j_profile)),
-      enabled, GURL(base::android::ConvertJavaStringToUTF8(env, url)),
-      g_browser_process->local_state());
+  auto* brave_shields_settings =
+      BraveShieldsSettingsServiceFactory::GetForProfile(
+          Profile::FromJavaObject(j_profile));
+  brave_shields_settings->SetForgetFirstPartyStorageEnabled(
+      enabled, GURL(base::android::ConvertJavaStringToUTF8(env, url)));
 }
 
 jboolean JNI_BraveShieldsContentSettings_GetForgetFirstPartyStorageEnabled(
     JNIEnv* env,
     const base::android::JavaParamRef<jstring>& url,
     const base::android::JavaParamRef<jobject>& j_profile) {
-  return brave_shields::GetForgetFirstPartyStorageEnabled(
-      HostContentSettingsMapFactory::GetForProfile(
-          Profile::FromJavaObject(j_profile)),
+  auto* brave_shields_settings =
+      BraveShieldsSettingsServiceFactory::GetForProfile(
+          Profile::FromJavaObject(j_profile));
+  return brave_shields_settings->GetForgetFirstPartyStorageEnabled(
       GURL(base::android::ConvertJavaStringToUTF8(env, url)));
 }
 

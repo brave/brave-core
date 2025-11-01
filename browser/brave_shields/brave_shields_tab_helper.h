@@ -82,7 +82,6 @@ class BraveShieldsTabHelper
   FingerprintMode GetFingerprintMode();
   CookieBlockMode GetCookieBlockMode();
   bool IsBraveShieldsManaged();
-  bool IsForgetFirstPartyStorageFeatureEnabled() const;
   HttpsUpgradeMode GetHttpsUpgradeMode();
   bool GetNoScriptEnabled();
   mojom::ContentSettingsOverriddenDataPtr GetJsContentSettingsOverriddenData();
