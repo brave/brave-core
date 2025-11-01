@@ -12,7 +12,7 @@ import Button from '@brave/leo/react/button'
 import Alert from '@brave/leo/react/alert'
 import { useCommands } from '../commands'
 import Dialog from '@brave/leo/react/dialog'
-import { getLocale } from '$web-common/locale'
+import { formatLocale, getLocale } from '$web-common/locale'
 import { Accelerator } from 'gen/brave/components/commands/common/commands.mojom.m'
 import { commandsCache } from '../commands'
 
@@ -154,12 +154,9 @@ export default function ConfigureShortcut(props: {
   const unmodifiable = commands[conflict]?.accelerators.some((a: Accelerator) => a.codes === shortcut && a.unmodifiable)
   const conflictMessage = React.useMemo(() => {
     if (!conflict) return null
-    const messageParts = getLocale(unmodifiable ? 'shortcutsPageShortcutUnmodifiable' : 'shortcutsPageShortcutInUse').split('$1')
-    return <>
-      {messageParts[0]}
-      <b>"{commands[conflict].name}"</b>
-      {messageParts[1]}
-    </>
+    return formatLocale(unmodifiable ? S.SHORTCUTS_PAGE_SHORTCUT_UNMODIFIABLE : S.SHORTCUTS_PAGE_SHORTCUT_IN_USE, {
+      $1: <b>"{commands[conflict].name}"</b>
+    })
   }, [conflict, commands, unmodifiable])
 
   return (
@@ -169,7 +166,7 @@ export default function ConfigureShortcut(props: {
           <Keys keys={keys} large />
         ) : (
           <HintText>
-            {getLocale('shortcutsPageShortcutHint')}
+            {getLocale(S.SHORTCUTS_PAGE_SHORTCUT_HINT)}
           </HintText>
         )}
       </KeysContainer>
@@ -187,7 +184,7 @@ export default function ConfigureShortcut(props: {
             props.onCancel?.()
           }}
         >
-          {getLocale('shortcutsPageCancelAddShortcut')}
+          {getLocale(S.SHORTCUTS_PAGE_CANCEL_ADD_SHORTCUT)}
         </Button>
         <Button
           size="large"
@@ -200,7 +197,7 @@ export default function ConfigureShortcut(props: {
             })
           }}
         >
-          {getLocale('shortcutsPageSaveAddShortcut')}
+          {getLocale(S.SHORTCUTS_PAGE_SAVE_ADD_SHORTCUT)}
         </Button>
       </div>
     </StyledDialog>
