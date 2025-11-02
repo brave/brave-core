@@ -196,6 +196,11 @@ void AIChatService::Shutdown() {
   conversations_.clear();
 }
 
+void AIChatService::SetCreateCustomFilterImpl(
+    ConversationHandler::CreateCustomFilterImplCallback callback) {
+  create_custom_filter_impl_ = std::move(callback);
+}
+
 ConversationHandler* AIChatService::CreateConversation() {
   base::Uuid uuid = base::Uuid::GenerateRandomV4();
   std::string conversation_uuid = uuid.AsLowercaseString();
@@ -215,6 +220,11 @@ ConversationHandler* AIChatService::CreateConversation() {
           feedback_api_.get(), profile_prefs_, url_loader_factory_,
           CreateToolProvidersForNewConversation());
   conversation_observations_.AddObservation(conversation_handler.get());
+
+  // Set the custom filter implementation callback if we have one
+  if (create_custom_filter_impl_) {
+    conversation_handler->SetCreateCustomFilterImpl(create_custom_filter_impl_);
+  }
 
   // Own it
   conversation_handlers_.insert_or_assign(conversation_uuid,

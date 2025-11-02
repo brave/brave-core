@@ -209,7 +209,9 @@ class PageContentFetcherInternal {
       auto content = data->content->get_content();
       DVLOG(1) << __func__ << ": Got content with char length of "
                << content.length();
-      SendResultAndDeleteSelf(std::move(callback), content, "", false);
+      // Pass through dom_structure if available
+      SendResultAndDeleteSelf(std::move(callback), content, "", false,
+                              data->dom_structure);
       return;
     }
     // If it's non YouTube video, we expect content url
@@ -434,11 +436,14 @@ class PageContentFetcherInternal {
  private:
   void DeleteSelf() { delete this; }
 
-  void SendResultAndDeleteSelf(FetchPageContentCallback callback,
-                               std::string content = "",
-                               std::string invalidation_token = "",
-                               bool is_video = false) {
-    std::move(callback).Run(content, is_video, invalidation_token);
+  void SendResultAndDeleteSelf(
+      FetchPageContentCallback callback,
+      std::string content = "",
+      std::string invalidation_token = "",
+      bool is_video = false,
+      std::optional<std::string> dom_structure = std::nullopt) {
+    std::move(callback).Run(content, is_video, invalidation_token,
+                            dom_structure);
     delete this;
   }
 
@@ -469,7 +474,7 @@ void OnScreenshot(FetchPageContentCallback callback, const SkBitmap& image) {
   GetOCRText(image,
              base::BindOnce(
                  [](FetchPageContentCallback callback, std::string text) {
-                   std::move(callback).Run(std::move(text), false, "");
+                   std::move(callback).Run(std::move(text), false, "", std::nullopt);
                  },
                  std::move(callback)));
 }
@@ -549,7 +554,7 @@ void PageContentFetcher::FetchPageContent(std::string_view invalidation_token,
     LOG(ERROR)
         << "Content extraction request submitted for a WebContents without "
            "a primary main frame";
-    std::move(callback).Run("", false, "");
+    std::move(callback).Run("", false, "", std::nullopt);
     return;
   }
 

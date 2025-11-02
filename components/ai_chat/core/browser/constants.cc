@@ -28,6 +28,11 @@ std::vector<mojom::ActionGroupPtr> GetActionMenuList() {
             l10n_util::GetStringUTF8(IDS_AI_CHAT_CONTEXT_EXPLAIN),
             mojom::ActionType::EXPLAIN)));
 
+    group->entries.push_back(
+        mojom::ActionEntry::NewDetails(mojom::ActionDetails::New(
+            l10n_util::GetStringUTF8(IDS_CHAT_UI_GENERATE_SCRIPTLET),
+            mojom::ActionType::GENERATE_COSMETIC_FILTER)));
+
     action_list.push_back(std::move(group));
   }
 

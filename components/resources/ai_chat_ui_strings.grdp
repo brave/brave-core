@@ -57,6 +57,9 @@
   <message name="IDS_CHAT_UI_SUMMARIZE_PAGE" desc="Button to summarize the article on the current page" formatter_data="webui=AiChat">
     Summarize this page
   </message>
+  <message name="IDS_CHAT_UI_GENERATE_SCRIPTLET" desc="Button to generate a custom scriptlet to modify the current page" formatter_data="webui=AiChat">
+    Custom Filter
+  </message>
   <message name="IDS_CHAT_UI_PAGE_CONTENT_WARNING" desc="Description about page content being sent to a remote LLM" formatter_data="webui=AiChat">
      Disconnect to stop sending this page content to Leo, and start a new conversation
   </message>

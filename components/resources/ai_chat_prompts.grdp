@@ -79,6 +79,7 @@ Put your rewritten version of the excerpt in &lt;response&gt;&lt;/response&gt; t
 <message name="IDS_AI_CHAT_QUESTION_SUMMARIZE_PAGE" translateable="false">Provide a concise list of up to 6 bullets on the most important points of the page.</message>
 <message name="IDS_AI_CHAT_QUESTION_SUMMARIZE_SELECTED_TEXT" translateable="false">Generate a summary of the excerpt.</message>
 <message name="IDS_AI_CHAT_QUESTION_SUMMARIZE_VIDEO" translateable="false">Provide a concise list of up to 6 bullets of the most important points of the video.</message>
+<message name="IDS_AI_CHAT_QUESTION_GENERATE_SCRIPTLET" translateable="false">Ask the user what element or content they want to hide or remove from the page. Once they tell you, use the text_filter_generation tool with their request to generate a custom scriptlet.</message>
 <message name="IDS_AI_CHAT_QUESTION_EXPLAIN" translateable="false">Explain the excerpt in simple terms. Expand on concepts that might not be familiar to the user.</message>
 <message name="IDS_AI_CHAT_QUESTION_PARAPHRASE" translateable="false">Rewrite the excerpt by paraphrasing. Include only the rewritten version in your response.</message>
 <message name="IDS_AI_CHAT_QUESTION_CREATE_TAGLINE" translateable="false">Use the excerpt to generate a tagline.</message>

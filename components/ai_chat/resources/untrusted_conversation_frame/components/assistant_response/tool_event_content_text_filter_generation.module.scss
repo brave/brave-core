@@ -1,0 +1,100 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-xl);
+  padding: var(--leo-spacing-xl);
+  background: var(--leo-color-container-background);
+  border: 1px solid var(--leo-color-divider-subtle);
+  border-radius: var(--leo-radius-m);
+}
+
+.infoMessage {
+  color: var(--leo-color-text-secondary);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.details {
+  margin: 0;
+  border-radius: var(--leo-radius-s);
+  border: 1px solid var(--leo-color-divider-subtle);
+  overflow: hidden;
+}
+
+.summary {
+  display: flex;
+  align-items: center;
+  gap: var(--leo-spacing-m);
+  padding: var(--leo-spacing-m) var(--leo-spacing-l);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 13px;
+  background: var(--leo-color-container-highlight);
+  color: var(--leo-color-text-primary);
+  transition: background 0.15s ease;
+  user-select: none;
+
+  &:hover {
+    background: var(--leo-color-divider-subtle);
+  }
+
+  leo-icon {
+    --leo-icon-size: 16px;
+    color: var(--leo-color-icon-default);
+  }
+}
+
+.detailsContent {
+  padding: var(--leo-spacing-l);
+  background: var(--leo-color-page-background);
+  font-size: 12px;
+}
+
+.detailItem {
+  &:not(:last-child) {
+    margin-bottom: var(--leo-spacing-l);
+  }
+
+  strong {
+    display: block;
+    margin-bottom: var(--leo-spacing-s);
+    color: var(--leo-color-text-primary);
+    font-size: 13px;
+  }
+}
+
+.codeBlock {
+  padding: var(--leo-spacing-m);
+  background: var(--leo-color-container-background);
+  border: 1px solid var(--leo-color-divider-subtle);
+  border-radius: var(--leo-radius-s);
+  font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+  font-size: 12px;
+  color: var(--leo-color-text-primary);
+  word-break: break-all;
+  overflow-wrap: break-word;
+  line-height: 1.5;
+}
+
+.successMessage {
+  padding: var(--leo-spacing-m) var(--leo-spacing-l);
+  border-radius: var(--leo-radius-s);
+  background-color: var(--leo-color-systemfeedback-success-background);
+  color: var(--leo-color-systemfeedback-success-text);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.errorMessage {
+  padding: var(--leo-spacing-m) var(--leo-spacing-l);
+  border-radius: var(--leo-radius-s);
+  background-color: var(--leo-color-systemfeedback-error-background);
+  color: var(--leo-color-systemfeedback-error-text);
+  font-size: 13px;
+  line-height: 1.5;
+}

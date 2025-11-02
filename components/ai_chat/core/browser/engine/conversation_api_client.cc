@@ -8,6 +8,7 @@
 #include <ios>
 #include <map>
 #include <ostream>
+#include <iostream>
 #include <string>
 #include <string_view>
 #include <type_traits>
@@ -208,8 +209,11 @@ GURL GetEndpointUrl(bool premium, const std::string& path) {
 #endif
 
   auto* prefix = premium ? "ai-chat-premium.bsg" : "ai-chat.bsg";
+  std::cerr << "[AI_CHAT] Using API prefix: " << prefix << "\n";
   auto hostname = brave_domains::GetServicesDomain(
       prefix, brave_domains::ServicesEnvironment::DEV);
+
+  std::cerr << "[AI_CHAT] Using API hostname: " << hostname << "\n";
 
   GURL url{base::StrCat(
       {url::kHttpsScheme, url::kStandardSchemeSeparator, hostname, "/", path})};
@@ -336,7 +340,17 @@ void ConversationAPIClient::PerformRequestWithCredentials(
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback,
     std::optional<CredentialCacheEntry> credential) {
+  std::cerr << "\n[API_CLIENT] ========================================\n";
+  std::cerr << "[API_CLIENT] PerformRequestWithCredentials called\n";
+  std::cerr << "[API_CLIENT] ========================================\n";
+  std::cerr << "[API_CLIENT] Conversation events: " << conversation.size() << "\n";
+  std::cerr << "[API_CLIENT] Model name: "
+            << (model_name.has_value() ? *model_name : "(default)") << "\n";
+  std::cerr << "[API_CLIENT] Premium credential: "
+            << (credential.has_value() ? "YES" : "NO") << "\n";
+
   if (conversation.empty()) {
+    std::cerr << "[API_CLIENT] ERROR: Empty conversation, aborting\n";
     std::move(completed_callback).Run(base::unexpected(mojom::APIError::None));
     return;
   }
@@ -344,19 +358,33 @@ void ConversationAPIClient::PerformRequestWithCredentials(
   bool premium_enabled = credential.has_value();
   const GURL api_url = GetEndpointUrl(premium_enabled, kRemotePath);
 
+  std::cerr << "[API_CLIENT] API URL: " << api_url.spec() << "\n";
+
   if (!api_url.is_valid()) {
+    std::cerr << "[API_CLIENT] ERROR: Invalid API URL\n";
     std::move(completed_callback).Run(base::unexpected(mojom::APIError::None));
     return;
   }
 
   const bool is_sse_enabled =
       ai_chat::features::kAIChatSSE.Get() && !data_received_callback.is_null();
+  std::cerr << "[API_CLIENT] SSE enabled: " << is_sse_enabled << "\n";
+
   const std::string request_body = CreateJSONRequestBody(
       std::move(conversation), selected_language,
       std::move(oai_tool_definitions), preferred_tool_name,
       conversation_capability, model_name, is_sse_enabled);
 
+  std::cerr << "[API_CLIENT] Request body length: " << request_body.length()
+            << " bytes\n";
+  std::cerr << "[API_CLIENT] Request body preview: \n"
+            << request_body << "\n";
+  // std::cerr << "[API_CLIENT] Request body preview (first 500 chars):\n"
+  //           << request_body.substr(0, 500) << "\n";
+
   base::flat_map<std::string, std::string> headers;
+  headers.emplace("Brave-Internal-Request", "true");
+  headers.emplace("X-Forwarded-Host", "52.34.19.133");
   const auto digest_header = brave_service_keys::GetDigestHeader(request_body);
   headers.emplace(digest_header.first, digest_header.second);
   auto result = brave_service_keys::GetAuthorizationHeader(
@@ -373,7 +401,17 @@ void ConversationAPIClient::PerformRequestWithCredentials(
   headers.emplace("x-brave-key", BUILDFLAG(BRAVE_SERVICES_KEY));
   headers.emplace("Accept", "text/event-stream");
 
+  std::cerr << "[API_CLIENT] Request headers:\n";
+  for (const auto& [key, value] : headers) {
+    if (key == "Cookie" || key == "x-brave-key" || key == "Authorization") {
+      std::cerr << "[API_CLIENT]   " << key << ": [REDACTED]\n";
+    } else {
+      std::cerr << "[API_CLIENT]   " << key << ": " << value << "\n";
+    }
+  }
+
   if (is_sse_enabled) {
+    std::cerr << "[API_CLIENT] Making STREAMING request (SSE)\n";
     DVLOG(2) << "Making streaming AI Chat Conversation API Request";
     auto on_received = base::BindRepeating(
         &ConversationAPIClient::OnQueryDataReceived,
@@ -388,6 +426,7 @@ void ConversationAPIClient::PerformRequestWithCredentials(
                                     std::move(on_received),
                                     std::move(on_complete), headers, {});
   } else {
+    std::cerr << "[API_CLIENT] Making NON-STREAMING request\n";
     DVLOG(2) << "Making non-streaming AI Chat Conversation API Request";
     auto on_complete =
         base::BindOnce(&ConversationAPIClient::OnQueryCompleted,
@@ -398,15 +437,32 @@ void ConversationAPIClient::PerformRequestWithCredentials(
                                  request_body, "application/json",
                                  std::move(on_complete), headers, {});
   }
+  std::cerr << "[API_CLIENT] Request sent, waiting for response...\n";
 }
 
 void ConversationAPIClient::OnQueryCompleted(
     std::optional<CredentialCacheEntry> credential,
     GenerationCompletedCallback callback,
     api_request_helper::APIRequestResult result) {
+  std::cerr << "\n[API_CLIENT] ========================================\n";
+  std::cerr << "[API_CLIENT] OnQueryCompleted called\n";
+  std::cerr << "[API_CLIENT] ========================================\n";
+  std::cerr << "[API_CLIENT] Response code: " << result.response_code() << "\n";
+  std::cerr << "[API_CLIENT] Is success (2xx): " << result.Is2XXResponseCode() << "\n";
+
   const bool success = result.Is2XXResponseCode();
+
+  if (!success) {
+    std::cerr << "[API_CLIENT] ERROR: Request failed\n";
+    std::string body_str = result.SerializeBodyToString();
+    std::cerr << "[API_CLIENT] Response body: " << body_str << "\n";
+  }
+
   // Handle successful request
   if (success) {
+    std::string body_str = result.SerializeBodyToString();
+    std::cerr << "[API_CLIENT] Success! Response body length: "
+              << body_str.length() << " bytes\n";
     std::string completion = "";
     std::optional<std::string> model_key = std::nullopt;
     mojom::ConversationEntryEventPtr completion_event = nullptr;
@@ -458,21 +514,35 @@ void ConversationAPIClient::OnQueryCompleted(
 void ConversationAPIClient::OnQueryDataReceived(
     GenerationDataCallback callback,
     base::expected<base::Value, std::string> result) {
+  std::cerr << "\n[API_CLIENT] ========================================\n";
+  std::cerr << "[API_CLIENT] OnQueryDataReceived - Streaming chunk received\n";
+  std::cerr << "[API_CLIENT] ========================================\n";
+
   if (!result.has_value() || !result->is_dict()) {
+    std::cerr << "[API_CLIENT] ERROR: Invalid result (not a dict)\n";
     return;
   }
 
   auto& result_params = result->GetDict();
 
+  // Log the full JSON for debugging
+  std::string json_str;
+  base::JSONWriter::WriteWithOptions(
+      result_params, base::JSONWriter::OPTIONS_PRETTY_PRINT, &json_str);
+  std::cerr << "[API_CLIENT] Streaming chunk content:\n" << json_str << "\n";
+
   if (auto result_data = ParseResponseEvent(result_params, model_service_)) {
+    std::cerr << "[API_CLIENT] ParseResponseEvent succeeded - forwarding to callback\n";
     callback.Run(std::move(*result_data));
   }
 
   // Tool calls - they may happen individually or combined with a response event
   if (const base::Value::List* tool_calls =
           result_params.FindList("tool_calls")) {
+    std::cerr << "[API_CLIENT] Found " << tool_calls->size() << " tool_calls in response\n";
     // Provide any valid tool use events to the callback
     for (auto& tool_use_event : ToolUseEventFromToolCallsResponse(tool_calls)) {
+      std::cerr << "[API_CLIENT] Processing tool_use_event\n";
       auto tool_event = mojom::ConversationEntryEvent::NewToolUseEvent(
           std::move(tool_use_event));
       callback.Run(GenerationResultData(std::move(tool_event), std::nullopt));

@@ -10,9 +10,11 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/functional/bind.h"
 #include "base/no_destructor.h"
 #include "brave/browser/ai_chat/ai_chat_utils.h"
 #include "brave/browser/ai_chat/browser_tool_provider_factory.h"
+#include "brave/browser/ai_chat/custom_filter_helper.h"
 #include "brave/browser/ai_chat/tab_tracker_service_factory.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
@@ -27,6 +29,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/channel_info.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
+#include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
 #include "components/version_info/channel.h"
 #include "content/public/browser/storage_partition.h"
@@ -129,6 +132,12 @@ AIChatServiceFactory::BuildServiceInstanceForBrowserContext(
   // the AIChatService constructor.
   service->SetIsContentAgentAllowed(is_actor_allowed);
 #endif
+
+  // Set up the custom filter creation callback
+  // This binds the profile's prefs to the implementation function
+  PrefService* profile_prefs = user_prefs::UserPrefs::Get(context);
+  service->SetCreateCustomFilterImpl(
+      base::BindRepeating(&CreateCustomFilterImpl, profile_prefs));
 
   return service;
 }

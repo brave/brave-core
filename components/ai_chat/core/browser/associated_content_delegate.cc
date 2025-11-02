@@ -19,6 +19,7 @@ PageContent& PageContent::operator=(PageContent&&) = default;
 PageContent::PageContent() = default;
 PageContent::PageContent(std::string content, bool is_video)
     : content(std::move(content)), is_video(is_video) {}
+PageContent::~PageContent() = default;
 
 AssociatedContentDelegate::AssociatedContentDelegate()
     : uuid_(base::Uuid::GenerateRandomV4().AsLowercaseString()) {}

@@ -88,7 +88,9 @@ GetActionTypeQuestionMap() {
             {mojom::ActionType::SHORTEN,
              l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SHORTEN)},
             {mojom::ActionType::EXPAND,
-             l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_EXPAND)}});
+             l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_EXPAND)},
+            {mojom::ActionType::GENERATE_COSMETIC_FILTER,
+             l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_GENERATE_SCRIPTLET)}});
   return *kMap;
 }
 

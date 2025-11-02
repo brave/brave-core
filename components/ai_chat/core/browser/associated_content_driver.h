@@ -50,7 +50,8 @@ class AssociatedContentDriver : public AssociatedContentDelegate {
   using FetchPageContentCallback =
       base::OnceCallback<void(std::string page_content,
                               bool is_video,
-                              std::string invalidation_token)>;
+                              std::string invalidation_token,
+                              std::optional<std::string> dom_structure)>;
 
   explicit AssociatedContentDriver(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
@@ -103,7 +104,8 @@ class AssociatedContentDriver : public AssociatedContentDelegate {
   void OnGeneratePageContentComplete(int64_t navigation_id,
                                      std::string contents_text,
                                      bool is_video,
-                                     std::string invalidation_token);
+                                     std::string invalidation_token,
+                                     std::optional<std::string> dom_structure);
   void OnExistingGeneratePageContentComplete(GetPageContentCallback callback,
                                              int64_t navigation_id);
 

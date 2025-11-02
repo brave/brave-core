@@ -61,6 +61,7 @@ class AIChatFeedbackAPI;
 class AIChatService;
 class AIChatCredentialManager;
 class AssociatedContentManager;
+class TextFilterGenerationTool;
 
 // Performs all conversation-related operations, responsible for sending
 // messages to the conversation engine, handling the responses, and owning
@@ -73,6 +74,10 @@ class ConversationHandler : public mojom::ConversationHandler,
  public:
   using GeneratedTextCallback =
       base::RepeatingCallback<void(const std::string& text)>;
+  using CreateCustomFilterImplCallback =
+      base::RepeatingCallback<void(const std::string& markdown_response,
+                                   const std::string& domain,
+                                   CreateCustomFilterCallback callback)>;
 
   class Observer : public base::CheckedObserver {
    public:
@@ -165,6 +170,9 @@ class ConversationHandler : public mojom::ConversationHandler,
 
   void OnArchiveContentUpdated(mojom::ConversationArchivePtr conversation_data);
 
+  // Set the callback that implements custom filter creation in the browser layer
+  void SetCreateCustomFilterImpl(CreateCustomFilterImplCallback callback);
+
   bool IsAnyClientConnected();
   bool HasAnyHistory();
   bool IsRequestInProgress();
@@ -187,6 +195,8 @@ class ConversationHandler : public mojom::ConversationHandler,
                     const std::string& rating_id,
                     bool send_hostname,
                     SendFeedbackCallback callback) override;
+  void CreateCustomFilter(const std::string& markdown_response,
+                         CreateCustomFilterCallback callback) override;
   void GetConversationUuid(GetConversationUuidCallback) override;
   void GetModels(GetModelsCallback callback) override;
   void ChangeModel(const std::string& model_key) override;
@@ -449,6 +459,9 @@ class ConversationHandler : public mojom::ConversationHandler,
   // (e.g. a KeyedService, or global singleton).
   std::vector<std::unique_ptr<ToolProvider>> tool_providers_;
 
+  // Filter generation tool, owned by this conversation handler.
+  std::unique_ptr<TextFilterGenerationTool> text_filter_generation_tool_;
+
   // Data store UUID for conversation
   raw_ptr<mojom::Conversation> metadata_;
 
@@ -482,6 +495,9 @@ class ConversationHandler : public mojom::ConversationHandler,
   mojo::RemoteSet<mojom::ConversationUI> conversation_ui_handlers_;
   mojo::RemoteSet<mojom::UntrustedConversationUI>
       untrusted_conversation_ui_handlers_;
+
+  // Callback to browser layer for creating custom filters
+  CreateCustomFilterImplCallback create_custom_filter_impl_;
 
   base::WeakPtrFactory<ConversationHandler> weak_ptr_factory_{this};
 };

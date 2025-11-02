@@ -50,6 +50,7 @@ enum ActionType {
   EXPAND,
   CONVERSATION_STARTER,
   SUGGESTION,
+  GENERATE_COSMETIC_FILTER,
 };
 
 // When adding or modifying category names, associated UI strings must also
@@ -186,6 +187,21 @@ struct ConversationTitleEvent {
   string title;
 };
 
+enum GeneratedFilterType {
+  CSS_SELECTOR,
+  SCRIPTLET
+};
+
+struct GeneratedFilterEvent {
+  GeneratedFilterType filter_type;
+  string domain;
+  string code;
+  string description;
+  array<string> target_elements;
+  string confidence;  // "high", "medium", "low"
+  string reasoning;
+};
+
 // Events that occur during a conversation turn (only assistant for now)
 union ConversationEntryEvent {
   CompletionEvent completion_event;
@@ -199,6 +215,7 @@ union ConversationEntryEvent {
   SelectedLanguageEvent selected_language_event;
   ContentReceiptEvent content_receipt_event;
   ConversationTitleEvent conversation_title_event;
+  GeneratedFilterEvent generated_filter_event;
 };
 
 // Represents a single turn in a conversation.

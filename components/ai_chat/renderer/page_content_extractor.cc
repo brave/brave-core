@@ -87,6 +87,33 @@ constexpr char16_t kVideoTrackTranscriptUrlExtractionScript[] =
       })()
     )JS";
 
+constexpr char16_t kDOMStructureExtractionScript[] =
+    uR"JS(
+      (function() {
+        const elements = [];
+        const allElements = document.querySelectorAll('*');
+
+        for (const el of allElements) {
+          // Only include visible elements
+          if (el.offsetWidth > 0 && el.offsetHeight > 0) {
+            elements.push({
+              tag: el.tagName.toLowerCase(),
+              classes: Array.from(el.classList),
+              id: el.id || '',
+              text: (el.innerText || '').substring(0, 50).trim()
+            });
+          }
+
+          // // Limit to first 500 visible elements to avoid overwhelming the AI
+          // if (elements.length >= 500) {
+          //   break;
+          // }
+        }
+
+        return JSON.stringify(elements);
+      })()
+    )JS";
+
 // TODO(petemill): Use heuristics to determine if page's main focus is
 // a video, and not a hard-coded list of Url hosts.
 constexpr auto kVideoTrackHosts =
@@ -223,7 +250,48 @@ void PageContentExtractor::OnDistillResult(
   auto result = mojom::PageContent::New();
   result->type = std::move(mojom::PageContentType::Text);
   result->content = mojom::PageContentData::NewContent(content.value());
-  std::move(callback).Run(std::move(result));
+
+  // Also extract DOM structure for potential filter generation
+  blink::WebLocalFrame* main_frame = render_frame()->GetWebFrame();
+  v8::HandleScope handle_scope(v8::Isolate::GetCurrent());
+  blink::WebScriptSource source = blink::WebScriptSource(
+      blink::WebString::FromUTF16(kDOMStructureExtractionScript));
+  auto script_callback = base::BindOnce(
+      &PageContentExtractor::OnDOMStructureExtractionResult,
+      weak_ptr_factory_.GetWeakPtr(), std::move(callback), std::move(result));
+  main_frame->RequestExecuteScript(
+      isolated_world_id_, base::span_from_ref(source),
+      blink::mojom::UserActivationOption::kDoNotActivate,
+      blink::mojom::EvaluationTiming::kAsynchronous,
+      blink::mojom::LoadEventBlockingOption::kDoNotBlock,
+      std::move(script_callback), blink::BackForwardCacheAware::kAllow,
+      blink::mojom::WantResultOption::kWantResult,
+      blink::mojom::PromiseResultOption::kAwait);
+}
+
+void PageContentExtractor::OnDOMStructureExtractionResult(
+    mojom::PageContentExtractor::ExtractPageContentCallback callback,
+    mojom::PageContentPtr page_content,
+    std::optional<base::Value> value,
+    base::TimeTicks start_time) {
+  DVLOG(2) << "DOM structure extraction script completed and took "
+           << (base::TimeTicks::Now() - start_time).InMillisecondsF() << "ms";
+
+  // Add DOM structure if available
+  if (value.has_value() && value->is_string()) {
+    page_content->dom_structure = value->GetString();
+    LOG(INFO) << "[DOM_EXTRACTION] SUCCESS: DOM structure extracted: "
+              << page_content->dom_structure.value().length() << " chars";
+  } else {
+    LOG(ERROR) << "[DOM_EXTRACTION] FAILED: Script did not return a string. "
+               << "has_value=" << value.has_value()
+               << ", is_string=" << (value.has_value() && value->is_string());
+    if (value.has_value()) {
+      LOG(ERROR) << "[DOM_EXTRACTION] Value type: " << value->type();
+    }
+  }
+
+  std::move(callback).Run(std::move(page_content));
 }
 
 void PageContentExtractor::OnJSYoutubeInnerTubeConfigResult(

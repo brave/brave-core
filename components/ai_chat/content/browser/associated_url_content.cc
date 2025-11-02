@@ -132,7 +132,8 @@ void AssociatedURLContent::DocumentOnLoadCompletedInPrimaryMainFrame() {
 void AssociatedURLContent::OnContentExtractionComplete(
     std::string content,
     bool is_video,
-    std::string invalidation_token) {
+    std::string invalidation_token,
+    std::optional<std::string> dom_structure) {
   DVLOG(2) << __func__
            << "Content extraction completed for URL: " << url().spec()
            << ", content length: " << content.length()
@@ -141,7 +142,9 @@ void AssociatedURLContent::OnContentExtractionComplete(
   timeout_timer_.Stop();
 
   // Update our cached content with the loaded content
-  set_cached_page_content(PageContent(std::move(content), is_video));
+  PageContent page_content(std::move(content), is_video);
+  page_content.dom_structure = std::move(dom_structure);
+  set_cached_page_content(std::move(page_content));
 
   // Notify pending callbacks
   if (content_loaded_event_) {

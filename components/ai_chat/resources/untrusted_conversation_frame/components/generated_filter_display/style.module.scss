@@ -1,0 +1,142 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+.container {
+  background: var(--leo-color-container-background);
+  border: 1px solid var(--leo-color-divider-subtle);
+  border-radius: 12px;
+  padding: var(--leo-spacing-xl);
+  margin: var(--leo-spacing-l) 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-xl);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--leo-spacing-m);
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: var(--leo-spacing-m);
+  --leo-icon-size: 24px;
+  color: var(--leo-color-icon-default);
+}
+
+.title {
+  margin: 0;
+  font: var(--leo-font-heading-h4);
+  color: var(--leo-color-text-primary);
+}
+
+.confidenceBadge {
+  display: flex;
+  align-items: center;
+  gap: var(--leo-spacing-s);
+  padding: var(--leo-spacing-s) var(--leo-spacing-m);
+  border-radius: 16px;
+  font: var(--leo-font-small-semibold);
+  --leo-icon-size: 16px;
+
+  &.confidence-high {
+    background: var(--leo-color-green-10);
+    color: var(--leo-color-green-60);
+  }
+
+  &.confidence-medium {
+    background: var(--leo-color-orange-10);
+    color: var(--leo-color-orange-60);
+  }
+
+  &.confidence-low {
+    background: var(--leo-color-red-10);
+    color: var(--leo-color-red-60);
+  }
+}
+
+.description {
+  font: var(--leo-font-default-regular);
+  color: var(--leo-color-text-primary);
+  line-height: 1.5;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-m);
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--leo-spacing-s);
+  --leo-icon-size: 18px;
+  color: var(--leo-color-icon-default);
+
+  h4 {
+    margin: 0;
+    font: var(--leo-font-default-semibold);
+    color: var(--leo-color-text-primary);
+  }
+}
+
+.targetElements {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--leo-spacing-s);
+}
+
+.targetElement {
+  background: var(--leo-color-page-background);
+  border: 1px solid var(--leo-color-divider-subtle);
+  padding: var(--leo-spacing-s) var(--leo-spacing-m);
+  border-radius: 6px;
+  font: var(--leo-font-small-regular);
+  font-family: monospace;
+  color: var(--leo-color-text-primary);
+}
+
+.reasoning {
+  font: var(--leo-font-default-regular);
+  color: var(--leo-color-text-secondary);
+  line-height: 1.5;
+  padding: var(--leo-spacing-m);
+  background: var(--leo-color-page-background);
+  border-radius: 8px;
+}
+
+.debugNote {
+  display: flex;
+  align-items: center;
+  gap: var(--leo-spacing-m);
+  padding: var(--leo-spacing-m);
+  background: var(--leo-color-page-background);
+  border-radius: 8px;
+  font: var(--leo-font-small-regular);
+  color: var(--leo-color-text-secondary);
+  --leo-icon-size: 18px;
+}
+
+.domainInfo {
+  display: flex;
+  align-items: center;
+  gap: var(--leo-spacing-m);
+  padding: var(--leo-spacing-m);
+  background: var(--leo-color-page-background);
+  border-radius: 8px;
+  font: var(--leo-font-small-regular);
+  color: var(--leo-color-text-secondary);
+  --leo-icon-size: 18px;
+
+  strong {
+    color: var(--leo-color-text-primary);
+    font-weight: 600;
+  }
+}

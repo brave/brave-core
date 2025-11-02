@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ASSOCIATED_CONTENT_DELEGATE_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ASSOCIATED_CONTENT_DELEGATE_H_
 
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -24,9 +25,13 @@ struct PageContent {
   // |EngineConsumer::SanitizeInput| before sending it.
   std::string content = "";
   bool is_video = false;
+  // Optional DOM structure for cosmetic filter generation
+  // JSON string containing array of visible elements with tag, classes, id, text
+  std::optional<std::string> dom_structure;
 
   PageContent();
   PageContent(std::string content, bool is_video);
+  ~PageContent();
 
   PageContent(const PageContent&);
   PageContent(PageContent&&);
@@ -34,7 +39,8 @@ struct PageContent {
   PageContent& operator=(PageContent&&);
 
   bool operator==(const PageContent& other) const {
-    return content == other.content && is_video == other.is_video;
+    return content == other.content && is_video == other.is_video &&
+           dom_structure == other.dom_structure;
   }
 };
 

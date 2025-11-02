@@ -147,7 +147,8 @@ class AssociatedWebContentsContent : public content::WebContentsObserver,
   void OnFetchPageContentComplete(FetchPageContentCallback callback,
                                   std::string content,
                                   bool is_video,
-                                  std::string invalidation_token);
+                                  std::string invalidation_token,
+                                  std::optional<std::string> dom_structure);
 
 #if BUILDFLAG(ENABLE_PDF)
   void OnPDFDocumentLoadComplete(FetchPageContentCallback callback);

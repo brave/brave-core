@@ -106,7 +106,8 @@ void AssociatedContentDriver::OnGeneratePageContentComplete(
     int64_t navigation_id,
     std::string contents_text,
     bool is_video,
-    std::string invalidation_token) {
+    std::string invalidation_token,
+    std::optional<std::string> dom_structure) {
   DVLOG(1) << "OnGeneratePageContentComplete";
   DVLOG(4) << "Contents(is_video=" << is_video
            << ", invalidation_token=" << invalidation_token
@@ -122,7 +123,9 @@ void AssociatedContentDriver::OnGeneratePageContentComplete(
     // Cache page content on instance so we don't always have to re-fetch
     // if the content fetcher knows the content won't have changed and the fetch
     // operation is expensive (e.g. network).
-    set_cached_page_content(PageContent(std::move(contents_text), is_video));
+    PageContent page_content(std::move(contents_text), is_video);
+    page_content.dom_structure = std::move(dom_structure);
+    set_cached_page_content(std::move(page_content));
 
     if (cached_page_content().content.empty()) {
       DVLOG(1) << __func__ << ": No data";

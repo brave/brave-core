@@ -124,6 +124,9 @@ class AIChatService : public KeyedService,
   // Adds new conversation and returns the handler
   ConversationHandler* CreateConversation();
 
+  // Set the callback for custom filter creation (browser layer implementation)
+  void SetCreateCustomFilterImpl(ConversationHandler::CreateCustomFilterImplCallback callback);
+
   // Provides memory tool for testing
   MemoryStorageTool* GetMemoryToolForTesting();
 
@@ -403,6 +406,9 @@ class AIChatService : public KeyedService,
   // subscription status changes. So we cache it and fetch latest fairly
   // often (whenever UI is focused).
   mojom::PremiumStatus last_premium_status_ = mojom::PremiumStatus::Unknown;
+
+  // Callback for custom filter creation (set by browser layer)
+  ConversationHandler::CreateCustomFilterImplCallback create_custom_filter_impl_;
 
   // Whether conversations can utilize content agent capabilities. For now,
   // this is profile-specific.

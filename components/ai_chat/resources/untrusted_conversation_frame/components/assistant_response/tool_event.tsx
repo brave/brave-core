@@ -9,6 +9,7 @@ import * as Mojom from '../../../common/mojom'
 import { getToolLabel } from './get_tool_label'
 import ToolEventContentUserChoice from './tool_event_content_user_choice'
 import ToolEventContentAssistantDetailStorage from './tool_event_content_assistant_detail_storage'
+import ToolEventContentTextFilterGeneration from './tool_event_content_text_filter_generation'
 import styles from './tool_event.module.scss'
 
 interface Props {
@@ -69,6 +70,12 @@ function ToolEventContent(
 ) {
   const { toolUseEvent } = props
 
+  console.log('[ToolEventContent] Processing tool', {
+    toolName: toolUseEvent.toolName,
+    hasOutput: !!toolUseEvent.output,
+    outputLength: toolUseEvent.output?.length,
+  })
+
   // parse input
   const input = React.useMemo(() => {
     if (!toolUseEvent?.argumentsJson) {
@@ -112,11 +119,26 @@ function ToolEventContent(
     component = ToolEventContentAssistantDetailStorage
   }
 
+  if (toolUseEvent.toolName === 'text_filter_generation') {
+    console.log('[ToolEvent] Matched text_filter_generation tool', {
+      toolName: toolUseEvent.toolName,
+      hasOutput: !!toolUseEvent.output,
+    })
+    component = ToolEventContentTextFilterGeneration
+  }
+
+  console.log('[ToolEvent] Rendering tool event', {
+    toolName: toolUseEvent.toolName,
+    hasComponent: !!component,
+    componentName: component?.name,
+  })
+
   if (component) {
     return component({ ...props, toolInput: input, content })
   }
 
   // default
+  console.log('[ToolEvent] Using default rendering for tool:', toolUseEvent.toolName)
   return props.children(content)
 }
 
@@ -126,9 +148,17 @@ function ToolEventContent(
  * AssistantResponse component.
  */
 export default function ToolEvent(props: Props) {
+  console.log('[ToolEvent] ToolEvent component called with', {
+    toolName: props.toolUseEvent.toolName,
+    hasOutput: !!props.toolUseEvent.output,
+  })
   return (
     <ToolEventContent {...props}>
       {(content) => {
+        console.log('[ToolEvent] Rendering content', {
+          hasToolLabel: !!content.toolLabel,
+          hasExpandedContent: !!content.expandedContent,
+        })
         if (!content.toolLabel && !content.expandedContent) {
           // The tool content has decided to not show anything.
           // Perhaps it's an internal tool event, or a tool that's not ready

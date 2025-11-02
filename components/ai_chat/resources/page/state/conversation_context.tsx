@@ -480,8 +480,10 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
       isToolsMenuOpen: false,
     }
 
-    const firstContent = context.inputText[0]
-    if (typeof firstContent === 'string' && firstContent.startsWith('/')) {
+    // Only clear input if it's exactly a slash command with no additional content
+    // (e.g., clear "/script" but keep "/script hide the title")
+    const inputString = stringifyContent(context.inputText).trim()
+    if (inputString.match(/^\/\w+$/)) {
       setPartialContext({
         inputText: [],
       })
@@ -537,7 +539,18 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
       getAPI().metrics.onSendingPromptWithFullPage()
     }
 
-    if (context.selectedSkill) {
+    // Check if input starts with /script slash command
+    const inputString = stringifyContent(context.inputText)
+    const scriptCommandMatch = inputString.match(/^\/script\s+(.+)$/i)
+
+    if (scriptCommandMatch) {
+      // Extract the request after /script (e.g., "/script hide the title" -> "hide the title")
+      const userRequest = scriptCommandMatch[1]
+      conversationHandler.submitHumanConversationEntryWithAction(
+        userRequest,
+        Mojom.ActionType.GENERATE_COSMETIC_FILTER,
+      )
+    } else if (context.selectedSkill) {
       conversationHandler.submitHumanConversationEntryWithSkill(
         stringifyContent(context.inputText),
         context.selectedSkill.id,

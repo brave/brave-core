@@ -145,7 +145,7 @@ void AssociatedWebContentsContent::GetPageContent(
 #endif  // BUILDFLAG(ENABLE_PDF)
     // If we have a PDF but no PDFHelper there's no point running one of our
     // other extractors - we'll just end up with empty content anyway.
-    std::move(callback).Run("", false, "");
+    std::move(callback).Run("", false, "", std::nullopt);
     return;
   }
   if (print_preview_extraction_delegate_ &&
@@ -165,7 +165,7 @@ void AssociatedWebContentsContent::GetPageContent(
     }
     DVLOG(1) << "print preview host detected, returning empty to trigger "
                 "autoscreenshots";
-    std::move(callback).Run("", false, "");
+    std::move(callback).Run("", false, "", std::nullopt);
     return;
   }
   page_content_fetcher_delegate_->FetchPageContent(
@@ -178,7 +178,8 @@ void AssociatedWebContentsContent::OnFetchPageContentComplete(
     FetchPageContentCallback callback,
     std::string content,
     bool is_video,
-    std::string invalidation_token) {
+    std::string invalidation_token,
+    std::optional<std::string> dom_structure) {
   base::TrimWhitespaceASCII(content, base::TRIM_ALL, &content);
   // If content is empty, and page was not loaded yet, wait for page load.
   // Once page load is complete, try again.
@@ -188,13 +189,14 @@ void AssociatedWebContentsContent::OnFetchPageContentComplete(
     return;
   }
   std::move(callback).Run(std::move(content), is_video,
-                          std::move(invalidation_token));
+                          std::move(invalidation_token),
+                          std::move(dom_structure));
 }
 
 void AssociatedWebContentsContent::SetPendingGetContentCallback(
     FetchPageContentCallback callback) {
   if (pending_get_page_content_callback_) {
-    std::move(pending_get_page_content_callback_).Run("", false, "");
+    std::move(pending_get_page_content_callback_).Run("", false, "", std::nullopt);
   }
   pending_get_page_content_callback_ = std::move(callback);
 }
@@ -205,7 +207,7 @@ void AssociatedWebContentsContent::OnNewPage(int64_t navigation_id) {
   set_url(web_contents()->GetLastCommittedURL());
   SetTitle(web_contents()->GetTitle());
   if (pending_get_page_content_callback_) {
-    std::move(pending_get_page_content_callback_).Run("", false, "");
+    std::move(pending_get_page_content_callback_).Run("", false, "", std::nullopt);
   }
 }
 
@@ -229,7 +231,7 @@ void AssociatedWebContentsContent::OnPDFDocumentLoadComplete(
   auto* pdf_helper =
       pdf::PDFDocumentHelper::MaybeGetForWebContents(web_contents());
   if (!pdf_helper) {
-    std::move(callback).Run("", false, "");
+    std::move(callback).Run("", false, "", std::nullopt);
     return;
   }
 
@@ -249,7 +251,7 @@ void AssociatedWebContentsContent::OnGetPDFPageCount(
       pdf::PDFDocumentHelper::MaybeGetForWebContents(web_contents());
   if (status == pdf::mojom::PdfListener::GetPdfBytesStatus::kFailed ||
       !pdf_helper) {
-    std::move(callback).Run("", false, "");
+    std::move(callback).Run("", false, "", std::nullopt);
     return;
   }
 
@@ -284,7 +286,8 @@ void AssociatedWebContentsContent::OnAllPDFPagesTextReceived(
     ordered_texts[index] = text;
   }
 
-  std::move(callback).Run(base::JoinString(ordered_texts, "\n"), false, "");
+  std::move(callback).Run(base::JoinString(ordered_texts, "\n"), false, "",
+                          std::nullopt);
 }
 #endif  // BUILDFLAG(ENABLE_PDF)
 

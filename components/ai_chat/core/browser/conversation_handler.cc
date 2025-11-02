@@ -8,6 +8,7 @@
 #include <stddef.h>
 
 #include <algorithm>
+#include <iostream>
 #include <iterator>
 #include <memory>
 #include <optional>
@@ -33,12 +34,15 @@
 #include "base/types/expected.h"
 #include "base/uuid.h"
 #include "base/values.h"
+#include "base/json/json_reader.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_feedback_api.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 #include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/model_validator.h"
+#include "brave/components/ai_chat/core/browser/tools/filter_generation_utils.h"
+#include "brave/components/ai_chat/core/browser/tools/text_filter_generation_tool.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
@@ -121,6 +125,9 @@ ConversationHandler::ConversationHandler(
     : associated_content_manager_(
           std::make_unique<AssociatedContentManager>(this)),
       tool_providers_(std::move(tool_providers)),
+      text_filter_generation_tool_(
+          std::make_unique<TextFilterGenerationTool>(
+              associated_content_manager_.get())),
       metadata_(conversation),
       ai_chat_service_(ai_chat_service),
       model_service_(model_service),
@@ -469,6 +476,52 @@ void ConversationHandler::SendFeedback(const std::string& category,
       urls.empty() ? std::nullopt
                    : std::make_optional(base::JoinString(urls, ",")),
       selected_language_, std::move(on_complete));
+}
+
+void ConversationHandler::SetCreateCustomFilterImpl(
+    CreateCustomFilterImplCallback callback) {
+  create_custom_filter_impl_ = std::move(callback);
+}
+
+void ConversationHandler::CreateCustomFilter(
+    const std::string& markdown_response,
+    CreateCustomFilterCallback callback) {
+  DVLOG(2) << __func__;
+
+  // Get the domain from associated content
+  auto associated_content_vec = associated_content_manager_->GetAssociatedContent();
+  if (associated_content_vec.empty()) {
+    std::move(callback).Run(false, "No page content available");
+    return;
+  }
+
+  std::string domain = associated_content_vec[0]->url.host();
+  if (domain.empty()) {
+    std::move(callback).Run(false, "Invalid domain");
+    return;
+  }
+
+  // If we have a browser-layer implementation, use it
+  if (create_custom_filter_impl_) {
+    create_custom_filter_impl_.Run(markdown_response, domain, std::move(callback));
+    return;
+  }
+
+  // Fallback: Parse the markdown and return success (for testing)
+  auto filter = ParseMarkdownFilterResponse(markdown_response, domain);
+  if (!filter.has_value()) {
+    std::move(callback).Run(false, "Failed to parse filter from response");
+    return;
+  }
+
+  std::string message = base::StrCat({
+      "Parsed filter successfully (no browser implementation):\n",
+      "Scriptlet: ", filter->scriptlet_name.value_or("none"), "\n",
+      "Filter rule: ", filter->filter_rule.value_or("none")
+  });
+
+  DVLOG(1) << message;
+  std::move(callback).Run(true, message);
 }
 
 void ConversationHandler::GetConversationUuid(
@@ -1509,6 +1562,7 @@ void ConversationHandler::OnEngineCompletionComplete(
       return;
     }
   }
+
   OnConversationEntryAdded(chat_history_.back());
 
   // Check if we need title generation (after assistant response is added)
@@ -1818,25 +1872,62 @@ void ConversationHandler::OnStateForConversationEntriesChanged() {
 }
 
 std::vector<base::WeakPtr<Tool>> ConversationHandler::GetTools() {
+  std::cerr << "\n[FILTER_TOOL] *** GetTools() called ***\n";
   std::vector<base::WeakPtr<Tool>> tools;
   // Get provided tools
   for (auto& tool_provider : tool_providers_) {
     std::ranges::move(tool_provider->GetTools(), std::back_inserter(tools));
   }
 
+  std::cerr << "[FILTER_TOOL] Tools from providers: " << tools.size() << "\n";
+
+  // Add conversation-owned tools
+  if (text_filter_generation_tool_) {
+    std::cerr << "[FILTER_TOOL] Adding text_filter_generation_tool_ to tools list\n";
+    tools.push_back(text_filter_generation_tool_->GetWeakPtr());
+    std::cerr << "[FILTER_TOOL] Total tools before filtering: " << tools.size() << "\n";
+  } else {
+    std::cerr << "[FILTER_TOOL] WARNING: text_filter_generation_tool_ is null!\n";
+  }
+
   // Filter tools not supported
   auto& model = GetCurrentModel();
+  std::cerr << "[FILTER_TOOL] Current model: " << model.display_name
+            << " (key=" << model.key << ")\n";
+  std::cerr << "[FILTER_TOOL] Model supports_tools=" << model.supports_tools << "\n";
+  std::cerr << "[FILTER_TOOL] Filtering tools - has_associated_content="
+            << associated_content_manager_->HasAssociatedContent()
+            << ", is_temporary=" << GetIsTemporary()
+            << "\n";
+
+  size_t before_filter = tools.size();
   tools.erase(
       std::remove_if(
           tools.begin(), tools.end(),
           [&](auto& tool) {
-            return (!tool->IsSupportedByModel(model) ||
-                    !tool->SupportsConversation(
+            bool model_supported = tool->IsSupportedByModel(model);
+            bool conversation_supported = tool->SupportsConversation(
                         GetIsTemporary(),
                         associated_content_manager_->HasAssociatedContent(),
-                        conversation_capability_));
+                        conversation_capability_);
+            if (!model_supported || !conversation_supported) {
+              std::cerr << "[FILTER_TOOL] Filtering out tool, model_supported="
+                        << model_supported << ", conversation_supported="
+                        << conversation_supported << "\n";
+            }
+            return (!model_supported || !conversation_supported);
           }),
       tools.end());
+
+  std::cerr << "[FILTER_TOOL] Filtered " << (before_filter - tools.size())
+            << " tools, remaining: " << tools.size() << "\n";
+
+  // Log final tools being sent to AI
+  std::cerr << "[FILTER_TOOL] Final tools list being sent to AI:\n";
+  for (const auto& tool : tools) {
+    std::cerr << "[FILTER_TOOL]   - " << tool->Name()
+              << ": " << tool->Description().substr(0, 100) << "...\n";
+  }
 
   return tools;
 }

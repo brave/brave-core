@@ -74,6 +74,11 @@ class PageContentExtractor
   void OnDistillResult(
       mojom::PageContentExtractor::ExtractPageContentCallback callback,
       const std::optional<std::string>& content);
+  void OnDOMStructureExtractionResult(
+      mojom::PageContentExtractor::ExtractPageContentCallback callback,
+      mojom::PageContentPtr page_content,
+      std::optional<base::Value> value,
+      base::TimeTicks start_time);
 
   // RenderFrameObserver implementation:
   void OnDestruct() override;

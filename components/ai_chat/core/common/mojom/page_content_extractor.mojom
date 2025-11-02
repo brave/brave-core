@@ -29,6 +29,9 @@ union PageContentData {
 struct PageContent {
   PageContentData content;
   PageContentType type;
+  // JSON string containing DOM structure for cosmetic filter generation
+  // Format: array of {tag, classes, id, text} for visible elements
+  string? dom_structure;
 };
 
 // Allows the browser process to request extraction events for a particular

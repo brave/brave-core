@@ -4593,4 +4593,251 @@ TEST_F(ConversationHandlerUnitTest,
   EXPECT_EQ(conversation_handler_->GetCurrentModel().key, current_model);
 }
 
+// Filter Generation Tests
+
+TEST_F(ConversationHandlerUnitTest, IsFilterGenerationRequest_DetectsKeywords) {
+  // Test positive cases
+  EXPECT_TRUE(conversation_handler_->IsFilterGenerationRequest("hide the banner"));
+  EXPECT_TRUE(conversation_handler_->IsFilterGenerationRequest("block this popup"));
+  EXPECT_TRUE(conversation_handler_->IsFilterGenerationRequest("remove the ad"));
+  EXPECT_TRUE(conversation_handler_->IsFilterGenerationRequest("create a filter for this"));
+  EXPECT_TRUE(conversation_handler_->IsFilterGenerationRequest("make this element disappear"));
+  EXPECT_TRUE(conversation_handler_->IsFilterGenerationRequest("get rid of the cookie notice"));
+  EXPECT_TRUE(conversation_handler_->IsFilterGenerationRequest("filter out the newsletter signup"));
+  EXPECT_TRUE(conversation_handler_->IsFilterGenerationRequest("create a cosmetic filter"));
+
+  // Test case insensitivity
+  EXPECT_TRUE(conversation_handler_->IsFilterGenerationRequest("HIDE THE BANNER"));
+  EXPECT_TRUE(conversation_handler_->IsFilterGenerationRequest("Hide The Banner"));
+
+  // Test negative cases
+  EXPECT_FALSE(conversation_handler_->IsFilterGenerationRequest("what is the weather"));
+  EXPECT_FALSE(conversation_handler_->IsFilterGenerationRequest("tell me about brave browser"));
+  EXPECT_FALSE(conversation_handler_->IsFilterGenerationRequest("summarize this page"));
+}
+
+TEST_F(ConversationHandlerUnitTest, BuildFilterGenerationPrompt_ContainsRequiredElements) {
+  std::string prompt = conversation_handler_->BuildFilterGenerationPrompt(
+      "Page content here",
+      "[{\"tag\":\"div\",\"classes\":[\"banner\"],\"id\":\"\",\"text\":\"Cookie notice\"}]",
+      "hide the cookie banner");
+
+  // Verify prompt contains key sections
+  EXPECT_NE(prompt.find("USER REQUEST: hide the cookie banner"), std::string::npos);
+  EXPECT_NE(prompt.find("PAGE STRUCTURE:"), std::string::npos);
+  EXPECT_NE(prompt.find("OUTPUT FORMAT"), std::string::npos);
+  EXPECT_NE(prompt.find("RULES:"), std::string::npos);
+  EXPECT_NE(prompt.find("EXAMPLES:"), std::string::npos);
+  EXPECT_NE(prompt.find("filter_type"), std::string::npos);
+  EXPECT_NE(prompt.find("css_selector"), std::string::npos);
+  EXPECT_NE(prompt.find("scriptlet"), std::string::npos);
+}
+
+TEST_F(ConversationHandlerUnitTest, ParseFilterResponse_ValidCSSSelector) {
+  std::string json_response = R"({
+    "filter_type": "css_selector",
+    "code": "##.cookie-banner",
+    "description": "Hides the cookie consent banner",
+    "target_elements": [".cookie-banner"],
+    "confidence": "high",
+    "reasoning": "Clear class name indicates cookie banner"
+  })";
+
+  auto filter = conversation_handler_->ParseFilterResponse(json_response, "example.com");
+
+  ASSERT_TRUE(filter.has_value());
+  EXPECT_EQ(filter->filter_type, ConversationHandler::GeneratedFilter::CSS_SELECTOR);
+  EXPECT_EQ(filter->domain, "example.com");
+  EXPECT_EQ(filter->code, "example.com##.cookie-banner");
+  EXPECT_EQ(filter->description, "Hides the cookie consent banner");
+  EXPECT_EQ(filter->confidence, "high");
+  EXPECT_EQ(filter->reasoning, "Clear class name indicates cookie banner");
+  ASSERT_EQ(filter->target_elements.size(), 1u);
+  EXPECT_EQ(filter->target_elements[0], ".cookie-banner");
+}
+
+TEST_F(ConversationHandlerUnitTest, ParseFilterResponse_ValidScriptlet) {
+  std::string json_response = R"({
+    "filter_type": "scriptlet",
+    "code": "document.querySelectorAll('.ad').forEach(el => el.remove());",
+    "description": "Removes all ad elements",
+    "target_elements": [".ad"],
+    "confidence": "medium",
+    "reasoning": "Using scriptlet to completely remove elements"
+  })";
+
+  auto filter = conversation_handler_->ParseFilterResponse(json_response, "example.com");
+
+  ASSERT_TRUE(filter.has_value());
+  EXPECT_EQ(filter->filter_type, ConversationHandler::GeneratedFilter::SCRIPTLET);
+  EXPECT_EQ(filter->domain, "example.com");
+  // Should be wrapped in IIFE with debug logging
+  EXPECT_NE(filter->code.find("(() => {"), std::string::npos);
+  EXPECT_NE(filter->code.find("})()"), std::string::npos);
+  EXPECT_NE(filter->code.find("[Leo Scriptlet] Starting execution"), std::string::npos);
+  EXPECT_NE(filter->code.find("[Leo Scriptlet] Execution complete"), std::string::npos);
+  EXPECT_NE(filter->code.find("document.querySelectorAll('.ad').forEach(el => el.remove());"), std::string::npos);
+}
+
+TEST_F(ConversationHandlerUnitTest, ParseFilterResponse_InvalidJSON) {
+  std::string json_response = "not valid json";
+
+  auto filter = conversation_handler_->ParseFilterResponse(json_response, "example.com");
+
+  EXPECT_FALSE(filter.has_value());
+}
+
+TEST_F(ConversationHandlerUnitTest, ParseFilterResponse_MissingFields) {
+  std::string json_response = R"({
+    "filter_type": "css_selector",
+    "code": "##.banner"
+  })";
+
+  auto filter = conversation_handler_->ParseFilterResponse(json_response, "example.com");
+
+  EXPECT_FALSE(filter.has_value());
+}
+
+TEST_F(ConversationHandlerUnitTest, ParseFilterResponse_InvalidFilterType) {
+  std::string json_response = R"({
+    "filter_type": "invalid_type",
+    "code": "##.banner",
+    "description": "Test",
+    "target_elements": [".banner"],
+    "confidence": "high",
+    "reasoning": "Test"
+  })";
+
+  auto filter = conversation_handler_->ParseFilterResponse(json_response, "example.com");
+
+  EXPECT_FALSE(filter.has_value());
+}
+
+TEST_F(ConversationHandlerUnitTest, WrapInIIFE_ProducesCorrectFormat) {
+  std::string code = "console.log('test');";
+  std::string wrapped = conversation_handler_->WrapInIIFE(code);
+
+  EXPECT_EQ(wrapped, "(() => {\nconsole.log('test');\n})()");
+}
+
+TEST_F(ConversationHandlerUnitTest, InjectDebugLogging_AddsConsoleStatements) {
+  std::string code = "document.querySelector('.ad').remove();";
+  std::string with_logging = conversation_handler_->InjectDebugLogging(code);
+
+  EXPECT_NE(with_logging.find("console.log('[Leo Scriptlet] Starting execution');"), std::string::npos);
+  EXPECT_NE(with_logging.find("console.log('[Leo Scriptlet] Execution complete');"), std::string::npos);
+  EXPECT_NE(with_logging.find("document.querySelector('.ad').remove();"), std::string::npos);
+}
+
+TEST_F(ConversationHandlerUnitTest, GenerateScriptletName_ProducesValidName) {
+  EXPECT_EQ(conversation_handler_->GenerateScriptletName("Hide popup banners"),
+            "user-hide-popup-banners");
+  EXPECT_EQ(conversation_handler_->GenerateScriptletName("Remove Cookie Notice"),
+            "user-remove-cookie-notice");
+  EXPECT_EQ(conversation_handler_->GenerateScriptletName("Block_Ads"),
+            "user-block-ads");
+
+  // Test with special characters
+  std::string name_with_special = conversation_handler_->GenerateScriptletName(
+      "Remove!@# Special$%^ Characters&*()");
+  EXPECT_EQ(name_with_special.find("user-"), 0u);
+  EXPECT_EQ(name_with_special.find("!"), std::string::npos);
+  EXPECT_EQ(name_with_special.find("@"), std::string::npos);
+
+  // Test length limiting
+  std::string long_description = std::string(100, 'a');
+  std::string long_name = conversation_handler_->GenerateScriptletName(long_description);
+  EXPECT_LE(long_name.length(), 50u);
+}
+
+TEST_F(ConversationHandlerUnitTest, ProcessScriptlet_CombinesWrappingAndLogging) {
+  std::string raw_code = "alert('test');";
+  std::string processed = conversation_handler_->ProcessScriptlet(raw_code, "Test alert");
+
+  // Should have IIFE wrapper
+  EXPECT_EQ(processed.find("(() => {"), 0u);
+  EXPECT_NE(processed.find("})()"), std::string::npos);
+
+  // Should have debug logging
+  EXPECT_NE(processed.find("[Leo Scriptlet] Starting execution"), std::string::npos);
+  EXPECT_NE(processed.find("[Leo Scriptlet] Execution complete"), std::string::npos);
+
+  // Should have original code
+  EXPECT_NE(processed.find("alert('test');"), std::string::npos);
+}
+
+TEST_F(ConversationHandlerUnitTest, ValidateFilterCode_AcceptsValidCSS) {
+  EXPECT_TRUE(conversation_handler_->ValidateFilterCode(
+      "##.banner",
+      ConversationHandler::GeneratedFilter::CSS_SELECTOR));
+  EXPECT_TRUE(conversation_handler_->ValidateFilterCode(
+      "##div.ad",
+      ConversationHandler::GeneratedFilter::CSS_SELECTOR));
+}
+
+TEST_F(ConversationHandlerUnitTest, ValidateFilterCode_AcceptsValidScriptlet) {
+  EXPECT_TRUE(conversation_handler_->ValidateFilterCode(
+      "document.querySelector('.ad').remove();",
+      ConversationHandler::GeneratedFilter::SCRIPTLET));
+  EXPECT_TRUE(conversation_handler_->ValidateFilterCode(
+      "console.log('safe code');",
+      ConversationHandler::GeneratedFilter::SCRIPTLET));
+}
+
+TEST_F(ConversationHandlerUnitTest, ValidateFilterCode_RejectsDangerousPatterns) {
+  // Should reject eval
+  EXPECT_FALSE(conversation_handler_->ValidateFilterCode(
+      "eval('malicious code');",
+      ConversationHandler::GeneratedFilter::SCRIPTLET));
+
+  // Should reject Function constructor
+  EXPECT_FALSE(conversation_handler_->ValidateFilterCode(
+      "new Function('return 1')();",
+      ConversationHandler::GeneratedFilter::SCRIPTLET));
+
+  // Should reject script tags
+  EXPECT_FALSE(conversation_handler_->ValidateFilterCode(
+      "document.write('<script>alert(1)</script>');",
+      ConversationHandler::GeneratedFilter::SCRIPTLET));
+
+  // Should reject javascript: URLs
+  EXPECT_FALSE(conversation_handler_->ValidateFilterCode(
+      "location.href = 'javascript:alert(1)';",
+      ConversationHandler::GeneratedFilter::SCRIPTLET));
+
+  // Should reject data: URLs
+  EXPECT_FALSE(conversation_handler_->ValidateFilterCode(
+      "fetch('data:text/html,<script>alert(1)</script>');",
+      ConversationHandler::GeneratedFilter::SCRIPTLET));
+
+  // Should reject import
+  EXPECT_FALSE(conversation_handler_->ValidateFilterCode(
+      "import('malicious.js');",
+      ConversationHandler::GeneratedFilter::SCRIPTLET));
+
+  // Should reject require
+  EXPECT_FALSE(conversation_handler_->ValidateFilterCode(
+      "require('fs');",
+      ConversationHandler::GeneratedFilter::SCRIPTLET));
+}
+
+TEST_F(ConversationHandlerUnitTest, ValidateFilterCode_RejectsEmptyCode) {
+  EXPECT_FALSE(conversation_handler_->ValidateFilterCode(
+      "",
+      ConversationHandler::GeneratedFilter::CSS_SELECTOR));
+  EXPECT_FALSE(conversation_handler_->ValidateFilterCode(
+      "",
+      ConversationHandler::GeneratedFilter::SCRIPTLET));
+}
+
+TEST_F(ConversationHandlerUnitTest, ValidateFilterCode_CaseInsensitiveDangerousPatterns) {
+  // Should catch dangerous patterns regardless of case
+  EXPECT_FALSE(conversation_handler_->ValidateFilterCode(
+      "EVAL('code');",
+      ConversationHandler::GeneratedFilter::SCRIPTLET));
+  EXPECT_FALSE(conversation_handler_->ValidateFilterCode(
+      "JavaScript:alert(1);",
+      ConversationHandler::GeneratedFilter::SCRIPTLET));
+}
+
 }  // namespace ai_chat

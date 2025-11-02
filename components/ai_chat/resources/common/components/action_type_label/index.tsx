@@ -88,6 +88,11 @@ function getCategoryAndItem(actionType: Mojom.ActionType): {
         category: getLocale(S.AI_CHAT_CONTEXT_CHANGE_LENGTH),
         item: getLocale(S.AI_CHAT_CONTEXT_EXPAND),
       }
+    case Mojom.ActionType.GENERATE_COSMETIC_FILTER:
+      return {
+        category: undefined,
+        item: getLocale(S.CHAT_UI_GENERATE_SCRIPTLET),
+      }
     default:
       return { category: undefined, item: undefined }
   }

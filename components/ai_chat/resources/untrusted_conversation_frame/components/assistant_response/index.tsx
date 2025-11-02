@@ -13,6 +13,7 @@ import MarkdownRenderer from '../markdown_renderer'
 import ToolEvent from './tool_event'
 import WebSourcesEvent from './web_sources_event'
 import MemoryToolEvent from './memory_tool_event'
+import GeneratedFilterDisplay from '../generated_filter_display'
 import styles from './style.module.scss'
 import {
   removeReasoning,
@@ -81,9 +82,10 @@ function AssistantEvent(
   props: BaseProps & {
     event: Mojom.ConversationEntryEvent
     hasCompletionStarted: boolean
+    hasFilterGenerationTool?: boolean
   },
 ) {
-  const { allowedLinks, event, isEntryInProgress, isLeoModel } = props
+  const { allowedLinks, event, isEntryInProgress, isLeoModel, hasFilterGenerationTool } = props
 
   if (event.completionEvent) {
     const numberedLinks =
@@ -102,10 +104,23 @@ function AssistantEvent(
 
     // Replaces 2 consecutive citations with a separator and also
     // adds a space before the citation and the text.
-    const completion = filteredOutCitationsWithMissingLinks.replace(
+    let completion = filteredOutCitationsWithMissingLinks.replace(
       /(\w|\S)\[(\d+)\]/g,
       '$1 [$2]',
     )
+
+    // If this is a text_filter_generation response, strip out only the scriptlet name
+    // and filter rule (shown in the button UI dropdown), but keep the JavaScript code visible
+    if (hasFilterGenerationTool) {
+      // Remove scriptlet name section - match with or without bold markdown
+      completion = completion.replace(/(\*\*)?Scriptlet name:(\*\*)?[\s\S]*?```[\s\S]*?```/gi, '')
+      // Remove filter rule section - match with or without bold markdown
+      completion = completion.replace(/(\*\*)?Filter rule:(\*\*)?[\s\S]*?```[\s\S]*?```/gi, '')
+      // Clean up multiple consecutive blank lines
+      completion = completion.replace(/\n\s*\n\s*\n/g, '\n\n')
+      // Clean up extra whitespace
+      completion = completion.trim()
+    }
 
     const fullText = `${numberedLinks}${removeReasoning(completion)}`
 
@@ -131,13 +146,38 @@ function AssistantEvent(
     )
   }
   if (props.event.toolUseEvent) {
+    console.log('[AssistantEvent] Found toolUseEvent', {
+      toolName: props.event.toolUseEvent.toolName,
+      hasOutput: !!props.event.toolUseEvent.output,
+      outputLength: props.event.toolUseEvent.output?.length,
+    })
     if (props.event.toolUseEvent.toolName === Mojom.MEMORY_STORAGE_TOOL_NAME) {
+      console.log('[AssistantEvent] Rendering MemoryToolEvent')
       return <MemoryToolEvent toolUseEvent={props.event.toolUseEvent} />
     }
+    console.log('[AssistantEvent] Rendering ToolEvent for:', props.event.toolUseEvent.toolName)
     return (
       <ToolEvent
         toolUseEvent={props.event.toolUseEvent}
         isEntryActive={props.isEntryInteractivityAllowed}
+      />
+    )
+  }
+  if (props.event.generatedFilterEvent) {
+    const filterEvent = props.event.generatedFilterEvent
+    return (
+      <GeneratedFilterDisplay
+        filter={{
+          filterType: filterEvent.filterType === Mojom.GeneratedFilterType.CSS_SELECTOR
+            ? 'css_selector'
+            : 'scriptlet',
+          domain: filterEvent.domain,
+          code: filterEvent.code,
+          description: filterEvent.description,
+          targetElements: filterEvent.targetElements,
+          confidence: filterEvent.confidence as 'high' | 'medium' | 'low',
+          reasoning: filterEvent.reasoning,
+        }}
       />
     )
   }
@@ -173,17 +213,25 @@ export default function AssistantResponse(props: AssistantResponseProps) {
 
   return (
     <>
-      {props.events?.map((event, i) => (
-        <AssistantEvent
-          key={i}
-          event={event}
-          hasCompletionStarted={hasCompletionStarted}
-          isEntryInProgress={props.isEntryInProgress}
-          isEntryInteractivityAllowed={props.isEntryInteractivityAllowed}
-          allowedLinks={props.allowedLinks}
-          isLeoModel={props.isLeoModel}
-        />
-      ))}
+      {props.events?.map((event, i) => {
+        // Check if this entry has a text_filter_generation tool event
+        const hasFilterGenerationTool = props.events?.some(
+          e => e.toolUseEvent?.toolName === 'text_filter_generation'
+        )
+
+        return (
+          <AssistantEvent
+            key={i}
+            event={event}
+            hasCompletionStarted={hasCompletionStarted}
+            isEntryInProgress={props.isEntryInProgress}
+            isEntryInteractivityAllowed={props.isEntryInteractivityAllowed}
+            allowedLinks={props.allowedLinks}
+            isLeoModel={props.isLeoModel}
+            hasFilterGenerationTool={hasFilterGenerationTool}
+          />
+        )
+      })}
 
       {!props.isEntryInProgress && (
         <>

@@ -58,7 +58,8 @@ class AssociatedURLContent : public AssociatedContentDelegate,
   void OnTimeout();
   void OnContentExtractionComplete(std::string content,
                                    bool is_video,
-                                   std::string invalidation_token);
+                                   std::string invalidation_token,
+                                   std::optional<std::string> dom_structure);
   void CompleteWithError(const std::string& error);
 
   // content::WebContentsObserver:
