@@ -94,6 +94,10 @@ AdBlockOnlyModePolicies AdBlockOnlyModePolicyManager::GetPoliciesImpl() const {
   // Do not block third-party cookies.
   policies.emplace(policy::key::kBlockThirdPartyCookies, base::Value(false));
 
+  // Disable Brave Fingerprinting protection.
+  policies.emplace(policy::key::kDefaultBraveFingerprintingV2Setting,
+                   base::Value(CONTENT_SETTING_ALLOW));
+
   // Disable language fingerprinting reduction.
   policies.emplace(policy::key::kBraveReduceLanguageEnabled,
                    base::Value(false));
@@ -103,6 +107,14 @@ AdBlockOnlyModePolicies AdBlockOnlyModePolicyManager::GetPoliciesImpl() const {
 
   // Disable URL debouncing.
   policies.emplace(policy::key::kBraveDebouncingEnabled, base::Value(false));
+
+  // Disable Brave Tracking Query Parameters Filtering.
+  policies.emplace(policy::key::kBraveTrackingQueryParametersFilteringEnabled,
+                   base::Value(false));
+
+  // Disable Brave Global Privacy Control.
+  policies.emplace(policy::key::kBraveGlobalPrivacyControlEnabled,
+                   base::Value(false));
 
   return policies;
 #else
