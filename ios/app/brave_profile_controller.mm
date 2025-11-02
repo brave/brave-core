@@ -13,6 +13,7 @@
 #include "brave/ios/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/ios/browser/ai_chat/model_service_factory.h"
 #include "brave/ios/browser/api/bookmarks/brave_bookmarks_api+private.h"
+#include "brave/ios/browser/api/brave_account/brave_account_api+private.h"
 #include "brave/ios/browser/api/brave_stats/brave_stats+private.h"
 #include "brave/ios/browser/api/brave_wallet/brave_wallet_api+private.h"
 #include "brave/ios/browser/api/content_settings/default_host_content_settings.h"
@@ -89,6 +90,7 @@
   std::unique_ptr<BraveWebViewDownloadManager> _downloadManager;
   std::unique_ptr<BraveWebViewDownloadManager> _otrDownloadManager;
 }
+@property(nonatomic) BraveAccountAPI* braveAccountAPI;
 @property(nonatomic) BraveBookmarksAPI* bookmarksAPI;
 @property(nonatomic) BraveHistoryAPI* historyAPI;
 @property(nonatomic) BravePasswordAPI* passwordAPI;
@@ -208,6 +210,13 @@
 
 - (id<ProfileBridge>)profile {
   return _profileBridge;
+}
+
+- (BraveAccountAPI*)braveAccountAPI {
+  if (!_braveAccountAPI) {
+    _braveAccountAPI = [[BraveAccountAPI alloc] initWithProfile:_profile];
+  }
+  return _braveAccountAPI;
 }
 
 - (BraveBookmarksAPI*)bookmarksAPI {

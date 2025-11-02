@@ -1,0 +1,21 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("brave_account") {
+  sources = [
+    "brave_account_api+private.h",
+    "brave_account_api.h",
+    "brave_account_api.mm",
+  ]
+  deps = [
+    "//base",
+    "//brave/components/brave_account",
+    "//brave/components/brave_account/mojom",
+    "//brave/ios/browser/brave_account",
+    "//ios/chrome/browser/shared/model/profile",
+    "//mojo/public/cpp/bindings",
+  ]
+  frameworks = [ "Foundation.framework" ]
+}

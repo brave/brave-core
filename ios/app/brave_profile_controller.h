@@ -8,9 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-@class BraveBookmarksAPI, BraveHistoryAPI, BravePasswordAPI, BraveOpenTabsAPI,
-    BraveSendTabAPI, BraveSyncAPI, BraveSyncProfileServiceIOS, DeAmpPrefs,
-    BraveTabGeneratorAPI, BraveWalletAPI, BraveStats, AIChat,
+@class BraveAccountAPI, BraveBookmarksAPI, BraveHistoryAPI, BravePasswordAPI,
+    BraveOpenTabsAPI, BraveSendTabAPI, BraveSyncAPI, BraveSyncProfileServiceIOS,
+    DeAmpPrefs, BraveTabGeneratorAPI, BraveWalletAPI, BraveStats, AIChat,
     DefaultHostContentSettings, CWVWebViewConfiguration, WebImageDownloader,
     NTPBackgroundImagesService, BraveWebViewConfiguration;
 @protocol AIChatDelegate
@@ -21,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 OBJC_EXPORT
 @interface BraveProfileController : NSObject
 @property(readonly) id<ProfileBridge> profile;
+@property(readonly) BraveAccountAPI* braveAccountAPI;
 @property(readonly) BraveBookmarksAPI* bookmarksAPI;
 @property(readonly) BraveHistoryAPI* historyAPI;
 @property(readonly) BravePasswordAPI* passwordAPI;
