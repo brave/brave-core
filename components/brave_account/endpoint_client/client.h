@@ -45,7 +45,6 @@ namespace brave_account::endpoint_client {
 
 enum class RequestCancelability { kNonCancelable, kCancelable };
 
-
 struct NetworkError {
   int response_code;
   std::string error_message;
