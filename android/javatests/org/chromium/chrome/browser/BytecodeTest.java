@@ -62,6 +62,7 @@ import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider
 import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsVisibilityDelegate;
 import org.chromium.chrome.browser.browser_controls.TopControlsStacker;
 import org.chromium.chrome.browser.browserservices.intents.BrowserServicesIntentDataProvider;
+import org.chromium.chrome.browser.browserservices.ui.controller.trustedwebactivity.ClientPackageNameProvider;
 import org.chromium.chrome.browser.compositor.CompositorViewHolder;
 import org.chromium.chrome.browser.compositor.layouts.LayoutRenderHost;
 import org.chromium.chrome.browser.compositor.layouts.LayoutUpdateHost;
@@ -1011,6 +1012,12 @@ public class BytecodeTest {
                         "getBrowserServicesThemeColorProvider",
                         MethodModifier.REGULAR,
                         BrowserServicesThemeColorProvider.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/customtabs/BaseCustomTabActivity",
+                        "getClientPackageNameProvider",
+                        MethodModifier.REGULAR,
+                        ClientPackageNameProvider.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/ChromeTabbedActivity",

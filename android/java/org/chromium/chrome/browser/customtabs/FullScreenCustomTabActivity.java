@@ -30,6 +30,7 @@ import androidx.core.content.ContextCompat;
 import org.chromium.base.IntentUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.browserservices.intents.BrowserServicesIntentDataProvider;
+import org.chromium.chrome.browser.browserservices.ui.controller.trustedwebactivity.ClientPackageNameProvider;
 import org.chromium.chrome.browser.customtabs.content.CustomTabActivityTabController;
 import org.chromium.chrome.browser.customtabs.features.minimizedcustomtab.CustomTabMinimizationManagerHolder;
 import org.chromium.chrome.browser.customtabs.features.toolbar.BrowserServicesThemeColorProvider;
@@ -233,7 +234,8 @@ public class FullScreenCustomTabActivity extends CustomTabActivity {
                         () -> getCustomTabActivityNavigationController().openCurrentUrlInBrowser(),
                         getEdgeToEdgeManager(),
                         getAppHeaderCoordinator(),
-                        this::getBrowserServicesThemeColorProvider);
+                        this::getBrowserServicesThemeColorProvider,
+                        getClientPackageNameProvider().get());
         return mBaseCustomTabRootUiCoordinator;
     }
 
@@ -244,6 +246,11 @@ public class FullScreenCustomTabActivity extends CustomTabActivity {
 
     private BrowserServicesThemeColorProvider getBrowserServicesThemeColorProvider() {
         assert false : "This methos should be overridden via bytecode manipulation!";
+        return null;
+    }
+
+    private ClientPackageNameProvider getClientPackageNameProvider() {
+        assert false : "This method should be overridden via bytecode manipulation!";
         return null;
     }
 }
