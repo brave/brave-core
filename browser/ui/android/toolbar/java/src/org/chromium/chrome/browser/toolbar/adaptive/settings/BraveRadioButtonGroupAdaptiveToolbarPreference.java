@@ -23,6 +23,8 @@ import org.chromium.chrome.browser.toolbar.adaptive.AdaptiveToolbarStatePredicto
 import org.chromium.components.browser_ui.widget.RadioButtonWithDescription;
 import org.chromium.ui.base.DeviceFormFactor;
 
+import java.util.ArrayList;
+
 /** Brave's fragment that allows the user to configure toolbar shortcut preferences. */
 @NullMarked
 public class BraveRadioButtonGroupAdaptiveToolbarPreference
@@ -144,9 +146,11 @@ public class BraveRadioButtonGroupAdaptiveToolbarPreference
 
     public UiState buildUiStateForStats() {
         // For stats always report New Tab button just to avoid assert on Brave variants.
+        ArrayList<Integer> buttonList = new ArrayList<>();
+        buttonList.add(AdaptiveToolbarButtonVariant.UNKNOWN);
         return new UiState(
                 /* canShowUi= */ true,
-                AdaptiveToolbarButtonVariant.UNKNOWN,
+                buttonList,
                 AdaptiveToolbarButtonVariant.NEW_TAB,
                 AdaptiveToolbarButtonVariant.NEW_TAB);
     }
