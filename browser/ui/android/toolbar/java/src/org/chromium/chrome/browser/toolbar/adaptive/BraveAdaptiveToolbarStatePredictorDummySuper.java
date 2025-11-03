@@ -28,7 +28,7 @@ public class BraveAdaptiveToolbarStatePredictorDummySuper extends AdaptiveToolba
         assert false : "This class usage should be removed via bytecode modification!";
     }
 
-    public boolean isValidSegment(@AdaptiveToolbarButtonVariant int variant) {
+    public static boolean isValidSegment(@AdaptiveToolbarButtonVariant int variant) {
         assert false : "This class usage should be removed via bytecode modification!";
         return false;
     }
