@@ -70,6 +70,7 @@ source_set("unit_tests") {
     "//base/test:test_support",
     "//brave/browser/policy:brave_simple_policy_map",
     "//brave/components/brave_origin",
+    "//brave/components/brave_rewards/core",
     "//brave/components/constants",
     "//brave/components/p3a",
     "//chrome/browser/profiles",
@@ -83,7 +84,5 @@ source_set("unit_tests") {
     deps += [ "//brave/components/tor:pref_names" ]
   }
 
-  if (is_win || is_mac || is_linux) {
-    deps += [ "//brave/components/brave_rewards/core" ]
-  }
+  deps += [  ]
 }
