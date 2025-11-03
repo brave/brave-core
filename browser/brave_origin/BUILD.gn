@@ -84,5 +84,5 @@ source_set("unit_tests") {
     deps += [ "//brave/components/tor:pref_names" ]
   }
 
-  deps += [  ]
+  deps += []
 }

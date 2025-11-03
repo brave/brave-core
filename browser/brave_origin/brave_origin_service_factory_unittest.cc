@@ -9,7 +9,7 @@
 #include "base/containers/map_util.h"
 #include "brave/browser/policy/brave_simple_policy_map.h"
 #include "brave/components/brave_origin/brave_origin_policy_info.h"
-#include "brave/components/brave_rewards/core/pref_names.h"  // nogncheck
+#include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/p3a/pref_names.h"
 #include "chrome/test/base/testing_browser_process.h"
