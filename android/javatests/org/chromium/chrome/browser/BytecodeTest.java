@@ -1050,7 +1050,7 @@ public class BytecodeTest {
                 methodExists(
                         "org/chromium/chrome/browser/toolbar/adaptive/AdaptiveToolbarStatePredictor", // presubmit: ignore-long-line
                         "isValidSegment",
-                        MethodModifier.REGULAR,
+                        MethodModifier.STATIC,
                         boolean.class,
                         int.class));
         Assert.assertTrue(
