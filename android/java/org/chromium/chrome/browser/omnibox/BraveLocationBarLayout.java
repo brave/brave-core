@@ -8,6 +8,7 @@ package org.chromium.chrome.browser.omnibox;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.ImageButton;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -35,15 +36,21 @@ public class BraveLocationBarLayout extends LocationBarLayout {
         StatusView statusView = findViewById(R.id.location_bar_status);
         statusView.setBackgroundDrawable(null);
 
-        // Ensure location bar status and url action container adjust bottom to parent
-        ConstraintLayout.LayoutParams statusViewParams =
-                (ConstraintLayout.LayoutParams) statusView.getLayoutParams();
-        ConstraintLayout.LayoutParams urlActionContainerParams =
-                (ConstraintLayout.LayoutParams) mUrlActionContainer.getLayoutParams();
-        statusViewParams.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID;
-        urlActionContainerParams.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID;
-        statusView.setLayoutParams(statusViewParams);
-        mUrlActionContainer.setLayoutParams(urlActionContainerParams);
+        // Ensure these location bar buttons are aligned to parent by top/bottom. Otherwise they
+        // look as misaligned.
+        tieTopAndBottomToParent(R.id.location_bar_status);
+        tieTopAndBottomToParent(R.id.bookmark_button);
+        tieTopAndBottomToParent(R.id.mic_button);
+        tieTopAndBottomToParent(R.id.delete_button);
+    }
+
+    void tieTopAndBottomToParent(int id) {
+        View view = findViewById(id);
+        ConstraintLayout.LayoutParams params =
+                (ConstraintLayout.LayoutParams) view.getLayoutParams();
+        params.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID;
+        params.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
+        view.setLayoutParams(params);
     }
 
     void setQRButtonTint(ColorStateList colorStateList) {
