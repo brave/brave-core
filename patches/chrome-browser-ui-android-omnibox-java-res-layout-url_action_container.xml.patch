@@ -1,12 +1,21 @@
 diff --git a/chrome/browser/ui/android/omnibox/java/res/layout/url_action_container.xml b/chrome/browser/ui/android/omnibox/java/res/layout/url_action_container.xml
-index b9c9bc94f76967a7993a3cdd40adb77ae446f042..125b3af81672d2e93f6fab50347d6f109405025d 100644
+index 1b9777d2d65f64d64fa392ede02218acfa6dcc68..cefad80327c18c93e00bacd9cc4896fc2134c752 100644
 --- a/chrome/browser/ui/android/omnibox/java/res/layout/url_action_container.xml
 +++ b/chrome/browser/ui/android/omnibox/java/res/layout/url_action_container.xml
-@@ -8,6 +8,7 @@ found in the LICENSE file.
-     xmlns:android="http://schemas.android.com/apk/res/android"
-     xmlns:app="http://schemas.android.com/apk/res-auto">
-     <!-- Fusebox/Omnibox top-stacked elements on Inactive Omnibox on NTP -->
-+<org.chromium.ui.widget.ChromeImageButton android:id="@+id/qr_button" style="@style/LocationBarActionButton" android:src="@drawable/ic_qr_code_18" android:visibility="invisible" android:contentDescription="@string/scan_qr_code" />
-     <org.chromium.ui.widget.ChromeImageButton
-         style="@style/LocationBarActionButton.AdaptiveDensity"
-         android:id="@+id/composeplate_button"
+@@ -46,6 +46,7 @@ found in the LICENSE file.
+         app:layout_constraintTop_toBottomOf="@id/location_bar_attachments"
+         app:layout_constraintEnd_toStartOf="@id/margin_spacer"/>
+ 
++<org.chromium.ui.widget.ChromeImageButton android:id="@+id/qr_button" style="@style/LocationBarActionButton.AdaptiveDensity" android:src="@drawable/ic_qr_code_18" android:visibility="invisible" android:contentDescription="@string/scan_qr_code" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintTop_toTopOf="parent" app:layout_constraintEnd_toStartOf="@id/mic_button"/>
+     <!--
+     Fusebox/Omnibox top-stacked elements on Active Omnibox with Empty content
+     -->
+@@ -80,7 +81,7 @@ found in the LICENSE file.
+         android:contentDescription="@string/accessibility_toolbar_btn_delete_url"
+         android:tooltipText="@string/accessibility_toolbar_btn_delete_url"
+         app:layout_constraintTop_toBottomOf="@id/location_bar_attachments"
+-        app:layout_constraintEnd_toStartOf="@id/margin_spacer"/>
++        app:layout_constraintEnd_toStartOf="@id/qr_button"/>
+ 
+     <Space
+         android:id="@+id/margin_spacer"
