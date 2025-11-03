@@ -94,7 +94,8 @@ public class FullScreenCustomTabRootUiCoordinator extends BaseCustomTabRootUiCoo
             @NonNull Runnable openInBrowserRunnable,
             @NonNull EdgeToEdgeManager edgeToEdgeManager,
             @Nullable DesktopWindowStateManager desktopWindowStateManager,
-            @Nullable Supplier<BrowserServicesThemeColorProvider> webAppThemeColorProvider) {
+            @Nullable Supplier<BrowserServicesThemeColorProvider> webAppThemeColorProvider,
+            @Nullable String clientPackageName) {
         super(
                 activity,
                 shareDelegateSupplier,
@@ -135,7 +136,8 @@ public class FullScreenCustomTabRootUiCoordinator extends BaseCustomTabRootUiCoo
                 openInBrowserRunnable,
                 edgeToEdgeManager,
                 desktopWindowStateManager,
-                webAppThemeColorProvider);
+                webAppThemeColorProvider,
+                clientPackageName);
     }
 
     @Override
