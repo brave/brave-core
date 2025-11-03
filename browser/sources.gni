@@ -443,6 +443,8 @@ if (enable_brave_vpn) {
 }
 
 if (is_android) {
+  import("//brave/browser/brave_account/android/sources.gni")
+
   brave_chrome_browser_sources += [
     "//brave/browser/android/brave_init_android.cc",
     "//brave/browser/password_manager/android/password_ui_view_android.cc",
@@ -455,9 +457,11 @@ if (is_android) {
     "//chrome/browser/importer/profile_writer.h",
   ]
 
+  brave_chrome_browser_sources += brave_browser_brave_account_android_sources
   brave_chrome_browser_sources += brave_browser_brave_rewards_android_sources
   brave_chrome_browser_sources += brave_browser_brave_wallet_android_sources
   brave_chrome_browser_sources += brave_browser_misc_metrics_android_sources
+  brave_chrome_browser_deps += brave_browser_brave_account_android_deps
   brave_chrome_browser_deps += brave_browser_brave_wallet_android_deps
 
   brave_chrome_browser_deps += [

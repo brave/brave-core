@@ -1,0 +1,12 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+brave_browser_brave_account_android_sources = [ "//brave/browser/brave_account/android/brave_account_service_factory_android.cc" ]
+
+brave_browser_brave_account_android_deps = [
+  "//brave/components/brave_account",
+  "//brave/components/brave_account/mojom",
+  "//chrome/browser/profiles:profile",
+]

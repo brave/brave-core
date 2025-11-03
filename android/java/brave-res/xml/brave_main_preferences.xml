@@ -15,6 +15,32 @@
         android:order="1"
         android:icon="@drawable/ic_brave"
         android:title="@string/get_started"/>
+    <org.chromium.components.browser_ui.settings.ChromeBasePreference
+        android:key="almost_there"
+        android:order="1"
+        android:icon="@drawable/ic_brave"
+        android:title="Almost there!"
+        android:summary="A confirmation email is on the way. Click the button in that email to activate your account."
+        android:selectable="false"/>
+    <org.chromium.components.browser_ui.settings.ChromeBasePreference
+        android:key="resend_confirmation_email"
+        android:order="2"
+        android:title="Resend confirmation email"
+        android:summary="Don't see the email? Check your spam folder or click on the button to resend the confirmation email."/>
+    <org.chromium.components.browser_ui.settings.ChromeBasePreference
+        android:key="cancel_registration"
+        android:order="3"
+        android:title="Cancel registration"/>
+    <org.chromium.components.browser_ui.settings.ChromeBasePreference
+        android:key="brave_account_user"
+        android:order="1"
+        android:icon="@drawable/ic_brave"
+        android:title="John Doe"
+        android:summary="johndoe@gmail.com"/>
+    <org.chromium.components.browser_ui.settings.ChromeBasePreference
+        android:key="sign_out"
+        android:order="2"
+        android:title="Sign out"/>
     <PreferenceCategory
         android:key="features_section"
         android:order="2"

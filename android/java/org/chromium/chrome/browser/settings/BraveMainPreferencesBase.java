@@ -20,10 +20,12 @@ import org.chromium.base.ContextUtils;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.brave.browser.customize_menu.CustomizeBraveMenu;
+import org.chromium.brave_account.mojom.Authentication;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveLaunchIntentDispatcher;
+import org.chromium.chrome.browser.brave_account.BraveAccountServiceFactory;
 import org.chromium.chrome.browser.brave_leo.BraveLeoPrefUtils;
 import org.chromium.chrome.browser.brave_origin.BraveOriginPlansActivity;
 import org.chromium.chrome.browser.brave_origin.BraveOriginSubscriptionPrefs;
@@ -38,6 +40,7 @@ import org.chromium.chrome.browser.ntp_background_images.util.NTPImageUtil;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.partnercustomizations.CloseBraveManager;
 import org.chromium.chrome.browser.preferences.BravePref;
+import org.chromium.chrome.browser.preferences.PrefServiceUtil;
 import org.chromium.chrome.browser.privacy.settings.BravePrivacySettings;
 import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.rate.BraveRateDialogFragment;
@@ -50,6 +53,8 @@ import org.chromium.chrome.browser.widget.quickactionsearchandbookmark.utils.Bra
 import org.chromium.components.browser_ui.settings.ChromeBasePreference;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
+import org.chromium.components.prefs.PrefChangeRegistrar;
+import org.chromium.components.prefs.PrefChangeRegistrar.PrefObserver;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.ui.base.DeviceFormFactor;
 
@@ -58,7 +63,7 @@ import java.util.HashMap;
 // This excludes some settings in main settings screen.
 @NullMarked
 public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
-        implements Preference.OnPreferenceChangeListener {
+        implements Preference.OnPreferenceChangeListener, PrefObserver {
     // sections
     private static final String PREF_BRAVE_ACCOUNT_SECTION = "brave_account_section";
     private static final String PREF_FEATURES_SECTION = "features_section";
@@ -72,6 +77,11 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
     // prefs
     private static final String PREF_BRAVE_VPN_CALLOUT = "pref_vpn_callout";
     private static final String PREF_GET_STARTED = "get_started";
+    private static final String PREF_ALMOST_THERE = "almost_there";
+    private static final String PREF_RESEND_CONFIRMATION_EMAIL = "resend_confirmation_email";
+    private static final String PREF_CANCEL_REGISTRATION = "cancel_registration";
+    private static final String PREF_BRAVE_ACCOUNT_USER = "brave_account_user";
+    private static final String PREF_SIGN_OUT = "sign_out";
     private static final String PREF_CLOSING_ALL_TABS_CLOSES_BRAVE =
             "closing_all_tabs_closes_brave";
     private static final String PREF_PRIVACY = "privacy";
@@ -106,8 +116,16 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
     private static final String PREF_HOME_SCREEN_WIDGET = "home_screen_widget";
     private static final String PREF_SAFETY_CHECK = "safety_check";
 
+    // Brave Account pref names
+    private static final String BRAVE_ACCOUNT_AUTHENTICATION_TOKEN_PREF =
+            "brave.account.authentication_token";
+    private static final String BRAVE_ACCOUNT_VERIFICATION_TOKEN_PREF =
+            "brave.account.verification_token";
+
     private final HashMap<String, Preference> mRemovedPreferences = new HashMap<>();
     private @Nullable Preference mVpnCalloutPreference;
+    private @Nullable PrefChangeRegistrar mPrefChangeRegistrar;
+    private @Nullable Authentication mAuthentication;
     private boolean mNotificationClicked;
 
     @Override
@@ -128,10 +146,36 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         initRateBrave();
         setPreferenceListeners();
         notificationClick();
+        setupPrefChangeObservers();
     }
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {}
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mPrefChangeRegistrar != null) {
+            mPrefChangeRegistrar.destroy();
+            mPrefChangeRegistrar = null;
+        }
+        if (mAuthentication != null) {
+            mAuthentication.close();
+            mAuthentication = null;
+        }
+    }
+
+    private void setupPrefChangeObservers() {
+        mPrefChangeRegistrar = PrefServiceUtil.createFor(getProfile());
+        mPrefChangeRegistrar.addObserver(BRAVE_ACCOUNT_AUTHENTICATION_TOKEN_PREF, this);
+        mPrefChangeRegistrar.addObserver(BRAVE_ACCOUNT_VERIFICATION_TOKEN_PREF, this);
+    }
+
+    @Override
+    public void onPreferenceChange() {
+        // React to Brave Account pref changes
+        PostTask.postTask(TaskTraits.UI_DEFAULT, this::updateBraveAccountSection);
+    }
 
     @Override
     public void onResume() {
@@ -142,6 +186,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         // Allows the fragment lifecycle to fully complete before updating preferences.
         // Prevents timing issues where preferences might not be fully initialized yet.
         PostTask.postTask(TaskTraits.UI_DEFAULT, this::updateBravePreferences);
+        PostTask.postTask(TaskTraits.UI_DEFAULT, this::updateBraveAccountSection);
         if (mNotificationClicked
                 && BraveNotificationWarningDialog.shouldShowNotificationWarningDialog(getActivity())
                 && !OnboardingPrefManager.getInstance()
@@ -287,9 +332,19 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_ACCOUNT)) {
             setPreferenceOrder(PREF_BRAVE_ACCOUNT_SECTION, ++braveAccountSectionOrder);
             setPreferenceOrder(PREF_GET_STARTED, ++braveAccountSectionOrder);
+            setPreferenceOrder(PREF_ALMOST_THERE, ++braveAccountSectionOrder);
+            setPreferenceOrder(PREF_RESEND_CONFIRMATION_EMAIL, ++braveAccountSectionOrder);
+            setPreferenceOrder(PREF_CANCEL_REGISTRATION, ++braveAccountSectionOrder);
+            setPreferenceOrder(PREF_BRAVE_ACCOUNT_USER, ++braveAccountSectionOrder);
+            setPreferenceOrder(PREF_SIGN_OUT, ++braveAccountSectionOrder);
         } else {
             removePreferenceIfPresent(PREF_BRAVE_ACCOUNT_SECTION);
             removePreferenceIfPresent(PREF_GET_STARTED);
+            removePreferenceIfPresent(PREF_ALMOST_THERE);
+            removePreferenceIfPresent(PREF_RESEND_CONFIRMATION_EMAIL);
+            removePreferenceIfPresent(PREF_CANCEL_REGISTRATION);
+            removePreferenceIfPresent(PREF_BRAVE_ACCOUNT_USER);
+            removePreferenceIfPresent(PREF_SIGN_OUT);
         }
 
         int featuresSectionOrder = braveAccountSectionOrder;
@@ -490,6 +545,113 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
                             return true;
                         }
                     });
+        }
+
+        Preference resendEmailPreference = findPreference(PREF_RESEND_CONFIRMATION_EMAIL);
+        if (resendEmailPreference != null) {
+            resendEmailPreference.setOnPreferenceClickListener(
+                    new Preference.OnPreferenceClickListener() {
+                        @Override
+                        public boolean onPreferenceClick(Preference preference) {
+                            Authentication authentication = getAuthentication();
+                            if (authentication != null) {
+                                authentication.resendConfirmationEmail();
+                            }
+                            return true;
+                        }
+                    });
+        }
+
+        Preference cancelRegistrationPreference = findPreference(PREF_CANCEL_REGISTRATION);
+        if (cancelRegistrationPreference != null) {
+            cancelRegistrationPreference.setOnPreferenceClickListener(
+                    new Preference.OnPreferenceClickListener() {
+                        @Override
+                        public boolean onPreferenceClick(Preference preference) {
+                            Authentication authentication = getAuthentication();
+                            if (authentication != null) {
+                                authentication.cancelRegistration();
+                            }
+                            return true;
+                        }
+                    });
+        }
+
+        Preference signOutPreference = findPreference(PREF_SIGN_OUT);
+        if (signOutPreference != null) {
+            signOutPreference.setOnPreferenceClickListener(
+                    new Preference.OnPreferenceClickListener() {
+                        @Override
+                        public boolean onPreferenceClick(Preference preference) {
+                            Authentication authentication = getAuthentication();
+                            if (authentication != null) {
+                                authentication.logOut();
+                            }
+                            return true;
+                        }
+                    });
+        }
+    }
+
+    private @Nullable Authentication getAuthentication() {
+        if (mAuthentication == null) {
+            mAuthentication =
+                    BraveAccountServiceFactory.getInstance()
+                            .getBraveAccountService(getProfile(), null);
+        }
+        return mAuthentication;
+    }
+
+    private boolean hasAuthenticationToken() {
+        String value =
+                UserPrefs.get(getProfile()).getString(BRAVE_ACCOUNT_AUTHENTICATION_TOKEN_PREF);
+        return value != null && !value.isEmpty();
+    }
+
+    private boolean hasVerificationToken() {
+        String value = UserPrefs.get(getProfile()).getString(BRAVE_ACCOUNT_VERIFICATION_TOKEN_PREF);
+        return value != null && !value.isEmpty();
+    }
+
+    private void updateBraveAccountSection() {
+        if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_ACCOUNT)) {
+            return;
+        }
+
+        boolean hasAuthToken = hasAuthenticationToken();
+        boolean hasVerificationToken = hasVerificationToken();
+
+        Preference getStartedPref = findPreference(PREF_GET_STARTED);
+        Preference almostTherePref = findPreference(PREF_ALMOST_THERE);
+        Preference resendEmailPref = findPreference(PREF_RESEND_CONFIRMATION_EMAIL);
+        Preference cancelRegistrationPref = findPreference(PREF_CANCEL_REGISTRATION);
+        Preference accountUserPref = findPreference(PREF_BRAVE_ACCOUNT_USER);
+        Preference signOutPref = findPreference(PREF_SIGN_OUT);
+
+        if (hasAuthToken) {
+            // Show user account info
+            if (getStartedPref != null) getStartedPref.setVisible(false);
+            if (almostTherePref != null) almostTherePref.setVisible(false);
+            if (resendEmailPref != null) resendEmailPref.setVisible(false);
+            if (cancelRegistrationPref != null) cancelRegistrationPref.setVisible(false);
+            if (accountUserPref != null) accountUserPref.setVisible(true);
+            if (signOutPref != null) signOutPref.setVisible(true);
+        } else if (hasVerificationToken) {
+            // Show verification state
+            if (getStartedPref != null) getStartedPref.setVisible(false);
+            if (almostTherePref != null) almostTherePref.setVisible(true);
+            if (resendEmailPref != null) resendEmailPref.setVisible(true);
+            if (cancelRegistrationPref != null) cancelRegistrationPref.setVisible(true);
+            if (accountUserPref != null) accountUserPref.setVisible(false);
+            if (signOutPref != null) signOutPref.setVisible(false);
+        } else {
+            // Show get started
+            if (getStartedPref != null) getStartedPref.setVisible(true);
+            if (almostTherePref != null) almostTherePref.setVisible(false);
+            if (resendEmailPref != null) resendEmailPref.setVisible(false);
+            if (cancelRegistrationPref != null) cancelRegistrationPref.setVisible(false);
+            if (accountUserPref != null) accountUserPref.setVisible(false);
+            if (signOutPref != null) signOutPref.setVisible(false);
         }
     }
 
