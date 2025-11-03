@@ -24,16 +24,16 @@ pub fn optimize(filters: Vec<NetworkFilter>) -> Vec<NetworkFilter> {
 
     /*
     let union_domain_group = UnionDomainGroup {};
-    let (mut fused, unfused) = apply_optimisation(&union_domain_group, filters);
-    optimized.append(&mut fused);
+    let (fused, unfused) = apply_optimisation(&union_domain_group, filters);
+    optimized.extend(fused);
     */
 
     let simple_pattern_group = SimplePatternGroup {};
-    let (mut fused, mut unfused) = apply_optimisation(&simple_pattern_group, filters);
-    optimized.append(&mut fused);
+    let (fused, unfused) = apply_optimisation(&simple_pattern_group, filters);
+    optimized.extend(fused);
 
     // Append whatever is still left unfused
-    optimized.append(&mut unfused);
+    optimized.extend(unfused);
 
     // Re-sort the list, now that the order has been perturbed
     optimized.sort_by_key(|f| f.id);

@@ -299,8 +299,8 @@ impl Blocker {
         impl std::fmt::Display for QParam<'_> {
             fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
                 match self {
-                    Self::KeyOnly(k) => write!(f, "{}", k),
-                    Self::KeyValue(k, v) => write!(f, "{}={}", k, v),
+                    Self::KeyOnly(k) => write!(f, "{k}"),
+                    Self::KeyValue(k, v) => write!(f, "{k}={v}"),
                 }
             }
         }
@@ -354,7 +354,7 @@ impl Blocker {
                 let new_param_str = if p.is_empty() {
                     String::from("")
                 } else {
-                    format!("?{}", p)
+                    format!("?{p}")
                 };
                 Some(format!(
                     "{}{}{}",

@@ -12,17 +12,12 @@ use serde::{Deserialize, Serialize};
 use thiserror::Error;
 
 /// Specifies rule types to keep during parsing.
-#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, Default)]
 pub enum RuleTypes {
+    #[default]
     All,
     NetworkOnly,
     CosmeticOnly,
-}
-
-impl Default for RuleTypes {
-    fn default() -> Self {
-        Self::All
-    }
 }
 
 impl RuleTypes {
@@ -259,10 +254,10 @@ impl FilterSet {
         filters: impl IntoIterator<Item = impl AsRef<str>>,
         opts: ParseOptions,
     ) -> FilterListMetadata {
-        let (metadata, mut parsed_network_filters, mut parsed_cosmetic_filters) =
+        let (metadata, parsed_network_filters, parsed_cosmetic_filters) =
             parse_filters_with_metadata(filters, self.debug, opts);
-        self.network_filters.append(&mut parsed_network_filters);
-        self.cosmetic_filters.append(&mut parsed_cosmetic_filters);
+        self.network_filters.extend(parsed_network_filters);
+        self.cosmetic_filters.extend(parsed_cosmetic_filters);
         metadata
     }
 
@@ -337,7 +332,7 @@ impl FilterSet {
             }
         });
 
-        other_rules.append(&mut ignore_previous_rules);
+        other_rules.extend(ignore_previous_rules);
 
         if add_fp_document_exception {
             other_rules.push(content_blocking::ignore_previous_fp_documents());

@@ -634,7 +634,7 @@ mod css_validation {
 
         // Use `mock-stylesheet-marker` where uBO uses `color: red` since we have control over the
         // parsing logic within the block.
-        let mock_stylesheet = format!("{}{{mock-stylesheet-marker}}", selector);
+        let mock_stylesheet = format!("{selector}{{mock-stylesheet-marker}}");
         let mut pi = ParserInput::new(&mock_stylesheet);
         let mut parser = Parser::new(&mut pi);
         let mut parser_impl = QualifiedRuleParserImpl {
@@ -1137,17 +1137,17 @@ mod css_validation {
         fn to_css<W: Write>(&self, dest: &mut W) -> FmtResult {
             write!(dest, ":")?;
             match self {
-                Self::HasText(text) => write!(dest, "has-text({})", text)?,
-                Self::MatchesAttr(text) => write!(dest, "matches-attr({})", text)?,
-                Self::MatchesCss(text) => write!(dest, "matches-css({})", text)?,
-                Self::MatchesCssBefore(text) => write!(dest, "matches-css-before({})", text)?,
-                Self::MatchesCssAfter(text) => write!(dest, "matches-css-after({})", text)?,
-                Self::MatchesPath(text) => write!(dest, "matches-path({})", text)?,
-                Self::MinTextLength(text) => write!(dest, "min-text-length({})", text)?,
-                Self::Upward(text) => write!(dest, "upward({})", text)?,
-                Self::Xpath(text) => write!(dest, "xpath({})", text)?,
-                Self::AnythingElse(name, None) => write!(dest, "{}", name)?,
-                Self::AnythingElse(name, Some(args)) => write!(dest, "{}({})", name, args)?,
+                Self::HasText(text) => write!(dest, "has-text({text})")?,
+                Self::MatchesAttr(text) => write!(dest, "matches-attr({text})")?,
+                Self::MatchesCss(text) => write!(dest, "matches-css({text})")?,
+                Self::MatchesCssBefore(text) => write!(dest, "matches-css-before({text})")?,
+                Self::MatchesCssAfter(text) => write!(dest, "matches-css-after({text})")?,
+                Self::MatchesPath(text) => write!(dest, "matches-path({text})")?,
+                Self::MinTextLength(text) => write!(dest, "min-text-length({text})")?,
+                Self::Upward(text) => write!(dest, "upward({text})")?,
+                Self::Xpath(text) => write!(dest, "xpath({text})")?,
+                Self::AnythingElse(name, None) => write!(dest, "{name}")?,
+                Self::AnythingElse(name, Some(args)) => write!(dest, "{name}({args})")?,
             }
             Ok(())
         }
@@ -1198,8 +1198,8 @@ mod css_validation {
         fn to_css<W: Write>(&self, dest: &mut W) -> FmtResult {
             write!(dest, "::")?;
             match self {
-                Self(name, None) => write!(dest, "{}", name)?,
-                Self(name, Some(args)) => write!(dest, "{}({})", name, args)?,
+                Self(name, None) => write!(dest, "{name}")?,
+                Self(name, Some(args)) => write!(dest, "{name}({args})")?,
             }
             Ok(())
         }

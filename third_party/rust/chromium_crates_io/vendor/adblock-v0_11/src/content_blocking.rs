@@ -377,7 +377,7 @@ impl TryFrom<NetworkFilter> for CbRuleEquivalent {
                     let with_fixed_wildcards =
                         REPLACE_WILDCARDS.replace_all(&escaped_special_chars, ".*");
                     let mut url_filter = if v.mask.contains(NetworkFilterMask::IS_LEFT_ANCHOR) {
-                        format!("^{}", with_fixed_wildcards)
+                        format!("^{with_fixed_wildcards}")
                     } else {
                         let scheme_part = if v
                             .mask
@@ -394,7 +394,7 @@ impl TryFrom<NetworkFilter> for CbRuleEquivalent {
                             unreachable!("Invalid scheme information");
                         };
 
-                        format!("{}{}", scheme_part, with_fixed_wildcards)
+                        format!("{scheme_part}{with_fixed_wildcards}")
                     };
 
                     if v.mask.contains(NetworkFilterMask::IS_RIGHT_ANCHOR) {
@@ -405,7 +405,7 @@ impl TryFrom<NetworkFilter> for CbRuleEquivalent {
                 }
                 (crate::filters::network::FilterPart::Empty, Some(hostname)) => {
                     let escaped_special_chars = SPECIAL_CHARS.replace_all(&hostname, r##"\$1"##);
-                    format!("^[^:]+:(//)?([^/]+\\.)?{}", escaped_special_chars)
+                    format!("^[^:]+:(//)?([^/]+\\.)?{escaped_special_chars}")
                 }
                 (crate::filters::network::FilterPart::Empty, None) => if v
                     .mask
@@ -464,7 +464,7 @@ impl TryFrom<NetworkFilter> for CbRuleEquivalent {
                         idna::domain_to_ascii(&lowercase).unwrap()
                     };
 
-                    collection.push(format!("*{}", normalized_domain));
+                    collection.push(format!("*{normalized_domain}"));
                 });
 
                 (non_empty(if_domain), non_empty(unless_domain))

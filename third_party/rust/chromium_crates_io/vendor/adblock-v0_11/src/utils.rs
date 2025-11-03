@@ -81,30 +81,43 @@ pub(crate) fn tokenize_pooled(pattern: &str, tokens_buffer: &mut Vec<Hash>) {
 
 pub fn tokenize(pattern: &str) -> Vec<Hash> {
     let mut tokens_buffer: Vec<Hash> = Vec::with_capacity(TOKENS_BUFFER_SIZE);
-    fast_tokenizer_no_regex(
-        pattern,
-        &is_allowed_filter,
-        false,
-        false,
-        &mut tokens_buffer,
-    );
+    tokenize_to(pattern, &mut tokens_buffer);
     tokens_buffer
 }
 
+pub(crate) fn tokenize_to(pattern: &str, tokens_buffer: &mut Vec<Hash>) {
+    fast_tokenizer_no_regex(pattern, &is_allowed_filter, false, false, tokens_buffer);
+}
+
+#[cfg(test)]
 pub(crate) fn tokenize_filter(
     pattern: &str,
     skip_first_token: bool,
     skip_last_token: bool,
 ) -> Vec<Hash> {
     let mut tokens_buffer: Vec<Hash> = Vec::with_capacity(TOKENS_BUFFER_SIZE);
-    fast_tokenizer_no_regex(
+    tokenize_filter_to(
         pattern,
-        &is_allowed_filter,
         skip_first_token,
         skip_last_token,
         &mut tokens_buffer,
     );
     tokens_buffer
+}
+
+pub(crate) fn tokenize_filter_to(
+    pattern: &str,
+    skip_first_token: bool,
+    skip_last_token: bool,
+    tokens_buffer: &mut Vec<Hash>,
+) {
+    fast_tokenizer_no_regex(
+        pattern,
+        &is_allowed_filter,
+        skip_first_token,
+        skip_last_token,
+        tokens_buffer,
+    );
 }
 
 pub(crate) fn bin_lookup<T: Ord>(arr: &[T], elt: T) -> bool {
