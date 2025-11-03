@@ -11,7 +11,6 @@
 #include <vector>
 
 #include "base/containers/span.h"
-#include "brave/components/brave_wallet/common/cardano_address.h"
 
 namespace brave_wallet {
 
@@ -20,71 +19,96 @@ namespace brave_wallet {
 // implementation
 class CardanoTxDecoder {
  public:
-  struct CardanoSignMessageResult {
-    CardanoSignMessageResult();
-    CardanoSignMessageResult(std::vector<uint8_t> signature_bytes,
-                             std::vector<uint8_t> public_key);
-    CardanoSignMessageResult(const CardanoSignMessageResult&);
-    CardanoSignMessageResult(CardanoSignMessageResult&&);
-    ~CardanoSignMessageResult();
+  struct SerializableTxInput {
+    SerializableTxInput();
+    SerializableTxInput(const SerializableTxInput&);
+    SerializableTxInput& operator=(const SerializableTxInput&);
+    SerializableTxInput(SerializableTxInput&&);
+    SerializableTxInput& operator=(SerializableTxInput&&);
+    ~SerializableTxInput();
+
+    std::array<uint8_t, 32u> tx_hash = {};
+    uint32_t index = 0;
+  };
+
+  struct SerializableTxOutput {
+    SerializableTxOutput();
+    SerializableTxOutput(const SerializableTxOutput&);
+    SerializableTxOutput& operator=(const SerializableTxOutput&);
+    SerializableTxOutput(SerializableTxOutput&&);
+    SerializableTxOutput& operator=(SerializableTxOutput&&);
+    ~SerializableTxOutput();
+
+    std::vector<uint8_t> address_bytes;
+    uint64_t amount = 0;
+  };
+
+  struct SerializableTxBody {
+    SerializableTxBody();
+    ~SerializableTxBody();
+    SerializableTxBody(const SerializableTxBody&);
+    SerializableTxBody& operator=(const SerializableTxBody&);
+    SerializableTxBody(SerializableTxBody&&);
+    SerializableTxBody& operator=(SerializableTxBody&&);
+
+    std::vector<SerializableTxInput> inputs;
+    std::vector<SerializableTxOutput> outputs;
+  };
+
+  struct SerializableVkeyWitness {
+    SerializableVkeyWitness();
+    ~SerializableVkeyWitness();
+    SerializableVkeyWitness(const SerializableVkeyWitness&);
+    SerializableVkeyWitness& operator=(const SerializableVkeyWitness&);
+    SerializableVkeyWitness(SerializableVkeyWitness&&);
+    SerializableVkeyWitness& operator=(SerializableVkeyWitness&&);
 
     std::vector<uint8_t> signature_bytes;
     std::vector<uint8_t> public_key;
   };
 
-  struct RestoredTransactionInput {
-    RestoredTransactionInput();
-    RestoredTransactionInput(const RestoredTransactionInput&);
-    RestoredTransactionInput(RestoredTransactionInput&&);
-    ~RestoredTransactionInput();
+  struct SerializableTxWitness {
+    SerializableTxWitness();
+    ~SerializableTxWitness();
+    SerializableTxWitness(const SerializableTxWitness&);
+    SerializableTxWitness& operator=(const SerializableTxWitness&);
+    SerializableTxWitness(SerializableTxWitness&&);
+    SerializableTxWitness& operator=(SerializableTxWitness&&);
 
-    std::array<uint8_t, 32u> tx_hash = {};
-    uint32_t index = 0;
-
-    // This is non-null for the account-related inputs.
-    std::optional<CardanoAddress> address;
-    std::optional<uint64_t> amount;
+    std::vector<SerializableVkeyWitness> vkey_witness_set;
   };
 
-  struct RestoredTransactionOutput {
-    RestoredTransactionOutput();
-    ~RestoredTransactionOutput();
+  struct SerializableTx {
+    SerializableTx();
+    ~SerializableTx();
+    SerializableTx(const SerializableTx&);
+    SerializableTx& operator=(const SerializableTx&);
+    SerializableTx(SerializableTx&&);
+    SerializableTx& operator=(SerializableTx&&);
 
-    CardanoAddress address;
-    uint64_t amount = 0;
+    SerializableTxBody tx_body;
   };
 
-  struct RestoredTransactionBody {
-    RestoredTransactionBody();
-    ~RestoredTransactionBody();
-    RestoredTransactionBody(const RestoredTransactionBody&);
-    RestoredTransactionBody(RestoredTransactionBody&&);
-    RestoredTransactionBody& operator=(RestoredTransactionBody&&);
+  struct DecodedTx {
+    DecodedTx();
+    ~DecodedTx();
+    DecodedTx(const DecodedTx&);
+    DecodedTx(DecodedTx&&);
 
-    std::vector<RestoredTransactionInput> inputs;
-    std::vector<RestoredTransactionOutput> outputs;
-    std::vector<uint8_t> raw_body_bytes;
-  };
-
-  struct RestoredTransaction {
-    RestoredTransaction();
-    ~RestoredTransaction();
-    RestoredTransaction(const RestoredTransaction&);
-    RestoredTransaction(RestoredTransaction&&);
-
-    RestoredTransactionBody tx_body;
+    SerializableTx tx;
     std::vector<uint8_t> raw_tx_bytes;
+    std::vector<uint8_t> raw_body_bytes;
   };
 
   CardanoTxDecoder();
   ~CardanoTxDecoder();
 
-  static std::optional<RestoredTransaction> DecodeTransaction(
+  static std::optional<DecodedTx> DecodeTransaction(
       base::span<const uint8_t> cbor_bytes);
 
   static std::optional<std::vector<uint8_t>> AddWitnessesToTransaction(
       const std::vector<uint8_t>& unsigned_tx_bytes,
-      const std::vector<CardanoSignMessageResult>& witness);
+      const SerializableTxWitness& witness);
 };
 
 }  // namespace brave_wallet
