@@ -43,9 +43,12 @@
 #define LoadAccelerators virtual LoadAccelerators
 #define ShowSplitView virtual ShowSplitView
 #define HideSplitView virtual HideSplitView
+#define ReparentTopContainerForEndOfImmersive \
+  virtual ReparentTopContainerForEndOfImmersive
 
 #include <chrome/browser/ui/views/frame/browser_view.h>  // IWYU pragma: export
 
+#undef ReparentTopContainerForEndOfImmersive
 #undef HideSplitView
 #undef ShowSplitView
 #undef LoadAccelerators
