@@ -37,8 +37,7 @@ public class BraveAdaptiveToolbarStatePredictor
      * @param variant The button variant to validate
      * @return true if the variant is valid for Brave, otherwise call super implementation
      */
-    @Override
-    public boolean isValidSegment(@AdaptiveToolbarButtonVariant int variant) {
+    public static boolean isValidSegment(@AdaptiveToolbarButtonVariant int variant) {
         // Check Brave-specific variants first
         switch (variant) {
                 // Add more Brave-specific variants here as needed
@@ -52,6 +51,6 @@ public class BraveAdaptiveToolbarStatePredictor
                 return ChromeFeatureList.isEnabled(BraveFeatureList.NATIVE_BRAVE_WALLET);
         }
 
-        return super.isValidSegment(variant);
+        return BraveAdaptiveToolbarStatePredictorDummySuper.isValidSegment(variant);
     }
 }
