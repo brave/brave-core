@@ -8,6 +8,7 @@
 #include <memory>
 #include <optional>
 #include <string>
+#include <string_view>
 #include <utility>
 
 #include "base/check.h"
@@ -79,7 +80,13 @@ base::Value::Dict GetPreferencesDictionary(PrefService* prefs) {
       "brandedWallpaperOptIn",
       prefs->GetBoolean(kNewTabPageShowSponsoredImagesBackgroundImage));
   pref_data.Set("showClock", prefs->GetBoolean(kNewTabPageShowClock));
-  pref_data.Set("clockFormat", prefs->GetString(kNewTabPageClockFormat));
+  std::string_view clock_format = prefs->GetString(kNewTabPageClockFormat);
+  // The current version of the NTP uses an "h" prefix for the clock format.
+  // Remove the prefix if present for compatibility with the old NTP.
+  if (clock_format.starts_with("h")) {
+    clock_format.remove_prefix(1);
+  }
+  pref_data.Set("clockFormat", clock_format);
   pref_data.Set("showStats", prefs->GetBoolean(kNewTabPageShowStats));
   pref_data.Set("showToday",
                 prefs->GetBoolean(brave_news::prefs::kNewTabPageShowToday));
