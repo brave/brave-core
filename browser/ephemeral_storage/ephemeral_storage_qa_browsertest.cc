@@ -422,7 +422,7 @@ class EphemeralStorageQaBrowserTest : public InProcessBrowserTest {
     CheckStorageResults(new_contents, expected);
   }
 
-  content::WebContents* SetupTestPage() {
+  void SetupTestPage() {
     tabs_ = browser()->tab_strip_model();
 
     GURL tab_url = embedded_test_server()->GetURL("dev-pages.brave.software",
@@ -431,8 +431,6 @@ class EphemeralStorageQaBrowserTest : public InProcessBrowserTest {
     auto* original_tab = tabs_->GetActiveWebContents();
 
     ClickStartTest(original_tab);
-
-    return original_tab;
   }
 
  protected:
