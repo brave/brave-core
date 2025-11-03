@@ -1502,6 +1502,13 @@ public class BrowserViewController: UIViewController {
 
       self.webViewContainer.accessibilityElementsHidden = true
       UIAccessibility.post(notification: .screenChanged, argument: nil)
+
+      if setupTasksCompleted,
+        Preferences.General.openKeyboardOnNTPSelection.value,
+        !topToolbar.inOverlayMode
+      {
+        topToolbar.enterOverlayMode(nil, pasted: false, search: false)
+      }
     }
   }
 
@@ -2772,16 +2779,9 @@ extension BrowserViewController: NewTabPageDelegate {
   }
 
   func showNewTabTakeoverInfoBarIfNeeded() {
-    // do not show if favoritesController is visible
-    if let favoritesController,
-      favoritesController.view.alpha == 1,
-      !favoritesController.view.isHidden
-    {
-      return
-    }
-    if !rewards.ads.shouldDisplayNewTabTakeoverInfobar() {
-      return
-    }
+    // do not show if topToobar is in overlay mode
+    guard !topToolbar.inOverlayMode else { return }
+
     rewards.ads.recordNewTabTakeoverInfobarWasDisplayed()
 
     let newTabTakeoverInfoBar = NewTabTakeoverInfoBar(
