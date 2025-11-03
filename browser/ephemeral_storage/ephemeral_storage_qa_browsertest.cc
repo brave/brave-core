@@ -332,7 +332,7 @@ class EphemeralStorageQaBrowserTest : public InProcessBrowserTest {
 
     std::string target =
         content::EvalJs(
-            contents.get(),
+            contents,
             "document.getElementById('continue-test-url-step-3').value")
             .ExtractString();
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL(target)));
