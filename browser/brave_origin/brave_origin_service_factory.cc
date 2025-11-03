@@ -15,6 +15,8 @@
 #include "brave/components/brave_origin/brave_origin_policy_manager.h"
 #include "brave/components/brave_origin/brave_origin_service.h"
 #include "brave/components/brave_origin/profile_id.h"
+#include "brave/components/brave_rewards/core/pref_names.h"
+#include "brave/components/brave_wallet/common/pref_names.h"
 #include "brave/components/brave_wayback_machine/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/p3a/pref_names.h"
@@ -23,8 +25,6 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_selections.h"
 #include "components/policy/core/browser/browser_policy_connector_base.h"
-#include "brave/components/brave_rewards/core/pref_names.h"
-#include "brave/components/brave_wallet/common/pref_names.h"
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/components/tor/pref_names.h"
