@@ -111,10 +111,6 @@ open class MockTabManagerDelegate: TabManagerDelegate {
   public func tabManagerDidRemoveAllTabs(_ tabManager: TabManager, toast: ButtonToast?) {
     testDelegateMethodWithName(#function, tabs: [])
   }
-
-  public func tabManagerDidAddAndSelectNTP(_ tabManager: TabManager) {
-    testDelegateMethodWithName(#function, tabs: [])
-  }
 }
 
 @MainActor class TabManagerTests: XCTestCase {
@@ -981,17 +977,5 @@ open class MockTabManagerDelegate: TabManagerDelegate {
       reorderedTabs.map(\.id),
       "Tab should be moved to the end when index is out of bounds"
     )
-  }
-
-  func testAddAndSelectNTP() {
-    let delegate = MockTabManagerDelegate()
-    manager.addDelegate(delegate)
-
-    let didSelect = MethodSpy(functionName: "tabManager(_:didSelectedTabChange:previous:)")
-    let didAddAndSelectNTP = MethodSpy(functionName: "tabManagerDidAddAndSelectNTP(_:)")
-
-    delegate.expect([willAdd, didAdd, didSelect, didAddAndSelectNTP])
-    manager.addTabAndSelect(isPrivate: false)
-    delegate.verify("Not all delegate methods were called")
   }
 }

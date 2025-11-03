@@ -830,6 +830,23 @@ class SettingsViewController: TableViewController {
       tabs.rows.append(privateTabsRow)
     }
 
+    var keyboardRow = Row(
+      text: Strings.TabsSettings.autoOpenKeyboardTitle,
+      detailText: Strings.TabsSettings.autoOpenKeyboardDescription,
+      image: UIImage(braveSystemNamed: "leo.keyboard"),
+      accessory: .view(
+        SwitchAccessoryView(
+          initialValue: Preferences.General.openKeyboardOnNTPSelection.value,
+          valueChange: { [unowned self] newValue in
+            Preferences.General.openKeyboardOnNTPSelection.value = newValue
+          }
+        )
+      ),
+      cellClass: MultilineSubtitleCell.self,
+      uuid: Preferences.General.openKeyboardOnNTPSelection.key
+    )
+    tabs.rows.append(keyboardRow)
+
     return tabs
   }()
 
