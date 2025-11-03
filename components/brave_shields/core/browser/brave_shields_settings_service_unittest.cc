@@ -386,6 +386,7 @@ TEST_F(BraveShieldsSettingsServiceTest, DefaultAutoShredMode) {
             AutoShredDictFrom(AutoShredMode::NEVER));
 }
 
+#if !BUILDFLAG(IS_IOS)
 TEST_F(BraveShieldsSettingsServiceTest, DefaultForgetFirstPartyStorage) {
   // verify the initial values
   EXPECT_EQ(brave_shields_settings()->GetForgetFirstPartyStorageEnabled(GURL()),
@@ -430,3 +431,4 @@ TEST_F(BraveShieldsSettingsServiceTest,
                 ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE),
             CONTENT_SETTING_BLOCK);
 }
+#endif

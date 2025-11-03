@@ -171,6 +171,7 @@ bool BraveShieldsSettingsService::IsNoScriptEnabled(const GURL& url) {
   return control_type != ControlType::ALLOW;
 }
 
+#if !BUILDFLAG(IS_IOS)
 bool BraveShieldsSettingsService::GetForgetFirstPartyStorageEnabled(
     const GURL& url) {
   ContentSetting setting = host_content_settings_map_->GetContentSetting(
@@ -196,6 +197,7 @@ void BraveShieldsSettingsService::SetForgetFirstPartyStorageEnabled(
   MaybeRecordShieldsUsageP3A(kChangedPerSiteShields, local_state_);
   RecordForgetFirstPartySetting(&*host_content_settings_map_);
 }
+#endif
 
 void BraveShieldsSettingsService::SetDefaultAutoShredMode(
     mojom::AutoShredMode mode) {
