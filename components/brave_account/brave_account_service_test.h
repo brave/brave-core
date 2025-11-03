@@ -32,6 +32,12 @@
 
 namespace brave_account {
 
+struct RegisterInitializeTestCase;
+struct RegisterFinalizeTestCase;
+struct VerifyResultTestCase;
+struct CancelRegistrationTestCase;
+struct LogOutTestCase;
+
 template <typename TestCase>
 class BraveAccountServiceTest : public testing::TestWithParam<const TestCase*> {
  public:
@@ -56,43 +62,58 @@ class BraveAccountServiceTest : public testing::TestWithParam<const TestCase*> {
   void RunTestCase() {
     const auto& test_case = CHECK_DEREF(this->GetParam());
 
-    if (test_case.endpoint_response) {
-      auto as_dict = [](const auto& opt) {
-        return opt ? opt->ToValue() : base::Value::Dict();
-      };
+    if constexpr (requires { typename TestCase::Endpoint; }) {
+      if (test_case.endpoint_response) {
+        auto as_dict = [](const auto& opt) {
+          return opt ? opt->ToValue() : base::Value::Dict();
+        };
 
-      const auto& endpoint_expected =
-          test_case.endpoint_response->endpoint_expected;
-      base::Value value(endpoint_expected.has_value()
-                            ? as_dict(endpoint_expected.value())
-                            : as_dict(endpoint_expected.error()));
+        const auto& endpoint_expected =
+            test_case.endpoint_response->endpoint_expected;
+        base::Value value(endpoint_expected.has_value()
+                              ? as_dict(endpoint_expected.value())
+                              : as_dict(endpoint_expected.error()));
 
-      const auto body = base::WriteJson(value);
-      CHECK(body);
-      test_url_loader_factory_.AddResponse(
-          TestCase::Endpoint::URL().spec(), *body,
-          test_case.endpoint_response->http_status_code);
+        const auto body = base::WriteJson(value);
+        CHECK(body);
+        test_url_loader_factory_.AddResponse(
+            TestCase::Endpoint::URL().spec(), *body,
+            test_case.endpoint_response->http_status_code);
+      }
     }
 
-    if constexpr (requires { typename TestCase::MojoExpected; }) {
+    if constexpr (std::is_same_v<TestCase, RegisterInitializeTestCase> ||
+                  std::is_same_v<TestCase, RegisterFinalizeTestCase>) {
       base::test::TestFuture<typename TestCase::MojoExpected> future;
       TestCase::Run(test_case, CHECK_DEREF(brave_account_service_.get()),
                     future.GetCallback());
       EXPECT_EQ(future.Take(), test_case.mojo_expected);
-    } else {
+    } else if constexpr (std::is_same_v<TestCase, VerifyResultTestCase>) {
       TestCase::Run(test_case, pref_service_, task_environment_,
                     *verify_result_timer_);
+    } else if constexpr (std::is_same_v<TestCase, CancelRegistrationTestCase> ||
+                         std::is_same_v<TestCase, LogOutTestCase>) {
+      TestCase::Run(test_case, pref_service_,
+                    CHECK_DEREF(brave_account_service_.get()));
+    } else {
+      static_assert(false);
     }
   }
 
   bool Encrypt(const std::string& in, std::string* out) {
     *out = in;
-    return !CHECK_DEREF(this->GetParam()).fail_encryption;
+    if constexpr (requires(TestCase test_case) { test_case.fail_encryption; }) {
+      return !CHECK_DEREF(this->GetParam()).fail_encryption;
+    }
+    return true;
   }
 
   bool Decrypt(const std::string& in, std::string* out) {
     *out = in;
-    return !CHECK_DEREF(this->GetParam()).fail_decryption;
+    if constexpr (requires(TestCase test_case) { test_case.fail_decryption; }) {
+      return !CHECK_DEREF(this->GetParam()).fail_decryption;
+    }
+    return true;
   }
 
   base::test::TaskEnvironment task_environment_{

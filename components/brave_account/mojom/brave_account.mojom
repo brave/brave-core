@@ -69,4 +69,13 @@ interface Authentication {
   //         `RegisterError` on failure.
   RegisterFinalize(string encryptedVerificationToken, string serializedRecord)
     => result<RegisterFinalizeResult, RegisterError>;
+
+  // Resends the confirmation email to the user during the registration process.
+  ResendConfirmationEmail();
+
+  // Cancels the registration process by clearing the verification token.
+  CancelRegistration();
+
+  // Logs out the user by clearing the authentication token.
+  LogOut();
 };

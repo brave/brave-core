@@ -36,6 +36,8 @@ struct EndpointResponse {
   EndpointExpected endpoint_expected;
 };
 
+}  // namespace
+
 struct RegisterInitializeTestCase {
   using Endpoint = endpoints::PasswordInit;
   using EndpointExpected =
@@ -60,6 +62,8 @@ struct RegisterInitializeTestCase {
   std::optional<EndpointResponse> endpoint_response;
   MojoExpected mojo_expected;
 };
+
+namespace {
 
 const RegisterInitializeTestCase* InitializeEmailEmpty() {
   static const base::NoDestructor<RegisterInitializeTestCase>
@@ -420,8 +424,6 @@ INSTANTIATE_TEST_SUITE_P(
                     InitializeSuccess()),
     RegisterInitializeTest::kNameGenerator);
 
-namespace {
-
 struct RegisterFinalizeTestCase {
   using Endpoint = endpoints::PasswordFinalize;
   using EndpointExpected =
@@ -447,6 +449,8 @@ struct RegisterFinalizeTestCase {
   std::optional<EndpointResponse> endpoint_response;
   MojoExpected mojo_expected;
 };
+
+namespace {
 
 const RegisterFinalizeTestCase* FinalizeEncryptedVerificationTokenEmpty() {
   static const base::NoDestructor<RegisterFinalizeTestCase>
@@ -700,8 +704,6 @@ INSTANTIATE_TEST_SUITE_P(
                     FinalizeSuccess()),
     RegisterFinalizeTest::kNameGenerator);
 
-namespace {
-
 struct VerifyResultTestCase {
   using Endpoint = endpoints::VerifyResult;
   using EndpointExpected =
@@ -741,6 +743,8 @@ struct VerifyResultTestCase {
   std::string expected_authentication_token;
   base::TimeDelta expected_verify_result_timer_delay;
 };
+
+namespace {
 
 const VerifyResultTestCase* VerifyResultVerificationTokenEmpty() {
   static const base::NoDestructor<VerifyResultTestCase>
@@ -945,5 +949,114 @@ INSTANTIATE_TEST_SUITE_P(
                     VerifyResultUnauthorized(),
                     VerifyResultInternalServerError()),
     ScheduleVerifyResultTest::kNameGenerator);
+
+struct CancelRegistrationTestCase {
+  static void Run(const CancelRegistrationTestCase& test_case,
+                  PrefService& pref_service,
+                  mojom::Authentication& authentication) {
+    pref_service.SetString(prefs::kVerificationToken,
+                           test_case.encrypted_verification_token);
+    authentication.CancelRegistration();
+    EXPECT_EQ(pref_service.GetString(prefs::kVerificationToken),
+              test_case.expected_verification_token);
+  }
+
+  std::string test_name;
+  std::string encrypted_verification_token;
+  std::string expected_verification_token;
+};
+
+namespace {
+
+const CancelRegistrationTestCase* CancelRegistrationVerificationTokenEmpty() {
+  static const base::NoDestructor<CancelRegistrationTestCase>
+      kCancelRegistrationVerificationTokenEmpty({
+          .test_name = "cancel_registration_verification_token_empty",
+          .encrypted_verification_token = "",
+          .expected_verification_token = "",
+      });
+  return kCancelRegistrationVerificationTokenEmpty.get();
+}
+
+const CancelRegistrationTestCase*
+CancelRegistrationVerificationTokenNonEmpty() {
+  static const base::NoDestructor<CancelRegistrationTestCase>
+      kCancelRegistrationVerificationTokenNonEmpty({
+          .test_name = "cancel_registration_verification_token_non_empty",
+          .encrypted_verification_token =
+              base::Base64Encode("encrypted_verification_token"),
+          .expected_verification_token = "",
+      });
+  return kCancelRegistrationVerificationTokenNonEmpty.get();
+}
+
+using CancelRegistrationTest =
+    BraveAccountServiceTest<CancelRegistrationTestCase>;
+
+}  // namespace
+
+TEST_P(CancelRegistrationTest, HandlesCancelRegistrationOutcomes) {
+  RunTestCase();
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    BraveAccountServiceTests,
+    CancelRegistrationTest,
+    testing::Values(CancelRegistrationVerificationTokenEmpty(),
+                    CancelRegistrationVerificationTokenNonEmpty()),
+    CancelRegistrationTest::kNameGenerator);
+
+struct LogOutTestCase {
+  static void Run(const LogOutTestCase& test_case,
+                  PrefService& pref_service,
+                  mojom::Authentication& authentication) {
+    pref_service.SetString(prefs::kAuthenticationToken,
+                           test_case.encrypted_authentication_token);
+    authentication.LogOut();
+    EXPECT_EQ(pref_service.GetString(prefs::kAuthenticationToken),
+              test_case.expected_authentication_token);
+  }
+
+  std::string test_name;
+  std::string encrypted_authentication_token;
+  std::string expected_authentication_token;
+};
+
+namespace {
+
+const LogOutTestCase* LogOutAuthenticationTokenEmpty() {
+  static const base::NoDestructor<LogOutTestCase>
+      kLogOutAuthenticationTokenEmpty({
+          .test_name = "log_out_authentication_token_empty",
+          .encrypted_authentication_token = "",
+          .expected_authentication_token = "",
+      });
+  return kLogOutAuthenticationTokenEmpty.get();
+}
+
+const LogOutTestCase* LogOutAuthenticationTokenNonEmpty() {
+  static const base::NoDestructor<LogOutTestCase>
+      kLogOutAuthenticationTokenNonEmpty({
+          .test_name = "log_out_authentication_token_non_empty",
+          .encrypted_authentication_token =
+              base::Base64Encode("authentication_token"),
+          .expected_authentication_token = "",
+      });
+  return kLogOutAuthenticationTokenNonEmpty.get();
+}
+
+using LogOutTest = BraveAccountServiceTest<LogOutTestCase>;
+
+}  // namespace
+
+TEST_P(LogOutTest, HandlesLogOutOutcomes) {
+  RunTestCase();
+}
+
+INSTANTIATE_TEST_SUITE_P(BraveAccountServiceTests,
+                         LogOutTest,
+                         testing::Values(LogOutAuthenticationTokenEmpty(),
+                                         LogOutAuthenticationTokenNonEmpty()),
+                         LogOutTest::kNameGenerator);
 
 }  // namespace brave_account

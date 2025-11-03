@@ -11,6 +11,7 @@
 #include "base/check_deref.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
+#include "base/notimplemented.h"
 #include "base/strings/strcat.h"
 #include "brave/components/brave_account/brave_account_service_constants.h"
 #include "brave/components/brave_account/endpoint_client/client.h"
@@ -186,6 +187,20 @@ void BraveAccountService::RegisterFinalize(
       base::BindOnce(&BraveAccountService::OnRegisterFinalize,
                      weak_factory_.GetWeakPtr(), std::move(callback),
                      encrypted_verification_token));
+}
+
+void BraveAccountService::ResendConfirmationEmail() {
+  // TODO(https://github.com/brave/brave-browser/issues/50653)
+  NOTIMPLEMENTED();
+}
+
+void BraveAccountService::CancelRegistration() {
+  pref_service_->ClearPref(prefs::kVerificationToken);
+}
+
+void BraveAccountService::LogOut() {
+  // TODO(https://github.com/brave/brave-browser/issues/50651)
+  pref_service_->ClearPref(prefs::kAuthenticationToken);
 }
 
 void BraveAccountService::OnRegisterInitialize(
