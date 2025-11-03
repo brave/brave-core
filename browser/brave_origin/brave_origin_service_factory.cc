@@ -23,11 +23,8 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_selections.h"
 #include "components/policy/core/browser/browser_policy_connector_base.h"
-
-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_wallet/common/pref_names.h"
-#endif
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/components/tor/pref_names.h"
@@ -101,14 +98,12 @@ constexpr auto kBraveOriginBrowserMetadata =
 constexpr auto kBraveOriginProfileMetadata =
     base::MakeFixedFlatMap<std::string_view,
                            BraveOriginServiceFactory::BraveOriginPrefMetadata>({
-
         // Wayback Machine preferences
         {kBraveWaybackMachineEnabled,
          BraveOriginServiceFactory::BraveOriginPrefMetadata(
              false,
              /*user_settable=*/true)},
 
-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
         // Brave Rewards preferences
         {brave_rewards::prefs::kDisabledByPolicy,
          BraveOriginServiceFactory::BraveOriginPrefMetadata(
@@ -120,8 +115,6 @@ constexpr auto kBraveOriginProfileMetadata =
          BraveOriginServiceFactory::BraveOriginPrefMetadata(
              true,
              /*user_settable=*/false)},
-#endif
-
         // AI Chat preferences
         {ai_chat::prefs::kEnabledByPolicy,
          BraveOriginServiceFactory::BraveOriginPrefMetadata(
