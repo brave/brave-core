@@ -82,6 +82,8 @@ class BraveTabContextMenuContents
                            ContextMenuString);
   FRIEND_TEST_ALL_PREFIXES(BraveTabContextMenuContentsTest,
                            SplitViewMenuCustomizationTest);
+  FRIEND_TEST_ALL_PREFIXES(BraveTabContextMenuContentsWithContainersTest,
+                           ContainersSubMenuExists);
 
   bool IsBraveCommandIdEnabled(int command_id) const;
   void ExecuteBraveCommand(int command_id);

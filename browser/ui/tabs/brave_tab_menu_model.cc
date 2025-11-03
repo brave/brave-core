@@ -187,12 +187,25 @@ void BraveTabMenuModel::BuildItemForContainers(
     TabStripModel* tab_strip_model,
     containers::ContainersMenuModel::Delegate& containers_delegate,
     const std::vector<int>& indices) {
-  auto index =
-      *GetIndexOfCommandId(TabStripModel::CommandMoveTabsToNewWindow) + 1;
+  // There are multiple command ids that could be used to find the right
+  // insertion point for the containers submenu. The command ids could be absent
+  // depending on the tab state. So we check for multiple commands.
+  std::optional<size_t> index;
+  for (const auto& command_id : {
+           TabStripModel::CommandMoveTabsToNewWindow,
+           TabStripModel::CommandMoveToExistingWindow,
+       }) {
+    if (auto cmd_index = GetIndexOfCommandId(command_id)) {
+      index = *cmd_index;
+      break;
+    }
+  }
+  CHECK(index.has_value());
+  index = *index + 1;
 
   containers_submenu_ = std::make_unique<containers::ContainersMenuModel>(
       containers_delegate, prefs);
-  InsertSubMenuWithStringIdAt(index, CommandOpenInContainer,
+  InsertSubMenuWithStringIdAt(*index, CommandOpenInContainer,
                               IDS_CXMENU_OPEN_IN_CONTAINER,
                               containers_submenu_.get());
 }
