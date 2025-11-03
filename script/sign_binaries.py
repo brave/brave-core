@@ -26,7 +26,6 @@ signtool_args = (
     'sign /t http://timestamp.digicert.com /sm '
     '/fd sha256')
 
-
 assert cert or cert_hash or signtool_args, \
     'At least one of AUTHENTICODE_HASH, CERT and SIGNTOOL_ARGS must be set.\n'\
     'The preferred parameter is AUTHENTICODE_HASH. Its value can be obtained '\
@@ -34,8 +33,6 @@ assert cert or cert_hash or signtool_args, \
     'CERT is a part of the name in the //CurrentUser/My Windows Certificate ' \
     'Store. It is ambiguous and will likely be deprecated in the future.'
 
-
-# pylint: disable=no-else-raise
 def execute_with_retry(argv, env=os.environ, max_attempts=5):
     return exponential_backoff_retry(lambda: execute(argv, env),
                                      excs=(RuntimeError, CalledProcessError),
@@ -51,7 +48,6 @@ def get_sign_cmd(file):
     if cert_hash:
         cmd = cmd + ' /sha1 "' + cert_hash + '"'
     return cmd + ' "' + file + '"'
-
 
 def sign_binaries(base_dir, endswidth=('.exe', '.dll')):
     matches = []
@@ -79,7 +75,6 @@ def main():
                               'file is signed in-place.'))
     args = parser.parse_args()
     sign_binary(args.file, args.out_file)
-
 
 if __name__ == '__main__':
     sys.exit(main())
