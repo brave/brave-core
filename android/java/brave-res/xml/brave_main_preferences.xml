@@ -5,16 +5,49 @@
      You can obtain one at https://mozilla.org/MPL/2.0/. -->
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orderingFromXml="false">
     <PreferenceCategory
         android:key="brave_account_section"
         android:order="1"
-        android:title="@string/prefs_section_brave_account"/>
-    <org.chromium.components.browser_ui.settings.ChromeBasePreference
-        android:key="get_started"
+        android:title="@string/prefs_brave_account"/>
+    <org.chromium.chrome.browser.settings.BraveAccountPreference
+        android:key="user_info"
         android:order="1"
         android:icon="@drawable/ic_brave"
-        android:title="@string/get_started"/>
+        android:title="John Doe"
+        android:summary="johndoe@gmail.com"
+        app:summary_text_color="@color/brave_theme_subtitle_text"
+        android:selectable="false"/>
+    <org.chromium.chrome.browser.settings.BraveAccountPreference
+        android:key="sign_out"
+        android:order="2"
+        android:title="@string/prefs_brave_account_sign_out"
+        app:title_text_color="@color/brave_link"/>
+    <org.chromium.chrome.browser.settings.BraveAccountPreference
+        android:key="almost_there"
+        android:order="3"
+        android:title="@string/prefs_brave_account_almost_there"
+        android:summary="@string/prefs_brave_account_almost_there_detail"
+        app:summary_text_color="@color/brave_theme_subtitle_text"
+        android:selectable="false"/>
+    <org.chromium.chrome.browser.settings.BraveAccountPreference
+        android:key="resend_confirmation_email"
+        android:order="4"
+        android:title="@string/prefs_brave_account_resend_confirmation_email"
+        app:title_text_color="@color/brave_link"
+        android:summary="@string/prefs_brave_account_resend_confirmation_email_detail"
+        app:summary_text_color="@color/brave_theme_subtitle_text"/>
+    <org.chromium.chrome.browser.settings.BraveAccountPreference
+        android:key="cancel_registration"
+        android:order="5"
+        android:title="@string/prefs_brave_account_cancel_registration"
+        app:title_text_color="@color/systemfeedback_error_text"/>
+    <org.chromium.components.browser_ui.settings.ChromeBasePreference
+        android:key="get_started"
+        android:order="6"
+        android:icon="@drawable/ic_brave"
+        android:title="@string/prefs_brave_account_get_started"/>
     <PreferenceCategory
         android:key="features_section"
         android:order="2"

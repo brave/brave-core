@@ -27,7 +27,6 @@ import org.chromium.chrome.browser.BraveLaunchIntentDispatcher;
 import org.chromium.chrome.browser.brave_leo.BraveLeoPrefUtils;
 import org.chromium.chrome.browser.brave_origin.BraveOriginPlansActivity;
 import org.chromium.chrome.browser.brave_origin.BraveOriginSubscriptionPrefs;
-import org.chromium.chrome.browser.customtabs.BraveAccountCustomTabActivity;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.homepage.settings.BraveHomepageSettings;
 import org.chromium.chrome.browser.notifications.BraveNotificationWarningDialog;
@@ -60,7 +59,6 @@ import java.util.HashMap;
 public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         implements Preference.OnPreferenceChangeListener {
     // sections
-    private static final String PREF_BRAVE_ACCOUNT_SECTION = "brave_account_section";
     private static final String PREF_FEATURES_SECTION = "features_section";
     private static final String PREF_DISPLAY_SECTION = "display_section";
     private static final String PREF_GENERAL_SECTION = "general_section";
@@ -71,7 +69,6 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
 
     // prefs
     private static final String PREF_BRAVE_VPN_CALLOUT = "pref_vpn_callout";
-    private static final String PREF_GET_STARTED = "get_started";
     private static final String PREF_CLOSING_ALL_TABS_CLOSES_BRAVE =
             "closing_all_tabs_closes_brave";
     private static final String PREF_PRIVACY = "privacy";
@@ -107,6 +104,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
     private static final String PREF_SAFETY_CHECK = "safety_check";
 
     private final HashMap<String, Preference> mRemovedPreferences = new HashMap<>();
+    private @Nullable BraveAccountSectionController mAccountController;
     private @Nullable Preference mVpnCalloutPreference;
     private boolean mNotificationClicked;
 
@@ -123,7 +121,8 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         // Forward the custom menu item keys from main settings to appearance preference screen.
         CustomizeBraveMenu.propagateMenuItemExtras(findPreference(PREF_APPEARANCE), getArguments());
 
-        initBraveAccount();
+        mAccountController = BraveAccountSectionController.maybeCreate(this, getProfile());
+
         overrideChromiumPreferences();
         initRateBrave();
         setPreferenceListeners();
@@ -142,6 +141,10 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         // Allows the fragment lifecycle to fully complete before updating preferences.
         // Prevents timing issues where preferences might not be fully initialized yet.
         PostTask.postTask(TaskTraits.UI_DEFAULT, this::updateBravePreferences);
+        if (mAccountController != null) {
+            mAccountController.updateUI();
+        }
+
         if (mNotificationClicked
                 && BraveNotificationWarningDialog.shouldShowNotificationWarningDialog(getActivity())
                 && !OnboardingPrefManager.getInstance()
@@ -154,6 +157,16 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
             }
             OnboardingPrefManager.getInstance()
                     .setNotificationPermissionEnablingDialogShownFromSetting(true);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        if (mAccountController != null) {
+            mAccountController.destroy();
+            mAccountController = null;
         }
     }
 
@@ -284,12 +297,12 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         }
 
         int braveAccountSectionOrder = firstSectionOrder;
-        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_ACCOUNT)) {
-            setPreferenceOrder(PREF_BRAVE_ACCOUNT_SECTION, ++braveAccountSectionOrder);
-            setPreferenceOrder(PREF_GET_STARTED, ++braveAccountSectionOrder);
-        } else {
-            removePreferenceIfPresent(PREF_BRAVE_ACCOUNT_SECTION);
-            removePreferenceIfPresent(PREF_GET_STARTED);
+        for (String key : BraveAccountSectionController.ALL_PREFERENCE_KEYS) {
+            if (mAccountController != null) {
+                setPreferenceOrder(key, ++braveAccountSectionOrder);
+            } else {
+                removePreferenceIfPresent(key);
+            }
         }
 
         int featuresSectionOrder = braveAccountSectionOrder;
@@ -477,20 +490,6 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
 
     private void updateSummaries() {
         updateSummary(PREF_BRAVE_STATS, BraveStatsPreferences.getPreferenceSummary());
-    }
-
-    private void initBraveAccount() {
-        Preference getStartedPreference = findPreference(PREF_GET_STARTED);
-        if (getStartedPreference != null) {
-            getStartedPreference.setOnPreferenceClickListener(
-                    new Preference.OnPreferenceClickListener() {
-                        @Override
-                        public boolean onPreferenceClick(Preference preference) {
-                            BraveAccountCustomTabActivity.show(getActivity());
-                            return true;
-                        }
-                    });
-        }
     }
 
     private void overrideChromiumPreferences() {

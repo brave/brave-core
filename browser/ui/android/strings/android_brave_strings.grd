@@ -335,10 +335,28 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_PREFS_SUPPORT_SECTION" desc="Title for the support section ">
         Support
       </message>
-      <message name="IDS_PREFS_SECTION_BRAVE_ACCOUNT" desc="Title for the Brave Account section in settings">
+      <message name="IDS_PREFS_BRAVE_ACCOUNT" translateable="false" desc="Title for the Brave Account section in settings">
         Brave Account
       </message>
-      <message name="IDS_GET_STARTED" desc="Button text to get started with Brave Account">
+      <message name="IDS_PREFS_BRAVE_ACCOUNT_SIGN_OUT" translateable="false" desc="Label for the button that signs the user out of their account when clicked">
+        Sign out
+      </message>
+      <message name="IDS_PREFS_BRAVE_ACCOUNT_ALMOST_THERE" translateable="false" desc="Title shown when user has registered but is awaiting email verification">
+        Almost there!
+      </message>
+      <message name="IDS_PREFS_BRAVE_ACCOUNT_ALMOST_THERE_DETAIL" translateable="false" desc="Instructions informing the user that a confirmation email has been sent and they need to click the link to activate their account">
+        A confirmation email is on the way. Click the button in that email to activate your account.
+      </message>
+      <message name="IDS_PREFS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL" translateable="false" desc="Label for the button that resends the confirmation email when clicked">
+        Resend confirmation email
+      </message>
+      <message name="IDS_PREFS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_DETAIL" translateable="false" desc="Help text for users who haven't received the confirmation email, suggesting they check spam or resend it">
+        Don't see the email? Check your spam folder or click on the button to resend the confirmation email.
+      </message>
+      <message name="IDS_PREFS_BRAVE_ACCOUNT_CANCEL_REGISTRATION" translateable="false" desc="Label for the button that cancels the pending registration when clicked">
+        Cancel registration
+      </message>
+      <message name="IDS_PREFS_BRAVE_ACCOUNT_GET_STARTED" translateable="false" desc="Label for the button that opens the Brave Account dialog when clicked">
         Get started
       </message>
       <message name="IDS_PREFS_SECTION_FEATURES" desc="Title for Brave-specific features section">
