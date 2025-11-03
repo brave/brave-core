@@ -61,7 +61,6 @@ inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
      kManagedBraveShieldsEnabledForUrls, base::Value::Type::LIST},
     {policy::key::kBraveSyncUrl, brave_sync::kCustomSyncServiceUrl,
      base::Value::Type::STRING},
-
 #if BUILDFLAG(ENABLE_TOR)
     {policy::key::kTorDisabled, tor::prefs::kTorDisabled,
      base::Value::Type::BOOLEAN},
@@ -80,7 +79,6 @@ inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
      base::Value::Type::BOOLEAN},
     {policy::key::kBraveWebDiscoveryEnabled, kWebDiscoveryEnabled,
      base::Value::Type::BOOLEAN},
-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
     {policy::key::kBraveNewsDisabled,
      brave_news::prefs::kBraveNewsDisabledByPolicy, base::Value::Type::BOOLEAN},
     {policy::key::kBraveTalkDisabled, kBraveTalkDisabledByPolicy,
@@ -88,7 +86,6 @@ inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
 #if BUILDFLAG(ENABLE_SPEEDREADER)
     {policy::key::kBraveSpeedreaderEnabled, speedreader::kSpeedreaderEnabled,
      base::Value::Type::BOOLEAN},
-#endif
 #endif
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
     {policy::key::kBraveWaybackMachineEnabled, kBraveWaybackMachineEnabled,
