@@ -83,6 +83,4 @@ source_set("unit_tests") {
   if (enable_tor) {
     deps += [ "//brave/components/tor:pref_names" ]
   }
-
-  deps += []
 }
