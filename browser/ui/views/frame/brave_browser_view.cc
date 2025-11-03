@@ -913,6 +913,14 @@ void BraveBrowserView::HideSplitView() {
   UpdateRoundedCornersUI();
 }
 
+void BraveBrowserView::ReparentTopContainerForEndOfImmersive() {
+  if (tabs::utils::ShouldShowVerticalTabs(browser())) {
+    return;
+  }
+
+  BrowserView::ReparentTopContainerForEndOfImmersive();
+}
+
 BraveMultiContentsView* BraveBrowserView::GetBraveMultiContentsView() const {
   return BraveMultiContentsView::From(multi_contents_view_);
 }
