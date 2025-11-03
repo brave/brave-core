@@ -33,10 +33,12 @@ assert cert or cert_hash or signtool_args, \
     'CERT is a part of the name in the //CurrentUser/My Windows Certificate ' \
     'Store. It is ambiguous and will likely be deprecated in the future.'
 
-def execute_with_retry(argv, env=os.environ, max_attempts=5):
+
+# pylint: disable=W0102
+def execute_with_retry(argv, env=os.environ, count=5):
     return exponential_backoff_retry(lambda: execute(argv, env),
                                      excs=(RuntimeError, CalledProcessError),
-                                     max_attempts=max_attempts)
+                                     count=count)
 
 def get_sign_cmd(file):
     # https://docs.microsoft.com/en-us/dotnet/framework/tools/signtool-exe
