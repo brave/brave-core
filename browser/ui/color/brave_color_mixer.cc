@@ -563,6 +563,10 @@ void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
       nala::kColorPrimitiveNeutral40};
   postprocessing_mixer[kColorBookmarkButtonIcon] = {
       nala::kColorPrimitiveNeutral40};
+
+  // Override menu separator color in darker theme from application side.
+  postprocessing_mixer[ui::kColorMenuSeparator] = {
+      nala::kColorPrimitiveNeutral15};
 #endif  // defined(TOOLKIT_VIEWS)
 }
 
