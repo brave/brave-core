@@ -150,7 +150,7 @@ views::ProposedLayout BraveContentsContainerView::CalculateProposedLayout(
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   auto* contents_layout = layouts.GetLayoutFor(contents_view_);
-  if (reader_mode_toolbar_->GetVisible()) {
+  if (contents_layout && reader_mode_toolbar_->GetVisible()) {
     gfx::Rect toolbar_bounds = contents_layout->bounds;
     toolbar_bounds.set_height(
         reader_mode_toolbar_->GetPreferredSize().height());
