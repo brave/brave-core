@@ -36,15 +36,23 @@ class AdBlockDefaultResourceProvider : public AdBlockResourceProvider {
   /// Returns the path to the resources file.
   base::FilePath GetResourcesPath();
 
+  /// Returns the cached resources JSON if available.
+  const std::string& GetResourcesJson() const { return resources_json_; }
+
   void LoadResources(
-      base::OnceCallback<void(const std::string& resources_json)>) override;
+      base::OnceCallback<void(BraveResourceStorageBox)>) override;
 
  private:
   friend class ::AdBlockServiceTest;
 
   void OnComponentReady(const base::FilePath&);
+  void OnResourcesLoaded(const std::string& resources_json);
+  void OnLoadResourcesLoaded(
+      base::OnceCallback<void(BraveResourceStorageBox)> cb,
+      const std::string& resources_json);
 
   base::FilePath component_path_;
+  std::string resources_json_;  // Cached resources JSON
 
   base::WeakPtrFactory<AdBlockDefaultResourceProvider> weak_factory_{this};
 };
