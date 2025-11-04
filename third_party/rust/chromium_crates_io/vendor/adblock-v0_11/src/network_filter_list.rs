@@ -8,13 +8,13 @@ use crate::filters::fb_network::FlatNetworkFilter;
 use crate::filters::filter_data_context::FilterDataContext;
 use crate::filters::flatbuffer_generated::fb;
 use crate::filters::network::{
-    NetworkFilter, NetworkFilterMask, NetworkFilterMaskHelper, NetworkMatchable,
+    FilterTokens, NetworkFilter, NetworkFilterMask, NetworkFilterMaskHelper, NetworkMatchable,
 };
 use crate::flatbuffers::containers::flat_multimap::FlatMultiMapView;
 use crate::flatbuffers::unsafe_tools::fb_vector_to_slice;
 use crate::regex_manager::RegexManager;
 use crate::request::Request;
-use crate::utils::{fast_hash, to_short_hash, Hash, ShortHash};
+use crate::utils::{fast_hash, to_short_hash, ShortHash};
 
 /// Holds relevant information from a single matchin gnetwork filter rule as a result of querying a
 /// [NetworkFilterList] for a given request.
@@ -37,7 +37,7 @@ impl From<&NetworkFilter> for CheckResult {
 impl fmt::Display for CheckResult {
     fn fmt(&self, f: &mut fmt::Formatter) -> Result<(), fmt::Error> {
         if let Some(ref raw_line) = self.raw_line {
-            write!(f, "{}", raw_line)
+            write!(f, "{raw_line}")
         } else {
             write!(f, "{}", self.filter_mask)
         }
@@ -155,16 +155,19 @@ impl NetworkFilterList<'_> {
 }
 
 pub(crate) fn token_histogram<T>(
-    filter_tokens: &[(T, Vec<Vec<Hash>>)],
+    filter_tokens: &[(T, FilterTokens)],
 ) -> (u32, HashMap<ShortHash, u32>) {
     let mut tokens_histogram: HashMap<ShortHash, u32> = HashMap::new();
     let mut number_of_tokens = 0;
     for (_, tokens) in filter_tokens.iter() {
-        for tg in tokens {
-            for t in tg {
-                *tokens_histogram.entry(to_short_hash(*t)).or_insert(0) += 1;
-                number_of_tokens += 1;
+        match tokens {
+            FilterTokens::Other(tokens) | FilterTokens::OptDomains(tokens) => {
+                for t in tokens {
+                    *tokens_histogram.entry(to_short_hash(*t)).or_insert(0) += 1;
+                    number_of_tokens += 1;
+                }
             }
+            FilterTokens::Empty => {}
         }
     }
 

@@ -208,7 +208,7 @@ where
             // Should match start or end of url
             let left_anchor = if is_left_anchor { "^" } else { "" };
             let right_anchor = if is_right_anchor { "$" } else { "" };
-            let filter = format!("{}{}{}", left_anchor, repl, right_anchor);
+            let filter = format!("{left_anchor}{repl}{right_anchor}");
 
             escaped_patterns.push(filter);
         }

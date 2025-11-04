@@ -1,6 +1,6 @@
 [package]
 name = "adblock"
-version = "0.11.0"
+version = "0.11.1"
 authors = ["Anton Lazarev <alazarev@brave.com>", "Andrius Aucinas"]
 edition = "2021"
 
@@ -105,8 +105,7 @@ resource-assembler = []
 
 [lints.clippy]
 len_zero = "allow"
-# TODO: https://github.com/brave/adblock-rust/issues/501
-uninlined_format_args = "allow"
+uninlined_format_args = "warn"
 
 [workspace]
 members = ["js", "fuzz"]

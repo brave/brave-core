@@ -255,7 +255,7 @@ impl MimeType {
                 "xml" => MimeType::TextXml,
                 _ => {
                     #[cfg(test)]
-                    eprintln!("Unrecognized file extension on: {:?}", resource_path);
+                    eprintln!("Unrecognized file extension on: {resource_path:?}");
                     MimeType::Unknown
                 }
             }
@@ -339,7 +339,7 @@ impl From<MimeType> for &str {
 impl std::fmt::Display for MimeType {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let s: &str = self.into();
-        write!(f, "{}", s)
+        write!(f, "{s}")
     }
 }
 

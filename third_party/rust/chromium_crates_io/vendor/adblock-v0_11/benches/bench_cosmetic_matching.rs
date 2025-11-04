@@ -51,8 +51,8 @@ fn by_classes_ids(c: &mut Criterion) {
 
     group.bench_function("brave-list", |b| {
         for i in 0..1000 {
-            classes.push(format!("class{}", i));
-            ids.push(format!("id{}", i));
+            classes.push(format!("class{i}"));
+            ids.push(format!("id{i}"));
         }
 
         let engine = make_engine();
