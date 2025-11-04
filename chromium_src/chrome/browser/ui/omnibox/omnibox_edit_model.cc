@@ -9,6 +9,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
+#include "brave/components/omnibox/browser/brave_search_ask_helper.h"
 #include "brave/components/omnibox/browser/brave_search_provider.h"
 #include "chrome/browser/ui/omnibox/omnibox_controller.h"
 #include "components/omnibox/browser/autocomplete_classifier.h"
@@ -20,6 +21,7 @@
 #endif
 
 namespace {
+
 [[nodiscard]] std::optional<base::AutoReset<bool>>
 SetInputIsPastedFromClipboard(OmniboxController* omnibox_controller,
                               bool is_input_pasted) {
@@ -34,6 +36,7 @@ SetInputIsPastedFromClipboard(OmniboxController* omnibox_controller,
   }
   return std::nullopt;
 }
+
 }  // namespace
 
 #define CanPasteAndGo CanPasteAndGo_Chromium
@@ -42,6 +45,8 @@ SetInputIsPastedFromClipboard(OmniboxController* omnibox_controller,
 #define BRAVE_OMNIBOX_EDIT_MODEL_START_AUTOCOMPLETE \
   auto pasted =                                     \
       SetInputIsPastedFromClipboard(controller_, paste_state_ != NONE);
+#define BRAVE_OMNIBOX_EDIT_MODEL_OPEN_MATCH \
+  brave_search::MaybeTransformDestinationUrlForQuestionInput(match);
 
 #include <chrome/browser/ui/omnibox/omnibox_edit_model.cc>
 
@@ -49,6 +54,7 @@ SetInputIsPastedFromClipboard(OmniboxController* omnibox_controller,
 #undef CanPasteAndGo
 #undef PasteAndGo
 #undef BRAVE_OMNIBOX_EDIT_MODEL_START_AUTOCOMPLETE
+#undef BRAVE_OMNIBOX_EDIT_MODEL_OPEN_MATCH
 
 bool OmniboxEditModel::CanPasteAndGo(const std::u16string& text) const {
 #if BUILDFLAG(ENABLE_COMMANDER)

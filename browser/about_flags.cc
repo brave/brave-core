@@ -642,6 +642,14 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           FEATURE_VALUE_TYPE(omnibox::kOmniboxTabSwitchByDefault),            \
       },                                                                      \
       {                                                                       \
+          "brave-route-questions-to-ask-brave",                               \
+          "Route questions to Ask Brave",                                     \
+          "Automatically route question queries from the omnibox to Ask "     \
+          "Brave instead of Brave Search",                                    \
+          kOsWin | kOsLinux | kOsMac,                                         \
+          FEATURE_VALUE_TYPE(omnibox::kRouteQuestionsToAskBrave),             \
+      },                                                                      \
+      {                                                                       \
           "brave-history-more-search-results",                                \
           "Brave More History",                                               \
           "Include more history in the omnibox search results",               \

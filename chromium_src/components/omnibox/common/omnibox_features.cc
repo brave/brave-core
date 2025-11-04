@@ -24,4 +24,6 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
 BASE_FEATURE(kOmniboxTabSwitchByDefault,
              base::FEATURE_DISABLED_BY_DEFAULT);
 
+BASE_FEATURE(kRouteQuestionsToAskBrave, base::FEATURE_DISABLED_BY_DEFAULT);
+
 }  // namespace omnibox

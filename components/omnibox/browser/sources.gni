@@ -20,6 +20,8 @@ brave_components_omnibox_browser_sources = [
   "//brave/components/omnibox/browser/brave_omnibox_prefs.h",
   "//brave/components/omnibox/browser/brave_on_device_head_provider.cc",
   "//brave/components/omnibox/browser/brave_on_device_head_provider.h",
+  "//brave/components/omnibox/browser/brave_search_ask_helper.cc",
+  "//brave/components/omnibox/browser/brave_search_ask_helper.h",
   "//brave/components/omnibox/browser/brave_search_provider.cc",
   "//brave/components/omnibox/browser/brave_search_provider.h",
   "//brave/components/omnibox/browser/brave_search_suggestion_parser.cc",
