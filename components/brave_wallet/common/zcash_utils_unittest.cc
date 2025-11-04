@@ -420,32 +420,6 @@ TEST(ZCashUtilsUnitTest, GetMergedUnifiedAddress) {
   }
 }
 
-TEST(ZCashUtilsUnitTest, CalculateZCashTxFee) {
-  // https://github.com/zcash/librustzcash/blob/e190b6b7baec244899556abed8f12f21fff19abf/zcash_client_backend/src/data_api/testing/pool.rs#L3961
-  EXPECT_EQ(15000u, CalculateZCashTxFee(0u, 1u, 1u, 0u).ValueOrDie());
-
-  // https://3xpl.com/zcash/transaction/3f7d24396bd120ef79b893983d78fc7e28dbe1d6c208ec50cd1285ff85c52d42
-  EXPECT_EQ(15000u, CalculateZCashTxFee(1u, 0u, 1u, 0u).ValueOrDie());
-
-  // 5000 * max(2, (max(5, 1) + 0)
-  EXPECT_EQ(25000u, CalculateZCashTxFee(5u, 1u, 0u, 0u).ValueOrDie());
-  // 5000 * max(2, (max(0, 5) + 0)
-  EXPECT_EQ(25000u, CalculateZCashTxFee(0u, 5u, 0u, 0u).ValueOrDie());
-  // 5000 * max(2, (max(1, 0) + 0)
-  EXPECT_EQ(10000u, CalculateZCashTxFee(1u, 0u, 0u, 0u).ValueOrDie());
-  // 5000 * max(2, (max(0, 1) + 0)
-  EXPECT_EQ(10000u, CalculateZCashTxFee(0u, 1u, 0u, 0u).ValueOrDie());
-  // 5000 * max(2, (max(5, 5) + 0)
-  EXPECT_EQ(25000u, CalculateZCashTxFee(5u, 5u, 0u, 0u).ValueOrDie());
-  // 5000 * max(2, (max(1, 1) + 0)
-  EXPECT_EQ(10000u, CalculateZCashTxFee(1u, 1u, 0u, 0u).ValueOrDie());
-
-  EXPECT_FALSE(CalculateZCashTxFee(0xFFFFFFFF, 0xFFFFFFFF, 1, 1).IsValid());
-  EXPECT_FALSE(CalculateZCashTxFee(0x88888888, 0, 0x88888888, 1).IsValid());
-  EXPECT_FALSE(CalculateZCashTxFee(1, 0, 0xFFFFFFFF, 1).IsValid());
-  EXPECT_FALSE(CalculateZCashTxFee(1, 0, 0, 0xFFFFFFFF).IsValid());
-}
-
 TEST(ZCashUtilsUnitTest, OutputZCashTransparentAddressSupported) {
   EXPECT_FALSE(OutputZCashTransparentAddressSupported(
       "t1Hsc1LR8yKnbbe3twRp88p6vFfC5t7DLbs__", false));

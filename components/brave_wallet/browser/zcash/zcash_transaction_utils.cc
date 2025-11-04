@@ -14,6 +14,8 @@ namespace brave_wallet {
 
 namespace {
 
+constexpr uint32_t kMinOrchardActionsCountForFee = 2u;
+
 base::CheckedNumeric<uint64_t> CalculateInputsAmount(
     const std::vector<ZCashTransaction::TxInput>& inputs) {
   base::CheckedNumeric<uint64_t> total_value = 0u;
@@ -36,7 +38,56 @@ base::CheckedNumeric<uint64_t> CalculateInputsAmount(
 
 #endif  // BUILDFLAG(ENABLE_ORCHARD)
 
+// https://github.com/zcash/orchard/blob/9d89b504c52dc69064ca431e8311a4cd1c279b44/src/builder.rs#L93-L94
+base::CheckedNumeric<uint32_t> GetOrchardActionsCount(
+    const base::StrictNumeric<uint32_t> orchard_input_notes,
+    const base::StrictNumeric<uint32_t> orchard_output_notes) {
+  if (orchard_input_notes == 0u && orchard_output_notes == 0u) {
+    return 0u;
+  }
+
+  return base::CheckMax<uint32_t>(orchard_input_notes, orchard_output_notes,
+                                  kMinOrchardActionsCountForFee);
+}
+
 }  // namespace
+
+// https://zips.z.cash/zip-0317
+base::CheckedNumeric<uint64_t> CalculateZCashTxFee(
+    const base::StrictNumeric<uint32_t> transparent_input_count,
+    const base::StrictNumeric<uint32_t> orchard_input_count,
+    ZCashTargetOutputType output_type) {
+  // Mixed inputs are not supported.
+  DCHECK((transparent_input_count != 0) ^ (orchard_input_count != 0));
+
+  // Basic outputs setup - add a change output.
+  base::CheckedNumeric<uint32_t> orchard_output_count =
+      orchard_input_count != 0u ? 1u : 0u;
+  base::CheckedNumeric<uint32_t> transparent_output_count =
+      transparent_input_count != 0u ? 1u : 0u;
+
+  // Add a target output.
+  switch (output_type) {
+    case ZCashTargetOutputType::kTransparent:
+      transparent_output_count++;
+      break;
+    case ZCashTargetOutputType::kOrchard:
+      orchard_output_count++;
+      break;
+    default:
+      NOTREACHED();
+  }
+
+  base::CheckedNumeric<uint32_t> orchard_actions_count = GetOrchardActionsCount(
+      orchard_input_count, orchard_output_count.ValueOrDie());
+  // https://github.com/zcash/librustzcash/blob/8eb78dfae38ca1c91a108a86a4a3b5505766c3f6/zcash_primitives/src/transaction/fees/zip317.rs#L188
+  base::CheckedNumeric<uint32_t> logical_actions_count =
+      base::CheckMax<uint32_t>(transparent_input_count,
+                               transparent_output_count) +
+      orchard_actions_count;
+  return base::CheckMul<uint64_t>(
+      kMarginalFee, base::CheckMax(kGraceActionsCount, logical_actions_count));
+}
 
 PickInputsResult::PickInputsResult(
     std::vector<ZCashTransaction::TxInput> inputs,
@@ -51,6 +102,10 @@ std::optional<PickInputsResult> PickZCashTransparentInputs(
     const ZCashWalletService::UtxoMap& utxo_map,
     uint64_t amount,
     ZCashTargetOutputType output_type) {
+  if (utxo_map.empty()) {
+    return std::nullopt;
+  }
+
   // TODO(cypt4): This just picks ouputs one by one and stops when picked
   // amount is GE to send amount plus fee. Needs something better than such
   // greedy strategy.
@@ -70,18 +125,8 @@ std::optional<PickInputsResult> PickZCashTransparentInputs(
   if (amount == kZCashFullAmount) {
     auto total_inputs_amount = CalculateInputsAmount(all_inputs);
     // Full amount case - no change output.
-    base::CheckedNumeric<uint64_t> fee = 0u;
-    switch (output_type) {
-      case ZCashTargetOutputType::kTransparent:
-        fee = CalculateZCashTxFee(all_inputs.size(), 1u, 0u, 0u);
-        break;
-      case ZCashTargetOutputType::kOrchard:
-        fee = CalculateZCashTxFee(all_inputs.size(), 0u, 0u, 1u);
-        break;
-      default:
-        NOTREACHED();
-    }
-
+    base::CheckedNumeric<uint64_t> fee = CalculateZCashTxFee(
+        base::checked_cast<uint32_t>(all_inputs.size()), 0u, output_type);
     if (!fee.IsValid() || !total_inputs_amount.IsValid()) {
       return std::nullopt;
     }
@@ -100,17 +145,8 @@ std::optional<PickInputsResult> PickZCashTransparentInputs(
   for (auto& input : all_inputs) {
     selected_inputs.push_back(std::move(input));
 
-    base::CheckedNumeric<uint64_t> fee = 0;
-    switch (output_type) {
-      case ZCashTargetOutputType::kTransparent:
-        fee = CalculateZCashTxFee(selected_inputs.size(), 2u, 0u, 0u);
-        break;
-      case ZCashTargetOutputType::kOrchard:
-        fee = CalculateZCashTxFee(selected_inputs.size(), 1u, 0u, 1u);
-        break;
-      default:
-        NOTREACHED();
-    }
+    base::CheckedNumeric<uint64_t> fee = CalculateZCashTxFee(
+        base::checked_cast<uint32_t>(selected_inputs.size()), 0u, output_type);
 
     auto total_inputs_amount = CalculateInputsAmount(selected_inputs);
     if (!fee.IsValid() || !total_inputs_amount.IsValid()) {
@@ -149,20 +185,15 @@ std::optional<PickOrchardInputsResult> PickZCashOrchardInputs(
     const std::vector<OrchardNote>& notes,
     uint64_t amount,
     ZCashTargetOutputType output_type) {
+  if (notes.empty()) {
+    return std::nullopt;
+  }
+
   if (amount == kZCashFullAmount) {
     auto total_inputs_amount = CalculateInputsAmount(notes);
 
-    base::CheckedNumeric<uint64_t> fee = 0;
-    switch (output_type) {
-      case ZCashTargetOutputType::kTransparent:
-        fee = CalculateZCashTxFee(0u, 1u, notes.size(), 0u);
-        break;
-      case ZCashTargetOutputType::kOrchard:
-        fee = CalculateZCashTxFee(0u, 0u, notes.size(), 1u);
-        break;
-      default:
-        NOTREACHED();
-    }
+    base::CheckedNumeric<uint64_t> fee = CalculateZCashTxFee(
+        0u, base::checked_cast<uint32_t>(notes.size()), output_type);
 
     if (!total_inputs_amount.IsValid() || !fee.IsValid()) {
       return std::nullopt;
@@ -184,17 +215,9 @@ std::optional<PickOrchardInputsResult> PickZCashOrchardInputs(
   for (auto& input : mutable_notes) {
     selected_inputs.push_back(input);
     auto total_inputs_amount = CalculateInputsAmount(selected_inputs);
-    base::CheckedNumeric<uint64_t> fee = 0u;
-    switch (output_type) {
-      case ZCashTargetOutputType::kTransparent:
-        fee = CalculateZCashTxFee(0u, 1u, selected_inputs.size(), 1u);
-        break;
-      case ZCashTargetOutputType::kOrchard:
-        fee = CalculateZCashTxFee(0u, 0u, selected_inputs.size(), 2u);
-        break;
-      default:
-        NOTREACHED();
-    }
+
+    base::CheckedNumeric<uint64_t> fee = CalculateZCashTxFee(
+        0u, base::checked_cast<uint32_t>(selected_inputs.size()), output_type);
 
     if (!total_inputs_amount.IsValid() || !fee.IsValid()) {
       return std::nullopt;

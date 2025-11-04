@@ -39,6 +39,11 @@ struct PickInputsResult {
   PickInputsResult& operator=(PickInputsResult&& other) = delete;
 };
 
+base::CheckedNumeric<uint64_t> CalculateZCashTxFee(
+    const base::StrictNumeric<uint32_t> transparent_input_count,
+    const base::StrictNumeric<uint32_t> orchard_input_notes,
+    ZCashTargetOutputType output_type);
+
 std::optional<PickInputsResult> PickZCashTransparentInputs(
     const ZCashWalletService::UtxoMap& utxo_map,
     uint64_t amount,

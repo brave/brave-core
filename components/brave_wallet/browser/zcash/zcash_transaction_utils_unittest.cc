@@ -100,7 +100,7 @@ TEST(ZCashTransactionUtilsUnitTest, PickZCashTransparentInputs) {
     EXPECT_TRUE(result);
     // max(2, max(3, 1)) * 5000.
     EXPECT_EQ(result->change, 15000u);
-    EXPECT_EQ(result->fee, CalculateZCashTxFee(3, 2, 0, 0).ValueOrDie());
+    EXPECT_EQ(result->fee, 15000u);
     EXPECT_EQ(result->inputs[0].utxo_address, "10000");
     EXPECT_EQ(result->inputs[0].utxo_value, 10000u);
 
@@ -348,5 +348,51 @@ TEST(ZCashTransactionUtilsUnitTest, PickZCashOrchardInputs) {
   }
 }
 #endif  // BUILDFLAG(ENABLE_ORCHARD)
+
+TEST(ZCashTransactionUtilsUnitTest, CalculateZCashTxFee) {
+  // https://github.com/zcash/librustzcash/blob/e190b6b7baec244899556abed8f12f21fff19abf/zcash_client_backend/src/data_api/testing/pool.rs#L3961
+  EXPECT_EQ(15000u,
+            CalculateZCashTxFee(0u, 1u, ZCashTargetOutputType::kTransparent)
+                .ValueOrDie());
+  // 5000 * max(2, (max(1, 2))
+  EXPECT_EQ(10000u,
+            CalculateZCashTxFee(1u, 0u, ZCashTargetOutputType::kTransparent)
+                .ValueOrDie());
+
+  // https://3xpl.com/zcash/transaction/3f7d24396bd120ef79b893983d78fc7e28dbe1d6c208ec50cd1285ff85c52d42
+  EXPECT_EQ(15000u, CalculateZCashTxFee(1u, 0u, ZCashTargetOutputType::kOrchard)
+                        .ValueOrDie());
+  // 5000 * max(2, (max(0, 0) + max(1, 2, 2))
+  EXPECT_EQ(10000u, CalculateZCashTxFee(0u, 1u, ZCashTargetOutputType::kOrchard)
+                        .ValueOrDie());
+
+  // 5000 * max(2, (max(5, 2))
+  EXPECT_EQ(25000u,
+            CalculateZCashTxFee(5u, 0u, ZCashTargetOutputType::kTransparent)
+                .ValueOrDie());
+  // 5000 * max(2, (max(5, 1) + max(0, 1, 2))
+  EXPECT_EQ(35000u, CalculateZCashTxFee(5u, 0u, ZCashTargetOutputType::kOrchard)
+                        .ValueOrDie());
+
+  // 5000 * max(2, (max(0, 1) + max(5u, 1, 2))
+  EXPECT_EQ(30000u,
+            CalculateZCashTxFee(0u, 5u, ZCashTargetOutputType::kTransparent)
+                .ValueOrDie());
+  // 5000 * max(2, (max(5u, 2u, 2))
+  EXPECT_EQ(25000u, CalculateZCashTxFee(0u, 5u, ZCashTargetOutputType::kOrchard)
+                        .ValueOrDie());
+
+  // 5000 * max(2, (max(5, 1) + 0)
+  EXPECT_EQ(25000u,
+            CalculateZCashTxFee(5u, 0u, ZCashTargetOutputType::kTransparent)
+                .ValueOrDie());
+
+  EXPECT_FALSE(
+      CalculateZCashTxFee(0xFFFFFFFF, 0u, ZCashTargetOutputType::kOrchard)
+          .IsValid());
+  EXPECT_FALSE(
+      CalculateZCashTxFee(0u, 0xFFFFFFFF, ZCashTargetOutputType::kTransparent)
+          .IsValid());
+}
 
 }  // namespace brave_wallet
