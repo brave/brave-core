@@ -213,11 +213,6 @@ mod tests {
         // Verify get_hash is stable.
         // If the value changes, update ADBLOCK_RUST_DAT_VERSION.
         let message = "If the value changes, update ADBLOCK_RUST_DAT_VERSION.";
-        assert_eq!(
-            get_hash(&"adblock-rust"),
-            15102204115509201409,
-            "{}",
-            message
-        );
+        assert_eq!(get_hash(&"adblock-rust"), 15102204115509201409, "{message}");
     }
 }

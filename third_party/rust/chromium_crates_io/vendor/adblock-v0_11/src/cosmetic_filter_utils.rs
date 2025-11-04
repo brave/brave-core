@@ -86,17 +86,16 @@ impl SpecificFilterType {
 
 /// Encodes permission bits in the last 2 ascii chars of a script string
 /// Returns the script with permission appended
-pub(crate) fn encode_script_with_permission(
-    mut script: String,
-    permission: PermissionMask,
-) -> String {
+pub(crate) fn encode_script_with_permission(script: &str, permission: &PermissionMask) -> String {
     const HEX_CHARS: &[u8; 16] = b"0123456789abcdef";
     let high = (permission.to_bits() >> 4) as usize;
     let low = (permission.to_bits() & 0x0f) as usize;
 
-    script.push(HEX_CHARS[high] as char);
-    script.push(HEX_CHARS[low] as char);
-    script
+    let mut encoded_script = String::with_capacity(script.len() + 2);
+    encoded_script.push_str(script);
+    encoded_script.push(HEX_CHARS[high] as char);
+    encoded_script.push(HEX_CHARS[low] as char);
+    encoded_script
 }
 
 /// Decodes permission bits from the last 2 ascii chars of a script string
@@ -133,7 +132,7 @@ mod tests {
             let script = "console.log('测试 🚀 emoji')".to_string();
             let permission = PermissionMask::from_bits(permission);
 
-            let encoded = encode_script_with_permission(script.clone(), permission);
+            let encoded = encode_script_with_permission(&script, &permission);
             let (decoded_permission, decoded_script) = decode_script_with_permission(&encoded);
 
             assert_eq!(decoded_permission.to_bits(), permission.to_bits());

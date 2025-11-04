@@ -17,7 +17,7 @@ const ADBLOCK_RUST_DAT_MAGIC: [u8; 4] = [0xd1, 0xd9, 0x3a, 0xaf];
 
 /// The version of the data format.
 /// If the data format version is incremented, the data is considered as incompatible.
-const ADBLOCK_RUST_DAT_VERSION: u8 = 2;
+const ADBLOCK_RUST_DAT_VERSION: u8 = 3;
 
 /// The total length of the header prefix (magic + version + seahash)
 const HEADER_PREFIX_LENGTH: usize = 4 + 1 + 8;

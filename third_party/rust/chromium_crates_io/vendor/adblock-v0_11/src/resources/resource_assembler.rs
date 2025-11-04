@@ -244,7 +244,7 @@ fn read_resource_from_web_accessible_dir(
 ) -> Resource {
     let resource_path = web_accessible_resource_dir.join(&resource_info.name);
     if !resource_path.is_file() {
-        panic!("Expected {:?} to be a file", resource_path);
+        panic!("Expected {resource_path:?} to be a file");
     }
     let mut resource_file = File::open(resource_path).expect("open resource file for reading");
     let mut resource_contents = Vec::new();

@@ -6,6 +6,7 @@ use crate::cosmetic_filter_cache::ProceduralOrActionFilter;
 use crate::cosmetic_filter_utils::SpecificFilterType;
 use crate::cosmetic_filter_utils::{encode_script_with_permission, key_from_selector};
 use crate::filters::cosmetic::{CosmeticFilter, CosmeticFilterMask, CosmeticFilterOperator};
+use crate::filters::fb_builder::{EngineFlatBuilder, ShareableString};
 use crate::filters::flatbuffer_generated::fb;
 use crate::flatbuffers::containers::flat_map::FlatMapBuilder;
 use crate::flatbuffers::containers::flat_multimap::FlatMultiMapBuilder;
@@ -27,18 +28,18 @@ use flatbuffers::WIPOffset;
 /// See HostnameSpecificRules declaration for more details.
 #[derive(Default)]
 struct HostnameRule {
-    unhide: Vec<String>,
-    uninject_script: Vec<String>,
-    procedural_action: Vec<String>,
-    procedural_action_exception: Vec<String>,
+    unhide: Vec<ShareableString>,
+    uninject_script: Vec<ShareableString>,
+    procedural_action: Vec<ShareableString>,
+    procedural_action_exception: Vec<ShareableString>,
 }
 
-impl<'a, B: FlatBuilder<'a>> FlatSerialize<'a, B> for HostnameRule {
+impl<'a> FlatSerialize<'a, EngineFlatBuilder<'a>> for HostnameRule {
     type Output = WIPOffset<fb::HostnameSpecificRules<'a>>;
 
     fn serialize(
         value: Self,
-        builder: &mut B,
+        builder: &mut EngineFlatBuilder<'a>,
     ) -> flatbuffers::WIPOffset<fb::HostnameSpecificRules<'a>> {
         let unhide = serialize_vec_opt(value.unhide, builder);
         let uninject_script = serialize_vec_opt(value.uninject_script, builder);
@@ -69,29 +70,29 @@ pub(crate) struct CosmeticFilterCacheBuilder {
     complex_class_rules: HashMapBuilder<String, StringVector>,
     complex_id_rules: HashMapBuilder<String, StringVector>,
 
-    hostname_hide: FlatMultiMapBuilder<Hash, String>,
-    hostname_inject_script: FlatMultiMapBuilder<Hash, String>,
+    hostname_hide: FlatMultiMapBuilder<Hash, ShareableString>,
+    hostname_inject_script: FlatMultiMapBuilder<Hash, ShareableString>,
 
     specific_rules: HashMap<Hash, HostnameRule>,
 }
 
 impl CosmeticFilterCacheBuilder {
-    pub fn from_rules(rules: Vec<CosmeticFilter>) -> Self {
+    pub fn from_rules(rules: Vec<CosmeticFilter>, builder: &mut EngineFlatBuilder) -> Self {
         let mut self_ = Self::default();
 
         for rule in rules {
-            self_.add_filter(rule)
+            self_.add_filter(rule, builder);
         }
 
         self_
     }
 
-    pub fn add_filter(&mut self, rule: CosmeticFilter) {
+    pub fn add_filter(&mut self, rule: CosmeticFilter, builder: &mut EngineFlatBuilder) {
         if rule.has_hostname_constraint() {
             if let Some(generic_rule) = rule.hidden_generic_rule() {
                 self.add_generic_filter(generic_rule);
             }
-            self.store_hostname_rule(rule);
+            self.store_hostname_rule(rule, builder);
         } else {
             self.add_generic_filter(rule);
         }
@@ -139,7 +140,7 @@ impl CosmeticFilterCacheBuilder {
         }
     }
 
-    fn store_hostname_rule(&mut self, rule: CosmeticFilter) {
+    fn store_hostname_rule(&mut self, rule: CosmeticFilter, builder: &mut EngineFlatBuilder) {
         use SpecificFilterType::*;
 
         let unhide = rule.mask.contains(CosmeticFilterMask::UNHIDE);
@@ -171,45 +172,74 @@ impl CosmeticFilterCacheBuilder {
             .chain(rule.hostnames.unwrap_or_default())
             .chain(rule.entities.unwrap_or_default());
 
-        tokens_to_insert.for_each(|t| self.store_hostname_filter(&t, kind.clone()));
+        self.store_hostname_filter(tokens_to_insert, &kind, builder);
 
+        let negated = kind.negated();
         let tokens_to_insert_negated = std::iter::empty()
             .chain(rule.not_hostnames.unwrap_or_default())
             .chain(rule.not_entities.unwrap_or_default());
 
-        let negated = kind.negated();
-
-        tokens_to_insert_negated.for_each(|t| self.store_hostname_filter(&t, negated.clone()));
+        self.store_hostname_filter(tokens_to_insert_negated, &negated, builder);
     }
 
-    fn store_hostname_filter(&mut self, token: &Hash, kind: SpecificFilterType) {
+    fn store_hostname_filter(
+        &mut self,
+        tokens: impl IntoIterator<Item = Hash>,
+        kind: &SpecificFilterType,
+        builder: &mut EngineFlatBuilder,
+    ) {
         use SpecificFilterType::*;
 
         match kind {
             // Handle hide and inject_script at top level for better deduplication
             Hide(s) => {
-                self.hostname_hide.insert(*token, s);
+                let mut shareable_string = None;
+                for token in tokens {
+                    let s = shareable_string.get_or_insert_with(|| builder.add_shareable_string(s));
+                    self.hostname_hide.insert(token, s.clone());
+                }
             }
             InjectScript((s, permission)) => {
-                let encoded_script = encode_script_with_permission(s, permission);
-                self.hostname_inject_script.insert(*token, encoded_script);
+                let mut shareable_string = None;
+                for token in tokens {
+                    let s = shareable_string.get_or_insert_with(|| {
+                        builder.add_shareable_string(&encode_script_with_permission(s, permission))
+                    });
+                    self.hostname_inject_script.insert(token, s.clone());
+                }
             }
             // Handle remaining types through HostnameRule
             Unhide(s) => {
-                let entry = self.specific_rules.entry(*token).or_default();
-                entry.unhide.push(s);
+                let mut shareable_string = None;
+                for token in tokens {
+                    let s = shareable_string.get_or_insert_with(|| builder.add_shareable_string(s));
+                    let entry = self.specific_rules.entry(token).or_default();
+                    entry.unhide.push(s.clone());
+                }
             }
             UninjectScript((s, _)) => {
-                let entry = self.specific_rules.entry(*token).or_default();
-                entry.uninject_script.push(s);
+                let mut shareable_string = None;
+                for token in tokens {
+                    let s = shareable_string.get_or_insert_with(|| builder.add_shareable_string(s));
+                    let entry = self.specific_rules.entry(token).or_default();
+                    entry.uninject_script.push(s.clone());
+                }
             }
             ProceduralOrAction(s) => {
-                let entry = self.specific_rules.entry(*token).or_default();
-                entry.procedural_action.push(s);
+                let mut shareable_string = None;
+                for token in tokens {
+                    let s = shareable_string.get_or_insert_with(|| builder.add_shareable_string(s));
+                    let entry = self.specific_rules.entry(token).or_default();
+                    entry.procedural_action.push(s.clone());
+                }
             }
             ProceduralOrActionException(s) => {
-                let entry = self.specific_rules.entry(*token).or_default();
-                entry.procedural_action_exception.push(s);
+                let mut shareable_string = None;
+                for token in tokens {
+                    let s = shareable_string.get_or_insert_with(|| builder.add_shareable_string(s));
+                    let entry = self.specific_rules.entry(token).or_default();
+                    entry.procedural_action_exception.push(s.clone());
+                }
             }
         }
     }
@@ -227,10 +257,13 @@ impl<'a, B: FlatBuilder<'a>> FlatSerialize<'a, B> for StringVector {
     }
 }
 
-impl<'a, B: FlatBuilder<'a>> FlatSerialize<'a, B> for CosmeticFilterCacheBuilder {
+impl<'a> FlatSerialize<'a, EngineFlatBuilder<'a>> for CosmeticFilterCacheBuilder {
     type Output = WIPOffset<fb::CosmeticFilters<'a>>;
 
-    fn serialize(value: Self, builder: &mut B) -> WIPOffset<fb::CosmeticFilters<'a>> {
+    fn serialize(
+        value: Self,
+        builder: &mut EngineFlatBuilder<'a>,
+    ) -> WIPOffset<fb::CosmeticFilters<'a>> {
         let complex_class_rules = HashMapBuilder::finish(value.complex_class_rules, builder);
         let complex_id_rules = HashMapBuilder::finish(value.complex_id_rules, builder);
 
