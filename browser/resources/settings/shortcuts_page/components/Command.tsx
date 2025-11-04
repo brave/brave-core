@@ -95,7 +95,7 @@ export default function Command({
           kind="plain-faint"
           onClick={() => commandsCache.reset(command.id)}
         >
-          {getLocale('shortcutsPageResetCommand')}
+          {getLocale(S.SHORTCUTS_PAGE_RESET_COMMAND)}
         </Button>
       )}
       <Button
@@ -104,7 +104,7 @@ export default function Command({
         disabled={adding}
         onClick={() => setAdding(true)}
       >
-        {getLocale('shortcutsPageAddShortcut')}
+        {getLocale(S.SHORTCUTS_PAGE_ADD_SHORTCUT)}
       </Button>
       {adding && (
         <ConfigureShortcut

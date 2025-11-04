@@ -21,6 +21,8 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/pref_names.h"
+#include "brave/components/commander/common/features.h"
+#include "brave/components/commands/common/features.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -991,17 +993,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_BRAVE_ADBLOCK_CUSTOM_SCRIPTLET_WARNING},
 
       {"braveShortcutsPage", IDS_SETTINGS_BRAVE_SHORTCUTS_TITLE},
-      {"shortcutsPageSearchPlaceholder", IDS_SHORTCUTS_PAGE_SEARCH_PLACEHOLDER},
-      {"shortcutsPageResetAll", IDS_SHORTCUTS_PAGE_RESET_ALL},
-      {"shortcutsPageResetCommand", IDS_SHORTCUTS_PAGE_RESET_COMMAND},
-      {"shortcutsPageShortcutHint", IDS_SHORTCUTS_PAGE_SHORTCUT_HINT},
-      {"shortcutsPageShortcutInUse", IDS_SHORTCUTS_PAGE_SHORTCUT_IN_USE},
-      {"shortcutsPageShortcutUnmodifiable",
-       IDS_SHORTCUTS_PAGE_SHORTCUT_UNMODIFIABLE},
-      {"shortcutsPageCancelAddShortcut",
-       IDS_SHORTCUTS_PAGE_CANCEL_ADD_SHORTCUT},
-      {"shortcutsPageSaveAddShortcut", IDS_SHORTCUTS_PAGE_SAVE_ADD_SHORTCUT},
-      {"shortcutsPageAddShortcut", IDS_SHORTCUTS_PAGE_ADD_SHORTCUT},
       {"settingsSelectValueYes", IDS_SETTINGS_SELECT_VALUE_YES},
       {"settingsSelectValueNo", IDS_SETTINGS_SELECT_VALUE_NO},
       {"settingsSelectValueAsk", IDS_SETTINGS_SELECT_VALUE_ASK},
@@ -1240,6 +1231,10 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
          IDS_SETTINGS_SITE_SETTINGS_USE_EPHEMERAL_STORAGE},
     };
     html_source->AddLocalizedStrings(kSessionOnlyToEphemeralStrings);
+  }
+
+  if (base::FeatureList::IsEnabled(commands::features::kBraveCommands)) {
+    html_source->AddLocalizedStrings(webui::kShortcutsStrings);
   }
 
   html_source->AddBoolean(
