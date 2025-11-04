@@ -35,10 +35,11 @@ fn load_requests() -> Vec<TestRequest> {
 }
 
 fn get_engine(rules: impl IntoIterator<Item = impl AsRef<str>>) -> Engine {
-    let (network_filters, _) = adblock::lists::parse_filters(rules, false, Default::default());
+    let (network_filters, cosmetic_filters) =
+        adblock::lists::parse_filters(rules, false, Default::default());
 
     Engine::from_filter_set(
-        FilterSet::new_with_rules(network_filters, vec![], false),
+        FilterSet::new_with_rules(network_filters, cosmetic_filters, false),
         true,
     )
 }

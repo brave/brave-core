@@ -12,7 +12,7 @@
 [package]
 edition = "2021"
 name = "adblock"
-version = "0.11.0"
+version = "0.11.1"
 authors = [
     "Anton Lazarev <alazarev@brave.com>",
     "Andrius Aucinas",
@@ -199,4 +199,4 @@ features = ["rt-multi-thread"]
 
 [lints.clippy]
 len_zero = "allow"
-uninlined_format_args = "allow"
+uninlined_format_args = "warn"

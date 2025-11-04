@@ -19,6 +19,7 @@ use crate::flatbuffers::containers::flat_map::FlatMapView;
 use crate::flatbuffers::containers::flat_multimap::FlatMultiMapView;
 use crate::flatbuffers::containers::hash_map::HashMapStringView;
 use crate::flatbuffers::containers::hash_set::HashSetView;
+use crate::flatbuffers::unsafe_tools::fb_vector_to_slice;
 use crate::resources::{PermissionMask, ResourceStorage};
 
 use crate::utils::Hash;
@@ -183,8 +184,8 @@ impl CosmeticFilterCache {
 
         classes.into_iter().for_each(|class| {
             let class = class.as_ref();
-            if simple_class_rules.contains(class) && !exceptions.contains(&format!(".{}", class)) {
-                selectors.push(format!(".{}", class));
+            if simple_class_rules.contains(class) && !exceptions.contains(&format!(".{class}")) {
+                selectors.push(format!(".{class}"));
             }
             if let Some(values) = complex_class_rules.get(class) {
                 for sel in values.data() {
@@ -196,8 +197,8 @@ impl CosmeticFilterCache {
         });
         ids.into_iter().for_each(|id| {
             let id = id.as_ref();
-            if simple_id_rules.contains(id) && !exceptions.contains(&format!("#{}", id)) {
-                selectors.push(format!("#{}", id));
+            if simple_id_rules.contains(id) && !exceptions.contains(&format!("#{id}")) {
+                selectors.push(format!("#{id}"));
             }
             if let Some(values) = complex_id_rules.get(id) {
                 for sel in values.data() {
@@ -246,15 +247,15 @@ impl CosmeticFilterCache {
 
         let cosmetic_filters = self.filter_data_context.memory.root().cosmetic_filters();
         let hostname_rules_view = FlatMapView::new(
-            cosmetic_filters.hostname_index(),
+            fb_vector_to_slice(cosmetic_filters.hostname_index()),
             cosmetic_filters.hostname_values(),
         );
         let hostname_hide_view = FlatMultiMapView::new(
-            cosmetic_filters.hostname_hide_index(),
+            fb_vector_to_slice(cosmetic_filters.hostname_hide_index()),
             cosmetic_filters.hostname_hide_values(),
         );
         let hostname_inject_script_view = FlatMultiMapView::new(
-            cosmetic_filters.hostname_inject_script_index(),
+            fb_vector_to_slice(cosmetic_filters.hostname_inject_script_index()),
             cosmetic_filters.hostname_inject_script_values(),
         );
 

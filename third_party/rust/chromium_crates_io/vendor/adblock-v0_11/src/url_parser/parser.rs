@@ -529,10 +529,10 @@ impl Parser {
         }
 
         if host_str.is_ascii() {
-            write!(&mut self.serialization, "{}", host_str).unwrap();
+            write!(&mut self.serialization, "{host_str}").unwrap();
         } else {
             let encoded = idna::domain_to_ascii(host_str)?;
-            write!(&mut self.serialization, "{}", encoded).unwrap();
+            write!(&mut self.serialization, "{encoded}").unwrap();
         }
 
         let host_end = self.serialization.len();
