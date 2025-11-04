@@ -77,6 +77,12 @@ class BraveAccountService : public KeyedService, public mojom::Authentication {
                         const std::string& serialized_record,
                         RegisterFinalizeCallback callback) override;
 
+  void ResendConfirmationEmail() override;
+
+  void CancelRegistration() override;
+
+  void LogOut() override;
+
   void OnRegisterInitialize(
       RegisterInitializeCallback callback,
       int response_code,
