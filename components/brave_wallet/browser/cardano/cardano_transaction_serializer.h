@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "brave/components/brave_wallet/browser/cardano/cardano_transaction.h"
+#include "brave/components/brave_wallet/browser/internal/cardano_tx_decoder.h"
 #include "components/cbor/values.h"
 
 namespace brave_wallet {
@@ -35,14 +36,15 @@ class CardanoTransactionSerializer {
   explicit CardanoTransactionSerializer(Options options);
 
   // Serializes a Cardano transaction into a byte vector (CBOR format).
-  std::vector<uint8_t> SerializeTransaction(const CardanoTransaction& tx);
+  std::optional<std::vector<uint8_t>> SerializeTransaction(
+      const CardanoTransaction& tx);
 
   // Calculates the size (in bytes) of the serialized transaction.
   uint32_t CalcTransactionSize(const CardanoTransaction& tx);
 
   // Computes the transaction hash (Blake2b-256 hash of the serialized
   // transaction body)
-  std::array<uint8_t, kCardanoTxHashSize> GetTxHash(
+  std::optional<std::array<uint8_t, kCardanoTxHashSize>> GetTxHash(
       const CardanoTransaction& tx);
 
   // Calculates minimum transaction fee based on its size and epoch parameters.
@@ -55,8 +57,6 @@ class CardanoTransactionSerializer {
 
   cbor::Value::ArrayValue SerializeInputs(const CardanoTransaction& tx);
   cbor::Value::ArrayValue SerializeOutputs(const CardanoTransaction& tx);
-  cbor::Value SerializeTxBody(const CardanoTransaction& tx);
-  cbor::Value SerializeWitnessSet(const CardanoTransaction& tx);
 };
 
 }  // namespace brave_wallet

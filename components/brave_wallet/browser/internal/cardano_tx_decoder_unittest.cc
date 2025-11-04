@@ -88,9 +88,10 @@ CardanoTransaction GetSignedReferenceTransaction() {
   tx.AddOutput(std::move(output2));
 
   CardanoTransaction::TxWitness witness;
-  witness.witness_bytes = test::HexToArray<96>(
+  witness.signature = test::HexToArray<64>(
       "e68ca46554098776f19f1433da96a108ea8bdda693fb1bea748f89adbfa7c2af"
-      "4dd83381fdc64b6123f193e23c983a99c979a1af44b1bda5ea15d06cf7364161"
+      "4dd83381fdc64b6123f193e23c983a99c979a1af44b1bda5ea15d06cf7364161");
+  witness.public_key = test::HexToArray<32>(
       "b7b3609bca439b62e232731fb5290c495601cf40b358f915ade8bcff1eb7b802");
 
   tx.SetWitnesses({witness});
@@ -110,7 +111,7 @@ TEST(CardanoTxDecoderTest, DecodeTransaction_ValidTransaction) {
   auto tx = GetSignedReferenceTransaction();
   auto tx_bytes = CardanoTransactionSerializer().SerializeTransaction(tx);
 
-  auto decode_result = CardanoTxDecoder::DecodeTransaction(tx_bytes);
+  auto decode_result = CardanoTxDecoder::DecodeTransaction(*tx_bytes);
   EXPECT_TRUE(decode_result.has_value());
 
   const auto& restored_tx = decode_result.value().tx;
@@ -227,11 +228,7 @@ TEST(CardanoTxDecoderTest, AddWitnessesToTransaction_ValidSignatures) {
   std::vector<CardanoTransaction::TxWitness> witnesses;
   for (const auto& sign_result : tx_witness.vkey_witness_set) {
     CardanoTransaction::TxWitness witness;
-    auto span_writer = base::SpanWriter(base::span(witness.witness_bytes));
-
-    span_writer.Write(sign_result.public_key);
-    span_writer.Write(sign_result.signature_bytes);
-    witnesses.push_back(witness);
+    witnesses.emplace_back(sign_result.signature_bytes, sign_result.public_key);
   }
   tx_with_signatures.SetWitnesses(witnesses);
 
@@ -239,7 +236,7 @@ TEST(CardanoTxDecoderTest, AddWitnessesToTransaction_ValidSignatures) {
       CardanoTransactionSerializer().SerializeTransaction(tx_with_signatures);
 
   auto result =
-      CardanoTxDecoder::AddWitnessesToTransaction(tx_bytes, tx_witness);
+      CardanoTxDecoder::AddWitnessesToTransaction(*tx_bytes, tx_witness);
   EXPECT_TRUE(result.has_value());
   EXPECT_EQ(expected_signed_bytes, result.value());
 }
@@ -290,8 +287,8 @@ TEST(CardanoTxDecoderTest, AddWitnessesToTransaction_EmptySignatures) {
 
   CardanoTxDecoder::SerializableTxWitness empty_sign_results;
 
-  auto result =
-      CardanoTxDecoder::AddWitnessesToTransaction(tx_bytes, empty_sign_results);
+  auto result = CardanoTxDecoder::AddWitnessesToTransaction(*tx_bytes,
+                                                            empty_sign_results);
 
   EXPECT_TRUE(result.has_value());
   EXPECT_EQ(tx_bytes, result.value());

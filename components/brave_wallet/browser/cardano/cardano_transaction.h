@@ -11,14 +11,16 @@
 #include <utility>
 #include <vector>
 
+#include "base/numerics/safe_math.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_rpc_schema.h"
+#include "brave/components/brave_wallet/browser/internal/cardano_tx_decoder.h"
 #include "brave/components/brave_wallet/common/cardano_address.h"
 
 namespace brave_wallet {
 
-inline constexpr uint32_t kCardanoTxHashSize = 32u;
-inline constexpr uint32_t kCardanoWitnessSize = 96u;
+inline constexpr uint32_t kCardanoSignatureSize = 64u;
+inline constexpr uint32_t kCardanoPubKeySize = 32u;
 
 // This class is used to make Cardano transactions for sending to blockchain.
 class CardanoTransaction {
@@ -64,7 +66,8 @@ class CardanoTransaction {
   // position. A pair of pubkey and signature bytes.
   struct TxWitness {
     TxWitness();
-    explicit TxWitness(std::array<uint8_t, kCardanoWitnessSize> witness_bytes);
+    TxWitness(std::array<uint8_t, kCardanoSignatureSize> signature,
+              std::array<uint8_t, kCardanoPubKeySize> public_key);
     ~TxWitness();
     TxWitness(const TxWitness& other);
     TxWitness& operator=(const TxWitness& other);
@@ -75,7 +78,8 @@ class CardanoTransaction {
     base::Value::Dict ToValue() const;
     static std::optional<TxWitness> FromValue(const base::Value::Dict& value);
 
-    std::array<uint8_t, kCardanoWitnessSize> witness_bytes = {};
+    std::array<uint8_t, kCardanoSignatureSize> signature = {};
+    std::array<uint8_t, kCardanoPubKeySize> public_key = {};
   };
 
   enum class TxOutputType { kTarget, kChange };
@@ -124,6 +128,7 @@ class CardanoTransaction {
 
   // Fee is calculated as sum of inputs which minus sum of outputs.
   uint64_t EffectiveFeeAmount() const;
+  base::CheckedNumeric<uint64_t> EffectiveFeeAmountChecked() const;
 
   const CardanoAddress& to() const { return to_; }
   void set_to(CardanoAddress to) { to_ = std::move(to); }
@@ -165,6 +170,8 @@ class CardanoTransaction {
   // Arrange order of inputs and outputs so transaction binary form is suitable
   // for testing.
   void ArrangeTransactionForTesting();
+
+  std::optional<CardanoTxDecoder::SerializableTx> ToSerializableTx() const;
 
  private:
   std::vector<TxInput> inputs_;
