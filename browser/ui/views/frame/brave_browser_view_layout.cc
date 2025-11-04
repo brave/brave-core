@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/check_is_test.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
@@ -41,6 +42,12 @@ BraveBrowserViewLayout::BraveBrowserViewLayout(
     Browser* browser,
     BrowserViewLayoutViews views)
     : BrowserViewLayoutImplOld(std::move(delegate), browser, std::move(views)) {
+  // TODO(anyone): consider a possibility of not passing the browser ptr in
+  // since upstream is actively working on removing the browser from being
+  // passed around. https://github.com/brave/brave-browser/issues/50815
+  if (!browser) {
+    CHECK_IS_TEST();
+  }
 }
 
 BraveBrowserViewLayout::~BraveBrowserViewLayout() = default;
@@ -81,7 +88,7 @@ void BraveBrowserViewLayout::LayoutVerticalTabs() {
     return;
   }
 
-  if (!tabs::utils::ShouldShowVerticalTabs(browser())) {
+  if (!browser() || !tabs::utils::ShouldShowVerticalTabs(browser())) {
     vertical_tab_strip_host_->SetBorder(nullptr);
     vertical_tab_strip_host_->SetBoundsRect({});
     return;
@@ -127,7 +134,7 @@ void BraveBrowserViewLayout::LayoutVerticalTabs() {
 
   const auto width =
       vertical_tab_strip_host_->GetPreferredSize().width() + insets.width();
-  if (tabs::utils::IsVerticalTabOnRight(browser())) {
+  if (browser() && tabs::utils::IsVerticalTabOnRight(browser())) {
     vertical_tab_strip_bounds.set_x(vertical_tab_strip_bounds.right() - width);
   }
   vertical_tab_strip_bounds.set_width(width);
@@ -135,7 +142,7 @@ void BraveBrowserViewLayout::LayoutVerticalTabs() {
 }
 
 void BraveBrowserViewLayout::LayoutTabStripRegion(gfx::Rect& available_bounds) {
-  if (tabs::utils::ShouldShowVerticalTabs(browser())) {
+  if (browser() && tabs::utils::ShouldShowVerticalTabs(browser())) {
     // In case we're using vertical tabstrip, we can decide the position
     // after we finish laying out views in top container.
     return;
@@ -243,8 +250,8 @@ void BraveBrowserViewLayout::LayoutSideBar(gfx::Rect& contents_bounds) {
 
     // When vertical tabs and the sidebar are adjacent, add a separator between
     // them.
-    if (tabs::utils::ShouldShowVerticalTabs(browser()) && sidebar_separator_ &&
-        !sidebar_bounds.IsEmpty()) {
+    if (browser() && tabs::utils::ShouldShowVerticalTabs(browser()) &&
+        sidebar_separator_ && !sidebar_bounds.IsEmpty()) {
       separator_bounds = sidebar_bounds;
       separator_bounds.set_width(kSidebarSeparatorWidth);
       separator_bounds.Inset(gfx::Insets::VH(kSidebarSeparatorMargin, 0));
@@ -258,7 +265,8 @@ void BraveBrowserViewLayout::LayoutSideBar(gfx::Rect& contents_bounds) {
   }
 
   gfx::Insets panel_margins = GetContentsMargins();
-  if (BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
+  if (browser() &&
+      BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
           browser())) {
     // In rounded mode, there is already a gap between the sidebar and the main
     // contents view, so we only remove from the margin from that side (we need
@@ -305,20 +313,24 @@ void BraveBrowserViewLayout::UpdateContentsContainerInsets(
   // In rounded corners mode, we need to include a little margin so we have
   // somewhere to draw the shadow.
   int contents_margin_for_rounded_corners =
-      BraveContentsViewUtil::GetRoundedCornersWebViewMargin(browser());
+      browser()
+          ? BraveContentsViewUtil::GetRoundedCornersWebViewMargin(browser())
+          : 0;
 
   // Due to vertical tab's padding(tabs::kMarginForVerticalTabContainers), we
   // can see some space between vertical tab and contents. However, If we don't
   // have margin from contents, vertical tab side contents shadow isn't visible.
   // So, having half or margin from vertical tab and half from contents.
-  if (tabs::utils::ShouldShowVerticalTabs(browser()) &&
+  if (browser() && tabs::utils::ShouldShowVerticalTabs(browser()) &&
       !IsFullscreenForBrowser()) {
     const int margin_with_vertical_tab =
-        BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
-            browser())
-            ? (tabs::kMarginForVerticalTabContainers / 2)
+        browser()
+            ? BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
+                  browser())
+                  ? (tabs::kMarginForVerticalTabContainers / 2)
+                  : 0
             : 0;
-    if (tabs::utils::IsVerticalTabOnRight(browser())) {
+    if (browser() && tabs::utils::IsVerticalTabOnRight(browser())) {
       contents_margins.set_right(margin_with_vertical_tab);
     } else {
       contents_margins.set_left(margin_with_vertical_tab);
@@ -327,7 +339,8 @@ void BraveBrowserViewLayout::UpdateContentsContainerInsets(
 
   // If side panel is shown, contents container should have margin
   // because panel doesn't have margin.
-  if (browser()->GetFeatures().side_panel_ui()->GetCurrentEntryId()) {
+  if (browser() &&
+      browser()->GetFeatures().side_panel_ui()->GetCurrentEntryId()) {
     contents_container_bounds.Inset(contents_margins);
     return;
   }
@@ -351,7 +364,8 @@ void BraveBrowserViewLayout::UpdateContentsContainerInsets(
 }
 
 gfx::Insets BraveBrowserViewLayout::GetContentsMargins() const {
-  if (!BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
+  if (!browser() ||
+      !BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
           browser())) {
     return {};
   }
@@ -378,6 +392,9 @@ gfx::Insets BraveBrowserViewLayout::GetContentsMargins() const {
 }
 
 bool BraveBrowserViewLayout::IsFullscreenForBrowser() const {
+  if (!browser()) {
+    return false;
+  }
   // TODO(https://github.com/brave/brave-browser/issues/50488): This direct
   // access to `browser_` should be corrected to be done through `browser()`
   // method, however this requires correcting some of the constness around the
@@ -398,6 +415,9 @@ bool BraveBrowserViewLayout::IsFullscreenForTab() const {
   // access to `browser_` should be corrected to be done through `browser()`
   // method, however this requires correcting some of the constness around the
   // data being accessed.
+  if (!browser()) {
+    return false;
+  }
   ExclusiveAccessManager* exclusive_access_manager =
       browser_->GetFeatures().exclusive_access_manager();
   if (!exclusive_access_manager) {
@@ -416,7 +436,7 @@ bool BraveBrowserViewLayout::ShouldPushBookmarkBarForVerticalTabs() {
   // This can happen when bookmarks bar is visible on NTP. In this case
   // we should lay out vertical tab strip next to bookmarks bar so that
   // the tab strip doesn't move when changing the active tab.
-  return views().bookmark_bar &&
+  return views().bookmark_bar && browser() &&
          !browser()->profile()->GetPrefs()->GetBoolean(
              bookmarks::prefs::kShowBookmarkBar) &&
          delegate_->IsBookmarkBarVisible();
@@ -426,7 +446,7 @@ gfx::Insets BraveBrowserViewLayout::GetInsetsConsideringVerticalTabHost() {
   CHECK(vertical_tab_strip_host_)
       << "This method is used only when vertical tab strip host is set";
   gfx::Insets insets;
-  if (tabs::utils::IsVerticalTabOnRight(browser())) {
+  if (browser() && tabs::utils::IsVerticalTabOnRight(browser())) {
     insets.set_right(vertical_tab_strip_host_->GetPreferredSize().width());
   } else {
     insets.set_left(vertical_tab_strip_host_->GetPreferredSize().width());
@@ -442,7 +462,7 @@ gfx::Insets BraveBrowserViewLayout::GetInsetsConsideringVerticalTabHost() {
 gfx::Insets BraveBrowserViewLayout::AdjustInsetsConsideringFrameBorder(
     const gfx::Insets& insets) {
   BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
-  if (!tabs::utils::ShouldShowVerticalTabs(browser()) ||
+  if (!browser() || !tabs::utils::ShouldShowVerticalTabs(browser()) ||
       (browser_view && browser_view->IsFullscreen())) {
     return insets;
   }
