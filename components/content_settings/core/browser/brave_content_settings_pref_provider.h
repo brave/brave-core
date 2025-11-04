@@ -13,7 +13,6 @@
 
 #include "base/gtest_prod_util.h"
 #include "base/memory/weak_ptr.h"
-#include "base/thread_annotations.h"
 #include "components/content_settings/core/browser/content_settings_observer.h"
 #include "components/content_settings/core/browser/content_settings_origin_value_map.h"
 #include "components/content_settings/core/browser/content_settings_pref_provider.h"
@@ -39,7 +38,6 @@ class BravePrefProvider : public PrefProvider, public Observer {
   BravePrefProvider& operator=(const BravePrefProvider&) = delete;
   ~BravePrefProvider() override;
 
-  static void CopyPluginSettingsForMigration(PrefService* prefs);
   static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
 
   // content_settings::PrefProvider overrides:
@@ -62,42 +60,11 @@ class BravePrefProvider : public PrefProvider, public Observer {
                            const ContentSetting& value,
                            bool incognito) const;
 
-  // calls superclass directly
-  bool SetWebsiteSettingForTest(const ContentSettingsPattern& primary_pattern,
-                                const ContentSettingsPattern& secondary_pattern,
-                                ContentSettingsType content_type,
-                                base::Value&& value,
-                                const ContentSettingConstraints& constraints);
-
  private:
   friend class BravePrefProviderTest;
-  FRIEND_TEST_ALL_PREFIXES(BravePrefProviderTest, TestShieldsSettingsMigration);
-  FRIEND_TEST_ALL_PREFIXES(BravePrefProviderTest,
-                           TestShieldsSettingsMigrationV2toV4);
-  FRIEND_TEST_ALL_PREFIXES(BravePrefProviderTest,
-                           TestShieldsSettingsMigrationVersion);
-  FRIEND_TEST_ALL_PREFIXES(BravePrefProviderTest,
-                           TestShieldsSettingsMigrationFromResourceIDs);
-  FRIEND_TEST_ALL_PREFIXES(BravePrefProviderTest,
-                           TestShieldsSettingsMigrationFromUnknownSettings);
   FRIEND_TEST_ALL_PREFIXES(BravePrefProviderTest, EnsureNoWildcardEntries);
-  FRIEND_TEST_ALL_PREFIXES(BravePrefProviderTest, MigrateFPShieldsSettings);
-  void MigrateShieldsSettings(bool incognito);
+  void ClearWildcards();
   void EnsureNoWildcardEntries(ContentSettingsType content_type);
-  void MigrateShieldsSettingsFromResourceIds();
-  void MigrateShieldsSettingsFromResourceIdsForOneType(
-      const std::string& preference_path,
-      const std::string& patterns_string,
-      const base::Time& expiration,
-      const base::Time& last_modified,
-      content_settings::mojom::SessionModel session_model,
-      int setting);
-  void MigrateShieldsSettingsV1ToV2();
-  void MigrateShieldsSettingsV1ToV2ForOneType(ContentSettingsType content_type);
-  void MigrateShieldsSettingsV2ToV3();
-  void MigrateShieldsSettingsV3ToV4(int start_version);
-  void MigrateFingerprintingSettings();
-  void MigrateFingerprintingSetingsToOriginScoped();
   void MigrateCosmeticFilteringSettings();
   void UpdateCookieRules(ContentSettingsType content_type, bool incognito);
   void OnCookieSettingsChanged(ContentSettingsType content_type);

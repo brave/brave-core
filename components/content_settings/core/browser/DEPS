@@ -14,10 +14,4 @@ specific_include_rules = {
     # core code should not have content deps
     "+content/public/test",
   ],
-  "brave_content_settings_utils_unittest\.cc": [
-    # component unit tests should not have chrome deps
-    "!chrome/test/base/testing_profile.h",
-    # core code should not have content deps
-    "!content/public/test",
-  ],
 }
