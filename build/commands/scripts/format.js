@@ -89,7 +89,6 @@ async function runFormat(options = {}) {
   const args = ['cl', 'format', '--upstream=' + options.base]
 
   args.push('--python')
-  args.push('--no-rust-fmt')
 
   if (options.full) {
     args.push('--full')
