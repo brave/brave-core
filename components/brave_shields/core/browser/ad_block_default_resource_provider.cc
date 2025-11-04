@@ -55,22 +55,40 @@ void AdBlockDefaultResourceProvider::OnComponentReady(
     return;
   }
 
-  // Load the resources (as a string)
+  // Load the resources (as ResourceStorage)
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&brave_component_updater::GetDATFileAsString,
                      resources_path),
-      base::BindOnce(&AdBlockDefaultResourceProvider::NotifyResourcesLoaded,
+      base::BindOnce(&AdBlockDefaultResourceProvider::OnResourcesLoaded,
                      weak_factory_.GetWeakPtr()));
 }
 
+void AdBlockDefaultResourceProvider::OnResourcesLoaded(
+    const std::string& resources_json) {
+  // Cache the JSON for potential merging
+  resources_json_ = resources_json;
+  auto storage = adblock::new_resource_storage(resources_json);
+  NotifyResourcesLoaded(std::move(storage));
+}
+
+void AdBlockDefaultResourceProvider::OnLoadResourcesLoaded(
+    base::OnceCallback<void(BraveResourceStorageBox)> cb,
+    const std::string& resources_json) {
+  // Cache the JSON for potential merging
+  resources_json_ = resources_json;
+  auto storage = adblock::new_resource_storage(resources_json);
+  std::move(cb).Run(std::move(storage));
+}
+
 void AdBlockDefaultResourceProvider::LoadResources(
-    base::OnceCallback<void(const std::string& resources_json)> cb) {
+    base::OnceCallback<void(BraveResourceStorageBox)> cb) {
   base::FilePath resources_path = GetResourcesPath();
   if (resources_path.empty()) {
     // If the path is not ready yet, run the callback with empty resources to
     // avoid blocking filter data loads.
-    std::move(cb).Run("[]");
+    auto empty_storage = adblock::new_resource_storage(std::string("[]"));
+    std::move(cb).Run(std::move(empty_storage));
     return;
   }
 
@@ -78,7 +96,8 @@ void AdBlockDefaultResourceProvider::LoadResources(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&brave_component_updater::GetDATFileAsString,
                      resources_path),
-      std::move(cb));
+      base::BindOnce(&AdBlockDefaultResourceProvider::OnLoadResourcesLoaded,
+                     weak_factory_.GetWeakPtr(), std::move(cb)));
 }
 
 }  // namespace brave_shields

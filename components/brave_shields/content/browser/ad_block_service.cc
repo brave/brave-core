@@ -103,22 +103,33 @@ void AdBlockService::SourceProviderObserver::OnFilterSetCreated(
 }
 
 void AdBlockService::SourceProviderObserver::OnResourcesLoaded(
-    const std::string& resources_json) {
+    BraveResourceStorageBox storage) {
+  // Clone the storage for this engine - each engine gets its own Box but shares
+  // the underlying Arc
+  auto cloned_storage = adblock::clone_resource_storage(*storage);
+
   if (!filter_set_) {
     task_runner_->PostTask(
         FROM_HERE,
-        base::BindOnce(&AdBlockEngine::UseResources,
-                       adblock_engine_->AsWeakPtr(), resources_json));
+        base::BindOnce(
+            [](base::WeakPtr<AdBlockEngine> engine,
+               BraveResourceStorageBox storage) {
+              if (engine) {
+                engine->UseResources(*storage);
+              }
+            },
+            adblock_engine_->AsWeakPtr(), std::move(cloned_storage)));
   } else {
     auto engine_load_callback = base::BindOnce(
         [](base::WeakPtr<AdBlockEngine> engine,
            std::unique_ptr<rust::Box<adblock::FilterSet>> filter_set,
-           const std::string& resources_json) {
+           BraveResourceStorageBox storage) {
           if (engine) {
-            engine->Load(std::move(*filter_set.get()), resources_json);
+            engine->Load(std::move(*filter_set.get()), *storage);
           }
         },
-        adblock_engine_->AsWeakPtr(), std::move(filter_set_), resources_json);
+        adblock_engine_->AsWeakPtr(), std::move(filter_set_),
+        std::move(cloned_storage));
     task_runner_->PostTask(FROM_HERE, std::move(engine_load_callback));
   }
 }
@@ -468,7 +479,7 @@ void AdBlockService::UseSourceProviderForTest(
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   default_service_observer_ = std::make_unique<SourceProviderObserver>(
       default_engine_.get(), source_provider, resource_provider_.get(),
-      GetTaskRunner());
+      GetTaskRunner(), false);
 }
 
 void AdBlockService::UseCustomSourceProviderForTest(
@@ -477,7 +488,7 @@ void AdBlockService::UseCustomSourceProviderForTest(
   additional_filters_service_observer_ =
       std::make_unique<SourceProviderObserver>(
           additional_filters_engine_.get(), source_provider,
-          resource_provider_.get(), GetTaskRunner());
+          resource_provider_.get(), GetTaskRunner(), false);
 }
 
 void AdBlockService::OnGetDebugInfoFromDefaultEngine(

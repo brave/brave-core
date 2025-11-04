@@ -196,7 +196,7 @@ impl Engine {
     }
 
     // TODO(https://github.com/brave/brave-browser/issues/50368): remove this method, expose storage API.
-    pub fn use_resources(&mut self, resources_json: &CxxString) -> bool {
+    pub fn use_resources_deprecated(&mut self, resources_json: &CxxString) -> bool {
         resources_json
             .to_str()
             .ok()
@@ -210,6 +210,10 @@ impl Engine {
                 Some(())
             })
             .is_some()
+    }
+
+    pub fn use_resource_storage(&mut self, storage: &BraveCoreResourceStorage) {
+        self.engine.use_resource_storage(storage.clone());
     }
 
     pub fn url_cosmetic_resources(&self, url: &CxxString) -> String {

@@ -11,6 +11,7 @@
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "base/values.h"
+#include "brave/components/brave_shields/core/browser/adblock/rs/src/lib.rs.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -35,9 +36,10 @@ class TestResourceProvider : public AdBlockResourceProvider {
   TestResourceProvider() = default;
   ~TestResourceProvider() override = default;
 
-  void LoadResources(base::OnceCallback<void(const std::string& resources_json)>
-                         on_load) override {
-    std::move(on_load).Run(resources_json_);
+  void LoadResources(
+      base::OnceCallback<void(BraveResourceStorageBox)> on_load) override {
+    auto storage = adblock::new_resource_storage(resources_json_);
+    std::move(on_load).Run(std::move(storage));
   }
 
   void SetResources(const std::string& resources_json) {
