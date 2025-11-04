@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include "brave/components/brave_shields/core/browser/ad_block_custom_resource_provider.h"
+#include "brave/components/brave_shields/core/browser/adblock/rs/src/lib.rs.h"
 
 #include "base/files/scoped_temp_dir.h"
 #include "base/json/json_reader.h"
@@ -35,9 +36,10 @@ class TestResourceProvider : public AdBlockResourceProvider {
   TestResourceProvider() = default;
   ~TestResourceProvider() override = default;
 
-  void LoadResources(base::OnceCallback<void(const std::string& resources_json)>
+  void LoadResources(base::OnceCallback<void(rust::Box<adblock::BraveCoreResourceStorage>)>
                          on_load) override {
-    std::move(on_load).Run(resources_json_);
+    auto storage = adblock::new_resource_storage(resources_json_);
+    std::move(on_load).Run(std::move(storage));
   }
 
   void SetResources(const std::string& resources_json) {

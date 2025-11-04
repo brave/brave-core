@@ -28,9 +28,9 @@ void AdBlockResourceProvider::RemoveObserver(
 }
 
 void AdBlockResourceProvider::NotifyResourcesLoaded(
-    const std::string& resources_json) {
+    rust::Box<adblock::BraveCoreResourceStorage> storage) {
   for (auto& observer : observers_) {
-    observer.OnResourcesLoaded(resources_json);
+    observer.OnResourcesLoaded(std::move(storage));
   }
 }
 
