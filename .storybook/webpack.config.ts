@@ -71,17 +71,6 @@ const prefixReplacer = (prefix, replacements) => {
 }
 
 /**
- * Adds the 'chrome:' scheme to protocol-relative resource URLs.
- */
-// const protocolRelativeReplacer = () => {
-//   return new webpack.NormalModuleReplacementPlugin(
-//     /^\/\/resources\//,
-//     (resource) => {
-//       resource.request = `chrome:${resource.request}`
-//     })
-// }
-
-/**
  * Attempts to use mock implementations of a provided module name
  * the mocked implementation should live in a `__mocks__` folder adjacent to the
  * module (`./bridge` -> `./__mocks__/bridge`)
@@ -171,7 +160,6 @@ export default async ({ config, mode }) => {
   config.plugins.push(
     provideNodeGlobals,
     useMockedModules(['bridge', 'brave_rewards_api_proxy']),
-    // protocolRelativeReplacer(),
     ...Object.keys(pathMap)
       .filter((prefix) => prefix.startsWith('chrome://'))
       .map((prefix) => prefixReplacer(prefix, pathMap[prefix]))
@@ -198,5 +186,3 @@ export default async ({ config, mode }) => {
   config.resolve.extensions.push('.ts', '.tsx', '.scss')
   return config
 }
-
-// throw new Error(JSON.stringify(pathMap, null, 2));
