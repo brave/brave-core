@@ -34,7 +34,7 @@ assert cert or cert_hash or signtool_args, \
     'Store. It is ambiguous and will likely be deprecated in the future.'
 
 
-# pylint: disable=W0102
+# pylint: disable=dangerous-default-value
 def execute_with_retry(argv, env=os.environ, count=5):
     return exponential_backoff_retry(lambda: execute(argv, env),
                                      excs=(RuntimeError, CalledProcessError),
