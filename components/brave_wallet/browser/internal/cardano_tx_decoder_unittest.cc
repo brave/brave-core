@@ -639,4 +639,44 @@ TEST(CardanoTxDecoderTest, AddWitnessesToTransaction_InvalidTransactionData) {
   EXPECT_FALSE(result.has_value());
 }
 
+TEST(CardanoTxDecoderTest, AddWitnessesToTransaction_InvalidTxNoWitness) {
+  // clang-format off
+  std::vector<uint8_t> valid_minimal_cbor = {
+    0x82,        // Main array: [transaction_body, witness_set]
+    0xa2,        // Transaction body map with 2 entries
+    0x00,        // Key 0: inputs
+    0x81,        // Array with 1 input
+    0x82,        // Input array with 2 elements [tx_hash, index]
+    0x58, 0x20,  // Byte array with 32-byte length
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00,  // 32-byte tx_hash (all zeros)
+    0x00,        // Index: 0
+    0x01,        // Key 1: outputs
+    0x81,        // Array with 1 output
+    0x82,        // Output array with 2 elements [address, amount]
+    0x58, 0x1c,  // Byte array with 28-byte length
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00,  // 28-byte address (all zeros)
+    0x1a, 0x00, 0x98, 0x96, 0x80,  // Amount: 10000000
+    0xa0,        // Empty witness set
+  };
+  // clang-format on
+
+  CardanoTxDecoder::SerializableTxWitness sign_results;
+  CardanoTxDecoder::SerializableVkeyWitness sign_result;
+  sign_result.public_key = std::vector<uint8_t>(32, 1);
+  sign_result.signature_bytes = std::vector<uint8_t>(64, 2);
+  sign_results.vkey_witness_set.push_back(std::move(sign_result));
+  EXPECT_TRUE(CardanoTxDecoder::AddWitnessesToTransaction(valid_minimal_cbor,
+                                                          sign_results));
+
+  valid_minimal_cbor[0] = 0x81;  // Remove witness set
+  valid_minimal_cbor.pop_back();
+  EXPECT_FALSE(CardanoTxDecoder::AddWitnessesToTransaction(valid_minimal_cbor,
+                                                           sign_results));
+}
+
 }  // namespace brave_wallet

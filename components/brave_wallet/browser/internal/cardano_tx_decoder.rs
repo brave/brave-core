@@ -217,9 +217,9 @@ fn extract_cardano_body(cbor_value: &CborValue) -> Result<(CxxSerializableTxBody
         _ => return Err(Error::InvalidTransactionFormat),
     };
 
-    if transaction_array.len() < TRANSACTION_BODY_INDEX {
+    if TRANSACTION_BODY_INDEX >= transaction_array.len() {
         return Err(Error::InvalidTransactionFormat);
-    }
+    };
 
     let body_value = &transaction_array[TRANSACTION_BODY_INDEX];
     let body_map = match body_value {
@@ -409,9 +409,9 @@ pub fn apply_signatures(
         }
     };
 
-    if transaction_array.len() < WITNESS_SET_INDEX {
+    if WITNESS_SET_INDEX >= transaction_array.len() {
         return box_error(Error::InvalidTransactionFormat);
-    }
+    };
 
     // Append new witnesses to existing witness set
     if let CborValue::Map(witness_map) = &mut transaction_array[WITNESS_SET_INDEX] {
