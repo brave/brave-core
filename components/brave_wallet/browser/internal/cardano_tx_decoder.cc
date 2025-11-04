@@ -30,7 +30,7 @@ std::vector<uint8_t> FromRust(const rust::Vec<uint8_t>& vec) {
 }
 
 CardanoTxDecoder::SerializableTxInput FromRust(
-    const cardano_rust::SerializableTxInput& input) {
+    const CxxSerializableTxInput& input) {
   CardanoTxDecoder::SerializableTxInput result;
 
   result.tx_hash = input.tx_hash;
@@ -40,7 +40,7 @@ CardanoTxDecoder::SerializableTxInput FromRust(
 }
 
 CardanoTxDecoder::SerializableTxOutput FromRust(
-    const cardano_rust::SerializableTxOutput& output) {
+    const CxxSerializableTxOutput& output) {
   CardanoTxDecoder::SerializableTxOutput result;
 
   result.address_bytes = FromRust(output.addr);
@@ -50,7 +50,7 @@ CardanoTxDecoder::SerializableTxOutput FromRust(
 }
 
 CardanoTxDecoder::SerializableTxBody FromRust(
-    const cardano_rust::SerializableTxBody& body) {
+    const CxxSerializableTxBody& body) {
   CardanoTxDecoder::SerializableTxBody result;
 
   result.inputs.reserve(body.inputs.size());
@@ -66,25 +66,24 @@ CardanoTxDecoder::SerializableTxBody FromRust(
   return result;
 }
 
-CardanoTxDecoder::SerializableTx FromRust(
-    const cardano_rust::SerializableTx& tx) {
+CardanoTxDecoder::SerializableTx FromRust(const CxxSerializableTx& tx) {
   CardanoTxDecoder::SerializableTx result;
   result.tx_body = FromRust(tx.body);
 
   return result;
 }
 
-cardano_rust::SerializableVkeyWitness ToRust(
+CxxSerializableVkeyWitness ToRust(
     const CardanoTxDecoder::SerializableVkeyWitness& from) {
-  cardano_rust::SerializableVkeyWitness result;
+  CxxSerializableVkeyWitness result;
   result.pubkey = ToRust(from.public_key);
   result.signature = ToRust(from.signature_bytes);
   return result;
 }
 
-cardano_rust::SerializableTxWitness ToRust(
+CxxSerializableTxWitness ToRust(
     const CardanoTxDecoder::SerializableTxWitness& from) {
-  cardano_rust::SerializableTxWitness result;
+  CxxSerializableTxWitness result;
 
   result.vkey_witness_set.reserve(from.vkey_witness_set.size());
   for (auto& item : from.vkey_witness_set) {
@@ -181,8 +180,7 @@ CardanoTxDecoder::~CardanoTxDecoder() = default;
 // static
 std::optional<CardanoTxDecoder::DecodedTx> CardanoTxDecoder::DecodeTransaction(
     base::span<const uint8_t> cbor_bytes) {
-  auto result = cardano_rust::decode_cardano_transaction(
-      base::SpanToRustSlice(cbor_bytes));
+  auto result = decode_cardano_transaction(base::SpanToRustSlice(cbor_bytes));
   if (!result->is_ok()) {
     return std::nullopt;
   }

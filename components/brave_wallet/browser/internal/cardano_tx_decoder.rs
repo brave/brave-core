@@ -19,17 +19,17 @@ use ciborium::{de::from_reader, Value as CborValue};
 
 // Re-export types for external use
 #[allow(unused_imports)]
-use crate::ffi::SerializableTx;
+use crate::ffi::CxxSerializableTx;
 #[allow(unused_imports)]
-use crate::ffi::SerializableTxBody;
+use crate::ffi::CxxSerializableTxBody;
 #[allow(unused_imports)]
-use crate::ffi::SerializableTxInput;
+use crate::ffi::CxxSerializableTxInput;
 #[allow(unused_imports)]
-use crate::ffi::SerializableTxOutput;
+use crate::ffi::CxxSerializableTxOutput;
 #[allow(unused_imports)]
-use crate::ffi::SerializableTxWitness;
+use crate::ffi::CxxSerializableTxWitness;
 #[allow(unused_imports)]
-use crate::ffi::SerializableVkeyWitness;
+use crate::ffi::CxxSerializableVkeyWitness;
 
 const TRANSACTION_BODY_INDEX: usize = 0;
 const WITNESS_SET_INDEX: usize = 1;
@@ -82,41 +82,41 @@ macro_rules! impl_error {
 }
 
 /// CXX bridge module for FFI with C++
-#[cxx::bridge(namespace = brave_wallet::cardano_rust)]
+#[cxx::bridge(namespace = brave_wallet)]
 mod ffi {
     #[derive(Clone)]
-    struct SerializableTxInput {
+    struct CxxSerializableTxInput {
         tx_hash: [u8; 32],
         index: u32,
     }
 
     #[derive(Clone)]
-    struct SerializableTxOutput {
+    struct CxxSerializableTxOutput {
         addr: Vec<u8>,
         amount: u64,
     }
 
     #[derive(Clone)]
-    struct SerializableTxBody {
-        inputs: Vec<SerializableTxInput>,
-        outputs: Vec<SerializableTxOutput>,
+    struct CxxSerializableTxBody {
+        inputs: Vec<CxxSerializableTxInput>,
+        outputs: Vec<CxxSerializableTxOutput>,
     }
 
     #[derive(Clone)]
-    struct SerializableVkeyWitness {
+    struct CxxSerializableVkeyWitness {
         pubkey: Vec<u8>,
         signature: Vec<u8>,
     }
 
     #[derive(Clone)]
-    struct SerializableTxWitness {
-        vkey_witness_set: Vec<SerializableVkeyWitness>,
+    struct CxxSerializableTxWitness {
+        vkey_witness_set: Vec<CxxSerializableVkeyWitness>,
     }
 
     #[derive(Clone)]
-    struct SerializableTx {
-        body: SerializableTxBody,
-        witness: SerializableTxWitness,
+    struct CxxSerializableTx {
+        body: CxxSerializableTxBody,
+        witness: CxxSerializableTxWitness,
     }
 
     extern "Rust" {
@@ -128,7 +128,7 @@ mod ffi {
         fn decode_cardano_transaction(bytes: &[u8]) -> Box<CxxDecodedCardanoTransactionResult>;
         fn apply_signatures(
             bytes: &[u8],
-            witnesses: SerializableTxWitness,
+            witnesses: CxxSerializableTxWitness,
         ) -> Box<CxxSignedCardanoTransactionResult>;
 
         fn is_ok(self: &CxxDecodedCardanoTransactionResult) -> bool;
@@ -136,7 +136,7 @@ mod ffi {
         fn unwrap(
             self: &mut CxxDecodedCardanoTransactionResult,
         ) -> Box<CxxDecodedCardanoTransaction>;
-        fn tx(self: &CxxDecodedCardanoTransaction) -> SerializableTx;
+        fn tx(self: &CxxDecodedCardanoTransaction) -> CxxSerializableTx;
         fn raw_body(self: &CxxDecodedCardanoTransaction) -> Vec<u8>;
         fn raw_tx(self: &CxxDecodedCardanoTransaction) -> Vec<u8>;
 
@@ -182,7 +182,7 @@ impl fmt::Display for Error {
 }
 
 struct CxxDecodedCardanoTransactionValue {
-    tx: SerializableTx,
+    tx: CxxSerializableTx,
     raw_body: Vec<u8>,
     raw_tx: Vec<u8>,
 }
@@ -211,7 +211,7 @@ impl_result!(
 
 /// Extracts the transaction body from a Cardano transaction CBOR
 /// https://github.com/IntersectMBO/cardano-ledger/blob/master/eras/conway/impl/cddl-files/conway.cddl#L17-L18
-fn extract_cardano_body(cbor_value: &CborValue) -> Result<(SerializableTxBody, Vec<u8>), Error> {
+fn extract_cardano_body(cbor_value: &CborValue) -> Result<(CxxSerializableTxBody, Vec<u8>), Error> {
     let transaction_array = match cbor_value {
         CborValue::Array(arr) => arr,
         _ => return Err(Error::InvalidTransactionFormat),
@@ -235,15 +235,17 @@ fn extract_cardano_body(cbor_value: &CborValue) -> Result<(SerializableTxBody, V
     let mut raw_body = Vec::new();
     ciborium::ser::into_writer(body_value, &mut raw_body).map_err(|_| Error::SerializationError)?;
 
-    Ok((SerializableTxBody { inputs, outputs }, raw_body))
+    Ok((CxxSerializableTxBody { inputs, outputs }, raw_body))
 }
 
-fn extract_witness(_cbor_value: &CborValue) -> Result<SerializableTxWitness, Error> {
+fn extract_witness(_cbor_value: &CborValue) -> Result<CxxSerializableTxWitness, Error> {
     // Don't support extracting witness from the transaction yet.
-    Ok(SerializableTxWitness { vkey_witness_set: Vec::new() })
+    Ok(CxxSerializableTxWitness { vkey_witness_set: Vec::new() })
 }
 
-fn extract_inputs(body_map: &[(CborValue, CborValue)]) -> Result<Vec<SerializableTxInput>, Error> {
+fn extract_inputs(
+    body_map: &[(CborValue, CborValue)],
+) -> Result<Vec<CxxSerializableTxInput>, Error> {
     let inputs_value = find_map_value(body_map, INPUTS_KEY)?;
     // Inputs are stored directly in an array value or in a tag value wrapping an
     // array.
@@ -282,7 +284,7 @@ fn extract_inputs(body_map: &[(CborValue, CborValue)]) -> Result<Vec<Serializabl
             _ => return Err(Error::InvalidInputFormat),
         };
 
-        inputs.push(SerializableTxInput { tx_hash, index });
+        inputs.push(CxxSerializableTxInput { tx_hash, index });
     }
 
     Ok(inputs)
@@ -290,7 +292,7 @@ fn extract_inputs(body_map: &[(CborValue, CborValue)]) -> Result<Vec<Serializabl
 
 fn extract_outputs(
     body_map: &[(CborValue, CborValue)],
-) -> Result<Vec<SerializableTxOutput>, Error> {
+) -> Result<Vec<CxxSerializableTxOutput>, Error> {
     let outputs_value = find_map_value(body_map, OUTPUTS_KEY)?;
     let outputs_array = match outputs_value {
         Some(CborValue::Array(arr)) => arr,
@@ -320,7 +322,7 @@ fn extract_outputs(
             _ => return Err(Error::InvalidOutputFormat),
         };
 
-        outputs.push(SerializableTxOutput { addr: addr_bytes, amount });
+        outputs.push(CxxSerializableTxOutput { addr: addr_bytes, amount });
     }
 
     Ok(outputs)
@@ -358,7 +360,7 @@ pub fn decode_cardano_transaction(bytes: &[u8]) -> Box<CxxDecodedCardanoTransact
     };
 
     let decoded_tx = CxxDecodedCardanoTransactionValue {
-        tx: SerializableTx { body, witness },
+        tx: CxxSerializableTx { body, witness },
         raw_body,
         raw_tx: bytes.to_vec(),
     };
@@ -366,7 +368,7 @@ pub fn decode_cardano_transaction(bytes: &[u8]) -> Box<CxxDecodedCardanoTransact
 }
 
 impl CxxDecodedCardanoTransaction {
-    fn tx(self: &CxxDecodedCardanoTransaction) -> SerializableTx {
+    fn tx(self: &CxxDecodedCardanoTransaction) -> CxxSerializableTx {
         self.0.tx.clone()
     }
 
@@ -391,7 +393,7 @@ fn box_error(error: Error) -> Box<CxxSignedCardanoTransactionResult> {
 /// ...]}
 pub fn apply_signatures(
     bytes: &[u8],
-    witnesses: SerializableTxWitness,
+    witnesses: CxxSerializableTxWitness,
 ) -> Box<CxxSignedCardanoTransactionResult> {
     let mut cbor_value: CborValue = match from_reader(bytes) {
         Ok(value) => value,
