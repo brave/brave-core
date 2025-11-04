@@ -33,7 +33,7 @@ echo
 
 # Create temporary directory
 TEMP_DIR=$(mktemp -d)
-trap "rm -rf ${TEMP_DIR}" EXIT
+trap 'rm -rf "${TEMP_DIR}"' EXIT
 
 cd "${TEMP_DIR}"
 
@@ -90,7 +90,6 @@ echo
 
 echo "Step 2: Generating checksums..."
 declare -A CHECKSUMS
-declare -A SIG_CHECKSUMS
 
 for DIST in opengrep_* *windows*.exe; do
     if [ -f "${DIST}" ]; then
@@ -114,7 +113,6 @@ for DIST in opengrep_* *windows*.exe; do
             elif command -v shasum > /dev/null 2>&1; then
                 SIG_CHECKSUM=$(shasum -a 256 "${DIST}.sig" | cut -d' ' -f1)
             fi
-            SIG_CHECKSUMS["${DIST}"]="${SIG_CHECKSUM}"
             echo "    (signature: ${SIG_CHECKSUM})"
         fi
     fi
