@@ -1304,7 +1304,8 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
 
 #if BUILDFLAG(ENABLE_TOR)
   html_source->AddBoolean("braveTorDisabledByPolicy",
-                          TorProfileServiceFactory::IsTorDisabled(profile));
+                          TorProfileServiceFactory::IsTorDisabled(profile) &&
+                              TorProfileServiceFactory::IsTorManaged(profile));
 #endif
 
   if (base::FeatureList::IsEnabled(
