@@ -210,21 +210,21 @@ SkPath BraveVerticalTabStyle::GetPath(TabStyle::PathType path_type,
     }
   }
 
-  SkPath path;
-  path.addRoundRect({tab_left, tab_top, tab_right, tab_bottom}, radius * scale,
-                    radius * scale);
+  SkPathBuilder builder(
+      SkPath::RRect({tab_left, tab_top, tab_right, tab_bottom}, radius * scale,
+                    radius * scale));
 
   // Convert path to be relative to the tab origin.
   gfx::PointF origin(tab()->origin());
   origin.Scale(scale);
-  path.offset(-origin.x(), -origin.y());
+  builder.offset(-origin.x(), -origin.y());
 
   // Possibly convert back to DIPs.
   if (flags.render_units == TabStyle::RenderUnits::kDips && scale != 1.0f) {
-    path.transform(SkMatrix::Scale(1.0f / scale, 1.0f / scale));
+    builder.transform(SkMatrix::Scale(1.0f / scale, 1.0f / scale));
   }
 
-  return path;
+  return builder.detach();
 }
 
 gfx::Insets BraveVerticalTabStyle::GetContentsInsets() const {
