@@ -257,7 +257,7 @@ void EphemeralStorageService::RemoveObserver(
   observer_list_.RemoveObserver(observer);
 }
 
-void EphemeralStorageService::TLDEphemeralStorageShred(
+void EphemeralStorageService::CleanupTLDEphemeralStorage(
     const std::string& ephemeral_domain,
     const content::StoragePartitionConfig storage_partition_config,
     const bool enforced_by_user) {
