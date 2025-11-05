@@ -72,9 +72,7 @@ class ButtonHighlightPathGenerator : public views::HighlightPathGenerator {
     int radius = layout_provider->GetCornerRadiusMetric(views::Emphasis::kHigh,
                                                         rect.size());
 
-    SkPath path;
-    path.addRoundRect(gfx::RectToSkRect(rect), radius, radius);
-    return path;
+    return SkPath::RRect(gfx::RectToSkRect(rect), radius, radius);
   }
 };
 
