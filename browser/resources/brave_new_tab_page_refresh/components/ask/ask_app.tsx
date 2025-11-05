@@ -10,10 +10,13 @@ import { Background } from '../background/background'
 import { TopSites } from '../top_sites/top_sites'
 import { AskInput } from './ask_input'
 import { Widgets } from './widgets'
+import { Sidebar } from './sidebar'
 
 import { style } from './ask_app.style'
 
 export function AskApp() {
+  const [sidebarOpen, setSidebarOpen] = React.useState(false)
+
   return (
     <div data-css-scope={style.scope}>
       <Background />
@@ -21,7 +24,7 @@ export function AskApp() {
       <main className='allow-background-pointer-events'>
         <button
           className='sidebar'
-          onClick={() => {}}
+          onClick={() => setSidebarOpen(true)}
         >
           <Icon name='window-tabs-vertical-expanded' />
         </button>
@@ -41,6 +44,7 @@ export function AskApp() {
           <Widgets />
         </div>
       </main>
+      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
     </div>
   )
 }
