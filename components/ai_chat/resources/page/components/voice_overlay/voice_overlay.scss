@@ -1,0 +1,120 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+.voiceOverlay {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+
+  background-color: white;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: var(--leo-spacing-2xl);
+
+  height: calc(100cqb - 60px);
+}
+
+.closeButton {
+  position: absolute;
+  bottom: var(--leo-spacing-xl);
+  
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(88, 101, 242, 0.5),
+                0 0 40px rgba(88, 101, 242, 0.3),
+                0 0 60px rgba(88, 101, 242, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(88, 101, 242, 0.8),
+                0 0 60px rgba(88, 101, 242, 0.5),
+                0 0 90px rgba(88, 101, 242, 0.3);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.messageDisplay {
+  max-width: 600px;
+  width: 80%;
+  padding: var(--leo-spacing-xl);
+}
+
+.messageLabel {
+  font: var(--leo-font-default-regular);
+  font-weight: var(--leo-font-weight-semibold);
+  color: var(--leo-color-text-secondary);
+  margin-bottom: var(--leo-spacing-s);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.messageText {
+  font: var(--leo-font-default-regular);
+  color: var(--leo-color-text-primary);
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.loadingContainer {
+  display: flex;
+  align-items: center;
+  gap: var(--leo-spacing-m);
+  padding: var(--leo-spacing-m) var(--leo-spacing-xl);
+  background-color: var(--leo-color-container-background);
+  border-radius: var(--leo-radius-m);
+}
+
+.loadingSpinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid var(--leo-color-divider-subtle);
+  border-top: 3px solid var(--leo-color-button-background);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.loadingText {
+  font-size: var(--leo-font-size-default);
+  color: var(--leo-color-text-primary);
+  font-weight: var(--leo-font-weight-semibold);
+}
+
+.orb {
+  width: 600px;
+  height: 600px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: opacity 0.2s ease, filter 0.2s ease;
+
+  &.loading {
+    opacity: 0.7;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+}

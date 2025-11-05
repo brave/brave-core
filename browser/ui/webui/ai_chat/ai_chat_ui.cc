@@ -106,6 +106,8 @@ AIChatUI::AIChatUI(content::WebUI* web_ui)
       network::mojom::CSPDirectiveName::ScriptSrc,
       "script-src 'self' chrome://resources;");
   source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::MediaSrc, "media-src 'self' blob:;");
+  source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::StyleSrc,
       "style-src 'self' 'unsafe-inline' chrome://resources chrome://theme;");
   source->OverrideContentSecurityPolicy(

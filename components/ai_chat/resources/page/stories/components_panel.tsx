@@ -981,6 +981,7 @@ type CustomArgs = {
   skillDialog: Mojom.Skill | null
   selectedActionType: Mojom.ActionType | undefined
   selectedSkill: Mojom.Skill | undefined
+  isVoiceMode: boolean
 }
 
 const args: CustomArgs = {
@@ -1015,6 +1016,7 @@ const args: CustomArgs = {
   shouldShowLongConversationInfo: false,
   shouldShowLongPageWarning: false,
   shouldShowLongVisualContentWarning: false,
+  isVoiceMode: true,
   totalTokens: 0,
   trimmedTokens: 0,
   isGenerating: false,
@@ -1132,6 +1134,8 @@ function StoryContext(
   const aiChatContext: AIChatContext = {
     conversationEntriesComponent: StorybookConversationEntries,
     initialized: options.args.initialized,
+    speechToText: async () => 'hello world',
+    textToSpeech: async () => new Uint8Array(),
     editingConversationId: options.args.editingConversationId,
     deletingConversationId: options.args.deletingConversationId,
     conversations,
@@ -1264,6 +1268,8 @@ function StoryContext(
   const inputText = options.args.inputText
 
   const conversationContext: ConversationContext = {
+    voiceMode: options.args.isVoiceMode,
+    setVoiceMode: (voiceMode: boolean) => setArgs({ isVoiceMode: voiceMode }),
     historyInitialized: true,
     conversationUuid: options.args.isNewConversation
       ? 'new-conversation'

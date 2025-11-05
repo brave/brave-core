@@ -204,6 +204,12 @@ class AIChatService : public KeyedService,
   void BindObserver(mojo::PendingRemote<mojom::ServiceObserver> ui,
                     BindObserverCallback callback) override;
 
+  void SpeechToText(const std::vector<uint8_t>& audio_data,
+                    SpeechToTextCallback callback) override;
+
+  void TextToSpeech(const std::string& text,
+                    TextToSpeechCallback callback) override;
+
   bool GetIsContentAgentAllowed() const;
   void SetIsContentAgentAllowed(bool is_allowed);
 

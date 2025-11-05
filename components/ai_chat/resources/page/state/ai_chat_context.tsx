@@ -30,6 +30,8 @@ type AIChatContextInternal = AIChatContextProps & {
   dismissPremiumPrompt: () => void
   userRefreshPremiumSession: () => void
   openAIChatAgentProfile: () => void
+  speechToText: (audioData: Uint8Array) => Promise<string>
+  textToSpeech: (text: string) => Promise<Uint8Array>
   getPluralString: (key: string, count: number) => Promise<string>
   uiHandler?: Mojom.AIChatUIHandlerRemote
   service?: Mojom.ServiceRemote
@@ -62,6 +64,8 @@ export const defaultContext: AIChatContext = {
   dismissPremiumPrompt: () => {},
   userRefreshPremiumSession: () => {},
   openAIChatAgentProfile: () => {},
+  speechToText: async () => '',
+  textToSpeech: async () => new Uint8Array(),
 
   editingConversationId: null,
   setEditingConversationId: () => {},
@@ -117,6 +121,8 @@ export function AIChatContextProvider(
     userRefreshPremiumSession: () => api.uiHandler.refreshPremiumSession(),
     handleAgreeClick: () => api.service.markAgreementAccepted(),
     openAIChatAgentProfile: () => api.uiHandler.openAIChatAgentProfile(),
+    speechToText: (audioData: Uint8Array) => api.service.speechToText(Array.from(audioData)).then((r) => r.text),
+    textToSpeech: (text: string) => api.service.textToSpeech(text).then((r) => new Uint8Array(r.audioData)),
     uiHandler: api.uiHandler,
     service: api.service,
     editingConversationId,

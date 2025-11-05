@@ -75,7 +75,7 @@ export type ConversationContext = SendFeedbackState
     handleResetError: () => void
     handleStopGenerating: () => Promise<void>
     setInputText: (text: Content) => void
-    submitInputTextToAPI: () => void
+    submitInputTextToAPI: (text?: Content) => void
     resetSelectedActionType: () => void
     handleActionTypeClick: (actionType: Mojom.ActionType) => void
     handleSkillClick: (skill: Mojom.Skill) => void
@@ -100,6 +100,8 @@ export type ConversationContext = SendFeedbackState
     isUploadingFiles: boolean
     setTemporary: (temporary: boolean) => void
     attachImages: (images: Mojom.UploadedFile[]) => void
+    voiceMode: boolean
+    setVoiceMode: (voiceMode: boolean) => void
   }
 
 export const defaultCharCountContext: CharCountContext = {
@@ -122,6 +124,8 @@ export const defaultContext: ConversationContext = {
   shouldShowLongPageWarning: false,
   shouldShowLongConversationInfo: false,
   inputText: [],
+  voiceMode: false,
+  setVoiceMode: () => {},
   selectedActionType: undefined,
   selectedSkill: undefined,
   isToolsMenuOpen: false,
@@ -187,6 +191,8 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
       }))
     },
   })
+
+  const [voiceMode, setVoiceMode] = React.useState<boolean>(false)
 
   const aiChatContext = useAIChat()
   const {
@@ -519,10 +525,12 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     aiChatContext.setSkillDialog(skill)
   }
 
-  const submitInputTextToAPI = () => {
+  const submitInputTextToAPI = (text?: Content) => {
     if (!context.inputText) return
     if (isCharLimitExceeded) return
     if (shouldDisableUserInput) return
+
+    if (!text) text = context.inputText;
 
     if (
       !aiChatContext.isStorageNoticeDismissed
@@ -544,12 +552,12 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
       )
     } else if (context.selectedActionType) {
       conversationHandler.submitHumanConversationEntryWithAction(
-        stringifyContent(context.inputText),
+        stringifyContent(text),
         context.selectedActionType,
       )
     } else {
       conversationHandler.submitHumanConversationEntry(
-        stringifyContent(context.inputText),
+        stringifyContent(text),
         context.pendingMessageFiles,
       )
     }
@@ -825,6 +833,8 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     setInputText: (inputText) => setPartialContext({ inputText }),
     handleActionTypeClick,
     handleSkillClick,
+    voiceMode,
+    setVoiceMode,
     handleSkillEdit,
     submitInputTextToAPI,
     isGenerating: context.isGenerating,
