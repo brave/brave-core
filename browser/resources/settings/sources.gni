@@ -203,6 +203,7 @@ brave_settings_mojo_files = [
   # Add generated strings as mojo files. Currently, this is the only way to
   # include them in build_webui() target.
   "$root_gen_dir/brave/grit/brave_generated_resources_webui_strings.ts",
+  "$root_gen_dir/components/grit/brave_components_webui_strings.ts",
 ]
 
 brave_settings_mojo_files_deps = [
@@ -212,6 +213,7 @@ brave_settings_mojo_files_deps = [
 
   # Add generated strings to the build_webui() via mojo_files_deps.
   "//brave/app:brave_generated_resources_grit",
+  "//brave/components/resources:strings",
 ]
 
 brave_settings_ts_deps = [

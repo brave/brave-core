@@ -5,6 +5,7 @@
 
 import { loadTimeData } from 'chrome://resources/js/load_time_data.js'
 import '../settings_page/settings_subpage.js'
+import { EmailAliasesStrings } from '../brave_components_webui_strings.js'
 
 // Unfortunately, our current WebPack build does not support ESModule output and
 // it expects loadTimeData to be on the globalThis. The settings page has been
@@ -17,7 +18,9 @@ class EmailAliasesPage extends HTMLElement {
     this.attachShadow({ mode: 'open' })
     const subpage = document.createElement('settings-subpage')
     this.shadowRoot!.appendChild(subpage)
-    const title = loadTimeData.getString('SETTINGS_EMAIL_ALIASES_LABEL')
+    const title = loadTimeData.getString(
+      EmailAliasesStrings.SETTINGS_EMAIL_ALIASES_LABEL,
+    )
     subpage.setAttribute('page-title', title)
     import('/email_aliases.bundle.js' as any).then(({ mount }) => {
       mount(subpage)
