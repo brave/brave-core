@@ -78,9 +78,9 @@ class SettingsViewController: TableViewController {
   private let windowProtection: WindowProtection?
   private let ipfsAPI: IpfsAPI
   private let altIconsModel = AltIconsModel()
-  private var prefsChangeRegistrar: PrefChangeRegistrar!
+  private let prefsChangeRegistrar: PrefChangeRegistrar
 
-  private lazy var braveAccountAuthentication: BraveAccountAuthentication = {
+  private lazy var braveAccountAuthentication: any BraveAccountAuthentication = {
     return BraveAccountAuthenticationBridgeImpl(profile: braveCore.profile)
   }()
 
@@ -122,6 +122,7 @@ class SettingsViewController: TableViewController {
     self.keyringStore = keyringStore
     self.cryptoStore = cryptoStore
     self.ipfsAPI = braveCore.ipfsAPI
+    self.prefsChangeRegistrar = PrefChangeRegistrar(prefService: braveCore.profile.prefs)
 
     super.init(style: .insetGrouped)
 
@@ -180,7 +181,6 @@ class SettingsViewController: TableViewController {
       }
       .store(in: &cancellables)
 
-    prefsChangeRegistrar = PrefChangeRegistrar(prefService: braveCore.profile.prefs)
     let refreshUI = { [weak self] (_: Any) in
       DispatchQueue.main.async {
         self?.setUpSections()
@@ -255,7 +255,7 @@ class SettingsViewController: TableViewController {
     ]
 
     if FeatureList.kBraveAccount.enabled {
-      list.insert(braveAccountSection(), at: 1)
+      list.insert(braveAccountSection, at: 1)
     }
 
     let shouldShowVPNSection = { () -> Bool in
@@ -355,7 +355,7 @@ class SettingsViewController: TableViewController {
     return section
   }()
 
-  private func braveAccountSection() -> Static.Section {
+  private var braveAccountSection: Static.Section {
     let authenticationToken = braveCore.profile.prefs.string(
       forPath: BraveAccountAuthenticationTokenPref
     )
@@ -373,7 +373,9 @@ class SettingsViewController: TableViewController {
             text: Strings.braveAccountSignOut,
             selection: { [unowned self] in braveAccountAuthentication.logOut() },
             cellClass: BraveAccountIconCell.self,
-            context: [BraveAccountIconCell.titleColorKey: UIColor.braveBlurple]
+            context: [
+              BraveAccountIconCell.titleColorKey: UIColor(braveSystemName: .textInteractive)
+            ]
           ),
         ]
       )
@@ -397,13 +399,17 @@ class SettingsViewController: TableViewController {
             detailText: Strings.braveAccountResendConfirmationEmailDetail,
             selection: { [unowned self] in braveAccountAuthentication.resendConfirmationEmail() },
             cellClass: BraveAccountIconCell.self,
-            context: [BraveAccountIconCell.titleColorKey: UIColor.braveBlurple]
+            context: [
+              BraveAccountIconCell.titleColorKey: UIColor(braveSystemName: .textInteractive)
+            ]
           ),
           Row(
             text: Strings.braveAccountCancelRegistration,
             selection: { [unowned self] in braveAccountAuthentication.cancelRegistration() },
             cellClass: BraveAccountIconCell.self,
-            context: [BraveAccountIconCell.titleColorKey: UIColor.braveErrorLabel]
+            context: [
+              BraveAccountIconCell.titleColorKey: UIColor(braveSystemName: .systemfeedbackErrorText)
+            ]
           ),
         ]
       )

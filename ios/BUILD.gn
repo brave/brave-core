@@ -46,7 +46,6 @@ import("//brave/ios/browser/api/url/headers.gni")
 import("//brave/ios/browser/api/web/web_state/headers.gni")
 import("//brave/ios/browser/api/web_view/headers.gni")
 import("//brave/ios/browser/api/webcompat_reporter/headers.gni")
-import("//brave/ios/browser/brave_account/headers.gni")
 import("//brave/ios/browser/brave_shields/headers.gni")
 import("//brave/ios/browser/debounce/headers.gni")
 import("//brave/ios/browser/url_sanitizer/headers.gni")
@@ -85,6 +84,8 @@ brave_core_public_headers = [
   "//brave/ios/app/brave_core_switches.h",
   "//brave/ios/browser/ai_chat/ai_chat_utils.h",
   "//brave/ios/browser/ai_chat/ai_chat_settings_helper.h",
+  "//brave/ios/browser/brave_account/brave_account_authentication_bridge.h",
+  "//brave/ios/browser/brave_account/brave_account_authentication_bridge_impl.h",
   "//brave/ios/browser/brave_news/brave_news_pref_names_bridge.h",
   "//brave/ios/browser/brave_vpn/brave_vpn_pref_names_bridge.h",
   "//brave/ios/browser/brave_wallet/brave_wallet_factory_wrappers.h",
@@ -116,7 +117,6 @@ brave_core_public_headers = [
 
 brave_core_public_headers += ads_public_headers
 brave_core_public_headers += ai_chat_component_public_headers
-brave_core_public_headers += brave_account_public_headers
 brave_core_public_headers += brave_domains_public_headers
 brave_core_public_headers += brave_shields_public_headers
 brave_core_public_headers += brave_shields_api_public_headers
