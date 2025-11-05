@@ -24,6 +24,10 @@
 #include "ui/views/view_constants_aura.h"
 #endif
 
+#if BUILDFLAG(IS_MAC)
+#include "third_party/skia/include/core/SkPathBuilder.h"
+#endif
+
 namespace {
 
 class VerticalTabStripWidget : public ThemeCopyingWidget {
@@ -228,25 +232,30 @@ void VerticalTabStripWidgetDelegateView::OnWidgetDestroying(
 void VerticalTabStripWidgetDelegateView::UpdateClip() {
   // On mac, child window can be drawn out of parent window. We should clip
   // the border line and corner radius manually.
-  SkPath path;
-  const int corner_radius = GetVerticalTabStripCornerRadiusMac();
+  const float corner_radius = GetVerticalTabStripCornerRadiusMac();
   if (tabs::utils::IsVerticalTabOnRight(browser_view_->browser())) {
+    SkPathBuilder path;
     path.moveTo(width(), 0);
     path.lineTo(0, 0);
     path.lineTo(0, height() - 1);
     path.lineTo(width() - corner_radius, height() - 1);
-    path.rArcTo(corner_radius, corner_radius, 0, SkPath::kSmall_ArcSize,
-                SkPathDirection::kCCW, corner_radius, -corner_radius);
+    path.rArcTo({corner_radius, corner_radius}, 0,
+                SkPathBuilder::kSmall_ArcSize, SkPathDirection::kCCW,
+                {corner_radius, -corner_radius});
+    path.close();
+    SetClipPath(path.detach());
   } else {
+    SkPathBuilder path;
     path.moveTo(0, 0);
     path.lineTo(width(), 0);
     path.lineTo(width(), height() - 1);
     path.lineTo(corner_radius, height() - 1);
-    path.rArcTo(corner_radius, corner_radius, 0, SkPath::kSmall_ArcSize,
-                SkPathDirection::kCW, -corner_radius, -corner_radius);
+    path.rArcTo({corner_radius, corner_radius}, 0,
+                SkPathBuilder::kSmall_ArcSize, SkPathDirection::kCW,
+                {-corner_radius, -corner_radius});
+    path.close();
+    SetClipPath(path.detach());
   }
-  path.close();
-  SetClipPath(path);
 }
 #endif
 
