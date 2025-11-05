@@ -55,6 +55,7 @@ import {
   Content,
   stringifyContent,
 } from '../components/input_box/editable_content'
+import { getToolUseEvent } from '../../common/test_data_utils'
 
 // TODO(https://github.com/brave/brave-browser/issues/47810): Attempt to split this file up
 
@@ -136,31 +137,31 @@ const CONVERSATIONS: Mojom.Conversation[] = [
   },
 ]
 
-const toolEvents: Mojom.ToolUseEvent[] = [
-  {
+const toolEvents: Mojom.ConversationEntryEvent[] = [
+  getToolUseEvent({
     id: 'abc123d',
     toolName: 'user_choice_tool',
     argumentsJson: JSON.stringify({ choices: ['7:00pm', '8:00pm'] }),
     output: [createTextContentBlock('7:00pm')],
-  },
-  {
+  }),
+  getToolUseEvent({
     id: 'abc123e',
     toolName: 'user_choice_tool',
     argumentsJson: JSON.stringify({ choices: ['7:00pm', '8:00pm'] }),
     output: undefined,
-  },
-  {
+  }),
+  getToolUseEvent({
     id: 'abc123f',
     toolName: 'user_choice_tool',
     argumentsJson: JSON.stringify({ choices: ['7:00pm', '8:00pm'] }),
     output: undefined,
-  },
-  {
+  }),
+  getToolUseEvent({
     id: 'abc123g',
     toolName: Mojom.NAVIGATE_TOOL_NAME,
     argumentsJson: JSON.stringify({ website_url: 'https://www.example.com' }),
     output: undefined,
-  },
+  }),
 ]
 
 const MEMORY_HISTORY: Mojom.ConversationTurn[] = [
@@ -189,20 +190,17 @@ const MEMORY_HISTORY: Mojom.ConversationTurn[] = [
     edits: [],
     createdTime: { internalValue: BigInt('13278618001100000') },
     events: [
-      {
-        ...eventTemplate,
-        toolUseEvent: {
-          id: 'memory-1',
-          toolName: Mojom.MEMORY_STORAGE_TOOL_NAME,
-          argumentsJson: '{"memory": "works as a software engineer"}',
-          output: [
-            {
-              textContentBlock: { text: '' },
-              imageContentBlock: undefined,
-            },
-          ],
-        },
-      },
+      getToolUseEvent({
+        id: 'memory-1',
+        toolName: Mojom.MEMORY_STORAGE_TOOL_NAME,
+        argumentsJson: '{"memory": "works as a software engineer"}',
+        output: [
+          {
+            textContentBlock: { text: '' },
+            imageContentBlock: undefined,
+          },
+        ],
+      }),
       getCompletionEvent("I'll remember that you work as a software engineer."),
     ],
     uploadedFiles: [],
@@ -235,20 +233,17 @@ const MEMORY_HISTORY: Mojom.ConversationTurn[] = [
     edits: [],
     createdTime: { internalValue: BigInt('13278618001300000') },
     events: [
-      {
-        ...eventTemplate,
-        toolUseEvent: {
-          id: 'memory-2',
-          toolName: Mojom.MEMORY_STORAGE_TOOL_NAME,
-          argumentsJson: '{"memory": "Likes cats"}',
-          output: [
-            {
-              textContentBlock: { text: '' },
-              imageContentBlock: undefined,
-            },
-          ],
-        },
-      },
+      getToolUseEvent({
+        id: 'memory-2',
+        toolName: Mojom.MEMORY_STORAGE_TOOL_NAME,
+        argumentsJson: '{"memory": "Likes cats"}',
+        output: [
+          {
+            textContentBlock: { text: '' },
+            imageContentBlock: undefined,
+          },
+        ],
+      }),
       getCompletionEvent("I've noted you like cats."),
     ],
     uploadedFiles: [],
@@ -281,20 +276,17 @@ const MEMORY_HISTORY: Mojom.ConversationTurn[] = [
     edits: [],
     createdTime: { internalValue: BigInt('13278618001500000') },
     events: [
-      {
-        ...eventTemplate,
-        toolUseEvent: {
-          id: 'memory-3',
-          toolName: Mojom.MEMORY_STORAGE_TOOL_NAME,
-          argumentsJson: '{"memory": "favorite hobby is hiking"}',
-          output: [
-            {
-              textContentBlock: { text: 'Memory storage failed' },
-              imageContentBlock: undefined,
-            },
-          ],
-        },
-      },
+      getToolUseEvent({
+        id: 'memory-3',
+        toolName: Mojom.MEMORY_STORAGE_TOOL_NAME,
+        argumentsJson: '{"memory": "favorite hobby is hiking"}',
+        output: [
+          {
+            textContentBlock: { text: 'Memory storage failed' },
+            imageContentBlock: undefined,
+          },
+        ],
+      }),
       getCompletionEvent(
         'I encountered an error while trying to store that information.',
       ),
@@ -803,11 +795,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     selectedText: undefined,
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
-    events: [
-      ...toolEvents
-        .slice(2)
-        .map((toolEvent) => ({ ...eventTemplate, toolUseEvent: toolEvent })),
-    ],
+    events: [...toolEvents.slice(2)],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
     skill: undefined,
@@ -826,9 +814,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [
       getCompletionEvent('Answer one of these questions:'),
-      ...toolEvents
-        .slice(0, 3)
-        .map((toolUseEvent) => ({ ...eventTemplate, toolUseEvent })),
+      ...toolEvents.slice(0, 3),
     ],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
@@ -1507,11 +1493,14 @@ export const _ToolUse = {
     return (
       <div className={styles.container}>
         {toolEvents
-          .filter((event) => event.toolName !== Mojom.MEMORY_STORAGE_TOOL_NAME)
+          .filter(
+            (event) =>
+              event.toolUseEvent!.toolName !== Mojom.MEMORY_STORAGE_TOOL_NAME,
+          )
           .map((event) => (
             <ToolEvent
-              key={event.id}
-              toolUseEvent={event}
+              key={event.toolUseEvent!.id}
+              toolUseEvent={event.toolUseEvent!}
               isEntryActive
             ></ToolEvent>
           ))}
