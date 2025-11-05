@@ -18,7 +18,6 @@ import stat
 import subprocess
 import sys
 import tempfile
-from pathlib import Path
 
 import brave_chromium_utils
 
@@ -66,7 +65,7 @@ def download_url(url, output_file):
     print(f'Downloading {url}')
     try:
         response = urlopen(url)
-        total_size = int(response.info().get('Content-Length', 0).strip())
+        total_size = int(response.info().get('Content-Length', '0').strip())
 
         bytes_downloaded = 0
         chunk_size = 4096
