@@ -122,8 +122,7 @@ IN_PROC_BROWSER_TEST_P(AIChatProfilesEnabledTest, SidebarCheck) {
 IN_PROC_BROWSER_TEST_P(AIChatProfilesEnabledTest, Autocomplete) {
   auto* autocomplete_controller = browser_->window()
                                       ->GetLocationBar()
-                                      ->GetOmniboxView()
-                                      ->controller()
+                                      ->GetOmniboxController()
                                       ->autocomplete_controller();
   const auto& providers = autocomplete_controller->providers();
   bool is_in_providers =

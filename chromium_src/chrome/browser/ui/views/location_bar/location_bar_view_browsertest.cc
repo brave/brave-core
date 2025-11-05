@@ -7,6 +7,7 @@
 
 #include <optional>
 
+#include "chrome/browser/ui/omnibox/omnibox_controller.h"
 #include "chrome/browser/ui/omnibox/omnibox_edit_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/omnibox/omnibox_view_views.h"
@@ -147,6 +148,10 @@ class BraveLocationBarViewColorOverridesTest : public InProcessBrowserTest {
         ->GetLocationBarView()
         ->omnibox_view();
   }
+
+  LocationBar* GetLocationBar() {
+    return browser()->window()->GetLocationBar();
+  }
 };
 
 // We override the behavior of the LocationBar when the user is editing text.
@@ -157,14 +162,26 @@ IN_PROC_BROWSER_TEST_F(BraveLocationBarViewColorOverridesTest,
   // LocationBar.
   ui_test_utils::NavigateToURLBlockUntilNavigationsComplete(
       browser(), GURL("https://example.com"), 1);
-  EXPECT_FALSE(GetOmniboxView()->model()->is_caret_visible());
-  EXPECT_FALSE(GetOmniboxView()->model()->user_input_in_progress());
+  EXPECT_FALSE(GetLocationBar()
+                   ->GetOmniboxController()
+                   ->edit_model()
+                   ->is_caret_visible());
+  EXPECT_FALSE(GetLocationBar()
+                   ->GetOmniboxController()
+                   ->edit_model()
+                   ->user_input_in_progress());
   auto default_color = GetOmniboxView()->GetBackgroundColor();
 
   // Set the user text
   GetOmniboxView()->SetUserText(u"hello world");
 
-  EXPECT_FALSE(GetOmniboxView()->model()->is_caret_visible());
-  EXPECT_TRUE(GetOmniboxView()->model()->user_input_in_progress());
+  EXPECT_FALSE(GetLocationBar()
+                   ->GetOmniboxController()
+                   ->edit_model()
+                   ->is_caret_visible());
+  EXPECT_TRUE(GetLocationBar()
+                  ->GetOmniboxController()
+                  ->edit_model()
+                  ->user_input_in_progress());
   EXPECT_EQ(default_color, GetOmniboxView()->GetBackgroundColor());
 }

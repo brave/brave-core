@@ -26,7 +26,9 @@ class OmniboxAutocompleteTest : public InProcessBrowserTest {
     return browser_view->toolbar()->location_bar();
   }
   OmniboxViewViews* omnibox_view() { return location_bar()->omnibox_view(); }
-  OmniboxEditModel* edit_model() { return omnibox_view()->model(); }
+  OmniboxEditModel* edit_model() {
+    return location_bar()->GetOmniboxController()->edit_model();
+  }
   OmniboxPopupView* popup_view() {
     return BrowserView::GetBrowserViewForBrowser(browser())
         ->GetLocationBarView()
@@ -36,8 +38,8 @@ class OmniboxAutocompleteTest : public InProcessBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(OmniboxAutocompleteTest, AutocompleteDisabledTest) {
   EXPECT_FALSE(popup_view()->IsOpen());
-  EXPECT_TRUE(omnibox_view()
-                  ->controller()
+  EXPECT_TRUE(location_bar()
+                  ->GetOmniboxController()
                   ->autocomplete_controller()
                   ->result()
                   .empty());
@@ -50,14 +52,15 @@ IN_PROC_BROWSER_TEST_F(OmniboxAutocompleteTest, AutocompleteDisabledTest) {
   edit_model()->StartAutocomplete(false, false);
 
   // Check popup is opened and results are not empty.
-  EXPECT_FALSE(omnibox_view()
-                   ->controller()
+  EXPECT_FALSE(location_bar()
+                   ->GetOmniboxController()
                    ->autocomplete_controller()
                    ->result()
                    .empty());
   EXPECT_TRUE(popup_view()->IsOpen());
 
-  omnibox_view()->controller()->StopAutocomplete(/*clear_result=*/true);
+  location_bar()->GetOmniboxController()->StopAutocomplete(
+      /*clear_result=*/true);
 
   browser()->profile()->GetPrefs()->SetBoolean(omnibox::kAutocompleteEnabled,
                                                false);
@@ -65,8 +68,8 @@ IN_PROC_BROWSER_TEST_F(OmniboxAutocompleteTest, AutocompleteDisabledTest) {
   edit_model()->StartAutocomplete(false, false);
 
   // Check popup isn't opened and result is empty.
-  EXPECT_TRUE(omnibox_view()
-                  ->controller()
+  EXPECT_TRUE(location_bar()
+                  ->GetOmniboxController()
                   ->autocomplete_controller()
                   ->result()
                   .empty());
