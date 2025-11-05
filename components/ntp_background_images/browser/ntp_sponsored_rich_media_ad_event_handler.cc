@@ -11,14 +11,12 @@
 #include "base/types/cxx23_to_underlying.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
-#include "brave/components/ntp_background_images/browser/ntp_p3a_helper.h"
 
 namespace ntp_background_images {
 
 NTPSponsoredRichMediaAdEventHandler::NTPSponsoredRichMediaAdEventHandler(
-    brave_ads::AdsService* ads_service,
-    NTPP3AHelper* ntp_p3a_helper)
-    : ads_service_(ads_service), ntp_p3a_helper_(ntp_p3a_helper) {}
+    brave_ads::AdsService* ads_service)
+    : ads_service_(ads_service) {}
 
 NTPSponsoredRichMediaAdEventHandler::~NTPSponsoredRichMediaAdEventHandler() =
     default;
@@ -40,8 +38,6 @@ void NTPSponsoredRichMediaAdEventHandler::MaybeReportRichMediaAdEvent(
   }
 
   if (ads_service_) {
-    // Ads service will handle the case when we should fallback to P3A and no-op
-    // if the campaign should report using P3A.
     ads_service_->TriggerNewTabPageAdEvent(placement_id, creative_instance_id,
                                            mojom_ad_metric_type,
                                            mojom_ad_event_type,

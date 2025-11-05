@@ -5,11 +5,8 @@
 
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_rich_media_ad_event_handler.h"
 
-#include <memory>
-
 #include "brave/components/brave_ads/core/browser/service/ads_service_mock.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
-#include "brave/components/ntp_background_images/browser/ntp_p3a_helper_mock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace ntp_background_images {
@@ -29,11 +26,7 @@ class NTPSponsoredRichMediaAdEventHandlerTest : public testing::Test {
       bool should_report) {
     brave_ads::AdsServiceMock ads_service;
 
-    std::unique_ptr<NTPP3AHelperMock> ntp_p3a_helper =
-        std::make_unique<NTPP3AHelperMock>();
-
-    NTPSponsoredRichMediaAdEventHandler ad_event_handler(&ads_service,
-                                                         ntp_p3a_helper.get());
+    NTPSponsoredRichMediaAdEventHandler ad_event_handler(&ads_service);
 
     if (should_report) {
       EXPECT_CALL(ads_service, TriggerNewTabPageAdEvent(
