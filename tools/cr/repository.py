@@ -144,6 +144,9 @@ class Repository:
         The contents of the file read. If more than one file is provided, the
         contents of all files are appended to the same string.
         """
+
+        # fails here! so before running git show, replaces \ path with /.
+        files = [str(file).replace('\\', '/') for file in files]
         return self.run_git('show',
                             *[f'{commit}:{file}' for file in files],
                             no_trim=True)
