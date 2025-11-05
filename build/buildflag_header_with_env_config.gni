@@ -32,7 +32,7 @@ import("//build/buildflag_header.gni")
 if (defined(env_config.allow_unset_env_config_flags)) {
   allow_unset_env_config_flags = env_config.allow_unset_env_config_flags
 } else {
-  allow_unset_env_config_flags = !is_official_build
+  allow_unset_env_config_flags = true
 }
 
 template("buildflag_header_with_env_config") {

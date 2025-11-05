@@ -1,8 +1,19 @@
 diff --git a/chrome/browser/ui/tabs/tab_model.cc b/chrome/browser/ui/tabs/tab_model.cc
-index 8cca90f1dda47915a59cc8d5eee3c54fddfb07a3..a274da471b085d5bf453bfcdf35fc4b65b780134 100644
+index 8cca90f1dda47915a59cc8d5eee3c54fddfb07a3..4208de06060a79915ddb653c7913ae42361c9da1 100644
 --- a/chrome/browser/ui/tabs/tab_model.cc
 +++ b/chrome/browser/ui/tabs/tab_model.cc
-@@ -80,7 +80,7 @@ TabModel::TabModel(std::unique_ptr<content::WebContents> contents,
+@@ -17,8 +17,10 @@
+ #include "chrome/browser/ui/tabs/public/tab_dialog_manager.h"
+ #include "chrome/browser/ui/tabs/public/tab_features.h"
+ #include "chrome/browser/ui/tabs/tab_enums.h"
++#if !BUILDFLAG(IS_ANDROID)
+ #include "chrome/browser/ui/tabs/tab_strip_model.h"
+ #include "chrome/browser/ui/tabs/tab_strip_model_delegate.h"
++#endif  // !BUILDFLAG(IS_ANDROID)
+ #include "chrome/browser/ui/ui_features.h"
+ #include "components/constrained_window/constrained_window_views.h"
+ #include "components/sessions/content/session_tab_helper.h"
+@@ -80,7 +82,7 @@ TabModel::TabModel(std::unique_ptr<content::WebContents> contents,
    // TODO(https://crbug.com/362038317): Tab-helpers should be created in exactly
    // one place, which is here.
    TabHelpers::AttachTabHelpers(contents_);
@@ -11,3 +22,38 @@ index 8cca90f1dda47915a59cc8d5eee3c54fddfb07a3..a274da471b085d5bf453bfcdf35fc4b6
    const SessionID session_id = sessions::SessionTabHelper::IdForTab(contents_);
    CHECK(session_id.is_valid());
    SetSessionId(session_id.id());
+@@ -291,6 +293,7 @@ bool TabModel::IsInNormalWindow() const {
+   return GetModelForTabInterface()->delegate()->IsNormalWindow();
+ }
+ 
++#if !BUILDFLAG(IS_ANDROID)
+ BrowserWindowInterface* TabModel::GetBrowserWindowInterface() {
+   return GetModelForTabInterface()->delegate()->GetBrowserWindowInterface();
+ }
+@@ -298,6 +301,7 @@ BrowserWindowInterface* TabModel::GetBrowserWindowInterface() {
+ const BrowserWindowInterface* TabModel::GetBrowserWindowInterface() const {
+   return GetModelForTabInterface()->delegate()->GetBrowserWindowInterface();
+ }
++#endif  // !BUILDFLAG(IS_ANDROID)
+ 
+ tabs::TabFeatures* TabModel::GetTabFeatures() {
+   return tab_features_.get();
+@@ -324,12 +328,18 @@ std::optional<tab_groups::TabGroupId> TabModel::GetGroup() const {
+ }
+ 
+ void TabModel::Close() {
++#if !BUILDFLAG(IS_ANDROID)
+   auto* window_interface = GetBrowserWindowInterface();
+   auto* tab_strip = window_interface->GetTabStripModel();
+   CHECK(tab_strip);
+   const int tab_idx = tab_strip->GetIndexOfTab(this);
+   CHECK(tab_idx != TabStripModel::kNoTab);
+   tab_strip->CloseWebContentsAt(tab_idx, TabCloseTypes::CLOSE_NONE);
++#else
++  // On Android, TabModel should not be used directly.
++  // This is a stub implementation to satisfy the interface.
++  NOTREACHED();
++#endif  // !BUILDFLAG(IS_ANDROID)
+ }
+ 
+ void TabModel::OnTabStripModelChanged(

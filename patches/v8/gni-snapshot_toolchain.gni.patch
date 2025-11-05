@@ -1,0 +1,14 @@
+diff --git a/gni/snapshot_toolchain.gni b/gni/snapshot_toolchain.gni
+index 37ed262640d048a6fa5923279ae0388c1c0ae766..45f9d09772bed617af57378da6a1dfcb2eb03b41 100644
+--- a/gni/snapshot_toolchain.gni
++++ b/gni/snapshot_toolchain.gni
+@@ -65,7 +65,8 @@ if (v8_snapshot_toolchain == "") {
+     # therefore snapshots will need to be built using native mksnapshot
+     # in combination with qemu
+     v8_snapshot_toolchain = current_toolchain
+-  } else if (host_cpu == current_cpu) {
++  } else if ((host_cpu == current_cpu) || (host_os == "mac" && host_cpu == "arm64" && current_cpu == "arm")) {
++    # Cross-build to ARM from MacOS M1.
+     # Cross-build from same ISA on one OS to another. For example:
+     # * targeting win/x64 on a linux/x64 host
+     # * targeting win/arm64 on a mac/arm64 host

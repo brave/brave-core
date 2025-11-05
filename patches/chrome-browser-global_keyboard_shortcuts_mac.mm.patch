@@ -2,7 +2,7 @@ diff --git a/chrome/browser/global_keyboard_shortcuts_mac.mm b/chrome/browser/gl
 index beffea21ede4b005e19de7cff26d152e095523be..449ff42106c9426a6315db386e835061f9edb4c3 100644
 --- a/chrome/browser/global_keyboard_shortcuts_mac.mm
 +++ b/chrome/browser/global_keyboard_shortcuts_mac.mm
-@@ -150,6 +150,7 @@ const std::vector<KeyboardShortcutData>& GetShortcutsNotPresentInMainMenu() {
+@@ -150,6 +150,7 @@ CommandForKeyEventResult ShortcutCommand(int cmd) {
        {true,  false, false, true,  kVK_DownArrow,         IDC_FOCUS_NEXT_PANE},
        {true,  false, false, true,  kVK_UpArrow,           IDC_FOCUS_PREVIOUS_PANE},
        {true,  true,  false, true,  kVK_ANSI_A,            IDC_FOCUS_INACTIVE_POPUP_FOR_ACCESSIBILITY},

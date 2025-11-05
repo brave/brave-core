@@ -1,0 +1,53 @@
+diff --git a/extensions/common/constants.cc b/extensions/common/constants.cc
+index 54a4d931e0a2347a6e82476ea79ef248ee9ec63a..775af8c863a5396e5b42e95ebb837462091f550d 100644
+--- a/extensions/common/constants.cc
++++ b/extensions/common/constants.cc
+@@ -8,6 +8,7 @@
+ 
+ #include "base/containers/contains.h"
+ #include "base/containers/fixed_flat_set.h"
++#include "base/containers/span.h"
+ #include "build/build_config.h"
+ #include "build/chromecast_buildflags.h"
+ #include "build/chromeos_buildflags.h"
+@@ -45,7 +46,7 @@ constexpr uint8_t kWebstoreSignaturesPublicKeyData[] = {
+ 
+ namespace extensions {
+ 
+-const base::span<const uint8_t> kWebstoreSignaturesPublicKey(
++[[maybe_unused]] const base::span<const uint8_t> kWebstoreSignaturesPublicKey(
+     kWebstoreSignaturesPublicKeyData,
+     std::size(kWebstoreSignaturesPublicKeyData));
+ 
+@@ -95,9 +96,9 @@ bool IsSystemUIApp(std::string_view extension_id) {
+ bool IsQuickOfficeExtension(std::string_view extension_id) {
+   constexpr auto kQuickOfficeIds = base::MakeFixedFlatSet<std::string_view>({
+       // clang-format off
+-      kQuickOfficeComponentExtensionId,
+-      kQuickOfficeInternalExtensionId,
+-      kQuickOfficeExtensionId,
++      "bpmcpldpdmajfigpchkicefoigmkfalc",  // kQuickOfficeComponentExtensionId
++      "ehibbfinohgbchlgdbfpikodjaojhccn",  // kQuickOfficeInternalExtensionId
++      "gbkeegbaiigmenfmjfclcdgdpimamgkj",  // kQuickOfficeExtensionId
+       // clang-format on
+   });
+   return base::Contains(kQuickOfficeIds, extension_id);
+@@ -107,12 +108,12 @@ bool IsQuickOfficeExtension(std::string_view extension_id) {
+ bool IsPreinstalledAppId(std::string_view app_id) {
+   constexpr auto kPreinstalledApps = base::MakeFixedFlatSet<std::string_view>({
+       // clang-format off
+-      kGmailAppId,
+-      kGoogleDocsAppId,
+-      kGoogleDriveAppId,
+-      kGoogleSheetsAppId,
+-      kGoogleSlidesAppId,
+-      kYoutubeAppId,
++      "pjkljhegncpnkpknbcohdijeoejaedia",  // kGmailAppId
++      "aohghmighlieiainnegkcijnfilokake",  // kGoogleDocsAppId
++      "apdfllckaahabafndbhieahigkjlhalf",  // kGoogleDriveAppId
++      "felcaaldnbdncclmgdcncolpebgiejap",  // kGoogleSheetsAppId
++      "aapocclcgogkmnckokdopfmhonfmgoek",  // kGoogleSlidesAppId
++      "blpcfgokakmgnkcojhhkbfbldkacnbeo",  // kYoutubeAppId
+       // clang-format on
+   });
+   return base::Contains(kPreinstalledApps, app_id);

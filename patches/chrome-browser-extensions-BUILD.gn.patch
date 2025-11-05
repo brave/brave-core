@@ -1,12 +1,36 @@
 diff --git a/chrome/browser/extensions/BUILD.gn b/chrome/browser/extensions/BUILD.gn
-index a8e054baadb1f1f75d4fe1809cc23f39105afd47..ee86f054a19bef2d8e358b16b9d4b8332bd799ba 100644
+index a8e054baadb1f1f75d4fe1809cc23f39105afd47..f399057b0158d38e298c5b506198ec556a405f4c 100644
 --- a/chrome/browser/extensions/BUILD.gn
 +++ b/chrome/browser/extensions/BUILD.gn
-@@ -1569,6 +1569,7 @@ source_set("extensions") {
+@@ -506,6 +506,16 @@ source_set("extensions") {
+     "//chrome/browser/ui/toolbar",
+     "//chrome/browser/supervised_user",
+   ]
++
++  if (enable_desktop_android_extensions) {
++    # Brave's extensions depend on Chrome's extensions (via component_loader),
++    # and Chrome's extensions depend on Brave's extensions (for BraveExtensionManagement).
++    # This is a circular dependency that's necessary for desktop Android extensions.
++    # Note: We add Brave's extensions directly to deps here (not via brave_extensions_resources)
++    # to avoid the circular dependency issue, and use allow_circular_includes_from to allow
++    # the necessary includes.
++    allow_circular_includes_from += [ "//brave/browser/extensions:extensions" ]
++  }
+   deps = [
+     "//base",
+     "//chrome/app:command_ids",
+@@ -1569,6 +1579,14 @@ source_set("extensions") {
        "api/tabs/app_window_helper.h",
      ]
    }
 +  deps += brave_extensions_resources
++
++  if (enable_desktop_android_extensions) {
++    # Add Brave's extensions directly to deps to link BraveExtensionManagement.
++    # This is done here (after brave_extensions_resources) to avoid circular dependency
++    # since brave_extensions_resources no longer includes it when desktop Android is enabled.
++    deps += [ "//brave/browser/extensions:extensions" ]
++  }
  }
  
  proto_library("cws_item_service_proto") {

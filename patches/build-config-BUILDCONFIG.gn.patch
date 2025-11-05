@@ -1,8 +1,16 @@
 diff --git a/build/config/BUILDCONFIG.gn b/build/config/BUILDCONFIG.gn
-index 24a1d143954ae05ae0b79b0994b76ef9218fb848..096641740fe50eb322b9c4e2f2d87c52025eaf99 100644
+index 24a1d143954ae05ae0b79b0994b76ef9218fb848..153c38de750d9e3a293e42eb89f72758ed1c0ddc 100644
 --- a/build/config/BUILDCONFIG.gn
 +++ b/build/config/BUILDCONFIG.gn
-@@ -346,6 +346,7 @@ is_posix = !is_win && !is_fuchsia
+@@ -244,7 +244,6 @@ _default_toolchain = ""
+ 
+ if (target_os == "android") {
+   # Targeting android on Mac is best-effort and not guaranteed to work.
+-  assert(host_os == "linux", "Android builds are only supported on Linux.")
+   _default_toolchain = "//build/toolchain/android:android_clang_$target_cpu"
+ } else if (target_os == "chromeos" || target_os == "linux") {
+   # See comments in build/toolchain/cros/BUILD.gn about board compiles.
+@@ -346,6 +345,7 @@ is_posix = !is_win && !is_fuchsia
  
  # Holds all configs used for running the compiler.
  default_compiler_configs = [
