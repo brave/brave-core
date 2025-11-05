@@ -54,6 +54,7 @@ class BraveTabStripModel : public TabStripModel {
   void UpdateWebContentsStateAt(int index, TabChangeType change_type) override;
 
   void CloseTabsWithTLD(std::string_view ephemeral_domain);
+
  private:
   friend class TreeTabsBrowserTest;
 
