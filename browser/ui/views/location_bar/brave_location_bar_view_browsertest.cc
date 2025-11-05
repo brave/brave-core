@@ -19,6 +19,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/omnibox/omnibox_controller.h"
 #include "chrome/browser/ui/omnibox/omnibox_edit_model.h"
 #include "chrome/browser/ui/omnibox/omnibox_view.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -61,6 +62,14 @@ class BraveLocationBarViewBrowserTest : public InProcessBrowserTest {
   }
 
   OmniboxViewViews* omnibox_view() { return location_bar()->omnibox_view(); }
+
+  OmniboxController* controller() {
+    return location_bar()->GetOmniboxController();
+  }
+
+  OmniboxEditModel* edit_model() {
+    return location_bar()->GetOmniboxController()->edit_model();
+  }
 
   views::View* promotion_button_view() {
     return location_bar()->GetSearchPromotionButton();
@@ -117,14 +126,14 @@ IN_PROC_BROWSER_TEST_F(BraveLocationBarViewBrowserTest,
   location_bar()->FocusLocation(true);
   omnibox_view()->SetUserText(u"a");
   WaitUntil(base::BindLambdaForTesting(
-      [&]() { return omnibox_view()->model()->PopupIsOpen(); }));
+      [&]() { return edit_model()->PopupIsOpen(); }));
   EXPECT_TRUE(promotion_button_view()->GetVisible());
 
   // Unfocus from the omnibox.
   // Omnibox popup is hidden and promotion button will be gone also.
   web_contents()->Focus();
   WaitUntil(base::BindLambdaForTesting(
-      [&]() { return !omnibox_view()->model()->PopupIsOpen(); }));
+      [&]() { return !edit_model()->PopupIsOpen(); }));
   EXPECT_FALSE(promotion_button_view()->GetVisible());
 
   // Set brave search as a default provider and type any input.
@@ -135,12 +144,12 @@ IN_PROC_BROWSER_TEST_F(BraveLocationBarViewBrowserTest,
   location_bar()->FocusLocation(true);
   omnibox_view()->SetUserText(u"a");
   WaitUntil(base::BindLambdaForTesting(
-      [&]() { return omnibox_view()->model()->PopupIsOpen(); }));
+      [&]() { return edit_model()->PopupIsOpen(); }));
   EXPECT_FALSE(promotion_button_view()->GetVisible());
 
   location_bar()->Revert();
   WaitUntil(base::BindLambdaForTesting(
-      [&]() { return !omnibox_view()->model()->PopupIsOpen(); }));
+      [&]() { return !edit_model()->PopupIsOpen(); }));
   EXPECT_FALSE(promotion_button_view()->GetVisible());
 
   GetTemplateURLService()->SetUserSelectedDefaultSearchProvider(
@@ -151,12 +160,12 @@ IN_PROC_BROWSER_TEST_F(BraveLocationBarViewBrowserTest,
       brave_search_conversion::prefs::kDismissed, true);
   omnibox_view()->SetUserText(u"a");
   WaitUntil(base::BindLambdaForTesting(
-      [&]() { return omnibox_view()->model()->PopupIsOpen(); }));
+      [&]() { return edit_model()->PopupIsOpen(); }));
   EXPECT_FALSE(promotion_button_view()->GetVisible());
 
   location_bar()->Revert();
   WaitUntil(base::BindLambdaForTesting(
-      [&]() { return !omnibox_view()->model()->PopupIsOpen(); }));
+      [&]() { return !edit_model()->PopupIsOpen(); }));
   EXPECT_FALSE(promotion_button_view()->GetVisible());
 
   constexpr std::u16string search_term = u"a";
@@ -167,7 +176,7 @@ IN_PROC_BROWSER_TEST_F(BraveLocationBarViewBrowserTest,
   location_bar()->FocusLocation(true);
   omnibox_view()->SetUserText(search_term);
   WaitUntil(base::BindLambdaForTesting(
-      [&]() { return omnibox_view()->model()->PopupIsOpen(); }));
+      [&]() { return edit_model()->PopupIsOpen(); }));
   EXPECT_TRUE(promotion_button_view()->GetVisible());
 
   // Check brave search is set as default provider and brave search is loaded in
