@@ -7,7 +7,7 @@ import * as React from 'react'
 import { style } from './widgets.style'
 import imgProtonLogo from './ford.svg'
 import imgNewsDigest from './news.png'
-import imgProton from './fordtruck.png'
+import videoProton from './backgroundsmall.mp4'
 
 function PrivacyStatsWidget() {
   return (
@@ -184,10 +184,13 @@ function ProtonWidget() {
     <div className='widget proton'>
       <div className='proton-background'>
       <div className='proton-overlay' />
-        <img 
-          alt="" 
+        <video 
           className='proton-image' 
-          src={imgProton}
+          src={videoProton}
+          autoPlay
+          loop
+          muted
+          playsInline
         />
         
       </div>
@@ -197,12 +200,7 @@ function ProtonWidget() {
           className='proton-logo'
           src={imgProtonLogo}
         />
-        <div className='proton-text'>
-          New 2026 Ford Super Duty F-350
-        </div>
-        <button className='proton-button'>
-          <div className='proton-button-text'>Feel the power</div>
-        </button>
+        
       </div>
     </div>
   )

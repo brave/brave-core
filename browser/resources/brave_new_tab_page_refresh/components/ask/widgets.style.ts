@@ -277,9 +277,10 @@ export const style = scoped.css`
 
   .proton-image {
     position: absolute;
-    top:0;
-    left:0;
-    height:180px;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 180px;
   }
 
   .proton-overlay {
