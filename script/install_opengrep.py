@@ -57,6 +57,12 @@ INSTALL_DIR = brave_chromium_utils.wspath('//brave/vendor/opengrep')
 
 def download_url(url, output_file):
     """Download URL to output file with progress indication."""
+    # Validate URL to prevent file:// scheme attacks
+    if not url.startswith('https://github.com/'):
+        raise RuntimeError(
+            f'Invalid URL: {url}. Only HTTPS URLs from github.com are allowed.'
+        )
+
     print(f'Downloading {url}')
     try:
         response = urlopen(url)
