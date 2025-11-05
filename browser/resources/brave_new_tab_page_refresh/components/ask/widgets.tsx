@@ -86,11 +86,6 @@ function NewsDigestWidget() {
 }
 
 function WeatherWidget() {
-  // Hardcoded weather data for San Francisco
-  const weatherData = {
-    temperature: 68,
-    description: 'Steady temperatures expected over the next 4 days. Currently partly cloudy.'
-  }
 
   return (
     <div className='widget weather'>
@@ -98,9 +93,9 @@ function WeatherWidget() {
         <div className='weather-location'>San Francisco, CA</div>
       </div>
       <div className='weather-content'>
-        <div className='weather-temp'>{weatherData.temperature}° F</div>
+        <div className='weather-temp'>68° F</div>
         <div className='weather-description'>
-          {weatherData.description}
+        Steady temperatures expected over the next 4 days. Currently partly cloudy.
         </div>
       </div>
     </div>
