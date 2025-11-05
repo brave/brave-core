@@ -77,6 +77,7 @@ source_set("unit_tests") {
     "//base/test:test_support",
     "//brave/components/brave_shields/core/common",
     "//components/content_settings/core/browser",
+    "//components/content_settings/core/common",
     "//components/content_settings/core/test:test_support",
     "//components/prefs",
     "//components/prefs:test_support",
