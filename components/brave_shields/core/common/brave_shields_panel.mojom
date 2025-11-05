@@ -36,12 +36,6 @@ interface UIHandler {
   OnSiteBlockInfoChanged(SiteBlockInfo site_block_info);
 };
 
-enum ShredMode {
-  NEVER,
-  WHEN_ALL_TAB_CLOSED,
-  WHEN_APP_CLOSED,
-};
-
 interface DataHandler {
   RegisterUIHandler(pending_remote<UIHandler> ui_handler);
   GetSiteBlockInfo() => (SiteBlockInfo site_block_info);
@@ -55,7 +49,6 @@ interface DataHandler {
   SetBraveShieldsAdBlockOnlyModeEnabled(bool is_enabled);
   SetBraveShieldsAdBlockOnlyModePromptDismissed();
   SetForgetFirstPartyStorageEnabled(bool is_enabled);
-  SetShredMode(ShredMode mode);
   OpenWebCompatWindow();
   UpdateFavicon();
   AllowScriptsOnce(array<string> origins);
