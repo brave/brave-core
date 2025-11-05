@@ -13,7 +13,9 @@
 #include "brave/app/brave_command_ids.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "chrome/browser/ui/tabs/tab_menu_model.h"
+#if !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#endif  // !BUILDFLAG(IS_ANDROID)
 #include "ui/menus/simple_menu_model.h"
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
@@ -25,11 +27,18 @@ class TabRestoreService;
 }  // namespace sessions
 
 class Browser;
+#if !BUILDFLAG(IS_ANDROID)
+class TabStripModel;
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 class BraveTabMenuModel : public TabMenuModel {
  public:
   enum BraveTabContextMenuCommand {
+#if !BUILDFLAG(IS_ANDROID)
     CommandStart = TabStripModel::CommandLast,
+#else
+    CommandStart = 10000,  // Placeholder for Android builds
+#endif  // !BUILDFLAG(IS_ANDROID)
     CommandRestoreTab,
     CommandBookmarkAllTabs,
     CommandShowVerticalTabs,

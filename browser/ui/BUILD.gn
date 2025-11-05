@@ -109,6 +109,8 @@ source_set("ui") {
     "webui/skus_internals_ui.h",
     "webui/untrusted_sanitized_image_source.cc",
     "webui/untrusted_sanitized_image_source.h",
+    "webui/navigation_bar_data_provider.cc",
+    "webui/navigation_bar_data_provider.h",
   ]
 
   # It doesn't make sense to view the webcompat webui on iOS & Android.
@@ -237,10 +239,7 @@ source_set("ui") {
       "webui/brave_shields/shields_panel_handler.h",
       "webui/brave_shields/shields_panel_ui.cc",
       "webui/brave_shields/shields_panel_ui.h",
-      "webui/navigation_bar_data_provider.cc",
-      "webui/navigation_bar_data_provider.h",
       "webui/new_tab_page/brave_new_tab_message_handler.cc",
-      "webui/new_tab_page/brave_new_tab_message_handler.h",
       "webui/new_tab_page/brave_new_tab_page_handler.cc",
       "webui/new_tab_page/brave_new_tab_page_handler.h",
       "webui/new_tab_page/brave_new_tab_ui.cc",
@@ -312,7 +311,6 @@ source_set("ui") {
       "//brave/browser/email_aliases",
       "//brave/browser/ntp_background",
       "//brave/browser/profiles:util",
-      "//brave/browser/ui/sidebar",
       "//brave/browser/ui/tabs:tab_model",
       "//brave/browser/ui/tabs:tab_strip",
       "//brave/common",
@@ -323,8 +321,6 @@ source_set("ui") {
       "//brave/components/email_aliases:features",
       "//brave/components/email_aliases:mojom",
       "//brave/components/misc_metrics",
-      "//brave/components/sidebar/browser",
-      "//brave/components/sidebar/common",
       "//brave/components/speedreader/common/buildflags",
       "//chrome/app:generated_resources",
       "//chrome/browser/app_mode",
@@ -1016,6 +1012,7 @@ source_set("ui") {
 
   if (toolkit_views) {
     deps += [
+      "//brave/browser/ui/sidebar",
       "//brave/components/sidebar/browser",
       "//chrome/app:generated_resources",
       "//chrome/browser/ui/views",

@@ -4,7 +4,7 @@ import("//build/config/features.gni")
 import("//extensions/buildflags/buildflags.gni")
 import("//tools/grit/repack.gni")
 
-assert(enable_extensions)
+assert(enable_extensions_core)
 
 pack_web_resources("generated_resources") {
   resource_name = "brave_extension"

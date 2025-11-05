@@ -6,14 +6,18 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_BROWSER_VIEW_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_BROWSER_VIEW_H_
 
+#include "build/build_config.h"
+
+#if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/views/bookmarks/brave_bookmark_bar_view.h"
 #include "brave/browser/ui/views/frame/brave_browser_view_layout.h"
 #include "brave/browser/ui/views/side_panel/brave_side_panel.h"
-#include "build/build_config.h"
+#endif  // !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/ui/exclusive_access/exclusive_access_context.h"
 #include "chrome/browser/ui/views/side_panel/side_panel.h"
 
+#if !BUILDFLAG(IS_ANDROID)
 #define BrowserViewLayoutDelegateImplNew \
   BrowserViewLayoutDelegateImplNew;      \
   friend class BraveBrowserView;         \
@@ -22,6 +26,7 @@
 #define BrowserViewLayout BraveBrowserViewLayout
 #define SidePanel BraveSidePanel
 #define BookmarkBarView BraveBookmarkBarView
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 #define MaybeShowReadingListInSidePanelIPH \
   virtual MaybeShowReadingListInSidePanelIPH
@@ -50,6 +55,7 @@
 #define ShowSplitView virtual ShowSplitView
 #define HideSplitView virtual HideSplitView
 
+#if !BUILDFLAG(IS_ANDROID)
 #include <chrome/browser/ui/views/frame/browser_view.h>  // IWYU pragma: export
 
 #undef HideSplitView
@@ -69,5 +75,6 @@
 #undef BrowserViewLayout
 #undef BrowserWindow
 #undef BrowserViewLayoutDelegateImplNew
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_BROWSER_VIEW_H_

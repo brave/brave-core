@@ -72,9 +72,15 @@ void BraveComponentLoader::UpdateBraveExtension() {
   brave_extension_path =
       brave_extension_path.Append(FILE_PATH_LITERAL("brave_extension"));
   auto& resource_bundle = ui::ResourceBundle::GetSharedInstance();
+  std::string manifest_json =
+      resource_bundle.LoadDataResourceString(IDR_BRAVE_EXTENSION);
+  if (manifest_json.empty()) {
+    // Resource might not be available on some platforms (e.g., Android without extensions)
+    // Skip loading the extension if the resource is not available.
+    return;
+  }
   std::optional<base::Value::Dict> manifest = base::JSONReader::ReadDict(
-      resource_bundle.LoadDataResourceString(IDR_BRAVE_EXTENSION),
-      base::JSON_PARSE_CHROMIUM_EXTENSIONS);
+      manifest_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   CHECK(manifest) << "invalid Brave Extension manifest";
 
   // The background page is a conditional. Replace MAYBE_background in the

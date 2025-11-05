@@ -7,3 +7,18 @@ brave_extensions_resources = [
   "//brave/browser/extensions/api:generated_api_registration",
   "//brave/browser/extensions:resources",
 ]
+
+# Note: We can't import extensions/buildflags/buildflags.gni here due to circular
+# dependency (it imports chrome_build.gni which imports brave_build.gni which
+# imports this file). Instead, we check is_desktop_android which is set earlier
+# and enable_desktop_android_extensions is derived from it.
+if (defined(is_desktop_android) && is_desktop_android) {
+  brave_extensions_resources += [
+    "//brave/app/theme:brave_unscaled_resources",
+    # Note: We don't include //brave/browser/extensions:extensions here because it
+    # creates a circular dependency (Chrome's extensions -> Brave's extensions ->
+    # Chrome's extensions via component_loader). Instead, Chrome's extensions
+    # target adds it directly to deps when enable_desktop_android_extensions is true.
+    "//brave/browser/extensions/manifest_v2:manifest_v2",
+  ]
+}

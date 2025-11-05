@@ -11,8 +11,9 @@ import("//brave/components/web_discovery/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 import("//build/config/ui.gni")
 import("//components/gcm_driver/config.gni")
+import("//extensions/buildflags/buildflags.gni")
 
-assert(toolkit_views)
+assert(toolkit_views || enable_desktop_android_extensions)
 
 source_set("component_loader") {
   sources = [
@@ -23,13 +24,26 @@ source_set("component_loader") {
   deps = [
     "//base",
     "//brave/components/brave_extension:static_resources",
-    "//chrome/browser/extensions",
     "//chrome/browser/profiles:profile",
     "//components/prefs",
     "//extensions/browser",
     "//extensions/common",
     "//ui/base",
   ]
+
+  # Note: When desktop Android is enabled, there's a circular dependency:
+  # Chrome extensions -> Brave extensions -> component_loader -> Chrome extensions
+  # To break the cycle, component_loader doesn't directly depend on Chrome's extensions
+  # when desktop Android is enabled. Instead, it gets Chrome's extensions headers
+  # transitively through Brave's extensions target (which depends on Chrome's extensions).
+  # Note: We can't use enable_desktop_android_extensions here because it's defined
+  # in extensions/buildflags/buildflags.gni which creates a circular import.
+  # Instead, we check is_desktop_android which is set earlier.
+  if (!defined(is_desktop_android) || !is_desktop_android) {
+    deps += [ "//chrome/browser/extensions" ]
+  }
+  # When desktop Android is enabled, component_loader gets headers transitively
+  # through Brave's extensions target, so no direct dependency needed.
 
   if (enable_web_discovery_native) {
     deps += [ "//brave/components/web_discovery/common" ]
@@ -39,24 +53,30 @@ source_set("component_loader") {
 # This is split out from extensions and the rest of brave_prefs_util because it
 # has circular dependencies on //chrome/browser.
 # https://github.com/brave/brave-browser/issues/41418
-source_set("brave_prefs_util_impl") {
-  visibility = [
-    ":*",
-    "//chrome/browser",
-  ]
-  sources = [ "api/settings_private/brave_prefs_util_impl.cc" ]
+# Note: brave_prefs_util_impl depends on chrome/common/extensions/api/settings_private.h
+# which is only generated when enable_extensions is true. On Android, enable_extensions
+# is false even when enable_desktop_android_extensions is true, so the header isn't generated.
+# Therefore, this target is only built when enable_extensions is true.
+if (enable_extensions) {
+  source_set("brave_prefs_util_impl") {
+    visibility = [
+      ":*",
+      "//chrome/browser",
+    ]
+    sources = [ "api/settings_private/brave_prefs_util_impl.cc" ]
 
-  deps = [
-    "//brave/components/brave_shields/core/browser",
-    "//chrome/browser:browser_public_dependencies",
-    "//chrome/browser/content_settings:content_settings_factory",
-    "//chrome/browser/profiles:profile",
-    "//chrome/common/extensions/api",
-    "//components/content_settings/core/browser:cookie_settings",
-    "//components/content_settings/core/common",
-    "//content/public/browser",
-    "//url",
-  ]
+    deps = [
+      "//brave/components/brave_shields/core/browser",
+      "//chrome/browser:browser_public_dependencies",
+      "//chrome/browser/content_settings:content_settings_factory",
+      "//chrome/browser/profiles:profile",
+      "//chrome/common/extensions/api",
+      "//components/content_settings/core/browser:cookie_settings",
+      "//components/content_settings/core/common",
+      "//content/public/browser",
+      "//url",
+    ]
+  }
 }
 
 source_set("extensions") {
@@ -71,8 +91,6 @@ source_set("extensions") {
     "api/brave_theme_api.h",
     "api/identity/brave_web_auth_flow.cc",
     "api/identity/brave_web_auth_flow.h",
-    "api/settings_private/brave_prefs_util.cc",
-    "api/settings_private/brave_prefs_util.h",
     "api/web_discovery_api.cc",
     "api/web_discovery_api.h",
     "brave_extension_management.cc",
@@ -87,9 +105,19 @@ source_set("extensions") {
     "updater/brave_update_client_config.h",
   ]
 
+  # Note: brave_prefs_util depends on chrome/common/extensions/api/settings_private.h
+  # which is only generated when enable_extensions is true. On Android, enable_extensions
+  # is false even when enable_desktop_android_extensions is true, so the header isn't generated.
+  # Therefore, we only include these files when enable_extensions is true.
+  if (enable_extensions) {
+    sources += [
+      "api/settings_private/brave_prefs_util.cc",
+      "api/settings_private/brave_prefs_util.h",
+    ]
+    deps += [ ":brave_prefs_util_impl" ]
+  }
+
   deps = [
-    ":brave_prefs_util_impl",
-    ":resources",
     "//base",
     "//brave/app:brave_generated_resources_grit",
     "//brave/browser:browser_process",
@@ -127,17 +155,12 @@ source_set("extensions") {
     "//brave/components/ntp_background_images/common",
     "//brave/components/playlist/core/common",
     "//brave/components/request_otr/common",
-    "//brave/components/sidebar/browser",
     "//brave/components/tor/buildflags",
     "//brave/components/web_discovery/buildflags",
     "//brave/components/webcompat_reporter/common",
     "//chrome/browser:browser_process",
     "//chrome/browser:browser_public_dependencies",
-    "//chrome/browser/extensions",
-    "//chrome/browser/extensions:chrome_extensions_browser_client",
     "//chrome/browser/profiles:profile",
-    "//chrome/browser/ui",
-    "//chrome/browser/ui/browser_window",
     "//chrome/common",
     "//components/browsing_data/core",
     "//components/gcm_driver:gcm_buildflags",
@@ -147,12 +170,65 @@ source_set("extensions") {
     "//content/public/browser",
   ]
 
+  # Note: When desktop Android is enabled, there's a circular dependency:
+  # Chrome extensions -> Brave extensions -> Chrome extensions
+  # To break the cycle, we conditionally exclude Chrome's extensions from deps
+  # when desktop Android is enabled, and use allow_circular_includes_from to get headers.
+  # Note: We can't use enable_desktop_android_extensions here because it's defined
+  # in extensions/buildflags/buildflags.gni which creates a circular import.
+  # Instead, we check is_desktop_android which is set earlier.
+  if (!defined(is_desktop_android) || !is_desktop_android) {
+    deps += [
+      "//chrome/browser/extensions",
+      "//chrome/browser/extensions:chrome_extensions_browser_client",
+      "//chrome/browser/ui",
+      "//chrome/browser/ui/browser_window",
+    ]
+  }
+
+  if (toolkit_views) {
+    deps += [ "//brave/components/sidebar/browser" ]
+  }
+
   public_deps = [
-    ":component_loader",
     "//brave/components/brave_ads/core/mojom",
     "//brave/components/brave_rewards/core/mojom",
     "//extensions/browser",
   ]
+
+  # Note: When desktop Android is enabled, we add chrome/common/extensions/api to public_deps
+  # (not deps) to ensure the generated headers are available in the include path.
+  # This is needed because brave_prefs_util.cc includes chrome/common/extensions/api/settings_private.h
+  # and the chromium_src override includes the original header which also includes it.
+  if (defined(is_desktop_android) && is_desktop_android) {
+    public_deps += [
+      "//chrome/common/extensions/api",
+    ]
+  }
+
+  # Note: We can't use enable_desktop_android_extensions here because it's defined
+  # in extensions/buildflags/buildflags.gni which we've already imported. Instead,
+  # we check is_desktop_android which is set earlier and enable_desktop_android_extensions
+  # is derived from it.
+  if (defined(is_desktop_android) && is_desktop_android) {
+    # When desktop Android is enabled, both manifest_v2 and component_loader are moved to deps
+    # (not public_deps) to avoid circular dependencies:
+    # - Chrome extensions -> Brave extensions -> manifest_v2 -> Chrome extensions
+    # - Chrome extensions -> Brave extensions -> component_loader -> Chrome extensions
+    # They are still compiled and linked, just not exported as transitive dependencies.
+    # manifest_v2 and component_loader get Chrome extensions headers transitively through
+    # Brave extensions' dependency on Chrome extensions.
+    deps += [
+      ":component_loader",
+      "//brave/browser/extensions/manifest_v2:manifest_v2",
+    ]
+  } else {
+    # On desktop, component_loader and manifest_v2 can be in public_deps since there's no circular dependency
+    public_deps += [
+      ":component_loader",
+      "//brave/browser/extensions/manifest_v2:manifest_v2",
+    ]
+  }
 
   if (use_gcm_from_platform) {
     deps += [ "//components/gcm_driver" ]
@@ -192,7 +268,31 @@ source_set("extensions") {
     "//components/prefs",
   ]
 
-  allow_circular_includes_from = [ ":brave_prefs_util_impl" ]
+  allow_circular_includes_from = []
+  if (enable_extensions) {
+    allow_circular_includes_from = [ ":brave_prefs_util_impl" ]
+  }
+
+  # Note: We can't use enable_desktop_android_extensions here because it's defined
+  # in extensions/buildflags/buildflags.gni which we've already imported. Instead,
+  # we check is_desktop_android which is set earlier and enable_desktop_android_extensions
+  # is derived from it.
+  if (defined(is_desktop_android) && is_desktop_android) {
+    # When desktop Android is enabled, there's a circular dependency chain:
+    # Chrome UI -> Brave UI -> Chrome WebUI -> Chrome Extensions -> Brave Extensions -> Chrome UI
+    # To break the cycle, we don't add Chrome extensions or Chrome UI to Brave extensions' deps.
+    # Chrome extensions depends on Brave extensions (for BraveExtensionManagement),
+    # so we can't have Brave extensions also depend on Chrome extensions or Chrome UI.
+    # Instead, we rely on chromium_src overrides and forward declarations to provide
+    # the necessary headers when needed. Some files may need conditional compilation
+    # or chromium_src overrides to work without the direct dependency.
+    # Note: We don't add chrome/browser/ui or chrome/browser/ui/browser_window here
+    # because they create a circular dependency through Brave UI -> Chrome WebUI -> Chrome Extensions -> Brave Extensions.
+    # Note: chrome/common/extensions/api is added to public_deps above (not here) to ensure
+    # the generated headers are available in the include path when needed.
+    # Headers from chrome/browser/extensions will be available through chromium_src overrides
+    # or forward declarations where needed.
+  }
 }
 
 group("resources") {

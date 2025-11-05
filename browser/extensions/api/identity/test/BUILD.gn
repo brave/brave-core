@@ -5,7 +5,7 @@
 
 import("//extensions/buildflags/buildflags.gni")
 
-assert(enable_extensions)
+assert(enable_extensions_core)
 
 source_set("browsertests") {
   testonly = true

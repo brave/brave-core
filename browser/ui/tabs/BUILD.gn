@@ -54,17 +54,19 @@ if (!is_android) {
   }
 }
 
-source_set("tab_model") {
-  sources = [
-    "brave_split_tab_menu_model.cc",
-    "brave_split_tab_menu_model.h",
-  ]
+if (!is_android) {
+  source_set("tab_model") {
+    sources = [
+      "brave_split_tab_menu_model.cc",
+      "brave_split_tab_menu_model.h",
+    ]
 
-  deps = [
-    "//brave/components/resources:strings_grit",
-    "//brave/components/vector_icons",
-    "//chrome/browser/ui/tabs",
-    "//chrome/browser/ui/tabs:tab_model",
-    "//ui/base",
-  ]
+    deps = [
+      "//brave/components/resources:strings_grit",
+      "//brave/components/vector_icons",
+      "//chrome/browser/ui/tabs",
+      "//chrome/browser/ui/tabs:tab_model",
+      "//ui/base",
+    ]
+  }
 }

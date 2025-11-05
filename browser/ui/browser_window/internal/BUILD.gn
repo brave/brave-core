@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+import("//build/config/ui.gni")
 
 source_set("internal") {
   sources = [ "browser_window_features.cc" ]
@@ -12,11 +13,14 @@ source_set("internal") {
     "//base",
     "//brave/browser/brave_rewards",
     "//brave/browser/ui:brave_tab_features",
-    "//brave/browser/ui/sidebar",
     "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/playlist/core/common",
     "//chrome/browser/ui/browser_window",
   ]
+
+  if (toolkit_views) {
+    deps += [ "//brave/browser/ui/sidebar" ]
+  }
 
   if (enable_brave_vpn) {
     deps += [ "//brave/browser/ui/brave_vpn" ]

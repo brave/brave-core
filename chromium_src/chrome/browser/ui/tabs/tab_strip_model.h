@@ -6,6 +6,8 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_TABS_TAB_STRIP_MODEL_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_TABS_TAB_STRIP_MODEL_H_
 
+#include "build/build_config.h"
+
 #define SelectRelativeTab(...)            \
   virtual SelectRelativeTab(__VA_ARGS__); \
   friend class BraveTabStripModel
@@ -26,7 +28,9 @@
  private:                           \
   bool Unused
 
+#if !BUILDFLAG(IS_ANDROID)
 #include <chrome/browser/ui/tabs/tab_strip_model.h>  // IWYU pragma: export
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 #undef CanActivateTabAt
 #undef UpdateWebContentsStateAt

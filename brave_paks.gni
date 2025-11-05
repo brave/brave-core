@@ -101,6 +101,18 @@ template("brave_extra_paks") {
       ]
     }
 
+    # Note: enable_desktop_android_extensions is defined in extensions/buildflags/buildflags.gni
+    # which might cause circular dependencies, so we check is_desktop_android directly.
+    # enable_desktop_android_extensions = is_desktop_android, so this is equivalent.
+    if (defined(is_desktop_android) && is_desktop_android && !enable_extensions) {
+      sources += [ "$root_gen_dir/brave/components/brave_extension/brave_extension_resources.pak" ]
+
+      deps += [
+        "//brave/common/extensions/api",
+        "//brave/components/brave_extension:resources",
+      ]
+    }
+
     if (defined(invoker.deps)) {
       deps += invoker.deps
     }

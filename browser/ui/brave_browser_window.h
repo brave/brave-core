@@ -8,10 +8,14 @@
 
 #include <string>
 
+#include "build/build_config.h"
+
+#if !BUILDFLAG(IS_ANDROID)
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/browser_window.h"
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 namespace content {
 class WebContents;
@@ -31,6 +35,7 @@ enum class SpeedreaderBubbleLocation : int;
 }  // namespace speedreader
 #endif
 
+#if !BUILDFLAG(IS_ANDROID)
 class BraveBrowserWindow : public BrowserWindow {
  public:
   ~BraveBrowserWindow() override {}
@@ -73,5 +78,6 @@ class BraveBrowserWindow : public BrowserWindow {
   virtual bool IsInTabDragging() const;
   virtual void ReadyToListenFullscreenChanges() {}
 };
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 #endif  // BRAVE_BROWSER_UI_BRAVE_BROWSER_WINDOW_H_

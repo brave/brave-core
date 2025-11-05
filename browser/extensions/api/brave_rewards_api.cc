@@ -11,12 +11,12 @@
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/strings/string_number_conversions.h"
+#include "build/build_config.h"
 #include "brave/browser/brave_adaptive_captcha/brave_adaptive_captcha_service_factory.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_tab_helper.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
-#include "brave/browser/ui/brave_rewards/rewards_panel_coordinator.h"
 #include "brave/common/extensions/api/brave_rewards.h"
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
@@ -29,19 +29,26 @@
 #include "chrome/browser/extensions/extension_tab_util.h"
 #include "chrome/browser/extensions/window_controller.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_finder.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_contents.h"
 #include "extensions/browser/event_router.h"
 
+#if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/ui/brave_rewards/rewards_panel_coordinator.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#endif
+
 using brave_ads::AdsService;
 using brave_ads::AdsServiceFactory;
-using brave_rewards::RewardsPanelCoordinator;
 using brave_rewards::RewardsService;
 using brave_rewards::RewardsServiceFactory;
 using brave_rewards::RewardsTabHelper;
+
+#if !BUILDFLAG(IS_ANDROID)
+using brave_rewards::RewardsPanelCoordinator;
+#endif
 
 namespace {
 
@@ -60,6 +67,7 @@ RewardsTabHelper* GetRewardsTabHelperForTabId(
   return RewardsTabHelper::FromWebContents(web_contents);
 }
 
+#if !BUILDFLAG(IS_ANDROID)
 RewardsPanelCoordinator* GetPanelCoordinator(
     content::WebContents* web_contents) {
   DCHECK(web_contents);
@@ -75,6 +83,7 @@ RewardsPanelCoordinator* GetPanelCoordinator(ExtensionFunction* function) {
   }
   return GetPanelCoordinator(web_contents);
 }
+#endif
 
 std::string StringifyResult(
     brave_rewards::mojom::CreateRewardsWalletResult result) {
@@ -129,9 +138,11 @@ BraveRewardsOpenRewardsPanelFunction::~BraveRewardsOpenRewardsPanelFunction() =
     default;
 
 ExtensionFunction::ResponseAction BraveRewardsOpenRewardsPanelFunction::Run() {
+#if !BUILDFLAG(IS_ANDROID)
   if (auto* coordinator = GetPanelCoordinator(this)) {
     coordinator->OpenRewardsPanel();
   }
+#endif
   return RespondNow(NoArguments());
 }
 

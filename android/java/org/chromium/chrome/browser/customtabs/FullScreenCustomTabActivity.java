@@ -95,7 +95,7 @@ public class FullScreenCustomTabActivity extends CustomTabActivity {
                 CLOSE_BUTTON_PADDING,
                 CLOSE_BUTTON_PADDING,
                 CLOSE_BUTTON_PADDING);
-        closeImg.setImageResource(R.drawable.ic_close);
+        closeImg.setImageResource(R.drawable.ic_close_brave);
         closeImg.setColorFilter(
                 ContextCompat.getColor(
                         FullScreenCustomTabActivity.this, R.color.schemes_on_surface_variant),

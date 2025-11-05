@@ -11,10 +11,13 @@
 
 #include "base/containers/span.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
+#if !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
+#endif  // !BUILDFLAG(IS_ANDROID)
 #include "components/prefs/pref_member.h"
 
+#if !BUILDFLAG(IS_ANDROID)
 class BraveTabStripModel : public TabStripModel {
  public:
   explicit BraveTabStripModel(TabStripModelDelegate* delegate,
@@ -68,5 +71,6 @@ class BraveTabStripModel : public TabStripModel {
   BooleanPrefMember vertical_tabs_enabled_;
   bool in_tree_mode_ = false;
 };
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 #endif  // BRAVE_BROWSER_UI_TABS_BRAVE_TAB_STRIP_MODEL_H_

@@ -6,8 +6,12 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_BROWSER_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_BROWSER_H_
 
+#include "build/build_config.h"
+
+#if !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "chrome/browser/ui/unload_controller.h"
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 #define FinishWarnBeforeClosing virtual FinishWarnBeforeClosing
 #define ScheduleUIUpdate virtual ScheduleUIUpdate
@@ -27,6 +31,7 @@
   DeprecatedCreateOwnedForTesting_Unused(__VA_ARGS__); \
   static std::unique_ptr<Browser> DeprecatedCreateOwnedForTesting(__VA_ARGS__)
 
+#if !BUILDFLAG(IS_ANDROID)
 #include <chrome/browser/ui/browser.h>  // IWYU pragma: export
 
 #undef NormalBrowserSupportsWindowFeature
@@ -38,5 +43,6 @@
 #undef OnTabClosing
 #undef ScheduleUIUpdate
 #undef FinishWarnBeforeClosing
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_BROWSER_H_

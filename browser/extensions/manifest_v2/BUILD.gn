@@ -5,9 +5,15 @@
 
 import("//extensions/buildflags/buildflags.gni")
 
-assert(enable_extensions)
+assert(enable_extensions_core)
 
 source_set("manifest_v2") {
+  visibility = [
+    "//brave/browser/extensions:*",
+    "//brave/browser/extensions/manifest_v2:*",
+    "//chrome/browser/extensions:*",
+  ]
+
   sources = [
     "brave_extensions_manifest_v2_installer.cc",
     "brave_extensions_manifest_v2_installer.h",
@@ -21,7 +27,6 @@ source_set("manifest_v2") {
 
   deps = [
     "//brave/components/constants:brave_service_key_helper",
-    "//chrome/browser/extensions",
     "//chrome/browser/profiles",
     "//components/crx_file",
     "//components/update_client",
@@ -31,6 +36,20 @@ source_set("manifest_v2") {
     "//net/traffic_annotation",
     "//services/network/public/cpp",
   ]
+
+  # Note: When desktop Android is enabled, there's a circular dependency:
+  # Chrome extensions -> Brave extensions -> manifest_v2 -> Chrome extensions
+  # To break the cycle, manifest_v2 doesn't directly depend on Chrome's extensions
+  # when desktop Android is enabled. Instead, it gets Chrome's extensions headers
+  # transitively through Brave's extensions target (which depends on Chrome's extensions).
+  # Note: We can't use enable_desktop_android_extensions here because it's defined
+  # in extensions/buildflags/buildflags.gni which creates a circular import.
+  # Instead, we check is_desktop_android which is set earlier.
+  if (!defined(is_desktop_android) || !is_desktop_android) {
+    deps += [ "//chrome/browser/extensions" ]
+  }
+  # When desktop Android is enabled, manifest_v2 gets headers transitively
+  # through Brave's extensions target, so no direct dependency needed.
 }
 
 source_set("unit_tests") {

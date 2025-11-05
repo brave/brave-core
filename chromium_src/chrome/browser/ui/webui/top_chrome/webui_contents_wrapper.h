@@ -6,6 +6,9 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_WEBUI_TOP_CHROME_WEBUI_CONTENTS_WRAPPER_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_WEBUI_TOP_CHROME_WEBUI_CONTENTS_WRAPPER_H_
 
+#include "build/build_config.h"
+
+#if !BUILDFLAG(IS_ANDROID)
 #include <vector>
 
 #include "chrome/browser/ui/browser.h"
@@ -46,5 +49,6 @@
 #undef webui_resizes_host_
 #undef PrimaryPageChanged
 #undef HideCustomContextMenu
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_WEBUI_TOP_CHROME_WEBUI_CONTENTS_WRAPPER_H_
