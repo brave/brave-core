@@ -7,7 +7,7 @@ import * as React from 'react'
 import { style } from './widgets.style'
 import imgProtonLogo from './ford.svg'
 import imgNewsDigest from './news.png'
-import videoProton from './backgroundsmall.mp4'
+import imgProton from './backgroundsmall.gif'
 
 function PrivacyStatsWidget() {
   return (
@@ -184,13 +184,10 @@ function ProtonWidget() {
     <div className='widget proton'>
       <div className='proton-background'>
       <div className='proton-overlay' />
-        <video 
+        <img 
+          alt=""
           className='proton-image' 
-          src={videoProton}
-          autoPlay
-          loop
-          muted
-          playsInline
+          src={imgProton}
         />
         
       </div>
