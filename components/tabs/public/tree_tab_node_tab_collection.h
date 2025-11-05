@@ -42,8 +42,9 @@ class TreeTabNodeTabCollection : public tabs::TabCollection {
   const TreeTabNode& node() const { return *node_; }
 
   // A tab that's associated with this TreeTabNode.
-  const tabs::TabInterface* current_tab() const { return current_tab_; }
-  tabs::TabInterface* current_tab() { return current_tab_; }
+  const base::WeakPtr<tabs::TabInterface>& current_tab() const {
+    return current_tab_;
+  }
 
   // Returns the top-level ancestor TreeTabNode in the hierarchy.
   TreeTabNodeTabCollection* GetTopLevelAncestor();
@@ -65,20 +66,12 @@ class TreeTabNodeTabCollection : public tabs::TabCollection {
       tabs::TabCollection& parent,
       std::vector<TreeTabNodeTabCollection*>& nodes);
 
-  // Callback for when the current tab is about to be detached.
-  // This is used to ensure that the current tab is properly handled when the
-  // TreeTabNode is removed or the tab is closed.
-  void OnWillDetach(tabs::TabInterface*,
-                    tabs::TabInterface::DetachReason tab_detach_reason);
-
   // Could be nullptr on closing the tab. Should be nulled out in order to avoid
   // dangling pointer issues.
-  raw_ptr<tabs::TabInterface> current_tab_;
+  base::WeakPtr<tabs::TabInterface> current_tab_;
 
   // A class that represents metadata about the tree tab node.
   std::unique_ptr<TreeTabNode> node_;
-
-  base::CallbackListSubscription will_detach_tab_subscription_;
 };
 
 }  // namespace tabs

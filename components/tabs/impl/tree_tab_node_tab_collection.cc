@@ -101,14 +101,10 @@ TreeTabNodeTabCollection::TreeTabNodeTabCollection(
                     {TabCollection::Type::SPLIT, TabCollection::Type::GROUP,
                      TabCollection::Type::TREE_NODE},
                     /*supports_tabs=*/true),
-      current_tab_(base::to_address(current_tab)),
+      current_tab_(current_tab->GetWeakPtr()),
       node_(std::make_unique<TreeTabNode>(*this, tree_tab_node_id)) {
   CHECK(!tree_tab_node_id.is_empty());
   CHECK(current_tab_);
-
-  will_detach_tab_subscription_ =
-      current_tab_->RegisterWillDetach(base::BindRepeating(
-          &TreeTabNodeTabCollection::OnWillDetach, base::Unretained(this)));
 
   AddTab(std::move(current_tab), 0);
 }
@@ -187,14 +183,6 @@ TreeTabNodeTabCollection::GetTreeNodeChildren() {
       });
 
   return children;
-}
-
-void TreeTabNodeTabCollection::OnWillDetach(
-    tabs::TabInterface* tab,
-    tabs::TabInterface::DetachReason detach_reason) {
-  if (current_tab_ == tab) {
-    current_tab_ = nullptr;
-  }
 }
 
 }  // namespace tabs
