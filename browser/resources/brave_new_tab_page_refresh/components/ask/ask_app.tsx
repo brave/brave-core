@@ -9,6 +9,7 @@ import Icon from '@brave/leo/react/icon'
 import { Background } from '../background/background'
 import { TopSites } from '../top_sites/top_sites'
 import { AskInput } from './ask_input'
+import { Widgets } from './widgets'
 
 import { style } from './ask_app.style'
 
@@ -37,7 +38,7 @@ export function AskApp() {
           <AskInput />
         </div>
         <div className='widget-container'>
-
+          <Widgets />
         </div>
       </main>
     </div>
