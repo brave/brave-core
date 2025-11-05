@@ -13,6 +13,7 @@ source_set("unit_tests") {
     "//base",
     "//brave/app:command_ids",
     "//chrome/browser",
+    "//chrome/browser/custom_handlers",
     "//chrome/browser/search_engines",
     "//chrome/test:test_support",
     "//components/custom_handlers",
