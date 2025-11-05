@@ -159,6 +159,9 @@
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_TABS_HIDE_COMPLETELY_WHEN_COLLPASED" desc="The label for hiding vertical tabs completely when collapsed" formatter_data="webui=BraveSettings">
     Hide completely when minimized
   </message>
+  <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_TABS_ALWAYS_HIDE_TAB_CLOSE_BUTTON" desc="The label for always hiding tab close button" formatter_data="webui=BraveSettings">
+    Always hide tab close button
+  </message>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_TABS_USE_FLOATING_VERTICAL_TABS" desc="The label for enabling floating mode for vertical tab strip">
     Auto expand on hover when minimized
   </message>

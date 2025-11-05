@@ -40,12 +40,15 @@ class BraveTabStrip : public TabStrip {
   void SetCustomTitleForTab(
       Tab* tab,
       const std::optional<std::u16string>& title) override;
+  bool ShouldAlwaysHideCloseButton() const override;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, ScrollBarVisibility);
 
   void UpdateTabContainer();
   bool ShouldShowVerticalTabs() const;
+
+  void OnAlwaysHideCloseButtonPrefChanged();
 
   TabContainer* GetTabContainerForTesting();
 
@@ -55,6 +58,8 @@ class BraveTabStrip : public TabStrip {
 
   // Exposed for testing.
   static constexpr float kBraveMinimumContrastRatioForOutlines = 1.0816f;
+
+  BooleanPrefMember always_hide_close_button_;
 
   base::WeakPtrFactory<BraveTabStrip> weak_factory_{this};
 };

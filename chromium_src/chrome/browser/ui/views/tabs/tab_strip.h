@@ -29,6 +29,7 @@ class BraveTabHoverCardController;
   friend class BraveTabStrip;                                           \
   friend class BraveTabDragContext;                                     \
   const Browser* GetBrowser() const override;                           \
+  bool ShouldAlwaysHideCloseButton() const override;                    \
   static constexpr bool IsUsingBraveTabHoverCardController() {          \
     return std::is_same_v<std::unique_ptr<BraveTabHoverCardController>, \
                           decltype(TabStrip::hover_card_controller_)>;  \

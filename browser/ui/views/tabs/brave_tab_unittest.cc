@@ -13,6 +13,7 @@
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/tab_style.h"
 #include "chrome/browser/ui/views/tabs/fake_tab_slot_controller.h"
+#include "chrome/browser/ui/views/tabs/tab_close_button.h"
 #include "chrome/browser/ui/views/tabs/tab_style_views.h"
 #include "chrome/test/views/chrome_views_test_base.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -271,4 +272,20 @@ TEST_F(BraveTabRenamingUnitTest, ClickingOutsideRenamingTabCommitsRename) {
   EXPECT_FALSE(in_renaming_mode());
   EXPECT_FALSE(rename_textfield().GetVisible());
   EXPECT_TRUE(title()->GetVisible());
+}
+
+TEST_F(BraveTabTest, ShouldAlwaysHideTabCloseButton) {
+  FakeTabSlotController tab_slot_controller;
+  BraveTab tab(&tab_slot_controller);
+  tab_slot_controller.set_active_tab(&tab);
+
+  ASSERT_FALSE(tab_slot_controller.ShouldAlwaysHideCloseButton());
+  tab.SetBoundsRect({0, 0, 100, 50});
+  views::test::RunScheduledLayout(&tab);
+  EXPECT_TRUE(tab.close_button_for_test()->GetVisible());
+
+  tab_slot_controller.set_should_always_hide_close_button(true);
+  tab.InvalidateLayout();
+  views::test::RunScheduledLayout(&tab);
+  EXPECT_FALSE(tab.close_button_for_test()->GetVisible());
 }
