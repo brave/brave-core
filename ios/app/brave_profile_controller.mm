@@ -32,7 +32,6 @@
 #include "brave/ios/browser/api/web_view/brave_web_view_configuration.h"
 #include "brave/ios/browser/api/web_view/brave_web_view_download_manager.h"
 #include "brave/ios/browser/application_context/brave_application_context_impl.h"
-#include "brave/ios/browser/brave_account/brave_account_api+private.h"
 #include "brave/ios/browser/brave_ads/ads_service_factory_ios.h"
 #include "brave/ios/browser/brave_ads/ads_service_impl_ios.h"
 #include "components/content_settings/core/browser/content_settings_utils.h"
@@ -90,7 +89,6 @@
   std::unique_ptr<BraveWebViewDownloadManager> _downloadManager;
   std::unique_ptr<BraveWebViewDownloadManager> _otrDownloadManager;
 }
-@property(nonatomic) BraveAccountAPI* braveAccountAPI;
 @property(nonatomic) BraveBookmarksAPI* bookmarksAPI;
 @property(nonatomic) BraveHistoryAPI* historyAPI;
 @property(nonatomic) BravePasswordAPI* passwordAPI;
@@ -210,13 +208,6 @@
 
 - (id<ProfileBridge>)profile {
   return _profileBridge;
-}
-
-- (BraveAccountAPI*)braveAccountAPI {
-  if (!_braveAccountAPI) {
-    _braveAccountAPI = [[BraveAccountAPI alloc] initWithProfile:_profile];
-  }
-  return _braveAccountAPI;
 }
 
 - (BraveBookmarksAPI*)bookmarksAPI {

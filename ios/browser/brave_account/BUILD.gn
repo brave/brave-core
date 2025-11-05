@@ -5,9 +5,9 @@
 
 source_set("brave_account") {
   sources = [
-    "brave_account_api+private.h",
-    "brave_account_api.h",
-    "brave_account_api.mm",
+    "brave_account_authentication_bridge.h",
+    "brave_account_authentication_bridge_impl.h",
+    "brave_account_authentication_bridge_impl.mm",
     "brave_account_service_factory_ios.h",
     "brave_account_service_factory_ios.mm",
   ]
@@ -17,6 +17,7 @@ source_set("brave_account") {
     "//brave/components/brave_account",
     "//brave/components/brave_account:features",
     "//brave/components/brave_account/mojom",
+    "//brave/ios/browser/api/profile",
     "//ios/chrome/browser/shared/model/profile",
     "//ios/chrome/browser/shared/model/profile:profile_keyed_service_factory",
     "//ios/web/public",

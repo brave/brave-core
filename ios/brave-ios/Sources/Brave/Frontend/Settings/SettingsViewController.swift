@@ -80,6 +80,10 @@ class SettingsViewController: TableViewController {
   private let altIconsModel = AltIconsModel()
   private var prefsChangeRegistrar: PrefChangeRegistrar!
 
+  private lazy var braveAccountAuthentication: BraveAccountAuthentication = {
+    return BraveAccountAuthenticationBridgeImpl(profile: braveCore.profile)
+  }()
+
   private let featureSectionUUID: UUID = .init()
   private let displaySectionUUID: UUID = .init()
 
@@ -367,7 +371,7 @@ class SettingsViewController: TableViewController {
           ),
           Row(
             text: Strings.braveAccountSignOut,
-            selection: { [unowned self] in braveCore.braveAccountAPI.logOut() },
+            selection: { [unowned self] in braveAccountAuthentication.logOut() },
             cellClass: BraveAccountIconCell.self,
             context: [BraveAccountIconCell.titleColorKey: UIColor.braveBlurple]
           ),
@@ -391,13 +395,13 @@ class SettingsViewController: TableViewController {
           Row(
             text: Strings.braveAccountResendConfirmationEmail,
             detailText: Strings.braveAccountResendConfirmationEmailDetail,
-            selection: { [unowned self] in braveCore.braveAccountAPI.resendConfirmationEmail() },
+            selection: { [unowned self] in braveAccountAuthentication.resendConfirmationEmail() },
             cellClass: BraveAccountIconCell.self,
             context: [BraveAccountIconCell.titleColorKey: UIColor.braveBlurple]
           ),
           Row(
             text: Strings.braveAccountCancelRegistration,
-            selection: { [unowned self] in braveCore.braveAccountAPI.cancelRegistration() },
+            selection: { [unowned self] in braveAccountAuthentication.cancelRegistration() },
             cellClass: BraveAccountIconCell.self,
             context: [BraveAccountIconCell.titleColorKey: UIColor.braveErrorLabel]
           ),
