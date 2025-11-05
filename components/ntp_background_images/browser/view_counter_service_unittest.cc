@@ -196,7 +196,7 @@ class ViewCounterServiceTest : public testing::Test {
     HostContentSettingsMap::RegisterProfilePrefs(prefs_.registry());
 
     brave::RegisterPrefsForBraveReferralsService(local_state_.registry());
-    NTPBackgroundImagesService::RegisterLocalStatePrefs(
+    NTPBackgroundImagesService::RegisterLocalStatePrefsForMigration(
         local_state_.registry());
     RegisterLocalStatePrefs(local_state_.registry());
     metrics::MetricsService::RegisterPrefs(local_state_.registry());

@@ -81,8 +81,8 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   p3a::P3AService::RegisterPrefs(registry, false);
   p3a::MetricLogStore::RegisterLocalStatePrefsForMigration(registry);
   p3a::RotationScheduler::RegisterLocalStatePrefsForMigration(registry);
-  ntp_background_images::NTPBackgroundImagesService::RegisterLocalStatePrefs(
-      registry);
+  ntp_background_images::NTPBackgroundImagesService::
+      RegisterLocalStatePrefsForMigration(registry);
   brave_l10n::RegisterLocalStatePrefsForMigration(registry);
   ai_chat::prefs::RegisterLocalStatePrefs(registry);
   ai_chat::AIChatMetrics::RegisterPrefs(registry);
@@ -112,6 +112,8 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
 void MigrateObsoleteLocalStatePrefs(PrefService* prefs) {
   p3a::MetricLogStore::MigrateObsoleteLocalStatePrefs(prefs);
   p3a::RotationScheduler::MigrateObsoleteLocalStatePrefs(prefs);
+  ntp_background_images::NTPBackgroundImagesService::
+      MigrateObsoleteLocalStatePrefs(prefs);
 }
 
 }  // namespace brave

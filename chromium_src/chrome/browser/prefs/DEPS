@@ -15,6 +15,7 @@ include_rules = [
   "+brave/components/constants/pref_names.h",
   "+brave/components/decentralized_dns/core/utils.h",
   "+brave/components/ipfs/ipfs_prefs.h",
+  "+brave/components/ntp_background_images/browser/ntp_background_images_service.h",
   "+brave/components/ntp_background_images/common/view_counter_pref_registry.h",
   "+brave/components/ntp_background_images/buildflags/buildflags.h",
   "+brave/components/omnibox/browser/brave_omnibox_prefs.h",

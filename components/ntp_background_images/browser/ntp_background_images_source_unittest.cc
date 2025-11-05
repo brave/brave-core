@@ -24,7 +24,8 @@ class NTPBackgroundImagesSourceTest : public testing::Test {
 
   void SetUp() override {
     PrefRegistrySimple* const pref_registry = pref_service_.registry();
-    NTPBackgroundImagesService::RegisterLocalStatePrefs(pref_registry);
+    NTPBackgroundImagesService::RegisterLocalStatePrefsForMigration(
+        pref_registry);
     brave::RegisterPrefsForBraveReferralsService(pref_registry);
 
     background_images_service_ = std::make_unique<NTPBackgroundImagesService>(
