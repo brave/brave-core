@@ -43,7 +43,8 @@ bool IsWeb3NotificationAllowed();
 
 void SetCallbackForNewSetupNeededForTesting(base::OnceCallback<void()>);
 
-void SetCallbackForAccountCreationForTesting(base::OnceCallback<void()>);
+void SetCallbackForAccountCreationForTesting(
+    base::OnceCallback<void(std::string_view)>);
 
 }  // namespace brave_wallet
 
