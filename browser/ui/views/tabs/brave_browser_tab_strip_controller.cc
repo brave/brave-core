@@ -135,8 +135,10 @@ void BraveBrowserTabStripController::OnTreeTabChanged(
       break;
     }
     case TreeTabChange::Type::kNodeWillBeDestroyed: {
-      auto index = model_->GetIndexOfTab(
-          change.GetWillBeDestroyedChange().node->GetTab());
+      auto* tab = change.GetWillBeDestroyedChange().node->GetTab();
+      CHECK(tab);
+      auto index = model_->GetIndexOfTab(tab);
+      LOG(ERROR) << " " << model_->count();
       CHECK_NE(index, TabStripModel::kNoTab);
       tabstrip_->tab_at(index)->set_tree_tab_node(std::nullopt);
       break;

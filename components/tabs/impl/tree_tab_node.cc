@@ -19,7 +19,8 @@ int TreeTabNode::GetTreeHeight() const {
 }
 
 const TabInterface* TreeTabNode::GetTab() const {
-  return collection_->current_tab();
+  return collection_->current_tab() ? collection_->current_tab().get()
+                                    : nullptr;
 }
 
 int TreeTabNode::CalculateLevelAndHeightRecursively(
@@ -37,17 +38,17 @@ int TreeTabNode::CalculateLevelAndHeightRecursivelyImpl() {
   if (!parent_collection ||
       parent_collection->type() != TabCollection::Type::TREE_NODE) {
     // If there's no parent or the parent is not a tree node, this is the root.
-    LOG(ERROR) << "TreeTabNode level == 0 " << " parent? "
-               << (parent_collection != nullptr) << " type? "
-               << (parent_collection
-                       ? static_cast<int>(parent_collection->type())
-                       : -1);
+    // LOG(ERROR) << "TreeTabNode level == 0 " << " parent? "
+    //            << (parent_collection != nullptr) << " type? "
+    //            << (parent_collection
+    //                    ? static_cast<int>(parent_collection->type())
+    //                    : -1);
     level_ = 0;
   } else {
     auto* parent_tree_node =
         static_cast<TreeTabNodeTabCollection*>(parent_collection);
     level_ = parent_tree_node->node().level_ + 1;
-    LOG(ERROR) << "TreeTabNode level updated: " << level_;
+    // LOG(ERROR) << "TreeTabNode level updated: " << level_;
   }
 
   int max_height = std::numeric_limits<int>::min();
