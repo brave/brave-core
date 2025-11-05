@@ -14,6 +14,7 @@
 #include "base/files/file.h"
 #include "base/memory/raw_span.h"
 #include "base/numerics/byte_conversions.h"
+#include "base/sequence_checker.h"
 #include "base/strings/string_view_util.h"
 #include "brave/components/brave_rewards/core/engine/hash_prefix_iterator.h"
 #include "crypto/sha2.h"
