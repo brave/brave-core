@@ -65,9 +65,9 @@ TabDragController::Liveness TabDragController::Init(
     ui::mojom::DragEventSource event_source) {
   if (TabDragControllerChromium::Init(
           source_context, source_view, dragging_views, mouse_offset,
-          source_view_offset, initial_selection_model,
-          event_source) == TabDragController::Liveness::DELETED) {
-    return TabDragController::Liveness::DELETED;
+          source_view_offset, initial_selection_model, event_source) ==
+      TabDragController::TabDragController::Liveness::kDeleted) {
+    return TabDragController::TabDragController::Liveness::kDeleted;
   }
 
   mouse_offset_ = mouse_offset;
@@ -87,14 +87,14 @@ TabDragController::Liveness TabDragController::Init(
                      TabSlotView::ViewType::kTab &&
                  views::AsViewClass<Tab>(slot_view)->data().pinned;
         })) {
-      detach_behavior_ = NOT_DETACHABLE;
+      detach_behavior_ = DetachBehavior::kNotDetachable;
     }
   }
 
   is_showing_vertical_tabs_ = tabs::utils::ShouldShowVerticalTabs(browser);
 
   if (!is_showing_vertical_tabs_) {
-    return TabDragController::Liveness::ALIVE;
+    return TabDragController::TabDragController::Liveness::kAlive;
   }
 
   // Update IsMaximized and IsFullscreen states for vertical mode.
@@ -112,7 +112,7 @@ TabDragController::Liveness TabDragController::Init(
   views::View::ConvertPointToScreen(source_view, &start_point_in_screen_);
 
   last_point_in_screen_ = start_point_in_screen_;
-  return TabDragController::Liveness::ALIVE;
+  return TabDragController::TabDragController::Liveness::kAlive;
 }
 
 gfx::Vector2d TabDragController::CalculateWindowDragOffset() {
@@ -175,7 +175,8 @@ TabDragController::Liveness TabDragController::GetLocalProcessWindow(
     base::WeakPtr<TabDragControllerChromium> ref(weak_factory_.GetWeakPtr());
     *window =
         window_finder_->GetLocalProcessWindowAtPoint(screen_point, exclude);
-    return ref ? Liveness::ALIVE : Liveness::DELETED;
+    return ref ? TabDragController::Liveness::kAlive
+               : TabDragController::Liveness::kDeleted;
   }
 
   return TabDragControllerChromium::GetLocalProcessWindow(
