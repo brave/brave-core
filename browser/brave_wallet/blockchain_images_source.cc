@@ -40,7 +40,7 @@ std::string BlockchainImagesSource::GetMimeType(const GURL& url) {
 }
 
 bool BlockchainImagesSource::AllowCaching() {
-  return BlockchainImagesSourceBase::AllowCaching();
+  return true;
 }
 
 }  // namespace brave_wallet

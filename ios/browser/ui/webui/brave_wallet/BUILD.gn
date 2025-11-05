@@ -24,7 +24,6 @@ source_set("brave_wallet") {
 
   deps = [
     "//brave/components/brave_wallet/browser",
-    "//brave/components/brave_wallet/browser:blockchain_images_source",
     "//brave/components/brave_wallet/browser:constants",
     "//brave/components/brave_wallet/browser:wallet_handler",
     "//brave/components/brave_wallet/common",

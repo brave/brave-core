@@ -26,6 +26,7 @@ class BlockchainImagesSource : public content::URLDataSource,
  public:
   explicit BlockchainImagesSource(const base::FilePath& base_path);
 
+ private:
   // content::URLDataSource overrides:
   std::string GetSource() override;
   void StartDataRequest(const GURL& url,

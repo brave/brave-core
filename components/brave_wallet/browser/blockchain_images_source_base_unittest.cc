@@ -20,6 +20,14 @@
 
 namespace brave_wallet {
 
+class TestBlockchainImagesSource : public BlockchainImagesSourceBase {
+ public:
+  explicit TestBlockchainImagesSource(const base::FilePath& base_path)
+      : BlockchainImagesSourceBase(base_path) {}
+  using BlockchainImagesSourceBase::GetMimeTypeForPath;
+  using BlockchainImagesSourceBase::StartDataRequestForPath;
+};
+
 class BlockchainImagesSourceBaseTest : public testing::Test {
  public:
   BlockchainImagesSourceBaseTest(const BlockchainImagesSourceBaseTest&) =
@@ -35,29 +43,27 @@ class BlockchainImagesSourceBaseTest : public testing::Test {
   void SetUp() override {
     // brave/test/data/brave_wallet/1.0.1
     brave_wallet::SetLastInstalledWalletVersionForTest(base::Version("1.0.1"));
-    source_ = std::make_unique<BlockchainImagesSourceBase>(
+    source_ = std::make_unique<TestBlockchainImagesSource>(
         BraveWalletTestDataFolder());
   }
   void TearDown() override { source_.reset(); }
 
-  BlockchainImagesSourceBase* source() const { return source_.get(); }
+  TestBlockchainImagesSource* source() const { return source_.get(); }
 
   bool data_received() const { return data_received_; }
-  std::string data() const { return data_; }
+  scoped_refptr<base::RefCountedMemory> data() const { return data_; }
 
   base::test::TaskEnvironment task_environment_;
 
   void OnDataReceived(scoped_refptr<base::RefCountedMemory> bytes) {
     data_received_ = true;
-    if (bytes) {
-      data_ = std::string(std::string_view(
-          reinterpret_cast<const char*>(bytes->front()), bytes->size()));
-    }
+    data_ = std::move(bytes);
   }
 
-  std::unique_ptr<BlockchainImagesSourceBase> source_;
+  std::unique_ptr<TestBlockchainImagesSource> source_;
   bool data_received_ = false;
-  std::string data_;
+  scoped_refptr<base::RefCountedMemory> data_;
+  size_t data_size() const { return data_ ? data_->size() : 0; }
 };
 
 TEST_F(BlockchainImagesSourceBaseTest, GetMimeTypeForPath) {
@@ -67,12 +73,12 @@ TEST_F(BlockchainImagesSourceBaseTest, GetMimeTypeForPath) {
   EXPECT_EQ(source()->GetMimeTypeForPath("img1.svg"), "image/svg+xml");
 }
 
-TEST_F(BlockchainImagesSourceBaseTest, HandleImageRequest) {
+TEST_F(BlockchainImagesSourceBaseTest, StartDataRequestForPath) {
   base::RunLoop run_loop;
   data_received_ = false;
-  data_.clear();
+  data_.reset();
 
-  source()->HandleImageRequest(
+  source()->StartDataRequestForPath(
       "logo.png", base::BindLambdaForTesting(
                       [&](scoped_refptr<base::RefCountedMemory> bytes) {
                         OnDataReceived(std::move(bytes));
@@ -81,15 +87,16 @@ TEST_F(BlockchainImagesSourceBaseTest, HandleImageRequest) {
 
   run_loop.Run();
   EXPECT_TRUE(data_received());
-  EXPECT_FALSE(data().empty());
+  EXPECT_TRUE(data());
+  EXPECT_GT(data_size(), 0u);
 }
 
-TEST_F(BlockchainImagesSourceBaseTest, HandleImageRequestImageNotExist) {
+TEST_F(BlockchainImagesSourceBaseTest, StartDataRequestForPathImageNotExist) {
   base::RunLoop run_loop;
   data_received_ = false;
-  data_.clear();
+  data_.reset();
 
-  source()->HandleImageRequest(
+  source()->StartDataRequestForPath(
       "ent.svg", base::BindLambdaForTesting(
                      [&](scoped_refptr<base::RefCountedMemory> bytes) {
                        OnDataReceived(std::move(bytes));
@@ -98,7 +105,7 @@ TEST_F(BlockchainImagesSourceBaseTest, HandleImageRequestImageNotExist) {
 
   run_loop.Run();
   EXPECT_TRUE(data_received());
-  EXPECT_TRUE(data().empty());
+  EXPECT_FALSE(data());
 }
 
 }  // namespace brave_wallet

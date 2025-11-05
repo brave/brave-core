@@ -20,6 +20,9 @@
 
 namespace brave_wallet {
 
+BlockchainImagesSource::BlockchainImagesSource(const base::FilePath& base_path)
+    : BlockchainImagesSourceBase(base_path) {}
+
 std::string BlockchainImagesSource::GetSource() const {
   return kImageSourceHost;
 }
@@ -27,7 +30,7 @@ std::string BlockchainImagesSource::GetSource() const {
 void BlockchainImagesSource::StartDataRequest(const std::string& path,
                                               GotDataCallback callback) {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
-  HandleImageRequest(path, std::move(callback));
+  StartDataRequestForPath(path, std::move(callback));
 }
 
 std::string BlockchainImagesSource::GetMimeType(const std::string& path) const {
@@ -35,7 +38,7 @@ std::string BlockchainImagesSource::GetMimeType(const std::string& path) const {
 }
 
 bool BlockchainImagesSource::AllowCaching() const {
-  return BlockchainImagesSourceBase::AllowCaching();
+  return true;
 }
 
 }  // namespace brave_wallet

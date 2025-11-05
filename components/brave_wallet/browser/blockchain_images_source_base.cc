@@ -18,57 +18,47 @@
 
 namespace brave_wallet {
 
-namespace {
-
-std::optional<std::string> ReadFileToString(const base::FilePath& path) {
-  std::string contents;
-  if (!base::ReadFileToString(path, &contents)) {
-    return std::optional<std::string>();
-  }
-  return contents;
-}
-
-}  // namespace
-
 BlockchainImagesSourceBase::BlockchainImagesSourceBase(
     const base::FilePath& base_path)
     : base_path_(base_path) {}
 
 BlockchainImagesSourceBase::~BlockchainImagesSourceBase() = default;
 
-void BlockchainImagesSourceBase::HandleImageRequest(
+void BlockchainImagesSourceBase::StartDataRequestForPath(
     const std::string& path,
-    base::OnceCallback<void(scoped_refptr<base::RefCountedMemory>)> callback) {
+    GotDataCallback callback) {
   std::optional<base::Version> version =
       brave_wallet::GetLastInstalledWalletVersion();
   if (!version) {
-    scoped_refptr<base::RefCountedMemory> bytes;
-    std::move(callback).Run(std::move(bytes));
+    std::move(callback).Run({});
     return;
   }
 
   base::FilePath images_path(base_path_);
   images_path = images_path.AppendASCII(version->GetString());
   images_path = images_path.AppendASCII("images");
+  images_path = images_path.AppendASCII(path);
 
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
-      base::BindOnce(&ReadFileToString, images_path.AppendASCII(path)),
-      base::BindOnce(&BlockchainImagesSourceBase::OnGotImageFile,
+      base::BindOnce(
+          [](const base::FilePath& path) {
+            return base::ReadFileToBytes(path);
+          },
+          images_path),
+      base::BindOnce(&BlockchainImagesSourceBase::OnGotImageFileBytes,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void BlockchainImagesSourceBase::OnGotImageFile(
+void BlockchainImagesSourceBase::OnGotImageFileBytes(
     base::OnceCallback<void(scoped_refptr<base::RefCountedMemory>)> callback,
-    std::optional<std::string> input) {
-  scoped_refptr<base::RefCountedMemory> bytes;
+    std::optional<std::vector<uint8_t>> input) {
   if (!input) {
-    std::move(callback).Run(std::move(bytes));
+    std::move(callback).Run({});
     return;
   }
 
-  std::move(callback).Run(
-      new base::RefCountedBytes(base::as_byte_span(*input)));
+  std::move(callback).Run(base::MakeRefCounted<base::RefCountedBytes>(*input));
 }
 
 std::string BlockchainImagesSourceBase::GetMimeTypeForPath(

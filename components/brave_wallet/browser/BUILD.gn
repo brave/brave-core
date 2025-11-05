@@ -54,6 +54,8 @@ static_library("browser") {
     "bitcoin/bitcoin_wallet_service.h",
     "block_tracker.cc",
     "block_tracker.h",
+    "blockchain_images_source_base.cc",
+    "blockchain_images_source_base.h",
     "blockchain_list_parser.cc",
     "blockchain_list_parser.h",
     "blockchain_registry.cc",
@@ -586,17 +588,6 @@ source_set("wallet_handler") {
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:mojom",
     "//mojo/public/cpp/bindings",
-  ]
-}
-
-source_set("blockchain_images_source") {
-  sources = [
-    "blockchain_images_source_base.cc",
-    "blockchain_images_source_base.h",
-  ]
-  deps = [
-    "//base",
-    "//brave/components/brave_wallet/browser",
   ]
 }
 

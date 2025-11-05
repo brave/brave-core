@@ -23,7 +23,7 @@ namespace brave_wallet {
 
 // This serves background image data.
 class BlockchainImagesSourceBase {
- public:
+ protected:
   explicit BlockchainImagesSourceBase(const base::FilePath& base_path);
 
   virtual ~BlockchainImagesSourceBase();
@@ -32,14 +32,15 @@ class BlockchainImagesSourceBase {
   BlockchainImagesSourceBase& operator=(const BlockchainImagesSourceBase&) =
       delete;
 
-  void HandleImageRequest(
-      const std::string& path,
-      base::OnceCallback<void(scoped_refptr<base::RefCountedMemory>)> callback);
+  using GotDataCallback =
+      base::OnceCallback<void(scoped_refptr<base::RefCountedMemory>)>;
+  void StartDataRequestForPath(const std::string& path,
+                               GotDataCallback callback);
   std::string GetMimeTypeForPath(const std::string& path) const;
   bool AllowCaching() const { return true; }
-  void OnGotImageFile(
+  void OnGotImageFileBytes(
       base::OnceCallback<void(scoped_refptr<base::RefCountedMemory>)> callback,
-      std::optional<std::string> input);
+      std::optional<std::vector<uint8_t>> input);
 
   base::FilePath base_path_;
   base::WeakPtrFactory<BlockchainImagesSourceBase> weak_factory_{this};

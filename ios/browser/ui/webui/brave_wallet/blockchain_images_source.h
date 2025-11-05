@@ -19,8 +19,9 @@ namespace brave_wallet {
 class BlockchainImagesSource : public web::URLDataSourceIOS,
                                public BlockchainImagesSourceBase {
  public:
-  using BlockchainImagesSourceBase::BlockchainImagesSourceBase;
+  explicit BlockchainImagesSource(const base::FilePath& base_path);
 
+ private:
   // web::URLDataSourceIOS overrides:
   std::string GetSource() const override;
   void StartDataRequest(const std::string& path,
