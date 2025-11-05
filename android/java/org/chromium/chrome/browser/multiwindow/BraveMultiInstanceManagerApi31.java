@@ -5,10 +5,13 @@
 
 package org.chromium.chrome.browser.multiwindow;
 
+import static org.chromium.build.NullUtil.assertNonNull;
+
 import android.app.Activity;
 
 import org.chromium.base.supplier.ObservableSupplier;
-import org.chromium.build.annotations.NullUnmarked;
+import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.tabmodel.TabModelOrchestrator;
 import org.chromium.chrome.browser.app.tabwindow.TabWindowManagerSingleton;
@@ -21,12 +24,13 @@ import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager.Snackbar
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManagerProvider;
 import org.chromium.components.browser_ui.desktop_windowing.DesktopWindowStateManager;
 import org.chromium.components.browser_ui.widget.MenuOrKeyboardActionController;
+import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 
 import java.util.List;
 import java.util.function.Supplier;
 
-@NullUnmarked // Waiting for upstream parent class to be NullMarked
+@NullMarked
 class BraveMultiInstanceManagerApi31 extends MultiInstanceManagerApi31 {
 
     private static final String TAG = "MultiInstanceApi31";
@@ -80,10 +84,15 @@ class BraveMultiInstanceManagerApi31 extends MultiInstanceManagerApi31 {
                                                 .getString(R.string.merge_windows_snackbar),
                                         new SnackbarController() {
                                             @Override
-                                            public void onDismissNoAction(Object actionData) {}
+                                            public void onDismissNoAction(
+                                                    @Nullable Object actionData) {}
 
+                                            // TODO(https://github.com/brave/brave-browser/issues/50673)
+                                            // BraveMultiWindowUtils.mergeWindows takes non-null
+                                            // activity and can't do anything when null is passed
+                                            @SuppressWarnings("NullAway")
                                             @Override
-                                            public void onAction(Object actionData) {
+                                            public void onAction(@Nullable Object actionData) {
                                                 BraveMultiWindowUtils.mergeWindows(null);
                                             }
                                         },
@@ -95,8 +104,11 @@ class BraveMultiInstanceManagerApi31 extends MultiInstanceManagerApi31 {
                                 .setDefaultLines(false)
                                 .setDuration(10000);
                 Tab firstTab = tabs.get(0);
-                SnackbarManager snackbarManager =
-                        SnackbarManagerProvider.from(firstTab.getWindowAndroid());
+                assertNonNull(firstTab);
+                WindowAndroid windowAndroid = firstTab.getWindowAndroid();
+                assertNonNull(windowAndroid);
+                SnackbarManager snackbarManager = SnackbarManagerProvider.from(windowAndroid);
+                assertNonNull(snackbarManager);
                 snackbarManager.showSnackbar(snackbar);
             }
         }

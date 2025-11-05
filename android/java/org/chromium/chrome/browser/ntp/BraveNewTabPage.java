@@ -5,12 +5,16 @@
 
 package org.chromium.chrome.browser.ntp;
 
+import static org.chromium.build.NullUtil.assertNonNull;
+
 import android.app.Activity;
 import android.view.LayoutInflater;
 
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
-import org.chromium.build.annotations.NullUnmarked;
+import org.chromium.build.annotations.EnsuresNonNull;
+import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
 import org.chromium.chrome.browser.feed.BraveFeedSurfaceCoordinator;
@@ -41,23 +45,23 @@ import org.chromium.ui.base.WindowAndroid;
 
 import java.util.function.Supplier;
 
-@NullUnmarked // Waiting for upstream parent class to be NullMarked
+@NullMarked
 public class BraveNewTabPage extends NewTabPage {
     // To delete in bytecode, members from parent class will be used instead.
-    private BrowserControlsStateProvider mBrowserControlsStateProvider;
-    private NewTabPageLayout mNewTabPageLayout;
+    private @Nullable BrowserControlsStateProvider mBrowserControlsStateProvider;
+    private @Nullable NewTabPageLayout mNewTabPageLayout;
 
     @SuppressWarnings("UnusedVariable")
-    private FeedSurfaceProvider mFeedSurfaceProvider;
+    private @Nullable FeedSurfaceProvider mFeedSurfaceProvider;
 
-    private Supplier<Toolbar> mToolbarSupplier;
-    private BottomSheetController mBottomSheetController;
-    private ObservableSupplier<Integer> mTabStripHeightSupplier;
+    private @Nullable Supplier<Toolbar> mToolbarSupplier;
+    private @Nullable BottomSheetController mBottomSheetController;
+    private @Nullable ObservableSupplier<Integer> mTabStripHeightSupplier;
 
     public BraveNewTabPage(
             Activity activity,
             BrowserControlsStateProvider browserControlsStateProvider,
-            Supplier<Tab> activityTabProvider,
+            Supplier<@Nullable Tab> activityTabProvider,
             SnackbarManager snackbarManager,
             ActivityLifecycleDispatcher lifecycleDispatcher,
             TabModelSelector tabModelSelector,
@@ -71,7 +75,7 @@ public class BraveNewTabPage extends NewTabPage {
             Supplier<ShareDelegate> shareDelegateSupplier,
             WindowAndroid windowAndroid,
             Supplier<Toolbar> toolbarSupplier,
-            HomeSurfaceTracker homeSurfaceTracker,
+            @Nullable HomeSurfaceTracker homeSurfaceTracker,
             ObservableSupplier<TabContentManager> tabContentManagerSupplier,
             ObservableSupplier<Integer> tabStripHeightSupplier,
             OneshotSupplier<ModuleRegistry> moduleRegistrySupplier,
@@ -103,6 +107,7 @@ public class BraveNewTabPage extends NewTabPage {
                 topInsetCoordinatorSupplier,
                 startupMetricsTracker);
 
+        assertNonNull(mNewTabPageLayout);
         assert mNewTabPageLayout instanceof BraveNewTabPageLayout;
         if (mNewTabPageLayout instanceof BraveNewTabPageLayout) {
             ((BraveNewTabPageLayout) mNewTabPageLayout).setTab(tab);
@@ -124,11 +129,12 @@ public class BraveNewTabPage extends NewTabPage {
         // Re-add to the new tab's profile
         TemplateUrlService templateUrlService =
                 TemplateUrlServiceFactory.getForProfile(
-                        Profile.fromWebContents(mTab.getWebContents()));
+                        Profile.fromWebContents(assertNonNull(mTab.getWebContents())));
         templateUrlService.addObserver(this);
     }
 
     @Override
+    @EnsuresNonNull({"mNewTabPageLayout", "mFeedSurfaceProvider"})
     protected void initializeMainView(
             Activity activity,
             WindowAndroid windowAndroid,
@@ -140,10 +146,14 @@ public class BraveNewTabPage extends NewTabPage {
             StartupMetricsTracker startupMetricsTracker) {
         // Override surface provider
         Profile profile = Profile.fromWebContents(mTab.getWebContents());
+        assertNonNull(profile);
 
         LayoutInflater inflater = LayoutInflater.from(activity);
         mNewTabPageLayout = (NewTabPageLayout) inflater.inflate(R.layout.new_tab_page_layout, null);
 
+        assertNonNull(mBrowserControlsStateProvider);
+        assertNonNull(mToolbarSupplier);
+        assertNonNull(mTabStripHeightSupplier);
         assert !FeedFeatures.isFeedEnabled(profile);
         FeedSurfaceCoordinator feedSurfaceCoordinator =
                 new BraveFeedSurfaceCoordinator(
