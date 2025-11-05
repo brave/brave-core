@@ -3,11 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "chrome/browser/ui/views/side_panel/read_anything/read_anything_service_factory.h"
+#include "chrome/browser/ui/read_anything/read_anything_service_factory.h"
 
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_selections.h"
-#include "chrome/browser/ui/views/side_panel/read_anything/read_anything_service.h"
+#include "chrome/browser/ui/read_anything/read_anything_service.h"
 
 // static
 ReadAnythingService* ReadAnythingServiceFactory::GetForBrowserContext(
