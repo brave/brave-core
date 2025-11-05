@@ -180,7 +180,7 @@ async function main() {
 
     if (currentVersionMatch && currentVersionMatch[1] === version) {
       console.log(`\n✓ Opengrep is already up to date (${version})`)
-      process.exit(1) // Exit with code 1 to signal no changes needed
+      process.exit(0) // Exit with code 0 for success (no changes needed)
     }
 
     // Download binaries and calculate checksums
@@ -191,7 +191,7 @@ async function main() {
 
     if (!hasChanges) {
       console.log('\n✓ No changes were made')
-      process.exit(1)
+      process.exit(0)
     }
 
     // Verify Python syntax
