@@ -21,6 +21,9 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_navigator.h"
 #include "chrome/browser/ui/browser_navigator_params.h"
+#include "chrome/browser/ui/browser_window.h"
+#include "chrome/browser/ui/location_bar/location_bar.h"
+#include "chrome/browser/ui/omnibox/omnibox_controller.h"
 #include "chrome/browser/ui/omnibox/omnibox_edit_model.h"
 #include "chrome/browser/ui/omnibox/omnibox_view.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -134,16 +137,20 @@ bool PromotionButtonController::ShouldShowSearchPromotionButton() {
   // Promotion button will be shown for current search provider's
   // suggestion entries to make users search with brave search with that
   // suggestion.
-  if (!omnibox_view_->model()->PopupIsOpen()) {
+  OmniboxEditModel* edit_model = browser_->window()
+                                     ->GetLocationBar()
+                                     ->GetOmniboxController()
+                                     ->edit_model();
+  if (!edit_model->PopupIsOpen()) {
     return false;
   }
 
   // Only show promotion for search query. Not url.
-  if (omnibox_view_->model()->CurrentTextIsURL()) {
+  if (edit_model->CurrentTextIsURL()) {
     return false;
   }
 
-  const AutocompleteMatch match = omnibox_view_->model()->CurrentMatch();
+  const AutocompleteMatch match = edit_model->CurrentMatch();
   return !IsBraveSearchPromotionMatch(match) &&
 #if BUILDFLAG(ENABLE_AI_CHAT)
          !LeoProvider::IsMatchFromLeoProvider(match) &&
