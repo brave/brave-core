@@ -23,7 +23,6 @@ brave_browser_brave_shields_sources = [
 brave_browser_brave_shields_deps = [
   "//base",
   "//brave/browser:browser_process",
-  "//brave/browser/ui/tabs:tab_strip",
   "//brave/common",
   "//brave/components/brave_perf_predictor/browser",
   "//brave/components/brave_shields/content/browser",
@@ -51,4 +50,6 @@ if (is_android) {
     "//brave/browser/android:android_browser_process",
     "//brave/build/android:jni_headers",
   ]
+} else {
+  brave_browser_brave_shields_deps += [ "//brave/browser/ui/tabs:tab_strip" ]
 }
