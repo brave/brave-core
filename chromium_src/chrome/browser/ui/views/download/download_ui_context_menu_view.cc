@@ -32,26 +32,54 @@ ui::SimpleMenuModel* DownloadUiContextMenuView::GetMenuModel() {
     return model;
   }
 
+  MaybeAddCopyDownloadLinkMenuItem(download, model);
+  MaybeAddRemoveFromListMenuItem(download, model);
+  return model;
+}
+
+void DownloadUiContextMenuView::MaybeAddRemoveFromListMenuItem(
+    DownloadUIModel* download,
+    ui::SimpleMenuModel* model) {
   // Early return if |model| has the item. |model| is cached by base class.
-  if (auto index =
-          model->GetIndexOfCommandId(BraveDownloadCommands::REMOVE_FROM_LIST)) {
-    return model;
+  if (AlreadyHasCommand(BraveDownloadCommands::REMOVE_FROM_LIST, model)) {
+    return;
   }
 
-  // Don't add "Remove item fro list" entry to in-progress state.
+  // Don't add "Remove item from list" entry to in-progress state.
   if (download->GetState() != download::DownloadItem::COMPLETE &&
       download->GetState() != download::DownloadItem::CANCELLED) {
-    return model;
+    return;
   }
 
-  if (auto index =
-          model->GetIndexOfCommandId(DownloadCommands::SHOW_IN_FOLDER)) {
+  if (auto index = model->GetIndexOfCommandId(
+          BraveDownloadCommands::COPY_DOWNLOAD_LINK)) {
     model->InsertItemAt(*index + 1, BraveDownloadCommands::REMOVE_FROM_LIST,
                         l10n_util::GetStringUTF16(
                             IDS_DOWNLOAD_BUBBLE_ITEM_CTX_MENU_REMOVE_ITEM));
   }
+}
 
-  return model;
+void DownloadUiContextMenuView::MaybeAddCopyDownloadLinkMenuItem(
+    DownloadUIModel* download,
+    ui::SimpleMenuModel* model) {
+  // Early return if |model| has the item. |model| is cached by base class.
+  if (AlreadyHasCommand(BraveDownloadCommands::COPY_DOWNLOAD_LINK, model)) {
+    return;
+  }
+
+  if (auto index =
+          model->GetIndexOfCommandId(DownloadCommands::SHOW_IN_FOLDER)) {
+    model->InsertItemAt(
+        *index + 1, BraveDownloadCommands::COPY_DOWNLOAD_LINK,
+        l10n_util::GetStringUTF16(
+            IDS_DOWNLOAD_BUBBLE_ITEM_CTX_MENU_COPY_DOWNLOAD_LINK));
+  }
+}
+
+bool DownloadUiContextMenuView::AlreadyHasCommand(
+    int command_id,
+    ui::SimpleMenuModel* model) const {
+  return model && model->GetIndexOfCommandId(command_id).has_value();
 }
 
 bool DownloadUiContextMenuView::IsCommandIdEnabled(int command_id) const {
@@ -85,5 +113,7 @@ void DownloadUiContextMenuView::ExecuteCommand(int command_id,
     return;
   }
 
-  DownloadUiContextMenuViewChromium::ExecuteCommand(command_id, event_flags);
+  // Bypass the DownloadUIContextMenuViewChromium implementation so that
+  // we can avoid histogramming for Brave specific commands.
+  DownloadUiContextMenu::ExecuteCommand(command_id, event_flags);
 }

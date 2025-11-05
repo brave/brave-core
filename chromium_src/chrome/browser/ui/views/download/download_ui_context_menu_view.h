@@ -6,6 +6,9 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_DOWNLOAD_DOWNLOAD_UI_CONTEXT_MENU_VIEW_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_DOWNLOAD_DOWNLOAD_UI_CONTEXT_MENU_VIEW_H_
 
+#include "chrome/browser/download/download_ui_model.h"
+#include "ui/menus/simple_menu_model.h"
+
 #define DownloadUiContextMenuView DownloadUiContextMenuViewChromium
 // To make private methods accessible from our subclass.
 #define OnMenuClosed \
@@ -30,6 +33,13 @@ class DownloadUiContextMenuView : public DownloadUiContextMenuViewChromium {
   bool IsCommandIdChecked(int command_id) const override;
   bool IsCommandIdVisible(int command_id) const override;
   void ExecuteCommand(int command_id, int event_flags) override;
+
+ private:
+  void MaybeAddRemoveFromListMenuItem(DownloadUIModel* download,
+                                      ui::SimpleMenuModel* model);
+  void MaybeAddCopyDownloadLinkMenuItem(DownloadUIModel* download,
+                                        ui::SimpleMenuModel* model);
+  bool AlreadyHasCommand(int command_id, ui::SimpleMenuModel* model) const;
 };
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_DOWNLOAD_DOWNLOAD_UI_CONTEXT_MENU_VIEW_H_
