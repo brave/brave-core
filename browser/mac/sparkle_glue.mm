@@ -16,7 +16,6 @@
 #include "base/check.h"
 #include "base/command_line.h"
 #include "base/logging.h"
-#include "base/memory/ref_counted.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/system/sys_info.h"
 #include "base/task/thread_pool.h"

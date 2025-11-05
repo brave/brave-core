@@ -15,7 +15,6 @@
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/raw_ref.h"
-#include "base/memory/ref_counted.h"
 #include "base/timer/timer.h"
 #include "brave/components/p3a/metric_log_store.h"
 #include "brave/components/p3a/metric_log_type.h"
