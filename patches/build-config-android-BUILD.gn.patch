@@ -1,5 +1,5 @@
 diff --git a/build/config/android/BUILD.gn b/build/config/android/BUILD.gn
-index db4025262767d571bc832e973a5d5283e5ea5910..a1ccf1a8e5b807ceacdf8278f7bcf0f0308a101e 100644
+index db4025262767d571bc832e973a5d5283e5ea5910..1e51b7f2a88fdbbe0d8b2364d95ba35b9dfaf911 100644
 --- a/build/config/android/BUILD.gn
 +++ b/build/config/android/BUILD.gn
 @@ -53,6 +53,7 @@ config("compiler") {
@@ -10,3 +10,11 @@ index db4025262767d571bc832e973a5d5283e5ea5910..a1ccf1a8e5b807ceacdf8278f7bcf0f0
  
    if (current_cpu == "arm64") {
      if (arm_control_flow_integrity == "standard") {
+@@ -62,6 +63,7 @@ config("compiler") {
+       cflags += [ "-mbranch-protection=pac-ret" ]
+       rustflags = [ "-Zbranch-protection=pac-ret" ]
+     }
++    if (use_thin_lto) { ldflags += ["-Wl,-mllvm", "-Wl,-generate-type-units"] }
+   }
+ 
+   # Disable TLSDESC for riscv64 until the Android NDK supports it. While
