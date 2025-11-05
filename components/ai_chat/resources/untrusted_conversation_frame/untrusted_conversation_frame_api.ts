@@ -13,6 +13,11 @@ export type ConversationEntriesUIState = Mojom.ConversationEntriesState & {
   conversationHistory: Mojom.ConversationTurn[]
   isMobile: boolean
   associatedContent: Mojom.AssociatedContent[]
+  // TODO(https://github.com/brave/brave-browser/issues/49258):
+  // Store the tab ID of a task on the ToolUseEvent and not for the whole
+  // conversation, once multiple agentic tabs and tasks per conversation are
+  // supported.
+  contentTaskTabId?: number
 }
 
 // Default state before initial API call
@@ -62,7 +67,7 @@ export function updateToolUseEventInHistory(
 // Define how to get the initial data and update the state from events
 export default class UntrustedConversationFrameAPI extends API<ConversationEntriesUIState> {
   public conversationHandler: Mojom.UntrustedConversationHandlerRemote =
-    Mojom.UntrustedConversationHandler.getRemote()
+    new Mojom.UntrustedConversationHandlerRemote()
 
   public uiHandler: Mojom.UntrustedUIHandlerRemote =
     Mojom.UntrustedUIHandler.getRemote()
@@ -84,6 +89,11 @@ export default class UntrustedConversationFrameAPI extends API<ConversationEntri
   async initialize() {
     // Bind UntrustedUI for memory notifications
     this.uiHandler.bindUntrustedUI(this.uiObserver.$.bindNewPipeAndPassRemote())
+    const conversationId = window.location.pathname.split('/').pop() || ''
+    this.uiHandler.bindConversationHandler(
+      conversationId,
+      this.conversationHandler.$.bindNewPipeAndPassReceiver(),
+    )
 
     const [{ conversationEntriesState }, { conversationHistory }] =
       await Promise.all([
@@ -92,8 +102,18 @@ export default class UntrustedConversationFrameAPI extends API<ConversationEntri
         ),
         this.conversationHandler.getConversationHistory(),
       ])
+
+    const allModels =
+      conversationEntriesState.conversationCapability
+      === Mojom.ConversationCapability.CONTENT_AGENT
+        ? conversationEntriesState.allModels.filter(
+            (model) => model.supportsTools,
+          )
+        : conversationEntriesState.allModels
+
     this.setPartialState({
       ...conversationEntriesState,
+      allModels,
       conversationHistory,
     })
     this.conversationObserver.onConversationHistoryUpdate.addListener(
@@ -126,6 +146,12 @@ export default class UntrustedConversationFrameAPI extends API<ConversationEntri
         if (updatedHistory) {
           this.setPartialState({ conversationHistory: updatedHistory })
         }
+      },
+    )
+
+    this.conversationObserver.contentTaskStarted.addListener(
+      (tabId: number) => {
+        this.setPartialState({ contentTaskTabId: tabId })
       },
     )
 

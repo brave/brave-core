@@ -11,16 +11,26 @@ testonly = true
 if (is_android) {
   robolectric_library(
       "brave_junit_tests_org.chromium.chrome.browser.homepage") {
-    sources = [ "src/org/chromium/chrome/browser/homepage/settings/BraveHomepageSettingsUnitTest.java" ]
+    sources = [
+      "src/org/chromium/chrome/browser/homepage/BraveHomepageManagerTest.java",
+      "src/org/chromium/chrome/browser/homepage/settings/BraveHomepageSettingsUnitTest.java",
+    ]
 
-    deps = [ "//chrome/android/junit:chrome_junit_tests_helper" ]
+    deps = [
+      "//chrome/android/junit:chrome_junit_tests_helper",
+      "//components/bookmarks/common/android:bookmark_type_javagen",
+      "//components/bookmarks/common/android:bookmarks_java",
+    ]
   }
 
   robolectric_library(
       "brave_junit_tests_org.chromium.chrome.browser.tabbed_mode") {
     sources = [ "src/org/chromium/chrome/browser/tabbed_mode/BraveTabbedAppMenuPropertiesDelegateUnitTest.java" ]
 
-    deps = [ "//chrome/android/junit:chrome_junit_tests_helper" ]
+    deps = [
+      "//chrome/android/junit:chrome_junit_tests_helper",
+      "//components/browser_ui/accessibility/android:page_zoom_utils_java",
+    ]
   }
 
   robolectric_library("brave_junit_tests_org.chromium.chrome.browser.toolbar") {
@@ -34,6 +44,27 @@ if (is_android) {
       "//brave/browser/ui/android/toolbar:java",
       "//chrome/android/junit:chrome_junit_tests_helper",
       "//chrome/browser/settings:java",
+    ]
+  }
+
+  robolectric_library("brave_junit_tests_org.chromium.chrome.browser.vpn") {
+    resources_package = "org.chromium.chrome.browser.vpn"
+    sources = [ "src/org/chromium/chrome/browser/vpn/activities/BraveVpnParentActivityTest.java" ]
+
+    deps = [ "//chrome/android/junit:chrome_junit_tests_helper" ]
+  }
+
+  robolectric_library(
+      "brave_junit_tests_org.chromium.chrome.browser.crypto_wallet") {
+    sources = [
+      "src/org/chromium/chrome/browser/crypto_wallet/ApproveTxBottomSheetDialogFragmentTest.java",
+      "src/org/chromium/chrome/browser/crypto_wallet/TwoLineItemBottomSheetFragmentTest.java",
+      "src/org/chromium/chrome/browser/crypto_wallet/WalletBottomSheetDialogFragmentTest.java",
+    ]
+
+    deps = [
+      "//brave/components/brave_wallet/common:mojom_java",
+      "//chrome/android/junit:chrome_junit_tests_helper",
     ]
   }
 }

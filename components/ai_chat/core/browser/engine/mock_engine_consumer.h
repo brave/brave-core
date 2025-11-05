@@ -12,6 +12,7 @@
 #include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
 namespace ai_chat {
@@ -43,8 +44,8 @@ class MockEngineConsumer : public EngineConsumer {
 
   MOCK_METHOD(void,
               GenerateRewriteSuggestion,
-              (std::string text,
-               const std::string& question,
+              (const std::string& text,
+               mojom::ActionType action_type,
                const std::string& selected_language,
                GenerationDataCallback received_callback,
                GenerationCompletedCallback completed_callback),

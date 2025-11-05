@@ -26,7 +26,13 @@ MyServiceFactory::MyServiceFactory()
 
 If you have more complicated logic then use
 `BrowserContextKeyedServiceFactory::GetBrowserContextToUse` and return nullptr
-if the service is not available for the given `BrowserContext`.
+if the service is not available for the given `BrowserContext`. The factory
+should only return nullptr for attributes that are fixed for at least the life
+of the browser session (profile, feature flag, etc...) and not for things like
+prefs that change during the session. For a given profile/browser session it
+should either always return nullptr or never return nullptr. This also applies
+to `GetForProfile`, etc... (If there is logic in `GetForProfile` it should move
+to `GetBrowserContextToUse`)
 
 ```cpp
 content::BrowserContext* MyServiceFactory::GetBrowserContextToUse(
@@ -48,6 +54,22 @@ a null check on the service itself. Prefer dependency injection
 and pass in the services you require instead of calling the factory methods
 internally. This reduces dependencies on the factories and makes unit
 testing/mocking simpler.
+
+#### Keyed Services and Unit Tests
+
+If the KeyedService needs to be created automatically with the profile, then it
+should not be created during unit tests otherwise it is not possible to
+use a `TestingProfile`/`TestProfileIOS` without this service (and then the tests 
+cannot be independent from the service). On iOS, This behaviour will be verified 
+by a `CHECK` when creating the `ProfileKeyedServiceFactoryIOS`
+
+On desktop/android you need to return false for 
+`ServiceIsCreatedWithBrowserContext` or return false for 
+`ServiceIsNULLWhileTesting`
+
+On iOS you need to either remove `ServiceCreation::kCreateWithProfile` or add 
+`TestCreation::kNoServiceForTests` and inject a test factory in tests 
+that need the service to exist.
 
 #### Keyed Services and Mojo
 

@@ -8,6 +8,5 @@
 namespace brave::features {
 
 BASE_FEATURE(kBraveAllowExternalPurchaseLinks,
-             "BraveAllowExternalPurchaseLinks",
              base::FEATURE_ENABLED_BY_DEFAULT);
 }

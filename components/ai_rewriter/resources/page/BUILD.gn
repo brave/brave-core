@@ -6,11 +6,16 @@
 import("//brave/components/common/typescript.gni")
 
 transpile_web_ui("ai_rewriter_ui") {
+  output_module = false
   resource_name = "ai_rewriter_ui"
   entry_points = [ [
         "rewriter_ui",
         rebase_path("rewriter_ui.tsx"),
       ] ]
+  imports_from = [
+    "//brave/components/ai_rewriter/resources/page/",
+    "//brave/components/ai_chat/resources/",
+  ]
   deps = [
     "//brave/components/ai_rewriter/common/mojom:mojom_js",
     "//brave/components/resources:strings",

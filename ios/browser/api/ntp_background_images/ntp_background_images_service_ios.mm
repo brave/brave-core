@@ -8,7 +8,6 @@
 #include <memory>
 
 #include "base/memory/raw_ptr.h"
-#include "base/strings/sys_string_conversions.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service_observer.h"
 #include "brave/components/ntp_background_images/browser/features.h"
@@ -58,6 +57,7 @@ class NTPBackgroundImagesServiceObserverBridge
 
 @protocol AdsServiceObserverIOS <NSObject>
 @required
+- (void)onDidInitializeAdsService;
 - (void)onDidClearAdsServiceData;
 @end
 
@@ -67,6 +67,10 @@ class AdsServiceObserverBridge : public brave_ads::AdsServiceObserver {
       : bridge_(bridge) {}
 
   ~AdsServiceObserverBridge() override = default;
+
+  void OnDidInitializeAdsService() override {
+    [bridge_ onDidInitializeAdsService];
+  }
 
   void OnDidClearAdsServiceData() override {
     [bridge_ onDidClearAdsServiceData];
@@ -133,15 +137,6 @@ class AdsServiceObserverBridge : public brave_ads::AdsServiceObserver {
   return [[NTPSponsoredImageData alloc] initWithData:*data];
 }
 
-- (NTPSponsoredImageData*)superReferralImageData {
-  auto* data = _service->GetSponsoredImagesData(/* super_referral=*/true,
-                                                /*supports_rich_media=*/false);
-  if (data == nullptr) {
-    return nil;
-  }
-  return [[NTPSponsoredImageData alloc] initWithData:*data];
-}
-
 - (NSInteger)initialCountToBrandedWallpaper {
   return ntp_background_images::features::kInitialCountToBrandedWallpaper.Get();
 }
@@ -152,10 +147,6 @@ class AdsServiceObserverBridge : public brave_ads::AdsServiceObserver {
 
 - (void)updateSponsoredImageComponentIfNeeded {
   _service->MaybeCheckForSponsoredComponentUpdate();
-}
-
-- (NSString*)superReferralCode {
-  return base::SysUTF8ToNSString(_service->GetSuperReferralCode());
 }
 
 - (void)onUpdatedNTPBackgroundImagesData:
@@ -183,6 +174,10 @@ class AdsServiceObserverBridge : public brave_ads::AdsServiceObserver {
     _adsService->ParseAndSaveNewTabPageAds(data.Clone(),
                                            /*intentional*/ base::DoNothing());
   }
+}
+
+- (void)onDidInitializeAdsService {
+  _service->RegisterSponsoredImagesComponent();
 }
 
 - (void)onDidClearAdsServiceData {

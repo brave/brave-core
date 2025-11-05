@@ -24,7 +24,11 @@ cargo_crate("lib") {
       "Crunchy unroller: deterministically unroll constant loops"
   cargo_pkg_version = "0.2.2"
 
-  features = [ "std" ]
+  features = [
+    "default",
+    "limit_128",
+    "std",
+  ]
   build_root =
       "//brave/third_party/rust/chromium_crates_io/vendor/crunchy-v0_2/build.rs"
   build_sources = [
@@ -33,6 +37,12 @@ cargo_crate("lib") {
   build_script_outputs = [ "lib.rs" ]
   rustenv = []
   rustflags = []
+
+  # Remove features incorrectly added by half crate for spirv arch
+  features -= [
+    "limit_128",
+    "default",
+  ]
 
   #####################################################################
   # Tweaking which GN `config`s apply to this target.

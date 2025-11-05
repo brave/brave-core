@@ -12,6 +12,8 @@
 
 #include "base/component_export.h"
 #include "base/values.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/customization_settings.mojom-forward.h"
 
 class PrefService;
@@ -57,6 +59,35 @@ void DeleteAllMemoriesFromPrefs(PrefService& prefs);
 
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 std::optional<base::Value::Dict> GetUserMemoryDictFromPrefs(PrefService& prefs);
+
+// Skills prefs
+// Returns skills from the skills dictionary in the pref.
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+std::vector<mojom::SkillPtr> GetSkillsFromPrefs(const PrefService& prefs);
+// Returns a specific skill by ID, or nullptr if not found.
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+mojom::SkillPtr GetSkillFromPrefs(const PrefService& prefs,
+                                  const std::string& id);
+
+// Adds a new skill and saves it to prefs.
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+void AddSkillToPrefs(const std::string& shortcut,
+                     const std::string& prompt,
+                     const std::optional<std::string>& model,
+                     PrefService& prefs);
+// Updates an existing skill in prefs.
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+void UpdateSkillInPrefs(const std::string& id,
+                        const std::string& shortcut,
+                        const std::string& prompt,
+                        const std::optional<std::string>& model,
+                        PrefService& prefs);
+// Deletes a skill from prefs.
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+void DeleteSkillFromPrefs(const std::string& id, PrefService& prefs);
+// Updates the last_used time for a skill in prefs.
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+void UpdateSkillLastUsedInPrefs(const std::string& id, PrefService& prefs);
 
 }  // namespace ai_chat::prefs
 

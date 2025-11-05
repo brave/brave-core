@@ -3,6 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import './strings'
+
 import * as CommandsMojo from 'gen/brave/components/commands/common/commands.mojom.m.js'
 import * as React from 'react'
 import { render } from 'react-dom'
@@ -95,7 +97,7 @@ function App() {
         <SearchContainer>
           <SearchIcon name="search" />
           <SearchBox
-            placeholder={getLocale('shortcutsPageSearchPlaceholder')}
+            placeholder={getLocale(S.SHORTCUTS_PAGE_SEARCH_PLACEHOLDER)}
             value={filter}
             onChange={(e) => {
               setFilter(e.target.value)
@@ -107,7 +109,7 @@ function App() {
         ))}
       </CommandsContainer>
       <Button kind="plain-faint" onClick={() => commandsCache.resetAll()}>
-        {getLocale('shortcutsPageResetAll')}
+        {getLocale(S.SHORTCUTS_PAGE_RESET_ALL)}
       </Button>
     </Container>
   )
@@ -121,5 +123,3 @@ export const mount = (at: HTMLElement) => {
     at
   )
 }
-
-;(window as any).mountCommands = mount

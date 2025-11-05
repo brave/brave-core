@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/background_facade.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/barrier_callback.h"
@@ -34,7 +35,7 @@ mojom::SponsoredImageBackgroundPtr ReadSponsoredImageData(
   using ntp_background_images::kIsBackgroundKey;
   using ntp_background_images::kLogoKey;
   using ntp_background_images::kWallpaperIDKey;
-  using ntp_background_images::kWallpaperShouldMetricsFallbackToP3aKey;
+  using ntp_background_images::kWallpaperMetricTypeKey;
   using ntp_background_images::kWallpaperTypeKey;
   using ntp_background_images::kWallpaperURLKey;
 
@@ -79,11 +80,11 @@ mojom::SponsoredImageBackgroundPtr ReadSponsoredImageData(
     background->logo = std::move(logo);
   }
 
-  if (auto fallback_to_p3a =
-          data.FindBool(kWallpaperShouldMetricsFallbackToP3aKey)) {
-    background->should_metrics_fallback_to_p3a = *fallback_to_p3a;
+  if (std::optional<int> value =
+          data.FindInt(ntp_background_images::kWallpaperMetricTypeKey)) {
+    background->metric_type =
+        static_cast<brave_ads::mojom::NewTabPageAdMetricType>(*value);
   }
-
   return background;
 }
 
@@ -196,10 +197,9 @@ BackgroundFacade::GetSponsoredImageBackground() {
 
   auto sponsored_image = ReadSponsoredImageData(*data);
   if (sponsored_image) {
-    view_counter_service_->BrandedWallpaperWillBeDisplayed(
+    view_counter_service_->RecordViewedAdEvent(
         sponsored_image->wallpaper_id, sponsored_image->campaign_id,
-        sponsored_image->creative_instance_id,
-        sponsored_image->should_metrics_fallback_to_p3a);
+        sponsored_image->creative_instance_id, sponsored_image->metric_type);
   }
 
   return sponsored_image;
@@ -276,13 +276,12 @@ void BackgroundFacade::NotifySponsoredImageLogoClicked(
     const std::string& wallpaper_id,
     const std::string& creative_instance_id,
     const std::string& destination_url,
-    bool should_metrics_fallback_to_p3a) {
+    brave_ads::mojom::NewTabPageAdMetricType metric_type) {
   if (!view_counter_service_) {
     return;
   }
-  view_counter_service_->BrandedWallpaperLogoClicked(
-      wallpaper_id, creative_instance_id, destination_url,
-      should_metrics_fallback_to_p3a);
+  view_counter_service_->RecordClickedAdEvent(
+      wallpaper_id, creative_instance_id, destination_url, metric_type);
 }
 
 void BackgroundFacade::OnCustomBackgroundsSaved(

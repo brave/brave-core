@@ -11,6 +11,7 @@
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 
 @protocol AIChatDelegate;
@@ -52,6 +53,7 @@ class ConversationClient : public mojom::ConversationUI,
   void OnStateChanged(mojom::ServiceStatePtr state) override;
   void OnConversationListChanged(
       std::vector<mojom::ConversationPtr> conversations) override {}
+  void OnSkillsChanged(std::vector<mojom::SkillPtr> skills) override {}
 
  private:
   // The actual UI

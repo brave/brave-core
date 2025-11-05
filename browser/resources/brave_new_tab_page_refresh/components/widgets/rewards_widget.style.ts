@@ -121,6 +121,11 @@ export const style = scoped.css`
       font: ${font.xSmall.regular};
       padding-left: 4px;
     }
+
+    &.skeleton {
+      width: 160px;
+      height: 24px;
+    }
   }
 
   .payout-status {

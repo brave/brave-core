@@ -190,14 +190,14 @@ class SolanaProviderImplUnitTest : public testing::Test {
 
   mojom::AccountInfoPtr AddAccount() {
     return keyring_service_->AddAccountSync(
-        mojom::CoinType::SOL, mojom::kSolanaKeyringId, "New Account");
+        mojom::CoinType::SOL, mojom::KeyringId::kSolana, "New Account");
   }
 
   mojom::AccountInfoPtr AddHardwareAccount(const std::string& address) {
     std::vector<mojom::HardwareWalletAccountPtr> hw_accounts;
     hw_accounts.push_back(mojom::HardwareWalletAccount::New(
         address, "m/44'/501'/0'/0", "name 1", mojom::HardwareVendor::kLedger,
-        "device1", mojom::kSolanaKeyringId));
+        "device1", mojom::KeyringId::kSolana));
 
     auto added_accounts =
         keyring_service_->AddHardwareAccountsSync(std::move(hw_accounts));
@@ -217,7 +217,7 @@ class SolanaProviderImplUnitTest : public testing::Test {
 
   mojom::AccountInfoPtr GetAccountByIndex(
       size_t index,
-      mojom::KeyringId keyring_id = mojom::kSolanaKeyringId) {
+      mojom::KeyringId keyring_id = mojom::KeyringId::kSolana) {
     CHECK(!keyring_service_->IsLockedSync());
     auto all_accounts = keyring_service_->GetAllAccountsSync();
     std::erase_if(all_accounts->accounts, [&](auto& acc) {
@@ -437,7 +437,8 @@ class SolanaProviderImplUnitTest : public testing::Test {
                             mojom::SolanaProviderError expected_error,
                             const std::string& expected_error_message) {
     base::Value::Dict result_out;
-    auto value = base::JSONReader::ReadDict(json);
+    auto value =
+        base::JSONReader::ReadDict(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
     if (!value) {
       return result_out;
     }
@@ -743,7 +744,7 @@ TEST_F(SolanaProviderImplUnitTest, AccountChangedEvent) {
 
   EXPECT_CALL(*observer_, AccountChangedEvent(_)).Times(0);
   // select non SOL account
-  auto eth_account = GetAccountByIndex(0, mojom::kDefaultKeyringId);
+  auto eth_account = GetAccountByIndex(0, mojom::KeyringId::kDefault);
   SetSelectedAccount(eth_account->account_id);
   observer_->WaitAndVerify();
 }

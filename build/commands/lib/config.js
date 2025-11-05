@@ -203,7 +203,6 @@ const Config = function () {
   this.notary_password = getEnvConfig(['notary_password'])
   this.channel = 'development'
   this.git_cache_path = getEnvConfig(['git_cache_path'])
-  this.sccache = getEnvConfig(['sccache'])
   this.rbeService = getEnvConfig(['rbe_service']) || ''
   this.rbeTlsClientAuthCert = getEnvConfig(['rbe_tls_client_auth_cert']) || ''
   this.rbeTlsClientAuthKey = getEnvConfig(['rbe_tls_client_auth_key']) || ''
@@ -211,7 +210,6 @@ const Config = function () {
     process.env.RBE_DIR || path.join(this.srcDir, 'buildtools', 'reclient')
   this.ignore_compile_failure = false
   this.enable_hangout_services_extension = false
-  this.enable_pseudolocales = false
   this.sign_widevine_cert = process.env.SIGN_WIDEVINE_CERT || ''
   this.sign_widevine_key = process.env.SIGN_WIDEVINE_KEY || ''
   this.sign_widevine_passwd = process.env.SIGN_WIDEVINE_PASSPHRASE || ''
@@ -279,6 +277,7 @@ const Config = function () {
     'brave_sync_endpoint',
     'brave_variations_server_url',
     'concurrent_links',
+    'dcheck_always_on',
     'enable_updater',
     'gemini_production_api_url',
     'gemini_production_client_id',
@@ -297,8 +296,6 @@ const Config = function () {
     'rewards_grant_prod_endpoint',
     'rewards_grant_staging_endpoint',
     'safebrowsing_api_endpoint',
-    'sardine_client_id',
-    'sardine_client_secret',
     'service_key_aichat',
     'service_key_stt',
     'sparkle_dsa_private_key_file',
@@ -328,6 +325,7 @@ const Config = function () {
     'zebpay_sandbox_oauth_url',
     'use_clang_coverage',
     'coverage_instrumentation_input_file',
+    'is_brave_origin_branded',
   ]
 }
 
@@ -413,19 +411,14 @@ Config.prototype.buildArgs = function () {
     is_ubsan_vptr: this.is_ubsan,
     is_ubsan_no_recover: this.is_ubsan,
     is_msan: this.is_msan,
-    safe_browsing_mode: 1,
     // TODO: Re-enable when chromium_src overrides work for files in relative
     // paths like widevine_cmdm_compoennt_installer.cc
     // use_jumbo_build: !this.officialBuild,
     is_component_build: this.isComponentBuild(),
     is_universal_binary: this.isUniversalBinary,
-    // Our copy of signature_generator.py doesn't support --ignore_missing_cert:
-    ignore_missing_widevine_signing_cert: false,
     target_cpu: this.targetArch,
     is_official_build: this.isOfficialBuild(),
     is_debug: this.isDebug(),
-    dcheck_always_on:
-      getEnvConfig(['dcheck_always_on']) || this.isComponentBuild(),
     brave_channel: this.channel,
     brave_version_major: versionParts[0],
     brave_version_minor: versionParts[1],
@@ -433,18 +426,25 @@ Config.prototype.buildArgs = function () {
     chrome_version_string: this.chromeVersion,
     enable_hangout_services_extension: this.enable_hangout_services_extension,
     enable_cdm_host_verification: this.enableCDMHostVerification(),
-    enable_pseudolocales: this.enable_pseudolocales,
     skip_signing: !this.shouldSign(),
     use_remoteexec: this.useRemoteExec,
     use_reclient: this.useRemoteExec,
     use_siso: this.useSiso,
     use_libfuzzer: this.use_libfuzzer,
     enable_update_notifications: this.isOfficialBuild(),
-    generate_about_credits: true,
+    v8_enable_drumbrake: false,
   }
 
   if (this.targetOS !== 'ios') {
     args['import("//brave/build/args/blink_platform_defaults.gni")'] = null
+  } else {
+    args['import("//brave/build/args/ios_defaults.gni")'] = null
+  }
+  if (this.targetOS === 'android') {
+    args['import("//brave/build/args/android_defaults.gni")'] = null
+  }
+  if (this.targetOS !== 'ios' && this.targetOS !== 'android') {
+    args['import("//brave/build/args/desktop_defaults.gni")'] = null
   }
 
   for (const key of this.forwardEnvArgsToGn) {
@@ -453,6 +453,13 @@ Config.prototype.buildArgs = function () {
 
   if (this.isOfficialBuild()) {
     args.enable_updater = true
+  }
+
+  if (args.is_asan || args.is_ubsan || args.is_msan) {
+    // Temporarily disabling dcheck_always_on for sanitiser builds, as there
+    // are some serious reports coming back. It is necessary first to stabilise
+    // these sanitisers with this flag first before using the default.
+    args.dcheck_always_on = false
   }
 
   if (!this.isBraveReleaseBuild()) {
@@ -533,14 +540,6 @@ Config.prototype.buildArgs = function () {
     && this.targetOS !== 'android'
   ) {
     args.enable_profiling = true
-  }
-
-  if (this.sccache) {
-    if (process.platform === 'win32') {
-      args.clang_use_chrome_plugins = false
-      args.use_thin_lto = true
-    }
-    args.enable_precompiled_headers = false
   }
 
   if (!this.useSiso) {
@@ -649,19 +648,6 @@ Config.prototype.buildArgs = function () {
     args.brave_android_developer_options_code =
       this.braveAndroidDeveloperOptionsCode
     args.brave_safebrowsing_api_key = this.braveAndroidSafeBrowsingApiKey
-    args.safe_browsing_mode = 2
-
-    // Required since cr126 to use Chrome password store
-    args.use_login_database_as_backend = true
-
-    // TODO(fixme)
-    args.enable_tor = false
-
-    // Fixes WebRTC IP leak with default option
-    args.enable_mdns = true
-
-    // We want it to be enabled for all configurations
-    args.disable_android_lint = false
 
     args.android_aab_to_apk = this.androidAabToApk
 
@@ -689,21 +675,12 @@ Config.prototype.buildArgs = function () {
       args.enable_java_asserts = false
     }
 
-    // Default value currently causes multiple errors of
-    // Input to targets not generated by a dependency
-    // Chromium change: 3c46aa800cbd4e21aeb08ac7c1222ce33d5c902e
-    args.translate_genders = false
-
     // These do not exist on android
     // TODO - recheck
     delete args.enable_hangout_services_extension
   }
 
   if (this.targetOS === 'ios') {
-    // Configure unit tests to run outside of chromium infra
-    // https://source.chromium.org/chromium/chromium/src/+/main:ios/build/bots/scripts/README.md
-    args.enable_run_ios_unittests_with_xctest = true
-
     if (this.targetEnvironment) {
       args.target_environment = this.targetEnvironment
     }
@@ -714,7 +691,6 @@ Config.prototype.buildArgs = function () {
     // Component builds are not supported for iOS:
     // https://chromium.googlesource.com/chromium/src/+/master/docs/component_build.md
     args.is_component_build = false
-    args.ios_enable_code_signing = false
 
     if (!args.is_official_build) {
       // When building locally iOS needs dSYMs in order for Xcode to map source
@@ -726,27 +702,9 @@ Config.prototype.buildArgs = function () {
       }
     }
 
-    args.ios_enable_share_extension = false
-    args.ios_enable_credential_provider_extension = true
-    args.ios_enable_widget_kit_extension = false
-
     args.brave_ios_developer_options_code = this.braveIOSDeveloperOptionsCode
 
-    // The app currently crashes on launch without disabling these 2 args:
-    // https://github.com/brave/brave-browser/issues/49595
-    // When this is fixed in Chromium we can remove these 2 arguments
-    args.use_partition_alloc_as_malloc = false
-    args.enable_backup_ref_ptr_support = false
-
-    args.ios_provider_target = '//brave/ios/browser/providers:brave_providers'
-
-    args.ios_locales_pack_extra_source_patterns = [
-      '%root_gen_dir%/components/brave_components_strings_',
-    ]
-    args.ios_locales_pack_extra_deps = ['//brave/components/resources:strings']
-
     delete args.safebrowsing_api_endpoint
-    delete args.safe_browsing_mode
     delete args.enable_hangout_services_extension
     delete args.brave_google_api_endpoint
     delete args.brave_google_api_key
@@ -1210,26 +1168,6 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
 
     if (this.getCachePath()) {
       env.GIT_CACHE_PATH = path.join(this.getCachePath())
-    }
-
-    if (!this.useRemoteExec && this.sccache) {
-      env.CC_WRAPPER = this.sccache
-      console.log('using cc wrapper ' + path.basename(this.sccache))
-      if (path.basename(this.sccache) === 'ccache') {
-        env.CCACHE_CPP2 = 'yes'
-        env.CCACHE_SLOPPINESS = 'pch_defines,time_macros,include_file_mtime'
-        env.CCACHE_BASEDIR = this.srcDir
-        env = this.addPathToEnv(
-          env,
-          path.join(
-            this.srcDir,
-            'third_party',
-            'llvm-build',
-            'Release+Asserts',
-            'bin',
-          ),
-        )
-      }
     }
 
     if (this.rbeService) {

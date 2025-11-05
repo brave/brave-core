@@ -25,7 +25,7 @@ class DefaultBrowserHelperTests: XCTestCase {
 
   func testAPIUnavailable_FallsBackToHeuristic() {
     let date = Date()
-    Preferences.General.lastHTTPURLOpenedDate.value = date.addingTimeInterval(-5.days)
+    Preferences.General.lastHTTPURLOpenedDate.value = date.addingDays(-5)
 
     let helper = DefaultBrowserHelper(
       isDefaultAppChecker: .unavailable
@@ -50,7 +50,7 @@ class DefaultBrowserHelperTests: XCTestCase {
 
   func testAPIUnavailable_FallsBackToHeuristic_Past14Days() {
     let date = Date()
-    Preferences.General.lastHTTPURLOpenedDate.value = date.addingTimeInterval(-30.days)
+    Preferences.General.lastHTTPURLOpenedDate.value = date.addingDays(-30)
 
     let helper = DefaultBrowserHelper(
       isDefaultAppChecker: .unavailable
@@ -80,7 +80,7 @@ class DefaultBrowserHelperTests: XCTestCase {
     let date = Date()
     // Set up cached API result from 3 days ago
     Preferences.General.isDefaultAPILastResult.value = true
-    Preferences.General.isDefaultAPILastResultDate.value = date.addingTimeInterval(-3.days)
+    Preferences.General.isDefaultAPILastResultDate.value = date.addingDays(-3)
 
     let helper = DefaultBrowserHelper(
       // API would return false, but cached is true
@@ -98,7 +98,7 @@ class DefaultBrowserHelperTests: XCTestCase {
     let date = Date()
     // Cache result from 10 days ago
     Preferences.General.isDefaultAPILastResult.value = false
-    Preferences.General.isDefaultAPILastResultDate.value = date.addingTimeInterval(-10.days)
+    Preferences.General.isDefaultAPILastResultDate.value = date.addingDays(-10)
 
     let helper = DefaultBrowserHelper(
       isDefaultAppChecker: .available(isDefault: true)
@@ -112,8 +112,8 @@ class DefaultBrowserHelperTests: XCTestCase {
     let date = Date()
     // Cache result from 15 days ago (expired)
     Preferences.General.isDefaultAPILastResult.value = true
-    Preferences.General.isDefaultAPILastResultDate.value = date.addingTimeInterval(-15.days)
-    Preferences.General.lastHTTPURLOpenedDate.value = date.addingTimeInterval(-5.days)
+    Preferences.General.isDefaultAPILastResultDate.value = date.addingDays(-15)
+    Preferences.General.lastHTTPURLOpenedDate.value = date.addingDays(-5)
 
     let helper = DefaultBrowserHelper(
       isDefaultAppChecker: .available(isDefault: false)
@@ -129,10 +129,10 @@ class DefaultBrowserHelperTests: XCTestCase {
     let date = Date()
     // API cached result from 5 days ago: not default
     Preferences.General.isDefaultAPILastResult.value = false
-    Preferences.General.isDefaultAPILastResultDate.value = date.addingTimeInterval(-5.days)
+    Preferences.General.isDefaultAPILastResultDate.value = date.addingDays(-5)
 
     // User opened link 2 days ago (more recent than API check)
-    Preferences.General.lastHTTPURLOpenedDate.value = date.addingTimeInterval(-2.days)
+    Preferences.General.lastHTTPURLOpenedDate.value = date.addingDays(-2)
 
     let helper = DefaultBrowserHelper(
       isDefaultAppChecker: .available(isDefault: false)
@@ -146,10 +146,10 @@ class DefaultBrowserHelperTests: XCTestCase {
     let date = Date()
     // API cached result from 2 days ago: not default
     Preferences.General.isDefaultAPILastResult.value = false
-    Preferences.General.isDefaultAPILastResultDate.value = date.addingTimeInterval(-2.days)
+    Preferences.General.isDefaultAPILastResultDate.value = date.addingDays(-2)
 
     // User opened link 5 days ago (older than API check)
-    Preferences.General.lastHTTPURLOpenedDate.value = date.addingTimeInterval(-5.days)
+    Preferences.General.lastHTTPURLOpenedDate.value = date.addingDays(-5)
 
     let helper = DefaultBrowserHelper(
       isDefaultAppChecker: .available(isDefault: false)
@@ -175,7 +175,7 @@ class DefaultBrowserHelperTests: XCTestCase {
 
   func testCheckScheduling_Day2_WithinWindow() {
     let date = Date()
-    Preferences.DAU.appRetentionLaunchDate.value = date.addingTimeInterval(-2.days)  // Day 2
+    Preferences.DAU.appRetentionLaunchDate.value = date.addingDays(-2)  // Day 2
 
     let helper = DefaultBrowserHelper(
       isDefaultAppChecker: .available(isDefault: false)
@@ -187,7 +187,7 @@ class DefaultBrowserHelperTests: XCTestCase {
 
   func testCheckScheduling_Day11_AfterWindow() {
     let date = Date()
-    Preferences.DAU.appRetentionLaunchDate.value = date.addingTimeInterval(-11.days)  // Day 11
+    Preferences.DAU.appRetentionLaunchDate.value = date.addingDays(-11)  // Day 11
 
     let helper = DefaultBrowserHelper(
       isDefaultAppChecker: .available(isDefault: false)
@@ -200,9 +200,9 @@ class DefaultBrowserHelperTests: XCTestCase {
   func testCheckScheduling_AlreadyShownInWindow() {
     let date = Date()
     // Day 4 (days 3-6 window)
-    Preferences.DAU.appRetentionLaunchDate.value = date.addingTimeInterval(-4.days)
+    Preferences.DAU.appRetentionLaunchDate.value = date.addingDays(-4)
     // Shown yesterday (also day 3)
-    Preferences.General.isDefaultAPILastCheckDate.value = date.addingTimeInterval(-1.days)
+    Preferences.General.isDefaultAPILastCheckDate.value = date.addingDays(-1)
 
     let helper = DefaultBrowserHelper(
       isDefaultAppChecker: .available(isDefault: false)
@@ -214,10 +214,10 @@ class DefaultBrowserHelperTests: XCTestCase {
 
   func testCheckScheduling_AlreadyDefault() {
     let date = Date()
-    Preferences.DAU.appRetentionLaunchDate.value = date.addingTimeInterval(-2.days)  // Day 2
+    Preferences.DAU.appRetentionLaunchDate.value = date.addingDays(-2)  // Day 2
     Preferences.General.isDefaultAPILastResult.value = true
-    Preferences.General.isDefaultAPILastResultDate.value = date.addingTimeInterval(-1.days)
-    Preferences.General.isDefaultAPILastCheckDate.value = date.addingTimeInterval(-1.days)
+    Preferences.General.isDefaultAPILastResultDate.value = date.addingDays(-1)
+    Preferences.General.isDefaultAPILastCheckDate.value = date.addingDays(-1)
 
     let helper = DefaultBrowserHelper(
       isDefaultAppChecker: .available(isDefault: true)
@@ -246,7 +246,7 @@ class DefaultBrowserHelperTests: XCTestCase {
   func testRecordCheckShown_SubsequentTimes() {
     let date = Date()
     Preferences.DAU.appRetentionLaunchDate.value = date
-    Preferences.General.isDefaultAPILastCheckDate.value = date.addingTimeInterval(-1.days)
+    Preferences.General.isDefaultAPILastCheckDate.value = date.addingDays(-1)
 
     let helper = DefaultBrowserHelper(
       isDefaultAppChecker: .available(isDefault: false)
@@ -264,10 +264,10 @@ class DefaultBrowserHelperTests: XCTestCase {
     let date = Date()
     // Set up cached result from 3 days ago
     Preferences.General.isDefaultAPILastResult.value = true
-    Preferences.General.isDefaultAPILastResultDate.value = date.addingTimeInterval(-3.days)
+    Preferences.General.isDefaultAPILastResultDate.value = date.addingDays(-3)
 
     let helper = DefaultBrowserHelper(
-      isDefaultAppChecker: .rateLimited(retryDate: date.addingTimeInterval(7.days))
+      isDefaultAppChecker: .rateLimited(retryDate: date.addingDays(7))
     )
     helper.now = { date }
 
@@ -278,10 +278,10 @@ class DefaultBrowserHelperTests: XCTestCase {
   func testRateLimited_NoCachedResult_FallsBackToHeuristic() {
     let date = Date()
     // Recent HTTP activity
-    Preferences.General.lastHTTPURLOpenedDate.value = date.addingTimeInterval(-5.days)
+    Preferences.General.lastHTTPURLOpenedDate.value = date.addingDays(-5)
 
     let helper = DefaultBrowserHelper(
-      isDefaultAppChecker: .rateLimited(retryDate: date.addingTimeInterval(7.days))
+      isDefaultAppChecker: .rateLimited(retryDate: date.addingDays(7))
     )
     helper.now = { date }
 
@@ -291,10 +291,10 @@ class DefaultBrowserHelperTests: XCTestCase {
 
   func testRateLimited_PerformAccurateCheck_DoesNotCallAPI() {
     let date = Date()
-    Preferences.DAU.appRetentionLaunchDate.value = date.addingTimeInterval(-2.days)  // Day 2
+    Preferences.DAU.appRetentionLaunchDate.value = date.addingDays(-2)  // Day 2
 
     let helper = DefaultBrowserHelper(
-      isDefaultAppChecker: .rateLimited(retryDate: date.addingTimeInterval(7.days))
+      isDefaultAppChecker: .rateLimited(retryDate: date.addingDays(7))
     )
     helper.now = { date }
 
@@ -311,7 +311,7 @@ class DefaultBrowserHelperTests: XCTestCase {
 
   func testPerformAccurateCheck_APIReturnsTrue_UpdatesStatusAndCache() {
     let date = Date()
-    Preferences.DAU.appRetentionLaunchDate.value = date.addingTimeInterval(-2.days)  // Day 2
+    Preferences.DAU.appRetentionLaunchDate.value = date.addingDays(-2)  // Day 2
 
     let helper = DefaultBrowserHelper(
       isDefaultAppChecker: .available(isDefault: true)
@@ -335,7 +335,7 @@ class DefaultBrowserHelperTests: XCTestCase {
 
   func testPerformAccurateCheck_APIReturnsFalse_UpdatesStatusAndCache() {
     let date = Date()
-    Preferences.DAU.appRetentionLaunchDate.value = date.addingTimeInterval(-5.days)  // Day 5
+    Preferences.DAU.appRetentionLaunchDate.value = date.addingDays(-5)  // Day 5
 
     let helper = DefaultBrowserHelper(
       isDefaultAppChecker: .available(isDefault: false)
@@ -356,16 +356,16 @@ class DefaultBrowserHelperTests: XCTestCase {
 
   func testPerformAccurateCheck_APIRateLimited_PreservesCacheAndStatus() {
     let date = Date()
-    Preferences.DAU.appRetentionLaunchDate.value = date.addingTimeInterval(-7.days)  // Day 7
+    Preferences.DAU.appRetentionLaunchDate.value = date.addingDays(-7)  // Day 7
 
     // Set up existing cache
-    let existingCacheDate = date.addingTimeInterval(-2.days)
+    let existingCacheDate = date.addingDays(-2)
     Preferences.General.isDefaultAPILastResult.value = true
     Preferences.General.isDefaultAPILastResultDate.value = existingCacheDate
     Preferences.General.isDefaultAPILastCheckDate.value = existingCacheDate
 
     let helper = DefaultBrowserHelper(
-      isDefaultAppChecker: .rateLimited(retryDate: date.addingTimeInterval(3.days))
+      isDefaultAppChecker: .rateLimited(retryDate: date.addingDays(3))
     )
     helper.now = { date }
 
@@ -387,9 +387,9 @@ class DefaultBrowserHelperTests: XCTestCase {
 
   func testPerformAccurateCheck_APIUnavailable_DoesNotUpdateCache() {
     let date = Date()
-    Preferences.DAU.appRetentionLaunchDate.value = date.addingTimeInterval(-1.days)  // Day 1
+    Preferences.DAU.appRetentionLaunchDate.value = date.addingDays(-1)  // Day 1
     // Recent activity
-    Preferences.General.lastHTTPURLOpenedDate.value = date.addingTimeInterval(-12.hours)
+    Preferences.General.lastHTTPURLOpenedDate.value = date.addingHours(-12)
 
     let helper = DefaultBrowserHelper(
       isDefaultAppChecker: .unavailable
@@ -414,7 +414,7 @@ class DefaultBrowserHelperTests: XCTestCase {
   func testPerformAccurateCheck_NoCheckNeeded_SkipsCheck() {
     let date = Date()
     // Day 15 (outside check window)
-    Preferences.DAU.appRetentionLaunchDate.value = date.addingTimeInterval(-15.days)
+    Preferences.DAU.appRetentionLaunchDate.value = date.addingDays(-15)
 
     let helper = DefaultBrowserHelper(
       isDefaultAppChecker: .available(isDefault: true)
@@ -432,12 +432,12 @@ class DefaultBrowserHelperTests: XCTestCase {
 
   func testPerformAccurateCheck_WithHTTPURLOpened_StatusReflectsOverride() {
     let date = Date()
-    Preferences.DAU.appRetentionLaunchDate.value = date.addingTimeInterval(-8.days)  // Day 8
+    Preferences.DAU.appRetentionLaunchDate.value = date.addingDays(-8)  // Day 8
 
     let helper = DefaultBrowserHelper(
       isDefaultAppChecker: .available(isDefault: false)
     )
-    helper.now = { date.addingTimeInterval(-2.hours) }
+    helper.now = { date.addingHours(-2) }
 
     // Perform accurate check first
     helper.performAccurateDefaultCheckIfNeeded()
@@ -449,7 +449,7 @@ class DefaultBrowserHelperTests: XCTestCase {
     XCTAssertEqual(helper.status, .notDefaulted)
 
     // Now set HTTP activity more recent than the API check
-    Preferences.General.lastHTTPURLOpenedDate.value = date.addingTimeInterval(-1.hours)
+    Preferences.General.lastHTTPURLOpenedDate.value = date.addingHours(-1)
 
     // Update status to reflect HTTP override
     helper.updateStatus()
@@ -465,10 +465,10 @@ class DefaultBrowserHelperTests: XCTestCase {
     let date = Date()
     // API cached result from 5 days ago: IS default (true)
     Preferences.General.isDefaultAPILastResult.value = true
-    Preferences.General.isDefaultAPILastResultDate.value = date.addingTimeInterval(-5.days)
+    Preferences.General.isDefaultAPILastResultDate.value = date.addingDays(-5)
 
     // User opened link 2 days ago (more recent than API check)
-    Preferences.General.lastHTTPURLOpenedDate.value = date.addingTimeInterval(-2.days)
+    Preferences.General.lastHTTPURLOpenedDate.value = date.addingDays(-2)
 
     let helper = DefaultBrowserHelper(
       isDefaultAppChecker: .available(isDefault: false)
@@ -483,10 +483,10 @@ class DefaultBrowserHelperTests: XCTestCase {
     let date = Date()
     // API cached result from 5 days ago: NOT default (false)
     Preferences.General.isDefaultAPILastResult.value = false
-    Preferences.General.isDefaultAPILastResultDate.value = date.addingTimeInterval(-5.days)
+    Preferences.General.isDefaultAPILastResultDate.value = date.addingDays(-5)
 
     // User opened link 2 days ago (more recent than API check)
-    Preferences.General.lastHTTPURLOpenedDate.value = date.addingTimeInterval(-2.days)
+    Preferences.General.lastHTTPURLOpenedDate.value = date.addingDays(-2)
 
     let helper = DefaultBrowserHelper(
       isDefaultAppChecker: .available(isDefault: true)
@@ -515,7 +515,7 @@ class DefaultBrowserHelperTests: XCTestCase {
   }
 
   func testRecordAppLaunchedWithWebURL_UpdatesExistingDate() {
-    let oldDate = Date().addingTimeInterval(-5.days)
+    let oldDate = Date().addingDays(-5)
     let newDate = Date()
 
     Preferences.General.lastHTTPURLOpenedDate.value = oldDate
@@ -536,7 +536,7 @@ class DefaultBrowserHelperTests: XCTestCase {
     // Set up cached API result that indicates not default
     Preferences.General.isDefaultAPILastResult.value = false
     Preferences.General.isDefaultAPILastResultDate.value =
-      date.addingTimeInterval(-3.days)
+      date.addingDays(-3)
 
     let helper = DefaultBrowserHelper(
       isDefaultAppChecker: .available(isDefault: false)
@@ -575,7 +575,7 @@ class DefaultBrowserHelperTests: XCTestCase {
     // Set up cached API result that indicates IS default
     Preferences.General.isDefaultAPILastResult.value = true
     Preferences.General.isDefaultAPILastResultDate.value =
-      date.addingTimeInterval(-5.days)
+      date.addingDays(-5)
 
     let helper = DefaultBrowserHelper(
       isDefaultAppChecker: .available(isDefault: false)
@@ -594,6 +594,17 @@ class DefaultBrowserHelperTests: XCTestCase {
 }
 
 // MARK: - Test Helpers
+
+extension Date {
+  fileprivate func addingDays(_ days: Int) -> Date {
+    let calendar = Calendar(identifier: .gregorian)
+    return calendar.date(byAdding: .day, value: days, to: self)!
+  }
+  fileprivate func addingHours(_ hours: Int) -> Date {
+    let calendar = Calendar(identifier: .gregorian)
+    return calendar.date(byAdding: .hour, value: hours, to: self)!
+  }
+}
 
 extension IsDefaultAppChecker {
   static var unavailable: Self {

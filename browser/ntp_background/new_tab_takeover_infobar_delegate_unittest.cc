@@ -5,7 +5,6 @@
 
 #include "brave/browser/ntp_background/new_tab_takeover_infobar_delegate.h"
 
-#include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_feature.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/ntp_background_images/browser/new_tab_takeover_infobar_util.h"
 #include "brave/components/ntp_background_images/common/infobar_constants.h"
@@ -57,31 +56,19 @@ class NewTabTakeoverInfoBarDelegateTest
     EXPECT_THAT(GetInfobarManager()->infobars(), ::testing::IsEmpty());
   }
 
-  void SetShouldSupportConfirmationsForNonRewardsFeatureEnabled(bool enabled) {
-    scoped_feature_list_.InitWithFeaturesAndParameters(
-        {{brave_ads::kNewTabPageAdFeature,
-          {{"should_support_confirmations_for_non_rewards",
-            enabled ? "true" : "false"}}}},
-        {});
-  }
-
   void SetRewardsEnabled(bool enabled) {
     GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, enabled);
   }
 
  private:
-  base::test::ScopedFeatureList scoped_feature_list_;
-
 #if !BUILDFLAG(IS_ANDROID)
   ChromeLayoutProvider layout_provider_;
 #endif  // !BUILDFLAG(IS_ANDROID)
 };
 
-TEST_F(
-    NewTabTakeoverInfoBarDelegateTest,
-    ShouldDisplayInfobarIfShouldSupportConfirmationsForNonRewardsFeatureIsEnabled) {
+TEST_F(NewTabTakeoverInfoBarDelegateTest,
+       ShouldDisplayInfobarIfShouldSupportConfirmationsForNonRewards) {
   SetRewardsEnabled(/*enabled=*/false);
-  SetShouldSupportConfirmationsForNonRewardsFeatureEnabled(/*enabled=*/true);
 
   EXPECT_THAT(
       GetPrefs()->GetInteger(
@@ -96,39 +83,9 @@ TEST_F(
       ::testing::Eq(kNewTabTakeoverInfobarRemainingDisplayCountThreshold - 1));
 }
 
-TEST_F(
-    NewTabTakeoverInfoBarDelegateTest,
-    ShouldNotDisplayInfobarIfShouldSupportConfirmationsForNonRewardsFeatureIsDisabled) {
-  SetRewardsEnabled(/*enabled=*/false);
-  SetShouldSupportConfirmationsForNonRewardsFeatureEnabled(/*enabled=*/false);
-
-  EXPECT_THAT(
-      GetPrefs()->GetInteger(
-          prefs::kNewTabTakeoverInfobarRemainingDisplayCount),
-      ::testing::Eq(kNewTabTakeoverInfobarRemainingDisplayCountThreshold));
-
-  VerifyInfobarWasNotDisplayedExpectation();
-}
-
-TEST_F(
-    NewTabTakeoverInfoBarDelegateTest,
-    ShouldNotDisplayInfobarIfShouldSupportConfirmationsForNonRewardsFeatureIsEnabledAndRewardsIsEnabled) {
+TEST_F(NewTabTakeoverInfoBarDelegateTest,
+       ShouldNotDisplayInfobarIfShouldSupportConfirmationsForRewards) {
   SetRewardsEnabled(/*enabled=*/true);
-  SetShouldSupportConfirmationsForNonRewardsFeatureEnabled(/*enabled=*/true);
-
-  EXPECT_THAT(
-      GetPrefs()->GetInteger(
-          prefs::kNewTabTakeoverInfobarRemainingDisplayCount),
-      ::testing::Eq(kNewTabTakeoverInfobarRemainingDisplayCountThreshold));
-
-  VerifyInfobarWasNotDisplayedExpectation();
-}
-
-TEST_F(
-    NewTabTakeoverInfoBarDelegateTest,
-    ShouldNotDisplayInfobarIfShouldSupportConfirmationsForNonRewardsFeatureIsDisabledAndRewardsIsEnabled) {
-  SetRewardsEnabled(/*enabled=*/true);
-  SetShouldSupportConfirmationsForNonRewardsFeatureEnabled(/*enabled=*/false);
 
   EXPECT_THAT(
       GetPrefs()->GetInteger(
@@ -141,7 +98,6 @@ TEST_F(
 TEST_F(NewTabTakeoverInfoBarDelegateTest,
        ShouldDisplayInfobarWhenThresholdHasNotBeenExceeded) {
   SetRewardsEnabled(/*enabled=*/false);
-  SetShouldSupportConfirmationsForNonRewardsFeatureEnabled(/*enabled=*/true);
 
   EXPECT_THAT(
       GetPrefs()->GetInteger(
@@ -164,7 +120,6 @@ TEST_F(NewTabTakeoverInfoBarDelegateTest,
 TEST_F(NewTabTakeoverInfoBarDelegateTest,
        ShouldNotDisplayInfobarWhenThresholdIsMet) {
   SetRewardsEnabled(/*enabled=*/false);
-  SetShouldSupportConfirmationsForNonRewardsFeatureEnabled(/*enabled=*/true);
 
   GetPrefs()->SetInteger(prefs::kNewTabTakeoverInfobarRemainingDisplayCount, 0);
 
@@ -174,7 +129,6 @@ TEST_F(NewTabTakeoverInfoBarDelegateTest,
 TEST_F(NewTabTakeoverInfoBarDelegateTest,
        ShouldNotDisplayInfobarWhenThresholdIsExceeded) {
   SetRewardsEnabled(/*enabled=*/false);
-  SetShouldSupportConfirmationsForNonRewardsFeatureEnabled(/*enabled=*/true);
 
   GetPrefs()->SetInteger(prefs::kNewTabTakeoverInfobarRemainingDisplayCount,
                          -1);
@@ -185,7 +139,6 @@ TEST_F(NewTabTakeoverInfoBarDelegateTest,
 TEST_F(NewTabTakeoverInfoBarDelegateTest,
        ShouldNeverDisplayInfobarAgainIfClosedByUser) {
   SetRewardsEnabled(/*enabled=*/false);
-  SetShouldSupportConfirmationsForNonRewardsFeatureEnabled(/*enabled=*/true);
 
   CreateInfobar();
   ASSERT_THAT(GetInfobarManager()->infobars(), ::testing::SizeIs(1));
@@ -200,7 +153,6 @@ TEST_F(NewTabTakeoverInfoBarDelegateTest,
 TEST_F(NewTabTakeoverInfoBarDelegateTest,
        ShouldNeverDisplayInfobarAgainIfUserClicksLearnMoreLink) {
   SetRewardsEnabled(/*enabled=*/false);
-  SetShouldSupportConfirmationsForNonRewardsFeatureEnabled(/*enabled=*/true);
 
   CreateInfobar();
   ASSERT_THAT(GetInfobarManager()->infobars(), ::testing::SizeIs(1));

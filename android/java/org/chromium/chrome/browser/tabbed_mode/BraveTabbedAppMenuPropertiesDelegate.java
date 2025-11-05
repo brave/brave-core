@@ -5,8 +5,6 @@
 
 package org.chromium.chrome.browser.tabbed_mode;
 
-import static org.chromium.build.NullUtil.assumeNonNull;
-
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
@@ -44,11 +42,9 @@ import org.chromium.chrome.browser.layouts.LayoutStateProvider;
 import org.chromium.chrome.browser.multiwindow.BraveMultiWindowUtils;
 import org.chromium.chrome.browser.multiwindow.MultiWindowModeStateDispatcher;
 import org.chromium.chrome.browser.multiwindow.MultiWindowUtils;
-import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.readaloud.ReadAloudController;
 import org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUtils;
-import org.chromium.chrome.browser.speedreader.BraveSpeedReaderUtils;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tinker_tank.TinkerTankDelegate;
@@ -64,9 +60,9 @@ import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnProfileUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
+import org.chromium.components.browser_ui.accessibility.PageZoomManager;
 import org.chromium.components.dom_distiller.core.DomDistillerFeatures;
 import org.chromium.components.embedder_support.util.UrlUtilities;
-import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.components.webapps.WebappsUtils;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 import org.chromium.ui.modelutil.MVCListAdapter;
@@ -100,7 +96,8 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
             @NonNull
                     OneshotSupplier<IncognitoReauthController>
                             incognitoReauthControllerOneshotSupplier,
-            Supplier<ReadAloudController> readAloudControllerSupplier) {
+            Supplier<ReadAloudController> readAloudControllerSupplier,
+            PageZoomManager pageZoomManager) {
         super(
                 context,
                 activityTabProvider,
@@ -115,7 +112,8 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                 modalDialogManager,
                 snackbarManager,
                 incognitoReauthControllerOneshotSupplier,
-                readAloudControllerSupplier);
+                readAloudControllerSupplier,
+                pageZoomManager);
 
         mBraveAppMenuDelegate = appMenuDelegate;
         mBookmarkModelSupplier = bookmarkModelSupplier;
@@ -415,9 +413,6 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         if (BraveLeoPrefUtils.isLeoEnabled()) {
             modelList.add(buildBraveLeoItem());
         }
-        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SPEEDREADER)) {
-            modelList.add(buildBraveSpeedreaderItem());
-        }
 
         modelList.add(buildSetDefaultBrowserItem());
 
@@ -691,15 +686,6 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                                 R.id.all_bookmarks_menu_id));
             }
         }
-        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SPEEDREADER)
-                && UserPrefs.get(assumeNonNull(mTabModelSelector.getCurrentModel().getProfile()))
-                        .getBoolean(BravePref.SPEEDREADER_PREF_FEATURE_ENABLED)) {
-            final Tab currentTab = mActivityTabProvider.get();
-            if (currentTab != null && BraveSpeedReaderUtils.tabSupportsDistillation(currentTab)) {
-                addMenuItemAfter(
-                        modelList, buildBraveSpeedreaderItem(), Arrays.asList(R.id.page_zoom_id));
-            }
-        }
         if (!BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser(mBraveContext)) {
             modelList.add(buildSetDefaultBrowserItem());
         }
@@ -838,15 +824,6 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                         R.id.brave_news_id,
                         R.string.brave_news_title,
                         shouldShowIconBeforeItem() ? R.drawable.ic_news : 0));
-    }
-
-    private MVCListAdapter.ListItem buildBraveSpeedreaderItem() {
-        return new MVCListAdapter.ListItem(
-                AppMenuHandler.AppMenuItemType.STANDARD,
-                buildModelForStandardMenuItem(
-                        R.id.brave_speedreader_id,
-                        R.string.brave_speedreader_title,
-                        shouldShowIconBeforeItem() ? R.drawable.ic_readermode : 0));
     }
 
     private MVCListAdapter.ListItem buildBraveLeoItem() {

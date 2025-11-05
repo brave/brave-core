@@ -635,7 +635,7 @@ TEST(BlockchainListParseUnitTest, ParseOnRampTokensListMap) {
 
   supported_tokens_list_map = ParseRampTokenListMaps(supported_tokens_list);
   ASSERT_TRUE(supported_tokens_list_map);
-  EXPECT_EQ((*supported_tokens_list_map).first.size(), 4UL);
+  EXPECT_EQ((*supported_tokens_list_map).first.size(), 3UL);
 
   auto it =
       (*supported_tokens_list_map).first.find(mojom::OnRampProvider::kRamp);
@@ -668,39 +668,6 @@ TEST(BlockchainListParseUnitTest, ParseOnRampTokensListMap) {
   EXPECT_EQ(it->second[1]->token_id, "");
   EXPECT_EQ(it->second[1]->coingecko_id, "");
   EXPECT_EQ(it->second[1]->chain_id, "0x38");
-  EXPECT_EQ(it->second[1]->coin, mojom::CoinType::ETH);
-
-  it = (*supported_tokens_list_map).first.find(mojom::OnRampProvider::kSardine);
-  ASSERT_NE(it, (*supported_tokens_list_map).first.end());
-  EXPECT_EQ(it->second.size(), 2UL);
-  EXPECT_EQ(it->second[0]->contract_address, "");
-  EXPECT_EQ(it->second[0]->name, "Ethereum");
-  EXPECT_EQ(it->second[0]->logo, "");
-  EXPECT_EQ(it->second[0]->is_erc20, false);
-  EXPECT_EQ(it->second[0]->is_erc721, false);
-  EXPECT_EQ(it->second[0]->is_erc1155, false);
-  EXPECT_EQ(it->second[0]->is_nft, false);
-  EXPECT_EQ(it->second[0]->symbol, "ETH");
-  EXPECT_EQ(it->second[0]->decimals, 18);
-  EXPECT_EQ(it->second[0]->visible, true);
-  EXPECT_EQ(it->second[0]->token_id, "");
-  EXPECT_EQ(it->second[0]->coingecko_id, "");
-  EXPECT_EQ(it->second[0]->chain_id, "0x1");
-  EXPECT_EQ(it->second[0]->coin, mojom::CoinType::ETH);
-  EXPECT_EQ(it->second[1]->contract_address,
-            "0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9");
-  EXPECT_EQ(it->second[1]->name, "AAVE");
-  EXPECT_EQ(it->second[1]->logo, "aave.png");
-  EXPECT_EQ(it->second[1]->is_erc20, true);
-  EXPECT_EQ(it->second[1]->is_erc721, false);
-  EXPECT_EQ(it->second[1]->is_erc1155, false);
-  EXPECT_EQ(it->second[1]->is_nft, false);
-  EXPECT_EQ(it->second[1]->symbol, "AAVE");
-  EXPECT_EQ(it->second[1]->decimals, 18);
-  EXPECT_EQ(it->second[1]->visible, true);
-  EXPECT_EQ(it->second[1]->token_id, "");
-  EXPECT_EQ(it->second[1]->coingecko_id, "");
-  EXPECT_EQ(it->second[1]->chain_id, "0x1");
   EXPECT_EQ(it->second[1]->coin, mojom::CoinType::ETH);
 
   it = (*supported_tokens_list_map).first.find(mojom::OnRampProvider::kTransak);

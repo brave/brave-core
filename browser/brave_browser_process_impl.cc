@@ -31,6 +31,7 @@
 #include "brave/components/brave_component_updater/browser/brave_component_updater_delegate.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_origin/brave_origin_policy_manager.h"
+#include "brave/components/brave_policy/ad_block_only_mode/ad_block_only_mode_policy_manager.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/content/browser/ad_block_subscription_service_manager.h"
@@ -41,7 +42,6 @@
 #include "brave/components/debounce/core/browser/debounce_component_installer.h"
 #include "brave/components/debounce/core/common/features.h"
 #include "brave/components/https_upgrade_exceptions/browser/https_upgrade_exceptions_service.h"
-#include "brave/components/localhost_permission/localhost_permission_component.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/p3a/histograms_braveizer.h"
 #include "brave/components/p3a/p3a_config.h"
@@ -193,6 +193,10 @@ void BraveBrowserProcessImpl::Init() {
     CreateAIChatAgentProfileManager();
   }
 #endif
+
+  // Lazy initialization of AdBlockOnlyModePolicyManager
+  brave_policy::AdBlockOnlyModePolicyManager::GetInstance()->Init(
+      local_state());
 }
 
 void BraveBrowserProcessImpl::PreMainMessageLoopRun() {
@@ -221,6 +225,7 @@ void BraveBrowserProcessImpl::StartTearDown() {
 #endif
   // Reset BraveOriginPolicyManager to prevent dangling pointer to local_state_
   brave_origin::BraveOriginPolicyManager::GetInstance()->Shutdown();
+  brave_policy::AdBlockOnlyModePolicyManager::GetInstance()->Shutdown();
   brave_sync::NetworkTimeHelper::GetInstance()->Shutdown();
   BrowserProcessImpl::StartTearDown();
 }
@@ -257,11 +262,6 @@ void BraveBrowserProcessImpl::StartBraveServices() {
 
   if (base::FeatureList::IsEnabled(net::features::kBraveHttpsByDefault)) {
     https_upgrade_exceptions_service();
-  }
-
-  if (base::FeatureList::IsEnabled(
-          brave_shields::features::kBraveLocalhostAccessPermission)) {
-    localhost_permission_component();
   }
 
   if (base::FeatureList::IsEnabled(
@@ -320,21 +320,6 @@ BraveBrowserProcessImpl::https_upgrade_exceptions_service() {
             local_data_files_service());
   }
   return https_upgrade_exceptions_service_.get();
-}
-
-localhost_permission::LocalhostPermissionComponent*
-BraveBrowserProcessImpl::localhost_permission_component() {
-  if (!base::FeatureList::IsEnabled(
-          brave_shields::features::kBraveLocalhostAccessPermission)) {
-    return nullptr;
-  }
-
-  if (!localhost_permission_component_) {
-    localhost_permission_component_ =
-        std::make_unique<localhost_permission::LocalhostPermissionComponent>(
-            local_data_files_service());
-  }
-  return localhost_permission_component_.get();
 }
 
 debounce::DebounceComponentInstaller*

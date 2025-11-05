@@ -71,6 +71,9 @@
 #error "This file requires ARC support."
 #endif
 
+NSString* const kBraveAdsFirstRunAtPrefName =
+    base::SysUTF8ToNSString(brave_ads::prefs::kFirstRunAt);
+
 #define BLOG(verbose_level, format, ...)                  \
   [self log:(__FILE__)                                    \
        line:(__LINE__)verboseLevel:(verbose_level)message \
@@ -1531,19 +1534,22 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 
 - (void)triggerNewTabPageAdEvent:(NSString*)wallpaperId
               creativeInstanceId:(NSString*)creativeInstanceId
-      shouldMetricsFallbackToP3a:(BOOL)shouldMetricsFallbackToP3a
+                      metricType:(BraveAdsNewTabPageAdMetricType)metricType
                        eventType:(BraveAdsNewTabPageAdEventType)eventType
                       completion:(void (^)(BOOL success))completion {
   if (![self isServiceRunning]) {
     return completion(/*success=*/false);
   }
 
+  const brave_ads::mojom::NewTabPageAdMetricType mojom_metric_type =
+      static_cast<brave_ads::mojom::NewTabPageAdMetricType>(metricType);
+
   const brave_ads::mojom::NewTabPageAdEventType mojom_event_type =
       static_cast<brave_ads::mojom::NewTabPageAdEventType>(eventType);
 
   adsService->TriggerNewTabPageAdEvent(
       base::SysNSStringToUTF8(wallpaperId),
-      base::SysNSStringToUTF8(creativeInstanceId), shouldMetricsFallbackToP3a,
+      base::SysNSStringToUTF8(creativeInstanceId), mojom_metric_type,
       mojom_event_type, base::BindOnce(completion));
 }
 

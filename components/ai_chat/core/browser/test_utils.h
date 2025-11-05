@@ -11,6 +11,7 @@
 
 #include "base/location.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
 
 namespace ai_chat {
 

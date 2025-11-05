@@ -156,19 +156,19 @@ void MockCanShowNotificationAdsWhileBrowserIsBackgrounded(
 void MockGetSiteHistory(const AdsClientMock& ads_client_mock,
                         const SiteHistoryList& site_history) {
   ON_CALL(ads_client_mock, GetSiteHistory)
-      .WillByDefault(::testing::Invoke(
-          [site_history](size_t max_count, size_t /*recent_day_range*/,
-                         GetSiteHistoryCallback callback) {
-            CHECK_LE(site_history.size(), max_count);
+      .WillByDefault([site_history](size_t max_count,
+                                    size_t /*recent_day_range*/,
+                                    GetSiteHistoryCallback callback) {
+        CHECK_LE(site_history.size(), max_count);
 
-            std::move(callback).Run(site_history);
-          }));
+        std::move(callback).Run(site_history);
+      });
 }
 
 void MockUrlResponses(const AdsClientMock& ads_client_mock,
                       const URLResponseMap& url_responses) {
   ON_CALL(ads_client_mock, UrlRequest)
-      .WillByDefault(::testing::Invoke(
+      .WillByDefault(
           [url_responses](const mojom::UrlRequestInfoPtr& mojom_url_request,
                           UrlRequestCallback callback) {
             std::optional<mojom::UrlResponseInfo> url_response =
@@ -179,7 +179,7 @@ void MockUrlResponses(const AdsClientMock& ads_client_mock,
             }
 
             std::move(callback).Run(*url_response);
-          }));
+          });
 }
 
 }  // namespace brave_ads::test

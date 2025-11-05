@@ -270,6 +270,7 @@
   <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT_CARDANO_DESCRIPTION" desc="Add account modal create account Cardano description">Store Cardano assets</message>
   <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT_CARDANO_TESTNET_DESCRIPTION" desc="Add account modal create account Cardano Testnet description">Store Cardano Testnet assets</message>
   <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT_POLKADOT_DESCRIPTION" desc="Add account modal create account Polkadot description">Supports Substrate assets on Polkadot relay chain and Substrate parachains</message>
+  <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT_POLKADOT_TESTNET_DESCRIPTION" desc="Add account modal create account Polkadot Tesnet description">Supports Substrate assets on Westend relay chain and Substrate parachains</message>
   <message name="IDS_BRAVE_WALLET_FILECOIN_PRIVATE_KEY_PROTOCOL" desc="Add account modal filecoin private key protocol">Private key <ph name="PROTOCOL"><ex>BLS12-381</ex>$1</ph></message>
   <message name="IDS_BRAVE_WALLET_ADD_ACCOUNT_IMPORT" desc="Add account modal import button">Import</message>
   <message name="IDS_BRAVE_WALLET_ADD_ACCOUNT_IMPORT_HARDWARE" desc="Add account modal import hardware wallet button">Import from hardware wallet</message>
@@ -648,7 +649,6 @@
   <message name="IDS_BRAVE_WALLET_NOT_VALID_FIL_ADDRESS" desc="Send input not valid FIL address error">Not a valid FIL address</message>
   <message name="IDS_BRAVE_WALLET_BUY_WITH_RAMP" desc="Buy with Ramp option label">Buy with Ramp</message>
   <message name="IDS_BRAVE_WALLET_SELL_WITH_PROVIDER" desc="Sell with Provider option label">Sell with <ph name="OFFRAMP_PROVIDER">$1<ex>Ramp</ex></ph></message>
-  <message name="IDS_BRAVE_WALLET_BUY_WITH_SARDINE" desc="Buy with Sardine option label">Buy with Sardine</message>
   <message name="IDS_BRAVE_WALLET_BUY_DISCLAIMER" desc="Brave disclaimer text in buy screen">Financial and transaction data is processed by our onramp partners. Brave does not collect or have access to such data.</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTIONS_PARTNER" desc="Transactions partner modal title">Transactions partner</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_PARTNER_CONSENT" desc="Meld consent description">Brave Wallet uses Meld.io to help aggregate and surface various crypto providers for your region. We will share information with Meld.io to complete the transaction, including your wallet address and country code. For more information please read Meld’s terms of use.</message>
@@ -674,12 +674,10 @@
   <message name="IDS_BRAVE_WALLET_BUY_WITH_STRIPE" desc="Buy with Stripe option label">Buy with Link</message>
   <message name="IDS_BRAVE_WALLET_BUY_WITH_COINBASE" desc="Buy with Coinbase Pay option label">Buy with Coinbase Pay</message>
   <message name="IDS_BRAVE_WALLET_BUY_RAMP_NETWORK_NAME" desc="Ramp.Network onramp provider name">Ramp.Network</message>
-  <message name="IDS_BRAVE_WALLET_BUY_SARDINE_NAME" desc="Sardine onramp provider name">Sardine</message>
   <message name="IDS_BRAVE_WALLET_BUY_TRANSAK_NAME" desc="Transak onramp provider name">Transak</message>
   <message name="IDS_BRAVE_WALLET_BUY_STRIPE_NAME" desc="Stripe onramp provider name">Link by Stripe</message>
   <message name="IDS_BRAVE_WALLET_BUY_COINBASE_NAME" desc="Coinbase Pay onramp provider name">Coinbase Pay</message>
   <message name="IDS_BRAVE_WALLET_BUY_RAMP_DESCRIPTION" desc="Ramp.Network description in buy options list">Buy crypto with Visa or Mastercard.</message>
-  <message name="IDS_BRAVE_WALLET_BUY_SARDINE_DESCRIPTION" desc="Sardine description in buy options list">Easiest, fastest and cheapest way to buy crypto with card and bank transfers.</message>
   <message name="IDS_BRAVE_WALLET_BUY_TRANSAK_DESCRIPTION" desc="Transak description in buy options list">Instant buy with your bank account. Lower fees.</message>
   <message name="IDS_BRAVE_WALLET_BUY_STRIPE_DESCRIPTION" desc="Stripe description in buy options list">Pay with credit, debit, bank account</message>
   <message name="IDS_BRAVE_WALLET_BUY_COINBASE_DESCRIPTION" desc="Coinbase Pay description in buy options list">Buy with the most trusted name in crypto.</message>
@@ -1048,6 +1046,7 @@
   <message name="IDS_BRAVE_SWAP_AVERAGE" desc="Gas price corresponding to average speed for confirmation">Average</message>
   <message name="IDS_BRAVE_SWAP_FAST" desc="Gas price corresponding to fast speed for confirmation">Fast</message>
   <message name="IDS_BRAVE_SWAP_GWEI" desc="Unit to use for gas price (giga-wei)">Gwei</message>
+  <message name="IDS_BRAVE_WALLET_ESTIMATED_FEE" desc="Estimated fee">Estimated fee</message>
   <message name="IDS_BRAVE_SWAP_SLIPPAGE_TOLERANCE" desc="Percentage tolerance to allow for slippage during the swap">Slippage tolerance</message>
   <message name="IDS_BRAVE_SWAP_EXCHANGES" desc="Exchanges to use for the swap trade">Exchanges</message>
   <message name="IDS_BRAVE_SWAP_DIRECT_ROUTE_TITLE" desc="Text indicating that swap must use direct routes in the trade">Direct route only</message>
@@ -1116,6 +1115,9 @@
   <message name="IDS_BRAVE_WALLET_GAS_PRICE" desc="Label for gas price">Gas price</message>
   <message name="IDS_BRAVE_WALLET_EDIT_GAS_ESTIMATED_NETWORK_FEE" desc="Label for estimated network fee">Estimated network fee</message>
   <message name="IDS_BRAVE_WALLET_USE_DEFAULT" desc="Label for use default">Use default</message>
+  <message name="IDS_BRAVE_WALLET_GAS_FEE_TOOLTIP" desc="Tooltip text for gas fee">This gas fee will replace the original.</message>
+  <message name="IDS_BRAVE_WALLET_GAS_FEE_TOOLTIP_DESCRIPTION" desc="Tooltip description for gas fee">This will create a new transaction with a new gas fee to override and cancel the pending one. A cancellation can only be attempted if the transaction is still pending on the network.</message>
+  <message name="IDS_BRAVE_WALLET_SPEED_PRIORITY" desc="Label for speed priority">Speed priority</message>
   <message name="IDS_WALLET_EIP6963_PROVIDER_NAME" desc="Provider name which will be return when announce ethereum provider">Brave Wallet</message>
   <message name="IDS_BRAVE_WALLET_RECEIVE" desc="Receive asset event title">Receive</message>
   <message name="IDS_BRAVE_WALLET_FROM" desc="From address label">From</message>

@@ -59,7 +59,12 @@ EphemeralStorageTabHelper::GetEphemeralStorageToken(const url::Origin& origin) {
   return std::nullopt;
 }
 
-void EphemeralStorageTabHelper::WebContentsDestroyed() {}
+void EphemeralStorageTabHelper::WebContentsDestroyed() {
+  provisional_tld_ephemeral_lifetimes_.clear();
+  tld_ephemeral_lifetime_.reset();
+
+  weak_factory_.InvalidateWeakPtrs();
+}
 
 void EphemeralStorageTabHelper::DidStartNavigation(
     NavigationHandle* navigation_handle) {

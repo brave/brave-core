@@ -13,13 +13,15 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kAblateSearchProviderWarmup, base::FEATURE_ENABLED_BY_DEFAULT},
     {kDocumentProviderNoSyncRequirement, base::FEATURE_DISABLED_BY_DEFAULT},
     {kMlUrlScoring, base::FEATURE_DISABLED_BY_DEFAULT},
+#if BUILDFLAG(IS_ANDROID)
+    {kOmniboxMobileParityUpdateV2, base::FEATURE_DISABLED_BY_DEFAULT},
+#endif
     {kRichAutocompletion, base::FEATURE_DISABLED_BY_DEFAULT},
     {kStarterPackExpansion, base::FEATURE_DISABLED_BY_DEFAULT},
     {kZeroSuggestPrefetching, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
 BASE_FEATURE(kOmniboxTabSwitchByDefault,
-             "OmniboxTabSwitchByDefault",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
 }  // namespace omnibox

@@ -43,8 +43,6 @@ OBJC_EXPORT
 @property(class, nonatomic, readonly) Feature* kBraveDomainBlock1PES;
 @property(class, nonatomic, readonly) Feature* kBraveLocalhostAccessPermission;
 @property(class, nonatomic, readonly) Feature* kBraveNTPBrandedWallpaper;
-@property(class, nonatomic, readonly) Feature* kBraveNTPBrandedWallpaperDemo;
-@property(class, nonatomic, readonly) Feature* kBraveNTPSuperReferralWallpaper;
 @property(class, nonatomic, readonly)
     Feature* kBraveNTPBrandedWallpaperSurveyPanelist;
 @property(class, nonatomic, readonly) Feature* kBraveNewsCardPeekFeature;
@@ -83,6 +81,11 @@ OBJC_EXPORT
 @property(class, nonatomic, readonly) Feature* kBraveAllowExternalPurchaseLinks;
 @property(class, nonatomic, readonly) Feature* kModernTabTrayEnabled;
 @property(class, nonatomic, readonly) Feature* kBraveWalletWebUIIOS;
+@property(class, nonatomic, readonly) Feature* kAIChatWebUIEnabled;
+@property(class, nonatomic, readonly) Feature* kBraveSyncDefaultPasswords;
+@property(class, nonatomic, readonly)
+    Feature* kWebKitAdvancedPrivacyProtections;
+@property(class, nonatomic, readonly) Feature* kBraveOrigin;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -1,6 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="hi">
+<translation id="1751249301761991853">व्यक्तिगत</translation>
 <translation id="3333887201479867589">Brave रिवार्ड्स</translation>
 <translation id="7561196759112975576">हमेशा</translation>
 <translation id="7961015016161918242">कभी नहीं</translation>
@@ -182,12 +183,12 @@
 <translation id="2533715613366623756">बुकमार्क मैनेजर</translation>
 <translation id="3405021928725149239">बुकमार्क मैनेजर</translation>
 <translation id="6284218950354553099">हर दिन के उपयोग पिंग Brave को अपने आप भेजें</translation>
-<translation id="2181060149810222381">यह प्राइवेट पिंग, Brave को सक्रिय उपयोगकर्ताओं का अनुमान लगाने देता है।</translation>
+<translation id="694500751416448436">यह प्राइवेट पिंग, Brave को सक्रिय उपयोगकर्ताओं का अनुमान लगाने देता है।</translation>
 <translation id="1872784258300710671">Brave कुछ फ़ीचर्स के समग्र उपयोग का अनुमान लगाने के लिए पूरी तरह से निजी प्रोडक्ट एनालिटिक्स का उपयोग करता है</translation>
 <translation id="8712637175834984815">समझ लिया</translation>
 <translation id="4394049700291259645">बंद करें</translation>
 <translation id="7142548388914389999">गोपनीयता-संरक्षण प्रोडक्ट एनालिटिक्स की अनुमति दें (P3A)</translation>
-<translation id="2604698253988679506">ये प्राइवेट रिस्पॉन्स, कुछ फ़ीचर्स के कुल उपयोग का अनुमान लगाने और उन्हें आपके लिए बेहतर बनाने में Brave की मदद करते हैं।</translation>
+<translation id="8707615221880318679">ये प्राइवेट रिस्पॉन्स, कुछ फ़ीचर्स के कुल उपयोग का अनुमान लगाने और उन्हें आपके लिए बेहतर बनाने में Brave की मदद करते हैं।</translation>
 <translation id="193368604235852218">Web3</translation>
 <translation id="4738583579791001083">Web3 डोमेन</translation>
 <translation id="4552520379838695057">क्षमा करें, वह पेज गायब है।</translation>
@@ -207,6 +208,7 @@
 <translation id="253980346046488815">डुप्लीकेट टैब को बंद करें</translation>
 <translation id="8670218546624422041">कंटेनर में खोलें</translation>
 <translation id="8638526693050780542">कंटेनर्स मैनेज करें</translation>
+<translation id="7302999361397024774">टैब का नाम बदलें</translation>
 <translation id="2336228925368920074">सभी टैब बुकमार्क करें...</translation>
 <translation id="2523967823495420116">वर्टिकल टैब का इस्तेमाल करें</translation>
 <translation id="3785071023202624850">{NUM_TABS,plural, =1{टैब म्यूट करें}one{टैब म्यूट करें}other{टैब म्यूट करें}}</translation>
@@ -217,6 +219,7 @@
 <translation id="2703180365855369896">डुप्लीकेट टैब को बंद करें</translation>
 <translation id="1987871867023021397">कंटेनर में खोलें</translation>
 <translation id="6745991613881384719">कंटेनर्स मैनेज करें</translation>
+<translation id="3917844427669888979">टैब का नाम बदलें</translation>
 <translation id="3704707436873245822">ईमेज से टेक्स्ट कॉपी करें</translation>
 <translation id="5268098808165185458">ईमेज से टेक्स्ट कॉपी हो रहा है...</translation>
 <translation id="4046485130884276245">ईमेज से टेक्स्ट कॉपी हो गया है</translation>
@@ -342,6 +345,9 @@
 <translation id="3435896845095436175">सक्षम करें</translation>
 <translation id="1940221956626514677">टूलबार कस्टमाइज़ करें</translation>
 <translation id="6501807887341963552">थीम और रंग</translation>
+<translation id="6724227215236550330">सेव किए गए पासवर्ड यहाँ दिखेंगे। इस डिवाइस पर <ph name="BRAND"/> में पासवर्ड इंपोर्ट करने के लिए <ph name="BEGIN_LINK"/> कोई CSV फ़ाइल चुनें
+<ph name="END_LINK"/></translation>
+<translation id="3575561030014162610">इस डिवाइस पर <ph name="BRAND"/> में पासवर्ड इंपोर्ट करने के लिए, कोई CSV फ़ाइल चुनें</translation>
 <translation id="9156965752763025780">अगली बार आपके द्वारा क्रोमियम पुन: लॉन्‍च करने पर आपके परिवर्तन प्रभावी होंगे.</translation>
 <translation id="7179921470347911571">अब पुनः प्रस्तुत करें</translation>
 <translation id="1426410128494586442">हां</translation>
@@ -413,9 +419,10 @@ Binance
 <translation id="5436069931267876389">कंटेनर नहीं मिला</translation>
 <translation id="2263346047290834619">ट्री टैब इस्तेमाल करें</translation>
 <translation id="5860254591544742609">टाइटल बार दिखाएँ</translation>
-<translation id="5371926069408837914">जब वर्टिकल पैनल पर माउस का कर्सर जाए तो वह खुल जाए</translation>
+<translation id="4691131445504068802">मिनिमाइज़ करने पर पूरी तरह छिपाएँ</translation>
+<translation id="4909269867860362936">मिनिमाइज़ होने पर होवर करने से स्वतः एक्सपैंड करें</translation>
 <translation id="3367129510799209147">टैब होवर मोड</translation>
-<translation id="8527099657928614787">हर विंडो में वर्टीकल टैब का एक्सपैंड करें</translation>
+<translation id="8925055964134259461">हर विंडो में वर्टीकल टैब का स्वतः एक्सपैंड अलग-अलग करें</translation>
 <translation id="916373084491701212">स्क्रॉलबार दिखाएँ</translation>
 <translation id="515949045075831661">दाईं ओर दिखाएं</translation>
 <translation id="3725395376319291415">बाईं ओर दिखाएं</translation>
@@ -426,19 +433,23 @@ Binance
 <translation id="2396127686705429331">बुकमार्क आइकन दिखाएँ</translation>
 <translation id="2814998458708016836">विस्तृत एड्रेस बार का उपयोग करें</translation>
 <translation id="4109670531935487117">एड्रेस बार में ऑटोकंप्लीट के सुझाव दिखाएँ</translation>
-<translation id="3405901785709583668">टॉप सुझाव</translation>
+<translation id="4579877808890085926">डिवाइस पर आधारित सुझाव</translation>
 <translation id="7859704718976024901">ब्राउज़िंग इतिहास</translation>
 <translation id="8820817407110198400">बुकमार्क बार</translation>
 <translation id="4144468798716165316">क्विक कमांड</translation>
 <translation id="7310387888625228830">लियो AI असिस्टेंट</translation>
 <translation id="5222974844674487962">Brave न्यूज़ का बटन दिखाएँ</translation>
 <translation id="2085436423511121572">Leo AI बटन दिखाएं</translation>
-<translation id="383007806262310953">बुकमार्क बार दिखाएं</translation>
+<translation id="6156323911414505561">बुकमार्क बार दिखाएं</translation>
 <translation id="4054323497808446566">बुकमार्क बार सभी पेज पर दिखाई देता है</translation>
 <translation id="8693858092251192712">नए टैब पेज को छोड़कर सभी पेज पर बुकमार्क बार छिपा हुआ रहता है</translation>
 <translation id="7158817046543187970">बुकमार्क बार सभी पेज छिपा हुआ रहता है</translation>
 <translation id="3416468988018290825">हमेशा पूरे URL दिखाएँ</translation>
 <translation id="5529693968082667490">टैब सर्च बटन दिखाएं</translation>
+<translation id="1013121820689882118">स्पीडरीडर</translation>
+<translation id="5522420266446076076">स्पीडरीडर सुविधा चालू करें।</translation>
+<translation id="5211997910936574251">जब संभव हो, तब अपने-आप स्पीडरीडर इस्तेमाल करें</translation>
+<translation id="2025435450953474282">लेख अपने आप रीडर मोड में लोड होते हैं, जिससे आपका समय बचता है</translation>
 <translation id="7984721311211272523">टैब स्पीकर के आइकन में म्यूट की सुविधा बंद करें</translation>
 <translation id="832432428796481785">साइडबार बटन दिखाएँ</translation>
 <translation id="5581036754486769849">प्राइवेट विंडो में अपने-आप भरने की इजाज़त दें</translation>
@@ -460,7 +471,7 @@ Binance
 <translation id="5690973901138662477">शील्ड चालू हैं</translation>
 <translation id="4697275813919189958">शील्ड बंद हैं</translation>
 <translation id="6303294677342628402">सुरक्षा कवच</translation>
-<translation id="7133511168130368997">पूरे वेब पर आपके साथ रहने वाले ट्रैकर्स और विज्ञापनों को ब्लॉक करें।</translation>
+<translation id="5128768857590582420">पूरे वेब पर आपके साथ रहने वाले ट्रैकर्स और विज्ञापनों को ब्लॉक करें।</translation>
 <translation id="2761825942249694703">ये डिफ़ॉल्ट शील्ड्स सेटिंग हैं। वे सभी वेबसाइटों पर लागू होते हैं जब तक आप किसी विशेष साइट के शील्ड्स पैनल मे कुछ बदलाव नही करते। इन्हें बदलने से आपकी मौजूदा प्रति-साइट सेटिंग प्रभावित नही होगी।</translation>
 <translation id="8452536890042542134">यह वेबसाइट पर ज़्यादातर आइकन को ब्लॉक कर देगा.</translation>
 <translation id="4800195524776354947">शील्ड्स आइकन पर ब्लॉक किए गए वस्तुओं की संख्या दिखाएँ</translation>
@@ -469,7 +480,7 @@ Binance
 <translation id="920638232916443453">अपने-आप दूसरे पेज पर ले जाने वाले ट्रैकिंग URL</translation>
 <translation id="1118970888826017401">अपने-आप दूसरे पेज पर भेजने वाले टॉप लेवल ट्रैकिंग URL को छोड़कर आगे बढ़ने के लिए सपोर्ट को चालू करें</translation>
 <translation id="7607166182943595829">मेरी भाषा प्राथमिकताओं के आधार पर साइट को मेरे फ़िंगरप्रिंट लेने से रोकें</translation>
-<translation id="3497934980362703405">आपकी भाषा प्राथमिकताओं के बारे में वेब साइटें कितना जान सकती हैं, यह आप इस सेटिंग को चालू करके कम कर सकते हैं.</translation>
+<translation id="1940747376931821321">आपकी भाषा प्राथमिकताओं के बारे में वेब साइटें कितना जान सकती हैं, यह आप इस सेटिंग को चालू करके कम कर सकते हैं.</translation>
 <translation id="2133317862976486547">ट्रैकर्स &amp; विज्ञापन ब्लॉक करना</translation>
 <translation id="4078738236287221428">एग्रेसिव</translation>
 <translation id="7740996059027112821">मानक</translation>
@@ -487,7 +498,7 @@ Binance
 <translation id="130615081792797568">सरल व्यू</translation>
 <translation id="2360360976480535628">उन्नत व्यू</translation>
 <translation id="101592339984642584">कंटेंट फ़िल्टर करना</translation>
-<translation id="8694564340481124390">कस्टम फ़िल्टर की सुविधा चालू करें, जो क्षेत्र और भाषा से जुड़े ट्रैकर और अनचाही चीज़ों को ब्लॉक करती है.</translation>
+<translation id="2398817776566547893">कस्टम फ़िल्टर की सुविधा चालू करें, जो क्षेत्र और भाषा से जुड़े ट्रैकर और अनचाही चीज़ों को ब्लॉक करती है.</translation>
 <translation id="3482656215021340727">कस्टम फ़िल्टर की लिस्ट जोड़ें</translation>
 <translation id="1020877116991797978">अपने भरोसेमंद समुदाय की ओर से बनाई और संभाली जा रही अतिरिक्त लिस्ट जोड़ें.</translation>
 <translation id="7617831480435794399">केवल उन संस्थाओं की लिस्ट की सदस्यता लें जिन पर आप भरोसा करते हैं. आपका ब्राउज़र समय-समय पर आपके द्वारा दर्ज किए गए URL से लिस्ट अपडेट की जांच करेगा, आपके IP पते को उनके सर्वर पर दिखाएगा.</translation>
@@ -541,6 +552,7 @@ Binance
 <translation id="1689062823386843231">गैर-प्रॉक्सी UDP अक्षम करें</translation>
 <translation id="3540231253392253941">पुश मैसेजिंग के लिए Google सेवाओं का इस्तेमाल करें</translation>
 <translation id="933652931229970927">अपने आप नैदानिक रिपोर्ट भेजें</translation>
+<translation id="8868426106596092089">Brave ब्राउज़र के क्रैश या फ़्रीज़ होने पर अपने आप नैदानिक रिपोर्ट भेजकर Brave की प्रोडक्ट स्थिरता को बेहतर बनाने में मदद करें.</translation>
 <translation id="4891600875049212418">संवेदनशील वेबसाइट पर जाते समय 'अदृश्य' हो जाएँ</translation>
 <translation id="509873765238158442">Microsoft Recall ब्लॉक करें</translation>
 <translation id="4763421121695677716">Microsoft Windows पर Recall सुविधा को Brave के किसी भी खुले टैब के अपने-आप स्क्रीनशॉट लेने से ब्लॉक करें।</translation>
@@ -670,16 +682,18 @@ Binance
 <translation id="6011308810877101166">सर्च के सुझाव बेहतर बनाएँ</translation>
 <translation id="2332576387809612040">चालू होने पर, Brave ऐड्रेस बार या सर्च बॉक्स में आप जो भी टाइप करते हैं उसे आपके डिफ़ॉल्ट सर्च इंजन में भेजता है, ताकि बेहतर सुझाव मिल सकें। बंद होने पर, Brave सिर्फ़ आपके डिवाइस पर जनरेट हुआ सुझाव दिखाता है। यह प्राइवेट विंडो में हमेशा बंद होता है।</translation>
 <translation id="6285118765755298263">अन्य सर्च इंजन इंडेक्स करें</translation>
-<translation id="919715748352669592">अपने आप उन वेबसाइटों को इंडेक्स करता है जो OpenSearch निर्देशों का पालन करती हैं.</translation>
+<translation id="5526883767168905185">अपने आप उन वेबसाइटों को इंडेक्स करता है जो OpenSearch निर्देशों का पालन करती हैं.</translation>
 <translation id="5522403133543437426">ऐड्रेस बार में इस्तेमाल किया गया सर्च इंजन।</translation>
 <translation id="280472502078788655">प्राइवेट विंडोज़ के लिए ऐड्रेस बार में इस्तेमाल किया गया सर्च इंजन।</translation>
 <translation id="7232120595886556478">सामान्य विंडो</translation>
 <translation id="6739674350896546324">प्राइवेट Windows के लिए सर्च इंजन</translation>
 <translation id="1280261732441045146"><ph name="SEARCH_ENGINE_NAME"/> अब प्राइवेट विंडोज़ के लिए आपका डिफ़ॉल्ट सर्च इंजन है</translation>
+<translation id="5363742888375478536">Brave ब्राउज़र इस्तेमाल करते समय सबसे अच्छे ब्राउज़िंग अनुभव के लिए Brave Search का सुझाव दिया जाता है।</translation>
+<translation id="7298195798382681320">सुझाया गया</translation>
 <translation id="6864914031231797928">एक्सटेंशन के लिए Google लॉगिन की अनुमति दें</translation>
-<translation id="7878791177459550035">मीडिया राउटर ब्राउज़र में कास्ट फीचर इनेबल करता है.</translation>
+<translation id="1519976482053221804">मीडिया राउटर ब्राउज़र में कास्ट फीचर इनेबल करता है</translation>
 <translation id="2707635989000984973">Unstoppable Domains के डोमेन नाम को हल करें</translation>
-<translation id="1807158022157096592">Unstoppable Domains के गोपनियता से जुड़े विचारों के बारे में <ph name="BEGIN_LINK"/>और जानें<ph name="END_LINK"/></translation>
+<translation id="732344438514476996">Unstoppable Domains के गोपनियता से जुड़े विचारों के बारे में <ph name="BEGIN_LINK"/>और जानें<ph name="END_LINK"/></translation>
 <translation id="641308776160806829">Ethereum Name Service (ENS) डोमेन नेम को हल करें</translation>
 <translation id="6421218422395686663">ENS ऑफ़चेन को खोजने की इजाज़त दें.</translation>
 <translation id="4608449984413688436">Solana Name Service (SNS) के डोमेन नेम को हल करें</translation>
@@ -707,8 +721,8 @@ Binance
 <translation id="6936835573742749135">CAPTCHA का अनुरोध नहीं कर सकते. बाद में फिर से कोशिश करें.</translation>
 <translation id="2653659639078652383">सबमिट करें</translation>
 <translation id="1294350054292274934">Tor विंडोज़ में सिर्फ़ .onion पतों को ठीक करें</translation>
-<translation id="601227612175911475">Tor विंडोज़ के बाहर Onion सर्विस मौजूद नहीं होंगी.</translation>
-<translation id="5249433283143453448">वाइडवाइन डिजिटल राइट्सस मैनेजमेंट (डीआरएम) के आंशिक प्रयोग से आप स्ट्रीम किये गए गोपनीय वीडियो के साथ और भी दूसरे कंटेंट देख सकते हैं.</translation>
+<translation id="4745128937437681681">Onion सेवाएँ Tor विंडो के बाहर उपलब्ध नहीं होंगी</translation>
+<translation id="6305528566126073902">वाइडवाइन डिजिटल राइट्सस मैनेजमेंट (डीआरएम) के आंशिक प्रयोग से आप स्ट्रीम किये गए गोपनीय वीडियो के साथ और भी दूसरे कंटेंट देख सकते हैं.</translation>
 <translation id="1314131187310290315">मैनिफ़ेस्ट V2 एक्सटेंशन</translation>
 <translation id="2488433650767270565">निम्नलिखित मैनिफ़ेस्ट V2 एक्सटेंशन को Chrome वेब स्टोर से निकाल दिया जाएगा, लेकिन वे तब भी Brave में काम करते रहेंगे। डाउनलोड और इंस्टॉल करने या अनइंस्टॉल करने के लिए टॉगल करें।</translation>
 <translation id="6918225713618473646">Brave इन Manifest V2 एक्सटेंशन को Brave सर्वर्स पर होस्ट करता है, लेकिन उनके कॉन्टेंट, सुरक्षा या व्यवहार की समीक्षा या उन्हें वेरिफ़ाय नहीं करता। सहायता के लिए, कृपया हर एक्सटेंशन के आधिकारिक पेज को देखें। Manifest V2 के लिए Brave की योजनाएँ <ph name="BEGIN_LINK"/>यहाँ<ph name="END_LINK"/> देखें।</translation>
@@ -733,8 +747,8 @@ Binance
 <translation id="3044369626313583722">Brave वॉलेट का बटन दिखाएँ</translation>
 <translation id="7568430944629653319">NFT डिस्कवरी सक्षम करें</translation>
 <translation id="970496996377628529">तीसरे पक्ष के API का इस्तेमाल करके NFT को अपने-आप अपने वॉलेट में जोड़ने की सुविधा चालू करें।</translation>
-<translation id="4898839076551703154">निजी विंडोज़ में Brave Wallet इनेबल करें.</translation>
-<translation id="1550684990179058322">चेतावनी: निजी विंडो सेशन में वॉलेट पते का दोबारा इस्तेमाल करने से साइट निजी विंडो सेशन को गैर-निजी विंडो सेशन से लिंक कर पाएगा.</translation>
+<translation id="8421293929927030255">निजी विंडोज़ में Brave Wallet इनेबल करें</translation>
+<translation id="1729224157015744629">चेतावनी: निजी विंडो सेशन में वॉलेट पते का दोबारा इस्तेमाल करने से साइट निजी विंडो सेशन को गैर-निजी विंडो सेशन से लिंक कर पाएगा.</translation>
 <translation id="8239147115686034860">Brave Wallet को अपने आप लॉक करें</translation>
 <translation id="414639769490080648">Brave Wallet को अपने आप लॉक होने तक इंतज़ार करने के लिए मिनटों की संख्या</translation>
 <translation id="856371974127598760">वॉलेट नेटवर्क</translation>
@@ -869,12 +883,15 @@ Binance
 <translation id="1721787502053471881">क्या आप वाकई इस मेमोरी को मिटाना चाहते हैं? एक बार मिटने पर ये वापस नहीं मिलेंगी।</translation>
 <translation id="5239685926753073108">सभी मेमोरीज़ मिटाएँ</translation>
 <translation id="2600803466586623124">क्या आप वाकई सभी मेमोरीज़ को मिटाना चाहते हैं? एक बार मिटने पर ये वापस नहीं मिलेंगी।</translation>
+<translation id="7311244614769792472">कोई परिणाम नहीं मिला</translation>
+<translation id="1838374766361614909">सर्च हटाएँ</translation>
+<translation id="5126255551970171328">मेमोरी सर्च करें</translation>
 <translation id="5985516785067818307">सर्वे पैनलिस्ट</translation>
 <translation id="8347743943525229984">Brave के सर्वे को अनुमति दें</translation>
 <translation id="3204080538332044581">Brave को नए टैब पेज में प्राइवेट सर्वे के लिंक दिखाने की अनुमति दें। सर्वे की मदद से, हम बेहतर सुविधाएँ बना सकते हैं और ब्राउज़र पर आधारित ऐड कैंपेन के असर को माप सकते हैं। <ph name="BEGIN_LINK"/>ज़्यादा जानें<ph name="END_LINK"/></translation>
 <translation id="349846214503465941">प्लेलिस्ट सक्षम करें</translation>
 <translation id="7903608716704052878">ऑफ़लाइन रूप से देखने के लिए फाइलें अपने आप जोड़ें</translation>
-<translation id="4193768184502613558">यह विकल्प अपने आप से मीडिया फ़ाइलों को कैश कर देगा, ताकि आप उन्हें इंटरनेट कनेक्शन के बिना चला सकें।</translation>
+<translation id="384666453982355633">यह विकल्प अपने आप से मीडिया फ़ाइलों को कैश कर देगा, ताकि आप उन्हें इंटरनेट कनेक्शन के बिना चला सकें।</translation>
 <translation id="8950562208228589873">OS डिफ़ॉल्ट या Quad9</translation>
 <translation id="5646330590189545860">OS डिफ़ॉल्ट या Wikimedia</translation>
 <translation id="2026075482948458926">OS डिफ़ॉल्ट या Cloudflare</translation>

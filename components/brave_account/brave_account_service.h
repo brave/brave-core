@@ -14,12 +14,17 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/time/time.h"
+#include "base/timer/timer.h"
 #include "base/types/expected.h"
-#include "brave/components/api_request_helper/api_request_helper.h"
+#include "brave/components/brave_account/endpoint_client/request_handle.h"
+#include "brave/components/brave_account/endpoints/error.h"
 #include "brave/components/brave_account/endpoints/password_finalize.h"
 #include "brave/components/brave_account/endpoints/password_init.h"
+#include "brave/components/brave_account/endpoints/verify_result.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
+#include "components/prefs/pref_change_registrar.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 
@@ -55,9 +60,14 @@ class BraveAccountService : public KeyedService, public mojom::Authentication {
   // Provides dependency injection for testing.
   BraveAccountService(
       PrefService* pref_service,
-      std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper,
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       OSCryptCallback encrypt_callback,
-      OSCryptCallback decrypt_callback);
+      OSCryptCallback decrypt_callback,
+      std::unique_ptr<base::OneShotTimer> verify_result_timer);
+
+  std::string Encrypt(const std::string& plain_text) const;
+
+  std::string Decrypt(const std::string& base64) const;
 
   void RegisterInitialize(const std::string& email,
                           const std::string& blinded_message,
@@ -66,6 +76,12 @@ class BraveAccountService : public KeyedService, public mojom::Authentication {
   void RegisterFinalize(const std::string& encrypted_verification_token,
                         const std::string& serialized_record,
                         RegisterFinalizeCallback callback) override;
+
+  void ResendConfirmationEmail() override;
+
+  void CancelRegistration() override;
+
+  void LogOut() override;
 
   void OnRegisterInitialize(
       RegisterInitializeCallback callback,
@@ -80,11 +96,30 @@ class BraveAccountService : public KeyedService, public mojom::Authentication {
       base::expected<std::optional<endpoints::PasswordFinalize::Response>,
                      std::optional<endpoints::PasswordFinalize::Error>> reply);
 
+  std::optional<mojom::RegisterErrorCode> TransformError(
+      std::optional<endpoints::Error> error);
+
+  void OnVerificationTokenChanged();
+
+  void ScheduleVerifyResult(
+      base::TimeDelta delay = base::Seconds(0),
+      endpoint_client::RequestHandle current_verify_result_request = {});
+
+  void VerifyResult(
+      endpoint_client::RequestHandle current_verify_result_request);
+
+  void OnVerifyResult(
+      int response_code,
+      base::expected<std::optional<endpoints::VerifyResult::Response>,
+                     std::optional<endpoints::VerifyResult::Error>> reply);
+
   const raw_ptr<PrefService> pref_service_;
-  std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
+  scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   OSCryptCallback encrypt_callback_;
   OSCryptCallback decrypt_callback_;
   mojo::ReceiverSet<mojom::Authentication> authentication_receivers_;
+  PrefChangeRegistrar pref_change_registrar_;
+  std::unique_ptr<base::OneShotTimer> verify_result_timer_;
   base::WeakPtrFactory<BraveAccountService> weak_factory_{this};
 };
 

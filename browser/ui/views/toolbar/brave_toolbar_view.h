@@ -50,6 +50,7 @@ class BraveToolbarView : public ToolbarView,
   void Init() override;
   void Layout(PassKey) override;
   void Update(content::WebContents* tab) override;
+  void UpdateRecedingCornerRadius() override;
   void OnThemeChanged() override;
   void OnEditBookmarksEnabledChanged();
   void OnLocationBarIsWideChanged();
@@ -96,6 +97,7 @@ class BraveToolbarView : public ToolbarView,
   BooleanPrefMember hide_ai_chat_button_by_policy_;
 
   BooleanPrefMember show_wallet_button_;
+  BooleanPrefMember wallet_disabled_by_policy_;
   BooleanPrefMember wallet_private_window_enabled_;
 
   BooleanPrefMember location_bar_is_wide_;

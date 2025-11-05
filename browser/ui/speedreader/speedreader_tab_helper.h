@@ -107,6 +107,7 @@ class SpeedreaderTabHelper
  private:
   friend class content::WebContentsUserData<SpeedreaderTabHelper>;
   explicit SpeedreaderTabHelper(content::WebContents* web_contents,
+                                SpeedreaderService& speedreader_service,
                                 SpeedreaderRewriterService* rewriter_service);
 
   void BindReceiver(
@@ -168,8 +169,6 @@ class SpeedreaderTabHelper
 
   void OnGetDocumentSource(bool success, std::string html);
 
-  SpeedreaderService* GetSpeedreaderService();
-
   void TransitStateTo(const DistillState& desired_state,
                       bool no_reload = false);
 
@@ -187,8 +186,11 @@ class SpeedreaderTabHelper
 
   DistillState distill_state_{DistillStates::ViewOriginal()};
 
+  raw_ref<SpeedreaderService> speedreader_service_;
+
   const raw_ptr<SpeedreaderRewriterService> rewriter_service_ =
       nullptr;  // NOT OWNED
+
   raw_ptr<SpeedreaderBubbleView> speedreader_bubble_ = nullptr;
 
   mojo::AssociatedReceiver<mojom::SpeedreaderHost> receiver_{this};

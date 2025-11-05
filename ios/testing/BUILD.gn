@@ -25,7 +25,6 @@ test("ios_brave_unit_tests") {
 
     # Unit tests
     ":legacy_unit_tests",
-    "//brave/ios/browser/brave_account:unit_tests",
 
     # This is required until we can sort out overridden deps symbols
     "//brave/ios/browser",

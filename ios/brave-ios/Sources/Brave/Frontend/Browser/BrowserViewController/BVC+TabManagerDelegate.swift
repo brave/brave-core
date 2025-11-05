@@ -22,7 +22,9 @@ extension BrowserViewController: TabManagerDelegate {
     tab.browserData = .init(tab: tab, tabGeneratorAPI: profileController.tabGeneratorAPI)
     tab.browserData?.miscDelegate = self
     tab.pullToRefresh = .init(tab: tab)
-    tab.playlist = .init(tab: tab)
+    if profileController.profile.prefs.isPlaylistAvailable {
+      tab.playlist = .init(tab: tab)
+    }
     tab.youtubeQualityTabHelper = .init(tab: tab)
     SnackBarTabHelper.create(for: tab)
     tab.braveUserAgentExceptions = braveCore.braveUserAgentExceptions
@@ -34,7 +36,7 @@ extension BrowserViewController: TabManagerDelegate {
       tab.isPrivate ? profileController.profile.offTheRecordProfile : profileController.profile
     let braveShieldsHelper: BraveShieldsTabHelper = .init(
       tab: tab,
-      braveShieldsSettings: BraveShieldsSettingsFactory.create(for: profile)
+      braveShieldsSettings: BraveShieldsSettingsServiceFactory.get(profile: profile)
     )
     tab.braveShieldsHelper = braveShieldsHelper
     // When `BraveShieldsTabHelper+TabPolicyDecider` is moved to `BraveShields` target,
@@ -273,9 +275,9 @@ extension BrowserViewController: TabManagerDelegate {
         make.left.right.equalTo(self.view)
         make.bottom.equalTo(self.webViewContainer)
       },
-      completion: {
+      completion: { [weak self] in
         if toast is ButtonToast {
-          self.activeButtonToast = nil
+          self?.activeButtonToast = nil
         }
       }
     )

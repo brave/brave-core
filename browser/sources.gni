@@ -118,6 +118,7 @@ brave_chrome_browser_deps = [
   "//brave/browser:browser_process",
   "//brave/browser:sparkle_buildflags",
   "//brave/browser/ai_chat",
+  "//brave/browser/ai_chat/ollama",
   "//brave/browser/brave_account",
   "//brave/browser/brave_adaptive_captcha",
   "//brave/browser/brave_adaptive_captcha:impl",
@@ -144,6 +145,7 @@ brave_chrome_browser_deps = [
   "//brave/browser/themes",
   "//brave/browser/ui",
   "//brave/browser/ui/webui/ads_internals",
+  "//brave/browser/ui/webui/ai_chat",
   "//brave/browser/ui/webui/brave_account",
   "//brave/browser/updater:buildflags",
   "//brave/common",
@@ -167,6 +169,7 @@ brave_chrome_browser_deps = [
   "//brave/components/brave_origin",
   "//brave/components/brave_perf_predictor/browser",
   "//brave/components/brave_policy",
+  "//brave/components/brave_policy/ad_block_only_mode",
   "//brave/components/brave_private_new_tab_ui/common",
   "//brave/components/brave_private_new_tab_ui/common:mojom",
   "//brave/components/brave_referrals/browser",
@@ -205,12 +208,12 @@ brave_chrome_browser_deps = [
   "//brave/components/decentralized_dns/content",
   "//brave/components/decentralized_dns/core",
   "//brave/components/email_aliases:features",
+  "//brave/components/global_privacy_control",
   "//brave/components/google_sign_in_permission",
   "//brave/components/https_upgrade_exceptions/browser",
   "//brave/components/ipfs",
   "//brave/components/ipfs/buildflags",
   "//brave/components/l10n/common",
-  "//brave/components/localhost_permission",
   "//brave/components/ntp_background_images/browser",
   "//brave/components/ntp_background_images/buildflags",
   "//brave/components/ntp_background_images/common",
@@ -218,7 +221,7 @@ brave_chrome_browser_deps = [
   "//brave/components/p3a",
   "//brave/components/p3a_utils",
   "//brave/components/password_strength_meter:mojom",
-  "//brave/components/playlist/common/buildflags",
+  "//brave/components/playlist/core/common/buildflags",
   "//brave/components/privacy_sandbox",
   "//brave/components/request_otr/common/buildflags",
   "//brave/components/resources",
@@ -229,6 +232,7 @@ brave_chrome_browser_deps = [
   "//brave/components/speech_to_text:buildflags",
   "//brave/components/speedreader/common/buildflags",
   "//brave/components/tor/buildflags",
+  "//brave/components/v8/buildflags",
   "//brave/components/version_info",
   "//brave/components/web_discovery/buildflags",
   "//brave/components/webcompat/content/browser",
@@ -285,6 +289,7 @@ brave_chrome_browser_deps = [
 
 if (enable_psst) {
   brave_chrome_browser_deps += [
+    "//brave/browser/psst",
     "//brave/components/psst/browser/content",
     "//brave/components/psst/browser/core",
     "//brave/components/psst/common",
@@ -317,6 +322,7 @@ if (!is_android) {
     "//brave/browser/ui/webui/brave_new_tab_page_refresh:mojom",
     "//brave/browser/ui/webui/brave_news_internals",
     "//brave/browser/user_education:features",
+    "//brave/ui/webui/brave_color_change_listener",
     "//chrome/browser/regional_capabilities",
     "//chrome/browser/ui/thumbnails",
     "//components/feed:feature_list",
@@ -643,6 +649,10 @@ brave_chrome_browser_allow_circular_includes_from = [
   "//brave/browser/brave_ads/creatives/search_result_ad",
   "//brave/browser/brave_stats",
   "//brave/browser/ntp_background",
+
+  # TODO(https://github.com/brave/brave-browser/issues/50507):
+  # Remove this once webui/ai_chat does not depend on chrome/browser.
+  "//brave/browser/ui/webui/ai_chat",
 ]
 
 if (enable_brave_ai_chat_agent_profile) {

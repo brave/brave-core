@@ -11,18 +11,20 @@
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/sidebar/browser/sidebar_item.h"
+#include "brave/components/speedreader/common/buildflags/buildflags.h"
+#include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile_window.h"
 #include "chrome/browser/renderer_context_menu/render_view_context_menu_test_util.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/location_bar/location_bar.h"
+#include "chrome/browser/ui/omnibox/omnibox_controller.h"
+#include "chrome/browser/ui/omnibox/omnibox_view.h"
 #include "chrome/browser/ui/tabs/public/tab_features.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_registry.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/omnibox/browser/autocomplete_controller.h"
-#include "components/omnibox/browser/omnibox_controller.h"
-#include "components/omnibox/browser/omnibox_view.h"
 #include "content/public/common/url_constants.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
@@ -30,9 +32,14 @@
 
 namespace {
 
-using ui_test_utils::BrowserChangeObserver;
-
-enum class ProfileType { kRegular, kGuest, kPrivate, kTor };
+enum class ProfileType {
+  kRegular,
+  kGuest,
+  kPrivate,
+#if BUILDFLAG(ENABLE_TOR)
+  kTor
+#endif
+};
 
 const char* GetProfileTypeString(ProfileType type) {
   switch (type) {
@@ -42,8 +49,10 @@ const char* GetProfileTypeString(ProfileType type) {
       return "Guest";
     case ProfileType::kPrivate:
       return "Private";
+#if BUILDFLAG(ENABLE_TOR)
     case ProfileType::kTor:
       return "Tor";
+#endif
   }
   NOTREACHED();
 }
@@ -74,12 +83,13 @@ class AIChatProfilesEnabledTest
         ;
       case ProfileType::kPrivate:
         return CreateIncognitoBrowser();
+#if BUILDFLAG(ENABLE_TOR)
       case ProfileType::kTor: {
-        BrowserChangeObserver observer(
-            nullptr, BrowserChangeObserver::ChangeType::kAdded);
+        ui_test_utils::BrowserCreatedObserver browser_created_observer;
         brave::NewOffTheRecordWindowTor(browser());
-        return observer.Wait();
+        return browser_created_observer.Wait();
       }
+#endif
     }
     NOTREACHED();
   }
@@ -157,6 +167,7 @@ IN_PROC_BROWSER_TEST_P(AIChatProfilesEnabledTest, SidePanelRegistry) {
   }
 }
 
+#if BUILDFLAG(ENABLE_SPEEDREADER)
 IN_PROC_BROWSER_TEST_P(AIChatProfilesEnabledTest, SpeedreaderToolbar) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(
       browser_, GURL(base::StrCat({content::kChromeUIScheme, "://",
@@ -170,11 +181,17 @@ IN_PROC_BROWSER_TEST_P(AIChatProfilesEnabledTest, SpeedreaderToolbar) {
     EXPECT_EQ(result, false);
   }
 }
+#endif  // BUILDFLAG(ENABLE_SPEEDREADER)
 
 INSTANTIATE_TEST_SUITE_P(
     All,
     AIChatProfilesEnabledTest,
     testing::ValuesIn({ProfileType::kRegular, ProfileType::kGuest,
-                       ProfileType::kPrivate, ProfileType::kTor}),
+                       ProfileType::kPrivate
+#if BUILDFLAG(ENABLE_TOR)
+                       ,
+                       ProfileType::kTor
+#endif
+    }),
     [](const testing::TestParamInfo<AIChatProfilesEnabledTest::ParamType>&
            info) { return GetProfileTypeString(info.param); });

@@ -73,7 +73,7 @@ export default function PublisherCard(props: {
 
   return <Flex direction="column" gap={8}>
     <Card backgroundColor={backgroundColor} data-feed-card-is-followed={followed}>
-      {coverUrl && <CoverImage backgroundImage={`chrome://image?url=${encodeURIComponent(coverUrl)}`} />}
+      {coverUrl && <CoverImage backgroundImage={`chrome://brave-image?url=${encodeURIComponent(coverUrl)}`} />}
       <StyledFollowButton fab size='tiny' following={followed} onClick={() => setFollowed(!followed)} />
     </Card>
     <Name>

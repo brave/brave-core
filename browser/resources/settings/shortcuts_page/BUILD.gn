@@ -19,4 +19,6 @@ transpile_web_ui("commands_ui") {
   ]
 
   resource_name = "commands"
+
+  imports_from = [ "//brave/browser/resources/settings/" ]
 }

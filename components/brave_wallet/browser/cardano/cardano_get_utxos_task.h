@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_CARDANO_CARDANO_GET_UTXOS_TASK_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_CARDANO_CARDANO_GET_UTXOS_TASK_H_
 
-#include <map>
 #include <string>
 #include <utility>
 #include <vector>
@@ -28,9 +27,8 @@ class CardanoRpc;
 // utxos associated with `addresses`.
 class GetCardanoUtxosTask {
  public:
-  using UtxoMap = std::map<CardanoAddress, cardano_rpc::UnspentOutputs>;
-  using Callback =
-      base::OnceCallback<void(base::expected<UtxoMap, std::string>)>;
+  using Callback = base::OnceCallback<void(
+      base::expected<cardano_rpc::UnspentOutputs, std::string>)>;
 
   GetCardanoUtxosTask(CardanoWalletService& cardano_wallet_service,
                       const std::string& chain_id,
@@ -41,7 +39,7 @@ class GetCardanoUtxosTask {
 
  private:
   void StopWithError(std::string error_string);
-  void StopWithResult(UtxoMap result);
+  void StopWithResult(cardano_rpc::UnspentOutputs result);
 
   cardano_rpc::CardanoRpc* GetCardanoRpc();
 
@@ -57,7 +55,7 @@ class GetCardanoUtxosTask {
   std::string chain_id_;
   std::vector<CardanoAddress> pending_addresses_;
 
-  UtxoMap utxos_;
+  cardano_rpc::UnspentOutputs utxos_;
 
   Callback callback_;
   base::WeakPtrFactory<GetCardanoUtxosTask> weak_ptr_factory_{this};

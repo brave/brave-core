@@ -7,7 +7,6 @@ import { initializeDetector } from './creator_detection'
 import { log, pollFor, urlPath, absoluteURL } from './helpers'
 
 initializeDetector(() => {
-
   function getChannelFromURL(url: string) {
     let pathname = urlPath(url)
     let match = pathname.match(/^\/channel\/([^\/]+)/i)
@@ -108,10 +107,9 @@ initializeDetector(() => {
       return name
     }
 
-    let elems = document.querySelectorAll<HTMLAnchorElement>([
-      'ytd-video-owner-renderer a',
-      'ytm-slim-owner-renderer a'
-    ].join(','))
+    let elems = document.querySelectorAll<HTMLAnchorElement>(
+      ['ytd-video-owner-renderer a', 'ytm-slim-owner-renderer a'].join(','),
+    )
 
     for (let elem of elems) {
       name = getChannelNameFromURL(elem.href)
@@ -121,10 +119,9 @@ initializeDetector(() => {
     }
 
     if (currentPathType === 'channel' || currentPathType === 'channel-name') {
-      let header = document.querySelector<HTMLElement>([
-        '#page-header',
-        'ytm-browse yt-page-header-view-model'
-      ].join(','))
+      let header = document.querySelector<HTMLElement>(
+        ['#page-header', 'ytm-browse yt-page-header-view-model'].join(','),
+      )
       if (header) {
         let matches = header.innerText.match(/@[\w]+/)
         if (matches && matches.length > 0) {
@@ -137,11 +134,13 @@ initializeDetector(() => {
   }
 
   function scrapeImage() {
-    let elems = document.querySelectorAll<HTMLImageElement>([
-      '#avatar img',
-      'yt-page-header-renderer yt-avatar-shape img',
-      'ytm-slim-owner-renderer a img'
-    ].join(','))
+    let elems = document.querySelectorAll<HTMLImageElement>(
+      [
+        '#avatar img',
+        'yt-page-header-renderer yt-avatar-shape img',
+        'ytm-slim-owner-renderer a img',
+      ].join(','),
+    )
 
     for (let elem of elems) {
       if (elem.src) {
@@ -197,7 +196,7 @@ initializeDetector(() => {
         id: `youtube#channel:${channel}`,
         name: scrapeChannelName(),
         url: scrapeChannelURL(),
-        imageURL: scrapeImage()
+        imageURL: scrapeImage(),
       }
     }
     return null
@@ -206,7 +205,7 @@ initializeDetector(() => {
   function isPageLoadComplete() {
     if (currentPathType === 'channel') {
       let elem = document.querySelector<HTMLAnchorElement>(
-        'a.ytp-ce-channel-title'
+        'a.ytp-ce-channel-title',
       )
       if (elem) {
         return absoluteURL(elem.href) === location.href
@@ -216,7 +215,7 @@ initializeDetector(() => {
 
     if (currentPathType === 'channel-name') {
       let elem = document.querySelector<HTMLAnchorElement>(
-        'ytd-video-owner-renderer a'
+        'ytd-video-owner-renderer a',
       )
       if (elem && absoluteURL(elem.href) === location.href) {
         return true
@@ -242,10 +241,9 @@ initializeDetector(() => {
     await pollFor(isPageLoadComplete, {
       name: 'load complete',
       interval: 500,
-      timeout: 6000
+      timeout: 6000,
     })
 
     return await getUser()
   }
-
 })

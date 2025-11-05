@@ -15,6 +15,7 @@
 #include "brave/components/brave_search/browser/backup_results_service.h"
 #include "brave/components/brave_search/common/features.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_extraction/inner_html.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
@@ -109,7 +110,8 @@ WEB_CONTENTS_USER_DATA_KEY_IMPL(BackupResultsWebContentsObserver);
 }  // namespace
 
 BackupResultsServiceImpl::BackupResultsServiceImpl(Profile* profile)
-    : profile_(profile) {
+    : profile_(profile),
+      backup_results_metrics_(g_browser_process->local_state()) {
   profile_->AddObserver(this);
 }
 BackupResultsServiceImpl::~BackupResultsServiceImpl() = default;
@@ -343,6 +345,9 @@ void BackupResultsServiceImpl::CleanupAndDispatchResult(
     PendingRequestList::iterator pending_request,
     std::optional<BackupResults> result) {
   auto* otr_profile = pending_request->otr_profile.get();
+
+  // Track query result (failure if result is nullopt, success otherwise)
+  backup_results_metrics_.RecordQuery(!result);
 
   std::move(pending_request->callback).Run(result);
   pending_requests_.erase(pending_request);

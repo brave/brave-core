@@ -46,13 +46,14 @@
 
 -keep class org.chromium.chrome.browser.ntp.NewTabPageLayout {
     *** mMvTilesContainerLayout;
-    *** mLogoCoordinator;
-    *** mInitialTileNum;
+    *** mMvtContentFits;
     *** mProfile;
     *** initializeSiteSectionView(...);
     *** setSearchProviderTopMargin(...);
     *** setSearchProviderBottomMargin(...);
     *** getLogoMargin(...);
+    *** calculateTabletMvtWidth(...);
+    *** updateMvtOnTablet(...);
 }
 
 -keep class org.chromium.chrome.browser.suggestions.tile.MostVisitedTilesMediator {
@@ -472,11 +473,11 @@
 -keep class org.chromium.chrome.browser.omnibox.suggestions.AutocompleteMediator {
     *** mDropdownViewInfoListManager;
     *** mDropdownViewInfoListBuilder;
-    public <init>(...);
+    <init>(...);
 }
 
 -keep class org.chromium.chrome.browser.omnibox.suggestions.BraveAutocompleteMediator {
-    public <init>(...);
+    <init>(...);
 }
 
 -keep class org.chromium.chrome.browser.omnibox.suggestions.BraveAutocompleteMediatorBase {
@@ -663,6 +664,25 @@
 }
 
 -keep class org.chromium.components.cached_flags.BraveCachedFlag {
+    <init>(...);
+}
+
+-keep class org.chromium.components.cached_flags.CachedFeatureParam {
+    *** getAllInstances(...);
+}
+
+-keep class org.chromium.components.cached_flags.CachedFlagUtils {
+    *** cacheNativeFlags(...);
+    *** cacheFeatureParams(...);
+    *** setFullListOfFlags(...);
+    *** setFullListOfFeatureParams(...);
+}
+
+-keep class org.chromium.chrome.browser.app.flags.ChromeCachedFlags {
+    <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.app.flags.BraveCachedFlags {
     <init>(...);
 }
 
@@ -976,6 +996,8 @@
     *** getChromeNtpRadioButton(...);
 }
 
+-keep class org.chromium.components.browser_ui.settings.ContainedRadioButtonGroupPreference
+
 -keep class org.chromium.chrome.browser.homepage.settings.BraveRadioButtonGroupHomepagePreference
 
 -keep class org.chromium.chrome.browser.tab_group_sync.StartupHelper {
@@ -1013,6 +1035,7 @@
 
 -keep class org.chromium.chrome.browser.toolbar.adaptive.AdaptiveToolbarPrefs {
     *** getCustomizationSetting(...);
+    *** isCustomizationPreferenceEnabled(...);
 }
 
 -keep class org.chromium.chrome.browser.download.home.search.SearchBarCoordinator {
@@ -1036,6 +1059,7 @@
 }
 
 -keep class org.chromium.chrome.browser.toolbar.adaptive.settings.RadioButtonGroupAdaptiveToolbarPreference {
+    *** buildUiStateForStats(...);
     *** mIsBound;
     *** mAutoButton;
     *** mNewTabButton;

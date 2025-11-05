@@ -8,16 +8,16 @@
 #include <string>
 
 #include "brave/app/brave_command_ids.h"
-#include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/speedreader/speedreader_tab_helper.h"
 #include "brave/components/speedreader/common/features.h"
+#include "brave/components/speedreader/speedreader_pref_names.h"
 #include "brave/components/vector_icons/vector_icons.h"
-#include "chrome/app/chrome_command_ids.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_bubble_delegate_view.h"
 #include "chrome/browser/ui/views/page_action/page_action_icon_view.h"
-#include "chrome/grit/generated_resources.h"
 #include "components/grit/brave_components_strings.h"
+#include "components/prefs/pref_service.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/views/animation/ink_drop.h"
@@ -43,10 +43,11 @@ void SpeedreaderIconView::UpdateImpl() {
   // Check if Speedreader feature is enabled
   auto* web_contents = GetWebContents();
   if (web_contents) {
-    auto* speedreader_service =
-        speedreader::SpeedreaderServiceFactory::GetForBrowserContext(
-            web_contents->GetBrowserContext());
-    if (!speedreader_service || !speedreader_service->IsFeatureEnabled()) {
+    auto* profile =
+        Profile::FromBrowserContext(GetWebContents()->GetBrowserContext());
+    if (!base::FeatureList::IsEnabled(
+            speedreader::features::kSpeedreaderFeature) ||
+        !profile->GetPrefs()->GetBoolean(speedreader::kSpeedreaderEnabled)) {
       SetVisible(false);
       return;
     }

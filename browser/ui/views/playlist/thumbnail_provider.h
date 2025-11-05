@@ -10,7 +10,7 @@
 
 #include "base/functional/callback_forward.h"
 #include "base/memory/weak_ptr.h"
-#include "brave/components/playlist/common/mojom/playlist.mojom.h"
+#include "brave/components/playlist/core/common/mojom/playlist.mojom.h"
 #include "ui/gfx/image/image.h"
 
 namespace playlist {

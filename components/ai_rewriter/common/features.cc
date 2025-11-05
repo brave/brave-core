@@ -10,7 +10,7 @@
 
 namespace ai_rewriter::features {
 
-BASE_FEATURE(kAIRewriter, "AIRewriter", base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kAIRewriter, base::FEATURE_DISABLED_BY_DEFAULT);
 
 bool IsAIRewriterEnabled() {
   return ai_chat::features::IsAIChatEnabled() &&

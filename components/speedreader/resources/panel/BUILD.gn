@@ -4,14 +4,19 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/common/typescript.gni")
+import("//brave/components/speedreader/common/buildflags/buildflags.gni")
+
+assert(enable_speedreader)
 
 transpile_web_ui("brave_speedreader_toolbar_ui") {
+  output_module = false
   entry_points = [ [
         "speedreader_toolbar",
         rebase_path("speedreader_toolbar.tsx"),
       ] ]
   resource_name = "brave_speedreader_toolbar"
   deps = [ "//brave/components/speedreader/common:mojom_js" ]
+  imports_from = [ "//brave/components/speedreader/resources/" ]
 }
 
 pack_web_resources("generated_resources") {

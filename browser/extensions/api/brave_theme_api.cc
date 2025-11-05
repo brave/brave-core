@@ -5,29 +5,12 @@
 
 #include "brave/browser/extensions/api/brave_theme_api.h"
 
-#include <memory>
 #include <optional>
-#include <string>
 
-#include "base/json/json_writer.h"
-#include "base/values.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/common/extensions/api/brave_theme.h"
 
 namespace extensions::api {
-
-ExtensionFunction::ResponseAction BraveThemeGetBraveThemeListFunction::Run() {
-  std::string json_string;
-  base::JSONWriter::Write(dark_mode::GetBraveDarkModeTypeList(), &json_string);
-  return RespondNow(WithArguments(json_string));
-}
-
-ExtensionFunction::ResponseAction BraveThemeGetBraveThemeTypeFunction::Run() {
-  const std::string theme_type =
-      dark_mode::GetStringFromBraveDarkModeType(
-          dark_mode::GetActiveBraveDarkModeType());
-  return RespondNow(WithArguments(theme_type));
-}
 
 ExtensionFunction::ResponseAction BraveThemeSetBraveThemeTypeFunction::Run() {
   std::optional<brave_theme::SetBraveThemeType::Params> params =

@@ -119,7 +119,7 @@ extension BrowserViewController: TabDelegate {
           image: UIImage(braveSystemNamed: "leo.copy.clean"),
           handler: UIAction.deferredActionHandler { _ in
             let service = URLSanitizerServiceFactory.get(privateMode: currentTab.isPrivate)
-            let cleanedURL = service?.sanitizeURL(url) ?? url
+            let cleanedURL = service?.sanitize(url: url) ?? url
             UIPasteboard.general.url = cleanedURL
           }
         )
@@ -383,7 +383,13 @@ extension BrowserViewController: TabDelegate {
   }
 
   public func tab(_ tab: some TabState, buildEditMenuWithBuilder builder: any UIMenuBuilder) {
-    let forcePaste = UIAction(title: Strings.forcePaste) { [weak tab] _ in
+    // We only want to show Force Paste if the regular Paste command is available
+    let responder = UIView.findSubViewWithFirstResponder(tab.view)
+    let canPaste = responder?.canPerformAction(#selector(paste(_:)), withSender: responder) == true
+    let forcePaste = UIAction(
+      title: Strings.forcePaste,
+      attributes: !canPaste ? .hidden : []
+    ) { [weak tab] _ in
       if let string = UIPasteboard.general.string {
         tab?.evaluateJavaScript(
           functionName: "window.__firefox__.forcePaste",
@@ -403,11 +409,6 @@ extension BrowserViewController: TabDelegate {
         self?.didSelectSearchWithBrave(selectedText, tab: tab)
       }
     }
-    let braveMenuItems: UIMenu = .init(
-      options: [.displayInline],
-      children: [forcePaste]
-    )
-    builder.insertChild(braveMenuItems, atEndOfMenu: .root)
     if let lookupMenu = builder.menu(for: .lookup) {
       builder.replace(
         menu: .lookup,
@@ -415,6 +416,14 @@ extension BrowserViewController: TabDelegate {
           lookupMenu: lookupMenu,
           searchWebAction: searchWithBrave
         )
+      )
+    }
+    if #available(iOS 26, *) {
+      builder.insertElements([forcePaste], afterCommand: #selector(paste(_:)))
+    } else {
+      builder.insertSibling(
+        UIMenu(options: .displayInline, children: [forcePaste]),
+        afterMenu: .standardEdit
       )
     }
   }
@@ -454,7 +463,8 @@ extension BrowserViewController {
       let toast = ButtonToast(
         labelText: Strings.contextMenuButtonToastNewTabOpenedLabelText,
         buttonText: Strings.contextMenuButtonToastNewTabOpenedButtonText,
-        completion: { buttonPressed in
+        completion: { [weak self, weak tab] buttonPressed in
+          guard let self, let tab else { return }
           if buttonPressed {
             self.tabManager.selectTab(tab)
           }

@@ -4,21 +4,42 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import Button from '@brave/leo/react/button'
+import Icon from '@brave/leo/react/icon'
 
-import {
-  ActionEntry,
-  ActionType,
-} from 'components/ai_chat/resources/common/mojom'
+import { ActionEntry, Skill } from 'components/ai_chat/resources/common/mojom'
+import { getLocale } from '$web-common/locale'
 import FilterMenu, { Props } from './filter_menu'
 import { matches } from './query'
 import styles from './style.module.scss'
 
-type ToolsMenuProps = {
-  handleClick: (type: ActionType) => void
-} & Pick<Props<ActionEntry>, 'categories' | 'isOpen' | 'setIsOpen' | 'query'>
+export type ExtendedActionEntry = ActionEntry | Skill
 
-function matchesQuery(query: string, entry: ActionEntry) {
-  return entry.details && matches(query, entry.details.label)
+type ToolsMenuProps = {
+  handleClick: (type: ExtendedActionEntry) => void
+  handleEditClick: (skill: Skill) => void
+  handleNewSkillClick: () => void
+} & Pick<
+  Props<ExtendedActionEntry>,
+  'categories' | 'isOpen' | 'setIsOpen' | 'query'
+>
+
+const getIsActionEntry = (item: ExtendedActionEntry): item is ActionEntry => {
+  return 'details' in item && item.details !== undefined
+}
+
+export const getIsSkill = (item: ExtendedActionEntry): item is Skill => {
+  return 'shortcut' in item
+}
+
+function matchesQuery(query: string, entry: ExtendedActionEntry) {
+  if (getIsActionEntry(entry)) {
+    return matches(query, entry.details!.label)
+  }
+  if (getIsSkill(entry)) {
+    return matches(query, entry.shortcut)
+  }
+  return false
 }
 
 export default function ToolsMenu(props: ToolsMenuProps) {
@@ -29,19 +50,53 @@ export default function ToolsMenu(props: ToolsMenuProps) {
       setIsOpen={props.setIsOpen}
       query={props.query}
       matchesQuery={matchesQuery}
-    >
-      {(item) =>
-        !item.details ? (
-          <div className={styles.menuSubtitle}>{item.subheading}</div>
-        ) : (
+      noMatchesMessage={
+        <div className={styles.toolsNoMatches}>
+          {getLocale(S.CHAT_UI_TOOLS_MENU_NO_SKILLS_FOUND)}
+        </div>
+      }
+      footer={
+        <div className={styles.toolsMenuFooter}>
           <leo-menu-item
-            key={item.details.type}
-            onClick={() => props.handleClick(item.details!.type)}
+            aria-selected={false}
+            onClick={props.handleNewSkillClick}
           >
-            {item.details.label}
+            <Icon name='plus-add' />
+            {getLocale(S.CHAT_UI_TOOLS_MENU_NEW_SKILL_BUTTON_LABEL)}
+          </leo-menu-item>
+        </div>
+      }
+    >
+      {(item) => {
+        if ('subheading' in item && item.subheading !== undefined) {
+          return <div className={styles.menuSubtitle}>{item.subheading}</div>
+        }
+
+        const isActionEntry = getIsActionEntry(item)
+        return (
+          <leo-menu-item
+            key={isActionEntry ? item.details!.type : item.shortcut}
+            onClick={() => props.handleClick(item)}
+          >
+            <div className={styles.toolsMenuItemContent}>
+              {isActionEntry ? item.details!.label : item.shortcut}
+              {getIsSkill(item) && (
+                <Button
+                  fab
+                  kind='plain-faint'
+                  className={styles.editButton}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    props.handleEditClick(item)
+                  }}
+                >
+                  <Icon name='edit-pencil' />
+                </Button>
+              )}
+            </div>
           </leo-menu-item>
         )
-      }
+      }}
     </FilterMenu>
   )
 }

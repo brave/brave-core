@@ -28,9 +28,10 @@ CreativeAdInfo::~CreativeAdInfo() = default;
 bool CreativeAdInfo::operator==(const CreativeAdInfo& other) const {
   return creative_instance_id == other.creative_instance_id &&
          creative_set_id == other.creative_set_id &&
-         campaign_id == other.campaign_id && start_at == other.start_at &&
-         end_at == other.end_at && daily_cap == other.daily_cap &&
-         advertiser_id == other.advertiser_id && priority == other.priority &&
+         campaign_id == other.campaign_id && metric_type == other.metric_type &&
+         start_at == other.start_at && end_at == other.end_at &&
+         daily_cap == other.daily_cap && advertiser_id == other.advertiser_id &&
+         priority == other.priority &&
          base::IsApproximatelyEqual(pass_through_rate, other.pass_through_rate,
                                     std::numeric_limits<double>::epsilon()) &&
          per_day == other.per_day && per_week == other.per_week &&
@@ -41,10 +42,6 @@ bool CreativeAdInfo::operator==(const CreativeAdInfo& other) const {
          condition_matchers == other.condition_matchers &&
          segment == other.segment && geo_targets == other.geo_targets &&
          target_url == other.target_url && dayparts == other.dayparts;
-}
-
-bool CreativeAdInfo::operator!=(const CreativeAdInfo& other) const {
-  return !(*this == other);
 }
 
 }  // namespace brave_ads

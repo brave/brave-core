@@ -15,15 +15,29 @@ source_set("web_view") {
   sources = [
     "brave_web_view.h",
     "brave_web_view.mm",
+    "brave_web_view_configuration.h",
+    "brave_web_view_configuration.mm",
+    "brave_web_view_download_manager.h",
+    "brave_web_view_download_manager.mm",
     "brave_web_view_internal.h",
   ]
   deps = [
     "//base",
+    "//brave/ios/browser/api/web_view/autofill",
+    "//brave/ios/browser/api/web_view/passwords",
+    "//brave/ios/browser/ui/web_view:features",
+    "//brave/ios/browser/ui/webui/ai_chat",
     "//brave/ios/web_view",
+    "//ios/chrome/browser/affiliations/model",
+    "//ios/chrome/browser/autofill/model",
+    "//ios/chrome/browser/passwords/model",
+    "//ios/chrome/browser/shared/model/profile",
+    "//ios/chrome/browser/signin/model",
+    "//ios/chrome/browser/sync/model",
     "//ios/chrome/browser/tabs/model",
     "//ios/web/common",
     "//ios/web/web_state",
-    "//ios/web_view:web_view_sources",
+    "//ios/web_view/framework:web_view_sources",
   ]
   frameworks = [
     "Foundation.framework",

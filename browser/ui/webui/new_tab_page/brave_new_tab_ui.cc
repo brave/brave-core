@@ -18,6 +18,7 @@
 #include "brave/browser/ntp_background/ntp_p3a_helper_impl.h"
 #include "brave/browser/ui/brave_ui_features.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/new_tab_page_initializer.h"
+#include "brave/browser/ui/webui/brave_sanitized_image_source.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_message_handler.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_page_handler.h"
@@ -35,7 +36,6 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/themes/theme_syncable_service.h"
-#include "chrome/browser/ui/webui/sanitized_image_source.h"
 #include "chrome/browser/ui/webui/theme_source.h"
 #include "chrome/common/pref_names.h"
 #include "components/country_codes/country_codes.h"
@@ -78,8 +78,7 @@ BraveNewTabUI::BraveNewTabUI(
 
   content::NavigationEntry* navigation_entry =
       web_contents->GetController().GetLastCommittedEntry();
-  const bool was_restored =
-      navigation_entry ? navigation_entry->IsRestored() : false;
+  const bool was_restored = navigation_entry && navigation_entry->IsRestored();
 
   Profile* profile = Profile::FromWebUI(web_ui);
   web_ui->OverrideTitle(l10n_util::GetStringUTF16(IDS_NEW_TAB_TITLE));
@@ -171,8 +170,8 @@ BraveNewTabUI::BraveNewTabUI(
   source->AddLocalizedStrings(webui::kBraveNewsStrings);
 
   // Add a SanitizedImageSource to allow fetching images for Brave News.
-  content::URLDataSource::Add(profile,
-                              std::make_unique<SanitizedImageSource>(profile));
+  content::URLDataSource::Add(
+      profile, std::make_unique<BraveSanitizedImageSource>(profile));
 
   content::URLDataSource::Add(profile, std::make_unique<ThemeSource>(profile));
 }
@@ -206,10 +205,10 @@ void BraveNewTabUI::BindInterface(
   auto* profile = Profile::FromWebUI(web_ui());
   CHECK(profile);
 
-  realbox_handler_ = std::make_unique<RealboxHandler>(
-      std::move(pending_page_handler), profile, web_ui()->GetWebContents(),
-      /*metrics_reporter=*/nullptr,
-      /*omnibox_controller=*/nullptr);
+  realbox_handler_ =
+      std::make_unique<RealboxHandler>(std::move(pending_page_handler),
+                                       /*composebox_metrics_recorder=*/nullptr,
+                                       profile, web_ui()->GetWebContents());
 }
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)

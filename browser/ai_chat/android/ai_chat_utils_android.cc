@@ -13,6 +13,7 @@
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/common/ai_chat_urls.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/android/chrome_jni_headers/BraveLeoUtils_jni.h"
 #include "content/public/browser/web_contents.h"
@@ -39,7 +40,8 @@ static void JNI_BraveLeoUtils_OpenLeoQuery(
         AIChatTabHelper::FromWebContents(web_contents);
     DCHECK(chat_tab_helper);
     conversation = ai_chat_service->GetOrCreateConversationHandlerForContent(
-        chat_tab_helper->content_id(), chat_tab_helper->GetWeakPtr());
+        chat_tab_helper->web_contents_content().content_id(),
+        chat_tab_helper->web_contents_content().GetWeakPtr());
   } else {
     conversation = ai_chat_service->GetConversation(conversation_uuid_str);
   }
@@ -53,7 +55,7 @@ static void JNI_BraveLeoUtils_OpenLeoQuery(
       base::android::ConvertJavaStringToUTF8(query), std::nullopt /* prompt */,
       std::nullopt /* selected_text */, std::nullopt /* events */,
       base::Time::Now(), std::nullopt, std::nullopt /* uploaded images */,
-      false, std::nullopt /* model_key */);
+      nullptr /* skill */, false, std::nullopt /* model_key */);
   conversation->SubmitHumanConversationEntry(std::move(turn));
 
   content::OpenURLParams params(
@@ -76,7 +78,8 @@ static void JNI_BraveLeoUtils_OpenLeoUrlForTab(
   DCHECK(chat_tab_helper);
   ConversationHandler* conversation =
       ai_chat_service->GetOrCreateConversationHandlerForContent(
-          chat_tab_helper->content_id(), chat_tab_helper->GetWeakPtr());
+          chat_tab_helper->web_contents_content().content_id(),
+          chat_tab_helper->web_contents_content().GetWeakPtr());
 
   content::OpenURLParams params(
       ConversationUrl(conversation->get_conversation_uuid()),

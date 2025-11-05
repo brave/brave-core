@@ -44,8 +44,11 @@
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
+#include "brave/components/ai_chat/core/common/prefs.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "components/grit/brave_components_strings.h"
+#include "components/prefs/pref_service.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/remote.h"
@@ -92,6 +95,7 @@ ConversationHandler::ConversationHandler(
     ModelService* model_service,
     AIChatCredentialManager* credential_manager,
     AIChatFeedbackAPI* feedback_api,
+    PrefService* prefs,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     std::vector<std::unique_ptr<ToolProvider>> tool_providers)
     : ConversationHandler(conversation,
@@ -99,6 +103,7 @@ ConversationHandler::ConversationHandler(
                           model_service,
                           credential_manager,
                           feedback_api,
+                          prefs,
                           url_loader_factory,
                           std::move(tool_providers),
                           std::nullopt) {}
@@ -109,6 +114,7 @@ ConversationHandler::ConversationHandler(
     ModelService* model_service,
     AIChatCredentialManager* credential_manager,
     AIChatFeedbackAPI* feedback_api,
+    PrefService* prefs,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     std::vector<std::unique_ptr<ToolProvider>> tool_providers,
     std::optional<mojom::ConversationArchivePtr> initial_state)
@@ -120,6 +126,7 @@ ConversationHandler::ConversationHandler(
       model_service_(model_service),
       credential_manager_(credential_manager),
       feedback_api_(feedback_api),
+      prefs_(prefs),
       url_loader_factory_(url_loader_factory) {
   // Set conversation capability based on profile-global state.
   // TODO(https://github.com/brave/brave-browser/issues/49261): This is
@@ -132,6 +139,11 @@ ConversationHandler::ConversationHandler(
   // the service make the determination.
   if (ai_chat_service_->GetIsContentAgentAllowed()) {
     conversation_capability_ = mojom::ConversationCapability::CONTENT_AGENT;
+  }
+
+  // Observe tool providers
+  for (const auto& tool_provider : tool_providers_) {
+    tool_provider->AddObserver(this);
   }
 
   // When a client disconnects, let observers know
@@ -165,6 +177,9 @@ ConversationHandler::ConversationHandler(
 
 ConversationHandler::~ConversationHandler() {
   OnConversationDeleted();
+  for (const auto& tool_provider : tool_providers_) {
+    tool_provider->RemoveObserver(this);
+  }
 }
 
 void ConversationHandler::AddObserver(Observer* observer) {
@@ -261,10 +276,6 @@ bool ConversationHandler::HasAnyHistory() {
 
 bool ConversationHandler::IsRequestInProgress() {
   return is_request_in_progress_;
-}
-
-bool ConversationHandler::IsAssociatedContentAlive() {
-  return associated_content_manager_->HasNonArchiveContent();
 }
 
 void ConversationHandler::OnConversationDeleted() {
@@ -518,7 +529,8 @@ void ConversationHandler::SubmitHumanConversationEntry(
       std::nullopt, CharacterType::HUMAN, mojom::ActionType::QUERY, input,
       std::nullopt /* prompt */, std::nullopt /* selected_text */,
       std::nullopt /* events */, base::Time::Now(), std::nullopt /* edits */,
-      std::move(uploaded_files), false, std::nullopt /* model_key */);
+      std::move(uploaded_files), nullptr /* skill */, false,
+      std::nullopt /* model_key */);
   SubmitHumanConversationEntry(std::move(turn));
 }
 
@@ -600,6 +612,42 @@ void ConversationHandler::SubmitHumanConversationEntryWithAction(
   SubmitSelectedText(input, action_type);
 }
 
+void ConversationHandler::SubmitHumanConversationEntryWithSkill(
+    const std::string& input,
+    const std::string& skill_id) {
+  DCHECK(!is_request_in_progress_)
+      << "Should not be able to submit more"
+      << "than a single human conversation turn at a time.";
+
+  // Get Skill from prefs and convert to SkillEntry object
+  auto skill = prefs::GetSkillFromPrefs(*prefs_, skill_id);
+
+  mojom::SkillEntryPtr skill_entry = nullptr;
+
+  if (skill) {
+    // Switch model if specified and different from current model
+    if (skill->model && !skill->model->empty() &&
+        *skill->model != GetCurrentModel().key) {
+      ChangeModel(*skill->model);
+    }
+
+    // Create Skill entry
+    skill_entry = mojom::SkillEntry::New(skill->shortcut, skill->prompt);
+
+    // Update last_used time
+    prefs::UpdateSkillLastUsedInPrefs(skill_id, *prefs_);
+  }
+
+  mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New(
+      std::nullopt, CharacterType::HUMAN, mojom::ActionType::QUERY, input,
+      std::nullopt /* prompt */, std::nullopt /* selected_text */,
+      std::nullopt /* events */, base::Time::Now(), std::nullopt /* edits */,
+      std::nullopt /* uploaded_files */, std::move(skill_entry), false,
+      std::nullopt /* model_key */);
+
+  SubmitHumanConversationEntry(std::move(turn));
+}
+
 void ConversationHandler::ModifyConversation(const std::string& entry_uuid,
                                              const std::string& new_text) {
   CHECK(!entry_uuid.empty()) << "Entry UUID is empty";
@@ -647,7 +695,7 @@ void ConversationHandler::ModifyConversation(const std::string& entry_uuid,
         turn->character_type, turn->action_type, trimmed_input,
         std::nullopt /* prompt */, std::nullopt /* selected_text */,
         std::move(events), base::Time::Now(), std::nullopt /* edits */,
-        std::nullopt, false, turn->model_key);
+        std::nullopt, nullptr /* skill */, false, turn->model_key);
     edited_turn->events->at(*completion_event_index)
         ->get_completion_event()
         ->completion = trimmed_input;
@@ -681,8 +729,8 @@ void ConversationHandler::ModifyConversation(const std::string& entry_uuid,
       base::Uuid::GenerateRandomV4().AsLowercaseString(), turn->character_type,
       turn->action_type, sanitized_input, std::nullopt /* prompt */,
       std::nullopt /* selected_text */, std::nullopt /* events */,
-      base::Time::Now(), std::nullopt /* edits */, std::nullopt, false,
-      turn->model_key);
+      base::Time::Now(), std::nullopt /* edits */, std::nullopt,
+      nullptr /* skill */, false, turn->model_key);
   if (!turn->edits) {
     turn->edits.emplace();
   }
@@ -758,7 +806,8 @@ void ConversationHandler::SubmitSummarizationRequest() {
       l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_PAGE),
       std::nullopt /* selected_text */, std::nullopt /* events */,
       base::Time::Now(), std::nullopt /* edits */,
-      std::nullopt /* uploaded_images */, false, std::nullopt /* model_key */);
+      std::nullopt /* uploaded_images */, nullptr /* skill */, false,
+      std::nullopt /* model_key */);
   SubmitHumanConversationEntry(std::move(turn));
 }
 
@@ -784,7 +833,7 @@ void ConversationHandler::SubmitSuggestion(
       std::nullopt, CharacterType::HUMAN, suggestion.action_type,
       suggestion.title, suggestion.prompt, std::nullopt /* selected_text */,
       std::nullopt /* events */, base::Time::Now(), std::nullopt /* edits */,
-      std::nullopt, false, std::nullopt /* model_key */);
+      std::nullopt, nullptr /* skill */, false, std::nullopt /* model_key */);
   SubmitHumanConversationEntry(std::move(turn));
 
   // Remove the suggestion from the list, assume the list has been modified
@@ -795,11 +844,9 @@ void ConversationHandler::SubmitSuggestion(
   OnSuggestedQuestionsChanged();
 }
 
-std::vector<std::string> ConversationHandler::GetSuggestedQuestionsForTest() {
-  std::vector<std::string> suggestions;
-  std::ranges::transform(suggestions_, std::back_inserter(suggestions),
-                         [](const auto& s) { return s.title; });
-  return suggestions;
+const std::vector<ConversationHandler::Suggestion>&
+ConversationHandler::GetSuggestedQuestionsForTest() const {
+  return suggestions_;
 }
 
 void ConversationHandler::SetSuggestedQuestionForTest(std::string title,
@@ -940,7 +987,8 @@ void ConversationHandler::SubmitSelectedTextWithQuestion(
   mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New(
       std::nullopt, CharacterType::HUMAN, action_type, question,
       std::nullopt /* prompt */, selected_text, std::nullopt, base::Time::Now(),
-      std::nullopt, std::nullopt, false, std::nullopt /* model_key */);
+      std::nullopt, std::nullopt, nullptr /* skill */, false,
+      std::nullopt /* model_key */);
 
   SubmitHumanConversationEntry(std::move(turn));
 }
@@ -979,7 +1027,8 @@ void ConversationHandler::AddSubmitSelectedTextError(
   mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New(
       std::nullopt, CharacterType::HUMAN, action_type, question,
       std::nullopt /* prompt */, selected_text, std::nullopt, base::Time::Now(),
-      std::nullopt, std::nullopt, false, std::nullopt /* model_key */);
+      std::nullopt, std::nullopt, nullptr /* skill */, false,
+      std::nullopt /* model_key */);
   AddToConversationHistory(std::move(turn));
   SetAPIError(error);
 }
@@ -1050,13 +1099,8 @@ void ConversationHandler::AddToConversationHistory(
 }
 
 void ConversationHandler::InitToolsForNewGenerationLoop() {
-  // TODO(https://github.com/brave/brave-browser/issues/48535): This is the
-  // main place to create stateful tools that this Conversation creates.
-
-  // We can also reset any already-created tools that don't want state to
+  // We can reset any already-created tools that don't want state to
   // survive between loops (i.e. when a new user message is received).
-
-  // Tool providers may want to do the same
   for (auto& tool_provider : tool_providers_) {
     tool_provider->OnNewGenerationLoop();
   }
@@ -1122,7 +1166,8 @@ void ConversationHandler::UpdateOrCreateLastAssistantEntry(
         CharacterType::ASSISTANT, mojom::ActionType::RESPONSE, "",
         std::nullopt /* prompt */, std::nullopt,
         std::vector<mojom::ConversationEntryEventPtr>{}, base::Time::Now(),
-        std::nullopt, std::nullopt, false, result.model_key);
+        std::nullopt, std::nullopt, nullptr /* skill */, false,
+        result.model_key);
     chat_history_.push_back(std::move(entry));
   }
 
@@ -1275,12 +1320,25 @@ void ConversationHandler::MaybeSeedOrClearSuggestions() {
     suggestion_generation_status_ =
         mojom::SuggestionGenerationStatus::CanGenerate;
   } else if (!suggestions_.empty() &&
-             suggestions_[0].action_type == mojom::ActionType::SUMMARIZE_PAGE) {
-    // The title for the summarize page suggestion needs to be updated when
-    // the number of associated content items changes.
-    suggestions_[0].title = l10n_util::GetPluralStringFUTF8(
-        IDS_CHAT_UI_SUMMARIZE_PAGES_SUGGESTION,
-        associated_content_manager_->GetContentDelegateCount());
+             (suggestions_[0].action_type ==
+                  mojom::ActionType::SUMMARIZE_PAGE ||
+              suggestions_[0].action_type ==
+                  mojom::ActionType::SUMMARIZE_VIDEO)) {
+    // Update the title for the summarize page/video suggestion. Note: We always
+    // treat multiple associated content items as a page for now.
+    suggestions_[0].title =
+        associated_content_manager_->IsVideo()
+            ? l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_VIDEO)
+            : l10n_util::GetPluralStringFUTF8(
+                  IDS_CHAT_UI_SUMMARIZE_PAGES_SUGGESTION,
+                  associated_content_manager_->GetContentDelegateCount());
+    suggestions_[0].prompt =
+        associated_content_manager_->IsVideo()
+            ? l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_VIDEO)
+            : l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_PAGE);
+    suggestions_[0].action_type = associated_content_manager_->IsVideo()
+                                      ? mojom::ActionType::SUMMARIZE_VIDEO
+                                      : mojom::ActionType::SUMMARIZE_PAGE;
   }
   OnSuggestedQuestionsChanged();
 }
@@ -1329,8 +1387,8 @@ void ConversationHandler::OnGetStagedEntriesFromContent(
         base::Uuid::GenerateRandomV4().AsLowercaseString(),
         CharacterType::HUMAN, mojom::ActionType::QUERY, entry.query,
         std::nullopt /* prompt */, std::nullopt, std::nullopt,
-        base::Time::Now(), std::nullopt, std::nullopt, true,
-        std::nullopt /* model_key */));
+        base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */,
+        true, std::nullopt /* model_key */));
     OnConversationEntryAdded(chat_history_.back());
 
     std::vector<mojom::ConversationEntryEventPtr> events;
@@ -1340,8 +1398,8 @@ void ConversationHandler::OnGetStagedEntriesFromContent(
         base::Uuid::GenerateRandomV4().AsLowercaseString(),
         CharacterType::ASSISTANT, mojom::ActionType::RESPONSE, entry.summary,
         std::nullopt /* prompt */, std::nullopt, std::move(events),
-        base::Time::Now(), std::nullopt, std::nullopt, true,
-        std::nullopt /* model_key */));
+        base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */,
+        true, std::nullopt /* model_key */));
     OnConversationEntryAdded(chat_history_.back());
   }
 }
@@ -1543,6 +1601,18 @@ void ConversationHandler::OnModelRemoved(const std::string& removed_key) {
 
   // Update the engine and fetch the new models
   InitEngine();
+}
+
+void ConversationHandler::OnContentTaskStarted(int32_t tab_id) {
+  // Store the tab_id so consumers can validate a tab is used by a tool
+  // in this conversation, or that a tab can locate its controlling
+  // conversation.
+  task_tab_ids_.insert(tab_id);
+
+  // Notify clients so they may display the relationship in UI
+  for (auto& client : untrusted_conversation_ui_handlers_) {
+    client->ContentTaskStarted(tab_id);
+  }
 }
 
 void ConversationHandler::OnModelDataChanged() {

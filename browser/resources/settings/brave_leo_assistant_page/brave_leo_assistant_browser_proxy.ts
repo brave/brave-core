@@ -8,6 +8,7 @@
  import * as mojomCustomizationSettings from
    '../customization_settings.mojom-webui.js'
  export * from '../ai_chat.mojom-webui.js'
+ export * from '../common.mojom-webui.js'
  export * from '../settings_helper.mojom-webui.js'
  export * from '../customization_settings.mojom-webui.js'
 

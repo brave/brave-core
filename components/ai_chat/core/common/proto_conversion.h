@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_COMMON_PROTO_CONVERSION_H_
 
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/proto/store.pb.h"
 
 namespace ai_chat {
@@ -26,6 +27,14 @@ mojom::ToolUseEventPtr DeserializeToolUseEvent(
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 bool SerializeToolUseEvent(const mojom::ToolUseEventPtr& mojom_event,
                            store::ToolUseEventProto* proto_event);
+
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+mojom::SkillEntryPtr DeserializeSkillEntry(
+    const store::SkillEntryProto& proto_entry);
+
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+void SerializeSkillEntry(const mojom::SkillEntryPtr& mojom_entry,
+                         store::SkillEntryProto* proto_entry);
 
 }  // namespace ai_chat
 

@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -14,6 +15,7 @@
 #include "base/containers/to_vector.h"
 #include "base/functional/callback.h"
 #include "base/notimplemented.h"
+#include "base/numerics/checked_math.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -54,122 +56,109 @@ constexpr int kTxSendFailure = 2;
 [[maybe_unused]] constexpr int kTxSignProofGeneration = 1;
 [[maybe_unused]] constexpr int kTxSignUserDeclined = 2;
 
-base::expected<std::optional<std::vector<
-                   std::pair<CardanoAddress, cardano_rpc::UnspentOutput>>>,
-               mojom::CardanoProviderErrorBundlePtr>
-FilterUtxosByAmount(const GetCardanoUtxosTask::UtxoMap& utxo_map,
-                    const std::optional<std::string>& amount) {
-  std::vector<std::pair<CardanoAddress, cardano_rpc::UnspentOutput>> all_utxos;
-  for (const auto& pair_by_address : utxo_map) {
-    for (const auto& utxo : pair_by_address.second) {
-      all_utxos.push_back({pair_by_address.first, utxo});
-    }
-  }
-  std::sort(all_utxos.begin(), all_utxos.end(),
-            [](std::pair<CardanoAddress, cardano_rpc::UnspentOutput>& a,
-               std::pair<CardanoAddress, cardano_rpc::UnspentOutput>& b) {
-              return (a.second.output_index < b.second.output_index);
-            });
+// Check if sum `utxos` amounts don't overflow.
+bool ValidateUtxosAmountsSum(
+    base::span<const cardano_rpc::UnspentOutput> utxos) {
+  base::CheckedNumeric<uint64_t> accumulated_sum = 0u;
 
-  if (amount) {
-    std::vector<std::pair<CardanoAddress, cardano_rpc::UnspentOutput>>
-        selected_utxos;
-    auto numeric_amount = CardanoCip30Serializer::DeserializeAmount(*amount);
-
-    if (!numeric_amount) {
-      return base::unexpected(mojom::CardanoProviderErrorBundle::New(
-          kAPIErrorInternalError, "Failed to decode amount", nullptr));
-    }
-
-    base::CheckedNumeric<uint64_t> accumulated_sum = 0u;
-
-    for (const auto& utxo : all_utxos) {
-      accumulated_sum += utxo.second.lovelace_amount;
-      if (!accumulated_sum.IsValid()) {
-        return base::unexpected(mojom::CardanoProviderErrorBundle::New(
-            kAPIErrorInternalError, "Value overflow", nullptr));
-      }
-
-      selected_utxos.push_back(utxo);
-
-      if (accumulated_sum.ValueOrDie() >= numeric_amount.value()) {
-        break;
-      }
-    }
-
-    if (accumulated_sum.ValueOrDie() < numeric_amount.value()) {
-      return base::ok(std::nullopt);
-    }
-
-    return base::ok(selected_utxos);
+  for (auto& utxo : utxos) {
+    accumulated_sum += utxo.lovelace_amount;
   }
 
-  return base::ok(all_utxos);
+  return accumulated_sum.IsValid();
 }
 
-base::expected<base::span<const std::string>,
-               mojom::CardanoProviderErrorBundlePtr>
-ApplyPaginate(base::span<const std::string> serialized_utxos,
-              const mojom::CardanoProviderPaginationPtr& paginate) {
-  if (!paginate) {
-    return serialized_utxos;
+// Return all utxos if there is no amount limit. Otherwise pick one by one
+// until amount is reached.
+std::optional<cardano_rpc::UnspentOutputs> FilterUtxosByAmount(
+    const cardano_rpc::UnspentOutputs& utxos,
+    const std::optional<uint64_t>& amount) {
+  if (!amount) {
+    return utxos;
   }
 
-  if (paginate->limit <= 0 || paginate->page < 0) {
+  cardano_rpc::UnspentOutputs selected_utxos;
+
+  base::CheckedNumeric<uint64_t> accumulated_sum = 0u;
+  for (auto& utxo : utxos) {
+    accumulated_sum += utxo.lovelace_amount;
+
+    selected_utxos.push_back(std::move(utxo));
+
+    // Utxos already have been validated not to overflow.
+    if (accumulated_sum.ValueOrDie() >= amount.value()) {
+      return selected_utxos;
+    }
+  }
+
+  // Utxos sum did not reach amount.
+  return std::nullopt;
+}
+
+base::expected<base::span<const cardano_rpc::UnspentOutput>,
+               mojom::CardanoProviderErrorBundlePtr>
+ApplyPaginate(base::span<const cardano_rpc::UnspentOutput> utxos,
+              const mojom::CardanoProviderPaginationPtr& paginate) {
+  if (!paginate) {
+    return utxos;
+  }
+
+  uint32_t limit = 0;
+  uint32_t page = 0;
+
+  if (!base::CheckedNumeric(paginate->limit).AssignIfValid(&limit) ||
+      !base::CheckedNumeric(paginate->page).AssignIfValid(&page) ||
+      limit == 0) {
     return base::unexpected(mojom::CardanoProviderErrorBundle::New(
         kAPIErrorInvalidRequest, "Pagination argument error", nullptr));
   }
 
   size_t start_pos = 0;
-  if (!base::CheckMul<size_t>(paginate->page, paginate->limit)
-           .AssignIfValid(&start_pos)) {
+  if (!base::CheckMul<size_t>(page, limit).AssignIfValid(&start_pos)) {
     return base::unexpected(mojom::CardanoProviderErrorBundle::New(
         kAPIErrorInternalError, "Numeric error", nullptr));
   }
 
-  if (start_pos >= serialized_utxos.size()) {
-    base::CheckedNumeric<int32_t> max_pages_count =
-        std::ceil(serialized_utxos.size() / paginate->limit);
+  if (start_pos >= utxos.size()) {
+    base::CheckedNumeric<int32_t> max_pages_count = utxos.size() / limit;
+    if (utxos.size() % limit != 0) {
+      max_pages_count++;
+    }
     return base::unexpected(mojom::CardanoProviderErrorBundle::New(
         kAPIErrorInvalidRequest, "Pagination error",
         mojom::CardanoProviderPaginationErrorPayload::New(
-            max_pages_count.ValueOrDie())));
+            max_pages_count.ValueOrDefault(0))));
   }
 
-  auto [_, requested_page] = serialized_utxos.split_at(start_pos);
-  if (requested_page.size() > static_cast<uint32_t>(paginate->limit)) {
-    requested_page =
-        requested_page.first(static_cast<uint32_t>(paginate->limit));
+  auto [_, requested_page] = utxos.split_at(start_pos);
+  if (requested_page.size() > limit) {
+    requested_page = requested_page.first(limit);
   }
 
   return requested_page;
 }
 
-std::optional<std::pair<CardanoAddress, cardano_rpc::UnspentOutput>>
-FindAddressByInput(
-    const GetCardanoUtxosTask::UtxoMap& utxo_map,
-    const CardanoCip30Serializer::RestoredTransactionInput& input) {
-  for (const auto& by_addr : utxo_map) {
-    for (const auto& utxo : by_addr.second) {
-      if (utxo.tx_hash == input.tx_hash && utxo.output_index == input.index) {
-        return std::pair<CardanoAddress, cardano_rpc::UnspentOutput>(
-            by_addr.first, utxo);
-      }
+std::optional<cardano_rpc::UnspentOutput> FindUtxoByOutpoint(
+    const cardano_rpc::UnspentOutputs& utxos,
+    const CardanoTxDecoder::RestoredTransactionInput& input) {
+  for (const auto& utxo : utxos) {
+    if (utxo.tx_hash == input.tx_hash && utxo.output_index == input.index) {
+      return utxo;
     }
   }
   return std::nullopt;
 }
 
 bool InsertKnownInputAddresses(
-    const GetCardanoUtxosTask::UtxoMap& utxo_map,
-    CardanoCip30Serializer::RestoredTransaction& transaction,
+    const cardano_rpc::UnspentOutputs& utxos,
+    CardanoTxDecoder::RestoredTransaction& transaction,
     bool partial_sign) {
   for (auto& restored_input : transaction.tx_body.inputs) {
-    auto find_result = FindAddressByInput(utxo_map, restored_input);
+    auto utxo = FindUtxoByOutpoint(utxos, restored_input);
 
-    if (find_result) {
-      restored_input.address = std::move(find_result->first);
-      restored_input.amount = find_result->second.lovelace_amount;
+    if (utxo) {
+      restored_input.address = utxo->address_to;
+      restored_input.amount = utxo->lovelace_amount;
     } else if (!partial_sign) {
       return false;
     }
@@ -320,11 +309,20 @@ void CardanoApiImpl::OnGetBalance(GetBalanceCallback callback,
 
   CHECK(balance);
 
-  std::move(callback).Run(
-      CardanoCip30Serializer::SerializeAmount(balance->total_balance), nullptr);
+  auto amount_hex =
+      CardanoCip30Serializer::SerializeAmount(balance->total_balance);
+  if (!amount_hex) {
+    std::move(callback).Run(
+        std::nullopt,
+        mojom::CardanoProviderErrorBundle::New(
+            kAPIErrorInternalError, WalletInternalErrorMessage(), nullptr));
+    return;
+  }
+
+  std::move(callback).Run(*amount_hex, nullptr);
 }
 
-void CardanoApiImpl::GetUtxos(const std::optional<std::string>& amount,
+void CardanoApiImpl::GetUtxos(const std::optional<std::string>& amount_cbor,
                               mojom::CardanoProviderPaginationPtr paginate,
                               GetUtxosCallback callback) {
   auto error = CheckSelectedAccountValid();
@@ -335,6 +333,18 @@ void CardanoApiImpl::GetUtxos(const std::optional<std::string>& amount,
 
   delegate_->WalletInteractionDetected();
 
+  std::optional<uint64_t> amount;
+  if (amount_cbor) {
+    amount = CardanoCip30Serializer::DeserializeAmount(*amount_cbor);
+    if (!amount) {
+      std::move(callback).Run(
+          std::nullopt,
+          mojom::CardanoProviderErrorBundle::New(
+              kAPIErrorInternalError, WalletParsingErrorMessage(), nullptr));
+      return;
+    }
+  }
+
   brave_wallet_service_->GetCardanoWalletService()->GetUtxos(
       selected_account_.Clone(),
       base::BindOnce(&CardanoApiImpl::OnGetUtxos,
@@ -343,41 +353,56 @@ void CardanoApiImpl::GetUtxos(const std::optional<std::string>& amount,
 }
 
 void CardanoApiImpl::OnGetUtxos(
-    const std::optional<std::string>& amount,
+    std::optional<uint64_t> amount,
     mojom::CardanoProviderPaginationPtr paginate,
     GetUtxosCallback callback,
-    base::expected<GetCardanoUtxosTask::UtxoMap, std::string> result) {
-  if (!result.has_value()) {
+    base::expected<cardano_rpc::UnspentOutputs, std::string> all_utxos) {
+  if (!all_utxos.has_value()) {
     std::move(callback).Run(
         std::nullopt, mojom::CardanoProviderErrorBundle::New(
-                          kAPIErrorInternalError, result.error(), nullptr));
+                          kAPIErrorInternalError, all_utxos.error(), nullptr));
     return;
   }
 
-  auto filter_utxos_result = FilterUtxosByAmount(result.value(), amount);
-  if (!filter_utxos_result.has_value()) {
-    std::move(callback).Run(std::nullopt,
-                            std::move(filter_utxos_result.error()));
+  // Need some stable order for same collection of utxos in case of paging.
+  std::ranges::sort(all_utxos.value(), [](cardano_rpc::UnspentOutput& a,
+                                          cardano_rpc::UnspentOutput& b) {
+    return std::tie(a.tx_hash, a.output_index) <
+           std::tie(b.tx_hash, b.output_index);
+  });
+
+  if (!ValidateUtxosAmountsSum(all_utxos.value())) {
+    std::move(callback).Run(
+        std::nullopt,
+        mojom::CardanoProviderErrorBundle::New(
+            kAPIErrorInternalError, WalletInternalErrorMessage(), nullptr));
     return;
   }
 
-  if (!filter_utxos_result.value()) {
-    // Can't achieve amount.
+  auto filtered_utxos = FilterUtxosByAmount(all_utxos.value(), amount);
+  if (!filtered_utxos) {
+    // Can't reach amount.
     std::move(callback).Run(std::nullopt, nullptr);
     return;
   }
 
-  auto serialized_utxos =
-      CardanoCip30Serializer::SerializeUtxos(**filter_utxos_result);
-
-  auto apply_paginate_result = ApplyPaginate(serialized_utxos, paginate);
-  if (!apply_paginate_result.has_value()) {
-    std::move(callback).Run(std::nullopt,
-                            std::move(apply_paginate_result.error()));
+  auto paginated_utxos = ApplyPaginate(filtered_utxos.value(), paginate);
+  if (!paginated_utxos.has_value()) {
+    std::move(callback).Run(std::nullopt, std::move(paginated_utxos.error()));
     return;
   }
 
-  std::move(callback).Run(base::ToVector(*apply_paginate_result), nullptr);
+  auto serialized_utxos =
+      CardanoCip30Serializer::SerializeUtxos(paginated_utxos.value());
+  if (!serialized_utxos.has_value()) {
+    std::move(callback).Run(
+        std::nullopt,
+        mojom::CardanoProviderErrorBundle::New(
+            kAPIErrorInternalError, WalletInternalErrorMessage(), nullptr));
+    return;
+  }
+
+  std::move(callback).Run(*serialized_utxos, nullptr);
 }
 
 void CardanoApiImpl::SignTx(const std::string& tx_cbor,
@@ -394,12 +419,11 @@ void CardanoApiImpl::SignTx(const std::string& tx_cbor,
     std::move(callback).Run(
         std::nullopt,
         mojom::CardanoProviderErrorBundle::New(
-            kAPIErrorInvalidRequest, "Failed to decode transaction", nullptr));
+            kAPIErrorInvalidRequest, WalletParsingErrorMessage(), nullptr));
     return;
   }
 
-  auto restored_tx =
-      CardanoCip30Serializer::DeserializeTransaction(tx_cbor_bytes);
+  auto restored_tx = CardanoTxDecoder::DecodeTransaction(tx_cbor_bytes);
   if (!restored_tx) {
     std::move(callback).Run(
         std::nullopt,
@@ -421,10 +445,10 @@ void CardanoApiImpl::SignTx(const std::string& tx_cbor,
 }
 
 void CardanoApiImpl::OnGetUtxosForSignTx(
-    CardanoCip30Serializer::RestoredTransaction tx,
+    CardanoTxDecoder::RestoredTransaction tx,
     bool partial_sign,
     SignTxCallback callback,
-    base::expected<GetCardanoUtxosTask::UtxoMap, std::string> utxos) {
+    base::expected<cardano_rpc::UnspentOutputs, std::string> utxos) {
   auto account_valid_error = CheckSelectedAccountValid();
   if (account_valid_error) {
     std::move(callback).Run(std::nullopt, std::move(account_valid_error));
@@ -465,7 +489,7 @@ void CardanoApiImpl::OnGetUtxosForSignTx(
 }
 
 mojom::SignCardanoTransactionRequestPtr CardanoApiImpl::FromRestoredTransaction(
-    const CardanoCip30Serializer::RestoredTransaction& tx) {
+    const CardanoTxDecoder::RestoredTransaction& tx) {
   auto addresses =
       brave_wallet_service_->keyring_service()->GetCardanoAddresses(
           selected_account_);
@@ -495,11 +519,11 @@ mojom::SignCardanoTransactionRequestPtr CardanoApiImpl::FromRestoredTransaction(
       -1, selected_account_.Clone(), MakeOriginInfo(delegate_->GetOrigin()),
       mojom::ChainId::New(mojom::CoinType::ADA,
                           GetNetworkForCardanoAccount(selected_account_)),
-      base::HexEncode(tx.raw_bytes), std::move(inputs), std::move(outputs));
+      base::HexEncode(tx.raw_tx_bytes), std::move(inputs), std::move(outputs));
 }
 
 void CardanoApiImpl::OnSignTransactionRequestProcessed(
-    CardanoCip30Serializer::RestoredTransaction tx,
+    CardanoTxDecoder::RestoredTransaction tx,
     SignTxCallback callback,
     bool approved,
     const std::optional<std::string>& error) {
@@ -536,7 +560,9 @@ void CardanoApiImpl::OnSignTransactionRequestProcessed(
     return;
   }
 
-  std::vector<CardanoSignMessageResult> sign_results;
+  auto hash = Blake2bHash<kCardanoTxHashSize>({tx.tx_body.raw_body_bytes});
+
+  std::vector<CardanoTxDecoder::CardanoSignMessageResult> sign_results;
   for (const auto& input : tx.tx_body.inputs) {
     if (!input.address) {
       continue;
@@ -552,7 +578,7 @@ void CardanoApiImpl::OnSignTransactionRequestProcessed(
 
     auto sign_result =
         brave_wallet_service_->keyring_service()->SignMessageByCardanoKeyring(
-            selected_account_, address_map_item->second, tx.raw_bytes);
+            selected_account_, address_map_item->second, hash);
 
     if (!sign_result) {
       std::move(callback).Run(
@@ -561,11 +587,13 @@ void CardanoApiImpl::OnSignTransactionRequestProcessed(
               kAPIErrorInternalError, WalletInternalErrorMessage(), nullptr));
       return;
     }
-    sign_results.push_back(sign_result.value());
+
+    sign_results.emplace_back(base::ToVector(sign_result->signature),
+                              base::ToVector(sign_result->pubkey));
   }
 
-  auto signed_tx = CardanoCip30Serializer().ApplySignResults(
-      tx.raw_bytes, std::move(sign_results));
+  auto signed_tx = CardanoTxDecoder::AddWitnessesToTransaction(
+      tx.raw_tx_bytes, std::move(sign_results));
 
   if (!signed_tx) {
     std::move(callback).Run(
@@ -726,7 +754,7 @@ void CardanoApiImpl::GetCollateral(const std::string& amount,
 
 mojom::CardanoProviderErrorBundlePtr
 CardanoApiImpl::CheckSelectedAccountValid() {
-  auto account_id = GetCardanoPereferedDappAccount(
+  auto account_id = GetCardanoPreferredDappAccount(
       delegate(), brave_wallet_service_->keyring_service());
   if (!account_id) {
     return mojom::CardanoProviderErrorBundle::New(

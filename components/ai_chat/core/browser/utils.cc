@@ -20,6 +20,7 @@
 #include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
@@ -193,11 +194,6 @@ EngineConsumer::GenerationDataCallback BindParseRewriteReceivedData(
   return base::BindRepeating(
       [](ConversationHandler::GeneratedTextCallback callback,
          EngineConsumer::GenerationResultData result_data) {
-        // TODO(petemill): This probably should exist at the EngineConsumer
-        // level and possibly only for the OAI engine since the others use
-        // stop sequences to exclude the ending tag.
-        constexpr char kResponseTagPattern[] =
-            "<\\/?(response|respons|respon|respo|resp|res|re|r)?$";
         auto& rewrite_event = result_data.event;
         if (!rewrite_event->is_completion_event()) {
           return;
@@ -205,14 +201,7 @@ EngineConsumer::GenerationDataCallback BindParseRewriteReceivedData(
 
         std::string suggestion =
             rewrite_event->get_completion_event()->completion;
-
-        base::TrimWhitespaceASCII(suggestion, base::TRIM_ALL, &suggestion);
         if (suggestion.empty()) {
-          return;
-        }
-
-        // Avoid showing the ending tag.
-        if (RE2::PartialMatch(suggestion, kResponseTagPattern)) {
           return;
         }
 

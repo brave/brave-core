@@ -19,27 +19,3 @@ if (!is_android) {
     ]
   }
 }
-
-source_set("unit_tests") {
-  testonly = true
-  sources = [ "ai_chat_tab_helper_unittest.cc" ]
-
-  deps = [
-    "//base/test:test_support",
-    "//brave/components/ai_chat/content/browser",
-    "//brave/components/ai_chat/core/browser",
-    "//brave/components/ai_chat/core/common",
-    "//brave/components/ai_chat/core/common/mojom",
-    "//chrome/test:test_support",
-    "//components/favicon/content",
-    "//components/favicon/core/test:test_support",
-    "//components/pdf/common:constants",
-    "//content/test:test_support",
-    "//pdf:buildflags",
-    "//testing/gtest",
-  ]
-
-  if (enable_pdf) {
-    deps += [ "//components/pdf/browser" ]
-  }
-}

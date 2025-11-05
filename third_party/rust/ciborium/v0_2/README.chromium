@@ -1,0 +1,10 @@
+Name: ciborium
+URL: https://crates.io/crates/ciborium
+Version: 0.2.2
+Revision: fdf3ec5c53256000f8e12f06c361ca18026a8d99
+License: Apache-2.0
+License File: //brave/third_party/rust/chromium_crates_io/vendor/ciborium-v0_2/LICENSE
+Shipped: yes
+Security Critical: yes
+
+Description: serde implementation of CBOR using ciborium-basic

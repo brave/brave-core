@@ -11,7 +11,7 @@ import { scoped } from '../../rewards_page/lib/scoped_css'
 import { App } from '../components/app'
 
 export default {
-  title: 'Rewards/Internals'
+  title: 'Rewards/Internals',
 }
 
 const style = scoped.css`

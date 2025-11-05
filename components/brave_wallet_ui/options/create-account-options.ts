@@ -110,38 +110,53 @@ export const CreateAccountOptions = (options: {
         chainIcons: [],
       })
     }
+  }
 
-    if (options.isCardanoEnabled) {
-      accounts.push({
-        description: getLocale('braveWalletCreateAccountCardanoDescription'),
-        name: 'Cardano',
-        fixedNetwork: BraveWallet.CARDANO_MAINNET,
+  if (options.isCardanoEnabled) {
+    accounts.push({
+      description: getLocale('braveWalletCreateAccountCardanoDescription'),
+      name: 'Cardano',
+      fixedNetwork: BraveWallet.CARDANO_MAINNET,
+      coin: BraveWallet.CoinType.ADA,
+      icon: getNetworkLogo(BraveWallet.CARDANO_MAINNET, 'ADA'),
+      chainIcons: ['ada-color'],
+    })
+    if (
+      isNetworkVisible(BraveWallet.CoinType.ADA, BraveWallet.CARDANO_TESTNET)
+    ) {
+      testnetAccounts.push({
+        description: getLocale(
+          'braveWalletCreateAccountCardanoTestnetDescription',
+        ),
+        name: 'Cardano Testnet',
+        fixedNetwork: BraveWallet.CARDANO_TESTNET,
         coin: BraveWallet.CoinType.ADA,
-        icon: getNetworkLogo(BraveWallet.CARDANO_MAINNET, 'ADA'),
+        icon: getNetworkLogo(BraveWallet.CARDANO_TESTNET, 'ADA'),
         chainIcons: ['ada-color'],
       })
-      if (
-        isNetworkVisible(BraveWallet.CoinType.ADA, BraveWallet.CARDANO_TESTNET)
-      ) {
-        testnetAccounts.push({
-          description: getLocale(
-            'braveWalletCreateAccountCardanoTestnetDescription',
-          ),
-          name: 'Cardano Testnet',
-          fixedNetwork: BraveWallet.CARDANO_TESTNET,
-          coin: BraveWallet.CoinType.ADA,
-          icon: getNetworkLogo(BraveWallet.CARDANO_TESTNET, 'ADA'),
-          chainIcons: ['ada-color'],
-        })
-      }
     }
+  }
 
-    if (options.isPolkadotEnabled) {
-      accounts.push({
-        description: getLocale('braveWalletCreateAccountPolkadotDescription'),
-        name: 'Polkadot',
+  if (options.isPolkadotEnabled) {
+    accounts.push({
+      description: getLocale('braveWalletCreateAccountPolkadotDescription'),
+      name: 'Polkadot',
+      coin: BraveWallet.CoinType.DOT,
+      icon: getNetworkLogo(BraveWallet.POLKADOT_MAINNET, 'DOT'),
+      chainIcons: ['dot-color'],
+    })
+
+    if (
+      isNetworkVisible(BraveWallet.CoinType.DOT, BraveWallet.POLKADOT_TESTNET)
+    ) {
+      testnetAccounts.push({
+        description: getLocale(
+          'braveWalletCreateAccountPolkadotTestnetDescription',
+        ),
+        name: 'Polkadot Westend',
+        fixedNetwork: BraveWallet.POLKADOT_TESTNET,
         coin: BraveWallet.CoinType.DOT,
-        icon: getNetworkLogo(BraveWallet.POLKADOT_MAINNET, 'DOT'),
+        icon: getNetworkLogo(BraveWallet.POLKADOT_TESTNET, 'DOT'),
         chainIcons: ['dot-color'],
       })
     }

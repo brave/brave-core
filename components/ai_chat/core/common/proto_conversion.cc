@@ -10,6 +10,7 @@
 
 #include "base/logging.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/proto/store.pb.h"
 #include "url/gurl.h"
 
@@ -148,6 +149,20 @@ bool SerializeToolUseEvent(const mojom::ToolUseEventPtr& mojom_event,
   }
 
   return true;
+}
+
+mojom::SkillEntryPtr DeserializeSkillEntry(
+    const store::SkillEntryProto& proto_entry) {
+  return mojom::SkillEntry::New(proto_entry.shortcut(), proto_entry.prompt());
+}
+
+void SerializeSkillEntry(const mojom::SkillEntryPtr& mojom_entry,
+                         store::SkillEntryProto* proto_entry) {
+  CHECK(mojom_entry);
+  CHECK(proto_entry);
+
+  proto_entry->set_shortcut(mojom_entry->shortcut);
+  proto_entry->set_prompt(mojom_entry->prompt);
 }
 
 }  // namespace ai_chat

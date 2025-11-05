@@ -11,8 +11,10 @@
 #include <vector>
 
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/test_mojom_printers.h"
 #include "mojo/public/cpp/bindings/equals_traits.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace ai_chat {
@@ -21,6 +23,16 @@ namespace ai_chat {
 #define EXPECT_MOJOM_EQ(a, b) EXPECT_PRED_FORMAT2(MojomEqVerbose, a, b)
 #define ASSERT_MOJOM_EQ(a, b) ASSERT_PRED_FORMAT2(MojomEqVerbose, a, b)
 #define EXPECT_MOJOM_NE(a, b) EXPECT_FALSE(mojo::Equals(a, b))
+
+// custom matcher for std::vector<mojom::ContentBlockPtr>
+MATCHER_P(ContentBlockText,
+          matcher,
+          "Fails to match " + DescribeMatcher<std::string>(matcher)) {
+  if (arg.size() != 1u && !arg[0]->is_text_content_block()) {
+    return false;
+  }
+  return testing::Matches(matcher)(arg[0]->get_text_content_block()->text);
+}
 
 // Helper template function to compare two Mojom objects for equality,
 // deeply, using mojo::Equals with verbose output

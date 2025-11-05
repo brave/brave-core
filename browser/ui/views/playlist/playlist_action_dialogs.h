@@ -14,8 +14,8 @@
 
 #include "base/check.h"
 #include "brave/browser/ui/views/playlist/selectable_list_view.h"
-#include "brave/components/playlist/browser/playlist_tab_helper_observer.h"
-#include "brave/components/playlist/common/mojom/playlist.mojom.h"
+#include "brave/components/playlist/content/browser/playlist_tab_helper_observer.h"
+#include "brave/components/playlist/core/common/mojom/playlist.mojom.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "components/constrained_window/constrained_window_views.h"
 #include "ui/base/metadata/metadata_header_macros.h"
@@ -36,7 +36,6 @@ class PlaylistService;
 class PlaylistActionDialog : public views::DialogDelegateView {
   METADATA_HEADER(PlaylistActionDialog, views::DialogDelegateView)
  public:
-
   template <class Dialog, typename... Args>
   static void Show(BrowserView* browser_view, Args&&... args) {
     DCHECK(browser_view);
@@ -63,7 +62,6 @@ class PlaylistNewPlaylistDialog : public PlaylistActionDialog,
                                   public views::TextfieldController {
   METADATA_HEADER(PlaylistNewPlaylistDialog, PlaylistActionDialog)
  public:
-
   using PassKey = base::PassKey<PlaylistActionDialog>;
 
   PlaylistNewPlaylistDialog(PassKey, playlist::PlaylistService* service);
@@ -90,7 +88,6 @@ class PlaylistMoveDialog : public PlaylistActionDialog,
                            public playlist::PlaylistTabHelperObserver {
   METADATA_HEADER(PlaylistMoveDialog, PlaylistActionDialog)
  public:
-
   using PassKey = base::PassKey<PlaylistActionDialog>;
 
   struct MoveParam {
@@ -167,7 +164,6 @@ class PlaylistMoveDialog : public PlaylistActionDialog,
 class PlaylistRemovePlaylistConfirmDialog : public PlaylistActionDialog {
   METADATA_HEADER(PlaylistRemovePlaylistConfirmDialog, PlaylistActionDialog)
  public:
-
   using PassKey = base::PassKey<PlaylistActionDialog>;
 
   PlaylistRemovePlaylistConfirmDialog(PassKey,

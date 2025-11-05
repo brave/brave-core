@@ -16,15 +16,6 @@
 
 namespace brave_wallet {
 
-namespace mojom {
-// TODO(apaymyshev): Remove these aliases eventually.
-inline constexpr KeyringId kDefaultKeyringId = KeyringId::kDefault;
-inline constexpr KeyringId kSolanaKeyringId = KeyringId::kSolana;
-inline constexpr KeyringId kFilecoinKeyringId = KeyringId::kFilecoin;
-inline constexpr KeyringId kFilecoinTestnetKeyringId =
-    KeyringId::kFilecoinTestnet;
-}  // namespace mojom
-
 using uint256_t = unsigned _BitInt(256);
 using int256_t = _BitInt(256);
 
@@ -59,7 +50,6 @@ struct Log {
   ~Log();
   Log(const Log&);
   bool operator==(const Log&) const;
-  bool operator!=(const Log&) const;
 
   std::string address;
   std::string block_hash;
@@ -77,7 +67,6 @@ struct TransactionReceipt {
   ~TransactionReceipt();
   TransactionReceipt(const TransactionReceipt&);
   bool operator==(const TransactionReceipt&) const;
-  bool operator!=(const TransactionReceipt&) const;
 
   std::string transaction_hash;
   uint256_t transaction_index{0u};
@@ -112,7 +101,6 @@ struct SolanaSignatureStatus {
   ~SolanaSignatureStatus() = default;
   SolanaSignatureStatus(const SolanaSignatureStatus&) = default;
   bool operator==(const SolanaSignatureStatus&) const;
-  bool operator!=(const SolanaSignatureStatus&) const;
 
   base::Value::Dict ToValue() const;
   static std::optional<SolanaSignatureStatus> FromValue(
@@ -139,7 +127,6 @@ struct SolanaAccountInfo {
   SolanaAccountInfo() = default;
   ~SolanaAccountInfo() = default;
   bool operator==(const SolanaAccountInfo&) const;
-  bool operator!=(const SolanaAccountInfo&) const;
 
   // Number of lamports assigned to this account.
   uint64_t lamports{0u};

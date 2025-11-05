@@ -28,7 +28,9 @@ BraveAccountService* BraveAccountServiceFactoryIOS::GetFor(
 }
 
 BraveAccountServiceFactoryIOS::BraveAccountServiceFactoryIOS()
-    : ProfileKeyedServiceFactoryIOS("BraveAccountService") {
+    : ProfileKeyedServiceFactoryIOS("BraveAccountService",
+                                    ServiceCreation::kCreateWithProfile,
+                                    TestingCreation::kNoServiceForTests) {
   CHECK(features::IsBraveAccountEnabled());
 }
 
@@ -36,11 +38,10 @@ BraveAccountServiceFactoryIOS::~BraveAccountServiceFactoryIOS() = default;
 
 std::unique_ptr<KeyedService>
 BraveAccountServiceFactoryIOS::BuildServiceInstanceFor(
-    web::BrowserState* state) const {
-  CHECK(state);
+    ProfileIOS* profile) const {
+  CHECK(profile);
   return std::make_unique<BraveAccountService>(
-      ProfileIOS::FromBrowserState(state)->GetPrefs(),
-      state->GetSharedURLLoaderFactory());
+      profile->GetPrefs(), profile->GetSharedURLLoaderFactory());
 }
 
 }  // namespace brave_account

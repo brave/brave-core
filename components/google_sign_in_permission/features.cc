@@ -13,7 +13,6 @@ namespace google_sign_in_permission::features {
 // When enabled, Brave will prompt for permission on sites which want to use
 // Google Sign In.
 BASE_FEATURE(kBraveGoogleSignInPermission,
-             "BraveGoogleSignInPermission",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
 }  // namespace google_sign_in_permission::features

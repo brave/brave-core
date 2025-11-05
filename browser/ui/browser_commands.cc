@@ -32,7 +32,6 @@
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 #include "brave/browser/ui/tabs/features.h"
-#include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
@@ -43,7 +42,7 @@
 #include "brave/components/sidebar/browser/sidebar_service.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
-#include "brave/components/url_sanitizer/browser/url_sanitizer_service.h"
+#include "brave/components/url_sanitizer/core/browser/url_sanitizer_service.h"
 #include "chrome/browser/bookmarks/bookmark_html_writer.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
@@ -134,18 +133,6 @@ bool CanTakeTabs(const Browser* from, const Browser* to) {
          !from->is_delete_scheduled() && to->profile() == from->profile();
 }
 
-std::optional<tabs::TabHandle> GetActiveTabHandle(Browser* browser) {
-  CHECK(browser);
-  auto* model = browser->tab_strip_model();
-  auto* active_contents = model->GetActiveWebContents();
-  if (!active_contents) {
-    return std::nullopt;
-  }
-
-  const int active_tab_index = model->GetIndexOfWebContents(active_contents);
-  return model->GetTabAtIndex(active_tab_index)->GetHandle();
-}
-
 std::vector<int> GetSelectedIndices(Browser* browser) {
   auto* model = browser->tab_strip_model();
   const auto selection = model->selection_model();
@@ -225,6 +212,7 @@ class BookmarksExportListener : public ui::SelectFileDialog::Listener {
   scoped_refptr<ui::SelectFileDialog> file_selector_;
 };
 
+#if BUILDFLAG(ENABLE_TOR)
 void NewOffTheRecordWindowTor(Browser* browser) {
   CHECK(browser);
   NewOffTheRecordWindowTor(browser->profile());
@@ -241,7 +229,6 @@ void NewOffTheRecordWindowTor(Profile* profile) {
 }
 
 void NewTorConnectionForSite(Browser* browser) {
-#if BUILDFLAG(ENABLE_TOR)
   Profile* profile = browser->profile();
   DCHECK(profile);
   tor::TorProfileService* service =
@@ -252,8 +239,8 @@ void NewTorConnectionForSite(Browser* browser) {
     return;
   }
   service->SetNewTorCircuit(current_tab);
-#endif
 }
+#endif
 
 void MaybeDistillAndShowSpeedreaderBubble(Browser* browser) {
 #if BUILDFLAG(ENABLE_SPEEDREADER)
@@ -1016,210 +1003,6 @@ void ToggleAllBookmarksButtonVisibility(Browser* browser) {
   prefs->SetBoolean(
       brave::bookmarks::prefs::kShowAllBookmarksButton,
       !prefs->GetBoolean(brave::bookmarks::prefs::kShowAllBookmarksButton));
-}
-
-bool CanOpenNewSplitViewForTab(Browser* browser,
-                               std::optional<tabs::TabHandle> tab) {
-  auto* split_view_data = browser->GetFeatures().split_view_browser_data();
-  if (!split_view_data) {
-    return false;
-  }
-
-  if (browser->tab_strip_model()->empty()) {
-    return false;
-  }
-
-  if (!tab) {
-    tab = GetActiveTabHandle(browser);
-  }
-
-  return !split_view_data->IsTabTiled(*tab);
-}
-
-void NewSplitViewForTab(Browser* browser, std::optional<tabs::TabHandle> tab) {
-  auto* split_view_data = browser->GetFeatures().split_view_browser_data();
-  if (!split_view_data) {
-    return;
-  }
-
-  if (!CanOpenNewSplitViewForTab(browser, tab)) {
-    return;
-  }
-
-  if (!tab) {
-    tab = GetActiveTabHandle(browser);
-  }
-
-  auto* model = browser->tab_strip_model();
-  const int tab_index = model->GetIndexOfTab(tab->Get());
-  const int new_tab_index = model->IsTabPinned(tab_index)
-                                ? model->IndexOfFirstNonPinnedTab()
-                                : tab_index + 1;
-
-  chrome::AddTabAt(browser, GURL("chrome://newtab"), new_tab_index,
-                   /*foreground*/ true);
-
-  split_view_data->TileTabs(
-      {.first = model->GetTabAtIndex(tab_index)->GetHandle(),
-       .second = model->GetTabAtIndex(new_tab_index)->GetHandle()});
-}
-
-void OpenLinkInSplitView(Browser* browser,
-                         content::OpenURLParams open_url_params) {
-  auto* split_view_data = browser->GetFeatures().split_view_browser_data();
-  if (!split_view_data) {
-    return;
-  }
-
-  auto tab = GetActiveTabHandle(browser);
-  if (!CanOpenNewSplitViewForTab(browser, tab)) {
-    return;
-  }
-
-  auto* model = browser->tab_strip_model();
-  const int tab_index = model->GetIndexOfTab(tab->Get());
-  const int new_tab_index = model->IsTabPinned(tab_index)
-                                ? model->IndexOfFirstNonPinnedTab()
-                                : tab_index + 1;
-  auto web_contents = content::WebContents::Create(
-      content::WebContents::CreateParams(browser->profile()));
-  auto* web_contents_ptr = web_contents.get();
-  model->InsertWebContentsAt(new_tab_index, std::move(web_contents),
-                             ADD_ACTIVE);
-  open_url_params.disposition = WindowOpenDisposition::CURRENT_TAB;
-  web_contents_ptr->OpenURL(open_url_params, base::DoNothing());
-
-  split_view_data->TileTabs(
-      {.first = model->GetTabAtIndex(tab_index)->GetHandle(),
-       .second = model->GetTabAtIndex(new_tab_index)->GetHandle()});
-}
-
-void TileTabs(Browser* browser, const std::vector<int>& indices) {
-  auto* split_view_data = browser->GetFeatures().split_view_browser_data();
-  if (!split_view_data) {
-    return;
-  }
-
-  if (indices.empty()) {
-    return TileTabs(browser, GetSelectedIndices(browser));
-  }
-
-  CHECK_LE(indices.size(), 2u);
-  CHECK(!indices.empty());
-  if (indices.size() == 1) {
-    auto* model = browser->tab_strip_model();
-    int active_tab_index =
-        model->GetIndexOfWebContents(model->GetActiveWebContents());
-    CHECK_NE(indices[0], active_tab_index);
-    auto new_indices = indices;
-    new_indices.push_back(active_tab_index);
-    return TileTabs(browser, new_indices);
-  }
-
-  auto* model = browser->tab_strip_model();
-  auto tab1 = indices[0];
-  auto tab2 = indices[1];
-  CHECK(!split_view_data->IsTabTiled(model->GetTabAtIndex(tab1)->GetHandle()));
-  CHECK(!split_view_data->IsTabTiled(model->GetTabAtIndex(tab2)->GetHandle()));
-
-  if (tab2 < tab1) {
-    std::swap(tab1, tab2);
-  }
-
-  split_view_data->TileTabs(
-      {.first = model->GetTabAtIndex(tab1)->GetHandle(),
-       .second = model->GetTabAtIndex(tab2)->GetHandle()});
-}
-
-void BreakTiles(Browser* browser, const std::vector<int>& indices) {
-  auto* split_view_data = browser->GetFeatures().split_view_browser_data();
-  if (!split_view_data) {
-    return;
-  }
-
-  if (indices.empty()) {
-    return BreakTiles(browser, GetSelectedIndices(browser));
-  }
-
-  auto* model = browser->tab_strip_model();
-  for (auto index : indices) {
-    // The tile could have already been broken from the earlier iteration.
-    if (auto tab_handle = model->GetTabAtIndex(index)->GetHandle();
-        split_view_data->IsTabTiled(tab_handle)) {
-      split_view_data->BreakTile(tab_handle);
-    }
-  }
-}
-
-bool IsTabsTiled(Browser* browser, const std::vector<int>& indices) {
-  auto* split_view_data = browser->GetFeatures().split_view_browser_data();
-  if (!split_view_data) {
-    return false;
-  }
-
-  if (browser->tab_strip_model()->empty()) {
-    return false;
-  }
-
-  if (indices.empty()) {
-    return IsTabsTiled(browser, GetSelectedIndices(browser));
-  }
-
-  auto* model = browser->tab_strip_model();
-
-  return std::ranges::any_of(indices, [&](auto index) {
-    return split_view_data->IsTabTiled(
-        model->GetTabAtIndex(index)->GetHandle());
-  });
-}
-
-bool CanTileTabs(Browser* browser, const std::vector<int>& indices) {
-  auto* split_view_data = browser->GetFeatures().split_view_browser_data();
-  if (!split_view_data) {
-    return false;
-  }
-
-  if (browser->tab_strip_model()->empty()) {
-    return false;
-  }
-
-  if (indices.empty()) {
-    return CanTileTabs(browser, GetSelectedIndices(browser));
-  }
-
-  if (indices.size() != 2) {
-    return false;
-  }
-
-  auto* model = browser->tab_strip_model();
-  return std::ranges::none_of(indices, [&](auto index) {
-    return split_view_data->IsTabTiled(
-        model->GetTabAtIndex(index)->GetHandle());
-  });
-}
-
-void SwapTabsInTile(Browser* browser) {
-  auto* split_view_data = browser->GetFeatures().split_view_browser_data();
-  if (!split_view_data) {
-    return;
-  }
-
-  if (browser->tab_strip_model()->empty()) {
-    return;
-  }
-
-  if (!IsTabsTiled(browser)) {
-    return;
-  }
-
-  auto* model = browser->tab_strip_model();
-  auto tab = model->GetActiveTab()->GetHandle();
-  auto tile = *split_view_data->GetTile(tab);
-  split_view_data->SwapTabsInTile(tile);
-
-  model->MoveWebContentsAt(model->GetIndexOfTab(tile.second.Get()),
-                           model->GetIndexOfTab(tile.first.Get()),
-                           /*select_after_move*/ false);
 }
 
 bool CanOpenNewSplitTabsWithSideBySide(Browser* browser) {

@@ -1,14 +1,8 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="lv">
-<translation id="3586180167003092914">Pārvaldība <ph name="BEGIN_LINK1"/>Android iestatījumos<ph name="END_LINK1"/>
-
-Papildu aizsardzība pārvalda tālāk norādītos Brave iestatījumus
-• Tiek ieslēgts iestatījums “Vienmēr izmantot drošus savienojumus”.
-• Tiek izslēgts iestatījums “JavaScript optimizētājs”. <ph name="BEGIN_LINK2"/>Pārvaldīt vietņu izņēmumus<ph name="END_LINK2"/></translation>
 <translation id="1006017844123154345">Atvērt tiešsaistē</translation>
 <translation id="1036348656032585052">Izslēgt</translation>
-<translation id="1044891598689252897">Vietnes darbosies normāli</translation>
 <translation id="1070329623210597193">Faili, ko šī vietne drīkst skatīt vai rediģēt</translation>
 <translation id="1882093842020941518">Palīdziet mums uzlabot pārlūku Brave, pastāstot, kāpēc atļāvāt trešo pušu sīkfailus. <ph name="BEGIN_LINK"/>Sūtīt atsauksmes<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">Varat pieprasīt skatīt vietņu datora versiju.</translation>
@@ -26,6 +20,7 @@ Papildu aizsardzība pārvalda tālāk norādītos Brave iestatījumus
 <translation id="129382876167171263">Šeit tiek rādīti tīmekļa vietņu saglabātie faili</translation>
 <translation id="131112695174432497">Tiek dzēsti dati, kas ietekmē reklāmu personalizēšanu</translation>
 <translation id="1317194122196776028">Aizmirst šo vietni</translation>
+<translation id="1321110954513621549">Atļauta • Aptuvena</translation>
 <translation id="1323433172918577554">Rādīt vairāk</translation>
 <translation id="1333965224356556482">Neļaut vietnēm piekļūt jūsu atrašanās vietas informācijai</translation>
 <translation id="1343356790768851700">Šī vietne nosaka jūsu intereses un pēc tam iesaka reklāmas citām vietnēm</translation>
@@ -41,9 +36,11 @@ Papildu aizsardzība pārvalda tālāk norādītos Brave iestatījumus
 <translation id="1448064542941920355">Tuvināt</translation>
 <translation id="1464044141348608623">Nerādīt vietnēm, kad jūs aktīvi lietojat savu ierīci</translation>
 <translation id="146867109637325312">{COUNT,plural, =1{<ph name="SITE_COUNT"/> vietne}zero{<ph name="SITE_COUNT"/> vietņu}one{<ph name="SITE_COUNT"/> vietne}other{<ph name="SITE_COUNT"/> vietnes}}</translation>
+<translation id="1476700086976862423">Motīva krāsa: sēpija</translation>
 <translation id="1500473259453106018">Paslēpt kartīti “Cenu kritums cilnēs”</translation>
 <translation id="1508931164824684991">Atļaut vietnēm izmantot JavaScript</translation>
 <translation id="1510341833810331442">Vietnēm nav atļauts saglabāt datus jūsu ierīcē</translation>
+<translation id="1532175480576580256">Ekrāna apakšdaļas lapa “Manas saīsnes” ir atvērta pilnā augstumā</translation>
 <translation id="1538031354170655462">Vietnēs parasti tiek izmantoti tuva darbības lauka sakari (NFC), lai darbotos ar tuvumā esošiem izsekotājiem vai ierīcēm, piemēram, skenētu emblēmas vai veiktu bezkontakta maksājumus.</translation>
 <translation id="1547123415014299762">Trešo pušu sīkfaili ir atļauti</translation>
 <translation id="3665719978526894928">Paātrināt vietņu darbību, izmantojot Brave programmu V8, bet nedaudz samazināt Brave izturību pret uzbrukumiem</translation>
@@ -72,6 +69,8 @@ Papildu aizsardzība pārvalda tālāk norādītos Brave iestatījumus
 <translation id="7401204338724669842">Brave padomi</translation>
 <translation id="6704867734300244173">Kad tas ir ieslēgts, pārlūks Brave darbojas ātrāk, un funkcijām, kas izmanto JavaScript, ir jādarbojas paredzētajā veidā. Ja izslēgts, tiek samazināta veiktspēja, bet uzlabojas V8 noturība pret uzbrukumiem.</translation>
 <translation id="1818308510395330587">Lai atļautu lietotnei <ph name="APP_NAME"/> izmantot papildināto realitāti, ieslēdziet arī kameru <ph name="BEGIN_LINK"/>Android iestatījumos<ph name="END_LINK"/>.</translation>
+<translation id="1848033246551405023">Bezserifa fonts</translation>
+<translation id="1861262398884155592">Šī mape ir tukša</translation>
 <translation id="1881806992065048905">Jaunas cilnes lapas izskata ekrāna apakšdaļas lapa</translation>
 <translation id="1887786770086287077">Piekļuve šīs ierīces atrašanās vietai ir izslēgta. Ieslēdziet to <ph name="BEGIN_LINK"/>Android iestatījumos<ph name="END_LINK"/>.</translation>
 <translation id="1906181697255754968">Parasti piekļuve failiem un mapēm ierīcē vietnēm ir nepieciešama, lai nodrošinātu noteiktas funkcijas, piemēram, automātisku darba saglabāšanu.</translation>
@@ -93,6 +92,7 @@ Papildu aizsardzība pārvalda tālāk norādītos Brave iestatījumus
 <translation id="2079545284768500474">Atsaukt</translation>
 <translation id="2080070583977670716">Vairāk iestatījumu</translation>
 <translation id="2091887806945687916">Signāls</translation>
+<translation id="2094208275686143364">Motīva krāsa: gaiša</translation>
 <translation id="2096716221239095980">Dzēst visus datus</translation>
 <translation id="2102396546234652240">Neļaut vietnēm izmantot jūsu mikrofonu</translation>
 <translation id="2117655453726830283">Nākamais slaids</translation>
@@ -116,11 +116,14 @@ Papildu aizsardzība pārvalda tālāk norādītos Brave iestatījumus
 <translation id="228293613124499805">Lielākā daļa apmeklēto vietņu, iespējams, saglabā datus jūsu ierīcē. Bieži vien jūsu preferences vai ar vietni kopīgotā informācija tiek saglabāta, lai uzlabotu jums pieejamās lietošanas iespējas. Šo iestatījumu ieteicams atstāt ieslēgtu.</translation>
 <translation id="2289270750774289114">Vaicāt, ja vietne vēlas redzēt tuvumā esošās Bluetooth ierīces (ieteicams)</translation>
 <translation id="2315043854645842844">Operētājsistēma neatbalsta klienta puses sertifikāta atlasi.</translation>
+<translation id="2347601491101454548">Ekrāna apakšdaļas lapa “Manas saīsnes” ir atvērta pusekrāna augstumā</translation>
 <translation id="2359808026110333948">Turpināt</translation>
 <translation id="904887679952026733">Lietojiet tumšo motīvu vietnēs, kad tumšais motīvs tiek izmantots pārlūkā Brave (ja iespējams)</translation>
 <translation id="2390272837142897736">Tālināt</translation>
 <translation id="2402980924095424747"><ph name="MEGABYTES"/> MB</translation>
+<translation id="2403474027143565107">Precīza</translation>
 <translation id="2404630663942400771">{PERMISSIONS_SUMMARY_ALLOWED,plural, =1{Atļautas: <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> un vēl <ph name="NUM_MORE"/>}zero{Atļautas: <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> un vēl <ph name="NUM_MORE"/>}one{Atļautas: <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> un vēl <ph name="NUM_MORE"/>}other{Atļautas: <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> un vēl <ph name="NUM_MORE"/>}}</translation>
+<translation id="2404857459073803936">Piekļuve atrašanās vietai šai vietnei</translation>
 <translation id="2410940059315936967">Jūsu apmeklētajā vietnē var būt iegults citu vietņu saturs, piemēram, attēli, reklāmas un teksts. Šo citu vietņu iestatītie sīkfaili tiek dēvēti par trešo pušu sīkfailiem.</translation>
 <translation id="2411116727035790889">Ieslēgt saīsnes</translation>
 <translation id="2433507940547922241">Izskats</translation>
@@ -136,6 +139,7 @@ Papildu aizsardzība pārvalda tālāk norādītos Brave iestatījumus
 <translation id="2498359688066513246">Palīdzība un atsauksmes</translation>
 <translation id="2501278716633472235">Doties atpakaļ</translation>
 <translation id="2533138527374486328">Kad šis slēdzis ir ieslēgts, vietnes var pieprasīt atļauju izveidot savienojumu ar jebkuru ierīci jūsu lokālajā tīklā. Kad šis slēdzis ir izslēgts, vietnes nevar izveidot savienojumu ar ierīcēm jūsu lokālajā tīklā.</translation>
+<translation id="2544997614631598250">Motīva krāsa: tumša</translation>
 <translation id="2546283357679194313">Sīkfaili un vietņu dati</translation>
 <translation id="2570922361219980984">Arī piekļuve šīs ierīces atrašanās vietai ir izslēgta. Ieslēdziet to <ph name="BEGIN_LINK"/>Android iestatījumos<ph name="END_LINK"/>.</translation>
 <translation id="257931822824936280">Izvērsts — noklikšķiniet, lai sakļautu.</translation>
@@ -143,6 +147,11 @@ Papildu aizsardzība pārvalda tālāk norādītos Brave iestatījumus
 <translation id="2588271083332682494">Ciļņu kārtošana, izmantojot ciļņu grupas</translation>
 <translation id="2597457036804169544">Varat vietnēs nelietot tumšo motīvu</translation>
 <translation id="2606760465469169465">Automātiska verifikācija</translation>
+<translation id="7615153661410655750">Pārvaldība <ph name="BEGIN_LINK1"/>Android iestatījumos<ph name="END_LINK1"/>
+
+Papildu aizsardzība pārvalda tālāk norādītos Brave iestatījumus
+• Tiek ieslēgts iestatījums “Vienmēr izmantot drošus savienojumus”.
+• Tiek izslēgts iestatījums “JavaScript optimizētājs”. <ph name="BEGIN_LINK2"/>Pārvaldīt vietņu izņēmumus<ph name="END_LINK2"/></translation>
 <translation id="2621115761605608342">Atļaut JavaScript konkrētai vietnei</translation>
 <translation id="2626708220538466178">Noklusējuma pārlūka ekrāna apakšdaļas lapa ir aizvērta</translation>
 <translation id="2653659639078652383">Iesniegt</translation>
@@ -190,10 +199,10 @@ Papildu aizsardzība pārvalda tālāk norādītos Brave iestatījumus
 <translation id="3123473560110926937">Bloķētas dažās vietnēs</translation>
 <translation id="3132996321662585180">Atsvaidzināt katru dienu</translation>
 <translation id="3143754809889689516">Atskaņot no sākuma</translation>
-<translation id="3162899666601560689">Vietnes drīkst izmantot sīkfailus, lai uzlabotu pārlūkošanas pieredzi, piemēram, lai nodrošinātu ilgstošu pierakstīšanos vai saglabātu pirkumu grozā ievietotās preces.</translation>
 <translation id="3165022941318558018">Atļaujiet vietnei izmantot trešo pušu sīkfailus.</translation>
 <translation id="3167868116600277716">Discover plūsma</translation>
 <translation id="3198916472715691905"><ph name="STORAGE_AMOUNT"/> saglabātu datu</translation>
+<translation id="3199078925536734975">Šoreiz atļauta • Aptuvena</translation>
 <translation id="321187648315454507">Lai atļautu lietotnei <ph name="APP_NAME"/> sūtīt jums paziņojumus, ieslēdziet paziņojumus arī <ph name="BEGIN_LINK"/>Android iestatījumos<ph name="END_LINK"/>.</translation>
 <translation id="3223425961342298674">Piekļuve atrašanās vietai nav atļauta</translation>
 <translation id="3227137524299004712">Mikrofons</translation>
@@ -248,6 +257,7 @@ Papildu aizsardzība pārvalda tālāk norādītos Brave iestatījumus
 <translation id="3803367742635802571">Apmeklētās vietnes var pārtraukt pienācīgi darboties</translation>
 <translation id="8338457030135232378">Brave krāsas</translation>
 <translation id="381841723434055211">Tālruņa numuri</translation>
+<translation id="3823453485268218808">Fonts Mono</translation>
 <translation id="3826050100957962900">Trešās puses pierakstīšanās</translation>
 <translation id="3835233591525155343">Jūsu ierīces lietojums</translation>
 <translation id="1799795508209440035">Šodien pārlūkā Brave sīkfaili atkal tiks bloķēti</translation>
@@ -257,9 +267,9 @@ Papildu aizsardzība pārvalda tālāk norādītos Brave iestatījumus
 <translation id="3895926599014793903">Tālummaiņas piespiedu iespējošana</translation>
 <translation id="3903738175795615004">Lai izietu no pilnekrāna režīma, velciet no augšas vai nospiediet taustiņu Esc.</translation>
 <translation id="3905475044299942653">Apturiet pārmērīgus paziņojumus</translation>
-<translation id="3918378745482005425">Dažas funkcijas var nedarboties. Saistītās vietnes joprojām var izmantot trešo pušu sīkfailus.</translation>
 <translation id="3922092564198021702">Tālrunī atveriet sadaļu Iestatījumi.</translation>
 <translation id="3933121352599513978">Sakļaut nevēlamos pieprasījumus (ieteicams)</translation>
+<translation id="3934905113567851655">Savelciet, lai mainītu lielumu</translation>
 <translation id="3955193568934677022">Atļaut vietnēm atskaņot aizsargātu saturu (ieteicams)</translation>
 <translation id="3955321697524543127">Neatļaut vietnēm veidot savienojumu ar USB ierīcēm</translation>
 <translation id="3965467402665811906">Vietnes drīkst pieprasīt atļauju izmantot par jums saglabāto informāciju.</translation>
@@ -272,6 +282,7 @@ Papildu aizsardzība pārvalda tālāk norādītos Brave iestatījumus
 <translation id="3992684624889376114">Par šo lapu</translation>
 <translation id="4002066346123236978">Nosaukums</translation>
 <translation id="4031179711345676612">Mikrofona lietošana ir atļauta</translation>
+<translation id="4042597221652780603">Aptuvena</translation>
 <translation id="4046123991198612571">Nākamais ieraksts</translation>
 <translation id="4077310749977440510">Parasti vietnes lasa starpliktuvi, lai nodrošinātu noteiktas funkcijas, piemēram, nokopētā teksta formatējuma saglabāšanu.</translation>
 <translation id="4082080074595021446">Izņēmumi konkrētām vietnēm nav atļauti, jo Android ierīcē nav pietiekama apjoma RAM.</translation>
@@ -298,11 +309,14 @@ Papildu aizsardzība pārvalda tālāk norādītos Brave iestatījumus
 <translation id="4338831206024587507">Visas vietnes domēnā <ph name="DOMAIN"/></translation>
 <translation id="4340799661701629185">Neļaut vietnēm sūtīt paziņojumus</translation>
 <translation id="4402755511846832236">Nerādīt vietnēm, kad jūs aktīvi lietojat šo ierīci</translation>
+<translation id="8382883799082236806">Brave krāsu ekrāna apakšdaļas lapa ir atvērta pusekrāna augstumā</translation>
 <translation id="4412992751769744546">Atļaut trešo pušu sīkfailus</translation>
 <translation id="1675197434085185531">Pārlūkā Brave vietnēm tiek liegts pārlūkošanas laikā izmantot trešo pušu sīkfailus, lai izsekotu jūsu darbībām. Lai <ph name="BEGIN_LINK"/>pārvaldītu piekļuvi trešo pušu sīkfailiem<ph name="END_LINK"/>, pārejiet uz iestatījumiem.</translation>
+<translation id="4425416282877905577">Serifa fonts</translation>
 <translation id="443121186588148776">Seriālais ports</translation>
 <translation id="4434045419905280838">Uznirstošie elem. un novirzīšana</translation>
 <translation id="443552056913301231">Veicot šo darbību, tiks dzēsti visi lokālie dati, tostarp sīkfaili, kā arī tiks atiestatītas visas pakalpojuma <ph name="ORIGIN"/> atļaujas.</translation>
+<translation id="43076815069546662">Brave krāsu ekrāna apakšdaļas lapa ir atvērta pilnā augstumā</translation>
 <translation id="4468959413250150279">Izslēgt skaņu noteiktai vietnei</translation>
 <translation id="4475912480633855319">{COOKIES,plural, =1{# sīkfails}zero{# sīkfailu}one{# sīkfails}other{# sīkfaili}}</translation>
 <translation id="4478158430052450698">Varat vienkāršot tālummaiņas pielāgošanu dažādās vietnēs</translation>
@@ -328,6 +342,7 @@ Papildu aizsardzība pārvalda tālāk norādītos Brave iestatījumus
 <translation id="4816495437032298535">Saglabātā tālummaiņa vietnēm</translation>
 <translation id="4836046166855586901">Vaicāt, ja vietne vēlas zināt, kad jūs aktīvi lietojat šo ierīci</translation>
 <translation id="483914009762354899">Iekļaut visas šī domēna vietnes</translation>
+<translation id="4852997963351138624">Fona krāsas heksadecimālais kods</translation>
 <translation id="4882919381756638075">Parasti vietnēs mikrofons tiek izmantots, lai nodrošinātu noteiktas saziņas funkcijas, piemēram, video tērzēšanu.</translation>
 <translation id="4883854917563148705">Pārvaldītos iestatījumus nevar atiestatīt</translation>
 <translation id="4887024562049524730">Vaicāt, pirms atļaut vietnēm piekļūt jūsu virtuālās realitātes ierīcei un datiem (ieteicams)</translation>
@@ -337,6 +352,7 @@ Papildu aizsardzība pārvalda tālāk norādītos Brave iestatījumus
 <translation id="4953688446973710931">Kad šis slēdzis ir ieslēgts, vietnes var pieprasīt atļauju automātiski lejupielādēt vairākus failus. Kad šis slēdzis ir izslēgts, vietnes nevar automātiski lejupielādēt vairākus failus.</translation>
 <translation id="4962975101802056554">Atsaukt visas atļaujas, kas piešķirtas ierīcei</translation>
 <translation id="4972737347717125191">Atļaut vietnēm pieprasīt atļauju izmantot virtuālās realitātes ierīces un datus</translation>
+<translation id="1275242979020712923">Brave krāsu ekrāna apakšdaļas lapa</translation>
 <translation id="497421865427891073">Doties uz priekšu</translation>
 <translation id="4976702386844183910">Pēdējoreiz apmeklēta: <ph name="DATE"/></translation>
 <translation id="4978178243417029856">Uzzināt vairāk par Discover plūsmu</translation>
@@ -356,6 +372,7 @@ Papildu aizsardzība pārvalda tālāk norādītos Brave iestatījumus
 <translation id="5100237604440890931">Sakļauts — noklikšķiniet, lai izvērstu.</translation>
 <translation id="7143053178237996319">Varat izmantot Brave ikreiz, kad pieskaraties saitēm ziņojumos, dokumentos un citās lietotnēs.</translation>
 <translation id="512938610812707830">Jaunas cilnes lapas izskata motīvu kolekciju ekrāna apakšdaļas lapa ir atvērta pilnā augstumā</translation>
+<translation id="5137460097045297858">Discover plūsmas ekrāna apakšdaļas lapa ir atvērta pusekrāna augstumā</translation>
 <translation id="5139253256813381453">{PRICE_DROP_COUNT,plural, =1{Cenas kritums atvērtajās cilnēs}zero{Cenu kritumi atvērtajās cilnēs}one{Cenu kritumi atvērtajās cilnēs}other{Cenu kritumi atvērtajās cilnēs}}</translation>
 <translation id="5186036860380548585">Opcija pieejama ekrāna augšdaļā</translation>
 <translation id="5197729504361054390">Atlasīto kontaktpersonu dati tiks kopīgoti ar vietni <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/>.</translation>
@@ -374,7 +391,6 @@ Papildu aizsardzība pārvalda tālāk norādītos Brave iestatījumus
 <translation id="5335288049665977812">Atļaut vietnēm izmantot JavaScript (ieteicams)</translation>
 <translation id="534295439873310000">NFC ierīces</translation>
 <translation id="5344522958567249764">Pārvaldīt reklāmu konfidencialitāti</translation>
-<translation id="5371407439562620893">JavaScript optimizācija un drošība</translation>
 <translation id="5373874281522292782">Jūsu ciļņu grupas ir saglabātas</translation>
 <translation id="5394307150471348411">{DETAIL_COUNT,plural, =1{(un vēl 1)}zero{(un vēl #)}one{(un vēl #)}other{(un vēl #)}}</translation>
 <translation id="5403592356182871684">Nosaukumi</translation>
@@ -386,7 +402,6 @@ Papildu aizsardzība pārvalda tālāk norādītos Brave iestatījumus
 <translation id="5515432237048785579">Discover plūsmas ekrāna apakšdaļas lapa ir atvērta pilnā augstumā</translation>
 <translation id="5516455585884385570">Atvērt paziņojumu iestatījumus</translation>
 <translation id="5527111080432883924">Vaicāt, pirms atļaut vietnēm lasīt tekstu un attēlus no starpliktuves (ieteicams)</translation>
-<translation id="5545693483061321551">Vietnes nedrīkst izmantot sīkfailus, lai skatītu jūsu pārlūkošanas darbības dažādās vietnēs, piemēram, lai personalizētu reklāmas. Noteiktās vietnēs funkcijas var nedarboties.</translation>
 <translation id="5553374991681107062">jaunākās</translation>
 <translation id="674221630984410403">Neizmantot Brave programmu V8 vietņu darbības paātrināšanai, bet nedaudz palielināt Brave izturību pret uzbrukumiem</translation>
 <translation id="5556459405103347317">Pārlādēt</translation>
@@ -457,6 +472,7 @@ Papildu aizsardzība pārvalda tālāk norādītos Brave iestatījumus
 <translation id="6207207788774442484">Dzēst datus un atiestatīt atļaujas</translation>
 <translation id="6231752747840485235">Vai atinstalēt lietotni <ph name="APP_NAME"/>?</translation>
 <translation id="4789073065838177382">Pieskarieties vienumam Pārlūka lietotne &gt; Brave.</translation>
+<translation id="6260830281887654268">Jaunas cilnes lapas izskata motīvu kolekciju ekrāna apakšdaļas lapa ir atvērta pusekrāna augstumā</translation>
 <translation id="6262191102408817757">Pamatojoties uz pēdējās cilnes saturu</translation>
 <translation id="6262279340360821358">Bloķētas: <ph name="PERMISSION_1"/> un <ph name="PERMISSION_2"/></translation>
 <translation id="6270391203985052864">Vietnēs var lūgt atļauju sūtīt paziņojumus</translation>
@@ -488,8 +504,10 @@ Papildu aizsardzība pārvalda tālāk norādītos Brave iestatījumus
 <translation id="6608650720463149374"><ph name="GIGABYTES"/> GB</translation>
 <translation id="6612358246767739896">Aizsargāts saturs</translation>
 <translation id="662080504995468778">Palikt</translation>
+<translation id="6630443592285535486">Šeit ievadiet heksadecimālo kodu</translation>
 <translation id="6635327442719709864">Kad šis slēdzis ir ieslēgts, vietnes var pieprasīt atļauju izmantot seriālos portus. Kad tas ir izslēgts, vietnes nevar izmantot seriālos portus.</translation>
 <translation id="6678072580827808850">Pārskatīt drošības pārbaudi</translation>
+<translation id="6682057173375416470">Saņemiet ieteiktos rakstus jaunas cilnes lapā</translation>
 <translation id="6683865262523156564">Šī vietne ir grupā, un visu grupas vietņu īpašnieki var skatīt jūsu darbības. Grupa ir definēta atbilstoši domēnam <ph name="RWS_OWNER"/></translation>
 <translation id="6689172468748959065">Profila fotoattēli</translation>
 <translation id="6697925417670533197">Aktīvas lejupielādes</translation>
@@ -539,16 +557,20 @@ Papildu aizsardzība pārvalda tālāk norādītos Brave iestatījumus
 <translation id="728412880473384942">Vietnes darbojas ātrāk, taču ir mazāk drošas</translation>
 <translation id="7366415735885268578">Vietnes pievienošana</translation>
 <translation id="7368695150573390554">Visi bezsaistes dati tiks izdzēsti</translation>
+<translation id="7369678931043226462">Jaunas cilnes lapas pielāgošanas ekrāna apakšdaļas lapa ir atvērta pusekrāna augstumā</translation>
 <translation id="7383715096023715447">Domēna <ph name="DOMAIN"/> iestatījumi</translation>
 <translation id="7399802613464275309">Drošības pārbaude</translation>
 <translation id="7406113532070524618">Šis iestatījums darbojas, neidentificējot jūs vai neatļaujot vietnēm skatīt jūsu pārlūkošanas vēsturi, taču verifikācijas nolūkos vietnes var kopīgot nelielu informācijas daudzumu</translation>
 <translation id="7409735910987429903">Vietnēs var tikt nosūtīti uznirstošie elementi reklāmu rādīšanai vai izmantota novirzīšana uz vietnēm, kuras, iespējams, nevēlaties apmeklēt.</translation>
+<translation id="7412160840120117304">Galvenās krāsas heksadecimālais kods</translation>
 <translation id="7423098979219808738">Vispirms jautāt</translation>
 <translation id="7423538860840206698">Bloķēta starpliktuves satura lasīšana</translation>
 <translation id="7425915948813553151">Tumšā motīva lietošana vietnēs</translation>
+<translation id="746412105358554870">JavaScript optimizācija un drošība</translation>
 <translation id="7478658909253570368">Neļaut vietnēm veidot savienojumu ar seriālajiem portiem</translation>
 <translation id="7488573225650545859">Paslēpt kartīti Ciļņu skatīšana lietotņu sarakstā</translation>
 <translation id="7521387064766892559">JavaScript</translation>
+<translation id="7538975533793429503">Fonta lieluma slīdnis</translation>
 <translation id="7547989957535180761">Kad šis slēdzis ir ieslēgts, vietnēs var rādīt pierakstīšanās uzvednes. Kad šis slēdzis ir izslēgts, vietnēs nevar rādīt pierakstīšanās uzvednes.</translation>
 <translation id="7553211568594248088">izietu no meklēšanas mezglā</translation>
 <translation id="7554752735887601236">Kāda vietne izmanto jūsu mikrofonu</translation>
@@ -574,6 +596,7 @@ Papildu aizsardzība pārvalda tālāk norādītos Brave iestatījumus
 <translation id="7804248752222191302">Kāda vietne izmanto jūsu kameru</translation>
 <translation id="7805832099057502789">Jaunas cilnes lapas izskata ekrāna apakšdaļas lapa ir atvērta pilnā augstumā</translation>
 <translation id="6720480757902085971">Nodrošina Brave</translation>
+<translation id="7809029041571842593">Jaunas cilnes lapas kartīšu ekrāna apakšdaļas lapa ir atvērta pusekrāna augstumā</translation>
 <translation id="7815680994978050279">Tika bloķēta bīstama lejupielāde</translation>
 <translation id="7835852323729233924">Multivides atskaņošana</translation>
 <translation id="783819812427904514">Ieslēgt video skaņu</translation>
@@ -631,6 +654,7 @@ Papildu aizsardzība pārvalda tālāk norādītos Brave iestatījumus
 <translation id="8441146129660941386">Pārtīt atpakaļ</translation>
 <translation id="8444433999583714703">Lai atļautu lietotnei <ph name="APP_NAME"/> piekļūt jūsu atrašanās vietas datiem, ieslēdziet atrašanās vietas noteikšanu arī <ph name="BEGIN_LINK"/>Android iestatījumos<ph name="END_LINK"/>.</translation>
 <translation id="8447861592752582886">Atsaukt ierīces atļauju</translation>
+<translation id="8467359479529706065">Jaunas cilnes lapas izskata ekrāna apakšdaļas lapa ir atvērta pusekrāna augstumā</translation>
 <translation id="8471525937465764768">Parasti vietnēs savienojums ar USB ierīcēm tiek veidots, lai nodrošinātu noteiktas funkcijas, piemēram, dokumentu drukāšanu vai saglabāšanu atmiņas ierīcē.</translation>
 <translation id="8473055640493819707">Lietotne <ph name="APP_NAME"/> ir novecojusi. Lūdzu, atkārtoti instalējiet lietotni.</translation>
 <translation id="847433688444405067">Pārlūkošana dažādās ierīcēs</translation>
@@ -646,7 +670,6 @@ Papildu aizsardzība pārvalda tālāk norādītos Brave iestatījumus
 <translation id="8549127125482561383">Kā rādīt pieprasījumus</translation>
 <translation id="4273503381657013953">Tagad varat izmantot Brave ikreiz, kad pārlūkojat saturu vai pieskaraties saitēm ziņojumos, dokumentos un citās lietotnēs.</translation>
 <translation id="857943718398505171">Atļauta (ieteicams)</translation>
-<translation id="8580511488901768832">Ekrāna apakšdaļas lapa “Manas saīsnes” ir atvērta pilnā augstumā</translation>
 <translation id="8593422116412089302">Kad šis slēdzis ir ieslēgts, vietnes drīkst pieprasīt atļauju izmantot par jums saglabāto informāciju. Kad šis slēdzis ir izslēgts, vietnes nedrīkst pieprasīt atļauju izmantot par jums saglabāto informāciju.</translation>
 <translation id="8609465669617005112">Virziet uz augšu</translation>
 <translation id="8617611086246832542">Kad šis slēdzis ir ieslēgts, tiek rādīts vietņu skats datorā. Kad šis slēdzis ir izslēgts, tiek rādīts vietņu skats mobilajā ierīcē.</translation>
@@ -664,6 +687,7 @@ Papildu aizsardzība pārvalda tālāk norādītos Brave iestatījumus
 <translation id="8730621377337864115">Gatavs</translation>
 <translation id="8737426583868847403">Šeit tiks rādītas vietnes, kurām saglabāsiet pielāgotu tālummaiņas līmeni.</translation>
 <translation id="8751914237388039244">Attēla atlase</translation>
+<translation id="8775741625735357092">Grāmatzīmju joslu varat ieslēgt sadaļā Iestatījumi &gt; Izskats</translation>
 <translation id="8800034312320686233">Vai vietne nedarbojas?</translation>
 <translation id="8801436777607969138">Bloķēt JavaScript konkrētai vietnei.</translation>
 <translation id="2026315747406172223">V8 ir Brave JavaScript un WebAssembly programma, kas tiek izmantota vietnes veiktspējas uzlabošanai</translation>
@@ -690,6 +714,7 @@ Papildu aizsardzība pārvalda tālāk norādītos Brave iestatījumus
 <translation id="9019902583201351841">Pārvalda jūsu vecāki</translation>
 <translation id="902236149563113779">Parasti vietnēs kameras pozīcija tiek izsekota, lai nodrošinātu PR funkcijas, piemēram, spēles vai brīdinājuma attēlojumus.</translation>
 <translation id="9039697262778250930">Iespējams, automātiski izrakstīsieties no šīm vietnēm.</translation>
+<translation id="9065203028668620118">Labot</translation>
 <translation id="9074739597929991885">Bluetooth</translation>
 <translation id="9106233582039520022">Vai dzēst sīkfailus?</translation>
 <translation id="9109747640384633967">{PERMISSIONS_SUMMARY_MIXED,plural, =1{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> un vēl <ph name="NUM_MORE"/>}zero{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> un vēl <ph name="NUM_MORE"/>}one{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> un vēl <ph name="NUM_MORE"/>}other{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> un vēl <ph name="NUM_MORE"/>}}</translation>
@@ -708,10 +733,5 @@ Papildu aizsardzība pārvalda tālāk norādītos Brave iestatījumus
 <translation id="3110967157686007724">Inkognito cilne</translation>
 <translation id="8623552597614912461">Šī vietne gatavojas kopīgot informāciju ar lietotni ārpus inkognito režīma.</translation>
 <translation id="8157212814767579028">Pamest inkognito režīmu?</translation>
-<translation id="6105125042109106861">Trešo pušu sīkfaili ir bloķēti inkognito režīmā</translation>
-<translation id="6642913673024345959">Bloķēt trešo personu sīkfailus inkognito režīmā</translation>
-<translation id="20460146243579445">Dažu vietņu funkcijas inkognito režīmā var nedarboties</translation>
-<translation id="8877838532507724268">Inkognito režīmā vietnes nevar izmantot jūsu sīkfailus, lai sekotu jūsu pārlūkošanas darbībām dažādās vietnēs. Jūsu pārlūkošanas darbības netiek izmantotas, lai individuāli pielāgotu reklāmas. Dažās vietnēs atsevišķas funkcijas var nedarboties.</translation>
-<translation id="1856888821396498049">Bloķēt trešo pušu sīkfailus inkognito režīmā:</translation>
 <translation id="1593610935874634135">Uzņēmums var nodefinēt vietņu grupu, kuras var izmantot sīkdatnes, lai dalītos tavā aktivitātē. Inkognito režīmā tas ir izslēgts.</translation>
 </translationbundle>

@@ -18,6 +18,8 @@ open class Download: NSObject {
   public internal(set) var filename: String
   public internal(set) var mimeType: String
   public internal(set) var originalURL: URL?
+  public internal(set) var redirectedURL: URL?
+  public internal(set) var originatingHost: String
   public internal(set) var destinationURL: URL?
 
   public internal(set) var isStarted: Bool = false
@@ -29,6 +31,8 @@ open class Download: NSObject {
   init(
     suggestedFilename: String,
     originalURL: URL?,
+    redirectedURL: URL?,
+    originatingHost: String,
     mimeType: String? = nil
   ) {
 
@@ -40,6 +44,8 @@ open class Download: NSObject {
     )
 
     self.originalURL = originalURL
+    self.redirectedURL = redirectedURL
+    self.originatingHost = originatingHost
     self.mimeType = mimeType ?? "application/octet-stream"
 
     self.bytesDownloaded = 0

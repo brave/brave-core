@@ -16,19 +16,31 @@ struct RegisterFinalizeResult {
   // Currently empty, serves as a placeholder for success.
 };
 
-enum RegisterFailureReason {
-  kInitializeBadRequest,   // /v2/accounts/password/init: 400
-  kInitializeUnauthorized, // /v2/accounts/password/init: 401
-  kInitializeServerError,  // /v2/accounts/password/init: 5XX
-  kInitializeUnknown,
-  kInitializeUnexpected,
-  kFinalizeBadRequest,     // /v2/accounts/password/finalize: 400
-  kFinalizeUnauthorized,   // /v2/accounts/password/finalize: 401
-  kFinalizeForbidden,      // /v2/accounts/password/finalize: 403
-  kFinalizeNotFound,       // /v2/accounts/password/finalize: 404
-  kFinalizeServerError,    // /v2/accounts/password/finalize: 5XX
-  kFinalizeUnknown,
-  kFinalizeUnexpected,
+enum RegisterErrorCode {
+  // Client-side errors:
+  kOpaqueError = -3,
+  kVerificationTokenEncryptionFailed = -2,
+  kVerificationTokenDecryptionFailed = -1,
+  // Server-side errors:
+  kMiscServerError                   = 0,
+  // /v2/accounts/password/init:
+  // - internal:
+  kNewAccountEmailRequired           = 11005,
+  kIntentNotAllowed                  = 13003,
+  // - user-facing:
+  kTooManyVerifications              = 13001,
+  kAccountExists                     = 13004,
+  kEmailDomainNotSupported           = 13006,
+  // /v2/accounts/password/finalize:
+  // - internal:
+  kInterimPasswordStateNotFound      = 14001,
+  kInterimPasswordStateExpired       = 14002,
+  // - user-facing: -
+};
+
+struct RegisterError {
+  uint32? statusCode;
+  RegisterErrorCode? errorCode;
 };
 
 // Interface for a two-step registration process
@@ -40,9 +52,9 @@ interface Authentication {
   //                   produced by the OPAQUE library,
   //                   to be sent to the server.
   // Returns `RegisterInitializeResult` on success, or
-  //         `RegisterFailureReason` on failure.
+  //         `RegisterError` on failure.
   RegisterInitialize(string email, string blindedMessage)
-    => result<RegisterInitializeResult, RegisterFailureReason>;
+    => result<RegisterInitializeResult, RegisterError>;
 
   // Second step of the registration process.
   // `encryptedVerificationToken`: verification token from the backend,
@@ -54,7 +66,16 @@ interface Authentication {
   //                     containing cryptographic identifiers,
   //                     to be sent to the server.
   // Returns `RegisterFinalizeResult` on success, or
-  //         `RegisterFailureReason` on failure.
+  //         `RegisterError` on failure.
   RegisterFinalize(string encryptedVerificationToken, string serializedRecord)
-    => result<RegisterFinalizeResult, RegisterFailureReason>;
+    => result<RegisterFinalizeResult, RegisterError>;
+
+  // Resends the confirmation email to the user during the registration process.
+  ResendConfirmationEmail();
+
+  // Cancels the registration process by clearing the verification token.
+  CancelRegistration();
+
+  // Logs out the user by clearing the authentication token.
+  LogOut();
 };

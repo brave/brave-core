@@ -19,7 +19,7 @@ namespace {
 
 struct ParamInfo final {
   test::CommandLineSwitchInfo command_line_switch;
-  bool should_debug;
+  bool should_debug = false;
 };
 
 // TODO(https://github.com/brave/brave-browser/issues/48713): This is a case of

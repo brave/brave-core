@@ -11,10 +11,10 @@
 
 #include "base/check.h"
 #include "base/debug/crash_logging.h"
-#include "base/debug/dump_without_crashing.h"
 #include "base/files/file_path.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
+#include "base/notreached.h"
 #include "base/trace_event/trace_event.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_row_util.h"
@@ -399,7 +399,12 @@ void Database::ErrorCallback(int extended_error,
         result_code != sql::SqliteResultCode::kIoRead &&
         result_code != sql::SqliteResultCode::kIoWrite &&
         result_code != sql::SqliteResultCode::kIoFsync &&
-        result_code != sql::SqliteResultCode::kIoTruncate) {
+        result_code != sql::SqliteResultCode::kIoTruncate &&
+        result_code != sql::SqliteResultCode::kReadOnlyDbMoved &&
+        result_code != sql::SqliteResultCode::kBusy &&
+        result_code != sql::SqliteResultCode::kLocked &&
+        result_code != sql::SqliteResultCode::kIoAccess &&
+        result_code != sql::SqliteResultCode::kIoFstat) {
       SCOPED_CRASH_KEY_NUMBER("BraveAds", "sqlite_schema_version",
                               database::kVersionNumber);
       SCOPED_CRASH_KEY_STRING1024(
@@ -409,7 +414,7 @@ void Database::ErrorCallback(int extended_error,
                                   db_.GetErrorMessage());
       SCOPED_CRASH_KEY_NUMBER("BraveAds", "sqlite_result_code",
                               static_cast<int>(result_code));
-      base::debug::DumpWithoutCrashing();
+      DUMP_WILL_BE_NOTREACHED();
     }
   }
 }

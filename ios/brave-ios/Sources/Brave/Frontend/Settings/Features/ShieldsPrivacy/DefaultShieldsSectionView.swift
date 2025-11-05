@@ -56,7 +56,7 @@ struct DefaultShieldsSectionView: View {
             set: { newValue in
               settings.httpsUpgradeLevel =
                 !newValue
-                ? .disabled : (ShieldPreferences.httpsUpgradePriorEnabledLevel ?? .standard)
+                ? .disabled : (Preferences.Shields.httpsUpgradePriorEnabledLevel ?? .standard)
             }
           )
         )
@@ -84,32 +84,25 @@ struct DefaultShieldsSectionView: View {
         toggle: $settings.isBlockFingerprintingEnabled
       )
 
-      ToggleView(
-        title: Strings.blockCookieConsentNotices,
-        subtitle: nil,
-        toggle: $settings.cookieConsentBlocking
-      )
+      if FeatureList.kBraveShredFeature.enabled {
+        NavigationLink(
+          destination: {
+            ShredSettingsView(settings: settings)
+          },
+          label: {
+            LabelView(
+              title: Strings.Shields.shredRowTitle,
+              subtitle: Strings.Shields.shredRowDescription
+            )
+          }
+        )
+      }
 
       ToggleView(
         title: Strings.braveShieldsSaveContactInfo,
         subtitle: Strings.braveShieldsSaveContactInfoDescription,
         toggle: $settings.isSaveContactInfoEnabled
       )
-
-      if FeatureList.kBraveShredFeature.enabled {
-        FormPicker(selection: $settings.shredLevel) {
-          ForEach(SiteShredLevel.allCases) { level in
-            Text(level.localizedTitle)
-              .foregroundColor(Color(.secondaryBraveLabel))
-              .tag(level)
-          }
-        } label: {
-          LabelView(
-            title: Strings.Shields.autoShred,
-            subtitle: nil
-          )
-        }
-      }
 
       NavigationLink {
         FilterListsView()

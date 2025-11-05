@@ -12,7 +12,6 @@
 #include "base/check_is_test.h"
 #include "base/check_op.h"
 #include "base/functional/bind.h"
-#include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
@@ -27,6 +26,7 @@
 #include "chrome/browser/ui/views/side_panel/side_panel_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/color/color_provider.h"
+#include "ui/compositor/layer.h"
 #include "ui/views/background.h"
 #include "ui/views/border.h"
 #include "ui/views/view_class_properties.h"
@@ -59,6 +59,10 @@ END_METADATA
 BraveSidePanel::BraveSidePanel(BrowserView* browser_view,
                                HorizontalAlignment horizontal_alignment)
     : browser_view_(browser_view) {
+  // If panel has layer by default, adjust its radius whenever
+  // updating shadow at UpdateBorder() instead of destroying layer.
+  CHECK(!layer());
+
   scoped_observation_.AddObservation(this);
 
   SetVisible(false);
@@ -71,13 +75,6 @@ BraveSidePanel::BraveSidePanel(BrowserView* browser_view,
     OnSidePanelWidthChanged();
   } else {
     CHECK_IS_TEST();
-  }
-
-  if (BraveBrowser::ShouldUseBraveWebViewRoundedCorners(
-          browser_view_->browser())) {
-    shadow_ = BraveContentsViewUtil::CreateShadow(this);
-    SetBackground(
-        views::CreateSolidBackground(kColorSidebarPanelHeaderBackground));
   }
 
   content_parent_view_ = AddChildView(std::make_unique<ContentParentView>());
@@ -110,13 +107,27 @@ bool BraveSidePanel::IsRightAligned() {
 }
 
 void BraveSidePanel::UpdateBorder() {
-  if (BraveBrowser::ShouldUseBraveWebViewRoundedCorners(
+  // Border and shadow should be updated together when rounded corner enabled
+  // condition is changed.
+  if (BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
           browser_view_->browser())) {
     // Use a negative top border to hide the separator inserted by the upstream
     // side panel implementation.
     SetBorder(views::CreateEmptyBorder(gfx::Insets::TLBR(-1, 0, 0, 0)));
+
+    shadow_ = BraveContentsViewUtil::CreateShadow(this);
+    SetBackground(
+        views::CreateSolidBackground(kColorSidebarPanelHeaderBackground));
+
     return;
   }
+
+  if (shadow_) {
+    shadow_.reset();
+    DestroyLayer();
+  }
+
+  SetBackground(nullptr);
 
   if (const ui::ColorProvider* color_provider = GetColorProvider()) {
     constexpr int kBorderThickness = 1;
@@ -215,6 +226,8 @@ void BraveSidePanel::AddHeaderView(std::unique_ptr<views::View> view) {
   // So just keep it here.
   header_view_ = std::move(view);
 }
+
+void BraveSidePanel::SetHeaderVisibility(bool visible) {}
 
 void BraveSidePanel::OnChildViewAdded(View* observed_view, View* child) {
   if (observed_view != this) {

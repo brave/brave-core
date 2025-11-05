@@ -74,7 +74,7 @@ class TeamcityReporter {
     for (const testResult of testFileResult.testResults) {
       // Original test name.
       const testName = [...testResult.ancestorTitles, testResult.title].join(
-        ' > '
+        ' > ',
       )
 
       this.reportTest(
@@ -86,7 +86,7 @@ class TeamcityReporter {
           // Report the unmodified test name as metadata.
           this.tcServiceMessage('testMetadata', {
             name: 'testName',
-            value: testName
+            value: testName,
           })
 
           // Report the test result.
@@ -100,7 +100,7 @@ class TeamcityReporter {
             case 'disabled':
               this.tcServiceMessage('testIgnored', {
                 name: tcFullTestName,
-                message: testResult.status
+                message: testResult.status,
               })
               break
             case 'failed':
@@ -111,11 +111,11 @@ class TeamcityReporter {
                 name: tcFullTestName,
                 details: [
                   testResult.status,
-                  ...testResult.failureMessages
-                ].join('\n')
+                  ...testResult.failureMessages,
+                ].join('\n'),
               })
           }
-        }
+        },
       )
       testFileResultWasReported = true
     }
@@ -131,10 +131,10 @@ class TeamcityReporter {
           this.tcServiceMessage('testFailed', {
             name: tcFullTestName,
             details:
-              testFileResult.failureMessage ??
-              util.format('%O', testFileResult.testExecError)
+              testFileResult.failureMessage
+              ?? util.format('%O', testFileResult.testExecError),
           })
-        }
+        },
       )
       testFileResultWasReported = true
     }
@@ -143,11 +143,11 @@ class TeamcityReporter {
     assert(
       testFileResultWasReported,
       util.format(
-        'Test file result was not reported to Teamcity. It means this ' +
-          "reporter doesn't handle some edge case or is not compatible with " +
-          'the current Jest version.\nTest file result:\n%O',
-        testFileResult
-      )
+        'Test file result was not reported to Teamcity. It means this '
+          + "reporter doesn't handle some edge case or is not compatible with "
+          + 'the current Jest version.\nTest file result:\n%O',
+        testFileResult,
+      ),
     )
   }
 
@@ -228,7 +228,7 @@ class TeamcityReporter {
     testFilePath,
     consoleMessages,
     duration,
-    reportResultClosure
+    reportResultClosure,
   ) {
     // Report the test start.
     this.tcServiceMessage('testStarted', { name: tcFullTestName })
@@ -236,7 +236,7 @@ class TeamcityReporter {
     // Report the test file path as metadata.
     this.tcServiceMessage('testMetadata', {
       name: 'testFilePath',
-      value: testFilePath
+      value: testFilePath,
     })
 
     // Report console messages as test stdout.
@@ -244,8 +244,8 @@ class TeamcityReporter {
       this.tcServiceMessage('testStdOut', {
         name: tcFullTestName,
         out:
-          `Console messages from ${testFilePath}:\n` +
-          consoleMessages.join('\n')
+          `Console messages from ${testFilePath}:\n`
+          + consoleMessages.join('\n'),
       })
     }
 
@@ -255,7 +255,7 @@ class TeamcityReporter {
     // Report the test finish.
     this.tcServiceMessage('testFinished', {
       name: tcFullTestName,
-      duration
+      duration,
     })
   }
 

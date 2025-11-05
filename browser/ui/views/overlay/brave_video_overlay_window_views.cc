@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/check.h"
+#include "base/feature_list.h"
 #include "base/strings/strcat.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ui/views/overlay/brave_back_to_tab_label_button.h"
@@ -24,6 +25,7 @@
 #include "chrome/browser/ui/views/overlay/toggle_camera_button.h"
 #include "chrome/browser/ui/views/overlay/toggle_microphone_button.h"
 #include "chrome/grit/generated_resources.h"
+#include "media/base/media_switches.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "ui/base/hit_test.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -190,7 +192,14 @@ END_METADATA
 
 BraveVideoOverlayWindowViews::BraveVideoOverlayWindowViews(
     content::VideoPictureInPictureWindowController* controller)
-    : VideoOverlayWindowViews(controller) {}
+    : VideoOverlayWindowViews(controller) {
+  CHECK(!base::FeatureList::IsEnabled(
+      media::kVideoPictureInPictureControlsUpdate2024))
+      << "BraveVideoOverlayWindowViews class was implemented with the "
+         "expectation that media::kVideoPictureInPictureControlsUpdate2024 was "
+         "disabled. If the feature is now enabled by default, either disable "
+         "it, or update the class code.";
+}
 
 BraveVideoOverlayWindowViews::~BraveVideoOverlayWindowViews() = default;
 

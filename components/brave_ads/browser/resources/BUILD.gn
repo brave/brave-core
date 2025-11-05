@@ -6,6 +6,7 @@
 import("//brave/components/common/typescript.gni")
 
 transpile_web_ui("ads_internals_ui") {
+  output_module = false
   entry_points = [ [
         "ads_internals",
         rebase_path("ads_internals.tsx"),
@@ -17,6 +18,7 @@ transpile_web_ui("ads_internals_ui") {
   ]
 
   resource_name = "ads_internals"
+  imports_from = [ "//brave/components/brave_ads/browser/resources/" ]
 }
 
 pack_web_resources("generated_resources") {

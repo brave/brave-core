@@ -27,7 +27,8 @@ namespace {
 constexpr char kPath[] = "/v4/wallets/";
 
 Result ParseBody(RewardsEngine& engine, const std::string& body) {
-  auto value = base::JSONReader::ReadDict(body);
+  auto value =
+      base::JSONReader::ReadDict(body, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!value) {
     engine.LogError(FROM_HERE) << "Failed to parse body";
     return base::unexpected(Error::kFailedToParseBody);

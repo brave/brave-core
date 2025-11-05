@@ -11,19 +11,22 @@ import Icon from '@brave/leo/react/icon'
 import { RecurringContribution } from '../../lib/app_state'
 import { AppModelContext, useAppState } from '../../lib/app_model_context'
 import { useLocaleContext } from '../../lib/locale_strings'
-import { getCreatorIconSrc, getCreatorPlatformIcon } from '../../lib/creator_icon'
+import {
+  getCreatorIconSrc,
+  getCreatorPlatformIcon,
+} from '../../lib/creator_icon'
 import { isSelfCustodyProvider } from '../../../shared/lib/external_wallet'
 import { NewTabLink } from '../../../shared/components/new_tab_link'
 
 import { style } from './recurring_contribution_card.style'
 
 const amountFormatter = new Intl.NumberFormat(undefined, {
-  minimumFractionDigits: 2
+  minimumFractionDigits: 2,
 })
 
 const exchangeFormatter = new Intl.NumberFormat(undefined, {
   style: 'currency',
-  currency: 'USD'
+  currency: 'USD',
 })
 
 const nextContributionFormatter = new Intl.DateTimeFormat(undefined)
@@ -49,15 +52,22 @@ export function RecurringContributionCard() {
       <div key={contribution.site.id}>
         <div className='icon'>
           <NewTabLink href={site.url}>
-            <img src={getCreatorIconSrc(site)} alt='Site icon' />
+            <img
+              src={getCreatorIconSrc(site)}
+              alt='Site icon'
+            />
           </NewTabLink>
         </div>
         <div className='name'>
           <div>
             <NewTabLink href={site.url}>
               {site.name}
-              {site.platform &&
-                <Icon name={getCreatorPlatformIcon(site)} forceColor />}
+              {site.platform && (
+                <Icon
+                  name={getCreatorPlatformIcon(site)}
+                  forceColor
+                />
+              )}
             </NewTabLink>
           </div>
           <div className='next-contribution'>
@@ -94,19 +104,21 @@ export function RecurringContributionCard() {
       .sort((a, b) => a.nextContributionDate - b.nextContributionDate)
       .slice(0, showAll ? Infinity : 5)
 
-    return <>
-      <div className='list'>
-        {topEntries.map(renderItem)}
-      </div>
-      {
-        contributions.length > topEntries.length &&
+    return (
+      <>
+        <div className='list'>{topEntries.map(renderItem)}</div>
+        {contributions.length > topEntries.length && (
           <div className='show-all'>
-            <Button kind='plain' onClick={() => setShowAll(true)}>
+            <Button
+              kind='plain'
+              onClick={() => setShowAll(true)}
+            >
               {getString('showAllButtonLabel')}
             </Button>
           </div>
-      }
-    </>
+        )}
+      </>
+    )
   }
 
   if (!externalWallet || isSelfCustodyProvider(externalWallet.provider)) {
@@ -118,11 +130,12 @@ export function RecurringContributionCard() {
   }
 
   return (
-    <div className='content-card' data-css-scope={style.scope}>
+    <div
+      className='content-card'
+      data-css-scope={style.scope}
+    >
       <h4>{getString('recurringTitle')}</h4>
-      <section>
-        {renderList()}
-      </section>
+      <section>{renderList()}</section>
     </div>
   )
 }

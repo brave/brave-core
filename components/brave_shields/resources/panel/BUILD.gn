@@ -7,11 +7,16 @@ import("//brave/components/common/typescript.gni")
 import("//mojo/public/tools/bindings/mojom.gni")
 
 transpile_web_ui("brave_shields_panel_ui") {
+  output_module = false
   entry_points = [ [
         "brave_shields_panel",
         rebase_path("shields_panel.tsx"),
       ] ]
   resource_name = "brave_shields_panel"
+  imports_from = [
+    "//brave/components/brave_shields/resources/panel/",
+    "//brave/components/web-components/",
+  ]
   deps = [ "//brave/components/brave_shields/core/common:mojom_js" ]
 }
 

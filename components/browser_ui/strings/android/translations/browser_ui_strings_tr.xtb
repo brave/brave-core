@@ -1,14 +1,8 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="tr">
-<translation id="3586180167003092914"><ph name="BEGIN_LINK1"/>Android ayarları<ph name="END_LINK1"/> bölümünde yönetin
-
-Gelişmiş Koruma, şu Brave ayarlarını kontrol eder:
-• "Her zaman güvenli bağlantılar kullan" ayarı açık.
-• "JavaScript optimize edici" kapalı. <ph name="BEGIN_LINK2"/>Site istisnalarını yönetin<ph name="END_LINK2"/></translation>
 <translation id="1006017844123154345">İnternet'te aç</translation>
 <translation id="1036348656032585052">Kapat</translation>
-<translation id="1044891598689252897">Siteler normal şekilde çalışır</translation>
 <translation id="1070329623210597193">Bu sitenin görüntüleyebileceği veya düzenleyebileceği dosyalar</translation>
 <translation id="1882093842020941518">Üçüncü taraf çerezlerine neden izin verdiğinizi bize bildirerek Brave'u iyileştirmemize yardımcı olun. <ph name="BEGIN_LINK"/>Geri bildirim gönderin<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">Sitelerin masaüstü sürümünü görüntülemeyi talep edebilirsiniz</translation>
@@ -26,6 +20,7 @@ Gelişmiş Koruma, şu Brave ayarlarını kontrol eder:
 <translation id="129382876167171263">Web siteleri tarafından kaydedilen dosyalar burada görünür</translation>
 <translation id="131112695174432497">Reklam kişiselleştirmeyi etkileyen veriler silinir</translation>
 <translation id="1317194122196776028">Bu siteyi unut</translation>
+<translation id="1321110954513621549">İzin veriliyor • Yaklaşık</translation>
 <translation id="1323433172918577554">Daha Fazla Göster</translation>
 <translation id="1333965224356556482">Sitelerin konumumu görmesine izin verme</translation>
 <translation id="1343356790768851700">Bu site, nelerden hoşlandığınızı belirleyip diğer sitelere reklam önerir</translation>
@@ -41,9 +36,11 @@ Gelişmiş Koruma, şu Brave ayarlarını kontrol eder:
 <translation id="1448064542941920355">Yakınlaştırmayı azalt</translation>
 <translation id="1464044141348608623">Cihazımı etkin olarak kullandığımda sitelerin bilmesine izin verme</translation>
 <translation id="146867109637325312">{COUNT,plural, =1{<ph name="SITE_COUNT"/> site}other{<ph name="SITE_COUNT"/> site}}</translation>
+<translation id="1476700086976862423">Sepya tema rengi</translation>
 <translation id="1500473259453106018">Sekmelerdeki fiyat düşüşleri kartını gizle</translation>
 <translation id="1508931164824684991">Siteler JavaScript kullanabilir</translation>
 <translation id="1510341833810331442">Sitelerin cihazınıza veri kaydetmesine izin verilmiyor</translation>
+<translation id="1532175480576580256">Kısayollarım alt sayfası tam ekranda açıldı</translation>
 <translation id="1538031354170655462">Siteler, yakındaki takip cihazları veya diğer cihazlarla çalışmak (ör. rozetleri taramak veya temassız ödeme yapmak) için genellikle Near Field Communication (NFC) teknolojisini kullanır</translation>
 <translation id="1547123415014299762">Üçüncü taraf çerezlerine izin verilir</translation>
 <translation id="3665719978526894928">Brave'un V8 motoruyla siteleri hızlandırın. Ancak bu durumda Brave, saldırılara karşı biraz daha dirençsiz hale gelir</translation>
@@ -72,6 +69,8 @@ Gelişmiş Koruma, şu Brave ayarlarını kontrol eder:
 <translation id="7401204338724669842">Brave ipuçları</translation>
 <translation id="6704867734300244173">Etkinleştirildiğinde Brave daha hızlı çalışır ve JavaScript kullanan özellikler tasarlandığı şekilde çalışır. Devre dışı bırakılması performansı düşürür ancak V8'i saldırılara karşı daha dirençli hale getirir.</translation>
 <translation id="1818308510395330587"><ph name="APP_NAME"/> uygulamasının artırılmış gerçekliği (AR) kullanması için <ph name="BEGIN_LINK"/>Android Ayarlarında<ph name="END_LINK"/> kamerayı da açın.</translation>
+<translation id="1848033246551405023">Sans Serif yazı tipi</translation>
+<translation id="1861262398884155592">Bu klasör boş</translation>
 <translation id="1881806992065048905">Yeni sekme sayfası görünümü alt sayfası</translation>
 <translation id="1887786770086287077">Konum erişimi bu cihaz için kapalı. Konum erişimini <ph name="BEGIN_LINK"/>Android Ayarları<ph name="END_LINK"/>'ndan açın.</translation>
 <translation id="1906181697255754968">Çalışmanızı otomatik olarak kaydetme gibi özelliklerin kullanılması için siteler genellikle cihazınızdaki dosyalar ile klasörlere erişir</translation>
@@ -93,6 +92,7 @@ Gelişmiş Koruma, şu Brave ayarlarını kontrol eder:
 <translation id="2079545284768500474">Geri al</translation>
 <translation id="2080070583977670716">Daha fazla ayar</translation>
 <translation id="2091887806945687916">Ses</translation>
+<translation id="2094208275686143364">Açık tema rengi</translation>
 <translation id="2096716221239095980">Tüm verileri sil</translation>
 <translation id="2102396546234652240">Sitelerin mikrofonumu kullanmasına izin verme</translation>
 <translation id="2117655453726830283">Sonraki slayt</translation>
@@ -116,11 +116,14 @@ Gelişmiş Koruma, şu Brave ayarlarını kontrol eder:
 <translation id="228293613124499805">Ziyaret ettiğiniz çoğu site, genellikle tercihlerinizi veya siteyle paylaştığınız bilgileri kaydederek deneyiminizi iyileştirmek için cihazınıza veri kaydeder. Bu ayarı açık tutmanızı öneririz.</translation>
 <translation id="2289270750774289114">Bir site yakındaki Bluetooth cihazları bulmak istediğinde sor (önerilir)</translation>
 <translation id="2315043854645842844">İstemci tarafı sertifika seçimi, işletim sistemi tarafından desteklenmiyor.</translation>
+<translation id="2347601491101454548">Kısayollarım alt sayfası, ekranın yarısına kadar açıldı</translation>
 <translation id="2359808026110333948">Devam</translation>
 <translation id="904887679952026733">Mümkünse Brave koyu tema kullandığında sitelere de koyu tema uygulayın</translation>
 <translation id="2390272837142897736">Yakınlaştırmayı artır</translation>
 <translation id="2402980924095424747"><ph name="MEGABYTES"/> MB</translation>
+<translation id="2403474027143565107">Tam</translation>
 <translation id="2404630663942400771">{PERMISSIONS_SUMMARY_ALLOWED,plural, =1{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> ve <ph name="NUM_MORE"/> tanesi için daha izin verildi}other{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> ve <ph name="NUM_MORE"/> tanesi için daha izin verildi}}</translation>
+<translation id="2404857459073803936">Bu site için konum erişimi</translation>
 <translation id="2410940059315936967">Ziyaret ettiğiniz bir site, diğer sitelerdeki resim, reklam ve metin gibi içerikleri yerleştirebilir. Diğer siteler tarafından ayarlanan çerezlere üçüncü taraf çerezleri denir.</translation>
 <translation id="2411116727035790889">Kısayolları etkinleştirme</translation>
 <translation id="2433507940547922241">Görünüm</translation>
@@ -136,6 +139,7 @@ Gelişmiş Koruma, şu Brave ayarlarını kontrol eder:
 <translation id="2498359688066513246">Yardım ve geri bildirim</translation>
 <translation id="2501278716633472235">Geri dön</translation>
 <translation id="2533138527374486328">Bu düğme açıkken siteler yerel ağınızdaki cihazlara bağlanmak isteyebilir. Düğme kapalıyken siteler yerel ağınızdaki cihazlara bağlanamaz.</translation>
+<translation id="2544997614631598250">Koyu tema rengi</translation>
 <translation id="2546283357679194313">Çerezler ve site verileri</translation>
 <translation id="2570922361219980984">Konum erişimi bu cihaz için de kapalı. Konum erişimini <ph name="BEGIN_LINK"/>Android Ayarları<ph name="END_LINK"/>'ndan açın.</translation>
 <translation id="257931822824936280">Genişletildi - Daraltmak için tıklayın.</translation>
@@ -143,6 +147,11 @@ Gelişmiş Koruma, şu Brave ayarlarını kontrol eder:
 <translation id="2588271083332682494">Sekme gruplarıyla düzenleyin</translation>
 <translation id="2597457036804169544">Sitelere koyu tema uygulama</translation>
 <translation id="2606760465469169465">Otomatik doğrulama</translation>
+<translation id="7615153661410655750"><ph name="BEGIN_LINK1"/>Android ayarları<ph name="END_LINK1"/> bölümünde yönetin
+
+Gelişmiş Koruma, şu Brave ayarlarını kontrol eder:
+• "Her zaman güvenli bağlantılar kullan" ayarı açık.
+• "JavaScript optimize edici" kapalı. <ph name="BEGIN_LINK2"/>Site istisnalarını yönetin<ph name="END_LINK2"/></translation>
 <translation id="2621115761605608342">Belirli bir site için JavaScript'e izin verin.</translation>
 <translation id="2626708220538466178">Varsayılan tarayıcı alt sayfası kapatıldı</translation>
 <translation id="2653659639078652383">Gönder</translation>
@@ -150,7 +159,7 @@ Gelişmiş Koruma, şu Brave ayarlarını kontrol eder:
 <translation id="2677748264148917807">Çık</translation>
 <translation id="2682367912565197520">Kayıtlı yakınlaştırma seviyesini sil</translation>
 <translation id="2683434792633810741">Veriler silinip sıfırlansın mı?</translation>
-<translation id="2685514716378236873">İzin Verilmiyor</translation>
+<translation id="2685514716378236873">İzin verilmiyor</translation>
 <translation id="2713106313042589954">Kamerayı kapat</translation>
 <translation id="2717722538473713889">E-posta adresleri</translation>
 <translation id="8181634240306014548">Brave'u çok amaçlı adres çubuğu odaklı başlatın. Böylece, düşük özellikli cihazlarda başlatma süresi kısalır.</translation>
@@ -190,10 +199,10 @@ Gelişmiş Koruma, şu Brave ayarlarını kontrol eder:
 <translation id="3123473560110926937">Bazı sitelerde engelleniyor</translation>
 <translation id="3132996321662585180">Günlük olarak yenile</translation>
 <translation id="3143754809889689516">Baştan oynat</translation>
-<translation id="3162899666601560689">Siteler size daha iyi bir göz atma deneyimi sunmak, örneğin, oturumunuzu açık tutmak veya alışveriş sepetinizdeki ürünleri hatırlamak için çerez kullanabilir.</translation>
 <translation id="3165022941318558018">Bir sitenin, üçüncü taraf çerezlerini kullanmasına izin verin</translation>
 <translation id="3167868116600277716">Keşfet feed'i</translation>
 <translation id="3198916472715691905"><ph name="STORAGE_AMOUNT"/> depolanmış veri</translation>
+<translation id="3199078925536734975">Şu anda izin veriliyor • Yaklaşık</translation>
 <translation id="321187648315454507"><ph name="APP_NAME"/> uygulamasının size bildirim gönderebilmesi için <ph name="BEGIN_LINK"/>Android Ayarları<ph name="END_LINK"/>'nda da bildirimleri açın.</translation>
 <translation id="3223425961342298674">Konuma izin verilmiyor</translation>
 <translation id="3227137524299004712">Mikrofon</translation>
@@ -225,10 +234,10 @@ Gelişmiş Koruma, şu Brave ayarlarını kontrol eder:
 <translation id="3594780231884063836">Videonun sesini kapat</translation>
 <translation id="3600792891314830896">Ses çalan sitelerin sesini kapat</translation>
 <translation id="3602290021589620013">Önizleme</translation>
-<translation id="3611658447322220736">Yeni kapatılan siteler veri gönderip alma işlemini bitirebilir</translation>
+<translation id="3611658447322220736">Yeni kapatılan siteler veri gönderip alma işlemini tamamlayabilir</translation>
 <translation id="3619294456800709762">Siteler otomatik olarak pencere içinde pencere moduna girebilir</translation>
 <translation id="3628308229821498208">Önerilen aramalar</translation>
-<translation id="3641456520301071208">Siteler konum bilginizi isteyebilir</translation>
+<translation id="3641456520301071208">Siteler konum bilgimi isteyebilir</translation>
 <translation id="3658847490588580244">Varsayılan tarayıcı alt sayfası</translation>
 <translation id="3669841141196828854">{COUNT,plural, =1{<ph name="RWS_OWNER"/> site grubunda yer alan ve gruptaki etkinliğinizi görebilen <ph name="RWS_MEMBERS_COUNT"/> site var}other{<ph name="RWS_OWNER"/> site grubunda yer alan ve gruptaki etkinliğinizi görebilen <ph name="RWS_MEMBERS_COUNT"/> site var}}</translation>
 <translation id="3676777756440746804">Sitelerin, hakkınızda kaydettikleri bilgileri kullanmak için izin istemesi engellendi</translation>
@@ -236,7 +245,7 @@ Gelişmiş Koruma, şu Brave ayarlarını kontrol eder:
 <translation id="3697164069658504920">Bu düğme açıkken siteler USB cihazları kullanmak isteyebilir. Düğme kapalıyken siteler USB cihazları kullanamaz.</translation>
 <translation id="3703430731944883733">Feed'inizi yönetin</translation>
 <translation id="2697264242676904869">Ziyaret ettiğiniz bir site, esasen bot olmadığınızı doğrulayan az miktarda bilgiyi Brave'a kaydedebilir</translation>
-<translation id="3708684582558000260">Kapatılan sitelerin veri gönderme veya alma işlemini bitirmesine izin verme</translation>
+<translation id="3708684582558000260">Kapatılan sitelerin veri gönderip alma işlemini tamamlamasına izin verme</translation>
 <translation id="3709818294139939629">Sitenin dosya erişimi kaldırıldı</translation>
 <translation id="3721953990244350188">Kapat ve sonraki mevcut işlemi göster</translation>
 <translation id="3744111561329211289">Arka plan senkronizasyonu</translation>
@@ -248,6 +257,7 @@ Gelişmiş Koruma, şu Brave ayarlarını kontrol eder:
 <translation id="3803367742635802571">Ziyaret ettiğiniz siteler tasarlandığı şekilde çalışmayabilir</translation>
 <translation id="8338457030135232378">Brave Renkleri</translation>
 <translation id="381841723434055211">Telefon numaraları</translation>
+<translation id="3823453485268218808">Mono yazı tipi</translation>
 <translation id="3826050100957962900">Üçüncü taraf oturum açma</translation>
 <translation id="3835233591525155343">Cihaz kullanımınız</translation>
 <translation id="1799795508209440035">Brave bugün çerezleri tekrar engelleyecek</translation>
@@ -257,9 +267,9 @@ Gelişmiş Koruma, şu Brave ayarlarını kontrol eder:
 <translation id="3895926599014793903">Yakınlaştırmayı etkinleştirmeye zorla</translation>
 <translation id="3903738175795615004">Tam ekrandan çıkmak için yukarıdan sürükleyin veya Esc tuşuna basın.</translation>
 <translation id="3905475044299942653">Çok fazla bildirim gelmesini engelleyin</translation>
-<translation id="3918378745482005425">Bazı özellikler çalışmayabilir. İlgili siteler, üçüncü taraf çerezlerini kullanmaya devam edebilir.</translation>
 <translation id="3922092564198021702">Telefonunuzda Ayarlar'ı açın.</translation>
 <translation id="3933121352599513978">İstenmeyen istekleri daralt (önerilir)</translation>
+<translation id="3934905113567851655">Yeniden boyutlandırmak için iki parmağınızı kullanın</translation>
 <translation id="3955193568934677022">Sitelerin korumalı içeriği oynatmasına izin ver (önerilir)</translation>
 <translation id="3955321697524543127">Sitelerin USB cihazlara bağlanmasına izin verme</translation>
 <translation id="3965467402665811906">Siteler, hakkınızda kaydettikleri bilgileri kullanmak için izin isteyebilir</translation>
@@ -272,6 +282,7 @@ Gelişmiş Koruma, şu Brave ayarlarını kontrol eder:
 <translation id="3992684624889376114">Bu sayfa hakkında</translation>
 <translation id="4002066346123236978">Başlık</translation>
 <translation id="4031179711345676612">Mikrofona izin verildi</translation>
+<translation id="4042597221652780603">Yaklaşık</translation>
 <translation id="4046123991198612571">Sonraki parça</translation>
 <translation id="4077310749977440510">Kopyaladığınız metnin biçimini koruma gibi özelliklerin kullanılması için siteler genellikle panonuzu okur</translation>
 <translation id="4082080074595021446">Android cihazda yeterli RAM olmadığından belirli web siteleri için istisnalara izin verilmiyor.</translation>
@@ -298,11 +309,14 @@ Gelişmiş Koruma, şu Brave ayarlarını kontrol eder:
 <translation id="4338831206024587507"><ph name="DOMAIN"/> altındaki tüm siteler</translation>
 <translation id="4340799661701629185">Sitelerin bildirim göndermesine izin verme</translation>
 <translation id="4402755511846832236">Bu cihazı etkin olarak kullandığınızda sitelerin bunu bilmesi engellenir</translation>
+<translation id="8382883799082236806">Brave renkleri alt sayfası, ekranın yarısına kadar açıldı</translation>
 <translation id="4412992751769744546">Üçüncü taraf çerezlerine izin ver</translation>
 <translation id="1675197434085185531">Brave, sitelerin internette gezinirken sizi izlemek için üçüncü taraf çerezlerini kullanmasını engeller. <ph name="BEGIN_LINK"/>Üçüncü taraf çerezlerine erişimi yönetmek<ph name="END_LINK"/> için ayarlara gidin.</translation>
+<translation id="4425416282877905577">Serif yazı tipi</translation>
 <translation id="443121186588148776">Seri bağlantı noktası</translation>
 <translation id="4434045419905280838">Pop-up ve yönlendirmeler</translation>
 <translation id="443552056913301231">Bu işlem, çerezler de dahil olmak üzere yerel verilerin tamamını temizler ve tüm <ph name="ORIGIN"/> izinlerini siler</translation>
+<translation id="43076815069546662">Brave renkleri alt sayfası tüm yükseklikte açıldı</translation>
 <translation id="4468959413250150279">Belirli bir site için sesi kapatın.</translation>
 <translation id="4475912480633855319">{COOKIES,plural, =1{# çerez}other{# çerez}}</translation>
 <translation id="4478158430052450698">Yakınlaştırma işlevini farklı siteler için özelleştirmeyi kolay hale getirin</translation>
@@ -328,6 +342,7 @@ Gelişmiş Koruma, şu Brave ayarlarını kontrol eder:
 <translation id="4816495437032298535">Siteler için kayıtlı yakınlaştırma seviyeleri</translation>
 <translation id="4836046166855586901">Bir site bu cihazı etkin olarak kullandığımı bilmek istediğinde sor</translation>
 <translation id="483914009762354899">Bu alandaki tüm siteleri dahil et</translation>
+<translation id="4852997963351138624">Arka Plan Rengi (Onaltılık)</translation>
 <translation id="4882919381756638075">Görüntülü sohbet gibi iletişim özellikleri için siteler genellikle mikrofonunuzu kullanır</translation>
 <translation id="4883854917563148705">Yönetilen ayarlar sıfırlanamaz</translation>
 <translation id="4887024562049524730">Sitelerin sanal gerçeklik cihazıma veya verilerime erişmesine izin vermeden önce sor (önerilir)</translation>
@@ -337,6 +352,7 @@ Gelişmiş Koruma, şu Brave ayarlarını kontrol eder:
 <translation id="4953688446973710931">Bu düğme açıkken siteler birden fazla dosyayı otomatik olarak indirmek isteyebilir. Düğme kapalıyken siteler birden fazla dosyayı otomatik olarak indiremez.</translation>
 <translation id="4962975101802056554">Cihaz için tüm izinleri iptal eder</translation>
 <translation id="4972737347717125191">Siteler sanal gerçeklik cihazlarını ve verilerini kullanmak isteyebilir</translation>
+<translation id="1275242979020712923">Brave Renkleri alt sayfası</translation>
 <translation id="497421865427891073">İlerle</translation>
 <translation id="4976702386844183910">Son ziyaret tarihi: <ph name="DATE"/></translation>
 <translation id="4978178243417029856">Keşfet feed'i hakkında daha fazla bilgi</translation>
@@ -356,6 +372,7 @@ Gelişmiş Koruma, şu Brave ayarlarını kontrol eder:
 <translation id="5100237604440890931">Daraltıldı - Genişletmek için tıklayın.</translation>
 <translation id="7143053178237996319">Mesajlardaki, belgelerdeki ve diğer uygulamalardaki bağlantıları tıkladığınızda Brave'u kullanabilirsiniz.</translation>
 <translation id="512938610812707830">Yeni sekme sayfası görünümü tema koleksiyonları alt sayfası tam ekranda açıldı</translation>
+<translation id="5137460097045297858">Keşfet feed'i alt sayfası, ekranın yarısına kadar açıldı</translation>
 <translation id="5139253256813381453">{PRICE_DROP_COUNT,plural, =1{Açık sekmelerinizde fiyat düşüşü}other{Açık sekmelerinizde fiyat düşüşleri}}</translation>
 <translation id="5186036860380548585">Seçenek, ekranın üst kısmına yakın bir yerdedir</translation>
 <translation id="5197729504361054390">Seçtiğiniz kişiler <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> ile paylaşılacak.</translation>
@@ -374,7 +391,6 @@ Gelişmiş Koruma, şu Brave ayarlarını kontrol eder:
 <translation id="5335288049665977812">Sitelerin JavaScript çalıştırmasına izin ver (önerilir)</translation>
 <translation id="534295439873310000">NFC cihazları</translation>
 <translation id="5344522958567249764">Reklam gizliliğini yönet</translation>
-<translation id="5371407439562620893">JavaScript optimizasyonu ve güvenlik</translation>
 <translation id="5373874281522292782">Sekme gruplarınız kaydedilir</translation>
 <translation id="5394307150471348411">{DETAIL_COUNT,plural, =1{(+ 1 tane daha)}other{(+ # tane daha)}}</translation>
 <translation id="5403592356182871684">Adlar</translation>
@@ -386,7 +402,6 @@ Gelişmiş Koruma, şu Brave ayarlarını kontrol eder:
 <translation id="5515432237048785579">Keşfet feed'i alt sayfası tam boyutta açıldı</translation>
 <translation id="5516455585884385570">Bildirim ayarlarını aç</translation>
 <translation id="5527111080432883924">Panodaki metin ve resimleri okumak için sitelere izin vermeden önce sor (önerilen)</translation>
-<translation id="5545693483061321551">Siteler, örneğin reklamları kişiselleştirmek amacıyla farklı sitelerde tarama etkinliğinizi görmek için çerezlerinizi kullanamaz. Bazı sitelerdeki özellikler çalışmayabilir.</translation>
 <translation id="5553374991681107062">En son</translation>
 <translation id="674221630984410403">Brave'un V8 motoruyla siteleri hızlandırmayın. Ancak bu durumda Brave, saldırılara karşı biraz daha dirençli hale gelir</translation>
 <translation id="5556459405103347317">Yeniden Yükle</translation>
@@ -457,6 +472,7 @@ Gelişmiş Koruma, şu Brave ayarlarını kontrol eder:
 <translation id="6207207788774442484">Verileri sil ve izinleri sıfırla</translation>
 <translation id="6231752747840485235">"<ph name="APP_NAME"/>" uygulaması kaldırılsın mı?</translation>
 <translation id="4789073065838177382">Tarayıcı uygulaması &gt; Brave'a dokunun</translation>
+<translation id="6260830281887654268">Yeni sekme sayfası görünümü, tema koleksiyonları alt sayfası ekranın yarısına kadar açıldı</translation>
 <translation id="6262191102408817757">Son sekmenize dayalı olarak</translation>
 <translation id="6262279340360821358"><ph name="PERMISSION_1"/> ve <ph name="PERMISSION_2"/> engellendi</translation>
 <translation id="6270391203985052864">Siteler bildirim gönderme izni isteyebilir</translation>
@@ -488,8 +504,10 @@ Gelişmiş Koruma, şu Brave ayarlarını kontrol eder:
 <translation id="6608650720463149374"><ph name="GIGABYTES"/> GB</translation>
 <translation id="6612358246767739896">Korunan içerik</translation>
 <translation id="662080504995468778">Kal</translation>
+<translation id="6630443592285535486">Onaltılık değeri buraya yazın</translation>
 <translation id="6635327442719709864">Bu düğme açıkken siteler seri bağlantı noktalarını kullanmak için izin isteyebilir. Düğme kapalıyken siteler seri bağlantı noktalarını kullanamaz.</translation>
 <translation id="6678072580827808850">Güvenlik Kontrolü'nü inceleyin</translation>
+<translation id="6682057173375416470">Yeni Sekme sayfasında önerilen makaleleri göster</translation>
 <translation id="6683865262523156564">Bu site, etkinliğinizi görebilen bir grupta bulunuyor. Grup, <ph name="RWS_OWNER"/> tarafından tanımlanmıştır.</translation>
 <translation id="6689172468748959065">Profil fotoğrafları</translation>
 <translation id="6697925417670533197">Etkin indirme işlemleri</translation>
@@ -500,7 +518,7 @@ Gelişmiş Koruma, şu Brave ayarlarını kontrol eder:
 <translation id="6766622839693428701">Kapatmak için aşağı kaydırın.</translation>
 <translation id="6787751205395685251"><ph name="SITE_NAME"/> için bir seçenek belirleyin</translation>
 <translation id="6790428901817661496">Oynat</translation>
-<translation id="6818926723028410516">Öğe seçin</translation>
+<translation id="6818926723028410516">Öğe seç</translation>
 <translation id="7912249371524580097">Varsayılan olarak Brave'u kullanın</translation>
 <translation id="6840760312327750441">Sekmeleri gruplamak için bir sekmeye dokunup basılı tutun. Ardından başka bir sekmenin üzerine sürükleyin.</translation>
 <translation id="6842868554183332230">Siteler, sohbet uygulamalarında müsaitliğinizi ayarlamak için genellikle cihazınızı aktif olarak kullandığınızı algılar</translation>
@@ -539,16 +557,20 @@ Gelişmiş Koruma, şu Brave ayarlarını kontrol eder:
 <translation id="728412880473384942">Siteler daha hızlı ancak daha az güvenli olur</translation>
 <translation id="7366415735885268578">Site ekle</translation>
 <translation id="7368695150573390554">Tüm çevrimdışı veriler silinecek</translation>
+<translation id="7369678931043226462">Yeni sekme sayfanızı özelleştirin alt sayfası, ekranın yarısına kadar açıldı</translation>
 <translation id="7383715096023715447"><ph name="DOMAIN"/> ayarları</translation>
 <translation id="7399802613464275309">Güvenlik Kontrolü</translation>
 <translation id="7406113532070524618">Bu ayar çalışırken kimliğinizin belirlenmesine veya sitelerin tarama geçmişinizi görmesine izin verilmez. Ancak siteler, doğrulama kapsamında az miktarda bilgi paylaşabilir</translation>
 <translation id="7409735910987429903">Siteler reklam göstermek için pop-up'lar gönderebilir veya yönlendirmeler kullanarak sizi ziyaret etmek istemeyebileceğiniz web sitelerine yönlendirebilir</translation>
+<translation id="7412160840120117304">Birincil Renk (Onaltılık)</translation>
 <translation id="7423098979219808738">Önce sor</translation>
 <translation id="7423538860840206698">Pano okuma engellendi</translation>
 <translation id="7425915948813553151">Siteler için koyu tema</translation>
+<translation id="746412105358554870">JavaScript optimizasyonu ve güvenlik</translation>
 <translation id="7478658909253570368">Sitelerin seri bağlantı noktalarına bağlanmasına izin verme</translation>
 <translation id="7488573225650545859">Uygulama listenizdeki sekmeleri görüntüle seçeneğini gizle</translation>
 <translation id="7521387064766892559">JavaScript</translation>
+<translation id="7538975533793429503">Yazı tipi boyutu kaydırma çubuğu</translation>
 <translation id="7547989957535180761">Bu düğme açıkken siteler oturum açma istemleri gösterebilir. Düğme kapalıyken siteler oturum açma istemleri gösteremez.</translation>
 <translation id="7553211568594248088">Hub aramasından çıkın</translation>
 <translation id="7554752735887601236">Bir site mikrofonunuzu kullanıyor</translation>
@@ -574,6 +596,7 @@ Gelişmiş Koruma, şu Brave ayarlarını kontrol eder:
 <translation id="7804248752222191302">Bir site kameranızı kullanıyor</translation>
 <translation id="7805832099057502789">Yeni sekme sayfası görünümü alt sayfası tam boyutta açıldı</translation>
 <translation id="6720480757902085971">Brave tarafından sağlanır</translation>
+<translation id="7809029041571842593">Yeni sekme sayfası kartları alt sayfası, ekranın yarısına kadar açıldı</translation>
 <translation id="7815680994978050279">Tehlikeli indirme işlemi engellendi</translation>
 <translation id="7835852323729233924">Medya oynatma/çalma</translation>
 <translation id="783819812427904514">Videonun sesini aç</translation>
@@ -631,6 +654,7 @@ Gelişmiş Koruma, şu Brave ayarlarını kontrol eder:
 <translation id="8441146129660941386">Geriye doğru git</translation>
 <translation id="8444433999583714703"><ph name="APP_NAME"/> uygulamasının konumunuza erişebilmesi için <ph name="BEGIN_LINK"/>Android Ayarları<ph name="END_LINK"/>'nda da konumu açın.</translation>
 <translation id="8447861592752582886">Cihaz iznini iptal et</translation>
+<translation id="8467359479529706065">Yeni sekme sayfası görünümü alt sayfası, ekranın yarısına kadar açıldı</translation>
 <translation id="8471525937465764768">Doküman yazdırma veya depolama cihazına kaydetme gibi özelliklerin kullanılması için siteler genellikle USB cihazlara bağlanır</translation>
 <translation id="8473055640493819707">'<ph name="APP_NAME"/>' güncel değil. Lütfen uygulamayı yeniden yükleyin.</translation>
 <translation id="847433688444405067">Farklı cihazlarda göz atın</translation>
@@ -646,7 +670,6 @@ Gelişmiş Koruma, şu Brave ayarlarını kontrol eder:
 <translation id="8549127125482561383">İstekler nasıl gösterilsin?</translation>
 <translation id="4273503381657013953">Artık mesajlardaki, dokümanlardaki ve diğer uygulamalardaki bağlantılara göz attığınızda veya dokunduğunuzda Brave'u kullanabilirsiniz.</translation>
 <translation id="857943718398505171">İzin verildi (önerilir)</translation>
-<translation id="8580511488901768832">kısayollarım alt sayfası tam ekranda açıldı</translation>
 <translation id="8593422116412089302">Bu düğme açıkken siteler hakkınızda kaydettikleri bilgileri kullanmak isteyebilir. Düğme kapalıyken siteler hakkınızda kaydettikleri bilgileri kullanmak isteyemez.</translation>
 <translation id="8609465669617005112">Yukarı taşı</translation>
 <translation id="8617611086246832542">Bu düğme açıkken web sitelerinin masaüstü görünümü gösterilir. Düğme kapalıyken web sitelerinin mobil cihaz görünümü gösterilir.</translation>
@@ -664,6 +687,7 @@ Gelişmiş Koruma, şu Brave ayarlarını kontrol eder:
 <translation id="8730621377337864115">Bitti</translation>
 <translation id="8737426583868847403">Özel bir yakınlaştırma seviyesi kaydettiğiniz siteler burada görünür</translation>
 <translation id="8751914237388039244">Resim seçin</translation>
+<translation id="8775741625735357092">Ayarlar &gt; Görünüm bölümünden yer işareti çubuğunu etkinleştirebilirsiniz</translation>
 <translation id="8800034312320686233">Site çalışmıyor mu?</translation>
 <translation id="8801436777607969138">JavaScript'i belirli bir site için engelleyin.</translation>
 <translation id="2026315747406172223">Brave'un JavaScript ve WebAssembly motoru olan V8, site performansını iyileştirmek için kullanılır</translation>
@@ -680,7 +704,7 @@ Gelişmiş Koruma, şu Brave ayarlarını kontrol eder:
 <translation id="8926666909099850184">NFC bu cihazda kapalı. Bu özelliği <ph name="BEGIN_LINK"/>Android Ayarları<ph name="END_LINK"/>'nda açın.</translation>
 <translation id="8928445016601307354">NFC cihazlarda sitelerin bilgileri görmesini ve değiştirmesini engelle</translation>
 <translation id="8944485226638699751">Sınırlı</translation>
-<translation id="895054485242522631">Siteler hareket sensörleri kullanabilir</translation>
+<translation id="895054485242522631">Siteler hareket sensörlerini kullanabilir</translation>
 <translation id="8959122750345127698">Gezinme işlevine ulaşılamıyor: <ph name="URL"/></translation>
 <translation id="8990043154272859344">Tüm sitelerdeki oturumunuz kapatılacak</translation>
 <translation id="8993853206419610596">Tüm istekleri genişlet</translation>
@@ -690,6 +714,7 @@ Gelişmiş Koruma, şu Brave ayarlarını kontrol eder:
 <translation id="9019902583201351841">Ebeveynleriniz tarafından yönetiliyor</translation>
 <translation id="902236149563113779">Siteler; oyunlar veya uyarı yönlendirmeleri gibi artırılmış gerçeklik özelliklerinin kullanılması için genellikle kamera konumunuzu izler</translation>
 <translation id="9039697262778250930">Bu sitelerdeki oturumunuz kapatılabilir</translation>
+<translation id="9065203028668620118">Düzenle</translation>
 <translation id="9074739597929991885">Bluetooth</translation>
 <translation id="9106233582039520022">Çerezler silinsin mi?</translation>
 <translation id="9109747640384633967">{PERMISSIONS_SUMMARY_MIXED,plural, =1{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> ve <ph name="NUM_MORE"/> tane daha}other{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> ve <ph name="NUM_MORE"/> tane daha}}</translation>
@@ -708,10 +733,5 @@ Gelişmiş Koruma, şu Brave ayarlarını kontrol eder:
 <translation id="3110967157686007724">Gizli sekme</translation>
 <translation id="8623552597614912461">Bu site, Gizli mod dışındaki bir uygulama ile bilgi paylaşmak üzere.</translation>
 <translation id="8157212814767579028">Gizli moddan çık?</translation>
-<translation id="6105125042109106861">Gizli modda üçüncü taraf çerezler engellenir</translation>
-<translation id="6642913673024345959">Gizli modda üçüncü taraf çerezleri engelle</translation>
-<translation id="20460146243579445">Bazı sitelerdeki özellikler Gizli modda çalışmayabilir</translation>
-<translation id="8877838532507724268">Gizli moddayken siteler, ilgili siteler de dahil olmak üzere farklı sitelerdeki tarama etkinliğinizi görmek amacıyla çerezlerinizi kullanamaz. Tarama etkinliğiniz, reklamları kişiselleştirmek gibi işlemlerde kullanılmaz. Bazı sitelerdeki özellikler bozulabilir.</translation>
-<translation id="1856888821396498049">Gizli modda üçüncü taraf çerezleri engelle:</translation>
 <translation id="1593610935874634135">Bir şirket, etkinliğinizi grupta paylaşmak için çerezleri kullanabilecek bir grup siteyi belirleyebilir. Bu, Gizli görünümde kapalıdır.</translation>
 </translationbundle>

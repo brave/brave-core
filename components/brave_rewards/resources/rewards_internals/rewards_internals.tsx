@@ -19,5 +19,5 @@ const root = createRoot(document.getElementById('root')!)
 root.render(
   <AppModelContext.Provider value={model}>
     <App />
-  </AppModelContext.Provider>
+  </AppModelContext.Provider>,
 )

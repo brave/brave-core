@@ -7,6 +7,8 @@
 
 #include "brave/components/omnibox/browser/commander_provider.h"
 #include "brave/components/vector_icons/vector_icons.h"
+#include "components/grit/brave_components_strings.h"
+#include "components/search_engines/template_url_starter_pack_data.h"
 
 #if (!BUILDFLAG(IS_ANDROID) || BUILDFLAG(ENABLE_VR)) && !BUILDFLAG(IS_IOS)
 const gfx::VectorIcon& AutocompleteMatch::GetVectorIcon(
@@ -18,12 +20,26 @@ const gfx::VectorIcon& AutocompleteMatch::GetVectorIcon(
            .empty()) {
     return kLeoCaratRightIcon;
   }
+  if (type == Type::STARTER_PACK && turl &&
+      turl->GetBuiltinEngineType() ==
+          KEYWORD_MODE_STARTER_PACK_ASK_BRAVE_SEARCH) {
+    return kLeoMessageBubbleAskIcon;
+  }
   return GetVectorIcon_Chromium(is_bookmark, turl);
 }
 
 #define GetVectorIcon GetVectorIcon_Chromium
 #endif
 
+// Add case statements to set omnibox placeholder message IDs for Brave-defined
+// starter packs.
+#define kAiMode                                                     \
+  kAskBraveSearch:                                                  \
+  message_id = IDS_OMNIBOX_ASK_BRAVE_SEARCH_SCOPE_PLACEHOLDER_TEXT; \
+  break;                                                            \
+  case template_url_starter_pack_data::kAiMode
+
 #include <components/omnibox/browser/autocomplete_match.cc>  // IWYU pragma: export
 
+#undef kAiMode
 #undef GetVectorIcon

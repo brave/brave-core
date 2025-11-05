@@ -21,9 +21,9 @@
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_shields/core/browser/ad_block_component_filters_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_list_p3a.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_locale_utils.h"
 #include "brave/components/brave_shields/core/browser/filter_list_catalog_entry.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
-#include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "components/component_updater/component_updater_service.h"
@@ -64,6 +64,12 @@ bool IsAdBlockOnlyModeFilterList(const std::string& uuid) {
   return kAdblockOnlyModeFilerListUUIDs.contains(uuid);
 }
 
+bool IsAdBlockOnlyModeSupportedAndFeatureEnabled(const std::string& locale) {
+  return base::FeatureList::IsEnabled(
+             brave_shields::features::kAdblockOnlyMode) &&
+         brave_shields::IsAdblockOnlyModeSupportedForLocale(locale);
+}
+
 }  // namespace
 
 AdBlockComponentServiceManager::AdBlockComponentServiceManager(
@@ -82,7 +88,7 @@ AdBlockComponentServiceManager::AdBlockComponentServiceManager(
                      weak_factory_.GetWeakPtr()));
   catalog_provider_->AddObserver(this);
 
-  if (IsAdblockOnlyModeFeatureEnabled()) {
+  if (IsAdBlockOnlyModeSupportedAndFeatureEnabled(locale_)) {
     local_state_change_registrar_ = std::make_unique<PrefChangeRegistrar>();
     local_state_change_registrar_->Init(local_state_);
     local_state_change_registrar_->Add(
@@ -238,8 +244,8 @@ bool AdBlockComponentServiceManager::IsFilterListEnabled(
   DCHECK(!uuid.empty());
   DCHECK(local_state_);
 
-  if (IsAdblockOnlyModeFeatureEnabled() &&
-      IsBraveShieldsAdBlockOnlyModeEnabled(local_state_) &&
+  if (IsAdBlockOnlyModeSupportedAndFeatureEnabled(locale_) &&
+      local_state_->GetBoolean(prefs::kAdBlockOnlyModeEnabled) &&
       !IsAdBlockOnlyModeFilterList(uuid)) {
     return false;
   }
@@ -267,8 +273,10 @@ bool AdBlockComponentServiceManager::IsFilterListEnabled(
       return false;
     }
     // prefer any user setting for a default-enabled list, unless it's hidden
+    const bool show_hidden = base::FeatureList::IsEnabled(
+        brave_shields::features::kBraveAdblockShowHiddenComponents);
     if (catalog_entry->default_enabled &&
-        (!list_touched || catalog_entry->hidden)) {
+        (!list_touched || (!show_hidden && catalog_entry->hidden))) {
       return true;
     }
   }
@@ -293,8 +301,8 @@ void AdBlockComponentServiceManager::EnableFilterList(const std::string& uuid,
     return;
   }
 
-  if (IsAdblockOnlyModeFeatureEnabled() &&
-      IsBraveShieldsAdBlockOnlyModeEnabled(local_state_) &&
+  if (IsAdBlockOnlyModeSupportedAndFeatureEnabled(locale_) &&
+      local_state_->GetBoolean(prefs::kAdBlockOnlyModeEnabled) &&
       !IsAdBlockOnlyModeFilterList(uuid)) {
     return;
   }

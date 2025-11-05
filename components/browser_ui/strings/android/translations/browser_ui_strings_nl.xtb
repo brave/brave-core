@@ -1,14 +1,8 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="nl">
-<translation id="3586180167003092914">Beheer in <ph name="BEGIN_LINK1"/>Android-instellingen<ph name="END_LINK1"/>
-
-Geavanceerde beveiliging beheert deze Brave-instellingen:
-• Altijd beveiligde verbindingen gebruiken staat aan.
-• JavaScript-optimalisatie is uitgezet. <ph name="BEGIN_LINK2"/>Site-uitzonderingen beheren<ph name="END_LINK2"/></translation>
 <translation id="1006017844123154345">Online openen</translation>
 <translation id="1036348656032585052">Uitzetten</translation>
-<translation id="1044891598689252897">Sites werken naar behoren</translation>
 <translation id="1070329623210597193">Bestanden die deze site mag bekijken of bewerken</translation>
 <translation id="1882093842020941518">Help ons Brave te verbeteren door ons te vertellen waarom je cookies van derden hebt toegestaan. <ph name="BEGIN_LINK"/>Feedback sturen<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">Je kunt vragen om de desktopversie van sites te bekijken</translation>
@@ -26,6 +20,7 @@ Geavanceerde beveiliging beheert deze Brave-instellingen:
 <translation id="129382876167171263">Hier zie je bestanden die worden opgeslagen door websites</translation>
 <translation id="131112695174432497">Gegevens die van invloed zijn op advertentiepersonalisatie, worden verwijderd</translation>
 <translation id="1317194122196776028">Deze site vergeten</translation>
+<translation id="1321110954513621549">Toegestaan • Geschat</translation>
 <translation id="1323433172918577554">Meer bekijken</translation>
 <translation id="1333965224356556482">Niet toestaan dat sites je locatie zien</translation>
 <translation id="1343356790768851700">Deze site bepaalt wat je leuk vindt en stelt daarna advertenties voor op andere sites</translation>
@@ -41,9 +36,11 @@ Geavanceerde beveiliging beheert deze Brave-instellingen:
 <translation id="1448064542941920355">Zoomniveau verkleinen</translation>
 <translation id="1464044141348608623">Niet toestaan dat sites weten wanneer je je apparaat actief gebruikt</translation>
 <translation id="146867109637325312">{COUNT,plural, =1{<ph name="SITE_COUNT"/> site}other{<ph name="SITE_COUNT"/> sites}}</translation>
+<translation id="1476700086976862423">Themakleur sepia</translation>
 <translation id="1500473259453106018">Kaart Prijsdalingen op tabbladen verbergen</translation>
 <translation id="1508931164824684991">Sites kunnen JavaScript gebruiken</translation>
 <translation id="1510341833810331442">Sites mogen geen gegevens opslaan op je apparaat</translation>
+<translation id="1532175480576580256">Blad onderaan voor Mijn snelkoppelingen is op volledige hoogte geopend</translation>
 <translation id="1538031354170655462">Sites gebruiken meestal Near Field Communication (NFC) om te werken met tags of apparaten in de buurt, zoals badges scannen of contactloos betalen</translation>
 <translation id="1547123415014299762">Cookies van derden zijn toegestaan</translation>
 <translation id="3665719978526894928">Sites versnellen met de V8-engine van Brave, maar Brave iets minder goed bestand maken tegen aanvallen</translation>
@@ -72,6 +69,8 @@ Geavanceerde beveiliging beheert deze Brave-instellingen:
 <translation id="7401204338724669842">Brave-tips</translation>
 <translation id="6704867734300244173">Als deze optie aanstaat, werkt Brave sneller en zouden functies die JavaScript gebruiken, naar behoren moeten werken. Als deze optie uitstaat, worden de prestaties slechter, maar is V8 beter bestand tegen aanvallen.</translation>
 <translation id="1818308510395330587">Als je <ph name="APP_NAME"/> AR wilt laten gebruiken, moet je ook de camera aanzetten via de <ph name="BEGIN_LINK"/>Android-instellingen<ph name="END_LINK"/>.</translation>
+<translation id="1848033246551405023">Lettertype Sans Serif</translation>
+<translation id="1861262398884155592">Deze map is leeg</translation>
 <translation id="1881806992065048905">Blad onderaan voor het uiterlijk van de pagina Nieuw tabblad</translation>
 <translation id="1887786770086287077">Locatietoegang staat uit voor dit apparaat. Zet deze aan via de <ph name="BEGIN_LINK"/>Android-instellingen<ph name="END_LINK"/>.</translation>
 <translation id="1906181697255754968">Sites vragen meestal toegang tot bestanden en mappen op je apparaat voor functies zoals het automatisch opslaan van je werk</translation>
@@ -93,6 +92,7 @@ Geavanceerde beveiliging beheert deze Brave-instellingen:
 <translation id="2079545284768500474">Ongedaan maken</translation>
 <translation id="2080070583977670716">Meer instellingen</translation>
 <translation id="2091887806945687916">Geluid</translation>
+<translation id="2094208275686143364">Themakleur licht</translation>
 <translation id="2096716221239095980">Alle gegevens verwijderen</translation>
 <translation id="2102396546234652240">Niet toestaan dat sites je microfoon gebruiken</translation>
 <translation id="2117655453726830283">Volgende dia</translation>
@@ -116,11 +116,14 @@ Geavanceerde beveiliging beheert deze Brave-instellingen:
 <translation id="228293613124499805">De meeste sites die je bezoekt, slaan waarschijnlijk gegevens op je apparaat op. Dit gebeurt vaak om de functionaliteit te verbeteren door je voorkeuren of met de site gedeelde informatie op te slaan. We raden je aan deze instelling aan te laten.</translation>
 <translation id="2289270750774289114">Vragen wanneer een site Bluetooth-apparaten in de buurt wilt detecteren (aanbevolen)</translation>
 <translation id="2315043854645842844">Certificaatselectie aan clientzijde wordt niet ondersteund door het besturingssysteem.</translation>
+<translation id="2347601491101454548">Blad onderaan voor Mijn snelkoppelingen is op halve hoogte geopend</translation>
 <translation id="2359808026110333948">Doorgaan</translation>
 <translation id="904887679952026733">Donker thema zo mogelijk toepassen op sites als Brave het donkere thema gebruikt</translation>
 <translation id="2390272837142897736">Zoomniveau vergroten</translation>
 <translation id="2402980924095424747"><ph name="MEGABYTES"/> MB</translation>
+<translation id="2403474027143565107">Exact</translation>
 <translation id="2404630663942400771">{PERMISSIONS_SUMMARY_ALLOWED,plural, =1{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> en nog <ph name="NUM_MORE"/> toegestaan}other{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> en nog <ph name="NUM_MORE"/> toegestaan}}</translation>
+<translation id="2404857459073803936">Locatietoegang voor deze site</translation>
 <translation id="2410940059315936967">Een site die je bezoekt, kan content van andere sites insluiten, zoals afbeeldingen, advertenties en tekst. Cookies die door deze andere sites worden ingesteld, worden cookies van derden genoemd.</translation>
 <translation id="2411116727035790889">Sneltoetsen aanzetten</translation>
 <translation id="2433507940547922241">Vormgeving</translation>
@@ -136,6 +139,7 @@ Geavanceerde beveiliging beheert deze Brave-instellingen:
 <translation id="2498359688066513246">Hulp en feedback</translation>
 <translation id="2501278716633472235">Terug</translation>
 <translation id="2533138527374486328">Als deze optie aanstaat, kunnen sites vragen of ze verbinding mogen maken met apparaten in je lokale netwerk. Staat de optie uit, dan kunnen sites geen verbinding maken met apparaten in je lokale netwerk.</translation>
+<translation id="2544997614631598250">Themakleur donker</translation>
 <translation id="2546283357679194313">Cookies en sitegegevens</translation>
 <translation id="2570922361219980984">Locatietoegang staat ook uit voor dit apparaat. Zet deze aan via de <ph name="BEGIN_LINK"/>Android-instellingen<ph name="END_LINK"/>.</translation>
 <translation id="257931822824936280">Uitgevouwen; klik om samen te vouwen.</translation>
@@ -143,6 +147,11 @@ Geavanceerde beveiliging beheert deze Brave-instellingen:
 <translation id="2588271083332682494">Opruimen met tabbladgroepen</translation>
 <translation id="2597457036804169544">Donker thema niet toepassen op sites</translation>
 <translation id="2606760465469169465">Automatisch verifiëren</translation>
+<translation id="7615153661410655750">Beheer in <ph name="BEGIN_LINK1"/>Android-instellingen<ph name="END_LINK1"/>
+
+Geavanceerde beveiliging beheert deze Brave-instellingen:
+• Altijd beveiligde verbindingen gebruiken staat aan.
+• JavaScript-optimalisatie is uitgezet. <ph name="BEGIN_LINK2"/>Site-uitzonderingen beheren<ph name="END_LINK2"/></translation>
 <translation id="2621115761605608342">JavaScript toestaan voor een specfieke site.</translation>
 <translation id="2626708220538466178">Blad onderaan voor standaardbrowser is gesloten</translation>
 <translation id="2653659639078652383">Verzenden</translation>
@@ -190,10 +199,10 @@ Geavanceerde beveiliging beheert deze Brave-instellingen:
 <translation id="3123473560110926937">Geblokkeerd op bepaalde sites</translation>
 <translation id="3132996321662585180">Dagelijks vernieuwen</translation>
 <translation id="3143754809889689516">Afspelen vanaf het begin</translation>
-<translation id="3162899666601560689">Sites mogen cookies gebruiken om de browsefunctionaliteit te verbeteren, bijvoorbeeld door je ingelogd te houden of door artikelen in je winkelwagen te onthouden</translation>
 <translation id="3165022941318558018">Toestaan dat een site cookies van derden gebruikt</translation>
 <translation id="3167868116600277716">Discover-feed</translation>
 <translation id="3198916472715691905"><ph name="STORAGE_AMOUNT"/> opgeslagen gegevens</translation>
+<translation id="3199078925536734975">Deze keer toegestaan • Geschat</translation>
 <translation id="321187648315454507">Als je wilt dat <ph name="APP_NAME"/> je meldingen stuurt, moet je meldingen ook aanzetten via de <ph name="BEGIN_LINK"/>Android-instellingen<ph name="END_LINK"/>.</translation>
 <translation id="3223425961342298674">Locatie niet toegestaan</translation>
 <translation id="3227137524299004712">Microfoon</translation>
@@ -248,6 +257,7 @@ Geavanceerde beveiliging beheert deze Brave-instellingen:
 <translation id="3803367742635802571">Sites die je bezoekt, werken misschien niet meer zoals bedoeld</translation>
 <translation id="8338457030135232378">Kleuren van Brave</translation>
 <translation id="381841723434055211">Telefoonnummers</translation>
+<translation id="3823453485268218808">Lettertype Mono</translation>
 <translation id="3826050100957962900">Externe login</translation>
 <translation id="3835233591525155343">Je apparaatgebruik</translation>
 <translation id="1799795508209440035">Brave blokkeert vandaag weer cookies</translation>
@@ -257,9 +267,9 @@ Geavanceerde beveiliging beheert deze Brave-instellingen:
 <translation id="3895926599014793903">Zoom verplicht aan</translation>
 <translation id="3903738175795615004">Sleep vanaf de bovenkant of druk op Esc om het volledige scherm te sluiten.</translation>
 <translation id="3905475044299942653">Houd veel meldingen tegen</translation>
-<translation id="3918378745482005425">Sommige functies werken misschien niet. Gerelateerde sites kunnen nog steeds cookies van derden gebruiken.</translation>
 <translation id="3922092564198021702">Open Instellingen op je telefoon</translation>
 <translation id="3933121352599513978">Ongewenste verzoeken samenvouwen (aanbevolen)</translation>
+<translation id="3934905113567851655">Knijp om het formaat aan te passen</translation>
 <translation id="3955193568934677022">Toestaan dat sites beschermde content afspelen (aanbevolen)</translation>
 <translation id="3955321697524543127">Niet toestaan dat sites verbinding maken met USB-apparaten</translation>
 <translation id="3965467402665811906">Sites kunnen vragen of ze informatie over je mogen gebruiken</translation>
@@ -272,6 +282,7 @@ Geavanceerde beveiliging beheert deze Brave-instellingen:
 <translation id="3992684624889376114">Over deze pagina</translation>
 <translation id="4002066346123236978">Titel</translation>
 <translation id="4031179711345676612">Microfoon toegestaan</translation>
+<translation id="4042597221652780603">Geschat</translation>
 <translation id="4046123991198612571">Volgend nummer</translation>
 <translation id="4077310749977440510">Sites lezen je klembord meestal voor functies zoals behoud van opmaak van de tekst die je hebt gekopieerd</translation>
 <translation id="4082080074595021446">Uitzonderingen voor specifieke websites zijn niet toegestaan omdat het Android-apparaat niet genoeg RAM heeft.</translation>
@@ -298,11 +309,14 @@ Geavanceerde beveiliging beheert deze Brave-instellingen:
 <translation id="4338831206024587507">Alle sites onder <ph name="DOMAIN"/></translation>
 <translation id="4340799661701629185">Niet toestaan dat sites meldingen sturen</translation>
 <translation id="4402755511846832236">Voorkomen dat sites weten wanneer je dit apparaat actief gebruikt</translation>
+<translation id="8382883799082236806">Blad onderaan voor Brave-kleuren is op halve hoogte geopend</translation>
 <translation id="4412992751769744546">Cookies van derden toestaan</translation>
 <translation id="1675197434085185531">Brave voorkomt dat sites cookies van derden gebruiken om je te volgen terwijl je browst. Ga naar Instellingen om <ph name="BEGIN_LINK"/>de toegang tot cookies van derden te beheren<ph name="END_LINK"/>.</translation>
+<translation id="4425416282877905577">Lettertype Serif</translation>
 <translation id="443121186588148776">Seriële poort</translation>
 <translation id="4434045419905280838">Pop-ups en omleidingen</translation>
 <translation id="443552056913301231">Met deze actie worden alle lokale gegevens (waaronder cookies) verwijderd en worden alle rechten voor <ph name="ORIGIN"/> gereset</translation>
+<translation id="43076815069546662">Blad onderaan voor Brave-kleuren is op volledige hoogte geopend</translation>
 <translation id="4468959413250150279">Geluid uitzetten voor een specifieke site.</translation>
 <translation id="4475912480633855319">{COOKIES,plural, =1{# cookie}other{# cookies}}</translation>
 <translation id="4478158430052450698">Maak het makkelijker om op verschillende sites in te zoomen</translation>
@@ -324,10 +338,11 @@ Geavanceerde beveiliging beheert deze Brave-instellingen:
 <translation id="4755971844837804407">Als deze optie aanstaat, kunnen sites elke advertentie aan je tonen. Staat de optie uit, dan kunnen sites geen opdringerige of misleidende advertenties tonen.</translation>
 <translation id="4779083564647765204">Zoom</translation>
 <translation id="4807122856660838973">Safe Browsing aanzetten</translation>
-<translation id="4811450222531576619">Meer informatie over de bron en het onderwerp</translation>
+<translation id="4811450222531576619">Informatie over bron en onderwerp</translation>
 <translation id="4816495437032298535">Opgeslagen zoomniveau voor sites</translation>
 <translation id="4836046166855586901">Vragen als een site wil weten wanneer je dit apparaat actief gebruikt</translation>
 <translation id="483914009762354899">Alle sites in dit domein opnemen</translation>
+<translation id="4852997963351138624">Hexadecimale code voor achtergrondkleur</translation>
 <translation id="4882919381756638075">Sites gebruiken je microfoon vaak voor communicatiefuncties zoals videochatten</translation>
 <translation id="4883854917563148705">Beheerde instellingen kunnen niet worden gereset</translation>
 <translation id="4887024562049524730">Vragen voordat sites je virtualreality-apparaat en -gegevens mogen gebruiken (aanbevolen)</translation>
@@ -337,6 +352,7 @@ Geavanceerde beveiliging beheert deze Brave-instellingen:
 <translation id="4953688446973710931">Als deze optie aanstaat, kunnen sites vragen of ze automatisch meerdere bestanden mogen downloaden. Staat de optie uit, dan kunnen sites niet automatisch meerdere bestanden downloaden.</translation>
 <translation id="4962975101802056554">Alle rechten voor apparaat intrekken</translation>
 <translation id="4972737347717125191">Sites kunnen vragen of ze apparaten en gegevens voor virtual reality mogen gebruiken</translation>
+<translation id="1275242979020712923">Blad onderaan voor Brave-kleuren</translation>
 <translation id="497421865427891073">Naar voren gaan</translation>
 <translation id="4976702386844183910">Laatst bezocht: <ph name="DATE"/></translation>
 <translation id="4978178243417029856">Meer informatie over de Discover-feed</translation>
@@ -356,6 +372,7 @@ Geavanceerde beveiliging beheert deze Brave-instellingen:
 <translation id="5100237604440890931">Samengevouwen; klik om uit te vouwen.</translation>
 <translation id="7143053178237996319">Je kunt Brave gebruiken als je op links in berichten, documenten en andere apps tikt</translation>
 <translation id="512938610812707830">Blad onderaan voor themacollecties voor het uiterlijk van de pagina Nieuw tabblad is op volledige hoogte geopend</translation>
+<translation id="5137460097045297858">Blad onderaan voor Discover-feed is op halve hoogte geopend</translation>
 <translation id="5139253256813381453">{PRICE_DROP_COUNT,plural, =1{Prijsdaling op je geopende tabbladen}other{Prijsdalingen op je geopende tabbladen}}</translation>
 <translation id="5186036860380548585">Optie beschikbaar boven aan het scherm</translation>
 <translation id="5197729504361054390">De contacten die je selecteert, worden gedeeld met <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/>.</translation>
@@ -374,7 +391,6 @@ Geavanceerde beveiliging beheert deze Brave-instellingen:
 <translation id="5335288049665977812">Sites toestaan JavaScript uit te voeren (aanbevolen)</translation>
 <translation id="534295439873310000">NFC-apparaten</translation>
 <translation id="5344522958567249764">Advertentieprivacy beheren</translation>
-<translation id="5371407439562620893">JavaScript-optimalisatie en -beveiliging</translation>
 <translation id="5373874281522292782">Je tabbladgroepen zijn opgeslagen</translation>
 <translation id="5394307150471348411">{DETAIL_COUNT,plural, =1{(en nog 1)}other{(en nog #)}}</translation>
 <translation id="5403592356182871684">Namen</translation>
@@ -386,7 +402,6 @@ Geavanceerde beveiliging beheert deze Brave-instellingen:
 <translation id="5515432237048785579">Blad onderaan voor Discover-feed is op volledige hoogte geopend</translation>
 <translation id="5516455585884385570">Instellingen voor meldingen openen</translation>
 <translation id="5527111080432883924">Vragen voordat sites toestemming krijgen om tekst en afbeeldingen vanaf het klembord te lezen (aanbevolen)</translation>
-<translation id="5545693483061321551">Sites kunnen je cookies niet gebruiken om je browse-activiteit op verschillende sites te bekijken, bijvoorbeeld om advertenties te personaliseren. Functies op bepaalde sites werken misschien niet.</translation>
 <translation id="5553374991681107062">Nieuwste</translation>
 <translation id="674221630984410403">Sites niet versnellen met de V8-engine van Brave en Brave iets beter bestand maken tegen aanvallen</translation>
 <translation id="5556459405103347317">Opnieuw laden</translation>
@@ -457,6 +472,7 @@ Geavanceerde beveiliging beheert deze Brave-instellingen:
 <translation id="6207207788774442484">Gegevens verwijderen en rechten resetten</translation>
 <translation id="6231752747840485235"><ph name="APP_NAME"/> verwijderen?</translation>
 <translation id="4789073065838177382">Tik op Browser-app &gt; Brave</translation>
+<translation id="6260830281887654268">Blad onderaan voor themacollecties voor het uiterlijk van de pagina Nieuw tabblad is op halve hoogte geopend</translation>
 <translation id="6262191102408817757">Op basis van je laatste tabblad</translation>
 <translation id="6262279340360821358"><ph name="PERMISSION_1"/> en <ph name="PERMISSION_2"/> geblokkeerd</translation>
 <translation id="6270391203985052864">Sites kunnen vragen of ze je meldingen mogen sturen</translation>
@@ -488,8 +504,10 @@ Geavanceerde beveiliging beheert deze Brave-instellingen:
 <translation id="6608650720463149374"><ph name="GIGABYTES"/> GB</translation>
 <translation id="6612358246767739896">Beschermde content</translation>
 <translation id="662080504995468778">Blijven</translation>
+<translation id="6630443592285535486">Typ hier de hexadecimale code</translation>
 <translation id="6635327442719709864">Als deze optie aanstaat, kunnen sites vragen of ze seriële poorten mogen gebruiken. Staat de optie uit, dan kunnen sites geen seriële poorten gebruiken.</translation>
 <translation id="6678072580827808850">Veiligheidscheck controleren</translation>
+<translation id="6682057173375416470">Voorgestelde artikelen krijgen op de pagina Nieuw tabblad</translation>
 <translation id="6683865262523156564">Deze site zit in een groep die je activiteit kan bekijken. De groep wordt gedefinieerd door <ph name="RWS_OWNER"/></translation>
 <translation id="6689172468748959065">Profielfoto's</translation>
 <translation id="6697925417670533197">Actieve downloads</translation>
@@ -539,16 +557,20 @@ Geavanceerde beveiliging beheert deze Brave-instellingen:
 <translation id="728412880473384942">Sites zijn sneller, maar minder goed beveiligd</translation>
 <translation id="7366415735885268578">Een site toevoegen</translation>
 <translation id="7368695150573390554">Alle offline gegevens worden verwijderd</translation>
+<translation id="7369678931043226462">Blad onderaan voor De pagina Nieuw tabblad aanpassen is op halve hoogte geopend</translation>
 <translation id="7383715096023715447">Instellingen voor <ph name="DOMAIN"/></translation>
 <translation id="7399802613464275309">Veiligheidscheck</translation>
 <translation id="7406113532070524618">Deze instelling werkt zonder je te identificeren of sites toegang te geven tot je browsegeschiedenis, maar sites kunnen wel een kleine hoeveelheid informatie delen als onderdeel van de verificatie</translation>
 <translation id="7409735910987429903">Sites sturen mogelijk pop-ups om advertenties te bekijken of gebruiken omleidingen die je naar websites leiden die je mogelijk niet wilt bezoeken</translation>
+<translation id="7412160840120117304">Hexadecimale code voor primaire kleur</translation>
 <translation id="7423098979219808738">Eerst vragen</translation>
 <translation id="7423538860840206698">Lezen van het klembord geblokkeerd</translation>
 <translation id="7425915948813553151">Donker thema voor sites</translation>
+<translation id="746412105358554870">JavaScript-optimalisatie en -beveiliging</translation>
 <translation id="7478658909253570368">Niet toestaan dat sites verbinding maken met seriële poorten</translation>
 <translation id="7488573225650545859">Tabbladen bekijken verbergen in je app-lijst</translation>
 <translation id="7521387064766892559">JavaScript</translation>
+<translation id="7538975533793429503">Schuifregelaar voor lettergrootte</translation>
 <translation id="7547989957535180761">Als deze optie aanstaat, kunnen sites inlogprompts tonen. Staat de optie uit, dan kunnen sites geen inlogprompts tonen.</translation>
 <translation id="7553211568594248088">Hub-zoekfunctie sluiten</translation>
 <translation id="7554752735887601236">Een site gebruikt de microfoon</translation>
@@ -574,6 +596,7 @@ Geavanceerde beveiliging beheert deze Brave-instellingen:
 <translation id="7804248752222191302">Een site gebruikt de camera</translation>
 <translation id="7805832099057502789">Blad onderaan voor het uiterlijk van de pagina Nieuw tabblad is op volledige hoogte geopend</translation>
 <translation id="6720480757902085971">Geleverd door Brave</translation>
+<translation id="7809029041571842593">Blad onderaan voor kaarten op de pagina Nieuw tabblad is op halve hoogte geopend</translation>
 <translation id="7815680994978050279">Gevaarlijke download geblokkeerd</translation>
 <translation id="7835852323729233924">Media afspelen</translation>
 <translation id="783819812427904514">Dempen van video opheffen</translation>
@@ -631,6 +654,7 @@ Geavanceerde beveiliging beheert deze Brave-instellingen:
 <translation id="8441146129660941386">Achteruit zoeken</translation>
 <translation id="8444433999583714703">Als je <ph name="APP_NAME"/> toegang wilt geven tot je locatie, moet je je locatie ook aanzetten via de <ph name="BEGIN_LINK"/>Android-instellingen<ph name="END_LINK"/>.</translation>
 <translation id="8447861592752582886">Rechten voor apparaat intrekken</translation>
+<translation id="8467359479529706065">Blad onderaan voor het uiterlijk van de pagina Nieuw tabblad is op halve hoogte geopend</translation>
 <translation id="8471525937465764768">Sites maken meestal verbinding met USB-apparaten voor functies zoals het afdrukken van een document of opslaan naar een opslagapparaat</translation>
 <translation id="8473055640493819707"><ph name="APP_NAME"/> is verouderd. Installeer de app opnieuw.</translation>
 <translation id="847433688444405067">Browse op verschillende apparaten</translation>
@@ -646,7 +670,6 @@ Geavanceerde beveiliging beheert deze Brave-instellingen:
 <translation id="8549127125482561383">Hoe verzoeken tonen</translation>
 <translation id="4273503381657013953">Je kunt Brave nu gebruiken als je browst of op links in berichten, documenten en andere apps tikt.</translation>
 <translation id="857943718398505171">Toegestaan (aanbevolen)</translation>
-<translation id="8580511488901768832">Blad onderaan voor Mijn snelkoppelingen is op volledige hoogte geopend</translation>
 <translation id="8593422116412089302">Als deze optie aanstaat, kunnen sites vragen of ze informatie mogen gebruiken die ze over je hebben opgeslagen. Staat de optie uit, dan kunnen sites je niet vragen of ze informatie mogen gebruiken die ze over jou hebben opgeslagen.</translation>
 <translation id="8609465669617005112">Omhoog</translation>
 <translation id="8617611086246832542">Als deze optie aanstaat, wordt de desktopweergave van websites getoond. Staat de optie uit, dan wordt de mobiele weergave van websites getoond.</translation>
@@ -664,6 +687,7 @@ Geavanceerde beveiliging beheert deze Brave-instellingen:
 <translation id="8730621377337864115">Klaar</translation>
 <translation id="8737426583868847403">Sites waarvoor je een aangepast zoomniveau hebt opgeslagen</translation>
 <translation id="8751914237388039244">Een afbeelding selecteren</translation>
+<translation id="8775741625735357092">Je kunt de bookmarkbalk aanzetten via Instellingen &gt; Vormgeving</translation>
 <translation id="8800034312320686233">Werkt de site niet?</translation>
 <translation id="8801436777607969138">Blokkeer JavaScript voor een specifieke site.</translation>
 <translation id="2026315747406172223">V8 is de JavaScript- en WebAssembly-engine van Brave die wordt gebruikt om de sitesprestaties te verbeteren</translation>
@@ -690,6 +714,7 @@ Geavanceerde beveiliging beheert deze Brave-instellingen:
 <translation id="9019902583201351841">Beheerd door je ouders</translation>
 <translation id="902236149563113779">Sites volgen je camerapositie meestal voor AR-functies, zoals games of visuele aanduidingen voor routes</translation>
 <translation id="9039697262778250930">Je wordt misschien uitgelogd van deze sites</translation>
+<translation id="9065203028668620118">Bewerken</translation>
 <translation id="9074739597929991885">Bluetooth</translation>
 <translation id="9106233582039520022">Cookies verwijderen?</translation>
 <translation id="9109747640384633967">{PERMISSIONS_SUMMARY_MIXED,plural, =1{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> en nog <ph name="NUM_MORE"/>}other{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> en nog <ph name="NUM_MORE"/>}}</translation>
@@ -708,10 +733,5 @@ Geavanceerde beveiliging beheert deze Brave-instellingen:
 <translation id="3110967157686007724">Privétabblad</translation>
 <translation id="8623552597614912461">Deze site staat op het punt om informatie te delen met een app buiten de privémodus.</translation>
 <translation id="8157212814767579028">Privémodus verlaten?</translation>
-<translation id="6105125042109106861">Cookies van derden worden geblokkeerd in Privé modus.</translation>
-<translation id="6642913673024345959">Cookies van derden blokkeren in de privémodus</translation>
-<translation id="20460146243579445">Functies op bepaalde websites werken mogelijk niet in de privémodus</translation>
-<translation id="8877838532507724268">Wanneer u de privémodus gebruikt, kunnen sites uw cookies niet gebruiken om uw browseactiviteit op sites te zien, zelfs niet op gerelateerde sites. Uw browseactiviteit wordt niet gebruikt voor bijvoorbeeld het personaliseren van advertenties. Functies van sommige sites werken mogelijk niet.</translation>
-<translation id="1856888821396498049">Cookies van derden blokkeren in de privémodus:</translation>
 <translation id="1593610935874634135">Een bedrijf kan een groep sites definiëren die cookies kunnen gebruiken om uw activiteit met de groep te delen. Dit is uitgeschakeld in Privé.</translation>
 </translationbundle>

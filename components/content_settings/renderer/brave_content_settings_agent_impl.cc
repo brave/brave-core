@@ -146,6 +146,13 @@ bool BraveContentSettingsAgentImpl::IsReduceLanguageEnabled() {
   return shields_settings_->reduce_language;
 }
 
+bool BraveContentSettingsAgentImpl::IsJsBlockingEnforced() const {
+  if (!shields_settings_) {
+    return false;
+  }
+  return shields_settings_->enforced_script_blocking;
+}
+
 void BraveContentSettingsAgentImpl::BraveSpecificDidAllowJavaScriptOnce(
     const GURL& resource_url) {
   // This will be called for all resources on a page, we want to notify only
@@ -175,7 +182,8 @@ bool BraveContentSettingsAgentImpl::AllowScript(bool enabled_per_settings) {
   auto is_shields_down = IsBraveShieldsDown(primary_url, secondary_url);
   auto is_script_temporarily_allowed =
       IsScriptTemporarilyAllowed(secondary_url);
-  allow = allow || is_shields_down || is_script_temporarily_allowed;
+  allow = !IsJsBlockingEnforced() &&
+          (allow || is_shields_down || is_script_temporarily_allowed);
   if (!allow) {
     blocked_script_url_ = secondary_url;
   } else if (!is_shields_down) {
@@ -183,6 +191,7 @@ bool BraveContentSettingsAgentImpl::AllowScript(bool enabled_per_settings) {
       BraveSpecificDidAllowJavaScriptOnce(secondary_url);
     }
   }
+
   return allow;
 }
 
@@ -218,7 +227,8 @@ bool BraveContentSettingsAgentImpl::AllowScriptFromSource(
   auto is_shields_down = IsBraveShieldsDown(primary_url, secondary_url);
   auto is_script_temporarily_allowed =
       IsScriptTemporarilyAllowed(secondary_url);
-  allow = allow || is_shields_down || is_script_temporarily_allowed;
+  allow = !IsJsBlockingEnforced() &&
+          (allow || is_shields_down || is_script_temporarily_allowed);
 
   if (!allow) {
     blocked_script_url_ = secondary_url;
@@ -397,7 +407,8 @@ BraveContentSettingsAgentImpl::GetBraveShieldsSettings(
                           HasContentSettingsRules());
     base::debug::DumpWithoutCrashing();
     return brave_shields::mojom::ShieldsSettings::New(
-        farbling_level, base::Token(), std::vector<std::string>(), false);
+        farbling_level, base::Token(), std::vector<std::string>(), false,
+        false);
   }
 }
 

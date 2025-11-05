@@ -21,7 +21,7 @@ namespace speedreader {
 
 class SpeedreaderServiceTest : public testing::Test {
  public:
-  SpeedreaderServiceTest() : feature_list_(kSpeedreaderFeature) {}
+  SpeedreaderServiceTest() : feature_list_(features::kSpeedreaderFeature) {}
 
   void SetUp() override {
     HostContentSettingsMap::RegisterProfilePrefs(prefs_.registry());
@@ -52,54 +52,73 @@ class SpeedreaderServiceTest : public testing::Test {
 };
 
 TEST_F(SpeedreaderServiceTest, DefaultSettings) {
-  EXPECT_FALSE(speedreader_service()->IsEnabledForAllSites());
+  EXPECT_FALSE(speedreader_service()->IsAllowedForAllReadableSites());
 
   for (const bool enabled : {true, false}) {
-    speedreader_service()->EnableForAllSites(enabled);
-    EXPECT_EQ(enabled, speedreader_service()->IsEnabledForAllSites());
-    EXPECT_EQ(enabled, prefs()->GetBoolean(kSpeedreaderPrefEnabledForAllSites));
+    SCOPED_TRACE(testing::Message() << "Enabled: " << enabled);
+    speedreader_service()->SetAllowedForAllReadableSites(enabled);
+    EXPECT_EQ(enabled, speedreader_service()->IsAllowedForAllReadableSites());
+    EXPECT_EQ(enabled,
+              prefs()->GetBoolean(kSpeedreaderAllowedForAllReadableSites));
   }
 }
 
 TEST_F(SpeedreaderServiceTest, DefaultSiteSettings) {
   const GURL site("https://example.com");
 
+  EXPECT_FALSE(speedreader_service()->IsAllowedForSite(site));
   EXPECT_FALSE(speedreader_service()->IsEnabledForSite(site));
-  EXPECT_FALSE(speedreader_service()->IsExplicitlyEnabledForSite(site));
-  EXPECT_FALSE(speedreader_service()->IsExplicitlyDisabledForSite(site));
+  EXPECT_FALSE(speedreader_service()->IsDisabledForSite(site));
 }
 
 TEST_F(SpeedreaderServiceTest, DefaultSiteSettingsAllSitesEnabled) {
   const GURL site("https://example.com");
 
-  speedreader_service()->EnableForAllSites(true);
-  EXPECT_TRUE(speedreader_service()->IsEnabledForSite(site));
-  EXPECT_FALSE(speedreader_service()->IsExplicitlyEnabledForSite(site));
-  EXPECT_FALSE(speedreader_service()->IsExplicitlyDisabledForSite(site));
+  speedreader_service()->SetAllowedForAllReadableSites(true);
+  EXPECT_TRUE(speedreader_service()->IsAllowedForSite(site));
+  EXPECT_FALSE(speedreader_service()->IsEnabledForSite(site));
+  EXPECT_FALSE(speedreader_service()->IsDisabledForSite(site));
+}
+
+TEST_F(SpeedreaderServiceTest, SpeedreaderDisabled) {
+  const GURL site1("https://example.com");
+  const GURL site2("https://example2.com");
+
+  prefs()->SetBoolean(kSpeedreaderEnabled, false);
+  speedreader_service()->SetEnabledForSite(site2, true);
+
+  for (const bool enabled : {true, false}) {
+    SCOPED_TRACE(testing::Message() << "Enabled: " << enabled);
+    speedreader_service()->SetAllowedForAllReadableSites(enabled);
+    EXPECT_FALSE(speedreader_service()->IsAllowedForSite(site1));
+    EXPECT_FALSE(speedreader_service()->IsAllowedForSite(site2));
+    EXPECT_FALSE(speedreader_service()->IsEnabledForSite(site1));
+    EXPECT_TRUE(speedreader_service()->IsEnabledForSite(site2));
+  }
 }
 
 TEST_F(SpeedreaderServiceTest, OverrideSiteSettingsAllSitesDefault) {
   const GURL site("https://example.com");
 
   for (const bool enabled : {true, false}) {
-    speedreader_service()->EnableForSite(site, enabled);
+    speedreader_service()->SetEnabledForSite(site, enabled);
+
+    EXPECT_EQ(enabled, speedreader_service()->IsAllowedForSite(site));
     EXPECT_EQ(enabled, speedreader_service()->IsEnabledForSite(site));
-    EXPECT_EQ(enabled, speedreader_service()->IsExplicitlyEnabledForSite(site));
-    EXPECT_EQ(!enabled,
-              speedreader_service()->IsExplicitlyDisabledForSite(site));
+    EXPECT_EQ(!enabled, speedreader_service()->IsDisabledForSite(site));
   }
 }
 
 TEST_F(SpeedreaderServiceTest, OverrideSiteSettingsAllSitesEnabled) {
   const GURL site("https://example.com");
 
-  speedreader_service()->EnableForAllSites(true);
+  speedreader_service()->SetAllowedForAllReadableSites(true);
   for (const bool enabled : {true, false}) {
-    speedreader_service()->EnableForSite(site, enabled);
+    SCOPED_TRACE(testing::Message() << "Enabled: " << enabled);
+    speedreader_service()->SetEnabledForSite(site, enabled);
+    EXPECT_EQ(enabled, speedreader_service()->IsAllowedForSite(site));
     EXPECT_EQ(enabled, speedreader_service()->IsEnabledForSite(site));
-    EXPECT_EQ(enabled, speedreader_service()->IsExplicitlyEnabledForSite(site));
-    EXPECT_EQ(!enabled,
-              speedreader_service()->IsExplicitlyDisabledForSite(site));
+    EXPECT_EQ(!enabled, speedreader_service()->IsDisabledForSite(site));
   }
 }
 
@@ -111,12 +130,15 @@ class SpeedreaderPolicyTest : public testing::Test {
 
  protected:
   void SetSpeedreaderFeatureEnabledByPolicy(bool value) {
-    pref_service_.SetManagedPref(kSpeedreaderPrefFeatureEnabled,
-                                 base::Value(value));
+    pref_service_.SetManagedPref(kSpeedreaderEnabled, base::Value(value));
   }
 
   bool IsManaged() {
-    return pref_service_.IsManagedPreference(kSpeedreaderPrefFeatureEnabled);
+    return pref_service_.IsManagedPreference(kSpeedreaderEnabled);
+  }
+
+  bool IsSpeedreaderEnabled() {
+    return pref_service_.GetBoolean(kSpeedreaderEnabled);
   }
 
   TestingPrefServiceSimple pref_service_;
@@ -124,7 +146,7 @@ class SpeedreaderPolicyTest : public testing::Test {
 
 TEST_F(SpeedreaderPolicyTest, PolicyDisablesSpeedreader) {
   // Initially, feature should be enabled by default and not managed
-  EXPECT_TRUE(pref_service_.GetBoolean(kSpeedreaderPrefFeatureEnabled));
+  EXPECT_TRUE(pref_service_.GetBoolean(kSpeedreaderEnabled));
   EXPECT_FALSE(IsManaged());
 
   // Set policy to disable Speedreader
@@ -132,7 +154,7 @@ TEST_F(SpeedreaderPolicyTest, PolicyDisablesSpeedreader) {
 
   // Test that the policy preference is managed and disabled
   EXPECT_TRUE(IsManaged());
-  EXPECT_FALSE(pref_service_.GetBoolean(kSpeedreaderPrefFeatureEnabled));
+  EXPECT_FALSE(pref_service_.GetBoolean(kSpeedreaderEnabled));
 }
 
 TEST_F(SpeedreaderPolicyTest, PolicyEnablesSpeedreader) {
@@ -141,27 +163,27 @@ TEST_F(SpeedreaderPolicyTest, PolicyEnablesSpeedreader) {
 
   // Test that the policy preference is managed and enabled
   EXPECT_TRUE(IsManaged());
-  EXPECT_TRUE(pref_service_.GetBoolean(kSpeedreaderPrefFeatureEnabled));
+  EXPECT_TRUE(pref_service_.GetBoolean(kSpeedreaderEnabled));
 }
 
 TEST_F(SpeedreaderPolicyTest, DefaultValueWhenNotManaged) {
   // When not managed by policy, feature should be enabled by default
-  EXPECT_TRUE(pref_service_.GetBoolean(kSpeedreaderPrefFeatureEnabled));
+  EXPECT_TRUE(pref_service_.GetBoolean(kSpeedreaderEnabled));
   EXPECT_FALSE(IsManaged());
 }
 
 TEST_F(SpeedreaderPolicyTest, PolicyChangesAreReflected) {
   // Start with policy enabling speedreader
   SetSpeedreaderFeatureEnabledByPolicy(true);
-  EXPECT_TRUE(IsSpeedreaderFeatureEnabled(&pref_service_));
+  EXPECT_TRUE(IsSpeedreaderEnabled());
 
   // Change policy to disable speedreader
   SetSpeedreaderFeatureEnabledByPolicy(false);
-  EXPECT_FALSE(IsSpeedreaderFeatureEnabled(&pref_service_));
+  EXPECT_FALSE(IsSpeedreaderEnabled());
 
   // Change back to enabling speedreader
   SetSpeedreaderFeatureEnabledByPolicy(true);
-  EXPECT_TRUE(IsSpeedreaderFeatureEnabled(&pref_service_));
+  EXPECT_TRUE(IsSpeedreaderEnabled());
 }
 
 TEST_F(SpeedreaderPolicyTest, PolicyWorksWithDefaultsWrite) {
@@ -169,15 +191,15 @@ TEST_F(SpeedreaderPolicyTest, PolicyWorksWithDefaultsWrite) {
   // where the preference is set but not marked as managed
 
   // Manually set the preference value without using SetManagedPref
-  pref_service_.SetBoolean(kSpeedreaderPrefFeatureEnabled, false);
+  pref_service_.SetBoolean(kSpeedreaderEnabled, false);
 
   // Verify the preference is set but not marked as managed
-  EXPECT_FALSE(pref_service_.GetBoolean(kSpeedreaderPrefFeatureEnabled));
+  EXPECT_FALSE(pref_service_.GetBoolean(kSpeedreaderEnabled));
   EXPECT_FALSE(IsManaged());
 
-  // IsSpeedreaderFeatureEnabled should return false since preference is
+  // IsSpeedreaderEnabled should return false since preference is
   // disabled
-  EXPECT_FALSE(IsSpeedreaderFeatureEnabled(&pref_service_));
+  EXPECT_FALSE(IsSpeedreaderEnabled());
 }
 
 class SpeedreaderPrefMigrationTest : public testing::Test {
@@ -198,10 +220,10 @@ TEST_F(SpeedreaderPrefMigrationTest, MigratesEnabledPrefToNewStructure) {
   // Verify initial state
   EXPECT_TRUE(pref_service_.HasPrefPath(kSpeedreaderPrefEnabledDeprecated));
   EXPECT_TRUE(pref_service_.GetBoolean(kSpeedreaderPrefEnabledDeprecated));
-  EXPECT_TRUE(pref_service_.GetBoolean(
-      kSpeedreaderPrefFeatureEnabled));  // Default is true
+  EXPECT_TRUE(
+      pref_service_.GetBoolean(kSpeedreaderEnabled));  // Default is true
   EXPECT_FALSE(pref_service_.GetBoolean(
-      kSpeedreaderPrefEnabledForAllSites));  // Default is false
+      kSpeedreaderAllowedForAllReadableSites));  // Default is false
 
   // Run migration
   MigrateObsoleteProfilePrefs(&pref_service_);
@@ -209,10 +231,10 @@ TEST_F(SpeedreaderPrefMigrationTest, MigratesEnabledPrefToNewStructure) {
   // Verify migration results
   EXPECT_FALSE(
       pref_service_.HasPrefPath(kSpeedreaderPrefEnabledDeprecated));  // Cleared
+  EXPECT_TRUE(
+      pref_service_.GetBoolean(kSpeedreaderEnabled));  // Still default (true)
   EXPECT_TRUE(pref_service_.GetBoolean(
-      kSpeedreaderPrefFeatureEnabled));  // Still default (true)
-  EXPECT_TRUE(pref_service_.GetBoolean(
-      kSpeedreaderPrefEnabledForAllSites));  // Migrated to true
+      kSpeedreaderAllowedForAllReadableSites));  // Migrated to true
 }
 
 TEST_F(SpeedreaderPrefMigrationTest, MigratesDisabledPrefToNewStructure) {
@@ -222,10 +244,10 @@ TEST_F(SpeedreaderPrefMigrationTest, MigratesDisabledPrefToNewStructure) {
   // Verify initial state
   EXPECT_TRUE(pref_service_.HasPrefPath(kSpeedreaderPrefEnabledDeprecated));
   EXPECT_FALSE(pref_service_.GetBoolean(kSpeedreaderPrefEnabledDeprecated));
-  EXPECT_TRUE(pref_service_.GetBoolean(
-      kSpeedreaderPrefFeatureEnabled));  // Default is true
+  EXPECT_TRUE(
+      pref_service_.GetBoolean(kSpeedreaderEnabled));  // Default is true
   EXPECT_FALSE(pref_service_.GetBoolean(
-      kSpeedreaderPrefEnabledForAllSites));  // Default is false
+      kSpeedreaderAllowedForAllReadableSites));  // Default is false
 
   // Run migration
   MigrateObsoleteProfilePrefs(&pref_service_);
@@ -233,10 +255,10 @@ TEST_F(SpeedreaderPrefMigrationTest, MigratesDisabledPrefToNewStructure) {
   // Verify migration results
   EXPECT_FALSE(
       pref_service_.HasPrefPath(kSpeedreaderPrefEnabledDeprecated));  // Cleared
-  EXPECT_TRUE(pref_service_.GetBoolean(
-      kSpeedreaderPrefFeatureEnabled));  // Still default (true)
+  EXPECT_TRUE(
+      pref_service_.GetBoolean(kSpeedreaderEnabled));  // Still default (true)
   EXPECT_FALSE(pref_service_.GetBoolean(
-      kSpeedreaderPrefEnabledForAllSites));  // Migrated to false
+      kSpeedreaderAllowedForAllReadableSites));  // Migrated to false
 }
 
 TEST_F(SpeedreaderPrefMigrationTest, HandlesNewInstallationWithDefaults) {
@@ -244,20 +266,19 @@ TEST_F(SpeedreaderPrefMigrationTest, HandlesNewInstallationWithDefaults) {
   EXPECT_FALSE(pref_service_.HasPrefPath(kSpeedreaderPrefEnabledDeprecated));
 
   // Verify initial defaults
-  EXPECT_TRUE(pref_service_.GetBoolean(
-      kSpeedreaderPrefFeatureEnabled));  // Default is true
+  EXPECT_TRUE(
+      pref_service_.GetBoolean(kSpeedreaderEnabled));  // Default is true
   EXPECT_FALSE(pref_service_.GetBoolean(
-      kSpeedreaderPrefEnabledForAllSites));  // Default is false
+      kSpeedreaderAllowedForAllReadableSites));  // Default is false
 
   // Run migration
   MigrateObsoleteProfilePrefs(&pref_service_);
 
   // Verify migration does nothing for new installations
   EXPECT_FALSE(pref_service_.HasPrefPath(kSpeedreaderPrefEnabledDeprecated));
-  EXPECT_TRUE(pref_service_.GetBoolean(
-      kSpeedreaderPrefFeatureEnabled));  // Still default
+  EXPECT_TRUE(pref_service_.GetBoolean(kSpeedreaderEnabled));  // Still default
   EXPECT_FALSE(pref_service_.GetBoolean(
-      kSpeedreaderPrefEnabledForAllSites));  // Still default
+      kSpeedreaderAllowedForAllReadableSites));  // Still default
 }
 
 TEST_F(SpeedreaderPrefMigrationTest, MigrationIdempotent) {
@@ -272,19 +293,20 @@ TEST_F(SpeedreaderPrefMigrationTest, MigrationIdempotent) {
 
   // Verify migration worked and deprecated pref is cleared
   EXPECT_FALSE(pref_service_.HasPrefPath(kSpeedreaderPrefEnabledDeprecated));
-  EXPECT_TRUE(pref_service_.GetBoolean(kSpeedreaderPrefFeatureEnabled));
-  EXPECT_TRUE(pref_service_.GetBoolean(kSpeedreaderPrefEnabledForAllSites));
+  EXPECT_TRUE(pref_service_.GetBoolean(kSpeedreaderEnabled));
+  EXPECT_TRUE(pref_service_.GetBoolean(kSpeedreaderAllowedForAllReadableSites));
 
   // Manually change preferences to test idempotency
-  pref_service_.SetBoolean(kSpeedreaderPrefFeatureEnabled, false);
-  pref_service_.SetBoolean(kSpeedreaderPrefEnabledForAllSites, false);
+  pref_service_.SetBoolean(kSpeedreaderEnabled, false);
+  pref_service_.SetBoolean(kSpeedreaderAllowedForAllReadableSites, false);
 
   // Run migration again - should do nothing since deprecated pref is gone
   MigrateObsoleteProfilePrefs(&pref_service_);
 
   // Verify values weren't changed by second migration
-  EXPECT_FALSE(pref_service_.GetBoolean(kSpeedreaderPrefFeatureEnabled));
-  EXPECT_FALSE(pref_service_.GetBoolean(kSpeedreaderPrefEnabledForAllSites));
+  EXPECT_FALSE(pref_service_.GetBoolean(kSpeedreaderEnabled));
+  EXPECT_FALSE(
+      pref_service_.GetBoolean(kSpeedreaderAllowedForAllReadableSites));
 }
 
 }  // namespace speedreader

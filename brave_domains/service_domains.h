@@ -12,6 +12,8 @@
 
 namespace brave_domains {
 
+// A Java counterpart will be generated for this enum.
+// GENERATED_JAVA_ENUM_PACKAGE: org.chromium.brave.browser.util
 enum ServicesEnvironment { DEV, STAGING, PROD };
 
 // Gets production services domain, or returns staging or dev

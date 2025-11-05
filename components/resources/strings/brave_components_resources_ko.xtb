@@ -126,8 +126,8 @@
 <translation id="730042046912793465">이것은</translation>
 <translation id="2055363275850890030">비공개 윈도우</translation>
 <translation id="9133213713928851646">Brave는 당신이 비공개 윈도우에서 하는 활동을 기억하지 않습니다. 방문한 사이트는 검색 내역에 나타나지 않으며, 검색을 끝내면 쿠기도 사라집니다. 비공개 윈도우는 온라인상에서 당신을 완벽한 익명으로 만들어 줍니다.</translation>
-<translation id="4491905831789757331">Brave는 비공개 창에서 사용자의 활동을 절대 저장하지 않습니다. 방문한 사이트가 기록에 표시되지 않는 것은 물론, 열려 있는 모든 비공개 창을 닫으면 쿠키와 양식 데이터, 사이트 데이터도 사라집니다.</translation>
-<translation id="1700746046668116047">귀하의 활동을 인터넷 서비스 공급자, 패시브 네트워크 옵저버, 고용주(업무용 장비나 네트워크를 사용하는 경우)는 볼 수 있습니다. 프라이버시를 더욱 보호하려면 Tor로 시크릿 창을 여세요.</translation>
+<translation id="5280085559200511517">Brave는 비공개 창에서 사용자가 어떤 활동을 했는지 기억하지 않으며, 사용자가 방문한 사이트는 기록에 표시되지 않습니다. 열려 있는 모든 비공개 창을 닫으면 쿠키, 양식 데이터, 사이트 데이터가 사라집니다. 하지만, 인터넷 서비스 제공업체, 수동적 네트워크 관찰자 또는 고용주(업무용 컴퓨터나 네트워크를 사용하는 경우)의 경우 사용자의 활동을 계속 볼 수 있습니다.</translation>
+<translation id="2517912602053665378">프라이버시를 강화하려면 Tor로 비공개 창을 여세요.</translation>
 <translation id="8759753423332885148">더 알아보기.</translation>
 <translation id="8611976753572844841">Tor 연결이 제공되는 비공개 창</translation>
 <translation id="1645589858096839236">Brave 비공개 창에서는 어떠한 브라우징 활동도 저장되지 않습니다. Tor 연결을 사용하면 사이트가 사용자의 진짜 IP 주소를 파악하기도, 네트워크 감시자가 사용자가 방문한 사이트를 알아내기도 더욱 어려워집니다. 하지만 익명 유지가 개인의 안전에 절대적이라면 Tor 브라우저를 사용하는 것이 낫습니다.</translation>
@@ -688,7 +688,6 @@
 <translation id="3266055641283174315">광고 유형</translation>
 <translation id="8706824117053903390">이번 달 본 횟수</translation>
 <translation id="5105890735834548623">광고 설정</translation>
-<translation id="96989662637180657">Brave 검색 광고는 <ph name="LINK_BEGIN"/>Brave 검색<ph name="LINK_END"/>에 나타납니다.</translation>
 <translation id="3138160233953903250">광고 설정</translation>
 <translation id="2446517297521536638">볼 Brave Ads 광고의 종류와 빈도를 제어할 수 있습니다. 많이 볼수록 많이 적립됩니다.</translation>
 <translation id="3479272537858623647">이번 달에 보신 Brave 광고 중 BAT를 적립할 수 있는 광고의 수가 표시됩니다.</translation>
@@ -855,6 +854,11 @@
       other {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} 스텝}
     }</translation>
 <translation id="8621264173374071200"><ph name="EXCHANGE_NAME"/> 를 통해 <ph name="PROVIDER_NAME"/> 제공</translation>
+<translation id="646023614746251785">스왑 확인</translation>
+<translation id="6264944956989873014">브릿지 확인</translation>
+<translation id="7067917728851842589">전송 확인</translation>
+<translation id="2351357639951873714">쉴드 확인</translation>
+<translation id="8332923694292360653">지출</translation>
 <translation id="3735740477244556633">정렬 기준</translation>
 <translation id="6484605214219822434">브리지 검토</translation>
 <translation id="3365052891357224017">예상 시간</translation>
@@ -964,6 +968,7 @@
 <translation id="3451958544919449297">ZEC Testnet 자산 저장</translation>
 <translation id="8459631690385393533">Cardano 자산 저장</translation>
 <translation id="4915057812371523845">Cardano Testnet 자산 저장</translation>
+<translation id="5387140102951033657">Polkadot 릴레이 체인과 Substrate 패러체인에서 Substrate 자산을 지원합니다</translation>
 <translation id="8500387257977999003">비공개 키 <ph name="PROTOCOL"/></translation>
 <translation id="8275038454117074363">가져오기</translation>
 <translation id="232925166623833246">하드웨어 월렛에서 가져오기</translation>
@@ -1075,6 +1080,10 @@
 <translation id="8904889345035514635">현재 허용 한도</translation>
 <translation id="7073918978411974168">권장 허용 한도</translation>
 <translation id="9019403281000653275">승인 요청 무제한</translation>
+<translation id="9108474191347769758">지출 한도</translation>
+<translation id="2102091845281366189">승인 대상</translation>
+<translation id="772196962479335292">현재 승인 한도</translation>
+<translation id="8215431557133305629">제안된 승인 한도</translation>
 <translation id="4717431746210146708">이 사이트가 네트워크를 추가할 수 있게 허용하시겠습니까?</translation>
 <translation id="2521480044079508357">이 네트워크를 Brave 월렛 내에서 사용할 수 있게 됩니다.</translation>
 <translation id="1982257600591932657">네트워크 이름</translation>
@@ -1091,7 +1100,7 @@
 <translation id="3948067511324628726">가스 수수료</translation>
 <translation id="7163997622278957886">입찰</translation>
 <translation id="1074360622426001342">금액 + 가스</translation>
-<translation id="2186011161688824046">금액 + 수수료</translation>
+<translation id="7542099582407803878">금액 + 네트워크 수수료</translation>
 <translation id="7084089311475827950">데이터 없음.</translation>
 <translation id="5821668936183240062">다음</translation>
 <translation id="793994607260936590">처음</translation>
@@ -1191,6 +1200,8 @@
 <translation id="2749584096020594976">이 필드가 지정되지 않으면 임시 값이 자동 결정됩니다.</translation>
 <translation id="1599636444563952897">지출 한도 권한을 설정하면 <ph name="SITE_ORIGIN"/>이 다음 금액을 인출하여 지출하도록 허용합니다.</translation>
 <translation id="4512871563176965522">사용자 지정 허용 한도</translation>
+<translation id="4584580349370930446">제안 지출 한도</translation>
+<translation id="3853163884524541156">사용자 지정 지출 한도</translation>
 <translation id="749944179568745958">유효한 ETH 주소 아님</translation>
 <translation id="2832270987629018596">유효한 SOL 주소 아님</translation>
 <translation id="2115100722958448834">유효한 <ph name="COIN_TYPE_SYMBOL"/> 주소가 아닙니다.</translation>
@@ -1259,6 +1270,10 @@
 <translation id="4213183402991860207"><ph name="DEVICE_NAME"/> 브릿지 준비되지 않음</translation>
 <translation id="3378339846292573874">추천 토큰 추가</translation>
 <translation id="2322227405137827074">이 토큰을 가져오시겠습니까?</translation>
+<translation id="5128068232340122017">보류 중(<ph name="QUEUE_LENGTH"/>)</translation>
+<translation id="4642769870132666012">다음 트랜잭션</translation>
+<translation id="6917555475950364314">이전 트랜잭션</translation>
+<translation id="5305367377612487857"><ph name="QUEUE_LENGTH"/> 트랜잭션 거부</translation>
 <translation id="4378475168089649292">블록체인</translation>
 <translation id="1904295039023858291">토큰 표준</translation>
 <translation id="9033453977881595182">토큰 ID</translation>
@@ -1409,6 +1424,10 @@
 <translation id="4841860051609590575">요청 ID</translation>
 <translation id="6759710362319508545">리소스</translation>
 <translation id="1908159733454294871">보안 위험 감지됨</translation>
+<translation id="3621202678540785336">입력</translation>
+<translation id="3009178788565917040">출력</translation>
+<translation id="7953669802889559161">입력</translation>
+<translation id="4554024082642878647">출력</translation>
 <translation id="1965889974717516497">보조 네트워크</translation>
 <translation id="7691821949666755802">테스트 네트워크</translation>
 <translation id="2816106784624007524">가스 한도는 0보다 큰 정수여야 합니다.</translation>
@@ -1692,6 +1711,12 @@
 <translation id="3214633363105739658"><ph name="REFRESH_START"/>새로고침<ph name="REFRESH_END"/> 또는 <ph name="IMPORT_START"/>수동으로 가져오기<ph name="IMPORT_END"/></translation>
 <translation id="3840001806553580474">새로고치는 중</translation>
 <translation id="4608324163534970318">네트워크 수수료</translation>
+<translation id="5024685988141485810">사용자 지정 수수료</translation>
+<translation id="167204008553981721">가스 팁 한도</translation>
+<translation id="9021878977748775164">가스 가격 한도</translation>
+<translation id="6276584161122912863">가스 가격</translation>
+<translation id="6132197290665156212">예상 네트워크 요금</translation>
+<translation id="1788636309517085411">기본값 사용</translation>
 <translation id="6213230117190778270">받기</translation>
 <translation id="6748108480210050150">보내는 이</translation>
 <translation id="4875290286426670462">무제한 <ph name="ASSET_SYMBOL"/></translation>
@@ -2098,7 +2123,7 @@
 <translation id="9089090017461255038">Speedreader 켜기</translation>
 <translation id="3929926885379607283">이 사이트에 항상 스피드리더 사용</translation>
 <translation id="4186588885948504942">이 웹사이트에 스피드리더 켬/끔을 토글합니다.</translation>
-<translation id="6568851043090579206">모든 사이트에 항상 스피드리더 사용</translation>
+<translation id="6568851043090579206">모든 사이트에서 가능한 경우 스피드리더 자동 사용</translation>
 <translation id="3138587343887871192">모든 웹사이트에 스피드리더 켬/끔을 토글합니다.</translation>
 <translation id="5153147025131874069">일부 사이트에는 스피드리더 기능이 제공되지 않을 수 있습니다.</translation>
 <translation id="1013121820689882118">Speedreader</translation>
@@ -2125,7 +2150,6 @@
 <translation id="5872363163901278000">재생 속도 높이기</translation>
 <translation id="6129027151000961048">레오</translation>
 <translation id="8637805148029768813">요약기 기능은 현재 일부 기사와 긴 형식의 웹페이지에만 사용할 수 있습니다.</translation>
-<translation id="1223498995510244364">요약하기</translation>
 <translation id="7491773233732232424">레오 소개</translation>
 <translation id="4611072979071082355">Brave 레오는 인터넷 사용성을 개선해주는 개인용 AI 스마트 어시스턴트입니다. 레오는 무료로 사용할 수 있으며 액세스 한도가 있습니다. Brave 레오 프리미엄은 더 많은 모델을 지원하고 한도가 높으며 구독자 여러분께 새로운 기능을 먼저 제공해 드립니다. 기본 모델은 수시로 변경됩니다. 자세한 정보는 <ph name="LINK_BEFORE"/>Brave 도움말 센터<ph name="LINK_AFTER"/>를 참조하세요.</translation>
 <translation id="7297056998057521697">보고 있는 웹사이트나 페이지에 대해 레오에게 질문을 하시면, 기본적으로는 그 웹페이지의 콘텐츠 또는 페이지에서 강조 표시한 텍스트와 검색 쿼리가 Brave 서버로 전송되어 레오의 답변에 활용됩니다. 경우에 따라 레오는 사용자의 입력에서 파생된 쿼리를 Brave 검색으로 전송하고 그 결과를 사용하여 더 나은 답변을 제공할 수 있습니다. Brave는 답변의 정확성을 보장하지 않습니다. 답변은 부정확하거나 오해의 소지가 있거나 허위 정보가 포함될 수 있습니다. 민감한 정보나 사적인 정보는 Brave 레오에게 제출하지 마시고, 건강, 금융, 개인 안전 등과 관련된 답변은 신중하게 사용하세요. 설정 &gt; 레오로 이동하시면, 언제든지 레오의 옵션을 조정할 수 있습니다.</translation>
@@ -2136,6 +2160,8 @@
     }</translation>
 <translation id="6961721183181597848">무엇을 도와드릴까요?</translation>
 <translation id="2966135729673253768">후속 조치 요청</translation>
+<translation id="6219262425964000211">여기에 파일 드롭</translation>
+<translation id="4313763911013851687">대화에 파일을 추가하려면 여기에 파일을 끌어다 놓으세요</translation>
 <translation id="4524675003624341892">추천 질문...</translation>
 <translation id="4567071417854988869">이 동영상 요약하기</translation>
 <translation id="4264902191243445258">{PAGE_COUNT, plural,
@@ -2153,20 +2179,24 @@
 <translation id="7905602379229309187">현재 엔드포인트에 과부하가 걸렸습니다. 나중에 다시 시도하세요.</translation>
 <translation id="8151638057146502721">구성</translation>
 <translation id="999273441077650169">최고의 작업을 위해 동적으로 모델을 변경합니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
-<translation id="3282183392203936979">안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 다양한 활용 사례에 맞춰 높은 성능을 발휘하도록 메타에서 개발한 라마 3.1 8B 모델을 기반으로 구동됩니다. 라마는 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
-<translation id="4328177358021456069">안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 다양한 활용 사례에 맞춰 높은 성능을 발휘하도록 알리바바 클라우드에서 개발한 큐원14B 모델을 기반으로 구동됩니다. 큐원은 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
-<translation id="5594884291408453470">안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 다양한 활용 사례에 맞춰 높은 성능을 발휘하도록 Google에서 개발한 Gemma 3 12B 모델을 기반으로 구동됩니다. Gemma는 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
-<translation id="8706248250250832190">안녕하세요, 레오입니다. 저는 Brave에서 완전 호스된 AI 어시스턴트입니다. 저는 심층 추론 작업을 수행할 수 있도록 DeepSeek에서 만든 모델인 DeepSeek R1으로 구동됩니다. <ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
-<translation id="2575216739207798060">안녕하세요, 저는 레오예요. 저는 Brave가 프록시하고, 대화문과 텍스트 처리 성능을 제공하기 위해 앤쓰라픽에서 개발한 클로드 인스턴트 모델을 기반으로 구동됩니다. 클로드 인스턴트는 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
-<translation id="512933369128404654">안녕하세요, 저는 레오예요. 저는 Brave가 프록시하고, 대화문과 텍스트 처리 성능을 제공하기 위해 앤쓰라픽에서 개발한 클로드 하이쿠 모델을 기반으로 구동됩니다. 클로드 하이쿠는 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
-<translation id="406499980300734922">안녕하세요, 저는 레오예요. 저는 Brave가 프록시하고, 대화문과 텍스트 처리 성능을 제공하기 위해 앤쓰라픽에서 개발한 클로드 소네트 모델을 기반으로 구동됩니다. 클로드 소네트는 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
+<translation id="1238020084128916796">안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 다양한 활용 사례에 맞춰 높은 성능을 발휘하도록 메타에서 개발한 라마 3.1 8B 모델을 기반으로 구동됩니다. 라마는 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
+<translation id="7127671672828944579">안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 다양한 활용 사례에 맞춰 높은 성능을 발휘하도록 알리바바 클라우드에서 개발한 큐원14B 모델을 기반으로 구동됩니다. 큐원은 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
+<translation id="2328524194917949829">안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 다양한 활용 사례에 맞춰 높은 성능을 발휘하도록 Google에서 개발한 Gemma 3 12B 모델을 기반으로 구동됩니다. Gemma는 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
+<translation id="634682910381645550">안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 심층적인 추론 작업을 수행하도록 DeepSeek에서 개발한 DeepSeek R1 모델을 기반으로 구동됩니다. DeepSeek R1은 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
+<translation id="8932568551552504373">안녕하세요, 저는 레오예요. 저는 Brave가 프록시하고, 대화문과 텍스트 처리 성능을 제공하기 위해 앤쓰라픽에서 개발한 클로드 인스턴트 모델을 기반으로 구동됩니다. 클로드 인스턴트는 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
+<translation id="3789772321824682783">안녕하세요, 저는 레오예요. 저는 Brave가 프록시하고, 대화문과 텍스트 처리 성능을 제공하기 위해 앤쓰라픽에서 개발한 클로드 하이쿠 모델을 기반으로 구동됩니다. 클로드 하이쿠는 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
+<translation id="1778885220602472158">안녕하세요, 저는 레오예요. 저는 Brave가 프록시하고, 대화문과 텍스트 처리 성능을 제공하기 위해 앤쓰라픽에서 개발한 클로드 소네트 모델을 기반으로 구동됩니다. 클로드 소네트는 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">프리미엄</translation>
+<translation id="5807427080183870259">로컬</translation>
+<translation id="631371844654031449">추천 모델</translation>
+<translation id="6568044140836233369">모든 모델 표시</translation>
 <translation id="6187065185557150870">채팅</translation>
 <translation id="4685048769603134644">전체 페이지 열기</translation>
 <translation id="2961040541145689181">새 채팅</translation>
 <translation id="7557539689487606886">프리미엄 가입</translation>
 <translation id="1691256669639196606">구독 관리</translation>
 <translation id="3840096463915153852">대화 기록</translation>
+<translation id="6761921176674289184">기억 관리</translation>
 <translation id="2304783958703511257">고급 설정</translation>
 <translation id="3037594989275592390">언어 모델</translation>
 <translation id="5543505256451301851">7일 무료 이용</translation>
@@ -2228,41 +2258,48 @@
 <translation id="1243966363662220847">응답 피드백</translation>
 <translation id="7417895556119762861">답변에 '좋아요'나 '싫어요'를 누르면 레오를 개선하기 위해 등급, 대화, 모델, 언어, 버전, 프리미엄 상태가 Brave로 전송됩니다. <ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
 <translation id="7494736170250048402">레오에게 메시지 보내기</translation>
+<translation id="4084869091337186002">이 프로필에서 레오 AI 콘텐츠 에이전트가 항상 활성화됩니다</translation>
 <translation id="8650874793377330048">응답 중지</translation>
 <translation id="8712637175834984815">확인</translation>
 <translation id="1093419424466417703">페이지가 레오에게 너무 깁니다. 일부 맥락이 대화에서 누락될 수 있습니다. 레오가 페이지 콘텐츠의 <ph name="PERCENTAGE"/>를 읽을 수 있었습니다.</translation>
 <translation id="4592293425457329338">대화에서 일부 문맥이 누락되었을 수 있습니다. 레오가 대화와 관련된 내용의 <ph name="PERCENTAGE"/>를 보관할 수 있었습니다.</translation>
+<translation id="8501106061098623831">페이지에서 너무 많은 이미지가 캡처되었습니다. 레오는 사용 가능한 시각적 콘텐츠 중 <ph name="PERCENTAGE"/>을(를) 사용할 수 있었습니다.</translation>
 <translation id="4370698775470316661">대화가 너무 길어 계속할 수 없습니다. 레오가 긴 대화에서도 정확성을 유지할 수 있게 해주는 다른 모델을 사용하실 수 있습니다.</translation>
 <translation id="5719170755629028558">Brave 검색으로 답변 수준 높이기...</translation>
 <translation id="5794962229997281366"><ph name="SEARCH_TERMS"/>에 대한 더 나은 답변 검색.</translation>
 <translation id="7307396647043599949"><ph name="COUNT"/>개 더 보기…</translation>
 <translation id="8103700533980268469">이 알림 닫기</translation>
 <translation id="3417835166382867856">검색 탭</translation>
+<translation id="7311244614769792472">결과가 없습니다</translation>
+<translation id="3112448569149476523">다른 검색어를 시도해보세요</translation>
 <translation id="1352836459737874921">다른 탭의 내용 첨부</translation>
-<translation id="3028258613451571431">브라우저 탭의 내용을 전송하여 레오에게 더 자세한 대화 맥락을 제공하세요</translation>
-<translation id="4300920590112551536">브라우저 탭</translation>
+<translation id="7039179822221107025">브라우저 탭의 내용을 전송하여 레오에게 더 자세한 대화 맥락을 제공하세요.</translation>
+<translation id="220541218939267992">페이지 내용이 메시지와 함께 레오에게 전송됩니다.</translation>
 <translation id="1446346932629101482">탭 콘텐츠를 추가해서 맥락을 개선하세요. 메시지를 전송하실 때 콘텐츠도 같이 레오에게 보내게 됩니다.</translation>
 <translation id="7193316103691252734">일치하는 탭 없음</translation>
 <translation id="2315654674554095762">이제 레오가 대화를 기억해두므로 다시 대화로 돌아갈 수 있습니다. 대화는 장치에 암호화되어 저장되며 언제든지 삭제할 수 있습니다.</translation>
 <translation id="7821251979960635244">대화를 시작하면 여기에 대화 기록이 나타납니다.</translation>
 <translation id="887511360213807449">기록을 비활성화함</translation>
 <translation id="5380979378058584412">레오와의 이전 대화를 보려면 대화 기록을 활성화해야 합니다.</translation>
-<translation id="6291843235651817590">일반 목적의 채팅</translation>
+<translation id="7348809809749151120">빠름 • 검색</translation>
 <translation id="3185367320601718531">대화 및 텍스트 생성</translation>
-<translation id="7979673624064378842">빛처럼 빠른 채팅</translation>
-<translation id="2836330653441111204">속도와 지능의 균형</translation>
-<translation id="6695329447007213917">범용 채팅, 코딩 등</translation>
-<translation id="7168072214482631597">일반 텍스트 및 이미지 이해</translation>
-<translation id="7226508434216060960">추론 모델</translation>
+<translation id="2793458212460902934">빠름 • 검색 • 도구</translation>
+<translation id="8506027496671575183">검색 • 비전 • 도구</translation>
+<translation id="3213834013136637671">검색 • 비전</translation>
+<translation id="7697693533305615127">검색 • 사고</translation>
 <translation id="8782867266498869301">최고의 작업을 위해 동적으로 모델을 변경합니다</translation>
 <translation id="3965507912994218570">레오 설정</translation>
-<translation id="1037324977127422019">안녕하세요, 저는 레오예요!</translation>
-<translation id="8930348081963284873">Brave에 바로 이식된 AI 기반 지능형 어시스턴트.</translation>
-<translation id="3528849152231418380">웹사이트 이용에 도움이 필요하신가요?</translation>
-<translation id="1558192229187362674">전 기사를 요약하거나 사이트의 콘텐츠 내용에 살을 덧붙이는 등의 도움을 드릴 수 있어요.</translation>
-<translation id="861953757568623294">전 기사를 요약하거나 사이트의 콘텐츠 내용에 살을 덧붙이는 등의 도움을 드릴 수 있어요. 어떻게 시작하는지 잘 모르시겠다고요? 다음과 같이 입력해보세요.</translation>
-<translation id="5642775487085641191">가볍게 채팅하고 싶으신가요?</translation>
-<translation id="8857222718794549840">무엇이든 제게 물어보세요! 어떤 주제든 함께 이야기할 수 있습니다. 전 항상 열심히 배워 점점 더 똑똑해지고 있으니까 갈수록 나은 답변을 드릴 거예요.</translation>
+<translation id="3754337604877048671">레오 AI 소개</translation>
+<translation id="5295261408976371809">브라우저에 바로 통합된 <ph name="TEXT_BEFORE"/>개인<ph name="TEXT_AFTER"/> AI 어시스턴트.</translation>
+<translation id="7452913484571004528">진정한 개인정보 보호 AI</translation>
+<translation id="8525501048785085223">레오는 채팅을 저장하거나 공유하지 않으며, 모델 학습에도 사용하지 않습니다. 계정이나 로그인 없이도 바로 채팅할 수 있습니다. 안전하게.</translation>
+<translation id="6401201054391523929">탭 및 파일과 함께 채팅하기</translation>
+<translation id="8522038408130089105">방문 중인 사이트가 궁금하신가요? 채팅에 추가해보세요. 탭이나 로컬 파일을 첨부하면 빠르고 관련성 있는 답변을 받을 수 있습니다.</translation>
+<translation id="3844955602461425647">지루한 작업 자동화</translation>
+<translation id="2196247864500723577">Brave가 브라우징을 지원하며 하고 있는 작업과 상호작용하도록 해보세요. 반복적인 작업은 맡기고, 중요한 일에 시간을 써보세요.</translation>
+<translation id="235457946228076038">소유한 모델 가져오기</translation>
+<translation id="7024005267156189454">로컬 또는 원격의 자체 AI 모델을 연결하여 레오의 동작, 출력, 기능을 원하는 대로 조정하실 수 있습니다.</translation>
+<translation id="7291578285403921288">레오 AI에 대해 자세히 알아보기</translation>
 <translation id="9051226419897869406">Brave 레오와 사적인 채팅하기</translation>
 <translation id="2414904697165579184">페이지 내용에 기반하여 새 답변 생성</translation>
 <translation id="8258324391302611485">메시지와 함께 이 페이지의 내용이 레오에게 전송됩니다.</translation>
@@ -2271,6 +2308,7 @@
 <translation id="8732450785281947197">레오 AI 도구</translation>
 <translation id="6535533770697728087">빠른 액션</translation>
 <translation id="3237710083340813756">재기술</translation>
+<translation id="1223498995510244364">요약하기</translation>
 <translation id="1252805982772190086">짧은 게시물</translation>
 <translation id="2087555497198267113">긴 게시물</translation>
 <translation id="4170307327863874820">블로그 게시물</translation>
@@ -2295,6 +2333,7 @@
 <translation id="6739516910850820220">파일 업로드 중...</translation>
 <translation id="9088751620363630236">사진 찍기...</translation>
 <translation id="4250229828105606438">스크린샷</translation>
+<translation id="7949596341600215809">전체 페이지 스크린샷</translation>
 <translation id="6332876390231524389">현재 탭 내용</translation>
 <translation id="7742969455167760092">탭 열기...</translation>
 <translation id="49269513399674318">마이크 사용</translation>
@@ -2304,127 +2343,10 @@
 <translation id="6287023598025162715">새 대화</translation>
 <translation id="7097822247923237815">임시 채팅</translation>
 <translation id="7481750859362986254">이 채팅은 기록에 저장되지 않으며, 레오의 사용자 지정이나 메모리를 사용하지 않습니다.</translation>
-<translation id="8370801182970639038">자동(<ph name="LOCALE"/>)</translation>
-<translation id="8343473178272604223">검색 엔진 활성화됨</translation>
-<translation id="5355776323718420036">인기 사이트 숨기기</translation>
-<translation id="9173319813356700250">뉴스</translation>
-<translation id="6543799171249004861"><ph name="AUTHOR"/>의 사진</translation>
-<translation id="466214682712474574"><ph name="PROVIDER"/> 계정에 로그인하여 잔액 보기</translation>
-<translation id="8332875111286275890">로그인하여 잔액 보기</translation>
-<translation id="5430001801813715388">보상</translation>
-<translation id="5966055668402779222">Brave 검색을 사용해 보세요</translation>
-<translation id="167018310108390163">새 탭 페이지 맞춤 설정</translation>
-<translation id="6851426306697017546">시계 표시</translation>
-<translation id="4844370919312937270">새 탭에 검색 위젯 표시</translation>
-<translation id="7328310113820087094"><ph name="LINK_BEGIN"/>Brave Rewards<ph name="LINK_END"/>를 통해, 새 탭 페이지 광고를 시청하여 수익을 올릴 수 있습니다.</translation>
-<translation id="4100520468072294616">새 탭 페이지 광고 표시</translation>
-<translation id="5009354496127441090">인기 사이트 표시</translation>
-<translation id="3960619311638643872">Brave VPN</translation>
-<translation id="4784802981241664605">통계</translation>
-<translation id="712731581368828482">Brave 토크로 암호화된 영상 통화.</translation>
-<translation id="2671474274417808910">개인 정보 보호 중심의 통화</translation>
-<translation id="2100665198270190500">토크</translation>
-<translation id="4290791698375397492">맨 위 사이트 제거됨</translation>
-<translation id="1436784010935106834">제거됨</translation>
-<translation id="9030215177866748410">상위 사이트는 자주 방문하는 웹 사이트를 기반으로 제안됩니다.</translation>
-<translation id="1849266032237224734">덜 보기</translation>
-<translation id="9125416311275819193">더 보기</translation>
-<translation id="8425213833346101688">변경</translation>
-<translation id="755045397420611731">더욱 든든한 온라인 프라이버시 및 보안</translation>
-<translation id="4520128772974831415">IP 숨기기 및 위치 변경</translation>
-<translation id="6819278685469225453">디바이스상의 모든 앱 보호</translation>
-<translation id="8422279921836245017">이미 구매하셨나요?</translation>
-<translation id="8703188411226330709">무료 평가판 시작하기</translation>
-<translation id="8814357473522731680">제공 -</translation>
-<translation id="7143207342074048698">연결 중</translation>
-<translation id="1202549130170287307">연결 해제 중</translation>
-<translation id="8941703009412168350">BRAVE VPN</translation>
-<translation id="6303294677342628402">보호</translation>
-<translation id="8458987127502506209">Brave Shields 활성화</translation>
-<translation id="7700894290854403770"><ph name="HOST"/>에 대해 <ph name="STATUS_BEFORE"/>쉴드 켜짐<ph name="STATUS_AFTER"/></translation>
-<translation id="7656091630265507216"><ph name="HOST"/>에 대해 <ph name="STATUS_BEFORE"/>쉴드 꺼짐<ph name="STATUS_AFTER"/></translation>
-<translation id="5623354834493649144">이 사이트가 깨져 보이면 Shields를 비활성화해보세요.
-<ph name="NOTE_BEFORE"/>참고: 이렇게 하면 Brave의 개인 정보 보호 기능이 저하될 수 있습니다.<ph name="NOTE_AFTER"/></translation>
-<translation id="8377155647357436161">트래커, 광고 등이 차단됨 <ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
-<translation id="7604553853176833536">Brave Shields로 보호되지 않음 <ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
-<translation id="650318023204990401">고급 컨트롤</translation>
-<translation id="5799940914270080805">이 설정을 변경하면 사이트가 깨져 보일 수 있습니다.</translation>
-<translation id="9204041448536398473">전역 Shield 설정</translation>
-<translation id="2108334320919763866">전역 기본값</translation>
-<translation id="7205939464631857223">차단된 모든 요소 지우기</translation>
-<translation id="3440043456924990296">조직이 관리하는 설정</translation>
-<translation id="7053983685419859001">차단</translation>
-<translation id="5716230673298034837">모두 허용하기</translation>
-<translation id="5279600392753459966">모두 차단하기</translation>
-<translation id="4516904298421534459">필터 목록</translation>
-<translation id="3570081523466826008">HTTPS 연결 업그레이드</translation>
-<translation id="131231380815754440">HTTPS 활성화</translation>
-<translation id="4824468494729001999">스크립트 차단</translation>
-<translation id="3246600097575692802">차단된 스크립트 활성화</translation>
-<translation id="3603525299146223354">트래커 및 광고</translation>
-<translation id="4448697385961650078">트래커 &amp; 광고 차단</translation>
-<translation id="8593054718053894081">트래커 및 광고 공격적으로 차단</translation>
-<translation id="7384778069178817075">모든 트래커 &amp; 광고 허용</translation>
-<translation id="6196640612572343990">타사 쿠키 차단</translation>
-<translation id="693506469193748756">이 사이트를 닫으면 기록 소거</translation>
-<translation id="5471580724041424345">사이트를 닫을 때 쿠키와 다른 사이트 데이터를 삭제합니다.</translation>
-<translation id="6486971767955110687">향후 고장난 사이트 보고서를 위해 연락처 정보 저장</translation>
-<translation id="4085787265464238844">연락처 정보를 제공하면 향후 보고서를 위해 저장됩니다.</translation>
-<translation id="6883611015375728278">모든 쿠키 차단</translation>
-<translation id="5657156137487675418">모든 쿠키 허용</translation>
-<translation id="8366221601425141146">지문 인식 차단됨</translation>
-<translation id="6531019308847917584">지문 차단</translation>
-<translation id="1899608006846124237">지문 공격적으로 차단</translation>
-<translation id="8034285923190068220">지문 정보 허용하기</translation>
-<translation id="7638541189782135885">HTTP 연결 업그레이드 안 함</translation>
-<translation id="2570787596946026998">HTTPS로만 연결</translation>
-<translation id="1992750560347846445">사이트 신고</translation>
-<translation id="2387532482048804818">실드를 활성화했을 때 사이트가 제대로 작동하지 않으면 알려주세요.</translation>
-<translation id="3795015906457257780">Brave 프라이버시 보호 없이 이 사이트를 보는 중</translation>
-<translation id="7194012750329511146">Brave Shields
-<ph name="NUMBER"/> 트래커, 광고 등 차단</translation>
-<translation id="4292121526390005808">차단된 스크립트</translation>
-<translation id="5046271170844958713">허용된 스크립트</translation>
-<translation id="199862531047218413">지문 방지 보호 적용됨</translation>
-<translation id="5032505924781383272">보호가 적용되었다고 해서 반드시 이 웹페이지가 귀하의 브라우저 지문 수집을 시도한다는 의미는 아닙니다.</translation>
-<translation id="1905384713982899903">차단된 지문</translation>
-<translation id="314364527871618241">허용된 지문</translation>
-<translation id="264682546981571963">쿠키 동의 문구를 보면 지치시지요?</translation>
-<translation id="4986297793092101884">Brave는 타사 쿠키를 기본으로 차단합니다. 쿠키 동의 문구도 차단할 수 있습니다.</translation>
-<translation id="535688588637568715">예, 쿠키 동의 문구 차단</translation>
-<translation id="2808175374672429053">Brave Shields에는 와일드카드가 허용되지 않습니다.</translation>
-<translation id="7630425922041907505">{BLOCKED_COUNT, plural,
-      =1 {Brave Shields가 <ph name="SITE_URL"/>에서 트래커 1개 차단함}
-      other {Brave Shields가 <ph name="SITE_URL"/>에서 트래커 {BLOCKED_COUNT}개 차단함}
-    }</translation>
-<translation id="2540598191934725677">Brave Shields를 보려면 Brave 아이콘을 클릭하세요.</translation>
-<translation id="6294662480095808915">프라이버시 보호가 기본.</translation>
-<translation id="4366423156486478559">클릭하는 모든 링크에서 Brave가 든든하게 보호해드립니다. Brave를 기본 브라우저로 설정하세요.</translation>
-<translation id="3830912418080848377">설정 가져오기</translation>
-<translation id="6378406588483694938">설치 중에 기존 브라우저에 저장된 북마크, 확장 프로그램, 저장된 비밀번호를 가져올 수 있습니다.</translation>
-<translation id="2092825239819166928">가져올 프로필 선택</translation>
-<translation id="4763127492635705340">선택하신 브라우저에 여러 개의 프로필이 있습니다. 가져올 프로필을 선택하세요.</translation>
-<translation id="880174232178865598">프로필 가져오기</translation>
-<translation id="2453860139492968684">완료</translation>
-<translation id="2273851479262317744">Brave를 기본 브라우저로 설정</translation>
-<translation id="5037676449506322593">모두 선택</translation>
-<translation id="5148943178722443958">Brave 개선에 참여.</translation>
-<translation id="1097073572755862978">충돌 또는 프리징이 발생하면 진단 보고서를 보냅니다. <ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
-<translation id="6629244688368006959">Brave 사용자가 사용 중인 기능에 대한 제품 인사이트를 프라이빗하게 익명으로 공유합니다. <ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
-<translation id="7415454883318062233">설정 완료</translation>
-<translation id="3141206739023333979">선택 여부는 언제든 Brave에서 <ph name="LINK_BEFORE1"/>brave://settings/privacy<ph name="LINK_AFTER2"/> 페이지로 이동하여 변경할 수 있습니다.</translation>
-<translation id="8321985064212130832"><ph name="LINK_BEFORE"/>개인정보 보호정책<ph name="LINK_AFTER"/> 전문 읽기</translation>
-<translation id="2801098717523961746">테마 선택</translation>
-<translation id="6262510489122516114">Brave 설정에서 언제든지 변경할 수 있습니다.</translation>
-<translation id="546481172717459539">일치 시스템 설정</translation>
-<translation id="7799817062559422778">라이트 모드</translation>
-<translation id="4117637339509843559">다크 모드</translation>
-<translation id="6302485303316397682">더 나은 검색 결과를 원하시나요?</translation>
-<translation id="7014699001826714920">Brave 검색에 기여하는 운동에 참여하세요.</translation>
-<translation id="6821108091726602352">Brave의 Web Discovery Project에 참여하여 웹 개선에 도움을 주세요. 완전히 익명화된 검색 신호를 공유하는 방법으로 Brave의 검색 색인 확보에 기여하실 수 있습니다.</translation>
-<translation id="6764845498618413165">자세히 알아보기</translation>
-<translation id="7818938154803162778">좋아요, 도울게요</translation>
-<translation id="7207456302801184289">Brave에 오신걸 환영합니다</translation>
+<translation id="4238305333951712482">메모리 업데이트: <ph name="MEMORY_CONTENT"/></translation>
+<translation id="2593275000606533518">모두 관리</translation>
+<translation id="8410199626695516952">알겠습니다, 이 부분은 기억하지 않겠습니다</translation>
+<translation id="8419849467765474535">메모리를 저장하지 못했습니다. 다시 시도하세요.</translation>
 <translation id="3486480638399578250">개인 이메일 주소 비공개 유지</translation>
 <translation id="7765422154906712751">고유하고 랜덤한 주소를 생성하여 Brave 계정 이메일로 전달하고 언제든지 삭제할 수 있습니다. 실제 이메일 주소가 광고주에게 공개되거나 사용되지 않도록 보호합니다.</translation>
 <translation id="5222676887888702881">로그아웃</translation>
@@ -2465,11 +2387,142 @@
 <translation id="619122420105901711">이메일이 보이지 않습니까? 스팸 폴더를 확인하거나 다시 시도하세요.</translation>
 <translation id="3397336197747843396">Brave 계정으로 인증하는 동안 오류가 발생했습니다. 다시 시도해 주세요.</translation>
 <translation id="1340795582009113055">다시 시작</translation>
+<translation id="8528664394991030582">제공된 이메일 없음</translation>
+<translation id="589806103071387355">Brave 계정 서비스의 잘못된 응답</translation>
+<translation id="7508412964869396375">Brave 계정 서비스에서 인증 토큰을 받지 못했습니다</translation>
+<translation id="3179527991526213624">Brave 계정 서비스의 응답이 없습니다</translation>
+<translation id="7911439408853154309">이메일 인증 실패</translation>
+<translation id="8370801182970639038">자동(<ph name="LOCALE"/>)</translation>
+<translation id="8343473178272604223">검색 엔진 활성화됨</translation>
+<translation id="8285901519864208412">리워드 카드 숨기기</translation>
+<translation id="4725613319787110841">통계 카드 숨기기</translation>
+<translation id="2991633563551889054">Talk 카드 숨기기</translation>
+<translation id="5355776323718420036">인기 사이트 숨기기</translation>
+<translation id="1689504141194856995">VPN 카드 숨기기</translation>
+<translation id="8262911270872215147">뉴스 맞춤 설정</translation>
+<translation id="3884037897537157986">뉴스 비활성화</translation>
+<translation id="7847477075635510673">뉴스 숨기기</translation>
+<translation id="9173319813356700250">뉴스</translation>
+<translation id="6543799171249004861"><ph name="AUTHOR"/>의 사진</translation>
+<translation id="466214682712474574"><ph name="PROVIDER"/> 계정에 로그인하여 잔액 보기</translation>
+<translation id="8332875111286275890">로그인하여 잔액 보기</translation>
+<translation id="5430001801813715388">보상</translation>
+<translation id="5966055668402779222">Brave 검색을 사용해 보세요</translation>
+<translation id="167018310108390163">새 탭 페이지 맞춤 설정</translation>
+<translation id="6851426306697017546">시계 표시</translation>
+<translation id="4844370919312937270">새 탭에 검색 위젯 표시</translation>
+<translation id="7328310113820087094"><ph name="LINK_BEGIN"/>Brave Rewards<ph name="LINK_END"/>를 통해, 새 탭 페이지 광고를 시청하여 수익을 올릴 수 있습니다.</translation>
+<translation id="4100520468072294616">새 탭 페이지 광고 표시</translation>
+<translation id="5009354496127441090">인기 사이트 표시</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
+<translation id="4784802981241664605">통계</translation>
+<translation id="5236080651083907980">Brave 토크로 암호화된 영상 통화</translation>
+<translation id="2671474274417808910">개인 정보 보호 중심의 통화</translation>
+<translation id="2100665198270190500">토크</translation>
+<translation id="4290791698375397492">맨 위 사이트 제거됨</translation>
+<translation id="9030215177866748410">상위 사이트는 자주 방문하는 웹 사이트를 기반으로 제안됩니다.</translation>
+<translation id="1849266032237224734">덜 보기</translation>
+<translation id="9125416311275819193">더 보기</translation>
+<translation id="8425213833346101688">변경</translation>
+<translation id="755045397420611731">더욱 든든한 온라인 프라이버시 및 보안</translation>
+<translation id="4520128772974831415">IP 숨기기 및 위치 변경</translation>
+<translation id="6819278685469225453">디바이스상의 모든 앱 보호</translation>
+<translation id="8422279921836245017">이미 구매하셨나요?</translation>
+<translation id="8703188411226330709">무료 평가판 시작하기</translation>
+<translation id="8814357473522731680">제공 -</translation>
+<translation id="7143207342074048698">연결 중</translation>
+<translation id="1202549130170287307">연결 해제 중</translation>
+<translation id="8941703009412168350">BRAVE VPN</translation>
+<translation id="6303294677342628402">보호</translation>
+<translation id="8458987127502506209">Brave Shields 활성화</translation>
+<translation id="8443488493738411048">이 사이트에 <ph name="STATUS_BEFORE"/>쉴드를 적용했습니다<ph name="STATUS_AFTER"/></translation>
+<translation id="2458631245058451506">이 사이트에서 <ph name="STATUS_BEFORE"/>쉴드를 해제했습니다<ph name="STATUS_AFTER"/></translation>
+<translation id="5623354834493649144">이 사이트가 깨져 보이면 Shields를 비활성화해보세요.
+<ph name="NOTE_BEFORE"/>참고: 이렇게 하면 Brave의 개인 정보 보호 기능이 저하될 수 있습니다.<ph name="NOTE_AFTER"/></translation>
+<translation id="8377155647357436161">트래커, 광고 등이 차단됨 <ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
+<translation id="7604553853176833536">Brave Shields로 보호되지 않음 <ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
+<translation id="650318023204990401">고급 컨트롤</translation>
+<translation id="5799940914270080805">이 설정을 변경하면 사이트가 깨져 보일 수 있습니다.</translation>
+<translation id="9204041448536398473">전역 Shield 설정</translation>
+<translation id="2108334320919763866">전역 기본값</translation>
+<translation id="7205939464631857223">차단된 모든 요소 지우기</translation>
+<translation id="3440043456924990296">조직이 관리하는 설정</translation>
+<translation id="7053983685419859001">차단</translation>
+<translation id="5716230673298034837">모두 허용하기</translation>
+<translation id="5279600392753459966">모두 차단하기</translation>
+<translation id="4516904298421534459">필터 목록</translation>
+<translation id="3570081523466826008">HTTPS 연결 업그레이드</translation>
+<translation id="131231380815754440">HTTPS 활성화</translation>
+<translation id="4824468494729001999">스크립트 차단</translation>
+<translation id="3246600097575692802">차단된 스크립트 활성화</translation>
+<translation id="3603525299146223354">트래커 및 광고</translation>
+<translation id="4448697385961650078">트래커 &amp; 광고 차단</translation>
+<translation id="8593054718053894081">트래커 및 광고 공격적으로 차단</translation>
+<translation id="7384778069178817075">모든 트래커 &amp; 광고 허용</translation>
+<translation id="6196640612572343990">타사 쿠키 차단</translation>
+<translation id="693506469193748756">이 사이트를 닫으면 기록 소거</translation>
+<translation id="6975864539539353406">사이트를 닫을 때 쿠키와 다른 사이트 데이터 삭제</translation>
+<translation id="6486971767955110687">향후 고장난 사이트 보고서를 위해 연락처 정보 저장</translation>
+<translation id="4085787265464238844">연락처 정보를 제공하면 향후 보고서를 위해 저장됩니다.</translation>
+<translation id="6883611015375728278">모든 쿠키 차단</translation>
+<translation id="5657156137487675418">모든 쿠키 허용</translation>
+<translation id="8366221601425141146">지문 인식 차단됨</translation>
+<translation id="6531019308847917584">지문 차단</translation>
+<translation id="1899608006846124237">지문 공격적으로 차단</translation>
+<translation id="8034285923190068220">지문 정보 허용하기</translation>
+<translation id="7638541189782135885">HTTP 연결 업그레이드 안 함</translation>
+<translation id="2570787596946026998">HTTPS로만 연결</translation>
+<translation id="1992750560347846445">사이트 신고</translation>
+<translation id="2387532482048804818">실드를 활성화했을 때 사이트가 제대로 작동하지 않으면 알려주세요.</translation>
+<translation id="3795015906457257780">Brave 프라이버시 보호 없이 이 사이트를 보는 중</translation>
+<translation id="7194012750329511146">Brave Shields
+<ph name="NUMBER"/> 트래커, 광고 등 차단</translation>
+<translation id="4292121526390005808">차단된 스크립트</translation>
+<translation id="5046271170844958713">허용된 스크립트</translation>
+<translation id="199862531047218413">지문 방지 보호 적용됨</translation>
+<translation id="5032505924781383272">보호가 적용되었다고 해서 반드시 이 웹페이지가 귀하의 브라우저 지문 수집을 시도한다는 의미는 아닙니다.</translation>
+<translation id="1905384713982899903">차단된 지문</translation>
+<translation id="314364527871618241">허용된 지문</translation>
+<translation id="2808175374672429053">Brave Shields에는 와일드카드가 허용되지 않습니다.</translation>
+<translation id="7630425922041907505">{BLOCKED_COUNT, plural,
+      =1 {Brave Shields가 <ph name="SITE_URL"/>에서 트래커 1개 차단함}
+      other {Brave Shields가 <ph name="SITE_URL"/>에서 트래커 {BLOCKED_COUNT}개 차단함}
+    }</translation>
+<translation id="2540598191934725677">Brave Shields를 보려면 Brave 아이콘을 클릭하세요.</translation>
+<translation id="6294662480095808915">프라이버시 보호가 기본.</translation>
+<translation id="4366423156486478559">클릭하는 모든 링크에서 Brave가 든든하게 보호해드립니다. Brave를 기본 브라우저로 설정하세요.</translation>
+<translation id="3830912418080848377">설정 가져오기</translation>
+<translation id="6378406588483694938">설치 중에 기존 브라우저에 저장된 북마크, 확장 프로그램, 저장된 비밀번호를 가져올 수 있습니다.</translation>
+<translation id="2092825239819166928">가져올 프로필 선택</translation>
+<translation id="4763127492635705340">선택하신 브라우저에 여러 개의 프로필이 있습니다. 가져올 프로필을 선택하세요.</translation>
+<translation id="880174232178865598">프로필 가져오기</translation>
+<translation id="2453860139492968684">완료</translation>
+<translation id="2273851479262317744">Brave를 기본 브라우저로 설정</translation>
+<translation id="5037676449506322593">모두 선택</translation>
+<translation id="5148943178722443958">Brave 개선에 참여.</translation>
+<translation id="1097073572755862978">충돌 또는 프리징이 발생하면 진단 보고서를 보냅니다. <ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
+<translation id="6629244688368006959">Brave 사용자가 사용 중인 기능에 대한 제품 인사이트를 프라이빗하게 익명으로 공유합니다. <ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
+<translation id="7415454883318062233">설정 완료</translation>
+<translation id="3141206739023333979">선택 여부는 언제든 Brave에서 <ph name="LINK_BEFORE1"/>brave://settings/privacy<ph name="LINK_AFTER2"/> 페이지로 이동하여 변경할 수 있습니다.</translation>
+<translation id="8321985064212130832"><ph name="LINK_BEFORE"/>개인정보 보호정책<ph name="LINK_AFTER"/> 전문 읽기</translation>
+<translation id="2801098717523961746">테마 선택</translation>
+<translation id="6262510489122516114">Brave 설정에서 언제든지 변경할 수 있습니다.</translation>
+<translation id="546481172717459539">일치 시스템 설정</translation>
+<translation id="7799817062559422778">라이트 모드</translation>
+<translation id="4117637339509843559">다크 모드</translation>
+<translation id="6302485303316397682">더 나은 검색 결과를 원하시나요?</translation>
+<translation id="7014699001826714920">Brave 검색에 기여하는 운동에 참여하세요.</translation>
+<translation id="6821108091726602352">Brave의 Web Discovery Project에 참여하여 웹 개선에 도움을 주세요. 완전히 익명화된 검색 신호를 공유하는 방법으로 Brave의 검색 색인 확보에 기여하실 수 있습니다.</translation>
+<translation id="6764845498618413165">자세히 알아보기</translation>
+<translation id="7818938154803162778">좋아요, 도울게요</translation>
+<translation id="7207456302801184289">Brave에 오신걸 환영합니다</translation>
+<translation id="293854220404217065">미드나잇 테마</translation>
 <translation id="2422927186524098759">사이드바</translation>
 <translation id="2361906291514218784">레오 AI</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="8000020256436988724">툴바</translation>
 <translation id="6225572914528673855">주소 표시줄</translation>
+<translation id="6821966107067356137">RSS 피드 추가</translation>
 <translation id="8293206222192510085">북마크 추가</translation>
 <translation id="7758460733045216901">북마크 패널</translation>
 <translation id="958268166261124668">Brave VPN: 연결됨</translation>

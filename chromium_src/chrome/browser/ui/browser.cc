@@ -8,8 +8,6 @@
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 #include "chrome/browser/ui/browser_command_controller.h"
 
-#define BRAVE_BROWSER_CREATE return new BraveBrowser(params);
-
 #define BrowserTabStripModelDelegate BraveTabStripModelDelegate
 #define DeprecatedCreateOwnedForTesting DeprecatedCreateOwnedForTesting_Unused
 
@@ -18,7 +16,6 @@
 #undef DeprecatedCreateOwnedForTesting
 #undef BrowserTabStripModelDelegate
 #undef BRAVE_BROWSER_DEPRECATED_CREATE_OWNED_FOR_TESTING
-#undef BRAVE_BROWSER_CREATE
 
 // static
 std::unique_ptr<Browser> Browser::DeprecatedCreateOwnedForTesting(

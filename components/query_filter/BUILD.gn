@@ -5,6 +5,7 @@
 
 source_set("query_filter") {
   sources = [
+    "pref_names.h",
     "utils.cc",
     "utils.h",
   ]

@@ -34,4 +34,6 @@ export const SupportedTopLevelChainIds = [
   BraveWallet.FILECOIN_MAINNET,
   BraveWallet.BITCOIN_MAINNET,
   BraveWallet.Z_CASH_MAINNET,
+  BraveWallet.CARDANO_MAINNET,
+  BraveWallet.POLKADOT_MAINNET,
 ]

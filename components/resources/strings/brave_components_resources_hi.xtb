@@ -127,8 +127,8 @@
 <translation id="730042046912793465">यह है एक</translation>
 <translation id="2055363275850890030">गोपनीय विंडो</translation>
 <translation id="9133213713928851646">ब्रेव याद नहीं रखता कि आपने प्राइवेट विंडो में क्या किया है? जिन साइट्स को आप देखते हैं वो आपके हिस्ट्री में नहीं दिखेंगी, और आपके काम के बाद कुकीज़ नष्ट हो जाएंगी। हालांकि, प्राइवेट विंडो ऑनलाइन होने पर आपकी पहचान पूरी तरह से गुप्त नहीं रखती है।</translation>
-<translation id="4491905831789757331">आप प्राइवेट विंडो में क्या करते हैं Brave ये कभी याद नहीं रखता। आपके द्वारा देखी जाने वाली साइटें आपके इतिहास में दिखाई नहीं देंगी। जब आप सभी निजी विंडो बंद करते हैं तो कुकीज, फ़ॉर्म डेटा और साइट डेटा गायब हो जाते हैं।</translation>
-<translation id="1700746046668116047">ध्यान दें कि आपकी एक्टिविटी अभी भी आपके इंटरनेट सेवा प्रदाता, निष्क्रिय नेटवर्क पर्यवेक्षकों, या आपके नियोक्ता (यदि आप किसी कार्य मशीन या नेटवर्क का उपयोग कर रहे हैं) को दिखाई दे सकती है. अधिक गोपनीयता के लिए, Tor से एक प्राइवेट विंडो खोलें.</translation>
+<translation id="5280085559200511517">Brave कभी भी याद नहीं रखता कि आप प्राइवेट विंडो में क्या करते हैं। आप जिन साइटों पर जाते हैं वे आपकी हिस्ट्री में नहीं दिखतीं। जब आप खुली हुई सभी विंडो को बंद कर देते हैं, कुकीज़, फ़ॉर्म डेटा, और साइट डेटा चला जाएगा। ध्यान दें कि फिर भी आपकी गतिविधि आपके इंटरनेट सर्विस प्रोवाइडर, पैसिव नेटवर्क ऑब्ज़र्वर या आपके नियोक्ता (अगर आप दफ़्तर की मशीन या नेटवर्क का इस्तेमाल कर रहे हैं) को दिखाई दे सकती है।</translation>
+<translation id="2517912602053665378">ज़्यादा प्राइवेसी के लिए, Tor के साथ प्राइवेट विंडो खोलें।</translation>
 <translation id="8759753423332885148">और जानें।</translation>
 <translation id="8611976753572844841">Tor कनेक्टिविटी के साथ प्राइवेट विंडो</translation>
 <translation id="1645589858096839236">Brave प्राइवेट विंडो की ब्राउज़िंग गतिविधि को स्टोर नहीं करता है. Tor कनेक्टिविटी की वजह से साइट के लिए आपका असली IP पता देखना और नेटवर्क ऑब्ज़र्वर के लिए आप किस साइट पर जा रहे हैं यह देख पाना और भी मुश्किल हो जाता है. हालाँकि अगर आपकी निजी सुरक्षा गुमनाम रहने पर निर्भर करती है, तो बेहतर है कि Tor ब्राउज़र का इस्तेमाल करें.</translation>
@@ -690,7 +690,6 @@
 <translation id="3266055641283174315">विज्ञापन का प्रकार</translation>
 <translation id="8706824117053903390">इस महीने के कुल व्यू</translation>
 <translation id="5105890735834548623">विज्ञापन सेटिंग</translation>
-<translation id="96989662637180657">Brave Search Ads<ph name="LINK_BEGIN"/>Brave Search<ph name="LINK_END"/>पर दिखाई देते हैं.</translation>
 <translation id="3138160233953903250">विज्ञापन सेटिंग</translation>
 <translation id="2446517297521536638">आप किस तरह के Brave Ads, कितनी बार देखना चाहते हैं, यह कंट्रोल करें. जितना ज़्यादा आप देखेंगे, आप उतना ज़्यादा कमा सकेंगे.</translation>
 <translation id="3479272537858623647">इससे आपके इस महीने देखे गए Brave Ads की संख्या दिखाई देती है, जो BAT कमाने के योग्य हैं।</translation>
@@ -857,6 +856,11 @@
       other {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} स्टेप्स}
     }</translation>
 <translation id="8621264173374071200"><ph name="PROVIDER_NAME"/> के ज़रिए <ph name="EXCHANGE_NAME"/></translation>
+<translation id="646023614746251785">स्वैप की पुष्टि करें</translation>
+<translation id="6264944956989873014">ब्रिज की पुष्टि करें</translation>
+<translation id="7067917728851842589">सेंड करने की पुष्टि करें</translation>
+<translation id="2351357639951873714">शील्ड की पुष्टि करें</translation>
+<translation id="8332923694292360653">खर्च करें</translation>
 <translation id="3735740477244556633">इसके अनुसार क्रम से लगाएं</translation>
 <translation id="6484605214219822434">ब्रिज रिव्यु करें</translation>
 <translation id="3365052891357224017">अनुमानित समय</translation>
@@ -966,6 +970,7 @@
 <translation id="3451958544919449297">ZEC Testnet assets</translation>
 <translation id="8459631690385393533">Cardano असेट स्टोर करें</translation>
 <translation id="4915057812371523845">Cardano Testnet असेट स्टोर करें</translation>
+<translation id="5387140102951033657">Polkadot रिले चेन और Substrate पैराचेन पर Substrate संपत्तियों को सपोर्ट करता है</translation>
 <translation id="8500387257977999003">प्राइवेट की: <ph name="PROTOCOL"/></translation>
 <translation id="8275038454117074363">आयात करें</translation>
 <translation id="232925166623833246">हार्डवेयर वॉलेट से इम्पोर्ट करें</translation>
@@ -1077,6 +1082,10 @@
 <translation id="8904889345035514635">मौजूदा भत्ता</translation>
 <translation id="7073918978411974168">प्रस्तावित भत्ता</translation>
 <translation id="9019403281000653275">असीमित स्वीकृति का अनुरोध किया गया</translation>
+<translation id="9108474191347769758">खर्च सीमा</translation>
+<translation id="2102091845281366189">स्वीकृति लक्ष्य</translation>
+<translation id="772196962479335292">वर्तमान स्वीकृति सीमा</translation>
+<translation id="8215431557133305629">प्रस्तावित स्वीकृति सीमा</translation>
 <translation id="4717431746210146708">इस साइट को एक नेटवर्क जोड़ने की अनुमति दें?</translation>
 <translation id="2521480044079508357">यह इस नेटवर्क को Brave Wallet में उपयोग करने की अनुमति देगा.</translation>
 <translation id="1982257600591932657">नेटवर्क का नाम</translation>
@@ -1093,7 +1102,7 @@
 <translation id="3948067511324628726">गैस शुल्क</translation>
 <translation id="7163997622278957886">Bid</translation>
 <translation id="1074360622426001342">राशि + गैस</translation>
-<translation id="2186011161688824046">राशि + शुल्क</translation>
+<translation id="7542099582407803878">राशि + नेटवर्क शुल्क</translation>
 <translation id="7084089311475827950">कोई डेटा नहीं.</translation>
 <translation id="5821668936183240062">अगला</translation>
 <translation id="793994607260936590">पहला</translation>
@@ -1193,6 +1202,8 @@
 <translation id="2749584096020594976">यदि यह फ़ील्ड निर्दिष्ट नहीं है, तो गैर-मान अपने आप निर्धारित हो जाएगा.</translation>
 <translation id="1599636444563952897">खर्च की सीमा से जुड़ी मंज़ूरी देने से <ph name="SITE_ORIGIN"/> द्वारा नीचे बताई गई राशि निकाली और खर्च की जा सकती है :</translation>
 <translation id="4512871563176965522">भत्ते की मनचाही राशि</translation>
+<translation id="4584580349370930446">खर्च की प्रस्तावित सीमा</translation>
+<translation id="3853163884524541156">खर्च की कस्टम सीमा</translation>
 <translation id="749944179568745958">यह कोई मान्य ETH पता नहीं है</translation>
 <translation id="2832270987629018596">यह SOL पता मान्य नहीं है</translation>
 <translation id="2115100722958448834"><ph name="COIN_TYPE_SYMBOL"/> सही पता नहीं है.</translation>
@@ -1261,6 +1272,10 @@
 <translation id="4213183402991860207"><ph name="DEVICE_NAME"/> ब्रिज तैयार नहीं है</translation>
 <translation id="3378339846292573874">सुझाए गए टोकन जोड़ें</translation>
 <translation id="2322227405137827074">क्या आप इन टोकन को इम्पोर्ट करना चाहेंगे?</translation>
+<translation id="5128068232340122017">बकाया (<ph name="QUEUE_LENGTH"/>)</translation>
+<translation id="4642769870132666012">अगला लेन-देन</translation>
+<translation id="6917555475950364314">पिछला लेन-देन</translation>
+<translation id="5305367377612487857"><ph name="QUEUE_LENGTH"/> लेन-देन नामंज़ूर करें</translation>
 <translation id="4378475168089649292">ब्लॉकचेन</translation>
 <translation id="1904295039023858291">टोकन स्टैंडर्ड</translation>
 <translation id="9033453977881595182">टोकन ID</translation>
@@ -1411,6 +1426,10 @@
 <translation id="4841860051609590575">अनुरोध आईडी</translation>
 <translation id="6759710362319508545">संसाधन</translation>
 <translation id="1908159733454294871">सुरक्षा संबंधित जोखिम का पता चला</translation>
+<translation id="3621202678540785336">इनपुट</translation>
+<translation id="3009178788565917040">आउटपुट</translation>
+<translation id="7953669802889559161">इनपुट्स</translation>
+<translation id="4554024082642878647">आउटपुट्स</translation>
 <translation id="1965889974717516497">सेकंडरी नेटवर्क</translation>
 <translation id="7691821949666755802">नेटवर्क टेस्ट करें</translation>
 <translation id="2816106784624007524">गैस की सीमा 0 से बड़ी कोई संख्या होनी चाहिए</translation>
@@ -1694,6 +1713,12 @@
 <translation id="3214633363105739658"><ph name="REFRESH_START"/>रीफ़्रेश करें<ph name="REFRESH_END"/> या <ph name="IMPORT_START"/>मैन्युअल रूप से इंपोर्ट करें<ph name="IMPORT_END"/></translation>
 <translation id="3840001806553580474">रीफ़्रेश हो रहा है</translation>
 <translation id="4608324163534970318">नेटवर्क फ़ीस</translation>
+<translation id="5024685988141485810">शुल्क की कस्टम राशि</translation>
+<translation id="167204008553981721">गैस की टिप की सीमा</translation>
+<translation id="9021878977748775164">गैस की कीमत की सीमा</translation>
+<translation id="6276584161122912863">गैस की कीमत</translation>
+<translation id="6132197290665156212">नेटवर्क का अनुमानित शुल्क</translation>
+<translation id="1788636309517085411">डिफ़ॉल्ट इस्तेमाल करें</translation>
 <translation id="6213230117190778270">प्राप्त करें</translation>
 <translation id="6748108480210050150">से\n\n</translation>
 <translation id="4875290286426670462">अनलिमिटेड <ph name="ASSET_SYMBOL"/></translation>
@@ -2100,7 +2125,7 @@
 <translation id="9089090017461255038">स्पीडरीडर चालू करें</translation>
 <translation id="3929926885379607283">इस साइट के लिए हमेशा स्पीडरीडर का इस्तेमाल करें</translation>
 <translation id="4186588885948504942">इस वेबसाइट के लिए स्पीडरीडर को बंद/चालू करें.</translation>
-<translation id="6568851043090579206">सभी साइटों के लिए हमेशा स्पीडरीडर का इस्तेमाल करें</translation>
+<translation id="6568851043090579206">जब संभव हो, तब सभी साइटों पर अपने-आप स्पीडरीडर इस्तेमाल करें</translation>
 <translation id="3138587343887871192">सभी वेबसाइटों के लिए स्पीडरीडर को बंद/चालू करें.</translation>
 <translation id="5153147025131874069">सभी साइटें स्पीडरीडर के लिए उपयुक्त नहीं होती हैं.</translation>
 <translation id="1013121820689882118">स्पीडरीडर</translation>
@@ -2127,7 +2152,6 @@
 <translation id="5872363163901278000">चलाने की स्पीड बढ़ाएँ</translation>
 <translation id="6129027151000961048">लियो</translation>
 <translation id="8637805148029768813">संक्षिप्त करने की यह सुविधा फ़िलहाल चुनिंदा लेख और बड़े आकार वाले वेब पेज के लिए ही उपलब्ध है.</translation>
-<translation id="1223498995510244364">संक्षिप्त करें</translation>
 <translation id="7491773233732232424">लियो के बारे में</translation>
 <translation id="4611072979071082355">Brave Leo एक प्राइवेट AI स्मार्ट असिस्टेंट है, जो आपके वेब के इस्तेमाल को बेहतर बनाता है। Leo को सीमित ऐक्सेस के साथ मुफ़्त में इस्तेमाल किया जा सकता है। Brave Leo प्रीमियम ज़्यादा मॉडल, ज़्यादा सीमाएँ और सब्सक्राइबर्स को नई सुविधाओं का जल्दी ऐक्सेस ऑफ़र करता है। डिफ़ॉल्ट मॉडल समय-समय पर बदलेगा। ज़्यादा जानकारी के लिए, <ph name="LINK_BEFORE"/>Brave हेल्प सेंटर<ph name="LINK_AFTER"/> पर जाएँ।</translation>
 <translation id="7297056998057521697">डिफ़ॉल्ट रूप से, जब आप अपनी देखी जा रही किसी वेबसाइट या पेज के बारे में Leo से कोई सवाल पूछते हैं, तो आपके देखे जा रहे वेबपेज का कॉन्टेंट या पेज पर आपका हाइलाइट किया गया कोई भी टेक्स्ट और कोई भी सर्च क्वेरी Brave के सर्वर्स को भेजी जाएगी, ताकि Leo जवाब दे सके। कुछ मामलों में, Leo आपके इनपुट से मिली क्वेरीज़ को Brave Search को भेजेगा और खोज नतीजों का इस्तेमाल आपको बेहतर ढंग से जवाब देने के लिए करेगा। Brave जवाबों की सटीकता की गारंटी नहीं लेगा, और जवाबों में गलत, गुमराह करने वाली या झूठी जानकारी हो सकती है। Brave Leo को संवेदनशील या निजी जानकारी सबमिट न करें और सेहत, फ़ाइनेंस, व्यक्तिगत सुरक्षा या मिलते-जुलते मामलों से जुड़े जवाबों के साथ सावधानी बरतें। आप सेटिंग में जाकर किसी भी समय Leo के विकल्प एडजस्ट कर सकते हैं। सेटिंग &gt; Leo पर जाएँ।</translation>
@@ -2138,6 +2162,8 @@
     }</translation>
 <translation id="6961721183181597848">आज हम आपकी मदद कैसे कर सकते हैं?</translation>
 <translation id="2966135729673253768">फ़ॉलो अप पूछें</translation>
+<translation id="6219262425964000211">फ़ाइलें यहाँ ड्रॉप करें</translation>
+<translation id="4313763911013851687">बातचीत में फ़ाइलें जोड़ने के लिए यहाँ उन्हें ड्रॉप करें</translation>
 <translation id="4524675003624341892">सवालों का सुझाव दें...</translation>
 <translation id="4567071417854988869">इस वीडियो को संक्षेप में बताएँ</translation>
 <translation id="4264902191243445258">{PAGE_COUNT, plural,
@@ -2155,20 +2181,24 @@
 <translation id="7905602379229309187">फ़िलहाल, एंडपॉइंट ओवरलोडेड है। कृपया बाद में कोशिश करें।</translation>
 <translation id="8151638057146502721">क़ॉन्फ़िगर करें</translation>
 <translation id="999273441077650169">कार्य के लिए सबसे अच्छा मॉडल इस्तेमाल करने की वजह से मॉडल डाइनैमिक रूप से बदलता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
-<translation id="3282183392203936979">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा पूरी तरह से होस्ट किया गया AI सहायक हूँ। मैं Llama 3.1 8B द्वारा संचालित हूँ, जो Meta द्वारा बनाया गया एक मॉडल है जो परफ़ॉर्मेंस और कई यूज़ केसेज़ के लिए लागू होता है। Llama हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
-<translation id="4328177358021456069">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा पूरी तरह से होस्ट किया गया AI सहायक हूँ। मैं Qwen 14B द्वारा संचालित हूँ, जो Alibaba Cloud द्वारा बनाया गया एक मॉडल है जो परफ़ॉर्मेंस और कई यूज़ केसेज़ के लिए लागू होता है। Qwen हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
-<translation id="5594884291408453470">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा पूरी तरह से होस्ट किया गया AI सहायक हूँ। मैं Gemma 3 12B द्वारा संचालित हूँ, जो Google DeepMind द्वारा बनाया गया एक मॉडल है जो परफ़ॉर्मेंस और कई यूज़ केसेज़ के लिए लागू होता है। Gemma हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
-<translation id="8706248250250832190">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा पूरी तरह से होस्ट किया गया AI सहायक हूँ। मैं DeepSeek R1 द्वारा संचालित हूँ, जो डीप रीज़निंग टास्क करने के लिए DeepSeek द्वारा बनाया गया एक मॉडल है. <ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
-<translation id="2575216739207798060">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा पॉवरड हूँ और Claude Instant द्वारा संचालित हूँ, जो Anthropic द्वारा बनाया गया एक मॉडल है जो संवादात्मक और टेक्स्ट प्रोसेसिंग जैसे कामों को पावर करता है। Claude Instant हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
-<translation id="512933369128404654">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा पॉवरड हूँ और Claude Haiku द्वारा संचालित हूँ, जो Anthropic द्वारा बनाया गया एक मॉडल है जो संवादात्मक और टेक्स्ट प्रोसेसिंग जैसे कामों को पावर करता है। Claude Haiku हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
-<translation id="406499980300734922">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा पॉवरड हूँ और Claude Sonnet द्वारा संचालित हूँ, जो Anthropic द्वारा बनाया गया एक मॉडल है जो संवादात्मक और टेक्स्ट प्रोसेसिंग जैसे कामों को पावर करता है। Claude Sonnet हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
+<translation id="1238020084128916796">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा पूरी तरह से होस्ट किया गया AI सहायक हूँ। मैं Llama 3.1 8B द्वारा संचालित हूँ, जो Meta द्वारा बनाया गया एक मॉडल है जो परफ़ॉर्मेंस और कई यूज़ केसेज़ के लिए लागू होता है। Llama हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
+<translation id="7127671672828944579">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा पूरी तरह से होस्ट किया गया AI सहायक हूँ। मैं Qwen 14B द्वारा संचालित हूँ, जो Alibaba Cloud द्वारा बनाया गया एक मॉडल है जो परफ़ॉर्मेंस और कई यूज़ केसेज़ के लिए लागू होता है। Qwen हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
+<translation id="2328524194917949829">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा पूरी तरह से होस्ट किया गया AI सहायक हूँ। मैं Gemma 3 12B द्वारा संचालित हूँ, जो Google DeepMind द्वारा बनाया गया एक मॉडल है जो परफ़ॉर्मेंस और कई यूज़ केसेज़ के लिए लागू होता है। Gemma हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
+<translation id="634682910381645550">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा पूरी तरह से होस्ट किया गया AI सहायक हूँ। मैं DeepSeek R1 द्वारा संचालित हूँ, जो DeepSeek द्वारा बनाया गया एक मॉडल है जो डीप रीज़निंग कार्य करता है। DeepSeek R1 हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
+<translation id="8932568551552504373">नमस्ते, मैं Leo हूँ। मैं Brave का एक एआई सहायक हूँ। मुझे Claude Instant द्वारा शक्ति प्रदान की गई है, जिसे Anthropic ने संवाद और पाठ संसाधन कार्यों के लिए बनाया है। Claude Instant को Brave की सुरक्षा पर होस्ट किया गया है।<ph name="LINK_BEFORE"/>और जानें<ph name="LINK_AFTER"/></translation>
+<translation id="3789772321824682783">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा पॉवरड हूँ और Claude Haiku द्वारा संचालित हूँ, जो Anthropic द्वारा बनाया गया एक मॉडल है जो संवादात्मक और टेक्स्ट प्रोसेसिंग जैसे कामों को पावर करता है। Claude Haiku हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
+<translation id="1778885220602472158">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा पॉवरड हूँ और Claude Sonnet द्वारा संचालित हूँ, जो Anthropic द्वारा बनाया गया एक मॉडल है जो संवादात्मक और टेक्स्ट प्रोसेसिंग जैसे कामों को पावर करता है। Claude Sonnet हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">प्रीमियम</translation>
+<translation id="5807427080183870259">लोकल</translation>
+<translation id="631371844654031449">सुझाए गए मॉडल</translation>
+<translation id="6568044140836233369">सभी मॉडल दिखाएँ</translation>
 <translation id="6187065185557150870">चैट</translation>
 <translation id="4685048769603134644">पूरा पेज खोलें</translation>
 <translation id="2961040541145689181">नई चैट</translation>
 <translation id="7557539689487606886">प्रीमियम सदस्य बनें</translation>
 <translation id="1691256669639196606">सदस्यता मैनेज करें</translation>
 <translation id="3840096463915153852">बातचीत का इतिहास</translation>
+<translation id="6761921176674289184">मेमोरीज़ प्रबंधित करें</translation>
 <translation id="2304783958703511257">एडवांस सेटिंग</translation>
 <translation id="3037594989275592390">लैंग्वेज मॉडल</translation>
 <translation id="5543505256451301851">7 दिन फ़्री में आज़माएँ</translation>
@@ -2230,41 +2260,48 @@
 <translation id="1243966363662220847">रिस्पॉन्स फ़ीडबैक</translation>
 <translation id="7417895556119762861">किसी जवाब को लाइक या डिसलाइक करने से Leo में सुधार करने के लिए Brave को रेटिंग, बातचीत, मॉडल, भाा और प्रीमियम स्थिति भेजी जाएगी।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
 <translation id="7494736170250048402">लियो को मैसेज भेजें</translation>
+<translation id="4084869091337186002">Leo AI Content Agent हमेशा इस प्रोफ़ाइल में चालू होता है</translation>
 <translation id="8650874793377330048">जवाब देना बंद करें</translation>
 <translation id="8712637175834984815">समझ लिया</translation>
 <translation id="1093419424466417703">लियो के लिए पेज बहुत लंबा है. हो सकता है बातचीत से कुछ संदर्भ पूरी तरह से ना हों. लियो पेज के <ph name="PERCENTAGE"/> कंटेंट को पढ़ सकता है.</translation>
 <translation id="4592293425457329338">बातचीत से कुछ संदर्भ गायब हो सकता है। Leo <ph name="PERCENTAGE"/> बातचीतों से जुड़ी सामग्री निकाल सका था।</translation>
+<translation id="8501106061098623831">पेज से बहुत ज़्यादा इमेज कैप्चर की गईं। Leo विज़ुअल कंटेट का <ph name="PERCENTAGE"/> इस्तेमाल कर पाया।</translation>
 <translation id="4370698775470316661">यह बातचीत बहुत लंबी है, इसलिए इसे जारी नहीं रखा जा सकता है. ऐसे कुछ अन्य मॉडल हो सकते हैं, जिनके साथ लियो लंबी बातचीत के दौरान भी सटीकता बनाए रख सके.</translation>
 <translation id="5719170755629028558">Brave Search के साथ अपने जवाब को बेहतर बनाएं...</translation>
 <translation id="5794962229997281366"><ph name="SEARCH_TERMS"/>के लिए बेहतर जवाब सर्च करता है.</translation>
 <translation id="7307396647043599949"><ph name="COUNT"/> ज़्यादा…</translation>
 <translation id="8103700533980268469">इस नोटिस को बंद करें</translation>
 <translation id="3417835166382867856">सर्च टैब्स</translation>
+<translation id="7311244614769792472">कोई परिणाम नहीं मिला.</translation>
+<translation id="3112448569149476523">कृपया कोई और सर्च आज़माएं</translation>
 <translation id="1352836459737874921">दूसरे टैब्स का कॉन्टेंट अटैच करें</translation>
-<translation id="3028258613451571431">अपने ब्राउज़र टैब्स से पेज का कॉन्टेंट भेजें, ताकि Leo को बातचीत के बारे में ज़्यादा जानकारी मिल सके</translation>
-<translation id="4300920590112551536">ब्राउज़र टैब्स</translation>
+<translation id="7039179822221107025">अपने ब्राउज़र टैब्स से पेज का कॉन्टेंट भेजें, ताकि Leo को बातचीत के बारे में ज़्यादा जानकारी मिल सके।</translation>
+<translation id="220541218939267992">आपकी संदेशों के साथ इस पेज की सामग्री भी Leo को भेजी जाएगी।</translation>
 <translation id="1446346932629101482">संदर्भ के लिए टैब कॉन्टेंट्स जोड़ें। कॉन्टेंट्स को आपके मैसेज के साथ Leo को भेजा जाएगा।</translation>
 <translation id="7193316103691252734">मेल खाने वाला कोई टैब नहीं है</translation>
 <translation id="2315654674554095762">Leo अब आपकी बातचीतों को याद रखेगा, ताकि आप उन्हें वापस देख सकें। वे आपके डिवाइस पर एन्क्रिप्ट होकर स्टोर रहते हैं, और आप उन्हें किसी भी समय डिलीट कर सकते हैं।</translation>
 <translation id="7821251979960635244">जब आप कोई बातचीत शुरू करेंगे, तो आपकी बातचीत का इतिहास यहाँ दिखेगा।</translation>
 <translation id="887511360213807449">इतिहास बंद है</translation>
 <translation id="5380979378058584412">Leo के साथ अपनी पिछली बातचीतों को देखने के लिए, आपको बातचीत का इतिहास चालू करना होगा।</translation>
-<translation id="6291843235651817590">सामान्य विषय की चैट</translation>
+<translation id="7348809809749151120">तेज़ • सर्च</translation>
 <translation id="3185367320601718531">बातचीत और टेक्स्ट जनरेशन</translation>
-<translation id="7979673624064378842">फ़टाफ़ट चैट करने की सुविधा</translation>
-<translation id="2836330653441111204">संतुलित गति और बुद्धिमत्ता</translation>
-<translation id="6695329447007213917">सामान्य उद्देश्य वाली चैट, कोडिंग और भी बहुत कुछ</translation>
-<translation id="7168072214482631597">सामान्य उद्देश्य टेक्स्ट और इमेज की समझ</translation>
-<translation id="7226508434216060960">रीज़निंग मॉडल</translation>
+<translation id="2793458212460902934">तेज़ • सर्च • टूल्स</translation>
+<translation id="8506027496671575183">सर्च • विज़न • टूल्स</translation>
+<translation id="3213834013136637671">सर्च • विज़न</translation>
+<translation id="7697693533305615127">सर्च • थिंकिंग</translation>
 <translation id="8782867266498869301">कार्य के लिए सबसे अच्छा मॉडल इस्तेमाल करने की वजह से मॉडल डाइनैमिक रूप से बदलता है</translation>
 <translation id="3965507912994218570">लियो सेटिंग्स</translation>
-<translation id="1037324977127422019">नमस्ते, मैं लियो हूँ!</translation>
-<translation id="8930348081963284873">मैं AI द्वारा संचालित बुद्धिमान असिस्टेंट हूँ, जिसे Brave के अंदर बनाया गया है।</translation>
-<translation id="3528849152231418380">क्या आपको किसी वेबसाइट के लिए मदद चाहिए?</translation>
-<translation id="1558192229187362674">मैं लेख से जुड़ी खास जानकारी देने, साइट के कॉन्टेंट को बढ़ाने और भी बहुत कुछ करने में आपकी मदद कर सकता हूं।</translation>
-<translation id="861953757568623294">मैं लेख से जुड़ी खास जानकारी देने, साइट के कॉन्टेंट को बढ़ाने और भी बहुत कुछ करने में आपकी मदद कर सकता हूं। क्या आपको शुरुआत करने में मदद चाहिए? यह आज़माएं:</translation>
-<translation id="5642775487085641191">क्या आप सिर्फ़ चैट करना चाहते हैं?</translation>
-<translation id="8857222718794549840">मुझसे कुछ भी पूछिए! हम आपकी पसंद के किसी भी विषय के बारे में बात कर सकते हैं। मैं हमेशा सीखता रहता हूं और सुधार करता रहता हूं, ताकि आपको बेहतर जवाब दे सकूं।</translation>
+<translation id="3754337604877048671">Leo AI का परिचय</translation>
+<translation id="5295261408976371809">आपका <ph name="TEXT_BEFORE"/>निजी<ph name="TEXT_AFTER"/> एआई सहायक, ब्राउज़र में ही निर्मित।</translation>
+<translation id="7452913484571004528">वास्तव में निजी एआई</translation>
+<translation id="8525501048785085223">Leo आपकी चैट को सहेजता या साझा नहीं करता, और ना ही उन्हें मॉडल प्रशिक्षण के लिए उपयोग करता है। अकाउंट या लॉग इन की आवश्यकता नहीं होती। बस खोलें और चैट करें। पूरी तरह से निजी रूप से।</translation>
+<translation id="6401201054391523929">अपनी टैब्स और फ़ाइलों के साथ चैट करें</translation>
+<translation id="8522038408130089105">क्या जिन साइटों पर आप जा रहे हैं, उनके बारे में अधिक जानना चाहते हैं? उन्हें एक चैट में जोड़ें। तेज़ और प्रासंगिक उत्तरों के लिए अपने टैब्स और लोकल फ़ाइलें संलग्न करें।</translation>
+<translation id="3844955602461425647">निरस कार्य को स्वचालित करें</translation>
+<translation id="2196247864500723577">Brave को आपके साथ ब्राउज़ करने दें और ब्राउज़र में आपके हर कार्य के साथ संवाद करने दें। थकाऊ कार्य को हटाएं, और ज़रूरी कामों के लिए अपना समय बचाएं।</translation>
+<translation id="235457946228076038">अपना ख़ुद का मॉडल लाएं</translation>
+<translation id="7024005267156189454">अपने स्वयं के एआई मॉडल्स कनेक्ट करें, चाहे वे लोकल या रिमोट हो। Leo के व्यवहार, आउटपुट और क्षमताओं को अपनी पसंद के अनुसार कस्टमाइज़ करें।</translation>
+<translation id="7291578285403921288">Leo AI के बारे में और जानें</translation>
 <translation id="9051226419897869406">Brave Leo के साथ निजी तौर पर चैट करें</translation>
 <translation id="2414904697165579184">टैब (टैब्स) के कॉन्टेंट के मुताबिक जवाब तैयार करें</translation>
 <translation id="8258324391302611485">इस पेज के कॉन्टेंट को आपके मैसेज के साथ Leo को भेजा जाएगा।</translation>
@@ -2273,6 +2310,7 @@
 <translation id="8732450785281947197">Leo AI टूल</translation>
 <translation id="6535533770697728087">त्वरित कार्रवाइयाँ</translation>
 <translation id="3237710083340813756">फिर से लिखें</translation>
+<translation id="1223498995510244364">संक्षिप्त करें</translation>
 <translation id="1252805982772190086">छोटी पोस्ट</translation>
 <translation id="2087555497198267113">लंबी पोस्ट</translation>
 <translation id="4170307327863874820">ब्लॉग पोस्ट</translation>
@@ -2297,6 +2335,7 @@
 <translation id="6739516910850820220">फ़ाइल अपलोड हो रही है...</translation>
 <translation id="9088751620363630236">तस्वीर लें...</translation>
 <translation id="4250229828105606438">स्क्रीनशॉट</translation>
+<translation id="7949596341600215809">पूरे पेज का स्क्रीनशॉट</translation>
 <translation id="6332876390231524389">मौजूदा टैब की सामग्री</translation>
 <translation id="7742969455167760092">टैब्स खोलें...</translation>
 <translation id="49269513399674318">माइक्रोफ़ोन का इस्तेमाल करें</translation>
@@ -2306,127 +2345,10 @@
 <translation id="6287023598025162715">नई बातचीत</translation>
 <translation id="7097822247923237815">अस्थायी चैट</translation>
 <translation id="7481750859362986254">इस चैट को आपकी हिस्ट्री में सेव नहीं किया जाएगा या Leo के किसी भी कस्टमाइज़ेशन या मेमोरीज़ में इस्तेमाल नहीं किया जाएगा।</translation>
-<translation id="8370801182970639038">ऑटोमैटिक (<ph name="LOCALE"/>)</translation>
-<translation id="8343473178272604223">चालू किया गया सर्च इंजन</translation>
-<translation id="5355776323718420036">टॉप साइटें छिपाएँ</translation>
-<translation id="9173319813356700250">NEWS</translation>
-<translation id="6543799171249004861"><ph name="AUTHOR"/> के द्वारा फ़ोटो</translation>
-<translation id="466214682712474574">अपना बैलेंस देखने के लिए अपने <ph name="PROVIDER"/> अकाउंट में लॉग इन करें</translation>
-<translation id="8332875111286275890">अपना बैलेंस देखने के लिए लॉग इन करें</translation>
-<translation id="5430001801813715388">रिवॉर्ड्स</translation>
-<translation id="5966055668402779222">Brave Search से पूछें</translation>
-<translation id="167018310108390163">नई टैब पेज को कस्टमाइज़ करें</translation>
-<translation id="6851426306697017546">घड़ी दिखाएँ</translation>
-<translation id="4844370919312937270">नए टैब्स में सर्च विजेट दिखाएँ</translation>
-<translation id="7328310113820087094"><ph name="LINK_BEGIN"/>Brave Rewards<ph name="LINK_END"/> के साथ, आप नए टैब पेज ऐड देखने के लिए कमा सकते हैं।</translation>
-<translation id="4100520468072294616">नए टैब पेज ऐड दिखाएँ</translation>
-<translation id="5009354496127441090">टॉप साइटें दिखाएँ</translation>
-<translation id="3960619311638643872">Brave VPN</translation>
-<translation id="4784802981241664605">आँकड़े</translation>
-<translation id="712731581368828482">Brave Talk के साथ एन्क्रिप्ट किए गए वीडियो कॉल।</translation>
-<translation id="2671474274417808910">प्राइवेसी का ध्यान रखने वाले कॉल</translation>
-<translation id="2100665198270190500">TALK</translation>
-<translation id="4290791698375397492">टॉप साइट हटाई गई</translation>
-<translation id="1436784010935106834">हटाया गया</translation>
-<translation id="9030215177866748410">आपकी अक्सर देखी जाने वाली वेबसाइटों के आधार पर टॉप साइटों का सुझाव दिया जाता है।</translation>
-<translation id="1849266032237224734">कम आइटम दिखाएँ</translation>
-<translation id="9125416311275819193">ज़्यादा आइटम दिखाएँ</translation>
-<translation id="8425213833346101688">बदलें</translation>
-<translation id="755045397420611731">और ज़्यादा प्राइवेसी और ऑनलाइन सिक्योरिटी</translation>
-<translation id="4520128772974831415">अपना IP छुपाएं और अपनी लोकेशन बदलें</translation>
-<translation id="6819278685469225453">अपने डिवाइस पर हर ऐप को सुरक्षित रखें</translation>
-<translation id="8422279921836245017">पहले से खरीदा हुआ है?</translation>
-<translation id="8703188411226330709">मुफ़्त ट्रायल शुरू करें</translation>
-<translation id="8814357473522731680">द्वारा संचालित</translation>
-<translation id="7143207342074048698">कनेक्‍ट हो रहा है</translation>
-<translation id="1202549130170287307">डिसकनेक्ट किया जा रहा है</translation>
-<translation id="8941703009412168350">Brave VPN</translation>
-<translation id="6303294677342628402">शील्ड्स</translation>
-<translation id="8458987127502506209">Brave Shields को इनेबल करें</translation>
-<translation id="7700894290854403770"><ph name="HOST"/> के लिए <ph name="STATUS_BEFORE"/>Shields चालू है<ph name="STATUS_AFTER"/></translation>
-<translation id="7656091630265507216"><ph name="HOST"/> के लिए <ph name="STATUS_BEFORE"/>Shields हटा दी गई है<ph name="STATUS_AFTER"/></translation>
-<translation id="5623354834493649144">अगर कोई साइट खराब लगती है, तो Shields हटाने की कोशिश करें।
-   <ph name="NOTE_BEFORE"/>ध्यान दें: इससे Brave की प्राइवेसी सुरक्षा कम हो सकती है।<ph name="NOTE_AFTER"/></translation>
-<translation id="8377155647357436161">Trackers, ads, and more blocked <ph name="LINK_BEFORE"/>और जानें <ph name="LINK_AFTER"/></translation>
-<translation id="7604553853176833536">Brave शील्ड से सुरक्षित नहीं है <ph name="LINK_BEFORE"/>और जानें<ph name="LINK_AFTER"/></translation>
-<translation id="650318023204990401">उन्नत कंट्रोल</translation>
-<translation id="5799940914270080805">इन सेटिंग को बदलने से साइट काम करना बंद कर सकती हैं.</translation>
-<translation id="9204041448536398473">ग्लोबल शील्ड सेटिंग</translation>
-<translation id="2108334320919763866">ग्लोबल डिफ़ॉल्ट</translation>
-<translation id="7205939464631857223">ब्लॉक किए गए सभी एलिमेंट हटाएँ</translation>
-<translation id="3440043456924990296">सेटिंग को संगठन मैनेज करता है</translation>
-<translation id="7053983685419859001">ब्लॉक करें</translation>
-<translation id="5716230673298034837">सभी को अनुमति दें</translation>
-<translation id="5279600392753459966">सबको ब्लॉक करें</translation>
-<translation id="4516904298421534459">लिस्ट को फ़िल्टर करें</translation>
-<translation id="3570081523466826008">कनेक्शन को HTTPS पर अपग्रेड करें</translation>
-<translation id="131231380815754440">HTTPS इनेबल करें</translation>
-<translation id="4824468494729001999">स्क्रिप्ट ब्लॉक करें</translation>
-<translation id="3246600097575692802">इनेबल किये गए स्क्रिप्ट ब्लॉक किए गए</translation>
-<translation id="3603525299146223354">ट्रैकर  &amp; ऐड</translation>
-<translation id="4448697385961650078">ट्रैकर और विज्ञापनों को ब्लॉक करें</translation>
-<translation id="8593054718053894081">ट्रैकर और विज्ञापनों को तेज़ी से ब्लॉक करता है</translation>
-<translation id="7384778069178817075">सभी ट्रैकर्स और विज्ञापनों की अनुमति दें</translation>
-<translation id="6196640612572343990">तीसरे पक्ष की कुकी ब्लॉक करें</translation>
-<translation id="693506469193748756">यह वेबसाइट बंद करने पर मुझे भुला देना</translation>
-<translation id="5471580724041424345">जब आप कोई वेबसाइट बंद करते हैं तो कुकीज़ समेत वेबसाइट का अन्य डेटा मिटाता है.</translation>
-<translation id="6486971767955110687">खराब साइटों की रिपोर्ट के लिए संपर्क जानकारी स्टोर करें</translation>
-<translation id="4085787265464238844">अगर आप संपर्क जानकारी देते हैं, तो इसे भविष्य की रिपोर्ट के लिए स्टोर किया जाएगा</translation>
-<translation id="6883611015375728278">सभी कुकी को रोकें</translation>
-<translation id="5657156137487675418">सभी कूकीज को अनुमति दें</translation>
-<translation id="8366221601425141146">फिंगरप्रिंटिंग ब्लॉक किया गया</translation>
-<translation id="6531019308847917584">फ़िंगरप्रिंटिंग ब्लॉक करें</translation>
-<translation id="1899608006846124237">फ़िंगरप्रिंटिंग को तेज़ी से ब्लॉक करता है</translation>
-<translation id="8034285923190068220">फिंगरप्रिंटिंग की अनुमति दें</translation>
-<translation id="7638541189782135885">HTTP कनेक्शन अपग्रेड न करें</translation>
-<translation id="2570787596946026998">सिर्फ़ HTTPS के साथ कनेक्ट करें</translation>
-<translation id="1992750560347846445">साइट की रिपोर्ट करें</translation>
-<translation id="2387532482048804818">अगर शील्ड चालू रखने पर साइट ठीक से काम नहीं कर रही थी, तो हमें बताएँ.</translation>
-<translation id="3795015906457257780">आप Brave की प्राइवेसी सुविधा के बिना इस साइट को इस्तेमाल कर रहे हैं.</translation>
-<translation id="7194012750329511146">Brave शील्ड
-<ph name="NUMBER"/> ट्रैकर, विज्ञापन और अन्य चीज़ें ब्लॉक की गईं</translation>
-<translation id="4292121526390005808">बाधित स्क्रिप्ट्स</translation>
-<translation id="5046271170844958713">जारी किए गए स्क्रिप्ट्स</translation>
-<translation id="199862531047218413">एंटी-फ़िंगरप्रिंटिंग सुरक्षा लागू की गई</translation>
-<translation id="5032505924781383272">संभव है कि लागू किए गए सुरक्षा उपायों का यह मतलब न हो कि यह वेब पेज आपके ब्राउज़र की फ़िंगरप्रिंटिंग करने का प्रयास कर रहा हो.</translation>
-<translation id="1905384713982899903">फ़िंगरप्रिंट ब्लॉक किया गया</translation>
-<translation id="314364527871618241">फ़िंगरप्रिंट को अनुमति दिया गया</translation>
-<translation id="264682546981571963">कुकी कंसेंट नोटिस से थक गए हैं?</translation>
-<translation id="4986297793092101884">Brave पहले से ही थर्ड-पार्टी कुकीज़ को ब्लॉक कर देता है. हम कुकी कंसेंट नोटिस को भी ब्लॉक कर सकते हैं.</translation>
-<translation id="535688588637568715">हाँ, कुकी कंसेंट नोटिस को ब्लॉक करें</translation>
-<translation id="2808175374672429053">Brave शील्ड के लिए वाइल्डकार्ड की मंज़ूरी नहीं है.</translation>
-<translation id="7630425922041907505">{BLOCKED_COUNT, plural,
-      =1 {Brave शील्ड्स ने <ph name="SITE_URL"/> पर 1 ट्रैकर को ब्लॉक कर दिया }
-      other {Brave शील्ड्स ने <ph name="SITE_URL"/> पर {BLOCKED_COUNT} ट्रैकर्स को ब्लॉक कर दिया }
-    }</translation>
-<translation id="2540598191934725677">Brave शील्ड्स देखने के लिए Brave आइकन पर क्लिक करें।</translation>
-<translation id="6294662480095808915">गोपनीयता. डिफ़ॉल्ट तौर पर.</translation>
-<translation id="4366423156486478559">हर लिंक पर क्लिक करते समय Brave की सुरक्षा पाएँ. बस Brave को डिफ़ॉल्ट के तौर पर सेट करें और गोपनीयता के साथ ब्राउज़ करें.</translation>
-<translation id="3830912418080848377">सेटिंग इंपोर्ट करें</translation>
-<translation id="6378406588483694938">अपने पुराने ब्राउज़र से बुकमार्क, एक्सटेंशन और सेव किए हुए पासवर्ड को भी आसानी से इंपोर्ट करें.</translation>
-<translation id="2092825239819166928">इंपोर्ट करने के लिए प्रोफ़ाइल चुनें</translation>
-<translation id="4763127492635705340">आपके चुने हुए ब्राउज़र में कई प्रोफ़ाइल हैं. आप जिस प्रोफ़ाइल को इंपोर्ट करना चाहते हैं उसे चुनें.</translation>
-<translation id="880174232178865598">प्रोफ़ाइल को इंपोर्ट करें</translation>
-<translation id="2453860139492968684">समाप्त करें</translation>
-<translation id="2273851479262317744">Brave को अपने डिफ़ॉल्ट ब्राउज़र में सेट करें</translation>
-<translation id="5037676449506322593">सभी को चुनें</translation>
-<translation id="5148943178722443958">Brave को बेहतर बनाने में मदद करें.</translation>
-<translation id="1097073572755862978">अचानक बंद होने या अटकने पर डायग्नोस्टिक रिपोर्ट भेजें. <ph name="LINK_BEFORE"/>और जानें.<ph name="LINK_AFTER"/></translation>
-<translation id="6629244688368006959">गुप्त और गुमनाम रह कर यह जानकारी दें कि Brave के यूज़र किन सुविधाओं का इस्तेमाल कर रहें हैं.<ph name="LINK_BEFORE"/>और जानें.<ph name="LINK_AFTER"/></translation>
-<translation id="7415454883318062233">सेटअप पूरा हुआ</translation>
-<translation id="3141206739023333979">आप <ph name="LINK_BEFORE1"/>brave://settings/privacy<ph name="LINK_AFTER2"/> पर जाकर Brave में इन विकल्पों को कभी भी बदल सकते हैं.</translation>
-<translation id="8321985064212130832">हमारी पूरी <ph name="LINK_BEFORE"/>गोपनीयता नीति<ph name="LINK_AFTER"/> पढ़ें</translation>
-<translation id="2801098717523961746">अपना थीम चुनें</translation>
-<translation id="6262510489122516114">आप Brave सेटिंग में जाकर इसे कभी भी बदल सकते हैं.</translation>
-<translation id="546481172717459539">सिस्टम सेटिंग मिलाएँ</translation>
-<translation id="7799817062559422778">लाइट मोड</translation>
-<translation id="4117637339509843559">डार्क मोड</translation>
-<translation id="6302485303316397682">और ज़्यादा बेहतर सर्च रिज़ल्ट चाहिए?</translation>
-<translation id="7014699001826714920">मुहीम में शामिल हों और Brave Search को बेहतर बनाने में मदद करें.</translation>
-<translation id="6821108091726602352">Brave के वेब डिस्कवरी प्रोजेक्ट में भाग लेकर वेब को ठीक करने में हमारी सहायता करें. पूरी तरह से गुमनाम सर्च सिग्नल शेयर करके, आप Brave को सर्च इंडेक्स क बढ़ाने में मदद कर सकते हैं.</translation>
-<translation id="6764845498618413165">और जानें.</translation>
-<translation id="7818938154803162778">मैं बिलकुल मदद करूंगा</translation>
-<translation id="7207456302801184289">Brave में आपका स्वागत है</translation>
+<translation id="4238305333951712482">मेमोरी अपडेट की गई: <ph name="MEMORY_CONTENT"/></translation>
+<translation id="2593275000606533518">सभी को प्रबंधित करें</translation>
+<translation id="8410199626695516952">ठीक है, इसे याद नहीं रखा जाएगा</translation>
+<translation id="8419849467765474535">मेमोरी सेव नहीं की जा सकी। कृपया फिर से कोशिश करें।</translation>
 <translation id="3486480638399578250">अपना व्यक्तिगत ईमेल पता निजी रखें</translation>
 <translation id="7765422154906712751">यूनीक, रैंडम पते बनाएँ, जो आपके ब्राउज़र अकाउंट ईमेल पर फ़ॉरवर्ड होते हैं और किसी भी समय हटाए जा सकते हैं। अपने असली ईमेल पते का खुलासा करने या विज्ञापनदाताओं द्वारा उनका इस्तेमाल किए जाने से बचें।</translation>
 <translation id="5222676887888702881">साइन आउट करें</translation>
@@ -2467,11 +2389,142 @@
 <translation id="619122420105901711">ईमेल नहीं दिख रहा है? अपना स्पैम फ़ोल्डर जाँचें या फिर से कोशिश करें</translation>
 <translation id="3397336197747843396">Brave अकाउंट के साथ ऑथेंटिकेशन में गड़बड़ी हुई। कृपया फिर से कोशिश करें।</translation>
 <translation id="1340795582009113055">दोबारा शुरू करें</translation>
+<translation id="8528664394991030582">कोई ईमेल नहीं दिया गया</translation>
+<translation id="589806103071387355">Brave Accounts सेवा से अमान्य जवाब</translation>
+<translation id="7508412964869396375">Brave Accounts सेवा से कोई वेरिफ़िकेशन टोकन नहीं मिला</translation>
+<translation id="3179527991526213624">Brave Accounts सेवा से कोई जवाब नहीं</translation>
+<translation id="7911439408853154309">ईमेल वेरिफ़िकेशन नहीं हो पाया</translation>
+<translation id="8370801182970639038">ऑटोमैटिक (<ph name="LOCALE"/>)</translation>
+<translation id="8343473178272604223">चालू किया गया सर्च इंजन</translation>
+<translation id="8285901519864208412">रिवॉर्ड कार्ड छिपाएँ</translation>
+<translation id="4725613319787110841">आँकड़ों वाला कार्ड छिपाएँ</translation>
+<translation id="2991633563551889054">टॉक कार्ड छिपाएँ</translation>
+<translation id="5355776323718420036">टॉप साइटें छिपाएँ</translation>
+<translation id="1689504141194856995">VPN कार्ड छिपाएँ</translation>
+<translation id="8262911270872215147">News को कस्टमाइज़ करें</translation>
+<translation id="3884037897537157986">News को बंद करें</translation>
+<translation id="7847477075635510673">News को छिपाएँ</translation>
+<translation id="9173319813356700250">NEWS</translation>
+<translation id="6543799171249004861"><ph name="AUTHOR"/> के द्वारा फ़ोटो</translation>
+<translation id="466214682712474574">अपना बैलेंस देखने के लिए अपने <ph name="PROVIDER"/> अकाउंट में लॉग इन करें</translation>
+<translation id="8332875111286275890">अपना बैलेंस देखने के लिए लॉग इन करें</translation>
+<translation id="5430001801813715388">रिवॉर्ड्स</translation>
+<translation id="5966055668402779222">Brave Search से पूछें</translation>
+<translation id="167018310108390163">नई टैब पेज को कस्टमाइज़ करें</translation>
+<translation id="6851426306697017546">घड़ी दिखाएँ</translation>
+<translation id="4844370919312937270">नए टैब्स में सर्च विजेट दिखाएँ</translation>
+<translation id="7328310113820087094"><ph name="LINK_BEGIN"/>Brave Rewards<ph name="LINK_END"/> के साथ, आप नए टैब पेज ऐड देखने के लिए कमा सकते हैं।</translation>
+<translation id="4100520468072294616">नए टैब पेज ऐड दिखाएँ</translation>
+<translation id="5009354496127441090">टॉप साइटें दिखाएँ</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
+<translation id="4784802981241664605">आँकड़े</translation>
+<translation id="5236080651083907980">Brave Talk से एन्क्रिप्ट किए गए वीडियो कॉल</translation>
+<translation id="2671474274417808910">प्राइवेसी का ध्यान रखने वाले कॉल</translation>
+<translation id="2100665198270190500">TALK</translation>
+<translation id="4290791698375397492">टॉप साइट हटाई गई</translation>
+<translation id="9030215177866748410">आपकी अक्सर देखी जाने वाली वेबसाइटों के आधार पर टॉप साइटों का सुझाव दिया जाता है।</translation>
+<translation id="1849266032237224734">कम आइटम दिखाएँ</translation>
+<translation id="9125416311275819193">ज़्यादा आइटम दिखाएँ</translation>
+<translation id="8425213833346101688">बदलें</translation>
+<translation id="755045397420611731">और ज़्यादा प्राइवेसी और ऑनलाइन सिक्योरिटी</translation>
+<translation id="4520128772974831415">अपना IP छुपाएं और अपनी लोकेशन बदलें</translation>
+<translation id="6819278685469225453">अपने डिवाइस पर हर ऐप को सुरक्षित रखें</translation>
+<translation id="8422279921836245017">पहले से खरीदा हुआ है?</translation>
+<translation id="8703188411226330709">मुफ़्त ट्रायल शुरू करें</translation>
+<translation id="8814357473522731680">द्वारा संचालित</translation>
+<translation id="7143207342074048698">कनेक्‍ट हो रहा है</translation>
+<translation id="1202549130170287307">डिसकनेक्ट किया जा रहा है</translation>
+<translation id="8941703009412168350">Brave VPN</translation>
+<translation id="6303294677342628402">शील्ड्स</translation>
+<translation id="8458987127502506209">Brave Shields को इनेबल करें</translation>
+<translation id="8443488493738411048">इस साइट के लिए <ph name="STATUS_BEFORE"/>Shields चालू है<ph name="STATUS_AFTER"/></translation>
+<translation id="2458631245058451506">इस साइट के लिए<ph name="STATUS_BEFORE"/>Shields बंद है<ph name="STATUS_AFTER"/></translation>
+<translation id="5623354834493649144">अगर कोई साइट खराब लगती है, तो Shields हटाने की कोशिश करें।
+   <ph name="NOTE_BEFORE"/>ध्यान दें: इससे Brave की प्राइवेसी सुरक्षा कम हो सकती है।<ph name="NOTE_AFTER"/></translation>
+<translation id="8377155647357436161">Trackers, ads, and more blocked <ph name="LINK_BEFORE"/>और जानें <ph name="LINK_AFTER"/></translation>
+<translation id="7604553853176833536">Brave शील्ड से सुरक्षित नहीं है <ph name="LINK_BEFORE"/>और जानें<ph name="LINK_AFTER"/></translation>
+<translation id="650318023204990401">उन्नत कंट्रोल</translation>
+<translation id="5799940914270080805">इन सेटिंग को बदलने से साइट काम करना बंद कर सकती हैं.</translation>
+<translation id="9204041448536398473">ग्लोबल शील्ड सेटिंग</translation>
+<translation id="2108334320919763866">ग्लोबल डिफ़ॉल्ट</translation>
+<translation id="7205939464631857223">ब्लॉक किए गए सभी एलिमेंट हटाएँ</translation>
+<translation id="3440043456924990296">सेटिंग को संगठन मैनेज करता है</translation>
+<translation id="7053983685419859001">ब्लॉक करें</translation>
+<translation id="5716230673298034837">सभी को अनुमति दें</translation>
+<translation id="5279600392753459966">सबको ब्लॉक करें</translation>
+<translation id="4516904298421534459">लिस्ट को फ़िल्टर करें</translation>
+<translation id="3570081523466826008">कनेक्शन को HTTPS पर अपग्रेड करें</translation>
+<translation id="131231380815754440">HTTPS इनेबल करें</translation>
+<translation id="4824468494729001999">स्क्रिप्ट ब्लॉक करें</translation>
+<translation id="3246600097575692802">इनेबल किये गए स्क्रिप्ट ब्लॉक किए गए</translation>
+<translation id="3603525299146223354">ट्रैकर  &amp; ऐड</translation>
+<translation id="4448697385961650078">ट्रैकर और विज्ञापनों को ब्लॉक करें</translation>
+<translation id="8593054718053894081">ट्रैकर और विज्ञापनों को तेज़ी से ब्लॉक करता है</translation>
+<translation id="7384778069178817075">सभी ट्रैकर्स और विज्ञापनों की अनुमति दें</translation>
+<translation id="6196640612572343990">तीसरे पक्ष की कुकी ब्लॉक करें</translation>
+<translation id="693506469193748756">यह वेबसाइट बंद करने पर मुझे भुला देना</translation>
+<translation id="6975864539539353406">जब आप कोई साइट बंद करते हैं तो कुकीज़ और अन्य साइट डेटा साफ़ करता है</translation>
+<translation id="6486971767955110687">खराब साइटों की रिपोर्ट के लिए संपर्क जानकारी स्टोर करें</translation>
+<translation id="4085787265464238844">अगर आप संपर्क जानकारी देते हैं, तो इसे भविष्य की रिपोर्ट के लिए स्टोर किया जाएगा</translation>
+<translation id="6883611015375728278">सभी कुकी को रोकें</translation>
+<translation id="5657156137487675418">सभी कूकीज को अनुमति दें</translation>
+<translation id="8366221601425141146">फिंगरप्रिंटिंग ब्लॉक किया गया</translation>
+<translation id="6531019308847917584">फ़िंगरप्रिंटिंग ब्लॉक करें</translation>
+<translation id="1899608006846124237">फ़िंगरप्रिंटिंग को तेज़ी से ब्लॉक करता है</translation>
+<translation id="8034285923190068220">फिंगरप्रिंटिंग की अनुमति दें</translation>
+<translation id="7638541189782135885">HTTP कनेक्शन अपग्रेड न करें</translation>
+<translation id="2570787596946026998">सिर्फ़ HTTPS के साथ कनेक्ट करें</translation>
+<translation id="1992750560347846445">साइट की रिपोर्ट करें</translation>
+<translation id="2387532482048804818">अगर शील्ड चालू रखने पर साइट ठीक से काम नहीं कर रही थी, तो हमें बताएँ.</translation>
+<translation id="3795015906457257780">आप Brave की प्राइवेसी सुविधा के बिना इस साइट को इस्तेमाल कर रहे हैं.</translation>
+<translation id="7194012750329511146">Brave शील्ड
+<ph name="NUMBER"/> ट्रैकर, विज्ञापन और अन्य चीज़ें ब्लॉक की गईं</translation>
+<translation id="4292121526390005808">बाधित स्क्रिप्ट्स</translation>
+<translation id="5046271170844958713">जारी किए गए स्क्रिप्ट्स</translation>
+<translation id="199862531047218413">एंटी-फ़िंगरप्रिंटिंग सुरक्षा लागू की गई</translation>
+<translation id="5032505924781383272">संभव है कि लागू किए गए सुरक्षा उपायों का यह मतलब न हो कि यह वेब पेज आपके ब्राउज़र की फ़िंगरप्रिंटिंग करने का प्रयास कर रहा हो.</translation>
+<translation id="1905384713982899903">फ़िंगरप्रिंट ब्लॉक किया गया</translation>
+<translation id="314364527871618241">फ़िंगरप्रिंट को अनुमति दिया गया</translation>
+<translation id="2808175374672429053">Brave शील्ड के लिए वाइल्डकार्ड की मंज़ूरी नहीं है.</translation>
+<translation id="7630425922041907505">{BLOCKED_COUNT, plural,
+      =1 {Brave शील्ड्स ने <ph name="SITE_URL"/> पर 1 ट्रैकर को ब्लॉक कर दिया }
+      other {Brave शील्ड्स ने <ph name="SITE_URL"/> पर {BLOCKED_COUNT} ट्रैकर्स को ब्लॉक कर दिया }
+    }</translation>
+<translation id="2540598191934725677">Brave शील्ड्स देखने के लिए Brave आइकन पर क्लिक करें।</translation>
+<translation id="6294662480095808915">गोपनीयता. डिफ़ॉल्ट तौर पर.</translation>
+<translation id="4366423156486478559">हर लिंक पर क्लिक करते समय Brave की सुरक्षा पाएँ. बस Brave को डिफ़ॉल्ट के तौर पर सेट करें और गोपनीयता के साथ ब्राउज़ करें.</translation>
+<translation id="3830912418080848377">सेटिंग इंपोर्ट करें</translation>
+<translation id="6378406588483694938">अपने पुराने ब्राउज़र से बुकमार्क, एक्सटेंशन और सेव किए हुए पासवर्ड को भी आसानी से इंपोर्ट करें.</translation>
+<translation id="2092825239819166928">इंपोर्ट करने के लिए प्रोफ़ाइल चुनें</translation>
+<translation id="4763127492635705340">आपके चुने हुए ब्राउज़र में कई प्रोफ़ाइल हैं. आप जिस प्रोफ़ाइल को इंपोर्ट करना चाहते हैं उसे चुनें.</translation>
+<translation id="880174232178865598">प्रोफ़ाइल को इंपोर्ट करें</translation>
+<translation id="2453860139492968684">समाप्त करें</translation>
+<translation id="2273851479262317744">Brave को अपने डिफ़ॉल्ट ब्राउज़र में सेट करें</translation>
+<translation id="5037676449506322593">सभी को चुनें</translation>
+<translation id="5148943178722443958">Brave को बेहतर बनाने में मदद करें.</translation>
+<translation id="1097073572755862978">अचानक बंद होने या अटकने पर डायग्नोस्टिक रिपोर्ट भेजें. <ph name="LINK_BEFORE"/>और जानें.<ph name="LINK_AFTER"/></translation>
+<translation id="6629244688368006959">गुप्त और गुमनाम रह कर यह जानकारी दें कि Brave के यूज़र किन सुविधाओं का इस्तेमाल कर रहें हैं.<ph name="LINK_BEFORE"/>और जानें.<ph name="LINK_AFTER"/></translation>
+<translation id="7415454883318062233">सेटअप पूरा हुआ</translation>
+<translation id="3141206739023333979">आप <ph name="LINK_BEFORE1"/>brave://settings/privacy<ph name="LINK_AFTER2"/> पर जाकर Brave में इन विकल्पों को कभी भी बदल सकते हैं.</translation>
+<translation id="8321985064212130832">हमारी पूरी <ph name="LINK_BEFORE"/>गोपनीयता नीति<ph name="LINK_AFTER"/> पढ़ें</translation>
+<translation id="2801098717523961746">अपना थीम चुनें</translation>
+<translation id="6262510489122516114">आप Brave सेटिंग में जाकर इसे कभी भी बदल सकते हैं.</translation>
+<translation id="546481172717459539">सिस्टम सेटिंग मिलाएँ</translation>
+<translation id="7799817062559422778">लाइट मोड</translation>
+<translation id="4117637339509843559">डार्क मोड</translation>
+<translation id="6302485303316397682">और ज़्यादा बेहतर सर्च रिज़ल्ट चाहिए?</translation>
+<translation id="7014699001826714920">मुहीम में शामिल हों और Brave Search को बेहतर बनाने में मदद करें.</translation>
+<translation id="6821108091726602352">Brave के वेब डिस्कवरी प्रोजेक्ट में भाग लेकर वेब को ठीक करने में हमारी सहायता करें. पूरी तरह से गुमनाम सर्च सिग्नल शेयर करके, आप Brave को सर्च इंडेक्स क बढ़ाने में मदद कर सकते हैं.</translation>
+<translation id="6764845498618413165">और जानें.</translation>
+<translation id="7818938154803162778">मैं बिलकुल मदद करूंगा</translation>
+<translation id="7207456302801184289">Brave में आपका स्वागत है</translation>
+<translation id="293854220404217065">मिडनाइट थीम</translation>
 <translation id="2422927186524098759">साइडबार</translation>
 <translation id="2361906291514218784">लियो AI</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="8000020256436988724">टूलबार</translation>
 <translation id="6225572914528673855">ऐड्रेस बार</translation>
+<translation id="6821966107067356137">RSS फ़ीड जोड़ें</translation>
 <translation id="8293206222192510085">बुकमार्क लगाएँ</translation>
 <translation id="7758460733045216901">बुकमार्क पैनल</translation>
 <translation id="958268166261124668">Brave VPN: कनेक्ट हो गया है</translation>

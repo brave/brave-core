@@ -41,11 +41,18 @@ public class PlaylistCoordinator: NSObject {
   // in use at any given moment
   public static let shared = PlaylistCoordinator()
 
+  /// Whether or not playlist is available and CarPlay should display playlist data
+  public var isPlaylistAvailable: Bool = true
+
   func getCarPlayController() -> Any? {
     // On iOS 14, we use CPTemplate (Custom UI)
     // We control what gets displayed
     guard let carplayInterface = carplayInterface else {
       return nil
+    }
+
+    if !isPlaylistAvailable {
+      return CarPlayUnavailableController(interface: carplayInterface)
     }
 
     // CarPlay can be launched independently of the browser/app
@@ -165,7 +172,9 @@ public class PlaylistCoordinator: NSObject {
     // - Playlist UI is visible
     // - Picture in picture is active
     // - CarPlay is connected
-    if !isPlaylistControllerPresented, !playerModel.isPictureInPictureActive, !isCarPlayAvailable {
+    if !isPlaylistControllerPresented, !playerModel.isPictureInPictureActive,
+      !isCarPlayAvailable || !isPlaylistAvailable
+    {
       playerModel.stop()
       self.playerModel = nil
     }

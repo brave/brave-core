@@ -2,36 +2,36 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="uz">
 <translation id="130631256467250065">O‘zgartirishlar qurimla qaytadan ishga tushirilganda kuchga kiradi.</translation>
+<translation id="6451924152958941455">Bularni oching:
+          Brave menyusi &gt;
+          <ph name="SETTINGS_TITLE"/>
+          &gt;
+          <ph name="SYSTEM_TITLE"/>
+          &gt;
+          <ph name="PROXIES_TITLE"/>
+          &gt;
+          va sozlamalarda “proksi-serversiz” yoki “bevosita” ulanish belgilanganini tekshiring.</translation>
 <translation id="7999989146447764333">Brave‘da xatoliklar haqidagi hisobot funksiyasi mavjud emas.</translation>
 <translation id="1953231710324290369">Xavfsiz Brave sahifasini ko‘rmoqdasiz.</translation>
 <translation id="907470742420136113">Brave toʻlov usuli kiritilishi sozlamasini oʻzgaritishga urinmoqda.</translation>
 <translation id="4847979153841887006">Brave logotipi</translation>
 <translation id="336808635693308470">Brave toʻlov usullarini oʻzgartirishga urinmoqda.</translation>
 <translation id="7932149101545999102">Brave yaratilishida <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/> ochiq kodli loyiha va boshqa <ph name="BEGIN_LINK_OSS"/>ochiq kodli dasturiy ta’minotning<ph name="END_LINK_OSS"/> katta o‘rni bor.</translation>
-<translation id="8746410156982274638">Bu yerga o‘ting:
-          Brave menyusi &gt;
-          <ph name="SETTINGS_TITLE"/>
-          &gt;
-          <ph name="ADVANCED_TITLE"/>
-          &gt;
-          <ph name="PROXIES_TITLE"/>
-          &gt;
-          LAN sozlamalari
-          va "LAN uchun proksi serveri ishlatish" katakchasidan belgini olib tashlang.</translation>
 <translation id="303960458633076466">Bu sahifa Brave tomonidan bloklandi</translation>
 <translation id="2017237562285586622">Himoya devori va antivirus dasturlari sozlamalarida Brave tarmoqqa ulanishiga ruxsat bering.</translation>
 <translation id="4949828774841497663">Ilovalar &gt; tizim sozlamalari &gt; tarmoq sahifasini ochib,
           faol tarmoqni tanlang, keyin Tafsilotlar... tugmasini bosing va tanlanishi mumkin har qanday
           proksi tanlovini bekor qiling.</translation>
-<translation id="8619622797841001082">Bu yerga o‘ting:
+<translation id="3269554930871094325">Bularni oching:
           Brave menyusi &gt;
           <ph name="SETTINGS_TITLE"/>
           &gt;
-          <ph name="ADVANCED_TITLE"/>
+          <ph name="SYSTEM_TITLE"/>
           &gt;
           <ph name="PROXIES_TITLE"/>
-          va “proksi-serversiz” yoki “to‘g‘ridan-to‘g‘ri” sozlamalaridan biri
-          belgilanganligiga ishonch xosil qiling.</translation>
+          &gt;
+          Tarmoq va internet &gt; Proksi-server
+          va keyin “Sozlamalarni avtomatik aniqlash” tanlovini bekor qiling.</translation>
 <translation id="6159073403999048272">Bu sahifalar Brave dastur ishlab chiquvchilari foydalanishi uchun moʻljallangan va faol ishlatish yoki sinovdan oʻtkazish mumkin emas. Ularni yoqish uchun <ph name="BEGIN_LINK"/>chrome://chrome-urls<ph name="LINK_END"/> havolasiga oʻting, debag sahifalarini yoqish uchun tugmani bosib, keyin yana bu sahifaga oʻting.</translation>
 <translation id="2765022094254723779">Brave paydo boʻlishida boshqa <ph name="BEGIN_LINK_OSS"/>ochiq kodli dastur<ph name="END_LINK_OSS"/> taʼminotining katta oʻrni bor.</translation>
 <translation id="9156965752763025780">O‘zgartirishlar Brave qaytadan ishga tushirilganda kuchga kiradi.</translation>

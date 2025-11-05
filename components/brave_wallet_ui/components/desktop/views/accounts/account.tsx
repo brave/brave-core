@@ -41,9 +41,11 @@ import {
 import { filterNetworksForAccount } from '../../../../utils/network-utils'
 import {
   makeAccountRoute,
+  makeFundWalletRoute,
   makePortfolioAssetRoute,
   openTab,
 } from '../../../../utils/routes-utils'
+import { makeNetworkAsset } from '../../../../options/asset-options'
 
 import Amount from '../../../../utils/amount'
 import {
@@ -134,6 +136,9 @@ import { useExplorer } from '../../../../common/hooks/explorer'
 import {
   useIsAccountSyncing, //
 } from '../../../../common/hooks/use_is_account_syncing'
+import {
+  useFindBuySupportedToken, //
+} from '../../../../common/hooks/use-multi-chain-buy-assets'
 
 // Actions
 import { AccountsTabActions } from '../../../../page/reducers/accounts-tab-reducer'
@@ -239,7 +244,6 @@ export const Account = () => {
   const { data: zcashBalance } = useGetZCashBalanceQuery(
     isShieldedAccount && selectedAccount
       ? {
-          chainId: BraveWallet.Z_CASH_MAINNET,
           accountId: selectedAccount.accountId,
         }
       : skipToken,
@@ -591,6 +595,26 @@ export const Account = () => {
     [],
   )
 
+  const onClickDeposit = React.useCallback(() => {
+    dispatch(AccountsTabActions.setShowAccountModal(true))
+    dispatch(AccountsTabActions.setAccountModalType('deposit'))
+    dispatch(AccountsTabActions.setSelectedAccount(selectedAccount))
+  }, [dispatch, selectedAccount])
+
+  const assetForNetwork = React.useMemo(() => {
+    return makeNetworkAsset(networkForSelectedAccount)
+  }, [networkForSelectedAccount])
+
+  const { foundMeldBuyToken } = useFindBuySupportedToken(assetForNetwork)
+
+  const onClickBuy = React.useCallback(() => {
+    if (foundMeldBuyToken) {
+      history.push(makeFundWalletRoute(foundMeldBuyToken, selectedAccount))
+      return
+    }
+    history.push(WalletRoutes.FundWalletPageStart)
+  }, [foundMeldBuyToken, history, selectedAccount])
+
   // redirect (asset not found)
   if (!selectedAccount) {
     return <Redirect to={WalletRoutes.Accounts} />
@@ -720,7 +744,10 @@ export const Account = () => {
             && !isLoadingBalances
             && !isLoadingSpotPrices && (
               <EmptyStateWrapper>
-                <EmptyTokenListState />
+                <EmptyTokenListState
+                  onDepositOverride={onClickDeposit}
+                  onBuyOverride={onClickBuy}
+                />
               </EmptyStateWrapper>
             )}
         </>

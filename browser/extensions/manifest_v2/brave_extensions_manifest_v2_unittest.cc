@@ -16,6 +16,7 @@
 #include "chrome/browser/extensions/extension_service_test_base.h"
 #include "chrome/browser/extensions/install_signer.h"
 #include "chrome/browser/extensions/install_verifier.h"
+#include "chrome/browser/extensions/manifest_v2_experiment_manager.h"
 #include "chrome/browser/extensions/mv2_deprecation_impact_checker.h"
 #include "chrome/browser/extensions/mv2_experiment_stage.h"
 #include "extensions/browser/extension_file_task_runner.h"
@@ -24,6 +25,7 @@
 #include "extensions/browser/extension_registry.h"
 #include "extensions/common/constants.h"
 #include "extensions/common/extension_builder.h"
+#include "extensions/common/extension_features.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 struct BraveExtensionsManifestV2Test
@@ -81,7 +83,31 @@ TEST_F(BraveExtensionsManifestV2Test, CheckInstallVerifier) {
 
 class BraveExtensionsManifestV2DeprecationTest
     : public BraveExtensionsManifestV2Test,
-      public ::testing::WithParamInterface<extensions::MV2ExperimentStage> {};
+      public ::testing::WithParamInterface<extensions::MV2ExperimentStage> {
+ public:
+  BraveExtensionsManifestV2DeprecationTest() {
+    switch (GetParam()) {
+      case extensions::MV2ExperimentStage::kWarning:
+        break;
+      case extensions::MV2ExperimentStage::kDisableWithReEnable:
+        feature_list_.InitWithFeatures(
+            {extensions_mv2::features::kExtensionsManifestV2,
+             extensions_features::kExtensionManifestV2Disabled},
+            {});
+        break;
+      case extensions::MV2ExperimentStage::kUnsupported:
+        feature_list_.InitWithFeatures(
+            {extensions_mv2::features::kExtensionsManifestV2,
+             extensions_features::kExtensionManifestV2Unsupported},
+            {});
+        break;
+    }
+  }
+  ~BraveExtensionsManifestV2DeprecationTest() = default;
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
+};
 
 INSTANTIATE_TEST_SUITE_P(
     ,
@@ -89,6 +115,13 @@ INSTANTIATE_TEST_SUITE_P(
     ::testing::Values(extensions::MV2ExperimentStage::kDisableWithReEnable,
                       extensions::MV2ExperimentStage::kUnsupported,
                       extensions::MV2ExperimentStage::kWarning));
+
+TEST_P(BraveExtensionsManifestV2DeprecationTest, CheckStages) {
+  auto* manager = extensions::ManifestV2ExperimentManager::Get(profile());
+
+  EXPECT_EQ(extensions::MV2ExperimentStage::kWarning,
+            manager->GetCurrentExperimentStage());
+}
 
 TEST_P(BraveExtensionsManifestV2DeprecationTest,
        KnownMV2ExtensionsNotDeprecated) {

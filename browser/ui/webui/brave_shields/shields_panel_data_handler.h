@@ -67,6 +67,7 @@ class ShieldsPanelDataHandler
   // BraveShieldsTabHelper::Observer
   void OnResourcesChanged() override;
   void OnFaviconUpdated() override;
+  void OnShieldsAdBlockOnlyModeEnabledChanged() override;
 
   // TabStripModelObserver
   void OnTabStripModelChanged(

@@ -32,13 +32,15 @@ namespace brave_wallet {
 namespace {
 
 mojom::CardanoBalancePtr BalanceFromUtxos(
-    const GetCardanoUtxosTask::UtxoMap& utxos) {
-  auto result = mojom::CardanoBalance::New();
+    const cardano_rpc::UnspentOutputs& utxos) {
+  base::CheckedNumeric<uint64_t> total_balance = 0;
+  for (const auto& utxo : utxos) {
+    total_balance += utxo.lovelace_amount;
+  }
 
-  for (const auto& items : utxos) {
-    for (const auto& utxo : items.second) {
-      result->total_balance += utxo.lovelace_amount;
-    }
+  auto result = mojom::CardanoBalance::New();
+  if (!total_balance.AssignIfValid(&result->total_balance)) {
+    return nullptr;
   }
 
   return result;
@@ -79,12 +81,17 @@ void CardanoWalletService::GetBalance(mojom::AccountIdPtr account_id,
 
 void CardanoWalletService::OnGetUtxosForGetBalance(
     GetBalanceCallback callback,
-    base::expected<GetCardanoUtxosTask::UtxoMap, std::string> utxos) {
+    base::expected<cardano_rpc::UnspentOutputs, std::string> utxos) {
   if (!utxos.has_value()) {
     std::move(callback).Run(nullptr, utxos.error());
     return;
   }
-  std::move(callback).Run(BalanceFromUtxos(utxos.value()), std::nullopt);
+  auto balance = BalanceFromUtxos(utxos.value());
+  if (!balance) {
+    std::move(callback).Run(nullptr, WalletInternalErrorMessage());
+    return;
+  }
+  std::move(callback).Run(std::move(balance), std::nullopt);
 }
 
 void CardanoWalletService::DiscoverNextUnusedAddress(
@@ -136,7 +143,7 @@ void CardanoWalletService::GetUtxos(mojom::AccountIdPtr account_id,
 void CardanoWalletService::OnGetUtxosTaskDone(
     GetCardanoUtxosTask* task,
     GetUtxosCallback callback,
-    base::expected<GetCardanoUtxosTask::UtxoMap, std::string> result) {
+    base::expected<cardano_rpc::UnspentOutputs, std::string> result) {
   get_cardano_utxo_tasks_.erase(task);
 
   std::move(callback).Run(std::move(result));
@@ -334,9 +341,9 @@ cardano_rpc::CardanoRpc* CardanoWalletService::GetCardanoRpc(
 void CardanoWalletService::SetUrlLoaderFactoryForTesting(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
   cardano_mainnet_rpc_.SetUrlLoaderFactoryForTesting(  // IN-TEST
-      std::move(url_loader_factory));
+      url_loader_factory);
   cardano_testnet_rpc_.SetUrlLoaderFactoryForTesting(  // IN-TEST
-      std::move(url_loader_factory));
+      url_loader_factory);
 }
 
 }  // namespace brave_wallet

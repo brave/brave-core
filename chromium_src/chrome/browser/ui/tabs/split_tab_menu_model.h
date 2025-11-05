@@ -6,6 +6,8 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_TABS_SPLIT_TAB_MENU_MODEL_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_TABS_SPLIT_TAB_MENU_MODEL_H_
 
+#include "base/gtest_prod_util.h"
+
 // Export GetCommandIdXXX() functions from cc to call it in subclass and test.
 #define CloseTabAtIndex(...)                                \
   CloseTabAtIndex(__VA_ARGS__);                             \

@@ -9,6 +9,7 @@ import { RegexDebugEntry, Regex } from './regex'
 export class EngineDebugInfo {
   compiled_regex_count: number = 0
   regex_data: RegexDebugEntry[] = []
+  flatbuffer_size: number = 0
 }
 
 interface Props {
@@ -16,14 +17,20 @@ interface Props {
   info: EngineDebugInfo
 }
 
-export class Engine extends React.Component<Props, {}> {
-  render () {
-    const items = this.props.info.regex_data.map(
-      (d, index) => <Regex key={index} regex={d} />)
+export const EngineRegexList = (props: Props) => {
+  const items = props.info.regex_data.map((d, index) => (
+    <Regex
+      key={index}
+      regex={d}
+    />
+  ))
 
-    return (
+  return (
+    <div>
       <table>
-        <caption><h2>{this.props.caption}</h2></caption>
+        <caption>
+          <h2>{props.caption} Regexes</h2>
+        </caption>
         <tbody>
           <tr>
             <th>ID</th>
@@ -35,6 +42,6 @@ export class Engine extends React.Component<Props, {}> {
           {items}
         </tbody>
       </table>
-    )
-  }
+    </div>
+  )
 }

@@ -9,16 +9,17 @@
 #include "brave/components/brave_component_updater/browser/features.h"
 #include "brave/components/brave_rewards/core/features.h"
 #include "brave/components/brave_shields/core/common/features.h"
+#include "brave/components/brave_sync/features.h"
 #include "brave/components/brave_user_agent/common/features.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/de_amp/common/features.h"
 #include "brave/components/debounce/core/common/features.h"
-#include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/ios/browser/api/translate/features.h"
 #include "brave/ios/browser/brave_wallet/features.h"
 #include "brave/ios/browser/ui/tab_tray/features.h"
 #include "brave/ios/browser/ui/web_view/features.h"
+#include "brave/ios/browser/ui/webui/ai_chat/features.h"
 #include "build/build_config.h"
 #include "components/webui/flags/feature_entry_macros.h"
 #include "components/webui/flags/flags_state.h"
@@ -129,23 +130,38 @@
           flags_ui::kOsIos,                                                    \
           FEATURE_VALUE_TYPE(                                                  \
               brave_shields::features::kBraveIOSEnableFarblingPlugins),        \
+      },                                                                       \
+      {                                                                        \
+          "ios-webkit-advanced-privacy-protections",                           \
+          "Enable WebKit's Advanced Privacy Protections",                      \
+          "Enable's WebKit's Advanced Privacy Protections on all sites",       \
+          flags_ui::kOsIos,                                                    \
+          FEATURE_VALUE_TYPE(                                                  \
+              brave_shields::features::kWebKitAdvancedPrivacyProtections),     \
       })
 
-#define BRAVE_AI_CHAT_FEATURE_ENTRIES                                      \
-  EXPAND_FEATURE_ENTRIES(                                                  \
-      {                                                                    \
-          "brave-ai-chat",                                                 \
-          "Brave AI Chat",                                                 \
-          "Summarize articles and engage in conversation with AI",         \
-          flags_ui::kOsIos,                                                \
-          FEATURE_VALUE_TYPE(ai_chat::features::kAIChat),                  \
-      },                                                                   \
-      {                                                                    \
-          "brave-ai-chat-history",                                         \
-          "Brave AI Chat History",                                         \
-          "Enables AI Chat History persistence and management",            \
-          flags_ui::kOsIos,                                                \
-          FEATURE_VALUE_TYPE(ai_chat::features::kAIChatHistory),           \
+#define BRAVE_AI_CHAT_FEATURE_ENTRIES                                 \
+  EXPAND_FEATURE_ENTRIES(                                             \
+      {                                                               \
+          "brave-ai-chat",                                            \
+          "Brave AI Chat",                                            \
+          "Summarize articles and engage in conversation with AI",    \
+          flags_ui::kOsIos,                                           \
+          FEATURE_VALUE_TYPE(ai_chat::features::kAIChat),             \
+      },                                                              \
+      {                                                               \
+          "brave-ai-chat-history",                                    \
+          "Brave AI Chat History",                                    \
+          "Enables AI Chat History persistence and management",       \
+          flags_ui::kOsIos,                                           \
+          FEATURE_VALUE_TYPE(ai_chat::features::kAIChatHistory),      \
+      },                                                              \
+      {                                                               \
+          "brave-ai-chat-webui",                                      \
+          "Brave AI Chat WebUI",                                      \
+          "Enables the use of Leo via WebUI",                         \
+          flags_ui::kOsIos,                                           \
+          FEATURE_VALUE_TYPE(ai_chat::features::kAIChatWebUIEnabled), \
       })
 
 #define BRAVE_WALLET_FEATURE_ENTRIES                                    \
@@ -178,6 +194,14 @@
           FEATURE_VALUE_TYPE(brave::features::kModernTabTrayEnabled),          \
       },                                                                       \
       {                                                                        \
+          "brave-sync-default-passwords",                                      \
+          "Enable password syncing by default",                                \
+          "Turn on password syncing when Sync is enabled.",                    \
+          flags_ui::kOsIos,                                                    \
+          FEATURE_VALUE_TYPE(                                                  \
+              brave_sync::features::kBraveSyncDefaultPasswords),               \
+      },                                                                       \
+      {                                                                        \
           "brave-translate-enabled",                                           \
           "Use Brave Translate",                                               \
           "Enables page translation",                                          \
@@ -206,16 +230,6 @@
           FEATURE_VALUE_TYPE(brave::features::kUseChromiumWebViews),           \
       },                                                                       \
       {                                                                        \
-          "brave-ntp-branded-wallpaper-demo",                                  \
-          "New Tab Page Demo Branded Wallpaper",                               \
-          "Force dummy data for the Branded Wallpaper New Tab Page "           \
-          "Experience. View rate and user opt-in conditionals will still be "  \
-          "followed to decide when to display the Branded Wallpaper.",         \
-          flags_ui::kOsIos,                                                    \
-          FEATURE_VALUE_TYPE(                                                  \
-              ntp_background_images::features::kBraveNTPBrandedWallpaperDemo), \
-      },                                                                       \
-      {                                                                        \
           "brave-debounce",                                                    \
           "Enable debouncing",                                                 \
           "Enable support for skipping top-level redirect tracking URLs",      \
@@ -228,14 +242,6 @@
           "Enable De-AMPing feature",                                          \
           flags_ui::kOsIos,                                                    \
           FEATURE_VALUE_TYPE(de_amp::features::kBraveDeAMP),                   \
-      },                                                                       \
-      {                                                                        \
-          "brave-super-referral",                                              \
-          "Enable Brave Super Referral",                                       \
-          "Use custom theme for Brave Super Referral",                         \
-          flags_ui::kOsIos,                                                    \
-          FEATURE_VALUE_TYPE(ntp_background_images::features::                 \
-                                 kBraveNTPSuperReferralWallpaper),             \
       },                                                                       \
       {                                                                        \
           "brave-rewards-verbose-logging",                                     \

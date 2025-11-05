@@ -42,7 +42,7 @@ bool Verify(const ConfirmationInfo& confirmation) {
   }
 
   std::optional<base::Value::Dict> dict =
-      base::JSONReader::ReadDict(credential);
+      base::JSONReader::ReadDict(credential, base::JSON_PARSE_RFC);
   if (!dict) {
     return false;
   }

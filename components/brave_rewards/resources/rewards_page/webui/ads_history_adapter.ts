@@ -32,9 +32,12 @@ function createMap(data: any[]) {
 
 function convertLikeAction(likeAction: number) {
   switch (likeAction) {
-    case 1: return 'liked'
-    case 2: return 'disliked'
-    default: return ''
+    case 1:
+      return 'liked'
+    case 2:
+      return 'disliked'
+    default:
+      return ''
   }
 }
 
@@ -54,7 +57,7 @@ function convertMapValue(id: string, value: MapValue): AdsHistoryItem | null {
     domain: String(adContent.brandDisplayUrl || ''),
     url: String(adContent.brandUrl || ''),
     likeStatus: convertLikeAction(adContent.likeAction),
-    inappropriate: Boolean(adContent.flaggedAd)
+    inappropriate: Boolean(adContent.flaggedAd),
   }
   if (!item.name || !item.domain || !item.url) {
     console.error('Unexpected Ad history data', detail)
@@ -65,10 +68,12 @@ function convertMapValue(id: string, value: MapValue): AdsHistoryItem | null {
 
 function convertAdType(typeString: string): AdType | null {
   switch (typeString) {
-    case 'ad_notification': return 'notification'
-    case 'new_tab_page_ad': return 'new-tab-page'
-    case 'search_result_ad': return 'search-result'
-    default: return null
+    case 'ad_notification':
+      return 'notification'
+    case 'new_tab_page_ad':
+      return 'new-tab-page'
+    default:
+      return null
   }
 }
 

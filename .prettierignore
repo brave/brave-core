@@ -1,51 +1,34 @@
 # Don't add paths that are already ignored in .gitignore:
 # npm run format/presubmit does it automatically.
-# For manual run use :
-# npx prettier --ignore-path .prettierignore --ignore-path .gitignore .
+# For manual run:
+# npm run format -- --all-files --only-prettier [--dry-run]
 
-# Ignore HTML Files - incompatable with presubmit rules
+# Ignore HTML Files - incompatible with presubmit rules
 *.html
 
-# Ignore non-component top level folders (remove to opt-in):
-/android
-/app
-/base
-/brave_domains
-/browser
+# Ignore some non-component top level folders (remove to opt-in):
 /chromium_src
-/common
-/content
-/coverage
 /docs
-/extensions
-/fuzzers
-/installer
 /ios
-/mojo
-/net
-/patches
-/renderer
 /resources
-/sandbox
-/script
-/services
 /test
-/third_party
-/tools
-/ui
-/utility
-/v8
-/vector_icons
-/win_build_output
 /.storybook/
+
+# Ignore external dependencies:
+/tools/crates/vendor/
+/third_party/
+/ui/webui/resources/wasm/vendor/
 
 # Ignore github .yml files:
 .github/**/*.yml
 
-# Ignored markdown files:
+# Ignore some markdown files:
 .github/PULL_REQUEST_TEMPLATE.md
 CONTRIBUTING.md
 README.md
+browser/ui/commander/fuzzy_finder.md
+browser/ui/views/brave_ads/overview.md
+components/ai_chat/core/browser/tools/tools.md
 
 # Ignored top-level files:
 .clang-tidy
@@ -59,9 +42,13 @@ snapcraft.yaml
 # Ignored minified javascript
 components/brave_wallet/resources/solana_web3_script.js
 
+# Ignore browser/resources sub folders that still need to be formatted
+/browser/resources/brave_new_tab_page_refresh/
+/browser/resources/settings/
+
 # Ignore components folders with a lot of formatting issues
 /components/brave_new_tab_ui/
-/components/brave_rewards/
+/components/brave_rewards/resources/shared
 /components/brave_shields/
 /components/brave_vpn/
 /components/brave_news/
@@ -95,3 +82,8 @@ components/brave_wallet/resources/solana_web3_script.js
 /components/test/
 /components/translate/
 /components/variations/
+
+# Ignore some folders that still need to be formatted
+/ui/webui/resources/
+/android/java/org/chromium/chrome/browser/
+/common/extensions/api/

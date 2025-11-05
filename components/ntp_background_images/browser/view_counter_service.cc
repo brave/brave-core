@@ -13,15 +13,14 @@
 
 #include "base/check.h"
 #include "base/check_is_test.h"
+#include "base/debug/crash_logging.h"
+#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
-#include "base/functional/callback_helpers.h"
 #include "base/logging.h"
 #include "base/metrics/histogram_macros.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
-#include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_feature.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
-#include "brave/components/brave_rewards/core/rewards_flags.h"
 #include "brave/components/ntp_background_images/browser/brave_ntp_custom_background_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
 #include "brave/components/ntp_background_images/browser/ntp_p3a_helper.h"
@@ -36,9 +35,7 @@
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
-#include "components/metrics/metrics_pref_names.h"
 #include "components/prefs/pref_service.h"
-#include "content/public/browser/web_ui_data_source.h"
 #include "url/gurl.h"
 
 namespace ntp_background_images {
@@ -123,6 +120,10 @@ ViewCounterService::~ViewCounterService() {
   host_content_settings_map_->RemoveObserver(this);
 }
 
+void ViewCounterService::OnDidInitializeAdsService() {
+  background_images_service_->RegisterSponsoredImagesComponent();
+}
+
 void ViewCounterService::OnDidClearAdsServiceData() {
   background_images_service_->ForceSponsoredComponentUpdate();
 }
@@ -136,29 +137,27 @@ void ViewCounterService::OnContentSettingChanged(
   }
 }
 
-void ViewCounterService::BrandedWallpaperWillBeDisplayed(
+void ViewCounterService::RecordViewedAdEvent(
     const std::string& placement_id,
     const std::string& campaign_id,
     const std::string& creative_instance_id,
-    bool should_metrics_fallback_to_p3a) {
-  if (!brave_ads::kShouldSupportNewTabPageAdConfirmationsForNonRewards.Get()) {
-    // If we don't support confirmations, we should always fallback to P3A.
-    should_metrics_fallback_to_p3a = true;
-  }
-
-  if (should_metrics_fallback_to_p3a && ntp_p3a_helper_) {
-    ntp_p3a_helper_->RecordView(creative_instance_id, campaign_id);
-  }
-
+    brave_ads::mojom::NewTabPageAdMetricType mojom_ad_metric_type) {
   branded_new_tab_count_state_->AddDelta(1);
   UpdateP3AValues();
 
-  // The ads service will handle cases where fallback to P3A reporting is
-  // required and will no-op sending a confirmation. However, we still need to
-  // trigger the event to ensure other related logic is executed.
   MaybeTriggerNewTabPageAdEvent(
-      placement_id, creative_instance_id, should_metrics_fallback_to_p3a,
+      placement_id, creative_instance_id, mojom_ad_metric_type,
       brave_ads::mojom::NewTabPageAdEventType::kViewedImpression);
+}
+
+void ViewCounterService::RecordClickedAdEvent(
+    const std::string& placement_id,
+    const std::string& creative_instance_id,
+    const std::string& /*target_url*/,
+    brave_ads::mojom::NewTabPageAdMetricType mojom_ad_metric_type) {
+  MaybeTriggerNewTabPageAdEvent(
+      placement_id, creative_instance_id, mojom_ad_metric_type,
+      brave_ads::mojom::NewTabPageAdEventType::kClicked);
 }
 
 NTPSponsoredImagesData* ViewCounterService::GetSponsoredImagesData() const {
@@ -230,6 +229,9 @@ ViewCounterService::GetCurrentBrandedWallpaper() const {
   }
 
   if (images_data->IsSuperReferral()) {
+    SCOPED_CRASH_KEY_STRING64("Issue50267", "failure_reason",
+                              "Super referrals are enabled");
+    base::debug::DumpWithoutCrashing();
     return GetCurrentBrandedWallpaperFromModel();
   }
 
@@ -248,6 +250,8 @@ ViewCounterService::GetCurrentBrandedWallpaperFromAdsService() const {
 
   NTPSponsoredImagesData* images_data = GetSponsoredImagesData();
   if (!images_data) {
+    ads_service_->OnFailedToPrefetchNewTabPageAd(ad->placement_id,
+                                                 ad->creative_instance_id);
     return std::nullopt;
   }
 
@@ -256,6 +260,12 @@ ViewCounterService::GetCurrentBrandedWallpaperFromAdsService() const {
   if (!background) {
     ads_service_->OnFailedToPrefetchNewTabPageAd(ad->placement_id,
                                                  ad->creative_instance_id);
+    SCOPED_CRASH_KEY_STRING64("Issue50267", "creative_instance_id",
+                              ad->creative_instance_id);
+    SCOPED_CRASH_KEY_STRING64("Issue50267", "failure_reason",
+                              "No matching background");
+    base::debug::DumpWithoutCrashing();
+    return std::nullopt;
   }
 
   return background;
@@ -319,6 +329,10 @@ void ViewCounterService::OnSuperReferralCampaignDidEnd() {
 void ViewCounterService::ParseAndSaveNewTabPageAdsCallback(bool success) {
   if (success) {
     MaybePrefetchNewTabPageAd();
+  } else {
+    SCOPED_CRASH_KEY_STRING64("Issue50267", "failure_reason",
+                              "Failed to parse and save ads");
+    base::debug::DumpWithoutCrashing();
   }
 }
 
@@ -378,43 +392,6 @@ void ViewCounterService::RegisterPageView() {
   MaybePrefetchNewTabPageAd();
 }
 
-void ViewCounterService::BrandedWallpaperLogoClicked(
-    const std::string& placement_id,
-    const std::string& creative_instance_id,
-    const std::string& /*target_url*/,
-    bool should_metrics_fallback_to_p3a) {
-  if (!brave_ads::kShouldSupportNewTabPageAdConfirmationsForNonRewards.Get()) {
-    // If we don't support confirmations, we should always fallback to P3A.
-    should_metrics_fallback_to_p3a = true;
-  }
-
-  if (should_metrics_fallback_to_p3a && ntp_p3a_helper_) {
-    ntp_p3a_helper_->RecordNewTabPageAdEvent(
-        brave_ads::mojom::NewTabPageAdEventType::kClicked,
-        creative_instance_id);
-  }
-
-  // The ads service will handle cases where fallback to P3A reporting is
-  // required and will no-op sending a confirmation. However, we still need to
-  // trigger the event to ensure other related logic is executed.
-  MaybeTriggerNewTabPageAdEvent(
-      placement_id, creative_instance_id, should_metrics_fallback_to_p3a,
-      brave_ads::mojom::NewTabPageAdEventType::kClicked);
-}
-
-void ViewCounterService::MaybeTriggerNewTabPageAdEvent(
-    const std::string& placement_id,
-    const std::string& creative_instance_id,
-    bool should_metrics_fallback_to_p3a,
-    brave_ads::mojom::NewTabPageAdEventType mojom_ad_event_type) {
-  if (ads_service_) {
-    ads_service_->TriggerNewTabPageAdEvent(placement_id, creative_instance_id,
-                                           should_metrics_fallback_to_p3a,
-                                           mojom_ad_event_type,
-                                           /*intentional*/ base::DoNothing());
-  }
-}
-
 bool ViewCounterService::ShouldShowSponsoredImages() const {
   return CanShowSponsoredImages() && model_.ShouldShowSponsoredImages();
 }
@@ -428,11 +405,6 @@ bool ViewCounterService::ShouldShowCustomBackgroundImages() const {
 #endif
 }
 
-void ViewCounterService::InitializeWebUIDataSource(
-    content::WebUIDataSource* html_source) {
-  html_source->AddString("superReferralThemeName", GetSuperReferralThemeName());
-}
-
 void ViewCounterService::OnTabURLChanged(const GURL& url) {
   if (ntp_p3a_helper_) {
     ntp_p3a_helper_->OnNavigationDidFinish(url);
@@ -441,40 +413,6 @@ void ViewCounterService::OnTabURLChanged(const GURL& url) {
 
 NTPP3AHelper* ViewCounterService::GetP3AHelper() const {
   return ntp_p3a_helper_.get();
-}
-
-base::Time ViewCounterService::GracePeriodEndAt(
-    base::TimeDelta grace_period) const {
-  const base::Time install_date = base::Time::FromSecondsSinceUnixEpoch(
-      local_state_->GetInt64(metrics::prefs::kInstallDate));
-  return install_date + grace_period;
-}
-
-bool ViewCounterService::HasGracePeriodEnded(
-    const NTPSponsoredImagesData* images_data) const {
-  if (brave_rewards::RewardsFlags::ForCurrentProcess().debug) {
-    // If debug mode is enabled, consider it ended.
-    return true;
-  }
-
-  if (!images_data->grace_period ||
-      !local_state_->FindPreference(metrics::prefs::kInstallDate)) {
-    // If no grace period is set, consider it ended.
-    return true;
-  }
-
-  const base::Time grace_period_end_at =
-      GracePeriodEndAt(*images_data->grace_period);
-  if (base::Time::Now() >= grace_period_end_at) {
-    // If the current time is past the grace period end time, it has ended.
-    return true;
-  }
-
-  // Otherwise, the grace period is still active.
-  LOG(INFO) << "Sponsored images not shown: Grace period after installation is "
-               "still active until "
-            << grace_period_end_at;
-  return false;
 }
 
 bool ViewCounterService::CanShowSponsoredImages() const {
@@ -492,11 +430,7 @@ bool ViewCounterService::CanShowSponsoredImages() const {
     return false;
   }
 
-  if (!IsSponsoredImagesWallpaperOptedIn()) {
-    return false;
-  }
-
-  return HasGracePeriodEnded(images_data);
+  return IsSponsoredImagesWallpaperOptedIn();
 }
 
 bool ViewCounterService::CanShowBackgroundImages() const {
@@ -539,12 +473,53 @@ std::string ViewCounterService::GetSuperReferralCode() const {
 
 void ViewCounterService::MaybePrefetchNewTabPageAd() {
   NTPSponsoredImagesData* images_data = GetSponsoredImagesData();
-  if (!ads_service_ || !CanShowSponsoredImages() || !images_data ||
-      images_data->IsSuperReferral()) {
+  if (!ads_service_) {
+    return;
+  }
+
+  if (!CanShowSponsoredImages() || !images_data) {
+    return;
+  }
+
+  if (images_data->IsSuperReferral()) {
+    SCOPED_CRASH_KEY_STRING64("Issue50267", "failure_reason",
+                              "Super referrals are enabled");
+    base::debug::DumpWithoutCrashing();
     return;
   }
 
   ads_service_->PrefetchNewTabPageAd();
+}
+
+void ViewCounterService::MaybeTriggerNewTabPageAdEvent(
+    const std::string& placement_id,
+    const std::string& creative_instance_id,
+    brave_ads::mojom::NewTabPageAdMetricType mojom_ad_metric_type,
+    brave_ads::mojom::NewTabPageAdEventType mojom_ad_event_type) {
+  if (ads_service_) {
+    ads_service_->TriggerNewTabPageAdEvent(
+        placement_id, creative_instance_id, mojom_ad_metric_type,
+        mojom_ad_event_type,
+        base::BindOnce(
+            [](const std::string& creative_instance_id,
+               brave_ads::mojom::NewTabPageAdMetricType mojom_ad_metric_type,
+               brave_ads::mojom::NewTabPageAdEventType mojom_ad_event_type,
+               bool success) {
+              if (!success) {
+                SCOPED_CRASH_KEY_STRING64("Issue50267", "creative_instance_id",
+                                          creative_instance_id);
+                SCOPED_CRASH_KEY_NUMBER("Issue50267", "metric_type",
+                                        static_cast<int>(mojom_ad_metric_type));
+                SCOPED_CRASH_KEY_NUMBER("Issue50267", "event_type",
+                                        static_cast<int>(mojom_ad_event_type));
+                SCOPED_CRASH_KEY_STRING64(
+                    "Issue50267", "failure_reason",
+                    "Failed to trigger new tab page ad event");
+                base::debug::DumpWithoutCrashing();
+              }
+            },
+            creative_instance_id, mojom_ad_metric_type, mojom_ad_event_type));
+  }
 }
 
 void ViewCounterService::UpdateP3AValues() {

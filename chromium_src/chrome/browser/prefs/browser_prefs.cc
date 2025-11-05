@@ -9,7 +9,6 @@
 #include "brave/browser/brave_rewards/rewards_prefs_util.h"
 #include "brave/browser/brave_stats/brave_stats_updater.h"
 #include "brave/browser/misc_metrics/uptime_monitor_impl.h"
-#include "brave/browser/ntp_background/ntp_p3a_helper_impl.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/translate/brave_translate_prefs_migration.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
@@ -36,6 +35,7 @@
 #include "brave/components/p3a/rotation_scheduler.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
+#include "chrome/browser/accessibility/page_colors_controller.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/channel_info.h"
 #include "chrome/common/pref_names.h"
@@ -253,8 +253,7 @@ void MigrateObsoleteLocalStatePrefs(PrefService* local_state) {
   brave_l10n::MigrateObsoleteLocalStatePrefs(local_state);
   p3a::MetricLogStore::MigrateObsoleteLocalStatePrefs(local_state);
   p3a::RotationScheduler::MigrateObsoleteLocalStatePrefs(local_state);
-  ntp_background_images::NTPP3AHelperImpl::MigrateObsoleteLocalStatePrefs(
-      local_state);
+  brave_ads::MigrateObsoleteLocalStatePrefs(local_state);
 
   // END_MIGRATE_OBSOLETE_LOCAL_STATE_PREFS
 }

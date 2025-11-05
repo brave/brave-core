@@ -83,6 +83,9 @@ extension BrowserViewController {
   }
 
   public func presentPlaylistController() {
+    if !profileController.profile.prefs.isPlaylistAvailable {
+      return
+    }
     if PlaylistCoordinator.shared.isPlaylistControllerPresented {
       let alert = UIAlertController(
         title: Strings.PlayList.playlistAlreadyShowingTitle,
@@ -184,9 +187,15 @@ extension BrowserViewController {
         )
       )
     }
-    // Sets up empty actions for any page actions that weren't setup as UIActivity's
+    // Sets up empty actions for any page actions that weren't setup as UIActivity's excluding any
+    // that should be hidden due to admin policies
+    var pageActivitiesRemovedByAdminPolicies: Set<Action.Identifier> = []
+    if !profileController.profile.prefs.isBraveNewsAvailable {
+      pageActivitiesRemovedByAdminPolicies.insert(.addSourceNews)
+    }
     let remainingPageActivities: [Action] = Action.ID.allPageActivites
       .subtracting(pageActivities.map(\.id))
+      .subtracting(pageActivitiesRemovedByAdminPolicies)
       .map { .init(id: $0, attributes: .disabled) }
     actions.append(contentsOf: pageActivities)
     actions.append(contentsOf: remainingPageActivities)
@@ -226,8 +235,6 @@ extension BrowserViewController {
   }
 
   private func pageActions(for pageURL: URL?, tab: (any TabState)?) -> [Action] {
-    let playlistActivity = addToPlayListActivityItem ?? openInPlaylistActivityItem
-    let isPlaylistItemAdded = openInPlaylistActivityItem != nil
     var actions: [Action] = [
       .init(id: .share) { @MainActor [unowned self] _ in
         self.dismiss(animated: true) {
@@ -242,39 +249,6 @@ extension BrowserViewController {
         return .none
       },
       .init(
-        id: .addToPlaylist,
-        title: isPlaylistItemAdded ? Strings.PlayList.toastAddedToPlaylistTitle : nil,
-        image: isPlaylistItemAdded ? "leo.product.playlist-added" : nil,
-        attributes: playlistActivity?.enabled == true ? [] : .disabled
-      ) { @MainActor [unowned self] action in
-        let playlistActivity = addToPlayListActivityItem ?? openInPlaylistActivityItem
-        let isPlaylistItemAdded = openInPlaylistActivityItem != nil
-        guard let item = playlistActivity?.item else { return .none }
-        if !isPlaylistItemAdded {
-          // Add to playlist
-          // TODO: Need to be able to return something that will update the underlying action
-          let addedItem = await withCheckedContinuation { continuation in
-            self.addToPlaylist(item: item) { didAddItem in
-              continuation.resume(returning: didAddItem)
-            }
-          }
-          if addedItem {
-            var actionCopy = action
-            actionCopy.title = Strings.PlayList.toastAddedToPlaylistTitle
-            actionCopy.image = "leo.product.playlist-added"
-            return .updateAction(actionCopy)
-          }
-        } else {
-          self.dismiss(animated: true) {
-            self.openPlaylist(
-              tab: self.tabManager.selectedTab,
-              item: item
-            )
-          }
-        }
-        return .none
-      },
-      .init(
         id: .toggleNightMode,
         state: Preferences.General.nightModeEnabled.value
       ) { @MainActor action in
@@ -284,6 +258,45 @@ extension BrowserViewController {
         return .updateAction(actionCopy)
       },
     ]
+    if profileController.profile.prefs.isPlaylistAvailable {
+      let playlistActivity = addToPlayListActivityItem ?? openInPlaylistActivityItem
+      let isPlaylistItemAdded = openInPlaylistActivityItem != nil
+      actions.append(
+        .init(
+          id: .addToPlaylist,
+          title: isPlaylistItemAdded ? Strings.PlayList.toastAddedToPlaylistTitle : nil,
+          image: isPlaylistItemAdded ? "leo.product.playlist-added" : nil,
+          attributes: playlistActivity?.enabled == true ? [] : .disabled
+        ) { @MainActor [unowned self] action in
+          let playlistActivity = addToPlayListActivityItem ?? openInPlaylistActivityItem
+          let isPlaylistItemAdded = openInPlaylistActivityItem != nil
+          guard let item = playlistActivity?.item else { return .none }
+          if !isPlaylistItemAdded {
+            // Add to playlist
+            // TODO: Need to be able to return something that will update the underlying action
+            let addedItem = await withCheckedContinuation { continuation in
+              self.addToPlaylist(item: item) { didAddItem in
+                continuation.resume(returning: didAddItem)
+              }
+            }
+            if addedItem {
+              var actionCopy = action
+              actionCopy.title = Strings.PlayList.toastAddedToPlaylistTitle
+              actionCopy.image = "leo.product.playlist-added"
+              return .updateAction(actionCopy)
+            }
+          } else {
+            self.dismiss(animated: true) {
+              self.openPlaylist(
+                tab: self.tabManager.selectedTab,
+                item: item
+              )
+            }
+          }
+          return .none
+        }
+      )
+    }
     if BraveCore.FeatureList.kBraveShredFeature.enabled {
       let isShredAvailable = tabManager.selectedTab?.visibleURL?.isShredAvailable ?? false
       actions.append(
@@ -482,12 +495,16 @@ extension BrowserViewController {
         }
         return .none
       },
-      .init(id: .playlist) { @MainActor [unowned self] _ in
-        // presentPlaylistController already handles dismiss + present
-        self.presentPlaylistController()
-        return .none
-      },
     ]
+    if profileController.profile.prefs.isPlaylistAvailable {
+      actions.append(
+        .init(id: .playlist) { @MainActor [unowned self] _ in
+          // presentPlaylistController already handles dismiss + present
+          self.presentPlaylistController()
+          return .none
+        }
+      )
+    }
     if profileController.braveWalletAPI.isAllowed {
       actions.append(
         .init(id: .braveWallet) { @MainActor [unowned self] _ in

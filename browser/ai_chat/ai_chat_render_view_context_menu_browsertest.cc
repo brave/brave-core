@@ -20,6 +20,7 @@
 #include "brave/components/ai_chat/core/browser/engine/mock_engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/renderer_context_menu/render_view_context_menu.h"
@@ -186,7 +187,7 @@ class AIChatRenderViewContextMenuBrowserTest : public InProcessBrowserTest {
           // Verify that rewrite is requested
           EXPECT_CALL(*ai_engine, GenerateRewriteSuggestion(_, _, _, _, _))
               .WillOnce(
-                  [&](std::string text, const std::string& question,
+                  [&](const std::string& text, mojom::ActionType action_type,
                       const std::string& selected_language,
                       EngineConsumer::GenerationDataCallback data_callback,
                       EngineConsumer::GenerationCompletedCallback callback) {
@@ -257,8 +258,9 @@ class AIChatRenderViewContextMenuBrowserTest : public InProcessBrowserTest {
 
     return AIChatServiceFactory::GetInstance()
         ->GetForBrowserContext(browser()->profile())
-        ->GetOrCreateConversationHandlerForContent(helper->content_id(),
-                                                   helper->GetWeakPtr());
+        ->GetOrCreateConversationHandlerForContent(
+            helper->web_contents_content().content_id(),
+            helper->web_contents_content().GetWeakPtr());
   }
 
   std::unique_ptr<testing::NiceMock<MockConversationHandlerClient>>
@@ -282,8 +284,7 @@ class AIChatRenderViewContextMenuBrowserTest : public InProcessBrowserTest {
       std::string& submitted_text,
       const base::Location& location) {
     EXPECT_CALL(client, OnConversationHistoryUpdate(_))
-        .WillOnce(testing::Invoke([&, location](
-                                      const mojom::ConversationTurnPtr turn) {
+        .WillOnce([&, location](const mojom::ConversationTurnPtr turn) {
           SCOPED_TRACE(testing::Message() << location.ToString());
           ConversationHandler* conversation_handler = GetConversationHandler();
           ASSERT_TRUE(conversation_handler);
@@ -294,7 +295,7 @@ class AIChatRenderViewContextMenuBrowserTest : public InProcessBrowserTest {
           ASSERT_TRUE(entry->selected_text);
           submitted_text = *entry->selected_text;
           run_loop.Quit();
-        }));
+        });
   }
 
   std::unique_ptr<TestRenderViewContextMenu> CreateContextMenu(
@@ -329,21 +330,13 @@ IN_PROC_BROWSER_TEST_F(AIChatRenderViewContextMenuBrowserTest, RewriteInPlace) {
   auto client = SetupMockConversationHandler(FROM_HERE);
   ASSERT_TRUE(client);
 
-  // Test rewriting textarea value and verify that the response tag is ignored
-  // by BraveRenderViewContextMenu
+  // Test rewriting textarea value.
   TestRewriteInPlace(contents, "textarea", "I'm textarea.",
-                     {"O", "OK", "<", "</", "</r", "</re", "</response"}, "",
-                     "OK");
+                     {"This", " is", " the w", "ay."}, "", "This is the way.");
 
   // Do the same again to make sure it still works at the second time.
-  TestRewriteInPlace(contents, "textarea", "OK", {"O", "OK", "OK2"}, "", "OK2");
-
-  // Select text in text input and create context menu to execute a rewrite cmd.
-  // Verify that the text is rewritten.
-  TestRewriteInPlace(contents, "input_text", "I'm input.", {"O", "OK", "OK3"},
-                     "", "OK3");
-  TestRewriteInPlace(contents, "contenteditable", "I'm contenteditable.",
-                     {"O", "OK", "OK4"}, "", "OK4");
+  TestRewriteInPlace(contents, "textarea", "This is the way.", {"OK", "2"}, "",
+                     "OK2");
 
   // Error case handling tests and verify that the text is not rewritten.
   // 1) Get error in completed callback immediately.
@@ -358,6 +351,44 @@ IN_PROC_BROWSER_TEST_F(AIChatRenderViewContextMenuBrowserTest, RewriteInPlace) {
   TestRewriteInPlace(contents, "textarea", "OK2", {"N", "O"},
                      base::unexpected(mojom::APIError::ConnectionIssue), "OK2");
   EXPECT_TRUE(IsAIChatSidebarActive());
+}
+
+IN_PROC_BROWSER_TEST_F(AIChatRenderViewContextMenuBrowserTest,
+                       RewriteInPlace_InputText) {
+  // Mimic user opt-in by setting pref.
+  SetUserOptedIn(GetPrefs(), true);
+
+  // Load rewrite.html
+  GURL url = https_server()->GetURL("/rewrite.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  auto* contents = web_contents();
+
+  // This is to keep the ConversationHandler alive until the test is done.
+  auto client = SetupMockConversationHandler(FROM_HERE);
+  ASSERT_TRUE(client);
+
+  // Test rewriting text input.
+  TestRewriteInPlace(contents, "input_text", "I'm input.", {"OK", "3"}, "",
+                     "OK3");
+}
+
+IN_PROC_BROWSER_TEST_F(AIChatRenderViewContextMenuBrowserTest,
+                       RewriteInPlace_ContentEditable) {
+  // Mimic user opt-in by setting pref.
+  SetUserOptedIn(GetPrefs(), true);
+
+  // Load rewrite.html
+  GURL url = https_server()->GetURL("/rewrite.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  auto* contents = web_contents();
+
+  // This is to keep the ConversationHandler alive until the test is done.
+  auto client = SetupMockConversationHandler(FROM_HERE);
+  ASSERT_TRUE(client);
+
+  // Test rewriting contenteditable.
+  TestRewriteInPlace(contents, "contenteditable", "I'm contenteditable.",
+                     {"OK4"}, "", "OK4");
 }
 
 IN_PROC_BROWSER_TEST_F(AIChatRenderViewContextMenuBrowserTest,

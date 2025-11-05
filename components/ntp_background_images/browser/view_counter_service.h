@@ -11,7 +11,6 @@
 #include <string>
 #include <vector>
 
-#include "base/functional/callback_forward.h"
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
@@ -31,18 +30,9 @@ class PrefService;
 
 class GURL;
 
-namespace base {
-class Time;
-class TimeDelta;
-}  // namespace base
-
 namespace brave_ads {
 class AdsService;
 }  // namespace brave_ads
-
-namespace content {
-class WebUIDataSource;
-}  // namespace content
 
 class HostContentSettingsMap;
 class WeeklyStorage;
@@ -79,16 +69,16 @@ class ViewCounterService : public KeyedService,
   // opted-in or data is available.
   void RegisterPageView();
 
-  void BrandedWallpaperLogoClicked(const std::string& placement_id,
-                                   const std::string& creative_instance_id,
-                                   const std::string& target_url,
-                                   bool should_metrics_fallback_to_p3a);
-
-  void MaybeTriggerNewTabPageAdEvent(
+  void RecordViewedAdEvent(
+      const std::string& placement_id,
+      const std::string& campaign_id,
+      const std::string& creative_instance_id,
+      brave_ads::mojom::NewTabPageAdMetricType mojom_ad_metric_type);
+  void RecordClickedAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
-      const bool should_metrics_fallback_to_p3a,
-      brave_ads::mojom::NewTabPageAdEventType mojom_ad_event_type);
+      const std::string& target_url,
+      brave_ads::mojom::NewTabPageAdMetricType mojom_ad_metric_type);
 
   std::optional<base::Value::Dict> GetNextWallpaperForDisplay();
   std::optional<base::Value::Dict> GetCurrentWallpaperForDisplay();
@@ -103,13 +93,7 @@ class ViewCounterService : public KeyedService,
   std::string GetSuperReferralThemeName() const;
   std::string GetSuperReferralCode() const;
 
-  void BrandedWallpaperWillBeDisplayed(const std::string& placement_id,
-                                       const std::string& campaign_id,
-                                       const std::string& creative_instance_id,
-                                       bool should_metrics_fallback_to_p3a);
   NTPSponsoredImagesData* GetSponsoredImagesData() const;
-
-  void InitializeWebUIDataSource(content::WebUIDataSource* html_source);
 
   void OnTabURLChanged(const GURL& url);
 
@@ -119,7 +103,6 @@ class ViewCounterService : public KeyedService,
   friend class ViewCounterServiceTest;
   friend class NTPBackgroundImagesServiceTest;
   FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest, CanShowSponsoredImages);
-  FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest, CannotShowSponsoredImages);
   FRIEND_TEST_ALL_PREFIXES(
       ViewCounterServiceTest,
       AllowNewTabTakeoverWithRichMediaIfJavaScriptContentSettingIsSetToAllowed);
@@ -157,6 +140,7 @@ class ViewCounterService : public KeyedService,
   void OnPreferenceChanged(const std::string& pref_name);
 
   // brave_ads::AdsServiceObserver:
+  void OnDidInitializeAdsService() override;
   void OnDidClearAdsServiceData() override;
 
   // content_settings::Observer:
@@ -181,9 +165,6 @@ class ViewCounterService : public KeyedService,
   bool IsSponsoredImagesWallpaperOptedIn() const;
   bool IsSuperReferralWallpaperOptedIn() const;
 
-  base::Time GracePeriodEndAt(base::TimeDelta grace_period) const;
-  bool HasGracePeriodEnded(const NTPSponsoredImagesData* images_data) const;
-
   // Do we have a sponsored or referral wallpaper to show and has the user
   // opted-in to showing it at some time.
   bool CanShowSponsoredImages() const;
@@ -198,6 +179,12 @@ class ViewCounterService : public KeyedService,
   void ResetModel();
 
   void MaybePrefetchNewTabPageAd();
+
+  void MaybeTriggerNewTabPageAdEvent(
+      const std::string& placement_id,
+      const std::string& creative_instance_id,
+      brave_ads::mojom::NewTabPageAdMetricType mojom_ad_metric_type,
+      brave_ads::mojom::NewTabPageAdEventType mojom_ad_event_type);
 
   void UpdateP3AValues();
 

@@ -8,6 +8,7 @@ import("//chrome/common/features.gni")
 import("//mojo/public/tools/bindings/mojom.gni")
 
 transpile_web_ui("brave_wallet_deposit_page_ui") {
+  output_module = false
   entry_points = [ [
         "brave_wallet_deposit_page",
         rebase_path("deposit-funds.tsx"),
@@ -16,6 +17,11 @@ transpile_web_ui("brave_wallet_deposit_page_ui") {
   deps = [
     "//brave/components/brave_wallet/common:mojom_js",
     "//brave/components/brave_wallet/common:preprocess_mojo",
+  ]
+  imports_from = [
+    "//brave/components/brave_wallet_ui/",
+    "//brave/components/brave_rewards/resources/rewards_page/",
+    "//brave/components/",
   ]
 }
 

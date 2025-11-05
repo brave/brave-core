@@ -14,9 +14,9 @@
 #include "chrome/browser/ui/exclusive_access/exclusive_access_context.h"
 #include "chrome/browser/ui/views/side_panel/side_panel.h"
 
-#define BrowserViewLayoutDelegateImpl \
-  BrowserViewLayoutDelegateImpl;      \
-  friend class BraveBrowserView;      \
+#define BrowserViewLayoutDelegateImplNew \
+  BrowserViewLayoutDelegateImplNew;      \
+  friend class BraveBrowserView;         \
   void SetNativeWindowPropertyForWidget(views::Widget* widget)
 #define BrowserWindow BraveBrowserWindow
 #define BrowserViewLayout BraveBrowserViewLayout
@@ -37,7 +37,6 @@
   UpdateExclusiveAccessBubble_ChromiumImpl(                    \
       const ExclusiveAccessBubbleParams& params,               \
       ExclusiveAccessBubbleHideCallback first_hide_callback);  \
-  virtual views::View* GetContentsContainerForLayoutManager(); \
   void UpdateExclusiveAccessBubble
 
 #if BUILDFLAG(IS_WIN)
@@ -69,6 +68,6 @@
 #undef SidePanel
 #undef BrowserViewLayout
 #undef BrowserWindow
-#undef BrowserViewLayoutDelegateImpl
+#undef BrowserViewLayoutDelegateImplNew
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_BROWSER_VIEW_H_

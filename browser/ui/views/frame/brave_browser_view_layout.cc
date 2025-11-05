@@ -10,7 +10,7 @@
 #include <utility>
 
 #include "base/check.h"
-#include "brave/browser/ui/brave_browser.h"
+#include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
@@ -47,32 +47,32 @@ BraveBrowserViewLayout::BraveBrowserViewLayout(
     views::View* vertical_tab_strip_container,
     views::View* toolbar,
     InfoBarContainerView* infobar_container,
+    views::View* main_container,
     views::View* contents_container,
     MultiContentsView* multi_contents_view,
     views::View* left_aligned_side_panel_separator,
-    views::View* unified_side_panel,
+    views::View* contents_height_side_panel,
     views::View* right_aligned_side_panel_separator,
     views::View* side_panel_rounded_corner,
     views::View* contents_separator)
-    : BrowserViewLayout(
-          std::move(delegate),
-          browser_view,
-          window_scrim,
-          top_container,
-          web_app_frame_toolbar,
-          web_app_window_title,
-          tab_strip_region_view,
-          vertical_tab_strip_container,
-          toolbar,
-          infobar_container,
-          (browser_view ? browser_view->GetContentsContainerForLayoutManager()
-                        : browser_view),
-          multi_contents_view,
-          left_aligned_side_panel_separator,
-          unified_side_panel,
-          right_aligned_side_panel_separator,
-          side_panel_rounded_corner,
-          contents_separator) {}
+    : BrowserViewLayout(std::move(delegate),
+                        browser_view,
+                        window_scrim,
+                        top_container,
+                        web_app_frame_toolbar,
+                        web_app_window_title,
+                        tab_strip_region_view,
+                        vertical_tab_strip_container,
+                        toolbar,
+                        infobar_container,
+                        main_container,
+                        contents_container,
+                        multi_contents_view,
+                        left_aligned_side_panel_separator,
+                        contents_height_side_panel,
+                        right_aligned_side_panel_separator,
+                        side_panel_rounded_corner,
+                        contents_separator) {}
 
 BraveBrowserViewLayout::~BraveBrowserViewLayout() = default;
 
@@ -125,7 +125,7 @@ void BraveBrowserViewLayout::LayoutVerticalTabs() {
     if (IsInfobarVisible()) {
       return infobar_container_->y();
     }
-    return contents_container_->y() - GetContentsMargins().top();
+    return main_container_->y() - GetContentsMargins().top();
   };
 
   gfx::Rect vertical_tab_strip_bounds = browser_view_->GetLocalBounds();
@@ -208,21 +208,20 @@ void BraveBrowserViewLayout::LayoutInfoBar(gfx::Rect& available_bounds) {
 
 void BraveBrowserViewLayout::LayoutContentsContainerView(
     const gfx::Rect& available_bounds) {
-  gfx::Rect new_rect = available_bounds;
+  main_container_->SetBoundsRect(available_bounds);
+
+  if (contents_background_) {
+    contents_background_->SetBoundsRect(available_bounds);
+  }
+
+  gfx::Rect contents_container_bounds = main_container_->GetLocalBounds();
   if (vertical_tab_strip_host_) {
     // Both vertical tab impls should not be enabled together.
     // https://github.com/brave/brave-browser/issues/48373
-    CHECK(!tabs::AreVerticalTabsEnabled());
-    new_rect.Inset(GetInsetsConsideringVerticalTabHost());
-  } else if (tabs::AreVerticalTabsEnabled()) {
-    new_rect.set_height(new_rect.height() - new_rect.y());
-    new_rect.set_width(new_rect.width() - BrowserView::kVerticalTabStripWidth);
+    CHECK(!tabs::IsVerticalTabsFeatureEnabled());
+    contents_container_bounds.Inset(GetInsetsConsideringVerticalTabHost());
   }
 
-  const int top = new_rect.y();
-  const int bottom = browser_view_->height();
-  gfx::Rect contents_container_bounds(new_rect.x(), top, new_rect.width(),
-                                      std::max(0, bottom - top));
   if (webui_tab_strip_ && webui_tab_strip_->GetVisible()) {
     // The WebUI tab strip container should "push" the tab contents down without
     // resizing it.
@@ -230,14 +229,21 @@ void BraveBrowserViewLayout::LayoutContentsContainerView(
         gfx::Insets().set_bottom(-webui_tab_strip_->size().height()));
   }
 
-  if (contents_background_) {
-    contents_background_->SetBoundsRect(contents_container_bounds);
-  }
-
   LayoutSideBar(contents_container_bounds);
   UpdateContentsContainerInsets(contents_container_bounds);
 
   contents_container_->SetBoundsRect(contents_container_bounds);
+}
+
+bool BraveBrowserViewLayout::IsImmersiveModeEnabledWithoutToolbar() const {
+  // When return true here, BrowserViewLayout::LayoutBookmarkAndInfoBars()
+  // makes |top_container_separator_| visible.
+  // We want to use |top_container_separator_| as a separator between
+  // top container and contents instead of MultiContentsContainer's top
+  // separator to cover whole browser window width.
+  // Althought it's always visible, it's only shown when rounded corners
+  // is not applied by controlling its bounds from BraveBrowserView.
+  return true;
 }
 
 void BraveBrowserViewLayout::LayoutSideBar(gfx::Rect& contents_bounds) {
@@ -282,7 +288,7 @@ void BraveBrowserViewLayout::LayoutSideBar(gfx::Rect& contents_bounds) {
   }
 
   gfx::Insets panel_margins = GetContentsMargins();
-  if (BraveBrowser::ShouldUseBraveWebViewRoundedCorners(
+  if (BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
           browser_view_->browser())) {
     // In rounded mode, there is already a gap between the sidebar and the main
     // contents view, so we only remove from the margin from that side (we need
@@ -332,14 +338,21 @@ void BraveBrowserViewLayout::UpdateContentsContainerInsets(
       BraveContentsViewUtil::GetRoundedCornersWebViewMargin(
           browser_view_->browser());
 
-  // Don't need contents container's left or right margin with vertical tab as
-  // vertical tab itself has sufficient padding.
+  // Due to vertical tab's padding(tabs::kMarginForVerticalTabContainers), we
+  // can see some space between vertical tab and contents. However, If we don't
+  // have margin from contents, vertical tab side contents shadow isn't visible.
+  // So, having half or margin from vertical tab and half from contents.
   if (tabs::utils::ShouldShowVerticalTabs(browser_view_->browser()) &&
       !IsFullscreenForBrowser()) {
+    const int margin_with_vertical_tab =
+        BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
+            browser_view_->browser())
+            ? (tabs::kMarginForVerticalTabContainers / 2)
+            : 0;
     if (tabs::utils::IsVerticalTabOnRight(browser_view_->browser())) {
-      contents_margins.set_right(contents_margin_for_rounded_corners);
+      contents_margins.set_right(margin_with_vertical_tab);
     } else {
-      contents_margins.set_left(contents_margin_for_rounded_corners);
+      contents_margins.set_left(margin_with_vertical_tab);
     }
   }
 
@@ -372,7 +385,7 @@ void BraveBrowserViewLayout::UpdateContentsContainerInsets(
 }
 
 gfx::Insets BraveBrowserViewLayout::GetContentsMargins() const {
-  if (!BraveBrowser::ShouldUseBraveWebViewRoundedCorners(
+  if (!BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
           browser_view_->browser())) {
     return {};
   }

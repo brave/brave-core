@@ -32,6 +32,13 @@
     cursor: pointer;
     color: red;
   }
+  .md-select:disabled {
+    background-color: var(--leo-color-container-disabled) !important;
+  }
+  #contentFiltersRow[disabled] {
+    background-color: var(--leo-color-container-disabled);
+    pointer-events: none;
+  }
 </style>
 
 <settings-section
@@ -59,7 +66,8 @@
   <div class="settings-box">
     <div class="start">$i18n{adControlLabel}</div>
     <select id="adControlType" class="md-select"
-        on-change="onAdControlChange_">
+        on-change="onAdControlChange_"
+        disabled="[[isAdBlockOnlyModeEnabled_]]">
       <template is="dom-repeat" items="[[adControlTypes_]]">
         <option value="[[item.value]]"
             selected="[[controlEqual_(item.value, adControlType_)]]">
@@ -71,7 +79,8 @@
   <div hidden="[[!isHttpsByDefaultEnabled_]]" class="settings-box">
     <div class="start">$i18n{httpsUpgradeControlLabel}</div>
     <select id="httpsUpgradeControlType" class="md-select"
-        on-change="onHttpsUpgradeControlChange_">
+        on-change="onHttpsUpgradeControlChange_"
+        disabled="[[isAdBlockOnlyModeEnabled_]]">
       <template is="dom-repeat" items="[[httpsUpgradeControlTypes_]]">
         <option value="[[item.value]]"
             selected="[[controlEqual_(item.value, httpsUpgradeControlType_)]]">
@@ -80,16 +89,18 @@
       </template>
     </select>
   </div>
-  <settings-toggle-button id="noScriptControlType"
+  <settings-toggle-button id="noScriptControlToggle"
       class="cr-row"
-      pref="{{prefs.brave.no_script_default}}"
+      pref="[[noScriptControlType_]]"
       label="$i18n{noScriptControlLabel}"
-      on-settings-boolean-control-change="onNoScriptControlChange_">
+      on-settings-boolean-control-change="onNoScriptControlChange_"
+      disabled="[[isAdBlockOnlyModeEnabled_]]">
   </settings-toggle-button>
   <div hidden="[[!showStrictFingerprintingMode_]]" class="settings-box">
     <div class="start">$i18n{fingerprintingControlLabel}</div>
     <select id="fingerprintingSelectControlType" class="md-select"
-        on-change="onFingerprintingSelectControlChange_">
+        on-change="onFingerprintingSelectControlChange_"
+        disabled="[[isAdBlockOnlyModeEnabled_]]">
       <template is="dom-repeat" items="[[fingerprintingControlTypes_]]">
         <option value="[[item.value]]"
             selected="[[controlEqual_(item.value, fingerprintingControlType_)]]">
@@ -103,7 +114,8 @@
     class="cr-row"
     pref="[[isFingerprintingEnabled_]]"
     label="$i18n{fingerprintingControlLabel}"
-    on-settings-boolean-control-change="onFingerprintingToggleControlChange_">
+    on-settings-boolean-control-change="onFingerprintingToggleControlChange_"
+    disabled="[[isAdBlockOnlyModeEnabled_]]">
   </settings-toggle-button>
   <div class="settings-box">
     <div class="start">
@@ -113,7 +125,8 @@
       </div>
     </div>
     <select id="cookieControlType" class="md-select"
-        on-change="onCookieControlChange_">
+        on-change="onCookieControlChange_"
+        disabled="[[isAdBlockOnlyModeEnabled_]]">
       <template is="dom-repeat" items="[[cookieControlTypes_]]">
         <option value="[[item.value]]"
             selected="[[controlEqual_(item.value, cookieControlType_)]]">
@@ -128,7 +141,8 @@
     label="$i18n{forgetFirstPartyStorageLabel}"
     sub-label="$i18n{forgetFirstPartyStorageSubLabel}"
     on-settings-boolean-control-change="onForgetFirstPartyStorageToggleChange_"
-    pref="[[isForgetFirstPartyStorageEnabled_]]">
+    pref="[[isForgetFirstPartyStorageEnabled_]]"
+    disabled="[[isAdBlockOnlyModeEnabled_]]">
   </settings-toggle-button>
   <settings-toggle-button id="setContactInfoSaveFlagToggle"
       class="cr-row"
@@ -143,6 +157,7 @@
     label="$i18n{adblockContentFilteringLabel}"
     sub-label="$i18n{adblockContentFilterLabelDesc}"
     on-click="onAdblockPageClick_"
+    disabled="[[isAdBlockOnlyModeEnabled_]]"
   ></cr-link-row>
 
 </settings-section>

@@ -12,7 +12,10 @@ import { useLocaleContext } from '../../lib/locale_strings'
 import { EventHubContext } from '../../lib/event_hub'
 import { isSelfCustodyProvider } from '../../../shared/lib/external_wallet'
 import { TabOpenerContext } from '../../../shared/components/new_tab_link'
-import { getCreatorIconSrc, getCreatorPlatformIcon } from '../../lib/creator_icon'
+import {
+  getCreatorIconSrc,
+  getCreatorPlatformIcon,
+} from '../../lib/creator_icon'
 
 import { style } from './contribute_card.style'
 
@@ -36,25 +39,32 @@ export function ContributeCard() {
 
   function renderOrigin() {
     if (site.platform) {
-      return <>
-        <span>{site.name}</span>
-        <Icon name={getCreatorPlatformIcon(site)} forceColor />
-      </>
+      return (
+        <>
+          <span>{site.name}</span>
+          <Icon
+            name={getCreatorPlatformIcon(site)}
+            forceColor
+          />
+        </>
+      )
     }
     return <span>{site.id}</span>
   }
 
   function hasMatchingCustodialProvider() {
     return Boolean(
-      creator && externalWallet &&
-      creator.supportedWalletProviders.includes(externalWallet.provider) &&
-      !isSelfCustodyProvider(externalWallet.provider)
+      creator
+        && externalWallet
+        && creator.supportedWalletProviders.includes(externalWallet.provider)
+        && !isSelfCustodyProvider(externalWallet.provider),
     )
   }
 
   function creatorAcceptsContributions() {
-    return creator && (
-      creator.supportedWalletProviders.length > 0 || creator.banner.web3URL
+    return (
+      creator
+      && (creator.supportedWalletProviders.length > 0 || creator.banner.web3URL)
     )
   }
 
@@ -67,30 +77,33 @@ export function ContributeCard() {
   }
 
   return (
-    <div className='content-card' data-css-scope={style.scope}>
+    <div
+      className='content-card'
+      data-css-scope={style.scope}
+    >
       <section>
         <div className='icon'>
-          <img src={getCreatorIconSrc(site)} alt='Site icon' />
+          <img
+            src={getCreatorIconSrc(site)}
+            alt='Site icon'
+          />
         </div>
         <div className='text'>
           <span className='name'>
             <span>{getName()}</span>
             <Icon name='verification-filled-color' />
           </span>
-          <span className='origin'>
-            {renderOrigin()}
-          </span>
+          <span className='origin'>{renderOrigin()}</span>
         </div>
-        {
-          creatorAcceptsContributions() &&
-            <Button
-              kind={externalWallet ? 'filled' : 'outline'}
-              onClick={onContributeClick}
-              className='contribute-button'
-            >
-              {getString('contributeButtonLabel')}
-            </Button>
-        }
+        {creatorAcceptsContributions() && (
+          <Button
+            kind={externalWallet ? 'filled' : 'outline'}
+            onClick={onContributeClick}
+            className='contribute-button'
+          >
+            {getString('contributeButtonLabel')}
+          </Button>
+        )}
       </section>
     </div>
   )

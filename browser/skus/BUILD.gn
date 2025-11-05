@@ -21,4 +21,10 @@ static_library("skus") {
     "//components/user_prefs",
     "//content/public/browser",
   ]
+
+  if (is_android) {
+    sources +=
+        [ "//brave/browser/skus/android/skus_service_factory_android.cc" ]
+    deps += [ "//brave/browser/skus/android:jni_headers" ]
+  }
 }

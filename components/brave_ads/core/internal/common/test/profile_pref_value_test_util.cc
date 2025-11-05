@@ -68,4 +68,9 @@ void SetProfileTimePrefValue(const std::string& path, base::Time value) {
   SetProfilePrefValue(path, base::TimeToValue(value));
 }
 
+void SetProfileTimeDeltaPrefValue(const std::string& path,
+                                  base::TimeDelta value) {
+  SetProfilePrefValue(path, base::TimeDeltaToValue(value));
+}
+
 }  // namespace brave_ads::test

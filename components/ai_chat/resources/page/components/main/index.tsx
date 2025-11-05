@@ -33,19 +33,24 @@ import InputBox from '../input_box'
 import ModelIntro from '../model_intro'
 import OpenExternalLinkModal from '../open_external_link_modal'
 import RateMessagePrivacyModal from '../rate_message_privacy_modal'
+import SkillModal from '../skill_modal/skill_modal'
 import PremiumSuggestion from '../premium_suggestion'
 import PrivacyMessage from '../privacy_message'
 import {
   GenerateSuggestionsButton,
   SuggestedQuestion,
 } from '../suggested_question'
-import ToolsMenu from '../filter_menu/tools_menu'
+import ToolsMenu, {
+  ExtendedActionEntry,
+  getIsSkill,
+} from '../filter_menu/tools_menu'
 import WelcomeGuide from '../welcome_guide'
 import styles from './style.module.scss'
 import Attachments from '../attachments'
 import useHasConversationStarted from '../../hooks/useHasConversationStarted'
 import { useExtractedQuery } from '../filter_menu/query'
-import TabsMenu from '../filter_menu/tabs_menu'
+import TabsMenu from '../filter_menu/attachments_menu'
+import { stringifyContent } from '../input_box/editable_content'
 
 // Amount of pixels user has to scroll up to break out of
 // automatic scroll to bottom when new response lines are generated.
@@ -92,9 +97,7 @@ function Main() {
     && conversationContext.associatedContentInfo === null // AssociatedContent request has finished and this is a standalone conversation
     && !aiChatContext.isPremiumUser
 
-  const showAttachments =
-    conversationContext.attachmentsDialog === 'tabs'
-    && aiChatContext.tabs.length > 0
+  const showAttachments = !!conversationContext.attachmentsDialog
 
   const showTemporaryChatInfo = conversationContext.isTemporaryChat
 
@@ -135,18 +138,19 @@ function Main() {
     }
   }
 
-  // Automatic scroll to bottom of scroll anchor when generating new response lines
+  // When the user has scrolled to the end of the conversation we anchor the scroll position to the end of the
+  // conversation.
+  // This means that:
+  // 1. Resizing the window will keep the conversation anchored to the bottom (if it was already at the bottom)
+  // 2. Loading a conversation will scroll to the end
+  // 3. Resizing the window will maintain scroll position, if you were not at the bottom before the resize.
   const scrollIsAtBottom = React.useRef(true)
   const scrollElement = React.useRef<HTMLDivElement | null>(null)
   const scrollAnchor = React.useRef<HTMLDivElement | null>(null)
 
   const handleScroll = React.useCallback(
     (e: React.UIEvent<HTMLDivElement>) => {
-      // Monitor scroll positions only when Assistant is generating,
-      // but always reset to bottom before next generation
-      if (!conversationContext.isGenerating) {
-        scrollIsAtBottom.current = true
-      } else if (scrollAnchor.current && conversationContentElement.current) {
+      if (scrollAnchor.current && conversationContentElement.current) {
         const el = e.currentTarget
         const idealScrollFromBottom =
           el.scrollHeight
@@ -161,8 +165,7 @@ function Main() {
 
   const handleConversationEntriesHeightChanged = () => {
     if (
-      !conversationContext.isGenerating
-      || !scrollElement.current
+      !scrollElement.current
       || !scrollIsAtBottom.current
       || !scrollAnchor.current
     ) {
@@ -211,10 +214,57 @@ function Main() {
     return false
   }
 
-  const extractedQuery = useExtractedQuery(conversationContext.inputText, {
-    onlyAtStart: true,
-    triggerCharacter: '/',
-  })
+  const extractedQuery = useExtractedQuery(
+    stringifyContent(conversationContext.inputText),
+    {
+      onlyAtStart: true,
+      triggerCharacter: '/',
+    },
+  )
+
+  // Transform skills into ActionGroup format and append to actionList
+  const categoriesWithSkills = React.useMemo(() => {
+    if (!aiChatContext.skills || aiChatContext.skills.length === 0) {
+      return aiChatContext.actionList
+    }
+
+    const skillGroup = {
+      category: getLocale(S.CHAT_UI_SKILLS_GROUP),
+      entries: aiChatContext.skills,
+    }
+
+    return [skillGroup, ...aiChatContext.actionList]
+  }, [aiChatContext.actionList, aiChatContext.skills])
+
+  const handleToolsMenuClick = React.useCallback(
+    (value: ExtendedActionEntry) => {
+      if (getIsSkill(value)) {
+        conversationContext.handleSkillClick(value)
+        return
+      }
+      conversationContext.handleActionTypeClick(value.details!.type)
+    },
+    [
+      conversationContext.handleSkillClick,
+      conversationContext.handleActionTypeClick,
+    ],
+  )
+
+  const handleToolsMenuEditClick = (skill: Mojom.Skill) => {
+    conversationContext.handleSkillEdit(skill)
+  }
+
+  const handleNewSkillClick = React.useCallback(() => {
+    const inputText = stringifyContent(conversationContext.inputText)
+    aiChatContext.setSkillDialog({
+      id: '',
+      shortcut: inputText.startsWith('/') ? inputText.substring(1) : inputText,
+      prompt: '',
+      model: '',
+      createdTime: { internalValue: BigInt(0) },
+      lastUsed: { internalValue: BigInt(0) },
+    })
+  }, [conversationContext.inputText, aiChatContext.setSkillDialog])
 
   return (
     <main
@@ -398,13 +448,18 @@ function Main() {
       )}
       <div className={styles.input}>
         <ToolsMenu
-          isOpen={conversationContext.isToolsMenuOpen}
+          isOpen={
+            !conversationContext.selectedSkill
+            && conversationContext.isToolsMenuOpen
+          }
           setIsOpen={conversationContext.setIsToolsMenuOpen}
           query={extractedQuery}
-          categories={aiChatContext.actionList}
-          handleClick={conversationContext.handleActionTypeClick}
+          categories={categoriesWithSkills}
+          handleClick={handleToolsMenuClick}
+          handleEditClick={handleToolsMenuEditClick}
+          handleNewSkillClick={handleNewSkillClick}
         />
-        {!hasConversationStarted && <TabsMenu />}
+        <TabsMenu />
         <InputBox
           conversationStarted={hasConversationStarted}
           context={{ ...conversationContext, ...aiChatContext }}
@@ -414,6 +469,7 @@ function Main() {
       <DeleteConversationModal />
       <OpenExternalLinkModal />
       <RateMessagePrivacyModal />
+      {aiChatContext.skillDialog && <SkillModal />}
     </main>
   )
 }

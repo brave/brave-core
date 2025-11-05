@@ -5,6 +5,8 @@
 <translation id="3478449063771497234">Obaveštenja su isključena</translation>
 <translation id="2862978891748913252">Izaberite zemlju</translation>
 <translation id="3970520675790340955">Izaberite zemlju da bismo mogli da vam pokažemo odgovarajuće opcije i oglase za vaš region.</translation>
+<translation id="721490496276866468">Uvezi lozinke</translation>
+<translation id="8178175542325151321">Izaberite .csv datoteku koja sadrži vaše lozinke da biste ih uvezli u Brave upravljač lozinkama.</translation>
 <translation id="7301741773883122509">Sada možete dobiti nagradu za gledanje oglasa. Pomažete da veb postane bolje mesto za sve. I to je sjajno!</translation>
 <translation id="6439128034594289376">Spremni ste!</translation>
 <translation id="370665806235115550">Učitava se…</translation>
@@ -99,6 +101,8 @@
 <translation id="8617525558807213034">Automatski unos na privatnim karticama</translation>
 <translation id="8685431198160039193">Sačuvane informacije mogu automatski biti unete u privatne kartice</translation>
 <translation id="6583902294974160967">Podrška</translation>
+<translation id="5713644099811900409">Nalog na Brave-u</translation>
+<translation id="4472575034687746823">Početak</translation>
 <translation id="1799030480311994998">Funkcije</translation>
 <translation id="2005732746077850308">Brave štitovi i privatnost</translation>
 <translation id="4692623383562244444">Pretraživači</translation>
@@ -107,7 +111,6 @@
 <translation id="7304425663107214334">Prikaži predloge u pregledaču</translation>
 <translation id="8982438328166986164">Prikazuje preporučene veb-sajtove na osnovu vaših obeleživača i istorije pregledanja.</translation>
 <translation id="924029461438529367">Prikaži predloge za pretragu</translation>
-<translation id="5989135139219497991">Prikaži omiljene predloge</translation>
 <translation id="6285118765755298263">Indeksiraj druge pretraživače</translation>
 <translation id="919715748352669592">Automatski indeksira veb-sajtove koji prate specifikacije softvera OpenSearch.</translation>
 <translation id="9148058034647219655">Izađi</translation>
@@ -197,6 +200,8 @@
 <translation id="7977176350719484850">Procenjeni sačuvani podaci</translation>
 <translation id="9008534313521214777">Procenjeno ušteđeno vreme</translation>
 <translation id="8347743943525229984">Aktiviraj Brave ankete</translation>
+<translation id="6022939994702081659">Omogućava Brave-u da prikazuje linkove za privatne ankete na stranici nove kartice. Ankete nam omogućavaju da kreiramo bolje funkcije i merimo efikasnost oglasnih kampanja zasnovanih na pregledaču.</translation>
+<translation id="7746496306508543965">Saznajte više o Brave anketama</translation>
 <translation id="410351446219883937">Automatsko puštanje</translation>
 <translation id="7445411102860286510">Dozvoli sajtovima da automatski puštaju video snimke sa isključenim zvukom (preporučeno)</translation>
 <translation id="7837721118676387834">Dozvoli automatsko puštanje video snimaka sa isključenim zvukom određenom sajtu.</translation>
@@ -225,6 +230,8 @@
 <translation id="2433507940547922241">Izgled</translation>
 <translation id="9040069796107003510">Ikona Brave nagrada</translation>
 <translation id="6333347122924254968">Prikaži ikonu Brave nagrada na traci za adresu</translation>
+<translation id="1215433243238902715">Aktiviraj donju traku sa alatkama za navigaciju</translation>
+<translation id="1422686363939271829">Ovo podešavanje je deaktivirano kada je izabrana donja pozicija trake za adresu</translation>
 <translation id="6587448235155023666">Promene će biti primenjene kada sledeći put ponovo pokrenete Brave</translation>
 <translation id="8701563696941209024">PONOVO POKRENI</translation>
 <translation id="834487290629916192">KASNIJE</translation>
@@ -291,6 +298,11 @@
 <translation id="4254029385847607686">DECEMBAR</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="1772301834467143364">Brave vesti</translation>
+<translation id="2518692840036393666">Prilagodi meni</translation>
+<translation id="5582839680698949063">Glavni meni</translation>
+<translation id="7002271985859760052">Akcije stranice</translation>
+<translation id="7104487676473617844">Sledeće stavke će biti prikazane u meniju samo kada ih trenutna otvorena stranica podržava.</translation>
+<translation id="4159764849281393303">Web aplikacija</translation>
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="8428213095426709021">Podešavanja</translation>
 <translation id="6020176662032623904">Verifikovan autor</translation>
@@ -417,6 +429,8 @@ Dobro proverite da li je ove reči koda generisao uređaj koji vi posedujete.
 <translation id="8748471354357836070">Saznajte više / opcije za odustanak</translation>
 <translation id="3171669670217312786">Slike pozadine</translation>
 <translation id="8522669544471808198">Prikaži slike pozadine</translation>
+<translation id="6258554626602400736">Prikaži oglase na stranici nove kartice</translation>
+<translation id="9001530744369687550">Saznajte više o oglasima na stranici nove kartice</translation>
 <translation id="8793108040181436796">Vidžeti</translation>
 <translation id="8643377320501056697">Prikaži omiljene sajtove</translation>
 <translation id="7275773481201277457">Pokaži Brave statistiku</translation>
@@ -494,6 +508,8 @@ Dobro proverite da li je ove reči koda generisao uređaj koji vi posedujete.
 <translation id="7616645803364270729">Imejl, Twitter itd.</translation>
 <translation id="5299848999918506028">Hvala!</translation>
 <translation id="76550953340008122">Hvala što ste obavestili razvojne programere Brave-a da nešto nije u redu sa ovim sajtom. Daćemo sve od sebe da to ispravimo!</translation>
+<translation id="3037432377946455872">Koji je glavni problem koji vidite?</translation>
+<translation id="8731661215617360873">Izaberite jednu opciju</translation>
 <translation id="650318023204990401">Napredne kontrole</translation>
 <translation id="7205939464631857223">Izbriši sve blokirane elemente</translation>
 <translation id="5370478469168390143">Sačuvaj podatke onlajn</translation>
@@ -789,7 +805,6 @@ Ako ne budete prihvatili ovaj zahtev, VPN se neće ponovo povezati i vaša veza 
 <translation id="750843150060816463">Cena gasa (Gwei)</translation>
 <translation id="1426320910664514906">Limit gasa</translation>
 <translation id="6389441740143786465">Isključi centar za deljenje</translation>
-<translation id="9065203028668620118">Izmeni</translation>
 <translation id="473775607612524610">Ažuriraj</translation>
 <translation id="479795390141144417">Ažuriranje naloga nije uspelo.</translation>
 <translation id="8084782383392198011">Naziv naloga ne može da bude prazan.</translation>
@@ -1005,8 +1020,6 @@ Ako ne budete prihvatili ovaj zahtev, VPN se neće ponovo povezati i vaša veza 
 <translation id="8496335570810457">Obaveza preliminarne provere:</translation>
 <translation id="5100124500279922001">Preskoči preliminarnu proveru:</translation>
 <translation id="7152095322071766507">Najposećeniji sajt</translation>
-<translation id="7230006500876504868">Pretraga pomoću Brave-a</translation>
-<translation id="5888208462949095139">Pretraga pomoću: <ph name="DEFAULT_SEARCH_ENGINE"/></translation>
 <translation id="5456039738087398178">Vidžet za početni ekran</translation>
 <translation id="703185154752046151">Vidžet je dodat na početni ekran</translation>
 <translation id="4635094429202343515">Probajte vidžet za Brave pretragu</translation>
@@ -1066,7 +1079,7 @@ Ako ne budete prihvatili ovaj zahtev, VPN se neće ponovo povezati i vaša veza 
 <translation id="7618347247876614969">Nalog tabele za pretragu adresa:</translation>
 <translation id="7659483790930268440">Indeks tabele za pretragu adresa:</translation>
 <translation id="5494920125229734069">Izaberi sve</translation>
-<translation id="6129027151000961048">Leo</translation>
+<translation id="2361906291514218784">Leo AI</translation>
 <translation id="8613144770663526433">Prijavite se pomoću Brave novčanika</translation>
 <translation id="3696514931437952995">Prijavljujete se na: <ph name="ORIGIN"/>. Brave novčanik će podeliti vašu adresu novčanika sa: <ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">Prikaži detalje</translation>
@@ -1083,11 +1096,11 @@ Ako ne budete prihvatili ovaj zahtev, VPN se neće ponovo povezati i vaša veza 
 <translation id="6742599753610126012">Izbriši istoriju ćaskanja</translation>
 <translation id="3443052382074796867">Ako isključite čuvanje razgovora, trajno će se izbrisati svi prethodno sačuvani razgovori. Ova radnja se ne može opozvati.</translation>
 <translation id="3692772534525889713">Povežite kupovinu u Play prodavnici sa svojim nalogom na Brave-u da biste koristili Brave Leo na drugim uređajima.</translation>
-<translation id="73236265316873967">Leo Premium</translation>
+<translation id="592831784390389506">Leo AI Premium</translation>
 <translation id="1028627582482425924">Godinu dana</translation>
 <translation id="2985392169397572983">NAJBOLjA VREDNOST</translation>
 <translation id="1166682575529520472">Mesečno</translation>
-<translation id="451189393813405346">Pitajte asistenta Leo</translation>
+<translation id="2206846767762985925">Pitaj Leo AI</translation>
 <translation id="7322560193401221004">Zapamtiti ovaj položaj puštanja fajla</translation>
 <translation id="7505951907514709271">Kod pojedinačnih fajlova, nastavite puštanje od trenutka poslednje pauze.</translation>
 <translation id="6835165453349969605">Zapamtiti ovaj položaj puštanja liste</translation>
@@ -1130,6 +1143,7 @@ Ako ne budete prihvatili ovaj zahtev, VPN se neće ponovo povezati i vaša veza 
 <translation id="3861012838874771868">Otvori podešavanja plejliste</translation>
 <translation id="5220099266891491416">Sakrij dugme za plejlistu</translation>
 <translation id="7416347631175891923">Isprobajte!</translation>
+<translation id="9065203028668620118">Izmeni</translation>
 <translation id="1173894706177603556">Preimenuj</translation>
 <translation id="3596306474342941843">Izbriši plejlistu</translation>
 <translation id="7765158879357617694">Premesti</translation>
@@ -1144,7 +1158,7 @@ Ako ne budete prihvatili ovaj zahtev, VPN se neće ponovo povezati i vaša veza 
 <translation id="5319532905552885478">Medijski sadržaj je već dodat u podrazumevanu plejlistu</translation>
 <translation id="4802584673094436231">Priprema…</translation>
 <translation id="481455355267255546">Sledeće</translation>
-<translation id="5474757891469990756">Osetite punu snagu asistenta Leo uz paket Premium:</translation>
+<translation id="3721790899869840343">Oslobodi punu snagu Leo AI uz Premium:</translation>
 <translation id="4173478269537830374">Istražite različite modele veštačke inteligencije</translation>
 <translation id="3453542753968940696">Prioritetni pristup moćnim modelima sa različitim models with different skills..</translation>
 <translation id="3245401959451976966">Otključajte svoju kreativnost</translation>
@@ -1212,11 +1226,18 @@ Ako ne budete prihvatili ovaj zahtev, VPN se neće ponovo povezati i vaša veza 
 <translation id="4650851936784160359">Spisak filtera ne može da se ažurira. Probajte ponovo</translation>
 <translation id="3098054327870766317">Prikaži dugme za poništavanje kada su kartice zatvorene</translation>
 <translation id="1336494649091412226">Želite li sigurno da izađete iz Brave-a?</translation>
-<translation id="2361906291514218784">Leo AI</translation>
 <translation id="7942415993090181327">Istorija ćaskanja</translation>
 <translation id="6859935199732075666">Prikaži greške prilikom bezbednog pregledanja</translation>
 <translation id="2735247450315842119">Dozvoli snimke ekrana u privatnim karticama</translation>
 <translation id="8420414929552321089">Ako je opcija aktivirana, privatne kartice će takođe biti vidljive kada je otvoreno više aplikacija.</translation>
+<translation id="7956713633345437162">Mobilni obeleživači</translation>
+<translation id="3176467469116060712">Podržite vodeći rad Brave-a na privatnosti na Webu i otvorenim listama za blokiranje oglasa</translation>
+<translation id="5896375129784311037">Optimizovan za minimalistički interfejs pregledača</translation>
+<translation id="746156554966264308">Jezgro Brave Shields za blokiranje oglasa, privatnost i brzinu</translation>
+<translation id="1432661650699782509">Podrška za politike upravljanja IT-om na poslu</translation>
+<translation id="1361157028850796410">najbolja vrednost</translation>
+<translation id="7280825497485894053">Mesečna pretplata</translation>
+<translation id="4570901726096223030">Saznajte više o Origin</translation>
 <translation id="1943432128510653496">Sačuvaj lozinke</translation>
 <translation id="2100273922101894616">Automatsko prijavljivanje</translation>
 <translation id="363596933471559332">Automatski se prijavljujte na veb-sajtove pomoću sačuvanih akreditiva. Kada je ova funkcija isključena, tražićemo vam da se verifikujete pre svakog prijavljivanja na veb-sajt.</translation>
@@ -1228,6 +1249,24 @@ Ako ne budete prihvatili ovaj zahtev, VPN se neće ponovo povezati i vaša veza 
 <translation id="5139940364318403933">Saznajte kako da koristite Brave disk</translation>
 <translation id="729975465115245577">Uređaj nema aplikaciju za čuvanje datoteke sa lozinkama.</translation>
 <translation id="1129510026454351943">Detalji: <ph name="ERROR_DESCRIPTION"/></translation>
+<translation id="5594899180331219722">Izaberi datoteku</translation>
+<translation id="3744219658596020825">Vaše lozinke nisu uvezene</translation>
+<translation id="8258027225380843424">Uvoz je uspeo!</translation>
+<translation id="766635563210446220">Ne može se uvesti lozinke. Proverite <ph name="FILENAME"/> i uverite se da je ispravno formatirana. <ph name="BEGIN_LINK"/>Saznajte više<ph name="END_LINK"/></translation>
+<translation id="6581356304040102696">Ne može se uvesti lozinke. Veličina datoteke treba da bude manja od 1 MB.</translation>
+<translation id="5895244669404288318">{COUNT, plural,
+        one {}
+        few {Ne mogu da uvezem lozinke. Možete da uvezete najviše <ph name="COUNT_MANY"/> lozinke istovremeno.}=1 {Nije moguće uneti lozinke. Možete uneti samo jednu lozinku istovremeno.}
+        other {Ne mogu da uvezem lozinke. Možete da uvezete najviše <ph name="COUNT_MANY"/> lozinki istovremeno.}}</translation>
+<translation id="3748424433435232460">Lozinka za ovaj nalog je već sačuvana na ovom uređaju</translation>
+<translation id="6438475350605608554">Već uvozite lozinke u drugoj kartici</translation>
+<translation id="3482868954775580230">Nije moguće pročitati izabranu datoteku. <ph name="EXCEPTION_INFO"/></translation>
+<translation id="9162995380643712715">{IMPORT_COUNT, plural,
+        one {}
+        few {Uspešno uvezene <ph name="IMPORT_COUNT_MANY"/> lozinke.}=1 {Uspešno uvezena 1 lozinka.}
+        other {Uspešno uvezeno <ph name="IMPORT_COUNT_MANY"/> lozinki.}}</translation>
+<translation id="4637949129057123593">Izvoz nije uspeo.</translation>
+<translation id="4300452012226767715">Upravljač lozinki nije dostupan.</translation>
 <translation id="6221633008163990886">Otključajte da biste izvezli lozinke</translation>
 <translation id="5245792669563792664">lozinke</translation>
 <translation id="10614374240317010">Nikada se ne čuva</translation>

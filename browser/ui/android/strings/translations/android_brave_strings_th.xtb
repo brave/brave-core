@@ -5,6 +5,8 @@
 <translation id="3478449063771497234">ระบบจะปิดใช้การแจ้งเตือน</translation>
 <translation id="2862978891748913252">เลือกประเทศของคุณ</translation>
 <translation id="3970520675790340955">เลือกประเทศของคุณ เพื่อให้เราสามารถแสดงตัวเลือกและโฆษณาที่เหมาะสมสำหรับภูมิภาคของคุณ</translation>
+<translation id="721490496276866468">นำเข้ารหัสผ่าน</translation>
+<translation id="8178175542325151321">เลือกไฟล์ .csv ที่มีรหัสผ่านของคุณเพื่อให้นำเข้ามาในตัวจัดการรหัสผ่านของ Brave</translation>
 <translation id="7301741773883122509">ตอนนี้คุณสามารถรับรางวัลจากการดูโฆษณาได้แล้ว คุณกำลังช่วยทำให้เว็บเป็นสถานที่ที่ดีขึ้นสำหรับทุกคน ซึ่งนับว่าเยี่ยมยอดไปเลย!</translation>
 <translation id="6439128034594289376">วู้ฮู! คุณทำเสร็จเรียบร้อย!</translation>
 <translation id="370665806235115550">กำลังโหลด...</translation>
@@ -99,6 +101,8 @@
 <translation id="8617525558807213034">ป้อนอัตโนมัติในแท็บแบบส่วนตัว</translation>
 <translation id="8685431198160039193">ข้อมูลที่บันทึกไว้สามารถป้อนอัตโนมัติได้ในแท็บแบบส่วนตัว</translation>
 <translation id="6583902294974160967">การสนับสนุน</translation>
+<translation id="5713644099811900409">บัญชี Brave</translation>
+<translation id="4472575034687746823">เริ่มต้น</translation>
 <translation id="1799030480311994998">ฟีเจอร์</translation>
 <translation id="2005732746077850308">Brave Shield &amp; ความเป็นส่วนตัว</translation>
 <translation id="4692623383562244444">เครื่องมือค้นหา</translation>
@@ -107,7 +111,6 @@
 <translation id="7304425663107214334">แสดงคำแนะนำของเบราว์เซอร์</translation>
 <translation id="8982438328166986164">แสดงเว็บไซต์แนะนำตามบุ๊กมาร์กและประวัติการเข้าชมของคุณ</translation>
 <translation id="924029461438529367">แสดงคำแนะนำในการค้นหา</translation>
-<translation id="5989135139219497991">แสดงคำแนะนำยอดนิยม</translation>
 <translation id="6285118765755298263">จัดทำดัชนีเครื่องมือค้นหาอื่นๆ</translation>
 <translation id="919715748352669592">จัดทำดัชนีเว็บไซต์ที่เป็นไปตามข้อกำหนดของ OpenSearch โดยอัตโนมัติ</translation>
 <translation id="9148058034647219655">ออก</translation>
@@ -295,6 +298,11 @@
 <translation id="4254029385847607686">ธันวาคม</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="1772301834467143364">ข่าว Brave</translation>
+<translation id="2518692840036393666">ปรับแต่งเมนู</translation>
+<translation id="5582839680698949063">เมนูหลัก</translation>
+<translation id="7002271985859760052">การกระทำของหน้า</translation>
+<translation id="7104487676473617844">รายการต่อไปนี้จะแสดงบนเมนูเฉพาะเมื่อหน้าเว็บที่เปิดอยู่รองรับเท่านั้น</translation>
+<translation id="4159764849281393303">WebApp</translation>
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="8428213095426709021">การตั้งค่า</translation>
 <translation id="6020176662032623904">ผู้สร้างยืนยันตัวตนแล้ว</translation>
@@ -797,7 +805,6 @@
 <translation id="750843150060816463">ราคาแก๊ส (GWEI)</translation>
 <translation id="1426320910664514906">วงเงินแก็ส</translation>
 <translation id="6389441740143786465">ปิดใช้งานการแชร์ฮับ</translation>
-<translation id="9065203028668620118">แก้ไข</translation>
 <translation id="473775607612524610">อัปเดต</translation>
 <translation id="479795390141144417">อัปเดตบัญชีไม่สำเร็จ</translation>
 <translation id="8084782383392198011">ชื่อบัญชีต้องไม่เว้นว่าง</translation>
@@ -1013,8 +1020,6 @@
 <translation id="8496335570810457">ความรับผิดชอบต่อการจำลองการทำธุรกรรม:</translation>
 <translation id="5100124500279922001">ข้ามการจำลองการทำธุรกรรม:</translation>
 <translation id="7152095322071766507">เว็บไซต์ที่เข้าชมบ่อย</translation>
-<translation id="7230006500876504868">ค้นหาด้วย Brave</translation>
-<translation id="5888208462949095139">ค้นหาด้วย <ph name="DEFAULT_SEARCH_ENGINE"/></translation>
 <translation id="5456039738087398178">วิดเจ็ตหน้าจอหลัก</translation>
 <translation id="703185154752046151">วิดเจ็ตที่เพิ่มลงในหน้าจอหลัก</translation>
 <translation id="4635094429202343515">ลองใช้วิดเจ็ต Brave Search</translation>
@@ -1074,7 +1079,7 @@
 <translation id="7618347247876614969">บัญชีตารางค้นหาที่อยู่:</translation>
 <translation id="7659483790930268440">ดัชนีตารางค้นหาที่อยู่:</translation>
 <translation id="5494920125229734069">เลือกทั้งหมด</translation>
-<translation id="6129027151000961048">ลีโอ</translation>
+<translation id="2361906291514218784">Leo AI</translation>
 <translation id="8613144770663526433">ลงชื่อเข้าใช้ด้วย Brave Wallet</translation>
 <translation id="3696514931437952995">คุณกำลังลงชื่อเข้าใช้ <ph name="ORIGIN"/> Brave Wallet จะแบ่งปันที่อยู่ Wallet ของคุณกับ <ph name="ORIGIN"/></translation>
 <translation id="1028781062521375153">ดูรายละเอียด</translation>
@@ -1091,11 +1096,11 @@
 <translation id="6742599753610126012">ลบประวัติการสนทนา</translation>
 <translation id="3443052382074796867">การปิดการจัดเก็บการสนทนาจะลบการสนทนาทั้งหมดที่เคยจัดเก็บไว้ถาวร การกระทำนี้ไม่สามารถยกเลิกได้</translation>
 <translation id="3692772534525889713">ลิงก์การซื้อใน Play Store กับบัญชี Brave เพื่อใช้ Brave Leo บนอุปกรณ์อื่นๆ</translation>
-<translation id="73236265316873967">Leo Premium</translation>
+<translation id="592831784390389506">Leo AI Premium</translation>
 <translation id="1028627582482425924">หนึ่งปี</translation>
 <translation id="2985392169397572983">คุ้มค่าที่สุด</translation>
 <translation id="1166682575529520472">รายเดือน</translation>
-<translation id="451189393813405346">ถาม Leo</translation>
+<translation id="2206846767762985925">ถาม Leo AI</translation>
 <translation id="7322560193401221004">จำตำแหน่งที่เล่นไฟล์</translation>
 <translation id="7505951907514709271">สำหรับไฟล์แต่ละไฟล์ ให้เล่นไฟล์ต่อจากจุดที่หยุดชั่วคราวครั้งสุดท้าย</translation>
 <translation id="6835165453349969605">จำตำแหน่งเล่นในรายการ</translation>
@@ -1138,6 +1143,7 @@
 <translation id="3861012838874771868">เปิดการตั้งค่าเพลย์ลิสต์</translation>
 <translation id="5220099266891491416">ซ่อนปุ่มเพลย์ลิสต์</translation>
 <translation id="7416347631175891923">ลองเลย!</translation>
+<translation id="9065203028668620118">แก้ไข</translation>
 <translation id="1173894706177603556">เปลี่ยนชื่อ</translation>
 <translation id="3596306474342941843">ลบเพลย์ลิสต์</translation>
 <translation id="7765158879357617694">ย้าย</translation>
@@ -1152,7 +1158,7 @@
 <translation id="5319532905552885478">เนื้อหาสื่อถูกเพิ่มเข้าไปในเพลย์ลิสต์เริ่มต้นแล้ว</translation>
 <translation id="4802584673094436231">กำลังเตรียม...</translation>
 <translation id="481455355267255546">รายการถัดไป</translation>
-<translation id="5474757891469990756">ปลดล็อกความสามารถของ Leo อย่างเต็มรูปแบบด้วย Premium:</translation>
+<translation id="3721790899869840343">ปลดปล่อยพลังของ Leo AI อย่างเต็มที่ด้วย Premium:</translation>
 <translation id="4173478269537830374">สำรวจโมเดล AI อื่นๆ</translation>
 <translation id="3453542753968940696">สิทธิพิเศษในการเข้าถึงโมเดลที่ทรงพลังพร้อมทักษะที่แตกต่างก่อนใคร</translation>
 <translation id="3245401959451976966">ปลดล็อกความคิดสร้างสรรค์ของคุณ</translation>
@@ -1220,12 +1226,18 @@
 <translation id="4650851936784160359">ไม่สามารถอัปเดตรายการตัวกรองได้ โปรดลองอีกครั้ง</translation>
 <translation id="3098054327870766317">แสดงปุ่มย้อนกลับเมื่อแท็บถูกปิด</translation>
 <translation id="1336494649091412226">คุณแน่ใจไหมว่าต้องการออกจาก Brave</translation>
-<translation id="2361906291514218784">Leo AI</translation>
 <translation id="7942415993090181327">ประวัติการแชท</translation>
 <translation id="6859935199732075666">แสดงข้อผิดพลาดของ Safe Browsing</translation>
 <translation id="2735247450315842119">อนุญาตให้ถ่ายภาพหน้าจอในแท็บส่วนตัว</translation>
 <translation id="8420414929552321089">หากมีการอนุญาต แท็บส่วนตัวจะมองเห็นได้เมื่อเปิดหลายแอป</translation>
 <translation id="7956713633345437162">บุ๊กมาร์กบนมือถือ</translation>
+<translation id="3176467469116060712">สนับสนุนการทำงานชั้นนำของอุตสาหกรรมของ Brave เพื่อความเป็นส่วนตัวบนเว็บและรายการบล็อกโฆษณาแบบโอเพนซอร์ส</translation>
+<translation id="5896375129784311037">ปรับให้เหมาะสมสำหรับอินเทอร์เฟซเบราว์เซอร์ที่เรียบง่ายยิ่งขึ้น</translation>
+<translation id="746156554966264308">แกนหลักของ Brave Shields สำหรับการบล็อกโฆษณา, ความเป็นส่วนตัว, และความเร็ว</translation>
+<translation id="1432661650699782509">การสนับสนุนนโยบายที่จัดการโดยฝ่าย IT ในที่ทำงาน</translation>
+<translation id="1361157028850796410">คุ้มค่าที่สุด</translation>
+<translation id="7280825497485894053">การสมัครสมาชิกรายเดือน</translation>
+<translation id="4570901726096223030">เรียนรู้เพิ่มเติมเกี่ยวกับ Origin</translation>
 <translation id="1943432128510653496">บันทึกรหัสผ่าน</translation>
 <translation id="2100273922101894616">ลงชื่อเข้าใช้อัตโนมัติ</translation>
 <translation id="363596933471559332">ลงชื่อเข้าใช้เว็บไซต์โดยอัตโนมัติโดยใช้ข้อมูลเข้าสู่ระบบที่เก็บไว้ เมื่อฟีเจอร์นี้ปิดอยู่ ระบบจะขอให้คุณยืนยันทุกครั้งก่อนลงชื่อเข้าใช้เว็บไซต์</translation>
@@ -1237,6 +1249,22 @@
 <translation id="5139940364318403933">ดูวิธีใช้ Brave ไดรฟ์</translation>
 <translation id="729975465115245577">อุปกรณ์ของคุณไม่มีแอปไว้จัดเก็บไฟล์รหัสผ่าน</translation>
 <translation id="1129510026454351943">รายละเอียด: <ph name="ERROR_DESCRIPTION"/></translation>
+<translation id="5594899180331219722">เลือกไฟล์</translation>
+<translation id="3744219658596020825">ไม่สามารถนำเข้ารหัสผ่านของคุณได้</translation>
+<translation id="8258027225380843424">นำเข้าสำเร็จ!</translation>
+<translation id="766635563210446220">ไม่สามารถนำเข้ารหัสผ่านได้ โปรดตรวจสอบ <ph name="FILENAME"/> และตรวจสอบให้แน่ใจว่าอยู่ในรูปแบบที่ถูกต้อง <ph name="BEGIN_LINK"/>เรียนรู้เพิ่มเติม<ph name="END_LINK"/></translation>
+<translation id="6581356304040102696">ไม่สามารถนำเข้ารหัสผ่านได้ ไฟล์ต้องมีขนาดไม่เกิน 1 MB</translation>
+<translation id="5895244669404288318">{COUNT, plural,
+ =1 {ไม่สามารถนำเข้ารหัสผ่านได้ คุณสามารถนำเข้ารหัสผ่านได้ครั้งละ 1 รหัสเท่านั้น}
+ other {ไม่สามารถนำเข้ารหัสผ่านได้ คุณสามารถนำเข้าสูงสุดถึง <ph name="COUNT_MANY"/> รหัสผ่านได้ในแต่ละครั้ง}}</translation>
+<translation id="3748424433435232460">มีรหัสผ่านสำหรับบัญชีนี้อยู่ในอุปกรณ์นี้แล้ว</translation>
+<translation id="6438475350605608554">คุณกำลังนำเข้ารหัสผ่านในแท็บอื่นอยู่แล้ว</translation>
+<translation id="3482868954775580230">ไม่สามารถอ่านไฟล์ที่เลือกได้ <ph name="EXCEPTION_INFO"/></translation>
+<translation id="9162995380643712715">{IMPORT_COUNT, plural,
+        =1 {นำเข้าข้อมูลรหัสผ่านสำเร็จ 1 รายการ}
+        other {นำเข้าข้อมูลสำเร็จ <ph name="IMPORT_COUNT_MANY"/> รหัสผ่าน}}</translation>
+<translation id="4637949129057123593">นำเข้าไม่สำเร็จ.</translation>
+<translation id="4300452012226767715">ไม่สามารถใช้งานตัวจัดการรหัสผ่านได้</translation>
 <translation id="6221633008163990886">ปลดล็อกเพื่อส่งออกรหัสผ่าน</translation>
 <translation id="5245792669563792664">รหัสผ่าน</translation>
 <translation id="10614374240317010">ไม่เคยบันทึก</translation>

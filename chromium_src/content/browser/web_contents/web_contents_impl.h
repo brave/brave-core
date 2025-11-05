@@ -13,13 +13,8 @@
   bool GetShouldDoLearningForTesting() override; \
   bool ShouldDoLearning(__VA_ARGS__)
 
-#define PreHandleKeyboardEvent(...)             \
-  PreHandleKeyboardEvent(__VA_ARGS__) override; \
-  bool PreHandleMouseEvent(const blink::WebMouseEvent& event)
-
 #include <content/browser/web_contents/web_contents_impl.h>  // IWYU pragma: export
 
-#undef PreHandleKeyboardEvent
 #undef ShouldDoLearning
 
 #endif  // BRAVE_CHROMIUM_SRC_CONTENT_BROWSER_WEB_CONTENTS_WEB_CONTENTS_IMPL_H_

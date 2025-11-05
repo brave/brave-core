@@ -49,6 +49,12 @@ import WarningPremiumDisconnected from '../components/alerts/warning_premium_dis
 import Attachments from '../components/attachments'
 import { createTextContentBlock } from '../../common/content_block'
 import ToolEvent from '../../untrusted_conversation_frame/components/assistant_response/tool_event'
+import { taskConversationEntries } from './story_utils/history'
+import { toolUseCompleteAssistantDetailStorage } from './story_utils/events'
+import {
+  Content,
+  stringifyContent,
+} from '../components/input_box/editable_content'
 
 // TODO(https://github.com/brave/brave-browser/issues/47810): Attempt to split this file up
 
@@ -149,6 +155,12 @@ const toolEvents: Mojom.ToolUseEvent[] = [
     argumentsJson: JSON.stringify({ choices: ['7:00pm', '8:00pm'] }),
     output: undefined,
   },
+  {
+    id: 'abc123g',
+    toolName: Mojom.NAVIGATE_TOOL_NAME,
+    argumentsJson: JSON.stringify({ website_url: 'https://www.example.com' }),
+    output: undefined,
+  },
 ]
 
 const MEMORY_HISTORY: Mojom.ConversationTurn[] = [
@@ -164,6 +176,7 @@ const MEMORY_HISTORY: Mojom.ConversationTurn[] = [
     events: [],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
+    skill: undefined,
     modelKey: '1',
   },
   {
@@ -194,6 +207,7 @@ const MEMORY_HISTORY: Mojom.ConversationTurn[] = [
     ],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
+    skill: undefined,
     modelKey: '1',
   },
   {
@@ -208,6 +222,7 @@ const MEMORY_HISTORY: Mojom.ConversationTurn[] = [
     events: [],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
+    skill: undefined,
     modelKey: '1',
   },
   {
@@ -238,6 +253,7 @@ const MEMORY_HISTORY: Mojom.ConversationTurn[] = [
     ],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
+    skill: undefined,
     modelKey: '1',
   },
   {
@@ -252,6 +268,7 @@ const MEMORY_HISTORY: Mojom.ConversationTurn[] = [
     events: [],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
+    skill: undefined,
     modelKey: '1',
   },
   {
@@ -284,11 +301,50 @@ const MEMORY_HISTORY: Mojom.ConversationTurn[] = [
     ],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
+    skill: undefined,
     modelKey: '1',
   },
 ]
 
 const HISTORY: Mojom.ConversationTurn[] = [
+  {
+    uuid: 'skill-turn',
+    text: '/translate Hello world, how are you today?',
+    characterType: Mojom.CharacterType.HUMAN,
+    actionType: Mojom.ActionType.QUERY,
+    prompt: undefined,
+    selectedText: undefined,
+    edits: [],
+    createdTime: { internalValue: BigInt('13278618000900000') },
+    events: [],
+    uploadedFiles: [],
+    fromBraveSearchSERP: false,
+    skill: {
+      shortcut: 'translate',
+      prompt: 'Translate the following text to English',
+    },
+    modelKey: '1',
+  },
+  {
+    uuid: 'skill-response',
+    text: '',
+    characterType: Mojom.CharacterType.ASSISTANT,
+    actionType: Mojom.ActionType.UNSPECIFIED,
+    prompt: undefined,
+    selectedText: undefined,
+    edits: [],
+    createdTime: { internalValue: BigInt('13278618000950000') },
+    events: [
+      getCompletionEvent(
+        'Here is the translation:\n\n"Hello world, how are you today?"'
+          + '\n\nThis text is already in English, so no translation is needed.',
+      ),
+    ],
+    uploadedFiles: [],
+    fromBraveSearchSERP: false,
+    skill: undefined,
+    modelKey: '1',
+  },
   {
     uuid: 'turn-uuid',
     text: 'Summarize this page',
@@ -301,6 +357,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     events: [],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
+    skill: undefined,
     modelKey: '1',
   },
   {
@@ -319,8 +376,27 @@ const HISTORY: Mojom.ConversationTurn[] = [
     ],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
+    skill: undefined,
     modelKey: '1',
   },
+  {
+    uuid: undefined,
+    text: 'Question that results in a task',
+    characterType: Mojom.CharacterType.HUMAN,
+    actionType: Mojom.ActionType.QUERY,
+    prompt: undefined,
+    selectedText: undefined,
+    edits: [],
+    createdTime: { internalValue: BigInt('13278618001000000') },
+    events: [],
+    uploadedFiles: [],
+    fromBraveSearchSERP: false,
+    skill: undefined,
+    modelKey: '1',
+  },
+  // Show how a Task is displayed within history. Use the AssistantTask story for
+  // viewing an active Task.
+  ...taskConversationEntries,
   {
     uuid: undefined,
     text: 'What is pointer compression?\n...and how does it work?\n    - tell me something interesting',
@@ -333,6 +409,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     events: [],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
+    skill: undefined,
     modelKey: '1',
   },
   {
@@ -351,6 +428,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     ],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
+    skill: undefined,
     modelKey: '1',
   },
   {
@@ -365,6 +443,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     events: [],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
+    skill: undefined,
     modelKey: '1',
   },
   {
@@ -383,6 +462,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     ],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
+    skill: undefined,
     modelKey: '1',
   },
   {
@@ -397,6 +477,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     events: [],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
+    skill: undefined,
     modelKey: '1',
   },
   {
@@ -430,6 +511,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     ],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
+    skill: undefined,
     modelKey: '1',
   },
   {
@@ -445,6 +527,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     events: [],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
+    skill: undefined,
     modelKey: '1',
   },
   {
@@ -482,6 +565,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     ],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
+    skill: undefined,
     modelKey: '1',
   },
   {
@@ -504,6 +588,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
         events: [],
         uploadedFiles: [],
         fromBraveSearchSERP: false,
+        skill: undefined,
         modelKey: '1',
       },
     ],
@@ -511,6 +596,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     events: [],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
+    skill: undefined,
     modelKey: '1',
   },
   {
@@ -531,6 +617,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     ],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
+    skill: undefined,
     modelKey: '1',
   },
   {
@@ -552,6 +639,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
       },
     ],
     fromBraveSearchSERP: false,
+    skill: undefined,
     modelKey: '1',
   },
   {
@@ -566,6 +654,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     events: [getCompletionEvent('It is a lion!')],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
+    skill: undefined,
     modelKey: '1',
   },
   {
@@ -593,6 +682,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
       },
     ],
     fromBraveSearchSERP: false,
+    skill: undefined,
     modelKey: '1',
   },
   {
@@ -608,9 +698,11 @@ const HISTORY: Mojom.ConversationTurn[] = [
       getCompletionEvent(
         'This website compares differences between Juniper Model Y and legacy one.',
       ),
+      toolUseCompleteAssistantDetailStorage,
     ],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
+    skill: undefined,
     modelKey: '1',
   },
   {
@@ -644,6 +736,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
       },
     ],
     fromBraveSearchSERP: false,
+    skill: undefined,
     modelKey: '1',
   },
   {
@@ -662,6 +755,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     ],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
+    skill: undefined,
     modelKey: '1',
   },
   {
@@ -695,8 +789,11 @@ const HISTORY: Mojom.ConversationTurn[] = [
     ],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
+    skill: undefined,
     modelKey: '1',
   },
+  // Show that tool use events are NOT interactive if they are not the last entry in the
+  // group of assistant conversation entries.
   {
     uuid: undefined,
     text: '',
@@ -707,33 +804,35 @@ const HISTORY: Mojom.ConversationTurn[] = [
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
     events: [
-      getCompletionEvent(
-        'Pointer compression is a memory optimization technique where pointers are stored in a compressed format to save memory.',
-      ),
+      ...toolEvents
+        .slice(2)
+        .map((toolEvent) => ({ ...eventTemplate, toolUseEvent: toolEvent })),
+    ],
+    uploadedFiles: [],
+    fromBraveSearchSERP: false,
+    skill: undefined,
+    modelKey: '1',
+  },
+  // Show that single or multipletool use events are interactive if they are the
+  // last entry in thegroup of assistant conversation entries.
+  {
+    uuid: undefined,
+    text: '',
+    characterType: Mojom.CharacterType.ASSISTANT,
+    actionType: Mojom.ActionType.UNSPECIFIED,
+    prompt: undefined,
+    selectedText: undefined,
+    edits: [],
+    createdTime: { internalValue: BigInt('13278618001000000') },
+    events: [
+      getCompletionEvent('Answer one of these questions:'),
       ...toolEvents
         .slice(0, 3)
         .map((toolUseEvent) => ({ ...eventTemplate, toolUseEvent })),
     ],
     uploadedFiles: [],
     fromBraveSearchSERP: false,
-    modelKey: '1',
-  },
-  {
-    uuid: undefined,
-    text: '',
-    characterType: Mojom.CharacterType.ASSISTANT,
-    actionType: Mojom.ActionType.UNSPECIFIED,
-    prompt: undefined,
-    selectedText: undefined,
-    edits: [],
-    createdTime: { internalValue: BigInt('13278618001000000') },
-    events: [
-      ...toolEvents
-        .slice(3)
-        .map((toolEvent) => ({ ...eventTemplate, toolUseEvent: toolEvent })),
-    ],
-    uploadedFiles: [],
-    fromBraveSearchSERP: false,
+    skill: undefined,
     modelKey: '1',
   },
 ]
@@ -843,7 +942,7 @@ type CustomArgs = {
   initialized: boolean
   currentErrorState: keyof typeof Mojom.APIError
   model: string
-  inputText: string
+  inputText: Content
   hasConversation: boolean
   editingConversationId: string | null
   deletingConversationId: string | null
@@ -871,7 +970,7 @@ type CustomArgs = {
   totalTokens: number
   trimmedTokens: number
   isGenerating: boolean
-  attachmentsDialog: 'tabs' | null
+  attachmentsDialog: 'tabs' | 'bookmarks' | 'history' | null
   isNewConversation: boolean
   generatedUrlToBeOpened: Url | undefined
   ratingTurnUuid: { isLiked: boolean; turnUuid: string } | undefined
@@ -879,11 +978,16 @@ type CustomArgs = {
   isDragActive: boolean
   isDragOver: boolean
   useMemoryHistory: boolean
+  skillDialog: Mojom.Skill | null
+  selectedActionType: Mojom.ActionType | undefined
+  selectedSkill: Mojom.Skill | undefined
 }
 
 const args: CustomArgs = {
   initialized: true,
-  inputText: `Write a Star Trek poem about Data's life on board the Enterprise`,
+  inputText: [
+    `Write a Star Trek poem about Data's life on board the Enterprise`,
+  ],
   hasConversation: true,
   conversationListCount: CONVERSATIONS.length,
   hasSuggestedQuestions: true,
@@ -914,7 +1018,7 @@ const args: CustomArgs = {
   totalTokens: 0,
   trimmedTokens: 0,
   isGenerating: false,
-  attachmentsDialog: 'tabs',
+  attachmentsDialog: null,
   isNewConversation: false,
   generatedUrlToBeOpened: undefined,
   ratingTurnUuid: undefined,
@@ -922,6 +1026,9 @@ const args: CustomArgs = {
   isDragActive: false,
   isDragOver: false,
   useMemoryHistory: false,
+  skillDialog: null,
+  selectedActionType: undefined,
+  selectedSkill: undefined,
 }
 
 const meta: Meta<CustomArgs> = {
@@ -1007,10 +1114,6 @@ function StoryContext(
     setArgs({ model: nonPremiumModel?.key })
   }
 
-  const setInputText = (inputText: string) => {
-    setArgs({ inputText })
-  }
-
   const [showSidebar, setShowSidebar] = React.useState(isSmall)
   const [isToolsMenuOpen, setIsToolsMenuOpen] = React.useState(false)
 
@@ -1045,6 +1148,32 @@ function StoryContext(
       options.args.isAIChatAgentProfileFeatureEnabled,
     isAIChatAgentProfile: options.args.isAIChatAgentProfile,
     isStandalone: options.args.isStandalone,
+    skills: [
+      {
+        id: 'translate-mode',
+        shortcut: 'translate',
+        prompt: 'Translate the following text to English',
+        model: 'claude-3-haiku',
+        createdTime: { internalValue: BigInt(Date.now() * 1000) },
+        lastUsed: { internalValue: BigInt(Date.now() * 1000) },
+      },
+      {
+        id: 'simplify-mode',
+        shortcut: 'simplify',
+        prompt: 'Simplify the following concept in simple terms',
+        model: undefined,
+        createdTime: { internalValue: BigInt(Date.now() * 1000) },
+        lastUsed: { internalValue: BigInt((Date.now() - 86400000) * 1000) },
+      },
+      {
+        id: 'summarize-mode',
+        shortcut: 'summarize',
+        prompt: 'Summarize the following content in bullet points',
+        model: undefined,
+        createdTime: { internalValue: BigInt(Date.now() * 1000) },
+        lastUsed: { internalValue: BigInt((Date.now() - 3600000) * 1000) },
+      },
+    ],
     actionList: ACTIONS_LIST,
     tabs: [
       {
@@ -1085,8 +1214,42 @@ function StoryContext(
       setArgs({ editingConversationId: id }),
     setDeletingConversationId: (id: string | null) =>
       setArgs({ deletingConversationId: id }),
+    skillDialog: options.args.skillDialog,
+    setSkillDialog: () => {},
     showSidebar: showSidebar,
     toggleSidebar: () => setShowSidebar((s) => !s),
+    getBookmarks: async () => [
+      {
+        id: BigInt(1),
+        url: { url: 'https://www.example.com' },
+        title: 'Example',
+        createdTime: { internalValue: BigInt(Date.now() * 1000) },
+        lastUsed: { internalValue: BigInt(Date.now() * 1000) },
+      },
+      {
+        id: BigInt(2),
+        url: { url: 'https://topos.nz' },
+        title: 'NZ Topo',
+        createdTime: { internalValue: BigInt(Date.now() * 1000) },
+        lastUsed: { internalValue: BigInt(Date.now() * 1000) },
+      },
+    ],
+    getHistory: async () => [
+      {
+        id: BigInt(1),
+        url: { url: 'https://w3.org' },
+        title: 'W3',
+        createdTime: { internalValue: BigInt(Date.now() * 1000) },
+        lastUsed: { internalValue: BigInt(Date.now() * 1000) },
+      },
+      {
+        id: BigInt(2),
+        url: { url: 'https://readr.nz' },
+        title: 'RSS Reader',
+        createdTime: { internalValue: BigInt(Date.now() * 1000) },
+        lastUsed: { internalValue: BigInt(Date.now() * 1000) },
+      },
+    ],
   }
 
   const activeChatContext: SelectedChatDetails = {
@@ -1124,7 +1287,8 @@ function StoryContext(
     shouldShowLongPageWarning: options.args.shouldShowLongPageWarning,
     shouldShowLongConversationInfo: options.args.shouldShowLongConversationInfo,
     inputText,
-    selectedActionType: undefined,
+    selectedActionType: options.args.selectedActionType,
+    selectedSkill: options.args.selectedSkill,
     isToolsMenuOpen,
     isCurrentModelLeo: true,
     isCharLimitApproaching: inputText.length > 64,
@@ -1135,7 +1299,7 @@ function StoryContext(
     ratingTurnUuid: options.args.ratingTurnUuid,
     isUploadingFiles: false,
     isTemporaryChat: options.args.isTemporaryChat,
-    setInputText,
+    setInputText: (content) => setArgs({ inputText: content }),
     setCurrentModel: () => {},
     switchToBasicModel,
     generateSuggestedQuestions: () => {},
@@ -1144,8 +1308,32 @@ function StoryContext(
     handleResetError: () => {},
     handleStopGenerating: async () => {},
     submitInputTextToAPI: () => {},
-    resetSelectedActionType: () => {},
-    handleActionTypeClick: () => {},
+    resetSelectedActionType: () => setArgs({ selectedActionType: undefined }),
+    handleActionTypeClick: (actionType: Mojom.ActionType) => {
+      const update: Partial<CustomArgs> = {
+        selectedActionType: actionType,
+        selectedSkill: undefined,
+      }
+
+      const content = stringifyContent(options.args.inputText)
+      if (content.startsWith('/')) {
+        update.inputText = ['']
+      }
+
+      setArgs(update)
+      setIsToolsMenuOpen(false)
+    },
+    handleSkillClick: (skill: any) => {
+      setArgs({
+        selectedSkill: skill,
+        selectedActionType: undefined,
+        inputText: [
+          { type: 'skill', id: skill.shortcut, text: `/${skill.shortcut}` },
+        ],
+      })
+      setIsToolsMenuOpen(false)
+    },
+    handleSkillEdit: () => {},
     setIsToolsMenuOpen,
     handleFeedbackFormCancel: () => {},
     handleFeedbackFormSubmit: () => Promise.resolve(),

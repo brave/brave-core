@@ -23,7 +23,7 @@ interface Props {
 }
 
 export function SearchBox(props: Props) {
-  const inputState = useSearchInputState()
+  const inputState = useSearchInputState('search-box')
   const searchFeatureEnabled = useSearchState((s) => s.searchFeatureEnabled)
   const showSearchBox = useSearchState((s) => s.showSearchBox)
   const [expanded, setExpanded] = React.useState(false)
@@ -68,11 +68,12 @@ export function SearchBox(props: Props) {
             type='text'
             placeholder={
               engineHost === braveSearchHost
-                ? getString('searchBoxPlaceholderTextBrave')
-                : getString('searchBoxPlaceholderText')
+                ? getString(S.NEW_TAB_SEARCH_BOX_PLACEHOLDER_TEXT_BRAVE)
+                : getString(S.NEW_TAB_SEARCH_BOX_PLACEHOLDER_TEXT)
             }
             tabIndex={1}
             value={inputState.query}
+            onFocus={() => inputState.setActiveInput()}
             onClick={() => setExpanded(true)}
             onKeyDown={(event) => {
               inputState.handleActionKeyDown(event.nativeEvent)

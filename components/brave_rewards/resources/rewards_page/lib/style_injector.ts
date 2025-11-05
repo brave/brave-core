@@ -23,4 +23,3 @@ export async function addStyles(id: string, cssText: unknown) {
 
   await stylesheet.replace(String(cssText))
 }
-

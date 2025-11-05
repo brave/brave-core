@@ -5,9 +5,6 @@
 
 #include "brave/browser/themes/brave_theme_service.h"
 
-#include <memory>
-
-#include "brave/browser/extensions/brave_theme_event_router.h"
 #include "chrome/browser/profiles/profile.h"
 
 #if defined(TOOLKIT_VIEWS)
@@ -18,9 +15,6 @@
 BraveThemeService::BraveThemeService(Profile* profile,
                                      const ThemeHelper& theme_helper)
     : ThemeService(profile, theme_helper) {
-  brave_theme_event_router_ =
-      std::make_unique<extensions::BraveThemeEventRouter>(profile);
-
 #if defined(TOOLKIT_VIEWS)
   if (base::FeatureList::IsEnabled(darker_theme::features::kBraveDarkerTheme)) {
     darker_theme_enabled_.Init(
@@ -37,11 +31,6 @@ BraveThemeService::~BraveThemeService() = default;
 // blue ish while ours is gray.
 bool BraveThemeService::GetIsGrayscale() const {
   return ThemeService::GetIsGrayscale() || GetIsBaseline();
-}
-
-void BraveThemeService::SetBraveThemeEventRouterForTesting(
-    extensions::BraveThemeEventRouter* mock_router) {
-  brave_theme_event_router_.reset(mock_router);
 }
 
 #if defined(TOOLKIT_VIEWS)

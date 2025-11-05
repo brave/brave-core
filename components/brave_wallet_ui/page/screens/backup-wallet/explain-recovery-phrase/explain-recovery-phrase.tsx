@@ -8,6 +8,11 @@ import { useHistory, useLocation } from 'react-router'
 import { useDispatch } from 'react-redux'
 import Button from '@brave/leo/react/button'
 import * as leo from '@brave/leo/tokens/css/variables'
+import useMediaQuery from '$web-common/useMediaQuery'
+
+// assets
+import ExamplePhraseLight from './images/example_recovery_phrase_light.png'
+import ExamplePhraseDark from './images/example_recovery_phrase_dark.png'
 
 // utils
 import { getLocale } from '../../../../../common/locale'
@@ -73,6 +78,9 @@ export const RecoveryPhraseExplainer = () => {
     report(BraveWallet.OnboardingAction.RecoverySetup)
   }, [report])
 
+  // hooks
+  const isDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
+
   // render
   return (
     <>
@@ -95,7 +103,9 @@ export const RecoveryPhraseExplainer = () => {
         <BackupInstructions>
           {getLocale('braveWalletRecoveryPhraseBackupWarningImportant')}
         </BackupInstructions>
-        <ExampleRecoveryPhrase />
+        <ExampleRecoveryPhrase
+          src={isDarkMode ? ExamplePhraseDark : ExamplePhraseLight}
+        />
         <Column gap='24px'>
           <ContinueButton onClick={onContinue}>
             {getLocale('braveWalletButtonVerifyPhrase')}

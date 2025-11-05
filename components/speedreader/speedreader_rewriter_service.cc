@@ -180,12 +180,12 @@ std::unique_ptr<Rewriter> SpeedreaderRewriterService::MakeRewriter(
   if (!rewriter) {
     return nullptr;
   }
-  rewriter->SetMinOutLength(speedreader::kSpeedreaderMinOutLengthParam.Get());
+  rewriter->SetMinOutLength(features::kSpeedreaderMinOutLengthParam.Get());
   rewriter->SetTheme(theme);
   rewriter->SetFontFamily(font_family);
   rewriter->SetFontSize(font_size);
   rewriter->SetColumnWidth(column_width);
-  rewriter->SetDebugView(speedreader::kSpeedreaderDebugView.Get());
+  rewriter->SetDebugView(features::kSpeedreaderDebugView.Get());
   return rewriter;
 }
 

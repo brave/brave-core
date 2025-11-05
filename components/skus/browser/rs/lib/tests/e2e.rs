@@ -1,9 +1,14 @@
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
 use std::cell::RefCell;
-use std::{thread, time};
 use std::cell::RefMut;
 use std::collections::HashMap;
 use std::fmt;
 use std::io::Read;
+use std::{thread, time};
 
 use async_std::task;
 use async_trait::async_trait;
@@ -201,12 +206,12 @@ fn skus_5m_tlv2_e2e_works() {
         // go ahead and see if we attempt to re-initialize, hope not
         sdk.fetch_order_credentials(&order.id).await.unwrap();
 
-		let four_min = time::Duration::from_millis(4*60000);
+        let four_min = time::Duration::from_millis(4 * 60000);
 
-		for _ in 1..=30 {
-        	sdk.present_order_credentials(&order.id, &order.location, "/").await.unwrap();
-			let now = time::Instant::now();
-			thread::sleep(four_min);
-		}
+        for _ in 1..=30 {
+            sdk.present_order_credentials(&order.id, &order.location, "/").await.unwrap();
+            let now = time::Instant::now();
+            thread::sleep(four_min);
+        }
     });
 }

@@ -13,17 +13,18 @@
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
-#include "brave/components/p3a/pref_names.h"
 
 namespace brave_ads::test {
 
 void RegisterLocalStatePrefs() {
-  // P3A prefs.
-  RegisterLocalStateBooleanPref(p3a::kP3AEnabled, true);
+  // Ads prefs.
+  RegisterLocalStateTimePref(prefs::kFirstRunAt, DistantPast());
 }
 
 void RegisterProfilePrefs() {
   // Ads prefs.
+  RegisterProfileTimeDeltaPref(prefs::kGracePeriod, base::Days(3));
+
   RegisterProfileStringPref(prefs::kDiagnosticId, "");
 
   RegisterProfileBooleanPref(prefs::kOptedInToNotificationAds, true);

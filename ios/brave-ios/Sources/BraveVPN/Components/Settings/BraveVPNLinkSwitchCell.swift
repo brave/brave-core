@@ -29,6 +29,8 @@ class BraveVPNLinkSwitchView: UIView {
 
 class BraveVPNLinkSwitchCell: UITableViewCell, Cell {
 
+  static let textAccessoryKey = "textAccessoryImageName"
+
   private let hostingController = UIHostingController(
     rootView: VPNToggleView(title: "", toggle: .constant(false))
   ).then {
@@ -67,8 +69,13 @@ class BraveVPNLinkSwitchCell: UITableViewCell, Cell {
       fatalError("row.accessory must be of type: BraveVPNLinkSwitchView")
     }
 
+    var titleAccessory: UIImage?
+    if let imageName = row.context?[BraveVPNLinkSwitchCell.textAccessoryKey] as? String {
+      titleAccessory = UIImage(braveSystemNamed: imageName)
+    }
     hostingController.rootView = VPNToggleView(
       title: row.text ?? "",
+      titleAccessory: titleAccessory,
       subtitle: row.detailText,
       openURL: switchView.openURL,
       toggle: .init(
@@ -84,17 +91,20 @@ class BraveVPNLinkSwitchCell: UITableViewCell, Cell {
 
   private struct VPNToggleView: View {
     let title: String
+    let titleAccessory: UIImage?
     var subtitle: String?
     var openURL: ((URL) -> Void)?
     @Binding var toggle: Bool
 
     public init(
       title: String,
+      titleAccessory: UIImage? = nil,
       subtitle: String? = nil,
       openURL: ((URL) -> Void)? = nil,
       toggle: Binding<Bool>
     ) {
       self.title = title
+      self.titleAccessory = titleAccessory
       self.subtitle = subtitle
       self.openURL = openURL
       _toggle = toggle
@@ -102,14 +112,18 @@ class BraveVPNLinkSwitchCell: UITableViewCell, Cell {
 
     public var body: some View {
       Toggle(isOn: $toggle) {
-        LabelView(title: title, subtitle: subtitle)
-          .environment(
-            \.openURL,
-            OpenURLAction { url in
-              openURL?(url)
-              return .handled
-            }
-          )
+        BraveVPNLabelView(
+          title: title,
+          titleAccessory: titleAccessory,
+          subtitle: subtitle
+        )
+        .environment(
+          \.openURL,
+          OpenURLAction { url in
+            openURL?(url)
+            return .handled
+          }
+        )
       }
       .toggleStyle(SwitchToggleStyle(tint: .accentColor))
     }

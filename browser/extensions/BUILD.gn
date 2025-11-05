@@ -5,7 +5,6 @@
 
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
-import("//brave/components/playlist/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//brave/components/web_discovery/buildflags/buildflags.gni")
@@ -84,8 +83,6 @@ source_set("extensions") {
     "brave_extensions_browser_api_provider.h",
     "brave_extensions_browser_client_impl.cc",
     "brave_extensions_browser_client_impl.h",
-    "brave_theme_event_router.cc",
-    "brave_theme_event_router.h",
     "updater/brave_update_client_config.cc",
     "updater/brave_update_client_config.h",
   ]
@@ -128,6 +125,7 @@ source_set("extensions") {
     "//brave/components/debounce/core/common",
     "//brave/components/decentralized_dns/core",
     "//brave/components/ntp_background_images/common",
+    "//brave/components/playlist/core/common",
     "//brave/components/request_otr/common",
     "//brave/components/sidebar/browser",
     "//brave/components/tor/buildflags",
@@ -170,10 +168,6 @@ source_set("extensions") {
 
   if (enable_brave_vpn) {
     deps += [ "//brave/components/brave_vpn/common" ]
-  }
-
-  if (enable_playlist) {
-    deps += [ "//brave/components/playlist/browser" ]
   }
 
   if (enable_tor) {

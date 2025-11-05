@@ -8,7 +8,6 @@ package org.chromium.chrome.browser.crypto_wallet.util;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import org.chromium.base.Callbacks;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
@@ -22,6 +21,16 @@ import java.util.List;
 import java.util.stream.Stream;
 
 public class TokenUtils {
+    /**
+     * A generic 1-argument callback.
+     *
+     * @param <T1> The type of the first argument.
+     */
+    public interface Callback1<T1> {
+        /** Call the callback. */
+        void call(T1 arg1);
+    }
+
     /**
      * Type of token used for filtering an array of {@code BlockchainToken}.
      *
@@ -125,7 +134,7 @@ public class TokenUtils {
             NetworkInfo selectedNetwork,
             int coinType,
             TokenType tokenType,
-            Callbacks.Callback1<BlockchainToken[]> callback) {
+            Callback1<BlockchainToken[]> callback) {
         braveWalletService.getUserAssets(
                 selectedNetwork.chainId,
                 coinType,
@@ -151,7 +160,7 @@ public class TokenUtils {
             @Nullable BlockchainRegistry blockchainRegistry,
             @Nullable NetworkInfo selectedNetwork,
             TokenType tokenType,
-            Callbacks.Callback1<BlockchainToken[]> callback) {
+            Callback1<BlockchainToken[]> callback) {
         if (braveWalletService == null || blockchainRegistry == null || selectedNetwork == null) {
             return;
         }
@@ -181,7 +190,7 @@ public class TokenUtils {
             int coinType,
             TokenType tokenType,
             boolean userAssetsOnly,
-            Callbacks.Callback1<BlockchainToken[]> callback) {
+            Callback1<BlockchainToken[]> callback) {
         if (JavaUtils.anyNull(braveWalletService, blockchainRegistry)) return;
         if (userAssetsOnly) {
             getVisibleUserAssetsFiltered(

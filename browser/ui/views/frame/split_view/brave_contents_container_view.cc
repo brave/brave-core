@@ -7,8 +7,8 @@
 
 #include <memory>
 
-#include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
+#include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view_mini_toolbar.h"
 #include "chrome/browser/profiles/profile.h"
@@ -63,10 +63,8 @@ BraveContentsContainerView::BraveContentsContainerView(
     : ContentsContainerView(browser_view), browser_view_(*browser_view) {
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   auto* browser = browser_view_->browser();
-  const bool use_rounded_corners =
-      BraveBrowser::ShouldUseBraveWebViewRoundedCorners(browser);
-  reader_mode_toolbar_ = AddChildView(std::make_unique<ReaderModeToolbarView>(
-      browser->profile(), use_rounded_corners));
+  reader_mode_toolbar_ =
+      AddChildView(std::make_unique<ReaderModeToolbarView>(browser->profile()));
   reader_mode_toolbar_->SetDelegate(this);
 #endif
 
@@ -133,6 +131,12 @@ void BraveContentsContainerView::UpdateBorderRoundedCorners() {
 
   devtools_web_view_->holder()->SetCornerRadii(contents_corner_radius);
   devtools_scrim_view_->SetRoundedCorners(contents_corner_radius);
+
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  if (reader_mode_toolbar_) {
+    reader_mode_toolbar_->SetCornerRadius(GetCornerRadius(false));
+  }
+#endif
 }
 
 views::ProposedLayout BraveContentsContainerView::CalculateProposedLayout(
@@ -189,7 +193,7 @@ float BraveContentsContainerView::GetCornerRadius(bool for_border) const {
     return 0;
   }
 
-  return BraveBrowser::ShouldUseBraveWebViewRoundedCorners(
+  return BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
              browser_view_->browser())
              ? BraveContentsViewUtil::kBorderRadius +
                    (for_border ? kBorderThickness : 0)

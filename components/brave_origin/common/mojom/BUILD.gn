@@ -1,0 +1,18 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//mojo/public/tools/bindings/mojom.gni")
+
+mojom_component("mojom") {
+  output_prefix = "brave_origin_mojom"
+  macro_prefix = "BRAVE_ORIGIN_MOJOM"
+
+  generate_legacy_js_bindings = true
+  webui_module_path = "/"
+
+  sources = [ "brave_origin_settings.mojom" ]
+
+  deps = [ "//mojo/public/mojom/base" ]
+}

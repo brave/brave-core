@@ -9,11 +9,18 @@ import("//mojo/public/tools/bindings/mojom.gni")
 import("//tools/grit/repack.gni")
 
 transpile_web_ui("brave_vpn_panel_ui") {
+  output_module = false
   entry_points = [ [
         "brave_vpn_panel",
         rebase_path("vpn_panel.tsx"),
       ] ]
   resource_name = "brave_vpn_panel"
+
+  imports_from = [
+    "//brave/components/brave_vpn/resources/panel/",
+    "//brave/components/web-components",
+  ]
+
   deps = [
     "//brave/components/brave_vpn/common/mojom:mojom_js",
     "//brave/components/brave_vpn/common/mojom:preprocess_mojo",

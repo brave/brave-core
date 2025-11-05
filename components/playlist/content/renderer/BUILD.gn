@@ -1,0 +1,26 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# TODO(sko) This should be component() target.
+# https://github.com/brave/brave-browser/issues/27764
+static_library("renderer") {
+  sources = [
+    "playlist_render_frame_observer.cc",
+    "playlist_render_frame_observer.h",
+  ]
+
+  public_deps = [ "//brave/components/playlist/core/common" ]
+
+  deps = [
+    "//brave/gin:converter_specializations",
+    "//content/public/renderer",
+    "//gin",
+    "//mojo/public/cpp/bindings",
+    "//third_party/blink/public:blink_headers",
+    "//third_party/blink/public/common",
+    "//url",
+    "//v8",
+  ]
+}

@@ -1,12 +1,12 @@
 diff --git a/components/content_settings/core/browser/content_settings_default_provider.cc b/components/content_settings/core/browser/content_settings_default_provider.cc
-index 2b4bbab440f91f0b61e50a70b5064fd4db486f6f..7bd4188e24a2368b10773ab04b850d0f9ba60d27 100644
+index 6898bffa23e3a9c0e3f9ed263a84fbc09b15cd97..8dcc4de84889890638389997b96538eeaf72ec97 100644
 --- a/components/content_settings/core/browser/content_settings_default_provider.cc
 +++ b/components/content_settings/core/browser/content_settings_default_provider.cc
-@@ -399,6 +399,7 @@ void DefaultProvider::DiscardOrMigrateObsoletePreferences() {
+@@ -410,6 +410,7 @@ void DefaultProvider::DiscardOrMigrateObsoletePreferences() {
    // TODO(https://crbug.com/367181093): clean this up.
    prefs_->ClearPref(kBug364820109AlreadyWorkedAroundPref);
  #endif  // !BUILDFLAG(IS_IOS)
 +BRAVE_DISCARD_OR_MIGRATE_OBSOLETE_PREFERENCES
  }
  
- void DefaultProvider::RecordHistogramMetrics() {
+ void DefaultProvider::MigrateGeolocationDefaultValue() {

@@ -206,7 +206,7 @@ void CardanoProviderImpl::OnRequestCardanoPermissions(
     }
   }
 
-  auto account_id = GetCardanoPereferedDappAccount(
+  auto account_id = GetCardanoPreferredDappAccount(
       delegate(), brave_wallet_service_->keyring_service());
 
   if (!account_id) {

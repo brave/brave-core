@@ -12,17 +12,22 @@
 namespace {
 constexpr char kLeoWindowTabNewIconResourceName[] =
     "//resources/brave-icons/window-tab-new.svg";
+constexpr char kLeoMessageBubbleAskIconResourceName[] =
+    "//resources/brave-icons/message-bubble-ask.svg";
 }  // namespace
 
 // This patches |ActionVectorIconToResourceName| to include the additional
 // omnibox icons we add in Brave. Unfortunately, the method is used inside the
 // file, so we can't just override the method. There is only one usage of
 // kSwitchIcon in the file, so we add additional statements from it.
-#define kSwitchIcon kSwitchIcon.name) {}        \
-  if (icon.name == kLeoWindowTabNewIcon.name) { \
-    return kLeoWindowTabNewIconResourceName;    \
-  }                                             \
-  if (icon.name == omnibox::kSwitchIcon
+#define kProductChromeRefreshIcon kProductChromeRefreshIcon.name) {} \
+  if (icon.name == kLeoWindowTabNewIcon.name) {                      \
+    return kLeoWindowTabNewIconResourceName;                         \
+  }                                                                  \
+  if (icon.name == kLeoMessageBubbleAskIcon.name) {                  \
+    return kLeoMessageBubbleAskIconResourceName;                     \
+  }                                                                  \
+  if (icon.name == omnibox::kProductChromeRefreshIcon
 
 // We tweak a few AutocompleteInput settings because unlike Chromium we only
 // want keyword search results.
@@ -36,4 +41,4 @@ constexpr char kLeoWindowTabNewIconResourceName[] =
 
 #undef set_prefer_keyword
 #undef set_allow_exact_keyword_match
-#undef kSwitchIcon
+#undef kProductChromeRefreshIcon

@@ -28,7 +28,7 @@ extension BrowserViewController {
       let cleanedURL =
         URLSanitizerServiceFactory.get(
           privateMode: tab?.isPrivate ?? true
-        )?.sanitizeURL(url) ?? url
+        )?.sanitize(url: url) ?? url
 
       activities.append(
         BasicMenuActivity(

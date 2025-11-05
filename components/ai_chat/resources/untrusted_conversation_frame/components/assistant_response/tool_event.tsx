@@ -4,25 +4,42 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import Icon from '@brave/leo/react/icon'
-import ProgressRing from '@brave/leo/react/progressRing'
-import Tooltip from '@brave/leo/react/tooltip'
 import classnames from '$web-common/classnames'
 import * as Mojom from '../../../common/mojom'
+import { getToolLabel } from './get_tool_label'
 import ToolEventContentUserChoice from './tool_event_content_user_choice'
+import ToolEventContentAssistantDetailStorage from './tool_event_content_assistant_detail_storage'
 import styles from './tool_event.module.scss'
 
 interface Props {
   toolUseEvent: Mojom.ToolUseEvent
+  /**
+   * Whether the event is contained within an entry that is currently generating
+   * or executing. This informs whether the tool can be interacted with, and
+   * what to do with partial input.
+   */
   isEntryActive: boolean
 }
 
-// Content customizable for each known tool type
+/**
+ * Content customizable for each known tool type. Some tools provide
+ * only a label, which will get styled depending on active state, some provide
+ * a more expansive content instead, and some may provide both whereby the label
+ * will be a button which toggles the expanded content.
+ */
 export interface ToolUseContent {
-  toolText: JSX.Element
-  tooltipContent: JSX.Element | null
-  statusIcon: JSX.Element
-  progressIcon: JSX.Element
+  /**
+   * Label to display for the action being taken. If not present,
+   * then expandedContent is shown instead. If present, then it is shown
+   * immediately and expandedContent, if present, is shown or hidden on click.
+   */
+  toolLabel: string | null
+
+  /**
+   * UI for the tool action. If toolLabel is present, then this
+   * will show on click. Otherwise, expandedContent will show by default.
+   */
+  expandedContent: JSX.Element | null
 }
 
 export type ToolComponent = React.FC<
@@ -31,36 +48,26 @@ export type ToolComponent = React.FC<
     // by parsing LLM input so properties should be defensively
     // checked.
     toolInput: any
+
     // default content for the component to modify any property
     content: ToolUseContent
+
     // The component should pass data about the rendering of the tool use event
     // to the tool use event template component.
-    children: (content: Partial<ToolUseContent>) => JSX.Element
+    children: (content: ToolUseContent) => JSX.Element | null
   }
 >
 
+/**
+ * Decides what structured ToolUseContent to provide for a given tool. Provides
+ * common functionality for all tools.
+ */
 function ToolEventContent(
   props: Props & {
-    children: (content: Partial<ToolUseContent>) => JSX.Element
+    children: (content: ToolUseContent) => JSX.Element | null
   },
 ) {
   const { toolUseEvent } = props
-
-  // defaults
-  let content: ToolUseContent = {
-    toolText: <>{toolUseEvent.toolName}</>,
-    tooltipContent: null,
-    statusIcon: (
-      <span data-testid='tool-default-completed-icon'>
-        <Icon name='check-circle-outline' />
-      </span>
-    ),
-    progressIcon: (
-      <span data-testid='tool-default-progress-icon'>
-        <ProgressRing />
-      </span>
-    ),
-  }
 
   // parse input
   const input = React.useMemo(() => {
@@ -82,11 +89,27 @@ function ToolEventContent(
     return null
   }
 
-  // If we have a tool-specific component, use it, otherwise use the default
+  // defaults
+  let content: ToolUseContent = {
+    toolLabel: getToolLabel(toolUseEvent.toolName, input),
+    // Note: we're not providing anything for expanded content by default. We
+    // could consider showing the tool input and output in a generic way,
+    // especially in an advanced mode. But this is mainly so that tools can
+    // decide whether to show more detailed output, such as the the detailed
+    // arguments to a non-critical tool.
+    expandedContent: null,
+  }
+
+  // Tool-specific components can add expanded content, a custom tool label,
+  // or make the expanded content show by default by removing the toolLabel.
   let component: ToolComponent | null = null
 
   if (toolUseEvent.toolName === Mojom.USER_CHOICE_TOOL_NAME) {
     component = ToolEventContentUserChoice
+  }
+
+  if (toolUseEvent.toolName === Mojom.ASSISTANT_DETAIL_STORAGE_TOOL_NAME) {
+    component = ToolEventContentAssistantDetailStorage
   }
 
   if (component) {
@@ -97,34 +120,68 @@ function ToolEventContent(
   return props.children(content)
 }
 
+/**
+ * Renders a tool event in a standardized way. Tools which don't want to display
+ * in the regular timeline can opt-out of this by adding an exception to the
+ * AssistantResponse component.
+ */
 export default function ToolEvent(props: Props) {
-  const isComplete = !!props.toolUseEvent.output
   return (
     <ToolEventContent {...props}>
-      {({ progressIcon, statusIcon, toolText, tooltipContent }) => (
-        <div
-          className={classnames(
-            styles.toolUse,
-            isComplete && styles.toolUseComplete,
-            `tool-${props.toolUseEvent.toolName}`,
-          )}
-        >
+      {(content) => {
+        if (!content.toolLabel && !content.expandedContent) {
+          // The tool content has decided to not show anything.
+          // Perhaps it's an internal tool event, or a tool that's not ready
+          // to render yet, given incomplete input.
+          return null
+        }
+
+        const isExpandable = content.toolLabel && content.expandedContent
+
+        return (
           <div
-            className={styles.toolUseIcon}
-            title={props.toolUseEvent.argumentsJson}
+            className={classnames(
+              styles.toolUse,
+              props.isEntryActive && styles.isActive,
+            )}
           >
-            {isComplete ? statusIcon : progressIcon}
+            {isExpandable && (
+              <ToolContentExpandable
+                {...props}
+                {...content}
+              />
+            )}
+
+            {!isExpandable && content.toolLabel && (
+              <div className={styles.toolLabel}>{content.toolLabel}</div>
+            )}
+
+            {!isExpandable && content.expandedContent && (
+              <div>{content.expandedContent}</div>
+            )}
           </div>
-          {tooltipContent ? (
-            <Tooltip>
-              {toolText}
-              <div slot='content'>{tooltipContent}</div>
-            </Tooltip>
-          ) : (
-            toolText
-          )}
-        </div>
-      )}
+        )
+      }}
     </ToolEventContent>
+  )
+}
+
+function ToolContentExpandable(props: Props & ToolUseContent) {
+  const [isExpanded, setIsExpanded] = React.useState<boolean>(false)
+
+  return (
+    <>
+      <button
+        className={classnames(styles.toolLabel, styles.isExpandable)}
+        onClick={() => {
+          setIsExpanded(!isExpanded)
+        }}
+      >
+        {props.toolLabel}
+      </button>
+      {isExpanded && (
+        <div className={styles.expandedContent}>{props.expandedContent}</div>
+      )}
+    </>
   )
 }

@@ -5,6 +5,8 @@
 <translation id="3478449063771497234">اعلان‌ها غیرفعال شده‌اند</translation>
 <translation id="2862978891748913252">کشور خود را انتخاب کنید</translation>
 <translation id="3970520675790340955">کشور خود را انتخاب کنید تا به شما گزینه‌های صحیح و آگهی‌های مربوط به منطقه‌تان را نشان دهیم.</translation>
+<translation id="721490496276866468">وارد کردن گذرواژه‌ها</translation>
+<translation id="8178175542325151321">یک فایل .csv را که شامل گذرواژه‌های شما است انتخاب کنید تا آن‌ها را به مدیر گذرواژه Brave وارد کنید.</translation>
 <translation id="7301741773883122509">اکنون می‌توانید برای مشاهده آگهی‌ها جایزه بگیرید. شما کمک می‌کنید وب به مکانی بهتر برای همه تبدیل شود. و این فوق‌العاده است!</translation>
 <translation id="6439128034594289376">وو هوو، کاملاً آماده هستید!</translation>
 <translation id="370665806235115550">در حال بارکردن…</translation>
@@ -99,6 +101,8 @@
 <translation id="8617525558807213034">تکمیل خودکار در زبانه‌های خصوصی</translation>
 <translation id="8685431198160039193">اطلاعات ذخیره‌شده را می‌توان به‌صورت خودکار در زبانه‌های خصوصی پر کرد</translation>
 <translation id="6583902294974160967">پشتیبانی</translation>
+<translation id="5713644099811900409">حساب Brave</translation>
+<translation id="4472575034687746823">شروع به کار</translation>
 <translation id="1799030480311994998">ویژگی‌ها</translation>
 <translation id="2005732746077850308">حریم خصوصی و سپر ایمنی Brave</translation>
 <translation id="4692623383562244444">موتورهای جستجو</translation>
@@ -107,7 +111,6 @@
 <translation id="7304425663107214334">نمایش پیشنهادهای مرورگر</translation>
 <translation id="8982438328166986164">پیشنهادهای وب‌سایت را بر اساس نشانک‌ها و سابقه مرور شما نمایش می‌دهد.</translation>
 <translation id="924029461438529367">نمایش پیشنهادهای جستجو</translation>
-<translation id="5989135139219497991">نمایش پیشنهادهای برتر</translation>
 <translation id="6285118765755298263">فهرست‌بندی سایر موتورهای جستجو</translation>
 <translation id="919715748352669592">فهرست‌بندی خودکار وبسایت‌هایی که از مشخصات OpenSearch پیروی می‌کنند.</translation>
 <translation id="9148058034647219655">خروج</translation>
@@ -297,6 +300,11 @@
 <translation id="4254029385847607686">دسامبر</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="1772301834467143364">Brave News</translation>
+<translation id="2518692840036393666">سفارشی‌سازی منو</translation>
+<translation id="5582839680698949063">منوی اصلی</translation>
+<translation id="7002271985859760052">اقدامات صفحه</translation>
+<translation id="7104487676473617844">موارد زیر تنها در صورتی در منو نمایش داده می‌شوند که توسط صفحه باز فعلی پشتیبانی شوند.</translation>
+<translation id="4159764849281393303">وب‌اپلیکیشن</translation>
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="8428213095426709021">تنظیمات</translation>
 <translation id="6020176662032623904">پدیدآورنده تأییدشده</translation>
@@ -799,7 +807,6 @@
 <translation id="750843150060816463">قیمت گس (Gwei)</translation>
 <translation id="1426320910664514906">محدوده گاز</translation>
 <translation id="6389441740143786465">غیرفعال کردن هاب اشتراک‌گذاری</translation>
-<translation id="9065203028668620118">ویرایش</translation>
 <translation id="473775607612524610">به‌روزرسانی</translation>
 <translation id="479795390141144417">به‌روزرسانی حساب ناموفق بود.</translation>
 <translation id="8084782383392198011">نام حساب نمی‌تواند خالی باشد.</translation>
@@ -1015,8 +1022,6 @@
 <translation id="8496335570810457">تعهد پیش از پرواز:</translation>
 <translation id="5100124500279922001">رد کردن پیش از پرواز:</translation>
 <translation id="7152095322071766507">سایت بازدیدشده برتر</translation>
-<translation id="7230006500876504868">جستجو با Brave</translation>
-<translation id="5888208462949095139">جستجو با <ph name="DEFAULT_SEARCH_ENGINE"/></translation>
 <translation id="5456039738087398178">ویجت صفحه اصلی</translation>
 <translation id="703185154752046151">ویجت به صفحه اصلی افزوده شد</translation>
 <translation id="4635094429202343515">ابزارک جستجوی Brave را امتحان کنید</translation>
@@ -1076,7 +1081,7 @@
 <translation id="7618347247876614969">حساب جدول جستجوی نشانی:</translation>
 <translation id="7659483790930268440">شاخص جدول جستجوی نشانی:</translation>
 <translation id="5494920125229734069">انتخاب همه</translation>
-<translation id="6129027151000961048">Leo</translation>
+<translation id="2361906291514218784">هوش مصنوعی Leo</translation>
 <translation id="8613144770663526433">ورورد از طریق کیف پول Brave</translation>
 <translation id="3696514931437952995">شما در حال وارد شدن به <ph name="ORIGIN"/> هستید. کیف پول Brave آدرس کیف پول شما را از طریق <ph name="ORIGIN"/> به اشتراک می‌گذارد.</translation>
 <translation id="1028781062521375153">مشاهده جزئیات</translation>
@@ -1093,11 +1098,11 @@
 <translation id="6742599753610126012">سابقه گفتگو را پاک کن</translation>
 <translation id="3443052382074796867">غیرفعال کردن ذخیره‌سازی گفتگوها، تمام گفتگوهای ذخیره‌شده قبلی را برای همیشه پاک خواهد کرد. این اقدام بازگشت‌ناپذیر است.</translation>
 <translation id="3692772534525889713">برای استفاده از Brave Leo در دستگاه‌های دیگر، خرید Play Store خود را به حساب Brave پیوند دهید.</translation>
-<translation id="73236265316873967">نسخه پرمیوم Leo</translation>
+<translation id="592831784390389506">Leo AI پریمیوم</translation>
 <translation id="1028627582482425924">یک سال</translation>
 <translation id="2985392169397572983">بهترین مقدار</translation>
 <translation id="1166682575529520472">ماهانه</translation>
-<translation id="451189393813405346">از Leo بپرسید</translation>
+<translation id="2206846767762985925">پرسش از Leo AI</translation>
 <translation id="7322560193401221004">موقعیت پخش فایل به خاطر سپرده شود</translation>
 <translation id="7505951907514709271">برای فایل‌های جداگانه، از نقطه آخرین مکث، پخش را از سر بگیرید</translation>
 <translation id="6835165453349969605">موقعیت پخش فهرست به خاطر سپرده شود</translation>
@@ -1140,6 +1145,7 @@
 <translation id="3861012838874771868">تنظیمات لیست پخش را باز کنید</translation>
 <translation id="5220099266891491416">دکمه لیست پخش را پنهان کنید</translation>
 <translation id="7416347631175891923">آن را امتحان کنید!</translation>
+<translation id="9065203028668620118">ویرایش</translation>
 <translation id="1173894706177603556">نام را تغییر دهید</translation>
 <translation id="3596306474342941843">لیست پخش را پاک کنید</translation>
 <translation id="7765158879357617694">انتقال دهید</translation>
@@ -1154,7 +1160,7 @@
 <translation id="5319532905552885478">محتوای رسانه‌ای قبلاً به فهرست پخش پیش‌فرض اضافه شده است</translation>
 <translation id="4802584673094436231">در حال آماده‌سازی…</translation>
 <translation id="481455355267255546">بعدی</translation>
-<translation id="5474757891469990756">بازگشایی قفل توانایی‌های کامل Leo با نسخه پرمیوم:</translation>
+<translation id="3721790899869840343">تمام توانایی‌های Leo AI را با پریمیوم فعال کنید:</translation>
 <translation id="4173478269537830374">مدل‌های مختلف هوش مصنوعی را کاوش کنید</translation>
 <translation id="3453542753968940696">اولویت دسترسی به مدل‌های قدرتمند با مهارت‌های مختلف.</translation>
 <translation id="3245401959451976966">قفل خلاقیت خود را باز کنید</translation>
@@ -1222,12 +1228,18 @@
 <translation id="4650851936784160359">فهرست فیلتر به‌روزرسانی نشد. لطفاً دوباره تلاش کنید</translation>
 <translation id="3098054327870766317">نمایش دکمه واگرد هنگام بستن زبانه‌ها</translation>
 <translation id="1336494649091412226">مطمئنید می‌خواهید از Brave خارج شوید؟</translation>
-<translation id="2361906291514218784">هوش مصنوعی Leo</translation>
 <translation id="7942415993090181327">سابقه گفتگو</translation>
 <translation id="6859935199732075666">نمایش خطاهای مرور ایمن</translation>
 <translation id="2735247450315842119">اجازه گرفتن عکس صفحه در برگه‌های خصوصی</translation>
 <translation id="8420414929552321089">در صورت دادن اجازه، برگه‌های خصوصی هنگام باز بودن چندین برنامه نیز قابل مشاهده خواهند بود.</translation>
 <translation id="7956713633345437162">نشانک‌های موبایل</translation>
+<translation id="3176467469116060712">از فعالیت پیشرو در صنعتِ Brave در زمینه حریم خصوصی وب و لیست‌های متن‌باز مسدودسازی تبلیغات، حمایت کنید</translation>
+<translation id="5896375129784311037">برای رابط کاربری ساده‌تر مرورگر بهینه‌سازی شده است</translation>
+<translation id="746156554966264308">هسته‌ی اصلیِ سپرهای Brave برای مسدودسازی تبلیغات، حریم خصوصی و سرعت</translation>
+<translation id="1432661650699782509">پشتیبانی از سیاست‌های مدیریتی IT</translation>
+<translation id="1361157028850796410">مقرون‌به‌صرفه‌ترین</translation>
+<translation id="7280825497485894053">اشتراک ماهانه</translation>
+<translation id="4570901726096223030">درباره Origin بیشتر بدانید</translation>
 <translation id="1943432128510653496">ذخیره گذرواژه‌ها</translation>
 <translation id="2100273922101894616">ورود به سیستم خودکار</translation>
 <translation id="363596933471559332">با استفاده از اعتبارنامه‌های ذخیره شده، به‌طور خودکار به سیستم وب‌سایت‌ها وارد شوید. وقتی این قابلیت خاموش است، هر بار قبل از وارد شدن به سیستم وب‌سایت از شما خواسته می‌شود اطلاعات را تأیید کنید.</translation>
@@ -1239,6 +1251,18 @@
 <translation id="5139940364318403933">‏آشنایی با نحوه استفاده از Google Drive</translation>
 <translation id="729975465115245577">دستگاه شما برنامه‌ای برای ذخیره فایل گذرواژه‌ها ندارد.</translation>
 <translation id="1129510026454351943">جزئیات: <ph name="ERROR_DESCRIPTION"/></translation>
+<translation id="5594899180331219722">انتخاب فایل</translation>
+<translation id="3744219658596020825">گذرواژه‌های شما وارد نشدند</translation>
+<translation id="8258027225380843424">واردات با موفقیت انجام شد!</translation>
+<translation id="766635563210446220">نمی‌توان گذرواژه‌ها را وارد کرد. فایل <ph name="FILENAME"/> را بررسی کرده و مطمئن شوید به‌درستی قالب‌بندی شده است. <ph name="BEGIN_LINK"/>اطلاعات بیشتر<ph name="END_LINK"/></translation>
+<translation id="6581356304040102696">نمی‌توان گذرواژه‌ها را وارد کرد. اندازه فایل باید کمتر از ۱ مگابایت باشد.</translation>
+<translation id="5895244669404288318">{COUNT, plural, =1 {نمی‌توان گذرواژه‌ها را وارد کرد. شما می‌توانید فقط 1 گذرواژه را در یک زمان وارد کنید.} other {نمی‌توان گذرواژه‌ها را وارد کرد. شما می‌توانید حداکثر <ph name="COUNT_MANY"/> گذرواژه را به‌طور هم‌زمان وارد کنید.}}</translation>
+<translation id="3748424433435232460">یک گذرواژه برای این حساب کاربری پیش‌تر روی این دستگاه ذخیره شده است.</translation>
+<translation id="6438475350605608554">شما در حال حاضر در حال وارد کردن گذرواژه‌ها در یک زبانه دیگر هستید</translation>
+<translation id="3482868954775580230">خواندن فایل انتخاب‌شده ناموفق بود. <ph name="EXCEPTION_INFO"/></translation>
+<translation id="9162995380643712715">{IMPORT_COUNT, plural, =1 {1 گذرواژه با موفقیت وارد شد.} other {<ph name="IMPORT_COUNT_MANY"/> گذرواژه با موفقیت وارد شدند.}}</translation>
+<translation id="4637949129057123593">واردات انجام نشد.</translation>
+<translation id="4300452012226767715">مدیر گذرواژه در دسترس نیست.</translation>
 <translation id="6221633008163990886">برای صادر کردن گذرواژه‌ها، قفل را باز کنید</translation>
 <translation id="5245792669563792664">گذرواژه‌ها</translation>
 <translation id="10614374240317010">هرگز ذخیره نمی‌شود</translation>

@@ -7,6 +7,7 @@ module brave_shields.mojom;
 
 import "brave/components/brave_shields/core/common/shields_settings.mojom";
 import "components/content_settings/core/common/content_settings_types.mojom";
+import "components/content_settings/core/common/content_settings.mojom";
 import "url/mojom/url.mojom";
 import "ui/gfx/geometry/mojom/geometry.mojom";
 
@@ -81,6 +82,11 @@ struct SiteBlockInfo {
   array<content_settings.mojom.ContentSettingsType> invoked_webcompat_list;
 };
 
+struct ContentSettingsOverriddenData {
+  content_settings.mojom.ContentSetting status;
+  ContentSettingSource override_source;
+};
+
 struct SiteSettings {
   AdBlockMode ad_block_mode;
   FingerprintMode fingerprint_mode;
@@ -88,5 +94,6 @@ struct SiteSettings {
   HttpsUpgradeMode https_upgrade_mode;
   bool is_noscript_enabled;
   bool is_forget_first_party_storage_enabled;
+  ContentSettingsOverriddenData? scripts_blocked_override_status;
   map<content_settings.mojom.ContentSettingsType, bool> webcompat_settings;
 };

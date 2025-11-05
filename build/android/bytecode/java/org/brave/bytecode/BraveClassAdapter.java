@@ -37,6 +37,9 @@ public class BraveClassAdapter {
         chain = new BraveBottomControlsCoordinatorClassAdapter(chain);
         chain = new BraveBottomControlsMediatorClassAdapter(chain);
         chain = new BraveCachedFlagClassAdapter(chain);
+        chain = new BraveCachedFeatureParamClassAdapter(chain);
+        chain = new BraveCachedFlagsClassAdapter(chain);
+        chain = new BraveCachedFlagUtilsClassAdapter(chain);
         chain = new BraveChromeContextMenuPopulatorAdapter(chain);
         chain = new BraveQuickActionSearchWidgetProviderClassAdapter(chain);
         chain = new BraveRadioButtonGroupHomepagePreferenceClassAdapter(chain);
@@ -120,7 +123,6 @@ public class BraveClassAdapter {
         chain = new BraveTabCardThemeUtilClassAdapter(chain);
         chain = new BraveTabGroupUiCoordinatorClassAdapter(chain);
         chain = new BraveTabSwitcherPaneBaseClassAdapter(chain);
-        chain = new BraveTabHelpersClassAdapter(chain);
         chain = new BraveTabbedActivityClassAdapter(chain);
         chain = new BraveTabbedNavigationBarColorControllerBaseClassAdapter(chain);
         chain = new BraveTabbedRootUiCoordinatorClassAdapter(chain);

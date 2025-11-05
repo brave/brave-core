@@ -10,8 +10,6 @@ import Icon from '@brave/leo/react/icon'
 import * as leo from '@brave/leo/tokens/css/variables'
 
 import WarningCircleOutlineIcon from '../../../../assets/svg-icons/warning-circle-outline-icon.svg'
-import ExamplePhraseLight from './images/example_recovery_phrase_light.png'
-import ExamplePhraseDark from './images/example_recovery_phrase_dark.png'
 
 export const BannerCard = styled.div`
   margin-top: 24px;
@@ -82,11 +80,7 @@ export const BackupInstructions = styled.p`
   margin: 14px 0 0;
 `
 
-export const ExampleRecoveryPhrase = styled.img.attrs(() => ({
-  src: window.matchMedia('(prefers-color-scheme: dark)').matches
-    ? ExamplePhraseDark
-    : ExamplePhraseLight,
-}))`
+export const ExampleRecoveryPhrase = styled.img`
   width: 100%;
   height: 208px;
   margin: 54px 0;

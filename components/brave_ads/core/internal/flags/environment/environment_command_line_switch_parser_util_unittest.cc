@@ -22,7 +22,7 @@ namespace {
 
 struct ParamInfo final {
   test::CommandLineSwitchInfo command_line_switch;
-  mojom::EnvironmentType environment_type;
+  mojom::EnvironmentType environment_type = kDefaultEnvironmentType;
 };
 
 // TODO(https://github.com/brave/brave-browser/issues/48713): This is a case of

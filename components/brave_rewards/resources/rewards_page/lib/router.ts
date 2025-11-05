@@ -43,11 +43,13 @@ export class Router {
   }
 }
 
-export const RouterContext = React.createContext<Router>(new Router({
-  get: () => location.pathname.toLocaleLowerCase().replace(/\/$/, '') || '/',
-  set: (route) => history.pushState(null, '', route),
-  replace: (route) => history.replaceState(null, '', route)
-}))
+export const RouterContext = React.createContext<Router>(
+  new Router({
+    get: () => location.pathname.toLocaleLowerCase().replace(/\/$/, '') || '/',
+    set: (route) => history.pushState(null, '', route),
+    replace: (route) => history.replaceState(null, '', route),
+  }),
+)
 
 export function useRouter() {
   return React.useContext(RouterContext)
@@ -57,7 +59,7 @@ export function useRouter() {
 // provided `onRouteUpdated` callback will be called when the route changes.
 export function useRoute(
   onRouteUpdated?: (route: string, router: Router) => void,
-  deps?: React.DependencyList
+  deps?: React.DependencyList,
 ) {
   const router = React.useContext(RouterContext)
   const [route, setRoute] = React.useState(router.getRoute())
@@ -82,4 +84,3 @@ export function useRoute(
 
   return route
 }
-

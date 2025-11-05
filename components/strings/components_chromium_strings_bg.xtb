@@ -2,34 +2,34 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="bg">
 <translation id="130631256467250065">Промените ви ще влязат в сила следващия път, когато рестартирате устройството си.</translation>
+<translation id="6451924152958941455">Отворете
+менюто на Brave &gt;
+<ph name="SETTINGS_TITLE"/>
+&gt;
+<ph name="SYSTEM_TITLE"/>
+&gt;
+<ph name="PROXIES_TITLE"/>
+и се уверете, че за конфигурацията ви е зададено no proxy или direct.</translation>
 <translation id="7999989146447764333">Подаването на сигнали за сривове не е налице в Brave.</translation>
 <translation id="1953231710324290369">Преглеждате защитена страница в Brave.</translation>
 <translation id="907470742420136113">Brave се опитва да промени настройките за попълване на начините на плащане.</translation>
 <translation id="4847979153841887006">Лого на Brave</translation>
 <translation id="336808635693308470">Brave се опитва да редактира начините на плащане.</translation>
 <translation id="7932149101545999102">Brave е възможен благодарение на проекта с отворен код <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/> и на друг <ph name="BEGIN_LINK_OSS"/>софтуер с отворен код<ph name="END_LINK_OSS"/>.</translation>
-<translation id="8746410156982274638">Отворете
-менюто на Brave &gt;
-<ph name="SETTINGS_TITLE"/>
-&gt;
-<ph name="ADVANCED_TITLE"/>
-&gt;
-<ph name="PROXIES_TITLE"/>
-&gt;
-„LAN настройки“
-и премахнете отметката от квадратчето „Използвайте прокси сървър за вашата локална мрежа“.</translation>
 <translation id="303960458633076466">Тази страница е блокирана от Brave</translation>
 <translation id="2017237562285586622">Разрешете достъпа на Brave до мрежата от настройките на защитната стена
 или антивирусния си софтуер.</translation>
 <translation id="4949828774841497663">Отворете Applications &gt; System Settings &gt; Network, изберете активната мрежа, кликнете върху бутона Details... и премахнете избора от всички евентуално избрани прокси сървъри.</translation>
-<translation id="8619622797841001082">Отворете
+<translation id="3269554930871094325">Отворете
 менюто на Brave &gt;
 <ph name="SETTINGS_TITLE"/>
 &gt;
-<ph name="ADVANCED_TITLE"/>
+<ph name="SYSTEM_TITLE"/>
 &gt;
 <ph name="PROXIES_TITLE"/>
-и се уверете, че за конфигурацията ви е зададено „no proxy“ или „direct“.</translation>
+&gt;
+„Мрежа и интернет &gt; Прокси сървър“
+и премахнете избора от опцията за автоматично установяване на настройките.</translation>
 <translation id="6159073403999048272">Тези страници са предназначени за програмисти на Brave и може да не се поддържат или тестват активно. За да ги активирате, навигирайте до <ph name="BEGIN_LINK"/>chrome://chrome-urls<ph name="LINK_END"/>, кликнете върху бутона за активиране на страниците за отстраняване на грешки и след това отново се придвижете до тази страница.</translation>
 <translation id="2765022094254723779">Браузърът Brave е възможен и благодарение на друг <ph name="BEGIN_LINK_OSS"/>софтуер с отворен код<ph name="END_LINK_OSS"/>.</translation>
 <translation id="9156965752763025780">Промените ви ще влязат в сила следващия път, когато стартирате отново Brave.</translation>

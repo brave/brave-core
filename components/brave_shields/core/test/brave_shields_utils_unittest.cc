@@ -3,6 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
+
 #include <memory>
 #include <utility>
 
@@ -10,7 +12,6 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/profiles/brave_profile_manager.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
-#include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/constants/pref_names.h"
@@ -23,6 +24,7 @@
 #include "chrome/test/base/testing_profile.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "components/content_settings/core/common/pref_names.h"
@@ -675,6 +677,51 @@ TEST_F(BraveShieldsUtilTest, GetCookieControlType_ForOrigin) {
   EXPECT_EQ(ControlType::BLOCK_THIRD_PARTY, setting);
 }
 
+TEST_F(BraveShieldsUtilTest,
+       GetCookieControlType_ManagedPrefOverridesBlockAllCookies) {
+  auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
+  auto cookies = CookieSettingsFactory::GetForProfile(profile());
+
+  // Set initial value to block all cookies.
+  brave_shields::SetCookieControlType(map, profile()->GetPrefs(),
+                                      ControlType::BLOCK, GURL());
+  brave_shields::SetCookieControlType(
+      map, profile()->GetPrefs(), ControlType::BLOCK, GURL("http://brave.com"));
+
+  // Set policy to allow cookies.
+  profile()->GetTestingPrefService()->SetManagedPref(
+      prefs::kManagedDefaultCookiesSetting, base::Value(CONTENT_SETTING_ALLOW));
+
+  EXPECT_EQ(ControlType::BLOCK_THIRD_PARTY,
+            brave_shields::GetCookieControlType(map, cookies.get(), GURL()));
+  EXPECT_EQ(ControlType::BLOCK_THIRD_PARTY,
+            brave_shields::GetCookieControlType(map, cookies.get(),
+                                                GURL("http://brave.com")));
+}
+
+TEST_F(BraveShieldsUtilTest,
+       GetCookieControlType_ManagedPrefOverridesBlockThirdPartyCookies) {
+  auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
+  auto cookies = CookieSettingsFactory::GetForProfile(profile());
+
+  // Set initial value to block third party cookies.
+  brave_shields::SetCookieControlType(map, profile()->GetPrefs(),
+                                      ControlType::BLOCK_THIRD_PARTY, GURL());
+  brave_shields::SetCookieControlType(map, profile()->GetPrefs(),
+                                      ControlType::BLOCK_THIRD_PARTY,
+                                      GURL("http://brave.com"));
+
+  // Set policy to block all cookies.
+  profile()->GetTestingPrefService()->SetManagedPref(
+      prefs::kManagedDefaultCookiesSetting, base::Value(CONTENT_SETTING_BLOCK));
+
+  EXPECT_EQ(ControlType::BLOCK,
+            brave_shields::GetCookieControlType(map, cookies.get(), GURL()));
+  EXPECT_EQ(ControlType::BLOCK,
+            brave_shields::GetCookieControlType(map, cookies.get(),
+                                                GURL("http://brave.com")));
+}
+
 /* FINGERPRINTING CONTROL */
 TEST_F(BraveShieldsUtilTest, SetFingerprintingControlType_Default) {
   base::test::ScopedFeatureList scoped_feature_list;
@@ -767,6 +814,24 @@ TEST_F(BraveShieldsUtilTest, SetFingerprintingControlType_ForOrigin) {
   // override should not apply to default
   type = brave_shields::GetFingerprintingControlType(map, GURL());
   EXPECT_EQ(ControlType::DEFAULT, type);
+}
+
+TEST_F(BraveShieldsUtilTest, GetFingerprintingControlType_ManagedPref) {
+  auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
+
+  profile()->GetTestingPrefService()->SetManagedPref(
+      kManagedDefaultBraveFingerprintingV2, base::Value(CONTENT_SETTING_ALLOW));
+  EXPECT_EQ(ControlType::ALLOW,
+            brave_shields::GetFingerprintingControlType(map, GURL()));
+  EXPECT_EQ(ControlType::ALLOW, brave_shields::GetFingerprintingControlType(
+                                    map, GURL("http://brave.com")));
+
+  profile()->GetTestingPrefService()->SetManagedPref(
+      kManagedDefaultBraveFingerprintingV2, base::Value(CONTENT_SETTING_ASK));
+  EXPECT_EQ(ControlType::DEFAULT,
+            brave_shields::GetFingerprintingControlType(map, GURL()));
+  EXPECT_EQ(ControlType::DEFAULT, brave_shields::GetFingerprintingControlType(
+                                      map, GURL("http://brave.com")));
 }
 
 /* NOSCRIPT CONTROL */

@@ -27,14 +27,6 @@ import os
     var isEnabled: Bool
   }
 
-  @Published var cookieConsentBlocking: Bool {
-    didSet {
-      FilterListStorage.shared.ensureFilterList(
-        for: AdblockFilterListCatalogEntry.cookieConsentNoticesComponentID,
-        isEnabled: cookieConsentBlocking
-      )
-    }
-  }
   @Published var blockMobileAnnoyances: Bool {
     didSet {
       FilterListStorage.shared.ensureFilterList(
@@ -78,17 +70,17 @@ import os
     didSet {
       guard oldValue != adBlockAndTrackingPreventionLevel else { return }
       if FeatureList.kBraveShieldsContentSettings.enabled {
-        braveShieldsSettings.defaultAdBlockMode = adBlockAndTrackingPreventionLevel.adBlockMode
+        braveShieldsSettings?.defaultAdBlockMode = adBlockAndTrackingPreventionLevel.adBlockMode
       }
       // Also assign to existing pref until deprecated so reverse migration is not required
-      ShieldPreferences.blockAdsAndTrackingLevel = adBlockAndTrackingPreventionLevel
+      Preferences.Shields.blockAdsAndTrackingLevel = adBlockAndTrackingPreventionLevel
     }
   }
   @Published var isBlockScriptsEnabled: Bool {
     didSet {
       guard oldValue != isBlockScriptsEnabled else { return }
       if FeatureList.kBraveShieldsContentSettings.enabled {
-        braveShieldsSettings.isBlockScriptsEnabledByDefault = isBlockScriptsEnabled
+        braveShieldsSettings?.isBlockScriptsEnabledByDefault = isBlockScriptsEnabled
       }
       // Also assign to existing pref until deprecated so reverse migration is not required
       Preferences.Shields.blockScripts.value = isBlockScriptsEnabled
@@ -98,7 +90,7 @@ import os
     didSet {
       guard oldValue != isBlockFingerprintingEnabled else { return }
       if FeatureList.kBraveShieldsContentSettings.enabled {
-        braveShieldsSettings.defaultFingerprintMode =
+        braveShieldsSettings?.defaultFingerprintMode =
           isBlockFingerprintingEnabled ? .standardMode : .allowMode
       }
       // Also assign to existing pref until deprecated so reverse migration is not required
@@ -107,7 +99,7 @@ import os
   }
   @Published var httpsUpgradeLevel: HTTPSUpgradeLevel {
     didSet {
-      ShieldPreferences.httpsUpgradeLevel = httpsUpgradeLevel
+      Preferences.Shields.httpsUpgradeLevel = httpsUpgradeLevel
       HttpsUpgradeServiceFactory.get(privateMode: false)?.clearAllowlist(
         fromStart: Date.distantPast,
         end: Date.distantFuture
@@ -117,7 +109,12 @@ import os
   @Published var shredLevel: SiteShredLevel {
     didSet {
       // TODO: Support AutoShred via content settings brave-browser#47753
-      ShieldPreferences.shredLevel = shredLevel
+      Preferences.Shields.shredLevel = shredLevel
+    }
+  }
+  @Published var shredHistoryItems: Bool {
+    didSet {
+      Preferences.Shields.shredHistoryItems.value = shredHistoryItems
     }
   }
 
@@ -145,7 +142,7 @@ import os
   private let p3aUtilities: BraveP3AUtils
   private let deAmpPrefs: DeAmpPrefs
   private let debounceService: (any DebounceService)?
-  private let braveShieldsSettings: any BraveShieldsSettings
+  private let braveShieldsSettings: (any BraveShieldsSettings)?
   private let rewards: BraveRewards?
   private let clearDataCallback: ClearDataCallback
   private let braveStats: BraveStats
@@ -157,7 +154,7 @@ import os
     tabManager: TabManager,
     feedDataSource: FeedDataSource,
     debounceService: (any DebounceService)?,
-    braveShieldsSettings: any BraveShieldsSettings,
+    braveShieldsSettings: (any BraveShieldsSettings)?,
     braveCore: BraveProfileController,
     p3aUtils: BraveP3AUtils,
     rewards: BraveRewards?,
@@ -176,26 +173,24 @@ import os
     self.clearDataCallback = clearDataCallback
     self.braveStats = braveStats
     if FeatureList.kBraveShieldsContentSettings.enabled {
-      self.adBlockAndTrackingPreventionLevel = braveShieldsSettings.defaultAdBlockMode.shieldLevel
-      self.isBlockScriptsEnabled = braveShieldsSettings.isBlockScriptsEnabledByDefault
+      self.adBlockAndTrackingPreventionLevel =
+        braveShieldsSettings?.defaultAdBlockMode.shieldLevel ?? .standard
+      self.isBlockScriptsEnabled = braveShieldsSettings?.isBlockScriptsEnabledByDefault ?? false
       self.isBlockFingerprintingEnabled =
-        braveShieldsSettings.defaultFingerprintMode == .standardMode
+        (braveShieldsSettings?.defaultFingerprintMode ?? .standardMode) == .standardMode
     } else {
-      self.adBlockAndTrackingPreventionLevel = ShieldPreferences.blockAdsAndTrackingLevel
+      self.adBlockAndTrackingPreventionLevel = Preferences.Shields.blockAdsAndTrackingLevel
       self.isBlockScriptsEnabled = Preferences.Shields.blockScripts.value
       self.isBlockFingerprintingEnabled = Preferences.Shields.fingerprintingProtection.value
     }
-    self.httpsUpgradeLevel = ShieldPreferences.httpsUpgradeLevel
+    self.httpsUpgradeLevel = Preferences.Shields.httpsUpgradeLevel
     self.isDeAmpEnabled = deAmpPrefs.isDeAmpEnabled
     self.isDebounceEnabled = debounceService?.isEnabled ?? false
     // TODO: Support AutoShred via content settings brave-browser#47753
-    self.shredLevel = ShieldPreferences.shredLevel
+    self.shredLevel = Preferences.Shields.shredLevel
+    self.shredHistoryItems = Preferences.Shields.shredHistoryItems.value
     self.webcompatReporterHandler = webcompatReporterHandler
     self.isSurveyPanelistEnabled = rewards?.ads.isSurveyPanelistEnabled ?? false
-
-    cookieConsentBlocking = FilterListStorage.shared.isEnabled(
-      for: AdblockFilterListCatalogEntry.cookieConsentNoticesComponentID
-    )
 
     blockMobileAnnoyances = FilterListStorage.shared.isEnabled(
       for: AdblockFilterListCatalogEntry.mobileAnnoyancesComponentID
@@ -246,11 +241,16 @@ import os
       )
     }
 
-    clearableSettings += [
-      ClearableSetting(id: .playlistCache, clearable: PlayListCacheClearable(), isEnabled: false),
-      ClearableSetting(id: .playlistData, clearable: PlayListDataClearable(), isEnabled: false),
-      ClearableSetting(id: .recentSearches, clearable: RecentSearchClearable(), isEnabled: true),
-    ]
+    if braveCore.profile.prefs.isPlaylistAvailable {
+      clearableSettings += [
+        ClearableSetting(id: .playlistCache, clearable: PlayListCacheClearable(), isEnabled: false),
+        ClearableSetting(id: .playlistData, clearable: PlayListDataClearable(), isEnabled: false),
+      ]
+    }
+
+    clearableSettings.append(
+      ClearableSetting(id: .recentSearches, clearable: RecentSearchClearable(), isEnabled: true)
+    )
 
     let savedToggles = Preferences.Privacy.clearPrivateDataToggles.value
 
@@ -356,10 +356,6 @@ import os
       .sink { filterLists in
         for filterList in filterLists {
           switch filterList.entry.componentId {
-          case AdblockFilterListCatalogEntry.cookieConsentNoticesComponentID:
-            if filterList.isEnabled != self.cookieConsentBlocking {
-              self.cookieConsentBlocking = filterList.isEnabled
-            }
           case AdblockFilterListCatalogEntry.mobileAnnoyancesComponentID:
             if filterList.isEnabled != self.blockMobileAnnoyances {
               self.blockMobileAnnoyances = filterList.isEnabled

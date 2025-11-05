@@ -1,0 +1,68 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/build/config.gni")
+
+# TODO(sko) This should be component() target.
+# https://github.com/brave/brave-browser/issues/27764
+static_library("browser") {
+  sources = [
+    "media_detector_component_installer.cc",
+    "media_detector_component_installer.h",
+    "media_detector_component_manager.cc",
+    "media_detector_component_manager.h",
+    "mime_util.cc",
+    "mime_util.h",
+    "playlist_background_web_contents_helper.cc",
+    "playlist_background_web_contents_helper.h",
+    "playlist_background_web_contentses.cc",
+    "playlist_background_web_contentses.h",
+    "playlist_constants.h",
+    "playlist_media_file_download_manager.cc",
+    "playlist_media_file_download_manager.h",
+    "playlist_media_file_downloader.cc",
+    "playlist_media_file_downloader.h",
+    "playlist_media_handler.cc",
+    "playlist_media_handler.h",
+    "playlist_p3a.cc",
+    "playlist_p3a.h",
+    "playlist_service.cc",
+    "playlist_service.h",
+    "playlist_streaming.cc",
+    "playlist_streaming.h",
+    "playlist_tab_helper.cc",
+    "playlist_tab_helper.h",
+    "playlist_tab_helper_observer.h",
+    "playlist_thumbnail_downloader.cc",
+    "playlist_thumbnail_downloader.h",
+    "type_converter.cc",
+    "type_converter.h",
+  ]
+
+  public_deps = [ "//brave/components/playlist/core/common" ]
+
+  deps = [
+    "//base",
+    "//brave/components/api_request_helper",
+    "//brave/components/brave_component_updater/browser:public",
+    "//brave/components/p3a_utils",
+    "//brave/components/resources:static_resources",
+    "//brave/components/resources:strings",
+    "//components/component_updater",
+    "//components/download/public/common:public",
+    "//components/keyed_service/core",
+    "//components/prefs",
+    "//components/user_prefs",
+    "//content/public/browser",
+    "//content/public/common",
+    "//crypto",
+    "//services/network/public/cpp",
+    "//services/preferences/public/cpp",
+    "//third_party/blink/public/common",
+    "//third_party/re2",
+    "//ui/gfx",
+    "//url",
+  ]
+}

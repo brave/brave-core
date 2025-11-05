@@ -9,7 +9,8 @@
 
 #include "base/check_is_test.h"
 #include "brave/browser/ui/page_action/brave_page_action_icon_type.h"
-#include "brave/components/playlist/common/features.h"
+#include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
+#include "brave/components/playlist/core/common/features.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sharing_hub/sharing_hub_features.h"
@@ -30,7 +31,16 @@ PageActionIconParams& ModifyIconParamsForBrave(PageActionIconParams& params) {
     return params;
   }
 
-  params.types_enabled.push_back(brave::kWaybackMachineActionIconType);
+  if (sharing_hub::HasPageAction(params.browser->profile(),
+                                 params.browser->is_type_popup())) {
+    params.types_enabled.push_back(PageActionIconType::kSharingHub);
+  }
+
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+  params.types_enabled.insert(
+      std::ranges::find(params.types_enabled, PageActionIconType::kSharingHub),
+      brave::kWaybackMachineActionIconType);
+#endif
 
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
     // Browser could be null if the location bar was created for
@@ -38,12 +48,16 @@ PageActionIconParams& ModifyIconParamsForBrave(PageActionIconParams& params) {
     if (params.browser && params.browser->is_type_normal() &&
         !params.browser->profile()->IsOffTheRecord()) {
       // Insert Playlist action before sharing hub or at the end of the vector.
-      params.types_enabled.push_back(brave::kPlaylistPageActionIconType);
+      params.types_enabled.insert(
+          std::ranges::find(params.types_enabled,
+                            PageActionIconType::kSharingHub),
+          brave::kPlaylistPageActionIconType);
     }
   }
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-  if (base::FeatureList::IsEnabled(speedreader::kSpeedreaderFeature)) {
+  if (base::FeatureList::IsEnabled(
+          speedreader::features::kSpeedreaderFeature)) {
     if (params.browser) {
       params.types_enabled.insert(
           std::ranges::find(

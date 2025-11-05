@@ -11,6 +11,7 @@
 #include "brave/components/brave_account/features.h"
 #include "brave/components/brave_component_updater/browser/features.h"
 #include "brave/components/brave_news/common/features.h"
+#include "brave/components/brave_origin/features.h"
 #include "brave/components/brave_rewards/core/features.h"
 #include "brave/components/brave_search/common/features.h"
 #include "brave/components/brave_search_conversion/features.h"
@@ -23,13 +24,14 @@
 #include "brave/components/debounce/core/common/features.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/p3a/features.h"
-#include "brave/components/playlist/common/features.h"
+#include "brave/components/playlist/core/common/features.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/ios/browser/api/translate/features.h"
 #include "brave/ios/browser/brave_wallet/features.h"
 #include "brave/ios/browser/ui/commerce/features.h"
 #include "brave/ios/browser/ui/tab_tray/features.h"
 #include "brave/ios/browser/ui/web_view/features.h"
+#include "brave/ios/browser/ui/webui/ai_chat/features.h"
 #import "build/blink_buildflags.h"
 #include "build/build_config.h"
 #include "net/base/features.h"
@@ -164,16 +166,6 @@
 + (Feature*)kBraveNTPBrandedWallpaper {
   return [[Feature alloc] initWithFeature:&ntp_background_images::features::
                                               kBraveNTPBrandedWallpaper];
-}
-
-+ (Feature*)kBraveNTPBrandedWallpaperDemo {
-  return [[Feature alloc] initWithFeature:&ntp_background_images::features::
-                                              kBraveNTPBrandedWallpaperDemo];
-}
-
-+ (Feature*)kBraveNTPSuperReferralWallpaper {
-  return [[Feature alloc] initWithFeature:&ntp_background_images::features::
-                                              kBraveNTPSuperReferralWallpaper];
 }
 
 + (Feature*)kBraveNTPBrandedWallpaperSurveyPanelist {
@@ -354,6 +346,27 @@
 + (Feature*)kBraveWalletWebUIIOS {
   return [[Feature alloc]
       initWithFeature:&brave_wallet::features::kBraveWalletWebUIIOS];
+}
+
++ (Feature*)kAIChatWebUIEnabled {
+  return
+      [[Feature alloc] initWithFeature:&ai_chat::features::kAIChatWebUIEnabled];
+}
+
++ (Feature*)kBraveSyncDefaultPasswords {
+  return [[Feature alloc]
+      initWithFeature:&brave_sync::features::kBraveSyncDefaultPasswords];
+}
+
++ (Feature*)kWebKitAdvancedPrivacyProtections {
+  return
+      [[Feature alloc] initWithFeature:&brave_shields::features::
+                                           kWebKitAdvancedPrivacyProtections];
+}
+
++ (Feature*)kBraveOrigin {
+  return
+      [[Feature alloc] initWithFeature:&brave_origin::features::kBraveOrigin];
 }
 
 @end

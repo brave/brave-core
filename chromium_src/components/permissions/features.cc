@@ -11,13 +11,10 @@ namespace permissions::features {
 
 // Enables the option of an automatic permission expiration time.
 BASE_FEATURE(kPermissionLifetime,
-             "PermissionLifetime",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kCpssUseTfliteSignatureRunner, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kPermissionOnDeviceNotificationPredictions,
-     base::FEATURE_DISABLED_BY_DEFAULT},
     {kPermissionPredictionsV2, base::FEATURE_DISABLED_BY_DEFAULT},
 #if !BUILDFLAG(IS_ANDROID)
     {kPermissionsPromptSurvey, base::FEATURE_DISABLED_BY_DEFAULT},

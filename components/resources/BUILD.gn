@@ -5,8 +5,7 @@
 
 import("//brave/components/ai_rewriter/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
-import("//brave/components/playlist/common/buildflags/buildflags.gni")
-import("//brave/components/playlist/common/buildflags/buildflags.gni")
+import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//brave/resources/brave_grit.gni")
@@ -25,8 +24,10 @@ brave_grit("static_resources") {
   ]
   deps = [
     ":strings",
+    "//brave/components/ai_chat/resources",
     "//brave/components/brave_rewards/resources",
     "//brave/components/brave_shields/resources:bundle_js",
+    "//brave/components/brave_wallet_ui/page:brave_wallet_page_generated",
     "//brave/components/decentralized_dns/content/resources:bundle_js",
     "//brave/components/request_otr/resources:bundle_js",
   ]
@@ -42,7 +43,6 @@ brave_grit("static_resources") {
   defines = [
     "enable_brave_vpn=$enable_brave_vpn",
     "enable_playlist_webui=$enable_playlist_webui",
-    "enable_playlist=$enable_playlist",
     "enable_speedreader=$enable_speedreader",
   ]
 
@@ -57,6 +57,7 @@ repack("resources") {
     "//brave/components/ai_rewriter/common/buildflags",
     "//brave/components/brave_account/resources",
     "//brave/components/brave_ads/browser/resources:generated_resources",
+    "//brave/components/brave_wallet_ui:resources",
     "//brave/components/cosmetic_filters/resources/data:generated_resources",
     "//brave/components/skus/browser/resources:generated_resources",
   ]
@@ -65,6 +66,7 @@ repack("resources") {
     "$root_gen_dir/brave/components/ai_chat/resources/custom_site_distiller_scripts/custom_site_distiller_scripts_generated.pak",
     "$root_gen_dir/brave/components/brave_account/resources/brave_account_resources.pak",
     "$root_gen_dir/brave/components/brave_ads/browser/resources/ads_internals_generated.pak",
+    "$root_gen_dir/brave/components/brave_wallet/resources/brave_wallet.pak",
     "$root_gen_dir/brave/components/cosmetic_filters/resources/cosmetic_filters_generated.pak",
     "$root_gen_dir/brave/components/skus/browser/resources/skus_internals_generated.pak",
     "$root_gen_dir/components/brave_components_static.pak",
@@ -94,7 +96,6 @@ repack("resources") {
       "//brave/components/brave_private_new_tab_ui/resources/page:generated_resources",
       "//brave/components/brave_shields/resources/panel:brave_shields_panel_generated",
       "//brave/components/brave_welcome_ui:generated_resources",
-      "//brave/components/speedreader/resources/panel:generated_resources",
       "//brave/components/webcompat_reporter/ui:generated_resources",
     ]
 
@@ -104,22 +105,21 @@ repack("resources") {
       "$root_gen_dir/brave/components/brave_private_new_tab/resources/page/brave_private_new_tab_generated.pak",
       "$root_gen_dir/brave/components/brave_shields/resources/panel/brave_shields_panel_generated.pak",
       "$root_gen_dir/brave/components/brave_welcome/resources/brave_welcome_generated.pak",
-      "$root_gen_dir/brave/components/speedreader/resources/panel/brave_speedreader_toolbar_generated.pak",
       "$root_gen_dir/brave/components/webcompat_reporter/resources/webcompat_reporter_generated.pak",
     ]
+
+    if (enable_speedreader) {
+      deps += [
+        "//brave/components/speedreader/resources/panel:generated_resources",
+      ]
+      sources += [ "$root_gen_dir/brave/components/speedreader/resources/panel/brave_speedreader_toolbar_generated.pak" ]
+    }
   }
 
   if (enable_ai_rewriter) {
     deps +=
         [ "//brave/components/ai_rewriter/resources/page:generated_resources" ]
     sources += [ "$root_gen_dir/brave/components/ai_rewriter/resources/page/ai_rewriter_ui_generated.pak" ]
-  }
-
-  if (!is_ios) {
-    deps += [ "//brave/components/brave_wallet_ui:resources" ]
-    sources += [
-      "$root_gen_dir/brave/components/brave_wallet/resources/brave_wallet.pak",
-    ]
   }
 
   deps += [ "//brave/components/brave_wallet/resources:ethereum_provider_generated_resources" ]
@@ -133,9 +133,8 @@ repack("resources") {
   }
 
   if (enable_playlist_webui) {
-    deps +=
-        [ "//brave/components/playlist/browser/resources:generated_resources" ]
-    sources += [ "$root_gen_dir/brave/components/playlist/browser/resources/playlist_generated.pak" ]
+    deps += [ "//brave/components/playlist/content/browser/resources:generated_resources" ]
+    sources += [ "$root_gen_dir/brave/components/playlist/content/browser/resources/playlist_generated.pak" ]
   }
 
   output = "$root_gen_dir/components/brave_components_resources.pak"
@@ -155,7 +154,6 @@ brave_grit("strings") {
     "enable_speedreader=$enable_speedreader",
     "enable_tor=$enable_tor",
     "enable_brave_vpn=$enable_brave_vpn",
-    "enable_playlist=$enable_playlist",
   ]
 
   foreach(locale, all_chrome_locales) {

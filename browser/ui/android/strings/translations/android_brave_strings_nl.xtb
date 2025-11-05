@@ -5,6 +5,8 @@
 <translation id="3478449063771497234">Meldingen zijn uitgeschakeld</translation>
 <translation id="2862978891748913252">Uw land selecteren</translation>
 <translation id="3970520675790340955">Selecteer uw land, zodat we u de juiste opties en advertenties kunnen laten zien voor uw regio.</translation>
+<translation id="721490496276866468">Wachtwoorden importeren</translation>
+<translation id="8178175542325151321">Selecteer een .csv-bestand met je wachtwoorden om ze te importeren in de wachtwoordenbeheerder van Brave.</translation>
 <translation id="7301741773883122509">Nu kunt u worden beloond voor het bekijken van advertenties. U helpt van het internet een betere plek te maken voor iedereen. Goed bezig!</translation>
 <translation id="6439128034594289376">U bent er helemaal klaar voor!</translation>
 <translation id="370665806235115550">Bezig met laden...</translation>
@@ -99,6 +101,8 @@
 <translation id="8617525558807213034">Automatisch invullen in privétabbladen</translation>
 <translation id="8685431198160039193">Opgeslagen informatie kan automatisch worden ingevuld in privétabbladen</translation>
 <translation id="6583902294974160967">Ondersteuning</translation>
+<translation id="5713644099811900409">Brave-account</translation>
+<translation id="4472575034687746823">Aan de slag</translation>
 <translation id="1799030480311994998">Functies</translation>
 <translation id="2005732746077850308">Brave Shields en privacy</translation>
 <translation id="4692623383562244444">Zoekmachines</translation>
@@ -107,7 +111,6 @@
 <translation id="7304425663107214334">Browsersuggesties weergeven</translation>
 <translation id="8982438328166986164">Hiermee worden websitesuggesties weergegeven op basis van uw bladwijzers en browsegeschiedenis.</translation>
 <translation id="924029461438529367">Zoeksuggesties weergeven</translation>
-<translation id="5989135139219497991">Topsuggesties weergeven</translation>
 <translation id="6285118765755298263">Overzicht van andere zoekmachines</translation>
 <translation id="919715748352669592">Indexeert automatisch websites die de OpenSearch spec volgen.</translation>
 <translation id="9148058034647219655">Sluiten</translation>
@@ -295,6 +298,11 @@
 <translation id="4254029385847607686">DECEMBER</translation>
 <translation id="3960619311638643872">Brave-VPN</translation>
 <translation id="1772301834467143364">Brave-nieuws</translation>
+<translation id="2518692840036393666">Menu aanpassen</translation>
+<translation id="5582839680698949063">Hoofdmenu</translation>
+<translation id="7002271985859760052">Paginahandelingen</translation>
+<translation id="7104487676473617844">De volgende items zijn alleen zichtbaar in het menu als ze worden ondersteund door de momenteel geopende webpagina.</translation>
+<translation id="4159764849281393303">WebApp</translation>
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="8428213095426709021">instellingen</translation>
 <translation id="6020176662032623904">Geverifieerde ontwikkelaar</translation>
@@ -421,6 +429,8 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="8748471354357836070">Meer informatie / afmeldingsopties</translation>
 <translation id="3171669670217312786">Achtergrondafbeeldingen</translation>
 <translation id="8522669544471808198">Achtergrondafbeeldingen weergeven</translation>
+<translation id="6258554626602400736">Advertenties op nieuwe tabbladen</translation>
+<translation id="9001530744369687550">Meer informatie over advertenties op nieuwe tabbladen</translation>
 <translation id="8793108040181436796">Widgets</translation>
 <translation id="8643377320501056697">Topsites Weergeven</translation>
 <translation id="7275773481201277457">Brave Statistieken Weergeven</translation>
@@ -498,6 +508,8 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="7616645803364270729">E-mail, Twitter, etc.</translation>
 <translation id="5299848999918506028">Bedankt!</translation>
 <translation id="76550953340008122">Bedankt dat u de ontwikkelaars van Brave heeft laten weten dat er iets mis is met deze site. We zullen ons best doen om het te repareren!</translation>
+<translation id="3037432377946455872">Wat is het voornaamste probleem?</translation>
+<translation id="8731661215617360873">Selecteer een optie</translation>
 <translation id="650318023204990401">Geavanceerde instellingen</translation>
 <translation id="7205939464631857223">Alle geblokkeerde elementen wissen</translation>
 <translation id="5370478469168390143">Sla gegevens online op</translation>
@@ -793,7 +805,6 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="750843150060816463">Gasprijs (Gwei)</translation>
 <translation id="1426320910664514906">Gaslimiet</translation>
 <translation id="6389441740143786465">Sharing Hub uitschakelen</translation>
-<translation id="9065203028668620118">Bewerken</translation>
 <translation id="473775607612524610">Updaten</translation>
 <translation id="479795390141144417">Bijwerken van account is mislukt.</translation>
 <translation id="8084782383392198011">Veld voor accountnaam kan niet leeg zijn.</translation>
@@ -1009,8 +1020,6 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="8496335570810457">Preflight-toezegging:</translation>
 <translation id="5100124500279922001">Preflight overslaan:</translation>
 <translation id="7152095322071766507">Meest bezochte site</translation>
-<translation id="7230006500876504868">Zoeken met Brave</translation>
-<translation id="5888208462949095139">Zoeken met <ph name="DEFAULT_SEARCH_ENGINE"/></translation>
 <translation id="5456039738087398178">Startscherm-widget</translation>
 <translation id="703185154752046151">Widget toegevoegd aan het startscherm</translation>
 <translation id="4635094429202343515">Probeer de Brave Search-widget</translation>
@@ -1070,7 +1079,7 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="7618347247876614969">Account van adresopzoektabel:</translation>
 <translation id="7659483790930268440">Index van adresopzoektabel:</translation>
 <translation id="5494920125229734069">Alles selecteren</translation>
-<translation id="6129027151000961048">Leo</translation>
+<translation id="2361906291514218784">Leo AI</translation>
 <translation id="8613144770663526433">Inloggen bij Brave Wallet</translation>
 <translation id="3696514931437952995">U logt in bij <ph name="ORIGIN"/>. Brave-wallet deelt uw wallet-adres met <ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">Gegevens bekijken</translation>
@@ -1087,11 +1096,11 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="6742599753610126012">Chatgeschiedenis wissen</translation>
 <translation id="3443052382074796867">Als je je gesprekken niet meer opslaat, worden alle eerder opgeslagen gesprekken ook definitief gewist. Deze actie kan niet ongedaan worden gemaakt.</translation>
 <translation id="3692772534525889713">Koppel uw Play Store-aankoop aan uw Brave-account om Brave Leo op andere apparaten te gebruiken.</translation>
-<translation id="73236265316873967">Leo Premium</translation>
+<translation id="592831784390389506">Leo AI Premium</translation>
 <translation id="1028627582482425924">Eén jaar</translation>
 <translation id="2985392169397572983">BESTE OPTIE</translation>
 <translation id="1166682575529520472">Maandelijks</translation>
-<translation id="451189393813405346">Vraag het Leo</translation>
+<translation id="2206846767762985925">Vraag het aan Leo AI</translation>
 <translation id="7322560193401221004">Afspeelpositie van bestand onthouden</translation>
 <translation id="7505951907514709271">Bij individuele bestanden het afspelen hervatten vanaf het punt waar u het laatst gestopt bent</translation>
 <translation id="6835165453349969605">Afspeelpositie van de playlist onthouden</translation>
@@ -1134,6 +1143,7 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="3861012838874771868">Playlist-instellingen openen</translation>
 <translation id="5220099266891491416">Playlist-knop verbergen</translation>
 <translation id="7416347631175891923">Probeer het!</translation>
+<translation id="9065203028668620118">Bewerken</translation>
 <translation id="1173894706177603556">Naam wijzigen</translation>
 <translation id="3596306474342941843">Playlist verwijderen</translation>
 <translation id="7765158879357617694">Verplaatsen</translation>
@@ -1148,7 +1158,7 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="5319532905552885478">Er is al mediacontent toegevoegd aan de standaard-playlist</translation>
 <translation id="4802584673094436231">Voorbereiden...</translation>
 <translation id="481455355267255546">Volgende</translation>
-<translation id="5474757891469990756">Benut de volledige capaciteit van Leo met Premium:</translation>
+<translation id="3721790899869840343">Ontgrendel de volledige kracht van Leo AI met Premium:</translation>
 <translation id="4173478269537830374">Verken verschillende AI-modellen</translation>
 <translation id="3453542753968940696">Als eerste toegang tot krachtige modellen met verschillende vaardigheden.</translation>
 <translation id="3245401959451976966">Ontgrendel uw creativiteit</translation>
@@ -1216,12 +1226,18 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="4650851936784160359">Filterlijst kon niet worden bijgewerkt. Probeer het opnieuw.</translation>
 <translation id="3098054327870766317">Knop voor ongedaan maken tonen wanneer tabbladen worden gesloten</translation>
 <translation id="1336494649091412226">Weet je zeker dat je Brave wilt afsluiten?</translation>
-<translation id="2361906291514218784">Leo AI</translation>
 <translation id="7942415993090181327">Chatgeschiedenis</translation>
 <translation id="6859935199732075666">Safe Browsing-fouten weergeven</translation>
 <translation id="2735247450315842119">Screenshots op privétabbladen toestaan</translation>
 <translation id="8420414929552321089">Als deze optie is ingeschakeld, zijn privétabbladen ook zichtbaar wanneer meerdere apps zijn geopend.</translation>
 <translation id="7956713633345437162">Mobiele bladwijzers</translation>
+<translation id="3176467469116060712">Ondersteun Brave's toonaangevende werk voor webprivacy en open-source adblocking lijsten</translation>
+<translation id="5896375129784311037">Geoptimaliseerd voor een minimalistischer browserinterface</translation>
+<translation id="746156554966264308">Een kern van Brave Shields voor adblock, privacy en snelheid</translation>
+<translation id="1432661650699782509">Ondersteuning voor door IT-beheerde beleidsregels op het werk</translation>
+<translation id="1361157028850796410">beste optie</translation>
+<translation id="7280825497485894053">Maandabonnement</translation>
+<translation id="4570901726096223030">Meer informatie over Origin</translation>
 <translation id="1943432128510653496">Wachtwoorden opslaan</translation>
 <translation id="2100273922101894616">Automatisch inloggen</translation>
 <translation id="363596933471559332">Log automatisch in bij websites met de opgeslagen inloggegevens. Als de functie uitstaat, moet je je identiteit verifiëren voordat je kunt inloggen bij een website.</translation>
@@ -1233,6 +1249,22 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="5139940364318403933">Meer informatie over het gebruik van Google Drive</translation>
 <translation id="729975465115245577">Je apparaat bevat geen app om het wachtwoordbestand in op te slaan.</translation>
 <translation id="1129510026454351943">Details: <ph name="ERROR_DESCRIPTION"/></translation>
+<translation id="5594899180331219722">Bestand selecteren</translation>
+<translation id="3744219658596020825">Je wachtwoorden zijn niet geïmporteerd</translation>
+<translation id="8258027225380843424">Importeren gelukt!</translation>
+<translation id="766635563210446220">Kan wachtwoorden niet importeren. Controleer <ph name="FILENAME"/> en zorg ervoor dat het correct is opgemaakt. <ph name="BEGIN_LINK"/>Meer informatie<ph name="END_LINK"/></translation>
+<translation id="6581356304040102696">Kan wachtwoorden niet importeren. De bestandsgrootte moet minder dan 1 MB zijn.</translation>
+<translation id="5895244669404288318">{COUNT, plural,
+        =1 {Kan wachtwoorden niet importeren. U kunt slechts 1 wachtwoord tegelijk importeren.}
+        other {Kan wachtwoorden niet importeren. U kunt maximaal <ph name="COUNT_MANY"/> wachtwoorden tegelijk importeren.}}</translation>
+<translation id="3748424433435232460">Een wachtwoord voor dit account is al opgeslagen op dit apparaat</translation>
+<translation id="6438475350605608554">Je bent al wachtwoorden aan het importeren in een ander tabblad</translation>
+<translation id="3482868954775580230">Het geselecteerde bestand kon niet worden gelezen. <ph name="EXCEPTION_INFO"/></translation>
+<translation id="9162995380643712715">{IMPORT_COUNT, plural,
+        =1 {Succesvol 1 wachtwoord geïmporteerd.}
+        other {Succesvol <ph name="IMPORT_COUNT_MANY"/> wachtwoorden geïmporteerd.}}</translation>
+<translation id="4637949129057123593">Importeren mislukt.</translation>
+<translation id="4300452012226767715">Wachtwoordenbeheerder niet beschikbaar.</translation>
 <translation id="6221633008163990886">Ontgrendel het apparaat om je wachtwoorden te exporteren</translation>
 <translation id="5245792669563792664">wachtwoorden</translation>
 <translation id="10614374240317010">Nooit opgeslagen</translation>

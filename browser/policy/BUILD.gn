@@ -6,7 +6,6 @@
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
-import("//brave/components/playlist/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//build/config/features.gni")
@@ -19,14 +18,20 @@ source_set("brave_simple_policy_map") {
     "//brave/components/ai_chat/core/common",
     "//brave/components/brave_news/common",
     "//brave/components/brave_rewards/core",
+    "//brave/components/brave_shields/core/common",
     "//brave/components/brave_sync:prefs",
     "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/brave_wallet/common:pref_names",
     "//brave/components/brave_wayback_machine/buildflags",
     "//brave/components/constants",
+    "//brave/components/de_amp/common",
+    "//brave/components/debounce/core/common",
+    "//brave/components/global_privacy_control",
     "//brave/components/ipfs/buildflags",
     "//brave/components/p3a",
-    "//brave/components/playlist/common/buildflags",
+    "//brave/components/playlist/content/browser",
+    "//brave/components/playlist/core/common/buildflags",
+    "//brave/components/query_filter",
     "//brave/components/speedreader/common/buildflags",
     "//brave/components/tor/buildflags",
     "//components/policy/core/browser",
@@ -51,9 +56,5 @@ source_set("brave_simple_policy_map") {
 
   if (deprecate_ipfs) {
     deps += [ "//brave/components/ipfs" ]
-  }
-
-  if (enable_playlist) {
-    deps += [ "//brave/components/playlist/browser" ]
   }
 }

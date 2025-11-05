@@ -65,7 +65,7 @@ void ZCashTxManager::AddUnapprovedZCashTransaction(
   auto from = params->from.Clone();
   auto chain_id = params->chain_id;
   auto tx_result = zcash_wallet_service_->GetTransactionType(
-      chain_id, from, params->use_shielded_pool, params->to);
+      from, params->use_shielded_pool, params->to);
   if (!tx_result.has_value()) {
     std::move(callback).Run(false, "", "");
     return;
@@ -87,28 +87,28 @@ void ZCashTxManager::AddUnapprovedZCashTransaction(
     }
     if (tx_result.value() == mojom::ZCashTxType::kOrchardToOrchard) {
       zcash_wallet_service_->CreateOrchardToOrchardTransaction(
-          chain_id, from->Clone(), params->to, amount, memo,
+          from->Clone(), params->to, amount, memo,
           base::BindOnce(&ZCashTxManager::ContinueAddUnapprovedTransaction,
-                         weak_factory_.GetWeakPtr(), chain_id, from.Clone(),
-                         origin, std::move(callback)));
+                         weak_factory_.GetWeakPtr(), from.Clone(), origin,
+                         std::move(callback)));
       return;
     } else if (tx_result.value() == mojom::ZCashTxType::kTransparentToOrchard ||
                tx_result.value() == mojom::ZCashTxType::kShielding) {
       zcash_wallet_service_->CreateTransparentToOrchardTransaction(
-          chain_id, from->Clone(), params->to, amount, memo,
+          from->Clone(), params->to, amount, memo,
           base::BindOnce(&ZCashTxManager::ContinueAddUnapprovedTransaction,
-                         weak_factory_.GetWeakPtr(), chain_id, from.Clone(),
-                         origin, std::move(callback)));
+                         weak_factory_.GetWeakPtr(), from.Clone(), origin,
+                         std::move(callback)));
       return;
     }
   }
 #endif
   if (tx_result.value() == mojom::ZCashTxType::kTransparentToTransparent) {
     zcash_wallet_service_->CreateFullyTransparentTransaction(
-        chain_id, from->Clone(), params->to, amount,
+        from->Clone(), params->to, amount,
         base::BindOnce(&ZCashTxManager::ContinueAddUnapprovedTransaction,
-                       weak_factory_.GetWeakPtr(), chain_id, from.Clone(),
-                       origin, std::move(callback)));
+                       weak_factory_.GetWeakPtr(), from.Clone(), origin,
+                       std::move(callback)));
     return;
   }
 
@@ -116,7 +116,6 @@ void ZCashTxManager::AddUnapprovedZCashTransaction(
 }
 
 void ZCashTxManager::ContinueAddUnapprovedTransaction(
-    const std::string& chain_id,
     const mojom::AccountIdPtr& from,
     const std::optional<url::Origin>& origin,
     AddUnapprovedTransactionCallback callback,
@@ -133,7 +132,7 @@ void ZCashTxManager::ContinueAddUnapprovedTransaction(
       origin.value_or(url::Origin::Create(GURL("chrome://wallet"))));
   meta.set_created_time(base::Time::Now());
   meta.set_status(mojom::TransactionStatus::Unapproved);
-  meta.set_chain_id(chain_id);
+  meta.set_chain_id(GetNetworkForZCashAccount(from));
   if (!tx_state_manager().AddOrUpdateTx(meta)) {
     std::move(callback).Run(
         false, "", l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
@@ -185,7 +184,7 @@ void ZCashTxManager::ApproveTransaction(const std::string& tx_meta_id,
   }
 
   zcash_wallet_service_->SignAndPostTransaction(
-      meta->chain_id(), meta->from(), std::move(*meta->tx()),
+      meta->from(), std::move(*meta->tx()),
       base::BindOnce(&ZCashTxManager::ContinueApproveTransaction,
                      weak_factory_.GetWeakPtr(), tx_meta_id,
                      std::move(callback)));
@@ -274,8 +273,7 @@ void ZCashTxManager::UpdatePendingTransactions(
     std::unique_ptr<ZCashTxMeta> meta =
         GetZCashTxStateManager().GetZCashTx(pending_transaction->id());
     zcash_wallet_service_->GetTransactionStatus(
-        pending_transaction->from(), pending_transaction->chain_id(),
-        std::move(meta),
+        pending_transaction->from(), std::move(meta),
         base::BindOnce(&ZCashTxManager::OnGetTransactionStatus,
                        weak_factory_.GetWeakPtr(), pending_transaction->id()));
     pending_chain_ids.emplace(pending_chain_id);

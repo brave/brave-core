@@ -6,7 +6,7 @@
 import("//brave/browser/shell_integrations/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/containers/buildflags/buildflags.gni")
-import("//brave/components/playlist/common/buildflags/buildflags.gni")
+import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
 import("//brave/components/request_otr/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/text_recognition/common/buildflags/buildflags.gni")
@@ -144,6 +144,7 @@ source_set("unit_tests") {
     "//components/history_clusters/core",
     "//components/history_embeddings",
     "//components/language/core/common",
+    "//components/legion",
     "//components/lens",
     "//components/manta",
     "//components/metrics/structured:structured_metrics_features",
@@ -174,6 +175,7 @@ source_set("unit_tests") {
   if (is_android) {
     deps += [
       "//android_webview/common",
+      "//chrome/browser/flags:flags_android",
       "//components/password_manager/core/common:features",
     ]
   } else {

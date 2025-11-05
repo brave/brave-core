@@ -11,10 +11,11 @@ import { formatMessage } from '../../../shared/lib/locale_context'
 import { ExternalWalletDisconnectedNotification } from '../../lib/app_state'
 import { NotificationViewProps } from './notification_view'
 
-export function ExternalWalletDisconnected (props: NotificationViewProps) {
+export function ExternalWalletDisconnected(props: NotificationViewProps) {
   const { getString } = useLocaleContext()
   const { Title, Body, Action } = props
-  const { provider } = props.notification as ExternalWalletDisconnectedNotification
+  const { provider } =
+    props.notification as ExternalWalletDisconnectedNotification
 
   return (
     <div>
@@ -22,10 +23,9 @@ export function ExternalWalletDisconnected (props: NotificationViewProps) {
         {getString('notificationWalletDisconnectedTitle')}
       </Title>
       <Body>
-        {
-          formatMessage(getString('notificationWalletDisconnectedText'),
-            [getExternalWalletProviderName(provider)])
-        }
+        {formatMessage(getString('notificationWalletDisconnectedText'), [
+          getExternalWalletProviderName(provider),
+        ])}
       </Body>
       <Action
         notification={props.notification}

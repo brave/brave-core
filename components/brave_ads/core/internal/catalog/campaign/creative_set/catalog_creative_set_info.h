@@ -31,7 +31,6 @@ struct CatalogCreativeSetInfo final {
   ~CatalogCreativeSetInfo();
 
   bool operator==(const CatalogCreativeSetInfo&) const;
-  bool operator!=(const CatalogCreativeSetInfo&) const;
 
   bool DoesSupportOS() const;
 

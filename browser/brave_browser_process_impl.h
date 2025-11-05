@@ -8,7 +8,6 @@
 
 #include <memory>
 
-#include "base/memory/ref_counted.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
@@ -16,7 +15,7 @@
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/brave_tor_pluggable_transport_updater.h"
 #include "brave/components/tor/buildflags/buildflags.h"
-#include "brave/components/url_sanitizer/browser/url_sanitizer_component_installer.h"
+#include "brave/components/url_sanitizer/core/browser/url_sanitizer_component_installer.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process_impl.h"
 #include "extensions/buildflags/buildflags.h"
@@ -36,10 +35,6 @@ class AdBlockService;
 namespace https_upgrade_exceptions {
 class HttpsUpgradeExceptionsService;
 }  // namespace https_upgrade_exceptions
-
-namespace localhost_permission {
-class LocalhostPermissionComponent;
-}  // namespace localhost_permission
 
 namespace brave_stats {
 class BraveStatsUpdater;
@@ -111,8 +106,6 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
   brave_shields::AdBlockService* ad_block_service() override;
   https_upgrade_exceptions::HttpsUpgradeExceptionsService*
   https_upgrade_exceptions_service() override;
-  localhost_permission::LocalhostPermissionComponent*
-  localhost_permission_component() override;
   debounce::DebounceComponentInstaller* debounce_component_installer() override;
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
   request_otr::RequestOTRComponentInstallerPolicy*
@@ -183,8 +176,6 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
   std::unique_ptr<brave_shields::AdBlockService> ad_block_service_;
   std::unique_ptr<https_upgrade_exceptions::HttpsUpgradeExceptionsService>
       https_upgrade_exceptions_service_;
-  std::unique_ptr<localhost_permission::LocalhostPermissionComponent>
-      localhost_permission_component_;
   std::unique_ptr<debounce::DebounceComponentInstaller>
       debounce_component_installer_;
 #if BUILDFLAG(ENABLE_REQUEST_OTR)

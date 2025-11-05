@@ -33,6 +33,8 @@ class FakeAccentColorObserver {
   std::optional<SkColor> accent_border_color() const { return std::nullopt; }
   bool use_dwm_frame_color() const { return false; }
 
+  bool ShouldUseAccentColorForWindowFrame() const { return false; }
+
  private:
   base::RepeatingClosureList callbacks_;
 };

@@ -6,6 +6,7 @@
 #include "brave/browser/brave_browser_main_parts_mac.h"
 
 #include "base/feature_list.h"
+#include "base/logging.h"
 #include "brave/browser/mac/keystone_glue.h"
 #include "brave/browser/sparkle_buildflags.h"
 #include "brave/browser/updater/buildflags.h"
@@ -24,7 +25,6 @@
 
 namespace brave {
 BASE_FEATURE(kUpgradeWhenIdle,
-             "UpgradeWhenIdle",
              base::FEATURE_DISABLED_BY_DEFAULT);
 }
 
@@ -37,21 +37,35 @@ BraveBrowserMainPartsMac::~BraveBrowserMainPartsMac() = default;
 void BraveBrowserMainPartsMac::PreCreateMainMessageLoop() {
   ChromeBrowserMainPartsMac::PreCreateMainMessageLoop();
 
+  bool use_omaha4 = false;
+#if BUILDFLAG(ENABLE_OMAHA4)
+  use_omaha4 = brave_updater::ShouldUseOmaha4();
+#endif
+
   if (base::FeatureList::IsEnabled(brave::kUpgradeWhenIdle)) {
-    upgrade_when_idle_ = std::make_unique<brave::UpgradeWhenIdle>(
-        // It's OK to pass profile_manager() here because it stays constant
-        // until we reset upgrade_when_idle_ in PostMainMessageLoopRun below.
-        g_browser_process->profile_manager());
+    if (use_omaha4) {
+      upgrade_when_idle_ = std::make_unique<brave::UpgradeWhenIdle>(
+          // It's OK to pass profile_manager() here because it stays constant
+          // until we reset upgrade_when_idle_ in PostMainMessageLoopRun below.
+          g_browser_process->profile_manager());
+    } else {
+      // UpgradeWhenIdle restarts the browser with 0 open windows. It achieves
+      // this by adding the switch kNoStartupWindow to the command line.
+      // Unfortunately, this does not work with Sparkle, which drops all
+      // command-line arguments when it relaunches the browser to apply an
+      // update. We could work around this, for example by introducing a custom
+      // preference. However, Sparkle will be replaced by Omaha 4 soon. So it
+      // does not seem worth the effort.
+      VLOG(1) << "Feature UpgradeWhenIdle is enabled but cannot take effect "
+                 "because Omaha 4 is not active.";
+    }
   }
 
 #if BUILDFLAG(ENABLE_SPARKLE)
-#if BUILDFLAG(ENABLE_OMAHA4)
-  if (brave_updater::ShouldUseOmaha4()) {
-    return;
+  if (!use_omaha4) {
+    // It would be a no-op if updates are disabled.
+    [[SparkleGlue sharedSparkleGlue] registerWithSparkle];
   }
-#endif
-  // It would be a no-op if updates are disabled.
-  [[SparkleGlue sharedSparkleGlue] registerWithSparkle];
 #endif  // BUILDFLAG(ENABLE_SPARKLE)
 }
 

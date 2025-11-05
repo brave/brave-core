@@ -15,6 +15,7 @@
 #include "base/uuid.h"
 #include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/test_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -165,7 +166,8 @@ std::vector<mojom::ConversationTurnPtr> CreateSampleChatHistory(
         base::StrCat({"query", base::NumberToString(i)}),
         std::nullopt /* prompt */, std::nullopt, std::nullopt,
         now + base::Seconds(i * 60) + base::Hours(future_hours), std::nullopt,
-        std::move(uploaded_files), false, std::nullopt /* model_key */));
+        std::move(uploaded_files), nullptr /* skill */, false,
+        std::nullopt /* model_key */));
     // response
     std::vector<mojom::ConversationEntryEventPtr> events;
     events.emplace_back(mojom::ConversationEntryEvent::NewCompletionEvent(
@@ -183,7 +185,7 @@ std::vector<mojom::ConversationTurnPtr> CreateSampleChatHistory(
         mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE, "",
         std::nullopt /* prompt */, std::nullopt, std::move(events),
         now + base::Seconds((i * 60) + 30) + base::Hours(future_hours),
-        std::nullopt, std::nullopt, false, "chat-basic"));
+        std::nullopt, std::nullopt, nullptr /* skill */, false, "chat-basic"));
   }
   return history;
 }

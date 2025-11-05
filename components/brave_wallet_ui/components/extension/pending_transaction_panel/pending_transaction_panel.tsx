@@ -32,15 +32,21 @@ import { AllowSpendPanel } from '../allow_spend_panel/allow_spend_panel'
 import {
   ConfirmSendTransaction, //
 } from '../confirm_send_transaction/confirm_send_transaction'
+import {
+  CancelSpeedupTransaction, //
+} from '../cancel_speedup_transaction/cancel_speedup_transaction'
 
 // Utils
 import { getCoinFromTxDataUnion } from '../../../utils/network-utils'
+import { isCancelTransaction } from '../../../utils/tx-utils'
 
 import {
   useGetEVMTransactionSimulationQuery,
   useGetHasTransactionSimulationSupportQuery,
   useGetIsTxSimulationOptInStatusQuery,
+  useGetNetworkQuery,
   useGetSolanaTransactionSimulationQuery,
+  useGetTransactionsQuery,
 } from '../../../common/slices/api.slice'
 
 // Style
@@ -127,6 +133,31 @@ export const PendingTransactionPanel: React.FC<Props> = ({
           txMetaId: selectedPendingTransaction.id,
         }
       : skipToken,
+  )
+
+  const { data: selectedPendingTxNetwork } = useGetNetworkQuery(
+    selectedPendingTransaction && selectedPendingTxCoinType
+      ? {
+          chainId: selectedPendingTransaction.chainId,
+          coin: selectedPendingTxCoinType,
+        }
+      : skipToken,
+  )
+
+  const { data: submittedTransactions = [] } = useGetTransactionsQuery(
+    selectedPendingTxNetwork && selectedPendingTxCoinType
+      ? {
+          accountId: null,
+          chainId: selectedPendingTxNetwork.chainId,
+          coinType: selectedPendingTxCoinType,
+        }
+      : skipToken,
+  )
+
+  // Detect if this is a cancel transaction
+  const isCancelTx = isCancelTransaction(
+    selectedPendingTransaction,
+    submittedTransactions,
   )
 
   // render
@@ -217,6 +248,11 @@ export const PendingTransactionPanel: React.FC<Props> = ({
     === BraveWallet.TransactionType.ERC20Approve
   ) {
     return <AllowSpendPanel />
+  }
+
+  // Cancel
+  if (isCancelTx) {
+    return <CancelSpeedupTransaction />
   }
 
   // Send

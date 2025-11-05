@@ -43,6 +43,7 @@
         "components/variations/service/field_trial_unittest.cc",
         "net/base/brave_proxy_string_util_unittest.cc",
         "net/cookies/brave_canonical_cookie_unittest.cc",
+        "third_party/blink/common/features_generated.cc",
         "third_party/rust/serde_json_lenient/v0_2/wrapper/large_integers.rs",
         "v8/include/DO NOT PUT FILES HERE",
     ],
@@ -97,6 +98,9 @@
         ],
         "chrome/installer/setup/install_worker.cc": [
             "BUILDFLAG_INTERNAL_USE_GOOGLE_UPDATE_INTEGRATION",
+        ],
+        "components/password_manager/core/browser/password_manager_constants.cc": [
+            "IS_ANDROID_FORCED_TO_FALSE",
         ],
         "components/permissions/permission_request_data.h": [
             "BRAVE_CHROMIUM_SRC_COMPONENTS_PERMISSIONS_PERMISSION_REQUEST_DATA_PERMISSION_CONTEXT_BASE",

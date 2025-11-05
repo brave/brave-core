@@ -10,12 +10,10 @@
 namespace features {
 
 BASE_FEATURE(kBraveNewTabPageRefreshEnabled,
-             "BraveNewTabPageRefreshEnabled",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
 // Cleanup Session Cookies on browser restart if Session Restore is enabled.
 BASE_FEATURE(kBraveCleanupSessionCookiesOnSessionRestore,
-             "BraveCleanupSessionCookiesOnSessionRestore",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
 // Sanitize url before copying, replaces default ctrl+c hotkey for urls.
@@ -29,7 +27,6 @@ BASE_FEATURE(kBraveCopyCleanLinkByDefault,
 );
 
 BASE_FEATURE(kBraveCopyCleanLinkFromJs,
-             "BraveCopyCleanLinkFromJs",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
 // Disable download warnings for dangerous files when Safe Browsing is
@@ -38,29 +35,38 @@ BASE_FEATURE(kBraveOverrideDownloadDangerLevel,
              "brave-override-download-danger-level",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
-// Adds rounded corners and a drop shadow to the main web content area and side
-// bar panels.
-BASE_FEATURE(kBraveWebViewRoundedCorners,
-             "brave-web-view-rounded-corners",
-             base::FEATURE_DISABLED_BY_DEFAULT);
-
 // Enable "day zero" experiment modifications, for potential user
 // retention improvements.
 BASE_FEATURE(kBraveDayZeroExperiment,
-             "BraveDayZeroExperiment",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
+#if BUILDFLAG(BRAVE_V8_ENABLE_DRUMBRAKE)
+// Run WebAssembly code in the DrumBrake interpreter instead of the optimizing
+// compiler. Automatically enabled when V8 is in jitless mode.
+BASE_FEATURE(kBraveWebAssemblyJitless,
+             base::FEATURE_DISABLED_BY_DEFAULT);
+#endif  // BUILDFLAG(BRAVE_V8_ENABLE_DRUMBRAKE)
+
+// Controls V8 jitless mode. When enabled, V8 runs in jitless
+// mode, which reduces performance but improves security.
+BASE_FEATURE(kBraveV8JitlessMode,
              base::FEATURE_DISABLED_BY_DEFAULT);
 
 #if BUILDFLAG(IS_ANDROID)
 // Enable new onboarding on Android
 BASE_FEATURE(kNewAndroidOnboarding,
-             "NewAndroidOnboarding",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
 // Enable dynamic colors on Android, which allows the app to adapt its
 // color scheme based on the user's wallpaper and system theme.
 // This feature is only available on Android 12 and above.
 BASE_FEATURE(kBraveAndroidDynamicColors,
-             "BraveAndroidDynamicColors",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
+// Enable fresh NTP display after idle expiration on Android.
+// This feature allows showing a refreshed NTP when the app has been idle
+// for a specified duration.
+BASE_FEATURE(kBraveFreshNtpAfterIdleExpirement,
              base::FEATURE_DISABLED_BY_DEFAULT);
 #endif  // BUILDFLAG(IS_ANDROID)
 
@@ -69,5 +75,13 @@ const base::FeatureParam<std::string> kBraveDayZeroExperimentVariant{
     &kBraveDayZeroExperiment,
     /*name=*/"variant",
     /*default_value=*/""};
+
+#if BUILDFLAG(IS_ANDROID)
+// The variant of the fresh NTP experiment. i.e. A, B, C, etc.
+const base::FeatureParam<std::string> kBraveFreshNtpAfterIdleExpirementVariant{
+    &kBraveFreshNtpAfterIdleExpirement,
+    /*name=*/"variant",
+    /*default_value=*/"A"};
+#endif  // BUILDFLAG(IS_ANDROID)
 
 }  // namespace features

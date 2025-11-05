@@ -19,6 +19,7 @@
 #include "brave/components/ai_chat/core/browser/tab_tracker_service.h"
 #include "brave/components/ai_chat/core/common/mojom/tab_tracker.mojom.h"
 #include "brave/components/constants/brave_paths.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/platform_browser_test.h"
@@ -250,6 +251,36 @@ IN_PROC_BROWSER_TEST_F(AIChatUIPageHandlerBrowserTest, ProcessImageFile) {
   EXPECT_EQ(valid_result->type, ai_chat::mojom::UploadedFileType::kImage);
   EXPECT_GT(valid_result->data.size(), 0u);
   EXPECT_EQ(valid_result->filesize, valid_result->data.size());
+}
+
+IN_PROC_BROWSER_TEST_F(AIChatUIPageHandlerBrowserTest,
+                       AssociateURLDoesNotCrashShutdown) {
+  auto* ai_chat_contents = web_contents();
+  ASSERT_TRUE(ai_chat_contents);
+  EXPECT_EQ(ai_chat_contents->GetLastCommittedURL().scheme(),
+            content::kChromeUIScheme);
+
+  OpenNewTab();
+
+  auto* contents_to_associate = web_contents();
+  ASSERT_TRUE(contents_to_associate);
+
+  auto* page_handler = GetPageHandler(ai_chat_contents);
+  auto* service = AIChatServiceFactory::GetForBrowserContext(GetProfile());
+  auto* conversation = service->CreateConversation();
+
+  page_handler->AssociateUrlContent(GURL("https://example.com"), "Example",
+                                    conversation->get_conversation_uuid());
+  EXPECT_EQ(
+      conversation->associated_content_manager()->GetAssociatedContent().size(),
+      1u);
+
+  // Note: We could crash while the profile is destroyed because
+  // `AssociatedUrlContent` (which is owned by `AssociatedContentManager` <==
+  // `ConversationHandler` <== `AIChatService`) holds a
+  // std::unique_ptr<content::WebContents>, which needs to be destroyed before
+  // the profile destructor is called. This test is essentially checking that
+  // its destroyed during the profile shutdown phase, rather than destruction.
 }
 
 }  // namespace ai_chat

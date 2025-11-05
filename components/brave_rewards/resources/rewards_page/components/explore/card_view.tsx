@@ -28,11 +28,16 @@ export function CardView(props: Props) {
       return card.title
     }
     switch (card.name) {
-      case 'community-card': return getString('communityTitle')
-      case 'bat-card': return getString('batUtilityTitle')
-      case 'merch-store-card': return getString('merchStoreTitle')
-      case 'benefits-card': return getString('benefitsTitle')
-      default: return ''
+      case 'community-card':
+        return getString('communityTitle')
+      case 'bat-card':
+        return getString('batUtilityTitle')
+      case 'merch-store-card':
+        return getString('merchStoreTitle')
+      case 'benefits-card':
+        return getString('benefitsTitle')
+      default:
+        return ''
     }
   }
 
@@ -43,18 +48,22 @@ export function CardView(props: Props) {
       data-deep-link-id={card.name}
     >
       <h4>{cardTitle()}</h4>
-      {
-        card.banner &&
-          <NewTabLink
-            className='banner'
-            href={sanitizeURL(card.banner.url)}
-            onClick={() => model.recordOfferClick()}
-          >
-            <img src={cardImageURL(card.banner.image)} />
-          </NewTabLink>
-      }
+      {card.banner && (
+        <NewTabLink
+          className='banner'
+          href={sanitizeURL(card.banner.url)}
+          onClick={() => model.recordOfferClick()}
+        >
+          <img src={cardImageURL(card.banner.image)} />
+        </NewTabLink>
+      )}
       <section>
-        {card.items.map((item, i) => <CardItemView key={i} item={item} />)}
+        {card.items.map((item, i) => (
+          <CardItemView
+            key={i}
+            item={item}
+          />
+        ))}
       </section>
     </div>
   )

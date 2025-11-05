@@ -1,0 +1,338 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module ai_chat.mojom;
+
+import "mojo/public/mojom/base/time.mojom";
+import "url/mojom/url.mojom";
+
+// Common types shared between ai_chat.mojom and untrusted_frame.mojom.
+// This file exists to break circular import dependencies between those files.
+
+enum CharacterType {
+  HUMAN,
+  ASSISTANT
+};
+
+enum ConversationCapability {
+  CHAT,
+  CONTENT_AGENT
+};
+
+// Which action the user was taking for the entry. This can be used
+// to provide better prompts (via the server) and for metrics.
+// Keep all items even if they're unused (they can be renamed as such) and only
+// add new items to the end, as this is serialized to the database as an int.
+enum ActionType {
+  UNSPECIFIED,
+  RESPONSE,
+  SUMMARIZE_PAGE,
+  SUMMARIZE_VIDEO,
+  SUMMARIZE_SELECTED_TEXT,
+  QUERY,
+  EXPLAIN,
+  CREATE_TAGLINE,
+  CREATE_SOCIAL_MEDIA_COMMENT_SHORT,
+  CREATE_SOCIAL_MEDIA_COMMENT_LONG,
+  // Rewrite
+  PARAPHRASE,
+  IMPROVE,
+  // Change tone
+  ACADEMICIZE,
+  PROFESSIONALIZE,
+  PERSUASIVE_TONE,
+  CASUALIZE,
+  FUNNY_TONE,
+  // Change length
+  SHORTEN,
+  EXPAND,
+  CONVERSATION_STARTER,
+  SUGGESTION,
+};
+
+// When adding or modifying category names, associated UI strings must also
+// be provided via ai_chat_ui_strings.grdp and ai_chat/core/constants.cc
+enum ModelCategory {
+  CHAT,
+};
+
+enum ModelAccess {
+  // The model only has a single basic tier, accessible by any level
+  BASIC,
+  // The model has a basic tier and a more capable premium tier (a.k.a freemium)
+  BASIC_AND_PREMIUM,
+  // The model only has a premium tier
+  PREMIUM,
+};
+
+// Type of content that is extracted
+enum ContentType {
+  PageContent,
+  VideoTranscript,
+};
+
+enum UploadedFileType {
+  kImage = 0,
+  kScreenshot,
+  kPdf,
+};
+
+// Represents the content that is associated with a conversation.
+struct AssociatedContent {
+  string uuid;
+
+  ContentType content_type;
+  string title;
+
+  // This is the ID of the content currently loaded in the tab.
+  // It is not persisted.
+  int32 content_id;
+
+  url.mojom.Url url;
+
+  // Percentage of the text content that has been utilized by remote LLM (0-100)
+  int32 content_used_percentage;
+
+  // If set, the conversation turn that this content is associated with.
+  // If |nullopt| this indicates that the user has staged the content but it
+  // hasn't been submitted yet (i.e. its in the input box).
+  string? conversation_turn_uuid;
+};
+
+struct UploadedFile {
+  string filename;
+  uint32 filesize;
+  array<uint8> data;
+  UploadedFileType type;
+};
+
+// An entry of an executed skill to be stored inside conversation entry
+// and persisted in database.
+struct SkillEntry {
+  string shortcut;
+  string prompt;
+};
+
+struct ImageContentBlock {
+  // Only base64 encoded data uri is supported
+  url.mojom.Url image_url;
+};
+
+struct TextContentBlock {
+  string text;
+};
+
+union ContentBlock {
+  ImageContentBlock image_content_block;
+  TextContentBlock text_content_block;
+};
+
+struct ToolUseEvent {
+  // Name of the tool, used to identify which
+  // tool to run in order to produce the output
+  // from the given arguments.
+  string tool_name;
+
+  // ID of the tool use request
+  string id;
+
+  // Arguments for the Tool. The LLM may hallucinate and generate
+  // incorrect arguments or even invalid JSON, so this should be
+  // interpreted defensively. This can also be provided in chunks,
+  // not being complete until the request is completed.
+  string arguments_json;
+
+  // Output from the Tool. When null, the Tool
+  // has not yet run or completed.
+  array<ContentBlock>? output;
+};
+
+struct SearchQueriesEvent {
+  array<string> search_queries;
+};
+
+struct SearchStatusEvent {
+  bool is_searching = true;
+};
+
+struct WebSource {
+  string title;
+  url.mojom.Url url;
+  url.mojom.Url favicon_url;
+};
+
+struct WebSourcesEvent {
+  array<WebSource> sources;
+};
+
+struct CompletionEvent {
+  // TODO(petemill): Use ContentBlock or even array<ContentBlock>
+  // and rely less on multiple events.
+  string completion;
+};
+
+struct SelectedLanguageEvent {
+  string selected_language;
+};
+
+struct ContentReceiptEvent {
+  uint64 total_tokens;
+  uint64 trimmed_tokens;
+};
+
+struct ConversationTitleEvent {
+  string title;
+};
+
+// Events that occur during a conversation turn (only assistant for now)
+union ConversationEntryEvent {
+  CompletionEvent completion_event;
+  SearchQueriesEvent search_queries_event;
+  SearchStatusEvent search_status_event;
+  WebSourcesEvent sources_event;
+  ToolUseEvent tool_use_event;
+
+  // These events don't normally get added to the conversation entry
+  // but are used in engine responses.
+  SelectedLanguageEvent selected_language_event;
+  ContentReceiptEvent content_receipt_event;
+  ConversationTitleEvent conversation_title_event;
+};
+
+// Represents a single turn in a conversation.
+// The character type defines which party initiated the turn in the
+// conversation.
+// The text attribute contains the actual content of the turn, which can be a
+// message, statement, or question, among others.
+// The selected_text attribute contains what user selects in the page when
+// calling from the context menu.
+struct ConversationTurn {
+  // Populated if owned by a conversation
+  string? uuid;
+
+  CharacterType character_type;
+  ActionType action_type;
+
+  // The text that is displayed to the user. This might be different than
+  // the text sent to the AI engine to represent this turn, which might be more
+  // verbose.
+  string text;
+
+  // Optional actual prompt used instead of |text| for the entry
+  string? prompt;
+
+  string? selected_text;
+  // Ordered list of events that occurred during this turn
+  // TODO(petemill): ConversationTurn's |text| and |selected_text| might move
+  // to be an event - as the events become richer, the order around text could
+  // be important.
+  array<ConversationEntryEvent>? events;
+
+  mojo_base.mojom.Time created_time;
+
+  // Edits to this turn, sorted by time of creation, with the most recent edit
+  // at the end of the array. When this appears, the value of |text| field is
+  // the original text of the turn, the last entry of this array should be used
+  // instead of the original turn text when submitting the turn to the AI
+  // engine or displaying the most recent text to users.
+  array<ConversationTurn>? edits;
+
+  // User uploaded files, currently including image and screenshot
+  array<UploadedFile>? uploaded_files;
+
+  SkillEntry? skill;
+
+  // Whether the turn was generated from Brave Search SERP.
+  bool from_brave_search_SERP = false;
+
+  // Null in BYOM conversations.
+  // In assistant turns, it indicates which model generated this turn.
+  // In human turns, it indicates which model to be used for regenerating
+  // answers.
+  // TODO(petemill): It should always store which model was used so that
+  // if the user changed the conversation model mid-conversation then we
+  // can see which answers were generated by which model.
+  string? model_key;
+};
+
+// Represents an AI engine model choice, usually for the user to choose for a
+// Conversation. Display Name and Description should be provided by
+// localization.
+// We use a key in case there are minor changes to model name for a purpose and
+// we want to respect the user's intent (e.g. claude increases version or llama2
+// default model changes parameter size).
+struct LeoModelOptions {
+  // exact name to provide to API
+  string name;
+  // maker, for users
+  string display_maker;
+  // user-facing category
+  ModelCategory category;
+  // Which access level grants permission to use the model
+  ModelAccess access;
+  // max limit to truncate page contents (measured in chars, not tokens)
+  uint32 max_associated_content_length;
+  // max limit for overall conversation (measured in chars, not tokens)
+  uint32 long_conversation_warning_character_limit;
+};
+
+struct CustomModelOptions {
+  string model_request_name;
+  // number of tokens supported by the given model
+  uint32 context_size;
+  // max limit to truncate page contents (measured in chars, not tokens)
+  uint32 max_associated_content_length;
+  // max limit for overall conversation (measured in chars, not tokens)
+  uint32 long_conversation_warning_character_limit;
+  // a user-specified prompt to be used with the model
+  string? model_system_prompt;
+  // the endpoint could be a local network address or a remote server
+  url.mojom.Url endpoint;
+  string api_key;
+};
+
+union ModelOptions {
+  LeoModelOptions leo_model_options;
+  CustomModelOptions custom_model_options;
+};
+
+struct Model {
+  ModelOptions options;
+  // unique key across all models
+  string key;
+  // display name, for users
+  string display_name;
+  // whether accept image as input
+  bool vision_support;
+  // Model supports tool use
+  bool supports_tools = false;
+  // Is a suggested model
+  bool is_suggested_model;
+};
+
+// State required to show the conversations entries UI block
+struct ConversationEntriesState {
+  // Whether an answer generation is in progress
+  bool is_generating;
+  // Whether the current model is a built-in Leo model
+  bool is_leo_model;
+  array<Model> all_models;
+  string current_model_key;
+  // How much of the content has been used by the AI engine, percentage,or null
+  // if no content is associated.
+  uint32? content_used_percentage;
+  // Percentage of the visual content that has been utilized by remote LLM
+  // (0-100)
+  // This tracks image/screenshot truncation due to MAX_IMAGES limits
+  uint32? visual_content_used_percentage;
+  // Whether the UI should represent that the user cannot submit new messages
+  // or edits to the conversation.
+  bool can_submit_user_entries;
+  // Indicates the total number of tokens for the conversation
+  uint64 total_tokens;
+  // Indicates the number of tokens that were trimmed from the conversation
+  uint64 trimmed_tokens;
+  ConversationCapability conversation_capability;
+};

@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/shields_settings.mojom-shared.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -11,6 +13,18 @@
 #include <chrome/browser/content_settings/content_settings_manager_delegate.cc>
 
 namespace {
+
+bool IsJsBlockingEnforced(content::BrowserContext* browser_context,
+                          const GURL& url) {
+  Profile* profile = Profile::FromBrowserContext(browser_context);
+  auto* settings_service =
+      BraveShieldsSettingsServiceFactory::GetForProfile(profile);
+  if (!settings_service) {
+    return false;
+  }
+
+  return settings_service->IsJsBlockingEnforced(url);
+}
 
 brave_shields::mojom::ShieldsSettingsPtr GetBraveShieldsSettingsOnUI(
     const content::GlobalRenderFrameHostToken& frame_token) {
@@ -37,12 +51,12 @@ brave_shields::mojom::ShieldsSettingsPtr GetBraveShieldsSettingsOnUI(
                 HostContentSettingsMapFactory::GetForProfile(browser_context),
                 top_frame_url)
           : base::Token();
-
   PrefService* pref_service = user_prefs::UserPrefs::Get(browser_context);
 
   return brave_shields::mojom::ShieldsSettings::New(
       farbling_level, farbling_token, std::vector<std::string>(),
-      brave_shields::IsReduceLanguageEnabledForProfile(pref_service));
+      brave_shields::IsReduceLanguageEnabledForProfile(pref_service),
+      IsJsBlockingEnforced(browser_context, top_frame_url));
 }
 
 }  // namespace

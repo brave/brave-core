@@ -118,8 +118,10 @@ import org.chromium.mojo.system.MojoException;
 import org.chromium.playlist.mojom.PlaylistItem;
 import org.chromium.playlist.mojom.PlaylistService;
 import org.chromium.ui.UiUtils;
+import org.chromium.ui.base.DeviceFormFactor;
 import org.chromium.ui.base.ViewUtils;
 import org.chromium.ui.interpolators.Interpolators;
+import org.chromium.ui.resources.dynamics.ViewResourceAdapter;
 import org.chromium.ui.util.ColorUtils;
 import org.chromium.ui.widget.Toast;
 import org.chromium.url.GURL;
@@ -187,6 +189,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     private ImageView mWalletIcon;
     private int mCurrentToolbarColor;
 
+    @Nullable private final Runnable mToolbarSnapshotCaptureRunnable;
+
     private boolean mIsPublisherVerified;
     private String mPublisherId;
     private boolean mIsNotificationPosted;
@@ -212,6 +216,18 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
     public BraveToolbarLayoutImpl(Context context, AttributeSet attrs) {
         super(context, attrs);
+
+        if (DeviceFormFactor.isNonMultiDisplayContextOnTablet(getContext())) {
+            mToolbarSnapshotCaptureRunnable = this::requestToolbarSnapshotCapture;
+        } else {
+            mToolbarSnapshotCaptureRunnable = null;
+        }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        removeCallbacks(mToolbarSnapshotCaptureRunnable);
+        super.onDetachedFromWindow();
     }
 
     @Override
@@ -561,9 +577,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                     @Override
                     public void onDidFinishNavigationInPrimaryMainFrame(
                             Tab tab, NavigationHandle navigation) {
-                        if (navigation.isInPrimaryMainFrame()
-                                && navigation.isSameDocument()
-                                && navigation.hasCommitted()) {
+                        if (navigation.isInPrimaryMainFrame() && navigation.hasCommitted()) {
                             showYouTubePipIcon(tab);
                         } else {
                             hideYouTubePipIcon();
@@ -627,7 +641,10 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         // Return early if picture in picture is not supported
         // or disabled in the OS settings.
         if (!PictureInPicture.isEnabled(getContext())) {
-            mYouTubePipLayout.setVisibility(View.GONE);
+            if (mYouTubePipLayout.getVisibility() != View.GONE) {
+                mYouTubePipLayout.setVisibility(View.GONE);
+                invalidateToolbarSnapshotOnTablet();
+            }
             return;
         }
 
@@ -637,7 +654,11 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         final boolean available =
                 BraveYouTubeScriptInjectorNativeHelper.isPictureInPictureAvailable(
                         tab.getWebContents());
-        mYouTubePipLayout.setVisibility(available ? View.VISIBLE : View.GONE);
+        final int newVisibility = available ? View.VISIBLE : View.GONE;
+        if (mYouTubePipLayout.getVisibility() != newVisibility) {
+            mYouTubePipLayout.setVisibility(newVisibility);
+            invalidateToolbarSnapshotOnTablet();
+        }
     }
 
     private void hideYouTubePipIcon() {
@@ -645,7 +666,39 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         if (mYouTubePipLayout == null) {
             return;
         }
-        mYouTubePipLayout.setVisibility(View.GONE);
+        if (mYouTubePipLayout.getVisibility() != View.GONE) {
+            mYouTubePipLayout.setVisibility(View.GONE);
+            invalidateToolbarSnapshotOnTablet();
+        }
+    }
+
+    /**
+     * Invalidates old toolbar bitmap snapshot on tablets, so when scrolling it will be shown the
+     * right toolbar preview containing the visibility of the icons.
+     */
+    private void invalidateToolbarSnapshotOnTablet() {
+        // mToolbarSnapshotCaptureRunnable is available on tablets only.
+        if (!isAttachedToWindow() || mToolbarSnapshotCaptureRunnable == null) {
+            return;
+        }
+
+        removeCallbacks(mToolbarSnapshotCaptureRunnable);
+        post(mToolbarSnapshotCaptureRunnable);
+    }
+
+    private void requestToolbarSnapshotCapture() {
+        final ToolbarControlContainer toolbarControlContainer =
+                getRootView().findViewById(R.id.control_container);
+        if (toolbarControlContainer == null) {
+            return;
+        }
+
+        final ViewResourceAdapter adapter = toolbarControlContainer.getToolbarResourceAdapter();
+        if (adapter == null) {
+            return;
+        }
+        adapter.invalidate(null);
+        adapter.triggerBitmapCapture();
     }
 
     private boolean isPlaylistEnabledByPrefsAndFlags() {
@@ -1224,6 +1277,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             description = resources.getString(R.string.accessibility_toolbar_btn_home);
         } else if (v == mBraveWalletButton) {
             description = resources.getString(R.string.accessibility_toolbar_btn_brave_wallet);
+        } else if (v == mYouTubePipButton) {
+            description = resources.getString(R.string.accessibility_toolbar_btn_brave_pip);
         }
 
         return Toast.showAnchoredToast(context, v, description);
@@ -1657,5 +1712,35 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             return false;
         }
         return true;
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+        maybeHideRewardsLayout(MeasureSpec.getSize(widthMeasureSpec));
+    }
+
+    /**
+     * Hides the rewards layout if the toolbar width is less than the minimum tablet width and the
+     * rewards icon should be shown. Uses the same threshold as the existing toolbar button
+     * visibility logic in ToolbarTablet.
+     */
+    private void maybeHideRewardsLayout(int width) {
+        // Only hide the rewards layout on tablet devices, like it is done in the upstream code.
+        if (!BraveReflectionUtil.equalTypes(this.getClass(), ToolbarTablet.class)) {
+            return;
+        }
+
+        if (mRewardsLayout == null || !NtpUtil.shouldShowRewardsIcon()) {
+            return;
+        }
+
+        mRewardsLayout.setVisibility(
+                width >= DeviceFormFactor.getNonMultiDisplayMinimumTabletWidthPx(getContext())
+                        ? View.VISIBLE
+                        : View.GONE);
+        // Update the shields layout background to match the rewards layout visibility.
+        updateShieldsLayoutBackground(mRewardsLayout.getVisibility() == View.GONE);
     }
 }

@@ -18,6 +18,7 @@
 #include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 
 class PrefService;
 
@@ -96,8 +97,8 @@ class EngineConsumer {
       GenerationCompletedCallback completed_callback) = 0;
 
   virtual void GenerateRewriteSuggestion(
-      std::string text,
-      const std::string& question,
+      const std::string& text,
+      mojom::ActionType action_type,
       const std::string& selected_language,
       GenerationDataCallback received_callback,
       GenerationCompletedCallback completed_callback) {}
@@ -154,6 +155,9 @@ class EngineConsumer {
   // human message.
   bool CanPerformCompletionRequest(
       const ConversationHistory& conversation_history) const;
+
+  static std::string BuildSkillDefinitionMessage(
+      const mojom::SkillEntryPtr& skill);
   uint32_t max_associated_content_length_ = 0;
   std::string model_name_ = "";
   raw_ptr<ModelService> model_service_;

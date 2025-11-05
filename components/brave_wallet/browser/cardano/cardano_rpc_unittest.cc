@@ -23,8 +23,8 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_test_utils.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/cardano_address.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
@@ -271,12 +271,12 @@ TEST_F(CardanoRpcUnitTest, GetLatestEpochParameters) {
 }
 
 TEST_F(CardanoRpcUnitTest, GetUtxoList) {
-  const std::string address =
+  const auto address = *CardanoAddress::FromString(
       "addr_"
       "test1qqy6nhfyks7wdu3dudslys37v252w2nwhv0fw2nfawemmn8k8ttq8f3gag0h89aepvx"
-      "3xf69g0l9pf80tqv7cve0l33sw96paj";
+      "3xf69g0l9pf80tqv7cve0l33sw96paj");
   const std::string req_url =
-      mainnet_rpc_url_ + "addresses/" + address + "/utxos";
+      mainnet_rpc_url_ + "addresses/" + address.ToString() + "/utxos";
 
   const std::string utxo_json = R"([
     {
@@ -298,12 +298,14 @@ TEST_F(CardanoRpcUnitTest, GetUtxoList) {
 
   cardano_rpc::UnspentOutputs utxos;
   utxos.emplace_back();
+  utxos.back().address_to = address;
   utxos.back().tx_hash = test::HexToArray<32>(
       "1fca84164f59606710ff4cf0fd660753bd299e30bb2c8194117fdb965ace67b9");
   utxos.back().output_index = 2;
   utxos.back().lovelace_amount = 406560;
 
   utxos.emplace_back();
+  utxos.back().address_to = address;
   utxos.back().tx_hash = test::HexToArray<32>(
       "f80875bfaa0726fadc0068cca851f3252762670df345e6c7a483fe841af98e98");
   utxos.back().output_index = 1;
@@ -336,7 +338,8 @@ TEST_F(CardanoRpcUnitTest, GetUtxoList) {
   // Testnet works.
   url_loader_factory_.ClearResponses();
   url_loader_factory_.AddResponse(
-      testnet_rpc_url_ + "addresses/" + address + "/utxos", utxo_json);
+      testnet_rpc_url_ + "addresses/" + address.ToString() + "/utxos",
+      utxo_json);
   cardano_testnet_rpc_->GetUtxoList(address, utxos_future.GetCallback());
   EXPECT_EQ(utxos_future.Take().value(), utxos);
 }

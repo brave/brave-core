@@ -34,25 +34,29 @@ export function OnboardingErrorModal(props: Props) {
         header: getString('onboardingErrorDisabledTitle'),
         text: formatMessage(getString('onboardingErrorDisabledText'), {
           tags: {
-            $1: (content) =>
-              <NewTabLink key='link' href={urls.walletCreationDisabledURL}>
+            $1: (content) => (
+              <NewTabLink
+                key='link'
+                href={urls.walletCreationDisabledURL}
+              >
                 {content}
               </NewTabLink>
-          }
-        })
+            ),
+          },
+        }),
       }
     }
 
     if (props.result === 'country-already-declared') {
       return {
         header: getString('onboardingErrorTitle'),
-        text: getString('onboardingErrorCountryDeclaredText')
+        text: getString('onboardingErrorCountryDeclaredText'),
       }
     }
 
     return {
       header: getString('onboardingErrorTitle'),
-      text: getString('onboardingErrorText')
+      text: getString('onboardingErrorText'),
     }
   }
 
@@ -65,14 +69,13 @@ export function OnboardingErrorModal(props: Props) {
         <div className='icon'>
           <Icon name='warning-circle-filled' />
         </div>
-        <div className='title'>
-          {messages.header}
-        </div>
-        <div className='text'>
-          {messages.text}
-        </div>
+        <div className='title'>{messages.header}</div>
+        <div className='text'>{messages.text}</div>
         <div className='action'>
-          <Button onClick={props.onClose} kind='outline'>
+          <Button
+            onClick={props.onClose}
+            kind='outline'
+          >
             {getString('closeButtonLabel')}
           </Button>
         </div>

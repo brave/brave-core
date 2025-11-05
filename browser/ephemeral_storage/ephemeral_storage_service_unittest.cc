@@ -56,14 +56,13 @@ class MockDelegate : public EphemeralStorageServiceDelegate {
   void ExpectRegisterFirstWindowOpenedCallback(base::OnceClosure callback,
                                                bool trigger_callback) {
     EXPECT_CALL(*this, RegisterFirstWindowOpenedCallback(_))
-        .WillOnce(testing::Invoke(
-            [this, trigger_callback](base::OnceClosure callback) {
-              if (trigger_callback) {
-                std::move(callback).Run();
-              } else {
-                first_window_opened_callback_ = std::move(callback);
-              }
-            }));
+        .WillOnce([this, trigger_callback](base::OnceClosure callback) {
+          if (trigger_callback) {
+            std::move(callback).Run();
+          } else {
+            first_window_opened_callback_ = std::move(callback);
+          }
+        });
   }
 
   void TriggerFirstWindowOpenedCallback() {

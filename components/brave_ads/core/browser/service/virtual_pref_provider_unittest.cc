@@ -7,6 +7,7 @@
 
 #include <memory>
 #include <string>
+#include <string_view>
 #include <utility>
 
 #include "base/memory/raw_ptr.h"
@@ -28,7 +29,7 @@ namespace brave_ads {
 
 class VirtualPrefProviderDelegateMock : public VirtualPrefProvider::Delegate {
  public:
-  MOCK_METHOD(std::string, GetChannel, (), (const));
+  MOCK_METHOD(std::string_view, GetChannel, (), (const));
 
   MOCK_METHOD(std::string, GetDefaultSearchEngineName, (), (const));
 };
@@ -156,16 +157,6 @@ TEST_F(BraveAdsVirtualPrefProviderTest, OperatingSystemLocaleRegion) {
 
   // Assert
   EXPECT_EQ(*region, "KY");
-}
-
-TEST_F(BraveAdsVirtualPrefProviderTest, OperatingSystemIsMobilePlatform) {
-  // Act
-  const base::Value::Dict virtual_prefs = provider().GetPrefs();
-  std::optional<bool> is_mobile_platform = virtual_prefs.FindBoolByDottedPath(
-      "[virtual]:operating_system.is_mobile_platform");
-
-  // Assert
-  EXPECT_EQ(is_mobile_platform, IsMobilePlatform());
 }
 
 TEST_F(BraveAdsVirtualPrefProviderTest, OperatingSystemName) {

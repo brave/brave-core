@@ -315,6 +315,11 @@ class DirectAccessContentSettings {
     prefs_value_.Set(primary + "," + secondary, std::move(value));
   }
 
+  void AddRuleWithoutSettingValue(const std::string& primary,
+                                  const std::string& secondary) {
+    prefs_value_.Set(primary + "," + secondary, base::Value::Dict());
+  }
+
   void Write() { prefs_->SetDict(GetPrefName(), prefs_value_.Clone()); }
 
   size_t GetRulesCount() const { return prefs_value_.size(); }
@@ -650,6 +655,10 @@ TEST_F(BravePrefProviderTest, TestShieldsSettingsMigrationFromResourceIDs) {
       CheckMigrationFromResourceIdentifierForDictionary(
           brave_shields_dict, "www.brave.com,*", expected_last_modified,
           expected_brave_com_settings_value);
+    } else if (content_type == ContentSettingsType::BRAVE_AUTO_SHRED) {
+      // BRAVE_AUTO_SHRED was added after the ResourceIdentifier migration
+      // and never existed in that old format, so we can skip validating it.
+      EXPECT_TRUE(brave_shields_dict.empty());
     } else {
       // All the other settings we changed them globally and in www.example.com.
       CheckMigrationFromResourceIdentifierForDictionary(
@@ -818,7 +827,12 @@ TEST_F(BravePrefProviderTest, CosmeticFilteringMigration) {
   cosmetic_filtering_v1.AddRule("brave.block", kFirstParty,
                                 CONTENT_SETTING_BLOCK);
 
-  EXPECT_EQ(6u, cosmetic_filtering_v1.GetRulesCount());
+  // Missing setting value https://github.com/brave/brave-browser/issues/49861
+  cosmetic_filtering_v1.AddRuleWithoutSettingValue("brave.missing", "*");
+  cosmetic_filtering_v1.AddRuleWithoutSettingValue("brave.missing",
+                                                   kFirstParty);
+
+  EXPECT_EQ(8u, cosmetic_filtering_v1.GetRulesCount());
   cosmetic_filtering_v1.Write();
 
   testing_profile()->GetPrefs()->ClearPref(

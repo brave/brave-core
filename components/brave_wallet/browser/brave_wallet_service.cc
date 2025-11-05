@@ -34,7 +34,6 @@
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_response_helpers.h"
-#include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
@@ -79,13 +78,13 @@ bool ContainsToken(const std::vector<mojom::BlockchainTokenPtr>& tokens,
 }
 
 // Ensure token list contains native tokens when appears empty. Only for BTC,
-// ZEC and ADA by now.
+// ZEC, ADA and DOT by now.
 std::vector<mojom::BlockchainTokenPtr> EnsureNativeTokens(
     const std::string& chain_id,
     mojom::CoinType coin,
     std::vector<mojom::BlockchainTokenPtr> tokens) {
   if (coin != mojom::CoinType::BTC && coin != mojom::CoinType::ZEC &&
-      coin != mojom::CoinType::ADA) {
+      coin != mojom::CoinType::ADA && coin != mojom::CoinType::DOT) {
     return tokens;
   }
 
@@ -110,6 +109,11 @@ std::vector<mojom::BlockchainTokenPtr> EnsureNativeTokens(
   if (coin == mojom::CoinType::ADA && IsCardanoNetwork(chain_id) &&
       !ContainsToken(tokens, coin, chain_id, false)) {
     tokens.push_back(GetCardanoNativeToken(chain_id));
+  }
+
+  if (coin == mojom::CoinType::DOT && IsPolkadotNetwork(chain_id) &&
+      !ContainsToken(tokens, coin, chain_id, false)) {
+    tokens.push_back(GetPolkadotNativeToken(chain_id));
   }
 
   return tokens;
@@ -1395,7 +1399,7 @@ void BraveWalletService::OnGetImportInfo(
   }
   if (info->number_of_accounts > 1) {
     keyring_service_->AddAccountsWithDefaultName(mojom::CoinType::ETH,
-                                                 mojom::kDefaultKeyringId,
+                                                 mojom::KeyringId::kDefault,
                                                  info->number_of_accounts - 1);
   }
 

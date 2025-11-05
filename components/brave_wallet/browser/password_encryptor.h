@@ -22,7 +22,7 @@ namespace brave_wallet {
 
 inline constexpr size_t kEncryptorNonceSize = 12;
 inline constexpr size_t kEncryptorSaltSize = 32;
-inline constexpr int kPbkdf2Iterations = 310000;
+inline constexpr uint32_t kPbkdf2Iterations = 310000;
 inline constexpr int kPbkdf2KeySize = 32;
 
 // Use password derived key to encrypt/decrypt using AES-256-GCM
@@ -35,14 +35,6 @@ class PasswordEncryptor {
   PasswordEncryptor(const PasswordEncryptor&) = delete;
   PasswordEncryptor& operator=(const PasswordEncryptor&) = delete;
 
-  static std::optional<int>& GetPbkdf2IterationsForTesting();
-  static base::RepeatingCallback<std::vector<uint8_t>()>&
-  GetCreateNonceCallbackForTesting();
-  static base::RepeatingCallback<std::vector<uint8_t>()>&
-  GetCreateSaltCallbackForTesting();
-
-  static std::vector<uint8_t> CreateNonce();
-  static std::vector<uint8_t> CreateSalt();
   static std::unique_ptr<PasswordEncryptor> CreateEncryptor(
       const std::string& password,
       base::span<const uint8_t> salt);

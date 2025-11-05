@@ -132,10 +132,10 @@ void ReaderModeBubble::Init() {
                               gfx::Insets::TLBR(24, 24, 0, 24), gfx::Insets());
     site_toggle_->SetCallback(base::BindRepeating(
         &ReaderModeBubble::OnSiteToggled, base::Unretained(this)));
-    if (GetSpeedreaderService()->IsExplicitlyEnabledForSite(
+    if (GetSpeedreaderService()->IsEnabledForSite(
             tab_helper_->web_contents())) {
       site_toggle_->SetIsOn(true);
-    } else if (GetSpeedreaderService()->IsExplicitlyDisabledForSite(
+    } else if (GetSpeedreaderService()->IsDisabledForSite(
                    tab_helper_->web_contents())) {
       site_toggle_->SetIsOn(false);
     } else {
@@ -156,7 +156,8 @@ void ReaderModeBubble::Init() {
         gfx::Insets::TLBR(0, 24, 24, 24), gfx::Insets::TLBR(0, 0, 1, 0));
     all_sites_toggle_->SetCallback(base::BindRepeating(
         &ReaderModeBubble::OnAllSitesToggled, base::Unretained(this)));
-    all_sites_toggle_->SetIsOn(GetSpeedreaderService()->IsEnabledForAllSites());
+    all_sites_toggle_->SetIsOn(
+        GetSpeedreaderService()->IsAllowedForAllReadableSites());
   }
 
   // Notes section
@@ -192,13 +193,13 @@ SpeedreaderService* ReaderModeBubble::GetSpeedreaderService() {
 void ReaderModeBubble::OnSiteToggled(const ui::Event& event) {
   DCHECK_EQ(event.target(), site_toggle_);
   const bool on = site_toggle_->GetIsOn();
-  GetSpeedreaderService()->EnableForSite(tab_helper_->web_contents(), on);
+  GetSpeedreaderService()->SetEnabledForSite(tab_helper_->web_contents(), on);
 }
 
 void ReaderModeBubble::OnAllSitesToggled(const ui::Event& event) {
   DCHECK_EQ(event.target(), all_sites_toggle_);
   const bool on = all_sites_toggle_->GetIsOn();
-  GetSpeedreaderService()->EnableForAllSites(on);
+  GetSpeedreaderService()->SetAllowedForAllReadableSites(on);
 }
 
 BEGIN_METADATA(ReaderModeBubble)

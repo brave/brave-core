@@ -11,10 +11,10 @@
 #include "base/check.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/speedreader/speedreader_service_factory.h"
-#include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/speedreader/speedreader_tab_helper.h"
+#include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/speedreader/tts_player.h"
 #include "build/build_config.h"
@@ -271,6 +271,16 @@ void SpeedreaderToolbarDataHandlerImpl::OnTabStripModelChanged(
       tab_helper_observation_.Observe(active_tab_helper_);
       events_->SetPlaybackState(GetTabPlaybackState());
     }
+
+    UpdateToolbarTheme();
+  }
+}
+
+void SpeedreaderToolbarDataHandlerImpl::OnSplitTabChanged(
+    const SplitTabChange& change) {
+  if (change.type == SplitTabChange::Type::kAdded ||
+      change.type == SplitTabChange::Type::kRemoved) {
+    UpdateToolbarTheme();
   }
 }
 
@@ -280,33 +290,7 @@ bool SpeedreaderToolbarDataHandlerImpl::ShouldTrackBrowser(
 }
 
 void SpeedreaderToolbarDataHandlerImpl::OnThemeChanged() {
-  const auto* color_provider = browser_->window()->GetColorProvider();
-  if (!color_provider) {
-    return;
-  }
-
-  auto colors = speedreader::mojom::ToolbarColors::New();
-  colors->background =
-      color_provider->GetColor(kColorSpeedreaderToolbarBackground);
-  colors->foreground =
-      color_provider->GetColor(kColorSpeedreaderToolbarForeground);
-  colors->border = color_provider->GetColor(kColorSpeedreaderToolbarBorder);
-  if (BraveBrowser::ShouldUseBraveWebViewRoundedCorners(browser_)) {
-    // The border is rendered in HTML. Hide the border by giving it the same
-    // color as the background. When this feature flag is removed, consider
-    // removing the border in HTML.
-    colors->border =
-        color_provider->GetColor(kColorSpeedreaderToolbarBackground);
-  }
-  colors->button_hover =
-      color_provider->GetColor(kColorSpeedreaderToolbarButtonHover);
-  colors->button_active =
-      color_provider->GetColor(kColorSpeedreaderToolbarButtonActive);
-  colors->button_active_text =
-      color_provider->GetColor(kColorSpeedreaderToolbarButtonActiveText);
-  colors->button_border =
-      color_provider->GetColor(kColorSpeedreaderToolbarButtonBorder);
-  events_->OnBrowserThemeChanged(std::move(colors));
+  UpdateToolbarTheme();
 }
 
 void SpeedreaderToolbarDataHandlerImpl::OnNativeThemeUpdated(
@@ -330,4 +314,35 @@ void SpeedreaderToolbarDataHandlerImpl::OnContentsReady() {
   if (active_tab_helper_) {
     active_tab_helper_->OnToolbarStateChanged(current_button_);
   }
+}
+
+void SpeedreaderToolbarDataHandlerImpl::UpdateToolbarTheme() {
+  const auto* color_provider = browser_->window()->GetColorProvider();
+  if (!color_provider) {
+    return;
+  }
+
+  auto colors = speedreader::mojom::ToolbarColors::New();
+  colors->background =
+      color_provider->GetColor(kColorSpeedreaderToolbarBackground);
+  colors->foreground =
+      color_provider->GetColor(kColorSpeedreaderToolbarForeground);
+  colors->border = color_provider->GetColor(kColorToolbarContentAreaSeparator);
+  if (BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
+          browser_)) {
+    // The border is rendered in HTML. Hide the border by giving it the same
+    // color as the background. When this feature flag is removed, consider
+    // removing the border in HTML.
+    colors->border =
+        color_provider->GetColor(kColorSpeedreaderToolbarBackground);
+  }
+  colors->button_hover =
+      color_provider->GetColor(kColorSpeedreaderToolbarButtonHover);
+  colors->button_active =
+      color_provider->GetColor(kColorSpeedreaderToolbarButtonActive);
+  colors->button_active_text =
+      color_provider->GetColor(kColorSpeedreaderToolbarButtonActiveText);
+  colors->button_border =
+      color_provider->GetColor(kColorSpeedreaderToolbarButtonBorder);
+  events_->OnBrowserThemeChanged(std::move(colors));
 }

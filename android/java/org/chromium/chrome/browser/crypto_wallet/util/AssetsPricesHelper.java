@@ -5,7 +5,6 @@
 
 package org.chromium.chrome.browser.crypto_wallet.util;
 
-import org.chromium.base.Callbacks;
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AssetPrice;
 import org.chromium.brave_wallet.mojom.AssetPriceRequest;
@@ -23,7 +22,7 @@ public class AssetsPricesHelper {
     public static void fetchPrices(
             AssetRatioService assetRatioService,
             BlockchainToken[] assets,
-            Callbacks.Callback1<List<AssetPrice>> callback) {
+            AsyncUtils.Callback1<List<AssetPrice>> callback) {
         List<AssetPriceRequest> requests = new ArrayList<>();
 
         for (BlockchainToken asset : assets) {

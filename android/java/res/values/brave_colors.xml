@@ -1,30 +1,29 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!-- Copyright (c) 2019 The Brave Authors. All rights reserved.
      This Source Code Form is subject to the terms of the Mozilla Public
      License, v. 2.0. If a copy of the MPL was not distributed with this file,
      You can obtain one at https://mozilla.org/MPL/2.0/.
 -->
-
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Brave colors taken from Nala -->
-    <color name="primitive_primary_10">#000668</color>
-    <color name="primitive_primary_20">#0210a2</color>
-    <color name="primitive_primary_30">#2833b7</color>
+    <color name="primitive_primary_10">#110c50</color>
+    <color name="primitive_primary_20">#20197f</color>
+    <color name="primitive_primary_30">#3126b1</color>
     <color name="primitive_primary_40">#434fcf</color>
-    <color name="primitive_primary_50">#5d69e9</color>
-    <color name="primitive_primary_60">#7985ff</color>
-    <color name="primitive_primary_70">#9ca4ff</color>
-    <color name="primitive_primary_80">#bdc2ff</color>
-    <color name="primitive_primary_90">#e0e0ff</color>
-    <color name="primitive_primary_95">#f1efff</color>
-    <color name="primitive_secondary_40">#5a5c7a</color>
-    <color name="primitive_secondary_50">#737594</color>
-    <color name="primitive_secondary_60">#8d8eaf</color>
-    <color name="primitive_secondary_70">#a7a9ca</color>
-    <color name="primitive_secondary_80">#c3c4e6</color>
-    <color name="primitive_tertiary_40">#804e71</color>
-    <color name="primitive_tertiary_80">#fbb0db</color>
+    <color name="primitive_primary_50">#5b67e8</color>
+    <color name="primitive_primary_60">#7686ec</color>
+    <color name="primitive_primary_70">#96a5f1</color>
+    <color name="primitive_primary_80">#bcc6f3</color>
+    <color name="primitive_primary_90">#dfe4f6</color>
+    <color name="primitive_primary_95">#f0f2fa</color>
+    <color name="primitive_secondary_40">#595b7f</color>
+    <color name="primitive_secondary_50">#747695</color>
+    <color name="primitive_secondary_60">#8c8ea7</color>
+    <color name="primitive_secondary_70">#a8a9bc</color>
+    <color name="primitive_secondary_80">#c7c8d3</color>
+    <color name="primitive_tertiary_40">#7a4f6c</color>
+    <color name="primitive_tertiary_80">#dbc0d1</color>
 
     <!-- Theme colors -->
     <color name="brave_white">@android:color/white</color>
@@ -64,11 +63,11 @@
 
     <!-- Brave wallet 2.0 colors -->
     <color name="brave_wallet_dn_panel_bg">#EDEEF1</color>
-    <color name="button_disabled">#4D687B85</color>
-    <color name="text_disabled">#8021272A</color>
+    <color name="button_disabled">#46464a</color>
+    <color name="text_disabled">#21272a</color>
     <color name="text_on_primary">#FFFFFF</color>
-    <color name="icon_interactive">#3F39E8</color>
-    <color name="divider_subtle">#66A1B2BA</color>
+    <color name="icon_interactive">#434fcf</color>
+    <color name="divider_subtle">#e4e4e5</color>
     <color name="system_feedback_error">#B3002A</color>
 
     <!-- Text colors -->
@@ -118,19 +117,19 @@
     <color name="ad_free_check_color">#737ADE</color>
 
     <!-- From src/brave/node_modules/@brave/leo/tokens/android/values/colors.xml -->
-    <color name="systemfeedback_error_background">#ffe8e7</color>
-    <color name="systemfeedback_error_text">#b3002a</color>
-    <color name="systemfeedback_error_icon">#b3002a</color>
-    <color name="systemfeedback_info_background">#e2f0ff</color>
-    <color name="systemfeedback_info_icon">#0061aa</color>
-    <color name="systemfeedback_info_text">#0061aa</color>
+    <color name="systemfeedback_error_background">#fcefee</color>
+    <color name="systemfeedback_error_text">#b4020e</color>
+    <color name="systemfeedback_error_icon">#b4020e</color>
+    <color name="systemfeedback_info_background">#eef4fc</color>
+    <color name="systemfeedback_info_icon">#0154cc</color>
+    <color name="systemfeedback_info_text">#0154cc</color>
     <color name="container_background">#ffffff</color>
-    <color name="primitive_private_window_5">#160041</color>
-    <color name="primitive_private_window_10">#22005D</color>
-    <color name="primitive_private_window_20">#3A0092</color>
-    <color name="primitive_private_window_60">#9E7BF9</color>
-    <color name="primitive_private_window_80">#CFBCFF</color>
-    <color name="primitive_private_window_90">#E9DDFF</color>
+    <color name="primitive_private_window_5">#180339</color>
+    <color name="primitive_private_window_10">#22044b</color>
+    <color name="primitive_private_window_20">#390977</color>
+    <color name="primitive_private_window_60">#9973f8</color>
+    <color name="primitive_private_window_80">#cbc0f8</color>
+    <color name="primitive_private_window_90">#e5e1f9</color>
 
     <!-- Sync colors -->
     <color name="brave_sync_bg_color">@android:color/transparent</color>
@@ -329,41 +328,41 @@
     <color name="leo_reset_text_color">#FF4B6A</color>
     <!-- End Brave Leo colors-->
 
-    <color name="text_primary">#0D1214</color>
-    <color name="text_secondary">#46464a</color>
-    <color name="text_tertiary">#62757e</color>
-    <color name="primary_20">#d5dcff</color>
-    <color name="button_background">#3F39E8</color>
+    <color name="text_primary">#1c1c1d</color>
+    <color name="text_secondary">#464649</color>
+    <color name="text_tertiary">#78787c</color>
+    <color name="primary_20">#dfe4f6</color>
+    <color name="button_background">#434fcf</color>
 
-    <color name="divider_interactive">#c1c4ff</color>
+    <color name="divider_interactive">#bcc6f3</color>
 
-    <color name="text_interactive">#3f39e8</color>
+    <color name="text_interactive">#434fcf</color>
 
     <color name="location_bar_background_color_for_ntp">#f2f2f2</color>
     <color name="toolbar_background_color_for_ntp">@android:color/white</color>
 
-    <color name="primitive_blurple_10">#000668</color>
-    <color name="primitive_blurple_15">#190b7d</color>
-    <color name="primitive_blurple_20">#121D9A</color>
-    <color name="primitive_blurple_25">#1824AC</color>
-    <color name="primitive_blurple_35">#3541C2</color>
-    <color name="primitive_blurple_40">#4a46e0</color>
-    <color name="primitive_blurple_50">#5D69E9</color>
-    <color name="primitive_blurple_80">#c1c4ff</color>
-    <color name="primitive_blurple_90">#dfe1ff</color>
-    <color name="primitive_blurple_95">#efefff</color>
-    <color name="primitive_blurple_98">#FBF8FF</color>
+    <color name="primitive_blurple_10">#110c50</color>
+    <color name="primitive_blurple_15">#181266</color>
+    <color name="primitive_blurple_20">#20197f</color>
+    <color name="primitive_blurple_25">#271e93</color>
+    <color name="primitive_blurple_35">#3a2ecd</color>
+    <color name="primitive_blurple_40">#434fcf</color>
+    <color name="primitive_blurple_50">#5b67e8</color>
+    <color name="primitive_blurple_80">#bcc6f3</color>
+    <color name="primitive_blurple_90">#dfe4f6</color>
+    <color name="primitive_blurple_95">#f0f2fa</color>
+    <color name="primitive_blurple_98">#f9fafd</color>
     <color name="semantic_text_interactive">#BDC2FF</color>
     <color name="semantic_divider_interactive">#7985FF</color>
     <color name="semantic_button_background">#BDC2FF</color>
 
-    <color name="schemes_on_surface">#1b1b1f</color>
-    <color name="schemes_on_surface_variant">#46464a</color>
-    <color name="schemes_outline_variant">#e3e3e8</color>
-    <color name="schemes_primary">#3e37d4</color>
+    <color name="schemes_on_surface">#1c1c1d</color>
+    <color name="schemes_on_surface_variant">#464649</color>
+    <color name="schemes_outline_variant">#c9c9ca</color>
+    <color name="schemes_primary">#434fcf</color>
     <color name="schemes_on_primary">#ffffff</color>
-    <color name="schemes_surface_container_highest">#c7c7cc</color>
-    <color name="schemes_surface_container_lowest">#FFFFFF</color>
+    <color name="schemes_surface_container_highest">#e4e4e5</color>
+    <color name="schemes_surface_container_lowest">#ffffff</color>
 
     <color name="button_background_widget_promo">#4551D1</color>
 

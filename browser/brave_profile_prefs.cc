@@ -10,10 +10,12 @@
 #include "base/feature_list.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 #include "brave/browser/new_tab/new_tab_shows_options.h"
+#include "brave/browser/search_engines/search_engine_tracker.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/translate/brave_translate_prefs_migration.h"
 #include "brave/browser/ui/bookmark/brave_bookmark_prefs.h"
 #include "brave/browser/ui/omnibox/brave_omnibox_client_impl.h"
+#include "brave/common/pref_names.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
@@ -26,6 +28,7 @@
 #include "brave/components/brave_news/browser/brave_news_pref_manager.h"
 #include "brave/components/brave_news/common/p3a_pref_names.h"
 #include "brave/components/brave_news/common/pref_names.h"
+#include "brave/components/brave_origin/pref_names.h"
 #include "brave/components/brave_perf_predictor/browser/p3a_bandwidth_savings_tracker.h"
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
@@ -44,12 +47,14 @@
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/de_amp/common/pref_names.h"
 #include "brave/components/debounce/core/browser/debounce_service.h"
+#include "brave/components/global_privacy_control/pref_names.h"
 #include "brave/components/ipfs/ipfs_prefs.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/ntp_background_images/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/common/view_counter_pref_registry.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
 #include "brave/components/psst/buildflags/buildflags.h"
+#include "brave/components/query_filter/pref_names.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
@@ -245,6 +250,11 @@ void OverrideDefaultPrefValues(user_prefs::PrefRegistrySyncable* registry) {
   // Currently, upstream only defines an int kAIModeAllowed = 0 value and check
   // against it (see components/omnibox/browser/omnibox_prefs.cc).
   registry->SetDefaultPrefValue(omnibox::kAIModeSettings, base::Value(-1));
+
+  // Disabled due to crash with tab group dragging.
+  // TODO(https://github.com/brave/brave-browser/issues/49752): Re-enable.
+  registry->SetDefaultPrefValue(prefs::kSplitViewDragAndDropEnabled,
+                                base::Value(false));
 }
 
 }  // namespace
@@ -332,6 +342,12 @@ void RegisterProfilePrefsForMigration(
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   speedreader::RegisterProfilePrefsForMigration(registry);
 #endif
+
+  // Added 2025-09
+  SearchEngineTrackerFactory::RegisterProfilePrefsForMigration(registry);
+
+  // Added 2025-10
+  registry->RegisterBooleanPref(kNoScriptControlType, false);
 }
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
@@ -364,7 +380,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kAskEnableWidvine, true);
 
   // Default Brave shields
-  registry->RegisterBooleanPref(kNoScriptControlType, false);
   registry->RegisterBooleanPref(kAdControlType, true);
   registry->RegisterBooleanPref(kShieldsAdvancedViewEnabled, false);
 
@@ -375,6 +390,10 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   registry->RegisterBooleanPref(kShieldsStatsBadgeVisible, true);
   registry->RegisterBooleanPref(kGoogleLoginControlType, true);
+  registry->RegisterBooleanPref(
+      query_filter::kTrackingQueryParametersFilteringEnabled, true);
+  registry->RegisterBooleanPref(
+      global_privacy_control::kGlobalPrivacyControlEnabled, true);
   registry->RegisterBooleanPref(brave_shields::prefs::kFBEmbedControlType,
                                 true);
   registry->RegisterBooleanPref(brave_shields::prefs::kTwitterEmbedControlType,
@@ -383,6 +402,9 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
                                 false);
   registry->RegisterBooleanPref(brave_shields::prefs::kAdBlockDeveloperMode,
                                 false);
+  registry->RegisterIntegerPref(brave_shields::prefs::kShieldsDisabledCount, 0);
+  registry->RegisterBooleanPref(
+      brave_shields::prefs::kAdBlockOnlyModePromptDismissed, false);
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
   registry->RegisterBooleanPref(kBraveWaybackMachineEnabled, true);
@@ -480,6 +502,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kEnableWindowClosingConfirm, true);
   registry->RegisterBooleanPref(kEnableClosingLastTab, true);
   registry->RegisterBooleanPref(kShowFullscreenReminder, true);
+  registry->RegisterBooleanPref(kWebViewRoundedCorners, true);
 
   brave_tabs::RegisterBraveProfilePrefs(registry);
 
@@ -490,6 +513,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   ai_chat::ModelService::RegisterProfilePrefs(registry);
 
   brave_account::prefs::RegisterPrefs(registry);
+  brave_origin::prefs::RegisterProfilePrefs(registry);
 
   brave_search_conversion::RegisterPrefs(registry);
 

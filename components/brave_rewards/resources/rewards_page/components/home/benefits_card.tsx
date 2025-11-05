@@ -28,10 +28,16 @@ export function BenefitsCard() {
   }
 
   return (
-    <div className='content-card' data-css-scope={style.scope}>
+    <div
+      className='content-card'
+      data-css-scope={style.scope}
+    >
       <h4>{getString('benefitsTitle')}</h4>
       <section>
-        <NewTabLink className='store' href={urls.braveStoreURL}>
+        <NewTabLink
+          className='store'
+          href={urls.braveStoreURL}
+        >
           <span className='icon'>
             <Icon name='brave-icon-outline' />
           </span>
@@ -40,9 +46,7 @@ export function BenefitsCard() {
               {getString('benefitsStoreText')}
               <Label color='primary'>{getString('newBadgeText')}</Label>
             </span>
-            <span className='subtext'>
-              {getString('benefitsStoreSubtext')}
-            </span>
+            <span className='subtext'>{getString('benefitsStoreSubtext')}</span>
           </span>
           <Icon name='launch' />
         </NewTabLink>

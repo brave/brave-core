@@ -4,19 +4,18 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
+import Alert from '@brave/leo/react/alert'
 import ButtonMenu from '@brave/leo/react/buttonMenu'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
-import Label from '@brave/leo/react/label'
 import classnames from '$web-common/classnames'
 import * as Mojom from '../../../common/mojom'
 import { getLocale } from '$web-common/locale'
+import { AUTOMATIC_MODEL_KEY } from '../../../common/constants'
 import { useAIChat } from '../../state/ai_chat_context'
 import { useConversation } from '../../state/conversation_context'
-import { getModelIcon } from '../../../common/constants'
+import { ModelMenuItem } from '../model_menu_item/model_menu_item'
 import styles from './style.module.scss'
-
-const AUTO_MODEL_KEY = 'chat-automatic'
 
 export function ModelSelector() {
   const aiChatContext = useAIChat()
@@ -45,7 +44,7 @@ export function ModelSelector() {
 
     // Find the Auto model (chat-automatic)
     const autoModel = conversationContext.allModels.find(
-      (model) => model.key === AUTO_MODEL_KEY,
+      (model) => model.key === AUTOMATIC_MODEL_KEY,
     )
     const defaultModel = conversationContext.userDefaultModel
     const currentModel = conversationContext.currentModel
@@ -57,14 +56,14 @@ export function ModelSelector() {
     }
 
     // Add defaultModel if it exists and is not Auto
-    if (defaultModel && defaultModel.key !== AUTO_MODEL_KEY) {
+    if (defaultModel && defaultModel.key !== AUTOMATIC_MODEL_KEY) {
       recommendedList.push(defaultModel)
     }
 
     // Add currentModel if it exists and is not Auto or defaultModel
     if (
       currentModel
-      && currentModel.key !== AUTO_MODEL_KEY
+      && currentModel.key !== AUTOMATIC_MODEL_KEY
       && currentModel.key !== defaultModel?.key
     ) {
       recommendedList.push(currentModel)
@@ -136,126 +135,58 @@ export function ModelSelector() {
         </div>
       </Button>
 
-      {models.map((model) => {
-        const isCustomModel = model.options.customModelOptions
-        return (
-          <leo-menu-item
-            key={model.key}
-            aria-selected={
-              model.key === conversationContext.currentModel?.key || null
-            }
-            onClick={() => conversationContext.setCurrentModel(model)}
+      {/* TODO: This should be based off of conversationCapability
+      in the future. https://github.com/brave/brave-browser/issues/49261 */}
+      {aiChatContext.isAIChatAgentProfile
+        && aiChatContext.isAIChatAgentProfileFeatureEnabled && (
+          <Alert
+            type='info'
+            className={styles.alert}
           >
-            <div
-              className={styles.modelIcon}
-              data-key={model.key}
-            >
-              <Icon name={getModelIcon(model.key)} />
+            <div className={styles.alertText}>
+              {getLocale(S.CHAT_UI_AGENT_MODE_MODEL_INFO)}
             </div>
-            <div className={styles.menuText}>
-              <div>{model.displayName}</div>
-              <p className={styles.modelSubtitle}>
-                {isCustomModel
-                  ? model.options.customModelOptions?.modelRequestName
-                  : getLocale(
-                      `CHAT_UI_${model.key
-                        .toUpperCase()
-                        .replaceAll('-', '_')}_SUBTITLE`,
-                    )}
-              </p>
-            </div>
-            {model.options.leoModelOptions?.access === Mojom.ModelAccess.PREMIUM
-              && !aiChatContext.isPremiumUser && (
-                <Label
-                  className={styles.modelLabel}
-                  mode={'outline'}
-                  color='blue'
-                >
-                  {getLocale(S.CHAT_UI_MODEL_PREMIUM_LABEL_NON_PREMIUM)}
-                </Label>
-              )}
-            {isCustomModel && (
-              <Label
-                className={styles.modelLabel}
-                mode='default'
-                color='blue'
-              >
-                {getLocale(S.CHAT_UI_MODEL_LOCAL_LABEL)}
-              </Label>
-            )}
-          </leo-menu-item>
+          </Alert>
+        )}
+
+      {models.map((model) => {
+        return (
+          <ModelMenuItem
+            key={model.key}
+            model={model}
+            isCurrent={model.key === conversationContext.currentModel?.key}
+            showPremiumLabel={!aiChatContext.isPremiumUser}
+            showDetails={true}
+            onClick={() => conversationContext.setCurrentModel(model)}
+          />
         )
       })}
 
       {showAllModels
         && premiumModels.map((model) => {
           return (
-            <leo-menu-item
+            <ModelMenuItem
               key={model.key}
-              aria-selected={
-                model.key === conversationContext.currentModel?.key || null
-              }
+              model={model}
+              isCurrent={model.key === conversationContext.currentModel?.key}
+              showPremiumLabel={!aiChatContext.isPremiumUser}
+              showDetails={true}
               onClick={() => conversationContext.setCurrentModel(model)}
-            >
-              <div
-                className={styles.modelIcon}
-                data-key={model.key}
-              >
-                <Icon name={getModelIcon(model.key)} />
-              </div>
-              <div className={styles.menuText}>
-                <div>{model.displayName}</div>
-                <p className={styles.modelSubtitle}>
-                  {getLocale(
-                    `CHAT_UI_${model.key
-                      .toUpperCase()
-                      .replaceAll('-', '_')}_SUBTITLE`,
-                  )}
-                </p>
-              </div>
-              {!aiChatContext.isPremiumUser && (
-                <Label
-                  className={styles.modelLabel}
-                  mode={'outline'}
-                  color='blue'
-                >
-                  {getLocale(S.CHAT_UI_MODEL_PREMIUM_LABEL_NON_PREMIUM)}
-                </Label>
-              )}
-            </leo-menu-item>
+            />
           )
         })}
 
       {showAllModels
         && customModels.map((model) => {
           return (
-            <leo-menu-item
+            <ModelMenuItem
               key={model.key}
-              aria-selected={
-                model.key === conversationContext.currentModel?.key || null
-              }
+              model={model}
+              isCurrent={model.key === conversationContext.currentModel?.key}
+              showPremiumLabel={!aiChatContext.isPremiumUser}
+              showDetails={true}
               onClick={() => conversationContext.setCurrentModel(model)}
-            >
-              <div
-                className={styles.modelIcon}
-                data-key={model.key}
-              >
-                <Icon name={getModelIcon(model.key)} />
-              </div>
-              <div className={styles.menuText}>
-                <div>{model.displayName}</div>
-                <p className={styles.modelSubtitle}>
-                  {model.options.customModelOptions?.modelRequestName}
-                </p>
-              </div>
-              <Label
-                className={styles.modelLabel}
-                mode='default'
-                color='blue'
-              >
-                {getLocale(S.CHAT_UI_MODEL_LOCAL_LABEL)}
-              </Label>
-            </leo-menu-item>
+            />
           )
         })}
 

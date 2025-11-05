@@ -3,6 +3,7 @@ include_rules = [
   "+brave/components/brave_account/features.h",
   "+brave/components/brave_component_updater/browser/features.h",
   "+brave/components/brave_news/common/features.h",
+  "+brave/components/brave_origin",
   "+brave/components/brave_rewards/core/features.h",
   "+brave/components/brave_search/common/features.h",
   "+brave/components/brave_search_conversion/features.h",
@@ -14,6 +15,6 @@ include_rules = [
   "+brave/components/de_amp/common/features.h",
   "+brave/components/debounce/core/common/features.h",
   "+brave/components/ntp_background_images/browser/features.h",
-  "+brave/components/playlist/common/features.h",
+  "+brave/components/playlist/core/common/features.h",
   "+brave/components/skus/common/features.h",
 ]

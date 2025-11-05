@@ -8,26 +8,23 @@
 
 #import <Foundation/Foundation.h>
 
+#ifdef __cplusplus
+#include "brave/ios/browser/api/ads/brave_ads.mojom.objc.h"
+#else
+#import "brave_ads.mojom.objc.h"
+#endif
+
 @class NTPSponsoredImageCampaign, NTPSponsoredImageBackground,
-    NTPSponsoredImageLogo, NTPSponsoredImageTopSite;
+    NTPSponsoredImageLogo;
 
 NS_ASSUME_NONNULL_BEGIN
 
 OBJC_EXPORT
 @interface NTPSponsoredImageData : NSObject
 @property(readonly) NSArray<NTPSponsoredImageCampaign*>* campaigns;
-@property(readonly, nullable) NSNumber* gracePeriod;
-@property(readonly) BOOL isSuperReferral;
-@property(readonly, nullable) NSString* themeName;
-@property(readonly, nullable) NSArray<NTPSponsoredImageTopSite*>* topSites;
 - (instancetype)init NS_UNAVAILABLE;
-- (instancetype)
-    initWithCampaigns:(NSArray<NTPSponsoredImageCampaign*>*)campaigns
-          gracePeriod:(nullable NSNumber*)gracePeriod
-      isSuperReferral:(BOOL)isSuperReferral
-            themeName:(nullable NSString*)themeName
-             topSites:(nullable NSArray<NTPSponsoredImageTopSite*>*)topSites
-    NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithCampaigns:
+    (NSArray<NTPSponsoredImageCampaign*>*)campaigns NS_DESIGNATED_INITIALIZER;
 @end
 
 OBJC_EXPORT
@@ -47,13 +44,13 @@ OBJC_EXPORT
 @property(readonly) CGPoint focalPoint;
 @property(readonly) NSString* creativeInstanceId;
 @property(readonly) NTPSponsoredImageLogo* logo;
-@property(readonly) BOOL shouldMetricsFallbackToP3A;
+@property(readonly) BraveAdsNewTabPageAdMetricType metricType;
 - (instancetype)init NS_UNAVAILABLE;
 - (instancetype)initWithImagePath:(NSURL*)imagePath
                        focalPoint:(CGPoint)focalPoint
                creativeInstanceId:(NSString*)creativeInstanceId
                              logo:(NTPSponsoredImageLogo*)logo
-       shouldMetricsFallbackToP3A:(BOOL)shouldMetricsFallbackToP3A
+                       metricType:(BraveAdsNewTabPageAdMetricType)metricType
     NS_DESIGNATED_INITIALIZER;
 @end
 
@@ -69,19 +66,6 @@ OBJC_EXPORT
                    destinationURL:(NSURL*)destinationURL
                       companyName:(NSString*)companyName
     NS_DESIGNATED_INITIALIZER;
-@end
-
-OBJC_EXPORT
-@interface NTPSponsoredImageTopSite : NSObject
-@property(readonly) NSString* name;
-@property(readonly, nullable) NSURL* destinationURL;
-@property(readonly) NSString* backgroundColor;
-@property(readonly) NSURL* imagePath;
-- (instancetype)init NS_UNAVAILABLE;
-- (instancetype)initWithName:(NSString*)name
-              destinationURL:(NSURL*)destinationURL
-             backgroundColor:(NSString*)backgroundColor
-                   imagePath:(NSURL*)imagePath NS_DESIGNATED_INITIALIZER;
 @end
 
 NS_ASSUME_NONNULL_END

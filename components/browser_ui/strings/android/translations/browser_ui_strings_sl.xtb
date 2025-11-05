@@ -1,14 +1,8 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="sl">
-<translation id="3586180167003092914">Upravljanje v <ph name="BEGIN_LINK1"/>nastavitvah za Android<ph name="END_LINK1"/>
-
-Dodatna zaščita upravlja te nastavitve za Brave:
-• Možnost »Vedno dovoli varne povezave« je vklopljena.
-• Možnost »Optimiziranje Javascripta« je izklopljena. <ph name="BEGIN_LINK2"/>Upravljanje izjem za spletna mesta<ph name="END_LINK2"/></translation>
 <translation id="1006017844123154345">Odpri v spletu</translation>
 <translation id="1036348656032585052">Izklop</translation>
-<translation id="1044891598689252897">Spletna mesta bodo delovala normalno</translation>
 <translation id="1070329623210597193">Datoteke, ki si jih to spletno mesto lahko ogleda ali jih uredi</translation>
 <translation id="1882093842020941518">Pomagajte nam izboljšati Brave, tako da nam poveste, zakaj ste dovolili piškotke tretjih oseb. <ph name="BEGIN_LINK"/>Pošiljanje povratnih informacij<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">Zahtevate lahko namizno različico spletnih mest</translation>
@@ -26,6 +20,7 @@ Dodatna zaščita upravlja te nastavitve za Brave:
 <translation id="129382876167171263">Datoteke, ki jih shranijo spletna mesta, so prikazane tukaj</translation>
 <translation id="131112695174432497">Podatki, ki vplivajo na osebno prilagajanje oglasov, so izbrisani.</translation>
 <translation id="1317194122196776028">Pozabi to spletno mesto</translation>
+<translation id="1321110954513621549">Dovoljeno • Približna</translation>
 <translation id="1323433172918577554">Pokaži več</translation>
 <translation id="1333965224356556482">Spletnim mestom ni dovoljen ogled vaše lokacije.</translation>
 <translation id="1343356790768851700">To spletno mesto določi stvari, ki so vam všeč, in nato predlaga oglase drugim spletnim mestom.</translation>
@@ -41,9 +36,11 @@ Dodatna zaščita upravlja te nastavitve za Brave:
 <translation id="1448064542941920355">Zmanjšanje povečave/pomanjšave</translation>
 <translation id="1464044141348608623">Spletnim mestom ni dovoljeno vedeti, kdaj aktivno uporabljate napravo</translation>
 <translation id="146867109637325312">{COUNT,plural, =1{<ph name="SITE_COUNT"/> spletnem mestu}one{<ph name="SITE_COUNT"/> spletnem mestu}two{<ph name="SITE_COUNT"/> spletnih mestih}few{<ph name="SITE_COUNT"/> spletnih mestih}other{<ph name="SITE_COUNT"/> spletnih mestih}}</translation>
+<translation id="1476700086976862423">Barva teme – sepija</translation>
 <translation id="1500473259453106018">Skrij kartico z znižanji cen na zavihkih</translation>
 <translation id="1508931164824684991">Spletna mesta lahko uporabljajo JavaScript</translation>
 <translation id="1510341833810331442">Spletna mesta ne smejo shranjevati podatkov v napravi.</translation>
+<translation id="1532175480576580256">Razdelek na dnu zaslona »Moje bližnjice« je odprt pri polni višini</translation>
 <translation id="1538031354170655462">Spletna mesta običajno uporabljajo tehnologijo NFC za delovanje z oznakami ali napravami v bližini, na primer pri optičnem branju značk ali brezstičnem plačevanju</translation>
 <translation id="1547123415014299762">Piškotki tretjih oseb so dovoljeni.</translation>
 <translation id="3665719978526894928">S Chromovim mehanizmom V8 pospešite delovanje spletnih mest, vendar je Brave zato nekoliko manj odporen proti napadom</translation>
@@ -72,6 +69,8 @@ Dodatna zaščita upravlja te nastavitve za Brave:
 <translation id="7401204338724669842">Nasveti za Brave</translation>
 <translation id="6704867734300244173">Če je vklopljeno, Brave deluje hitreje, funkcije, ki uporabljajo JavaScript, pa bi morale delovati, kot je predvideno. Če je izklopljeno, se zmanjša učinkovitost delovanja, vendar je mehanizem V8 odpornejši proti napadom.</translation>
 <translation id="1818308510395330587">Če želite aplikaciji <ph name="APP_NAME"/> dovoliti uporabo razširjene resničnosti, prav tako vklopite fotoaparat v <ph name="BEGIN_LINK"/>nastavitvah za Android<ph name="END_LINK"/>.</translation>
+<translation id="1848033246551405023">Pisava Sans Serif</translation>
+<translation id="1861262398884155592">Ta mapa je prazna</translation>
 <translation id="1881806992065048905">Razdelek na dnu zaslona za videz strani »Nov zavihek«</translation>
 <translation id="1887786770086287077">Dostop do lokacije je izklopljen za to napravo. Vklopite ga lahko v <ph name="BEGIN_LINK"/>nastavitvah za Android<ph name="END_LINK"/>.</translation>
 <translation id="1906181697255754968">Spletna mesta običajno dostopajo do datotek in map v vaši napravi zaradi funkcij, kot je samodejno shranjevanje vašega dela.</translation>
@@ -93,6 +92,7 @@ Dodatna zaščita upravlja te nastavitve za Brave:
 <translation id="2079545284768500474">Razveljavi</translation>
 <translation id="2080070583977670716">Več nastavitev</translation>
 <translation id="2091887806945687916">Zvok</translation>
+<translation id="2094208275686143364">Barva teme – svetla</translation>
 <translation id="2096716221239095980">Izbriši vse podatke</translation>
 <translation id="2102396546234652240">Spletnim mestom ni dovoljena uporaba mikrofona.</translation>
 <translation id="2117655453726830283">Naslednji diapozitiv</translation>
@@ -116,11 +116,14 @@ Dodatna zaščita upravlja te nastavitve za Brave:
 <translation id="228293613124499805">Večina spletnih mest, ki jih obiščete, v napravo verjetno shrani podatke, pogosto zaradi izboljšanja izkušnje, in sicer tako, da shrani nastavitve ali podatke, ki jih razkrijete spletnemu mestu. Priporočamo, da pustite to nastavitev vklopljeno.</translation>
 <translation id="2289270750774289114">Vprašaj, ko želi spletno mesto odkrivati naprave Bluetooth v bližini (priporočljivo)</translation>
 <translation id="2315043854645842844">Operacijski sistem ne podpira izbire potrdila pri odjemalcu.</translation>
+<translation id="2347601491101454548">Razdelek na dnu zaslona »Moje bližnjice« je odprt pri polovični višini</translation>
 <translation id="2359808026110333948">Naprej</translation>
 <translation id="904887679952026733">Uporaba temne teme (ko je to mogoče) na spletnih mestih, če Brave uporablja temno temo.</translation>
 <translation id="2390272837142897736">Povečanje povečave/pomanjšave</translation>
 <translation id="2402980924095424747"><ph name="MEGABYTES"/> MB</translation>
+<translation id="2403474027143565107">Natančna</translation>
 <translation id="2404630663942400771">{PERMISSIONS_SUMMARY_ALLOWED,plural, =1{Dovoljeno: <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> in še <ph name="NUM_MORE"/>}one{Dovoljeno: <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> in še <ph name="NUM_MORE"/>}two{Dovoljeno: <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> in še <ph name="NUM_MORE"/>}few{Dovoljeno: <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> in še <ph name="NUM_MORE"/>}other{Dovoljeno: <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> in še <ph name="NUM_MORE"/>}}</translation>
+<translation id="2404857459073803936">Dostop do lokacije za to spletno mesto</translation>
 <translation id="2410940059315936967">Spletno mesto, ki ga obiščete, lahko vdela vsebino z drugih spletnih mest, na primer slike, oglase in besedilo. Piškotki, ki jih nastavijo ta druga spletna mesta, se imenujejo piškotki tretjih oseb.</translation>
 <translation id="2411116727035790889">Vklop bližnjic</translation>
 <translation id="2433507940547922241">Videz</translation>
@@ -136,6 +139,7 @@ Dodatna zaščita upravlja te nastavitve za Brave:
 <translation id="2498359688066513246">Pomoč in povratne inform.</translation>
 <translation id="2501278716633472235">Nazaj</translation>
 <translation id="2533138527374486328">Če je ta možnost vklopljena, spletna mesta lahko zahtevajo vzpostavitev povezave s katero koli napravo v lokalnem omrežju. Če je ta možnost izklopljena, spletna mesta ne smejo vzpostavljati povezav z napravami v lokalnem omrežju.</translation>
+<translation id="2544997614631598250">Barva teme – temna</translation>
 <translation id="2546283357679194313">Piškotki in podatki spletnih mest</translation>
 <translation id="2570922361219980984">Dostop do lokacije je tudi izklopljen za to napravo. Vklopite ga lahko v <ph name="BEGIN_LINK"/>nastavitvah za Android<ph name="END_LINK"/>.</translation>
 <translation id="257931822824936280">Razširjeno – kliknite, če želite strniti.</translation>
@@ -143,6 +147,11 @@ Dodatna zaščita upravlja te nastavitve za Brave:
 <translation id="2588271083332682494">Organizirajte s skupinami zavihkov</translation>
 <translation id="2597457036804169544">Brez uporabe temne teme na spletnih mestih.</translation>
 <translation id="2606760465469169465">Samodejno preverjanje</translation>
+<translation id="7615153661410655750">Upravljanje v <ph name="BEGIN_LINK1"/>nastavitvah za Android<ph name="END_LINK1"/>
+
+Dodatna zaščita upravlja te nastavitve za Brave:
+• Možnost »Vedno dovoli varne povezave« je vklopljena.
+• Možnost »Optimiziranje JavaScripta« je izklopljena. <ph name="BEGIN_LINK2"/>Upravljanje izjem za spletna mesta<ph name="END_LINK2"/></translation>
 <translation id="2621115761605608342">Dovoli JavaScript za določeno spletno mesto.</translation>
 <translation id="2626708220538466178">Razdelek na dnu zaslona za privzeti brskalnik je zaprt</translation>
 <translation id="2653659639078652383">Pošlji</translation>
@@ -190,10 +199,10 @@ Dodatna zaščita upravlja te nastavitve za Brave:
 <translation id="3123473560110926937">Blokirano na nekaterih spletnih mestih</translation>
 <translation id="3132996321662585180">Dnevno osveževanje</translation>
 <translation id="3143754809889689516">Predvajaj od začetka</translation>
-<translation id="3162899666601560689">Spletna mesta lahko uporabljajo piškotke za izboljšanje izkušnje brskanja, in sicer tako, da na primer poskrbijo, da ostanete prijavljeni, ali si zapomnijo izdelke v nakupovalnem vozičku.</translation>
 <translation id="3165022941318558018">Dovoli spletnemu mestu uporabo piškotkov tretje osebe</translation>
 <translation id="3167868116600277716">Vir Odkrivanje</translation>
 <translation id="3198916472715691905"><ph name="STORAGE_AMOUNT"/> shranjenih podatkov</translation>
+<translation id="3199078925536734975">Tokrat dovoljeno • Približna</translation>
 <translation id="321187648315454507">Če želite, da vam aplikacija <ph name="APP_NAME"/> pošilja obvestila, obvestila vklopite tudi v <ph name="BEGIN_LINK"/>nastavitvah za Android<ph name="END_LINK"/>.</translation>
 <translation id="3223425961342298674">Lokacija ni dovoljena</translation>
 <translation id="3227137524299004712">Mikrofon</translation>
@@ -248,6 +257,7 @@ Dodatna zaščita upravlja te nastavitve za Brave:
 <translation id="3803367742635802571">Obiskana spletna mesta bodo morda nehala delovati, kot je predvideno</translation>
 <translation id="8338457030135232378">Barve za Brave</translation>
 <translation id="381841723434055211">Telefonske številke</translation>
+<translation id="3823453485268218808">Pisava Mono</translation>
 <translation id="3826050100957962900">Prijava prek zunanjih ponudnikov</translation>
 <translation id="3835233591525155343">Uporaba naprave</translation>
 <translation id="1799795508209440035">Brave bo znova blokiral piškotke danes</translation>
@@ -257,9 +267,9 @@ Dodatna zaščita upravlja te nastavitve za Brave:
 <translation id="3895926599014793903">Vsili povečavo</translation>
 <translation id="3903738175795615004">Povlecite z vrha ali pritisnite tipko Esc, če želite zapreti celozaslonski način.</translation>
 <translation id="3905475044299942653">Ustavitev veliko obvestil</translation>
-<translation id="3918378745482005425">Nekatere funkcije morda ne bodo delovale. Povezana spletna mesta lahko še vedno uporabljajo piškotke tretjih oseb.</translation>
 <translation id="3922092564198021702">V telefonu odprite nastavitve</translation>
 <translation id="3933121352599513978">Strni neželene zahteve (priporočeno)</translation>
+<translation id="3934905113567851655">Primaknite ali razmaknite prsta za spreminjanje velikosti</translation>
 <translation id="3955193568934677022">Dovoli spletnim mestom predvajanje zaščitene vsebine (priporočeno)</translation>
 <translation id="3955321697524543127">Spletnim mestom ni dovoljeno povezovanje z napravami USB.</translation>
 <translation id="3965467402665811906">Spletna mesta lahko zahtevajo uporabo podatkov, ki so jih shranila o vas</translation>
@@ -272,6 +282,7 @@ Dodatna zaščita upravlja te nastavitve za Brave:
 <translation id="3992684624889376114">O tej strani</translation>
 <translation id="4002066346123236978">Naslov</translation>
 <translation id="4031179711345676612">Mikrofon je dovoljen</translation>
+<translation id="4042597221652780603">Približna</translation>
 <translation id="4046123991198612571">Naslednja skladba</translation>
 <translation id="4077310749977440510">Spletna mesta običajno preberejo odložišče zaradi funkcij, kot je ohranjanje oblike kopiranega besedila</translation>
 <translation id="4082080074595021446">Izjeme za določena spletna mesta niso dovoljene, ker naprava Android nima dovolj RAM-a.</translation>
@@ -298,11 +309,14 @@ Dodatna zaščita upravlja te nastavitve za Brave:
 <translation id="4338831206024587507">Vsa spletna mesta v domeni <ph name="DOMAIN"/>.</translation>
 <translation id="4340799661701629185">Spletnim mestom ni dovoljeno pošiljati obvestil.</translation>
 <translation id="4402755511846832236">Preprečevanje, da bi spletna mesta vedela, kdaj aktivno uporabljate to napravo.</translation>
+<translation id="8382883799082236806">Razdelek na dnu zaslona z barvami Chroma je odprt pri polovični višini</translation>
 <translation id="4412992751769744546">Omogočanje piškotkov tretjih oseb</translation>
 <translation id="1675197434085185531">Brave spletnim mestom onemogoči uporabo piškotkov tretjih oseb, da bi vam sledila med brskanjem. Obiščite nastavitve, če želite <ph name="BEGIN_LINK"/>upravljati dostop do piškotkov tretjih oseb<ph name="END_LINK"/>.</translation>
+<translation id="4425416282877905577">Pisava Serif</translation>
 <translation id="443121186588148776">Serijska vrata</translation>
 <translation id="4434045419905280838">Pojavna okna in preusmeritve</translation>
 <translation id="443552056913301231">To dejanje bo izbrisalo vse lokalne podatke, vključno s piškotki, in ponastavilo vsa dovoljenja za <ph name="ORIGIN"/></translation>
+<translation id="43076815069546662">Razdelek na dnu zaslona z barvami Chroma je odprt pri polni višini</translation>
 <translation id="4468959413250150279">Izklop zvoka za določeno spletno mesto.</translation>
 <translation id="4475912480633855319">{COOKIES,plural, =1{# piškotek}one{# piškotek}two{# piškotka}few{# piškotki}other{# piškotkov}}</translation>
 <translation id="4478158430052450698">Poenostavljeno nastavljanje povečave po meri za različna spletna mesta</translation>
@@ -328,6 +342,7 @@ Dodatna zaščita upravlja te nastavitve za Brave:
 <translation id="4816495437032298535">Shranjena povečava za spletna mesta</translation>
 <translation id="4836046166855586901">Vprašaj, ko želi spletno mesto vedeti, kdaj aktivno uporabljate to napravo.</translation>
 <translation id="483914009762354899">Vključi vsa spletna mesta v tej domeni</translation>
+<translation id="4852997963351138624">Šestnajstiška koda barve ozadja</translation>
 <translation id="4882919381756638075">Spletna mesta običajno uporabljajo mikrofon za komunikacijske funkcije, kot je videoklepet.</translation>
 <translation id="4883854917563148705">Upravljanih nastavitev ni mogoče ponastaviti</translation>
 <translation id="4887024562049524730">Vprašaj, preden se spletnim mestom dovoli uporaba naprav in podatkov za navidezno resničnost (priporočeno)</translation>
@@ -337,6 +352,7 @@ Dodatna zaščita upravlja te nastavitve za Brave:
 <translation id="4953688446973710931">Če je ta možnost vklopljena, spletna mesta lahko zahtevajo samodejni prenos več datotek. Če je ta možnost izklopljena, spletna mesta ne smejo samodejno prenesti več datotek.</translation>
 <translation id="4962975101802056554">Umik vseh dovoljenj za napravo</translation>
 <translation id="4972737347717125191">Spletna mesta lahko zahtevajo uporabo naprav in podatkov za navidezno resničnost</translation>
+<translation id="1275242979020712923">Razdelek na dnu zaslona z barvami Chroma</translation>
 <translation id="497421865427891073">Pojdi naprej</translation>
 <translation id="4976702386844183910">Nazadnje obiskano: <ph name="DATE"/></translation>
 <translation id="4978178243417029856">Preberite več o viru Odkrivanje</translation>
@@ -356,6 +372,7 @@ Dodatna zaščita upravlja te nastavitve za Brave:
 <translation id="5100237604440890931">Strnjeno – kliknite, če želite razširiti.</translation>
 <translation id="7143053178237996319">Brave lahko uporabljate, kadar koli se dotaknete povezav v sporočilih, dokumentih in drugih aplikacijah</translation>
 <translation id="512938610812707830">Razdelek na dnu zaslona z zbirkami tem za videz strani »Nov zavihek« odprt pri polni višini</translation>
+<translation id="5137460097045297858">Razdelek na dnu zaslona za vir Odkrivanje je odprt pri polovični višini</translation>
 <translation id="5139253256813381453">{PRICE_DROP_COUNT,plural, =1{Znižanje cene na odprtih zavihkih}one{Znižanja cen na odprtih zavihkih}two{Znižanja cen na odprtih zavihkih}few{Znižanja cen na odprtih zavihkih}other{Znižanja cen na odprtih zavihkih}}</translation>
 <translation id="5186036860380548585">Možnosti so na voljo blizu vrha zaslona</translation>
 <translation id="5197729504361054390">Izbrani stiki bodo v skupni rabi s spletnim mestom <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/>.</translation>
@@ -374,7 +391,6 @@ Dodatna zaščita upravlja te nastavitve za Brave:
 <translation id="5335288049665977812">Spletnim mestom dovoli izvajanje JavaScripta (priporočeno)</translation>
 <translation id="534295439873310000">Naprave s tehnologijo NFC</translation>
 <translation id="5344522958567249764">Upravljanje zasebnosti pri oglaševanju</translation>
-<translation id="5371407439562620893">Optimizacija in varnost za JavaScript</translation>
 <translation id="5373874281522292782">Skupine zavihkov so shranjene</translation>
 <translation id="5394307150471348411">{DETAIL_COUNT,plural, =1{(in še 1)}one{(in še #)}two{(in še #)}few{(in še #)}other{(in še #)}}</translation>
 <translation id="5403592356182871684">Imena</translation>
@@ -386,7 +402,6 @@ Dodatna zaščita upravlja te nastavitve za Brave:
 <translation id="5515432237048785579">Razdelek na dnu zaslona za vir Odkrivanje je odprt pri polni višini</translation>
 <translation id="5516455585884385570">Odpiranje nastavitev obvestil</translation>
 <translation id="5527111080432883924">Prikaži poziv, preden se spletnim mestom dovoli branje besedila in slik v odložišču (priporočeno)</translation>
-<translation id="5545693483061321551">Spletna mesta ne morejo uporabljati vaših piškotkov za ogled dejavnosti brskanja na različnih spletnih mestih, na primer za osebno prilagajanje oglasov. Funkcije na nekaterih spletnih mestih morda ne bodo delovale.</translation>
 <translation id="5553374991681107062">Najnovejše</translation>
 <translation id="674221630984410403">Ne pospešite delovanja spletnih mest s Chromovim mehanizmom V8, vendar je Brave zato nekoliko odpornejši proti napadom</translation>
 <translation id="5556459405103347317">Znova naloži</translation>
@@ -457,6 +472,7 @@ Dodatna zaščita upravlja te nastavitve za Brave:
 <translation id="6207207788774442484">Izbriši podatke in ponastavi dovoljenja</translation>
 <translation id="6231752747840485235">Želite odmestiti aplikacijo »<ph name="APP_NAME"/>«?</translation>
 <translation id="4789073065838177382">Dotaknite se Brskalnik &gt; Brave</translation>
+<translation id="6260830281887654268">Razdelek na dnu zaslona z zbirkami tem za videz strani »Nov zavihek« odprt pri polovični višini</translation>
 <translation id="6262191102408817757">Na podlagi vašega zadnjega zavihka</translation>
 <translation id="6262279340360821358">Blokirano: <ph name="PERMISSION_1"/> in <ph name="PERMISSION_2"/></translation>
 <translation id="6270391203985052864">Spletna mesta vas lahko vprašajo, ali želite, da vam pošiljajo obvestila</translation>
@@ -488,8 +504,10 @@ Dodatna zaščita upravlja te nastavitve za Brave:
 <translation id="6608650720463149374"><ph name="GIGABYTES"/> GB</translation>
 <translation id="6612358246767739896">Zaščitena vsebina</translation>
 <translation id="662080504995468778">Ostani</translation>
+<translation id="6630443592285535486">Tukaj vnesite šestnajstiško kodo</translation>
 <translation id="6635327442719709864">Če je ta možnost vklopljena, spletna mesta lahko zahtevajo uporabo serijskih vrat. Če je ta možnost izklopljena, spletna mesta ne smejo uporabljati serijskih vrat.</translation>
 <translation id="6678072580827808850">Pregled varnostnega preverjanja</translation>
+<translation id="6682057173375416470">Prejemanje predlaganih člankov na strani »Nov zavihek«</translation>
 <translation id="6683865262523156564">To spletno mesto je v skupini, ki si lahko ogleda vašo dejavnost. To skupino je definiralo spletno mesto <ph name="RWS_OWNER"/></translation>
 <translation id="6689172468748959065">Profilne fotografije</translation>
 <translation id="6697925417670533197">Aktivni prenosi</translation>
@@ -539,16 +557,20 @@ Dodatna zaščita upravlja te nastavitve za Brave:
 <translation id="728412880473384942">Spletna mesta delujejo hitreje, vendar manj varno</translation>
 <translation id="7366415735885268578">Dodajanje spletnega mesta</translation>
 <translation id="7368695150573390554">Vsi podatki brez povezave bodo izbrisani</translation>
+<translation id="7369678931043226462">Razdelek na dnu zaslona za prilagajanje strani »Nov zavihek« je odprt pri polovični višini</translation>
 <translation id="7383715096023715447">Nastavitve za domeno <ph name="DOMAIN"/></translation>
 <translation id="7399802613464275309">Varnostno preverjanje</translation>
 <translation id="7406113532070524618">Ta nastavitev deluje, ne da bi prišlo do vaše osebne prepoznave ali da bi bil spletnim mestom omogočen ogled vaše zgodovine brskanja. vendar lahko spletna mesta v okviru preverjanja delijo majhno količino podatkov.</translation>
 <translation id="7409735910987429903">Spletna mesta lahko prikazujejo oglase v pojavnih oknih ali uporabljajo preusmeritve na spletna mesta, ki jih morda ne želite obiskati.</translation>
+<translation id="7412160840120117304">Šestnajstiška koda glavne barve</translation>
 <translation id="7423098979219808738">Najprej vprašaj</translation>
 <translation id="7423538860840206698">Blokirano branje vsebine odložišča</translation>
 <translation id="7425915948813553151">Temna tema za spletna mesta</translation>
+<translation id="746412105358554870">Optimizacija in varnost za JavaScript</translation>
 <translation id="7478658909253570368">Spletnim mestom ni dovoljeno povezovanje s serijskimi vrati.</translation>
 <translation id="7488573225650545859">Skrij Ogled zavihkov na seznamu aplikacij</translation>
 <translation id="7521387064766892559">JavaScript</translation>
+<translation id="7538975533793429503">Drsnik za velikost pisave</translation>
 <translation id="7547989957535180761">Če je ta možnost vklopljena, spletna mesta lahko prikazujejo pozive za prijavo. Če je ta možnost izklopljena, spletna mesta ne smejo prikazovati pozivov za prijavo.</translation>
 <translation id="7553211568594248088">Izhod iz iskanja v središču</translation>
 <translation id="7554752735887601236">Spletno mesto uporablja mikrofon</translation>
@@ -574,6 +596,7 @@ Dodatna zaščita upravlja te nastavitve za Brave:
 <translation id="7804248752222191302">Spletno mesto uporablja kamero</translation>
 <translation id="7805832099057502789">Razdelek na dnu zaslona za videz strani »Nov zavihek« je odprt pri polni višini</translation>
 <translation id="6720480757902085971">Zagotavlja Brave</translation>
+<translation id="7809029041571842593">Razdelek na dnu zaslona za kartice strani »Nov zavihek« je odprt pri polovični višini</translation>
 <translation id="7815680994978050279">Nevaren prenos je bil blokiran</translation>
 <translation id="7835852323729233924">Predvajanje predstavnosti</translation>
 <translation id="783819812427904514">Vklop videa</translation>
@@ -631,6 +654,7 @@ Dodatna zaščita upravlja te nastavitve za Brave:
 <translation id="8441146129660941386">Išči nazaj</translation>
 <translation id="8444433999583714703">Če želite aplikaciji <ph name="APP_NAME"/> omogočiti dostop do lokacije, lokacijo vklopite tudi v <ph name="BEGIN_LINK"/>nastavitvah za Android<ph name="END_LINK"/>.</translation>
 <translation id="8447861592752582886">Umik dovoljenja za dostop do naprave</translation>
+<translation id="8467359479529706065">Razdelek na dnu zaslona za videz strani »Nov zavihek« je odprt pri polovični višini</translation>
 <translation id="8471525937465764768">Spletna mesta običajno vzpostavijo povezavo z napravami USB zaradi funkcij, kot sta tiskanje dokumenta ali shranjevanje podatkov v napravo za shranjevanje.</translation>
 <translation id="8473055640493819707">Aplikacija »<ph name="APP_NAME"/>« je zastarela. Znova jo namestite.</translation>
 <translation id="847433688444405067">Brskanje po vseh napravah</translation>
@@ -646,7 +670,6 @@ Dodatna zaščita upravlja te nastavitve za Brave:
 <translation id="8549127125482561383">Kako prikazati zahteve</translation>
 <translation id="4273503381657013953">Zdaj lahko uporabljate Brave, kadar koli brskate po povezavah ali se jih dotaknete v sporočilih, dokumentih in drugih aplikacijah.</translation>
 <translation id="857943718398505171">Dovoljeno (priporočeno)</translation>
-<translation id="8580511488901768832">razdelek na dnu zaslona »Moje bližnjice« je odprt pri polni višini</translation>
 <translation id="8593422116412089302">Če je ta možnost vklopljena, spletna mesta lahko zahtevajo, da dovolite uporabo podatkov, ki so jih shranila o vas. Če je ta možnost izklopljena, spletna mesta ne smejo zahtevati, da dovolite uporabo podatkov, ki so jih shranila o vas.</translation>
 <translation id="8609465669617005112">Premakni navzgor</translation>
 <translation id="8617611086246832542">Če je ta možnost vklopljena, je prikazan pogled spletnih mest za namizni računalnik. Če je ta možnost izklopljena, je prikazan pogled spletnih mest za mobilno napravo.</translation>
@@ -664,6 +687,7 @@ Dodatna zaščita upravlja te nastavitve za Brave:
 <translation id="8730621377337864115">Končano</translation>
 <translation id="8737426583868847403">Spletna mesta, za katera shranite prilagojeno stopnjo povečave, bodo prikazana tukaj</translation>
 <translation id="8751914237388039244">Izberite sliko</translation>
+<translation id="8775741625735357092">V meniju Nastavitve &gt; Videz lahko vklopite vrstico z zaznamki</translation>
 <translation id="8800034312320686233">Ali spletno mesto ne deluje?</translation>
 <translation id="8801436777607969138">Preprečevanje JavaScripta za določeno spletno mesto.</translation>
 <translation id="2026315747406172223">V8 je mehanizem za JavaScript in WebAssembly za Brave, ki se uporablja za izboljšanje učinkovitosti delovanja spletnih mest</translation>
@@ -690,6 +714,7 @@ Dodatna zaščita upravlja te nastavitve za Brave:
 <translation id="9019902583201351841">Upravljajo starši</translation>
 <translation id="902236149563113779">Spletna mesta običajno spremljajo položaj kamere zaradi funkcij razširjene resničnosti, kot so igre ali opozorilna navodila.</translation>
 <translation id="9039697262778250930">Morda boste odjavljeni s teh spletnih mest.</translation>
+<translation id="9065203028668620118">Uredi</translation>
 <translation id="9074739597929991885">Bluetooth</translation>
 <translation id="9106233582039520022">Želite izbrisati piškotke?</translation>
 <translation id="9109747640384633967">{PERMISSIONS_SUMMARY_MIXED,plural, =1{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> in še <ph name="NUM_MORE"/>}one{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> in še <ph name="NUM_MORE"/>}two{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> in še <ph name="NUM_MORE"/>}few{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> in še <ph name="NUM_MORE"/>}other{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> in še <ph name="NUM_MORE"/>}}</translation>
@@ -708,10 +733,5 @@ Dodatna zaščita upravlja te nastavitve za Brave:
 <translation id="3110967157686007724">Zavihek brez beleženja zgodovine</translation>
 <translation id="8623552597614912461">To spletno mesto namerava deliti informacije z aplikacijo zunaj zasebnega načina.</translation>
 <translation id="8157212814767579028">Želite zapustiti zasebni način?</translation>
-<translation id="6105125042109106861">Piškotki drugih spletnih mest so blokirani v načinu brez beleženja dejavnosti</translation>
-<translation id="6642913673024345959">Blokirajte piškotke tretjih oseb v Zasebnem načinu</translation>
-<translation id="20460146243579445">Funkcije na nekaterih spletnih mestih morda ne bodo delovale v zasebnem načinu</translation>
-<translation id="8877838532507724268">Ko ste v Zasebnem načinu, spletna mesta ne morejo uporabljati vaših piškotkov za ogled vaše brskalne dejavnosti na spletnih mestih, niti na povezanih spletnih mestih. Vaša dejavnost brskanja se ne uporablja za stvari, kot je prilagajanje oglasov. Funkcije na nekaterih spletnih mestih morda ne bodo delovale.</translation>
-<translation id="1856888821396498049">Blokiranje piškotkov tretjih oseb v zasebnem načinu:</translation>
 <translation id="1593610935874634135">Podjetje lahko določi skupino spletnih mest, ki lahko uporabljajo piškotke za skupno rabo vaše dejavnosti v skupini. To je izklopljeno v zasebnem načinu.</translation>
 </translationbundle>

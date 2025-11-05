@@ -25,12 +25,9 @@ class BraveBrowser : public Browser {
   BraveBrowser(const BraveBrowser&) = delete;
   BraveBrowser& operator=(const BraveBrowser&) = delete;
 
-  static bool ShouldUseBraveWebViewRoundedCorners(Browser* browser);
-
   // Browser overrides:
   void ScheduleUIUpdate(content::WebContents* source,
                         unsigned changed_flags) override;
-  bool ShouldDisplayFavicon(content::WebContents* web_contents) const override;
   void OnTabStripModelChanged(
       TabStripModel* tab_strip_model,
       const TabStripModelChange& change,
@@ -47,8 +44,6 @@ class BraveBrowser : public Browser {
   bool NormalBrowserSupportsWindowFeature(
       WindowFeature feature,
       bool check_can_support) const override;
-  bool PreHandleMouseEvent(content::WebContents* source,
-                           const blink::WebMouseEvent& event) override;
 
   // This overrides ChromeWebModalDialogManagerDelegate::IsWebContentsVisible()
   // and it's called from WebContentsModalDialogManager.

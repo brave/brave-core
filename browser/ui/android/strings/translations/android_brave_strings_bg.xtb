@@ -5,6 +5,8 @@
 <translation id="3478449063771497234">Нотификациите са деактивирани</translation>
 <translation id="2862978891748913252">Изберете Вашата държава</translation>
 <translation id="3970520675790340955">Изберете вашата държава, за да можем да ви покажем правилните опции и реклами за вашия регион.</translation>
+<translation id="721490496276866468">Импортиране на пароли</translation>
+<translation id="8178175542325151321">Изберете .csv файл, който съдържа вашите пароли, за да ги импортирате в мениджъра на пароли на Brave.</translation>
 <translation id="7301741773883122509">Сега можете да получите награда за гледане на реклами. Вие помагате да направим мрежата по-добро място за всички. И това е страхотно!</translation>
 <translation id="6439128034594289376">Уаууу! Готов си!</translation>
 <translation id="370665806235115550">Зарежда се...</translation>
@@ -99,6 +101,8 @@
 <translation id="8617525558807213034">Автоматично попълване в частни раздели</translation>
 <translation id="8685431198160039193">Запазената информация може да бъде попълнена автоматично в частни раздели</translation>
 <translation id="6583902294974160967">Поддържа</translation>
+<translation id="5713644099811900409">Brave акаунт</translation>
+<translation id="4472575034687746823">Първи стъпки</translation>
 <translation id="1799030480311994998">Функции</translation>
 <translation id="2005732746077850308">Поверителност и щитове на Brave</translation>
 <translation id="4692623383562244444">Търсещи машини</translation>
@@ -107,7 +111,6 @@
 <translation id="7304425663107214334">Показване на предложения за браузър</translation>
 <translation id="8982438328166986164">Показва предложения на уебсайта въз основа на отметките и историята на сърфиране.</translation>
 <translation id="924029461438529367">Показване на предложения за търсене</translation>
-<translation id="5989135139219497991">Показване на топ предложения</translation>
 <translation id="6285118765755298263">Индексиране на други търсачки</translation>
 <translation id="919715748352669592">Автоматично индексира уебсайтове, които следват спецификациите на OpenSearch.</translation>
 <translation id="9148058034647219655">Изход</translation>
@@ -295,6 +298,11 @@
 <translation id="4254029385847607686">ДЕКЕМВРИ</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="1772301834467143364">Brave новини</translation>
+<translation id="2518692840036393666">Персонализиране на менюто</translation>
+<translation id="5582839680698949063">Главно меню</translation>
+<translation id="7002271985859760052">Действия на страницата</translation>
+<translation id="7104487676473617844">Следните елементи ще бъдат видими в менюто само когато се поддържат от текущата отворена уеб страница.</translation>
+<translation id="4159764849281393303">УебПриложение</translation>
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="8428213095426709021">Настройки</translation>
 <translation id="6020176662032623904">Потвърден създател</translation>
@@ -797,7 +805,6 @@
 <translation id="750843150060816463">Цената на Gas (Gwei)</translation>
 <translation id="1426320910664514906">Ограничение на газ</translation>
 <translation id="6389441740143786465">Дезактивиране на платформата за споделяне</translation>
-<translation id="9065203028668620118">Редактиране</translation>
 <translation id="473775607612524610">Актуализиране</translation>
 <translation id="479795390141144417">Неуспешно актуализиране на акаунта.</translation>
 <translation id="8084782383392198011">Името на акаунта не може да бъде празно.</translation>
@@ -1013,8 +1020,6 @@
 <translation id="8496335570810457">Прифлайт обвързаност:</translation>
 <translation id="5100124500279922001">Пропускане на прифлайт:</translation>
 <translation id="7152095322071766507">Най-посещаван сайт</translation>
-<translation id="7230006500876504868">Търсене с Brave</translation>
-<translation id="5888208462949095139">Търсене с <ph name="DEFAULT_SEARCH_ENGINE"/></translation>
 <translation id="5456039738087398178">Изпълним модул за начален екран</translation>
 <translation id="703185154752046151">Добавен е изпълним модул към началния екран</translation>
 <translation id="4635094429202343515">Опитай уиджета на Brave Търсене</translation>
@@ -1074,7 +1079,7 @@
 <translation id="7618347247876614969">Профил с таблица за търсене на адреси:</translation>
 <translation id="7659483790930268440">Индекс с таблица за търсене на адреси:</translation>
 <translation id="5494920125229734069">Избиране на всички</translation>
-<translation id="6129027151000961048">Leo</translation>
+<translation id="2361906291514218784">Leo AI</translation>
 <translation id="8613144770663526433">Влизане с Портфейл в Brave</translation>
 <translation id="3696514931437952995">Влизате в <ph name="ORIGIN"/>. Портфейлът в Brave ще сподели адреса на вашия портфейл с <ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">Вижте подробности</translation>
@@ -1091,11 +1096,11 @@
 <translation id="6742599753610126012">Изчистване на историята на чатовете</translation>
 <translation id="3443052382074796867">Деактивирането на съхранението на разговори ще изтрие окончателно всички разговори, съхранени досега. Това действие не може да бъде отменено.</translation>
 <translation id="3692772534525889713">Свържете покупката си от Play Store с вашия акаунт в Brave, за да използвате Brave Leo на други устройства.</translation>
-<translation id="73236265316873967">Leo Premium</translation>
+<translation id="592831784390389506">Leo AI Premium</translation>
 <translation id="1028627582482425924">Една година</translation>
 <translation id="2985392169397572983">НАЙ-ДОБРА СТОЙНОСТ</translation>
 <translation id="1166682575529520472">Месечен</translation>
-<translation id="451189393813405346">Попитайте Leo</translation>
+<translation id="2206846767762985925">Попитай Leo AI</translation>
 <translation id="7322560193401221004">Запомняне на позицията на възпроизвеждане на файла</translation>
 <translation id="7505951907514709271">За единични файлове възобновете възпроизвеждането от точката на последното спиране.</translation>
 <translation id="6835165453349969605">Запомняне на позицията на възпроизвеждане в списъка</translation>
@@ -1138,6 +1143,7 @@
 <translation id="3861012838874771868">Отваряне на настройките на плейлиста</translation>
 <translation id="5220099266891491416">Скриване на бутона на плейлиста</translation>
 <translation id="7416347631175891923">Опитайте!</translation>
+<translation id="9065203028668620118">Редактиране</translation>
 <translation id="1173894706177603556">Преименуване</translation>
 <translation id="3596306474342941843">Изтриване на плейлиста</translation>
 <translation id="7765158879357617694">Преместване</translation>
@@ -1152,7 +1158,7 @@
 <translation id="5319532905552885478">Медийното съдържание вече е добавено към плейлиста по подразбиране.</translation>
 <translation id="4802584673094436231">Подготвя се...</translation>
 <translation id="481455355267255546">Следва</translation>
-<translation id="5474757891469990756">Отключете пълната мощ на Leo с Premium.</translation>
+<translation id="3721790899869840343">Освободете пълния потенциал на Leo AI с Premium:</translation>
 <translation id="4173478269537830374">Изпробвайте различни модели на изкуствен интелект.</translation>
 <translation id="3453542753968940696">Приоритетен достъп до мощни модели с различни умения.</translation>
 <translation id="3245401959451976966">Отключете креативността си</translation>
@@ -1220,12 +1226,18 @@
 <translation id="4650851936784160359">Списъкът с филтри не може да бъде актуализиран. Моля, опитайте отново</translation>
 <translation id="3098054327870766317">Показване на бутон за отмяна при затваряне на разделите</translation>
 <translation id="1336494649091412226">Сигурни ли сте, че искате да излезете от Brave?</translation>
-<translation id="2361906291514218784">Leo AI</translation>
 <translation id="7942415993090181327">История на чатовете</translation>
 <translation id="6859935199732075666">Покажи грешките за безопасно сърфиране</translation>
 <translation id="2735247450315842119">Разрешаване на снимки на екрана в поверителни раздели</translation>
 <translation id="8420414929552321089">Ако е разрешено, поверителните раздели ще се виждат и когато са отворени няколко приложения.</translation>
 <translation id="7956713633345437162">Мобилни отметки</translation>
+<translation id="3176467469116060712">Подкрепяш водещата в индустрията работа на Brave за поверителност в мрежата и списъците с отворен код за блокиране на реклами</translation>
+<translation id="5896375129784311037">Оптимизиран за по-минималистичен интерфейс на браузъра</translation>
+<translation id="746156554966264308">Ядро от Brave Щитове за блокиране на реклами, поверителност и скорост</translation>
+<translation id="1432661650699782509">Подкрепа за управлявани от ИТ отдела политики на работното място</translation>
+<translation id="1361157028850796410">най-добра цена</translation>
+<translation id="7280825497485894053">Месечен абонамент</translation>
+<translation id="4570901726096223030">Научи повече за Origin</translation>
 <translation id="1943432128510653496">Запазени пароли</translation>
 <translation id="2100273922101894616">Автоматичен вход</translation>
 <translation id="363596933471559332">Автоматично влизане в уебсайтове посредством съхранявани идентификационни данни. Когато функцията е изключена, ще трябва да потвърждавате всяко влизане в профил в уебсайт.</translation>
@@ -1237,6 +1249,18 @@
 <translation id="5139940364318403933">Научете как да използвате Brave Диск</translation>
 <translation id="729975465115245577">На устройството ви няма приложение за съхраняване на файла с паролите.</translation>
 <translation id="1129510026454351943">Подробности: <ph name="ERROR_DESCRIPTION"/></translation>
+<translation id="5594899180331219722">Изберете файл</translation>
+<translation id="3744219658596020825">Вашите пароли не бяха импортирани</translation>
+<translation id="8258027225380843424">Импортирането е успешно!</translation>
+<translation id="766635563210446220">Неуспешен импорт на пароли. Проверете <ph name="FILENAME"/> и се уверете, че е във верен формат. <ph name="BEGIN_LINK"/>Научете повече<ph name="END_LINK"/></translation>
+<translation id="6581356304040102696">Неуспешен импорт на пароли. Размерът на файла трябва да бъде по-малък от 1 MB.</translation>
+<translation id="5895244669404288318">{COUNT, plural, =1 {Не може да се импортира парола. Можете да импортирате само 1 парола наведнъж.} other {Не може да се импортират пароли. Можете да импортирате най-много <ph name="COUNT_MANY"/> пароли наведнъж.}}</translation>
+<translation id="3748424433435232460">Парола за този акаунт вече е запазена на това устройство</translation>
+<translation id="6438475350605608554">Вече импортирате пароли в друг раздел</translation>
+<translation id="3482868954775580230">Грешка при четене на избрания файл. <ph name="EXCEPTION_INFO"/></translation>
+<translation id="9162995380643712715">{IMPORT_COUNT, plural, =1 {Успешно е импортирана 1 парола.} other {Успешно са импортирани <ph name="IMPORT_COUNT_MANY"/> пароли.}}</translation>
+<translation id="4637949129057123593">Импортирането е неуспешно.</translation>
+<translation id="4300452012226767715">Мениджърът на пароли не е наличен.</translation>
 <translation id="6221633008163990886">Отключете, за да експортирате паролите си</translation>
 <translation id="5245792669563792664">пароли</translation>
 <translation id="10614374240317010">Незапазвани никога</translation>

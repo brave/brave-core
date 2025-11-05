@@ -6,9 +6,11 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_TOOLS_TOOL_PROVIDER_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_TOOLS_TOOL_PROVIDER_H_
 
+#include <cstdint>
 #include <vector>
 
 #include "base/memory/weak_ptr.h"
+#include "base/observer_list.h"
 
 namespace ai_chat {
 
@@ -42,6 +44,17 @@ class ToolProvider {
   // but not a whole conversation.
   virtual void OnNewGenerationLoop() {}
 
+  class Observer : public base::CheckedObserver {
+   public:
+    ~Observer() override {}
+
+    // This ToolProvider has some Tool acting on a Tab
+    virtual void OnContentTaskStarted(int32_t tab_id) {}
+  };
+
+  void AddObserver(Observer* observer);
+  void RemoveObserver(Observer* observer);
+
   // Returns the list of tools available for the conversation.
   // The returned pointers *should* be valid as long as the ToolProvider exists
   // until either the ToolProvider is destroyed, or `OnNewGenerationLoop` is
@@ -52,6 +65,13 @@ class ToolProvider {
   // Note: any filtering conditions required by ToolProviders can be added as
   // params here.
   virtual std::vector<base::WeakPtr<Tool>> GetTools() = 0;
+
+  // Attempts to stops all current tasks started by Tools from this
+  // ToolProvider.
+  virtual void StopAllTasks() {}
+
+ protected:
+  base::ObserverList<Observer> observers_;
 };
 
 }  // namespace ai_chat

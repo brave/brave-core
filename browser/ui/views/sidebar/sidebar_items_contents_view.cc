@@ -31,7 +31,7 @@
 #include "brave/browser/ui/views/sidebar/sidebar_item_view.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #include "brave/components/ai_chat/core/common/features.h"
-#include "brave/components/playlist/common/features.h"
+#include "brave/components/playlist/core/common/features.h"
 #include "brave/components/sidebar/browser/pref_names.h"
 #include "brave/components/sidebar/browser/sidebar_item.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
@@ -257,6 +257,12 @@ void SidebarItemsContentsView::OnItemAdded(const sidebar::SidebarItem& item,
 }
 
 void SidebarItemsContentsView::OnItemRemoved(int index) {
+  if (view_for_context_menu_ && children()[index] == view_for_context_menu_) {
+    // Clear before it's destroyed via below child remove.
+    // Otherwise, it's dangled when OnContextMenuClosed() runs.
+    view_for_context_menu_ = nullptr;
+  }
+
   RemoveChildViewT(children()[index]);
   InvalidateLayout();
 }

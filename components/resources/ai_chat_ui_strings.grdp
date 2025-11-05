@@ -103,7 +103,7 @@
     Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by DeepSeek R1, a model created by DeepSeek to perform deep reasoning tasks. DeepSeek R1 is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
   </message>
   <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_CLAUDE_INSTANT" desc="AI Chat intro message for the Claude Instant model" formatter_data="webui=AiChat">
-    Hi, I'm Leo.I'm an AI assistant by Brave. I'm powered by Claude Instant, a model created by Anthropic to power conversational and text processing tasks. Claude Instant is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
+    Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Claude Instant, a model created by Anthropic to power conversational and text processing tasks. Claude Instant is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
   </message>
   <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_CLAUDE_HAIKU" desc="AI Chat intro message for the Claude Haiku model" formatter_data="webui=AiChat">
     Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Claude Haiku, a model created by Anthropic to power conversational and text processing tasks. Claude Haiku is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
@@ -282,6 +282,60 @@
   <message name="IDS_CHAT_UI_COPY_PROMPT_BUTTON_LABEL" desc="Button title to copy prompt content" formatter_data="webui=AiChat">
     Copy prompt
   </message>
+  <message name="IDS_CHAT_UI_SAVE_AS_SKILL_BUTTON_LABEL" desc="Button title to save prompt as skill" formatter_data="webui=AiChat">
+    Save as skill
+  </message>
+  <message name="IDS_CHAT_UI_SKILLS_GROUP" desc="Group label for skills in tools menu" formatter_data="webui=AiChat">
+    My Skills
+  </message>
+  <message name="IDS_CHAT_UI_NEW_SKILL_TITLE" desc="Title for new skill dialog" formatter_data="webui=AiChat">
+    New skill
+  </message>
+  <message name="IDS_CHAT_UI_SKILL_DESCRIPTION" desc="Description text for skill dialog" formatter_data="webui=AiChat">
+    Skills will appear in your [/] tools and are accessible by just typing the "/name" you set up below.
+  </message>
+  <message name="IDS_CHAT_UI_MODEL_FOR_PROMPT_LABEL" desc="Label for model selection in skill dialog" formatter_data="webui=AiChat">
+    Model for prompt
+  </message>
+  <message name="IDS_CHAT_UI_SHORTCUT_LABEL" desc="Label for shortcut input in skill dialog" formatter_data="webui=AiChat">
+    Shortcut
+  </message>
+  <message name="IDS_CHAT_UI_SHORTCUT_PLACEHOLDER" desc="Placeholder text for shortcut input" formatter_data="webui=AiChat">
+    Enter your shortcut here
+  </message>
+  <message name="IDS_CHAT_UI_PROMPT_LABEL" desc="Label for prompt input in skill dialog" formatter_data="webui=AiChat">
+    Prompt
+  </message>
+  <message name="IDS_CHAT_UI_PROMPT_PLACEHOLDER" desc="Placeholder text for prompt input" formatter_data="webui=AiChat">
+    Enter your prompt here
+  </message>
+  <message name="IDS_CHAT_UI_EDIT_SKILL_TITLE" desc="Title for edit skill dialog" formatter_data="webui=AiChat">
+    Edit skill
+  </message>
+  <message name="IDS_CHAT_UI_DELETE_SKILL_TITLE" desc="Title for delete skill confirmation dialog" formatter_data="webui=AiChat">
+    Delete skill
+  </message>
+  <message name="IDS_CHAT_UI_DELETE_SKILL_WARNING" desc="Warning message for deleting a skill" formatter_data="webui=AiChat">
+    Are you sure you want to delete this skill? This action cannot be undone.
+  </message>
+  <message name="IDS_CHAT_UI_SHORTCUT_REQUIRED_ERROR" desc="Error message when shortcut field is empty in skill dialog" formatter_data="webui=AiChat">
+    Shortcut is required
+  </message>
+  <message name="IDS_CHAT_UI_SHORTCUT_FORMAT_ERROR" desc="Error message when shortcut format is invalid in skill dialog" formatter_data="webui=AiChat">
+    Shortcut can only contain letters, numbers, underscore, and hyphen
+  </message>
+  <message name="IDS_CHAT_UI_SHORTCUT_TOO_LONG_ERROR" desc="Error message when shortcut exceeds maximum length in skill dialog" formatter_data="webui=AiChat">
+    Shortcut must be 64 characters or less
+  </message>
+  <message name="IDS_CHAT_UI_SHORTCUT_DUPLICATE_ERROR" desc="Error message when shortcut already exists" formatter_data="webui=AiChat">
+    Shortcut already exists
+  </message>
+  <message name="IDS_CHAT_UI_PROMPT_REQUIRED_ERROR" desc="Error message when prompt field is empty in skill dialog" formatter_data="webui=AiChat">
+    Prompt is required
+  </message>
+  <message name="IDS_CHAT_UI_PROMPT_TOO_LONG_ERROR" desc="Error message when prompt exceeds character limit" formatter_data="webui=AiChat">
+    Prompt must be 5000 characters or less
+  </message>
   <message name="IDS_CHAT_UI_EDIT_ANSWER_LABEL" desc="Button title to edit AI agent answer" formatter_data="webui=AiChat">
     Edit answer
   </message>
@@ -408,26 +462,53 @@
   <message name="IDS_CHAT_UI_ATTACHMENTS_TABS_SEARCH_PLACEHOLDER" desc="Placeholder for the attachments search input" formatter_data="webui=AiChat">
     Search tabs
   </message>
+  <message name="IDS_CHAT_UI_ATTACHMENTS_BOOKMARKS_SEARCH_PLACEHOLDER" desc="Placeholder for the bookmarks attachments search input" formatter_data="webui=AiChat">
+    Search bookmarks
+  </message>
+  <message name="IDS_CHAT_UI_ATTACHMENTS_HISTORY_SEARCH_PLACEHOLDER" desc="Placeholder for the history attachments search input" formatter_data="webui=AiChat">
+    Search browser history
+  </message>
   <message name="IDS_CHAT_UI_ATTACHMENTS_SEARCH_NO_RESULTS" desc="No results message" formatter_data="webui=AiChat">
     No results found
   </message>
   <message name="IDS_CHAT_UI_ATTACHMENTS_SEARCH_NO_RESULTS_SUGGESTION" desc="Suggestion for getting results" formatter_data="webui=AiChat">
     Please try a different search
   </message>
-  <message name="IDS_CHAT_UI_ATTACHMENTS_TABS_TITLE" desc="Title for the attachments section" formatter_data="webui=AiChat">
+  <message name="IDS_CHAT_UI_ATTACHMENTS_TABS_TITLE" desc="Title for the tabs attachments section" formatter_data="webui=AiChat">
     Attach content from other tabs
+  </message>
+  <message name="IDS_CHAT_UI_ATTACHMENTS_BOOKMARKS_TITLE" desc="Title for the bookmarks attachments section" formatter_data="webui=AiChat">
+    Attach content from bookmarks
+  </message>
+  <message name="IDS_CHAT_UI_ATTACHMENTS_HISTORY_TITLE" desc="Title for the history attachments section" formatter_data="webui=AiChat">
+    Attach content from browser history
   </message>
   <message name="IDS_CHAT_UI_ATTACHMENTS_TABS_DESCRIPTION" desc="Description for the attachments section" formatter_data="webui=AiChat">
     Send page content from your browser tabs to give Leo more context for the conversation.
   </message>
+  <message name="IDS_CHAT_UI_ATTACHMENTS_BOOKMARKS_DESCRIPTION" desc="Description for the bookmarks attachments section" formatter_data="webui=AiChat">
+    Send page content from tabs in your bookmarks to give Leo more context for the conversation.
+  </message>
+  <message name="IDS_CHAT_UI_ATTACHMENTS_HISTORY_DESCRIPTION" desc="Description for the history attachments section" formatter_data="webui=AiChat">
+    Send page content from your browser history to give Leo more context for the conversation.
+  </message>
   <message name="IDS_CHAT_UI_ATTACHMENTS_DESCRIPTION_AFTER" desc="Sentence after the description, shared across different content types" formatter_data="webui=AiChat">
     Page contents will be sent to Leo along with your messages.
   </message>
-  <message name="IDS_CHAT_UI_TABS_MENU_TITLE" desc="Title for the tabs menu" formatter_data="webui=AiChat">
-    Add tab contents for context. The contents will be sent to Leo along with your messages.
+  <message name="IDS_CHAT_UI_ATTACHMENTS_MENU_TITLE" desc="Title for the attachments menu" formatter_data="webui=AiChat">
+    Add tab and bookmark contents for context. The contents will be sent to Leo along with your messages.
   </message>
-  <message name="IDS_CHAT_UI_TABS_MENU_NO_MATCHING_TABS" desc="A message shown when no tabs match the filter" formatter_data="webui=AiChat">
-    No matching tabs
+  <message name="IDS_CHAT_UI_ATTACHMENTS_MENU_NO_MATCHING_ATTACHMENTS" desc="A message shown when no attachments match the filter" formatter_data="webui=AiChat">
+    No matching attachments
+  </message>
+  <message name="IDS_CHAT_UI_ATTACHMENTS_MENU_TABS_SECTION_TITLE" desc="Title for the tabs section" formatter_data="webui=AiChat">
+    Tabs
+  </message>
+  <message name="IDS_CHAT_UI_ATTACHMENTS_MENU_BOOKMARKS_SECTION_TITLE" desc="Title for the bookmarks section" formatter_data="webui=AiChat">
+    Bookmarks
+  </message>
+  <message name="IDS_CHAT_UI_ATTACHMENTS_MENU_HISTORY_SECTION_TITLE" desc="Title for the browser visits history section of a URL picker" formatter_data="webui=AiChat">
+    History
   </message>
   <message name="IDS_CHAT_UI_NOTICE_CONVERSATION_HISTORY_BODY" desc="Main text for the notice about conversation history" formatter_data="webui=AiChat">
     Leo will now remember your conversations so you can go back to them. They are stored encrypted on your device, and you can delete them any time.
@@ -494,6 +575,12 @@
   </message>
   <message name="IDS_CHAT_UI_WELCOME_CARD_AUTOMATE_WORK_SUBTITLE" desc="A subtitle for welcome guide component presented for first time users" formatter_data="webui=AiChat">
     Let Brave browse with you and interact with everything you do in the browser. Offload the tedious tasks, and save your time for the important stuff.
+  </message>
+  <message name="IDS_CHAT_UI_WELCOME_BRING_YOUR_OWN_MODEL_TITLE" desc="A title for welcome guide component presented for first time users" formatter_data="webui=AiChat">
+    Bring your own model
+  </message>
+  <message name="IDS_CHAT_UI_WELCOME_BRING_YOUR_OWN_MODEL_SUBTITLE" desc="A subtitle for welcome guide component presented for first time users" formatter_data="webui=AiChat">
+    Connect your own AI models, whether running locally or remotely. Tailor Leo's behavior, outputs, and capabilities to your preferences.
   </message>
   <message name="IDS_CHAT_UI_LEARN_MORE_ABOUT_LEO_AI" desc="A link text to learn more about Leo AI" formatter_data="webui=AiChat">
     Learn more about Leo AI
@@ -607,7 +694,13 @@
     Current tab contents
   </message>
   <message name="IDS_AI_CHAT_ATTACH_OPEN_TABS_BUTTON_LABEL" desc="The button label for attaching open tabs" formatter_data="webui=AiChat">
-    Open tabs...
+    Open tabs…
+  </message>
+  <message name="IDS_AI_CHAT_ATTACH_OPEN_BOOKMARKS_BUTTON_LABEL" desc="The button label for attaching open bookmarks" formatter_data="webui=AiChat">
+    Bookmarks…
+  </message>
+  <message name="IDS_AI_CHAT_ATTACH_OPEN_HISTORY_BUTTON_LABEL" desc="The button label for attaching history" formatter_data="webui=AiChat">
+    History…
   </message>
   <message name="IDS_AI_CHAT_USE_MICROPHONE_BUTTON_LABEL" desc="The button label for Leo's microphone feature" formatter_data="webui=AiChat">
     Use microphone
@@ -644,5 +737,59 @@
   </message>
   <message name="IDS_CHAT_UI_MEMORY_ERROR_LABEL" desc="Message shown when memory storage fails" formatter_data="webui=AiChat">
     Failed to save memory. Please try again.
+  </message>
+  <message name="IDS_CHAT_UI_TOOL_LABEL_NAVIGATE_WEB_PAGE" desc="Label for the navigate web page tool" formatter_data="webui=AiChat">
+    Navigating the web page to a new address
+  </message>
+  <message name="IDS_CHAT_UI_TOOL_LABEL_NAVIGATE_WEB_PAGE_WITH_INPUT" desc="Label for the navigate web page tool with a known URL destination" formatter_data="webui=AiChat">
+    Navigated the web page to <ph name="URL">$1<ex>https://www.example.com</ex></ph>
+  </message>
+  <message name="IDS_AI_CHAT_TASK_PROGRESS_LABEL" desc="Label for the task progress tab in the assistant response" formatter_data="webui=AiChat">
+    Progress
+  </message>
+  <message name="IDS_AI_CHAT_TASK_STEPS_LABEL" desc="Label for the task steps tab in the assistant response" formatter_data="webui=AiChat">
+    Steps
+  </message>
+  <message name="IDS_CHAT_UI_TOOL_LABEL_CLICK_ELEMENT" desc="Label for when the assistant is clicking something on a page" formatter_data="webui=AiChat">
+    Clicking on the page
+  </message>
+  <message name="IDS_CHAT_UI_TOOL_LABEL_DRAG_AND_RELEASE" desc="Label for when the assistant is dragging and dropping something on a page" formatter_data="webui=AiChat">
+    Dragging and dropping on the page
+  </message>
+  <message name="IDS_CHAT_UI_TOOL_LABEL_NAVIGATE_HISTORY_BACK" desc="Label for when the assistant is navigating back in browser history" formatter_data="webui=AiChat">
+    Navigating back
+  </message>
+  <message name="IDS_CHAT_UI_TOOL_LABEL_NAVIGATE_HISTORY_FORWARD" desc="Label for when the assistant is navigating forward in browser history" formatter_data="webui=AiChat">
+    Navigating forward
+  </message>
+  <message name="IDS_CHAT_UI_TOOL_LABEL_MOVE_MOUSE" desc="Label for when the assistant is moving the mouse pointer on a page" formatter_data="webui=AiChat">
+    Moving the mouse
+  </message>
+  <message name="IDS_CHAT_UI_TOOL_LABEL_SCROLL_ELEMENT" desc="Label for when the assistant is scrolling on a page" formatter_data="webui=AiChat">
+    Scrolling
+  </message>
+  <message name="IDS_CHAT_UI_TOOL_LABEL_SELECT_DROPDOWN" desc="Label for when the assistant is selecting an option from a dropdown on a page" formatter_data="webui=AiChat">
+    Selecting from a dropdown
+  </message>
+  <message name="IDS_CHAT_UI_TOOL_LABEL_TYPE_TEXT" desc="Label for when the assistant is typing text into a field on a page" formatter_data="webui=AiChat">
+    Typing text
+  </message>
+  <message name="IDS_CHAT_UI_TOOL_LABEL_WAIT" desc="Label for when the assistant is waiting for a page to load or update" formatter_data="webui=AiChat">
+    Waiting for the page
+  </message>
+  <message name="IDS_CHAT_UI_TOOLS_MENU_NO_SKILLS_FOUND" desc="Message shown when no skills are found" formatter_data="webui=AiChat">
+    No skills found. Create a new one by clicking the "New" button.
+  </message>
+  <message name="IDS_CHAT_UI_TOOLS_MENU_NEW_SKILL_BUTTON_LABEL" desc="Label for the new skill button" formatter_data="webui=AiChat">
+    New
+  </message>
+  <message name='IDS_CHAT_UI_TOOL_LABEL_ASSISTANT_DETAIL_STORAGE' desc="Label for when the assistant is storing information for later" formatter_data="webui=AiChat">
+    Noting down some information for later about the page
+  </message>
+  <message name="IDS_CHAT_UI_AGENT_MODE_MODEL_INFO" desc="Warning message for agent mode" formatter_data="webui=AiChat">
+    Agent mode works with models with tool support. Non-compatible models are hidden from this list.
+  </message>
+  <message name="IDS_CHAT_UI_CONTENT_AGENT_WARNING_TEXT" desc="Warning message for content agent" formatter_data="webui=AiChat">
+    Enabling AI to browse automatically for you may cause harmful, unintended consequences for your privacy, finances, and online communications. <ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
   </message>
 </grit-part>

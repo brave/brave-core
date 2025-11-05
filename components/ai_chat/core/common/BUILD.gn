@@ -65,6 +65,7 @@ source_set("test_support") {
     "//base",
     "//brave/components/ai_chat/core/common/mojom",
     "//crypto",
+    "//testing/gmock",
     "//testing/gtest",
   ]
 }

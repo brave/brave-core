@@ -9,7 +9,6 @@
 #include <string>
 #include <string_view>
 #include <utility>
-#include <variant>
 
 #include "base/check.h"
 #include "base/check_is_test.h"
@@ -61,7 +60,7 @@ namespace speedreader {
 std::u16string GetSpeedreaderData(
     std::initializer_list<std::pair<std::string_view, int>> resources) {
   base::Value::Dict sr_data;
-  sr_data.Set("ttsEnabled", kSpeedreaderTTS.Get());
+  sr_data.Set("ttsEnabled", features::kSpeedreaderTTS.Get());
   for (const auto& r : resources) {
     sr_data.Set(r.first, l10n_util::GetStringUTF16(r.second));
   }
@@ -73,13 +72,15 @@ std::u16string GetSpeedreaderData(
 
 SpeedreaderTabHelper::SpeedreaderTabHelper(
     content::WebContents* web_contents,
+    SpeedreaderService& speedreader_service,
     SpeedreaderRewriterService* rewriter_service)
     : content::WebContentsObserver(web_contents),
       content::WebContentsUserData<SpeedreaderTabHelper>(*web_contents),
       PageDistiller(web_contents),
+      speedreader_service_(speedreader_service),
       rewriter_service_(rewriter_service) {
   dom_distiller::AddObserver(web_contents, this);
-  speedreader_service_observation_.Observe(GetSpeedreaderService());
+  speedreader_service_observation_.Observe(&speedreader_service_.get());
   tts_player_observation_.Observe(speedreader::TtsPlayer::GetInstance());
   is_visible_ = web_contents->GetVisibility() != content::Visibility::HIDDEN;
 }
@@ -92,7 +93,7 @@ SpeedreaderTabHelper::~SpeedreaderTabHelper() {
 // static
 void SpeedreaderTabHelper::MaybeCreateForWebContents(
     content::WebContents* contents) {
-  if (!base::FeatureList::IsEnabled(speedreader::kSpeedreaderFeature)) {
+  if (!base::FeatureList::IsEnabled(features::kSpeedreaderFeature)) {
     return;
   }
 
@@ -111,7 +112,8 @@ void SpeedreaderTabHelper::MaybeCreateForWebContents(
     return;
   }
 
-  SpeedreaderTabHelper::CreateForWebContents(contents, rewriter_service);
+  SpeedreaderTabHelper::CreateForWebContents(contents, *speedreader_service,
+                                             rewriter_service);
 }
 
 // static
@@ -153,7 +155,7 @@ void SpeedreaderTabHelper::ProcessIconClick() {
   if (DistillStates::IsViewOriginal(distill_state_)) {
     const auto& vo = std::get<DistillStates::ViewOriginal>(distill_state_);
     if (!vo.was_auto_distilled ||
-        !GetSpeedreaderService()->IsEnabledForSite(web_contents())) {
+        !speedreader_service_->IsAllowedForSite(web_contents())) {
       GetDistilledHTML(
           base::BindOnce(&SpeedreaderTabHelper::OnGetDocumentSource,
                          weak_factory_.GetWeakPtr()));
@@ -177,14 +179,9 @@ bool SpeedreaderTabHelper::MaybeUpdateCachedState(
                  !handle->IsServedFromBackForwardCache())) {
     return false;
   }
-  auto* speedreader_service = GetSpeedreaderService();
-  if (!speedreader_service) {
-    SpeedreaderExtendedInfoHandler::ClearPersistedData(entry);
-    return false;
-  }
 
-  const DistillState state =
-      SpeedreaderExtendedInfoHandler::GetCachedMode(entry, speedreader_service);
+  const DistillState state = SpeedreaderExtendedInfoHandler::GetCachedMode(
+      entry, &speedreader_service_.get());
   if (DistillStates::IsDistilled(state)) {
     if (handle->IsServedFromBackForwardCache() ||
         DistillStates::IsDistilledAutomatically(state)) {
@@ -315,7 +312,7 @@ void SpeedreaderTabHelper::ProcessNavigation(
       rewriter_service_->URLLooksReadable(navigation_handle->GetURL());
 
   const bool enabled_for_site =
-      GetSpeedreaderService()->IsEnabledForSite(navigation_handle->GetURL());
+      speedreader_service_->IsAllowedForSite(navigation_handle->GetURL());
 
   const auto reason =
       url_looks_readable ? DistillStates::ViewOriginal::Reason::kNone
@@ -332,9 +329,8 @@ void SpeedreaderTabHelper::ProcessNavigation(
     // Enable speedreader if the user explicitly enabled speedreader on the
     // site.
     const bool explicit_enabled_for_size =
-        !homepage && kSpeedreaderExplicitPref.Get() &&
-        GetSpeedreaderService()->IsExplicitlyEnabledForSite(
-            navigation_handle->GetURL());
+        !homepage && features::kSpeedreaderExplicitPref.Get() &&
+        speedreader_service_->IsEnabledForSite(navigation_handle->GetURL());
     if (url_looks_readable || explicit_enabled_for_size) {
       // Speedreader enabled for this page.
       TransitStateTo(DistillStates::Distilling(
@@ -464,7 +460,7 @@ void SpeedreaderTabHelper::OnDistillComplete(DistillationResult result) {
   // Perform a state transition
   Transit(distill_state_, DistillStates::Distilled(result));
   if (result == DistillationResult::kSuccess) {
-    GetSpeedreaderService()->metrics().RecordPageView();
+    speedreader_service_->metrics().RecordPageView();
   }
 }
 
@@ -545,31 +541,26 @@ void SpeedreaderTabHelper::OnSiteEnableSettingChanged(
 
 void SpeedreaderTabHelper::OnAllSitesEnableSettingChanged(
     bool enabled_on_all_sites) {
-  if (!is_visible_ || !GetSpeedreaderService()) {
+  if (!is_visible_) {
     return;
   }
   OnSiteEnableSettingChanged(
-      web_contents(),
-      GetSpeedreaderService()->IsEnabledForSite(web_contents()));
+      web_contents(), speedreader_service_->IsAllowedForSite(web_contents()));
 }
 
 void SpeedreaderTabHelper::OnAppearanceSettingsChanged(
     const mojom::AppearanceSettings& view_settings) {
-  auto* speedreader_service = GetSpeedreaderService();
-  if (!speedreader_service) {
-    return;
-  }
   if (!speedreader::DistillStates::IsDistilled(distill_state_)) {
     return;
   }
 
-  SetDocumentAttribute("data-theme", speedreader_service->GetThemeName());
+  SetDocumentAttribute("data-theme", speedreader_service_->GetThemeName());
   SetDocumentAttribute("data-font-family",
-                       speedreader_service->GetFontFamilyName());
+                       speedreader_service_->GetFontFamilyName());
   SetDocumentAttribute("data-font-size",
-                       speedreader_service->GetFontSizeName());
+                       speedreader_service_->GetFontSizeName());
   SetDocumentAttribute("data-column-width",
-                       speedreader_service->GetColumnWidth());
+                       speedreader_service_->GetColumnWidth());
 }
 
 void SpeedreaderTabHelper::OnResult(
@@ -618,11 +609,6 @@ void SpeedreaderTabHelper::OnGetDocumentSource(bool success, std::string html) {
       DistillStates::Distilling(DistillStates::Distilling::Reason::kManual));
 }
 
-SpeedreaderService* SpeedreaderTabHelper::GetSpeedreaderService() {
-  return SpeedreaderServiceFactory::GetForBrowserContext(
-      web_contents()->GetBrowserContext());
-}
-
 void SpeedreaderTabHelper::TransitStateTo(const DistillState& desired_state,
                                           bool no_reload) {
   if (Transit(distill_state_, desired_state) && !no_reload) {
@@ -645,7 +631,8 @@ bool SpeedreaderTabHelper::SendGestureEvent(ui::ViewAndroid* view,
       ScalePoint(view->GetLocationOnScreen(x, y), 1.f / dip_scale);
   return view->OnGestureEvent(ui::GestureEventAndroid(
       type, gfx::PointF(x / dip_scale, y / dip_scale), root_location, time_ms,
-      scale, 0, 0, 0, 0, /*target_viewport*/ false, /*synthetic_scroll*/ false,
+      /*source*/ ui::GestureDeviceType::DEVICE_TOUCHSCREEN, scale, 0, 0, 0, 0,
+      /*target_viewport*/ false, /*synthetic_scroll*/ false,
       /*prevent_boosting*/ false));
 }
 #endif

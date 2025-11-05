@@ -6,6 +6,11 @@
 import * as React from 'react'
 import { useHistory } from 'react-router'
 import { useDispatch } from 'react-redux'
+import useMediaQuery from '$web-common/useMediaQuery'
+
+// images
+import CompleteGraphicLight from './images/complete_light.svg'
+import CompleteGraphicDark from './images/complete_dark.svg'
 
 // utils
 import { getLocale } from '../../../../../common/locale'
@@ -53,13 +58,16 @@ export const OnboardingSuccess = () => {
     report(BraveWallet.OnboardingAction.Complete)
   }, [report, discoverAssets])
 
+  // hooks
+  const isDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
+
   // render
   return (
     <OnboardingContentLayout
       showBackButton={false}
       padding='0 0 100px 0'
     >
-      <IntroImg />
+      <IntroImg src={isDarkMode ? CompleteGraphicDark : CompleteGraphicLight} />
       <Title>{getLocale('braveWalletOnboardingSuccessTitle')}</Title>
       <VerticalSpace space='16px' />
       <SubTitle>

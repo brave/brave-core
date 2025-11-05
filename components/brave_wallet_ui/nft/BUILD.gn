@@ -4,18 +4,19 @@
 # you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import("//brave/components/common/typescript.gni")
-import("//chrome/common/features.gni")
 import("//mojo/public/tools/bindings/mojom.gni")
 import("//tools/grit/preprocess_if_expr.gni")
 import("//tools/grit/repack.gni")
 
 transpile_web_ui("nft_display_ui") {
+  output_module = false
   entry_points = [ [
         "nft",
         rebase_path("nft_script.ts"),
       ] ]
   webpack_aliases = [ "browser" ]
   resource_name = "nft_display"
+  imports_from = [ "//brave/components/brave_wallet_ui/" ]
   deps = [
     "//brave/components/brave_wallet/common:mojom_js",
     "//brave/components/brave_wallet/common:preprocess_mojo",

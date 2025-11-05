@@ -5,6 +5,8 @@
 <translation id="3478449063771497234">Upozornenia sú zakázané</translation>
 <translation id="2862978891748913252">Vyberte krajinu</translation>
 <translation id="3970520675790340955">Vyberte svoju krajinu, aby sme vám mohli zobraziť správne možnosti a reklamy pre váš región.</translation>
+<translation id="721490496276866468">Importovať heslá</translation>
+<translation id="8178175542325151321">Vyberte súbor .csv, ktorý obsahuje vaše heslá, aby ste ich mohli importovať do správcu hesiel Brave.</translation>
 <translation id="7301741773883122509">Teraz môžete získať odmenu za prezeranie reklám. Pomáhate urobiť web lepším miestom pre všetkých. A to je úžasné!</translation>
 <translation id="6439128034594289376">Woohoo! Ste pripravený!</translation>
 <translation id="370665806235115550">Načítava sa...</translation>
@@ -99,6 +101,8 @@
 <translation id="8617525558807213034">Automaticky vyplniť v súkromných kartách</translation>
 <translation id="8685431198160039193">Uložené informácie môžu byť automaticky vyplnené v súkromných kartách</translation>
 <translation id="6583902294974160967">Podpora</translation>
+<translation id="5713644099811900409">Účet Brave</translation>
+<translation id="4472575034687746823">Začíname</translation>
 <translation id="1799030480311994998">Funkcie</translation>
 <translation id="2005732746077850308">Brave Shields a ochrana osobných údajov</translation>
 <translation id="4692623383562244444">Vyhľadávače</translation>
@@ -107,7 +111,6 @@
 <translation id="7304425663107214334">Zobraziť návrh prehliadača</translation>
 <translation id="8982438328166986164">Zobrazuje návrhy webových stránok na základe vašich záložiek a histórie prehliadania.</translation>
 <translation id="924029461438529367">Zobraziť návrhy vyhľadávania</translation>
-<translation id="5989135139219497991">Zobraziť top návrhy</translation>
 <translation id="6285118765755298263">Indexovať ostatné vyhľadávače</translation>
 <translation id="919715748352669592">Automaticky indexované webové lokality, ktoré sa riadia špecifikáciami OpenSearch</translation>
 <translation id="9148058034647219655">Ukončiť</translation>
@@ -295,6 +298,11 @@
 <translation id="4254029385847607686">DECEMBER</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="1772301834467143364">Novinky Brave</translation>
+<translation id="2518692840036393666">Prispôsobiť ponuku</translation>
+<translation id="5582839680698949063">Hlavná ponuka</translation>
+<translation id="7002271985859760052">Akcie stránky</translation>
+<translation id="7104487676473617844">Nasledujúce položky sa zobrazia v ponuke len vtedy, ak ich podporuje aktuálne otvorená webová stránka.</translation>
+<translation id="4159764849281393303">Webová aplikácia</translation>
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="8428213095426709021">Nastavení</translation>
 <translation id="6020176662032623904">Overený tvorca</translation>
@@ -797,7 +805,6 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="750843150060816463">Cena paliva (Gwei)</translation>
 <translation id="1426320910664514906">Limit paliva</translation>
 <translation id="6389441740143786465">Zakázať centrum zdieľania</translation>
-<translation id="9065203028668620118">Upraviť</translation>
 <translation id="473775607612524610">Aktualizovať</translation>
 <translation id="479795390141144417">Aktualizácia účtu zlyhala.</translation>
 <translation id="8084782383392198011">Názov účtu nesmie byť prázdny.</translation>
@@ -1013,8 +1020,6 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="8496335570810457">Záväzok pred skutočnou transakciou:</translation>
 <translation id="5100124500279922001">Preskočiť simulovanú transakciu:</translation>
 <translation id="7152095322071766507">Najnavštevovanejšia stránka</translation>
-<translation id="7230006500876504868">Vyhľadávanie pomocou Brave</translation>
-<translation id="5888208462949095139">Hľadať pomocou <ph name="DEFAULT_SEARCH_ENGINE"/></translation>
 <translation id="5456039738087398178">Miniaplikácia domovskej obrazovky</translation>
 <translation id="703185154752046151">Miniaplikácia pridaná na domovskú obrazovku</translation>
 <translation id="4635094429202343515">Vyskúšajte widget Vyhľadávania Brave</translation>
@@ -1074,7 +1079,7 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="7618347247876614969">Účet vyhľadávacej tabuľky adries:</translation>
 <translation id="7659483790930268440">Index vyhľadávacej tabuľky adries:</translation>
 <translation id="5494920125229734069">Vybrať všetko</translation>
-<translation id="6129027151000961048">Leo</translation>
+<translation id="2361906291514218784">Leo AI</translation>
 <translation id="8613144770663526433">Prihláste sa pomocou peňaženky Brave</translation>
 <translation id="3696514931437952995">Prihlasujete sa do <ph name="ORIGIN"/>. Peňaženka Brave bude zdieľať adresu vašej peňaženky s <ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">Zobraziť podrobnosti</translation>
@@ -1094,11 +1099,11 @@ Leo AI. Túto akciu nie je možné vrátiť späť.</translation>
 <translation id="6742599753610126012">Vymazať históriu chatov</translation>
 <translation id="3443052382074796867">Vypnutím ukladania konverzácií sa natrvalo vymažú všetky predtým uložené konverzácie. Túto akciu nemožno vrátiť späť.</translation>
 <translation id="3692772534525889713">Prepojte nákup v Obchode Play so svojím účtom Brave a používajte Brave Leo na iných zariadeniach.</translation>
-<translation id="73236265316873967">Leo Premium</translation>
+<translation id="592831784390389506">Leo AI Premium</translation>
 <translation id="1028627582482425924">Jeden rok</translation>
 <translation id="2985392169397572983">NAJLEPŠIA HODNOTA</translation>
 <translation id="1166682575529520472">Mesačne</translation>
-<translation id="451189393813405346">Opýtajte sa Lea</translation>
+<translation id="2206846767762985925">Opýtať sa Leo AI</translation>
 <translation id="7322560193401221004">Zapamätať si pozíciu prehrávania súboru</translation>
 <translation id="7505951907514709271">Pre jednotlivé súbory obnoviť prehrávanie od bodu posledného pozastavenia</translation>
 <translation id="6835165453349969605">Zapamätať si pozíciu prehrávania zoznamu médií</translation>
@@ -1141,6 +1146,7 @@ Leo AI. Túto akciu nie je možné vrátiť späť.</translation>
 <translation id="3861012838874771868">Otvoriť nastavenia zoznamu skladieb</translation>
 <translation id="5220099266891491416">Tlačidlo Skryť zoznam skladieb</translation>
 <translation id="7416347631175891923">Vyskúšajte to!</translation>
+<translation id="9065203028668620118">Upraviť</translation>
 <translation id="1173894706177603556">Premenovať</translation>
 <translation id="3596306474342941843">Odstrániť zoznam skladieb</translation>
 <translation id="7765158879357617694">Presunúť</translation>
@@ -1155,7 +1161,7 @@ Leo AI. Túto akciu nie je možné vrátiť späť.</translation>
 <translation id="5319532905552885478">Mediálny obsah je už pridaný do predvoleného zoznamu</translation>
 <translation id="4802584673094436231">Pripravuje sa...</translation>
 <translation id="481455355267255546">Nasleduje</translation>
-<translation id="5474757891469990756">Vychutnajte si Leo na maximum s možnosťou Premium:</translation>
+<translation id="3721790899869840343">Odomknite plný potenciál Leo AI s Premium:</translation>
 <translation id="4173478269537830374">Preskúmajte rôzne modely AI</translation>
 <translation id="3453542753968940696">Prioritný prístup k výkonným modelom s rôznymi funkciami.</translation>
 <translation id="3245401959451976966">Dajte priestor svojej kreativite</translation>
@@ -1223,12 +1229,18 @@ Leo AI. Túto akciu nie je možné vrátiť späť.</translation>
 <translation id="4650851936784160359">Zoznam filtrov sa nepodarilo aktualizovať. Skúste to znova</translation>
 <translation id="3098054327870766317">Zobraziť tlačidlo „Späť“ pri zatvorení kariet</translation>
 <translation id="1336494649091412226">Naozaj chcete opustiť Brave?</translation>
-<translation id="2361906291514218784">Leo AI</translation>
 <translation id="7942415993090181327">História chatu</translation>
 <translation id="6859935199732075666">Zobraziť chyby Bezpečného prehliadania</translation>
 <translation id="2735247450315842119">Povoliť snímky obrazovky v súkromných kartách</translation>
 <translation id="8420414929552321089">Ak je táto možnosť povolená, súkromné karty budú viditeľné aj pri viacerých otvorených aplikáciách.</translation>
 <translation id="7956713633345437162">Mobilné záložky</translation>
+<translation id="3176467469116060712">Podporte poprednú prácu spoločnosti Brave v oblasti ochrany súkromia na webe a open-source zoznamy na blokovanie reklám</translation>
+<translation id="5896375129784311037">Optimalizované pre minimalistickejšie rozhranie prehliadača</translation>
+<translation id="746156554966264308">Štíty Brave pre blokovanie reklamy, súkromie a rýchlosť</translation>
+<translation id="1432661650699782509">Podpora pre firemné zásady spravované IT oddelením</translation>
+<translation id="1361157028850796410">najvýhodnejšie</translation>
+<translation id="7280825497485894053">Mesačné predplatné</translation>
+<translation id="4570901726096223030">Viac informácií o Origin</translation>
 <translation id="1943432128510653496">Ukladať heslá</translation>
 <translation id="2100273922101894616">Automaticky prihlasovať</translation>
 <translation id="363596933471559332">Povolí automatické prihlasovanie na webové stránky pomocou uložených poverení. Keď je funkcia vypnutá, zobrazí sa výzva na overenie vždy pred prihlásením na web.</translation>
@@ -1240,6 +1252,26 @@ Leo AI. Túto akciu nie je možné vrátiť späť.</translation>
 <translation id="5139940364318403933">Ako používať Disk Brave</translation>
 <translation id="729975465115245577">Vaše zariadenie nemá aplikáciu na uloženie súboru s heslami.</translation>
 <translation id="1129510026454351943">Podrobnosti: <ph name="ERROR_DESCRIPTION"/></translation>
+<translation id="5594899180331219722">Vybrať súbor</translation>
+<translation id="3744219658596020825">Vaše heslá sa nepodarilo importovať</translation>
+<translation id="8258027225380843424">Import bol úspešný!</translation>
+<translation id="766635563210446220">Nedá sa importovať heslá. Skontrolujte <ph name="FILENAME"/> a uistite sa, že je správne naformátovaný. <ph name="BEGIN_LINK"/>Ďalšie informácie<ph name="END_LINK"/></translation>
+<translation id="6581356304040102696">Nedá sa importovať heslá. Veľkosť súboru musí byť menšia ako 1 MB.</translation>
+<translation id="5895244669404288318">{COUNT, plural,
+        =1 {Nemožno importovať heslá. Môžete importovať len 1 heslo naraz.}
+        few {Nemožno importovať heslá. Môžete importovať až {COUNT} hesiel naraz.}
+        many {Nemožno importovať heslá. Môžete importovať až {COUNT} hesiel naraz.}
+        other {Nemožno importovať heslá. Môžete importovať až <ph name="COUNT_MANY"/> hesiel naraz.}}</translation>
+<translation id="3748424433435232460">Pre tento účet už je heslo uložené v tomto zariadení</translation>
+<translation id="6438475350605608554">Heslá už importujete v inom paneli</translation>
+<translation id="3482868954775580230">Nepodarilo sa načítať vybraný súbor. <ph name="EXCEPTION_INFO"/></translation>
+<translation id="9162995380643712715">{IMPORT_COUNT, plural,
+        =1 {Úspešne importované 1 heslo.}
+        few {Úspešne importované {IMPORT_COUNT} heslá.}
+        many {Úspešne importované {IMPORT_COUNT} hesiel.}
+        other {Úspešne importované <ph name="IMPORT_COUNT_MANY"/> hesiel.}}</translation>
+<translation id="4637949129057123593">Import bol neúspešný.</translation>
+<translation id="4300452012226767715">Správca hesiel nie je k dispozícii.</translation>
 <translation id="6221633008163990886">Heslá budete môcť exportovať po odomknutí</translation>
 <translation id="5245792669563792664">heslá</translation>
 <translation id="10614374240317010">Nikdy neukladať</translation>

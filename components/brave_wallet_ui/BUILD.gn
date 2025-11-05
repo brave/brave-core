@@ -4,7 +4,6 @@
 # you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import("//brave/components/common/typescript.gni")
-import("//chrome/common/features.gni")
 import("//mojo/public/tools/bindings/mojom.gni")
 import("//tools/grit/repack.gni")
 
@@ -36,7 +35,7 @@ repack("resources") {
       "$root_gen_dir/brave/components/brave_wallet_page/resources/brave_wallet_send_page_generated.pak",
       "$root_gen_dir/brave/components/brave_wallet_page/resources/brave_wallet_swap_page_generated.pak",
     ]
-  } else {
+  } else if (!is_ios) {
     deps += [
       "//brave/components/brave_wallet_ui/ledger:ledger_bridge_generated",
       "//brave/components/brave_wallet_ui/panel:brave_wallet_panel_generated",

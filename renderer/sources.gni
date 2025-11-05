@@ -5,7 +5,6 @@
 
 import("//brave/components/ai_rewriter/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
-import("//brave/components/playlist/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//brave/components/web_discovery/buildflags/buildflags.gni")
@@ -32,7 +31,8 @@ brave_chrome_renderer_deps = [
   "//brave/components/brave_wallet/common",
   "//brave/components/brave_wallet/renderer",
   "//brave/components/cosmetic_filters/renderer",
-  "//brave/components/playlist/common/buildflags",
+  "//brave/components/playlist/content/renderer",
+  "//brave/components/playlist/core/common/buildflags",
   "//brave/components/safe_builtins/renderer",
   "//brave/components/script_injector/renderer",
   "//brave/components/skus/common",
@@ -55,10 +55,6 @@ if (enable_speedreader) {
     "//brave/components/speedreader/common",
     "//brave/components/speedreader/renderer",
   ]
-}
-
-if (enable_playlist) {
-  brave_chrome_renderer_deps += [ "//brave/components/playlist/renderer" ]
 }
 
 if (enable_ai_rewriter) {

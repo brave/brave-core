@@ -4,98 +4,21 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import '@testing-library/jest-dom'
-import { render, screen, fireEvent } from '@testing-library/react'
-import { createTextContentBlock } from '../../../common/content_block'
-import * as Mojom from '../../../common/mojom'
+import { fireEvent, render, screen } from '@testing-library/react'
 import * as React from 'react'
+import * as Mojom from '../../../common/mojom'
 import MockContext from '../../mock_untrusted_conversation_context'
 import ToolEvent from './tool_event'
 
 describe('ToolEvent', () => {
-  test('should render a user choice tool event', () => {
-    const mockRespondToToolUseRequest = jest.fn()
-    render(
-      <MockContext
-        conversationHandler={
-          {
-            respondToToolUseRequest: mockRespondToToolUseRequest,
-          } as unknown as Mojom.UntrustedConversationHandlerRemote
-        }
-      >
-        <ToolEvent
-          toolUseEvent={{
-            toolName: 'user_choice_tool',
-            id: '123',
-            argumentsJson: '{"choices": ["first", "second", "third"]}',
-            output: undefined,
-          }}
-          isEntryActive={true}
-        />
-      </MockContext>,
-    )
-
-    expect(screen.getByTestId('tool-choice-text-0').textContent).toBe('first')
-    expect(screen.getByTestId('tool-choice-text-1').textContent).toBe('second')
-    expect(screen.getByTestId('tool-choice-text-2').textContent).toBe('third')
-
-    fireEvent.click(screen.getByTestId('tool-choice-text-0'))
-    expect(mockRespondToToolUseRequest).toHaveBeenCalledWith('123', [
-      {
-        textContentBlock: {
-          text: 'first',
-        },
-      },
-    ])
-  })
-
-  it('should render completed state for user choice tool events', () => {
-    const mockRespondToToolUseRequest = jest.fn()
-    render(
-      <MockContext
-        conversationHandler={
-          {
-            respondToToolUseRequest: mockRespondToToolUseRequest,
-          } as unknown as Mojom.UntrustedConversationHandlerRemote
-        }
-      >
-        <ToolEvent
-          toolUseEvent={{
-            toolName: 'user_choice_tool',
-            id: '123',
-            argumentsJson: '{"choices": ["first", "second", "third"]}',
-            output: [createTextContentBlock('first')],
-          }}
-          isEntryActive={true}
-        />
-      </MockContext>,
-    )
-
-    // should only display result
-    expect(screen.getByTestId('tool-choice-text-0').textContent).toBe('first')
-    expect(screen.queryByTestId('tool-choice-text-1')).not.toBeInTheDocument()
-    expect(screen.queryByTestId('tool-choice-text-2')).not.toBeInTheDocument()
-
-    // shouldn't be able to click when completed
-    fireEvent.click(screen.getByTestId('tool-choice-text-0'))
-    expect(mockRespondToToolUseRequest).not.toHaveBeenCalled()
-
-    // icon should represent completed state
-    expect(
-      screen.getByTestId('tool-default-completed-icon'),
-    ).toBeInTheDocument()
-    expect(
-      screen.queryByTestId('tool-default-progress-icon'),
-    ).not.toBeInTheDocument()
-  })
-
-  test('should handle bad json input for inactive entries', () => {
+  it('should not render tool label for inactive tool events', () => {
     const { container } = render(
       <MockContext>
         <ToolEvent
           toolUseEvent={{
-            toolName: 'user_choice_tool',
+            toolName: Mojom.NAVIGATE_TOOL_NAME,
             id: '123',
-            argumentsJson: '{"choices": }{["first", "second", "third"]}',
+            argumentsJson: '',
             output: undefined,
           }}
           isEntryActive={false}
@@ -106,14 +29,71 @@ describe('ToolEvent', () => {
     expect(container.innerHTML).toBe('')
   })
 
-  test('should handle bad json input for active entries', () => {
+  it('should render tool label for active tool events', () => {
     render(
       <MockContext>
         <ToolEvent
           toolUseEvent={{
-            toolName: 'user_choice_tool',
+            toolName: Mojom.NAVIGATE_TOOL_NAME,
             id: '123',
-            argumentsJson: '{"choices": }{["first", "second", "third"]}',
+            argumentsJson: '',
+            output: undefined,
+          }}
+          isEntryActive={true}
+        />
+      </MockContext>,
+    )
+    expect(
+      screen.getByText(S.CHAT_UI_TOOL_LABEL_NAVIGATE_WEB_PAGE),
+    ).toBeInTheDocument()
+  })
+
+  it('should handle bad json for active tool events', () => {
+    render(
+      <MockContext>
+        <ToolEvent
+          toolUseEvent={{
+            toolName: Mojom.NAVIGATE_TOOL_NAME,
+            id: '123',
+            argumentsJson: '2 invalid 2 json',
+            output: undefined,
+          }}
+          isEntryActive={true}
+        />
+      </MockContext>,
+    )
+    expect(
+      screen.getByText(S.CHAT_UI_TOOL_LABEL_NAVIGATE_WEB_PAGE),
+    ).toBeInTheDocument()
+  })
+
+  it('should handle navigate website url', () => {
+    render(
+      <MockContext>
+        <ToolEvent
+          toolUseEvent={{
+            toolName: Mojom.NAVIGATE_TOOL_NAME,
+            id: '123',
+            argumentsJson: '{"website_url": "https://www.example.com"}',
+            output: undefined,
+          }}
+          isEntryActive={true}
+        />
+      </MockContext>,
+    )
+    expect(
+      screen.getByText(S.CHAT_UI_TOOL_LABEL_NAVIGATE_WEB_PAGE_WITH_INPUT),
+    ).toBeInTheDocument()
+  })
+
+  it('should show expanded content on click', () => {
+    const result = render(
+      <MockContext>
+        <ToolEvent
+          toolUseEvent={{
+            toolName: Mojom.ASSISTANT_DETAIL_STORAGE_TOOL_NAME,
+            id: '123',
+            argumentsJson: '{"information": "This is some information"}',
             output: undefined,
           }}
           isEntryActive={true}
@@ -121,6 +101,12 @@ describe('ToolEvent', () => {
       </MockContext>,
     )
 
-    expect(screen.getByTestId('tool-choice-progress-icon')).toBeInTheDocument()
+    const toolLabel = screen.getByText(
+      S.CHAT_UI_TOOL_LABEL_ASSISTANT_DETAIL_STORAGE,
+    )
+    expect(toolLabel).toBeInTheDocument()
+    // Click the label and check if the expanded content is shown
+    fireEvent.click(toolLabel)
+    expect(result.getByText('This is some information')).toBeInTheDocument()
   })
 })

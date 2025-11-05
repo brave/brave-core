@@ -44,6 +44,7 @@ void Confirmations::Confirm(const TransactionInfo& transaction,
           ? BuildRewardConfirmation(transaction, std::move(user_data))
           : BuildNonRewardConfirmation(transaction, std::move(user_data));
   if (!confirmation) {
+    // This can happen if there are no confirmation tokens.
     return BLOG(0, "Failed to build confirmation");
   }
 

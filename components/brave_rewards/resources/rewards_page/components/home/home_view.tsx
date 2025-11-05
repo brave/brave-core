@@ -46,11 +46,11 @@ export function HomeView() {
       <EarningCard />
       <PayoutAccountCard />
       <BenefitsCard />
-      {
-        !embedder.isAutoResizeBubble && <>
+      {!embedder.isAutoResizeBubble && (
+        <>
           <RecurringContributionCard />
         </>
-      }
+      )}
     </div>
   )
 }

@@ -19,6 +19,9 @@
 <translation id="5379685283876547860">បានផ្ញើការរួមចំណែក!</translation>
 <translation id="1041398280582063935">ចែករំលែកការគាំទ្ររបស់អ្នក</translation>
 <translation id="8855543392451028706">សូមស្វាគមន៍! អ្នកប្រើប្រាស់អាចគាំទ្រអ្នកបង្កើតមាតិកានេះដោយផ្ញើការរួមចំណែកដល់ពួកគេ។ វា​ជា​វិធី​អរគុណ​ពួកគេ​សម្រាប់​ការ​បង្កើត​ខ្លឹមសារ​ដ៏​អស្ចារ្យ។</translation>
+<translation id="1235176624390585199"><ph name="TITLE"/> នៅលើ <ph name="PROVIDER"/></translation>
+<translation id="3699420827646925694">បានចាកចេញពី <ph name="CUSTODIAN"/></translation>
+<translation id="9038728316393235637">ចូលទៅ <ph name="CUSTODIAN"/></translation>
 <translation id="7063168612616047608">សូមអរគុណសម្រាប់ការគាំទ្រអ្នកបង្កើតដែលអ្នកចូលចិត្ត</translation>
 <translation id="3733094367889291358">ផ្ញើការរួមចំណែក</translation>
 <translation id="1899434873745933492">មិនអាចផ្ញើការរួមចំណែករបស់អ្នកបានទេ</translation>
@@ -55,6 +58,8 @@
 <translation id="8617525558807213034">បំពេញដោយស្វ័យប្រវត្តិនៅក្នុងផ្ទាំងឯកជន</translation>
 <translation id="8685431198160039193">ព័ត៌មានដែលបានរក្សាទុកអាចត្រូវបានបំពេញដោយស្វ័យប្រវត្តិនៅក្នុងផ្ទាំងឯកជន</translation>
 <translation id="6583902294974160967">គាំទ្រ</translation>
+<translation id="5713644099811900409">គណនី Brave</translation>
+<translation id="4472575034687746823">ចាប់ផ្តើម</translation>
 <translation id="1799030480311994998">លក្ខណៈពិសេស</translation>
 <translation id="2005732746077850308">ខែលការពារ Brave &amp; ឯកជនភាព</translation>
 <translation id="4692623383562244444">ម៉ាស៊ីនស្វែងរក</translation>
@@ -100,8 +105,8 @@
 <translation id="7459000603787995422">បិទផ្ទាំងនៅពេលចាកចេញ</translation>
 <translation id="4448697385961650078">ទប់ស្កាត់អ្នកតាមដាន &amp; ads</translation>
 <translation id="2448893613530489637">បង្អាក់អ្នកតាមដាន &amp; ads ពីការផ្ទុកឡើង និងការបង្ហាញក្នុងទំព័រវែប</translation>
-<translation id="3570081523466826008">តំឡើងការតភ្ជាប់ទៅជា HTTPS</translation>
 <translation id="1025207378813960343">ធ្វើឱ្យនូវការតភ្ជាប់ទៅកាន់គេហទំព័រត្រូវបានការ។</translation>
+<translation id="3570081523466826008">តំឡើងការតភ្ជាប់ទៅជា HTTPS</translation>
 <translation id="693506469193748756">ភ្លេចខ្ញុំនៅពេលខ្ញុំបិទភ្ជាប់នេះ</translation>
 <translation id="7142548388914389999">អនុញ្ញាតវិភាគផលិតផល​ការពារ​ភាពឯកជន (P3A)</translation>
 <translation id="4174337572777167894">គម្រោងស្វែងរកគេហទំព័រ</translation>
@@ -132,6 +137,7 @@
 <translation id="4275663329226226506">កំសាន្ត</translation>
 <translation id="5950428831347558278">Widevine DRM</translation>
 <translation id="2433507940547922241">លក្ខណៈខាងក្រៅ</translation>
+<translation id="6587448235155023666">ការផ្លាស់ប្តូររបស់អ្នកនឹងមានប្រសិទ្ធភាពនៅពេលដែលបើកដំណើរការ Brave ឡើងវិញពេលក្រោយ។</translation>
 <translation id="834487290629916192">ពេលក្រោយ</translation>
 <translation id="4117451092682672487">ផ្តល់ជូននូវដំណោះស្រាយដែលផ្តោតលើឯកជនភាព</translation>
 <translation id="7909375417585209817">តាមរយៈការកំណត់ Brave ជាលំនាំដើម រាល់តំណភ្ជាប់ដែលអ្នកចុចនឹងភ្ជាប់មកជាមួយការការពារឯកជនភាពរបស់ Brave។</translation>
@@ -223,6 +229,7 @@
 <translation id="3974348661685061050">សាកល្បងដោយឥតគិតថ្លៃរយៈពេល 7 ថ្ងៃ</translation>
 <translation id="4973347371961481083">ការរួមចំណែក</translation>
 <translation id="7047578174221019462">ការបរិច្ចាគរបស់អ្នក ត្រូវបានដំណើរការ។</translation>
+<translation id="1486343603936278248">តោកខឹន</translation>
 <translation id="7781069478569868053">ទំព័រផ្ទាំងថ្មី</translation>
 <translation id="5927196110206824867">រូបភាពផ្ទៃខាងក្រោយដែលបានព្រមានគាំទ្រគោលដៅរបស់ Brave ដើម្បីតស៊ូឱ្យមាន Web ដែលមានភាពឯករាជ្យ និងប្រើប្រាស់អ្នកប្រើប្រាស់ជាដំបូង ហើយខុសពី Big Tech យើងវាស់បញ្ចាំងផ្សាយពាណិជ្ជកម្មដោយមិនដឹងខ្លួនដើម្បីរក្សាភាពឯកជនរបស់អ្នក។</translation>
 <translation id="8748471354357836070">ស្វែងយល់បន្ថែម / ជម្រើសឈប់លេង</translation>
@@ -378,11 +385,12 @@
 <translation id="713136183174551885">ផ្ទុកព័ត៌មានសម្ងាត់របស់អ្នកឡើងវិញ</translation>
 <translation id="6053992191006521518">សាកល្បងដោយឥតគិតថ្លៃ</translation>
 <translation id="5903391101107992067">សាកល្បង 7 ថ្ងៃដោយឥតគិតថ្លៃ</translation>
+<translation id="9073255657908892407">ទាក់ទងអ្នកបច្ចេកទេសគាំទ្រ</translation>
 <translation id="8681480718817027245">ការជាវ</translation>
 <translation id="7805768142964895445">ស្ថានភាព</translation>
 <translation id="5747552184818312860">ផុតកំណត់</translation>
+<translation id="1656814355341174523">គ្រប់គ្រងការជួញដូរ</translation>
 <translation id="5646376287012673985">ទីតាំង</translation>
-<translation id="9073255657908892407">ទាក់ទងអ្នកបច្ចេកទេសគាំទ្រ</translation>
 <translation id="5431902940483264007">ល្អបំផុត</translation>
 <translation id="6527596624419285047">ប្រើម៉ាស៊ីនមេល្អបំផុតដែលមាន</translation>
 <translation id="6687228121145903051">មិនអាចភ្ជាប់ទៅ VPN (កំហុសផ្សេងទៀត)</translation>
@@ -454,6 +462,7 @@
 <translation id="4804818685124855865">ផ្ដាច់</translation>
 <translation id="8009571545960303544">ហត្ថលេខារបស់អ្នកកំពុងត្រូវបានស្នើ</translation>
 <translation id="3484981968509595506">DApp កំពុងស្នើសុំកូនសោហ្ស៊ីមាផ្ទាល់របស់អ្នក</translation>
+<translation id="2300240008330189182"><ph name="URL"/> កំពុង​ស្នើ​សុំ​គ្រាប់ចុច​សម្ងាត់​របស់អ្នក។ ប្រសិន​បើ​អ្នក​នឹងផ្តល់​លេខសម្ងាត់នេះ គេហទំព័រ​នឹង អាច​ដកស្រង់​សារ​ដែល​បាន​ចុចទៅអ្នក។</translation>
 <translation id="3340247553212049934">ផ្ដល់</translation>
 <translation id="1982257600591932657">ឈ្មោះបណ្តាញ</translation>
 <translation id="5052727830821470769">URL បណ្តាញ</translation>
@@ -506,6 +515,7 @@
 <translation id="1313065465616456728">ជំនួញថ្ងៃទី</translation>
 <translation id="7902225556763260253">ពេលវេលាអស់សិទ្ធ</translation>
 <translation id="1908159733454294871">ជម្រាបគ្រោះថ្នាក់សន្តិសុខ</translation>
+<translation id="5658257029899993935">ភ្ជាប់ការជួញដូរសម្រាប់គណនី Brave របស់អ្នក</translation>
 <translation id="5899814466108868020">អ្នកកំពុងជួយគាំទ្រ Brave និងសហគមន៍ BAT</translation>
 <translation id="6067959437127691361">ការប្រើប្រាស់ Brave Rewards មិនមែនជាដើម្បីគាំទ្រអ្នកបង្កើតមាតិកាឡើយ ហើយអាចឱ្យអ្នករកប៊ីត្តិ BAT ទេ។</translation>
 <translation id="3264975266761862670">ត្រៀម​ខ្លួន​ដើម្បី​ចាប់​ផ្តើ​ម​រក​ប្រាក់​ឬនៅ?</translation>
@@ -537,8 +547,6 @@
 <translation id="5781842473834867765">រក្សាទុកប្រវត្តិសន្ទនារបស់ខ្ញុំ</translation>
 <translation id="4109670531935487117">បង្ហាញការណែនាំអំពីការបំពេញដោយស្វ័យប្រវត្តិនៅក្នុងរបារអាសយដ្ឋាន</translation>
 <translation id="6106701981952170121">លុបទិន្នន័យសន្ទនា Leo AI ទាំងអស់</translation>
-<translation id="5658257029899993935">ភ្ជាប់ការជួញដូរសម្រាប់គណនី Brave របស់អ្នក</translation>
-<translation id="1656814355341174523">គ្រប់គ្រងការជួញដូរ</translation>
 <translation id="73236265316873967">Leo Premium</translation>
 <translation id="1028627582482425924">មួយឆ្នាំ</translation>
 <translation id="2985392169397572983">តម្លៃពិសេសបំផុត</translation>
@@ -588,6 +596,12 @@
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="7942415993090181327">ប្រវត្តិការជជែក</translation>
 <translation id="7956713633345437162">កត់ចំណាំចល័ត</translation>
+<translation id="3176467469116060712">គាំទ្រការងារឈានមុខគេក្នុងឧស្សាហកម្មរបស់ Brave សម្រាប់ភាពឯកជនគេហទំព័រ និងបញ្ជីបិទបាំងប្រភពបើកចំហ</translation>
+<translation id="5896375129784311037">ធ្វើឱ្យប្រសើរសម្រាប់ចំណុចប្រទាក់កម្មវិធីរុករកតិចតួចបំផុត</translation>
+<translation id="746156554966264308">ស្នូលនៃខែលការពារ Brave សម្រាប់មុខងារទប់ស្កាត់ការផ្សាយពាណិជ្ជកម្ម ឯកជនភាព និងល្បឿន</translation>
+<translation id="1432661650699782509">ការគាំទ្រសម្រាប់គោលការណ៍គ្រប់គ្រងដោយបច្ចេកវិទ្យាព័ត៌មាននៅកន្លែងធ្វើការ</translation>
+<translation id="1361157028850796410">តម្លៃល្អបំផុត</translation>
+<translation id="4570901726096223030">ស្វែងយល់បន្ថែមអំពីប្រភពដើម</translation>
 <translation id="1943432128510653496">រក្សាទុកពាក្យសម្ងាត់</translation>
 <translation id="2100273922101894616">ចូលស្វ័យប្រវត្តិ</translation>
 <translation id="363596933471559332">ចូលគេហទំព័រដោយស្វ័យប្រវត្តិដោយប្រើព័ត៌មានអត្តសញ្ញាណដែលបានផ្ទុក។ នៅពេលដែលលក្ខណៈពិសេសនេះត្រូវបានបិទ អ្នកនឹងត្រូវបានស្នើឲ្យធ្វើការផ្ទៀងផ្ទាត់ រាល់ពេលដែលអ្នកចូលទៅកាន់គេហទំព័រណាមួយ។</translation>

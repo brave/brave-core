@@ -84,12 +84,3 @@ impl_result_from_trait!(BoxEngineResult, Box<Engine>);
 impl_result_from_trait!(FilterListMetadataResult, FilterListMetadata);
 #[cfg(feature = "ios")]
 impl_result_from_trait!(ContentBlockingRulesResult, ContentBlockingRules);
-
-/// `cxx` doesn't support unit values in structs,
-/// so we have a separate From<_> implementation for the UnitResult.
-impl From<Result<(), InternalError>> for UnitResult {
-    fn from(result: Result<(), InternalError>) -> Self {
-        let PreResult { result_kind, error_message, .. } = PreResult::from(result);
-        Self { result_kind, error_message }
-    }
-}

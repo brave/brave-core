@@ -1,6 +1,6 @@
 {
   "appName": {
-    "message": "The Brave Extension",
+    "message": "ສ່ວນເພິ່ມ Brave",
     "description": "The name of the extension."
   },
   "shields": {
@@ -8,23 +8,23 @@
     "description": "The Shields feature name"
   },
   "up": {
-    "message": "up",
+    "message": "ເປີ່ຍ",
     "description": "Message for when shields is enabled"
   },
   "down": {
-    "message": "down",
+    "message": "ດາວ",
     "description": "Message for when shields is disabled"
   },
   "forThisSite": {
-    "message": "for this site",
+    "message": "ສຳຫຼັບເວັບໄຊນີ້",
     "description": "Partial string for the phrase `shields is up *for this site*`"
   },
   "enabledMessage": {
-    "message": "If a site appears broken, try shields down",
+    "message": "ຖ້າເວັບໄຊແຕກພັງ, ລອງປິດການປ້ອງກັນ",
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "You’re browsing this site without Brave’s privacy and security protections. Does it not work right with Shields up?",
+    "message": "ທ່ານກຳລັງເບິ່ງເວັບໄຊນີ້ໂດຍບໍ່ມີການປ້ອງກັນຄວາມສ່ວນຕົວແລະຄວາມປອດໄພຂອງ Brave. ເວັບໄຊບໍ່ເຮັດວຽກທີ່ມີການປິດການປ້ອງກັນ?",
     "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
   },
   "reportBrokenSite": {
@@ -32,27 +32,27 @@
     "description": "Message for the button allowing users to report a broken site to Brave developers"
   },
   "itemsBlocked": {
-    "message": "Items blocked",
+    "message": "ລາຍການທີ່ຖືກບ໋ອກໄວ້",
     "description": "Message for the main blocked resources text when there is more than one ad/track/script blocked (plural)"
   },
   "itemBlocked": {
-    "message": "Item blocked",
+    "message": "ລາຍການທີ່ຖືກບ໋ອກ",
     "description": "Message for the main blocked resources text when there is one ad/track/script blocked (singular)"
   },
   "and": {
-    "message": "and",
+    "message": "ແລະ",
     "description": "Message for the `and` conjunction. Used to connect grammatically the `item blocked and connection upgrades` and its variant phrases"
   },
   "connectionsUpgraded": {
-    "message": "connections upgraded",
+    "message": "ການອັບເກຣດເຊື່ອມຕໍ່",
     "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and more than one connection upgrade (plural)"
   },
   "connectionUpgraded": {
-    "message": "connection upgraded",
+    "message": "ການອັບເກຣດເຊື່ອມຕໍ່ໄດ້ຮັບການອັບເກຣ",
     "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
   },
   "thirdPartyTrackersBlocked": {
-    "message": "Cross-site trackers blocked",
+    "message": "ຕົວລາຍງານຕິດຕາມເວັບໄຊອື່ນທີ່ຖືກປ້ອງກັນ",
     "description": "Message for the scripts blocked row label"
   },
   "readOnlyAdsTrackersBlocking": {
@@ -60,11 +60,11 @@
     "description": "Message for the option in the ads and trackers blocking select field in read only view"
   },
   "aggressiveAdsTrackersBlocking": {
-    "message": "Trackers & ads blocked (aggressive)",
+    "message": "ຕົວຕິດຕາມ & ໂຄສະນາຖືກປ້ອງກັນ (ການຫ້າມເງິນ)",
     "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
   },
   "standardAdsTrackersBlocking": {
-    "message": "Trackers & ads blocked (standard)",
+    "message": "ຕົວຕິດຕາມ & ໂຄສະນາຖືກປ້ອງກັນ (ມາດຕານການ)",
     "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with standard heuristics"
   },
   "allowAdsTrackers": {
@@ -72,71 +72,71 @@
     "description": "Message for the option in the ads and trackers blocking select field to allow all ads and trackers"
   },
   "connectionsUpgradedHTTPS": {
-    "message": "Connections upgraded to HTTPS",
+    "message": "ເຊື່ອມຕໍ່ໄປທີ່ HTTPS",
     "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"
   },
   "connectionUpgradedHTTPS": {
-    "message": "Connection upgraded to HTTPS",
+    "message": "ເຊື່ອມຕໍ່ໄປທີ່ HTTPS",
     "description": "Message for the main blocked resources text when there is one connection upgraded (singular) and no other ads/trackers blocked"
   },
   "scriptsBlocked": {
-    "message": "Scripts blocked",
+    "message": "ສະເຫນີສືບ່ອງ",
     "description": "Message for the scripts blocked row label"
   },
   "thirdPartyCookiesBlocked": {
-    "message": "Cross-site cookies blocked",
+    "message": "ຊ່ອງຄົ້ນຫາ Cross-site",
     "description": "Message for the option in the cookies select field to block all 3rd party cookies"
   },
   "allCookiesBlocked": {
-    "message": "Cookies blocked",
+    "message": "ສະເຫນີບໍ່ມີ",
     "description": "Message for the option in the cookies select field to block all cookies"
   },
   "allCookiesAllowed": {
-    "message": "All cookies allowed",
+    "message": "ອະນຸຍາດສະເຫນີບໍໄດ້ເລີຍ",
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "readOnlyFingerprinting": {
-    "message": "Fingerprinting blocked",
+    "message": "ການຖືກບລັອກ Fingerprinting",
     "description": "Message for the option in the fingerprinting field in read only view"
   },
   "standardFingerprinting": {
-    "message": "Fingerprinting blocked (standard)",
+    "message": "Fingerprinting ໄດ້ຮັບການປ້ອງກັນ (ປາໃນມາດຕານ)",
     "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
   "strictFingerprinting": {
-    "message": "Fingerprinting blocked (strict, may break sites)",
+    "message": "Fingerprinting ໄດ້ຮັບການປ້ອງກັນ (ເຄງຄວາມກວດກາ)ອາດຈະແຕກສາຍເວັບໄຊ",
     "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
   "allowAllFingerprinting": {
-    "message": "Allow all fingerprinting",
+    "message": "ອະນຸຍາດໃຫ້ Fingerprinting",
     "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {
-    "message": "Fingerprinting attempts",
+    "message": "ຄຳສັ່ງຂອງຕົວອະຊິລາ",
     "description": "Message for the fingerprinting attempts blocked panel"
   },
   "scriptsOnThisSite": {
-    "message": "Scripts on this site",
+    "message": "ສືບ່ອງໃນເວັບໄຊນີ້",
     "description": "Message for the script resources blocked panel"
   },
   "blockedScripts": {
-    "message": "Blocked scripts",
+    "message": "Scripts ທີ່ໄດ້ຖືກບລັອກ",
     "description": "Message for the script resources blocked"
   },
   "allowedScripts": {
-    "message": "Allowed scripts",
+    "message": "Scripts ທີ່ອະນຸຍາດ",
     "description": "Message for the script resources allowed"
   },
   "blockAll": {
-    "message": "Block all",
+    "message": "ບລັອກທັງຫມົດ",
     "description": "Message for the resources blocked *block all* option"
   },
   "allowAll": {
-    "message": "Allow all",
+    "message": "ອະນຸຍາດທັງຫມົດ",
     "description": "Message for the resources blocked *allow all* option"
   },
   "block": {
-    "message": "Block",
+    "message": "ປິດ",
     "description": "Message for the resources blocked *block* option"
   },
   "allow": {
@@ -144,59 +144,59 @@
     "description": "Message for the resources blocked *allow* option"
   },
   "blockedOnce": {
-    "message": "Blocked once",
+    "message": "ບໍມີຫນຶ່ງເທົ່ານັ້ນ",
     "description": "Message for the resources blocked *blocked once* option"
   },
   "allowedOnce": {
-    "message": "Allowed once",
+    "message": "ອະນຸຍາດແມ່ນບໍມີບໍ",
     "description": "Message for the resources blocked *allowed once* option"
   },
   "allowScriptsOnce": {
-    "message": "Allow scripts once",
+    "message": "ອະນຸຍາດສືບ່ອງ",
     "description": "Message for the shortcut in the main interface to allow all scripts once"
   },
   "cancel": {
-    "message": "Cancel",
+    "message": "ຍົກເລີກ",
     "description": "Message for the button inside the static list of resources blocked to cancel the operation"
   },
   "goBack": {
-    "message": "Go back",
+    "message": "ກັບຄືນ",
     "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
   },
   "applyOnce": {
-    "message": "Apply once",
+    "message": "ໃສ່ຄືນໃຊ້ເທດຽວ",
     "description": "Message for action in dynamic list of resources blocked to *apply once*"
   },
   "changeDefaults": {
-    "message": "Change global shield defaults",
+    "message": "ປ່ຽນຄ່າເບີ້ງເປັນການເລີມຕົ້ນ",
     "description": "Message for the button action linking to the settings page"
   },
   "manageCustomFilters": {
-    "message": "Manage custom filters",
+    "message": "ຈັດການກັບຣູບເຮົາບໍ",
     "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
   },
   "elementPickerMode": {
-    "message": "Block element",
+    "message": "ບໍເລຶມເລຶມ",
     "description": "Message for context menu that enables the element picker UI to apply cosmetic filter rules to the page."
   },
   "advancedView": {
-    "message": "Advanced View",
+    "message": "ເປີດເນີວີເບິວ",
     "description": "Message for the advanced view option"
   },
   "simpleView": {
-    "message": "Simple View",
+    "message": "ເປີດໂແລບງ່າຍ",
     "description": "Message for the simple view option"
   },
   "shieldsExplanation": {
-    "message": "Sites often include cookies and scripts which try to identify you and your device (often embedded into ads). They want to work out who you are and follow you across the web — tracking what you do on every site. Brave blocks these things so that you can browse without being followed around.",
+    "message": "ເວັບໄຊ່ນີ້ມັກມີເບີ່ງຄູ່ຄຽງນົບໄດ້",
     "description": "Message in read-only view explaining what Brave Shields do"
   },
   "blockedResoucesExplanation": {
-    "message": "Cross-site trackers and other creepy things blocked",
+    "message": "ການຕ້ອງການຂໍ້ມູນເວັບໄຊ່ນີ້ບໍມີຂໍ້ນິຍາມ",
     "description": "Message for the main trackers count in Shields simple view"
   },
   "webCompatWarning": {
-    "message": "Changing Shield settings in this view may affect web compatibility on this site.",
+    "message": "ການປ່ອງກັນເພິ່ມຂຶ້ນທີ່ບຸກບໍ່ຮັກ",
     "description": "Message for web compat warning when switching from simple to advanced view"
   },
   "gotIt": {
@@ -208,11 +208,11 @@
     "description": "Message inviting the user to learn more about Shields"
   },
   "addToBrave": {
-    "message": "Add to Brave",
+    "message": "ເພີ່ມໃສ່ Brave",
     "description": "Message for adding an extension to Brave"
   },
   "removeFromBrave": {
-    "message": "Remove from Brave",
+    "message": "ປິດອອກຈາກ Brave",
     "description": "Message for removing an extension from Brave"
   },
   "addToChrome": {

@@ -1201,7 +1201,6 @@ interface KeyringServiceObserver {
 
 enum OnRampProvider {
   kRamp = 0,
-  kSardine = 1,
   kTransak = 2,
   kStripe = 3,
   kCoinbase = 4,
@@ -2278,7 +2277,7 @@ interface ZCashWalletServiceObserver {
 };
 
 interface ZCashWalletService {
-  GetBalance(string network_id, AccountId account_id)
+  GetBalance(AccountId account_id)
       => (ZCashBalance? balance, string? error_message);
 
   GetReceiverAddress(AccountId account_id)
@@ -2287,13 +2286,11 @@ interface ZCashWalletService {
   GetZCashAccountInfo(AccountId account_id)
       => (ZCashAccountInfo? account_info);
 
-  ShieldAllFunds(string network_id, AccountId account_id)
+  ShieldAllFunds(AccountId account_id)
       => (string? tx_id, string? error_message);
 
-  GetTransactionType(string chain_id,
-                     AccountId account_id,
-                     bool use_shielded_pool,
-                     string recipient)
+  GetTransactionType(
+      AccountId account_id, bool use_shielded_pool, string recipient)
       => (ZCashTxType tx_type, ZCashAddressError error);
 
   AddObserver(pending_remote<ZCashWalletServiceObserver> observer);
@@ -2312,13 +2309,36 @@ interface ZCashWalletService {
 
   ResetSyncState(AccountId account_id) => (string? error_message);
 
-  GetChainTipStatus(AccountId account_id, string chain_id)
+  GetChainTipStatus(AccountId account_id)
       => (ZCashChainTipStatus? status, string? error_message);
+};
+
+struct uint128 {
+  uint64 high;
+  uint64 low;
+};
+
+struct PolkadotAccountBalance {
+  uint128 free;
+  uint128 reserved;
+  uint128 frozen;
+  uint128 flags;
+};
+
+struct PolkadotAccountInfo {
+  uint32 nonce;
+  uint32 consumers;
+  uint32 providers;
+  uint32 sufficients;
+  PolkadotAccountBalance data;
 };
 
 interface PolkadotWalletService {
   GetNetworkName(AccountId account)
       => (string? network, string? error_message);
+
+  GetAccountBalance(AccountId account, string chain_id)
+      => (PolkadotAccountInfo? account, string? error_message);
 };
 
 enum TransactionStatus {
@@ -2425,6 +2445,10 @@ struct CardanoTxData {
   array<CardanoTxOutput> outputs;
 };
 
+struct PolkadotTxdata {
+  string to;
+};
+
 union TxDataUnion {
   TxData eth_tx_data;
   TxData1559 eth_tx_data_1559;
@@ -2433,6 +2457,7 @@ union TxDataUnion {
   BtcTxData btc_tx_data;
   ZecTxData zec_tx_data;
   CardanoTxData cardano_tx_data;
+  PolkadotTxdata polkadot_tx_data;
 };
 
 struct SwapInfo {
@@ -3275,7 +3300,7 @@ enum SolanaInstructionParamType {
   kUint64 = 2,
   kPublicKey = 3,
   kOptionalPublicKey = 4,
-  kString = 5,
+  kString = 5,  // We support only seed strings which are 32 bytes max.
   kAuthorityType = 6,
   kUnknown = -1,
 };

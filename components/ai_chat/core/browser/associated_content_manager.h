@@ -20,6 +20,7 @@
 #include "brave/components/ai_chat/core/browser/associated_archive_content.h"
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 
 namespace ai_chat {
 
@@ -49,12 +50,19 @@ class AssociatedContentManager : public AssociatedContentDelegate::Observer {
 
   // Adds a content delegate to the list of content delegates.
   // If |notify_updated| is true, the conversation will be notified that the
-  // content has been updated.
+  // content has been updated. You might want to avoid notifying if you're
+  // adding multiple contents at once, or if you're replacing (i.e. via a
+  // RemoveContent followed by an AddContent) and you don't want to tell the
+  // ConversationHandler/Frontend about the intermediate states.
+  // Additionally |OnAssociatedContentUpdated| will update the conversation
+  // metadata, which can be problematic if you aren't expecting it to change.
   // If |detach_existing_content| is true, the current content will be detached
   // and the new content will be set as the only content for this conversation.
   void AddContent(AssociatedContentDelegate* delegate,
                   bool notify_updated = true,
                   bool detach_existing_content = false);
+  void AddOwnedContent(std::unique_ptr<AssociatedContentDelegate> delegate,
+                       bool notify_updated = true);
 
   // Removes a content delegate from the list of content delegates.
   void RemoveContent(AssociatedContentDelegate* delegate,
@@ -91,7 +99,7 @@ class AssociatedContentManager : public AssociatedContentDelegate::Observer {
   PageContentsMap GetCachedContentsMap() const;
 
   bool HasOpenAIChatPermission() const;
-  bool HasNonArchiveContent() const;
+  bool HasLiveContent() const;
   bool HasAssociatedContent() const;
 
   // Determines if the content for this conversation is a single video.
@@ -120,7 +128,10 @@ class AssociatedContentManager : public AssociatedContentDelegate::Observer {
   base::flat_map<std::string, std::string> content_uuid_to_conversation_turns_;
 
   // Used for ownership - still stored in the above array.
-  std::vector<std::unique_ptr<AssociatedArchiveContent>> archive_content_;
+  // This includes:
+  // - Archived content
+  // - Link content
+  std::vector<std::unique_ptr<AssociatedContentDelegate>> owned_content_;
 
   base::ScopedMultiSourceObservation<AssociatedContentDelegate,
                                      AssociatedContentDelegate::Observer>

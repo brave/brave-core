@@ -27,7 +27,6 @@
 #include "third_party/re2/src/re2/re2.h"
 #include "url/gurl.h"
 #include "url/origin.h"
-#include "url/url_constants.h"
 
 namespace {
 // debounce.json keys
@@ -59,32 +58,30 @@ std::string_view CanonicalizeHostForMatching(std::string_view host_piece) {
 
 // Extract the host from |url| using a simple parsing algorithm
 // WARNING: this is a special-purpose function whose output should not be used.
-std::string NaivelyExtractHostnameFromUrl(const std::string& url) {
+std::string NaivelyExtractHostnameFromUrl(std::string_view url) {
   CHECK(GURL(url).SchemeIsHTTPOrHTTPS());
 
-  const std::string kHttp =
-      base::StrCat({url::kHttpScheme, url::kStandardSchemeSeparator});
-  const std::string kHttps =
-      base::StrCat({url::kHttpsScheme, url::kStandardSchemeSeparator});
-  std::string mutable_url = url;
+  static constexpr std::string_view kHttps = "https://";
+  static constexpr std::string_view kHttp = "http://";
 
-  if (base::StartsWith(mutable_url, kHttps,
-                       base::CompareCase::INSENSITIVE_ASCII)) {
-    mutable_url = mutable_url.substr(kHttps.length());
-  } else if (base::StartsWith(mutable_url, kHttp,
-                              base::CompareCase::INSENSITIVE_ASCII)) {
-    mutable_url = mutable_url.substr(kHttp.length());
+  auto url_without_schema =
+      base::RemovePrefix(url, kHttps, base::CompareCase::INSENSITIVE_ASCII);
+  if (!url_without_schema.has_value()) {
+    url_without_schema =
+        base::RemovePrefix(url, kHttp, base::CompareCase::INSENSITIVE_ASCII)
+            .value_or(url);
   }
 
   // Known limitation: this will not work properly with origins which consist
   // of IPv6 hostnames.
-  const std::vector<std::string> parts = base::SplitString(
-      mutable_url, ":/", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
-  if (parts.size() > 0) {
-    return parts[0];
+  const std::vector<std::string_view> parts =
+      base::SplitStringPiece(*url_without_schema, ":/", base::KEEP_WHITESPACE,
+                             base::SPLIT_WANT_NONEMPTY);
+  if (parts.empty()) {
+    return std::string();
   }
 
-  return std::string();
+  return std::string(parts[0]);
 }
 
 }  // namespace
@@ -164,7 +161,7 @@ void DebounceRule::RegisterJSONConverter(
 // static
 // All eTLD+1 calculations for debouncing should flow through here so they
 // are consistent in their private registries configuration.
-const std::string DebounceRule::GetETLDForDebounce(const std::string& host) {
+const std::string DebounceRule::GetETLDForDebounce(std::string_view host) {
   std::string_view host_piece = CanonicalizeHostForMatching(host);
   return net::registry_controlled_domains::GetDomainAndRegistry(
       host_piece, net::registry_controlled_domains::PrivateRegistryFilter::
@@ -183,11 +180,12 @@ bool DebounceRule::IsSameETLDForDebounce(const GURL& url1, const GURL& url2) {
 base::expected<std::pair<std::vector<std::unique_ptr<DebounceRule>>,
                          base::flat_set<std::string>>,
                std::string>
-DebounceRule::ParseRules(const std::string& contents) {
+DebounceRule::ParseRules(std::string_view contents) {
   if (contents.empty()) {
     return base::unexpected("Could not obtain debounce configuration");
   }
-  std::optional<base::Value::List> root = base::JSONReader::ReadList(contents);
+  std::optional<base::Value::List> root = base::JSONReader::ReadList(
+      contents, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!root) {
     return base::unexpected("Failed to parse debounce configuration");
   }
@@ -233,8 +231,8 @@ bool DebounceRule::CheckPrefForRule(const PrefService* prefs) const {
 }
 
 bool DebounceRule::ValidateAndParsePatternRegex(
-    const std::string& pattern,
-    const std::string& path,
+    std::string_view pattern,
+    std::string_view path,
     std::string* parsed_value) const {
   if (pattern.length() > kMaxLengthRegexPattern) {
     VLOG(1) << "Debounce regex pattern exceeds max length: "

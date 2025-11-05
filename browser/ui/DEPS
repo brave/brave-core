@@ -2,6 +2,7 @@ from brave_chromium_utils import inline_file
 inline_file('//chrome/browser/ui/DEPS', globals(), locals())
 
 include_rules += [
+  "+brave/browser/brave_origin",
   "+chrome/browser/ui",
   "+brave/components/vector_icons",
   "+brave/components/query_filter",

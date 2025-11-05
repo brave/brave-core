@@ -11,6 +11,7 @@
 #include "base/types/cxx23_to_underlying.h"
 #include "base/values.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
+#include "brave/components/brave_shields/core/common/shields_settings.mojom.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 
 namespace brave_shields {
@@ -40,6 +41,22 @@ struct SettingTraits<ControlType> {
   static int To(ControlType setting) {
     CHECK(setting >= ControlType::ALLOW && setting <= ControlType::DEFAULT)
         << "Invalid setting.";
+    return base::to_underlying(setting);
+  }
+};
+
+template <>
+struct SettingTraits<mojom::AutoShredMode> {
+  static std::optional<mojom::AutoShredMode> From(
+      std::underlying_type_t<mojom::AutoShredMode> v) {
+    if (v >= static_cast<int>(mojom::AutoShredMode::NEVER) &&
+        v <= static_cast<int>(mojom::AutoShredMode::kMaxValue)) {
+      return static_cast<mojom::AutoShredMode>(v);
+    }
+    return std::nullopt;
+  }
+
+  static int To(mojom::AutoShredMode setting) {
     return base::to_underlying(setting);
   }
 };
@@ -106,6 +123,11 @@ using CosmeticFilteringSetting = traits::BraveShieldsSetting<
     /*content_settings_type=*/ContentSettingsType::BRAVE_COSMETIC_FILTERING,
     /*SettingType=*/ControlType,
     /*default_value=*/ControlType::BLOCK_THIRD_PARTY>;
+
+using AutoShredSetting = traits::BraveShieldsSetting<
+    /*content_settings_type=*/ContentSettingsType::BRAVE_AUTO_SHRED,
+    /*SettingType=*/mojom::AutoShredMode,
+    /*default_value=*/mojom::AutoShredMode::NEVER>;
 
 }  // namespace brave_shields
 

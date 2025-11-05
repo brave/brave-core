@@ -77,6 +77,7 @@ BraveShieldsActionView::BraveShieldsActionView(
                                       base::Unretained(this),
                                       browser_window_interface),
                   std::u16string()),
+      browser_window_interface_(browser_window_interface),
       profile_(CHECK_DEREF(browser_window_interface->GetProfile())),
       tab_strip_model_(
           CHECK_DEREF(browser_window_interface->GetTabStripModel())) {
@@ -213,18 +214,12 @@ void BraveShieldsActionView::ButtonPressed(
     return;
   }
 
-  if (!webui_bubble_manager_) {
-    webui_bubble_manager_ = WebUIBubbleManager::Create<ShieldsPanelUI>(
-        this, browser_window_interface, GURL(kShieldsPanelURL),
-        IDS_BRAVE_SHIELDS);
-  }
-
-  if (webui_bubble_manager_->GetBubbleWidget()) {
+  if (webui_bubble_manager_ && webui_bubble_manager_->GetBubbleWidget()) {
     webui_bubble_manager_->CloseBubble();
     return;
   }
 
-  webui_bubble_manager_->ShowBubble();
+  ShowBubble(GURL(kShieldsPanelURL));
 }
 
 bool BraveShieldsActionView::IsPageInReaderMode(
@@ -240,6 +235,16 @@ bool BraveShieldsActionView::IsPageInReaderMode(
   }
 #endif
   return false;
+}
+
+void BraveShieldsActionView::ShowBubble(GURL webui_url) {
+  if (!webui_bubble_manager_ || webui_url != last_webui_url_) {
+    webui_bubble_manager_ = WebUIBubbleManager::Create<ShieldsPanelUI>(
+        this, browser_window_interface_, webui_url, IDS_BRAVE_SHIELDS);
+  }
+  last_webui_url_ = webui_url;
+
+  webui_bubble_manager_->ShowBubble();
 }
 
 bool BraveShieldsActionView::ShouldShowBubble(
@@ -320,6 +325,16 @@ void BraveShieldsActionView::OnResourcesChanged() {
 
 void BraveShieldsActionView::OnShieldsEnabledChanged() {
   UpdateIconState();
+}
+
+void BraveShieldsActionView::OnRepeatedReloadsDetected() {
+  auto* web_content = tab_strip_model_->GetActiveWebContents();
+  if (!ShouldShowBubble(web_content)) {
+    return;
+  }
+
+  ShowBubble(
+      GURL(std::string(kShieldsPanelURL) + "?mode=afterRepeatedReloads"));
 }
 
 void BraveShieldsActionView::OnTabStripModelChanged(

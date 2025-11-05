@@ -25,11 +25,13 @@
 #include "brave/browser/misc_metrics/page_metrics_tab_helper.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/ntp_background/ntp_tab_helper.h"
+#include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/browser/ui/brave_ui_features.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
-#include "brave/components/playlist/common/buildflags/buildflags.h"
+#include "brave/components/playlist/content/browser/playlist_tab_helper.h"
+#include "brave/components/playlist/core/common/features.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -93,12 +95,6 @@
 #include "brave/components/request_otr/common/features.h"
 #endif
 
-#if BUILDFLAG(ENABLE_PLAYLIST)
-#include "brave/browser/playlist/playlist_service_factory.h"
-#include "brave/components/playlist/browser/playlist_tab_helper.h"
-#include "brave/components/playlist/common/features.h"
-#endif
-
 #if defined(TOOLKIT_VIEWS)
 #include "brave/browser/onboarding/onboarding_tab_helper.h"
 #include "brave/browser/ui/sidebar/sidebar_tab_helper.h"
@@ -107,8 +103,10 @@
 namespace brave {
 
 void AttachTabHelpers(content::WebContents* web_contents) {
-  brave_shields::BraveShieldsWebContentsObserver::CreateForWebContents(
-      web_contents);
+  // If your TabHelper is related to privacy consider whether it belongs in this
+  // method, so it can also be attached to background WebContents.
+  AttachPrivacySensitiveTabHelpers(web_contents);
+
 #if BUILDFLAG(IS_ANDROID)
   YouTubeScriptInjectorTabHelper::CreateForWebContents(web_contents);
 #else
@@ -196,11 +194,6 @@ void AttachTabHelpers(content::WebContents* web_contents) {
   sidebar::SidebarTabHelper::MaybeCreateForWebContents(web_contents);
 #endif
 
-  if (base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage)) {
-    ephemeral_storage::EphemeralStorageTabHelper::CreateForWebContents(
-        web_contents);
-  }
-
   brave_wallet::BraveWalletTabHelper::CreateForWebContents(web_contents);
 
   if (!web_contents->GetBrowserContext()->IsOffTheRecord()) {
@@ -214,7 +207,6 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 #endif
   }
 
-#if BUILDFLAG(ENABLE_PLAYLIST)
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
     if (auto* playlist_service =
             playlist::PlaylistServiceFactory::GetForBrowserContext(
@@ -223,7 +215,15 @@ void AttachTabHelpers(content::WebContents* web_contents) {
                                                         playlist_service);
     }
   }
-#endif  // BUILDFLAG(ENABLE_PLAYLIST)
+}
+
+void AttachPrivacySensitiveTabHelpers(content::WebContents* web_contents) {
+  brave_shields::BraveShieldsWebContentsObserver::CreateForWebContents(
+      web_contents);
+  if (base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage)) {
+    ephemeral_storage::EphemeralStorageTabHelper::CreateForWebContents(
+        web_contents);
+  }
 }
 
 }  // namespace brave

@@ -11,6 +11,8 @@
 #include "base/check.h"
 #include "base/check_op.h"
 #include "base/command_line.h"
+#include "base/debug/crash_logging.h"
+#include "base/debug/dump_without_crashing.h"
 #include "base/feature_list.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
@@ -18,6 +20,7 @@
 #include "base/i18n/time_formatting.h"
 #include "base/json/json_reader.h"
 #include "base/logging.h"
+#include "base/notreached.h"
 #include "base/path_service.h"
 #include "base/strings/string_util.h"
 #include "base/task/thread_pool.h"
@@ -76,6 +79,14 @@ std::string HandleComponentData(const base::FilePath& installed_dir,
   std::string contents;
   const bool success = base::ReadFileToString(file_path, &contents);
   if (!success || contents.empty()) {
+    SCOPED_CRASH_KEY_BOOL("Issue50267", "success", success);
+    SCOPED_CRASH_KEY_BOOL("Issue50267", "empty_contents", contents.empty());
+    SCOPED_CRASH_KEY_BOOL("Issue50267", "path_exists",
+                          base::PathExists(file_path));
+    SCOPED_CRASH_KEY_STRING64("Issue50267", "filename",
+                              file_path.BaseName().AsUTF8Unsafe());
+    SCOPED_CRASH_KEY_STRING64("Issue50267", "failure_reason", "Invalid JSON");
+    DUMP_WILL_BE_NOTREACHED();
     VLOG(6) << "Cannot read NTP component " << manifest_file
             << " manifest file";
   }
@@ -143,7 +154,6 @@ void NTPBackgroundImagesService::Init() {
                               override_sponsored_images_component_path);
   } else {
     RegisterBackgroundImagesComponent();
-    RegisterSponsoredImagesComponent();
 
     pref_change_registrar_.Add(
         variations::prefs::kVariationsCountry,
@@ -185,7 +195,9 @@ void NTPBackgroundImagesService::MaybeCheckForSponsoredComponentUpdate() {
   // If previous update check is missed, do update check now.
   if (base::Time::Now() - *last_updated_at_ >
       features::kSponsoredImagesUpdateCheckAfter.Get()) {
-    sponsored_images_update_check_callback_.Run();
+    if (sponsored_images_update_check_callback_) {
+      sponsored_images_update_check_callback_.Run();
+    }
   }
 }
 
@@ -195,16 +207,22 @@ void NTPBackgroundImagesService::ForceSponsoredComponentUpdate() {
 }
 
 void NTPBackgroundImagesService::ScheduleNextSponsoredImagesComponentUpdate() {
+  if (!sponsored_images_update_check_callback_) {
+    return;
+  }
+
   const base::Time next_update_check_time =
       base::Time::Now() + features::kSponsoredImagesUpdateCheckAfter.Get();
   sponsored_images_update_check_timer_.Start(
       FROM_HERE, next_update_check_time,
       base::BindOnce(sponsored_images_update_check_callback_));
 
-  VLOG(6)
-      << "Scheduled update check for NTP Sponsored Images component with ID "
-      << sponsored_images_component_id_.value() << " at "
-      << base::TimeFormatFriendlyDateAndTime(next_update_check_time);
+  if (sponsored_images_component_id_) {
+    VLOG(6)
+        << "Scheduled update check for NTP Sponsored Images component with ID "
+        << *sponsored_images_component_id_ << " at "
+        << base::TimeFormatFriendlyDateAndTime(next_update_check_time);
+  }
 }
 
 void NTPBackgroundImagesService::CheckSponsoredImagesComponentUpdate(
@@ -225,32 +243,35 @@ void NTPBackgroundImagesService::RegisterBackgroundImagesComponent() {
 }
 
 void NTPBackgroundImagesService::RegisterSponsoredImagesComponent() {
-  const std::string country_code =
+  const std::string variations_country_code =
       GetVariationsCountryCode(variations_service_);
-  const std::optional<SponsoredImagesComponentData> data =
-      GetSponsoredImagesComponentData(country_code);
-  if (!data) {
-    VLOG(6) << "NTP Sponsored Images component is not supported in "
-            << country_code;
+  const std::optional<SponsoredImagesComponentInfo> sponsored_images_component =
+      GetSponsoredImagesComponent(variations_country_code);
+  if (!sponsored_images_component) {
+    // Unsupported.
     return;
   }
 
-  if (sponsored_images_component_id_ == data->component_id.data()) {
+  if (sponsored_images_component_id_ == sponsored_images_component->id) {
+    // Already registered.
     return;
   }
 
   if (sponsored_images_component_id_) {
+    // Unregister previous component.
     component_update_service_->UnregisterComponent(
         *sponsored_images_component_id_);
   }
-  sponsored_images_component_id_ = data->component_id.data();
+  sponsored_images_component_id_ = sponsored_images_component->id;
 
-  VLOG(0) << "Registering NTP Sponsored Images component for " << country_code
-          << " with ID " << data->component_id;
+  VLOG(0) << "Registering NTP Sponsored Images component for "
+          << variations_country_code << " with ID "
+          << *sponsored_images_component_id_;
   RegisterNTPSponsoredImagesComponent(
-      component_update_service_, std::string(data->component_base64_public_key),
-      std::string(data->component_id),
-      absl::StrFormat("NTP Sponsored Images (%s)", data->region),
+      component_update_service_,
+      std::string(sponsored_images_component->public_key_base64),
+      *sponsored_images_component_id_,
+      absl::StrFormat("NTP Sponsored Images (%s)", variations_country_code),
       base::BindRepeating(
           &NTPBackgroundImagesService::OnSponsoredComponentReady,
           weak_factory_.GetWeakPtr(), false));
@@ -259,7 +280,7 @@ void NTPBackgroundImagesService::RegisterSponsoredImagesComponent() {
   // However, this background interval is too long for SI. Use 15mins interval.
   sponsored_images_update_check_callback_ = base::BindRepeating(
       &NTPBackgroundImagesService::CheckSponsoredImagesComponentUpdate,
-      base::Unretained(this), data->component_id.data());
+      weak_factory_.GetWeakPtr(), *sponsored_images_component_id_);
 
   last_updated_at_ = base::Time::Now();
 
@@ -279,8 +300,8 @@ void NTPBackgroundImagesService::CheckSuperReferralComponent() {
     const std::string cached_json_data = pref_service_->GetString(
         prefs::kNewTabPageCachedSuperReferralComponentData);
     if (!cached_json_data.empty()) {
-      std::optional<base::Value::Dict> cached_data =
-          base::JSONReader::ReadDict(cached_json_data);
+      std::optional<base::Value::Dict> cached_data = base::JSONReader::ReadDict(
+          cached_json_data, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
       if (!cached_data) {
         return;
       }
@@ -361,7 +382,7 @@ void NTPBackgroundImagesService::MonitorReferralPromoCodeChange() {
   pref_change_registrar_.Add(
       kReferralPromoCode,
       base::BindRepeating(&NTPBackgroundImagesService::OnPreferenceChanged,
-                          base::Unretained(this)));
+                          weak_factory_.GetWeakPtr()));
 #endif
 }
 
@@ -390,7 +411,12 @@ void NTPBackgroundImagesService::OnPreferenceChanged(
 }
 
 void NTPBackgroundImagesService::OnVariationsCountryPrefChanged() {
-  RegisterSponsoredImagesComponent();
+  if (sponsored_images_component_id_) {
+    // Re-register the Sponsored Images component when the country preference
+    // changes. Defer first registration until ads service initialization
+    // completes, to prevent race conditions.
+    RegisterSponsoredImagesComponent();
+  }
 }
 
 void NTPBackgroundImagesService::RegisterSuperReferralComponent() {
@@ -462,7 +488,8 @@ void NTPBackgroundImagesService::OnGetMappingTableData(
   }
 
   std::optional<base::Value::Dict> mapping_table_value =
-      base::JSONReader::ReadDict(json_string);
+      base::JSONReader::ReadDict(json_string,
+                                 base::JSON_PARSE_CHROMIUM_EXTENSIONS);
 
   if (!mapping_table_value) {
     DVLOG(6) << "Mapping table is invalid.";
@@ -512,6 +539,11 @@ NTPSponsoredImagesData* NTPBackgroundImagesService::GetSponsoredImagesData(
   const bool is_super_referrals_enabled =
       base::FeatureList::IsEnabled(features::kBraveNTPSuperReferralWallpaper);
   if (is_super_referrals_enabled) {
+    SCOPED_CRASH_KEY_BOOL("Issue50267", "super_referral", super_referral);
+    SCOPED_CRASH_KEY_STRING64("Issue50267", "failure_reason",
+                              "Super referrals are enabled");
+    base::debug::DumpWithoutCrashing();
+
     if (super_referral) {
       if (super_referrals_images_data_ &&
           super_referrals_images_data_->IsValid()) {
@@ -590,9 +622,15 @@ void NTPBackgroundImagesService::OnSponsoredComponentReady(
 void NTPBackgroundImagesService::OnGetSponsoredComponentJsonData(
     bool is_super_referral,
     const std::string& json_string) {
-  std::optional<base::Value::Dict> json_value =
-      base::JSONReader::ReadDict(json_string);
+  std::optional<base::Value::Dict> json_value = base::JSONReader::ReadDict(
+      json_string, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!json_value) {
+    SCOPED_CRASH_KEY_STRING64("Issue50267", "variations_country_code",
+                              GetVariationsCountryCode(variations_service_));
+    SCOPED_CRASH_KEY_STRING64("Issue50267", "json_string", json_string);
+    SCOPED_CRASH_KEY_BOOL("Issue50267", "empty_json", json_string.empty());
+    SCOPED_CRASH_KEY_STRING64("Issue50267", "failure_reason", "Invalid JSON");
+    base::debug::DumpWithoutCrashing();
     DVLOG(2) << "Read json data failed. Invalid JSON data";
     return;
   }

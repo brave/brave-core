@@ -5,6 +5,8 @@
 <translation id="3478449063771497234">Notifications are disabled</translation>
 <translation id="2862978891748913252">Select your country</translation>
 <translation id="3970520675790340955">Select your country so we can show you the right options and ads for your region.</translation>
+<translation id="721490496276866468">Import passwords</translation>
+<translation id="8178175542325151321">Select a .csv file that contains your passwords to import them into Brave's password manager.</translation>
 <translation id="7301741773883122509">Now you can get rewarded for viewing ads. You’re helping make the web a better place for everyone. And that’s awesome!</translation>
 <translation id="6439128034594289376">Woohoo! You’re all set!</translation>
 <translation id="370665806235115550">Loading...</translation>
@@ -99,6 +101,8 @@
 <translation id="8617525558807213034">Auto-fill in private tabs</translation>
 <translation id="8685431198160039193">Saved information can be auto-filled in private tabs</translation>
 <translation id="6583902294974160967">Support</translation>
+<translation id="5713644099811900409">Brave Account</translation>
+<translation id="4472575034687746823">Get started</translation>
 <translation id="1799030480311994998">Features</translation>
 <translation id="2005732746077850308">Brave Shields &amp; privacy</translation>
 <translation id="4692623383562244444">Search engines</translation>
@@ -195,6 +199,9 @@
 <translation id="5987838417172370108">Help improve Brave\u2019s product stability by automatically sending diagnostic reports when the Brave Browser crashes or freezes.</translation>
 <translation id="7977176350719484850">Est. Data\nSaved</translation>
 <translation id="9008534313521214777">Est. Time\nSaved</translation>
+<translation id="8347743943525229984">Allow Brave surveys</translation>
+<translation id="6022939994702081659">Allows Brave to show links to private surveys in the new tab page. Surveys help us build better features and measure the effectiveness of browser-based ad campaigns.</translation>
+<translation id="7746496306508543965">Learn more about Brave surveys</translation>
 <translation id="410351446219883937">Auto-play</translation>
 <translation id="7445411102860286510">Allow sites to automatically play muted videos (recommended)</translation>
 <translation id="7837721118676387834">Allow auto-play of muted videos for a specific site.</translation>
@@ -223,6 +230,8 @@
 <translation id="2433507940547922241">Appearance</translation>
 <translation id="9040069796107003510">Brave Rewards icon</translation>
 <translation id="6333347122924254968">Show Brave Rewards icon in address bar</translation>
+<translation id="1215433243238902715">Enable bottom navigation toolbar</translation>
+<translation id="1422686363939271829">This setting is disabled when the bottom address bar position is selected</translation>
 <translation id="6587448235155023666">Your changes will take effect the next time you relaunch Brave</translation>
 <translation id="8701563696941209024">RELAUNCH NOW</translation>
 <translation id="834487290629916192">LATER</translation>
@@ -233,6 +242,8 @@
 <translation id="5148943178722443958">Help make Brave better.</translation>
 <translation id="6718362830686703942">Send diagnostic reports if you experience a crash or freeze.</translation>
 <translation id="8616157231067364693">Share private and anonymous product insights about what features are being used by Brave's users.</translation>
+<translation id="2888496576732880897">Help Brave Search grow</translation>
+<translation id="7044431516245362795">Opt into the Web Discovery Project to help grow the index and improve search results. <ph name="LEARN_MORE_START"/>Learn more.<ph name="LEARN_MORE_END"/></translation>
 <translation id="7818938154803162778">Sure, I'll help</translation>
 <translation id="3545804467215833536">Tap to view Brave Shields</translation>
 <translation id="1724327820822194498">See all the bad stuff Brave blocked, on every page, with Shields.</translation>
@@ -287,6 +298,11 @@
 <translation id="4254029385847607686">DECEMBER</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="1772301834467143364">Brave News</translation>
+<translation id="2518692840036393666">Customise menu</translation>
+<translation id="5582839680698949063">Main menu</translation>
+<translation id="7002271985859760052">Page actions</translation>
+<translation id="7104487676473617844">The following items will only appear in the menu when supported by the currently open webpage.</translation>
+<translation id="4159764849281393303">WebApp</translation>
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="8428213095426709021">Settings</translation>
 <translation id="6020176662032623904">Verified creator</translation>
@@ -394,6 +410,12 @@ Are you sure you want to do this?</translation>
 <translation id="597993392929850353">Brave licence</translation>
 <translation id="6336451774241870485">New Private tab</translation>
 <translation id="3110967157686007724">Private tab</translation>
+<translation id="944340256927461196">Leave no trace on your device</translation>
+<translation id="2063044449012253966">Sites you visit in private windows won't appear in your history. Cookies, form data, and site data vanish once all private windows are closed.</translation>
+<translation id="7395764193745523646">Browsing visibility</translation>
+<translation id="8670344404057978375">Note that, even in private windows, your browsing activity may still be visible to your ISP, network observers, or your employer (if you're using a work device/network).</translation>
+<translation id="1413177583895309156">Brave VPN encrypts and protects anything you do online, even outside the Brave browser.</translation>
+<translation id="3974348661685061050">Try free for 7 days</translation>
 <translation id="5789441016350810005">Brave Ads sent when browser is in the background</translation>
 <translation id="4973347371961481083">Contributions</translation>
 <translation id="7047578174221019462">Your monthly contributions have been processed.</translation>
@@ -403,8 +425,12 @@ Are you sure you want to do this?</translation>
 <translation id="8520059774736886747">Creator <ph name="PUBLISHER_NAME"/> recently verified</translation>
 <translation id="1486343603936278248">token</translation>
 <translation id="7781069478569868053">New tab page</translation>
+<translation id="5927196110206824867">Sponsored background images support Brave's mission to build an independent, user-first Web. And unlike Big Tech, we measure ad performance anonymously to preserve your privacy.</translation>
+<translation id="8748471354357836070">Learn more / opt out choices</translation>
 <translation id="3171669670217312786">Background Images</translation>
 <translation id="8522669544471808198">Show background images</translation>
+<translation id="6258554626602400736">Show New Tab Page Ads</translation>
+<translation id="9001530744369687550">Learn more about new tab page ads</translation>
 <translation id="8793108040181436796">Widgets</translation>
 <translation id="8643377320501056697">Show Top Sites</translation>
 <translation id="7275773481201277457">Show Brave Stats</translation>
@@ -435,6 +461,7 @@ Are you sure you want to do this?</translation>
 <translation id="3624048886326677117">Block trackers &amp; ads (Aggressive)</translation>
 <translation id="7151914815476509258">Block trackers &amp; ads (Standard)</translation>
 <translation id="7384778069178817075">Allow all trackers &amp; ads</translation>
+<translation id="1173312143376149085"><ph name="BEGIN_LINK_0"/>The "Block all Cookies" option has been deprecated. To learn how to force-enable this option, visit<ph name="END_LINK_0"/> <ph name="BEGIN_LINK_1"/>our help page<ph name="END_LINK_1"/></translation>
 <translation id="3763681089644577874">Block Cookies</translation>
 <translation id="614747795780742163">Prevents websites from storing information about your previous visits</translation>
 <translation id="6883611015375728278">Block all cookies</translation>
@@ -450,6 +477,8 @@ Are you sure you want to do this?</translation>
 <translation id="7854108565842971747">These are the default Shields settings for new sites. Changing these won't affect your existing per-site settings.</translation>
 <translation id="218587021686734263">Prevent fingerprinting via language settings</translation>
 <translation id="1706099589708266367">Reduces how much websites can learn about you based on your browser's language settings.</translation>
+<translation id="6486971767955110687">Store contact information for future broken site reports</translation>
+<translation id="4085787265464238844">If you provide contact info it will be stored for future reports</translation>
 <translation id="4721088070859595932">Prevents websites from recognising your device</translation>
 <translation id="7445306466605902444">Fingerprinting blocked (strict, may break sites)</translation>
 <translation id="5582686930349810484">Fingerprinting blocked (standard)</translation>
@@ -475,13 +504,21 @@ Are you sure you want to do this?</translation>
 <translation id="8459191579769999214">View screenshot</translation>
 <translation id="6476216365964140603">Additional details (optional)</translation>
 <translation id="6145852496180774737">Contact me at: (optional)</translation>
+<translation id="6367576083705149078">If you provide contact info it will be stored for future reports.</translation>
 <translation id="7616645803364270729">Email, Twitter, etc.</translation>
 <translation id="5299848999918506028">Thank you!</translation>
 <translation id="76550953340008122">Thanks for letting Brave's developers know that there's something wrong with this site. We'll do our best to fix it!</translation>
+<translation id="3037432377946455872">What's the main issue you're seeing?</translation>
+<translation id="8731661215617360873">Select one option</translation>
 <translation id="650318023204990401">Advanced controls</translation>
+<translation id="7205939464631857223">Clear all blocked elements</translation>
 <translation id="5370478469168390143">Save Data Online</translation>
 <translation id="1118508688433541158">Browse faster and block ads with Brave</translation>
 <translation id="7427391215172269363">Every day I save data by browsing the web with Brave.</translation>
+<translation id="357198789571802914">Watch YouTube, not Ads.</translation>
+<translation id="2154817758398495571">Open YouTube links in Brave to block ads.</translation>
+<translation id="1580816390443799567">Turn on now</translation>
+<translation id="8589748782214271192">No, thank you</translation>
 <translation id="8374242949413616101">Privacy protection</translation>
 <translation id="4955406228638026265">Brave stops ads &amp; trackers from collecting information about you without your consent.</translation>
 <translation id="752842701893882688">Save data and battery</translation>
@@ -646,6 +683,7 @@ Are you sure you want to do this?</translation>
 <translation id="3952797765659730604">Enter, paste, or import your private key string file or JSON.</translation>
 <translation id="569068482611873351">Import...</translation>
 <translation id="4522570452068850558">Details</translation>
+<translation id="3114681061018999547">Shielding</translation>
 <translation id="3784455785234192852">Lock</translation>
 <translation id="4412698727486357573">Help Centre</translation>
 <translation id="8239147115686034860">Automatically lock Brave Wallet</translation>
@@ -681,8 +719,10 @@ Are you sure you want to do this?</translation>
 <translation id="1532536259167115948">Monthly subscription <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">Yearly subscription <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">Renews monthly</translation>
+<translation id="112929124115834557">Renews annually</translation>
 <translation id="1131191042781544288"><ph name="MONTHLY_AMOUNT"/> /month</translation>
 <translation id="1163809943099641131">One year</translation>
+<translation id="83293016232121346">(<ph name="DISCOUNT_TEXT_START"/>save <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/>)</translation>
 <translation id="4790641549702094825"><ph name="YEARLY_AMOUNT"/> /year</translation>
 <translation id="2786538705804257030">Subscriptions will be charged via your Google account. Any unused portion of the free trial, if offered, is forfeited when you buy a subscription.\n\nYour subscription will renew automatically unless it is cancelled at least 24 hours before the end of the current period.\n\nYou can manage your subscriptions in Settings.\n\nBy using Brave, you agree to the Terms of Use and Privacy Policy.</translation>
 <translation id="5035172357624830412">Already purchased on brave.com?</translation>
@@ -765,7 +805,6 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="750843150060816463">Gas Price (Gwei)</translation>
 <translation id="1426320910664514906">Gas Limit</translation>
 <translation id="6389441740143786465">Disable sharing hub</translation>
-<translation id="9065203028668620118">Edit</translation>
 <translation id="473775607612524610">Update</translation>
 <translation id="479795390141144417">Account update failed.</translation>
 <translation id="8084782383392198011">Account name can't be empty.</translation>
@@ -981,10 +1020,9 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="8496335570810457">Preflight commitment:</translation>
 <translation id="5100124500279922001">Skip preflight:</translation>
 <translation id="7152095322071766507">Top visited site</translation>
-<translation id="7230006500876504868">Search with Brave</translation>
-<translation id="5888208462949095139">Search with <ph name="DEFAULT_SEARCH_ENGINE"/></translation>
 <translation id="5456039738087398178">Home screen widget</translation>
 <translation id="703185154752046151">Widget added to the home screen</translation>
+<translation id="4635094429202343515">Try the Brave Search widget</translation>
 <translation id="4809681171446727314">Access private, independent search right from your home screen.</translation>
 <translation id="7751715172931488388">Add widget</translation>
 <translation id="7285167584112910782">Brave quick action search</translation>
@@ -1041,7 +1079,7 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="7618347247876614969">Address look-up table account:</translation>
 <translation id="7659483790930268440">Address look-up table index:</translation>
 <translation id="5494920125229734069">Select all</translation>
-<translation id="6129027151000961048">Leo</translation>
+<translation id="2361906291514218784">Leo AI</translation>
 <translation id="8613144770663526433">Sign in with Brave Wallet</translation>
 <translation id="3696514931437952995">You are signing into <ph name="ORIGIN"/>. Brave wallet will share your wallet address with <ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">See details</translation>
@@ -1049,13 +1087,20 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="2471230424465522689">Not before</translation>
 <translation id="4841860051609590575">Request ID</translation>
 <translation id="1179407411385015942">Leo is an AI-powered smart assistant, built right into the browser</translation>
+<translation id="5781842473834867765">Store my conversation history</translation>
 <translation id="4109670531935487117">Show autocomplete suggestions in address bar</translation>
+<translation id="4983005227524068187">Show in quick search engines bar</translation>
+<translation id="8514910864411336826">Enables a shortcut to launch Leo from the quick search engines bar.</translation>
+<translation id="6106701981952170121">Delete all Leo AI conversation data</translation>
+<translation id="423600389315522551">Resetting Leo AI will require you to opt-in to use Brave Leo AI in the future and will also clear your chat history. Clearing your chat history will delete all your previous conversations with Brave Leo AI. This action can't be undone.</translation>
+<translation id="6742599753610126012">Clear chat history</translation>
+<translation id="3443052382074796867">Disabling conversation storage will permanently erase all previously stored conversations. This action cannot be undone.</translation>
 <translation id="3692772534525889713">Link your Play Store purchase to your Brave account to use Brave Leo on other devices.</translation>
-<translation id="73236265316873967">Leo Premium</translation>
+<translation id="592831784390389506">Leo AI Premium</translation>
 <translation id="1028627582482425924">One year</translation>
 <translation id="2985392169397572983">BEST VALUE</translation>
 <translation id="1166682575529520472">Monthly</translation>
-<translation id="451189393813405346">Ask Leo</translation>
+<translation id="2206846767762985925">Ask Leo AI</translation>
 <translation id="7322560193401221004">Remember file playback position</translation>
 <translation id="7505951907514709271">For individual files, resume playing from the point of last pause</translation>
 <translation id="6835165453349969605">Remember list playback position</translation>
@@ -1098,6 +1143,7 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="3861012838874771868">Open playlist Settings</translation>
 <translation id="5220099266891491416">Hide playlist button</translation>
 <translation id="7416347631175891923">Try it!</translation>
+<translation id="9065203028668620118">Edit</translation>
 <translation id="1173894706177603556">Rename</translation>
 <translation id="3596306474342941843">Delete playlist</translation>
 <translation id="7765158879357617694">Move</translation>
@@ -1112,7 +1158,7 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="5319532905552885478">Media content is already added to the default playlist</translation>
 <translation id="4802584673094436231">Preparing …</translation>
 <translation id="481455355267255546">Up next</translation>
-<translation id="5474757891469990756">Unleash Leo's full powers with Premium:</translation>
+<translation id="3721790899869840343">Unleash Leo AI's full powers with Premium:</translation>
 <translation id="4173478269537830374">Explore different AI models</translation>
 <translation id="3453542753968940696">Priority access to powerful models with different skills.</translation>
 <translation id="3245401959451976966">Unlock your creativity</translation>
@@ -1168,15 +1214,30 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="6891382640886173702">Merge windows</translation>
 <translation id="2912247081180973411">Close windows</translation>
 <translation id="4010699428656610296">Please merge other tabs to another Brave window.</translation>
+<translation id="4306918392910017801">Auto re-connect VPN</translation>
 <translation id="1599073346542156922">How to turn on:</translation>
 <translation id="7001163334415463127">1. Open your device's settings from your app drawer or tapping the button below.</translation>
 <translation id="887443138775437899">2. Find Brave VPN and tap on the settings icon to the right.</translation>
 <translation id="7546805138087561624">3. Toggle <ph name="AUTO_RECONNECT_VPN_TUTORIAL_START"/>Always-on VPN<ph name="AUTO_RECONNECT_VPN_TUTORIAL_END"/> to enable it.</translation>
+<translation id="2446001600399646984">Note that because of Android limitations, "Block connections without VPN" doesn't work as expected. <ph name="LEARN_MORE_START"/>Learn more.<ph name="LEARN_MORE_END"/></translation>
 <translation id="4776146737004271126">Open Android settings</translation>
 <translation id="2728518864712716830">Update is downloaded.</translation>
 <translation id="8403338849301491865">Filter list is updated successfully</translation>
 <translation id="4650851936784160359">Filter list could not be updated. Please try again</translation>
-<translation id="2361906291514218784">Leo AI</translation>
+<translation id="3098054327870766317">Show undo button when tabs are closed</translation>
+<translation id="1336494649091412226">Are you sure you want to exit Brave?</translation>
+<translation id="7942415993090181327">Chat history</translation>
+<translation id="6859935199732075666">Show Safe Browsing errors</translation>
+<translation id="2735247450315842119">Allow screenshots in private tabs</translation>
+<translation id="8420414929552321089">If allowed, private tabs will also be visible when multiple apps are open.</translation>
+<translation id="7956713633345437162">Mobile bookmarks</translation>
+<translation id="3176467469116060712">Support Brave's industry-leading work for Web privacy and open-source adblocking lists</translation>
+<translation id="5896375129784311037">Optimised for a more minimalist browser interface</translation>
+<translation id="746156554966264308">A core of Brave Shields for adblock, privacy, and speed</translation>
+<translation id="1432661650699782509">Support for IT-managed policies at work</translation>
+<translation id="1361157028850796410">best value</translation>
+<translation id="7280825497485894053">Monthly subscription</translation>
+<translation id="4570901726096223030">Learn more about Origin</translation>
 <translation id="1943432128510653496">Save passwords</translation>
 <translation id="2100273922101894616">Auto Sign-in</translation>
 <translation id="363596933471559332">Automatically sign in to websites using stored credentials. When the feature is off, you’ll be asked for verification every time before signing in to a website.</translation>
@@ -1188,6 +1249,18 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="5139940364318403933">Learn how to use Google Drive</translation>
 <translation id="729975465115245577">Your device doesn’t have an app to store the passwords file.</translation>
 <translation id="1129510026454351943">Details: <ph name="ERROR_DESCRIPTION"/></translation>
+<translation id="5594899180331219722">Select file</translation>
+<translation id="3744219658596020825">Your passwords weren't imported</translation>
+<translation id="8258027225380843424">Import successful!</translation>
+<translation id="766635563210446220">Can't import passwords. Check <ph name="FILENAME"/> and make sure it's formatted correctly. <ph name="BEGIN_LINK"/>Learn more<ph name="END_LINK"/></translation>
+<translation id="6581356304040102696">Can't import passwords. The file size must be less than 1 MB.</translation>
+<translation id="5895244669404288318">{COUNT, plural,=1 {Can't import passwords. You can only import 1 password at a time.} other {Can't import passwords. You can only import up to <ph name="COUNT_MANY"/> passwords at a time.}}</translation>
+<translation id="3748424433435232460">A password for this account is already saved on this device</translation>
+<translation id="6438475350605608554">You're already importing passwords in another tab</translation>
+<translation id="3482868954775580230">Failed to read the selected file. <ph name="EXCEPTION_INFO"/></translation>
+<translation id="9162995380643712715">{IMPORT_COUNT, plural,=1 {Successfully imported 1 password.} other {Successfully imported <ph name="IMPORT_COUNT_MANY"/> passwords.}}</translation>
+<translation id="4637949129057123593">Import failed.</translation>
+<translation id="4300452012226767715">Password manager not available.</translation>
 <translation id="6221633008163990886">Unlock to export your passwords</translation>
 <translation id="5245792669563792664">passwords</translation>
 <translation id="10614374240317010">Never saved</translation>

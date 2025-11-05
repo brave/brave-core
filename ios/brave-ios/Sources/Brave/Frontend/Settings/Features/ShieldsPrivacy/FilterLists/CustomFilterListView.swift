@@ -73,6 +73,7 @@ struct CustomFilterListView: View {
           Text(Strings.CancelString)
         }
       )
+      .disabled(isSaving)
       .alert(
         isPresented: $showCancelAlert,
         content: {

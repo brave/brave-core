@@ -8,8 +8,10 @@ import { Store } from '../lib/store'
 import {
   BackgroundState,
   BackgroundActions,
-  SponsoredImageBackground,
+  NewTabPageAdMetricType,
   SelectedBackgroundType } from '../state/background_state'
+
+import { StorybookArgs } from './storybook_args'
 
 function delay(ms: number) {
   return new Promise((resolve) => {
@@ -20,7 +22,7 @@ function delay(ms: number) {
 const sampleBackground =
     'https://brave.com/static-assets/images/coding-background-texture.jpg'
 
-const sponsoredBackgrounds: Record<string, SponsoredImageBackground | null> = {
+const sponsoredBackgrounds = {
   image: {
     wallpaperType: '',
     imageUrl: sampleBackground,
@@ -32,12 +34,12 @@ const sponsoredBackgrounds: Record<string, SponsoredImageBackground | null> = {
       destinationUrl: 'https://brave.com',
       imageUrl: sampleBackground
     },
-    shouldMetricsFallbackToP3a: false
+    metricType: NewTabPageAdMetricType.kConfirmation
   },
 
   richMedia: {
     wallpaperType: 'richMedia',
-    imageUrl: 'https://en.wikipedia.org/wiki/Main_Page',
+    imageUrl: './ntp-assets/fake_rich_media_background.html',
     campaignId: '1234',
     creativeInstanceId: '',
     wallpaperId: '',
@@ -46,14 +48,15 @@ const sponsoredBackgrounds: Record<string, SponsoredImageBackground | null> = {
       destinationUrl: 'https://brave.com',
       imageUrl: ''
     },
-    shouldMetricsFallbackToP3a: false
+    metricType: NewTabPageAdMetricType.kConfirmation
   },
 
   none: null
 }
 
 export function createBackgroundHandler(
-  store: Store<BackgroundState>
+  store: Store<BackgroundState>,
+  args: StorybookArgs
 ): BackgroundActions {
   store.update({
     initialized: true,
@@ -65,11 +68,14 @@ export function createBackgroundHandler(
       }
     ],
     backgroundRandomValue: Math.random(),
-    sponsoredImageBackground: sponsoredBackgrounds.none
+    sponsoredImageBackground:
+      args.sponsoredBackgroundType === 'rich' ? sponsoredBackgrounds.richMedia :
+      args.sponsoredBackgroundType === 'image' ? sponsoredBackgrounds.image :
+      sponsoredBackgrounds.none
   })
 
   store.update({
-    sponsoredRichMediaBaseUrl: 'https://brave.com'
+    sponsoredRichMediaBaseUrl: location.origin
   })
 
   return {
@@ -114,6 +120,8 @@ export function createBackgroundHandler(
 
     notifySponsoredImageLogoClicked() {},
 
-    notifySponsoredRichMediaEvent(type) {}
+    notifySponsoredRichMediaEvent(type) {
+      console.log('richMediaEvent', type)
+    }
   }
 }

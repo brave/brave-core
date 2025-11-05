@@ -19,6 +19,10 @@ import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.toolbar.adaptive.AdaptiveToolbarButtonController;
 import org.chromium.chrome.browser.toolbar.adaptive.AdaptiveToolbarButtonVariant;
 import org.chromium.chrome.browser.toolbar.adaptive.BraveBookmarksButtonController;
+import org.chromium.chrome.browser.toolbar.adaptive.BraveDownloadsButtonController;
+import org.chromium.chrome.browser.toolbar.adaptive.BraveHistoryButtonController;
+import org.chromium.chrome.browser.toolbar.adaptive.BraveLeoButtonController;
+import org.chromium.chrome.browser.toolbar.adaptive.BraveWalletButtonController;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 
 import java.util.function.Supplier;
@@ -76,5 +80,45 @@ public class BraveAdaptiveToolbarUiCoordinator extends AdaptiveToolbarUiCoordina
                         bookmarkManagerOpener);
         mAdaptiveToolbarButtonController.addButtonVariant(
                 AdaptiveToolbarButtonVariant.BOOKMARKS, bookmarksButtonController);
+
+        var historyButtonController =
+                new BraveHistoryButtonController(
+                        mContext,
+                        AppCompatResources.getDrawable(mContext, R.drawable.brave_menu_history),
+                        mActivityTabProvider,
+                        mProfileSupplier,
+                        mModalDialogManagerSupplier.get());
+        mAdaptiveToolbarButtonController.addButtonVariant(
+                AdaptiveToolbarButtonVariant.HISTORY, historyButtonController);
+
+        var downloadsButtonController =
+                new BraveDownloadsButtonController(
+                        mContext,
+                        AppCompatResources.getDrawable(mContext, R.drawable.brave_menu_downloads),
+                        mActivityTabProvider,
+                        mProfileSupplier,
+                        mModalDialogManagerSupplier.get());
+        mAdaptiveToolbarButtonController.addButtonVariant(
+                AdaptiveToolbarButtonVariant.DOWNLOADS, downloadsButtonController);
+
+        var leoButtonController =
+                new BraveLeoButtonController(
+                        mContext,
+                        AppCompatResources.getDrawable(mContext, R.drawable.ic_brave_ai),
+                        mActivityTabProvider,
+                        mProfileSupplier,
+                        mModalDialogManagerSupplier.get());
+        mAdaptiveToolbarButtonController.addButtonVariant(
+                AdaptiveToolbarButtonVariant.LEO, leoButtonController);
+
+        var walletButtonController =
+                new BraveWalletButtonController(
+                        mContext,
+                        AppCompatResources.getDrawable(mContext, R.drawable.ic_crypto_wallets),
+                        mActivityTabProvider,
+                        mProfileSupplier,
+                        mModalDialogManagerSupplier.get());
+        mAdaptiveToolbarButtonController.addButtonVariant(
+                AdaptiveToolbarButtonVariant.WALLET, walletButtonController);
     }
 }

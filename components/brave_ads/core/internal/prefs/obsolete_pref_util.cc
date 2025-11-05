@@ -13,16 +13,6 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kObsoleteHasMigratedConversionState[] =
-    "brave.brave_ads.migrated.conversion_state";
-constexpr char kObsoleteHasMigratedNotificationState[] =
-    "brave.brave_ads.has_migrated.notification_state";
-constexpr char kObsoleteHasMigratedRewardsState[] =
-    "brave.brave_ads.migrated.rewards_state";
-
-constexpr char kObsoleteShouldMigrateVerifiedRewardsUser[] =
-    "brave.brave_ads.rewards.verified_user.should_migrate";
-
 constexpr char kObsoleteShouldShowSearchResultAdClickedInfoBar[] =
     "brave.brave_ads.should_show_search_result_ad_clicked_infobar";
 
@@ -60,6 +50,13 @@ constexpr const char* kObsoleteP2APrefPaths[] = {
     R"(brave.weekly_storage.Brave.P2A.inline_content_ad.opportunities)",
     R"(brave.weekly_storage.Brave.P2A.new_tab_page_ad.opportunities)"};
 
+constexpr std::string_view kNewTabPageEventCountDictPref =
+    "brave.brave_ads.p3a.ntp_event_count";
+constexpr std::string_view kNewTabPageEventCountConstellationDictPref =
+    "brave.brave_ads.p3a.ntp_event_count_constellation";
+constexpr std::string_view kNewTabPageKnownCampaignsDictPref =
+    "brave.brave_ads.p3a.ntp_known_campaigns";
+
 void MaybeMigrateShouldShowSearchResultAdClickedInfoBarProfilePref(
     PrefService* const prefs) {
   if (!prefs->HasPrefPath(kObsoleteShouldShowSearchResultAdClickedInfoBar)) {
@@ -75,15 +72,6 @@ void MaybeMigrateShouldShowSearchResultAdClickedInfoBarProfilePref(
 }  // namespace
 
 void RegisterProfilePrefsForMigration(PrefRegistrySimple* const registry) {
-  // Added 08/2024.
-  registry->RegisterBooleanPref(kObsoleteHasMigratedConversionState, false);
-  registry->RegisterBooleanPref(kObsoleteHasMigratedNotificationState, false);
-  registry->RegisterBooleanPref(kObsoleteHasMigratedRewardsState, false);
-
-  // Added 10/2024.
-  registry->RegisterBooleanPref(kObsoleteShouldMigrateVerifiedRewardsUser,
-                                false);
-
   // Added 05/2025.
   registry->RegisterBooleanPref(kObsoleteShouldShowSearchResultAdClickedInfoBar,
                                 false);
@@ -95,14 +83,6 @@ void RegisterProfilePrefsForMigration(PrefRegistrySimple* const registry) {
 }
 
 void MigrateObsoleteProfilePrefs(PrefService* const prefs) {
-  // Added 08/2024.
-  prefs->ClearPref(kObsoleteHasMigratedConversionState);
-  prefs->ClearPref(kObsoleteHasMigratedNotificationState);
-  prefs->ClearPref(kObsoleteHasMigratedRewardsState);
-
-  // Added 10/2024.
-  prefs->ClearPref(kObsoleteShouldMigrateVerifiedRewardsUser);
-
   // Added 05/2025.
   MaybeMigrateShouldShowSearchResultAdClickedInfoBarProfilePref(prefs);
 
@@ -110,6 +90,24 @@ void MigrateObsoleteProfilePrefs(PrefService* const prefs) {
   for (const auto* path : kObsoleteP2APrefPaths) {
     prefs->ClearPref(path);
   }
+}
+
+void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry) {
+  // Added 06/2025
+  registry->RegisterDictionaryPref(kNewTabPageEventCountDictPref);
+
+  // Added 10/2025
+  registry->RegisterDictionaryPref(kNewTabPageEventCountConstellationDictPref);
+  registry->RegisterDictionaryPref(kNewTabPageKnownCampaignsDictPref);
+}
+
+void MigrateObsoleteLocalStatePrefs(PrefService* local_state) {
+  // Added 06/2025
+  local_state->ClearPref(kNewTabPageEventCountDictPref);
+
+  // Added 10/2025
+  local_state->ClearPref(kNewTabPageEventCountConstellationDictPref);
+  local_state->ClearPref(kNewTabPageKnownCampaignsDictPref);
 }
 
 }  // namespace brave_ads

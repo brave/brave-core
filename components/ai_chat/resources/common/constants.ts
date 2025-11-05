@@ -21,3 +21,5 @@ const fallbackModelIcon = 'product-brave-leo'
 export function getModelIcon(modelKey: string): string {
   return modelIcons[modelKey as keyof typeof modelIcons] ?? fallbackModelIcon
 }
+
+export const AUTOMATIC_MODEL_KEY = 'chat-automatic'

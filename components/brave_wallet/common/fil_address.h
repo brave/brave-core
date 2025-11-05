@@ -39,7 +39,6 @@ class FilAddress {
   FilAddress(const FilAddress& other);
   ~FilAddress();
   bool operator==(const FilAddress& other) const;
-  bool operator!=(const FilAddress& other) const;
 
   bool IsEmpty() const { return bytes_.empty(); }
   mojom::FilecoinAddressProtocol protocol() const { return protocol_; }

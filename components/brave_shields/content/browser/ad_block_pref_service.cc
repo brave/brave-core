@@ -10,6 +10,7 @@
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_locale_utils.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -39,7 +40,8 @@ std::string GetTagFromPrefName(const std::string& pref_name) {
 
 AdBlockPrefService::AdBlockPrefService(AdBlockService* ad_block_service,
                                        PrefService* prefs,
-                                       PrefService* local_state)
+                                       PrefService* local_state,
+                                       const std::string& locale)
     : ad_block_service_(ad_block_service), prefs_(prefs) {
   pref_change_registrar_.reset(new PrefChangeRegistrar());
   pref_change_registrar_->Init(prefs_);
@@ -60,6 +62,8 @@ AdBlockPrefService::AdBlockPrefService(AdBlockService* ad_block_service,
   OnPreferenceChanged(prefs::kFBEmbedControlType);
   OnPreferenceChanged(prefs::kTwitterEmbedControlType);
   OnPreferenceChanged(prefs::kLinkedInEmbedControlType);
+
+  ManageAdBlockOnlyModeByLocale(local_state, locale);
 }
 
 AdBlockPrefService::~AdBlockPrefService() = default;

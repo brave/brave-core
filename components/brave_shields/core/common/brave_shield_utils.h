@@ -8,10 +8,10 @@
 
 #include <map>
 
+#include "brave/components/brave_shields/core/common/shields_settings.mojom-data-view.h"
 #include "components/content_settings/core/common/content_settings.h"
 
 class GURL;
-class PrefService;
 
 namespace brave_shields {
 
@@ -37,11 +37,8 @@ ShieldsSettingCounts GetSettingCountFromRules(
 ShieldsSettingCounts GetSettingCountFromCosmeticFilteringRules(
     const ContentSettingsForOneType& fp_rules);
 
-bool IsAdblockOnlyModeFeatureEnabled();
-
-bool IsBraveShieldsAdBlockOnlyModeEnabled(PrefService* local_state);
-void SetBraveShieldsAdBlockOnlyModeEnabled(PrefService* local_state,
-                                           bool enabled);
+mojom::ContentSettingSource ConvertSettingsSource(
+    const content_settings::SettingSource source);
 
 }  // namespace brave_shields
 

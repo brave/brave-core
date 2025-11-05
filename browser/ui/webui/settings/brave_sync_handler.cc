@@ -418,7 +418,7 @@ base::Value::List BraveSyncHandler::GetSyncDeviceList() {
   for (const auto& device : tracker->GetAllBraveDeviceInfo()) {
     auto device_value = device->ToValue();
     bool is_current_device =
-        local_device_info ? local_device_info->guid() == device->guid() : false;
+        local_device_info && local_device_info->guid() == device->guid();
     device_value.Set("isCurrentDevice", is_current_device);
     device_value.Set("guid", device->guid());
     device_value.Set("supportsSelfDelete",

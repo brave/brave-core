@@ -24,10 +24,6 @@ bool Log::operator==(const Log& log) const {
          transaction_index == log.transaction_index;
 }
 
-bool Log::operator!=(const Log& log) const {
-  return !operator==(log);
-}
-
 TransactionReceipt::TransactionReceipt() = default;
 TransactionReceipt::~TransactionReceipt() = default;
 TransactionReceipt::TransactionReceipt(const TransactionReceipt&) = default;
@@ -46,11 +42,6 @@ bool TransactionReceipt::operator==(
          logs == tx_receipt.logs;
 }
 
-bool TransactionReceipt::operator!=(
-    const TransactionReceipt& tx_receipt) const {
-  return !operator==(tx_receipt);
-}
-
 SolanaSignatureStatus::SolanaSignatureStatus(
     uint64_t slot,
     uint64_t confirmations,
@@ -66,11 +57,6 @@ bool SolanaSignatureStatus::operator==(
   return slot == sig_status.slot && confirmations == sig_status.confirmations &&
          err == sig_status.err &&
          confirmation_status == sig_status.confirmation_status;
-}
-
-bool SolanaSignatureStatus::operator!=(
-    const SolanaSignatureStatus& sig_status) const {
-  return !operator==(sig_status);
 }
 
 base::Value::Dict SolanaSignatureStatus::ToValue() const {
@@ -117,10 +103,6 @@ bool SolanaAccountInfo::operator==(const SolanaAccountInfo& info) const {
   return lamports == info.lamports && owner == info.owner &&
          data == info.data && executable == info.executable &&
          rent_epoch == info.rent_epoch;
-}
-
-bool SolanaAccountInfo::operator!=(const SolanaAccountInfo& info) const {
-  return !operator==(info);
 }
 
 bool ValidSolidityBits(size_t bits) {

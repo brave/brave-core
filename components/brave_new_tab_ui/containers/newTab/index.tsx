@@ -8,7 +8,7 @@ import * as React from 'react'
 // Components
 import getNTPBrowserAPI from '../../api/background'
 import { addNewTopSite, editTopSite } from '../../api/topSites'
-import { brandedWallpaperLogoClicked } from '../../api/wallpaper'
+import { recordClickedAdEvent } from '../../api/wallpaper'
 import * as BraveAds from 'gen/brave/components/brave_ads/core/mojom/brave_ads.mojom.m.js'
 import {
   BraveTalkWidget as BraveTalk, Clock, EditTopSite, OverrideReadabilityColor, RewardsWidget as Rewards, SearchPromotion, VPNWidget
@@ -119,7 +119,7 @@ function GetSponsoredRichMediaBackground(props: Props): SponsoredRichMediaBackgr
     url: wallpaperData.wallpaperImageUrl,
     placementId: wallpaperData.wallpaperId,
     creativeInstanceId: wallpaperData.creativeInstanceId,
-    shouldMetricsFallbackToP3a: wallpaperData.shouldMetricsFallbackToP3a,
+    metricType: wallpaperData.metricType,
     targetUrl: wallpaperData.logo.destinationUrl
   } : undefined
 }
@@ -436,7 +436,7 @@ class NewTabPage extends React.Component<Props, State> {
   }
 
   onClickLogo = () => {
-    brandedWallpaperLogoClicked(this.props.newTabData.brandedWallpaper)
+    recordClickedAdEvent(this.props.newTabData.brandedWallpaper)
   }
 
   setForegroundStackWidget = (widget: NewTab.StackWidget) => {
@@ -732,7 +732,7 @@ class NewTabPage extends React.Component<Props, State> {
                 getNTPBrowserAPI().sponsoredRichMediaAdEventHandler.maybeReportRichMediaAdEvent(
                   this.sponsoredRichMediaBackgroundInfo.placementId,
                   this.sponsoredRichMediaBackgroundInfo.creativeInstanceId,
-                  this.sponsoredRichMediaBackgroundInfo.shouldMetricsFallbackToP3a,
+                  this.sponsoredRichMediaBackgroundInfo.metricType,
                   adEventType)
 
                 if (adEventType === BraveAds.NewTabPageAdEventType.kClicked) {

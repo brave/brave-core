@@ -8,6 +8,7 @@
 #include <memory>
 
 #include "brave/components/brave_ads/core/browser/service/ads_service_mock.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/ntp_background_images/browser/ntp_p3a_helper_mock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -22,9 +23,9 @@ constexpr char kCreativeInstanceId[] = "7e352bd8-affc-4d47-90d8-316480152bd8";
 
 class NTPSponsoredRichMediaAdEventHandlerTest : public testing::Test {
  protected:
-  void VerifyReportAdEventMetricExpectation(
+  void VerifyReportAdEventExpectation(
       brave_ads::mojom::NewTabPageAdEventType mojom_ad_event_type,
-      bool should_metrics_fallback_to_p3a,
+      brave_ads::mojom::NewTabPageAdMetricType mojom_ad_metric_type,
       bool should_report) {
     brave_ads::AdsServiceMock ads_service;
 
@@ -34,107 +35,91 @@ class NTPSponsoredRichMediaAdEventHandlerTest : public testing::Test {
     NTPSponsoredRichMediaAdEventHandler ad_event_handler(&ads_service,
                                                          ntp_p3a_helper.get());
 
-    if (should_metrics_fallback_to_p3a) {
-      if (should_report) {
-        EXPECT_CALL(
-            *ntp_p3a_helper,
-            RecordNewTabPageAdEvent(mojom_ad_event_type, kCreativeInstanceId));
+    if (should_report) {
+      EXPECT_CALL(ads_service, TriggerNewTabPageAdEvent(
+                                   kPlacementId, kCreativeInstanceId,
+                                   mojom_ad_metric_type, mojom_ad_event_type,
+                                   /*callback=*/::testing::_));
 
-        // `TriggerNewTabPageAdEvent` should be called because the ads service
-        // will handle the case when we should fallback to P3A and no-op if the
-        // campaign should report using P3A.
-        EXPECT_CALL(ads_service, TriggerNewTabPageAdEvent);
-      } else {
-        EXPECT_CALL(*ntp_p3a_helper, RecordNewTabPageAdEvent).Times(0);
-        EXPECT_CALL(ads_service, TriggerNewTabPageAdEvent).Times(0);
-      }
     } else {
-      if (should_report) {
-        EXPECT_CALL(ads_service,
-                    TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
-                                             should_metrics_fallback_to_p3a,
-                                             mojom_ad_event_type,
-                                             /*callback=*/::testing::_));
-      } else {
-        EXPECT_CALL(ads_service, TriggerNewTabPageAdEvent).Times(0);
-      }
-      EXPECT_CALL(*ntp_p3a_helper, RecordNewTabPageAdEvent).Times(0);
+      EXPECT_CALL(ads_service, TriggerNewTabPageAdEvent).Times(0);
     }
 
     ad_event_handler.MaybeReportRichMediaAdEvent(
-        kPlacementId, kCreativeInstanceId, should_metrics_fallback_to_p3a,
+        kPlacementId, kCreativeInstanceId, mojom_ad_metric_type,
         mojom_ad_event_type);
   }
 };
 
-TEST_F(NTPSponsoredRichMediaAdEventHandlerTest, ReportAdEventMetricUsingP3a) {
-  VerifyReportAdEventMetricExpectation(
+TEST_F(NTPSponsoredRichMediaAdEventHandlerTest,
+       ReportAdEventWhenMetricTypeIsConfirmation) {
+  VerifyReportAdEventExpectation(
       brave_ads::mojom::NewTabPageAdEventType::kClicked,
-      /*should_metrics_fallback_to_p3a=*/true,
+      brave_ads::mojom::NewTabPageAdMetricType::kConfirmation,
       /*should_report=*/true);
-  VerifyReportAdEventMetricExpectation(
+  VerifyReportAdEventExpectation(
       brave_ads::mojom::NewTabPageAdEventType::kInteraction,
-      /*should_metrics_fallback_to_p3a=*/true,
+      brave_ads::mojom::NewTabPageAdMetricType::kConfirmation,
       /*should_report=*/true);
-  VerifyReportAdEventMetricExpectation(
+  VerifyReportAdEventExpectation(
       brave_ads::mojom::NewTabPageAdEventType::kMediaPlay,
-      /*should_metrics_fallback_to_p3a=*/true,
+      brave_ads::mojom::NewTabPageAdMetricType::kConfirmation,
       /*should_report=*/true);
-  VerifyReportAdEventMetricExpectation(
+  VerifyReportAdEventExpectation(
       brave_ads::mojom::NewTabPageAdEventType::kMedia25,
-      /*should_metrics_fallback_to_p3a=*/true,
+      brave_ads::mojom::NewTabPageAdMetricType::kConfirmation,
       /*should_report=*/true);
-  VerifyReportAdEventMetricExpectation(
+  VerifyReportAdEventExpectation(
       brave_ads::mojom::NewTabPageAdEventType::kMedia100,
-      /*should_metrics_fallback_to_p3a=*/true,
+      brave_ads::mojom::NewTabPageAdMetricType::kConfirmation,
       /*should_report=*/true);
 }
 
 TEST_F(NTPSponsoredRichMediaAdEventHandlerTest,
-       DoNotReportAdEventMetricUsingP3a) {
-  VerifyReportAdEventMetricExpectation(
+       DoNotReportAdEventWhenMetricTypeIsConfirmation) {
+  VerifyReportAdEventExpectation(
       brave_ads::mojom::NewTabPageAdEventType::kServedImpression,
-      /*should_metrics_fallback_to_p3a=*/true,
+      brave_ads::mojom::NewTabPageAdMetricType::kConfirmation,
       /*should_report=*/false);
-  VerifyReportAdEventMetricExpectation(
+  VerifyReportAdEventExpectation(
       brave_ads::mojom::NewTabPageAdEventType::kViewedImpression,
-      /*should_metrics_fallback_to_p3a=*/true,
+      brave_ads::mojom::NewTabPageAdMetricType::kConfirmation,
       /*should_report=*/false);
 }
 
 TEST_F(NTPSponsoredRichMediaAdEventHandlerTest,
-       ReportAdEventMetricUsingConfirmation) {
-  VerifyReportAdEventMetricExpectation(
+       ReportAdEventWhenMetricTypeIsDisabled) {
+  VerifyReportAdEventExpectation(
       brave_ads::mojom::NewTabPageAdEventType::kClicked,
-      /*should_metrics_fallback_to_p3a=*/false,
+      brave_ads::mojom::NewTabPageAdMetricType::kDisabled,
       /*should_report=*/true);
-  VerifyReportAdEventMetricExpectation(
+  VerifyReportAdEventExpectation(
       brave_ads::mojom::NewTabPageAdEventType::kInteraction,
-      /*should_metrics_fallback_to_p3a=*/false,
+      brave_ads::mojom::NewTabPageAdMetricType::kDisabled,
       /*should_report=*/true);
-  VerifyReportAdEventMetricExpectation(
+  VerifyReportAdEventExpectation(
       brave_ads::mojom::NewTabPageAdEventType::kMediaPlay,
-      /*should_metrics_fallback_to_p3a=*/false,
+      brave_ads::mojom::NewTabPageAdMetricType::kDisabled,
       /*should_report=*/true);
-  VerifyReportAdEventMetricExpectation(
+  VerifyReportAdEventExpectation(
       brave_ads::mojom::NewTabPageAdEventType::kMedia25,
-      /*should_metrics_fallback_to_p3a=*/false,
+      brave_ads::mojom::NewTabPageAdMetricType::kDisabled,
       /*should_report=*/true);
-  VerifyReportAdEventMetricExpectation(
+  VerifyReportAdEventExpectation(
       brave_ads::mojom::NewTabPageAdEventType::kMedia100,
-      /*should_metrics_fallback_to_p3a=*/false,
+      brave_ads::mojom::NewTabPageAdMetricType::kDisabled,
       /*should_report=*/true);
 }
 
 TEST_F(NTPSponsoredRichMediaAdEventHandlerTest,
-       DoNotReportAdEventMetricUsingConfirmation) {
-  VerifyReportAdEventMetricExpectation(
+       DoNotReportAdEventWhenMetricTypeIsDisabled) {
+  VerifyReportAdEventExpectation(
       brave_ads::mojom::NewTabPageAdEventType::kServedImpression,
-      /*should_metrics_fallback_to_p3a=*/false,
+      brave_ads::mojom::NewTabPageAdMetricType::kDisabled,
       /*should_report=*/false);
-  VerifyReportAdEventMetricExpectation(
+  VerifyReportAdEventExpectation(
       brave_ads::mojom::NewTabPageAdEventType::kViewedImpression,
-      /*should_metrics_fallback_to_p3a=*/false,
+      brave_ads::mojom::NewTabPageAdMetricType::kDisabled,
       /*should_report=*/false);
 }
 

@@ -6,17 +6,6 @@
 import brave_chromium_utils
 import override_utils
 
-@override_utils.override_function(build_utils)
-# pylint: disable=unused-argument
-def JavaCmd(original_function, xmx='1G'):  #NOSONAR
-    # pylint: enable=unused-argument
-    # Override to pass xmx='4G', to fix error
-    # java.lang.OutOfMemoryError: Java heap space
-    # for Android incremental builds
-
-    return original_function('4G')
-
-
 @override_utils.override_function(globals())
 def _GenerateConfigXmlTree(original_function, orig_config_path,
                            backported_methods):

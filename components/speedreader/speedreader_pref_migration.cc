@@ -24,7 +24,7 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
     // The old "enabled" pref controlled whether speedreader was enabled for
     // all sites. Migrate only the all-sites preference - let the feature
     // toggle use its default value (enabled).
-    prefs->SetBoolean(kSpeedreaderPrefEnabledForAllSites, old_value);
+    prefs->SetBoolean(kSpeedreaderAllowedForAllReadableSites, old_value);
 
     // Clear the deprecated preference
     prefs->ClearPref(kSpeedreaderPrefEnabledDeprecated);

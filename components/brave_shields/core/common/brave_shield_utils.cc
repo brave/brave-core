@@ -10,13 +10,12 @@
 #include "base/containers/map_util.h"
 #include "base/feature_list.h"
 #include "base/no_destructor.h"
+#include "base/strings/string_util.h"
 #include "brave/components/brave_shields/core/common/brave_shields_settings_values.h"
-#include "brave/components/brave_shields/core/common/features.h"
-#include "brave/components/brave_shields/core/common/pref_names.h"
+#include "brave/components/brave_shields/core/common/shields_settings.mojom-data-view.h"
 #include "brave/components/webcompat/core/common/features.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
-#include "components/prefs/pref_service.h"
 #include "url/gurl.h"
 
 namespace brave_shields {
@@ -103,19 +102,33 @@ ShieldsSettingCounts GetSettingCountFromCosmeticFilteringRules(
   return result;
 }
 
-bool IsAdblockOnlyModeFeatureEnabled() {
-  return base::FeatureList::IsEnabled(features::kAdblockOnlyMode);
-}
-
-bool IsBraveShieldsAdBlockOnlyModeEnabled(PrefService* local_state) {
-  CHECK(local_state);
-  return local_state->GetBoolean(prefs::kAdBlockOnlyModeEnabled);
-}
-
-void SetBraveShieldsAdBlockOnlyModeEnabled(PrefService* local_state,
-                                           bool enabled) {
-  CHECK(local_state);
-  local_state->SetBoolean(prefs::kAdBlockOnlyModeEnabled, enabled);
+mojom::ContentSettingSource ConvertSettingsSource(
+    const content_settings::SettingSource source) {
+  switch (source) {
+    case content_settings::SettingSource::kUser:
+      return mojom::ContentSettingSource::kUser;
+    case content_settings::SettingSource::kExtension:
+      return mojom::ContentSettingSource::kExtension;
+    case content_settings::SettingSource::kPolicy:
+      return mojom::ContentSettingSource::kPolicy;
+    case content_settings::SettingSource::kSupervised:
+      return mojom::ContentSettingSource::kSupervised;
+    case content_settings::SettingSource::kInstalledWebApp:
+      return mojom::ContentSettingSource::kInstalledWebApp;
+    case content_settings::SettingSource::kNone:
+      return mojom::ContentSettingSource::kNone;
+    case content_settings::SettingSource::kAllowList:
+      return mojom::ContentSettingSource::kAllowList;
+    case content_settings::SettingSource::kTpcdGrant:
+      return mojom::ContentSettingSource::kTpcdGrant;
+    case content_settings::SettingSource::kRemoteList:
+      return mojom::ContentSettingSource::kRemoteList;
+    case content_settings::SettingSource::kOsJavascriptOptimizer:
+      return mojom::ContentSettingSource::kOsJavascriptOptimizer;
+    case content_settings::SettingSource::kTest:
+      return mojom::ContentSettingSource::kTest;
+  }
+  NOTREACHED();
 }
 
 }  // namespace brave_shields

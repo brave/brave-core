@@ -1,48 +1,37 @@
 {
-  "configurations": [{
-    "dashboard-bot-name": "win11-hp-laptop-typical",
-    "browser-type": "brave",
-    "profile": "brave-typical-win",
-    "extra-browser-args": [
-      "--disable-backgrounding-occluded-windows",
-    ],
-    "extra-benchmark-args": [],
-  }],
-  "benchmarks": [
+  'configurations': [
     {
-      "name": "loading.desktop.brave",
-      "pageset-repeat": 10,
-      "stories": [
-        "example.com_cold",
-        "wikipedia.com_cold",
-        "IGN_warm",
-      ]
+      'dashboard-bot-name': 'win11-hp-laptop-typical',
+      'browser-type': 'brave',
+      'profile': 'brave-typical-win',
+      'extra-browser-args': ['--disable-backgrounding-occluded-windows'],
+      'extra-benchmark-args': [],
+    },
+  ],
+  'benchmarks': [
+    {
+      'name': 'loading.desktop.brave',
+      'pageset-repeat': 10,
+      'stories': ['example.com_cold', 'wikipedia.com_cold', 'IGN_warm'],
     },
     {
-      "name": "loading.desktop.brave.startup",
-      "pageset-repeat": 10,
-      "stories": [
-        "example.com_cold",
-      ]
+      'name': 'loading.desktop.brave.startup',
+      'pageset-repeat': 10,
+      'stories': ['example.com_cold'],
     },
     {
-      "name": "system_health.memory_desktop",
-      "pageset-repeat": 10,
-      "stories": [
-        "load:site:example:2023",
-        "load:media:youtube:2018",
-      ]
+      'name': 'system_health.memory_desktop',
+      'pageset-repeat': 10,
+      'stories': ['load:site:example:2023', 'load:media:youtube:2018'],
     },
     {
-      "name": "system_health.common_desktop",
-      "pageset-repeat": 10,
-      "stories": [
-        "load:site:example:2023",
-      ]
+      'name': 'system_health.common_desktop',
+      'pageset-repeat': 10,
+      'stories': ['load:site:example:2023'],
     },
     {
-      "name": "speedometer3",
-      "pageset-repeat": 10
+      'name': 'speedometer3',
+      'pageset-repeat': 10,
     },
-  ]
+  ],
 }

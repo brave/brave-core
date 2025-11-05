@@ -33,4 +33,10 @@
                           list-title="$i18n{walletCardanoNetworksListTitle}">
     </wallet-networks-list>
   </template>
+  <template is="dom-if" if="[[isPolkadotEnabled]]" restamp>
+    <wallet-networks-list id="dot-networks-section"
+                          coin="[[dotCoin]]"
+                          list-title="$i18n{walletCardanoNetworksListTitle}">
+    </wallet-networks-list>
+  </template>
 </settings-subpage>

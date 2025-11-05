@@ -38,7 +38,6 @@ import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 import org.xmlpull.v1.XmlSerializer;
 
-import org.chromium.base.Callbacks;
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.content.WebContentsFactory;
@@ -430,22 +429,45 @@ public class ImageLoader {
         return url.endsWith(".gif") || url.endsWith("=gif");
     }
 
-    public static void fetchFavIcon(String originSpecUrl, WeakReference<Context> context,
-            Callbacks.Callback1<Bitmap> callback) {
+    /**
+     * A generic 1-argument callback.
+     *
+     * @param <T1> The type of the first argument.
+     */
+    public interface Callback1<T1> {
+        /** Call the callback. */
+        void call(T1 arg1);
+    }
+
+    public static void fetchFavIcon(
+            String originSpecUrl,
+            boolean useIncognitoNtpIcon,
+            WeakReference<Context> context,
+            Callback1<Bitmap> callback) {
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
-            FaviconHelper.FaviconImageCallback imageCallback = (bitmap, iconUrl) -> {
-                if (context.get() != null) {
-                    if (bitmap == null) {
-                        bitmap = getFaviconThemeHelper().getDefaultFaviconBitmap(
-                                context.get(), iconUrl, true);
-                    }
-                    callback.call(bitmap);
-                }
-            };
+            FaviconHelper.FaviconImageCallback imageCallback =
+                    (bitmap, iconUrl) -> {
+                        if (context.get() != null) {
+                            if (bitmap == null) {
+                                bitmap =
+                                        getFaviconThemeHelper()
+                                                .getDefaultFaviconBitmap(
+                                                        context.get(),
+                                                        iconUrl,
+                                                        true,
+                                                        useIncognitoNtpIcon);
+                            }
+                            callback.call(bitmap);
+                        }
+                    };
             // 0 is a max bitmap size for download
-            getFaviconHelper().getLocalFaviconImageForURL(
-                    activity.getCurrentProfile(), new GURL(originSpecUrl), 0, imageCallback);
+            getFaviconHelper()
+                    .getLocalFaviconImageForURL(
+                            activity.getCurrentProfile(),
+                            new GURL(originSpecUrl),
+                            0,
+                            imageCallback);
 
         } catch (Exception ignored) {
         }

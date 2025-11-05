@@ -62,8 +62,8 @@ NTPBackgroundImagesData::NTPBackgroundImagesData(
     const std::string& json_string,
     const base::FilePath& installed_dir)
     : NTPBackgroundImagesData() {
-  std::optional<base::Value::Dict> dict =
-      base::JSONReader::ReadDict(json_string);
+  std::optional<base::Value::Dict> dict = base::JSONReader::ReadDict(
+      json_string, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!dict) {
     DVLOG(2) << "Read json data failed. Invalid JSON data";
     return;

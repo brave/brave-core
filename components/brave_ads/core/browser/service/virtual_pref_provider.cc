@@ -105,7 +105,7 @@ base::Value::Dict GetSkus(PrefService* local_state) {
     // Deserialize the SKUs data from a JSON string stored in local state into a
     // dictionary object for further processing.
     std::optional<base::Value::Dict> sku_state =
-        base::JSONReader::ReadDict(value.GetString());
+        base::JSONReader::ReadDict(value.GetString(), base::JSON_PARSE_RFC);
     if (!sku_state) {
       continue;
     }
@@ -156,7 +156,6 @@ base::Value::Dict VirtualPrefProvider::GetPrefs() const {
                .Set("locale", base::Value::Dict()
                                   .Set("language", CurrentLanguageCode())
                                   .Set("region", CurrentCountryCode()))
-               .Set("is_mobile_platform", IsMobilePlatform())
                .Set("name", version_info::GetOSType()))
       .Set("[virtual]:is_survey_panelist", IsSurveyPanelist(prefs_))
       .Set("[virtual]:search_engine",

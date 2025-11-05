@@ -7,12 +7,20 @@
 
 #include <optional>
 #include <string>
+#include <string_view>
 #include <utility>
 
+#include "base/containers/fixed_flat_map.h"
 #include "base/containers/flat_set.h"
+#include "base/containers/map_util.h"
 #include "base/functional/bind.h"
+#include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/time/time_delta_from_string.h"
+#include "base/types/cxx23_to_underlying.h"
+#include "base/types/optional_util.h"
 #include "base/values.h"
+#include "brave/components/brave_ads/core/internal/ads_core/ads_core_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_info.h"
@@ -20,17 +28,42 @@
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpaper_type_constants.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpaper_type_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_table.h"
+#include "brave/components/brave_ads/core/internal/prefs/pref_util.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_constants.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_ads/core/public/common/url/url_util.h"
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 
 namespace brave_ads {
 
 namespace {
 
+constexpr char kUndefinedAdMetricType[] = "";
+constexpr char kDisabledAdMetricType[] = "disabled";
+constexpr char kConfirmationAdMetricType[] = "confirmation";
+
+constexpr auto kStringToMojomMap =
+    base::MakeFixedFlatMap<std::string_view, mojom::NewTabPageAdMetricType>(
+        {{kUndefinedAdMetricType, mojom::NewTabPageAdMetricType::kUndefined},
+         {kDisabledAdMetricType, mojom::NewTabPageAdMetricType::kDisabled},
+         {kConfirmationAdMetricType,
+          mojom::NewTabPageAdMetricType::kConfirmation}});
+
+constexpr auto kMojomToStringMap =
+    base::MakeFixedFlatMap<mojom::NewTabPageAdMetricType, std::string_view>({
+        {mojom::NewTabPageAdMetricType::kUndefined, kUndefinedAdMetricType},
+        {mojom::NewTabPageAdMetricType::kDisabled, kDisabledAdMetricType},
+        {mojom::NewTabPageAdMetricType::kConfirmation,
+         kConfirmationAdMetricType},
+    });
+
 // Schema keys.
 constexpr int kExpectedSchemaVersion = 2;
 constexpr char kSchemaVersionKey[] = "schemaVersion";
+
+// Grace period keys.
+constexpr char kGracePeriodKey[] = "gracePeriod";
 
 // Campaign keys.
 constexpr int kExpectedCampaignVersion = 1;
@@ -40,6 +73,8 @@ constexpr char kCampaignVersionKey[] = "version";
 constexpr char kCampaignIdKey[] = "campaignId";
 
 constexpr char kCampaignAdvertiserIdKey[] = "advertiserId";
+
+constexpr char kCampaignMetricsKey[] = "metrics";
 
 constexpr char kCampaignStartAtKey[] = "startAt";
 constexpr char kCampaignEndAtKey[] = "endAt";
@@ -135,6 +170,15 @@ void ParseAndSaveNewTabPageAds(base::Value::Dict dict,
     return std::move(callback).Run(/*success=*/false);
   }
 
+  base::TimeDelta grace_period = base::Days(3);
+  if (const std::string* const value = dict.FindString(kGracePeriodKey)) {
+    grace_period = base::TimeDeltaFromString(*value).value_or(grace_period);
+    BLOG(1, "Grace period changed to " << grace_period);
+  } else {
+    BLOG(1, "Grace period not specified, defaulting to " << grace_period);
+  }
+  SetProfileTimeDeltaPref(prefs::kGracePeriod, grace_period);
+
   const base::Value::List* const campaign_list = dict.FindList(kCampaignsKey);
   if (!campaign_list) {
     BLOG(0, "Campaigns are required");
@@ -165,6 +209,14 @@ void ParseAndSaveNewTabPageAds(base::Value::Dict dict,
     if (!campaign_id) {
       BLOG(0, "Campaign ID is required, skipping campaign");
       continue;
+    }
+
+    mojom::NewTabPageAdMetricType mojom_ad_metric_type =
+        mojom::NewTabPageAdMetricType::kConfirmation;
+    if (const std::string* const value =
+            campaign_dict->FindString(kCampaignMetricsKey)) {
+      mojom_ad_metric_type = ToMojomNewTabPageAdMetricType(*value).value_or(
+          mojom::NewTabPageAdMetricType::kConfirmation);
     }
 
     const std::string* const advertiser_id =
@@ -284,6 +336,7 @@ void ParseAndSaveNewTabPageAds(base::Value::Dict dict,
       CreativeNewTabPageAdInfo creative_ad;
       creative_ad.campaign_id = *campaign_id;
       creative_ad.advertiser_id = *advertiser_id;
+      creative_ad.metric_type = mojom_ad_metric_type;
       creative_ad.start_at = start_at;
       creative_ad.end_at = end_at;
       creative_ad.daily_cap = daily_cap;
@@ -512,6 +565,9 @@ void ParseAndSaveNewTabPageAds(base::Value::Dict dict,
         for (const auto& segment : segments) {
           creative_ad.segment = segment;
           creative_ads.push_back(creative_ad);
+
+          UpdateReportMetricState(creative_ad.creative_instance_id,
+                                  mojom_ad_metric_type);
         }
       }
     }
@@ -522,6 +578,21 @@ void ParseAndSaveNewTabPageAds(base::Value::Dict dict,
       creative_ads,
       base::BindOnce(&SaveCreativeNewTabPageAdsCallback,
                      creative_set_conversions, std::move(callback)));
+}
+
+std::optional<mojom::NewTabPageAdMetricType> ToMojomNewTabPageAdMetricType(
+    std::string_view value) {
+  return base::OptionalFromPtr(base::FindOrNull(kStringToMojomMap, value));
+}
+
+std::string_view ToString(mojom::NewTabPageAdMetricType value) {
+  const auto iter = kMojomToStringMap.find(value);
+  if (iter != kMojomToStringMap.cend()) {
+    return iter->second;
+  }
+
+  NOTREACHED() << "Unexpected value for mojom::NewTabPageAdMetricType: "
+               << base::to_underlying(value);
 }
 
 }  // namespace brave_ads

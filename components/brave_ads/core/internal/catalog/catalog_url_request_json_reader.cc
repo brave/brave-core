@@ -698,7 +698,8 @@ std::optional<CatalogInfo> ParseCatalog(const base::Value::Dict& dict) {
 }  // namespace
 
 std::optional<CatalogInfo> ReadCatalog(const std::string& json) {
-  std::optional<base::Value::Dict> dict = base::JSONReader::ReadDict(json);
+  std::optional<base::Value::Dict> dict =
+      base::JSONReader::ReadDict(json, base::JSON_PARSE_RFC);
   if (!dict) {
     BLOG(0, "Failed to read catalog JSON");
     return std::nullopt;

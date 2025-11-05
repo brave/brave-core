@@ -11,6 +11,7 @@
 
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
@@ -40,6 +41,7 @@ class MockUntrustedConversationHandlerClient
               AssociatedContentChanged,
               (std::vector<mojom::AssociatedContentPtr>),
               (override));
+  MOCK_METHOD(void, ContentTaskStarted, (int32_t), (override));
 
  private:
   mojo::Receiver<mojom::UntrustedConversationUI> conversation_ui_receiver_{

@@ -5,6 +5,8 @@
 <translation id="3478449063771497234">Las notificaciones están desactivadas</translation>
 <translation id="2862978891748913252">Selecciona tu país</translation>
 <translation id="3970520675790340955">Selecciona tu país para que podamos mostrarte las opciones y anuncios adecuados para tu región.</translation>
+<translation id="721490496276866468">Importar contraseñas</translation>
+<translation id="8178175542325151321">Selecciona un archivo .csv que contenga tus contraseñas para importarlas al administrador de contraseñas de Brave.</translation>
 <translation id="7301741773883122509">Ya puedes conseguir recompensas por ver anuncios. Al hacerlo, contribuyes a que la web sea un lugar mejor para todos, ¡y eso es fantástico!</translation>
 <translation id="6439128034594289376">¡Bien! Ya tienes todo lo que necesitas.</translation>
 <translation id="370665806235115550">Cargando...</translation>
@@ -99,6 +101,8 @@
 <translation id="8617525558807213034">Autorrelleno en las pestañas de incógnito</translation>
 <translation id="8685431198160039193">La información guardada se puede rellenar automáticamente en las pestañas de incógnito</translation>
 <translation id="6583902294974160967">Asistencia</translation>
+<translation id="5713644099811900409">Cuenta de Brave</translation>
+<translation id="4472575034687746823">Comenzar</translation>
 <translation id="1799030480311994998">Funciones</translation>
 <translation id="2005732746077850308">Escudos y privacidad de Brave</translation>
 <translation id="4692623383562244444">Motores de búsqueda</translation>
@@ -107,7 +111,6 @@
 <translation id="7304425663107214334">Mostrar sugerencias del navegador</translation>
 <translation id="8982438328166986164">Muestra sugerencias de sitios web en función de tus marcadores y de tu historial de navegación.</translation>
 <translation id="924029461438529367">Mostrar sugerencias de búsqueda</translation>
-<translation id="5989135139219497991">Mostrar las sugerencias principales</translation>
 <translation id="6285118765755298263">Indexar otros motores de búsqueda</translation>
 <translation id="919715748352669592">Indexa automáticamente sitios web que siguen las especificaciones OpenSearch</translation>
 <translation id="9148058034647219655">Salir</translation>
@@ -295,6 +298,11 @@
 <translation id="4254029385847607686">DICIEMBRE</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="1772301834467143364">Noticias sobre Brave</translation>
+<translation id="2518692840036393666">Personalizar menú</translation>
+<translation id="5582839680698949063">Menú principal</translation>
+<translation id="7002271985859760052">Acciones de página</translation>
+<translation id="7104487676473617844">Los siguientes elementos solo serán visibles en el menú cuando la página web abierta los admita.</translation>
+<translation id="4159764849281393303">Aplicación web</translation>
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="8428213095426709021">Configuración</translation>
 <translation id="6020176662032623904">Creador verificado</translation>
@@ -797,7 +805,6 @@ Si no acepta esta solicitud, la VPN no se volverá a conectar y su conexión a I
 <translation id="750843150060816463">Precio del gas (GWEI)</translation>
 <translation id="1426320910664514906">Limite de gas</translation>
 <translation id="6389441740143786465">Desactivar centro de difusión</translation>
-<translation id="9065203028668620118">Editar</translation>
 <translation id="473775607612524610">Actualizar</translation>
 <translation id="479795390141144417">No se pudo actualizar la cuenta.</translation>
 <translation id="8084782383392198011">El nombre de la cuenta no puede estar vacío.</translation>
@@ -1013,8 +1020,6 @@ Si no acepta esta solicitud, la VPN no se volverá a conectar y su conexión a I
 <translation id="8496335570810457">Compromiso de simulación:</translation>
 <translation id="5100124500279922001">Omitir simulación:</translation>
 <translation id="7152095322071766507">Sitio visitado destacado</translation>
-<translation id="7230006500876504868">Buscar con Brave</translation>
-<translation id="5888208462949095139">Buscar con <ph name="DEFAULT_SEARCH_ENGINE"/></translation>
 <translation id="5456039738087398178">Widget de la pantalla de inicio</translation>
 <translation id="703185154752046151">Se ha agregado el widget a la pantalla de inicio</translation>
 <translation id="4635094429202343515">Prueba el widget del Buscador de Brave</translation>
@@ -1074,7 +1079,7 @@ Si no acepta esta solicitud, la VPN no se volverá a conectar y su conexión a I
 <translation id="7618347247876614969">Cuenta de la tabla de consulta de direcciones:</translation>
 <translation id="7659483790930268440">Índice de la tabla de consulta de direcciones:</translation>
 <translation id="5494920125229734069">Seleccionar todo</translation>
-<translation id="6129027151000961048">Leo</translation>
+<translation id="2361906291514218784">IA de Leo</translation>
 <translation id="8613144770663526433">Iniciar sesión con Billetera de Brave</translation>
 <translation id="3696514931437952995">Estás iniciando sesión en <ph name="ORIGIN"/>. Billetera de Brave compartirá la dirección de tu cartera con <ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">Ver detalles</translation>
@@ -1091,11 +1096,11 @@ Si no acepta esta solicitud, la VPN no se volverá a conectar y su conexión a I
 <translation id="6742599753610126012">Borrar el historial de chat</translation>
 <translation id="3443052382074796867">Deshabilitar el almacenamiento de conversaciones borrará permanentemente todas las conversaciones previamente almacenadas. Esta acción no se puede deshacer.</translation>
 <translation id="3692772534525889713">Vincula la compra que has hecho en el Play Store con tu cuenta de Brave para usar Brave Leo en otros dispositivos.</translation>
-<translation id="73236265316873967">Leo Premium</translation>
+<translation id="592831784390389506">Leo AI Premium</translation>
 <translation id="1028627582482425924">Un año</translation>
 <translation id="2985392169397572983">MEJOR RELACIÓN CALIDAD-PRECIO</translation>
 <translation id="1166682575529520472">Mensual</translation>
-<translation id="451189393813405346">Preguntar a Leo</translation>
+<translation id="2206846767762985925">Preguntar a Leo AI</translation>
 <translation id="7322560193401221004">Recordar la posición de reproducción de archivos</translation>
 <translation id="7505951907514709271">Con los archivos individuales, reanudar la reproducción en el punto en el que se pausó la última vez.</translation>
 <translation id="6835165453349969605">Recordar la posición de reproducción de listas</translation>
@@ -1138,6 +1143,7 @@ Si no acepta esta solicitud, la VPN no se volverá a conectar y su conexión a I
 <translation id="3861012838874771868">Abrir la configuración de listas de reproducción</translation>
 <translation id="5220099266891491416">Ocultar el botón Lista de reproducción</translation>
 <translation id="7416347631175891923">¡Pruébalo!</translation>
+<translation id="9065203028668620118">Editar</translation>
 <translation id="1173894706177603556">Cambiar nombre</translation>
 <translation id="3596306474342941843">Eliminar lista de reproducción</translation>
 <translation id="7765158879357617694">Mover</translation>
@@ -1152,7 +1158,7 @@ Si no acepta esta solicitud, la VPN no se volverá a conectar y su conexión a I
 <translation id="5319532905552885478">El contenido multimedia ya se ha añadido a la lista de reproducción predeterminada</translation>
 <translation id="4802584673094436231">Preparando…</translation>
 <translation id="481455355267255546">A continuación</translation>
-<translation id="5474757891469990756">Descubre todo el potencial de Leo con Premium:</translation>
+<translation id="3721790899869840343">Desata todo el poder de Leo AI con Premium:</translation>
 <translation id="4173478269537830374">Prueba diferentes modelos de IA</translation>
 <translation id="3453542753968940696">Acceso prioritario a modelos potentes con diferentes habilidades.</translation>
 <translation id="3245401959451976966">Potencia tu creatividad</translation>
@@ -1220,12 +1226,18 @@ Si no acepta esta solicitud, la VPN no se volverá a conectar y su conexión a I
 <translation id="4650851936784160359">No se ha podido actualizar la lista de filtros. Inténtelo de nuevo.</translation>
 <translation id="3098054327870766317">Mostrar botón de deshacer cuando las pestañas están cerradas</translation>
 <translation id="1336494649091412226">¿Tienes la certeza de que quieres salir de Brave?</translation>
-<translation id="2361906291514218784">IA de Leo</translation>
 <translation id="7942415993090181327">Historial de chat</translation>
 <translation id="6859935199732075666">Mostrar errores de Safe Browsing</translation>
 <translation id="2735247450315842119">Permitir capturas de pantalla en pestañas privadas</translation>
 <translation id="8420414929552321089">Si se permite, las pestañas privadas también serán visibles cuando haya varias aplicaciones abiertas.</translation>
 <translation id="7956713633345437162">Marcadores móviles</translation>
+<translation id="3176467469116060712">Apoya el trabajo líder en la industria de Brave en materia de privacidad web y listas de bloqueo de anuncios de código abierto</translation>
+<translation id="5896375129784311037">Optimizado para una interfaz de navegador más minimalista</translation>
+<translation id="746156554966264308">Un núcleo de los Escudos de Brave para la privacidad, la velocidad y el bloqueo de anuncios</translation>
+<translation id="1432661650699782509">Apoyo a las políticas gestionadas por TI en el trabajo</translation>
+<translation id="1361157028850796410">mejor valor</translation>
+<translation id="7280825497485894053">Suscripción mensual</translation>
+<translation id="4570901726096223030">Más información sobre Origin</translation>
 <translation id="1943432128510653496">Guardar contraseñas</translation>
 <translation id="2100273922101894616">Acceso automático</translation>
 <translation id="363596933471559332">Permite acceder automáticamente a los sitios web con las credenciales almacenadas. Si la función está desactivada, siempre se solicitará verificación antes de acceder a un sitio web.</translation>
@@ -1237,6 +1249,18 @@ Si no acepta esta solicitud, la VPN no se volverá a conectar y su conexión a I
 <translation id="5139940364318403933">Aprender a usar Brave Drive</translation>
 <translation id="729975465115245577">Tu dispositivo no tiene una app que pueda almacenar el archivo de contraseñas.</translation>
 <translation id="1129510026454351943">Detalles: <ph name="ERROR_DESCRIPTION"/></translation>
+<translation id="5594899180331219722">Seleccionar archivo</translation>
+<translation id="3744219658596020825">Tus contraseñas no se importaron</translation>
+<translation id="8258027225380843424">Importación correcta!</translation>
+<translation id="766635563210446220">No se pueden importar las contraseñas. Revisa <ph name="FILENAME"/> y asegúrate de que esté correctamente formateado. <ph name="BEGIN_LINK"/>Más información<ph name="END_LINK"/></translation>
+<translation id="6581356304040102696">No se pueden importar las contraseñas. El tamaño del archivo debe ser menor a 1 MB.</translation>
+<translation id="5895244669404288318">{COUNT, plural, =1 {No se pueden importar contraseñas. Solo puedes importar 1 contraseña a la vez.} other {No se pueden importar contraseñas. Solo puedes importar hasta <ph name="COUNT_MANY"/> contraseñas a la vez.}}</translation>
+<translation id="3748424433435232460">Ya hay una contraseña guardada para esta cuenta en este dispositivo</translation>
+<translation id="6438475350605608554">Ya estás importando contraseñas en otra pestaña</translation>
+<translation id="3482868954775580230">No se pudo leer el archivo seleccionado. <ph name="EXCEPTION_INFO"/></translation>
+<translation id="9162995380643712715">{IMPORT_COUNT, plural, =1 {Contraseña importada exitosamente.} other {<ph name="IMPORT_COUNT_MANY"/> contraseñas importadas exitosamente.}}</translation>
+<translation id="4637949129057123593">Error en la importación.</translation>
+<translation id="4300452012226767715">Administrador de contraseñas no disponible.</translation>
 <translation id="6221633008163990886">Desbloquea la pantalla para exportar tus contraseñas</translation>
 <translation id="5245792669563792664">contraseñas</translation>
 <translation id="10614374240317010">Nunca guardado</translation>

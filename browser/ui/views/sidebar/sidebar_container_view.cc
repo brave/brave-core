@@ -176,25 +176,20 @@ bool SidebarContainerView::IsSidebarVisible() const {
   return sidebar_control_view_ && sidebar_control_view_->GetVisible();
 }
 
-bool SidebarContainerView::PreHandleMouseEvent(
+void SidebarContainerView::ShowSidebarOnMouseOver(
     const gfx::PointF& point_in_screen) {
   if (IsSidebarVisible()) {
-    return false;
+    return;
   }
 
   if (show_sidebar_option_ != ShowSidebarOption::kShowOnMouseOver) {
-    return false;
+    return;
   }
 
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser_);
   gfx::RectF mouse_event_detect_bounds(
-      browser_view->GetContentsContainerForLayoutManager()
-          ->GetBoundsInScreen());
+      browser_view->main_container()->GetBoundsInScreen());
 
-  // Detect bounds should include rounded corners margin to make sidebar
-  // visible from that padding also.
-  mouse_event_detect_bounds.Outset(
-      BraveContentsViewUtil::GetRoundedCornersWebViewMargin(browser_));
   constexpr int kHotCornerWidth = 7;
   const int inset = mouse_event_detect_bounds.width() - kHotCornerWidth;
   if (sidebar_on_left_) {
@@ -205,10 +200,8 @@ bool SidebarContainerView::PreHandleMouseEvent(
 
   if (mouse_event_detect_bounds.Contains(point_in_screen)) {
     ShowSidebarControlView();
-    return true;
+    return;
   }
-
-  return false;
 }
 
 void SidebarContainerView::WillShowSidePanel() {
@@ -256,6 +249,10 @@ bool SidebarContainerView::IsFullscreenForCurrentEntry() const {
   }
 
   return false;
+}
+
+void SidebarContainerView::UpdateBorder() {
+  sidebar_control_view_->UpdateBackgroundAndBorder();
 }
 
 void SidebarContainerView::SetSidebarShowOption(ShowSidebarOption show_option) {
@@ -742,9 +739,14 @@ void SidebarContainerView::OnEntryShown(SidePanelEntry* entry) {
 
   // Handling if |entry| is managed one.
   for (const auto& item : sidebar_model_->GetAllSidebarItems()) {
-    if (!item.open_in_panel) {
+    // WebPanel feature is not enabled by default now but that item
+    // type(true to web_type & open_in_panel) could exist if tested before.
+    // That item type should not go further as
+    // sidebar::SidePanelIdFromSideBarItem() doesn't know about that type.
+    if (item.is_web_type() || !item.open_in_panel) {
       continue;
     }
+
     if (entry->key().id() == sidebar::SidePanelIdFromSideBarItem(item)) {
       const auto sidebar_index = sidebar_model_->GetIndexOf(item);
       controller->ActivateItemAt(sidebar_index);
@@ -896,7 +898,8 @@ void SidebarContainerView::StartObservingContextualSidePanelEntry(
   // windows also should have same visible side panel.
   if (shared_pinned_tab_service &&
       shared_pinned_tab_service->IsSharedContents(contents)) {
-    if (auto active_entry = registry->active_entry()) {
+    if (auto active_entry =
+            registry->GetActiveEntryFor(SidePanelEntry::PanelType::kContent)) {
       OnEntryShown(*active_entry);
     }
   }

@@ -72,6 +72,16 @@ export function createSearchHandler(store: Store<SearchState>): SearchActions {
       })
     },
 
+    setActiveSearchInputKey(key) {
+      const { activeSearchInputKey } = store.getState()
+      if (key !== activeSearchInputKey) {
+        store.update({
+          activeSearchInputKey: key,
+          searchMatches: []
+        })
+      }
+    },
+
     queryAutocomplete(query, engine) {
       store.update({
         searchMatches: [{
@@ -86,6 +96,14 @@ export function createSearchHandler(store: Store<SearchState>): SearchActions {
           allowedToBeDefaultMatch: true,
           contents: stringToMojoString16('contents 2'),
           description: stringToMojoString16('Ask Leo'),
+          iconUrl: { url: '' },
+          imageUrl: '',
+          destinationUrl: { url: '' }
+        },
+        {
+          allowedToBeDefaultMatch: true,
+          contents: stringToMojoString16(query),
+          description: stringToMojoString16(engine),
           iconUrl: { url: '' },
           imageUrl: '',
           destinationUrl: { url: '' }

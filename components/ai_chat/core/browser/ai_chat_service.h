@@ -27,10 +27,12 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_database.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_feedback_api.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
+#include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_provider_factory.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/tab_tracker.mojom.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -159,6 +161,8 @@ class AIChatService : public KeyedService,
 
   void MaybeAssociateContent(AssociatedContentDelegate* content,
                              const std::string& conversation_uuid);
+  void AssociateOwnedContent(std::unique_ptr<AssociatedContentDelegate> content,
+                             const std::string& conversation_uuid);
   void DisassociateContent(const mojom::AssociatedContentPtr& content,
                            const std::string& conversation_uuid);
 
@@ -173,6 +177,15 @@ class AIChatService : public KeyedService,
   void EnableStoragePref() override;
   void DismissStorageNotice() override;
   void DismissPremiumPrompt() override;
+  void GetSkills(GetSkillsCallback callback) override;
+  void CreateSkill(const std::string& shortcut,
+                   const std::string& prompt,
+                   const std::optional<std::string>& model) override;
+  void UpdateSkill(const std::string& id,
+                   const std::string& shortcut,
+                   const std::string& prompt,
+                   const std::optional<std::string>& model) override;
+  void DeleteSkill(const std::string& id) override;
   void GetConversations(GetConversationsCallback callback) override;
   void GetActionMenuList(GetActionMenuListCallback callback) override;
   void GetPremiumStatus(GetPremiumStatusCallback callback) override;
@@ -302,6 +315,7 @@ class AIChatService : public KeyedService,
   void OnDataDeletedForDisabledStorage(bool success);
   mojom::ServiceStatePtr BuildState();
   void OnStateChanged();
+  void OnSkillsChanged();
   void OnMemoryEnabledChanged();
   void InitializeTools();
 

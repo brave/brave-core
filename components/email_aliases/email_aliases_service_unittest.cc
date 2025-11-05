@@ -20,6 +20,7 @@
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "base/types/expected.h"
+#include "brave/components/constants/brave_services_key.h"
 #include "brave/components/email_aliases/features.h"
 #include "components/grit/brave_components_strings.h"
 #include "net/base/net_errors.h"
@@ -62,7 +63,7 @@ class TestObserver : public email_aliases::mojom::EmailAliasesServiceObserver {
 class EmailAliasesServiceTest : public ::testing::Test {
  protected:
   EmailAliasesServiceTest() {
-    feature_list_.InitAndEnableFeature(email_aliases::kEmailAliases);
+    feature_list_.InitAndEnableFeature(email_aliases::features::kEmailAliases);
   }
 
   void SetUp() override {
@@ -241,7 +242,7 @@ TEST_F(EmailAliasesServiceTest,
 class EmailAliasesServiceTimingTest : public ::testing::Test {
  protected:
   void SetUp() override {
-    feature_list_.InitAndEnableFeature(email_aliases::kEmailAliases);
+    feature_list_.InitAndEnableFeature(email_aliases::features::kEmailAliases);
     service_ = std::make_unique<EmailAliasesService>(
         url_loader_factory_.GetSafeWeakWrapper());
     observer_ = std::make_unique<TestObserver>();
@@ -378,8 +379,7 @@ class AliasObserver : public mojom::EmailAliasesServiceObserver {
 class EmailAliasesAPITest : public ::testing::Test {
  public:
   void AddManageResponseFor(const std::optional<std::string>& body) {
-    const GURL manage_url =
-        EmailAliasesService::GetEmailAliasesServiceURLForTesting();
+    const GURL manage_url = EmailAliasesService::GetEmailAliasesServiceURL();
     if (body.has_value()) {
       url_loader_factory_.AddResponse(manage_url.spec(), *body,
                                       base::Contains(*body, "error")
@@ -394,8 +394,7 @@ class EmailAliasesAPITest : public ::testing::Test {
 
   void AddRefreshResponseFor(
       const std::optional<std::string>& refresh_body = std::nullopt) {
-    const GURL manage_url =
-        EmailAliasesService::GetEmailAliasesServiceURLForTesting();
+    const GURL manage_url = EmailAliasesService::GetEmailAliasesServiceURL();
     url_loader_factory_.AddResponse(manage_url.Resolve("?status=active").spec(),
                                     refresh_body.value_or("[]"));
   }
@@ -455,7 +454,7 @@ class EmailAliasesAPITest : public ::testing::Test {
     service_->AddObserver(std::move(remote));
   }
 
-  base::test::ScopedFeatureList feature_list_{kEmailAliases};
+  base::test::ScopedFeatureList feature_list_{features::kEmailAliases};
   base::test::TaskEnvironment task_environment_;
   network::TestURLLoaderFactory url_loader_factory_;
   std::unique_ptr<EmailAliasesService> service_;
@@ -676,8 +675,7 @@ TEST_F(EmailAliasesAPITest, ApiFetch_AttachesAuthTokenAndAPIKeyHeaders) {
       [&]() { return service_->GetAuthTokenForTesting() == "auth456"; }));
 
   // Intercept the next manage request to capture headers.
-  const GURL manage_url =
-      EmailAliasesService::GetEmailAliasesServiceURLForTesting();
+  const GURL manage_url = EmailAliasesService::GetEmailAliasesServiceURL();
   std::string seen_authorization;
   std::string seen_api_key;
   url_loader_factory_.SetInterceptor(
@@ -702,8 +700,7 @@ TEST_F(EmailAliasesAPITest, ApiFetch_AttachesAuthTokenAndAPIKeyHeaders) {
   // The helper enqueues the request body separately; here we just ensure it
   // ran. Validate headers captured by the interceptor.
   EXPECT_EQ(seen_authorization, "Bearer auth456");
-  EXPECT_EQ(seen_api_key,
-            EmailAliasesService::GetEmailAliasesServiceAPIKeyForTesting());
+  EXPECT_EQ(seen_api_key, BUILDFLAG(BRAVE_SERVICES_KEY));
 }
 
 }  // namespace email_aliases

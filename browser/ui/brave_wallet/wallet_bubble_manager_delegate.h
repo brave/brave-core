@@ -21,7 +21,7 @@ namespace brave_wallet {
 
 class WalletBubbleManagerDelegate {
  public:
-  static std::unique_ptr<WalletBubbleManagerDelegate> Create(
+  static std::unique_ptr<WalletBubbleManagerDelegate> MaybeCreate(
       content::WebContents* web_contents,
       const GURL& webui_url);
 

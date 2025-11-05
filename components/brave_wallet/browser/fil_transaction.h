@@ -25,7 +25,6 @@ class FilTransaction {
   FilTransaction(const FilTransaction&);
   virtual ~FilTransaction();
   bool operator==(const FilTransaction&) const;
-  bool operator!=(const FilTransaction&) const;
 
   static std::optional<FilTransaction> FromTxData(
       bool is_mainnet,

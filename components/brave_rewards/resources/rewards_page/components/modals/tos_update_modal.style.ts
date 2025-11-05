@@ -22,4 +22,3 @@ export const style = scoped.css`
     cursor: pointer;
   }
 `
-

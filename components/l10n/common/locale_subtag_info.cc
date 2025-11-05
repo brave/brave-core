@@ -27,8 +27,4 @@ bool operator==(const LocaleSubtagInfo& lhs, const LocaleSubtagInfo& rhs) {
          lhs.variant == rhs.variant;
 }
 
-bool operator!=(const LocaleSubtagInfo& lhs, const LocaleSubtagInfo& rhs) {
-  return !(lhs == rhs);
-}
-
 }  // namespace brave_l10n

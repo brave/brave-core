@@ -7,7 +7,6 @@ package org.chromium.chrome.browser.crypto_wallet.util;
 
 import androidx.annotation.NonNull;
 
-import org.chromium.base.Callbacks;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
@@ -44,7 +43,7 @@ public class BalanceHelper {
             @NonNull final JsonRpcService jsonRpcService,
             @NonNull final NetworkInfo selectedNetwork,
             @NonNull final AccountInfo[] accounts,
-            @NonNull final Callbacks.Callback2<Integer, HashMap<String, Double>> callback) {
+            @NonNull final AsyncUtils.Callback2<Integer, HashMap<String, Double>> callback) {
         HashMap<String, Double> nativeAssetsBalances = new HashMap<>();
 
         MultiResponseHandler balancesMultiResponse = new MultiResponseHandler(accounts.length);
@@ -114,7 +113,7 @@ public class BalanceHelper {
             NetworkInfo selectedNetwork,
             AccountInfo[] accountInfos,
             BlockchainToken[] tokens,
-            Callbacks.Callback2<Integer, HashMap<String, HashMap<String, Double>>> callback) {
+            AsyncUtils.Callback2<Integer, HashMap<String, HashMap<String, Double>>> callback) {
         if (jsonRpcService == null) return;
         HashMap<String, HashMap<String, Double>> blockchainTokensBalances =
                 new HashMap<String, HashMap<String, Double>>();
@@ -222,7 +221,7 @@ public class BalanceHelper {
             WeakReference<BraveWalletBaseActivity> activityRef,
             List<NetworkInfo> allNetworks,
             NetworkInfo selectedNetwork,
-            Callbacks.Callback1<HashMap<Integer, HashSet<String>>> callback) {
+            AsyncUtils.Callback1<HashMap<Integer, HashSet<String>>> callback) {
         BraveWalletBaseActivity activity = activityRef.get();
         if (activity == null || activity.isFinishing()) return;
         KeyringService keyringService = activity.getKeyringService();
@@ -234,13 +233,16 @@ public class BalanceHelper {
                 && keyringService != null
                 && jsonRpcService != null;
         if (JavaUtils.anyNull(
-                braveWalletService, blockchainRegistry, keyringService, jsonRpcService)) return;
+                braveWalletService, blockchainRegistry, keyringService, jsonRpcService)) {
+            return;
+        }
 
         boolean P3AEnabled = BraveLocalState.get().getBoolean(BravePref.P3A_ENABLED);
 
         HashMap<Integer, HashSet<String>> activeAddresses = new HashMap<Integer, HashSet<String>>();
-        for (int coinType : Utils.P3ACoinTypes)
+        for (int coinType : Utils.P3ACoinTypes) {
             activeAddresses.put(coinType, new HashSet<String>());
+        }
 
         if (!P3AEnabled) {
             callback.call(activeAddresses);
@@ -392,16 +394,18 @@ public class BalanceHelper {
             HashMap<Integer, HashSet<String>> activeAddresses) {
         for (GetNativeAssetsBalancesResponseContext ctx : nativeAssetsBalancesResponses) {
             for (Map.Entry<String, Double> nativeEntry : ctx.nativeAssetsBalances.entrySet()) {
-                if (nativeEntry.getValue() > 0.0d)
+                if (nativeEntry.getValue() > 0.0d) {
                     activeAddresses.get(ctx.coinType).add(nativeEntry.getKey());
+                }
             }
         }
         for (GetBlockchainTokensBalancesResponseContext ctx : blockchainTokensBalancesResponses) {
             for (Map.Entry<String, HashMap<String, Double>> accEntry :
                     ctx.blockchainTokensBalances.entrySet()) {
                 for (Map.Entry<String, Double> tokenEntry : accEntry.getValue().entrySet()) {
-                    if (tokenEntry.getValue() > 0.0d)
+                    if (tokenEntry.getValue() > 0.0d) {
                         activeAddresses.get(ctx.coinType).add(accEntry.getKey());
+                    }
                 }
             }
         }

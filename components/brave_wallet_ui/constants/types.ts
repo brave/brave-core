@@ -713,6 +713,7 @@ export const SupportedTestNetworks = [
   BraveWallet.BITCOIN_TESTNET,
   BraveWallet.Z_CASH_TESTNET,
   BraveWallet.CARDANO_TESTNET,
+  BraveWallet.POLKADOT_TESTNET,
 ]
 
 export const SupportedTestNetworkEntityIds: EntityId[] = [
@@ -729,6 +730,7 @@ export const SupportedTestNetworkEntityIds: EntityId[] = [
   BraveWallet.BITCOIN_TESTNET,
   BraveWallet.Z_CASH_TESTNET,
   BraveWallet.CARDANO_TESTNET,
+  BraveWallet.POLKADOT_TESTNET,
 ]
 
 export const DAppSupportedCoinTypes = [
@@ -775,6 +777,7 @@ export const CoinTypes = {
   FIL: 461,
   SOL: 501,
   ADA: 1815,
+  DOT: 354,
   MIN_VALUE: 0,
   MAX_VALUE: 501,
 } as const
@@ -788,6 +791,7 @@ export enum CoinTypesMap {
   BTC = BraveWallet.CoinType.BTC,
   ZEC = BraveWallet.CoinType.ZEC,
   ADA = BraveWallet.CoinType.ADA,
+  DOT = BraveWallet.CoinType.DOT,
 }
 
 export type BuyOption = {

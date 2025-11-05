@@ -583,14 +583,22 @@ void BravePrefProvider::MigrateCosmeticFilteringSettings() {
 
   auto merge_values = [](const Rule* fp_rule, const Rule* general_rule) {
     // Same logic as in GetCosmeticFilteringControlType.
-    if (content_settings::ValueToContentSetting(
-            *general_rule->value.GetDict().Find("setting")) ==
+    const auto* setting = general_rule->value.GetDict().Find("setting");
+    if (!setting) {
+      return base::Value();
+    }
+    if (content_settings::ValueToContentSetting(*setting) ==
         CONTENT_SETTING_ALLOW) {
       return brave_shields::CosmeticFilteringSetting::ToValue(
           brave_shields::ControlType::ALLOW);
     }
-    if (content_settings::ValueToContentSetting(*fp_rule->value.GetDict().Find(
-            "setting")) != CONTENT_SETTING_BLOCK) {
+
+    setting = fp_rule->value.GetDict().Find("setting");
+    if (!setting) {
+      return base::Value();
+    }
+    if (content_settings::ValueToContentSetting(*setting) !=
+        CONTENT_SETTING_BLOCK) {
       return brave_shields::CosmeticFilteringSetting::ToValue(
           brave_shields::ControlType::BLOCK_THIRD_PARTY);
     }

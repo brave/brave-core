@@ -22,6 +22,7 @@
 #include "base/threading/thread_restrictions.h"
 #include "base/types/cxx23_to_underlying.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/proto_conversion.h"
 #include "brave/components/ai_chat/core/proto/store.pb.h"
 #include "components/os_crypt/async/common/encryptor.h"
@@ -143,6 +144,15 @@ bool MigrateFrom6to7(sql::Database* db) {
   return update_statement.is_valid() && update_statement.Run();
 }
 
+bool MigrateFrom7to8(sql::Database* db) {
+  // Note: Column name kept as 'smart_mode_data' for backward compatibility
+  // (feature is now called 'skills').
+  static constexpr char kAddSkillColumnQuery[] =
+      "ALTER TABLE conversation_entry ADD COLUMN smart_mode_data BLOB";
+  sql::Statement statement(db->GetUniqueStatement(kAddSkillColumnQuery));
+  return statement.is_valid() && statement.Run();
+}
+
 }  // namespace
 
 // These database versions should roll together unless we develop migrations.
@@ -155,7 +165,7 @@ constexpr int kLowestSupportedDatabaseVersion = 1;
 constexpr int kCompatibleDatabaseVersionNumber = 7;
 
 // Current version of the database. Increase if breaking changes are made.
-constexpr int kCurrentDatabaseVersion = 7;
+constexpr int kCurrentDatabaseVersion = 8;
 
 AIChatDatabase::AIChatDatabase(const base::FilePath& db_file_path,
                                os_crypt_async::Encryptor encryptor)
@@ -273,6 +283,15 @@ sql::InitStatus AIChatDatabase::InitInternal() {
       }
       current_version = 7;
     }
+    if (migration_success && current_version == 7) {
+      migration_success = MigrateFrom7to8(&GetDB());
+      if (migration_success) {
+        migration_success = meta_table.SetCompatibleVersionNumber(
+                                kCompatibleDatabaseVersionNumber) &&
+                            meta_table.SetVersionNumber(8);
+      }
+      current_version = 8;
+    }
 
     // Migration unsuccessful, raze the database and re-init
     if (!migration_success) {
@@ -333,6 +352,7 @@ std::vector<mojom::ConversationPtr> AIChatDatabase::GetAllConversations() {
     std::string uuid = statement.ColumnString(0);
     if (conversation && conversation->uuid != uuid) {
       conversation_list.emplace_back(std::move(conversation));
+      conversation = nullptr;
     }
 
     if (!conversation) {
@@ -398,7 +418,9 @@ std::vector<mojom::ConversationTurnPtr> AIChatDatabase::GetConversationEntries(
   static constexpr char kEntriesQuery[] =
       "SELECT uuid, date, entry_text, prompt, character_type, "
       "editing_entry_uuid, "
-      "action_type, selected_text, model_key"
+      // Note: Column name kept as 'smart_mode_data' for backward compatibility
+      // (feature is now called 'skills').
+      "action_type, selected_text, model_key, smart_mode_data"
       " FROM conversation_entry"
       " WHERE conversation_uuid=?"
       " ORDER BY date ASC";
@@ -431,9 +453,20 @@ std::vector<mojom::ConversationTurnPtr> AIChatDatabase::GetConversationEntries(
     auto selected_text = DecryptOptionalColumnToString(statement, index++);
     auto model_key = GetOptionalString(statement, index++);
 
+    // Deserialize skill data
+    mojom::SkillEntryPtr skill = nullptr;
+    auto skill_data = DecryptOptionalColumnToString(statement, index++);
+    if (skill_data.has_value() && !skill_data.value().empty()) {
+      store::SkillEntryProto proto_skill;
+      if (proto_skill.ParseFromString(skill_data.value())) {
+        skill = DeserializeSkillEntry(proto_skill);
+      }
+    }
+
     auto entry = mojom::ConversationTurn::New(
         entry_uuid, character_type, action_type, text, prompt, selected_text,
-        std::nullopt, date, std::nullopt, std::nullopt, false, model_key);
+        std::nullopt, date, std::nullopt, std::nullopt, std::move(skill), false,
+        model_key);
 
     // events
     struct Event {
@@ -852,16 +885,21 @@ bool AIChatDatabase::AddConversationEntry(
     static constexpr char kInsertEditingConversationEntryQuery[] =
         "INSERT INTO conversation_entry(editing_entry_uuid, uuid,"
         " conversation_uuid, date, entry_text, prompt,"
-        " character_type, action_type, selected_text, model_key)"
-        " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        " character_type, action_type, selected_text, model_key,"
+        // Note: Column name kept as 'smart_mode_data' for backward
+        // compatibility (feature is now called 'skills').
+        " smart_mode_data)"
+        " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     insert_conversation_entry_statement.Assign(
         GetDB().GetUniqueStatement(kInsertEditingConversationEntryQuery));
   } else {
     static constexpr char kInsertConversationEntryQuery[] =
         "INSERT INTO conversation_entry(uuid, conversation_uuid, date,"
         " entry_text, prompt, character_type, action_type, selected_text,"
-        " model_key)"
-        " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        // Note: Column name kept as 'smart_mode_data' for backward
+        // compatibility (feature is now called 'skills').
+        " model_key, smart_mode_data)"
+        " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     insert_conversation_entry_statement.Assign(
         GetDB().GetUniqueStatement(kInsertConversationEntryQuery));
   }
@@ -886,6 +924,18 @@ bool AIChatDatabase::AddConversationEntry(
                                entry->selected_text);
   BindOptionalString(insert_conversation_entry_statement, index++,
                      entry->model_key);
+
+  // Serialize and bind skill data
+  if (entry->skill) {
+    store::SkillEntryProto proto_skill;
+    SerializeSkillEntry(entry->skill, &proto_skill);
+    if (!BindAndEncryptString(insert_conversation_entry_statement, index++,
+                              proto_skill.SerializeAsString())) {
+      return false;
+    }
+  } else {
+    insert_conversation_entry_statement.BindNull(index++);
+  }
 
   if (!insert_conversation_entry_statement.Run()) {
     DVLOG(0) << "Failed to execute 'conversation_entry' insert statement: "
@@ -1553,7 +1603,10 @@ bool AIChatDatabase::CreateSchema() {
       "action_type INTEGER,"
       // Encrypted selected text
       "selected_text BLOB,"
-      "model_key TEXT)";
+      "model_key TEXT,"
+      // Encrypted skill data
+      // Note: Column name kept as 'smart_mode_data' for backward compatibility
+      "smart_mode_data BLOB)";
   // TODO(petemill): Forking can be achieved by associating each
   // ConversationEntry with a parent ConversationEntry.
   // TODO(petemill): Store a model name with each entry to know when

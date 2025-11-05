@@ -6,6 +6,7 @@
 import("//brave/components/common/typescript.gni")
 
 transpile_web_ui("skus_internals_ui") {
+  output_module = false
   entry_points = [ [
         "skus_internals",
         rebase_path("skus_internals.tsx"),
@@ -17,6 +18,7 @@ transpile_web_ui("skus_internals_ui") {
   ]
 
   resource_name = "skus_internals"
+  imports_from = [ "//brave/components/skus/browser/resources/" ]
 }
 
 pack_web_resources("generated_resources") {

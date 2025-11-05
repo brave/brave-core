@@ -344,7 +344,7 @@ public class AutocompleteTextField: UITextField, UITextFieldDelegate {
         privateMode: privateBrowsingManager.isPrivateBrowsing
       )
     {
-      let cleanedURL = service.sanitizeURL(match.destinationURL) ?? match.destinationURL
+      let cleanedURL = service.sanitize(url: match.destinationURL) ?? match.destinationURL
       let copyCleanLinkAction = UIAction(
         title: Strings.copyCleanLink,
         image: UIImage(braveSystemNamed: "leo.copy.clean"),
@@ -426,5 +426,24 @@ public class AutocompleteTextField: UITextField, UITextFieldDelegate {
   override public func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
     applyCompletion()
     super.touchesBegan(touches, with: event)
+  }
+
+  public override func pressesEnded(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
+    guard isSelectionActive else {
+      super.pressesEnded(presses, with: event)
+      return
+    }
+
+    for press in presses {
+      guard let key = press.key else { continue }
+      let charactersIsRightArrow = key.charactersIgnoringModifiers == UIKeyCommand.inputRightArrow
+      let keycodeIsRightArrow = key.keyCode == .keyboardRightArrow
+      if charactersIsRightArrow || keycodeIsRightArrow {
+        applyCompletion()
+        break
+      }
+    }
+
+    super.pressesEnded(presses, with: event)
   }
 }

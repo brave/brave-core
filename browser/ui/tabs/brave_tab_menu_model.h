@@ -20,10 +20,6 @@
 #include "brave/browser/ui/containers/containers_menu_model.h"
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
-namespace content {
-class WebContents;
-}  // namespace content
-
 namespace sessions {
 class TabRestoreService;
 }  // namespace sessions
@@ -40,10 +36,6 @@ class BraveTabMenuModel : public TabMenuModel {
     CommandToggleTabMuted,
     CommandBringAllTabsToThisWindow,
     CommandCloseDuplicateTabs,
-    CommandNewSplitView,
-    CommandTileTabs,
-    CommandBreakTile,
-    CommandSwapTabsInTile,
     CommandOpenInContainer,
     CommandRenameTab,
     CommandLast,
@@ -100,7 +92,6 @@ class BraveTabMenuModel : public TabMenuModel {
     return arrange_split_view_submenu_.get();
   }
 
-  raw_ptr<content::WebContents> web_contents_ = nullptr;
   raw_ptr<sessions::TabRestoreService> restore_service_ = nullptr;
   bool all_muted_;
 

@@ -14,7 +14,6 @@ namespace request_otr::features {
 // 'X-Request-OTR: 1' HTTP header, and present a security interstitial with
 // choice to proceed normally or in an off-the-record context.
 BASE_FEATURE(kBraveRequestOTRTab,
-             "BraveRequestOTRTab",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
 }  // namespace request_otr::features

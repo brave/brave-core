@@ -26,7 +26,6 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/metrics/field_trial_params.h"
-#include "base/no_destructor.h"
 #include "base/numerics/clamped_math.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
@@ -40,6 +39,7 @@
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/brave_service_keys/brave_service_key_utils.h"
 #include "brave/components/constants/brave_services_key.h"
 #include "brave/components/l10n/common/locale_util.h"
@@ -93,13 +93,14 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
 
 base::Value::List ConversationEventsToList(
     std::vector<ConversationEvent> conversation) {
-  static const base::NoDestructor<std::map<ConversationEventRole, std::string>>
-      kRoleMap({{ConversationEventRole::kUser, "user"},
-                {ConversationEventRole::kAssistant, "assistant"},
-                {ConversationEventRole::kTool, "tool"}});
+  static constexpr auto kRoleMap =
+      base::MakeFixedFlatMap<ConversationEventRole, std::string_view>(
+          {{ConversationEventRole::kUser, "user"},
+           {ConversationEventRole::kAssistant, "assistant"},
+           {ConversationEventRole::kTool, "tool"}});
 
-  static const base::NoDestructor<std::map<ConversationEventType, std::string>>
-      kTypeMap(
+  static constexpr auto kTypeMap =
+      base::MakeFixedFlatMap<ConversationEventType, std::string_view>(
           {{ConversationEventType::kContextURL, "contextURL"},
            {ConversationEventType::kUserText, "userText"},
            {ConversationEventType::kPageText, "pageText"},
@@ -123,20 +124,25 @@ base::Value::List ConversationEventsToList(
            {ConversationEventType::kPageScreenshot, "pageScreenshot"},
            {ConversationEventType::kUploadPdf, "uploadPdf"},
            {ConversationEventType::kToolUse, "toolUse"},
-           {ConversationEventType::kUserMemory, "userMemory"}});
+           {ConversationEventType::kUserMemory, "userMemory"},
+           {ConversationEventType::kChangeTone, "requestChangeTone"},
+           {ConversationEventType::kParaphrase, "requestParaphrase"},
+           {ConversationEventType::kImprove, "requestImprove"},
+           {ConversationEventType::kShorten, "requestShorten"},
+           {ConversationEventType::kExpand, "requestExpand"}});
 
   base::Value::List events;
   for (auto& event : conversation) {
     base::Value::Dict event_dict;
 
     // Set role
-    auto role_it = kRoleMap->find(event.role);
-    CHECK(role_it != kRoleMap->end());
+    auto role_it = kRoleMap.find(event.role);
+    CHECK(role_it != kRoleMap.end());
     event_dict.Set("role", role_it->second);
 
     // Set type
-    auto type_it = kTypeMap->find(event.type);
-    CHECK(type_it != kTypeMap->end());
+    auto type_it = kTypeMap.find(event.type);
+    CHECK(type_it != kTypeMap.end());
     event_dict.Set("type", type_it->second);
 
     // Content string or content blocks
@@ -175,6 +181,10 @@ base::Value::List ConversationEventsToList(
 
     if (event.type == ConversationEventType::kUserMemory && event.user_memory) {
       event_dict.Set("memory", std::move(*event.user_memory));
+    }
+
+    if (event.type == ConversationEventType::kChangeTone) {
+      event_dict.Set("tone", event.tone);
     }
 
     events.Append(std::move(event_dict));
@@ -218,14 +228,16 @@ ConversationAPIClient::ConversationEvent::ConversationEvent(
     const std::string& topic,
     std::optional<base::Value::Dict> user_memory,
     std::vector<mojom::ToolUseEventPtr> tool_calls,
-    const std::string& tool_call_id)
+    const std::string& tool_call_id,
+    const std::string& tone)
     : role(role),
       type(type),
       content(std::move(content)),
       topic(topic),
       user_memory(std::move(user_memory)),
       tool_calls(std::move(tool_calls)),
-      tool_call_id(tool_call_id) {}
+      tool_call_id(tool_call_id),
+      tone(tone) {}
 
 ConversationAPIClient::ConversationEvent::ConversationEvent() = default;
 
@@ -350,10 +362,7 @@ void ConversationAPIClient::PerformRequestWithCredentials(
   auto result = brave_service_keys::GetAuthorizationHeader(
       BUILDFLAG(SERVICE_KEY_AICHAT), headers, api_url,
       net::HttpRequestHeaders::kPostMethod, {"digest"});
-  if (result) {
-    std::pair<std::string, std::string> authorization_header = result.value();
-    headers.emplace(authorization_header.first, authorization_header.second);
-  }
+  headers.emplace(result.first, result.second);
 
   if (premium_enabled) {
     // Add Leo premium SKU credential as a Cookie header.

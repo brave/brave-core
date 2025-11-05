@@ -10,19 +10,28 @@ import { placeholderImageSrc } from '../../lib/image_loader'
 interface Props {
   src: string
   className?: string
+  targetSize?: { width: number, height: number }
 }
 
 export function SafeImage(props: Props) {
+  let { src } = props
+  if (src) {
+    src = 'chrome://brave-image?url=' + encodeURIComponent(src);
+    if (props.targetSize) {
+      let { width, height } = props.targetSize
+      width = Math.round(width * window.devicePixelRatio)
+      height = Math.round(height * window.devicePixelRatio)
+      src += `&target_size=${width}x${height}`
+    }
+  }
+
   return (
     <img
-      src={
-        props.src
-          ? 'chrome://image?url=' + encodeURIComponent(props.src)
-          : placeholderImageSrc
-      }
+      src={src || placeholderImageSrc}
       loading='lazy'
       className={props.className}
       onError={(event) => { event.currentTarget.src = placeholderImageSrc }}
+      onLoad={(event) => { event.currentTarget?.classList.add('loaded') }}
     />
   )
 }

@@ -1,0 +1,10 @@
+Name: byte-slice-cast
+URL: https://crates.io/crates/byte-slice-cast
+Version: 1.2.3
+Revision: a7f61c2b4dd74064b4cfd6b0f5cb5bf50f86e64b
+License: MIT
+License File: //brave/third_party/rust/chromium_crates_io/vendor/byte-slice-cast-v1/LICENSE
+Shipped: yes
+Security Critical: yes
+
+Description: Safely cast bytes slices from/to slices of built-in fundamental numeric types

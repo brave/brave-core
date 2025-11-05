@@ -263,8 +263,6 @@ public class BrowserViewController: UIViewController {
   /// In app purchase obsever for VPN Subscription action
   let iapObserver: BraveVPNInAppPurchaseObserver
 
-  private let ntpP3AHelper: NewTabPageP3AHelper
-
   private let prefsChangeRegistrar: PrefChangeRegistrar
 
   let defaultBrowserHelper: DefaultBrowserHelper = .init()
@@ -334,7 +332,6 @@ public class BrowserViewController: UIViewController {
     )
 
     iapObserver = BraveVPN.iapObserver
-    ntpP3AHelper = .init(p3aUtils: braveCore.p3aUtils, rewards: rewards)
 
     super.init(nibName: nil, bundle: nil)
     didInit()
@@ -474,7 +471,7 @@ public class BrowserViewController: UIViewController {
     Preferences.Rewards.rewardsToggledOnce.observe(from: self)
     Preferences.Playlist.enablePlaylistURLBarButton.observe(from: self)
     Preferences.NewTabPage.backgroundMediaTypeRaw.observe(from: self)
-    ShieldPreferences.blockAdsAndTrackingLevelRaw.observe(from: self)
+    Preferences.Shields.blockAdsAndTrackingLevelRaw.observe(from: self)
     Preferences.Privacy.screenTimeEnabled.observe(from: self)
     Preferences.Translate.translateEnabled.observe(from: self)
 
@@ -525,41 +522,6 @@ public class BrowserViewController: UIViewController {
     Preferences.NewTabPage.attemptToShowClaimRewardsNotification.value = true
 
     setupAdsNotificationHandler()
-
-    backgroundDataSource.replaceFavoritesIfNeeded = { sites in
-      if Preferences.NewTabPage.initialFavoritesHaveBeenReplaced.value { return }
-
-      guard let sites = sites, !sites.isEmpty else { return }
-
-      Task { @MainActor in
-        let defaultFavorites = await FavoritesPreloadedData.getList()
-        let currentFavorites = Favorite.allFavorites
-
-        if defaultFavorites.count != currentFavorites.count {
-          return
-        }
-
-        let exactSameFavorites = Favorite.allFavorites
-          .filter {
-            guard let urlString = $0.url,
-              let url = URL(string: urlString),
-              let title = $0.displayTitle
-            else {
-              return false
-            }
-
-            return defaultFavorites.contains(where: { defaultFavorite in
-              defaultFavorite.url == url && defaultFavorite.title == title
-            })
-          }
-
-        if currentFavorites.count == exactSameFavorites.count {
-          let customFavorites = sites.compactMap { $0.asFavoriteSite }
-          Preferences.NewTabPage.initialFavoritesHaveBeenReplaced.value = true
-          Favorite.forceOverwriteFavorites(with: customFavorites)
-        }
-      }
-    }
 
     // Setup Widgets FRC
     widgetBookmarksFRC = Favorite.frc()
@@ -1503,8 +1465,7 @@ public class BrowserViewController: UIViewController {
         dataSource: backgroundDataSource,
         feedDataSource: feedDataSource,
         rewards: rewards,
-        privateBrowsingManager: privateBrowsingManager,
-        p3aHelper: ntpP3AHelper
+        privateBrowsingManager: privateBrowsingManager
       )
       // Donate NewTabPage Activity For Custom Suggestions
       let newTabPageActivity =
@@ -2682,7 +2643,8 @@ extension BrowserViewController: ToolbarUrlActionsDelegate {
         let toast = ButtonToast(
           labelText: Strings.contextMenuButtonToastNewTabOpenedLabelText,
           buttonText: Strings.contextMenuButtonToastNewTabOpenedButtonText,
-          completion: { buttonPressed in
+          completion: { [weak self, weak tab] buttonPressed in
+            guard let self, let tab else { return }
             if buttonPressed {
               self.tabManager.selectTab(tab)
             }
@@ -2813,22 +2775,6 @@ extension BrowserViewController: NewTabPageDelegate {
     }
   }
 
-  func tappedQRCodeButton(url: URL) {
-    let qrPopup = QRCodePopupView(url: url)
-    qrPopup.showWithType(showType: .flyUp)
-    qrPopup.qrCodeShareHandler = { [weak self] url in
-      guard let self = self else { return }
-
-      let viewRect = CGRect(origin: self.view.center, size: .zero)
-      self.presentActivityViewController(
-        url,
-        sourceView: self.view,
-        sourceRect: viewRect,
-        arrowDirection: .any
-      )
-    }
-  }
-
   func showNewTabTakeoverInfoBarIfNeeded() {
     if !rewards.ads.shouldDisplayNewTabTakeoverInfobar() {
       return
@@ -2864,7 +2810,7 @@ extension BrowserViewController: PreferencesObserver {
       Preferences.Shields.blockImages.key,
       Preferences.Shields.useRegionAdBlock.key:
       tabManager.reloadSelectedTab()
-    case ShieldPreferences.blockAdsAndTrackingLevelRaw.key:
+    case Preferences.Shields.blockAdsAndTrackingLevelRaw.key:
       tabManager.reloadSelectedTab()
       recordGlobalAdBlockShieldsP3A()
       // Global shield setting changed, reset selectors cache.

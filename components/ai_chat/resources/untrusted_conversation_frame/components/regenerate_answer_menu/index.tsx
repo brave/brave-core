@@ -7,11 +7,12 @@ import * as React from 'react'
 import ButtonMenu from '@brave/leo/react/buttonMenu'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
-import Label from '@brave/leo/react/label'
 import { getLocale } from '$web-common/locale'
 import classnames from '$web-common/classnames'
 import * as Mojom from '../../../common/mojom'
-import { getModelIcon } from '../../../common/constants'
+import {
+  ModelMenuItem, //
+} from '../../../page/components/model_menu_item/model_menu_item'
 import styles from './style.module.scss'
 
 interface Props {
@@ -52,10 +53,9 @@ export function RegenerateAnswerMenu(props: Props) {
       </div>
       <div className={styles.headerGap} />
       <Button
-        fab
         slot='anchor-content'
-        size='small'
         kind='plain-faint'
+        size='tiny'
         onClick={isOpen ? onClose : onOpen}
         title={getLocale(S.CHAT_UI_REGENERATE_ANSWER_MENU_TOOLTIP).replace(
           '$1',
@@ -66,35 +66,25 @@ export function RegenerateAnswerMenu(props: Props) {
           [styles.anchorButtonOpen]: isOpen,
         })}
       >
-        <div className={styles.anchorButtonIconRow}>
-          <Icon name='refresh' />
-          <Icon name={isOpen ? 'carat-up' : 'carat-down'} />
+        <div className={styles.anchorButtonContent}>
+          <span className={styles.anchorButtonText}>{modelDisplayName}</span>
+          <Icon
+            name='carat-down'
+            className={classnames({
+              [styles.anchorButtonIcon]: true,
+              [styles.anchorButtonIconOpen]: isOpen,
+            })}
+          />
         </div>
       </Button>
-      {leoModels.map((model) => {
-        const selected = model.key === turnModelKey
-        return (
-          <leo-menu-item
-            key={model.key}
-            data-key={model.key}
-            onClick={() => handleRegenerate(model.key)}
-            aria-selected={selected || null}
-          >
-            <div className={styles.modelIconAndName}>
-              <Icon name={getModelIcon(model.key)} />
-              {model.displayName}
-            </div>
-            {selected && (
-              <Label
-                mode='loud'
-                color='primary'
-              >
-                {getLocale(S.CHAT_UI_CURRENT_LABEL)}
-              </Label>
-            )}
-          </leo-menu-item>
-        )
-      })}
+      {leoModels.map((model) => (
+        <ModelMenuItem
+          key={model.key}
+          model={model}
+          isCurrent={model.key === turnModelKey}
+          onClick={() => handleRegenerate(model.key)}
+        />
+      ))}
       <div className={styles.footerGap} />
       <div className={styles.menuFooter}>
         <leo-menu-item

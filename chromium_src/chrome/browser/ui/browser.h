@@ -11,7 +11,6 @@
 
 #define FinishWarnBeforeClosing virtual FinishWarnBeforeClosing
 #define ScheduleUIUpdate virtual ScheduleUIUpdate
-#define ShouldDisplayFavicon virtual ShouldDisplayFavicon
 #define TryToCloseWindow virtual TryToCloseWindow
 #define OnTabClosing virtual OnTabClosing
 #define TabStripEmpty virtual TabStripEmpty
@@ -37,7 +36,6 @@
 #undef TryToCloseWindow
 #undef TabStripEmpty
 #undef OnTabClosing
-#undef ShouldDisplayFavicon
 #undef ScheduleUIUpdate
 #undef FinishWarnBeforeClosing
 

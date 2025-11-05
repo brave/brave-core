@@ -13,6 +13,7 @@
 #include "base/files/file_path.h"
 #include "base/time/time.h"
 #include "base/values.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "ui/gfx/geometry/point.h"
 #include "url/gurl.h"
 
@@ -95,7 +96,8 @@ struct Creative {
   gfx::Point focal_point;
 
   std::string creative_instance_id;
-  bool should_metrics_fallback_to_p3a = false;
+  brave_ads::mojom::NewTabPageAdMetricType metric_type =
+      brave_ads::mojom::NewTabPageAdMetricType::kConfirmation;
 
   Logo logo;
 };
@@ -155,8 +157,6 @@ struct NTPSponsoredImagesData {
       const std::string& creative_instance_id) const;
 
   std::string url_prefix;
-
-  std::optional<base::TimeDelta> grace_period;
 
   std::vector<Campaign> campaigns;
 

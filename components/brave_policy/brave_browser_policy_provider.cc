@@ -48,10 +48,15 @@ bool BraveBrowserPolicyProvider::IsFirstPolicyLoadComplete(
   return first_policies_loaded_;
 }
 
-void BraveBrowserPolicyProvider::OnBraveOriginPoliciesReady() {
-  // Now that BraveOrigin policies are ready, trigger policy loading for the
+void BraveBrowserPolicyProvider::OnBravePoliciesReady() {
+  // Now that Brave policies are ready, trigger policy loading for the
   // first time.
   RefreshPolicies(policy::PolicyFetchReason::kBrowserStart);
+}
+
+void BraveBrowserPolicyProvider::OnBrowserPolicyChanged(
+    std::string_view policy_key) {
+  RefreshPolicies(policy::PolicyFetchReason::kUserRequest);
 }
 
 policy::PolicyBundle BraveBrowserPolicyProvider::LoadPolicies() {
@@ -59,12 +64,12 @@ policy::PolicyBundle BraveBrowserPolicyProvider::LoadPolicies() {
 
   // TODO(https://github.com/brave/brave-browser/issues/47463)
   // Get the actual purchase state from SKU service.
-#if DCHECK_IS_ON()  // Debug builds only
+#if !defined(OFFICIAL_BUILD)
   if (brave_origin::IsBraveOriginEnabled()) {
     LoadBraveOriginPolicies(bundle);
   }
 #else
-  // Always disabled in release builds
+  // Always disabled in official builds
 #endif
 
   return bundle;

@@ -12,10 +12,10 @@
 #include "base/compiler_specific.h"
 #include "base/feature_list.h"
 #include "brave/browser/ai_chat/ai_chat_settings_helper.h"
+#include "brave/browser/brave_origin/brave_origin_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/email_aliases/email_aliases_service_factory.h"
-#include "brave/browser/ntp_background/view_counter_service_factory.h"
 #include "brave/browser/resources/settings/grit/brave_settings_resources.h"
 #include "brave/browser/resources/settings/grit/brave_settings_resources_map.h"
 #include "brave/browser/shell_integrations/buildflags/buildflags.h"
@@ -35,6 +35,8 @@
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/brave_account/features.h"
+#include "brave/components/brave_origin/brave_origin_handler.h"
+#include "brave/components/brave_origin/brave_origin_utils.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/features.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
@@ -46,8 +48,8 @@
 #include "brave/components/email_aliases/email_aliases.mojom.h"
 #include "brave/components/email_aliases/features.h"
 #include "brave/components/ntp_background_images/browser/features.h"
-#include "brave/components/ntp_background_images/browser/view_counter_service.h"
-#include "brave/components/playlist/common/buildflags/buildflags.h"
+#include "brave/components/playlist/core/common/features.h"
+#include "brave/components/playlist/core/common/pref_names.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -74,7 +76,6 @@
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/components/speedreader/common/features.h"
 #include "brave/components/speedreader/speedreader_pref_names.h"
-#include "brave/components/speedreader/speedreader_service.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -100,11 +101,6 @@
 #include "brave/browser/ui/webui/settings/brave_tor_snowflake_extension_handler.h"
 #endif
 
-#if BUILDFLAG(ENABLE_PLAYLIST)
-#include "brave/components/playlist/browser/pref_names.h"
-#include "brave/components/playlist/common/features.h"
-#endif
-
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "brave/components/containers/core/browser/containers_settings_handler.h"
 #include "brave/components/containers/core/common/features.h"
@@ -123,8 +119,6 @@ bool IsLocaleJapan(Profile* profile) {
 }
 
 }  // namespace
-
-using ntp_background_images::ViewCounterServiceFactory;
 
 BraveSettingsUI::BraveSettingsUI(content::WebUI* web_ui) : SettingsUI(web_ui) {
   web_ui->AddMessageHandler(
@@ -174,9 +168,6 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
       "braveProductVersion",
       version_info::GetBraveVersionWithoutChromiumMajorVersion());
   NavigationBarDataProvider::Initialize(html_source, profile);
-  if (auto* service = ViewCounterServiceFactory::GetForProfile(profile)) {
-    service->InitializeWebUIDataSource(html_source);
-  }
   html_source->AddBoolean(
       "isIdleDetectionFeatureEnabled",
       base::FeatureList::IsEnabled(features::kIdleDetection));
@@ -193,10 +184,11 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   html_source->AddBoolean(
       "isSpeedreaderAllowed",
-      base::FeatureList::IsEnabled(speedreader::kSpeedreaderFeature) &&
-          (speedreader::IsSpeedreaderFeatureEnabled(profile->GetPrefs()) ||
+      base::FeatureList::IsEnabled(
+          speedreader::features::kSpeedreaderFeature) &&
+          (profile->GetPrefs()->GetBoolean(speedreader::kSpeedreaderEnabled) ||
            !profile->GetPrefs()->IsManagedPreference(
-               speedreader::kSpeedreaderPrefFeatureEnabled)));
+               speedreader::kSpeedreaderEnabled)));
 #endif
   html_source->AddBoolean(
       "isNativeBraveWalletFeatureEnabled",
@@ -233,14 +225,11 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
                           base::FeatureList::IsEnabled(
                               ntp_background_images::features::
                                   kBraveNTPBrandedWallpaperSurveyPanelist));
-#if BUILDFLAG(ENABLE_PLAYLIST)
   html_source->AddBoolean(
       "isPlaylistAllowed",
       base::FeatureList::IsEnabled(playlist::features::kPlaylist) &&
           profile->GetPrefs()->GetBoolean(playlist::kPlaylistEnabledPref));
-#else
-  html_source->AddBoolean("isPlaylistAllowed", false);
-#endif
+
   html_source->AddBoolean(
       "showCommandsInOmnibox",
       base::FeatureList::IsEnabled(features::kBraveCommandsInOmnibox));
@@ -249,7 +238,7 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
       base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs));
   html_source->AddBoolean(
       "isEmailAliasesEnabled",
-      base::FeatureList::IsEnabled(email_aliases::kEmailAliases));
+      base::FeatureList::IsEnabled(email_aliases::features::kEmailAliases));
 #if BUILDFLAG(ENABLE_CONTAINERS)
   html_source->AddBoolean(
       "isContainersEnabled",
@@ -257,6 +246,8 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
 #endif
   html_source->AddBoolean("isBraveAccountEnabled",
                           brave_account::features::IsBraveAccountEnabled());
+  html_source->AddBoolean("isOriginAllowed",
+                          brave_origin::IsBraveOriginEnabled());
   html_source->AddBoolean(
       "isTreeTabsFlagEnabled",
       base::FeatureList::IsEnabled(tabs::features::kBraveTreeTab));
@@ -325,4 +316,19 @@ void BraveSettingsUI::BindInterface(
   auto* profile = Profile::FromWebUI(web_ui());
   email_aliases::EmailAliasesServiceFactory::BindForProfile(
       profile, std::move(receiver));
+}
+
+void BraveSettingsUI::BindInterface(
+    mojo::PendingReceiver<brave_origin::mojom::BraveOriginSettingsHandler>
+        receiver) {
+  auto* profile = Profile::FromWebUI(web_ui());
+  auto* brave_origin_service =
+      brave_origin::BraveOriginServiceFactory::GetForProfile(profile);
+  // Service may be null for Guest profiles
+  if (brave_origin_service) {
+    auto handler =
+        std::make_unique<brave_origin::BraveOriginSettingsHandlerImpl>(
+            brave_origin_service);
+    mojo::MakeSelfOwnedReceiver(std::move(handler), std::move(receiver));
+  }
 }

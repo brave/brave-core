@@ -5,8 +5,10 @@
 
 import { StringKey } from '../lib/locale_strings'
 
-export const localeStrings: { [K in StringKey]: string }  = {
-  fullLogDisclaimerText: 'WARNING: This log file may contain sensitive data. Be careful who you share it with.',
-  pageDisclaimerText: 'WARNING: Data on these pages may be sensitive. Be careful who you share them with.',
-  pageTitle: 'Rewards internals'
+export const localeStrings: { [K in StringKey]: string } = {
+  fullLogDisclaimerText:
+    'WARNING: This log file may contain sensitive data. Be careful who you share it with.',
+  pageDisclaimerText:
+    'WARNING: Data on these pages may be sensitive. Be careful who you share them with.',
+  pageTitle: 'Rewards internals',
 }

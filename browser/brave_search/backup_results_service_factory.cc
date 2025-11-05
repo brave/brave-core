@@ -42,4 +42,8 @@ BackupResultsServiceFactory::BuildServiceInstanceForBrowserContext(
       Profile::FromBrowserContext(context));
 }
 
+bool BackupResultsServiceFactory::ServiceIsCreatedWithBrowserContext() const {
+  return true;
+}
+
 }  // namespace brave_search

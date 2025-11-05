@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/ntp_background_images/browser/mojom/ntp_background_images.mojom.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 
@@ -39,7 +40,7 @@ class NTPSponsoredRichMediaAdEventHandler
   void MaybeReportRichMediaAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
-      bool should_metrics_fallback_to_p3a,
+      brave_ads::mojom::NewTabPageAdMetricType mojom_ad_metric_type,
       brave_ads::mojom::NewTabPageAdEventType mojom_ad_event_type) override;
 
  private:

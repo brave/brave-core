@@ -7,11 +7,11 @@ import * as React from 'react'
 
 let gIdToRegexMap = new Map<string, string>()
 
-export function discardRegex (id: string) {
+export function discardRegex(id: string) {
   chrome.send('brave_adblock_internals.discardRegex', [id])
 }
 
-export function saveRegexTexts (list: RegexDebugEntry[]) {
+export function saveRegexTexts(list: RegexDebugEntry[]) {
   for (const entry of list) {
     if (entry.regex !== '') {
       gIdToRegexMap.set(entry.id, entry.regex)
@@ -19,7 +19,7 @@ export function saveRegexTexts (list: RegexDebugEntry[]) {
   }
 }
 
-export function discardRegexs (list: RegexDebugEntry[]) {
+export function discardRegexs(list: RegexDebugEntry[]) {
   for (const entry of list) {
     if (entry.regex !== '') {
       discardRegex(entry.id)
@@ -38,30 +38,38 @@ interface Props {
   regex: RegexDebugEntry
 }
 
-export class Regex extends React.Component<Props, {}> {
-  render () {
-    const regex = this.props.regex
-    let regexText = regex.regex
-    const discarded = regexText === ''
-    if (discarded) {
-      regexText = '[UNKNOWN]'
-      const savedText = gIdToRegexMap.get(regex.id)
-      if (savedText) {
-        regexText = savedText
-      }
+export const Regex = (props: Props) => {
+  const regex = props.regex
+  let regexText = regex.regex
+  const discarded = regexText === ''
+  if (discarded) {
+    regexText = '[UNKNOWN]'
+    const savedText = gIdToRegexMap.get(regex.id)
+    if (savedText) {
+      regexText = savedText
     }
-
-    const className = discarded ? 'inactive-entry' : 'active-entry'
-    let unused = discarded ? '[DISCARDED]' : regex.unused_sec.toString()
-
-    return (
-      <tr>
-        <td>{regex.id}</td>
-        <td>{regex.usage_count}</td>
-        <td>{unused} </td>
-        <td><div className={className}>{regexText}</div></td>
-        <td><input type="button" value="Discard"
-          onClick={() => { discardRegex(regex.id) }} /></td>
-      </tr>)
   }
+
+  const className = discarded ? 'inactive-entry' : 'active-entry'
+  let unused = discarded ? '[DISCARDED]' : regex.unused_sec.toString()
+
+  return (
+    <tr>
+      <td>{regex.id}</td>
+      <td>{regex.usage_count}</td>
+      <td>{unused} </td>
+      <td>
+        <div className={className}>{regexText}</div>
+      </td>
+      <td>
+        <input
+          type='button'
+          value='Discard'
+          onClick={() => {
+            discardRegex(regex.id)
+          }}
+        />
+      </td>
+    </tr>
+  )
 }

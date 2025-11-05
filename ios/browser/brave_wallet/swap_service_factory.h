@@ -20,17 +20,17 @@ template <typename T>
 class NoDestructor;
 }  // namespace base
 
-namespace web {
-class BrowserState;
-}  // namespace web
-
 namespace brave_wallet {
+
+class SwapService;
 
 class SwapServiceFactory : public ProfileKeyedServiceFactoryIOS {
  public:
   // Creates the service if it doesn't exist already for |profile|.
   static mojo::PendingRemote<mojom::SwapService> GetForProfile(
       ProfileIOS* profile);
+
+  static SwapService* GetServiceForProfile(ProfileIOS* profile);
 
   static SwapServiceFactory* GetInstance();
 
@@ -42,7 +42,7 @@ class SwapServiceFactory : public ProfileKeyedServiceFactoryIOS {
 
   // ProfileKeyedServiceFactoryIOS implementation.
   std::unique_ptr<KeyedService> BuildServiceInstanceFor(
-      web::BrowserState* context) const override;
+      ProfileIOS* profile) const override;
 
   SwapServiceFactory(const SwapServiceFactory&) = delete;
   SwapServiceFactory& operator=(const SwapServiceFactory&) = delete;

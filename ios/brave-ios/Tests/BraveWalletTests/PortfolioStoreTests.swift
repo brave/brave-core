@@ -535,8 +535,8 @@ import XCTest
         decimals: Int(BraveWallet.BlockchainToken.mockZecToken.decimals)
       ) ?? ""
     let zcashWalletService = BraveWallet.TestZCashWalletService()
-    zcashWalletService._balance = { chainId, accountId, completion in
-      if chainId == BraveWallet.ZCashMainnet {
+    zcashWalletService._balance = { accountId, completion in
+      if accountId.keyringId == BraveWallet.KeyringId.zCashMainnet {
         completion(
           .init(
             totalBalance: UInt64(zecTransparentBalanceInSatoshi) ?? 0,

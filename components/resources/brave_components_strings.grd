@@ -498,6 +498,7 @@
       <message name="IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_NEWSLETTER" desc="Category of website problems relating to visible newsletter popups">Newsletter popup</message>
       <message name="IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_SOCIAL" desc="Category of website problems relating to visible social media icons or sharing requests">Social widget</message>
       <message name="IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_CHAT" desc="Category of website problems relating to visible chatbot or customer service chat buttons">Chat widget</message>
+      <message name="IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_BROWSER_NOT_SUPPORTED" desc="Category of website problems relating to browsers that are not supported">Browser not supported</message>
       <message name="IDS_BRAVE_WEBCOMPATREPORTER_ISSUE_CATEGORY_OTHER" desc="Category of miscellaneous website problems">Other</message>
 
       <!-- WebUI rewards resources -->
@@ -841,9 +842,7 @@
         <part file="brave_vpn_strings.grdp" />
       </if>
       <part file="omnibox_strings.grdp" />
-      <if expr="enable_playlist">
-        <part file="playlist_strings.grdp" />
-      </if>
+      <part file="playlist_strings.grdp" />
       <part file="../brave_account/resources/brave_account_strings.grdp" />
     </messages>
   </release>

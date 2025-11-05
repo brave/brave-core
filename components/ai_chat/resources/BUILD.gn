@@ -4,8 +4,10 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/common/typescript.gni")
+import("//tools/grit/preprocess_if_expr.gni")
 
 transpile_web_ui("ai_chat_ui") {
+  output_module = false
   resource_name = "ai_chat_ui"
   entry_points = [
     [
@@ -18,14 +20,33 @@ transpile_web_ui("ai_chat_ui") {
           "untrusted_conversation_frame/untrusted_conversation_frame.tsx"),
     ],
   ]
+
+  imports_from = [
+    "//brave/components/ai_chat/resources/",
+    "//brave/components/web-components",
+  ]
+
   deps = [
     "//brave/components/ai_chat/core/common/mojom:mojom_js",
     "//brave/components/resources:strings",
   ]
 }
 
+preprocess_if_expr("preprocess_html") {
+  visibility = [ ":resources_grit" ]
+  in_folder = "."
+  in_files = [
+    "page/ai_chat_ui.html",
+    "untrusted_conversation_frame/untrusted_conversation_frame.html",
+  ]
+  out_folder = "$target_gen_dir/preprocessed"
+}
+
 pack_web_resources("resources") {
   resource_name = "ai_chat_ui"
   output_dir = "$root_gen_dir/brave/components/ai_chat/resources"
-  deps = [ ":ai_chat_ui" ]
+  deps = [
+    ":ai_chat_ui",
+    ":preprocess_html",
+  ]
 }

@@ -69,6 +69,8 @@ std::optional<int> GetBraveLayoutConstant(LayoutConstant constant) {
       // See also SidebarButtonView::kSidebarButtonSize
       return touch ? 48 : 28;
     }
+    case TOOLBAR_CORNER_RADIUS:
+      return 8;
 
     case LOCATION_BAR_HEIGHT:
       // Consider adjust below element padding also when this height is changed.

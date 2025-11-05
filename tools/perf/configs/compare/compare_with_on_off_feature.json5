@@ -1,33 +1,31 @@
 // Comparing the same browser binary with enabled/disabled feature to estimate
 // the performance impact.
 {
-  "configurations": [
+  'configurations': [
     {
-      "target" : "v1.39.73",
-      "label": "solana_on",
-      "profile": "clean",
-      "browser-type": "brave",
-      "field-trials": "no-trials",
-      "extra-browser-args": ["--enable-features=BraveWalletSolana"],
-      "extra-benchmark-args": [],
+      'target': 'v1.39.73',
+      'label': 'solana_on',
+      'profile': 'clean',
+      'browser-type': 'brave',
+      'field-trials': 'no-trials',
+      'extra-browser-args': ['--enable-features=BraveWalletSolana'],
+      'extra-benchmark-args': [],
     },
     {
-      "target" : "v1.39.73",
-      "label": "solana_off",
-      "field-trials": "no-trials",
-      "profile": "clean",
-      "browser-type": "brave",
-      "extra-browser-args": ["--disable-features=BraveWalletSolana"],
-      "extra-benchmark-args": [],
+      'target': 'v1.39.73',
+      'label': 'solana_off',
+      'field-trials': 'no-trials',
+      'profile': 'clean',
+      'browser-type': 'brave',
+      'extra-browser-args': ['--disable-features=BraveWalletSolana'],
+      'extra-benchmark-args': [],
     },
   ],
-  "benchmarks": [
+  'benchmarks': [
     {
-      "name": "loading.desktop.brave",
-      "pageset-repeat": 5,
-      "stories": [
-        "example.com_cold",
-      ]
-    }
-  ]
+      'name': 'loading.desktop.brave',
+      'pageset-repeat': 5,
+      'stories': ['example.com_cold'],
+    },
+  ],
 }

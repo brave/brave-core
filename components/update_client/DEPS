@@ -1,0 +1,10 @@
+include_rules = [
+  "+components/update_client",
+]
+specific_include_rules = {
+  "test_util.cc": [
+    "+components/prefs/pref_service.h",
+    "+components/prefs/testing_pref_service.h",
+    "+third_party/re2",
+  ]
+}

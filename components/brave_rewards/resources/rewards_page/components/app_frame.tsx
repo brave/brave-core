@@ -18,11 +18,7 @@ import * as routes from '../lib/app_routes'
 
 import { style } from './app_frame.style'
 
-const navRoutes = [
-  routes.home,
-  routes.explore,
-  routes.creators
-]
+const navRoutes = [routes.home, routes.explore, routes.creators]
 
 function getCurrentNavRoute(route: string) {
   for (const value of navRoutes) {
@@ -35,7 +31,7 @@ function getCurrentNavRoute(route: string) {
 
 function scrollRouteContentIntoView(
   route: string,
-  behavior: 'smooth' | 'instant'
+  behavior: 'smooth' | 'instant',
 ) {
   const elem = document.querySelector(`[data-app-route="${route}"]`)
   if (!(elem instanceof HTMLElement) || !elem.offsetParent) {
@@ -44,7 +40,7 @@ function scrollRouteContentIntoView(
   elem.offsetParent.scrollTo({
     top: elem.offsetTop - 16,
     left: 0,
-    behavior
+    behavior,
   })
 }
 
@@ -65,7 +61,11 @@ function NavList() {
   function renderLink(route: string, icon: string, text: string) {
     let className = route === current ? 'current' : ''
     return (
-      <a className={className} href={route} onClick={onLinkClick}>
+      <a
+        className={className}
+        href={route}
+        onClick={onLinkClick}
+      >
         <Icon name={icon} />
         <span>{text}</span>
       </a>
@@ -75,28 +75,25 @@ function NavList() {
   return (
     <ul>
       <li>
-        {
-          renderLink(
-            routes.home,
-            'browser-home',
-            getString('navigationHomeLabel'))
-        }
+        {renderLink(
+          routes.home,
+          'browser-home',
+          getString('navigationHomeLabel'),
+        )}
       </li>
       <li>
-        {
-          renderLink(
-            routes.explore,
-            'discover',
-            getString('navigationExploreLabel'))
-        }
+        {renderLink(
+          routes.explore,
+          'discover',
+          getString('navigationExploreLabel'),
+        )}
       </li>
       <li className='creators'>
-        {
-          renderLink(
-            routes.creators,
-            'star-outline',
-            getString('navigationCreatorsLabel'))
-        }
+        {renderLink(
+          routes.creators,
+          'star-outline',
+          getString('navigationCreatorsLabel'),
+        )}
       </li>
     </ul>
   )
@@ -119,20 +116,20 @@ function MoreMenu(props: { children: React.ReactNode }) {
 
   return (
     <ButtonMenu className='more-menu'>
-      <button slot='anchor-content'>
-        {props.children}
-      </button>
+      <button slot='anchor-content'>{props.children}</button>
       <leo-menu-item onClick={onHelp}>
         <Icon name='help-outline' />
         <span>{getString('helpButtonLabel')}</span>
       </leo-menu-item>
-      {
-        !hideReset &&
-          <leo-menu-item class='reset' onClick={onReset}>
-            <Icon name='history' />
-            <span>{getString('resetRewardsButtonLabel')}</span>
-          </leo-menu-item>
-      }
+      {!hideReset && (
+        <leo-menu-item
+          class='reset'
+          onClick={onReset}
+        >
+          <Icon name='history' />
+          <span>{getString('resetRewardsButtonLabel')}</span>
+        </leo-menu-item>
+      )}
     </ButtonMenu>
   )
 }
@@ -161,20 +158,25 @@ function PanelFrame(props: Props) {
   }
 
   return (
-    <div className='panel-frame' data-css-scope={style.scope}>
+    <div
+      className='panel-frame'
+      data-css-scope={style.scope}
+    >
       <header className={isScrolled ? 'overlapped' : ''}>
-        {
-          embedder.platform === 'desktop' && embedder.isBubble &&
-            <button className='expand-button' onClick={onExpand}>
-              <Icon name='expand' />
-            </button>
-        }
+        {embedder.platform === 'desktop' && embedder.isBubble && (
+          <button
+            className='expand-button'
+            onClick={onExpand}
+          >
+            <Icon name='expand' />
+          </button>
+        )}
         <h4>{getString('rewardsPageTitle')}</h4>
-        <MoreMenu><Icon name='more-vertical' /></MoreMenu>
+        <MoreMenu>
+          <Icon name='more-vertical' />
+        </MoreMenu>
       </header>
-      <main onScroll={onScroll}>
-        {props.children}
-      </main>
+      <main onScroll={onScroll}>{props.children}</main>
       <footer>
         <NavList />
       </footer>
@@ -185,7 +187,10 @@ function PanelFrame(props: Props) {
 function PageFrame(props: Props) {
   const { getString } = useLocaleContext()
   return (
-    <div className='page-frame' data-css-scope={style.scope}>
+    <div
+      className='page-frame'
+      data-css-scope={style.scope}
+    >
       <div className='sidebar'>
         <header>
           <div className='brave-rewards-logo' />
@@ -205,9 +210,7 @@ function PageFrame(props: Props) {
         </footer>
       </div>
       <div className='page-content'>
-        <main>
-          {props.children}
-        </main>
+        <main>{props.children}</main>
       </div>
     </div>
   )

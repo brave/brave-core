@@ -188,6 +188,16 @@
 					<key>INEnumValueName</key>
 					<string>braveLeo</string>
 				</dict>
+				<dict>
+					<key>INEnumValueDisplayName</key>
+					<string>Ask Brave</string>
+					<key>INEnumValueDisplayNameID</key>
+					<string>bUHTuL</string>
+					<key>INEnumValueIndex</key>
+					<integer>12</integer>
+					<key>INEnumValueName</key>
+					<string>askBrave</string>
+				</dict>
 			</array>
 		</dict>
 	</array>
@@ -196,11 +206,11 @@
 	<key>INIntentDefinitionNamespace</key>
 	<string>88xZPY</string>
 	<key>INIntentDefinitionSystemVersion</key>
-	<string>23F79</string>
+	<string>25A362</string>
 	<key>INIntentDefinitionToolsBuildVersion</key>
-	<string>15E204a</string>
+	<string>17A324</string>
 	<key>INIntentDefinitionToolsVersion</key>
-	<string>15.3</string>
+	<string>26.0</string>
 	<key>INIntents</key>
 	<array>
 		<dict>

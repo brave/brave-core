@@ -5,6 +5,7 @@
 
 #import "brave/ios/browser/api/sync/driver/brave_sync_profile_service.h"
 
+#include <array>
 #include <unordered_map>
 
 #include "base/memory/raw_ptr.h"
@@ -24,12 +25,8 @@ static_assert(static_cast<NSInteger>(syncer::UserSelectableType::kCookies) ==
 
 namespace brave {
 namespace ios {
-// TODO(https://github.com/brave/brave-browser/issues/48713): This is a case of
-// `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
-// added in the meantime to fix the build error. Remove this attribute and
-// provide a proper fix.
-[[clang::no_destroy]] std::unordered_map<syncer::UserSelectableType,
-                                         BraveSyncUserSelectableTypes> mapping =
+constexpr auto kMapping = std::to_array<
+    std::pair<syncer::UserSelectableType, BraveSyncUserSelectableTypes>>(
     {{syncer::UserSelectableType::kBookmarks,
       BraveSyncUserSelectableTypes_BOOKMARKS},
      {syncer::UserSelectableType::kPreferences,
@@ -54,14 +51,14 @@ namespace ios {
      {syncer::UserSelectableType::kProductComparison,
       BraveSyncUserSelectableTypes_PRODUCT_COMPARISON},
      {syncer::UserSelectableType::kCookies,
-      BraveSyncUserSelectableTypes_COOKIES}};
+      BraveSyncUserSelectableTypes_COOKIES}});
 
 syncer::UserSelectableTypeSet user_types_from_options(
     BraveSyncUserSelectableTypes options) {
   syncer::UserSelectableTypeSet results;
-  for (auto it = mapping.begin(); it != mapping.end(); ++it) {
-    if (options & it->second) {
-      results.Put(it->first);
+  for (auto entry : kMapping) {
+    if (options & entry.second) {
+      results.Put(entry.first);
     }
   }
   return results;
@@ -70,9 +67,9 @@ syncer::UserSelectableTypeSet user_types_from_options(
 BraveSyncUserSelectableTypes options_from_user_types(
     const syncer::UserSelectableTypeSet& types) {
   BraveSyncUserSelectableTypes results = BraveSyncUserSelectableTypes_NONE;
-  for (auto it = mapping.begin(); it != mapping.end(); ++it) {
-    if (types.Has(it->first)) {
-      results |= it->second;
+  for (auto entry : kMapping) {
+    if (types.Has(entry.first)) {
+      results |= entry.second;
     }
   }
   return results;

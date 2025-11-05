@@ -1,5 +1,5 @@
 diff --git a/tools/gritsettings/resource_ids.spec b/tools/gritsettings/resource_ids.spec
-index bba1bed7b351171434d9b6d8170f6b015f5acb6c..69cebd9debe09fd7f061e744dfcc4a94ccdceedc 100644
+index dd44a6f6850fe36d9a159e98cd1ffb23df10876d..5995650f2ad97001742568054055db6631639dd9 100644
 --- a/tools/gritsettings/resource_ids.spec
 +++ b/tools/gritsettings/resource_ids.spec
 @@ -38,6 +38,9 @@
@@ -12,7 +12,7 @@ index bba1bed7b351171434d9b6d8170f6b015f5acb6c..69cebd9debe09fd7f061e744dfcc4a94
    "chrome/app/google_chrome_strings.grd": {
      "messages": [800],
    },
-@@ -409,7 +412,7 @@
+@@ -415,7 +418,7 @@
      "includes": [3900],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/extensions/resources.grd": {
@@ -21,7 +21,7 @@ index bba1bed7b351171434d9b6d8170f6b015f5acb6c..69cebd9debe09fd7f061e744dfcc4a94
      "includes": [3920],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/extensions_zero_state_promo/resources.grd": {
-@@ -445,7 +448,7 @@
+@@ -451,7 +454,7 @@
      "includes": [4020],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/history/resources.grd": {
@@ -30,16 +30,16 @@ index bba1bed7b351171434d9b6d8170f6b015f5acb6c..69cebd9debe09fd7f061e744dfcc4a94
      "includes": [4040],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/infobar_internals/resources.grd": {
-@@ -597,7 +600,7 @@
+@@ -603,7 +606,7 @@
      "includes": [4720],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/settings/resources.grd": {
 -    "META": {"sizes": {"includes": [600],}},
-+    "META": {"sizes": {"includes": [702],}},
++    "META": {"sizes": {"includes": [780],}},
      "includes": [4740],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/settings_shared/resources.grd": {
-@@ -1049,6 +1052,9 @@
+@@ -1059,6 +1062,9 @@
      # Big alignment at start of section.
      "messages": [7020],
    },
@@ -49,7 +49,7 @@ index bba1bed7b351171434d9b6d8170f6b015f5acb6c..69cebd9debe09fd7f061e744dfcc4a94
    "components/components_google_chrome_strings.grd": {
      "messages": [7020],
    },
-@@ -1539,11 +1545,11 @@
+@@ -1549,11 +1555,11 @@
      "includes": [9980],
    },
    "<(SHARED_INTERMEDIATE_DIR)/ui/webui/resources/webui_code_cache_resources.grd": {
@@ -59,7 +59,7 @@ index bba1bed7b351171434d9b6d8170f6b015f5acb6c..69cebd9debe09fd7f061e744dfcc4a94
    },
    "<(SHARED_INTERMEDIATE_DIR)/ui/webui/resources/webui_resources.grd": {
 -    "META": {"sizes": {"includes": [1100]}},
-+    "META": {"sizes": {"includes": [1176]}},
++    "META": {"sizes": {"includes": [1210]}},
      "includes": [10000],
    },
  

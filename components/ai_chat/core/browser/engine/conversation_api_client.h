@@ -20,6 +20,7 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 
 namespace base {
@@ -82,6 +83,11 @@ class ConversationAPIClient {
     kPageScreenshot,
     kToolUse,
     kUserMemory,
+    kChangeTone,
+    kParaphrase,
+    kImprove,
+    kShorten,
+    kExpand,
     // TODO(petemill):
     // - Search in-progress?
     // - Sources?
@@ -122,13 +128,18 @@ class ConversationAPIClient {
     // `content` field contains the result of the matching assistant tool call.
     std::string tool_call_id;
 
+    // Only for a role=User type=ChangeTone event. Specifies which tone to be
+    // used when rewriting the content.
+    std::string tone;
+
     ConversationEvent(ConversationEventRole,
                       ConversationEventType,
                       Content,
                       const std::string& topic = "",
                       std::optional<base::Value::Dict> memory = std::nullopt,
                       std::vector<mojom::ToolUseEventPtr> tool_calls = {},
-                      const std::string& tool_call_id = "");
+                      const std::string& tool_call_id = "",
+                      const std::string& tone = "");
     ConversationEvent();
     ~ConversationEvent();
     ConversationEvent(const ConversationEvent&) = delete;

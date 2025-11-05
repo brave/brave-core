@@ -13,6 +13,7 @@
 #include "brave/browser/ui/views/tabs/brave_tab_strip.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
+#include "components/tabs/public/tab_interface.h"
 
 BraveBrowserTabStripController::BraveBrowserTabStripController(
     TabStripModel* model,
@@ -64,13 +65,37 @@ void BraveBrowserTabStripController::ExecuteCommandForTab(
     const Tab* tab) {
   const std::optional<int> model_index = tabstrip_->GetModelIndexOf(tab);
   if (!model_index.has_value()) {
+    BrowserTabStripController::ExecuteCommandForTab(command_id, tab);
     return;
   }
 
-  if (command_id == TabStripModel::CommandCloseTab) {
-    model_->CloseSelectedTabsWithSplitView();
-    return;
+  // This tab close customization targets only for split |tab|.
+  // When select close tab from context menu, we want to close
+  // only that split tab instead of both tabs in split.
+  // Upstream closes both but we don't want that behavior.
+  // As this customization could cause unexpected tab closing
+  // behavior, apply strictly in some specific situations.
+  // Follow upstream behavior in all other cases.
+  // We can add other specific situations when user want to.
+  const auto split_id = model_->GetSplitForTab(*model_index);
+  if (command_id == TabStripModel::CommandCloseTab && split_id.has_value()) {
+    auto* tab_interface = model_->GetTabAtIndex(*model_index);
+    // If |tab| is split and selection size is 1, it means split tab that
+    // contains |tab| is inactive and the active tab is normal. Close |tab|.
+    if (model_->selection_model().size() == 1) {
+      tab_interface->Close();
+      return;
+    }
+
+    // If only single split tab is activated,
+    // selection size is 2 as because upstream puts both tabs
+    // in single split view as selected. In this situation, |tab|
+    // could be in that active split view or not. Close |tab|.
+    if (model_->IsActiveTabSplit() && model_->selection_model().size() == 2) {
+      tab_interface->Close();
+      return;
+    }
   }
 
-  model_->ExecuteContextMenuCommand(model_index.value(), command_id);
+  BrowserTabStripController::ExecuteCommandForTab(command_id, tab);
 }

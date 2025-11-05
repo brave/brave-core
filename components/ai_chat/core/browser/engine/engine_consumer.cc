@@ -9,7 +9,9 @@
 #include <string>
 
 #include "base/base64.h"
+#include "base/strings/escape.h"
 #include "base/strings/strcat.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace ai_chat {
 
@@ -33,6 +35,13 @@ std::string EngineConsumer::GetPromptForEntry(
       (entry->edits && !entry->edits->empty()) ? entry->edits->back() : entry;
 
   return prompt_entry->prompt.value_or(prompt_entry->text);
+}
+
+// static
+std::string EngineConsumer::BuildSkillDefinitionMessage(
+    const mojom::SkillEntryPtr& skill) {
+  return absl::StrFormat("When handling the request, interpret '/%s' as '%s'",
+                         skill->shortcut, skill->prompt);
 }
 
 EngineConsumer::EngineConsumer(ModelService* model_service, PrefService* prefs)

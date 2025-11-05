@@ -9,7 +9,7 @@
 namespace speedreader {
 
 // Deprecated - migrated to kSpeedreaderPrefFeatureEnabled and
-// kSpeedreaderPrefEnabledForAllSites (08/2025)
+// kSpeedreaderAllowedForAllReadableSites (08/2025)
 // java_cpp_string.py doesn't work when the variable is constexpr
 inline constexpr char kSpeedreaderPrefEnabledDeprecated[] =
     "brave.speedreader.enabled";
@@ -51,11 +51,11 @@ inline constexpr char kSpeedreaderPageViewsStoragePref[] =
 // Top-level feature toggle for Speedreader (named feature_enabled to
 // distinguish from the legacy "enabled" pref which actually controls all-sites
 // behavior)
-inline constexpr char kSpeedreaderPrefFeatureEnabled[] =
+inline constexpr char kSpeedreaderEnabled[] =
     "brave.speedreader.feature_enabled";
 
 // Whether Speedreader should be enabled for all sites
-inline constexpr char kSpeedreaderPrefEnabledForAllSites[] =
+inline constexpr char kSpeedreaderAllowedForAllReadableSites[] =
     "brave.speedreader.enabled_for_all_sites";
 
 }  // namespace speedreader

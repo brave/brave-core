@@ -51,6 +51,7 @@
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/ai_chat/core/common/prefs.h"
 #include "components/os_crypt/async/browser/os_crypt_async.h"
@@ -108,6 +109,11 @@ class MockServiceClient : public mojom::ServiceObserver {
               (override));
 
   MOCK_METHOD(void, OnStateChanged, (mojom::ServiceStatePtr), (override));
+
+  MOCK_METHOD(void,
+              OnSkillsChanged,
+              (std::vector<mojom::SkillPtr>),
+              (override));
 
  private:
   mojo::Receiver<mojom::ServiceObserver> service_observer_receiver_{this};
@@ -1492,6 +1498,91 @@ TEST_P(AIChatServiceUnitTest, OnMemoryEnabledChanged_DisabledToEnabled) {
 
   // Verify memory tool is added
   EXPECT_TRUE(ai_chat_service_->GetMemoryToolForTesting());
+}
+
+TEST_P(AIChatServiceUnitTest, GetSkills) {
+  // Add a skill to preferences directly
+  prefs::AddSkillToPrefs("test", "Test prompt", "model", prefs_);
+
+  base::RunLoop run_loop;
+  std::vector<mojom::SkillPtr> result;
+
+  ai_chat_service_->GetSkills(
+      base::BindLambdaForTesting([&](std::vector<mojom::SkillPtr> modes) {
+        result = std::move(modes);
+        run_loop.Quit();
+      }));
+
+  run_loop.Run();
+  ASSERT_EQ(result.size(), 1u);
+  EXPECT_EQ(result[0]->shortcut, "test");
+  EXPECT_EQ(result[0]->prompt, "Test prompt");
+  EXPECT_EQ(result[0]->model, "model");
+}
+
+TEST_P(AIChatServiceUnitTest, CreateSkill) {
+  MockServiceClient mock_client(ai_chat_service_.get());
+  base::RunLoop run_loop;
+  EXPECT_CALL(mock_client, OnSkillsChanged(_))
+      .WillOnce([&](std::vector<mojom::SkillPtr> skills) {
+        ASSERT_EQ(skills.size(), 1u);
+        EXPECT_EQ(skills[0]->shortcut, "test_shortcut");
+        EXPECT_EQ(skills[0]->prompt, "Test prompt");
+        EXPECT_EQ(skills[0]->model, "test_model");
+        run_loop.Quit();
+      });
+
+  ai_chat_service_->CreateSkill("test_shortcut", "Test prompt", "test_model");
+  run_loop.Run();
+}
+
+TEST_P(AIChatServiceUnitTest, UpdateSkill) {
+  // First create a skill
+  prefs::AddSkillToPrefs("original", "Original prompt", "original_model",
+                         prefs_);
+  auto skills = prefs::GetSkillsFromPrefs(prefs_);
+  ASSERT_EQ(skills.size(), 1u);
+  std::string id = skills[0]->id;
+
+  MockServiceClient mock_client(ai_chat_service_.get());
+  base::RunLoop run_loop;
+  EXPECT_CALL(mock_client, OnSkillsChanged(_))
+      .WillOnce([&](std::vector<mojom::SkillPtr> skills) {
+        ASSERT_EQ(skills.size(), 1u);
+        EXPECT_EQ(skills[0]->shortcut, "updated_shortcut");
+        EXPECT_EQ(skills[0]->prompt, "Updated prompt");
+        EXPECT_EQ(skills[0]->model, "updated_model");
+        run_loop.Quit();
+      });
+
+  ai_chat_service_->UpdateSkill(id, "updated_shortcut", "Updated prompt",
+                                "updated_model");
+  run_loop.Run();
+}
+
+TEST_P(AIChatServiceUnitTest, DeleteSkill) {
+  prefs::AddSkillToPrefs("test", "Test prompt", "model", prefs_);
+  auto skills = prefs::GetSkillsFromPrefs(prefs_);
+  ASSERT_EQ(skills.size(), 1u);
+  std::string id = skills[0]->id;
+
+  MockServiceClient mock_client(ai_chat_service_.get());
+  base::RunLoop run_loop;
+  EXPECT_CALL(mock_client, OnSkillsChanged(_))
+      .WillOnce([&](std::vector<mojom::SkillPtr> skills) {
+        EXPECT_TRUE(skills.empty());
+        run_loop.Quit();
+      });
+
+  ai_chat_service_->DeleteSkill(id);
+  run_loop.Run();
+
+  // Verify it was deleted
+  auto mode = prefs::GetSkillFromPrefs(prefs_, id);
+  EXPECT_FALSE(mode);
+
+  auto all_skills = prefs::GetSkillsFromPrefs(prefs_);
+  EXPECT_TRUE(all_skills.empty());
 }
 
 }  // namespace ai_chat

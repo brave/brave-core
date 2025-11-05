@@ -1,14 +1,8 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ja">
-<translation id="3586180167003092914"><ph name="BEGIN_LINK1"/>Android の設定<ph name="END_LINK1"/>で管理
-
-高度な保護機能では、次の Brave の設定を制御します。
-• [常に安全な接続を使用する] がオンになります。
-• [JavaScript オプティマイザー] がオフになります。<ph name="BEGIN_LINK2"/>サイトの例外を管理する<ph name="END_LINK2"/></translation>
 <translation id="1006017844123154345">オンライン版を開く</translation>
 <translation id="1036348656032585052">オフにする</translation>
-<translation id="1044891598689252897">サイトは通常どおり動作します</translation>
 <translation id="1070329623210597193">このサイトが表示または編集できるファイル</translation>
 <translation id="1882093842020941518">Brave の改善に役立てるため、サードパーティ Cookie を許可した理由をお聞かせください。<ph name="BEGIN_LINK"/>フィードバックを送信<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">サイトの PC 版を表示するようリクエストできます</translation>
@@ -26,6 +20,7 @@
 <translation id="129382876167171263">ウェブサイトによって保存されたファイルがここに表示されます</translation>
 <translation id="131112695174432497">広告のパーソナライズに影響するデータは削除されます</translation>
 <translation id="1317194122196776028">このサイトの閲覧履歴を消去</translation>
+<translation id="1321110954513621549">許可 • おおよそ</translation>
 <translation id="1323433172918577554">もっと見る</translation>
 <translation id="1333965224356556482">サイトに位置情報へのアクセスを許可しない</translation>
 <translation id="1343356790768851700">このサイトでは、ユーザーの好みを判断して他のサイトに広告を提案します</translation>
@@ -41,9 +36,11 @@
 <translation id="1448064542941920355">縮小</translation>
 <translation id="1464044141348608623">サイトによるデバイスのアクティブ状態の検出を許可しない</translation>
 <translation id="146867109637325312">{COUNT,plural, =1{<ph name="SITE_COUNT"/> 件のサイト}other{<ph name="SITE_COUNT"/> 件のサイト}}</translation>
+<translation id="1476700086976862423">テーマカラー セピア</translation>
 <translation id="1500473259453106018">タブカードで値下げ情報を非表示にする</translation>
 <translation id="1508931164824684991">サイトが JavaScript を使用できるようにする</translation>
 <translation id="1510341833810331442">サイトはデバイスにデータを保存できません</translation>
+<translation id="1532175480576580256">カスタム ショートカットのボトムシートが画面全体に表示されています</translation>
 <translation id="1538031354170655462">付近のタグやデバイスと接続してバッジのスキャンやタッチ決済などを行うため、サイトで近距離無線通信（NFC）を使用する場合があります</translation>
 <translation id="1547123415014299762">サードパーティの Cookie が許可されています</translation>
 <translation id="3665719978526894928">Brave の V8 エンジンでサイトを高速化する（攻撃に対する Brave の耐性は若干低下します）</translation>
@@ -57,7 +54,7 @@
 <translation id="1660204651932907780">音声の再生をサイトに許可する（推奨）</translation>
 <translation id="1677097821151855053">Cookie と他のサイトデータは、ログインや広告のパーソナライズなどでユーザーを覚えておくために使用されます。すべてのサイトの Cookie を管理するには、<ph name="BEGIN_LINK"/>設定<ph name="END_LINK"/>をご覧ください。</translation>
 <translation id="1679305402657584804">サイトが NFC デバイスの使用を要求できるようにする</translation>
-<translation id="1686785653877010442">サイトは、最新情報やチャット メッセージなどを知らせる目的で通知を送信する場合がよくあります。</translation>
+<translation id="1686785653877010442">多くのサイトは、最新情報やチャット メッセージなどを知らせる目的で通知を送信します。</translation>
 <translation id="169515064810179024">サイトによるモーション センサーへのアクセスをブロックする</translation>
 <translation id="1703666494654169921">サイトにバーチャル リアリティ デバイスとデータの使用を許可しない</translation>
 <translation id="1704230497453185209">サイトに音声の再生を許可しない</translation>
@@ -72,9 +69,11 @@
 <translation id="7401204338724669842">Brave のおすすめの使い方</translation>
 <translation id="6704867734300244173">オンにすると、Brave の動作が速くなり、JavaScript を使用する機能が設計どおりに動作します。オフにすると、パフォーマンスは低下しますが、攻撃に対する V8 の耐性が強化されます。</translation>
 <translation id="1818308510395330587"><ph name="APP_NAME"/> に AR の使用を許可するには、<ph name="BEGIN_LINK"/>Android の設定<ph name="END_LINK"/>でもカメラをオンにしてください。</translation>
+<translation id="1848033246551405023">フォント Sans Serif</translation>
+<translation id="1861262398884155592">このフォルダは空です</translation>
 <translation id="1881806992065048905">新しいタブページの外観のボトムシート</translation>
 <translation id="1887786770086287077">位置情報へのアクセスがデバイスでオフになっています。<ph name="BEGIN_LINK"/>Android の設定<ph name="END_LINK"/>でオンにしてください。</translation>
-<translation id="1906181697255754968">多くのサイトは、作業内容を自動的に保存するためにデバイスのファイルやフォルダにアクセスします。</translation>
+<translation id="1906181697255754968">通常、作業内容を自動的に保存したりするため、サイトがデバイスのファイルやフォルダにアクセスする場合があります</translation>
 <translation id="1915307458270490472">通話を終了</translation>
 <translation id="1919950603503897840">連絡先を選択</translation>
 <translation id="1923695749281512248"><ph name="BYTES_DOWNLOADED_WITH_UNITS"/> / <ph name="FILE_SIZE_WITH_UNITS"/></translation>
@@ -93,6 +92,7 @@
 <translation id="2079545284768500474">元に戻す</translation>
 <translation id="2080070583977670716">詳細設定</translation>
 <translation id="2091887806945687916">音声</translation>
+<translation id="2094208275686143364">テーマカラー ライト</translation>
 <translation id="2096716221239095980">すべてのデータを削除</translation>
 <translation id="2102396546234652240">サイトにマイクの使用を許可しない</translation>
 <translation id="2117655453726830283">次のスライド</translation>
@@ -116,11 +116,14 @@
 <translation id="228293613124499805">アクセスするサイトの多くは、エクスペリエンスの向上を目的として、設定内容やあなたがサイトと共有した情報をデバイス上に保存します。この設定はオンにしておくことをおすすめします。</translation>
 <translation id="2289270750774289114">サイトから近くにある Bluetooth デバイスの検出を求められたときに確認する（推奨）</translation>
 <translation id="2315043854645842844">オペレーティング システムでサポートされていないため、クライアントサイドで証明書を選択することはできません。</translation>
+<translation id="2347601491101454548">カスタム ショートカットのボトムシートが画面の下半分に表示されています</translation>
 <translation id="2359808026110333948">続行</translation>
 <translation id="904887679952026733">可能であれば、Brave がダークモードを使用している場合にダークモードをサイトに適用します</translation>
 <translation id="2390272837142897736">拡大</translation>
 <translation id="2402980924095424747"><ph name="MEGABYTES"/> MB</translation>
+<translation id="2403474027143565107">正確</translation>
 <translation id="2404630663942400771">{PERMISSIONS_SUMMARY_ALLOWED,plural, =1{<ph name="PERMISSION_1"/>、<ph name="PERMISSION_2"/>、他 <ph name="NUM_MORE"/> 個の権限が許可されています}other{<ph name="PERMISSION_1"/>、<ph name="PERMISSION_2"/>、他 <ph name="NUM_MORE"/> 個の権限が許可されています}}</translation>
+<translation id="2404857459073803936">このサイトの位置情報アクセス</translation>
 <translation id="2410940059315936967">アクセスしたサイトに他のサイトのコンテンツ（画像、広告、テキストなど）が埋め込まれている場合があります。こうした他のサイトによって設定された Cookie は「サードパーティ Cookie」と呼ばれます。</translation>
 <translation id="2411116727035790889">ショートカットをオンにします</translation>
 <translation id="2433507940547922241">デザイン</translation>
@@ -136,6 +139,7 @@
 <translation id="2498359688066513246">ヘルプとフィードバック</translation>
 <translation id="2501278716633472235">戻る</translation>
 <translation id="2533138527374486328">オンにすると、サイトはローカル ネットワーク上のデバイスへの接続を要求できます。オフにすると、サイトはローカル ネットワーク上のデバイスに接続できません。</translation>
+<translation id="2544997614631598250">テーマカラー ダーク</translation>
 <translation id="2546283357679194313">Cookie とサイトデータ</translation>
 <translation id="2570922361219980984">位置情報へのアクセスがデバイスでもオフになっています。<ph name="BEGIN_LINK"/>Android の設定<ph name="END_LINK"/>でオンにしてください。</translation>
 <translation id="257931822824936280">展開されています - クリックすると折りたたまれます。</translation>
@@ -143,6 +147,11 @@
 <translation id="2588271083332682494">タブグループで整理整頓</translation>
 <translation id="2597457036804169544">ダークモードをサイトに適用しません</translation>
 <translation id="2606760465469169465">自動確認</translation>
+<translation id="7615153661410655750"><ph name="BEGIN_LINK1"/>Android の設定<ph name="END_LINK1"/>で管理
+
+高度な保護機能では、次の Brave の設定を制御します。
+• [常に安全な接続を使用する] がオンになります。
+• [JavaScript オプティマイザー] がオフになります。<ph name="BEGIN_LINK2"/>サイトの例外を管理する<ph name="END_LINK2"/></translation>
 <translation id="2621115761605608342">特定のサイトに対して JavaScript を許可します。</translation>
 <translation id="2626708220538466178">デフォルトのブラウザのボトムシートが閉じられました</translation>
 <translation id="2653659639078652383">送信</translation>
@@ -190,10 +199,10 @@
 <translation id="3123473560110926937">一部のサイトでブロックされています</translation>
 <translation id="3132996321662585180">毎日更新する</translation>
 <translation id="3143754809889689516">最初から再生</translation>
-<translation id="3162899666601560689">サイトは、Cookie を使用して閲覧の利便性を高めることができます（ログイン状態の維持、ショッピング カートの中身の保存など）</translation>
 <translation id="3165022941318558018">サイトにサードパーティ Cookie の使用を許可する</translation>
 <translation id="3167868116600277716">Discover フィード</translation>
 <translation id="3198916472715691905"><ph name="STORAGE_AMOUNT"/> の保存データ</translation>
+<translation id="3199078925536734975">一時的に許可 • おおよそ</translation>
 <translation id="321187648315454507"><ph name="APP_NAME"/> に通知の送信を許可するには、<ph name="BEGIN_LINK"/>Android の設定<ph name="END_LINK"/>でも通知をオンにしてください。</translation>
 <translation id="3223425961342298674">位置情報は許可されていません</translation>
 <translation id="3227137524299004712">マイク</translation>
@@ -214,8 +223,8 @@
 <translation id="3403537308306431953"><ph name="ZOOM_LEVEL"/>%%</translation>
 <translation id="344449859752187052">サードパーティ Cookie がブロックされています</translation>
 <translation id="3448554387819310837">オンにすると、サイトはカメラの使用を要求できます。オフにすると、サイトはカメラを使用できません。</translation>
-<translation id="3491678231052507920">多くのサイトは、VR セッションに参加するためにバーチャル リアリティ デバイスとデータを使用します。</translation>
-<translation id="3496995426334945408">多くのサイトは、インタラクティブなビデオゲームやウェブフォームなどを表示するために JavaScript を使用します</translation>
+<translation id="3491678231052507920">VR セッションに参加するため、サイトでバーチャル リアリティ デバイスとデータを使用する場合があります。</translation>
+<translation id="3496995426334945408">インタラクティブなビデオゲームやウェブフォームなどを表示するために、サイトが JavaScript を使用する場合があります。</translation>
 <translation id="3521663503435878242"><ph name="DOMAIN"/> のサイト</translation>
 <translation id="3523447078673133727">サイトにハンド トラッキングを許可しない</translation>
 <translation id="3536227077203206203">一時的に許可しました</translation>
@@ -228,7 +237,7 @@
 <translation id="3611658447322220736">最近閉じたサイトがデータの送受信を完了できるようにする</translation>
 <translation id="3619294456800709762">サイトはピクチャー イン ピクチャーを自動的に開始できる</translation>
 <translation id="3628308229821498208">提案された検索</translation>
-<translation id="3641456520301071208">位置情報へのアクセス権限がサイトからリクエストされる場合があります</translation>
+<translation id="3641456520301071208">サイトが位置情報を要求できるようにする</translation>
 <translation id="3658847490588580244">デフォルトのブラウザのボトムシート</translation>
 <translation id="3669841141196828854">{COUNT,plural, =1{<ph name="RWS_OWNER"/> のサイトグループに属する <ph name="RWS_MEMBERS_COUNT"/> 件のサイトが、グループでのあなたのアクティビティを確認できます}other{<ph name="RWS_OWNER"/> のサイトグループに属する <ph name="RWS_MEMBERS_COUNT"/> 件のサイトが、グループでのあなたのアクティビティを確認できます}}</translation>
 <translation id="3676777756440746804">サイトがあなたに関する保存済みの情報の使用を要求できないようにする</translation>
@@ -248,6 +257,7 @@
 <translation id="3803367742635802571">アクセスするサイトが想定どおりに機能しなくなる可能性があります</translation>
 <translation id="8338457030135232378">Brave の色</translation>
 <translation id="381841723434055211">電話番号</translation>
+<translation id="3823453485268218808">フォント Mono</translation>
 <translation id="3826050100957962900">サードパーティのログイン</translation>
 <translation id="3835233591525155343">デバイスのアクティブ状態</translation>
 <translation id="1799795508209440035">今日、Brave で Cookie を再びブロックします</translation>
@@ -257,9 +267,9 @@
 <translation id="3895926599014793903">強制的にズームを有効にする</translation>
 <translation id="3903738175795615004">全画面表示を終了するには、上からドラッグするか、Esc キーを押します。</translation>
 <translation id="3905475044299942653">頻繁な通知をブロック</translation>
-<translation id="3918378745482005425">一部の機能が動作しない可能性があります。関連サイトでは引き続きサードパーティ Cookie を使用できます。</translation>
 <translation id="3922092564198021702">スマートフォンの [設定] を開きます</translation>
 <translation id="3933121352599513978">不要なリクエストを閉じる（推奨）</translation>
+<translation id="3934905113567851655">ピンチでサイズを変更</translation>
 <translation id="3955193568934677022">保護されたコンテンツの再生をサイトに許可する（推奨）</translation>
 <translation id="3955321697524543127">サイトに USB デバイスへの接続を許可しない</translation>
 <translation id="3965467402665811906">サイトがあなたに関する保存済みの情報の使用を要求できるようにする</translation>
@@ -272,6 +282,7 @@
 <translation id="3992684624889376114">このページについて</translation>
 <translation id="4002066346123236978">タイトル</translation>
 <translation id="4031179711345676612">マイクを使用できます</translation>
+<translation id="4042597221652780603">おおよそ</translation>
 <translation id="4046123991198612571">次のトラック</translation>
 <translation id="4077310749977440510">コピーしたテキストの書式を保持したりするため、サイトでクリップボードを読み取る場合があります</translation>
 <translation id="4082080074595021446">Android デバイスに十分な RAM がないため、特定のウェブサイトの例外は許可されません。</translation>
@@ -298,11 +309,14 @@
 <translation id="4338831206024587507"><ph name="DOMAIN"/> のすべてのサイト</translation>
 <translation id="4340799661701629185">サイトに通知の送信を許可しない</translation>
 <translation id="4402755511846832236">サイトによるこのデバイスのアクティブ状態の検出をブロックする</translation>
+<translation id="8382883799082236806">Brave の色のボトムシートが画面の下半分に表示されています</translation>
 <translation id="4412992751769744546">サードパーティの Cookie を許可する</translation>
 <translation id="1675197434085185531">Brave では、サードパーティ Cookie の使用を制限し、ブラウジング中のユーザーをトラッキングできないようにしています。<ph name="BEGIN_LINK"/>サードパーティ Cookie へのアクセスを管理<ph name="END_LINK"/>するには、設定に移動してください。</translation>
+<translation id="4425416282877905577">フォント Serif</translation>
 <translation id="443121186588148776">シリアルポート</translation>
 <translation id="4434045419905280838">ポップアップとリダイレクト</translation>
 <translation id="443552056913301231">この操作を行うと、Cookie を含むすべてのローカルデータが削除され、<ph name="ORIGIN"/> のすべての権限がリセットされます</translation>
+<translation id="43076815069546662">Brave の色のボトムシートが画面全体に表示されています</translation>
 <translation id="4468959413250150279">特定のサイトの音声をミュートします。</translation>
 <translation id="4475912480633855319">{COOKIES,plural, =1{# 件の Cookie}other{# 件の Cookie}}</translation>
 <translation id="4478158430052450698">サイトごとにズーム設定をカスタマイズしやすくします</translation>
@@ -328,7 +342,8 @@
 <translation id="4816495437032298535">サイトの保存済みズーム</translation>
 <translation id="4836046166855586901">サイトからこのデバイスのアクティブ状態の検出を求められたときに確認する</translation>
 <translation id="483914009762354899">このドメインのすべてのサイトを含める</translation>
-<translation id="4882919381756638075">多くのサイトは、ビデオチャットなどの通信機能にマイクを使用します。</translation>
+<translation id="4852997963351138624">背景の色（16 進数）</translation>
+<translation id="4882919381756638075">通常、ビデオチャットなどの通信機能を使用するため、サイトがマイクを使用する場合があります</translation>
 <translation id="4883854917563148705">管理者による設定はリセットできません</translation>
 <translation id="4887024562049524730">サイトにバーチャル リアリティ デバイスとデータの使用を許可する前に確認する（推奨）</translation>
 <translation id="4934780484581617878">ウィンドウ管理</translation>
@@ -337,6 +352,7 @@
 <translation id="4953688446973710931">オンにすると、サイトは複数のファイルの自動ダウンロードを要求できます。オフにすると、サイトは複数のファイルを自動ダウンロードできません。</translation>
 <translation id="4962975101802056554">デバイスのすべての権限を取り消します</translation>
 <translation id="4972737347717125191">サイトがバーチャル リアリティ デバイスとデータの使用を要求できるようにする</translation>
+<translation id="1275242979020712923">Brave の色のボトムシート</translation>
 <translation id="497421865427891073">次に進む</translation>
 <translation id="4976702386844183910">最終アクセス日: <ph name="DATE"/></translation>
 <translation id="4978178243417029856">Discover フィードの詳細を確認する</translation>
@@ -356,6 +372,7 @@
 <translation id="5100237604440890931">折りたたまれています - クリックすると展開します。</translation>
 <translation id="7143053178237996319">メッセージ、ドキュメント、他のアプリでタップしたリンクを常に Brave で開くよう設定できます</translation>
 <translation id="512938610812707830">新しいタブページの外観テーマ コレクションのボトムシートが画面全体に表示されています</translation>
+<translation id="5137460097045297858">Discover フィードのボトムシートが画面の下半分に表示されています</translation>
 <translation id="5139253256813381453">{PRICE_DROP_COUNT,plural, =1{開いているタブの値下げ情報}other{開いているタブの値下げ情報}}</translation>
 <translation id="5186036860380548585">設定は画面上部にあります</translation>
 <translation id="5197729504361054390">選択した連絡先が <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> と共有されます。</translation>
@@ -374,7 +391,6 @@
 <translation id="5335288049665977812">サイトに JavaScript の実行を許可する（推奨）</translation>
 <translation id="534295439873310000">NFC デバイス</translation>
 <translation id="5344522958567249764">広告プライバシーを管理</translation>
-<translation id="5371407439562620893">JavaScript の最適化とセキュリティ</translation>
 <translation id="5373874281522292782">タブグループを保存しました</translation>
 <translation id="5394307150471348411">{DETAIL_COUNT,plural, =1{（他 1 件）}other{（他 # 件）}}</translation>
 <translation id="5403592356182871684">名前</translation>
@@ -386,7 +402,6 @@
 <translation id="5515432237048785579">Discover フィードのボトムシートが画面全体に表示されています</translation>
 <translation id="5516455585884385570">通知設定を開く</translation>
 <translation id="5527111080432883924">サイトがクリップボードのテキストや画像を読み取る前に確認する（推奨）</translation>
-<translation id="5545693483061321551">サイトは、Cookie を使用して別のサイトでのあなたの閲覧アクティビティを確認できず、広告のパーソナライズなどが行えなくなります。一部のサイトで機能を使用できなくなる可能性があります。</translation>
 <translation id="5553374991681107062">最新</translation>
 <translation id="674221630984410403">Brave の V8 エンジンでサイトを高速化しない（攻撃に対する Brave の耐性は若干強化されます）</translation>
 <translation id="5556459405103347317">再読み込み</translation>
@@ -457,6 +472,7 @@
 <translation id="6207207788774442484">データを削除して権限をリセット</translation>
 <translation id="6231752747840485235">「<ph name="APP_NAME"/>」をアンインストールしますか？</translation>
 <translation id="4789073065838177382">[ブラウザアプリ] &gt; [Brave] をタップします</translation>
+<translation id="6260830281887654268">新しいタブページの外観テーマ コレクションのボトムシートが画面の下半分に表示されています</translation>
 <translation id="6262191102408817757">最後のタブに基づく</translation>
 <translation id="6262279340360821358"><ph name="PERMISSION_1"/>、<ph name="PERMISSION_2"/>をブロック</translation>
 <translation id="6270391203985052864">通知を送信するかどうかの確認をサイトに許可する</translation>
@@ -488,8 +504,10 @@
 <translation id="6608650720463149374"><ph name="GIGABYTES"/> GB</translation>
 <translation id="6612358246767739896">保護されたコンテンツ</translation>
 <translation id="662080504995468778">とどまる</translation>
+<translation id="6630443592285535486">ここに 16 進数を入力</translation>
 <translation id="6635327442719709864">オンにすると、サイトはシリアルポートの使用を要求できます。オフにすると、サイトはシリアルポートを使用できません。</translation>
 <translation id="6678072580827808850">安全確認を表示</translation>
+<translation id="6682057173375416470">新しいタブページでおすすめの記事を表示</translation>
 <translation id="6683865262523156564">このサイトは、あなたのアクティビティを確認できるグループに属しています。グループは <ph name="RWS_OWNER"/> によって定義されます</translation>
 <translation id="6689172468748959065">プロフィール写真</translation>
 <translation id="6697925417670533197">アクティブなダウンロード</translation>
@@ -503,7 +521,7 @@
 <translation id="6818926723028410516">アイテムを選択</translation>
 <translation id="7912249371524580097">Brave をデフォルトに設定する</translation>
 <translation id="6840760312327750441">タブをグループ化するには、タブを押しながら別のタブにドラッグします。</translation>
-<translation id="6842868554183332230">多くのサイトはデバイスのアクティブ状態を検出して、チャットアプリのステータスを設定しています</translation>
+<translation id="6842868554183332230">チャットアプリのステータスを設定するため、サイトでデバイスのアクティブ状態を検出する場合があります。</translation>
 <translation id="6864395892908308021">このデバイスでは NFC を読み込めません</translation>
 <translation id="6870169401250095575">安全チェックカードを非表示にする</translation>
 <translation id="6900883974539674431">タブグループを作成すると、お使いのすべてのデバイスで自動的に保存され、更新されます</translation>
@@ -539,21 +557,25 @@
 <translation id="728412880473384942">サイトは速くなりますが、安全性は低下します</translation>
 <translation id="7366415735885268578">サイトの追加</translation>
 <translation id="7368695150573390554">オフライン データがすべて削除されます</translation>
+<translation id="7369678931043226462">[新しいタブページをカスタマイズ] のボトムシートが画面の下半分に表示されています</translation>
 <translation id="7383715096023715447"><ph name="DOMAIN"/> の設定</translation>
 <translation id="7399802613464275309">安全チェック</translation>
 <translation id="7406113532070524618">この設定では、ユーザーを特定したり、ユーザーの閲覧履歴の参照をサイトに許可したりすることはありませんが、確認に必要な少量の情報を共有することがあります</translation>
 <translation id="7409735910987429903">ポップアップを送信して広告を表示したり、リダイレクトを使ってユーザーがアクセスするつもりのないウェブサイトを表示したりするサイトもあります</translation>
+<translation id="7412160840120117304">メインの色（16 進数）</translation>
 <translation id="7423098979219808738">最初に確認する</translation>
 <translation id="7423538860840206698">クリップボードの読み取りがブロックされています</translation>
 <translation id="7425915948813553151">サイトのダークモード</translation>
+<translation id="746412105358554870">JavaScript の最適化とセキュリティ</translation>
 <translation id="7478658909253570368">サイトにシリアルポートへの接続を許可しない</translation>
 <translation id="7488573225650545859">[アプリリストにタブを表示] を非表示にする</translation>
 <translation id="7521387064766892559">JavaScript</translation>
+<translation id="7538975533793429503">フォントサイズのスライダー</translation>
 <translation id="7547989957535180761">オンにすると、サイトはログイン メッセージを表示できます。オフにすると、サイトはログイン メッセージを表示できません。</translation>
 <translation id="7553211568594248088">ハブ検索を終了</translation>
 <translation id="7554752735887601236">サイトでマイクが使用されています</translation>
 <translation id="7561196759112975576">常に使用</translation>
-<translation id="7573594921350120855">多くのサイトは、ビデオチャットなどの通信機能にビデオカメラを使用します。</translation>
+<translation id="7573594921350120855">通常、ビデオチャットなどの通信機能を使用するため、サイトがビデオカメラを使用する場合があります</translation>
 <translation id="7574529565935733861">{NUM_MONTHS,plural, =1{<ph name="NUM_MONTHS_ONE"/> か月前}other{<ph name="NUM_MONTHS_MANY"/> か月前}}</translation>
 <translation id="757524316907819857">サイトでの保護されたコンテンツの再生をブロックする</translation>
 <translation id="7586676035079382730">通知は許可されていません</translation>
@@ -563,17 +585,18 @@
 <translation id="7655411746932645568">サイトがシリアルポートへの接続を要求できるようにする</translation>
 <translation id="7658239707568436148">キャンセル</translation>
 <translation id="7667547420449112975">オズの魔法使い</translation>
-<translation id="7681597159868843240">多くのサイトは、バーチャル リアリティやフィットネス トラッキングなどの機能にデバイスのモーション センサーを使用します</translation>
+<translation id="7681597159868843240">通常、バーチャル リアリティやフィットネス トラッキングなどの機能を使用するため、サイトがデバイスのモーション センサーを使用する場合があります</translation>
 <translation id="5455732060086060613">Brave のヒントカードを非表示にする</translation>
 <translation id="7719367874908701697">ページのズーム</translation>
 <translation id="775043444390799886">権限を取り消す</translation>
 <translation id="7759147511335618829">MIDI デバイスの操作と再プログラム</translation>
 <translation id="7781829728241885113">昨日</translation>
 <translation id="7791543448312431591">追加</translation>
-<translation id="780301667611848630">キャンセル</translation>
+<translation id="780301667611848630">利用しない</translation>
 <translation id="7804248752222191302">サイトでカメラが使用されています</translation>
 <translation id="7805832099057502789">新しいタブページの外観のボトムシートが画面全体に表示されています</translation>
 <translation id="6720480757902085971">Brave から提供</translation>
+<translation id="7809029041571842593">新しいタブページのカードのボトムシートが画面の下半分に表示されています</translation>
 <translation id="7815680994978050279">危険なダウンロードがブロックされました</translation>
 <translation id="7835852323729233924">再生中のメディア</translation>
 <translation id="783819812427904514">動画のミュートを解除</translation>
@@ -631,7 +654,8 @@
 <translation id="8441146129660941386">後方にシーク再生</translation>
 <translation id="8444433999583714703"><ph name="APP_NAME"/> に現在地へのアクセスを許可するには、<ph name="BEGIN_LINK"/>Android の設定<ph name="END_LINK"/>でも位置情報をオンにしてください。</translation>
 <translation id="8447861592752582886">デバイスの許可を取り消します</translation>
-<translation id="8471525937465764768">多くのサイトは、ドキュメントを印刷したりストレージ デバイスに保存するために USB デバイスに接続します。</translation>
+<translation id="8467359479529706065">新しいタブページの外観のボトムシートが画面の下半分に表示されています</translation>
+<translation id="8471525937465764768">ドキュメントの印刷やストレージ デバイスへの保存のため、サイトが USB デバイスに接続する場合があります。</translation>
 <translation id="8473055640493819707">「<ph name="APP_NAME"/>」は最新ではありません。アプリを再インストールしてください。</translation>
 <translation id="847433688444405067">複数のデバイスでブラウジング</translation>
 <translation id="8487700953926739672">オフラインでの利用</translation>
@@ -646,7 +670,6 @@
 <translation id="8549127125482561383">リクエストの表示方法</translation>
 <translation id="4273503381657013953">ブラウジングするときや、メッセージ、ドキュメント、他のアプリのリンクをタップしたときに、常に Brave が使えるようになります。</translation>
 <translation id="857943718398505171">許可（推奨）</translation>
-<translation id="8580511488901768832">カスタム ショートカットのボトムシートが画面全体に表示されています</translation>
 <translation id="8593422116412089302">オンにすると、サイトはあなたに関する保存済みの情報の使用を要求できます。オフにすると、サイトはあなたに関する保存済みの情報の使用を要求できません。</translation>
 <translation id="8609465669617005112">上に移動</translation>
 <translation id="8617611086246832542">オンにすると、ウェブサイトのデスクトップ ビューが表示されます。オフにすると、ウェブサイトのモバイルビューが表示されます。</translation>
@@ -656,7 +679,7 @@
 <translation id="8681886425883659911">煩わしい広告や誤解を招く広告が表示されることがわかっているサイトで広告がブロックされます</translation>
 <translation id="868929229000858085">連絡先を検索</translation>
 <translation id="8707904142362025782">サイトがカメラへのアクセスを要求できるようにする</translation>
-<translation id="8712637175834984815">理解した</translation>
+<translation id="8712637175834984815">理解しました</translation>
 <translation id="8715862698998036666">全画面表示を終了するには、上からドラッグして、左端または右端からスワイプします。</translation>
 <translation id="8719283222052720129"><ph name="BEGIN_LINK"/>Android の設定<ph name="END_LINK"/>で <ph name="APP_NAME"/> の権限を有効にしてください。</translation>
 <translation id="8721719390026067591">オンにすると、サイトは Bluetooth デバイスの検出を要求できます。オフにすると、サイトは Bluetooth デバイスを検出できません。</translation>
@@ -664,6 +687,7 @@
 <translation id="8730621377337864115">完了</translation>
 <translation id="8737426583868847403">カスタムのズームレベルを保存したサイトがここに表示されます</translation>
 <translation id="8751914237388039244">画像を選択</translation>
+<translation id="8775741625735357092">[設定] &gt; [デザイン] でブックマーク バーをオンにできます</translation>
 <translation id="8800034312320686233">サイトが動作していない場合</translation>
 <translation id="8801436777607969138">特定のサイトで JavaScript をブロックします。</translation>
 <translation id="2026315747406172223">V8 は、サイトのパフォーマンスを向上させるために使用される Brave の JavaScript エンジンおよび WebAssembly エンジンです</translation>
@@ -688,8 +712,9 @@
 <translation id="9011903857143958461"><ph name="SITE_NAME"/> を許可しました</translation>
 <translation id="9017522656123387064">選択モードを終了しました</translation>
 <translation id="9019902583201351841">保護者により管理されています</translation>
-<translation id="902236149563113779">多くのサイトは、ゲームや HUD のナビ表示などで AR 機能を使用するためにカメラ位置を追跡します。</translation>
+<translation id="902236149563113779">ゲームや HUD のナビ表示などで AR 機能を使用するため、サイトでカメラ位置を追跡する場合があります。</translation>
 <translation id="9039697262778250930">これらのサイトからログアウトされる可能性があります</translation>
+<translation id="9065203028668620118">編集</translation>
 <translation id="9074739597929991885">Bluetooth</translation>
 <translation id="9106233582039520022">Cookie を削除しますか？</translation>
 <translation id="9109747640384633967">{PERMISSIONS_SUMMARY_MIXED,plural, =1{<ph name="PERMISSION_1"/>、<ph name="PERMISSION_2"/>、他 <ph name="NUM_MORE"/> 個の権限}other{<ph name="PERMISSION_1"/>、<ph name="PERMISSION_2"/>、他 <ph name="NUM_MORE"/> 個の権限}}</translation>
@@ -708,10 +733,5 @@
 <translation id="3110967157686007724">プライベートタブ</translation>
 <translation id="8623552597614912461">このサイトはプライベートモード外のアプリと情報を共有しようとしています。</translation>
 <translation id="8157212814767579028">プライベートモードを終了しますか？</translation>
-<translation id="6105125042109106861">シークレット モードでサードパーティの Cookie がブロックされています</translation>
-<translation id="6642913673024345959">プライベートモードでサードパーティの Cookie をブロックします</translation>
-<translation id="20460146243579445">プライベートモードでは、一部のサイトで機能を使用できなくなる可能性があります</translation>
-<translation id="8877838532507724268">プライベートモードを使用中は、サイトは、Cookie を使用してサイトでのあなたの閲覧アクティビティを確認することができません。閲覧アクティビティが広告のカスタマイズに使用されることはありません。また、一部サイトの機能が機能しなくなる可能性もあります。</translation>
-<translation id="1856888821396498049">プライベート モードでサードパーティの Cookie をブロックします:</translation>
 <translation id="1593610935874634135">企業は、Cookieを使用できるサイトのグループを定義し、グループ内であなたの活動を共有することができます。プライベートの場合、この機能はオフになっています。</translation>
 </translationbundle>

@@ -38,9 +38,6 @@ inline constexpr char kOffRampEnabledFlows[] = "OFFRAMP";
 inline constexpr char kOnRampEnabledFlows[] = "ONRAMP";
 inline constexpr char kOnRampID[] = "8yxja8782as5essk2myz3bmh4az6gpq4nte9n2gf";
 inline constexpr char kOffRampID[] = "y57zqta99ohs7o2paf4ak6vpfb7wf8ubj9krwtwe";
-inline constexpr char kSardineStorefrontBaseURL[] = "https://crypto.sardine.ai";
-inline constexpr char kSardineClientTokensURL[] =
-    "https://api.sardine.ai/v1/auth/client-tokens";
 inline constexpr char kTransakURL[] = "https://global.transak.com/";
 inline constexpr char kTransakApiKey[] = "985d14f0-4cf5-4a4c-8917-78107620d3b7";
 inline constexpr char kCoinbaseURL[] = "https://pay.coinbase.com";
@@ -226,6 +223,10 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletEditGasEstimatedNetworkFee",
      IDS_BRAVE_WALLET_EDIT_GAS_ESTIMATED_NETWORK_FEE},
     {"braveWalletUseDefault", IDS_BRAVE_WALLET_USE_DEFAULT},
+    {"braveWalletGasFeeTooltip", IDS_BRAVE_WALLET_GAS_FEE_TOOLTIP},
+    {"braveWalletGasFeeTooltipDescription",
+     IDS_BRAVE_WALLET_GAS_FEE_TOOLTIP_DESCRIPTION},
+    {"braveWalletSpeedPriority", IDS_BRAVE_WALLET_SPEED_PRIORITY},
     {"braveWalletNetworkFee", IDS_BRAVE_WALLET_NETWORK_FEE},
     {"braveWalletSolanaSysvarRentProgram",
      IDS_BRAVE_WALLET_SOLANA_SYSVAR_RENT_PROGRAM},
@@ -573,6 +574,8 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_CREATE_ACCOUNT_CARDANO_TESTNET_DESCRIPTION},
     {"braveWalletCreateAccountPolkadotDescription",
      IDS_BRAVE_WALLET_CREATE_ACCOUNT_POLKADOT_DESCRIPTION},
+    {"braveWalletCreateAccountPolkadotTestnetDescription",
+     IDS_BRAVE_WALLET_CREATE_ACCOUNT_POLKADOT_TESTNET_DESCRIPTION},
     {"braveWalletFilecoinPrivateKeyProtocol",
      IDS_BRAVE_WALLET_FILECOIN_PRIVATE_KEY_PROTOCOL},
     {"braveWalletAddAccountImport", IDS_BRAVE_WALLET_ADD_ACCOUNT_IMPORT},
@@ -1133,18 +1136,14 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletCreateAccountToBuyDescription",
      IDS_BRAVE_WALLET_CREATE_ACCOUNT_TO_BUY_DESCRIPTION},
     {"braveWalletAccountName", IDS_BRAVE_WALLET_ACCOUNT_NAME},
-    {"braveWalletBuyWithSardine", IDS_BRAVE_WALLET_BUY_WITH_SARDINE},
     {"braveWalletBuyWithTransak", IDS_BRAVE_WALLET_BUY_WITH_TRANSAK},
     {"braveWalletBuyWithStripe", IDS_BRAVE_WALLET_BUY_WITH_STRIPE},
     {"braveWalletBuyWithCoinbase", IDS_BRAVE_WALLET_BUY_WITH_COINBASE},
     {"braveWalletBuyRampNetworkName", IDS_BRAVE_WALLET_BUY_RAMP_NETWORK_NAME},
-    {"braveWalletBuySardineName", IDS_BRAVE_WALLET_BUY_SARDINE_NAME},
     {"braveWalletBuyTransakName", IDS_BRAVE_WALLET_BUY_TRANSAK_NAME},
     {"braveWalletBuyStripeName", IDS_BRAVE_WALLET_BUY_STRIPE_NAME},
     {"braveWalletBuyCoinbaseName", IDS_BRAVE_WALLET_BUY_COINBASE_NAME},
     {"braveWalletBuyRampDescription", IDS_BRAVE_WALLET_BUY_RAMP_DESCRIPTION},
-    {"braveWalletBuySardineDescription",
-     IDS_BRAVE_WALLET_BUY_SARDINE_DESCRIPTION},
     {"braveWalletBuyTransakDescription",
      IDS_BRAVE_WALLET_BUY_TRANSAK_DESCRIPTION},
     {"braveWalletBuyStripeDescription",
@@ -1577,6 +1576,7 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveSwapAverage", IDS_BRAVE_SWAP_AVERAGE},
     {"braveSwapFast", IDS_BRAVE_SWAP_FAST},
     {"braveSwapGwei", IDS_BRAVE_SWAP_GWEI},
+    {"braveWalletEstimatedFee", IDS_BRAVE_WALLET_ESTIMATED_FEE},
     {"braveSwapSlippageTolerance", IDS_BRAVE_SWAP_SLIPPAGE_TOLERANCE},
     {"braveSwapExchanges", IDS_BRAVE_SWAP_EXCHANGES},
     {"braveSwapDirectRouteTitle", IDS_BRAVE_SWAP_DIRECT_ROUTE_TITLE},
@@ -1849,9 +1849,6 @@ inline constexpr auto kEthSupportedNftInterfaces =
 
 // https://docs.rs/solana-program/1.18.10/src/solana_program/clock.rs.html#129-131
 inline constexpr int kSolanaValidBlockHeightThreshold = 150;
-
-std::optional<std::string_view> GetSardineNetworkName(
-    std::string_view chain_id);
 
 // Returns the URL for the Ratios service.
 std::string GetAssetRatioBaseURL();

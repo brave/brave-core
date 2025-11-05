@@ -9,7 +9,6 @@ namespace brave_wallet {
 namespace features {
 
 BASE_FEATURE(kBraveWalletWebUIIOS,
-             "BraveWalletWebUIIOS",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
 }

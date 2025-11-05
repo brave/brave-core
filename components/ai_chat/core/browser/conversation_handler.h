@@ -9,6 +9,7 @@
 #include <cstdint>
 #include <memory>
 #include <optional>
+#include <set>
 #include <string>
 #include <string_view>
 #include <utility>
@@ -34,6 +35,8 @@
 #include "brave/components/ai_chat/core/browser/tools/tool_provider.h"
 #include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
@@ -50,6 +53,8 @@ namespace network {
 class SharedURLLoaderFactory;
 }  // namespace network
 
+class PrefService;
+
 namespace ai_chat {
 
 class AIChatFeedbackAPI;
@@ -63,6 +68,7 @@ class AssociatedContentManager;
 class ConversationHandler : public mojom::ConversationHandler,
                             public mojom::UntrustedConversationHandler,
                             public ModelService::Observer,
+                            public ToolProvider::Observer,
                             public ConversationHandlerForMetrics {
  public:
   using GeneratedTextCallback =
@@ -102,12 +108,30 @@ class ConversationHandler : public mojom::ConversationHandler,
     virtual void OnAssociatedContentUpdated(ConversationHandler* handler) {}
   };
 
+  struct Suggestion {
+    std::string title;
+    std::optional<std::string> prompt;
+    mojom::ActionType action_type = mojom::ActionType::SUGGESTION;
+
+    explicit Suggestion(std::string title);
+    Suggestion(std::string title, std::string prompt);
+    Suggestion(std::string title,
+               std::string prompt,
+               mojom::ActionType action_type);
+    Suggestion(const Suggestion&) = delete;
+    Suggestion& operator=(const Suggestion&) = delete;
+    Suggestion(Suggestion&&);
+    Suggestion& operator=(Suggestion&&);
+    ~Suggestion();
+  };
+
   ConversationHandler(
       mojom::Conversation* conversation,
       AIChatService* ai_chat_service,
       ModelService* model_service,
       AIChatCredentialManager* credential_manager,
       AIChatFeedbackAPI* feedback_api,
+      PrefService* prefs,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       std::vector<std::unique_ptr<ToolProvider>> tool_providers);
 
@@ -117,6 +141,7 @@ class ConversationHandler : public mojom::ConversationHandler,
       ModelService* model_service,
       AIChatCredentialManager* credential_manager,
       AIChatFeedbackAPI* feedback_api,
+      PrefService* prefs,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       std::vector<std::unique_ptr<ToolProvider>> tool_providers,
       std::optional<mojom::ConversationArchivePtr> initial_state);
@@ -143,9 +168,6 @@ class ConversationHandler : public mojom::ConversationHandler,
   bool IsAnyClientConnected();
   bool HasAnyHistory();
   bool IsRequestInProgress();
-
-  // Returns true if the conversation has associated content that is non-archive
-  bool IsAssociatedContentAlive();
 
   const mojom::Model& GetCurrentModel();
   const std::vector<mojom::ConversationTurnPtr>& GetConversationHistory() const;
@@ -177,13 +199,16 @@ class ConversationHandler : public mojom::ConversationHandler,
   void SubmitHumanConversationEntryWithAction(
       const std::string& input,
       mojom::ActionType action_type) override;
+  void SubmitHumanConversationEntryWithSkill(
+      const std::string& input,
+      const std::string& skill_id) override;
   void ModifyConversation(const std::string& entry_uuid,
                           const std::string& new_text) override;
   void RegenerateAnswer(const std::string& turn_uuid,
                         const std::string& model_key) override;
   void SubmitSummarizationRequest() override;
   void SubmitSuggestion(const std::string& suggestion_title) override;
-  std::vector<std::string> GetSuggestedQuestionsForTest();
+  const std::vector<Suggestion>& GetSuggestedQuestionsForTest() const;
   void SetSuggestedQuestionForTest(std::string title, std::string prompt);
   void GenerateQuestions() override;
   void GetAssociatedContentInfo(
@@ -232,6 +257,8 @@ class ConversationHandler : public mojom::ConversationHandler,
 
   mojom::APIError current_error() const override;
 
+  const std::set<int32_t>& get_task_tab_ids() const { return task_tab_ids_; }
+
   void SetEngineForTesting(std::unique_ptr<EngineConsumer> engine_for_testing) {
     engine_ = std::move(engine_for_testing);
   }
@@ -273,6 +300,9 @@ class ConversationHandler : public mojom::ConversationHandler,
                              const std::string& new_key) override;
   void OnModelRemoved(const std::string& removed_key) override;
 
+  // ToolProvider::Observer
+  void OnContentTaskStarted(int32_t tab_id) override;
+
  private:
   friend class ::AIChatUIBrowserTest;
   FRIEND_TEST_ALL_PREFIXES(AIChatServiceUnitTest, DeleteAssociatedWebContent);
@@ -301,23 +331,6 @@ class ConversationHandler : public mojom::ConversationHandler,
   FRIEND_TEST_ALL_PREFIXES(
       ConversationHandlerUnitTest,
       GetTools_MemoryToolFilteredForTemporaryConversations);
-
-  struct Suggestion {
-    std::string title;
-    std::optional<std::string> prompt;
-    mojom::ActionType action_type = mojom::ActionType::SUGGESTION;
-
-    explicit Suggestion(std::string title);
-    Suggestion(std::string title, std::string prompt);
-    Suggestion(std::string title,
-               std::string prompt,
-               mojom::ActionType action_type);
-    Suggestion(const Suggestion&) = delete;
-    Suggestion& operator=(const Suggestion&) = delete;
-    Suggestion(Suggestion&&);
-    Suggestion& operator=(Suggestion&&);
-    ~Suggestion();
-  };
 
   void InitEngine();
 
@@ -447,10 +460,17 @@ class ConversationHandler : public mojom::ConversationHandler,
   mojom::ConversationCapability conversation_capability_ =
       mojom::ConversationCapability::CHAT;
 
+  // Set of tab IDs that have been part of tasks whilst this conversation is
+  // in-memory. Since conversations are finite (limited by context size) and not
+  // held in memory forever, we don't currently prune the tab IDs once they
+  // close. Therefore, these are not guaranteed to be active.
+  std::set<int32_t> task_tab_ids_;
+
   raw_ptr<AIChatService, DanglingUntriaged> ai_chat_service_;
   raw_ptr<ModelService> model_service_;
   raw_ptr<AIChatCredentialManager, DanglingUntriaged> credential_manager_;
   raw_ptr<AIChatFeedbackAPI, DanglingUntriaged> feedback_api_;
+  raw_ptr<PrefService> prefs_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
 
   base::ScopedObservation<ModelService, ModelService::Observer>

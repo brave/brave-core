@@ -204,7 +204,10 @@ void BraveWalletTabHelper::ShowBubble() {
     return;
   }
   wallet_bubble_manager_delegate_ =
-      WalletBubbleManagerDelegate::Create(&GetWebContents(), bubble_url);
+      WalletBubbleManagerDelegate::MaybeCreate(&GetWebContents(), bubble_url);
+  if (!wallet_bubble_manager_delegate_) {
+    return;
+  }
   wallet_bubble_manager_delegate_->ShowBubble();
   if (show_bubble_callback_for_testing_) {
     std::move(show_bubble_callback_for_testing_).Run();
@@ -218,8 +221,11 @@ void BraveWalletTabHelper::ShowApproveWalletBubble() {
   if (IsShowingBubble()) {
     return;
   }
-  wallet_bubble_manager_delegate_ = WalletBubbleManagerDelegate::Create(
+  wallet_bubble_manager_delegate_ = WalletBubbleManagerDelegate::MaybeCreate(
       &GetWebContents(), GetApproveBubbleURL());
+  if (!wallet_bubble_manager_delegate_) {
+    return;
+  }
   wallet_bubble_manager_delegate_->ShowBubble();
 }
 

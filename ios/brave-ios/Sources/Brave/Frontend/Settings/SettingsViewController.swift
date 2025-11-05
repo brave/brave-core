@@ -16,6 +16,8 @@ import DataImporter
 import Growth
 import LocalAuthentication
 import NetworkExtension
+import Origin
+import Playlist
 import Preferences
 import Shared
 import Static
@@ -377,7 +379,9 @@ class SettingsViewController: TableViewController {
                   tabManager: self.tabManager,
                   feedDataSource: self.feedDataSource,
                   debounceService: DebounceServiceFactory.get(privateMode: false),
-                  braveShieldsSettings: BraveShieldsSettingsFactory.create(for: braveCore.profile),
+                  braveShieldsSettings: BraveShieldsSettingsServiceFactory.get(
+                    profile: braveCore.profile
+                  ),
                   braveCore: braveCore,
                   p3aUtils: p3aUtilities,
                   rewards: rewards,
@@ -477,17 +481,19 @@ class SettingsViewController: TableViewController {
       section.rows.append(vpnSettingsRow)
     }
 
-    section.rows.append(
-      Row(
-        text: Strings.PlayList.playListTitle,
-        selection: { [unowned self] in
-          let playlistSettings = PlaylistSettingsViewController()
-          self.navigationController?.pushViewController(playlistSettings, animated: true)
-        },
-        image: UIImage(braveSystemNamed: "leo.product.playlist"),
-        accessory: .disclosureIndicator
+    if braveCore.profile.prefs.isPlaylistAvailable {
+      section.rows.append(
+        Row(
+          text: Strings.PlayList.playListTitle,
+          selection: { [unowned self] in
+            let playlistSettings = PlaylistSettingsViewController()
+            self.navigationController?.pushViewController(playlistSettings, animated: true)
+          },
+          image: UIImage(braveSystemNamed: "leo.product.playlist"),
+          accessory: .disclosureIndicator
+        )
       )
-    )
+    }
 
     if FeatureList.kBraveTranslateEnabled.enabled {
       section.rows.append(
@@ -624,6 +630,22 @@ class SettingsViewController: TableViewController {
       cellClass: MultilineSubtitleCell.self
     )
     general.rows.append(websiteRedirectsRow)
+
+    if FeatureList.kBraveOrigin.enabled {
+      general.rows.append(
+        Row(
+          text: Strings.Origin.originProductName,
+          selection: { [unowned self] in
+            let controller = UIHostingController(rootView: OriginSettingsView())
+            controller.title = Strings.Origin.originProductName  // Not Translated
+            self.navigationController?.pushViewController(controller, animated: true)
+          },
+          image: UIImage(braveSystemNamed: "leo.product.origin"),
+          accessory: .disclosureIndicator,
+          cellClass: MultilineSubtitleCell.self
+        )
+      )
+    }
 
     return general
   }()

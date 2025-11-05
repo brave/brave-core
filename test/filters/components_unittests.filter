@@ -34,8 +34,13 @@
 # https://github.com/brave/brave-browser/issues/47218
 -OmniboxTextUtilTest.AdjustTextForCopy
 
-# This test fails because we disable @aimode search keyword
--FeaturedSearchProviderTest.StarterPack
+# The following tests use Chromium's list of "starter pack engines", which
+# includes entries not supported by Brave (i.e. "@gemini" and "@aimode").
+-AutocompleteControllerTest.ContextualSearchActionAttachedPageKeywordMode
+-AutocompleteControllerTest.ContextualSearchOpenLensActionAttachedPageKeywordMode
+-AutocompleteControllerTest.ExtraHeaders
+-AutocompleteControllerTest.ShouldRunProvider_StarterPack
+-FeaturedSearchProviderTest.*
 
 # These tests pass locally but fail on CI (flaky).
 -SupervisedUserServiceTest.CantEnableFilteringUsingUserControls
@@ -46,6 +51,7 @@
 -HintsManagerFetchingTest.*
 -HintsManagerProactivePersonalizationFetchingTest.*
 -ModelBrokerClientTest.*
+-OnDeviceAssetManagerTest.AdaptationModelDownloadRegisteredWhenFeatureFirstUsed
 -OnDeviceModelAdaptationLoaderTest2.UnavailableAdaptationRejectsSession
 -OptimizationGuidePermissionsUtilTest.IsUserPermittedToFetchHintsDefaultUserAnonymousDataCollectionEnabled
 -PDPMetricsTest.TestFalseOptGuideResponseIsRecorded
@@ -85,6 +91,15 @@
 -SyncUserSettingsImplTest.PreferredTypesSyncEverything
 -SyncUserSettingsImplTest.SetSelectedTypeInFullSyncMode
 
+# These tests fail because we disable
+# switches::kSyncEnableBookmarksInTransportMode
+-InitialAccountBookmarkDeduplicatorTest.*
+
+# These tests fail because we patch ImageServiceConsentHelper::GetConsentStatus
+# to return false always
+-ImageServiceConsentHelperTest.*
+-ImageServiceImplTest.*
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AccountInvestigatorTest.*
 -AccountReconcilorDiceTest.*
@@ -100,7 +115,6 @@
 -All/PasswordFormManagerTest.Autofill/*
 -All/PrivacySandboxAttestationsTest.*
 -All/WellKnownChangePasswordStateTest.PrefetchCallbackTriggersOnProcessingFinished/*
--AutocompleteControllerTest.ExtraHeaders
 -AutocompleteProviderTest.AllowExactKeywordMatch
 -AutocompleteProviderTest.CurbDefaultSuggestions
 -AutocompleteProviderTest.ExtraQueryParams
@@ -140,7 +154,6 @@
 -FCMNetworkHandlerTest.*
 -FCMNetworkHandlerTestWithTTL.ShouldNotProvideTTLWithFakeSenderID
 -FCMNetworkHandlerTestWithTTL.ShouldProvideTTLWithPolicySenderID
--FeaturedSearchProviderTest.HistoryEmbedding_Iphs
 -FeedbackUploaderDispatchTest.VariationHeaders
 -FeedbackUploaderDispatchTest.VariationHeadersForProductID
 -GetUserPopulationTest.PopulatesPopulation
@@ -158,8 +171,6 @@
 -MostVisitedSitesWithCustomLinksTest.DisableCustomLinksWhenInitialized
 -OhttpKeyServiceTest.AsyncFetch_PrefChanges_BackgroundHprtDisabled
 -OhttpKeyServiceTest.GetOhttpKey_BackgroundLookupsForbidden
--OmniboxControllerTest.CheckDefaultAutocompleteProviders
--OmniboxEditModelTest.*
 -OnDeviceModelAdaptationLoaderTest.*
 -OnDeviceModelComponentTest.*
 -OnDeviceModelComponentTest.PerformanceClassChangesAfterInstall
@@ -175,11 +186,6 @@
 -PageSpecificContentSettingsWithPrerenderTest.UpdateLocationBarAfterActivation
 -PageTextObserverWithPrerenderTest.AMPRequestedOnOOPIFInPrerendering
 -PageTextObserverWithPrerenderTest.PrerenderingShouldNotResetOutstandingRequest
--PermissionContextBaseTests.ExpirationAllow
--PermissionContextBaseTests.ExpirationBlock
--PermissionContextBaseTests.TestAskAndBlock
--PermissionContextBaseTests.TestAskAndDismiss
--PermissionContextBaseTests.TestAskAndGrant
 -PasswordFormFillingTest.Autofill
 -PasswordFormFillingTest.TestFillOnLoadSuggestion
 -PasswordFormFillingTest.TestFillOnLoadSuggestionWithPrefill
@@ -187,6 +193,11 @@
 -PasswordManagerTest.AutofillingOfAffiliatedCredentials/0
 -PasswordManagerTest.AutofillingOfAffiliatedCredentials/1
 -PaymentsNetworkInterfaceTest.*
+-PermissionContextBaseTests.ExpirationAllow
+-PermissionContextBaseTests.ExpirationBlock
+-PermissionContextBaseTests.TestAskAndBlock
+-PermissionContextBaseTests.TestAskAndDismiss
+-PermissionContextBaseTests.TestAskAndGrant
 -PermissionUmaUtilTest.ScopedRevocationReporter
 -PermissionsDelegationUmaUtilTest.SiteLevelAndOSPromptVariantsTest
 -PrimaryAccountManagerTest.*

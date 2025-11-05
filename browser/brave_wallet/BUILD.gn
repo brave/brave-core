@@ -226,6 +226,7 @@ source_set("browser_tests") {
       "//brave/components/brave_wallet/common",
       "//brave/components/brave_wallet/common:pref_names",
       "//brave/components/sidebar/browser",
+      "//brave/components/tor/buildflags",
       "//chrome/browser/ui",
       "//chrome/browser/ui/browser_window",
       "//chrome/test:test_support",

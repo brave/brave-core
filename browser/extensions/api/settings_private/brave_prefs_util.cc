@@ -6,6 +6,7 @@
 #include "brave/browser/extensions/api/settings_private/brave_prefs_util.h"
 
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/common/pref_names.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
@@ -19,7 +20,7 @@
 #include "brave/components/decentralized_dns/core/pref_names.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
-#include "brave/components/playlist/common/buildflags/buildflags.h"
+#include "brave/components/playlist/core/common/pref_names.h"
 #include "brave/components/request_otr/common/pref_names.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -55,10 +56,6 @@
 #include "brave/components/brave_vpn/common/pref_names.h"
 #endif
 
-#if BUILDFLAG(ENABLE_PLAYLIST)
-#include "brave/components/playlist/browser/pref_names.h"
-#endif
-
 #if BUILDFLAG(IS_WIN)
 #include "brave/components/windows_recall/windows_recall.h"
 #endif
@@ -68,7 +65,6 @@ namespace extensions {
 using ntp_background_images::prefs::kNewTabPageShowBackgroundImage;
 using ntp_background_images::prefs::
     kNewTabPageShowSponsoredImagesBackgroundImage;
-using ntp_background_images::prefs::kNewTabPageSuperReferralThemesOption;
 
 namespace settings_api = api::settings_private;
 
@@ -94,7 +90,6 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[kShieldsStatsBadgeVisible] =
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[kAdControlType] = settings_api::PrefType::kBoolean;
-  (*s_brave_allowlist)[kNoScriptControlType] = settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[kGoogleLoginControlType] =
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[brave_shields::prefs::kFBEmbedControlType] =
@@ -145,8 +140,6 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[omnibox::kCommanderSuggestionsEnabled] =
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[kAskEnableWidvine] = settings_api::PrefType::kBoolean;
-  (*s_brave_allowlist)[kNewTabPageSuperReferralThemesOption] =
-      settings_api::PrefType::kNumber;
   (*s_brave_allowlist)[kTabsSearchShow] = settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[brave_tabs::kTabHoverMode] =
       settings_api::PrefType::kNumber;
@@ -169,9 +162,9 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::kNumber;
 #endif
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-  (*s_brave_allowlist)[speedreader::kSpeedreaderPrefFeatureEnabled] =
+  (*s_brave_allowlist)[speedreader::kSpeedreaderEnabled] =
       settings_api::PrefType::kBoolean;
-  (*s_brave_allowlist)[speedreader::kSpeedreaderPrefEnabledForAllSites] =
+  (*s_brave_allowlist)[speedreader::kSpeedreaderAllowedForAllReadableSites] =
       settings_api::PrefType::kBoolean;
 #endif
   // De-AMP feature
@@ -233,6 +226,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[kShowFullscreenReminder] =
       settings_api::PrefType::kBoolean;
+  (*s_brave_allowlist)[kWebViewRoundedCorners] =
+      settings_api::PrefType::kBoolean;
 
   // Brave Wallet pref
   (*s_brave_allowlist)[kBraveWalletSelectedNetworks] =
@@ -269,6 +264,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[ai_chat::prefs::kBraveAIChatUserCustomizationEnabled] =
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[ai_chat::prefs::kBraveAIChatUserMemoryEnabled] =
+      settings_api::PrefType::kBoolean;
+  (*s_brave_allowlist)[ai_chat::prefs::kBraveAIChatOllamaFetchEnabled] =
       settings_api::PrefType::kBoolean;
 
   // Survey Panelist pref
@@ -327,15 +324,15 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::kBoolean;
 #endif
 
-#if BUILDFLAG(ENABLE_PLAYLIST)
   (*s_brave_allowlist)[playlist::kPlaylistEnabledPref] =
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[playlist::kPlaylistCacheByDefault] =
       settings_api::PrefType::kBoolean;
-#endif
 
 #if !BUILDFLAG(IS_ANDROID)
   (*s_brave_allowlist)[brave_tabs::kSharedPinnedTab] =
+      settings_api::PrefType::kBoolean;
+  (*s_brave_allowlist)[brave_tabs::kTreeTabsEnabled] =
       settings_api::PrefType::kBoolean;
 #endif
 

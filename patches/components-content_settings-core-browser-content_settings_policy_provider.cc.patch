@@ -1,5 +1,5 @@
 diff --git a/components/content_settings/core/browser/content_settings_policy_provider.cc b/components/content_settings/core/browser/content_settings_policy_provider.cc
-index 174e7f0c9e714bc7a792d9dc69fbc8c01d064146..44f63ba6a842eed74bc395e9b39274bc109ab73a 100644
+index 174e7f0c9e714bc7a792d9dc69fbc8c01d064146..e924faa3b30c8908e59fae2786043e54d9aff5af 100644
 --- a/components/content_settings/core/browser/content_settings_policy_provider.cc
 +++ b/components/content_settings/core/browser/content_settings_policy_provider.cc
 @@ -51,6 +51,7 @@ struct PrefsForManagedContentSettingsMapEntry {
@@ -18,3 +18,19 @@ index 174e7f0c9e714bc7a792d9dc69fbc8c01d064146..44f63ba6a842eed74bc395e9b39274bc
      prefs::kManagedAutomaticFullscreenAllowedForUrls,
      prefs::kManagedAutomaticFullscreenBlockedForUrls,
      prefs::kManagedAutoSelectCertificateForUrls,
+@@ -240,6 +242,7 @@ constexpr const char* kManagedPrefs[] = {
+ // the preference default content settings. If a default content settings type
+ // is managed any user defined exceptions (patterns) for this type are ignored.
+ constexpr const char* kManagedDefaultPrefs[] = {
++    BRAVE_MANAGED_DEFAULT_PREFS
+     prefs::kManagedDefaultAdsSetting,
+     prefs::kManagedDefaultClipboardSetting,
+     prefs::kManagedDefaultCookiesSetting,
+@@ -335,6 +338,7 @@ struct PolicyProvider::PrefsForManagedDefaultMapEntry {
+ // static
+ const PolicyProvider::PrefsForManagedDefaultMapEntry
+     PolicyProvider::kPrefsForManagedDefault[] = {
++        BRAVE_MANAGED_DEFAULT
+         {ContentSettingsType::ADS, prefs::kManagedDefaultAdsSetting},
+         {ContentSettingsType::CLIPBOARD_READ_WRITE,
+          prefs::kManagedDefaultClipboardSetting},

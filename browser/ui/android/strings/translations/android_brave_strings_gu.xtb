@@ -19,6 +19,9 @@
 <translation id="5379685283876547860">યોગદાન મોકલ્યું!</translation>
 <translation id="1041398280582063935">તમારો સપોર્ટ શેર કરો</translation>
 <translation id="8855543392451028706">સ્વાગત છે! વપરાશકર્તાઓ આ કન્ટેન્ટ ક્રિએટરને યોગદાન મોકલીને સપોર્ટ કરી શકે છે. આ ઉત્તમ કન્ટેન્ટ બનાવવા માટે તેમનો આભાર વ્યક્ત કરવાની એક રીત છે.</translation>
+<translation id="1235176624390585199"><ph name="PROVIDER"/> પર <ph name="TITLE"/></translation>
+<translation id="3699420827646925694"><ph name="CUSTODIAN"/> માંથી લૉગ આઉટ થયા</translation>
+<translation id="9038728316393235637"><ph name="CUSTODIAN"/> માં લૉગ ઇન કરો</translation>
 <translation id="7063168612616047608">તમારા મનપસંદ ક્રિએટરને સપોર્ટ કરવા બદલ આભાર</translation>
 <translation id="3733094367889291358">યોગદાન મોકલો</translation>
 <translation id="1899434873745933492">તમારું યોગદાન મોકલી શકાતું નથી</translation>
@@ -52,6 +55,8 @@
 <translation id="8617525558807213034">ખાનગી ટૅબમાં ઓટોફિલ કરો</translation>
 <translation id="8685431198160039193">સાચવેલી માહિતી ખાનગી ટૅબમાં ઓટો-ફિલ કરી શકાય છે</translation>
 <translation id="6583902294974160967">સપોર્ટ</translation>
+<translation id="5713644099811900409">Brave અકાઉન્ટ</translation>
+<translation id="4472575034687746823">પ્રારંભ કરો</translation>
 <translation id="1799030480311994998">ફીચર્સ</translation>
 <translation id="2005732746077850308">Brave શિલ્ડ &amp; ગોપનિયતા</translation>
 <translation id="4692623383562244444">સર્ચ એન્જિન</translation>
@@ -93,8 +98,8 @@
 <translation id="7459000603787995422">બહાર નીકળવા પર ટૅબ્સ બંધ કરો</translation>
 <translation id="4448697385961650078">ટ્રેકર્સ અને જાહેરાતોને બ્લોક કરો</translation>
 <translation id="2448893613530489637">વેબપેજને લોડ કરવામાં અને બતાવવામાંથી ટ્રેકર્સ અને જાહેરાતોને અટકાવો</translation>
-<translation id="3570081523466826008">HTTPS માટે કનેક્શન અપગ્રેડ કરો</translation>
 <translation id="1025207378813960343">સુનિશ્ચિત કરો કે વેબસાઇટ સાથેના કનેક્શન સુરક્ષિત છે.</translation>
+<translation id="3570081523466826008">HTTPS માટે કનેક્શન અપગ્રેડ કરો</translation>
 <translation id="693506469193748756">જ્યારે હું આ સાઇટ બંધ કરું ત્યારે મને ભૂલી જાઓ</translation>
 <translation id="1680858055899097121">બ્રાઉઝિંગ સત્રોની વચ્ચે ટૅબ્સ ચાલુ રાખતા નહીં</translation>
 <translation id="7142548388914389999">ગોપનીયતા જાળવતા પ્રોડક્ટ એનાલિટિક્સને મંજૂરી આપો (P3A)</translation>
@@ -238,6 +243,7 @@
 <translation id="3974348661685061050">7 દિવસ માટે મફતમાં અજમાવો</translation>
 <translation id="4973347371961481083">યોગદાનો</translation>
 <translation id="7047578174221019462">તમારા માસિક યોગદાનો પ્રોસેસ કરી દેવામાં આવ્યા છે.</translation>
+<translation id="1486343603936278248">ટોકન</translation>
 <translation id="7781069478569868053">નવું ટૅબ પેજ</translation>
 <translation id="5927196110206824867">પ્રાયોજિત બૅકગ્રાઉન્ડ ઇમેજ Braveના સ્વતંત્ર, વપરાશકર્તા-પ્રથમ વેબ બનાવવાના મિશનને સપોર્ટ કરે છે. અને Big Techથી વિપરીત, અમે તમારી ગોપનીયતા જાળવવા માટે અનામી રીતે જાહેરાત પ્રદર્શનને માપીએ છીએ.</translation>
 <translation id="8748471354357836070">વધુ જાણો / ઓપ્ટ આઉટ પસંગીઓ</translation>
@@ -387,11 +393,12 @@
 <translation id="713136183174551885">તમારા ક્રિડેન્શિયલ્સ રિફ્રેશ કરો</translation>
 <translation id="6053992191006521518">મફતમાં અજમાવો</translation>
 <translation id="5903391101107992067">7 દિવસ માટે મફતમાં અજમાવો</translation>
+<translation id="9073255657908892407">ટેકનિકલ સપોર્ટ પર સંપર્ક કરો</translation>
 <translation id="8681480718817027245">સબ્સ્ક્રિપ્શન</translation>
 <translation id="7805768142964895445">સ્થિતિ</translation>
 <translation id="5747552184818312860">સમાપ્ત થાય છે</translation>
+<translation id="1656814355341174523">સબ્સક્રિપ્શન મેનેજ કરો</translation>
 <translation id="5646376287012673985">સ્થાન</translation>
-<translation id="9073255657908892407">ટેકનિકલ સપોર્ટ પર સંપર્ક કરો</translation>
 <translation id="5431902940483264007">ઓપ્ટિમલ</translation>
 <translation id="6527596624419285047">ઉપલબ્ધ હોય તે શ્રેષ્ઠ સર્વરનો ઉપયોગ કરો</translation>
 <translation id="6687228121145903051">VPN સાથે કનેક્ટ કરી શકતા નથી (અન્ય ભૂલ)</translation>
@@ -465,6 +472,7 @@
 <translation id="4804818685124855865">ડિસ્કનેક્ટ કરો</translation>
 <translation id="8009571545960303544">તમારી સહીની વિનંતી કરવામાં આવી રહી છે</translation>
 <translation id="3484981968509595506">એક DApp તમારી જાહેર એન્ક્રિપ્શન કીની વિનંતી કરી રહ્યું છે</translation>
+<translation id="2300240008330189182"><ph name="URL"/> તમારા વૉલેટની જાહેર એન્ક્રિપ્શન કીની વિનંતી કરી રહી છે. જો તમે આ કી પ્રદાન કરવા સંમત થાઓ, તો સાઇટ તમને એન્ક્રિપ્ટેડ મેસેજ મોકલી શકશે.</translation>
 <translation id="3340247553212049934">પ્રદાન કરો</translation>
 <translation id="1982257600591932657">નેટવર્કનું નામ</translation>
 <translation id="5052727830821470769">નેટવર્ક URL</translation>
@@ -517,6 +525,7 @@
 <translation id="1313065465616456728">જારી કર્યાનો સમય</translation>
 <translation id="7902225556763260253">સમાપ્તિ સમય</translation>
 <translation id="1908159733454294871">સુરક્ષા જોખમ શોધાયું</translation>
+<translation id="5658257029899993935">તમારા Brave ખાતા સાથે ખરીદીને લિંક કરો</translation>
 <translation id="5899814466108868020">તમે Brave અને BAT કોમ્યુનિટીને સપોર્ટ કરવામાં મદદ કરી રહ્યા છો</translation>
 <translation id="6067959437127691361">Brave રિવોર્ડ્સનો ઉપયોગ કન્ટેન્ટ ક્રિએટરને સપોર્ટ કરવામાં મદદ કરે છે અને તમને BAT કમાવા દે છે.</translation>
 <translation id="3264975266761862670">કમાવાની શરૂઆત કરવા તૈયાર છો?</translation>
@@ -547,8 +556,6 @@
 <translation id="5781842473834867765">મારી વાતચીતના ઇતિહાસને સ્ટોર કરો</translation>
 <translation id="4109670531935487117">એડ્રેસ બારમાં ઓટોકમ્પ્લીટ સૂચનો બતાવો</translation>
 <translation id="6106701981952170121">તમામ Leo AI વાતચીત ડેટાને ડિલીટ કરો</translation>
-<translation id="5658257029899993935">તમારા Brave ખાતા સાથે ખરીદીને લિંક કરો</translation>
-<translation id="1656814355341174523">સબ્સક્રિપ્શન મેનેજ કરો</translation>
 <translation id="73236265316873967">Leo પ્રીમિયમ</translation>
 <translation id="1028627582482425924">એક વર્ષ</translation>
 <translation id="2985392169397572983">શ્રેષ્ઠ મૂલ્ય</translation>
@@ -587,6 +594,7 @@
 <translation id="4185473179105062442">BAT ને સીધા સેલ્ફ-કસ્ટડી ક્રિપ્ટો સરનામાં પર મેળવો</translation>
 <translation id="5802986777701714573">અમે તમારા માસિક BAT રિવોર્ડ મેળવવા માટે એક નવી રીત ઉમેરી છે. હમણાં જ કમાણી શરૂ કરવા માટે અમારા ભાગીદારોમાંથી એકનું એકાઉન્ટ કનેક્ટ કરો અથવા નવા સેલ્ફ-કસ્ટડી વિકલ્પનો ઉપયોગ કરો.</translation>
 <translation id="7557539689487606886">પ્રીમિયમ સભ્ય બનો</translation>
+<translation id="1496514951988037011">વપરાશકર્તાનામ</translation>
 <translation id="901834265349196618">ઇમેઇલ</translation>
 <translation id="3488199663160411179">નામ</translation>
 <translation id="793994607260936590">પ્રથમ</translation>
@@ -597,6 +605,13 @@
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="7942415993090181327">ચેટનો ઇતિહાસ</translation>
 <translation id="7956713633345437162">મોબાઇલ બુકમાર્ક્સ</translation>
+<translation id="3176467469116060712">વેબ પ્રાઇવસી અને ઓપન-સોર્સ એડ-બ્લોકિંગ લિસ્ટ માટે Braveના ઉદ્યોગ-અગ્રણી કામને સપોર્ટ કરો</translation>
+<translation id="5896375129784311037">વધુ ન્યૂનતમ બ્રાઉઝર ઇન્ટરફેસ માટે ઑપ્ટિમાઇઝ કરેલ</translation>
+<translation id="746156554966264308">એડબ્લોક, પ્રાઇવસી અને સ્પીડ માટે Brave Shieldsનું મુખ્ય અંગ</translation>
+<translation id="1432661650699782509">કામ પર IT દ્વારા મેનેજ થયેલ પોલિસી માટેનો સપોર્ટ</translation>
+<translation id="1361157028850796410">શ્રેષ્ઠ મૂલ્ય</translation>
+<translation id="7280825497485894053">માસિક સબ્સ્ક્રિપ્શન</translation>
+<translation id="4570901726096223030">Origin વિશે વધુ જાણો</translation>
 <translation id="1943432128510653496">પાસવર્ડ સાચવો</translation>
 <translation id="2100273922101894616">સ્વતઃ સાઇન-ઇન</translation>
 <translation id="363596933471559332">સંગ્રહિત ઓળખપત્રોનો ઉપયોગ કરીને વેબસાઇટમાં ઑટોમૅટિક રીતે સાઇન ઇન કરો. જ્યારે સુવિધા બંધ હોય છે, ત્યારે વેબસાઇટમાં સાઇન ઇન કરતાં પહેલાં દર વખતે તમને ચકાસણી માટે કહેવામાં આવશે.</translation>

@@ -46,7 +46,7 @@ export default function Article({ info, hideChannel, feedDepth }: Props) {
           {info.data.title}
         </BraveNewsLink>
       </Title>
-      <SmallImage loading='lazy' src={`chrome://image?url=${encodeURIComponent(info.data.image.paddedImageUrl?.url ?? info.data.image.imageUrl?.url ?? '')}`} />
+      <SmallImage loading='lazy' src={info.data.image.paddedImageUrl?.url ?? info.data.image.imageUrl?.url ?? ''} />
     </Flex>
   </Container>
 }

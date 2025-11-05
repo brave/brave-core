@@ -10,8 +10,6 @@
 #include "brave/components/brave_ads/core/internal/legacy_migration/legacy_migration_util.h"
 #include "brave/components/brave_ads/core/internal/prefs/pref_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
-#include "brave/components/ntp_background_images/common/pref_names.h"
-#include "brave/components/p3a/pref_names.h"
 
 namespace brave_ads {
 
@@ -22,18 +20,6 @@ void SuccessfullyMigrated(InitializeCallback callback) {
   std::move(callback).Run(/*success=*/true);
 }
 
-void HandleP3AMigration() {
-  if (GetLocalStateBooleanPref(p3a::kP3AEnabled)) {
-    // P3A is enabled, so do nothing.
-    return;
-  }
-
-  // If P3A is disabled, then disable new tab takeovers.
-  SetProfileBooleanPref(ntp_background_images::prefs::
-                            kNewTabPageShowSponsoredImagesBackgroundImage,
-                        false);
-}
-
 }  // namespace
 
 void MigrateState(InitializeCallback callback) {
@@ -41,8 +27,6 @@ void MigrateState(InitializeCallback callback) {
     // Already migrated.
     return std::move(callback).Run(/*success=*/true);
   }
-
-  HandleP3AMigration();
 
   SuccessfullyMigrated(std::move(callback));
 }

@@ -5,6 +5,8 @@
 <translation id="3478449063771497234">Đã tắt thông báo</translation>
 <translation id="2862978891748913252">Chọn quốc gia của bạn</translation>
 <translation id="3970520675790340955">Chọn quốc gia của bạn để chúng tôi có thể hiển thị cho bạn các tùy chọn và quảng cáo phù hợp cho khu vực của bạn.</translation>
+<translation id="721490496276866468">Nhập mật khẩu</translation>
+<translation id="8178175542325151321">Chọn tệp .csv chứa các mật khẩu của bạn để nhập chúng vào trình quản lý mật khẩu của Brave.</translation>
 <translation id="7301741773883122509">Bây giờ bạn có thể nhận được phần thưởng cho việc xem quảng cáo. Bạn có thể giúp làm cho web trở thành một nơi tốt hơn cho tất cả mọi người. Và điều đó thật tuyệt vời!</translation>
 <translation id="6439128034594289376">Tuyệt vời! Tất cả đã sẵn sàng!</translation>
 <translation id="370665806235115550">Đang tải...</translation>
@@ -99,6 +101,8 @@
 <translation id="8617525558807213034">Tự động điền vào các tab riêng tư</translation>
 <translation id="8685431198160039193">Thông tin đã lưu có thể được tự động điền vào các tab riêng tư</translation>
 <translation id="6583902294974160967">Hỗ trợ</translation>
+<translation id="5713644099811900409">Tài khoản Brave</translation>
+<translation id="4472575034687746823">Bắt đầu</translation>
 <translation id="1799030480311994998">Tính năng</translation>
 <translation id="2005732746077850308">Lá chắn &amp; quyền riêng tư Brave</translation>
 <translation id="4692623383562244444">Công cụ tìm kiếm</translation>
@@ -107,7 +111,6 @@
 <translation id="7304425663107214334">Hiển thị các đề xuất của trình duyệt</translation>
 <translation id="8982438328166986164">Hiển thị các đề xuất trang web dựa trên dấu trang và lịch sử duyệt web của bạn.</translation>
 <translation id="924029461438529367">Hiển thị gợi ý tìm kiếm</translation>
-<translation id="5989135139219497991">Hiển thị các đề xuất hàng đầu</translation>
 <translation id="6285118765755298263">Lập chỉ mục các công cụ tìm kiếm khác</translation>
 <translation id="919715748352669592">Tự động lập chỉ mục các trang web tuân theo thông số OpenSearch.</translation>
 <translation id="9148058034647219655">Thoát</translation>
@@ -295,6 +298,11 @@
 <translation id="4254029385847607686">THÁNG 12</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="1772301834467143364">Tin tức Brave</translation>
+<translation id="2518692840036393666">Tùy chỉnh menu</translation>
+<translation id="5582839680698949063">Menu chính</translation>
+<translation id="7002271985859760052">Hành động trên trang</translation>
+<translation id="7104487676473617844">Các mục sau sẽ chỉ hiển thị trong menu khi được trang web đang mở hiện tại hỗ trợ.</translation>
+<translation id="4159764849281393303">Ứng dụng Web</translation>
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="8428213095426709021">Cài đặt</translation>
 <translation id="6020176662032623904">Người tạo nội dung đã được xác minh</translation>
@@ -797,7 +805,6 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="750843150060816463">Giá xăng (Gwei)</translation>
 <translation id="1426320910664514906">Hạn mức ga</translation>
 <translation id="6389441740143786465">Tắt Trung tâm chia sẻ</translation>
-<translation id="9065203028668620118">Chỉnh sửa</translation>
 <translation id="473775607612524610">Cập nhật</translation>
 <translation id="479795390141144417">Cập nhật tài khoản không thành công.</translation>
 <translation id="8084782383392198011">Tên tài khoản không được trống.</translation>
@@ -1013,8 +1020,6 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="8496335570810457">Cam kết mô phỏng giao dịch:</translation>
 <translation id="5100124500279922001">Bỏ qua mô phỏng giao dịch:</translation>
 <translation id="7152095322071766507">Trang web được truy cập nhiều nhất</translation>
-<translation id="7230006500876504868">Tìm kiếm với Brave</translation>
-<translation id="5888208462949095139">Tìm kiếm với <ph name="DEFAULT_SEARCH_ENGINE"/></translation>
 <translation id="5456039738087398178">Tiện ích màn hình chính</translation>
 <translation id="703185154752046151">Đã thêm tiện ích vào màn hình chính</translation>
 <translation id="4635094429202343515">Dùng thử tiện ích Brave Tìm kiếm</translation>
@@ -1074,7 +1079,7 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="7618347247876614969">Tài khoản bảng tra cứu địa chỉ:</translation>
 <translation id="7659483790930268440">Chỉ mục bảng tra cứu địa chỉ:</translation>
 <translation id="5494920125229734069">Chọn tất cả</translation>
-<translation id="6129027151000961048">Leo</translation>
+<translation id="2361906291514218784">Leo AI</translation>
 <translation id="8613144770663526433">Đăng nhập bằng Ví Brave</translation>
 <translation id="3696514931437952995">Bạn đang đăng nhập vào<ph name="ORIGIN"/>. Ví Brave sẽ chia sẻ địa chỉ ví của bạn với <ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">Xem chi tiết</translation>
@@ -1094,11 +1099,11 @@ Leo AI. Hành động này không thể được hoàn tác.</translation>
 <translation id="6742599753610126012">Xóa lịch sử trò chuyện</translation>
 <translation id="3443052382074796867">Tắt tùy chọn lưu lịch sử trò chuyện sẽ xóa vĩnh viễn tất cả cuộc trò chuyện đã được lưu. Hành động này không thể được hoàn tác.</translation>
 <translation id="3692772534525889713">Liên kết giao dịch mua trên Cửa hàng Play với tài khoản Brave của bạn để sử dụng Brave Leo trên các thiết bị khác.</translation>
-<translation id="73236265316873967">Leo Premium</translation>
+<translation id="592831784390389506">Leo AI Premium</translation>
 <translation id="1028627582482425924">Một năm</translation>
 <translation id="2985392169397572983">GIÁ TRỊ TỐT NHẤT</translation>
 <translation id="1166682575529520472">Hàng tháng</translation>
-<translation id="451189393813405346">Hỏi Leo</translation>
+<translation id="2206846767762985925">Hỏi Leo AI</translation>
 <translation id="7322560193401221004">Ghi nhớ vị trí phát lại tập tin</translation>
 <translation id="7505951907514709271">Đối với các tệp riêng lẻ, hãy tiếp tục phát từ điểm tạm dừng cuối cùng</translation>
 <translation id="6835165453349969605">Ghi nhớ vị trí phát lại danh sách</translation>
@@ -1141,6 +1146,7 @@ Leo AI. Hành động này không thể được hoàn tác.</translation>
 <translation id="3861012838874771868">Mở cài đặt danh sách phát</translation>
 <translation id="5220099266891491416">Ẩn nút Danh sách phát</translation>
 <translation id="7416347631175891923">Thử ngay!</translation>
+<translation id="9065203028668620118">Chỉnh sửa</translation>
 <translation id="1173894706177603556">Đổi tên</translation>
 <translation id="3596306474342941843">Xóa danh sách phát</translation>
 <translation id="7765158879357617694">Di chuyển</translation>
@@ -1155,7 +1161,7 @@ Leo AI. Hành động này không thể được hoàn tác.</translation>
 <translation id="5319532905552885478">Nội dung đa phương tiện đã được thêm vào danh sách phát mặc định</translation>
 <translation id="4802584673094436231">Đang chuẩn bị...</translation>
 <translation id="481455355267255546">Tiếp theo</translation>
-<translation id="5474757891469990756">Giải phóng toàn bộ sức mạnh của Leo với Premium:</translation>
+<translation id="3721790899869840343">Kích hoạt toàn bộ sức mạnh của Leo AI với Premium:</translation>
 <translation id="4173478269537830374">Khám phá các mô hình AI khác nhau</translation>
 <translation id="3453542753968940696">Ưu tiên truy cập vào các mô hình mạnh mẽ với các kỹ năng khác nhau.</translation>
 <translation id="3245401959451976966">Mở khóa sự sáng tạo của bạn</translation>
@@ -1223,12 +1229,18 @@ Leo AI. Hành động này không thể được hoàn tác.</translation>
 <translation id="4650851936784160359">Không thể cập nhật danh sách bộ lọc. Vui lòng thử lại</translation>
 <translation id="3098054327870766317">Hiển thị nút hoàn tác khi tab đã đóng</translation>
 <translation id="1336494649091412226">Bạn có chắc là bạn muốn thoát Brave?</translation>
-<translation id="2361906291514218784">Leo AI</translation>
 <translation id="7942415993090181327">Lịch sử trò chuyện</translation>
 <translation id="6859935199732075666">Hiển thị lỗi của Duyệt web an toàn</translation>
 <translation id="2735247450315842119">Cho phép ảnh chụp màn hình trong thẻ riêng tư</translation>
 <translation id="8420414929552321089">Nếu được phép, các thẻ riêng tư cũng sẽ hiển thị khi nhiều ứng dụng được mở.</translation>
 <translation id="7956713633345437162">Dấu trang trên thiết bị di động</translation>
+<translation id="3176467469116060712">Ủng hộ vai trò tiên phong của Brave trong việc bảo vệ quyền riêng tư trên web và danh sách chặn quảng cáo mã nguồn mở</translation>
+<translation id="5896375129784311037">Được tối ưu hóa để có giao diện trình duyệt tối giản hơn</translation>
+<translation id="746156554966264308">Yếu tố cốt lõi của Lá chắn Brave để chặn quảng cáo, hỗ trợ quyền riêng tư và tốc độ</translation>
+<translation id="1432661650699782509">Hỗ trợ các chính sách do bộ phận CNTT quản lý tại nơi làm việc</translation>
+<translation id="1361157028850796410">giá trị tốt nhất</translation>
+<translation id="7280825497485894053">Gói đăng ký hằng tháng</translation>
+<translation id="4570901726096223030">Tìm hiểu thêm về Origin</translation>
 <translation id="1943432128510653496">Lưu mật khẩu</translation>
 <translation id="2100273922101894616">Tự động đăng nhập</translation>
 <translation id="363596933471559332">Tự động đăng nhập vào các trang web bằng thông tin đăng nhập được lưu trữ. Khi tính năng này tắt, bạn sẽ luôn được yêu cầu xác minh trước khi đăng nhập vào trang web.</translation>
@@ -1240,6 +1252,22 @@ Leo AI. Hành động này không thể được hoàn tác.</translation>
 <translation id="5139940364318403933">Tìm hiểu cách sử dụng Google Drive</translation>
 <translation id="729975465115245577">Thiết bị của bạn không có ứng dụng để lưu trữ tệp mật khẩu.</translation>
 <translation id="1129510026454351943">Chi tiết: <ph name="ERROR_DESCRIPTION"/></translation>
+<translation id="5594899180331219722">Chọn tệp</translation>
+<translation id="3744219658596020825">Mật khẩu của bạn chưa được nhập</translation>
+<translation id="8258027225380843424">Nhập thành công!</translation>
+<translation id="766635563210446220">Không thể nhập mật khẩu. Kiểm tra <ph name="FILENAME"/> và đảm bảo rằng định dạng đúng. <ph name="BEGIN_LINK"/>Tìm hiểu thêm<ph name="END_LINK"/></translation>
+<translation id="6581356304040102696">Không thể nhập mật khẩu. Kích thước tệp phải nhỏ hơn 1 MB.</translation>
+<translation id="5895244669404288318">{COUNT, plural,
+        =1 {Không thể nhập mật khẩu. Bạn chỉ có thể nhập 1 mật khẩu tại một thời điểm.}
+        other {Không thể nhập mật khẩu. Bạn chỉ có thể nhập tối đa <ph name="COUNT_MANY"/> mật khẩu tại một thời điểm.}}</translation>
+<translation id="3748424433435232460">Mật khẩu cho tài khoản này đã được lưu trên thiết bị này</translation>
+<translation id="6438475350605608554">Bạn đang thực hiện nhập mật khẩu trong một tab khác</translation>
+<translation id="3482868954775580230">Không thể đọc tệp đã chọn. <ph name="EXCEPTION_INFO"/></translation>
+<translation id="9162995380643712715">{IMPORT_COUNT, plural,
+        =1 {Đã nhập thành công 1 mật khẩu.}
+        other {Đã nhập thành công <ph name="IMPORT_COUNT_MANY"/> mật khẩu.}}</translation>
+<translation id="4637949129057123593">Nhập không thành công.</translation>
+<translation id="4300452012226767715">Trình quản lý mật khẩu không khả dụng.</translation>
 <translation id="6221633008163990886">Mở khóa để xuất mật khẩu của bạn</translation>
 <translation id="5245792669563792664">mật khẩu</translation>
 <translation id="10614374240317010">Không bao giờ lưu</translation>

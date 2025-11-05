@@ -38,6 +38,8 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
     registry->RegisterBooleanPref(kBraveAIChatUserMemoryEnabled, true);
     registry->RegisterDictionaryPref(kBraveAIChatUserCustomizations);
     registry->RegisterListPref(kBraveAIChatUserMemories);
+    registry->RegisterDictionaryPref(kBraveAIChatSkills);
+    registry->RegisterBooleanPref(kBraveAIChatOllamaFetchEnabled, false);
   }
   registry->RegisterBooleanPref(kEnabledByPolicy, true);
 }

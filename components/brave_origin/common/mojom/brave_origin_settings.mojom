@@ -1,0 +1,22 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module brave_origin.mojom;
+
+// Interface for communicating with BraveOriginService from WebUI
+interface BraveOriginSettingsHandler {
+  // Check if the current user is a Brave Origin user
+  IsBraveOriginUser() => (bool is_brave_origin_user);
+
+  // Check if a specific policy is controlled by Brave Origin
+  IsPolicyControlledByBraveOrigin(string policy_key) =>
+      (bool is_controlled);
+
+  // Get the current value of a Brave Origin controlled policy
+  GetPolicyValue(string policy_key) => (bool? value);
+
+  // Set the value of a Brave Origin controlled policy
+  SetPolicyValue(string policy_key, bool value) => (bool success);
+};

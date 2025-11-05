@@ -17,37 +17,53 @@ import {
   ContributionType,
   ContributionProcessor,
   ContributionPublisher,
-  defaultState } from '../lib/app_state'
+  defaultState,
+} from '../lib/app_state'
 
 function parseEnvironment(env: number): Environment {
   switch (env) {
-    case mojom.Environment.kDevelopment: return 'development'
-    case mojom.Environment.kStaging: return 'staging'
-    case mojom.Environment.kProduction: return 'production'
-    default: return 'production'
+    case mojom.Environment.kDevelopment:
+      return 'development'
+    case mojom.Environment.kStaging:
+      return 'staging'
+    case mojom.Environment.kProduction:
+      return 'production'
+    default:
+      return 'production'
   }
 }
 
 function parseContributionType(type: number): ContributionType {
   switch (type) {
-    case mojom.RewardsType.AUTO_CONTRIBUTE: return 'auto-contribution'
-    case mojom.RewardsType.ONE_TIME_TIP: return 'one-time'
-    case mojom.RewardsType.RECURRING_TIP: return 'recurring'
-    case mojom.RewardsType.TRANSFER: return 'transfer'
-    case mojom.RewardsType.PAYMENT: return 'payment'
-    default: return 'one-time'
+    case mojom.RewardsType.AUTO_CONTRIBUTE:
+      return 'auto-contribution'
+    case mojom.RewardsType.ONE_TIME_TIP:
+      return 'one-time'
+    case mojom.RewardsType.RECURRING_TIP:
+      return 'recurring'
+    case mojom.RewardsType.TRANSFER:
+      return 'transfer'
+    case mojom.RewardsType.PAYMENT:
+      return 'payment'
+    default:
+      return 'one-time'
   }
 }
 
 function parseContributionProcessor(
-  type: number
+  type: number,
 ): ContributionProcessor | null {
   switch (type) {
-    case mojom.ContributionProcessor.BITFLYER: return 'bitflyer'
-    case mojom.ContributionProcessor.BRAVE_TOKENS: return 'brave'
-    case mojom.ContributionProcessor.UPHOLD: return 'uphold'
-    case mojom.ContributionProcessor.GEMINI: return 'gemini'
-    default: return null
+    case mojom.ContributionProcessor.BITFLYER:
+      return 'bitflyer'
+    case mojom.ContributionProcessor.BRAVE_TOKENS:
+      return 'brave'
+    case mojom.ContributionProcessor.UPHOLD:
+      return 'uphold'
+    case mojom.ContributionProcessor.GEMINI:
+      return 'gemini'
+    default:
+      return null
   }
 }
 
@@ -55,11 +71,13 @@ function parseContributionPublishers(list: any): ContributionPublisher[] {
   if (!Array.isArray(list)) {
     return []
   }
-  return list.filter((item) => Boolean(item)).map((item) => ({
-    id: String(item.publisherKey || ''),
-    totalAmount: Number(item.totalAmount) || 0,
-    contributedAmount: Number(item.contributedAmount) || 0
-  }))
+  return list
+    .filter((item) => Boolean(item))
+    .map((item) => ({
+      id: String(item.publisherKey || ''),
+      totalAmount: Number(item.totalAmount) || 0,
+      contributedAmount: Number(item.contributedAmount) || 0,
+    }))
 }
 
 export function createModel(): AppModel {
@@ -77,11 +95,12 @@ export function createModel(): AppModel {
           isKeyInfoSeedValid: Boolean(info.isKeyInfoSeedValid),
           paymentId,
           createdAt: new Optional(
-              paymentId ? Number(info.bootStamp) * 1000 || 0 : undefined),
+            paymentId ? Number(info.bootStamp) * 1000 || 0 : undefined,
+          ),
           declaredGeo: String(info.declaredGeo || ''),
           creationEnvironment: paymentId
-              ? parseEnvironment(Number(info.walletCreationEnvironment))
-              : null
+            ? parseEnvironment(Number(info.walletCreationEnvironment))
+            : null,
         })
       },
 
@@ -106,8 +125,8 @@ export function createModel(): AppModel {
               retryCount: Number(item.retryCount) || 0,
               createdAt: Number(item.createdAt) * 1000 || 0,
               processor: parseContributionProcessor(Number(item.processor)),
-              publishers: parseContributionPublishers(item.publishers)
-            }))
+              publishers: parseContributionPublishers(item.publishers),
+            })),
         })
       },
 
@@ -125,7 +144,7 @@ export function createModel(): AppModel {
         stateManager.update({
           externalWallet: externalWalletFromExtensionData(wallet),
           externalWalletAccountId: String(wallet?.memberId || ''),
-          externalWalletId: String(wallet?.address || '')
+          externalWalletId: String(wallet?.address || ''),
         })
       },
 
@@ -134,12 +153,14 @@ export function createModel(): AppModel {
           return
         }
         stateManager.update({
-          rewardsEvents: events.filter((item) => Boolean(item)).map((item) => ({
-            id: String(item.id || ''),
-            key: String(item.key || ''),
-            value: String(item.value || ''),
-            createdAt: Number(item.createdAt) * 1000 || 0
-          }))
+          rewardsEvents: events
+            .filter((item) => Boolean(item))
+            .map((item) => ({
+              id: String(item.id || ''),
+              key: String(item.key || ''),
+              value: String(item.value || ''),
+              createdAt: Number(item.createdAt) * 1000 || 0,
+            })),
         })
       },
 
@@ -148,27 +169,28 @@ export function createModel(): AppModel {
           return
         }
         stateManager.update({
-          adDiagnosticId: String(info.diagnosticId || '')
+          adDiagnosticId: String(info.diagnosticId || ''),
         })
         const { entries } = info
         if (!Array.isArray(entries)) {
           return
         }
         stateManager.update({
-          adDiagnosticEntries:
-            entries.filter((item) => Boolean(item)).map((item) => ({
+          adDiagnosticEntries: entries
+            .filter((item) => Boolean(item))
+            .map((item) => ({
               name: String(item.name || ''),
-              value: String(item.value || '')
-            }))
+              value: String(item.value || ''),
+            })),
         })
       },
 
       environment(environment: any) {
         stateManager.update({
-          environment: parseEnvironment(environment)
+          environment: parseEnvironment(environment),
         })
-      }
-    }
+      },
+    },
   })
 
   function loadData() {
@@ -182,7 +204,9 @@ export function createModel(): AppModel {
   loadData()
 
   return {
-    getString(key) { return loadTimeData.getString(key) },
+    getString(key) {
+      return loadTimeData.getString(key)
+    },
     getState: stateManager.getState,
     addListener: stateManager.addListener,
 
@@ -213,6 +237,6 @@ export function createModel(): AppModel {
 
     loadRewardsEvents() {
       chrome.send('brave_rewards_internals.getEventLogs')
-    }
+    },
   }
 }

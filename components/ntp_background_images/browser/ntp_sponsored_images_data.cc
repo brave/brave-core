@@ -6,12 +6,13 @@
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_images_data.h"
 
 #include "base/check.h"
+#include "base/debug/crash_logging.h"
+#include "base/debug/dump_without_crashing.h"
 #include "base/files/file_path.h"
 #include "base/logging.h"
 #include "base/strings/string_util.h"
 #include "base/time/time_delta_from_string.h"
 #include "base/uuid.h"
-#include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_feature.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/public/common/url/url_util.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -27,7 +28,6 @@ constexpr int kExpectedSchemaVersion = 2;
 constexpr int kExpectedCampaignVersion = 1;
 
 constexpr char kCampaignVersionKey[] = "version";
-constexpr char kGracePeriodKey[] = "gracePeriod";
 constexpr char kCreativeSetsKey[] = "creativeSets";
 constexpr char kCreativeSetIdKey[] = "creativeSetId";
 constexpr char kCreativesKey[] = "creatives";
@@ -140,7 +140,7 @@ NTPSponsoredImagesData::NTPSponsoredImagesData(
     : NTPSponsoredImagesData() {
   const std::optional<int> schema_version = dict.FindInt(kSchemaVersionKey);
   if (schema_version != kExpectedSchemaVersion) {
-    // Currently, only version 2 is supported. Update this code to maintain.
+    // Currently, only version 1 is supported. Update this code to maintain.
     return;
   }
 
@@ -151,10 +151,6 @@ NTPSponsoredImagesData::NTPSponsoredImagesData(
     url_prefix += kSuperReferralPath;
   } else {
     url_prefix += kSponsoredImagesPath;
-  }
-
-  if (const std::string* const value = dict.FindString(kGracePeriodKey)) {
-    grace_period = base::TimeDeltaFromString(*value);
   }
 
   if (const base::Value::List* const value = dict.FindList(kCampaignsKey)) {
@@ -202,7 +198,7 @@ std::optional<Campaign> NTPSponsoredImagesData::MaybeParseCampaign(
 
   const std::optional<int> campaign_version = dict.FindInt(kCampaignVersionKey);
   if (campaign_version != kExpectedCampaignVersion) {
-    // Currently, only version 1 is supported. Update this code to maintain
+    // Currently, only version 2 is supported. Update this code to maintain
     // backwards compatibility when adding new schema versions.
     return std::nullopt;
   }
@@ -214,15 +210,14 @@ std::optional<Campaign> NTPSponsoredImagesData::MaybeParseCampaign(
   }
   campaign.campaign_id = *campaign_id;
 
-  bool should_metrics_fallback_to_p3a = false;
-  if (!brave_ads::kShouldSupportNewTabPageAdConfirmationsForNonRewards.Get()) {
-    // If we don't support confirmations, we should always fallback to P3A.
-    should_metrics_fallback_to_p3a = true;
-  } else if (const std::string* metrics =
-                 dict.FindString(kCampaignMetricsKey)) {
-    // Metrics (optional). If not provided, the default behavior is to send
-    // confirmations.
-    should_metrics_fallback_to_p3a = *metrics == "p3a";
+  brave_ads::mojom::NewTabPageAdMetricType metric_type =
+      brave_ads::mojom::NewTabPageAdMetricType::kConfirmation;
+  if (const std::string* const metrics = dict.FindString(kCampaignMetricsKey)) {
+    if (*metrics == "disabled") {
+      metric_type = brave_ads::mojom::NewTabPageAdMetricType::kDisabled;
+    } else if (*metrics == "confirmation") {
+      metric_type = brave_ads::mojom::NewTabPageAdMetricType::kConfirmation;
+    }
   }
 
   const base::Value::List* const creative_sets =
@@ -384,7 +379,7 @@ std::optional<Campaign> NTPSponsoredImagesData::MaybeParseCampaign(
         continue;
       }
 
-      creative.should_metrics_fallback_to_p3a = should_metrics_fallback_to_p3a;
+      creative.metric_type = metric_type;
 
       campaign.creatives.push_back(creative);
     }
@@ -474,6 +469,11 @@ const Creative* NTPSponsoredImagesData::GetCreativeByInstanceId(
       }
     }
   }
+  SCOPED_CRASH_KEY_STRING64("Issue50267", "creative_instance_id",
+                            creative_instance_id);
+  SCOPED_CRASH_KEY_STRING64("Issue50267", "failure_reason",
+                            "Failed to get creative by instance id");
+  base::debug::DumpWithoutCrashing();
   return nullptr;
 }
 
@@ -501,8 +501,7 @@ std::optional<base::Value::Dict> NTPSponsoredImagesData::MaybeGetBackgroundAt(
       .Set(kIsSponsoredKey, !IsSuperReferral())
       .Set(kIsBackgroundKey, false)
       .Set(kWallpaperIDKey, base::Uuid::GenerateRandomV4().AsLowercaseString())
-      .Set(kWallpaperShouldMetricsFallbackToP3aKey,
-           creative.should_metrics_fallback_to_p3a)
+      .Set(kWallpaperMetricTypeKey, static_cast<int>(creative.metric_type))
       .Set(kWallpaperURLKey, creative.url.spec())
       .Set(kWallpaperFilePathKey, creative.file_path.AsUTF8Unsafe())
       .Set(kWallpaperFocalPointXKey, creative.focal_point.x())

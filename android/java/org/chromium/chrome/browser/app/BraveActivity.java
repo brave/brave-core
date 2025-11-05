@@ -179,7 +179,6 @@ import org.chromium.chrome.browser.share.ShareDelegate.ShareOrigin;
 import org.chromium.chrome.browser.shields.ContentFilteringFragment;
 import org.chromium.chrome.browser.shields.CreateCustomFiltersFragment;
 import org.chromium.chrome.browser.site_settings.BraveWalletEthereumConnectedSites;
-import org.chromium.chrome.browser.speedreader.BraveSpeedReaderUtils;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabLaunchType;
 import org.chromium.chrome.browser.tab.TabSelectionType;
@@ -520,8 +519,6 @@ public abstract class BraveActivity extends ChromeActivity
             }
         } else if (id == R.id.request_vpn_location_id || id == R.id.request_vpn_location_icon_id) {
             BraveVpnUtils.openVpnServerSelectionActivity(BraveActivity.this);
-        } else if (id == R.id.brave_speedreader_id) {
-            enableSpeedreaderMode();
         } else if (id == R.id.brave_leo_id) {
             openBraveLeo();
         } else if (id == CustomizeBraveMenu.BRAVE_CUSTOMIZE_ITEM_ID) {
@@ -1719,11 +1716,8 @@ public abstract class BraveActivity extends ChromeActivity
     }
 
     public void openBraveWalletDAppsActivity(
-            @NonNull final BraveWalletDAppsActivity.ActivityType activityType) {
-        Intent braveWalletIntent = new Intent(this, BraveWalletDAppsActivity.class);
-        braveWalletIntent.putExtra("activityType", activityType.getValue());
-        braveWalletIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        braveWalletIntent.setAction(Intent.ACTION_VIEW);
+            final BraveWalletDAppsActivity.ActivityType activityType) {
+        final Intent braveWalletIntent = BraveWalletDAppsActivity.getIntent(this, activityType);
         startActivity(braveWalletIntent);
     }
 
@@ -2137,13 +2131,6 @@ public abstract class BraveActivity extends ChromeActivity
         }
 
         return null;
-    }
-
-    private void enableSpeedreaderMode() {
-        final Tab currentTab = getActivityTab();
-        if (currentTab != null) {
-            BraveSpeedReaderUtils.enableSpeedreaderMode(currentTab);
-        }
     }
 
     public void openBraveLeo() {

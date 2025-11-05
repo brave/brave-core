@@ -8,7 +8,7 @@
 
 #include <cstddef>
 #include <cstdint>
-#include <string>
+#include <string_view>
 
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "sql/statement.h"
@@ -47,7 +47,7 @@ void BindColumnBool(const mojom::DBActionInfoPtr& mojom_db_action,
 
 void BindColumnString(const mojom::DBActionInfoPtr& mojom_db_action,
                       int32_t index,
-                      const std::string& value);
+                      std::string_view value);
 [[nodiscard]] std::string ColumnString(const mojom::DBRowInfoPtr& mojom_db_row,
                                        size_t column);
 

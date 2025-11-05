@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 
+#include <optional>
 #include <string>
 #include <utility>
 
@@ -12,6 +13,7 @@
 #include "base/hash/hash.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
 #include "brave/components/brave_shields/core/common/brave_shield_utils.h"
+#include "brave/components/brave_shields/core/common/brave_shields_panel.mojom-data-view.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/constants/url_constants.h"
@@ -20,6 +22,7 @@
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
+#include "components/content_settings/core/common/content_settings_enums.mojom-data-view.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/content_settings/core/common/content_settings_utils.h"
 #include "components/content_settings/core/common/pref_names.h"
@@ -64,9 +67,33 @@ class BraveCookieRules {
   ContentSetting general_setting() const { return general_setting_; }
   ContentSetting first_party_setting() const { return first_party_setting_; }
 
+  static BraveCookieRules CalculateRules(
+      HostContentSettingsMap* map,
+      content_settings::CookieSettings* cookie_settings,
+      const GURL& url) {
+    const auto default_rules = BraveCookieRules::GetDefault(cookie_settings);
+    if (IsDefaultCookieManaged(cookie_settings)) {
+      return default_rules;
+    }
+
+    auto result = BraveCookieRules::Get(map, url);
+    if (result.HasDefault()) {
+      result.Merge(default_rules);
+    }
+    return result;
+  }
+
+ private:
   bool HasDefault() const {
     return general_setting_ == CONTENT_SETTING_DEFAULT ||
            first_party_setting_ == CONTENT_SETTING_DEFAULT;
+  }
+
+  static bool IsDefaultCookieManaged(
+      content_settings::CookieSettings* cookie_settings) {
+    content_settings::ProviderType provider_id;
+    cookie_settings->GetDefaultCookieSetting(&provider_id);
+    return provider_id == content_settings::ProviderType::kPolicyProvider;
   }
 
   static BraveCookieRules Get(HostContentSettingsMap* map, const GURL& url) {
@@ -530,11 +557,7 @@ ControlType GetCookieControlType(
   DCHECK(map);
   DCHECK(cookie_settings);
 
-  auto result = BraveCookieRules::Get(map, url);
-  if (result.HasDefault()) {
-    const auto default_rules = BraveCookieRules::GetDefault(cookie_settings);
-    result.Merge(default_rules);
-  }
+  auto result = BraveCookieRules::CalculateRules(map, cookie_settings, url);
 
   if (result.general_setting() == CONTENT_SETTING_ALLOW) {
     return ControlType::ALLOW;
@@ -622,10 +645,6 @@ bool IsBraveShieldsManaged(PrefService* prefs,
   return info.source == content_settings::SettingSource::kPolicy;
 }
 
-bool IsHttpsByDefaultFeatureEnabled() {
-  return base::FeatureList::IsEnabled(net::features::kBraveHttpsByDefault);
-}
-
 bool IsShowStrictFingerprintingModeEnabled() {
   return base::FeatureList::IsEnabled(
       features::kBraveShowStrictFingerprintingMode);
@@ -708,7 +727,7 @@ bool ShouldUpgradeToHttps(
     return false;
   }
   // Don't upgrade if feature is disabled.
-  if (!IsHttpsByDefaultFeatureEnabled()) {
+  if (!base::FeatureList::IsEnabled(net::features::kBraveHttpsByDefault)) {
     return false;
   }
   if (!url.SchemeIsHTTPOrHTTPS() && !url.is_empty()) {
@@ -762,44 +781,6 @@ ControlType GetNoScriptControlType(HostContentSettingsMap* map,
 
   return setting == CONTENT_SETTING_ALLOW ? ControlType::ALLOW
                                           : ControlType::BLOCK;
-}
-
-void SetForgetFirstPartyStorageEnabled(HostContentSettingsMap* map,
-                                       bool is_enabled,
-                                       const GURL& url,
-                                       PrefService* local_state) {
-  auto primary_pattern = content_settings::CreateDomainPattern(url);
-
-  if (!primary_pattern.IsValid()) {
-    return;
-  }
-
-  map->SetContentSettingCustomScope(
-      primary_pattern, ContentSettingsPattern::Wildcard(),
-      ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE,
-      is_enabled ? CONTENT_SETTING_BLOCK : CONTENT_SETTING_ALLOW);
-  RecordShieldsSettingChanged(local_state);
-  RecordForgetFirstPartySetting(map);
-}
-
-bool GetForgetFirstPartyStorageEnabled(HostContentSettingsMap* map,
-                                       const GURL& url) {
-  ContentSetting setting = map->GetContentSetting(
-      url, url, ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE);
-
-  return setting == CONTENT_SETTING_BLOCK;
-}
-
-ShieldsSettingCounts GetFPSettingCount(HostContentSettingsMap* map) {
-  ContentSettingsForOneType fp_rules =
-      map->GetSettingsForOneType(ContentSettingsType::BRAVE_FINGERPRINTING_V2);
-  return GetSettingCountFromRules(fp_rules);
-}
-
-ShieldsSettingCounts GetAdsSettingCount(HostContentSettingsMap* map) {
-  ContentSettingsForOneType cosmetic_rules =
-      map->GetSettingsForOneType(ContentSettingsType::BRAVE_COSMETIC_FILTERING);
-  return GetSettingCountFromCosmeticFilteringRules(cosmetic_rules);
 }
 
 void SetWebcompatEnabled(HostContentSettingsMap* map,

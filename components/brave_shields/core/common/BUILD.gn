@@ -24,9 +24,10 @@ static_library("common") {
 
   deps = [
     "//base",
+    "//brave/components/brave_shields/core/common:mojom",
+    "//brave/components/brave_shields/core/common:mojom_shared__generator",
     "//brave/components/webcompat/core/common",
     "//components/content_settings/core/common",
-    "//components/prefs",
     "//net",
     "//ui/base",
     "//url",
@@ -45,7 +46,10 @@ mojom_component("mojom") {
     "shields_settings.mojom",
   ]
 
-  deps = [ "//components/content_settings/core/common:content_settings_types" ]
+  deps = [
+    "//components/content_settings/core/common:content_settings_types",
+    "//components/content_settings/core/common:mojo_bindings",
+  ]
 
   public_deps = [
     "//mojo/public/mojom/base",
@@ -61,17 +65,11 @@ mojom_component("mojom") {
 source_set("unit_tests") {
   testonly = true
 
-  sources = [
-    "brave_shield_utils_unittest.cc",
-    "brave_shields_settings_values_unittest.cc",
-  ]
+  sources = [ "brave_shields_settings_values_unittest.cc" ]
 
   deps = [
     ":common",
     "//base",
-    "//base/test:test_support",
-    "//components/prefs",
-    "//components/prefs:test_support",
     "//testing/gtest",
   ]
 }

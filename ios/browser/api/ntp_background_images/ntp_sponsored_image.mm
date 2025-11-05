@@ -16,27 +16,14 @@
 
 @interface NTPSponsoredImageData ()
 @property(nonatomic, copy) NSArray<NTPSponsoredImageCampaign*>* campaigns;
-@property(nonatomic, nullable) NSNumber* gracePeriod;
-@property(nonatomic) BOOL isSuperReferral;
-@property(nonatomic, copy, nullable) NSString* themeName;
-@property(nonatomic, copy, nullable)
-    NSArray<NTPSponsoredImageTopSite*>* topSites;
 @end
 
 @implementation NTPSponsoredImageData
 
-- (instancetype)
-    initWithCampaigns:(NSArray<NTPSponsoredImageCampaign*>*)campaigns
-          gracePeriod:(nullable NSNumber*)gracePeriod
-      isSuperReferral:(BOOL)isSuperReferral
-            themeName:(nullable NSString*)themeName
-             topSites:(nullable NSArray<NTPSponsoredImageTopSite*>*)topSites {
+- (instancetype)initWithCampaigns:
+    (NSArray<NTPSponsoredImageCampaign*>*)campaigns {
   if ((self = [super init])) {
     self.campaigns = campaigns;
-    self.gracePeriod = gracePeriod;
-    self.isSuperReferral = isSuperReferral;
-    self.themeName = themeName;
-    self.topSites = topSites;
   }
   return self;
 }
@@ -48,26 +35,8 @@
     [campaigns addObject:[[NTPSponsoredImageCampaign alloc]
                              initWithCampaign:campaign]];
   }
-  NSNumber* gracePeriod = nil;
-  if (data.grace_period) {
-    gracePeriod = [NSNumber numberWithFloat:data.grace_period->InSecondsF()];
-  }
-  auto isSuperReferral = data.IsSuperReferral();
-  NSString* themeName = nil;
-  NSMutableArray<NTPSponsoredImageTopSite*>* topSites = nil;
-  if (isSuperReferral) {
-    themeName = base::SysUTF8ToNSString(data.theme_name);
-    topSites = [[NSMutableArray<NTPSponsoredImageTopSite*> alloc] init];
-    for (const auto& topSite : data.top_sites) {
-      [topSites
-          addObject:[[NTPSponsoredImageTopSite alloc] initWithTopSite:topSite]];
-    }
-  }
-  return [self initWithCampaigns:campaigns
-                     gracePeriod:gracePeriod
-                 isSuperReferral:isSuperReferral
-                       themeName:themeName
-                        topSites:topSites];
+
+  return [self initWithCampaigns:campaigns];
 }
 
 @end
@@ -108,7 +77,7 @@
 @property(nonatomic) CGPoint focalPoint;
 @property(nonatomic, copy) NSString* creativeInstanceId;
 @property(nonatomic) NTPSponsoredImageLogo* logo;
-@property(nonatomic) BOOL shouldMetricsFallbackToP3A;
+@property(nonatomic) BraveAdsNewTabPageAdMetricType metricType;
 @end
 
 @implementation NTPSponsoredImageBackground
@@ -117,13 +86,13 @@
                        focalPoint:(CGPoint)focalPoint
                creativeInstanceId:(NSString*)creativeInstanceId
                              logo:(NTPSponsoredImageLogo*)logo
-       shouldMetricsFallbackToP3A:(BOOL)shouldMetricsFallbackToP3A {
+                       metricType:(BraveAdsNewTabPageAdMetricType)metricType {
   if ((self = [super init])) {
     self.imagePath = imagePath;
     self.focalPoint = focalPoint;
     self.creativeInstanceId = creativeInstanceId;
     self.logo = logo;
-    self.shouldMetricsFallbackToP3A = shouldMetricsFallbackToP3A;
+    self.metricType = metricType;
   }
   return self;
 }
@@ -138,13 +107,12 @@
       base::SysUTF8ToNSString(sponsoredBackground.creative_instance_id);
   auto logo =
       [[NTPSponsoredImageLogo alloc] initWithLogo:sponsoredBackground.logo];
-  const bool shouldMetricsFallbackToP3A =
-      sponsoredBackground.should_metrics_fallback_to_p3a;
+  auto metricType = sponsoredBackground.metric_type;
   return [self initWithImagePath:imagePath
                       focalPoint:focalPoint
               creativeInstanceId:creativeInstanceId
                             logo:logo
-      shouldMetricsFallbackToP3A:shouldMetricsFallbackToP3A];
+                      metricType:(BraveAdsNewTabPageAdMetricType)metricType];
 }
 
 @end
@@ -182,43 +150,6 @@
                          altText:altText
                   destinationURL:destinationURL
                      companyName:companyName];
-}
-
-@end
-
-@interface NTPSponsoredImageTopSite ()
-@property(nonatomic, copy) NSString* name;
-@property(nonatomic, copy, nullable) NSURL* destinationURL;
-@property(nonatomic, copy) NSString* backgroundColor;
-@property(nonatomic, copy) NSURL* imagePath;
-@end
-
-@implementation NTPSponsoredImageTopSite
-
-- (instancetype)initWithName:(NSString*)name
-              destinationURL:(NSURL*)destinationURL
-             backgroundColor:(NSString*)backgroundColor
-                   imagePath:(NSURL*)imagePath {
-  if ((self = [super init])) {
-    self.name = name;
-    self.destinationURL = destinationURL;
-    self.backgroundColor = backgroundColor;
-    self.imagePath = imagePath;
-  }
-  return self;
-}
-
-- (instancetype)initWithTopSite:(const ntp_background_images::TopSite&)topSite {
-  auto name = base::SysUTF8ToNSString(topSite.name);
-  auto destinationURL =
-      [NSURL URLWithString:base::SysUTF8ToNSString(topSite.destination_url)];
-  auto backgroundColor = base::SysUTF8ToNSString(topSite.background_color);
-  auto imagePath = [NSURL
-      fileURLWithPath:base::SysUTF8ToNSString(topSite.image_file.value())];
-  return [self initWithName:name
-             destinationURL:destinationURL
-            backgroundColor:backgroundColor
-                  imagePath:imagePath];
 }
 
 @end

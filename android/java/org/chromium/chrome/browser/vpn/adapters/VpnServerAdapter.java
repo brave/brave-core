@@ -20,6 +20,7 @@ import com.google.android.material.radiobutton.MaterialRadioButton;
 import org.chromium.brave_vpn.mojom.BraveVpnConstants;
 import org.chromium.brave_vpn.mojom.Region;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.vpn.activities.VpnServerActivity.OnCityRadioSelection;
 import org.chromium.chrome.browser.vpn.activities.VpnServerActivity.OnCitySelection;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 
@@ -30,7 +31,9 @@ public class VpnServerAdapter extends RecyclerView.Adapter<VpnServerAdapter.View
     private final Context mContext;
     private List<Region> mCities = new ArrayList<>();
     private OnCitySelection mOnCitySelection;
+    private OnCityRadioSelection mOnCityRadioSelection;
     private Region mRegion;
+    private Region mActiveCity;
 
     public VpnServerAdapter(Context context) {
         this.mContext = context;
@@ -42,6 +45,27 @@ public class VpnServerAdapter extends RecyclerView.Adapter<VpnServerAdapter.View
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View listItem = layoutInflater.inflate(R.layout.vpn_server_item_layout, parent, false);
         return new ViewHolder(listItem);
+    }
+
+    private enum CheckedState {
+        SET_CHECKED,
+        SET_UNCHECKED,
+    }
+
+    @Override
+    public void onBindViewHolder(
+            @NonNull ViewHolder holder, int position, @NonNull List<Object> payloads) {
+        if (payloads.isEmpty()) {
+            onBindViewHolder(holder, position);
+            return;
+        }
+        if (payloads.get(0) instanceof CheckedState isCheckedObj) {
+            boolean isChecked = isCheckedObj == CheckedState.SET_CHECKED;
+            holder.serverRadioButton.setChecked(isChecked);
+            if (isChecked) {
+                mActiveCity = mCities.get(position);
+            }
+        }
     }
 
     @Override
@@ -75,6 +99,20 @@ public class VpnServerAdapter extends RecyclerView.Adapter<VpnServerAdapter.View
                             || (isCityPrecision && cityMatches)
                             || isoCodeMatches;
             holder.serverRadioButton.setChecked(isEnabled);
+            if (isEnabled) {
+                mActiveCity = city;
+            }
+            holder.serverRadioButton.setOnClickListener(
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (city == mActiveCity) {
+                                return;
+                            }
+                            mOnCityRadioSelection.onCityRadioSelect(
+                                    city, holder.getBindingAdapterPosition());
+                        }
+                    });
             holder.serverSelectionItemLayout.setOnClickListener(
                     new View.OnClickListener() {
                         @Override
@@ -100,6 +138,24 @@ public class VpnServerAdapter extends RecyclerView.Adapter<VpnServerAdapter.View
 
     public void setOnCitySelection(OnCitySelection onCitySelection) {
         this.mOnCitySelection = onCitySelection;
+    }
+
+    public void setOnCityRadioSelection(OnCityRadioSelection onCityRadioSelection) {
+        this.mOnCityRadioSelection = onCityRadioSelection;
+    }
+
+    public void updateSelectedCity(int newPosition) {
+        if (newPosition < 0 || newPosition >= mCities.size()) {
+            return;
+        }
+        Region oldCity = mActiveCity;
+        mActiveCity = mCities.get(newPosition);
+
+        int oldCityIdx = oldCity != null ? mCities.indexOf(oldCity) : -1;
+        if (oldCityIdx != -1) {
+            notifyItemChanged(oldCityIdx, CheckedState.SET_UNCHECKED);
+        }
+        notifyItemChanged(newPosition, CheckedState.SET_CHECKED);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

@@ -28,6 +28,9 @@ NS_ASSUME_NONNULL_BEGIN
 CWV_EXPORT
 @interface CWVWebView (Extras)
 
+// Web view's obscured insets.
+@property(nonatomic) UIEdgeInsets obscuredInsets;
+
 /// The user agent type currently used on the page (e.g. mobile/desktop)
 - (CWVUserAgentType)currentItemUserAgentType;
 

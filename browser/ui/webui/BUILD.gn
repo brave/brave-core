@@ -15,18 +15,23 @@ source_set("browser_tests") {
 
   deps = [
     "//base",
+    "//chrome/browser/profiles",
     "//chrome/browser/search_engines",
     "//chrome/browser/ui",
     "//chrome/browser/ui:browser_navigator_params_headers",
     "//chrome/test",
     "//chrome/test:test_support",
     "//components/omnibox/browser",
+    "//content/test:test_support",
     "//testing/gtest",
     "//ui/base",
   ]
 
   if (!is_android) {
-    sources += [ "searchbox/brave_realbox_handler_browsertest.cc" ]
+    sources += [
+      "brave_settings_ui_browsertest.cc",
+      "searchbox/brave_realbox_handler_browsertest.cc",
+    ]
 
     deps += [ "//chrome/browser/ui/webui/searchbox" ]
   }
@@ -35,7 +40,7 @@ source_set("browser_tests") {
 source_set("unit_tests") {
   testonly = true
 
-  sources = [ "sanitized_image_source_unittest.cc" ]
+  sources = [ "brave_sanitized_image_source_unittest.cc" ]
   deps = [
     "//base",
     "//base/test:test_support",

@@ -4,11 +4,12 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import usePromise from '$web-common/usePromise';
-import { AutocompleteResult, OmniboxPopupSelection, PageHandler, PageHandlerRemote, PageInterface, PageReceiver } from 'gen/components/omnibox/browser/searchbox.mojom.m';
+import { AutocompleteResult, OmniboxPopupSelection, PageHandler, PageHandlerRemote, PageInterface, PageReceiver } from 'chrome://resources/mojo/components/omnibox/browser/searchbox.mojom-webui.js';
 import { stringToMojoString16 } from 'chrome://resources/js/mojo_type_util.js';
 import * as React from 'react';
 import getNTPBrowserAPI, { SearchEngineInfo } from '../../api/background';
 import { useEngineContext } from './EngineContext';
+import { FileUploadErrorType, FileUploadStatus } from 'gen/components/omnibox/composebox/composebox_query.mojom.m';
 
 interface Context {
   open: boolean,
@@ -75,6 +76,8 @@ class SearchPage implements PageInterface {
 
   setInputText(inputText: string) { }
   setThumbnail(thumbnailUrl: string) { }
+  onContextualInputStatusChanged(token: string, status: FileUploadStatus, errorType: FileUploadErrorType | null) { }
+  onTabStripChanged() { }
 }
 
 export const search = new SearchPage()

@@ -525,7 +525,6 @@ function PurchaseOptionSelection() {
 
     return {
       [BraveWallet.OnRampProvider.kRamp]: options.rampAssetOptions,
-      [BraveWallet.OnRampProvider.kSardine]: options.sardineAssetOptions,
       [BraveWallet.OnRampProvider.kTransak]: options.transakAssetOptions,
       [BraveWallet.OnRampProvider.kStripe]: options.stripeAssetOptions,
       [BraveWallet.OnRampProvider.kCoinbase]: options.coinbaseAssetOptions,

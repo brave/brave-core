@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/playlist/browser/playlist_service.h"
+#include "brave/components/playlist/content/browser/playlist_service.h"
 
 #include <algorithm>
 
@@ -20,12 +20,12 @@
 #include "base/timer/timer.h"
 #include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/browser/playlist/test/mock_playlist_service_observer.h"
-#include "brave/components/playlist/browser/media_detector_component_manager.h"
-#include "brave/components/playlist/browser/playlist_constants.h"
-#include "brave/components/playlist/browser/pref_names.h"
-#include "brave/components/playlist/browser/type_converter.h"
-#include "brave/components/playlist/common/features.h"
-#include "brave/components/playlist/common/mojom/playlist.mojom.h"
+#include "brave/components/playlist/content/browser/media_detector_component_manager.h"
+#include "brave/components/playlist/content/browser/playlist_constants.h"
+#include "brave/components/playlist/content/browser/type_converter.h"
+#include "brave/components/playlist/core/common/features.h"
+#include "brave/components/playlist/core/common/mojom/playlist.mojom.h"
+#include "brave/components/playlist/core/common/pref_names.h"
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/download/public/common/download_task_runner.h"
@@ -1218,6 +1218,7 @@ TEST_F(PlaylistServiceUnitTest, ResetAll) {
   // Adding item should work after resetting.
   auto item = prototype_item.Clone();
   item->id = base::Token::CreateRandom().ToString();
+  items.clear();
   items.push_back(item.Clone());
   service->AddMediaFilesFromItems(kDefaultPlaylistID, false /* no caching */,
                                   base::NullCallback(), std::move(items));

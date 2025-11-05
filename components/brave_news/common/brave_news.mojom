@@ -314,7 +314,7 @@ interface BraveNewsController {
   SubscribeToNewDirectFeed(url.mojom.Url feed_url)
     => (bool is_valid_feed, bool is_duplicate, map<string, Publisher>? publishers);
   RemoveDirectFeed(string publisher_id);
-  // Deprecated - instead use chrome://image?url=<url> to load images.
+  // Deprecated - instead use chrome://brave-image?url=<url> to load images.
   GetImageData(url.mojom.Url padded_image_url) => (array<uint8>? image_data);
   SetPublisherPref(string publisher_id, UserEnabled new_status);
   ClearPrefs();

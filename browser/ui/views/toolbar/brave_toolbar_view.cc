@@ -26,6 +26,7 @@
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
+#include "brave/components/brave_wallet/common/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/browser_process.h"
@@ -142,7 +143,10 @@ class BraveToolbarView::LayoutGuard {
 };
 
 BraveToolbarView::BraveToolbarView(Browser* browser, BrowserView* browser_view)
-    : ToolbarView(browser, browser_view) {}
+    : ToolbarView(browser, browser_view) {
+  // See the comments in UpdateRecedingCornerRadius().
+  receding_corner_radius_ = GetLayoutConstant(TOOLBAR_CORNER_RADIUS);
+}
 
 BraveToolbarView::~BraveToolbarView() = default;
 
@@ -194,6 +198,11 @@ void BraveToolbarView::Init() {
 
   show_wallet_button_.Init(
       kShowWalletIconOnToolbar, browser_->profile()->GetPrefs(),
+      base::BindRepeating(&BraveToolbarView::UpdateWalletButtonVisibility,
+                          base::Unretained(this)));
+
+  wallet_disabled_by_policy_.Init(
+      brave_wallet::prefs::kDisabledByPolicy, browser_->profile()->GetPrefs(),
       base::BindRepeating(&BraveToolbarView::UpdateWalletButtonVisibility,
                           base::Unretained(this)));
 
@@ -384,6 +393,11 @@ void BraveToolbarView::Update(content::WebContents* tab) {
   }
 }
 
+void BraveToolbarView::UpdateRecedingCornerRadius() {
+  // Do nothing here as we'll show rounded corners always.
+  // |receding_corner_radius_| is initialized in ctor.
+}
+
 void BraveToolbarView::UpdateBookmarkVisibility() {
   if (!bookmark_) {
     return;
@@ -411,7 +425,7 @@ void BraveToolbarView::UpdateHorizontalPadding() {
   } else {
     auto [leading, trailing] =
         tabs::utils::GetLeadingTrailingCaptionButtonWidth(
-            browser_view_->frame());
+            browser_view_->browser_widget());
     container_view->SetBorder(views::CreateEmptyBorder(
         gfx::Insets().set_left(leading).set_right(trailing)));
   }

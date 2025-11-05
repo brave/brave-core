@@ -107,17 +107,10 @@ impl NativeClient {
     ) -> Result<http::Response<Vec<u8>>, InternalError> {
         let (tx, rx) = oneshot::channel();
         let context = Box::new(HttpRoundtripContext { tx, client: self.clone() });
-        let ctx = self
-                .inner
-                .lock().await
-                .ctx
-                .clone();
+        let ctx = self.inner.lock().await.ctx.clone();
 
         let fetcher = ffi::shim_executeRequest(
-            &*ctx
-              .try_borrow()
-              .map_err(|_| InternalError::BorrowFailed)?
-            ,
+            &*ctx.try_borrow().map_err(|_| InternalError::BorrowFailed)?,
             &req,
             |context, resp| {
                 let _ = context.tx.send(resp.into());

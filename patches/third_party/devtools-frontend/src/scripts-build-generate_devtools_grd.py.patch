@@ -1,8 +1,8 @@
 diff --git a/scripts/build/generate_devtools_grd.py b/scripts/build/generate_devtools_grd.py
-index bb7be15d26c1f696d8bea6c99ed6ad7916cf6ca0..7283ca120040128e60a249b437fcce1447a13eb6 100644
+index 4a5543d2c9f5a361e8123b51f29b2bb620688095..cb01e057f5d32d82814c8991d9769b56d3bbe856 100644
 --- a/scripts/build/generate_devtools_grd.py
 +++ b/scripts/build/generate_devtools_grd.py
-@@ -119,5 +119,6 @@ def main(argv):
+@@ -93,5 +93,6 @@ def main(argv):
          output_file.write(doc.toxml(encoding='UTF-8'))
  
  

@@ -17,7 +17,7 @@
 #include "ui/display/display_observer.h"
 #include "ui/gfx/animation/animation_delegate.h"
 #include "ui/gfx/geometry/point_f.h"
-#include "ui/gfx/native_widget_types.h"
+#include "ui/gfx/native_ui_types.h"
 #include "ui/views/widget/widget_delegate.h"
 #include "ui/views/widget/widget_observer.h"
 

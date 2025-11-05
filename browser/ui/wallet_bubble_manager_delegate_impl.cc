@@ -12,6 +12,7 @@
 
 #include "base/check.h"
 #include "base/memory/raw_ptr.h"
+#include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/wallet_bubble_focus_observer.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_common_ui.h"
@@ -189,8 +190,12 @@ class WalletWebUIBubbleManager : public WebUIBubbleManagerImpl<WalletPanelUI>,
 
 // static
 std::unique_ptr<WalletBubbleManagerDelegate>
-WalletBubbleManagerDelegate::Create(content::WebContents* web_contents,
-                                    const GURL& webui_url) {
+WalletBubbleManagerDelegate::MaybeCreate(content::WebContents* web_contents,
+                                         const GURL& webui_url) {
+  if (!IsAllowedForContext(web_contents->GetBrowserContext())) {
+    return nullptr;
+  }
+
   return std::make_unique<WalletBubbleManagerDelegateImpl>(web_contents,
                                                            webui_url);
 }

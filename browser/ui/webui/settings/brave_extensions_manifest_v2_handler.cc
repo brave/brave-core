@@ -25,7 +25,6 @@
 #include "ui/base/l10n/l10n_util.h"
 
 BASE_FEATURE(kExtensionsManifestV2,
-             "ExtensionsManifestV2",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
 struct ExtensionManifestV2 {

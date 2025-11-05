@@ -10,16 +10,13 @@
 #include <optional>
 #include <vector>
 
-#include "brave/browser/ui/tabs/split_view_browser_data.h"
-#include "brave/browser/ui/tabs/split_view_browser_data_observer.h"
 #include "chrome/browser/ui/tabs/tab_style.h"
 #include "chrome/browser/ui/views/tabs/dragging/tab_drag_context.h"
 #include "chrome/browser/ui/views/tabs/tab_container_impl.h"
 #include "components/prefs/pref_member.h"
 #include "ui/gfx/canvas.h"
 
-class BraveTabContainer : public TabContainerImpl,
-                          public SplitViewBrowserDataObserver {
+class BraveTabContainer : public TabContainerImpl {
   METADATA_HEADER(BraveTabContainer, TabContainerImpl)
  public:
   BraveTabContainer(TabContainerController& controller,
@@ -37,7 +34,6 @@ class BraveTabContainer : public TabContainerImpl,
   base::OnceClosure LockLayout();
 
   // TabContainerImpl:
-  void AddedToWidget() override;
   gfx::Size CalculatePreferredSize(
       const views::SizeBounds& available_size) const override;
   void UpdateClosingModeOnRemovedTab(int model_index, bool was_active) override;
@@ -64,12 +60,6 @@ class BraveTabContainer : public TabContainerImpl,
   void HandleDragUpdate(
       const std::optional<BrowserRootView::DropIndex>& index) override;
   void HandleDragExited() override;
-
-  // SplitViewBrowserDataObserver:
-  void OnTileTabs(const TabTile& tile) override;
-  void OnDidBreakTile(const TabTile& tile) override;
-  void OnSwapTabsInTile(const TabTile& tile) override;
-  void OnWillDeleteBrowserData() override;
 
  private:
   class DropArrow {
@@ -107,9 +97,6 @@ class BraveTabContainer : public TabContainerImpl,
 
   void UpdateLayoutOrientation();
 
-  void PaintBoundingBoxForTiles(gfx::Canvas& canvas,
-                                const SplitViewBrowserData* split_view_data);
-  void PaintBoundingBoxForTile(gfx::Canvas& canvas, const TabTile& tile);
   void PaintBoundingBoxForSplitTabs(gfx::Canvas& canvas);
   void PaintBoundingBoxForSplitTab(gfx::Canvas& canvas,
                                    const std::vector<int>& indices);
@@ -127,7 +114,6 @@ class BraveTabContainer : public TabContainerImpl,
                           bool* is_beneath);
 
   bool IsPinnedTabContainer() const;
-  void UpdateTabsBorderInTile(const TabTile& tile);
   void UpdateTabsBorderInSplitTab(const std::vector<int>& indices);
 
   base::flat_set<Tab*> closing_tabs_;
@@ -149,9 +135,6 @@ class BraveTabContainer : public TabContainerImpl,
 
   // Size we last laid out at.
   gfx::Size last_layout_size_;
-
-  base::ScopedObservation<SplitViewBrowserData, SplitViewBrowserDataObserver>
-      split_view_data_observation_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_CONTAINER_H_

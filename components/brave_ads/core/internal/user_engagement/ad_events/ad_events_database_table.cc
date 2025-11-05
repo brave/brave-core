@@ -11,8 +11,6 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/debug/crash_logging.h"
-#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "base/location.h"
 #include "base/strings/string_util.h"
@@ -119,25 +117,6 @@ void GetCallback(
        mojom_db_transaction_result->rows_union->get_rows()) {
     const AdEventInfo ad_event = FromMojomRow(mojom_db_row);
     if (!ad_event.IsValid()) {
-      SCOPED_CRASH_KEY_BOOL("Issue45296", "type",
-                            ad_event.type != mojom::AdType::kUndefined);
-      SCOPED_CRASH_KEY_BOOL(
-          "Issue45296", "confirmation_type",
-          ad_event.confirmation_type != mojom::ConfirmationType::kUndefined);
-      SCOPED_CRASH_KEY_BOOL("Issue45296", "placement_id",
-                            !ad_event.placement_id.empty());
-      SCOPED_CRASH_KEY_BOOL("Issue45296", "creative_instance_id",
-                            !ad_event.creative_instance_id.empty());
-      SCOPED_CRASH_KEY_BOOL("Issue45296", "creative_set_id",
-                            !ad_event.creative_set_id.empty());
-      SCOPED_CRASH_KEY_BOOL("Issue45296", "campaign_id",
-                            !ad_event.campaign_id.empty());
-      SCOPED_CRASH_KEY_BOOL("Issue45296", "target_url",
-                            ad_event.target_url.is_valid());
-      SCOPED_CRASH_KEY_BOOL("Issue45296", "created_at", !!ad_event.created_at);
-      SCOPED_CRASH_KEY_STRING64("Issue45296", "failure_reason",
-                                "Invalid ad event");
-      base::debug::DumpWithoutCrashing();
       BLOG(0, "Invalid ad event");
       continue;
     }
@@ -269,25 +248,6 @@ void MigrateToV51(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
 void AdEvents::RecordEvent(const AdEventInfo& ad_event,
                            ResultCallback callback) {
   if (!ad_event.IsValid()) {
-    SCOPED_CRASH_KEY_BOOL("Issue45296", "type",
-                          ad_event.type != mojom::AdType::kUndefined);
-    SCOPED_CRASH_KEY_BOOL(
-        "Issue45296", "confirmation_type",
-        ad_event.confirmation_type != mojom::ConfirmationType::kUndefined);
-    SCOPED_CRASH_KEY_BOOL("Issue45296", "placement_id",
-                          !ad_event.placement_id.empty());
-    SCOPED_CRASH_KEY_BOOL("Issue45296", "creative_instance_id",
-                          !ad_event.creative_instance_id.empty());
-    SCOPED_CRASH_KEY_BOOL("Issue45296", "creative_set_id",
-                          !ad_event.creative_set_id.empty());
-    SCOPED_CRASH_KEY_BOOL("Issue45296", "campaign_id",
-                          !ad_event.campaign_id.empty());
-    SCOPED_CRASH_KEY_BOOL("Issue45296", "target_url",
-                          ad_event.target_url.is_valid());
-    SCOPED_CRASH_KEY_BOOL("Issue45296", "created_at", !!ad_event.created_at);
-    SCOPED_CRASH_KEY_STRING64("Issue45296", "failure_reason",
-                              "Invalid ad event");
-    base::debug::DumpWithoutCrashing();
     BLOG(0, "Invalid ad event");
     return std::move(callback).Run(/*success=*/true);
   }
@@ -322,7 +282,8 @@ void AdEvents::IsFirstTime(const std::string& campaign_id,
               THEN 1
               ELSE 0
             END AS is_first_time;)",
-      {GetTableName(), ToString(confirmation_type), campaign_id}, nullptr);
+      {GetTableName(), std::string(ToString(confirmation_type)), campaign_id},
+      nullptr);
   mojom_db_action->bind_column_types = {
       mojom::DBBindColumnType::kBool  // is_first_time
   };
@@ -409,8 +370,8 @@ void AdEvents::Get(mojom::AdType mojom_ad_type,
             AND created_at > $4
           ORDER BY
             created_at ASC)",
-      {GetTableName(), ToString(mojom_ad_type),
-       ToString(mojom_confirmation_type),
+      {GetTableName(), std::string(ToString(mojom_ad_type)),
+       std::string(ToString(mojom_confirmation_type)),
        TimeToSqlValueAsString(base::Time::Now() - time_window)},
       nullptr);
   BindColumnTypes(mojom_db_action);
@@ -585,7 +546,7 @@ void AdEvents::GetUnexpired(mojom::AdType mojom_ad_type,
             )
           ORDER BY
             created_at ASC)",
-      {GetTableName(), ToString(mojom_ad_type),
+      {GetTableName(), std::string(ToString(mojom_ad_type)),
        TimeToSqlValueAsString(base::Time::Now() - base::Days(90))},
       nullptr);
   BindColumnTypes(mojom_db_action);
@@ -649,7 +610,7 @@ void AdEvents::PurgeForAdType(mojom::AdType ad_type,
               $1
             WHERE
               type = '$2')",
-          {GetTableName(), ToString(ad_type)});
+          {GetTableName(), std::string(ToString(ad_type))});
 
   RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
                  std::move(callback));
@@ -659,7 +620,8 @@ void AdEvents::PurgeOrphaned(mojom::AdType mojom_ad_type,
                              ResultCallback callback) const {
   mojom::DBTransactionInfoPtr mojom_db_transaction =
       mojom::DBTransactionInfo::New();
-  Execute(mojom_db_transaction, R"(
+  Execute(
+      mojom_db_transaction, R"(
         DELETE FROM
           $1
         WHERE
@@ -675,7 +637,7 @@ void AdEvents::PurgeOrphaned(mojom::AdType mojom_ad_type,
           )
           AND confirmation_type = 'served'
           AND type = '$3')",
-          {GetTableName(), GetTableName(), ToString(mojom_ad_type)});
+      {GetTableName(), GetTableName(), std::string(ToString(mojom_ad_type))});
 
   RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
                  std::move(callback));

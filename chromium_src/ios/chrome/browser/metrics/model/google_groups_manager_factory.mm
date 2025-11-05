@@ -29,10 +29,9 @@ GoogleGroupsManagerFactory::GoogleGroupsManagerFactory()
                                     TestingCreation::kNoServiceForTests) {}
 
 std::unique_ptr<KeyedService>
-GoogleGroupsManagerFactory::BuildServiceInstanceFor(
-    web::BrowserState* context) const {
+GoogleGroupsManagerFactory::BuildServiceInstanceFor(ProfileIOS* profile) const {
   return nullptr;
 }
 
-void GoogleGroupsManagerFactory::RegisterBrowserStatePrefs(
+void GoogleGroupsManagerFactory::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {}

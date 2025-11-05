@@ -5,18 +5,16 @@
 
 package org.chromium.chrome.browser.settings;
 
-import android.content.SharedPreferences;
-
 import androidx.annotation.Nullable;
 
-import org.chromium.base.ContextUtils;
+import org.chromium.base.shared_preferences.SharedPreferencesManager;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.search_engines.settings.BraveSearchEngineAdapter;
 import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
-import org.chromium.chrome.browser.widget.quickactionsearchandbookmark.QuickActionSearchAndBookmarkWidgetProvider;
 import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.search_engines.TemplateUrlService;
 
@@ -69,19 +67,18 @@ public class BraveSearchEngineUtils {
         // At first run, we should set initial default prefs to each standard/private DSE prefs.
         // Those pref values will be used until user change DES options explicitly.
         final String notInitialized = "notInitialized";
-        if (notInitialized.equals(ContextUtils.getAppSharedPreferences().getString(
-                    BraveSearchEngineAdapter.STANDARD_DSE_SHORTNAME, notInitialized))) {
+        SharedPreferencesManager sharedPreferences = ChromeSharedPreferences.getInstance();
+        if (notInitialized.equals(
+                sharedPreferences.readString(
+                        BraveSearchEngineAdapter.STANDARD_DSE_SHORTNAME, notInitialized))) {
             final TemplateUrlService templateUrlService =
                     TemplateUrlServiceFactory.getForProfile(profile);
 
             TemplateUrl templateUrl = templateUrlService.getDefaultSearchEngineTemplateUrl();
-            SharedPreferences.Editor sharedPreferencesEditor =
-                    ContextUtils.getAppSharedPreferences().edit();
-            sharedPreferencesEditor.putString(
+            sharedPreferences.writeString(
                     BraveSearchEngineAdapter.STANDARD_DSE_SHORTNAME, templateUrl.getShortName());
-            sharedPreferencesEditor.putString(
+            sharedPreferences.writeString(
                     BraveSearchEngineAdapter.PRIVATE_DSE_SHORTNAME, templateUrl.getShortName());
-            sharedPreferencesEditor.apply();
         }
     }
 
@@ -95,15 +92,10 @@ public class BraveSearchEngineUtils {
 
         initializeDSEPrefs(profile);
         updateActiveDSE(profile, templateUrlService);
-        QuickActionSearchAndBookmarkWidgetProvider.initializeDelegate();
     }
 
     public static void setDSEPrefs(TemplateUrl templateUrl, Profile profile) {
         BraveSearchEngineAdapter.setDSEPrefs(templateUrl, profile);
-        if (!profile.isOffTheRecord() && templateUrl != null) {
-            QuickActionSearchAndBookmarkWidgetProvider.updateSearchEngine(
-                    templateUrl.getShortName());
-        }
     }
 
     public static void updateActiveDSE(Profile profile, TemplateUrlService templateUrlServiceArg) {

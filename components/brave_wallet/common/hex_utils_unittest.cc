@@ -241,4 +241,51 @@ TEST(HexUtilsUnitTest, PrefixedHexStringToBytes) {
   EXPECT_FALSE(PrefixedHexStringToBytes(""));
 }
 
+TEST(HexUtilsUnitTest, PrefixedHexStringToFixed) {
+  // Empty strings, should fail.
+  EXPECT_FALSE(PrefixedHexStringToFixed<1>("0x"));
+  EXPECT_FALSE(PrefixedHexStringToFixed<1>(""));
+
+  // Invalid hex digits, but correct lengths.
+  EXPECT_FALSE(PrefixedHexStringToFixed<1>("0xy"));
+  EXPECT_FALSE(PrefixedHexStringToFixed<1>("0xxy"));
+
+  // No leading 0x marker, but correct lengths.
+  EXPECT_FALSE(PrefixedHexStringToFixed<1>("0"));
+  EXPECT_FALSE(PrefixedHexStringToFixed<1>("00"));
+  EXPECT_FALSE(PrefixedHexStringToFixed<2>("123"));
+  EXPECT_FALSE(PrefixedHexStringToFixed<2>("0123"));
+
+  // Length mismatch but otherwise valid hex strings.
+  EXPECT_FALSE(PrefixedHexStringToFixed<4>("0x11223"));
+  EXPECT_FALSE(PrefixedHexStringToFixed<4>("0x112233"));
+  EXPECT_FALSE(PrefixedHexStringToFixed<4>("0x112233445"));
+  EXPECT_FALSE(PrefixedHexStringToFixed<4>("0x1122334455"));
+  EXPECT_FALSE(PrefixedHexStringToFixed<16>("0x1"));
+  EXPECT_FALSE(PrefixedHexStringToFixed<16>("0x11"));
+
+  EXPECT_EQ(PrefixedHexStringToFixed<1>("0x0"), (std::array<uint8_t, 1>{0x00}));
+  EXPECT_EQ(PrefixedHexStringToFixed<1>("0x01"),
+            (std::array<uint8_t, 1>{0x01}));
+  EXPECT_EQ(PrefixedHexStringToFixed<1>("0xf"), (std::array<uint8_t, 1>{0x0f}));
+  EXPECT_EQ(PrefixedHexStringToFixed<1>("0x3"), (std::array<uint8_t, 1>{0x03}));
+  EXPECT_EQ(PrefixedHexStringToFixed<2>("0x0123"),
+            (std::array<uint8_t, 2>{0x01, 0x23}));
+  EXPECT_EQ(PrefixedHexStringToFixed<2>("0x123"),
+            (std::array<uint8_t, 2>{0x01, 0x23}));
+  EXPECT_EQ(PrefixedHexStringToFixed<4>("0xdeadbeef"),
+            (std::array<uint8_t, 4>{0xde, 0xad, 0xbe, 0xef}));
+  EXPECT_EQ(
+      PrefixedHexStringToFixed<8>("0x0123456789abcdef"),
+      (std::array<uint8_t, 8>{0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef}));
+  EXPECT_EQ(
+      PrefixedHexStringToFixed<8>("0xfedcba9876543210"),
+      (std::array<uint8_t, 8>{0xfe, 0xdc, 0xba, 0x98, 0x76, 0x54, 0x32, 0x10}));
+
+  std::string_view hash =
+      "0xba38d3e0e1033e97a3aa294e59741c9f4ab8786c8d55c493d0ebc58b885961b3";
+  EXPECT_EQ(base::HexEncode(PrefixedHexStringToFixed<32>(hash).value()),
+            "BA38D3E0E1033E97A3AA294E59741C9F4AB8786C8D55C493D0EBC58B885961B3");
+}
+
 }  // namespace brave_wallet

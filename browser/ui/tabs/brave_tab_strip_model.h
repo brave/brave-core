@@ -51,7 +51,6 @@ class BraveTabStripModel : public TabStripModel {
   void SelectRelativeTab(TabRelativeDirection direction,
                          TabStripUserGestureDetails detail) override;
   void UpdateWebContentsStateAt(int index, TabChangeType change_type) override;
-  void CloseSelectedTabsWithSplitView() override;
 
  private:
   friend class TreeTabsBrowserTest;

@@ -1,0 +1,121 @@
+.task {
+  border: 1px solid var(--leo-color-divider-subtle);
+  border-radius: var(--leo-radius-xl);
+  min-height: 350px;
+  box-shadow: var(--leo-effect-elevation-01);
+}
+
+.taskContent {
+  padding: var(--leo-spacing-2xl);
+  display: flex;
+  flex-direction: row;
+  gap: var(--leo-spacing-l);
+  // Image should appear at the top when there isn't enough space for
+  // side-by-side with the task data.
+  flex-wrap: wrap-reverse;
+  // Image should still be at top when side-by-side with the task data
+  align-items: flex-end;
+}
+
+.taskData {
+  flex: 1 1 0;
+  min-width: min(300px, 100%);
+}
+
+.taskImage {
+  position: sticky;
+  background: var(--leo-color-container-background);
+  top: var(--leo-spacing-xl);
+  border-radius: var(--leo-radius-m);
+  padding: var(--leo-spacing-s);
+  border: 1px solid var(--leo-color-neutral-10);
+  width: 115px;
+  height: fit-content;
+
+  img {
+    width: 100%;
+    height: auto;
+  }
+}
+
+.taskStep {
+  --task-icon-size: 22px;
+  --half-task-icon-size: calc(var(--task-icon-size) / 2);
+  --task-step-line-size: 2px;
+  --half-task-step-line-size: calc(var(--task-step-line-size) / 2);
+
+  min-height: 30px;
+  // Space to the left of the steps line to counteract the negative left position
+  // of the steps icon.
+  margin-left: var(--half-task-icon-size);
+  // The steps line
+  border-left: var(--leo-color-neutral-20) var(--task-step-line-size) solid;
+  // No padding-top so that the previous steps line extends to the top of this
+  // steps icon.
+  padding: 0 var(--leo-spacing-l) var(--leo-spacing-xl) var(--leo-spacing-l);
+  // Space to the right of the steps line
+  padding-left: calc(var(--half-task-icon-size) + var(--leo-spacing-m));
+
+  font: var(--leo-font-default-regular);
+  color: var(--leo-color-text-primary);
+  position: relative;
+
+  .taskIcon {
+    --border-size: 1px;
+    --leo-icon-size: 16px;
+    --leo-progressring-size: 16px;
+    --outline-color: var(--leo-color-divider-subtle);
+
+    position: absolute;
+    top: calc(0.5lh - var(--half-task-icon-size));
+    left: calc(
+      calc(var(--half-task-icon-size) + var(--half-task-step-line-size)) * -1
+    );
+    width: var(--task-icon-size);
+    height: var(--task-icon-size);
+
+    // circle
+    border-radius: 50%;
+
+    outline: var(--outline-color) var(--border-size) solid;
+    outline-offset: calc(var(--border-size) * -1);
+    background: var(--leo-color-container-background);
+
+    // center the icon
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &.isComplete {
+    .taskIcon {
+      --leo-icon-color: var(--leo-color-systemfeedback-success-icon);
+      background: var(--leo-color-systemfeedback-success-background);
+      --outline-color: transparent;
+    }
+  }
+
+  &.isPending {
+    .taskIcon {
+      --leo-icon-color: var(--leo-color-systemfeedback-info-icon);
+      background: var(--leo-color-systemfeedback-info-background);
+      --outline-color: transparent;
+    }
+  }
+
+  &:last-child {
+    // Don't continue the steps line below the icon of the last step
+    border-left-color: transparent;
+  }
+}
+
+.progress {
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-m);
+}
+
+.progressText {
+  font: var(--leo-font-default-regular);
+  color: var(--leo-color-text-primary);
+}

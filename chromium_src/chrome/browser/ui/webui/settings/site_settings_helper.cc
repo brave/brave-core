@@ -35,6 +35,7 @@
   {ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE, nullptr},          \
   {ContentSettingsType::BRAVE_LOCALHOST_ACCESS, "localhostAccess"},   \
   {ContentSettingsType::BRAVE_OPEN_AI_CHAT, "braveOpenAIChat"},       \
+  {ContentSettingsType::BRAVE_AUTO_SHRED, nullptr},                   \
   {ContentSettingsType::BRAVE_WEBCOMPAT_NONE, nullptr}, \
   {ContentSettingsType::BRAVE_WEBCOMPAT_AUDIO, nullptr}, \
   {ContentSettingsType::BRAVE_WEBCOMPAT_CANVAS, nullptr}, \
@@ -55,7 +56,8 @@
   {ContentSettingsType::BRAVE_WEBCOMPAT_WEB_SOCKETS_POOL, nullptr}, \
   {ContentSettingsType::BRAVE_WEBCOMPAT_ALL, nullptr}, \
   {ContentSettingsType::BRAVE_SHIELDS_METADATA, nullptr}, \
-  {ContentSettingsType::BRAVE_CARDANO, "cardano"},
+  {ContentSettingsType::BRAVE_CARDANO, "cardano"}, \
+  {ContentSettingsType::BRAVE_PSST, nullptr},
 // clang-format on
 
 #define BRAVE_SITE_SETTINGS_HELPER_CONTENT_SETTINGS_TYPE_FROM_GROUP_NAME \

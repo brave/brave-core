@@ -16,18 +16,6 @@ import { createTextContentBlock } from '../../../common/content_block'
 import MockContext from '../../mock_untrusted_conversation_context'
 import AssistantResponse from '.'
 
-// Mock the locale functions for MemoryToolEvent
-jest.mock('$web-common/locale', () => ({
-  ...jest.requireActual('$web-common/locale'),
-  getLocale: (key: string) => key,
-  formatLocale: (key: string, params?: Record<string, string>) => {
-    if (key === 'CHAT_UI_MEMORY_UPDATED_WITH_CONTENT_LABEL') {
-      return `Memory updated: ${params?.$1}`
-    }
-    return key
-  },
-}))
-
 test('AssistantResponse should include expandable sources', async () => {
   const testEntry: Mojom.ConversationTurn = {
     uuid: 'test-uuid',
@@ -150,7 +138,9 @@ test('AssistantResponse should render memory tool events inline', async () => {
   await waitFor(() => {
     expect(screen.getByTestId('memory-tool-event')).toBeInTheDocument()
   })
-  expect(screen.getByText(/Test memory content/)).toBeInTheDocument()
+  expect(
+    screen.getByText(/CHAT_UI_MEMORY_UPDATED_WITH_CONTENT_LABEL/),
+  ).toBeInTheDocument()
 })
 
 test(

@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_OMNIBOX_BROWSER_LEO_PROVIDER_H_
 #define BRAVE_COMPONENTS_OMNIBOX_BROWSER_LEO_PROVIDER_H_
 
+#include "base/memory/ref_counted.h"
 #include "components/omnibox/browser/autocomplete_provider.h"
 
 class AutocompleteProviderClient;

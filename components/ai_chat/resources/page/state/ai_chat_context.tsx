@@ -38,9 +38,14 @@ type AIChatContextInternal = AIChatContextProps & {
   setEditingConversationId: (uuid: string | null) => void
   deletingConversationId: string | null
   setDeletingConversationId: (uuid: string | null) => void
+  skillDialog: Mojom.Skill | null
+  setSkillDialog: (skill: Mojom.Skill | null) => void
 
   showSidebar: boolean
   toggleSidebar: () => void
+
+  getBookmarks: () => Promise<Mojom.Bookmark[]>
+  getHistory: (search?: string) => Promise<Mojom.HistoryEntry[]>
 }
 
 export type AIChatContext = AIChat.State & AIChatContextInternal
@@ -62,11 +67,20 @@ export const defaultContext: AIChatContext = {
   setEditingConversationId: () => {},
   deletingConversationId: null,
   setDeletingConversationId: () => {},
+  skillDialog: null,
+  setSkillDialog: () => {},
 
   showSidebar: false,
   toggleSidebar: () => {},
 
   conversationEntriesComponent: () => <></>,
+
+  async getBookmarks() {
+    return []
+  },
+  async getHistory() {
+    return []
+  },
 }
 
 export const AIChatReactContext =
@@ -87,6 +101,7 @@ export function AIChatContextProvider(
   const [deletingConversationId, setDeletingConversationId] = React.useState<
     string | null
   >(null)
+  const [skillDialog, setSkillDialog] = React.useState<Mojom.Skill | null>(null)
   const isSmall = useIsSmall()
   const [showSidebar, setShowSidebar] = React.useState(isSmall)
 
@@ -108,9 +123,15 @@ export function AIChatContextProvider(
     setEditingConversationId,
     deletingConversationId,
     setDeletingConversationId,
+    skillDialog,
+    setSkillDialog,
     showSidebar,
     toggleSidebar: () => setShowSidebar((s) => !s),
     conversationEntriesComponent: props.conversationEntriesComponent,
+    getBookmarks: () =>
+      api.bookmarksService.getBookmarks().then((r) => r.bookmarks),
+    getHistory: (query: string | null = null) =>
+      api.historyService.getHistory(query, null).then((r) => r.history),
   }
 
   return (

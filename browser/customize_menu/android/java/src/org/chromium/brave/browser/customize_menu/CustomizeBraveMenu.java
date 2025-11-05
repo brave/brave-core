@@ -117,7 +117,6 @@ public class CustomizeBraveMenu {
         MENU_ICON_MAP.put(R.id.brave_playlist_id, R.drawable.ic_open_playlist);
         MENU_ICON_MAP.put(R.id.add_to_playlist_id, R.drawable.ic_baseline_add_24);
         MENU_ICON_MAP.put(R.id.brave_news_id, R.drawable.ic_news);
-        MENU_ICON_MAP.put(R.id.brave_speedreader_id, R.drawable.ic_readermode);
         MENU_ICON_MAP.put(R.id.brave_leo_id, R.drawable.ic_brave_ai);
         MENU_ICON_MAP.put(R.id.request_brave_vpn_id, R.drawable.ic_vpn);
         MENU_ICON_MAP.put(R.id.brave_rewards_id, R.drawable.brave_menu_rewards);
@@ -136,7 +135,7 @@ public class CustomizeBraveMenu {
         MENU_ICON_MAP.put(R.id.find_in_page_id, R.drawable.ic_find_in_page);
         MENU_ICON_MAP.put(R.id.translate_id, R.drawable.ic_translate);
         MENU_ICON_MAP.put(R.id.readaloud_menu_id, R.drawable.ic_play_circle);
-        MENU_ICON_MAP.put(R.id.reader_mode_menu_id, R.drawable.ic_reader_mode_24dp);
+        MENU_ICON_MAP.put(R.id.reader_mode_menu_id, R.drawable.ic_mobile_friendly_24dp);
         MENU_ICON_MAP.put(R.id.open_with_id, R.drawable.ic_open_in_new);
         MENU_ICON_MAP.put(R.id.open_webapk_id, R.drawable.ic_open_webapk);
         MENU_ICON_MAP.put(R.id.universal_install, R.drawable.ic_add_to_home_screen);

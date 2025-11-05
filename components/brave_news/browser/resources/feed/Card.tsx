@@ -34,22 +34,56 @@ export const Title = styled.h3`
   &> a { all: unset; }
 `
 
-const HidableImage = ({ onError, ...rest }: React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>) => {
+const BaseImg = styled.img`
+  opacity: 0;
+  transition: opacity 400ms ease-in-out;
+`
+
+type HidabeImageProps = React.DetailedHTMLProps<
+  React.ImgHTMLAttributes<HTMLImageElement>,
+  HTMLImageElement
+> & {
+  targetHeight?: number
+  targetWidth?: number
+}
+const HidableImage = ({
+  onError,
+  onLoad,
+  targetHeight,
+  targetWidth,
+  src,
+  loading,
+  ...rest
+}: HidabeImageProps) => {
   const ref = React.useRef<HTMLImageElement>()
 
-  React.useEffect(() => {
-    ref.current!.style.opacity = ''
-  }, [rest.src])
+  const { shouldRenderImages } = useBraveNews()
+  const delayLoad = !shouldRenderImages && loading === 'lazy'
 
-  const handleError = React.useCallback((e: React.UIEvent<HTMLImageElement>) => {
-    ref.current!.style.opacity = '0'
-    onError?.(e)
-  }, [onError])
+  const handleLoad = React.useCallback((e: React.UIEvent<HTMLImageElement>) => {
+    ref.current!.style.opacity = '1'
+    onLoad?.(e)
+  }, [onLoad])
 
-  return <img {...rest} ref={ref as any} onError={handleError} />
+  if (src) {
+    src = 'chrome://brave-image?url=' + encodeURIComponent(src);
+  }
+  if (targetHeight && targetWidth) {
+    const width = Math.round(targetWidth * window.devicePixelRatio)
+    const height = Math.round(targetHeight * window.devicePixelRatio)
+    src += `&target_size=${width}x${height}`
+  }
+
+  return <BaseImg
+    {...rest}
+    src={delayLoad ? undefined : src}
+    loading={loading}
+    ref={ref as any}
+    onLoad={handleLoad}
+  />
 }
 
-export const SmallImage = styled(HidableImage)`
+export const SmallImage = styled(HidableImage).attrs({ targetHeight: 64, targetWidth: 96 })`
   &:not([src]) { opacity: 0; }
 
   min-width: 96px;
@@ -63,7 +97,7 @@ export const SmallImage = styled(HidableImage)`
   border-radius: 6px;
 `
 
-export const LargeImage = styled(HidableImage)`
+export const LargeImage = styled(HidableImage).attrs({ targetHeight: 269, targetWidth: 508 })`
   &:not([src]) { opacity: 0; }
 
   width: 100%;

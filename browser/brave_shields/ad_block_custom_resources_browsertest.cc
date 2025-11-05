@@ -41,7 +41,7 @@ base::Value CreateResource(const std::string& name,
 void AwaitRoot(content::WebContents* web_contents, const std::string& root) {
   constexpr const char kScript[] = R"js(
     (async () => {
-      let waiter = () => { return !window.testing && !window.testing[$1]; };
+      let waiter = () => { return !window.testing || !window.testing[$1]; };
       while (waiter()) {
         await new Promise(r => setTimeout(r, 10));
       }

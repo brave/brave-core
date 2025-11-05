@@ -22,7 +22,6 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
 // Chromium implementation which makes INHERIT_IF_LESS_PERMISSIVE inherit
 // blocked permissions in incognito profile.
 BASE_FEATURE(kAllowIncognitoPermissionInheritance,
-             "AllowIncognitoPermissionInheritance",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
 }  // namespace content_settings

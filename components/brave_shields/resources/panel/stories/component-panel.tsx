@@ -11,13 +11,22 @@ import MainPanel from '../components/main-panel'
 import TreeList from '../components/tree-list'
 import ThemeProvider from '../../../../common/BraveCoreThemeProvider'
 import DataContext from '../state/context'
-import { AdBlockMode, FingerprintMode, CookieBlockMode, HttpsUpgradeMode } from '../api/panel_browser_api'
+import {
+  AdBlockMode,
+  FingerprintMode,
+  CookieBlockMode,
+  HttpsUpgradeMode,
+  ContentSettingSource,
+} from '../api/panel_browser_api'
 import {
   ViewType
 } from '../state/component_types'
 import { getLocale } from '../../../../common/locale'
 
 import '@brave/leo/tokens/css/variables.css'
+import {
+  ContentSetting
+} from 'gen/components/content_settings/core/common/content_settings.mojom.m'
 
 const LIST_JS = [
   { 'url': 'https://www.reddit.com/' },
@@ -74,6 +83,10 @@ export default {
           cookieBlockMode: CookieBlockMode.ALLOW,
           httpsUpgradeMode: HttpsUpgradeMode.DISABLED_MODE,
           isNoscriptEnabled: false,
+          scriptsBlockedOverrideStatus: {
+            status: ContentSetting.DEFAULT,
+            overrideSource: ContentSettingSource.kNone,
+          },
           isForgetFirstPartyStorageEnabled: false,
           webcompatSettings: {}
         },

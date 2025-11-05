@@ -93,6 +93,7 @@ class SpeedreaderToolbarDataHandlerImpl
       TabStripModel* tab_strip_model,
       const TabStripModelChange& change,
       const TabStripSelectionChange& selection) override;
+  void OnSplitTabChanged(const SplitTabChange& change) override;
 
   // BrowserTabStripTrackerDelegate:
   bool ShouldTrackBrowser(BrowserWindowInterface* browser) override;
@@ -106,6 +107,11 @@ class SpeedreaderToolbarDataHandlerImpl
   // speedreader::SpeedreaderTabHelper::Observer:
   void OnTuneBubbleClosed() override;
   void OnContentsReady() override;
+
+  // Need to call whenever active tab's split view state is changed.
+  // Whenever active tab's split view state changed, reader mode
+  // toolbar's bottom border should be updated.
+  void UpdateToolbarTheme();
 
   raw_ptr<Browser> browser_ = nullptr;
   mojo::Receiver<speedreader::mojom::ToolbarDataHandler> receiver_;

@@ -19,11 +19,16 @@ source_set("unit_tests") {
   ]
 
   if (!is_android) {
-    sources += [ "brave_shields_util_profiles_unittest.cc" ]
+    sources += [
+      "brave_shields_tab_helper_unittest.cc",
+      "brave_shields_util_profiles_unittest.cc",
+    ]
 
     deps += [
       "//chrome/browser",
       "//chrome/browser/content_settings:content_settings_factory",
+      "//components/favicon/content",
+      "//components/favicon/core/test:test_support",
     ]
   }
 }

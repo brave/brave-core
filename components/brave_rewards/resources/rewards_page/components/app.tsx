@@ -48,8 +48,8 @@ export function App() {
   const [showResetModal, setShowResetModal] = React.useState(false)
   const [showContributeModal, setShowContributeModal] = React.useState(false)
   const [hideCaptcha, setHideCaptcha] = React.useState(false)
-  const [showOnboardingSuccess, setShowOnboardingSuccess]
-    = React.useState(false)
+  const [showOnboardingSuccess, setShowOnboardingSuccess] =
+    React.useState(false)
 
   const route = useRoute((route, router) => {
     if (route === routes.reset) {
@@ -78,7 +78,8 @@ export function App() {
     if (elem) {
       elem.style.setProperty(
         '--app-screen-height',
-        window.screen.availHeight + 'px')
+        window.screen.availHeight + 'px',
+      )
     }
   }, [])
 
@@ -212,10 +213,12 @@ export function App() {
   }
 
   return (
-    <div className={getClassNames()} ref={onMount} data-css-scope={style.scope}>
-      <AppErrorBoundary>
-        {renderContent()}
-      </AppErrorBoundary>
+    <div
+      className={getClassNames()}
+      ref={onMount}
+      data-css-scope={style.scope}
+    >
+      <AppErrorBoundary>{renderContent()}</AppErrorBoundary>
       <div className='background' />
     </div>
   )

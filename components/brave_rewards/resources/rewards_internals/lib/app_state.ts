@@ -25,17 +25,13 @@ export interface AppState {
 }
 
 export type ContributionType =
-  'auto-contribution' |
-  'one-time' |
-  'recurring' |
-  'transfer' |
-  'payment'
+  | 'auto-contribution'
+  | 'one-time'
+  | 'recurring'
+  | 'transfer'
+  | 'payment'
 
-export type ContributionProcessor =
-  'uphold' |
-  'gemini' |
-  'bitflyer' |
-  'brave'
+export type ContributionProcessor = 'uphold' | 'gemini' | 'bitflyer' | 'brave'
 
 export interface ContributionInfo {
   id: string
@@ -84,6 +80,6 @@ export function defaultState(): AppState {
     externalWalletAccountId: '',
     rewardsEvents: [],
     adDiagnosticId: '',
-    adDiagnosticEntries: []
+    adDiagnosticEntries: [],
   }
 }

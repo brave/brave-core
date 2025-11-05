@@ -152,7 +152,8 @@ where
                                         // that we need to resubmit
                                         request_id = match item_creds.request_id {
                                             Some(request_id) => request_id,
-                                            // use the item id as the request id if it was not persisted
+                                            // use the item id as the request id if it was not
+                                            // persisted
                                             None => item_id.to_string(),
                                         };
 
@@ -217,15 +218,15 @@ where
                                         // NOTE: this should only happen in one of two cases:
                                         // 1. we upgraded from a browser version that did not
                                         //    persist request ids and there are multiple devices
-                                        // 2. we accidentally re-used a request id due to
-                                        //    https://github.com/brave/brave-browser/issues/35742
-                                        self.client.upsert_time_limited_v2_item_creds_request_id(
-                                            &item.id,
-                                            &Uuid::new_v4().to_string(),
-                                        )
-                                        .await?;
+                                        // 2. we accidentally re-used a request id due to https://github.com/brave/brave-browser/issues/35742
+                                        self.client
+                                            .upsert_time_limited_v2_item_creds_request_id(
+                                                &item.id,
+                                                &Uuid::new_v4().to_string(),
+                                            )
+                                            .await?;
                                         Err(resp.into())
-                                    },
+                                    }
                                     _ => Err(resp.into()),
                                 }
                             },

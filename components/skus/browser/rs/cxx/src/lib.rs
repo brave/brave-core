@@ -14,11 +14,11 @@ use std::thread;
 
 use cxx::UniquePtr;
 use futures::executor::{LocalPool, LocalSpawner};
-use futures::task::LocalSpawnExt;
 use futures::lock::Mutex;
+use futures::task::LocalSpawnExt;
 
-use tracing_log::LogTracer;
 use log::debug;
+use tracing_log::LogTracer;
 
 pub use skus;
 
@@ -68,12 +68,7 @@ impl NativeClientExecutor {
     fn new() -> Self {
         let pool = LocalPool::new();
         let spawner = pool.spawner();
-        Self {
-            is_shutdown: false,
-            pool: Some(pool),
-            spawner,
-            thread_id: thread::current().id(),
-        }
+        Self { is_shutdown: false, pool: Some(pool), spawner, thread_id: thread::current().id() }
     }
 
     fn shutdown(&mut self) {
@@ -279,8 +274,7 @@ pub struct CppSDK {
 }
 
 fn initialize_sdk(ctx: UniquePtr<ffi::SkusContext>, env: String) -> Box<CppSDK> {
-    match LogTracer::init()
-    {
+    match LogTracer::init() {
         Ok(_) => debug!("LogTracer - init success"),
         Err(_) => debug!("LogTracer - maybe already initialized"),
     };
@@ -321,16 +315,9 @@ impl CppSDK {
         self.sdk.client.executor.borrow_mut().shutdown();
     }
 
-    fn refresh_order(
-        &self,
-        callback: UniquePtr<ffi::RustBoundPostTask>,
-        order_id: String,
-    ) {
+    fn refresh_order(&self, callback: UniquePtr<ffi::RustBoundPostTask>, order_id: String) {
         let spawner = self.sdk.client.get_spawner();
-        if spawner
-            .spawn_local(refresh_order_task(self.sdk.clone(), callback, order_id))
-            .is_err()
-        {
+        if spawner.spawn_local(refresh_order_task(self.sdk.clone(), callback, order_id)).is_err() {
             debug!("pool is shutdown");
         }
 
@@ -344,11 +331,7 @@ impl CppSDK {
     ) {
         let spawner = self.sdk.client.get_spawner();
         if spawner
-            .spawn_local(fetch_order_credentials_task(
-                self.sdk.clone(),
-                callback,
-                order_id,
-            ))
+            .spawn_local(fetch_order_credentials_task(self.sdk.clone(), callback, order_id))
             .is_err()
         {
             debug!("pool is shutdown");
@@ -379,19 +362,9 @@ impl CppSDK {
         self.sdk.client.try_run_until_stalled();
     }
 
-    fn credential_summary(
-        &self,
-        callback: UniquePtr<ffi::RustBoundPostTask>,
-        domain: String,
-    ) {
+    fn credential_summary(&self, callback: UniquePtr<ffi::RustBoundPostTask>, domain: String) {
         let spawner = self.sdk.client.get_spawner();
-        if spawner
-            .spawn_local(credential_summary_task(
-                self.sdk.clone(),
-                callback,
-                domain,
-            ))
-            .is_err()
+        if spawner.spawn_local(credential_summary_task(self.sdk.clone(), callback, domain)).is_err()
         {
             debug!("pool is shutdown");
         }
@@ -407,12 +380,7 @@ impl CppSDK {
     ) {
         let spawner = self.sdk.client.get_spawner();
         if spawner
-            .spawn_local(submit_receipt_task(
-                self.sdk.clone(),
-                callback,
-                order_id,
-                receipt,
-            ))
+            .spawn_local(submit_receipt_task(self.sdk.clone(), callback, order_id, receipt))
             .is_err()
         {
             debug!("pool is shutdown");
@@ -427,11 +395,7 @@ impl CppSDK {
     ) {
         let spawner = self.sdk.client.get_spawner();
         if spawner
-            .spawn_local(create_order_from_receipt_task(
-                self.sdk.clone(),
-                callback,
-                receipt,
-            ))
+            .spawn_local(create_order_from_receipt_task(self.sdk.clone(), callback, receipt))
             .is_err()
         {
             debug!("pool is shutdown");
@@ -452,7 +416,9 @@ async fn refresh_order_task(
         .and_then(|order| serde_json::to_string(&order).map_err(|e| e.into()))
         .map_err(|e| e.into())
     {
-        Ok(order) => callback.pin_mut().RunWithResponse(ffi::SkusResult::new(ffi::SkusResultCode::Ok, ""), &order),
+        Ok(order) => callback
+            .pin_mut()
+            .RunWithResponse(ffi::SkusResult::new(ffi::SkusResultCode::Ok, ""), &order),
         Err(e) => callback.pin_mut().RunWithResponse(e, ""),
     }
 }
@@ -475,8 +441,12 @@ async fn prepare_credentials_presentation_task(
     path: String,
 ) {
     match sdk.prepare_credentials_presentation(&domain, &path).await.map_err(|e| e.into()) {
-        Ok(Some(presentation)) => callback.pin_mut().RunWithResponse(ffi::SkusResult::new(ffi::SkusResultCode::Ok, ""), &presentation),
-        Ok(None) => callback.pin_mut().RunWithResponse(ffi::SkusResult::new(ffi::SkusResultCode::Ok, ""), ""),
+        Ok(Some(presentation)) => callback
+            .pin_mut()
+            .RunWithResponse(ffi::SkusResult::new(ffi::SkusResultCode::Ok, ""), &presentation),
+        Ok(None) => callback
+            .pin_mut()
+            .RunWithResponse(ffi::SkusResult::new(ffi::SkusResultCode::Ok, ""), ""),
         Err(e) => callback.pin_mut().RunWithResponse(e, ""),
     }
 }
@@ -494,9 +464,14 @@ async fn credential_summary_task(
         })
         .map_err(|e| e.into())
     {
-        Ok(Some(summary)) => callback.pin_mut().RunWithResponse(ffi::SkusResult::new(ffi::SkusResultCode::Ok, ""), &summary),
-        Ok(None) => callback.pin_mut().RunWithResponse(ffi::SkusResult::new(ffi::SkusResultCode::Ok, ""), "{}"), /* none, empty */
-        Err(e) => callback.pin_mut().RunWithResponse(e, "{}"),                     // none, empty
+        Ok(Some(summary)) => callback
+            .pin_mut()
+            .RunWithResponse(ffi::SkusResult::new(ffi::SkusResultCode::Ok, ""), &summary),
+        // none, empty
+        Ok(None) => callback
+            .pin_mut()
+            .RunWithResponse(ffi::SkusResult::new(ffi::SkusResultCode::Ok, ""), "{}"),
+        Err(e) => callback.pin_mut().RunWithResponse(e, "{}"), // none, empty
     }
 }
 
@@ -518,7 +493,9 @@ async fn create_order_from_receipt_task(
     receipt: String,
 ) {
     match sdk.create_order_from_receipt(&receipt).await.map_err(|e| e.into()) {
-        Ok(order_id) => callback.pin_mut().RunWithResponse(ffi::SkusResult::new(ffi::SkusResultCode::Ok, ""), &order_id),
+        Ok(order_id) => callback
+            .pin_mut()
+            .RunWithResponse(ffi::SkusResult::new(ffi::SkusResultCode::Ok, ""), &order_id),
         Err(e) => callback.pin_mut().RunWithResponse(e, ""),
     }
 }

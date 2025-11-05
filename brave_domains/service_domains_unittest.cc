@@ -126,4 +126,28 @@ TEST(BraveServiceDomains, DefaultEnvValue) {
   EXPECT_EQ(result, base::StrCat({prefix, ".", kDevValue}));
 }
 
+// This test ensures all enum values are explicitly handled.
+// If new enum values are added to ServicesEnvironment, this test will fail to
+// compile, forcing developers to update the validation logic inside
+// brave_domains_utils_android.cc
+TEST(BraveServiceDomains, AllEnumValuesHandled) {
+  // This constexpr function will cause a compile error if any enum values
+  // are not handled in the switch statement.
+  constexpr auto ValidateAllEnumValues = [](ServicesEnvironment env) constexpr {
+    switch (env) {
+      case ServicesEnvironment::DEV:
+      case ServicesEnvironment::STAGING:
+      case ServicesEnvironment::PROD:
+        return true;
+        // No default case - compiler will error if new enum values are added
+    }
+    return false;
+  };
+
+  // Runtime verification that all values are considered valid
+  EXPECT_TRUE(ValidateAllEnumValues(ServicesEnvironment::DEV));
+  EXPECT_TRUE(ValidateAllEnumValues(ServicesEnvironment::STAGING));
+  EXPECT_TRUE(ValidateAllEnumValues(ServicesEnvironment::PROD));
+}
+
 }  // namespace brave_domains

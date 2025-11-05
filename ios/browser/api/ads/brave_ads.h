@@ -12,6 +12,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+OBJC_EXPORT NSString* const kBraveAdsFirstRunAtPrefName;
+
 @class NotificationAdIOS, InlineContentAdIOS, NewTabPageAdIOS;
 
 OBJC_EXPORT
@@ -126,7 +128,7 @@ OBJC_EXPORT
 
 - (void)triggerNewTabPageAdEvent:(NSString*)wallpaperId
               creativeInstanceId:(NSString*)creativeInstanceId
-      shouldMetricsFallbackToP3a:(BOOL)shouldMetricsFallbackToP3a
+                      metricType:(BraveAdsNewTabPageAdMetricType)metricType
                        eventType:(BraveAdsNewTabPageAdEventType)eventType
                       completion:(void (^)(BOOL success))completion;
 

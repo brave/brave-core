@@ -15,6 +15,7 @@
 #include "base/test/test_future.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
+#include "brave/components/ai_chat/content/browser/associated_web_contents_content.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
@@ -160,7 +161,7 @@ class AIChatUIBrowserTest : public InProcessBrowserTest {
     auto* side_panel_ui = browser()->GetFeatures().side_panel_ui();
     side_panel_ui->Show(SidePanelEntryId::kChatUI);
     auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
-    auto* side_panel = browser_view->unified_side_panel();
+    auto* side_panel = browser_view->contents_height_side_panel();
     auto* ai_chat_side_panel =
         side_panel->GetViewByID(SidePanelWebUIView::kSidePanelWebViewId);
     ASSERT_TRUE(ai_chat_side_panel);
@@ -175,15 +176,16 @@ class AIChatUIBrowserTest : public InProcessBrowserTest {
                         bool wait_for_callback = true) {
     SCOPED_TRACE(testing::Message() << location.ToString());
     base::RunLoop run_loop;
-    chat_tab_helper_->GetContent(base::BindLambdaForTesting(
-        [&run_loop, expected_text,
-         wait_for_callback](ai_chat::PageContent content) {
-          EXPECT_FALSE(content.is_video);
-          EXPECT_EQ(content.content, expected_text);
-          if (wait_for_callback) {
-            run_loop.Quit();
-          }
-        }));
+    chat_tab_helper_->web_contents_content().GetContent(
+        base::BindLambdaForTesting(
+            [&run_loop, expected_text,
+             wait_for_callback](ai_chat::PageContent content) {
+              EXPECT_FALSE(content.is_video);
+              EXPECT_EQ(content.content, expected_text);
+              if (wait_for_callback) {
+                run_loop.Quit();
+              }
+            }));
     if (wait_for_callback) {
       run_loop.Run();
     }
@@ -196,17 +198,19 @@ class AIChatUIBrowserTest : public InProcessBrowserTest {
     SCOPED_TRACE(testing::Message() << location.ToString());
 
     base::RunLoop run_loop;
-    chat_tab_helper_->GetStagedEntriesFromContent(base::BindLambdaForTesting(
-        [&](const std::optional<std::vector<ai_chat::SearchQuerySummary>>&
-                search_query_summary) {
-          EXPECT_EQ(search_query_summary, expected_search_query_summary);
-          run_loop.Quit();
-        }));
+    chat_tab_helper_->web_contents_content().GetStagedEntriesFromContent(
+        base::BindLambdaForTesting(
+            [&](const std::optional<std::vector<ai_chat::SearchQuerySummary>>&
+                    search_query_summary) {
+              EXPECT_EQ(search_query_summary, expected_search_query_summary);
+              run_loop.Quit();
+            }));
     run_loop.Run();
   }
 
   bool HasPendingGetContentRequest() {
-    return chat_tab_helper_->pending_get_page_content_callback_ ? true : false;
+    return !!chat_tab_helper_->web_contents_content()
+                 .pending_get_page_content_callback_;
   }
 
   std::optional<std::vector<ai_chat::mojom::UploadedFilePtr>>
@@ -214,7 +218,8 @@ class AIChatUIBrowserTest : public InProcessBrowserTest {
     base::test::TestFuture<
         std::optional<std::vector<ai_chat::mojom::UploadedFilePtr>>>
         future;
-    chat_tab_helper_->GetScreenshots(future.GetCallback());
+    chat_tab_helper_->web_contents_content().GetScreenshots(
+        future.GetCallback());
     return future.Take();
   }
 
@@ -226,7 +231,6 @@ class AIChatUIBrowserTest : public InProcessBrowserTest {
  private:
   content::ContentMockCertVerifier mock_cert_verifier_;
 };
-
 
 IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, PrintPreviewDisabled) {
   prefs()->SetBoolean(prefs::kPrintPreviewDisabled, true);
@@ -346,7 +350,7 @@ IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, WebContentsShouldBeFocused) {
   auto* side_panel_ui = browser()->GetFeatures().side_panel_ui();
   side_panel_ui->Show(SidePanelEntryId::kChatUI);
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
-  auto* side_panel = browser_view->unified_side_panel();
+  auto* side_panel = browser_view->contents_height_side_panel();
   auto* ai_chat_side_panel = static_cast<views::WebView*>(
       side_panel->GetViewByID(SidePanelWebUIView::kSidePanelWebViewId));
   ASSERT_TRUE(ai_chat_side_panel);

@@ -20,9 +20,11 @@ source_set("android_browser_process") {
 
   deps = [
     "//base",
+    "//brave/brave_domains/android:jni_headers",
     "//brave/browser/android/preferences",
     "//brave/browser/android/safe_browsing",
     "//brave/browser/brave_ads/android:jni_headers",
+    "//brave/browser/skus/android:jni_headers",
     "//brave/build/android:jni_headers",
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_shields/content/browser",

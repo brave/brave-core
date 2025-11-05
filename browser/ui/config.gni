@@ -7,8 +7,10 @@ import("//brave/components/containers/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//build/config/ui.gni")
 
-brave_ui_allow_circular_includes_from =
-    [ "//brave/browser/ui/webui/ads_internals" ]
+brave_ui_allow_circular_includes_from = [
+  "//brave/browser/ui/webui/ads_internals",
+  "//brave/browser/ui/webui/ai_chat",
+]
 if (!is_android) {
   brave_ui_allow_circular_includes_from += [
     "//brave/browser/ui/browser_window/internal",
@@ -29,8 +31,8 @@ if (toolkit_views) {
   brave_ui_allow_circular_includes_from += [
     "//brave/browser/ui/views/frame/split_view",
     "//brave/browser/ui/views/frame/vertical_tabs",
+    "//brave/browser/ui/views/page_info",
     "//brave/browser/ui/views/side_panel/ai_chat",
-    "//brave/browser/ui/views/split_view",
     "//brave/browser/ui/sidebar",
   ]
 

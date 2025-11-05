@@ -9,6 +9,7 @@
 #include <memory>
 
 #include "ui/base/metadata/metadata_header_macros.h"
+#include "ui/gfx/geometry/rounded_corners_f.h"
 #include "ui/views/controls/webview/webview.h"
 
 namespace content {
@@ -24,8 +25,7 @@ class ReaderModeToolbarView : public views::View {
     virtual void OnReaderModeToolbarActivate(ReaderModeToolbarView* toolbar) {}
   };
 
-  ReaderModeToolbarView(content::BrowserContext* browser_context,
-                        bool use_rounded_corners);
+  explicit ReaderModeToolbarView(content::BrowserContext* browser_context);
   ~ReaderModeToolbarView() override;
 
   ReaderModeToolbarView(const ReaderModeToolbarView&) = delete;
@@ -42,16 +42,20 @@ class ReaderModeToolbarView : public views::View {
   void SetDelegate(Delegate* delegate);
   void SwapToolbarContents(ReaderModeToolbarView* toolbar);
   void RestoreToolbarContents(ReaderModeToolbarView* toolbar);
-
+  void SetCornerRadius(int radius);
   void ActivateContents();
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(SpeedReaderBrowserTest, ToolbarWithRoundedCorners);
+
   gfx::Size CalculatePreferredSize(
       const views::SizeBounds& available_size) const override;
   void OnBoundsChanged(const gfx::Rect& previous_bounds) override;
   bool OnMousePressed(const ui::MouseEvent& event) override;
 
-  bool use_rounded_corners_ = false;
+  void UpdateBorderAndBackground();
+
+  gfx::RoundedCornersF rounded_corners_;
   std::unique_ptr<views::WebView> toolbar_;
   std::unique_ptr<content::WebContents> toolbar_contents_;
   raw_ptr<Delegate> delegate_ = nullptr;

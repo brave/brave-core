@@ -33,7 +33,9 @@
 #include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
+#include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/prefs.h"
 #include "components/grit/brave_components_strings.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -110,8 +112,8 @@ void EngineConsumerOAIRemote::UpdateModelOptions(
 }
 
 void EngineConsumerOAIRemote::GenerateRewriteSuggestion(
-    std::string text,
-    const std::string& question,
+    const std::string& text,
+    mojom::ActionType action_type,
     const std::string& selected_language,
     GenerationDataCallback received_callback,
     GenerationCompletedCallback completed_callback) {
@@ -119,7 +121,7 @@ void EngineConsumerOAIRemote::GenerateRewriteSuggestion(
   std::string rewrite_prompt = base::ReplaceStringPlaceholders(
       l10n_util::GetStringUTF8(
           IDS_AI_CHAT_LLAMA2_GENERATE_REWRITE_SUGGESTION_PROMPT),
-      {std::move(truncated_text), question}, nullptr);
+      {std::move(truncated_text), GetActionTypeQuestion(action_type)}, nullptr);
 
   base::Value::List messages;
 
@@ -130,9 +132,19 @@ void EngineConsumerOAIRemote::GenerateRewriteSuggestion(
     messages.Append(std::move(message));
   }
 
-  api_->PerformRequest(model_options_, std::move(messages),
-                       std::move(received_callback),
-                       std::move(completed_callback));
+  // Add a message as seed.
+  {
+    base::Value::Dict message;
+    message.Set("role", "assistant");
+    message.Set("content",
+                "Here is the requested rewritten version of the excerpt "
+                "in <response> tags:\n<response>");
+    messages.Append(std::move(message));
+  }
+
+  api_->PerformRequest(
+      model_options_, std::move(messages), std::move(received_callback),
+      std::move(completed_callback), std::vector<std::string>{"</response>"});
 }
 
 void EngineConsumerOAIRemote::GenerateQuestionSuggestions(
@@ -508,12 +520,35 @@ base::Value::List EngineConsumerOAIRemote::BuildMessages(
                             .Set("content", std::move(content_uploaded_pdfs)));
       }
     }
+
     base::Value::Dict message;
     message.Set("role", turn->character_type == CharacterType::HUMAN
                             ? "user"
                             : "assistant");
 
-    message.Set("content", GetPromptContentForEntry(turn));
+    // For human turns with skill, use content blocks
+    if (turn->character_type == CharacterType::HUMAN && turn->skill) {
+      std::string skill_definition = BuildSkillDefinitionMessage(turn->skill);
+
+      base::Value::List content_blocks;
+
+      // Add skill definition as first content block
+      base::Value::Dict skill_block;
+      skill_block.Set("type", "text");
+      skill_block.Set("text", skill_definition);
+      content_blocks.Append(std::move(skill_block));
+
+      // Add user message as second content block
+      base::Value::Dict user_message_block;
+      user_message_block.Set("type", "text");
+      user_message_block.Set("text", GetPromptContentForEntry(turn));
+      content_blocks.Append(std::move(user_message_block));
+
+      message.Set("content", std::move(content_blocks));
+    } else {
+      message.Set("content", GetPromptContentForEntry(turn));
+    }
+
     messages.Append(std::move(message));
   }
 

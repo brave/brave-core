@@ -37,7 +37,8 @@ class MessageMetainfo {
 
   void Update();
 
-  const std::string& GetCountryCodeForNormalMetrics(bool raw) const;
+  const std::string& GetCountryCodeForNormalMetrics(bool raw,
+                                                    bool is_locale) const;
 
   std::optional<base::Time> GetActivationDate(
       std::string_view histogram_name) const;

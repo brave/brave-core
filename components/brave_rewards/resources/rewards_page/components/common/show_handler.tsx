@@ -15,7 +15,9 @@ export function ShowHandler(props: Props) {
   const model = React.useContext(AppModelContext)
   const openTime = useAppState((state) => state.openTime)
 
-  React.useEffect(() => { model.onAppRendered() }, [model, openTime])
+  React.useEffect(() => {
+    model.onAppRendered()
+  }, [model, openTime])
 
   return <div key={`rewards-page-${openTime}`}>{props.children}</div>
 }

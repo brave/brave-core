@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2019 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/. -->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <org.chromium.components.browser_ui.settings.ChromeBasePreference
+        android:fragment="org.chromium.brave.browser.customize_menu.settings.BraveCustomizeMenuPreferenceFragment"
+        android:key="brave_customize_menu"
+        android:icon="@drawable/ic_window_screwdriver"
+        android:title="@string/customize_menu_title"/>
+
+    <org.chromium.components.browser_ui.settings.ChromeBasePreference
+        android:fragment="org.chromium.chrome.browser.toolbar.settings.AddressBarSettingsFragment"
+        android:key="address_bar"
+        android:title="@string/address_bar_settings"/>
+
+    <Preference
+        android:fragment="org.chromium.chrome.browser.toolbar.adaptive.settings.AdaptiveToolbarSettingsFragment"
+        android:key="toolbar_shortcut"
+        android:title="@string/toolbar_shortcut"/>
+
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+        android:key="brave_bottom_toolbar_enabled_key"
+        android:title="@string/bottom_toolbar_title" />
+
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+      android:key="show_brave_rewards_icon"
+      android:title="@string/show_brave_rewards_icon_title"
+      android:summary="@string/show_brave_rewards_icon_summary" />
+
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+        android:key="ads_switch"
+        android:title="@string/show_ads_when_brave_is_not_in_use_title"
+        android:summary="@string/show_ads_when_brave_is_not_in_use_summary" />
+
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+        android:key="brave_night_mode_enabled_key"
+        android:title="@string/night_mode_enable"
+        android:summaryOn="@string/text_on"
+        android:summaryOff="@string/text_off" />
+
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+        android:key="brave_disable_sharing_hub"
+        android:title="@string/disable_sharing_hub"
+        android:summaryOn="@string/text_on"
+        android:summaryOff="@string/text_off" />
+
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+        android:key="brave_enable_tab_groups"
+        android:title="@string/enable_tab_groups_title"
+        android:summary="@string/enable_tab_groups_text" />
+
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+        android:key="enable_multi_windows"
+        android:title="@string/enable_multi_windows_title"
+        android:summary="@string/enable_multi_windows_summary" />
+
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+        android:key="show_undo_when_tabs_closed"
+        android:title="@string/show_undo_when_tabs_closed"
+        android:summaryOn="@string/text_on"
+        android:summaryOff="@string/text_off" />
+
+    <Preference
+        android:fragment="org.chromium.chrome.browser.night_mode.settings.BraveThemePreferences"
+        android:key="ui_theme"
+        android:title="@string/theme_settings" />
+
+</PreferenceScreen>

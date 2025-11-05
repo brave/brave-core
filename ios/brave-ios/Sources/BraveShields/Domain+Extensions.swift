@@ -18,9 +18,9 @@ extension Domain {
   @MainActor public var shredLevel: SiteShredLevel {
     get {
       guard let shredLevel = self.shield_shredLevel else {
-        return ShieldPreferences.shredLevel
+        return Preferences.Shields.shredLevel
       }
-      return SiteShredLevel(rawValue: shredLevel) ?? ShieldPreferences.shredLevel
+      return SiteShredLevel(rawValue: shredLevel) ?? Preferences.Shields.shredLevel
     }
 
     set {
@@ -32,9 +32,9 @@ extension Domain {
   @MainActor var domainBlockAdsAndTrackingLevel: ShieldLevel {
     get {
       guard let level = self.shield_blockAdsAndTrackingLevel else {
-        return ShieldPreferences.blockAdsAndTrackingLevel
+        return Preferences.Shields.blockAdsAndTrackingLevel
       }
-      return ShieldLevel(rawValue: level) ?? ShieldPreferences.blockAdsAndTrackingLevel
+      return ShieldLevel(rawValue: level) ?? Preferences.Shields.blockAdsAndTrackingLevel
     }
 
     set {
@@ -77,7 +77,7 @@ extension Domain {
   }
 
   @MainActor public class func totalDomainsWithAdblockShieldsLoweredFromGlobal() -> Int {
-    guard ShieldPreferences.blockAdsAndTrackingLevel.isEnabled,
+    guard Preferences.Shields.blockAdsAndTrackingLevel.isEnabled,
       let domains = Domain.allDomainsWithExplicitShieldLevel()
     else {
       return 0  // Can't be lower than disabled
@@ -85,25 +85,25 @@ extension Domain {
 
     return domains.filter({
       $0.domainBlockAdsAndTrackingLevel.strength
-        < ShieldPreferences.blockAdsAndTrackingLevel.strength
+        < Preferences.Shields.blockAdsAndTrackingLevel.strength
     }).count
   }
 
   @MainActor public class func totalDomainsWithAdblockShieldsIncreasedFromGlobal() -> Int {
-    guard ShieldPreferences.blockAdsAndTrackingLevel != .aggressive,
+    guard Preferences.Shields.blockAdsAndTrackingLevel != .aggressive,
       let domains = Domain.allDomainsWithExplicitShieldLevel()
     else {
       return 0  // Can't be higher than aggressive
     }
     return domains.filter({
       $0.domainBlockAdsAndTrackingLevel.strength
-        > ShieldPreferences.blockAdsAndTrackingLevel.strength
+        > Preferences.Shields.blockAdsAndTrackingLevel.strength
     }).count
   }
 
   @MainActor public class func allDomainsWithShredLevelAppExit() -> [Domain]? {
     let allExplicitlySet = Domain.allDomainsWithAutoShredLevel(SiteShredLevel.appExit.rawValue)
-    guard ShieldPreferences.shredLevel.shredOnAppExit else { return allExplicitlySet }
+    guard Preferences.Shields.shredLevel.shredOnAppExit else { return allExplicitlySet }
     // Default value is SiteShredLevel.appExit, include all with default value nil
     return (allExplicitlySet ?? []) + (Domain.allDomainsWithAutoShredLevel(nil) ?? [])
   }

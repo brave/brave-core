@@ -16,9 +16,11 @@ class BraveBackToTabLabelButton;
 #define OnUpdateControlsBounds virtual OnUpdateControlsBounds
 #define BackToTabLabelButton BraveBackToTabLabelButton
 #define ControlsHitTestContainsPoint virtual ControlsHitTestContainsPoint
+#define IsTrustedForMediaPlayback virtual IsTrustedForMediaPlayback
 
 #include <chrome/browser/ui/views/overlay/video_overlay_window_views.h>  // IWYU pragma: export
 
+#undef IsTrustedForMediaPlayback
 #undef ControlsHitTestContainsPoint
 #undef BackToTabLabelButton
 #undef OnUpdateControlsBounds

@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "brave/components/brave_shields/core/common/brave_shields_panel.mojom-data-view.h"
 #include "brave/components/brave_shields/core/common/brave_shields_settings_values.h"
 #include "brave/components/brave_shields/core/common/shields_settings.mojom.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
@@ -37,8 +38,6 @@ enum class DomainBlockingType {
   // Show an interstitial before proceeding to as website.
   kAggressive,
 };
-
-struct ShieldsSettingCounts;
 
 ContentSettingsPattern GetPatternFromURL(const GURL& url);
 std::string ControlTypeToString(ControlType type);
@@ -97,7 +96,6 @@ bool IsBraveShieldsManaged(PrefService* prefs,
                            HostContentSettingsMap* map,
                            GURL url);
 
-bool IsHttpsByDefaultFeatureEnabled();
 void SetHttpsUpgradeControlType(HostContentSettingsMap* map,
                                 ControlType type,
                                 const GURL& url,
@@ -120,13 +118,6 @@ void SetNoScriptControlType(HostContentSettingsMap* map,
 ControlType GetNoScriptControlType(HostContentSettingsMap* map,
                                    const GURL& url);
 
-void SetForgetFirstPartyStorageEnabled(HostContentSettingsMap* map,
-                                       bool is_enabled,
-                                       const GURL& url,
-                                       PrefService* local_state = nullptr);
-bool GetForgetFirstPartyStorageEnabled(HostContentSettingsMap* map,
-                                       const GURL& url);
-
 // Enables a webcompat exception for a specific URL.
 void SetWebcompatEnabled(HostContentSettingsMap* map,
                          ContentSettingsType webcompat_settings_type,
@@ -137,9 +128,6 @@ void SetWebcompatEnabled(HostContentSettingsMap* map,
 bool IsWebcompatEnabled(HostContentSettingsMap* map,
                         ContentSettingsType webcompat_settings_type,
                         const GURL& url);
-
-ShieldsSettingCounts GetFPSettingCount(HostContentSettingsMap* map);
-ShieldsSettingCounts GetAdsSettingCount(HostContentSettingsMap* map);
 
 mojom::FarblingLevel GetFarblingLevel(HostContentSettingsMap* map,
                                       const GURL& primary_url);

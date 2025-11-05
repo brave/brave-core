@@ -14,11 +14,16 @@ export function Contributions() {
   const actions = useAppActions()
   const contributions = useAppState((state) => state.contributions)
 
-  React.useEffect(() => { actions.loadContributions() }, [])
+  React.useEffect(() => {
+    actions.loadContributions()
+  }, [])
 
   function renderContribution(contribution: ContributionInfo) {
     return (
-      <div key={contribution.id} className='content-card'>
+      <div
+        key={contribution.id}
+        className='content-card'
+      >
         <h4>{contribution.id}</h4>
         <section>
           <div className='key-value-list'>
@@ -56,15 +61,13 @@ export function Contributions() {
               </tr>
             </thead>
             <tbody>
-            {
-              contribution.publishers.map((publisher) => (
+              {contribution.publishers.map((publisher) => (
                 <tr key={publisher.id}>
                   <td>{publisher.id}</td>
                   <td>{publisher.totalAmount}</td>
                   <td>{publisher.contributedAmount}</td>
                 </tr>
-              ))
-            }
+              ))}
             </tbody>
           </table>
         </section>
@@ -74,11 +77,11 @@ export function Contributions() {
 
   return (
     <div data-css-scope={style.scope}>
-      {
-        contributions.length > 0
-            ? contributions.map(renderContribution)
-            : <p>No contributions</p>
-      }
+      {contributions.length > 0 ? (
+        contributions.map(renderContribution)
+      ) : (
+        <p>No contributions</p>
+      )}
     </div>
   )
 }

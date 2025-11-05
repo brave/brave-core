@@ -9,6 +9,9 @@ script/deps.py @brave/deps-reviewers
 package*.json @brave/js-deps-reviewers
 rewrite/ @brave/brave-core-owners
 
+# Layered Components
+/components/**/ios/ @brave/ios
+
 # Views
 # Do not add to BRAVE_VIEW_OWNED_BY_CLIENT_PASS_KEY
 chromium_src/ui/views/view.h @brave/brave-core-owners
@@ -194,10 +197,9 @@ android/java/res @brave/Android
 android/java/org/chromium/chrome/browser/preferences/BravePrefServiceBridge.java @AlexeyBarabash @samartnik @SergeyZhukovsky
 
 # GitHub configuration
-/.github/ @bridiver @cdesouza-chromium
+/.github/ @brave/devops-team
 /.github/CODEOWNERS @bridiver @bsclifton
 /.github/PULL_REQUEST_TEMPLATE.md @bsclifton
-
 
 # Semgrep configuration
 /.semgrepignore @thypon
@@ -206,6 +208,9 @@ android/java/org/chromium/chrome/browser/preferences/BravePrefServiceBridge.java
 android/java/org/chromium/chrome/browser/util @bridiver
 # This file should be removed once our UI is adjusted to Dynamic Colors
 android/java/org/chromium/chrome/browser/util/BraveDynamicColors.java @brave/Android
+
+# mojo interfaces should be implemented directly by the underlying classes
+browser/ai_chat/ai_chat_settings_helper.* @bridiver @petemill
 
 # These rules are last to take precedence over directory rules.Do not add any
 # new rules below this line without checking with @bridiver
@@ -273,3 +278,13 @@ content_settings_registry.cc @brave/content-settings-reviewers
 
 # new content settings need review
 content_settings_types.mojom @brave/content-settings-reviewers
+
+# Keyed service factories need special attention for browser context handling
+# See docs/keyed_services.md
+*_service_factory.cc @brave/brave-core-owners
+*_service_factory.mm @brave/brave-core-owners
+*_service_factory_ios.mm @brave/brave-core-owners
+
+# Brave Account
+*brave_account* @szilardszaloki
+*BraveAccount* @szilardszaloki

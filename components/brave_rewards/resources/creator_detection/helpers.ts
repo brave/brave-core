@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-export const log = new class {
+export const log = new (class {
   info(...args: any[]) {
     console.debug('[Rewards]', ...args)
   }
@@ -11,7 +11,7 @@ export const log = new class {
   error(...args: any[]) {
     console.error('[Rewards]', ...args)
   }
-}
+})()
 
 interface PollOptions {
   name: string
@@ -37,7 +37,9 @@ export function throttle<T>(fn: () => Promise<T> | T) {
   let next: Promise<T> | null = null
 
   let start = () => {
-    current = Promise.resolve(fn()).finally(() => { current = null })
+    current = Promise.resolve(fn()).finally(() => {
+      current = null
+    })
     return current
   }
 
@@ -46,20 +48,30 @@ export function throttle<T>(fn: () => Promise<T> | T) {
       return start()
     }
     if (!next) {
-      next = current.finally(() => { next = null }).then(start)
+      next = current
+        .finally(() => {
+          next = null
+        })
+        .then(start)
     }
     return next
   }
 }
 
 export function urlPath(url: string) {
-  try { return new URL(url, location.href).pathname }
-  catch { return '' }
+  try {
+    return new URL(url, location.href).pathname
+  } catch {
+    return ''
+  }
 }
 
 export function absoluteURL(url: string) {
-  try { return new URL(url, location.href).toString() }
-  catch { return '' }
+  try {
+    return new URL(url, location.href).toString()
+  } catch {
+    return ''
+  }
 }
 
 export function getPathComponents(path: string) {

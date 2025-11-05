@@ -54,7 +54,7 @@ export class SettingsShieldsPageIndexElement extends
 
   private showDefaultViews_() {
     const views = ['parent']
-    if (loadTimeData.getBoolean('isAdBlockOnlyModeFeatureEnabled')) {
+    if (loadTimeData.getBoolean('isAdBlockOnlyModeSupportedAndFeatureEnabled')) {
       views.push('adBlockOnlyMode')
     }
     views.push('socialBlocking')

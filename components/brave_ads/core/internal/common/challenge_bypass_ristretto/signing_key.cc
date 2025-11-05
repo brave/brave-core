@@ -44,10 +44,6 @@ bool SigningKey::operator==(const SigningKey& other) const {
   return EncodeBase64().value_or("") == other.EncodeBase64().value_or("");
 }
 
-bool SigningKey::operator!=(const SigningKey& other) const {
-  return !(*this == other);
-}
-
 SigningKey SigningKey::DecodeBase64(const std::string& signing_key_base64) {
   return SigningKey(signing_key_base64);
 }

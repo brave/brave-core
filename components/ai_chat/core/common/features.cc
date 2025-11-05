@@ -15,7 +15,7 @@
 
 namespace ai_chat::features {
 
-BASE_FEATURE(kAIChat, "AIChat", base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kAIChat, base::FEATURE_ENABLED_BY_DEFAULT);
 const base::FeatureParam<std::string> kAIModelsDefaultKey{
 #if BUILDFLAG(IS_IOS)
     &kAIChat, "default_model", "chat-basic"};
@@ -48,12 +48,17 @@ const base::FeatureParam<size_t> kMaxCountLargeToolUseEvents{
 const base::FeatureParam<size_t> kContentSizeLargeToolUseEvent{
     &kAIChat, "content_size_large_tool_use_events", 1000};
 
+const base::FeatureParam<bool> kAutomaticModelSupportsTools{
+    &kAIChat, "automatic_model_supports_tools", true};
+
+const base::FeatureParam<bool> kShouldIndentPageContentBlocks{
+    &kAIChat, "should_indent_page_content_blocks", true};
+
 bool IsAIChatEnabled() {
   return base::FeatureList::IsEnabled(features::kAIChat);
 }
 
 BASE_FEATURE(kAIChatHistory,
-             "AIChatHistory",
 #if BUILDFLAG(IS_IOS)
              base::FEATURE_DISABLED_BY_DEFAULT);
 #else
@@ -64,20 +69,15 @@ bool IsAIChatHistoryEnabled() {
   return base::FeatureList::IsEnabled(features::kAIChatHistory);
 }
 
-BASE_FEATURE(kAIChatFirst, "AIChatFirst", base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kAIChatFirst, base::FEATURE_DISABLED_BY_DEFAULT);
 
 bool IsAIChatFirstEnabled() {
   return base::FeatureList::IsEnabled(features::kAIChatFirst);
 }
 
-BASE_FEATURE(kAIChatTools, "AIChatTools", base::FEATURE_DISABLED_BY_DEFAULT);
-
-bool IsToolsEnabled() {
-  return base::FeatureList::IsEnabled(features::kAIChatTools);
-}
+BASE_FEATURE(kAIChatUserChoiceTool, base::FEATURE_DISABLED_BY_DEFAULT);
 
 BASE_FEATURE(kAIChatAgentProfile,
-             "AIChatAgentProfile",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
 bool IsAIChatAgentProfileEnabled() {
@@ -89,7 +89,6 @@ bool IsAIChatAgentProfileEnabled() {
 }
 
 BASE_FEATURE(kAIChatGlobalSidePanelEverywhere,
-             "AIChatGlobalSidePanelEverywhere",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
 bool IsAIChatGlobalSidePanelEverywhereEnabled() {
@@ -98,7 +97,6 @@ bool IsAIChatGlobalSidePanelEverywhereEnabled() {
 }
 
 BASE_FEATURE(kCustomSiteDistillerScripts,
-             "CustomSiteDistillerScripts",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
 bool IsCustomSiteDistillerScriptsEnabled() {
@@ -113,7 +111,6 @@ bool IsContextMenuRewriteInPlaceEnabled() {
 }
 
 BASE_FEATURE(kAllowPrivateIPs,
-             "AllowPrivateIPs",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
 bool IsAllowPrivateIPsEnabled() {
@@ -121,7 +118,6 @@ bool IsAllowPrivateIPsEnabled() {
 }
 
 BASE_FEATURE(kOpenAIChatFromBraveSearch,
-             "OpenAIChatFromBraveSearch",
 #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
              base::FEATURE_ENABLED_BY_DEFAULT);
 #else
@@ -133,7 +129,6 @@ bool IsOpenAIChatFromBraveSearchEnabled() {
 }
 
 BASE_FEATURE(kPageContextEnabledInitially,
-             "PageContextEnabledInitially",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
 bool IsPageContextEnabledInitially() {

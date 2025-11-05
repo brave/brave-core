@@ -33,9 +33,6 @@ import { getIsRewardsToken } from '../../../../../../utils/rewards_utils'
 import { PortfolioAssetOptions } from '../../../../../../options/nav-options'
 
 // Components
-import {
-  PortfolioTransactionItem, //
-} from '../../../../portfolio_transaction_item/portfolio_transaction_item'
 import { PortfolioAccountItem } from '../../../../portfolio-account-item/index'
 import {
   SegmentedControl, //
@@ -44,6 +41,12 @@ import {
   SellAssetModal, //
 } from '../../../../popup-modals/sell-asset-modal/sell-asset-modal'
 import { LoadingSkeleton } from '../../../../../shared/loading-skeleton/index'
+import {
+  VirtualizedTransactionList, //
+} from '../../../../virtualized_transaction_list/virtualized_transaction_list'
+import {
+  TransactionDetailsModal, //
+} from '../../../../popup-modals/transaction_details_modal/transaction_details_modal'
 
 // Hooks
 import {
@@ -128,6 +131,8 @@ export const AccountsAndTransactionsList = ({
   const [selectedSellAccount, setSelectedSellAccount] =
     React.useState<BraveWallet.AccountInfo>()
   const [showSellModal, setShowSellModal] = React.useState<boolean>(false)
+  const [selectedTransaction, setSelectedTransaction] =
+    React.useState<SerializableTransactionInfo>()
 
   // Memos & Computed
   const isRewardsToken = getIsRewardsToken(selectedAsset)
@@ -207,6 +212,13 @@ export const AccountsAndTransactionsList = ({
   const onToggleHideBalances = React.useCallback(() => {
     setHidePortfolioBalances((prev) => !prev)
   }, [setHidePortfolioBalances])
+
+  const onSelectTransaction = React.useCallback(
+    (transaction: SerializableTransactionInfo) => {
+      setSelectedTransaction(transaction)
+    },
+    [],
+  )
 
   if (
     hash !== WalletRoutes.TransactionsHash
@@ -428,14 +440,11 @@ export const AccountsAndTransactionsList = ({
                   fullWidth={true}
                   alignItems='flex-start'
                   justifyContent='flex-start'
-                  gap='16px'
                 >
-                  {nonRejectedTransactions.map((transaction) => (
-                    <PortfolioTransactionItem
-                      key={transaction.id}
-                      transaction={transaction}
-                    />
-                  ))}
+                  <VirtualizedTransactionList
+                    transactionList={nonRejectedTransactions}
+                    onSelectTransaction={onSelectTransaction}
+                  />
                 </Column>
               ) : (
                 <Column
@@ -464,6 +473,12 @@ export const AccountsAndTransactionsList = ({
             </>
           )}
         </>
+      )}
+      {selectedTransaction && (
+        <TransactionDetailsModal
+          onClose={() => setSelectedTransaction(undefined)}
+          transaction={selectedTransaction}
+        />
       )}
       {showSellModal && selectedAsset && (
         <SellAssetModal

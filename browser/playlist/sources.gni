@@ -3,40 +3,32 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import("//brave/components/playlist/common/buildflags/buildflags.gni")
+brave_browser_playlist_sources = [
+  "//brave/browser/playlist/playlist_service_factory.cc",
+  "//brave/browser/playlist/playlist_service_factory.h",
+]
 
-brave_browser_playlist_sources = []
-brave_browser_playlist_deps = []
+brave_browser_playlist_deps = [
+  "//base",
+  "//brave/components/playlist/content/browser",
+  "//chrome/browser:browser_process",
+  "//chrome/browser/profiles:profile",
+  "//chrome/common",
+  "//components/keyed_service/content",
+  "//components/pref_registry",
+]
 
-if (enable_playlist) {
-  brave_browser_playlist_sources += [
-    "//brave/browser/playlist/playlist_service_factory.cc",
-    "//brave/browser/playlist/playlist_service_factory.h",
-  ]
+if (is_android) {
+  brave_browser_playlist_sources +=
+      [ "//brave/browser/playlist/android/playlist_service_factory_android.cc" ]
 
   brave_browser_playlist_deps += [
-    "//base",
-    "//brave/components/playlist/browser",
-    "//chrome/browser:browser_process",
-    "//chrome/browser/profiles:profile",
-    "//chrome/common",
-    "//components/keyed_service/content",
-    "//components/pref_registry",
+    "//brave/build/android:jni_headers",
+    "//mojo/public/cpp/bindings",
   ]
-
-  if (is_android) {
-    brave_browser_playlist_sources += [
-      "//brave/browser/playlist/android/playlist_service_factory_android.cc",
-    ]
-
-    brave_browser_playlist_deps += [
-      "//brave/build/android:jni_headers",
-      "//mojo/public/cpp/bindings",
-    ]
-  } else {
-    brave_browser_playlist_sources += [
-      "//brave/browser/playlist/playlist_data_source.cc",
-      "//brave/browser/playlist/playlist_data_source.h",
-    ]
-  }
+} else {
+  brave_browser_playlist_sources += [
+    "//brave/browser/playlist/playlist_data_source.cc",
+    "//brave/browser/playlist/playlist_data_source.h",
+  ]
 }

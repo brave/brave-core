@@ -5,15 +5,12 @@
 
 .buttonMenu {
   leo-menu-item {
-    --leo-icon-size: 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: var(--leo-spacing-xl);
     padding: var(--leo-spacing-m);
-    margin: var(--leo-spacing-s) var(--leo-spacing-s) 0;
     min-width: 240px;
-    font: var(--leo-font-default-regular);
   }
 }
 
@@ -39,18 +36,50 @@
 }
 
 .anchorButton {
+  --leo-button-padding: 0px;
+  --leo-button-color: none;
+  --anchor-button-text-color: var(--leo-color-text-tertiary);
+  --anchor-button-icon-color: var(--leo-color-icon-secondary);
+  opacity: 0.7;
   display: flex;
-  color: var(--leo-color-neutral-30);
   flex: 0;
+  &:hover {
+    opacity: 1;
+  }
 }
 
 .anchorButtonOpen {
-  color: var(--leo-color-icon-interactive);
+  opacity: 1;
+  --anchor-button-text-color: var(--leo-color-text-interactive);
+  --anchor-button-icon-color: var(--leo-color-icon-interactive);
 }
 
-.anchorButtonIconRow {
-  display: flex;
-  flex-direction: row;
+.anchorButtonContent {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: var(--leo-spacing-s);
+  overflow: hidden;
+  max-width: 100%;
+}
+
+.anchorButtonText {
+  font: var(--leo-font-small-regular);
+  color: var(--anchor-button-text-color);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.anchorButtonIcon {
+  --leo-icon-size: 18px;
+  --leo-icon-color: var(--anchor-button-icon-color);
+  transform: rotate(0deg);
+  transition: transform 0.2s ease;
+}
+
+.anchorButtonIconOpen {
+  transform: rotate(180deg);
 }
 
 .menuFooter {
@@ -66,6 +95,8 @@
   border-radius: 0px 0px 8px 8px;
   border: 1px solid var(--leo-color-divider-subtle);
   leo-menu-item {
+    --leo-icon-size: 20px;
+    font: var(--leo-font-default-regular);
     justify-content: flex-start;
     border-radius: var(--leo-radius-s);
     margin: 0;
@@ -77,14 +108,5 @@
 }
 
 .footerGap {
-  min-height: 51px;
-}
-
-.modelIconAndName {
-  --leo-icon-size: 20px;
-  --leo-icon-color: var(--leo-color-icon-default);
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: var(--leo-spacing-m);
+  min-height: 47px;
 }

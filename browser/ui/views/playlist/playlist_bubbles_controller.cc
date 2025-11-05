@@ -12,7 +12,7 @@
 #include "brave/browser/ui/views/playlist/playlist_action_icon_view.h"
 #include "brave/browser/ui/views/playlist/playlist_add_bubble_view.h"
 #include "brave/browser/ui/views/playlist/playlist_edit_bubble_view.h"
-#include "brave/components/playlist/browser/playlist_tab_helper.h"
+#include "brave/components/playlist/content/browser/playlist_tab_helper.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
 
 namespace playlist {

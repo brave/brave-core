@@ -12,7 +12,7 @@ import { createModel } from './storybook_model'
 import { App } from '../components/app'
 
 export default {
-  title: 'Rewards/Page'
+  title: 'Rewards/Page',
 }
 
 const style = scoped.css`

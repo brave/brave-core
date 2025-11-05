@@ -1,0 +1,25 @@
+[package]
+name = "impl-trait-for-tuples"
+version = "0.2.3"
+authors = ["Bastian Köcher <git@kchr.de>"]
+edition = "2021"
+categories = [ "development-tools::procedural-macro-helpers" ]
+documentation = "https://docs.rs/impl-trait-for-tuples"
+repository = "https://github.com/bkchr/impl-trait-for-tuples"
+keywords = [ "trait", "tuple", "crate", "macro", "proc-macro" ]
+license = "Apache-2.0/MIT"
+description = """
+Attribute macro to implement a trait for tuples
+"""
+readme = "./README.md"
+
+[lib]
+proc-macro = true
+
+[dependencies]
+syn = { version = "2.0.89", features = [ "full", "visit", "fold", "extra-traits" ] }
+quote = "1.0.37"
+proc-macro2 = "1.0.91"
+
+[dev-dependencies]
+trybuild = "1.0.101"

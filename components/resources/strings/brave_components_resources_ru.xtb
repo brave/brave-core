@@ -126,8 +126,10 @@
 <translation id="730042046912793465">Это</translation>
 <translation id="2055363275850890030">Приватное окно</translation>
 <translation id="9133213713928851646">Brave не запоминает, что вы делаете в приватном окне. Посещенные вами сайты не будут показаны в истории, а файлы cookie исчезнут, как только вы закончите. Приватное окно, однако, не делает вас абсолютно анонимным.</translation>
-<translation id="4491905831789757331">Brave никогда не запоминает, что вы делаете в приватном окне. Посещенные вами сайты не появятся в истории, а данные форм и сайтов, а также файлы cookie удаляются при закрытии окна браузера.</translation>
-<translation id="1700746046668116047">Ваши действия могут быть видны интернет-провайдеру, пассивным сетевым наблюдателям или работодателю (если вы пользуетесь рабочим компьютером или сетью). Для еще большей конфиденциальности откройте приватное окно Tor.</translation>
+<translation id="5280085559200511517">ChatGPT said:
+
+Brave никогда не запоминает ваши действия в приватном окне. Посещённые сайты не будут отображаться в вашей истории. Файлы cookie, данные форм и данные сайтов исчезают сразу после закрытия всех приватных окон. Обратите внимание, что ваша деятельность всё ещё может быть видна вашему интернет-провайдеру, пассивным наблюдателям в сети или вашему работодателю (если вы используете рабочий компьютер или сеть).</translation>
+<translation id="2517912602053665378">Для большей конфиденциальности откройте личное окно с помощью Tor.</translation>
 <translation id="8759753423332885148">Узнать больше.</translation>
 <translation id="8611976753572844841">Приватное окно с подключением к Tor</translation>
 <translation id="1645589858096839236">Brave не хранит информацию о ваших действиях при работе в приватном окне. Когда вы подключаетесь к Tor, сайтам труднее узнать ваш настоящий IP-адрес, а инструментам мониторинга сети — какие сайты вы посещаете. Однако, если ваша личная безопасность зависит от сохранения анонимности, используйте вместо этого браузер Tor.</translation>
@@ -690,7 +692,6 @@
 <translation id="3266055641283174315">Тип рекламы</translation>
 <translation id="8706824117053903390">Просмотры в этом месяце</translation>
 <translation id="5105890735834548623">Настройки рекламы</translation>
-<translation id="96989662637180657">Показываются в <ph name="LINK_BEGIN"/>Brave Поиске<ph name="LINK_END"/></translation>
 <translation id="3138160233953903250">Настройки рекламы</translation>
 <translation id="2446517297521536638">Управляйте типами Brave Рекламы и частотой ее показа. Чем больше объявлений вы видите, тем больше можете заработать.</translation>
 <translation id="3479272537858623647">Здесь показано количество Brave рекламы, которое вы видели в этом месяце и которое подходит для получения BAT.</translation>
@@ -857,6 +858,11 @@
       other {<ph name="EXCHANGE_NAME"/> + {SWAP_EXCHANGE_STEPS} ш.}
     }</translation>
 <translation id="8621264173374071200"><ph name="EXCHANGE_NAME"/> via <ph name="PROVIDER_NAME"/></translation>
+<translation id="646023614746251785">Подтвердить обмен</translation>
+<translation id="6264944956989873014">Подтвердить мост</translation>
+<translation id="7067917728851842589">Подтвердить отправку</translation>
+<translation id="2351357639951873714">Подтвердить защиту</translation>
+<translation id="8332923694292360653">Потратить</translation>
 <translation id="3735740477244556633">Сортировать по:</translation>
 <translation id="6484605214219822434">Проверить мост</translation>
 <translation id="3365052891357224017">Примерное время</translation>
@@ -966,6 +972,7 @@
 <translation id="3451958544919449297">Сохранить тестовые активы ZEC</translation>
 <translation id="8459631690385393533">Сохранить активы Cardano</translation>
 <translation id="4915057812371523845">Сохранить активы Cardano Testnet</translation>
+<translation id="5387140102951033657">Поддерживает активы Substrate в релейной цепи Polkadot и парачейнах Substrate</translation>
 <translation id="8500387257977999003">Закрытый ключ <ph name="PROTOCOL"/></translation>
 <translation id="8275038454117074363">Импортировать</translation>
 <translation id="232925166623833246">Импортировать из аппаратного криптокошелька</translation>
@@ -1077,6 +1084,10 @@
 <translation id="8904889345035514635">Текущая выплата</translation>
 <translation id="7073918978411974168">Предложенная выплата</translation>
 <translation id="9019403281000653275">Запрошено неограниченное подтверждение</translation>
+<translation id="9108474191347769758">Лимит расходов</translation>
+<translation id="2102091845281366189">Цель разрешения</translation>
+<translation id="772196962479335292">Текущий лимит разрешения</translation>
+<translation id="8215431557133305629">Предлагаемый лимит разрешения</translation>
 <translation id="4717431746210146708">Разрешить сайту добавить сеть?</translation>
 <translation id="2521480044079508357">Эту сеть можно будет использовать в кошельке Brave</translation>
 <translation id="1982257600591932657">Название сети</translation>
@@ -1093,7 +1104,7 @@
 <translation id="3948067511324628726">Комиссия за газ</translation>
 <translation id="7163997622278957886">Ставка</translation>
 <translation id="1074360622426001342">Сумма + газ</translation>
-<translation id="2186011161688824046">Сумма + комиссия</translation>
+<translation id="7542099582407803878">Сумма + комиссия сети</translation>
 <translation id="7084089311475827950">Нет данных.</translation>
 <translation id="5821668936183240062">Далее</translation>
 <translation id="793994607260936590">Начать</translation>
@@ -1193,6 +1204,8 @@
 <translation id="2749584096020594976">Если вы не укажете значение, оно будет определено автоматически.</translation>
 <translation id="1599636444563952897">Ограничение расходов позволяет <ph name="SITE_ORIGIN"/> снимать и тратить средства до следующей суммы:</translation>
 <translation id="4512871563176965522">Настроить выплату</translation>
+<translation id="4584580349370930446">Предлагаемый лимит расходов</translation>
+<translation id="3853163884524541156">Пользовательский лимит расходов</translation>
 <translation id="749944179568745958">Недействительный адрес ETH.</translation>
 <translation id="2832270987629018596">Недействительный адрес SOL.</translation>
 <translation id="2115100722958448834">Неверный адрес <ph name="COIN_TYPE_SYMBOL"/>.</translation>
@@ -1261,6 +1274,10 @@
 <translation id="4213183402991860207">Мост <ph name="DEVICE_NAME"/> еще не готов.</translation>
 <translation id="3378339846292573874">Добавление рекомендуемого токена</translation>
 <translation id="2322227405137827074">Вы хотите импортировать этот балл?</translation>
+<translation id="5128068232340122017">В ожидании (<ph name="QUEUE_LENGTH"/>)</translation>
+<translation id="4642769870132666012">Следующая транзакция</translation>
+<translation id="6917555475950364314">Предыдущая транзакция</translation>
+<translation id="5305367377612487857">Отклонить транзакции: <ph name="QUEUE_LENGTH"/></translation>
 <translation id="4378475168089649292">Блокчейн</translation>
 <translation id="1904295039023858291">Стандарт токена</translation>
 <translation id="9033453977881595182">ID токена</translation>
@@ -1411,6 +1428,10 @@
 <translation id="4841860051609590575">ID запроса</translation>
 <translation id="6759710362319508545">Ресурсы</translation>
 <translation id="1908159733454294871">Обнаружена угроза безопасности</translation>
+<translation id="3621202678540785336">Вход</translation>
+<translation id="3009178788565917040">Выход</translation>
+<translation id="7953669802889559161">Входящие</translation>
+<translation id="4554024082642878647">Исходящие</translation>
 <translation id="1965889974717516497">Дополнительные сети</translation>
 <translation id="7691821949666755802">Тестовые сети</translation>
 <translation id="2816106784624007524">Значение для лимита газа должно быть целым числом больше 0.</translation>
@@ -1694,6 +1715,12 @@
 <translation id="3214633363105739658"><ph name="REFRESH_START"/>Обновить<ph name="REFRESH_END"/> или <ph name="IMPORT_START"/>Импортировать вручную<ph name="IMPORT_END"/></translation>
 <translation id="3840001806553580474">Обновляем…</translation>
 <translation id="4608324163534970318">Комиссии сетей</translation>
+<translation id="5024685988141485810">Размер пользовательской платы</translation>
+<translation id="167204008553981721">Лимит газа</translation>
+<translation id="9021878977748775164">Лимит цен на газ</translation>
+<translation id="6276584161122912863">Цена на газ</translation>
+<translation id="6132197290665156212">Предполагаемая плата за пользование сетью</translation>
+<translation id="1788636309517085411">Использовать по умолчанию</translation>
 <translation id="6213230117190778270">Receive</translation>
 <translation id="6748108480210050150">From</translation>
 <translation id="4875290286426670462">Безлимитный расход токенов <ph name="ASSET_SYMBOL"/></translation>
@@ -2102,7 +2129,7 @@ other {# источника}
 <translation id="9089090017461255038">Включить Speedreader</translation>
 <translation id="3929926885379607283">Всегда использовать Speedreader для этого сайта</translation>
 <translation id="4186588885948504942">Включить или отключить Speedreader для этого сайта.</translation>
-<translation id="6568851043090579206">Всегда использовать Speedreader для всех сайтов</translation>
+<translation id="6568851043090579206">Автоматически используйте Speedreader, когда это возможно</translation>
 <translation id="3138587343887871192">Включить или отключить Speedreader для всех сайтов.</translation>
 <translation id="5153147025131874069">Speedreader не поддерживается на некоторых сайтах.</translation>
 <translation id="1013121820689882118">Speedreader</translation>
@@ -2129,7 +2156,6 @@ other {# источника}
 <translation id="5872363163901278000">Увеличить скорость воспроизведения</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8637805148029768813">Сейчас краткий пересказ текста доступен только для определенных статей и длинных веб-страниц.</translation>
-<translation id="1223498995510244364">Создать краткий пересказ</translation>
 <translation id="7491773233732232424">Что такое Brave Leo</translation>
 <translation id="4611072979071082355">Brave Leo — это персональный ИИ-ассистент, оптимизирующий изпользование Интернета. Leo предлагается бесплатно с ограниченным доступом. Brave Leo Premium предоставляет больше моделей, более высокие лимиты и дает подписчикам ранний доступ к новым функциям. По умолчанию используемая модель будет меняться время от времени. Подробнее см. <ph name="LINK_BEFORE"/>Brave Help Center<ph name="LINK_AFTER"/>.</translation>
 <translation id="7297056998057521697">По умолчанию, когда вы задаёте Leo вопрос о веб-сайте или странице, которую просматриваете, содержимое этой страницы или любой выделенный вами текст, а также ваш поисковый запрос будут отправлены на серверы Brave, чтобы Leo мог дать ответ. В некоторых случаях Leo отправляет запросы, сформированные на основе вашего ввода, в Brave Search и использует результаты поиска для более точного ответа на ваш вопрос. Brave не гарантирует точность ответов — они могут содержать неточную, вводящую в заблуждение или ложную информацию. Не отправляйте в Brave Leo конфиденциальную или личную информацию и проявляйте осторожность при использовании ответов, связанных со здоровьем, финансами, личной безопасностью или аналогичными вопросами. Вы можете в любой момент изменить параметры Leo в Настройках: перейдите в Настройки &gt;  Leo.</translation>
@@ -2140,6 +2166,8 @@ other {# источника}
     }</translation>
 <translation id="6961721183181597848">Как я могу помочь вам сегодня?</translation>
 <translation id="2966135729673253768">Спросить о последующих действиях</translation>
+<translation id="6219262425964000211">Переместите файлы сюда</translation>
+<translation id="4313763911013851687">Переместите сюда файлы, чтобы добавить их в разговор</translation>
 <translation id="4524675003624341892">Предположить вопросы…</translation>
 <translation id="4567071417854988869">Получить краткий пересказ видео</translation>
 <translation id="4264902191243445258">{PAGE_COUNT, plural,
@@ -2157,20 +2185,24 @@ other {# источника}
 <translation id="7905602379229309187">Конечная точка в настоящее время перегружена. Пожалуйста, повторите попытку позже.</translation>
 <translation id="8151638057146502721">Настроить</translation>
 <translation id="999273441077650169">Модель меняется динамически, чтобы использовать лучшую для задачи.<ph name="LINK_BEFORE"/>Узнать больше<ph name="LINK_AFTER"/></translation>
-<translation id="3282183392203936979">Привет, я Лео. Я - полностью хостируемый ИИ-ассистент от Brave. Я работаю на основе Llama 3.1 8B, модели, созданной Meta. Эта модель эффективна и применима для многих случаев использования. Llama размещается на хостинге Brave в нашей собственной безопасной инфраструктуре.<ph name="LINK_BEFORE"/>Узнать больше<ph name="LINK_AFTER"/></translation>
-<translation id="4328177358021456069">Привет, я Лео. Я - полностью хостируемый ИИ-ассистент от Brave. Я работаю на базе Qwen 14B, модели, созданной Alibaba Cloud. Эта модель эффективна и применима для многих случаев использования. <ph name="LINK_BEFORE"/>Узнать больше<ph name="LINK_AFTER"/></translation>
-<translation id="5594884291408453470">Привет, я Лео. Я полностью хостируемый ИИ-ассистент от Brave. Я работаю на основе Gemma 3 12B — модели, созданной Google DeepMind для высокой производительности и широкого спектра применений. Gemma размещена Brave на нашей собственной защищённой инфраструктуре.<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
-<translation id="8706248250250832190">Здравствуйте! Я Leo — по DeepSeek R1, созданной компанией DeepSeek для решения сложных задач. <ph name="LINK_BEFORE"/>Подробнее…<ph name="LINK_AFTER"/></translation>
-<translation id="2575216739207798060">Привет, я Лео. Я использую прокси-сервер от Brave и работаю на Claude Instant, модели, созданной Anthropic для решения задач, связанных с общением и обработкой текста. Claude Instant размещается на хостинге Brave в рамках нашей собственной безопасной инфраструктуры.<ph name="LINK_BEFORE"/>Узнать больше<ph name="LINK_AFTER"/></translation>
-<translation id="512933369128404654">Привет, я Лео. Я использую прокси-сервер от Brave и работаю на Claude Haiku, модели, созданной Anthropic для решения задач, связанных с общением и обработкой текста. Claude Haiku размещается на хостинге Brave в рамках нашей собственной безопасной инфраструктуры.<ph name="LINK_BEFORE"/>Узнать больше<ph name="LINK_AFTER"/></translation>
-<translation id="406499980300734922">Привет, я Лео. Я использую прокси-сервер от Brave и работаю на Claude  Sonnet, модели, созданной Anthropic для решения задач, связанных с общением и обработкой текста. Claude  Sonnet размещается на хостинге Brave в рамках нашей собственной безопасной инфраструктуры.<ph name="LINK_BEFORE"/>Узнать больше<ph name="LINK_AFTER"/></translation>
+<translation id="1238020084128916796">Привет, я Лео. Я - полностью хостируемый ИИ-ассистент от Brave. Я работаю на основе Llama 3.1 8B, модели, созданной Meta для высокой производительности и широкого спектра применений. Llama размещается на хостинге Brave в нашей собственной защищённой инфраструктуре.<ph name="LINK_BEFORE"/>Узнать больше<ph name="LINK_AFTER"/></translation>
+<translation id="7127671672828944579">Привет, я Лео. Я - полностью хостируемый ИИ-ассистент от Brave. Я работаю на базе Qwen 14B, модели, созданной Alibaba Cloud для высокой производительности и широкого спектра применений. Qwen размещается на хостинге Brave в нашей собственной защищённой инфраструктуре.<ph name="LINK_BEFORE"/>Узнать больше<ph name="LINK_AFTER"/></translation>
+<translation id="2328524194917949829">Привет, я Лео. Я - полностью хостируемый ИИ-ассистент от Brave. Я работаю на основе Gemma 3 12B, модели, созданной Google DeepMind для высокой производительности и широкого спектра применений. Gemma размещается на хостинге Brave в нашей собственной защищённой инфраструктуре.<ph name="LINK_BEFORE"/>Узнать больше<ph name="LINK_AFTER"/></translation>
+<translation id="634682910381645550">Привет, я Лео. Я - полностью хостируемый ИИ-ассистент от Brave. Я работаю на основе DeepSeek R1, модели, созданной DeepSeek для выполнения задач глубокого анализа. DeepSeek R1 размещается на хостинге Brave в нашей собственной защищённой инфраструктуре.<ph name="LINK_BEFORE"/>Узнать больше<ph name="LINK_AFTER"/></translation>
+<translation id="8932568551552504373">Привет, я Лео. Я ИИ-помощник от Brave. Я работаю на базе Claude Instant — модели, созданной компанией Anthropic для обработки текста и диалогов. Claude Instant размещён на защищённой инфраструктуре Brave.<ph name="LINK_BEFORE"/>Подробнее<ph name="LINK_AFTER"/></translation>
+<translation id="3789772321824682783">Привет, я Лео. Я использую прокси-сервер от Brave и работаю на Claude Haiku, модели, созданной Anthropic для решения задач, связанных с общением и обработкой текста. Claude Haiku размещается на хостинге Brave в рамках нашей собственной безопасной инфраструктуры.<ph name="LINK_BEFORE"/>Узнать больше<ph name="LINK_AFTER"/></translation>
+<translation id="1778885220602472158">Привет, я Лео. Я использую прокси-сервер от Brave и работаю на Claude Sonnet, модели, созданной Anthropic для решения задач, связанных с общением и обработкой текста. Claude Sonnet размещается на хостинге Brave в рамках нашей собственной безопасной инфраструктуры.<ph name="LINK_BEFORE"/>Узнать больше<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Премиум-подписка</translation>
+<translation id="5807427080183870259">Местный</translation>
+<translation id="631371844654031449">Рекомендуемые модели</translation>
+<translation id="6568044140836233369">Показывать все модели</translation>
 <translation id="6187065185557150870">Чат</translation>
 <translation id="4685048769603134644">Открыть страницу целиком</translation>
 <translation id="2961040541145689181">Новый чат</translation>
 <translation id="7557539689487606886">Премиум-подписка</translation>
 <translation id="1691256669639196606">Управление подпиской</translation>
 <translation id="3840096463915153852">История переписки</translation>
+<translation id="6761921176674289184">Управление воспоминаниями</translation>
 <translation id="2304783958703511257">Дополнительные настройки</translation>
 <translation id="3037594989275592390">Языковые модели</translation>
 <translation id="5543505256451301851">Попробовать бесплатно 7 дней</translation>
@@ -2232,41 +2264,48 @@ other {# источника}
 <translation id="1243966363662220847">Обратная связь</translation>
 <translation id="7417895556119762861">Если вы поставите лайк или дислайк под ответом, вы отправите данные о рейтинге, разговоре, модели, языке, версии и премиум-статусе в Brave, чтобы улучшить Leo. <ph name="LINK_BEFORE"/>Узнать больше<ph name="LINK_AFTER"/></translation>
 <translation id="7494736170250048402">Отправить сообщение Leo</translation>
+<translation id="4084869091337186002">Агент контента Leo AI всегда включен в этом профиле</translation>
 <translation id="8650874793377330048">Прекратить отвечать</translation>
 <translation id="8712637175834984815">Готово</translation>
 <translation id="1093419424466417703">Эта страница слишком большая для Leo, поэтому чат-бот ознакомился лишь с <ph name="PERCENTAGE"/> ее содержимого. Для точных ответов может не хватать некоторых данных.</translation>
 <translation id="4592293425457329338">В разговоре может отсутствовать контекст. Leo смог сохранить <ph name="PERCENTAGE"/> связанного с ним контента.</translation>
+<translation id="8501106061098623831">Слишком много изображений было снято со страницы. Leo смог использовать <ph name="PERCENTAGE"/> доступного визуального контента.</translation>
 <translation id="4370698775470316661">Вы превысили лимит сообщений, поэтому не можете продолжить диалог. Чтобы помощник Leo поддерживал более длинные беседы, не упуская информацию, используйте другую модель.</translation>
 <translation id="5719170755629028558">Улучшаем ваш ответ с помощью Brave Поиска…</translation>
 <translation id="5794962229997281366">Улучшенный ответ на запрос «<ph name="SEARCH_TERMS"/>»</translation>
 <translation id="7307396647043599949"><ph name="COUNT"/> more…</translation>
 <translation id="8103700533980268469">Закрыть это уведомление</translation>
 <translation id="3417835166382867856">Поиск по вкладкам</translation>
+<translation id="7311244614769792472">Ничего не найдено</translation>
+<translation id="3112448569149476523">Попробуйте другой запрос</translation>
 <translation id="1352836459737874921">Прикрепить содержимое из других вкладок</translation>
-<translation id="3028258613451571431">Отправьте содержимое страниц из вкладок вашего браузера, чтобы дать Leo больше контекста для разговора</translation>
-<translation id="4300920590112551536">Вкладки браузера</translation>
+<translation id="7039179822221107025">Отправьте содержимое страниц из вкладок вашего браузера, чтобы дать Leo больше контекста для разговора.</translation>
+<translation id="220541218939267992">Содержимое страницы будет отправлено Лео вместе с вашими сообщениями.</translation>
 <translation id="1446346932629101482">Добавьте содержимое вкладки для контекста. Содержимое будет отправлено Лео вместе с вашими сообщениями.</translation>
 <translation id="7193316103691252734">Нет подходящих вкладок</translation>
 <translation id="2315654674554095762">Теперь Leo будет помнить ваши разговоры, чтобы вы могли вернуться к ним. Они хранятся в зашифрованном виде на вашем устройстве, и вы можете удалить их в любое время.</translation>
 <translation id="7821251979960635244">История разговоров появится здесь после начала разговора.</translation>
 <translation id="887511360213807449">История отключена</translation>
 <translation id="5380979378058584412">Чтобы просмотреть Ваши предыдущие разговоры с Лео, Вам нужно включить историю разговоров.</translation>
-<translation id="6291843235651817590">Чат для общих целей</translation>
+<translation id="7348809809749151120">Быстро • Поиск</translation>
 <translation id="3185367320601718531">Общение и генерирование текстов</translation>
-<translation id="7979673624064378842">Сверхбыстрый чат</translation>
-<translation id="2836330653441111204">Баланс между скоростью и интеллектом</translation>
-<translation id="6695329447007213917">Чат для общего назначения, кодирование и многое другое</translation>
-<translation id="7168072214482631597">Понимание текста и изображений общего назначения</translation>
-<translation id="7226508434216060960">Модель рассуждений</translation>
+<translation id="2793458212460902934">Быстро • Поиск • Инструменты</translation>
+<translation id="8506027496671575183">Поиск • Видение • Инструменты</translation>
+<translation id="3213834013136637671">Поиск • Видение</translation>
+<translation id="7697693533305615127">Поиск • Мышление</translation>
 <translation id="8782867266498869301">Модель меняется динамически, чтобы использовать наилучший вариант для выполнения задачи</translation>
 <translation id="3965507912994218570">Настройки Leo</translation>
-<translation id="1037324977127422019">Привет, я Лео!</translation>
-<translation id="8930348081963284873">Умный ассистент, работающий на основе ИИ и встроенный в Brave.</translation>
-<translation id="3528849152231418380">Нужна помощь с веб-сайтом?</translation>
-<translation id="1558192229187362674">Я могу помочь вам суммировать информацию из статей, расширять контент сайтов и многое другое.</translation>
-<translation id="861953757568623294">Я могу помочь вам суммировать информацию из статей, расширять контент сайтов и многое другое. Не уверены, с чего начать? Попробуйте это:</translation>
-<translation id="5642775487085641191">Просто нужен чат?</translation>
-<translation id="8857222718794549840">Спросите меня о чем угодно! Мы можем говорить на любую тему, которая вас интересует. Я всегда учусь и совершенствуюсь, чтобы улучшать ответы.</translation>
+<translation id="3754337604877048671">Знакомьтесь: ИИ Leo</translation>
+<translation id="5295261408976371809">Ваш <ph name="TEXT_BEFORE"/>приватный<ph name="TEXT_AFTER"/> ИИ-помощник, встроенный прямо в браузер.</translation>
+<translation id="7452913484571004528">По-настоящему приватный ИИ</translation>
+<translation id="8525501048785085223">Лео не сохраняет и не передаёт ваши чаты и не использует их для обучения модели. Аккаунт или вход не требуется. Просто откройте и начните общение. Приватно.</translation>
+<translation id="6401201054391523929">Общайтесь с вкладками и файлами</translation>
+<translation id="8522038408130089105">Хотите узнать больше о сайтах, которые вы посещаете? Просто добавьте их в чат. Прикрепите вкладки и файлы для быстрого и точного ответа.</translation>
+<translation id="3844955602461425647">Автоматизируйте рутину</translation>
+<translation id="2196247864500723577">Позвольте Brave просматривать вместе с вами и взаимодействовать со всем, что вы делаете в браузере. Передайте скучную работу на автоматизацию и оставьте время для важного.</translation>
+<translation id="235457946228076038">Воспользуйтесь своей моделью</translation>
+<translation id="7024005267156189454">Подключите свои собственные ИИ-модели — локально или удалённо. Настройте поведение, ответы и возможности Лео под свои нужды.</translation>
+<translation id="7291578285403921288">Подробнее об ИИ Leo</translation>
 <translation id="9051226419897869406">Общайтесь с Brave Leo в приватном чате</translation>
 <translation id="2414904697165579184">Формируйте ответы на основе содержимого вкладки (вкладок)</translation>
 <translation id="8258324391302611485">Содержимое этой страницы будет отправлено Leo вместе с вашими сообщениями.</translation>
@@ -2275,6 +2314,7 @@ other {# источника}
 <translation id="8732450785281947197">Инструменты Leo</translation>
 <translation id="6535533770697728087">Быстрые действия</translation>
 <translation id="3237710083340813756">Переработка текста</translation>
+<translation id="1223498995510244364">Создать краткий пересказ</translation>
 <translation id="1252805982772190086">Короткая публикация</translation>
 <translation id="2087555497198267113">Длинная публикация</translation>
 <translation id="4170307327863874820">Публикация в блоге</translation>
@@ -2299,6 +2339,7 @@ other {# источника}
 <translation id="6739516910850820220">Загрузка файла...</translation>
 <translation id="9088751620363630236">Сделайте снимок...</translation>
 <translation id="4250229828105606438">Скриншот</translation>
+<translation id="7949596341600215809">Полный скриншот страницы</translation>
 <translation id="6332876390231524389">Текущее содержание вкладки</translation>
 <translation id="7742969455167760092">Открыть вкладки...</translation>
 <translation id="49269513399674318">Использовать микрофон</translation>
@@ -2308,128 +2349,10 @@ other {# источника}
 <translation id="6287023598025162715">Новая переписка</translation>
 <translation id="7097822247923237815">Временный чат</translation>
 <translation id="7481750859362986254">Этот чат не будет сохранен в вашей истории и не будет использовать какие-либо настройки или воспоминания Лео.</translation>
-<translation id="8370801182970639038">Автоматически (<ph name="LOCALE"/>)</translation>
-<translation id="8343473178272604223">Включенные поисковые системы</translation>
-<translation id="5355776323718420036">Скрыть топ-сайты</translation>
-<translation id="9173319813356700250">НОВОСТИ</translation>
-<translation id="6543799171249004861">Фото <ph name="AUTHOR"/></translation>
-<translation id="466214682712474574">Чтобы проверить баланс, войдите в аккаунт <ph name="PROVIDER"/></translation>
-<translation id="8332875111286275890">Чтобы посмотреть баланс, войдите в аккаунт.</translation>
-<translation id="5430001801813715388">НАГРАДЫ</translation>
-<translation id="5966055668402779222">Задать вопрос Поиску Bravе</translation>
-<translation id="167018310108390163">Настроить новую вкладку</translation>
-<translation id="6851426306697017546">Показать часы</translation>
-<translation id="4844370919312937270">Показывать виджет поиска в новых вкладках</translation>
-<translation id="7328310113820087094">С <ph name="LINK_BEGIN"/>Brave Rewards<ph name="LINK_END"/>, вы можете зарабатывать, просматривая рекламу на странице новой вкладки.</translation>
-<translation id="4100520468072294616">Показывать рекламу на странице новой вкладки</translation>
-<translation id="5009354496127441090">Показать топ-сайты</translation>
-<translation id="3960619311638643872">Brave VPN</translation>
-<translation id="4784802981241664605">СТАТИСТИКА</translation>
-<translation id="712731581368828482">Зашифрованные видео звонки с помощью Brave Talk.</translation>
-<translation id="2671474274417808910">Звонки, ориентированные на конфиденциальность</translation>
-<translation id="2100665198270190500">РАЗГОВОР</translation>
-<translation id="4290791698375397492">Верхний блок убран</translation>
-<translation id="1436784010935106834">Удалено</translation>
-<translation id="9030215177866748410">Лучшие сайты предлагаются на основе сайтов, которые вы часто посещаете.</translation>
-<translation id="1849266032237224734">Показать меньше элементов</translation>
-<translation id="9125416311275819193">Показать больше элементов</translation>
-<translation id="8425213833346101688">Изменить</translation>
-<translation id="755045397420611731">Дополнительная приватность и безопасность</translation>
-<translation id="4520128772974831415">Скрытый IP-адрес и измененное местоположение</translation>
-<translation id="6819278685469225453">Защита всех приложений на устройстве</translation>
-<translation id="8422279921836245017">Уже купили?</translation>
-<translation id="8703188411226330709">Бесплатный пробный период</translation>
-<translation id="8814357473522731680">Технологии</translation>
-<translation id="7143207342074048698">Подключение</translation>
-<translation id="1202549130170287307">Отключение…</translation>
-<translation id="8941703009412168350">BRAVE VPN</translation>
-<translation id="6303294677342628402">Защита</translation>
-<translation id="8458987127502506209">Включить Защиту Brave</translation>
-<translation id="7700894290854403770"><ph name="STATUS_BEFORE"/>Защита UP<ph name="STATUS_AFTER"/> для <ph name="HOST"/></translation>
-<translation id="7656091630265507216"><ph name="STATUS_BEFORE"/>Защита НЕ РАБОТАЕТ<ph name="STATUS_AFTER"/> для <ph name="HOST"/></translation>
-<translation id="5623354834493649144">Если сайт не работает, попробуйте отключить Защиту. 
- <ph name="NOTE_BEFORE"/>Примечание. Это может снизить защиту конфиденциальности Brave.<ph name="NOTE_AFTER"/></translation>
-<translation id="8377155647357436161">Трекеры, реклама и другие элементы заблокированы. <ph name="LINK_BEFORE"/>Подробнее…<ph name="LINK_AFTER"/></translation>
-<translation id="7604553853176833536">Brave Защита не активирована. <ph name="LINK_BEFORE"/>Подробнее…<ph name="LINK_AFTER"/></translation>
-<translation id="650318023204990401">Расширенное управление</translation>
-<translation id="5799940914270080805">В результате изменения этих настроек может быть нарушена работа некоторых сайтов.</translation>
-<translation id="9204041448536398473">Глобальные настройки Защиты</translation>
-<translation id="2108334320919763866">Глобальные настройки по умолчанию</translation>
-<translation id="7205939464631857223">Удалить все заблокированные элементы</translation>
-<translation id="3440043456924990296">Настройки, которыми управляет организация</translation>
-<translation id="7053983685419859001">Блокировать</translation>
-<translation id="5716230673298034837">Разрешить все</translation>
-<translation id="5279600392753459966">Заблокировать все</translation>
-<translation id="4516904298421534459">Списки фильтров</translation>
-<translation id="3570081523466826008">Подключаться по HTTPS</translation>
-<translation id="131231380815754440">Включить HTTPS</translation>
-<translation id="4824468494729001999">Блокировать скрипты</translation>
-<translation id="3246600097575692802">Включить блокирование скриптов</translation>
-<translation id="3603525299146223354">Трекеры и реклама</translation>
-<translation id="4448697385961650078">Блокировать трекеры и рекламу</translation>
-<translation id="8593054718053894081">Полностью блокировать трекеры и рекламу</translation>
-<translation id="7384778069178817075">Разрешить все трекеры и рекламу</translation>
-<translation id="6196640612572343990">Блокировать сторонние файлы cookie</translation>
-<translation id="693506469193748756">Удалять данные о посещении этого сайта</translation>
-<translation id="5471580724041424345">Удалять файлы cookie и другие данные сайта после закрытия страницы</translation>
-<translation id="6486971767955110687">Сохранять контактную информацию для будущих отчетов об ошибках на сайте</translation>
-<translation id="4085787265464238844">Если вы предоставите контактную информацию, она будет сохранена для будущих отчетов</translation>
-<translation id="6883611015375728278">Блокировать все cookie</translation>
-<translation id="5657156137487675418">Разрешить все cookie</translation>
-<translation id="8366221601425141146">Сбор цифровых отпечатков заблокирован</translation>
-<translation id="6531019308847917584">Блокировать цифровые отпечатки</translation>
-<translation id="1899608006846124237">Полностью блокировать цифровые отпечатки</translation>
-<translation id="8034285923190068220">Разрешить цифровой след</translation>
-<translation id="7638541189782135885">Не обновлять HTTP-соединения</translation>
-<translation id="2570787596946026998">Подключаться только с помощью HTTPS</translation>
-<translation id="1992750560347846445">Сообщить о неработающем сайте</translation>
-<translation id="2387532482048804818">Сообщайте нам о сайтах, которые работают неправильно при включенной Защите.</translation>
-<translation id="3795015906457257780">Средства Brave для защиты конфиденциальности отключены на этом сайте.</translation>
-<translation id="7194012750329511146">Защита Brave
-Заблокировано трекеров и рекламных объявлений: <ph name="NUMBER"/></translation>
-<translation id="4292121526390005808">Заблокированные скрипты</translation>
-<translation id="5046271170844958713">Скриптов разрешено</translation>
-<translation id="199862531047218413">— столько защит от создания цифровых отпечатков применено</translation>
-<translation id="5032505924781383272">Если защита работает, это не значит, что страница пытается получить цифровые отпечатки браузера.</translation>
-<translation id="1905384713982899903">Заблокированные цифровые отпечатки</translation>
-<translation id="314364527871618241">Разрешенные цифровые отпечатки</translation>
-<translation id="264682546981571963">Устали от уведомлений о согласии на использование файлов cookie?</translation>
-<translation id="4986297793092101884">Brave уже блокирует сторонние файлы cookie. Но мы можем избавить вас и от уведомлений о согласии на использование файлов cookie.</translation>
-<translation id="535688588637568715">Да, блокировать уведомления о согласии на использование файлов cookie</translation>
-<translation id="2808175374672429053">Шаблоны подстановки не разрешены в Защите Brave.</translation>
-<translation id="7630425922041907505">{BLOCKED_COUNT, plural,
-      =1 {Защита Brave заблокировала 1 трекер на сайте <ph name="SITE_URL"/>}
-      few {Защита Brave заблокировала {BLOCKED_COUNT} трекера на сайте <ph name="SITE_URL"/>}
-      other {Защита Brave заблокировала {BLOCKED_COUNT} трекеров на сайте <ph name="SITE_URL"/>}
-    }</translation>
-<translation id="2540598191934725677">Нажмите на значок Brave для просмотра Защиты Brave.</translation>
-<translation id="6294662480095808915">Конфиденциальность по умолчанию</translation>
-<translation id="4366423156486478559">Brave защищает вас во время каждого перехода по ссылке. Сделайте Brave браузером по умолчанию и наслаждайтесь конфиденциальностью в интернете.</translation>
-<translation id="3830912418080848377">Настройки импорта</translation>
-<translation id="6378406588483694938">Импортируйте закладки, расширения и даже сохраненные пароли из прежнего браузера.</translation>
-<translation id="2092825239819166928">Выберите профиль для импорта</translation>
-<translation id="4763127492635705340">В выбранном браузере есть несколько профилей. Выберите нужные.</translation>
-<translation id="880174232178865598">Импортировать профили</translation>
-<translation id="2453860139492968684">Закрыть</translation>
-<translation id="2273851479262317744">Сделать Brave браузером по умолчанию</translation>
-<translation id="5037676449506322593">Выбрать все</translation>
-<translation id="5148943178722443958">Помогите сделать Brave лучше</translation>
-<translation id="1097073572755862978">Отправлять отчеты для диагностики, когда происходит сбой или зависание. <ph name="LINK_BEFORE"/>Подробнее<ph name="LINK_AFTER"/></translation>
-<translation id="6629244688368006959">Отправлять конфиденциальные и анонимные сведения о функциях, используемых в Brave. <ph name="LINK_BEFORE"/>Подробнее…<ph name="LINK_AFTER"/></translation>
-<translation id="7415454883318062233">Настройка завершена</translation>
-<translation id="3141206739023333979">Вы можете когда угодно изменить настройки в браузере Brave по ссылке <ph name="LINK_BEFORE1"/>brave://settings/privacy<ph name="LINK_AFTER2"/>.</translation>
-<translation id="8321985064212130832">Прочитайте полную версию <ph name="LINK_BEFORE"/>Политики конфиденциальности<ph name="LINK_AFTER"/></translation>
-<translation id="2801098717523961746">Выбрать тему</translation>
-<translation id="6262510489122516114">Вы можете в любой момент изменить тему в настройках Brave.</translation>
-<translation id="546481172717459539">В соответствии с системой</translation>
-<translation id="7799817062559422778">Светлая тема</translation>
-<translation id="4117637339509843559">Темная тема</translation>
-<translation id="6302485303316397682">Хотите улучшить результаты поиска?</translation>
-<translation id="7014699001826714920">Внесите свой вклад в Brave Поиск.</translation>
-<translation id="6821108091726602352">Помогите нам сделать интернет лучше, приняв участие в проекте Brave Web Discovery Project. Разрешив отправку анонимных сигналов, вы позволите расширить наш индекс поиска.</translation>
-<translation id="6764845498618413165">Подробнее…</translation>
-<translation id="7818938154803162778">Хорошо, разрешить</translation>
-<translation id="7207456302801184289">Добро пожаловать в Brave!</translation>
+<translation id="4238305333951712482">Память обновлена: <ph name="MEMORY_CONTENT"/></translation>
+<translation id="2593275000606533518">Управление всем</translation>
+<translation id="8410199626695516952">Хорошо, я не буду это запоминать</translation>
+<translation id="8419849467765474535">Не удалось сохранить память. Пожалуйста, попробуйте еще раз.</translation>
 <translation id="3486480638399578250">Сохраните ваш личный адрес электронной почты в секрете</translation>
 <translation id="7765422154906712751">Создайте уникальные, случайные адреса, которые перенаправляются на ваш Brave аккаунт электронной почты и могут быть удалены в любое время. Защитите ваш реальный адрес от раскрытия или использования рекламодателями.</translation>
 <translation id="5222676887888702881">Выйти</translation>
@@ -2470,11 +2393,143 @@ other {# источника}
 <translation id="619122420105901711">Не видите письмо? Проверьте папку спам или попробуйте снова.</translation>
 <translation id="3397336197747843396">Ошибка при аутентификации с помощью Brave Account. Пожалуйста, попробуйте еще раз.</translation>
 <translation id="1340795582009113055">Начните сначала</translation>
+<translation id="8528664394991030582">Email не указан</translation>
+<translation id="589806103071387355">Неверный ответ от службы Brave Accounts</translation>
+<translation id="7508412964869396375">Служба Brave Accounts не получила токен верификации</translation>
+<translation id="3179527991526213624">Нет ответа от службы поддержки Brave Accounts</translation>
+<translation id="7911439408853154309">Не удалось проверить адрес электронной почты</translation>
+<translation id="8370801182970639038">Автоматически (<ph name="LOCALE"/>)</translation>
+<translation id="8343473178272604223">Включенные поисковые системы</translation>
+<translation id="8285901519864208412">Скрыть карту вознаграждений</translation>
+<translation id="4725613319787110841">Скрыть карту статистики</translation>
+<translation id="2991633563551889054">Скрыть карту Talk</translation>
+<translation id="5355776323718420036">Скрыть топ-сайты</translation>
+<translation id="1689504141194856995">Скрыть карту VPN</translation>
+<translation id="8262911270872215147">Настройка новостей</translation>
+<translation id="3884037897537157986">Отключить новости</translation>
+<translation id="7847477075635510673">Скрыть новости</translation>
+<translation id="9173319813356700250">НОВОСТИ</translation>
+<translation id="6543799171249004861">Фото <ph name="AUTHOR"/></translation>
+<translation id="466214682712474574">Чтобы проверить баланс, войдите в аккаунт <ph name="PROVIDER"/></translation>
+<translation id="8332875111286275890">Чтобы посмотреть баланс, войдите в аккаунт.</translation>
+<translation id="5430001801813715388">НАГРАДЫ</translation>
+<translation id="5966055668402779222">Задать вопрос Поиску Bravе</translation>
+<translation id="167018310108390163">Настроить новую вкладку</translation>
+<translation id="6851426306697017546">Показать часы</translation>
+<translation id="4844370919312937270">Показывать виджет поиска в новых вкладках</translation>
+<translation id="7328310113820087094">С <ph name="LINK_BEGIN"/>Brave Rewards<ph name="LINK_END"/>, вы можете зарабатывать, просматривая рекламу на странице новой вкладки.</translation>
+<translation id="4100520468072294616">Показывать рекламу на странице новой вкладки</translation>
+<translation id="5009354496127441090">Показать топ-сайты</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
+<translation id="4784802981241664605">СТАТИСТИКА</translation>
+<translation id="5236080651083907980">Зашифрованные видео звонки с помощью Brave Talk</translation>
+<translation id="2671474274417808910">Звонки, ориентированные на конфиденциальность</translation>
+<translation id="2100665198270190500">РАЗГОВОР</translation>
+<translation id="4290791698375397492">Верхний блок убран</translation>
+<translation id="9030215177866748410">Лучшие сайты предлагаются на основе сайтов, которые вы часто посещаете.</translation>
+<translation id="1849266032237224734">Показать меньше элементов</translation>
+<translation id="9125416311275819193">Показать больше элементов</translation>
+<translation id="8425213833346101688">Изменить</translation>
+<translation id="755045397420611731">Дополнительная приватность и безопасность</translation>
+<translation id="4520128772974831415">Скрытый IP-адрес и измененное местоположение</translation>
+<translation id="6819278685469225453">Защита всех приложений на устройстве</translation>
+<translation id="8422279921836245017">Уже купили?</translation>
+<translation id="8703188411226330709">Бесплатный пробный период</translation>
+<translation id="8814357473522731680">Технологии</translation>
+<translation id="7143207342074048698">Подключение</translation>
+<translation id="1202549130170287307">Отключение…</translation>
+<translation id="8941703009412168350">BRAVE VPN</translation>
+<translation id="6303294677342628402">Защита</translation>
+<translation id="8458987127502506209">Включить Защиту Brave</translation>
+<translation id="8443488493738411048"><ph name="STATUS_BEFORE"/>Brave Shields находятся вверху<ph name="STATUS_AFTER"/> для этого сайта.</translation>
+<translation id="2458631245058451506"><ph name="STATUS_BEFORE"/>Brave Shieldsнаходятся ВНИЗ<ph name="STATUS_AFTER"/> для этого сайта</translation>
+<translation id="5623354834493649144">Если сайт не работает, попробуйте отключить Защиту. 
+ <ph name="NOTE_BEFORE"/>Примечание. Это может снизить защиту конфиденциальности Brave.<ph name="NOTE_AFTER"/></translation>
+<translation id="8377155647357436161">Трекеры, реклама и другие элементы заблокированы. <ph name="LINK_BEFORE"/>Подробнее…<ph name="LINK_AFTER"/></translation>
+<translation id="7604553853176833536">Brave Защита не активирована. <ph name="LINK_BEFORE"/>Подробнее…<ph name="LINK_AFTER"/></translation>
+<translation id="650318023204990401">Расширенное управление</translation>
+<translation id="5799940914270080805">В результате изменения этих настроек может быть нарушена работа некоторых сайтов.</translation>
+<translation id="9204041448536398473">Глобальные настройки Защиты</translation>
+<translation id="2108334320919763866">Глобальные настройки по умолчанию</translation>
+<translation id="7205939464631857223">Удалить все заблокированные элементы</translation>
+<translation id="3440043456924990296">Настройки, которыми управляет организация</translation>
+<translation id="7053983685419859001">Блокировать</translation>
+<translation id="5716230673298034837">Разрешить все</translation>
+<translation id="5279600392753459966">Заблокировать все</translation>
+<translation id="4516904298421534459">Списки фильтров</translation>
+<translation id="3570081523466826008">Подключаться по HTTPS</translation>
+<translation id="131231380815754440">Включить HTTPS</translation>
+<translation id="4824468494729001999">Блокировать скрипты</translation>
+<translation id="3246600097575692802">Включить блокирование скриптов</translation>
+<translation id="3603525299146223354">Трекеры и реклама</translation>
+<translation id="4448697385961650078">Блокировать трекеры и рекламу</translation>
+<translation id="8593054718053894081">Полностью блокировать трекеры и рекламу</translation>
+<translation id="7384778069178817075">Разрешить все трекеры и рекламу</translation>
+<translation id="6196640612572343990">Блокировать сторонние файлы cookie</translation>
+<translation id="693506469193748756">Удалять данные о посещении этого сайта</translation>
+<translation id="6975864539539353406">Удалять файлы cookie и другие данные сайта после закрытия страницы.</translation>
+<translation id="6486971767955110687">Сохранять контактную информацию для будущих отчетов об ошибках на сайте</translation>
+<translation id="4085787265464238844">Если вы предоставите контактную информацию, она будет сохранена для будущих отчетов</translation>
+<translation id="6883611015375728278">Блокировать все cookie</translation>
+<translation id="5657156137487675418">Разрешить все cookie</translation>
+<translation id="8366221601425141146">Сбор цифровых отпечатков заблокирован</translation>
+<translation id="6531019308847917584">Блокировать цифровые отпечатки</translation>
+<translation id="1899608006846124237">Полностью блокировать цифровые отпечатки</translation>
+<translation id="8034285923190068220">Разрешить цифровой след</translation>
+<translation id="7638541189782135885">Не обновлять HTTP-соединения</translation>
+<translation id="2570787596946026998">Подключаться только с помощью HTTPS</translation>
+<translation id="1992750560347846445">Сообщить о неработающем сайте</translation>
+<translation id="2387532482048804818">Сообщайте нам о сайтах, которые работают неправильно при включенной Защите.</translation>
+<translation id="3795015906457257780">Средства Brave для защиты конфиденциальности отключены на этом сайте.</translation>
+<translation id="7194012750329511146">Защита Brave
+Заблокировано трекеров и рекламных объявлений: <ph name="NUMBER"/></translation>
+<translation id="4292121526390005808">Заблокированные скрипты</translation>
+<translation id="5046271170844958713">Скриптов разрешено</translation>
+<translation id="199862531047218413">— столько защит от создания цифровых отпечатков применено</translation>
+<translation id="5032505924781383272">Если защита работает, это не значит, что страница пытается получить цифровые отпечатки браузера.</translation>
+<translation id="1905384713982899903">Заблокированные цифровые отпечатки</translation>
+<translation id="314364527871618241">Разрешенные цифровые отпечатки</translation>
+<translation id="2808175374672429053">Шаблоны подстановки не разрешены в Защите Brave.</translation>
+<translation id="7630425922041907505">{BLOCKED_COUNT, plural,
+      =1 {Защита Brave заблокировала 1 трекер на сайте <ph name="SITE_URL"/>}
+      few {Защита Brave заблокировала {BLOCKED_COUNT} трекера на сайте <ph name="SITE_URL"/>}
+      other {Защита Brave заблокировала {BLOCKED_COUNT} трекеров на сайте <ph name="SITE_URL"/>}
+    }</translation>
+<translation id="2540598191934725677">Нажмите на значок Brave для просмотра Защиты Brave.</translation>
+<translation id="6294662480095808915">Конфиденциальность по умолчанию</translation>
+<translation id="4366423156486478559">Brave защищает вас во время каждого перехода по ссылке. Сделайте Brave браузером по умолчанию и наслаждайтесь конфиденциальностью в интернете.</translation>
+<translation id="3830912418080848377">Настройки импорта</translation>
+<translation id="6378406588483694938">Импортируйте закладки, расширения и даже сохраненные пароли из прежнего браузера.</translation>
+<translation id="2092825239819166928">Выберите профиль для импорта</translation>
+<translation id="4763127492635705340">В выбранном браузере есть несколько профилей. Выберите нужные.</translation>
+<translation id="880174232178865598">Импортировать профили</translation>
+<translation id="2453860139492968684">Закрыть</translation>
+<translation id="2273851479262317744">Сделать Brave браузером по умолчанию</translation>
+<translation id="5037676449506322593">Выбрать все</translation>
+<translation id="5148943178722443958">Помогите сделать Brave лучше</translation>
+<translation id="1097073572755862978">Отправлять отчеты для диагностики, когда происходит сбой или зависание. <ph name="LINK_BEFORE"/>Подробнее<ph name="LINK_AFTER"/></translation>
+<translation id="6629244688368006959">Отправлять конфиденциальные и анонимные сведения о функциях, используемых в Brave. <ph name="LINK_BEFORE"/>Подробнее…<ph name="LINK_AFTER"/></translation>
+<translation id="7415454883318062233">Настройка завершена</translation>
+<translation id="3141206739023333979">Вы можете когда угодно изменить настройки в браузере Brave по ссылке <ph name="LINK_BEFORE1"/>brave://settings/privacy<ph name="LINK_AFTER2"/>.</translation>
+<translation id="8321985064212130832">Прочитайте полную версию <ph name="LINK_BEFORE"/>Политики конфиденциальности<ph name="LINK_AFTER"/></translation>
+<translation id="2801098717523961746">Выбрать тему</translation>
+<translation id="6262510489122516114">Вы можете в любой момент изменить тему в настройках Brave.</translation>
+<translation id="546481172717459539">В соответствии с системой</translation>
+<translation id="7799817062559422778">Светлая тема</translation>
+<translation id="4117637339509843559">Темная тема</translation>
+<translation id="6302485303316397682">Хотите улучшить результаты поиска?</translation>
+<translation id="7014699001826714920">Внесите свой вклад в Brave Поиск.</translation>
+<translation id="6821108091726602352">Помогите нам сделать интернет лучше, приняв участие в проекте Brave Web Discovery Project. Разрешив отправку анонимных сигналов, вы позволите расширить наш индекс поиска.</translation>
+<translation id="6764845498618413165">Подробнее…</translation>
+<translation id="7818938154803162778">Хорошо, разрешить</translation>
+<translation id="7207456302801184289">Добро пожаловать в Brave!</translation>
+<translation id="293854220404217065">Тема «Полночь»</translation>
 <translation id="2422927186524098759">Боковая панель</translation>
 <translation id="2361906291514218784">ИИ-помощник Leo</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="8000020256436988724">Панель инструментов</translation>
 <translation id="6225572914528673855">Адресная строка</translation>
+<translation id="6821966107067356137">Добавить RSS-ленту</translation>
 <translation id="8293206222192510085">Добавление закладки</translation>
 <translation id="7758460733045216901">Панель закладок</translation>
 <translation id="958268166261124668">Brave VPN: подключено</translation>

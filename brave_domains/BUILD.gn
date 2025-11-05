@@ -16,6 +16,11 @@ source_set("brave_domains") {
     ":buildflags",
     "//base",
   ]
+
+  if (is_android) {
+    sources += [ "android/brave_domains_utils_android.cc" ]
+    deps += [ "//brave/brave_domains/android:jni_headers" ]
+  }
 }
 
 buildflag_header("buildflags") {

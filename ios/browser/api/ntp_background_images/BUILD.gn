@@ -20,5 +20,6 @@ source_set("ntp_background_images") {
     "//brave/components/brave_ads/core/browser/service",
     "//brave/components/ntp_background_images/browser",
     "//brave/components/ntp_background_images/common",
+    "//brave/ios/browser/api/ads:brave_ads_mojom_wrappers",
   ]
 }

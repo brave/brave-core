@@ -33,22 +33,17 @@ void NTPSponsoredRichMediaAdEventHandler::Bind(
 void NTPSponsoredRichMediaAdEventHandler::MaybeReportRichMediaAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
-    bool should_metrics_fallback_to_p3a,
+    brave_ads::mojom::NewTabPageAdMetricType mojom_ad_metric_type,
     brave_ads::mojom::NewTabPageAdEventType mojom_ad_event_type) {
   if (!ShouldReportNewTabPageAdEvent(mojom_ad_event_type)) {
     return;
-  }
-
-  if (should_metrics_fallback_to_p3a && ntp_p3a_helper_) {
-    ntp_p3a_helper_->RecordNewTabPageAdEvent(mojom_ad_event_type,
-                                             creative_instance_id);
   }
 
   if (ads_service_) {
     // Ads service will handle the case when we should fallback to P3A and no-op
     // if the campaign should report using P3A.
     ads_service_->TriggerNewTabPageAdEvent(placement_id, creative_instance_id,
-                                           should_metrics_fallback_to_p3a,
+                                           mojom_ad_metric_type,
                                            mojom_ad_event_type,
                                            /*intentional*/ base::DoNothing());
   }

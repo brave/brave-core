@@ -76,6 +76,7 @@ class SidebarControlView : public views::View,
   bool IsItemReorderingInProgress() const;
   bool IsBubbleWidgetVisible() const;
   void SetSidebarOnLeft(bool sidebar_on_left);
+  void UpdateBackgroundAndBorder();
 
  private:
   friend class sidebar::SidebarBrowserTest;
@@ -87,7 +88,6 @@ class SidebarControlView : public views::View,
   // is NTP.
   void UpdateItemAddButtonState();
   void UpdateSettingsButtonState();
-  void UpdateBackgroundAndBorder();
 
   bool sidebar_on_left_ = true;
   raw_ptr<Delegate> delegate_ = nullptr;

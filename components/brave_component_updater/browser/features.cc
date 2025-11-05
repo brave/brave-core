@@ -8,7 +8,6 @@
 namespace brave_component_updater {
 
 BASE_FEATURE(kUseDevUpdaterUrl,
-             "UseDevUpdaterUrl",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
 }  // namespace brave_component_updater

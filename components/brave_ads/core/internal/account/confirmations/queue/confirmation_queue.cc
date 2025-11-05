@@ -8,8 +8,10 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/debug/crash_logging.h"
 #include "base/functional/bind.h"
 #include "base/location.h"
+#include "base/notreached.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/queue_item/confirmation_queue_item_builder.h"
@@ -50,6 +52,18 @@ void ConfirmationQueue::AddCallback(
     const ConfirmationQueueItemInfo& confirmation_queue_item,
     bool success) {
   if (!success) {
+    SCOPED_CRASH_KEY_NUMBER(
+        "Issue50267", "ad_type",
+        static_cast<int>(confirmation_queue_item.confirmation.ad_type));
+    SCOPED_CRASH_KEY_NUMBER(
+        "Issue50267", "confirmation_type",
+        static_cast<int>(confirmation_queue_item.confirmation.type));
+    SCOPED_CRASH_KEY_STRING64(
+        "Issue50267", "creative_instance_id",
+        confirmation_queue_item.confirmation.creative_instance_id);
+    SCOPED_CRASH_KEY_STRING64("Issue50267", "failure_reason",
+                              "Failed to add confirmation to queue");
+    DUMP_WILL_BE_NOTREACHED();
     return NotifyFailedToAddConfirmationToQueue(
         confirmation_queue_item.confirmation);
   }
@@ -150,9 +164,27 @@ void ConfirmationQueue::FailedToProcessQueueItemCallback(
 
   if (!success) {
     if (should_retry) {
+      SCOPED_CRASH_KEY_NUMBER("Issue50267", "ad_type",
+                              static_cast<int>(confirmation.ad_type));
+      SCOPED_CRASH_KEY_NUMBER("Issue50267", "confirmation_type",
+                              static_cast<int>(confirmation.type));
+      SCOPED_CRASH_KEY_STRING64("Issue50267", "creative_instance_id",
+                                confirmation.creative_instance_id);
+      SCOPED_CRASH_KEY_STRING64("Issue50267", "failure_reason",
+                                "Failed to retry confirmation queue item");
+      DUMP_WILL_BE_NOTREACHED();
+
       return BLOG(0, "Failed to retry confirmation queue item");
     }
 
+    SCOPED_CRASH_KEY_NUMBER("Issue50267", "ad_type",
+                            static_cast<int>(confirmation.ad_type));
+    SCOPED_CRASH_KEY_NUMBER("Issue50267", "confirmation_type",
+                            static_cast<int>(confirmation.type));
+    SCOPED_CRASH_KEY_STRING64("Issue50267", "creative_instance_id",
+                              confirmation.creative_instance_id);
+    SCOPED_CRASH_KEY_STRING64("Issue50267", "failure_reason",
+                              "Failed to delete confirmation queue item");
     return BLOG(0, "Failed to delete confirmation queue item");
   }
 

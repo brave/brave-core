@@ -6,6 +6,8 @@
 import("//brave/browser/shell_integrations/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/containers/buildflags/buildflags.gni")
+import("//brave/components/speedreader/common/buildflags/buildflags.gni")
+import("//brave/components/tor/buildflags/buildflags.gni")
 
 # Provide our file list to chromium's settings page build
 # Since our components start in a different path, we'll do the first step (move them to
@@ -19,18 +21,18 @@ brave_settings_web_component_files = [
   "ad_block_only_mode_page/ad_block_only_mode_page.ts",
   "brave_appearance_page/bookmark_bar.ts",
   "brave_appearance_page/sidebar.ts",
-  "brave_appearance_page/super_referral.ts",
   "brave_appearance_page/tabs.ts",
   "brave_appearance_page/toolbar.ts",
   "brave_clear_browsing_data_dialog/brave_clear_browsing_data_on_exit_page.ts",
   "brave_content_page/content.ts",
   "brave_content_page/content_page_index.ts",
   "brave_content_page/playlist.ts",
-  "brave_content_page/speedreader.ts",
   "brave_data_collection_page/brave_data_collection_page.ts",
   "brave_default_extensions_page/brave_default_extensions_page.ts",
   "brave_default_extensions_page/brave_extensions_manifest_v2_subpage.ts",
   "brave_new_tab_page/brave_new_tab_page.ts",
+  "brave_origin_page/brave_origin_page.ts",
+  "brave_origin_page/origin_toggle_button.ts",
   "brave_privacy_page/brave_personalization_options.ts",
   "brave_search_engines_page/brave_search_engines_page.ts",
   "brave_search_engines_page/normal_search_engine_list_dialog.ts",
@@ -43,9 +45,6 @@ brave_settings_web_component_files = [
   "brave_sync_page/brave_sync_setup.ts",
   "brave_sync_page/brave_sync_subpage.ts",
   "brave_system_page/brave_system_page_index.ts",
-  "brave_tor_page/brave_tor_bridges_dialog.ts",
-  "brave_tor_page/brave_tor_snowflake_install_failed_dialog.ts",
-  "brave_tor_page/brave_tor_subpage.ts",
   "brave_leo_assistant_page/brave_leo_assistant_page.ts",
   "brave_leo_assistant_page/brave_leo_assistant_page_index.ts",
   "brave_leo_assistant_page/customization_subpage.ts",
@@ -70,11 +69,68 @@ brave_settings_web_component_files = [
   "default_brave_shields_page/shields_page_index.ts",
   "getting_started_page/getting_started.ts",
   "getting_started_page/getting_started_page_index.ts",
+  "site_settings/site_settings_autoplay.ts",
+  "site_settings/site_settings_brave_ai.ts",
+  "site_settings/site_settings_localhost.ts",
+  "site_settings/site_settings_google.ts",
+  "site_settings/site_settings_shields.ts",
+  "site_settings/site_settings_cardano.ts",
+  "site_settings/site_settings_ethereum.ts",
+  "site_settings/site_settings_solana.ts",
   "social_blocking_page/social_blocking_page.ts",
   "ui/searchable_drop_down_cros.ts",
 ]
 
 brave_settings_ts_files = [
+  "ad_block_only_mode_page/ad_block_only_mode_mixin.ts",
+  "br/a11y_page.ts",
+  "br/a11y_page_index.ts",
+  "br/all_sites.ts",
+  "br/about_page.ts",
+  "br/autofill_page.ts",
+  "br/appearance_page.ts",
+  "br/appearance_page_index.ts",
+  "br/basic_page.ts",
+  "br/clear_browsing_data_dialog.ts",
+  "br/config.ts",
+  "br/cookies_page.ts",
+  "br/default_browser_page.ts",
+  "br/edit_dictionary_page.ts",
+  "br/import_data_dialog.ts",
+  "br/index.ts",
+  "br/memory_page.ts",
+  "br/on_startup_page.ts",
+  "br/page_visibility.ts",
+  "br/passwords_section.ts",
+  "br/payments_section.ts",
+  "br/people_page.ts",
+  "br/performance_page.ts",
+  "br/personalization_options.ts",
+  "br/printing_page.ts",
+  "br/privacy_page.ts",
+  "br/privacy_page_index.ts",
+  "br/reset_profile_dialog.ts",
+  "br/safety_check.ts",
+  "br/safety_check_passwords_child.ts",
+  "br/safety_hub_page.ts",
+  "br/search_page.ts",
+  "br/search_page_index.ts",
+  "br/security_page.ts",
+  "br/settings_basic_page.ts",
+  "br/settings_manage_profile.ts",
+  "br/settings_main.ts",
+  "br/settings_menu.ts",
+  "br/settings_section.ts",
+  "br/settings_subpage.ts",
+  "br/settings_ui.ts",
+  "br/site_details.ts",
+  "br/site_list_entry.ts",
+  "br/site_list.ts",
+  "br/system_page.ts",
+  "br/add_site_dialog.ts",
+  "br/site_settings_page.ts",
+  "br/sync_account_control.ts",
+  "br/sync_controls.ts",
   "brave_clear_browsing_data_dialog/brave_clear_browsing_data_dialog_behavior.ts",
   "brave_clear_browsing_data_dialog/brave_clear_browsing_data_dialog_proxy.ts",
   "brave_autofill_page/brave_autofill_page.ts",
@@ -83,59 +139,11 @@ brave_settings_ts_files = [
   "brave_default_extensions_page/brave_default_extensions_browser_proxy.ts",
   "brave_new_tab_page/brave_new_tab_browser_proxy.ts",
   "brave_leo_assistant_page/brave_leo_assistant_browser_proxy.ts",
-  "brave_overrides/a11y_page.ts",
-  "brave_overrides/a11y_page_index.ts",
-  "brave_overrides/all_sites.ts",
-  "brave_overrides/about_page.ts",
-  "brave_overrides/autofill_page.ts",
-  "brave_overrides/appearance_page.ts",
-  "brave_overrides/appearance_page_index.ts",
-  "brave_overrides/basic_page.ts",
-  "brave_overrides/clear_browsing_data_dialog.ts",
-  "brave_overrides/config.ts",
-  "brave_overrides/cookies_page.ts",
-  "brave_overrides/default_browser_page.ts",
-  "brave_overrides/edit_dictionary_page.ts",
-  "brave_overrides/import_data_dialog.ts",
-  "brave_overrides/index.ts",
-  "brave_overrides/memory_page.ts",
-  "brave_overrides/on_startup_page.ts",
-  "brave_overrides/page_visibility.ts",
-  "brave_overrides/passwords_section.ts",
-  "brave_overrides/payments_section.ts",
-  "brave_overrides/people_page.ts",
-  "brave_overrides/performance_page.ts",
-  "brave_overrides/personalization_options.ts",
-  "brave_overrides/printing_page.ts",
-  "brave_overrides/privacy_page.ts",
-  "brave_overrides/privacy_page_index.ts",
-  "brave_overrides/reset_profile_dialog.ts",
-  "brave_overrides/safety_check.ts",
-  "brave_overrides/safety_check_passwords_child.ts",
-  "brave_overrides/safety_hub_page.ts",
-  "brave_overrides/search_page.ts",
-  "brave_overrides/search_page_index.ts",
-  "brave_overrides/security_page.ts",
-  "brave_overrides/settings_basic_page.ts",
-  "brave_overrides/settings_manage_profile.ts",
-  "brave_overrides/settings_main.ts",
-  "brave_overrides/settings_menu.ts",
-  "brave_overrides/settings_section.ts",
-  "brave_overrides/settings_subpage.ts",
-  "brave_overrides/settings_ui.ts",
-  "brave_overrides/site_details.ts",
-  "brave_overrides/site_list_entry.ts",
-  "brave_overrides/system_page.ts",
-  "brave_overrides/add_site_dialog.ts",
-  "brave_overrides/site_settings_page.ts",
-  "brave_overrides/sync_account_control.ts",
-  "brave_overrides/sync_controls.ts",
   "brave_privacy_page/brave_privacy_page_browser_proxy.ts",
   "brave_reset_page/brave_reset_profile_dialog_behavior.ts",
   "brave_routes.ts",
   "brave_search_engines_page/brave_search_engines_page_browser_proxy.ts",
   "brave_sync_page/brave_sync_browser_proxy.ts",
-  "brave_tor_page/brave_tor_browser_proxy.ts",
   "brave_wallet_page/brave_wallet_browser_proxy.ts",
   "brave_web3_domains_page/brave_web3_domains_browser_proxy.ts",
   "default_brave_shields_page/brave_adblock_browser_proxy.ts",
@@ -163,6 +171,15 @@ if (enable_pin_shortcut) {
       [ "pin_shortcut_page/pin_shortcut_page_browser_proxy.ts" ]
 }
 
+if (enable_tor) {
+  brave_settings_web_component_files += [
+    "brave_tor_page/brave_tor_bridges_dialog.ts",
+    "brave_tor_page/brave_tor_snowflake_install_failed_dialog.ts",
+    "brave_tor_page/brave_tor_subpage.ts",
+  ]
+  brave_settings_ts_files += [ "brave_tor_page/brave_tor_browser_proxy.ts" ]
+}
+
 brave_settings_ts_definitions =
     [ "//brave/components/definitions/chrome_brave_theme.d.ts" ]
 
@@ -172,12 +189,16 @@ brave_settings_ts_extra_deps =
 brave_settings_mojo_files = [
   "$root_gen_dir/brave/components/ai_chat/core/common/mojom/settings_helper.mojom-webui.ts",
   "$root_gen_dir/brave/components/ai_chat/core/common/mojom/ai_chat.mojom-webui.ts",
-  "$root_gen_dir/brave/components/ai_chat/core/common/mojom/customization_settings.mojom-webui.ts",
+  "$root_gen_dir/brave/components/ai_chat/core/common/mojom/bookmarks.mojom-webui.ts",
 
-  # ai_chat.mojom depends on tab_tracker.mojom even though it isn't used on settings
+  # ai_chat.mojom depends on these mojom files, even though they aren't used directly on settings
+  "$root_gen_dir/brave/components/ai_chat/core/common/mojom/common.mojom-webui.ts",
+  "$root_gen_dir/brave/components/ai_chat/core/common/mojom/customization_settings.mojom-webui.ts",
   "$root_gen_dir/brave/components/ai_chat/core/common/mojom/tab_tracker.mojom-webui.ts",
   "$root_gen_dir/brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom-webui.ts",
+
   "$root_gen_dir/brave/components/brave_account/mojom/brave_account_settings_handler.mojom-webui.ts",
+  "$root_gen_dir/brave/components/brave_origin/common/mojom/brave_origin_settings.mojom-webui.ts",
 
   # Add generated strings as mojo files. Currently, this is the only way to
   # include them in build_webui() target.
@@ -187,6 +208,7 @@ brave_settings_mojo_files = [
 brave_settings_mojo_files_deps = [
   "//brave/components/ai_chat/core/common/mojom:mojom_ts__generator",
   "//brave/components/brave_account/mojom:mojom_ts__generator",
+  "//brave/components/brave_origin/common/mojom:mojom_ts__generator",
 
   # Add generated strings to the build_webui() via mojo_files_deps.
   "//brave/app:brave_generated_resources_grit",
@@ -217,6 +239,10 @@ if (enable_containers) {
   brave_settings_mojo_files_deps +=
       [ "//brave/components/containers/core/mojom:mojom_ts__generator" ]
   brave_settings_mojo_files += [ "$root_gen_dir/brave/components/containers/core/mojom/containers.mojom-webui.ts" ]
+}
+
+if (enable_speedreader) {
+  brave_settings_web_component_files += [ "brave_content_page/speedreader.ts" ]
 }
 
 # Generate the list for inclusion via preprocess and exclusion for chromium's preprocess

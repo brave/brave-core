@@ -3,18 +3,20 @@
 <translationbundle lang="bg">
 <translation id="1010283278930414892">На това устройство няма запазени пароли</translation>
 <translation id="1011749477052068769">Преместване тук</translation>
+<translation id="1014083013111769343">Листът с предпочитания за режима на четене е отворен на пълната височина</translation>
 <translation id="1014147525163127655">На това устройство няма ключове за достъп за <ph name="ORIGIN"/></translation>
 <translation id="1016498331642356377">Бързо търсене с гласа ви. За да редактирате този пряк път, докоснете и задръжте.</translation>
 <translation id="1028699632127661925">Изпраща се до <ph name="DEVICE_NAME"/>...</translation>
 <translation id="103269572468856066">Изчиств. и на данните от тези сайтове и прил.?</translation>
 <translation id="1034259925032978114">Отворен прозорец</translation>
+<translation id="1035113036584565771">Долният лист за известия със съвети е затворен</translation>
 <translation id="1036348656032585052">Изключване</translation>
 <translation id="1045899828449635435">Изчиств. и на данните от тези сайтове?</translation>
 <translation id="1052842760770519282">Някои от паролите ви не са достъпни</translation>
 <translation id="1058669287135776095">Офлайн сте. Проверете връзката си с интернет и опитайте отново.</translation>
+<translation id="1066338698580889414">Долният лист за известия със съвети е отворен на пълната височина</translation>
 <translation id="1070689840697074178">Можете да изтегляте PDF файловете тук</translation>
 <translation id="107147699690128016">Ако промените файловото разширение, файлът може да се отвори в друго приложение и потенциално да навреди на устройството ви.</translation>
-<translation id="1080365971383768617">Паролите са достъпни на всичките ви устройства</translation>
 <translation id="1087799850623149508">Можете да докоснете и задържите, за да преместите адресната лента в долната част</translation>
 <translation id="1089606299949659462">Прегледът завърши!</translation>
 <translation id="1094555143448724771">За да виждате разделите от другите си устройства, синхронизирайте разделите и историята си</translation>
@@ -29,6 +31,7 @@
 <translation id="1138458427267715730">Получавайте сигнали при понижение на цената в който и да е сайт в мрежата</translation>
 <translation id="1140317858355046628">Ако я изтриете, всички хора незабавно ще загубят достъп до групата раздели „<ph name="GROUP_NAME"/>“ и тя ще бъде изтрита от всички устройства.</translation>
 <translation id="1142732900304639782">Да не се предлага превод на тези сайтове</translation>
+<translation id="1143193470214071120">Затворете прозорец или управлявайте прозорците</translation>
 <translation id="7083341910267693582"><ph name="APP_NAME"/> ще се отвори в Brave. С продължаването си приемате <ph name="BEGIN_LINK1"/>Общите условия на Brave<ph name="END_LINK1"/> и <ph name="BEGIN_LINK2"/>Допълнителните общи условия на Brave и Chrome OS<ph name="END_LINK2"/>.</translation>
 <translation id="7443574521624544928">Нямате запазени пароли в Brave Мениджър на пароли.</translation>
 <translation id="115483310321669804">Използване на паролата <ph name="PASSWORD"/></translation>
@@ -97,6 +100,7 @@
 <translation id="1407135791313364759">Отваряне на всички</translation>
 <translation id="1409879593029778104">Изтеглянето на „<ph name="FILE_NAME"/>“ е предотвратено, защото файлът вече съществува.</translation>
 <translation id="3219606989239049572">Запазване на данни в профила ви в Brave</translation>
+<translation id="1414919006379339073">Затваряне на текущия прозорец</translation>
 <translation id="1416550906796893042">Версия на приложението</translation>
 <translation id="5171187478741797469">Да се рестартира ли Brave?</translation>
 <translation id="1428770807407000502">Да се изключи ли синхронизирането?</translation>
@@ -114,7 +118,6 @@
 <translation id="1493287004536771723">Следвате <ph name="SITE_NAME"/></translation>
 <translation id="1496514951988037011">потребителско име</translation>
 <translation id="1501480321619201731">Изтриване на групата</translation>
-<translation id="1502010315804028179">За да управлявате паролите си, актуализирайте услугите за Google Play</translation>
 <translation id="1506061864768559482">Търсеща машина</translation>
 <translation id="1513352483775369820">Отметки и посетени сайтове</translation>
 <translation id="1515901671075971249">Клавишни комбинации за навигиране между разделите</translation>
@@ -155,6 +158,7 @@
 <translation id="1749561566933687563">Синхронизирайте отметките си</translation>
 <translation id="12433225238423439">Продължете да използвате паролите в профила си в Brave</translation>
 <translation id="17513872634828108">Отворени раздели</translation>
+<translation id="1753744496844366747">Aa</translation>
 <translation id="1755203724116202818">С цел измерване на ефективността на дадена реклама между сайтовете се споделят ограничени типове данни – например дали сте направили покупка, след като сте посетили даден сайт.</translation>
 <translation id="1760873718737761808">{FILE_COUNT,plural, =1{Страници, 1 страница в списъка}other{Страници, # страници в списъка}}</translation>
 <translation id="9142246815232811613">До Brave се изпраща информация за употребата на Brave от ваша страна, но тя не е свързана с вас\n\nАко Brave претърпи срив, подробностите за срива може да включват известна лична информация\n\nАко синхронизирате историята си с профила си в Brave, показателите може да включват и информация за посещаваните от вас URL адреси</translation>
@@ -205,6 +209,7 @@
 <translation id="197288927597451399">Запазване</translation>
 <translation id="1973912524893600642">Запазване на данните</translation>
 <translation id="1974060860693918893">Разширени</translation>
+<translation id="1982274314082047220">Плъзнете нагоре, за да отворите листа с предпочитания за режима на четене</translation>
 <translation id="1984087999855033707">телефонен номер</translation>
 <translation id="1984417487208496350">Без защита (не се препоръчва)</translation>
 <translation id="1986685561493779662">Името вече съществува</translation>
@@ -265,11 +270,11 @@
 <translation id="2318045970523081853">Докоснете за извършване на обаждане</translation>
 <translation id="2323763861024343754">Данни от сайтове</translation>
 <translation id="2328474416100889417">Всички хора незабавно ще загубят достъп до групата раздели „<ph name="GROUP_NAME"/>“ и всички връзки към поканата ще бъдат изключени</translation>
+<translation id="2330186936255788117">Още отметки</translation>
 <translation id="2332515770639153015">Функцията за подобрена защита от Безопасно сърфиране е включена</translation>
 <translation id="233375395665273385">Изтриване и излизане от профила</translation>
 <translation id="2341410551640223969">Инсталирането на <ph name="WEBAPK_NAME"/> не бе успешно.</translation>
 <translation id="3587672679800759167">Общо място в хранилището, което се използва от Brave, включително за профили, отметки и запазени настройки</translation>
-<translation id="2349954856814571872">Икона на бутона за лентата на отметките</translation>
 <translation id="2767094839186957509">Декларация за поверителност на Brave</translation>
 <translation id="2359808026110333948">Напред</translation>
 <translation id="2362083820973145409">Влезли сте като <ph name="USER_NAME"/>. <ph name="USER_EMAIL"/>. Отваря настройките.</translation>
@@ -302,7 +307,6 @@
 <translation id="2496180316473517155">История на сърфирането</translation>
 <translation id="2497852260688568942">Синхронизирането е деактивирано от администратора ви</translation>
 <translation id="7229462727772664332">В Brave ще виждате дали сте влезли в профила си в <ph name="SITE_NAME"/>, както и съответните данни за сърфирането и сайта</translation>
-<translation id="2502798195266898572">Долният лист за режима на четене е отворен на пълната височина</translation>
 <translation id="2510106555128151389"><ph name="WEBAPK_NAME"/> се инсталира...</translation>
 <translation id="2512234228327349533">Търсене на опции за купуване</translation>
 <translation id="7222718784508482526">За още настройки за поверителността, сигурността и събирането на данни вижте <ph name="BEGIN_LINK"/>Синхронизиране и услуги на Brave<ph name="END_LINK"/></translation>
@@ -317,6 +321,7 @@
 <translation id="253498598929009420">Сайтът ще може да вижда съдържанието на екрана ви</translation>
 <translation id="2535807170289627159">Всички раздели</translation>
 <translation id="2536728043171574184">Преглеждате офлайн копие на страницата</translation>
+<translation id="2539002604555291451">Безсерифен</translation>
 <translation id="2542548955756682219"><ph name="TAB_TITLE"/> – раздел</translation>
 <translation id="2546283357679194313">„Бисквитки“ и данни за сайтове</translation>
 <translation id="1272534541032649011">Опцията ви за заключване на потребителския профил защитава информацията ви в автомобила, включително паролите, плащанията и др., запазени в профила ви в Brave.</translation>
@@ -326,7 +331,6 @@
 <translation id="2571834852878229351">Създаване на собствена парола</translation>
 <translation id="7242554556818074465">Влезте в профила си на всичките си устройства, за да виждате разделите си навсякъде, където използвате Brave</translation>
 <translation id="5021250666812601581"><ph name="MEMBER_FULL_NAME"/> (<ph name="EMAIL"/>) незабавно ще загуби достъп до групата раздели „<ph name="GROUP_NAME"/>“ и вече няма да може да взаимодейства с вас в услугите на Brave.</translation>
-<translation id="2579297619530305344">Известието „Паролите са достъпни на всичките ви устройства“ е отворено на пълната височина</translation>
 <translation id="2324920234469020158">Така ще се изчистят „бисквитките“, кешът и другата информация от сайтове, която не е важна за Brave.</translation>
 <translation id="2587052924345400782">Налице е по-нова версия</translation>
 <translation id="2593272815202181319">Непропорционален</translation>
@@ -351,7 +355,7 @@
 <translation id="2687009626279857299">Спря да работи на това устройство</translation>
 <translation id="2702516483241149200">Ново: споделяне на връзка, която превърта до този текст</translation>
 <translation id="2708226184420201102">Отваряне на <ph name="PRODUCT_NAME"/> в браузъра</translation>
-<translation id="271033894570825754">Създаване</translation>
+<translation id="271033894570825754">Нова колекция</translation>
 <translation id="2718352093833049315">Само при Wi-Fi</translation>
 <translation id="2718846868787000099">Сайтовете, които посещавате, могат да виждат предпочитанията ви, за да ви показват съдържание на предпочитаните от вас езици</translation>
 <translation id="2723001399770238859">звук</translation>
@@ -397,6 +401,7 @@
 <translation id="2904414404539560095">Списъкът с устройства, с които да се сподели даден раздел, е отворен на пълната височина.</translation>
 <translation id="2908243544703713905">Непрочетените материали са готови</translation>
 <translation id="7339921667754113786">Brave Notifications Platform</translation>
+<translation id="2918484639460781603">Към настройките</translation>
 <translation id="2923908459366352541">Името е невалидно</translation>
 <translation id="6355102470683871794">Хранилище на Brave <ph name="APP_NAME"/></translation>
 <translation id="2932222164150889403">Клавиатурата ви няма да се промени</translation>
@@ -413,17 +418,20 @@
 <translation id="2979639724566107830">Отваряне в нов прозорец</translation>
 <translation id="2983102365694924129">Въз основа на активността ви в даден сайт. Тази настройка е изключена.</translation>
 <translation id="2983398917942897288">Неактивно (<ph name="ITEM_COUNT"/>)</translation>
+<translation id="2983835398644161987">Изход от „Картина в картината“</translation>
 <translation id="5948666439178419683">Включване на съседния текст в търсенията с Brave</translation>
 <translation id="2988638966064514052">Подобрете паролите си</translation>
 <translation id="2989523299700148168">Наскоро посетени</translation>
 <translation id="2992473221983447149">Описания на изображенията</translation>
 <translation id="2996291259634659425">Създаване на пропуск</translation>
 <translation id="2996809686854298943">Изисква се URL адрес</translation>
+<translation id="3024215143424744261">Листът с предпочитания за режима на четене е затворен</translation>
 <translation id="3026955690410463085">Включване на връзката</translation>
 <translation id="3027644380269727216">Въз основа на активността ви в даден сайт. Тази настройка е включена.</translation>
 <translation id="3027950907978057636">От <ph name="APP_LABEL"/></translation>
 <translation id="3029276696788198026">Без предварително зареждане</translation>
 <translation id="3029704984691124060">Пропуските не са идентични</translation>
+<translation id="3029829659829245765"><ph name="TAB_TITLE"/> – избран фиксиран раздел</translation>
 <translation id="3036750288708366620"><ph name="BEGIN_LINK"/>Получете помощ<ph name="END_LINK"/></translation>
 <translation id="3037177537145227281">Цената се проследява</translation>
 <translation id="3251012123600267109">Показва подкани за влизане в Brave</translation>
@@ -479,6 +487,7 @@
 <translation id="3305130791745726624">Изпращане до устройства</translation>
 <translation id="3305795716056605962">Превеждайте страници от бутона „Още опции“</translation>
 <translation id="3307355280394823921">Отваряне на историята</translation>
+<translation id="3309978850836730073">Режимът на четене винаги е налице тук</translation>
 <translation id="331080746368555063">Частните сайтове може да включват различни неща, като например интранет на компанията ви</translation>
 <translation id="3311330810461485557">Търсете по приложение, дата и др.</translation>
 <translation id="3334729583274622784">Да се промени ли файловото разширение?</translation>
@@ -490,7 +499,6 @@
 <translation id="3384347053049321195">Споделяне на изображението</translation>
 <translation id="3387650086002190359">Изтеглянето на „<ph name="FILE_NAME"/>“ не бе успешно поради грешки във файловата система.</translation>
 <translation id="3414952576877147120">Размер:</translation>
-<translation id="3421726884497337397">Избиране кога да се блокират „бисквитките“ на трети страни</translation>
 <translation id="3430670036890315772">Изключването на функцията за заключване на потребителския профил ще премахне запазената ви информация</translation>
 <translation id="3435465986463792564">Отворили сте много прозорци? Можете да ги управлявате оттук</translation>
 <translation id="4114256890962999877">За да запазите достъпа до паролите си, експортирайте ги сега, актуализирайте услугите за Google Play и след това импортирайте паролите отново в Brave Мениджър на пароли. <ph name="BEGIN_LINK"/>Преглед на пълните инструкции<ph name="END_LINK"/>.</translation>
@@ -580,9 +588,9 @@
 <translation id="3823019343150397277">IBAN</translation>
 <translation id="38243391581572867">Обектив не е налице за този профил.</translation>
 <translation id="38258275871320156">Налице само за малки прозорци</translation>
-<translation id="3830886834687455630">Актуализирайте услугите за Google Play, за да проверите паролите си</translation>
 <translation id="3847319713229060696">Помогнете за всеобщото подобряване на сигурността в мрежата</translation>
 <translation id="385051799172605136">Назад</translation>
+<translation id="3851464569313827017"><ph name="SITE_ETLD_PLUS_ONE"/> вгражда съдържание от <ph name="IFRAME_ETLD_PLUS_ONE"/></translation>
 <translation id="3856096718352044181">Моля, проверете дали този доставчик е валиден или опитайте отново по-късно</translation>
 <translation id="3858860766373142691">Име</translation>
 <translation id="3863527519275151528">Известието се обработва</translation>
@@ -607,6 +615,7 @@
 <translation id="397105322502079400">Изчислява се...</translation>
 <translation id="397583555483684758">Синхронизирането спря да работи</translation>
 <translation id="3976396876660209797">Премахнете и създайте отново този пряк път</translation>
+<translation id="397650873162244514"><ph name="TAB_TITLE"/> – фиксиран раздел</translation>
 <translation id="3985022125189960801">Ако искате даден сайт да прави предположения за това какво харесвате, можете отново да го добавите в съответната група</translation>
 <translation id="3985215325736559418">Искате ли отново да изтеглите „<ph name="FILE_NAME"/>“?</translation>
 <translation id="3987993985790029246">Връзка: Коп.</translation>
@@ -615,10 +624,12 @@
 <translation id="5267293611589304570">{NUM_PASSWORDS,plural, =1{1 компрометирана парола в профила ви в Brave}other{# компрометирани пароли в профила ви в Brave}}</translation>
 <translation id="4016425174436051808">Следенето не е възможно. Нещо се обърка.</translation>
 <translation id="4024768890073681126">Браузърът се управлява от родител</translation>
+<translation id="4027569221211770437">Папка <ph name="FOLDER_TITLE"/></translation>
 <translation id="4034817413553209278">{HOURS,plural, =1{# ч}other{# ч}}</translation>
 <translation id="4042941173059740150">Продължаване към <ph name="SITE_ETLD_PLUS_ONE"/> чрез <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/></translation>
 <translation id="4044708993631234325">Долен лист</translation>
 <translation id="4045441967987592849">Повторно отваряне</translation>
+<translation id="4049920046559074950">Още опции за <ph name="INSTANCE_TITLE"/></translation>
 <translation id="4052419222954753986">{NUMBER_OF_TABS,plural, =1{<ph name="TABS_COUNT_ONE"/> стандартен раздел с нова активност в споделените групи раздели}other{<ph name="TABS_COUNT_MANY"/> стандартни раздела с нова активност в споделените групи раздели}}</translation>
 <translation id="405365679581583349">Актуализиране на услугите за Google Play</translation>
 <translation id="405399507749852140">Получаване на сигнали при понижение на цената в който и да е сайт</translation>
@@ -692,6 +703,7 @@
 <translation id="4380055775103003110">Ако проблемът не се отстрани, можете да изпробвате други начини за продължаване към <ph name="SITE_ETLD_PLUS_ONE"/>.</translation>
 <translation id="4384468725000734951">За търсене ще се използва Sogou</translation>
 <translation id="4387647248986092471">Задаване на опция за заключване на потребителския профил в автомобила</translation>
+<translation id="4387817230000841154">Отваряне на страницата „Изтегляния“</translation>
 <translation id="4401432223274567153">{INACTIVE_TIME_DAYS,plural, =1{Разделите и групите, които не са използвани от 1 или повече дни}other{Разделите и групите, които не са използвани от # или повече дни}}</translation>
 <translation id="4402611456429872546"><ph name="LANG"/> – изтегля се…</translation>
 <translation id="4404568932422911380">Няма отметки</translation>
@@ -705,7 +717,6 @@
 <translation id="4425173294238317796">Лист за потвърждение за ключа за достъп</translation>
 <translation id="442518031075347249">Вече няма да можете да използвате виртуалната си карта с Google Pay. <ph name="BEGIN_LINK1"/>Научете повече за виртуалните карти<ph name="END_LINK1"/></translation>
 <translation id="442577985493096785">{TAB_COUNT,plural, =1{<ph name="TAB_TITLE"/> и още <ph name="TAB_COUNT_ONE"/> раздел ще бъдат затворени}other{<ph name="TAB_TITLE"/> и още <ph name="TAB_COUNT_MANY"/> раздела ще бъдат затворени}}</translation>
-<translation id="4426508677408162512">Всички отметки</translation>
 <translation id="4430277756566635951">Понастоящем сте избрали: <ph name="EMAIL"/>. Изберете профил.</translation>
 <translation id="4452411734226507615">Затваряне на раздела „<ph name="TAB_TITLE"/>“</translation>
 <translation id="4452548195519783679">Отметката бе запазена в/ъв „<ph name="FOLDER_NAME"/>“</translation>
@@ -796,6 +807,7 @@
 <translation id="4807098396393229769">Име върху картата</translation>
 <translation id="480990236307250886">Отваряне на началната страница</translation>
 <translation id="4822710610088666676">Затворихте и запазихте групата раздели „<ph name="TAB_GROUP_TITLE"/>“</translation>
+<translation id="482405935591409882">Търсете в разделите и групите си</translation>
 <translation id="4834250788637067901">Начини на плащане, оферти и адреси посредством Google Pay</translation>
 <translation id="2593289874938379417">Brave няма достъп до заявения ресурс.</translation>
 <translation id="483742037940503070">{TAB_COUNT,plural, =1{Възстановяване на група раздели с(ъс) <ph name="COLOR_NAME"/> цвят, в която има <ph name="TAB_COUNT_ONE"/> раздел, като нова група на заден план.}other{Възстановяване на група раздели с(ъс) <ph name="COLOR_NAME"/> цвят, в която има <ph name="TAB_COUNT_MANY"/> раздела, като нова група на заден план.}}</translation>
@@ -857,7 +869,6 @@
 <translation id="4744980273298156620">Скоро ще виждате материали от <ph name="SITE_NAME"/>, когато отворите нов раздел. Сайтовете, които следвате, се запазват в профила ви в Brave. Можете да ги управлявате от настройките за Discover.</translation>
 <translation id="509429900233858213">Възникна грешка.</translation>
 <translation id="5096775069898886423">Получавайте предупреждения за сайтове, които не поддържат защитени връзки, преди да ги посетите</translation>
-<translation id="5097349930204431044">Посещаваните от вас сайтове могат да определят какво харесвате и след това да предлагат реклами, докато продължавате да сърфирате</translation>
 <translation id="510275257476243843">Остава 1 час</translation>
 <translation id="5114895953710637392">Листът за филтриране по приложение е затворен.</translation>
 <translation id="5115811374190515607">до <ph name="PRODUCT_NAME"/></translation>
@@ -891,7 +902,6 @@
 <translation id="5233638681132016545">Нов раздел</translation>
 <translation id="5235196193381275927">Нещо се обърка при влизането в профила</translation>
 <translation id="5246093389635966745">Редактиране на пряк път в лентата с инструменти</translation>
-<translation id="5252768492075585080">Настройки за „бисквитките“ на трети страни</translation>
 <translation id="5264813352784073502">последните 24 часа</translation>
 <translation id="5267572070504076962">Включете Безопасно сърфиране, за да получите защита срещу опасни сайтове</translation>
 <translation id="5271967389191913893">Устройството не може да отвори съдържанието за изтегляне.</translation>
@@ -936,7 +946,6 @@
 <translation id="5471273988133666918">Разделът „<ph name="TAB_TITLE"/>“ не може да бъде преместен</translation>
 <translation id="548278423535722844">Отваряне в приложение за карти</translation>
 <translation id="549660026907543296">Присъединяване като <ph name="MEMBER_FULL_NAME"/></translation>
-<translation id="5503125329065007089">Известието „Паролите са достъпни на всичките ви устройства“ е отворено на половината височина</translation>
 <translation id="5517326820028369152">Долен лист със скорошна активност</translation>
 <translation id="5526281268548144413">Затварянето в няколко прозореца не е възможно</translation>
 <translation id="5548606607480005320">Проверка на безопасността</translation>
@@ -960,6 +969,7 @@
 <translation id="5626134646977739690">Име:</translation>
 <translation id="5628604359369369630">Непрочетено – налице офлайн</translation>
 <translation id="5631483240431073854">Управление на отворените раздели</translation>
+<translation id="5632485077360054581">Покажете ми как</translation>
 <translation id="8459994515707449554">Влезли сте като <ph name="USER_NAME"/>. Грешка в профила в Brave. Отваря настройките.</translation>
 <translation id="3801854459269566477">Възможно е <ph name="BEGIN_LINK1"/>историята на търсенията<ph name="END_LINK1"/> и <ph name="BEGIN_LINK2"/>други видове активност<ph name="END_LINK2"/> да се запазват в профила ви в Brave</translation>
 <translation id="5648166631817621825">Последните 7 дни</translation>
@@ -970,7 +980,6 @@
 <translation id="5668833306439455813">Brave не може да провери за актуализации</translation>
 <translation id="5683916195767086779">Група раздели</translation>
 <translation id="5686790454216892815">Името на файла е твърде дълго</translation>
-<translation id="4809211418322514799">Brave автоматично изтрива сайтовете, посетени преди повече от 30 дни. Ако отново посетите даден сайт, той може пак да се покаже в списъка. Също така имате възможност да блокирате даден сайт, така че да не ви предлага реклами. Научете повече за <ph name="BEGIN_LINK"/>управлението на поверителността при рекламите в Brave<ph name="END_LINK"/>.</translation>
 <translation id="569536719314091526">Страницата може да бъде преведена на който и да е език чрез бутона за още опции</translation>
 <translation id="2320748512701464301">Brave може да ви защити от нарушения на сигурността на данните, опасни уебсайтове и др.</translation>
 <translation id="5698878456427040674">Проверете дали избраният профил се поддържа.</translation>
@@ -1069,6 +1078,7 @@
 <translation id="6125202119952209826">Присъединяване към групата раздели с(ъс) <ph name="OWNER_FIRST_NAME"/></translation>
 <translation id="6125864963080902918"><ph name="BEGIN_LINK"/>Още подробности<ph name="END_LINK"/></translation>
 <translation id="6127379762771434464">Елементът бе премахнат</translation>
+<translation id="6127860394906721547">Отваряне на групата раздели „<ph name="TITLE_OF_GROUP"/>“ с(ъс) <ph name="COLOR_NAME"/> цвят, която съдържа следните сайтове: <ph name="URL_LIST"/>.</translation>
 <translation id="6130303040046284160">Намаляване на раздела</translation>
 <translation id="6134168885321518274">Отваряне на лентата за търсене</translation>
 <translation id="6135608400322377268">{TAB_COUNT,plural, =1{<ph name="TAB_COUNT_ONE"/> раздел}other{<ph name="TAB_COUNT_MANY"/> раздела}}</translation>
@@ -1099,21 +1109,18 @@
 <translation id="6232535412751077445">Активирането на „Do Not Track“ означава, че с трафика ви на сърфиране ще се подава заявка. Ефектите зависят от това, дали уебсайтът ще отговори на нея и как ще я изтълкува.
 
 Някои уебсайтове например може да отговорят на тази заявка, като ви покажат реклами, които не се базират на други посетени от вас сайтове. Много уебсайтове ще продължат да събират и използват данните ви за сърфиране – например с цел подобряване на сигурността, предоставяне на съдържание, реклами и препоръки и генериране на статистически данни за отчитане.</translation>
-<translation id="623755660902014047">Режим на четене</translation>
 <translation id="8883879481897424949">Brave Мениджър на паролите</translation>
+<translation id="6248988683584659830">Търсене в „Настройки“</translation>
 <translation id="2715956954609894918">Вижте историята си в Brave тук</translation>
 <translation id="6254139308321626268">Преглеждате PDF файл</translation>
 <translation id="725280687245147974">С помощта на инструментите от Brave можете да сърфирате безопасно и да запазите контрол</translation>
 <translation id="6264376385120300461">Изтегляне въпреки това</translation>
 <translation id="6264485186158353794">Назад към безопасната страница</translation>
-<translation id="6267063201726531683">Долен лист за режима на четене</translation>
 <translation id="6277522088822131679">При отпечатването на страницата възникна проблем. Моля, опитайте отново.</translation>
 <translation id="6278428485366576908">Тема</translation>
-<translation id="6284472661216707937">Известието „Паролите са достъпни на всичките ви устройства“ е затворено</translation>
 <translation id="6291294824436685757">Изтриване на данните за сърфирането: изберете данните, които да бъдат изтрити</translation>
 <translation id="6295158916970320988">Всички сайтове</translation>
 <translation id="629730747756840877">Профил</translation>
-<translation id="6300697579369314762">Долният лист за режима на четене е отворен на половината височина</translation>
 <translation id="6301526076346731664">Отваряне на инструментите за програмисти</translation>
 <translation id="6303969859164067831">Изход от профила и изключване на синхронизирането</translation>
 <translation id="6307241780749477694">Потвърдете самоличността си, за да получите всичките си пароли на това устройство</translation>
@@ -1193,13 +1200,11 @@
 <translation id="6593061639179217415">Настолен сайт</translation>
 <translation id="6594347733515723558">Сорт./преглед на опциите</translation>
 <translation id="2466982615210189224">Изображенията се изпращат до Brave с цел подобряване на описанията за вас.</translation>
-<translation id="6904452514635238551">Когато сте влезли в Brave, паролите, които запазвате, ще се съхраняват в профила ви в Brave. За да изключите тази функция, <ph name="BEGIN_LINK"/>отворете настройките<ph name="END_LINK"/>.</translation>
 <translation id="661266467055912436">Подобрява сигурността за вас и всички потребители в мрежата.</translation>
 <translation id="8127050479140582768">За да изпратите този раздел до друго устройство, влезте в профила си в Brave и на двете устройства</translation>
 <translation id="6627583120233659107">Редактиране на папката</translation>
 <translation id="6636623428211296678">Разгледайте още настройки по-долу или завършете сега</translation>
 <translation id="7939692063031538305">С цел подобряване на приложението Brave изпраща до Brave данни за употребата и сривовете. <ph name="BEGIN_UMA_LINK"/>Управление<ph name="END_UMA_LINK"/></translation>
-<translation id="6640207029842583248">Блокиране във всички случаи</translation>
 <translation id="6641780377503683465">Премахване на <ph name="INTEREST"/></translation>
 <translation id="7556503430569358637">Посещаваните от вас URL адреси се изпращат до Brave с цел предвиждане на следващите страници, които е възможно да посетите</translation>
 <translation id="6648977384226967773">{CONTACT,plural, =1{<ph name="CONTACT_PREVIEW"/>\u2026 и още <ph name="NUMBER_OF_ADDITIONAL_CONTACTS"/>}other{<ph name="CONTACT_PREVIEW"/>\u2026 и още <ph name="NUMBER_OF_ADDITIONAL_CONTACTS"/>}}</translation>
@@ -1211,6 +1216,7 @@
 <translation id="6674571176963658787">За да стартирате синхронизирането, въведете пропуска си</translation>
 <translation id="3683330416566109578">Влезте в профила си в този сайт и в Brave</translation>
 <translation id="3385384709865894288">Подобряване на Brave</translation>
+<translation id="6689436252814043643">Няма достъп до режима на четене</translation>
 <translation id="6700279777779583398">Предпочитанията са запазени</translation>
 <translation id="670498945988402717">Проверено вчера</translation>
 <translation id="6710213216561001401">Предишно</translation>
@@ -1219,7 +1225,7 @@
 <translation id="7499197548870160669">В профила ви в Brave</translation>
 <translation id="6734310707649923383">Можете да видите посетените от вас страници или да ги изтриете от историята си</translation>
 <translation id="6738867403308150051">Изтегля се…</translation>
-<translation id="2275686406263739320">Посещаваните от вас сайтове обикновено запомнят нещата, които ви интересуват, за да персонализират практическата ви работа. Те също така могат да съхраняват в Brave информация за интересите ви.</translation>
+<translation id="6745063744988317486">Моно</translation>
 <translation id="6746338529702829275">Преглед на данните за профила ви</translation>
 <translation id="6751521182688001123">Бързо отваряне на нов раздел. За да редактирате този пряк път, докоснете и задръжте.</translation>
 <translation id="6752130751133944215">За да възстановите нов прозорец, намалете общия брой на активните и неактивните прозорци до не повече от <ph name="MAX_WINDOW_COUNT_MINUS_ONE"/>. Неактивните прозорци се изтриват след 6 месеца.</translation>
@@ -1231,6 +1237,7 @@
 <translation id="6767294960381293877">Списъкът с устройства, с които да се сподели даден раздел, е отворен на половин височина.</translation>
 <translation id="8174975477247159780">Допълнителни общи условия на Brave и Chrome OS</translation>
 <translation id="6786747875388722282">Разширения</translation>
+<translation id="6787600234697426339">Достигнато е ограничението от <ph name="MAX_INSTANCE_COUNT"/> прозореца</translation>
 <translation id="6795633245022906657">Бързо отваряне на нов раздел. За да редактирате този пряк път, отворете настройките.</translation>
 <translation id="4757665660890677272">Задайте Brave като браузър по подразбиране</translation>
 <translation id="679956319013005046">За да зададете предпочитаната от вас услуга за автоматично попълване, първо я добавете от <ph name="BEGIN_LINK"/>настройките на Android<ph name="END_LINK"/>.</translation>
@@ -1251,7 +1258,6 @@
 <translation id="6850830437481525139">Затворихте <ph name="TAB_COUNT"/> раздела</translation>
 <translation id="685340923442249391">{FILE_COUNT,plural, =1{Аудиофайлове, 1 аудиофайл в списъка}other{Аудиофайлове, # аудиофайла в списъка}}</translation>
 <translation id="4046835482356054431">Discover от Brave – изкл.</translation>
-<translation id="6861722405755529743">Бутон за допълнителни елементи в лентата на отметките</translation>
 <translation id="6864459304226931083">Изтегляне на изображението</translation>
 <translation id="686490460830618322">Лист за филтриране по приложение</translation>
 <translation id="6865313869410766144">Данни за автоматично попълване на формуляри</translation>
@@ -1289,6 +1295,7 @@
 <translation id="6964300328304469089">Понастоящем сте избрали: <ph name="NAME"/> (<ph name="EMAIL"/>). Изберете профил.</translation>
 <translation id="6965382102122355670">OK</translation>
 <translation id="6968350777423863208">{NUMBER_OF_TABS,plural, =1{Вижте <ph name="TABS_COUNT_ONE"/> раздел с нова активност в споделените групи раздели}other{Вижте <ph name="TABS_COUNT_MANY"/> раздела с нова активност в споделените групи раздели}}</translation>
+<translation id="6971555615916967190">Листът с предпочитания за режима на четене е отворен на половината височина</translation>
 <translation id="6971862865055170158">Отхвърляне</translation>
 <translation id="6976223255612495095"><ph name="TAB_TITLE"/> – нов или актуализиран раздел</translation>
 <translation id="6976811588313110624">Добавяне на нова клавишна комбинация.</translation>
@@ -1317,6 +1324,7 @@
 <translation id="7111822978084196600">Наименувайте този прозорец</translation>
 <translation id="7115358764509798967">Стандартно за системата</translation>
 <translation id="7117485132243600300">Управление на съдържанието, което следвате, и на предложените теми и търсения</translation>
+<translation id="7119984597597798764">Затваряне на <ph name="INSTANCE_TITLE"/></translation>
 <translation id="7136902389402789299">{NUM_SITES,plural, =1{Прегледани са разрешенията за 1 сайт}other{Прегледани са разрешенията за # сайта}}</translation>
 <translation id="7138678301420049075">Друго</translation>
 <translation id="7140829094791862589">Ръчно сортиране</translation>
@@ -1326,7 +1334,6 @@
 <translation id="1206376179559420424">Шифроването с пропуск не включва начините на плащане и адресите от Google Pay.
 
 За да промените тази настройка, <ph name="BEGIN_LINK"/>изтрийте данните от Brave в профила си<ph name="END_LINK"/>.</translation>
-<translation id="7151332203500147130">Долният лист за режима на четене е затворен</translation>
 <translation id="2679203756569766105">Научете повече за това защо Brave блокира някои файлове</translation>
 <translation id="7168323970702333693">Влезли сте като <ph name="USER_NAME"/>. Отваря настройките.</translation>
 <translation id="7173114856073700355">Към настройките</translation>
@@ -1376,6 +1383,7 @@
 <translation id="7375125077091615385">Тип:</translation>
 <translation id="7376560087009844242">С включването на повече текст от страницата може да виждате по-добри резултати, когато използвате функцията за търсене чрез докосване. Винаги можете да отворите <ph name="BEGIN_LINK"/>настройките<ph name="END_LINK"/>, за да промените това.</translation>
 <translation id="7379900596734708416">Налице е тъмна тема за сайтовете</translation>
+<translation id="7384486627147155832">Долният лист за известия със съвети е отворен на половината височина</translation>
 <translation id="7388615499319468910">Сайтовете и рекламодателите могат да разберат ефективността на рекламите. Тази настройка е изключена.</translation>
 <translation id="7400003506822844357">{FILE_COUNT,plural, =1{Други, 1 файл в списъка}other{Други, # файла в списъка}}</translation>
 <translation id="7400418766976504921">URL адрес</translation>
@@ -1407,6 +1415,7 @@
 <translation id="749294055653435199">Brave Обектив не е налице на устройството</translation>
 <translation id="7493994139787901920"><ph name="VERSION"/> (Актуализирано: <ph name="TIME_SINCE_UPDATE"/>)</translation>
 <translation id="7498271377022651285">Моля, изчакайте...</translation>
+<translation id="7501135638693251872">Всички отметки</translation>
 <translation id="750228856503700085">Не са налице актуализации</translation>
 <translation id="7507207699631365376">Вижте <ph name="BEGIN_LINK"/>декларацията за поверителност<ph name="END_LINK"/> на този доставчик</translation>
 <translation id="750886945254958667">Запазете тази група, за да добавяте раздели по-късно, или я напуснете, ако вече не искате достъп до нея</translation>
@@ -1543,6 +1552,7 @@
 <translation id="8088176524274673045">За да споделите с хората в близост, те трябва да сканират този QR код</translation>
 <translation id="8090732854597034573">Ако се нуждаете от помощ, попитайте родителя си</translation>
 <translation id="8101414242770404289">Няма раздели от <ph name="TIME_PERIOD"/></translation>
+<translation id="810433609302852">Долен лист за функцията за известия със съвети и съответните стъпки за използване</translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/><ph name="SEPARATOR"/><ph name="FILE_SIZE"/></translation>
 <translation id="8107530384992929318">Затваряне на опциите за сортиране</translation>
 <translation id="2919733817273403520">Помощ за подобряването на функциите и ефективността на Brave</translation>
@@ -1570,7 +1580,6 @@
 <translation id="8212799748012101103">Отваряне на търсенето на раздели</translation>
 <translation id="8215740705341534369">Страничен лист</translation>
 <translation id="8218622182176210845">Управление на профила ви</translation>
-<translation id="4034729701971511794">Можете да блокирате нежеланите сайтове. Също така Brave автоматично изтрива от списъка сайтовете, посетени преди повече от 30 дни. <ph name="BEGIN_LINK"/>Научете повече<ph name="END_LINK"/></translation>
 <translation id="8221985041778490865">Данните за сърфирането се изтриват</translation>
 <translation id="8223642481677794647">Меню на картата за емисията</translation>
 <translation id="82296173028782770">Редактиране на заявката за търсене: <ph name="SEARCH_QUERY"/></translation>
@@ -1579,7 +1588,6 @@
 <translation id="8243077599929149377">Добавете потребителското си име</translation>
 <translation id="8244387390464017490">Персонализ. на новия раздел</translation>
 <translation id="8250920743982581267">Документи</translation>
-<translation id="8255617931166444521">Сайтовете могат да използват „бисквитките“ ви, за да следят активността ви при сърфиране само в собствените си уеб страници</translation>
 <translation id="8258999165172757081">Добавено</translation>
 <translation id="2876689296031086375">Тъй като заредените предварително страници са шифровани, Brave няма да получава информация за съдържанието им. Сървърите ни обаче ще научават за кои сайтове е извършено частно предварително зареждане. Тази информация се използва само за предварителното зареждане на страниците и не се свързва с други данни от профила ви в Brave.</translation>
 <translation id="8260126382462817229">Опитайте да влезете отново</translation>
@@ -1665,9 +1673,9 @@
 <translation id="8611922158252451755">Всеки, който разполага с връзката, може да редактира всички раздели, затова споделяйте разумно. Връзката изтича след 48 часа.</translation>
 <translation id="5784514951651328424">В профила ви в Brave може да има други видове история на сърфиране, съхранявани на адрес <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="8617240290563765734">Да се отвори ли предложеният URL адрес, посочен в изтегленото съдържание?</translation>
+<translation id="8634050254805484913">Скриване на тесни екрани</translation>
 <translation id="8635399646025169806">Искате ли да запазите групата раздели?</translation>
 <translation id="8636825310635137004">Включете синхронизирането, за да получите разделите си от другите си устройства.</translation>
-<translation id="864544049772947936">Управление на прозорците (<ph name="INSTANCE_COUNTS"/>)</translation>
 <translation id="8662474268934425487">Вход в(ъв) <ph name="SITE_ETLD_PLUS_ONE"/></translation>
 <translation id="8664979001105139458">Името на файла вече съществува</translation>
 <translation id="8676276370198826499">Регистрирайте се за <ph name="SITE_ETLD_PLUS_ONE"/> чрез <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/></translation>
@@ -1691,7 +1699,6 @@
 <translation id="8766529642647037772">Да се създаде ли откроена връзка като тази?</translation>
 <translation id="8788265440806329501">Историята на навигацията е затворена</translation>
 <translation id="8790193082819560975">Докоснете, за да търсите опции за купуване на продукта в нов раздел.</translation>
-<translation id="879027982257117598">Ако например посетите даден сайт, в който се продават обувки за бягане на дълги разстояния, той може да определи, че се интересувате от маратони. В случай че по-късно посетите друг сайт, е възможно той да ви покаже реклама на обувки за бягане, предложена от първия сайт.</translation>
 <translation id="8798449543960971550">Прочетени</translation>
 <translation id="8803526663383843427">Когато е включено</translation>
 <translation id="2508649107031454563">{ITEMS_COUNT,plural, =1{Елементът е запазен в профила ви в Brave (<ph name="ACCOUNT_EMAIL"/>).}other{Елементите са запазени в профила ви в Brave (<ph name="ACCOUNT_EMAIL"/>).}}</translation>
@@ -1699,7 +1706,6 @@
 <translation id="8812260976093120287">На някои уебсайтове можете да извършвате плащания чрез посочените по-горе поддържани приложения за плащане на устройството ви.</translation>
 <translation id="8816556050903368450">Включително връзката: <ph name="ORIGIN"/></translation>
 <translation id="881688628773363275">Не е възможна визуализация на съдържанието на раздела.</translation>
-<translation id="8820817407110198400">Отметки</translation>
 <translation id="8824359129672223138">Можете да отворите най-много <ph name="MAX_WINDOW_COUNT"/> прозореца.</translation>
 <translation id="8835786707922974220">Обезпечете си непрекъснат достъп до запазените си пароли</translation>
 <translation id="883806473910249246">При изтеглянето на съдържанието възникна грешка.</translation>
@@ -1773,6 +1779,7 @@
 <translation id="9157212632995922070">Изберете профил, за да продължите към <ph name="SITE_ETLD_PLUS_ONE"/></translation>
 <translation id="9158770349521403363">Споделяне само на съдържанието</translation>
 <translation id="9161172953291434881">Доверявате ли данните си на този сайт?</translation>
+<translation id="916607977885256133">Картина в картината</translation>
 <translation id="9168847423516963845">Преместване на адресната лента в долната част</translation>
 <translation id="9169507124922466868">Историята на навигацията е наполовина отворена</translation>
 <translation id="9189607089796819144">Искате ли да изтеглите „<ph name="FILE_NAME"/>“ (<ph name="FILE_SIZE"/>) въпреки това?</translation>
@@ -1792,6 +1799,7 @@
 <translation id="930124987204876019">Изтриване на историята, „бисквитките“, данните за сайтове и кеша…</translation>
 <translation id="938850635132480979">Грешка: <ph name="ERROR_CODE"/></translation>
 <translation id="939598580284253335">Въведете пропуск</translation>
+<translation id="945522503751344254">Изпращане на отзиви</translation>
 <translation id="5406914950576900927">Brave може да използва <ph name="BEGIN_BOLD"/>Sogou<ph name="END_BOLD"/> за търсене в Китай. Можете да промените това от <ph name="BEGIN_LINK"/>Настройки<ph name="END_LINK"/>.</translation>
 <translation id="961856697154696964">Данни за сърфир.: Изтриване</translation>
 <translation id="963246339335003378">Отваряне на „Диспечер на задачите“</translation>
@@ -1808,12 +1816,11 @@
 <translation id="5711390076756601471">Заключване на поверителни раздели при излизане от Brave</translation>
 <translation id="1014490034578104945">Използвайте заключване на екрана, за да видите отворени поверителни раздели</translation>
 <translation id="383007806262310953">Показване на лентата на отметките</translation>
-<translation id="5722020415664104421">Блокиране при използването на поверителен режим</translation>
-<translation id="8915136961932734044">Докато сте в поверителен режим, сайтовете не могат да използват бисквитките ви, за да следят активността ви при сърфиране в различни сайтове, например за персонализиране на реклами. Функциите в някои сайтове може да не работят правилно.</translation>
 <translation id="2589970573128789862">Поверителен режим на Brave</translation>
 <translation id="5809126106485463836">Поверителният режим запазва сърфирането ви поверително за другите, които използват устройството ви</translation>
 <translation id="2633278372998075009">Поверителни раздели</translation>
 <translation id="8810805383611013660">Отваряне в поверителен раздел</translation>
+<translation id="5556722972306334687">Отваряне в поверителен прозорец</translation>
 <translation id="3110967157686007724">Поверителен раздел</translation>
 <translation id="1961291599064731706">Сайтовете, които посещавате, не са запазени в поверителния режим</translation>
 <translation id="3442126301004443274">За да изтриете хронологията на сърфиране в поверителен режим от устройството си, затворете всички поверителни раздели.</translation>
@@ -1824,16 +1831,20 @@
 <translation id="5278260521317049275">Включване на функцията за поверително заключване</translation>
 <translation id="6302653771627628530">Поверителните раздели ще бъдат заключени, когато излезете от Brave</translation>
 <translation id="4167670741834902166">Нов поверителен раздел</translation>
-<translation id="4471385409549756595">Нов прозорец в режим „инкогнито“</translation>
+<translation id="5760418762676108038">Нов поверителен прозорец</translation>
+<translation id="408336132633586393">Поверителен прозорец</translation>
 <translation id="8120164982795455341">Нов поверителен раздел</translation>
 <translation id="3377025655491224618">Поверителен раздел</translation>
 <translation id="1988906120194081364">Преминаване към Поверително</translation>
 <translation id="4300497327999623298">Изход от Поверително</translation>
+<translation id="8820817407110198400">Лента на отметките</translation>
 <translation id="4968908871398201967">Поверителен режим</translation>
 <translation id="8448127664493413656">Влизане в поверителен режим</translation>
 <translation id="6484416399492735324">Излезане от поверителния режим</translation>
 <translation id="4639461638460276789"><ph name="TAB_TITLE"/>, поверителен раздел</translation>
 <translation id="1315014485411054095"><ph name="TAB_TITLE"/>, избран поверителен раздел</translation>
+<translation id="4306060575297422191"><ph name="TAB_TITLE"/>, Закачен поверителен раздел</translation>
+<translation id="6401852251745802167"><ph name="TAB_TITLE"/>, Избран закачен поверителен раздел</translation>
 <translation id="2280910239864711607">Отворяне на нов раздел в поверителен режим</translation>
 <translation id="7770295979628466744">Показване или скриване на отметките</translation>
 <translation id="5048396920203761159">{TAB_COUNT, plural,

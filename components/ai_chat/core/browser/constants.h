@@ -15,6 +15,7 @@
 #include "base/containers/fixed_flat_set.h"
 #include "base/containers/span.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "ui/base/webui/web_ui_util.h"
 
 namespace ai_chat {
@@ -34,6 +35,17 @@ inline constexpr char kLeoModelSupportUrl[] =
 
 inline constexpr char kLeoGoPremiumUrl[] =
     "https://account.brave.com/account/?intent=checkout&product=leo";
+
+inline constexpr char kLeoRefreshPremiumSessionUrl[] =
+    "https://account.brave.com/?intent=recover&product=leo";
+
+inline constexpr char kLeoStorageSupportUrl[] =
+    "https://support.brave.app/hc/en-us/articles/"
+    "32663367857549-How-do-I-use-Chat-History-in-Brave-Leo";
+
+inline constexpr char kLeoBraveSearchSupportUrl[] =
+    "https://support.brave.app/hc/en-us/articles/"
+    "27586048343309-How-does-Leo-get-current-information";
 
 inline constexpr char kBraveAIChatCustomizationSubPage[] =
     "leo-ai/customization";

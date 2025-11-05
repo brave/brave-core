@@ -246,4 +246,25 @@ TEST(ProtoConversionTest, DeserializeToolUseEvent_InvalidContentBlocks) {
             "Valid text");
 }
 
+TEST(ProtoConversionTest, SerializeDeserializeSkillEntry) {
+  // Create mojom SkillEntry
+  auto mojom_entry =
+      mojom::SkillEntry::New("summarize", "Please summarize this content");
+
+  // Serialize to proto
+  store::SkillEntryProto proto_entry;
+  SerializeSkillEntry(mojom_entry, &proto_entry);
+
+  // Verify proto data
+  EXPECT_EQ(proto_entry.shortcut(), "summarize");
+  EXPECT_EQ(proto_entry.prompt(), "Please summarize this content");
+
+  // Deserialize back to mojom
+  auto deserialized_entry = DeserializeSkillEntry(proto_entry);
+
+  // Verify deserialized data matches original
+  EXPECT_EQ(deserialized_entry->shortcut, mojom_entry->shortcut);
+  EXPECT_EQ(deserialized_entry->prompt, mojom_entry->prompt);
+}
+
 }  // namespace ai_chat

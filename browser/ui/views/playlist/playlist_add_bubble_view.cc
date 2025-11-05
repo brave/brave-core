@@ -19,7 +19,7 @@
 #include "brave/browser/ui/views/playlist/playlist_bubbles_controller.h"
 #include "brave/browser/ui/views/playlist/playlist_edit_bubble_view.h"
 #include "brave/browser/ui/views/playlist/thumbnail_provider.h"
-#include "brave/components/playlist/browser/playlist_tab_helper.h"
+#include "brave/components/playlist/content/browser/playlist_tab_helper.h"
 #include "chrome/grit/generated_resources.h"
 #include "third_party/skia/include/core/SkColor.h"
 #include "ui/base/l10n/l10n_util.h"

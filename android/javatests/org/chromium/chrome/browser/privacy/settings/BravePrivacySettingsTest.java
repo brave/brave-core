@@ -49,7 +49,7 @@ public class BravePrivacySettingsTest {
             "incognito_tracking_protections";
     private static final String PREF_ADVANCED_PROTECTION_INFO = "advanced_protection_info";
 
-    private static final int BRAVE_PRIVACY_SETTINGS_NUMBER_OF_ITEMS = 30;
+    private static final int BRAVE_PRIVACY_SETTINGS_NUMBER_OF_ITEMS = 29;
 
     private int mItemsLeft;
 

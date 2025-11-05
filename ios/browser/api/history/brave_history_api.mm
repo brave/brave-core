@@ -267,7 +267,7 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
       /*response_code_category*/
       history::VisitResponseCodeCategory::kNot404,
       /*did_replace_entry=*/false, /*consider_for_ntp_most_visited=*/true,
-      /*is_ephemeral*/ false,
+      history::VisitContextEphemerality::kNotEphemeral,
       /*title*/ base::SysNSStringToUTF16(history.title));
 
   history_service_->AddPage(args);
@@ -412,6 +412,7 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
         historyAPI->history_service_->GetDomainDiversity(
             base::Time::Now(), /*number_of_days_to_report*/ 1,
             static_cast<history::DomainMetricType>(type),
+            history::VisitQuery404sPolicy::kExclude404s,
             base::BindOnce(
                 ^(std::pair<history::DomainDiversityResults,
                             history::DomainDiversityResults> metrics) {

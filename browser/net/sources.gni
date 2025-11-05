@@ -76,7 +76,6 @@ brave_browser_net_deps = [
   "//brave/components/decentralized_dns/content",
   "//brave/components/decentralized_dns/core",
   "//brave/components/geolocation",
-  "//brave/components/localhost_permission",
   "//brave/components/query_filter",
   "//brave/components/safebrowsing",
   "//brave/components/speech_to_text",

@@ -1,63 +1,65 @@
 {
-  "configurations": [{
-    "dashboard-bot-name": "pixel4",
-    "browser-type": "brave",
-    "profile": "brave-typical-android",
-    "extra-browser-args": [],
-    "extra-benchmark-args": [],
-    "save-artifacts": true,
-  }],
-  "benchmarks": [
+  'configurations': [
     {
-      "name": "system_health.memory_mobile",
-      "pageset-repeat": 10,
-      "stories": [
-        "load:site:example:2023",
+      'dashboard-bot-name': 'pixel4',
+      'browser-type': 'brave',
+      'profile': 'brave-typical-android',
+      'extra-browser-args': [],
+      'extra-benchmark-args': [],
+      'save-artifacts': true,
+    },
+  ],
+  'benchmarks': [
+    {
+      'name': 'system_health.memory_mobile',
+      'pageset-repeat': 10,
+      'stories': [
+        'load:site:example:2023',
         // temporarily disabled: https://github.com/brave/brave-browser/issues/47803
         // "load:site:brave_search:2023",
-        "load:site:wikipedia:2023",
-        "load:site:bbc:2023",
-      ]
+        'load:site:wikipedia:2023',
+        'load:site:bbc:2023',
+      ],
     },
     {
-      "name": "system_health.common_mobile",
-      "pageset-repeat": 10,
-      "stories": [
-        "load:site:example:2023",
+      'name': 'system_health.common_mobile',
+      'pageset-repeat': 10,
+      'stories': [
+        'load:site:example:2023',
         // temporarily disabled: https://github.com/brave/brave-browser/issues/47803
         // "load:site:brave_search:2023",
-        "load:site:wikipedia:2023",
-        "load:site:bbc:2023",
-      ]
+        'load:site:wikipedia:2023',
+        'load:site:bbc:2023',
+      ],
     },
     {
-      "name": "speedometer3",
-      "pageset-repeat": 10
+      'name': 'speedometer3',
+      'pageset-repeat': 10,
     },
     {
-      "name": "jetstream2",
-      "pageset-repeat": 5
+      'name': 'jetstream2',
+      'pageset-repeat': 5,
     },
     {
-      "name": "rendering.mobile",
-      "pageset-repeat": 3,
-      "stories": [
-        "motionmark_ramp_canvas_arcs",
-        "motionmark_ramp_canvas_lines",
-        "motionmark_ramp_design",
-        "motionmark_ramp_leaves",
-        "motionmark_ramp_paths",
-        "motionmark_ramp_suits",
+      'name': 'rendering.mobile',
+      'pageset-repeat': 3,
+      'stories': [
+        'motionmark_ramp_canvas_arcs',
+        'motionmark_ramp_canvas_lines',
+        'motionmark_ramp_design',
+        'motionmark_ramp_leaves',
+        'motionmark_ramp_paths',
+        'motionmark_ramp_suits',
 
         // "motionmark_ramp_images" is disabled, not enough buffer
-      ]
+      ],
     },
     {
-      "name": "speedometer2",
-      "pageset-repeat": 1
+      'name': 'speedometer2',
+      'pageset-repeat': 1,
     },
     {
-      "name": "apk_size",
+      'name': 'apk_size',
     },
-  ]
+  ],
 }

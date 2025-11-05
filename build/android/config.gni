@@ -22,6 +22,7 @@ brave_android_manifest_includes = [
 
 brave_chrome_java_deps = [
   "//brave/android/java/org/chromium/chrome/browser/search_engines:java",
+  "//brave/brave_domains/android:java",
   "//brave/browser/customize_menu/android:java",
   "//brave/browser/download/android:java",
   "//brave/browser/notifications/android:brave_java",
@@ -29,6 +30,7 @@ brave_chrome_java_deps = [
   "//brave/browser/password_entry_edit:public_java",
   "//brave/browser/quick_search_engines/android:java",
   "//brave/browser/safe_browsing/android/java/src/org/chromium/chrome/browser/safe_browsing/settings:java",
+  "//brave/browser/skus/android:java",
   "//brave/browser/tab_group_sync:java",
   "//brave/browser/tabmodel/android:java",
   "//brave/browser/ui/android/logo:java",
@@ -36,6 +38,7 @@ brave_chrome_java_deps = [
   "//brave/browser/ui/android/theme:java",
   "//brave/browser/ui/android/toolbar:java",
   "//brave/components/ai_chat/core/common/mojom:mojom_java",
+  "//brave/components/brave_ads/core/mojom:mojom_java",
   "//brave/components/brave_news/common:mojom_java",
   "//brave/components/brave_rewards/core/mojom:mojom_java",
   "//brave/components/brave_shields/core/common:mojom_java",
@@ -45,9 +48,10 @@ brave_chrome_java_deps = [
   "//brave/components/browser_ui/notifications/android:java",
   "//brave/components/browser_ui/site_settings/android:java",
   "//brave/components/misc_metrics/common:mojom_java",
-  "//brave/components/playlist/common/mojom:mojom_java",
+  "//brave/components/playlist/core/common/mojom:mojom_java",
   "//brave/components/safe_browsing/android:brave_safe_browsing_java",
-  "//brave/components/url_sanitizer/common/mojom:mojom_java",
+  "//brave/components/skus/common:mojom_java",
+  "//brave/components/url_sanitizer/core/common/mojom:mojom_java",
   "//brave/components/variations/android:java",
   "//brave/components/version_info/android:java",
   "//brave/components/webcompat_reporter/common:mojom_java",
@@ -94,6 +98,7 @@ brave_chrome_java_srcjar_deps = [
 ]
 
 brave_chrome_app_java_resources_deps = [
+  "//brave/android:java_resources",
   "//brave/browser/quick_search_engines/android:java_resources",
   "//brave/build/android:android_brave_strings_grd",
 ]
@@ -132,7 +137,6 @@ brave_jni_headers_sources = [
   "//brave/android/java/org/chromium/chrome/browser/preferences/website/BraveShieldsContentSettings.java",
   "//brave/android/java/org/chromium/chrome/browser/shields/FilterListServiceFactory.java",
   "//brave/android/java/org/chromium/chrome/browser/shields/UrlSanitizerServiceFactory.java",
-  "//brave/android/java/org/chromium/chrome/browser/speedreader/BraveSpeedReaderUtils.java",
   "//brave/android/java/org/chromium/chrome/browser/sync/BraveSyncDevices.java",
   "//brave/android/java/org/chromium/chrome/browser/util/BraveReferrer.java",
   "//brave/android/java/org/chromium/chrome/browser/vpn/BraveVpnNativeWorker.java",

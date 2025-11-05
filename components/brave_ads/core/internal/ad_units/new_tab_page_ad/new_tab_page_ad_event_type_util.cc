@@ -5,24 +5,24 @@
 
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_event_type_util.h"
 
-#include <string_view>
-
 #include "base/containers/fixed_flat_map.h"
+#include "base/containers/map_util.h"
+#include "base/types/optional_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 namespace brave_ads {
 
 namespace {
 
-constexpr char kServedImpressionAdEventType[] = "served";
-constexpr char kViewedImpressionAdEventType[] = "view";
-constexpr char kClickedAdEventType[] = "click";
-constexpr char kInteractionAdEventType[] = "interaction";
-constexpr char kMediaPlayAdEventType[] = "media_play";
-constexpr char kMedia25AdEventType[] = "media_25";
-constexpr char kMedia100AdEventType[] = "media_100";
+constexpr std::string_view kServedImpressionAdEventType = "served";
+constexpr std::string_view kViewedImpressionAdEventType = "view";
+constexpr std::string_view kClickedAdEventType = "click";
+constexpr std::string_view kInteractionAdEventType = "interaction";
+constexpr std::string_view kMediaPlayAdEventType = "media_play";
+constexpr std::string_view kMedia25AdEventType = "media_25";
+constexpr std::string_view kMedia100AdEventType = "media_100";
 
-constexpr auto kNewTabPageAdEventTypeMap =
+constexpr auto kStringToMojomMap =
     base::MakeFixedFlatMap<std::string_view, mojom::NewTabPageAdEventType>({
         {kServedImpressionAdEventType,
          mojom::NewTabPageAdEventType::kServedImpression},
@@ -38,18 +38,12 @@ constexpr auto kNewTabPageAdEventTypeMap =
 }  // namespace
 
 std::optional<mojom::NewTabPageAdEventType> ToMojomNewTabPageAdEventType(
-    const std::string& event_type) {
-  const auto iter = kNewTabPageAdEventTypeMap.find(event_type);
-  if (iter == kNewTabPageAdEventTypeMap.cend()) {
-    return std::nullopt;
-  }
-
-  return iter->second;
+    std::string_view value) {
+  return base::OptionalFromPtr(base::FindOrNull(kStringToMojomMap, value));
 }
 
-std::string FromMojomNewTabPageAdEventType(
-    const mojom::NewTabPageAdEventType& event_type) {
-  switch (event_type) {
+std::string_view ToString(mojom::NewTabPageAdEventType value) {
+  switch (value) {
     case mojom::NewTabPageAdEventType::kServedImpression:
       return kServedImpressionAdEventType;
     case mojom::NewTabPageAdEventType::kViewedImpression:

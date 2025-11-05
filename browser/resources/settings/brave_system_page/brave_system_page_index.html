@@ -20,20 +20,32 @@
   </settings-system-page>
 
   <!-- <if expr="enable_brave_vpn_wireguard"> -->
-  <settings-brave-vpn-page
-    id="vpn"
-    slot="view"
-    prefs="{{prefs}}">
-  </settings-brave-vpn-page>
+  <template is="dom-if" if="[[showVPNPage_]]">
+    <settings-brave-vpn-page
+      id="vpn"
+      slot="view"
+      prefs="{{prefs}}">
+    </settings-brave-vpn-page>
+  </template>
   <!-- </if> -->
 
-  <settings-memory-page slot="view" id="memory" prefs="{{prefs}}">
+  <settings-memory-page slot="view" id="memory" prefs="{{prefs}}" in-search-mode="[[inSearchMode_]]">
   </settings-memory-page>
 
-  <settings-brave-shortcuts-page
-    id="shortcuts"
-    slot="view"
-    prefs="{{prefs}}"
-    data-parent-view-id="system">
-  </settings-brave-shortcuts-page>
+  <template is="dom-if" if="[[showBatterySettings_]]">
+    <settings-battery-page slot="view" id="battery" prefs="{{prefs}}"
+      hidden="[[!showBatterySettings_]]"
+      in-search-mode="[[inSearchMode_]]">
+    </settings-battery-page>
+  </template>
+
+  <template is="dom-if" if="[[showShortcutsPage_]]">
+    <settings-brave-shortcuts-page
+      id="shortcuts"
+      slot="view"
+      prefs="{{prefs}}"
+      data-parent-view-id="system"
+      in-search-mode="[[inSearchMode_]]">
+    </settings-brave-shortcuts-page>
+  </template>
 </cr-view-manager>

@@ -8,6 +8,7 @@
 #include <optional>
 #include <string>
 
+#include "base/no_destructor.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_account/endpoints/endpoint_test.h"
 #include "net/http/http_status_code.h"
@@ -22,18 +23,19 @@ bool operator==(const PasswordFinalize::Response& lhs,
 
 using PasswordFinalizeTestCase = EndpointTestCase<PasswordFinalize>;
 
-// TODO(https://github.com/brave/brave-browser/issues/48713): This is a case of
-// `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
-// added in the meantime to fix the build error. Remove this attribute and
-// provide a proper fix.
-[[clang::no_destroy]] const PasswordFinalizeTestCase kSuccess{
-    .test_name = "success",
-    .http_status_code = net::HTTP_OK,
-    .raw_reply = R"({ "authToken": null,
-                                                          "requiresEmailVerification": true,
-                                                          "requiresTwoFA": false,
-                                                          "sessionsInvalidated": false })",
-    .reply = PasswordFinalize::Response()};
+namespace {
+
+const PasswordFinalizeTestCase* Success() {
+  static const base::NoDestructor<PasswordFinalizeTestCase> kSuccess(
+      {.test_name = "success",
+       .http_status_code = net::HTTP_OK,
+       .raw_reply = R"({ "authToken": null,
+                         "requiresEmailVerification": true,
+                         "requiresTwoFA": false,
+                         "sessionsInvalidated": false })",
+       .reply = PasswordFinalize::Response()});
+  return kSuccess.get();
+}
 
 // clang-format off
 // application/json errors:
@@ -49,37 +51,37 @@ using PasswordFinalizeTestCase = EndpointTestCase<PasswordFinalize>;
 // - HTTP 5XX:
 //   - { "code": 0, "error": "Internal Server Error", "status": <5xx> }
 // clang-format on
-// TODO(https://github.com/brave/brave-browser/issues/48713): This is a case of
-// `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
-// added in the meantime to fix the build error. Remove this attribute and
-// provide a proper fix.
-[[clang::no_destroy]] const PasswordFinalizeTestCase kApplicationJsonError{
-    .test_name = "application_json_error",
-    .http_status_code = net::HTTP_BAD_REQUEST,
-    .raw_reply =
-        R"({ "code": 14002,
-             "error": "interim password state has expired",
-             "status": 400 })",
-    .reply = base::unexpected([] {
-      PasswordFinalize::Error error;
-      error.code = 14002;
-      error.error = "interim password state has expired";
-      error.status = 400;
-      return error;
-    }())};
+const PasswordFinalizeTestCase* ApplicationJsonError() {
+  static const base::NoDestructor<PasswordFinalizeTestCase>
+      kApplicationJsonError({.test_name = "application_json_error",
+                             .http_status_code = net::HTTP_BAD_REQUEST,
+                             .raw_reply = R"(
+                               { "code": 14002,
+                                 "error": "interim password state has expired",
+                                 "status": 400 }
+                              )",
+                             .reply = base::unexpected([] {
+                               PasswordFinalize::Error error;
+                               error.code = base::Value(14002);
+                               return error;
+                             }())});
+  return kApplicationJsonError.get();
+}
 
 // non-application/json errors:
 // - HTTP 5XX:
 //   - plain text errors returned by AWS/load balancer
-// TODO(https://github.com/brave/brave-browser/issues/48713): This is a case of
-// `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
-// added in the meantime to fix the build error. Remove this attribute and
-// provide a proper fix.
-[[clang::no_destroy]] const PasswordFinalizeTestCase kNonApplicationJsonError{
-    .test_name = "non_application_json_error",
-    .http_status_code = net::HTTP_INTERNAL_SERVER_ERROR,
-    .raw_reply = "non-application/json error",
-    .reply = base::unexpected(std::nullopt)};
+const PasswordFinalizeTestCase* NonApplicationJsonError() {
+  static const base::NoDestructor<PasswordFinalizeTestCase>
+      kNonApplicationJsonError(
+          {.test_name = "non_application_json_error",
+           .http_status_code = net::HTTP_INTERNAL_SERVER_ERROR,
+           .raw_reply = "non-application/json error",
+           .reply = base::unexpected(std::nullopt)});
+  return kNonApplicationJsonError.get();
+}
+
+}  // namespace
 
 using PasswordFinalizeTest = EndpointTest<PasswordFinalize>;
 
@@ -89,9 +91,9 @@ TEST_P(PasswordFinalizeTest, HandlesReplies) {
 
 INSTANTIATE_TEST_SUITE_P(PasswordFinalizeTestCases,
                          PasswordFinalizeTest,
-                         testing::Values(&kSuccess,
-                                         &kApplicationJsonError,
-                                         &kNonApplicationJsonError),
-                         PasswordFinalizeTest::NameGenerator);
+                         testing::Values(Success(),
+                                         ApplicationJsonError(),
+                                         NonApplicationJsonError()),
+                         PasswordFinalizeTest::kNameGenerator);
 
 }  // namespace brave_account::endpoints

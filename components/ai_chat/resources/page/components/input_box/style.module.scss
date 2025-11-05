@@ -4,6 +4,9 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 .form {
+  --editable-padding: 12px var(--leo-spacing-xl) 8px var(--leo-spacing-xl);
+  --editable-max-height: 300px;
+
   border-radius: var(--leo-radius-xl);
   border: 1px solid var(--leo-color-divider-subtle);
   width: 100%;
@@ -11,62 +14,11 @@
   color: var(--leo-color-text-primary);
   position: relative;
   transition: all 0.2s ease-in-out;
-
-  &:has(textarea:disabled) {
-    border-color: var(--leo-color-divider-subtle);
-    background: var(--leo-color-container-highlight);
-
-    &::placeholder {
-      color: var(--leo-color-text-tertiary);
-    }
-  }
 }
+
 .form:hover,
 .form:focus-visible {
   box-shadow: var(--leo-effect-elevation-01);
-}
-
-.growWrap {
-  display: grid;
-  grid-template-columns: 1fr;
-  max-height: 300px;
-  overflow-y: auto;
-
-  textarea {
-    width: 100%;
-    resize: none;
-    background-color: transparent;
-    border: 0;
-    overflow: hidden;
-
-    &:focus {
-      outline: none;
-    }
-    &::placeholder {
-      color: var(--leo-color-text-tertiary);
-    }
-  }
-
-  &::after {
-    content: attr(data-replicated-value) ' ';
-    white-space: pre-wrap;
-    visibility: hidden;
-  }
-
-  textarea,
-  &::after {
-    padding: 12px var(--leo-spacing-xl) 8px var(--leo-spacing-xl);
-    grid-area: 1 / 1 / 2 / 2;
-  }
-
-  &::-webkit-scrollbar {
-    width: 6px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: var(--leo-color-neutral-20);
-    border-radius: var(--leo-spacing-m);
-  }
 }
 
 .buttonAgree {
@@ -162,6 +114,7 @@
 }
 
 .contentAgentButtonEnabled {
+  --leo-icon-size: 20px;
   --leo-icon-color: var(--leo-color-icon-interactive);
 }
 
@@ -186,4 +139,43 @@
   box-sizing: border-box;
   overflow: hidden;
   margin: 0 0 0 var(--leo-spacing-m);
+}
+
+.contentAgentWarning {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: var(--leo-spacing-m);
+  gap: var(--leo-spacing-m);
+  margin: var(--leo-spacing-m) var(--leo-spacing-m) 0 var(--leo-spacing-m);
+  border-radius: var(--leo-radius-m);
+  border: 1px solid rgba(250, 114, 80, 0.3);
+  background: linear-gradient(
+    314deg,
+    rgba(250, 114, 80, 0.08) 8.49%,
+    rgba(255, 24, 147, 0.08) 43.72%,
+    rgba(167, 138, 255, 0.08) 99.51%
+  );
+}
+
+.contentAgentWarningText {
+  font: var(--leo-font-small-regular);
+  color: var(--leo-color-text-secondary);
+  padding: var(--leo-spacing-s) 0;
+}
+
+.contentAgentWarningIcon {
+  --leo-icon-size: 20px;
+  --leo-icon-color: var(--leo-gradient-icons-active);
+  padding: 6px;
+  border-radius: var(--leo-radius-m);
+  background-color: var(--leo-color-container-background);
+  box-shadow: var(--leo-effect-elevation-01);
+}
+
+.learnMoreLink {
+  color: inherit;
+  &:hover {
+    color: var(--leo-color-text-interactive);
+  }
 }

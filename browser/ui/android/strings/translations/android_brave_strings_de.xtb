@@ -5,6 +5,8 @@
 <translation id="3478449063771497234">Benachrichtigungen sind deaktiviert</translation>
 <translation id="2862978891748913252">Wählen Sie Ihr Land aus</translation>
 <translation id="3970520675790340955">Wählen Sie Ihr Land aus, damit wir Ihnen die richtigen Optionen und Anzeigen für Ihre Region anzeigen können.</translation>
+<translation id="721490496276866468">Passwörter importieren</translation>
+<translation id="8178175542325151321">Wähle eine .csv-Datei mit deinen Passwörtern aus, um sie in den Passwort-Manager von Brave zu importieren.</translation>
 <translation id="7301741773883122509">Jetzt können Sie für das Ansehen von Anzeigen belohnt werden. Noch dazu helfen Sie, das Web zu einem besseren Ort für alle zu machen. Und das ist spitze!</translation>
 <translation id="6439128034594289376">Hurra, Sie sind startklar!</translation>
 <translation id="370665806235115550">Laden...</translation>
@@ -99,6 +101,8 @@
 <translation id="8617525558807213034">AutoFill in privaten Tabs</translation>
 <translation id="8685431198160039193">Gespeicherte Daten können in privaten Tabs automatisch ausgefüllt werden</translation>
 <translation id="6583902294974160967">Support</translation>
+<translation id="5713644099811900409">Brave Konto</translation>
+<translation id="4472575034687746823">Start</translation>
 <translation id="1799030480311994998">Funktionen</translation>
 <translation id="2005732746077850308">Brave Schutz und Datenschutz</translation>
 <translation id="4692623383562244444">Suchmaschinen</translation>
@@ -107,7 +111,6 @@
 <translation id="7304425663107214334">Browser-Empfehlungen anzeigen</translation>
 <translation id="8982438328166986164">Zeigt Website-Vorschläge basierend auf Ihren Lesezeichen und Ihrem Browserverlauf an.</translation>
 <translation id="924029461438529367">Suchvorschläge anzeigen</translation>
-<translation id="5989135139219497991">Top-Vorschläge anzeigen</translation>
 <translation id="6285118765755298263">Andere Suchmaschinen indizieren</translation>
 <translation id="919715748352669592">Indiziert automatisch Websites, die der OpenSearch-Spezifikation entsprechen.</translation>
 <translation id="9148058034647219655">Beenden</translation>
@@ -295,6 +298,11 @@
 <translation id="4254029385847607686">DEZEMBER</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
 <translation id="1772301834467143364">Brave News</translation>
+<translation id="2518692840036393666">Menü anpassen</translation>
+<translation id="5582839680698949063">Hauptmenü</translation>
+<translation id="7002271985859760052">Seitenaktionen</translation>
+<translation id="7104487676473617844">Die folgenden Elemente sind im Menü nur sichtbar, wenn sie von der aktuell geöffneten Website unterstützt werden.</translation>
+<translation id="4159764849281393303">WebApp</translation>
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="8428213095426709021">Einstellungen</translation>
 <translation id="6020176662032623904">Verifizierter Urheber</translation>
@@ -797,7 +805,6 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="750843150060816463">Gaspreis (Gwei)</translation>
 <translation id="1426320910664514906">Gaslimit</translation>
 <translation id="6389441740143786465">Freigabe-Hub deaktivieren</translation>
-<translation id="9065203028668620118">Bearbeiten</translation>
 <translation id="473775607612524610">Aktualisieren</translation>
 <translation id="479795390141144417">Kontoaktualisierung fehlgeschlagen.</translation>
 <translation id="8084782383392198011">Kontoname darf nicht leer sein.</translation>
@@ -1013,8 +1020,6 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="8496335570810457">Simulationsverpflichtung:</translation>
 <translation id="5100124500279922001">Simulation überspringen:</translation>
 <translation id="7152095322071766507">Häufig besuchte Website</translation>
-<translation id="7230006500876504868">Mit Brave suchen</translation>
-<translation id="5888208462949095139">Mit <ph name="DEFAULT_SEARCH_ENGINE"/> suchen</translation>
 <translation id="5456039738087398178">Startbildschirm-Widget</translation>
 <translation id="703185154752046151">Widget zum Startbildschirm hinzugefügt</translation>
 <translation id="4635094429202343515">Probiere das Brave Search-Widget aus</translation>
@@ -1074,7 +1079,7 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="7618347247876614969">Konto der Adresssuch-Tabelle:</translation>
 <translation id="7659483790930268440">Index der Adresssuch-Tabelle:</translation>
 <translation id="5494920125229734069">Alle auswählen</translation>
-<translation id="6129027151000961048">Leo</translation>
+<translation id="2361906291514218784">Leo-KI</translation>
 <translation id="8613144770663526433">Mit Brave Wallet anmelden</translation>
 <translation id="3696514931437952995">Sie melden sich bei <ph name="ORIGIN"/> an. Brave Wallet teilt Ihre Wallet-Adresse mit <ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">Detaillierte Informationen anzeigen</translation>
@@ -1091,11 +1096,11 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="6742599753610126012">Chat-Verlauf löschen</translation>
 <translation id="3443052382074796867">Durch die Deaktivierung der Gesprächsspeicherung werden alle zuvor gespeicherten Gespräche endgültig gelöscht. Diese Aktion kann nicht rückgängig gemacht werden.</translation>
 <translation id="3692772534525889713">Verknüpfen Sie Ihren Play Store-Kauf mit Ihrem Brave-Konto, um Brave Leo auf anderen Geräten verwenden zu können.</translation>
-<translation id="73236265316873967">Leo Premium</translation>
+<translation id="592831784390389506">Leo KI Premium</translation>
 <translation id="1028627582482425924">Ein Jahr</translation>
 <translation id="2985392169397572983">Bester Wert</translation>
 <translation id="1166682575529520472">Monatlich</translation>
-<translation id="451189393813405346">Leo fragen</translation>
+<translation id="2206846767762985925">Leo KI fragen</translation>
 <translation id="7322560193401221004">Wiedergabeposition merken</translation>
 <translation id="7505951907514709271">Setzen Sie die Wiedergabe für Einzeldateien dort fort, wo Sie sie zuletzt angehalten haben</translation>
 <translation id="6835165453349969605">Wiedergabeposition der Liste merken</translation>
@@ -1138,6 +1143,7 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="3861012838874771868">Playlist-Einstellungen öffnen</translation>
 <translation id="5220099266891491416">Schaltfläche Playlist ausblenden</translation>
 <translation id="7416347631175891923">Probieren Sie es!</translation>
+<translation id="9065203028668620118">Bearbeiten</translation>
 <translation id="1173894706177603556">Umbenennen</translation>
 <translation id="3596306474342941843">Playlist löschen</translation>
 <translation id="7765158879357617694">Verschieben</translation>
@@ -1152,7 +1158,7 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="5319532905552885478">Medieninhalte sind bereits zur Standard-Wiedergabeliste hinzugefügt</translation>
 <translation id="4802584673094436231">Wird vorbereitet …</translation>
 <translation id="481455355267255546">Nächster</translation>
-<translation id="5474757891469990756">Entfesseln Sie mit Premium die volle Stärke von Leo:</translation>
+<translation id="3721790899869840343">Entfessele mit Premium die volle Stärke von Leo:</translation>
 <translation id="4173478269537830374">Erkunden Sie verschiedene KI-Modelle</translation>
 <translation id="3453542753968940696">Prioritärer Zugang zu leistungsstarken Modellen mit unterschiedlichen Fähigkeiten.</translation>
 <translation id="3245401959451976966">Entfesseln Sie Ihre Kreativität</translation>
@@ -1220,12 +1226,18 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="4650851936784160359">Die Filterliste konnte nicht aktualisiert werden. Bitte versuchen Sie es erneut.</translation>
 <translation id="3098054327870766317">Rückgängig-Schaltfläche anzeigen, wenn Registerkarten geschlossen werden</translation>
 <translation id="1336494649091412226">Bist du sicher, dass du Brave verlassen möchtest?</translation>
-<translation id="2361906291514218784">Leo-KI</translation>
 <translation id="7942415993090181327">Chat-Verlauf</translation>
 <translation id="6859935199732075666">Safe Browsing-Fehler anzeigen</translation>
 <translation id="2735247450315842119">Screenshots in privaten Tabs erlauben</translation>
 <translation id="8420414929552321089">Wenn erlaubt, sind private Tabs auch sichtbar, wenn mehrere Apps geöffnet sind.</translation>
 <translation id="7956713633345437162">Lesezeichen (mobil)</translation>
+<translation id="3176467469116060712">Unterstütze Braves branchenführende Arbeit für Web‑Datenschutz und Open‑Source‑Werbeblockierlisten</translation>
+<translation id="5896375129784311037">Optimiert für eine minimalistischere Browser-Oberfläche</translation>
+<translation id="746156554966264308">Das Herzstück von Brave Shields sorgt für Werbeblockierung, Schutz der Privatsphäre und mehr Geschwindigkeit</translation>
+<translation id="1432661650699782509">Unterstützung für von der IT verwaltete Richtlinien am Arbeitsplatz</translation>
+<translation id="1361157028850796410">bestes Angebot</translation>
+<translation id="7280825497485894053">Monatsabonnement</translation>
+<translation id="4570901726096223030">Erfahre mehr über Origin</translation>
 <translation id="1943432128510653496">Passwörter speichern</translation>
 <translation id="2100273922101894616">Automatisch anmelden</translation>
 <translation id="363596933471559332">Du wirst mit gespeicherten Anmeldedaten automatisch auf Websites angemeldet. Wenn diese Funktion nicht aktiviert ist, wirst du jedes Mal aufgefordert, dich manuell auf einer Website anzumelden.</translation>
@@ -1237,6 +1249,22 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="5139940364318403933">So nutzt du Google Drive</translation>
 <translation id="729975465115245577">Auf deinem Gerät befindet sich keine App zum Speichern der Passwortdatei.</translation>
 <translation id="1129510026454351943">Details: <ph name="ERROR_DESCRIPTION"/></translation>
+<translation id="5594899180331219722">Datei auswählen</translation>
+<translation id="3744219658596020825">Deine Passwörter wurden nicht importiert</translation>
+<translation id="8258027225380843424">Import erfolgreich!</translation>
+<translation id="766635563210446220">Passwörter können nicht importiert werden. Überprüfe <ph name="FILENAME"/> und stelle sicher, dass es korrekt formatiert ist. <ph name="BEGIN_LINK"/>Mehr erfahren<ph name="END_LINK"/></translation>
+<translation id="6581356304040102696">Passwörter können nicht importiert werden. Die Dateigröße sollte weniger als 1 MB betragen.</translation>
+<translation id="5895244669404288318">{COUNT, plural,
+        one {}=1 {Passwörter können nicht importiert werden. Du kannst immer nur 1 Passwort auf einmal importieren.}
+        other {Kann keine Kennwörter importieren. Du kannst nur bis zu <ph name="COUNT_MANY"/> Passwörter auf einmal importieren.}}</translation>
+<translation id="3748424433435232460">Ein Passwort für dieses Konto ist bereits auf diesem Gerät gespeichert</translation>
+<translation id="6438475350605608554">Du importierst bereits Passwörter in einem anderen Tab</translation>
+<translation id="3482868954775580230">Die ausgewählte Datei konnte nicht gelesen werden. <ph name="EXCEPTION_INFO"/></translation>
+<translation id="9162995380643712715">{IMPORT_COUNT, plural,
+        one {}=1 {Erfolgreich importiert 1 Passwort.}
+        other {Erfolgreich importiert <ph name="IMPORT_COUNT_MANY"/> Passwörter.}}</translation>
+<translation id="4637949129057123593">Import fehlgeschlagen.</translation>
+<translation id="4300452012226767715">Passwort-Manager nicht verfügbar.</translation>
 <translation id="6221633008163990886">Zum Exportieren deiner Passwörter entsperren</translation>
 <translation id="5245792669563792664">passwörter</translation>
 <translation id="10614374240317010">Nie speichern für…</translation>

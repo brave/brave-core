@@ -15,17 +15,18 @@ export function AdDiagnostics() {
   const diagnosticId = useAppState((state) => state.adDiagnosticId)
 
   return (
-    <div className='content-card' data-css-scope={style.scope}>
+    <div
+      className='content-card'
+      data-css-scope={style.scope}
+    >
       <h4>Ad Diagnostics</h4>
       <section className='key-value-list'>
-        {
-          entries.map((entry) => (
-            <div key={entry.name}>
-              <span>{entry.name}</span>
-              <span>{entry.value}</span>
-            </div>
-          ))
-        }
+        {entries.map((entry) => (
+          <div key={entry.name}>
+            <span>{entry.name}</span>
+            <span>{entry.value}</span>
+          </div>
+        ))}
         <div>
           <span>Diagnostic ID:</span>
           <span>

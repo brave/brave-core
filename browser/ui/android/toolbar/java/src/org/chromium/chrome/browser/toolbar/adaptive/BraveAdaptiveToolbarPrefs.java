@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.toolbar.adaptive;
 
+import static org.chromium.chrome.browser.preferences.ChromePreferenceKeys.ADAPTIVE_TOOLBAR_CUSTOMIZATION_ENABLED;
 import static org.chromium.chrome.browser.preferences.ChromePreferenceKeys.ADAPTIVE_TOOLBAR_CUSTOMIZATION_SETTINGS;
 
 import org.chromium.base.ContextUtils;
@@ -22,5 +23,15 @@ public class BraveAdaptiveToolbarPrefs {
                                         ContextUtils.getApplicationContext())
                                 ? AdaptiveToolbarButtonVariant.SHARE
                                 : AdaptiveToolbarButtonVariant.NEW_TAB);
+    }
+
+    /**
+     * Returns whether the customization preference toggle is enabled. Returns false if no value has
+     * been set. The value returned is orthogonal to whether the corresponding feature flag is
+     * enabled.
+     */
+    public static boolean isCustomizationPreferenceEnabled() {
+        return ChromeSharedPreferences.getInstance()
+                .readBoolean(ADAPTIVE_TOOLBAR_CUSTOMIZATION_ENABLED, false);
     }
 }

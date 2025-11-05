@@ -23,57 +23,6 @@ extension Preferences {
     public static let httpse = Option<String?>(key: "blockfile.httpse", default: nil)
   }
 
-  public final class Shields {
-    public static let allShields = [
-      googleSafeBrowsing, blockScripts, fingerprintingProtection, blockImages,
-    ]
-    /// Enable Google Safe Browsing
-    public static let googleSafeBrowsing = Option<Bool>(
-      key: "shields.google-safe-browsing",
-      default: true
-    )
-    /// Disables JavaScript execution in the browser
-    public static let blockScripts = Option<Bool>(key: "shields.block-scripts", default: false)
-    /// Enforces fingerprinting protection on the users session
-    public static let fingerprintingProtection = Option<Bool>(
-      key: "shields.fingerprinting-protection",
-      default: true
-    )
-    /// Enable redirecting of Google's AMP (Accelerated Mobile Page) to the original (non-AMP) pages
-    public static let autoRedirectAMPPagesDeprecated = Option<Bool?>(
-      key: "shields.auto-redirect-amp-pages",
-      default: nil
-    )
-    /// Enable redirecting of tracking urls (i.e. debouncing)
-    public static let autoRedirectTrackingURLsDeprecated = Option<Bool?>(
-      key: "shields.auto-redirect-tracking-urls",
-      default: nil
-    )
-    /// Disables image loading in the browser
-    public static let blockImages = Option<Bool>(key: "shields.block-images", default: false)
-    /// In addition to global adblocking rules, adds custom country based rules.
-    /// This setting is enabled by default for all locales.
-    public static let useRegionAdBlock = Option<Bool>(
-      key: "shields.regional-adblock",
-      default: true
-    )
-    /// Version of downloaded data file for adblock stats.
-    public static let adblockStatsDataVersion = Option<Int?>(
-      key: "stats.adblock-data-version",
-      default: nil
-    )
-    /// Whether or not advanced controls in the shields UI are visible by default
-    public static let advancedControlsVisible = Option<Bool>(
-      key: "shields.advanced-controls-visible",
-      default: false
-    )
-    /// Whether or not we've reported the initial state of shields for p3a
-    public static let initialP3AStateReportedRevision = Option<Int>(
-      key: "shields.initial-p3a-state-reported-revision",
-      default: 0
-    )
-  }
-
   public final class Rewards {
     public static let hideRewardsIcon = Option<Bool>(
       key: "rewards.new-hide-rewards-icon",
@@ -239,7 +188,7 @@ extension Preferences {
     /// The sync type passwords enabled the device in sync chain
     public static let syncPasswordsEnabled = Option<Bool>(
       key: "chromium.sync.syncPasswordsEnabled",
-      default: false
+      default: true  // default is unused; kBraveSyncDefaultPasswords respected
     )
     /// The sync type open tabs enabled the device in sync chain
     public static let syncOpenTabsEnabled = Option<Bool>(

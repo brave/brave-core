@@ -18,8 +18,6 @@
 #include "base/scoped_observation.h"
 #include "brave/browser/ui/commands/accelerator_service.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
-#include "brave/browser/ui/tabs/split_view_browser_data.h"
-#include "brave/browser/ui/tabs/split_view_browser_data_observer.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/commands/browser/accelerator_pref_manager.h"
@@ -46,6 +44,11 @@ enum class SpeedreaderBubbleLocation : int;
 }  // namespace speedreader
 #endif
 
+namespace sidebar {
+FORWARD_DECLARE_TEST(SidebarBrowserWithSplitViewTest,
+                     ShowSidebarOnMouseOverTest);
+}  // namespace sidebar
+
 namespace content {
 class WebContents;
 }  // namespace content
@@ -64,7 +67,6 @@ class BraveMultiContentsView;
 class ContentsLayoutManager;
 class SidebarContainerView;
 class SidePanelEntry;
-class SplitView;
 class VerticalTabStripWidgetDelegateView;
 class ViewShadow;
 class WalletButton;
@@ -73,15 +75,16 @@ class BraveBrowserView : public BrowserView,
                          public commands::AcceleratorService::Observer {
   METADATA_HEADER(BraveBrowserView, BrowserView)
  public:
-  explicit BraveBrowserView(std::unique_ptr<Browser> browser);
+  explicit BraveBrowserView(Browser* browser);
   BraveBrowserView(const BraveBrowserView&) = delete;
   BraveBrowserView& operator=(const BraveBrowserView&) = delete;
   ~BraveBrowserView() override;
 
   static BraveBrowserView* From(BrowserView* view);
 
-  SplitView* split_view() { return split_view_; }
-  const SplitView* split_view() const { return split_view_; }
+  // We use rounded corners even rounded corners setting is disabled.
+  // Call this when we want to know
+  static bool ShouldUseBraveWebViewRoundedCornersForContents(Browser* browser);
 
   void SetStarredState(bool is_starred) override;
   void ShowUpdateChromeDialog() override;
@@ -119,15 +122,13 @@ class BraveBrowserView : public BrowserView,
                           int reason) override;
   bool AcceleratorPressed(const ui::Accelerator& accelerator) override;
   bool IsInTabDragging() const override;
-  views::View* GetContentsContainerForLayoutManager() override;
   void ReadyToListenFullscreenChanges() override;
-  void OnMouseMoved(const ui::MouseEvent& event) override;
-  bool PreHandleMouseEvent(const blink::WebMouseEvent& event) override;
 
 #if defined(USE_AURA)
   views::View* sidebar_host_view() { return sidebar_host_view_; }
 #endif
 
+  void StopListeningFullscreenChanges();
   bool IsSidebarVisible() const;
   void SetSidePanelOperationByActiveTabChange(bool tab_change);
 
@@ -141,6 +142,9 @@ class BraveBrowserView : public BrowserView,
   void OnAcceleratorsChanged(const commands::Accelerators& changed) override;
 
   BraveMultiContentsView* GetBraveMultiContentsView() const;
+  void UpdateRoundedCornersUI();
+  void UpdateVerticalTabStripBorder();
+  void UpdateSidebarBorder();
 
   SidebarContainerView* sidebar_container_view() {
     return sidebar_container_view_;
@@ -148,11 +152,11 @@ class BraveBrowserView : public BrowserView,
 
  private:
   class TabCyclingEventHandler;
+  class SidebarOnMouseOverEventHandler;
   friend class WindowClosingConfirmBrowserTest;
   friend class sidebar::SidebarBrowserTest;
   friend class VerticalTabStripDragAndDropBrowserTest;
   friend class SplitViewBrowserTest;
-  friend class SplitViewLocationBarBrowserTest;
   friend class BraveBrowserViewTest;
 
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, VisualState);
@@ -174,6 +178,8 @@ class BraveBrowserView : public BrowserView,
                            ContentsBackgroundEventHandleTest);
   FRIEND_TEST_ALL_PREFIXES(SideBySideWithRoundedCornersTest,
                            ContentsShadowTest);
+  FRIEND_TEST_ALL_PREFIXES(sidebar::SidebarBrowserWithSplitViewTest,
+                           ShowSidebarOnMouseOverTest);
 
   static void SetDownloadConfirmReturnForTesting(bool allow);
 
@@ -190,13 +196,15 @@ class BraveBrowserView : public BrowserView,
       Browser::DownloadCloseType dialog_type,
       base::OnceCallback<void(bool)> callback) override;
   void MaybeShowReadingListInSidePanelIPH() override;
-  void UpdateDevTools(content::WebContents* inspected_web_contents) override;
   bool MaybeUpdateDevtools(content::WebContents* web_contents) override;
   void OnWidgetActivationChanged(views::Widget* widget, bool active) override;
-  void GetAccessiblePanes(std::vector<views::View*>* panes) override;
+  void OnWidgetWindowModalVisibilityChanged(views::Widget* widget,
+                                            bool visible) override;
   void ShowSplitView(bool focus_active_view) override;
   void HideSplitView() override;
 
+  void HandleSidebarOnMouseOverMouseEvent(const ui::MouseEvent& event);
+  bool IsBraveWebViewRoundedCornersEnabled();
   void UpdateContentsShadowVisibility();
   void StopTabCycling();
   void UpdateSearchTabsButtonState();
@@ -247,9 +255,9 @@ class BraveBrowserView : public BrowserView,
 #endif
 
   std::unique_ptr<TabCyclingEventHandler> tab_cycling_event_handler_;
+  std::unique_ptr<SidebarOnMouseOverEventHandler>
+      sidebar_on_mouse_over_event_handler_;
   std::unique_ptr<ViewShadow> contents_shadow_;
-
-  raw_ptr<SplitView> split_view_ = nullptr;
 
   PrefChangeRegistrar pref_change_registrar_;
   base::ScopedObservation<commands::AcceleratorService,

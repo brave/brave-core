@@ -4,10 +4,17 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 source_set("brave_account") {
-  sources = [
-    "brave_account_ui.cc",
-    "brave_account_ui.h",
-  ]
+  if (!is_android) {
+    sources = [
+      "brave_account_ui_desktop.cc",
+      "brave_account_ui_desktop.h",
+    ]
+  } else {
+    sources = [
+      "brave_account_ui_android.cc",
+      "brave_account_ui_android.h",
+    ]
+  }
 
   deps = [
     "//base",
@@ -16,19 +23,15 @@ source_set("brave_account") {
     "//brave/components/brave_account:features",
     "//brave/components/constants",
     "//chrome/browser/profiles",
-    "//chrome/browser/ui/webui",
     "//content/public/browser",
     "//content/public/common",
     "//ui/webui",
   ]
 
   if (!is_android) {
-    sources += [
-      "brave_account_ui_desktop.cc",
-      "brave_account_ui_desktop.h",
-    ]
-
     deps += [
+      "//chrome/browser/ui/webui",
+      "//components/prefs",
       "//ui/compositor",
       "//ui/gfx/geometry",
       "//ui/views",

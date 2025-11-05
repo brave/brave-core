@@ -27,33 +27,6 @@
 
 namespace brave_wallet {
 
-template <size_t const T>
-base::expected<std::optional<std::array<uint8_t, T>>, std::string>
-ReadSizedBlob(sql::Statement& statement, size_t position) {
-  auto columns = statement.ColumnCount();
-  CHECK(columns >= 0);
-  if (position >= static_cast<size_t>(columns)) {
-    return base::unexpected("Position mismatch");
-  }
-
-  if (statement.GetColumnType(position) == sql::ColumnType::kNull) {
-    return base::ok(std::nullopt);
-  }
-
-  if (statement.GetColumnType(position) != sql::ColumnType::kBlob) {
-    return base::unexpected("Type mismatch");
-  }
-
-  auto blob = statement.ColumnBlob(position);
-  if (blob.size() != T) {
-    return base::unexpected("Size mismatch");
-  }
-
-  std::array<uint8_t, T> to;
-  base::span(to).copy_from(blob);
-  return base::ok(to);
-}
-
 // Implements SQLite database to store found incoming notes,
 // nullifiers, wallet zcash accounts and commitment trees.
 class OrchardStorage {

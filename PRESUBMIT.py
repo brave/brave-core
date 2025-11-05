@@ -57,6 +57,8 @@ def CheckPatchFormatted(input_api, output_api):
         brave_chromium_utils.wspath(
             '//brave/build/commands/scripts/format.js'), '--presubmit'
     ]
+    if input_api.change.UpstreamBranch():
+        cmd.extend(['--base', input_api.change.UpstreamBranch()])
     if not input_api.PRESUBMIT_FIX:
         cmd.append('--dry-run')
     try:
@@ -271,6 +273,7 @@ def CheckNewThemeFilesForUpstreamOverride(input_api, output_api):
         ]
     return []
 
+
 def CheckNewSourceFileWithoutGnChangeOnUpload(input_api, output_api):
     """Checks newly added source files have corresponding GN changes."""
     files_to_skip = input_api.DEFAULT_FILES_TO_SKIP + (r"chromium_src/.*", )
@@ -416,6 +419,16 @@ _BANNED_CPP_FUNCTIONS += (
         'base::StringAppendF',
         explanation=('Please use `absl::StrAppendFormat` rather.', ),
         treat_as_error=False,
+    ),
+    BanRule(
+        'base::debug::DumpWithoutCrashing',
+        explanation=(
+            'Please use `DUMP_WILL_BE_NOTREACHED()` instead.',
+            'This prevents dumps and NOTREACHED in tests for the following reasons:',
+            ' * Dumps can hang tests.',
+            ' * NOTREACHED is a test failure unless it is an EXPECT_DEATH test.',
+        ),
+        treat_as_error=True,
     ),
 )
 

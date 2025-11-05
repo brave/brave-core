@@ -79,6 +79,7 @@ export const style = scoped.css`
       opacity: 0.5;
       color: #fff;
       font: ${font.xSmall.regular};
+      text-decoration: underline;
     }
   }
 

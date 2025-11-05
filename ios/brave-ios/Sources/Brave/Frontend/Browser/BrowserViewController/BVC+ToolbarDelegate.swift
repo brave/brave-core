@@ -520,7 +520,9 @@ extension BrowserViewController: TopToolbarDelegate {
           tabManager: self.tabManager,
           feedDataSource: self.feedDataSource,
           debounceService: DebounceServiceFactory.get(privateMode: false),
-          braveShieldsSettings: BraveShieldsSettingsFactory.create(for: profileController.profile),
+          braveShieldsSettings: BraveShieldsSettingsServiceFactory.get(
+            profile: profileController.profile
+          ),
           braveCore: profileController,
           p3aUtils: braveCore.p3aUtils,
           rewards: rewards,
@@ -756,6 +758,7 @@ extension BrowserViewController: TopToolbarDelegate {
       isPrivate: isPrivate,
       isAIChatAvailable: !isPrivate && Preferences.AIChat.leoInQuickSearchBarEnabled.value
         && AIChatUtils.isAIChatEnabled(for: profileController.profile.prefs),
+      isPlaylistAvailable: profileController.profile.prefs.isPlaylistAvailable,
       searchEngines: profile.searchEngines
     )
 
@@ -1204,7 +1207,7 @@ extension BrowserViewController: UIContextMenuInteractionDelegate {
         image: UIImage(braveSystemNamed: "leo.copy.clean"),
         handler: UIAction.deferredActionHandler { _ in
           let service = URLSanitizerServiceFactory.get(privateMode: tab?.isPrivate ?? true)
-          let cleanedURL = service?.sanitizeURL(url) ?? url
+          let cleanedURL = service?.sanitize(url: url) ?? url
           UIPasteboard.general.url = cleanedURL
         }
       ),

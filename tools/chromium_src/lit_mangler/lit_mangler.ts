@@ -16,9 +16,9 @@ import path from 'path'
 import { JSDOM } from 'jsdom'
 
 export interface HTMLTemplateTags {
-    id: number,
-    text: string,
-    children: HTMLTemplateTags[]
+  id: number
+  text: string
+  children: HTMLTemplateTags[]
 }
 
 let nextId = 1
@@ -31,13 +31,17 @@ const propertyRegex = /\s\.(\w+)/gm
 const propertyCases: Record<string, string> = {}
 
 const loadRaw = (filepath: string) => {
-    isHTML = filepath.endsWith('.html')
+  isHTML = filepath.endsWith('.html')
 
-    const text = readFileSync(filepath, 'utf-8')
-    cachePropertyCasesFromText(text)
-    const tsFile = ts.createSourceFile(path.basename(filepath), text, ts.ScriptTarget.Latest)
+  const text = readFileSync(filepath, 'utf-8')
+  cachePropertyCasesFromText(text)
+  const tsFile = ts.createSourceFile(
+    path.basename(filepath),
+    text,
+    ts.ScriptTarget.Latest,
+  )
 
-    return tsFile
+  return tsFile
 }
 
 /**
@@ -47,25 +51,32 @@ const loadRaw = (filepath: string) => {
  * @param node The node to load the template literals from.
  * @param templateTags The template tags to load the template literals into.
  */
-const getTemplateLiterals = (source: ts.SourceFile, node: ts.Node, templateTags: HTMLTemplateTags) => {
-    if (ts.isTaggedTemplateExpression(node) && node.tag.getText(source) === 'html') {
-        let text = node.template.getText(source)
-        text = text.substring(1, text.length - 1)
-        const tag: HTMLTemplateTags = {
-            children: [],
-            text,
-            id: nextId++
-        }
-
-        getTemplateLiterals(source, node.template, tag)
-
-        templateTags.children.push(tag)
-        return
+const getTemplateLiterals = (
+  source: ts.SourceFile,
+  node: ts.Node,
+  templateTags: HTMLTemplateTags,
+) => {
+  if (
+    ts.isTaggedTemplateExpression(node)
+    && node.tag.getText(source) === 'html'
+  ) {
+    let text = node.template.getText(source)
+    text = text.substring(1, text.length - 1)
+    const tag: HTMLTemplateTags = {
+      children: [],
+      text,
+      id: nextId++,
     }
 
-    node.forEachChild(n => {
-        getTemplateLiterals(source, n, templateTags)
-    })
+    getTemplateLiterals(source, node.template, tag)
+
+    templateTags.children.push(tag)
+    return
+  }
+
+  node.forEachChild((n) => {
+    getTemplateLiterals(source, n, templateTags)
+  })
 }
 
 /**
@@ -74,10 +85,10 @@ const getTemplateLiterals = (source: ts.SourceFile, node: ts.Node, templateTags:
  * @param text The source text of the file
  */
 const cachePropertyCasesFromText = (text: string) => {
-    const matches = text.matchAll(propertyRegex)
-    for (const match of matches) {
-        propertyCases[match[0].toLocaleLowerCase()] = match[0]
-    }
+  const matches = text.matchAll(propertyRegex)
+  for (const match of matches) {
+    propertyCases[match[0].toLocaleLowerCase()] = match[0]
+  }
 }
 
 /**
@@ -86,10 +97,10 @@ const cachePropertyCasesFromText = (text: string) => {
  * @returns The source text with the property cases restored
  */
 const restorePropertyCases = (text: string) => {
-    for (const [key, value] of Object.entries(propertyCases)) {
-        text = text.replaceAll(key, value)
-    }
-    return text
+  for (const [key, value] of Object.entries(propertyCases)) {
+    text = text.replaceAll(key, value)
+  }
+  return text
 }
 
 /**
@@ -98,15 +109,19 @@ const restorePropertyCases = (text: string) => {
  * @param filepath The file to load the template literals from.
  */
 const getLiteralsFromFile = (filepath: string) => {
-    const file = loadRaw(filepath)
-    const root: HTMLTemplateTags = { text: file.getText(), children: [], id: nextId++ }
-    getTemplateLiterals(file, file, root)
+  const file = loadRaw(filepath)
+  const root: HTMLTemplateTags = {
+    text: file.getText(),
+    children: [],
+    id: nextId++,
+  }
+  getTemplateLiterals(file, file, root)
 
-    if (root.children.length === 0) {
-        throw new Error(`No templates found in ${filepath}`)
-    }
+  if (root.children.length === 0) {
+    throw new Error(`No templates found in ${filepath}`)
+  }
 
-    return root
+  return root
 }
 
 /**
@@ -155,13 +170,16 @@ const getLiteralsFromFile = (filepath: string) => {
  * @param template The template to inject placeholders into.
  */
 const injectPlaceholders = (template: HTMLTemplateTags) => {
-    for (const child of template.children) {
-        const original = child.text
-        child.text = injectPlaceholders(child)
-        template.text = template.text.replace(original, `$$$$lit_mangler_${child.id}$$$$`)
-    }
+  for (const child of template.children) {
+    const original = child.text
+    child.text = injectPlaceholders(child)
+    template.text = template.text.replace(
+      original,
+      `$$$$lit_mangler_${child.id}$$$$`,
+    )
+  }
 
-    return template.text
+  return template.text
 }
 
 /**
@@ -183,12 +201,15 @@ const injectPlaceholders = (template: HTMLTemplateTags) => {
  * @param template The template to replace the placeholders in.
  */
 const replacePlaceholders = (template: HTMLTemplateTags) => {
-    for (const child of template.children) {
-        child.text = replacePlaceholders(child)
-        template.text = template.text.replaceAll(`$$lit_mangler_${child.id}$$`, child.text)
-    }
+  for (const child of template.children) {
+    child.text = replacePlaceholders(child)
+    template.text = template.text.replaceAll(
+      `$$lit_mangler_${child.id}$$`,
+      child.text,
+    )
+  }
 
-    return template.text
+  return template.text
 }
 
 let result: HTMLTemplateTags | undefined
@@ -199,12 +220,12 @@ let result: HTMLTemplateTags | undefined
  * @param file The file to load the template literals from.
  */
 export const load = (file: string) => {
-    if (result !== undefined) {
-        throw new Error('This should only be called once per file')
-    }
+  if (result !== undefined) {
+    throw new Error('This should only be called once per file')
+  }
 
-    result = getLiteralsFromFile(file)
-    injectPlaceholders(result)
+  result = getLiteralsFromFile(file)
+  injectPlaceholders(result)
 }
 
 /**
@@ -213,12 +234,12 @@ export const load = (file: string) => {
  * @param file The file to write the mangled template to.
  */
 export const write = (file: string) => {
-    if (!result) {
-        throw new Error('This should only be called after load')
-    }
+  if (!result) {
+    throw new Error('This should only be called after load')
+  }
 
-    const text = restorePropertyCases(replacePlaceholders(result))
-    writeFileSync(file, text)
+  const text = restorePropertyCases(replacePlaceholders(result))
+  writeFileSync(file, text)
 }
 
 /**
@@ -230,58 +251,62 @@ export const write = (file: string) => {
  * @param mangler The function to use to mangle the template.
  * @param getTemplate The template to mangle, or a predicate to find a matching template. If undefined, the first html template will be used.
  */
-export const mangle = (mangler: (element: DocumentFragment) => void, getTemplate?: HTMLTemplateTags | ((template: HTMLTemplateTags) => boolean)) => {
-    if (!result) {
-        throw new Error('This should only be called after load!')
-    }
+export const mangle = (
+  mangler: (element: DocumentFragment) => void,
+  getTemplate?: HTMLTemplateTags | ((template: HTMLTemplateTags) => boolean),
+) => {
+  if (!result) {
+    throw new Error('This should only be called after load!')
+  }
 
-    let template: HTMLTemplateTags | undefined
-    if (!getTemplate) {
-        template = findTemplates(() => true).next().value
-    } else if (typeof getTemplate === 'function') {
-        template = findTemplates(getTemplate).next().value
-    } else {
-        template = getTemplate
-    }
+  let template: HTMLTemplateTags | undefined
+  if (!getTemplate) {
+    template = findTemplates(() => true).next().value
+  } else if (typeof getTemplate === 'function') {
+    template = findTemplates(getTemplate).next().value
+  } else {
+    template = getTemplate
+  }
 
-    // If we don't have a template throw an error - mangling isn't going to work.
-    if (!template) {
-        throw new Error(`Failed to find template matching ${getTemplate}. If this was working before upstream may have changed.`)
-    }
+  // If we don't have a template throw an error - mangling isn't going to work.
+  if (!template) {
+    throw new Error(
+      `Failed to find template matching ${getTemplate}. If this was working before upstream may have changed.`,
+    )
+  }
 
-    const world = new JSDOM()
-    const document = world.window.document
-    const element = document.createElement('template')
-    element.innerHTML = template.text
-        // Note: we ensure that all attributes are quoted so the template can be
-        // parsed as HTML.
-        // This won't work for attributes with braces in them, but it'll
-        // drastically break the HTML output from upstream, so it should be
-        // pretty obvious that something went wrong.
-        // This turns `foo=${bar}` into `foo="bar"`
-        .replaceAll(/(\w+)(\s+)?=(\s+)?(\$\{.*?\})(\s|>)/gi, '$1="$4"$5')
-        // Replace all quotes in interpolated strings with &quot; so we don't
-        // break the HTML output.
-        // This turns `foo="${bar ? "one" : "two"}"` into
-        // `foo="${bar ? &quot;one&quot; : &quot;two&quot;}"`
-        .replaceAll(/\$\{.*?\}/gis, (...args) => {
-            return args[0]
-                .replaceAll('&', '&amp;') // Note: &amp; needs to be first
-                .replaceAll('"', '&quot;')
-                .replaceAll('<', '&lt;')
-                .replaceAll('>', '&gt;')
-        })
+  const world = new JSDOM()
+  const document = world.window.document
+  const element = document.createElement('template')
+  element.innerHTML = template.text
+    // Note: we ensure that all attributes are quoted so the template can be
+    // parsed as HTML.
+    // This won't work for attributes with braces in them, but it'll
+    // drastically break the HTML output from upstream, so it should be
+    // pretty obvious that something went wrong.
+    // This turns `foo=${bar}` into `foo="bar"`
+    .replaceAll(/(\w+)(\s+)?=(\s+)?(\$\{.*?\})(\s|>)/gi, '$1="$4"$5')
+    // Replace all quotes in interpolated strings with &quot; so we don't
+    // break the HTML output.
+    // This turns `foo="${bar ? "one" : "two"}"` into
+    // `foo="${bar ? &quot;one&quot; : &quot;two&quot;}"`
+    .replaceAll(/\$\{.*?\}/gis, (...args) => {
+      return args[0]
+        .replaceAll('&', '&amp;') // Note: &amp; needs to be first
+        .replaceAll('"', '&quot;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+    })
 
-    mangler(element.content)
+  mangler(element.content)
 
-    template.text = element.innerHTML
-        .replaceAll(/\$\{.*?\}/gis, (...args) => {
-            return args[0]
-                .replaceAll('&gt;', '>')
-                .replaceAll('&lt;', '<')
-                .replaceAll('&quot;', '"')
-                .replaceAll('&amp;', '&') // Note: &amp; needs to be last
-        })
+  template.text = element.innerHTML.replaceAll(/\$\{.*?\}/gis, (...args) => {
+    return args[0]
+      .replaceAll('&gt;', '>')
+      .replaceAll('&lt;', '<')
+      .replaceAll('&quot;', '"')
+      .replaceAll('&amp;', '&') // Note: &amp; needs to be last
+  })
 }
 
 /**
@@ -290,47 +315,53 @@ export const mangle = (mangler: (element: DocumentFragment) => void, getTemplate
  * @param mangler The function to use to mangle the template.
  * @param matchTemplate The predicate to use to find the templates to mangle.
  */
-export const mangleAll = (mangler: (element: DocumentFragment) => void, matchTemplate: (template: HTMLTemplateTags) => boolean) => {
-    for (const template of findTemplates(matchTemplate)) {
-        mangle(mangler, template)
-    }
+export const mangleAll = (
+  mangler: (element: DocumentFragment) => void,
+  matchTemplate: (template: HTMLTemplateTags) => boolean,
+) => {
+  for (const template of findTemplates(matchTemplate)) {
+    mangle(mangler, template)
+  }
 }
 
 // Note: This doesn't check the template param against the predicate, only its children.
-export function* findTemplates(predicate: (template: HTMLTemplateTags) => boolean, template?: HTMLTemplateTags): IterableIterator<HTMLTemplateTags> {
-    if (!result) {
-        throw new Error("This should only be called after load!")
+export function* findTemplates(
+  predicate: (template: HTMLTemplateTags) => boolean,
+  template?: HTMLTemplateTags,
+): IterableIterator<HTMLTemplateTags> {
+  if (!result) {
+    throw new Error('This should only be called after load!')
+  }
+
+  // If we're mangling an HTML file, the root node is also a template (though
+  // it isn't tagged)
+  if (isHTML && !template && predicate(result)) {
+    yield result
+  }
+
+  for (const child of (template ?? result).children) {
+    if (predicate(child)) {
+      yield child
     }
 
-    // If we're mangling an HTML file, the root node is also a template (though
-    // it isn't tagged)
-    if (isHTML && !template && predicate(result)) {
-        yield result
-    }
-
-    for (const child of (template ?? result).children) {
-        if (predicate(child)) {
-            yield child
-        }
-
-        yield* findTemplates(predicate, child)
-    }
+    yield* findTemplates(predicate, child)
+  }
 }
 
 // Utils to make testing easier
 export const utilsForTest = {
-    findTemplates,
-    mangle,
-    mangleAll,
-    injectPlaceholders,
-    replacePlaceholders,
-    getTemplateLiterals,
-    setResult: (r: HTMLTemplateTags | undefined) => {
-        result = r
-    },
-    getResult: () => result,
-    resetTemplateId: () => nextId = 1,
-    load,
-    cachePropertyCasesFromText,
-    restorePropertyCases
+  findTemplates,
+  mangle,
+  mangleAll,
+  injectPlaceholders,
+  replacePlaceholders,
+  getTemplateLiterals,
+  setResult: (r: HTMLTemplateTags | undefined) => {
+    result = r
+  },
+  getResult: () => result,
+  resetTemplateId: () => (nextId = 1),
+  load,
+  cachePropertyCasesFromText,
+  restorePropertyCases,
 }

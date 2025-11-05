@@ -11,7 +11,6 @@ import android.util.AttributeSet;
 import androidx.preference.PreferenceViewHolder;
 
 import org.chromium.build.annotations.NullMarked;
-import org.chromium.components.prefs.PrefService;
 
 @NullMarked
 public class BravePasswordsPreference extends PasswordsPreference {
@@ -19,5 +18,5 @@ public class BravePasswordsPreference extends PasswordsPreference {
         super(context, attrs);
     }
 
-    public void setUpPostDeprecationWarning(PreferenceViewHolder holder, PrefService prefService) {}
+    public void setUpPostDeprecationWarning(PreferenceViewHolder holder) {}
 }

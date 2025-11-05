@@ -9,16 +9,6 @@ import("//build/config/features.gni")
 import("//third_party/protobuf/proto_library.gni")
 import("//tools/json_schema_compiler/json_schema_api.gni")
 
-declare_args() {
-  sardine_client_id = ""
-  sardine_client_secret = ""
-}
-
-if (is_official_build) {
-  assert(sardine_client_id != "")
-  assert(sardine_client_secret != "")
-}
-
 static_library("browser") {
   sources = [
     "account_discovery_manager.cc",
@@ -190,8 +180,17 @@ static_library("browser") {
     "nonce_tracker.h",
     "password_encryptor.cc",
     "password_encryptor.h",
+    "polkadot/polkadot_block_tracker.cc",
+    "polkadot/polkadot_block_tracker.h",
     "polkadot/polkadot_substrate_rpc.cc",
     "polkadot/polkadot_substrate_rpc.h",
+    "polkadot/polkadot_tx_manager.cc",
+    "polkadot/polkadot_tx_manager.h",
+    "polkadot/polkadot_tx_meta.cc",
+    "polkadot/polkadot_tx_meta.h",
+    "polkadot/polkadot_tx_state_manager.cc",
+    "polkadot/polkadot_tx_state_manager.h",
+    "polkadot/polkadot_utils.h",
     "polkadot/polkadot_wallet_service.cc",
     "polkadot/polkadot_wallet_service.h",
     "scoped_txs_update.cc",
@@ -318,6 +317,7 @@ static_library("browser") {
     "//brave/components/brave_wallet/api",
     "//brave/components/brave_wallet/browser/bitcoin:generated_bitcoin_rpc_responses",
     "//brave/components/brave_wallet/browser/cardano:generated_cardano_rpc_blockfrost_api",
+    "//brave/components/brave_wallet/browser/internal:cardano_tx_decoder",
     "//brave/components/brave_wallet/browser/internal:hd_key_common",
     "//brave/components/brave_wallet/browser/polkadot:generated_polkadot_substrate_rpc_responses",
     "//brave/components/brave_wallet/common",
@@ -385,8 +385,6 @@ static_library("browser") {
       "//sql",
     ]
   }
-
-  configs += [ ":sardine_config" ]
 }
 
 # TODO(https://github.com/brave/brave-browser/issues/47669) this should be
@@ -578,6 +576,19 @@ source_set("test_support") {
   ]
 }  # source_set("test_support")
 
+source_set("wallet_handler") {
+  sources = [
+    "wallet_handler.cc",
+    "wallet_handler.h",
+  ]
+  deps = [
+    "//brave/components/brave_wallet/browser",
+    "//brave/components/brave_wallet/common",
+    "//brave/components/brave_wallet/common:mojom",
+    "//mojo/public/cpp/bindings",
+  ]
+}
+
 generated_types("generated_blockchain_list_schemas") {
   sources = [ "blockchain_list_schemas.idl" ]
   root_namespace = "brave_wallet::%(namespace)s"
@@ -615,13 +626,6 @@ generated_types("generated_swap_responses") {
   visibility = [
     ":browser",
     ":unit_tests",
-  ]
-}
-
-config("sardine_config") {
-  defines = [
-    "SARDINE_CLIENT_ID=\"$sardine_client_id\"",
-    "SARDINE_CLIENT_SECRET=\"$sardine_client_secret\"",
   ]
 }
 
@@ -703,6 +707,7 @@ source_set("unit_tests") {
     "fil_tx_meta_unittest.cc",
     "fil_tx_state_manager_unittest.cc",
     "filecoin_keyring_unittest.cc",
+    "internal/cardano_tx_decoder_unittest.cc",
     "internal/hd_key_common_unittest.cc",
     "internal/hd_key_ed25519_slip23_unittest.cc",
     "internal/hd_key_ed25519_unittest.cc",
@@ -724,6 +729,7 @@ source_set("unit_tests") {
     "password_encryptor_unittest.cc",
     "polkadot/polkadot_keyring_unittest.cc",
     "polkadot/polkadot_substrate_rpc_unittest.cc",
+    "polkadot/polkadot_tx_manager_unittest.cc",
     "polkadot/polkadot_wallet_service_unittest.cc",
     "rlp_decode_unittest.cc",
     "rlp_encode_unittest.cc",
@@ -783,6 +789,7 @@ source_set("unit_tests") {
     "//brave/components/brave_component_updater/browser:test_support",
     "//brave/components/brave_wallet/browser/bitcoin:generated_bitcoin_rpc_responses",
     "//brave/components/brave_wallet/browser/cardano:generated_cardano_rpc_blockfrost_api",
+    "//brave/components/brave_wallet/browser/internal:cardano_tx_decoder",
     "//brave/components/brave_wallet/browser/internal:hd_key",
     "//brave/components/brave_wallet/browser/polkadot:generated_polkadot_substrate_rpc_responses",
     "//brave/components/brave_wallet/common",

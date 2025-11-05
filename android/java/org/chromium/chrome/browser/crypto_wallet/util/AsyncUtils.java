@@ -7,7 +7,6 @@ package org.chromium.chrome.browser.crypto_wallet.util;
 
 import static org.chromium.chrome.browser.crypto_wallet.util.Utils.warnWhenError;
 
-import org.chromium.base.Callbacks;
 import org.chromium.brave_wallet.mojom.AssetPrice;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.AssetTimePrice;
@@ -27,6 +26,40 @@ import java.util.List;
 
 public class AsyncUtils {
     private static final String TAG = "AsyncUtils";
+
+    /**
+     * A generic 1-argument callback.
+     *
+     * @param <T1> The type of the first argument.
+     */
+    public interface Callback1<T1> {
+        /** Call the callback. */
+        void call(T1 arg1);
+    }
+
+    /**
+     * A generic 2-argument callback.
+     *
+     * @param <T1> The type of the first argument.
+     * @param <T2> The type of the second argument.
+     */
+    public interface Callback2<T1, T2> {
+        /** Call the callback. */
+        void call(T1 arg1, T2 arg2);
+    }
+
+    /**
+     * A generic 4-argument callback.
+     *
+     * @param <T1> The type of the first argument.
+     * @param <T2> The type of the second argument.
+     * @param <T3> The type of the third argument.
+     * @param <T4> The type of the fourth argument.
+     */
+    public interface Callback4<T1, T2, T3, T4> {
+        /** Call the callback. */
+        void call(T1 arg1, T2 arg2, T3 arg3, T4 arg4);
+    }
 
     // Helper to track multiple wallet services responses
     public static class MultiResponseHandler {
@@ -243,7 +276,7 @@ public class AsyncUtils {
     }
 
     public static class FetchPricesResponseContext extends SingleResponseBaseContext
-            implements Callbacks.Callback1<List<AssetPrice>> {
+            implements Callback1<List<AssetPrice>> {
         public List<AssetPrice> assetPrices;
 
         public FetchPricesResponseContext(Runnable responseCompleteCallback) {
@@ -258,7 +291,7 @@ public class AsyncUtils {
     }
 
     public static class GetNativeAssetsBalancesResponseContext extends SingleResponseBaseContext
-            implements Callbacks.Callback2<Integer, HashMap<String, Double>> {
+            implements Callback2<Integer, HashMap<String, Double>> {
         public int coinType;
         public HashMap<String, Double> nativeAssetsBalances;
 
@@ -275,7 +308,7 @@ public class AsyncUtils {
     }
 
     public static class GetBlockchainTokensBalancesResponseContext extends SingleResponseBaseContext
-            implements Callbacks.Callback2<Integer, HashMap<String, HashMap<String, Double>>> {
+            implements Callback2<Integer, HashMap<String, HashMap<String, Double>>> {
         public HashMap<String, HashMap<String, Double>> blockchainTokensBalances;
         public int coinType;
 
@@ -294,7 +327,7 @@ public class AsyncUtils {
     }
 
     public static class GetTxExtraInfoResponseContext extends SingleResponseBaseContext
-            implements Callbacks.Callback4<
+            implements Callback4<
                     List<AssetPrice>,
                     BlockchainToken[],
                     HashMap<String, Double>,
@@ -346,7 +379,7 @@ public class AsyncUtils {
     }
 
     public static class GetP3ABalancesContext extends SingleResponseBaseContext
-            implements Callbacks.Callback1<HashMap<Integer, HashSet<String>>> {
+            implements Callback1<HashMap<Integer, HashSet<String>>> {
         public HashMap<Integer, HashSet<String>> activeAddresses;
 
         public GetP3ABalancesContext(Runnable responseCompleteCallback) {

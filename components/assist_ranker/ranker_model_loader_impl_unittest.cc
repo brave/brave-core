@@ -10,7 +10,6 @@
 #include <vector>
 
 #include "base/files/file_util.h"
-#include "base/memory/ref_counted.h"
 #include "base/notreached.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"

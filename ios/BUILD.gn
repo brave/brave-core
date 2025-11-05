@@ -10,6 +10,7 @@ import("//brave/build/mac/tweak_info_plist.gni")
 import("//brave/components/ai_chat/ios/browser/headers.gni")
 import("//brave/components/brave_shields/ios/browser/headers.gni")
 import("//brave/components/debounce/ios/browser/headers.gni")
+import("//brave/components/url_sanitizer/ios/browser/headers.gni")
 import("//brave/ios/browser/api/ads/headers.gni")
 import("//brave/ios/browser/api/brave_domains/headers.gni")
 import("//brave/ios/browser/api/brave_rewards/headers.gni")
@@ -42,7 +43,6 @@ import("//brave/ios/browser/api/translate/headers.gni")
 import("//brave/ios/browser/api/unicode/headers.gni")
 import("//brave/ios/browser/api/unzip/headers.gni")
 import("//brave/ios/browser/api/url/headers.gni")
-import("//brave/ios/browser/api/url_sanitizer/headers.gni")
 import("//brave/ios/browser/api/web/web_state/headers.gni")
 import("//brave/ios/browser/api/web_view/headers.gni")
 import("//brave/ios/browser/api/webcompat_reporter/headers.gni")
@@ -54,6 +54,7 @@ import("//build/apple/tweak_info_plist.gni")
 import("//build/config/compiler/compiler.gni")
 import("//build/config/ios/rules.gni")
 import("//ios/features.gni")
+import("//ios/web_view/framework/sources.gni")
 
 # lld is required when building arm64 with optimization in order to avoid
 # runtime crashes
@@ -69,21 +70,20 @@ config("internal_config") {
 group("brave_ios") {
   public_deps = [
     ":brave_core_xcframework",
+    ":early_partition_alloc_xcframework",
     ":generated_xcconfig",
-    ":material_components_xcframework",
     ":nala_assets_xcframework",
   ]
-  if (ios_partition_alloc_enabled) {
-    public_deps += [ ":early_partition_alloc_xcframework" ]
-  }
 }
 
 brave_core_public_headers = [
   "//brave/base/apple/base_value_bridge.h",
+  "//brave/components/ai_chat/ios/browser/ai_chat_ui_handler_bridge.h",
   "//brave/ios/app/brave_core_main.h",
   "//brave/ios/app/brave_profile_controller.h",
   "//brave/ios/app/brave_core_switches.h",
   "//brave/ios/browser/ai_chat/ai_chat_utils.h",
+  "//brave/ios/browser/ai_chat/ai_chat_settings_helper.h",
   "//brave/ios/browser/brave_news/brave_news_pref_names_bridge.h",
   "//brave/ios/browser/brave_vpn/brave_vpn_pref_names_bridge.h",
   "//brave/ios/browser/brave_wallet/brave_wallet_factory_wrappers.h",
@@ -110,6 +110,7 @@ brave_core_public_headers = [
   "//brave/ios/browser/safari_data_import/safari_data_import_client_delegate.h",
   "//brave/ios/browser/safari_data_import/safari_data_importer_bridge.h",
   "//brave/ios/browser/safari_data_import/safari_data_importer_coordinator.h",
+  "//brave/ios/browser/playlist/playlist_pref_names_bridge.h",
 ]
 
 brave_core_public_headers += ads_public_headers
@@ -118,7 +119,7 @@ brave_core_public_headers += brave_domains_public_headers
 brave_core_public_headers += brave_shields_public_headers
 brave_core_public_headers += brave_shields_api_public_headers
 brave_core_public_headers += brave_shields_component_public_headers
-brave_core_public_headers += browser_api_url_sanitizer_public_headers
+brave_core_public_headers += url_sanitizer_component_public_headers
 brave_core_public_headers += browser_url_sanitizer_public_headers
 brave_core_public_headers += browser_api_de_amp_public_headers
 brave_core_public_headers += debounce_component_public_headers
@@ -156,6 +157,7 @@ brave_core_public_headers += browser_api_unicode_public_headers
 brave_core_public_headers += browser_api_unzip_public_headers
 brave_core_public_headers += brave_web_view_public_headers
 brave_core_public_headers += browser_api_profile_public_headers
+brave_core_public_headers += brave_ios_web_view_public_headers
 
 action("brave_core_umbrella_header") {
   script = "//build/config/ios/generate_umbrella_header.py"
@@ -221,34 +223,27 @@ ios_framework_bundle("brave_core_ios_framework") {
   public_headers += ios_web_view_public_headers
 }
 
-if (ios_partition_alloc_enabled) {
-  ios_framework_bundle("early_partition_alloc_framework") {
-    output_name = "PartitionAllocSupport"
-    sources = [ "//ios/chrome/app/early_pa_registration.cc" ]
-    info_plist = "//ios/chrome/app/resources/EarlyPAFrameworkInfo.plist"
-    extra_substitutions = [ "BUNDLE_IDENTIFIER=com.brave.ios.$output_name" ]
+ios_framework_bundle("early_partition_alloc_framework") {
+  output_name = "PartitionAllocSupport"
+  sources = [ "//ios/chrome/app/early_pa_registration.cc" ]
+  info_plist = "//ios/chrome/app/resources/EarlyPAFrameworkInfo.plist"
+  extra_substitutions = [ "BUNDLE_IDENTIFIER=com.brave.ios.$output_name" ]
 
-    deps = [
-      "//base/allocator:early_zone_registration_apple",
-      "//base/allocator/partition_allocator:buildflags",
-    ]
-  }
-  ios_create_xcframework("early_partition_alloc_xcframework") {
-    framework_dir = "$root_build_dir/PartitionAllocSupport.framework"
-    deps = [ ":early_partition_alloc_framework" ]
-  }
+  deps = [
+    "//base/allocator:early_zone_registration_apple",
+    "//base/allocator/partition_allocator:buildflags",
+  ]
+}
+
+ios_create_xcframework("early_partition_alloc_xcframework") {
+  framework_dir = "$root_build_dir/PartitionAllocSupport.framework"
+  deps = [ ":early_partition_alloc_framework" ]
 }
 
 ios_create_xcframework("brave_core_xcframework") {
   framework_dir = "$root_build_dir/BraveCore.framework"
   remove_asset_catalogs = true
   deps = [ ":brave_core_ios_framework" ]
-}
-
-ios_create_xcframework("material_components_xcframework") {
-  framework_dir = "$root_build_dir/MaterialComponents.framework"
-  fix_info_plist_versions = true
-  deps = [ "//ios/third_party/material_components_ios" ]
 }
 
 ios_create_xcframework("nala_assets_xcframework") {

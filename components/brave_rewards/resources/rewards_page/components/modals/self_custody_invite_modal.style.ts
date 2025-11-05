@@ -21,4 +21,3 @@ export const style = scoped.css`
     }
   }
 `
-

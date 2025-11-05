@@ -22,7 +22,7 @@
     Rewards
   </message>
   <message name="IDS_CUSTOMIZE_TOOLBAR_TOGGLE_BRAVE_NEWS" desc="Title for a toggle button to show or hide brave news">
-    Brave News
+    Add RSS feed
   </message>
   <message name="IDS_CUSTOMIZE_TOOLBAR_TOGGLE_BOOKMARK" desc="Title for a toggle button to show or hide bookmark button to add a new bookmark">
     Add Bookmark

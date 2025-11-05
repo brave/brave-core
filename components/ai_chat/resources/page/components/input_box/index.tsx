@@ -8,7 +8,8 @@ import Button from '@brave/leo/react/button'
 import Tooltip from '@brave/leo/react/tooltip'
 import * as React from 'react'
 import classnames from '$web-common/classnames'
-import { getLocale } from '$web-common/locale'
+import { getLocale, formatLocale } from '$web-common/locale'
+import { Url } from 'gen/url/mojom/url.mojom.m.js'
 import ActionTypeLabel from '../../../common/components/action_type_label'
 import { AIChatContext } from '../../state/ai_chat_context'
 import { ConversationContext } from '../../state/conversation_context'
@@ -23,6 +24,11 @@ import { ModelSelector } from '../model_selector'
 import usePromise from '$web-common/usePromise'
 import { isImageFile } from '../../constants/file_types'
 import { convertFileToUploadedFile } from '../../utils/file_utils'
+import Editable from './editable'
+import { stringifyContent } from './editable_content'
+
+const LEARN_MORE_CONTENT_AGENT_URL =
+  'https://support.brave.app/hc/en-us/sections/20991947768717-Leo-AI'
 
 type Props = Pick<
   ConversationContext,
@@ -52,6 +58,8 @@ type Props = Pick<
   | 'setAttachmentsDialog'
   | 'attachImages'
   | 'unassociatedTabs'
+  | 'handleSkillClick'
+  | 'selectedSkill'
 >
   & Pick<
     AIChatContext,
@@ -61,6 +69,8 @@ type Props = Pick<
     | 'hasAcceptedAgreement'
     | 'getPluralString'
     | 'openAIChatAgentProfile'
+    | 'skills'
+    | 'uiHandler'
   >
 
 export interface InputBoxProps {
@@ -90,10 +100,6 @@ function usePlaceholderText(
 }
 
 function InputBox(props: InputBoxProps) {
-  const onInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    props.context.setInputText(e.target.value)
-  }
-
   const querySubmitted = React.useRef(false)
   const attachmentWrapperRef = React.useRef<HTMLDivElement>(null)
   const [attachmentWrapperHeight, setAttachmentWrapperHeight] =
@@ -112,7 +118,7 @@ function InputBox(props: InputBoxProps) {
     props.context.handleVoiceRecognition?.()
   }
 
-  const handleOnKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+  const handleOnKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) {
       if (!e.repeat) {
         props.context.submitInputTextToAPI()
@@ -123,7 +129,7 @@ function InputBox(props: InputBoxProps) {
 
     if (
       e.key === 'Backspace'
-      && props.context.inputText === ''
+      && stringifyContent(props.context.inputText) === ''
       && props.context.selectedActionType
     ) {
       props.context.resetSelectedActionType()
@@ -158,7 +164,7 @@ function InputBox(props: InputBoxProps) {
     }
   }
 
-  const maybeAutofocus = (node: HTMLTextAreaElement | null) => {
+  const maybeAutofocus = (node: HTMLElement | null) => {
     if (!node) {
       return
     }
@@ -200,10 +206,20 @@ function InputBox(props: InputBoxProps) {
     (c) => !c.conversationTurnUuid,
   )
   const isSendButtonDisabled =
-    props.context.shouldDisableUserInput || props.context.inputText === ''
+    props.context.shouldDisableUserInput
+    || stringifyContent(props.context.inputText) === ''
+
+  const handleLearnMoreClicked = React.useCallback(() => {
+    const mojomUrl = new Url()
+    mojomUrl.url = LEARN_MORE_CONTENT_AGENT_URL
+    props.context.uiHandler?.openURL(mojomUrl)
+  }, [props.context.uiHandler])
 
   return (
-    <form className={styles.form}>
+    <form
+      className={styles.form}
+      onKeyDownCapture={handleOnKeyDown}
+    >
       {props.context.selectedActionType && (
         <div className={styles.actionsLabelContainer}>
           <ActionTypeLabel
@@ -213,6 +229,33 @@ function InputBox(props: InputBoxProps) {
           />
         </div>
       )}
+      {props.context.isAIChatAgentProfileFeatureEnabled
+        && props.context.isAIChatAgentProfile
+        && !props.conversationStarted && (
+          <div className={styles.contentAgentWarning}>
+            <div className={styles.contentAgentWarningIcon}>
+              <Icon name='leo-cursor-filled' />
+            </div>
+            <div className={styles.contentAgentWarningText}>
+              {formatLocale(S.CHAT_UI_CONTENT_AGENT_WARNING_TEXT, {
+                $1: (content) => (
+                  <a
+                    // While we preventDefault onClick, we still need to pass
+                    // the href here so we can show link preview.
+                    href={LEARN_MORE_CONTENT_AGENT_URL}
+                    className={styles.learnMoreLink}
+                    onClick={(e) => {
+                      e.preventDefault()
+                      handleLearnMoreClicked()
+                    }}
+                  >
+                    {content}
+                  </a>
+                ),
+              })}
+            </div>
+          </div>
+        )}
       {(showUploadedFiles || pendingContent.length > 0) && (
         <div
           className={classnames({
@@ -241,21 +284,15 @@ function InputBox(props: InputBoxProps) {
           />
         </div>
       )}
-      <div
-        className={styles.growWrap}
-        data-replicated-value={props.context.inputText || placeholderText}
-      >
-        <textarea
-          ref={maybeAutofocus}
-          placeholder={placeholderText}
-          onChange={onInputChange}
-          onKeyDown={handleOnKeyDown}
-          onPaste={handleOnPaste}
-          value={props.context.inputText}
-          autoFocus
-          rows={1}
-        />
-      </div>
+      <Editable
+        ref={maybeAutofocus}
+        placeholder={placeholderText}
+        content={props.context.inputText}
+        onContentChange={(e) => {
+          props.context.setInputText(e)
+        }}
+        onPaste={handleOnPaste}
+      />
       {props.context.isCharLimitApproaching && (
         <div
           className={classnames({

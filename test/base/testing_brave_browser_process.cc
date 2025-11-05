@@ -13,6 +13,7 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
+#include "brave/components/brave_origin/brave_origin_policy_manager.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -44,7 +45,10 @@ void TestingBraveBrowserProcess::DeleteInstance() {
 }
 
 // static
-void TestingBraveBrowserProcess::StartTearDown() {}
+void TestingBraveBrowserProcess::StartTearDown() {
+  // Reset BraveOriginPolicyManager to prevent dangling pointer to local_state_.
+  brave_origin::BraveOriginPolicyManager::GetInstance()->Shutdown();
+}
 
 // static
 void TestingBraveBrowserProcess::TearDownAndDeleteInstance() {
@@ -95,11 +99,6 @@ TestingBraveBrowserProcess::https_upgrade_exceptions_service() {
   return nullptr;
 }
 
-localhost_permission::LocalhostPermissionComponent*
-TestingBraveBrowserProcess::localhost_permission_component() {
-  return nullptr;
-}
-
 brave_component_updater::LocalDataFilesService*
 TestingBraveBrowserProcess::local_data_files_service() {
   return nullptr;
@@ -115,7 +114,6 @@ TestingBraveBrowserProcess::tor_pluggable_transport_updater() {
   return nullptr;
 }
 #endif
-
 
 p3a::P3AService* TestingBraveBrowserProcess::p3a_service() {
   return nullptr;

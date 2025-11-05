@@ -7,6 +7,7 @@
 
 #include <string_view>
 
+#include "base/check_is_test.h"
 #include "base/containers/fixed_flat_map.h"
 #include "base/containers/map_util.h"
 #include "base/no_destructor.h"
@@ -21,6 +22,7 @@
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_selections.h"
+#include "components/policy/core/browser/browser_policy_connector_base.h"
 
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
 #include "brave/components/brave_rewards/core/pref_names.h"
@@ -43,11 +45,30 @@ namespace policy {
 class PolicyService;
 }
 
+namespace policy {
+class ChromeBrowserPolicyConnector;
+}
+
 namespace brave_origin {
 
 // Defined in chromium_src/chrome/browser/profiles/profile.cc to avoid a
 // circular dep on chrome/browser for the policy connector include.
 policy::PolicyService* GetPolicyServiceFromProfile(Profile* profile);
+
+policy::PolicyService* GetBrowserPolicyService() {
+  if (!g_browser_process || !g_browser_process->browser_policy_connector()) {
+    CHECK_IS_TEST();
+    return nullptr;
+  }
+
+  auto* connector = reinterpret_cast<policy::BrowserPolicyConnectorBase*>(
+      g_browser_process->browser_policy_connector());
+  // Only get policy service if we have one already or not in testing mode
+  if (connector->HasPolicyService()) {
+    return connector->GetPolicyService();
+  }
+  return nullptr;
+}
 
 namespace {
 
@@ -109,7 +130,7 @@ constexpr auto kBraveOriginProfileMetadata =
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
         // Speedreader preferences
-        {speedreader::kSpeedreaderPrefFeatureEnabled,
+        {speedreader::kSpeedreaderEnabled,
          BraveOriginServiceFactory::BraveOriginPrefMetadata(
              false,
              /*user_settable=*/true)},
@@ -134,6 +155,12 @@ constexpr auto kBraveOriginProfileMetadata =
          BraveOriginServiceFactory::BraveOriginPrefMetadata(
              true,
              /*user_settable=*/false)},
+
+        // Web Discovery preferences
+        {kWebDiscoveryEnabled,
+         BraveOriginServiceFactory::BraveOriginPrefMetadata(
+             false,
+             /*user_settable=*/true)},
     });
 
 }  // namespace
@@ -173,7 +200,7 @@ BraveOriginServiceFactory::BuildServiceInstanceForBrowserContext(
   std::string profile_id = GetProfileId(profile->GetPath());
   return std::make_unique<BraveOriginService>(
       g_browser_process->local_state(), profile->GetPrefs(), profile_id,
-      GetPolicyServiceFromProfile(profile));
+      GetPolicyServiceFromProfile(profile), GetBrowserPolicyService());
 }
 
 bool BraveOriginServiceFactory::ServiceIsCreatedWithBrowserContext() const {
@@ -192,10 +219,9 @@ BraveOriginPolicyMap BraveOriginServiceFactory::GetBrowserPolicyDefinitions() {
       std::string brave_origin_pref_key = pref_name;
 
       browser_policy_definitions.emplace(
-          pref_name,
-          BraveOriginPolicyInfo(pref_name, metadata->origin_default_value,
-                                metadata->user_settable, policy_key,
-                                brave_origin_pref_key));
+          policy_key, BraveOriginPolicyInfo(
+                          pref_name, metadata->origin_default_value,
+                          metadata->user_settable, brave_origin_pref_key));
     }
   }
 
@@ -214,10 +240,9 @@ BraveOriginPolicyMap BraveOriginServiceFactory::GetProfilePolicyDefinitions() {
       std::string brave_origin_pref_key = pref_name;
 
       profile_policy_definitions.emplace(
-          pref_name,
-          BraveOriginPolicyInfo(pref_name, metadata->origin_default_value,
-                                metadata->user_settable, policy_key,
-                                brave_origin_pref_key));
+          policy_key, BraveOriginPolicyInfo(
+                          pref_name, metadata->origin_default_value,
+                          metadata->user_settable, brave_origin_pref_key));
     }
   }
 

@@ -5,6 +5,8 @@
 <translation id="3478449063771497234">Notifikasi dinonaktifkan</translation>
 <translation id="2862978891748913252">Pilih negara Anda</translation>
 <translation id="3970520675790340955">Pilih negara Anda sehingga kami dapat menunjukkan kepada Anda opsi dan iklan yang tepat untuk wilayah Anda.</translation>
+<translation id="721490496276866468">Impor kata sandi</translation>
+<translation id="8178175542325151321">Pilih berkas .csv yang berisi kata sandi Anda untuk mengimpornya ke pengelola kata sandi Brave.</translation>
 <translation id="7301741773883122509">Kini, Anda bisa mendapatkan imbalan dengan melihat iklan. Anda membantu menjadikan web tempat yang lebih baik bagi semua orang. Dan itu keren!</translation>
 <translation id="6439128034594289376">Hore! Anda kini siap!</translation>
 <translation id="370665806235115550">Memuat...</translation>
@@ -99,6 +101,8 @@
 <translation id="8617525558807213034">Isi otomatis di tab pribadi</translation>
 <translation id="8685431198160039193">Informasi yang disimpan dapat diisi secara otomatis ke dalam tab pribadi</translation>
 <translation id="6583902294974160967">Mendukung</translation>
+<translation id="5713644099811900409">Akun Brave</translation>
+<translation id="4472575034687746823">Memulai</translation>
 <translation id="1799030480311994998">Fitur</translation>
 <translation id="2005732746077850308">Perisai &amp; privasi Brave</translation>
 <translation id="4692623383562244444">Mesin pencari</translation>
@@ -107,7 +111,6 @@
 <translation id="7304425663107214334">Tampilkan saran peramban</translation>
 <translation id="8982438328166986164">Menampilkan usulan situs web berdasarkan markah dan riwayat penelusuran Anda.</translation>
 <translation id="924029461438529367">Tampilkan saran pencarian</translation>
-<translation id="5989135139219497991">Tampilkan saran teratas</translation>
 <translation id="6285118765755298263">Masukkan mesin pencarian lain ke dalam daftar</translation>
 <translation id="919715748352669592">Susun indeks situs web yang mengikuti spesifikasi OpenSearch secara otomatis.</translation>
 <translation id="9148058034647219655">Keluar</translation>
@@ -295,6 +298,11 @@
 <translation id="4254029385847607686">DESEMBER</translation>
 <translation id="3960619311638643872">VPN Brave</translation>
 <translation id="1772301834467143364">Brave News</translation>
+<translation id="2518692840036393666">Sesuaikan menu</translation>
+<translation id="5582839680698949063">Menu utama</translation>
+<translation id="7002271985859760052">Tindakan halaman</translation>
+<translation id="7104487676473617844">Item berikut hanya akan terlihat di menu saat didukung oleh halaman web yang sedang dibuka.</translation>
+<translation id="4159764849281393303">WebApp</translation>
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> Dolar AS</translation>
 <translation id="8428213095426709021">Setelan</translation>
 <translation id="6020176662032623904">Kreator yang Telah Diverifikasi</translation>
@@ -797,7 +805,6 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="750843150060816463">Harga Bensin (Gwei)</translation>
 <translation id="1426320910664514906">Batas Gas</translation>
 <translation id="6389441740143786465">Nonaktifkan Hub Berbagi</translation>
-<translation id="9065203028668620118">Edit</translation>
 <translation id="473775607612524610">Perbarui</translation>
 <translation id="479795390141144417">Pembaruan akun gagal.</translation>
 <translation id="8084782383392198011">Nama akun tidak dapat dibiarkan kosong.</translation>
@@ -1013,8 +1020,6 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="8496335570810457">Komitmen Simulasi Transaksi:</translation>
 <translation id="5100124500279922001">Lewati Simulasi Transaksi:</translation>
 <translation id="7152095322071766507">Situs Paling Sering Dikunjungi</translation>
-<translation id="7230006500876504868">Mencari dengan Brave</translation>
-<translation id="5888208462949095139">Mencari dengan <ph name="DEFAULT_SEARCH_ENGINE"/></translation>
 <translation id="5456039738087398178">Widget layar beranda</translation>
 <translation id="703185154752046151">Widget ditambahkan ke layar beranda</translation>
 <translation id="4635094429202343515">Coba widget Brave Penelusuran</translation>
@@ -1074,7 +1079,7 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="7618347247876614969">Akun Tabel Pencarian Alamat:</translation>
 <translation id="7659483790930268440">Indeks Tabel Pencarian Alamat:</translation>
 <translation id="5494920125229734069">Pilih semua</translation>
-<translation id="6129027151000961048">Leo</translation>
+<translation id="2361906291514218784">AI Leo</translation>
 <translation id="8613144770663526433">Masuk dengan Dompet Brave</translation>
 <translation id="3696514931437952995">Anda masuk ke <ph name="ORIGIN"/>. Dompet Brave akan membagikan alamat dompet Anda dengan <ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">Lihat detail</translation>
@@ -1091,11 +1096,11 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="6742599753610126012">Hapus riwayat obrolan</translation>
 <translation id="3443052382074796867">Menonaktifkan penyimpanan percakapan akan hapus permanen semua percakapan yang tersimpan sebelumnya. Tidak bisa diurungkan.</translation>
 <translation id="3692772534525889713">Tautkan pembelian di Play Store Anda ke akun Brave Anda untuk menggunakan Brave Leo pada perangkat lain.</translation>
-<translation id="73236265316873967">Leo Premium</translation>
+<translation id="592831784390389506">Leo AI Premium</translation>
 <translation id="1028627582482425924">Satu tahun</translation>
 <translation id="2985392169397572983">NILAI TERBAIK</translation>
 <translation id="1166682575529520472">Bulanan</translation>
-<translation id="451189393813405346">Tanyakan pada Leo</translation>
+<translation id="2206846767762985925">Tanya Leo AI</translation>
 <translation id="7322560193401221004">Ingat posisi putar ulang berkas</translation>
 <translation id="7505951907514709271">Untuk berkas individual, putar kembali dari titik terakhir dijeda</translation>
 <translation id="6835165453349969605">Ingat posisi putar ulang daftar</translation>
@@ -1138,6 +1143,7 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="3861012838874771868">Buka Pengaturan Daftar Putar</translation>
 <translation id="5220099266891491416">Sembunyikan tombol Daftar Putar</translation>
 <translation id="7416347631175891923">Cobalah!</translation>
+<translation id="9065203028668620118">Edit</translation>
 <translation id="1173894706177603556">Ganti nama</translation>
 <translation id="3596306474342941843">Hapus daftar putar</translation>
 <translation id="7765158879357617694">Pindahkan</translation>
@@ -1152,7 +1158,7 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="5319532905552885478">Konten media telah ditambahkan ke daftar putar bawaan</translation>
 <translation id="4802584673094436231">Menyiapkan...</translation>
 <translation id="481455355267255546">Berikutnya</translation>
-<translation id="5474757891469990756">Lepaskan kekuatan penuh Leo dengan paket Premium:</translation>
+<translation id="3721790899869840343">Manfaatkan kekuatan penuh Leo AI dengan Premium:</translation>
 <translation id="4173478269537830374">Jelajahi model AI yang berbeda</translation>
 <translation id="3453542753968940696">Akses prioritas ke model penuh kekuatan dengan keterampilan berbeda.</translation>
 <translation id="3245401959451976966">Lepaskan kreativitas Anda</translation>
@@ -1220,12 +1226,18 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="4650851936784160359">Daftar filter tidak dapat diperbarui. Silakan coba lagi.</translation>
 <translation id="3098054327870766317">Tampilkan tombol urungkan saat tab ditutup</translation>
 <translation id="1336494649091412226">Apakah Anda yakin ingin keluar dari Brave?</translation>
-<translation id="2361906291514218784">AI Leo</translation>
 <translation id="7942415993090181327">Riwayat obrolan</translation>
 <translation id="6859935199732075666">Tampilkan kesalahan dari Safe Browsing</translation>
 <translation id="2735247450315842119">Izinkan tangkapan layar di tab pribadi</translation>
 <translation id="8420414929552321089">Jika diizinkan, tab pribadi juga akan terlihat ketika beberapa aplikasi terbuka.</translation>
 <translation id="7956713633345437162">Bookmark ponsel</translation>
+<translation id="3176467469116060712">Mendukung upaya terdepan Brave dalam industri terkait privasi Web dan daftar pemblokiran iklan sumber terbuka</translation>
+<translation id="5896375129784311037">Dioptimalkan untuk antarmuka browser yang lebih minimalis</translation>
+<translation id="746156554966264308">Bagian inti dari Brave Perisai untuk pemblokiran iklan, privasi, dan kecepatan</translation>
+<translation id="1432661650699782509">Mendukung kebijakan terkait IT di tempat kerja</translation>
+<translation id="1361157028850796410">nilai terbaik</translation>
+<translation id="7280825497485894053">Langganan bulanan</translation>
+<translation id="4570901726096223030">Pelajari selengkapnya tentang Origin</translation>
 <translation id="1943432128510653496">Simpan sandi</translation>
 <translation id="2100273922101894616">Login Otomatis</translation>
 <translation id="363596933471559332">Otomatis login ke situs web menggunakan kredensial yang tersimpan. Saat fitur dinonaktifkan, Anda akan dimintai verifikasi setiap kali hendak login ke situs web.</translation>
@@ -1237,6 +1249,22 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="5139940364318403933">Pelajari cara menggunakan Google Drive</translation>
 <translation id="729975465115245577">Perangkat Anda tidak memiliki aplikasi untuk menyimpan file sandi.</translation>
 <translation id="1129510026454351943">Detail: <ph name="ERROR_DESCRIPTION"/></translation>
+<translation id="5594899180331219722">Pilih berkas</translation>
+<translation id="3744219658596020825">Kata sandi Anda gagal diimpor</translation>
+<translation id="8258027225380843424">Impor berhasil!</translation>
+<translation id="766635563210446220">Tidak dapat mengimpor kata sandi. Periksa <ph name="FILENAME"/> dan pastikan formatnya benar. <ph name="BEGIN_LINK"/>Pelajari lebih lanjut<ph name="END_LINK"/></translation>
+<translation id="6581356304040102696">Tidak dapat mengimpor kata sandi. Ukuran berkas harus kurang dari 1 MB.</translation>
+<translation id="5895244669404288318">{COUNT, plural,
+        =1 {Tidak dapat mengimpor sandi. Anda hanya dapat mengimpor 1 sandi dalam satu waktu.}
+        other {Tidak dapat mengimpor sandi. Anda hanya dapat mengimpor hingga <ph name="COUNT_MANY"/> sandi dalam satu waktu.}}</translation>
+<translation id="3748424433435232460">Kata sandi untuk akun ini sudah disimpan di perangkat ini</translation>
+<translation id="6438475350605608554">Anda sudah mengimpor kata sandi di tab lain</translation>
+<translation id="3482868954775580230">Gagal membaca berkas yang dipilih. <ph name="EXCEPTION_INFO"/></translation>
+<translation id="9162995380643712715">{IMPORT_COUNT, plural,
+        =1 {Berhasil mengimpor 1 sandi.}
+        other {Berhasil mengimpor <ph name="IMPORT_COUNT_MANY"/> sandi.}}</translation>
+<translation id="4637949129057123593">Impor gagal.</translation>
+<translation id="4300452012226767715">Pengelola kata sandi tidak tersedia.</translation>
 <translation id="6221633008163990886">Buka kunci untuk mengekspor sandi</translation>
 <translation id="5245792669563792664">sandi</translation>
 <translation id="10614374240317010">Jangan pernah disimpan</translation>

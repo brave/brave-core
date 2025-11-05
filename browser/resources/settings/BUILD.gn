@@ -8,6 +8,7 @@ import("//brave/build/config.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/containers/buildflags/buildflags.gni")
+import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//brave/components/web_discovery/buildflags/buildflags.gni")
 import("//brave/resources/brave_grit.gni")
@@ -65,7 +66,7 @@ generate_grd("build_grd") {
 
   deps = [
     ":preprocess",
-    "email_aliases_page:email_aliases_ui",
+    "//brave/components/email_aliases/resources:email_aliases_ui",
   ]
 
   if (!is_android) {
@@ -88,6 +89,7 @@ preprocess_if_expr("preprocess") {
     "enable_containers=$enable_containers",
     "enable_extensions=$enable_extensions",
     "enable_pin_shortcut=$enable_pin_shortcut",
+    "enable_speedreader=$enable_speedreader",
     "enable_web_discovery_native=$enable_web_discovery_native",
   ]
   out_folder =

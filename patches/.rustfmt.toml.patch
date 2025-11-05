@@ -1,12 +1,13 @@
 diff --git a/.rustfmt.toml b/.rustfmt.toml
-index f94e79babc090bc2cb4cdaae19db2d4f72618359..4065e4a5d8bd3d13d1e85fd84db93c608e6109bc 100644
+index f94e79babc090bc2cb4cdaae19db2d4f72618359..577add2d5492ecc4dabb0a0ae70c3d4c199ec609 100644
 --- a/.rustfmt.toml
 +++ b/.rustfmt.toml
-@@ -24,4 +24,7 @@ use_small_heuristics = "Max"
+@@ -24,4 +24,8 @@ use_small_heuristics = "Max"
  ignore = [
    "third_party/**",
    "!third_party/blink/**",
-+  "brave/third_party/**",
-+  "brave/third_party/rust/chromium_crates_io/vendor",
-+  "brave/tools/crates/",
++  "brave/third_party/",
++  "brave/tools/crates/vendor/",
++  "brave/ui/webui/resources/wasm/vendor/",
  ]
++skip_children = true  # Do not format submodules.

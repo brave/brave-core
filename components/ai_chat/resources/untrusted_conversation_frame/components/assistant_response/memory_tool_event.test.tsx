@@ -11,18 +11,6 @@ import * as React from 'react'
 import MockContext from '../../mock_untrusted_conversation_context'
 import MemoryToolEvent from './memory_tool_event'
 
-// Mock the locale functions for MemoryToolEvent
-jest.mock('$web-common/locale', () => ({
-  ...jest.requireActual('$web-common/locale'),
-  getLocale: (key: string) => key,
-  formatLocale: (key: string, params?: Record<string, string>) => {
-    if (key === 'CHAT_UI_MEMORY_UPDATED_WITH_CONTENT_LABEL') {
-      return `Memory updated: ${params?.$1}`
-    }
-    return key
-  },
-}))
-
 describe('MemoryToolEvent', () => {
   const createToolUseEvent = (
     argumentsJson: string,
@@ -132,7 +120,9 @@ describe('MemoryToolEvent', () => {
     await waitFor(() => {
       expect(screen.getByTestId('memory-tool-event')).toBeInTheDocument()
     })
-    expect(screen.getByText(/Test memory content/)).toBeInTheDocument()
+    expect(
+      screen.getByText(/CHAT_UI_MEMORY_UPDATED_WITH_CONTENT_LABEL/),
+    ).toBeInTheDocument()
     expect(screen.getByTestId('memory-undo-button')).toBeInTheDocument()
     expect(screen.getByTestId('memory-manage-button')).toBeInTheDocument()
     expect(mockHasMemory).toHaveBeenCalledWith('Test memory content')

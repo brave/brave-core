@@ -101,7 +101,7 @@ export function TopSites() {
               listKind === TopSitesListKind.kCustom &&
                 <button onClick={topSitesMenuAction(onAddTopSite)}>
                   <Icon name='browser-add' />
-                  {getString('addTopSiteLabel')}
+                  {getString(S.NEW_TAB_ADD_TOP_SITE_LABEL)}
                 </button>
             }
             {
@@ -112,8 +112,8 @@ export function TopSites() {
                   <Icon name={expanded ? 'contract' : 'expand' } />
                   {
                     expanded
-                      ? getString('topSitesShowLessLabel')
-                      : getString('topSitesShowMoreLabel')
+                      ? getString(S.NEW_TAB_TOP_SITES_SHOW_LESS_LABEL)
+                      : getString(S.NEW_TAB_TOP_SITES_SHOW_MORE_LABEL)
                   }
                 </button>
             }
@@ -124,13 +124,13 @@ export function TopSites() {
                   actions.setTopSitesListKind(TopSitesListKind.kMostVisited))
                 }>
                   <Icon name='history' />
-                  {getString('topSitesShowMostVisitedLabel')}
+                  {getString(S.NEW_TAB_TOP_SITES_SHOW_MOST_VISITED_LABEL)}
                 </button> :
                 <button onClick={topSitesMenuAction(() =>
                   actions.setTopSitesListKind(TopSitesListKind.kCustom))
                 }>
                   <Icon name='star-outline' />
-                  {getString('topSitesShowCustomLabel')}
+                  {getString(S.NEW_TAB_TOP_SITES_SHOW_CUSTOM_LABEL)}
                 </button>
             }
             <div className='menu-divider' />
@@ -138,7 +138,7 @@ export function TopSites() {
               actions.setShowTopSites(false))
             }>
               <Icon name='eye-off' />
-              {getString('hideTopSitesLabel')}
+              {getString(S.NEW_TAB_HIDE_TOP_SITES_LABEL)}
             </button>
           </div>
         </Popover>
@@ -156,7 +156,7 @@ export function TopSites() {
                   setContextMenuSite(null)
                 }}>
                   <Icon name='edit-pencil' />
-                  {getString('editTopSiteLabel')}
+                  {getString(S.NEW_TAB_EDIT_TOP_SITE_LABEL)}
                 </button>
             }
             <button onClick={() => {
@@ -167,7 +167,7 @@ export function TopSites() {
               }
             }}>
               <Icon name='trash' />
-              {getString('removeTopSiteLabel')}
+              {getString(S.NEW_TAB_REMOVE_TOP_SITE_LABEL)}
             </button>
           </div>
         </Popover>

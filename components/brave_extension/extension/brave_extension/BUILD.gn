@@ -7,6 +7,8 @@ import("//brave/components/common/typescript.gni")
 import("//build/config/locales.gni")
 
 transpile_web_ui("brave_extension") {
+  output_module = false
+
   # Need this to fire re-pack if changed, nevertheless extension is repacked on each 2nd build
   # what is the output bundle called and what is the entry point file
   entry_points = [
@@ -38,6 +40,8 @@ transpile_web_ui("brave_extension") {
 
   sync_wasm = true
 
+  imports_from =
+      [ "//brave/components/brave_extension/extension/brave_extension/" ]
   deps =
       [ "//brave/components/brave_extension:web_discovery_project_resources" ]
 }

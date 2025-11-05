@@ -48,10 +48,6 @@ bool TokenPreimage::operator==(const TokenPreimage& other) const {
   return EncodeBase64().value_or("") == other.EncodeBase64().value_or("");
 }
 
-bool TokenPreimage::operator!=(const TokenPreimage& other) const {
-  return !(*this == other);
-}
-
 TokenPreimage TokenPreimage::DecodeBase64(
     const std::string& token_preimage_base64) {
   return TokenPreimage(token_preimage_base64);

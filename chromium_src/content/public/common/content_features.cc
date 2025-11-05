@@ -14,7 +14,6 @@ namespace features {
 // this feature, the experimental web platform features flag should be set,
 // or the site should obtain an Origin Trial token.
 BASE_FEATURE(kIdleDetection,
-             "IdleDetection",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{

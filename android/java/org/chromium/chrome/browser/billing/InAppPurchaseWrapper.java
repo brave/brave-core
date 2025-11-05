@@ -13,7 +13,6 @@ import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.TextAppearanceSpan;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -30,10 +29,15 @@ import com.android.billingclient.api.QueryPurchasesParams;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
+import org.chromium.base.ThreadUtils;
+import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_leo.BraveLeoPrefUtils;
 import org.chromium.chrome.browser.brave_leo.BraveLeoUtils;
+import org.chromium.chrome.browser.brave_origin.BraveOriginSubscriptionPrefs;
+import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
@@ -47,6 +51,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+@NullMarked
 public class InAppPurchaseWrapper {
     public static final String MANAGE_SUBSCRIPTION_PAGE =
             "https://play.google.com/store/account/subscriptions";
@@ -73,12 +78,15 @@ public class InAppPurchaseWrapper {
 
     public static final String VPN_RELEASE_MONTHLY_SUBSCRIPTION = "brave.vpn.monthly";
     public static final String VPN_RELEASE_YEARLY_SUBSCRIPTION = "brave.vpn.yearly";
-    private BillingClient mBillingClient;
+    private @Nullable BillingClient mBillingClient;
+
+    // Profile context for current purchase flow
+    private @Nullable Profile mPurchaseProfile;
 
     private static final long MICRO_UNITS =
             1000000; // 1,000,000 micro-units equal one unit of the currency
 
-    private static volatile InAppPurchaseWrapper sInAppPurchaseWrapper;
+    private static volatile @Nullable InAppPurchaseWrapper sInAppPurchaseWrapper;
     private static final Object sMutex = new Object();
 
     public enum SubscriptionType {
@@ -120,7 +128,7 @@ public class InAppPurchaseWrapper {
      * @param product The subscription product type (VPN, LEO, or ORIGIN)
      */
     private void setMonthlyProductDetails(
-            ProductDetails productDetails, SubscriptionProduct product) {
+            @Nullable ProductDetails productDetails, SubscriptionProduct product) {
         if (product.equals(SubscriptionProduct.LEO)) {
             mMutableMonthlyProductDetailsLeo.postValue(productDetails);
         } else if (product.equals(SubscriptionProduct.VPN)) {
@@ -165,7 +173,7 @@ public class InAppPurchaseWrapper {
             mMutableYearlyProductDetailsOrigin;
 
     private void setYearlyProductDetails(
-            ProductDetails productDetails, SubscriptionProduct product) {
+            @Nullable ProductDetails productDetails, SubscriptionProduct product) {
         if (product.equals(SubscriptionProduct.LEO)) {
             mMutableYearlyProductDetailsLeo.postValue(productDetails);
         } else if (product.equals(SubscriptionProduct.VPN)) {
@@ -204,7 +212,7 @@ public class InAppPurchaseWrapper {
     }
 
     private void startBillingServiceConnection(
-            MutableLiveData<Boolean> billingClientConnectionState) {
+            @Nullable MutableLiveData<Boolean> billingClientConnectionState) {
         Context context = ContextUtils.getApplicationContext();
         // End existing connection if any before we start another connection
         endConnection();
@@ -215,24 +223,26 @@ public class InAppPurchaseWrapper {
                                  .build();
         if (!mBillingClient.isReady()) {
             try {
-                mBillingClient.startConnection(new BillingClientStateListener() {
-                    @Override
-                    public void onBillingServiceDisconnected() {
-                        retryBillingServiceConnection(billingClientConnectionState);
-                    }
-                    @Override
-                    public void onBillingSetupFinished(@NonNull BillingResult billingResult) {
-                        if (billingResult.getResponseCode()
-                                == BillingClient.BillingResponseCode.OK) {
-                            if (billingClientConnectionState != null) {
-                                billingClientConnectionState.postValue(true);
+                mBillingClient.startConnection(
+                        new BillingClientStateListener() {
+                            @Override
+                            public void onBillingServiceDisconnected() {
+                                retryBillingServiceConnection(billingClientConnectionState);
                             }
-                        } else {
-                            showToast(billingResult.getDebugMessage());
-                            retryBillingServiceConnection(billingClientConnectionState);
-                        }
-                    }
-                });
+
+                            @Override
+                            public void onBillingSetupFinished(BillingResult billingResult) {
+                                if (billingResult.getResponseCode()
+                                        == BillingClient.BillingResponseCode.OK) {
+                                    if (billingClientConnectionState != null) {
+                                        billingClientConnectionState.postValue(true);
+                                    }
+                                } else {
+                                    showToast(billingResult.getDebugMessage());
+                                    retryBillingServiceConnection(billingClientConnectionState);
+                                }
+                            }
+                        });
             } catch (IllegalStateException exc) {
                 // That prevents a crash that some users experience
                 // https://github.com/brave/brave-browser/issues/27751.
@@ -318,7 +328,7 @@ public class InAppPurchaseWrapper {
         LiveDataUtil.observeOnce(
                 billingConnectionState,
                 isConnected -> {
-                    if (isConnected) {
+                    if (isConnected && mBillingClient != null) {
                         mBillingClient.queryProductDetailsAsync(
                                 queryProductDetailsParams,
                                 (billingResult, productDetailsList) -> {
@@ -361,7 +371,7 @@ public class InAppPurchaseWrapper {
         LiveDataUtil.observeOnce(
                 billingConnectionState,
                 isConnected -> {
-                    if (isConnected) {
+                    if (isConnected && mBillingClient != null) {
                         mBillingClient.queryPurchasesAsync(
                                 QueryPurchasesParams.newBuilder()
                                         .setProductType(BillingClient.ProductType.SUBS)
@@ -415,12 +425,19 @@ public class InAppPurchaseWrapper {
     }
 
     public void initiatePurchase(Activity activity, ProductDetails productDetails) {
-        String offerToken = productDetails.getSubscriptionOfferDetails().get(0).getOfferToken();
+        List<ProductDetails.SubscriptionOfferDetails> offerDetails =
+                productDetails.getSubscriptionOfferDetails();
+        if (offerDetails == null || offerDetails.isEmpty()) {
+            Log.e(TAG, "No subscription offer details available");
+            return;
+        }
+        String offerToken = offerDetails.get(0).getOfferToken();
         List<BillingFlowParams.ProductDetailsParams> productDetailsParamsList = new ArrayList<>();
-        productDetailsParamsList.add(BillingFlowParams.ProductDetailsParams.newBuilder()
-                                             .setProductDetails(productDetails)
-                                             .setOfferToken(offerToken)
-                                             .build());
+        productDetailsParamsList.add(
+                BillingFlowParams.ProductDetailsParams.newBuilder()
+                        .setProductDetails(productDetails)
+                        .setOfferToken(offerToken)
+                        .build());
 
         BillingFlowParams billingFlowParams =
                 BillingFlowParams.newBuilder()
@@ -432,11 +449,27 @@ public class InAppPurchaseWrapper {
         LiveDataUtil.observeOnce(
                 billingConnectionState,
                 isConnected -> {
-                    if (isConnected) {
+                    if (isConnected && mBillingClient != null) {
                         BillingResult unused_billingResult =
                                 mBillingClient.launchBillingFlow(activity, billingFlowParams);
                     }
                 });
+    }
+
+    /**
+     * Initiates a subscription purchase flow with profile context.
+     *
+     * @param activity The activity to launch the billing flow from
+     * @param productDetails The subscription product details to purchase
+     * @param profile The current user profile for context (can be null)
+     */
+    public void initiatePurchase(
+            Activity activity, ProductDetails productDetails, @Nullable Profile profile) {
+        // Store the profile for use in the asynchronous purchase callback flow
+        mPurchaseProfile = profile;
+
+        // Delegate to the original method
+        initiatePurchase(activity, productDetails);
     }
 
     public void processPurchases(Context context, Purchase activePurchase) {
@@ -459,7 +492,7 @@ public class InAppPurchaseWrapper {
             LiveDataUtil.observeOnce(
                     billingConnectionState,
                     isConnected -> {
-                        if (isConnected) {
+                        if (isConnected && mBillingClient != null) {
                             mBillingClient.acknowledgePurchase(
                                     acknowledgePurchaseParams,
                                     billingResult -> {
@@ -525,15 +558,23 @@ public class InAppPurchaseWrapper {
                         }
                     });
         } else if (isOriginProduct && activity != null) {
-            activity.runOnUiThread(
-                    new Runnable() {
-                        @Override
-                        public void run() {
-                            // TODO(sergz): Add Origin subscription handling
-                        }
+            final BraveActivity finalActivity = activity;
+            ThreadUtils.runOnUiThread(
+                    () -> {
+                        BraveOriginSubscriptionPrefs.setIsSubscriptionActive(
+                                mPurchaseProfile, true);
+                        BraveOriginSubscriptionPrefs.setOriginPackageName(mPurchaseProfile);
+                        BraveOriginSubscriptionPrefs.setOriginProductId(
+                                mPurchaseProfile, purchase.getProducts().get(0));
+                        BraveOriginSubscriptionPrefs.setOriginPurchaseToken(
+                                mPurchaseProfile, purchase.getPurchaseToken());
+                        BraveOriginSubscriptionPrefs.openOriginPreferences(finalActivity);
                     });
         }
         showToast(context.getResources().getString(R.string.subscription_consumed));
+
+        // Clear the stored profile after processing
+        mPurchaseProfile = null;
     }
 
     private boolean isVPNProduct(List<String> productIds) {
@@ -591,8 +632,9 @@ public class InAppPurchaseWrapper {
     private int mMaxTries;
     private int mTries;
     private boolean mIsConnectionEstablished;
+
     private void retryBillingServiceConnection(
-            MutableLiveData<Boolean> billingClientConnectionState) {
+            @Nullable MutableLiveData<Boolean> billingClientConnectionState) {
         mMaxTries = 3;
         mTries = 1;
         mIsConnectionEstablished = false;
@@ -603,31 +645,34 @@ public class InAppPurchaseWrapper {
 
                 Context context = ContextUtils.getApplicationContext();
 
-                mBillingClient = BillingClient.newBuilder(context)
-                                         .enablePendingPurchases()
-                                         .setListener(getPurchasesUpdatedListener(context))
-                                         .build();
+                mBillingClient =
+                        BillingClient.newBuilder(context)
+                                .enablePendingPurchases()
+                                .setListener(getPurchasesUpdatedListener(context))
+                                .build();
 
-                mBillingClient.startConnection(new BillingClientStateListener() {
-                    @Override
-                    public void onBillingServiceDisconnected() {
-                        if (mTries == mMaxTries && billingClientConnectionState != null) {
-                            billingClientConnectionState.postValue(false);
-                        }
-                    }
-                    @Override
-                    public void onBillingSetupFinished(@NonNull BillingResult billingResult) {
-                        if (billingResult.getResponseCode()
-                                == BillingClient.BillingResponseCode.OK) {
-                            mIsConnectionEstablished = true;
-                            if (billingClientConnectionState != null) {
-                                billingClientConnectionState.postValue(true);
+                mBillingClient.startConnection(
+                        new BillingClientStateListener() {
+                            @Override
+                            public void onBillingServiceDisconnected() {
+                                if (mTries == mMaxTries && billingClientConnectionState != null) {
+                                    billingClientConnectionState.postValue(false);
+                                }
                             }
-                        } else {
-                            showToast(billingResult.getDebugMessage());
-                        }
-                    }
-                });
+
+                            @Override
+                            public void onBillingSetupFinished(BillingResult billingResult) {
+                                if (billingResult.getResponseCode()
+                                        == BillingClient.BillingResponseCode.OK) {
+                                    mIsConnectionEstablished = true;
+                                    if (billingClientConnectionState != null) {
+                                        billingClientConnectionState.postValue(true);
+                                    }
+                                } else {
+                                    showToast(billingResult.getDebugMessage());
+                                }
+                            }
+                        });
             } catch (Exception ex) {
                 Log.e(TAG, "retryBillingServiceConnection " + ex.getMessage());
             } finally {
@@ -636,7 +681,7 @@ public class InAppPurchaseWrapper {
         } while (mTries <= mMaxTries && !mIsConnectionEstablished);
     }
 
-    private ProductDetails.PricingPhase getPricingPhase(ProductDetails productDetails) {
+    private ProductDetails.@Nullable PricingPhase getPricingPhase(ProductDetails productDetails) {
         if (productDetails.getSubscriptionOfferDetails() != null) {
             for (ProductDetails.SubscriptionOfferDetails subscriptionOfferDetails :
                     productDetails.getSubscriptionOfferDetails()) {
@@ -653,7 +698,7 @@ public class InAppPurchaseWrapper {
         return null;
     }
 
-    public SpannableString getFormattedProductPrice(
+    public @Nullable SpannableString getFormattedProductPrice(
             Context context, ProductDetails productDetails, int stringRes) {
         ProductDetails.PricingPhase pricingPhase = getPricingPhase(productDetails);
         if (pricingPhase != null) {
@@ -684,7 +729,7 @@ public class InAppPurchaseWrapper {
         return null;
     }
 
-    public SpannableString getFormattedFullProductPrice(
+    public @Nullable SpannableString getFormattedFullProductPrice(
             Context context, ProductDetails productDetails) {
         ProductDetails.PricingPhase pricingPhase = getPricingPhase(productDetails);
         if (pricingPhase != null) {

@@ -49,18 +49,14 @@ namespace brave_wallet {
 
 namespace {
 
-std::vector<std::pair<CardanoAddress, cardano_rpc::UnspentOutput>>
-UtxosToVector(
-    const std::map<std::string,
-                   std::vector<cardano_rpc::blockfrost_api::UnspentOutput>>&
-        map) {
-  std::vector<std::pair<CardanoAddress, cardano_rpc::UnspentOutput>> result;
+cardano_rpc::UnspentOutputs UtxosToVector(auto& map) {
+  cardano_rpc::UnspentOutputs result;
   for (const auto& by_addr : map) {
     for (const auto& utxo : by_addr.second) {
       result.push_back(
-          {CardanoAddress::FromString(by_addr.first).value(),
-           cardano_rpc::UnspentOutput::FromBlockfrostApiValue(utxo.Clone())
-               .value()});
+          cardano_rpc::UnspentOutput::FromBlockfrostApiValue(
+              *CardanoAddress::FromString(by_addr.first), utxo.Clone())
+              .value());
     }
   }
   return result;
@@ -945,6 +941,14 @@ TEST_F(CardanoApiImplTest, GetUtxos) {
                                   ->GetChangeAddress(added_account->account_id)
                                   ->address_string,
                               400000);
+  test_rpc_service()->AddUtxo(brave_wallet_service()
+                                  ->GetCardanoWalletService()
+                                  ->GetChangeAddress(added_account->account_id)
+                                  ->address_string,
+                              500000);
+
+  auto utxos_as_vec = UtxosToVector(test_rpc_service()->GetUtxos());
+  auto utxos_span = base::span(utxos_as_vec);
 
   ON_CALL(*delegate(), GetAllowedAccounts(_, _))
       .WillByDefault(
@@ -983,11 +987,9 @@ TEST_F(CardanoApiImplTest, GetUtxos) {
     provider()->GetUtxos(CardanoCip30Serializer::SerializeAmount(600000u),
                          nullptr, future.GetCallback());
     auto [utxos, error] = future.Take();
-    auto utxos_as_vec = UtxosToVector(test_rpc_service()->GetUtxos());
     EXPECT_TRUE(utxos);
     EXPECT_EQ(utxos.value(),
-              CardanoCip30Serializer::SerializeUtxos(
-                  std::vector(utxos_as_vec.begin(), utxos_as_vec.begin() + 3)));
+              CardanoCip30Serializer::SerializeUtxos(utxos_span.first(3u)));
     EXPECT_FALSE(error);
   }
 
@@ -1016,11 +1018,9 @@ TEST_F(CardanoApiImplTest, GetUtxos) {
                          mojom::CardanoProviderPagination::New(1, 2),
                          future.GetCallback());
     auto [utxos, error] = future.Take();
-    auto utxos_as_vec = UtxosToVector(test_rpc_service()->GetUtxos());
     EXPECT_TRUE(utxos);
-    EXPECT_EQ(utxos.value(),
-              CardanoCip30Serializer::SerializeUtxos(std::vector(
-                  utxos_as_vec.begin() + 2, utxos_as_vec.begin() + 3)));
+    EXPECT_EQ(utxos.value(), CardanoCip30Serializer::SerializeUtxos(
+                                 utxos_span.subspan(2u, 1u)));
     EXPECT_FALSE(error);
   }
 
@@ -1035,11 +1035,9 @@ TEST_F(CardanoApiImplTest, GetUtxos) {
                          mojom::CardanoProviderPagination::New(3, 1),
                          future.GetCallback());
     auto [utxos, error] = future.Take();
-    auto utxos_as_vec = UtxosToVector(test_rpc_service()->GetUtxos());
     EXPECT_TRUE(utxos);
-    EXPECT_EQ(utxos.value(),
-              CardanoCip30Serializer::SerializeUtxos(std::vector(
-                  utxos_as_vec.begin() + 3, utxos_as_vec.begin() + 4)));
+    EXPECT_EQ(utxos.value(), CardanoCip30Serializer::SerializeUtxos(
+                                 utxos_span.subspan(3u, 1u)));
     EXPECT_FALSE(error);
   }
 
@@ -1054,11 +1052,9 @@ TEST_F(CardanoApiImplTest, GetUtxos) {
                          mojom::CardanoProviderPagination::New(3, 1),
                          future.GetCallback());
     auto [utxos, error] = future.Take();
-    auto utxos_as_vec = UtxosToVector(test_rpc_service()->GetUtxos());
     EXPECT_TRUE(utxos);
-    EXPECT_EQ(utxos.value(),
-              CardanoCip30Serializer::SerializeUtxos(std::vector(
-                  utxos_as_vec.begin() + 3, utxos_as_vec.begin() + 4)));
+    EXPECT_EQ(utxos.value(), CardanoCip30Serializer::SerializeUtxos(
+                                 utxos_span.subspan(3u, 1u)));
     EXPECT_FALSE(error);
   }
 
@@ -1075,7 +1071,24 @@ TEST_F(CardanoApiImplTest, GetUtxos) {
     auto [utxos, error] = future.Take();
     EXPECT_FALSE(utxos);
     EXPECT_TRUE(error);
-    EXPECT_EQ(error->pagination_error_payload->payload, 4);
+    EXPECT_EQ(error->pagination_error_payload->payload, 5);
+  }
+
+  // Paginate error
+  {
+    EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
+
+    base::test::TestFuture<const std::optional<std::vector<std::string>>&,
+                           mojom::CardanoProviderErrorBundlePtr>
+        future;
+    provider()->GetUtxos(std::nullopt,
+                         mojom::CardanoProviderPagination::New(3, 3),
+                         future.GetCallback());
+    auto [utxos, error] = future.Take();
+    EXPECT_FALSE(utxos);
+    EXPECT_TRUE(error);
+    // 5 utxos, 3 page limit, so 2 pages.
+    EXPECT_EQ(error->pagination_error_payload->payload, 2);
   }
 
   // Paginate error - limit is zero
@@ -1400,6 +1413,7 @@ TEST_F(CardanoApiImplTest, SignTx) {
   auto unsigned_tx_bytes =
       CardanoTransactionSerializer().SerializeTransaction(unsigned_tx);
 
+  auto tx_hash = CardanoTransactionSerializer().GetTxHash(unsigned_tx);
   std::vector<CardanoSignMessageResult> sign_results;
   sign_results.emplace_back(
       brave_wallet_service()
@@ -1407,7 +1421,7 @@ TEST_F(CardanoApiImplTest, SignTx) {
           ->SignMessageByCardanoKeyring(
               added_account->account_id,
               mojom::CardanoKeyId::New(mojom::CardanoKeyRole::kExternal, 0),
-              unsigned_tx_bytes)
+              tx_hash)
           .value());
   sign_results.emplace_back(
       brave_wallet_service()
@@ -1415,7 +1429,7 @@ TEST_F(CardanoApiImplTest, SignTx) {
           ->SignMessageByCardanoKeyring(
               added_account->account_id,
               mojom::CardanoKeyId::New(mojom::CardanoKeyRole::kExternal, 1),
-              unsigned_tx_bytes)
+              tx_hash)
           .value());
 
   CardanoTransaction signed_tx = unsigned_tx;
@@ -1504,6 +1518,7 @@ TEST_F(CardanoApiImplTest, SignTx_ExistingExternalSignature) {
   auto unsigned_tx_bytes =
       CardanoTransactionSerializer().SerializeTransaction(unsigned_tx);
 
+  auto tx_hash = CardanoTransactionSerializer().GetTxHash(unsigned_tx);
   std::vector<CardanoSignMessageResult> sign_results;
   sign_results.emplace_back(
       brave_wallet_service()
@@ -1511,7 +1526,7 @@ TEST_F(CardanoApiImplTest, SignTx_ExistingExternalSignature) {
           ->SignMessageByCardanoKeyring(
               added_account->account_id,
               mojom::CardanoKeyId::New(mojom::CardanoKeyRole::kExternal, 0),
-              unsigned_tx_bytes)
+              tx_hash)
           .value());
   sign_results.emplace_back(
       brave_wallet_service()
@@ -1519,7 +1534,7 @@ TEST_F(CardanoApiImplTest, SignTx_ExistingExternalSignature) {
           ->SignMessageByCardanoKeyring(
               added_account->account_id,
               mojom::CardanoKeyId::New(mojom::CardanoKeyRole::kExternal, 1),
-              unsigned_tx_bytes)
+              tx_hash)
           .value());
 
   CardanoTransaction signed_tx = unsigned_tx;
@@ -1576,6 +1591,7 @@ TEST_F(CardanoApiImplTest, SignTx_PartialSign) {
   auto unsigned_tx_bytes =
       CardanoTransactionSerializer().SerializeTransaction(unsigned_tx);
 
+  auto tx_hash = CardanoTransactionSerializer().GetTxHash(unsigned_tx);
   std::vector<CardanoSignMessageResult> sign_results;
   sign_results.emplace_back(
       brave_wallet_service()
@@ -1583,7 +1599,7 @@ TEST_F(CardanoApiImplTest, SignTx_PartialSign) {
           ->SignMessageByCardanoKeyring(
               added_account->account_id,
               mojom::CardanoKeyId::New(mojom::CardanoKeyRole::kExternal, 0),
-              unsigned_tx_bytes)
+              tx_hash)
           .value());
   sign_results.emplace_back(
       brave_wallet_service()
@@ -1591,7 +1607,7 @@ TEST_F(CardanoApiImplTest, SignTx_PartialSign) {
           ->SignMessageByCardanoKeyring(
               added_account->account_id,
               mojom::CardanoKeyId::New(mojom::CardanoKeyRole::kExternal, 1),
-              unsigned_tx_bytes)
+              tx_hash)
           .value());
 
   CardanoTransaction signed_tx = unsigned_tx;

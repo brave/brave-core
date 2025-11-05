@@ -73,7 +73,7 @@ ViewCounterServiceFactory::BuildServiceInstanceForBrowserContext(
     brave_ads::AdsService* const ads_service =
         brave_ads::AdsServiceFactory::GetForProfile(profile);
     const bool is_supported_locale =
-        ads_service ? brave_ads::IsSupportedRegion() : false;
+        ads_service && brave_ads::IsSupportedRegion();
 
     content::URLDataSource::Add(
         browser_context, std::make_unique<NTPBackgroundImagesSource>(service));

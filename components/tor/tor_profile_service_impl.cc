@@ -14,6 +14,7 @@
 #include "base/dcheck_is_on.h"
 #include "base/files/file_util.h"
 #include "base/functional/bind.h"
+#include "base/json/json_reader.h"
 #include "base/logging.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/tor/brave_tor_pluggable_transport_updater.h"
@@ -37,7 +38,6 @@
 #include "net/base/schemeful_site.h"
 #include "net/proxy_resolution/proxy_resolution_service.h"
 #include "net/url_request/url_request_context.h"
-#include "services/data_decoder/public/cpp/data_decoder.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
@@ -187,19 +187,16 @@ class BuiltinBridgesRequest {
   void OnResponse(std::optional<std::string> response_body) {
     simple_url_loader_.reset();
     if (!response_body) {
-      OnDataParsed(base::unexpected("Request has failed."));
-    } else {
-      data_decoder::DataDecoder::ParseJsonIsolated(
-          *response_body, base::BindOnce(&BuiltinBridgesRequest::OnDataParsed,
-                                         weak_factory_.GetWeakPtr()));
-    }
-  }
-
-  void OnDataParsed(data_decoder::DataDecoder::ValueOrError value) {
-    if (!value.has_value() || !value->is_dict()) {
       return std::move(result_callback_).Run(base::Value::Dict());
     }
-    std::move(result_callback_).Run(value->GetDict());
+
+    std::optional<base::Value::Dict> value =
+        base::JSONReader::ReadDict(*response_body, base::JSON_PARSE_RFC);
+
+    if (!value.has_value()) {
+      return std::move(result_callback_).Run(base::Value::Dict());
+    }
+    std::move(result_callback_).Run(*value);
   }
 
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;

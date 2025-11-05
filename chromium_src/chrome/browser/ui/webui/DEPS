@@ -1,15 +1,14 @@
 include_rules = [
-  "+brave/brave_domains",
   "+brave/components/webui",
   "+brave/components/version_info",
   "+brave/components/ai_chat/core/common",
   "+brave/components/brave_account/features.h",
   "+brave/components/brave_vpn/common",
-  "+brave/components/playlist/common",
-  "+brave/components/brave_private_cdn",
+  "+brave/components/playlist/core/common",
   "+brave/components/brave_vpn/common",
-  "+brave/components/playlist/common",
+  "+brave/components/playlist/core/common",
   "+brave/components/ai_chat/core/browser",
   "+brave/components/ai_chat/core/common",
   "+brave/components/brave_education/buildflags.h",
+  "+brave/components/speedreader/common/buildflags",
 ]

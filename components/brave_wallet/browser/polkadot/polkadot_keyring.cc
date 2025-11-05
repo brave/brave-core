@@ -13,6 +13,12 @@ namespace brave_wallet {
 
 namespace {
 
+// Address prefixes based on network:
+// https://wiki.polkadot.com/learn/learn-account-advanced/.
+constexpr uint8_t kPolkadotPrefix = 0u;
+// 42 relates to general Substrate address.
+constexpr uint8_t kWestendPrefix = 42u;
+
 inline constexpr char const kPolkadotTestnet[] =
     "\x1c"
     "westend";
@@ -28,7 +34,7 @@ PolkadotKeyring::PolkadotKeyring(
     mojom::KeyringId keyring_id)
     : root_account_key_(HDKeySr25519::GenerateFromSeed(seed)),
       keyring_id_(keyring_id) {
-  // can be useful to remember:
+  // Can be useful to remember:
   // https://wiki.polkadot.com/learn/learn-account-advanced/#derivation-paths
 
   CHECK(IsPolkadotKeyring(keyring_id));
@@ -94,7 +100,7 @@ HDKeySr25519& PolkadotKeyring::EnsureKeyPair(uint32_t account_index) {
 }
 
 std::optional<std::string> PolkadotKeyring::AddNewHDAccount(uint32_t index) {
-  return GetAddress(index, 0u);
+  return GetAddress(index, IsTestnet() ? kWestendPrefix : kPolkadotPrefix);
 }
 
 }  // namespace brave_wallet

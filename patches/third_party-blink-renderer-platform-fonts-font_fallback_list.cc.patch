@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/platform/fonts/font_fallback_list.cc b/third_party/blink/renderer/platform/fonts/font_fallback_list.cc
-index 5e6ec1ae1f19d0834edac42e3a927eafd0aa3cfc..27658b057954b13c0225342e36805d5125f53bbf 100644
+index 5bba873e78297eba8d6266b7729bc8ea14ad4042..155b9237be6b0f65caf949dcdf5b707715ffd0ab 100644
 --- a/third_party/blink/renderer/platform/fonts/font_fallback_list.cc
 +++ b/third_party/blink/renderer/platform/fonts/font_fallback_list.cc
-@@ -161,6 +161,7 @@ const FontData* FontFallbackList::GetFontData(
+@@ -171,6 +171,7 @@ const FontData* FontFallbackList::GetFontData(
      if (!result && !curr_family->FamilyName().empty()) {
        result = FontCache::Get().GetFontData(font_description,
                                              curr_family->FamilyName());

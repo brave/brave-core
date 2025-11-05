@@ -10,9 +10,18 @@ import { loadTimeData } from '$web-common/loadTimeData'
 import Select from '$web-components/select'
 
 import * as S from './style'
-import getPanelBrowserAPI, { AdBlockMode, CookieBlockMode, FingerprintMode, HttpsUpgradeMode } from '../../api/panel_browser_api'
+import getPanelBrowserAPI, {
+  AdBlockMode,
+  CookieBlockMode,
+  FingerprintMode,
+  HttpsUpgradeMode,
+  ContentSettingSource,
+} from '../../api/panel_browser_api'
 import DataContext from '../../state/context'
 import { ViewType } from '../../state/component_types'
+import {
+  ContentSetting
+} from 'gen/components/content_settings/core/common/content_settings.mojom.m'
 
 const adBlockModeOptions = [
   { value: AdBlockMode.AGGRESSIVE, text: getLocale('braveShieldsTrackersAndAdsBlockedAgg') },
@@ -110,6 +119,27 @@ function AdvancedControlsContent () {
     if (getSiteSettings) getSiteSettings()
   }
 
+  const getEnforcedDescription = () => {
+    if (!siteSettings?.scriptsBlockedOverrideStatus) {
+      return getLocale('braveShieldsScriptsBlockedOverridden')
+    }
+
+    switch (siteSettings.scriptsBlockedOverrideStatus.overrideSource) {
+      case ContentSettingSource.kExtension:
+        return getLocale('braveShieldsScriptsBlockedOverriddenByExt')
+      case ContentSettingSource.kPolicy:
+        return getLocale('braveShieldsScriptsBlockedOverriddenByPolicy')
+      case ContentSettingSource.kAllowList:
+        return getLocale('braveShieldsScriptsBlockedOverriddenByAllowlist')
+      case ContentSettingSource.kSupervised:
+        return getLocale('braveShieldsScriptsBlockedOverriddenBySupervisor')
+      case ContentSettingSource.kInstalledWebApp:
+        return getLocale('braveShieldsScriptsBlockedOverriddenByPWA')
+      default:
+        return getLocale('braveShieldsScriptsBlockedOverridden')
+    }
+  }
+
   const adsListCount = siteBlockInfo?.adsList.length ?? 0
   const jsListCount = siteBlockInfo?.blockedJsList.length ?? 0
   const invokedWebcompatListCount = siteBlockInfo?.invokedWebcompatList.length ?? 0
@@ -117,9 +147,17 @@ function AdvancedControlsContent () {
   const showStrictFingerprintingMode = loadTimeData.getBoolean('showStrictFingerprintingMode')
   const isWebcompatExceptionsServiceEnabled = loadTimeData.getBoolean('isWebcompatExceptionsServiceEnabled')
   const isTorProfile = loadTimeData.getBoolean('isTorProfile')
-  const isForgetFirstPartyStorageEnabled = loadTimeData.getBoolean(
-    'isForgetFirstPartyStorageEnabled'
+  const isBraveForgetFirstPartyStorageFeatureEnabled = loadTimeData.getBoolean(
+    'isBraveForgetFirstPartyStorageFeatureEnabled'
   )
+  const isEnforced =
+    siteSettings?.scriptsBlockedOverrideStatus?.overrideSource !== undefined
+    && siteSettings?.scriptsBlockedOverrideStatus?.status
+      !== ContentSetting.DEFAULT
+    && siteSettings?.scriptsBlockedOverrideStatus?.overrideSource
+      !== ContentSettingSource.kUser
+    && siteSettings?.scriptsBlockedOverrideStatus?.overrideSource
+      !== ContentSettingSource.kNone
 
   return (
     <section
@@ -170,19 +208,27 @@ function AdvancedControlsContent () {
         </S.ControlGroup>}
         <S.ControlGroup>
           <label>
-            <span>{getLocale('braveShieldsScriptsBlocked')}</span>
+            <S.LabelContainer>
+              <span>
+                {getLocale('braveShieldsScriptsBlocked')}
+              </span>
+              {isEnforced && (
+                <S.SecondaryText>{getEnforcedDescription()}</S.SecondaryText>
+              )}
+            </S.LabelContainer>
             <Toggle
               aria-label={getLocale('braveShieldsScriptsBlockedEnable')}
               onChange={handleIsNoScriptEnabledChange}
               checked={siteSettings?.isNoscriptEnabled}
               size='small'
-              disabled={siteBlockInfo?.isBraveShieldsManaged}
+              disabled={siteBlockInfo?.isBraveShieldsManaged || isEnforced}
             />
           </label>
           <S.CountButton
             title={jsListCount.toString()}
             aria-label={getLocale('braveShieldsScriptsBlocked')}
             onClick={() => setViewType?.(ViewType.ScriptsList)}
+            visible={!isEnforced}
             disabled={jsListCount <= 0}
           >
             {jsListCount > 99 ? '99+' : jsListCount}
@@ -239,7 +285,7 @@ function AdvancedControlsContent () {
             </Select>
             </div>
         </S.ControlGroup>
-        {isForgetFirstPartyStorageEnabled && <S.ControlGroup>
+        {isBraveForgetFirstPartyStorageFeatureEnabled && <S.ControlGroup>
           <label>
             <span>{getLocale('braveShieldsForgetFirstPartyStorage')}</span>
             <Toggle

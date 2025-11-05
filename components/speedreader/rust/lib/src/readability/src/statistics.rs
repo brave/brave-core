@@ -116,7 +116,11 @@ impl<'a> Iterator for NaiveInlineCSSStyleIterator<'a> {
             let mut splitter = n.splitn(2, ':');
             let property = splitter.next()?.trim();
             let value = splitter.next()?.trim();
-            if !property.is_empty() && !value.is_empty() { Some((property, value)) } else { None }
+            if !property.is_empty() && !value.is_empty() {
+                Some((property, value))
+            } else {
+                None
+            }
         })
     }
 

@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import * as mojom from 'gen/components/omnibox/browser/searchbox.mojom.m'
+import * as mojom from 'chrome://resources/mojo/components/omnibox/browser/searchbox.mojom-webui.js'
 
 export const braveSearchHost = 'search.brave.com'
 
@@ -36,6 +36,7 @@ export interface SearchState {
   lastUsedSearchEngine: string
   searchSuggestionsEnabled: boolean
   searchSuggestionsPromptDismissed: boolean
+  activeSearchInputKey: string
   searchMatches: AutocompleteMatch[]
 }
 
@@ -50,6 +51,7 @@ export function defaultSearchState(): SearchState {
     lastUsedSearchEngine: '',
     searchSuggestionsEnabled: true,
     searchSuggestionsPromptDismissed: false,
+    activeSearchInputKey: '',
     searchMatches: []
   }
 }
@@ -68,6 +70,7 @@ export interface SearchActions {
   setSearchSuggestionsPromptDismissed: (dismissed: boolean) => void
   setLastUsedSearchEngine: (engine: string) => void
   setSearchEngineEnabled: (engine: string, enabled: boolean) => void
+  setActiveSearchInputKey: (key: string) => void
   queryAutocomplete: (query: string, engine: string) => void
   openAutocompleteMatch: (index: number, event: ClickEvent) => void
   stopAutocomplete: () => void
@@ -85,6 +88,7 @@ export function defaultSearchActions(): SearchActions {
     setSearchSuggestionsPromptDismissed(dismissed) {},
     setSearchEngineEnabled(engine, enabled) {},
     setLastUsedSearchEngine(engine) {},
+    setActiveSearchInputKey(key) {},
     queryAutocomplete(query, engine) {},
     openAutocompleteMatch(index, event) {},
     stopAutocomplete() {},

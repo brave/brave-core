@@ -86,7 +86,8 @@ base::expected<std::vector<std::string>, std::string> UnBlindCreds(
     return base::unexpected(std::move(batch_proof).error());
   }
 
-  auto creds_base64 = base::JSONReader::ReadList(creds_batch.creds);
+  auto creds_base64 = base::JSONReader::ReadList(
+      creds_batch.creds, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   DCHECK(creds_base64.has_value());
   std::vector<Token> creds;
   for (auto& item : creds_base64.value()) {
@@ -97,8 +98,8 @@ base::expected<std::vector<std::string>, std::string> UnBlindCreds(
     }
   }
 
-  auto blinded_creds_base64 =
-      base::JSONReader::ReadList(creds_batch.blinded_creds);
+  auto blinded_creds_base64 = base::JSONReader::ReadList(
+      creds_batch.blinded_creds, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   DCHECK(blinded_creds_base64.has_value());
   std::vector<BlindedToken> blinded_creds;
   for (auto& item : blinded_creds_base64.value()) {
@@ -110,8 +111,8 @@ base::expected<std::vector<std::string>, std::string> UnBlindCreds(
     }
   }
 
-  auto signed_creds_base64 =
-      base::JSONReader::ReadList(creds_batch.signed_creds);
+  auto signed_creds_base64 = base::JSONReader::ReadList(
+      creds_batch.signed_creds, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   DCHECK(signed_creds_base64.has_value());
   std::vector<SignedToken> signed_creds;
   for (auto& item : signed_creds_base64.value()) {
@@ -150,11 +151,12 @@ base::expected<std::vector<std::string>, std::string> UnBlindCreds(
 std::vector<std::string> UnBlindCredsMock(const mojom::CredsBatch& creds) {
   std::vector<std::string> unblinded_encoded_creds;
 
-  auto signed_creds_base64 = base::JSONReader::ReadList(creds.signed_creds);
+  auto signed_creds_base64 = base::JSONReader::ReadList(
+      creds.signed_creds, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   DCHECK(signed_creds_base64.has_value());
 
   for (auto& item : signed_creds_base64.value()) {
-    unblinded_encoded_creds.push_back(item.GetString());
+    unblinded_encoded_creds.push_back(std::move(item).TakeString());
   }
 
   return unblinded_encoded_creds;

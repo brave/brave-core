@@ -3,9 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-use std::ops::DerefMut;
 use std::collections::HashMap;
 use std::fmt::Debug;
+use std::ops::DerefMut;
 
 use async_trait::async_trait;
 use challenge_bypass_ristretto::voprf::*;
@@ -49,7 +49,9 @@ trait KVStoreHelpers<C> {
 #[async_trait(?Send)]
 pub trait KVClient {
     type Store: KVStore;
-    type StoreRef<'a>: DerefMut<Target=Self::Store> where Self: 'a;
+    type StoreRef<'a>: DerefMut<Target = Self::Store>
+    where
+        Self: 'a;
 
     async fn get_store<'a>(&'a self) -> Result<Self::StoreRef<'a>, InternalError>;
 }
@@ -214,7 +216,8 @@ where
 
                         credentials
                             .items
-                            .insert((&item_id).to_string(), Credentials::TimeLimitedV2(item_creds)); // insert truncated
+                            .insert((&item_id).to_string(), Credentials::TimeLimitedV2(item_creds));
+                        // insert truncated
                     }
                     _ => (), // only care about time limted for the test
                 }

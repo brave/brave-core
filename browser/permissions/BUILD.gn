@@ -33,7 +33,6 @@ if (!is_android) {
       "//brave/components/brave_wallet/common",
       "//brave/components/ephemeral_storage",
       "//brave/components/google_sign_in_permission",
-      "//brave/components/localhost_permission",
       "//chrome/browser",
       "//chrome/browser/content_settings:content_settings_factory",
       "//chrome/browser/permissions",

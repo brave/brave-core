@@ -18,7 +18,6 @@
 #include "base/containers/contains.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
-#include "base/functional/callback_helpers.h"
 #include "base/logging.h"
 #include "base/memory/weak_ptr.h"
 #include "base/strings/string_util.h"
@@ -47,9 +46,9 @@ void AssociatedContentManager::LoadArchivedContent(
            << " metadata size: " << metadata->associated_content.size()
            << ", archive size: " << archive->associated_content.size();
 
-  // Remove all archived content - its been reloaded from the DB.
-  for (int i = archive_content_.size() - 1; i >= 0; --i) {
-    RemoveContent(archive_content_[i].get(), /*notify_updated=*/false);
+  // Remove all owned content - it should be reloaded from the DB.
+  for (int i = owned_content_.size() - 1; i >= 0; --i) {
+    RemoveContent(owned_content_[i].get(), /*notify_updated=*/false);
   }
 
   for (size_t i = 0; i < archive->associated_content.size(); ++i) {
@@ -65,10 +64,10 @@ void AssociatedContentManager::LoadArchivedContent(
     auto* content = content_it->get();
     bool is_video =
         (content->content_type == mojom::ContentType::VideoTranscript);
-    archive_content_.push_back(std::make_unique<AssociatedArchiveContent>(
+    owned_content_.push_back(std::make_unique<AssociatedArchiveContent>(
         content->url, archive_content->content,
         base::UTF8ToUTF16(content->title), is_video, content->uuid));
-    AddContent(archive_content_.back().get(), /*notify_updated=*/false);
+    AddContent(owned_content_.back().get(), /*notify_updated=*/false);
 
     // Be sure to record the turn that this content is associated with.
     content_uuid_to_conversation_turns_[archive_content->content_uuid] =
@@ -94,10 +93,10 @@ void AssociatedContentManager::CreateArchiveContent(
 
   // Construct a "content archive" implementation of AssociatedContentDelegate
   // with a duplicate of the article text.
-  archive_content_.emplace_back(std::make_unique<AssociatedArchiveContent>(
+  owned_content_.emplace_back(std::make_unique<AssociatedArchiveContent>(
       delegate->url(), std::move(text_content), delegate->title(), is_video,
       delegate->uuid()));
-  *it = archive_content_.back().get();
+  *it = owned_content_.back().get();
   content_observations_.AddObservation(*it);
 
   conversation_->OnAssociatedContentUpdated();
@@ -131,7 +130,20 @@ void AssociatedContentManager::AddContent(AssociatedContentDelegate* delegate,
     // fetch because its a bit of an edge case, and there are no real
     // consequences of not having the content (except for the content not being
     // attached).
-    delegate->GetContent(base::DoNothing());
+    // Additionally, we want to call GetContent even if `notify_updated` is
+    // false so we cache the attached content.
+    delegate->GetContent(base::BindOnce(
+        [](base::WeakPtr<AssociatedContentManager> self, bool notify_updated,
+           PageContent content) {
+          if (!self || !notify_updated) {
+            return;
+          }
+
+          // Note: |is_video| may have changed so we need to notify the
+          // conversation.
+          self->conversation_->OnAssociatedContentUpdated();
+        },
+        weak_ptr_factory_.GetWeakPtr(), notify_updated));
 
     content_delegates_.push_back(delegate);
     content_observations_.AddObservation(delegate);
@@ -140,6 +152,13 @@ void AssociatedContentManager::AddContent(AssociatedContentDelegate* delegate,
   if (notify_updated) {
     conversation_->OnAssociatedContentUpdated();
   }
+}
+
+void AssociatedContentManager::AddOwnedContent(
+    std::unique_ptr<AssociatedContentDelegate> delegate,
+    bool notify_updated) {
+  owned_content_.push_back(std::move(delegate));
+  AddContent(owned_content_.back().get(), notify_updated);
 }
 
 void AssociatedContentManager::RemoveContent(
@@ -156,12 +175,12 @@ void AssociatedContentManager::RemoveContent(
     content_delegates_.erase(it);
   }
 
-  // If this is archived content, delete it.
-  auto archive_it = std::ranges::find_if(
-      archive_content_,
+  // If this is owned content, delete it.
+  auto owned_it = std::ranges::find_if(
+      owned_content_,
       [delegate](const auto& content) { return content.get() == delegate; });
-  if (archive_it != archive_content_.end()) {
-    archive_content_.erase(archive_it);
+  if (owned_it != owned_content_.end()) {
+    owned_content_.erase(owned_it);
   }
 
   if (notify_updated) {
@@ -416,10 +435,10 @@ bool AssociatedContentManager::HasOpenAIChatPermission() const {
          content_delegates_[0]->HasOpenAIChatPermission();
 }
 
-bool AssociatedContentManager::HasNonArchiveContent() const {
+bool AssociatedContentManager::HasLiveContent() const {
   DVLOG(1) << __func__;
 
-  return archive_content_.size() < content_delegates_.size();
+  return owned_content_.size() < content_delegates_.size();
 }
 
 bool AssociatedContentManager::HasAssociatedContent() const {
@@ -467,7 +486,7 @@ void AssociatedContentManager::DetachContent() {
 
   content_observations_.RemoveAllObservations();
   content_delegates_.clear();
-  archive_content_.clear();
+  owned_content_.clear();
 }
 
 }  // namespace ai_chat

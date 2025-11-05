@@ -10,8 +10,11 @@ import { Redirect, Route, Switch } from 'react-router'
 import { WalletRoutes } from '../../../constants/types'
 
 // utils
-import { useSafeWalletSelector } from '../../../common/hooks/use-safe-selector'
-import { WalletSelectors } from '../../../common/selectors'
+import {
+  useSafeUISelector,
+  useSafeWalletSelector,
+} from '../../../common/hooks/use-safe-selector'
+import { UISelectors, WalletSelectors } from '../../../common/selectors'
 
 import {
   WalletPageLayout, //
@@ -33,11 +36,12 @@ import {
 export const OnboardingRoutes = () => {
   // redux
   const isWalletCreated = useSafeWalletSelector(WalletSelectors.isWalletCreated)
+  const isMobile = useSafeUISelector(UISelectors.isMobile)
 
   // render
   return (
-    <WalletPageLayout>
-      <WalletSubViewLayout>
+    <WalletPageLayout maintainWidth={isMobile}>
+      <WalletSubViewLayout noPadding={isMobile}>
         <Switch>
           <ProtectedRoute
             path={WalletRoutes.OnboardingWelcome}

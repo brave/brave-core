@@ -23,6 +23,7 @@
 #include "base/functional/callback_forward.h"
 #include "base/functional/callback_helpers.h"
 #include "base/logging.h"
+#include "base/memory/ref_counted.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/notreached.h"
@@ -180,10 +181,13 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlockFromContentGroups(
     return result;
   }
 
-  base::flat_map<std::string, std::vector<std::string>>
-      publisher_id_to_channels;
+  using PublisherIdToChannels = base::RefCountedData<
+      base::flat_map<std::string, std::vector<std::string>>>;
+  scoped_refptr<PublisherIdToChannels> publisher_id_to_channels =
+      base::MakeRefCounted<PublisherIdToChannels>();
+
   for (const auto& [publisher_id, publisher] : info.publishers()) {
-    publisher_id_to_channels[publisher_id] =
+    publisher_id_to_channels->data[publisher_id] =
         GetChannelsForPublisher(info.locale(), publisher);
   }
 
@@ -193,20 +197,20 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlockFromContentGroups(
   auto get_weighting = base::BindRepeating(
       [](const std::string& locale,
          std::vector<ContentGroup> eligible_content_groups,
-         base::flat_map<std::string, std::vector<std::string>>
-             publisher_id_to_channels,
+         scoped_refptr<PublisherIdToChannels> publisher_id_to_channels,
          bool is_hero) {
         return base::BindRepeating(
             [](const bool is_hero, const ContentGroup& content_group,
-               const base::flat_map<std::string, std::vector<std::string>>&
+               const scoped_refptr<PublisherIdToChannels>&
                    publisher_id_to_channels,
                const std::string& locale,
                const mojom::FeedItemMetadataPtr& article,
                const ArticleMetadata& meta) {
               if (is_hero) {
-                auto image_url = article->image->is_padded_image_url()
-                                     ? article->image->get_padded_image_url()
-                                     : article->image->get_image_url();
+                const auto& image_url =
+                    article->image->is_padded_image_url()
+                        ? article->image->get_padded_image_url()
+                        : article->image->get_image_url();
                 if (!image_url.is_valid()) {
                   return 0.0;
                 }
@@ -214,7 +218,7 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlockFromContentGroups(
 
               if (/*is_channel*/ content_group.second) {
                 auto channels =
-                    publisher_id_to_channels.find(article->publisher_id);
+                    publisher_id_to_channels->data.find(article->publisher_id);
                 if (base::Contains(channels->second, content_group.first)) {
                   return meta.weighting;
                 }

@@ -9,7 +9,6 @@
 
 #include "base/check_op.h"
 #include "brave/browser/brave_browser_process.h"
-#include "brave/components/localhost_permission/localhost_permission_component.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/prefs/pref_service.h"
@@ -70,13 +69,6 @@ int HandleLocalhostRequestsWithNoWebContents(
 int OnBeforeURLRequest_LocalhostPermissionWork(
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx) {
-  // If feature is disabled, return.
-  auto* localhost_permission_component =
-      g_brave_browser_process->localhost_permission_component();
-  if (!localhost_permission_component) {
-    return net::OK;
-  }
-
   // If request is already blocked by adblock, return.
   if (ctx->blocked_by == kAdBlocked) {
     return net::OK;
@@ -128,11 +120,13 @@ int OnBeforeURLRequest_LocalhostPermissionWork(
   auto* permission_controller =
       contents->GetBrowserContext()->GetPermissionController();
   auto current_status =
-      permission_controller->GetPermissionStatusForCurrentDocument(
-          content::PermissionDescriptorUtil::
-              CreatePermissionDescriptorForPermissionType(
-                  blink::PermissionType::BRAVE_LOCALHOST_ACCESS),
-          /* rfh */ contents->GetPrimaryMainFrame());
+      permission_controller
+          ->GetPermissionResultForCurrentDocument(
+              content::PermissionDescriptorUtil::
+                  CreatePermissionDescriptorForPermissionType(
+                      blink::PermissionType::BRAVE_LOCALHOST_ACCESS),
+              /* rfh */ contents->GetPrimaryMainFrame())
+          .status;
 
   switch (current_status) {
     case blink::mojom::PermissionStatus::GRANTED: {
@@ -146,18 +140,14 @@ int OnBeforeURLRequest_LocalhostPermissionWork(
 
     case blink::mojom::PermissionStatus::ASK: {
       // Check if website is allowed to ask for permission.
-      if (localhost_permission_component->CanAskForLocalhostPermission(
-              request_initiator_url)) {
-        permission_controller->RequestPermissionsFromCurrentDocument(
-            /* rfh */ contents->GetPrimaryMainFrame(),
-            content::PermissionRequestDescription(
-                content::PermissionDescriptorUtil::
-                    CreatePermissionDescriptorForPermissionType(
-                        blink::PermissionType::BRAVE_LOCALHOST_ACCESS),
-                /*user_gesture*/ true),
-            base::BindOnce(&OnPermissionRequestStatus,
-                           ctx->frame_tree_node_id));
-      }
+      permission_controller->RequestPermissionsFromCurrentDocument(
+          /* rfh */ contents->GetPrimaryMainFrame(),
+          content::PermissionRequestDescription(
+              content::PermissionDescriptorUtil::
+                  CreatePermissionDescriptorForPermissionType(
+                      blink::PermissionType::BRAVE_LOCALHOST_ACCESS),
+              /*user_gesture*/ true),
+          base::BindOnce(&OnPermissionRequestStatus, ctx->frame_tree_node_id));
       return net::ERR_ACCESS_DENIED;
     }
   }

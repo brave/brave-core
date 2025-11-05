@@ -5,9 +5,13 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import argparse
+import json
 import os
 import sys
 import shutil
+
+from pathlib import Path
+
 from lib.util import execute_stdout, scoped_cwd
 
 
@@ -32,6 +36,7 @@ def main():
     webpack_gen_dir = output_path_absolute
 
     depfile_path = os.path.abspath(args.depfile_path[0])
+    import_paths_file = os.path.abspath(args.import_paths_file[0])
     transpile_options = dict(production=args.production,
                              target_gen_dir=webpack_gen_dir,
                              root_gen_dir=root_gen_dir,
@@ -48,6 +53,10 @@ def main():
     generate_grd(output_path_absolute, args.grd_name[0], args.resource_name[0],
                  resource_path_prefix)
 
+    verify_webpack_srcs(root_gen_dir, import_paths_file, depfile_path,
+                        args.extra_modules)
+
+
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Transpile web-uis')
@@ -61,6 +70,7 @@ def parse_args():
     parser.add_argument('--output_path', nargs=1)
     parser.add_argument('--root_gen_dir', nargs=1)
     parser.add_argument('--depfile_path', nargs=1)
+    parser.add_argument('--import_paths_file', nargs=1)
     parser.add_argument('--grd_name', nargs=1)
     parser.add_argument('--resource_name', nargs=1)
     parser.add_argument('--public_asset_path', nargs='?')
@@ -148,7 +158,6 @@ def transpile_web_uis(options):
     with scoped_cwd(dirname):
         execute_stdout(args, env)
 
-
 def generate_grd(target_include_dir, grd_name, resource_name,
                  resource_path_prefix):
     env = os.environ.copy()
@@ -167,6 +176,71 @@ def generate_grd(target_include_dir, grd_name, resource_name,
     with scoped_cwd(dirname):
         execute_stdout(args, env)
 
+
+# verifies that all files webpack imports or their containing folders are listed in the imports_from
+# section defined in transpile_web_ui targets. Doing it here allows us to not only verify
+# the completeness but also to generate an actionable error message.
+# The list is important as it allows us to ensure gn analyze always works correctly.
+# imports_from is passed as data to the underlying gn action and is recognised by gn analyze.
+# This is a compromise solution to explicitly listing out or generating a list of files via an exec_script
+# https://gn.googlesource.com/gn/+/main/docs/reference.md#cmd_analyze
+def verify_webpack_srcs(root_gen_dir, import_paths_file, depfile_path,
+                        extra_modules):
+
+    src_folder = Path(os.path.abspath(os.path.join(
+        __file__, '..', '..', '..'))).resolve().as_posix()
+
+    make_source_absolute = lambda path: Path(path).resolve().as_posix(
+    ).replace(src_folder, '/')
+
+    out_dir = make_source_absolute(Path(root_gen_dir).resolve().parents[1])
+
+    with open(import_paths_file) as f:
+        src_roots = json.loads(f.read())
+        assert isinstance(src_roots, list)
+
+    with open(depfile_path) as f:
+        files = [make_source_absolute(file) for file in f.read().split()[1:]]
+
+    all_roots = src_roots + [
+        '//brave/node_modules',  # handled via package.json
+        out_dir  # generated assets are deps and handled by gn already
+    ] + [make_source_absolute(module) for module in extra_modules]
+
+    not_contained = get_not_contained(all_roots, files)
+
+    if len(not_contained) > 0:
+        print("error occured cross-referencing import_paths folders.")
+        print("transpile_web_ui accessed the following files:")
+        print("  " + "\n  ".join(not_contained))
+
+        if len(src_roots) > 0:
+            print(
+                "However they are not listed as imports_from in target. imports_from conatains:"
+            )
+            print("  " + "\n  ".join(src_roots))
+        else:
+            print("However imports_from is empty")
+
+        print(
+            "fix this issue by adding the containing source folders into the transpile_web_ui target imports_from section"
+        )
+
+        sys.exit(1)
+
+
+def get_not_contained(roots, test_paths):
+    """
+    Check whether all given paths are contained within the source roots.
+    Returns list of paths that were not contained
+    """
+
+    not_contained = [
+        str(path) for path in test_paths
+        if not any(path.startswith(root) for root in roots)
+    ]
+
+    return not_contained
 
 if __name__ == '__main__':
     sys.exit(main())

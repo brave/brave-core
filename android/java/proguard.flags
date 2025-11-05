@@ -49,10 +49,6 @@
     *** setContentSetting(...);
 }
 
--keep class org.chromium.chrome.browser.tab.TabHelpers {
-    *** initTabHelpers(...);
-}
-
 -keep,allowobfuscation,allowshrinking class com.google.gson.reflect.TypeToken
 
 -keep class org.chromium.chrome.browser.tabmodel.TabGroupModelFilterImpl {

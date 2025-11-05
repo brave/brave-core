@@ -359,7 +359,7 @@ void RewardsEngine::FetchBalance(FetchBalanceCallback callback) {
 void RewardsEngine::GetExternalWallet(GetExternalWalletCallback callback) {
   WhenReady([this, callback = std::move(callback)]() mutable {
     mojom::ExternalWalletPtr wallet;
-    auto wallet_type =
+    const auto& wallet_type =
         Get<RewardsPrefs>().GetString(prefs::kExternalWalletType);
     if (auto* provider = GetExternalWalletProvider(wallet_type)) {
       wallet = provider->GetWallet();

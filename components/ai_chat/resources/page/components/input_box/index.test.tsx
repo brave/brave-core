@@ -119,7 +119,7 @@ describe('input box', () => {
       <InputBox
         context={{
           ...testContext,
-          inputText: '',
+          inputText: [''],
         }}
         conversationStarted={false}
       />,
@@ -135,7 +135,7 @@ describe('input box', () => {
       <InputBox
         context={{
           ...testContext,
-          inputText: 'test',
+          inputText: ['test'],
         }}
         conversationStarted={false}
       />,
@@ -387,7 +387,7 @@ describe('input box', () => {
         />,
       )
 
-      const textarea = container.querySelector('textarea')!
+      const textarea = container.querySelector('[data-editor]')!
       const imageFile = createMockFile('test.png', 'image/png')
       const textFile = createMockFile('test.txt', 'text/plain')
 
@@ -420,4 +420,62 @@ describe('input box', () => {
       })
     })
   })
+
+  it(
+    'Content Agent warning is shown if the conversation has not started'
+      + ' and isAIChatAgentProfile is true',
+    () => {
+      const { container } = render(
+        <InputBox
+          context={{
+            ...testContext,
+            isAIChatAgentProfileFeatureEnabled: true,
+            isAIChatAgentProfile: true,
+          }}
+          conversationStarted={false}
+        />,
+      )
+      expect(
+        container.querySelector('.contentAgentWarning'),
+      ).toBeInTheDocument()
+    },
+  )
+
+  it(
+    'Content Agent warning is not shown after the conversation has started'
+      + ' and isAIChatAgentProfile is true',
+    () => {
+      const { container } = render(
+        <InputBox
+          context={{
+            ...testContext,
+            isAIChatAgentProfileFeatureEnabled: true,
+            isAIChatAgentProfile: true,
+          }}
+          conversationStarted={true}
+        />,
+      )
+      expect(
+        container.querySelector('.contentAgentWarning'),
+      ).not.toBeInTheDocument()
+    },
+  )
+
+  it(
+    'Content Agent warning is not shown if isAIChatAgentProfile'
+      + 'is not true',
+    () => {
+      const { container } = render(
+        <InputBox
+          context={{
+            ...testContext,
+          }}
+          conversationStarted={true}
+        />,
+      )
+      expect(
+        container.querySelector('.contentAgentWarning'),
+      ).not.toBeInTheDocument()
+    },
+  )
 })

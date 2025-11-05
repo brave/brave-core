@@ -22,6 +22,11 @@ mojo::PendingRemote<mojom::SwapService> SwapServiceFactory::GetForProfile(
 }
 
 // static
+SwapService* SwapServiceFactory::GetServiceForProfile(ProfileIOS* profile) {
+  return GetInstance()->GetServiceForProfileAs<SwapService>(profile, true);
+}
+
+// static
 SwapServiceFactory* SwapServiceFactory::GetInstance() {
   static base::NoDestructor<SwapServiceFactory> instance;
   return instance.get();
@@ -36,8 +41,7 @@ SwapServiceFactory::SwapServiceFactory()
 SwapServiceFactory::~SwapServiceFactory() = default;
 
 std::unique_ptr<KeyedService> SwapServiceFactory::BuildServiceInstanceFor(
-    web::BrowserState* context) const {
-  auto* profile = ProfileIOS::FromBrowserState(context);
+    ProfileIOS* profile) const {
   std::unique_ptr<SwapService> swap_service(
       new SwapService(profile->GetSharedURLLoaderFactory()));
   return swap_service;

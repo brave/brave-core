@@ -18,6 +18,7 @@
 #include "base/numerics/safe_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/values.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_locale_utils.h"
 
 namespace {
 
@@ -189,15 +190,7 @@ FindAdBlockFilterListsByLocale(
     const std::string& locale) {
   std::vector<std::reference_wrapper<FilterListCatalogEntry const>> output;
 
-  std::string adjusted_locale;
-  std::string::size_type loc = locale.find("-");
-  if (loc == std::string::npos) {
-    adjusted_locale = locale;
-  } else {
-    adjusted_locale = locale.substr(0, loc);
-  }
-
-  adjusted_locale = base::ToLowerASCII(adjusted_locale);
+  const std::string adjusted_locale = GetLanguageCodeFromLocale(locale);
   std::copy_if(region_lists.begin(), region_lists.end(),
                std::back_inserter(output),
                [&adjusted_locale](const FilterListCatalogEntry& entry) {
@@ -212,8 +205,8 @@ std::vector<FilterListCatalogEntry> FilterListCatalogFromJSON(
   std::vector<FilterListCatalogEntry> catalog =
       std::vector<FilterListCatalogEntry>();
 
-  std::optional<base::Value::List> parsed_json =
-      base::JSONReader::ReadList(catalog_json);
+  std::optional<base::Value::List> parsed_json = base::JSONReader::ReadList(
+      catalog_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!parsed_json) {
     LOG(ERROR) << "Could not load regional adblock catalog";
     return catalog;

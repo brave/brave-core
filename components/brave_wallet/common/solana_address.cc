@@ -26,10 +26,6 @@ bool SolanaAddress::operator==(const SolanaAddress& other) const {
   return bytes_ == other.bytes_;
 }
 
-bool SolanaAddress::operator!=(const SolanaAddress& other) const {
-  return !(*this == other);
-}
-
 // static
 std::optional<SolanaAddress> SolanaAddress::FromBytes(
     base::span<const uint8_t> bytes) {

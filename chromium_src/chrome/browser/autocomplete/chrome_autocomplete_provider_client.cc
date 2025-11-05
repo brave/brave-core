@@ -81,7 +81,8 @@ void ChromeAutocompleteProviderClient::OpenLeo(const std::u16string& query) {
     DCHECK(chat_tab_helper);
     conversation_handler =
         ai_chat_service->GetOrCreateConversationHandlerForContent(
-            chat_tab_helper->content_id(), chat_tab_helper->GetWeakPtr());
+            chat_tab_helper->web_contents_content().content_id(),
+            chat_tab_helper->web_contents_content().GetWeakPtr());
     if (!conversation_handler) {
       return;
     }
@@ -109,7 +110,7 @@ void ChromeAutocompleteProviderClient::OpenLeo(const std::u16string& query) {
           base::UTF16ToUTF8(query) /* text */, std::nullopt /* prompt */,
           std::nullopt /* selected_text */, std::nullopt /* events */,
           base::Time::Now(), std::nullopt /* edits */,
-          std::nullopt /* uploaded images */,
+          std::nullopt /* uploaded images */, nullptr /* skill */,
           false /* from_brave_search_SERP */, std::nullopt /* model_key */);
 
   auto* profile_metrics =

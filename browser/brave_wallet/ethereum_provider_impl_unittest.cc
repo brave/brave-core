@@ -271,7 +271,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
     std::vector<mojom::HardwareWalletAccountPtr> hw_accounts;
     hw_accounts.push_back(mojom::HardwareWalletAccount::New(
         address, "m/44'/60'/1'/0/0", "name 1", mojom::HardwareVendor::kLedger,
-        "device1", mojom::kDefaultKeyringId));
+        "device1", mojom::KeyringId::kDefault));
 
     auto added_accounts =
         keyring_service()->AddHardwareAccountsSync(std::move(hw_accounts));

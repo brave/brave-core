@@ -49,7 +49,8 @@ AdBlockPrefServiceFactory::BuildServiceInstanceForBrowserContext(
 
   auto service = std::make_unique<AdBlockPrefService>(
       g_brave_browser_process->ad_block_service(), profile->GetPrefs(),
-      g_browser_process->local_state());
+      g_browser_process->local_state(),
+      g_browser_process->GetApplicationLocale());
 
   auto pref_proxy_config_tracker =
       ProxyServiceFactory::CreatePrefProxyConfigTrackerOfProfile(

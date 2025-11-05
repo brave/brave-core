@@ -82,7 +82,8 @@ brave_common_web_compile_inputs = [
 #     Support for web pack aliases that directly passed to webpack config.
 #   output_module
 #     If true, the resulting bundle will be a JS module that can import other
-#     modules using `import` syntax.
+#     modules using `import` syntax. This implies |no_iife=true|.
+#     Defaults to true.
 #   rust_packages
 #     An optional list of Cargo.toml files that identify the Rust packages
 #     to be compiled to WASM.
@@ -138,6 +139,11 @@ template("transpile_web_ui") {
     # https://chromium.googlesource.com/chromium/src/build/+/HEAD/docs/writing_gn_templates.md#inputs-and-depfiles
     depfile = "${target_gen_dir}/${target_name}.d"
 
+    # This file contains the webpack import paths which describe the folders and files (indirectly) imported by the entry point
+    # This is important to ensure gn knows about webpacks implicit dependencies.
+    # We write those to json and cross reference them in a later stage to ensure the list is complete
+    import_paths_file = "${target_gen_dir}/${target_name}.data_paths.json"
+
     resource_name = invoker.resource_name
 
     # Allow target to define custom path
@@ -167,6 +173,7 @@ template("transpile_web_ui") {
       # depfile header format is correct (see docs above).
       "--output_path=" + rebase_path(gen_output_dir, root_build_dir),
       "--root_gen_dir=" + rebase_path(root_gen_dir),
+      "--import_paths_file=" + rebase_path(import_paths_file),
       "--grd_name=$grd_name",
       "--resource_name=$resource_name",
       "--depfile_path=" + rebase_path(depfile),
@@ -204,7 +211,8 @@ template("transpile_web_ui") {
       args += [ "--resource_path_prefix=" + invoker.resource_path_prefix ]
     }
 
-    if (defined(invoker.output_module) && invoker.output_module) {
+    # Default to output_module=true if not specified
+    if (!defined(invoker.output_module) || invoker.output_module) {
       args += [ "--output_module" ]
     }
 
@@ -226,6 +234,15 @@ template("transpile_web_ui") {
                              "testonly",
                              "visibility",
                            ])
+
+    import_paths = [ "//brave/components/common/" ]
+    if (defined(invoker.imports_from)) {
+      import_paths += invoker.imports_from
+    }
+
+    write_file(import_paths_file, import_paths, "json")
+    inputs += [ import_paths_file ]
+    data = import_paths
   }
 }
 
@@ -255,9 +272,6 @@ template("pack_web_resources") {
     }
     source = "$generated_dir/$resource_name.grd"
 
-    # The target contains references to generated files.
-    enable_input_discovery_for_gn_analyze = false
-
     outputs = [
       "grit/$resource_name" + "_generated.h",
       "grit/$resource_name" + "_generated_map.cc",
@@ -271,6 +285,8 @@ template("pack_web_resources") {
                            [
                              "deps",
                              "public_deps",
+                             "data",
+                             "data_deps",
                              "testonly",
                              "visibility",
                            ])

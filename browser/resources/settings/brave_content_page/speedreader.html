@@ -23,10 +23,10 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
   <template is="dom-if" if="[[prefs.brave.speedreader.feature_enabled.value]]">
     <settings-toggle-button
       class="cr-row continuation"
-      id="speedreaderEnabledForAllSites"
+      id="speedreaderEnabledForAllReadableSites"
       pref="{{prefs.brave.speedreader.enabled_for_all_sites}}"
-      label="$i18n{speedreaderEnabledForAllSitesLabel}"
-      sub-label="$i18n{speedreaderEnabledForAllSitesSubLabel}">
+      label="$i18n{speedreaderEnabledForAllReadableSitesLabel}"
+      sub-label="$i18n{speedreaderEnabledForAllReadableSitesSubLabel}">
     </settings-toggle-button>
   </template>
 

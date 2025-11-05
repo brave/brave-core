@@ -139,12 +139,10 @@ void BraveMockRenderViewContextMenu::AddSubMenu(int command_id,
     sub_item.is_submenu = true;
     if (model->GetTypeAt(i) != ui::MenuModel::TYPE_SEPARATOR) {
       sub_item.command_id = model->GetCommandIdAt(i);
-      sub_item.enabled = observer_->IsCommandIdSupported(sub_item.command_id)
-                             ? model->IsEnabledAt(i)
-                             : false;
-      sub_item.checked = observer_->IsCommandIdSupported(sub_item.command_id)
-                             ? model->IsItemCheckedAt(i)
-                             : false;
+      sub_item.enabled = observer_->IsCommandIdSupported(sub_item.command_id) &&
+                         model->IsEnabledAt(i);
+      sub_item.checked = observer_->IsCommandIdSupported(sub_item.command_id) &&
+                         model->IsItemCheckedAt(i);
       sub_item.hidden = !model->IsVisibleAt(i);
       sub_item.title = model->GetLabelAt(i);
     } else {

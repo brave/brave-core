@@ -67,6 +67,7 @@ class BraveSidePanel : public views::View,
   // views::ResizeAreaDelegate:
   void OnResize(int resize_amount, bool done_resizing) override;
   void AddHeaderView(std::unique_ptr<views::View> view);
+  void SetHeaderVisibility(bool visible);
 
   // views::View:
   void OnThemeChanged() override;
@@ -83,10 +84,14 @@ class BraveSidePanel : public views::View,
   void Open(bool animated);
   void Close(bool animated);
 
+  void UpdateBorder();
+
   // This is the parent view for the contents of the side panel.
   views::View* GetContentParentView();
 
   void SetMinimumSidePanelContentsWidthForTesting(int width) {}
+
+  views::View* get_header_for_testing() { return header_view_.get(); }
 
  private:
   friend class sidebar::SidebarBrowserTest;
@@ -98,7 +103,6 @@ class BraveSidePanel : public views::View,
   void OnChildViewAdded(View* observed_view, View* child) override;
   void OnChildViewRemoved(View* observed_view, View* child) override;
 
-  void UpdateBorder();
   void OnSidePanelWidthChanged();
 
   // Monitors addition of content view and change content view property that

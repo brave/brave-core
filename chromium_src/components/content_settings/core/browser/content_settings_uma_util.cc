@@ -29,6 +29,7 @@ static_assert(static_cast<int>(ContentSettingsType::kMaxValue) <
 
 // clang-format off
 #define BRAVE_HISTOGRAM_VALUE_LIST                                        \
+  , \
   {ContentSettingsType::BRAVE_ADS, brave_value(0)},                       \
   {ContentSettingsType::BRAVE_COSMETIC_FILTERING, brave_value(1)},        \
   {ContentSettingsType::BRAVE_TRACKERS, brave_value(2)},                  \
@@ -45,6 +46,7 @@ static_assert(static_cast<int>(ContentSettingsType::kMaxValue) <
   {ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE, brave_value(13)},      \
   {ContentSettingsType::BRAVE_LOCALHOST_ACCESS, brave_value(14)},         \
   {ContentSettingsType::BRAVE_OPEN_AI_CHAT, brave_value(15)},             \
+  {ContentSettingsType::BRAVE_AUTO_SHRED, brave_value(16)},               \
   /* Begin webcompat items */                                                \
   {ContentSettingsType::BRAVE_WEBCOMPAT_NONE, brave_value(50)}, \
   {ContentSettingsType::BRAVE_WEBCOMPAT_AUDIO, brave_value(51)}, \
@@ -66,7 +68,8 @@ static_assert(static_cast<int>(ContentSettingsType::kMaxValue) <
   {ContentSettingsType::BRAVE_WEBCOMPAT_WEB_SOCKETS_POOL, brave_value(67)}, \
   {ContentSettingsType::BRAVE_WEBCOMPAT_ALL, brave_value(68)}, \
   {ContentSettingsType::BRAVE_SHIELDS_METADATA, brave_value(69)},  \
-  {ContentSettingsType::BRAVE_CARDANO, brave_value(70)},
+  {ContentSettingsType::BRAVE_CARDANO, brave_value(70)},  \
+  {ContentSettingsType::BRAVE_PSST, brave_value(71)},
 // clang-format on
 
 #define kDefaultProvider       \

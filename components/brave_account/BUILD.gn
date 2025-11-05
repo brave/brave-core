@@ -7,6 +7,7 @@ source_set("brave_account") {
   sources = [
     "brave_account_service.cc",
     "brave_account_service.h",
+    "brave_account_service_constants.h",
     "brave_account_ui_base.h",
     "pref_names.h",
     "prefs.cc",
@@ -15,7 +16,6 @@ source_set("brave_account") {
 
   deps = [
     "//base",
-    "//brave/components/api_request_helper",
     "//brave/components/brave_account:features",
     "//brave/components/brave_account/endpoint_client",
     "//brave/components/brave_account/endpoints",
@@ -59,19 +59,14 @@ source_set("unit_tests") {
   deps = [
     "//base",
     "//base/test:test_support",
-    "//brave/components/api_request_helper",
-    "//brave/components/api_request_helper:test_support",
     "//brave/components/brave_account",
     "//brave/components/brave_account:features",
     "//brave/components/brave_account/endpoints",
     "//brave/components/brave_account/mojom",
     "//components/prefs:test_support",
     "//net",
-    "//net/traffic_annotation:test_support",
     "//services/network:test_support",
     "//services/network/public/cpp",
-    "//testing/gmock",
     "//testing/gtest",
-    "//url",
   ]
 }

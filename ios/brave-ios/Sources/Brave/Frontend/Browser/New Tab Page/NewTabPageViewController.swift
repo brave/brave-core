@@ -89,7 +89,6 @@ protocol NewTabPageDelegate: AnyObject {
   func navigateToInput(_ input: String, inNewTab: Bool, switchingToPrivateMode: Bool)
   func handleFavoriteAction(favorite: Favorite, action: BookmarksAction)
   func brandedImageCalloutActioned(_ state: BrandedImageCalloutState)
-  func tappedQRCodeButton(url: URL)
   func showNTPOnboarding()
   func showNewTabTakeoverInfoBarIfNeeded()
 }
@@ -165,7 +164,6 @@ class NewTabPageViewController: UIViewController {
   private var cancellables: Set<AnyCancellable> = []
   private let privateBrowsingManager: PrivateBrowsingManager
 
-  private let p3aHelper: NewTabPageP3AHelper
   private let profilePrefs: any PrefService
 
   init(
@@ -174,8 +172,7 @@ class NewTabPageViewController: UIViewController {
     dataSource: NTPDataSource,
     feedDataSource: FeedDataSource,
     rewards: BraveRewards,
-    privateBrowsingManager: PrivateBrowsingManager,
-    p3aHelper: NewTabPageP3AHelper
+    privateBrowsingManager: PrivateBrowsingManager
   ) {
     self.browserTab = tab
     self.profilePrefs = profilePrefs
@@ -186,7 +183,6 @@ class NewTabPageViewController: UIViewController {
       privateBrowsingManager: privateBrowsingManager,
       profilePrefs: profilePrefs
     )
-    self.p3aHelper = p3aHelper
     background = NewTabPageBackground(dataSource: dataSource, rewards: rewards)
     notifications = NewTabPageNotifications(rewards: rewards)
     collectionView = NewTabCollectionView(frame: .zero, collectionViewLayout: layout)
@@ -482,7 +478,7 @@ class NewTabPageViewController: UIViewController {
         return
       }
       switch background {
-      case .image, .superReferral:
+      case .image:
         hideNotification()
       case .sponsoredMedia:
         // Current background is still a sponsored image so it can stay
@@ -626,8 +622,6 @@ class NewTabPageViewController: UIViewController {
         }
       case .sponsoredMedia(let background):
         backgroundButtonsView.activeButton = .brandLogo(background.logo)
-      case .superReferral:
-        backgroundButtonsView.activeButton = .qrCode
       }
     } else {
       backgroundButtonsView.activeButton = .none
@@ -688,23 +682,10 @@ class NewTabPageViewController: UIViewController {
     if let tab = browserTab,
       case .sponsoredMedia(let sponsoredBackground) = background.currentBackground
     {
-      let eventType: NewTabPageP3AHelper.EventType? = {
-        switch event {
-        case .clicked: return .tapped
-        case .viewedImpression: return .viewed
-        case .mediaPlay: return .mediaPlay
-        case .media25: return .media25
-        case .media100: return .media100
-        default: return nil
-        }
-      }()
-      if let eventType, sponsoredBackground.shouldMetricsFallbackToP3A {
-        p3aHelper.recordEvent(eventType, on: tab, for: sponsoredBackground)
-      }
       rewards.ads.triggerNewTabPageAdEvent(
         background.wallpaperId.uuidString,
         creativeInstanceId: sponsoredBackground.creativeInstanceId,
-        shouldMetricsFallbackToP3a: sponsoredBackground.shouldMetricsFallbackToP3A,
+        metricType: sponsoredBackground.metricType,
         eventType: event,
         completion: { success in
           completion?(success)
@@ -1113,8 +1094,6 @@ class NewTabPageViewController: UIViewController {
       presentImageCredit(sender)
     case .sponsoredMedia(let background):
       tappedSponsorButton(background.logo)
-    case .superReferral(_, let code):
-      tappedQRCode(code)
     }
   }
 
@@ -1125,16 +1104,6 @@ class NewTabPageViewController: UIViewController {
     }
 
     reportSponsoredBackgroundEvent(.clicked)
-  }
-
-  private func tappedQRCode(_ code: String) {
-    // Super referrer websites come in format https://brave.com/r/REF_CODE
-    let refUrl = URL(string: "https://brave.com/")?
-      .appendingPathComponent("r")
-      .appendingPathComponent(code)
-
-    guard let url = refUrl else { return }
-    delegate?.tappedQRCodeButton(url: url)
   }
 
   private func handleFavoriteAction(favorite: Favorite, action: BookmarksAction) {

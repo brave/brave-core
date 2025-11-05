@@ -15,18 +15,20 @@
 #include "brave/components/brave_account/features.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
-#include "brave/components/brave_shields/core/common/brave_shield_utils.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_locale_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/pref_names.h"
+#include "brave/components/commander/common/features.h"
+#include "brave/components/commands/common/features.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/email_aliases/features.h"
-#include "brave/components/playlist/common/buildflags/buildflags.h"
+#include "brave/components/playlist/core/common/features.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/version_info/version_info.h"
@@ -41,6 +43,7 @@
 #include "chrome/grit/generated_resources.h"
 #include "components/google/core/common/google_util.h"
 #include "components/grit/brave_components_strings.h"
+#include "components/grit/brave_components_webui_strings.h"
 #include "components/prefs/pref_service.h"
 #include "components/signin/public/base/signin_pref_names.h"
 #include "content/public/browser/web_ui_data_source.h"
@@ -48,10 +51,6 @@
 #include "extensions/common/extension_urls.h"
 #include "net/base/features.h"
 #include "ui/base/l10n/l10n_util.h"
-
-#if BUILDFLAG(ENABLE_PLAYLIST)
-#include "brave/components/playlist/common/features.h"
-#endif
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/tor/tor_profile_service_factory.h"
@@ -170,6 +169,42 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       {"siteSettingsLocalhostAccessAllowExceptions",
        IDS_SETTINGS_SITE_SETTINGS_LOCALHOST_ACCESS_ALLOW_EXCEPTIONS},
       {"braveGetStartedTitle", IDS_SETTINGS_BRAVE_GET_STARTED_TITLE},
+      {"braveOriginTitle", IDS_SETTINGS_BRAVE_ORIGIN_TITLE},
+      {"braveOriginHeadingTitle", IDS_SETTINGS_BRAVE_ORIGIN_HEADING_TITLE},
+      {"braveOriginHeadingDescription1",
+       IDS_SETTINGS_BRAVE_ORIGIN_HEADING_DESCRIPTION1},
+      {"braveOriginHeadingDescription2",
+       IDS_SETTINGS_BRAVE_ORIGIN_HEADING_DESCRIPTION2},
+      {"braveOriginSectionAdsTitle",
+       IDS_SETTINGS_BRAVE_ORIGIN_ADS_SECTION_TITLE},
+      {"braveOriginRewardsToggleTitle",
+       IDS_SETTINGS_BRAVE_ORIGIN_REWARDS_TOGGLE_TITLE},
+      {"braveOriginSectionAnalyticsTitle",
+       IDS_SETTINGS_BRAVE_ORIGIN_ANALYTICS_SECTION_TITLE},
+      {"braveOriginSectionFeaturesTitle",
+       IDS_SETTINGS_BRAVE_ORIGIN_FEATURES_SECTION_TITLE},
+      {"braveOriginLeoAiToggleTitle",
+       IDS_SETTINGS_BRAVE_ORIGIN_LEO_AI_TOGGLE_TITLE},
+      {"braveOriginNewsToggleTitle",
+       IDS_SETTINGS_BRAVE_ORIGIN_NEWS_TOGGLE_TITLE},
+      {"braveOriginTalkToggleTitle",
+       IDS_SETTINGS_BRAVE_ORIGIN_TALK_TOGGLE_TITLE},
+      {"braveOriginWaybackMachineToggleTitle",
+       IDS_SETTINGS_BRAVE_ORIGIN_WAYBACK_MACHINE_TOGGLE_TITLE},
+      {"braveOriginSpeedReaderToggleTitle",
+       IDS_SETTINGS_BRAVE_ORIGIN_SPEED_READER_TOGGLE_TITLE},
+      {"braveOriginWebDiscoveryProjectToggleTitle",
+       IDS_SETTINGS_BRAVE_ORIGIN_WEB_DISCOVERY_PROJECT_TOGGLE_TITLE},
+      {"braveOriginP3AToggleTitle", IDS_SETTINGS_BRAVE_ORIGIN_P3A_TOGGLE_TITLE},
+      {"braveOriginStatsReportingToggleTitle",
+       IDS_SETTINGS_BRAVE_ORIGIN_STATS_REPORTING_TOGGLE_TITLE},
+      {"braveOriginTorWindowsToggleTitle",
+       IDS_SETTINGS_BRAVE_ORIGIN_TOR_WINDOWS_TOGGLE_TITLE},
+      {"braveOriginVpnToggleTitle", IDS_SETTINGS_BRAVE_ORIGIN_VPN_TOGGLE_TITLE},
+      {"braveOriginWalletToggleTitle",
+       IDS_SETTINGS_BRAVE_ORIGIN_WALLET_TOGGLE_TITLE},
+      {"braveOriginResetToDefaultsTitle",
+       IDS_SETTINGS_BRAVE_ORIGIN_RESET_TO_DEFAULTS_TITLE},
       {"siteSettingsShields", IDS_SETTINGS_SITE_SETTINGS_SHIELDS},
       {"siteSettingsShieldsStatus", IDS_SETTINGS_SITE_SETTINGS_SHIELDS_STATUS},
       {"siteSettingsShieldsUp", IDS_SETTINGS_SITE_SETTINGS_SHIELDS_UP},
@@ -186,6 +221,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_APPEARANCE_SETTINGS_SHOW_BOOKMARKS_BUTTON},
       {"appearanceSettingsLocationBarIsWide",
        IDS_SETTINGS_APPEARANCE_SETTINGS_LOCATION_BAR_IS_WIDE},
+      {"appearanceSettingsWebViewRoundedCorners",
+       IDS_SETTINGS_APPEARANCE_SETTINGS_WEB_VIEW_ROUNDED_CORNERS},
       {"appearanceSettingsShowBraveNewsButtonLabel",
        IDS_SETTINGS_SHOW_BRAVE_NEWS_BUTTON_LABEL},
       {"appearanceSettingsShowLeoButtonLabel",
@@ -290,10 +327,10 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       {"speedreaderFeatureLabel", IDS_SETTINGS_SPEEDREADER_FEATURE_LABEL},
       {"speedreaderFeatureSubLabel",
        IDS_SETTINGS_SPEEDREADER_FEATURE_SUB_LABEL},
-      {"speedreaderEnabledForAllSitesLabel",
-       IDS_SETTINGS_SPEEDREADER_ENABLED_FOR_ALL_SITES_LABEL},
-      {"speedreaderEnabledForAllSitesSubLabel",
-       IDS_SETTINGS_SPEEDREADER_ENABLED_FOR_ALL_SITES_SUB_LABEL},
+      {"speedreaderEnabledForAllReadableSitesLabel",
+       IDS_SETTINGS_SPEEDREADER_ALLOWED_FOR_ALL_READABLE_SITES_LABEL},
+      {"speedreaderEnabledForAllReadableSitesSubLabel",
+       IDS_SETTINGS_SPEEDREADER_ALLOWED_FOR_ALL_READABLE_SITES_SUB_LABEL},
       {"deAmpSettingLabel", IDS_SETTINGS_DE_AMP_LABEL},
       {"deAmpSettingSubLabel", IDS_SETTINGS_DE_AMP_SUB_LABEL},
       {"debounceSettingLabel", IDS_SETTINGS_DEBOUNCE_LABEL},
@@ -825,6 +862,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_WALLET_ZEC_NETWORK_LIST_TITLE},
       {"walletCardanoNetworksListTitle",
        IDS_SETTINGS_WALLET_CARDANO_NETWORK_LIST_TITLE},
+      {"walletPolkadotNetworksListTitle",
+       IDS_SETTINGS_WALLET_POLKADOT_NETWORK_LIST_TITLE},
       {"walletNetworksItemDesc", IDS_SETTINGS_WALLET_NETWORKS_ITEM_DESC},
       {"walletNetworksError", IDS_SETTINGS_WALLET_NETWORKS_ERROR},
       {"walletDeleteNetworkConfirmation",
@@ -954,17 +993,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_BRAVE_ADBLOCK_CUSTOM_SCRIPTLET_WARNING},
 
       {"braveShortcutsPage", IDS_SETTINGS_BRAVE_SHORTCUTS_TITLE},
-      {"shortcutsPageSearchPlaceholder", IDS_SHORTCUTS_PAGE_SEARCH_PLACEHOLDER},
-      {"shortcutsPageResetAll", IDS_SHORTCUTS_PAGE_RESET_ALL},
-      {"shortcutsPageResetCommand", IDS_SHORTCUTS_PAGE_RESET_COMMAND},
-      {"shortcutsPageShortcutHint", IDS_SHORTCUTS_PAGE_SHORTCUT_HINT},
-      {"shortcutsPageShortcutInUse", IDS_SHORTCUTS_PAGE_SHORTCUT_IN_USE},
-      {"shortcutsPageShortcutUnmodifiable",
-       IDS_SHORTCUTS_PAGE_SHORTCUT_UNMODIFIABLE},
-      {"shortcutsPageCancelAddShortcut",
-       IDS_SHORTCUTS_PAGE_CANCEL_ADD_SHORTCUT},
-      {"shortcutsPageSaveAddShortcut", IDS_SHORTCUTS_PAGE_SAVE_ADD_SHORTCUT},
-      {"shortcutsPageAddShortcut", IDS_SHORTCUTS_PAGE_ADD_SHORTCUT},
       {"settingsSelectValueYes", IDS_SETTINGS_SELECT_VALUE_YES},
       {"settingsSelectValueNo", IDS_SETTINGS_SELECT_VALUE_NO},
       {"settingsSelectValueAsk", IDS_SETTINGS_SELECT_VALUE_ASK},
@@ -1099,6 +1127,10 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       "extensionsV2Warn",
       l10n_util::GetStringFUTF16(IDS_SETTINGS_MANAGE_EXTENSIONS_V2_WARN,
                                  kExtensionsV2LearnMoreURL));
+
+  // Disabled due to crash with tab group dragging.
+  // TODO(https://github.com/brave/brave-browser/issues/49752): Re-enable.
+  html_source->AddBoolean("showSplitViewDragAndDropSetting", false);
 }  // NOLINT(readability/fn_size)
 
 void BraveAddResources(content::WebUIDataSource* html_source,
@@ -1125,88 +1157,10 @@ void BraveAddSyncStrings(content::WebUIDataSource* html_source) {
 }
 
 void BraveAddEmailAliasesStrings(content::WebUIDataSource* html_source) {
-  if (!base::FeatureList::IsEnabled(email_aliases::kEmailAliases)) {
+  if (!base::FeatureList::IsEnabled(email_aliases::features::kEmailAliases)) {
     return;
   }
-  webui::LocalizedString localized_strings[] = {
-      {"emailAliasesLabel", IDS_SETTINGS_EMAIL_ALIASES_LABEL},
-      {"emailAliasesShortDescription",
-       IDS_SETTINGS_EMAIL_ALIASES_SHORT_DESCRIPTION},
-      {"emailAliasesDescription", IDS_SETTINGS_EMAIL_ALIASES_DESCRIPTION},
-      {"emailAliasesLearnMore", IDS_SETTINGS_EMAIL_ALIASES_LEARN_MORE},
-      {"emailAliasesSignOut", IDS_SETTINGS_EMAIL_ALIASES_SIGN_OUT},
-      {"emailAliasesSignOutTitle", IDS_SETTINGS_EMAIL_ALIASES_SIGN_OUT_TITLE},
-      {"emailAliasesConnectingToBraveAccount",
-       IDS_SETTINGS_EMAIL_ALIASES_CONNECTING_TO_BRAVE_ACCOUNT},
-      {"emailAliasesBraveAccount", IDS_SETTINGS_EMAIL_ALIASES_BRAVE_ACCOUNT},
-      {"emailAliasesCopiedToClipboard",
-       IDS_SETTINGS_EMAIL_ALIASES_COPIED_TO_CLIPBOARD},
-      {"emailAliasesClickToCopyAlias",
-       IDS_SETTINGS_EMAIL_ALIASES_CLICK_TO_COPY_ALIAS},
-      {"emailAliasesUsedBy", IDS_SETTINGS_EMAIL_ALIASES_USED_BY},
-      {"emailAliasesEdit", IDS_SETTINGS_EMAIL_ALIASES_EDIT},
-      {"emailAliasesDelete", IDS_SETTINGS_EMAIL_ALIASES_DELETE},
-      {"emailAliasesCreateDescription",
-       IDS_SETTINGS_EMAIL_ALIASES_CREATE_DESCRIPTION},
-      {"emailAliasesListTitle", IDS_SETTINGS_EMAIL_ALIASES_LIST_TITLE},
-      {"emailAliasesCreateAliasTitle",
-       IDS_SETTINGS_EMAIL_ALIASES_CREATE_ALIAS_TITLE},
-      {"emailAliasesBubbleDescription",
-       IDS_SETTINGS_EMAIL_ALIASES_BUBBLE_DESCRIPTION},
-      {"emailAliasesBubbleLimitReached",
-       IDS_SETTINGS_EMAIL_ALIASES_BUBBLE_LIMIT_REACHED},
-      {"emailAliasesCreateAliasLabel",
-       IDS_SETTINGS_EMAIL_ALIASES_CREATE_ALIAS_LABEL},
-      {"emailAliasesRefreshButtonTitle",
-       IDS_SETTINGS_EMAIL_ALIASES_REFRESH_BUTTON_TITLE},
-      {"emailAliasesGeneratingNewAlias",
-       IDS_SETTINGS_EMAIL_ALIASES_GENERATING_NEW_ALIAS},
-      {"emailAliasesGenerateError", IDS_SETTINGS_EMAIL_ALIASES_GENERATE_ERROR},
-      {"emailAliasesNoteLabel", IDS_SETTINGS_EMAIL_ALIASES_NOTE_LABEL},
-      {"emailAliasesEditNotePlaceholder",
-       IDS_SETTINGS_EMAIL_ALIASES_EDIT_NOTE_PLACEHOLDER},
-      {"emailAliasesCancelButton", IDS_SETTINGS_EMAIL_ALIASES_CANCEL_BUTTON},
-      {"emailAliasesManageButton", IDS_SETTINGS_EMAIL_ALIASES_MANAGE_BUTTON},
-      {"emailAliasesAliasLabel", IDS_SETTINGS_EMAIL_ALIASES_ALIAS_LABEL},
-      {"emailAliasesEmailsWillBeForwardedTo",
-       IDS_SETTINGS_EMAIL_ALIASES_EMAILS_WILL_BE_FORWARDED_TO},
-      {"emailAliasesEditAliasTitle",
-       IDS_SETTINGS_EMAIL_ALIASES_EDIT_ALIAS_TITLE},
-      {"emailAliasesCreateAliasButton",
-       IDS_SETTINGS_EMAIL_ALIASES_CREATE_ALIAS_BUTTON},
-      {"emailAliasesUpdateAliasError",
-       IDS_SETTINGS_EMAIL_ALIASES_UPDATE_ALIAS_ERROR},
-      {"emailAliasesSaveAliasButton",
-       IDS_SETTINGS_EMAIL_ALIASES_SAVE_ALIAS_BUTTON},
-      {"emailAliasesDeleteAliasTitle",
-       IDS_SETTINGS_EMAIL_ALIASES_DELETE_ALIAS_TITLE},
-      {"emailAliasesDeleteAliasDescription",
-       IDS_SETTINGS_EMAIL_ALIASES_DELETE_ALIAS_DESCRIPTION},
-      {"emailAliasesDeleteAliasButton",
-       IDS_SETTINGS_EMAIL_ALIASES_DELETE_ALIAS_BUTTON},
-      {"emailAliasesDeleteAliasError",
-       IDS_SETTINGS_EMAIL_ALIASES_DELETE_ALIAS_ERROR},
-      {"emailAliasesDeleteWarning", IDS_SETTINGS_EMAIL_ALIASES_DELETE_WARNING},
-      {"emailAliasesSignInOrCreateAccount",
-       IDS_SETTINGS_EMAIL_ALIASES_SIGN_IN_OR_CREATE_ACCOUNT},
-      {"emailAliasesEnterEmailToGetLoginLink",
-       IDS_SETTINGS_EMAIL_ALIASES_ENTER_EMAIL_TO_GET_LOGIN_LINK},
-      {"emailAliasesGetLoginLinkButton",
-       IDS_SETTINGS_EMAIL_ALIASES_GET_LOGIN_LINK_BUTTON},
-      {"emailAliasesRequestAuthenticationError",
-       IDS_SETTINGS_EMAIL_ALIASES_REQUEST_AUTHENTICATION_ERROR},
-      {"emailAliasesEmailAddressPlaceholder",
-       IDS_SETTINGS_EMAIL_ALIASES_EMAIL_ADDRESS_PLACEHOLDER},
-      {"emailAliasesLoginEmailOnTheWay",
-       IDS_SETTINGS_EMAIL_ALIASES_LOGIN_EMAIL_ON_THE_WAY},
-      {"emailAliasesClickOnSecureLogin",
-       IDS_SETTINGS_EMAIL_ALIASES_CLICK_ON_SECURE_LOGIN},
-      {"emailAliasesDontSeeEmail", IDS_SETTINGS_EMAIL_ALIASES_DONT_SEE_EMAIL},
-      {"emailAliasesAuthError", IDS_SETTINGS_EMAIL_ALIASES_AUTH_ERROR},
-      {"emailAliasesAuthTryAgainButton",
-       IDS_SETTINGS_EMAIL_ALIASES_AUTH_TRY_AGAIN_BUTTON},
-  };
-  html_source->AddLocalizedStrings(localized_strings);
+  html_source->AddLocalizedStrings(webui::kEmailAliasesStrings);
 }
 
 void BraveAddBraveAccountStrings(content::WebUIDataSource* html_source) {
@@ -1262,7 +1216,8 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
 
 #if BUILDFLAG(ENABLE_TOR)
   html_source->AddBoolean("braveTorDisabledByPolicy",
-                          TorProfileServiceFactory::IsTorDisabled(profile));
+                          TorProfileServiceFactory::IsTorDisabled(profile) &&
+                              TorProfileServiceFactory::IsTorManaged(profile));
 #endif
 
   if (base::FeatureList::IsEnabled(
@@ -1278,13 +1233,20 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
     html_source->AddLocalizedStrings(kSessionOnlyToEphemeralStrings);
   }
 
+  if (base::FeatureList::IsEnabled(commands::features::kBraveCommands)) {
+    html_source->AddLocalizedStrings(webui::kShortcutsStrings);
+  }
+
   html_source->AddBoolean(
       "cosmeticFilteringCustomScriptletsEnabled",
       base::FeatureList::IsEnabled(
           brave_shields::features::kCosmeticFilteringCustomScriptlets));
 
-  html_source->AddBoolean("isAdBlockOnlyModeFeatureEnabled",
-                          brave_shields::IsAdblockOnlyModeFeatureEnabled());
+  html_source->AddBoolean(
+      "isAdBlockOnlyModeSupportedAndFeatureEnabled",
+      base::FeatureList::IsEnabled(brave_shields::features::kAdblockOnlyMode) &&
+          brave_shields::IsAdblockOnlyModeSupportedForLocale(
+              g_browser_process->GetApplicationLocale()));
 
   // Always disable upstream's side panel align option.
   // We add our customized option at preferred position.
@@ -1401,7 +1363,6 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
           IDS_SETTINGS_COOKIES_LOCAL_STORAGE_SIZE_ON_DISK_LABEL));
   html_source->AddLocalizedStrings(webui::kBraveSettingsStrings);
 
-#if BUILDFLAG(ENABLE_PLAYLIST)
   // We add strings regardless of the FeatureFlag state to prevent crash
 
   // At this moment, the feature name is DNT.
@@ -1416,7 +1377,6 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
   html_source->AddString("bravePlaylistCacheByDefaultSubLabel",
                          l10n_util::GetStringUTF16(
                              IDS_SETTINGS_PLAYLIST_CACHE_BY_DEFAULT_SUB_LABEL));
-#endif
 }
 
 }  // namespace settings

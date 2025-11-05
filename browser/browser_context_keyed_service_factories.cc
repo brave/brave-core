@@ -7,6 +7,7 @@
 
 #include "base/feature_list.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
+#include "brave/browser/ai_chat/ollama/ollama_service_factory.h"
 #include "brave/browser/ai_chat/tab_tracker_service_factory.h"
 #include "brave/browser/brave_account/brave_account_service_factory.h"
 #include "brave/browser/brave_adaptive_captcha/brave_adaptive_captcha_service_factory.h"
@@ -17,6 +18,7 @@
 #include "brave/browser/brave_search/backup_results_service_factory.h"
 #include "brave/browser/brave_shields/ad_block_pref_service_factory.h"
 #include "brave/browser/brave_shields/brave_farbling_service_factory.h"
+#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_ipfs_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
@@ -30,6 +32,7 @@
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/browser/ntp_background/view_counter_service_factory.h"
 #include "brave/browser/permissions/permission_lifetime_manager_factory.h"
+#include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/browser/profiles/brave_renderer_updater_factory.h"
 #include "brave/browser/search_engines/search_engine_provider_service_factory.h"
 #include "brave/browser/search_engines/search_engine_tracker.h"
@@ -44,7 +47,8 @@
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "brave/components/email_aliases/features.h"
-#include "brave/components/playlist/common/buildflags/buildflags.h"
+#include "brave/components/playlist/core/common/features.h"
+#include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -67,11 +71,6 @@
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/tor/tor_profile_service_factory.h"
-#endif
-
-#if BUILDFLAG(ENABLE_PLAYLIST)
-#include "brave/browser/playlist/playlist_service_factory.h"
-#include "brave/components/playlist/common/features.h"
 #endif
 
 #if BUILDFLAG(ENABLE_COMMANDER)
@@ -98,6 +97,11 @@
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "brave/browser/extensions/manifest_v2/brave_extensions_manifest_v2_migrator.h"
 #endif
+
+#if BUILDFLAG(ENABLE_PSST)
+#include "brave/browser/psst/brave_psst_permission_context_factory.h"
+#include "brave/components/psst/common/features.h"
+#endif  // BUILDFLAG(ENABLE_PSST)
 
 namespace brave {
 
@@ -159,11 +163,9 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   brave_vpn::BraveVpnServiceFactory::GetInstance();
 #endif
-#if BUILDFLAG(ENABLE_PLAYLIST)
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
     playlist::PlaylistServiceFactory::GetInstance();
   }
-#endif
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
   request_otr::RequestOTRServiceFactory::GetInstance();
 #endif
@@ -187,6 +189,7 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   if (ai_chat::features::IsAIChatEnabled()) {
     ai_chat::AIChatServiceFactory::GetInstance();
     ai_chat::ModelServiceFactory::GetInstance();
+    ai_chat::OllamaServiceFactory::GetInstance();
     ai_chat::TabTrackerServiceFactory::GetInstance();
   }
 
@@ -200,13 +203,19 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
     brave_account::BraveAccountServiceFactory::GetInstance();
   }
 
-  if (base::FeatureList::IsEnabled(email_aliases::kEmailAliases)) {
+  if (base::FeatureList::IsEnabled(email_aliases::features::kEmailAliases)) {
     email_aliases::EmailAliasesServiceFactory::GetInstance();
   }
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   extensions_mv2::ExtensionsManifestV2MigratorFactory::GetInstance();
 #endif
+#if BUILDFLAG(ENABLE_PSST)
+  if (base::FeatureList::IsEnabled(psst::features::kEnablePsst)) {
+    psst::BravePsstPermissionContextFactory::GetInstance();
+  }
+#endif  // BUILDFLAG(ENABLE_PSST)
+  BraveShieldsSettingsServiceFactory::GetInstance();
 }
 
 }  // namespace brave

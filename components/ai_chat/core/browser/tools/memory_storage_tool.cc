@@ -14,6 +14,7 @@
 #include "brave/components/ai_chat/core/browser/tools/tool_input_properties.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_utils.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/prefs.h"
 #include "build/build_config.h"
 #include "build/buildflag.h"
@@ -89,7 +90,8 @@ bool MemoryStorageTool::SupportsConversation(
 void MemoryStorageTool::UseTool(const std::string& input_json,
                                 UseToolCallback callback) {
   // Parse the input JSON
-  auto input_dict = base::JSONReader::ReadDict(input_json);
+  auto input_dict = base::JSONReader::ReadDict(
+      input_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!input_dict.has_value()) {
     std::move(callback).Run(CreateContentBlocksForText(
         "Error: Invalid JSON input, input must be a JSON object"));

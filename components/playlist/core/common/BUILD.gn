@@ -1,0 +1,36 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# TODO(sko) This should be component() target.
+# https://github.com/brave/brave-browser/issues/27764
+static_library("common") {
+  sources = [
+    "features.cc",
+    "features.h",
+    "playlist_render_frame_observer_helper.cc",
+    "playlist_render_frame_observer_helper.h",
+    "pref_names.h",
+  ]
+
+  public_deps = [
+    "//brave/components/playlist/core/common/buildflags",
+    "//brave/components/playlist/core/common/mojom",
+  ]
+
+  deps = [ "//base" ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "playlist_render_frame_observer_helper_unittest.cc" ]
+
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/playlist/core/common",
+    "//url",
+  ]
+}

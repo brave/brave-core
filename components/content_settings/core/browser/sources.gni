@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//brave/components/psst/buildflags/buildflags.gni")
+
 brave_components_content_settings_core_browser_sources = [
   "//brave/components/content_settings/core/browser/brave_content_settings_utils.cc",
   "//brave/components/content_settings/core/browser/brave_content_settings_utils.h",
@@ -12,6 +14,7 @@ brave_components_content_settings_core_browser_deps = [
   "//base",
   "//brave/components/brave_shields/core/common",
   "//brave/components/content_settings/core/common",
+  "//brave/components/psst/buildflags",
   "//url",
 ]
 
@@ -33,4 +36,9 @@ if (!is_ios) {
     "//content/public/browser",
     "//net",
   ]
+}
+
+if (enable_psst) {
+  brave_components_content_settings_core_browser_deps +=
+      [ "//brave/components/psst/common" ]
 }

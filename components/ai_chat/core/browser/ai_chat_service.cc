@@ -10,6 +10,7 @@
 #include <functional>
 #include <ios>
 #include <iterator>
+#include <memory>
 #include <optional>
 #include <string>
 #include <string_view>
@@ -25,6 +26,7 @@
 #include "base/functional/callback_helpers.h"
 #include "base/logging.h"
 #include "base/numerics/clamped_math.h"
+#include "base/strings/string_util.h"
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
@@ -33,6 +35,7 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_database.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
+#include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 #include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
@@ -44,8 +47,9 @@
 #include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/ai_chat/core/common/prefs.h"
 #include "build/build_config.h"
@@ -93,6 +97,13 @@ std::vector<mojom::AssociatedContentPtr> CloneAssociatedContent(
   }
   return cloned_content;
 }
+
+// Determines whether its safe to associate content with a conversation.
+bool CanAssociateContent(AssociatedContentDelegate* delegate) {
+  return delegate &&
+         kAllowedContentSchemes.contains(delegate->url().scheme_piece());
+}
+
 }  // namespace
 
 AIChatService::AIChatService(
@@ -145,6 +156,10 @@ AIChatService::AIChatService(
       prefs::kBraveAIChatUserMemoryEnabled,
       base::BindRepeating(&AIChatService::OnMemoryEnabledChanged,
                           weak_ptr_factory_.GetWeakPtr()));
+  pref_change_registrar_.Add(
+      prefs::kBraveAIChatSkills,
+      base::BindRepeating(&AIChatService::OnSkillsChanged,
+                          weak_ptr_factory_.GetWeakPtr()));
 
   MaybeInitStorage();
 
@@ -171,6 +186,14 @@ void AIChatService::Shutdown() {
   if (ai_chat_db_) {
     ai_chat_db_.Reset();
   }
+
+  receivers_.Clear();
+  observer_remotes_.Clear();
+
+  conversation_observations_.RemoveAllObservations();
+
+  conversation_handlers_.clear();
+  conversations_.clear();
 }
 
 ConversationHandler* AIChatService::CreateConversation() {
@@ -189,7 +212,7 @@ ConversationHandler* AIChatService::CreateConversation() {
   std::unique_ptr<ConversationHandler> conversation_handler =
       std::make_unique<ConversationHandler>(
           conversation, this, model_service_, credential_manager_.get(),
-          feedback_api_.get(), url_loader_factory_,
+          feedback_api_.get(), profile_prefs_, url_loader_factory_,
           CreateToolProvidersForNewConversation());
   conversation_observations_.AddObservation(conversation_handler.get());
 
@@ -295,7 +318,7 @@ void AIChatService::OnConversationDataReceived(
   std::unique_ptr<ConversationHandler> conversation_handler =
       std::make_unique<ConversationHandler>(
           conversation, this, model_service_, credential_manager_.get(),
-          feedback_api_.get(), url_loader_factory_,
+          feedback_api_.get(), profile_prefs_, url_loader_factory_,
           CreateToolProvidersForNewConversation(), std::move(data));
   conversation_observations_.AddObservation(conversation_handler.get());
   conversation_handlers_.insert_or_assign(conversation_uuid,
@@ -588,8 +611,7 @@ void AIChatService::MaybeAssociateContent(
     ConversationHandler* conversation,
     int associated_content_id,
     base::WeakPtr<AssociatedContentDelegate> associated_content) {
-  if (associated_content &&
-      kAllowedContentSchemes.contains(associated_content->url().scheme())) {
+  if (CanAssociateContent(associated_content.get())) {
     conversation->associated_content_manager()->AddContent(
         associated_content.get(),
         /*notify_updated=*/true);
@@ -616,6 +638,28 @@ void AIChatService::DismissStorageNotice() {
 
 void AIChatService::DismissPremiumPrompt() {
   profile_prefs_->SetBoolean(prefs::kUserDismissedPremiumPrompt, true);
+}
+
+void AIChatService::GetSkills(GetSkillsCallback callback) {
+  auto skills = prefs::GetSkillsFromPrefs(*profile_prefs_);
+  std::move(callback).Run(std::move(skills));
+}
+
+void AIChatService::CreateSkill(const std::string& shortcut,
+                                const std::string& prompt,
+                                const std::optional<std::string>& model) {
+  prefs::AddSkillToPrefs(shortcut, prompt, model, *profile_prefs_);
+}
+
+void AIChatService::UpdateSkill(const std::string& id,
+                                const std::string& shortcut,
+                                const std::string& prompt,
+                                const std::optional<std::string>& model) {
+  prefs::UpdateSkillInPrefs(id, shortcut, prompt, model, *profile_prefs_);
+}
+
+void AIChatService::DeleteSkill(const std::string& id) {
+  prefs::DeleteSkillFromPrefs(id, *profile_prefs_);
 }
 
 void AIChatService::GetActionMenuList(GetActionMenuListCallback callback) {
@@ -701,7 +745,7 @@ bool AIChatService::CanUnloadConversation(ConversationHandler* conversation) {
   // GetOrCreateConversationHandlerForContent allows a callback so that it
   // can provide an answer after loading the conversation content from storage.
   if (!conversation->GetIsTemporary() &&
-      conversation->IsAssociatedContentAlive() &&
+      conversation->associated_content_manager()->HasLiveContent() &&
       conversation->HasAnyHistory()) {
     return false;
   }
@@ -814,6 +858,12 @@ void AIChatService::OnStateChanged() {
   mojom::ServiceStatePtr state = BuildState();
   for (auto& remote : observer_remotes_) {
     remote->OnStateChanged(state.Clone());
+  }
+}
+
+void AIChatService::OnSkillsChanged() {
+  for (auto& remote : observer_remotes_) {
+    remote->OnSkillsChanged(prefs::GetSkillsFromPrefs(*profile_prefs_));
   }
 }
 
@@ -1156,6 +1206,25 @@ void AIChatService::MaybeAssociateContent(
 
   MaybeAssociateContent(conversation, content->content_id(),
                         content->GetWeakPtr());
+}
+
+void AIChatService::AssociateOwnedContent(
+    std::unique_ptr<AssociatedContentDelegate> delegate,
+    const std::string& conversation_uuid) {
+  CHECK(delegate);
+
+  auto* conversation = GetConversation(conversation_uuid);
+  if (!conversation) {
+    return;
+  }
+
+  // Don't associate the content if it isn't allowed.
+  if (!CanAssociateContent(delegate.get())) {
+    return;
+  }
+
+  conversation->associated_content_manager()->AddOwnedContent(
+      std::move(delegate));
 }
 
 void AIChatService::DisassociateContent(

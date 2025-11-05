@@ -24,6 +24,7 @@ public class BraveProfileMigrations {
     migrateDebouncePreferences()
     migrateDefaultUserAgentPreferences()
     migrateBlockPopupsPreferences()
+    migrateSyncPasswordsDefault()
   }
 
   private func migrateDefaultUserAgentPreferences() {
@@ -55,6 +56,31 @@ public class BraveProfileMigrations {
     debounceService?.isEnabled = isDebounceEnabled
     Preferences.Shields.autoRedirectTrackingURLsDeprecated.value = nil
   }
+
+  /// Migrate sync passwords default value to enabled.
+  /// If a user has a sync chain, but has not touched the sync passwords value,
+  /// we do not want their passwords sync pref to enable so we assign the old
+  /// default value.
+  private func migrateSyncPasswordsDefault() {
+    guard !Preferences.Migration.syncPasswordsEnabledByDefault.value else {
+      // already ran this migration
+      return
+    }
+    guard profileController.syncAPI.isInSyncGroup else {
+      // user is not in a sync chain, so the
+      // Preferences.Chromium.syncPasswordsEnabled default can be used
+      return
+    }
+    guard !Preferences.Chromium.syncPasswordsEnabled.isValueStored else {
+      // user has either enabled/disabled sync passwords, do not change it
+      // from their explict set preference
+      return
+    }
+    // user is currently using the `defaultValue`, which is updating from
+    // disabled to enabled. Keep them on the old `defaultValue`
+    Preferences.Chromium.syncPasswordsEnabled.value = false
+    Preferences.Migration.syncPasswordsEnabledByDefault.value = true
+  }
 }
 
 public class BraveLocalStateMigration {
@@ -65,12 +91,25 @@ public class BraveLocalStateMigration {
 
   public func launchMigrations() {
     migrateDAUPingPreference()
+    migrateAdsPreferences()
   }
 
   private func migrateDAUPingPreference() {
     Preferences.DeprecatedPreferences.sendUsagePing.migrate { value in
       localState.set(value, forPath: kStatsReportingEnabledPrefName)
     }
+  }
+
+  private func migrateAdsPreferences() {
+    guard !localState.hasPref(forPath: kBraveAdsFirstRunAtPrefName) else { return }
+
+    let installationDate = Preferences.P3A.installationDate.value
+    if let installationDate = installationDate {
+      adsRewardsLog.debug("Migrated ads first-run date: \(installationDate)")
+    }
+
+    let firstRunAt = installationDate ?? Date()
+    localState.set(firstRunAt, forPath: kBraveAdsFirstRunAtPrefName)
   }
 }
 
@@ -309,6 +348,12 @@ extension Preferences {
       key: "migration.youtube-high-quality-default",
       default: false
     )
+
+    /// Migrated sync passwords to enabled by default.
+    static let syncPasswordsEnabledByDefault = Option<Bool>(
+      key: "migration.sync-passwords-enabled-by-default",
+      default: false
+    )
   }
 
   /// Migrate a given key from `Prefs` into a specific option
@@ -412,7 +457,7 @@ extension Preferences {
     DeprecatedPreferences.blockAdsAndTracking.migrate { isEnabled in
       if !isEnabled {
         // We only need to migrate `disabled`. `standard` is the default.
-        ShieldPreferences.blockAdsAndTrackingLevel = .disabled
+        Preferences.Shields.blockAdsAndTrackingLevel = .disabled
       }
     }
 
@@ -425,13 +470,13 @@ extension Preferences {
     // and on it will correctly set the underlying upgrade level to the level they had set when
     // the feature flag was on.
     if !FeatureList.kBraveHttpsByDefault.enabled {
-      ShieldPreferences.httpsUpgradePriorEnabledLevel = ShieldPreferences.httpsUpgradeLevel
+      Preferences.Shields.httpsUpgradePriorEnabledLevel = Preferences.Shields.httpsUpgradeLevel
     }
     guard !Migration.httpsUpgradesLivelCompleted.value else { return }
 
     // Migrate old tracking protection setting to new BraveShields setting
     DeprecatedPreferences.httpsEverywhere.migrate { isEnabled in
-      ShieldPreferences.httpsUpgradeLevel = isEnabled ? .standard : .disabled
+      Preferences.Shields.httpsUpgradeLevel = isEnabled ? .standard : .disabled
     }
 
     Migration.adBlockAndTrackingProtectionShieldLevelCompleted.value = true
@@ -528,5 +573,9 @@ extension Preferences.Option {
     } else {
       Logger.module.info("Could not migrate legacy pref with key: \"\(self.key)\".")
     }
+  }
+
+  fileprivate var isValueStored: Bool {
+    (container.object(forKey: key) as? ValueType) != nil
   }
 }

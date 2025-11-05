@@ -29,11 +29,48 @@ export function getCompletionEvent(text: string): Mojom.ConversationEntryEvent {
   }
 }
 
+export function getToolUseEvent(
+  toolUseEvent: Mojom.ToolUseEvent,
+): Mojom.ConversationEntryEvent {
+  return {
+    ...eventTemplate,
+    toolUseEvent,
+  }
+}
+
 export function getWebSourcesEvent(
   sources: Mojom.WebSource[],
 ): Mojom.ConversationEntryEvent {
   return {
     ...eventTemplate,
     sourcesEvent: { sources },
+  }
+}
+
+/**
+ * Creates a conversation turn filling in any optional properties as undefined
+ * and basic defaults for other properties.
+ * @param props Overriding properties
+ * @returns a valid ConversationTurn
+ */
+export function createConversationTurnWithDefaults(
+  props: Partial<Mojom.ConversationTurn>,
+): Mojom.ConversationTurn {
+  return {
+    uuid: '1',
+    prompt: undefined,
+    selectedText: undefined,
+    events: undefined,
+    createdTime: { internalValue: BigInt(Date.now()) },
+    edits: undefined,
+    uploadedFiles: undefined,
+    skill: undefined,
+    fromBraveSearchSERP: false,
+    modelKey: undefined,
+    actionType: Mojom.ActionType.UNSPECIFIED,
+    characterType: Mojom.CharacterType.ASSISTANT,
+    text: '',
+
+    ...props,
   }
 }

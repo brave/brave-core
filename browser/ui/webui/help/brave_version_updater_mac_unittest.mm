@@ -24,14 +24,13 @@ class BraveVersionUpdaterMacTest : public testing::Test {
 };
 
 TEST_F(BraveVersionUpdaterMacTest, UsesSparkleWhenFeatureDisabled) {
-  scoped_feature_list_.InitAndDisableFeature(
-      brave_updater::kBraveUseOmaha4Alpha);
+  scoped_feature_list_.InitAndDisableFeature(brave_updater::kBraveUseOmaha4);
   EXPECT_TRUE(UsesSparkle());
 }
 
 TEST_F(BraveVersionUpdaterMacTest, UsesOmaha4WhenFeatureEnabled) {
   scoped_feature_list_.InitAndEnableFeatureWithParameters(
-      brave_updater::kBraveUseOmaha4Alpha,
+      brave_updater::kBraveUseOmaha4,
       {{brave_updater::kLegacyFallbackIntervalDays.name,
         base::NumberToString(INT_MAX)}});
   EXPECT_FALSE(UsesSparkle());

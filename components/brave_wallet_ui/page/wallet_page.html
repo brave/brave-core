@@ -3,12 +3,24 @@
   <head>
   <base href="/">
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width">
+  <if expr="is_ios">
+    <!-- iOS-only: lock viewport to prevent auto-zoom when focusing input fields and preserve WebUI layout consistency. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  </if>
+  <if expr="not is_ios">
+    <meta name="viewport" content="width=device-width">
+  </if>
   <title>Brave Wallet</title>
-  <link rel="stylesheet" href="chrome://resources/css/md_colors.css">
+  <if expr="not is_ios">
+    <link rel="stylesheet" href="chrome://resources/css/md_colors.css">
+  </if>
   <link rel="stylesheet" href="chrome://resources/brave/fonts/poppins.css">
   <link rel="stylesheet" href="chrome://resources/brave/fonts/inter.css">
   <link rel="stylesheet" href="chrome://resources/brave/css/nala.css">
+  <if expr="is_ios">
+    <script src="chrome://resources/js/ios/web_ui.js"></script>
+    <script src="chrome://resources/js/ios/mojo_api.js"></script>
+  </if>
   <script src="chrome://resources/js/load_time_data_deprecated.js"></script>
   <script src="/strings.js"></script>
   <style>

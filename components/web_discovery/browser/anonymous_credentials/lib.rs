@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-//! Partial implementation of Direct Anonymous Attestation (DAA) for the Web Discovery Project.
-//! Only signer functions are available. Performs the same elliptic curve operations as the [original C library](https://github.com/whotracksme/anonymous-credentials).
+//! Partial implementation of Direct Anonymous Attestation (DAA) for the Web
+//! Discovery Project. Only signer functions are available. Performs the same elliptic curve operations as the [original C library](https://github.com/whotracksme/anonymous-credentials).
 //!
 //! bn254 is the only supported curve for this library.
 

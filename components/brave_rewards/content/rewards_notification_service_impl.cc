@@ -133,7 +133,7 @@ RewardsNotificationServiceImpl::GenerateRewardsNotificationTimestamp() const {
 }
 
 void RewardsNotificationServiceImpl::ReadRewardsNotificationsJSON() {
-  std::string json = prefs_->GetString(prefs::kNotifications);
+  const auto& json = prefs_->GetString(prefs::kNotifications);
   if (json.empty()) {
     return;
   }
@@ -197,9 +197,8 @@ void RewardsNotificationServiceImpl::ReadRewardsNotifications(
 
     const base::Value::List* args = dict.FindList("args");
     if (args) {
-      for (auto& arg : *args) {
-        std::string arg_string = arg.GetString();
-        notification_args.push_back(arg_string);
+      for (const auto& arg : *args) {
+        notification_args.push_back(arg.GetString());
       }
     }
 

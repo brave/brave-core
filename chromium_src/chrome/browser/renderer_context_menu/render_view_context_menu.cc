@@ -13,6 +13,7 @@
 #include "base/feature_list.h"
 #include "base/logging.h"
 #include "base/notimplemented.h"
+#include "base/strings/strcat.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/autocomplete/brave_autocomplete_scheme_classifier.h"
 #include "brave/browser/brave_shields/brave_shields_tab_helper.h"
@@ -24,7 +25,6 @@
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/browser_dialogs.h"
-#include "brave/browser/ui/tabs/features.h"
 #include "brave/components/ai_rewriter/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/grit/brave_theme_resources.h"
@@ -47,6 +47,7 @@
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/tor/tor_profile_manager.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
+#include "chrome/browser/ui/incognito_allowed_url.h"
 #endif
 
 #include "base/feature_list.h"
@@ -54,12 +55,14 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
+#include "brave/components/ai_chat/content/browser/associated_web_contents_content.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "components/grit/brave_components_strings.h"
@@ -202,7 +205,7 @@ void OnGetImageForTextCopy(base::WeakPtr<content::WebContents> web_contents,
 constexpr char kAIChatRewriteDataKey[] = "ai_chat_rewrite_data";
 
 struct AIChatRewriteData : public base::SupportsUserData::Data {
-  bool has_data_received = false;
+  std::string accumulated_text;
 };
 
 bool IsRewriteCommand(int command) {
@@ -279,14 +282,14 @@ void OnRewriteSuggestionDataReceived(
     return;
   }
 
-  if (rewrite_data->has_data_received) {
+  if (!rewrite_data->accumulated_text.empty()) {
     // Subsequent data received, undo previous streaming result.
     web_contents->Undo();
-  } else {
-    rewrite_data->has_data_received = true;
   }
 
-  web_contents->Replace(base::UTF8ToUTF16(suggestion));
+  // Accumulate the delta to build the full text.
+  base::StrAppend(&rewrite_data->accumulated_text, {suggestion});
+  web_contents->Replace(base::UTF8ToUTF16(rewrite_data->accumulated_text));
 }
 
 void OnRewriteSuggestionCompleted(
@@ -308,7 +311,7 @@ void OnRewriteSuggestionCompleted(
       return;
     }
 
-    if (rewrite_data->has_data_received) {
+    if (!rewrite_data->accumulated_text.empty()) {
       web_contents->Undo();
     }
 
@@ -326,7 +329,8 @@ void OnRewriteSuggestionCompleted(
     }
     ai_chat::ConversationHandler* conversation =
         ai_chat_service->GetOrCreateConversationHandlerForContent(
-            helper->content_id(), helper->GetWeakPtr());
+            helper->web_contents_content().content_id(),
+            helper->web_contents_content().GetWeakPtr());
     if (!conversation) {
       return;
     }
@@ -339,31 +343,6 @@ void OnRewriteSuggestionCompleted(
   }
 
   web_contents->RemoveUserData(kAIChatRewriteDataKey);
-}
-
-bool CanOpenSplitViewForWebContents(
-    base::WeakPtr<content::WebContents> web_contents) {
-  if (!tabs::features::IsBraveSplitViewEnabled()) {
-    return false;
-  }
-
-  if (!web_contents) {
-    return false;
-  }
-
-  Browser* browser = chrome::FindBrowserWithTab(web_contents.get());
-  return browser && browser->is_type_normal() &&
-         brave::CanOpenNewSplitViewForTab(browser);
-}
-
-void OpenLinkInSplitView(base::WeakPtr<content::WebContents> web_contents,
-                         content::OpenURLParams open_url_params) {
-  if (!web_contents) {
-    return;
-  }
-
-  Browser* browser = chrome::FindBrowserWithTab(web_contents.get());
-  brave::OpenLinkInSplitView(browser, std::move(open_url_params));
 }
 
 }  // namespace
@@ -428,8 +407,6 @@ bool BraveRenderViewContextMenu::IsCommandIdEnabled(int id) const {
     case IDC_AI_CHAT_CONTEXT_REWRITE:
       return ai_rewriter::features::IsAIRewriterEnabled();
 #endif
-    case IDC_CONTENT_CONTEXT_OPENLINK_SPLIT_VIEW:
-      return CanOpenSplitViewForWebContents(source_web_contents_->GetWeakPtr());
     case IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENTS:
       return true;
     case IDC_OPEN_IN_CONTAINER:
@@ -499,19 +476,6 @@ void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
           source_web_contents_, base::UTF16ToUTF8(params_.selection_text));
       break;
 #endif
-    case IDC_CONTENT_CONTEXT_OPENLINK_SPLIT_VIEW: {
-      // Note that we must pass `initiator` so that cookies are not shared based
-      // on SameSite attributes.
-      // https://github.com/brave/brave-browser/issues/47642
-      auto open_url_params = GetOpenURLParamsWithExtraHeaders(
-          params_.link_url, /*referral=*/{}, params_.frame_origin,
-          WindowOpenDisposition::NEW_WINDOW, ui::PAGE_TRANSITION_LINK,
-          /*extra_headers=*/std::string(),
-          /*started_from_context_menu=*/true);
-      ::OpenLinkInSplitView(source_web_contents_->GetWeakPtr(),
-                            std::move(open_url_params));
-      break;
-    }
     case IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENTS:
       cosmetic_filters::CosmeticFiltersTabHelper::LaunchContentPicker(
           source_web_contents_);
@@ -585,7 +549,7 @@ void BraveRenderViewContextMenu::ExecuteAIChatCommand(int command) {
                        ->GetDefaultAIEngine();
     }
     ai_engine_->GenerateRewriteSuggestion(
-        selected_text, ai_chat::GetActionTypeQuestion(action_type),
+        selected_text, action_type,
         /*selected_language*/ "",
         ai_chat::BindParseRewriteReceivedData(
             base::BindRepeating(&OnRewriteSuggestionDataReceived,
@@ -604,8 +568,9 @@ void BraveRenderViewContextMenu::ExecuteAIChatCommand(int command) {
     ai_chat::ConversationHandler* conversation =
         ai_chat::AIChatServiceFactory::GetForBrowserContext(
             embedder_web_contents_->GetBrowserContext())
-            ->GetOrCreateConversationHandlerForContent(helper->content_id(),
-                                                       helper->GetWeakPtr());
+            ->GetOrCreateConversationHandlerForContent(
+                helper->web_contents_content().content_id(),
+                helper->web_contents_content().GetWeakPtr());
     // Before trying to activate the panel, unlink page content if needed.
     // This needs to be called before activating the panel to check against the
     // current state.
@@ -863,27 +828,6 @@ void BraveRenderViewContextMenu::InitMenu() {
   }
 
   BuildAIChatMenu();
-
-  // Add Open Link in Split View
-  if (CanOpenSplitViewForWebContents(source_web_contents_->GetWeakPtr()) &&
-      params_.link_url.is_valid()) {
-    // Reset our index
-    index.reset();
-
-    // Loop over menu_model_ items until we find the first separator
-    for (size_t i = 0; i < menu_model_.GetItemCount(); i++) {
-      if (menu_model_.GetTypeAt(i) == ui::MenuModel::ItemType::TYPE_SEPARATOR) {
-        index = i;
-        break;
-      }
-    }
-
-    CHECK(index.has_value());
-
-    menu_model_.InsertItemWithStringIdAt(
-        index.value(), IDC_CONTENT_CONTEXT_OPENLINK_SPLIT_VIEW,
-        IDS_CONTENT_CONTEXT_SPLIT_VIEW);
-  }
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
   BuildContainersMenu();

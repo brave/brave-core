@@ -677,7 +677,7 @@ extension BrowserViewController {
     }
     let isInUserAllowList = httpUpgradeService.isHttpAllowed(forHost: host)
     let shouldUpgrade: Bool
-    switch ShieldPreferences.httpsUpgradeLevel {
+    switch Preferences.Shields.httpsUpgradeLevel {
     case .strict:
       // Always upgrade for Strict HTTPS upgrade unless previously allowed by user.
       shouldUpgrade = !isInUserAllowList
@@ -703,7 +703,7 @@ extension BrowserViewController {
       return nil
     }
 
-    if ShieldPreferences.httpsUpgradeLevel.isStrict,
+    if Preferences.Shields.httpsUpgradeLevel.isStrict,
       let url = originalURL.encodeEmbeddedInternalURL(for: .httpBlocked)
     {
       Logger.module.debug(

@@ -16,6 +16,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_hd_keyring.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/buildflags.h"
@@ -52,6 +53,16 @@ class SolanaKeyring;
 class SolanaProviderImplUnitTest;
 class ZCashKeyring;
 struct KeyringSeed;
+
+// Allows tests to set a custom nonce generation callback. Caller is expected to
+// keep the callback alive.
+void SetCreateNonceCallbackForTesting(
+    base::RepeatingCallback<std::array<uint8_t, 12u>()>* callback);
+
+// Allows tests to set a custom salt generation callback. Caller is expected to
+// keep the callback alive.
+void SetCreateSaltCallbackForTesting(
+    base::RepeatingCallback<std::array<uint8_t, 32u>()>* callback);
 
 // This class is not thread-safe and should have single owner
 class KeyringService : public mojom::KeyringService {
@@ -269,6 +280,10 @@ class KeyringService : public mojom::KeyringService {
       const mojom::AccountIdPtr& account_id,
       const mojom::CardanoKeyIdPtr& key_id,
       base::span<const uint8_t> message);
+
+  // Polkadot
+  std::optional<std::array<uint8_t, kPolkadotSubstrateAccountIdSize>>
+  GetPolkadotPubKey(const mojom::AccountIdPtr& account_id);
 
   const std::vector<mojom::AccountInfoPtr>& GetAllAccountInfos();
   mojom::AccountInfoPtr FindAccount(const mojom::AccountIdPtr& account_id);

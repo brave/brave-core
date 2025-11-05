@@ -37,26 +37,14 @@ using mojom::Theme;
 
 }  // namespace
 
-namespace features {
-
-bool IsSpeedreaderEnabled() {
-  return base::FeatureList::IsEnabled(kSpeedreaderFeature);
-}
-
-}  // namespace features
-
-bool IsSpeedreaderFeatureEnabled(PrefService* prefs) {
-  return prefs->GetBoolean(kSpeedreaderPrefFeatureEnabled);
-}
-
 SpeedreaderService::SpeedreaderService(content::BrowserContext* browser_context,
                                        PrefService* local_state,
                                        HostContentSettingsMap* content_rules)
     : browser_context_(browser_context),
       content_rules_(content_rules),
       prefs_(user_prefs::UserPrefs::Get(browser_context_)),
-      metrics_(local_state, content_rules_, IsEnabledForAllSites()) {
-  DCHECK(features::IsSpeedreaderEnabled());
+      metrics_(local_state, content_rules_, IsAllowedForAllReadableSites()) {
+  DCHECK(base::FeatureList::IsEnabled(features::kSpeedreaderFeature));
 }
 
 SpeedreaderService::~SpeedreaderService() = default;
@@ -73,8 +61,8 @@ void SpeedreaderService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
       base::CommandLine::ForCurrentProcess()->HasSwitch(kCollectSwitch);
 #endif
 
-  registry->RegisterBooleanPref(kSpeedreaderPrefFeatureEnabled, true);
-  registry->RegisterBooleanPref(kSpeedreaderPrefEnabledForAllSites,
+  registry->RegisterBooleanPref(kSpeedreaderEnabled, true);
+  registry->RegisterBooleanPref(kSpeedreaderAllowedForAllReadableSites,
                                 enabled_by_default);
 
   registry->RegisterBooleanPref(kSpeedreaderPrefEverEnabled, false);
@@ -106,18 +94,14 @@ void SpeedreaderService::RemoveObserver(Observer* observer) {
   observers_.RemoveObserver(observer);
 }
 
-bool SpeedreaderService::IsFeatureEnabled() {
-  return speedreader::IsSpeedreaderFeatureEnabled(prefs_);
-}
-
-bool SpeedreaderService::IsEnabledForAllSites() {
-  if (!IsFeatureEnabled()) {
+bool SpeedreaderService::IsAllowedForAllReadableSites() {
+  if (!prefs_->GetBoolean(kSpeedreaderEnabled)) {
     return false;
   }
-  return prefs_->GetBoolean(kSpeedreaderPrefEnabledForAllSites);
+  return prefs_->GetBoolean(kSpeedreaderAllowedForAllReadableSites);
 }
 
-ContentSetting SpeedreaderService::GetEnabledForSiteSetting(const GURL& url) {
+ContentSetting SpeedreaderService::GetSiteSetting(const GURL& url) {
   if (!url.is_valid()) {
     return CONTENT_SETTING_BLOCK;
   }
@@ -128,22 +112,38 @@ ContentSetting SpeedreaderService::GetEnabledForSiteSetting(const GURL& url) {
       url, GURL::EmptyGURL(), ContentSettingsType::BRAVE_SPEEDREADER);
 }
 
-ContentSetting SpeedreaderService::GetEnabledForSiteSetting(
+ContentSetting SpeedreaderService::GetSiteSetting(
     content::WebContents* contents) {
   if (!contents) {
     return CONTENT_SETTING_BLOCK;
   }
-  return GetEnabledForSiteSetting(contents->GetLastCommittedURL());
+  return GetSiteSetting(contents->GetLastCommittedURL());
 }
 
-bool SpeedreaderService::IsEnabledForSite(const GURL& url) {
-  const auto setting = GetEnabledForSiteSetting(url);
+bool SpeedreaderService::IsAllowedForSite(const GURL& url) {
+  if (!prefs_->GetBoolean(speedreader::kSpeedreaderEnabled)) {
+    return false;
+  }
+
+  const auto setting = GetSiteSetting(url);
   if (setting == CONTENT_SETTING_BLOCK) {
     return false;
   } else if (setting == CONTENT_SETTING_ALLOW) {
     return true;
   }
-  return IsEnabledForAllSites();
+  return IsAllowedForAllReadableSites();
+}
+
+bool SpeedreaderService::IsAllowedForSite(content::WebContents* contents) {
+  if (!contents) {
+    return false;
+  }
+  return IsAllowedForSite(contents->GetLastCommittedURL());
+}
+
+bool SpeedreaderService::IsEnabledForSite(const GURL& url) {
+  const auto setting = GetSiteSetting(url);
+  return setting == CONTENT_SETTING_ALLOW;
 }
 
 bool SpeedreaderService::IsEnabledForSite(content::WebContents* contents) {
@@ -153,37 +153,23 @@ bool SpeedreaderService::IsEnabledForSite(content::WebContents* contents) {
   return IsEnabledForSite(contents->GetLastCommittedURL());
 }
 
-bool SpeedreaderService::IsExplicitlyEnabledForSite(const GURL& url) {
-  const auto setting = GetEnabledForSiteSetting(url);
-  return setting == CONTENT_SETTING_ALLOW;
-}
-
-bool SpeedreaderService::IsExplicitlyEnabledForSite(
-    content::WebContents* contents) {
-  if (!contents) {
-    return false;
-  }
-  return IsExplicitlyEnabledForSite(contents->GetLastCommittedURL());
-}
-
-bool SpeedreaderService::IsExplicitlyDisabledForSite(const GURL& url) {
-  const auto setting = GetEnabledForSiteSetting(url);
+bool SpeedreaderService::IsDisabledForSite(const GURL& url) {
+  const auto setting = GetSiteSetting(url);
   return setting == CONTENT_SETTING_BLOCK;
 }
 
-bool SpeedreaderService::IsExplicitlyDisabledForSite(
-    content::WebContents* contents) {
+bool SpeedreaderService::IsDisabledForSite(content::WebContents* contents) {
   if (!contents) {
     return false;
   }
-  return IsExplicitlyDisabledForSite(contents->GetLastCommittedURL());
+  return IsDisabledForSite(contents->GetLastCommittedURL());
 }
 
-void SpeedreaderService::EnableForAllSites(bool enabled) {
-  if (IsEnabledForAllSites() == enabled) {
+void SpeedreaderService::SetAllowedForAllReadableSites(bool enabled) {
+  if (IsAllowedForAllReadableSites() == enabled) {
     return;
   }
-  prefs_->SetBoolean(kSpeedreaderPrefEnabledForAllSites, enabled);
+  prefs_->SetBoolean(kSpeedreaderAllowedForAllReadableSites, enabled);
 
   for (auto& o : observers_) {
     o.OnAllSitesEnableSettingChanged(enabled);
@@ -192,13 +178,13 @@ void SpeedreaderService::EnableForAllSites(bool enabled) {
   metrics_.UpdateEnabledSitesMetric(enabled);
 }
 
-void SpeedreaderService::EnableForSite(const GURL& url, bool enabled) {
+void SpeedreaderService::SetEnabledForSite(const GURL& url, bool enabled) {
   if (!url.is_valid()) {
     return;
   }
   const ContentSetting setting =
       enabled ? CONTENT_SETTING_ALLOW : CONTENT_SETTING_BLOCK;
-  if (GetEnabledForSiteSetting(url) == setting) {
+  if (GetSiteSetting(url) == setting) {
     return;
   }
   if (!content_rules_) {
@@ -215,19 +201,19 @@ void SpeedreaderService::EnableForSite(const GURL& url, bool enabled) {
       pattern, ContentSettingsPattern::Wildcard(),
       ContentSettingsType::BRAVE_SPEEDREADER, setting);
 
-  metrics_.UpdateEnabledSitesMetric(IsEnabledForAllSites());
+  metrics_.UpdateEnabledSitesMetric(IsAllowedForAllReadableSites());
 }
 
-void SpeedreaderService::EnableForSite(content::WebContents* contents,
-                                       bool enabled) {
+void SpeedreaderService::SetEnabledForSite(content::WebContents* contents,
+                                           bool enabled) {
   if (contents) {
-    EnableForSite(contents->GetLastCommittedURL(), enabled);
+    SetEnabledForSite(contents->GetLastCommittedURL(), enabled);
     for (auto& o : observers_) {
       o.OnSiteEnableSettingChanged(contents, enabled);
     }
   }
 
-  metrics_.UpdateEnabledSitesMetric(IsEnabledForAllSites());
+  metrics_.UpdateEnabledSitesMetric(IsAllowedForAllReadableSites());
 }
 
 void SpeedreaderService::SetAppearanceSettings(

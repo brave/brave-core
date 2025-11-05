@@ -3,7 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { ExternalWallet, ExternalWalletProvider } from '../../shared/lib/external_wallet'
+import {
+  ExternalWallet,
+  ExternalWalletProvider,
+} from '../../shared/lib/external_wallet'
 import { ProviderPayoutStatus } from '../../shared/lib/provider_payout_status'
 import { Optional } from '../../shared/lib/optional'
 
@@ -15,20 +18,17 @@ interface EmbedderInfo {
 }
 
 export type EnableRewardsResult =
-  'success' |
-  'wallet-generation-disabled' |
-  'country-already-declared' |
-  'unexpected-error'
+  | 'success'
+  | 'wallet-generation-disabled'
+  | 'country-already-declared'
+  | 'unexpected-error'
 
 export interface AvailableCountryInfo {
   countryCodes: string[]
   defaultCountryCode: string
 }
 
-export type AdType =
-  'new-tab-page' |
-  'notification' |
-  'search-result'
+export type AdType = 'new-tab-page' | 'notification'
 
 export interface AdsInfo {
   browserUpgradeRequired: boolean
@@ -40,7 +40,7 @@ export interface AdsInfo {
   notificationAdsPerHour: number
   shouldAllowSubdivisionTargeting: boolean
   currentSubdivision: string
-  availableSubdivisions: Array<{ code: string, name: string }>
+  availableSubdivisions: Array<{ code: string; name: string }>
   autoDetectedSubdivision: string
 }
 
@@ -61,33 +61,33 @@ export interface AdsHistoryItem {
 export interface RewardsParameters {
   tipChoices: number[]
   rate: number
-  walletProviderRegions: Record<string, { allow: string[], block: string[] }>
+  walletProviderRegions: Record<string, { allow: string[]; block: string[] }>
   payoutStatus: Record<string, ProviderPayoutStatus>
 }
 
 export type ConnectExternalWalletResult =
-  'success' |
-  'device-limit-reached' |
-  'flagged-wallet' |
-  'kyc-required' |
-  'mismatched-countries' |
-  'mismatched-provider-accounts' |
-  'provider-unavailable' |
-  'region-not-supported' |
-  'request-signature-verification-error' |
-  'unexpected-error' |
-  'uphold-bat-not-allowed' |
-  'uphold-insufficient-capabilities' |
-  'uphold-transaction-verification-failure'
+  | 'success'
+  | 'device-limit-reached'
+  | 'flagged-wallet'
+  | 'kyc-required'
+  | 'mismatched-countries'
+  | 'mismatched-provider-accounts'
+  | 'provider-unavailable'
+  | 'region-not-supported'
+  | 'request-signature-verification-error'
+  | 'unexpected-error'
+  | 'uphold-bat-not-allowed'
+  | 'uphold-insufficient-capabilities'
+  | 'uphold-transaction-verification-failure'
 
 export type CreatorPlatform =
-  '' |
-  'twitter' |
-  'youtube' |
-  'twitch' |
-  'reddit' |
-  'vimeo' |
-  'github'
+  | ''
+  | 'twitter'
+  | 'youtube'
+  | 'twitch'
+  | 'reddit'
+  | 'vimeo'
+  | 'github'
 
 export interface CreatorSite {
   id: string
@@ -122,8 +122,8 @@ export interface CaptchaInfo {
 }
 
 export type NotificationType =
-  'monthly-tip-completed' |
-  'external-wallet-disconnected'
+  | 'monthly-tip-completed'
+  | 'external-wallet-disconnected'
 
 export interface Notification {
   type: NotificationType
@@ -136,9 +136,7 @@ export interface ExternalWalletDisconnectedNotification extends Notification {
   provider: ExternalWalletProvider
 }
 
-export type NotificationActionType =
-  'open-link' |
-  'reconnect-external-wallet'
+export type NotificationActionType = 'open-link' | 'reconnect-external-wallet'
 
 export interface NotificationAction {
   type: NotificationActionType
@@ -203,7 +201,7 @@ export function defaultState(): AppState {
       isBubble: false,
       isAutoResizeBubble: false,
       platform: 'desktop',
-      animatedBackgroundEnabled: false
+      animatedBackgroundEnabled: false,
     },
     paymentId: '',
     countryCode: '',
@@ -219,6 +217,6 @@ export function defaultState(): AppState {
     currentCreator: null,
     captchaInfo: null,
     notifications: [],
-    cards: null
+    cards: null,
   }
 }

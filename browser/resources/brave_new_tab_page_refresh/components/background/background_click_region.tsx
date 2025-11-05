@@ -7,11 +7,12 @@ import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 
 import { Link } from '../common/link'
-import { useCurrentBackground } from '../../context/background_context'
+import { useCurrentBackground, useBackgroundActions } from '../../context/background_context'
 
 import { style } from './background_click_region.style'
 
 export function BackgroundClickRegion() {
+  const actions = useBackgroundActions()
   const currentBackground = useCurrentBackground()
   if (currentBackground?.type !== 'sponsored-image') {
     return null
@@ -24,7 +25,9 @@ export function BackgroundClickRegion() {
 
   return (
     <div data-css-scope={style.scope}>
-      <Link url={url}><Icon name='launch' /></Link>
+      <Link url={url} onClick={actions.notifySponsoredImageLogoClicked}>
+        <Icon name='launch' />
+      </Link>
     </div>
   )
 }

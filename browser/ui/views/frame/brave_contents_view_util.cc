@@ -6,8 +6,7 @@
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 
 #include "base/check.h"
-#include "brave/browser/ui/brave_browser.h"
-#include "chrome/browser/ui/browser.h"
+#include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "ui/compositor/layer.h"
 #include "ui/views/view.h"
 
@@ -30,7 +29,8 @@ std::unique_ptr<ViewShadow> BraveContentsViewUtil::CreateShadow(
 }
 
 int BraveContentsViewUtil::GetRoundedCornersWebViewMargin(Browser* browser) {
-  return BraveBrowser::ShouldUseBraveWebViewRoundedCorners(browser)
+  return BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
+             browser)
              ? BraveContentsViewUtil::kMarginThickness
              : 0;
 }

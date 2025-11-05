@@ -20,6 +20,8 @@ class ChromiumDownload: Download, CWVDownloadTaskDelegate {
     super.init(
       suggestedFilename: downloadTask.suggestedFileName,
       originalURL: downloadTask.originalURL,
+      redirectedURL: downloadTask.redirectedURL,
+      originatingHost: downloadTask.originatingHost,
       mimeType: downloadTask.mimeType
     )
 

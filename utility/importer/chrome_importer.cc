@@ -13,7 +13,6 @@
 #include "base/files/file_util.h"
 #include "base/json/json_reader.h"
 #include "base/logging.h"
-#include "base/memory/ref_counted.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/common/importer/scoped_copy_file.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -85,8 +84,8 @@ bool SetEncryptionKeyForPasswordImporting(
     const base::FilePath& local_state_path) {
   std::string local_state_content;
   base::ReadFileToString(local_state_path, &local_state_content);
-  std::optional<base::Value::Dict> local_state =
-      base::JSONReader::ReadDict(local_state_content);
+  std::optional<base::Value::Dict> local_state = base::JSONReader::ReadDict(
+      local_state_content, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!local_state) {
     return false;
   }
@@ -294,8 +293,8 @@ void ChromeImporter::ImportBookmarks() {
 
   base::ReadFileToString(copy_bookmark_file.copied_file_path(),
                          &bookmarks_content);
-  std::optional<base::Value::Dict> bookmark_dict =
-      base::JSONReader::ReadDict(bookmarks_content);
+  std::optional<base::Value::Dict> bookmark_dict = base::JSONReader::ReadDict(
+      bookmarks_content, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!bookmark_dict)
     return;
 

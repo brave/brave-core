@@ -6,9 +6,9 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_TOASTS_TOAST_CONTROLLER_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_TOASTS_TOAST_CONTROLLER_H_
 
-#define MaybeShowToast                             \
-  MaybeShowToast_ChromiumImpl(ToastParams params); \
-  bool MaybeShowToast
+#define MaybeShowToast(...)    \
+  MaybeShowToast(__VA_ARGS__); \
+  bool MaybeShowToast_ChromiumImpl(__VA_ARGS__)
 
 #include <chrome/browser/ui/toasts/toast_controller.h>  // IWYU pragma: export
 

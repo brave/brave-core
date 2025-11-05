@@ -605,15 +605,6 @@ private class WebKitWebView: WKWebView {
 
   override func buildMenu(with builder: any UIMenuBuilder) {
     super.buildMenu(with: builder)
-    if !canPerformAction(#selector(copy(_:)), withSender: self) {
-      // This matches CRWWebView's implementation
-      //
-      // `WKWebView buildMenuWithBuilder:` is called too often in WKWebView,
-      // sometimes when there is no selection.
-      // As a proxy to detect if we should add our items, only add Chrome
-      // features if there is something to copy in the view.
-      return
-    }
     buildMenu?(builder)
   }
 }

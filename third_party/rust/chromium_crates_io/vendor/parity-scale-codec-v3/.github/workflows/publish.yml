@@ -1,0 +1,25 @@
+name: Publish release to crates.io
+
+on:
+  release:
+    types:
+      - published
+
+jobs:
+  publish-crate:
+    runs-on: ubuntu-latest
+    environment: release
+    container: paritytech/ci-unified:bullseye-1.79.0
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Cache Rust dependencies
+        uses: swatinem/rust-cache@v2
+        with:
+          key: ${{ runner.os }}-rust-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Publish Crate
+        run: |
+          cargo publish --token ${{ secrets.CARGO_REGISTRY_TOKEN }} -p parity-scale-codec-derive
+          cargo publish --token ${{ secrets.CARGO_REGISTRY_TOKEN }} -p parity-scale-codec

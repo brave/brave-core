@@ -20,6 +20,7 @@ source_set("web") {
     "//brave/ios/browser/api/web_view",
     "//brave/ios/browser/application_context",
     "//brave/ios/browser/component_updater:zxcvbn_data_component_installer",
+    "//brave/ios/browser/ui/web_view:features",
     "//components/component_updater/installer_policies",
     "//components/translate/ios/browser",
     "//ios/chrome/browser/application_context/model",
@@ -33,7 +34,7 @@ source_set("web") {
     "//ios/components/security_interstitials/safe_browsing",
     "//ios/components/webui:url_constants",
     "//ios/public/provider/chrome/browser/url_rewriters:url_rewriters_api",
-    "//ios/web_view:web_view_sources",
+    "//ios/web_view/framework:web_view_sources",
   ]
   frameworks = [ "Foundation.framework" ]
 }

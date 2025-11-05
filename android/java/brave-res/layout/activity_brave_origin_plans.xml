@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2025 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primitive_blurple_10"
+    android:orientation="vertical"
+    tools:context=".BraveOriginPlansActivity">
+
+    <!-- Toolbar with close button and Origin Premium title -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/BraveOriginToolbar"
+        android:minHeight="?attr/actionBarSize"/>
+
+    <!-- Scrollable content area for premium features and subscription plans -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="24dp"
+            android:orientation="vertical">
+
+            <!-- Premium feature benefit #1 with checkmark icon -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/DefaultRegular"
+                android:textAlignment="textStart"
+                android:gravity="center_vertical"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginBottom="8dp"
+                android:textColor="@android:color/white"
+                android:drawablePadding="8dp"
+                android:text="@string/origin_paywall_text_1"
+                app:drawableStartCompat="@drawable/ic_checkmark_gradient" />
+
+            <!-- Premium feature benefit #2 with checkmark icon -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/DefaultRegular"
+                android:textAlignment="textStart"
+                android:gravity="center_vertical"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginBottom="8dp"
+                android:textColor="@android:color/white"
+                android:drawablePadding="8dp"
+                android:text="@string/origin_paywall_text_2"
+                app:drawableStartCompat="@drawable/ic_checkmark_gradient" />
+
+            <!-- Premium feature benefit #3 with checkmark icon -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/DefaultRegular"
+                android:textAlignment="textStart"
+                android:gravity="center_vertical"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginBottom="16dp"
+                android:textColor="@android:color/white"
+                android:drawablePadding="8dp"
+                android:text="@string/origin_paywall_text_3"
+                app:drawableStartCompat="@drawable/ic_checkmark_gradient" />
+
+            <!-- Separator line between features and subscription plans -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/primitive_blurple_25"/>
+
+            <!-- Yearly subscription plan selector-->
+            <LinearLayout
+                android:id="@+id/yearly_selector_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="12dp"
+                android:layout_marginHorizontal="16dp"
+                android:padding="16dp"
+                android:background="@drawable/origin_plan_active_bg"
+                android:orientation="horizontal"
+                android:baselineAligned="false">
+
+                <!-- Subscription plan details container -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/yearly_subscription_text"
+                            style="@style/LargeSemibold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/one_year_subscription"
+                            android:textColor="@android:color/white"
+                            android:layout_gravity="start"
+                            android:gravity="start"
+                            android:textAlignment="textStart"
+                            android:layout_marginBottom="2dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="4dp"
+                            android:text="@string/yearly_subscription_best_value"
+                            android:textColor="@android:color/white"
+                            android:layout_gravity="start"
+                            android:gravity="start"
+                            android:textAlignment="textStart"
+                            android:layout_marginStart="4dp"
+                            android:layout_marginBottom="2dp"
+                            android:background="@drawable/leo_yearly_bg"
+                            android:textSize="11sp"/>
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/yearly_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/renews_annually"
+                        android:textColor="@color/primitive_blurple_95"
+                        android:textAlignment="textStart"
+                        style="@style/DefaultRegular"/>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="vertical">
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <ProgressBar
+                            android:id="@+id/yearly_plan_progress"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:visibility="gone"
+                            android:layout_gravity="center"
+                            android:indeterminate="true"/>
+
+                        <TextView
+                            android:id="@+id/yearly_subscription_amount_text"
+                            android:layout_width="wrap_content"
+                            style="@style/SmallRegular"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/primitive_blurple_95"
+                            android:textAlignment="textStart"
+                            android:layout_marginBottom="2dp" />
+
+                    </FrameLayout>
+
+                    <TextView
+                        android:id="@+id/removed_value_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/primitive_blurple_95"
+                        style="@style/SmallRegular"
+                        android:textAlignment="textEnd"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- Monthly subscription plan selector-->
+            <LinearLayout
+                android:id="@+id/monthly_selector_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginHorizontal="16dp"
+                android:baselineAligned="false"
+                android:padding="16dp"
+                android:background="@drawable/origin_plan_non_active_bg"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/monthly_subscription_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/monthly_subscription_origin"
+                        android:textColor="@android:color/white"
+                        style="@style/LargeSemibold"
+                        android:textAlignment="textStart"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/renews_monthly"
+                        android:textColor="@color/primitive_blurple_95"
+                        android:textAlignment="textStart"
+                        style="@style/DefaultRegular"/>
+
+                </LinearLayout>
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ProgressBar
+                        android:id="@+id/monthly_plan_progress"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:visibility="gone"
+                        android:layout_gravity="center"
+                        android:indeterminate="true"/>
+
+                    <TextView
+                        android:id="@+id/monthly_subscription_amount_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/SmallRegular"
+                        android:textColor="@color/primitive_blurple_95"
+                        android:textAlignment="textEnd"/>
+
+                </FrameLayout>
+            </LinearLayout>
+
+            <!-- Subscription renewal terms and conditions text -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/brave_subscription_renewal_text"
+                android:textColor="@color/primitive_blurple_80"
+                android:textSize="11sp"
+                app:drawableTint="@android:color/white"/>
+
+            <!-- Learn more about Origin button -->
+            <TextView
+                android:id="@+id/learn_more_about_origin_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/DefaultSemibold"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginBottom="16dp"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="12dp"
+                android:textColor="@color/primitive_primary_20"
+                android:background="@drawable/learn_more_about_origin_bg"
+                android:text="@string/learn_more_about_origin"
+                android:textAlignment="center"/>
+
+            <!-- "Already purchased" section header -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/DefaultSemibold"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/already_purchased"
+                android:textColor="@color/primitive_blurple_98"
+                android:textAlignment="center"/>
+
+            <!-- Refresh credentials button for existing subscribers -->
+            <TextView
+                android:id="@+id/refresh_credentials_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/DefaultSemibold"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginBottom="16dp"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="12dp"
+                android:textColor="@color/semantic_text_interactive"
+                android:background="@drawable/refresh_credentials_origin_bg"
+                android:text="@string/refresh_your_credentials"
+                android:textAlignment="center"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Bottom action area with upgrade button -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:orientation="vertical">
+
+        <!-- Separator line above upgrade button -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/primitive_blurple_25"/>
+
+        <!-- Main upgrade button with gradient background -->
+        <TextView
+            android:id="@+id/tv_upgrade_now"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/origin_plan_upgrade_now_bg"
+            android:text="@string/origin_subscription_try_free_trial"
+            android:textColor="@android:color/white"
+            android:layout_gravity="start"
+            android:gravity="center"
+            android:layout_marginTop="16dp"
+            android:layout_marginHorizontal="24dp"
+            android:padding="16dp"
+            android:textSize="14sp"/>
+    </LinearLayout>
+
+</LinearLayout>

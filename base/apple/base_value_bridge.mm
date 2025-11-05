@@ -276,11 +276,11 @@
 }
 
 - (nullable NSString*)jsonString {
-  std::string input_json;
-  if (!base::JSONWriter::Write(self.value, &input_json) || input_json.empty()) {
+  std::optional<std::string> input_json = base::WriteJson(self.value);
+  if (!input_json || input_json->empty()) {
     return nil;
   }
-  return base::SysUTF8ToNSString(input_json);
+  return base::SysUTF8ToNSString(*input_json);
 }
 
 - (nullable id)jsonObject {

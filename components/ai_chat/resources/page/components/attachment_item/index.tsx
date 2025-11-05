@@ -109,7 +109,7 @@ export function AttachmentPageItem(props: {
       icon={
         <div className={styles.favicon}>
           <img
-            src={`//favicon2?size=256&pageUrl=${encodeURIComponent(props.url)}`}
+            src={`//favicon2?size=256&pageUrl=${encodeURIComponent(props.url)}&allowGoogleServerFallback=0`}
           />
         </div>
       }

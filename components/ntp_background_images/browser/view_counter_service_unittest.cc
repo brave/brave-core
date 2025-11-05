@@ -377,6 +377,7 @@ class ViewCounterServiceTest : public testing::Test {
   void VerifyGetNewTabTakeoverWallpaperExpectation() {
     EXPECT_CALL(ads_service_mock_, PrefetchNewTabPageAd)
         .Times(GetInitialCountToBrandedWallpaper());
+    EXPECT_CALL(ads_service_mock_, MaybeGetPrefetchedNewTabPageAd);
     const brave_ads::NewTabPageAdInfo ad = BuildNewTabPageAd();
     ON_CALL(ads_service_mock_, MaybeGetPrefetchedNewTabPageAd)
         .WillByDefault(::testing::Return(ad));
@@ -739,88 +740,6 @@ TEST_F(ViewCounterServiceTest,
   EXPECT_CALL(ads_service_mock_, MaybeGetPrefetchedNewTabPageAd)
       .WillOnce(::testing::Return(ad));
   EXPECT_CALL(ads_service_mock_, OnFailedToPrefetchNewTabPageAd);
-  VerifyDoNotGetNewTabTakeoverWallpaperExpectation();
-}
-
-TEST_F(ViewCounterServiceTest,
-       GetNewTabTakeoverWallpaperOutsideGracePeriodForNonRewardsUser) {
-  prefs_.SetBoolean(brave_rewards::prefs::kEnabled, false);
-
-  MockBackgroundImagesService();
-  background_images_service_->sponsored_images_data_->grace_period =
-      base::Minutes(1);
-  task_environment_.AdvanceClock(base::Minutes(1));
-
-  VerifyGetNewTabTakeoverWallpaperExpectation();
-}
-
-TEST_F(ViewCounterServiceTest,
-       DoNotGetNewTabTakeoverWallpaperOnCuspOfGracePeriodForNonRewardsUser) {
-  prefs_.SetBoolean(brave_rewards::prefs::kEnabled, false);
-
-  MockBackgroundImagesService();
-  background_images_service_->sponsored_images_data_->grace_period =
-      base::Minutes(1);
-  task_environment_.AdvanceClock(base::Seconds(59));
-
-  EXPECT_CALL(ads_service_mock_, PrefetchNewTabPageAd).Times(0);
-  EXPECT_CALL(ads_service_mock_, MaybeGetPrefetchedNewTabPageAd).Times(0);
-  EXPECT_CALL(ads_service_mock_, OnFailedToPrefetchNewTabPageAd).Times(0);
-  VerifyDoNotGetNewTabTakeoverWallpaperExpectation();
-}
-
-TEST_F(ViewCounterServiceTest,
-       DoNotGetNewTabTakeoverWallpaperWithinGracePeriodForNonRewardsUser) {
-  prefs_.SetBoolean(brave_rewards::prefs::kEnabled, false);
-
-  MockBackgroundImagesService();
-  background_images_service_->sponsored_images_data_->grace_period =
-      base::Minutes(1);
-
-  EXPECT_CALL(ads_service_mock_, PrefetchNewTabPageAd).Times(0);
-  EXPECT_CALL(ads_service_mock_, MaybeGetPrefetchedNewTabPageAd).Times(0);
-  EXPECT_CALL(ads_service_mock_, OnFailedToPrefetchNewTabPageAd).Times(0);
-  VerifyDoNotGetNewTabTakeoverWallpaperExpectation();
-}
-
-TEST_F(ViewCounterServiceTest,
-       GetNewTabTakeoverWallpaperOutsideGracePeriodForRewardsUser) {
-  prefs_.SetBoolean(brave_rewards::prefs::kEnabled, true);
-
-  MockBackgroundImagesService();
-  background_images_service_->sponsored_images_data_->grace_period =
-      base::Minutes(1);
-  task_environment_.AdvanceClock(base::Minutes(1));
-
-  VerifyGetNewTabTakeoverWallpaperExpectation();
-}
-
-TEST_F(ViewCounterServiceTest,
-       DoNotGetNewTabTakeoverWallpaperOnCuspOfGracePeriodForRewardsUser) {
-  prefs_.SetBoolean(brave_rewards::prefs::kEnabled, true);
-
-  MockBackgroundImagesService();
-  background_images_service_->sponsored_images_data_->grace_period =
-      base::Minutes(1);
-  task_environment_.AdvanceClock(base::Seconds(59));
-
-  EXPECT_CALL(ads_service_mock_, PrefetchNewTabPageAd).Times(0);
-  EXPECT_CALL(ads_service_mock_, MaybeGetPrefetchedNewTabPageAd).Times(0);
-  EXPECT_CALL(ads_service_mock_, OnFailedToPrefetchNewTabPageAd).Times(0);
-  VerifyDoNotGetNewTabTakeoverWallpaperExpectation();
-}
-
-TEST_F(ViewCounterServiceTest,
-       DoNotGetNewTabTakeoverWallpaperWithinGracePeriodForRewardsUser) {
-  prefs_.SetBoolean(brave_rewards::prefs::kEnabled, true);
-
-  MockBackgroundImagesService();
-  background_images_service_->sponsored_images_data_->grace_period =
-      base::Minutes(1);
-
-  EXPECT_CALL(ads_service_mock_, PrefetchNewTabPageAd).Times(0);
-  EXPECT_CALL(ads_service_mock_, MaybeGetPrefetchedNewTabPageAd).Times(0);
-  EXPECT_CALL(ads_service_mock_, OnFailedToPrefetchNewTabPageAd).Times(0);
   VerifyDoNotGetNewTabTakeoverWallpaperExpectation();
 }
 

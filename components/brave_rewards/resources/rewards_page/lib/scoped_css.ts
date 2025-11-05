@@ -35,17 +35,20 @@ export const scoped = {
   // attributes.
   css(callsite: TemplateStringsArray, ...values: any[]) {
     const attr = new ScopedCSSAttribute((scopeID++).toString(36))
-    addStyles(attr.selector, css`
-      @scope (${attr.selector}) to ([${scopeAttributeName}]) {
-        ${css(callsite, ...values)}
-      }
-    `)
+    addStyles(
+      attr.selector,
+      css`
+        @scope (${attr.selector}) to ([${scopeAttributeName}]) {
+          ${css(callsite, ...values)}
+        }
+      `,
+    )
     return attr
-  }
+  },
 }
 
 export const global = {
   css(callsite: TemplateStringsArray, ...values: any[]) {
     addStyles((scopeID++).toString(36), String.raw(callsite, ...values))
-  }
+  },
 }

@@ -1,51 +1,49 @@
 {
-  "configurations": [{
-    "dashboard-bot-name": "test-agent-android",
-    "browser-type": "brave",
-    "profile": "brave-typical-android",
-    "extra-browser-args": [],
-    "extra-benchmark-args": [
-      "--also-run-disabled-tests",
-    ],
-  }],
-  "benchmarks": [
+  'configurations': [
     {
-      "name": "system_health.memory_mobile",
-      "pageset-repeat": 1,
-      "stories": [
-        "load:site:example:2023",
-        "load:site:brave_search:2023",
-        "load:site:wikipedia:2023",
-        "load:site:cnn:2023",
-        "load:site:bbc:2023",
-      ]
+      'dashboard-bot-name': 'test-agent-android',
+      'browser-type': 'brave',
+      'profile': 'brave-typical-android',
+      'extra-browser-args': [],
+      'extra-benchmark-args': ['--also-run-disabled-tests'],
+    },
+  ],
+  'benchmarks': [
+    {
+      'name': 'system_health.memory_mobile',
+      'pageset-repeat': 1,
+      'stories': [
+        'load:site:example:2023',
+        'load:site:brave_search:2023',
+        'load:site:wikipedia:2023',
+        'load:site:cnn:2023',
+        'load:site:bbc:2023',
+      ],
     },
     {
-      "name": "system_health.common_mobile",
-      "pageset-repeat": 1,
-      "stories": [
-        "load:site:example:2023",
-        "load:site:brave_search:2023",
-        "load:site:wikipedia:2023",
-        "load:site:cnn:2023",
-        "load:site:bbc:2023",
-      ]
+      'name': 'system_health.common_mobile',
+      'pageset-repeat': 1,
+      'stories': [
+        'load:site:example:2023',
+        'load:site:brave_search:2023',
+        'load:site:wikipedia:2023',
+        'load:site:cnn:2023',
+        'load:site:bbc:2023',
+      ],
     },
     {
-      "name": "speedometer3",
-      "pageset-repeat": 1
+      'name': 'speedometer3',
+      'pageset-repeat': 1,
     },
     {
-      "name": "jetstream2",
+      'name': 'jetstream2',
     },
     {
-      "name": "rendering.mobile",
-      "stories": [
-        "motionmark_fixed_2_seconds"
-      ]
+      'name': 'rendering.mobile',
+      'stories': ['motionmark_fixed_2_seconds'],
     },
     {
-      "name": "apk_size",
+      'name': 'apk_size',
     },
-  ]
+  ],
 }

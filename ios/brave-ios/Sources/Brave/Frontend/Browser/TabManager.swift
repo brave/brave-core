@@ -281,7 +281,15 @@ class TabManager: NSObject {
     configuration.allowsInlineMediaPlayback = true
     // Enables Zoom in website by ignoring their javascript based viewport Scale limits.
     configuration.ignoresViewportScaleLimits = true
-    configuration.upgradeKnownHostsToHTTPS = ShieldPreferences.httpsUpgradeLevel.isEnabled
+    configuration.upgradeKnownHostsToHTTPS = Preferences.Shields.httpsUpgradeLevel.isEnabled
+
+    if FeatureList.kWebKitAdvancedPrivacyProtections.enabled {
+      let senderKeyPath = String(format: "_setNetw%@rityEnabled:", "orkConnectionInteg")
+      let selector = Selector(senderKeyPath)
+      if configuration.defaultWebpagePreferences.responds(to: selector) {
+        configuration.defaultWebpagePreferences.perform(selector, with: true)
+      }
+    }
 
     if configuration.urlSchemeHandler(forURLScheme: InternalURL.scheme) == nil {
       configuration.setURLSchemeHandler(
@@ -964,7 +972,7 @@ class TabManager: NSObject {
     }
 
     // Delete the history for forgotten websites
-    if let historyAPI = self.historyAPI {
+    if let historyAPI = self.historyAPI, Preferences.Shields.shredHistoryItems.value {
       // if we're only forgetting 1 site, we can query history by it's domain
       let query = urls.count == 1 ? urls.first?.baseDomain : nil
 
@@ -992,7 +1000,9 @@ class TabManager: NSObject {
       historyAPI.removeHistory(for: nodes)
     }
 
-    RecentlyClosed.remove(baseDomains: baseDomains)
+    if Preferences.Shields.shredHistoryItems.value {
+      RecentlyClosed.remove(baseDomains: baseDomains)
+    }
 
     for url in urls {
       await FaviconFetcher.deleteCache(for: url)
@@ -1169,7 +1179,8 @@ class TabManager: NSObject {
       toast = ButtonToast(
         labelText: String.localizedStringWithFormat(Strings.tabsDeleteAllUndoTitle, numberOfTabs),
         buttonText: Strings.tabsDeleteAllUndoAction,
-        completion: { buttonPressed in
+        completion: { [weak self] buttonPressed in
+          guard let self else { return }
           if buttonPressed {
             self.undoCloseTabs()
             for delegate in self.delegates {

@@ -11,10 +11,10 @@
 #include <vector>
 
 #include "base/containers/flat_set.h"
+#include "base/memory/raw_ptr.h"
 #include "base/observer_list.h"
 #include "base/observer_list_types.h"
 #include "base/scoped_observation.h"
-#include "brave/components/brave_shields/core/browser/brave_shields_settings.h"
 #include "brave/components/brave_shields/core/common/brave_shields_panel.mojom.h"
 #include "brave/components/brave_shields/core/common/shields_settings.mojom.h"
 #include "components/content_settings/core/browser/content_settings_observer.h"
@@ -23,6 +23,7 @@
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
+#include "url/gurl.h"
 
 using brave_shields::mojom::AdBlockMode;
 using brave_shields::mojom::CookieBlockMode;
@@ -31,6 +32,8 @@ using brave_shields::mojom::HttpsUpgradeMode;
 using content::NavigationEntry;
 
 namespace brave_shields {
+
+class BraveShieldsSettingsService;
 
 // Per-tab class to manage Shields panel data
 class BraveShieldsTabHelper
@@ -48,6 +51,8 @@ class BraveShieldsTabHelper
     virtual void OnResourcesChanged() = 0;
     virtual void OnFaviconUpdated() {}
     virtual void OnShieldsEnabledChanged() {}
+    virtual void OnShieldsAdBlockOnlyModeEnabledChanged() {}
+    virtual void OnRepeatedReloadsDetected() {}
   };
 
   void HandleItemBlocked(const std::string& block_type,
@@ -65,7 +70,11 @@ class BraveShieldsTabHelper
   std::vector<GURL> GetFingerprintsList();
   bool GetBraveShieldsEnabled();
   void SetBraveShieldsEnabled(bool is_enabled);
-  GURL GetCurrentSiteURL();
+  bool IsBraveShieldsAdBlockOnlyModeEnabled();
+  void SetBraveShieldsAdBlockOnlyModeEnabled(bool is_enabled);
+  bool ShouldShowShieldsDisabledAdBlockOnlyModePrompt();
+  void SetBraveShieldsAdBlockOnlyModePromptDismissed();
+  GURL GetCurrentSiteURL() const;
   GURL GetFaviconURL(bool refresh);
   const base::flat_set<ContentSettingsType>& GetInvokedWebcompatFeatures();
 
@@ -73,9 +82,9 @@ class BraveShieldsTabHelper
   FingerprintMode GetFingerprintMode();
   CookieBlockMode GetCookieBlockMode();
   bool IsBraveShieldsManaged();
-  bool IsForgetFirstPartyStorageFeatureEnabled() const;
   HttpsUpgradeMode GetHttpsUpgradeMode();
   bool GetNoScriptEnabled();
+  mojom::ContentSettingsOverriddenDataPtr GetJsContentSettingsOverriddenData();
   bool GetForgetFirstPartyStorageEnabled();
   void SetAdBlockMode(AdBlockMode mode);
   void SetFingerprintMode(FingerprintMode mode);
@@ -95,6 +104,11 @@ class BraveShieldsTabHelper
 
  private:
   friend class content::WebContentsUserData<BraveShieldsTabHelper>;
+
+  struct RepeatedReloadsCounter {
+    base::Time initial_reload_at;
+    size_t reloads_count = 0;
+  };
 
   explicit BraveShieldsTabHelper(content::WebContents* web_contents);
 
@@ -117,6 +131,12 @@ class BraveShieldsTabHelper
                         const gfx::Image& image) override;
 
   void ReloadWebContents();
+  void MaybeNotifyRepeatedReloads(content::NavigationHandle* navigation_handle);
+
+  void OnShieldsAdBlockOnlyModeEnabledChanged();
+
+  bool navigation_triggered_by_shields_changes_ = false;
+  std::optional<RepeatedReloadsCounter> repeated_reloads_counter_;
 
   base::ObserverList<Observer> observer_list_;
   std::set<GURL> resource_list_blocked_ads_;
@@ -128,7 +148,9 @@ class BraveShieldsTabHelper
   base::ScopedObservation<HostContentSettingsMap, content_settings::Observer>
       observation_{this};
   const raw_ref<HostContentSettingsMap> host_content_settings_map_;
-  std::unique_ptr<BraveShieldsSettings> brave_shields_settings_;
+  const raw_ref<BraveShieldsSettingsService> brave_shields_settings_;
+
+  PrefChangeRegistrar local_state_change_registrar_;
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };

@@ -70,8 +70,8 @@ class SidebarContainerView
 
   bool IsSidebarVisible() const;
 
-  // Return false if this mouse event can't make sidebar UI visible.
-  bool PreHandleMouseEvent(const gfx::PointF& point_in_screen);
+  // Show sidebar if the hot corner contains |point_in_screen|.
+  void ShowSidebarOnMouseOver(const gfx::PointF& point_in_screen);
 
   BraveSidePanel* side_panel() { return side_panel_; }
 
@@ -85,6 +85,7 @@ class SidebarContainerView
   // is called whether it's closing from deregistration.
   void WillShowSidePanel();
   bool IsFullscreenForCurrentEntry() const;
+  void UpdateBorder();
 
   void set_operation_from_active_tab_change(bool tab_change) {
     operation_from_active_tab_change_ = tab_change;

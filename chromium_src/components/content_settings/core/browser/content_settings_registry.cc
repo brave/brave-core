@@ -10,9 +10,15 @@
 #include "base/containers/fixed_flat_map.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/brave_shields_settings_values.h"
+#include "brave/components/psst/buildflags/buildflags.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings.mojom.h"
 #include "net/base/features.h"
+
+#if BUILDFLAG(ENABLE_PSST)
+#include "brave/components/psst/common/constants.h"
+#include "brave/components/psst/common/features.h"
+#endif  // BUILDFLAG(ENABLE_PSST)
 
 namespace content_settings {
 
@@ -396,6 +402,28 @@ void ContentSettingsRegistry::BraveInit() {
           WebsiteSettingsRegistry::PLATFORM_ANDROID |
           WebsiteSettingsRegistry::PLATFORM_IOS,
       WebsiteSettingsInfo::INHERIT_IN_INCOGNITO);
+
+  website_settings_registry_->Register(
+      ContentSettingsType::BRAVE_AUTO_SHRED, brave_shields::kBraveAutoShred,
+      brave_shields::AutoShredSetting::DefaultValue(),
+      WebsiteSettingsInfo::UNSYNCABLE, WebsiteSettingsInfo::NOT_LOSSY,
+      WebsiteSettingsInfo::TOP_ORIGIN_ONLY_SCOPE,
+      WebsiteSettingsRegistry::DESKTOP |
+          WebsiteSettingsRegistry::PLATFORM_ANDROID |
+          WebsiteSettingsRegistry::PLATFORM_IOS,
+      WebsiteSettingsInfo::INHERIT_IN_INCOGNITO);
+
+#if BUILDFLAG(ENABLE_PSST)
+  if (base::FeatureList::IsEnabled(psst::features::kEnablePsst)) {
+    website_settings_registry_->Register(
+        ContentSettingsType::BRAVE_PSST, psst::kBravePsst, base::Value(),
+        WebsiteSettingsInfo::UNSYNCABLE, WebsiteSettingsInfo::NOT_LOSSY,
+        WebsiteSettingsInfo::TOP_ORIGIN_ONLY_SCOPE,
+        WebsiteSettingsRegistry::DESKTOP |
+            WebsiteSettingsRegistry::PLATFORM_ANDROID,
+        WebsiteSettingsInfo::DONT_INHERIT_IN_INCOGNITO);
+  }
+#endif  // BUILDFLAG(ENABLE_PSST)
 }
 
 }  // namespace content_settings

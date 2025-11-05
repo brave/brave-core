@@ -7,6 +7,6 @@
 
 namespace psst::features {
 
-BASE_FEATURE(kEnablePsst, "EnablePsst", base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kEnablePsst, base::FEATURE_DISABLED_BY_DEFAULT);
 
 }  // namespace psst::features

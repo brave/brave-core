@@ -19,9 +19,12 @@ transpile_web_ui("custom_site_distiller_scripts") {
       rebase_path("scripts/github.com/distiller.ts"),
     ],
   ]
+  imports_from =
+      [ "//brave/components/ai_chat/resources/custom_site_distiller_scripts/" ]
 
   # Distillation scripts are provided a `return` statement and IIFE by
   # ai_chat::DistillPageTextViaSiteScript in page_text_distilling.cc
+  output_module = false
   no_iife = true
 }
 

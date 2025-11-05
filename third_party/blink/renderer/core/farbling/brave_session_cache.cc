@@ -44,6 +44,12 @@ namespace {
 constexpr uint64_t zero = 0;
 constexpr double maxUInt64AsDouble = static_cast<double>(UINT64_MAX);
 
+constexpr int kFarbledUserAgentMaxExtraSpaces = 5;
+
+// acceptable letters for generating random strings
+constexpr std::string_view kLettersForRandomStrings =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
 inline uint64_t lfsr_next(uint64_t v) {
   return ((v >> 1) | (((v << 62) ^ (v << 61)) & (~(~zero << 63) << 62)));
 }
@@ -94,13 +100,6 @@ const blink::BlinkStorageKey* GetStorageKey(blink::ExecutionContext* context) {
 namespace brave {
 
 constexpr char BraveSessionCache::kSupplementName[] = "BraveSessionCache";
-constexpr int kFarbledUserAgentMaxExtraSpaces = 5;
-
-// acceptable letters for generating random strings
-const char kLettersForRandomStrings[] =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-// length of kLettersForRandomStrings array
-const size_t kLettersForRandomStringsLength = 62;
 
 blink::WebContentSettingsClient* GetContentSettingsClientFor(
     ExecutionContext* context) {
@@ -318,19 +317,12 @@ void BraveSessionCache::PerturbPixelsInternal(base::span<uint8_t> data) {
   // limited to 32,767 pixels.)
   // Four bits per pixel
   const size_t pixel_count = data.size() / 4;
+
   // calculate initial seed to find first pixel to perturb, based on session
   // key, domain key, and canvas contents
-  crypto::HMAC h(crypto::HMAC::SHA256);
-  const auto farbling_token_bytes =
-      default_shields_settings_->farbling_token.AsBytes();
-  CHECK(h.Init(farbling_token_bytes));
-  uint8_t canvas_key_buffer[32];
-  auto canvas_key = base::as_writable_byte_span(canvas_key_buffer);
-  CHECK(h.Sign(data, canvas_key));
-  uint64_t v = base::U64FromNativeEndian(canvas_key.first<8u>());
-  uint64_t pixel_index;
-  // choose which channel (R, G, or B) to perturb
-  uint8_t channel;
+  auto canvas_key = crypto::hmac::SignSha256(
+      default_shields_settings_->farbling_token.AsBytes(), data);
+  uint64_t v = base::U64FromNativeEndian(base::span(canvas_key).first<8u>());
   // iterate through 32-byte canvas key and use each bit to determine how to
   // perturb the current pixel
   for (uint8_t key : canvas_key) {
@@ -339,8 +331,9 @@ void BraveSessionCache::PerturbPixelsInternal(base::span<uint8_t> data) {
       if (j % 8 == 0) {
         bit = key;
       }
-      channel = v % 3;
-      pixel_index = 4 * (v % pixel_count) + channel;
+      // choose which channel (R, G, or B) to perturb
+      uint8_t channel = v % 3;
+      uint64_t pixel_index = 4 * (v % pixel_count) + channel;
       data[pixel_index] = data[pixel_index] ^ (bit & 0x1);
       bit = bit >> 1;
       // find next pixel to perturb
@@ -349,27 +342,25 @@ void BraveSessionCache::PerturbPixelsInternal(base::span<uint8_t> data) {
   }
 }
 
-WTF::String BraveSessionCache::GenerateRandomString(std::string seed,
-                                                    blink::wtf_size_t length) {
-  uint8_t key[32];
-  crypto::HMAC h(crypto::HMAC::SHA256);
-  const auto farbling_token_bytes =
-      default_shields_settings_->farbling_token.AsBytes();
-  CHECK(h.Init(farbling_token_bytes.data(), farbling_token_bytes.size()));
-  CHECK(h.Sign(seed, key, sizeof key));
+blink::String BraveSessionCache::GenerateRandomString(
+    std::string_view seed,
+    blink::wtf_size_t length) {
+  auto key = crypto::hmac::SignSha256(
+      default_shields_settings_->farbling_token.AsBytes(),
+      base::as_byte_span(seed));
   // initial PRNG seed based on session key and passed-in seed string
-  uint64_t v = *reinterpret_cast<uint64_t*>(key);
+  uint64_t v = base::U64FromNativeEndian(base::span(key).first<8u>());
   base::span<UChar> destination;
-  WTF::String value = WTF::String::CreateUninitialized(length, destination);
+  blink::String value = blink::String::CreateUninitialized(length, destination);
   for (auto& c : destination) {
-    c = UNSAFE_TODO(
-        kLettersForRandomStrings[v % kLettersForRandomStringsLength]);
+    c = kLettersForRandomStrings.at(v % kLettersForRandomStrings.size());
     v = lfsr_next(v);
   }
   return value;
 }
 
-WTF::String BraveSessionCache::FarbledUserAgent(WTF::String real_user_agent) {
+blink::String BraveSessionCache::FarbledUserAgent(
+    blink::String real_user_agent) {
   FarblingPRNG prng = MakePseudoRandomGenerator();
   blink::StringBuilder result;
   result.Append(real_user_agent);

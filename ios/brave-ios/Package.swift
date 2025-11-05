@@ -16,7 +16,7 @@ var package = Package(
     .library(name: "Shared", targets: ["Shared"]),
     .library(
       name: "BraveCore",
-      targets: ["BraveCore", "MaterialComponents", "PartitionAllocSupport"]
+      targets: ["BraveCore", "PartitionAllocSupport"]
     ),
     .library(name: "BraveShared", targets: ["BraveShared"]),
     .library(name: "BraveShields", targets: ["BraveShields"]),
@@ -52,6 +52,7 @@ var package = Package(
     .library(name: "BrowserMenu", targets: ["BrowserMenu"]),
     .library(name: "Web", targets: ["Web"]),
     .library(name: "BraveTalk", targets: ["BraveTalk"]),
+    .library(name: "Origin", targets: ["Origin"]),
     .executable(name: "LeoAssetCatalogGenerator", targets: ["LeoAssetCatalogGenerator"]),
     .plugin(name: "IntentBuilderPlugin", targets: ["IntentBuilderPlugin"]),
     .plugin(name: "LoggerPlugin", targets: ["LoggerPlugin"]),
@@ -73,7 +74,7 @@ var package = Package(
     .package(url: "https://github.com/apple/swift-algorithms", from: "1.0.0"),
     .package(url: "https://github.com/devxoul/Then", from: "2.7.0"),
     .package(url: "https://github.com/mkrd/Swift-BigInt", from: "2.3.0"),
-    .package(url: "https://github.com/GuardianFirewall/GuardianConnect", exact: "2.0.1"),
+    .package(url: "https://github.com/GuardianFirewall/GuardianConnect", exact: "2.1.1"),
     .package(url: "https://github.com/pointfreeco/swift-custom-dump", from: "0.6.0"),
     .package(
       url: "https://github.com/venmo/Static",
@@ -89,7 +90,6 @@ var package = Package(
         "Shared",
         "BraveWallet",
         "BraveCore",
-        "MaterialComponents",
         "PartitionAllocSupport",
         "BraveUI",
         "DesignSystem",
@@ -123,6 +123,7 @@ var package = Package(
         "Web",
         "BraveShields",
         "BraveTalk",
+        "Origin",
       ],
       exclude: [
         "Frontend/UserContent/UserScripts/AllFrames",
@@ -260,7 +261,6 @@ var package = Package(
       name: "Shared",
       dependencies: [
         "BraveCore",
-        "MaterialComponents",
         "Strings",
       ],
       plugins: ["LoggerPlugin"]
@@ -278,7 +278,7 @@ var package = Package(
     .testTarget(
       name: "CertificateUtilitiesTests",
       dependencies: [
-        "CertificateUtilities", "BraveShared", "BraveCore", "MaterialComponents",
+        "CertificateUtilities", "BraveShared", "BraveCore",
         "PartitionAllocSupport",
       ],
       exclude: ["Certificates/self-signed.conf"],
@@ -339,10 +339,6 @@ var package = Package(
     ),
     .binaryTarget(name: "BraveCore", path: "../../../out/ios_current_link/BraveCore.xcframework"),
     .binaryTarget(
-      name: "MaterialComponents",
-      path: "../../../out/ios_current_link/MaterialComponents.xcframework"
-    ),
-    .binaryTarget(
       name: "GRDWireGuardKit",
       path: "../third_party/GRDWireGuardKit/GRDWireGuardKit.xcframework"
     ),
@@ -376,7 +372,6 @@ var package = Package(
       dependencies: [
         "Data",
         "BraveCore",
-        "MaterialComponents",
         "PartitionAllocSupport",
         "BraveShared",
         "BraveUI",
@@ -657,7 +652,10 @@ var package = Package(
     .executableTarget(name: "LeoAssetCatalogGenerator"),
     .target(
       name: "BraveTalk",
-      dependencies: ["Shared", "Preferences", "JitsiMeet", "BraveCore"],
+      dependencies: [
+        "Shared", "Preferences", "JitsiMeet", "BraveCore",
+        .product(name: "Collections", package: "swift-collections"),
+      ],
       plugins: ["LoggerPlugin"]
     ),
     .testTarget(
@@ -666,6 +664,10 @@ var package = Package(
         "BraveTalk", "Shared", "TestHelpers", "BraveCore",
         .product(name: "Collections", package: "swift-collections"),
       ]
+    ),
+    .target(
+      name: "Origin",
+      dependencies: ["DesignSystem", "Strings"]
     ),
   ],
   cxxLanguageStandard: .cxx17

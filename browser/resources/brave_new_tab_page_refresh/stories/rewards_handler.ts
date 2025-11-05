@@ -18,7 +18,7 @@ export function createRewardsHandler(
     rewardsFeatureEnabled: true,
     rewardsEnabled: true,
     showRewardsWidget: true,
-    rewardsBalance: 1.204,
+    rewardsBalance: null,
     rewardsExchangeRate: 1,
     rewardsExternalWallet: {
       provider: 'gemini',
@@ -31,6 +31,8 @@ export function createRewardsHandler(
     tosUpdateRequired: false,
     rewardsAdsViewed: 1
   })
+
+  setTimeout(() => { store.update({ rewardsBalance:  1.204 }) }, 2000)
 
   return {
     ...defaultRewardsActions(),

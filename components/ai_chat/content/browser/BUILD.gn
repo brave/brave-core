@@ -14,6 +14,10 @@ static_library("browser") {
     "ai_chat_tab_helper.h",
     "ai_chat_throttle.cc",
     "ai_chat_throttle.h",
+    "associated_url_content.cc",
+    "associated_url_content.h",
+    "associated_web_contents_content.cc",
+    "associated_web_contents_content.h",
     "full_screenshotter.cc",
     "full_screenshotter.h",
     "model_service_factory.cc",
@@ -27,6 +31,7 @@ static_library("browser") {
   deps = [
     "//base",
     "//brave/components/ai_chat/core/browser",
+    "//brave/components/ai_chat/core/browser/ollama",
     "//brave/components/ai_chat/core/common",
     "//brave/components/ai_chat/core/common:common_impl",
     "//brave/components/ai_chat/core/common/mojom",
@@ -45,6 +50,7 @@ static_library("browser") {
     "//components/strings:components_strings_grit",
     "//components/user_prefs",
     "//content/public/browser",
+    "//net",
     "//net/traffic_annotation",
     "//pdf:buildflags",
     "//services/data_decoder/public/cpp",
@@ -65,7 +71,11 @@ static_library("browser") {
 
 source_set("unit_tests") {
   testonly = true
-  sources = [ "page_content_fetcher_unittest.cc" ]
+  sources = [
+    "associated_url_content_unittest.cc",
+    "associated_web_contents_content_unittest.cc",
+    "page_content_fetcher_unittest.cc",
+  ]
 
   deps = [
     "//base",
@@ -75,10 +85,14 @@ source_set("unit_tests") {
     "//brave/components/ai_chat/core/common",
     "//brave/components/ai_chat/core/common/mojom",
     "//brave/components/api_request_helper",
+    "//components/favicon/content",
+    "//components/favicon/core/test:test_support",
+    "//components/pdf/common:constants",
     "//content/public/browser",
     "//content/test:test_support",
     "//mojo/public/cpp/bindings",
     "//net:test_support",
+    "//pdf:buildflags",
     "//services/data_decoder/public/cpp",
     "//services/data_decoder/public/cpp:test_support",
     "//services/network:test_support",
@@ -86,5 +100,10 @@ source_set("unit_tests") {
     "//services/service_manager/public/cpp",
     "//testing/gmock",
     "//testing/gtest",
+    "//url",
   ]
+
+  if (enable_pdf) {
+    deps += [ "//components/pdf/browser" ]
+  }
 }

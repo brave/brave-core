@@ -16,17 +16,14 @@ export function UnsupportedRegionView() {
   return (
     <div data-css-scope={style.scope}>
       <h4>{getString('unsupportedRegionTitle')}</h4>
-      <p>
-        {getString('unsupportedRegionText1')}
-      </p>
+      <p>{getString('unsupportedRegionText1')}</p>
       <p className='learn-more'>
         <NewTabLink href={urls.rewardsUnavailableURL}>
           {getString('learnMoreLink')}
         </NewTabLink>
       </p>
       <p>
-        {getString('unsupportedRegionText2')}
-        {' '}
+        {getString('unsupportedRegionText2')}{' '}
         {getString('unsupportedRegionText3')}
       </p>
     </div>

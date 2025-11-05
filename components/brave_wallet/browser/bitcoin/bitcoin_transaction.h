@@ -26,7 +26,6 @@ class BitcoinTransaction {
     Outpoint(Outpoint&& other);
     Outpoint& operator=(Outpoint&& other);
     bool operator==(const Outpoint& other) const;
-    bool operator!=(const Outpoint& other) const;
     bool operator<(const Outpoint& other) const;
 
     base::Value::Dict ToValue() const;
@@ -45,7 +44,6 @@ class BitcoinTransaction {
     TxInput(TxInput&& other);
     TxInput& operator=(TxInput&& other);
     bool operator==(const TxInput& other) const;
-    bool operator!=(const TxInput& other) const;
 
     base::Value::Dict ToValue() const;
     static std::optional<TxInput> FromValue(const base::Value::Dict& value);
@@ -102,7 +100,6 @@ class BitcoinTransaction {
     TxOutput(TxOutput&& other);
     TxOutput& operator=(TxOutput&& other);
     bool operator==(const TxOutput& other) const;
-    bool operator!=(const TxOutput& other) const;
 
     base::Value::Dict ToValue() const;
     static std::optional<TxOutput> FromValue(const base::Value::Dict& value);
@@ -120,7 +117,6 @@ class BitcoinTransaction {
   BitcoinTransaction(BitcoinTransaction&& other);
   BitcoinTransaction& operator=(BitcoinTransaction&& other);
   bool operator==(const BitcoinTransaction& other) const;
-  bool operator!=(const BitcoinTransaction& other) const;
 
   base::Value::Dict ToValue() const;
   static std::optional<BitcoinTransaction> FromValue(

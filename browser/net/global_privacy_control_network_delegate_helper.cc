@@ -9,6 +9,8 @@
 
 #include "base/feature_list.h"
 #include "brave/components/constants/network_constants.h"
+#include "brave/components/global_privacy_control/global_privacy_control_utils.h"
+#include "chrome/browser/profiles/profile.h"
 #include "net/base/net_errors.h"
 #include "net/http/http_request_headers.h"
 
@@ -18,7 +20,11 @@ int OnBeforeStartTransaction_GlobalPrivacyControlWork(
     net::HttpRequestHeaders* headers,
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx) {
-  headers->SetHeader(kSecGpcHeader, "1");
+  Profile* profile = Profile::FromBrowserContext(ctx->browser_context);
+  if (profile && global_privacy_control::IsGlobalPrivacyControlEnabled(
+                     profile->GetPrefs())) {
+    headers->SetHeader(kSecGpcHeader, "1");
+  }
   return net::OK;
 }
 

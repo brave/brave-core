@@ -1,14 +1,8 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="id">
-<translation id="3586180167003092914">Kelola di <ph name="BEGIN_LINK1"/>setelan Android<ph name="END_LINK1"/>
-
-Perlindungan Lanjutan mengontrol setelan Brave berikut:
-• "Selalu gunakan koneksi aman" aktif.
-• "Pengoptimal JavaScript" nonaktif. <ph name="BEGIN_LINK2"/>Kelola Pengecualian situs<ph name="END_LINK2"/></translation>
 <translation id="1006017844123154345">Buka versi Online</translation>
 <translation id="1036348656032585052">Nonaktifkan</translation>
-<translation id="1044891598689252897">Situs akan berfungsi secara normal</translation>
 <translation id="1070329623210597193">File yang dapat dilihat atau diedit oleh situs ini</translation>
 <translation id="1882093842020941518">Bantu kami meningkatkan Brave dengan memberi tahu kami alasan Anda mengizinkan cookie pihak ketiga. <ph name="BEGIN_LINK"/>Kirim masukan<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">Anda dapat meminta untuk melihat situs versi desktop</translation>
@@ -26,6 +20,7 @@ Perlindungan Lanjutan mengontrol setelan Brave berikut:
 <translation id="129382876167171263">File yang disimpan situs muncul di sini</translation>
 <translation id="131112695174432497">Data yang memengaruhi personalisasi iklan dihapus</translation>
 <translation id="1317194122196776028">Lupakan situs ini</translation>
+<translation id="1321110954513621549">Diizinkan • Perkiraan</translation>
 <translation id="1323433172918577554">Tampilkan Lebih Banyak</translation>
 <translation id="1333965224356556482">Jangan izinkan situs melihat lokasi Anda</translation>
 <translation id="1343356790768851700">Situs ini menentukan hal-hal yang Anda sukai, lalu menyarankan iklan ke situs lain</translation>
@@ -41,9 +36,11 @@ Perlindungan Lanjutan mengontrol setelan Brave berikut:
 <translation id="1448064542941920355">Kurangi zoom</translation>
 <translation id="1464044141348608623">Jangan izinkan situs mengetahui saat Anda aktif menggunakan perangkat</translation>
 <translation id="146867109637325312">{COUNT,plural, =1{<ph name="SITE_COUNT"/> situs}other{<ph name="SITE_COUNT"/> situs}}</translation>
+<translation id="1476700086976862423">Warna tema sepia</translation>
 <translation id="1500473259453106018">Sembunyikan kartu penurunan harga di tab</translation>
 <translation id="1508931164824684991">Situs dapat menggunakan JavaScript</translation>
 <translation id="1510341833810331442">Situs tidak diizinkan menyimpan data di perangkat Anda</translation>
+<translation id="1532175480576580256">Panel bawah pintasan saya terbuka sepenuhnya</translation>
 <translation id="1538031354170655462">Situs biasanya menggunakan komunikasi nirkabel jarak dekat (NFC) agar berfungsi dengan tag atau perangkat di sekitar, seperti memindai badge atau melakukan pembayaran nirsentuh</translation>
 <translation id="1547123415014299762">Cookie pihak ketiga diizinkan</translation>
 <translation id="3665719978526894928">Percepat situs dengan mesin V8 Brave, tetapi buat Brave sedikit lebih rentan terhadap serangan</translation>
@@ -72,6 +69,8 @@ Perlindungan Lanjutan mengontrol setelan Brave berikut:
 <translation id="7401204338724669842">Tips untuk Brave</translation>
 <translation id="6704867734300244173">Jika diaktifkan, Brave berjalan lebih cepat dan fitur yang menggunakan JavaScript akan berfungsi sebagaimana mestinya. Jika dinonaktifkan, performa akan berkurang tetapi akan membuat V8 lebih tahan terhadap serangan.</translation>
 <translation id="1818308510395330587">Untuk mengizinkan <ph name="APP_NAME"/> menggunakan Augmented Reality (AR), aktifkan juga kamera di <ph name="BEGIN_LINK"/>Setelan Android<ph name="END_LINK"/>.</translation>
+<translation id="1848033246551405023">Font Sans Serif</translation>
+<translation id="1861262398884155592">Folder ini kosong</translation>
 <translation id="1881806992065048905">Panel bawah tampilan halaman tab baru</translation>
 <translation id="1887786770086287077">Akses lokasi dinonaktifkan untuk perangkat ini. Aktifkan di <ph name="BEGIN_LINK"/>Setelan Android<ph name="END_LINK"/>.</translation>
 <translation id="1906181697255754968">Situs biasanya mengakses file dan folder di perangkat Anda untuk fitur seperti penyimpanan tugas otomatis</translation>
@@ -93,6 +92,7 @@ Perlindungan Lanjutan mengontrol setelan Brave berikut:
 <translation id="2079545284768500474">Urungkan</translation>
 <translation id="2080070583977670716">Setelan lain</translation>
 <translation id="2091887806945687916">Suara</translation>
+<translation id="2094208275686143364">Warna tema terang</translation>
 <translation id="2096716221239095980">Hapus semua data</translation>
 <translation id="2102396546234652240">Jangan izinkan situs menggunakan mikrofon Anda</translation>
 <translation id="2117655453726830283">Slide berikutnya</translation>
@@ -116,11 +116,14 @@ Perlindungan Lanjutan mengontrol setelan Brave berikut:
 <translation id="228293613124499805">Sebagian besar situs yang Anda buka mungkin menyimpan data ke perangkat, sering kali untuk meningkatkan pengalaman Anda dengan menyimpan preferensi atau informasi yang Anda bagikan ke situs. Sebaiknya tetap aktifkan setelan ini.</translation>
 <translation id="2289270750774289114">Tanyakan saat situs ingin menemukan perangkat Bluetooth di sekitar (direkomendasikan)</translation>
 <translation id="2315043854645842844">Pilihan sertifikat sisi klien tidak didukung oleh sistem operasi.</translation>
+<translation id="2347601491101454548">Panel bawah pintasan saya terbuka setengah</translation>
 <translation id="2359808026110333948">Lanjutkan</translation>
 <translation id="904887679952026733">Terapkan tema gelap ke situs saat Brave menggunakan tema gelap, jika mungkin</translation>
 <translation id="2390272837142897736">Tambah zoom</translation>
 <translation id="2402980924095424747"><ph name="MEGABYTES"/> MB</translation>
+<translation id="2403474027143565107">Presisi</translation>
 <translation id="2404630663942400771">{PERMISSIONS_SUMMARY_ALLOWED,plural, =1{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/>, dan <ph name="NUM_MORE"/> lainnya diizinkan}other{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/>, dan <ph name="NUM_MORE"/> lainnya diizinkan}}</translation>
+<translation id="2404857459073803936">Akses lokasi untuk situs ini</translation>
 <translation id="2410940059315936967">Situs yang Anda buka dapat menyematkan konten dari situs lain, misalnya gambar, iklan, dan teks. Cookie yang disetel oleh situs lain ini disebut cookie pihak ketiga.</translation>
 <translation id="2411116727035790889">Aktifkan pintasan</translation>
 <translation id="2433507940547922241">Tampilan</translation>
@@ -136,6 +139,7 @@ Perlindungan Lanjutan mengontrol setelan Brave berikut:
 <translation id="2498359688066513246">Bantuan &amp; masukan</translation>
 <translation id="2501278716633472235">Kembali</translation>
 <translation id="2533138527374486328">Jika diaktifkan, situs dapat meminta untuk terhubung ke perangkat apa pun di jaringan lokal Anda. Jika dinonaktifkan, situs tidak dapat terhubung ke perangkat di jaringan lokal Anda.</translation>
+<translation id="2544997614631598250">Warna tema gelap</translation>
 <translation id="2546283357679194313">Cookie dan data situs</translation>
 <translation id="2570922361219980984">Akses lokasi juga dinonaktifkan untuk perangkat ini. Aktifkan di <ph name="BEGIN_LINK"/>Setelan Android<ph name="END_LINK"/>.</translation>
 <translation id="257931822824936280">Diperluas - klik untuk menciutkan</translation>
@@ -143,6 +147,11 @@ Perlindungan Lanjutan mengontrol setelan Brave berikut:
 <translation id="2588271083332682494">Rapikan tab dengan grup tab</translation>
 <translation id="2597457036804169544">Jangan terapkan tema gelap ke situs</translation>
 <translation id="2606760465469169465">Verifikasi otomatis</translation>
+<translation id="7615153661410655750">Kelola di <ph name="BEGIN_LINK1"/>setelan Android<ph name="END_LINK1"/>
+
+Perlindungan Lanjutan mengontrol setelan Brave berikut:
+• "Selalu gunakan koneksi aman" aktif.
+• "Pengoptimal JavaScript" nonaktif. <ph name="BEGIN_LINK2"/>Kelola Pengecualian situs<ph name="END_LINK2"/></translation>
 <translation id="2621115761605608342">Izinkan JavaScript untuk situs tertentu.</translation>
 <translation id="2626708220538466178">Sheet bawah browser default ditutup</translation>
 <translation id="2653659639078652383">Kirim</translation>
@@ -190,10 +199,10 @@ Perlindungan Lanjutan mengontrol setelan Brave berikut:
 <translation id="3123473560110926937">Diblokir di beberapa situs</translation>
 <translation id="3132996321662585180">Perbarui tiap hari</translation>
 <translation id="3143754809889689516">Putar dari awal</translation>
-<translation id="3162899666601560689">Situs dapat menggunakan cookie untuk menyempurnakan pengalaman penjelajahan Anda, misalnya untuk membuat Anda tetap login atau untuk mengingat item di keranjang belanja Anda</translation>
 <translation id="3165022941318558018">Izinkan situs menggunakan cookie pihak ketiga</translation>
 <translation id="3167868116600277716">Feed Discover</translation>
 <translation id="3198916472715691905"><ph name="STORAGE_AMOUNT"/> data tersimpan</translation>
+<translation id="3199078925536734975">Diizinkan kali ini • Perkiraan</translation>
 <translation id="321187648315454507">Untuk mengizinkan <ph name="APP_NAME"/> mengirimkan notifikasi, aktifkan juga notifikasi di <ph name="BEGIN_LINK"/>Setelan Android<ph name="END_LINK"/>.</translation>
 <translation id="3223425961342298674">Lokasi tidak diizinkan</translation>
 <translation id="3227137524299004712">Mikrofon</translation>
@@ -248,6 +257,7 @@ Perlindungan Lanjutan mengontrol setelan Brave berikut:
 <translation id="3803367742635802571">Situs yang Anda buka mungkin tidak berfungsi sebagaimana mestinya</translation>
 <translation id="8338457030135232378">Warna Brave</translation>
 <translation id="381841723434055211">Nomor telepon</translation>
+<translation id="3823453485268218808">Font Mono</translation>
 <translation id="3826050100957962900">Login pihak ketiga</translation>
 <translation id="3835233591525155343">Penggunaan perangkat Anda</translation>
 <translation id="1799795508209440035">Brave akan memblokir cookie lagi hari ini</translation>
@@ -257,9 +267,9 @@ Perlindungan Lanjutan mengontrol setelan Brave berikut:
 <translation id="3895926599014793903">Aktifkan zoom secara paksa</translation>
 <translation id="3903738175795615004">Tarik dari atas atau tekan tombol Esc untuk keluar dari layar penuh.</translation>
 <translation id="3905475044299942653">Menghentikan banyak notifikasi</translation>
-<translation id="3918378745482005425">Beberapa fitur mungkin tidak berfungsi. Situs terkait masih dapat menggunakan cookie pihak ketiga.</translation>
 <translation id="3922092564198021702">Di ponsel Anda, buka Setelan</translation>
 <translation id="3933121352599513978">Ciutkan permintaan yang tidak diinginkan (direkomendasikan)</translation>
+<translation id="3934905113567851655">Cubit untuk mengubah ukuran</translation>
 <translation id="3955193568934677022">Izinkan situs memutar konten yang dilindungi (direkomendasikan)</translation>
 <translation id="3955321697524543127">Jangan izinkan situs terhubung ke perangkat USB</translation>
 <translation id="3965467402665811906">Situs dapat meminta untuk menggunakan informasi tentang Anda yang disimpan situs</translation>
@@ -272,6 +282,7 @@ Perlindungan Lanjutan mengontrol setelan Brave berikut:
 <translation id="3992684624889376114">Tentang halaman ini</translation>
 <translation id="4002066346123236978">Judul</translation>
 <translation id="4031179711345676612">Mikrofon diizinkan</translation>
+<translation id="4042597221652780603">Perkiraan</translation>
 <translation id="4046123991198612571">Lagu berikutnya</translation>
 <translation id="4077310749977440510">Situs biasanya membaca papan klip Anda untuk fitur seperti mempertahankan format teks yang Anda salin</translation>
 <translation id="4082080074595021446">Pengecualian untuk situs tertentu tidak diizinkan karena perangkat Android tidak memiliki RAM yang cukup.</translation>
@@ -298,11 +309,14 @@ Perlindungan Lanjutan mengontrol setelan Brave berikut:
 <translation id="4338831206024587507">Semua situs di bawah <ph name="DOMAIN"/></translation>
 <translation id="4340799661701629185">Jangan izinkan situs mengirim notifikasi</translation>
 <translation id="4402755511846832236">Blokir situs agar tidak mengetahui saat Anda aktif menggunakan perangkat ini</translation>
+<translation id="8382883799082236806">Panel bawah warna Brave terbuka setengah</translation>
 <translation id="4412992751769744546">Izinkan cookie pihak ketiga</translation>
 <translation id="1675197434085185531">Brave memblokir situs agar tidak menggunakan cookie pihak ketiga untuk melacak Anda saat menjelajah. Buka setelan untuk <ph name="BEGIN_LINK"/>mengelola akses ke cookie pihak ketiga<ph name="END_LINK"/>.</translation>
+<translation id="4425416282877905577">Font Serif</translation>
 <translation id="443121186588148776">Port serial</translation>
 <translation id="4434045419905280838">Pop-up dan pengalihan</translation>
 <translation id="443552056913301231">Tindakan ini akan menghapus semua data lokal, termasuk cookie, dan mereset semua izin untuk <ph name="ORIGIN"/></translation>
+<translation id="43076815069546662">Panel bawah warna Brave terbuka sepenuhnya</translation>
 <translation id="4468959413250150279">Mematikan suara untuk situs tertentu.</translation>
 <translation id="4475912480633855319">{COOKIES,plural, =1{# cookie}other{# cookie}}</translation>
 <translation id="4478158430052450698">Permudah penyesuaian zoom untuk berbagai situs</translation>
@@ -328,6 +342,7 @@ Perlindungan Lanjutan mengontrol setelan Brave berikut:
 <translation id="4816495437032298535">Zoom tersimpan untuk situs</translation>
 <translation id="4836046166855586901">Tanyakan saat situs ingin mengetahui saat Anda aktif menggunakan perangkat ini</translation>
 <translation id="483914009762354899">Sertakan semua situs di domain ini</translation>
+<translation id="4852997963351138624">Hex Warna Latar Belakang</translation>
 <translation id="4882919381756638075">Situs biasanya menggunakan mikrofon Anda untuk fitur komunikasi seperti video chat</translation>
 <translation id="4883854917563148705">Setelan yang dikelola tidak dapat direset</translation>
 <translation id="4887024562049524730">Tanyakan sebelum mengizinkan situs untuk menggunakan perangkat dan data virtual reality Anda (direkomendasikan)</translation>
@@ -337,6 +352,7 @@ Perlindungan Lanjutan mengontrol setelan Brave berikut:
 <translation id="4953688446973710931">JIka diaktifkan, situs dapat meminta untuk otomatis mendownload beberapa file. Jika dinonaktifkan, situs tidak dapat otomatis mendownload beberapa file.</translation>
 <translation id="4962975101802056554">Cabut semua izin untuk perangkat</translation>
 <translation id="4972737347717125191">Situs dapat meminta untuk menggunakan perangkat dan data virtual reality</translation>
+<translation id="1275242979020712923">Panel bawah Warna Brave</translation>
 <translation id="497421865427891073">Maju</translation>
 <translation id="4976702386844183910">Terakhir dibuka <ph name="DATE"/></translation>
 <translation id="4978178243417029856">Pelajari lebih lanjut feed Discover</translation>
@@ -356,6 +372,7 @@ Perlindungan Lanjutan mengontrol setelan Brave berikut:
 <translation id="5100237604440890931">Diciutkan - klik untuk memperluas.</translation>
 <translation id="7143053178237996319">Anda dapat menggunakan Brave kapan saja dengan mengetuk link di pesan, dokumen, dan aplikasi lainnya</translation>
 <translation id="512938610812707830">Panel bawah kumpulan tema tampilan halaman tab baru terbuka sepenuhnya</translation>
+<translation id="5137460097045297858">Panel bawah feed Discover terbuka setengah</translation>
 <translation id="5139253256813381453">{PRICE_DROP_COUNT,plural, =1{Penurunan harga di tab yang terbuka}other{Penurunan harga di tab yang terbuka}}</translation>
 <translation id="5186036860380548585">Opsi tersedia di dekat bagian atas layar</translation>
 <translation id="5197729504361054390">Kontak yang Anda pilih akan dibagikan dengan <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/>.</translation>
@@ -374,7 +391,6 @@ Perlindungan Lanjutan mengontrol setelan Brave berikut:
 <translation id="5335288049665977812">Izinkan situs menjalankan JavaScript (disarankan)</translation>
 <translation id="534295439873310000">Perangkat NFC</translation>
 <translation id="5344522958567249764">Kelola privasi iklan</translation>
-<translation id="5371407439562620893">Pengoptimalan &amp; keamanan JavaScript</translation>
 <translation id="5373874281522292782">Grup tab Anda disimpan</translation>
 <translation id="5394307150471348411">{DETAIL_COUNT,plural, =1{(+ 1 lainnya)}other{(+ # lainnya)}}</translation>
 <translation id="5403592356182871684">Nama</translation>
@@ -386,7 +402,6 @@ Perlindungan Lanjutan mengontrol setelan Brave berikut:
 <translation id="5515432237048785579">Panel bawah feed Discover terbuka sepenuhnya</translation>
 <translation id="5516455585884385570">Buka setelan notifikasi</translation>
 <translation id="5527111080432883924">Tanya sebelum mengizinkan situs membaca teks dan gambar dari papan klip (disarankan)</translation>
-<translation id="5545693483061321551">Situs tidak dapat menggunakan cookie untuk melihat aktivitas penjelajahan Anda di berbagai situs, misalnya untuk mempersonalisasi iklan. Fitur tertentu di beberapa situs mungkin tidak berfungsi.</translation>
 <translation id="5553374991681107062">Terbaru</translation>
 <translation id="674221630984410403">Jangan percepat situs dengan mesin V8 Brave, tetapi buat Brave sedikit lebih tahan terhadap serangan</translation>
 <translation id="5556459405103347317">Muat ulang</translation>
@@ -457,6 +472,7 @@ Perlindungan Lanjutan mengontrol setelan Brave berikut:
 <translation id="6207207788774442484">Hapus data &amp; reset izin</translation>
 <translation id="6231752747840485235">Uninstal '<ph name="APP_NAME"/>'?</translation>
 <translation id="4789073065838177382">Ketuk Aplikasi browser &gt; Brave</translation>
+<translation id="6260830281887654268">Panel bawah koleksi tema tampilan halaman tab baru terbuka setengah</translation>
 <translation id="6262191102408817757">Berdasarkan tab terakhir Anda</translation>
 <translation id="6262279340360821358"><ph name="PERMISSION_1"/> dan <ph name="PERMISSION_2"/> diblokir</translation>
 <translation id="6270391203985052864">Situs dapat meminta izin mengirimkan notifikasi</translation>
@@ -488,8 +504,10 @@ Perlindungan Lanjutan mengontrol setelan Brave berikut:
 <translation id="6608650720463149374"><ph name="GIGABYTES"/> GB</translation>
 <translation id="6612358246767739896">Konten dilindungi</translation>
 <translation id="662080504995468778">Tinggal</translation>
+<translation id="6630443592285535486">Ketik kode hex di sini</translation>
 <translation id="6635327442719709864">Jika diaktifkan, situs dapat meminta untuk menggunakan port serial. Jika dinonaktifkan, situs tidak dapat menggunakan port serial.</translation>
 <translation id="6678072580827808850">Tinjau Pemeriksaan Keamanan</translation>
+<translation id="6682057173375416470">Dapatkan artikel yang disarankan di halaman Tab Baru</translation>
 <translation id="6683865262523156564">Situs ini berada dalam grup yang dapat melihat aktivitas Anda. Grup ditentukan oleh <ph name="RWS_OWNER"/></translation>
 <translation id="6689172468748959065">Foto profil</translation>
 <translation id="6697925417670533197">Download aktif</translation>
@@ -539,16 +557,20 @@ Perlindungan Lanjutan mengontrol setelan Brave berikut:
 <translation id="728412880473384942">Situs lebih cepat, tetapi kurang aman</translation>
 <translation id="7366415735885268578">Tambahkan situs</translation>
 <translation id="7368695150573390554">Semua data offline akan dihapus</translation>
+<translation id="7369678931043226462">Panel bawah sesuaikan halaman tab baru Anda terbuka setengah</translation>
 <translation id="7383715096023715447">Setelan untuk <ph name="DOMAIN"/></translation>
 <translation id="7399802613464275309">Pemeriksaan Keamanan</translation>
 <translation id="7406113532070524618">Setelan ini berfungsi tanpa mengidentifikasi Anda atau mengizinkan situs melihat histori penjelajahan Anda, meskipun situs dapat membagikan info dalam jumlah kecil sebagai bagian dari verifikasi</translation>
 <translation id="7409735910987429903">Situs mungkin dapat mengirim pop-up untuk menampilkan iklan, atau menggunakan pengalihan untuk mengarahkan Anda ke situs yang mungkin tidak ingin Anda kunjungi</translation>
+<translation id="7412160840120117304">Hex Warna Primer</translation>
 <translation id="7423098979219808738">Tanyakan dulu</translation>
 <translation id="7423538860840206698">Diblokir agar tidak membaca papan klip</translation>
 <translation id="7425915948813553151">Tema gelap untuk situs</translation>
+<translation id="746412105358554870">Pengoptimalan &amp; keamanan JavaScript</translation>
 <translation id="7478658909253570368">Jangan izinkan situs terhubung ke port serial</translation>
 <translation id="7488573225650545859">Sembunyikan Lihat tab di daftar aplikasi Anda</translation>
 <translation id="7521387064766892559">JavaScript</translation>
+<translation id="7538975533793429503">Penggeser ukuran font</translation>
 <translation id="7547989957535180761">Jika diaktifkan, situs dapat menampilkan perintah login. Jika dinonaktifkan, situs tidak dapat menampilkan perintah login.</translation>
 <translation id="7553211568594248088">Keluar dari penelusuran hub</translation>
 <translation id="7554752735887601236">Situs menggunakan mikrofon Anda</translation>
@@ -574,6 +596,7 @@ Perlindungan Lanjutan mengontrol setelan Brave berikut:
 <translation id="7804248752222191302">Situs menggunakan kamera Anda</translation>
 <translation id="7805832099057502789">Panel bawah tampilan halaman tab baru terbuka sepenuhnya</translation>
 <translation id="6720480757902085971">Disediakan oleh Brave</translation>
+<translation id="7809029041571842593">Panel bawah kartu halaman tab baru terbuka setengah</translation>
 <translation id="7815680994978050279">Download berbahaya diblokir</translation>
 <translation id="7835852323729233924">Media yang sedang diputar</translation>
 <translation id="783819812427904514">Bunyikan video</translation>
@@ -631,6 +654,7 @@ Perlindungan Lanjutan mengontrol setelan Brave berikut:
 <translation id="8441146129660941386">Cari mundur</translation>
 <translation id="8444433999583714703">Untuk mengizinkan <ph name="APP_NAME"/> mengakses lokasi Anda, aktifkan juga lokasi di <ph name="BEGIN_LINK"/>Setelan Android<ph name="END_LINK"/>.</translation>
 <translation id="8447861592752582886">Cabut izin perangkat</translation>
+<translation id="8467359479529706065">Panel bawah tampilan halaman tab baru terbuka setengah</translation>
 <translation id="8471525937465764768">Situs biasanya terhubung ke perangkat USB untuk fitur seperti pencetakan dokumen atau penyimpanan ke perangkat penyimpanan</translation>
 <translation id="8473055640493819707">'<ph name="APP_NAME"/>' sudah usang. Instal ulang aplikasi.</translation>
 <translation id="847433688444405067">Menjelajah di berbagai perangkat</translation>
@@ -646,7 +670,6 @@ Perlindungan Lanjutan mengontrol setelan Brave berikut:
 <translation id="8549127125482561383">Cara menampilkan permintaan</translation>
 <translation id="4273503381657013953">Anda kini dapat menggunakan Brave kapan saja dengan mengakses atau mengetuk link di pesan, dokumen, dan aplikasi lainnya.</translation>
 <translation id="857943718398505171">Diizinkan (disarankan)</translation>
-<translation id="8580511488901768832">panel bawah pintasan saya terbuka sepenuhnya</translation>
 <translation id="8593422116412089302">Jika diaktifkan, situs dapat meminta untuk menggunakan informasi tentang Anda yang disimpan situs. Jika dinonaktifkan, situs tidak dapat meminta untuk menggunakan informasi tentang Anda yang disimpan situs.</translation>
 <translation id="8609465669617005112">Berpindah ke atas</translation>
 <translation id="8617611086246832542">Jika diaktifkan, tampilan desktop situs akan ditampilkan. Jika dinonaktifkan, tampilan seluler situs akan ditampilkan.</translation>
@@ -664,6 +687,7 @@ Perlindungan Lanjutan mengontrol setelan Brave berikut:
 <translation id="8730621377337864115">Selesai</translation>
 <translation id="8737426583868847403">Situs yang Anda simpan tingkat zoom khususnya akan muncul di sini</translation>
 <translation id="8751914237388039244">Pilih gambar</translation>
+<translation id="8775741625735357092">Anda dapat mengaktifkan kolom bookmark di Setelan &gt; Tampilan</translation>
 <translation id="8800034312320686233">Situs tidak berfungsi?</translation>
 <translation id="8801436777607969138">Blokir JavaScript untuk situs tertentu.</translation>
 <translation id="2026315747406172223">V8 adalah mesin WebAssembly dan JavaScript Brave yang digunakan untuk meningkatkan performa situs</translation>
@@ -690,6 +714,7 @@ Perlindungan Lanjutan mengontrol setelan Brave berikut:
 <translation id="9019902583201351841">Dikelola oleh orang tua Anda</translation>
 <translation id="902236149563113779">Situs biasanya melacak posisi kamera Anda untuk fitur AR, seperti game atau petunjuk arah</translation>
 <translation id="9039697262778250930">Anda mungkin akan logout dari situs ini</translation>
+<translation id="9065203028668620118">Edit</translation>
 <translation id="9074739597929991885">Bluetooth</translation>
 <translation id="9106233582039520022">Hapus cookie?</translation>
 <translation id="9109747640384633967">{PERMISSIONS_SUMMARY_MIXED,plural, =1{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/>, dan <ph name="NUM_MORE"/> lainnya}other{<ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/>, dan <ph name="NUM_MORE"/> lainnya}}</translation>
@@ -708,10 +733,5 @@ Perlindungan Lanjutan mengontrol setelan Brave berikut:
 <translation id="3110967157686007724">Tab pribadi</translation>
 <translation id="8623552597614912461">Situs ini akan berbagi informasi dengan aplikasi di luar mode Pribadi.</translation>
 <translation id="8157212814767579028">Keluar dari mode Pribadi?</translation>
-<translation id="6105125042109106861">Cookie pihak ketiga diblokir dalam mode Samaran</translation>
-<translation id="6642913673024345959">Memblokir kuki pihak ketiga di Mode Privat</translation>
-<translation id="20460146243579445">Fitur-fitur di beberapa situs mungkin tidak dapat berfungsi di Mode Pribadi</translation>
-<translation id="8877838532507724268">Ketika berada dalam mode Privat, situs-situs tidak dapat menggunakan kuki Anda untuk melihat aktivitas penjelajahan Anda ke berbagai situs, bahkan di situs yang terkait. Kegiatan perambanan Anda tidak akan digunakan untuk hal-hal seperti untuk menyesuaikan iklan. Fitur pada beberapa situs mungkin tidak berfungsi.</translation>
-<translation id="1856888821396498049">Memblokir kuki pihak ketiga di Mode Pribadi:</translation>
 <translation id="1593610935874634135">Perusahaan dapat menentukan sekelompok situs yang dapat menggunakan kuki untuk membagikan aktivitas Anda di grup. Ini dinonaktifkan di Privat.</translation>
 </translationbundle>

@@ -53,7 +53,7 @@ namespace {
 
 struct ParamInfo final {
   test::CommandLineSwitchInfo command_line_switch;
-  bool did_override_from_command_line;
+  bool did_override_from_command_line = false;
 };
 
 // TODO(https://github.com/brave/brave-browser/issues/48713): This is a case of

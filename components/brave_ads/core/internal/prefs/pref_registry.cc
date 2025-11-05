@@ -11,11 +11,14 @@
 namespace brave_ads {
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* const registry) {
-  // Add local state prefs to be registered here.
+  // Ads prefs.
+  registry->RegisterTimePref(prefs::kFirstRunAt, base::Time::Now());
 }
 
 void RegisterProfilePrefs(PrefRegistrySimple* const registry) {
   // Ads prefs.
+  registry->RegisterTimeDeltaPref(prefs::kGracePeriod, base::Days(3));
+
   registry->RegisterStringPref(prefs::kDiagnosticId, "");
 
   registry->RegisterBooleanPref(prefs::kOptedInToNotificationAds, false);

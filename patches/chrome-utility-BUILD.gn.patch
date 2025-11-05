@@ -1,13 +1,12 @@
 diff --git a/chrome/utility/BUILD.gn b/chrome/utility/BUILD.gn
-index 88b6b588f581338a8873767e64d08dcf5333240c..9556d02ac2c9babde33d8e7837ce919b148ad459 100644
+index c524bf95656e79249463ea9898bbd7342bb06999..5dada809a85cd92097e7a110c69648f33726cd3b 100644
 --- a/chrome/utility/BUILD.gn
 +++ b/chrome/utility/BUILD.gn
-@@ -77,6 +77,8 @@ static_library("utility") {
-     "//ui/base:buildflags",
-   ]
- 
+@@ -261,6 +261,7 @@ static_library("utility") {
+   if (enable_on_device_translation) {
+     deps += [ "//components/services/on_device_translation:on_device_translation_service" ]
+   }
 +  import("//brave/utility/sources.gni") sources += brave_utility_sources deps += brave_utility_deps public_deps += brave_utility_public_deps
-+
-   if (is_win) {
-     deps += [
-       "//components/services/quarantine",
+ }
+ 
+ if (!is_android) {

@@ -7,14 +7,18 @@
 
 #include <vector>
 
+#include "brave/components/speedreader/common/buildflags/buildflags.h"
+
 // Provide a base implementation (important for `TestBrowserWindow ` in tests)
 // For real implementation, see `BraveBrowserView`.
 
+#if BUILDFLAG(ENABLE_SPEEDREADER)
 speedreader::SpeedreaderBubbleView* BraveBrowserWindow::ShowSpeedreaderBubble(
     speedreader::SpeedreaderTabHelper* tab_helper,
     speedreader::SpeedreaderBubbleLocation location) {
   return nullptr;
 }
+#endif
 
 gfx::Rect BraveBrowserWindow::GetShieldsBubbleRect() {
   return gfx::Rect();
@@ -44,10 +48,5 @@ bool BraveBrowserWindow::ShowBraveHelpBubbleView(const std::string& text) {
 #endif  // defined(TOOLKIT_VIEWS)
 
 bool BraveBrowserWindow::IsInTabDragging() const {
-  return false;
-}
-
-bool BraveBrowserWindow::PreHandleMouseEvent(
-    const blink::WebMouseEvent& event) {
   return false;
 }

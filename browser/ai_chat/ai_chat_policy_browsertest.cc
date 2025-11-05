@@ -15,12 +15,15 @@
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/sidebar/browser/sidebar_item.h"
+#include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/renderer_context_menu/render_view_context_menu_test_util.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/location_bar/location_bar.h"
+#include "chrome/browser/ui/omnibox/omnibox_controller.h"
+#include "chrome/browser/ui/omnibox/omnibox_view.h"
 #include "chrome/browser/ui/tabs/public/tab_features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
@@ -28,8 +31,6 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/omnibox/browser/autocomplete_controller.h"
-#include "components/omnibox/browser/omnibox_controller.h"
-#include "components/omnibox/browser/omnibox_view.h"
 #include "components/policy/core/browser/browser_policy_connector.h"
 #include "components/policy/core/common/mock_configuration_policy_provider.h"
 #include "components/policy/core/common/policy_map.h"
@@ -180,6 +181,7 @@ IN_PROC_BROWSER_TEST_P(AIChatPolicyTest, SidePanelRegistry) {
   }
 }
 
+#if BUILDFLAG(ENABLE_SPEEDREADER)
 IN_PROC_BROWSER_TEST_P(AIChatPolicyTest, SpeedreaderToolbar) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(
       browser(), GURL(base::StrCat({content::kChromeUIScheme, "://",
@@ -193,6 +195,7 @@ IN_PROC_BROWSER_TEST_P(AIChatPolicyTest, SpeedreaderToolbar) {
     EXPECT_EQ(result, false);
   }
 }
+#endif  // BUILDFLAG(ENABLE_SPEEDREADER)
 
 IN_PROC_BROWSER_TEST_P(AIChatPolicyTest, Command) {
   chrome::BrowserCommandController* command_controller =

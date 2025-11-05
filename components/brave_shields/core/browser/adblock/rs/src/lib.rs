@@ -9,6 +9,7 @@
 mod convert;
 mod engine;
 mod filter_set;
+mod resource_storage;
 mod result;
 
 use engine::*;
@@ -76,13 +77,6 @@ mod ffi {
         pub fn serialize(&self) -> Vec<u8>;
         /// Deserializes and loads a binary-serialized Engine.
         fn deserialize(&mut self, serialized: &CxxVector<u8>) -> bool;
-        /// Adds a resource to the engine resource set.
-        fn add_resource(
-            &mut self,
-            name: &CxxString,
-            content_type: &CxxString,
-            data: &CxxString,
-        ) -> UnitResult;
         /// Loads JSON-serialized resources into the engine resource set.
         fn use_resources(&mut self, resources_json: &CxxString) -> bool;
         /// Returns JSON-serialized cosmetic filter resources for a given url.
@@ -97,7 +91,7 @@ mod ffi {
             exceptions: &CxxVector<CxxString>,
         ) -> VecStringResult;
         /// Returns the blocker debug info containing regex info.
-        fn get_regex_debug_info(&self) -> RegexDebugInfo;
+        fn get_debug_info(&self) -> DebugInfo;
         /// Removes a regex entry by the id.
         fn discard_regex(&mut self, regex_id: u64);
         /// Sets a discard policy for the regex manager.
@@ -140,9 +134,10 @@ mod ffi {
         usage_count: usize,
     }
 
-    struct RegexDebugInfo {
+    struct DebugInfo {
         regex_data: Vec<RegexDebugEntry>,
         compiled_regex_count: usize,
+        flatbuffer_size: usize,
     }
 
     struct RegexManagerDiscardPolicy {
@@ -174,15 +169,6 @@ mod ffi {
     // not yet supported in cxx.
     // Created custom Result structs because cxx auto converts Result<T> to
     // std::exception, and exceptions are not allowed in Chromium.
-
-    // To check a result for success/error, evaluate the result_kind ==
-    // ResultKind::Success. If the condition is false, the result_kind will
-    // contain an enum value describing the type of error, and error_message may
-    // contain further details about the error.
-    struct UnitResult {
-        result_kind: ResultKind,
-        error_message: String,
-    }
 
     struct ContentBlockingRulesResult {
         value: ContentBlockingRules,

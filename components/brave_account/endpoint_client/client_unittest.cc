@@ -8,30 +8,40 @@
 #include <optional>
 #include <string>
 #include <string_view>
+#include <tuple>
+#include <utility>
 #include <vector>
 
+#include "base/check.h"
+#include "base/check_deref.h"
+#include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/json/json_reader.h"
+#include "base/location.h"
 #include "base/memory/scoped_refptr.h"
-#include "base/run_loop.h"
+#include "base/memory/weak_ptr.h"
 #include "base/strings/string_util.h"
 #include "base/strings/to_string.h"
+#include "base/task/single_thread_task_runner.h"
 #include "base/test/bind.h"
-#include "base/test/mock_callback.h"
+#include "base/test/run_until.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
+#include "base/threading/thread.h"
 #include "base/types/expected.h"
 #include "base/values.h"
-#include "brave/components/api_request_helper/api_request_helper.h"
+#include "brave/components/brave_account/endpoint_client/request_handle.h"
+#include "brave/components/brave_account/endpoint_client/request_types.h"
+#include "brave/components/brave_account/endpoint_client/with_headers.h"
 #include "net/http/http_request_headers.h"
 #include "net/http/http_status_code.h"
-#include "net/traffic_annotation/network_traffic_annotation_test_helper.h"
 #include "services/network/public/cpp/data_element.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/resource_request_body.h"
+#include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/public/mojom/url_request.mojom-shared.h"
 #include "services/network/test/test_url_loader_factory.h"
-#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
@@ -68,7 +78,8 @@ inline constexpr char kErrorKey[] = "error";
 
 namespace brave_account::endpoint_client {
 
-using TestRequest = Message<kRequestKey>;
+using TestRequestBody = Message<kRequestKey>;
+using TestRequest = POST<TestRequestBody>;
 using TestResponse = Message<kResponseKey>;
 using TestError = Message<kErrorKey>;
 
@@ -92,7 +103,6 @@ struct TestEndpoint {
   using Response = TestResponse;
   using Error = TestError;
   static GURL URL() { return GURL("https://example.com/api/query"); }
-  static std::string_view Method() { return "POST"; }
 };
 
 using Expected =
@@ -110,9 +120,6 @@ class ClientTest : public testing::TestWithParam<TestCase> {
  protected:
   base::test::TaskEnvironment task_environment_;
   network::TestURLLoaderFactory test_url_loader_factory_;
-  api_request_helper::APIRequestHelper api_request_helper_{
-      TRAFFIC_ANNOTATION_FOR_TESTS,
-      test_url_loader_factory_.GetSafeWeakWrapper()};
 };
 
 TEST_P(ClientTest, Send) {
@@ -160,50 +167,46 @@ TEST_P(ClientTest, Send) {
         }
       }));
 
-  base::RunLoop run_loop;
-  base::MockCallback<base::OnceCallback<void(int, Expected)>> callback;
-  EXPECT_CALL(callback, Run(test_case.status_code, test_case.expected_reply))
-      .Times(1)
-      .WillOnce([&] { run_loop.Quit(); });
-
+  base::test::TestFuture<int, Expected> future;
   if (test_case.with_headers) {
     WithHeaders<TestRequest> request{test_case.request};
     request.headers.SetHeader("Authorization", "Bearer 12345");
-    Client<TestEndpoint>::Send(api_request_helper_, std::move(request),
-                               callback.Get());
+    Client<TestEndpoint>::Send(test_url_loader_factory_.GetSafeWeakWrapper(),
+                               std::move(request), future.GetCallback());
   } else {
-    Client<TestEndpoint>::Send(api_request_helper_, test_case.request,
-                               callback.Get());
+    Client<TestEndpoint>::Send(test_url_loader_factory_.GetSafeWeakWrapper(),
+                               test_case.request, future.GetCallback());
   }
 
-  run_loop.Run();
+  EXPECT_EQ(future.Take(),
+            std::tie(test_case.status_code, test_case.expected_reply));
 }
 
 INSTANTIATE_TEST_SUITE_P(
     ClientTestCases,
     ClientTest,
     testing::Values(
-        TestCase{.request = TestRequest("valid response"),
+        TestCase{.request = TestRequest{{"valid response"}},
                  .with_headers = false,
                  .status_code = net::HTTP_OK,
                  .server_reply = R"({"response": "some response"})",
                  .expected_reply = TestResponse("some response")},
-        TestCase{.request = TestRequest("invalid response"),
+        TestCase{.request = TestRequest{{"invalid response"}},
                  .with_headers = false,
                  .status_code = net::HTTP_CREATED,
                  .server_reply = R"({"invalid": response})",
                  .expected_reply = Expected(std::nullopt)},
-        TestCase{.request = TestRequest("valid error"),
+        TestCase{.request = TestRequest{{"valid error"}},
                  .with_headers = false,
                  .status_code = net::HTTP_BAD_REQUEST,
                  .server_reply = R"({"error": "some error"})",
                  .expected_reply = base::unexpected(TestError("some error"))},
-        TestCase{.request = TestRequest("invalid error"),
+        TestCase{.request = TestRequest{{"invalid error"}},
                  .with_headers = false,
                  .status_code = net::HTTP_UNAUTHORIZED,
                  .server_reply = R"({"invalid": error})",
                  .expected_reply = base::unexpected(std::nullopt)},
-        TestCase{.request = TestRequest("request with headers"),
+        TestCase{.request = TestRequest{{"request with headers"}},
                  .with_headers = true,
                  .status_code = net::HTTP_OK,
                  .server_reply = R"({"response": "some response"})",
@@ -216,5 +219,61 @@ INSTANTIATE_TEST_SUITE_P(
                          " ", "_", &name);
       return name;
     });
+
+namespace {
+
+enum class CancelRequestOn { kSameSequence, kDifferentSequence };
+
+class ClientCancelTest : public testing::TestWithParam<CancelRequestOn> {
+ protected:
+  base::test::TaskEnvironment task_environment_;
+  network::TestURLLoaderFactory test_url_loader_factory_;
+};
+
+}  // namespace
+
+TEST_P(ClientCancelTest, Cancel) {
+  base::test::TestFuture<int, Expected> future;
+  RequestHandle request_handle =
+      Client<TestEndpoint>::Send<RequestCancelability::kCancelable>(
+          test_url_loader_factory_.GetSafeWeakWrapper(),
+          TestRequest{{"cancel me"}}, future.GetCallback());
+
+  auto weak_simple_url_loader =
+      CHECK_DEREF(static_cast<network::SimpleURLLoader*>(request_handle.get()))
+          .GetWeakPtr();
+  EXPECT_TRUE(weak_simple_url_loader);
+
+  // We intentionally don't add a response for this request.
+  // It will hang, so the only way it completes is
+  // by explicitly canceling via |request_handle|.
+  if (GetParam() == CancelRequestOn::kSameSequence) {
+    request_handle.reset();
+  } else {
+    base::Thread thread("cancel-thread");
+    CHECK(thread.Start());
+    thread.task_runner()->PostTask(
+        FROM_HERE,
+        base::BindOnce(
+            [](RequestHandle request_handle) { request_handle.reset(); },
+            std::move(request_handle)));
+    thread.FlushForTesting();  // ensures request_handle.reset() ran
+  }
+
+  // The deleter uses `SequencedTaskRunner::DeleteSoon()`
+  // on the owning sequence, so wait for it to run.
+  EXPECT_TRUE(base::test::RunUntil([&] { return !weak_simple_url_loader; }));
+  EXPECT_FALSE(future.IsReady());
+}
+
+INSTANTIATE_TEST_SUITE_P(Cancelation,
+                         ClientCancelTest,
+                         testing::Values(CancelRequestOn::kSameSequence,
+                                         CancelRequestOn::kDifferentSequence),
+                         [](const auto& info) {
+                           return info.param == CancelRequestOn::kSameSequence
+                                      ? "SameSequence"
+                                      : "DifferentSequence";
+                         });
 
 }  // namespace brave_account::endpoint_client

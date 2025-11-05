@@ -28,6 +28,7 @@
 #include "brave/components/p3a/metric_log_store.h"
 #include "brave/components/p3a/p3a_service.h"
 #include "brave/components/p3a/rotation_scheduler.h"
+#include "brave/components/playlist/core/common/pref_names.h"
 #include "brave/components/skus/browser/skus_utils.h"
 #include "brave/ios/browser/brave_stats/brave_stats_prefs.h"
 #include "components/pref_registry/pref_registry_syncable.h"
@@ -60,6 +61,10 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   registry->RegisterBooleanPref(kBraveTalkDisabledByPolicy, false);
 
+  // This is typically registered by the PlaylistService but iOS does not
+  // use that service
+  registry->RegisterBooleanPref(playlist::kPlaylistEnabledPref, true);
+
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   registry->RegisterBooleanPref(brave_vpn::prefs::kManagedBraveVPNDisabled,
                                 false);
@@ -67,6 +72,7 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
 }
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+  brave_ads::RegisterLocalStatePrefs(registry);
   brave_stats::RegisterLocalStatePrefs(registry);
   brave_wallet::RegisterLocalStatePrefs(registry);
   brave_wallet::RegisterLocalStatePrefsForMigration(registry);

@@ -493,8 +493,8 @@ void BraveVpnService::GetAllRegions(GetAllRegionsCallback callback) {
 void BraveVpnService::OnFetchRegionList(GetAllRegionsCallback callback,
                                         const std::string& region_list,
                                         bool success) {
-  std::optional<base::Value::List> value =
-      base::JSONReader::ReadList(region_list);
+  std::optional<base::Value::List> value = base::JSONReader::ReadList(
+      region_list, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (value) {
     auto new_regions = ParseRegionList(*value);
     std::vector<mojom::RegionPtr> regions;

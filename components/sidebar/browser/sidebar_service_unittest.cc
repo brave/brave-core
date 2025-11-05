@@ -18,7 +18,7 @@
 #include "base/test/values_test_util.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/constants/pref_names.h"
-#include "brave/components/playlist/common/buildflags/buildflags.h"
+#include "brave/components/playlist/core/common/features.h"
 #include "brave/components/sidebar/browser/constants.h"
 #include "brave/components/sidebar/browser/pref_names.h"
 #include "brave/components/sidebar/browser/sidebar_item.h"
@@ -28,10 +28,6 @@
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
-
-#if BUILDFLAG(ENABLE_PLAYLIST)
-#include "brave/components/playlist/common/features.h"
-#endif  // BUILDFLAG(ENABLE_PLAYLIST)
 
 using ::testing::Eq;
 using ::testing::NiceMock;
@@ -229,11 +225,9 @@ class SidebarServiceTest : public testing::Test {
   size_t GetDefaultItemCount() const {
     auto item_count =
         std::size(kDefaultBuiltInItemTypesForTest) - 1 /* for history*/;
-#if BUILDFLAG(ENABLE_PLAYLIST)
     if (!base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
       item_count -= 1;
     }
-#endif
 
     if (!ai_chat::features::IsAIChatEnabled()) {
       item_count -= 1;
@@ -517,12 +511,11 @@ TEST_F(SidebarServiceTest, NewDefaultItemAdded) {
           return false;
         }
 
-#if BUILDFLAG(ENABLE_PLAYLIST)
         if (!base::FeatureList::IsEnabled(playlist::features::kPlaylist) &&
             built_in_type == SidebarItem::BuiltInItemType::kPlaylist) {
           return false;
         }
-#endif
+
         return true;
       });
 
@@ -816,11 +809,9 @@ TEST_F(SidebarServiceTest, BuiltInItemUpdateTestWithBuiltInItemTypeKey) {
 
   // Brave Talk and Reading list.
   auto expected_count = 2UL;
-#if BUILDFLAG(ENABLE_PLAYLIST)
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
     expected_count += 1;
   }
-#endif
 
   if (ai_chat::features::IsAIChatEnabled()) {
     expected_count += 1;
@@ -1067,12 +1058,10 @@ TEST_F(SidebarServiceOrderingTest, LoadFromPrefsWalletBuiltInHidden) {
 
   auto expected_count = sidebar_items->size();
 
-#if BUILDFLAG(ENABLE_PLAYLIST)
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
     expected_count++;
     items.push_back(SidebarItem::BuiltInItemType::kPlaylist);
   }
-#endif
 
   LoadFromPrefsTest(std::move(sidebar), items, expected_count);
 }
@@ -1094,12 +1083,10 @@ TEST_F(SidebarServiceOrderingTest, LoadFromPrefsAIChatBuiltInNotListed) {
 
   auto expected_count = sidebar_items->size() + 1;
 
-#if BUILDFLAG(ENABLE_PLAYLIST)
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
     expected_count++;
     items.push_back(SidebarItem::BuiltInItemType::kPlaylist);
   }
-#endif
 
   LoadFromPrefsTest(std::move(sidebar), items, expected_count);
 }

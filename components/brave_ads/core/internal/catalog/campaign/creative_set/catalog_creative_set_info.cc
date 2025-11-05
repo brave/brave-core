@@ -45,11 +45,6 @@ bool CatalogCreativeSetInfo::operator==(
          creative_promoted_content_ads == other.creative_promoted_content_ads;
 }
 
-bool CatalogCreativeSetInfo::operator!=(
-    const CatalogCreativeSetInfo& other) const {
-  return !(*this == other);
-}
-
 bool CatalogCreativeSetInfo::DoesSupportOS() const {
   if (oses.empty()) {
     // Creative set supports all operating systems

@@ -176,7 +176,7 @@ bool AdBlockEngine::TagExists(const std::string& tag) {
 
 base::Value::Dict AdBlockEngine::GetDebugInfo() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  const auto debug_info_struct = ad_block_client_->get_regex_debug_info();
+  const auto debug_info_struct = ad_block_client_->get_debug_info();
   base::Value::List regex_list;
   for (const auto& regex_entry : debug_info_struct.regex_data) {
     base::Value::Dict regex_info;
@@ -190,6 +190,8 @@ base::Value::Dict AdBlockEngine::GetDebugInfo() {
   base::Value::Dict result;
   result.Set("compiled_regex_count",
              static_cast<int>(debug_info_struct.compiled_regex_count));
+  result.Set("flatbuffer_size",
+             static_cast<int>(debug_info_struct.flatbuffer_size));
   result.Set("regex_data", std::move(regex_list));
   return result;
 }
@@ -210,8 +212,8 @@ base::Value::Dict AdBlockEngine::UrlCosmeticResources(const std::string& url) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   auto result = ad_block_client_->url_cosmetic_resources(url);
 
-  std::optional<base::Value::Dict> parsed_result =
-      base::JSONReader::ReadDict(result.c_str());
+  std::optional<base::Value::Dict> parsed_result = base::JSONReader::ReadDict(
+      std::string_view(result.data(), result.size()), base::JSON_PARSE_RFC);
   if (!parsed_result) {
     return base::Value::Dict();
   }

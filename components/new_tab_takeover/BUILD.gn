@@ -8,6 +8,7 @@ import("//brave/components/common/typescript.gni")
 import("//mojo/public/tools/bindings/mojom.gni")
 
 transpile_web_ui("new_tab_takeover_ui") {
+  output_module = false
   resource_name = "new_tab_takeover"
   entry_points = [ [
         "new_tab_takeover",
@@ -18,6 +19,10 @@ transpile_web_ui("new_tab_takeover_ui") {
     "//brave/components/new_tab_takeover/mojom:mojom_js",
     "//brave/components/ntp_background_images/browser/mojom:mojom_js",
     "//mojo/public/mojom/base",
+  ]
+  imports_from = [
+    "//brave/components/new_tab_takeover/",
+    "//brave/components/brave_new_tab_ui/containers/newTab/",
   ]
 }
 

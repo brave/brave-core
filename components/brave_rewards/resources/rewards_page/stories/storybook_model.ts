@@ -32,7 +32,7 @@ export function createModel(): AppModel {
       platform: 'desktop',
       isAutoResizeBubble: false,
       isBubble: false,
-      animatedBackgroundEnabled: false
+      animatedBackgroundEnabled: false,
     },
     loading: false,
     paymentId: 'abc123',
@@ -43,29 +43,27 @@ export function createModel(): AppModel {
       adsEnabled: {
         'new-tab-page': true,
         'notification': false,
-        'search-result': true
       },
       adTypesReceivedThisMonth: {
         'new-tab-page': 92,
         'notification': 4,
-        'search-result': 1
       },
       minEarningsPreviousMonth: 1.244,
-      nextPaymentDate: Date.now() + (4 * 24 * 60 * 60 * 1000),
+      nextPaymentDate: Date.now() + 4 * 24 * 60 * 60 * 1000,
       notificationAdsPerHour: 5,
       shouldAllowSubdivisionTargeting: true,
       currentSubdivision: 'US-NY',
       availableSubdivisions: [
         { code: 'US-NY', name: 'New York' },
-        { code: 'US-CA', name: 'California' }
+        { code: 'US-CA', name: 'California' },
       ],
-      autoDetectedSubdivision: 'US-NY'
+      autoDetectedSubdivision: 'US-NY',
     },
     externalWallet: {
       provider: 'uphold',
       name: 'Test Account',
       authenticated: true,
-      url: ''
+      url: '',
     },
     externalWalletProviders: ['uphold', 'gemini', 'solana'],
     balance: optional(4.123),
@@ -79,10 +77,10 @@ export function createModel(): AppModel {
           icon: '',
           name: 'Alice',
           url: 'https://brave.com',
-          platform: ''
+          platform: '',
         },
         amount: 2.5,
-        nextContributionDate: Date.now() - 10000
+        nextContributionDate: Date.now() - 10000,
       },
       {
         site: {
@@ -90,24 +88,24 @@ export function createModel(): AppModel {
           icon: '',
           name: 'Bob',
           url: 'https://brave.com',
-          platform: 'youtube'
+          platform: 'youtube',
         },
         amount: 0.025,
-        nextContributionDate: Date.now()
-      }
+        nextContributionDate: Date.now(),
+      },
     ],
     rewardsParameters: {
       tipChoices: [1.25, 5.0, 10.5],
-      rate: .56,
+      rate: 0.56,
       walletProviderRegions: {
         bitflyer: { allow: [], block: [] },
         gemini: { allow: [], block: ['US'] },
-        uphold: { allow: [], block: [] }
+        uphold: { allow: [], block: [] },
       },
       payoutStatus: {
         uphold: 'off',
-        bitflyer: 'processing'
-      }
+        bitflyer: 'processing',
+      },
     },
     currentCreator: {
       site: {
@@ -115,15 +113,15 @@ export function createModel(): AppModel {
         platform: '',
         url: 'https://wikipedia.org',
         name: 'wikipedia.org',
-        icon: ''
+        icon: '',
       },
       banner: {
         title: 'Wikipedia',
         description: '',
         background: '',
-        web3URL: ''
+        web3URL: '',
       },
-      supportedWalletProviders: ['uphold', 'gemini']
+      supportedWalletProviders: ['uphold', 'gemini'],
     },
     captchaInfo: null,
     notifications: [],
@@ -139,8 +137,8 @@ export function createModel(): AppModel {
             title: 'Brave meetup in Toronto!',
             description: 'December 12 in Toronto, Canada',
             url: '{{ some link to event details }}',
-            thumbnail: ''
-          }
+            thumbnail: '',
+          },
         ],
       },
       {
@@ -152,11 +150,13 @@ export function createModel(): AppModel {
         items: [
           {
             title: 'Brave Embroidered Crop Top',
-            description: 'The beautiful embroidery, trendy raw hem, and matching drawstring are great.',
+            description:
+              'The beautiful embroidery, trendy raw hem, and matching drawstring are great.',
             url: 'https://store.brave.com/p/brave-lion-embroidered-eco-hoodie/3576345201/',
-            thumbnail: 'https://cdn.store.brave.com/6944e95453a447ed8bd4ba69524eb76bb0b6b924db88ab0726b169affe0ac743.png'
-          }
-        ]
+            thumbnail:
+              'https://cdn.store.brave.com/6944e95453a447ed8bd4ba69524eb76bb0b6b924db88ab0726b169affe0ac743.png',
+          },
+        ],
       },
       {
         name: 'partner-promo-card',
@@ -167,11 +167,12 @@ export function createModel(): AppModel {
         items: [
           {
             title: 'Secure Your Crypto with Ledger Nano',
-            description: 'Keep your cryptocurrencies, NFTs and tokens safe with industry-leading hardware wallet security.',
-            url: "https://shop.ledger.com/products/ledger-nano-x",
-            thumbnail: ''
-          }
-        ]
+            description:
+              'Keep your cryptocurrencies, NFTs and tokens safe with industry-leading hardware wallet security.',
+            url: 'https://shop.ledger.com/products/ledger-nano-x',
+            thumbnail: '',
+          },
+        ],
       },
       {
         name: 'top-banner-card',
@@ -180,11 +181,11 @@ export function createModel(): AppModel {
         order: 0,
         banner: {
           image: '',
-          url: ''
+          url: '',
         },
-        items: []
-      }
-    ]
+        items: [],
+      },
+    ],
   })
 
   return {
@@ -198,7 +199,7 @@ export function createModel(): AppModel {
     async getAvailableCountries() {
       return {
         countryCodes: ['US'],
-        defaultCountryCode: 'US'
+        defaultCountryCode: 'US',
       }
     },
 
@@ -245,30 +246,33 @@ export function createModel(): AppModel {
     },
 
     async getAdsHistory() {
-      return repeat([
-        {
-          createdAt: Date.now(),
-          type: 'notification',
-          id: '123',
-          name: 'Brave',
-          text: 'Data Regulation & GDPR...',
-          domain: 'kite.lnk',
-          url: 'https://brave.com',
-          likeStatus: '',
-          inappropriate: false
-        },
-        {
-          createdAt: Date.now(),
-          id: '124',
-          type: 'search-result',
-          name: 'Brave',
-          text: 'Data Regulation & GDPR...',
-          domain: 'kite.lnk',
-          url: 'https://brave.com',
-          likeStatus: 'liked',
-          inappropriate: false
-        }
-      ], 500)
+      return repeat(
+        [
+          {
+            createdAt: Date.now(),
+            type: 'notification',
+            id: '123',
+            name: 'Brave',
+            text: 'Data Regulation & GDPR...',
+            domain: 'kite.lnk',
+            url: 'https://brave.com',
+            likeStatus: '',
+            inappropriate: false,
+          },
+          {
+            createdAt: Date.now(),
+            id: '124',
+            type: 'notification',
+            name: 'Brave',
+            text: 'Data Regulation & GDPR...',
+            domain: 'kite.lnk',
+            url: 'https://brave.com',
+            likeStatus: 'liked',
+            inappropriate: false,
+          },
+        ],
+        500,
+      )
     },
 
     async removeRecurringContribution(id) {
@@ -300,9 +304,8 @@ export function createModel(): AppModel {
       stateManager.update({
         notifications: stateManager.getState().notifications.filter((item) => {
           return item.id !== id
-        })
+        }),
       })
-    }
-
+    },
   }
 }

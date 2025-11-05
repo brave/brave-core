@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_util.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/run_loop.h"
@@ -18,6 +19,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_table.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_constants.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -33,6 +35,7 @@ CreativeNewTabPageAdList BuildCreativeNewTabPageAds() {
     CreativeNewTabPageAdInfo creative_ad;
     creative_ad.campaign_id = "65933e82-6b21-440b-9956-c0f675ca7435";
     creative_ad.advertiser_id = "496b045a-195e-441f-b439-07bac083450f";
+    creative_ad.metric_type = mojom::NewTabPageAdMetricType::kConfirmation;
     creative_ad.start_at = test::TimeFromString("2025-01-01T00:00:00Z");
     creative_ad.end_at = test::TimeFromString("2025-12-31T23:59:59Z");
     creative_ad.daily_cap = 20;
@@ -65,6 +68,7 @@ CreativeNewTabPageAdList BuildCreativeNewTabPageAds() {
     CreativeNewTabPageAdInfo creative_ad;
     creative_ad.campaign_id = "65933e82-6b21-440b-9956-c0f675ca7435";
     creative_ad.advertiser_id = "496b045a-195e-441f-b439-07bac083450f";
+    creative_ad.metric_type = mojom::NewTabPageAdMetricType::kConfirmation;
     creative_ad.start_at = test::TimeFromString("2025-01-01T00:00:00Z");
     creative_ad.end_at = test::TimeFromString("2025-12-31T23:59:59Z");
     creative_ad.daily_cap = 20;
@@ -97,6 +101,7 @@ CreativeNewTabPageAdList BuildCreativeNewTabPageAds() {
     creative_ad.creative_set_id = "0c2f239c-1230-43f9-8759-9b17532c2749";
     creative_ad.campaign_id = "5a5e9915-128e-41af-9d56-b7c0db1ba6fa";
     creative_ad.advertiser_id = "496b045a-195e-441f-b439-07bac083450f";
+    creative_ad.metric_type = mojom::NewTabPageAdMetricType::kDisabled;
     creative_ad.start_at = test::TimeFromString("2025-03-01T00:00:00Z");
     creative_ad.end_at = test::TimeFromString("2025-09-31T23:59:59Z");
     creative_ad.daily_cap = 10;
@@ -127,6 +132,7 @@ CreativeNewTabPageAdList BuildCreativeNewTabPageAds() {
     CreativeNewTabPageAdInfo creative_ad;
     creative_ad.campaign_id = "5a5e9915-128e-41af-9d56-b7c0db1ba6fa";
     creative_ad.advertiser_id = "496b045a-195e-441f-b439-07bac083450f";
+    creative_ad.metric_type = mojom::NewTabPageAdMetricType::kDisabled;
     creative_ad.start_at = test::TimeFromString("2025-03-01T00:00:00Z");
     creative_ad.end_at = test::TimeFromString("2025-09-31T23:59:59Z");
     creative_ad.daily_cap = 10;
@@ -177,6 +183,7 @@ TEST_F(BraveAdsCreativeNewTabPageAdsUtilTest, ParseAndSaveAds) {
             "dailyCap": 20,
             "priority": 10,
             "ptr": 1,
+            "metrics": "confirmation",
             "geoTargets": [
               "US"
             ],
@@ -269,6 +276,7 @@ TEST_F(BraveAdsCreativeNewTabPageAdsUtilTest, ParseAndSaveAds) {
             "dailyCap": 10,
             "priority": 20,
             "ptr": 0.5,
+            "metrics": "disabled",
             "geoTargets": [
               "KY"
             ],
@@ -441,6 +449,27 @@ TEST_F(BraveAdsCreativeNewTabPageAdsUtilTest,
       .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   ParseAndSaveNewTabPageAds(std::move(dict), callback.Get());
   run_loop.Run();
+}
+
+TEST(BraveAdsNewTabPageAdMetricTypeUtilTest, ToMojomNewTabPageAdMetricType) {
+  // Act & Assert
+  EXPECT_EQ(ToMojomNewTabPageAdMetricType("disabled"),
+            mojom::NewTabPageAdMetricType::kDisabled);
+
+  EXPECT_EQ(ToMojomNewTabPageAdMetricType("confirmation"),
+            mojom::NewTabPageAdMetricType::kConfirmation);
+
+  EXPECT_EQ(ToMojomNewTabPageAdMetricType("foobar"), std::nullopt);
+}
+
+TEST(BraveAdsNewTabPageAdMetricTypeUtilTest, ToString) {
+  // Act & Assert
+  EXPECT_EQ(ToString(mojom::NewTabPageAdMetricType::kUndefined), "");
+
+  EXPECT_EQ(ToString(mojom::NewTabPageAdMetricType::kDisabled), "disabled");
+
+  EXPECT_EQ(ToString(mojom::NewTabPageAdMetricType::kConfirmation),
+            "confirmation");
 }
 
 }  // namespace brave_ads

@@ -1,0 +1,15 @@
+error[E0080]: evaluation of constant value failed
+ --> tests/scale_codec_ui/codec_invalid_index.rs:1:10
+  |
+1 | #[derive(::parity_scale_codec::Decode, ::parity_scale_codec::Encode)]
+  |          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the evaluated program panicked at 'Found variant `B` with invalid index: `524`. Max supported index is 255.', $DIR/tests/scale_codec_ui/codec_invalid_index.rs:1:10
+  |
+  = note: this error originates in the macro `$crate::panic::panic_2021` which comes from the expansion of the macro `::core::panic` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0080]: evaluation of constant value failed
+ --> tests/scale_codec_ui/codec_invalid_index.rs:1:40
+  |
+1 | #[derive(::parity_scale_codec::Decode, ::parity_scale_codec::Encode)]
+  |                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the evaluated program panicked at 'Found variant `B` with invalid index: `524`. Max supported index is 255.', $DIR/tests/scale_codec_ui/codec_invalid_index.rs:1:40
+  |
+  = note: this error originates in the macro `$crate::panic::panic_2021` which comes from the expansion of the macro `::core::panic` (in Nightly builds, run with -Z macro-backtrace for more info)

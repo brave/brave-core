@@ -26,6 +26,7 @@
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/net/brave_ad_block_tp_network_delegate_helper.h"
+#include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/components/brave_shields/content/browser/ad_block_custom_filters_provider.h"
 #include "brave/components/brave_shields/content/browser/ad_block_engine.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
@@ -38,13 +39,14 @@
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/browser/filter_list_catalog_entry.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
-#include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/de_amp/common/pref_names.h"
-#include "brave/components/playlist/common/buildflags/buildflags.h"
+#include "brave/components/playlist/content/browser/playlist_background_web_contentses.h"
+#include "brave/components/playlist/content/browser/playlist_service.h"
+#include "brave/components/playlist/core/common/features.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
@@ -68,13 +70,6 @@
 #include "chrome/browser/renderer_context_menu/render_view_context_menu_test_util.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/ui_test_utils.h"
-#endif
-
-#if BUILDFLAG(ENABLE_PLAYLIST)
-#include "brave/browser/playlist/playlist_service_factory.h"
-#include "brave/components/playlist/browser/playlist_background_web_contentses.h"
-#include "brave/components/playlist/browser/playlist_service.h"
-#include "brave/components/playlist/common/features.h"
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER) && !BUILDFLAG(IS_ANDROID)
@@ -199,6 +194,10 @@ content::WebContents* AdBlockServiceTest::web_contents() {
 
 Profile* AdBlockServiceTest::profile() {
   return chrome_test_utils::GetProfile(this);
+}
+
+PrefService* AdBlockServiceTest::local_state() {
+  return g_browser_process->local_state();
 }
 
 HostContentSettingsMap* AdBlockServiceTest::content_settings() {
@@ -798,7 +797,6 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
                                                 resource_url.spec())));
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 }
-
 
 // A test observer that allows blocking waits for the
 // AdBlockSubscriptionServiceManager to update the status of any registered
@@ -2044,8 +2042,6 @@ IN_PROC_BROWSER_TEST_F(ProceduralFilteringFlagDisabledTest,
   }
 }
 
-#if BUILDFLAG(ENABLE_PLAYLIST)
-
 class CosmeticFilteringPlaylistFlagEnabledTest : public AdBlockServiceTest {
  public:
   CosmeticFilteringPlaylistFlagEnabledTest() {
@@ -2080,8 +2076,6 @@ IN_PROC_BROWSER_TEST_F(CosmeticFilteringPlaylistFlagEnabledTest,
   EXPECT_EQ(false, EvalJs(web_contents,
                           "checkSelector('#ad-banner', 'display', 'block')"));
 }
-
-#endif
 
 // Ensure no cosmetic filtering occurs when the shields setting is disabled
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringDisabled) {
@@ -3078,7 +3072,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ListEnabled) {
 
   // Disable the filter list.
   {
-    CookieListPrefObserver pref_observer(g_browser_process->local_state());
+    CookieListPrefObserver pref_observer(local_state());
     component_service_manager()->EnableFilterList(
         brave_shields::kCookieListUuid, false);
     pref_observer.Wait();
@@ -3282,7 +3276,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, NoCosmeticFiltersOnSpeedreaderPage) {
   auto* speedreader_service =
       speedreader::SpeedreaderServiceFactory::GetForBrowserContext(
           browser()->profile());
-  speedreader_service->EnableForAllSites(true);
+  speedreader_service->SetAllowedForAllReadableSites(true);
   const GURL url = embedded_test_server()->GetURL(
       "a.com", "/speedreader/article/simple.html");
   NavigateToURL(url);
@@ -3325,8 +3319,8 @@ IN_PROC_BROWSER_TEST_F(AdBlockOnlyModeFilterListsTest,
 
   // Enable AdBlockOnlyMode and check if lists other than default are disabled.
   {
-    brave_shields::SetBraveShieldsAdBlockOnlyModeEnabled(
-        g_browser_process->local_state(), true);
+    local_state()->SetBoolean(brave_shields::prefs::kAdBlockOnlyModeEnabled,
+                              true);
 
     EXPECT_TRUE(component_service_manager()->IsFilterListEnabled(
         kDefaultAdBlockComponentUuid));
@@ -3340,8 +3334,8 @@ IN_PROC_BROWSER_TEST_F(AdBlockOnlyModeFilterListsTest,
 
   // Disable AdBlockOnlyMode and check that all filter lists are enabled.
   {
-    brave_shields::SetBraveShieldsAdBlockOnlyModeEnabled(
-        g_browser_process->local_state(), false);
+    local_state()->SetBoolean(brave_shields::prefs::kAdBlockOnlyModeEnabled,
+                              false);
 
     EXPECT_TRUE(component_service_manager()->IsFilterListEnabled(
         kDefaultAdBlockComponentUuid));
@@ -3385,8 +3379,8 @@ IN_PROC_BROWSER_TEST_F(AdBlockOnlyModeFilterListsWithFeatureDisabledTest,
   // Enabling AdBlockOnlyMode preference does not affect filters lists
   // because the feature is disabled.
   {
-    brave_shields::SetBraveShieldsAdBlockOnlyModeEnabled(
-        g_browser_process->local_state(), true);
+    local_state()->SetBoolean(brave_shields::prefs::kAdBlockOnlyModeEnabled,
+                              true);
 
     EXPECT_TRUE(component_service_manager()->IsFilterListEnabled(
         kDefaultAdBlockComponentUuid));

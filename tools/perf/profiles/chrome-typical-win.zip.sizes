@@ -1,23 +1,26 @@
-Total size 56972K
+Total size 80400K
 
-GROUP chromium [32003K total]
-   613K crl-set-7286253261943595898.data 10044 [CertificateRevocation]
-    96K Crowd Deny 2025.9.18.60 [Crowd Deny]
+GROUP chromium [55589K total]
+   217K chromeAutofillStatesData 2025.6.13.84507 [AutofillStates]
+   700K crl-set-4876970856718305755.data 10129 [CertificateRevocation]
+    31K chromeCommerceHeuristics 2023.3.30.1305 [CommerceHeuristics]
+   173K Crowd Deny 2025.10.30.61 [Crowd Deny]
      9K fileTypePolicies 67 [FileTypePolicies]
      7K history_search_strings_farmhashed.binarypb 6.7431.9692 [HistorySearch]
     10K MEI Preload 1.0.7.1744928549 [MEIPreload]
-  7739K OnDeviceHeadSuggestENUS500000 20250805.789100898.14 [OnDeviceHeadSuggestModel]
-   363K Optimization Hints 540 [OptimizationHints]
-     1K Origin Trials Updates 1.0.0.17 [OriginTrials]
-   370K pkiMetadata 1431 [PKIMetadata]
+  7741K OnDeviceHeadSuggestENUS500000 20251020.824019708.14 [OnDeviceHeadSuggestModel]
+   369K Optimization Hints 564 [OptimizationHints]
+     1K Origin Trials Updates 1.0.0.19 [OriginTrials]
+   381K pkiMetadata 1477 [PKIMetadata]
      4K sslErrorAssistant 7 [SSLErrorAssistant]
-   177K safetyTips 3082 [SafetyTips]
-   238K Subresource Filtering Rules 9.60.0 [Subresource Filter]
-    10K trustToken 2025.8.25.1 [TrustTokenKeyCommitments]
+   179K safetyTips 3087 [SafetyTips]
+   240K Subresource Filtering Rules 9.62.0 [Subresource Filter]
+    11K trustToken 2025.9.29.1 [TrustTokenKeyCommitments]
+ 23149K WASM TTS Engine 20251021.1 [WasmTtsEngine]
  18987K WidevineCdm 4.10.2891.0 [WidevineCdm]
   1642K zxcvbnData 3 [ZxcvbnData]
   1728K hyphens-data 120.0.6050.0 [hyphen-data]
 
-GROUP large_files [19045K total]
-  1862K Safe Browsing\ChromeExtMalware.store.32_13402946826479061
- 17183K Safe Browsing\UrlSoceng.store.4_13402946826172807
+GROUP large_files [18851K total]
+  1863K Safe Browsing\ChromeExtMalware.store.32_13406574196000654
+ 16987K Safe Browsing\UrlSoceng.store.4_13406574195698695

@@ -13,6 +13,10 @@
     <script src="//resources/js/load_time_data_deprecated.js"></script>
     <script src="/strings.js"></script>
     <script src="untrusted_conversation_frame.bundle.js" type="module"></script>
+<if expr="is_ios">
+    <script src="//resources/js/ios/web_ui.js"></script>
+    <script src="//resources/js/ios/mojo_api.js"></script>
+</if>
     <style>
       body {
         /* This page is designed to be embedded in an opaque iframe */

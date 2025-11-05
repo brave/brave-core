@@ -10,12 +10,16 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.RadioGroup;
 
+import androidx.annotation.VisibleForTesting;
 import androidx.preference.PreferenceViewHolder;
 
+import org.chromium.base.BraveFeatureList;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.toolbar.R;
 import org.chromium.chrome.browser.toolbar.adaptive.AdaptiveToolbarButtonVariant;
+import org.chromium.chrome.browser.toolbar.adaptive.AdaptiveToolbarStatePredictor.UiState;
 import org.chromium.components.browser_ui.widget.RadioButtonWithDescription;
 import org.chromium.ui.base.DeviceFormFactor;
 
@@ -23,6 +27,8 @@ import org.chromium.ui.base.DeviceFormFactor;
 @NullMarked
 public class BraveRadioButtonGroupAdaptiveToolbarPreference
         extends RadioButtonGroupAdaptiveToolbarPreference {
+    private static boolean sIsJunitTesting;
+
     // Variables below are to be removed in the bytecode, variables from the parent class will be
     // used instead.
     private @AdaptiveToolbarButtonVariant int mSelected;
@@ -34,6 +40,10 @@ public class BraveRadioButtonGroupAdaptiveToolbarPreference
     // Own members.
     private final Context mContext;
     private @Nullable RadioButtonWithDescription mBookmarksButton;
+    private @Nullable RadioButtonWithDescription mHistoryButton;
+    private @Nullable RadioButtonWithDescription mDownloadsButton;
+    private @Nullable RadioButtonWithDescription mBraveLeoButton;
+    private @Nullable RadioButtonWithDescription mBraveWalletButton;
 
     public BraveRadioButtonGroupAdaptiveToolbarPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -47,6 +57,24 @@ public class BraveRadioButtonGroupAdaptiveToolbarPreference
         // method.
         mBookmarksButton =
                 (RadioButtonWithDescription) holder.findViewById(R.id.adaptive_option_bookmarks);
+        mHistoryButton =
+                (RadioButtonWithDescription) holder.findViewById(R.id.adaptive_option_history);
+        mDownloadsButton =
+                (RadioButtonWithDescription) holder.findViewById(R.id.adaptive_option_downloads);
+        mBraveLeoButton =
+                (RadioButtonWithDescription) holder.findViewById(R.id.adaptive_option_brave_leo);
+        if (!sIsJunitTesting
+                && mBraveLeoButton != null
+                && !ChromeFeatureList.isEnabled(BraveFeatureList.AI_CHAT)) {
+            mBraveLeoButton.setVisibility(View.GONE);
+        }
+        mBraveWalletButton =
+                (RadioButtonWithDescription) holder.findViewById(R.id.adaptive_option_brave_wallet);
+        if (!sIsJunitTesting
+                && mBraveWalletButton != null
+                && !ChromeFeatureList.isEnabled(BraveFeatureList.NATIVE_BRAVE_WALLET)) {
+            mBraveWalletButton.setVisibility(View.GONE);
+        }
 
         super.onBindViewHolder(holder);
 
@@ -75,6 +103,18 @@ public class BraveRadioButtonGroupAdaptiveToolbarPreference
         if (mBookmarksButton != null && mBookmarksButton.isChecked()) {
             mSelected = AdaptiveToolbarButtonVariant.BOOKMARKS;
             isOnCheckedChangedHandled = true;
+        } else if (mHistoryButton != null && mHistoryButton.isChecked()) {
+            mSelected = AdaptiveToolbarButtonVariant.HISTORY;
+            isOnCheckedChangedHandled = true;
+        } else if (mDownloadsButton != null && mDownloadsButton.isChecked()) {
+            mSelected = AdaptiveToolbarButtonVariant.DOWNLOADS;
+            isOnCheckedChangedHandled = true;
+        } else if (mBraveLeoButton != null && mBraveLeoButton.isChecked()) {
+            mSelected = AdaptiveToolbarButtonVariant.LEO;
+            isOnCheckedChangedHandled = true;
+        } else if (mBraveWalletButton != null && mBraveWalletButton.isChecked()) {
+            mSelected = AdaptiveToolbarButtonVariant.WALLET;
+            isOnCheckedChangedHandled = true;
         }
         if (isOnCheckedChangedHandled) {
             callChangeListener(mSelected);
@@ -89,8 +129,30 @@ public class BraveRadioButtonGroupAdaptiveToolbarPreference
         switch (variant) {
             case AdaptiveToolbarButtonVariant.BOOKMARKS:
                 return mBookmarksButton;
+            case AdaptiveToolbarButtonVariant.HISTORY:
+                return mHistoryButton;
+            case AdaptiveToolbarButtonVariant.DOWNLOADS:
+                return mDownloadsButton;
+            case AdaptiveToolbarButtonVariant.LEO:
+                return mBraveLeoButton;
+            case AdaptiveToolbarButtonVariant.WALLET:
+                return mBraveWalletButton;
         }
 
         return super.getButton(variant);
+    }
+
+    public UiState buildUiStateForStats() {
+        // For stats always report New Tab button just to avoid assert on Brave variants.
+        return new UiState(
+                /* canShowUi= */ true,
+                AdaptiveToolbarButtonVariant.UNKNOWN,
+                AdaptiveToolbarButtonVariant.NEW_TAB,
+                AdaptiveToolbarButtonVariant.NEW_TAB);
+    }
+
+    @VisibleForTesting
+    public static void setIsJunitTesting(boolean isJunitTesting) {
+        sIsJunitTesting = isJunitTesting;
     }
 }

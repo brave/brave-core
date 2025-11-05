@@ -15,6 +15,7 @@
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/tabs/brave_browser_tab_strip_controller.h"
@@ -25,6 +26,7 @@
 #include "brave/browser/ui/views/tabs/brave_tab_strip_layout_helper.h"
 #include "brave/browser/ui/views/tabs/switches.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "brave/common/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
@@ -138,10 +140,10 @@ class VerticalTabStripBrowserTest : public InProcessBrowserTest {
     return static_cast<BraveBrowserView*>(browser()->window());
   }
   BrowserNonClientFrameView* browser_non_client_frame_view() {
-    return browser_view()->frame()->GetFrameView();
+    return browser_view()->browser_widget()->GetFrameView();
   }
   const BrowserNonClientFrameView* browser_non_client_frame_view() const {
-    return browser_view()->frame()->GetFrameView();
+    return browser_view()->browser_widget()->GetFrameView();
   }
 
   void ToggleVerticalTabStrip() {
@@ -230,6 +232,12 @@ class VerticalTabStripBrowserTest : public InProcessBrowserTest {
     run_loop_->Run();
   }
 
+ protected:
+  TabStripRegionView* tab_strip_region_view() {
+    return views::AsViewClass<TabStripRegionView>(
+        BrowserView::GetBrowserViewForBrowser(browser())->tab_strip_view());
+  }
+
  private:
   std::unique_ptr<base::RunLoop> run_loop_;
 };
@@ -310,16 +318,13 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, WindowTitle) {
 }
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, NewTabVisibility) {
-  EXPECT_TRUE(
-      browser_view()->tab_strip_region_view()->GetNewTabButton()->GetVisible());
+  EXPECT_TRUE(tab_strip_region_view()->GetNewTabButton()->GetVisible());
 
   ToggleVerticalTabStrip();
-  EXPECT_FALSE(
-      browser_view()->tab_strip_region_view()->GetNewTabButton()->GetVisible());
+  EXPECT_FALSE(tab_strip_region_view()->GetNewTabButton()->GetVisible());
 
   ToggleVerticalTabStrip();
-  EXPECT_TRUE(
-      browser_view()->tab_strip_region_view()->GetNewTabButton()->GetVisible());
+  EXPECT_TRUE(tab_strip_region_view()->GetNewTabButton()->GetVisible());
 }
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, MinHeight) {
@@ -330,22 +335,26 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, MinHeight) {
 
   const auto browser_view_min_size = browser_view()->GetMinimumSize();
   const auto browser_non_client_frame_view_min_size =
-      browser_view()->frame()->GetFrameView()->GetMinimumSize();
+      browser_view()->browser_widget()->GetFrameView()->GetMinimumSize();
 
   // Add tabs as much as it can grow mih height of tab strip.
   auto tab_strip_min_height =
-      browser_view()->tab_strip_region_view()->GetMinimumSize().height();
+      tab_strip_region_view()->GetMinimumSize().height();
   for (int i = 0; i < 10; i++) {
     AppendTab(browser());
   }
   ASSERT_LE(tab_strip_min_height,
-            browser_view()->tab_strip_region_view()->GetMinimumSize().height());
+            tab_strip_region_view()->GetMinimumSize().height());
 
   // TabStrip's min height shouldn't affect that of browser window.
   EXPECT_EQ(browser_view_min_size.height(),
             browser_view()->GetMinimumSize().height());
   EXPECT_EQ(browser_non_client_frame_view_min_size.height(),
-            browser_view()->frame()->GetFrameView()->GetMinimumSize().height());
+            browser_view()
+                ->browser_widget()
+                ->GetFrameView()
+                ->GetMinimumSize()
+                .height());
 }
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, VisualState) {
@@ -362,6 +371,14 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, VisualState) {
   ASSERT_TRUE(region_view);
   ASSERT_EQ(State::kExpanded, region_view->state());
 
+  // When rounded corners is on(it's default now),
+  // region view's border inset is changed during the floating.
+  // See BraveVerticalTabStripRegionView::UpdateBorder() for
+  // border inset calculation.
+  const int inset_for_expanded_collapsed = -2;
+  const int inset_for_floating = 1;
+  EXPECT_EQ(inset_for_expanded_collapsed, region_view->GetInsets().width());
+
   // Try Expanding / collapsing
   auto* prefs = browser()->profile()->GetOriginalProfile()->GetPrefs();
   prefs->SetBoolean(brave_tabs::kVerticalTabsCollapsed, true);
@@ -377,6 +394,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, VisualState) {
                          gfx::PointF(), {}, {}, {});
     region_view->OnMouseEntered(event);
     EXPECT_EQ(State::kFloating, region_view->state());
+    EXPECT_EQ(inset_for_floating, region_view->GetInsets().width());
   }
 
   // Check if mouse exiting make tab strip collapsed.
@@ -386,6 +404,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, VisualState) {
                          gfx::PointF(), {}, {}, {});
     region_view->OnMouseExited(event);
     EXPECT_EQ(State::kCollapsed, region_view->state());
+    EXPECT_EQ(inset_for_expanded_collapsed, region_view->GetInsets().width());
   }
 
   // When floating mode is disabled, it shouldn't be triggered.
@@ -770,6 +789,12 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripStringBrowserTest, ContextMenuString) {
 }
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, PinningGroupedTab) {
+  auto* tab_groups_service =
+      tab_groups::TabGroupSyncServiceFactory::GetForProfile(
+          browser()->profile());
+  ASSERT_TRUE(tab_groups_service);
+  tab_groups_service->SetIsInitializedForTesting(true);
+
   // Regression check for https://github.com/brave/brave-browser/issues/40201
   ToggleVerticalTabStrip();
 
@@ -1183,8 +1208,16 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripHideCompletelyTest, GetMinimumWidth) {
   // it used to be.
   EXPECT_EQ(4, region_view->GetMinimumSize().width());
 
-  // When the preference is disabled, the minimum width should be back to 41px.
+  // When the preference is disabled, the minimum width should be back to
+  // 41px(w/o rounded corners) or 38px(with rounded corners) due to region
+  // view's difference. See BraveVerticalTabStripRegionView::UpdateBorder().
   SetHideCompletelyWhenCollapsed(false);
+
+  // As rounded corners is on by default minimum size is 38px.
+  EXPECT_EQ(38, region_view->GetMinimumSize().width());
+
+  // 41px w/o rounded corners.
+  browser()->profile()->GetPrefs()->SetBoolean(kWebViewRoundedCorners, false);
   EXPECT_EQ(41, region_view->GetMinimumSize().width());
 }
 

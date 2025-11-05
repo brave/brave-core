@@ -6,24 +6,30 @@
 #include "brave/browser/ui/webui/brave_account/brave_account_ui_desktop.h"
 
 #include <memory>
+#include <string>
 
 #include "base/check.h"
+#include "base/check_deref.h"
+#include "base/functional/bind.h"
+#include "brave/components/brave_account/features.h"
+#include "brave/components/brave_account/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
 #include "content/public/browser/web_ui.h"
+#include "content/public/common/url_constants.h"
 #include "ui/compositor/layer.h"
 #include "ui/gfx/geometry/rounded_corners_f.h"
 #include "ui/gfx/geometry/size.h"
 #include "ui/views/widget/widget.h"
 #include "ui/web_dialogs/web_dialog_delegate.h"
+#include "ui/webui/webui_util.h"
 #include "url/gurl.h"
 
 namespace {
 
 constexpr float kDialogBorderRadius = 16;
 constexpr int kDialogWidth = 500;
-constexpr gfx::Size kDialogMinSize(kDialogWidth, 470);
+constexpr gfx::Size kDialogMinSize(kDialogWidth, 336);
 constexpr gfx::Size kDialogMaxSize(kDialogWidth, 794);
 
 class BraveAccountDialogDelegate : public ui::WebDialogDelegate {
@@ -36,6 +42,45 @@ class BraveAccountDialogDelegate : public ui::WebDialogDelegate {
 };
 
 }  // namespace
+
+BraveAccountUIDesktop::BraveAccountUIDesktop(content::WebUI* web_ui)
+    : BraveAccountUIBase(Profile::FromWebUI(web_ui),
+                         base::BindOnce(&webui::SetupWebUIDataSource)),
+      ConstrainedWebDialogUI(web_ui) {
+  auto* pref_service = CHECK_DEREF(Profile::FromWebUI(web_ui)).GetPrefs();
+  CHECK(pref_service);
+
+  pref_verification_token_.Init(
+      brave_account::prefs::kVerificationToken, pref_service,
+      base::BindRepeating(&BraveAccountUIDesktop::OnVerificationTokenChanged,
+                          base::Unretained(this)));
+}
+
+BraveAccountUIDesktop::~BraveAccountUIDesktop() = default;
+
+void BraveAccountUIDesktop::OnVerificationTokenChanged() {
+  if (pref_verification_token_.GetValue().empty()) {
+    return;
+  }
+
+  auto* constrained_delegate = GetConstrainedDelegate();
+  auto* web_dialog_delegate = constrained_delegate
+                                  ? constrained_delegate->GetWebDialogDelegate()
+                                  : nullptr;
+  if (!web_dialog_delegate) {
+    return;
+  }
+
+  web_dialog_delegate->OnDialogClosed("");
+  constrained_delegate->OnDialogCloseFromWebUI();
+}
+
+WEB_UI_CONTROLLER_TYPE_IMPL(BraveAccountUIDesktop)
+
+BraveAccountUIDesktopConfig::BraveAccountUIDesktopConfig()
+    : DefaultWebUIConfig(content::kChromeUIScheme, kBraveAccountHost) {
+  CHECK(brave_account::features::IsBraveAccountEnabled());
+}
 
 void ShowBraveAccountDialog(content::WebUI* web_ui) {
   DCHECK(web_ui);

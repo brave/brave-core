@@ -20,6 +20,7 @@ constexpr auto kMetricAttributeMap =
         {"channel", MetricAttribute::kChannel},
         {"platform", MetricAttribute::kPlatform},
         {"country_code", MetricAttribute::kCountryCode},
+        {"locale_country_code", MetricAttribute::kLocaleCountryCode},
         {"woi", MetricAttribute::kWoi},
         {"general_platform", MetricAttribute::kGeneralPlatform},
         {"region", MetricAttribute::kRegion},

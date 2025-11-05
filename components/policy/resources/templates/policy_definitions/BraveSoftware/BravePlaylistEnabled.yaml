@@ -33,7 +33,8 @@ schema:
   type: boolean
 supported_on:
 - chrome.*:139-
+- ios:140-
 future_on:
 - android
 tags: []
-type: main 
+type: main

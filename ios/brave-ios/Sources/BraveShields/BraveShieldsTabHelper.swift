@@ -27,12 +27,12 @@ private let alwaysAggressiveETLDs: Set<String> = ["youtube.com"]
 @MainActor
 public class BraveShieldsTabHelper {
   private weak var tab: (any TabState)?
-  private let braveShieldsSettings: any BraveShieldsSettings
+  private let braveShieldsSettings: (any BraveShieldsSettings)?
   private let isBraveShieldsContentSettingsEnabled: Bool
 
   public init(
     tab: some TabState,
-    braveShieldsSettings: any BraveShieldsSettings,
+    braveShieldsSettings: (any BraveShieldsSettings)?,
     isBraveShieldsContentSettingsEnabled: Bool = FeatureList.kBraveShieldsContentSettings.enabled
   ) {
     self.tab = tab
@@ -43,7 +43,7 @@ public class BraveShieldsTabHelper {
   public func isBraveShieldsEnabled(for url: URL?) -> Bool {
     guard let url = url ?? tab?.visibleURL, let isPrivate = tab?.isPrivate else { return false }
     if isBraveShieldsContentSettingsEnabled {
-      return braveShieldsSettings.isBraveShieldsEnabled(for: url)
+      return braveShieldsSettings?.isBraveShieldsEnabled(for: url) ?? true
     }
     let domain = Domain.getOrCreate(forUrl: url, persistent: !isPrivate)
     return !domain.areAllShieldsOff
@@ -52,7 +52,7 @@ public class BraveShieldsTabHelper {
   public func setBraveShieldsEnabled(_ isEnabled: Bool, for url: URL?) {
     guard let url = url ?? tab?.visibleURL, let isPrivate = tab?.isPrivate else { return }
     if isBraveShieldsContentSettingsEnabled {
-      braveShieldsSettings.setBraveShieldsEnabled(isEnabled, for: url)
+      braveShieldsSettings?.setBraveShieldsEnabled(isEnabled, for: url)
     }
     // Also assign to Domain until deprecated so reverse migration is required
     let domain = Domain.getOrCreate(forUrl: url, persistent: !isPrivate)
@@ -73,7 +73,7 @@ public class BraveShieldsTabHelper {
     }
     let shieldLevel: ShieldLevel
     if isBraveShieldsContentSettingsEnabled {
-      shieldLevel = braveShieldsSettings.adBlockMode(for: url).shieldLevel
+      shieldLevel = braveShieldsSettings?.adBlockMode(for: url).shieldLevel ?? .standard
     } else {
       let domain = Domain.getOrCreate(forUrl: url, persistent: !isPrivate)
       shieldLevel =
@@ -94,7 +94,7 @@ public class BraveShieldsTabHelper {
   public func setShieldLevel(_ shieldLevel: ShieldLevel, for url: URL?) {
     guard let url = url ?? tab?.visibleURL, let isPrivate = tab?.isPrivate else { return }
     if isBraveShieldsContentSettingsEnabled {
-      braveShieldsSettings.setAdBlockMode(shieldLevel.adBlockMode, for: url)
+      braveShieldsSettings?.setAdBlockMode(shieldLevel.adBlockMode, for: url)
     }
     // Also assign to Domain until deprecated so reverse migration is required
     let domain = Domain.getOrCreate(forUrl: url, persistent: !isPrivate)
@@ -107,7 +107,7 @@ public class BraveShieldsTabHelper {
   public func setBlockScriptsEnabled(_ isEnabled: Bool, for url: URL?) {
     guard let url = url ?? tab?.visibleURL, let isPrivate = tab?.isPrivate else { return }
     if isBraveShieldsContentSettingsEnabled {
-      braveShieldsSettings.setBlockScriptsEnabled(isEnabled, for: url)
+      braveShieldsSettings?.setBlockScriptsEnabled(isEnabled, for: url)
     }
     // Also assign to Domain until deprecated so reverse migration is required
     let domain = Domain.getOrCreate(forUrl: url, persistent: !isPrivate)
@@ -120,7 +120,7 @@ public class BraveShieldsTabHelper {
   public func setBlockFingerprintingEnabled(_ isEnabled: Bool, for url: URL?) {
     guard let url = url ?? tab?.visibleURL, let isPrivate = tab?.isPrivate else { return }
     if isBraveShieldsContentSettingsEnabled {
-      braveShieldsSettings.setFingerprintMode(isEnabled ? .standardMode : .allowMode, for: url)
+      braveShieldsSettings?.setFingerprintMode(isEnabled ? .standardMode : .allowMode, for: url)
     }
     // Also assign to Domain until deprecated so reverse migration is required
     let domain = Domain.getOrCreate(forUrl: url, persistent: !isPrivate)
@@ -144,11 +144,11 @@ public class BraveShieldsTabHelper {
       }
       switch shield {
       case .allOff:
-        return braveShieldsSettings.isBraveShieldsEnabled(for: url)
+        return braveShieldsSettings?.isBraveShieldsEnabled(for: url) ?? true
       case .fpProtection:
-        return braveShieldsSettings.fingerprintMode(for: url) == .standardMode
+        return (braveShieldsSettings?.fingerprintMode(for: url) ?? .standardMode) == .standardMode
       case .noScript:
-        return braveShieldsSettings.isBlockScriptsEnabled(for: url)
+        return braveShieldsSettings?.isBlockScriptsEnabled(for: url) ?? false
       }
     }
     let domain = Domain.getOrCreate(forUrl: url, persistent: !isPrivate)

@@ -16,23 +16,23 @@ namespace {
 
 // Do not change the following string values as they are used for persisting and
 // restoring state.
-constexpr char kUndefinedType[] = "";
-constexpr char kClickedType[] = "click";
-constexpr char kDismissedType[] = "dismiss";
-constexpr char kViewedImpressionType[] = "view";
-constexpr char kServedImpressionType[] = "served";
-constexpr char kLandedType[] = "landed";
-constexpr char kSavedAdType[] = "bookmark";
-constexpr char kMarkAdAsInappropriateType[] = "flag";
-constexpr char kLikedAdType[] = "upvote";
-constexpr char kDislikedAdType[] = "downvote";
-constexpr char kConversionType[] = "conversion";
-constexpr char kInteractionType[] = "interaction";
-constexpr char kMediaPlayType[] = "media_play";
-constexpr char kMedia25Type[] = "media_25";
-constexpr char kMedia100Type[] = "media_100";
+constexpr std::string_view kUndefinedType;
+constexpr std::string_view kClickedType = "click";
+constexpr std::string_view kDismissedType = "dismiss";
+constexpr std::string_view kViewedImpressionType = "view";
+constexpr std::string_view kServedImpressionType = "served";
+constexpr std::string_view kLandedType = "landed";
+constexpr std::string_view kSavedAdType = "bookmark";
+constexpr std::string_view kMarkAdAsInappropriateType = "flag";
+constexpr std::string_view kLikedAdType = "upvote";
+constexpr std::string_view kDislikedAdType = "downvote";
+constexpr std::string_view kConversionType = "conversion";
+constexpr std::string_view kInteractionType = "interaction";
+constexpr std::string_view kMediaPlayType = "media_play";
+constexpr std::string_view kMedia25Type = "media_25";
+constexpr std::string_view kMedia100Type = "media_100";
 
-constexpr auto kStringToMojomConfirmationTypeMap =
+constexpr auto kStringToMojomMap =
     base::MakeFixedFlatMap<std::string_view, mojom::ConfirmationType>(
         {{kUndefinedType, mojom::ConfirmationType::kUndefined},
          {kClickedType, mojom::ConfirmationType::kClicked},
@@ -51,7 +51,7 @@ constexpr auto kStringToMojomConfirmationTypeMap =
          {kMedia25Type, mojom::ConfirmationType::kMedia25},
          {kMedia100Type, mojom::ConfirmationType::kMedia100}});
 
-constexpr auto kMojomConfirmationTypeToStringMap =
+constexpr auto kMojomToStringMap =
     base::MakeFixedFlatMap<mojom::ConfirmationType, std::string_view>(
         {{mojom::ConfirmationType::kUndefined, kUndefinedType},
          {mojom::ConfirmationType::kClicked, kClickedType},
@@ -73,25 +73,22 @@ constexpr auto kMojomConfirmationTypeToStringMap =
 }  // namespace
 
 mojom::ConfirmationType ToMojomConfirmationType(std::string_view value) {
-  const auto iter = kStringToMojomConfirmationTypeMap.find(value);
-  if (iter != kStringToMojomConfirmationTypeMap.cend()) {
-    const auto [_, mojom_confirmation_type] = *iter;
-    return mojom_confirmation_type;
+  const auto iter = kStringToMojomMap.find(value);
+  if (iter != kStringToMojomMap.cend()) {
+    return iter->second;
   }
 
   NOTREACHED() << "Unexpected value for mojom::ConfirmationType: " << value;
 }
 
-const char* ToString(mojom::ConfirmationType mojom_confirmation_type) {
-  const auto iter =
-      kMojomConfirmationTypeToStringMap.find(mojom_confirmation_type);
-  if (iter != kMojomConfirmationTypeToStringMap.cend()) {
-    const auto [_, confirmation_type] = *iter;
-    return confirmation_type.data();
+std::string_view ToString(mojom::ConfirmationType value) {
+  const auto iter = kMojomToStringMap.find(value);
+  if (iter != kMojomToStringMap.cend()) {
+    return iter->second;
   }
 
   NOTREACHED() << "Unexpected value for mojom::ConfirmationType: "
-               << base::to_underlying(mojom_confirmation_type);
+               << base::to_underlying(value);
 }
 
 }  // namespace brave_ads

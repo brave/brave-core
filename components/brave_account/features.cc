@@ -7,7 +7,7 @@
 
 namespace brave_account::features {
 
-BASE_FEATURE(kBraveAccount, "BraveAccount", base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kBraveAccount, base::FEATURE_DISABLED_BY_DEFAULT);
 
 bool IsBraveAccountEnabled() {
   return base::FeatureList::IsEnabled(kBraveAccount);

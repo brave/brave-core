@@ -1,0 +1,54 @@
+error: Invalid attribute: only `#[codec(dumb_trait_bound)]`, `#[codec(crate = path::to::crate)]`, `#[codec(encode_bound(T: Encode))]`, `#[codec(decode_bound(T: Decode))]`, `#[codec(decode_with_mem_tracking_bound(T: DecodeWithMemTracking))]` or `#[codec(mel_bound(T: MaxEncodedLen))]` are accepted as top attribute
+ --> tests/max_encoded_len_ui/missing_crate_specifier.rs:4:9
+  |
+4 | #[codec(parity_scale_codec)]
+  |         ^^^^^^^^^^^^^^^^^^
+
+error[E0277]: the trait bound `Example: Encode` is not satisfied
+ --> tests/max_encoded_len_ui/missing_crate_specifier.rs:5:8
+  |
+5 | struct Example;
+  |        ^^^^^^^ the trait `WrapperTypeEncode` is not implemented for `Example`, which is required by `Example: Encode`
+  |
+  = help: the following other types implement trait `WrapperTypeEncode`:
+            &T
+            &mut T
+            Arc<T>
+            Box<T>
+            Cow<'_, T>
+            Rc<T>
+            String
+            Vec<T>
+            parity_scale_codec::Ref<'_, T, U>
+  = note: required for `Example` to implement `Encode`
+note: required by a bound in `MaxEncodedLen`
+ --> src/max_encoded_len.rs
+  |
+  | pub trait MaxEncodedLen: Encode {
+  |                          ^^^^^^ required by this bound in `MaxEncodedLen`
+
+error[E0277]: the trait bound `Example: Encode` is not satisfied
+ --> tests/max_encoded_len_ui/missing_crate_specifier.rs:8:10
+  |
+8 |     let _ = Example::max_encoded_len();
+  |             ^^^^^^^ the trait `WrapperTypeEncode` is not implemented for `Example`, which is required by `Example: Encode`
+  |
+  = help: the following other types implement trait `WrapperTypeEncode`:
+            &T
+            &mut T
+            Arc<T>
+            Box<T>
+            Cow<'_, T>
+            Rc<T>
+            String
+            Vec<T>
+            parity_scale_codec::Ref<'_, T, U>
+  = note: required for `Example` to implement `Encode`
+note: required by a bound in `max_encoded_len`
+ --> src/max_encoded_len.rs
+  |
+  | pub trait MaxEncodedLen: Encode {
+  |                          ^^^^^^ required by this bound in `MaxEncodedLen::max_encoded_len`
+  |     /// Upper bound, in bytes, of the maximum encoded size of this item.
+  |     fn max_encoded_len() -> usize;
+  |        --------------- required by a bound in this associated function

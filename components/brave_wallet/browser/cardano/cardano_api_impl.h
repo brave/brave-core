@@ -12,7 +12,7 @@
 
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
-#include "brave/components/brave_wallet/browser/cardano/cardano_cip30_serializer.h"
+#include "brave/components/brave_wallet/browser/internal/cardano_tx_decoder.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
 namespace brave_wallet {
@@ -32,7 +32,7 @@ class CardanoApiImpl final : public mojom::CardanoApi {
   void GetChangeAddress(GetChangeAddressCallback callback) override;
   void GetRewardAddresses(GetRewardAddressesCallback callback) override;
   void GetBalance(GetBalanceCallback callback) override;
-  void GetUtxos(const std::optional<std::string>& amount,
+  void GetUtxos(const std::optional<std::string>& amount_cbor,
                 mojom::CardanoProviderPaginationPtr paginate,
                 GetUtxosCallback callback) override;
   void SignTx(const std::string& tx_cbor,
@@ -61,17 +61,17 @@ class CardanoApiImpl final : public mojom::CardanoApi {
                     mojom::CardanoBalancePtr balance,
                     const std::optional<std::string>& error);
   void OnGetUtxos(
-      const std::optional<std::string>& amount,
+      std::optional<uint64_t> amount,
       mojom::CardanoProviderPaginationPtr paginate,
       GetUtxosCallback callback,
-      base::expected<GetCardanoUtxosTask::UtxoMap, std::string> result);
+      base::expected<cardano_rpc::UnspentOutputs, std::string> all_utxos);
   void OnSubmitTx(SubmitTxCallback callback,
                   base::expected<std::string, std::string> txid);
   void OnGetUtxosForSignTx(
-      CardanoCip30Serializer::RestoredTransaction tx,
+      CardanoTxDecoder::RestoredTransaction tx,
       bool partial_sign,
       SignTxCallback callback,
-      base::expected<GetCardanoUtxosTask::UtxoMap, std::string>);
+      base::expected<cardano_rpc::UnspentOutputs, std::string>);
 
   mojom::CardanoProviderErrorBundlePtr CheckSelectedAccountValid();
 
@@ -81,18 +81,18 @@ class CardanoApiImpl final : public mojom::CardanoApi {
                                   const std::string& error_message);
 
   bool InsertKnowInputAddresses(
-      const GetCardanoUtxosTask::UtxoMap& utxo_map,
-      CardanoCip30Serializer::RestoredTransaction& transaction,
+      const cardano_rpc::UnspentOutputs& utxos,
+      CardanoTxDecoder::RestoredTransaction& transaction,
       bool partial_sign);
 
   void OnSignTransactionRequestProcessed(
-      CardanoCip30Serializer::RestoredTransaction tx,
+      CardanoTxDecoder::RestoredTransaction tx,
       SignTxCallback callback,
       bool approved,
       const std::optional<std::string>& error);
 
   mojom::SignCardanoTransactionRequestPtr FromRestoredTransaction(
-      const CardanoCip30Serializer::RestoredTransaction& tx);
+      const CardanoTxDecoder::RestoredTransaction& tx);
 
   BraveWalletProviderDelegate* delegate();
 

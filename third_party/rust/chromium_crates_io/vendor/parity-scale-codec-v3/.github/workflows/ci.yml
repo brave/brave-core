@@ -1,0 +1,225 @@
+name: Rust CI/CD
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+env:
+  IMAGE: paritytech/ci-unified:bullseye-1.81.0
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+jobs:
+  set-image:
+    # GitHub Actions does not allow using 'env' in a container context.
+    # This workaround sets the container image for each job using 'set-image' job output.
+    runs-on: ubuntu-latest
+    outputs:
+      IMAGE: ${{ steps.set_image.outputs.IMAGE }}
+    steps:
+      - id: set_image
+        run: echo "IMAGE=${{ env.IMAGE }}" >> $GITHUB_OUTPUT
+
+  # Checks
+  fmt:
+    runs-on: ubuntu-latest
+    needs: [ set-image ]
+    container: ${{ needs.set-image.outputs.IMAGE }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Show Cargo version
+        run: cargo +nightly -vV
+
+      - name: Cargo fmt
+        run: cargo +nightly fmt --all -- --check
+
+  clippy:
+    runs-on: ubuntu-latest
+    needs: [ set-image ]
+    container: ${{ needs.set-image.outputs.IMAGE }}
+    steps:
+      - name: Checkout code/.
+        uses: actions/checkout@v4
+
+      - name: Show Rust version
+        run: |
+          cargo -vV
+          rustc -vV
+          rustup show
+
+      - name: Cache Rust dependencies
+        uses: swatinem/rust-cache@v2
+        with:
+          key: ${{ runner.os }}-rust-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Run Clippy
+        run: |
+          cargo +stable clippy --locked -- -Dwarnings
+          cargo +stable clippy --locked -p parity-scale-codec-derive -- -Dwarnings
+          cargo +stable clippy --locked --test clippy -- -Dwarnings
+
+  checks:
+    runs-on: ubuntu-latest
+    needs: [ set-image ]
+    container: ${{ needs.set-image.outputs.IMAGE }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Show Rust version
+        run: |
+          cargo -vV
+          rustc -vV
+          rustup show
+
+      - name: Cache Rust dependencies
+        uses: swatinem/rust-cache@v2
+        with:
+          key: ${{ runner.os }}-rust-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Check Rust Stable (no_derive_no_std)
+        run: time cargo +stable check --verbose --no-default-features --features bit-vec,bytes,generic-array
+
+      - name: Check Rust Stable (no_std-chain-error)
+        run: |
+          export RUSTFLAGS='-Cdebug-assertions=y -Dwarnings'
+          time cargo +stable check --verbose --no-default-features --features chain-error
+
+      - name: check-rust-stable-no_derive
+        run: |
+          export RUSTFLAGS='-Cdebug-assertions=y -Dwarnings'
+          time cargo +stable check --verbose --features bit-vec,bytes,generic-array
+
+      - name: check-rust-stable-only_mel
+        run: |
+          export RUSTFLAGS='-Cdebug-assertions=y -Dwarnings'
+          time cargo +stable check --verbose --features max-encoded-len
+
+  # Tests
+  tests:
+    runs-on: ubuntu-latest
+    needs: [ set-image ]
+    container: ${{ needs.set-image.outputs.IMAGE }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Show Rust version
+        run: |
+          cargo -vV
+          rustc -vV
+          rustup show
+
+      - name: Cache Rust dependencies
+        uses: swatinem/rust-cache@v2
+        with:
+          key: ${{ runner.os }}-rust-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Test Rust Stable
+        run: |
+          export RUSTFLAGS='-Cdebug-assertions=y -Dwarnings'
+          time cargo +stable test --verbose --all --features bit-vec,bytes,generic-array,derive,max-encoded-len
+
+      - name: Test Rust Stable (no_derive)
+        run: |
+          export RUSTFLAGS='-Cdebug-assertions=y -Dwarnings'
+          time cargo +stable test --verbose --features bit-vec,bytes,generic-array
+
+      - name: Test Rust Stable (only_mel)
+        run: |
+          export RUSTFLAGS='-Cdebug-assertions=y -Dwarnings'
+          time cargo +stable test --verbose --features max-encoded-len
+
+      - name: Test Rust Stable (only_mel-no_default_std)
+        run: |
+          export RUSTFLAGS='-Cdebug-assertions=y -Dwarnings'
+          time cargo +stable test --verbose --features max-encoded-len,std --no-default-features
+
+      - name: Run Nightly Tests
+        run: |
+          export RUSTFLAGS='-Cdebug-assertions=y -Dwarnings'
+          time cargo +nightly test --verbose --lib btree_utils
+
+  # Benches
+  bench-rust-nightly:
+    runs-on: ubuntu-latest
+    needs: [ set-image ]
+    strategy:
+      matrix:
+        feature: [ bit-vec,bytes,generic-array,derive,max-encoded-len ]
+    container: ${{ needs.set-image.outputs.IMAGE }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Cache Rust dependencies
+        uses: swatinem/rust-cache@v2
+        with:
+          key: ${{ runner.os }}-rust-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Bench Rust Nightly
+        run: |
+          export RUSTFLAGS='-Cdebug-assertions=y -Dwarnings'
+          time cargo +nightly bench --features ${{ matrix.feature }}
+
+  miri:
+    runs-on: ubuntu-latest
+    needs: [ set-image ]
+    strategy:
+      matrix:
+        feature: [ bit-vec,bytes,generic-array,arbitrary ]
+    container: ${{ needs.set-image.outputs.IMAGE }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Cache Rust dependencies
+        uses: swatinem/rust-cache@v2
+        with:
+          key: ${{ runner.os }}-rust-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Run Miri
+        run: |
+          export RUST_BACKTRACE=1
+          export RUSTFLAGS='-Cdebug-assertions=y -Dwarnings'
+          export MIRIFLAGS='-Zmiri-disable-isolation'
+          time cargo +nightly miri test --features ${{ matrix.feature }} --release
+
+  # Build
+
+  build-linux-ubuntu-amd64:
+    runs-on: ubuntu-latest
+    needs: [ set-image, clippy, checks, tests ]
+    container: ${{ needs.set-image.outputs.IMAGE }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Cache Rust dependencies
+        uses: swatinem/rust-cache@v2
+        with:
+          key: ${{ runner.os }}-rust-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Build for Linux (Ubuntu, AMD64)
+        run: cargo build --verbose --release --features bit-vec,bytes,generic-array,derive
+
+  publish-dry-run:
+    runs-on: ubuntu-latest
+    needs: [ set-image, build-linux-ubuntu-amd64 ]
+    container: ${{ needs.set-image.outputs.IMAGE }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Cache Rust dependencies
+        uses: swatinem/rust-cache@v2
+        with:
+          key: ${{ runner.os }}-rust-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Dry Run Publish
+        if: github.event_name == 'pull_request'
+        run: cargo publish -p parity-scale-codec-derive --dry-run

@@ -5,6 +5,8 @@
 <translation id="3478449063771497234">Märguanded on keelatud</translation>
 <translation id="2862978891748913252">Valige oma riik</translation>
 <translation id="3970520675790340955">Valige oma riik, et saaksime kuvada teie piirkonna jaoks õiged valikud ja reklaamid.</translation>
+<translation id="721490496276866468">Impordi paroolid</translation>
+<translation id="8178175542325151321">Vali .csv-fail, mis sisaldab sinu paroole, et need Brave'i paroolihaldurisse importida.</translation>
 <translation id="7301741773883122509">Võite nüüd reklaamide vaatamise eest preemiaid saada. Aitate muuta veebi kõigi jaoks paremaks. Ja see on suurepärane!</translation>
 <translation id="6439128034594289376">Ohoo! Kõik on valmis!</translation>
 <translation id="370665806235115550">Laadimine...</translation>
@@ -99,6 +101,8 @@
 <translation id="8617525558807213034">Automaattäitmine privaatsetel vahelehtedel</translation>
 <translation id="8685431198160039193">Privaatsetel vahelehtedel saab salvestatud teabe automaatselt täita</translation>
 <translation id="6583902294974160967">Kasutajatugi</translation>
+<translation id="5713644099811900409">Brave'i konto</translation>
+<translation id="4472575034687746823">Alustamine</translation>
 <translation id="1799030480311994998">Funktsioonid</translation>
 <translation id="2005732746077850308">Brave'i kaitsed ja privaatsus</translation>
 <translation id="4692623383562244444">Otsingumootorid</translation>
@@ -107,7 +111,6 @@
 <translation id="7304425663107214334">Näita brauseri soovitusi</translation>
 <translation id="8982438328166986164">Näitab teie järjehoidjate ja sirvimisajaloo põhjal veebisaitide soovitusi.</translation>
 <translation id="924029461438529367">Näita otsingusoovitusi</translation>
-<translation id="5989135139219497991">Näita otsingusoovitusi</translation>
 <translation id="6285118765755298263">Indekseeri muid otsimootoreid</translation>
 <translation id="919715748352669592">Indekseerib automaatselt veebisaidid, mis järgivad OpenSearchi spetsifikatsiooni.</translation>
 <translation id="9148058034647219655">Välju</translation>
@@ -295,6 +298,11 @@
 <translation id="4254029385847607686">DETSEMBER</translation>
 <translation id="3960619311638643872">Brave'i VPN</translation>
 <translation id="1772301834467143364">Brave'i uudised</translation>
+<translation id="2518692840036393666">Kohanda menüüd</translation>
+<translation id="5582839680698949063">Peamenüü</translation>
+<translation id="7002271985859760052">Lehe toimingud</translation>
+<translation id="7104487676473617844">Järgmised üksused kuvatakse menüüs ainult siis, kui avatud veebileht neid toetab.</translation>
+<translation id="4159764849281393303">Veebirakendus</translation>
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="8428213095426709021">Seaded</translation>
 <translation id="6020176662032623904">Kinnitatud looja</translation>
@@ -422,6 +430,8 @@ Kas soovite seda kindlasti teha?</translation>
 <translation id="8748471354357836070">Lisateave / loobumisvõimalused</translation>
 <translation id="3171669670217312786">Taustapildid</translation>
 <translation id="8522669544471808198">Kuva taustapildid</translation>
+<translation id="6258554626602400736">Näita uue vahelehe reklaame</translation>
+<translation id="9001530744369687550">Lisateave uue vahelehe reklaamide kohta</translation>
 <translation id="8793108040181436796">Vidinad</translation>
 <translation id="8643377320501056697">Kuva popid saidid</translation>
 <translation id="7275773481201277457">Kuva Brave’i statistika</translation>
@@ -499,6 +509,8 @@ Kas soovite seda kindlasti teha?</translation>
 <translation id="7616645803364270729">E-posti aadress, Twitter vms</translation>
 <translation id="5299848999918506028">Täname!</translation>
 <translation id="76550953340008122">Täname, et andsite Brave’i arendajatele teada, et selle veebisaidiga on midagi valesti. Anname endast parima, et see korda teha!</translation>
+<translation id="3037432377946455872">Mis on teie hinnangul peamine probleem?</translation>
+<translation id="8731661215617360873">Valige üks võimalus</translation>
 <translation id="650318023204990401">Täiustatud kontroll</translation>
 <translation id="7205939464631857223">Tühjendage kõik blokeeritud elemendid</translation>
 <translation id="5370478469168390143">Salvesta andmed veebis</translation>
@@ -794,7 +806,6 @@ Kui te selle taotlusega ei nõustu, siis VPN-i ühendust ei taastata ja teie int
 <translation id="750843150060816463">Gaasihind (Gwei)</translation>
 <translation id="1426320910664514906">Gaasi ülemmäär</translation>
 <translation id="6389441740143786465">Keela jagamiskeskus</translation>
-<translation id="9065203028668620118">Muuda</translation>
 <translation id="473775607612524610">Värskenda</translation>
 <translation id="479795390141144417">Konto uuendamine nurjus.</translation>
 <translation id="8084782383392198011">Konto nimi ei tohi olla tühi.</translation>
@@ -1010,8 +1021,6 @@ Kui te selle taotlusega ei nõustu, siis VPN-i ühendust ei taastata ja teie int
 <translation id="8496335570810457">Eelkohustumus:</translation>
 <translation id="5100124500279922001">Jäta eelpäring vahele:</translation>
 <translation id="7152095322071766507">Kõige rohkem kasutatud veebisait</translation>
-<translation id="7230006500876504868">Otsi Brave'iga</translation>
-<translation id="5888208462949095139">Otsi mootoriga <ph name="DEFAULT_SEARCH_ENGINE"/></translation>
 <translation id="5456039738087398178">Avakuva vidin</translation>
 <translation id="703185154752046151">Vidinat lisati avakuvale</translation>
 <translation id="4635094429202343515">Proovige Brave'i otsinguvidinat</translation>
@@ -1071,7 +1080,7 @@ Kui te selle taotlusega ei nõustu, siis VPN-i ühendust ei taastata ja teie int
 <translation id="7618347247876614969">Aadresside teatmetabeli konto:</translation>
 <translation id="7659483790930268440">Aadresside teatmetabeli indeks:</translation>
 <translation id="5494920125229734069">Vali kõik</translation>
-<translation id="6129027151000961048">Leo</translation>
+<translation id="2361906291514218784">Leo AI</translation>
 <translation id="8613144770663526433">Logi sisse Brave’i rahakotiga</translation>
 <translation id="3696514931437952995">Logite sisse kohta <ph name="ORIGIN"/>. Brave’i rahakott jagab teie rahakotiaadressi ressursiga <ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">Kuva üksikasjad</translation>
@@ -1091,11 +1100,11 @@ Seda tegevust ei saa tagasi võtta.</translation>
 <translation id="6742599753610126012">Tühjenda vestluse ajalugu</translation>
 <translation id="3443052382074796867">Vestluste salvestamise keelamine kustutab lõplikult kõik varem salvestatud vestlused. Seda toimingut ei saa tühistada.</translation>
 <translation id="3692772534525889713">Ühendage oma Play Store'i ost oma Brave'i kontoga, et kasutada Brave'i Leod teistes seadmetes.</translation>
-<translation id="73236265316873967">Leo Premium</translation>
+<translation id="592831784390389506">Leo AI Premium</translation>
 <translation id="1028627582482425924">Üks aasta</translation>
 <translation id="2985392169397572983">PARIM HINNA JA KVALITEEDI SUHE</translation>
 <translation id="1166682575529520472">Iga kuu</translation>
-<translation id="451189393813405346">Küsi Leolt</translation>
+<translation id="2206846767762985925">Küsi Leo AI-lt</translation>
 <translation id="7322560193401221004">Jäta faili taasesituse asukoht meelde</translation>
 <translation id="7505951907514709271">Jätka individuaalsete failide korral esitamist viimasest peatamispunktist</translation>
 <translation id="6835165453349969605">Jäta loendi taasesituse punkt meelde</translation>
@@ -1138,6 +1147,7 @@ Seda tegevust ei saa tagasi võtta.</translation>
 <translation id="3861012838874771868">Ava esitusloendi seaded</translation>
 <translation id="5220099266891491416">Peida esitusloendi nupp</translation>
 <translation id="7416347631175891923">Proovige järele!</translation>
+<translation id="9065203028668620118">Muuda</translation>
 <translation id="1173894706177603556">Muuda nime</translation>
 <translation id="3596306474342941843">Kustuta esitusloend</translation>
 <translation id="7765158879357617694">Liiguta</translation>
@@ -1152,7 +1162,7 @@ Seda tegevust ei saa tagasi võtta.</translation>
 <translation id="5319532905552885478">Meediumisisu on juba lisatud vaikeesitusloendisse</translation>
 <translation id="4802584673094436231">Ettevalmistamine…</translation>
 <translation id="481455355267255546">Järgmisena</translation>
-<translation id="5474757891469990756">Premiumiga saate kasutada kõiki Leo võimalusi:</translation>
+<translation id="3721790899869840343">Vabasta Leo AI täielik võimsus Premiumi abil:</translation>
 <translation id="4173478269537830374">Uurige erinevaid tehisintellektimudeleid</translation>
 <translation id="3453542753968940696">Eelisjuurdepääs võimsatele eri oskustega mudelitele.</translation>
 <translation id="3245401959451976966">Päästke oma loovus valla</translation>
@@ -1220,12 +1230,18 @@ Seda tegevust ei saa tagasi võtta.</translation>
 <translation id="4650851936784160359">Filtrite loendit ei õnnestunud uuendada. Proovige uuesti</translation>
 <translation id="3098054327870766317">Kuva tagasivõtmise nupp, kui vahekaardid on suletud</translation>
 <translation id="1336494649091412226">Kas olete kindel, et soovite Brave'ist väljuda?</translation>
-<translation id="2361906291514218784">Leo AI</translation>
 <translation id="7942415993090181327">Vestluse ajalugu</translation>
 <translation id="6859935199732075666">Näita turvalise lehitsemise vigu</translation>
 <translation id="2735247450315842119">Luba ekraanipildid privaatsetel vahelehtedel</translation>
 <translation id="8420414929552321089">Kui see on lubatud, on privaatsed vahelehed nähtavad ka siis, kui mitu rakendust on avatud.</translation>
 <translation id="7956713633345437162">Mobiilne järjehoidja</translation>
+<translation id="3176467469116060712">Toetage Brave'i valdkonda juhtivat tööd veebiprivaatsuse ja avatud lähtekoodiga reklaamiblokeerimise loendite alal</translation>
+<translation id="5896375129784311037">Optimeeritud minimalistlikuma brauseri kasutajaliidese jaoks</translation>
+<translation id="746156554966264308">Brave'i kaitse kese reklaamide blokeerimiseks ning privaatsuse ja kiiruse tagamiseks</translation>
+<translation id="1432661650699782509">IT juhitud p'himõtete toetamine töökohal</translation>
+<translation id="1361157028850796410">parima hinnaga</translation>
+<translation id="7280825497485894053">Kuupõhine tellimus</translation>
+<translation id="4570901726096223030">Lisateave Origini kohta</translation>
 <translation id="1943432128510653496">Paroolide salvestamine</translation>
 <translation id="2100273922101894616">Automaatne sisselogimine</translation>
 <translation id="363596933471559332">Teid logitakse salvestatud mandaadiga veebisaitidele automaatselt sisse. Kui funktsioon on välja lülitatud, palutakse teilt kinnitust iga kord enne veebisaidile sisselogimist.</translation>
@@ -1237,6 +1253,18 @@ Seda tegevust ei saa tagasi võtta.</translation>
 <translation id="5139940364318403933">Vaadake, kuidas Google Drive'i kasutada</translation>
 <translation id="729975465115245577">Seadmes pole sünkroonimiseks piisavalt salvestusruumi.</translation>
 <translation id="1129510026454351943">Üksikasjad: <ph name="ERROR_DESCRIPTION"/></translation>
+<translation id="5594899180331219722">Vali fail</translation>
+<translation id="3744219658596020825">Sinu paroole ei imporditud</translation>
+<translation id="8258027225380843424">Importimine õnnestus!</translation>
+<translation id="766635563210446220">Paroole ei saa importida. Kontrolli faili <ph name="FILENAME"/> ja veendu, et see oleks õigesti vormindatud. <ph name="BEGIN_LINK"/>Lisateave<ph name="END_LINK"/></translation>
+<translation id="6581356304040102696">Paroole ei saa importida. Faili suurus peab olema alla 1 MB.</translation>
+<translation id="5895244669404288318">{COUNT, plural, =1 {Paroole ei saa importida. Sa saad korraga importida ainult 1 parooli.} other {Paroole ei saa importida. Sa saad korraga importida kuni <ph name="COUNT_MANY"/> parooli.}}</translation>
+<translation id="3748424433435232460">Selle konto parool on selles seadmes juba salvestatud</translation>
+<translation id="6438475350605608554">Paroole imporditakse juba teises vahelehes</translation>
+<translation id="3482868954775580230">Valitud faili ei õnnestunud lugeda. <ph name="EXCEPTION_INFO"/></translation>
+<translation id="9162995380643712715">{IMPORT_COUNT, plural, =1 {1 parool imporditud edukalt.} other {Imporditud edukalt <ph name="IMPORT_COUNT_MANY"/> parooli.}}</translation>
+<translation id="4637949129057123593">Importimine ebaõnnestus.</translation>
+<translation id="4300452012226767715">Paroolihaldur ei ole saadaval.</translation>
 <translation id="6221633008163990886">Paroolide eksportimiseks avage seade</translation>
 <translation id="5245792669563792664">paroolid</translation>
 <translation id="10614374240317010">Ei ole kunagi salvestatud</translation>

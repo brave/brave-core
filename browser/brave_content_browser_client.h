@@ -99,6 +99,9 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
   void AppendExtraCommandLineSwitches(base::CommandLine* command_line,
                                       int child_process_id) override;
 
+  bool IsJitDisabledForSite(content::BrowserContext* browser_context,
+                            const GURL& site_url) override;
+
   std::vector<std::unique_ptr<blink::URLLoaderThrottle>>
   CreateURLLoaderThrottles(
       const network::ResourceRequest& request,
@@ -141,8 +144,8 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
                          const GURL& document_url,
                          blink::mojom::ReferrerPtr* referrer) override;
 
-  GURL GetEffectiveURL(content::BrowserContext* browser_context,
-                       const GURL& url) override;
+  std::optional<GURL> GetEffectiveURL(content::BrowserContext* browser_context,
+                                      const GURL& url) override;
   static bool HandleURLOverrideRewrite(
       GURL* url,
       content::BrowserContext* browser_context);

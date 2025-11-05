@@ -53,7 +53,6 @@
 #include "brave/components/brave_wallet/common/bitcoin_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
-#include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/cardano_address.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
@@ -66,6 +65,7 @@
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
+#include "crypto/random.h"
 #include "ui/base/l10n/l10n_util.h"
 
 namespace brave_wallet {
@@ -75,6 +75,36 @@ namespace {
 constexpr char kHardwareAccounts[] = "hardware";
 constexpr char kHardwareDerivationPath[] = "derivation_path";
 constexpr char kHardwareVendor[] = "hardware_vendor";
+constexpr int kPbkdf2IterationsLegacy = 100000;
+constexpr char kBackupCompleteDeprecated[] = "backup_complete";
+constexpr char kLegacyBraveWalletDeprecated[] = "legacy_brave_wallet";
+constexpr char kEncryptedMnemonicDeprecated[] = "encrypted_mnemonic";
+constexpr char kImportedAccountCoinTypeDeprecated[] = "coin_type";
+constexpr char kSelectedAccountDeprecated[] = "selected_account";
+constexpr char kPasswordEncryptorNonceDeprecated[] = "password_encryptor_nonce";
+constexpr char kPasswordEncryptorSaltDeprecated[] = "password_encryptor_salt";
+
+base::RepeatingCallback<std::array<uint8_t, kEncryptorNonceSize>()>*
+    g_create_nonce_callback_for_testing = nullptr;
+
+base::RepeatingCallback<std::array<uint8_t, kEncryptorSaltSize>()>*
+    g_create_salt_callback_for_testing = nullptr;
+
+std::array<uint8_t, kEncryptorNonceSize> CreateNonceArray() {
+  if (g_create_nonce_callback_for_testing) {
+    CHECK_IS_TEST();
+    return g_create_nonce_callback_for_testing->Run();  // IN-TEST
+  }
+  return crypto::RandBytesAsArray<kEncryptorNonceSize>();
+}
+
+std::array<uint8_t, kEncryptorSaltSize> CreateSaltArray() {
+  if (g_create_salt_callback_for_testing) {
+    CHECK_IS_TEST();
+    return g_create_salt_callback_for_testing->Run();  // IN-TEST
+  }
+  return crypto::RandBytesAsArray<kEncryptorSaltSize>();
+}
 
 std::string GetAccountName(size_t number) {
   return l10n_util::GetStringFUTF8(IDS_BRAVE_WALLET_NUMBERED_ACCOUNT_NAME,
@@ -667,7 +697,316 @@ mojom::CardanoAccountInfoPtr CardanoAccountInfoFromPrefInfo(
   return result;
 }
 
+std::optional<std::vector<uint8_t>> GetPrefInBytesForKeyringDeprecated(
+    PrefService* profile_prefs,
+    std::string_view key,
+    mojom::KeyringId keyring_id) {
+  const base::Value* value = GetPrefForKeyring(profile_prefs, key, keyring_id);
+  if (!value) {
+    return std::nullopt;
+  }
+
+  const std::string* encoded = value->GetIfString();
+  if (!encoded || encoded->empty()) {
+    return std::nullopt;
+  }
+
+  return base::Base64Decode(*encoded);
+}
+
+std::vector<uint8_t> GetOrCreateNonceForKeyringDeprecated(
+    PrefService* profile_prefs,
+    mojom::KeyringId keyring_id,
+    bool force_create) {
+  if (!force_create) {
+    if (auto nonce = GetPrefInBytesForKeyringDeprecated(
+            profile_prefs, kPasswordEncryptorNonceDeprecated, keyring_id)) {
+      return *nonce;
+    }
+  }
+
+  std::vector<uint8_t> nonce(kEncryptorNonceSize);
+  crypto::RandBytes(nonce);
+  SetPrefForKeyring(profile_prefs, kPasswordEncryptorNonceDeprecated,
+                    base::Value(base::Base64Encode(nonce)), keyring_id);
+  return nonce;
+}
+
+std::vector<uint8_t> GetOrCreateSaltForKeyringDeprecated(
+    PrefService* profile_prefs,
+    mojom::KeyringId keyring_id,
+    bool force_create) {
+  if (!force_create) {
+    if (auto salt = GetPrefInBytesForKeyringDeprecated(
+            profile_prefs, kPasswordEncryptorSaltDeprecated, keyring_id)) {
+      return *salt;
+    }
+  }
+
+  std::vector<uint8_t> salt(kEncryptorSaltSize);
+  crypto::RandBytes(salt);
+  SetPrefForKeyring(profile_prefs, kPasswordEncryptorSaltDeprecated,
+                    base::Value(base::Base64Encode(salt)), keyring_id);
+  return salt;
+}
+
+void MaybeMigratePBKDF2Iterations(PrefService* profile_prefs,
+                                  const std::string& password) {
+  if (profile_prefs->GetBoolean(kBraveWalletKeyringEncryptionKeysMigrated)) {
+    return;
+  }
+
+  // Pref is supposed to be set only as true.
+  DCHECK(
+      !profile_prefs->HasPrefPath(kBraveWalletKeyringEncryptionKeysMigrated));
+
+  for (auto keyring_id :
+       {mojom::KeyringId::kDefault, mojom::KeyringId::kFilecoin,
+        mojom::KeyringId::kFilecoinTestnet, mojom::KeyringId::kSolana}) {
+    auto deprecated_encrypted_mnemonic = GetPrefInBytesForKeyringDeprecated(
+        profile_prefs, kEncryptedMnemonicDeprecated, keyring_id);
+    auto deprecated_nonce = GetPrefInBytesForKeyringDeprecated(
+        profile_prefs, kPasswordEncryptorNonceDeprecated, keyring_id);
+    auto deprecated_salt = GetPrefInBytesForKeyringDeprecated(
+        profile_prefs, kPasswordEncryptorSaltDeprecated, keyring_id);
+
+    if (!deprecated_encrypted_mnemonic || !deprecated_nonce ||
+        !deprecated_salt) {
+      continue;
+    }
+
+    auto deprecated_encryptor =
+        PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
+            password, *deprecated_salt, kPbkdf2IterationsLegacy);
+    if (!deprecated_encryptor) {
+      continue;
+    }
+
+    auto mnemonic = deprecated_encryptor->Decrypt(
+        *deprecated_encrypted_mnemonic, *deprecated_nonce);
+    if (!mnemonic) {
+      continue;
+    }
+
+    auto salt = GetOrCreateSaltForKeyringDeprecated(profile_prefs, keyring_id,
+                                                    /*force_create = */ true);
+
+    auto encryptor = PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
+        password, salt, kPbkdf2Iterations);
+    if (!encryptor) {
+      continue;
+    }
+
+    auto nonce = GetOrCreateNonceForKeyringDeprecated(profile_prefs, keyring_id,
+                                                      /*force_create = */ true);
+
+    SetPrefForKeyring(profile_prefs, kEncryptedMnemonicDeprecated,
+                      base::Value(base::Base64Encode(
+                          encryptor->Encrypt(base::span(*mnemonic), nonce))),
+                      keyring_id);
+
+    if (keyring_id == mojom::KeyringId::kDefault) {
+      profile_prefs->SetBoolean(kBraveWalletKeyringEncryptionKeysMigrated,
+                                true);
+    }
+
+    const base::Value* deprecated_imported_accounts =
+        GetPrefForKeyring(profile_prefs, kImportedAccounts, keyring_id);
+    if (!deprecated_imported_accounts ||
+        !deprecated_imported_accounts->is_list()) {
+      continue;
+    }
+    base::Value::List imported_accounts =
+        deprecated_imported_accounts->GetList().Clone();
+    for (auto& imported_account : imported_accounts) {
+      if (!imported_account.is_dict()) {
+        continue;
+      }
+
+      const std::string* deprecated_encrypted_private_key =
+          imported_account.GetDict().FindString(kEncryptedPrivateKey);
+      if (!deprecated_encrypted_private_key) {
+        continue;
+      }
+
+      auto deprecated_private_key_decoded =
+          base::Base64Decode(*deprecated_encrypted_private_key);
+      if (!deprecated_private_key_decoded) {
+        continue;
+      }
+
+      auto private_key = deprecated_encryptor->Decrypt(
+          base::span(*deprecated_private_key_decoded), *deprecated_nonce);
+      if (!private_key) {
+        continue;
+      }
+
+      imported_account.GetDict().Set(
+          kEncryptedPrivateKey,
+          base::Base64Encode(encryptor->Encrypt(*private_key, nonce)));
+    }
+    SetPrefForKeyring(profile_prefs, kImportedAccounts,
+                      base::Value(std::move(imported_accounts)), keyring_id);
+  }
+}
+
+void MaybeMigrateToWalletMnemonic(PrefService* profile_prefs,
+                                  const std::string& password) {
+  auto deprecated_eth_encrypted_mnemonic = GetPrefInBytesForKeyringDeprecated(
+      profile_prefs, kEncryptedMnemonicDeprecated, mojom::KeyringId::kDefault);
+  if (!deprecated_eth_encrypted_mnemonic) {
+    return;
+  }
+
+  auto deprecated_eth_nonce = GetPrefInBytesForKeyringDeprecated(
+      profile_prefs, kPasswordEncryptorNonceDeprecated,
+      mojom::KeyringId::kDefault);
+  auto deprecated_eth_salt = GetPrefInBytesForKeyringDeprecated(
+      profile_prefs, kPasswordEncryptorSaltDeprecated,
+      mojom::KeyringId::kDefault);
+  if (!deprecated_eth_nonce || !deprecated_eth_salt) {
+    return;
+  }
+
+  auto deprecated_eth_encryptor =
+      PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
+          password, *deprecated_eth_salt, kPbkdf2Iterations);
+  if (!deprecated_eth_encryptor) {
+    return;
+  }
+
+  auto mnemonic = deprecated_eth_encryptor->Decrypt(
+      *deprecated_eth_encrypted_mnemonic, *deprecated_eth_nonce);
+  if (!mnemonic) {
+    return;
+  }
+
+  auto wallet_salt = CreateSaltArray();
+  auto wallet_encryptor =
+      PasswordEncryptor::CreateEncryptor(password, wallet_salt);
+  if (!wallet_encryptor) {
+    return;
+  }
+
+  if (auto* value =
+          GetPrefForKeyring(profile_prefs, kLegacyBraveWalletDeprecated,
+                            mojom::KeyringId::kDefault)) {
+    if (value->GetIfBool().value_or(false)) {
+      profile_prefs->SetBoolean(kBraveWalletLegacyEthSeedFormat, true);
+    }
+  }
+
+  if (auto* value = GetPrefForKeyring(profile_prefs, kBackupCompleteDeprecated,
+                                      mojom::KeyringId::kDefault)) {
+    profile_prefs->SetBoolean(kBraveWalletMnemonicBackedUp,
+                              value->GetIfBool().value_or(false));
+  }
+
+  profile_prefs->SetString(kBraveWalletEncryptorSalt,
+                           base::Base64Encode(wallet_salt));
+  profile_prefs->SetDict(
+      kBraveWalletMnemonic,
+      wallet_encryptor->EncryptToDict(base::as_byte_span(*mnemonic),
+                                      CreateNonceArray()));
+
+  for (auto keyring_id :
+       {mojom::KeyringId::kDefault, mojom::KeyringId::kFilecoin,
+        mojom::KeyringId::kFilecoinTestnet, mojom::KeyringId::kSolana,
+        mojom::KeyringId::kBitcoin84, mojom::KeyringId::kBitcoin84Testnet,
+        mojom::KeyringId::kZCashMainnet, mojom::KeyringId::kZCashTestnet}) {
+    auto deprecated_encrypted_mnemonic = GetPrefInBytesForKeyringDeprecated(
+        profile_prefs, kEncryptedMnemonicDeprecated, keyring_id);
+    auto deprecated_nonce = GetPrefInBytesForKeyringDeprecated(
+        profile_prefs, kPasswordEncryptorNonceDeprecated, keyring_id);
+    auto deprecated_salt = GetPrefInBytesForKeyringDeprecated(
+        profile_prefs, kPasswordEncryptorSaltDeprecated, keyring_id);
+
+    SetPrefForKeyring(profile_prefs, kEncryptedMnemonicDeprecated,
+                      base::Value(), keyring_id);
+    SetPrefForKeyring(profile_prefs, kPasswordEncryptorNonceDeprecated,
+                      base::Value(), keyring_id);
+    SetPrefForKeyring(profile_prefs, kPasswordEncryptorSaltDeprecated,
+                      base::Value(), keyring_id);
+    SetPrefForKeyring(profile_prefs, kLegacyBraveWalletDeprecated,
+                      base::Value(), keyring_id);
+    SetPrefForKeyring(profile_prefs, kSelectedAccountDeprecated, base::Value(),
+                      keyring_id);
+    SetPrefForKeyring(profile_prefs, kBackupCompleteDeprecated, base::Value(),
+                      keyring_id);
+
+    if (!deprecated_encrypted_mnemonic || !deprecated_nonce ||
+        !deprecated_salt) {
+      continue;
+    }
+
+    auto deprecated_encryptor =
+        PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
+            password, *deprecated_salt, kPbkdf2Iterations);
+    if (!deprecated_encryptor) {
+      continue;
+    }
+
+    const base::Value* deprecated_imported_accounts =
+        GetPrefForKeyring(profile_prefs, kImportedAccounts, keyring_id);
+    if (!deprecated_imported_accounts ||
+        !deprecated_imported_accounts->is_list()) {
+      continue;
+    }
+    base::Value::List imported_accounts =
+        deprecated_imported_accounts->GetList().Clone();
+    for (auto& imported_account : imported_accounts) {
+      if (!imported_account.is_dict()) {
+        continue;
+      }
+
+      const std::string* deprecated_encrypted_private_key =
+          imported_account.GetDict().FindString(kEncryptedPrivateKey);
+      if (!deprecated_encrypted_private_key) {
+        continue;
+      }
+
+      auto deprecated_private_key_decoded =
+          base::Base64Decode(*deprecated_encrypted_private_key);
+      if (!deprecated_private_key_decoded) {
+        continue;
+      }
+
+      auto private_key = deprecated_encryptor->Decrypt(
+          base::span(*deprecated_private_key_decoded), *deprecated_nonce);
+      if (!private_key) {
+        continue;
+      }
+
+      imported_account.GetDict().Set(
+          kEncryptedPrivateKey,
+          wallet_encryptor->EncryptToDict(*private_key, CreateNonceArray()));
+
+      imported_account.GetDict().Remove(kImportedAccountCoinTypeDeprecated);
+    }
+    SetPrefForKeyring(profile_prefs, kImportedAccounts,
+                      base::Value(std::move(imported_accounts)), keyring_id);
+  }
+}
+
+void MaybeRunPasswordMigrations(PrefService* profile_prefs,
+                                const std::string& password) {
+  MaybeMigratePBKDF2Iterations(profile_prefs, password);
+  MaybeMigrateToWalletMnemonic(profile_prefs, password);
+}
+
 }  // namespace
+
+void SetCreateNonceCallbackForTesting(
+    base::RepeatingCallback<std::array<uint8_t, kEncryptorNonceSize>()>*
+        callback) {
+  g_create_nonce_callback_for_testing = callback;
+}
+
+void SetCreateSaltCallbackForTesting(
+    base::RepeatingCallback<std::array<uint8_t, kEncryptorSaltSize>()>*
+        callback) {
+  g_create_salt_callback_for_testing = callback;
+}
 
 struct KeyringSeed {
   std::vector<uint8_t> eth_seed;
@@ -791,7 +1130,7 @@ bool KeyringService::CreateWalletInternal(const std::string& mnemonic,
     return false;
   }
 
-  auto salt = PasswordEncryptor::CreateSalt();
+  auto salt = CreateSaltArray();
   auto encryptor = PasswordEncryptor::CreateEncryptor(password, salt);
   if (!encryptor) {
     return false;
@@ -804,7 +1143,7 @@ bool KeyringService::CreateWalletInternal(const std::string& mnemonic,
   profile_prefs_->SetDict(
       kBraveWalletMnemonic,
       encryptor_->EncryptToDict(base::as_byte_span(mnemonic),
-                                PasswordEncryptor::CreateNonce()));
+                                CreateNonceArray()));
   profile_prefs_->SetString(kBraveWalletEncryptorSalt,
                             base::Base64Encode(salt));
 
@@ -918,12 +1257,12 @@ void KeyringService::ClearKeyrings() {
 }
 
 void KeyringService::CreateDefaultAccounts() {
-  if (auto account =
-          AddHDAccountForKeyring(mojom::kDefaultKeyringId, GetAccountName(1))) {
+  if (auto account = AddHDAccountForKeyring(mojom::KeyringId::kDefault,
+                                            GetAccountName(1))) {
     SetSelectedAccountInternal(*account);
     NotifyAccountsAdded(*account);
   }
-  if (auto account = AddHDAccountForKeyring(mojom::kSolanaKeyringId,
+  if (auto account = AddHDAccountForKeyring(mojom::KeyringId::kSolana,
                                             "Solana " + GetAccountName(1))) {
     SetSelectedAccountInternal(*account);
     NotifyAccountsAdded(*account);
@@ -1282,7 +1621,7 @@ void KeyringService::ImportFilecoinAccount(
 
   ImportedAccountInfo imported_account_info(
       keyring_id, account_name, *address, 0,
-      encryptor_->EncryptToDict(private_key, PasswordEncryptor::CreateNonce()));
+      encryptor_->EncryptToDict(private_key, CreateNonceArray()));
 
   auto account_info = MakeAccountInfoForImportedAccount(imported_account_info);
 
@@ -1335,7 +1674,7 @@ mojom::AccountInfoPtr KeyringService::ImportBitcoinAccountSync(
   ImportedAccountInfo imported_account_info(
       keyring_id, account_name, std::nullopt, account_index,
       encryptor_->EncryptToDict(base::as_byte_span(payload),
-                                PasswordEncryptor::CreateNonce()));
+                                CreateNonceArray()));
 
   auto account_info = MakeAccountInfoForImportedAccount(imported_account_info);
 
@@ -1420,7 +1759,8 @@ void KeyringService::ImportEthereumAccountFromJson(
     return;
   }
 
-  auto parsed_json = base::JSONReader::ReadAndReturnValueWithError(json);
+  auto parsed_json = base::JSONReader::ReadAndReturnValueWithError(
+      json, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!parsed_json.has_value() || !parsed_json->is_dict()) {
     std::move(callback).Run({});
     return;
@@ -1434,7 +1774,7 @@ void KeyringService::ImportEthereumAccountFromJson(
     return;
   }
 
-  std::move(callback).Run(ImportAccountForKeyring(mojom::kDefaultKeyringId,
+  std::move(callback).Run(ImportAccountForKeyring(mojom::KeyringId::kDefault,
                                                   account_name, *private_key));
 }
 
@@ -1458,7 +1798,7 @@ void KeyringService::SetSelectedWalletAccountInternal(
     // TODO(apaymyshev): this should not be a part of KeyringService.
     if (account_id.coin == mojom::CoinType::FIL) {
       json_rpc_service_->SetNetwork(
-          account_id.keyring_id == mojom::kFilecoinKeyringId
+          account_id.keyring_id == mojom::KeyringId::kFilecoin
               ? mojom::kFilecoinMainnet
               : mojom::kFilecoinTestnet,
           account_id.coin, std::nullopt);
@@ -1627,7 +1967,7 @@ mojom::AccountInfoPtr KeyringService::ImportAccountForKeyring(
 
   ImportedAccountInfo imported_account_info(
       keyring_id, account_name, *address, 0,
-      encryptor_->EncryptToDict(private_key, PasswordEncryptor::CreateNonce()));
+      encryptor_->EncryptToDict(private_key, CreateNonceArray()));
   auto account_info = MakeAccountInfoForImportedAccount(imported_account_info);
   AddImportedAccountForKeyring(profile_prefs_, std::move(imported_account_info),
                                keyring_id);
@@ -2597,6 +2937,19 @@ KeyringService::SignCip30MessageByCardanoKeyring(
       HexEncodeLower(CardanoCip30Serializer::SerializeSignedDataSignature(
           *cardano_address, message, signature_pair->signature)));
   return result;
+}
+
+std::optional<std::array<uint8_t, kPolkadotSubstrateAccountIdSize>>
+KeyringService::GetPolkadotPubKey(const mojom::AccountIdPtr& account_id) {
+  CHECK(account_id);
+
+  auto* keyring = GetKeyring<PolkadotKeyring>(account_id->keyring_id);
+  if (!keyring) {
+    return std::nullopt;
+  }
+
+  auto key = keyring->GetPublicKey(account_id->account_index);
+  return {key};
 }
 
 void KeyringService::UpdateNextUnusedAddressForBitcoinAccount(

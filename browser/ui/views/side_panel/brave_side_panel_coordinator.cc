@@ -80,7 +80,7 @@ std::unique_ptr<views::View> BraveSidePanelCoordinator::CreateHeader() {
 
 void BraveSidePanelCoordinator::Toggle() {
   if (IsSidePanelShowing() &&
-      !browser_view_->unified_side_panel()->IsClosing()) {
+      !browser_view_->contents_height_side_panel()->IsClosing()) {
     Close();
   } else if (const auto key = GetLastActiveEntryKey()) {
     SidePanelUIBase::Show(*key,

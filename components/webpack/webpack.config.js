@@ -78,6 +78,7 @@ module.exports = async function (env, argv) {
 
   if (env.output_module) {
     output.library = { type: 'module' }
+    output.iife = false
   }
 
   if (env.output_public_path) {

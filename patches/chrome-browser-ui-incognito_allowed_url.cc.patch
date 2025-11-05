@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/incognito_allowed_url.cc b/chrome/browser/ui/incognito_allowed_url.cc
+index ee61e8eec113aad24dc8a88bca816e7666c0f961..5f763b590bd5ca7bea6564e9bbce9f25bacae664 100644
+--- a/chrome/browser/ui/incognito_allowed_url.cc
++++ b/chrome/browser/ui/incognito_allowed_url.cc
+@@ -68,6 +68,7 @@ bool IsURLAllowedInIncognito(const GURL& url) {
+     }
+     return stripped_url.is_valid() && IsURLAllowedInIncognito(stripped_url);
+   }
++  BRAVE_IS_URL_ALLOWED_IN_INCOGNITO
+ 
+   return IsHostAllowedInIncognito(url);
+ }

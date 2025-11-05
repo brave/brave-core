@@ -18,6 +18,7 @@
 #include "brave/components/commands/common/features.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
+#include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/tor/pref_names.h"
 #include "build/build_config.h"
 #include "chrome/app/chrome_command_ids.h"
@@ -364,11 +365,9 @@ TEST_F(AcceleratorServiceUnitTest, PolicyFiltering) {
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   // Test Speedreader
   EXPECT_FALSE(service.IsCommandDisabledByPolicy(IDC_SPEEDREADER_ICON_ONCLICK));
-  profile().GetPrefs()->SetBoolean(speedreader::kSpeedreaderPrefFeatureEnabled,
-                                   false);
+  profile().GetPrefs()->SetBoolean(speedreader::kSpeedreaderEnabled, false);
   EXPECT_TRUE(service.IsCommandDisabledByPolicy(IDC_SPEEDREADER_ICON_ONCLICK));
-  profile().GetPrefs()->SetBoolean(speedreader::kSpeedreaderPrefFeatureEnabled,
-                                   true);
+  profile().GetPrefs()->SetBoolean(speedreader::kSpeedreaderEnabled, true);
   EXPECT_FALSE(service.IsCommandDisabledByPolicy(IDC_SPEEDREADER_ICON_ONCLICK));
 #endif
 
@@ -450,6 +449,7 @@ class AcceleratorServiceUnitTestWithLocalState : public testing::Test {
 TEST_F(AcceleratorServiceUnitTestWithLocalState, PolicyFiltering) {
   commands::AcceleratorService service(profile().GetPrefs(), {}, {});
 
+#if BUILDFLAG(ENABLE_TOR)
   // Test Tor-related commands (which use local state)
   const std::vector<int> tor_commands = {IDC_NEW_OFFTHERECORD_WINDOW_TOR,
                                          IDC_NEW_TOR_CONNECTION_FOR_SITE};
@@ -470,6 +470,7 @@ TEST_F(AcceleratorServiceUnitTestWithLocalState, PolicyFiltering) {
   for (int command : tor_commands) {
     EXPECT_FALSE(service.IsCommandDisabledByPolicy(command));
   }
+#endif  // BUILDFLAG(ENABLE_TOR)
 }
 
 }  // namespace commands

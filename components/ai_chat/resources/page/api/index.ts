@@ -21,6 +21,7 @@ export type State = Mojom.ServiceState & {
   isAIChatAgentProfileFeatureEnabled: boolean
   isAIChatAgentProfile: boolean
   actionList: Mojom.ActionGroup[]
+  skills: Mojom.Skill[]
   tabs: Mojom.TabData[]
 
   // This is the content of the tab that this conversation is shown next to (if
@@ -46,6 +47,7 @@ export const defaultUIState: State = {
   ),
   isAIChatAgentProfile: loadTimeData.getBoolean('isAIChatAgentProfile'),
   actionList: [],
+  skills: [],
   tabs: [],
 }
 
@@ -69,6 +71,10 @@ class PageAPI extends API<State> {
 
   public tabObserver: Mojom.TabDataObserverCallbackRouter =
     new Mojom.TabDataObserverCallbackRouter()
+
+  public bookmarksService = Mojom.BookmarksPageHandler.getRemote()
+
+  public historyService = Mojom.HistoryUIHandler.getRemote()
 
   constructor() {
     super(defaultUIState)
@@ -95,12 +101,14 @@ class PageAPI extends API<State> {
       { isStandalone },
       { conversations },
       { actionList },
+      { skills },
       premiumStatus,
     ] = await Promise.all([
       this.service.bindObserver(this.observer.$.bindNewPipeAndPassRemote()),
       this.uiHandler.setChatUI(this.uiObserver.$.bindNewPipeAndPassRemote()),
       this.service.getConversations(),
       this.service.getActionMenuList(),
+      this.service.getSkills(),
       this.getCurrentPremiumStatus(),
     ])
     this.setPartialState({
@@ -110,6 +118,7 @@ class PageAPI extends API<State> {
       isStandalone,
       conversations,
       actionList,
+      skills,
     })
 
     this.service.bindMetrics(this.metrics.$.bindNewPipeAndPassReceiver())
@@ -135,6 +144,12 @@ class PageAPI extends API<State> {
         })
       },
     )
+
+    this.observer.onSkillsChanged.addListener((skills: Mojom.Skill[]) => {
+      this.setPartialState({
+        skills,
+      })
+    })
 
     this.uiObserver.onChildFrameBound.addListener(
       (parentPagePendingReceiver: Mojom.ParentUIFramePendingReceiver) => {

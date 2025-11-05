@@ -14,7 +14,6 @@
 #include "brave/browser/ui/tabs/brave_split_tab_menu_model.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 #include "brave/browser/ui/tabs/features.h"
-#include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/app/vector_icons/vector_icons.h"
 #include "chrome/browser/profiles/profile.h"
@@ -50,9 +49,9 @@ BraveTabMenuModel::BraveTabMenuModel(
       containers_menu_model_delegate_(containers_delegate)
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 {
-  web_contents_ = tab_strip_model->GetWebContentsAt(index);
-  CHECK(web_contents_);
-  Browser* browser = chrome::FindBrowserWithTab(web_contents_);
+  auto* web_contents = tab_strip_model->GetWebContentsAt(index);
+  CHECK(web_contents);
+  Browser* browser = chrome::FindBrowserWithTab(web_contents);
   CHECK(browser);
 
   restore_service_ =
@@ -71,10 +70,6 @@ BraveTabMenuModel::~BraveTabMenuModel() = default;
 
 int BraveTabMenuModel::GetRestoreTabCommandStringId() const {
   int id = IDS_RESTORE_TAB;
-
-  if (!web_contents_) {
-    return id;
-  }
 
   if (!restore_service_) {
     return id;
@@ -156,10 +151,6 @@ void BraveTabMenuModel::Build(Browser* browser,
                            CommandCloseDuplicateTabs,
                            IDS_TAB_CXMENU_CLOSE_DUPLICATE_TABS);
 
-  if (tabs::features::IsBraveSplitViewEnabled()) {
-    BuildItemsForSplitView(browser, tab_strip_model, indices);
-  }
-
 #if BUILDFLAG(ENABLE_CONTAINERS)
   if (base::FeatureList::IsEnabled(containers::features::kContainers)) {
     BuildItemForContainers(*browser->profile()->GetPrefs(), tab_strip_model,
@@ -187,44 +178,6 @@ void BraveTabMenuModel::Build(Browser* browser,
             ui::ImageModel::FromVectorIcon(kSplitSceneIcon, ui::kColorMenuIcon,
                                            16));
     SetElementIdentifierAt(*arrange_submenu_index, kArrangeSplitTabsMenuItem);
-  }
-}
-
-void BraveTabMenuModel::BuildItemsForSplitView(
-    Browser* browser,
-    TabStripModel* tab_strip_model,
-    const std::vector<int>& indices) {
-  // The split view context menu items are added after the "reload" item.
-  auto index = *GetIndexOfCommandId(TabStripModel::CommandReload);
-
-  // In case only one tab is selected
-  //  * if the tab is tiled, show "Close Split View" and "Break into Tabs"
-  //  * else show "New Split View"
-  if (indices.size() == 1u) {
-    if (brave::IsTabsTiled(browser, indices)) {
-      InsertItemWithStringIdAt(++index, CommandBreakTile, IDS_IDC_BREAK_TILE);
-      InsertItemWithStringIdAt(++index, CommandSwapTabsInTile,
-                               IDS_IDC_SWAP_SPLIT_VIEW);
-      return;
-    }
-
-    InsertItemWithStringIdAt(++index, CommandNewSplitView,
-                             IDS_IDC_NEW_SPLIT_VIEW);
-    return;
-  }
-
-  if (brave::CanTileTabs(browser, indices)) {
-    InsertItemWithStringIdAt(++index, CommandTileTabs, IDS_IDC_TILE_TABS);
-    return;
-  }
-
-  if (brave::IsTabsTiled(browser, indices)) {
-    InsertItemWithStringIdAt(++index, CommandBreakTile, IDS_IDC_BREAK_TILE);
-  }
-
-  if (brave::IsTabsTiled(browser, {tab_strip_model->active_index()})) {
-    InsertItemWithStringIdAt(++index, CommandSwapTabsInTile,
-                             IDS_IDC_SWAP_SPLIT_VIEW);
   }
 }
 

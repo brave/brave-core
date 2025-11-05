@@ -553,7 +553,7 @@ window.idgus = window.idgus || {};
 window.idgus.cmp = window.idgus.cmp || {};
 (function (promise) {
 	promise.then(function (consentOk) {
-		var isDebug = !!window.idgus.cmp.isDebug ? window.idgus.cmp.isDebug() : false;
+		var isDebug = !!window.idgus.cmp.isDebug && window.idgus.cmp.isDebug();
 		if (isDebug) console.log('GDPR', 'blueconic - consentOk', consentOk);
 		if (!consentOk) return;
 		var bcscript = document.createElement("script");
@@ -7525,7 +7525,7 @@ _comscore.push(
 		    		return; 
 		    	} else {
 		    		console.log("*****GDPR: sp_analytics.js: consent = " + consentOk);
-					var isDebug = !!window.idgus.cmp.isDebug ? window.idgus.cmp.isDebug() : false;
+					var isDebug = !!window.idgus.cmp.isDebug && window.idgus.cmp.isDebug();
 					if (isDebug) console.log('GDPR', 'sp_analytics - consentOk', consentOk);
 					if (!consentOk) return;
 					var spscript = document.createElement("script");

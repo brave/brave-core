@@ -1,8 +1,8 @@
 diff --git a/components/page_info/page_info.cc b/components/page_info/page_info.cc
-index b42a15c44a66b8d4817e34ca9aae26be69177d53..218d01e24f1f0b54df4c109be2fd5677a8bcdd12 100644
+index 19830648fa7e2782f850aa6add7458d088962ee4..ba4bc93ec009b8a06ff0d4a125bc041ded7bb081 100644
 --- a/components/page_info/page_info.cc
 +++ b/components/page_info/page_info.cc
-@@ -1365,6 +1365,7 @@ void PageInfo::PopulatePermissionInfo(PermissionInfo& permission_info,
+@@ -1375,6 +1375,7 @@ void PageInfo::PopulatePermissionInfo(PermissionInfo& permission_info,
  // via `HasContentSettingChangedViaPageInfo(type)`.
  bool PageInfo::ShouldShowPermission(
      const PageInfo::PermissionInfo& info) const {

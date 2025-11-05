@@ -136,6 +136,7 @@ export const WarningBox = styled.div<Partial<StyleProps>>`
     p.warningType === 'danger'
       ? p.theme.color.errorBackground
       : p.theme.color.warningBackground};
+  overflow-y: auto;
 `
 
 export const WarningTitle = styled.span<Partial<StyleProps>>`

@@ -6,10 +6,13 @@
 import("//brave/components/common/typescript.gni")
 
 transpile_web_ui("brave_news_internals") {
+  output_module = false
   entry_points = [ [
         "brave_news_internals",
         rebase_path("internals.tsx"),
       ] ]
+
+  imports_from = [ "//brave/components/brave_news/browser/resources/" ]
 
   deps = [
     "//brave/components/brave_news/common",

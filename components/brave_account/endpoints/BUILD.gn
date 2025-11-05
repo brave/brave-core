@@ -9,10 +9,10 @@ source_set("endpoints") {
   sources = [
     "host.cc",
     "host.h",
-    "password_finalize.cc",
     "password_finalize.h",
-    "password_init.cc",
     "password_init.h",
+    "service_token.h",
+    "verify_result.h",
   ]
 
   deps = [
@@ -34,6 +34,10 @@ generated_types("generated_api_types") {
     "password_finalize_response.idl",
     "password_init_request.idl",
     "password_init_response.idl",
+    "service_token_request.idl",
+    "service_token_response.idl",
+    "verify_result_request.idl",
+    "verify_result_response.idl",
   ]
 
   deps = [ "//base" ]
@@ -48,19 +52,18 @@ source_set("unit_tests") {
     "endpoint_test.h",
     "password_finalize_unittest.cc",
     "password_init_unittest.cc",
+    "service_token_unittest.cc",
+    "verify_result_unittest.cc",
   ]
 
   deps = [
     "//base",
     "//base/test:test_support",
-    "//brave/components/api_request_helper",
     "//brave/components/brave_account/endpoint_client",
     "//brave/components/brave_account/endpoints",
     "//net",
-    "//net/traffic_annotation:test_support",
     "//services/network:test_support",
     "//services/network/public/cpp",
-    "//testing/gmock",
     "//testing/gtest",
     "//url",
   ]

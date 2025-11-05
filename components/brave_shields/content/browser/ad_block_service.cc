@@ -445,6 +445,8 @@ void RegisterPrefsForAdBlockService(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(prefs::kAdBlockCheckedDefaultRegion, false);
   registry->RegisterBooleanPref(prefs::kAdBlockCheckedAllDefaultRegions, false);
   registry->RegisterBooleanPref(prefs::kAdBlockOnlyModeEnabled, false);
+  registry->RegisterBooleanPref(
+      prefs::kAdBlockOnlyModeWasEnabledForSupportedLocale, false);
 }
 
 void RegisterPrefsForAdBlockServiceForMigration(PrefRegistrySimple* registry) {
@@ -580,7 +582,7 @@ void AdBlockService::StripProceduralFilters(base::Value::Dict& resources) {
       if (pfilter_str == nullptr) {
         continue;
       }
-      auto val = base::JSONReader::ReadDict(*pfilter_str);
+      auto val = base::JSONReader::ReadDict(*pfilter_str, base::JSON_PARSE_RFC);
       if (val) {
         auto* list = val->FindList("selector");
         if (list && list->size() != 1) {

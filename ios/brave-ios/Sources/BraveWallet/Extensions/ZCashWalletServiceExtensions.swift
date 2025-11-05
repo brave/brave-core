@@ -40,10 +40,9 @@ extension BraveWalletZCashWalletService {
   ///     - accountId: The `BraveWallet.AccountId` for the account
   /// - Returns: The BTC balances of the given `BraveWallet.AccountId` in `Double`; Will return a nil if there is an issue fetching balance.
   func fetchZECTransparentBalances(
-    networkId: String,
     accountId: BraveWallet.AccountId
   ) async -> Double? {
-    let (zecBalance, _) = await self.balance(networkId: networkId, accountId: accountId)
+    let (zecBalance, _) = await self.balance(accountId: accountId)
 
     guard
       let balance = zecBalance?.transparentBalance

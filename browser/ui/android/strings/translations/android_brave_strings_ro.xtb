@@ -5,6 +5,8 @@
 <translation id="3478449063771497234">Notificările sunt dezactivate</translation>
 <translation id="2862978891748913252">Selectați țara</translation>
 <translation id="3970520675790340955">Selectați-vă țara ca să vă putem afișa opțiunile și anunțurile adecvate pentru regiunea dvs.</translation>
+<translation id="721490496276866468">Importați parole</translation>
+<translation id="8178175542325151321">Selectați un fișier .csv care conține parolele dvs. pentru a le importa în managerul de parole Brave.</translation>
 <translation id="7301741773883122509">Acum puteți primi recompense pentru vizualizarea anunțurilor. Contribuiți la transformarea internetului într-un loc mai bun pentru toată lumea. Și asta e minunat!</translation>
 <translation id="6439128034594289376">Iuguu, totul e gata!</translation>
 <translation id="370665806235115550">Se încarcă…</translation>
@@ -99,6 +101,8 @@
 <translation id="8617525558807213034">Completați automat în filele private</translation>
 <translation id="8685431198160039193">Informațiile salvate pot fi completate automat în filele private</translation>
 <translation id="6583902294974160967">Asistență</translation>
+<translation id="5713644099811900409">Contul Brave</translation>
+<translation id="4472575034687746823">Începeți</translation>
 <translation id="1799030480311994998">Funcții</translation>
 <translation id="2005732746077850308">Scuturile și confidențialitatea Brave</translation>
 <translation id="4692623383562244444">Motoare de căutare</translation>
@@ -107,7 +111,6 @@
 <translation id="7304425663107214334">Afișați sugestiile din browser</translation>
 <translation id="8982438328166986164">Afișează sugestiile site-ului pe baza marcajelor și a istoricului de navigare.</translation>
 <translation id="924029461438529367">Afișați sugestiile de căutare</translation>
-<translation id="5989135139219497991">Afișează sugestiile de top</translation>
 <translation id="6285118765755298263">Indexare alte motoare de căutare</translation>
 <translation id="919715748352669592">Indexează automat site-urile care respectă specificațiile OpenSearch.</translation>
 <translation id="9148058034647219655">Ieși</translation>
@@ -295,6 +298,11 @@
 <translation id="4254029385847607686">DECEMBRIE</translation>
 <translation id="3960619311638643872">VPN Brave</translation>
 <translation id="1772301834467143364">Știrile Brave</translation>
+<translation id="2518692840036393666">Personalizați meniul</translation>
+<translation id="5582839680698949063">Meniul principal</translation>
+<translation id="7002271985859760052">Acțiuni pentru pagină</translation>
+<translation id="7104487676473617844">Următoarele elemente vor fi vizibile în meniu doar când sunt acceptate de pagina web deschisă.</translation>
+<translation id="4159764849281393303">Aplicație web</translation>
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="8428213095426709021">Setări</translation>
 <translation id="6020176662032623904">Creator confirmat</translation>
@@ -799,7 +807,6 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="750843150060816463">Preț gas (Gwei)</translation>
 <translation id="1426320910664514906">Limită gas</translation>
 <translation id="6389441740143786465">Dezactivați bara de distribuire</translation>
-<translation id="9065203028668620118">Editează</translation>
 <translation id="473775607612524610">Actualizează</translation>
 <translation id="479795390141144417">Eroare la actualizarea contului.</translation>
 <translation id="8084782383392198011">Câmpul pentru numele contului nu poate rămâne gol.</translation>
@@ -1015,9 +1022,6 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="8496335570810457">Angajament Preflight:</translation>
 <translation id="5100124500279922001">Omiteți Preflight:</translation>
 <translation id="7152095322071766507">Site-ul cel mai vizitat</translation>
-<translation id="7230006500876504868">Căutați cu Brave</translation>
-<translation id="5888208462949095139">Căutați cu
-<ph name="DEFAULT_SEARCH_ENGINE"/></translation>
 <translation id="5456039738087398178">Widget pentru ecranul principal</translation>
 <translation id="703185154752046151">Widget adăugat la ecranul principal</translation>
 <translation id="4635094429202343515">Încearcă widget-ul Brave Search</translation>
@@ -1077,7 +1081,7 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="7618347247876614969">Contul tabelului de căutare a adreselor:</translation>
 <translation id="7659483790930268440">Indexul tabelului de căutare a adreselor:</translation>
 <translation id="5494920125229734069">Selectează-le pe toate</translation>
-<translation id="6129027151000961048">Leo</translation>
+<translation id="2361906291514218784">Leo IA</translation>
 <translation id="8613144770663526433">Conectați-vă cu Brave Wallet</translation>
 <translation id="3696514931437952995">Vă conectați la <ph name="ORIGIN"/>. Brave Wallet va partaja adresa portofelului dvs. cu <ph name="ORIGIN"/>.</translation>
 <translation id="1028781062521375153">Vedeți detaliile</translation>
@@ -1094,11 +1098,11 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="6742599753610126012">Șterge istoricul conversațiilor</translation>
 <translation id="3443052382074796867">Dezactivarea stocării conversațiilor va șterge definitiv toate conversațiile stocate anterior. Această acțiune nu poate fi anulată.</translation>
 <translation id="3692772534525889713">Conectați achiziția din Play Store la contul dumneavoastră Brave pentru a utiliza Brave Leo și pe alte dispozitive.</translation>
-<translation id="73236265316873967">Leo Premium</translation>
+<translation id="592831784390389506">Leo AI Premium</translation>
 <translation id="1028627582482425924">Un an</translation>
 <translation id="2985392169397572983">CEL MAI AVANTAJOS</translation>
 <translation id="1166682575529520472">Lunar</translation>
-<translation id="451189393813405346">Întrebați-l pe Leo</translation>
+<translation id="2206846767762985925">Întreabă-l pe Leo AI</translation>
 <translation id="7322560193401221004">Rețineți poziția de redare a fișierului</translation>
 <translation id="7505951907514709271">Pentru fișiere individuale, reluați redarea din punctul în care ați întrerupt ultima dată</translation>
 <translation id="6835165453349969605">Rețineți poziția de redare a listei</translation>
@@ -1141,6 +1145,7 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="3861012838874771868">Deschideți setările listei de redare</translation>
 <translation id="5220099266891491416">Ascundeți butonul Listă de redare</translation>
 <translation id="7416347631175891923">Încercați!</translation>
+<translation id="9065203028668620118">Editează</translation>
 <translation id="1173894706177603556">Redenumește</translation>
 <translation id="3596306474342941843">Ștergeți lista de redare</translation>
 <translation id="7765158879357617694">Mută</translation>
@@ -1155,7 +1160,7 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="5319532905552885478">Conținutul media a fost deja adăugat în lista de redare implicită</translation>
 <translation id="4802584673094436231">Se pregătește...</translation>
 <translation id="481455355267255546">Urmează</translation>
-<translation id="5474757891469990756">Dezlănțuiți întreaga putere a lui Leo cu Premium:</translation>
+<translation id="3721790899869840343">Dezvăluie întregul potențial al Leo AI cu Premium:</translation>
 <translation id="4173478269537830374">Explorați diverse modele de IA</translation>
 <translation id="3453542753968940696">Acces prioritar la modele puternice cu diverse competențe.</translation>
 <translation id="3245401959451976966">Stimulați-vă creativitatea</translation>
@@ -1223,12 +1228,18 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="4650851936784160359">Lista de filtre nu a putut fi actualizată. Încercați din nou</translation>
 <translation id="3098054327870766317">Afișați butonul de anulare atunci când filele sunt închise</translation>
 <translation id="1336494649091412226">Sunteți sigur că vreți să părăsiți Brave?</translation>
-<translation id="2361906291514218784">Leo IA</translation>
 <translation id="7942415993090181327">Istoricul conversațiilor</translation>
 <translation id="6859935199732075666">Afișează erorile de navigare sigură</translation>
 <translation id="2735247450315842119">Permite capturi de ecran în filele private</translation>
 <translation id="8420414929552321089">Dacă este permis, filele private vor fi vizibile și atunci când sunt deschise mai multe aplicații.</translation>
 <translation id="7956713633345437162">Marcaje mobile</translation>
+<translation id="3176467469116060712">Susțineți munca de pionierat a Brave pentru confidențialitatea pe Web și listele open-source de blocare a reclamelor</translation>
+<translation id="5896375129784311037">Optimizat pentru o interfață mai minimalistă a browser-ului</translation>
+<translation id="746156554966264308">Un nucleu de Brave Shields pentru adblock, confidențialitate și viteză</translation>
+<translation id="1432661650699782509">Suport pentru politici gestionate de IT la locul de muncă</translation>
+<translation id="1361157028850796410">cea mai bună valoare</translation>
+<translation id="7280825497485894053">Abonament lunar</translation>
+<translation id="4570901726096223030">Află mai multe despre Origin</translation>
 <translation id="1943432128510653496">Parole salvate</translation>
 <translation id="2100273922101894616">Conectare automată</translation>
 <translation id="363596933471559332">Te conectezi automat la site-uri folosind datele de conectare stocate. Când funcția este dezactivată, ți se va solicita verificarea de fiecare dată înainte de a te conecta la un site.</translation>
@@ -1240,6 +1251,18 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="5139940364318403933">Află cum să folosești Google Drive</translation>
 <translation id="729975465115245577">Dispozitivul nu are o aplicație pentru stocarea fișierului parolelor.</translation>
 <translation id="1129510026454351943">Detalii: <ph name="ERROR_DESCRIPTION"/></translation>
+<translation id="5594899180331219722">Selectați fișierul</translation>
+<translation id="3744219658596020825">Parolele dvs. nu au fost importate</translation>
+<translation id="8258027225380843424">Importare reușită!</translation>
+<translation id="766635563210446220">Nu se pot importa parolele. Verificați <ph name="FILENAME"/> și asigurați-vă că este formatat corect. <ph name="BEGIN_LINK"/>Aflați mai multe<ph name="END_LINK"/></translation>
+<translation id="6581356304040102696">Nu se pot importa parolele. Dimensiunea fișierului trebuie să fie mai mică de 1 MB.</translation>
+<translation id="5895244669404288318">{COUNT, plural, =1 {Nu se pot importa parolele. Poti importa doar 1 parolă la un moment dat.} few {Nu se pot importa parolele. Poți importa doar până la <ph name="COUNT_MANY"/> parole simultan.} other {Nu se pot importa parolele. Poți importa doar până la <ph name="COUNT_MANY"/> parole simultan.}}</translation>
+<translation id="3748424433435232460">O parolă pentru acest cont este deja salvată pe acest dispozitiv</translation>
+<translation id="6438475350605608554">Importarea parolelor este deja în desfășurare într-un alt tab</translation>
+<translation id="3482868954775580230">Nu s-a putut citi fișierul selectat. <ph name="EXCEPTION_INFO"/></translation>
+<translation id="9162995380643712715">{IMPORT_COUNT, plural, =1 {1 parolă a fost importată cu succes.} few {Au fost importate cu succes <ph name="IMPORT_COUNT_MANY"/> parole.} other {Au fost importate cu succes <ph name="IMPORT_COUNT_MANY"/> parole.}}</translation>
+<translation id="4637949129057123593">Importare nereușită.</translation>
+<translation id="4300452012226767715">Managerul de parole nu este disponibil.</translation>
 <translation id="6221633008163990886">Deblochează pentru a-ți exporta parolele.</translation>
 <translation id="5245792669563792664">parole</translation>
 <translation id="10614374240317010">Nu se salvează niciodată</translation>

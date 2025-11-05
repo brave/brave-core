@@ -220,15 +220,8 @@ public class BraveDappPermissionPromptDialog
                 .fetchAccountsForConnectionReq(
                         mCoinType,
                         selectedAccountAllAccounts -> {
-                            AccountInfo selectedAccount = selectedAccountAllAccounts.first;
                             List<AccountInfo> accounts = selectedAccountAllAccounts.second;
                             mAccountsListAdapter.setAccounts(accounts.toArray(new AccountInfo[0]));
-                            if (accounts.size() > 0) {
-                                mAccountsListAdapter.setSelectedAccount(selectedAccount);
-                                if (mPermissionDialogPositiveButton != null) {
-                                    mPermissionDialogPositiveButton.setEnabled(true);
-                                }
-                            }
                             mAccountsListAdapter.notifyDataSetChanged();
 
                             // We are on the flow from ConnectAccountFragment.connectAccount
@@ -254,6 +247,7 @@ public class BraveDappPermissionPromptDialog
         }
         ImageLoader.fetchFavIcon(
                 mFavIconURL,
+                false,
                 new WeakReference<>(mContext),
                 fav -> {
                     if (fav == null) return;

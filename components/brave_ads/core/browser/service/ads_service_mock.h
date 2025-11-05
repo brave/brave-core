@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_BROWSER_SERVICE_ADS_SERVICE_MOCK_H_
 
 #include <cstdint>
-#include <memory>
 #include <optional>
 #include <string>
 #include <vector>
@@ -64,7 +63,7 @@ class AdsServiceMock : public AdsService {
               TriggerNewTabPageAdEvent,
               (const std::string&,
                const std::string&,
-               bool,
+               mojom::NewTabPageAdMetricType,
                mojom::NewTabPageAdEventType,
                TriggerAdEventCallback));
   MOCK_METHOD(void,

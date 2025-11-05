@@ -199,7 +199,7 @@ RedeemRewardConfirmation::HandleFetchPaymentTokenUrlResponse(
   }
 
   std::optional<base::Value::Dict> dict =
-      base::JSONReader::ReadDict(mojom_url_response.body);
+      base::JSONReader::ReadDict(mojom_url_response.body, base::JSON_PARSE_RFC);
   if (!dict) {
     return base::unexpected(std::make_tuple(
         base::StrCat({"Failed to parse response: ", mojom_url_response.body}),

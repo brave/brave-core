@@ -2722,6 +2722,9 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_ACCESSIBILITY_ADDITIONAL_FEATURES_TITLE" desc="In the settings tab, the title of a link that adds additional accessibility features not found in the built-in settings.">
     Find more accessibility tools in the Web Store
   </message>
+  <message name="IDS_SETTINGS_ACCESSIBILITY_DISABILITY_SUPPORT_TITLE" desc="In the settings tab, the title of a link that opens the disability support help center page.">
+    Contact Brave Disability Support
+  </message>
   <message name="IDS_SETTINGS_MANAGE_TTS_SETTINGS" desc="Link to manage text-to-speech settings">
     Text-to-Speech voice settings
   </message>
@@ -6978,22 +6981,12 @@ Press &amp; hold keyboard keys to see accent marks and special characters. This 
   </message>
 
   <!-- Privacy Page -->
-  <if expr="reven">
-    <message name="IDS_OS_SETTINGS_ENABLE_LOGGING_TOGGLE_TITLE" desc="The label of the checkbox to enable/disable crash and user metrics logging in ChromeOS Flex.">
-      Send diagnostic and usage data
-    </message>
-    <message name="IDS_OS_SETTINGS_ENABLE_LOGGING_TOGGLE_DESCRIPTION" desc="The description of the checkbox to enable/disable crash and user metrics logging in ChromeOS Flex for user of the device.">
-      Help improve Brave and ChromeOS Flex features and performance by automatically sending crash reports as well as diagnostic and usage data to Brave.
-    </message>
-  </if>
-  <if expr="not reven">
-    <message name="IDS_OS_SETTINGS_ENABLE_LOGGING_TOGGLE_TITLE" desc="The label of the checkbox to enable/disable crash and user metrics logging in ChromeOS.">
-      Send diagnostic and usage data
-    </message>
-    <message name="IDS_OS_SETTINGS_ENABLE_LOGGING_TOGGLE_DESCRIPTION" desc="The description of the checkbox to enable/disable crash and user metrics logging in ChromeOS for user of the device.">
-      Help improve Brave and ChromeOS features and performance by automatically sending crash reports as well as diagnostic and usage data to Brave.
-    </message>
-  </if>
+  <message name="IDS_OS_SETTINGS_ENABLE_LOGGING_TOGGLE_TITLE" desc="The label of the checkbox to enable/disable crash and user metrics logging in ChromeOS.">
+    Send diagnostic and usage data
+  </message>
+  <message name="IDS_OS_SETTINGS_ENABLE_LOGGING_TOGGLE_DESCRIPTION" desc="The description of the checkbox to enable/disable crash and user metrics logging in ChromeOS for user of the device.">
+    Help improve Brave and ChromeOS features and performance by automatically sending crash reports as well as diagnostic and usage data to Brave.
+  </message>
   <message name="IDS_OS_SETTINGS_PRIVACY_TITLE" desc="Name of the privacy settings page.">
     Privacy and security
   </message>

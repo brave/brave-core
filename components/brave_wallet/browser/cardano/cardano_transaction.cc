@@ -14,7 +14,9 @@
 
 #include "base/check.h"
 #include "base/check_op.h"
+#include "base/numerics/checked_math.h"
 #include "base/numerics/clamped_math.h"
+#include "base/numerics/safe_conversions.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/types/optional_util.h"
 #include "brave/components/brave_wallet/common/cardano_address.h"
@@ -106,8 +108,6 @@ CardanoTransaction& CardanoTransaction::operator=(CardanoTransaction&& other) =
     default;
 bool CardanoTransaction::operator==(const CardanoTransaction& other) const =
     default;
-bool CardanoTransaction::operator!=(const CardanoTransaction& other) const =
-    default;
 
 CardanoTransaction::Outpoint::Outpoint() = default;
 CardanoTransaction::Outpoint::~Outpoint() = default;
@@ -122,7 +122,7 @@ base::Value::Dict CardanoTransaction::Outpoint::ToValue() const {
   base::Value::Dict dict;
 
   dict.Set("txid", base::HexEncode(txid));
-  dict.Set("index", static_cast<int>(index));
+  dict.Set("index", base::checked_cast<int>(index));
 
   return dict;
 }
@@ -196,13 +196,11 @@ CardanoTransaction::TxInput::FromValue(const base::Value::Dict& value) {
 }
 
 // static
-std::optional<CardanoTransaction::TxInput>
-CardanoTransaction::TxInput::FromRpcUtxo(
-    const CardanoAddress& address,
+CardanoTransaction::TxInput CardanoTransaction::TxInput::FromRpcUtxo(
     const cardano_rpc::UnspentOutput& utxo) {
   CardanoTransaction::TxInput result;
 
-  result.utxo_address = address;
+  result.utxo_address = utxo.address_to;
   result.utxo_outpoint.txid = utxo.tx_hash;
   result.utxo_outpoint.index = utxo.output_index;
   result.utxo_value = utxo.lovelace_amount;
@@ -401,23 +399,24 @@ bool CardanoTransaction::IsSigned() const {
 }
 
 uint64_t CardanoTransaction::TotalInputsAmount() const {
-  uint64_t result = 0;
+  base::CheckedNumeric<uint64_t> result = 0;
   for (const auto& input : inputs_) {
     result += input.utxo_value;
   }
-  return result;
+  return result.ValueOrDie();
 }
 
 uint64_t CardanoTransaction::TotalOutputsAmount() const {
-  uint64_t result = 0;
+  base::CheckedNumeric<uint64_t> result = 0;
   for (const auto& output : outputs_) {
     result += output.amount;
   }
-  return result;
+  return result.ValueOrDie();
 }
 
 bool CardanoTransaction::AmountsAreValid(uint64_t min_fee) const {
-  return TotalInputsAmount() >= TotalOutputsAmount() + min_fee;
+  return TotalInputsAmount() >=
+         base::CheckAdd(TotalOutputsAmount(), min_fee).ValueOrDie();
 }
 
 uint64_t CardanoTransaction::EffectiveFeeAmount() const {
@@ -502,13 +501,16 @@ bool CardanoTransaction::MoveSurplusFeeToChangeOutput(uint64_t min_fee) {
   auto* target = TargetOutput();
   CHECK(target);
 
-  auto total_input = TotalInputsAmount();
-  if (total_input >= min_fee + target->amount) {
-    change->amount = total_input - (min_fee + target->amount);
-    DCHECK_EQ(EffectiveFeeAmount(), min_fee);
-    return true;
+  base::CheckedNumeric<uint64_t> total_input = TotalInputsAmount();
+  base::CheckedNumeric<uint64_t> change_amount =
+      total_input - min_fee - target->amount;
+  if (!change_amount.IsValid()) {
+    return false;
   }
-  return false;
+
+  change->amount = change_amount.ValueOrDie();
+  DCHECK_EQ(EffectiveFeeAmount(), min_fee);
+  return true;
 }
 
 void CardanoTransaction::ArrangeTransactionForTesting() {

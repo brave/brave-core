@@ -15,7 +15,6 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
-import org.chromium.base.Callbacks;
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AllAccountsInfo;
@@ -41,6 +40,16 @@ import java.util.Locale;
 import java.util.Set;
 
 public class KeyringModel implements KeyringServiceObserver {
+    /**
+     * A generic 1-argument callback.
+     *
+     * @param <T1> The type of the first argument.
+     */
+    public interface Callback1<T1> {
+        /** Call the callback. */
+        void call(T1 arg1);
+    }
+
     private static final String TAG = "KeyringModel";
     private final Object mLock = new Object();
 
@@ -119,8 +128,11 @@ public class KeyringModel implements KeyringServiceObserver {
         }
     }
 
-    public void getAccounts(Callbacks.Callback1<AccountInfo[]> callback1) {
-        mKeyringService.getAllAccounts(allAccounts -> { callback1.call(allAccounts.accounts); });
+    public void getAccounts(Callback1<AccountInfo[]> callback1) {
+        mKeyringService.getAllAccounts(
+                allAccounts -> {
+                    callback1.call(allAccounts.accounts);
+                });
     }
 
     public void isWalletCreated(@NonNull final KeyringService.IsWalletCreated_Response callback) {
@@ -135,7 +147,7 @@ public class KeyringModel implements KeyringServiceObserver {
             @CoinType.EnumType int coinType,
             @KeyringId.EnumType int keyringId,
             String accountName,
-            Callbacks.Callback1<Boolean> callback) {
+            Callback1<Boolean> callback) {
         mKeyringService.addAccount(
                 coinType,
                 keyringId,
@@ -149,7 +161,7 @@ public class KeyringModel implements KeyringServiceObserver {
             @CoinType.EnumType int coinType,
             String chainId,
             String accountName,
-            Callbacks.Callback1<Boolean> callback) {
+            Callback1<Boolean> callback) {
         @KeyringId.EnumType int keyringId = AssetUtils.getKeyring(coinType, chainId);
         if (accountName == null) {
             LiveDataUtil.observeOnce(
@@ -167,7 +179,7 @@ public class KeyringModel implements KeyringServiceObserver {
         }
     }
 
-    public void isWalletLocked(@NonNull final Callbacks.Callback1<Boolean> callback) {
+    public void isWalletLocked(@NonNull final Callback1<Boolean> callback) {
         mKeyringService.isLocked(callback::call);
     }
 
@@ -185,7 +197,7 @@ public class KeyringModel implements KeyringServiceObserver {
     }
 
     private void handleAddAccountResult(
-            AccountInfo result, @NonNull final Callbacks.Callback1<Boolean> callback) {
+            AccountInfo result, @NonNull final Callback1<Boolean> callback) {
         mCryptoSharedActions.updateCoinType();
         mCryptoSharedActions.onNewAccountAdded();
         callback.call(result != null);
@@ -216,7 +228,7 @@ public class KeyringModel implements KeyringServiceObserver {
             @NonNull final Set<NetworkInfo> availableNetworks,
             @NonNull final Set<NetworkInfo> selectedNetworks,
             @NonNull final JsonRpcService jsonRpcService,
-            @NonNull final Callbacks.Callback1<Boolean> callback) {
+            @NonNull final Callback1<Boolean> callback) {
         assertOnUiThread();
         generateWallet(
                 password,
@@ -250,7 +262,7 @@ public class KeyringModel implements KeyringServiceObserver {
             @NonNull final Set<NetworkInfo> availableNetworks,
             @NonNull final Set<NetworkInfo> selectedNetworks,
             @NonNull final JsonRpcService jsonRpcService,
-            @NonNull final Callbacks.Callback1<String> callback) {
+            @NonNull final Callback1<String> callback) {
         assertOnUiThread();
         generateWallet(
                 password,
@@ -270,8 +282,8 @@ public class KeyringModel implements KeyringServiceObserver {
             @NonNull final Set<NetworkInfo> availableNetworks,
             @NonNull final Set<NetworkInfo> selectedNetworks,
             @NonNull final JsonRpcService jsonRpcService,
-            @Nullable final Callbacks.Callback1<String> createCallback,
-            @Nullable final Callbacks.Callback1<Boolean> restoreCallback) {
+            @Nullable final Callback1<String> createCallback,
+            @Nullable final Callback1<Boolean> restoreCallback) {
         final Set<NetworkInfo> removeHiddenNetworks = new HashSet<>();
         final Set<NetworkInfo> addHiddenNetworks = new HashSet<>();
 
@@ -386,7 +398,7 @@ public class KeyringModel implements KeyringServiceObserver {
             @NonNull final String recoveryPhrase,
             final boolean legacyRestoreEnabled,
             @NonNull final Set<NetworkInfo> selectedNetworks,
-            @NonNull final Callbacks.Callback1<Boolean> callback) {
+            @NonNull final Callback1<Boolean> callback) {
         assertOnUiThread();
         mKeyringService.restoreWallet(
                 recoveryPhrase,
@@ -398,7 +410,7 @@ public class KeyringModel implements KeyringServiceObserver {
     private void finalizeWalletCreation(
             @NonNull final String password,
             @NonNull final Set<NetworkInfo> selectedNetworks,
-            @NonNull final Callbacks.Callback1<String> callback) {
+            @NonNull final Callback1<String> callback) {
         assertOnUiThread();
         mKeyringService.createWallet(
                 password,
@@ -408,7 +420,7 @@ public class KeyringModel implements KeyringServiceObserver {
     private <T> void createAccounts(
             final T result,
             @NonNull final Set<NetworkInfo> selectedNetworks,
-            @NonNull final Callbacks.Callback1<T> callback) {
+            @NonNull final Callback1<T> callback) {
         final Set<NetworkInfo> createAccounts = new HashSet<>();
 
         for (NetworkInfo networkInfo : selectedNetworks) {
@@ -455,8 +467,7 @@ public class KeyringModel implements KeyringServiceObserver {
         }
     }
 
-    private <T> void selectEthAccount(
-            final T result, @NonNull final Callbacks.Callback1<T> callback) {
+    private <T> void selectEthAccount(final T result, @NonNull final Callback1<T> callback) {
         mKeyringService.getAllAccounts(
                 allAccounts -> {
                     if (allAccounts.ethDappSelectedAccount != null) {
