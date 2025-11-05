@@ -1439,10 +1439,10 @@ INSTANTIATE_TEST_SUITE_P(
     EphemeralStorageWithDisableThirdPartyStoragePartitioningBrowserTest,
     testing::Bool());
 
-class EphemeralStorageShredSiteDataBrowserTest
+class EphemeralStorageCleanupSiteDataBrowserTest
     : public EphemeralStorageBrowserTest {
  public:
-  EphemeralStorageShredSiteDataBrowserTest() {
+  EphemeralStorageCleanupSiteDataBrowserTest() {
     scoped_feature_list_.InitAndEnableFeature(
         brave_shields::features::kBraveShredFeature);
   }
@@ -1451,8 +1451,8 @@ class EphemeralStorageShredSiteDataBrowserTest
   base::test::ScopedFeatureList scoped_feature_list_;
 };
 
-IN_PROC_BROWSER_TEST_F(EphemeralStorageShredSiteDataBrowserTest,
-                       StorageIsShreddedTabsIsClosed) {
+IN_PROC_BROWSER_TEST_F(EphemeralStorageCleanupSiteDataBrowserTest,
+                       StorageIsCleanedTabsIsClosed) {
   // Open two tabs with different sites.
   WebContents* site_a_tab = LoadURLInNewTab(a_site_ephemeral_storage_url_);
   EXPECT_TRUE(LoadURLInNewTab(a_site_ephemeral_storage_url_));
@@ -1479,7 +1479,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageShredSiteDataBrowserTest,
       site_a_tab->GetSiteInstance()->GetStoragePartitionConfig();
   EphemeralStorageServiceFactory::GetInstance()
       ->GetForContext(profile)
-      ->TLDEphemeralStorageShred("a.com", storage_partition_config, true);
+      ->CleanupTLDEphemeralStorage("a.com", storage_partition_config, true);
 
   // Wait for the cleanup to finish.
   WaitForCleanup(profile);
@@ -1503,8 +1503,8 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageShredSiteDataBrowserTest,
   EXPECT_EQ("b.com", site_b_tab_values.iframe_2.local_storage);
 }
 
-IN_PROC_BROWSER_TEST_F(EphemeralStorageShredSiteDataBrowserTest,
-                       StorageIsShreddedTabsIsClosedForSameDomain) {
+IN_PROC_BROWSER_TEST_F(EphemeralStorageCleanupSiteDataBrowserTest,
+                       StorageIsCleanedTabsIsClosedForSameDomain) {
   const auto a_site_ephemeral_storage_url =
       https_server_.GetURL("a.com", "/ephemeral_storage.html");
   const auto a_a_site_ephemeral_storage_url =
@@ -1565,7 +1565,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageShredSiteDataBrowserTest,
       site_a_tab->GetSiteInstance()->GetStoragePartitionConfig();
   EphemeralStorageServiceFactory::GetInstance()
       ->GetForContext(profile)
-      ->TLDEphemeralStorageShred("a.com", storage_partition_config, true);
+      ->CleanupTLDEphemeralStorage("a.com", storage_partition_config, true);
 
   // Wait for the cleanup to finish.
   WaitForCleanup(profile);
@@ -1604,8 +1604,8 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageShredSiteDataBrowserTest,
       FROM_HERE, GetValuesFromFrame(new_site_b_a_tab->GetPrimaryMainFrame()));
 }
 
-IN_PROC_BROWSER_TEST_F(EphemeralStorageShredSiteDataBrowserTest,
-                       DoNotShredStorageIfShieldsDisabledOnAnySubdomain) {
+IN_PROC_BROWSER_TEST_F(EphemeralStorageCleanupSiteDataBrowserTest,
+                       DoNotCleanupStorageIfShieldsDisabledOnAnySubdomain) {
   const auto a_site_ephemeral_storage_url =
       https_server_.GetURL("a.com", "/ephemeral_storage.html");
   const auto a_a_site_ephemeral_storage_url =
@@ -1649,7 +1649,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageShredSiteDataBrowserTest,
       site_a_tab->GetSiteInstance()->GetStoragePartitionConfig();
   EphemeralStorageServiceFactory::GetInstance()
       ->GetForContext(profile)
-      ->TLDEphemeralStorageShred("a.com", storage_partition_config, false);
+      ->CleanupTLDEphemeralStorage("a.com", storage_partition_config, false);
 
   // Wait for the cleanup to finish.
   WaitForCleanup(profile);

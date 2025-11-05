@@ -10,7 +10,6 @@
 #include "base/check.h"
 #include "base/logging.h"
 #include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
-#include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "base/memory/scoped_refptr.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
@@ -28,8 +27,17 @@
 #include "url/origin.h"
 
 #if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_list.h"
+#else
+#include "base/android/jni_android.h"
+#include "base/android/jni_string.h"
+// Suppress unused function warning for JNI functions we don't use
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-function"
+#include "brave/build/android/jni_headers/TabUtils_jni.h"
+#pragma clang diagnostic pop
 #endif
 
 namespace ephemeral_storage {
@@ -152,13 +160,20 @@ void BraveEphemeralStorageServiceDelegate::OnBrowserAdded(Browser* browser) {
 
 void BraveEphemeralStorageServiceDelegate::CloseTabsForDomainAndSubdomains(
     const std::string_view ephemeral_domain) {
-  const Browser* browser =
-      chrome::FindBrowserWithProfile(Profile::FromBrowserContext(context_));
+#if !BUILDFLAG(IS_ANDROID)
+  const auto* browser =
+      chrome::FindTabbedBrowser(Profile::FromBrowserContext(context_), false);
   if (!browser) {
     return;
   }
   static_cast<BraveTabStripModel*>(browser->tab_strip_model())
       ->CloseTabsWithTLD(ephemeral_domain);
+#else
+  Java_TabUtils_closeTabsWithTLD(
+      base::android::AttachCurrentThread(),
+      base::android::ConvertUTF8ToJavaString(
+          base::android::AttachCurrentThread(), std::string(ephemeral_domain)));
+#endif
 }
 
 bool BraveEphemeralStorageServiceDelegate::

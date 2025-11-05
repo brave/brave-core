@@ -1941,6 +1941,32 @@ public abstract class BraveActivity extends ChromeActivity
         }
     }
 
+    /** Close all tabs whose domain matches with a given TLD. */
+    public void closeTabsWithTLD(@NonNull final String tld) {
+        final TabModel tabModel = getCurrentTabModel();
+        final int count = tabModel.getCount();
+
+        // Collect tabs to close (iterate backwards to avoid index issues during closure)
+        for (int i = count - 1; i >= 0; i--) {
+            Tab tab = tabModel.getTabAt(i);
+            if (tab != null) {
+                String spec = tab.getUrl().getSpec();
+                if (spec == null) continue;
+
+                String domain = UrlUtilities.getDomainAndRegistry(spec, false);
+                if (domain == null || domain.isEmpty()) {
+                    domain = spec;
+                }
+
+                if (domain.equals(tld)) {
+                    tab.setClosing(true);
+                    tabModel.getTabRemover()
+                            .closeTabs(TabClosureParams.closeTab(tab).build(), false);
+                }
+            }
+        }
+    }
+
     /**
      * Selects an existing tab if it matches a given origin, marks it as active and returns it.
      *

@@ -88,7 +88,7 @@ class BraveShieldsTabHelper
   void SetHttpsUpgradeMode(mojom::HttpsUpgradeMode mode);
   void SetIsNoScriptEnabled(bool is_enabled);
   void SetForgetFirstPartyStorageEnabled(bool is_enabled);
-  void EnforceShredSiteData();
+  void EnforceSiteDataCleanup();
   void AllowScriptsOnce(const std::vector<std::string>& origins);
   void BlockAllowedScripts(const std::vector<std::string>& origins);
   void SetWebcompatEnabled(ContentSettingsType webcompat_settings_type,
