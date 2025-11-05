@@ -10,7 +10,7 @@
 
 // Extend download_commands_executed_recorded_ array size to include
 // Brave-specific commands.
-#define kMaxValue DELETE_LOCAL_FILE
+#define kMaxValue COPY_DOWNLOAD_LINK
 
 #include <chrome/browser/ui/views/download/download_ui_context_menu_view.h>  // IWYU pragma: export
 

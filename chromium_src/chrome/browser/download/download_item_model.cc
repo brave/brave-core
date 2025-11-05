@@ -6,16 +6,18 @@
 #include "chrome/browser/download/download_item_model.h"
 
 #include "chrome/browser/download/download_commands.h"
+#include "ui/base/clipboard/scoped_clipboard_writer.h"
 
 #define DownloadItemModel DownloadItemModel_Chromium
 
 // Add switch-case handling for Brave-specific commands.
 // These cases are not used by the DownloadItemModel_Chromium, so just fall
 // through.
-#define EDIT_WITH_MEDIA_APP                \
-  EDIT_WITH_MEDIA_APP:                     \
-  case DownloadCommands::REMOVE_FROM_LIST: \
-  case DownloadCommands::DELETE_LOCAL_FILE
+#define EDIT_WITH_MEDIA_APP                 \
+  EDIT_WITH_MEDIA_APP:                      \
+  case DownloadCommands::REMOVE_FROM_LIST:  \
+  case DownloadCommands::DELETE_LOCAL_FILE: \
+  case DownloadCommands::COPY_DOWNLOAD_LINK
 
 #include <chrome/browser/download/download_item_model.cc>
 
@@ -46,6 +48,14 @@ void DownloadItemModel::DeleteLocalFile() {
   DownloadUIModel::GetDownloadItem()->DeleteFile(base::DoNothing());
 }
 
+void DownloadItemModel::CopyDownloadLinkToClipboard() {
+  auto url = GetURL();
+  CHECK(url.is_valid())
+      << "This call must be reached only when the URL is valid.";
+  ui::ScopedClipboardWriter clipboard_writer(ui::ClipboardBuffer::kCopyPaste);
+  clipboard_writer.WriteText(base::UTF8ToUTF16(url.spec()));
+}
+
 #if !BUILDFLAG(IS_ANDROID)
 bool DownloadItemModel::IsCommandEnabled(
     const DownloadCommands* download_commands,
@@ -57,6 +67,10 @@ bool DownloadItemModel::IsCommandEnabled(
 
   if (command == DownloadCommands::REMOVE_FROM_LIST) {
     return true;
+  }
+
+  if (command == DownloadCommands::COPY_DOWNLOAD_LINK) {
+    return GetURL().is_valid();
   }
 
   return DownloadItemModel_Chromium::IsCommandEnabled(download_commands,
@@ -73,6 +87,11 @@ void DownloadItemModel::ExecuteCommand(DownloadCommands* download_commands,
   if (command == DownloadCommands::REMOVE_FROM_LIST) {
     // Calls non-const version of GetDownloadItem() here.
     DownloadUIModel::GetDownloadItem()->Remove();
+    return;
+  }
+
+  if (command == DownloadCommands::COPY_DOWNLOAD_LINK) {
+    CopyDownloadLinkToClipboard();
     return;
   }
 

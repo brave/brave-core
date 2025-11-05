@@ -12,11 +12,14 @@
 
 namespace {
 
+bool AlreadyHasCommand(int command_id, ui::SimpleMenuModel* model) {
+  return model && model->GetIndexOfCommandId(command_id).has_value();
+}
+
 void MaybeAddRemoveFromListCommand(DownloadUIModel& download,
                                    ui::SimpleMenuModel* model) {
   // Early return if |model| has the item. |model| is cached by base class.
-  if (auto index =
-          model->GetIndexOfCommandId(DownloadCommands::REMOVE_FROM_LIST)) {
+  if (AlreadyHasCommand(DownloadCommands::REMOVE_FROM_LIST, model)) {
     return;
   }
 
@@ -34,6 +37,21 @@ void MaybeAddRemoveFromListCommand(DownloadUIModel& download,
   }
 }
 
+void MaybeAddCopyDownloadLinkMenuItem(DownloadUIModel& download,
+                                      ui::SimpleMenuModel* model) {
+  // Early return if |model| has the item. |model| is cached by base class.
+  if (AlreadyHasCommand(DownloadCommands::COPY_DOWNLOAD_LINK, model)) {
+    return;
+  }
+
+  if (auto index =
+          model->GetIndexOfCommandId(DownloadCommands::SHOW_IN_FOLDER)) {
+    model->InsertItemAt(
+        *index + 1, DownloadCommands::COPY_DOWNLOAD_LINK,
+        l10n_util::GetStringUTF16(IDS_DOWNLOAD_COPY_DOWNLOAD_LINK));
+  }
+}
+
 void InsertBraveSpecificCommandsToModel(
     const base::WeakPtr<DownloadUIModel>& download,
     ui::SimpleMenuModel* model) {
@@ -41,6 +59,7 @@ void InsertBraveSpecificCommandsToModel(
     return;
   }
 
+  MaybeAddCopyDownloadLinkMenuItem(*download, model);
   MaybeAddRemoveFromListCommand(*download, model);
 }
 
@@ -49,12 +68,13 @@ void InsertBraveSpecificCommandsToModel(
 #define RecordCommandsEnabled RecordCommandsEnabled_Unused
 
 // Add switch-case handling for Brave-specific commands.
-// These cases are not used by the DownloadShelfContextMenu, so just fall
+// These cases are not used by the DownloadUIContextMenu, so just fall
 // through.
-#define EDIT_WITH_MEDIA_APP                \
-  EDIT_WITH_MEDIA_APP:                     \
-  case DownloadCommands::REMOVE_FROM_LIST: \
-  case DownloadCommands::DELETE_LOCAL_FILE
+#define EDIT_WITH_MEDIA_APP                 \
+  EDIT_WITH_MEDIA_APP:                      \
+  case DownloadCommands::REMOVE_FROM_LIST:  \
+  case DownloadCommands::DELETE_LOCAL_FILE: \
+  case DownloadCommands::COPY_DOWNLOAD_LINK
 
 #define GetMenuModel GetMenuModel_Chromium
 

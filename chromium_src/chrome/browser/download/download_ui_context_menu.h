@@ -6,6 +6,9 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_DOWNLOAD_DOWNLOAD_UI_CONTEXT_MENU_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_DOWNLOAD_DOWNLOAD_UI_CONTEXT_MENU_H_
 
+#include "chrome/browser/download/download_commands.h"
+#include "chrome/browser/download/download_item_model.h"
+
 // Scrubs out code for histogram.
 #define RecordCommandsEnabled(...)      \
   RecordCommandsEnabled(__VA_ARGS__) {} \

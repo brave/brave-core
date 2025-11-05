@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "base/strings/utf_string_conversions.h"
 #include "base/test/scoped_feature_list.h"
 #include "chrome/browser/download/download_item_model.h"
 #include "chrome/browser/download/download_ui_context_menu.h"
@@ -16,6 +17,9 @@
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/base/clipboard/clipboard.h"
+#include "ui/base/clipboard/clipboard_buffer.h"
+#include "ui/base/clipboard/test/test_clipboard.h"
 #include "ui/menus/simple_menu_model.h"
 #include "url/gurl.h"
 
@@ -214,4 +218,27 @@ TEST_F(DownloadBubbleTest,
 
   DownloadCommands commands(model_.GetWeakPtr());
   EXPECT_FALSE(commands.IsCommandEnabled(DownloadCommands::DELETE_LOCAL_FILE));
+}
+
+TEST_F(DownloadBubbleTest, DownloadCommands_CopyDownloadLink) {
+  ui::TestClipboard::CreateForCurrentThread();
+
+  SetupDownloadItemDefaults();
+
+  // Check if "Copy download link" command exists.
+  DownloadCommands commands(model_.GetWeakPtr());
+  EXPECT_TRUE(commands.IsCommandEnabled(DownloadCommands::COPY_DOWNLOAD_LINK));
+
+  // Check if executing the command copies the URL to clipboard.
+  auto* clipboard = ui::Clipboard::GetForCurrentThread();
+  clipboard->Clear(ui::ClipboardBuffer::kCopyPaste);
+  commands.ExecuteCommand(DownloadCommands::COPY_DOWNLOAD_LINK);
+
+  std::u16string clipboard_text;
+  clipboard->ReadText(ui::ClipboardBuffer::kCopyPaste, nullptr,
+                      &clipboard_text);
+
+  EXPECT_EQ(base::UTF8ToUTF16(model_.GetURL().spec()), clipboard_text);
+
+  ui::TestClipboard::DestroyClipboardForCurrentThread();
 }

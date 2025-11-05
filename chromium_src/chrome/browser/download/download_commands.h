@@ -17,6 +17,8 @@
   /* Remove downloaded file from disk and and remove the download item from */ \
   /* the list. Used by download bubble view. */                                \
   DELETE_LOCAL_FILE = 24,                                                      \
+  /* Copy download link to clipboard from DownloadUIContextMenuView */         \
+  COPY_DOWNLOAD_LINK = 25,                                                  \
   OPEN_WITH_MEDIA_APP
 
 #include <chrome/browser/download/download_commands.h>  // IWYU pragma: export
