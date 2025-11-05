@@ -12,7 +12,9 @@ class BottomToolbarView: UIView, ToolbarProtocol {
   weak var tabToolbarDelegate: ToolbarDelegate?
 
   let tabsButton = TabsButton()
-  let forwardButton = ToolbarButton()
+  let forwardButton = ToolbarButton().then {
+    $0.isHidden = true
+  }
   let backButton = ToolbarButton()
   let shareButton = ToolbarButton()
   let addTabButton = ToolbarButton()
@@ -30,7 +32,9 @@ class BottomToolbarView: UIView, ToolbarProtocol {
 
   init(privateBrowsingManager: PrivateBrowsingManager) {
     self.privateBrowsingManager = privateBrowsingManager
-    actionButtons = [backButton, forwardButton, addTabButton, searchButton, tabsButton, menuButton]
+    actionButtons = [
+      backButton, shareButton, forwardButton, addTabButton, searchButton, tabsButton, menuButton,
+    ]
     super.init(frame: .zero)
     setupAccessibility()
 
@@ -158,14 +162,7 @@ class BottomToolbarView: UIView, ToolbarProtocol {
   }
 
   func updateForwardStatus(_ canGoForward: Bool) {
-    if canGoForward, let shareIndex = contentView.arrangedSubviews.firstIndex(of: shareButton) {
-      shareButton.removeFromSuperview()
-      contentView.insertArrangedSubview(forwardButton, at: shareIndex)
-    } else if !canGoForward,
-      let forwardIndex = contentView.arrangedSubviews.firstIndex(of: forwardButton)
-    {
-      forwardButton.removeFromSuperview()
-      contentView.insertArrangedSubview(shareButton, at: forwardIndex)
-    }
+    forwardButton.isHidden = !canGoForward
+    shareButton.isHidden = canGoForward
   }
 }
