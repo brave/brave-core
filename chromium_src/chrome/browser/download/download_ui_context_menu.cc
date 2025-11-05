@@ -5,7 +5,11 @@
 
 #include "chrome/browser/download/download_ui_context_menu.h"
 
+<<<<<<< HEAD
 #include "brave/grit/brave_generated_resources.h"
+=======
+#include "brave/browser/download/brave_download_commands_macros.h"
+>>>>>>> 7bac4860968 (Add "Copy download link" command to download bubble)
 #include "chrome/browser/download/download_commands.h"
 #include "chrome/browser/download/download_ui_model.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -49,12 +53,11 @@ void InsertBraveSpecificCommandsToModel(
 #define RecordCommandsEnabled RecordCommandsEnabled_Unused
 
 // Add switch-case handling for Brave-specific commands.
-// These cases are not used by the DownloadShelfContextMenu, so just fall
+// These cases are not used by the DownloadUIContextMenu, so just fall
 // through.
-#define EDIT_WITH_MEDIA_APP                \
-  EDIT_WITH_MEDIA_APP:                     \
-  case DownloadCommands::REMOVE_FROM_LIST: \
-  case DownloadCommands::DELETE_LOCAL_FILE
+#define EDIT_WITH_MEDIA_APP \
+  EDIT_WITH_MEDIA_APP:      \
+  BRAVE_DOWNLOAD_COMMANDS_SWITCH_CASES
 
 #define GetMenuModel GetMenuModel_Chromium
 
@@ -69,3 +72,27 @@ ui::SimpleMenuModel* DownloadUiContextMenu::GetMenuModel() {
   InsertBraveSpecificCommandsToModel(download_, model);
   return model;
 }
+
+
+// void DownloadUiContextMenuView::MaybeAddCopyDownloadLinkMenuItem(
+//     DownloadUIModel* download,
+//     ui::SimpleMenuModel* model) {
+//   // Early return if |model| has the item. |model| is cached by base class.
+//   if (AlreadyHasCommand(BraveDownloadCommands::COPY_DOWNLOAD_LINK, model)) {
+//     return;
+//   }
+
+//   if (auto index =
+//           model->GetIndexOfCommandId(DownloadCommands::SHOW_IN_FOLDER)) {
+//     model->InsertItemAt(
+//         *index + 1, BraveDownloadCommands::COPY_DOWNLOAD_LINK,
+//         l10n_util::GetStringUTF16(
+//             IDS_DOWNLOAD_BUBBLE_ITEM_CTX_MENU_COPY_DOWNLOAD_LINK));
+//   }
+// }
+
+// bool DownloadUiContextMenuView::AlreadyHasCommand(
+//     int command_id,
+//     ui::SimpleMenuModel* model) const {
+//   return model && model->GetIndexOfCommandId(command_id).has_value();
+// }

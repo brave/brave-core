@@ -6,6 +6,10 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_DOWNLOAD_DOWNLOAD_UI_CONTEXT_MENU_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_DOWNLOAD_DOWNLOAD_UI_CONTEXT_MENU_H_
 
+#include "brave/browser/download/brave_download_commands.h"
+#include "chrome/browser/download/download_commands.h"
+#include "chrome/browser/download/download_item_model.h"
+
 // Scrubs out code for histogram.
 #define RecordCommandsEnabled(...)      \
   RecordCommandsEnabled(__VA_ARGS__) {} \
@@ -22,8 +26,12 @@
   GetMenuModel_Chromium(); \
   ui::SimpleMenuModel* GetMenuModel
 
+// Replace DownloadCommands with BraveDownloadCommands in the member variable.
+#define DownloadCommands BraveDownloadCommands
+
 #include <chrome/browser/download/download_ui_context_menu.h>  // IWYU pragma: export
 
+#undef DownloadCommands
 #undef GetMenuModel
 #undef DetachFromDownloadItem
 #undef RecordCommandsEnabled
