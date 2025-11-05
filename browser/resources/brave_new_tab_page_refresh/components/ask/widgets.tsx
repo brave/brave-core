@@ -85,76 +85,12 @@ function NewsDigestWidget() {
   )
 }
 
-interface WeatherData {
-  temperature: number
-  description: string
-  weatherCode: number
-}
-
 function WeatherWidget() {
-  const [weatherData, setWeatherData] = React.useState<WeatherData | null>(null)
-  const [loading, setLoading] = React.useState(true)
-  const [error, setError] = React.useState<string | null>(null)
-
-  React.useEffect(() => {
-    const fetchWeather = async () => {
-      try {
-        // San Francisco coordinates
-        const latitude = 37.7749
-        const longitude = -122.4194
-        
-        // Open-Meteo API - free, no API key required
-        const response = await fetch(
-          `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,weather_code&temperature_unit=fahrenheit&forecast_days=4&daily=temperature_2m_max,temperature_2m_min`
-        )
-        
-        if (!response.ok) {
-          throw new Error('Failed to fetch weather data')
-        }
-        
-        const data = await response.json()
-        
-        // Weather code interpretation
-        const getWeatherDescription = (code: number, temps: { max: number[], min: number[] }) => {
-          let condition = ''
-          if (code === 0) condition = 'clear'
-          else if (code <= 3) condition = 'partly cloudy'
-          else if (code <= 49) condition = 'foggy'
-          else if (code <= 69) condition = 'rainy'
-          else if (code <= 79) condition = 'snowy'
-          else condition = 'stormy'
-          
-          // Analyze temperature trend
-          const avgCurrent = (temps.max[0] + temps.min[0]) / 2
-          const avgFuture = temps.max.slice(1, 4).reduce((a, b, i) => a + (b + temps.min[i + 1]) / 2, 0) / 3
-          const trend = avgFuture > avgCurrent + 3 ? 'Warming' : avgFuture < avgCurrent - 3 ? 'Cooling' : 'Steady temperatures'
-          
-          return `${trend} expected over the next 4 days. Currently ${condition}.`
-        }
-        
-        const temps = {
-          max: data.daily.temperature_2m_max,
-          min: data.daily.temperature_2m_min
-        }
-        
-        setWeatherData({
-          temperature: Math.round(data.current.temperature_2m),
-          weatherCode: data.current.weather_code,
-          description: getWeatherDescription(data.current.weather_code, temps)
-        })
-        setLoading(false)
-      } catch (err) {
-        console.error('Error fetching weather:', err)
-        setError('Unable to load weather')
-        setLoading(false)
-      }
-    }
-
-    fetchWeather()
-    // Refresh weather data every 10 minutes
-    const interval = setInterval(fetchWeather, 10 * 60 * 1000)
-    return () => clearInterval(interval)
-  }, [])
+  // Hardcoded weather data for San Francisco
+  const weatherData = {
+    temperature: 68,
+    description: 'Steady temperatures expected over the next 4 days. Currently partly cloudy.'
+  }
 
   return (
     <div className='widget weather'>
@@ -162,18 +98,10 @@ function WeatherWidget() {
         <div className='weather-location'>San Francisco, CA</div>
       </div>
       <div className='weather-content'>
-        {loading ? (
-          <div className='weather-temp'>Loading...</div>
-        ) : error ? (
-          <div className='weather-temp'>{error}</div>
-        ) : weatherData ? (
-          <>
-            <div className='weather-temp'>{weatherData.temperature}° F</div>
-            <div className='weather-description'>
-              {weatherData.description}
-            </div>
-          </>
-        ) : null}
+        <div className='weather-temp'>{weatherData.temperature}° F</div>
+        <div className='weather-description'>
+          {weatherData.description}
+        </div>
       </div>
     </div>
   )
