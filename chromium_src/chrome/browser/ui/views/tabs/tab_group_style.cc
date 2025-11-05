@@ -9,6 +9,7 @@
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/features.h"
+#include "third_party/skia/include/core/SkPathBuilder.h"
 
 #define TabGroupUnderline BraveTabGroupUnderline
 #define TabGroupStyle TabGroupStyle_ChromiumImpl
@@ -43,22 +44,23 @@ SkPath TabGroupStyle::GetUnderlinePath(gfx::Rect local_bounds) const {
   // ++  tab 2          | counter-clockwise
   // +   tab 3          |
   //
-  SkPath path;
-  path.arcTo(/* rx = */ kStrokeThicknessForVerticalTabs,
-             /* ry = */ kStrokeThicknessForVerticalTabs,
-             /* angle = */ 180.f, SkPath::kSmall_ArcSize, SkPathDirection::kCW,
-             /* x = */ kStrokeThicknessForVerticalTabs,
-             /* y = */ kStrokeThicknessForVerticalTabs);
-  path.lineTo(kStrokeThicknessForVerticalTabs,
-              local_bounds.height() - kStrokeThicknessForVerticalTabs);
-  path.arcTo(/* rx = */ kStrokeThicknessForVerticalTabs,
-             /* ry = */ kStrokeThicknessForVerticalTabs,
-             /* angle = */ 180.f, SkPath::kSmall_ArcSize, SkPathDirection::kCW,
-             /* x = */ 0,
-             /* y = */ local_bounds.height());
-  path.close();
-
-  return path;
+  return SkPathBuilder()
+      .arcTo({/* rx = */ kStrokeThicknessForVerticalTabs,
+              /* ry = */ kStrokeThicknessForVerticalTabs},
+             /* angle = */ 180.f, SkPathBuilder::kSmall_ArcSize,
+             SkPathDirection::kCW,
+             {/* x = */ kStrokeThicknessForVerticalTabs,
+              /* y = */ kStrokeThicknessForVerticalTabs})
+      .lineTo(kStrokeThicknessForVerticalTabs,
+              local_bounds.height() - kStrokeThicknessForVerticalTabs)
+      .arcTo({/* rx = */ kStrokeThicknessForVerticalTabs,
+              /* ry = */ kStrokeThicknessForVerticalTabs},
+             /* angle = */ 180.f, SkPathBuilder::kSmall_ArcSize,
+             SkPathDirection::kCW,
+             {/* x = */ 0,
+              /* y = */ static_cast<float>(local_bounds.height())})
+      .close()
+      .detach();
 }
 
 gfx::Insets TabGroupStyle::GetInsetsForHeaderChip() const {

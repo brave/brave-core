@@ -127,9 +127,7 @@ SkPath BraveShieldsActionView::GetHighlightPath() const {
   rect.Inset(highlight_insets);
   const int radii = ChromeLayoutProvider::Get()->GetCornerRadiusMetric(
       views::Emphasis::kHigh, rect.size());
-  SkPath path;
-  path.addRoundRect(gfx::RectToSkRect(rect), radii, radii);
-  return path;
+  return SkPath::RRect(gfx::RectToSkRect(rect), radii, radii);
 }
 
 views::Widget* BraveShieldsActionView::GetBubbleWidget() {

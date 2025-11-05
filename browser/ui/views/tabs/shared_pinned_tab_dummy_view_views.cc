@@ -102,12 +102,10 @@ SharedPinnedTabDummyViewViews::SharedPinnedTabDummyViewViews(
               .SetProperty(views::kMarginsKey, gfx::Insets().set_top(8)))
       .BuildChildren();
 
-  SkPath path;
-  path.addRoundRect(
+  thumbnail_view_->SetClipPath(SkPath::RRect(
       SkRect::MakeWH(kThumbnailImageSize.width(), kThumbnailImageSize.height()),
       kThumbnailRadius - kThumbnailBorderThickness,
-      kThumbnailRadius - kThumbnailBorderThickness);
-  thumbnail_view_->SetClipPath(path);
+      kThumbnailRadius - kThumbnailBorderThickness));
 
   subscription_->SetSizeHint(kThumbnailImageSize);
   subscription_->SetUncompressedImageCallback(base::BindRepeating(

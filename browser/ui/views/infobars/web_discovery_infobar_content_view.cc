@@ -150,9 +150,8 @@ WebDiscoveryInfoBarContentView::WebDiscoveryInfoBarContentView(
 WebDiscoveryInfoBarContentView::~WebDiscoveryInfoBarContentView() = default;
 
 void WebDiscoveryInfoBarContentView::OnPaint(gfx::Canvas* canvas) {
-  SkPath mask;
-  mask.addRoundRect(gfx::RectToSkRect(GetContentsBounds()), 16, 16);
-  canvas->ClipPath(mask, true);
+  canvas->ClipPath(
+      SkPath::RRect(gfx::RectToSkRect(GetContentsBounds()), 16, 16), true);
   View::OnPaint(canvas);
 }
 

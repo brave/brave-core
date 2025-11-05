@@ -379,8 +379,7 @@ void BraveLocationBarView::FocusLocation(bool is_user_initiated) {
 
 SkPath BraveLocationBarView::GetFocusRingHighlightPath() const {
   const SkScalar radius = GetBorderRadius();
-  return SkPath().addRoundRect(gfx::RectToSkRect(GetLocalBounds()), radius,
-                               radius);
+  return SkPath::RRect(gfx::RectToSkRect(GetLocalBounds()), radius, radius);
 }
 
 ContentSettingImageView*

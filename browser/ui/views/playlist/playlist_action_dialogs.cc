@@ -93,11 +93,9 @@ class TiledItemsView : public views::BoxLayoutView {
     auto container = std::make_unique<views::BoxLayoutView>();
     container->SetOrientation(views::BoxLayout::Orientation::kVertical);
     container->AddChildView(std::make_unique<views::BoxLayoutView>());
-    SkPath clip;
-    clip.addRoundRect(
+    container->SetClipPath(SkPath::RRect(
         SkRect::MakeWH(kThumbnailSize.width(), kThumbnailSize.height()),
-        kCornerRadius, kCornerRadius);
-    container->SetClipPath(clip);
+        kCornerRadius, kCornerRadius));
     if (!is_single_row) {
       container->AddChildView(std::make_unique<views::BoxLayoutView>());
     }

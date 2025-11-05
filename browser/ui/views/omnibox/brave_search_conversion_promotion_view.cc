@@ -30,6 +30,7 @@
 #include "components/strings/grit/components_strings.h"
 #include "components/vector_icons/vector_icons.h"
 #include "third_party/skia/include/core/SkPath.h"
+#include "third_party/skia/include/core/SkPathBuilder.h"
 #include "ui/accessibility/ax_enums.mojom.h"
 #include "ui/accessibility/ax_node_data.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -211,11 +212,9 @@ class BannerTypeContainer : public views::View {
 
   // views::View overrides:
   void OnPaint(gfx::Canvas* canvas) override {
-    SkPath mask;
-    mask.addRoundRect(gfx::RectToSkRect(GetLocalBounds()), kBannerTypeRadius,
-                      kBannerTypeRadius);
-    canvas->ClipPath(mask, true);
-
+    canvas->ClipPath(SkPath::RRect(gfx::RectToSkRect(GetLocalBounds()),
+                                   kBannerTypeRadius, kBannerTypeRadius),
+                     true);
     View::OnPaint(canvas);
   }
 };
@@ -266,17 +265,17 @@ class BraveOmniboxResultSelectionIndicator : public views::View {
   // represented using a fill path. This matches the style and implementation
   // used in Tab Groups.
   SkPath GetPath() const {
-    SkPath path;
-
-    path.moveTo(0, 0);
-    path.arcTo(kStrokeThickness, kStrokeThickness, 0, SkPath::kSmall_ArcSize,
-               SkPathDirection::kCW, kStrokeThickness, kStrokeThickness);
-    path.lineTo(kStrokeThickness, height() - kStrokeThickness);
-    path.arcTo(kStrokeThickness, kStrokeThickness, 0, SkPath::kSmall_ArcSize,
-               SkPathDirection::kCW, 0, height());
-    path.close();
-
-    return path;
+    return SkPathBuilder()
+        .moveTo(0, 0)
+        .arcTo({kStrokeThickness, kStrokeThickness}, 0,
+               SkPathBuilder::kSmall_ArcSize, SkPathDirection::kCW,
+               {kStrokeThickness, kStrokeThickness})
+        .lineTo(kStrokeThickness, height() - kStrokeThickness)
+        .arcTo({kStrokeThickness, kStrokeThickness}, 0,
+               SkPathBuilder::kSmall_ArcSize, SkPathDirection::kCW,
+               {0, static_cast<float>(height())})
+        .close()
+        .detach();
   }
 };
 
