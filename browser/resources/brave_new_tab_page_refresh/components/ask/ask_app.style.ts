@@ -123,7 +123,7 @@ export const style = scoped.css`
     align-items: center;
     min-height: 100vh;
     gap: 40px;
-    padding: 16px ${horizontalContentPadding}px;
+    padding: 16px ${horizontalContentPadding}px 32px;
   }
 
   .topsites-container {
@@ -135,12 +135,12 @@ export const style = scoped.css`
 
   .inputbox-container {
     width: calc(100vw - 32px);
-    max-width: 720px;
+    max-width: 753px;
   }
 
   .widget-container {
     width: calc(100vw - 32px);
-    max-width: 720px;
+    max-width: 753px;
   }
 `
 

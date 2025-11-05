@@ -207,20 +207,20 @@
     "includes": [32540],
   },
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_new_tab_page_refresh/brave_new_tab_page_refresh.grd": {
-    "META": {"sizes": {"includes": [30]}},
+    "META": {"sizes": {"includes": [40]}},
     "includes": [32560],
   },
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-email_aliases/email_aliases.grd": {
     "META": {"sizes": {"includes": [40]}},
-    "includes": [32580],
+    "includes": [32600],
   },
   "<(SHARED_INTERMEDIATE_DIR)/brave/components/brave_account/resources/resources.grd": {
     "META": {"sizes": {"includes": [35]}},
-    "includes": [32600],
+    "includes": [32640],
   },
   "brave/ios/web/test/test_resources.grd": {
     "META": {"sizes": {"includes": [10]}},
-    "includes": [32620],
+    "includes": [32660],
   },
   # WARNING: The upstream ChromeOS/Ash strings currently run through 40000. We
   # must be careful not to exceed that maximum when adding new strings here.
