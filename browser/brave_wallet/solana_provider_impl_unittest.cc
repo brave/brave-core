@@ -641,6 +641,7 @@ TEST_F(SolanaProviderImplUnitTest, ConnectWithNoSolanaAccount) {
   EXPECT_TRUE(account.empty());
   EXPECT_EQ(error, mojom::SolanaProviderError::kInternalError);
   EXPECT_FALSE(IsConnected());
+  EXPECT_TRUE(account_creation_callback_future.IsReady());
   EXPECT_EQ(account_creation_callback_future.Take(), "Solana");
   EXPECT_TRUE(provider_->account_creation_shown_);
 
@@ -651,7 +652,7 @@ TEST_F(SolanaProviderImplUnitTest, ConnectWithNoSolanaAccount) {
   EXPECT_TRUE(account.empty());
   EXPECT_EQ(error, mojom::SolanaProviderError::kInternalError);
   EXPECT_FALSE(IsConnected());
-  EXPECT_EQ(account_creation_callback_future.Take(), "Solana");
+  EXPECT_FALSE(account_creation_callback_future.IsReady());
   EXPECT_TRUE(provider_->account_creation_shown_);
   // Clear previous set callback which won't run in this test suite
   SetCallbackForAccountCreationForTesting(base::DoNothing());
