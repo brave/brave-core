@@ -10,8 +10,10 @@ import os
 import shutil
 import sys
 
-from os.path import abspath, dirname
+from gclient_utils import exponential_backoff_retry
 from lib.util import execute
+from os.path import abspath, dirname
+from subprocess import CalledProcessError
 
 cert = os.environ.get('CERT')
 cert_hash = os.environ.get('AUTHENTICODE_HASH')
@@ -24,7 +26,6 @@ signtool_args = (
     'sign /t http://timestamp.digicert.com /sm '
     '/fd sha256')
 
-
 assert cert or cert_hash or signtool_args, \
     'At least one of AUTHENTICODE_HASH, CERT and SIGNTOOL_ARGS must be set.\n'\
     'The preferred parameter is AUTHENTICODE_HASH. Its value can be obtained '\
@@ -32,6 +33,12 @@ assert cert or cert_hash or signtool_args, \
     'CERT is a part of the name in the //CurrentUser/My Windows Certificate ' \
     'Store. It is ambiguous and will likely be deprecated in the future.'
 
+
+# pylint: disable=dangerous-default-value
+def execute_with_retry(argv, env=os.environ, count=5):
+    return exponential_backoff_retry(lambda: execute(argv, env),
+                                     excs=(RuntimeError, CalledProcessError),
+                                     count=count)
 
 def get_sign_cmd(file):
     # https://docs.microsoft.com/en-us/dotnet/framework/tools/signtool-exe
@@ -44,7 +51,6 @@ def get_sign_cmd(file):
         cmd = cmd + ' /sha1 "' + cert_hash + '"'
     return cmd + ' "' + file + '"'
 
-
 def sign_binaries(base_dir, endswidth=('.exe', '.dll')):
     matches = []
     for root, _, filenames in os.walk(base_dir):
@@ -55,15 +61,13 @@ def sign_binaries(base_dir, endswidth=('.exe', '.dll')):
     for binary in matches:
         sign_binary(binary)
 
-
 def sign_binary(binary, out_file=None):
     if out_file:
         os.makedirs(dirname(abspath(out_file)), exist_ok=True)
         shutil.copy(binary, out_file)
         binary = out_file
     cmd = get_sign_cmd(binary)
-    execute(cmd)
-
+    execute_with_retry(cmd)
 
 def main():
     parser = argparse.ArgumentParser()
@@ -73,7 +77,6 @@ def main():
                               'file is signed in-place.'))
     args = parser.parse_args()
     sign_binary(args.file, args.out_file)
-
 
 if __name__ == '__main__':
     sys.exit(main())
