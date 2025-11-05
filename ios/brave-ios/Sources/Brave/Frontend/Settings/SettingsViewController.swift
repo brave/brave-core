@@ -78,6 +78,11 @@ class SettingsViewController: TableViewController {
   private let windowProtection: WindowProtection?
   private let ipfsAPI: IpfsAPI
   private let altIconsModel = AltIconsModel()
+  private let prefsChangeRegistrar: PrefChangeRegistrar
+
+  private lazy var braveAccountAuthentication: any BraveAccountAuthentication = {
+    return BraveAccountAuthenticationBridgeImpl(profile: braveCore.profile)
+  }()
 
   private let featureSectionUUID: UUID = .init()
   private let displaySectionUUID: UUID = .init()
@@ -117,6 +122,7 @@ class SettingsViewController: TableViewController {
     self.keyringStore = keyringStore
     self.cryptoStore = cryptoStore
     self.ipfsAPI = braveCore.ipfsAPI
+    self.prefsChangeRegistrar = PrefChangeRegistrar(prefService: braveCore.profile.prefs)
 
     super.init(style: .insetGrouped)
 
@@ -174,6 +180,21 @@ class SettingsViewController: TableViewController {
         self.tableView.reloadData()
       }
       .store(in: &cancellables)
+
+    let refreshUI = { [weak self] (_: Any) in
+      DispatchQueue.main.async {
+        self?.setUpSections()
+        self?.tableView.reloadData()
+      }
+    }
+    prefsChangeRegistrar.addObserver(
+      forPath: BraveAccountAuthenticationTokenPref,
+      callback: refreshUI
+    )
+    prefsChangeRegistrar.addObserver(
+      forPath: BraveAccountVerificationTokenPref,
+      callback: refreshUI
+    )
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -334,12 +355,71 @@ class SettingsViewController: TableViewController {
     return section
   }()
 
-  private lazy var braveAccountSection: Static.Section = {
-    var section = Static.Section(
+  private var braveAccountSection: Static.Section {
+    let authenticationToken = braveCore.profile.prefs.string(
+      forPath: BraveAccountAuthenticationTokenPref
+    )
+    if !authenticationToken.isEmpty {
+      return Static.Section(
+        header: .title(Strings.braveAccount),
+        rows: [
+          Row(
+            text: "John Doe",
+            detailText: "johndoe@gmail.com",
+            image: UIImage(sharedNamed: "brave.logo"),
+            cellClass: BraveAccountIconCell.self
+          ),
+          Row(
+            text: Strings.braveAccountSignOut,
+            selection: { [unowned self] in braveAccountAuthentication.logOut() },
+            cellClass: BraveAccountIconCell.self,
+            context: [
+              BraveAccountIconCell.titleColorKey: UIColor(braveSystemName: .textInteractive)
+            ]
+          ),
+        ]
+      )
+    }
+
+    let verificationToken = braveCore.profile.prefs.string(
+      forPath: BraveAccountVerificationTokenPref
+    )
+    if !verificationToken.isEmpty {
+      return Static.Section(
+        header: .title(Strings.braveAccount),
+        rows: [
+          Row(
+            text: Strings.braveAccountAlmostThere,
+            detailText: Strings.braveAccountAlmostThereDetail,
+            image: UIImage(sharedNamed: "brave.logo"),
+            cellClass: BraveAccountIconCell.self
+          ),
+          Row(
+            text: Strings.braveAccountResendConfirmationEmail,
+            detailText: Strings.braveAccountResendConfirmationEmailDetail,
+            selection: { [unowned self] in braveAccountAuthentication.resendConfirmationEmail() },
+            cellClass: BraveAccountIconCell.self,
+            context: [
+              BraveAccountIconCell.titleColorKey: UIColor(braveSystemName: .textInteractive)
+            ]
+          ),
+          Row(
+            text: Strings.braveAccountCancelRegistration,
+            selection: { [unowned self] in braveAccountAuthentication.cancelRegistration() },
+            cellClass: BraveAccountIconCell.self,
+            context: [
+              BraveAccountIconCell.titleColorKey: UIColor(braveSystemName: .systemfeedbackErrorText)
+            ]
+          ),
+        ]
+      )
+    }
+
+    return Static.Section(
       header: .title(Strings.braveAccount),
       rows: [
         Row(
-          text: Strings.getStarted,
+          text: Strings.braveAccountGetStarted,
           selection: { [unowned self] in
             let controller = ChromeWebUIController(braveCore: braveCore, isPrivateBrowsing: false)
             let container = UINavigationController(rootViewController: controller)
@@ -359,9 +439,7 @@ class SettingsViewController: TableViewController {
         )
       ]
     )
-
-    return section
-  }()
+  }
 
   private func makeFeaturesSection() -> Static.Section {
     weak var spinner: SpinnerView?
@@ -1600,16 +1678,29 @@ class SettingsViewController: TableViewController {
   }
 }
 
-private class BraveAccountIconCell: UITableViewCell, Cell {
+private final class BraveAccountIconCell: UITableViewCell, Cell {
+  static let titleColorKey = "titleColor"
+
   func configure(row: Row) {
     var content = defaultContentConfiguration()
-    let scaledValue = UIFontMetrics.default.scaledValue(for: 26)
-    content.image = row.image?.preparingThumbnail(
-      of: .init(width: scaledValue, height: scaledValue)
-    )
+
+    if let image = row.image {
+      let scaledValue = UIFontMetrics.default.scaledValue(for: 26)
+      content.image = image.preparingThumbnail(of: .init(width: scaledValue, height: scaledValue))
+    }
+
     content.text = row.text
+    content.textProperties.numberOfLines = 0
+    if let titleColor = row.context?[Self.titleColorKey] as? UIColor {
+      content.textProperties.color = titleColor
+    }
+
+    content.secondaryText = row.detailText
+    content.secondaryTextProperties.numberOfLines = 0
+    content.secondaryTextProperties.color = .secondaryBraveLabel
+
     contentConfiguration = content
-    accessoryType = .disclosureIndicator
+    accessoryType = row.accessory.type
   }
 }
 

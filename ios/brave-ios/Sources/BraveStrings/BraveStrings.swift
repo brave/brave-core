@@ -2912,8 +2912,56 @@ extension Strings {
     comment: "Title for the Brave Account section in settings"
   )
 
-  public static let getStarted = NSLocalizedString(
-    "GetStarted",
+  public static let braveAccountSignOut = NSLocalizedString(
+    "BraveAccountSignOut",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Sign out",
+    comment: "Button text to sign out of Brave Account"
+  )
+
+  public static let braveAccountAlmostThere = NSLocalizedString(
+    "BraveAccountAlmostThere",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Almost there!",
+    comment: "Title shown when waiting for email verification"
+  )
+
+  public static let braveAccountAlmostThereDetail = NSLocalizedString(
+    "BraveAccountAlmostThereDetail",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "A confirmation email is on the way. Click the button in that email to activate your account.",
+    comment: "Detail text for the almost there title"
+  )
+
+  public static let braveAccountResendConfirmationEmail = NSLocalizedString(
+    "BraveAccountResendConfirmationEmail",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Resend confirmation email",
+    comment: "Button text to resend confirmation email"
+  )
+
+  public static let braveAccountResendConfirmationEmailDetail = NSLocalizedString(
+    "BraveAccountResendConfirmationEmailDetail",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Don't see the email? Check your spam folder or click on the button to resend the confirmation email.",
+    comment: "Detail text for the resend confirmation email button"
+  )
+
+  public static let braveAccountCancelRegistration = NSLocalizedString(
+    "BraveAccountCancelRegistration",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Cancel registration",
+    comment: "Button text to cancel Brave Account registration"
+  )
+
+  public static let braveAccountGetStarted = NSLocalizedString(
+    "BraveAccountGetStarted",
     tableName: "BraveShared",
     bundle: .module,
     value: "Get Started",
