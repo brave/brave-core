@@ -206,6 +206,7 @@
     "@trezor/connect-web": "9.1.11",
     "@types/jszip": "^3.1.6",
     "@types/react-router-dom": "^5.3.3",
+    "@types/three": "^0.181.0",
     "array-move": "^2.2.1",
     "async": "^3.2.4",
     "bignumber.js": "^9.0.2",
@@ -227,6 +228,7 @@
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
     "remark-gfm": "4.0.1",
+    "three": "^0.181.0",
     "throttleit": "^1.0.0",
     "webext-redux": "^2.1.4"
   },

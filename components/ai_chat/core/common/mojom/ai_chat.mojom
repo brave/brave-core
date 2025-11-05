@@ -201,6 +201,11 @@ interface Service {
 
   // Bind metrics interface
   BindMetrics(pending_receiver<Metrics> metrics);
+
+  // Api call for converting audio to text.
+  SpeechToText(array<uint8> audio_data) => (string text);
+  // Api call for converting text to audio.
+  TextToSpeech(string text) => (array<uint8> audio_data);
 };
 
 interface ServiceObserver {

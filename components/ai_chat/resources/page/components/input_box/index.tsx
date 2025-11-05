@@ -34,6 +34,7 @@ type Props = Pick<
   ConversationContext,
   | 'inputText'
   | 'setInputText'
+  | 'setVoiceMode'
   | 'submitInputTextToAPI'
   | 'selectedActionType'
   | 'resetSelectedActionType'
@@ -106,6 +107,10 @@ function InputBox(props: InputBoxProps) {
     React.useState(0)
 
   const handleSubmit = () => {
+    if (isSendButtonDisabled) {
+      props.context.setVoiceMode(true)
+      return
+    }
     querySubmitted.current = true
     props.context.submitInputTextToAPI()
   }
@@ -328,7 +333,6 @@ function InputBox(props: InputBoxProps) {
               fab
               kind='plain-faint'
               onClick={handleMic}
-              disabled={props.context.shouldDisableUserInput}
               title={getLocale(S.AI_CHAT_USE_MICROPHONE_BUTTON_LABEL)}
             >
               <Icon name='microphone' />
@@ -395,17 +399,12 @@ function InputBox(props: InputBoxProps) {
               kind='filled'
               className={classnames({
                 [styles.button]: true,
-                [styles.sendButtonDisabled]: isSendButtonDisabled,
               })}
               onClick={handleSubmit}
-              disabled={isSendButtonDisabled}
               title={getLocale(S.CHAT_UI_SEND_CHAT_BUTTON_LABEL)}
             >
               <Icon
-                className={classnames({
-                  [styles.sendIconDisabled]: isSendButtonDisabled,
-                })}
-                name='arrow-up'
+                name={isSendButtonDisabled ? 'voice-mode' : 'arrow-up'}
               />
             </Button>
           )}

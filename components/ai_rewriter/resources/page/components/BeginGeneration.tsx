@@ -48,6 +48,7 @@ export default function BeginGeneration() {
         <InputBox
           conversationStarted
           context={{
+            setVoiceMode: () => {},
             inputText: [context.instructionsText],
             setInputText: (c) =>
               context.setInstructionsText(stringifyContent(c)),

@@ -51,6 +51,7 @@ import useHasConversationStarted from '../../hooks/useHasConversationStarted'
 import { useExtractedQuery } from '../filter_menu/query'
 import TabsMenu from '../filter_menu/attachments_menu'
 import { stringifyContent } from '../input_box/editable_content'
+import { VoiceOverlay } from '../voice_overlay/voice_overlay'
 
 // Amount of pixels user has to scroll up to break out of
 // automatic scroll to bottom when new response lines are generated.
@@ -312,6 +313,7 @@ function Main() {
         ref={scrollElement}
         onScroll={handleScroll}
       >
+        {conversationContext.voiceMode && <VoiceOverlay />}
         <AlertCenter
           position='top-left'
           className={styles.alertCenter}
@@ -460,11 +462,12 @@ function Main() {
           handleNewSkillClick={handleNewSkillClick}
         />
         <TabsMenu />
-        <InputBox
-          conversationStarted={hasConversationStarted}
-          context={{ ...conversationContext, ...aiChatContext }}
-          maybeShowSoftKeyboard={maybeShowSoftKeyboard}
-        />
+        {!conversationContext.voiceMode && <InputBox
+            conversationStarted={hasConversationStarted}
+            context={{ ...conversationContext, ...aiChatContext }}
+            maybeShowSoftKeyboard={maybeShowSoftKeyboard}
+          />
+        }
       </div>
       <DeleteConversationModal />
       <OpenExternalLinkModal />

@@ -58,7 +58,14 @@
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/struct_ptr.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "services/network/public/mojom/url_response_head.mojom.h"
 #include "url/url_constants.h"
+#include "base/json/json_reader.h"
+#include "base/json/json_writer.h"
+#include "net/base/load_flags.h"
+#include "net/base/mime_util.h"
+#include "services/network/public/cpp/resource_request.h"
+#include "services/network/public/cpp/simple_url_loader.h"
 
 namespace ai_chat {
 namespace {
@@ -1116,6 +1123,202 @@ void AIChatService::BindObserver(
     BindObserverCallback callback) {
   observer_remotes_.Add(std::move(observer));
   std::move(callback).Run(BuildState());
+}
+
+void AIChatService::SpeechToText(const std::vector<uint8_t>& audio_data,
+                                 SpeechToTextCallback callback) {
+  const GURL transcription_url(
+      "https://ai-chat-voxtral-vllm-dev.bsg.brave.software/v1/audio/"
+      "transcriptions");
+
+  // Create multipart form data
+  std::string multipart_boundary = net::GenerateMimeMultipartBoundary();
+  std::string content_type =
+      "multipart/form-data; boundary=" + multipart_boundary;
+  std::string multipart_data;
+
+  // Add the audio file
+  std::string audio_str(audio_data.begin(), audio_data.end());
+  net::AddMultipartValueForUploadWithFileName(
+      "file", "audio.wav", audio_str, multipart_boundary, "audio/wav",
+      &multipart_data);
+
+  // Add model parameter
+  net::AddMultipartValueForUpload("model", "mistralai/Voxtral-Mini-3B-2507",
+                                  multipart_boundary, "", &multipart_data);
+
+  // Add language parameter
+  net::AddMultipartValueForUpload("language", "en", multipart_boundary, "",
+                                  &multipart_data);
+
+  // Add temperature parameter
+  net::AddMultipartValueForUpload("temperature", "0.0", multipart_boundary, "",
+                                  &multipart_data);
+
+  // Add final delimiter
+  net::AddMultipartFinalDelimiterForUpload(multipart_boundary, &multipart_data);
+
+  // Create and configure the resource request
+  auto resource_request = std::make_unique<network::ResourceRequest>();
+  resource_request->url = transcription_url;
+  resource_request->method = "POST";
+  resource_request->credentials_mode = network::mojom::CredentialsMode::kOmit;
+  resource_request->load_flags =
+      net::LOAD_BYPASS_CACHE | net::LOAD_DISABLE_CACHE;
+
+  net::NetworkTrafficAnnotationTag traffic_annotation =
+      net::DefineNetworkTrafficAnnotation("ai_chat_speech_to_text", R"(
+        semantics {
+          sender: "AI Chat Speech to Text"
+          description:
+            "Transcribes audio recorded from the user's microphone into text "
+            "for use in AI Chat conversations."
+          trigger:
+            "User records audio in the AI Chat interface and stops recording."
+          data: "Audio recording in WAV format."
+          destination: OTHER
+          destination_other: "Brave AI transcription service"
+        }
+        policy {
+          cookies_allowed: NO
+        })");
+
+  auto simple_url_loader =
+      network::SimpleURLLoader::Create(std::move(resource_request),
+                                       traffic_annotation);
+  simple_url_loader->AttachStringForUpload(multipart_data, content_type);
+
+  // Store the loader pointer before moving it
+  auto* loader_ptr = simple_url_loader.get();
+
+  // Keep the loader alive until the request completes
+  auto loader_holder = std::move(simple_url_loader);
+
+  loader_ptr->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
+      url_loader_factory_.get(),
+      base::BindOnce(
+          [](std::unique_ptr<network::SimpleURLLoader> loader,
+             SpeechToTextCallback callback,
+             std::unique_ptr<std::string> response_body) {
+            if (!response_body) {
+              DLOG(ERROR) << "Speech to text request failed";
+              std::move(callback).Run("");
+              return;
+            }
+
+            // Parse JSON response
+            std::optional<base::Value> result =
+                base::JSONReader::Read(*response_body);
+            if (!result || !result->is_dict()) {
+              DLOG(ERROR) << "Failed to parse speech to text response";
+              std::move(callback).Run("");
+              return;
+            }
+
+            const base::Value::Dict& dict = result->GetDict();
+            const std::string* text = dict.FindString("text");
+            if (!text) {
+              DLOG(ERROR) << "No 'text' field in speech to text response";
+              std::move(callback).Run("");
+              return;
+            }
+
+            LOG(ERROR) << "omg a response:" << *text;
+            std::move(callback).Run(*text);
+          },
+          std::move(loader_holder), std::move(callback)));
+}
+
+void AIChatService::TextToSpeech(const std::string& text,
+                                 TextToSpeechCallback callback) {
+  const GURL tts_url(
+      "http://localhost:5000");
+
+  // Create JSON payload
+  base::Value::Dict payload;
+  payload.Set("text", text);
+
+  // Convert to JSON string
+  std::string json_payload;
+  if (!base::JSONWriter::Write(payload, &json_payload)) {
+    DLOG(ERROR) << "Failed to serialize text-to-speech payload";
+    std::move(callback).Run(std::vector<uint8_t>());
+    return;
+  }
+
+  // Create and configure the resource request
+  auto resource_request = std::make_unique<network::ResourceRequest>();
+  resource_request->url = tts_url;
+  resource_request->method = "POST";
+  resource_request->credentials_mode = network::mojom::CredentialsMode::kOmit;
+  resource_request->load_flags =
+      net::LOAD_BYPASS_CACHE | net::LOAD_DISABLE_CACHE;
+
+  net::NetworkTrafficAnnotationTag traffic_annotation =
+      net::DefineNetworkTrafficAnnotation("ai_chat_text_to_speech", R"(
+        semantics {
+          sender: "AI Chat Text to Speech"
+          description:
+            "Converts text responses from AI Chat into speech audio "
+            "that can be played back to the user."
+          trigger:
+            "User requests audio playback of AI Chat responses."
+          data: "Text content to be converted to speech."
+          destination: OTHER
+          destination_other: "Brave AI text-to-speech service"
+        }
+        policy {
+          cookies_allowed: NO
+        })");
+
+  auto simple_url_loader =
+      network::SimpleURLLoader::Create(std::move(resource_request),
+                                       traffic_annotation);
+  simple_url_loader->AttachStringForUpload(json_payload,
+                                           "application/json");
+
+  // Store the loader pointer before moving it
+  auto* loader_ptr = simple_url_loader.get();
+
+  // Keep the loader alive until the request completes
+  auto loader_holder = std::move(simple_url_loader);
+
+  loader_ptr->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
+      url_loader_factory_.get(),
+      base::BindOnce(
+          [](std::unique_ptr<network::SimpleURLLoader> loader,
+             TextToSpeechCallback callback,
+             std::unique_ptr<std::string> response_body) {
+            if (!response_body) {
+              int response_code = -1;
+              if (loader->ResponseInfo() && loader->ResponseInfo()->headers) {
+                response_code =
+                    loader->ResponseInfo()->headers->response_code();
+              }
+              LOG(ERROR) << "Text to speech request failed. HTTP code: "
+                         << response_code
+                         << " Net error: " << loader->NetError();
+              std::move(callback).Run(std::vector<uint8_t>());
+              return;
+            }
+
+            LOG(INFO) << "Text to speech response received. Size: "
+                      << response_body->size() << " bytes";
+
+            if (response_body->empty()) {
+              LOG(ERROR) << "Text to speech response is empty";
+              std::move(callback).Run(std::vector<uint8_t>());
+              return;
+            }
+
+            // Convert string to vector of bytes
+            std::vector<uint8_t> audio_data(response_body->begin(),
+                                           response_body->end());
+            LOG(INFO) << "Returning audio data with " << audio_data.size()
+                      << " bytes";
+            std::move(callback).Run(std::move(audio_data));
+          },
+          std::move(loader_holder), std::move(callback)));
 }
 
 bool AIChatService::GetIsContentAgentAllowed() const {
