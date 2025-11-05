@@ -17,6 +17,7 @@ import { routes } from '../route.js'
 import { Router } from '../router.js'
 import type { Route } from '../router.js'
 import '../email_aliases_page/email_aliases_page.js'
+import { EmailAliasesStrings } from '../brave_components_webui_strings.js'
 
 RegisterPolymerComponentReplacement(
   'settings-autofill-page', BraveSettingsAutofillPageElement
@@ -59,12 +60,16 @@ RegisterPolymerTemplateModifications({
     // that navigates to the Email Aliases subpage when the feature is enabled.
     if (loadTimeData.getBoolean('isEmailAliasesEnabled')) {
       const linkRow = html`
-        <cr-link-row id="emailAliasesLinkRow"
-                     class="hr"
-                     start-icon="email-shield"
-                     label="${loadTimeData.getString('SETTINGS_EMAIL_ALIASES_LABEL')}"
-                     on-click="onEmailAliasesClick"
-                     role="link">
+        <cr-link-row
+          id="emailAliasesLinkRow"
+          class="hr"
+          start-icon="email-shield"
+          label="${loadTimeData.getString(
+            EmailAliasesStrings.SETTINGS_EMAIL_ALIASES_LABEL,
+          )}"
+          on-click="onEmailAliasesClick"
+          role="link"
+        >
         </cr-link-row>
       `
       // Insert just before Payment methods if present.
