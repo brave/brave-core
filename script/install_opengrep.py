@@ -7,8 +7,8 @@
 Secure Opengrep installer
 
 Downloads opengrep binary directly from GitHub releases and installs to
-vendor/opengrep/ directory for vendorization. Includes optional signature
-verification using cosign if available.
+tools/opengrep/ directory. Includes optional signature verification using
+cosign if available.
 """
 
 import hashlib
@@ -52,7 +52,7 @@ BINARY_CHECKSUMS = {
 }
 
 # Installation directory (relative to brave core)
-INSTALL_DIR = brave_chromium_utils.wspath('//brave/vendor/opengrep')
+INSTALL_DIR = brave_chromium_utils.wspath('//brave/tools/opengrep')
 
 
 def download_url(url, output_file):
