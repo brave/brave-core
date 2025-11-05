@@ -4,4 +4,4 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 brave_account_public_headers =
-    [ "//brave/ios/browser/api/brave_account/brave_account_api.h" ]
+    [ "//brave/ios/browser/brave_account/brave_account_api.h" ]

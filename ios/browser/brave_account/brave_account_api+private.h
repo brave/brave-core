@@ -3,10 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_IOS_BROWSER_API_BRAVE_ACCOUNT_BRAVE_ACCOUNT_API_PRIVATE_H_
-#define BRAVE_IOS_BROWSER_API_BRAVE_ACCOUNT_BRAVE_ACCOUNT_API_PRIVATE_H_
+#ifndef BRAVE_IOS_BROWSER_BRAVE_ACCOUNT_BRAVE_ACCOUNT_API_PRIVATE_H_
+#define BRAVE_IOS_BROWSER_BRAVE_ACCOUNT_BRAVE_ACCOUNT_API_PRIVATE_H_
 
-#import "brave/ios/browser/api/brave_account/brave_account_api.h"
+#import "brave/ios/browser/brave_account/brave_account_api.h"
 
 class ProfileIOS;
 
@@ -18,4 +18,4 @@ NS_ASSUME_NONNULL_BEGIN
 
 NS_ASSUME_NONNULL_END
 
-#endif  // BRAVE_IOS_BROWSER_API_BRAVE_ACCOUNT_BRAVE_ACCOUNT_API_PRIVATE_H_
+#endif  // BRAVE_IOS_BROWSER_BRAVE_ACCOUNT_BRAVE_ACCOUNT_API_PRIVATE_H_

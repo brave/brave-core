@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/ios/browser/api/brave_account/brave_account_api.h"
+#include "brave/ios/browser/brave_account/brave_account_api.h"
 
 #include "base/check.h"
 #include "base/strings/sys_string_conversions.h"
