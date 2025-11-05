@@ -76,9 +76,11 @@ class AIChatPolicyTest : public InProcessBrowserTest,
   }
 
   AutocompleteController* GetAutocompleteController() {
-    OmniboxView* omnibox =
-        browser()->window()->GetLocationBar()->GetOmniboxView();
-    return omnibox->controller()->autocomplete_controller();
+    return browser()
+        ->window()
+        ->GetLocationBar()
+        ->GetOmniboxController()
+        ->autocomplete_controller();
   }
 
  protected:
