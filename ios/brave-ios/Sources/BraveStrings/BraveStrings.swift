@@ -6524,7 +6524,7 @@ extension Strings {
       "tabs.settings.autoOpenKeyboardTitle",
       tableName: "BraveShared",
       bundle: .module,
-      value: "Auto-open Keyboard",
+      value: "Auto-Open Keyboard",
       comment: "The title of the toggle for user to turn on auto-open keyboard when opening a new tab."
     )
     public static let autoOpenKeyboardDescription = NSLocalizedString(
