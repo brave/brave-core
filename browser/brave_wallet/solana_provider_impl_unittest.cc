@@ -631,9 +631,9 @@ TEST_F(SolanaProviderImplUnitTest, ConnectWithNoSolanaAccount) {
   EXPECT_FALSE(IsConnected());
   EXPECT_TRUE(onboarding_callback_called);
 
-  bool account_creation_callback_called = false;
-  SetCallbackForAccountCreationForTesting(base::BindLambdaForTesting(
-      [&]() { account_creation_callback_called = true; }));
+  base::test::TestFuture<std::string_view> account_creation_callback_future;
+  SetCallbackForAccountCreationForTesting(
+      account_creation_callback_future.GetCallback());
   // No solana account
   CreateWallet();
   keyring_service_->SetSelectedDappAccountInternal(mojom::CoinType::SOL, {});
@@ -641,18 +641,17 @@ TEST_F(SolanaProviderImplUnitTest, ConnectWithNoSolanaAccount) {
   EXPECT_TRUE(account.empty());
   EXPECT_EQ(error, mojom::SolanaProviderError::kInternalError);
   EXPECT_FALSE(IsConnected());
-  EXPECT_TRUE(account_creation_callback_called);
+  EXPECT_EQ(account_creation_callback_future.Take(), "Solana");
   EXPECT_TRUE(provider_->account_creation_shown_);
 
   // It should be shown at most once.
-  account_creation_callback_called = false;
-  SetCallbackForAccountCreationForTesting(base::BindLambdaForTesting(
-      [&]() { account_creation_callback_called = true; }));
+  SetCallbackForAccountCreationForTesting(
+      account_creation_callback_future.GetCallback());
   account = Connect(std::nullopt, &error, &error_message);
   EXPECT_TRUE(account.empty());
   EXPECT_EQ(error, mojom::SolanaProviderError::kInternalError);
   EXPECT_FALSE(IsConnected());
-  EXPECT_FALSE(account_creation_callback_called);
+  EXPECT_EQ(account_creation_callback_future.Take(), "Solana");
   EXPECT_TRUE(provider_->account_creation_shown_);
   // Clear previous set callback which won't run in this test suite
   SetCallbackForAccountCreationForTesting(base::DoNothing());
