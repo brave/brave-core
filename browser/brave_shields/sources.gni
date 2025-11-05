@@ -23,6 +23,7 @@ brave_browser_brave_shields_sources = [
 brave_browser_brave_shields_deps = [
   "//base",
   "//brave/browser:browser_process",
+  "//brave/browser/ui/tabs:tab_strip",
   "//brave/common",
   "//brave/components/brave_perf_predictor/browser",
   "//brave/components/brave_shields/content/browser",

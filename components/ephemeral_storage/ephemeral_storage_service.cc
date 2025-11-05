@@ -259,7 +259,7 @@ void EphemeralStorageService::RemoveObserver(
 
 void EphemeralStorageService::TLDEphemeralStorageShred(
     const std::string& ephemeral_domain,
-    const content::StoragePartitionConfig& storage_partition_config,
+    const content::StoragePartitionConfig storage_partition_config,
     const bool enforced_by_user) {
   if (!base::FeatureList::IsEnabled(
           brave_shields::features::kBraveShredFeature)) {

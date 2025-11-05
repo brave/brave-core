@@ -16,9 +16,9 @@
 #include "base/types/cxx23_to_underlying.h"
 #include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
-#include "brave/components/brave_shields/core/browser/brave_shields_locale_utils.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_locale_utils.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
@@ -467,7 +467,6 @@ void BraveShieldsTabHelper::SetForgetFirstPartyStorageEnabled(bool is_enabled) {
       is_enabled, GetCurrentSiteURL());
 }
 
-
 void BraveShieldsTabHelper::BlockAllowedScripts(
     const std::vector<std::string>& origins) {
   BraveShieldsWebContentsObserver* observer =
@@ -479,9 +478,10 @@ void BraveShieldsTabHelper::BlockAllowedScripts(
   ReloadWebContents();
 }
 
-void BraveShieldsTabHelper::ShredSiteData() {
+void BraveShieldsTabHelper::EnforceShredSiteData() {
   std::string domain = net::URLToEphemeralStorageDomain(GetCurrentSiteURL());
   auto* site_instance = web_contents()->GetSiteInstance();
+  CHECK(site_instance);
   // Start manual shredding.
   ephemeral_storage_service_->TLDEphemeralStorageShred(
       domain, site_instance->GetStoragePartitionConfig(), true);

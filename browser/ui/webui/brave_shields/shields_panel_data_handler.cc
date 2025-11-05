@@ -193,14 +193,6 @@ void ShieldsPanelDataHandler::SetForgetFirstPartyStorageEnabled(
       is_enabled);
 }
 
-void ShieldsPanelDataHandler::SetShredMode(ShredMode mode) {
-  if (!active_shields_data_controller_) {
-    return;
-  }
-
-  //active_shields_data_controller_->SetShredMode(mode);
-}
-
 void ShieldsPanelDataHandler::SetWebcompatEnabled(
     ContentSettingsType webcompat_settings_type,
     bool enable) {
