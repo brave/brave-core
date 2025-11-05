@@ -9,10 +9,13 @@
 
 #include "base/check.h"
 #include "base/check_is_test.h"
+#include "base/task/single_thread_task_runner.h"
 #include "brave/browser/autocomplete/brave_autocomplete_scheme_classifier.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/browser/search_engines/search_engine_tracker.h"
+#include "brave/browser/ui/browser_commands.h"
+#include "brave/browser/infobars/dual_search_infobar_delegate.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_search_conversion/p3a.h"
@@ -22,7 +25,10 @@
 #include "brave/components/p3a_utils/bucket.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/omnibox/chrome_omnibox_client.h"
+#include "components/infobars/content/content_infobar_manager.h"
 #include "components/omnibox/browser/autocomplete_match.h"
 #include "components/omnibox/browser/autocomplete_result.h"
 #include "components/omnibox/browser/omnibox_log.h"
@@ -132,7 +138,9 @@ void BraveOmniboxClientImpl::OnAutocompleteAccept(
     const std::u16string& text,
     const AutocompleteMatch& match,
     const AutocompleteMatch& alternative_nav_match) {
-  if (IsSearchEvent(match)) {
+  const bool is_search = IsSearchEvent(match);
+
+  if (is_search) {
     // TODO(iefremov): Optimize this.
     search_storage_.AddDelta(1);
     RecordSearchEventP3A();
@@ -143,11 +151,25 @@ void BraveOmniboxClientImpl::OnAutocompleteAccept(
       ai_chat_metrics_->RecordOmniboxSearchQuery();
     }
   }
+
+  // Let the default navigation happen first
   ChromeOmniboxClient::OnAutocompleteAccept(
       destination_url, post_content, disposition, transition, match_type,
       match_selection_timestamp, destination_url_entered_without_scheme,
       destination_url_entered_with_http_scheme, text, match,
       alternative_nav_match);
+
+  // After default navigation, check if we should open dual search
+  if (is_search &&
+      profile_->GetPrefs()->GetBoolean(omnibox::kDualSearchEnabled) &&
+      disposition == WindowOpenDisposition::CURRENT_TAB) {
+    Browser* browser = chrome::FindBrowserWithProfile(profile_);
+    if (browser) {
+      // Open dual search in split view (this will add Brave Search and split)
+      // The infobar will be shown by DualSearchTabHelper when the page loads
+      brave::OpenDualSearchInSplitView(browser, text);
+    }
+  }
 }
 
 void BraveOmniboxClientImpl::RecordSearchEventP3A() {

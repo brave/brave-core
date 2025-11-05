@@ -15,6 +15,7 @@
       <!-- TODO: Define only where needed, via webpack generated output, or use common chrome://resources DataSource -->
       <if expr="not is_android">
         <include name="IDR_BRAVE_COMMON_TOOLBAR_IMG" file="../img/toolbar/menu_btn.svg" type="BINDATA" />
+        <include name="IDR_BRAVE_DUAL_SEARCH_SPLIT_VIEW_IMG" file="dual_search_split_view.png" type="BINDATA" />
       </if>
 
       <!-- WebUI adblock resources -->

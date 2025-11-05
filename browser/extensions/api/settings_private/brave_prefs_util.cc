@@ -139,6 +139,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[omnibox::kCommanderSuggestionsEnabled] =
       settings_api::PrefType::kBoolean;
+  (*s_brave_allowlist)[omnibox::kDualSearchEnabled] =
+      settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[kAskEnableWidvine] = settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[kTabsSearchShow] = settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[brave_tabs::kTabHoverMode] =

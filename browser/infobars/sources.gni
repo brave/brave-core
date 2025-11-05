@@ -17,6 +17,8 @@ if (!is_android) {
     "//brave/browser/infobars/brave_sync_account_deleted_infobar_delegate.h",
     "//brave/browser/infobars/dev_channel_deprecation_infobar_delegate.cc",
     "//brave/browser/infobars/dev_channel_deprecation_infobar_delegate.h",
+    "//brave/browser/infobars/dual_search_infobar_delegate.cc",
+    "//brave/browser/infobars/dual_search_infobar_delegate.h",
     "//brave/browser/infobars/request_otr_infobar_delegate.cc",
     "//brave/browser/infobars/request_otr_infobar_delegate.h",
     "//brave/browser/infobars/sync_cannot_run_infobar_delegate.cc",

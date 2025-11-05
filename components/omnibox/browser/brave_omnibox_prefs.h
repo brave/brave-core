@@ -42,6 +42,11 @@ inline constexpr char kBookmarkSuggestionsEnabled[] =
 inline constexpr char kCommanderSuggestionsEnabled[] =
     "brave.omnibox.commander_suggestions_enabled";
 
+// Determines whether search queries open dual SERP results in split view:
+// one with the default search engine and another with Brave Search.
+inline constexpr char kDualSearchEnabled[] =
+    "brave.omnibox.dual_search_enabled";
+
 void RegisterBraveProfilePrefs(PrefRegistrySimple* registry);
 
 }  // namespace omnibox

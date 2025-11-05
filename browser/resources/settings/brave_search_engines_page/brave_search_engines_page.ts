@@ -116,6 +116,43 @@ class BraveSearchEnginesPage extends BraveSearchEnginesPageBase {
   private computeDefaultPrivateSearchEngine_() {
     return this.privateSearchEngines_.find(engine => engine.default)!
   }
+
+  private isDualSearchDisabled_(pref: chrome.settingsPrivate.PrefObject) {
+    // Disable dual search toggle if Brave Search is already the default
+    if (!pref || !pref.value) {
+      return false
+    }
+    const templateUrlData = pref.value
+    if (!templateUrlData || typeof templateUrlData !== 'object') {
+      return false
+    }
+
+    // If the pref value is empty, Brave Search is the default
+    if (Object.keys(templateUrlData).length === 0) {
+      return true
+    }
+
+    const data = templateUrlData as {keyword?: string, short_name?: string, url?: string}
+
+    // Check if the default search engine is Brave Search
+    // Check keyword
+    if (data.keyword && (data.keyword === 'search.brave.com' ||
+                         data.keyword.toLowerCase() === 'brave')) {
+      return true
+    }
+
+    // Check URL
+    if (data.url && data.url.includes('search.brave.com')) {
+      return true
+    }
+
+    // Check short_name
+    if (data.short_name && data.short_name.toLowerCase().includes('brave')) {
+      return true
+    }
+
+    return false
+  }
 }
 
 customElements.define(BraveSearchEnginesPage.is, BraveSearchEnginesPage)

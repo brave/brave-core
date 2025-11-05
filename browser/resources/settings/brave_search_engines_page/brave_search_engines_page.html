@@ -89,3 +89,12 @@
     label="$i18n{otherSearchEnginesControlLabel}"
     sub-label="$i18n{otherSearchEnginesControlDesc}">
 </settings-toggle-button>
+<template is="dom-if" if="[[!isDualSearchDisabled_(
+    prefs.default_search_provider_data.template_url_data)]]" restamp>
+  <settings-toggle-button id="dualSearchEnabled"
+      class="cr-row"
+      pref="{{prefs.brave.omnibox.dual_search_enabled}}"
+      label="$i18n{dualSearchLabel}"
+      sub-label="$i18n{dualSearchDesc}">
+  </settings-toggle-button>
+</template>

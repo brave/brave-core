@@ -15,6 +15,9 @@ void RegisterBraveProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kHistorySuggestionsEnabled, true);
   registry->RegisterBooleanPref(kBookmarkSuggestionsEnabled, true);
   registry->RegisterBooleanPref(kCommanderSuggestionsEnabled, true);
+  registry->RegisterBooleanPref(kDualSearchEnabled, true);
+  registry->RegisterBooleanPref("brave.omnibox.dual_search_infobar_shown",
+                                false);
 }
 
 }  // namespace omnibox

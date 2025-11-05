@@ -42,12 +42,15 @@ if (!is_android) {
     sources = [
       "brave_tab_strip_model.cc",
       "brave_tab_strip_model.h",
+      "dual_search_tab_helper.cc",
+      "dual_search_tab_helper.h",
     ]
 
     deps = [
       "//brave/browser/ui:brave_tab_features",
       "//brave/components/tabs",
       "//chrome/browser/ui/tabs:tab_strip",
+      "//content/public/browser",
     ]
 
     public_deps = [ "//chrome/browser:browser_public_dependencies" ]

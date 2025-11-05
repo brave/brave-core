@@ -22,6 +22,7 @@
 #include "base/logging.h"
 #include "base/notreached.h"
 #include "base/path_service.h"
+#include "base/strings/escape.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/brave_shields/brave_shields_tab_helper.h"
@@ -31,6 +32,7 @@
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
+#include "brave/browser/ui/tabs/dual_search_tab_helper.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
@@ -43,6 +45,8 @@
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/url_sanitizer/core/browser/url_sanitizer_service.h"
+#include "chrome/browser/search_engines/template_url_service_factory.h"
+#include "components/search_engines/template_url_service.h"
 #include "chrome/browser/bookmarks/bookmark_html_writer.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
@@ -75,6 +79,7 @@
 #include "content/public/browser/web_contents.h"
 #include "ui/base/clipboard/clipboard_buffer.h"
 #include "ui/base/clipboard/scoped_clipboard_writer.h"
+#include "ui/base/models/list_selection_model.h"
 #include "ui/base/window_open_disposition.h"
 #include "ui/shell_dialogs/select_file_dialog.h"
 #include "ui/shell_dialogs/select_file_policy.h"
@@ -1090,6 +1095,179 @@ void SwapTabsInSplitWithSideBySide(Browser* browser) {
   auto split_id = tab_strip_model->GetSplitForTab(active_index);
   CHECK(split_id.has_value());
   tab_strip_model->ReverseTabsInSplit(*split_id);
+}
+
+void OpenDualSearchInSplitView(Browser* browser,
+                                const std::u16string& search_query) {
+  if (!base::FeatureList::IsEnabled(features::kSideBySide)) {
+    return;
+  }
+
+  auto* profile = browser->profile();
+  auto* template_url_service =
+      TemplateURLServiceFactory::GetForProfile(profile);
+  if (!template_url_service) {
+    return;
+  }
+
+  // Get default search engine URL
+  const TemplateURL* default_template_url =
+      template_url_service->GetDefaultSearchProvider();
+  if (!default_template_url) {
+    return;
+  }
+
+  // Don't use dual search if Brave Search is already the default
+  if (default_template_url->keyword() == u"search.brave.com" ||
+      default_template_url->url().find("search.brave.com") != std::string::npos) {
+    return;
+  }
+
+  GURL default_search_url = default_template_url->GenerateSearchURL(
+      template_url_service->search_terms_data(), search_query);
+
+  // Build Brave Search URL
+  const GURL brave_search_base("https://search.brave.com/search");
+  std::string query_str = base::UTF16ToUTF8(search_query);
+  GURL brave_search_url = GURL(brave_search_base.spec() + "?q=" +
+      base::EscapeQueryParamValue(query_str, false));
+
+  auto* tab_strip_model = browser->tab_strip_model();
+  int active_index = tab_strip_model->active_index();
+
+  // Check if we're already in a split view
+  auto split_id = tab_strip_model->GetSplitForTab(active_index);
+  if (split_id.has_value()) {
+    // Already in split view - navigate the other tab to Brave Search
+    // Find the other tab in the split
+    int other_tab_index = -1;
+    for (int i = 0; i < tab_strip_model->count(); ++i) {
+      if (i != active_index &&
+          tab_strip_model->GetSplitForTab(i) == split_id) {
+        other_tab_index = i;
+        break;
+      }
+    }
+
+    if (other_tab_index != -1) {
+      // Navigate the other tab to Brave Search
+      auto* other_web_contents = tab_strip_model->GetWebContentsAt(other_tab_index);
+      if (other_web_contents) {
+        content::OpenURLParams params(
+            brave_search_url, content::Referrer(),
+            WindowOpenDisposition::CURRENT_TAB,
+            ui::PAGE_TRANSITION_FROM_ADDRESS_BAR, false);
+        other_web_contents->OpenURL(params, /*navigation_handle_callback=*/{});
+      }
+
+      // Ensure Brave Search is on the right
+      // If active tab is on the right (higher index), we need to swap
+      if (active_index > other_tab_index) {
+        // Active tab (now showing default search) is on right
+        // Other tab (now showing Brave Search) is on left
+        // Swap them so Brave Search is on right
+        tab_strip_model->ReverseTabsInSplit(*split_id);
+        // After swap, the indices are reversed
+        std::swap(active_index, other_tab_index);
+      }
+
+      // Set up tab helpers to track the paired tabs
+      // After any swap, get fresh WebContents from current indices
+      auto* active_web_contents = tab_strip_model->GetWebContentsAt(active_index);
+      other_web_contents = tab_strip_model->GetWebContentsAt(other_tab_index);
+
+      // Get or create helpers
+      if (!DualSearchTabHelper::FromWebContents(active_web_contents)) {
+        DualSearchTabHelper::CreateForWebContents(active_web_contents);
+      }
+      if (!DualSearchTabHelper::FromWebContents(other_web_contents)) {
+        DualSearchTabHelper::CreateForWebContents(other_web_contents);
+      }
+
+      auto* active_helper = DualSearchTabHelper::FromWebContents(active_web_contents);
+      auto* other_helper = DualSearchTabHelper::FromWebContents(other_web_contents);
+
+      if (active_helper && other_helper) {
+        // Reset the helpers for the new search
+        active_helper->ResetForNewSearch();
+        other_helper->ResetForNewSearch();
+        active_helper->SetPairedTab(other_web_contents);
+        other_helper->SetPairedTab(active_web_contents);
+
+        // Show infobar on both tabs
+        // Active tab (left) is default search engine, other tab (right) is Brave Search
+        active_helper->SetShouldShowInfobar(browser->profile()->GetPrefs(), false);
+        other_helper->SetShouldShowInfobar(browser->profile()->GetPrefs(), true);
+      }
+    }
+    return;
+  }
+
+  // Not in a split view yet - create one
+  // Duplicate the current tab to preserve history
+  auto* delegate = tab_strip_model->delegate();
+  if (!delegate || !delegate->CanDuplicateContentsAt(active_index)) {
+    return;
+  }
+
+  content::WebContents* duplicated_contents =
+      delegate->DuplicateContentsAt(active_index);
+  if (!duplicated_contents) {
+    return;
+  }
+
+  // The duplicated tab is automatically added after the current tab
+  int new_tab_index = active_index + 1;
+
+  // Navigate the duplicated tab to Brave Search
+  content::OpenURLParams params(
+      brave_search_url, content::Referrer(),
+      WindowOpenDisposition::CURRENT_TAB,
+      ui::PAGE_TRANSITION_FROM_ADDRESS_BAR, false);
+  duplicated_contents->OpenURL(params, /*navigation_handle_callback=*/{});
+
+  // Split the tabs - select both the original and new tab
+  if (tab_strip_model->count() >= 2) {
+    // Select both tabs for splitting
+    ui::ListSelectionModel selection;
+    selection.SetSelectedIndex(active_index);
+    selection.AddIndexToSelection(new_tab_index);
+    selection.set_active(active_index);
+    tab_strip_model->SetSelectionFromModel(std::move(selection));
+
+    // Create split view if both tabs are not already in a split
+    if (CanSplitTabsWithSideBySide(browser)) {
+      SplitTabsWithSideBySide(browser,
+          split_tabs::SplitTabCreatedSource::kKeyboardShortcut);
+
+      // Set up tab helpers to track the paired tabs
+      auto* active_web_contents = tab_strip_model->GetWebContentsAt(active_index);
+
+      // Get or create helpers
+      if (!DualSearchTabHelper::FromWebContents(active_web_contents)) {
+        DualSearchTabHelper::CreateForWebContents(active_web_contents);
+      }
+      if (!DualSearchTabHelper::FromWebContents(duplicated_contents)) {
+        DualSearchTabHelper::CreateForWebContents(duplicated_contents);
+      }
+
+      auto* active_helper = DualSearchTabHelper::FromWebContents(active_web_contents);
+      auto* duplicated_helper = DualSearchTabHelper::FromWebContents(duplicated_contents);
+
+      if (active_helper && duplicated_helper) {
+        // Reset for new search
+        active_helper->ResetForNewSearch();
+        duplicated_helper->ResetForNewSearch();
+        active_helper->SetPairedTab(duplicated_contents);
+        duplicated_helper->SetPairedTab(active_web_contents);
+
+        // Show infobar on both tabs
+        // Active tab (left) is default search engine, duplicated tab (right) is Brave Search
+        active_helper->SetShouldShowInfobar(browser->profile()->GetPrefs(), false);
+        duplicated_helper->SetShouldShowInfobar(browser->profile()->GetPrefs(), true);
+      }
+    }
+  }
 }
 
 }  // namespace brave

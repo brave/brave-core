@@ -138,6 +138,9 @@ void RemoveSplitWithSideBySide(Browser* browser);
 // Swap tabs in active tab.
 void SwapTabsInSplitWithSideBySide(Browser* browser);
 
+// Open a search query in split view with default search engine and Brave Search
+void OpenDualSearchInSplitView(Browser* browser, const std::u16string& search_query);
+
 }  // namespace brave
 
 #endif  // BRAVE_BROWSER_UI_BROWSER_COMMANDS_H_

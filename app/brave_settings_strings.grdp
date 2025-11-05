@@ -1186,6 +1186,12 @@
   <message name="IDS_SETTINGS_BRAVE_OTHER_SEARCH_ENGINES_DESC" desc="The description for the settings switch controlling the addition of custom search engines">
     Automatically indexes websites that follow the OpenSearch spec
   </message>
+  <message name="IDS_SETTINGS_BRAVE_DUAL_SEARCH_LABEL" desc="The label for the settings switch controlling dual search split view">
+    Use split view
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_DUAL_SEARCH_DESC" desc="The description for the settings switch controlling dual search split view">
+    Show search results from your default search engine and Brave Search side-by-side for easy comparison
+  </message>
   <message name="IDS_SETTINGS_NORMAL_PROFILE_SEARCH_EXPLANATION" desc="Explanation for the search engine setting.">
     Search engine used in the address bar.
   </message>
