@@ -10,7 +10,7 @@ import { dirname, join } from 'path'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
-const rootDir = join(__dirname, '..')
+const rootDir = join(__dirname, '..', '..')
 
 // All supported platforms
 const PLATFORMS = [
@@ -97,7 +97,7 @@ async function downloadAndHashBinaries(version) {
 }
 
 async function updateInstallScript(version, checksums) {
-  const installScriptPath = join(rootDir, 'script/install_opengrep.py')
+  const installScriptPath = join(rootDir, 'third_party/opengrep/install_opengrep.py')
   console.log(`\nUpdating ${installScriptPath}...`)
 
   let content = await readFile(installScriptPath, 'utf-8')
@@ -154,7 +154,7 @@ async function updateInstallScript(version, checksums) {
 
 async function verifyPythonSyntax() {
   console.log('\nVerifying Python syntax...')
-  const installScriptPath = join(rootDir, 'script/install_opengrep.py')
+  const installScriptPath = join(rootDir, 'third_party/opengrep/install_opengrep.py')
 
   try {
     const { exec } = await import('child_process')
@@ -177,7 +177,7 @@ async function main() {
     const version = await fetchLatestRelease()
 
     // Check if already up to date
-    const installScriptPath = join(rootDir, 'script/install_opengrep.py')
+    const installScriptPath = join(rootDir, 'third_party/opengrep/install_opengrep.py')
     const currentContent = await readFile(installScriptPath, 'utf-8')
     const currentVersionMatch = currentContent.match(
       /OPENGREP_VERSION = '([^']+)'/,
@@ -213,7 +213,7 @@ async function main() {
     console.log(`\nVersion: ${version}`)
     console.log(`Updated: ${Object.keys(checksums).length} checksums`)
     console.log('\nChanges:')
-    console.log('  - script/install_opengrep.py')
+    console.log('  - third_party/opengrep/install_opengrep.py')
 
     process.exit(0)
   } catch (error) {
