@@ -10,6 +10,8 @@ namespace features {
 BASE_FEATURE(kBraveNtpSearchWidget,
              base::FEATURE_ENABLED_BY_DEFAULT);
 
+BASE_FEATURE(kBraveFilledBookmarkFolderIcon, base::FEATURE_DISABLED_BY_DEFAULT);
+
 #if BUILDFLAG(IS_WIN)
 // Enables window cloaking on window creation to prevent a white flash.
 BASE_FEATURE(kBraveWorkaroundNewWindowFlash,
