@@ -19,6 +19,7 @@ import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.OneshotSupplierImpl;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
+import org.chromium.chrome.browser.ChromeInactivityTracker;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.back_press.BackPressManager;
 import org.chromium.chrome.browser.bookmarks.BookmarkManagerOpener;
@@ -123,7 +124,8 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
             @NonNull ManualFillingComponentSupplier manualFillingComponentSupplier,
             @NonNull EdgeToEdgeManager edgeToEdgeManager,
             @NonNull ObservableSupplier<BookmarkManagerOpener> bookmarkManagerOpenerSupplier,
-            @Nullable ObservableSupplier<Boolean> xrSpaceModeObservableSupplier) {
+            @Nullable ObservableSupplier<Boolean> xrSpaceModeObservableSupplier,
+            @NonNull OneshotSupplier<ChromeInactivityTracker> inactivityTrackerSupplier) {
         super(
                 activity,
                 onOmniboxFocusChangedListener,
@@ -174,7 +176,8 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
                 manualFillingComponentSupplier,
                 edgeToEdgeManager,
                 bookmarkManagerOpenerSupplier,
-                xrSpaceModeObservableSupplier);
+                xrSpaceModeObservableSupplier,
+                inactivityTrackerSupplier);
 
         mBraveActivity = activity;
         mHubManagerSupplier = hubManagerSupplier;
