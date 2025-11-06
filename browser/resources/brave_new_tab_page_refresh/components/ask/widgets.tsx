@@ -354,23 +354,129 @@ function FunWithLeoWidget() {
   )
 }
 
+type WidgetType = 'privacy-stats' | 'news-digest' | 'upcoming-tasks' | 'proton' | 'world-clock' | 'weather' | 'task-ideas' | 'start-chat' | 'fun-with-leo'
+
+const widgetComponents: Record<WidgetType, React.ComponentType> = {
+  'privacy-stats': PrivacyStatsWidget,
+  'news-digest': NewsDigestWidget,
+  'upcoming-tasks': UpcomingTasksWidget,
+  'proton': ProtonWidget,
+  'world-clock': WorldClockWidget,
+  'weather': WeatherWidget,
+  'task-ideas': TaskIdeasWidget,
+  'start-chat': StartChatWidget,
+  'fun-with-leo': FunWithLeoWidget,
+}
+
 export function Widgets() {
+  const [widgets, setWidgets] = React.useState<WidgetType[]>([
+    'privacy-stats',
+    'news-digest',
+    'upcoming-tasks',
+    'proton',
+    'world-clock',
+    'weather',
+    'task-ideas',
+    'start-chat',
+    'fun-with-leo',
+  ])
+
+  const [draggedIndex, setDraggedIndex] = React.useState<number | null>(null)
+  const [dragOverIndex, setDragOverIndex] = React.useState<number | null>(null)
+
+  const handleDragStart = (e: React.DragEvent, index: number) => {
+    // Prevent dragging if clicking on interactive elements
+    const target = e.target as HTMLElement
+    if (target.tagName === 'BUTTON' || target.closest('button')) {
+      e.preventDefault()
+      return
+    }
+    
+    setDraggedIndex(index)
+    if (e.dataTransfer) {
+      e.dataTransfer.effectAllowed = 'move'
+      e.dataTransfer.setData('text/plain', '') // Required for Firefox
+    }
+  }
+
+  const handleDragOver = (e: React.DragEvent, index: number) => {
+    e.preventDefault()
+    e.stopPropagation()
+    if (draggedIndex !== null && draggedIndex !== index) {
+      setDragOverIndex(index)
+    }
+  }
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    // Only clear drag-over if we're actually leaving the widget container
+    const relatedTarget = e.relatedTarget as HTMLElement
+    const currentTarget = e.currentTarget as HTMLElement
+    if (!currentTarget.contains(relatedTarget)) {
+      setDragOverIndex(null)
+    }
+  }
+
+  const handleDrop = (e: React.DragEvent, dropIndex: number) => {
+    e.preventDefault()
+    if (draggedIndex === null || draggedIndex === dropIndex) {
+      setDraggedIndex(null)
+      setDragOverIndex(null)
+      return
+    }
+
+    const newWidgets = [...widgets]
+    // Swap the widgets
+    const draggedWidget = newWidgets[draggedIndex]
+    const targetWidget = newWidgets[dropIndex]
+    newWidgets[draggedIndex] = targetWidget
+    newWidgets[dropIndex] = draggedWidget
+    
+    setWidgets(newWidgets)
+    setDraggedIndex(null)
+    setDragOverIndex(null)
+  }
+
+  const handleDragEnd = () => {
+    setDraggedIndex(null)
+    setDragOverIndex(null)
+  }
+
+  // Split widgets into 3 columns
+  const column1 = widgets.slice(0, 3)
+  const column2 = widgets.slice(3, 6)
+  const column3 = widgets.slice(6, 9)
+
+  const renderWidget = (widgetType: WidgetType, index: number) => {
+    const isDragging = draggedIndex === index
+    const isDragOver = dragOverIndex === index
+    const WidgetComponent = widgetComponents[widgetType]
+
+    return (
+      <div
+        key={`${widgetType}-${index}`}
+        draggable
+        onDragStart={(e) => handleDragStart(e, index)}
+        onDragOver={(e) => handleDragOver(e, index)}
+        onDragLeave={handleDragLeave}
+        onDrop={(e) => handleDrop(e, index)}
+        onDragEnd={handleDragEnd}
+        className={`widget-container ${isDragging ? 'dragging' : ''} ${isDragOver ? 'drag-over' : ''}`}
+      >
+        <WidgetComponent />
+      </div>
+    )
+  }
+
   return (
     <div data-css-scope={style.scope}>
       <div className='content-area'>
-        <PrivacyStatsWidget />
-        <NewsDigestWidget />
-        <UpcomingTasksWidget />
+        {column1.map((widgetType, idx) => renderWidget(widgetType, idx))}
       </div>
       <div className='content-area'>
-        <ProtonWidget />
-        <WorldClockWidget />
-        <WeatherWidget />
+        {column2.map((widgetType, idx) => renderWidget(widgetType, idx + 3))}
       </div>
       <div className='content-area'>
-        <TaskIdeasWidget />
-        <StartChatWidget />
-        <FunWithLeoWidget />
+        {column3.map((widgetType, idx) => renderWidget(widgetType, idx + 6))}
       </div>
     </div>
   )

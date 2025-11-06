@@ -26,6 +26,29 @@ export const style = scoped.css`
     width: 100%;
   }
 
+  .widget-container {
+    cursor: grab;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+
+  .widget-container:active {
+    cursor: grabbing;
+  }
+
+  .widget-container.dragging {
+    opacity: 0.5;
+    cursor: grabbing;
+  }
+
+  .widget-container.drag-over {
+    transform: scale(1.02);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .widget-container button {
+    pointer-events: auto;
+  }
+
   .widget {
     width: 240px;
     height: 160px;
@@ -33,6 +56,8 @@ export const style = scoped.css`
     overflow: hidden;
     position: relative;
     flex-shrink: 0;
+    user-select: none;
+    -webkit-user-drag: none;
   }
 
   /* Privacy Stats Widget */
