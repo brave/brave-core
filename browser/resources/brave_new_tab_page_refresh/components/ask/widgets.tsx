@@ -110,26 +110,54 @@ function WeatherWidget() {
 }
 
 function ProtonWidget() {
+  const [isLightboxOpen, setIsLightboxOpen] = React.useState(false)
+
   return (
-    <div className='widget proton'>
-      <div className='proton-background'>
-      <div className='proton-overlay' />
-        <img 
-          alt=""
-          className='proton-image' 
-          src={imgProton}
-        />
-        
+    <>
+      <div className='widget proton'>
+        <div className='proton-background'>
+          <div 
+            className='proton-overlay' 
+            
+          />
+          <img 
+            alt=""
+            className='proton-image' 
+            src={imgProton}
+            onClick={() => setIsLightboxOpen(true)}
+            style={{ cursor: 'pointer' }}
+          />
+        </div>
+        <div className='proton-content'>
+          <img 
+            alt="Proton" 
+            className='proton-logo'
+            src={imgProtonLogo}
+          />
+        </div>
       </div>
-      <div className='proton-content'>
-        <img 
-          alt="Proton" 
-          className='proton-logo'
-          src={imgProtonLogo}
-        />
-        
-      </div>
-    </div>
+
+      {isLightboxOpen && (
+        <div className='lightbox-overlay' onClick={() => setIsLightboxOpen(false)}>
+          <div className='lightbox-content' onClick={(e) => e.stopPropagation()}>
+            <button 
+              className='lightbox-close' 
+              onClick={() => setIsLightboxOpen(false)}
+              aria-label="Close"
+            >
+              ×
+            </button>
+            <div className='lightbox-video-container'>
+            <img 
+            alt=""
+            className='proton-image' 
+            src={imgProton}
+          />
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   )
 }
 
@@ -388,6 +416,12 @@ export function Widgets() {
     // Prevent dragging if clicking on interactive elements
     const target = e.target as HTMLElement
     if (target.tagName === 'BUTTON' || target.closest('button')) {
+      e.preventDefault()
+      return
+    }
+    
+    // Prevent dragging if clicking on the proton image (which opens lightbox)
+    if (target.classList.contains('proton-image')) {
       e.preventDefault()
       return
     }

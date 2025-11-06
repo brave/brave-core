@@ -306,6 +306,7 @@ export const style = scoped.css`
     left: 50%;
     transform: translate(-50%, -50%);
     height: 180px;
+    z-index: 2;
   }
 
   .proton-overlay {
@@ -314,6 +315,7 @@ export const style = scoped.css`
     left:0;
     width:240px;
     height:180px;
+    pointer-events: none;
   }
 
   .proton-content {
@@ -841,6 +843,100 @@ export const style = scoped.css`
     text-align: center;
     padding: 0 8px 8px 8px;
     line-height: 12px;
+  }
+
+  /* Lightbox */
+  .lightbox-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    backdrop-filter: blur(4px);
+    animation: fadeIn 0.2s ease-in-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  .lightbox-content {
+    position: relative;
+    width: 90%;
+    max-width: 1200px;
+    aspect-ratio: 16 / 9;
+    background: black;
+    border-radius: ${radius.xl};
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    animation: scaleIn 0.3s ease-out;
+  }
+
+  @keyframes scaleIn {
+    from {
+      transform: scale(0.9);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  .lightbox-close {
+    position: absolute;
+    top: -48px;
+    right: 0;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    font-size: 32px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    padding: 0;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.4);
+      transform: scale(1.1);
+    }
+  }
+
+  .lightbox-video-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+
+  .lightbox-video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+
+  .lightbox-video-container img{
+  width:945px;
+  height:532px;
   }
 `
 
