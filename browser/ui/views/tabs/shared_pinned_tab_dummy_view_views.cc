@@ -50,9 +50,8 @@ SharedPinnedTabDummyViewViews::SharedPinnedTabDummyViewViews(
     content::WebContents* dummy_contents)
     : shared_contents_(shared_contents),
       dummy_contents_(dummy_contents),
-      thumbnail_(ThumbnailTabHelper::From(
-                     tabs::TabInterface::GetFromContents(shared_contents))
-                     ->thumbnail()),
+      thumbnail_(
+          ThumbnailTabHelper::FromWebContents(shared_contents)->thumbnail()),
       subscription_(thumbnail_->Subscribe()) {
   SetPaintToLayer();
   SetLayoutManager(std::make_unique<views::FlexLayout>())
