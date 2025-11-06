@@ -148,7 +148,7 @@ hooks = [
   {
     'name': 'install_opengrep',
     'pattern': '.',
-    'action': ['vpython3', 'script/install_opengrep.py'],
+    'action': ['vpython3', 'third_party/opengrep/install_opengrep.py'],
   },
   {
     'name': 'generate_licenses',
