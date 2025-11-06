@@ -8,6 +8,8 @@ import { style } from './widgets.style'
 import imgProtonLogo from './ford.svg'
 import imgNewsDigest from './news.png'
 import imgProton from './backgroundsmall.gif'
+import imgTaskIcon from './task-icon.svg'
+import imgPlayCircle from './play-circle-icon.svg'
 
 function PrivacyStatsWidget() {
   return (
@@ -193,21 +195,57 @@ function UpcomingTasksWidget() {
   return (
     <div className='widget upcoming-tasks'>
       <div className='upcoming-tasks-header'>
-        <div className='upcoming-tasks-title'>Brave AI tasks</div>
+        <img 
+          alt="" 
+          className='upcoming-tasks-icon'
+          src={imgTaskIcon}
+        />
+        <div className='upcoming-tasks-title'>Upcoming tasks</div>
       </div>
       <div className='upcoming-tasks-content'>
-        <div className='task-item task-top'>
-          <div className='task-time'>08:00 AM</div>
-          <div className='task-description'>News digest</div>
-          <div className='task-status'>✅</div>
+        <div className='task-item'>
+          <div className='task-description'>Important notifications</div>
+          <div className='task-time-badge'>08:15 am</div>
+          <button className='task-play-button'>
+            <img 
+              alt="Play" 
+              className='task-play-icon'
+              src={imgPlayCircle}
+            />
+          </button>
         </div>
-        <div className='task-item task-middle'>
-          <div className='task-time'>05:50 PM</div>
-          <div className='task-description'>End of day status</div>
+        <div className='task-item'>
+          <div className='task-description'>Daily news</div>
+          <div className='task-time-badge'>09:30 am</div>
+          <button className='task-play-button'>
+            <img 
+              alt="Play" 
+              className='task-play-icon'
+              src={imgPlayCircle}
+            />
+          </button>
         </div>
-        <div className='task-item task-bottom'>
-          <div className='task-time'>07:45 PM</div>
-          <div className='task-description'>Movie night</div>
+        <div className='task-item'>
+          <div className='task-description'>Stocks digest</div>
+          <div className='task-time-badge'>09:35 am</div>
+          <button className='task-play-button'>
+            <img 
+              alt="Play" 
+              className='task-play-icon'
+              src={imgPlayCircle}
+            />
+          </button>
+        </div>
+        <div className='task-item'>
+          <div className='task-description'>Daily news roundup</div>
+          <div className='task-time-badge'>09:30 am</div>
+          <button className='task-play-button'>
+            <img 
+              alt="Play" 
+              className='task-play-icon'
+              src={imgPlayCircle}
+            />
+          </button>
         </div>
       </div>
     </div>

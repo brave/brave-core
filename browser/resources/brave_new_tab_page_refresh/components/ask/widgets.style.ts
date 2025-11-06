@@ -496,16 +496,23 @@ export const style = scoped.css`
 
   /* Upcoming Tasks Widget */
   .upcoming-tasks {
-    background: ${color.neutral[10]};
+    background: ${color.page.background};
     display: flex;
     flex-direction: column;
+    box-shadow: 0px 1px 2px -1px rgba(0, 0, 0, 0.08), 0px 1px 3px 0px rgba(0, 0, 0, 0.08);
   }
 
   .upcoming-tasks-header {
-    padding: 12px;
+    padding: 12px 16px;
     display: flex;
-    gap: 4px;
+    gap: 12px;
     align-items: center;
+  }
+
+  .upcoming-tasks-icon {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
   }
 
   .upcoming-tasks-title {
@@ -519,53 +526,65 @@ export const style = scoped.css`
     display: flex;
     flex-direction: column;
     gap: 4px;
-    padding: 8px;
+    padding: 0 8px 8px 8px;
     align-items: flex-start;
     justify-content: flex-end;
   }
 
   .task-item {
     background: ${color.container.background};
-    padding: 4px 10px;
+    padding: 6px 12px;
     display: flex;
     gap: 8px;
     align-items: center;
-    justify-content: center;
     width: 100%;
     box-sizing: border-box;
-
-    &.task-top {
-      border-radius: 8px 8px 4px 4px;
-    }
-
-    &.task-middle {
-      border-radius: 4px;
-    }
-
-    &.task-bottom {
-      border-radius: 4px 4px 8px 8px;
-    }
-  }
-
-  .task-time {
-    font: ${font.small.semibold};
-    color: ${color.text.tertiary};
-    width: 64px;
-    flex-shrink: 0;
+    border-radius: ${radius.m};
   }
 
   .task-description {
     flex: 1;
-    font: ${font.small.regular};
-    color: ${color.text.tertiary};
+    font: ${font.default.regular};
+    color: ${color.text.secondary};
     min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
-  .task-status {
+  .task-time-badge {
+    background: ${color.neutral[10]};
+    padding: 4px;
+    border-radius: 6px;
     font: ${font.small.regular};
-    color: ${color.text.tertiary};
-    white-space: pre;
+    color: ${color.neutral[60]};
     flex-shrink: 0;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+  }
+
+  .task-play-button {
+    background: transparent;
+    border: none;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: ${radius.s};
+    flex-shrink: 0;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+
+  .task-play-icon {
+    width: 18px;
+    height: 18px;
+    display: block;
   }
 `
 
