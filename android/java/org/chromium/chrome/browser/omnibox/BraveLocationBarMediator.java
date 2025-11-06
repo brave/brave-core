@@ -11,12 +11,12 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.view.View;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
-import org.chromium.build.annotations.NullUnmarked;
+import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
 import org.chromium.chrome.browser.lens.LensController;
 import org.chromium.chrome.browser.locale.LocaleManager;
@@ -33,8 +33,9 @@ import org.chromium.ui.permissions.PermissionCallback;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
-@NullUnmarked // Waiting for upstream parent class to be NullMarked
+@NullMarked
 public class BraveLocationBarMediator extends LocationBarMediator {
+    // To delete in bytecode, members from parent class will be used instead.
     private WindowAndroid mWindowAndroid;
     private LocationBarLayout mLocationBarLayout;
     private boolean mIsUrlFocusChangeInProgress;
@@ -43,10 +44,15 @@ public class BraveLocationBarMediator extends LocationBarMediator {
     private boolean mNativeInitialized;
     private boolean mIsLocationBarFocusedFromNtpScroll;
     private Context mContext;
-    private static final @BrandedColorScheme int BRANDED_COLOR_SCHEME =
-            BrandedColorScheme.APP_DEFAULT;
     private OneshotSupplier<TemplateUrlService> mTemplateUrlServiceSupplier;
 
+    private static final @BrandedColorScheme int BRANDED_COLOR_SCHEME =
+            BrandedColorScheme.APP_DEFAULT;
+
+    // The fields mWindowAndroid, mLocationBarLayout, mContext, mTemplateUrlServiceSupplier are
+    // initialized at LocationBarMediator.ctor and are declared here only to be removed later
+    // with asm. NullAway expects them to be initialized here, so ignore this warning.
+    @SuppressWarnings("NullAway")
     public BraveLocationBarMediator(
             Context context,
             LocationBarLayout locationBarLayout,
@@ -65,7 +71,7 @@ public class BraveLocationBarMediator extends LocationBarMediator {
             OmniboxSuggestionsDropdownEmbedderImpl dropdownEmbedder,
             @Nullable ObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
             @Nullable BrowserControlsStateProvider browserControlsStateProvider,
-            Supplier<ModalDialogManager> modalDialogManagerSupplier,
+            Supplier<@Nullable ModalDialogManager> modalDialogManagerSupplier,
             ObservableSupplier<@NavigationFulfillmentType Integer>
                     navigationFulfillmentTypeSupplier) {
         super(

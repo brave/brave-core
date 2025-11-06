@@ -5,16 +5,16 @@
 
 package org.chromium.chrome.browser.omnibox;
 
+import static org.chromium.build.NullUtil.assertNonNull;
+
 import android.view.ActionMode;
 import android.view.View;
 import android.view.View.OnLongClickListener;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import org.chromium.base.Callback;
 import org.chromium.base.supplier.ObservableSupplier;
-import org.chromium.build.annotations.NullUnmarked;
+import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.back_press.BackPressManager;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
 import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsVisibilityDelegate;
@@ -39,55 +39,53 @@ import org.chromium.ui.modaldialog.ModalDialogManager;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
-// NullUnmarked because LocationBarCoordinator is not yet NullMarked
-@NullUnmarked
+@NullMarked
 public class BraveLocationBarCoordinator extends LocationBarCoordinator {
     /**
      * {@link LocationBarCoordinator#mLocationBarMediator} is private so we add a private
      * `mLocationBarMediator` here so this code compiles and then remove it and make {@link
      * LocationBarCoordinator#mLocationBarMediator} protected via asm.
      */
-    private LocationBarMediator mLocationBarMediator;
+    private @Nullable LocationBarMediator mLocationBarMediator;
 
     /**
      * {@link LocationBarCoordinator#mUrlBar} is private so we add a private `mUrlBar` here so this
      * code compiles and then remove it and make {@link LocationBarCoordinator#mUrlBar} protected
      * via asm.
      */
-    private View mUrlBar;
+    private @Nullable View mUrlBar;
 
-    private View mQRButton;
+    private @Nullable View mQRButton;
 
     public BraveLocationBarCoordinator(
             View locationBarLayout,
             View autocompleteAnchorView,
             ObservableSupplier<Profile> profileObservableSupplier,
             LocationBarDataProvider locationBarDataProvider,
-            ActionMode.Callback actionModeCallback,
+            ActionMode.@Nullable Callback actionModeCallback,
             WindowAndroid windowAndroid,
-            @NonNull Supplier<Tab> activityTabSupplier,
-            Supplier<ModalDialogManager> modalDialogManagerSupplier,
-            Supplier<ShareDelegate> shareDelegateSupplier,
-            IncognitoStateProvider incognitoStateProvider,
+            Supplier<@Nullable Tab> activityTabSupplier,
+            Supplier<@Nullable ModalDialogManager> modalDialogManagerSupplier,
+            @Nullable Supplier<ShareDelegate> shareDelegateSupplier,
+            @Nullable IncognitoStateProvider incognitoStateProvider,
             ActivityLifecycleDispatcher activityLifecycleDispatcher,
             OverrideUrlLoadingDelegate overrideUrlLoadingDelegate,
             BackKeyBehaviorDelegate backKeyBehavior,
-            @NonNull PageInfoAction pageInfoAction,
-            @NonNull Callback<Tab> bringTabToFrontCallback,
+            PageInfoAction pageInfoAction,
+            Callback<Tab> bringTabToFrontCallback,
             Callback<String> bringTabGroupToFrontCallback,
-            @NonNull OmniboxUma omniboxUma,
-            @NonNull Supplier<TabWindowManager> tabWindowManagerSupplier,
-            @NonNull BookmarkState bookmarkState,
-            @NonNull BooleanSupplier isToolbarMicEnabledSupplier,
-            @Nullable
-                    Supplier<MerchantTrustSignalsCoordinator>
-                            merchantTrustSignalsCoordinatorSupplier,
-            @NonNull OmniboxActionDelegate omniboxActionDelegate,
-            BrowserStateBrowserControlsVisibilityDelegate browserControlsVisibilityDelegate,
+            OmniboxUma omniboxUma,
+            Supplier<TabWindowManager> tabWindowManagerSupplier,
+            BookmarkState bookmarkState,
+            BooleanSupplier isToolbarMicEnabledSupplier,
+            @Nullable Supplier<MerchantTrustSignalsCoordinator>
+                    merchantTrustSignalsCoordinatorSupplier,
+            OmniboxActionDelegate omniboxActionDelegate,
+            @Nullable BrowserStateBrowserControlsVisibilityDelegate
+                    browserControlsVisibilityDelegate,
             @Nullable BackPressManager backPressManager,
-            @Nullable
-                    OmniboxSuggestionsDropdownScrollListener
-                            omniboxSuggestionsDropdownScrollListener,
+            @Nullable OmniboxSuggestionsDropdownScrollListener
+                    omniboxSuggestionsDropdownScrollListener,
             @Nullable ObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
             LocationBarEmbedderUiOverrides uiOverrides,
             @Nullable View baseChromeLayout,
@@ -137,6 +135,7 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
             ((UrlBar) mUrlBar).setSelectAllOnFocus(true);
         }
 
+        assertNonNull(mLocationBarMediator);
         if (mLocationBarMediator instanceof BraveLocationBarMediator) {
             mQRButton = locationBarLayout.findViewById(R.id.qr_button);
             mQRButton.setOnClickListener(
