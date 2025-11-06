@@ -30,6 +30,7 @@
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_coordinator.h"
 #include "chrome/common/pref_names.h"
+#include "chrome/common/webui_url_constants.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test.h"
@@ -151,6 +152,15 @@ IN_PROC_BROWSER_TEST_F(AIChatAgentProfileBrowserTest,
 
   // Verify the AI Chat browser has the side panel opened to Chat UI
   VerifyAIChatSidePanelShowing(ai_chat_browser);
+
+  // Verify the new tab page is the AI Chat Agent new tab page
+  auto* ntp_rfh = ui_test_utils::NavigateToURL(
+      ai_chat_browser, GURL(chrome::kChromeUINewTabURL));
+  ASSERT_TRUE(ntp_rfh);
+  EXPECT_TRUE(content::EvalJs(ntp_rfh,
+                              "!!document.querySelector(`html[data-test-id="
+                              "'brave-ai-chat-agent-new-tab-page']`)")
+                  .ExtractBool());
 
   // Verify content agent tools are available in the agent profile
   auto* agent_ai_chat_service =

@@ -222,6 +222,14 @@
     "META": {"sizes": {"includes": [10]}},
     "includes": [32620],
   },
+  "<(SHARED_INTERMEDIATE_DIR)/brave/browser/resources/ai_chat_agent_new_tab_page/ai_chat_agent_new_tab_page_static_resources.grd": {
+    "META": {"sizes": {"includes": [1]}},
+    "includes": [32630],
+  },
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-ai_chat_agent_new_tab_page/ai_chat_agent_new_tab_page.grd": {
+    "META": {"sizes": {"includes": [20]}},
+    "includes": [32631],
+  },
   # WARNING: The upstream ChromeOS/Ash strings currently run through 40000. We
   # must be careful not to exceed that maximum when adding new strings here.
   # Check out/<BUILD_TYPE>/gen/brave/resources/brave_resource_ids for how much
