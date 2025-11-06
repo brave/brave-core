@@ -166,7 +166,8 @@ class PatchInfo:
 
         # Setup patch file (named based on source path, with dashes).
         self.patch = PathChecksumPair(
-            PATCHES_PATH / f'{str(self.source).replace("/", "-")}.patch')
+            PATCHES_PATH /
+            f'{str(PurePath(self.source).as_posix()).replace("/", "-")}.patch')
 
         # Setup patchinfo metadata file (same as the patch .patchinfo
         # extension).
