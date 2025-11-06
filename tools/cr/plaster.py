@@ -76,12 +76,7 @@ class PathChecksumPair:
             return False  # No change detected
         logging.debug('Saving: %s', self.path)
         if not dry_run:
-            target_path = Path(self.path)
-            if (target_path.parts[0] == 'patches'):
-                target_path = Path.cwd() / Path(
-                    'patches/' + '-'.join(target_path.parts[1:]))
-            logging.debug('Writing to: %s', target_path)
-            target_path.write_text(new_content, encoding='utf-8')
+            self.path.write_text(new_content, encoding='utf-8')
         self.checksum = new_checksum
         return True
 

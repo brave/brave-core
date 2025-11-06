@@ -145,8 +145,8 @@ class Repository:
         contents of all files are appended to the same string.
         """
 
-        # fails here! so before running git show, replaces \ path with /.
-        files = [str(file).replace('\\', '/') for file in files]
+        # Replaces \ in path with / for Windows.
+        files = [str(PurePath(file).as_posix()) for file in files]
         return self.run_git('show',
                             *[f'{commit}:{file}' for file in files],
                             no_trim=True)
