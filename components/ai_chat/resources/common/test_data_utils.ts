@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { MakeUndefinedOptional } from '$web-common/mojomUtils'
+import { UndefinedToOptional } from '$web-common/mojomUtils'
 import * as Mojom from './mojom'
 
 const eventTemplate: Mojom.ConversationEntryEvent = {
@@ -31,7 +31,7 @@ export function getCompletionEvent(text: string): Mojom.ConversationEntryEvent {
 }
 
 export function getToolUseEvent(
-  toolUseEvent: MakeUndefinedOptional<Mojom.ToolUseEvent>,
+  toolUseEvent: UndefinedToOptional<Mojom.ToolUseEvent>,
 ): Mojom.ConversationEntryEvent {
   return {
     ...eventTemplate,

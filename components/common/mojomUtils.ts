@@ -25,7 +25,7 @@ export type UndefinedKeys<T> = {
  * This is useful for providing defaults for mojom structs that have optional fields where their definitions
  * define optional as possibly undefined instead of truly optional.
  */
-export type MakeUndefinedOptional<T> =
+export type UndefinedToOptional<T> =
   Omit<T, UndefinedKeys<T>>
   & Partial<Pick<T, UndefinedKeys<T>>>
 
