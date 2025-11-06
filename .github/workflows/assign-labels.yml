@@ -10,7 +10,7 @@ permissions:
 jobs:
   label:
     name: Assign labels
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     steps:
     - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
 
@@ -28,4 +28,3 @@ jobs:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
         sync-labels: false
         configuration-path: .github/optional-labels.yml
-

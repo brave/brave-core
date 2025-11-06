@@ -10,7 +10,7 @@ concurrency: set-bb-issues-milestone
 jobs:
   set-pr-milestone:
     if: github.event.pull_request.merged == true
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     steps:
       - env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -30,7 +30,7 @@ jobs:
 
   set-brave-browser-issues-milestone:
     if: github.event.pull_request.merged == true
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     needs: set-pr-milestone
     steps:
       - env:

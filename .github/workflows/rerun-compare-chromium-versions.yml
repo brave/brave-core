@@ -16,7 +16,7 @@ jobs:
 ## TODO: Temporary workaround for the above issue
 #    if: github.event.pull_request.merged == true
     if: github.event.pull_request.merged == true && startsWith(github.head_ref, 'cr1')
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       PR_SHA: ${{ github.event.pull_request.head.sha }}
