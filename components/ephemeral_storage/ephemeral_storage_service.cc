@@ -24,6 +24,7 @@
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/site_instance.h"
 #include "content/public/browser/storage_partition_config.h"
+#include "content/public/browser/web_contents.h"
 #include "net/base/features.h"
 #include "net/base/schemeful_site.h"
 #include "net/base/url_util.h"
@@ -258,7 +259,7 @@ void EphemeralStorageService::RemoveObserver(
 }
 
 void EphemeralStorageService::CleanupTLDEphemeralStorage(
-    const std::string& ephemeral_domain,
+    content::WebContents* contents,
     const content::StoragePartitionConfig storage_partition_config,
     const bool enforced_by_user) {
   if (!base::FeatureList::IsEnabled(
@@ -266,6 +267,9 @@ void EphemeralStorageService::CleanupTLDEphemeralStorage(
     return;
   }
 
+  CHECK(contents);
+  const auto ephemeral_domain =
+      net::URLToEphemeralStorageDomain(contents->GetLastCommittedURL());
   if (!enforced_by_user &&
       delegate_->IsShieldsDisabledOnAnyHostMatchingDomainOf(ephemeral_domain)) {
     // Do not start auto shred if shields is disabled on any host matching the
@@ -273,7 +277,7 @@ void EphemeralStorageService::CleanupTLDEphemeralStorage(
     return;
   }
 
-  delegate_->CloseTabsForDomainAndSubdomains(ephemeral_domain);
+  delegate_->CloseTabsForDomainAndSubdomains(contents, ephemeral_domain);
   const TLDEphemeralAreaKey key(ephemeral_domain, storage_partition_config);
   CleanupTLDEphemeralArea(key, true, true);
 }
