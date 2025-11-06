@@ -43,11 +43,21 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
                          const std::string& chain_id,
                          GetAccountBalanceCallback callback) override;
 
+  void AddObserver(mojo::PendingRemote<mojom::PolkadotWalletServiceObserver>
+                       observer) override;
+
+  std::string GetPubKey();
+
  private:
+  void OnGetPubKey(std::string chain_id,
+                   GetAccountBalanceCallback callback,
+                   const std::string& pubkey);
+
   const raw_ref<KeyringService> keyring_service_;
   mojo::ReceiverSet<mojom::PolkadotWalletService> receivers_;
 
   PolkadotSubstrateRpc polkadot_substrate_rpc_;
+  mojo::Remote<mojom::PolkadotWalletServiceObserver> polkadot_remote_;
   mojo::Receiver<brave_wallet::mojom::KeyringServiceObserver>
       keyring_service_observer_receiver_{this};
   base::WeakPtrFactory<PolkadotWalletService> weak_ptr_factory_{this};

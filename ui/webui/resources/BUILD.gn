@@ -30,6 +30,7 @@ group("grdp") {
     ":icons_grdp",
     ":leo_bundle",
     ":opaque_ke",
+    ":polkadot_bridge_wasm",
     ":static_grdp",
   ]
   if (include_polymer) {
@@ -109,10 +110,9 @@ transpile_web_ui("opaque_ke") {
   generate_grdp = true
   resource_path_prefix = "brave"
 
-  entry_points = [ [
-        "opaque_ke",
-        rebase_path("wasm/opaque_ke/index.js"),
-      ] ]
+  entry_points = [
+    [ "opaque_ke", rebase_path("wasm/opaque_ke/index.js") ],
+  ]
 
   inputs = [
     rebase_path("wasm/Cargo.lock"),
@@ -124,6 +124,25 @@ transpile_web_ui("opaque_ke") {
   rust_packages = [ rebase_path("wasm/opaque_ke/Cargo.toml") ]
 
   public_asset_path = "chrome://resources/brave/"
+}
+
+transpile_web_ui("polkadot_bridge_wasm") {
+  resource_name = "polkadot_bridge_wasm"
+  generate_grdp = true
+  resource_path_prefix = "brave"
+
+  entry_points = [
+    [ "polkadot_bridge_wasm", rebase_path("wasm/polkadot_bridge_wasm/index.js") ],
+  ]
+
+  inputs = [
+    rebase_path("wasm/Cargo.lock"),
+    rebase_path("wasm/polkadot_bridge_wasm/src/lib.rs"),
+  ]
+
+  rust_packages = [ rebase_path("wasm/polkadot_bridge_wasm/Cargo.toml") ]
+
+  public_asset_path = "chrome-untrusted://resources/brave/"
 }
 
 # Create a grdp that //ui/webui/resources can include in its main resources GRD

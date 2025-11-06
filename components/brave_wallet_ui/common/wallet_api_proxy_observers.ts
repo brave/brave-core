@@ -105,6 +105,8 @@ export function makeKeyringServiceObserver(store: Store) {
       ) {
         // TODO: Handle this event.
       },
+      generateWasmKeyrings: function (seed: number[]) {
+      },
     })
   return keyringServiceObserverReceiver
 }
@@ -161,7 +163,7 @@ export function makeTxServiceObserver(store: Store) {
           }
         }
       },
-      onTxServiceReset: function () {},
+      onTxServiceReset: function () { },
     })
   return txServiceManagerObserverReceiver
 }
@@ -221,7 +223,7 @@ export function makeBraveWalletServiceObserver(store: Store) {
         )
         store.dispatch(WalletActions.setAssetAutoDiscoveryCompleted(true))
       },
-      onResetWallet: function () {},
+      onResetWallet: function () { },
     })
   return braveWalletServiceObserverReceiver
 }
