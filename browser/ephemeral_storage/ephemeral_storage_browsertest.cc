@@ -82,8 +82,9 @@ std::unique_ptr<HttpResponse> HandleFileRequestWithCustomHeaders(
   std::unique_ptr<HttpResponse> http_response;
   for (const auto& server_root : server_roots) {
     http_response = net::test_server::HandleFileRequest(server_root, request);
-    if (http_response)
+    if (http_response) {
       break;
+    }
   }
   if (http_response) {
     GURL request_url = request.GetURL();
@@ -171,8 +172,9 @@ bool HttpRequestMonitor::HasHttpRequestWithCookie(
     const std::string& cookie_value) const {
   base::AutoLock lock(lock_);
   for (const auto& http_request : http_requests_) {
-    if (GetHttpRequestURL(http_request) != url)
+    if (GetHttpRequestURL(http_request) != url) {
       continue;
+    }
     for (const auto& header : http_request.headers) {
       if (header.first == net::HttpRequestHeaders::kCookie &&
           header.second == cookie_value) {
@@ -1479,7 +1481,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageCleanupSiteDataBrowserTest,
       site_a_tab->GetSiteInstance()->GetStoragePartitionConfig();
   EphemeralStorageServiceFactory::GetInstance()
       ->GetForContext(profile)
-      ->CleanupTLDEphemeralStorage("a.com", storage_partition_config, true);
+      ->CleanupTLDEphemeralStorage(site_a_tab, storage_partition_config, true);
 
   // Wait for the cleanup to finish.
   WaitForCleanup(profile);
@@ -1565,7 +1567,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageCleanupSiteDataBrowserTest,
       site_a_tab->GetSiteInstance()->GetStoragePartitionConfig();
   EphemeralStorageServiceFactory::GetInstance()
       ->GetForContext(profile)
-      ->CleanupTLDEphemeralStorage("a.com", storage_partition_config, true);
+      ->CleanupTLDEphemeralStorage(site_a_tab, storage_partition_config, true);
 
   // Wait for the cleanup to finish.
   WaitForCleanup(profile);
@@ -1649,7 +1651,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageCleanupSiteDataBrowserTest,
       site_a_tab->GetSiteInstance()->GetStoragePartitionConfig();
   EphemeralStorageServiceFactory::GetInstance()
       ->GetForContext(profile)
-      ->CleanupTLDEphemeralStorage("a.com", storage_partition_config, false);
+      ->CleanupTLDEphemeralStorage(site_a_tab, storage_partition_config, false);
 
   // Wait for the cleanup to finish.
   WaitForCleanup(profile);
