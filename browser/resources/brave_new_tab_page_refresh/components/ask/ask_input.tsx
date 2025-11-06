@@ -27,6 +27,7 @@ export function AskInput(props: Props) {
   const aiChatContext = useAIChat()
   const conversationContext = useConversation()
   const { conversationUuid, conversationHistory } = conversationContext
+  const [isTransitioning, setIsTransitioning] = React.useState(false)
 
   const extractedQuery = useExtractedQuery(
     stringifyContent(conversationContext.inputText), {
@@ -35,10 +36,17 @@ export function AskInput(props: Props) {
     })
 
   React.useEffect(() => {
-    if (conversationUuid && conversationHistory.length > 0) {
-      openLink('chrome://leo-ai/' + encodeURIComponent(conversationUuid))
+    if (conversationUuid && conversationHistory.length > 0 && !isTransitioning) {
+      setIsTransitioning(true)
+      // Add fade-out class to the page
+      document.documentElement.classList.add('leo-page-transition')
+      
+      // Navigate after the fade animation completes
+      setTimeout(() => {
+        openLink('chrome://leo-ai/' + encodeURIComponent(conversationUuid))
+      }, 300) // Match the CSS animation duration
     }
-  }, [conversationUuid, conversationHistory.length])
+  }, [conversationUuid, conversationHistory.length, isTransitioning])
 
   return (
     <div data-css-scope={style.scope}>

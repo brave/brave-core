@@ -20,6 +20,15 @@ export const style = scoped.css`
     --ntp-background-height: 340px;
   }
 
+  @keyframes page-fade-out {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+
   @keyframes background-scroll-fade {
     from {
       background: rgba(0, 0, 0, 0);
@@ -149,6 +158,10 @@ style.passthrough.css`
     font: ${font.default.regular};
     color: ${color.text.primary};
     interpolate-size: allow-keywords;
+  }
+
+  html.leo-page-transition & {
+    animation: page-fade-out 0.3s ease-out forwards;
   }
 
   button {
