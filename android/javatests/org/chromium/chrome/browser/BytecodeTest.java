@@ -1816,7 +1816,8 @@ public class BytecodeTest {
                         ManualFillingComponentSupplier.class,
                         EdgeToEdgeManager.class,
                         ObservableSupplier.class,
-                        ObservableSupplier.class));
+                        ObservableSupplier.class,
+                        OneshotSupplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/bookmarks/BookmarkToolbar",
