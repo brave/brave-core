@@ -57,7 +57,10 @@ public enum BraveStoreProductGroup: String, CaseIterable {
   public var skusDomain: String {
     switch self {
     case .vpn: return BraveDomains.serviceDomain(prefix: "vpn")
-    case .leo: return BraveDomains.serviceDomain(prefix: "leo")
+    case .leo:
+      // AI Chat uses staging as its default in unofficial builds. The passed in environment is only
+      // used in unofficial builds and when no service override switch is in place.
+      return BraveDomains.serviceDomain(prefix: "leo", environment: .staging)
     }
   }
 }
