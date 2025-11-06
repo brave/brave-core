@@ -2784,7 +2784,9 @@ extension BrowserViewController: NewTabPageDelegate {
 
   func showNewTabTakeoverInfoBarIfNeeded() {
     // do not show if topToobar is in overlay mode
-    guard !topToolbar.inOverlayMode else { return }
+    guard !topToolbar.inOverlayMode,
+      rewards.ads.shouldDisplayNewTabTakeoverInfobar()
+    else { return }
 
     rewards.ads.recordNewTabTakeoverInfobarWasDisplayed()
 
