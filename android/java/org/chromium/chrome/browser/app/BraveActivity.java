@@ -236,6 +236,7 @@ import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.ui.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -1945,9 +1946,10 @@ public abstract class BraveActivity extends ChromeActivity
     public void closeTabsWithTLD(@NonNull final String tld) {
         final TabModel tabModel = getCurrentTabModel();
         final int count = tabModel.getCount();
+        final List<Tab> tabsToClose = new ArrayList<>();
 
-        // Collect tabs to close (iterate backwards to avoid index issues during closure)
-        for (int i = count - 1; i >= 0; i--) {
+        // Collect all tabs that match the TLD
+        for (int i = 0; i < count; i++) {
             Tab tab = tabModel.getTabAt(i);
             if (tab != null) {
                 String spec = tab.getUrl().getSpec();
@@ -1959,11 +1961,17 @@ public abstract class BraveActivity extends ChromeActivity
                 }
 
                 if (domain.equals(tld)) {
-                    tab.setClosing(true);
-                    tabModel.getTabRemover()
-                            .closeTabs(TabClosureParams.closeTab(tab).build(), false);
+                    tabsToClose.add(tab);
                 }
             }
+        }
+
+        // Close all matching tabs in a single operation
+        if (!tabsToClose.isEmpty()) {
+            tabModel.getTabRemover()
+                    .closeTabs(
+                            TabClosureParams.closeTabs(tabsToClose).allowUndo(false).build(),
+                            false);
         }
     }
 
