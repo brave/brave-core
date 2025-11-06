@@ -92,8 +92,9 @@ IN_PROC_BROWSER_TEST_F(BraveTabHoverTest, ThumbnailHelperIsAlwaysAttached) {
   tabstrip()->AddTabsAt(data_list);
   EXPECT_EQ(0, browser()->tab_strip_model()->active_index());
   EXPECT_EQ(data_list[0].second.visible_url, active_tab()->data().visible_url);
-  EXPECT_NE(nullptr, ThumbnailTabHelper::From(
-                         browser()->tab_strip_model()->GetTabAtIndex(0)));
+  EXPECT_NE(nullptr,
+            content::WebContentsUserData<ThumbnailTabHelper>::FromWebContents(
+                contents()));
 
   browser()->profile()->GetPrefs()->SetInteger(
       brave_tabs::kTabHoverMode, brave_tabs::TabHoverMode::CARD_WITH_PREVIEW);
@@ -104,8 +105,9 @@ IN_PROC_BROWSER_TEST_F(BraveTabHoverTest, ThumbnailHelperIsAlwaysAttached) {
   tabstrip()->AddTabsAt(data_list);
   EXPECT_EQ(0, browser()->tab_strip_model()->active_index());
   EXPECT_EQ(data_list[0].second.visible_url, active_tab()->data().visible_url);
-  EXPECT_NE(nullptr, ThumbnailTabHelper::From(
-                         browser()->tab_strip_model()->GetTabAtIndex(0)));
+  EXPECT_NE(nullptr,
+            content::WebContentsUserData<ThumbnailTabHelper>::FromWebContents(
+                contents()));
 
   browser()->profile()->GetPrefs()->SetInteger(
       brave_tabs::kTabHoverMode, brave_tabs::TabHoverMode::TOOLTIP);
@@ -117,8 +119,9 @@ IN_PROC_BROWSER_TEST_F(BraveTabHoverTest, ThumbnailHelperIsAlwaysAttached) {
   tabstrip()->AddTabsAt(data_list);
   EXPECT_EQ(0, tabstrip()->GetActiveIndex());
   EXPECT_EQ(data_list[0].second.visible_url, active_tab()->data().visible_url);
-  EXPECT_NE(nullptr, ThumbnailTabHelper::From(
-                         browser()->tab_strip_model()->GetTabAtIndex(0)));
+  EXPECT_NE(nullptr,
+            content::WebContentsUserData<ThumbnailTabHelper>::FromWebContents(
+                contents()));
 }
 
 // This is based on |TabHoverCardBubbleViewBrowserTest|. Unfortunately, all the
