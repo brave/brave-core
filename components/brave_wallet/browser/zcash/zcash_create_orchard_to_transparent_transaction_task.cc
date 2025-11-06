@@ -56,10 +56,6 @@ void ZCashCreateOrchardToTransparentTransactionTask::ScheduleWorkOnTask() {
 
 void ZCashCreateOrchardToTransparentTransactionTask::WorkOnTask() {
   if (error_) {
-    LOG(ERROR)
-        << "XXXZZZ ZCashCreateOrchardToTransparentTransactionTask error: "
-        << error_.value() << ", amount: " << amount_
-        << ", to: " << transparent_address_;
     std::move(callback_).Run(base::unexpected(error_.value()));
     return;
   }
@@ -79,9 +75,6 @@ void ZCashCreateOrchardToTransparentTransactionTask::WorkOnTask() {
 
 void ZCashCreateOrchardToTransparentTransactionTask::GetSpendableNotes() {
   if (!context_.account_internal_addr) {
-    LOG(ERROR) << "XXXZZZ ZCashCreateOrchardToTransparentTransactionTask - No "
-                  "internal address provided, amount: "
-               << amount_ << ", to: " << transparent_address_;
     error_ = "No internal address provided";
     ScheduleWorkOnTask();
     return;
@@ -98,49 +91,23 @@ void ZCashCreateOrchardToTransparentTransactionTask::OnGetSpendableNotes(
     base::expected<std::optional<OrchardSyncState::SpendableNotesBundle>,
                    OrchardStorage::Error> result) {
   if (!result.has_value()) {
-    LOG(ERROR) << "XXXZZZ ZCashCreateOrchardToTransparentTransactionTask - "
-                  "Failed to get spendable notes: "
-               << result.error().message << ", amount: " << amount_
-               << ", to: " << transparent_address_;
     error_ = result.error().message;
     ScheduleWorkOnTask();
     return;
   }
 
   if (!result.value()) {
-    LOG(ERROR) << "XXXZZZ ZCashCreateOrchardToTransparentTransactionTask - No "
-                  "spendable notes available, amount: "
-               << amount_ << ", to: " << transparent_address_;
     error_ = "No spendable notes";
     ScheduleWorkOnTask();
     return;
   }
 
   spendable_notes_ = std::move(*result.value());
-
-  LOG(ERROR) << "XXXZZZ spendable notes bundle ";
-  LOG(ERROR) << "XXXZZZ spendable notes bundle anchor_block_id "
-             << spendable_notes_->anchor_block_id.value_or(0);
-
-  for (const auto& note : spendable_notes_->spendable_notes) {
-    LOG(ERROR) << "XXXZZZ block_id " << note.block_id;
-    LOG(ERROR) << "XXXZZZ addr " << ToHex(note.addr);
-    LOG(ERROR) << "XXXZZZ nullifier " << ToHex(note.nullifier);
-    LOG(ERROR) << "XXXZZZ amount " << note.amount;
-    LOG(ERROR) << "XXXZZZ orchard_commitment_tree_position "
-               << note.orchard_commitment_tree_position;
-    LOG(ERROR) << "XXXZZZ rho " << ToHex(note.rho);
-    LOG(ERROR) << "XXXZZZ seed " << ToHex(note.seed);
-  }
-
   ScheduleWorkOnTask();
 }
 
 void ZCashCreateOrchardToTransparentTransactionTask::CreateTransaction() {
   CHECK(spendable_notes_);
-  LOG(ERROR) << "XXXZZZ CreateTransaction - Starting Orchard to Transparent "
-                "transaction creation, amount: "
-             << amount_;
 
   ZCashTransaction zcash_transaction;
 
@@ -149,9 +116,6 @@ void ZCashCreateOrchardToTransparentTransactionTask::CreateTransaction() {
       PickZCashOrchardInputs(spendable_notes_->spendable_notes, amount_,
                              ZCashTargetOutputType::kTransparent);
   if (!pick_result) {
-    LOG(ERROR) << "XXXZZZ ZCashCreateOrchardToTransparentTransactionTask - "
-                  "Can't pick inputs, amount: "
-               << amount_ << ", to: " << transparent_address_;
     error_ = "Can't pick inputs";
     ScheduleWorkOnTask();
     return;
@@ -166,18 +130,12 @@ void ZCashCreateOrchardToTransparentTransactionTask::CreateTransaction() {
   zcash_transaction.set_fee(pick_result->fee);
 
   if (!context_.account_internal_addr) {
-    LOG(ERROR) << "XXXZZZ ZCashCreateOrchardToTransparentTransactionTask - "
-                  "Internal address error, amount: "
-               << amount_ << ", to: " << transparent_address_;
     error_ = "Internal address error";
     ScheduleWorkOnTask();
     return;
   }
 
   if (!spendable_notes_->anchor_block_id) {
-    LOG(ERROR) << "XXXZZZ ZCashCreateOrchardToTransparentTransactionTask - "
-                  "Failed to select anchor, amount: "
-               << amount_ << ", to: " << transparent_address_;
     error_ = "Failed to select anchor";
     ScheduleWorkOnTask();
     return;
@@ -205,32 +163,16 @@ void ZCashCreateOrchardToTransparentTransactionTask::CreateTransaction() {
       IsZCashTestnetKeyring(context_.account_id->keyring_id));
 
   // Create Orchard change output if needed
-  LOG(ERROR) << "XXXZZZ OrchardToTransparent - pick_result->change: "
-             << pick_result->change << ", send_amount: " << send_amount
-             << ", total_inputs: " << zcash_transaction.TotalInputsAmount()
-             << ", fee: " << zcash_transaction.fee();
-
   if (pick_result->change != 0) {
     OrchardOutput& orchard_output =
         zcash_transaction.orchard_part().outputs.emplace_back();
     orchard_output.value = pick_result->change;
     orchard_output.addr = context_.account_internal_addr.value();
-    LOG(ERROR) << "XXXZZZ OrchardToTransparent - Created change output: "
-               << pick_result->change;
-  } else {
-    LOG(ERROR) << "XXXZZZ OrchardToTransparent - No change, this might cause "
-                  "Orchard bundle creation to fail";
   }
 
   // Set transaction metadata
   zcash_transaction.set_amount(send_amount);
   zcash_transaction.set_to(transparent_address_);
-
-  LOG(ERROR)
-      << "XXXZZZ CreateTransaction - Transaction created successfully with "
-      << zcash_transaction.orchard_part().inputs.size()
-      << " Orchard inputs and "
-      << zcash_transaction.orchard_part().outputs.size() << " Orchard outputs";
 
   transaction_ = std::move(zcash_transaction);
   ScheduleWorkOnTask();

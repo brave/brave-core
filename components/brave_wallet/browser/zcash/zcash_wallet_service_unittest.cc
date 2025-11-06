@@ -2699,7 +2699,6 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_SendShieldedFunds) {
   }
 }
 
-
 // https://3xpl.com/zcash/transaction/99b223198efaa5fb2ea4b10c53f9f9d118753789ce7f9ed3f891c9e2c8da91f0
 TEST_F(ZCashWalletServiceUnitTest, MAYBE_UnshieldFunds) {
   // Creating authorized orchard bundle may take a time
@@ -3006,49 +3005,49 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_UnshieldFunds) {
       });
 
   ON_CALL(zcash_rpc(), GetTreeState(_, _, _))
-      .WillByDefault(
-          [&](const std::string& chain_id, zcash::mojom::BlockIDPtr block_id,
-              ZCashRpc::GetTreeStateCallback callback) {
-            auto tree_state = zcash::mojom::TreeState::New(
-                "main" /* network */, 3118554u /* height */,
-                "000000000043298abfe7f300a7c02ea6f1e92f6372a447f56ad40af9a98440"
-                "07" /* hash */,
-                1761916103u /* time */,
-                "01bb48829ed71af6873ff9940dff0c226ae7485b084568b2f37cbe31f8d11f"
-                "d66c01471b3ea27ca9fce56e0ba984538f88c14f24eeeca862603220b43201"
-                "63f6d52f1f01bc2a6ef3e3db718b0a4200daca6299478b46c9eb77e9b051ee"
-                "386d6a5b086f35000000000128ef8f3ef0b26d96d2aebe349a829a446abbb4"
-                "e59a507bb5c5fc5309a794a74d01fb8b4ba331bcf7243a16e8f37497128306"
-                "4ac5892de4de25dffcb0fa101db50c00015707fbb044f505d17d910831a892"
-                "0c2e567ff4489eb0c5543a8a5bd139171c6e000001fac3b6c4f0946f8f4064"
-                "37b5ea0066ceaffc81436dcd66a5cad0d1c87e04625c01fd4c4391cb31054d"
-                "9ebea02406bdae95e15579e74bff7e8c75a1ffbb1182283b0128423c48fcf6"
-                "6ca650c3aa306cbb3f8c1ae1cbc9ae88c6349bf80790c09db153000001931c"
-                "48ea50688eae5e54c24d0df7a6b00ce498f92eb5e1cfd6a2d87d8ebd536401"
-                "7d1ce2f0839bdbf1bad7ae37f845e7fe2116e0c1197536bfbad549f3876c3c"
-                "590000013e2598f743726006b8de42476ed56a55a75629a7b82e430c4e7c10"
-                "1a69e9b02a011619f99023a69bb647eab2d2aa1a73c3673c74bb033c3c4930"
-                "eacda19e6fd93b0000000160272b134ca494b602137d89e528c751c06d3ef4"
-                "a87a45f33af343c15060cc1e0000000000",
-                "015e47ec3dd650d19acf4fbf183d478c4ebb40748466c46d187e51aec21d54"
-                "bd0001cdbdce676ae3fe5dd1713f14e87d1ac5bfa89367faf55cdc78ed3f6e"
-                "5b06182e1f01e6677145c4406ef28290287c6194ddea1c0df6e5cf45c8f169"
-                "0e164bc9d85b30000001ccb81ac716d737138f3862a40cbeb8ef7f57229510"
-                "63c8bcaddefe8bfbeace2e01b0dc10d01b484706263972638f10b35e13f0b2"
-                "dc74a4c0dc617c1df393cfa60b017c0fd92f88103cfcc36e3796bd9b873f32"
-                "205073ddecd12419e9579b626bfb1c01c20d7c086b635a7f1f230dd0e9d25e"
-                "73567352d1b0411b32031b85e3dac8b71a000000010d1fecf33f83e117159b"
-                "8c2dfc380dcab49bb120f47f74da4a1a72a66f51d12700019fee5cb985ac09"
-                "618e2efd0ca273eb36b05eeeb13934ba6010aa74f471950d2c0000017852cc"
-                "0085e68db25ad9fa1b63a310463c148e07140f600bc2779971b21d22110000"
-                "00017c8ece2b2ab2355d809b58809b21c7a5e95cfc693cd689387f7533ec87"
-                "49261e01cc2dcaa338b312112db04b435a706d63244dd435238f0aa1e9e159"
-                "8d35470810012dcc4273c8a0ed2337ecf7879380a07e7d427c7f9d82e53800"
-                "2bd1442978402c01daf63debf5b40df902dae98dadc029f281474d190cddec"
-                "ef1b10653248a234150001e2bca6a8d987d668defba89dc082196a922634ed"
-                "88e065c669e526bb8815ee1b000000000000");
-            std::move(callback).Run(std::move(tree_state));
-          });
+      .WillByDefault([&](const std::string& chain_id,
+                         zcash::mojom::BlockIDPtr block_id,
+                         ZCashRpc::GetTreeStateCallback callback) {
+        auto tree_state = zcash::mojom::TreeState::New(
+            "main" /* network */, 3118554u /* height */,
+            "000000000043298abfe7f300a7c02ea6f1e92f6372a447f56ad40af9a98440"
+            "07" /* hash */,
+            1761916103u /* time */,
+            "01bb48829ed71af6873ff9940dff0c226ae7485b084568b2f37cbe31f8d11f"
+            "d66c01471b3ea27ca9fce56e0ba984538f88c14f24eeeca862603220b43201"
+            "63f6d52f1f01bc2a6ef3e3db718b0a4200daca6299478b46c9eb77e9b051ee"
+            "386d6a5b086f35000000000128ef8f3ef0b26d96d2aebe349a829a446abbb4"
+            "e59a507bb5c5fc5309a794a74d01fb8b4ba331bcf7243a16e8f37497128306"
+            "4ac5892de4de25dffcb0fa101db50c00015707fbb044f505d17d910831a892"
+            "0c2e567ff4489eb0c5543a8a5bd139171c6e000001fac3b6c4f0946f8f4064"
+            "37b5ea0066ceaffc81436dcd66a5cad0d1c87e04625c01fd4c4391cb31054d"
+            "9ebea02406bdae95e15579e74bff7e8c75a1ffbb1182283b0128423c48fcf6"
+            "6ca650c3aa306cbb3f8c1ae1cbc9ae88c6349bf80790c09db153000001931c"
+            "48ea50688eae5e54c24d0df7a6b00ce498f92eb5e1cfd6a2d87d8ebd536401"
+            "7d1ce2f0839bdbf1bad7ae37f845e7fe2116e0c1197536bfbad549f3876c3c"
+            "590000013e2598f743726006b8de42476ed56a55a75629a7b82e430c4e7c10"
+            "1a69e9b02a011619f99023a69bb647eab2d2aa1a73c3673c74bb033c3c4930"
+            "eacda19e6fd93b0000000160272b134ca494b602137d89e528c751c06d3ef4"
+            "a87a45f33af343c15060cc1e0000000000",
+            "015e47ec3dd650d19acf4fbf183d478c4ebb40748466c46d187e51aec21d54"
+            "bd0001cdbdce676ae3fe5dd1713f14e87d1ac5bfa89367faf55cdc78ed3f6e"
+            "5b06182e1f01e6677145c4406ef28290287c6194ddea1c0df6e5cf45c8f169"
+            "0e164bc9d85b30000001ccb81ac716d737138f3862a40cbeb8ef7f57229510"
+            "63c8bcaddefe8bfbeace2e01b0dc10d01b484706263972638f10b35e13f0b2"
+            "dc74a4c0dc617c1df393cfa60b017c0fd92f88103cfcc36e3796bd9b873f32"
+            "205073ddecd12419e9579b626bfb1c01c20d7c086b635a7f1f230dd0e9d25e"
+            "73567352d1b0411b32031b85e3dac8b71a000000010d1fecf33f83e117159b"
+            "8c2dfc380dcab49bb120f47f74da4a1a72a66f51d12700019fee5cb985ac09"
+            "618e2efd0ca273eb36b05eeeb13934ba6010aa74f471950d2c0000017852cc"
+            "0085e68db25ad9fa1b63a310463c148e07140f600bc2779971b21d22110000"
+            "00017c8ece2b2ab2355d809b58809b21c7a5e95cfc693cd689387f7533ec87"
+            "49261e01cc2dcaa338b312112db04b435a706d63244dd435238f0aa1e9e159"
+            "8d35470810012dcc4273c8a0ed2337ecf7879380a07e7d427c7f9d82e53800"
+            "2bd1442978402c01daf63debf5b40df902dae98dadc029f281474d190cddec"
+            "ef1b10653248a234150001e2bca6a8d987d668defba89dc082196a922634ed"
+            "88e065c669e526bb8815ee1b000000000000");
+        std::move(callback).Run(std::move(tree_state));
+      });
 
   std::optional<ZCashTransaction> created_transaction;
   base::MockCallback<ZCashWalletService::CreateTransactionCallback>

@@ -378,22 +378,12 @@ void ZCashWalletService::OnCompleteTransactionTaskDone(
   CHECK(complete_transaction_tasks_.erase(task));
 
   if (!result.has_value()) {
-    LOG(ERROR) << "XXXZZZ OnCompleteTransactionTaskDone - Transaction "
-                  "completion failed: "
-               << result.error();
     std::move(callback).Run("", std::move(original_zcash_transaction),
                             result.error());
     return;
   }
 
-  LOG(ERROR) << "XXXZZZ OnCompleteTransactionTaskDone - Transaction completed "
-                "successfully, serializing and sending";
   auto tx = ZCashSerializer::SerializeRawTransaction(result.value());
-  LOG(ERROR)
-      << "XXXZZZ OnCompleteTransactionTaskDone - Serialized transaction size: "
-      << tx.size();
-  LOG(ERROR) << "XXXZZZ send transaction";
-  LOG(ERROR) << "XXXZZZ " << ToHex(tx);
   zcash_rpc_->SendTransaction(
       GetNetworkForZCashAccount(account_id), std::move(tx),
       base::BindOnce(&ZCashWalletService::OnSendTransactionResult,
@@ -498,24 +488,11 @@ void ZCashWalletService::OnSendTransactionResult(
     ZCashTransaction tx,
     base::expected<zcash::mojom::SendResponsePtr, std::string> result) {
   if (result.has_value() && result.value() && (*result)->error_code == 0) {
-    LOG(ERROR)
-        << "XXXZZZ OnSendTransactionResult - Transaction sent successfully!";
     auto tx_id = ZCashSerializer::CalculateTxIdDigest(tx);
     auto tx_id_hex = ToHex(tx_id);
     CHECK(tx_id_hex.starts_with("0x"));
-    LOG(ERROR) << "XXXZZZ OnSendTransactionResult - Transaction ID: "
-               << tx_id_hex.substr(2);
     std::move(callback).Run(tx_id_hex.substr(2), std::move(tx), "");
   } else {
-    LOG(ERROR) << "XXXZZZ OnSendTransactionResult - Transaction send failed!";
-    if (result.has_value() && result.value()) {
-      LOG(ERROR) << "XXXZZZ OnSendTransactionResult - Error code: "
-                 << (*result)->error_code
-                 << ", Error message: " << (*result)->error_message;
-    } else {
-      LOG(ERROR) << "XXXZZZ OnSendTransactionResult - Error: "
-                 << result.error();
-    }
     std::move(callback).Run("", std::move(tx), WalletInternalErrorMessage());
   }
 }
