@@ -10,6 +10,11 @@
 
 #include "base/functional/callback.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_types.h"
+#include "content/public/browser/web_contents.h"
+
+namespace content {
+class WebContents;
+}  // namespace content
 
 namespace ephemeral_storage {
 
@@ -26,6 +31,7 @@ class EphemeralStorageServiceDelegate {
   virtual void RegisterFirstWindowOpenedCallback(
       base::OnceClosure callback) = 0;
   virtual void CloseTabsForDomainAndSubdomains(
+      content::WebContents* contents,
       std::string_view ephemeral_domain) = 0;
   virtual bool IsShieldsDisabledOnAnyHostMatchingDomainOf(
       const std::string_view ephemeral_domain) const = 0;

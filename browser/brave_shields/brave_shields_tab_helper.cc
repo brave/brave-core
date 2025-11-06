@@ -475,12 +475,11 @@ void BraveShieldsTabHelper::BlockAllowedScripts(
 }
 
 void BraveShieldsTabHelper::EnforceSiteDataCleanup() {
-  std::string domain = net::URLToEphemeralStorageDomain(GetCurrentSiteURL());
   auto* site_instance = web_contents()->GetSiteInstance();
   CHECK(site_instance);
   // Start manual cleanup.
   ephemeral_storage_service_->CleanupTLDEphemeralStorage(
-      domain, site_instance->GetStoragePartitionConfig(), true);
+      web_contents(), site_instance->GetStoragePartitionConfig(), true);
 }
 
 void BraveShieldsTabHelper::AllowScriptsOnce(
