@@ -189,13 +189,27 @@ function WorldClockWidget() {
   )
 }
 
-function EmptyWidget() {
+function UpcomingTasksWidget() {
   return (
-    <div className='widget empty-widget'>
-      <div className='empty-widget-header'>
-        <div className='empty-widget-title'>Brave Finance</div>
+    <div className='widget upcoming-tasks'>
+      <div className='upcoming-tasks-header'>
+        <div className='upcoming-tasks-title'>Brave AI tasks</div>
       </div>
-      <div className='empty-widget-content' />
+      <div className='upcoming-tasks-content'>
+        <div className='task-item task-top'>
+          <div className='task-time'>08:00 AM</div>
+          <div className='task-description'>News digest</div>
+          <div className='task-status'>✅</div>
+        </div>
+        <div className='task-item task-middle'>
+          <div className='task-time'>05:50 PM</div>
+          <div className='task-description'>End of day status</div>
+        </div>
+        <div className='task-item task-bottom'>
+          <div className='task-time'>07:45 PM</div>
+          <div className='task-description'>Movie night</div>
+        </div>
+      </div>
     </div>
   )
 }
@@ -206,12 +220,12 @@ export function Widgets() {
       <div className='content-area'>
         <PrivacyStatsWidget />
         <NewsDigestWidget />
-        <WeatherWidget />
+        <UpcomingTasksWidget />
       </div>
       <div className='content-area'>
         <ProtonWidget />
         <WorldClockWidget />
-        <EmptyWidget />
+        <WeatherWidget />
       </div>
     </div>
   )

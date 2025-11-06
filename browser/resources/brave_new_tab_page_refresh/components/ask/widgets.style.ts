@@ -494,29 +494,78 @@ export const style = scoped.css`
     width: 121px;
   }
 
-  /* Empty Widget */
-  .empty-widget {
+  /* Upcoming Tasks Widget */
+  .upcoming-tasks {
     background: ${color.neutral[10]};
     display: flex;
     flex-direction: column;
   }
 
-  .empty-widget-header {
+  .upcoming-tasks-header {
     padding: 12px;
     display: flex;
     gap: 4px;
     align-items: center;
   }
 
-  .empty-widget-title {
+  .upcoming-tasks-title {
     font: ${font.small.regular};
     color: ${color.text.tertiary};
     flex: 1;
   }
 
-  .empty-widget-content {
-    height: 82px;
+  .upcoming-tasks-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 8px;
+    align-items: flex-start;
+    justify-content: flex-end;
+  }
+
+  .task-item {
+    background: ${color.container.background};
+    padding: 4px 10px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
     width: 100%;
+    box-sizing: border-box;
+
+    &.task-top {
+      border-radius: 8px 8px 4px 4px;
+    }
+
+    &.task-middle {
+      border-radius: 4px;
+    }
+
+    &.task-bottom {
+      border-radius: 4px 4px 8px 8px;
+    }
+  }
+
+  .task-time {
+    font: ${font.small.semibold};
+    color: ${color.text.tertiary};
+    width: 64px;
+    flex-shrink: 0;
+  }
+
+  .task-description {
+    flex: 1;
+    font: ${font.small.regular};
+    color: ${color.text.tertiary};
+    min-width: 0;
+  }
+
+  .task-status {
+    font: ${font.small.regular};
+    color: ${color.text.tertiary};
+    white-space: pre;
+    flex-shrink: 0;
   }
 `
 
