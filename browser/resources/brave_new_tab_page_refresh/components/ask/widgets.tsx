@@ -10,6 +10,11 @@ import imgNewsDigest from './news.png'
 import imgProton from './backgroundsmall.gif'
 import imgTaskIcon from './task-icon.svg'
 import imgPlayCircle from './play-circle-icon.svg'
+import imgChatIcon from './chat-icon.svg'
+import imgFunIcon from './fun-icon.svg'
+import imgGame20Q from './game-20q.png'
+import imgGameCrossword from './game-crossword.png'
+import imgGameHoroscope from './game-horoscope.png'
 
 function PrivacyStatsWidget() {
   return (
@@ -252,6 +257,103 @@ function UpcomingTasksWidget() {
   )
 }
 
+function TaskIdeasWidget() {
+  return (
+    <div className='widget task-ideas'>
+      <div className='task-ideas-header'>
+        <img 
+          alt="" 
+          className='task-ideas-icon'
+          src={imgTaskIcon}
+        />
+        <div className='task-ideas-title'>Task ideas</div>
+        <div className='task-ideas-nav-dots'>
+          <div className='nav-dot' />
+          <div className='nav-dot nav-dot-active' />
+          <div className='nav-dot' />
+          <div className='nav-dot' />
+        </div>
+      </div>
+      <div className='task-ideas-content'>
+        <div className='task-ideas-description'>
+          Provide a concise summary of the top 5 news stories from the past 24 hours, focusing on politics, technology, and science. Include one key takeaway for each story. Format as a Custom Newsletter with date, edition, and sources from Grok's web lookups. Deliver daily.
+        </div>
+        <div className='task-ideas-info'>
+          <div className='task-ideas-name'>📰 Daily news roundup</div>
+          <div className='task-ideas-schedule'>Daily at 9:00 am</div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function StartChatWidget() {
+  return (
+    <div className='widget start-chat'>
+      <div className='start-chat-header'>
+        <img 
+          alt="" 
+          className='start-chat-icon'
+          src={imgChatIcon}
+        />
+        <div className='start-chat-title'>Start a new chat</div>
+      </div>
+      <div className='start-chat-content'>
+        <button className='chat-prompt-item'>
+          What should I wear today?
+        </button>
+        <button className='chat-prompt-item'>
+          What are today's tech headlines?
+        </button>
+        <button className='chat-prompt-item'>
+          What movies are releasing this week?
+        </button>
+      </div>
+    </div>
+  )
+}
+
+function FunWithLeoWidget() {
+  return (
+    <div className='widget fun-with-leo'>
+      <div className='fun-with-leo-header'>
+        <img 
+          alt="" 
+          className='fun-with-leo-icon'
+          src={imgFunIcon}
+        />
+        <div className='fun-with-leo-title'>Fun with Brave AI</div>
+      </div>
+      <div className='fun-with-leo-content'>
+        <button className='fun-game-item'>
+          <img 
+            alt="20 questions" 
+            className='game-image'
+            src={imgGame20Q}
+          />
+          <div className='game-label'>Play 20 questions</div>
+        </button>
+        <button className='fun-game-item'>
+          <img 
+            alt="NYTimes crossword" 
+            className='game-image'
+            src={imgGameCrossword}
+          />
+          <div className='game-label'>NYTimes crossword</div>
+        </button>
+        <button className='fun-game-item'>
+          <img 
+            alt="Daily Horoscope" 
+            className='game-image'
+            src={imgGameHoroscope}
+          />
+          <div className='game-label'>Daily Horoscope</div>
+        </button>
+      </div>
+    </div>
+  )
+}
+
 export function Widgets() {
   return (
     <div data-css-scope={style.scope}>
@@ -264,6 +366,11 @@ export function Widgets() {
         <ProtonWidget />
         <WorldClockWidget />
         <WeatherWidget />
+      </div>
+      <div className='content-area'>
+        <TaskIdeasWidget />
+        <StartChatWidget />
+        <FunWithLeoWidget />
       </div>
     </div>
   )

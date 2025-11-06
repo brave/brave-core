@@ -586,5 +586,236 @@ export const style = scoped.css`
     height: 18px;
     display: block;
   }
+
+  /* Task Ideas Widget */
+  .task-ideas {
+    background: ${color.page.background};
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0px 1px 2px -1px rgba(0, 0, 0, 0.08), 0px 1px 3px 0px rgba(0, 0, 0, 0.08);
+    height: 180px;
+  }
+
+  .task-ideas-header {
+    padding: 12px 16px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .task-ideas-icon {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
+
+  .task-ideas-title {
+    font: ${font.small.regular};
+    color: ${color.text.tertiary};
+    flex: 1;
+  }
+
+  .task-ideas-nav-dots {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    height: 10px;
+    flex-shrink: 0;
+  }
+
+  .nav-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: ${color.neutral[10]};
+    flex-shrink: 0;
+  }
+
+  .nav-dot-active {
+    background: ${color.primary[20]};
+    border: 1px solid ${color.divider.interactive};
+    width: 18px;
+    border-radius: 1000px;
+  }
+
+  .task-ideas-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 0 16px 16px 16px;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .task-ideas-description {
+    font: ${font.default.regular};
+    color: ${color.text.secondary};
+    line-height: 22px;
+    flex: 1;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    min-height: 0;
+  }
+
+  .task-ideas-info {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+    width: 100%;
+  }
+
+  .task-ideas-name {
+    font: ${font.small.semibold};
+    color: ${color.text.secondary};
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .task-ideas-schedule {
+    font: ${font.small.regular};
+    color: ${color.text.secondary};
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* Start Chat Widget */
+  .start-chat {
+    background: ${color.page.background};
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0px 1px 2px -1px rgba(0, 0, 0, 0.08), 0px 1px 3px 0px rgba(0, 0, 0, 0.08);
+    height: 180px;
+  }
+
+  .start-chat-header {
+    padding: 12px 16px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .start-chat-icon {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
+
+  .start-chat-title {
+    font: ${font.small.regular};
+    color: ${color.text.tertiary};
+    flex: 1;
+  }
+
+  .start-chat-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 0 8px 8px 8px;
+    align-items: flex-start;
+    justify-content: flex-end;
+  }
+
+  .chat-prompt-item {
+    background: ${color.container.background};
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 12px 12px 4px 12px;
+    font: ${font.default.regular};
+    color: ${color.text.secondary};
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    &:hover {
+      opacity: 0.9;
+    }
+  }
+
+  /* Fun with Leo Widget */
+  .fun-with-leo {
+    background: ${color.page.background};
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0px 1px 2px -1px rgba(0, 0, 0, 0.08), 0px 1px 3px 0px rgba(0, 0, 0, 0.08);
+    height: 180px;
+  }
+
+  .fun-with-leo-header {
+    padding: 12px 16px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .fun-with-leo-icon {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
+
+  .fun-with-leo-title {
+    font: ${font.small.regular};
+    color: ${color.text.tertiary};
+    flex: 1;
+  }
+
+  .fun-with-leo-content {
+    flex: 1;
+    display: flex;
+    gap: 8px;
+    padding: 0 8px 8px 8px;
+    align-items: flex-start;
+  }
+
+  .fun-game-item {
+    flex: 1;
+    background: ${color.container.background};
+    padding: 2px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    border-radius: ${radius.m};
+    border: none;
+    cursor: pointer;
+    min-width: 0;
+
+    &:hover {
+      opacity: 0.9;
+    }
+  }
+
+  .game-image {
+    width: 100%;
+    height: 64px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-bottom: 8px;
+  }
+
+  .game-label {
+    font: ${font.small.regular};
+    color: ${color.text.secondary};
+    text-align: center;
+    padding: 0 8px 8px 8px;
+    line-height: 12px;
+  }
 `
 
