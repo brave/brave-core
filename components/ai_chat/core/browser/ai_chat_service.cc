@@ -1232,7 +1232,7 @@ void AIChatService::SpeechToText(const std::vector<uint8_t>& audio_data,
 void AIChatService::TextToSpeech(const std::string& text,
                                  TextToSpeechCallback callback) {
   const GURL tts_url(
-      "http://localhost:5000");
+      "http://localhost:5013");
 
   // Create JSON payload
   base::Value::Dict payload;
