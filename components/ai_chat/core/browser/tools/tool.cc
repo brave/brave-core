@@ -34,9 +34,9 @@ bool Tool::IsSupportedByModel(const mojom::Model& model) const {
   return model.supports_tools;
 }
 
-bool Tool::RequiresUserInteractionBeforeHandling(
-    const mojom::ToolUseEvent& tool_use,
-    mojom::PermissionChallengePtr& out_challenge) const {
+std::variant<bool, mojom::PermissionChallengePtr>
+Tool::RequiresUserInteractionBeforeHandling(
+    const mojom::ToolUseEvent& tool_use) const {
   return false;
 }
 

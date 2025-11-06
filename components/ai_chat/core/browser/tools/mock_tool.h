@@ -9,6 +9,7 @@
 #include <optional>
 #include <string>
 #include <string_view>
+#include <variant>
 #include <vector>
 
 #include "base/functional/callback.h"
@@ -60,10 +61,9 @@ class MockTool : public Tool {
     supports_conversation_ = supports_conversation;
   }
 
-  MOCK_METHOD(bool,
+  MOCK_METHOD((std::variant<bool, mojom::PermissionChallengePtr>),
               RequiresUserInteractionBeforeHandling,
-              (const mojom::ToolUseEvent& tool_use,
-               mojom::PermissionChallengePtr& out_challenge),
+              (const mojom::ToolUseEvent& tool_use),
               (const, override));
 
   MOCK_METHOD(void,

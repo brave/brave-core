@@ -12,6 +12,7 @@
 #include <string>
 #include <string_view>
 #include <utility>
+#include <variant>
 #include <vector>
 
 #include "base/files/scoped_temp_dir.h"
@@ -4676,15 +4677,14 @@ TEST_F(ConversationHandlerUnitTest, PermissionChallenge_ToolReturnsChallenge) {
   // Create a tool that returns a permission challenge
   auto tool1 = std::make_unique<NiceMock<MockTool>>("test_tool", "Test tool");
 
-  // Mock RequiresUserInteractionBeforeHandling to return true with a challenge
+  // Mock RequiresUserInteractionBeforeHandling to return a challenge
   ON_CALL(*tool1, RequiresUserInteractionBeforeHandling)
-      .WillByDefault([](const mojom::ToolUseEvent& tool_use,
-                        mojom::PermissionChallengePtr& out_challenge) {
-        out_challenge = mojom::PermissionChallenge::New(
-            false,                                   // user_allows
-            std::nullopt,                            // assessment
-            "This tool needs to manage your tabs");  // plan
-        return true;
+      .WillByDefault([](const mojom::ToolUseEvent& tool_use) {
+        return std::variant<bool, mojom::PermissionChallengePtr>(
+            mojom::PermissionChallenge::New(
+                false,                                    // user_allows
+                std::nullopt,                             // assessment
+                "This tool needs to manage your tabs"));  // plan
       });
 
   ON_CALL(*mock_tool_provider_, GetTools()).WillByDefault([&]() {
@@ -4761,11 +4761,10 @@ TEST_F(ConversationHandlerUnitTest, PermissionChallenge_UserDeniesPermission) {
 
   // Tool1 requires permission
   ON_CALL(*tool1, RequiresUserInteractionBeforeHandling)
-      .WillByDefault([](const mojom::ToolUseEvent& tool_use,
-                        mojom::PermissionChallengePtr& out_challenge) {
-        out_challenge = mojom::PermissionChallenge::New(false, std::nullopt,
-                                                        "Needs permission");
-        return true;
+      .WillByDefault([](const mojom::ToolUseEvent& tool_use) {
+        return std::variant<bool, mojom::PermissionChallengePtr>(
+            mojom::PermissionChallenge::New(false, std::nullopt,
+                                            "Needs permission"));
       });
 
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
@@ -4888,11 +4887,10 @@ TEST_F(ConversationHandlerUnitTest,
 
   // Tool1 requires permission
   ON_CALL(*tool1, RequiresUserInteractionBeforeHandling)
-      .WillByDefault([](const mojom::ToolUseEvent& tool_use,
-                        mojom::PermissionChallengePtr& out_challenge) {
-        out_challenge = mojom::PermissionChallenge::New(false, std::nullopt,
-                                                        "Needs permission");
-        return true;
+      .WillByDefault([](const mojom::ToolUseEvent& tool_use) {
+        return std::variant<bool, mojom::PermissionChallengePtr>(
+            mojom::PermissionChallenge::New(false, std::nullopt,
+                                            "Needs permission"));
       });
 
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());

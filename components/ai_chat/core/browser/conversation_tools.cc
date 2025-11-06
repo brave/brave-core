@@ -69,11 +69,10 @@ The key is to avoid overusing the tool. It should supplement your responses, not
     return std::optional<std::vector<std::string>>({"choices"});
   }
 
-  bool RequiresUserInteractionBeforeHandling(
-      const mojom::ToolUseEvent& tool_use,
-      mojom::PermissionChallengePtr& out_challenge) const override {
+  std::variant<bool, mojom::PermissionChallengePtr>
+  RequiresUserInteractionBeforeHandling(
+      const mojom::ToolUseEvent& tool_use) const override {
     // UserChoiceTool needs user to provide output, not permission
-    out_challenge = nullptr;
     return true;
   }
 };

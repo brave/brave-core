@@ -29,10 +29,10 @@ MockTool::MockTool(std::string_view name,
   // Set up default behavior for RequiresUserInteractionBeforeHandling
   ON_CALL(*this, RequiresUserInteractionBeforeHandling)
       .WillByDefault([requires_user_interaction_before_handling](
-                         const mojom::ToolUseEvent& tool_use,
-                         mojom::PermissionChallengePtr& out_challenge) {
-        out_challenge = nullptr;
-        return requires_user_interaction_before_handling;
+                         const mojom::ToolUseEvent& tool_use) {
+        // Return true if user needs to provide output, false otherwise
+        return std::variant<bool, mojom::PermissionChallengePtr>(
+            requires_user_interaction_before_handling);
       });
 }
 
