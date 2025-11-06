@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/containers/fixed_flat_map.h"
 #include "base/notreached.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/browser/ui/brave_pages.h"
@@ -25,9 +26,15 @@ namespace {
 // `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
 // added in the meantime to fix the build error. Remove this attribute and
 // provide a proper fix.
-[[clang::no_destroy]] base::OnceCallback<void()>
+[[clang::no_destroy]] base::OnceCallback<void(std::string_view coin_name)>
     g_account_creation_callback_for_testing;
 
+// These are names of coins used by `create-account-options.ts`. We support only
+// Solana and Cardano account creation triggered by dApp.
+constexpr auto kAccountCreationCoinName =
+    base::MakeFixedFlatMap<brave_wallet::mojom::CoinType, std::string_view>(
+        {{brave_wallet::mojom::CoinType::SOL, "Solana"},
+         {brave_wallet::mojom::CoinType::ADA, "Cardano"}});
 }  // namespace
 
 namespace brave_wallet {
@@ -68,10 +75,16 @@ void ShowAccountCreation(content::WebContents* web_contents,
   Browser* browser =
       web_contents ? chrome::FindBrowserWithTab(web_contents) : nullptr;
 
+  auto it = kAccountCreationCoinName.find(coin_type);
+  if (kAccountCreationCoinName.find(coin_type) ==
+      kAccountCreationCoinName.end()) {
+    return;
+  }
+
   if (browser) {
-    brave::ShowBraveWalletAccountCreation(browser, coin_type);
+    brave::ShowBraveWalletAccountCreation(browser, it->second);
   } else if (g_account_creation_callback_for_testing) {
-    std::move(g_account_creation_callback_for_testing).Run();
+    std::move(g_account_creation_callback_for_testing).Run(it->second);
   }
 }
 
@@ -89,7 +102,7 @@ void SetCallbackForNewSetupNeededForTesting(
 }
 
 void SetCallbackForAccountCreationForTesting(
-    base::OnceCallback<void()> callback) {
+    base::OnceCallback<void(std::string_view)> callback) {
   g_account_creation_callback_for_testing = std::move(callback);
 }
 
