@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/location_bar/location_bar_view.cc b/chrome/browser/ui/views/location_bar/location_bar_view.cc
-index af0475ed779bdee38146097acfe2654f7add935e..e12ff6060bc307d2b6366d6850f286e5e907f787 100644
+index 84ca546a93ba3faa0ecf2f6c91a76f0d82d54550..015b1a782756e731547c1a621305d467bf41749f 100644
 --- a/chrome/browser/ui/views/location_bar/location_bar_view.cc
 +++ b/chrome/browser/ui/views/location_bar/location_bar_view.cc
-@@ -758,6 +758,7 @@ void LocationBarView::Layout(PassKey) {
+@@ -770,6 +770,7 @@ void LocationBarView::Layout(PassKey) {
                                    .indent_input_when_popup_closed) &&
                               !location_icon_view_->ShouldShowLabel() &&
                               !ShouldShowKeywordBubble();
@@ -10,7 +10,7 @@ index af0475ed779bdee38146097acfe2654f7add935e..e12ff6060bc307d2b6366d6850f286e5
    if (should_indent) {
      icon_left += 7 /*icon_indent*/;
      icon_left += omnibox_feature_configs::AdjustOmniboxIndent()
-@@ -844,6 +845,7 @@ void LocationBarView::Layout(PassKey) {
+@@ -856,6 +857,7 @@ void LocationBarView::Layout(PassKey) {
        }
        selected_keyword_view_->SetCustomImage(image);
      }
@@ -18,7 +18,7 @@ index af0475ed779bdee38146097acfe2654f7add935e..e12ff6060bc307d2b6366d6850f286e5
    } else if (location_icon_view_->GetShowText() &&
               !ShouldChipOverrideLocationIcon()) {
      location_icon_view_->SetVisible(true);
-@@ -891,6 +893,7 @@ void LocationBarView::Layout(PassKey) {
+@@ -903,6 +905,7 @@ void LocationBarView::Layout(PassKey) {
      }
    };
  
@@ -26,7 +26,7 @@ index af0475ed779bdee38146097acfe2654f7add935e..e12ff6060bc307d2b6366d6850f286e5
    add_trailing_decoration(page_action_icon_container_,
                            /*intra_item_padding=*/0);
    add_trailing_decoration(page_action_container_,
-@@ -906,6 +909,7 @@ void LocationBarView::Layout(PassKey) {
+@@ -918,6 +921,7 @@ void LocationBarView::Layout(PassKey) {
    }
  
    add_trailing_decoration(clear_all_button_, /*intra_item_padding=*/0);
