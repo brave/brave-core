@@ -274,6 +274,8 @@ source_set("ui") {
       "webui/private_new_tab_page/brave_private_new_tab_page_handler.h",
       "webui/private_new_tab_page/brave_private_new_tab_ui.cc",
       "webui/private_new_tab_page/brave_private_new_tab_ui.h",
+      "webui/settings/brave_account_row_handler.cc",
+      "webui/settings/brave_account_row_handler.h",
       "webui/settings/brave_account_settings_handler.cc",
       "webui/settings/brave_account_settings_handler.h",
       "webui/settings/brave_adblock_handler.cc",
@@ -328,6 +330,7 @@ source_set("ui") {
 
     deps += [
       "//base",
+      "//brave/browser/brave_account",
       "//brave/browser/email_aliases",
       "//brave/browser/ntp_background",
       "//brave/browser/profiles:util",
@@ -335,6 +338,7 @@ source_set("ui") {
       "//brave/browser/ui/tabs:tab_model",
       "//brave/browser/ui/tabs:tab_strip",
       "//brave/common",
+      "//brave/components/brave_account",
       "//brave/components/brave_account:features",
       "//brave/components/brave_account/mojom",
       "//brave/components/brave_wayback_machine/buildflags",

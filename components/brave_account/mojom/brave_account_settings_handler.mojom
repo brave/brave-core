@@ -5,6 +5,22 @@
 
 module brave_account.mojom;
 
-interface BraveAccountSettingsHandler {
+enum AccountState {
+  kLoggedOut,
+  kVerification,
+  kLoggedIn,
+};
+
+interface BraveAccountRow {
+  UpdateState(AccountState state);
+};
+
+interface BraveAccountRowHandler {
+  GetAccountState() => (AccountState state);
   OpenDialog();
+};
+
+interface BraveAccountSettingsHandler {
+  CreateRowHandler(pending_remote<BraveAccountRow> row,
+                   pending_receiver<BraveAccountRowHandler> row_handler);
 };

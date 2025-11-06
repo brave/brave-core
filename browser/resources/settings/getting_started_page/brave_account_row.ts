@@ -32,7 +32,7 @@ export class SettingsBraveAccountRow extends CrLitElement {
   }
 
   protected onButtonClicked() {
-    this.browserProxy.handler.openDialog()
+    this.browserProxy.rowHandler.openDialog()
   }
 
   private browserProxy: BraveAccountBrowserProxy =

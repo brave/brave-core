@@ -9,8 +9,10 @@
 #include <string>
 #include <utility>
 
+#include "base/check_deref.h"
 #include "base/compiler_specific.h"
 #include "base/feature_list.h"
+#include "brave/browser/brave_account/brave_account_service_factory.h"
 #include "brave/browser/brave_origin/brave_origin_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
@@ -30,6 +32,7 @@
 #include "brave/browser/ui/webui/settings/brave_wallet_handler.h"
 #include "brave/browser/ui/webui/settings/default_brave_shields_handler.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_account/brave_account_service.h"
 #include "brave/components/brave_account/features.h"
 #include "brave/components/brave_origin/brave_origin_handler.h"
 #include "brave/components/brave_origin/brave_origin_utils.h"
@@ -300,11 +303,20 @@ void BraveSettingsUI::BindInterface(
 #endif
 
 void BraveSettingsUI::BindInterface(
+    mojo::PendingReceiver<brave_account::mojom::Authentication>
+        pending_receiver) {
+  auto* profile = Profile::FromWebUI(web_ui());
+  auto* brave_account_service =
+      brave_account::BraveAccountServiceFactory::GetFor(profile);
+  CHECK_DEREF(brave_account_service).BindInterface(std::move(pending_receiver));
+}
+
+void BraveSettingsUI::BindInterface(
     mojo::PendingReceiver<brave_account::mojom::BraveAccountSettingsHandler>
         pending_receiver) {
-  brave_account_settings_handler_ =
-      std::make_unique<brave_account::BraveAccountSettingsHandler>(
-          std::move(pending_receiver), web_ui());
+  mojo::MakeSelfOwnedReceiver(
+      std::make_unique<brave_account::BraveAccountSettingsHandler>(web_ui()),
+      std::move(pending_receiver));
 }
 
 #if BUILDFLAG(ENABLE_CONTAINERS)

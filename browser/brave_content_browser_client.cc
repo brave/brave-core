@@ -910,6 +910,8 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   }
   if (brave_account::features::IsBraveAccountEnabled()) {
     content::RegisterWebUIControllerInterfaceBinder<
+        brave_account::mojom::Authentication, BraveSettingsUI>(map);
+    content::RegisterWebUIControllerInterfaceBinder<
         brave_account::mojom::BraveAccountSettingsHandler, BraveSettingsUI>(
         map);
   }
