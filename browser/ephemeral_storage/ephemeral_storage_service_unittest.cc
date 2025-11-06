@@ -58,7 +58,8 @@ class MockDelegate : public EphemeralStorageServiceDelegate {
               (const override));
   MOCK_METHOD(void,
               CloseTabsForDomainAndSubdomains,
-              (std::string_view ephemeral_domain),
+              (content::WebContents * contents,
+               std::string_view ephemeral_domain),
               (override));
 
   void ExpectRegisterFirstWindowOpenedCallback(base::OnceClosure callback,

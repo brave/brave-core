@@ -21,6 +21,7 @@
 #include "content/public/browser/browsing_data_filter_builder.h"
 #include "content/public/browser/browsing_data_remover.h"
 #include "content/public/browser/dom_storage_context.h"
+#include "content/public/browser/web_contents.h"
 #include "net/base/features.h"
 #include "net/base/schemeful_site.h"
 #include "net/base/url_util.h"
@@ -159,14 +160,16 @@ void BraveEphemeralStorageServiceDelegate::OnBrowserAdded(Browser* browser) {
 #endif
 
 void BraveEphemeralStorageServiceDelegate::CloseTabsForDomainAndSubdomains(
+    content::WebContents* contents,
     const std::string_view ephemeral_domain) {
 #if !BUILDFLAG(IS_ANDROID)
-  const auto* browser =
-      chrome::FindTabbedBrowser(Profile::FromBrowserContext(context_), false);
+  CHECK(contents);
+  tabs::TabInterface* tab = tabs::TabInterface::GetFromContents(contents);
+  BrowserWindowInterface* browser = tab->GetBrowserWindowInterface();
   if (!browser) {
     return;
   }
-  static_cast<BraveTabStripModel*>(browser->tab_strip_model())
+  static_cast<BraveTabStripModel*>(browser->GetTabStripModel())
       ->CloseTabsWithTLD(ephemeral_domain);
 #else
   Java_TabUtils_closeTabsWithTLD(

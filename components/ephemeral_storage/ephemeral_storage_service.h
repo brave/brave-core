@@ -35,6 +35,7 @@ class PrefService;
 
 namespace content {
 class BrowserContext;
+class WebContents;
 }  // namespace content
 
 namespace permissions {
@@ -83,7 +84,7 @@ class EphemeralStorageService : public KeyedService {
   void RemoveObserver(EphemeralStorageServiceObserver* observer);
 
   void CleanupTLDEphemeralStorage(
-      const std::string& ephemeral_domain,
+      content::WebContents* contents,
       const content::StoragePartitionConfig storage_partition_config,
       const bool enforced_by_user);
 
