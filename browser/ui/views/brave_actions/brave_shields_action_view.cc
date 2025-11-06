@@ -132,6 +132,13 @@ SkPath BraveShieldsActionView::GetHighlightPath() const {
   return path;
 }
 
+views::Widget* BraveShieldsActionView::GetBubbleWidget() {
+  if (!webui_bubble_manager_) {
+    return nullptr;
+  }
+  return webui_bubble_manager_->GetBubbleWidget();
+}
+
 std::unique_ptr<IconWithBadgeImageSource>
 BraveShieldsActionView::GetImageSource() {
   auto preferred_size = GetPreferredSize();

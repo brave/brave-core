@@ -12,15 +12,24 @@ source_set("page_info") {
     "brave_page_info_tab_switcher.cc",
     "brave_page_info_tab_switcher.h",
     "brave_page_info_view_ids.h",
+    "brave_shields_page_info_view.cc",
+    "brave_shields_page_info_view.h",
   ]
 
   deps = [
     "//brave/browser/ui/page_info",
+    "//brave/components/constants",
     "//brave/components/resources:strings",
     "//brave/components/vector_icons",
+    "//chrome/browser/profiles",
+    "//chrome/browser/ui/browser_window",
     "//chrome/browser/ui/views/page_info",
+    "//chrome/browser/ui/webui:webui_util",
+    "//chrome/browser/ui/webui/top_chrome",
     "//components/strings:components_strings",
+    "//components/tabs:public",
     "//ui/base",
+    "//ui/views/controls/webview",
   ]
 }
 
