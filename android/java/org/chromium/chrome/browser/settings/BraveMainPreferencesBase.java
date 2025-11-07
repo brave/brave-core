@@ -59,7 +59,6 @@ import java.util.HashMap;
 public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         implements Preference.OnPreferenceChangeListener {
     // sections
-    private static final String PREF_BRAVE_ACCOUNT_SECTION = "brave_account_section";
     private static final String PREF_FEATURES_SECTION = "features_section";
     private static final String PREF_DISPLAY_SECTION = "display_section";
     private static final String PREF_GENERAL_SECTION = "general_section";
@@ -70,7 +69,6 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
 
     // prefs
     private static final String PREF_BRAVE_VPN_CALLOUT = "pref_vpn_callout";
-    private static final String PREF_GET_STARTED = "get_started";
     private static final String PREF_CLOSING_ALL_TABS_CLOSES_BRAVE =
             "closing_all_tabs_closes_brave";
     private static final String PREF_PRIVACY = "privacy";
@@ -125,7 +123,6 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
 
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_ACCOUNT)) {
             mAccountController = new BraveAccountSectionController(this, getProfile());
-            mAccountController.init();
         }
         overrideChromiumPreferences();
         initRateBrave();
@@ -300,21 +297,21 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
 
         int braveAccountSectionOrder = firstSectionOrder;
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_ACCOUNT)) {
-            setPreferenceOrder(PREF_BRAVE_ACCOUNT_SECTION, ++braveAccountSectionOrder);
-            setPreferenceOrder(PREF_GET_STARTED, ++braveAccountSectionOrder);
-            setPreferenceOrder("almost_there", ++braveAccountSectionOrder);
-            setPreferenceOrder("resend_confirmation_email", ++braveAccountSectionOrder);
-            setPreferenceOrder("cancel_registration", ++braveAccountSectionOrder);
-            setPreferenceOrder("brave_account_user", ++braveAccountSectionOrder);
-            setPreferenceOrder("sign_out", ++braveAccountSectionOrder);
+            setPreferenceOrder(BraveAccountSectionController.PREF_BRAVE_ACCOUNT_SECTION, ++braveAccountSectionOrder);
+            setPreferenceOrder(BraveAccountSectionController.PREF_USER_INFO, ++braveAccountSectionOrder);
+            setPreferenceOrder(BraveAccountSectionController.PREF_SIGN_OUT, ++braveAccountSectionOrder);
+            setPreferenceOrder(BraveAccountSectionController.PREF_ALMOST_THERE, ++braveAccountSectionOrder);
+            setPreferenceOrder(BraveAccountSectionController.PREF_RESEND_CONFIRMATION_EMAIL, ++braveAccountSectionOrder);
+            setPreferenceOrder(BraveAccountSectionController.PREF_CANCEL_REGISTRATION, ++braveAccountSectionOrder);
+            setPreferenceOrder(BraveAccountSectionController.PREF_GET_STARTED, ++braveAccountSectionOrder);
         } else {
-            removePreferenceIfPresent(PREF_BRAVE_ACCOUNT_SECTION);
-            removePreferenceIfPresent(PREF_GET_STARTED);
-            removePreferenceIfPresent("almost_there");
-            removePreferenceIfPresent("resend_confirmation_email");
-            removePreferenceIfPresent("cancel_registration");
-            removePreferenceIfPresent("brave_account_user");
-            removePreferenceIfPresent("sign_out");
+            removePreferenceIfPresent(BraveAccountSectionController.PREF_BRAVE_ACCOUNT_SECTION);
+            removePreferenceIfPresent(BraveAccountSectionController.PREF_USER_INFO);
+            removePreferenceIfPresent(BraveAccountSectionController.PREF_SIGN_OUT);
+            removePreferenceIfPresent(BraveAccountSectionController.PREF_ALMOST_THERE);
+            removePreferenceIfPresent(BraveAccountSectionController.PREF_RESEND_CONFIRMATION_EMAIL);
+            removePreferenceIfPresent(BraveAccountSectionController.PREF_CANCEL_REGISTRATION);
+            removePreferenceIfPresent(BraveAccountSectionController.PREF_GET_STARTED);
         }
 
         int featuresSectionOrder = braveAccountSectionOrder;

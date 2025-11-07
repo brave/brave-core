@@ -28,12 +28,13 @@ import org.chromium.components.user_prefs.UserPrefs;
 @NullMarked
 public class BraveAccountSectionController implements PrefObserver {
     // Preference keys
-    private static final String PREF_GET_STARTED = "get_started";
-    private static final String PREF_ALMOST_THERE = "almost_there";
-    private static final String PREF_RESEND_CONFIRMATION_EMAIL = "resend_confirmation_email";
-    private static final String PREF_CANCEL_REGISTRATION = "cancel_registration";
-    private static final String PREF_BRAVE_ACCOUNT_USER = "brave_account_user";
-    private static final String PREF_SIGN_OUT = "sign_out";
+    public static final String PREF_BRAVE_ACCOUNT_SECTION = "brave_account_section";
+    public static final String PREF_USER_INFO = "user_info";
+    public static final String PREF_SIGN_OUT = "sign_out";
+    public static final String PREF_ALMOST_THERE = "almost_there";
+    public static final String PREF_RESEND_CONFIRMATION_EMAIL = "resend_confirmation_email";
+    public static final String PREF_CANCEL_REGISTRATION = "cancel_registration";
+    public static final String PREF_GET_STARTED = "get_started";
 
     // Brave Account pref names
     private static final String BRAVE_ACCOUNT_AUTHENTICATION_TOKEN_PREF =
@@ -46,49 +47,32 @@ public class BraveAccountSectionController implements PrefObserver {
     private @Nullable PrefChangeRegistrar mPrefChangeRegistrar;
     private @Nullable Authentication mAuthentication;
 
-    /**
-     * Creates a new controller for the Brave Account section.
-     *
-     * @param fragment The preference fragment containing the Brave Account preferences
-     * @param profile The user profile
-     */
     public BraveAccountSectionController(PreferenceFragmentCompat fragment, Profile profile) {
         mFragment = fragment;
         mProfile = profile;
-    }
 
-    /**
-     * Initializes the controller by setting up preference listeners and observers. Should be called
-     * during fragment onCreate().
-     */
-    public void init() {
         setupPreferenceListeners();
         setupPrefChangeObservers();
     }
 
-    /** Cleans up resources. Should be called during fragment onDestroy(). */
     public void destroy() {
         if (mPrefChangeRegistrar != null) {
             mPrefChangeRegistrar.destroy();
             mPrefChangeRegistrar = null;
         }
+
         if (mAuthentication != null) {
             mAuthentication.close();
             mAuthentication = null;
         }
     }
 
-    /**
-     * Updates the UI based on the current authentication state. Should be called during fragment
-     * onResume() or when state changes.
-     */
     public void updateUI() {
         PostTask.postTask(TaskTraits.UI_DEFAULT, this::updateBraveAccountSection);
     }
 
     @Override
     public void onPreferenceChange() {
-        // React to Brave Account pref changes
         updateUI();
     }
 
@@ -171,7 +155,7 @@ public class BraveAccountSectionController implements PrefObserver {
         Preference almostTherePref = findPreference(PREF_ALMOST_THERE);
         Preference resendEmailPref = findPreference(PREF_RESEND_CONFIRMATION_EMAIL);
         Preference cancelRegistrationPref = findPreference(PREF_CANCEL_REGISTRATION);
-        Preference accountUserPref = findPreference(PREF_BRAVE_ACCOUNT_USER);
+        Preference accountUserPref = findPreference(PREF_USER_INFO);
         Preference signOutPref = findPreference(PREF_SIGN_OUT);
 
         if (hasAuthToken) {
