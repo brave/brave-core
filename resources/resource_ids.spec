@@ -230,9 +230,6 @@
     "META": {"sizes": {"includes": [20]}},
     "includes": [32631],
   },
-  "brave/browser/resources/bookmark_icon/bookmark_icon_resources.grd": {
-    "structures": [32660],
-  },
   # WARNING: The upstream ChromeOS/Ash strings currently run through 40000. We
   # must be careful not to exceed that maximum when adding new strings here.
   # Check out/<BUILD_TYPE>/gen/brave/resources/brave_resource_ids for how much
