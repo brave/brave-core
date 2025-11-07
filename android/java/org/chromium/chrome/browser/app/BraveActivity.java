@@ -1943,7 +1943,7 @@ public abstract class BraveActivity extends ChromeActivity
     }
 
     /** Close all tabs whose domain matches with a given TLD. */
-    public void closeTabsWithTLD(@NonNull final String tld) {
+    public boolean closeTabsWithTLD(@NonNull final String tld) {
         final TabModel tabModel = getCurrentTabModel();
         final int count = tabModel.getCount();
         final List<Tab> tabsToClose = new ArrayList<>();
@@ -1957,7 +1957,7 @@ public abstract class BraveActivity extends ChromeActivity
 
                 String domain = UrlUtilities.getDomainAndRegistry(spec, false);
                 if (domain == null || domain.isEmpty()) {
-                    domain = spec;
+                    continue;
                 }
 
                 if (domain.equals(tld)) {
@@ -1968,11 +1968,17 @@ public abstract class BraveActivity extends ChromeActivity
 
         // Close all matching tabs in a single operation
         if (!tabsToClose.isEmpty()) {
-            tabModel.getTabRemover()
-                    .closeTabs(
-                            TabClosureParams.closeTabs(tabsToClose).allowUndo(false).build(),
-                            false);
+            try {
+                tabModel.getTabRemover()
+                        .closeTabs(
+                                TabClosureParams.closeTabs(tabsToClose).allowUndo(false).build(),
+                                false);
+                return true; // Successfully initiated tab closure
+            } catch (Exception e) {
+                return false; // Failed to close tabs
+            }
         }
+        return false;
     }
 
     /**

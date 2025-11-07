@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/check.h"
+#include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/strings/strcat.h"
 #include "base/task/sequenced_task_runner.h"
@@ -277,9 +278,11 @@ void EphemeralStorageService::CleanupTLDEphemeralStorage(
     return;
   }
 
-  delegate_->CloseTabsForDomainAndSubdomains(contents, ephemeral_domain);
   const TLDEphemeralAreaKey key(ephemeral_domain, storage_partition_config);
-  CleanupTLDEphemeralArea(key, true, true);
+  delegate_->CloseTabsForDomainAndSubdomains(
+      contents, ephemeral_domain,
+      base::BindOnce(&EphemeralStorageService::CleanupTLDEphemeralArea,
+                     weak_ptr_factory_.GetWeakPtr(), key, true, true));
 }
 
 void EphemeralStorageService::FirstPartyStorageAreaInUse(

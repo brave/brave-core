@@ -24,15 +24,16 @@ public class BraveEphemeralStorageUtils {
     }
 
     @CalledByNative
-    public static void closeTabsWithTLD(String tld) {
+    public static boolean closeTabsWithTLD(String tld) {
         try {
             BraveActivity braveActivity = BraveActivity.getBraveActivity();
             if (braveActivity != null) {
-                braveActivity.closeTabsWithTLD(tld);
+                return braveActivity.closeTabsWithTLD(tld);
             }
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "closeTabsWithTLD error" + e);
         }
+        return false;
     }
 
     @NativeMethods

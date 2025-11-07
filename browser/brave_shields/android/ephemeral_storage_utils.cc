@@ -13,6 +13,7 @@
 #include "chrome/browser/android/tab_android.h"
 
 namespace ephemeral_storage {
+
 static void JNI_BraveEphemeralStorageUtils_CleanupTLDEphemeralStorage(
     JNIEnv* env,
     const jni_zero::JavaRef<jobject>& tab) {
@@ -34,8 +35,8 @@ static void JNI_BraveEphemeralStorageUtils_CleanupTLDEphemeralStorage(
       web_contents->GetSiteInstance()->GetStoragePartitionConfig(), true);
 }
 
-void CloseTabsWithTLD(const std::string_view tld) {
-  Java_BraveEphemeralStorageUtils_closeTabsWithTLD(
+bool CloseTabsWithTLD(const std::string_view tld) {
+  return Java_BraveEphemeralStorageUtils_closeTabsWithTLD(
       base::android::AttachCurrentThread(),
       base::android::ConvertUTF8ToJavaString(
           base::android::AttachCurrentThread(), std::string(tld)));
