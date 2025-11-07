@@ -33,15 +33,10 @@ template("brave_repack_percent") {
                            ])
 
     # All sources should also have deps for completeness.
-    sources = [
-      "$root_gen_dir/brave/brave_theme_resources_${percent}_percent.pak",
-      "$root_gen_dir/brave/browser/resources/bookmark_icon/bookmark_icon_resources_${percent}_percent.pak",
-    ]
+    sources =
+        [ "$root_gen_dir/brave/brave_theme_resources_${percent}_percent.pak" ]
 
-    deps = [
-      "//brave/app/theme:brave_theme_resources",
-      "//brave/browser/resources/bookmark_icon:bookmark_icon_resources",
-    ]
+    deps = [ "//brave/app/theme:brave_theme_resources" ]
 
     if (defined(invoker.deps)) {
       deps += invoker.deps
