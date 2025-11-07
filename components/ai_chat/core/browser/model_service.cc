@@ -513,42 +513,42 @@ ModelService::GetModelsWithSubtitles() {
   std::vector<mojom::ModelWithSubtitlePtr> models;
 
   for (const auto& model : all_models) {
-    mojom::ModelWithSubtitle model_with_subtitle;
-    model_with_subtitle.model = model->Clone();
+    auto model_with_subtitle = mojom::ModelWithSubtitle::New();
+    model_with_subtitle->model = model->Clone();
 
     if (model->options->is_leo_model_options()) {
       if (model->key == "chat-basic") {
-        model_with_subtitle.subtitle =
+        model_with_subtitle->subtitle =
             l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_BASIC_SUBTITLE);
       } else if (model->key == "chat-claude-instant") {
-        model_with_subtitle.subtitle =
+        model_with_subtitle->subtitle =
             l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_CLAUDE_INSTANT_SUBTITLE);
       } else if (model->key == "chat-claude-haiku") {
-        model_with_subtitle.subtitle =
+        model_with_subtitle->subtitle =
             l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_CLAUDE_HAIKU_SUBTITLE);
       } else if (model->key == "chat-claude-sonnet") {
-        model_with_subtitle.subtitle =
+        model_with_subtitle->subtitle =
             l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_CLAUDE_SONNET_SUBTITLE);
       } else if (model->key == "chat-qwen") {
-        model_with_subtitle.subtitle =
+        model_with_subtitle->subtitle =
             l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_QWEN_SUBTITLE);
       } else if (model->key == "chat-deepseek-r1") {
-        model_with_subtitle.subtitle =
+        model_with_subtitle->subtitle =
             l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_DEEPSEEK_R1_SUBTITLE);
       } else if (model->key == "chat-automatic") {
-        model_with_subtitle.subtitle =
+        model_with_subtitle->subtitle =
             l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_AUTOMATIC_SUBTITLE);
       } else if (model->key == "chat-gemma") {
-        model_with_subtitle.subtitle =
+        model_with_subtitle->subtitle =
             l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_GEMMA_SUBTITLE);
       }
     }
 
     if (model->options->is_custom_model_options()) {
-      model_with_subtitle.subtitle = "";
+      model_with_subtitle->subtitle = "";
     }
 
-    models.emplace_back(model_with_subtitle.Clone());
+    models.emplace_back(std::move(model_with_subtitle));
   }
   return models;
 }
