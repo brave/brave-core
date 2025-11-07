@@ -380,18 +380,6 @@ public class TabUtils {
         return 0;
     }
 
-    @CalledByNative
-    public static void closeTabsWithTLD(String tld) {
-        try {
-            BraveActivity braveActivity = BraveActivity.getBraveActivity();
-            if (braveActivity != null) {
-                braveActivity.closeTabsWithTLD(tld);
-            }
-        } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "closeTabsWithTLD error" + e);
-        }
-    }
-
     private static void tintIcon(@Nullable Drawable icon, int color) {
         if (icon != null) icon.setTint(color);
     }
