@@ -1,10 +1,10 @@
-/* Copyright (c) 2024 The Brave Authors. All rights reserved.
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_ACCOUNT_ROW_HANDLER_H_
-#define BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_ACCOUNT_ROW_HANDLER_H_
+#ifndef BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_ACCOUNT_BRAVE_ACCOUNT_ROW_HANDLER_H_
+#define BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_ACCOUNT_BRAVE_ACCOUNT_ROW_HANDLER_H_
 
 #include "base/memory/raw_ptr.h"
 #include "brave/components/brave_account/mojom/brave_account_settings_handler.mojom.h"
@@ -51,4 +51,4 @@ class BraveAccountRowHandler : public mojom::BraveAccountRowHandler {
 
 }  // namespace brave_account
 
-#endif  // BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_ACCOUNT_ROW_HANDLER_H_
+#endif  // BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_ACCOUNT_BRAVE_ACCOUNT_ROW_HANDLER_H_

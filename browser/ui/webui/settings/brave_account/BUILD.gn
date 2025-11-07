@@ -1,0 +1,23 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+assert(!is_android)
+
+source_set("brave_account") {
+  sources = [
+    "brave_account_row_handler.cc",
+    "brave_account_row_handler.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/browser/ui/webui/brave_account",
+    "//brave/components/brave_account",
+    "//brave/components/brave_account/mojom",
+    "//chrome/browser/profiles:profile",
+    "//components/prefs",
+    "//mojo/public/cpp/bindings",
+  ]
+}

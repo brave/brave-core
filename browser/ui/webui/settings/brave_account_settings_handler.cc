@@ -7,7 +7,7 @@
 
 #include <utility>
 
-#include "brave/browser/ui/webui/settings/brave_account_row_handler.h"
+#include "brave/browser/ui/webui/settings/brave_account/brave_account_row_handler.h"
 
 namespace brave_account {
 
