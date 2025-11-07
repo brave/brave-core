@@ -78,7 +78,6 @@ test("brave_components_unittests") {
   if (is_ios) {
     bundle_deps = [
       ":components_tests_pak_bundle_data",
-      "//brave/components/brave_wallet/browser:brave_wallet_test_data_bundle",
       "//components:components_tests_pak_bundle_data",
     ]
   } else {

@@ -32,7 +32,7 @@ void BlockchainImagesSource::StartDataRequest(
     GotDataCallback callback) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   const std::string path = URLDataSource::URLToRequestPath(url);
-  HandleImageRequest(path, std::move(callback));
+  StartDataRequestForPath(path, std::move(callback));
 }
 
 std::string BlockchainImagesSource::GetMimeType(const GURL& url) {
