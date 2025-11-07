@@ -82,7 +82,8 @@ std::vector<base::WeakPtr<Tool>> ContentAgentToolProvider::GetTools() {
 void ContentAgentToolProvider::StopAllTasks() {
   if (!task_id_.is_null()) {
     // `success` sets whether the task ends as state kFinished or kCancelled
-    actor_service_->StopTask(task_id_, true /* success */);
+    actor_service_->StopTask(task_id_,
+                             actor::ActorTask::StoppedReason::kTaskComplete);
   }
 }
 
