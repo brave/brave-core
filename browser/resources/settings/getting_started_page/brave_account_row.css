@@ -7,7 +7,12 @@
  * #type=style-lit
  * #css_wrapper_metadata_end */
 
-.row {
+.row-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.first-row {
   align-items: center;
   display: flex;
   gap: var(--leo-spacing-xl);
@@ -39,19 +44,22 @@
   font: var(--leo-font-default-semibold);
 }
 
-:host([signed-in]) .title {
-  font: var(--leo-font-large-semibold);
-}
-
 .description {
   color: var(--leo-color-text-secondary);
   font: var(--leo-font-small-regular);
 }
 
-:host([signed-in]) .description {
-  font: var(--leo-font-default-regular);
-}
-
 leo-button {
   flex: none;
+}
+
+.second-row {
+  align-items: flex-start;
+  display: flex;
+  gap: var(--leo-spacing-m);
+  padding: 0 var(--leo-spacing-2xl) var(--leo-spacing-l);
+}
+
+.cancel-registration-button {
+  color: var(--leo-color-systemfeedback-error-text);
 }
