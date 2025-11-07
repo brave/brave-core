@@ -32,13 +32,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_list.h"
 #else
-#include "base/android/jni_android.h"
-#include "base/android/jni_string.h"
-// Suppress unused function warning for JNI functions we don't use
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-function"
-#include "brave/build/android/jni_headers/TabUtils_jni.h"
-#pragma clang diagnostic pop
+#include "brave/browser/brave_shields/android/ephemeral_storage_utils.h"
 #endif
 
 namespace ephemeral_storage {
@@ -172,10 +166,7 @@ void BraveEphemeralStorageServiceDelegate::CloseTabsForDomainAndSubdomains(
   static_cast<BraveTabStripModel*>(browser->GetTabStripModel())
       ->CloseTabsWithTLD(ephemeral_domain);
 #else
-  Java_TabUtils_closeTabsWithTLD(
-      base::android::AttachCurrentThread(),
-      base::android::ConvertUTF8ToJavaString(
-          base::android::AttachCurrentThread(), std::string(ephemeral_domain)));
+  CloseTabsWithTLD(ephemeral_domain);
 #endif
 }
 

@@ -7,11 +7,7 @@
 
 #include "base/android/jni_android.h"
 #include "base/android/jni_string.h"
-// Suppress unused function warning for JNI functions we don't use
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-function"
 #include "brave/build/android/jni_headers/TabUtils_jni.h"
-#pragma clang diagnostic pop
 
 namespace brave_rewards {
 
