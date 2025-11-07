@@ -22,7 +22,7 @@ import org.chromium.mojo.system.impl.CoreImpl;
 @NullMarked
 public class BraveAccountServiceFactory {
     private static final Object sLock = new Object();
-    private static BraveAccountServiceFactory sInstance;
+    private static @Nullable BraveAccountServiceFactory sInstance;
 
     public static BraveAccountServiceFactory getInstance() {
         synchronized (sLock) {
