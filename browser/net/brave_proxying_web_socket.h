@@ -94,6 +94,7 @@ class BraveProxyingWebSocket
                            OnBeforeSendHeadersCallback callback) override;
   void OnHeadersReceived(const std::string& headers,
                          const ::net::IPEndPoint& remote_endpoint,
+                         const std::optional<net::SSLInfo>& ssl_info,
                          OnHeadersReceivedCallback callback) override;
 
  private:
