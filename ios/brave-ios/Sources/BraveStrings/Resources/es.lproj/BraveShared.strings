@@ -139,6 +139,9 @@
 /* Placeholder text for adding or editing a bookmark */
 "BookmarkUrlPlaceholderText" = "Dirección";
 
+/* Title for the Brave Account section in settings */
+"BraveAccount" = "Cuenta de Brave";
+
 /* Button to show the brave panel */
 "BravePanel" = "Panel de Brave";
 
@@ -264,36 +267,6 @@
 
 /* Title for Bottom Bar Callout View */
 "callout.bottomBarCalloutTitle" = "Personaliza la barra de pestañas de Brave";
-
-/* Description - Description used for main button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutButtonDescription" = "¿Establecer Brave como navegador predeterminado?";
-
-/* Subtitle - Description for Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutDescription" = "Si usas Brave como navegador predeterminado, todos los enlaces que pulses se abrirán con la protección de privacidad de Brave.";
-
-/* Title for main button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutPrimaryButtonTitle" = "Establecer como predeterminado";
-
-/* Description for secondary button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutSecondaryButtonDescription" = "¿Ya está como predeterminado?";
-
-/* Title for secondary button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutSecondaryButtonTitle" = "Omitir";
-
-/* Title for Default Browser Full Screen Callout */
-"callout.defaultBrowserTitle" = "Privacidad con total simplicidad.";
-
-/* Subtitle - Description for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutDescription" = "Esto nos permite averiguar cuáles son las funciones de Brave que se usan con más frecuencia. Puedes cambiar esto cuando quieras en los apartados \"Protecciones de Brave\" y \"Otros ajustes de privacidad\" de la configuración de Brave.";
-
-/* Title for the link that navigates to a webpage showing information about p3a (Privacy Preserving Analytics) */
-"callout.p3aCalloutLinkTitle" = "Obtén más información sobre nuestras estadísticas de productos que preservan la privacidad (P3A).";
-
-/* Title for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutTitle" = "Ayuda a mejorar Brave.";
-
-/* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutToggleTitle" = "Comparta opiniones anónimas y privadas sobre los productos.";
 
 /* Subtitle - Description for Privacy Everywhere Full Screen Callout */
 "callout.privacyEverywhereCalloutDescription" = "Disfruta de la privacidad de Brave en tu ordenador o tableta, y mantén los marcadores y extensiones sincronizados en todos los dispositivos.";
@@ -588,9 +561,6 @@
 
 /* The success message that appears after a user sucessfully adds a new search engine */
 "custonmSearchEngine.thirdPartySearchEngineAddedToastTitle" = "¡Buscador añadido!";
-
-/* Button text to close the default browser popup. */
-"defaultBrowserCallout.introCancelButtonText" = "Ahora No";
 
 /* Button text to open app settings */
 "defaultBrowserCallout.introOpenSettingsButtonText" = "Abrir Ajustes";
@@ -1201,18 +1171,6 @@
 /* Button to show Brave Rewards. */
 "OBTurnOnButton" = "Empezar";
 
-/* The description text shown when there is big tech tracker among trackers. Example usage: Google, Amazon and 32 other trackers blocked */
-"onboarding.blockedAdsOnboardingBigTechInformationText" = "Se ha bloqueado %1$@, así como %2$lld anuncios & rastreadores más";
-
-/* The footnote indicating what Brave shields is blocking */
-"onboarding.blockedAdsOnboardingFootnoteText" = "Consulta todos los elementos no deseados bloqueados por Brave en cada página con Protecciones.";
-
-/* The text describing user where they should press in order to open Shield panel */
-"onboarding.blockedAdsOnboardingInstructionsText" = "Pulsa para ver Protecciones de Brave";
-
-/* The description text shown when there is no big tech tracker among trackers. Example usage: 31 Ads & trackers blocked. The number here is presented separately so it is not in translation. */
-"onboarding.blockedAdsOnboardingNoBigTechInformationText" = "Anuncios y rastreadores bloqueados";
-
 /* Button text to let users know they can use the vpn on all their devices */
 "onboarding.linkReceiptButton" = "Vincula tu suscripción a la VPN";
 
@@ -1222,12 +1180,6 @@
 /* Popup title to let users know they can use the vpn on all their devices */
 "onboarding.linkReceiptTitle" = "Amplía tu protección de Firewall + VPN de Brave";
 
-/* Description for Navigate Settings Screen in Onboarding. This part indicating navigation ('Default Browser App') should match the option in iPhone Settings in that Language. */
-"onboarding.navigateSettingsOnboardingScreenDescription" = "Buscar \"Aplicación de navegador predeterminado\"";
-
-/* Title for Navigate Settings Screen in Onboarding */
-"onboarding.navigateSettingsOnboardingScreenTitle" = "Te estamos dirigiendo a Ajustes…";
-
 /* Description for the NTP pop-over that describes the tracking information on NTP */
 "onboarding.ntpOnboardingPopOverTrackerDescription" = "Al bloquear rastreadores & anuncios, los sitios web usan menos datos y se cargan mucho más rápido.";
 
@@ -1236,9 +1188,6 @@
 
 /* Title for the Omnibox (URL Bar) pop-over that describes faster load times. */
 "onboarding.omniboxOnboardingPopOverTitle" = "Escribe el nombre o la URL de un sitio web";
-
-/* Title for Welcome Screen in Onboarding */
-"onboarding.welcomeScreenTitle" = "Te damos la bienvenida a Brave";
 
 /* Continue button to navigate to next onboarding screen. */
 "OnboardingContinueButton" = "Continuar";
@@ -1390,7 +1339,7 @@
 /* Title of the alert when a calendar event is available for download */
 "OpenTextCalendarAlertTitle" = "Calendario Evento disponible";
 
-/* Button title to that opens a website. */
+/* Button title to open a website. */
 "OpenWebsite" = "Abrir sitio web";
 
 /* Brave News Item Menu title */
@@ -1413,9 +1362,6 @@
 
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
 "p3a.settingTitle" = "Permitir estadísticas del producto con preservación de la privacidad (P3A)";
-
-/* No comment provided by engineer. */
-"p3aCalloutCloseAccessibilityLabel" = "Cerrar llamada de producto que preserva la privacidad";
 
 /* No comment provided by engineer. */
 "pageSecurityView.pageNotFullySecureTitle" = "Tu conexión a este sitio no es completamente segura.";
@@ -1573,8 +1519,11 @@
 /* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
 "playlist.playlistAutoSaveSettingsTitle" = "Guardar contenido para reproducir sin conexión";
 
+/* The title of the button for the user to proceed adding playlist item when the user's disk space is almost full */
+"playlist.playlistDiskSpaceAddAnywayButtonTitle" = "Agregar de todas formas";
+
 /* When the user's disk space is almost full */
-"playlist.playlistDiskSpaceWarningMessage" = "Los archivos audiovisuales para uso sin conexión pueden ocupar mucho espacio en tu dispositivo. Elimina algunos archivos para liberar espacio de almacenamiento.";
+"playlist.playlistDiskSpaceWarningMessage" = "Tu dispositivo tiene poco espacio. Agregar este video a Playlist puede fallar o afectar otras descargas.";
 
 /* When the user's disk space is almost full */
 "playlist.playlistDiskSpaceWarningTitle" = "Apenas hay espacio de almacenamiento";
@@ -2005,9 +1954,8 @@
 /* A label for a text entry field where the user can provide additional details for a web-compatibility report */
 "reportBrokenAdditionalDetailsRequired" = "Detalles adicionales";
 
-/* A label for a drop down where the user provides a category for a web-compatibility report
-A placeholder for a drop down where the user provides a category for a web-compatibility report */
-"reportBrokenCategory" = "Selecciona una opción";
+/* A label for a drop down where the user provides a category for a web-compatibility report */
+"reportBrokenCategory" = "¿Cuál es el problema principal que estás viendo?";
 
 /* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
 "ReportBrokenContactMe" = "Contacto: (opcional)";
@@ -2017,6 +1965,9 @@ A placeholder for a drop down where the user provides a category for a web-compa
 
 /* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
 "ReportBrokenContactMeSuggestions" = "Correo electrónico, Twitter, etc.";
+
+/* A placeholder for a drop down where the user provides a category for a web-compatibility report */
+"ReportBrokenPlaceholder" = "Selecciona una opción";
 
 /* First part of the report a broken site copy. After the colon is a new line and then a website address */
 "ReportBrokenSiteBody1" = "Informa a los desarrolladores de Brave de que este sitio no funciona como debería:";
@@ -2646,7 +2597,7 @@ A placeholder for a drop down where the user provides a category for a web-compa
 "shortcuts.activityTypeOpenPlaylistSuggestedPhrase" = "Abrir lista de reproducción";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeOpenPlaylistTitle" = "Abrir Playlist";
+"shortcuts.activityTypeOpenPlaylistTitle" = "Abrir lista de reproducción";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeOpenSyncedTabsDescription" = "Abrir las pestañas de Brave abiertas en otros dispositivos";
@@ -2721,7 +2672,7 @@ A placeholder for a drop down where the user provides a category for a web-compa
 "shortcuts.shortcutSettingsOpenPlaylistDescription" = "Utiliza los accesos directos para abrir Playlist con el asistente de voz Siri";
 
 /* No comment provided by engineer. */
-"shortcuts.shortcutSettingsOpenPlaylistTitle" = "Abrir Playlist";
+"shortcuts.shortcutSettingsOpenPlaylistTitle" = "Abrir lista de reproducción";
 
 /* Description of Open Tabs from Other Devices Shortcut in Settings Screen */
 "shortcuts.shortcutSettingsOpenSyncedTabsDescription" = "Utiliza los accesos directos para abrir las pestañas de otros dispositivos con el asistente de voz Siri";
@@ -3089,8 +3040,14 @@ A placeholder for a drop down where the user provides a category for a web-compa
 /* A button title which when tapped will close all of the open tabs for the user */
 "tabGrid.closeAllTabsButtonTitle" = "Cerrar todas las pestañas";
 
-/* Accessibility label for a close button that when tapped closes the associated tab */
+/* Label for a close button that when tapped closes the associated tab */
 "tabGrid.closeTab" = "Cerrar pestaña";
+
+/* Label for a close button that when tapped closes the associated tabs */
+"tabGrid.closeTabs" = "Cerrar pestañas";
+
+/* A button title which when tapped will allow the user to deselect multiple tabs in the tab grid */
+"tabGrid.deselectTabsButtonTitle" = "Deseleccionar pestañas";
 
 /* A button title which when tapped will display a menu with more options */
 "tabGrid.moreMenuButtonTitle" = "Más";
@@ -3125,11 +3082,20 @@ A placeholder for a drop down where the user provides a category for a web-compa
 /* Accessibility label for the regular browsing option in the browsing mode picker */
 "tabGrid.regularBrowsingModeAccessibilityLabel" = "Navegación regular";
 
+/* A text label showing how many tabs the user has currently selected in edit mode. It is shown next to the number of selected tabs e.g. "Selected tabs: 4" */
+"tabGrid.selectedTabs" = "Pestañas seleccionadas";
+
+/* A button title which when tapped will allow the user to select multiple tabs in the tab grid */
+"tabGrid.selectTabsButtonTitle" = "Seleccionar pestañas";
+
 /* A button title that when tapped allows users to shred all of their tabs */
 "tabGrid.shredAllTabsButtonTitle" = "Eliminar todas las pestañas";
 
 /* A button title that when tapped allows users to shred the currently selected tab */
 "tabGrid.shredSelectedTabButtonTitle" = "Eliminar la pestaña seleccionada";
+
+/* A button title that when tapped allows users to shred the currently selected tabs */
+"tabGrid.shredSelectedTabsButtonTitle" = "Triturar";
 
 /* Accessibility label for a button that allows users to shred their tabs (erase them & associated data) */
 "tabGrid.shredTabsAccessibilityLabel" = "Eliminar pestañas";
@@ -3261,7 +3227,7 @@ A placeholder for a drop down where the user provides a category for a web-compa
 "TabTraySingleTabPositionFormatVoiceOverText" = "Pestaña %1$@ de %2$@";
 
 /* No comment provided by engineer. */
-"TermsOfService" = "Condiciones de uso";
+"TermsOfService" = "Condiciones de servicio";
 
 /* Show Brave Browser TOS page from the Privacy section in the settings. */
 "TermsOfUse" = "Términos de uso";

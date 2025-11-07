@@ -71,7 +71,7 @@
 "wallet.addCustomTokenCoingeckoId" = "ID CoinGecko";
 
 /* The message of the error pop up when there is an error occurs during the process of adding a custom token. */
-"wallet.addCustomTokenErrorMessage" = "L'ajout du jeton personnalisé a échoué. Veuillez réessayer.";
+"wallet.addCustomTokenErrorMessage" = "Impossible d'ajouter le jeton personnalisé. Veuillez réessayer.";
 
 /* The title of the error pop up when there is an error occurs during the process of adding a custom token. */
 "wallet.addCustomTokenErrorTitle" = "Impossible d'ajouter le jeton personnalisé";
@@ -170,7 +170,7 @@
 "wallet.backupRecoveryPhraseBackButtonTitle" = "Phrase de récupération";
 
 /* The subtitle of the backup recovery phrase screen */
-"wallet.backupRecoveryPhraseSubtitle" = "Votre phrase de récupération est la clé qui vous permet d'accéder à votre portefeuille en cas d'oubli de votre mot de passe ou de perte de votre appareil.\n\nConservez-la dans un endroit sécurisé et ne la communiquez à personne.";
+"wallet.backupRecoveryPhraseSubtitle" = "Votre phrase de récupération est la clé qui vous permet d'accéder à votre portefeuille en cas d'oubli de votre mot de passe ou de perte de votre appareil.\n\nConservez-la dans un endroit sûr qui n'est pas accessible à d'autres personnes et évitez de la partager avec qui que ce soit.";
 
 /* The title of the backup recovery phrase screen */
 "wallet.backupRecoveryPhraseTitle" = "Enregistrer la phrase de récupération";
@@ -947,16 +947,16 @@
 "wallet.learnMoreButton" = "En savoir plus";
 
 /* The description of the screen for user to understand the responsibility and the terms of use before setting up a wallet. */
-"wallet.legalDescription" = "Veuillez prendre acte des éléments ci-dessous :";
+"wallet.legalDescription" = "Nous vous demandons de prendre acte des éléments ci-dessous";
 
 /* For users to check indicates they have read and agree to the Terms of Use before setting up a wallet. */
-"wallet.legalTermOfUse" = "J'ai lu et j'accepte les [conditions d'utilisation](%@).";
+"wallet.legalTermOfUse" = "J'ai lu et j'accepte les [conditions d'utilisation](%@)";
 
 /* The title of the screen for user to understand the responsibility and the terms of use before setting up a wallet. */
 "wallet.legalTitle" = "Avant de commencer";
 
 /* The responsibility explained in screen for users to check indicates they understand before setting up a wallet. */
-"wallet.legalUserResponsibility" = "Je comprends qu'il s'agit d'un portefeuille dont j'ai la garde, que je suis la seule personne responsable des fonds, actifs ou comptes associés, et que je dois prendre les mesures appropriées pour sécuriser, protéger et sauvegarder mon portefeuille. Je comprends que Brave ne peut pas accéder à mon portefeuille ou inverser des transactions en mon nom, et que ma phrase de récupération est le SEUL moyen de retrouver l'accès en cas de perte du mot de passe, de vol de l'appareil ou de circonstances similaires.";
+"wallet.legalUserResponsibility" = "Je comprends qu'il s'agit d'un portefeuille dont j'ai la garde, et que je suis le seul responsable des fonds, actifs ou comptes associés, et que je dois prendre les mesures appropriées pour sécuriser, protéger et sauvegarder mon portefeuille. Je comprends que Brave ne peut pas accéder à mon portefeuille ou inverser des transactions en mon nom, et que ma phrase de récupération est le SEUL moyen de retrouver l'accès en cas de perte du mot de passe, de vol de l'appareil ou de circonstances similaires.";
 
 /* The title of the lock option inside the menu when user clicks the three dots button beside assets search button. */
 "wallet.lock" = "Verrouiller";
@@ -998,7 +998,7 @@
 "wallet.manageSiteConnectionsRemoveAll" = "Tout supprimer";
 
 /* The page title that will display the top 250 tokens from the market via CoinGecko */
-"wallet.marketPageTitle" = "Marché";
+"wallet.marketPageTitle" = "Au cours du marché";
 
 /* The highest the user will pay in a gas fee based on the entered gas fee details or predefined option. It is displayed above the amount */
 "wallet.maximumGasFee" = "Frais maximums";
@@ -1418,7 +1418,7 @@
 "wallet.selectNetworksDescription" = "Sélectionner les réseaux à filtrer par";
 
 /* The label of the filter option that allows users to select which networks to filter assets by. Used in Portfolio/NFT filters and display settings. */
-"wallet.selectNetworksTitle" = "Sélectionner les réseaux";
+"wallet.selectNetworksTitle" = "Sélectionnez les réseaux";
 
 /* The description of the view that lets the user select a token & account at the same time in the Send crypto view when there are no available tokens. */
 "wallet.selectTokenToSendNoTokens" = "Aucun jeton disponible";
@@ -1787,7 +1787,7 @@
 "wallet.solanaSignTransactionDetails" = "Détails";
 
 /* The warning message to let users understand the risk of using Brave Wallet to sign any transaction. */
-"wallet.solanaSignTransactionWarning" = "Brave ne peut pas vérifier ce qui se passera si vous signez. Une signature peut autoriser presque n'importe quelle opération sur votre compte ou en votre nom, y compris (mais sans s'y limiter) donner le contrôle total de votre compte et de vos crypto-actifs au site qui en fait la demande. Ne signez que si vous voulez vraiment effectuer cette action et que vous faites confiance au site demandeur.";
+"wallet.solanaSignTransactionWarning" = "Notez que Brave ne peut pas vérifier ce qui se passera si vous signez. Une signature peut autoriser presque n'importe quelle opération sur votre compte ou en votre nom, y compris (mais sans s'y limiter) donner le contrôle total de votre compte et de vos actifs cryptos au site qui en fait la demande. Ne signez que si vous voulez vraiment effectuer cette action et si vous faites confiance au site demandeur.";
 
 /* The title displayed above the value of a Solana swap transaction in transaction confirmation view, transaction details view and transaction summary rows. */
 "wallet.solanaSwapTransactionTitle" = "Transaction d'échange";
@@ -1901,7 +1901,7 @@
 "wallet.swapLimitOrderType" = "À cours limité";
 
 /* The 'Market' order type. Market orders execute immediately based on the price at the time of the order. */
-"wallet.swapMarketOrderType" = "Marché";
+"wallet.swapMarketOrderType" = "Au cours du marché";
 
 /* The type of order you want to place. Options are: 'Market' and 'Limit' */
 "wallet.swapOrderTypeLabel" = "Type d'ordre";
@@ -2050,6 +2050,9 @@
 /* A title shown for a erc 20 transfer. The first '%@' becomes the symbol for the cryptocurrency For example: "Sent ETH" */
 "wallet.transactionUnknownSendTitle" = "%@ envoyés";
 
+/* The title displays in confirmation screen when there is no more pending transaction. */
+"wallet.txConfirmationNoMorePendingTitle" = "Aucune transaction en attente";
+
 /* Blockchain function name for Solana compressed NFT transfers. */
 "wallet.txFunctionTypeCompressedNFTTransfer" = "Transfert de NFT compressé";
 
@@ -2119,9 +2122,8 @@
 /* The message when a sign transaction is completed/confirmed on the blockchain. */
 "wallet.txStatusSignedConfirmedMsg" = "La transaction a été signée et va être envoyée au réseau par dapps en attendant la confirmation.";
 
-/* The text in the disclosure view in transaction status screen.
-The title displays in confirmation screen when there is no more pending transaction. */
-"wallet.txStatusSubmittedDisclosure" = "Aucune transaction en attente";
+/* The text in the disclosure view in transaction status screen. */
+"wallet.txStatusSubmittedDisclosure" = "Vous pouvez ignorer cette fenêtre.";
 
 /* A message explains an ETH Swap transaction is confirmed on the blockchain. */
 "wallet.txStatusSwappedMsg" = "ont été ajoutés à ";
@@ -2220,7 +2222,7 @@ The title displays in confirmation screen when there is no more pending transact
 "wallet.walletPanelSetupWalletDescription" = "Utilisez ce panneau pour accéder en toute sécurité au domaine web3 et à tous vos actifs crypto.";
 
 /* The title of the settings option inside the menu when user clicks the three dots button beside assets search button. */
-"wallet.walletSettings" = "Paramètres";
+"wallet.walletSettings" = "Paramètres de portefeuille";
 
 /* The value shown when selecting the default wallet as none / no wallet in wallet settings, or when grouping Portfolio assets. */
 "wallet.walletTypeNone" = "Aucun";

@@ -17,7 +17,7 @@
 "vpn.autoRenewSoonExpireTitle" = "Термін дії підписки Brave VPN скоро мине.";
 
 /* Title for screen to buy the VPN. */
-"vpn.buyVPNTitle" = "Файрвол та VPN-розширення браузера Brave";
+"vpn.buyVPNTitle" = "VPN-розширення браузера Brave";
 
 /* Message for an alert when the VPN can't get prices from the App Store */
 "vpn.errorCantGetPricesBody" = "Не вдалося встановити з’єднання з App Store. Повторіть спробу через декілька хвилин.";

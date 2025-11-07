@@ -2050,6 +2050,9 @@
 /* A title shown for a erc 20 transfer. The first '%@' becomes the symbol for the cryptocurrency For example: "Sent ETH" */
 "wallet.transactionUnknownSendTitle" = "נשלח %@";
 
+/* The title displays in confirmation screen when there is no more pending transaction. */
+"wallet.txConfirmationNoMorePendingTitle" = "אין יותר עסקאות בהמתנה";
+
 /* Blockchain function name for Solana compressed NFT transfers. */
 "wallet.txFunctionTypeCompressedNFTTransfer" = "העברת NFT מכווץ";
 
@@ -2119,9 +2122,8 @@
 /* The message when a sign transaction is completed/confirmed on the blockchain. */
 "wallet.txStatusSignedConfirmedMsg" = "העסקה נחתמה ותישלח אל הרשת באמצעות אפליקציות מבוזרות וממתינה לאישור.";
 
-/* The text in the disclosure view in transaction status screen.
-The title displays in confirmation screen when there is no more pending transaction. */
-"wallet.txStatusSubmittedDisclosure" = "אין יותר עסקאות בהמתנה";
+/* The text in the disclosure view in transaction status screen. */
+"wallet.txStatusSubmittedDisclosure" = "ניתן לסגור חלון זה בבטחה.";
 
 /* A message explains an ETH Swap transaction is confirmed on the blockchain. */
 "wallet.txStatusSwappedMsg" = "נוספה אל";

@@ -146,25 +146,31 @@
 "aichat.internalErrorViewTitle" = "Kesilapan telah berlaku semasa memproses permintaan anda. Sila cuba lagi kemudian.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeHaikuMessageDescription" = "Hai, saya Leo. Saya diproksi oleh Brave dan dikuasakan oleh Claude Haiku, model ciptaan Anthropic untuk menjalankan tugas perbualan dan pemprosesan teks. Claude Haiku dihoskan secara selamat oleh Brave melalui infrastruktur kami sendiri.";
+"aichat.introMessageClaudeHaikuMessageDescription" = "Hai, saya Leo. Saya pembantu AI yang dihoskan sepenuhnya oleh Brave. Saya dikuasakan oleh Claude Haiku, model ciptaan Anthropic untuk menjalankan tugasan perbualan dan pemprosesan teks. Claude Haiku dihoskan secara selamat oleh Brave melalui infrastruktur kami sendiri.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeHaikuModelPurposeDescription" = "Sembang sepantas kilat";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeInstantMessageDescription" = "Hai, saya Leo. Saya diproksi oleh Brave dan dikuasakan oleh Claude Instant, model ciptaan Anthropic untuk menjalankan tugas perbualan dan pemprosesan teks. Claude Instant dihoskan secara selamat oleh Brave melalui infrastruktur kami sendiri.";
+"aichat.introMessageClaudeInstantMessageDescription" = "Hai, saya Leo. Saya pembantu AI yang dihoskan sepenuhnya oleh Brave. Saya dikuasakan oleh Claude Instant, model ciptaan Anthropic untuk menjalankan tugasan perbualan dan pemprosesan teks. Claude Instant dihoskan secara selamat oleh Brave melalui infrastruktur kami sendiri.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeSonnetMessageDescription" = "Hai, saya Leo. Saya diproksi oleh Brave dan dikuasakan oleh Claude Sonnet, model ciptaan Anthropic untuk menjalankan tugas perbualan dan pemprosesan teks. Claude Sonnet dihoskan secara selamat oleh Brave melalui infrastruktur kami sendiri.";
+"aichat.introMessageClaudeSonnetMessageDescription" = "Hai, saya Leo. Saya pembantu AI yang dihoskan sepenuhnya oleh Brave. Saya dikuasakan oleh Claude Sonnet, model ciptaan Anthropic untuk menjalankan tugasan perbualan dan pemprosesan teks. Claude Sonnet dihoskan secara selamat oleh Brave melalui infrastruktur kami sendiri.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeSonnetModelPurposeDescription" = "Kepantasan dan kecerdasan yang seimbang";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageDeepSeekR1MessageDescription" = "Hai, saya Leo. Saya pembantu AI yang dihoskan sepenuhnya oleh Brave. Saya dikuasakan oleh DeepSeek R1, model yang dibangunkan oleh DeepSeek untuk melaksanakan tugas penaakulan mendalam.";
+"aichat.introMessageDeepSeekR1MessageDescription" = "Hai, saya Leo. Saya pembantu AI yang dihoskan sepenuhnya oleh Brave. Saya dikuasakan oleh DeepSeek R1, model ciptaan DeepSeek untuk melaksanakan tugasan penaakulan mendalam. DeepSeek R1 dihoskan secara selamat oleh Brave melalui infrastruktur kami sendiri.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageDeepSeekR1ModelPurposeDescription" = "Model penaakulan";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageGemmaMessageDescription" = "Hai, saya Leo. Saya pembantu AI yang dihoskan sepenuhnya oleh Brave. Saya dikuasakan oleh Gemma 3 12B, model ciptaan Google DeepMind yang berprestasi tinggi dan sesuai untuk pelbagai kegunaan. Gemma dihoskan secara selamat oleh Brave melalui infrastruktur kami sendiri.";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageGemmaPurposeDescription" = "Pemahaman umum teks dan imej";
 
 /* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
 "aichat.introMessageGenericMessageDescription" = "Hai, saya Leo. Saya ialah pembantu AI oleh Brave. Saya dikuasakan oleh %@. Tanya apa sahaja, dan saya akan cuba sedaya upaya untuk menjawabnya.";

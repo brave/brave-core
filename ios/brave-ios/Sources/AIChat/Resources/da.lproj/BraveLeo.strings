@@ -146,37 +146,43 @@
 "aichat.internalErrorViewTitle" = "Noget gik galt under behandlingen af din anmodning. Prøv venligst igen senere.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeHaikuMessageDescription" = "Hej, jeg hedder Leo. Jeg er en proxy fra Brave og drevet af Claude Haiku, en model skabt af Anthropic til at udføre samtale- og tekstbehandlingsopgaver. Claude Haiku hostes af Brave via vores egen sikre infrastruktur.";
+"aichat.introMessageClaudeHaikuMessageDescription" = "Hej, jeg hedder Leo. Jeg er en AI-assistent fra Brave. Jeg er drevet af Claude Haiku, en model skabt af Anthropic til at udføre samtale- og tekstbehandlingsopgaver. Claude Haiku hostes af Brave via vores egen sikre infrastruktur.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeHaikuModelPurposeDescription" = "Hurtig chat";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeInstantMessageDescription" = "Hej, jeg hedder Leo. Jeg er en proxy fra Brave og drevet af Claude Instant, en model skabt af Anthropic til at udføre samtale- og tekstbehandlingsopgaver. Claude Instant hostes af Brave via vores egen sikre infrastruktur.";
+"aichat.introMessageClaudeInstantMessageDescription" = "Hej, jeg hedder Leo. Jeg er en AI-assistent fra Brave. Jeg er drevet af Claude Instant, en model skabt af Anthropic til at udføre samtale- og tekstbehandlingsopgaver. Claude Instant hostes af Brave via vores egen sikre infrastruktur.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeSonnetMessageDescription" = "Hej, jeg hedder Leo. Jeg er en proxy fra Brave og drevet af Claude Sonnet, en model skabt af Anthropic til at udføre samtale- og tekstbehandlingsopgaver. Claude Sonnet hostes af Brave via vores egen sikre infrastruktur.";
+"aichat.introMessageClaudeSonnetMessageDescription" = "Hej, jeg hedder Leo. Jeg er en AI-assistent fra Brave. Jeg er drevet af Claude Sonnet, en model skabt af Anthropic til at udføre samtale- og tekstbehandlingsopgaver. Claude Sonnet hostes af Brave via vores egen sikre infrastruktur.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeSonnetModelPurposeDescription" = "Afbalanceret hastighed og intelligens";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageDeepSeekR1MessageDescription" = "Hej, jeg hedder Leo. Jeg er en fuldt ud hostet AI-assistent fra Brave. Jeg er udviklet af DeepSeek R1, en model skabt af DeepSeek til at håndtere dybe ræsonnementer.";
+"aichat.introMessageDeepSeekR1MessageDescription" = "Hej, jeg hedder Leo. Jeg er en AI-assistent fra Brave. Jeg er drevet af DeepSeek R1, en model skabt af DeepSeek til at udføre dybdegående ræsonnementopgaver. DeepSeek R1 hostes af Brave via vores egen sikre infrastruktur.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageDeepSeekR1ModelPurposeDescription" = "Model for ræsonnement";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageGemmaMessageDescription" = "Hej, jeg hedder Leo. Jeg er en AI-assistent fra Brave. Jeg er drevet af Gemma 3 12B, en model skabt af Google DeepMind til at være effektiv og anvendelig i mange forskellige sammenhænge. Gemma hostes af Brave via vores egen sikre infrastruktur.";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageGemmaPurposeDescription" = "Generel tekst- og billedforståelse";
 
 /* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
 "aichat.introMessageGenericMessageDescription" = "Hej, jeg er Leo. Jeg er Braves AI-assistent. Jeg er drevet af %@. Spørg mig om hvad som helst, og jeg vil gøre mit bedste for at svare.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageLlamaMessageDescription" = "Hej, jeg hedder Leo. Jeg er en fuldt hostet AI-assistent fra Brave. Jeg er drevet af Llama 3.1 8B, en model skabt af Meta til at være effektiv og anvendelig i flere forskellige situationer. Llama hostes af Brave via vores egen sikre infrastruktur.";
+"aichat.introMessageLlamaMessageDescription" = "Hej, jeg hedder Leo. Jeg er en AI-assistent fra Brave. Jeg er drevet af Llama 3.1 8B, en model skabt af Meta til at være effektiv og anvendelig i mange forskellige sammenhænge. Llama hostes af Brave via vores egen sikre infrastruktur.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageLlamaModelPurposeDescription" = "Chat til generelle formål";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageQwenMessageDescription" = "Hej, jeg hedder Leo. Jeg er en fuldt hostet AI-assistent fra Brave. Jeg er udviklet af Qwen 14B, en model skabt af Alibaba Cloud til at være effektiv og anvendelig i flere forskellige situationer. Qwen hostes af Brave via vores egen sikre infrastruktur.";
+"aichat.introMessageQwenMessageDescription" = "Hej, jeg hedder Leo. Jeg er en AI-assistent fra Brave. Jeg er drevet af Qwen 14B, en model skabt af Alibaba Cloud til at være effektiv og anvendelig i mange forskellige sammenhænge. Qwen hostes af Brave via vores egen sikre infrastruktur.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageQwenModelPurposeDescription" = "Chat til generelle formål, kodning og meget mere";

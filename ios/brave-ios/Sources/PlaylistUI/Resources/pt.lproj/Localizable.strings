@@ -11,7 +11,7 @@
 "playlist.accessibilityEnterPictureInPicture" = "Insira imagem em imagem";
 
 /* A label read by VoiceOver accessibility technology that indicates the button will toggle fullscreen mode on */
-"playlist.accessibilityExitFullscreen" = "Sair da Tela Cheia";
+"playlist.accessibilityExitFullscreen" = "Sair da Tela inteira";
 
 /* A label shown on an item when the item is ready for offline play */
 "playlist.accessibilityItemDownloadStatusReady" = "Item pronto";
@@ -23,7 +23,7 @@
 "playlist.accessibilityNextItem" = "Próximo item";
 
 /* A label read by VoiceOver accessibility technology that indicates the button will pause some currently playing media */
-"playlist.accessibilityPause" = "Pausar";
+"playlist.accessibilityPause" = "Pausa";
 
 /* A label read by VoiceOver accessibility technology that indicates the button will play some media */
 "playlist.accessibilityPlay" = "Reproduzir";
@@ -32,7 +32,7 @@
 "playlist.accessibilityPlaybackSpeed" = "Velocidade de reprodução";
 
 /* A label read by VoiceOver accessibility technology that indicates the button will play the previous item in the queue */
-"playlist.accessibilityPreviousItem" = "Item anterior";
+"playlist.accessibilityPreviousItem" = "Artigo Anterior";
 
 /* A label read by VoiceOver accessibility technology that indicates the repeat mode button is toggled to the All option (repeats entire playlist) */
 "playlist.accessibilityRepeatModeAll" = "Modo de repetição: tudo";
@@ -62,7 +62,7 @@
 "playlist.createNewPlaylistButtonTitle" = "Criar";
 
 /* A button title that when tapped will allow the user to delete the selected item. */
-"playlist.deleteItem" = "Excluir";
+"playlist.deleteItem" = "Eliminar";
 
 /* A menu button that when tapped will present a confirmation dialog to delete a playlist and all its contents */
 "playlist.deletePlaylist" = "Excluir Playlist…";
@@ -74,16 +74,16 @@
 "playlist.doneButtonTitle" = "Concluído";
 
 /* A button title that when tapped will allow the user to edit the selected playlist. */
-"playlist.editPlaylist" = "Editar playlist";
+"playlist.editPlaylist" = "Editar lista de reprodução";
 
 /* A button title that when tapped will allow the user to edit the selected playlist. */
 "playlist.editPlaylistShortTitle" = "Editar";
 
 /* A subtitle shown when no search query is entered in the search bar on the search page */
-"playlist.emptySearchQuerySubtitle" = "Comece a digitar para pesquisar seus vídeos e áudios salvos";
+"playlist.emptySearchQuerySubtitle" = "Comece a escrever para pesquisar os seus vídeos ou áudios gravados";
 
 /* A title shown when no search query is entered in the search bar on the search page */
-"playlist.emptySearchQueryTitle" = "Pesquisar Mídia";
+"playlist.emptySearchQueryTitle" = "Pesquisar Ficheiros";
 
 /* A title shown above a list of videos in your default playlist. */
 "playlist.fillNewPlaylistSubtitle" = "Toque para selecionar mídia";
@@ -101,7 +101,7 @@
 "playlist.itemDownloadStatusPreparing" = "Preparando";
 
 /* A label shown next to the media progress bar that when the particular media being played is being live streamed. */
-"playlist.liveIndicator" = "Ao vivo";
+"playlist.liveIndicator" = "Em tempo real";
 
 /* A button title that when tapped will allow the user to move the selected item to another playlist. */
 "playlist.moveItem" = "Mover";
@@ -137,7 +137,7 @@
 "playlist.renamePlaylist" = "Renomear Playlist";
 
 /* A repeat mode option, where selecting All will mean that the entire playlist will repeat from the beginning when the last item in it completes. */
-"playlist.repeatModeOptionAll" = "Todos";
+"playlist.repeatModeOptionAll" = "Tudo";
 
 /* A repeat mode option, where selecting None will mean that repeat mode is off and nothing will repeat. */
 "playlist.repeatModeOptionNone" = "Nenhum";
@@ -146,16 +146,16 @@
 "playlist.repeatModeOptionOne" = "Um";
 
 /* A button call to action that allows the user to save their selection */
-"playlist.saveButtonTitle" = "Salvar";
+"playlist.saveButtonTitle" = "Guardar";
 
 /* A button title that will attempt to save the selected item for offline playback. */
 "playlist.saveOfflineData" = "Salvar dados off-line";
 
 /* A placeholder string shown in the search bar */
-"playlist.searchTitle" = "Pesquisa";
+"playlist.searchTitle" = "Pesquisar";
 
 /* A button title that will present a share sheet for the selected item */
-"playlist.share" = "Compartilhar";
+"playlist.share" = "Partilhar";
 
 /* Describes an icon which allows the user to set a timer that when reaches 0 will stop playback of any media. */
 "playlist.sleepTimer" = "Temporizador de sono";
@@ -170,5 +170,5 @@
 "playlist.sleepTimerStopPlaybackAfter" = "Parar a reprodução após…";
 
 /* A fallback error message displayed when a video fails to play */
-"playlist.somethingWentWrong" = "Algo deu errado";
+"playlist.somethingWentWrong" = "Algo correu mal";
 

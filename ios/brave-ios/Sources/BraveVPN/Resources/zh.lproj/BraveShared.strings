@@ -17,7 +17,7 @@
 "vpn.autoRenewSoonExpireTitle" = "哎呀！你的 Brave VPN 订阅即将到期。";
 
 /* Title for screen to buy the VPN. */
-"vpn.buyVPNTitle" = "Brave Firewall + VPN";
+"vpn.buyVPNTitle" = "Brave VPN";
 
 /* Message for an alert when the VPN can't get prices from the App Store */
 "vpn.errorCantGetPricesBody" = "無法連線至 App Store，請稍候再試。";

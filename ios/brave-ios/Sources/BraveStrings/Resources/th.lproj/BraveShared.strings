@@ -139,6 +139,9 @@
 /* Placeholder text for adding or editing a bookmark */
 "BookmarkUrlPlaceholderText" = "แอดเดรส";
 
+/* Title for the Brave Account section in settings */
+"BraveAccount" = "บัญชี Brave";
+
 /* Button to show the brave panel */
 "BravePanel" = "Brave Panel";
 
@@ -264,36 +267,6 @@
 
 /* Title for Bottom Bar Callout View */
 "callout.bottomBarCalloutTitle" = "ปรับแต่งแถบแท็บของ Brave";
-
-/* Description - Description used for main button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutButtonDescription" = "ต้องการตั้ง Brave เป็นเบราว์เซอร์เริ่มต้นหรือไม่";
-
-/* Subtitle - Description for Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutDescription" = "เมื่อ Brave เป็นค่าเริ่มต้น ทุกลิงก์ที่คุณคลิกจะเปิดด้วยการป้องกันความเป็นส่วนตัวของ Brave";
-
-/* Title for main button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutPrimaryButtonTitle" = "ตั้งเป็นเบราว์เซอร์เริ่มต้น";
-
-/* Description for secondary button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutSecondaryButtonDescription" = "เป็นเบราว์เซอร์เริ่มต้นอยู่แล้วหรือ";
-
-/* Title for secondary button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutSecondaryButtonTitle" = "ข้ามสิ่งนี้ไปได้เลย";
-
-/* Title for Default Browser Full Screen Callout */
-"callout.defaultBrowserTitle" = "ปกป้องความเป็นส่วนตัวง่ายๆ";
-
-/* Subtitle - Description for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutDescription" = "การตั้งค่านี้จะช่วยให้เราได้เรียนรู้ว่าฟีเจอร์ใดบ้างของ Brave ที่ถูกใช้บ่อยที่สุด โดยสามารถเปลี่ยนแปลงเมื่อใดก็ได้ในการตั้งค่าของ Brave ใต้การตั้งค่า Brave Shields และการตั้งค่าเกี่ยวกับความเป็นส่วนตัวอื่นๆ";
-
-/* Title for the link that navigates to a webpage showing information about p3a (Privacy Preserving Analytics) */
-"callout.p3aCalloutLinkTitle" = "ดูข้อมูลเพิ่มเติมเกี่ยวกับการวิเคราะห์ผลิตภัณฑ์โดยรักษาความเป็นส่วนตัว (P3A) ของเรา";
-
-/* Title for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutTitle" = "ช่วยปรับปรุง Brave ให้ดีขึ้น";
-
-/* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutToggleTitle" = "แชร์ข้อมูลเชิงลึกของผลิตภัณฑ์แบบส่วนตัวและไม่ระบุชื่อ";
 
 /* Subtitle - Description for Privacy Everywhere Full Screen Callout */
 "callout.privacyEverywhereCalloutDescription" = "ดาวน์โหลดความเป็นส่วนตัวของ Brave บนคอมพิวเตอร์หรือแท็บเล็ตของคุณ แล้วซิงค์บุ๊กมาร์กและส่วนขยายระหว่างอุปกรณ์";
@@ -588,9 +561,6 @@
 
 /* The success message that appears after a user sucessfully adds a new search engine */
 "custonmSearchEngine.thirdPartySearchEngineAddedToastTitle" = "เพิ่มเครื่องมือค้นหาแล้ว!";
-
-/* Button text to close the default browser popup. */
-"defaultBrowserCallout.introCancelButtonText" = "ไม่ใช่ตอนนี้";
 
 /* Button text to open app settings */
 "defaultBrowserCallout.introOpenSettingsButtonText" = "เปิดการตั้งค่า";
@@ -1201,18 +1171,6 @@
 /* Button to show Brave Rewards. */
 "OBTurnOnButton" = "เริ่ม";
 
-/* The description text shown when there is big tech tracker among trackers. Example usage: Google, Amazon and 32 other trackers blocked */
-"onboarding.blockedAdsOnboardingBigTechInformationText" = "บล็อกโฆษณา & เครื่องมือติดตาม %1$@ และ %2$lld อื่นๆ แล้ว";
-
-/* The footnote indicating what Brave shields is blocking */
-"onboarding.blockedAdsOnboardingFootnoteText" = "ดูสิ่งรบกวนทั้งหมดที่ Brave บล็อกในทุกหน้าด้วย Brave Shields";
-
-/* The text describing user where they should press in order to open Shield panel */
-"onboarding.blockedAdsOnboardingInstructionsText" = "แตะเพื่อดู Brave Shields";
-
-/* The description text shown when there is no big tech tracker among trackers. Example usage: 31 Ads & trackers blocked. The number here is presented separately so it is not in translation. */
-"onboarding.blockedAdsOnboardingNoBigTechInformationText" = "บล็อกโฆษณา & ตัวติดตามแล้ว";
-
 /* Button text to let users know they can use the vpn on all their devices */
 "onboarding.linkReceiptButton" = "ลิงก์การสมัครสมาชิก VPN ของคุณ";
 
@@ -1222,12 +1180,6 @@
 /* Popup title to let users know they can use the vpn on all their devices */
 "onboarding.linkReceiptTitle" = "ขยายการปกป้อง Brave Firewall + VPN ของคุณ";
 
-/* Description for Navigate Settings Screen in Onboarding. This part indicating navigation ('Default Browser App') should match the option in iPhone Settings in that Language. */
-"onboarding.navigateSettingsOnboardingScreenDescription" = "ค้นหา 'แอปเบราว์เซอร์เริ่มต้น'";
-
-/* Title for Navigate Settings Screen in Onboarding */
-"onboarding.navigateSettingsOnboardingScreenTitle" = "กำลังนำคุณไปยังการตั้งค่า...";
-
 /* Description for the NTP pop-over that describes the tracking information on NTP */
 "onboarding.ntpOnboardingPopOverTrackerDescription" = "เมื่อทำการบล็อกโฆษณา & เครื่องมือติดตามแล้ว เว็บไซต์จะใช้ข้อมูลน้อยลง และโหลดได้รวดเร็วยิ่งขึ้น";
 
@@ -1236,9 +1188,6 @@
 
 /* Title for the Omnibox (URL Bar) pop-over that describes faster load times. */
 "onboarding.omniboxOnboardingPopOverTitle" = "พิมพ์ชื่อเว็บไซต์หรือ URL";
-
-/* Title for Welcome Screen in Onboarding */
-"onboarding.welcomeScreenTitle" = "ยินดีต้อนรับสู่ Brave";
 
 /* Continue button to navigate to next onboarding screen. */
 "OnboardingContinueButton" = "ดำเนินการต่อ";
@@ -1390,7 +1339,7 @@
 /* Title of the alert when a calendar event is available for download */
 "OpenTextCalendarAlertTitle" = "กิจกรรมในปฏิทินพร้อมใช้งาน";
 
-/* Button title to that opens a website. */
+/* Button title to open a website. */
 "OpenWebsite" = "เปิดเว็บไซต์";
 
 /* Brave News Item Menu title */
@@ -1413,9 +1362,6 @@
 
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
 "p3a.settingTitle" = "อนุญาตการวิเคราะห์ผลิตภัณฑ์โดยรักษาความเป็นส่วนตัว (P3A)";
-
-/* No comment provided by engineer. */
-"p3aCalloutCloseAccessibilityLabel" = "ปิดคำอธิบายการวิเคราะห์ผลิตภัณฑ์โดยรักษาความเป็นส่วนตัว";
 
 /* No comment provided by engineer. */
 "pageSecurityView.pageNotFullySecureTitle" = "การเชื่อมต่อของคุณกับไซต์นี้ไม่ปลอดภัยอย่างสมบูรณ์";
@@ -1573,8 +1519,11 @@
 /* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
 "playlist.playlistAutoSaveSettingsTitle" = "บันทึกเนื้อหาสำหรับการเล่นแบบออฟไลน์";
 
+/* The title of the button for the user to proceed adding playlist item when the user's disk space is almost full */
+"playlist.playlistDiskSpaceAddAnywayButtonTitle" = "เพิ่มอยู่ดี";
+
 /* When the user's disk space is almost full */
-"playlist.playlistDiskSpaceWarningMessage" = "การเพิ่มไฟล์วิดีโอและไฟล์เสียงสำหรับการใช้งานแบบออฟไลน์อาจใช้พื้นที่เก็บข้อมูลบนอุปกรณ์ของคุณมาก โปรดลบไฟล์บางไฟล์ออกเพื่อเพิ่มพื้นที่เก็บข้อมูล";
+"playlist.playlistDiskSpaceWarningMessage" = "อุปกรณ์ของคุณเหลือพื้นที่น้อย การเพิ่มวิดีโอนี้ไปยังเพลย์ลิสต์อาจล้มเหลวหรือส่งผลกระทบต่อการดาวน์โหลดอื่น";
 
 /* When the user's disk space is almost full */
 "playlist.playlistDiskSpaceWarningTitle" = "พื้นที่จัดเก็บใกล้เต็มแล้ว";
@@ -2005,9 +1954,8 @@
 /* A label for a text entry field where the user can provide additional details for a web-compatibility report */
 "reportBrokenAdditionalDetailsRequired" = "รายละเอียดเพิ่มเติม";
 
-/* A label for a drop down where the user provides a category for a web-compatibility report
-A placeholder for a drop down where the user provides a category for a web-compatibility report */
-"reportBrokenCategory" = "เลือกหนึ่งตัวเลือก";
+/* A label for a drop down where the user provides a category for a web-compatibility report */
+"reportBrokenCategory" = "ปัญหาหลักที่คุณกำลังเห็นคืออะไร";
 
 /* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
 "ReportBrokenContactMe" = "ติดต่อฉันที่: (ไม่บังคับ)";
@@ -2017,6 +1965,9 @@ A placeholder for a drop down where the user provides a category for a web-compa
 
 /* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
 "ReportBrokenContactMeSuggestions" = "อีเมล, Twitter, ฯลฯ";
+
+/* A placeholder for a drop down where the user provides a category for a web-compatibility report */
+"ReportBrokenPlaceholder" = "เลือกหนึ่งตัวเลือก";
 
 /* First part of the report a broken site copy. After the colon is a new line and then a website address */
 "ReportBrokenSiteBody1" = "แจ้งให้ผู้พัฒนา Brave ทราบว่าเว็บไซต์นี้ทำงานไม่ถูกต้องตามที่คิดไว้:";
@@ -3089,8 +3040,14 @@ A placeholder for a drop down where the user provides a category for a web-compa
 /* A button title which when tapped will close all of the open tabs for the user */
 "tabGrid.closeAllTabsButtonTitle" = "ปิดแท็บทั้งหมด";
 
-/* Accessibility label for a close button that when tapped closes the associated tab */
+/* Label for a close button that when tapped closes the associated tab */
 "tabGrid.closeTab" = "ปิดแท็บ";
+
+/* Label for a close button that when tapped closes the associated tabs */
+"tabGrid.closeTabs" = "ปิดแท็บ";
+
+/* A button title which when tapped will allow the user to deselect multiple tabs in the tab grid */
+"tabGrid.deselectTabsButtonTitle" = "ยกเลิกการเลือกแท็บ";
 
 /* A button title which when tapped will display a menu with more options */
 "tabGrid.moreMenuButtonTitle" = "เพิ่มเติม";
@@ -3125,11 +3082,20 @@ A placeholder for a drop down where the user provides a category for a web-compa
 /* Accessibility label for the regular browsing option in the browsing mode picker */
 "tabGrid.regularBrowsingModeAccessibilityLabel" = "การท่องเว็บปกติ";
 
+/* A text label showing how many tabs the user has currently selected in edit mode. It is shown next to the number of selected tabs e.g. "Selected tabs: 4" */
+"tabGrid.selectedTabs" = "แท็บที่เลือก";
+
+/* A button title which when tapped will allow the user to select multiple tabs in the tab grid */
+"tabGrid.selectTabsButtonTitle" = "เลือกแท็บ";
+
 /* A button title that when tapped allows users to shred all of their tabs */
 "tabGrid.shredAllTabsButtonTitle" = "ทำลายแท็บทั้งหมด";
 
 /* A button title that when tapped allows users to shred the currently selected tab */
 "tabGrid.shredSelectedTabButtonTitle" = "ทำลายแท็บที่เลือก";
+
+/* A button title that when tapped allows users to shred the currently selected tabs */
+"tabGrid.shredSelectedTabsButtonTitle" = "ย่อยข้อมูล";
 
 /* Accessibility label for a button that allows users to shred their tabs (erase them & associated data) */
 "tabGrid.shredTabsAccessibilityLabel" = "ทำลายแท็บ";

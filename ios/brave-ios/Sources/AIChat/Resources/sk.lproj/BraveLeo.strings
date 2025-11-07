@@ -146,37 +146,43 @@
 "aichat.internalErrorViewTitle" = "Pri spracovaní vašej žiadosti došlo k chybe. Skúste to prosím neskôr.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeHaikuMessageDescription" = "Ahoj, ja som Leo. Som sprostredkovaný spoločnosťou Brave a poháňaný modelom Claude Haiku vytvoreným spoločnosťou Anthropic na spracovanie konverzačných a textových úloh. Claude Haiku prevádzkuje priamo spoločnosť Brave cez svoju vlastnú zabezpečenú infraštruktúru.";
+"aichat.introMessageClaudeHaikuMessageDescription" = "Ahoj, ja som Leo. Som asistent s umelou inteligenciou prevádzkovaný spoločnosťou Brave. Som poháňaný modelom Claude Haiku vytvoreným spoločnosťou Anthropic na spracovanie konverzačných a textových úloh. Claude Haiku prevádzkuje priamo spoločnosť Brave cez svoju vlastnú zabezpečenú infraštruktúru.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeHaikuModelPurposeDescription" = "Chat s bleskovou rýchlosťou";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeInstantMessageDescription" = "Ahoj, ja som Leo. Som sprostredkovaný spoločnosťou Brave a poháňaný modelom Claude Instant vytvoreným spoločnosťou Anthropic na spracovanie konverzačných a textových úloh. Claude Instant prevádzkuje priamo spoločnosť Brave cez svoju vlastnú zabezpečenú infraštruktúru.";
+"aichat.introMessageClaudeInstantMessageDescription" = "Ahoj, ja som Leo. Som asistent s umelou inteligenciou prevádzkovaný spoločnosťou Brave. Som poháňaný modelom Claude Instant vytvoreným spoločnosťou Anthropic na spracovanie konverzačných a textových úloh. Claude Instant prevádzkuje priamo spoločnosť Brave cez svoju vlastnú zabezpečenú infraštruktúru.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeSonnetMessageDescription" = "Ahoj, ja som Leo. Som sprostredkovaný spoločnosťou Brave a poháňaný modelom Claude Sonnet vytvoreným spoločnosťou Anthropic na spracovanie konverzačných a textových úloh. Claude Sonnet prevádzkuje priamo spoločnosť Brave cez svoju vlastnú zabezpečenú infraštruktúru.";
+"aichat.introMessageClaudeSonnetMessageDescription" = "Ahoj, ja som Leo. Som asistent s umelou inteligenciou prevádzkovaný spoločnosťou Brave. Som poháňaný modelom Claude Sonnet vytvoreným spoločnosťou Anthropic na spracovanie konverzačných a textových úloh. Claude Sonnet prevádzkuje priamo spoločnosť Brave cez svoju vlastnú zabezpečenú infraštruktúru.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeSonnetModelPurposeDescription" = "Vyvážená rýchlosť a inteligencia";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageDeepSeekR1MessageDescription" = "Ahoj, ja som Leo, asistent s umelou inteligenciou prevádzkovaný spoločnosťou Brave. Som poháňaný modelom DeepSeek R1 vytvoreným spoločnosťou DeepSeek na zvládanie pokročilých argumentačných úloh.";
+"aichat.introMessageDeepSeekR1MessageDescription" = "Ahoj, ja som Leo. Som asistent s umelou inteligenciou prevádzkovaný spoločnosťou Brave. Som poháňaný modelom DeepSeek R1 vytvoreným spoločnosťou DeepSeek na vykonávanie úloh s hlbokým uvažovaním. Model DeepSeek R1 prevádzkuje priamo spoločnosť Brave cez svoju vlastnú zabezpečenú infraštruktúru.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageDeepSeekR1ModelPurposeDescription" = "Model uvažovania";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageGemmaMessageDescription" = "Ahoj, ja som Leo. Som asistent s umelou inteligenciou prevádzkovaný spoločnosťou Brave. Som poháňaný modelom Gemma 3 12B vytvoreným spoločnosťou Google DeepMind, aby som bol výkonný a použiteľný v mnohých prípadoch. Model Gemma prevádzkuje priamo spoločnosť Brave cez svoju vlastnú zabezpečenú infraštruktúru.";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageGemmaPurposeDescription" = "Všeobecné porozumenie textu a obrazu";
 
 /* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
 "aichat.introMessageGenericMessageDescription" = "Ahoj, ja som Leo. Som asistent AI od Brave. Používam %@. Opýtajte sa ma na čokoľvek a ja sa pokúsim odpovedať.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageLlamaMessageDescription" = "Ahoj, ja som Leo, asistent s umelou inteligenciou prevádzkovaný spoločnosťou Brave. Som poháňaný modelom Llama 3.1 8B vytvoreným spoločnosťou Meta, aby bol výkonný a použiteľný v mnohých prípadoch. Model Llama prevádzkuje priamo spoločnosť Brave cez svoju vlastnú zabezpečenú infraštruktúru.";
+"aichat.introMessageLlamaMessageDescription" = "Ahoj, ja som Leo. Som asistent s umelou inteligenciou prevádzkovaný spoločnosťou Brave. Som poháňaný modelom Llama 3.1 8B vytvoreným spoločnosťou Meta, aby som bol výkonný a použiteľný v mnohých prípadoch. Model Llama prevádzkuje priamo spoločnosť Brave cez svoju vlastnú zabezpečenú infraštruktúru.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageLlamaModelPurposeDescription" = "Všeobecný chat";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageQwenMessageDescription" = "Ahoj, ja som Leo, asistent s umelou inteligenciou prevádzkovaný spoločnosťou Brave. Som poháňaný modelom Qwen 14B vytvoreným spoločnosťou Alibaba Cloud, aby bol výkonný a použiteľný v mnohých prípadoch. Model Qwen prevádzkuje priamo spoločnosť Brave cez svoju vlastnú zabezpečenú infraštruktúru.";
+"aichat.introMessageQwenMessageDescription" = "Ahoj, ja som Leo. Som asistent s umelou inteligenciou prevádzkovaný spoločnosťou Brave. Som poháňaný modelom Qwen 14B vytvoreným spoločnosťou Alibaba Cloud, aby som bol výkonný a použiteľný v mnohých prípadoch. Model Qwen prevádzkuje priamo spoločnosť Brave cez svoju vlastnú zabezpečenú infraštruktúru.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageQwenModelPurposeDescription" = "Všeobecný chat, programovanie a ďalšie";

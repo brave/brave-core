@@ -17,7 +17,7 @@
 "vpn.autoRenewSoonExpireTitle" = "Olamaz! Brave VPN aboneliğinizin süresi dolmak üzere.";
 
 /* Title for screen to buy the VPN. */
-"vpn.buyVPNTitle" = "Brave Güvenlik Duvarı + VPN";
+"vpn.buyVPNTitle" = "Brave VPN";
 
 /* Message for an alert when the VPN can't get prices from the App Store */
 "vpn.errorCantGetPricesBody" = "App Store'a bağlanılamadı, lütfen birkaç dakika içinde yeniden deneyin.";

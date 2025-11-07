@@ -17,7 +17,7 @@
 "vpn.autoRenewSoonExpireTitle" = "Alamak! Langganan VPN Brave anda hampir tamat tempoh.";
 
 /* Title for screen to buy the VPN. */
-"vpn.buyVPNTitle" = "Tembok Api Berani + VPN";
+"vpn.buyVPNTitle" = "Brave VPN";
 
 /* Message for an alert when the VPN can't get prices from the App Store */
 "vpn.errorCantGetPricesBody" = "Tidak dapat menyambung ke App Store, sila cuba lagi dalam beberapa minit.";

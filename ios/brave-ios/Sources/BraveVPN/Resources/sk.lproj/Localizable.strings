@@ -101,7 +101,7 @@
 "vpn.contactFormTimezone" = "Časové pásmo iOS";
 
 /* Title for contact form email. */
-"vpn.contactFormTitle" = "Brave Firewall + problém VPN";
+"vpn.contactFormTitle" = "Problém s Brave VPN";
 
 /* Button text to enable Brave VPN */
 "vpn.enableButton" = "Aktivovať";
@@ -296,7 +296,7 @@
 "vpn.vpnBackgroundNotificationBody" = "Brave vás bude naďalej chrániť aj na pozadí.";
 
 /* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationTitle" = "Brave Firewall + VPN sú ZAPNUTÉ";
+"vpn.vpnBackgroundNotificationTitle" = "Brave VPN je ZAPNUTÉ";
 
 /* Text for description of list item which chooses the optimal server for the country region */
 "vpn.vpnCityRegionOptimalDescription" = "Použiť najlepší dostupný server";
@@ -311,7 +311,7 @@
 "vpn.vpnConfigGenericErrorTitle" = "Chyba";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "Aby Brave Firewall + VPN fungovalI, vyžaduje sa na vašom zariadení nainštalovaný profil VPN.";
+"vpn.vpnConfigPermissionDeniedErrorBody" = "Aby Brave VPN fungovala, vyžaduje sa na vašom zariadení nainštalovaný profil VPN.";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
 "vpn.vpnConfigPermissionDeniedErrorTitle" = "Prístup zamietnutý";
@@ -341,7 +341,7 @@
 "vpn.vpnRegionChangedTitle" = "Oblasť VPN sa zmenila";
 
 /* Message for alert to reset vpn configuration */
-"vpn.vpnResetAlertBody" = "Tým sa resetuje konfigurácia Brave Firewall + VPN a opravia sa všetky chyby. Tento proces môže chvíľu trvať.";
+"vpn.vpnResetAlertBody" = "Tým sa resetuje konfigurácia Brave VPN a opravia sa všetky chyby. Tento proces môže chvíľu trvať.";
 
 /* Title for alert to reset vpn configuration */
 "vpn.vpnResetAlertTitle" = "Obnoviť konfiguráciu";

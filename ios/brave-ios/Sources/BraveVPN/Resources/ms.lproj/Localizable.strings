@@ -101,7 +101,7 @@
 "vpn.contactFormTimezone" = "Zon Masa iOS";
 
 /* Title for contact form email. */
-"vpn.contactFormTitle" = "Brave Firewall + Isu VPN";
+"vpn.contactFormTitle" = "Isu Brave VPN";
 
 /* Button text to enable Brave VPN */
 "vpn.enableButton" = "Mendayakan";
@@ -275,7 +275,7 @@
 "vpn.settingsTransportProtocol" = "Protokol Pemindahan";
 
 /* Button to allow the user to view the App Store receipt. */
-"vpn.settingsViewReceipt" = "View App Store Receipt";
+"vpn.settingsViewReceipt" = "Paparkan Resit App Store";
 
 /* The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc. */
 "vpn.settingsVPNKillSwitchDescription" = "Apabila didayakan, jika sambungan VPN anda terputus secara tidak dijangka, peranti anda akan diputuskan daripada internet secara automatik, bagi mengelakkan kebocoran alamat IP dan data. [Ketahui Lebih Lanjut](%@)";
@@ -296,7 +296,7 @@
 "vpn.vpnBackgroundNotificationBody" = "Walaupun di latar belakang, Brave akan terus melindungi anda.";
 
 /* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationTitle" = "Brave Firewall + VPN adalah DIHIDUPKAN";
+"vpn.vpnBackgroundNotificationTitle" = "BRAVE VPN dihidupkan";
 
 /* Text for description of list item which chooses the optimal server for the country region */
 "vpn.vpnCityRegionOptimalDescription" = "Gunakan pelayan tersedia yang terbaik";
@@ -311,7 +311,7 @@
 "vpn.vpnConfigGenericErrorTitle" = "Ralat";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "Brave Firewall + VPN memerlukan profil VPN untuk dipasang pada peranti anda untuk berfungsi.";
+"vpn.vpnConfigPermissionDeniedErrorBody" = "Brave VPN memerlukan profil VPN untuk dipasang pada peranti anda untuk berfungsi.";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
 "vpn.vpnConfigPermissionDeniedErrorTitle" = "Kebenaran ditolak";
@@ -341,7 +341,7 @@
 "vpn.vpnRegionChangedTitle" = "Wilayah VPN Berubah";
 
 /* Message for alert to reset vpn configuration */
-"vpn.vpnResetAlertBody" = "Ini akan menetapkan semula konfigurasi Brave Firewall + VPN anda dan memperbaiki sebarang kesalahan. Proses ini mungkin mengambil masa sebentar.";
+"vpn.vpnResetAlertBody" = "Ini akan menetapkan semula konfigurasi Brave VPN anda dan memperbaiki sebarang kesalahan. Proses ini mungkin mengambil masa sebentar.";
 
 /* Title for alert to reset vpn configuration */
 "vpn.vpnResetAlertTitle" = "Set semula konfigurasi";
