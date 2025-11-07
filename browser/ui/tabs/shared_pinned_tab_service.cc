@@ -710,7 +710,7 @@ void SharedPinnedTabService::TabDraggingEnded(Browser* browser) {
     return;
   }
 
-  if (!browser->IsBrowserClosing()) {
+  if (!browser->is_delete_scheduled()) {
     SynchronizeNewBrowser(browser);
   }
 }
