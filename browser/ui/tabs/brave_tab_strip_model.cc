@@ -132,7 +132,7 @@ void BraveTabStripModel::CloseTabs(base::span<int> indices,
   TabStripModel::CloseTabs(contentses, close_types);
 }
 
-void BraveTabStripModel::CloseTabsWithTLD(std::string_view ephemeral_domain) {
+bool BraveTabStripModel::CloseTabsWithTLD(std::string_view ephemeral_domain) {
   std::vector<content::WebContents*> closing_tabs;
   for (std::vector<tabs::TabInterface*> tabs =
            contents_data_->GetTabsRecursive();
@@ -145,6 +145,7 @@ void BraveTabStripModel::CloseTabsWithTLD(std::string_view ephemeral_domain) {
   }
   TabStripModel::CloseTabs(closing_tabs,
                            TabCloseTypes::CLOSE_CREATE_HISTORICAL_TAB);
+  return !closing_tabs.empty();
 }
 
 void BraveTabStripModel::SetCustomTitleForTab(
