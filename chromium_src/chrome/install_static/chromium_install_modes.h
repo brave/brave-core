@@ -48,7 +48,8 @@ inline constexpr auto kInstallModes = std::to_array<InstallConstants>({
         .base_app_id = L"Brave",                 // A distinct base_app_id.
         .browser_prog_id_prefix = L"BraveHTML",  // Browser ProgID prefix.
         .browser_prog_id_description =
-            L"Brave HTML Document",         // Browser ProgID description.
+            L"Brave HTML Document",  // Browser ProgID description.
+        .direct_launch_url_scheme = "brave-browser",
         .pdf_prog_id_prefix = L"BravePDF",  // PDF ProgID prefix.
         .pdf_prog_id_description =
             L"Brave PDF Document",  // PDF ProgID description.
@@ -96,7 +97,8 @@ inline constexpr auto kInstallModes = std::to_array<InstallConstants>({
         .base_app_id = L"BraveBeta",              // A distinct base_app_id.
         .browser_prog_id_prefix = L"BraveBHTML",  // Browser ProgID prefix.
         .browser_prog_id_description =
-            L"Brave Beta HTML Document",     // Browser ProgID description.
+            L"Brave Beta HTML Document",  // Browser ProgID description.
+        .direct_launch_url_scheme = "brave-browser-beta",
         .pdf_prog_id_prefix = L"BraveBPDF",  // PDF ProgID prefix.
         .pdf_prog_id_description =
             L"Brave Beta PDF Document",  // PDF ProgID description.
@@ -142,7 +144,8 @@ inline constexpr auto kInstallModes = std::to_array<InstallConstants>({
         .base_app_id = L"BraveDev",               // A distinct base_app_id.
         .browser_prog_id_prefix = L"BraveDHTML",  // Browser ProgID prefix.
         .browser_prog_id_description =
-            L"Brave Dev HTML Document",      // Browser ProgID description.
+            L"Brave Dev HTML Document",  // Browser ProgID description.
+        .direct_launch_url_scheme = "brave-browser-dev",
         .pdf_prog_id_prefix = L"BraveDPDF",  // PDF ProgID prefix.
         .pdf_prog_id_description =
             L"Brave Dev PDF Document",  // PDF ProgID description.
@@ -189,7 +192,8 @@ inline constexpr auto kInstallModes = std::to_array<InstallConstants>({
         .base_app_id = L"BraveNightly",           // A distinct base_app_id.
         .browser_prog_id_prefix = L"BraveSSHTM",  // Browser ProgID prefix.
         .browser_prog_id_description =
-            L"Brave Nightly HTML Document",   // Browser ProgID description.
+            L"Brave Nightly HTML Document",  // Browser ProgID description.
+        .direct_launch_url_scheme = "brave-browser-nightly",
         .pdf_prog_id_prefix = L"BraveSSPDF",  // PDF ProgID prefix.
         .pdf_prog_id_description =
             L"Brave Nightly PDF Document",  // PDF ProgID description.
@@ -243,7 +247,8 @@ inline constexpr auto kInstallModes = std::to_array<InstallConstants>({
         .browser_prog_id_prefix = L"BraveDevHTM",  // Browser ProgID prefix.
         .browser_prog_id_description =
             L"Brave Development HTML Document",  // Browser ProgID description.
-        .pdf_prog_id_prefix = L"BraveDevPDF",    // PDF ProgID prefix.
+        .direct_launch_url_scheme = "brave-browser-development",
+        .pdf_prog_id_prefix = L"BraveDevPDF",  // PDF ProgID prefix.
         .pdf_prog_id_description =
             L"Brave Development PDF Document",  // PDF ProgID description.
         .active_setup_guid =
