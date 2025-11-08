@@ -27,7 +27,6 @@
     <org.chromium.chrome.browser.settings.BraveAccountPreference
         android:key="almost_there"
         android:order="3"
-        android:icon="@drawable/ic_brave"
         android:title="@string/prefs_brave_account_almost_there"
         android:summary="@string/prefs_brave_account_almost_there_detail"
         app:summaryTextColor="@color/brave_theme_subtitle_text"
