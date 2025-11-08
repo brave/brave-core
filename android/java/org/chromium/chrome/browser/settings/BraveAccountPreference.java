@@ -7,7 +7,6 @@ package org.chromium.chrome.browser.settings;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
@@ -19,16 +18,13 @@ import org.chromium.chrome.R;
 import org.chromium.components.browser_ui.settings.ChromeBasePreference;
 
 /**
- * A preference for Brave Account that supports customizing title and summary text colors
- * and making the title bold.
+ * A preference for Brave Account that supports customizing title and summary text colors.
  */
 @NullMarked
 public class BraveAccountPreference extends ChromeBasePreference {
     private final int mTitleTextColor;
     private final int mSummaryTextColor;
-    private final boolean mBoldTitle;
 
-    /** Constructor for BraveAccountPreference. */
     public BraveAccountPreference(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
@@ -39,7 +35,6 @@ public class BraveAccountPreference extends ChromeBasePreference {
         mSummaryTextColor = a.getColor(
                 R.styleable.BraveAccountPreference_summaryTextColor,
                 /* defaultValue= */ 0);
-        mBoldTitle = a.getBoolean(R.styleable.BraveAccountPreference_boldTitle, false);
         a.recycle();
     }
 
@@ -47,17 +42,18 @@ public class BraveAccountPreference extends ChromeBasePreference {
     public void onBindViewHolder(PreferenceViewHolder holder) {
         super.onBindViewHolder(holder);
 
-        // Customize title
         if (holder.findViewById(android.R.id.title) instanceof TextView titleView) {
             if (mTitleTextColor != 0) {
                 titleView.setTextColor(mTitleTextColor);
-            }
-            if (mBoldTitle) {
-                titleView.setTypeface(titleView.getTypeface(), Typeface.BOLD);
+            } else {
+                TypedArray ta = getContext().obtainStyledAttributes(
+                        new int[] { android.R.attr.textColorPrimary });
+                int defaultTitleColor = ta.getColor(0, titleView.getCurrentTextColor());
+                ta.recycle();
+                titleView.setTextColor(defaultTitleColor);
             }
         }
 
-        // Customize summary
         if (mSummaryTextColor != 0
                 && holder.findViewById(android.R.id.summary) instanceof TextView summaryView) {
             summaryView.setTextColor(mSummaryTextColor);

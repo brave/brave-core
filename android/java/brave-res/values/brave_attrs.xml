@@ -7,12 +7,8 @@
     </declare-styleable>
 
     <declare-styleable name="BraveAccountPreference">
-        <!-- The text color for the preference title. -->
         <attr name="titleTextColor" format="color"/>
-        <!-- The text color for the preference summary. -->
         <attr name="summaryTextColor" format="color"/>
-        <!-- Whether to make the title text bold. -->
-        <attr name="boldTitle" format="boolean"/>
     </declare-styleable>
 
     <attr name="ic_onboarding_backup" format="reference"/>
