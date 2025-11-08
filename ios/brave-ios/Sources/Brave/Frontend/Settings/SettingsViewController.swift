@@ -92,6 +92,8 @@ class SettingsViewController: TableViewController {
 
   private var cancellables: Set<AnyCancellable> = []
 
+  private let viewTintColor: UIColor = .braveBlurpleTint
+
   init(
     profile: LegacyBrowserProfile,
     tabManager: TabManager,
@@ -152,7 +154,7 @@ class SettingsViewController: TableViewController {
     tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
 
     view.backgroundColor = .braveGroupedBackground
-    view.tintColor = .braveBlurpleTint
+    view.tintColor = viewTintColor
     navigationController?.view.backgroundColor = .braveGroupedBackground
 
     if braveCore.profile.prefs.isBraveVPNAvailable {
@@ -374,7 +376,7 @@ class SettingsViewController: TableViewController {
             selection: { [unowned self] in braveAccountAuthentication.logOut() },
             cellClass: BraveAccountIconCell.self,
             context: [
-              BraveAccountIconCell.titleColorKey: UIColor(braveSystemName: .textInteractive)
+              BraveAccountIconCell.titleColorKey: viewTintColor
             ]
           ),
         ]
@@ -391,7 +393,6 @@ class SettingsViewController: TableViewController {
           Row(
             text: Strings.braveAccountAlmostThere,
             detailText: Strings.braveAccountAlmostThereDetail,
-            image: UIImage(sharedNamed: "brave.logo"),
             cellClass: BraveAccountIconCell.self
           ),
           Row(
@@ -400,7 +401,7 @@ class SettingsViewController: TableViewController {
             selection: { [unowned self] in braveAccountAuthentication.resendConfirmationEmail() },
             cellClass: BraveAccountIconCell.self,
             context: [
-              BraveAccountIconCell.titleColorKey: UIColor(braveSystemName: .textInteractive)
+              BraveAccountIconCell.titleColorKey: viewTintColor
             ]
           ),
           Row(
