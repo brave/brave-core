@@ -72,14 +72,16 @@ chromium_src/some_chromium_source.cc
 #define ChromeClass BraveClass<ChromeClass>()
 ```
 
-#### Circular dependencies {#circular-dependencies}
+#### Circular dependencies
 
 Circular dependencies can sometimes (temporarily) use
-`allow_circular_includes_from` to split sources up into smaller targets so they
-can be more easily resolved down the road. This is the technique we should use
-for `//chrome/browser` and `//chrome/browserui` if the circular dependencies
-cannot be removed through the methods above. It may be appropriate in other
-cases, check in slack if you are unsure. See [`//chrome/browser`](https://source.chromium.org/chromium/chromium/src/+/main:chrome/browser/BUILD.gn;l=3524;drc=80bd94ca218b30eb74a107ea54b469d79b25f16d) and
+`brave_chrome_browser_allow_circular_includes_from` and/or
+`brave_chrome_browser_ui_allow_circular_includes_from` if necessary to split
+sources up into smaller targets so they can be more easily resolved down the
+road. This is the technique we should use for `//chrome/browser` and
+`//chrome/browser/ui` if the circular dependencies cannot be removed through
+the methods above. It may be appropriate in other cases, check in slack if you
+are unsure. See [`//chrome/browser`](https://source.chromium.org/chromium/chromium/src/+/main:chrome/browser/BUILD.gn;l=3524;drc=80bd94ca218b30eb74a107ea54b469d79b25f16d) and
 [`//chrome/browser/ui`](https://source.chromium.org/chromium/chromium/src/+/main:chrome/browser/ui/BUILD.gn;l=5752;drc=fe55ddc4724a631b7e1752ac29310cfb3de4a8c5) for examples. Also
 [https://github.com/brave/brave-core/pull/25892/files](https://github.com/brave/brave-core/pull/25892/files) for an example in brave-core
 of converting from sources.gni.
