@@ -780,21 +780,21 @@ source_set("unit_tests") {
   if (!is_ios) {
     # TODO(...) Investigate why these tests fail on ios
     sources += [
-      "wallet_data_files_installer_unittest.cc",
-      "ethereum_keyring_unittest.cc",
-      "zcash/zcash_create_transparent_transaction_task_unittest.cc",
-      "keyring_service_unittest.cc",
-      "internal/hd_key_unittest.cc",
-      "eth_tx_manager_unittest.cc",
-      "eth_block_tracker_unittest.cc",
       "asset_ratio_response_parser_unittest.cc",
       "asset_ratio_service_unittest.cc",
       "bitcoin/bitcoin_hardware_keyring_unittest.cc",
       "bitcoin/bitcoin_serializer_unittest.cc",
       "brave_wallet_utils_unittest.cc",
-      "cardano/cardano_rpc_unittest.cc",
       "cardano/cardano_api_impl_unittest.cc",
       "cardano/cardano_provider_impl_unittest.cc",
+      "cardano/cardano_rpc_unittest.cc",
+      "eth_block_tracker_unittest.cc",
+      "eth_tx_manager_unittest.cc",
+      "ethereum_keyring_unittest.cc",
+      "internal/hd_key_unittest.cc",
+      "keyring_service_unittest.cc",
+      "wallet_data_files_installer_unittest.cc",
+      "zcash/zcash_create_transparent_transaction_task_unittest.cc",
     ]
   }
 
@@ -874,9 +874,7 @@ source_set("unit_tests") {
   }
 
   if (is_ios) {
-    deps += [
-      ":test_bundle_data",
-    ]
+    deps += [ ":test_bundle_data" ]
   }
 
   data = [
