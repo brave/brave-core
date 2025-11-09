@@ -640,8 +640,9 @@ generated_types("meld_integration_responses") {
 }
 
 if (is_ios) {
-  bundle_data("test_bundle_data") {
+  bundle_data("unit_tests_bundle_data") {
     testonly = true
+    visibility = [ ":unit_tests" ]
     sources = [
       "//brave/components/test/data/brave_wallet/1.0.1/images/logo.png",
       "//brave/components/test/data/brave_wallet/cardano/cardano_sdk_cip30/index.mts",
@@ -873,7 +874,7 @@ source_set("unit_tests") {
   }
 
   if (is_ios) {
-    deps += [ ":test_bundle_data" ]
+    deps += [ ":unit_tests_bundle_data" ]
   }
 
   data = [
