@@ -10,7 +10,7 @@
 #define BRAVE_EXTENSION_MENU_MAIN_PAGE_VIEW_CREATE_AND_INSERT_MENU_ITEM        \
   {                                                                            \
     auto item = std::make_unique<BraveExtensionMenuItemView>(                  \
-        browser_, menu_item.is_enterprise, std::move(action_controller),       \
+        browser_, menu_item.is_enterprise, std::move(model),                   \
         base::BindRepeating(&ExtensionsMenuHandler::OnExtensionToggleSelected, \
                             base::Unretained(menu_handler_), extension_id),    \
         base::BindRepeating(&ExtensionsMenuHandler::OpenSitePermissionsPage,   \
