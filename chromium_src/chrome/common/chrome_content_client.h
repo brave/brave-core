@@ -8,8 +8,8 @@
 
 #include "content/public/common/content_client.h"
 
-#define AddPlugins                                                       \
-  AddPlugins(std::vector<content::ContentPluginInfo>* plugins) override; \
+#define AddPlugins                                                   \
+  AddPlugins(std::vector<content::WebPluginInfo>* plugins) override; \
   void AddPlugins_ChromiumImpl
 
 #include <chrome/common/chrome_content_client.h>  // IWYU pragma: export
