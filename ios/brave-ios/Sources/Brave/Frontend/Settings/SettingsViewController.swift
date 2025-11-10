@@ -147,13 +147,14 @@ class SettingsViewController: TableViewController {
 
     navigationItem.title = Strings.settings
     tableView.accessibilityIdentifier = "SettingsViewController.tableView"
-    setUpSections()
 
     tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
 
     view.backgroundColor = .braveGroupedBackground
     view.tintColor = .braveBlurpleTint
     navigationController?.view.backgroundColor = .braveGroupedBackground
+
+    setUpSections()
 
     if braveCore.profile.prefs.isBraveVPNAvailable {
       NotificationCenter.default.addObserver(
@@ -374,7 +375,7 @@ class SettingsViewController: TableViewController {
             selection: { [unowned self] in braveAccountAuthentication.logOut() },
             cellClass: BraveAccountIconCell.self,
             context: [
-              BraveAccountIconCell.titleColorKey: UIColor(braveSystemName: .textInteractive)
+              BraveAccountIconCell.titleColorKey: view.tintColor
             ]
           ),
         ]
@@ -391,7 +392,6 @@ class SettingsViewController: TableViewController {
           Row(
             text: Strings.braveAccountAlmostThere,
             detailText: Strings.braveAccountAlmostThereDetail,
-            image: UIImage(sharedNamed: "brave.logo"),
             cellClass: BraveAccountIconCell.self
           ),
           Row(
@@ -400,7 +400,7 @@ class SettingsViewController: TableViewController {
             selection: { [unowned self] in braveAccountAuthentication.resendConfirmationEmail() },
             cellClass: BraveAccountIconCell.self,
             context: [
-              BraveAccountIconCell.titleColorKey: UIColor(braveSystemName: .textInteractive)
+              BraveAccountIconCell.titleColorKey: view.tintColor
             ]
           ),
           Row(
