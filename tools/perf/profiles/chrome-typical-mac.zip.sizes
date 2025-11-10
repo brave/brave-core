@@ -1,21 +1,21 @@
-Total size 78442K
+Total size 78215K
 
-GROUP chromium [53601K total]
+GROUP chromium [53579K total]
      2K Amount Extraction Heuristic Regexes 4 [AmountExtractionHeuristicRegexes]
    217K chromeAutofillStatesData 2025.6.13.84507 [AutofillStates]
-   700K crl-set-4876970856718305755.data 10129 [CertificateRevocation]
+   698K crl-set-10435902620562040753.data 10143 [CertificateRevocation]
     31K chromeCommerceHeuristics 2023.3.30.1305 [CommerceHeuristics]
      3K Cookie Readiness List 2024.11.26.0 [CookieReadinessList]
-   173K Crowd Deny 2025.10.30.61 [Crowd Deny]
-     9K fileTypePolicies 67 [FileTypePolicies]
+   161K Crowd Deny 2025.11.6.121 [Crowd Deny]
+     9K fileTypePolicies 144.0.7512.1 [FileTypePolicies]
     13K First Party Sets 2025.7.24.0 [FirstPartySetsPreloaded]
      7K history_search_strings_farmhashed.binarypb 6.7431.9692 [HistorySearch]
     10K MEI Preload 1.0.7.1744928549 [MEIPreload]
   7744K OnDeviceHeadSuggestENUS500000 20251024.824731831.14 [OnDeviceHeadSuggestModel]
   1079K Open Cookie Database 2024.10.17.0 [OpenCookieDatabase]
-   369K Optimization Hints 564 [OptimizationHints]
+   363K Optimization Hints 568 [OptimizationHints]
      1K Origin Trials Updates 1.0.0.19 [OriginTrials]
-   381K pkiMetadata 1477 [PKIMetadata]
+   379K pkiMetadata 1482 [PKIMetadata]
      3K Probabilistic Reveal Tokens 2025.8.19.0 [ProbabilisticRevealTokenRegistry]
      4K sslErrorAssistant 7 [SSLErrorAssistant]
    179K safetyTips 3087 [SafetyTips]
@@ -26,6 +26,6 @@ GROUP chromium [53601K total]
  17587K WidevineCdm 4.10.2891.0 [WidevineCdm]
   1642K zxcvbnData 3 [ZxcvbnData]
 
-GROUP large_files [18852K total]
-  1863K Safe Browsing/ChromeExtMalware.store.32_13406574104997627
- 16988K Safe Browsing/UrlSoceng.store.4_13406574104863893
+GROUP large_files [18619K total]
+  1863K Safe Browsing/ChromeExtMalware.store.32_13407178872188663
+ 16755K Safe Browsing/UrlSoceng.store.4_13407178872054508
