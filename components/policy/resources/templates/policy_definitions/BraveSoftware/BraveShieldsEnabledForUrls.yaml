@@ -28,5 +28,6 @@ supported_on:
 - chrome.win:107-
 - chrome.mac:107-
 - chrome.linux:107-
+- android:142-
 tags: []
 type: list
