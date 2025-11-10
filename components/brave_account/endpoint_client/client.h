@@ -27,8 +27,10 @@
 #include "brave/components/brave_account/endpoint_client/is_endpoint.h"
 #include "brave/components/brave_account/endpoint_client/maybe_strip_with_headers.h"
 #include "brave/components/brave_account/endpoint_client/request_handle.h"
+#include "brave/components/brave_account/endpoint_client/response.h"
 #include "brave/components/brave_account/endpoint_client/with_headers.h"
 #include "net/base/load_flags.h"
+#include "net/base/net_errors.h"
 #include "net/http/http_request_headers.h"
 #include "net/http/http_response_headers.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
@@ -48,12 +50,6 @@ enum class RequestCancelability { kNonCancelable, kCancelable };
 
 template <IsEndpoint T>
 class Client {
-  using Response = typename T::Response;
-  using Error = typename T::Error;
-  using Expected =
-      base::expected<std::optional<Response>, std::optional<Error>>;
-  using Callback = base::OnceCallback<void(int, Expected)>;
-
   // Depending on |C|, either takes ownership of (moves out) |simple_url_loader|
   // (non-cancelable case), or returns a raw pointer to the loader (cancelable
   // case).
@@ -89,13 +85,16 @@ class Client {
   // the cancelable case. It has no effect in the non-cancelable case,
   // where the return type is void.
   template <RequestCancelability C = RequestCancelability::kNonCancelable,
-            typename Request>
+            typename Request,
+            typename Response>
     requires(std::same_as<detail::MaybeStripWithHeaders<Request>,
-                          typename T::Request>)
+                          typename T::Request> &&
+             std::same_as<detail::MaybeStripWithHeaders<Response>,
+                          typename T::Response>)
   [[nodiscard]] static auto Send(
       const scoped_refptr<network::SharedURLLoaderFactory>& url_loader_factory,
       Request request,
-      Callback callback) {
+      base::OnceCallback<void(Response)> callback) {
     CHECK(url_loader_factory);
     if (!request.network_traffic_annotation_tag.is_valid()) {
       CHECK_IS_TEST()
@@ -130,33 +129,52 @@ class Client {
 
     simple_url_loader->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
         url_loader_factory.get(),
-        base::BindOnce(OnResponse, std::move(callback),
+        base::BindOnce(OnResponse<Response>, std::move(callback),
                        MaybeMoveLoader<C>(simple_url_loader)));
 
     return MaybeMakeHandle<C>(simple_url_loader);
   }
 
  private:
+  template <typename Response>
   static void OnResponse(
-      Callback callback,
+      base::OnceCallback<void(Response)> callback,
       std::variant<std::unique_ptr<network::SimpleURLLoader>,
                    network::SimpleURLLoader*> simple_url_loader,
       std::optional<std::string> response_body) {
-    auto* const response_info = std::visit(
-        [](const auto& ptr) { return ptr->ResponseInfo(); }, simple_url_loader);
-    const auto headers = response_info ? response_info->headers : nullptr;
-    if (!headers) {
-      return std::move(callback).Run(-1, base::unexpected(std::nullopt));
+    const auto& simple_url_loader_ref = std::visit(
+        [](const auto& ptr) -> network::SimpleURLLoader& { return *ptr; },
+        simple_url_loader);
+
+    Response response;
+    response.error = simple_url_loader_ref.NetError();
+
+    auto* const response_info = simple_url_loader_ref.ResponseInfo();
+    auto headers = response_info ? response_info->headers : nullptr;
+    if (response.error != net::OK || !headers) {
+      return std::move(callback).Run(std::move(response));
     }
 
-    const auto response_code = headers->response_code();
+    response.status = headers->response_code();
+    if constexpr (base::is_instantiation<Response, WithHeaders>) {
+      response.headers = std::move(headers);
+    }
+
     const auto value =
         base::JSONReader::Read(response_body.value_or(""), base::JSON_PARSE_RFC)
             .value_or(base::Value());
-    std::move(callback).Run(response_code,
-                            response_code / 100 == 2  // 2xx
-                                ? Expected(Response::FromValue(value))
-                                : base::unexpected(Error::FromValue(value)));
+    // Intentionally kept as an if-else block for symmetry.
+    if (*response.status / 100 == 2) {  // 2xx
+      if (auto success_body = Response::SuccessBody::FromValue(value)) {
+        response.body = std::move(*success_body);
+      }
+    } else {  // non-2xx
+      if (auto error_body = Response::ErrorBody::FromValue(value)) {
+        response.body = base::unexpected(std::move(*error_body));
+      }
+    }
+
+    std::move(callback).Run(std::move(response));
   }
 };
 
