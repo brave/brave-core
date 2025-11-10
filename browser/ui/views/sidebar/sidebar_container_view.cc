@@ -215,7 +215,7 @@ void SidebarContainerView::WillShowSidePanel() {
   }
   StartObservingContextualSidePanelEntry(active_web_contents);
 
-  auto* global_registry = side_panel_coordinator_->GetWindowRegistry();
+  auto* global_registry = SidePanelRegistry::From(browser_);
   for (const auto& entry : global_registry->entries()) {
     AddSidePanelEntryObservation(entry.get());
   }
