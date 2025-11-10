@@ -18,6 +18,7 @@ import org.chromium.base.SysUtils;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.ui.appmenu.internal.R;
+import org.chromium.ui.hierarchicalmenu.HierarchicalMenuController;
 
 @NullMarked
 class BraveAppMenu extends BraveAppMenuDummySuper {
@@ -25,8 +26,11 @@ class BraveAppMenu extends BraveAppMenuDummySuper {
     private static int sMenuHeight;
     private static int sNegativeVerticalOffsetNotTopAnchored;
 
-    BraveAppMenu(AppMenuHandlerImpl handler, Resources res) {
-        super(handler, res);
+    BraveAppMenu(
+            AppMenuHandlerImpl handler,
+            Resources res,
+            HierarchicalMenuController hierarchicalMenuController) {
+        super(handler, res, hierarchicalMenuController);
 
         final float scale = res.getDisplayMetrics().density;
         sNegativeVerticalOffsetNotTopAnchored =
