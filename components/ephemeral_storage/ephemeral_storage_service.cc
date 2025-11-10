@@ -271,18 +271,30 @@ void EphemeralStorageService::CleanupTLDEphemeralStorage(
   CHECK(contents);
   const auto ephemeral_domain =
       net::URLToEphemeralStorageDomain(contents->GetLastCommittedURL());
-  if (!enforced_by_user &&
-      delegate_->IsShieldsDisabledOnAnyHostMatchingDomainOf(ephemeral_domain)) {
+  if (ephemeral_domain.empty() ||
+      (!enforced_by_user &&
+       delegate_->IsShieldsDisabledOnAnyHostMatchingDomainOf(
+           ephemeral_domain))) {
     // Do not start auto shred if shields is disabled on any host matching the
-    // domain.
+    // domain or ephemeral_domain is empty.
     return;
   }
 
   const TLDEphemeralAreaKey key(ephemeral_domain, storage_partition_config);
   delegate_->CloseTabsForDomainAndSubdomains(
       contents, ephemeral_domain,
-      base::BindOnce(&EphemeralStorageService::CleanupTLDEphemeralArea,
-                     weak_ptr_factory_.GetWeakPtr(), key, true, true));
+      base::BindOnce(&EphemeralStorageService::OnDomainAndSubdomainTabsClosed,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(key)));
+}
+
+void EphemeralStorageService::OnDomainAndSubdomainTabsClosed(
+    const TLDEphemeralAreaKey key,
+    const bool result) {
+  if (!result) {
+    LOG(ERROR) << "Failed to close tabs for domain and subdomains.";
+    return;
+  }
+  CleanupTLDEphemeralArea(key, true, true);
 }
 
 void EphemeralStorageService::FirstPartyStorageAreaInUse(
