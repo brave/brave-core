@@ -30,6 +30,7 @@ public class BraveAccountServiceFactory {
                 sInstance = new BraveAccountServiceFactory();
             }
         }
+
         return sInstance;
     }
 
@@ -43,6 +44,7 @@ public class BraveAccountServiceFactory {
         if (!handle.isValid()) {
             return null;
         }
+
         Authentication authentication = Authentication.MANAGER.attachProxy(handle, 0);
         if (connectionErrorHandler != null) {
             Handler handler = ((Interface.Proxy) authentication).getProxyHandler();

@@ -104,8 +104,8 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
     private static final String PREF_SAFETY_CHECK = "safety_check";
 
     private final HashMap<String, Preference> mRemovedPreferences = new HashMap<>();
-    private @Nullable Preference mVpnCalloutPreference;
     private @Nullable BraveAccountSectionController mAccountController;
+    private @Nullable Preference mVpnCalloutPreference;
     private boolean mNotificationClicked;
 
     @Override
@@ -121,9 +121,8 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         // Forward the custom menu item keys from main settings to appearance preference screen.
         CustomizeBraveMenu.propagateMenuItemExtras(findPreference(PREF_APPEARANCE), getArguments());
 
-        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_ACCOUNT)) {
-            mAccountController = new BraveAccountSectionController(this, getProfile());
-        }
+        mAccountController = BraveAccountSectionController.maybeCreate(this, getProfile());
+
         overrideChromiumPreferences();
         initRateBrave();
         setPreferenceListeners();
@@ -132,15 +131,6 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {}
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (mAccountController != null) {
-            mAccountController.destroy();
-            mAccountController = null;
-        }
-    }
 
     @Override
     public void onResume() {
@@ -154,6 +144,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         if (mAccountController != null) {
             mAccountController.updateUI();
         }
+
         if (mNotificationClicked
                 && BraveNotificationWarningDialog.shouldShowNotificationWarningDialog(getActivity())
                 && !OnboardingPrefManager.getInstance()
@@ -166,6 +157,16 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
             }
             OnboardingPrefManager.getInstance()
                     .setNotificationPermissionEnablingDialogShownFromSetting(true);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        if (mAccountController != null) {
+            mAccountController.destroy();
+            mAccountController = null;
         }
     }
 
@@ -296,22 +297,12 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         }
 
         int braveAccountSectionOrder = firstSectionOrder;
-        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_ACCOUNT)) {
-            setPreferenceOrder(BraveAccountSectionController.PREF_BRAVE_ACCOUNT_SECTION, ++braveAccountSectionOrder);
-            setPreferenceOrder(BraveAccountSectionController.PREF_USER_INFO, ++braveAccountSectionOrder);
-            setPreferenceOrder(BraveAccountSectionController.PREF_SIGN_OUT, ++braveAccountSectionOrder);
-            setPreferenceOrder(BraveAccountSectionController.PREF_ALMOST_THERE, ++braveAccountSectionOrder);
-            setPreferenceOrder(BraveAccountSectionController.PREF_RESEND_CONFIRMATION_EMAIL, ++braveAccountSectionOrder);
-            setPreferenceOrder(BraveAccountSectionController.PREF_CANCEL_REGISTRATION, ++braveAccountSectionOrder);
-            setPreferenceOrder(BraveAccountSectionController.PREF_GET_STARTED, ++braveAccountSectionOrder);
-        } else {
-            removePreferenceIfPresent(BraveAccountSectionController.PREF_BRAVE_ACCOUNT_SECTION);
-            removePreferenceIfPresent(BraveAccountSectionController.PREF_USER_INFO);
-            removePreferenceIfPresent(BraveAccountSectionController.PREF_SIGN_OUT);
-            removePreferenceIfPresent(BraveAccountSectionController.PREF_ALMOST_THERE);
-            removePreferenceIfPresent(BraveAccountSectionController.PREF_RESEND_CONFIRMATION_EMAIL);
-            removePreferenceIfPresent(BraveAccountSectionController.PREF_CANCEL_REGISTRATION);
-            removePreferenceIfPresent(BraveAccountSectionController.PREF_GET_STARTED);
+        for (String key : BraveAccountSectionController.ALL_PREFERENCE_KEYS) {
+            if (mAccountController != null) {
+                setPreferenceOrder(key, ++braveAccountSectionOrder);
+            } else {
+                removePreferenceIfPresent(key);
+            }
         }
 
         int featuresSectionOrder = braveAccountSectionOrder;

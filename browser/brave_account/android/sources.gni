@@ -6,7 +6,11 @@
 brave_browser_brave_account_android_sources = [ "//brave/browser/brave_account/android/brave_account_service_factory_android.cc" ]
 
 brave_browser_brave_account_android_deps = [
+  "//base",
+  "//brave/browser/brave_account",
   "//brave/components/brave_account",
   "//brave/components/brave_account/mojom",
+  "//chrome/android:chrome_jni_headers",
   "//chrome/browser/profiles:profile",
+  "//mojo/public/cpp/bindings",
 ]

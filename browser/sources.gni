@@ -5,6 +5,7 @@
 
 import("//brave/browser/ai_chat/android/sources.gni")
 import("//brave/browser/autocomplete/sources.gni")
+import("//brave/browser/brave_account/android/sources.gni")
 import("//brave/browser/brave_news/sources.gni")
 import("//brave/browser/brave_referrals/sources.gni")
 import("//brave/browser/brave_rewards/android/sources.gni")
@@ -443,8 +444,6 @@ if (enable_brave_vpn) {
 }
 
 if (is_android) {
-  import("//brave/browser/brave_account/android/sources.gni")
-
   brave_chrome_browser_sources += [
     "//brave/browser/android/brave_init_android.cc",
     "//brave/browser/password_manager/android/password_ui_view_android.cc",

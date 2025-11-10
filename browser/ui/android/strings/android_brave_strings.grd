@@ -335,7 +335,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_PREFS_SUPPORT_SECTION" desc="Title for the support section ">
         Support
       </message>
-      <message name="IDS_PREFS_BRAVE_ACCOUNT" desc="Title for the Brave Account section in settings">
+      <message name="IDS_PREFS_BRAVE_ACCOUNT" translateable="false" desc="Title for the Brave Account section in settings">
         Brave Account
       </message>
       <message name="IDS_PREFS_BRAVE_ACCOUNT_SIGN_OUT" translateable="false" desc="Label for the button that signs the user out of their account when clicked">

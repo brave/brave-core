@@ -11,6 +11,8 @@
 #include "chrome/android/chrome_jni_headers/BraveAccountServiceFactory_jni.h"
 #include "chrome/browser/profiles/profile.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
+#include "mojo/public/cpp/system/handle.h"
+#include "mojo/public/cpp/system/message_pipe.h"
 
 namespace chrome::android {
 
@@ -24,11 +26,11 @@ static jlong JNI_BraveAccountServiceFactory_GetInterfaceToBraveAccountService(
     return static_cast<jlong>(mojo::kInvalidHandleValue);
   }
 
-  mojo::PendingRemote<brave_account::mojom::Authentication> pending;
+  mojo::PendingRemote<brave_account::mojom::Authentication> pending_remote;
   brave_account_service->BindInterface(
-      pending.InitWithNewPipeAndPassReceiver());
+      pending_remote.InitWithNewPipeAndPassReceiver());
 
-  return static_cast<jlong>(pending.PassPipe().release().value());
+  return static_cast<jlong>(pending_remote.PassPipe().release().value());
 }
 
 }  // namespace chrome::android
