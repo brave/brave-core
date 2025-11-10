@@ -43,10 +43,12 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
+#include "components/grit/brave_components_strings.h"
 #include "components/os_crypt/sync/os_crypt.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "url/gurl.h"
 
 namespace ai_chat {
@@ -503,6 +505,52 @@ void ModelService::InitModels() {
 
 const std::vector<mojom::ModelPtr>& ModelService::GetModels() {
   return models_;
+}
+
+std::vector<mojom::ModelWithSubtitlePtr>
+ModelService::GetModelsWithSubtitles() {
+  const auto& all_models = GetModels();
+  std::vector<mojom::ModelWithSubtitlePtr> models;
+
+  for (const auto& model : all_models) {
+    auto model_with_subtitle = mojom::ModelWithSubtitle::New();
+    model_with_subtitle->model = model->Clone();
+
+    if (model->options->is_leo_model_options()) {
+      if (model->key == "chat-basic") {
+        model_with_subtitle->subtitle =
+            l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_BASIC_SUBTITLE);
+      } else if (model->key == "chat-claude-instant") {
+        model_with_subtitle->subtitle =
+            l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_CLAUDE_INSTANT_SUBTITLE);
+      } else if (model->key == "chat-claude-haiku") {
+        model_with_subtitle->subtitle =
+            l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_CLAUDE_HAIKU_SUBTITLE);
+      } else if (model->key == "chat-claude-sonnet") {
+        model_with_subtitle->subtitle =
+            l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_CLAUDE_SONNET_SUBTITLE);
+      } else if (model->key == "chat-qwen") {
+        model_with_subtitle->subtitle =
+            l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_QWEN_SUBTITLE);
+      } else if (model->key == "chat-deepseek-r1") {
+        model_with_subtitle->subtitle =
+            l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_DEEPSEEK_R1_SUBTITLE);
+      } else if (model->key == "chat-automatic") {
+        model_with_subtitle->subtitle =
+            l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_AUTOMATIC_SUBTITLE);
+      } else if (model->key == "chat-gemma") {
+        model_with_subtitle->subtitle =
+            l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_GEMMA_SUBTITLE);
+      }
+    }
+
+    if (model->options->is_custom_model_options()) {
+      model_with_subtitle->subtitle = "";
+    }
+
+    models.emplace_back(std::move(model_with_subtitle));
+  }
+  return models;
 }
 
 const mojom::Model* ModelService::GetModel(std::string_view key) {

@@ -66,6 +66,7 @@ class ModelService : public KeyedService {
   // All models that the user can choose for chat conversations, in UI display
   // order.
   const std::vector<ai_chat::mojom::ModelPtr>& GetModels();
+  std::vector<ai_chat::mojom::ModelWithSubtitlePtr> GetModelsWithSubtitles();
   const ai_chat::mojom::Model* GetModel(std::string_view key);
 
   std::optional<std::string> GetLeoModelKeyByName(std::string_view name);
