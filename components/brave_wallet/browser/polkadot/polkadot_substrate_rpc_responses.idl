@@ -41,8 +41,14 @@ namespace polkadot_substrate_rpc_responses {
   };
 
   dictionary ChainHeader {
+    // The hex-encoded hash of the parent block's header.
     DOMString parentHash;
+
+    // The number of the block in the current chain.
     DOMString number;
+
+    // Various fields we don't need currently but are still top-level fields
+    // in the RPC response.
     DOMString stateRoot;
     DOMString extrinsicsRoot;
     any digest;
