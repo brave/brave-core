@@ -448,7 +448,7 @@ export const useBuy = () => {
       const sessionData: CryptoBuySessionData = {
         countryCode: selectedCountryCode,
         destinationCurrencyCode: selectedMeldAsset.currencyCode,
-        paymentMethodType: undefined,
+        paymentMethodType: selectedPaymentMethod.paymentMethod,
         redirectUrl: undefined,
         serviceProvider: quote.serviceProvider,
         sourceAmount: amount,
@@ -502,6 +502,7 @@ export const useBuy = () => {
       selectedCountryCode,
       selectedCurrency,
       receiveAddress,
+      selectedPaymentMethod,
     ],
   )
 
