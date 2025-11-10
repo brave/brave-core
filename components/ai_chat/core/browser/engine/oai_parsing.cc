@@ -41,8 +41,7 @@ std::vector<mojom::ToolUseEventPtr> ToolUseEventFromToolCallsResponse(
     const std::string* name = function->FindString("name");
 
     mojom::ToolUseEventPtr tool_use_event = mojom::ToolUseEvent::New(
-        name ? *name : "", id ? *id : "", "", std::nullopt,
-        nullptr);  // permission_challenge
+        name ? *name : "", id ? *id : "", "", std::nullopt, nullptr);
 
     const std::string* arguments_raw = function->FindString("arguments");
     if (arguments_raw) {

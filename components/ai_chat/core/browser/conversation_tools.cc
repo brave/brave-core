@@ -72,7 +72,7 @@ The key is to avoid overusing the tool. It should supplement your responses, not
   std::variant<bool, mojom::PermissionChallengePtr>
   RequiresUserInteractionBeforeHandling(
       const mojom::ToolUseEvent& tool_use) const override {
-    // UserChoiceTool needs user to provide output, not permission
+    // This tool needs user to provide the output
     return true;
   }
 };
