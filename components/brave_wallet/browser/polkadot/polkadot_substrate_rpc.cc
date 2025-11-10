@@ -410,15 +410,20 @@ void PolkadotSubstrateRpc::OnGetBlockHeader(GetBlockHeaderCallback callback,
           api_result);
 
   if (!res.has_value()) {
+    // We received either a network error, an actual RPC error or JSON that
+    // didn't match our schema.
     return std::move(callback).Run(std::nullopt, res.error());
   }
 
   if (!res->result) {
+    // We received { "result": null } from the RPC, not an error.
     return std::move(callback).Run(std::nullopt, std::nullopt);
   }
 
   auto header = ParseChainHeaderFromHex(*res);
   if (!header) {
+    // We received { "parentHash": "...", "number": "..." } that contained
+    // invalid hex or hex that exceeded numeric limits.
     return std::move(callback).Run(std::nullopt, WalletParsingErrorMessage());
   }
 
