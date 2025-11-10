@@ -677,7 +677,7 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithSplitViewTest,
 
   auto* browser_view = static_cast<BraveBrowserView*>(
       BrowserView::GetBrowserViewForBrowser(browser()));
-  auto* main_container = browser_view->main_container();
+  auto* main_shadow_overlay = browser_view->main_shadow_overlay();
   auto* prefs = browser()->profile()->GetPrefs();
   auto* sidebar_container = GetSidebarContainerView();
   auto* screen = display::Screen::Get();
@@ -685,17 +685,17 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithSplitViewTest,
   // We assume main container is outer-most view for contents.
   // Its width should be same with browser view.
   // This test verifies mouse hover test based on that assumption.
-  EXPECT_EQ(browser_view->width(), main_container->width());
+  EXPECT_EQ(browser_view->width(), main_shadow_overlay->width());
 
   // Check sidebar is not shown.
   EXPECT_FALSE(sidebar_container->IsSidebarVisible());
 
   // Set mouse position inside the mouse hover area to check sidebar UI is shown
   // with that mouse position when sidebar is on right side.
-  auto main_container_rect = main_container->GetLocalBounds();
-  gfx::Point mouse_position = main_container_rect.top_right();
+  auto main_shadow_overlay_rect = main_shadow_overlay->GetLocalBounds();
+  gfx::Point mouse_position = main_shadow_overlay_rect.top_right();
   mouse_position.Offset(-2, 2);
-  views::View::ConvertPointToScreen(main_container, &mouse_position);
+  views::View::ConvertPointToScreen(main_shadow_overlay, &mouse_position);
   screen->SetCursorScreenPointForTesting(mouse_position);
   browser_view->HandleSidebarOnMouseOverMouseEvent(GetDummyEvent());
   EXPECT_TRUE(sidebar_container->IsSidebarVisible());
@@ -709,10 +709,10 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithSplitViewTest,
 
   // Set mouse position inside the mouse hover area to check sidebar UI is shown
   // with that mouse position when sidebar is on left side.
-  // main_container_rect = main_container->GetLocalBounds();
-  mouse_position = main_container_rect.origin();
+  // main_shadow_overlay_rect = main_shadow_overlay->GetLocalBounds();
+  mouse_position = main_shadow_overlay_rect.origin();
   mouse_position.Offset(2, 2);
-  views::View::ConvertPointToScreen(main_container, &mouse_position);
+  views::View::ConvertPointToScreen(main_shadow_overlay, &mouse_position);
   screen->SetCursorScreenPointForTesting(mouse_position);
   browser_view->HandleSidebarOnMouseOverMouseEvent(GetDummyEvent());
   EXPECT_TRUE(sidebar_container->IsSidebarVisible());
@@ -724,8 +724,8 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithSplitViewTest,
   // Check with the space between window border and contents.
   // We have that space with rounded corners.
   // When mouse moves into that space, sidebar should be visible.
-  mouse_position = main_container_rect.origin();
-  views::View::ConvertPointToScreen(main_container, &mouse_position);
+  mouse_position = main_shadow_overlay_rect.origin();
+  views::View::ConvertPointToScreen(main_shadow_overlay, &mouse_position);
   screen->SetCursorScreenPointForTesting(mouse_position);
   browser_view->HandleSidebarOnMouseOverMouseEvent(GetDummyEvent());
   EXPECT_TRUE(sidebar_container->IsSidebarVisible());
