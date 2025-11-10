@@ -63,7 +63,7 @@ void BraveExtensionMenuItemView::UpdateContextMenuButton(
   views::InstallCircleHighlightPathGenerator(context_menu_button_.get());
 
   // We want pin button to be shown if it's pinned
-  UpdatePinButton(model_ && model_->IsActionForcePinned(controller_->GetId()),
+  UpdatePinButton(model_ && model_->IsActionForcePinned(view_model_->GetId()),
                   is_action_pinned);
 }
 
