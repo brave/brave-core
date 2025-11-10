@@ -28,6 +28,9 @@ class SyncCameraView: UIView, AVCaptureMetadataOutputObjectsDelegate {
     return button
   }()
 
+  private var captureDevice: AVCaptureDevice?
+  private var captureDeviceRotationCoordinator: AVCaptureDevice.RotationCoordinator?
+
   var scanCallback: ((_ data: String) -> Void)?
 
   override init(frame: CGRect) {
@@ -84,6 +87,7 @@ class SyncCameraView: UIView, AVCaptureMetadataOutputObjectsDelegate {
       vpl.frame = bounds
     }
     cameraOverlayView.frame = bounds
+    updateCameraOrientation()
   }
 
   @objc func cameraAccess() {
@@ -127,6 +131,8 @@ class SyncCameraView: UIView, AVCaptureMetadataOutputObjectsDelegate {
     videoPreviewLayer?.videoGravity = AVLayerVideoGravity.resizeAspectFill
     videoPreviewLayer?.frame = layer.bounds
     layer.addSublayer(videoPreviewLayer!)
+
+    captureDeviceRotationCoordinator = .init(device: captureDevice, previewLayer: videoPreviewLayer)
 
     startRunning()
     bringSubviewToFront(cameraOverlayView)
@@ -200,5 +206,10 @@ class SyncCameraView: UIView, AVCaptureMetadataOutputObjectsDelegate {
 
   @objc func cameraOverlayNormal() {
     cameraOverlayView.tintColor = .white
+  }
+
+  func updateCameraOrientation() {
+    videoPreviewLayer?.connection?.videoRotationAngle =
+      captureDeviceRotationCoordinator?.videoRotationAngleForHorizonLevelPreview ?? 0
   }
 }

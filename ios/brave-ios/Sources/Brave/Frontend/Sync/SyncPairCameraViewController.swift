@@ -149,32 +149,13 @@ class SyncPairCameraViewController: SyncViewController {
     }
   }
 
-  override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
-    updateCameraOrientation()
-  }
-
   override func viewWillTransition(
     to size: CGSize,
     with coordinator: UIViewControllerTransitionCoordinator
   ) {
     coordinator.animate(alongsideTransition: nil) { [weak self] _ in
-      self?.updateCameraOrientation()
+      self?.cameraView.updateCameraOrientation()
     }
-  }
-
-  private func updateCameraOrientation() {
-    guard let interfaceOrientation = view.window?.windowScene?.interfaceOrientation
-    else { return }
-    let angle: Double
-    switch interfaceOrientation {
-    case .portrait: angle = 90
-    case .portraitUpsideDown: angle = 270
-    case .landscapeLeft: angle = 180
-    case .landscapeRight: angle = 0
-    default: angle = 0
-    }
-    self.cameraView.videoPreviewLayer?.connection?.videoRotationAngle = angle
   }
 
   @objc
