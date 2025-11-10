@@ -130,9 +130,9 @@ union ContentBlock {
 };
 
 // Permission challenge that blocks tool execution until user approves
+// The existence of this struct means permission is needed. When granted,
+// the permission_challenge should be set to null.
 struct PermissionChallenge {
-  // Whether user has granted permission
-  bool user_allows = false;
   // Server alignment reasoning (when server blocks the tool)
   string? assessment;
   // Tool's explanation for why it needs permission

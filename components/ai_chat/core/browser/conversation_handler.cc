@@ -16,6 +16,7 @@
 #include <vector>
 
 #include "base/check.h"
+#include "base/check_op.h"
 #include "base/containers/contains.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/containers/span.h"
@@ -1124,8 +1125,8 @@ void ConversationHandler::ProcessPermissionChallenge(
     return;
   }
 
-  // User approved - mark as granted
-  tool_use->permission_challenge->user_allows = true;
+  // User approved - clear the permission challenge
+  tool_use->permission_challenge = nullptr;
 
   // Notify UI of the state change
   OnToolUseEventOutput(chat_history_.back().get(), tool_use);
@@ -1144,7 +1145,9 @@ void ConversationHandler::ProcessPermissionChallenge(
     return;
   }
 
-  // Notify tool that permission was granted
+  // Notify tool that permission was granted. At the moment there is no
+  // need to distinguish between different permission challenges. If that
+  // changes then we can add relevant parameters to this method.
   tool_ptr->UserPermissionGranted(tool_use_id);
 
   // Continue with tool execution
@@ -1958,10 +1961,9 @@ void ConversationHandler::MaybeRespondToNextToolUseRequest() {
         continue;
       }
 
-      // Gate 1: Check for existing permission challenge that hasn't been
-      // granted
-      if (tool_use_event->permission_challenge &&
-          !tool_use_event->permission_challenge->user_allows) {
+      // Check for existing permission challenge that hasn't been
+      // granted yet. If permission_challenge exists, permission is needed.
+      if (tool_use_event->permission_challenge) {
         DVLOG(0) << __func__ << " tool waiting for permission: "
                  << tool_use_event->tool_name;
         OnToolUseEventOutput(last_entry.get(), tool_use_event.get());
@@ -1970,7 +1972,6 @@ void ConversationHandler::MaybeRespondToNextToolUseRequest() {
 
       // Find the tool
       base::WeakPtr<Tool> tool_ptr;
-      bool tool_found = false;
       for (auto& tool : GetTools()) {
         if (!tool) {
           // Defensive check to avoid dereferencing invalid WeakPtr
@@ -1980,13 +1981,12 @@ void ConversationHandler::MaybeRespondToNextToolUseRequest() {
 
         if (!tool_use_event->tool_name.empty() &&
             tool->Name() == tool_use_event->tool_name) {
-          tool_found = true;
           tool_ptr = tool;
           break;
         }
       }
 
-      if (!tool_found) {
+      if (!tool_ptr) {
         DVLOG(1) << "Tool not found or unavailable: "
                  << tool_use_event->tool_name;
 
@@ -2003,30 +2003,34 @@ void ConversationHandler::MaybeRespondToNextToolUseRequest() {
         break;
       }
 
-      // Gate 2: Check if tool requires user interaction
-      // Only check if there isn't already a permission_challenge that was
-      // granted
+      // Check if tool requires user interaction
+      // Only check if there isn't already a permission_challenge.
+      // If permission_challenge is null, either there was no challenge or
+      // it was granted (cleared to null).
       if (!tool_use_event->permission_challenge) {
         auto interaction_result =
             tool_ptr->RequiresUserInteractionBeforeHandling(*tool_use_event);
 
         if (std::holds_alternative<mojom::PermissionChallengePtr>(
                 interaction_result)) {
-          // Tool needs permission challenge
+          // Tool needs permission challenge acceptance before proceeding
+          mojom::PermissionChallengePtr permission_challenge = std::move(
+              std::get<mojom::PermissionChallengePtr>(interaction_result));
+          CHECK(permission_challenge);
           DVLOG(0) << __func__ << " tool requires permission: "
                    << tool_use_event->tool_name;
-          tool_use_event->permission_challenge = std::move(
-              std::get<mojom::PermissionChallengePtr>(interaction_result));
+          tool_use_event->permission_challenge =
+              std::move(permission_challenge);
           OnToolUseEventOutput(last_entry.get(), tool_use_event.get());
           break;
         } else if (std::get<bool>(interaction_result)) {
           // Tool needs user to provide output via UI (e.g. UserChoiceTool)
           DVLOG(0) << __func__ << " tool requires user output: "
                    << tool_use_event->tool_name;
-          OnToolUseEventOutput(last_entry.get(), tool_use_event.get());
           break;
         }
-        // else: bool(false) - no interaction needed, continue to tool execution
+        // interaction_result is false - no interaction needed, continue to tool
+        // execution.
       }
 
       // No user interaction needed - execute tool
