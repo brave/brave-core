@@ -21,6 +21,7 @@ def LoadPList(path):
     with open(path, 'rb') as f:
         return plistlib.load(f)
 
+
 XCODE_VERSION = '26.1'
 HERMETIC_XCODE_BINARY = (
     DEPS_PACKAGES_INTERNAL_URL +
