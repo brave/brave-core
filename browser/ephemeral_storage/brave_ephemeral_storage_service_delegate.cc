@@ -161,10 +161,12 @@ void BraveEphemeralStorageServiceDelegate::CloseTabsForDomainAndSubdomains(
   CHECK(contents);
   tabs::TabInterface* tab = tabs::TabInterface::GetFromContents(contents);
   if (!tab) {
+    std::move(callback).Run(false);
     return;
   }
   BrowserWindowInterface* browser = tab->GetBrowserWindowInterface();
   if (!browser) {
+    std::move(callback).Run(false);
     return;
   }
   result = static_cast<BraveTabStripModel*>(browser->GetTabStripModel())
@@ -172,9 +174,7 @@ void BraveEphemeralStorageServiceDelegate::CloseTabsForDomainAndSubdomains(
 #else
   result = CloseTabsWithTLD(ephemeral_domain);
 #endif
-  if (result) {
-    std::move(callback).Run();
-  }
+  std::move(callback).Run(result);
 }
 
 bool BraveEphemeralStorageServiceDelegate::

@@ -122,6 +122,8 @@ class EphemeralStorageService : public KeyedService {
   void CleanupFirstPartyStorageArea(const TLDEphemeralAreaKey& key);
 
   size_t FireCleanupTimersForTesting();
+  void OnDomainAndSubdomainTabsClosed(const TLDEphemeralAreaKey key,
+                                      const bool result);
 
   raw_ptr<content::BrowserContext> context_ = nullptr;
   raw_ptr<HostContentSettingsMap> host_content_settings_map_ = nullptr;
