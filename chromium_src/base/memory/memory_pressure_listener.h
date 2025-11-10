@@ -6,10 +6,11 @@
 #ifndef BRAVE_CHROMIUM_SRC_BASE_MEMORY_MEMORY_PRESSURE_LISTENER_H_
 #define BRAVE_CHROMIUM_SRC_BASE_MEMORY_MEMORY_PRESSURE_LISTENER_H_
 
-#define kMax kRewardsDatabase, kAdsDatabase, kMax
+#define kMemoryReclaimerPressureListener \
+  kRewardsDatabase = 1000, kAdsDatabase = 1001, kMemoryReclaimerPressureListener
 
 #include <base/memory/memory_pressure_listener.h>  // IWYU pragma: export
 
-#undef kMax
+#undef kMemoryReclaimerPressureListener
 
 #endif  // BRAVE_CHROMIUM_SRC_BASE_MEMORY_MEMORY_PRESSURE_LISTENER_H_
