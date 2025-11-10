@@ -97,7 +97,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &blink::features::kAIWriterAPI,
       &blink::features::kAllowURNsInIframes,
       &blink::features::kBackgroundResourceFetch,
-      &blink::features::kBuiltInAIAPI,
       &blink::features::kControlledFrame,
       &blink::features::kCssSelectorFragmentAnchor,
       &blink::features::kFencedFrames,
