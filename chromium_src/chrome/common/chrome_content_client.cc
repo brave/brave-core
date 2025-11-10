@@ -14,16 +14,16 @@
 #undef AddPlugins
 
 void ChromeContentClient::AddPlugins(
-    std::vector<content::ContentPluginInfo>* plugins) {
+    std::vector<content::WebPluginInfo>* plugins) {
   AddPlugins_ChromiumImpl(plugins);
 #if BUILDFLAG(ENABLE_PDF)
   auto iter = std::ranges::find_if(*plugins, [](const auto& plugin_info) {
-    return plugin_info.name == "Chromium PDF Plugin";
+    return plugin_info.name == u"Chromium PDF Plugin";
   });
   if (iter == plugins->end()) {
     return;
   }
   auto& plugin_info = *iter;
-  plugin_info.name = "Chrome PDF Plugin";
+  plugin_info.name = u"Chrome PDF Plugin";
 #endif  // BUILDFLAG(ENABLE_PDF)
 }
