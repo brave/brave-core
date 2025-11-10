@@ -47,7 +47,7 @@
 #include "elevation_service_idl.h"
 
 #define TYPE_FORMAT_STRING_SIZE   69                                
-#define PROC_FORMAT_STRING_SIZE   207                               
+#define PROC_FORMAT_STRING_SIZE   307                               
 #define EXPR_FORMAT_STRING_SIZE   1                                 
 #define TRANSMIT_AS_TABLE_SIZE    0            
 #define WIRE_MARSHAL_TABLE_SIZE   1            
@@ -156,6 +156,19 @@ extern const MIDL_STUB_DESC Object_StubDesc;
 #endif
 
 
+extern const MIDL_SERVER_INFO IElevator2_ServerInfo;
+extern const MIDL_STUBLESS_PROXY_INFO IElevator2_ProxyInfo;
+
+#ifdef __cplusplus
+namespace {
+#endif
+
+extern const MIDL_STUB_DESC Object_StubDesc;
+#ifdef __cplusplus
+}
+#endif
+
+
 extern const MIDL_SERVER_INFO IElevatorChromium_ServerInfo;
 extern const MIDL_STUBLESS_PROXY_INFO IElevatorChromium_ProxyInfo;
 
@@ -223,6 +236,71 @@ extern const MIDL_STUB_DESC Object_StubDesc;
 
 extern const MIDL_SERVER_INFO IElevatorDevelopment_ServerInfo;
 extern const MIDL_STUBLESS_PROXY_INFO IElevatorDevelopment_ProxyInfo;
+
+#ifdef __cplusplus
+namespace {
+#endif
+
+extern const MIDL_STUB_DESC Object_StubDesc;
+#ifdef __cplusplus
+}
+#endif
+
+
+extern const MIDL_SERVER_INFO IElevator2Chromium_ServerInfo;
+extern const MIDL_STUBLESS_PROXY_INFO IElevator2Chromium_ProxyInfo;
+
+#ifdef __cplusplus
+namespace {
+#endif
+
+extern const MIDL_STUB_DESC Object_StubDesc;
+#ifdef __cplusplus
+}
+#endif
+
+
+extern const MIDL_SERVER_INFO IElevator2Chrome_ServerInfo;
+extern const MIDL_STUBLESS_PROXY_INFO IElevator2Chrome_ProxyInfo;
+
+#ifdef __cplusplus
+namespace {
+#endif
+
+extern const MIDL_STUB_DESC Object_StubDesc;
+#ifdef __cplusplus
+}
+#endif
+
+
+extern const MIDL_SERVER_INFO IElevator2ChromeBeta_ServerInfo;
+extern const MIDL_STUBLESS_PROXY_INFO IElevator2ChromeBeta_ProxyInfo;
+
+#ifdef __cplusplus
+namespace {
+#endif
+
+extern const MIDL_STUB_DESC Object_StubDesc;
+#ifdef __cplusplus
+}
+#endif
+
+
+extern const MIDL_SERVER_INFO IElevator2ChromeDev_ServerInfo;
+extern const MIDL_STUBLESS_PROXY_INFO IElevator2ChromeDev_ProxyInfo;
+
+#ifdef __cplusplus
+namespace {
+#endif
+
+extern const MIDL_STUB_DESC Object_StubDesc;
+#ifdef __cplusplus
+}
+#endif
+
+
+extern const MIDL_SERVER_INFO IElevator2ChromeCanary_ServerInfo;
+extern const MIDL_STUBLESS_PROXY_INFO IElevator2ChromeCanary_ProxyInfo;
 
 
 extern const USER_MARSHAL_ROUTINE_QUADRUPLE UserMarshalRoutines[ WIRE_MARSHAL_TABLE_SIZE ];
@@ -419,6 +497,95 @@ static const elevation_service_idl_MIDL_PROC_FORMAT_STRING elevation_service_idl
 /* 204 */	0x8,		/* FC_LONG */
 			0x0,		/* 0 */
 
+	/* Procedure RunIsolatedChrome */
+
+/* 206 */	0x33,		/* FC_AUTO_HANDLE */
+			0x6c,		/* Old Flags:  object, Oi2 */
+/* 208 */	NdrFcLong( 0x0 ),	/* 0 */
+/* 212 */	NdrFcShort( 0x7 ),	/* 7 */
+/* 214 */	NdrFcShort( 0x38 ),	/* X64 Stack size/offset = 56 */
+/* 216 */	NdrFcShort( 0x8 ),	/* 8 */
+/* 218 */	NdrFcShort( 0x40 ),	/* 64 */
+/* 220 */	0x47,		/* Oi2 Flags:  srv must size, clt must size, has return, has ext, */
+			0x6,		/* 6 */
+/* 222 */	0xa,		/* 10 */
+			0x3,		/* Ext Flags:  new corr desc, clt corr check, */
+/* 224 */	NdrFcShort( 0x1 ),	/* 1 */
+/* 226 */	NdrFcShort( 0x0 ),	/* 0 */
+/* 228 */	NdrFcShort( 0x0 ),	/* 0 */
+/* 230 */	NdrFcShort( 0x0 ),	/* 0 */
+
+	/* Parameter flags */
+
+/* 232 */	NdrFcShort( 0x48 ),	/* Flags:  in, base type, */
+/* 234 */	NdrFcShort( 0x8 ),	/* X64 Stack size/offset = 8 */
+/* 236 */	0x8,		/* FC_LONG */
+			0x0,		/* 0 */
+
+	/* Parameter command_line */
+
+/* 238 */	NdrFcShort( 0x10b ),	/* Flags:  must size, must free, in, simple ref, */
+/* 240 */	NdrFcShort( 0x10 ),	/* X64 Stack size/offset = 16 */
+/* 242 */	NdrFcShort( 0x4 ),	/* Type Offset=4 */
+
+	/* Parameter log */
+
+/* 244 */	NdrFcShort( 0x2113 ),	/* Flags:  must size, must free, out, simple ref, srv alloc size=8 */
+/* 246 */	NdrFcShort( 0x18 ),	/* X64 Stack size/offset = 24 */
+/* 248 */	NdrFcShort( 0x36 ),	/* Type Offset=54 */
+
+	/* Parameter proc_handle */
+
+/* 250 */	NdrFcShort( 0x2150 ),	/* Flags:  out, base type, simple ref, srv alloc size=8 */
+/* 252 */	NdrFcShort( 0x20 ),	/* X64 Stack size/offset = 32 */
+/* 254 */	0xb9,		/* FC_UINT3264 */
+			0x0,		/* 0 */
+
+	/* Parameter last_error */
+
+/* 256 */	NdrFcShort( 0x2150 ),	/* Flags:  out, base type, simple ref, srv alloc size=8 */
+/* 258 */	NdrFcShort( 0x28 ),	/* X64 Stack size/offset = 40 */
+/* 260 */	0x8,		/* FC_LONG */
+			0x0,		/* 0 */
+
+	/* Return value */
+
+/* 262 */	NdrFcShort( 0x70 ),	/* Flags:  out, return, base type, */
+/* 264 */	NdrFcShort( 0x30 ),	/* X64 Stack size/offset = 48 */
+/* 266 */	0x8,		/* FC_LONG */
+			0x0,		/* 0 */
+
+	/* Procedure AcceptInvitation */
+
+/* 268 */	0x33,		/* FC_AUTO_HANDLE */
+			0x6c,		/* Old Flags:  object, Oi2 */
+/* 270 */	NdrFcLong( 0x0 ),	/* 0 */
+/* 274 */	NdrFcShort( 0x8 ),	/* 8 */
+/* 276 */	NdrFcShort( 0x18 ),	/* X64 Stack size/offset = 24 */
+/* 278 */	NdrFcShort( 0x0 ),	/* 0 */
+/* 280 */	NdrFcShort( 0x8 ),	/* 8 */
+/* 282 */	0x46,		/* Oi2 Flags:  clt must size, has return, has ext, */
+			0x2,		/* 2 */
+/* 284 */	0xa,		/* 10 */
+			0x1,		/* Ext Flags:  new corr desc, */
+/* 286 */	NdrFcShort( 0x0 ),	/* 0 */
+/* 288 */	NdrFcShort( 0x0 ),	/* 0 */
+/* 290 */	NdrFcShort( 0x0 ),	/* 0 */
+/* 292 */	NdrFcShort( 0x0 ),	/* 0 */
+
+	/* Parameter server_name */
+
+/* 294 */	NdrFcShort( 0x10b ),	/* Flags:  must size, must free, in, simple ref, */
+/* 296 */	NdrFcShort( 0x8 ),	/* X64 Stack size/offset = 8 */
+/* 298 */	NdrFcShort( 0x4 ),	/* Type Offset=4 */
+
+	/* Return value */
+
+/* 300 */	NdrFcShort( 0x70 ),	/* Flags:  out, return, base type, */
+/* 302 */	NdrFcShort( 0x10 ),	/* X64 Stack size/offset = 16 */
+/* 304 */	0x8,		/* FC_LONG */
+			0x0,		/* 0 */
+
 			0x0
         }
     };
@@ -563,6 +730,66 @@ const CInterfaceStubVtbl _IElevatorStubVtbl =
     &IID_IElevator,
     &IElevator_ServerInfo,
     7,
+    0, /* pure interpreted */
+    CStdStubBuffer_METHODS
+};
+
+
+/* Object interface: IElevator2, ver. 0.0,
+   GUID={0x8F7B6792,0x784D,0x4047,{0x84,0x5D,0x17,0x82,0xEF,0xBE,0xF2,0x05}} */
+
+#pragma code_seg(".orpc")
+static const unsigned short IElevator2_FormatStringOffsetTable[] =
+    {
+    0,
+    68,
+    124,
+    174,
+    206,
+    268
+    };
+
+static const MIDL_STUBLESS_PROXY_INFO IElevator2_ProxyInfo =
+    {
+    &Object_StubDesc,
+    elevation_service_idl__MIDL_ProcFormatString.Format,
+    &IElevator2_FormatStringOffsetTable[-3],
+    0,
+    0,
+    0
+    };
+
+
+static const MIDL_SERVER_INFO IElevator2_ServerInfo = 
+    {
+    &Object_StubDesc,
+    0,
+    elevation_service_idl__MIDL_ProcFormatString.Format,
+    &IElevator2_FormatStringOffsetTable[-3],
+    0,
+    0,
+    0,
+    0};
+CINTERFACE_PROXY_VTABLE(9) _IElevator2ProxyVtbl = 
+{
+    &IElevator2_ProxyInfo,
+    &IID_IElevator2,
+    IUnknown_QueryInterface_Proxy,
+    IUnknown_AddRef_Proxy,
+    IUnknown_Release_Proxy ,
+    (void *) (INT_PTR) -1 /* IElevator::RunRecoveryCRXElevated */ ,
+    (void *) (INT_PTR) -1 /* IElevator::EncryptData */ ,
+    (void *) (INT_PTR) -1 /* IElevator::DecryptData */ ,
+    (void *) (INT_PTR) -1 /* IElevator::InstallVPNServices */ ,
+    (void *) (INT_PTR) -1 /* IElevator2::RunIsolatedChrome */ ,
+    (void *) (INT_PTR) -1 /* IElevator2::AcceptInvitation */
+};
+
+const CInterfaceStubVtbl _IElevator2StubVtbl =
+{
+    &IID_IElevator2,
+    &IElevator2_ServerInfo,
+    9,
     0, /* pure interpreted */
     CStdStubBuffer_METHODS
 };
@@ -963,6 +1190,366 @@ CInterfaceStubVtbl _IElevatorDevelopmentStubVtbl =
     CStdStubBuffer_DELEGATING_METHODS
 };
 
+
+/* Object interface: IElevator2Chromium, ver. 0.0,
+   GUID={0xBB19A0E5,0x00C6,0x4966,{0x94,0xB2,0x5A,0xFE,0xC6,0xFE,0xD9,0x3A}} */
+
+#pragma code_seg(".orpc")
+static const unsigned short IElevator2Chromium_FormatStringOffsetTable[] =
+    {
+    0,
+    68,
+    124,
+    174,
+    206,
+    268,
+    0
+    };
+
+static const MIDL_STUBLESS_PROXY_INFO IElevator2Chromium_ProxyInfo =
+    {
+    &Object_StubDesc,
+    elevation_service_idl__MIDL_ProcFormatString.Format,
+    &IElevator2Chromium_FormatStringOffsetTable[-3],
+    0,
+    0,
+    0
+    };
+
+
+static const MIDL_SERVER_INFO IElevator2Chromium_ServerInfo = 
+    {
+    &Object_StubDesc,
+    0,
+    elevation_service_idl__MIDL_ProcFormatString.Format,
+    &IElevator2Chromium_FormatStringOffsetTable[-3],
+    0,
+    0,
+    0,
+    0};
+CINTERFACE_PROXY_VTABLE(9) _IElevator2ChromiumProxyVtbl = 
+{
+    0,
+    &IID_IElevator2Chromium,
+    IUnknown_QueryInterface_Proxy,
+    IUnknown_AddRef_Proxy,
+    IUnknown_Release_Proxy ,
+    0 /* forced delegation IElevator::RunRecoveryCRXElevated */ ,
+    0 /* forced delegation IElevator::EncryptData */ ,
+    0 /* forced delegation IElevator::DecryptData */ ,
+    0 /* forced delegation IElevator::InstallVPNServices */ ,
+    0 /* forced delegation IElevator2::RunIsolatedChrome */ ,
+    0 /* forced delegation IElevator2::AcceptInvitation */
+};
+
+
+EXTERN_C DECLSPEC_SELECTANY const PRPC_STUB_FUNCTION IElevator2Chromium_table[] =
+{
+    NdrStubCall2,
+    NdrStubCall2,
+    NdrStubCall2,
+    NdrStubCall2,
+    NdrStubCall2,
+    NdrStubCall2
+};
+
+CInterfaceStubVtbl _IElevator2ChromiumStubVtbl =
+{
+    &IID_IElevator2Chromium,
+    &IElevator2Chromium_ServerInfo,
+    9,
+    &IElevator2Chromium_table[-3],
+    CStdStubBuffer_DELEGATING_METHODS
+};
+
+
+/* Object interface: IElevator2Chrome, ver. 0.0,
+   GUID={0x1BF5208B,0x295F,0x4992,{0xB5,0xF4,0x3A,0x9B,0xB6,0x49,0x48,0x38}} */
+
+#pragma code_seg(".orpc")
+static const unsigned short IElevator2Chrome_FormatStringOffsetTable[] =
+    {
+    0,
+    68,
+    124,
+    174,
+    206,
+    268,
+    0
+    };
+
+static const MIDL_STUBLESS_PROXY_INFO IElevator2Chrome_ProxyInfo =
+    {
+    &Object_StubDesc,
+    elevation_service_idl__MIDL_ProcFormatString.Format,
+    &IElevator2Chrome_FormatStringOffsetTable[-3],
+    0,
+    0,
+    0
+    };
+
+
+static const MIDL_SERVER_INFO IElevator2Chrome_ServerInfo = 
+    {
+    &Object_StubDesc,
+    0,
+    elevation_service_idl__MIDL_ProcFormatString.Format,
+    &IElevator2Chrome_FormatStringOffsetTable[-3],
+    0,
+    0,
+    0,
+    0};
+CINTERFACE_PROXY_VTABLE(9) _IElevator2ChromeProxyVtbl = 
+{
+    0,
+    &IID_IElevator2Chrome,
+    IUnknown_QueryInterface_Proxy,
+    IUnknown_AddRef_Proxy,
+    IUnknown_Release_Proxy ,
+    0 /* forced delegation IElevator::RunRecoveryCRXElevated */ ,
+    0 /* forced delegation IElevator::EncryptData */ ,
+    0 /* forced delegation IElevator::DecryptData */ ,
+    0 /* forced delegation IElevator::InstallVPNServices */ ,
+    0 /* forced delegation IElevator2::RunIsolatedChrome */ ,
+    0 /* forced delegation IElevator2::AcceptInvitation */
+};
+
+
+EXTERN_C DECLSPEC_SELECTANY const PRPC_STUB_FUNCTION IElevator2Chrome_table[] =
+{
+    NdrStubCall2,
+    NdrStubCall2,
+    NdrStubCall2,
+    NdrStubCall2,
+    NdrStubCall2,
+    NdrStubCall2
+};
+
+CInterfaceStubVtbl _IElevator2ChromeStubVtbl =
+{
+    &IID_IElevator2Chrome,
+    &IElevator2Chrome_ServerInfo,
+    9,
+    &IElevator2Chrome_table[-3],
+    CStdStubBuffer_DELEGATING_METHODS
+};
+
+
+/* Object interface: IElevator2ChromeBeta, ver. 0.0,
+   GUID={0xB96A14B8,0xD0B0,0x44D8,{0xBA,0x68,0x23,0x85,0xB2,0xA0,0x32,0x54}} */
+
+#pragma code_seg(".orpc")
+static const unsigned short IElevator2ChromeBeta_FormatStringOffsetTable[] =
+    {
+    0,
+    68,
+    124,
+    174,
+    206,
+    268,
+    0
+    };
+
+static const MIDL_STUBLESS_PROXY_INFO IElevator2ChromeBeta_ProxyInfo =
+    {
+    &Object_StubDesc,
+    elevation_service_idl__MIDL_ProcFormatString.Format,
+    &IElevator2ChromeBeta_FormatStringOffsetTable[-3],
+    0,
+    0,
+    0
+    };
+
+
+static const MIDL_SERVER_INFO IElevator2ChromeBeta_ServerInfo = 
+    {
+    &Object_StubDesc,
+    0,
+    elevation_service_idl__MIDL_ProcFormatString.Format,
+    &IElevator2ChromeBeta_FormatStringOffsetTable[-3],
+    0,
+    0,
+    0,
+    0};
+CINTERFACE_PROXY_VTABLE(9) _IElevator2ChromeBetaProxyVtbl = 
+{
+    0,
+    &IID_IElevator2ChromeBeta,
+    IUnknown_QueryInterface_Proxy,
+    IUnknown_AddRef_Proxy,
+    IUnknown_Release_Proxy ,
+    0 /* forced delegation IElevator::RunRecoveryCRXElevated */ ,
+    0 /* forced delegation IElevator::EncryptData */ ,
+    0 /* forced delegation IElevator::DecryptData */ ,
+    0 /* forced delegation IElevator::InstallVPNServices */ ,
+    0 /* forced delegation IElevator2::RunIsolatedChrome */ ,
+    0 /* forced delegation IElevator2::AcceptInvitation */
+};
+
+
+EXTERN_C DECLSPEC_SELECTANY const PRPC_STUB_FUNCTION IElevator2ChromeBeta_table[] =
+{
+    NdrStubCall2,
+    NdrStubCall2,
+    NdrStubCall2,
+    NdrStubCall2,
+    NdrStubCall2,
+    NdrStubCall2
+};
+
+CInterfaceStubVtbl _IElevator2ChromeBetaStubVtbl =
+{
+    &IID_IElevator2ChromeBeta,
+    &IElevator2ChromeBeta_ServerInfo,
+    9,
+    &IElevator2ChromeBeta_table[-3],
+    CStdStubBuffer_DELEGATING_METHODS
+};
+
+
+/* Object interface: IElevator2ChromeDev, ver. 0.0,
+   GUID={0x3FEFA48E,0xC8BF,0x461F,{0xAE,0xD6,0x63,0xF6,0x58,0xCC,0x85,0x0A}} */
+
+#pragma code_seg(".orpc")
+static const unsigned short IElevator2ChromeDev_FormatStringOffsetTable[] =
+    {
+    0,
+    68,
+    124,
+    174,
+    206,
+    268,
+    0
+    };
+
+static const MIDL_STUBLESS_PROXY_INFO IElevator2ChromeDev_ProxyInfo =
+    {
+    &Object_StubDesc,
+    elevation_service_idl__MIDL_ProcFormatString.Format,
+    &IElevator2ChromeDev_FormatStringOffsetTable[-3],
+    0,
+    0,
+    0
+    };
+
+
+static const MIDL_SERVER_INFO IElevator2ChromeDev_ServerInfo = 
+    {
+    &Object_StubDesc,
+    0,
+    elevation_service_idl__MIDL_ProcFormatString.Format,
+    &IElevator2ChromeDev_FormatStringOffsetTable[-3],
+    0,
+    0,
+    0,
+    0};
+CINTERFACE_PROXY_VTABLE(9) _IElevator2ChromeDevProxyVtbl = 
+{
+    0,
+    &IID_IElevator2ChromeDev,
+    IUnknown_QueryInterface_Proxy,
+    IUnknown_AddRef_Proxy,
+    IUnknown_Release_Proxy ,
+    0 /* forced delegation IElevator::RunRecoveryCRXElevated */ ,
+    0 /* forced delegation IElevator::EncryptData */ ,
+    0 /* forced delegation IElevator::DecryptData */ ,
+    0 /* forced delegation IElevator::InstallVPNServices */ ,
+    0 /* forced delegation IElevator2::RunIsolatedChrome */ ,
+    0 /* forced delegation IElevator2::AcceptInvitation */
+};
+
+
+EXTERN_C DECLSPEC_SELECTANY const PRPC_STUB_FUNCTION IElevator2ChromeDev_table[] =
+{
+    NdrStubCall2,
+    NdrStubCall2,
+    NdrStubCall2,
+    NdrStubCall2,
+    NdrStubCall2,
+    NdrStubCall2
+};
+
+CInterfaceStubVtbl _IElevator2ChromeDevStubVtbl =
+{
+    &IID_IElevator2ChromeDev,
+    &IElevator2ChromeDev_ServerInfo,
+    9,
+    &IElevator2ChromeDev_table[-3],
+    CStdStubBuffer_DELEGATING_METHODS
+};
+
+
+/* Object interface: IElevator2ChromeCanary, ver. 0.0,
+   GUID={0xFF672E9F,0x0994,0x4322,{0x81,0xE5,0x3A,0x5A,0x97,0x46,0x14,0x0A}} */
+
+#pragma code_seg(".orpc")
+static const unsigned short IElevator2ChromeCanary_FormatStringOffsetTable[] =
+    {
+    0,
+    68,
+    124,
+    174,
+    206,
+    268,
+    0
+    };
+
+static const MIDL_STUBLESS_PROXY_INFO IElevator2ChromeCanary_ProxyInfo =
+    {
+    &Object_StubDesc,
+    elevation_service_idl__MIDL_ProcFormatString.Format,
+    &IElevator2ChromeCanary_FormatStringOffsetTable[-3],
+    0,
+    0,
+    0
+    };
+
+
+static const MIDL_SERVER_INFO IElevator2ChromeCanary_ServerInfo = 
+    {
+    &Object_StubDesc,
+    0,
+    elevation_service_idl__MIDL_ProcFormatString.Format,
+    &IElevator2ChromeCanary_FormatStringOffsetTable[-3],
+    0,
+    0,
+    0,
+    0};
+CINTERFACE_PROXY_VTABLE(9) _IElevator2ChromeCanaryProxyVtbl = 
+{
+    0,
+    &IID_IElevator2ChromeCanary,
+    IUnknown_QueryInterface_Proxy,
+    IUnknown_AddRef_Proxy,
+    IUnknown_Release_Proxy ,
+    0 /* forced delegation IElevator::RunRecoveryCRXElevated */ ,
+    0 /* forced delegation IElevator::EncryptData */ ,
+    0 /* forced delegation IElevator::DecryptData */ ,
+    0 /* forced delegation IElevator::InstallVPNServices */ ,
+    0 /* forced delegation IElevator2::RunIsolatedChrome */ ,
+    0 /* forced delegation IElevator2::AcceptInvitation */
+};
+
+
+EXTERN_C DECLSPEC_SELECTANY const PRPC_STUB_FUNCTION IElevator2ChromeCanary_table[] =
+{
+    NdrStubCall2,
+    NdrStubCall2,
+    NdrStubCall2,
+    NdrStubCall2,
+    NdrStubCall2,
+    NdrStubCall2
+};
+
+CInterfaceStubVtbl _IElevator2ChromeCanaryStubVtbl =
+{
+    &IID_IElevator2ChromeCanary,
+    &IElevator2ChromeCanary_ServerInfo,
+    9,
+    &IElevator2ChromeCanary_table[-3],
+    CStdStubBuffer_DELEGATING_METHODS
+};
+
 #ifdef __cplusplus
 namespace {
 #endif
@@ -1000,7 +1587,13 @@ const CInterfaceProxyVtbl * const _elevation_service_idl_ProxyVtblList[] =
     ( CInterfaceProxyVtbl *) &_IElevatorProxyVtbl,
     ( CInterfaceProxyVtbl *) &_IElevatorChromeCanaryProxyVtbl,
     ( CInterfaceProxyVtbl *) &_IElevatorChromeDevProxyVtbl,
+    ( CInterfaceProxyVtbl *) &_IElevator2ChromeProxyVtbl,
+    ( CInterfaceProxyVtbl *) &_IElevator2ChromeDevProxyVtbl,
+    ( CInterfaceProxyVtbl *) &_IElevator2ProxyVtbl,
+    ( CInterfaceProxyVtbl *) &_IElevator2ChromeCanaryProxyVtbl,
     ( CInterfaceProxyVtbl *) &_IElevatorChromeBetaProxyVtbl,
+    ( CInterfaceProxyVtbl *) &_IElevator2ChromeBetaProxyVtbl,
+    ( CInterfaceProxyVtbl *) &_IElevator2ChromiumProxyVtbl,
     ( CInterfaceProxyVtbl *) &_IElevatorDevelopmentProxyVtbl,
     0
 };
@@ -1012,7 +1605,13 @@ const CInterfaceStubVtbl * const _elevation_service_idl_StubVtblList[] =
     ( CInterfaceStubVtbl *) &_IElevatorStubVtbl,
     ( CInterfaceStubVtbl *) &_IElevatorChromeCanaryStubVtbl,
     ( CInterfaceStubVtbl *) &_IElevatorChromeDevStubVtbl,
+    ( CInterfaceStubVtbl *) &_IElevator2ChromeStubVtbl,
+    ( CInterfaceStubVtbl *) &_IElevator2ChromeDevStubVtbl,
+    ( CInterfaceStubVtbl *) &_IElevator2StubVtbl,
+    ( CInterfaceStubVtbl *) &_IElevator2ChromeCanaryStubVtbl,
     ( CInterfaceStubVtbl *) &_IElevatorChromeBetaStubVtbl,
+    ( CInterfaceStubVtbl *) &_IElevator2ChromeBetaStubVtbl,
+    ( CInterfaceStubVtbl *) &_IElevator2ChromiumStubVtbl,
     ( CInterfaceStubVtbl *) &_IElevatorDevelopmentStubVtbl,
     0
 };
@@ -1024,7 +1623,13 @@ PCInterfaceName const _elevation_service_idl_InterfaceNamesList[] =
     "IElevator",
     "IElevatorChromeCanary",
     "IElevatorChromeDev",
+    "IElevator2Chrome",
+    "IElevator2ChromeDev",
+    "IElevator2",
+    "IElevator2ChromeCanary",
     "IElevatorChromeBeta",
+    "IElevator2ChromeBeta",
+    "IElevator2Chromium",
     "IElevatorDevelopment",
     0
 };
@@ -1036,7 +1641,13 @@ const IID *  const _elevation_service_idl_BaseIIDList[] =
     0,
     &IID_IElevator,   /* forced */
     &IID_IElevator,   /* forced */
+    &IID_IElevator2,   /* forced */
+    &IID_IElevator2,   /* forced */
+    0,
+    &IID_IElevator2,   /* forced */
     &IID_IElevator,   /* forced */
+    &IID_IElevator2,   /* forced */
+    &IID_IElevator2,   /* forced */
     &IID_IElevator,   /* forced */
     0
 };
@@ -1048,10 +1659,11 @@ int __stdcall _elevation_service_idl_IID_Lookup( const IID * pIID, int * pIndex 
 {
     IID_BS_LOOKUP_SETUP
 
-    IID_BS_LOOKUP_INITIAL_TEST( _elevation_service_idl, 7, 4 )
+    IID_BS_LOOKUP_INITIAL_TEST( _elevation_service_idl, 13, 8 )
+    IID_BS_LOOKUP_NEXT_TEST( _elevation_service_idl, 4 )
     IID_BS_LOOKUP_NEXT_TEST( _elevation_service_idl, 2 )
     IID_BS_LOOKUP_NEXT_TEST( _elevation_service_idl, 1 )
-    IID_BS_LOOKUP_RETURN_RESULT( _elevation_service_idl, 7, *pIndex )
+    IID_BS_LOOKUP_RETURN_RESULT( _elevation_service_idl, 13, *pIndex )
     
 }
 
@@ -1062,7 +1674,7 @@ EXTERN_C const ExtendedProxyFileInfo elevation_service_idl_ProxyFileInfo =
     (const PCInterfaceName * ) & _elevation_service_idl_InterfaceNamesList,
     (const IID ** ) & _elevation_service_idl_BaseIIDList,
     & _elevation_service_idl_IID_Lookup, 
-    7,
+    13,
     2,
     0, /* table of [async_uuid] interfaces */
     0, /* Filler1 */
