@@ -11,7 +11,7 @@
 #include "base/check.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/components/vector_icons/vector_icons.h"
-#include "chrome/browser/ui/toolbar/toolbar_action_view_controller.h"
+#include "chrome/browser/ui/toolbar/toolbar_action_view_model.h"
 #include "chrome/browser/ui/views/controls/hover_button.h"
 #include "chrome/browser/ui/views/extensions/extensions_menu_button.h"
 #include "chrome/browser/ui/views/extensions/extensions_menu_item_view.h"
@@ -26,7 +26,7 @@
 BraveExtensionMenuItemView::BraveExtensionMenuItemView(
     Browser* browser,
     bool is_enterprise,
-    std::unique_ptr<ToolbarActionViewController> controller,
+    std::unique_ptr<ToolbarActionViewModel> controller,
     base::RepeatingCallback<void(bool)> site_access_toggle_callback,
     views::Button::PressedCallback site_permissions_button_callback)
     : ExtensionMenuItemView(browser,
