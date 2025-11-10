@@ -196,11 +196,14 @@
 /* An option setting for automatically shredding when the site is closed */
 "ShredOnSiteTabsClosed" = "Webbplatsflikar stängda";
 
+/* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'. */
+"ShredSiteAllTabsConfirmationMessage" = "Borttagning stänger alla flikar och tar bort alla webbplatsdata. Detta kan inte ångras.";
+
 /* A list row label for accessing the shred settings screen */
 "ShredSiteData" = "Ta bort webbplatsdata";
 
-/* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'.
-A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'.
+A message for a confirmation window that appears when a user clicks on 'Shred' with multiple tabs selected. */
 "ShredSiteDataConfirmationMessage" = "Borttagning stänger alla flikar som är öppna för den här webbplatsen och tar bort alla webbplatsdata. Detta kan inte ångras.";
 
 /* A title for a confirmation window that appears when a user clicks on 'Shred Data' */

@@ -1025,7 +1025,7 @@
 "wallet.meldTransactionPartnerLegal" = "Ich habe die [Nutzungsbedingungen von Meld](%@) gelesen und stimme ihnen zu";
 
 /* The title shown on the wallet settings page, and the value shown when selecting the default wallet as Brave Wallet in wallet settings. */
-"wallet.module" = "Brave-Wallet";
+"wallet.module" = "Brave Wallet";
 
 /* A button title for user to open more option in asset details screen other than buy/send/swap. */
 "wallet.more" = "Mehr";
@@ -2050,6 +2050,9 @@
 /* A title shown for a erc 20 transfer. The first '%@' becomes the symbol for the cryptocurrency For example: "Sent ETH" */
 "wallet.transactionUnknownSendTitle" = "%@ gesendet";
 
+/* The title displays in confirmation screen when there is no more pending transaction. */
+"wallet.txConfirmationNoMorePendingTitle" = "Keine offenen Transaktionen mehr";
+
 /* Blockchain function name for Solana compressed NFT transfers. */
 "wallet.txFunctionTypeCompressedNFTTransfer" = "Komprimierter NFT-Transfer";
 
@@ -2119,9 +2122,8 @@
 /* The message when a sign transaction is completed/confirmed on the blockchain. */
 "wallet.txStatusSignedConfirmedMsg" = "Die Transaktion wurde signiert und wird von den Dapps an das Netzwerk gesendet, wo sie auf die Bestätigung warten.";
 
-/* The text in the disclosure view in transaction status screen.
-The title displays in confirmation screen when there is no more pending transaction. */
-"wallet.txStatusSubmittedDisclosure" = "Keine offenen Transaktionen mehr";
+/* The text in the disclosure view in transaction status screen. */
+"wallet.txStatusSubmittedDisclosure" = "Du kannst diesen Bildschirm getrost ausblenden";
 
 /* A message explains an ETH Swap transaction is confirmed on the blockchain. */
 "wallet.txStatusSwappedMsg" = "hinzugefügt zu deinem";
@@ -2283,7 +2285,7 @@ The title displays in confirmation screen when there is no more pending transact
 "wallet.web3SettingsEnableNFTDiscoveryFooter" = "Füge NFTs, die du besitzt, mithilfe von Drittanbieter-APS automatisch zu deinem Wallet hinzu. [Mehr erfahren](%@)";
 
 /* A description of an ZCash account, displayed in Accounts tab. */
-"wallet.zecAccountDescription" = "Zcash";
+"wallet.zecAccountDescription" = "ZCash";
 
 /* The title of the sort option that sorts alphabetically from Z to A. Used in Portfolio/NFT filters and display settings. */
 "wallet.zToASortOption" = "Z bis A";

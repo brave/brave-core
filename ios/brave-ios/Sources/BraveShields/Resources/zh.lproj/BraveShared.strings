@@ -196,11 +196,14 @@
 /* An option setting for automatically shredding when the site is closed */
 "ShredOnSiteTabsClosed" = "网站标签已关闭";
 
+/* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'. */
+"ShredSiteAllTabsConfirmationMessage" = "销毁操作将关闭所有打开到该网站的标签页，并删除所有网站数据。此操作无法撤销。";
+
 /* A list row label for accessing the shred settings screen */
 "ShredSiteData" = "销毁网站数据";
 
-/* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'.
-A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'.
+A message for a confirmation window that appears when a user clicks on 'Shred' with multiple tabs selected. */
 "ShredSiteDataConfirmationMessage" = "销毁操作将关闭所有打开到该网站的标签页，并删除所有网站数据。此操作无法撤销。";
 
 /* A title for a confirmation window that appears when a user clicks on 'Shred Data' */

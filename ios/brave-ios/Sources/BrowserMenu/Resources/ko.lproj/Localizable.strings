@@ -47,7 +47,7 @@
 "BrowserMenu.quickActionDividerTitle" = "상단의 항목은 기본 영역에 표시됩니다.";
 
 /* A button title that when taps shows a confirmation dialog to reset the menu back to its default state */
-"BrowserMenu.resetButtonTitle" = "재설정";
+"BrowserMenu.resetButtonTitle" = "초기화";
 
 /* A button title that when taps shows a confirmation dialog to reset the menu back to its default state */
 "BrowserMenu.resetToDefault" = "기본값으로 초기화";
@@ -59,7 +59,7 @@
 "BrowserMenu.showAllButtonTitle" = "모두 표시…";
 
 /* A title shown above the list of actions that are visible on the menu. */
-"BrowserMenu.visibleActionsTitle" = "모든 작업";
+"BrowserMenu.visibleActionsTitle" = "주요 작업";
 
 /* A title on a button that lets the user switch the active VPN's selected region. */
 "BrowserMenu.vpnButtonTitle" = "VPN";

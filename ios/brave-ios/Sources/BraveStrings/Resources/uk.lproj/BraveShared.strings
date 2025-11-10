@@ -139,6 +139,9 @@
 /* Placeholder text for adding or editing a bookmark */
 "BookmarkUrlPlaceholderText" = "Адреса";
 
+/* Title for the Brave Account section in settings */
+"BraveAccount" = "Обліковий запис Brave";
+
 /* Button to show the brave panel */
 "BravePanel" = "Панель Brave";
 
@@ -264,36 +267,6 @@
 
 /* Title for Bottom Bar Callout View */
 "callout.bottomBarCalloutTitle" = "Персоналізуйте панель вкладок Brave";
-
-/* Description - Description used for main button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutButtonDescription" = "Установити Brave як браузер за замовчуванням?";
-
-/* Subtitle - Description for Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutDescription" = "Якщо Brave буде вибрано за замовчуванням, кожне посилання відкриватиметься з налаштуваннями безпеки від Brave.";
-
-/* Title for main button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutPrimaryButtonTitle" = "Установити за замовчуванням";
-
-/* Description for secondary button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutSecondaryButtonDescription" = "Уже встановлено за замовчуванням?";
-
-/* Title for secondary button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutSecondaryButtonTitle" = "Пропустити";
-
-/* Title for Default Browser Full Screen Callout */
-"callout.defaultBrowserTitle" = "Конфіденційність — це просто.";
-
-/* Subtitle - Description for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutDescription" = "Завдяки цьому ми дізнаємося, які функції Brave використовуються найчастіше. Ви можете змінити ці параметри будь-коли в налаштуваннях Brave у розділі «Brave Shields й інші параметри конфіденційності».";
-
-/* Title for the link that navigates to a webpage showing information about p3a (Privacy Preserving Analytics) */
-"callout.p3aCalloutLinkTitle" = "Дізнайтеся більше про аналітику продуктів зі збереженням конфіденційності (P3A).";
-
-/* Title for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutTitle" = "Допоможіть поліпшити Brave.";
-
-/* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutToggleTitle" = "Ділитися конфіденційною та анонімною статистикою продукта.";
 
 /* Subtitle - Description for Privacy Everywhere Full Screen Callout */
 "callout.privacyEverywhereCalloutDescription" = "Отримуйте конфіденційність Brave на своєму комп’ютері або планшеті й синхронізуйте закладки й розширення на різних пристроях.";
@@ -588,9 +561,6 @@
 
 /* The success message that appears after a user sucessfully adds a new search engine */
 "custonmSearchEngine.thirdPartySearchEngineAddedToastTitle" = "Пошукову систему додано!";
-
-/* Button text to close the default browser popup. */
-"defaultBrowserCallout.introCancelButtonText" = "Не зараз";
 
 /* Button text to open app settings */
 "defaultBrowserCallout.introOpenSettingsButtonText" = "Відкрити налаштування";
@@ -1201,18 +1171,6 @@
 /* Button to show Brave Rewards. */
 "OBTurnOnButton" = "Початок";
 
-/* The description text shown when there is big tech tracker among trackers. Example usage: Google, Amazon and 32 other trackers blocked */
-"onboarding.blockedAdsOnboardingBigTechInformationText" = "Заблоковано оголошень і трекерів: %1$@ та ще %2$lld";
-
-/* The footnote indicating what Brave shields is blocking */
-"onboarding.blockedAdsOnboardingFootnoteText" = "Переглянути весь заблокований Brave уміст завдяки Shields.";
-
-/* The text describing user where they should press in order to open Shield panel */
-"onboarding.blockedAdsOnboardingInstructionsText" = "Торкніться, щоб переглянути Brave Shields";
-
-/* The description text shown when there is no big tech tracker among trackers. Example usage: 31 Ads & trackers blocked. The number here is presented separately so it is not in translation. */
-"onboarding.blockedAdsOnboardingNoBigTechInformationText" = "Заблоковано стеження і рекламу";
-
 /* Button text to let users know they can use the vpn on all their devices */
 "onboarding.linkReceiptButton" = "Зв’язати підписку на VPN";
 
@@ -1222,12 +1180,6 @@
 /* Popup title to let users know they can use the vpn on all their devices */
 "onboarding.linkReceiptTitle" = "Розширений захист брандмауера Firewall + VPN";
 
-/* Description for Navigate Settings Screen in Onboarding. This part indicating navigation ('Default Browser App') should match the option in iPhone Settings in that Language. */
-"onboarding.navigateSettingsOnboardingScreenDescription" = "Виконайте пошук запитом «Браузер за замовчуванням»";
-
-/* Title for Navigate Settings Screen in Onboarding */
-"onboarding.navigateSettingsOnboardingScreenTitle" = "Перехід до налаштувань…";
-
 /* Description for the NTP pop-over that describes the tracking information on NTP */
 "onboarding.ntpOnboardingPopOverTrackerDescription" = "Завдяки блокуванню трекерів і реклами вебсайти використовують менше даних і завантажуються набагато швидше.";
 
@@ -1236,9 +1188,6 @@
 
 /* Title for the Omnibox (URL Bar) pop-over that describes faster load times. */
 "onboarding.omniboxOnboardingPopOverTitle" = "Наберіть назву сайту або введіть URL-посилання";
-
-/* Title for Welcome Screen in Onboarding */
-"onboarding.welcomeScreenTitle" = "Вітаємо у Brave!";
 
 /* Continue button to navigate to next onboarding screen. */
 "OnboardingContinueButton" = "Продовжити";
@@ -1390,7 +1339,7 @@
 /* Title of the alert when a calendar event is available for download */
 "OpenTextCalendarAlertTitle" = "Доступна подія календаря";
 
-/* Button title to that opens a website. */
+/* Button title to open a website. */
 "OpenWebsite" = "Відкрити вебсайт";
 
 /* Brave News Item Menu title */
@@ -1413,9 +1362,6 @@
 
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
 "p3a.settingTitle" = "Дозволити аналітику продуктів зі збереженням конфіденційності (P3A)";
-
-/* No comment provided by engineer. */
-"p3aCalloutCloseAccessibilityLabel" = "Закрити посилання на продукт зі збереженням приватності";
 
 /* No comment provided by engineer. */
 "pageSecurityView.pageNotFullySecureTitle" = "Ваше підключення до сайту не є цілком захищеним.";
@@ -1573,8 +1519,11 @@
 /* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
 "playlist.playlistAutoSaveSettingsTitle" = "Зберегти контент для відтворення в автономному режимі";
 
+/* The title of the button for the user to proceed adding playlist item when the user's disk space is almost full */
+"playlist.playlistDiskSpaceAddAnywayButtonTitle" = "Додати в будь-якому випадку";
+
 /* When the user's disk space is almost full */
-"playlist.playlistDiskSpaceWarningMessage" = "Додавання відео- й аудіофайлів для використання офлайн може потребувати багато місця на вашому пристрої. Видаліть деякі файли, щоб звільнити місце в пам’яті.";
+"playlist.playlistDiskSpaceWarningMessage" = "На вашому пристрої мало місця. Додавання цього відео до Плейліста може не вдатися або вплинути на інші завантаження.";
 
 /* When the user's disk space is almost full */
 "playlist.playlistDiskSpaceWarningTitle" = "Пам’ять майже заповнена";
@@ -2005,9 +1954,8 @@
 /* A label for a text entry field where the user can provide additional details for a web-compatibility report */
 "reportBrokenAdditionalDetailsRequired" = "Додаткова інформація";
 
-/* A label for a drop down where the user provides a category for a web-compatibility report
-A placeholder for a drop down where the user provides a category for a web-compatibility report */
-"reportBrokenCategory" = "Оберіть один з варіантів";
+/* A label for a drop down where the user provides a category for a web-compatibility report */
+"reportBrokenCategory" = "Що саме вас турбує найбільше?";
 
 /* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
 "ReportBrokenContactMe" = "Мої контактні дані: (необов’язково)";
@@ -2017,6 +1965,9 @@ A placeholder for a drop down where the user provides a category for a web-compa
 
 /* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
 "ReportBrokenContactMeSuggestions" = "Ел. адреса, Twitter тощо.";
+
+/* A placeholder for a drop down where the user provides a category for a web-compatibility report */
+"ReportBrokenPlaceholder" = "Оберіть один з варіантів";
 
 /* First part of the report a broken site copy. After the colon is a new line and then a website address */
 "ReportBrokenSiteBody1" = "Повідомте розробників Brave, що вебсайт працює неправильно:";
@@ -3089,8 +3040,14 @@ A placeholder for a drop down where the user provides a category for a web-compa
 /* A button title which when tapped will close all of the open tabs for the user */
 "tabGrid.closeAllTabsButtonTitle" = "Закрити всі вкладки";
 
-/* Accessibility label for a close button that when tapped closes the associated tab */
+/* Label for a close button that when tapped closes the associated tab */
 "tabGrid.closeTab" = "Закрити вкладку";
+
+/* Label for a close button that when tapped closes the associated tabs */
+"tabGrid.closeTabs" = "Закрити вкладки";
+
+/* A button title which when tapped will allow the user to deselect multiple tabs in the tab grid */
+"tabGrid.deselectTabsButtonTitle" = "Зняти виділення вкладок";
 
 /* A button title which when tapped will display a menu with more options */
 "tabGrid.moreMenuButtonTitle" = "Більше";
@@ -3125,11 +3082,20 @@ A placeholder for a drop down where the user provides a category for a web-compa
 /* Accessibility label for the regular browsing option in the browsing mode picker */
 "tabGrid.regularBrowsingModeAccessibilityLabel" = "Звичайний перегляд";
 
+/* A text label showing how many tabs the user has currently selected in edit mode. It is shown next to the number of selected tabs e.g. "Selected tabs: 4" */
+"tabGrid.selectedTabs" = "Вибрані вкладки";
+
+/* A button title which when tapped will allow the user to select multiple tabs in the tab grid */
+"tabGrid.selectTabsButtonTitle" = "Вибрати вкладки";
+
 /* A button title that when tapped allows users to shred all of their tabs */
 "tabGrid.shredAllTabsButtonTitle" = "Стерти всі вкладки";
 
 /* A button title that when tapped allows users to shred the currently selected tab */
 "tabGrid.shredSelectedTabButtonTitle" = "Стерти вибрані вкладки";
+
+/* A button title that when tapped allows users to shred the currently selected tabs */
+"tabGrid.shredSelectedTabsButtonTitle" = "Очистити";
 
 /* Accessibility label for a button that allows users to shred their tabs (erase them & associated data) */
 "tabGrid.shredTabsAccessibilityLabel" = "Стерти вкладки";

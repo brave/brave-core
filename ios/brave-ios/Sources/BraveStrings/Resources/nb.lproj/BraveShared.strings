@@ -139,6 +139,9 @@
 /* Placeholder text for adding or editing a bookmark */
 "BookmarkUrlPlaceholderText" = "Adresse";
 
+/* Title for the Brave Account section in settings */
+"BraveAccount" = "Brave-konto";
+
 /* Button to show the brave panel */
 "BravePanel" = "Brave-panel";
 
@@ -264,36 +267,6 @@
 
 /* Title for Bottom Bar Callout View */
 "callout.bottomBarCalloutTitle" = "Tilpass Brave-fanelinjen";
-
-/* Description - Description used for main button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutButtonDescription" = "Vil du angi Brave som standardnettleser?";
-
-/* Subtitle - Description for Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutDescription" = "Med Brave som standard åpnes alle linker du trykker på, med Braves innebygde standardinnstillinger.";
-
-/* Title for main button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutPrimaryButtonTitle" = "Angi som standard";
-
-/* Description for secondary button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutSecondaryButtonDescription" = "Allerede standard?";
-
-/* Title for secondary button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutSecondaryButtonTitle" = "Hopp over dette";
-
-/* Title for Default Browser Full Screen Callout */
-"callout.defaultBrowserTitle" = "Personvern. Gjort enkelt.";
-
-/* Subtitle - Description for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutDescription" = "Dette hjelper oss å finne ut hvilke Brave-funksjoner som brukes oftest. Du kan endre dette når som helst i Brave-innstillingene under Brave Shields og andre personverninnstillinger.";
-
-/* Title for the link that navigates to a webpage showing information about p3a (Privacy Preserving Analytics) */
-"callout.p3aCalloutLinkTitle" = "Finn ut mer om vår personvernbevarende produktanalyse (P3A).";
-
-/* Title for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutTitle" = "Hjelp oss med å gjøre Brave bedre.";
-
-/* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutToggleTitle" = "Del anonyme produktinnsikter helt privat.";
 
 /* Subtitle - Description for Privacy Everywhere Full Screen Callout */
 "callout.privacyEverywhereCalloutDescription" = "Få Brave-personvernfunksjonalitet på datamaskinen eller nettbrettet, og synkroniser bokmerker og utvidelser mellom enheter.";
@@ -588,9 +561,6 @@
 
 /* The success message that appears after a user sucessfully adds a new search engine */
 "custonmSearchEngine.thirdPartySearchEngineAddedToastTitle" = "La til søkemotor!";
-
-/* Button text to close the default browser popup. */
-"defaultBrowserCallout.introCancelButtonText" = "Ikke nå";
 
 /* Button text to open app settings */
 "defaultBrowserCallout.introOpenSettingsButtonText" = "Åpne innstillinger";
@@ -1201,18 +1171,6 @@
 /* Button to show Brave Rewards. */
 "OBTurnOnButton" = "Begynn";
 
-/* The description text shown when there is big tech tracker among trackers. Example usage: Google, Amazon and 32 other trackers blocked */
-"onboarding.blockedAdsOnboardingBigTechInformationText" = "%1$@ og %2$lld andre annonser og sporere ble blokkert";
-
-/* The footnote indicating what Brave shields is blocking */
-"onboarding.blockedAdsOnboardingFootnoteText" = "Se alle de kjipe tingene Brave har blokkert, på hver side, med Shields.";
-
-/* The text describing user where they should press in order to open Shield panel */
-"onboarding.blockedAdsOnboardingInstructionsText" = "Trykk for å vise Brave Shields";
-
-/* The description text shown when there is no big tech tracker among trackers. Example usage: 31 Ads & trackers blocked. The number here is presented separately so it is not in translation. */
-"onboarding.blockedAdsOnboardingNoBigTechInformationText" = "sporere og annonser er blokkert";
-
 /* Button text to let users know they can use the vpn on all their devices */
 "onboarding.linkReceiptButton" = "Link VPN-abonnementet ditt";
 
@@ -1222,12 +1180,6 @@
 /* Popup title to let users know they can use the vpn on all their devices */
 "onboarding.linkReceiptTitle" = "Utvid Brave Firewall + VPN-beskyttelsen";
 
-/* Description for Navigate Settings Screen in Onboarding. This part indicating navigation ('Default Browser App') should match the option in iPhone Settings in that Language. */
-"onboarding.navigateSettingsOnboardingScreenDescription" = "Se etter 'standard nettleserapp'";
-
-/* Title for Navigate Settings Screen in Onboarding */
-"onboarding.navigateSettingsOnboardingScreenTitle" = "Sender deg til Innstillinger …";
-
 /* Description for the NTP pop-over that describes the tracking information on NTP */
 "onboarding.ntpOnboardingPopOverTrackerDescription" = "Når du blokkerer sporering og annonser bruker nettsidene mindre data og lastes inn mye raskere.";
 
@@ -1236,9 +1188,6 @@
 
 /* Title for the Omnibox (URL Bar) pop-over that describes faster load times. */
 "onboarding.omniboxOnboardingPopOverTitle" = "Skriv inn navnet på et nettsted eller en nettadresse";
-
-/* Title for Welcome Screen in Onboarding */
-"onboarding.welcomeScreenTitle" = "Velkommen til Brave";
 
 /* Continue button to navigate to next onboarding screen. */
 "OnboardingContinueButton" = "Fortsett";
@@ -1390,7 +1339,7 @@
 /* Title of the alert when a calendar event is available for download */
 "OpenTextCalendarAlertTitle" = "Kalenderhendelse tilgjengelig";
 
-/* Button title to that opens a website. */
+/* Button title to open a website. */
 "OpenWebsite" = "Åpne nettside";
 
 /* Brave News Item Menu title */
@@ -1413,9 +1362,6 @@
 
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
 "p3a.settingTitle" = "Tillat personvernbevarende produktanalyse (P3A)";
-
-/* No comment provided by engineer. */
-"p3aCalloutCloseAccessibilityLabel" = "Lukk infomelding om personvernbevarende produkt";
 
 /* No comment provided by engineer. */
 "pageSecurityView.pageNotFullySecureTitle" = "Forbindelsen din til dette nettstedet er ikke helt sikker.";
@@ -1573,8 +1519,11 @@
 /* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
 "playlist.playlistAutoSaveSettingsTitle" = "Lagre innhold for å spille av uten internett";
 
+/* The title of the button for the user to proceed adding playlist item when the user's disk space is almost full */
+"playlist.playlistDiskSpaceAddAnywayButtonTitle" = "Legg til likevel";
+
 /* When the user's disk space is almost full */
-"playlist.playlistDiskSpaceWarningMessage" = "Å legge til video- og lydfiler for frakoblet bruk kan ta opp mye lagringsplass på enheten din. Fjern noen filer for å frigjøre lagringsplass.";
+"playlist.playlistDiskSpaceWarningMessage" = "Enheten din har lite ledig plass. Hvis du legger denne videoen til Playlist, kan det mislykkes eller påvirke andre nedlastinger.";
 
 /* When the user's disk space is almost full */
 "playlist.playlistDiskSpaceWarningTitle" = "Nesten tom for lagringsplass";
@@ -2005,9 +1954,8 @@
 /* A label for a text entry field where the user can provide additional details for a web-compatibility report */
 "reportBrokenAdditionalDetailsRequired" = "Tilleggsinformasjon";
 
-/* A label for a drop down where the user provides a category for a web-compatibility report
-A placeholder for a drop down where the user provides a category for a web-compatibility report */
-"reportBrokenCategory" = "Velg ett alternativ";
+/* A label for a drop down where the user provides a category for a web-compatibility report */
+"reportBrokenCategory" = "Hva er hovedproblemet med siden?";
 
 /* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
 "ReportBrokenContactMe" = "Kontakt meg på: (valgfritt)";
@@ -2017,6 +1965,9 @@ A placeholder for a drop down where the user provides a category for a web-compa
 
 /* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
 "ReportBrokenContactMeSuggestions" = "E-post, Twitter osv.";
+
+/* A placeholder for a drop down where the user provides a category for a web-compatibility report */
+"ReportBrokenPlaceholder" = "Velg ett alternativ";
 
 /* First part of the report a broken site copy. After the colon is a new line and then a website address */
 "ReportBrokenSiteBody1" = "Gi Braves utviklere beskjed om at dette nettstedet ikke fungerer som det skal:";
@@ -3089,8 +3040,14 @@ A placeholder for a drop down where the user provides a category for a web-compa
 /* A button title which when tapped will close all of the open tabs for the user */
 "tabGrid.closeAllTabsButtonTitle" = "Lukk alle faner";
 
-/* Accessibility label for a close button that when tapped closes the associated tab */
+/* Label for a close button that when tapped closes the associated tab */
 "tabGrid.closeTab" = "Lukk fane";
+
+/* Label for a close button that when tapped closes the associated tabs */
+"tabGrid.closeTabs" = "Lukk faner";
+
+/* A button title which when tapped will allow the user to deselect multiple tabs in the tab grid */
+"tabGrid.deselectTabsButtonTitle" = "Fjern avmerkingen på faner";
 
 /* A button title which when tapped will display a menu with more options */
 "tabGrid.moreMenuButtonTitle" = "Mer";
@@ -3125,11 +3082,20 @@ A placeholder for a drop down where the user provides a category for a web-compa
 /* Accessibility label for the regular browsing option in the browsing mode picker */
 "tabGrid.regularBrowsingModeAccessibilityLabel" = "Vanlig surfing";
 
+/* A text label showing how many tabs the user has currently selected in edit mode. It is shown next to the number of selected tabs e.g. "Selected tabs: 4" */
+"tabGrid.selectedTabs" = "Valgte faner";
+
+/* A button title which when tapped will allow the user to select multiple tabs in the tab grid */
+"tabGrid.selectTabsButtonTitle" = "Velg faner";
+
 /* A button title that when tapped allows users to shred all of their tabs */
 "tabGrid.shredAllTabsButtonTitle" = "Makulér alle faner";
 
 /* A button title that when tapped allows users to shred the currently selected tab */
 "tabGrid.shredSelectedTabButtonTitle" = "Makulér valgte faner";
+
+/* A button title that when tapped allows users to shred the currently selected tabs */
+"tabGrid.shredSelectedTabsButtonTitle" = "Makuler";
 
 /* Accessibility label for a button that allows users to shred their tabs (erase them & associated data) */
 "tabGrid.shredTabsAccessibilityLabel" = "Makulér faner";

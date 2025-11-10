@@ -146,7 +146,7 @@
 "aichat.internalErrorViewTitle" = "Нещо се обърка при обработка на заявката ти. Моля, опитай отново по-късно.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeHaikuMessageDescription" = "Здравей, аз съм Лио. Проксиран съм от Brave и съм захранван от Claude Haiku – модел, създаден от Anthropic с цел да захранва разговорни задачи и задачи за обработка на текст. Claude Haiku се хоства от Brave чрез нашата собствена защитена инфраструктура.";
+"aichat.introMessageClaudeHaikuMessageDescription" = "Здравей, аз съм Лио. Проксиран съм от Brave и съм задвижван от Claude Haiku – модел, създаден от Anthropic с цел да захранва разговорни задачи и задачи за обработка на текст. Claude Haiku се хоства от Brave чрез нашата собствена защитена инфраструктура.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeHaikuModelPurposeDescription" = "Светкавично бърз чат";
@@ -161,16 +161,22 @@
 "aichat.introMessageClaudeSonnetModelPurposeDescription" = "Балансирана скорост и интелект";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageDeepSeekR1MessageDescription" = "Здравейте, аз съм Лио и съм изцяло хостван AI асистент от Brave. Работя с DeepSeek R1, модел, създаден от DeepSeek за изпълнение на задачи, изискващи задълбочено разсъждаване.";
+"aichat.introMessageDeepSeekR1MessageDescription" = "Здравей, аз съм Лио. Аз съм AI асистент на Brave. Задвижван съм от DeepSeek R1 – модел, създаден от DeepSeek за изпълнение на задачи по дълбоко разсъждение. DeepSeek R1 се хоства от Brave чрез нашата собствена защитена инфраструктура.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageDeepSeekR1ModelPurposeDescription" = "Модел за разсъждение";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageGemmaMessageDescription" = "Здравей, аз съм Лио, изцяло хостваният асистент с ИИ на Brave. Захранва ме Gemma 3 12B – модел, създаден от Google DeepMind, с цел ефективност и широко приложение. Gemma се хоства от Brave чрез собствената ни защитена инфраструктура.";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageGemmaPurposeDescription" = "Разбиране на изображения и текст с общо предназначение";
 
 /* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
 "aichat.introMessageGenericMessageDescription" = "Здравей, аз съм Лио. Аз съм асистент с изкуствен интелект от Brave. Захранван съм от %@. Попитай ме за каквото си поискаш и аз ще направя всичко възможно да отговоря.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageLlamaMessageDescription" = "Здравей, аз съм Лио, изцяло хостван асистент на Brave с изкуствен интелект. Задвижен съм от Llama 3.1 8B – модел, създаден от Meta с цел ефективност и широко приложение. Llama се хоства от Brave чрез нашата собствена защитена инфраструктура.";
+"aichat.introMessageLlamaMessageDescription" = "Здравей, аз съм Лио, асистентът на Brave, поддържан изцяло с изкуствен интелект. Задвижен съм от Llama 3.1 8B - модел, създаден от Meta, с цел ефективност и широко приложение. Llama се хоства от Brave чрез нашата собствена защитена инфраструктура.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageLlamaModelPurposeDescription" = "Чат с общо предназначение";

@@ -59,7 +59,7 @@
 "BrowserMenu.showAllButtonTitle" = "Afișează-le pe toate…";
 
 /* A title shown above the list of actions that are visible on the menu. */
-"BrowserMenu.visibleActionsTitle" = "Toate acțiunile";
+"BrowserMenu.visibleActionsTitle" = "Acțiuni primare";
 
 /* A title on a button that lets the user switch the active VPN's selected region. */
 "BrowserMenu.vpnButtonTitle" = "VPN";

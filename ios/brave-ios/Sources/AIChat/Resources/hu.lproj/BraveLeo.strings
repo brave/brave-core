@@ -155,22 +155,28 @@
 "aichat.introMessageClaudeInstantMessageDescription" = "Üdv, Leo vagyok. A Brave proxyval üzemeltetnek, a működésem a Claude Instant modellen alapul, amelyet az Anthropic fejlesztett ki beszélgetésre és szövegfeldolgozási feladatok elvégzésére. A Claude Instant a Brave által biztosított, saját biztonságos infrastruktúrán fut.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeSonnetMessageDescription" = "Üdv, Leo vagyok. A Brave proxyval üzemeltetnek, a működésem a Claude  Sonnet modellen alapul, amelyet az Anthropic fejlesztett ki beszélgetésre és szövegfeldolgozási feladatok elvégzésére.\nA Claude Sonnet a Brave által biztosított, saját biztonságos infrastruktúrán fut.";
+"aichat.introMessageClaudeSonnetMessageDescription" = "Üdv, Leo vagyok. A Brave proxyval üzemeltetnek, a működésem a Claude Sonnet modellen alapul, amelyet az Anthropic fejlesztett ki beszélgetésre és szövegfeldolgozási feladatok elvégzésére. A Claude Sonnet a Brave által biztosított, saját biztonságos infrastruktúrán fut.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeSonnetModelPurposeDescription" = "Kiegyensúlyozott sebesség és intelligencia";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageDeepSeekR1MessageDescription" = "Üdv, Leo vagyok. A Brave AI asszisztense.\nA DeepSeek R1 motorral működöm, amelyet a DeepSeek fejlesztett ki összetettebb következtetési feladatok elvégzésére.";
+"aichat.introMessageDeepSeekR1MessageDescription" = "Üdv, Leo vagyok, a Brave AI-asszisztense. a működésem pedig a DeepSeek R1 modellen alapul, amelyet a DeepSeek fejlesztett ki, amely mély gondolkodási feladatokat lát el. A DeepSeek R1 a Brave által biztosított, saját biztonságos infrastruktúrán fut.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageDeepSeekR1ModelPurposeDescription" = "Értékelő modell";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageGemmaMessageDescription" = "Üdv, Leo vagyok, a Brave AI-asszisztense. a működésem pedig a Gemma 3 12B modellen alapul, amelyet a DeepMind fejlesztett ki, amely számos esetben használható. A Gemma a Brave által biztosított, saját biztonságos infrastruktúrán fut.";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageGemmaPurposeDescription" = "Általános célú szöveg- és képfeldolgozás";
 
 /* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
 "aichat.introMessageGenericMessageDescription" = "Szia, Leo vagyok, a Brave MI-asszisztense. Engem a(z) %@ üzemeltet. Kérdezz bármit, és legjobb tudásom szerint igyekszem válaszolni.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageLlamaMessageDescription" = "Üdv, Leo vagyok, a Brave AI-asszisztense. a működésem a Llama 3.1 8B modellen alapul, amelyet a Meta fejlesztett ki, amely számos esetben használható. A Llama a Brave által biztosított, saját biztonságos infrastruktúrán fut.";
+"aichat.introMessageLlamaMessageDescription" = "Üdv, Leo vagyok, a Brave AI-asszisztense. a működésem pedig a Llama 3.1 8B modellen alapul, amelyet a Meta fejlesztett ki, amely számos esetben használható. A Llama a Brave által biztosított, saját biztonságos infrastruktúrán fut.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageLlamaModelPurposeDescription" = "Általános célú csevegés";

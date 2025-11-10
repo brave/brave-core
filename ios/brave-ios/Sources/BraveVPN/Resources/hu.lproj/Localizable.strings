@@ -101,7 +101,7 @@
 "vpn.contactFormTimezone" = "iOS-időzóna";
 
 /* Title for contact form email. */
-"vpn.contactFormTitle" = "Brave-tűzfal + VPN-nel kapcsolatos probléma";
+"vpn.contactFormTitle" = "Brave VPN-probléma";
 
 /* Button text to enable Brave VPN */
 "vpn.enableButton" = "Engedélyezés";
@@ -296,7 +296,7 @@
 "vpn.vpnBackgroundNotificationBody" = "A Brave a háttérben is megvédi Önt.";
 
 /* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationTitle" = "A Brave-tűzfal + VPN BE van kapcsolva";
+"vpn.vpnBackgroundNotificationTitle" = "A Brave VPN BE VAN kapcsolva";
 
 /* Text for description of list item which chooses the optimal server for the country region */
 "vpn.vpnCityRegionOptimalDescription" = "Az elérhető legjobb szerver használata";
@@ -311,7 +311,7 @@
 "vpn.vpnConfigGenericErrorTitle" = "Hiba";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "A Brave-tűzfal + VPN használatához VPN-profilt kell telepíteni az eszközre. ";
+"vpn.vpnConfigPermissionDeniedErrorBody" = "A Brave VPN használatához VPN-profilt kell telepíteni az eszközre. ";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
 "vpn.vpnConfigPermissionDeniedErrorTitle" = "Hozzáférés megtagadva";
@@ -341,7 +341,7 @@
 "vpn.vpnRegionChangedTitle" = "A VPN-régió módosult";
 
 /* Message for alert to reset vpn configuration */
-"vpn.vpnResetAlertBody" = "Ezzel visszaállítja a Brave-tűzfal + VPN konfigurációját, és kijavítja az esetleges hibákat. Ez a folyamat egy percig is eltarthat.";
+"vpn.vpnResetAlertBody" = "Ezzel visszaállítja a Brave VPN konfigurációját, és kijavítja az esetleges hibákat. Ez a folyamat egy percig is eltarthat.";
 
 /* Title for alert to reset vpn configuration */
 "vpn.vpnResetAlertTitle" = "Konfiguráció visszaállítása";

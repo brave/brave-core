@@ -139,6 +139,9 @@
 /* Placeholder text for adding or editing a bookmark */
 "BookmarkUrlPlaceholderText" = "Adresse";
 
+/* Title for the Brave Account section in settings */
+"BraveAccount" = "Compte Brave";
+
 /* Button to show the brave panel */
 "BravePanel" = "Panneau Brave";
 
@@ -264,36 +267,6 @@
 
 /* Title for Bottom Bar Callout View */
 "callout.bottomBarCalloutTitle" = "Personnaliser la barre des onglets Brave";
-
-/* Description - Description used for main button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutButtonDescription" = "Définir Brave comme navigateur par défaut ?";
-
-/* Subtitle - Description for Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutDescription" = "Lorsque Brave est défini comme navigateur par défaut, tous les liens sur lesquels vous appuyez s'ouvrent avec les protections de confidentialité de Brave.";
-
-/* Title for main button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutPrimaryButtonTitle" = "Définir par défaut";
-
-/* Description for secondary button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutSecondaryButtonDescription" = "Déjà par défaut ?";
-
-/* Title for secondary button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutSecondaryButtonTitle" = "Ignorer";
-
-/* Title for Default Browser Full Screen Callout */
-"callout.defaultBrowserTitle" = "La confidentialité. Simplifiée.";
-
-/* Subtitle - Description for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutDescription" = "Ces informations nous aident à identifier les fonctionnalités Brave les plus utilisées. Vous pouvez modifier ceci à tout moment dans les paramètres Brave, dans la section Boucliers Brave et autres paramètres de confidentialité.";
-
-/* Title for the link that navigates to a webpage showing information about p3a (Privacy Preserving Analytics) */
-"callout.p3aCalloutLinkTitle" = "En savoir plus sur l'analyse anonyme des données d'utilisation (P3A).";
-
-/* Title for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutTitle" = "Aidez-nous à améliorer Brave.";
-
-/* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutToggleTitle" = "Partagez des données d'utilisation de manière privée et anonyme.";
 
 /* Subtitle - Description for Privacy Everywhere Full Screen Callout */
 "callout.privacyEverywhereCalloutDescription" = "Bénéficiez de la confidentialité offerte par Brave sur votre ordinateur ou tablette et synchronisez vos favoris et vos extensions entre vos appareils.";
@@ -588,9 +561,6 @@
 
 /* The success message that appears after a user sucessfully adds a new search engine */
 "custonmSearchEngine.thirdPartySearchEngineAddedToastTitle" = "Moteur de recherche ajouté.";
-
-/* Button text to close the default browser popup. */
-"defaultBrowserCallout.introCancelButtonText" = "Pas maintenant";
 
 /* Button text to open app settings */
 "defaultBrowserCallout.introOpenSettingsButtonText" = "Ouvrir les paramètres";
@@ -1201,18 +1171,6 @@
 /* Button to show Brave Rewards. */
 "OBTurnOnButton" = "Démarrer";
 
-/* The description text shown when there is big tech tracker among trackers. Example usage: Google, Amazon and 32 other trackers blocked */
-"onboarding.blockedAdsOnboardingBigTechInformationText" = "%1$@ et %2$lld autres publicités et traqueurs bloqués";
-
-/* The footnote indicating what Brave shields is blocking */
-"onboarding.blockedAdsOnboardingFootnoteText" = "Découvrez tout ce Brave a bloqué sur chaque page, grâce aux boucliers.";
-
-/* The text describing user where they should press in order to open Shield panel */
-"onboarding.blockedAdsOnboardingInstructionsText" = "Toucher pour afficher les boucliers Brave";
-
-/* The description text shown when there is no big tech tracker among trackers. Example usage: 31 Ads & trackers blocked. The number here is presented separately so it is not in translation. */
-"onboarding.blockedAdsOnboardingNoBigTechInformationText" = "Publicités et traceurs bloqués";
-
 /* Button text to let users know they can use the vpn on all their devices */
 "onboarding.linkReceiptButton" = "Associer votre abonnement VPN";
 
@@ -1222,12 +1180,6 @@
 /* Popup title to let users know they can use the vpn on all their devices */
 "onboarding.linkReceiptTitle" = "Étendre votre protection Pare-feu + VPN Brave";
 
-/* Description for Navigate Settings Screen in Onboarding. This part indicating navigation ('Default Browser App') should match the option in iPhone Settings in that Language. */
-"onboarding.navigateSettingsOnboardingScreenDescription" = "Rechercher « Apps par défaut »";
-
-/* Title for Navigate Settings Screen in Onboarding */
-"onboarding.navigateSettingsOnboardingScreenTitle" = "Ouverture des réglages...";
-
 /* Description for the NTP pop-over that describes the tracking information on NTP */
 "onboarding.ntpOnboardingPopOverTrackerDescription" = "En bloquant les traqueurs et les publicités, les sites Web utilisent moins de données et se chargent beaucoup plus rapidement.";
 
@@ -1236,9 +1188,6 @@
 
 /* Title for the Omnibox (URL Bar) pop-over that describes faster load times. */
 "onboarding.omniboxOnboardingPopOverTitle" = "Saisissez un nom ou une URL de site Web";
-
-/* Title for Welcome Screen in Onboarding */
-"onboarding.welcomeScreenTitle" = "Bienvenue dans Brave";
 
 /* Continue button to navigate to next onboarding screen. */
 "OnboardingContinueButton" = "Continuer";
@@ -1390,7 +1339,7 @@
 /* Title of the alert when a calendar event is available for download */
 "OpenTextCalendarAlertTitle" = "Événement du calendrier disponible";
 
-/* Button title to that opens a website. */
+/* Button title to open a website. */
 "OpenWebsite" = "Ouvrir le site";
 
 /* Brave News Item Menu title */
@@ -1413,9 +1362,6 @@
 
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
 "p3a.settingTitle" = "Autoriser l'analyse anonyme des données d'utilisation (P3A)";
-
-/* No comment provided by engineer. */
-"p3aCalloutCloseAccessibilityLabel" = "Fermer la légende de l'analyse anonyme des données d'utilisation";
 
 /* No comment provided by engineer. */
 "pageSecurityView.pageNotFullySecureTitle" = "Votre connexion à ce site n'est pas entièrement sécurisée.";
@@ -1505,7 +1451,7 @@
 "playlist.carplayRestartPlaybackOptionTitle" = "Redémarrer la lecture";
 
 /* The title of the section containing settings/options in CarPlay */
-"playlist.carplaySettingsSectionTitle" = "Réglages";
+"playlist.carplaySettingsSectionTitle" = "Paramètres";
 
 /* The title of the playlist when in Carplay mode */
 "playlist.carplayTitle" = "Playlist Brave";
@@ -1514,7 +1460,7 @@
 "playList.changeFoldersButtonTitle" = "Modifier la playlist";
 
 /* The description for the alert that shows up when an item is expired */
-"playList.expiredAlertDescription" = "Cette vidéo était diffusée en direct ou la limite de temps a été atteinte. Veuillez rouvrir le lien pour l’actualiser.";
+"playList.expiredAlertDescription" = "Cette vidéo était diffusée en direct ou la limite de temps a été atteinte. Veuillez rouvrir le lien pour l'actualiser.";
 
 /* The title for the alert that shows up when an item is expired */
 "playList.expiredAlertTitle" = "Vidéo expirée";
@@ -1550,7 +1496,7 @@
 "playlist.playlistAlreadyShowingTitle" = "Désolés";
 
 /* Footer Text for the Playlist Settings Option for Enable/Disable Auto-Play */
-"playlist.playlistAutoPlaySettingsOptionFooterText" = "Cette option active la lecture automatique lorsque la playlist est ouverte. Cependant, cela n’affecte pas la lecture automatique lors du chargement de la vidéo suivante dans la liste.";
+"playlist.playlistAutoPlaySettingsOptionFooterText" = "Cette option active la lecture automatique lorsque la playlist est ouverte. Cependant, cela n'affecte pas la lecture automatique lors du chargement de la vidéo suivante dans la liste.";
 
 /* Title for the Playlist Settings Option for Enable/Disable Auto-Play */
 "playlist.playlistAutoPlaySettingsOptionTitle" = "Lecture automatique";
@@ -1565,7 +1511,7 @@
 "playlist.playlistAutoSaveOptionOnlyWifi" = "Wi-Fi uniquement";
 
 /* Description for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
-"playlist.playlistAutoSaveSettingsDescription" = "L’ajout de fichiers vidéo et audio pour une utilisation hors ligne peut nécessiter un espace de stockage important sur votre appareil ainsi qu’une utilisation de vos données cellulaires";
+"playlist.playlistAutoSaveSettingsDescription" = "L'ajout de fichiers vidéo et audio pour une utilisation hors ligne peut nécessiter un espace de stockage important sur votre appareil ainsi qu'une utilisation de vos données cellulaires";
 
 /* Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi)) */
 "playlist.playlistAutoSaveSettingsFooterText" = "Cette option permet de conserver le contenu multimédia ouvert de votre playlist sur votre appareil afin de pouvoir les lire hors ligne.";
@@ -1573,8 +1519,11 @@
 /* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
 "playlist.playlistAutoSaveSettingsTitle" = "Sauvegarder pour la lecture hors ligne";
 
+/* The title of the button for the user to proceed adding playlist item when the user's disk space is almost full */
+"playlist.playlistDiskSpaceAddAnywayButtonTitle" = "Ajouter quand même";
+
 /* When the user's disk space is almost full */
-"playlist.playlistDiskSpaceWarningMessage" = "L’ajout de fichiers vidéo et audio pour une utilisation hors ligne peut nécessiter un espace de stockage important sur votre appareil. Supprimez des fichiers pour libérer de l’espace de stockage.";
+"playlist.playlistDiskSpaceWarningMessage" = "Votre appareil manque d'espace. L'ajout de cette vidéo à la Playlist risque d'échouer ou d'affecter d'autres téléchargements.";
 
 /* When the user's disk space is almost full */
 "playlist.playlistDiskSpaceWarningTitle" = "Stockage presque plein";
@@ -1583,7 +1532,7 @@
 "playlist.playlistLongPressSettingsOptionFooterText" = "Lorsque cette option est activée, vous pouvez appuyer longuement sur la plupart des fichiers audio/vidéo pour les ajouter à votre playlist.";
 
 /* Title for the Playlist Settings Option for long press gesture */
-"playlist.playlistLongPressSettingsOptionTitle" = "Activer l’appui long";
+"playlist.playlistLongPressSettingsOptionTitle" = "Activer l'appui long";
 
 /* Text for Playlist Media & Offline Data Toggle while clearing the offline data storage in settings */
 "playlist.playlistMediaAndOfflineDataToggleOption" = "Données hors ligne et contenu multimédia";
@@ -2005,9 +1954,8 @@
 /* A label for a text entry field where the user can provide additional details for a web-compatibility report */
 "reportBrokenAdditionalDetailsRequired" = "Détails supplémentaires";
 
-/* A label for a drop down where the user provides a category for a web-compatibility report
-A placeholder for a drop down where the user provides a category for a web-compatibility report */
-"reportBrokenCategory" = "Sélectionnez une option";
+/* A label for a drop down where the user provides a category for a web-compatibility report */
+"reportBrokenCategory" = "Quel est le problème principal ?";
 
 /* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
 "ReportBrokenContactMe" = "Mes coordonnées : (facultatif)";
@@ -2017,6 +1965,9 @@ A placeholder for a drop down where the user provides a category for a web-compa
 
 /* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
 "ReportBrokenContactMeSuggestions" = "E-mail, Twitter, etc.";
+
+/* A placeholder for a drop down where the user provides a category for a web-compatibility report */
+"ReportBrokenPlaceholder" = "Sélectionnez une option";
 
 /* First part of the report a broken site copy. After the colon is a new line and then a website address */
 "ReportBrokenSiteBody1" = "Signalez aux équipes de Brave que ce site rencontre un dysfonctionnement :";
@@ -2079,7 +2030,7 @@ A placeholder for a drop down where the user provides a category for a web-compa
 "rewards.disabledBody" = "Activez cette fonctionnalité pour soutenir Brave et la communauté BAT.";
 
 /* Displayed in the status container when rewards is disabled */
-"rewards.disabledStatusBody" = "En participant au programme de récompenses Brave, vous soutenez Brave et la communauté BAT.";
+"rewards.disabledStatusBody" = "En optant pour le programme de récompenses Brave, vous soutenez Brave et la communauté BAT.";
 
 /* Displayed when Brave Rewards is enabled */
 "rewards.enabledBody" = "Vous soutenez Brave et la communauté BAT.";
@@ -2430,13 +2381,13 @@ A placeholder for a drop down where the user provides a category for a web-compa
 "settings.autocloseTabsSetting" = "Fermer les onglets";
 
 /* Description of autoclose tabs feature. */
-"settings.autocloseTabsSettingFooter" = "Autorisez Brave à fermer automatiquement les onglets qui n’ont pas été consultés récemment.";
+"settings.autocloseTabsSettingFooter" = "Autorisez Brave à fermer automatiquement les onglets qui n'ont pas été consultés récemment.";
 
 /* Description beside the toggle for blocking YouTube distracting elements */
 "settings.blockYouTubeDistractingElementsDesc" = "Bloque les éléments indésirables sur YouTube";
 
 /* Title beside the toggle for blocking YouTube distracting elements */
-"settings.blockYouTubeDistractingElementsTitle" = "Bloquer les éléments indésirables sur YouTube";
+"settings.blockYouTubeDistractingElementsTitle" = "Bloque les éléments indésirables sur YouTube";
 
 /* Description beside the toggle for blocking YouTube recommendations */
 "settings.blockYoutubeRecommendationsDesc" = "Bloque les vidéos à suivre et les écrans de fin sur youtube.com";
@@ -2580,7 +2531,7 @@ A placeholder for a drop down where the user provides a category for a web-compa
 "ShortcutItemTitleNewTab" = "Nouvel onglet";
 
 /* Quick Action for 3D-Touch on the Application Icon */
-"ShortcutItemTitleQRCode" = "Analyser le code QR";
+"ShortcutItemTitleQRCode" = "Scanner le code QR";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeBraveNewsDescription" = "Ouvrez les actualités Brave pour voir les infos essentielles de la journée.";
@@ -2697,7 +2648,7 @@ A placeholder for a drop down where the user provides a category for a web-compa
 "shortcuts.shortcutSettingsOpenBraveNewsDescription" = "Crée un raccourci pour ouvrir un nouvel onglet et afficher le fil d'actualités Brave avec Siri";
 
 /* No comment provided by engineer. */
-"shortcuts.shortcutSettingsOpenBraveNewsTitle" = "Ouvrir Brave News";
+"shortcuts.shortcutSettingsOpenBraveNewsTitle" = "Ouvrir les actualités Brave";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenHistoryListDescription" = "Crée un raccourci pour ouvrir l'historique du navigateur avec Siri";
@@ -2799,10 +2750,10 @@ A placeholder for a drop down where the user provides a category for a web-compa
 "sync.addDeviceWords" = "Saisir le code de synchronisation";
 
 /* Sync add device description */
-"sync.addDeviceWordsDescription" = "Sur votre appareil, accédez à Synchronisation dans le volet des paramètres et appuyez sur le bouton « %@ ». Saisissez les mots codés de la chaîne de synchronisation affichés ci-dessous.\n\nCe code fait office de mot de passe. Si une autre personne réussit à l'obtenir, elle pourra lire et modifier vos données synchronisées.";
+"sync.addDeviceWordsDescription" = "Sur votre appareil, ouvrez les paramètres dans Brave et cliquez sur « Synchronisation », puis cliquez sur le bouton « %@ ». Saisissez le code de synchronisation affiché ci-dessous.\n\nCe code doit être considéré comme un mot de passe. Si une autre personne réussit à l'obtenir, elle pourra lire et modifier vos données synchronisées.";
 
 /* Add device to sync with code words navigation title */
-"sync.addDeviceWordsTitle" = "Saisir les mots codés";
+"sync.addDeviceWordsTitle" = "Saisir le code";
 
 /* Add Tablet or phone title */
 "sync.addTabletOrPhoneTitle" = "Ajouter une tablette ou un téléphone";
@@ -2862,16 +2813,16 @@ A placeholder for a drop down where the user provides a category for a web-compa
 "sync.codeTimeSingleSecondText" = "seconde";
 
 /* Code words input help */
-"sync.codeWordInputHelp" = "Saisissez les mots codés fournis pour la chaîne de synchronisation dans le formulaire ci-dessous.";
+"sync.codeWordInputHelp" = "Saisissez le code de synchronisation ci-dessous.";
 
 /* Code words section title */
-"sync.codeWords" = "Mots codés";
+"sync.codeWords" = "Code textuel";
 
 /* Computer device button title */
 "sync.computerDevice" = "Ordinateur";
 
 /* Information Text underneath the toggles for enable/disable different sync types for the device */
-"sync.configurationInformationText" = "Gérez les informations que vous souhaitez synchroniser entre les appareils. Ces paramètres ne concernent que cet appareil.";
+"sync.configurationInformationText" = "Sélectionnez les données à synchroniser. Ces réglages s'appliquent uniquement à cet appareil.";
 
 /* Copied action complete title */
 "sync.copied" = "Copié";
@@ -2883,16 +2834,16 @@ A placeholder for a drop down where the user provides a category for a web-compa
 "sync.copyToClipboard" = "Copier dans le presse-papiers";
 
 /* Delete Sync Account cell title for button. */
-"sync.deleteAccount" = "Supprimer le compte Synchronisation";
+"sync.deleteAccount" = "Supprimer le compte";
 
 /* Part 1 Description for Alert used action Delete Sync Account. */
-"sync.deleteAccountAlertDescriptionPart1" = "La suppression de votre compte effacera toutes vos données chiffrées des serveurs Brave et désactivera Synchronisation sur tous vous appareils connectés.";
+"sync.deleteAccountAlertDescriptionPart1" = "La suppression de votre compte effacera toutes vos données chiffrées des serveurs Brave et désactivera la synchronisation sur tous vous appareils connectés.";
 
 /* Part 2 Description for Alert used action Delete Sync Account. */
 "sync.deleteAccountAlertDescriptionPart2" = "Cependant, elle ne supprimera pas les données qui sont stockées localement sur ces appareils.";
 
 /* Title for Alert used action Delete Sync Account. */
-"sync.deleteAccountAlertTitle" = "Supprimer le compte Synchronisation";
+"sync.deleteAccountAlertTitle" = "Supprimer le compte";
 
 /* Sync Error Description */
 "sync.deprecatedVersionError" = "Ce code semble avoir été créé sur un appareil exécutant une ancienne version de Brave. Veuillez passer à la dernière version de Brave sur l'autre appareil, puis créez un nouveau code de synchronisation.";
@@ -2916,10 +2867,10 @@ A placeholder for a drop down where the user provides a category for a web-compa
 "sync.devicesInSyncChainTitle" = "Appareils dans la chaîne de synchronisation";
 
 /* Sync enter code words */
-"sync.enterCodeWords" = "Saisissez les mots codés";
+"sync.enterCodeWords" = "Saisissez le code";
 
 /* Enter sync code words below */
-"sync.enterCodeWordsBelow" = "Saisissez les mots codés ci-dessous";
+"sync.enterCodeWordsBelow" = "Saisissez le code ci-dessous";
 
 /* Sync Error message for when the sync code is expired */
 "sync.expiredError" = "Ce code de synchronisation a expiré. Veuillez en générer un nouveau, puis réessayer.";
@@ -2943,7 +2894,7 @@ A placeholder for a drop down where the user provides a category for a web-compa
 "sync.invalidSyncCodeDescription" = "Code de synchronisation invalide, veuillez le vérifier et réessayer.";
 
 /* A warning when user adds more than 5 device to sync chain */
-"sync.joinChainCodewordsWarning" = "Remarque : vous devriez vérifier que vous reconnaissez chaque appareil dans la liste ci-dessus. Il est possible que les appareils d'une chaîne de synchronisation reçoivent des données personnelles comme les mots de passe et l'historique de navigation.";
+"sync.joinChainCodewordsWarning" = "Remarque : Pensez à vérifier que vous reconnaissez chaque appareil dans la liste ci-dessus. Les appareils d'une chaîne de synchronisation peuvent partager des données personnelles comme les mots de passe et l'historique de navigation.";
 
 /* Title for alert error for device confirmation */
 "sync.joinChainWarningTitle" = "Confirmation de l'appareil";
@@ -2955,7 +2906,7 @@ A placeholder for a drop down where the user provides a category for a web-compa
 "sync.maximumDeviceReachedErrorTitle" = "Limite de l'appareil";
 
 /* New sync code button title */
-"sync.newSyncCode" = "Lancer une nouvelle chaîne de synchronisation";
+"sync.newSyncCode" = "Démarrer la synchronisation";
 
 /* No internet connection alert body. */
 "sync.noConnectionBody" = "Vérifiez votre connexion Internet et réessayez.";
@@ -3024,19 +2975,19 @@ A placeholder for a drop down where the user provides a category for a web-compa
 "sync.setPasscodeAlertTitle" = "Définir un code d'accès";
 
 /* Header title for Sync settings */
-"sync.settingsHeader" = "La liste d'appareils ci-dessous comprend tous les appareils de votre chaîne de synchronisation. Tous ces appareils peuvent être gérés depuis n'importe lequel des autres appareils.";
+"sync.settingsHeader" = "Les appareils de votre chaîne de synchronisation apparaissent dans la liste ci-dessous. Vous pouvez les gérer depuis n'importe lequel des appareils.";
 
 /* Title for Sync Settings Toggle Header */
 "sync.settingsTitle" = "Paramètres de synchronisation";
 
 /* Show code words instead */
-"sync.showCodeWords" = "Afficher plutôt les mots codés";
+"sync.showCodeWords" = "Afficher un code textuel";
 
 /* Switch back to camera button */
 "sync.switchBackToCameraButton" = "Je souhaite utiliser mon appareil photo…";
 
 /* Part 3 Description for Alert used action Delete Sync Account. */
-"sync.syncDeleteAccountAlertDescriptionPart3" = "Cette suppression est définitive et il n'est pas possible de récupérer les données. Si vous décidez de recommencer à utiliser la fonction Synchronisation, vous devrez créer un nouveau compte et ajouter à nouveau chaque appareil un par un.";
+"sync.syncDeleteAccountAlertDescriptionPart3" = "Cette suppression est définitive et les données ne peuvent être récupérées. Pour reprendre la synchronisation, vous devrez créer un nouveau compte et ajouter à nouveau chaque appareil un par un.";
 
 /* Sync you browser settings across devices. */
 "sync.Syncdevices" = "Appareils et paramètres";
@@ -3089,8 +3040,14 @@ A placeholder for a drop down where the user provides a category for a web-compa
 /* A button title which when tapped will close all of the open tabs for the user */
 "tabGrid.closeAllTabsButtonTitle" = "Fermer tous les onglets";
 
-/* Accessibility label for a close button that when tapped closes the associated tab */
-"tabGrid.closeTab" = "Testing Close Tab 2 for French";
+/* Label for a close button that when tapped closes the associated tab */
+"tabGrid.closeTab" = "Fermer l'onglet";
+
+/* Label for a close button that when tapped closes the associated tabs */
+"tabGrid.closeTabs" = "Fermer les onglets";
+
+/* A button title which when tapped will allow the user to deselect multiple tabs in the tab grid */
+"tabGrid.deselectTabsButtonTitle" = "Tout désélectionner";
 
 /* A button title which when tapped will display a menu with more options */
 "tabGrid.moreMenuButtonTitle" = "Plus";
@@ -3105,7 +3062,7 @@ A placeholder for a drop down where the user provides a category for a web-compa
 "tabGrid.privateBrowsingInfoBulletThreeBody" = "Le VPN Brave chiffre et protège tout ce que vous faites en ligne, même en dehors du navigateur Brave.";
 
 /* A bullet point explaining the benefits of Brave VPN */
-"tabGrid.privateBrowsingInfoBulletThreeTitle" = "Brave VPN";
+"tabGrid.privateBrowsingInfoBulletThreeTitle" = "VPN Brave";
 
 /* A bullet point explaining that your browsing data is still visible to the users ISP, network observers, or your employer */
 "tabGrid.privateBrowsingInfoBulletTwoBody" = "Votre activité de navigation peut toujours être visible par toute personne ou entreprise pouvant accéder à votre réseau comme votre FAI ou votre employeur (si vous travaillez sur un ordinateur fourni par votre entreprise ou naviguez sur un réseau professionnel), même en mode de navigation privée.";
@@ -3125,11 +3082,20 @@ A placeholder for a drop down where the user provides a category for a web-compa
 /* Accessibility label for the regular browsing option in the browsing mode picker */
 "tabGrid.regularBrowsingModeAccessibilityLabel" = "Navigation normale";
 
+/* A text label showing how many tabs the user has currently selected in edit mode. It is shown next to the number of selected tabs e.g. "Selected tabs: 4" */
+"tabGrid.selectedTabs" = "Onglets sélectionnés";
+
+/* A button title which when tapped will allow the user to select multiple tabs in the tab grid */
+"tabGrid.selectTabsButtonTitle" = "Sélectionner les onglets";
+
 /* A button title that when tapped allows users to shred all of their tabs */
 "tabGrid.shredAllTabsButtonTitle" = "Effacer les données de tous les onglets";
 
 /* A button title that when tapped allows users to shred the currently selected tab */
 "tabGrid.shredSelectedTabButtonTitle" = "Effacer les données des onglets sélectionnés";
+
+/* A button title that when tapped allows users to shred the currently selected tabs */
+"tabGrid.shredSelectedTabsButtonTitle" = "Effacer les données";
 
 /* Accessibility label for a button that allows users to shred their tabs (erase them & associated data) */
 "tabGrid.shredTabsAccessibilityLabel" = "Effacer les données des onglets";

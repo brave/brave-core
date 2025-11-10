@@ -146,37 +146,43 @@
 "aichat.internalErrorViewTitle" = "حدث خطأ ما أثناء معالجة طلبك. يرجى المحاولة مرة أخرى لاحقًا.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeHaikuMessageDescription" = "مرحبًا، أنا Leo. أنا موكل بواسطة Brave، ومدعوم من Claude Haiku، وهو نموذج تم إنشاؤه بواسطة Anthropic لتشغيل المهام الحوارية ومعالجة النصوص. يتم استضافة Claude Haiku من خلال البنية التحتية الآمنة الخاصة بـ Brave.";
+"aichat.introMessageClaudeHaikuMessageDescription" = "مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Claude Haiku، وهو نموذج تم إنشاؤه بواسطة Anthropic لتشغيل المهام الحوارية ومعالجة النصوص. يتم استضافة Claude Haiku من خلال البنية التحتية الآمنة الخاصة بـ Brave.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeHaikuModelPurposeDescription" = "دردشة بسرعة البرق";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeInstantMessageDescription" = "مرحبًا، أنا Leo. أنا موكل بواسطة Brave، ومدعوم من Claude Instant، وهو نموذج تم إنشاؤه بواسطة Anthropic لتشغيل المهام الحوارية ومعالجة النصوص. يتم استضافة Claude Instant من خلال البنية التحتية الآمنة الخاصة بـ Brave.";
+"aichat.introMessageClaudeInstantMessageDescription" = "مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Claude Instant، وهو نموذج تم إنشاؤه بواسطة Anthropic لتشغيل المهام الحوارية ومعالجة النصوص. يتم استضافة Claude Instant من خلال البنية التحتية الآمنة الخاصة بـ Brave.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeSonnetMessageDescription" = "مرحبًا، أنا Leo. أنا موكل بواسطة Brave، ومدعوم من Claude Sonnet، وهو نموذج تم إنشاؤه بواسطة Anthropic لتشغيل المهام الحوارية ومعالجة النصوص. يتم استضافة Claude Sonnet من خلال البنية التحتية الآمنة الخاصة بـ Brave.";
+"aichat.introMessageClaudeSonnetMessageDescription" = "مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Claude Sonnet، وهو نموذج تم إنشاؤه بواسطة Anthropic لتشغيل المهام الحوارية ومعالجة النصوص. يتم استضافة Claude Sonnet من خلال البنية التحتية الآمنة الخاصة بـ Brave.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeSonnetModelPurposeDescription" = "سرعة وذكاء متوازنان";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageDeepSeekR1MessageDescription" = "مرحبًا، أنا Leo. مساعد ذكاء اصطناعي مستضاف بالكامل بواسطة Brave. أنا مدعوم بـ DeepSeek R1، وهو نموذج تم إنشاؤه بواسطة DeepSeek للتعامل مع المهام المتقدمة.";
+"aichat.introMessageDeepSeekR1MessageDescription" = "مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة DeepSeek R1، وهو نموذج تم إنشاؤه من طرف DeepSeek لتنفيذ مهام الاستدلال العميق. يتم استضافة DeepSeek R1 من خلال البنية التحتية الآمنة الخاصة بـ Brave.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageDeepSeekR1ModelPurposeDescription" = "نموذج التعليل";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageGemmaMessageDescription" = "مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Gemma 3 12B، وهو نموذج تم إنشاؤه من طرف Google DeepMind ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة Gemma من خلال البنية التحتية الآمنة الخاصة بـ Brave.";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageGemmaPurposeDescription" = "فهم النص والصورة للأغراض العامة";
 
 /* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
 "aichat.introMessageGenericMessageDescription" = "مرحبا ، أنا Leo. أنا مساعد الذكاء الاصطناعي من Brave. أنا مدعوم من %@. اسألني أي شيء، وسأبذل قصارى جهدي للإجابة.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageLlamaMessageDescription" = "مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي مستضاف بالكامل من Brave. أنا مدعوم بواسطة Llama 3.1 8B، وهو نموذج تم إنشاؤه من طرف Meta ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة Llama من خلال البنية التحتية الآمنة الخاصة بـ Brave.";
+"aichat.introMessageLlamaMessageDescription" = "مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Llama 3.1 8B، وهو نموذج تم إنشاؤه من طرف Meta ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة Llama من خلال البنية التحتية الآمنة الخاصة بـ Brave.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageLlamaModelPurposeDescription" = "دردشة حول أغراض عامة";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageQwenMessageDescription" = "مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي مستضاف بالكامل من Brave. أنا مدعوم بواسطة Qwen 14B، وهو نموذج تم إنشاؤه من طرف Alibaba Cloud ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة Llama من خلال البنية التحتية الآمنة الخاصة بـ Brave.";
+"aichat.introMessageQwenMessageDescription" = "مرحبًا، أنا Leo. أنا مساعد ذكاء اصطناعي من Brave. أنا مدعوم بواسطة Qwen 14B، وهو نموذج تم إنشاؤه من طرف Alibaba Cloud ليكون فعالًا وقابلًا للتطبيق في العديد من حالات الاستخدام. يتم استضافة Llama من خلال البنية التحتية الآمنة الخاصة بـ Brave.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageQwenModelPurposeDescription" = "الدردشة العامة و البرمجة و المزيد";

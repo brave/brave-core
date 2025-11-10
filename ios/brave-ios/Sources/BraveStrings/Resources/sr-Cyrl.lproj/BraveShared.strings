@@ -139,6 +139,9 @@
 /* Placeholder text for adding or editing a bookmark */
 "BookmarkUrlPlaceholderText" = "Адреса";
 
+/* Title for the Brave Account section in settings */
+"BraveAccount" = "Налог на Brave-у";
+
 /* Button to show the brave panel */
 "BravePanel" = "Brave панел";
 
@@ -264,36 +267,6 @@
 
 /* Title for Bottom Bar Callout View */
 "callout.bottomBarCalloutTitle" = "Прилагодите траку са картицама у Brave-у";
-
-/* Description - Description used for main button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutButtonDescription" = "Желите ли да подесите Brave као подразумевани прегледач?";
-
-/* Subtitle - Description for Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutDescription" = "Када је Brave подешен као подразумевани прегледач, сваки линк који додирнете отвара се уз Brave-ову заштиту приватности.";
-
-/* Title for main button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutPrimaryButtonTitle" = "Подеси као подразумевано";
-
-/* Description for secondary button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutSecondaryButtonDescription" = "Већ је подразумевано?";
-
-/* Title for secondary button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutSecondaryButtonTitle" = "Прескочи";
-
-/* Title for Default Browser Full Screen Callout */
-"callout.defaultBrowserTitle" = "Поједностављена заштита приватности.";
-
-/* Subtitle - Description for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutDescription" = "Омогућава нам да сазнамо које се функције Brave-а најчешће користе. Промените опцију у било ком тренутку у подешавањима Brave-а под „Brave штитови и друга подешавања приватности“.";
-
-/* Title for the link that navigates to a webpage showing information about p3a (Privacy Preserving Analytics) */
-"callout.p3aCalloutLinkTitle" = "Сазнајте више о нашој аналитици производа којом се чува приватност (P3A).";
-
-/* Title for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutTitle" = "Помозите нам да побољшамо Brave.";
-
-/* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutToggleTitle" = "Пошаљите приватно и анонимно мишљење о производу.";
 
 /* Subtitle - Description for Privacy Everywhere Full Screen Callout */
 "callout.privacyEverywhereCalloutDescription" = "Обезбедите себи приватност коју нуди Brave на рачунару или таблету и синхронизујте обележиваче и додатке међу уређајима.";
@@ -588,9 +561,6 @@
 
 /* The success message that appears after a user sucessfully adds a new search engine */
 "custonmSearchEngine.thirdPartySearchEngineAddedToastTitle" = "Додат је претраживач!";
-
-/* Button text to close the default browser popup. */
-"defaultBrowserCallout.introCancelButtonText" = "Не сада";
 
 /* Button text to open app settings */
 "defaultBrowserCallout.introOpenSettingsButtonText" = "Отвори подешавања";
@@ -1201,18 +1171,6 @@
 /* Button to show Brave Rewards. */
 "OBTurnOnButton" = "Почетак";
 
-/* The description text shown when there is big tech tracker among trackers. Example usage: Google, Amazon and 32 other trackers blocked */
-"onboarding.blockedAdsOnboardingBigTechInformationText" = "Блокирани су %1$@ и још других огласа и праћења (%2$lld)";
-
-/* The footnote indicating what Brave shields is blocking */
-"onboarding.blockedAdsOnboardingFootnoteText" = "Погледајте све лоше ствари које су на свакој страници блокирали Brave штитови.";
-
-/* The text describing user where they should press in order to open Shield panel */
-"onboarding.blockedAdsOnboardingInstructionsText" = "Додирните да бисте видели Brave штитове";
-
-/* The description text shown when there is no big tech tracker among trackers. Example usage: 31 Ads & trackers blocked. The number here is presented separately so it is not in translation. */
-"onboarding.blockedAdsOnboardingNoBigTechInformationText" = "Блокираних огласа и праћења";
-
 /* Button text to let users know they can use the vpn on all their devices */
 "onboarding.linkReceiptButton" = "Повежите претплату на VPN";
 
@@ -1222,12 +1180,6 @@
 /* Popup title to let users know they can use the vpn on all their devices */
 "onboarding.linkReceiptTitle" = "Продужите заштиту коју вам пружа Brave Firewall + VPN";
 
-/* Description for Navigate Settings Screen in Onboarding. This part indicating navigation ('Default Browser App') should match the option in iPhone Settings in that Language. */
-"onboarding.navigateSettingsOnboardingScreenDescription" = "Потражите опцију „Подразумевана апликација прегледача“";
-
-/* Title for Navigate Settings Screen in Onboarding */
-"onboarding.navigateSettingsOnboardingScreenTitle" = "Отварају се подешавања...";
-
 /* Description for the NTP pop-over that describes the tracking information on NTP */
 "onboarding.ntpOnboardingPopOverTrackerDescription" = "Блокирањем праћења и огласа, веб-сајтови користе мање података и брже се учитавају.";
 
@@ -1236,9 +1188,6 @@
 
 /* Title for the Omnibox (URL Bar) pop-over that describes faster load times. */
 "onboarding.omniboxOnboardingPopOverTitle" = "Унесите назив веб-сајта или URL";
-
-/* Title for Welcome Screen in Onboarding */
-"onboarding.welcomeScreenTitle" = "Добро дошли у Brave";
 
 /* Continue button to navigate to next onboarding screen. */
 "OnboardingContinueButton" = "Настави";
@@ -1390,7 +1339,7 @@
 /* Title of the alert when a calendar event is available for download */
 "OpenTextCalendarAlertTitle" = "Доступан је догађај за календар";
 
-/* Button title to that opens a website. */
+/* Button title to open a website. */
 "OpenWebsite" = "Отвори веб-сајт";
 
 /* Brave News Item Menu title */
@@ -1413,9 +1362,6 @@
 
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
 "p3a.settingTitle" = "Допусти аналитику производа којим се чува приватност (P3A)";
-
-/* No comment provided by engineer. */
-"p3aCalloutCloseAccessibilityLabel" = "Затвори обавештење о производу којим се чува приватност";
 
 /* No comment provided by engineer. */
 "pageSecurityView.pageNotFullySecureTitle" = "Ваша веза са овим сајтом није потпуно безбедна.";
@@ -1573,8 +1519,11 @@
 /* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
 "playlist.playlistAutoSaveSettingsTitle" = "Сачувај садржај за офлајн пуштање";
 
+/* The title of the button for the user to proceed adding playlist item when the user's disk space is almost full */
+"playlist.playlistDiskSpaceAddAnywayButtonTitle" = "Додај ипак";
+
 /* When the user's disk space is almost full */
-"playlist.playlistDiskSpaceWarningMessage" = "Додавање видео и аудио фајлова за офлајн употребу може да заузме доста меморијског простора на вашем уређају. Уклоните неке фајлове да ослободите меморијски простор.";
+"playlist.playlistDiskSpaceWarningMessage" = "Ваш уређај нема довољно простора. Додавање овог видеа у Brave плејлисту може да се не успи или да утиче на друга преузимања.";
 
 /* When the user's disk space is almost full */
 "playlist.playlistDiskSpaceWarningTitle" = "Меморијски простор је скоро пун";
@@ -2005,9 +1954,8 @@
 /* A label for a text entry field where the user can provide additional details for a web-compatibility report */
 "reportBrokenAdditionalDetailsRequired" = "Додатни детаљи";
 
-/* A label for a drop down where the user provides a category for a web-compatibility report
-A placeholder for a drop down where the user provides a category for a web-compatibility report */
-"reportBrokenCategory" = "Изаберите једну опцију";
+/* A label for a drop down where the user provides a category for a web-compatibility report */
+"reportBrokenCategory" = "Који је главни проблем који видите?";
 
 /* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
 "ReportBrokenContactMe" = "Обратите ми се на: (опционо)";
@@ -2017,6 +1965,9 @@ A placeholder for a drop down where the user provides a category for a web-compa
 
 /* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
 "ReportBrokenContactMeSuggestions" = "Имејл, Twitter итд.";
+
+/* A placeholder for a drop down where the user provides a category for a web-compatibility report */
+"ReportBrokenPlaceholder" = "Изаберите једну опцију";
 
 /* First part of the report a broken site copy. After the colon is a new line and then a website address */
 "ReportBrokenSiteBody1" = "Обавестите развојне програмере Brave-а да овај сајт не функционише како је очекивано:";
@@ -2892,7 +2843,7 @@ A placeholder for a drop down where the user provides a category for a web-compa
 "sync.deleteAccountAlertDescriptionPart2" = "Међутим, неће избрисати податке који се налазе на локалном меморијском простору на тим уређајима.";
 
 /* Title for Alert used action Delete Sync Account. */
-"sync.deleteAccountAlertTitle" = "Избриши налог за синхронизацију";
+"sync.deleteAccountAlertTitle" = "Брисање налога за синхронизацију";
 
 /* Sync Error Description */
 "sync.deprecatedVersionError" = "Изгледа да је овај код креиран на уређају који користи старију верзију Brave-а. Ажурирајте Brave на најновију верзију на другом уређају, а затим креирајте нови код за синхронизацију.";
@@ -3021,7 +2972,7 @@ A placeholder for a drop down where the user provides a category for a web-compa
 "sync.setPasscodeAlertDescription" = "Да бисте додали уређај у ланац синхронизације или активирали синхронизацију лозинки, прво морате да подесите приступни код на свом уређају.";
 
 /* The title displayed in alert when a user needs to set passcode */
-"sync.setPasscodeAlertTitle" = "Подесите приступни код";
+"sync.setPasscodeAlertTitle" = "Подеси приступни код";
 
 /* Header title for Sync settings */
 "sync.settingsHeader" = "Листа уређаја у наставку обухвата све уређаје у вашем ланцу синхронизације. Сваким уређајем се може управљати на било ком другом уређају.";
@@ -3089,8 +3040,14 @@ A placeholder for a drop down where the user provides a category for a web-compa
 /* A button title which when tapped will close all of the open tabs for the user */
 "tabGrid.closeAllTabsButtonTitle" = "Затвори све картице";
 
-/* Accessibility label for a close button that when tapped closes the associated tab */
+/* Label for a close button that when tapped closes the associated tab */
 "tabGrid.closeTab" = "Затвори картицу";
+
+/* Label for a close button that when tapped closes the associated tabs */
+"tabGrid.closeTabs" = "Затвори картице";
+
+/* A button title which when tapped will allow the user to deselect multiple tabs in the tab grid */
+"tabGrid.deselectTabsButtonTitle" = "Поништи избор картица";
 
 /* A button title which when tapped will display a menu with more options */
 "tabGrid.moreMenuButtonTitle" = "Више";
@@ -3125,11 +3082,20 @@ A placeholder for a drop down where the user provides a category for a web-compa
 /* Accessibility label for the regular browsing option in the browsing mode picker */
 "tabGrid.regularBrowsingModeAccessibilityLabel" = "Регуларно прегледање веба";
 
+/* A text label showing how many tabs the user has currently selected in edit mode. It is shown next to the number of selected tabs e.g. "Selected tabs: 4" */
+"tabGrid.selectedTabs" = "Изабране картице";
+
+/* A button title which when tapped will allow the user to select multiple tabs in the tab grid */
+"tabGrid.selectTabsButtonTitle" = "Изабери картице";
+
 /* A button title that when tapped allows users to shred all of their tabs */
 "tabGrid.shredAllTabsButtonTitle" = "Уништи све картице";
 
 /* A button title that when tapped allows users to shred the currently selected tab */
 "tabGrid.shredSelectedTabButtonTitle" = "Уништи изабрану картицу";
+
+/* A button title that when tapped allows users to shred the currently selected tabs */
+"tabGrid.shredSelectedTabsButtonTitle" = "Уништи";
 
 /* Accessibility label for a button that allows users to shred their tabs (erase them & associated data) */
 "tabGrid.shredTabsAccessibilityLabel" = "Уништи картице";

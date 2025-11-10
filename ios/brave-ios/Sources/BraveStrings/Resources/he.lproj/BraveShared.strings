@@ -139,6 +139,9 @@
 /* Placeholder text for adding or editing a bookmark */
 "BookmarkUrlPlaceholderText" = "כתובת";
 
+/* Title for the Brave Account section in settings */
+"BraveAccount" = "חשבון Brave";
+
 /* Button to show the brave panel */
 "BravePanel" = "פאנל Brave";
 
@@ -264,36 +267,6 @@
 
 /* Title for Bottom Bar Callout View */
 "callout.bottomBarCalloutTitle" = "התאמה אישית של סרגל הכרטיסיות של Brave";
-
-/* Description - Description used for main button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutButtonDescription" = "להגדיר את Brave כדפדפן ברירת המחדל?";
-
-/* Subtitle - Description for Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutDescription" = "עם Brave כברירת מחדל, כל קישור שאתם מקישים עליו נפתח עם הגנות הפרטיות של Brave.";
-
-/* Title for main button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutPrimaryButtonTitle" = "הגדרה כברירת מחדל";
-
-/* Description for secondary button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutSecondaryButtonDescription" = "זו כבר ברירת המחדל?";
-
-/* Title for secondary button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutSecondaryButtonTitle" = "דילוג";
-
-/* Title for Default Browser Full Screen Callout */
-"callout.defaultBrowserTitle" = "פרטיות. בקלות.";
-
-/* Subtitle - Description for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutDescription" = "זה עוזר לנו ללמוד אילו פיצ׳רים של Brave נמצאים בשימוש הכי הרבה. אפשר לשנות את זה בכל עת בהגדרות Brave תחת מגני Brave והגדרות פרטיות אחרות.";
-
-/* Title for the link that navigates to a webpage showing information about p3a (Privacy Preserving Analytics) */
-"callout.p3aCalloutLinkTitle" = "מידע נוסף על ניתוח המוצרים משמר הפרטיות (P3A) שלנו.";
-
-/* Title for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutTitle" = "עזרו לנו להפוך את Brave לטוב יותר.";
-
-/* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutToggleTitle" = "שיתוף תובנות מוצר פרטיות ואנונימיות";
 
 /* Subtitle - Description for Privacy Everywhere Full Screen Callout */
 "callout.privacyEverywhereCalloutDescription" = "להוסיף את הפרטיות של Brave למחשב או או לטאבלט ולסנכרן סימניות והרחבות בין מכשירים.";
@@ -588,9 +561,6 @@
 
 /* The success message that appears after a user sucessfully adds a new search engine */
 "custonmSearchEngine.thirdPartySearchEngineAddedToastTitle" = "מנוע חיפוש נוסף!";
-
-/* Button text to close the default browser popup. */
-"defaultBrowserCallout.introCancelButtonText" = "לא עכשיו";
 
 /* Button text to open app settings */
 "defaultBrowserCallout.introOpenSettingsButtonText" = "פתיחת ההגדרות";
@@ -1201,18 +1171,6 @@
 /* Button to show Brave Rewards. */
 "OBTurnOnButton" = "התחלה";
 
-/* The description text shown when there is big tech tracker among trackers. Example usage: Google, Amazon and 32 other trackers blocked */
-"onboarding.blockedAdsOnboardingBigTechInformationText" = "%1$@ ו-%2$lld מודעות אחרות וכלי מעקב";
-
-/* The footnote indicating what Brave shields is blocking */
-"onboarding.blockedAdsOnboardingFootnoteText" = "ראו את כל הדברים הרעים שנחסמו על ידי Brave, בכל עמוד, באמצעות Shields.";
-
-/* The text describing user where they should press in order to open Shield panel */
-"onboarding.blockedAdsOnboardingInstructionsText" = "לחץ/י כדי לראות את Brave Shields";
-
-/* The description text shown when there is no big tech tracker among trackers. Example usage: 31 Ads & trackers blocked. The number here is presented separately so it is not in translation. */
-"onboarding.blockedAdsOnboardingNoBigTechInformationText" = "Ads & רכיבי מעקב נחסמו";
-
 /* Button text to let users know they can use the vpn on all their devices */
 "onboarding.linkReceiptButton" = "קשר/י את מינוי ה-VPN שלך";
 
@@ -1222,12 +1180,6 @@
 /* Popup title to let users know they can use the vpn on all their devices */
 "onboarding.linkReceiptTitle" = "הרחבת Brave Firewall + הגנת VPN";
 
-/* Description for Navigate Settings Screen in Onboarding. This part indicating navigation ('Default Browser App') should match the option in iPhone Settings in that Language. */
-"onboarding.navigateSettingsOnboardingScreenDescription" = "לחפש את ׳אפליקציית ברירת מחדל של דפדפן׳";
-
-/* Title for Navigate Settings Screen in Onboarding */
-"onboarding.navigateSettingsOnboardingScreenTitle" = "לוקחים אותך להגדרות...";
-
 /* Description for the NTP pop-over that describes the tracking information on NTP */
 "onboarding.ntpOnboardingPopOverTrackerDescription" = "על ידי חסימה של כלי מעקב ומודעות, אתרים משתמשים בפחות נתונים ונטענים הרבה יותר מהר.";
 
@@ -1236,9 +1188,6 @@
 
 /* Title for the Omnibox (URL Bar) pop-over that describes faster load times. */
 "onboarding.omniboxOnboardingPopOverTitle" = "יש להקליד שם או כתובת אתר";
-
-/* Title for Welcome Screen in Onboarding */
-"onboarding.welcomeScreenTitle" = "‏ברוכים הבאים ל-Brave‏";
 
 /* Continue button to navigate to next onboarding screen. */
 "OnboardingContinueButton" = "המשך";
@@ -1390,7 +1339,7 @@
 /* Title of the alert when a calendar event is available for download */
 "OpenTextCalendarAlertTitle" = "לוח שנה של אירועים זמין";
 
-/* Button title to that opens a website. */
+/* Button title to open a website. */
 "OpenWebsite" = "פתיחת אתר";
 
 /* Brave News Item Menu title */
@@ -1413,9 +1362,6 @@
 
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
 "p3a.settingTitle" = "הפעלת ניתוח נתונים משמר פרטיות (P3A)";
-
-/* No comment provided by engineer. */
-"p3aCalloutCloseAccessibilityLabel" = "סגירת חלון ניתוח מוצרים משמר פרטיות";
 
 /* No comment provided by engineer. */
 "pageSecurityView.pageNotFullySecureTitle" = "החיבור שלך לאתר הזה לא מאובטח באופן מלא.";
@@ -1573,8 +1519,11 @@
 /* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
 "playlist.playlistAutoSaveSettingsTitle" = "שמירת תוכן להשמעה לא מקוונת";
 
+/* The title of the button for the user to proceed adding playlist item when the user's disk space is almost full */
+"playlist.playlistDiskSpaceAddAnywayButtonTitle" = "הוסף בכל זאת";
+
 /* When the user's disk space is almost full */
-"playlist.playlistDiskSpaceWarningMessage" = "הוספת קובצי וידאו ושמע עבור שימוש לא מקוון עלולה לנצל נפח אחסון רב במכשיר שלך. יש להסיר קבצים כדי לפנות שטח אחסון.";
+"playlist.playlistDiskSpaceWarningMessage" = "ההתקן שלך חסר מקום. הוספת סרטון זה ל-פלייליסט עלולה להיכשל או להשפיע על הורדות אחרות.";
 
 /* When the user's disk space is almost full */
 "playlist.playlistDiskSpaceWarningTitle" = "האחסון כמעט מלא";
@@ -2005,9 +1954,8 @@
 /* A label for a text entry field where the user can provide additional details for a web-compatibility report */
 "reportBrokenAdditionalDetailsRequired" = "פרטים נוספים";
 
-/* A label for a drop down where the user provides a category for a web-compatibility report
-A placeholder for a drop down where the user provides a category for a web-compatibility report */
-"reportBrokenCategory" = "יש לבחור אפשרות אחת";
+/* A label for a drop down where the user provides a category for a web-compatibility report */
+"reportBrokenCategory" = "מה הבעיה העיקרית?";
 
 /* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
 "ReportBrokenContactMe" = "צור איתי קשר בכתובת: (לא חובה)";
@@ -2017,6 +1965,9 @@ A placeholder for a drop down where the user provides a category for a web-compa
 
 /* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
 "ReportBrokenContactMeSuggestions" = "דואר אלקטרוני, טוויטר וכו'.";
+
+/* A placeholder for a drop down where the user provides a category for a web-compatibility report */
+"ReportBrokenPlaceholder" = "יש לבחור אפשרות אחת";
 
 /* First part of the report a broken site copy. After the colon is a new line and then a website address */
 "ReportBrokenSiteBody1" = "אפשר להודיע למפתחים של Brave שהאתר הזה לא עובד כצפוי:";
@@ -2436,7 +2387,7 @@ A placeholder for a drop down where the user provides a category for a web-compa
 "settings.blockYouTubeDistractingElementsDesc" = "חסימת אלמנטים מסיחים ב-YouTube";
 
 /* Title beside the toggle for blocking YouTube distracting elements */
-"settings.blockYouTubeDistractingElementsTitle" = "חסימת רכיבים מסיחים ב-YouTube";
+"settings.blockYouTubeDistractingElementsTitle" = "חסימת אלמנטים מסיחים ב-YouTube";
 
 /* Description beside the toggle for blocking YouTube recommendations */
 "settings.blockYoutubeRecommendationsDesc" = "חוסם את הרכיב ׳הבא׳ ואת כרטיסיות הסיום ב-youtube.com";
@@ -3089,8 +3040,14 @@ A placeholder for a drop down where the user provides a category for a web-compa
 /* A button title which when tapped will close all of the open tabs for the user */
 "tabGrid.closeAllTabsButtonTitle" = "סגירת כל הכרטיסיות";
 
-/* Accessibility label for a close button that when tapped closes the associated tab */
+/* Label for a close button that when tapped closes the associated tab */
 "tabGrid.closeTab" = "סגור כרטיסייה";
+
+/* Label for a close button that when tapped closes the associated tabs */
+"tabGrid.closeTabs" = "סגור כרטיסיות";
+
+/* A button title which when tapped will allow the user to deselect multiple tabs in the tab grid */
+"tabGrid.deselectTabsButtonTitle" = "הסר סימון מהכרטיסיות";
 
 /* A button title which when tapped will display a menu with more options */
 "tabGrid.moreMenuButtonTitle" = "עוד";
@@ -3125,11 +3082,20 @@ A placeholder for a drop down where the user provides a category for a web-compa
 /* Accessibility label for the regular browsing option in the browsing mode picker */
 "tabGrid.regularBrowsingModeAccessibilityLabel" = "גלישה רגילה";
 
+/* A text label showing how many tabs the user has currently selected in edit mode. It is shown next to the number of selected tabs e.g. "Selected tabs: 4" */
+"tabGrid.selectedTabs" = "כרטיסיות נבחרות";
+
+/* A button title which when tapped will allow the user to select multiple tabs in the tab grid */
+"tabGrid.selectTabsButtonTitle" = "בחר כרטיסיות";
+
 /* A button title that when tapped allows users to shred all of their tabs */
 "tabGrid.shredAllTabsButtonTitle" = "גריסת כל הכרטיסיות";
 
 /* A button title that when tapped allows users to shred the currently selected tab */
 "tabGrid.shredSelectedTabButtonTitle" = "גריסת כרטיסיה שנבחרה";
+
+/* A button title that when tapped allows users to shred the currently selected tabs */
+"tabGrid.shredSelectedTabsButtonTitle" = "גרוס";
 
 /* Accessibility label for a button that allows users to shred their tabs (erase them & associated data) */
 "tabGrid.shredTabsAccessibilityLabel" = "גריסת כרטיסיות";

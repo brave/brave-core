@@ -139,6 +139,9 @@
 /* Placeholder text for adding or editing a bookmark */
 "BookmarkUrlPlaceholderText" = "주소";
 
+/* Title for the Brave Account section in settings */
+"BraveAccount" = "Brave 계정";
+
 /* Button to show the brave panel */
 "BravePanel" = "Brave 패널";
 
@@ -264,36 +267,6 @@
 
 /* Title for Bottom Bar Callout View */
 "callout.bottomBarCalloutTitle" = "Brave 탭 바 맞춤 설정";
-
-/* Description - Description used for main button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutButtonDescription" = "Brave를 기본 브라우저로 설정하시겠습니까?";
-
-/* Subtitle - Description for Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutDescription" = "Brave를 기본 브라우저로 설정하면 탭하는 모든 링크가 프라이버시를 보호하는 Brave로 열립니다.";
-
-/* Title for main button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutPrimaryButtonTitle" = "기본값으로 설정";
-
-/* Description for secondary button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutSecondaryButtonDescription" = "이미 기본으로 설정하셨나요?";
-
-/* Title for secondary button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutSecondaryButtonTitle" = "건너뛰기";
-
-/* Title for Default Browser Full Screen Callout */
-"callout.defaultBrowserTitle" = "프라이버시. 심플하게.";
-
-/* Subtitle - Description for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutDescription" = "어떤 Brave 기능이 가장 자주 사용되는지 당사가 파악할 수 있습니다. Brave Shields 아래 Brave 설정 및 기타 프라이버시 설정에서 언제든지 변경할 수 있습니다.";
-
-/* Title for the link that navigates to a webpage showing information about p3a (Privacy Preserving Analytics) */
-"callout.p3aCalloutLinkTitle" = "프라이버시 보호 제품 분석(P3A)에 대해 자세히 알아보기.";
-
-/* Title for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutTitle" = "Brave 개선에 참여.";
-
-/* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutToggleTitle" = "프라이버시가 보장되는 익명 제품 인사이트를 공유합니다.";
 
 /* Subtitle - Description for Privacy Everywhere Full Screen Callout */
 "callout.privacyEverywhereCalloutDescription" = "프라이버시가 뛰어난 Brave를 컴퓨터와 태블릿에서 이용하고 기기 간 북마크와 확장 프로그램을 동기화하세요.";
@@ -588,9 +561,6 @@
 
 /* The success message that appears after a user sucessfully adds a new search engine */
 "custonmSearchEngine.thirdPartySearchEngineAddedToastTitle" = "검색 엔진이 추가되었습니다.";
-
-/* Button text to close the default browser popup. */
-"defaultBrowserCallout.introCancelButtonText" = "나중에";
 
 /* Button text to open app settings */
 "defaultBrowserCallout.introOpenSettingsButtonText" = "설정 열기";
@@ -1201,18 +1171,6 @@
 /* Button to show Brave Rewards. */
 "OBTurnOnButton" = "시작";
 
-/* The description text shown when there is big tech tracker among trackers. Example usage: Google, Amazon and 32 other trackers blocked */
-"onboarding.blockedAdsOnboardingBigTechInformationText" = "%1$@ 외 기타 광고 %2$lld개 및 트래커 차단됨";
-
-/* The footnote indicating what Brave shields is blocking */
-"onboarding.blockedAdsOnboardingFootnoteText" = "모든 페이지에서 Brave가 Shields로 차단한 모든 나쁜 것들을 확인합니다.";
-
-/* The text describing user where they should press in order to open Shield panel */
-"onboarding.blockedAdsOnboardingInstructionsText" = "탭하여 Brave Shields 보기";
-
-/* The description text shown when there is no big tech tracker among trackers. Example usage: 31 Ads & trackers blocked. The number here is presented separately so it is not in translation. */
-"onboarding.blockedAdsOnboardingNoBigTechInformationText" = "광고 및 트래커 차단됨";
-
 /* Button text to let users know they can use the vpn on all their devices */
 "onboarding.linkReceiptButton" = "VPN 구독 연결";
 
@@ -1222,12 +1180,6 @@
 /* Popup title to let users know they can use the vpn on all their devices */
 "onboarding.linkReceiptTitle" = "Brave Firewall + VPN 보호를 더 폭넓게 활용";
 
-/* Description for Navigate Settings Screen in Onboarding. This part indicating navigation ('Default Browser App') should match the option in iPhone Settings in that Language. */
-"onboarding.navigateSettingsOnboardingScreenDescription" = "\"기본 브라우저 앱\"을 살펴보세요.";
-
-/* Title for Navigate Settings Screen in Onboarding */
-"onboarding.navigateSettingsOnboardingScreenTitle" = "설정으로 이동 중...";
-
 /* Description for the NTP pop-over that describes the tracking information on NTP */
 "onboarding.ntpOnboardingPopOverTrackerDescription" = "트래커와 광고를 차단하면 웹사이트에서 데이터를 적게 사용하므로 로딩이 빨라집니다.";
 
@@ -1236,9 +1188,6 @@
 
 /* Title for the Omnibox (URL Bar) pop-over that describes faster load times. */
 "onboarding.omniboxOnboardingPopOverTitle" = "웹사이트 이름 또는 URL 입력";
-
-/* Title for Welcome Screen in Onboarding */
-"onboarding.welcomeScreenTitle" = "Brave에 오신걸 환영합니다";
 
 /* Continue button to navigate to next onboarding screen. */
 "OnboardingContinueButton" = "계속";
@@ -1390,7 +1339,7 @@
 /* Title of the alert when a calendar event is available for download */
 "OpenTextCalendarAlertTitle" = "캘린더 이벤트 사용 가능";
 
-/* Button title to that opens a website. */
+/* Button title to open a website. */
 "OpenWebsite" = "웹사이트 열기";
 
 /* Brave News Item Menu title */
@@ -1413,9 +1362,6 @@
 
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
 "p3a.settingTitle" = "프라이버시 보호 제품 분석(P3A) 허용";
-
-/* No comment provided by engineer. */
-"p3aCalloutCloseAccessibilityLabel" = "프라이버시 보호 제품 콜아웃 닫기";
 
 /* No comment provided by engineer. */
 "pageSecurityView.pageNotFullySecureTitle" = "이 사이트로의 연결이 안전하지 않을 수 있습니다.";
@@ -1573,8 +1519,11 @@
 /* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
 "playlist.playlistAutoSaveSettingsTitle" = "오프라인 재생을 위한 콘텐츠 저장";
 
+/* The title of the button for the user to proceed adding playlist item when the user's disk space is almost full */
+"playlist.playlistDiskSpaceAddAnywayButtonTitle" = "어쨌든 추가";
+
 /* When the user's disk space is almost full */
-"playlist.playlistDiskSpaceWarningMessage" = "동영상 및 오디오를 오프라인 용도로 추가하면 기기 내 저장소를 많이 사용할 수 있습니다. 일부 파일을 삭제하여 저장소 공간을 확보하세요.";
+"playlist.playlistDiskSpaceWarningMessage" = "기기의 저장 공간이 부족합니다. 이 동영상을 플레이리스트에 추가하면 실패하거나 다른 다운로드에 영향을 줄 수 있습니다.";
 
 /* When the user's disk space is almost full */
 "playlist.playlistDiskSpaceWarningTitle" = "저장소 거의 가득 참";
@@ -2005,9 +1954,8 @@
 /* A label for a text entry field where the user can provide additional details for a web-compatibility report */
 "reportBrokenAdditionalDetailsRequired" = "추가 세부 정보";
 
-/* A label for a drop down where the user provides a category for a web-compatibility report
-A placeholder for a drop down where the user provides a category for a web-compatibility report */
-"reportBrokenCategory" = "택일";
+/* A label for a drop down where the user provides a category for a web-compatibility report */
+"reportBrokenCategory" = "확인된 핵심 문제";
 
 /* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
 "ReportBrokenContactMe" = "연락 방법:(선택사항)";
@@ -2017,6 +1965,9 @@ A placeholder for a drop down where the user provides a category for a web-compa
 
 /* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
 "ReportBrokenContactMeSuggestions" = "이메일, Twitter 등";
+
+/* A placeholder for a drop down where the user provides a category for a web-compatibility report */
+"ReportBrokenPlaceholder" = "택일";
 
 /* First part of the report a broken site copy. After the colon is a new line and then a website address */
 "ReportBrokenSiteBody1" = "Brave 개발자에게 이 사이트가 제대로 작동하지 않는다고 알려주세요:";
@@ -2436,7 +2387,7 @@ A placeholder for a drop down where the user provides a category for a web-compa
 "settings.blockYouTubeDistractingElementsDesc" = "유튜브의 방해 요소를 차단합니다";
 
 /* Title beside the toggle for blocking YouTube distracting elements */
-"settings.blockYouTubeDistractingElementsTitle" = "유튜브 방해 요소 차단";
+"settings.blockYouTubeDistractingElementsTitle" = "유튜브의 방해 요소를 차단합니다";
 
 /* Description beside the toggle for blocking YouTube recommendations */
 "settings.blockYoutubeRecommendationsDesc" = "Youtube.com에서 다음 동영상과 엔드카드 요소를 차단합니다";
@@ -3089,8 +3040,14 @@ A placeholder for a drop down where the user provides a category for a web-compa
 /* A button title which when tapped will close all of the open tabs for the user */
 "tabGrid.closeAllTabsButtonTitle" = "모든 탭 닫기";
 
-/* Accessibility label for a close button that when tapped closes the associated tab */
+/* Label for a close button that when tapped closes the associated tab */
 "tabGrid.closeTab" = "탭 닫기";
+
+/* Label for a close button that when tapped closes the associated tabs */
+"tabGrid.closeTabs" = "탭 닫기";
+
+/* A button title which when tapped will allow the user to deselect multiple tabs in the tab grid */
+"tabGrid.deselectTabsButtonTitle" = "모두 선택 취소";
 
 /* A button title which when tapped will display a menu with more options */
 "tabGrid.moreMenuButtonTitle" = "더보기";
@@ -3125,11 +3082,20 @@ A placeholder for a drop down where the user provides a category for a web-compa
 /* Accessibility label for the regular browsing option in the browsing mode picker */
 "tabGrid.regularBrowsingModeAccessibilityLabel" = "일반 브라우징";
 
+/* A text label showing how many tabs the user has currently selected in edit mode. It is shown next to the number of selected tabs e.g. "Selected tabs: 4" */
+"tabGrid.selectedTabs" = "선택된 탭";
+
+/* A button title which when tapped will allow the user to select multiple tabs in the tab grid */
+"tabGrid.selectTabsButtonTitle" = "탭 선택";
+
 /* A button title that when tapped allows users to shred all of their tabs */
 "tabGrid.shredAllTabsButtonTitle" = "모든 탭 지우기";
 
 /* A button title that when tapped allows users to shred the currently selected tab */
 "tabGrid.shredSelectedTabButtonTitle" = "선택한 탭 지우기";
+
+/* A button title that when tapped allows users to shred the currently selected tabs */
+"tabGrid.shredSelectedTabsButtonTitle" = "파쇄";
 
 /* Accessibility label for a button that allows users to shred their tabs (erase them & associated data) */
 "tabGrid.shredTabsAccessibilityLabel" = "탭 지우기";
