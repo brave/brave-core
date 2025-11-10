@@ -9,7 +9,7 @@ desc: |-
 
             If this policy is set to 3 (Standard), HTTP is upgraded to HTTPS when available.
 
-            If left unset, users can configure the HTTPS upgrade behavior in Brave Shields settings.
+            If left unset, users can configure the HTTPS upgrade behavior in Brave Shields settings (Standard by default).
 example_value: 3
 features:
   can_be_mandatory: true
