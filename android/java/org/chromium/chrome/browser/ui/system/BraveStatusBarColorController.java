@@ -5,9 +5,8 @@
 
 package org.chromium.chrome.browser.ui.system;
 
-import android.content.Context;
+import android.app.Activity;
 import android.graphics.Color;
-import android.view.Window;
 
 import androidx.annotation.ColorInt;
 
@@ -29,9 +28,8 @@ public class BraveStatusBarColorController extends StatusBarColorController {
     public @ColorInt int mBackgroundColorForNtp;
 
     public BraveStatusBarColorController(
-            Window window,
+            Activity activity,
             boolean isTablet,
-            Context context,
             StatusBarColorProvider statusBarColorProvider,
             ObservableSupplier<LayoutManager> layoutManagerSupplier,
             ActivityLifecycleDispatcher activityLifecycleDispatcher,
@@ -41,9 +39,8 @@ public class BraveStatusBarColorController extends StatusBarColorController {
             @Nullable DesktopWindowStateManager desktopWindowStateManager,
             ObservableSupplier<Integer> overviewColorSupplier) {
         super(
-                window,
+                activity,
                 isTablet,
-                context,
                 statusBarColorProvider,
                 layoutManagerSupplier,
                 activityLifecycleDispatcher,
@@ -54,7 +51,7 @@ public class BraveStatusBarColorController extends StatusBarColorController {
                 overviewColorSupplier);
 
         // Dark theme doesn't have the regression, apply adjustment to light one only
-        if (!ColorUtils.inNightMode(context)) {
+        if (!ColorUtils.inNightMode(activity)) {
             mBackgroundColorForNtp = Color.WHITE;
         }
     }

@@ -25,7 +25,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.RadioGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -2021,9 +2020,8 @@ public class BytecodeTest {
                 constructorsMatch(
                         "org/chromium/chrome/browser/ui/system/StatusBarColorController", // presubmit: ignore-long-line
                         "org/chromium/chrome/browser/ui/system/BraveStatusBarColorController", // presubmit: ignore-long-line
-                        Window.class,
+                        Activity.class,
                         boolean.class,
-                        Context.class,
                         StatusBarColorProvider.class,
                         ObservableSupplier.class,
                         ActivityLifecycleDispatcher.class,
