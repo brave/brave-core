@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_IOS_BROWSER_UI_WEBUI_BRAVE_WALLET_BLOCKCHAIN_IMAGES_SOURCE_H_
-#define BRAVE_IOS_BROWSER_UI_WEBUI_BRAVE_WALLET_BLOCKCHAIN_IMAGES_SOURCE_H_
+#ifndef BRAVE_IOS_BROWSER_BRAVE_WALLET_BLOCKCHAIN_IMAGES_SOURCE_H_
+#define BRAVE_IOS_BROWSER_BRAVE_WALLET_BLOCKCHAIN_IMAGES_SOURCE_H_
 
 #include <string>
 
@@ -32,4 +32,4 @@ class BlockchainImagesSource : public web::URLDataSourceIOS,
 
 }  // namespace brave_wallet
 
-#endif  // BRAVE_IOS_BROWSER_UI_WEBUI_BRAVE_WALLET_BLOCKCHAIN_IMAGES_SOURCE_H_
+#endif  // BRAVE_IOS_BROWSER_BRAVE_WALLET_BLOCKCHAIN_IMAGES_SOURCE_H_
