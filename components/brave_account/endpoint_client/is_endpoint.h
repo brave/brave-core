@@ -7,10 +7,9 @@
 #define BRAVE_COMPONENTS_BRAVE_ACCOUNT_ENDPOINT_CLIENT_IS_ENDPOINT_H_
 
 #include <concepts>
-#include <string_view>
 
 #include "brave/components/brave_account/endpoint_client/is_request.h"
-#include "brave/components/brave_account/endpoint_client/is_response_body.h"
+#include "brave/components/brave_account/endpoint_client/is_response.h"
 #include "url/gurl.h"
 
 namespace brave_account::endpoint_client {
@@ -36,10 +35,8 @@ concept IsEndpoint =
     requires {
       typename T::Request;
       typename T::Response;
-      typename T::Error;
     } && detail::IsRequest<typename T::Request> &&
-    detail::IsResponseBody<typename T::Response> &&
-    detail::IsResponseBody<typename T::Error> && detail::URL<T>;
+    detail::IsResponse<typename T::Response> && detail::URL<T>;
 
 }  // namespace brave_account::endpoint_client
 

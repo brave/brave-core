@@ -16,7 +16,6 @@
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
-#include "base/types/expected.h"
 #include "brave/components/brave_account/endpoint_client/request_handle.h"
 #include "brave/components/brave_account/endpoints/error.h"
 #include "brave/components/brave_account/endpoints/password_finalize.h"
@@ -83,21 +82,15 @@ class BraveAccountService : public KeyedService, public mojom::Authentication {
 
   void LogOut() override;
 
-  void OnRegisterInitialize(
-      RegisterInitializeCallback callback,
-      int response_code,
-      base::expected<std::optional<endpoints::PasswordInit::Response>,
-                     std::optional<endpoints::PasswordInit::Error>> reply);
+  void OnRegisterInitialize(RegisterInitializeCallback callback,
+                            endpoints::PasswordInit::Response response);
 
-  void OnRegisterFinalize(
-      RegisterFinalizeCallback callback,
-      const std::string& encrypted_verification_token,
-      int response_code,
-      base::expected<std::optional<endpoints::PasswordFinalize::Response>,
-                     std::optional<endpoints::PasswordFinalize::Error>> reply);
+  void OnRegisterFinalize(RegisterFinalizeCallback callback,
+                          const std::string& encrypted_verification_token,
+                          endpoints::PasswordFinalize::Response response);
 
   std::optional<mojom::RegisterErrorCode> TransformError(
-      std::optional<endpoints::Error> error);
+      endpoints::Error error_body);
 
   void OnVerificationTokenChanged();
 
@@ -108,10 +101,7 @@ class BraveAccountService : public KeyedService, public mojom::Authentication {
   void VerifyResult(
       endpoint_client::RequestHandle current_verify_result_request);
 
-  void OnVerifyResult(
-      int response_code,
-      base::expected<std::optional<endpoints::VerifyResult::Response>,
-                     std::optional<endpoints::VerifyResult::Error>> reply);
+  void OnVerifyResult(endpoints::VerifyResult::Response response);
 
   const raw_ptr<PrefService> pref_service_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
