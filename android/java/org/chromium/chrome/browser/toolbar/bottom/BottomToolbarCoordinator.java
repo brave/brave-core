@@ -340,6 +340,9 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
 
         mLayoutStateProvider = layoutStateProvider;
         mLayoutStateProvider.addObserver(mLayoutStateObserver);
+        // Set layout state provider for browsing mode coordinator to detect tab overview mode
+        ((BrowsingModeBottomToolbarCoordinator) mBrowsingModeCoordinator)
+                .setLayoutStateProvider(layoutStateProvider);
     }
 
     public void updateBookmarkButton(boolean isBookmarked, boolean editingAllowed) {

@@ -16,9 +16,12 @@ import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneShotCallback;
+import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.layouts.LayoutStateProvider;
 import org.chromium.chrome.browser.omaha.UpdateMenuItemHelper;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
@@ -42,6 +45,7 @@ import java.util.function.Supplier;
  * Android view that handles user actions and a composited texture that draws when the controls are
  * being scrolled off-screen. The Android version does not draw unless the controls offset is 0.
  */
+@NullMarked
 public class BrowsingModeBottomToolbarCoordinator {
     private static final String TAG = "BrowsingMode";
 
@@ -70,17 +74,17 @@ public class BrowsingModeBottomToolbarCoordinator {
     private final BrowsingModeBottomToolbarModel mModel;
 
     /** The callback to be exectured when the share button on click listener is available. */
-    private Callback<OnClickListener> mShareButtonListenerSupplierCallback;
+    @Nullable private Callback<OnClickListener> mShareButtonListenerSupplierCallback;
 
     /** The supplier for the share button on click listener. */
-    private ObservableSupplier<OnClickListener> mShareButtonListenerSupplier;
+    @Nullable private ObservableSupplier<OnClickListener> mShareButtonListenerSupplier;
 
     /** The activity tab provider that used for making the IPH. */
     private final ActivityTabProvider mTabProvider;
 
     private final BookmarksButton mBookmarkButton;
     private final MenuButton mMenuButton;
-    private ThemeColorProvider mThemeColorProvider;
+    @Nullable private ThemeColorProvider mThemeColorProvider;
 
     BrowsingModeBottomToolbarCoordinator(
             View root,
@@ -96,7 +100,7 @@ public class BrowsingModeBottomToolbarCoordinator {
         PropertyModelChangeProcessor.create(
                 mModel, mToolbarRoot, new BrowsingModeBottomToolbarViewBinder());
 
-        mMediator = new BrowsingModeBottomToolbarMediator(mModel);
+        mMediator = new BrowsingModeBottomToolbarMediator(mModel, mToolbarRoot.getContext());
 
         mBraveHomeButton = mToolbarRoot.findViewById(R.id.bottom_home_button);
         mBraveHomeButton.setOnClickListener(homeButtonListener);
@@ -174,12 +178,14 @@ public class BrowsingModeBottomToolbarCoordinator {
             ThemeColorProvider themeColorProvider,
             IncognitoStateProvider incognitoStateProvider) {
         if (mMenuButton != null) {
-            Supplier<MenuButtonState> menuButtonStateSupplier =
-                    () ->
-                            UpdateMenuItemHelper.getInstance(
-                                            tabModelSelector.getModel(false).getProfile())
-                                    .getUiState()
-                                    .buttonState;
+            Supplier<@Nullable MenuButtonState> menuButtonStateSupplier =
+                    () -> {
+                        var profile = tabModelSelector.getModel(false).getProfile();
+                        if (profile == null) {
+                            return null;
+                        }
+                        return UpdateMenuItemHelper.getInstance(profile).getUiState().buttonState;
+                    };
             BraveMenuButtonCoordinator.setupPropertyModel(mMenuButton, menuButtonStateSupplier);
             if (!BottomToolbarVariationManager.isMenuButtonOnBottomControls()) {
                 mMenuButton.setVisibility(View.GONE);
@@ -187,6 +193,7 @@ public class BrowsingModeBottomToolbarCoordinator {
         }
         mThemeColorProvider = themeColorProvider;
         mMediator.setThemeColorProvider(themeColorProvider);
+        mMediator.setIncognitoStateProvider(incognitoStateProvider);
         if (incognitoStateProvider.isIncognitoSelected()) {
             mMediator.onThemeColorChanged(
                     ChromeColors.getDefaultThemeColor(ContextUtils.getApplicationContext(), true),
@@ -275,10 +282,21 @@ public class BrowsingModeBottomToolbarCoordinator {
     }
 
     /**
-     * Clean up any state when the browsing mode bottom toolbar is destroyed.
+     * Set the layout state provider to detect tab overview mode.
+     *
+     * @param layoutStateProvider The layout state provider.
      */
+    void setLayoutStateProvider(LayoutStateProvider layoutStateProvider) {
+        mMediator.setLayoutStateProvider(layoutStateProvider);
+        // Update color when layout state is set
+        if (mThemeColorProvider != null) {
+            mMediator.onThemeColorChanged(mThemeColorProvider.getThemeColor(), false);
+        }
+    }
+
+    /** Clean up any state when the browsing mode bottom toolbar is destroyed. */
     public void destroy() {
-        if (mShareButtonListenerSupplier != null) {
+        if (mShareButtonListenerSupplier != null && mShareButtonListenerSupplierCallback != null) {
             mShareButtonListenerSupplier.removeObserver(mShareButtonListenerSupplierCallback);
         }
         mMediator.destroy();
