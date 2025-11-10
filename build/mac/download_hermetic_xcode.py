@@ -24,8 +24,8 @@ def LoadPList(path):
 XCODE_VERSION = '26.1'
 HERMETIC_XCODE_BINARY = (
     DEPS_PACKAGES_INTERNAL_URL +
-    '/xcode-hermetic-toolchain/xcode-hermetic-toolchain-' +
-    XCODE_VERSION + '.tar.gz')
+    '/xcode-hermetic-toolchain/xcode-hermetic-toolchain-' + XCODE_VERSION +
+    '.tar.gz')
 
 # The toolchain will not be downloaded if the minimum OS version is not met. 19
 # is the major version number for macOS 10.15. Xcode 13.2 13C90 only runs on
