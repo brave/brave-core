@@ -5,7 +5,7 @@ desc: |-
 
             If this policy is set to 1 (Disabled), HTTP connections are allowed.
 
-            If this policy is set to 2 (Strict), HTTPS connections are required.
+            If this policy is set to 2 (Strict), HTTPS connections are required. Users get an interstitial if HTTPS upgrade not possible.
 
             If this policy is set to 3 (Standard), HTTP is upgraded to HTTPS when available.
 
