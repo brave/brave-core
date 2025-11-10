@@ -21,7 +21,8 @@ namespace ephemeral_storage {
 // Delegate performs cleanup for all required parts (chrome, content, etc.).
 class EphemeralStorageServiceDelegate {
  public:
-  using CloseTabsForDomainAndSubdomainsCallback = base::OnceCallback<void()>;
+  using CloseTabsForDomainAndSubdomainsCallback =
+      base::OnceCallback<void(const bool)>;
   virtual ~EphemeralStorageServiceDelegate() = default;
 
   // Cleanups ephemeral storages (local storage, cookies).
