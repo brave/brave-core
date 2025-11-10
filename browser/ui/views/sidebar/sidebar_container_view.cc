@@ -45,6 +45,7 @@
 #include "chrome/browser/ui/tabs/public/tab_features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/frame/top_container_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_entry.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_registry.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_web_ui_view.h"
@@ -188,7 +189,7 @@ void SidebarContainerView::ShowSidebarOnMouseOver(
 
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser_);
   gfx::RectF mouse_event_detect_bounds(
-      browser_view->main_container()->GetBoundsInScreen());
+      browser_view->top_container()->parent()->GetBoundsInScreen());
 
   constexpr int kHotCornerWidth = 7;
   const int inset = mouse_event_detect_bounds.width() - kHotCornerWidth;
