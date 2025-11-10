@@ -172,12 +172,12 @@ mojom::PolkadotAccountInfoPtr ParseAccountInfoFromJson(
 
   std::string_view sv = *str;
 
-  auto hex_bytes = PrefixedHexStringToFixed<80>(sv);
-  if (!hex_bytes) {
+  std::array<uint8_t, 80> hex_bytes = {};
+  if (!PrefixedHexStringToFixed(sv, hex_bytes)) {
     return nullptr;
   }
 
-  auto account = ParseAccountInfoAsHex(*hex_bytes);
+  auto account = ParseAccountInfoAsHex(hex_bytes);
   if (account) {
     return account;
   }
@@ -211,14 +211,9 @@ base::expected<RpcResponse, std::string> HandleRpcCall(
 std::optional<PolkadotBlockHeader> ParseChainHeaderFromHex(
     const polkadot_substrate_rpc_responses::PolkadotChainHeader& res) {
   PolkadotBlockHeader header;
-
-  auto parent_hash =
-      PrefixedHexStringToFixed<kPolkadotBlockHashSize>(res.result->parent_hash);
-  if (!parent_hash) {
+  if (!PrefixedHexStringToFixed(res.result->parent_hash, header.parent_hash)) {
     return std::nullopt;
   }
-
-  header.parent_hash = *parent_hash;
 
   std::string_view block_number = res.result->number;
   if (!base::HexStringToUInt(block_number, &header.number)) {
@@ -378,9 +373,8 @@ void PolkadotSubstrateRpc::OnGetFinalizedHead(GetFinalizedHeadCallback callback,
     return std::move(callback).Run(std::nullopt, std::nullopt);
   }
 
-  auto block_hash =
-      PrefixedHexStringToFixed<kPolkadotBlockHashSize>(*res->result);
-  if (!block_hash) {
+  std::array<uint8_t, kPolkadotBlockHashSize> block_hash = {};
+  if (!PrefixedHexStringToFixed(*res->result, block_hash)) {
     return std::move(callback).Run(std::nullopt, WalletParsingErrorMessage());
   }
 

@@ -242,49 +242,68 @@ TEST(HexUtilsUnitTest, PrefixedHexStringToBytes) {
 }
 
 TEST(HexUtilsUnitTest, PrefixedHexStringToFixed) {
+  std::array<uint8_t, 1> out1 = {};
+  std::array<uint8_t, 2> out2 = {};
+  std::array<uint8_t, 4> out4 = {};
+  std::array<uint8_t, 8> out8 = {};
+  std::array<uint8_t, 16> out16 = {};
+  std::array<uint8_t, 32> out32 = {};
+
   // Empty strings, should fail.
-  EXPECT_FALSE(PrefixedHexStringToFixed<1>("0x"));
-  EXPECT_FALSE(PrefixedHexStringToFixed<1>(""));
+  EXPECT_FALSE(PrefixedHexStringToFixed("0x", out1));
+  EXPECT_FALSE(PrefixedHexStringToFixed("", out1));
 
   // Invalid hex digits, but correct lengths.
-  EXPECT_FALSE(PrefixedHexStringToFixed<1>("0xy"));
-  EXPECT_FALSE(PrefixedHexStringToFixed<1>("0xxy"));
+  EXPECT_FALSE(PrefixedHexStringToFixed("0xy", out1));
+  EXPECT_FALSE(PrefixedHexStringToFixed("0xxy", out1));
 
   // No leading 0x marker, but correct lengths.
-  EXPECT_FALSE(PrefixedHexStringToFixed<1>("0"));
-  EXPECT_FALSE(PrefixedHexStringToFixed<1>("00"));
-  EXPECT_FALSE(PrefixedHexStringToFixed<2>("123"));
-  EXPECT_FALSE(PrefixedHexStringToFixed<2>("0123"));
+  EXPECT_FALSE(PrefixedHexStringToFixed("0", out1));
+  EXPECT_FALSE(PrefixedHexStringToFixed("00", out1));
+  EXPECT_FALSE(PrefixedHexStringToFixed("123", out2));
+  EXPECT_FALSE(PrefixedHexStringToFixed("0123", out2));
 
   // Length mismatch but otherwise valid hex strings.
-  EXPECT_FALSE(PrefixedHexStringToFixed<4>("0x11223"));
-  EXPECT_FALSE(PrefixedHexStringToFixed<4>("0x112233"));
-  EXPECT_FALSE(PrefixedHexStringToFixed<4>("0x112233445"));
-  EXPECT_FALSE(PrefixedHexStringToFixed<4>("0x1122334455"));
-  EXPECT_FALSE(PrefixedHexStringToFixed<16>("0x1"));
-  EXPECT_FALSE(PrefixedHexStringToFixed<16>("0x11"));
+  EXPECT_FALSE(PrefixedHexStringToFixed("0x11223", out4));
+  EXPECT_FALSE(PrefixedHexStringToFixed("0x112233", out4));
+  EXPECT_FALSE(PrefixedHexStringToFixed("0x112233445", out4));
+  EXPECT_FALSE(PrefixedHexStringToFixed("0x1122334455", out4));
+  EXPECT_FALSE(PrefixedHexStringToFixed("0x1", out16));
+  EXPECT_FALSE(PrefixedHexStringToFixed("0x11", out16));
 
-  EXPECT_EQ(PrefixedHexStringToFixed<1>("0x0"), (std::array<uint8_t, 1>{0x00}));
-  EXPECT_EQ(PrefixedHexStringToFixed<1>("0x01"),
-            (std::array<uint8_t, 1>{0x01}));
-  EXPECT_EQ(PrefixedHexStringToFixed<1>("0xf"), (std::array<uint8_t, 1>{0x0f}));
-  EXPECT_EQ(PrefixedHexStringToFixed<1>("0x3"), (std::array<uint8_t, 1>{0x03}));
-  EXPECT_EQ(PrefixedHexStringToFixed<2>("0x0123"),
-            (std::array<uint8_t, 2>{0x01, 0x23}));
-  EXPECT_EQ(PrefixedHexStringToFixed<2>("0x123"),
-            (std::array<uint8_t, 2>{0x01, 0x23}));
-  EXPECT_EQ(PrefixedHexStringToFixed<4>("0xdeadbeef"),
-            (std::array<uint8_t, 4>{0xde, 0xad, 0xbe, 0xef}));
-  EXPECT_EQ(
-      PrefixedHexStringToFixed<8>("0x0123456789abcdef"),
-      (std::array<uint8_t, 8>{0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef}));
-  EXPECT_EQ(
-      PrefixedHexStringToFixed<8>("0xfedcba9876543210"),
-      (std::array<uint8_t, 8>{0xfe, 0xdc, 0xba, 0x98, 0x76, 0x54, 0x32, 0x10}));
+  EXPECT_TRUE(PrefixedHexStringToFixed("0x0", out1));
+  EXPECT_EQ(out1, (std::array<uint8_t, 1>{0x00}));
+
+  EXPECT_TRUE(PrefixedHexStringToFixed("0x01", out1));
+  EXPECT_EQ(out1, (std::array<uint8_t, 1>{0x01}));
+
+  EXPECT_TRUE(PrefixedHexStringToFixed("0xf", out1));
+  EXPECT_EQ(out1, (std::array<uint8_t, 1>{0x0f}));
+
+  EXPECT_TRUE(PrefixedHexStringToFixed("0x3", out1));
+  EXPECT_EQ(out1, (std::array<uint8_t, 1>{0x03}));
+
+  EXPECT_TRUE(PrefixedHexStringToFixed("0x0123", out2));
+  EXPECT_EQ(out2, (std::array<uint8_t, 2>{0x01, 0x23}));
+
+  EXPECT_TRUE(PrefixedHexStringToFixed("0x123", out2));
+  EXPECT_EQ(out2, (std::array<uint8_t, 2>{0x01, 0x23}));
+
+  EXPECT_TRUE(PrefixedHexStringToFixed("0xdeadbeef", out4));
+  EXPECT_EQ(out4, (std::array<uint8_t, 4>{0xde, 0xad, 0xbe, 0xef}));
+
+  EXPECT_TRUE(PrefixedHexStringToFixed("0x0123456789abcdef", out8));
+  EXPECT_EQ(out8, (std::array<uint8_t, 8>{0x01, 0x23, 0x45, 0x67, 0x89, 0xab,
+                                          0xcd, 0xef}));
+
+  EXPECT_TRUE(PrefixedHexStringToFixed("0xfedcba9876543210", out8));
+  EXPECT_EQ(out8, (std::array<uint8_t, 8>{0xfe, 0xdc, 0xba, 0x98, 0x76, 0x54,
+                                          0x32, 0x10}));
 
   std::string_view hash =
       "0xba38d3e0e1033e97a3aa294e59741c9f4ab8786c8d55c493d0ebc58b885961b3";
-  EXPECT_EQ(base::HexEncode(PrefixedHexStringToFixed<32>(hash).value()),
+  EXPECT_TRUE(PrefixedHexStringToFixed(hash, out32));
+  EXPECT_EQ(base::HexEncode(out32),
             "BA38D3E0E1033E97A3AA294E59741C9F4AB8786C8D55C493D0EBC58B885961B3");
 }
 

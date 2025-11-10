@@ -80,16 +80,8 @@ std::optional<std::vector<uint8_t>> PrefixedHexStringToBytes(
 // a leading "0x". If required, this function will append a leading 0 if the
 // supplied hex string contains an odd-number of characters (i.e. 0x123 will be
 // treated as 0x0123).
-template <size_t N>
-  requires(N > 0)
-std::optional<std::array<uint8_t, N>> PrefixedHexStringToFixed(
-    std::string_view input) {
-  std::array<uint8_t, N> bytes = {};
-  if (!internal::WritePrefixedHexStringToFixed(input, bytes)) {
-    return std::nullopt;
-  }
-  return bytes;
-}
+[[nodiscard]] bool PrefixedHexStringToFixed(std::string_view input,
+                                            base::span<uint8_t> out);
 
 }  // namespace brave_wallet
 

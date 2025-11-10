@@ -28,39 +28,6 @@ char NibbleToChar(uint8_t val) {
 
 }  // namespace
 
-namespace internal {
-
-bool WritePrefixedHexStringToFixed(std::string_view input,
-                                   base::span<uint8_t> bytes) {
-  DCHECK(!bytes.empty());
-
-  input = base::RemovePrefix(input, "0x").value_or({});
-  if (input.empty()) {
-    return false;
-  }
-
-  // e.g. 0x123 => 0x0123
-  if (input.size() % 2 == 1) {
-    auto [before, after] = bytes.split_at(size_t{1});
-    bytes = after;
-
-    std::array<char, 2> tmp = {'0', input[0]};
-    if (!base::HexStringToSpan(base::as_string_view(tmp), before)) {
-      return false;
-    }
-
-    input.remove_prefix(1);
-    if (input.empty()) {
-      // We only have a valid parse here if there is no more expected output.
-      return bytes.empty();
-    }
-  }
-
-  return base::HexStringToSpan(input, bytes);
-}
-
-}  // namespace internal
-
 std::string ToHex(std::string_view data) {
   if (data.empty()) {
     return "0x0";
@@ -240,6 +207,34 @@ std::optional<std::vector<uint8_t>> PrefixedHexStringToBytes(
   }
 
   return result;
+}
+
+bool PrefixedHexStringToFixed(std::string_view input, base::span<uint8_t> out) {
+  DCHECK(!out.empty());
+
+  input = base::RemovePrefix(input, "0x").value_or({});
+  if (input.empty()) {
+    return false;
+  }
+
+  // e.g. 0x123 => 0x0123
+  if (input.size() % 2 == 1) {
+    auto [before, after] = out.split_at(size_t{1});
+    out = after;
+
+    std::array<char, 2> tmp = {'0', input[0]};
+    if (!base::HexStringToSpan(base::as_string_view(tmp), before)) {
+      return false;
+    }
+
+    input.remove_prefix(1);
+    if (input.empty()) {
+      // We only have a valid parse here if there is no more expected output.
+      return out.empty();
+    }
+  }
+
+  return base::HexStringToSpan(input, out);
 }
 
 }  // namespace brave_wallet
