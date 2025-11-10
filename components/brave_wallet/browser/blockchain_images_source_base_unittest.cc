@@ -5,15 +5,18 @@
 
 #include "brave/components/brave_wallet/browser/blockchain_images_source_base.h"
 
+#include <cstddef>
 #include <memory>
 #include <string_view>
 #include <utility>
 
 #include "base/files/file_path.h"
 #include "base/memory/ref_counted_memory.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/path_service.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
+#include "base/version.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -41,12 +44,16 @@ class BlockchainImagesSourceBaseTest : public testing::Test {
   ~BlockchainImagesSourceBaseTest() override = default;
 
   void SetUp() override {
-    // brave/test/data/brave_wallet/1.0.1
+    // brave/components/test/data/brave_wallet/1.0.1
     brave_wallet::SetLastInstalledWalletVersionForTest(base::Version("1.0.1"));
     source_ = std::make_unique<TestBlockchainImagesSource>(
-        BraveWalletTestDataFolder());
+        BraveWalletComponentsTestDataFolder());
   }
-  void TearDown() override { source_.reset(); }
+  void TearDown() override {
+    data_received_ = false;
+    source_.reset();
+    data_.reset();
+  }
 
   TestBlockchainImagesSource* source() const { return source_.get(); }
 
@@ -75,8 +82,6 @@ TEST_F(BlockchainImagesSourceBaseTest, GetMimeTypeForPath) {
 
 TEST_F(BlockchainImagesSourceBaseTest, StartDataRequestForPath) {
   base::RunLoop run_loop;
-  data_received_ = false;
-  data_.reset();
 
   source()->StartDataRequestForPath(
       "logo.png", base::BindLambdaForTesting(
@@ -93,8 +98,6 @@ TEST_F(BlockchainImagesSourceBaseTest, StartDataRequestForPath) {
 
 TEST_F(BlockchainImagesSourceBaseTest, StartDataRequestForPathImageNotExist) {
   base::RunLoop run_loop;
-  data_received_ = false;
-  data_.reset();
 
   source()->StartDataRequestForPath(
       "ent.svg", base::BindLambdaForTesting(

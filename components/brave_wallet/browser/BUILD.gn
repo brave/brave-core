@@ -814,7 +814,6 @@ source_set("unit_tests") {
     ":utils",
     "//base/test:test_support",
     "//brave/components/brave_component_updater/browser:test_support",
-    "//brave/components/brave_wallet/browser:blockchain_images_source",
     "//brave/components/brave_wallet/browser/bitcoin:generated_bitcoin_rpc_responses",
     "//brave/components/brave_wallet/browser/cardano:generated_cardano_rpc_blockfrost_api",
     "//brave/components/brave_wallet/browser/internal:cardano_tx_decoder",
