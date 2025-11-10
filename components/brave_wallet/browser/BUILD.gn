@@ -639,16 +639,30 @@ generated_types("meld_integration_responses") {
   ]
 }
 
+if (is_ios) {
+  bundle_data("unit_tests_bundle_data") {
+    testonly = true
+    visibility = [ ":unit_tests" ]
+    sources = [
+      "//brave/components/test/data/brave_wallet/1.0.1/images/logo.png",
+      "//brave/components/test/data/brave_wallet/cardano/cardano_sdk_cip30/index.mts",
+      "//brave/components/test/data/brave_wallet/cardano/cardano_sdk_cip30/test_vectors.json",
+      "//brave/components/test/data/brave_wallet/cardano/cardano_sdk_crypto_slip23/index.mts",
+      "//brave/components/test/data/brave_wallet/cardano/cardano_sdk_crypto_slip23/test_vectors.json",
+      "//brave/third_party/bitcoin-core/src/src/test/data/key_io_valid.json",
+    ]
+    outputs = [ "{{bundle_resources_dir}}/" +
+                "{{source_root_relative_dir}}/{{source_file_part}}" ]
+  }
+}
+
 source_set("unit_tests") {
   testonly = true
   sources = [
     "account_discovery_manager_unittest.cc",
     "account_resolver_delegate_impl_unittest.cc",
-    "asset_ratio_response_parser_unittest.cc",
-    "asset_ratio_service_unittest.cc",
     "bip39_unittest.cc",
     "bitcoin/bitcoin_block_tracker_unittest.cc",
-    "bitcoin/bitcoin_hardware_keyring_unittest.cc",
     "bitcoin/bitcoin_hd_keyring_unittest.cc",
     "bitcoin/bitcoin_import_keyring_unittest.cc",
     "bitcoin/bitcoin_knapsack_solver_unittest.cc",
@@ -661,11 +675,8 @@ source_set("unit_tests") {
     "bitcoin/bitcoin_tx_state_manager_unittest.cc",
     "bitcoin/bitcoin_wallet_service_unittest.cc",
     "blockchain_list_parser_unittest.cc",
-    "blockchain_registry_unittest.cc",
     "brave_wallet_p3a_unittest.cc",
     "brave_wallet_prefs_unittest.cc",
-    "brave_wallet_utils_unittest.cc",
-    "cardano/cardano_api_impl_unittest.cc",
     "cardano/cardano_block_tracker_unittest.cc",
     "cardano/cardano_cip30_serializer_unittest.cc",
     "cardano/cardano_create_transaction_task_unittest.cc",
@@ -673,9 +684,7 @@ source_set("unit_tests") {
     "cardano/cardano_hd_keyring_unittest.cc",
     "cardano/cardano_knapsack_solver_unittest.cc",
     "cardano/cardano_max_send_solver_unittest.cc",
-    "cardano/cardano_provider_impl_unittest.cc",
     "cardano/cardano_rpc_schema_unittest.cc",
-    "cardano/cardano_rpc_unittest.cc",
     "cardano/cardano_transaction_serializer_unittest.cc",
     "cardano/cardano_transaction_unittest.cc",
     "cardano/cardano_tx_manager_unittest.cc",
@@ -685,7 +694,6 @@ source_set("unit_tests") {
     "eip1559_transaction_unittest.cc",
     "eip2930_transaction_unittest.cc",
     "eth_abi_decoder_unittest.cc",
-    "eth_block_tracker_unittest.cc",
     "eth_data_builder_unittest.cc",
     "eth_data_parser_unittest.cc",
     "eth_gas_utils_unittest.cc",
@@ -694,10 +702,8 @@ source_set("unit_tests") {
     "eth_response_parser_unittest.cc",
     "eth_topics_builder_unittest.cc",
     "eth_transaction_unittest.cc",
-    "eth_tx_manager_unittest.cc",
     "eth_tx_meta_unittest.cc",
     "eth_tx_state_manager_unittest.cc",
-    "ethereum_keyring_unittest.cc",
     "fil_block_tracker_unittest.cc",
     "fil_nonce_tracker_unittest.cc",
     "fil_requests_unittest.cc",
@@ -712,7 +718,6 @@ source_set("unit_tests") {
     "internal/hd_key_ed25519_slip23_unittest.cc",
     "internal/hd_key_ed25519_unittest.cc",
     "internal/hd_key_sr25519_unittest.cc",
-    "internal/hd_key_unittest.cc",
     "internal/secp256k1_signature_unittest.cc",
     "json_keystore_parser_unittest.cc",
     "json_rpc_requests_helper_unittest.cc",
@@ -721,7 +726,6 @@ source_set("unit_tests") {
     "json_rpc_service_unittest.cc",
     "keyring_service_migrations_unittest.cc",
     "keyring_service_prefs_unittest.cc",
-    "keyring_service_unittest.cc",
     "meld_integration_response_parser_unittest.cc",
     "meld_integration_service_unittest.cc",
     "network_manager_unittest.cc",
@@ -764,8 +768,6 @@ source_set("unit_tests") {
     "tx_storage_delegate_impl_unittest.cc",
     "unstoppable_domains_dns_resolve_unittest.cc",
     "unstoppable_domains_multichain_calls_unittest.cc",
-    "wallet_data_files_installer_unittest.cc",
-    "zcash/zcash_create_transparent_transaction_task_unittest.cc",
     "zcash/zcash_grpc_utils_unittest.cc",
     "zcash/zcash_keyring_unittest.cc",
     "zcash/zcash_resolve_transaction_status_task_unittest.cc",
@@ -774,6 +776,27 @@ source_set("unit_tests") {
     "zcash/zcash_transaction_utils_unittest.cc",
     "zcash/zcash_wallet_service_unittest.cc",
   ]
+
+  if (!is_ios) {
+    # TODO(https://github.com/brave/brave-browser/issues/50734) Investigate why these tests fail on ios
+    sources += [
+      "asset_ratio_response_parser_unittest.cc",
+      "asset_ratio_service_unittest.cc",
+      "bitcoin/bitcoin_hardware_keyring_unittest.cc",
+      "blockchain_registry_unittest.cc",
+      "brave_wallet_utils_unittest.cc",
+      "cardano/cardano_api_impl_unittest.cc",
+      "cardano/cardano_provider_impl_unittest.cc",
+      "cardano/cardano_rpc_unittest.cc",
+      "eth_block_tracker_unittest.cc",
+      "eth_tx_manager_unittest.cc",
+      "ethereum_keyring_unittest.cc",
+      "internal/hd_key_unittest.cc",
+      "keyring_service_unittest.cc",
+      "wallet_data_files_installer_unittest.cc",
+      "zcash/zcash_create_transparent_transaction_task_unittest.cc",
+    ]
+  }
 
   deps = [
     ":browser",
@@ -848,6 +871,10 @@ source_set("unit_tests") {
       "//components/permissions",
       "//third_party/blink/public/common",
     ]
+  }
+
+  if (is_ios) {
+    deps += [ ":unit_tests_bundle_data" ]
   }
 
   data = [

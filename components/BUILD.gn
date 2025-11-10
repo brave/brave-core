@@ -32,6 +32,7 @@ test("brave_components_unittests") {
     "//brave/components/brave_policy/ad_block_only_mode:unit_tests",
     "//brave/components/brave_shields/core/browser:unit_tests",
     "//brave/components/brave_shields/core/common:unit_tests",
+    "//brave/components/brave_wallet/browser:unit_tests",
     "//brave/components/brave_wallet/common:unit_tests",
     "//brave/components/component_updater:unit_tests",
     "//brave/components/email_aliases:unit_tests",
@@ -60,7 +61,6 @@ test("brave_components_unittests") {
   if (use_blink) {
     deps += [
       "//brave/components/ai_chat/content/browser:unit_tests",
-      "//brave/components/brave_wallet/browser:unit_tests",
       "//brave/components/brave_wallet/renderer/test:unit_tests",
     ]
   }
