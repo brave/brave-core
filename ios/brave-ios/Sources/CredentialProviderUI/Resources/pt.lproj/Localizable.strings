@@ -11,10 +11,10 @@
 "CredentialProvider.copyMenuItemTitle" = "Copiar";
 
 /* The title shown at the top of a list of credentials. 'Brave' in this case is the company name */
-"CredentialProvider.credentialListTitle" = "Senhas Brave";
+"CredentialProvider.credentialListTitle" = "Senhas do Brave";
 
 /* The password field in the details form. Shows the password (if revealed) or a mask of the users password for the website next to it */
-"CredentialProvider.detailsFormPasswordField" = "Senha";
+"CredentialProvider.detailsFormPasswordField" = "Palavra-passe";
 
 /* The URL field in the details form. Shows a website URL next to it */
 "CredentialProvider.detailsFormURLField" = "URL";
@@ -65,5 +65,5 @@
 "CredentialProvider.useButtonTitle" = "Usar";
 
 /* An accessibility label read out when a user activates VoiceOver on a button that when taps drills down into a credentials details */
-"CredentialProvider.viewCredentialDetails" = "Ver detalhes";
+"CredentialProvider.viewCredentialDetails" = "Ver Detalhes";
 

@@ -196,11 +196,14 @@
 /* An option setting for automatically shredding when the site is closed */
 "ShredOnSiteTabsClosed" = "Schede del sito chiuse";
 
+/* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'. */
+"ShredSiteAllTabsConfirmationMessage" = "La cancellazione chiuderà tutte le schede, eliminando tutti i dati. L’azione non può essere annullata.";
+
 /* A list row label for accessing the shred settings screen */
 "ShredSiteData" = "Cancella i dati del sito";
 
-/* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'.
-A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'.
+A message for a confirmation window that appears when a user clicks on 'Shred' with multiple tabs selected. */
 "ShredSiteDataConfirmationMessage" = "La cancellazione chiuderà tutte le schede del sito aperte, eliminando tutti i dati. L’azione non può essere annullata.";
 
 /* A title for a confirmation window that appears when a user clicks on 'Shred Data' */

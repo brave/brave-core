@@ -17,7 +17,7 @@
 "vpn.autoRenewSoonExpireTitle" = "Oh no! La teva subscripció VPN de Brave està a punt de caducar.";
 
 /* Title for screen to buy the VPN. */
-"vpn.buyVPNTitle" = "Tallafoc + VPN de Brave";
+"vpn.buyVPNTitle" = "VPN de Brave";
 
 /* Message for an alert when the VPN can't get prices from the App Store */
 "vpn.errorCantGetPricesBody" = "No s'ha pogut connectar a l'App Store, torna-ho a provar d'aquí a uns minuts.";

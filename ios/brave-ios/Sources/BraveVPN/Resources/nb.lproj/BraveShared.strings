@@ -17,7 +17,7 @@
 "vpn.autoRenewSoonExpireTitle" = "Å nei! Brave VPN-abonnementet ditt utløper snart.";
 
 /* Title for screen to buy the VPN. */
-"vpn.buyVPNTitle" = "Brave-brannmur + VPN";
+"vpn.buyVPNTitle" = "Brave-VPN";
 
 /* Message for an alert when the VPN can't get prices from the App Store */
 "vpn.errorCantGetPricesBody" = "Kunne ikke koble til App Store. Prøv igjen om noen minutter.";

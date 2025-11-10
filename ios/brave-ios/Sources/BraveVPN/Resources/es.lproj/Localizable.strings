@@ -101,7 +101,7 @@
 "vpn.contactFormTimezone" = "Zona horaria de iOS";
 
 /* Title for contact form email. */
-"vpn.contactFormTitle" = "Problema con el firewall + VPN de Brave";
+"vpn.contactFormTitle" = "Problema con VPN de Brave";
 
 /* Button text to enable Brave VPN */
 "vpn.enableButton" = "Habilitar";
@@ -275,7 +275,7 @@
 "vpn.settingsTransportProtocol" = "Protocolo de transporte";
 
 /* Button to allow the user to view the App Store receipt. */
-"vpn.settingsViewReceipt" = "Ver Recibo de la App Store";
+"vpn.settingsViewReceipt" = "Ver Recibo del App Store";
 
 /* The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc. */
 "vpn.settingsVPNKillSwitchDescription" = "Cuando está activada, si tu conexión VPN cae inesperadamente, tu dispositivo se desconectará automáticamente de Internet, para evitar fugas de direcciones IP y datos. [Más información](%@)";
@@ -296,7 +296,7 @@
 "vpn.vpnBackgroundNotificationBody" = "Brave continuará protegiéndote incluso en segundo plano.";
 
 /* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationTitle" = "El firewall + VPN de Brave está ACTIVADO";
+"vpn.vpnBackgroundNotificationTitle" = "VPN de Brave está ACTIVADA";
 
 /* Text for description of list item which chooses the optimal server for the country region */
 "vpn.vpnCityRegionOptimalDescription" = "Usar el mejor servidor que haya disponible";
@@ -311,7 +311,7 @@
 "vpn.vpnConfigGenericErrorTitle" = "Error";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "Para que el firewall + VPN de Brave funcione, es necesario que instales un perfil VPN en tu dispositivo.";
+"vpn.vpnConfigPermissionDeniedErrorBody" = "Para que la VPN de Brave funcione, es necesario que instales un perfil VPN en tu dispositivo.";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
 "vpn.vpnConfigPermissionDeniedErrorTitle" = "Permiso denegado";
@@ -341,7 +341,7 @@
 "vpn.vpnRegionChangedTitle" = "Región de VPN modificada";
 
 /* Message for alert to reset vpn configuration */
-"vpn.vpnResetAlertBody" = "Se restablecerá la configuración del firewall + VPN de Brave y se corregirán todos los errores. El proceso puede tardar un minuto.";
+"vpn.vpnResetAlertBody" = "Se restablecerá la configuración de tu VPN de Brave y se corregirán todos los errores. El proceso puede tardar un minuto.";
 
 /* Title for alert to reset vpn configuration */
 "vpn.vpnResetAlertTitle" = "Restablecer la configuración";

@@ -59,7 +59,7 @@
 "CredentialProvider.setPasscodeAlertMessage" = "Да бисте приступили лозинкама, морате прво да подесите приступни код на уређају.";
 
 /* The title displayed in alert when a user needs to set passcode */
-"CredentialProvider.setPasscodeAlertTitle" = "Подесите приступни код";
+"CredentialProvider.setPasscodeAlertTitle" = "Подеси приступни код";
 
 /* A title for a button shown as a confirmation action on a login's detail screen. Tapping it uses the password when autofilling into the website */
 "CredentialProvider.useButtonTitle" = "Искористи";

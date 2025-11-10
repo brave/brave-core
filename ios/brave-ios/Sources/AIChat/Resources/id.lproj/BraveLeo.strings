@@ -146,37 +146,43 @@
 "aichat.internalErrorViewTitle" = "Terjadi kesalahan saat memproses permintaan Anda. Coba lagi nanti.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeHaikuMessageDescription" = "Hai, saya Leo. Saya mewakili Brave dan didukung oleh Claude Haiku, model yang diciptakan oleh Anthropic untuk menangani tugas-tugas pemrosesan percakapan dan teks. Claude Haiku dihost oleh Brave dalam infrastruktur kami yang aman.";
+"aichat.introMessageClaudeHaikuMessageDescription" = "Hai, saya Leo. Saya adalah asisten AI oleh Brave. Saya didukung oleh Claude Haiku, model yang diciptakan oleh Anthropic untuk menangani tugas-tugas pemrosesan percakapan dan teks. Claude Haiku dihost oleh Brave dalam infrastruktur kami yang aman.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeHaikuModelPurposeDescription" = "Obrolan secepat kilat";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeInstantMessageDescription" = "Hai, saya Leo. Saya mewakili Brave dan didukung oleh Claude Instant, model yang diciptakan oleh Anthropic untuk menangani tugas-tugas pemrosesan percakapan dan teks. Claude Instant dihost oleh Brave dalam infrastruktur kami yang aman.";
+"aichat.introMessageClaudeInstantMessageDescription" = "Hai, saya Leo. Saya adalah asisten AI oleh Brave. Saya didukung oleh Claude Instant, model yang diciptakan oleh Anthropic untuk menangani tugas-tugas pemrosesan percakapan dan teks. Claude Instant dihost oleh Brave dalam infrastruktur kami yang aman.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeSonnetMessageDescription" = "Hai, saya Leo. Saya mewakili Brave dan didukung oleh Claude Sonnet, model yang diciptakan oleh Anthropic untuk menangani tugas-tugas pemrosesan percakapan dan teks. Claude Sonnet dihost oleh Brave dalam infrastruktur kami yang aman.";
+"aichat.introMessageClaudeSonnetMessageDescription" = "Hai, saya Leo. Saya adalah asisten AI oleh Brave. Saya didukung oleh Claude Sonnet, model yang diciptakan oleh Anthropic untuk menangani tugas-tugas pemrosesan percakapan dan teks. Claude Sonnet dihost oleh Brave dalam infrastruktur kami yang aman.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeSonnetModelPurposeDescription" = "Kecepatan yang seimbang dengan kecerdasan";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageDeepSeekR1MessageDescription" = "Hai, saya Leo. Saya adalah asisten AI yang dihost sepenuhnya oleh Brave. Saya didukung oleh DeepSeek R1, model yang diciptakan oleh DeepSeek untuk melakukan tugas penalaran yang mendalam.";
+"aichat.introMessageDeepSeekR1MessageDescription" = "Hai, saya Leo. Saya adalah asisten AI oleh Brave. Saya didukung oleh DeepSeek R1, model yang diciptakan oleh DeepSeek untuk melakukan tugas-tugas penalaran mendalam. DeepSeek R1 dihost oleh Brave dalam infrastruktur kami yang aman.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageDeepSeekR1ModelPurposeDescription" = "Model penalaran";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageGemmaMessageDescription" = "Hai, saya Leo. Saya adalah asisten AI oleh Brave. Saya didukung oleh Gemma 3 12B, model yang diciptakan oleh Google DeepMind agar berfungsi dengan baik dan dapat diterapkan untuk banyak kasus penggunaan. Gemma dihost oleh Brave dalam infrastruktur kami yang aman.";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageGemmaPurposeDescription" = "Pemahaman teks dan gambar untuk tujuan umum";
 
 /* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
 "aichat.introMessageGenericMessageDescription" = "Hai, saya Leo. Saya asisten AI berdasarkan Brave. Saya didukung oleh %@. Tanyakan saya semua hal dan saya akan berusaha menjawab dengan sebaik mungkin.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageLlamaMessageDescription" = "Hai, saya Leo. Saya adalah asisten AI yang dihost sepenuhnya oleh Brave. Saya didukung oleh Llama 3.1 8B, model yang diciptakan oleh Meta agar berfungsi dengan baik dan dapat diterapkan untuk banyak kasus penggunaan. Llama dihost oleh Brave dalam infrastruktur kami yang aman.";
+"aichat.introMessageLlamaMessageDescription" = "Hai, saya Leo. Saya adalah asisten AI oleh Brave. Saya didukung oleh Llama 3.1 8B, model yang diciptakan oleh Meta agar berfungsi dengan baik dan dapat diterapkan untuk banyak kasus penggunaan. Llama dihost oleh Brave dalam infrastruktur kami yang aman.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageLlamaModelPurposeDescription" = "Obrolan umum";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageQwenMessageDescription" = "Hai, saya Leo. Saya adalah asisten AI yang dihost sepenuhnya oleh Brave. Saya didukung oleh Qwen 14B, model yang diciptakan oleh Alibaba Cloud agar berfungsi dengan baik dan dapat diterapkan untuk banyak kasus penggunaan. Qwen dihost oleh Brave dalam infrastruktur kami yang aman.";
+"aichat.introMessageQwenMessageDescription" = "Hai, saya Leo. Saya adalah asisten AI oleh Brave. Saya didukung oleh Qwen 14B, model yang diciptakan oleh Alibaba Cloud agar berfungsi dengan baik dan dapat diterapkan untuk banyak kasus penggunaan. Qwen dihost oleh Brave dalam infrastruktur kami yang aman.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageQwenModelPurposeDescription" = "Obrolan umum, koding, dan lainnya";

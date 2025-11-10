@@ -11,7 +11,7 @@
 "altAppIcon.errorTitle" = "Impossible de changer l'icône de l'application";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"BackTitle" = "Retour";
+"BackTitle" = "Retour en arrière";
 
 /* Accessibility message e.g. spoken by VoiceOver when page translation becomes available. */
 "BraveTranslate.availableVoiceOverAnnouncement" = "Traduction de la page disponible";
@@ -26,7 +26,7 @@
 "CloseTabTitle" = "Fermer l'onglet";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"ForwardTitle" = "Avancer";
+"ForwardTitle" = "Rétablir";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "NewPrivateTabTitle" = "Nouvel onglet de navigation privée";

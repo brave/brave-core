@@ -14,7 +14,7 @@
 "ActionTitles.print" = "Ispis";
 
 /* A button title shown on the menu that presents the Brave Rewards feature. */
-"ActionTitles.rewards" = "Rewards";
+"ActionTitles.rewards" = "Nagrade Brave";
 
 /* A button title shown on the menu that when tapped lets the user share the current URL or document they're viewing */
 "ActionTitles.share" = "Podijelite…";
@@ -59,7 +59,7 @@
 "BrowserMenu.showAllButtonTitle" = "Pokaži sve…";
 
 /* A title shown above the list of actions that are visible on the menu. */
-"BrowserMenu.visibleActionsTitle" = "Sve radnje";
+"BrowserMenu.visibleActionsTitle" = "Primarne akcije";
 
 /* A title on a button that lets the user switch the active VPN's selected region. */
 "BrowserMenu.vpnButtonTitle" = "VPN";

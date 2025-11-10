@@ -161,10 +161,16 @@
 "aichat.introMessageClaudeSonnetModelPurposeDescription" = "속도와 지능의 균형";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageDeepSeekR1MessageDescription" = "안녕하세요, 저는 레오예요. Brave가 완전히 자체 호스팅하는 AI 어시스턴트입니다. 저는 심층 추론 작업을 수행하기 위해 딥시크에서 개발한 딥시크 R1 모델을 기반으로 구동됩니다.";
+"aichat.introMessageDeepSeekR1MessageDescription" = "안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 심층적인 추론 작업을 수행하도록 DeepSeek에서 개발한 DeepSeek R1 모델을 기반으로 구동됩니다. DeepSeek R1은 Brave의 안전한 인프라를 통해 호스팅됩니다.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageDeepSeekR1ModelPurposeDescription" = "추론 모델";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageGemmaMessageDescription" = "안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 다양한 활용 사례에 맞춰 높은 성능을 발휘하도록 Google에서 개발한 Gemma 3 12B 모델을 기반으로 구동됩니다. Gemma는 Brave의 안전한 인프라를 통해 호스팅됩니다.";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageGemmaPurposeDescription" = "일반 텍스트 및 이미지 이해";
 
 /* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
 "aichat.introMessageGenericMessageDescription" = "안녕하세요, 전 Brave가 만든 AI 어시스턴트인 레오예요. 전 %@ 기반으로 작동합니다. 무엇이든 물어보시면 성심을 다해 답변해드릴게요.";
@@ -176,7 +182,7 @@
 "aichat.introMessageLlamaModelPurposeDescription" = "일반 목적의 채팅";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageQwenMessageDescription" = "안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 다양한 활용 사례에 맞춰 높은 성능을 발휘하도록 알리바바 클라우드에서 개발한 큐원 14B 모델을 기반으로 구동됩니다. 큐원은 Brave의 안전한 인프라를 통해 호스팅됩니다.";
+"aichat.introMessageQwenMessageDescription" = "안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 다양한 활용 사례에 맞춰 높은 성능을 발휘하도록 알리바바 클라우드에서 개발한 큐원14B 모델을 기반으로 구동됩니다. 큐원은 Brave의 안전한 인프라를 통해 호스팅됩니다.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageQwenModelPurposeDescription" = "범용 채팅, 코딩 등";

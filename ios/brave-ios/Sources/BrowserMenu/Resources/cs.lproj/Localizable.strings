@@ -59,7 +59,7 @@
 "BrowserMenu.showAllButtonTitle" = "Zobrazit vše…";
 
 /* A title shown above the list of actions that are visible on the menu. */
-"BrowserMenu.visibleActionsTitle" = "Zobrazit vše…";
+"BrowserMenu.visibleActionsTitle" = "Primární akce";
 
 /* A title on a button that lets the user switch the active VPN's selected region. */
 "BrowserMenu.vpnButtonTitle" = "VPN";

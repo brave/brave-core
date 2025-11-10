@@ -139,6 +139,9 @@
 /* Placeholder text for adding or editing a bookmark */
 "BookmarkUrlPlaceholderText" = "Adresse";
 
+/* Title for the Brave Account section in settings */
+"BraveAccount" = "Brave Konto";
+
 /* Button to show the brave panel */
 "BravePanel" = "Brave Menü";
 
@@ -264,36 +267,6 @@
 
 /* Title for Bottom Bar Callout View */
 "callout.bottomBarCalloutTitle" = "Passe die Tabs-Leiste von Brave an";
-
-/* Description - Description used for main button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutButtonDescription" = "Brave als Standardbrowser festlegen?";
-
-/* Subtitle - Description for Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutDescription" = "Wenn Brave als Standard gewählt wurde, wird jeder Link, den du antippst, mit den Datenschutzmechanismen von Brave geöffnet.";
-
-/* Title for main button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutPrimaryButtonTitle" = "Als Standard festlegen";
-
-/* Description for secondary button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutSecondaryButtonDescription" = "Bereits als Standard festgelegt?";
-
-/* Title for secondary button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutSecondaryButtonTitle" = "Überspringen";
-
-/* Title for Default Browser Full Screen Callout */
-"callout.defaultBrowserTitle" = "Privatsphäre leicht gemacht.";
-
-/* Subtitle - Description for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutDescription" = "Das hilft uns, zu verstehen, welche Brave Funktionen am häufigsten genutzt werden. Du kannst diese jederzeit in den Brave Einstellungen unter „Brave Shields und Datenschutz“ ändern.";
-
-/* Title for the link that navigates to a webpage showing information about p3a (Privacy Preserving Analytics) */
-"callout.p3aCalloutLinkTitle" = "Erfahre mehr über unsere Produktanalyse, die den Datenschutz respektiert (P3A).";
-
-/* Title for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutTitle" = "Brave mit deiner Hilfe verbessern.";
-
-/* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutToggleTitle" = "Private und anonyme Produkteinblicke teilen.";
 
 /* Subtitle - Description for Privacy Everywhere Full Screen Callout */
 "callout.privacyEverywhereCalloutDescription" = "Nutze den Brave Datenschutz jetzt für deinen Computer oder dein Tablet und synchronisiere Lesezeichen und Erweiterungen zwischen deinen Geräten.";
@@ -588,9 +561,6 @@
 
 /* The success message that appears after a user sucessfully adds a new search engine */
 "custonmSearchEngine.thirdPartySearchEngineAddedToastTitle" = "Suchmaschine wurde hinzugefügt.";
-
-/* Button text to close the default browser popup. */
-"defaultBrowserCallout.introCancelButtonText" = "Nicht jetzt";
 
 /* Button text to open app settings */
 "defaultBrowserCallout.introOpenSettingsButtonText" = "Einstellungen öffnen";
@@ -1172,7 +1142,7 @@
 "OBRewardsDetail" = "Wenn du dich für private Brave Ads entscheidest, werden Publisher und Content Creators unterstützt, wann immer du eine Anzeige öffnen.";
 
 /* Detail text for rewards onboarding screen */
-"OBRewardsDetailInAdRegion" = "Verdiene Token und belohne die Creators für großartige Inhalte, während du surfst.";
+"OBRewardsDetailInAdRegion" = "Verdiene Token und belohne die Erstellenden für großartige Inhalte, während du surfst.";
 
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsPrivacyPolicyDetailLink" = "Datenschutzerklärung";
@@ -1201,18 +1171,6 @@
 /* Button to show Brave Rewards. */
 "OBTurnOnButton" = "Start";
 
-/* The description text shown when there is big tech tracker among trackers. Example usage: Google, Amazon and 32 other trackers blocked */
-"onboarding.blockedAdsOnboardingBigTechInformationText" = "%1$@ und %2$lld andere Werbung & Tracker blockiert";
-
-/* The footnote indicating what Brave shields is blocking */
-"onboarding.blockedAdsOnboardingFootnoteText" = "Sehe all die Dinge, die Brave auf jeder Website mit Shields blockiert hat.";
-
-/* The text describing user where they should press in order to open Shield panel */
-"onboarding.blockedAdsOnboardingInstructionsText" = "Tippen, um Brave Schutz anzuzeigen";
-
-/* The description text shown when there is no big tech tracker among trackers. Example usage: 31 Ads & trackers blocked. The number here is presented separately so it is not in translation. */
-"onboarding.blockedAdsOnboardingNoBigTechInformationText" = "Anzeigen & Tracker blockiert";
-
 /* Button text to let users know they can use the vpn on all their devices */
 "onboarding.linkReceiptButton" = "VPN-Abonnement verknüpfen";
 
@@ -1222,12 +1180,6 @@
 /* Popup title to let users know they can use the vpn on all their devices */
 "onboarding.linkReceiptTitle" = "Erweitere deine Brave Firewall + VPN-Schutz";
 
-/* Description for Navigate Settings Screen in Onboarding. This part indicating navigation ('Default Browser App') should match the option in iPhone Settings in that Language. */
-"onboarding.navigateSettingsOnboardingScreenDescription" = "Nach „Standardbrowser“ suchen";
-
-/* Title for Navigate Settings Screen in Onboarding */
-"onboarding.navigateSettingsOnboardingScreenTitle" = "Zu den Einstellungen …";
-
 /* Description for the NTP pop-over that describes the tracking information on NTP */
 "onboarding.ntpOnboardingPopOverTrackerDescription" = "Durch das Blockieren von Trackern und Werbung verbrauchen Websites weniger Daten und laden viel schneller.";
 
@@ -1236,9 +1188,6 @@
 
 /* Title for the Omnibox (URL Bar) pop-over that describes faster load times. */
 "onboarding.omniboxOnboardingPopOverTitle" = "Gebe den Namen einer Website oder eine URL ein";
-
-/* Title for Welcome Screen in Onboarding */
-"onboarding.welcomeScreenTitle" = "Willkommen bei Brave";
 
 /* Continue button to navigate to next onboarding screen. */
 "OnboardingContinueButton" = "Weiter";
@@ -1390,7 +1339,7 @@
 /* Title of the alert when a calendar event is available for download */
 "OpenTextCalendarAlertTitle" = "Kalenderereignis verfügbar";
 
-/* Button title to that opens a website. */
+/* Button title to open a website. */
 "OpenWebsite" = "Website öffnen";
 
 /* Brave News Item Menu title */
@@ -1413,9 +1362,6 @@
 
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
 "p3a.settingTitle" = "Erlaubt Produktanalyse, die den Datenschutz respektiert (P3A)";
-
-/* No comment provided by engineer. */
-"p3aCalloutCloseAccessibilityLabel" = "Produkt-Pop-up, das den Datenschutz respektiert, schließt";
 
 /* No comment provided by engineer. */
 "pageSecurityView.pageNotFullySecureTitle" = "Deine Verbindung zu dieser Website ist nicht vollständig sicher.";
@@ -1573,8 +1519,11 @@
 /* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
 "playlist.playlistAutoSaveSettingsTitle" = "Inhalt für Offline-Wiedergabe speichern";
 
+/* The title of the button for the user to proceed adding playlist item when the user's disk space is almost full */
+"playlist.playlistDiskSpaceAddAnywayButtonTitle" = "Trotzdem hinzufügen";
+
 /* When the user's disk space is almost full */
-"playlist.playlistDiskSpaceWarningMessage" = "Das Herunterladen von Video- und Audiodateien für die Offline-Wiedergabe kann große Mengen an Speicherplatz auf deinem Gerät erfordern. Bitte entferne Dateien, um Speicherplatz freizugeben.";
+"playlist.playlistDiskSpaceWarningMessage" = "Ihr Gerät hat wenig Speicherplatz. Das Hinzufügen dieses Videos zur Playlist kann fehlschlagen oder andere Downloads beeinträchtigen.";
 
 /* When the user's disk space is almost full */
 "playlist.playlistDiskSpaceWarningTitle" = "Speicherplatz fast voll";
@@ -1619,7 +1568,7 @@
 "playList.reopenButtonTitle" = "Erneut öffnen";
 
 /* Title for load resources error alert */
-"playList.sorryAlertTitle" = "Entschuldigung";
+"playList.sorryAlertTitle" = "Sorry";
 
 /* The title for the toast that shows up on a page containing a playlist item that was added to playlist */
 "playList.toastAddedToPlaylistTitle" = "In Playlist anzeigen";
@@ -1796,7 +1745,7 @@
 "privacyHub.settingsSlearDataTitle" = "Shields-Daten löschen";
 
 /* This label says shields, as a source of by what a resource was blocked. Think of it in context of 'Blocked by Shields' */
-"privacyHub.shieldsLabel" = "Shields";
+"privacyHub.shieldsLabel" = "Schutz";
 
 /* Text of a callout that tells the user they shields tracking data is disabled. The %@ placeholder will name the setting that needs to be enabled */
 "privacyHub.trackingDisabledCalloutBody" = "Aktiviere %@, um hier Daten anzuzeigen.";
@@ -2005,9 +1954,8 @@
 /* A label for a text entry field where the user can provide additional details for a web-compatibility report */
 "reportBrokenAdditionalDetailsRequired" = "Weitere Details";
 
-/* A label for a drop down where the user provides a category for a web-compatibility report
-A placeholder for a drop down where the user provides a category for a web-compatibility report */
-"reportBrokenCategory" = "Wähle aus";
+/* A label for a drop down where the user provides a category for a web-compatibility report */
+"reportBrokenCategory" = "Was ist das Hauptproblem, das dir auffällt?";
 
 /* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
 "ReportBrokenContactMe" = "Kontaktiere mich unter: (optional)";
@@ -2017,6 +1965,9 @@ A placeholder for a drop down where the user provides a category for a web-compa
 
 /* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
 "ReportBrokenContactMeSuggestions" = "E-Mail, X usw.";
+
+/* A placeholder for a drop down where the user provides a category for a web-compatibility report */
+"ReportBrokenPlaceholder" = "Wähle aus";
 
 /* First part of the report a broken site copy. After the colon is a new line and then a website address */
 "ReportBrokenSiteBody1" = "Teile den Brave-Developern mit, dass diese Seite nicht richtig funktioniert:";
@@ -2844,7 +2795,7 @@ A placeholder for a drop down where the user provides a category for a web-compa
 "sync.codeExpirationTitleLabel" = "Der Code ist abgelaufen. Generiere einen neuen, indem du auf die Schaltfläche unten tippst.";
 
 /* The unit abbreviation used for minutes when showing code validity. Ex: This temporary code is valid for the next 2 min */
-"sync.codeTimeMinutesAbbreviation" = "min";
+"sync.codeTimeMinutesAbbreviation" = "Min.";
 
 /* The unit text used for multiple hours when showing code validity. Ex: This temporary code is valid for the next 2 hours */
 "sync.codeTimeMultipleHourText" = "Stunden";
@@ -3089,8 +3040,14 @@ A placeholder for a drop down where the user provides a category for a web-compa
 /* A button title which when tapped will close all of the open tabs for the user */
 "tabGrid.closeAllTabsButtonTitle" = "Alle Tabs schließen";
 
-/* Accessibility label for a close button that when tapped closes the associated tab */
+/* Label for a close button that when tapped closes the associated tab */
 "tabGrid.closeTab" = "Tab schließen";
+
+/* Label for a close button that when tapped closes the associated tabs */
+"tabGrid.closeTabs" = "Tabs schließen";
+
+/* A button title which when tapped will allow the user to deselect multiple tabs in the tab grid */
+"tabGrid.deselectTabsButtonTitle" = "Gesamte Auswahl aufheben";
 
 /* A button title which when tapped will display a menu with more options */
 "tabGrid.moreMenuButtonTitle" = "Mehr";
@@ -3125,11 +3082,20 @@ A placeholder for a drop down where the user provides a category for a web-compa
 /* Accessibility label for the regular browsing option in the browsing mode picker */
 "tabGrid.regularBrowsingModeAccessibilityLabel" = "Normales Surfen";
 
+/* A text label showing how many tabs the user has currently selected in edit mode. It is shown next to the number of selected tabs e.g. "Selected tabs: 4" */
+"tabGrid.selectedTabs" = "Ausgewählte Registerkarten";
+
+/* A button title which when tapped will allow the user to select multiple tabs in the tab grid */
+"tabGrid.selectTabsButtonTitle" = "Tab auswählen";
+
 /* A button title that when tapped allows users to shred all of their tabs */
 "tabGrid.shredAllTabsButtonTitle" = "Alle Tabs schließen und Daten löschen";
 
 /* A button title that when tapped allows users to shred the currently selected tab */
 "tabGrid.shredSelectedTabButtonTitle" = "Ausgewählten Tab schließen und Daten löschen";
+
+/* A button title that when tapped allows users to shred the currently selected tabs */
+"tabGrid.shredSelectedTabsButtonTitle" = "Schreddern";
 
 /* Accessibility label for a button that allows users to shred their tabs (erase them & associated data) */
 "tabGrid.shredTabsAccessibilityLabel" = "Tabs schließen und Daten löschen";

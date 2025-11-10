@@ -101,7 +101,7 @@
 "vpn.contactFormTimezone" = "Временска зона iOS-а";
 
 /* Title for contact form email. */
-"vpn.contactFormTitle" = "Brave Firewall + VPN – проблем";
+"vpn.contactFormTitle" = "Проблем са Brave VPN";
 
 /* Button text to enable Brave VPN */
 "vpn.enableButton" = "Активирај";
@@ -296,7 +296,7 @@
 "vpn.vpnBackgroundNotificationBody" = "Чак и у позадини, Brave наставља да вас штити.";
 
 /* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationTitle" = "Brave Firewall + VPN је УКЉУЧЕН";
+"vpn.vpnBackgroundNotificationTitle" = "Brave VPN је УКЉУЧЕН";
 
 /* Text for description of list item which chooses the optimal server for the country region */
 "vpn.vpnCityRegionOptimalDescription" = "Користите најбољи доступни сервер";
@@ -311,7 +311,7 @@
 "vpn.vpnConfigGenericErrorTitle" = "Грешка";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "Brave Firewall + VPN захтева да VPN профил буде инсталиран на вашем уређају да би функционисао. ";
+"vpn.vpnConfigPermissionDeniedErrorBody" = "Brave VPN захтева да VPN профил буде инсталиран на вашем уређају да би функционисао. ";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
 "vpn.vpnConfigPermissionDeniedErrorTitle" = "Дозвола је одбијена";
@@ -341,7 +341,7 @@
 "vpn.vpnRegionChangedTitle" = "Регион VPN-а је промењен";
 
 /* Message for alert to reset vpn configuration */
-"vpn.vpnResetAlertBody" = "Овим ће се ресетовати ваша конфигурација за Brave Firewall + VPN и исправити грешке. Овај процес може потрајати неколико минута.";
+"vpn.vpnResetAlertBody" = "Овим ће се ресетовати ваша конфигурација за Brave VPN и исправити грешке. Овај процес може потрајати неколико минута.";
 
 /* Title for alert to reset vpn configuration */
 "vpn.vpnResetAlertTitle" = "Ресетуј конфигурацију";

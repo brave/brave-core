@@ -101,7 +101,7 @@
 "vpn.contactFormTimezone" = "iOS-aikavyöhyke";
 
 /* Title for contact form email. */
-"vpn.contactFormTitle" = "Brave-palomuuri ja -VPN -ongelma";
+"vpn.contactFormTitle" = "Brave-VPN-ongelma";
 
 /* Button text to enable Brave VPN */
 "vpn.enableButton" = "Ota käyttöön";
@@ -296,7 +296,7 @@
 "vpn.vpnBackgroundNotificationBody" = "Brave jatkaa suojaamistasi jopa taustalla toimiessaan.";
 
 /* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationTitle" = "Brave-palomuuri ja -VPN on kytketty PÄÄLLE";
+"vpn.vpnBackgroundNotificationTitle" = "Brave-VPN on PÄÄLLÄ";
 
 /* Text for description of list item which chooses the optimal server for the country region */
 "vpn.vpnCityRegionOptimalDescription" = "Käytä parasta käytettävissä olevaa palvelinta";
@@ -311,7 +311,7 @@
 "vpn.vpnConfigGenericErrorTitle" = "Virhe";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "Brave-palomuurin ja -VPN:n toiminta edellyttää, että laitteellesi on asennettu VPN-profiili.";
+"vpn.vpnConfigPermissionDeniedErrorBody" = "Toimiakseen Brave VPN vaatii VPN-profiilin asentamisen laitteellesi. ";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
 "vpn.vpnConfigPermissionDeniedErrorTitle" = "Lupa kielletty";
@@ -341,7 +341,7 @@
 "vpn.vpnRegionChangedTitle" = "VPN-alue muuttunut";
 
 /* Message for alert to reset vpn configuration */
-"vpn.vpnResetAlertBody" = "Tämä nollaa Brave-palomuurin ja -VPN:n määritykset ja korjaa mahdolliset virheet. Tämä prosessi voi kestää minuutin.";
+"vpn.vpnResetAlertBody" = "Tämä nollaa Brave-VPN -asetuksesi ja korjaa mahdolliset virheet. Tämä prosessi voi kestää minuutin.";
 
 /* Title for alert to reset vpn configuration */
 "vpn.vpnResetAlertTitle" = "Nollaa määritykset";

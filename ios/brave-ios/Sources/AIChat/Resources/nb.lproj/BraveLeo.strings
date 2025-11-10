@@ -146,25 +146,31 @@
 "aichat.internalErrorViewTitle" = "Noe gikk galt i behandlingen av forespørselen. Prøv igjen senere.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeHaikuMessageDescription" = "Hei, jeg er Leo. Jeg har proxy hos Brave og er drevet av Claude Haiku, en modell som ble skapt av Anthropic for å drifte samtale- og tekstbehandlingsoppgaver. Brave er vert for Claude Haiku via vår egen, sikre infrastruktur.";
+"aichat.introMessageClaudeHaikuMessageDescription" = "Hei, jeg heter Leo. Jeg er en KI-assistent fra Brave. Jeg driftes av Claude Haiku, en modell skapt av Anthropic for å drive samtale- og tekstbehandlingsoppgaver. Brave er vert for Claude Haiku via vår egen, sikre infrastruktur.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeHaikuModelPurposeDescription" = "Lynrask chat";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeInstantMessageDescription" = "Hei, jeg er Leo. Jeg har proxy hos Brave og er drevet av Claude Instant, en modell som ble skapt av Anthropic for å drifte samtale- og tekstbehandlingsoppgaver. Brave er vert for Claude Instant via vår egen, sikre infrastruktur.";
+"aichat.introMessageClaudeInstantMessageDescription" = "Hei, jeg heter Leo. Jeg er en KI-assistent fra Brave. Jeg driftes av Claude Instant, en modell skapt av Anthropic for å drive samtale- og tekstbehandlingsoppgaver. Brave er vert for Claude Instant via vår egen, sikre infrastruktur.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeSonnetMessageDescription" = "Hei, jeg er Leo. Jeg har proxy hos Brave og er drevet av Claude Sonnet, en modell som ble skapt av Anthropic for å drifte samtale- og tekstbehandlingsoppgaver. Brave er vert for Claude Sonnet via vår egen, sikre infrastruktur.";
+"aichat.introMessageClaudeSonnetMessageDescription" = "Hei, jeg heter Leo. Jeg er en KI-assistent fra Brave. Jeg driftes av Claude Sonnet, en modell skapt av Anthropic for å drive samtale- og tekstbehandlingsoppgaver. Brave er vert for Claude Sonnet via vår egen, sikre infrastruktur.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeSonnetModelPurposeDescription" = "Balansert hastighet og intelligens";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageDeepSeekR1MessageDescription" = "Hei, jeg er Leo. Jeg er en fullstendig vertsbasert KI-assistent fra Brave. Jeg er drevet av DeepSeek R1, en modell skapt av DeepSeek for å håndtere avanserte oppgaver.";
+"aichat.introMessageDeepSeekR1MessageDescription" = "Hei, jeg heter Leo og er en KI-assistent fra Brave. Jeg driftes av DeepSeek R1, som er en modell skapt av DeepSeek for å utføre komplekse resonneringsoppgaver. Brave er vert for DeepSeek R1 via vår egen, sikre infrastruktur.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageDeepSeekR1ModelPurposeDescription" = "Resonnementsmodell";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageGemmaMessageDescription" = "Hei, jeg heter Leo og er en KI-assistent fra Brave. Jeg driftes av Gemma 3 12B, som er en ytelsesdyktig modell fra Google DeepMind med mange ulike bruksområder. Brave er vert for Gemma via vår egen, sikre infrastruktur.";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageGemmaPurposeDescription" = "Generell tekst- og bildeforståelse";
 
 /* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
 "aichat.introMessageGenericMessageDescription" = "Hei! Jeg heter Leo, og er en AI-assistent fra %@ som du kan snakke med gjennom Brave. Spør meg om hva som helst, så skal jeg svare deg så godt jeg kan!";

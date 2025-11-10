@@ -101,7 +101,7 @@
 "vpn.contactFormTimezone" = "Fus orar iOS";
 
 /* Title for contact form email. */
-"vpn.contactFormTitle" = "Problemă Firewall + VPN Brave";
+"vpn.contactFormTitle" = "Problemă VPN Brave";
 
 /* Button text to enable Brave VPN */
 "vpn.enableButton" = "Activează";
@@ -296,7 +296,7 @@
 "vpn.vpnBackgroundNotificationBody" = "Chiar și în fundal, Brave va continua să te protejeze.";
 
 /* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationTitle" = "Firewall + VPN Brave este ON";
+"vpn.vpnBackgroundNotificationTitle" = "VPN Brave este ACTIVAT";
 
 /* Text for description of list item which chooses the optimal server for the country region */
 "vpn.vpnCityRegionOptimalDescription" = "Folosește cel mai bun server disponibil";
@@ -311,7 +311,7 @@
 "vpn.vpnConfigGenericErrorTitle" = "Eroare";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "Pentru a funcționa, Firewall + VPN Brave necesită instalarea unui profil VPN pe dispozitiv. ";
+"vpn.vpnConfigPermissionDeniedErrorBody" = "VPN Brave necesită instalarea unui profil VPN pe dispozitiv pentru a funcționa. ";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
 "vpn.vpnConfigPermissionDeniedErrorTitle" = "Permisiune refuzată";
@@ -341,7 +341,7 @@
 "vpn.vpnRegionChangedTitle" = "Regiune VPN schimbată";
 
 /* Message for alert to reset vpn configuration */
-"vpn.vpnResetAlertBody" = "Acest lucru va reseta configurația Brave Firewall + VPN și va corecta eventualele erori. Procesul poate dura un minut.";
+"vpn.vpnResetAlertBody" = "Acest lucru va reseta configurația VPN Brave și va corecta eventualele erori. Procesul poate dura un minut.";
 
 /* Title for alert to reset vpn configuration */
 "vpn.vpnResetAlertTitle" = "Resetare configurație";

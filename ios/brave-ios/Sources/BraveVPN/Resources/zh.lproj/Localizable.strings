@@ -101,7 +101,7 @@
 "vpn.contactFormTimezone" = "iOS 時區";
 
 /* Title for contact form email. */
-"vpn.contactFormTitle" = "Brave Firewall + VPN 問題";
+"vpn.contactFormTitle" = "Brave VPN 问题";
 
 /* Button text to enable Brave VPN */
 "vpn.enableButton" = "启用";
@@ -296,7 +296,7 @@
 "vpn.vpnBackgroundNotificationBody" = "即使在背景運作，Brave 也會繼續為您提供防護。";
 
 /* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationTitle" = "Brave Firewall + VPN 已開啟";
+"vpn.vpnBackgroundNotificationTitle" = "Brave VPN 已启用";
 
 /* Text for description of list item which chooses the optimal server for the country region */
 "vpn.vpnCityRegionOptimalDescription" = "使用最好的服务器";
@@ -311,7 +311,7 @@
 "vpn.vpnConfigGenericErrorTitle" = "错误";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "Brave Firewall + VPN 需要 VPN 設定檔，才能安裝到您的裝置上，發揮效用。";
+"vpn.vpnConfigPermissionDeniedErrorBody" = "Brave VPN 需要在您的设备上安装 VPN 配置文件才能工作。 ";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
 "vpn.vpnConfigPermissionDeniedErrorTitle" = "權限遭拒";
@@ -341,7 +341,7 @@
 "vpn.vpnRegionChangedTitle" = "VPN 区域已更改";
 
 /* Message for alert to reset vpn configuration */
-"vpn.vpnResetAlertBody" = "此程序會重設您的 Brave Firewall + VPN 組態，並修正任何錯誤。這會需要一點時間，請稍候。";
+"vpn.vpnResetAlertBody" = "此过程将重置您的 Brave VPN 配置并修复任何错误。此过程可能需要一分钟。";
 
 /* Title for alert to reset vpn configuration */
 "vpn.vpnResetAlertTitle" = "重設組態";

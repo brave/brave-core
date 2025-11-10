@@ -101,7 +101,7 @@
 "vpn.contactFormTimezone" = "Часова зона на iOS";
 
 /* Title for contact form email. */
-"vpn.contactFormTitle" = "Проблем Brave Защитна стена + VPN";
+"vpn.contactFormTitle" = "Проблем с Brave VPN";
 
 /* Button text to enable Brave VPN */
 "vpn.enableButton" = "Активиране";
@@ -158,7 +158,7 @@
 "vpn.paywallYearlyPriceDividend" = "година";
 
 /* Text to show user when their vpn plan has expired */
-"vpn.planExpired" = "Изтекъл";
+"vpn.planExpired" = "Изтекло";
 
 /* Description of vpn tunnel protocol */
 "vpn.protocolPickerDescription" = "Моля, избери предпочитания си транспортен протокол. След като превключиш, съществуващите ти данни за VPN ще се изчистят и ще се свържеш отново, ако има установена VPN връзка.";
@@ -296,7 +296,7 @@
 "vpn.vpnBackgroundNotificationBody" = "Brave ще продължи да те защитава дори във фонов режим.";
 
 /* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationTitle" = "Brave Защитна стена + VPN е ВКЛЮЧЕНО";
+"vpn.vpnBackgroundNotificationTitle" = "Brave VPN е ВКЛЮЧЕН";
 
 /* Text for description of list item which chooses the optimal server for the country region */
 "vpn.vpnCityRegionOptimalDescription" = "Използвай най-добрия наличен сървър";
@@ -311,7 +311,7 @@
 "vpn.vpnConfigGenericErrorTitle" = "Грешка";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "За да работи Brave Защитна стена + VPN, трябва да имаш инсталиран VPN профил на устройството си. ";
+"vpn.vpnConfigPermissionDeniedErrorBody" = "За да работи Brave VPN, трябва да имаш инсталиран VPN профил на устройството си. ";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
 "vpn.vpnConfigPermissionDeniedErrorTitle" = "Разрешението е отказано";
@@ -341,7 +341,7 @@
 "vpn.vpnRegionChangedTitle" = "Регионът на VPN е променен";
 
 /* Message for alert to reset vpn configuration */
-"vpn.vpnResetAlertBody" = "Това ще възстанови конфигурацията на Brave Защитна стена + VPN и ще поправи всички грешки. Този процес може да отнеме около минута.";
+"vpn.vpnResetAlertBody" = "Това ще възстанови конфигурацията на Brave VPN и ще поправи всички грешки. Този процес може да отнеме около минута.";
 
 /* Title for alert to reset vpn configuration */
 "vpn.vpnResetAlertTitle" = "Нулиране на конфигурацията";
