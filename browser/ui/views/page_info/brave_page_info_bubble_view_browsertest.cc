@@ -19,6 +19,7 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/content_settings/core/common/content_settings_types.h"
+#include "components/page_info/page_info.h"
 #include "content/public/test/browser_test.h"
 #include "ui/events/test/test_event.h"
 #include "ui/views/controls/button/button.h"
@@ -64,13 +65,13 @@ class BravePageInfoBubbleViewBrowserTestBase : public InProcessBrowserTest {
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
-    ASSERT_TRUE(embedded_test_server()->Start());
+    ASSERT_TRUE(embedded_https_test_server().Start());
   }
 
  protected:
   void NavigateAndOpenBubble() {
     // Navigate to a test page.
-    GURL test_url = embedded_test_server()->GetURL("/test.html");
+    GURL test_url = embedded_https_test_server().GetURL("/test.html");
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), test_url));
 
     // Set a site permission, so that the page info permissions subpage has an
@@ -150,6 +151,32 @@ IN_PROC_BROWSER_TEST_F(BravePageInfoBubbleViewBrowserTest,
   // visible.
   EXPECT_TRUE(IsSiteSettingsViewDrawn(bubble_view));
   EXPECT_FALSE(IsShieldsViewDrawn(bubble_view));
+}
+
+// Test that Site Settings tab is displayed by default when the page info bubble
+// is showing a security warning.
+IN_PROC_BROWSER_TEST_F(BravePageInfoBubbleViewBrowserTest,
+                       SiteSettingsVisibleWhenConnectionNotSecure) {
+  NavigateAndOpenBubble();
+  auto* bubble_view = GetBubbleView();
+  ASSERT_TRUE(bubble_view);
+
+  // Before setting security info, the initial tab should be Shields.
+  EXPECT_EQ(bubble_view->GetInitialTab(),
+            BravePageInfoTabSwitcher::Tab::kShields);
+
+  // Create identity info with a security warning and sent it to the UI.
+  PageInfoUI::IdentityInfo identity;
+  identity.safe_browsing_status = PageInfo::SAFE_BROWSING_STATUS_MALWARE;
+  auto* presenter =
+      static_cast<PageInfoBubbleView*>(bubble_view)->presenter_for_testing();
+  ASSERT_TRUE(presenter);
+  ASSERT_TRUE(presenter->ui_for_testing());
+  presenter->ui_for_testing()->SetIdentityInfo(identity);
+
+  // After setting security info, the initial tab should be Site Settings.
+  EXPECT_EQ(bubble_view->GetInitialTab(),
+            BravePageInfoTabSwitcher::Tab::kSiteSettings);
 }
 
 // Test the behavior of the tab switcher.

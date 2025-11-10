@@ -49,6 +49,9 @@ class BravePageInfoBubbleView
   void OnResourcesChanged() override;
   void OnShieldsEnabledChanged() override;
 
+  // Returns the tab that should be shown when the bubble view is opened.
+  BravePageInfoTabSwitcher::Tab GetInitialTab();
+
  private:
   friend class PageInfoBubbleView;
 
@@ -84,6 +87,8 @@ class BravePageInfoBubbleView
 
   // Returns a value indicating whether Shields is enabled for the current tab.
   bool IsShieldsEnabledForWebContents();
+
+  bool IsDisplayingSecurityInfo();
 
   // UI components.
   raw_ptr<BravePageInfoTabSwitcher> tab_switcher_ = nullptr;

@@ -126,6 +126,13 @@ void BravePageInfoBubbleView::OnShieldsEnabledChanged() {
   tab_switcher_->SetShieldsEnabled(IsShieldsEnabledForWebContents());
 }
 
+Tab BravePageInfoBubbleView::GetInitialTab() {
+  if (IsSiteSettingsSubpageActive() || IsDisplayingSecurityInfo()) {
+    return Tab::kSiteSettings;
+  }
+  return Tab::kShields;
+}
+
 void BravePageInfoBubbleView::InitializeView() {
   if (!page_info::features::IsShowBraveShieldsInPageInfoEnabled()) {
     return;
@@ -147,11 +154,8 @@ void BravePageInfoBubbleView::InitializeView() {
       std::make_unique<BravePageInfoTabSwitcher>(base::BindRepeating(
           &BravePageInfoBubbleView::SwitchToTab, base::Unretained(this)));
   tab_switcher_ = AddChildViewAt(std::move(tab_switcher), 0);
+  tab_switcher_->SetCurrentTab(GetInitialTab());
 
-  // If the PageInfo bubble was not opened directly to a subpage, then show the
-  // Shields tab first.
-  tab_switcher_->SetCurrentTab(
-      IsSiteSettingsSubpageActive() ? Tab::kSiteSettings : Tab::kShields);
   OnShieldsEnabledChanged();
 
   // Add the Brave Shields view.
@@ -234,6 +238,11 @@ BravePageInfoBubbleView::GetShieldsTabHelper() {
 bool BravePageInfoBubbleView::IsShieldsEnabledForWebContents() {
   auto* tab_helper = GetShieldsTabHelper();
   return tab_helper && tab_helper->GetBraveShieldsEnabled();
+}
+
+bool BravePageInfoBubbleView::IsDisplayingSecurityInfo() {
+  return GetViewByID(
+      PageInfoViewFactory::VIEW_ID_PAGE_INFO_SECURITY_DETAILS_LABEL);
 }
 
 BEGIN_METADATA(BravePageInfoBubbleView)
