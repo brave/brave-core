@@ -27,6 +27,7 @@ source_set("brave_wallet") {
   deps = [
     "//base",
     "//brave/components/brave_wallet/browser",
+    "//brave/components/brave_wallet/browser:constants",
     "//brave/components/brave_wallet/browser:pref_names",
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:mojom",
@@ -38,6 +39,7 @@ source_set("brave_wallet") {
     "//ios/chrome/browser/shared/model/profile:profile_keyed_service_factory",
     "//ios/web/public",
     "//ios/web/public/thread",
+    "//ios/web/public/webui",
     "//mojo/public/cpp/bindings",
     "//services/network/public/cpp",
   ]
