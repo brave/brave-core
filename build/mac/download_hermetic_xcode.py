@@ -21,12 +21,11 @@ def LoadPList(path):
     with open(path, 'rb') as f:
         return plistlib.load(f)
 
-# This contains binaries from Xcode 16.4, along with the macOS 15.5 SDK
-XCODE_VERSION = '26.0'
+XCODE_VERSION = '26.1'
 HERMETIC_XCODE_BINARY = (
     DEPS_PACKAGES_INTERNAL_URL +
-    '/xcode-hermetic-toolchain/xcode-hermetic-toolchain-xcode-' +
-    XCODE_VERSION + '-sdk-26.0-15.5.tar.gz')
+    '/xcode-hermetic-toolchain/xcode-hermetic-toolchain-' +
+    XCODE_VERSION + '.tar.gz')
 
 # The toolchain will not be downloaded if the minimum OS version is not met. 19
 # is the major version number for macOS 10.15. Xcode 13.2 13C90 only runs on
