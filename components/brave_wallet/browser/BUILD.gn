@@ -774,6 +774,7 @@ source_set("unit_tests") {
     "zcash/zcash_serializer_unittest.cc",
     "zcash/zcash_transaction_unittest.cc",
     "zcash/zcash_transaction_utils_unittest.cc",
+    "zcash/zcash_tx_meta_unittest.cc",
     "zcash/zcash_wallet_service_unittest.cc",
   ]
 

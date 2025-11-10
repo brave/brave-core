@@ -24,6 +24,15 @@ mojom::ZecTxDataPtr ToZecTxData(const std::string& chain_id,
     mojom_inputs.push_back(
         mojom::ZecTxInput::New(input.utxo_address, input.utxo_value));
   }
+  for (auto& input : tx.orchard_part().inputs) {
+    auto orchard_unified_addr = GetOrchardUnifiedAddress(
+        input.note.addr, chain_id == mojom::kZCashTestnet);
+    if (orchard_unified_addr) {
+      mojom_inputs.push_back(
+          mojom::ZecTxInput::New(*orchard_unified_addr, input.note.amount));
+    }
+  }
+
   std::vector<mojom::ZecTxOutputPtr> mojom_outputs;
   for (auto& output : tx.transparent_part().outputs) {
     mojom_outputs.push_back(
