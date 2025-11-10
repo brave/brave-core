@@ -23,6 +23,9 @@ using APIRequestResult = api_request_helper::APIRequestResult;
 
 namespace {
 
+// Account info comes to us through the wire as 160 hex digits.
+inline constexpr size_t kPolkadotAccountInfoSize = 80;
+
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
   return net::DefineNetworkTrafficAnnotation("polkadot_substrate_rpc", R"(
       semantics {
@@ -62,7 +65,7 @@ bool ReadU128(base::SpanReader<const uint8_t>& reader, mojom::uint128Ptr& out) {
 }
 
 mojom::PolkadotAccountInfoPtr ParseAccountInfoAsHex(
-    base::span<const uint8_t, 80> bytes) {
+    base::span<const uint8_t, kPolkadotAccountInfoSize> bytes) {
   base::SpanReader<const uint8_t> reader(bytes);
   auto account = mojom::PolkadotAccountInfo::New();
 
@@ -172,7 +175,7 @@ mojom::PolkadotAccountInfoPtr ParseAccountInfoFromJson(
 
   std::string_view sv = *str;
 
-  std::array<uint8_t, 80> hex_bytes = {};
+  std::array<uint8_t, kPolkadotAccountInfoSize> hex_bytes = {};
   if (!PrefixedHexStringToFixed(sv, hex_bytes)) {
     return nullptr;
   }
