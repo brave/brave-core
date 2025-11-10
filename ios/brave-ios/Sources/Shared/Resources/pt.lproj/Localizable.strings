@@ -26,7 +26,7 @@
 "CancelString" = "Cancelar";
 
 /* The button text in the Button Toast for switching to a fresh New Tab. */
-"ContextMenuButtonToastNewTabOpenedButtonText" = "Alternar";
+"ContextMenuButtonToastNewTabOpenedButtonText" = "Mudar";
 
 /* The label text in the Button Toast for switching to a fresh New Tab. */
 "ContextMenuButtonToastNewTabOpenedLabelText" = "Nova aba aberta";
@@ -47,7 +47,7 @@
 "DownloadProgressToastDescriptionText" = "%1$@/%2$@";
 
 /* The button to open a new tab with the Downloads home panel */
-"DownloadsButtonTitle" = "Downloads";
+"DownloadsButtonTitle" = "Transferências";
 
 /* Question shown to user when tapping a link that opens the App Store app */
 "ExternalLinkAppStoreConfirmationTitle" = "Abrir este link no app da App Store?";
@@ -95,7 +95,7 @@
 "ScanQRCodePermissionErrorMessage" = "Permita que o Brave acesse a câmera do seu dispositivo em Configurações -> Privacidade -> Câmera.";
 
 /* Title for the QR code scanner view. */
-"ScanQRCodeViewTitle" = "Ler código QR";
+"ScanQRCodeViewTitle" = "Proceda ao scan do código QR";
 
 /* General settings section title */
 "SettingsGeneralSectionTitle" = "Geral";
@@ -104,7 +104,7 @@
 "SettingsSearchDoneButton" = "Concluído";
 
 /* The button to undo the delete all tabs */
-"TabsDeleteAllUndoAction" = "Desfazer";
+"TabsDeleteAllUndoAction" = "Anular";
 
 /* The label indicating that all the tabs were closed */
 "TabsDeleteAllUndoTitle" = "%d aba(s) fechada(s)";

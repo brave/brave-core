@@ -146,37 +146,43 @@
 "aichat.internalErrorViewTitle" = "Při zpracování vašeho požadavku se něco pokazilo. Zkuste to prosím znovu později.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeHaikuMessageDescription" = "Ahoj, jsem Leo. Zastupuji Brave a jsem poháněn pomocí Claude Haiku – modelu vytvořeného společností Anthropic, který slouží k podpoře úloh konverzace a zpracování textu. Model Claude Haiku je hostován společností Brave prostřednictvím vlastní zabezpečené infrastruktury.";
+"aichat.introMessageClaudeHaikuMessageDescription" = "Dobrý den, jsem Leo. Jsem AI asistentem od Brave. Využívám model Claude Haiku, který vytvořila společnost Anthropic ke zpracování úloh konverzace a zpracování textu. Model Claude Haiku je hostován společností Brave prostřednictvím vlastní zabezpečené infrastruktury.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeHaikuModelPurposeDescription" = "Bleskově rychlý chat";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeInstantMessageDescription" = "Ahoj, jsem Leo. Zastupuji Brave a jsem poháněn pomocí Claude Instant – modelu vytvořeného společností Anthropic, který slouží k podpoře úloh konverzace a zpracování textu. Model Claude Instant je hostován společností Brave prostřednictvím vlastní zabezpečené infrastruktury.Zjistit více";
+"aichat.introMessageClaudeInstantMessageDescription" = "Dobrý den, jsem Leo. Jsem AI asistentem od Brave. Využívám model Claude Instant, který vytvořila společnost Anthropic ke zpracování úloh konverzace a zpracování textu. Model Claude Instant je hostován společností Brave prostřednictvím vlastní zabezpečené infrastruktury.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeSonnetMessageDescription" = "Ahoj, jsem Leo. Zastupuji Brave a jsem poháněn pomocí Claude Sonnet – modelu vytvořeného společností Anthropic, který slouží k podpoře úloh konverzace a zpracování textu. Model Claude Sonnet je hostován společností Brave prostřednictvím vlastní zabezpečené infrastruktury.Zjistit více";
+"aichat.introMessageClaudeSonnetMessageDescription" = "Dobrý den, jsem Leo. Jsem AI asistentem od Brave. Využívám model Claude Sonnet, který vytvořila společnost Anthropic ke zpracování úloh konverzace a zpracování textu. Model Claude Sonnet je hostován společností Brave prostřednictvím vlastní zabezpečené infrastruktury.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeSonnetModelPurposeDescription" = "Vyvážená rychlost a inteligence";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageDeepSeekR1MessageDescription" = "Ahoj, já jsem Leo. Jsem plně hostovaný asistent s UI od Brave. Využívám model DeepSeek R1, který vytvořila společnost DeepSeek a který zvládá i úkoly vyžadující hloubkovou úvahu.";
+"aichat.introMessageDeepSeekR1MessageDescription" = "Dobrý den, jsem Leo. Jsem AI asistentem od Brave. Využívám model DeepSeek R1, který vytvořila společnost DeepSeek pro provádění hlubokých úkolů uvažování. Model DeepSeek R1 je hostován společností Brave prostřednictvím vlastní zabezpečené infrastruktury.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageDeepSeekR1ModelPurposeDescription" = "Model uvažování";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageGemmaMessageDescription" = "Dobrý den, jsem Leo. Jsem AI asistentem od Brave. Využívám model Gemma 3 12B, který vytvořila společnost Google DeepMind, aby byl výkonný a použitelný v mnoha případech. Model Gemma je hostován společností Brave prostřednictvím vlastní zabezpečené infrastruktury.";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageGemmaPurposeDescription" = "Obecné porozumění textu a obrázkům";
 
 /* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
 "aichat.introMessageGenericMessageDescription" = "Ahoj, já jsem Leo. Jsem asistent UI od Brave. Jsem poháněn %@. Zeptejte se mě na cokoli a já se pokusím odpovědět.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageLlamaMessageDescription" = "Dobrý den, jsem Leo, asistent využívající umělou inteligencí plně hostovaný společností Brave. Využívám model Llama 3.1 8B, který vytvořila společnost Meta, aby byl výkonný a dal se použít v řadě případů. Model Llama je hostován společností Brave prostřednictvím vlastní zabezpečené infrastruktury.";
+"aichat.introMessageLlamaMessageDescription" = "Dobrý den, jsem Leo. Jsem AI asistentem od Brave. Využívám model Llama 3.1 8B, který vytvořila společnost Meta, aby byl výkonný a použitelný v mnoha případech. Model Llama je hostován společností Brave prostřednictvím vlastní zabezpečené infrastruktury.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageLlamaModelPurposeDescription" = "Obecný chat";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageQwenMessageDescription" = "Dobrý den, jsem Leo, asistent využívající umělou inteligencí plně hostovaný společností Brave. Využívám model Qwen 14B, který vytvořila společnost Alibaba Cloud, aby byl výkonný a dal se použít v řadě případů. Model Qwen je hostován společností Brave prostřednictvím vlastní zabezpečené infrastruktury. Zjistit více";
+"aichat.introMessageQwenMessageDescription" = "Dobrý den, jsem Leo. Jsem AI asistentem od Brave. Využívám model Qwen 14B, který vytvořila společnost Alibaba Cloud, aby byl výkonný a použitelný v mnoha případech. Model Qwen je hostován společností Brave prostřednictvím vlastní zabezpečené infrastruktury.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageQwenModelPurposeDescription" = "Obecný chat, kódování a další";

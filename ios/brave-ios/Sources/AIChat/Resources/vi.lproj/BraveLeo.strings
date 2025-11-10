@@ -146,37 +146,43 @@
 "aichat.internalErrorViewTitle" = "Có vấn đề xảy ra khi xử lý yêu cầu của bạn. Vui lòng thử lại sau.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeHaikuMessageDescription" = "Xin chào, tôi là Leo. Tôi được Brave ủy quyền và được hỗ trợ bởi Claude Haiku, một mô hình do Anthropic tạo ra để hỗ trợ xử lý các tác vụ đàm thoại và xử lý văn bản. Claude Haiku chạy trên cơ sở hạ tầng bảo mật của Brave.";
+"aichat.introMessageClaudeHaikuMessageDescription" = "Xin chào, tôi là Leo. Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi Claude Haiku, một mô hình được tạo ra bởi Anthropic để hỗ trợ các công việc đàm thoại và xử lý văn bản. Claude Haiku được Brave lưu trữ thông qua cơ sở hạ tầng bảo mật của chúng tôi.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeHaikuModelPurposeDescription" = "Trò chuyện nhanh như chớp";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeInstantMessageDescription" = "Xin chào, tôi là Leo. Tôi được Brave ủy quyền và được hỗ trợ bởi Claude Instant, một mô hình do Anthropic tạo ra để hỗ trợ xử lý các tác vụ đàm thoại và xử lý văn bản. Claude Instant chạy trên cơ sở hạ tầng bảo mật của Brave.";
+"aichat.introMessageClaudeInstantMessageDescription" = "Xin chào, tôi là Leo.Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi Claude Instant, một mô hình được tạo ra bởi Anthropic để hỗ trợ các công việc đàm thoại và xử lý văn bản. Claude Instant được Brave lưu trữ thông qua cơ sở hạ tầng bảo mật của chúng tôi.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeSonnetMessageDescription" = "Xin chào, tôi là Leo. Tôi được Brave ủy quyền và được hỗ trợ bởi Claude Sonnet, một mô hình do Anthropic tạo ra để hỗ trợ xử lý các tác vụ đàm thoại và xử lý văn bản. Claude Sonnet chạy trên cơ sở hạ tầng bảo mật của Brave.";
+"aichat.introMessageClaudeSonnetMessageDescription" = "Xin chào, tôi là Leo. Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi Claude Sonnet, một mô hình được tạo ra bởi Anthropic để hỗ trợ các công việc đàm thoại và xử lý văn bản. Claude Sonnet được Brave lưu trữ thông qua cơ sở hạ tầng bảo mật của chúng tôi.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeSonnetModelPurposeDescription" = "Cân bằng tốc độ và trí thông minh";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageDeepSeekR1MessageDescription" = "Xin chào, tôi là Leo. Tôi là một trợ lý AI được lưu trữ hoàn toàn bởi Brave. Tôi được hỗ trợ bởi DeepSeek R1, một mô hình do DeepSeek tạo ra để xử lý các tác vụ lý luận chuyên sâu.";
+"aichat.introMessageDeepSeekR1MessageDescription" = "Xin chào, tôi là Leo. Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi DeepSeek R1, một mô hình được tạo ra bởi DeepSeek để thực hiện các nhiệm vụ lý luận sâu. DeepSeek R1 được Brave lưu trữ thông qua cơ sở hạ tầng bảo mật của chúng tôi.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageDeepSeekR1ModelPurposeDescription" = "Mô hình lý luận";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageGemmaMessageDescription" = "Xin chào, tôi là Leo. Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi Gemma 3 12B, một mô hình được tạo ra bởi Google DeepMind để hoạt động hiệu quả và áp dụng cho nhiều trường hợp sử dụng. Gemma được Brave lưu trữ thông qua cơ sở hạ tầng bảo mật của chúng tôi.";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageGemmaPurposeDescription" = "Hiểu văn bản và hình ảnh cho các mục đích phổ biến";
 
 /* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
 "aichat.introMessageGenericMessageDescription" = "Xin chào, tôi là Leo, trợ lý AI của Brave. Tôi được hỗ trợ bởi %@. Hãy hỏi tôi bất cứ điều gì, tôi sẽ cố gắng hết sức để trả lời.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageLlamaMessageDescription" = "Xin chào, tôi là Leo. Tôi là một trợ lý AI được lưu trữ hoàn toàn bởi Brave. Tôi được hỗ trợ bởi Llama 3.1 8B, một mô hình do Meta tạo ra để hoạt động hiệu quả và có thể áp dụng cho nhiều trường hợp sử dụng. Llama chạy trên cơ sở hạ tầng bảo mật của Brave.";
+"aichat.introMessageLlamaMessageDescription" = "Xin chào, tôi là Leo. Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi Llama 3.1 8B, một mô hình được tạo ra bởi Meta để hoạt động hiệu quả và áp dụng cho nhiều trường hợp sử dụng. Llama được Brave lưu trữ thông qua cơ sở hạ tầng bảo mật của chúng tôi.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageLlamaModelPurposeDescription" = "Trò chuyện cho mục đích chung";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageQwenMessageDescription" = "Xin chào, tôi là Leo. Tôi là một trợ lý AI được lưu trữ hoàn toàn bởi Brave. Tôi được hỗ trợ bởi Qwen 14B, một mô hình do Alibaba Cloud tạo ra để hoạt động hiệu quả và có thể áp dụng cho nhiều trường hợp sử dụng. Qwen chạy trên cơ sở hạ tầng bảo mật của Brave.";
+"aichat.introMessageQwenMessageDescription" = "Xin chào, tôi là Leo. Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi Qwen 14B, một mô hình được tạo ra bởi Alibaba Cloud để hoạt động hiệu quả và áp dụng cho nhiều trường hợp sử dụng. Qwen được Brave lưu trữ thông qua cơ sở hạ tầng bảo mật của chúng tôi.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageQwenModelPurposeDescription" = "Trò chuyện mục đích chung, lập trình, v.v.";

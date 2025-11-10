@@ -59,7 +59,7 @@
 "BrowserMenu.showAllButtonTitle" = "Hiển thị tất cả…";
 
 /* A title shown above the list of actions that are visible on the menu. */
-"BrowserMenu.visibleActionsTitle" = "Tất cả hành động";
+"BrowserMenu.visibleActionsTitle" = "Hành động chính";
 
 /* A title on a button that lets the user switch the active VPN's selected region. */
 "BrowserMenu.vpnButtonTitle" = "VPN";

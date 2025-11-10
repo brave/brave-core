@@ -139,6 +139,9 @@
 /* Placeholder text for adding or editing a bookmark */
 "BookmarkUrlPlaceholderText" = "住所";
 
+/* Title for the Brave Account section in settings */
+"BraveAccount" = "Braveアカウント";
+
 /* Button to show the brave panel */
 "BravePanel" = "Brave パネル";
 
@@ -264,36 +267,6 @@
 
 /* Title for Bottom Bar Callout View */
 "callout.bottomBarCalloutTitle" = "Braveタブバーをカスタマイズする";
-
-/* Description - Description used for main button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutButtonDescription" = "Braveをデフォルトのブラウザに設定しますか？";
-
-/* Subtitle - Description for Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutDescription" = "Braveをデフォルトに設定すると、すべてのリンクをBraveのプライバシー保護により開くことができます。";
-
-/* Title for main button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutPrimaryButtonTitle" = "デフォルトに設定する";
-
-/* Description for secondary button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutSecondaryButtonDescription" = "すでにデフォルトに設定していますか？";
-
-/* Title for secondary button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutSecondaryButtonTitle" = "スキップする";
-
-/* Title for Default Browser Full Screen Callout */
-"callout.defaultBrowserTitle" = "シンプルに、プライバシー保護。";
-
-/* Subtitle - Description for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutDescription" = "これにより、Braveのどの機能が最も頻繁に使用されているかを知ることができます。Braveの設定の「Braveシールド & その他のプライバシー設定」でいつでも変更できます。";
-
-/* Title for the link that navigates to a webpage showing information about p3a (Privacy Preserving Analytics) */
-"callout.p3aCalloutLinkTitle" = "プライバシーを保護したプロダクト分析 (P3A) についてはこちらをご覧ください。";
-
-/* Title for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutTitle" = "Braveの品質向上にご協力ください。";
-
-/* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutToggleTitle" = "非公開、匿名で製品のインサイトを共有します。";
 
 /* Subtitle - Description for Privacy Everywhere Full Screen Callout */
 "callout.privacyEverywhereCalloutDescription" = "Braveによるプライバシー保護を、パソコンやタブレットでも活用しましょう。ブックマークや拡張機能をデバイス間で同期することもできます。";
@@ -588,9 +561,6 @@
 
 /* The success message that appears after a user sucessfully adds a new search engine */
 "custonmSearchEngine.thirdPartySearchEngineAddedToastTitle" = "検索エンジンを追加しました！";
-
-/* Button text to close the default browser popup. */
-"defaultBrowserCallout.introCancelButtonText" = "後で";
 
 /* Button text to open app settings */
 "defaultBrowserCallout.introOpenSettingsButtonText" = "設定を開く";
@@ -1201,18 +1171,6 @@
 /* Button to show Brave Rewards. */
 "OBTurnOnButton" = "スタート";
 
-/* The description text shown when there is big tech tracker among trackers. Example usage: Google, Amazon and 32 other trackers blocked */
-"onboarding.blockedAdsOnboardingBigTechInformationText" = "%1$@、その他%2$lldの広告とトラッカーをブロックしました";
-
-/* The footnote indicating what Brave shields is blocking */
-"onboarding.blockedAdsOnboardingFootnoteText" = "BraveのShieldによりあらゆるページでブロックされたすべての不要なアイテムを確認。";
-
-/* The text describing user where they should press in order to open Shield panel */
-"onboarding.blockedAdsOnboardingInstructionsText" = "Brave Shieldを表示するにはタップ";
-
-/* The description text shown when there is no big tech tracker among trackers. Example usage: 31 Ads & trackers blocked. The number here is presented separately so it is not in translation. */
-"onboarding.blockedAdsOnboardingNoBigTechInformationText" = "個の広告 & トラッカーをブロックしました";
-
 /* Button text to let users know they can use the vpn on all their devices */
 "onboarding.linkReceiptButton" = "VPNサブスクリプションにリンク";
 
@@ -1222,12 +1180,6 @@
 /* Popup title to let users know they can use the vpn on all their devices */
 "onboarding.linkReceiptTitle" = "Brave Firewall + VPNの保護を拡張";
 
-/* Description for Navigate Settings Screen in Onboarding. This part indicating navigation ('Default Browser App') should match the option in iPhone Settings in that Language. */
-"onboarding.navigateSettingsOnboardingScreenDescription" = "「デフォルトのブラウザアプリ」を検索";
-
-/* Title for Navigate Settings Screen in Onboarding */
-"onboarding.navigateSettingsOnboardingScreenTitle" = "設定へ移動します…";
-
 /* Description for the NTP pop-over that describes the tracking information on NTP */
 "onboarding.ntpOnboardingPopOverTrackerDescription" = "トラッカーと広告をブロックすることで、ウェブサイトが使用するデータ通信量が減少し、より速く読み込むことができます。";
 
@@ -1236,9 +1188,6 @@
 
 /* Title for the Omnibox (URL Bar) pop-over that describes faster load times. */
 "onboarding.omniboxOnboardingPopOverTitle" = "ウェブサイト名またはURLを入力";
-
-/* Title for Welcome Screen in Onboarding */
-"onboarding.welcomeScreenTitle" = "Braveへようこそ";
 
 /* Continue button to navigate to next onboarding screen. */
 "OnboardingContinueButton" = "続ける";
@@ -1390,7 +1339,7 @@
 /* Title of the alert when a calendar event is available for download */
 "OpenTextCalendarAlertTitle" = "利用可能なカレンダーイベントがあります";
 
-/* Button title to that opens a website. */
+/* Button title to open a website. */
 "OpenWebsite" = "ウェブサイトを開く";
 
 /* Brave News Item Menu title */
@@ -1413,9 +1362,6 @@
 
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
 "p3a.settingTitle" = "プライバシーを保護したプロダクト分析 (P3A) を許可する";
-
-/* No comment provided by engineer. */
-"p3aCalloutCloseAccessibilityLabel" = "プライバシーを保護したプロダクトの設定メッセージを閉じる";
 
 /* No comment provided by engineer. */
 "pageSecurityView.pageNotFullySecureTitle" = "このサイトへの接続は保護されていません。";
@@ -1573,8 +1519,11 @@
 /* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
 "playlist.playlistAutoSaveSettingsTitle" = "オフライン再生のためにコンテンツを保存";
 
+/* The title of the button for the user to proceed adding playlist item when the user's disk space is almost full */
+"playlist.playlistDiskSpaceAddAnywayButtonTitle" = "とにかく追加";
+
 /* When the user's disk space is almost full */
-"playlist.playlistDiskSpaceWarningMessage" = "動画や音声をオフライン使用を可能にすることは、デバイスのデータ容量を大きく消費することがあります。容量を確保するため、いくつかのファイルを削除してください。";
+"playlist.playlistDiskSpaceWarningMessage" = "お使いのデバイスの容量が不足しています。この動画をプレイリストに追加するとダウンロードが失敗する場合があります。また、他のダウンロードに影響する可能性があります。";
 
 /* When the user's disk space is almost full */
 "playlist.playlistDiskSpaceWarningTitle" = "データ容量がもうすぐいっぱいです";
@@ -2005,9 +1954,8 @@
 /* A label for a text entry field where the user can provide additional details for a web-compatibility report */
 "reportBrokenAdditionalDetailsRequired" = "詳細";
 
-/* A label for a drop down where the user provides a category for a web-compatibility report
-A placeholder for a drop down where the user provides a category for a web-compatibility report */
-"reportBrokenCategory" = "カテゴリを1つ選択";
+/* A label for a drop down where the user provides a category for a web-compatibility report */
+"reportBrokenCategory" = "あなたが経験している主な問題は何ですか？";
 
 /* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
 "ReportBrokenContactMe" = "連絡先: (オプション)";
@@ -2017,6 +1965,9 @@ A placeholder for a drop down where the user provides a category for a web-compa
 
 /* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
 "ReportBrokenContactMeSuggestions" = "メールアドレス、Twitterなど";
+
+/* A placeholder for a drop down where the user provides a category for a web-compatibility report */
+"ReportBrokenPlaceholder" = "カテゴリを1つ選択";
 
 /* First part of the report a broken site copy. After the colon is a new line and then a website address */
 "ReportBrokenSiteBody1" = "Braveの開発者に、このサイトが思ったように機能していないことをお知らせください：";
@@ -3089,8 +3040,14 @@ A placeholder for a drop down where the user provides a category for a web-compa
 /* A button title which when tapped will close all of the open tabs for the user */
 "tabGrid.closeAllTabsButtonTitle" = "すべてのタブを閉じる";
 
-/* Accessibility label for a close button that when tapped closes the associated tab */
+/* Label for a close button that when tapped closes the associated tab */
 "tabGrid.closeTab" = "タブを閉じる";
+
+/* Label for a close button that when tapped closes the associated tabs */
+"tabGrid.closeTabs" = "タブを閉じる";
+
+/* A button title which when tapped will allow the user to deselect multiple tabs in the tab grid */
+"tabGrid.deselectTabsButtonTitle" = "すべて選択解除";
 
 /* A button title which when tapped will display a menu with more options */
 "tabGrid.moreMenuButtonTitle" = "もっと見る";
@@ -3125,11 +3082,20 @@ A placeholder for a drop down where the user provides a category for a web-compa
 /* Accessibility label for the regular browsing option in the browsing mode picker */
 "tabGrid.regularBrowsingModeAccessibilityLabel" = "通常のブラウジング";
 
+/* A text label showing how many tabs the user has currently selected in edit mode. It is shown next to the number of selected tabs e.g. "Selected tabs: 4" */
+"tabGrid.selectedTabs" = "選択したタブ";
+
+/* A button title which when tapped will allow the user to select multiple tabs in the tab grid */
+"tabGrid.selectTabsButtonTitle" = "タブを選択";
+
 /* A button title that when tapped allows users to shred all of their tabs */
 "tabGrid.shredAllTabsButtonTitle" = "すべてのタブをシュレッド(削除)";
 
 /* A button title that when tapped allows users to shred the currently selected tab */
 "tabGrid.shredSelectedTabButtonTitle" = "選択したタブをシュレッド(削除)";
+
+/* A button title that when tapped allows users to shred the currently selected tabs */
+"tabGrid.shredSelectedTabsButtonTitle" = "削除";
 
 /* Accessibility label for a button that allows users to shred their tabs (erase them & associated data) */
 "tabGrid.shredTabsAccessibilityLabel" = "タブをシュレッド";

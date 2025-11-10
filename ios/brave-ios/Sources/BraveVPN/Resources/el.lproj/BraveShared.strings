@@ -17,7 +17,7 @@
 "vpn.autoRenewSoonExpireTitle" = "Ωχ, όχι! Η συνδρομή σας Brave VPN πρόκειται να λήξει.";
 
 /* Title for screen to buy the VPN. */
-"vpn.buyVPNTitle" = "Τείχος προστασίας Brave + VPN";
+"vpn.buyVPNTitle" = "VPN Brave";
 
 /* Message for an alert when the VPN can't get prices from the App Store */
 "vpn.errorCantGetPricesBody" = "Δεν ήταν δυνατή η σύνδεση στο App Store. Δοκιμάστε ξανά σε λίγα λεπτά.";

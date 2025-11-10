@@ -101,7 +101,7 @@
 "vpn.contactFormTimezone" = "iOS Saat Dilimi";
 
 /* Title for contact form email. */
-"vpn.contactFormTitle" = "Brave Güvenlik Duvarı + VPN Sorunu";
+"vpn.contactFormTitle" = "Brave VPN Sorunu";
 
 /* Button text to enable Brave VPN */
 "vpn.enableButton" = "Etkinleştir";
@@ -296,7 +296,7 @@
 "vpn.vpnBackgroundNotificationBody" = "Arka planda bile Brave seni korumaya devam edecek.";
 
 /* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationTitle" = "Brave Güvenlik Duvarı + VPN Açık";
+"vpn.vpnBackgroundNotificationTitle" = "Brave VPN AÇIK";
 
 /* Text for description of list item which chooses the optimal server for the country region */
 "vpn.vpnCityRegionOptimalDescription" = "Mevcut en iyi sunucuyu kullan";
@@ -311,7 +311,7 @@
 "vpn.vpnConfigGenericErrorTitle" = "Hata";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "Brave Güvenlik Duvarı + VPN'in çalışması için cihazınıza bir VPN profilinin yüklenmesi gerekir. ";
+"vpn.vpnConfigPermissionDeniedErrorBody" = "Brave VPN'in çalışması için cihazınıza bir VPN profilinin yüklenmesi gerekir. ";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
 "vpn.vpnConfigPermissionDeniedErrorTitle" = "İzin reddedildi";
@@ -341,7 +341,7 @@
 "vpn.vpnRegionChangedTitle" = "VPN Bölgesi Değişti";
 
 /* Message for alert to reset vpn configuration */
-"vpn.vpnResetAlertBody" = "Bu, Brave Güvenlik Duvarı + VPN yapılandırmanızı sıfırlar ve hataları düzeltir. Bu işlem bir dakika sürebilir.";
+"vpn.vpnResetAlertBody" = "Bu, Brave VPN yapılandırmanızı sıfırlar ve hataları düzeltir. Bu işlem bir dakika sürebilir.";
 
 /* Title for alert to reset vpn configuration */
 "vpn.vpnResetAlertTitle" = "Yapılandırmayı sıfırla";

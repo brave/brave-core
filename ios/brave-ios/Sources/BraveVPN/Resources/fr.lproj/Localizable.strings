@@ -47,7 +47,7 @@
 "vpn.contactFormDoNotEditText" = "Brave ne vous suit pas à la trace et ne sait pas comment vous utilisez l'application. Nous ne savons donc pas comment vous avez configuré votre VPN. Donnez-nous des informations au sujet du problème que vous rencontrez et nous ferons de notre mieux pour le résoudre dans les meilleurs délais.";
 
 /* Button name to send contact form. */
-"vpn.contactFormEmailNotConfiguredBody" = "Échec d’envoi de l’e-mail. Vérifiez la configuration de votre messagerie.";
+"vpn.contactFormEmailNotConfiguredBody" = "Échec d'envoi de l'e-mail. Vérifiez la configuration de votre messagerie.";
 
 /* Footer for customer support contact form. */
 "vpn.contactFormFooter" = "Veuillez sélectionner les informations que vous souhaitez nous communiquer.\n\nPlus vous nous communiquez d'informations, plus il sera facile pour notre équipe d'assistance de vous aider à résoudre votre problème.";
@@ -101,7 +101,7 @@
 "vpn.contactFormTimezone" = "Fuseau horaire iOS";
 
 /* Title for contact form email. */
-"vpn.contactFormTitle" = "Problème avec le pare-feu et le VPN Brave";
+"vpn.contactFormTitle" = "Problème VPN Brave";
 
 /* Button text to enable Brave VPN */
 "vpn.enableButton" = "Activer";
@@ -149,22 +149,22 @@
 "vpn.multipleServerCountTitle" = "%ld serveurs";
 
 /* The text that briefly explains how Brave VPN subscription is going to be charged and managed. */
-"vpn.paywallDisclaimer" = "Les abonnements seront facturés via votre compte Apple. Toute période d’essai gratuite non utilisée sera annulée en cas d’achat d’un abonnement.\n\nVotre abonnement sera automatiquement renouvelé, sauf en cas d’annulation au moins 24 heures avant la fin de la période en cours.\n\nVous pouvez gérer vos abonnements dans les paramètres.\n\nEn utilisant Brave, vous acceptez les conditions générales d’utilisation et la politique de confidentialité.";
+"vpn.paywallDisclaimer" = "Les abonnements seront facturés via votre compte Apple. Toute période d'essai gratuite non utilisée sera annulée en cas d'achat d'un abonnement.\n\nVotre abonnement sera automatiquement renouvelé, sauf en cas d'annulation au moins 24 heures avant la fin de la période en cours.\n\nVous pouvez gérer vos abonnements dans les paramètres.\n\nEn utilisant Brave, vous acceptez les conditions générales d'utilisation et la politique de confidentialité.";
 
 /* The text which will be used to indicate period of payments like 10 / month */
 "vpn.paywallMonthlyPriceDividend" = "mois";
 
 /* The text which will be used to indicate period of payments like 150 / year */
-"vpn.paywallYearlyPriceDividend" = "année";
+"vpn.paywallYearlyPriceDividend" = "an";
 
 /* Text to show user when their vpn plan has expired */
-"vpn.planExpired" = "Expiré";
+"vpn.planExpired" = "Expirée";
 
 /* Description of vpn tunnel protocol */
 "vpn.protocolPickerDescription" = "Veuillez sélectionner votre protocole de transport préféré. Une fois le protocole sélectionné, vos identifiants VPN seront effacés et nous vous reconnecterons dès qu'une connexion VPN est établie.";
 
 /* Message for error when we fail to switch tunnel protocol for the user */
-"vpn.protocolPickerErrorMessage" = "Impossible de changer de protocole de tunnel. Veuillez réessayer plus tard.";
+"vpn.protocolPickerErrorMessage" = "Impossible de changer de protocole de tunnel, veuillez réessayer plus tard.";
 
 /* Title for error when we fail to switch tunnel protocol for the user */
 "vpn.protocolPickerErrorTitle" = "Erreur de serveur";
@@ -194,7 +194,7 @@
 "vpn.renewAnnually" = "Renouvellement annuel";
 
 /* Monthly tier explaination. Subscription will be renewed monthly. */
-"vpn.renewMonthly" = "Renouvellement mensuel";
+"vpn.renewMonthly" = "Renouvelé chaque mois";
 
 /* Message to show when vpn configuration reset fails. */
 "vpn.resetVPNErrorBody" = "Impossible de réinitialiser la configuration du VPN. Veuillez réessayer ou contacter l'équipe d'assistance pour obtenir de l'aide si le problème persiste.";
@@ -296,7 +296,7 @@
 "vpn.vpnBackgroundNotificationBody" = "Brave continue à vous protéger en arrière-plan.";
 
 /* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationTitle" = "Pare-feu + VPN Brave activé";
+"vpn.vpnBackgroundNotificationTitle" = "VPN Brave est ACTIVÉ";
 
 /* Text for description of list item which chooses the optimal server for the country region */
 "vpn.vpnCityRegionOptimalDescription" = "Utiliser le meilleur serveur disponible";
@@ -311,7 +311,7 @@
 "vpn.vpnConfigGenericErrorTitle" = "Erreur";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "Un profil VPN doit être installé sur votre appareil pour que le pare-feu et le VPN Brave puissent fonctionner.";
+"vpn.vpnConfigPermissionDeniedErrorBody" = "Le VPN Brave nécessite l'installation d'un profil VPN sur votre appareil pour fonctionner. ";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
 "vpn.vpnConfigPermissionDeniedErrorTitle" = "Autorisation refusée";
@@ -326,7 +326,7 @@
 "vpn.vpnErrorPurchaseFailedTitle" = "Erreur";
 
 /* Disclaimer for user purchasing the VPN plan. */
-"vpn.vpnIAPBoilerPlate" = "Les abonnements seront facturés via votre compte iTunes.\n\nToute période d’essai gratuite non utilisée sera annulée en cas d’achat d’un abonnement.\n\nVotre abonnement sera automatiquement renouvelé, sauf en cas d’annulation au moins 24 heures avant la fin de la période en cours.\n\nVous pouvez gérer vos abonnements dans les paramètres.\n\nEn utilisant Brave, vous acceptez les conditions d’utilisation et la politique de confidentialité.";
+"vpn.vpnIAPBoilerPlate" = "Les abonnements seront facturés via votre compte iTunes.\n\nToute période d'essai gratuite non utilisée sera annulée en cas d'achat d'un abonnement.\n\nVotre abonnement sera automatiquement renouvelé, sauf en cas d'annulation au moins 24 heures avant la fin de la période en cours.\n\nVous pouvez gérer vos abonnements dans les paramètres.\n\nEn utilisant Brave, vous acceptez les conditions d'utilisation et la politique de confidentialité.";
 
 /* The title shown on the menu when the VPN connection is disconnected */
 "vpn.vpnOffMenuButtonTitle" = "VPN désactivé";
@@ -341,7 +341,7 @@
 "vpn.vpnRegionChangedTitle" = "Région VPN modifiée";
 
 /* Message for alert to reset vpn configuration */
-"vpn.vpnResetAlertBody" = "Vos paramètres Pare-feu + VPN Brave seront réinitialisés afin de résoudre les problèmes. Cette opération peut prendre quelques minutes.";
+"vpn.vpnResetAlertBody" = "Vos paramètres de configuration VPN Brave seront réinitialisés afin de résoudre les problèmes. Cette opération peut prendre quelques minutes.";
 
 /* Title for alert to reset vpn configuration */
 "vpn.vpnResetAlertTitle" = "Réinitialiser la configuration";
@@ -362,5 +362,5 @@
 "vpn.yearlySubDisclaimer" = "MEILLEURE OFFRE";
 
 /* One year length vpn subcription */
-"vpn.yearlySubTitle" = "Un an";
+"vpn.yearlySubTitle" = "Annuel";
 

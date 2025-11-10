@@ -101,7 +101,7 @@
 "vpn.contactFormTimezone" = "Ζώνη ώρας iOS";
 
 /* Title for contact form email. */
-"vpn.contactFormTitle" = "Πρόβλημα Τείχους προστασίας + VPN Brave";
+"vpn.contactFormTitle" = "Πρόβλημα Brave VPN";
 
 /* Button text to enable Brave VPN */
 "vpn.enableButton" = "Ενεργοποίηση";
@@ -296,7 +296,7 @@
 "vpn.vpnBackgroundNotificationBody" = "Ακόμα και στο παρασκήνιο, το Brave θα συνεχίσει να σας προστατεύει.";
 
 /* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationTitle" = "Το Τείχος προστασίας + VPN Brave είναι ΕΝΕΡΓΟ";
+"vpn.vpnBackgroundNotificationTitle" = "Το Brave VPN είναι ΕΝΕΡΓΟ";
 
 /* Text for description of list item which chooses the optimal server for the country region */
 "vpn.vpnCityRegionOptimalDescription" = "Χρήση του καλύτερου διαθέσιμου διακομιστή";
@@ -311,7 +311,7 @@
 "vpn.vpnConfigGenericErrorTitle" = "Σφάλμα";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "Το Τείχος προστασίας + VPN Brave απαιτεί την εγκατάσταση ενός προφίλ VPN στη συσκευή σας για να λειτουργήσει. ";
+"vpn.vpnConfigPermissionDeniedErrorBody" = "Για να λειτουργεί σωστά, το Brave VPN απαιτεί την εγκατάσταση ενός προφίλ VPN στη συσκευή σας. ";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
 "vpn.vpnConfigPermissionDeniedErrorTitle" = "Η άδεια απορρίφθηκε";
@@ -341,7 +341,7 @@
 "vpn.vpnRegionChangedTitle" = "Η περιοχή VPN άλλαξε";
 
 /* Message for alert to reset vpn configuration */
-"vpn.vpnResetAlertBody" = "Αυτή η ενέργεια θα επαναφέρει τη διαμόρφωση Τείχους προστασίας + VPN Brave και θα διορθώσει τυχόν σφάλματα. Αυτή η διαδικασία μπορεί να χρειαστεί λίγο χρόνο.";
+"vpn.vpnResetAlertBody" = "Αυτό θα επαναφέρει τις ρυθμίσεις του Brave VPN και θα διορθώσει τυχόν σφάλματα. Η διαδικασία αυτή μπορεί να διαρκέσει ένα λεπτό.";
 
 /* Title for alert to reset vpn configuration */
 "vpn.vpnResetAlertTitle" = "Επαναφορά διαμόρφωσης";

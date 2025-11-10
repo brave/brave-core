@@ -47,7 +47,7 @@
 "BrowserMenu.quickActionDividerTitle" = "Item di atas akan ditampilkan di area utama";
 
 /* A button title that when taps shows a confirmation dialog to reset the menu back to its default state */
-"BrowserMenu.resetButtonTitle" = "Atur Ulang";
+"BrowserMenu.resetButtonTitle" = "Setel ulang";
 
 /* A button title that when taps shows a confirmation dialog to reset the menu back to its default state */
 "BrowserMenu.resetToDefault" = "Reset ke Default";
@@ -59,7 +59,7 @@
 "BrowserMenu.showAllButtonTitle" = "Tampilkan Semua…";
 
 /* A title shown above the list of actions that are visible on the menu. */
-"BrowserMenu.visibleActionsTitle" = "Semua Tindakan";
+"BrowserMenu.visibleActionsTitle" = "Tindakan Utama";
 
 /* A title on a button that lets the user switch the active VPN's selected region. */
 "BrowserMenu.vpnButtonTitle" = "VPN";

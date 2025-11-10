@@ -101,7 +101,7 @@
 "vpn.contactFormTimezone" = "Fus horari d'iOS";
 
 /* Title for contact form email. */
-"vpn.contactFormTitle" = "Assumpte del Tallafoc + VPN de Brave";
+"vpn.contactFormTitle" = "Problema de VPN de Brave";
 
 /* Button text to enable Brave VPN */
 "vpn.enableButton" = "Activa";
@@ -296,7 +296,7 @@
 "vpn.vpnBackgroundNotificationBody" = "Fins i tot, en segon pla, Brave continuarà protegint-te.";
 
 /* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationTitle" = "El Tallafoc + VPN de Brave està activat";
+"vpn.vpnBackgroundNotificationTitle" = "VPN de Brave està ACTIVADA";
 
 /* Text for description of list item which chooses the optimal server for the country region */
 "vpn.vpnCityRegionOptimalDescription" = "Utilitza el millor servidor disponible";
@@ -311,7 +311,7 @@
 "vpn.vpnConfigGenericErrorTitle" = "Error";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "Per funcionar, el Tallafoc + VPN de Brave requereix que s'instal·li un perfil.";
+"vpn.vpnConfigPermissionDeniedErrorBody" = "Per funcionar, la VPN de Brave requereix que s'instal·li un perfil a l'aparell.";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
 "vpn.vpnConfigPermissionDeniedErrorTitle" = "Permís denegat";
@@ -341,7 +341,7 @@
 "vpn.vpnRegionChangedTitle" = "Regió de la VPN canviada";
 
 /* Message for alert to reset vpn configuration */
-"vpn.vpnResetAlertBody" = "Això restablirà la configuració del Tallafoc + VPN de Brave i solucionarà qualsevol error. Aquest procés pot trigar un minut.";
+"vpn.vpnResetAlertBody" = "Això restablirà la configuració de la VPN de Brave i solucionarà qualsevol error. Aquest procés pot trigar un minut.";
 
 /* Title for alert to reset vpn configuration */
 "vpn.vpnResetAlertTitle" = "Restableix la configuració";

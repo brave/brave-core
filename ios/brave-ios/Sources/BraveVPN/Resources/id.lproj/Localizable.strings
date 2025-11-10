@@ -101,7 +101,7 @@
 "vpn.contactFormTimezone" = "Timezone iOS";
 
 /* Title for contact form email. */
-"vpn.contactFormTitle" = "Masalah Firewall + VPN Brave";
+"vpn.contactFormTitle" = "Masalah Brave VPN";
 
 /* Button text to enable Brave VPN */
 "vpn.enableButton" = "Aktifkan";
@@ -296,7 +296,7 @@
 "vpn.vpnBackgroundNotificationBody" = "Bahkan di belakang layar, Brave akan tetap melindungi Anda.";
 
 /* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationTitle" = "Firewall + VPN Brave telah AKTIF";
+"vpn.vpnBackgroundNotificationTitle" = "Brave VPN Aktif";
 
 /* Text for description of list item which chooses the optimal server for the country region */
 "vpn.vpnCityRegionOptimalDescription" = "Menggunakan peladen terbaik yang ada";
@@ -311,7 +311,7 @@
 "vpn.vpnConfigGenericErrorTitle" = "Error";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "Firewall + VPN Brave memerlukan pemasangan profil VPN di perangkat Anda agar dapat bekerja.";
+"vpn.vpnConfigPermissionDeniedErrorBody" = "Brave VPN memerlukan pemasangan profil VPN di perangkat Anda agar dapat bekerja.";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
 "vpn.vpnConfigPermissionDeniedErrorTitle" = "Izin tidak diberikan";
@@ -341,7 +341,7 @@
 "vpn.vpnRegionChangedTitle" = "Wilayah VPN Berubah";
 
 /* Message for alert to reset vpn configuration */
-"vpn.vpnResetAlertBody" = "Ini akan mengatur ulang konfigurasi Firewall + VPN Brave Anda dan memperbaiki kesalahan apa pun. Proses ini dapat memakan waktu beberapa saat.";
+"vpn.vpnResetAlertBody" = "Ini akan mengatur ulang konfigurasi Brave VPN Anda dan memperbaiki kesalahan apa pun. Proses ini dapat memakan waktu beberapa saat.";
 
 /* Title for alert to reset vpn configuration */
 "vpn.vpnResetAlertTitle" = "Atur ulang konfigurasi";

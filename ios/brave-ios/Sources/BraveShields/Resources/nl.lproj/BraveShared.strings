@@ -196,11 +196,14 @@
 /* An option setting for automatically shredding when the site is closed */
 "ShredOnSiteTabsClosed" = "Tabbladen van site gesloten";
 
+/* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'. */
+"ShredSiteAllTabsConfirmationMessage" = "Door de versnippering worden alle tabbladen gesloten en worden alle sitegegevens verwijderd. Deze actie kun je niet ongedaan maken.";
+
 /* A list row label for accessing the shred settings screen */
 "ShredSiteData" = "Versnipper sitegegevens";
 
-/* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'.
-A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'.
+A message for a confirmation window that appears when a user clicks on 'Shred' with multiple tabs selected. */
 "ShredSiteDataConfirmationMessage" = "Door de versnippering worden alle tabbladen van deze site gesloten en worden alle sitegegevens verwijderd. Deze actie kun je niet ongedaan maken.";
 
 /* A title for a confirmation window that appears when a user clicks on 'Shred Data' */

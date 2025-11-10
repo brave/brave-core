@@ -101,7 +101,7 @@
 "vpn.contactFormTimezone" = "タイムゾーン";
 
 /* Title for contact form email. */
-"vpn.contactFormTitle" = "Brave Firewall + VPNに関わる問題";
+"vpn.contactFormTitle" = "Brave VPN問題";
 
 /* Button text to enable Brave VPN */
 "vpn.enableButton" = "有効化";
@@ -296,7 +296,7 @@
 "vpn.vpnBackgroundNotificationBody" = "バックグラウンドでもBraveはあなたを保護します";
 
 /* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationTitle" = "Brave Firewall + VPNは有効です";
+"vpn.vpnBackgroundNotificationTitle" = "Brave VPNがオンです";
 
 /* Text for description of list item which chooses the optimal server for the country region */
 "vpn.vpnCityRegionOptimalDescription" = "利用できる最適なサーバーを使用";
@@ -311,7 +311,7 @@
 "vpn.vpnConfigGenericErrorTitle" = "エラー";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "Brave Firewall + VPNを使用するには、お使いのデバイスにVPNプロファイルをインストールする必要があります。";
+"vpn.vpnConfigPermissionDeniedErrorBody" = "Brave VPNを使用するには、お使いのデバイスにVPNプロファイルをインストールする必要があります。";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
 "vpn.vpnConfigPermissionDeniedErrorTitle" = "パーミッションが拒否されました";
@@ -341,7 +341,7 @@
 "vpn.vpnRegionChangedTitle" = "VPNのリージョンが変更されました";
 
 /* Message for alert to reset vpn configuration */
-"vpn.vpnResetAlertBody" = "この操作を実行するとBrave Firewall + VPNの構成はリセットされ、発生しているエラーが修正されます。プロセス完了までに約1分かかる場合があります。";
+"vpn.vpnResetAlertBody" = "この操作を実行するとBrave VPN構成はリセットされ、発生しているエラーが修正されます。プロセス完了までに約1分かかる場合があります。";
 
 /* Title for alert to reset vpn configuration */
 "vpn.vpnResetAlertTitle" = "設定リセット";

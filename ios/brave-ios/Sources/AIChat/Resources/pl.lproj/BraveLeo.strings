@@ -146,37 +146,43 @@
 "aichat.internalErrorViewTitle" = "Coś poszło nie tak podczas przetwarzania twojego żądania. Spróbuj ponownie później.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeHaikuMessageDescription" = "Cześć, jestem Leo. Jestem używany przez Brave za pośrednictwem serwera proxy i korzystam z modelu Claude Haiku opracowanego przez firmę Anthropic do obsługi zadań konwersacyjnych i przetwarzania tekstu. Nasza wersja modelu Claude Haiku jest hostowana przez Brave za pośrednictwem naszej własnej, bezpiecznej infrastruktury.";
+"aichat.introMessageClaudeHaikuMessageDescription" = "Cześć, jestem Leo. Jestem asystentem AI firmy Brave. Opieram się na modelu Claude Haiku opracowanym przez firmę Anthropic do obsługi zadań konwersacyjnych i przetwarzania tekstu. Claude Haiku jest hostowany przez Brave za pośrednictwem naszej własnej, bezpiecznej infrastruktury.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeHaikuModelPurposeDescription" = "Nieprawdopodobnie szybki czat";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeInstantMessageDescription" = "Cześć, jestem Leo. Jestem używany przez Brave za pośrednictwem serwera proxy i korzystam z modelu Claude Instant opracowanego przez firmę Anthropic do obsługi zadań konwersacyjnych i przetwarzania tekstu. Nasza wersja modelu Claude Instant jest hostowana przez Brave za pośrednictwem naszej własnej, bezpiecznej infrastruktury.";
+"aichat.introMessageClaudeInstantMessageDescription" = "Cześć, jestem Leo. Jestem asystentem AI firmy Brave. Opieram się na modelu Claude Instant opracowanym przez firmę Anthropic do obsługi zadań konwersacyjnych i przetwarzania tekstu. Claude Instant jest hostowany przez Brave za pośrednictwem naszej własnej, bezpiecznej infrastruktury.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeSonnetMessageDescription" = "Cześć, jestem Leo. Jestem używany przez Brave za pośrednictwem serwera proxy i korzystam z modelu Claude Sonnet opracowanego przez firmę Anthropic do obsługi zadań konwersacyjnych i przetwarzania tekstu. Nasza wersja modelu Claude Sonnet jest hostowana przez Brave za pośrednictwem naszej własnej, bezpiecznej infrastruktury.";
+"aichat.introMessageClaudeSonnetMessageDescription" = "Cześć, jestem Leo. Jestem asystentem AI firmy Brave. Opieram się na modelu Claude Sonnet opracowanym przez firmę Anthropic do obsługi zadań konwersacyjnych i przetwarzania tekstu. Claude Sonnet jest hostowany przez Brave za pośrednictwem naszej własnej, bezpiecznej infrastruktury.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeSonnetModelPurposeDescription" = "Równowaga prędkości działania i inteligencji";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageDeepSeekR1MessageDescription" = "Cześć, jestem Leo. Jestem w pełni obsługiwanym asystentem SI firmy Brave. Opieram się na modelu DeepSeek R1 opracowanym przez firmę DeepSeek z myślą o zadaniach wymagających dogłębnego wnioskowania.";
+"aichat.introMessageDeepSeekR1MessageDescription" = "Cześć, jestem Leo. Jestem asystentem AI firmy Brave. Opieram się na modelu DeepSeek R1 opracowanym przez DeepSeek do wykonywania zadań związanych z głębokim rozumowaniem. DeepSeek R1 jest hostowany przez Brave za pośrednictwem naszej własnej, bezpiecznej infrastruktury.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageDeepSeekR1ModelPurposeDescription" = "Model rozumowania";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageGemmaMessageDescription" = "Cześć, jestem Leo. Jestem asystentem AI firmy Brave. Opieram się na modelu Gemma 3 12B opracowanym przez Google DeepMind z myślą o wydajności i zastosowaniu w wielu różnych przypadkach. Gemma jest hostowana przez Brave za pośrednictwem naszej własnej, bezpiecznej infrastruktury.";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageGemmaPurposeDescription" = "Rozumienie tekstu i obrazu ogólnego przeznaczenia";
 
 /* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
 "aichat.introMessageGenericMessageDescription" = "Cześć, jestem Leo. Jestem asystentem Brave opartym na sztucznej inteligencji. Korzystam z modelu %@. Zapytaj mnie o cokolwiek, a ja postaram się jak najlepiej odpowiedzieć.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageLlamaMessageDescription" = "Cześć, jestem Leo. Jestem w pełni obsługiwanym asystentem SI firmy Brave. Opieram się na modelu Llama 3.1 8B opracowanym przez firmę Meta z myślą o wydajności i zastosowaniu w wielu różnych przypadkach. Nasza wersja modelu Llama jest hostowana przez Brave za pośrednictwem naszej własnej, bezpiecznej infrastruktury.";
+"aichat.introMessageLlamaMessageDescription" = "Cześć, jestem Leo. Jestem asystentem AI firmy Brave. Opieram się na modelu Llama 3.1 8B opracowanym przez firmę Meta z myślą o wydajności i zastosowaniu w wielu różnych przypadkach. Llama jest hostowana przez Brave za pośrednictwem naszej własnej, bezpiecznej infrastruktury.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageLlamaModelPurposeDescription" = "Czat ogólny";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageQwenMessageDescription" = "Cześć, jestem Leo. Jestem w pełni obsługiwanym asystentem SI firmy Brave. Opieram się na modelu Qwen 14B opracowanym przez firmę Alibaba Cloud z myślą o wydajności i zastosowaniu w wielu różnych przypadkach. Nasza wersja modelu Qwen jest hostowana przez Brave za pośrednictwem naszej własnej, bezpiecznej infrastruktury.";
+"aichat.introMessageQwenMessageDescription" = "Cześć, jestem Leo. Jestem asystentem AI firmy Brave. Opieram się na modelu Qwen 14B opracowanym przez firmę Alibaba Cloud z myślą o wydajności i zastosowaniu w wielu różnych przypadkach. Qwen jest hostowany przez Brave za pośrednictwem naszej własnej, bezpiecznej infrastruktury.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageQwenModelPurposeDescription" = "Czat ogólny, generowanie kodu i nie tylko";

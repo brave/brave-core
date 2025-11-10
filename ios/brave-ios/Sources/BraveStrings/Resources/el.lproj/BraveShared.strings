@@ -139,6 +139,9 @@
 /* Placeholder text for adding or editing a bookmark */
 "BookmarkUrlPlaceholderText" = "Διεύθυνση";
 
+/* Title for the Brave Account section in settings */
+"BraveAccount" = "Λογαριασμός Brave";
+
 /* Button to show the brave panel */
 "BravePanel" = "Πίνακας Brave";
 
@@ -264,36 +267,6 @@
 
 /* Title for Bottom Bar Callout View */
 "callout.bottomBarCalloutTitle" = "Προσαρμογή γραμμής καρτελών του Brave";
-
-/* Description - Description used for main button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutButtonDescription" = "Ορισμός του Brave ως προεπιλεγμένου προγράμματος περιήγησης;";
-
-/* Subtitle - Description for Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutDescription" = "Με το Brave ως προεπιλογή, κάθε σύνδεσμος που πατάτε ανοίγει με την προστασία απορρήτου του Brave.";
-
-/* Title for main button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutPrimaryButtonTitle" = "Ορισμός προεπιλογής";
-
-/* Description for secondary button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutSecondaryButtonDescription" = "Είναι ήδη η προεπιλογή;";
-
-/* Title for secondary button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutSecondaryButtonTitle" = "Παράλειψη";
-
-/* Title for Default Browser Full Screen Callout */
-"callout.defaultBrowserTitle" = "Απόρρητο. Απλά.";
-
-/* Subtitle - Description for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutDescription" = "Αυτό μας βοηθά να μάθουμε ποιες λειτουργίες του Brave χρησιμοποιούνται συχνότερα. Αλλάξτε το ανά πάσα στιγμή στις Ρυθμίσεις Brave στην ενότητα «Ασπίδες Brave και άλλες ρυθμίσεις απορρήτου».";
-
-/* Title for the link that navigates to a webpage showing information about p3a (Privacy Preserving Analytics) */
-"callout.p3aCalloutLinkTitle" = "Μάθετε περισσότερα για τα αναλυτικά στοιχεία προϊόντων με προστασία απορρήτου (P3A).";
-
-/* Title for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutTitle" = "Βοηθήστε μας να κάνουμε το Brave καλύτερο.";
-
-/* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutToggleTitle" = "Κοινοποιήστε ιδιωτικές και ανώνυμες πληροφορίες προϊόντος.";
 
 /* Subtitle - Description for Privacy Everywhere Full Screen Callout */
 "callout.privacyEverywhereCalloutDescription" = "Εξασφαλίστε το απόρρητο του Brave στον υπολογιστή ή στο tablet σας και συγχρονίστε σελιδοδείκτες και επεκτάσεις μεταξύ συσκευών.";
@@ -588,9 +561,6 @@
 
 /* The success message that appears after a user sucessfully adds a new search engine */
 "custonmSearchEngine.thirdPartySearchEngineAddedToastTitle" = "Η μηχανή αναζήτησης προστέθηκε!";
-
-/* Button text to close the default browser popup. */
-"defaultBrowserCallout.introCancelButtonText" = "Όχι τώρα";
 
 /* Button text to open app settings */
 "defaultBrowserCallout.introOpenSettingsButtonText" = "Άνοιγμα ρυθμίσεων";
@@ -1201,18 +1171,6 @@
 /* Button to show Brave Rewards. */
 "OBTurnOnButton" = "Έναρξη";
 
-/* The description text shown when there is big tech tracker among trackers. Example usage: Google, Amazon and 32 other trackers blocked */
-"onboarding.blockedAdsOnboardingBigTechInformationText" = "%1$@ και %2$lld άλλες διαφημίσεις & προγράμματα παρακολούθησης αποκλείστηκαν";
-
-/* The footnote indicating what Brave shields is blocking */
-"onboarding.blockedAdsOnboardingFootnoteText" = "Δείτε όλα τα βλαβερά στοιχεία που έχει αποκλείσει το Brave, σε κάθε σελίδα, με τις Ασπίδες.";
-
-/* The text describing user where they should press in order to open Shield panel */
-"onboarding.blockedAdsOnboardingInstructionsText" = "Πατήστε για να προβάλλετε τις Ασπίδες Brave ";
-
-/* The description text shown when there is no big tech tracker among trackers. Example usage: 31 Ads & trackers blocked. The number here is presented separately so it is not in translation. */
-"onboarding.blockedAdsOnboardingNoBigTechInformationText" = "Διαφημίσεις & ιχνηλάτες που αποκλείστηκαν";
-
 /* Button text to let users know they can use the vpn on all their devices */
 "onboarding.linkReceiptButton" = "Συνδέστε τη συνδρομή σας VPN";
 
@@ -1222,12 +1180,6 @@
 /* Popup title to let users know they can use the vpn on all their devices */
 "onboarding.linkReceiptTitle" = "Επεκτείνετε την προστασία σας με Τείχος προστασίας Brave + VPN";
 
-/* Description for Navigate Settings Screen in Onboarding. This part indicating navigation ('Default Browser App') should match the option in iPhone Settings in that Language. */
-"onboarding.navigateSettingsOnboardingScreenDescription" = "Αναζητήστε την επιλογή «Προεπιλεγμένη εφαρμογή προγράμματος περιήγησης»";
-
-/* Title for Navigate Settings Screen in Onboarding */
-"onboarding.navigateSettingsOnboardingScreenTitle" = "Μετάβαση στις Ρυθμίσεις...";
-
 /* Description for the NTP pop-over that describes the tracking information on NTP */
 "onboarding.ntpOnboardingPopOverTrackerDescription" = "Αποκλείοντας προγράμματα παρακολούθησης & διαφημίσεις, οι ιστότοποι χρησιμοποιούν λιγότερα δεδομένα και φορτώνονται πολύ πιο γρήγορα.";
 
@@ -1236,9 +1188,6 @@
 
 /* Title for the Omnibox (URL Bar) pop-over that describes faster load times. */
 "onboarding.omniboxOnboardingPopOverTitle" = "Πληκτρολογήστε ένα όνομα ιστοτόπου ή μια διεύθυνση URL";
-
-/* Title for Welcome Screen in Onboarding */
-"onboarding.welcomeScreenTitle" = "Καλώς ήλθατε στο Brave";
 
 /* Continue button to navigate to next onboarding screen. */
 "OnboardingContinueButton" = "Συνέχεια";
@@ -1390,7 +1339,7 @@
 /* Title of the alert when a calendar event is available for download */
 "OpenTextCalendarAlertTitle" = "Εκδήλωση ημερολογίου διαθέσιμη";
 
-/* Button title to that opens a website. */
+/* Button title to open a website. */
 "OpenWebsite" = "Άνοιγμα ιστότοπου";
 
 /* Brave News Item Menu title */
@@ -1413,9 +1362,6 @@
 
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
 "p3a.settingTitle" = "Να επιτρέπονται αναλυτικά στοιχεία προϊόντων με προστασία απορρήτου (P3A)";
-
-/* No comment provided by engineer. */
-"p3aCalloutCloseAccessibilityLabel" = "Κλείσιμο επεξήγησης προϊόντος διατήρησης απορρήτου";
 
 /* No comment provided by engineer. */
 "pageSecurityView.pageNotFullySecureTitle" = "Η σύνδεσή σας σε αυτόν τον ιστότοπο δεν είναι εντελώς ασφαλής.";
@@ -1573,8 +1519,11 @@
 /* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
 "playlist.playlistAutoSaveSettingsTitle" = "Αποθήκευση περιεχομένου για αναπαραγωγή χωρίς σύνδεση";
 
+/* The title of the button for the user to proceed adding playlist item when the user's disk space is almost full */
+"playlist.playlistDiskSpaceAddAnywayButtonTitle" = "Προσθήκη Ούτως ή άλλως";
+
 /* When the user's disk space is almost full */
-"playlist.playlistDiskSpaceWarningMessage" = "Η προσθήκη αρχείων βίντεο και ήχου για χρήση εκτός σύνδεσης μπορεί να χρησιμοποιήσει πολύ χώρο αποθήκευσης στη συσκευή σας. Καταργήστε ορισμένα αρχεία για να ελευθερώσετε χώρο αποθήκευσης.";
+"playlist.playlistDiskSpaceWarningMessage" = "Η συσκευή σας έχει χαμηλό χώρο. Η προσθήκη αυτού του βίντεο στη Λίστα αναπαραγωγής ενδέχεται να αποτύχει ή να επηρεάσει άλλες λήψεις.";
 
 /* When the user's disk space is almost full */
 "playlist.playlistDiskSpaceWarningTitle" = "Ο χώρος αποθήκευσης είναι σχεδόν πλήρης";
@@ -2005,9 +1954,8 @@
 /* A label for a text entry field where the user can provide additional details for a web-compatibility report */
 "reportBrokenAdditionalDetailsRequired" = "Πρόσθετες λεπτομέρειες";
 
-/* A label for a drop down where the user provides a category for a web-compatibility report
-A placeholder for a drop down where the user provides a category for a web-compatibility report */
-"reportBrokenCategory" = "Κάντε μία επιλογή";
+/* A label for a drop down where the user provides a category for a web-compatibility report */
+"reportBrokenCategory" = "Ποιο είναι το κύριο ζήτημα που παρατηρείτε;";
 
 /* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
 "ReportBrokenContactMe" = "Επικοινωνήστε μαζί μου στο: (προαιρετικό)";
@@ -2017,6 +1965,9 @@ A placeholder for a drop down where the user provides a category for a web-compa
 
 /* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
 "ReportBrokenContactMeSuggestions" = "Email, Twitter κ.λπ.";
+
+/* A placeholder for a drop down where the user provides a category for a web-compatibility report */
+"ReportBrokenPlaceholder" = "Κάντε μία επιλογή";
 
 /* First part of the report a broken site copy. After the colon is a new line and then a website address */
 "ReportBrokenSiteBody1" = "Ενημερώστε τους προγραμματιστές του Brave ότι ο ιστότοπος αυτός δεν λειτουργεί όπως αναμενόταν:";
@@ -3089,8 +3040,14 @@ A placeholder for a drop down where the user provides a category for a web-compa
 /* A button title which when tapped will close all of the open tabs for the user */
 "tabGrid.closeAllTabsButtonTitle" = "Κλείσιμο όλων των καρτελών";
 
-/* Accessibility label for a close button that when tapped closes the associated tab */
+/* Label for a close button that when tapped closes the associated tab */
 "tabGrid.closeTab" = "Κλείσιμο Καρτέλας";
+
+/* Label for a close button that when tapped closes the associated tabs */
+"tabGrid.closeTabs" = "Κλείσιμο καρτελών";
+
+/* A button title which when tapped will allow the user to deselect multiple tabs in the tab grid */
+"tabGrid.deselectTabsButtonTitle" = "Κατάργηση επιλογής καρτελών";
 
 /* A button title which when tapped will display a menu with more options */
 "tabGrid.moreMenuButtonTitle" = "Περισσότερα";
@@ -3125,11 +3082,20 @@ A placeholder for a drop down where the user provides a category for a web-compa
 /* Accessibility label for the regular browsing option in the browsing mode picker */
 "tabGrid.regularBrowsingModeAccessibilityLabel" = "Κανονική περιήγηση";
 
+/* A text label showing how many tabs the user has currently selected in edit mode. It is shown next to the number of selected tabs e.g. "Selected tabs: 4" */
+"tabGrid.selectedTabs" = "Επιλεγμένες καρτέλες";
+
+/* A button title which when tapped will allow the user to select multiple tabs in the tab grid */
+"tabGrid.selectTabsButtonTitle" = "Επιλογή καρτελών";
+
 /* A button title that when tapped allows users to shred all of their tabs */
 "tabGrid.shredAllTabsButtonTitle" = "Κατάργηση όλων των καρτελών";
 
 /* A button title that when tapped allows users to shred the currently selected tab */
 "tabGrid.shredSelectedTabButtonTitle" = "Κατάργηση επιλεγμένης καρτέλας";
+
+/* A button title that when tapped allows users to shred the currently selected tabs */
+"tabGrid.shredSelectedTabsButtonTitle" = "Καταστροφή";
 
 /* Accessibility label for a button that allows users to shred their tabs (erase them & associated data) */
 "tabGrid.shredTabsAccessibilityLabel" = "Κατάργηση καρτελών";

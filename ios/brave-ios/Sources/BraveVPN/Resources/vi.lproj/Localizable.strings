@@ -101,7 +101,7 @@
 "vpn.contactFormTimezone" = "Múi giờ của iOS";
 
 /* Title for contact form email. */
-"vpn.contactFormTitle" = "Vấn đề Tường lửa Brave + VPN";
+"vpn.contactFormTitle" = "Vấn đề Brave VPN";
 
 /* Button text to enable Brave VPN */
 "vpn.enableButton" = "Bật";
@@ -296,7 +296,7 @@
 "vpn.vpnBackgroundNotificationBody" = "Ngay cả khi ở chế độ nền, Brave vẫn sẽ tiếp tục bảo vệ bạn.";
 
 /* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationTitle" = "Brave Tường lửa + VPN hiện đang BẬT";
+"vpn.vpnBackgroundNotificationTitle" = "Brave VPN đang BẬT";
 
 /* Text for description of list item which chooses the optimal server for the country region */
 "vpn.vpnCityRegionOptimalDescription" = "Sử dụng máy chủ tốt nhất hiện có";
@@ -311,7 +311,7 @@
 "vpn.vpnConfigGenericErrorTitle" = "Lỗi";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "Tường lửa Brave + VPN cần có cấu hình VPN được cài đặt trên thiết bị của bạn để hoạt động.";
+"vpn.vpnConfigPermissionDeniedErrorBody" = "Brave VPN cần có cấu hình VPN được cài đặt trên thiết bị của bạn để hoạt động.";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
 "vpn.vpnConfigPermissionDeniedErrorTitle" = "Quyền bị từ chối";
@@ -341,7 +341,7 @@
 "vpn.vpnRegionChangedTitle" = "Đã đổi vùng VPN.";
 
 /* Message for alert to reset vpn configuration */
-"vpn.vpnResetAlertBody" = "Thao tác này sẽ đặt lại cấu hình Brave Firewall + VPN của bạn và sửa mọi lỗi. Quá trình này có thể mất một phút.";
+"vpn.vpnResetAlertBody" = "Thao tác này sẽ đặt lại cấu hình Brave VPN của bạn và sửa mọi lỗi. Quá trình này có thể mất một phút.";
 
 /* Title for alert to reset vpn configuration */
 "vpn.vpnResetAlertTitle" = "Đặt lại cấu hình";

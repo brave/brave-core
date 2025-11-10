@@ -95,7 +95,7 @@
 "ScanQRCodePermissionErrorMessage" = "Autorisez Brave à accéder à l'appareil photo de votre appareil dans Réglages -> Confidentialité et sécurité -> Caméra.";
 
 /* Title for the QR code scanner view. */
-"ScanQRCodeViewTitle" = "Analyser le code QR";
+"ScanQRCodeViewTitle" = "Scanner le code QR";
 
 /* General settings section title */
 "SettingsGeneralSectionTitle" = "Général";
