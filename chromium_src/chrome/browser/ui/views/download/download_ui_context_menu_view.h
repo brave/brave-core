@@ -6,7 +6,6 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_DOWNLOAD_DOWNLOAD_UI_CONTEXT_MENU_VIEW_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_DOWNLOAD_DOWNLOAD_UI_CONTEXT_MENU_VIEW_H_
 
-#include "chrome/browser/download/download_ui_model.h"
 #include "ui/menus/simple_menu_model.h"
 
 #define DownloadUiContextMenuView DownloadUiContextMenuViewChromium
