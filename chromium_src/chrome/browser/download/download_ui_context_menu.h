@@ -24,6 +24,8 @@
   virtual ui::SimpleMenuModel* GetMenuModel
 
 // Replace DownloadCommands with BraveDownloadCommands in the member variable.
+// BraveDownloadCommands adds additional commands specific to Brave, such as
+// "Delete Local File" and "Copy Download Link".
 #define DownloadCommands BraveDownloadCommands
 
 #include <chrome/browser/download/download_ui_context_menu.h>  // IWYU pragma: export
