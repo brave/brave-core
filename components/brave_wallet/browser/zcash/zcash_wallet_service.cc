@@ -422,6 +422,9 @@ base::expected<mojom::ZCashTxType, mojom::ZCashAddressError>
 ZCashWalletService::GetTransactionType(const mojom::AccountIdPtr& account_id,
                                        bool use_shielded_pool,
                                        const std::string& addr) {
+  if (!IsZCashAccount(account_id)) {
+    return base::unexpected(mojom::ZCashAddressError::kNotZCashAccount);
+  }
   bool testnet = IsZCashTestnetKeyring(account_id->keyring_id);
 
 #if BUILDFLAG(ENABLE_ORCHARD)
