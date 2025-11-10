@@ -9,6 +9,7 @@
 
 #include "brave/browser/ui/tabs/brave_tab_menu_model.h"
 #include "brave/browser/ui/views/tabs/brave_browser_tab_strip_controller.h"
+#include "brave/components/containers/buildflags/buildflags.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
@@ -24,6 +25,10 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/gurl.h"
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/components/containers/core/common/features.h"
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
 class BraveTabContextMenuContentsTest : public InProcessBrowserTest {
  public:
@@ -382,3 +387,36 @@ IN_PROC_BROWSER_TEST_F(BraveTabContextMenuContentsTest,
     EXPECT_FALSE(menu_model->IsNewFeatureAt(*index));
   }
 }
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+class BraveTabContextMenuContentsWithContainersTest
+    : public BraveTabContextMenuContentsTest {
+ public:
+  BraveTabContextMenuContentsWithContainersTest() = default;
+  ~BraveTabContextMenuContentsWithContainersTest() override = default;
+
+ private:
+  base::test::ScopedFeatureList feature_list_{
+      containers::features::kContainers};
+};
+
+IN_PROC_BROWSER_TEST_F(BraveTabContextMenuContentsWithContainersTest,
+                       ContainersSubMenuExists) {
+  // Regression test for https://github.com/brave/brave-browser/issues/47808
+  // The Containers submenu should be added even if CommandMoveTabsToNewWindow
+  // doesn't exist in the tab context menu.
+  auto menu = CreateMenuAt(0);
+  auto* menu_model = menu->model_.get();
+  auto index = menu_model->GetIndexOfCommandId(
+      BraveTabMenuModel::CommandOpenInContainer);
+  EXPECT_TRUE(index.has_value());
+
+  chrome::NewEmptyWindow(browser()->profile());
+
+  menu = CreateMenuAt(0);
+  menu_model = menu->model_.get();
+  index = menu_model->GetIndexOfCommandId(
+      BraveTabMenuModel::CommandOpenInContainer);
+  EXPECT_TRUE(index.has_value());
+}
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
