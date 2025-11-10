@@ -28,7 +28,6 @@ class SyncCameraView: UIView, AVCaptureMetadataOutputObjectsDelegate {
     return button
   }()
 
-  private var captureDevice: AVCaptureDevice?
   private var captureDeviceRotationCoordinator: AVCaptureDevice.RotationCoordinator?
 
   var scanCallback: ((_ data: String) -> Void)?
