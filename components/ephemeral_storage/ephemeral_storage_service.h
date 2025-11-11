@@ -85,7 +85,7 @@ class EphemeralStorageService : public KeyedService {
 
   void CleanupTLDEphemeralStorage(
       content::WebContents* contents,
-      const content::StoragePartitionConfig storage_partition_config,
+      const content::StoragePartitionConfig& storage_partition_config,
       const bool enforced_by_user);
 
  private:
@@ -122,7 +122,7 @@ class EphemeralStorageService : public KeyedService {
   void CleanupFirstPartyStorageArea(const TLDEphemeralAreaKey& key);
 
   size_t FireCleanupTimersForTesting();
-  void OnDomainAndSubdomainTabsClosed(const TLDEphemeralAreaKey key,
+  void OnDomainAndSubdomainTabsClosed(const TLDEphemeralAreaKey& key,
                                       const bool result);
 
   raw_ptr<content::BrowserContext> context_ = nullptr;

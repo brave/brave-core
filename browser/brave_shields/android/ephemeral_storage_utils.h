@@ -10,7 +10,7 @@
 
 namespace ephemeral_storage {
 
-bool CloseTabsWithTLD(const std::string_view tld);
+bool CloseTabsWithTLD(const std::string tld);
 
 }  // namespace ephemeral_storage
 

@@ -41,11 +41,11 @@ static void JNI_BraveEphemeralStorageUtils_CleanupTLDEphemeralStorage(
       web_contents->GetSiteInstance()->GetStoragePartitionConfig(), true);
 }
 
-bool CloseTabsWithTLD(const std::string_view tld) {
+bool CloseTabsWithTLD(const std::string tld) {
   return Java_BraveEphemeralStorageUtils_closeTabsWithTLD(
       base::android::AttachCurrentThread(),
       base::android::ConvertUTF8ToJavaString(
-          base::android::AttachCurrentThread(), std::string(tld)));
+          base::android::AttachCurrentThread(), std::move(tld)));
 }
 
 }  // namespace ephemeral_storage
