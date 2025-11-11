@@ -3,27 +3,26 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { Authentication } from '../brave_account.mojom-webui.js'
-import type { AuthenticationInterface } from '../brave_account.mojom-webui.js'
+import {
+  Authentication,
+  AuthenticationRemote
+} from '../brave_account.mojom-webui.js'
 import {
   BraveAccountRowCallbackRouter,
   BraveAccountRowHandlerRemote,
   BraveAccountSettingsHandler
 } from '../brave_account_settings_handler.mojom-webui.js'
-import type {
-  BraveAccountRowHandlerInterface
-} from '../brave_account_settings_handler.mojom-webui.js'
 
 export interface BraveAccountBrowserProxy {
-  authentication: AuthenticationInterface
+  authentication: AuthenticationRemote
   rowCallbackRouter: BraveAccountRowCallbackRouter;
-  rowHandler: BraveAccountRowHandlerInterface;
+  rowHandler: BraveAccountRowHandlerRemote;
 }
 
 export class BraveAccountBrowserProxyImpl implements BraveAccountBrowserProxy {
-  authentication: AuthenticationInterface
+  authentication: AuthenticationRemote
   rowCallbackRouter: BraveAccountRowCallbackRouter;
-  rowHandler: BraveAccountRowHandlerInterface;
+  rowHandler: BraveAccountRowHandlerRemote;
 
   private constructor() {
     this.authentication = Authentication.getRemote()
@@ -32,8 +31,7 @@ export class BraveAccountBrowserProxyImpl implements BraveAccountBrowserProxy {
 
     BraveAccountSettingsHandler.getRemote().createRowHandler(
         this.rowCallbackRouter.$.bindNewPipeAndPassRemote(),
-        (this.rowHandler as BraveAccountRowHandlerRemote)
-            .$.bindNewPipeAndPassReceiver());
+        this.rowHandler.$.bindNewPipeAndPassReceiver());
   }
 
   static getInstance(): BraveAccountBrowserProxy {
