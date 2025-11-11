@@ -157,8 +157,8 @@ void BravePageInfoTabSwitcher::UpdateTabIndicator() {
 
   // Convert button bounds to indicator's parent coordinate space.
   gfx::Rect button_bounds = active_button->bounds();
-  views::View::ConvertRectToTarget(active_button->parent(),
-                                   tab_indicator_->parent(), button_bounds);
+  button_bounds = views::View::ConvertRectToTarget(
+      active_button->parent(), tab_indicator_->parent(), button_bounds);
 
   // Position the indicator under the active button with full button width.
   tab_indicator_->SetBounds(button_bounds.x(),
