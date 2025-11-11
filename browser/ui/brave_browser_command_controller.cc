@@ -79,7 +79,7 @@
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #endif
 
-    namespace {
+namespace {
 
 bool IsBraveCommands(int id) {
   return id >= IDC_BRAVE_COMMANDS_START && id <= IDC_BRAVE_COMMANDS_LAST;
