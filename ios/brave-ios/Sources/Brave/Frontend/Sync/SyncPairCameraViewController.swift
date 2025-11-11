@@ -153,10 +153,8 @@ class SyncPairCameraViewController: SyncViewController {
     to size: CGSize,
     with coordinator: UIViewControllerTransitionCoordinator
   ) {
-    coordinator.animate(alongsideTransition: nil) { _ in
-      self.cameraView.videoPreviewLayer?.connection?.videoOrientation = AVCaptureVideoOrientation(
-        ui: UIApplication.shared.statusBarOrientation
-      )
+    coordinator.animate(alongsideTransition: nil) { [weak self] _ in
+      self?.cameraView.updateCameraOrientation()
     }
   }
 
