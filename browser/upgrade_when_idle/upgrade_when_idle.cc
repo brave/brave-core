@@ -9,7 +9,6 @@
 
 #include "base/check_is_test.h"
 #include "base/command_line.h"
-#include "base/sequence_checker.h"
 #include "base/time/time.h"
 #include "brave/browser/browsing_data/brave_clear_browsing_data.h"
 #include "chrome/browser/first_run/upgrade_util.h"

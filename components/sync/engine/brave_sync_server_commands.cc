@@ -9,7 +9,6 @@
 
 #include "base/functional/callback.h"
 #include "base/logging.h"
-#include "base/sequence_checker.h"
 #include "base/types/cxx23_to_underlying.h"
 #include "components/sync/engine/sync_protocol_error.h"
 #include "components/sync/engine/syncer_proto_util.h"

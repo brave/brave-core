@@ -15,6 +15,7 @@
 #include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/notreached.h"
+#include "base/sequence_checker.h"
 #include "base/trace_event/trace_event.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_row_util.h"
