@@ -16,7 +16,6 @@
 #include "base/containers/flat_map.h"
 #include "base/feature_list.h"
 #include "brave/browser/ui/color/brave_color_id.h"
-#include "chrome/browser/ui/layout_constants.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"

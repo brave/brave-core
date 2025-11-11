@@ -6,7 +6,6 @@
 #include "chrome/browser/ui/tabs/tab_style.h"
 
 #include "chrome/browser/ui/layout_constants.h"
-#include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/features.h"
 
 namespace {
@@ -40,14 +39,13 @@ class BraveTabStyle : public TabStyle {
     if (!tabs::HorizontalTabsUpdateEnabled()) {
       return TabStyle::GetContentsInsets();
     }
-    return gfx::Insets::VH(0, tabs::GetHorizontalTabPadding() +
-                                  tabs::kHorizontalTabInset);
+    return gfx::Insets::VH(
+        0, tabs::GetHorizontalTabPadding() + tabs::kHorizontalTabInset);
   }
 
   int GetPinnedWidth(const bool is_split) const override {
     // We can ignore |is_split| because we're always using same width.
-    return tabs::GetHorizontalTabHeight() +
-           tabs::kHorizontalTabInset * 2;
+    return tabs::GetHorizontalTabHeight() + tabs::kHorizontalTabInset * 2;
   }
 
   int GetDragHandleExtension(int height) const override {

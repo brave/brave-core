@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "chrome/browser/ui/layout_constants.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/ui/layout_constants.h"

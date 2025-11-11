@@ -7,10 +7,10 @@
 
 #include <algorithm>
 
-#include "chrome/browser/ui/layout_constants.h"
 #include "brave/browser/ui/views/tabs/brave_tab_group_header.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "cc/paint/paint_flags.h"
+#include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/views/tabs/tab_group_style.h"
 #include "chrome/browser/ui/views/tabs/tab_group_views.h"

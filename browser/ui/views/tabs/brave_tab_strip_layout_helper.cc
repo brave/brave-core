@@ -10,7 +10,6 @@
 
 #include "base/check.h"
 #include "base/check_op.h"
-#include "chrome/browser/ui/layout_constants.h"
 #include "brave/browser/ui/views/tabs/brave_tab_group_header.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip.h"
 #include "chrome/browser/ui/layout_constants.h"
