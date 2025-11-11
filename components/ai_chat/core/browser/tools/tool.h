@@ -9,6 +9,7 @@
 #include <optional>
 #include <string>
 #include <string_view>
+#include <variant>
 #include <vector>
 
 #include "base/functional/callback_forward.h"
@@ -73,10 +74,20 @@ class Tool {
   // supported.
   virtual bool IsSupportedByModel(const mojom::Model& model) const;
 
-  // If this tool requires a user to interact with it before a response will
-  // be sent to the Assistant. This can be for permission or because
-  // the tool requires the user to take some action to provide the result.
-  virtual bool RequiresUserInteractionBeforeHandling() const;
+  // Check if this tool requires user interaction before handling
+  // Returns:
+  //  - bool(false): No interaction needed, tool can execute immediately
+  //  - bool(true): Needs user to provide output (e.g. UserChoiceTool)
+  //  - mojom::PermissionChallengePtr: Needs user permission with the given
+  //    challenge.
+  virtual std::variant<bool, mojom::PermissionChallengePtr>
+  RequiresUserInteractionBeforeHandling(
+      const mojom::ToolUseEvent& tool_use) const;
+
+  // Called after user grants permission when a tool requires a
+  // PermissionChallenge. Tools can override to perform any setup needed
+  // before UseTool is called.
+  virtual void UserPermissionGranted(const std::string& tool_use_id);
 
   // Whether this tool supports the given conversation. Can be used to filter
   // tools based on conversation properties like temporary status.

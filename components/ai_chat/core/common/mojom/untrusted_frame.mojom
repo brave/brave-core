@@ -63,6 +63,10 @@ interface UntrustedConversationHandler {
   // as a result of a user action.
   RespondToToolUseRequest(string tool_id, array<ContentBlock> output_json);
 
+  // Called when user responds to a permission challenge.
+  // user_result: true if user approved, false if denied.
+  ProcessPermissionChallenge(string tool_use_id, bool user_result);
+
   // Regenerate answer using specified model.
   RegenerateAnswer(string turn_uuid, string model_key);
 };

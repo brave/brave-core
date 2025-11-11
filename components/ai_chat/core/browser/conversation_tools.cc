@@ -69,7 +69,12 @@ The key is to avoid overusing the tool. It should supplement your responses, not
     return std::optional<std::vector<std::string>>({"choices"});
   }
 
-  bool RequiresUserInteractionBeforeHandling() const override { return true; }
+  std::variant<bool, mojom::PermissionChallengePtr>
+  RequiresUserInteractionBeforeHandling(
+      const mojom::ToolUseEvent& tool_use) const override {
+    // This tool needs user to provide the output
+    return true;
+  }
 };
 
 // Encourages the LLM to store important information before it gets removed
@@ -115,8 +120,6 @@ class AssistantDetailStorageTool : public Tool {
           StringProperty(
               "Useful information from an immediately-previous tool call")}});
   }
-
-  bool RequiresUserInteractionBeforeHandling() const override { return false; }
 
   bool SupportsConversation(
       bool is_temporary,

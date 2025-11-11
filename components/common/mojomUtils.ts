@@ -12,6 +12,24 @@ type MojomEnum = {
 }
 
 /**
+ * Extracts keys from T where undefined is part of the type union
+ * This is useful for mojom types where optional fields are represented by the possibility of being
+ * undefined, instead of truly being optional.
+ */
+export type UndefinedKeys<T> = {
+  [K in keyof T]: undefined extends T[K] ? K : never
+}[keyof T]
+
+/**
+ * Makes all properties that can be undefined optional, while keeping required properties required.
+ * This is useful for providing defaults for mojom structs that have optional fields where their definitions
+ * define optional as possibly undefined instead of truly optional.
+ */
+export type UndefinedToOptional<T> =
+  Omit<T, UndefinedKeys<T>>
+  & Partial<Pick<T, UndefinedKeys<T>>>
+
+/**
  * Converts a mojo time to a JS time.
  */
 export function mojoTimeToJSDate(mojoTime: mojo.Time): Date {
