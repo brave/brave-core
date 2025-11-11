@@ -195,7 +195,7 @@ brave_settings_ts_extra_deps =
 
 brave_settings_mojo_files = [
   "$root_gen_dir/brave/components/brave_account/mojom/brave_account.mojom-webui.ts",
-  "$root_gen_dir/brave/components/brave_account/mojom/brave_account_settings_handler.mojom-webui.ts",
+  "$root_gen_dir/brave/components/brave_account/mojom/brave_account_row.mojom-webui.ts",
   "$root_gen_dir/brave/components/brave_origin/common/mojom/brave_origin_settings.mojom-webui.ts",
 
   # Add generated strings as mojo files. Currently, this is the only way to

@@ -7,7 +7,7 @@
 #define BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_ACCOUNT_BRAVE_ACCOUNT_ROW_HANDLER_H_
 
 #include "base/memory/raw_ptr.h"
-#include "brave/components/brave_account/mojom/brave_account_settings_handler.mojom.h"
+#include "brave/components/brave_account/mojom/brave_account_row.mojom.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
@@ -22,12 +22,11 @@ class WebUI;
 
 namespace brave_account {
 
-class BraveAccountRowHandler : public mojom::BraveAccountRowHandler {
+class BraveAccountRowHandler : public mojom::RowHandler {
  public:
-  BraveAccountRowHandler(
-      mojo::PendingReceiver<mojom::BraveAccountRowHandler> row_handler,
-      mojo::PendingRemote<mojom::BraveAccountRow> row,
-      content::WebUI* web_ui);
+  BraveAccountRowHandler(mojo::PendingReceiver<mojom::RowHandler> row_handler,
+                         mojo::PendingRemote<mojom::RowClient> row_client,
+                         content::WebUI* web_ui);
 
   BraveAccountRowHandler(const BraveAccountRowHandler&) = delete;
   BraveAccountRowHandler& operator=(const BraveAccountRowHandler&) = delete;
@@ -35,15 +34,15 @@ class BraveAccountRowHandler : public mojom::BraveAccountRowHandler {
   ~BraveAccountRowHandler() override;
 
  private:
-  // brave_account::mojom::BraveAccountRowHandler:
+  // brave_account::mojom::RowHandler:
   void GetAccountState(GetAccountStateCallback callback) override;
   void OpenDialog() override;
 
   mojom::AccountState GetAccountState() const;
   void OnPrefChanged();
 
-  mojo::Receiver<mojom::BraveAccountRowHandler> row_handler_;
-  mojo::Remote<mojom::BraveAccountRow> row_;
+  mojo::Receiver<mojom::RowHandler> row_handler_;
+  mojo::Remote<mojom::RowClient> row_client_;
   const raw_ptr<content::WebUI> web_ui_;
   const raw_ptr<PrefService> pref_service_;
   PrefChangeRegistrar pref_change_registrar_;

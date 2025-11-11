@@ -20,11 +20,11 @@
 namespace brave_account {
 
 BraveAccountRowHandler::BraveAccountRowHandler(
-    mojo::PendingReceiver<mojom::BraveAccountRowHandler> row_handler,
-    mojo::PendingRemote<mojom::BraveAccountRow> row,
+    mojo::PendingReceiver<mojom::RowHandler> row_handler,
+    mojo::PendingRemote<mojom::RowClient> row_client,
     content::WebUI* web_ui)
     : row_handler_(this, std::move(row_handler)),
-      row_(std::move(row)),
+      row_client_(std::move(row_client)),
       web_ui_(&CHECK_DEREF(web_ui)),
       pref_service_(CHECK_DEREF(Profile::FromWebUI(web_ui_)).GetPrefs()) {
   CHECK(pref_service_);
@@ -58,7 +58,7 @@ mojom::AccountState BraveAccountRowHandler::GetAccountState() const {
 }
 
 void BraveAccountRowHandler::OnPrefChanged() {
-  row_->UpdateState(GetAccountState());
+  row_client_->UpdateState(GetAccountState());
 }
 
 }  // namespace brave_account

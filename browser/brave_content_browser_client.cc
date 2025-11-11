@@ -264,7 +264,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 #include "brave/browser/ui/webui/private_new_tab_page/brave_private_new_tab_ui.h"
-#include "brave/components/brave_account/mojom/brave_account_settings_handler.mojom.h"
+#include "brave/components/brave_account/mojom/brave_account_row.mojom.h"
 #include "brave/components/brave_new_tab_ui/brave_new_tab_page.mojom.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/features.h"
@@ -912,8 +912,7 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
     content::RegisterWebUIControllerInterfaceBinder<
         brave_account::mojom::Authentication, BraveSettingsUI>(map);
     content::RegisterWebUIControllerInterfaceBinder<
-        brave_account::mojom::BraveAccountSettingsHandler, BraveSettingsUI>(
-        map);
+        brave_account::mojom::RowHandlerFactory, BraveSettingsUI>(map);
   }
 
   if (base::FeatureList::IsEnabled(email_aliases::features::kEmailAliases)) {

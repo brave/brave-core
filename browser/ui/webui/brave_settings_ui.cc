@@ -312,7 +312,7 @@ void BraveSettingsUI::BindInterface(
 }
 
 void BraveSettingsUI::BindInterface(
-    mojo::PendingReceiver<brave_account::mojom::BraveAccountSettingsHandler>
+    mojo::PendingReceiver<brave_account::mojom::RowHandlerFactory>
         pending_receiver) {
   mojo::MakeSelfOwnedReceiver(
       std::make_unique<brave_account::BraveAccountSettingsHandler>(web_ui()),

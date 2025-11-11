@@ -11,16 +11,16 @@ enum AccountState {
   kLoggedIn,
 };
 
-interface BraveAccountRow {
+interface RowClient {
   UpdateState(AccountState state);
 };
 
-interface BraveAccountRowHandler {
+interface RowHandler {
   GetAccountState() => (AccountState state);
   OpenDialog();
 };
 
-interface BraveAccountSettingsHandler {
-  CreateRowHandler(pending_remote<BraveAccountRow> row,
-                   pending_receiver<BraveAccountRowHandler> row_handler);
+interface RowHandlerFactory {
+  CreateRowHandler(pending_receiver<RowHandler> row_handler,
+                   pending_remote<RowClient> row_client);
 };

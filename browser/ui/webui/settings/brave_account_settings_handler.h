@@ -9,7 +9,7 @@
 #include <memory>
 
 #include "base/memory/raw_ptr.h"
-#include "brave/components/brave_account/mojom/brave_account_settings_handler.mojom.h"
+#include "brave/components/brave_account/mojom/brave_account_row.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 
@@ -21,7 +21,7 @@ namespace brave_account {
 
 class BraveAccountRowHandler;
 
-class BraveAccountSettingsHandler : public mojom::BraveAccountSettingsHandler {
+class BraveAccountSettingsHandler : public mojom::RowHandlerFactory {
  public:
   explicit BraveAccountSettingsHandler(content::WebUI* web_ui);
 
@@ -32,9 +32,9 @@ class BraveAccountSettingsHandler : public mojom::BraveAccountSettingsHandler {
   ~BraveAccountSettingsHandler() override;
 
  private:
-  void CreateRowHandler(mojo::PendingRemote<mojom::BraveAccountRow> row,
-                        mojo::PendingReceiver<mojom::BraveAccountRowHandler>
-                            row_handler) override;
+  void CreateRowHandler(
+      mojo::PendingReceiver<mojom::RowHandler> row_handler,
+      mojo::PendingRemote<mojom::RowClient> row_client) override;
 
   const raw_ptr<content::WebUI> web_ui_;
   std::unique_ptr<BraveAccountRowHandler> row_handler_;

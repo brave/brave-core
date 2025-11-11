@@ -8,30 +8,30 @@ import {
   AuthenticationRemote
 } from '../brave_account.mojom-webui.js'
 import {
-  BraveAccountRowCallbackRouter,
-  BraveAccountRowHandlerRemote,
-  BraveAccountSettingsHandler
-} from '../brave_account_settings_handler.mojom-webui.js'
+  RowClientCallbackRouter,
+  RowHandlerRemote,
+  RowHandlerFactory
+} from '../brave_account_row.mojom-webui.js'
 
 export interface BraveAccountBrowserProxy {
   authentication: AuthenticationRemote
-  rowCallbackRouter: BraveAccountRowCallbackRouter;
-  rowHandler: BraveAccountRowHandlerRemote;
+  rowClientCallbackRouter: RowClientCallbackRouter;
+  rowHandler: RowHandlerRemote;
 }
 
 export class BraveAccountBrowserProxyImpl implements BraveAccountBrowserProxy {
   authentication: AuthenticationRemote
-  rowCallbackRouter: BraveAccountRowCallbackRouter;
-  rowHandler: BraveAccountRowHandlerRemote;
+  rowClientCallbackRouter: RowClientCallbackRouter;
+  rowHandler: RowHandlerRemote;
 
   private constructor() {
     this.authentication = Authentication.getRemote()
-    this.rowCallbackRouter = new BraveAccountRowCallbackRouter();
-    this.rowHandler = new BraveAccountRowHandlerRemote();
+    this.rowClientCallbackRouter = new RowClientCallbackRouter();
+    this.rowHandler = new RowHandlerRemote();
 
-    BraveAccountSettingsHandler.getRemote().createRowHandler(
-        this.rowCallbackRouter.$.bindNewPipeAndPassRemote(),
-        this.rowHandler.$.bindNewPipeAndPassReceiver());
+    RowHandlerFactory.getRemote().createRowHandler(
+        this.rowHandler.$.bindNewPipeAndPassReceiver(),
+        this.rowClientCallbackRouter.$.bindNewPipeAndPassRemote());
   }
 
   static getInstance(): BraveAccountBrowserProxy {

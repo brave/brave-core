@@ -8,7 +8,7 @@
 
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
-#include "brave/components/brave_account/mojom/brave_account_settings_handler.mojom.h"
+#include "brave/components/brave_account/mojom/brave_account_row.mojom.h"
 #include "brave/components/brave_origin/common/mojom/brave_origin_settings.mojom.h"
 #include "brave/components/commands/common/commands.mojom.h"
 #include "brave/components/containers/buildflags/buildflags.h"
@@ -67,7 +67,7 @@ class BraveSettingsUI : public settings::SettingsUI {
   void BindInterface(mojo::PendingReceiver<brave_account::mojom::Authentication>
                          pending_receiver);
   void BindInterface(
-      mojo::PendingReceiver<brave_account::mojom::BraveAccountSettingsHandler>
+      mojo::PendingReceiver<brave_account::mojom::RowHandlerFactory>
           pending_receiver);
 
 #if BUILDFLAG(ENABLE_CONTAINERS)

@@ -17,10 +17,10 @@ BraveAccountSettingsHandler::BraveAccountSettingsHandler(content::WebUI* web_ui)
 BraveAccountSettingsHandler::~BraveAccountSettingsHandler() = default;
 
 void BraveAccountSettingsHandler::CreateRowHandler(
-    mojo::PendingRemote<mojom::BraveAccountRow> row,
-    mojo::PendingReceiver<mojom::BraveAccountRowHandler> row_handler) {
+    mojo::PendingReceiver<mojom::RowHandler> row_handler,
+    mojo::PendingRemote<mojom::RowClient> row_client) {
   row_handler_ = std::make_unique<BraveAccountRowHandler>(
-      std::move(row_handler), std::move(row), web_ui_);
+      std::move(row_handler), std::move(row_client), web_ui_);
 }
 
 }  // namespace brave_account
