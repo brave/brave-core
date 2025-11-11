@@ -576,6 +576,7 @@ if (is_win && is_official_build) {
 brave_chrome_browser_public_deps = [
   "//brave/app/vector_icons",
   "//brave/browser:browser_process",
+  "//brave/browser/resources/bookmark_icon:bookmark_icon_resources",
   "//brave/common/importer:interfaces",
   "//brave/components/brave_sync:constants",
   "//brave/components/psst/buildflags",
