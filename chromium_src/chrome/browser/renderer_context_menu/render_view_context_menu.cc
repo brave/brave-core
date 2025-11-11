@@ -500,7 +500,8 @@ void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
       if (auto* browser = GetBrowser()) {
         if (auto* email_aliases =
                 browser->GetFeatures().email_aliases_controller()) {
-          email_aliases->ShowBubble(params_.field_renderer_id);
+          email_aliases->ShowBubble(GetRenderFrameHost(),
+                                    params_.field_renderer_id);
         }
       }
       break;

@@ -12,6 +12,7 @@
 #include "chrome/browser/ui/views/bubble/webui_bubble_manager.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
+#include "components/autofill/content/browser/content_autofill_driver.h"
 #include "components/grit/brave_components_strings.h"
 #include "content/public/browser/context_menu_params.h"
 #include "content/public/browser/web_contents.h"
@@ -51,7 +52,8 @@ bool EmailAliasesController::IsAvailableFor(
          params.form_control_type == FormControlType::kInputText;
 }
 
-void EmailAliasesController::ShowBubble(uint64_t field_renderer_id) {
+void EmailAliasesController::ShowBubble(content::RenderFrameHost* render_frame,
+                                        uint64_t field_renderer_id) {
   if (!email_aliases_service_->IsReadyToCreate()) {
     return OpenSettingsPage();
   }
@@ -61,6 +63,9 @@ void EmailAliasesController::ShowBubble(uint64_t field_renderer_id) {
   const auto url_with_field =
       base::StrCat({kEmailAliasesPanelURL,
                     "?field=", base::NumberToString(field_renderer_id)});
+
+  field_render_frame_host_id_ = render_frame->GetGlobalId();
+  field_renderer_id_ = field_renderer_id;
 
   auto* anchor_view = browser_view_->GetLocationBarView();
 
@@ -80,6 +85,8 @@ void EmailAliasesController::ShowBubble(uint64_t field_renderer_id) {
 
 void EmailAliasesController::CloseBubble() {
   bubble_.reset();
+  field_render_frame_host_id_ = content::GlobalRenderFrameHostId();
+  field_renderer_id_ = 0;
 }
 
 void EmailAliasesController::OpenSettingsPage() {
@@ -94,10 +101,24 @@ WebUIBubbleManager* EmailAliasesController::GetBubbleForTesting() {
 
 void EmailAliasesController::OnAliasCreationComplete(const std::string& email) {
   CloseBubble();
-  if (!email.empty() && browser_view_->GetActiveWebContents()) {
-    // In future: consider to use AutofillDriver::ApplyFieldAction.
-    browser_view_->GetActiveWebContents()->Replace(base::UTF8ToUTF16(email));
+  if (email.empty()) {
+    return;
   }
+  auto* field_render_frame =
+      content::RenderFrameHost::FromID(field_render_frame_host_id_);
+  if (!field_render_frame) {
+    return;
+  }
+  auto* autofill_driver =
+      autofill::ContentAutofillDriver::GetForRenderFrameHost(
+          field_render_frame);
+  if (!autofill_driver) {
+    return;
+  }
+  autofill_driver->GetAutofillAgent()->ApplyFieldAction(
+      autofill::mojom::FieldActionType::kReplaceAll,
+      autofill::mojom::ActionPersistence::kFill,
+      autofill::FieldRendererId(field_renderer_id_), base::UTF8ToUTF16(email));
 }
 
 // static

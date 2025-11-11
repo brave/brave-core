@@ -8,13 +8,15 @@
 
 #include "base/memory/raw_ptr.h"
 #include "brave/components/email_aliases/email_aliases_service.h"
+#include "content/public/browser/global_routing_id.h"
 
 class BrowserView;
 class WebUIBubbleManager;
 
 namespace content {
 struct ContextMenuParams;
-}
+class RenderFrameHost;
+}  // namespace content
 
 namespace email_aliases {
 
@@ -28,7 +30,8 @@ class EmailAliasesController {
 
   bool IsAvailableFor(const content::ContextMenuParams& params) const;
 
-  void ShowBubble(uint64_t field_renderer_id);
+  void ShowBubble(content::RenderFrameHost* render_frame,
+                  uint64_t field_renderer_id);
   void CloseBubble();
   void OpenSettingsPage();
 
@@ -40,6 +43,9 @@ class EmailAliasesController {
  private:
   raw_ptr<BrowserView> browser_view_ = nullptr;
   raw_ptr<EmailAliasesService> email_aliases_service_ = nullptr;
+
+  content::GlobalRenderFrameHostId field_render_frame_host_id_;
+  uint64_t field_renderer_id_ = 0;
 
   std::unique_ptr<WebUIBubbleManager> bubble_;
 };
