@@ -19,6 +19,7 @@
 #include "base/test/task_environment.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_complete_transaction_task.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_rpc.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
@@ -612,6 +613,8 @@ TEST_F(ZCashWalletServiceUnitTest, SignAndPostTransaction) {
 
     zcash_transaction.transparent_part().outputs.push_back(std::move(output));
   }
+
+  zcash_transaction.set_fee(2000u);
 
   ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
       .WillByDefault([](const std::string& chain_id,
@@ -3112,5 +3115,46 @@ TEST_F(ZCashWalletServiceUnitTest, ShieldSync_FeatureDisabled) {
 
 #endif
 #endif  // BUILDFLAG(ENABLE_ORCHARD)
+
+TEST_F(ZCashWalletServiceUnitTest,
+       OnCompleteTransactionTaskDone_InvalidTransaction) {
+  // Create an invalid transaction where inputs != outputs + fee
+  ZCashTransaction invalid_tx;
+  invalid_tx.set_fee(5000u);
+
+  // Add transparent input
+  auto& input = invalid_tx.transparent_part().inputs.emplace_back();
+  input.utxo_value = 10000u;
+
+  // Add transparent output that makes the transaction invalid
+  // 10000 (input) != 6000 (output) + 5000 (fee) = 11000
+  auto& output = invalid_tx.transparent_part().outputs.emplace_back();
+  output.amount = 6000u;
+
+  // Create a task and add it to the complete_transaction_tasks_ set
+  auto [task_it, inserted] =
+      zcash_wallet_service_->complete_transaction_tasks_.insert(
+          std::make_unique<ZCashCompleteTransactionTask>(
+              zcash_wallet_service_->CreatePassKeyForTesting(),
+              *zcash_wallet_service_,
+              zcash_wallet_service_->CreateActionContext(account_id()),
+              *keyring_service(), invalid_tx));
+  ASSERT_TRUE(inserted);
+  auto* task_ptr = task_it->get();
+
+  // Create a dummy callback
+  base::MockCallback<ZCashWalletService::SignAndPostTransactionCallback>
+      callback;
+
+  // Create a dummy result
+  base::expected<ZCashTransaction, std::string> result =
+      base::ok(ZCashTransaction());
+
+  // EXPECT_DEATH should trigger because ValidateTransaction will fail
+  // and the CHECK will abort
+  EXPECT_DEATH(zcash_wallet_service_->OnCompleteTransactionTaskDone(
+                   task_ptr, account_id(), invalid_tx, callback.Get(), result),
+               "");
+}
 
 }  // namespace brave_wallet

@@ -422,4 +422,33 @@ uint8_t ZCashTransaction::sighash_type() const {
   return kZCashSigHashAll;
 }
 
+bool ZCashTransaction::ValidateTransaction() {
+  base::CheckedNumeric<uint64_t> inputs_sum = 0;
+  base::CheckedNumeric<uint64_t> outputs_sum = 0;
+
+  for (const auto& input : transparent_part().inputs) {
+    inputs_sum += input.utxo_value;
+  }
+  for (const auto& input : orchard_part().inputs) {
+    inputs_sum += input.note.amount;
+  }
+
+  for (const auto& output : transparent_part().outputs) {
+    outputs_sum += output.amount;
+  }
+  for (const auto& output : orchard_part().outputs) {
+    outputs_sum += output.value;
+  }
+
+  outputs_sum += fee_;
+
+  if (!outputs_sum.IsValid() || !inputs_sum.IsValid()) {
+    return false;
+  }
+
+  CHECK(inputs_sum.ValueOrDie() == TotalInputsAmount());
+
+  return outputs_sum.ValueOrDie() == inputs_sum.ValueOrDie();
+}
+
 }  // namespace brave_wallet

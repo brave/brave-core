@@ -21,6 +21,7 @@
 #include "brave/components/brave_wallet/browser/zcash/zcash_resolve_balance_task.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_resolve_transaction_status_task.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_serializer.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_transaction_utils.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_tx_meta.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
@@ -375,6 +376,7 @@ void ZCashWalletService::OnCompleteTransactionTaskDone(
     SignAndPostTransactionCallback callback,
     base::expected<ZCashTransaction, std::string> result) {
   CHECK(complete_transaction_tasks_.erase(task));
+  CHECK(original_zcash_transaction.ValidateTransaction());
 
   if (!result.has_value()) {
     std::move(callback).Run("", std::move(original_zcash_transaction),
@@ -383,6 +385,7 @@ void ZCashWalletService::OnCompleteTransactionTaskDone(
   }
 
   auto tx = ZCashSerializer::SerializeRawTransaction(result.value());
+
   zcash_rpc_->SendTransaction(
       GetNetworkForZCashAccount(account_id), std::move(tx),
       base::BindOnce(&ZCashWalletService::OnSendTransactionResult,
@@ -1013,6 +1016,12 @@ ZCashActionContext ZCashWalletService::CreateActionContext(
                             internal_addr, sync_state_,
 #endif
                             account_id.Clone());
+}
+
+base::PassKey<ZCashWalletService>
+ZCashWalletService::CreatePassKeyForTesting() {
+  CHECK_IS_TEST();
+  return base::PassKey<ZCashWalletService>();
 }
 
 }  // namespace brave_wallet
