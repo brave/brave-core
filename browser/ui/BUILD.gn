@@ -1399,9 +1399,12 @@ source_set("brave_tab_prefs") {
     "tabs/brave_tab_prefs.h",
   ]
   deps = [
-    "//chrome/browser/ui/tabs:features",
     "//components/prefs",
   ]
+
+  if (!is_android) {
+    deps += [ "//chrome/browser/ui/tabs:features" ]
+  }
 }
 
 source_set("unit_tests") {
