@@ -16,7 +16,7 @@
 #include "brave/components/ai_chat/core/browser/local_models_updater.h"
 #include "brave/components/brave_user_agent/browser/brave_user_agent_component_installer.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
-#include "brave/components/p3a/component_installer.h"
+#include "brave/components/p3a/managed/component_installer.h"
 #include "brave/components/p3a/p3a_service.h"
 #include "brave/components/psst/buildflags/buildflags.h"
 #include "chrome/browser/browser_process.h"
