@@ -6,6 +6,8 @@
 #include "brave/ios/browser/api/web_view/brave_web_view_download_manager.h"
 
 #include "brave/ios/browser/api/web_view/brave_web_view_internal.h"
+#include "ios/web/public/thread/web_task_traits.h"
+#include "ios/web/public/thread/web_thread.h"
 #include "ios/web_view/internal/web_view_download_manager.h"
 
 void BraveWebViewDownloadManager::OnDownloadCreated(
@@ -14,6 +16,12 @@ void BraveWebViewDownloadManager::OnDownloadCreated(
     std::unique_ptr<web::DownloadTask> task) {
   ios_web_view::WebViewDownloadManager::OnDownloadCreated(controller, web_state,
                                                           std::move(task));
-  BraveWebView* web_view = [BraveWebView braveWebViewForWebState:web_state];
-  [web_view updateForOnDownloadCreated];
+  __weak BraveWebView* web_view =
+      [BraveWebView braveWebViewForWebState:web_state];
+  web::GetUIThreadTaskRunner({})->PostTask(
+      FROM_HERE, base::BindOnce(^{
+        // The URLs are not always updated in time after the download is created
+        // so this attempts to update them on next runloop
+        [web_view updateForOnDownloadCreated];
+      }));
 }
