@@ -53,12 +53,21 @@ base::CheckedNumeric<uint32_t> GetOrchardActionsCount(
 }  // namespace
 
 // https://zips.z.cash/zip-0317
+// We assume change always exists since it doesn't affect final result:
+// t->t:
+// fee = max(2, (inputs, 1 + change?)) * 5000
+// t->s
+// fee = max(2, (inputs, change?) + max(1, 0, 2)) * 5000
+// s->t
+// fee = max(2, (0, 1) + max(inputs, change?, 2)) * 5000
+// s->s
+// fee = max(2, max(inputs, 1 + change?, 2)) * 5000.
 base::CheckedNumeric<uint64_t> CalculateZCashTxFee(
     const base::StrictNumeric<uint32_t> transparent_input_count,
     const base::StrictNumeric<uint32_t> orchard_input_count,
     ZCashTargetOutputType output_type) {
   // Mixed inputs are not supported.
-  DCHECK((transparent_input_count != 0) ^ (orchard_input_count != 0));
+  CHECK((transparent_input_count != 0) ^ (orchard_input_count != 0));
 
   // Basic outputs setup - add a change output.
   base::CheckedNumeric<uint32_t> orchard_output_count =
