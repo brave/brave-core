@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit-part>
+  <message name="IDS_AI_AGENT_NTP_TITLE" translateable="true" desc="Title for the Brave AI Agent mode New Tab Page" formatter_data="webui=AiChatAgentNtp">
+    Agent mode
+  </message>
+</grit-part>

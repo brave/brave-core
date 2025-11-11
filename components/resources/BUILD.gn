@@ -165,6 +165,7 @@ brave_grit("strings") {
 
   defines = [
     "enable_ai_chat=$enable_ai_chat",
+    "enable_brave_ai_chat_agent_profile=$enable_brave_ai_chat_agent_profile",
     "enable_speedreader=$enable_speedreader",
     "enable_tor=$enable_tor",
     "enable_brave_vpn=$enable_brave_vpn",
