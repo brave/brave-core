@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/download/download_ui_context_menu.cc b/chrome/browser/download/download_ui_context_menu.cc
+index e18936ca9755be3ce1ed3ec054b1d9380dd34ed3..e0ac2f0e4dd7045095102ed4681fb566feff9823 100644
+--- a/chrome/browser/download/download_ui_context_menu.cc
++++ b/chrome/browser/download/download_ui_context_menu.cc
+@@ -86,6 +86,7 @@ ui::SimpleMenuModel* DownloadUiContextMenu::GetMenuModel() {
+     model = GetInProgressMenuModel(is_download);
+   }
+   RecordCommandsEnabled(model);
++  BRAVE_DOWNLOAD_UI_CONTEXT_MENU_GET_MENU_MODEL
+   return model;
+ }
+ 
