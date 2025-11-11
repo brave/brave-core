@@ -675,7 +675,7 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetBlockHeader) {
     EXPECT_EQ(
         base::HexEncode(header->parent_hash),
         "F7B0A3C2684DD0C5233B41B584FAF3DDED56105DEA0F6D232A3432F973962B44");
-    EXPECT_EQ(header->number, 13089907u);
+    EXPECT_EQ(header->block_number, 13089907u);
 
     parent_hash = header->parent_hash;  // Make this available to the next test.
   }
@@ -742,7 +742,7 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetBlockHeader) {
     EXPECT_EQ(
         base::HexEncode(header->parent_hash),
         "8C8728C828CED532D4B5785536EF426FFED39A9459F14400342E0F2B4D78C86F");
-    EXPECT_EQ(header->number, 13089906u);
+    EXPECT_EQ(header->block_number, 13089906u);
   }
 
   {
@@ -1010,7 +1010,7 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetBlockHeader) {
     EXPECT_EQ(
         base::HexEncode(header->parent_hash),
         "8C8728C828CED532D4B5785536EF426FFED39A9459F14400342E0F2B4D78C86F");
-    EXPECT_EQ(header->number, 13089906u);
+    EXPECT_EQ(header->block_number, 13089906u);
   }
 }
 

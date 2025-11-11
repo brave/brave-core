@@ -218,8 +218,7 @@ std::optional<PolkadotBlockHeader> ParseChainHeaderFromHex(
     return std::nullopt;
   }
 
-  std::string_view block_number = res.result->number;
-  if (!base::HexStringToUInt(block_number, &header.number)) {
+  if (!base::HexStringToUInt(res.result->number, &header.block_number)) {
     return std::nullopt;
   }
 

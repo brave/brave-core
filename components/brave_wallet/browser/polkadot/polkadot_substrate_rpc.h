@@ -18,7 +18,7 @@ class NetworkManager;
 
 struct PolkadotBlockHeader {
   std::array<uint8_t, kPolkadotBlockHashSize> parent_hash = {};
-  uint32_t number = 0;
+  uint32_t block_number = 0;
 };
 
 // The main driver for the Polkadot-based RPC calls against the relay chain and
