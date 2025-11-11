@@ -9,6 +9,7 @@
 #include "base/containers/map_util.h"
 #include "brave/browser/policy/brave_simple_policy_map.h"
 #include "brave/components/brave_origin/brave_origin_policy_info.h"
+#include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/p3a/pref_names.h"
 #include "chrome/test/base/testing_browser_process.h"
@@ -19,10 +20,6 @@
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/components/tor/pref_names.h"
-#endif
-
-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
-#include "brave/components/brave_rewards/core/pref_names.h"  // nogncheck
 #endif
 
 namespace brave_origin {
@@ -62,12 +59,10 @@ TEST(BraveOriginServiceFactoryTest,
   EXPECT_EQ(tor_info->brave_origin_pref_key, tor::prefs::kTorDisabled);
 #endif
 
-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
   // Test that profile-level policies are NOT in browser definitions
   EXPECT_FALSE(base::Contains(browser_policy_definitions,
                               policy::key::kBraveRewardsDisabled))
       << "Profile-level policy should not be in browser definitions";
-#endif
 }
 
 TEST(BraveOriginServiceFactoryTest,
@@ -75,7 +70,6 @@ TEST(BraveOriginServiceFactoryTest,
   auto profile_policy_definitions =
       BraveOriginServiceFactory::GetProfilePolicyDefinitions();
 
-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
   // Test that Brave Rewards disabled policy is correctly built (profile-level)
   const auto* rewards_info = base::FindOrNull(
       profile_policy_definitions, policy::key::kBraveRewardsDisabled);
@@ -86,7 +80,6 @@ TEST(BraveOriginServiceFactoryTest,
   EXPECT_EQ(rewards_info->user_settable, false);
   EXPECT_EQ(rewards_info->brave_origin_pref_key,
             brave_rewards::prefs::kDisabledByPolicy);
-#endif
 
   // Test that browser-level policies are NOT in profile definitions
   EXPECT_FALSE(
@@ -105,7 +98,6 @@ TEST(BraveOriginServiceFactoryTest,
   // Test that policies in kBraveSimplePolicyMap but NOT in kBraveOriginMetadata
   // are excluded kBraveShieldsDisabledForUrls is in kBraveSimplePolicyMap but
   // not in kBraveOriginMetadata
-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
   EXPECT_FALSE(base::Contains(policy_definitions,
                               policy::key::kBraveShieldsDisabledForUrls))
       << "kManagedBraveShieldsDisabledForUrls should not be in policy "
@@ -117,7 +109,6 @@ TEST(BraveOriginServiceFactoryTest,
                               policy::key::kBraveShieldsEnabledForUrls))
       << "kManagedBraveShieldsEnabledForUrls should not be in policy "
          "definitions";
-#endif
 }
 
 TEST(BraveOriginServiceFactoryTest,

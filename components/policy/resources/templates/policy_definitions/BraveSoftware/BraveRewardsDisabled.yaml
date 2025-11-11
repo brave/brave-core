@@ -34,5 +34,6 @@ schema:
 supported_on:
 - ios:139-
 - chrome.*:105-
+- android:142-
 tags: []
 type: main

@@ -8,8 +8,11 @@
 
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/brave_news/common/pref_names.h"
+#include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
+#include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/pref_names.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/de_amp/common/pref_names.h"
@@ -24,12 +27,6 @@
 #include "build/build_config.h"
 #include "components/policy/core/browser/configuration_policy_handler.h"
 #include "components/policy/policy_constants.h"
-
-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
-#include "brave/components/brave_rewards/core/pref_names.h"
-#include "brave/components/brave_sync/brave_sync_prefs.h"
-#include "brave/components/brave_wallet/common/pref_names.h"
-#endif
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/components/tor/pref_names.h"
@@ -54,7 +51,6 @@
 namespace policy {
 
 inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
     {policy::key::kBraveRewardsDisabled,
      brave_rewards::prefs::kDisabledByPolicy, base::Value::Type::BOOLEAN},
     {policy::key::kBraveWalletDisabled, brave_wallet::prefs::kDisabledByPolicy,
@@ -65,8 +61,6 @@ inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
      kManagedBraveShieldsEnabledForUrls, base::Value::Type::LIST},
     {policy::key::kBraveSyncUrl, brave_sync::kCustomSyncServiceUrl,
      base::Value::Type::STRING},
-#endif
-
 #if BUILDFLAG(ENABLE_TOR)
     {policy::key::kTorDisabled, tor::prefs::kTorDisabled,
      base::Value::Type::BOOLEAN},
@@ -85,7 +79,6 @@ inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
      base::Value::Type::BOOLEAN},
     {policy::key::kBraveWebDiscoveryEnabled, kWebDiscoveryEnabled,
      base::Value::Type::BOOLEAN},
-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
     {policy::key::kBraveNewsDisabled,
      brave_news::prefs::kBraveNewsDisabledByPolicy, base::Value::Type::BOOLEAN},
     {policy::key::kBraveTalkDisabled, kBraveTalkDisabledByPolicy,
@@ -93,7 +86,6 @@ inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
 #if BUILDFLAG(ENABLE_SPEEDREADER)
     {policy::key::kBraveSpeedreaderEnabled, speedreader::kSpeedreaderEnabled,
      base::Value::Type::BOOLEAN},
-#endif
 #endif
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
     {policy::key::kBraveWaybackMachineEnabled, kBraveWaybackMachineEnabled,
