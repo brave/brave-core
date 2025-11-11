@@ -12,6 +12,7 @@
 #include "base/compiler_specific.h"
 #include "base/feature_list.h"
 #include "brave/browser/ai_chat/ai_chat_settings_helper.h"
+#include "brave/browser/ai_chat/ollama/ollama_service_factory.h"
 #include "brave/browser/brave_origin/brave_origin_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
@@ -32,6 +33,7 @@
 #include "brave/browser/ui/webui/settings/brave_wallet_handler.h"
 #include "brave/browser/ui/webui/settings/default_brave_shields_handler.h"
 #include "brave/components/ai_chat/core/browser/customization_settings_handler.h"
+#include "brave/components/ai_chat/core/browser/ollama/ollama_service.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/brave_account/features.h"
@@ -287,6 +289,15 @@ void BraveSettingsUI::BindInterface(
       user_prefs::UserPrefs::Get(
           web_ui()->GetWebContents()->GetBrowserContext()));
   mojo::MakeSelfOwnedReceiver(std::move(handler), std::move(pending_receiver));
+}
+
+void BraveSettingsUI::BindInterface(
+    mojo::PendingReceiver<ai_chat::mojom::OllamaService> pending_receiver) {
+  auto* profile = Profile::FromWebUI(web_ui());
+  auto* ollama_service = ai_chat::OllamaServiceFactory::GetForProfile(profile);
+  if (ollama_service) {
+    ollama_service->BindReceiver(std::move(pending_receiver));
+  }
 }
 
 void BraveSettingsUI::BindInterface(
