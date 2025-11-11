@@ -21,6 +21,7 @@ import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
 import org.chromium.chrome.browser.lens.LensController;
 import org.chromium.chrome.browser.locale.LocaleManager;
+import org.chromium.chrome.browser.multiwindow.MultiInstanceManager;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.theme.ThemeUtils;
@@ -76,7 +77,8 @@ public class BraveLocationBarMediator extends LocationBarMediator {
             Supplier<@Nullable ModalDialogManager> modalDialogManagerSupplier,
             ObservableSupplierImpl<@AutocompleteRequestType Integer>
                     autocompleteRequestTypeSupplier,
-            @Nullable PageZoomIndicatorCoordinator pageZoomIndicatorCoordinator) {
+            @Nullable PageZoomIndicatorCoordinator pageZoomIndicatorCoordinator,
+            @Nullable MultiInstanceManager multiInstanceManager) {
         super(
                 context,
                 locationBarLayout,
@@ -97,7 +99,8 @@ public class BraveLocationBarMediator extends LocationBarMediator {
                 browserControlsStateProvider,
                 modalDialogManagerSupplier,
                 autocompleteRequestTypeSupplier,
-                pageZoomIndicatorCoordinator);
+                pageZoomIndicatorCoordinator,
+                multiInstanceManager);
     }
 
     public static Class<OmniboxUma> getOmniboxUmaClass() {
