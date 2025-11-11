@@ -387,7 +387,7 @@ public class CustomizeBraveMenu {
                                 new BitmapDrawable(context.getResources(), bitmap);
 
                         // Apply tinting.
-                        maybeApplyTinting(context, drawable);
+                        maybeApplyTinting(context, resizedDrawable);
 
                         // Return to UI thread with result.
                         PostTask.postTask(
