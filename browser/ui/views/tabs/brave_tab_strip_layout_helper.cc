@@ -10,7 +10,7 @@
 
 #include "base/check.h"
 #include "base/check_op.h"
-#include "brave/browser/ui/tabs/brave_tab_layout_constants.h"
+#include "chrome/browser/ui/layout_constants.h"
 #include "brave/browser/ui/views/tabs/brave_tab_group_header.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip.h"
 #include "chrome/browser/ui/layout_constants.h"
@@ -118,7 +118,7 @@ int GetTabCornerRadius(const Tab& tab) {
     return tab.data().pinned ? 8 : 4;
   }
 
-  return brave_tabs::kTabBorderRadius;
+  return tabs::kTabBorderRadius;
 }
 
 std::pair<std::vector<gfx::Rect>, LayoutDomain> CalculateVerticalTabBounds(

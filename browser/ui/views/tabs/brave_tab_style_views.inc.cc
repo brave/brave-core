@@ -108,8 +108,8 @@ SkPath BraveVerticalTabStyle::GetPath(
     // insetting the bounds of the tab by the required gap plus overlap before
     // drawing the rectangle.
     aligned_bounds.Inset(
-        gfx::InsetsF::VH(brave_tabs::kHorizontalTabVerticalSpacing * scale,
-                         brave_tabs::kHorizontalTabInset * scale));
+        gfx::InsetsF::VH(tabs::kHorizontalTabVerticalSpacing * scale,
+                         tabs::kHorizontalTabInset * scale));
 
     // |aligned_bounds| is tab's bounds(). So, it includes insets also.
     // Shrink height more if it's overlapped.
@@ -124,8 +124,8 @@ SkPath BraveVerticalTabStyle::GetPath(
     // card.
     if (path_type == TabStyle::PathType::kHitTest) {
       auto hit_test_outsets =
-          gfx::OutsetsF::VH(brave_tabs::kHorizontalTabVerticalSpacing * scale,
-                            brave_tabs::kHorizontalTabGap / 2 * scale);
+          gfx::OutsetsF::VH(tabs::kHorizontalTabVerticalSpacing * scale,
+                            tabs::kHorizontalTabGap / 2 * scale);
 
       // Note that upstream's `ShouldExtendHitTest` does not currently take into
       // account some "condensed" frame scenarios on Linux.
@@ -145,9 +145,9 @@ SkPath BraveVerticalTabStyle::GetPath(
       // screen.
       if (frame_condensed && tab()->controller()->IsTabFirst(tab())) {
         if (tab()->GetMirrored()) {
-          hit_test_outsets.set_right(brave_tabs::kHorizontalTabInset * scale);
+          hit_test_outsets.set_right(tabs::kHorizontalTabInset * scale);
         } else {
-          hit_test_outsets.set_left(brave_tabs::kHorizontalTabInset * scale);
+          hit_test_outsets.set_left(tabs::kHorizontalTabInset * scale);
         }
       }
 
@@ -203,8 +203,8 @@ SkPath BraveVerticalTabStyle::GetPath(
       tab_right -= scale * kPaddingForVerticalTabInTile;
     } else {
       constexpr int kAdditionalVerticalPadding =
-          brave_tabs::kHorizontalSplitViewTabVerticalSpacing -
-          brave_tabs::kHorizontalTabGap;
+          tabs::kHorizontalSplitViewTabVerticalSpacing -
+          tabs::kHorizontalTabGap;
       tab_top += scale * kAdditionalVerticalPadding;
       tab_bottom -= scale * kAdditionalVerticalPadding;
 

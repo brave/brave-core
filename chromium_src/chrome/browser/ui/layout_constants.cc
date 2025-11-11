@@ -7,7 +7,7 @@
 
 #include <optional>
 
-#include "brave/browser/ui/tabs/brave_tab_layout_constants.h"
+#include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "ui/base/pointer/touch_ui_controller.h"
 #include "ui/gfx/geometry/insets.h"
@@ -41,20 +41,20 @@ std::optional<int> GetBraveLayoutConstant(LayoutConstant constant) {
   switch (constant) {
     case TAB_HEIGHT: {
       if (HorizontalTabsUpdateEnabled()) {
-        return brave_tabs::GetHorizontalTabHeight();
+        return tabs::GetHorizontalTabHeight();
       }
       return (touch ? 41 : 30) + GetLayoutConstant(TABSTRIP_TOOLBAR_OVERLAP);
     }
     case TAB_STRIP_HEIGHT: {
       if (HorizontalTabsUpdateEnabled()) {
-        return brave_tabs::GetHorizontalTabStripHeight() +
+        return tabs::GetHorizontalTabStripHeight() +
                GetLayoutConstant(TABSTRIP_TOOLBAR_OVERLAP);
       }
       return std::nullopt;
     }
     case TAB_STRIP_PADDING: {
       if (HorizontalTabsUpdateEnabled()) {
-        return brave_tabs::kHorizontalTabVerticalSpacing;
+        return tabs::kHorizontalTabVerticalSpacing;
       }
       return std::nullopt;
     }
@@ -125,3 +125,35 @@ gfx::Insets GetLayoutInsets_ChromiumImpl(LayoutInset inset);
 #include <chrome/browser/ui/layout_constants.cc>
 #undef LayoutInset
 #undef LayoutConstant
+
+namespace tabs {
+
+namespace {
+
+bool UseCompact() {
+  return base::FeatureList::IsEnabled(tabs::kBraveCompactHorizontalTabs);
+}
+
+}  // namespace
+
+int GetHorizontalTabHeight() {
+  return UseCompact() ? 28 : 32;
+}
+
+int GetHorizontalTabStripHeight() {
+  return GetHorizontalTabHeight() + (kHorizontalTabVerticalSpacing * 2);
+}
+
+int GetHorizontalTabPadding() {
+  return UseCompact() ? 4 : 8;
+}
+
+int GetTabGroupTitleVerticalInset() {
+  return (GetHorizontalTabHeight() - kTabGroupLineHeight) / 2;
+}
+
+int GetTabGroupTitleHorizontalInset() {
+  return UseCompact() ? 6 : 10;
+}
+
+}  // namespace tabs

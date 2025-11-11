@@ -229,8 +229,6 @@ source_set("ui") {
       "startup/brave_startup_tab_provider_impl.h",
       "tabs/brave_tab_color_mixer.cc",
       "tabs/brave_tab_color_mixer.h",
-      "tabs/brave_tab_layout_constants.cc",
-      "tabs/brave_tab_layout_constants.h",
       "tabs/brave_tab_menu_model.cc",
       "tabs/brave_tab_menu_model.h",
       "tabs/shared_pinned_tab_dummy_view.h",

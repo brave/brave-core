@@ -5,7 +5,7 @@
 
 #include "chrome/browser/ui/tabs/tab_style.h"
 
-#include "brave/browser/ui/tabs/brave_tab_layout_constants.h"
+#include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/features.h"
 
@@ -19,35 +19,35 @@ class BraveTabStyle : public TabStyle {
     if (!tabs::HorizontalTabsUpdateEnabled()) {
       return TabStyle::GetTabOverlap();
     }
-    return brave_tabs::kHorizontalTabOverlap;
+    return tabs::kHorizontalTabOverlap;
   }
 
   int GetTopCornerRadius() const override {
     if (!tabs::HorizontalTabsUpdateEnabled()) {
       return TabStyle::GetTopCornerRadius();
     }
-    return brave_tabs::kTabBorderRadius;
+    return tabs::kTabBorderRadius;
   }
 
   int GetBottomCornerRadius() const override {
     if (!tabs::HorizontalTabsUpdateEnabled()) {
       return TabStyle::GetBottomCornerRadius();
     }
-    return brave_tabs::kTabBorderRadius;
+    return tabs::kTabBorderRadius;
   }
 
   gfx::Insets GetContentsInsets() const override {
     if (!tabs::HorizontalTabsUpdateEnabled()) {
       return TabStyle::GetContentsInsets();
     }
-    return gfx::Insets::VH(0, brave_tabs::GetHorizontalTabPadding() +
-                                  brave_tabs::kHorizontalTabInset);
+    return gfx::Insets::VH(0, tabs::GetHorizontalTabPadding() +
+                                  tabs::kHorizontalTabInset);
   }
 
   int GetPinnedWidth(const bool is_split) const override {
     // We can ignore |is_split| because we're always using same width.
-    return brave_tabs::GetHorizontalTabHeight() +
-           brave_tabs::kHorizontalTabInset * 2;
+    return tabs::GetHorizontalTabHeight() +
+           tabs::kHorizontalTabInset * 2;
   }
 
   int GetDragHandleExtension(int height) const override {

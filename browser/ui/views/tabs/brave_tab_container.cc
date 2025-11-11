@@ -16,7 +16,7 @@
 #include "base/containers/flat_map.h"
 #include "base/feature_list.h"
 #include "brave/browser/ui/color/brave_color_id.h"
-#include "brave/browser/ui/tabs/brave_tab_layout_constants.h"
+#include "chrome/browser/ui/layout_constants.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
@@ -333,9 +333,9 @@ void BraveTabContainer::PaintBoundingBoxForSplitTab(
     // at bottom.
     int vertical_margin = tab1->data().pinned ? 4 : 2;
     bounding_rects.Inset(gfx::Insets::TLBR(
-        vertical_margin, brave_tabs::kHorizontalTabInset,
+        vertical_margin, tabs::kHorizontalTabInset,
         vertical_margin + GetLayoutConstant(TABSTRIP_TOOLBAR_OVERLAP),
-        brave_tabs::kHorizontalTabInset));
+        tabs::kHorizontalTabInset));
   }
 
   constexpr auto kRadius = 12.f;  // same value with --leo-radius-l
