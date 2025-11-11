@@ -230,6 +230,8 @@ source_set("ui") {
       "startup/brave_startup_tab_provider_impl.h",
       "tabs/brave_tab_color_mixer.cc",
       "tabs/brave_tab_color_mixer.h",
+      "tabs/brave_tab_layout_constants.cc",
+      "tabs/brave_tab_layout_constants.h",
       "tabs/brave_tab_menu_model.cc",
       "tabs/brave_tab_menu_model.h",
       "tabs/shared_pinned_tab_dummy_view.h",
@@ -1392,26 +1394,6 @@ source_set("ui") {
       "//brave/components/containers/core/mojom",
     ]
   }
-}
-
-source_set("brave_layout_constants") {
-  visibility = [ "//chrome/browser/ui:layout_constants" ]
-  sources = [
-    "brave_layout_constants.cc",
-    "brave_layout_constants.h",
-    "tabs/brave_tab_layout_constants.cc",
-    "tabs/brave_tab_layout_constants.h",
-  ]
-
-  # Circular dependency on "//chrome/browser/ui:layout_constants" is addressed
-  # via brave_chrome_browser_ui_layout_constants_allow_circular_includes_from
-  # in brave/browser/sources.gni. This approach is only done as a one-off
-  # because "//chrome/browser/ui/views" target is a `component` and it depends
-  # on "//chrome/browser/ui:layout_constants".
-  deps = [
-    ":brave_tab_features",
-    "//ui/base",
-  ]
 }
 
 source_set("brave_tab_prefs") {
