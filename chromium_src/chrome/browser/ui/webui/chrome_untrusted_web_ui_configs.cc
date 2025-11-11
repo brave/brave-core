@@ -6,6 +6,7 @@
 #include "chrome/browser/ui/webui/chrome_untrusted_web_ui_configs.h"
 
 #include "base/feature_list.h"
+#include "brave/browser/ui/webui/candle_wasm/candle_embedding_gemma_ui.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
@@ -86,4 +87,6 @@ void RegisterChromeUntrustedWebUIConfigs() {
         std::make_unique<ai_chat::CodeSandboxUIConfig>());
   }
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
+  content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
+      std::make_unique<local_ai::UntrustedCandleEmbeddingGemmaUIConfig>());
 }
