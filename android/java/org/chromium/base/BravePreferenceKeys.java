@@ -84,6 +84,9 @@ public final class BravePreferenceKeys {
 
     public static final String DAY_ZERO_EXPT_VARIANT = "day_zero_expt_variant";
 
+    public static final String BRAVE_NEW_TAB_PAGE_OPENING_SCREEN =
+            "brave_new_tab_page_opening_screen";
+
     public static final String SHOW_UNDO_WHEN_TABS_CLOSED = "show_undo_when_tabs_closed";
 
     public static final String OPEN_YT_IN_BRAVE_DIALOG = "open_yt_in_brave_dialog";
