@@ -1506,6 +1506,29 @@ class SettingsViewController: TableViewController {
       ],
       uuid: debugSectionUUID
     )
+    #if compiler(>=6.2.1)  // Xcode 26.1
+    let isCompatabilityModeEnabled =
+      Bundle.main.infoDictionary?["UIDesignRequiresCompatibility"] as? Bool == true
+    if #available(iOS 26.1, *), isCompatabilityModeEnabled {
+      let key = "com.apple.Swi\("ftUI.IgnoreSolar")iumOptOut"
+      section.rows.insert(
+        Row(
+          text: "Enable Liquid Glass",
+          accessory: .switchToggle(
+            value: UserDefaults.standard.bool(forKey: key),
+            { newValue in
+              if newValue {
+                UserDefaults.standard.set(true, forKey: key)
+              } else {
+                UserDefaults.standard.removeObject(forKey: key)
+              }
+            }
+          )
+        ),
+        at: 0
+      )
+    }
+    #endif
     if AppConstants.isOfficialBuild {
       section.rows.append(
         Row(
