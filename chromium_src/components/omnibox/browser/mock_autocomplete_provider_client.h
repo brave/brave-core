@@ -6,9 +6,9 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_OMNIBOX_BROWSER_MOCK_AUTOCOMPLETE_PROVIDER_CLIENT_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_OMNIBOX_BROWSER_MOCK_AUTOCOMPLETE_PROVIDER_CLIENT_H_
 
-#include "components/omnibox/browser/autocomplete_provider_client.h"
-
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
+#include "components/omnibox/browser/autocomplete_provider_client.h"
 
 #if BUILDFLAG(ENABLE_COMMANDER)
 #include "brave/components/commander/browser/commander_frontend_delegate.h"
@@ -31,6 +31,7 @@
   scoped_refptr<history::TopSites> GetTopSites
 #endif
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
 #define GetRemoteSuggestionsService                     \
   GetRemoteSuggestionsService_Unused() {                \
     return nullptr;                                     \
@@ -40,10 +41,13 @@
     return false;                                       \
   }                                                     \
   RemoteSuggestionsService* GetRemoteSuggestionsService
+#endif
 
 #include <components/omnibox/browser/mock_autocomplete_provider_client.h>  // IWYU pragma: export
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
 #undef GetRemoteSuggestionsService
+#endif
 #undef GetTopSites
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_OMNIBOX_BROWSER_MOCK_AUTOCOMPLETE_PROVIDER_CLIENT_H_

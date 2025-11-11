@@ -141,6 +141,7 @@ RegisterPolymerComponentReplacement(
               lists.permissionsAdvanced.splice(currentIndex, 0,
                 localhostAccessItem)
             }
+            // <if expr="enable_ai_chat">
             const isOpenAIChatFromBraveSearchEnabled =
               loadTimeData.getBoolean('isOpenAIChatFromBraveSearchEnabled')
             if (isOpenAIChatFromBraveSearchEnabled) {
@@ -156,6 +157,7 @@ RegisterPolymerComponentReplacement(
               lists.permissionsAdvanced.splice(currentIndex, 0,
                 AIChatItem)
             }
+            // </if>
             const isNativeBraveWalletEnabled =
               loadTimeData.getBoolean('isNativeBraveWalletFeatureEnabled')
             const isCardanoDappSupportFeatureEnabled =

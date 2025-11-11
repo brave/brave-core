@@ -6,7 +6,7 @@
 #include "brave/browser/ui/brave_browser_actions.h"
 
 #include "base/types/to_address.h"
-#include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/features.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/profiles/profile.h"
@@ -18,6 +18,10 @@
 #include "ui/actions/actions.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/gfx/vector_icon_types.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/core/browser/utils.h"
+#endif
 
 namespace {
 
@@ -58,6 +62,7 @@ void BraveBrowserActions::InitializeBrowserActions() {
             .Build());
   }
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
   if (ai_chat::IsAIChatEnabled(profile_->GetPrefs())) {
     root_action_item_->AddChild(
         SidePanelAction(SidePanelEntryId::kChatUI, IDS_CHAT_UI_TITLE,
@@ -65,4 +70,5 @@ void BraveBrowserActions::InitializeBrowserActions() {
                         kActionSidePanelShowChatUI, bwi, true)
             .Build());
   }
+#endif
 }

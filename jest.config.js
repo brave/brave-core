@@ -6,6 +6,8 @@
 // For a detailed explanation regarding each configuration property, visit:
 // https://jestjs.io/docs/en/configuration.html
 
+const fs = require('fs')
+
 const crossPlatforms = ['mac', 'win']
 const buildConfigs = ['Component', 'Static', 'Debug', 'Release']
 const extraArchitectures = ['arm64', 'x86']
@@ -32,6 +34,32 @@ function getReporters() {
     return ['default']
   }
 }
+
+function getBuildConfig() {
+  // Try to find the build config in any of the possible build directories
+  const possiblePaths = getBuildOutputPathList(
+    'gen/brave/jest_build_config.json'
+  )
+
+  for (const configPath of possiblePaths) {
+    // Remove <rootDir> placeholder and resolve the actual path
+    const actualPath = configPath.replace('<rootDir>', __dirname)
+    if (fs.existsSync(actualPath)) {
+      try {
+        return JSON.parse(fs.readFileSync(actualPath, 'utf8'))
+      } catch (e) {
+        // Continue to next path
+      }
+    }
+  }
+
+  // Default to all features enabled if no config found
+  return {
+    enable_ai_chat: true
+  }
+}
+
+const buildConfig = getBuildConfig()
 
 /**
  * @type {import('@jest/types').Config.InitialOptions}
@@ -76,7 +104,8 @@ module.exports = {
     '<rootDir>/build/commands/lib/test.js',
     '<rootDir>/build/rustup',
     '<rootDir>/third_party',
-    '<rootDir>/tools/crates/vendor'
+    '<rootDir>/tools/crates/vendor',
+    ...(buildConfig.enable_ai_chat ? [] : ['<rootDir>/components/ai_chat'])
   ],
   testTimeout: 30000,
   transformIgnorePatterns: [

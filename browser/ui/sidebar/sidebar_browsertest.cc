@@ -37,7 +37,7 @@
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/browser/ui/views/toolbar/side_panel_button.h"
 #include "brave/common/pref_names.h"
-#include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/constants/brave_switches.h"
 #include "brave/components/playlist/core/common/features.h"
 #include "brave/components/sidebar/browser/constants.h"
@@ -74,6 +74,10 @@
 #include "ui/events/event.h"
 #include "ui/gfx/animation/animation_test_api.h"
 #include "ui/gfx/geometry/point.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/core/common/features.h"
+#endif
 
 using ::testing::Eq;
 using ::testing::Ne;
@@ -269,9 +273,11 @@ class SidebarBrowserTest : public InProcessBrowserTest {
       item_count -= 1;
     }
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
     if (!ai_chat::features::IsAIChatEnabled()) {
       item_count -= 1;
     }
+#endif
 
     return item_count;
   }
@@ -366,6 +372,10 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, BasicTest) {
   }));
   EXPECT_EQ(expected_count, model()->GetAllSidebarItems().size());
   EXPECT_THAT(model()->active_index(), Optional(active_item_index));
+
+  // Navigate to a non-NTP page first to ensure we can add it to sidebar
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), GURL("brave://settings/")));
 
   // If current active tab is not NTP, we can add current url to sidebar.
   EXPECT_TRUE(CanAddCurrentActiveTabToSidebar(browser()));
@@ -1160,7 +1170,8 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, TabSpecificAndGlobalPanelsTest) {
   tab_model()->ActivateTabAt(0);
   ASSERT_TRUE(
       ui_test_utils::NavigateToURL(browser(), GURL("chrome://new-tab-page/")));
-  panel_ui->Show(SidePanelEntryId::kChatUI);
+
+  panel_ui->Show(SidePanelEntryId::kCustomizeChrome);
   WaitUntil(base::BindLambdaForTesting(
       [&]() { return GetSidePanel()->GetVisible(); }));
 
@@ -1177,7 +1188,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, TabSpecificAndGlobalPanelsTest) {
   // Contextual panel should be set when activate tab at 0.
   tab_model()->ActivateTabAt(0);
   WaitUntil(base::BindLambdaForTesting([&]() {
-    return panel_ui->GetCurrentEntryId() == SidePanelEntryId::kChatUI;
+    return panel_ui->GetCurrentEntryId() == SidePanelEntryId::kCustomizeChrome;
   }));
 
   // Global panel should be set when activate tab at 1.
@@ -1240,6 +1251,7 @@ class MockSidebarModelObserver : public SidebarModel::Observer {
               (override));
 };
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
 class SidebarBrowserTestWithkSidebarShowAlwaysOnStable
     : public testing::WithParamInterface<bool>,
       public SidebarBrowserTest {
@@ -1341,6 +1353,7 @@ INSTANTIATE_TEST_SUITE_P(
     /* no prefix */,
     SidebarBrowserTestWithkSidebarShowAlwaysOnStable,
     ::testing::Bool());
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 class SidebarBrowserTestWithPlaylist : public SidebarBrowserTest {
  public:
@@ -1379,6 +1392,8 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithPlaylist, Incognito) {
   // Try Remove an item
   sidebar_service->RemoveItemAt(0);
 }
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
 
 class SidebarBrowserTestWithAIChat : public SidebarBrowserTest {
  public:
@@ -1557,6 +1572,8 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithAIChat,
   tab_model()->ActivateTabAt(2);
   EXPECT_EQ(model()->active_index(), new_global_item_index);
 }
+
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidebarRightSideTest) {
   // Sidebar is on right by default

@@ -9,7 +9,7 @@
 #include "brave/browser/brave_stats/first_run_util.h"
 #include "brave/browser/misc_metrics/profile_new_tab_metrics.h"
 #include "brave/browser/misc_metrics/theme_metrics.h"
-#include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/misc_metrics/autofill_metrics.h"
 #include "brave/components/misc_metrics/language_metrics.h"
 #include "brave/components/misc_metrics/page_metrics.h"
@@ -26,6 +26,10 @@
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 #if BUILDFLAG(IS_ANDROID)
 #include "brave/browser/brave_browser_process.h"
@@ -49,10 +53,12 @@ ProfileMiscMetricsService::ProfileMiscMetricsService(
         ntp_background_images::prefs::kNewTabPageSponsoredImagesSurveyPanelist,
         base::BindRepeating(&ProfileMiscMetricsService::ReportSimpleMetrics,
                             base::Unretained(this)));
+#if BUILDFLAG(ENABLE_AI_CHAT)
     if (local_state) {
       ai_chat_metrics_ =
           std::make_unique<ai_chat::AIChatMetrics>(local_state, profile_prefs_);
     }
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
   }
   auto* profile = Profile::FromBrowserContext(context);
   auto* history_service = HistoryServiceFactory::GetForProfile(
@@ -137,8 +143,10 @@ void ProfileMiscMetricsService::ReportSimpleMetrics() {
   }
 }
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
 ai_chat::AIChatMetrics* ProfileMiscMetricsService::GetAIChatMetrics() {
   return ai_chat_metrics_.get();
 }
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 }  // namespace misc_metrics

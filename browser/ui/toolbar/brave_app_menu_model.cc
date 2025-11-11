@@ -15,6 +15,7 @@
 #include "base/notreached.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/ui/toolbar/app_menu_icons.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/profiles/profile.h"
@@ -145,11 +146,13 @@ void BraveAppMenuModel::BuildBraveProductsSection() {
   // Needs to add separator as this section is brave specific section.
   bool need_separator = false;
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
   if (IsCommandIdEnabled(IDC_TOGGLE_AI_CHAT)) {
     InsertItemWithStringIdAt(GetNextIndexOfBraveProductsSection(),
                              IDC_TOGGLE_AI_CHAT, IDS_TOGGLE_AI_CHAT);
     need_separator = true;
   }
+#endif
 
   if (IsCommandIdEnabled(IDC_SHOW_BRAVE_WALLET)) {
     InsertItemWithStringIdAt(GetNextIndexOfBraveProductsSection(),

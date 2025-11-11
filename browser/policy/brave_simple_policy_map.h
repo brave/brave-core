@@ -6,7 +6,7 @@
 #ifndef BRAVE_BROWSER_POLICY_BRAVE_SIMPLE_POLICY_MAP_H_
 #define BRAVE_BROWSER_POLICY_BRAVE_SIMPLE_POLICY_MAP_H_
 
-#include "brave/components/ai_chat/core/common/pref_names.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
@@ -27,6 +27,10 @@
 #include "build/build_config.h"
 #include "components/policy/core/browser/configuration_policy_handler.h"
 #include "components/policy/policy_constants.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/core/common/pref_names.h"
+#endif
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/components/tor/pref_names.h"
@@ -69,8 +73,10 @@ inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
     {policy::key::kBraveVPNDisabled, brave_vpn::prefs::kManagedBraveVPNDisabled,
      base::Value::Type::BOOLEAN},
 #endif
+#if BUILDFLAG(ENABLE_AI_CHAT)
     {policy::key::kBraveAIChatEnabled, ai_chat::prefs::kEnabledByPolicy,
      base::Value::Type::BOOLEAN},
+#endif
     {policy::key::kBraveP3AEnabled, p3a::kP3AEnabled,
      base::Value::Type::BOOLEAN},
     {policy::key::kBraveStatsPingEnabled, kStatsReportingEnabled,

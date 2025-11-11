@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//build/config/ui.gni")
 
 assert(toolkit_views)
@@ -21,8 +22,7 @@ static_library("browser") {
 
   deps = [
     "//base",
-    "//brave/components/ai_chat/core/browser",
-    "//brave/components/ai_chat/core/common",
+    "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/brave_wallet/common",
     "//brave/components/constants",
     "//brave/components/l10n/common",
@@ -35,6 +35,13 @@ static_library("browser") {
     "//ui/base",
     "//url",
   ]
+
+  if (enable_ai_chat) {
+    deps += [
+      "//brave/components/ai_chat/core/browser",
+      "//brave/components/ai_chat/core/common",
+    ]
+  }
 }
 
 source_set("unit_tests") {
@@ -44,7 +51,7 @@ source_set("unit_tests") {
   deps = [
     "//base",
     "//base/test:test_support",
-    "//brave/components/ai_chat/core/common",
+    "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/constants",
     "//brave/components/playlist/core/common",
     "//brave/components/sidebar/browser",
@@ -58,4 +65,8 @@ source_set("unit_tests") {
     "//testing/gmock",
     "//testing/gtest",
   ]
+
+  if (enable_ai_chat) {
+    deps += [ "//brave/components/ai_chat/core/common" ]
+  }
 }

@@ -57,7 +57,6 @@ source_set("ui") {
 
   deps = [
     "//brave/brave_domains",
-    "//brave/browser/ai_chat",
     "//brave/browser/brave_adaptive_captcha",
     "//brave/browser/brave_ads",
     "//brave/browser/brave_origin",
@@ -65,6 +64,7 @@ source_set("ui") {
     "//brave/browser/skus",
     "//brave/browser/ui/page_info",
     "//brave/browser/ui/webui/brave_account",
+    "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/brave_origin",
     "//brave/components/brave_private_cdn",
     "//brave/components/brave_shields/core/browser",
@@ -116,6 +116,21 @@ source_set("ui") {
     "webui/untrusted_sanitized_image_source.cc",
     "webui/untrusted_sanitized_image_source.h",
   ]
+
+  if (enable_ai_chat) {
+    deps += [ "//brave/components/ai_chat/core/common" ]
+
+    if (!is_android) {
+      sources += [
+        "webui/settings/brave_settings_leo_assistant_handler.cc",
+        "webui/settings/brave_settings_leo_assistant_handler.h",
+      ]
+      deps += [
+        "//brave/browser/ai_chat",
+        "//brave/components/ai_chat/core/browser",
+      ]
+    }
+  }
 
   # It doesn't make sense to view the webcompat webui on iOS & Android.
   if (!is_android && !is_ios) {
@@ -277,8 +292,6 @@ source_set("ui") {
       "webui/settings/brave_privacy_handler.h",
       "webui/settings/brave_search_engines_handler.cc",
       "webui/settings/brave_search_engines_handler.h",
-      "webui/settings/brave_settings_leo_assistant_handler.cc",
-      "webui/settings/brave_settings_leo_assistant_handler.h",
       "webui/settings/brave_settings_localized_strings_provider.cc",
       "webui/settings/brave_settings_localized_strings_provider.h",
       "webui/settings/brave_site_settings_handler.cc",
@@ -596,8 +609,6 @@ source_set("ui") {
       "views/tabs/switches.h",
       "views/tabs/vertical_tab_utils.cc",
       "views/tabs/vertical_tab_utils.h",
-      "views/toolbar/ai_chat_button.cc",
-      "views/toolbar/ai_chat_button.h",
       "views/toolbar/bookmark_button.cc",
       "views/toolbar/bookmark_button.h",
       "views/toolbar/brave_app_menu.cc",
@@ -721,6 +732,13 @@ source_set("ui") {
     if (enable_tor) {
       deps += [ "//brave/browser/tor" ]
     }
+
+    if (enable_ai_chat) {
+      sources += [
+        "views/toolbar/ai_chat_button.cc",
+        "views/toolbar/ai_chat_button.h",
+      ]
+    }
   }
 
   if (is_win || is_mac || is_linux) {
@@ -780,9 +798,6 @@ source_set("ui") {
     # to pull in dependencies needed for the overwrite codes in chromium_src.
     "//brave/chromium_src/chrome/browser/ui",
     "//brave/common",
-    "//brave/components/ai_chat/core/browser",
-    "//brave/components/ai_chat/core/common",
-    "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/ai_rewriter/common/buildflags",
     "//brave/components/brave_adaptive_captcha",
     "//brave/components/brave_adblock_ui:generated_resources",

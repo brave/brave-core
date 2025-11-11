@@ -15,7 +15,7 @@
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
-#include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -40,6 +40,10 @@
 #include "components/sync/base/command_line_switches.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/test_utils.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/core/browser/utils.h"
+#endif
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/tor/tor_profile_service_factory.h"
@@ -79,6 +83,7 @@ class BraveBrowserCommandControllerTest : public InProcessBrowserTest {
     policy::BrowserPolicyConnector::SetPolicyProviderForTesting(&provider_);
   }
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
   void BlockAIChatByPolicy(bool value) {
     policy::PolicyMap policies;
     policies.Set(policy::key::kBraveAIChatEnabled,
@@ -88,6 +93,7 @@ class BraveBrowserCommandControllerTest : public InProcessBrowserTest {
     EXPECT_EQ(ai_chat::IsAIChatEnabled(browser()->profile()->GetPrefs()),
               !value);
   }
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   void BlockVPNByPolicy(bool value) {
@@ -264,7 +270,9 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_OPEN_GUEST_PROFILE));
   EXPECT_TRUE(
       command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER));
+#if BUILDFLAG(ENABLE_AI_CHAT)
   EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_TOGGLE_AI_CHAT));
+#endif
 }
 
 // Create guest browser and test its brave commands status.
@@ -293,7 +301,9 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
   EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_OPEN_GUEST_PROFILE));
   EXPECT_TRUE(
       command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER));
+#if BUILDFLAG(ENABLE_AI_CHAT)
   EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_TOGGLE_AI_CHAT));
+#endif
 }
 
 // Launch tor window and check its command status.
@@ -324,7 +334,9 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_OPEN_GUEST_PROFILE));
   EXPECT_TRUE(
       command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER));
+#if BUILDFLAG(ENABLE_AI_CHAT)
   EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_TOGGLE_AI_CHAT));
+#endif
 
   // Check tor commands when tor is disabled.
   TorProfileServiceFactory::SetTorDisabled(true);
@@ -336,6 +348,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
 }
 #endif
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
 IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
                        ToggleAIChat_ControlledByPolicy) {
   auto* command_controller = browser()->command_controller();
@@ -349,6 +362,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
   BlockAIChatByPolicy(false);
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_TOGGLE_AI_CHAT));
 }
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
                        BraveCommandsCloseTabsToLeft) {
@@ -444,7 +458,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
   }
 }
 
-#if defined(TOOLKIT_VIEWS)
+#if defined(TOOLKIT_VIEWS) && BUILDFLAG(ENABLE_AI_CHAT)
 IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
                        BraveCommandsToggleAIChat) {
   SidePanelEntryKey ai_chat_key =

@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/commander/common/buildflags/buildflags.gni")
 import("//brave/components/omnibox/buildflags/buildflags.gni")
 
@@ -19,7 +20,6 @@ source_set("unit_tests") {
     "//brave/components/omnibox/browser/brave_local_history_zero_suggest_provider_unittest.cc",
     "//brave/components/omnibox/browser/brave_search_provider_unittest.cc",
     "//brave/components/omnibox/browser/brave_shortcuts_provider_unittest.cc",
-    "//brave/components/omnibox/browser/leo_provider_unittest.cc",
     "//brave/components/omnibox/browser/omnibox_autocomplete_unittest.cc",
     "//brave/components/omnibox/browser/on_device_head_provider_unittest.cc",
     "brave_autocomplete_result_unittest.cc",
@@ -28,10 +28,14 @@ source_set("unit_tests") {
     "promotion_unittest.cc",
   ]
 
+  if (enable_ai_chat) {
+    sources += [ "//brave/components/omnibox/browser/leo_provider_unittest.cc" ]
+  }
+
   deps = [
     "//base",
     "//base/test:test_support",
-    "//brave/components/ai_chat/core/common",
+    "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/brave_search_conversion",
     "//brave/components/constants",
     "//brave/components/l10n/common:test_support",
@@ -51,6 +55,10 @@ source_set("unit_tests") {
     "//testing/gmock",
     "//testing/gtest",
   ]
+
+  if (enable_ai_chat) {
+    deps += [ "//brave/components/ai_chat/core/common" ]
+  }
 
   if (!is_ios) {
     deps += [

@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
@@ -104,7 +105,7 @@ source_set("extensions") {
     "//brave/browser/ui:brave_tab_prefs",
     "//brave/common",
     "//brave/common/extensions/api",
-    "//brave/components/ai_chat/core/common",
+    "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/brave_adaptive_captcha",
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_ads/core/public:headers",
@@ -128,6 +129,7 @@ source_set("extensions") {
     "//brave/components/playlist/core/common",
     "//brave/components/request_otr/common",
     "//brave/components/sidebar/browser",
+    "//brave/components/speedreader/common/buildflags",
     "//brave/components/tor/buildflags",
     "//brave/components/web_discovery/buildflags",
     "//brave/components/webcompat_reporter/common",
@@ -164,6 +166,10 @@ source_set("extensions") {
 
   if (enable_speedreader) {
     deps += [ "//brave/components/speedreader" ]
+  }
+
+  if (enable_ai_chat) {
+    deps += [ "//brave/components/ai_chat/core/common" ]
   }
 
   if (enable_brave_vpn) {

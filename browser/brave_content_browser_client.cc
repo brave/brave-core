@@ -18,7 +18,6 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/system/sys_info.h"
-#include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/brave_account/brave_account_navigation_throttle.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_browser_features.h"
@@ -44,24 +43,11 @@
 #include "brave/browser/skus/skus_service_factory.h"
 #include "brave/browser/ui/brave_ui_features.h"
 #include "brave/browser/ui/webui/ads_internals/ads_internals_ui.h"
-#include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
-#include "brave/browser/ui/webui/ai_chat/ai_chat_untrusted_conversation_ui.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_ui.h"
 #include "brave/browser/ui/webui/skus_internals_ui.h"
 #include "brave/browser/updater/buildflags.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
-#include "brave/components/ai_chat/content/browser/ai_chat_brave_search_throttle.h"
-#include "brave/components/ai_chat/content/browser/ai_chat_throttle.h"
-#include "brave/components/ai_chat/core/browser/utils.h"
-#include "brave/components/ai_chat/core/common/features.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
-#include "brave/components/ai_chat/core/common/mojom/bookmarks.mojom.h"
-#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
-#include "brave/components/ai_chat/core/common/mojom/customization_settings.mojom.h"
-#include "brave/components/ai_chat/core/common/mojom/history.mojom.h"
-#include "brave/components/ai_chat/core/common/mojom/settings_helper.mojom.h"
-#include "brave/components/ai_chat/core/common/mojom/tab_tracker.mojom.h"
-#include "brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_rewriter/common/buildflags/buildflags.h"
 #include "brave/components/body_sniffer/body_sniffer_throttle.h"
 #include "brave/components/brave_account/features.h"
@@ -193,15 +179,36 @@ using content::WebContents;
 using extensions::ChromeContentBrowserClientExtensionsPart;
 #endif
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/browser/ai_chat/ai_chat_service_factory.h"
+#include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
+#include "brave/browser/ui/webui/ai_chat/ai_chat_untrusted_conversation_ui.h"
+#include "brave/components/ai_chat/content/browser/ai_chat_brave_search_throttle.h"
+#include "brave/components/ai_chat/content/browser/ai_chat_throttle.h"
+#include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/bookmarks.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/customization_settings.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/history.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/settings_helper.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/tab_tracker.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom.h"
+#endif
+
 #if !BUILDFLAG(IS_ANDROID)
-#include "brave/browser/ui/ai_chat/utils.h"
 #include "brave/browser/ui/webui/brave_account/brave_account_ui_desktop.h"
 #include "brave/ui/webui/brave_color_change_listener/brave_color_change_handler.h"
 #include "ui/webui/resources/cr_components/color_change_listener/color_change_listener.mojom.h"
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/browser/ui/ai_chat/utils.h"
 #endif
-#if BUILDFLAG(IS_ANDROID)
+#else
 #include "brave/browser/ui/webui/brave_account/brave_account_ui_android.h"
+#if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/browser/android/ai_chat_iap_subscription_android.h"
+#endif
 #endif
 
 #if BUILDFLAG(ENABLE_AI_REWRITER)
@@ -428,7 +435,7 @@ void BindBraveSearchDefaultHost(
   }
 }
 
-#if BUILDFLAG(IS_ANDROID)
+#if BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_AI_CHAT)
 void BindIAPSubscription(
     content::RenderFrameHost* const frame_host,
     mojo::PendingReceiver<ai_chat::mojom::IAPSubscription> receiver) {
@@ -629,6 +636,7 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
   }
 #endif
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
   if (ai_chat::features::IsAIChatEnabled()) {
     registry.ForWebUI<AIChatUI>()
         .Add<ai_chat::mojom::AIChatUIHandler>()
@@ -639,6 +647,7 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
     registry.ForWebUI<AIChatUntrustedConversationUI>()
         .Add<ai_chat::mojom::UntrustedUIHandler>();
   }
+#endif
 
 #if BUILDFLAG(ENABLE_AI_REWRITER)
   if (ai_rewriter::features::IsAIRewriterEnabled()) {
@@ -914,6 +923,7 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
       base::BindRepeating(&MaybeBindColorChangeHandler));
 #endif
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
   auto* prefs =
       user_prefs::UserPrefs::Get(render_frame_host->GetBrowserContext());
   if (ai_chat::IsAIChatEnabled(prefs) &&
@@ -934,6 +944,7 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
     map->Add<ai_chat::mojom::IAPSubscription>(
         base::BindRepeating(&BindIAPSubscription));
   }
+#endif
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER) && !BUILDFLAG(IS_ANDROID)
@@ -1298,6 +1309,7 @@ void BraveContentBrowserClient::CreateThrottlesForNavigation(
       g_browser_process->GetApplicationLocale());
 #endif
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
   if (Profile::FromBrowserContext(context)->IsRegularProfile()) {
     ai_chat::AIChatThrottle::MaybeCreateAndAdd(registry);
   }
@@ -1307,6 +1319,7 @@ void BraveContentBrowserClient::CreateThrottlesForNavigation(
       base::BindOnce(&ai_chat::OpenAIChatForTab), registry,
       ai_chat::AIChatServiceFactory::GetForBrowserContext(context),
       user_prefs::UserPrefs::Get(context));
+#endif
 #endif
 
   brave_search::BackupResultsNavigationThrottle::MaybeCreateAndAdd(registry);

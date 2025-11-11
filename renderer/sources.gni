@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/ai_rewriter/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
@@ -21,8 +22,7 @@ brave_chrome_renderer_sources = [
 
 brave_chrome_renderer_deps = [
   "//brave/common:mojo_bindings",
-  "//brave/components/ai_chat/core/common",
-  "//brave/components/ai_chat/renderer",
+  "//brave/components/ai_chat/core/common/buildflags",
   "//brave/components/ai_rewriter/common/buildflags",
   "//brave/components/brave_search/common",
   "//brave/components/brave_search/renderer",
@@ -45,6 +45,13 @@ brave_chrome_renderer_deps = [
   "//third_party/blink/public:blink",
   "//third_party/blink/public/common",
 ]
+
+if (enable_ai_chat) {
+  brave_chrome_renderer_deps += [
+    "//brave/components/ai_chat/core/common",
+    "//brave/components/ai_chat/renderer",
+  ]
+}
 
 if (enable_tor) {
   brave_chrome_renderer_deps += [ "//brave/components/tor/renderer" ]

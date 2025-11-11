@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_WEBUI_SIDE_PANEL_CUSTOMIZE_CHROME_CUSTOMIZE_TOOLBAR_BRAVE_ACTION_H_
 
 #include "base/containers/fixed_flat_map.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
@@ -62,6 +63,7 @@ inline constexpr BraveAction kShowWalletAction = {
     .pref_name = kShowWalletIconOnToolbar,
     .icon = kLeoProductBraveWalletIcon};
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
 inline constexpr BraveAction kShowAIChatAction = {
     .id = side_panel::customize_chrome::mojom::ActionId::kShowAIChat,
     .display_name_resource_id = IDS_CUSTOMIZE_TOOLBAR_TOGGLE_AI_CHAT,
@@ -69,6 +71,7 @@ inline constexpr BraveAction kShowAIChatAction = {
     .category = side_panel::customize_chrome::mojom::CategoryId::kNavigation,
     .pref_name = ai_chat::prefs::kBraveAIChatShowToolbarButton,
     .icon = kLeoProductBraveLeoIcon};
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 inline constexpr BraveAction kShowVPNAction = {
@@ -104,7 +107,9 @@ inline constexpr auto kBraveActions =
         {kShowAddBookmarkButton.id, &kShowAddBookmarkButton},
         {kShowSidePanelAction.id, &kShowSidePanelAction},
         {kShowWalletAction.id, &kShowWalletAction},
+#if BUILDFLAG(ENABLE_AI_CHAT)
         {kShowAIChatAction.id, &kShowAIChatAction},
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
         {kShowVPNAction.id, &kShowVPNAction},
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN)

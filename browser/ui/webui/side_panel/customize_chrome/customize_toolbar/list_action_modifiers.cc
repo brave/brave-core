@@ -14,7 +14,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/brave_action.h"
-#include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "chrome/browser/profiles/profile.h"
@@ -28,6 +28,10 @@
 #include "ui/color/color_provider.h"
 #include "ui/display/screen.h"
 #include "ui/gfx/image/image_skia.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/core/browser/utils.h"
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/brave_vpn/vpn_utils.h"
@@ -179,9 +183,11 @@ std::vector<ActionPtr> ApplyBraveSpecificModifications(
   }
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
   if (ai_chat::IsAIChatEnabled(prefs)) {
     brave_actions.push_back(kShowAIChatAction);
   }
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
   if (brave_wallet::IsNativeWalletEnabled()) {
     brave_actions.push_back(kShowWalletAction);

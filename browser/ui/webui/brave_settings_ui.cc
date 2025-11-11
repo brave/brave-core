@@ -11,7 +11,6 @@
 
 #include "base/compiler_specific.h"
 #include "base/feature_list.h"
-#include "brave/browser/ai_chat/ai_chat_settings_helper.h"
 #include "brave/browser/brave_origin/brave_origin_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
@@ -27,13 +26,10 @@
 #include "brave/browser/ui/webui/settings/brave_appearance_handler.h"
 #include "brave/browser/ui/webui/settings/brave_default_extensions_handler.h"
 #include "brave/browser/ui/webui/settings/brave_privacy_handler.h"
-#include "brave/browser/ui/webui/settings/brave_settings_leo_assistant_handler.h"
 #include "brave/browser/ui/webui/settings/brave_sync_handler.h"
 #include "brave/browser/ui/webui/settings/brave_wallet_handler.h"
 #include "brave/browser/ui/webui/settings/default_brave_shields_handler.h"
-#include "brave/components/ai_chat/core/browser/customization_settings_handler.h"
-#include "brave/components/ai_chat/core/browser/utils.h"
-#include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_account/features.h"
 #include "brave/components/brave_origin/brave_origin_handler.h"
 #include "brave/components/brave_origin/brave_origin_utils.h"
@@ -68,6 +64,14 @@
 #include "extensions/buildflags/buildflags.h"
 #include "mojo/public/cpp/bindings/self_owned_receiver.h"
 #include "net/base/features.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/browser/ai_chat/ai_chat_settings_helper.h"
+#include "brave/browser/ui/webui/settings/brave_settings_leo_assistant_handler.h"
+#include "brave/components/ai_chat/core/browser/customization_settings_handler.h"
+#include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/components/ai_chat/core/common/features.h"
+#endif
 
 #if BUILDFLAG(ENABLE_PIN_SHORTCUT)
 #include "brave/browser/ui/webui/settings/pin_shortcut_handler.h"
@@ -130,8 +134,10 @@ BraveSettingsUI::BraveSettingsUI(content::WebUI* web_ui) : SettingsUI(web_ui) {
   web_ui->AddMessageHandler(std::make_unique<BraveSyncHandler>());
   web_ui->AddMessageHandler(std::make_unique<BraveWalletHandler>());
   web_ui->AddMessageHandler(std::make_unique<BraveAdBlockHandler>());
+#if BUILDFLAG(ENABLE_AI_CHAT)
   web_ui->AddMessageHandler(
       std::make_unique<settings::BraveLeoAssistantHandler>());
+#endif
 
 #if BUILDFLAG(ENABLE_TOR)
   web_ui->AddMessageHandler(std::make_unique<BraveTorHandler>());
@@ -216,10 +222,12 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
                           base::FeatureList::IsEnabled(
                               extensions_mv2::features::kExtensionsManifestV2));
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
   html_source->AddBoolean("isLeoAssistantAllowed",
                           ai_chat::IsAIChatEnabled(profile->GetPrefs()));
   html_source->AddBoolean("isLeoAssistantHistoryAllowed",
                           ai_chat::features::IsAIChatHistoryEnabled());
+#endif
 
   html_source->AddBoolean("isSurveyPanelistAllowed",
                           base::FeatureList::IsEnabled(
@@ -272,6 +280,7 @@ void BraveSettingsUI::BindInterface(
       ->BindInterface(std::move(pending_receiver));
 }
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
 void BraveSettingsUI::BindInterface(
     mojo::PendingReceiver<ai_chat::mojom::AIChatSettingsHelper>
         pending_receiver) {
@@ -288,6 +297,7 @@ void BraveSettingsUI::BindInterface(
           web_ui()->GetWebContents()->GetBrowserContext()));
   mojo::MakeSelfOwnedReceiver(std::move(handler), std::move(pending_receiver));
 }
+#endif
 
 void BraveSettingsUI::BindInterface(
     mojo::PendingReceiver<brave_account::mojom::BraveAccountSettingsHandler>

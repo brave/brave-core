@@ -8,6 +8,7 @@
 
 #include <memory>
 
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -18,9 +19,11 @@ namespace content {
 class BrowserContext;
 }  // namespace content
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
 namespace ai_chat {
 class AIChatMetrics;
 }  // namespace ai_chat
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 namespace misc_metrics {
 
@@ -52,7 +55,9 @@ class ProfileMiscMetricsService : public KeyedService {
   void Shutdown() override;
 
   PageMetrics* GetPageMetrics();
+#if BUILDFLAG(ENABLE_AI_CHAT)
   ai_chat::AIChatMetrics* GetAIChatMetrics();
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 #if BUILDFLAG(IS_ANDROID)
   MiscAndroidMetrics* GetMiscAndroidMetrics();
 #endif
@@ -66,7 +71,9 @@ class ProfileMiscMetricsService : public KeyedService {
   std::unique_ptr<AutofillMetrics> autofill_metrics_ = nullptr;
   std::unique_ptr<LanguageMetrics> language_metrics_ = nullptr;
   std::unique_ptr<PageMetrics> page_metrics_ = nullptr;
+#if BUILDFLAG(ENABLE_AI_CHAT)
   std::unique_ptr<ai_chat::AIChatMetrics> ai_chat_metrics_ = nullptr;
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 #if BUILDFLAG(IS_ANDROID)
   std::unique_ptr<MiscAndroidMetrics> misc_android_metrics_ = nullptr;
 #else

@@ -23,7 +23,6 @@
 #include "brave/browser/ui/webui/brave_rewards_internals_ui.h"
 #include "brave/browser/ui/webui/skus_internals_ui.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
-#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_rewriter/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -80,6 +79,7 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
 #include "brave/browser/ui/webui/ai_chat/ai_chat_agent_new_tab_page_ui.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #endif
 
 using content::WebUI;

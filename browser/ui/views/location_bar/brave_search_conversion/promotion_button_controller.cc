@@ -8,10 +8,10 @@
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "brave/browser/ui/views/location_bar/brave_search_conversion/promotion_button_view.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_search_conversion/features.h"
 #include "brave/components/brave_search_conversion/pref_names.h"
 #include "brave/components/brave_search_conversion/utils.h"
-#include "brave/components/omnibox/browser/leo_provider.h"
 #include "brave/components/omnibox/browser/promotion_utils.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "chrome/browser/image_fetcher/image_fetcher_service_factory.h"
@@ -31,6 +31,10 @@
 #include "components/search_engines/template_url_data_util.h"
 #include "components/search_engines/template_url_service.h"
 #include "ui/base/page_transition_types.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/omnibox/browser/leo_provider.h"
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 namespace {
 
@@ -141,7 +145,9 @@ bool PromotionButtonController::ShouldShowSearchPromotionButton() {
 
   const AutocompleteMatch match = omnibox_view_->model()->CurrentMatch(nullptr);
   return !IsBraveSearchPromotionMatch(match) &&
+#if BUILDFLAG(ENABLE_AI_CHAT)
          !LeoProvider::IsMatchFromLeoProvider(match) &&
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
          AutocompleteMatch::IsSearchType(match.type);
 }
 

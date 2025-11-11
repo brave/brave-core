@@ -1,12 +1,12 @@
 diff --git a/components/omnibox/browser/BUILD.gn b/components/omnibox/browser/BUILD.gn
-index 7c5f40f9fe208672472fc6f27bc189b038642e49..927fb5f73de50374cacfe8a6cc8ac97a303ab86e 100644
+index 7c5f40f9fe208672472fc6f27bc189b038642e49..39b7af1529dcb21a3ad12dee97228d1229c70e59 100644
 --- a/components/omnibox/browser/BUILD.gn
 +++ b/components/omnibox/browser/BUILD.gn
 @@ -407,6 +407,7 @@ static_library("browser") {
      "//ui/base",
      "//ui/gfx",
    ]
-+  sources += brave_components_omnibox_browser_sources deps += brave_components_omnibox_browser_deps
++  sources += brave_components_omnibox_browser_sources deps += brave_components_omnibox_browser_deps public_deps += brave_components_omnibox_browser_public_deps
  
    configs += [ "//build/config/compiler:wexit_time_destructors" ]
  

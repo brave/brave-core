@@ -4,6 +4,7 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import("//brave/browser/updater/buildflags.gni")
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//build/config/ui.gni")
 
 group("ui") {
@@ -28,10 +29,15 @@ group("ui") {
   if (toolkit_views) {
     deps += [
       "//brave/browser/ui/darker_theme",
-      "//brave/components/ai_chat/content/browser",
-      "//brave/components/ai_chat/core/browser",
-      "//brave/components/ai_chat/core/common",
       "//brave/components/sidebar/browser",
     ]
+
+    if (enable_ai_chat) {
+      deps += [
+        "//brave/components/ai_chat/content/browser",
+        "//brave/components/ai_chat/core/browser",
+        "//brave/components/ai_chat/core/common",
+      ]
+    }
   }
 }

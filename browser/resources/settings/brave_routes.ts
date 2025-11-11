@@ -97,12 +97,14 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
       r.SITE_SETTINGS_LOCALHOST_ACCESS = r.SITE_SETTINGS
         .createChild('localhostAccess')
     }
+    // <if expr="enable_ai_chat">
     const isOpenAIChatFromBraveSearchEnabled =
       loadTimeData.getBoolean('isOpenAIChatFromBraveSearchEnabled')
     if (isOpenAIChatFromBraveSearchEnabled) {
       r.SITE_SETTINGS_BRAVE_OPEN_AI_CHAT =
         r.SITE_SETTINGS.createChild('braveOpenAIChat')
     }
+    // </if>
     const isNativeBraveWalletFeatureEnabled =
       loadTimeData.getBoolean('isNativeBraveWalletFeatureEnabled')
     const isCardanoDappSupportFeatureEnabled =

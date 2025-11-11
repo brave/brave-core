@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/build/config.gni")
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 import("//chrome/common/features.gni")
@@ -16,9 +17,9 @@ source_set("brave_browser_command") {
 
   deps = [
     "//base",
-    "//brave/browser/ai_chat",
     "//brave/browser/brave_rewards",
     "//brave/browser/brave_wallet",
+    "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/brave_education",
     "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/constants",
@@ -28,6 +29,10 @@ source_set("brave_browser_command") {
     "//ui/base:types",
     "//url",
   ]
+
+  if (enable_ai_chat) {
+    deps += [ "//brave/browser/ai_chat" ]
+  }
 
   if (enable_brave_vpn) {
     deps += [ "//brave/browser/brave_vpn" ]

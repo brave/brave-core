@@ -27,7 +27,7 @@
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
 #include "brave/browser/ui/webui/speedreader/speedreader_toolbar_data_handler_impl.h"
 #include "brave/common/pref_names.h"
-#include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/speedreader/common/features.h"
@@ -66,6 +66,10 @@
 #include "services/network/public/cpp/network_switches.h"
 #include "ui/events/base_event_utils.h"
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/core/common/features.h"
+#endif
+
 constexpr char kTestHost[] = "a.test";
 constexpr char kTestPageSimple[] = "/simple.html";
 constexpr char kTestPageReadable[] = "/speedreader/article/guardian.html";
@@ -95,8 +99,12 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
     feature_list_.InitWithFeaturesAndParameters(
         {{speedreader::features::kSpeedreaderFeature,
-          {{speedreader::features::kSpeedreaderTTS.name, "true"}}},
-         {ai_chat::features::kAIChat, {{}}}},
+          {{speedreader::features::kSpeedreaderTTS.name, "true"}}}
+#if BUILDFLAG(ENABLE_AI_CHAT)
+         ,
+         {ai_chat::features::kAIChat, {{}}}
+#endif
+        },
         {});
   }
 
@@ -835,6 +843,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Toolbar) {
   auto* toolbar = toolbar_view->GetWebContentsForTesting();
   WaitElement(toolbar, "appearance");
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
   Click(toolbar, "ai");
   auto* side_panel = browser()->GetFeatures().side_panel_ui();
   while (side_panel->GetCurrentEntryId() != SidePanelEntryId::kChatUI) {
@@ -846,6 +855,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Toolbar) {
     NonBlockingDelay(base::Milliseconds(10));
   }
   EXPECT_FALSE(side_panel->GetCurrentEntryId().has_value());
+#endif
 
   Click(toolbar, "appearance");
   {  // change theme

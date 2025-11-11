@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/ai_rewriter/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
@@ -24,13 +25,16 @@ brave_grit("static_resources") {
   ]
   deps = [
     ":strings",
-    "//brave/components/ai_chat/resources",
     "//brave/components/brave_rewards/resources",
     "//brave/components/brave_shields/resources:bundle_js",
     "//brave/components/brave_wallet_ui/page:brave_wallet_page_generated",
     "//brave/components/decentralized_dns/content/resources:bundle_js",
     "//brave/components/request_otr/resources:bundle_js",
   ]
+
+  if (enable_ai_chat) {
+    deps += [ "//brave/components/ai_chat/resources" ]
+  }
 
   if (enable_extensions) {
     deps += [ "//brave/components/brave_extension/extension/brave_extension" ]
@@ -41,6 +45,8 @@ brave_grit("static_resources") {
   }
 
   defines = [
+    "enable_ai_chat=$enable_ai_chat",
+    "enable_ai_rewriter=$enable_ai_rewriter",
     "enable_brave_vpn=$enable_brave_vpn",
     "enable_playlist_webui=$enable_playlist_webui",
     "enable_speedreader=$enable_speedreader",
@@ -52,8 +58,6 @@ brave_grit("static_resources") {
 repack("resources") {
   deps = [
     ":static_resources",
-    "//brave/components/ai_chat/resources",
-    "//brave/components/ai_chat/resources/custom_site_distiller_scripts:generated_resources",
     "//brave/components/ai_rewriter/common/buildflags",
     "//brave/components/brave_account/resources",
     "//brave/components/brave_ads/browser/resources:generated_resources",
@@ -62,8 +66,6 @@ repack("resources") {
     "//brave/components/skus/browser/resources:generated_resources",
   ]
   sources = [
-    "$root_gen_dir/brave/components/ai_chat/resources/ai_chat_ui_generated.pak",
-    "$root_gen_dir/brave/components/ai_chat/resources/custom_site_distiller_scripts/custom_site_distiller_scripts_generated.pak",
     "$root_gen_dir/brave/components/brave_account/resources/brave_account_resources.pak",
     "$root_gen_dir/brave/components/brave_ads/browser/resources/ads_internals_generated.pak",
     "$root_gen_dir/brave/components/brave_wallet/resources/brave_wallet.pak",
@@ -71,6 +73,17 @@ repack("resources") {
     "$root_gen_dir/brave/components/skus/browser/resources/skus_internals_generated.pak",
     "$root_gen_dir/components/brave_components_static.pak",
   ]
+
+  if (enable_ai_chat) {
+    deps += [
+      "//brave/components/ai_chat/resources",
+      "//brave/components/ai_chat/resources/custom_site_distiller_scripts:generated_resources",
+    ]
+    sources += [
+      "$root_gen_dir/brave/components/ai_chat/resources/ai_chat_ui_generated.pak",
+      "$root_gen_dir/brave/components/ai_chat/resources/custom_site_distiller_scripts/custom_site_distiller_scripts_generated.pak",
+    ]
+  }
 
   if (is_android) {
     deps += [ "//brave/components/new_tab_takeover:new_tab_takeover_generated_resources" ]
@@ -151,6 +164,7 @@ brave_grit("strings") {
   ]
 
   defines = [
+    "enable_ai_chat=$enable_ai_chat",
     "enable_speedreader=$enable_speedreader",
     "enable_tor=$enable_tor",
     "enable_brave_vpn=$enable_brave_vpn",

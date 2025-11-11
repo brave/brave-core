@@ -16,7 +16,7 @@
 #include "base/test/metrics/histogram_tester.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/values_test_util.h"
-#include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/playlist/core/common/features.h"
 #include "brave/components/sidebar/browser/constants.h"
@@ -29,6 +29,10 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/core/common/features.h"
+#endif
+
 using ::testing::Eq;
 using ::testing::NiceMock;
 using ::testing::Optional;
@@ -39,7 +43,9 @@ constexpr sidebar::SidebarItem::BuiltInItemType
     kDefaultBuiltInItemTypesForTest[] = {
         sidebar::SidebarItem::BuiltInItemType::kBraveTalk,
         sidebar::SidebarItem::BuiltInItemType::kWallet,
+#if BUILDFLAG(ENABLE_AI_CHAT)
         sidebar::SidebarItem::BuiltInItemType::kChatUI,
+#endif
         sidebar::SidebarItem::BuiltInItemType::kBookmarks,
         sidebar::SidebarItem::BuiltInItemType::kReadingList,
         sidebar::SidebarItem::BuiltInItemType::kHistory,
@@ -229,9 +235,11 @@ class SidebarServiceTest : public testing::Test {
       item_count -= 1;
     }
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
     if (!ai_chat::features::IsAIChatEnabled()) {
       item_count -= 1;
     }
+#endif
 
     return item_count;
   }
@@ -506,10 +514,12 @@ TEST_F(SidebarServiceTest, NewDefaultItemAdded) {
           return false;
         }
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
         if (!ai_chat::features::IsAIChatEnabled() &&
             built_in_type == SidebarItem::BuiltInItemType::kChatUI) {
           return false;
         }
+#endif
 
         if (!base::FeatureList::IsEnabled(playlist::features::kPlaylist) &&
             built_in_type == SidebarItem::BuiltInItemType::kPlaylist) {
@@ -680,7 +690,11 @@ TEST_F(SidebarServiceTest, MigratePrefSidebarBuiltInItemsNoneHidden) {
       std::ranges::find(items, SidebarItem::BuiltInItemType::kReadingList,
                         &SidebarItem::built_in_item_type);
   auto index = iter - items.begin();
+#if BUILDFLAG(ENABLE_AI_CHAT)
   EXPECT_EQ(4, index);
+#else
+  EXPECT_EQ(3, index);
+#endif
 }
 
 // Verify service has migrated the previous pref format where built-in items
@@ -813,9 +827,11 @@ TEST_F(SidebarServiceTest, BuiltInItemUpdateTestWithBuiltInItemTypeKey) {
     expected_count += 1;
   }
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
   if (ai_chat::features::IsAIChatEnabled()) {
     expected_count += 1;
   }
+#endif
 
   // Check service has updated built-in item. Previously url was deprecated.xxx.
   EXPECT_EQ(expected_count, service_->items().size());
@@ -958,7 +974,9 @@ class SidebarServiceOrderingTest : public SidebarServiceTest {
 
   void SetUp() override {
     SidebarServiceTest::SetUp();
+#if BUILDFLAG(ENABLE_AI_CHAT)
     scoped_feature_list_.InitAndEnableFeature(ai_chat::features::kAIChat);
+#endif
   }
 
   bool ValidateBuiltInTypesOrdering(
@@ -1010,7 +1028,9 @@ TEST_F(SidebarServiceOrderingTest, BuiltInItemsDefaultOrder) {
   EXPECT_TRUE(
       ValidateBuiltInTypesOrdering({SidebarItem::BuiltInItemType::kBraveTalk,
                                     SidebarItem::BuiltInItemType::kWallet,
+#if BUILDFLAG(ENABLE_AI_CHAT)
                                     SidebarItem::BuiltInItemType::kChatUI,
+#endif
                                     SidebarItem::BuiltInItemType::kBookmarks,
                                     SidebarItem::BuiltInItemType::kReadingList,
                                     SidebarItem::BuiltInItemType::kHistory,
@@ -1025,7 +1045,9 @@ TEST_F(SidebarServiceOrderingTest, LoadFromPrefsAllBuiltInVisible) {
   CHECK(sidebar_items);
 
   std::vector items = {
+#if BUILDFLAG(ENABLE_AI_CHAT)
       SidebarItem::BuiltInItemType::kChatUI,
+#endif
       SidebarItem::BuiltInItemType::kWallet,
       SidebarItem::BuiltInItemType::kReadingList,
       SidebarItem::BuiltInItemType::kBookmarks,
@@ -1033,6 +1055,11 @@ TEST_F(SidebarServiceOrderingTest, LoadFromPrefsAllBuiltInVisible) {
   };
 
   auto expected_count = sidebar_items->size();
+
+#if !BUILDFLAG(ENABLE_AI_CHAT)
+  // JSON includes kChatUI, but it won't be loaded when AI Chat is disabled
+  expected_count--;
+#endif
 
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
     expected_count++;
@@ -1052,11 +1079,18 @@ TEST_F(SidebarServiceOrderingTest, LoadFromPrefsWalletBuiltInHidden) {
       SidebarItem::BuiltInItemType::kBraveTalk,
       SidebarItem::BuiltInItemType::kBookmarks,
       SidebarItem::BuiltInItemType::kReadingList,
+#if BUILDFLAG(ENABLE_AI_CHAT)
       SidebarItem::BuiltInItemType::kChatUI,
+#endif
       SidebarItem::BuiltInItemType::kPlaylist,
   };
 
   auto expected_count = sidebar_items->size();
+
+#if !BUILDFLAG(ENABLE_AI_CHAT)
+  // JSON includes kChatUI, but it won't be loaded when AI Chat is disabled
+  expected_count--;
+#endif
 
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
     expected_count++;
@@ -1076,12 +1110,18 @@ TEST_F(SidebarServiceOrderingTest, LoadFromPrefsAIChatBuiltInNotListed) {
   std::vector items = {
       SidebarItem::BuiltInItemType::kBraveTalk,
       SidebarItem::BuiltInItemType::kBookmarks,
+#if BUILDFLAG(ENABLE_AI_CHAT)
       SidebarItem::BuiltInItemType::kChatUI,
+#endif
       SidebarItem::BuiltInItemType::kReadingList,
       SidebarItem::BuiltInItemType::kWallet,
   };
 
-  auto expected_count = sidebar_items->size() + 1;
+  auto expected_count = sidebar_items->size();
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  // AI Chat is not listed in JSON but will be added
+  expected_count++;
+#endif
 
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
     expected_count++;

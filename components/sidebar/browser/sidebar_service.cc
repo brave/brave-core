@@ -21,7 +21,7 @@
 #include "base/notreached.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
-#include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -37,6 +37,10 @@
 #include "components/prefs/scoped_user_pref_update.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/resource/resource_bundle.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/core/browser/utils.h"
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 namespace sidebar {
 
@@ -442,7 +446,9 @@ std::optional<SidebarItem> SidebarService::GetDefaultPanelItem() const {
   // Use this order for picking active panel when panel is opened as
   // we don't cache previous active panel.
   constexpr SidebarItem::BuiltInItemType kPreferredPanelOrder[] = {
+#if BUILDFLAG(ENABLE_AI_CHAT)
       SidebarItem::BuiltInItemType::kChatUI,
+#endif
       SidebarItem::BuiltInItemType::kReadingList,
       SidebarItem::BuiltInItemType::kBookmarks,
       SidebarItem::BuiltInItemType::kPlaylist};
@@ -652,16 +658,17 @@ SidebarItem SidebarService::GetBuiltInItemForType(
 
       return SidebarItem();
     }
+#if BUILDFLAG(ENABLE_AI_CHAT)
     case SidebarItem::BuiltInItemType::kChatUI: {
       if (ai_chat::IsAIChatEnabled(prefs_)) {
         return SidebarItem::Create(l10n_util::GetStringUTF16(IDS_CHAT_UI_TITLE),
                                    SidebarItem::Type::kTypeBuiltIn,
                                    SidebarItem::BuiltInItemType::kChatUI,
                                    /* open_in_panel = */ true);
-      } else {
-        return SidebarItem();
       }
+      return SidebarItem();
     }
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
     case SidebarItem::BuiltInItemType::kNone:
       break;
   }

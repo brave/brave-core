@@ -17,7 +17,7 @@
 #include "base/containers/map_util.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/app/command_utils.h"
-#include "brave/components/ai_chat/core/common/pref_names.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
@@ -36,6 +36,10 @@
 #include "components/prefs/pref_service.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "ui/base/accelerators/accelerator.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/core/common/pref_names.h"
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/components/tor/pref_names.h"
@@ -417,9 +421,11 @@ bool AcceleratorService::IsCommandDisabledByPolicy(int command_id) const {
     case IDC_SHOW_BRAVE_REWARDS:
     case IDC_OFFERS_AND_REWARDS_FOR_PAGE:
       return pref_service_->GetBoolean(brave_rewards::prefs::kDisabledByPolicy);
+#if BUILDFLAG(ENABLE_AI_CHAT)
     case IDC_TOGGLE_AI_CHAT:
     case IDC_OPEN_FULL_PAGE_CHAT:
       return !pref_service_->GetBoolean(ai_chat::prefs::kEnabledByPolicy);
+#endif
     case IDC_NEW_OFFTHERECORD_WINDOW_TOR:
     case IDC_NEW_TOR_CONNECTION_FOR_SITE:
 #if BUILDFLAG(ENABLE_TOR)

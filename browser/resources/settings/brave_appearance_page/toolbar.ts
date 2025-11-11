@@ -98,9 +98,11 @@ class SettingsBraveAppearanceToolbarElement extends SettingsBraveAppearanceToolb
     return loadTimeData.getBoolean('isBraveVPNEnabled')
   }
 
+  // <if expr="enable_ai_chat">
   private showLeoAssistant_() {
     return loadTimeData.getBoolean('isLeoAssistantAllowed')
   }
+  // </if>
 
   private showCommandsInOmnibox_() {
     return loadTimeData.getBoolean('showCommandsInOmnibox')

@@ -3,9 +3,24 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+
+# Generate a JSON config file with build flags for Jest tests
+generated_file("jest_build_config") {
+  outputs = [ "$root_gen_dir/brave/jest_build_config.json" ]
+
+  contents = {
+    enable_ai_chat = enable_ai_chat
+  }
+
+  output_conversion = "json"
+}
+
 action("generate_tsconfig") {
   script = "//brave/script/generate-tsconfig.py"
   deps = [
+    ":jest_build_config",
+
     # Ensure chrome://resources/js file and typescript definitions are
     # generated
     "//ui/webui/resources/js:build_ts",

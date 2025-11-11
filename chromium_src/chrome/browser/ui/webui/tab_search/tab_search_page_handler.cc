@@ -7,15 +7,7 @@
 
 #include "base/check.h"
 #include "base/strings/string_number_conversions.h"
-#include "brave/browser/ai_chat/ai_chat_service_factory.h"
-#include "brave/components/ai_chat/core/browser/ai_chat_service.h"
-#include "brave/components/ai_chat/core/browser/constants.h"
-#include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
-#include "brave/components/ai_chat/core/browser/types.h"
-#include "brave/components/ai_chat/core/common/features.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
-#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
-#include "brave/components/ai_chat/core/common/pref_names.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_navigator_params.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -25,6 +17,18 @@
 #include "ui/base/page_transition_types.h"
 #include "ui/base/window_open_disposition.h"
 #include "url/origin.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/browser/ai_chat/ai_chat_service_factory.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_service.h"
+#include "brave/components/ai_chat/core/browser/constants.h"
+#include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
+#include "brave/components/ai_chat/core/browser/types.h"
+#include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
+#include "brave/components/ai_chat/core/common/pref_names.h"
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 #define TabSearchPageHandler TabSearchPageHandler_ChromiumImpl
 #include <chrome/browser/ui/webui/tab_search/tab_search_page_handler.cc>
@@ -41,13 +45,18 @@ TabSearchPageHandler::TabSearchPageHandler(
                                         web_ui,
                                         webui_controller,
                                         metrics_reporter) {
+#if BUILDFLAG(ENABLE_AI_CHAT)
   pref_change_registrar_.Add(
       ai_chat::prefs::kBraveAIChatTabOrganizationEnabled,
       base::BindRepeating(
           &TabSearchPageHandler::OnTabOrganizationFeaturePrefChanged,
           base::Unretained(this), Profile::FromWebUI(web_ui_)));
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 }
 
+TabSearchPageHandler::~TabSearchPageHandler() = default;
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
 void TabSearchPageHandler::OnTabOrganizationFeaturePrefChanged(
     Profile* profile) {
   page_->TabOrganizationEnabledChanged(
@@ -58,8 +67,6 @@ void TabSearchPageHandler::OnTabOrganizationFeaturePrefChanged(
   page_->ShowFREChanged(!profile->GetPrefs()->HasPrefPath(
       ai_chat::prefs::kBraveAIChatTabOrganizationEnabled));
 }
-
-TabSearchPageHandler::~TabSearchPageHandler() = default;
 
 std::vector<ai_chat::Tab> TabSearchPageHandler::GetTabsForAIEngine() {
   std::vector<ai_chat::Tab> tabs;
@@ -264,3 +271,28 @@ void TabSearchPageHandler::GetTabFocusShowFRE(
   std::move(callback).Run(!Profile::FromWebUI(web_ui_)->GetPrefs()->HasPrefPath(
       ai_chat::prefs::kBraveAIChatTabOrganizationEnabled));
 }
+#else   // !BUILDFLAG(ENABLE_AI_CHAT)
+// Stub implementations when AI Chat is disabled
+void TabSearchPageHandler::GetSuggestedTopics(
+    GetSuggestedTopicsCallback callback) {
+  std::move(callback).Run({}, nullptr);
+}
+
+void TabSearchPageHandler::GetFocusTabs(const std::string& topic,
+                                        GetFocusTabsCallback callback) {
+  std::move(callback).Run(false, nullptr);
+}
+
+void TabSearchPageHandler::UndoFocusTabs(UndoFocusTabsCallback callback) {
+  std::move(callback).Run();
+}
+
+void TabSearchPageHandler::OpenLeoGoPremiumPage() {}
+
+void TabSearchPageHandler::SetTabFocusEnabled() {}
+
+void TabSearchPageHandler::GetTabFocusShowFRE(
+    GetTabFocusShowFRECallback callback) {
+  std::move(callback).Run(false);
+}
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)

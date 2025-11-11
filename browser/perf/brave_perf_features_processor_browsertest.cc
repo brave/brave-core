@@ -6,7 +6,7 @@
 #include "base/scoped_observation.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/perf/brave_perf_switches.h"
-#include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/content/rewards_service.h"
@@ -18,6 +18,10 @@
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/core/browser/utils.h"
+#endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/browser/speedreader/speedreader_service_factory.h"
@@ -95,7 +99,9 @@ IN_PROC_BROWSER_TEST_F(BraveSpeedFeatureProcessorBrowserTest, Default) {
   EXPECT_TRUE(BraveNewsAreEnabled());
   WaitForRewardsServiceInitialized();
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
   auto* prefs = browser()->profile()->GetPrefs();
   EXPECT_TRUE(ai_chat::IsAIChatEnabled(prefs));
   EXPECT_TRUE(ai_chat::HasUserOptedIn(prefs));
+#endif
 }
