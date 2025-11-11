@@ -141,8 +141,8 @@ class MockUiDelegate : public PsstTabWebContentsObserver::PsstUiDelegate {
                const mojom::PsstStatus status),
               (override));
 
-  MOCK_METHOD(std::optional<PsstPermissionInfo>,
-              GetPsstPermissionInfo,
+  MOCK_METHOD(std::optional<PsstMetadata>,
+              GetPsstMetadata,
               (const url::Origin& origin, const std::string& user_id),
               (override));
 };

@@ -99,7 +99,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_PSST)
-#include "brave/browser/psst/brave_psst_permission_context_factory.h"
+// #include "brave/browser/psst/brave_psst_permission_context_factory.h"
 #include "brave/components/psst/common/features.h"
 #endif  // BUILDFLAG(ENABLE_PSST)
 
@@ -210,11 +210,6 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   extensions_mv2::ExtensionsManifestV2MigratorFactory::GetInstance();
 #endif
-#if BUILDFLAG(ENABLE_PSST)
-  if (base::FeatureList::IsEnabled(psst::features::kEnablePsst)) {
-    psst::BravePsstPermissionContextFactory::GetInstance();
-  }
-#endif  // BUILDFLAG(ENABLE_PSST)
   BraveShieldsSettingsServiceFactory::GetInstance();
 }
 
