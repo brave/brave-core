@@ -242,12 +242,21 @@ TEST(HexUtilsUnitTest, PrefixedHexStringToBytes) {
 }
 
 TEST(HexUtilsUnitTest, PrefixedHexStringToFixed) {
+  std::array<uint8_t, 0> out0 = {};
   std::array<uint8_t, 1> out1 = {};
   std::array<uint8_t, 2> out2 = {};
   std::array<uint8_t, 4> out4 = {};
   std::array<uint8_t, 8> out8 = {};
   std::array<uint8_t, 16> out16 = {};
   std::array<uint8_t, 32> out32 = {};
+
+  // Empty output spans, should unconditionally return false.
+  EXPECT_FALSE(PrefixedHexStringToFixed("", out0));
+  EXPECT_FALSE(PrefixedHexStringToFixed("0x", out0));
+  EXPECT_FALSE(PrefixedHexStringToFixed("0xy", out0));
+  EXPECT_FALSE(PrefixedHexStringToFixed("0xxy", out0));
+  EXPECT_FALSE(PrefixedHexStringToFixed("0x123", out0));
+  EXPECT_FALSE(PrefixedHexStringToFixed("0x1234", out0));
 
   // Empty strings, should fail.
   EXPECT_FALSE(PrefixedHexStringToFixed("0x", out1));

@@ -210,7 +210,9 @@ std::optional<std::vector<uint8_t>> PrefixedHexStringToBytes(
 }
 
 bool PrefixedHexStringToFixed(std::string_view input, base::span<uint8_t> out) {
-  DCHECK(!out.empty());
+  if (out.empty()) {
+    return false;
+  }
 
   input = base::RemovePrefix(input, "0x").value_or({});
   if (input.empty()) {
