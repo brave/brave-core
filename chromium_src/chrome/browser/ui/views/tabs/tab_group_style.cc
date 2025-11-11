@@ -6,7 +6,7 @@
 #include "chrome/browser/ui/views/tabs/tab_group_style.h"
 
 #include "brave/browser/ui/tabs/brave_tab_layout_constants.h"
-#include "brave/browser/ui/tabs/features.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/tabs/brave_tab_group_underline.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 
@@ -63,7 +63,7 @@ SkPath TabGroupStyle::GetUnderlinePath(gfx::Rect local_bounds) const {
 
 gfx::Insets TabGroupStyle::GetInsetsForHeaderChip() const {
   auto insets = TabGroupStyle_ChromiumImpl::GetInsetsForHeaderChip();
-  if (!tabs::features::HorizontalTabsUpdateEnabled()) {
+  if (!tabs::HorizontalTabsUpdateEnabled()) {
     return insets;
   }
   if (!ShouldShowVerticalTabs()) {
@@ -75,7 +75,7 @@ gfx::Insets TabGroupStyle::GetInsetsForHeaderChip() const {
 
 gfx::Point TabGroupStyle::GetTitleChipOffset(
     std::optional<int> text_height) const {
-  if (!tabs::features::HorizontalTabsUpdateEnabled()) {
+  if (!tabs::HorizontalTabsUpdateEnabled()) {
     return TabGroupStyle_ChromiumImpl::GetTitleChipOffset(text_height);
   }
   return gfx::Point(brave_tabs::kHorizontalTabInset,
@@ -87,14 +87,14 @@ bool TabGroupStyle::ShouldShowVerticalTabs() const {
 }
 
 float TabGroupStyle::GetEmptyChipSize() const {
-  if (!tabs::features::HorizontalTabsUpdateEnabled()) {
+  if (!tabs::HorizontalTabsUpdateEnabled()) {
     return TabGroupStyle_ChromiumImpl::GetEmptyChipSize();
   }
   return brave_tabs::GetHorizontalTabHeight();
 }
 
 int TabGroupStyle::GetChipCornerRadius() const {
-  if (!tabs::features::HorizontalTabsUpdateEnabled()) {
+  if (!tabs::HorizontalTabsUpdateEnabled()) {
     return TabGroupStyle_ChromiumImpl::GetChipCornerRadius();
   }
   return brave_tabs::kTabBorderRadius;

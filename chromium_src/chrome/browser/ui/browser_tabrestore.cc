@@ -7,7 +7,7 @@
 
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
-#include "brave/browser/ui/tabs/features.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/public/constants.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "chrome/browser/ui/tab_ui_helper.h"
@@ -41,7 +41,7 @@ void MaybeRestoreCustomTitleForTab(
     BraveTabStripModel* model,
     int tab_index,
     const std::map<std::string, std::string>& extra_data) {
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveRenamingTabs)) {
+  if (!base::FeatureList::IsEnabled(tabs::kBraveRenamingTabs)) {
     return;
   }
 

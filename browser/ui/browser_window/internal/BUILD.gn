@@ -11,11 +11,11 @@ source_set("internal") {
   deps = [
     "//base",
     "//brave/browser/brave_rewards",
-    "//brave/browser/ui:brave_tab_features",
     "//brave/browser/ui/sidebar",
     "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/playlist/core/common",
     "//chrome/browser/ui/browser_window",
+    "//chrome/browser/ui/tabs:features",
   ]
 
   if (enable_brave_vpn) {

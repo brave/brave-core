@@ -12,7 +12,7 @@
 #include <chrome/browser/ui/tabs/tab_renderer_data.cc>
 #undef FromTabInModel
 
-#include "brave/browser/ui/tabs/features.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/shared_pinned_tab_service.h"
 #include "brave/browser/ui/tabs/shared_pinned_tab_service_factory.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -21,7 +21,7 @@
 
 TabRendererData TabRendererData::FromTabInModel(const TabStripModel* model,
                                                 int index) {
-  if (base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs)) {
+  if (base::FeatureList::IsEnabled(tabs::kBraveSharedPinnedTabs)) {
     if (index < model->IndexOfFirstNonPinnedTab()) {
       auto* shared_pinned_tab_service =
           SharedPinnedTabServiceFactory::GetForProfile(model->profile());
@@ -59,7 +59,7 @@ TabRendererData TabRendererData::FromTabInModel(const TabStripModel* model,
     }
   }
 
-  if (base::FeatureList::IsEnabled(tabs::features::kBraveRenamingTabs)) {
+  if (base::FeatureList::IsEnabled(tabs::kBraveRenamingTabs)) {
     tabs::TabInterface* const tab = model->GetTabAtIndex(index);
     CHECK(tab);
 

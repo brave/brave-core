@@ -15,7 +15,7 @@
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
-#include "brave/browser/ui/tabs/features.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/shared_pinned_tab_service.h"
 #include "brave/browser/ui/tabs/shared_pinned_tab_service_factory.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
@@ -98,7 +98,7 @@ bool BraveTabStrip::ShouldDrawStrokes() const {
   // TODO(simonhong): We can return false always here as horizontal tab design
   // doesn't need additional stroke.
   // Delete all below code when horizontal tab feature flag is removed.
-  if (tabs::features::HorizontalTabsUpdateEnabled()) {
+  if (tabs::HorizontalTabsUpdateEnabled()) {
     // We never automatically draw strokes around tabs. For pinned tabs, we draw
     // the stroke when generating the tab drawing path.
     return false;
@@ -163,7 +163,7 @@ void BraveTabStrip::MaybeStartDrag(
     }
   }
 
-  if (base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs)) {
+  if (base::FeatureList::IsEnabled(tabs::kBraveSharedPinnedTabs)) {
     // When source tab is bound for dummy web contents for a shared pinned tab,
     // we shouldn't kick off drag-and-drop session as the web contents will be
     // replaced soon.

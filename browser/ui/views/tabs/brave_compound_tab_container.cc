@@ -15,7 +15,7 @@
 #include "base/check_op.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
-#include "brave/browser/ui/tabs/features.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/tabs/brave_tab_container.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
@@ -125,7 +125,7 @@ void BraveCompoundTabContainer::SetAvailableWidthCallback(
     pinned_tab_container_->SetAvailableWidthCallback(
         base::BindRepeating(&views::View::width, base::Unretained(this)));
     if (base::FeatureList::IsEnabled(
-            tabs::features::kBraveVerticalTabScrollBar)) {
+            tabs::kBraveVerticalTabScrollBar)) {
       unpinned_tab_container_->SetAvailableWidthCallback(base::BindRepeating(
           &BraveCompoundTabContainer::GetAvailableWidthConsideringScrollBar,
           base::Unretained(this)));
@@ -495,7 +495,7 @@ void BraveCompoundTabContainer::SetActiveTab(
 views::View* BraveCompoundTabContainer::TargetForRect(views::View* root,
                                                       const gfx::Rect& rect) {
   if (base::FeatureList::IsEnabled(
-          tabs::features::kBraveVerticalTabScrollBar) &&
+          tabs::kBraveVerticalTabScrollBar) &&
       scroll_view_) {
     auto* scroll_bar = scroll_view_->vertical_scroll_bar();
     const gfx::Rect rect_in_scroll_bar =
@@ -616,7 +616,7 @@ void BraveCompoundTabContainer::ScrollTabToBeVisible(Tab* tab) {
 
 int BraveCompoundTabContainer::GetAvailableWidthConsideringScrollBar() {
   CHECK(
-      base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabScrollBar));
+      base::FeatureList::IsEnabled(tabs::kBraveVerticalTabScrollBar));
   if (scroll_view_) {
     auto* scroll_bar = scroll_view_->vertical_scroll_bar();
     if (scroll_bar->GetVisible()) {

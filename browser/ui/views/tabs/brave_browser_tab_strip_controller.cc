@@ -8,7 +8,7 @@
 #include <utility>
 
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
-#include "brave/browser/ui/tabs/features.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/tabs/brave_tab_context_menu_contents.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
@@ -35,7 +35,7 @@ const std::optional<int> BraveBrowserTabStripController::GetModelIndexOf(
 }
 
 void BraveBrowserTabStripController::EnterTabRenameModeAt(int index) {
-  CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveRenamingTabs));
+  CHECK(base::FeatureList::IsEnabled(tabs::kBraveRenamingTabs));
   return static_cast<BraveTabStrip*>(tabstrip_)->EnterTabRenameModeAt(index);
 }
 

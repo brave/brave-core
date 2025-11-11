@@ -21,7 +21,7 @@
 #include "brave/browser/ui/sidebar/sidebar.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
-#include "brave/browser/ui/tabs/features.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/public/constants.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/components/constants/pref_names.h"
@@ -338,7 +338,7 @@ bool BraveBrowser::ShouldAskForBrowserClosingBeforeHandlers() {
 }
 
 bool BraveBrowser::AreAllTabsSharedPinnedTabs() {
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs)) {
+  if (!base::FeatureList::IsEnabled(tabs::kBraveSharedPinnedTabs)) {
     return false;
   }
 

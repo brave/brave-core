@@ -11,7 +11,7 @@
 #include "base/task/current_thread.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
-#include "brave/browser/ui/tabs/features.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/public/constants.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/app/chrome_command_ids.h"
@@ -167,7 +167,7 @@ class BraveTabStripModelRenamingTabBrowserTest : public BraveTabStripModelTest {
 
   BraveTabStripModelRenamingTabBrowserTest() {
     scoped_feature_list_.InitAndEnableFeature(
-        tabs::features::kBraveRenamingTabs);
+        tabs::kBraveRenamingTabs);
   }
   ~BraveTabStripModelRenamingTabBrowserTest() override = default;
 

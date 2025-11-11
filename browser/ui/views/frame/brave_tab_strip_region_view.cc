@@ -8,7 +8,7 @@
 #include <utility>
 
 #include "brave/browser/ui/tabs/brave_tab_layout_constants.h"
-#include "brave/browser/ui/tabs/features.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/ui/layout_constants.h"
@@ -51,7 +51,7 @@ void BraveTabStripRegionView::UpdateTabStripMargin() {
   // When we are in a fullscreen/condensed mode, we want the tabstrip to meet
   // the frame edge so that the leftmost tab can be selected at the edge of the
   // screen.
-  if (tabs::features::HorizontalTabsUpdateEnabled()) {
+  if (tabs::HorizontalTabsUpdateEnabled()) {
     if (!tab_strip_->controller()->IsFrameCondensed() && !vertical_tabs) {
       margins.set_left(brave_tabs::kHorizontalTabStripLeftMargin);
     } else {

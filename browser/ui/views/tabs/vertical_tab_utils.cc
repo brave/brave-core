@@ -9,7 +9,7 @@
 #include "base/check_is_test.h"
 #include "base/command_line.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
-#include "brave/browser/ui/tabs/features.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/tabs/switches.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -163,7 +163,7 @@ std::pair<int, int> GetLeadingTrailingCaptionButtonWidth(
 
 bool ShouldHideVerticalTabsCompletelyWhenCollapsed(const Browser* browser) {
   return base::FeatureList::IsEnabled(
-             tabs::features::kBraveVerticalTabHideCompletely) &&
+             tabs::kBraveVerticalTabHideCompletely) &&
          browser->profile()->GetPrefs()->GetBoolean(
              brave_tabs::kVerticalTabsHideCompletelyWhenCollapsed);
 }

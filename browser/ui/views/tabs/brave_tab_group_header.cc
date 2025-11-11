@@ -10,7 +10,7 @@
 #include "base/check.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/tabs/brave_tab_layout_constants.h"
-#include "brave/browser/ui/tabs/features.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/ui/browser.h"
@@ -51,7 +51,7 @@ void BraveTabGroupHeader::AddedToWidget() {
 void BraveTabGroupHeader::VisualsChanged() {
   TabGroupHeader::VisualsChanged();
 
-  if (!tabs::features::HorizontalTabsUpdateEnabled() &&
+  if (!tabs::HorizontalTabsUpdateEnabled() &&
       !ShouldShowVerticalTabs()) {
     return;
   }
@@ -100,7 +100,7 @@ void BraveTabGroupHeader::VisualsChanged() {
 }
 
 int BraveTabGroupHeader::GetDesiredWidth() const {
-  if (!tabs::features::HorizontalTabsUpdateEnabled() ||
+  if (!tabs::HorizontalTabsUpdateEnabled() ||
       ShouldShowVerticalTabs()) {
     return TabGroupHeader::GetDesiredWidth();
   }

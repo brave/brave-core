@@ -13,7 +13,7 @@
 #include "base/test/bind.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
-#include "brave/browser/ui/tabs/features.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/test/shared_pinned_tab_service_browsertest.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_commands.h"
@@ -33,7 +33,7 @@
 #include "ui/base/window_open_disposition.h"
 
 SharedPinnedTabServiceBrowserTest::SharedPinnedTabServiceBrowserTest()
-    : feature_list_(tabs::features::kBraveSharedPinnedTabs) {}
+    : feature_list_(tabs::kBraveSharedPinnedTabs) {}
 
 SharedPinnedTabServiceBrowserTest::~SharedPinnedTabServiceBrowserTest() =
     default;

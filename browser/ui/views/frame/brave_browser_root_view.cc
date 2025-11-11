@@ -5,7 +5,7 @@
 
 #include "brave/browser/ui/views/frame/brave_browser_root_view.h"
 
-#include "brave/browser/ui/tabs/features.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -26,7 +26,7 @@ bool BraveBrowserRootView::OnMouseWheel(const ui::MouseWheelEvent& event) {
   // Bypass BrowserRootView::OnMouseWheel() to avoid tab cycling feature.
 #if BUILDFLAG(IS_LINUX)
   if (!base::FeatureList::IsEnabled(
-          tabs::features::kBraveChangeActiveTabOnScrollEvent)) {
+          tabs::kBraveChangeActiveTabOnScrollEvent)) {
     return RootView::OnMouseWheel(event);
   }
 #endif

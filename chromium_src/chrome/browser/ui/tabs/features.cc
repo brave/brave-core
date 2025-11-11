@@ -1,13 +1,17 @@
-/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/tabs/features.h"
+#include "chrome/browser/ui/tabs/features.h"
 
 #include "chrome/browser/ui/ui_features.h"
 
-namespace tabs::features {
+#include <chrome/browser/ui/tabs/features.cc>
+
+#include "base/feature_list.h"
+
+namespace tabs {
 
 #if BUILDFLAG(IS_LINUX)
 BASE_FEATURE(kBraveChangeActiveTabOnScrollEvent,
@@ -38,4 +42,4 @@ bool HorizontalTabsUpdateEnabled() {
   return base::FeatureList::IsEnabled(kBraveHorizontalTabsUpdate);
 }
 
-}  // namespace tabs::features
+}  // namespace tabs

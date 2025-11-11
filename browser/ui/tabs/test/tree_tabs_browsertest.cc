@@ -6,7 +6,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
-#include "brave/browser/ui/tabs/features.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/tab_group_sync/tab_group_sync_service_factory.h"
 #include "chrome/browser/ui/browser.h"
@@ -22,7 +22,7 @@
 class TreeTabsBrowserTest : public InProcessBrowserTest {
  protected:
   TreeTabsBrowserTest() {
-    feature_list_.InitAndEnableFeature(tabs::features::kBraveTreeTab);
+    feature_list_.InitAndEnableFeature(tabs::kBraveTreeTab);
   }
   ~TreeTabsBrowserTest() override = default;
 

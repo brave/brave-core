@@ -19,7 +19,7 @@
 #include "brave/browser/resources/settings/grit/brave_settings_resources_map.h"
 #include "brave/browser/shell_integrations/buildflags/buildflags.h"
 #include "brave/browser/ui/commands/accelerator_service_factory.h"
-#include "brave/browser/ui/tabs/features.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "brave/browser/ui/webui/navigation_bar_data_provider.h"
 #include "brave/browser/ui/webui/settings/brave_account_settings_handler.h"
 #include "brave/browser/ui/webui/settings/brave_adblock_handler.h"
@@ -243,7 +243,7 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
       base::FeatureList::IsEnabled(features::kBraveCommandsInOmnibox));
   html_source->AddBoolean(
       "isSharedPinnedTabsEnabled",
-      base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs));
+      base::FeatureList::IsEnabled(tabs::kBraveSharedPinnedTabs));
   html_source->AddBoolean(
       "isEmailAliasesEnabled",
       base::FeatureList::IsEnabled(email_aliases::features::kEmailAliases));
@@ -258,13 +258,13 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
                           brave_origin::IsBraveOriginEnabled());
   html_source->AddBoolean(
       "isTreeTabsFlagEnabled",
-      base::FeatureList::IsEnabled(tabs::features::kBraveTreeTab));
+      base::FeatureList::IsEnabled(tabs::kBraveTreeTab));
   html_source->AddString("braveSearchEngineName",
                          TemplateURLPrepopulateData::brave_search.name);
   html_source->AddBoolean("isLocaleJapan", IsLocaleJapan(profile));
   html_source->AddBoolean("isHideVerticalTabCompletelyFlagEnabled",
                           base::FeatureList::IsEnabled(
-                              tabs::features::kBraveVerticalTabHideCompletely));
+                              tabs::kBraveVerticalTabHideCompletely));
 }
 
 // static

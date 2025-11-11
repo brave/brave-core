@@ -21,7 +21,7 @@
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
-#include "brave/browser/ui/tabs/features.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/brave_tab_search_bubble_host.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
@@ -551,7 +551,7 @@ BraveVerticalTabStripRegionView::BraveVerticalTabStripRegionView(
           base::Unretained(this)));
 
   if (base::FeatureList::IsEnabled(
-          tabs::features::kBraveVerticalTabHideCompletely)) {
+          tabs::kBraveVerticalTabHideCompletely)) {
     hide_completely_when_collapsed_pref_.Init(
         brave_tabs::kVerticalTabsHideCompletelyWhenCollapsed, prefs,
         base::BindRepeating(&BraveVerticalTabStripRegionView::
@@ -701,7 +701,7 @@ void BraveVerticalTabStripRegionView::SetState(State state) {
     // This can happen when
     // * vertical tab strip is expanded temporarily in browser fullscreen mode.
     // * vertical tab strip is shown from collapsed state with
-    // tabs::features::kBraveVerticalTabHideCompletely on.
+    // tabs::kBraveVerticalTabHideCompletely on.
     SetVisible(true);
   }
 

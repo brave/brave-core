@@ -21,7 +21,7 @@
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
-#include "brave/browser/ui/tabs/features.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/shared_pinned_tab_service.h"
 #include "brave/browser/ui/tabs/shared_pinned_tab_service_factory.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
@@ -76,7 +76,7 @@ sidebar::SidebarService* GetSidebarService(BraveBrowser* browser) {
 }
 
 SharedPinnedTabService* GetSharedPinnedTabService(Profile* profile) {
-  if (base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs)) {
+  if (base::FeatureList::IsEnabled(tabs::kBraveSharedPinnedTabs)) {
     return SharedPinnedTabServiceFactory::GetForProfile(profile);
   }
 

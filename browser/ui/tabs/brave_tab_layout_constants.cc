@@ -6,7 +6,7 @@
 #include "brave/browser/ui/tabs/brave_tab_layout_constants.h"
 
 #include "base/feature_list.h"
-#include "brave/browser/ui/tabs/features.h"
+#include "chrome/browser/ui/tabs/features.h"
 
 namespace brave_tabs {
 
@@ -14,7 +14,7 @@ namespace {
 
 bool UseCompact() {
   return base::FeatureList::IsEnabled(
-      tabs::features::kBraveCompactHorizontalTabs);
+      tabs::kBraveCompactHorizontalTabs);
 }
 
 }  // namespace

@@ -16,7 +16,7 @@
 #include "base/notreached.h"
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
-#include "brave/browser/ui/tabs/features.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/shared_pinned_tab_dummy_view.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -201,7 +201,7 @@ WEB_CONTENTS_USER_DATA_KEY_IMPL(DummyContentsData);
 
 SharedPinnedTabService::SharedPinnedTabService(Profile* profile)
     : profile_(profile) {
-  DCHECK(base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs));
+  DCHECK(base::FeatureList::IsEnabled(tabs::kBraveSharedPinnedTabs));
   profile_observation_.Observe(profile_);
 
   shared_pinned_tab_enabled_.Init(

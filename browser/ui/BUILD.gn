@@ -33,7 +33,6 @@ group("ui_public_dependencies") {
     "//chrome/browser/ui:ui_public_dependencies",
   ]
   public_deps = [
-    ":brave_tab_features",
     ":brave_tab_prefs",
     "//brave/components/brave_wayback_machine/buildflags",
     "//brave/components/containers/buildflags",
@@ -1402,19 +1401,8 @@ source_set("brave_tab_prefs") {
     "tabs/brave_tab_prefs.h",
   ]
   deps = [
-    ":brave_tab_features",
+    "//chrome/browser/ui/tabs:features",
     "//components/prefs",
-  ]
-}
-
-source_set("brave_tab_features") {
-  sources = [
-    "tabs/features.cc",
-    "tabs/features.h",
-  ]
-  deps = [
-    "//base",
-    "//chrome/browser/ui:ui_features",
   ]
 }
 

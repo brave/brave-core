@@ -6,7 +6,7 @@
 #include "chrome/browser/ui/tabs/tab_style.h"
 
 #include "brave/browser/ui/tabs/brave_tab_layout_constants.h"
-#include "brave/browser/ui/tabs/features.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/layout_constants.h"
 
 namespace {
@@ -16,28 +16,28 @@ namespace {
 class BraveTabStyle : public TabStyle {
  public:
   int GetTabOverlap() const override {
-    if (!tabs::features::HorizontalTabsUpdateEnabled()) {
+    if (!tabs::HorizontalTabsUpdateEnabled()) {
       return TabStyle::GetTabOverlap();
     }
     return brave_tabs::kHorizontalTabOverlap;
   }
 
   int GetTopCornerRadius() const override {
-    if (!tabs::features::HorizontalTabsUpdateEnabled()) {
+    if (!tabs::HorizontalTabsUpdateEnabled()) {
       return TabStyle::GetTopCornerRadius();
     }
     return brave_tabs::kTabBorderRadius;
   }
 
   int GetBottomCornerRadius() const override {
-    if (!tabs::features::HorizontalTabsUpdateEnabled()) {
+    if (!tabs::HorizontalTabsUpdateEnabled()) {
       return TabStyle::GetBottomCornerRadius();
     }
     return brave_tabs::kTabBorderRadius;
   }
 
   gfx::Insets GetContentsInsets() const override {
-    if (!tabs::features::HorizontalTabsUpdateEnabled()) {
+    if (!tabs::HorizontalTabsUpdateEnabled()) {
       return TabStyle::GetContentsInsets();
     }
     return gfx::Insets::VH(0, brave_tabs::GetHorizontalTabPadding() +
@@ -51,7 +51,7 @@ class BraveTabStyle : public TabStyle {
   }
 
   int GetDragHandleExtension(int height) const override {
-    if (!tabs::features::HorizontalTabsUpdateEnabled()) {
+    if (!tabs::HorizontalTabsUpdateEnabled()) {
       return TabStyle::GetDragHandleExtension(height);
     }
     // The "drag handle extension" is the amount of space in DIP at the top of

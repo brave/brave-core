@@ -15,7 +15,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
-#include "brave/browser/ui/tabs/features.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/tabs/public/tree_tab_node.h"
 #include "chrome/browser/profiles/profile.h"
@@ -36,7 +36,7 @@ BraveTabStripModel::BraveTabStripModel(
     Profile* profile,
     TabGroupModelFactory* group_model_factory)
     : TabStripModel(delegate, profile, group_model_factory) {
-  if (base::FeatureList::IsEnabled(tabs::features::kBraveTreeTab) &&
+  if (base::FeatureList::IsEnabled(tabs::kBraveTreeTab) &&
       delegate->IsNormalWindow()) {
     tree_tabs_enabled_.Init(
         brave_tabs::kTreeTabsEnabled, profile->GetPrefs(),
@@ -69,7 +69,7 @@ void BraveTabStripModel::SelectRelativeTab(TabRelativeDirection direction,
 
 void BraveTabStripModel::UpdateWebContentsStateAt(int index,
                                                   TabChangeType change_type) {
-  if (base::FeatureList::IsEnabled(tabs::features::kBraveRenamingTabs)) {
+  if (base::FeatureList::IsEnabled(tabs::kBraveRenamingTabs)) {
     // Make sure that the tab's last origin is updated when the url changes.
     // When last origin changes, the custom title is reset.
     GetTabAtIndex(index)->GetTabFeatures()->tab_ui_helper()->UpdateLastOrigin();
@@ -134,7 +134,7 @@ void BraveTabStripModel::CloseTabs(base::span<int> indices,
 void BraveTabStripModel::SetCustomTitleForTab(
     int index,
     const std::optional<std::u16string>& title) {
-  CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveRenamingTabs));
+  CHECK(base::FeatureList::IsEnabled(tabs::kBraveRenamingTabs));
 
   auto* tab_interface = GetTabAtIndex(index);
   CHECK(tab_interface);
@@ -160,7 +160,7 @@ void BraveTabStripModel::OnTreeTabRelatedPrefChanged() {
 }
 
 void BraveTabStripModel::BuildTreeTabs() {
-  CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveTreeTab));
+  CHECK(base::FeatureList::IsEnabled(tabs::kBraveTreeTab));
   CHECK(!in_tree_mode_);
 
   auto* unpinned_collection = contents_data_->unpinned_collection();
@@ -171,7 +171,7 @@ void BraveTabStripModel::BuildTreeTabs() {
 }
 
 void BraveTabStripModel::FlattenTreeTabs() {
-  CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveTreeTab));
+  CHECK(base::FeatureList::IsEnabled(tabs::kBraveTreeTab));
 
   if (!in_tree_mode_) {
     return;

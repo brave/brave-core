@@ -14,7 +14,7 @@
 #include "base/check_op.h"
 #include "base/feature_list.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
-#include "brave/browser/ui/tabs/features.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
@@ -78,7 +78,7 @@ TabDragController::Liveness TabDragController::Init(
       BrowserView::GetBrowserViewForNativeWindow(widget->GetNativeWindow())
           ->browser();
 
-  if (base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs) &&
+  if (base::FeatureList::IsEnabled(tabs::kBraveSharedPinnedTabs) &&
       browser->profile()->GetPrefs()->GetBoolean(
           brave_tabs::kSharedPinnedTab)) {
     if (std::ranges::any_of(dragging_views, [](TabSlotView* slot_view) {

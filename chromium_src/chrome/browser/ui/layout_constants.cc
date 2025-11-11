@@ -8,13 +8,13 @@
 #include <optional>
 
 #include "brave/browser/ui/tabs/brave_tab_layout_constants.h"
-#include "brave/browser/ui/tabs/features.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "ui/base/pointer/touch_ui_controller.h"
 #include "ui/gfx/geometry/insets.h"
 
 namespace {
 
-using tabs::features::HorizontalTabsUpdateEnabled;
+using tabs::HorizontalTabsUpdateEnabled;
 
 std::optional<gfx::Insets> GetBraveLayoutInsets(LayoutInset inset) {
   const bool touch_ui = ui::TouchUiController::Get()->touch_ui();

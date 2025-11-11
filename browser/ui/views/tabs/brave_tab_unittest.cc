@@ -9,7 +9,7 @@
 #include <string>
 
 #include "base/test/scoped_feature_list.h"
-#include "brave/browser/ui/tabs/features.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/tab_style.h"
 #include "chrome/browser/ui/views/tabs/fake_tab_slot_controller.h"
@@ -147,7 +147,7 @@ class BraveTabRenamingUnitTest : public BraveTabTest {
 
  private:
   base::test::ScopedFeatureList feature_list_{
-      tabs::features::kBraveRenamingTabs};
+      tabs::kBraveRenamingTabs};
   std::unique_ptr<BraveTab> tab_;
   testing::NiceMock<MockTabSlotController> tab_slot_controller_;
 };

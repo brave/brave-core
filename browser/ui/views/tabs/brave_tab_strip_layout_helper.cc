@@ -11,7 +11,7 @@
 #include "base/check.h"
 #include "base/check_op.h"
 #include "brave/browser/ui/tabs/brave_tab_layout_constants.h"
-#include "brave/browser/ui/tabs/features.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/tabs/brave_tab_group_header.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip.h"
 #include "chrome/browser/ui/layout_constants.h"
@@ -114,7 +114,7 @@ void CalculateVerticalLayout(const std::vector<TabWidthConstraints>& tabs,
 }  // namespace
 
 int GetTabCornerRadius(const Tab& tab) {
-  if (!tabs::features::HorizontalTabsUpdateEnabled()) {
+  if (!tabs::HorizontalTabsUpdateEnabled()) {
     return tab.data().pinned ? 8 : 4;
   }
 

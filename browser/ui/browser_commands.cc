@@ -31,7 +31,7 @@
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
-#include "brave/browser/ui/tabs/features.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
@@ -789,7 +789,7 @@ void BringAllTabs(Browser* browser) {
   std::stack<std::unique_ptr<tabs::TabModel>> detached_unpinned_tabs;
 
   const bool shared_pinned_tab_enabled =
-      base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs) &&
+      base::FeatureList::IsEnabled(tabs::kBraveSharedPinnedTabs) &&
       browser->profile()->GetPrefs()->GetBoolean(brave_tabs::kSharedPinnedTab);
 
   std::ranges::for_each(browsers, [&detached_pinned_tabs,

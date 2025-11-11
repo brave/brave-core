@@ -5,7 +5,7 @@
 
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 
-#include "brave/browser/ui/tabs/features.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 
@@ -25,7 +25,7 @@ void RegisterBraveProfilePrefs(PrefRegistrySimple* registry) {
 #endif
 
   if (base::FeatureList::IsEnabled(
-          tabs::features::kBraveVerticalTabHideCompletely)) {
+          tabs::kBraveVerticalTabHideCompletely)) {
     registry->RegisterBooleanPref(kVerticalTabsHideCompletelyWhenCollapsed,
                                   false);
   }
@@ -37,7 +37,7 @@ void RegisterBraveProfilePrefs(PrefRegistrySimple* registry) {
 
   registry->RegisterBooleanPref(kSharedPinnedTab, false);
 
-  if (base::FeatureList::IsEnabled(tabs::features::kBraveTreeTab)) {
+  if (base::FeatureList::IsEnabled(tabs::kBraveTreeTab)) {
     registry->RegisterBooleanPref(kTreeTabsEnabled, false);
   }
 }
@@ -46,7 +46,7 @@ void MigrateBraveProfilePrefs(PrefService* prefs) {
   if (auto* pref = prefs->FindPreference(kVerticalTabsShowScrollbar);
       pref && pref->IsDefaultValue() &&
       base::FeatureList::IsEnabled(
-          tabs::features::kBraveVerticalTabScrollBar)) {
+          tabs::kBraveVerticalTabScrollBar)) {
     prefs->SetBoolean(kVerticalTabsShowScrollbar, true);
   }
 }

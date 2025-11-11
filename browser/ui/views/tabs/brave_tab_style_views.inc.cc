@@ -14,7 +14,7 @@
 
 namespace {
 
-using tabs::features::HorizontalTabsUpdateEnabled;
+using tabs::HorizontalTabsUpdateEnabled;
 
 constexpr auto kPaddingForVerticalTabInTile = 4;
 

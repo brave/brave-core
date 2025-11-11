@@ -8,7 +8,7 @@
 #include "brave/browser/themes/brave_private_window_theme_supplier.h"
 #include "brave/browser/ui/darker_theme/features.h"
 #include "brave/browser/ui/darker_theme/pref_names.h"
-#include "brave/browser/ui/tabs/features.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/shared_pinned_tab_service.h"
 #include "brave/browser/ui/tabs/shared_pinned_tab_service_factory.h"
 #include "brave/browser/ui/views/frame/brave_browser_root_view.h"
@@ -57,7 +57,7 @@ views::internal::RootView* BraveBrowserWidget::CreateRootView() {
 
 void BraveBrowserWidget::SetTabDragKind(TabDragKind kind) {
   const bool should_sync_shared_pinned_tab =
-      base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs) &&
+      base::FeatureList::IsEnabled(tabs::kBraveSharedPinnedTabs) &&
       tab_drag_kind_ == TabDragKind::kAllTabs && kind == TabDragKind::kNone;
 
   BrowserWidget::SetTabDragKind(kind);
