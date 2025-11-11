@@ -269,6 +269,8 @@ void AddBraveTabThemeColorMixer(ui::ColorProvider* provider,
       darker_theme::ApplyDarknessFromColor(nala::kColorPrimitiveNeutral10);
   postprocessing_mixer[kColorBraveVerticalTabInactiveBackground] = {
       kColorToolbar};
+  postprocessing_mixer[kColorBraveVerticalTabSeparator] = {
+      nala::kColorPrimitiveNeutral15};
 
   const SkColor ntb_forground = postprocessing_mixer.GetResultColor(
       kColorTabForegroundInactiveFrameActive);
