@@ -49,12 +49,6 @@ namespace polkadot_substrate_rpc_responses {
 
     // The number of the block in the current chain.
     DOMString number;
-
-    // Various fields we don't need currently but are still top-level fields
-    // in the RPC response.
-    DOMString stateRoot;
-    DOMString extrinsicsRoot;
-    any digest;
   };
 
   dictionary PolkadotChainHeader {

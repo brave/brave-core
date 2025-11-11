@@ -987,7 +987,7 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetBlockHeader) {
   }
 
   {
-    // RPC nodes return an incomplete message.
+    // RPC nodes return an incomplete message, which we accept.
 
     url_loader_factory_.AddResponse(testnet_url,
                                     R"(
@@ -1006,8 +1006,11 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetBlockHeader) {
 
     auto [header, error] = future.Take();
 
-    EXPECT_EQ(error, WalletParsingErrorMessage());
-    EXPECT_FALSE(header);
+    EXPECT_FALSE(error);
+    EXPECT_EQ(
+        base::HexEncode(header->parent_hash),
+        "8C8728C828CED532D4B5785536EF426FFED39A9459F14400342E0F2B4D78C86F");
+    EXPECT_EQ(header->number, 13089906u);
   }
 }
 
