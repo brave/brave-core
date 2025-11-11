@@ -261,7 +261,7 @@ void EphemeralStorageService::RemoveObserver(
 
 void EphemeralStorageService::CleanupTLDEphemeralStorage(
     content::WebContents* contents,
-    const content::StoragePartitionConfig storage_partition_config,
+    const content::StoragePartitionConfig& storage_partition_config,
     const bool enforced_by_user) {
   if (!base::FeatureList::IsEnabled(
           brave_shields::features::kBraveShredFeature)) {
@@ -282,13 +282,13 @@ void EphemeralStorageService::CleanupTLDEphemeralStorage(
 
   const TLDEphemeralAreaKey key(ephemeral_domain, storage_partition_config);
   delegate_->CloseTabsForDomainAndSubdomains(
-      contents, ephemeral_domain,
+      contents, std::move(ephemeral_domain),
       base::BindOnce(&EphemeralStorageService::OnDomainAndSubdomainTabsClosed,
                      weak_ptr_factory_.GetWeakPtr(), std::move(key)));
 }
 
 void EphemeralStorageService::OnDomainAndSubdomainTabsClosed(
-    const TLDEphemeralAreaKey key,
+    const TLDEphemeralAreaKey& key,
     const bool result) {
   if (!result) {
     LOG(ERROR) << "Failed to close tabs for domain and subdomains.";
