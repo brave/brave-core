@@ -2463,13 +2463,6 @@
 # This test fails because we add our own item to omnibox contextual search
 -OmniboxRowGroupedViewBrowserTest.AnimationAndGrouping
 
-# These tests crash/fail because BraveVideoOverlayWindowViews doesn't support
-# media::kVideoPictureInPictureControlsUpdate2024 feature being enabled, but
-# it is enabled in these tests.
--All/VideoPictureInPictureWindowControllerInteractionBrowserTest.TitleVisibility_UntrustedSite_HidesOnInteraction_InteractionAfterTimerEnds/*
--All/VideoPictureInPictureWindowControllerInteractionBrowserTest.TitleVisibility_UntrustedSite_HidesOnInteraction_InteractionBeforeTimerEnds/*
--VideoPictureInPictureWindowControllerWith2024UIBrowserTest.TitleVisibility*
-
 # This test fails because we don't show profile menu for a browser with a
 # single profile
 -ProfileMenuViewBrowserTest.ProfileMenuDoesNotOutliveBrowser
