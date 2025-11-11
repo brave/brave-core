@@ -20,20 +20,15 @@ function_registration("generated_api_registration") {
   ]
 }
 
-source_set("browser_tests") {
+source_set("unit_tests") {
   testonly = true
-  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
-  sources = [ "brave_theme_api_browsertest.cc" ]
+  sources = [ "brave_theme_api_unittest.cc" ]
 
   deps = [
-    "//base",
     "//brave/browser/extensions",
-    "//chrome/browser/profiles:profile",
     "//chrome/browser/themes",
-    "//chrome/browser/ui",
     "//chrome/test:test_support",
-    "//content/test:test_support",
-    "//extensions:test_support",
+    "//testing/gtest",
   ]
 }

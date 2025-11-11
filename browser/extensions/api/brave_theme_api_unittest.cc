@@ -5,40 +5,33 @@
 
 #include "brave/browser/extensions/api/brave_theme_api.h"
 
-#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/extensions/extension_api_unittest.h"
 #include "chrome/browser/themes/theme_service.h"
 #include "chrome/browser/themes/theme_service_factory.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/test/base/in_process_browser_test.h"
-#include "content/public/test/browser_test.h"
-#include "extensions/browser/api_test_utils.h"
+#include "testing/gtest/include/gtest/gtest.h"
 
+using BraveThemeAPITest = extensions::ExtensionApiUnittest;
 using extensions::api::BraveThemeSetBraveThemeTypeFunction;
-using extensions::api_test_utils::RunFunction;
 
-using BraveThemeAPIBrowserTest = InProcessBrowserTest;
-
-IN_PROC_BROWSER_TEST_F(BraveThemeAPIBrowserTest,
-                       BraveThemeSetBraveThemeTypeTest) {
-  auto* theme_service =
-      ThemeServiceFactory::GetForProfile(browser()->profile());
+TEST_F(BraveThemeAPITest, SetBraveThemeTypeTest) {
+  auto* theme_service = ThemeServiceFactory::GetForProfile(profile());
   CHECK(theme_service);
 
   scoped_refptr<BraveThemeSetBraveThemeTypeFunction> set_dark_function(
       new BraveThemeSetBraveThemeTypeFunction());
-  RunFunction(set_dark_function.get(), R"(["Dark"])", browser()->profile());
+  RunFunction(set_dark_function.get(), R"(["Dark"])");
   EXPECT_EQ(ThemeService::BrowserColorScheme::kDark,
             theme_service->GetBrowserColorScheme());
 
   scoped_refptr<BraveThemeSetBraveThemeTypeFunction> set_light_function(
       new BraveThemeSetBraveThemeTypeFunction());
-  RunFunction(set_light_function.get(), R"(["Light"])", browser()->profile());
+  RunFunction(set_light_function.get(), R"(["Light"])");
   EXPECT_EQ(ThemeService::BrowserColorScheme::kLight,
             theme_service->GetBrowserColorScheme());
 
   scoped_refptr<BraveThemeSetBraveThemeTypeFunction> set_system_function(
       new BraveThemeSetBraveThemeTypeFunction());
-  RunFunction(set_system_function.get(), R"(["System"])", browser()->profile());
+  RunFunction(set_system_function.get(), R"(["System"])");
   EXPECT_EQ(ThemeService::BrowserColorScheme::kSystem,
             theme_service->GetBrowserColorScheme());
 }

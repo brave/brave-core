@@ -562,6 +562,7 @@ test("brave_unit_tests") {
 
     deps += [
       "//brave/browser/extensions",
+      "//brave/browser/extensions/api:unit_tests",
       "//brave/browser/extensions/manifest_v2:unit_tests",
       "//brave/browser/importer:unit_tests",
       "//brave/common/importer",
@@ -1166,7 +1167,6 @@ test("brave_browser_tests") {
       "//brave/browser/banners:browser_tests",
       "//brave/browser/brave_ads/creatives/search_result_ad:browser_tests",
       "//brave/browser/brave_search:browser_tests",
-      "//brave/browser/extensions/api:browser_tests",
       "//brave/browser/password_manager:browser_tests",
       "//brave/browser/sharing_hub:browser_tests",
       "//brave/browser/sync:browser_tests",
