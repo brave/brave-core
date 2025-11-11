@@ -1218,6 +1218,15 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(                                                  \
               brave_sync::features::kBraveSyncDefaultPasswords),               \
+      },                                                                       \
+      {                                                                        \
+          "brave-shred",                                                       \
+          "Enable Brave 'Shred' Feature",                                      \
+          "Enable the Brave 'Shred' feature which will allow a user to "       \
+          "easily delete all site data on demand or automatically when "       \
+          "closing a site or terminating the application.",                    \
+          kOsAll,                                                              \
+          FEATURE_VALUE_TYPE(brave_shields::features::kBraveShredFeature),     \
       })                                                                       \
   BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                          \
   BRAVE_NEWS_FEATURE_ENTRIES                                                   \
