@@ -17,11 +17,13 @@ static_library("browser") {
     "//brave/components/brave_component_updater/browser:public",
     "//brave/components/local_ai/common",
     "//brave/components/local_ai/common:mojom",
+    "//brave/components/resources:strings_grit",
     "//components/component_updater",
     "//components/component_updater:component_updater_paths",
     "//components/update_client",
     "//crypto",
     "//mojo/public/cpp/bindings",
+    "//ui/base",
   ]
 }
 

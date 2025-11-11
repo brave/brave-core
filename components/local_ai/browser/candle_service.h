@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_LOCAL_AI_BROWSER_CANDLE_SERVICE_H_
 #define BRAVE_COMPONENTS_LOCAL_AI_BROWSER_CANDLE_SERVICE_H_
 
+#include "base/functional/callback.h"
 #include "base/memory/weak_ptr.h"
 #include "base/no_destructor.h"
 #include "brave/components/local_ai/common/candle.mojom.h"
@@ -28,11 +29,19 @@ class CandleService : public mojom::CandleService {
   void BindEmbeddingGemma(
       mojo::PendingRemote<mojom::EmbeddingGemmaInterface>) override;
 
+  void RunEmbeddingGemmaInit();
+  void RunEmbeddingGemmaExamples();
+
  private:
   friend class base::NoDestructor<CandleService>;
 
   CandleService();
   ~CandleService() override;
+
+  void OnEmbeddingGemmaModelFilesLoaded(mojom::ModelFilesPtr model_files);
+  void OnEmbeddingGemmaInit(bool success);
+  void OnEmbeddingGemmaEmbed(const std::string& text,
+                             const std::vector<double>& embedding);
 
   mojo::ReceiverSet<mojom::CandleService> receivers_;
 

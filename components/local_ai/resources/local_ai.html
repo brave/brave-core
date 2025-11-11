@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Local AI Internals</title>
+    <style>
+      body {
+        font-family: system-ui, -apple-system, sans-serif;
+        margin: 20px;
+      }
+      iframe {
+        width: 100%;
+        height: 600px;
+        border: 1px solid #ccc;
+        margin-top: 20px;
+      }
+      .info {
+        background: #e3f2fd;
+        padding: 15px;
+        border-radius: 4px;
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Local AI Internals</h1>
+    <div class="info" style="background: #fff3cd; border-left: 4px solid #ffc107;">
+      <p><strong>⚠️ Developer Feature:</strong> This feature is intended for developers. See <a href="https://github.com/brave/brave-core/pull/32261" target="_blank">brave-core#32261</a> for more details.</p>
+    </div>
+    <div class="info">
+      <p><strong>Architecture:</strong></p>
+      <ul>
+        <li><strong>Trusted Page:</strong> chrome://local-ai-internals
+        (this page)</li>
+        <li><strong>Untrusted WASM:</strong>
+        chrome-untrusted://candle-embedding-gemma-wasm</li>
+      </ul>
+      <p>The Candle WASM modules run in isolated untrusted contexts for
+      security because we might provide untrusted content as input to WASM.
+      ex. passages of page contents to be embedded</p>
+      <p><strong>Check the console for logs from both contexts.</strong></p>
+    </div>
+
+    <h2>Embedding Gemma WASM (from ~/Downloads/embeddinggemma-300m):</h2>
+    <iframe src="chrome-untrusted://candle-embedding-gemma-wasm/"
+      title="Candle Embedding Gemma WASM"></iframe>
+  </body>
+</html>

@@ -230,6 +230,14 @@
     "META": {"sizes": {"includes": [2]}},
     "includes": [54031],
   },
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-candle_embedding_gemma_bridge/candle_embedding_gemma_bridge.grd": {
+    "META": {"sizes": {"includes": [1]}},
+    "includes": [54033],
+  },
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-local_ai/local_ai.grd": {
+    "META": {"sizes": {"includes": [1]}},
+    "includes": [54034],
+  },
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-ai_chat_agent_new_tab_page/ai_chat_agent_new_tab_page.grd": {
     "META": {"sizes": {"includes": [20]}},
     "includes": [54040],

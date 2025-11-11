@@ -40,6 +40,7 @@
 #include "brave/browser/skus/skus_service_factory.h"
 #include "brave/browser/ui/brave_ui_features.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_ui.h"
+#include "brave/browser/ui/webui/candle_wasm/candle_embedding_gemma_ui.h"
 #include "brave/browser/ui/webui/skus_internals_ui.h"
 #include "brave/browser/updater/buildflags.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
@@ -82,6 +83,7 @@
 #include "brave/components/global_privacy_control/global_privacy_control_utils.h"
 #include "brave/components/google_sign_in_permission/google_sign_in_permission_throttle.h"
 #include "brave/components/google_sign_in_permission/google_sign_in_permission_util.h"
+#include "brave/components/local_ai/common/candle.mojom.h"
 #include "brave/components/ntp_background_images/browser/mojom/ntp_background_images.mojom.h"
 #include "brave/components/password_strength_meter/password_strength_meter.mojom.h"
 #include "brave/components/playlist/content/browser/playlist_background_web_contents_helper.h"
@@ -724,6 +726,9 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
   if (base::FeatureList::IsEnabled(skus::features::kSkusFeature)) {
     registry.ForWebUI<SkusInternalsUI>().Add<skus::mojom::SkusInternals>();
   }
+
+  registry.ForWebUI<local_ai::UntrustedCandleEmbeddingGemmaUI>()
+      .Add<local_ai::mojom::CandleService>();
 
   registry.ForWebUI<brave_rewards::RewardsPageUI>()
       .Add<brave_rewards::mojom::RewardsPageHandler>();
