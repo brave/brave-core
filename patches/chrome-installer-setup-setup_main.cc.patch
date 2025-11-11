@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/setup/setup_main.cc b/chrome/installer/setup/setup_main.cc
-index bf5b9a610a7cd3ddfce42bf848a997b6ac26c529..f4b1bd98f7d014981c458c1f8191c6ca9df05970 100644
+index bf5b9a610a7cd3ddfce42bf848a997b6ac26c529..bca8a75ce7fa61fec3c7257908a360eba722b770 100644
 --- a/chrome/installer/setup/setup_main.cc
 +++ b/chrome/installer/setup/setup_main.cc
 @@ -68,6 +68,7 @@
@@ -10,19 +10,14 @@ index bf5b9a610a7cd3ddfce42bf848a997b6ac26c529..f4b1bd98f7d014981c458c1f8191c6ca
  #include "chrome/installer/setup/brand_behaviors.h"
  #include "chrome/installer/setup/configure_app_container_sandbox.h"
  #include "chrome/installer/setup/downgrade_cleanup.h"
-@@ -666,9 +667,10 @@ installer::InstallStatus InstallProducts(InstallationState& original_state,
+@@ -666,6 +667,7 @@ installer::InstallStatus InstallProducts(InstallationState& original_state,
                                           InstallerState* installer_state) {
    DCHECK(installer_state);
    installer::InstallStatus install_status = installer::UNKNOWN_STATUS;
 +  installer::ArchiveType archive_type = installer::UNKNOWN_ARCHIVE_TYPE;
    installer_state->SetStage(installer::PRECONDITIONS);
--  // Remove any legacy "-full" values from the product's "ap" value.
--  installer::UpdateInstallStatus();
-+  // Remove any legacy "-stage:*" values from the product's "ap" value.
-+  installer::UpdateInstallStatus(archive_type, install_status);
- 
-   // Drop to background processing mode if the process was started below the
-   // normal process priority class. This is done here because InstallProducts-
+   // Remove any legacy "-full" values from the product's "ap" value.
+   installer::UpdateInstallStatus();
 @@ -680,8 +682,9 @@ installer::InstallStatus InstallProducts(InstallationState& original_state,
    if (CheckPreInstallConditions(original_state, *installer_state,
                                  &install_status)) {
@@ -39,7 +34,7 @@ index bf5b9a610a7cd3ddfce42bf848a997b6ac26c529..f4b1bd98f7d014981c458c1f8191c6ca
      }
    }
  
-+  UpdateInstallStatus(archive_type, install_status);
++  UpdateInstallStatus();
 +
    return install_status;
  }

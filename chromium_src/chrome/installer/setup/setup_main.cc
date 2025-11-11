@@ -12,9 +12,11 @@
 #include "base/path_service.h"
 #include "chrome/common/chrome_paths.h"
 #include "chrome/installer/setup/archive_patch_helper.h"
+#include "chrome/installer/setup/brand_behaviors.h"
 #include "chrome/installer/setup/installer_state.h"
 #include "chrome/installer/setup/modify_params.h"
 #include "chrome/installer/setup/setup_util.h"
+#include "chrome/installer/util/google_update_settings.h"
 #include "chrome/installer/util/initial_preferences.h"
 #include "chrome/installer/util/install_util.h"
 #include "chrome/installer/util/installation_state.h"
@@ -105,6 +107,8 @@ void SavePromoCode(installer::InstallStatus install_status) {
                                           &exit_code)) {                  \
     return exit_code;                                                     \
   }
+#define UpdateInstallStatus() UpdateInstallStatus(archive_type, install_status)
 #include <chrome/installer/setup/setup_main.cc>
+#undef UpdateInstallStatus
 #undef BRAVE_HANDLE_NON_INSTALL_CMD_LINE_OPTIONS
 #undef DoLegacyCleanups
