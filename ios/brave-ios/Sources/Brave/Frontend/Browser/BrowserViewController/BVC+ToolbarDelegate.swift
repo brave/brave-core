@@ -561,7 +561,6 @@ extension BrowserViewController: TopToolbarDelegate {
     }
 
     let container = SettingsNavigationController(rootViewController: controller)
-    container.isModalInPresentation = true
     container.modalPresentationStyle =
       UIDevice.current.userInterfaceIdiom == .phone ? .pageSheet : .formSheet
     controller.navigationItem.rightBarButtonItem = .init(
