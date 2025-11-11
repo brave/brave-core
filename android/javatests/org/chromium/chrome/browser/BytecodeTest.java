@@ -1137,6 +1137,7 @@ public class BytecodeTest {
                         GURL.class,
                         long.class,
                         boolean.class,
+                        boolean.class,
                         boolean.class));
         Assert.assertTrue(
                 methodExists(
@@ -1682,7 +1683,8 @@ public class BytecodeTest {
                         BrowserControlsStateProvider.class,
                         boolean.class,
                         PageZoomManager.class,
-                        Function.class));
+                        Function.class,
+                        MultiInstanceManager.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/omnibox/LocationBarMediator",
@@ -1706,7 +1708,8 @@ public class BytecodeTest {
                         BrowserControlsStateProvider.class,
                         Supplier.class,
                         ObservableSupplierImpl.class,
-                        PageZoomIndicatorCoordinator.class));
+                        PageZoomIndicatorCoordinator.class,
+                        MultiInstanceManager.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/AppHooks",
