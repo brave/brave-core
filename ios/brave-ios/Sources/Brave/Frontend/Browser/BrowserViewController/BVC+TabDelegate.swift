@@ -427,7 +427,8 @@ extension BrowserViewController {
       let toast = ButtonToast(
         labelText: Strings.contextMenuButtonToastNewTabOpenedLabelText,
         buttonText: Strings.contextMenuButtonToastNewTabOpenedButtonText,
-        completion: { buttonPressed in
+        completion: { [weak self, weak tab] buttonPressed in
+          guard let self, let tab else { return }
           if buttonPressed {
             self.tabManager.selectTab(tab)
           }

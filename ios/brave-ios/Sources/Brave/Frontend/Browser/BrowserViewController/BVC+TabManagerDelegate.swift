@@ -273,9 +273,9 @@ extension BrowserViewController: TabManagerDelegate {
         make.left.right.equalTo(self.view)
         make.bottom.equalTo(self.webViewContainer)
       },
-      completion: {
+      completion: { [weak self] in
         if toast is ButtonToast {
-          self.activeButtonToast = nil
+          self?.activeButtonToast = nil
         }
       }
     )
