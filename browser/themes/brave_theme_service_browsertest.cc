@@ -57,10 +57,6 @@ class BraveThemeServiceTest : public InProcessBrowserTest {
   BraveThemeServiceTest() = default;
   ~BraveThemeServiceTest() override = default;
 
-  PrefService* local_state() { return g_browser_process->local_state(); }
-
-  PrefService* profile_prefs() { return browser()->profile()->GetPrefs(); }
-
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   bool UsingCustomTheme(const ThemeService& theme_service) const {
     return !theme_service.UsingSystemTheme() &&
@@ -159,30 +155,36 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, NonNormalWindowDarkModeTest) {
 }
 
 IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, PRE_BraveDarkModeMigrationTest) {
+  auto* local_state = g_browser_process->local_state();
+  auto* profile_prefs = browser()->profile()->GetPrefs();
+
   // Check on first launch.
   EXPECT_EQ(dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DEFAULT,
             static_cast<dark_mode::BraveDarkModeType>(
-                local_state()->GetInteger(kBraveDarkMode)));
+                local_state->GetInteger(kBraveDarkMode)));
   EXPECT_EQ(ThemeService::BrowserColorScheme::kSystem,
             static_cast<ThemeService::BrowserColorScheme>(
-                profile_prefs()->GetInteger(prefs::kBrowserColorScheme)));
-  EXPECT_TRUE(profile_prefs()->GetBoolean(dark_mode::kBraveDarkModeMigrated));
+                profile_prefs->GetInteger(prefs::kBrowserColorScheme)));
+  EXPECT_TRUE(profile_prefs->GetBoolean(dark_mode::kBraveDarkModeMigrated));
 
   // Set migration is not yet done and brave dark mode is dark for checking
   // migration at next launch.
-  profile_prefs()->SetBoolean(dark_mode::kBraveDarkModeMigrated, false);
-  local_state()->SetInteger(
+  profile_prefs->SetBoolean(dark_mode::kBraveDarkModeMigrated, false);
+  local_state->SetInteger(
       kBraveDarkMode,
       static_cast<int>(
           dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, BraveDarkModeMigrationTest) {
+  auto* local_state = g_browser_process->local_state();
+  auto* profile_prefs = browser()->profile()->GetPrefs();
+
   EXPECT_EQ(dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK,
             static_cast<dark_mode::BraveDarkModeType>(
-                local_state()->GetInteger(kBraveDarkMode)));
+                local_state->GetInteger(kBraveDarkMode)));
   EXPECT_EQ(ThemeService::BrowserColorScheme::kDark,
             static_cast<ThemeService::BrowserColorScheme>(
-                profile_prefs()->GetInteger(prefs::kBrowserColorScheme)));
-  EXPECT_TRUE(profile_prefs()->GetBoolean(dark_mode::kBraveDarkModeMigrated));
+                profile_prefs->GetInteger(prefs::kBrowserColorScheme)));
+  EXPECT_TRUE(profile_prefs->GetBoolean(dark_mode::kBraveDarkModeMigrated));
 }
