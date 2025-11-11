@@ -33,10 +33,6 @@ specific_include_rules = {
   # This is an exclusion list for browser tests written before proper dependency
   # checking was implemented. These tests should be migrated out of
   # //brave/components into //brave/browser eventually.
-  "android_page_appearing_browsertest\.cc": [
-    "+brave/browser",
-    "+chrome",
-  ],
   "brave_content_settings_agent_impl_browsertest\.cc": [
     "+chrome",
     "+content",

@@ -98,7 +98,7 @@ android_test_exception_deps = [
 
 # Tests that run only on Android
 android_only_test_sources = [
-  "//brave/components/brave_wallet/browser/android_page_appearing_browsertest.cc",
+  "//brave/browser/brave_wallet/android/android_page_appearing_browsertest.cc",
   "//chrome/test/android/browsertests_apk/android_browsertests_jni_onload.cc",
   "//chrome/test/base/android/android_browser_test_browsertest_android.cc",
 ]
