@@ -65,6 +65,12 @@ inline constexpr char kUntrustedMarketURL[] =
 inline constexpr char kUntrustedTrezorHost[] = "trezor-bridge";
 inline constexpr char kUntrustedTrezorURL[] =
     "chrome-untrusted://trezor-bridge/";
+inline constexpr char kLocalAIInternalsHost[] = "local-ai-internals";
+inline constexpr char kLocalAIInternalsURL[] = "chrome://local-ai-internals/";
+inline constexpr char kUntrustedCandleEmbeddingGemmaWasmHost[] =
+    "candle-embedding-gemma-wasm";
+inline constexpr char kUntrustedCandleEmbeddingGemmaWasmURL[] =
+    "chrome-untrusted://candle-embedding-gemma-wasm/";
 inline constexpr char kShieldsPanelURL[] = "chrome://brave-shields.top-chrome";
 inline constexpr char kShieldsPanelHost[] = "brave-shields.top-chrome";
 inline constexpr char kCookieListOptInHost[] = "cookie-list-opt-in.top-chrome";
