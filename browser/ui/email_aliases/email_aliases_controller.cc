@@ -11,7 +11,9 @@
 #include "chrome/browser/ui/singleton_tabs.h"
 #include "chrome/browser/ui/views/bubble/webui_bubble_manager.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 #include "components/autofill/content/browser/content_autofill_driver.h"
+#include "components/grit/brave_components_strings.h"
 #include "content/public/browser/context_menu_params.h"
 #include "content/public/browser/web_contents.h"
 #include "third_party/blink/public/mojom/forms/form_control_type.mojom-shared.h"
@@ -60,6 +62,9 @@ void EmailAliasesController::ShowBubble(content::RenderFrameHost* render_frame,
   const auto url_with_field =
       base::StrCat({kEmailAliasesPanelURL,
                     "?field=", base::NumberToString(field_renderer_id)});
+
+  field_render_frame_host_id_ = render_frame->GetGlobalId();
+  field_renderer_id_ = field_renderer_id;
 
   auto* anchor_view = browser_view_->GetLocationBarView();
 
@@ -115,6 +120,21 @@ void EmailAliasesController::OnAliasCreationComplete(const std::string& email) {
       autofill::FieldRendererId(field_renderer_id_), base::UTF8ToUTF16(email));
 
   CloseBubble();
+  auto* field_render_frame =
+      content::RenderFrameHost::FromID(field_render_frame_host_id_);
+  if (!field_render_frame) {
+    return;
+  }
+  auto* autofill_driver =
+      autofill::ContentAutofillDriver::GetForRenderFrameHost(
+          field_render_frame);
+  if (!autofill_driver) {
+    return;
+  }
+  autofill_driver->GetAutofillAgent()->ApplyFieldAction(
+      autofill::mojom::FieldActionType::kReplaceAll,
+      autofill::mojom::ActionPersistence::kFill,
+      autofill::FieldRendererId(field_renderer_id_), base::UTF8ToUTF16(email));
 }
 
 // static

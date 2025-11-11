@@ -26,6 +26,7 @@ import {
   EmailAliasesServiceInterface,
   MAX_ALIASES,
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
+import './strings'
 
 const ModalCol = styled(Col)`
   row-gap: ${spacing['2Xl']};

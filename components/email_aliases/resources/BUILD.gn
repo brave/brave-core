@@ -40,6 +40,8 @@ transpile_web_ui("email_aliases_panel_ui") {
 
   resource_name = "email_aliases_panel"
 
+  imports_from = [ "//brave/components/email_aliases/resources/" ]
+
   deps = [ "//brave/components/email_aliases:mojom_js" ]
 }
 
