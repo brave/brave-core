@@ -191,5 +191,22 @@ void PrintTo(const ContentBlock& block, std::ostream* os) {
   }
 }
 
+void PrintTo(const ContentBlock& block, std::ostream* os) {
+  *os << "--ContentBlock--\n";
+  *os << "  type: " << static_cast<int>(block.which()) << "\n";
+  switch (block.which()) {
+    case ContentBlock::Tag::kImageContentBlock:
+      *os << "  image_url: "
+          << block.get_image_content_block()->image_url.possibly_invalid_spec()
+          << "\n";
+      break;
+    case ContentBlock::Tag::kTextContentBlock:
+      *os << "  text: " << block.get_text_content_block()->text << "\n";
+      break;
+    default:
+      NOTREACHED() << "Implement PrintTo for new types of ContentBlock";
+  }
+}
+
 }  // namespace mojom
 }  // namespace ai_chat

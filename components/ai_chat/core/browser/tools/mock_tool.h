@@ -63,7 +63,9 @@ class MockTool : public Tool {
 
   MOCK_METHOD(void,
               UseTool,
-              (const std::string& input_json, UseToolCallback callback),
+              (const std::string& input_json,
+               std::optional<base::Value> client_data,
+               UseToolCallback callback),
               (override));
 
  private:

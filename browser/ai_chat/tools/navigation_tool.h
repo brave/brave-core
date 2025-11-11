@@ -28,6 +28,7 @@ class NavigationTool : public Tool {
   std::optional<std::vector<std::string>> RequiredProperties() const override;
 
   void UseTool(const std::string& input_json,
+               std::optional<base::Value> client_data,
                UseToolCallback callback) override;
 
  private:

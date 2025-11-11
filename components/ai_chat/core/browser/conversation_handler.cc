@@ -1078,8 +1078,39 @@ void ConversationHandler::RespondToToolUseRequest(
     PerformAssistantGenerationWithPossibleContent();
   } else {
     DVLOG(0) << "Tool use request handled, but still have more to handle";
-    // Still have more tool use requests to handle.
+    // Still have more tool use requests to handle, so execute the next one
+    // or wait for the next user interaction.
     MaybeRespondToNextToolUseRequest();
+  }
+}
+
+void ConversationHandler::UseToolWithClientData(
+    const std::string& tool_use_id,
+    std::optional<base::Value> client_data) {
+  auto* tool_use = GetToolUseEventForLastResponse(tool_use_id);
+  if (!tool_use) {
+    DLOG(ERROR) << "Tool use event not found: " << tool_use_id;
+    return;
+  }
+
+  // Doesn't require user interaction anymore
+  tool_use->requires_user_interaction = false;
+  for (auto& client : untrusted_conversation_ui_handlers_) {
+    client->OnToolUseEventOutput(chat_history_.back()->uuid.value(),
+                                 tool_use->Clone());
+  }
+
+  // Find tool
+  for (auto& tool : GetTools()) {
+    if (tool->Name() == tool_use->tool_name) {
+      // We don't need to check Tool::RequiresUserInteractionBeforeHandling
+      // because this function is called from the UI client.
+      tool->UseTool(
+          tool_use->arguments_json, std::move(client_data),
+          base::BindOnce(&ConversationHandler::RespondToToolUseRequest,
+                         weak_ptr_factory_.GetWeakPtr(), tool_use_id));
+      break;
+    }
   }
 }
 
@@ -1888,8 +1919,16 @@ void ConversationHandler::MaybeRespondToNextToolUseRequest() {
         // already handled
         continue;
       }
-
+      if (tool_use_event->requires_user_interaction) {
+        // Already started waiting for user interaction,
+        // don't need to ask again.
+        continue;
+      }
+      // Find the Tool that handles this request
       bool tool_found = false;
+
+      // TODO(https://github.com/brave/brave-browser/issues/49016): Avoid nested
+      // for loop with a GetTool(name) function.
       for (auto& tool : GetTools()) {
         if (!tool) {
           // Defensive check to avoid dereferencing invalid WeakPtr
@@ -1900,24 +1939,38 @@ void ConversationHandler::MaybeRespondToNextToolUseRequest() {
         if (!tool_use_event->tool_name.empty() &&
             tool->Name() == tool_use_event->tool_name) {
           tool_found = true;
-          if (!tool->RequiresUserInteractionBeforeHandling()) {
-            is_tool_use_in_progress_ = true;
-            OnAPIRequestInProgressChanged();
-            // Tool use will be handled by the Tool itself
-            DVLOG(0) << __func__
-                     << " calling UseTool for tool: " << tool->Name();
-            tool->UseTool(
-                tool_use_event->arguments_json,
-                base::BindOnce(&ConversationHandler::RespondToToolUseRequest,
-                               weak_ptr_factory_.GetWeakPtr(),
-                               tool_use_event->id));
+
+          if (tool->RequiresUserInteractionBeforeHandling()) {
+            // ToolUseEvent needs handling by the UI before we can either call
+            // UseTool or the UI will provide the output.
+            tool_use_event->requires_user_interaction = true;
+            for (auto& client : untrusted_conversation_ui_handlers_) {
+              client->OnToolUseEventOutput(last_entry->uuid.value(),
+                                           tool_use_event->Clone());
+            }
+
+            // Wait for the user interaction to happen or the user to skip via
+            // a new message.
+            break;
           }
+
+          // ToolUseEvent can be directly handled by the found Tool
+          is_tool_use_in_progress_ = true;
+          OnAPIRequestInProgressChanged();
+          // Tool use will be handled by the Tool itself
+          DVLOG(0) << __func__ << " calling UseTool for tool: " << tool->Name()
+                   << " with arguments: " << tool_use_event->arguments_json;
+          tool->UseTool(
+              tool_use_event->arguments_json, std::nullopt,
+              base::BindOnce(&ConversationHandler::RespondToToolUseRequest,
+                             weak_ptr_factory_.GetWeakPtr(),
+                             tool_use_event->id));
           break;
         }
       }
 
       if (!tool_found) {
-        DVLOG(1) << "Tool not found or unavailable: "
+        DVLOG(0) << "Tool not found or unavailable: "
                  << tool_use_event->tool_name;
 
         // Set these to mark that we're in progress of handling this event, and
@@ -1935,6 +1988,10 @@ void ConversationHandler::MaybeRespondToNextToolUseRequest() {
 
         RespondToToolUseRequest(tool_use_event->id, std::move(result));
       }
+
+      // Only execute one tool use request at a time. If we were to allow
+      // parallel execution, we'd likely need to make sure the same tool, or
+      // same category of tool cannot execute in parallel.
 
       if (is_tool_use_in_progress_) {
         break;

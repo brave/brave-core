@@ -792,4 +792,19 @@
   <message name="IDS_CHAT_UI_CONTENT_AGENT_WARNING_TEXT" desc="Warning message for content agent" formatter_data="webui=AiChat">
     Enabling AI to browse automatically for you may cause harmful, unintended consequences for your privacy, finances, and online communications. <ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
   </message>
+  <message name="IDS_AI_CHAT_TOOL_TAB_MANAGEMENT_PERMISSION_DESCRIPTION" desc="Instruction for the user to grant or deny permission to share their list of Tabs with AI and have AI able to perform movement operations on those Tabs" formatter_data="webui=AiChat">
+    Leo wants to manage your tabs. Allowing this will send the <ph name="URL_FORMAT_START">$1<ex>&lt;b&gt;</ex></ph>URL<ph name="URL_FORMAT_END">/$1<ex>&lt;/b&gt;</ex></ph> and <ph name="TITLE_FORMAT_START">$2<ex>&lt;b&gt;</ex></ph>Title<ph name="TITLE_FORMAT_END">/$2<ex>&lt;/b&gt;</ex></ph> of all your Tabs and Tab Groups, and allow Leo to move them around. This permission applies only to this conversation.
+  </message>
+  <message name="IDS_AI_CHAT_TOOL_TAB_MANAGEMENT_PERMISSION_ALLOW_BUTTON" desc="Button label to allow permission to share tabs with AI" formatter_data="webui=AiChat">
+    Allow
+  </message>
+  <message name="IDS_AI_CHAT_TOOL_TAB_MANAGEMENT_PERMISSION_DENY_BUTTON" desc="Button label to deny permission to share tabs with AI" formatter_data="webui=AiChat">
+    Deny
+  </message>
+  <message name="IDS_AI_CHAT_TOOL_TAB_MANAGEMENT_ACTIVE_STATE_DESCRIPTION" desc="Description for the active state of the AI tab management tool" formatter_data="webui=AiChat">
+    Leo is moving your tabs around
+  </message>
+  <message name="IDS_AI_CHAT_TOOL_TAB_MANAGEMENT_COMPLETED_STATE_DESCRIPTION" desc="Description for the completed state of the AI tab management tool" formatter_data="webui=AiChat">
+    Leo asked to move some tabs around
+  </message>
 </grit-part>
