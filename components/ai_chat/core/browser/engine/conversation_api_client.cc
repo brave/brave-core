@@ -471,8 +471,26 @@ void ConversationAPIClient::OnQueryDataReceived(
   // Tool calls - they may happen individually or combined with a response event
   if (const base::Value::List* tool_calls =
           result_params.FindList("tool_calls")) {
+    // Check for alignment_check that applies to tool calls in this response
+    mojom::PermissionChallengePtr permission_challenge = nullptr;
+    if (const base::Value::Dict* alignment_dict =
+            result_params.FindDict("alignment_check")) {
+      if (alignment_dict->FindBool("allowed").value_or(true) == false) {
+        const std::string* assessment = alignment_dict->FindString("reasoning");
+        permission_challenge = mojom::PermissionChallenge::New(
+            assessment ? std::make_optional(*assessment) : std::nullopt,
+            std::nullopt);
+      }
+    }
+
     // Provide any valid tool use events to the callback
     for (auto& tool_use_event : ToolUseEventFromToolCallsResponse(tool_calls)) {
+      if (permission_challenge) {
+        // Apply PermissionChallenge to the first tool call, which will
+        // stop the tool execution loop until the user approves or denies.
+        tool_use_event->permission_challenge = std::move(permission_challenge);
+        permission_challenge = nullptr;
+      }
       auto tool_event = mojom::ConversationEntryEvent::NewToolUseEvent(
           std::move(tool_use_event));
       callback.Run(GenerationResultData(std::move(tool_event), std::nullopt));
