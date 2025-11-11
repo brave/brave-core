@@ -193,12 +193,6 @@ END_METADATA
 BraveVideoOverlayWindowViews::BraveVideoOverlayWindowViews(
     content::VideoPictureInPictureWindowController* controller)
     : VideoOverlayWindowViews(controller) {
-  CHECK(!base::FeatureList::IsEnabled(
-      media::kVideoPictureInPictureControlsUpdate2024))
-      << "BraveVideoOverlayWindowViews class was implemented with the "
-         "expectation that media::kVideoPictureInPictureControlsUpdate2024 was "
-         "disabled. If the feature is now enabled by default, either disable "
-         "it, or update the class code.";
 }
 
 BraveVideoOverlayWindowViews::~BraveVideoOverlayWindowViews() = default;
@@ -288,15 +282,6 @@ void BraveVideoOverlayWindowViews::OnUpdateControlsBounds() {
   if (play_pause_controls_view_->GetVisible()) {
     visible_controls.push_back(play_pause_controls_view_.get());
   }
-  if (next_track_controls_view_->GetVisible()) {
-    visible_controls.push_back(next_track_controls_view_.get());
-  }
-  if (previous_slide_controls_view_->GetVisible()) {
-    visible_controls.push_back(previous_slide_controls_view_.get());
-  }
-  if (next_slide_controls_view_->GetVisible()) {
-    visible_controls.push_back(next_slide_controls_view_.get());
-  }
   if (toggle_microphone_button_->GetVisible()) {
     visible_controls.push_back(toggle_microphone_button_.get());
   }
@@ -359,7 +344,6 @@ void BraveVideoOverlayWindowViews::UpdateControlIcons() {
   }
 
   previous_track_controls_view_->override_icon(kLeoPreviousOutlineIcon);
-  next_track_controls_view_->override_icon(kLeoNextOutlineIcon);
 }
 
 void BraveVideoOverlayWindowViews::SetMediaPosition(
