@@ -6,9 +6,11 @@
 #include "chrome/browser/download/download_item_model.h"
 
 #include "chrome/browser/download/download_commands.h"
+#include "chrome/browser/download/download_ui_model.h"
 
 // Add switch-case handling for Brave-specific commands.
-// These cases are not used by the DownloadItemModel, so just fall through.
+// These cases are not used by the DownloadItemModel_Chromium, so just fall
+// through.
 #define EDIT_WITH_MEDIA_APP                \
   EDIT_WITH_MEDIA_APP:                     \
   case DownloadCommands::REMOVE_FROM_LIST: \
@@ -54,6 +56,10 @@ bool DownloadItemModel::IsCommandEnabled(
            !GetFileExternallyRemoved() && !GetFullPath().empty();
   }
 
+  if (command == DownloadCommands::REMOVE_FROM_LIST) {
+    return true;
+  }
+
   return DownloadItemModel_Chromium::IsCommandEnabled(download_commands,
                                                       command);
 }
@@ -62,6 +68,12 @@ void DownloadItemModel::ExecuteCommand(DownloadCommands* download_commands,
                                        DownloadCommands::Command command) {
   if (command == DownloadCommands::DELETE_LOCAL_FILE) {
     DeleteLocalFile();
+    return;
+  }
+
+  if (command == DownloadCommands::REMOVE_FROM_LIST) {
+    // Calls non-const version of GetDownloadItem() here.
+    DownloadUIModel::GetDownloadItem()->Remove();
     return;
   }
 
