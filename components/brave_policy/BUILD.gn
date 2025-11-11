@@ -10,6 +10,8 @@ static_library("brave_policy") {
     "brave_policy_profile_id.cc",
     "brave_profile_policy_provider.cc",
     "brave_profile_policy_provider.h",
+    "static_simple_policy_handler.cc",
+    "static_simple_policy_handler.h",
   ]
 
   deps = [
