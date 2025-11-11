@@ -87,6 +87,16 @@ void PrintTo(const mojom::ToolUseEvent& event, std::ostream* os) {
       *os << "\n";
     }
   }
+
+  *os << "permission_challenge:\n";
+  if (event.permission_challenge) {
+    *os << "  assessment: "
+        << event.permission_challenge->assessment.value_or("<nullopt>") << "\n";
+    *os << "  plan: " << event.permission_challenge->plan.value_or("<nullopt>")
+        << "\n";
+  } else {
+    *os << "[nullopt]\n";
+  }
 }
 
 void PrintTo(const ConversationEntryEvent& event, std::ostream* os) {

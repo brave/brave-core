@@ -24,6 +24,16 @@ namespace ai_chat {
 #define ASSERT_MOJOM_EQ(a, b) ASSERT_PRED_FORMAT2(MojomEqVerbose, a, b)
 #define EXPECT_MOJOM_NE(a, b) EXPECT_FALSE(mojo::Equals(a, b))
 
+// Matcher for any Mojom struct that prints verbose output when PrintTo
+// implementations are available.
+MATCHER_P(MojomEq, expected_item, "") {
+  *result_listener << "Expected:\n"
+                   << ::testing::PrintToString(*expected_item)
+                   << "\n\nActual:\n"
+                   << ::testing::PrintToString(*arg) << "\n";
+  return mojo::Equals(*arg, *expected_item);
+}
+
 // custom matcher for std::vector<mojom::ContentBlockPtr>
 MATCHER_P(ContentBlockText,
           matcher,

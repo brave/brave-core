@@ -844,6 +844,360 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_WithToolUseResponse) {
   testing::Mock::VerifyAndClearExpectations(mock_request_helper);
 }
 
+TEST_F(ConversationAPIUnitTest, PerformRequest_PermissionChallenge) {
+  // Tests that we correctly parse alignment_check from the API response
+  // and populate the PermissionChallenge in the first ToolUseEvent
+  std::vector<ConversationAPIClient::ConversationEvent> events =
+      GetMockEventsAndExpectedEventsBody().first;
+  MockAPIRequestHelper* mock_request_helper =
+      client_->GetMockAPIRequestHelper();
+  testing::NiceMock<MockCallbacks> mock_callbacks;
+  base::RunLoop run_loop;
+
+  EXPECT_CALL(*mock_request_helper, RequestSSE)
+      .WillOnce(testing::WithArgs<4, 5>(
+          [&](DataReceivedCallback data_received_callback,
+              ResultCallback result_callback) {
+            data_received_callback.Run(base::ok(base::test::ParseJson(R"({
+              "type": "completion",
+              "model": "model-1",
+              "completion": "This is a test completion",
+              "alignment_check": {
+                "allowed": false,
+                "reasoning": "Server determined this tool use is off-topic"
+              },
+              "tool_calls": [
+                {
+                  "id": "call_123",
+                  "type": "function",
+                  "function": {
+                    "name": "search_web",
+                    "arguments": "{\"query\":\"Hello, world!\"}"
+                  }
+                },
+                {
+                  "id": "call_456",
+                  "type": "function",
+                  "function": {
+                    "name": "get_weather",
+                    "arguments": "{\"location\":\"New York\"}"
+                  }
+                }
+              ]
+            })")));
+
+            std::move(result_callback)
+                .Run(api_request_helper::APIRequestResult(200, {}, {}, net::OK,
+                                                          GURL()));
+            run_loop.QuitWhenIdle();
+            return Ticket();
+          }));
+
+  auto expected_tool_use_event_1 =
+      mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
+          "search_web", "call_123", "{\"query\":\"Hello, world!\"}",
+          std::nullopt,
+          mojom::PermissionChallenge::New(
+              "Server determined this tool use is off-topic", std::nullopt)));
+
+  auto expected_tool_use_event_2 =
+      mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
+          "get_weather", "call_456", "{\"location\":\"New York\"}",
+          std::nullopt, nullptr));
+
+  // This test is focused on the correctness of the ToolUseEvent,
+  // we can leave verifying other events are also sent in another test.
+  EXPECT_CALL(mock_callbacks, OnDataReceived(_)).Times(testing::AnyNumber());
+
+  EXPECT_CALL(mock_callbacks,
+              OnDataReceived(testing::Field(
+                  "event", &EngineConsumer::GenerationResultData::event,
+                  MojomEq(expected_tool_use_event_1.get()))))
+      .Times(1);
+
+  EXPECT_CALL(mock_callbacks,
+              OnDataReceived(testing::Field(
+                  "event", &EngineConsumer::GenerationResultData::event,
+                  MojomEq(expected_tool_use_event_2.get()))))
+      .Times(1);
+
+  client_->PerformRequest(
+      std::move(events), "" /* selected_language */,
+      std::nullopt /* oai_tool_definitions */,
+      std::nullopt /* preferred_tool_name */,
+      mojom::ConversationCapability::CHAT,
+      base::BindRepeating(&MockCallbacks::OnDataReceived,
+                          base::Unretained(&mock_callbacks)),
+      base::BindOnce(&MockCallbacks::OnCompleted,
+                     base::Unretained(&mock_callbacks)));
+
+  run_loop.Run();
+}
+
+TEST_F(ConversationAPIUnitTest, PerformRequest_PermissionChallenge_Allowed) {
+  // Tests that we correctly parse alignment_check from the API response
+  // and don't populate the PermissionChallenge when allowed is true.
+  std::vector<ConversationAPIClient::ConversationEvent> events =
+      GetMockEventsAndExpectedEventsBody().first;
+  MockAPIRequestHelper* mock_request_helper =
+      client_->GetMockAPIRequestHelper();
+  testing::NiceMock<MockCallbacks> mock_callbacks;
+  base::RunLoop run_loop;
+
+  EXPECT_CALL(*mock_request_helper, RequestSSE)
+      .WillOnce(testing::WithArgs<4, 5>(
+          [&](DataReceivedCallback data_received_callback,
+              ResultCallback result_callback) {
+            data_received_callback.Run(base::ok(base::test::ParseJson(R"({
+              "type": "completion",
+              "model": "model-1",
+              "completion": "This is a test completion",
+              "alignment_check": {
+                "allowed": true,
+                "reasoning": "Server determined this tool use is ok"
+              },
+              "tool_calls": [
+                {
+                  "id": "call_123",
+                  "type": "function",
+                  "function": {
+                    "name": "search_web",
+                    "arguments": "{\"query\":\"Hello, world!\"}"
+                  }
+                },
+                {
+                  "id": "call_456",
+                  "type": "function",
+                  "function": {
+                    "name": "get_weather",
+                    "arguments": "{\"location\":\"New York\"}"
+                  }
+                }
+              ]
+            })")));
+
+            std::move(result_callback)
+                .Run(api_request_helper::APIRequestResult(200, {}, {}, net::OK,
+                                                          GURL()));
+            run_loop.QuitWhenIdle();
+            return Ticket();
+          }));
+
+  auto expected_tool_use_event_1 =
+      mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
+          "search_web", "call_123", "{\"query\":\"Hello, world!\"}",
+          std::nullopt, nullptr));
+
+  auto expected_tool_use_event_2 =
+      mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
+          "get_weather", "call_456", "{\"location\":\"New York\"}",
+          std::nullopt, nullptr));
+
+  // This test is focused on the correctness of the ToolUseEvent,
+  // we can leave verifying other events are also sent in another test.
+  EXPECT_CALL(mock_callbacks, OnDataReceived(_)).Times(testing::AnyNumber());
+
+  EXPECT_CALL(mock_callbacks,
+              OnDataReceived(testing::Field(
+                  "event", &EngineConsumer::GenerationResultData::event,
+                  MojomEq(expected_tool_use_event_1.get()))))
+      .Times(1);
+
+  EXPECT_CALL(mock_callbacks,
+              OnDataReceived(testing::Field(
+                  "event", &EngineConsumer::GenerationResultData::event,
+                  MojomEq(expected_tool_use_event_2.get()))))
+      .Times(1);
+
+  client_->PerformRequest(
+      std::move(events), "" /* selected_language */,
+      std::nullopt /* oai_tool_definitions */,
+      std::nullopt /* preferred_tool_name */,
+      mojom::ConversationCapability::CHAT,
+      base::BindRepeating(&MockCallbacks::OnDataReceived,
+                          base::Unretained(&mock_callbacks)),
+      base::BindOnce(&MockCallbacks::OnCompleted,
+                     base::Unretained(&mock_callbacks)));
+
+  run_loop.Run();
+}
+
+TEST_F(ConversationAPIUnitTest,
+       PerformRequest_PermissionChallenge_MissingAllowed) {
+  // Tests that we handle unknown alignment_check schema (missing allowed
+  // property) by ignoring the alignment_check.
+  std::vector<ConversationAPIClient::ConversationEvent> events =
+      GetMockEventsAndExpectedEventsBody().first;
+  MockAPIRequestHelper* mock_request_helper =
+      client_->GetMockAPIRequestHelper();
+  testing::NiceMock<MockCallbacks> mock_callbacks;
+  base::RunLoop run_loop;
+
+  EXPECT_CALL(*mock_request_helper, RequestSSE)
+      .WillOnce(testing::WithArgs<4, 5>(
+          [&](DataReceivedCallback data_received_callback,
+              ResultCallback result_callback) {
+            data_received_callback.Run(base::ok(base::test::ParseJson(R"({
+              "type": "completion",
+              "model": "model-1",
+              "completion": "This is a test completion",
+              "alignment_check": {
+                "reasoning": "Format unknown"
+              },
+              "tool_calls": [
+                {
+                  "id": "call_123",
+                  "type": "function",
+                  "function": {
+                    "name": "search_web",
+                    "arguments": "{\"query\":\"Hello, world!\"}"
+                  }
+                },
+                {
+                  "id": "call_456",
+                  "type": "function",
+                  "function": {
+                    "name": "get_weather",
+                    "arguments": "{\"location\":\"New York\"}"
+                  }
+                }
+              ]
+            })")));
+
+            std::move(result_callback)
+                .Run(api_request_helper::APIRequestResult(200, {}, {}, net::OK,
+                                                          GURL()));
+            run_loop.QuitWhenIdle();
+            return Ticket();
+          }));
+
+  auto expected_tool_use_event_1 =
+      mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
+          "search_web", "call_123", "{\"query\":\"Hello, world!\"}",
+          std::nullopt, nullptr));
+
+  auto expected_tool_use_event_2 =
+      mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
+          "get_weather", "call_456", "{\"location\":\"New York\"}",
+          std::nullopt, nullptr));
+
+  // This test is focused on the correctness of the ToolUseEvent,
+  // we can leave verifying other events are also sent in another test.
+  EXPECT_CALL(mock_callbacks, OnDataReceived(_)).Times(testing::AnyNumber());
+
+  EXPECT_CALL(mock_callbacks,
+              OnDataReceived(testing::Field(
+                  "event", &EngineConsumer::GenerationResultData::event,
+                  MojomEq(expected_tool_use_event_1.get()))))
+      .Times(1);
+
+  EXPECT_CALL(mock_callbacks,
+              OnDataReceived(testing::Field(
+                  "event", &EngineConsumer::GenerationResultData::event,
+                  MojomEq(expected_tool_use_event_2.get()))))
+      .Times(1);
+
+  client_->PerformRequest(
+      std::move(events), "" /* selected_language */,
+      std::nullopt /* oai_tool_definitions */,
+      std::nullopt /* preferred_tool_name */,
+      mojom::ConversationCapability::CHAT,
+      base::BindRepeating(&MockCallbacks::OnDataReceived,
+                          base::Unretained(&mock_callbacks)),
+      base::BindOnce(&MockCallbacks::OnCompleted,
+                     base::Unretained(&mock_callbacks)));
+
+  run_loop.Run();
+}
+
+TEST_F(ConversationAPIUnitTest,
+       PerformRequest_PermissionChallenge_MissingReasoning) {
+  // Tests that we ignore missing reasoning property and still provide
+  // PermissionChallenge.
+  std::vector<ConversationAPIClient::ConversationEvent> events =
+      GetMockEventsAndExpectedEventsBody().first;
+  MockAPIRequestHelper* mock_request_helper =
+      client_->GetMockAPIRequestHelper();
+  testing::NiceMock<MockCallbacks> mock_callbacks;
+  base::RunLoop run_loop;
+
+  EXPECT_CALL(*mock_request_helper, RequestSSE)
+      .WillOnce(testing::WithArgs<4, 5>(
+          [&](DataReceivedCallback data_received_callback,
+              ResultCallback result_callback) {
+            data_received_callback.Run(base::ok(base::test::ParseJson(R"({
+              "type": "completion",
+              "model": "model-1",
+              "completion": "This is a test completion",
+              "alignment_check": {
+                "allowed": false,
+                "some_other_property": "some_value"
+              },
+              "tool_calls": [
+                {
+                  "id": "call_123",
+                  "type": "function",
+                  "function": {
+                    "name": "search_web",
+                    "arguments": "{\"query\":\"Hello, world!\"}"
+                  }
+                },
+                {
+                  "id": "call_456",
+                  "type": "function",
+                  "function": {
+                    "name": "get_weather",
+                    "arguments": "{\"location\":\"New York\"}"
+                  }
+                }
+              ]
+            })")));
+
+            std::move(result_callback)
+                .Run(api_request_helper::APIRequestResult(200, {}, {}, net::OK,
+                                                          GURL()));
+            run_loop.QuitWhenIdle();
+            return Ticket();
+          }));
+
+  auto expected_tool_use_event_1 =
+      mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
+          "search_web", "call_123", "{\"query\":\"Hello, world!\"}",
+          std::nullopt,
+          mojom::PermissionChallenge::New(std::nullopt, std::nullopt)));
+
+  auto expected_tool_use_event_2 =
+      mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
+          "get_weather", "call_456", "{\"location\":\"New York\"}",
+          std::nullopt, nullptr));
+
+  // This test is focused on the correctness of the ToolUseEvent,
+  // we can leave verifying other events are also sent in another test.
+  EXPECT_CALL(mock_callbacks, OnDataReceived(_)).Times(testing::AnyNumber());
+
+  EXPECT_CALL(mock_callbacks, OnDataReceived(testing::Field(
+                                  &EngineConsumer::GenerationResultData::event,
+                                  MojomEq(expected_tool_use_event_1.get()))))
+      .Times(1);
+
+  EXPECT_CALL(mock_callbacks, OnDataReceived(testing::Field(
+                                  &EngineConsumer::GenerationResultData::event,
+                                  MojomEq(expected_tool_use_event_2.get()))))
+      .Times(1);
+
+  client_->PerformRequest(
+      std::move(events), "" /* selected_language */,
+      std::nullopt /* oai_tool_definitions */,
+      std::nullopt /* preferred_tool_name */,
+      mojom::ConversationCapability::CHAT,
+      base::BindRepeating(&MockCallbacks::OnDataReceived,
+                          base::Unretained(&mock_callbacks)),
+      base::BindOnce(&MockCallbacks::OnCompleted,
+                     base::Unretained(&mock_callbacks)));
+
+  run_loop.Run();
+}
+
 TEST_F(ConversationAPIUnitTest,
        PerformRequest_WithModelNameOverride_Streaming) {
   // Tests that the model name override is correctly passed to the API
