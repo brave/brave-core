@@ -351,6 +351,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveOriginResetPreference.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BravePreferenceDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BravePreferenceFragment.java",
+  "../../brave/android/java/org/chromium/chrome/browser/settings/BraveRadioButtonGroupOpeningScreenPreference.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveSearchEngineUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveSearchEnginesPreferences.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveSettingsActivity.java",
