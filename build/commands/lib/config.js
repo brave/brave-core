@@ -1313,12 +1313,18 @@ Object.defineProperty(Config.prototype, 'outputDir', {
 
 Object.defineProperty(Config.prototype, 'useSiso', {
   get: function () {
-    return getEnvConfig(
-      ['use_siso'],
-      // * iOS fails in siso+reproxy mode because of incorrect handling of
-      //   input_root_absolute_path value.
-      !this.isIOS(),
-    )
+    // This is a temporary fix for
+    // "Can't enable reclient with siso. please remove use_reclient=true from
+    // args.gn." error at cr144
+    // Do not merge into master.
+    return false
+
+    // return getEnvConfig(
+    //   ['use_siso'],
+    //   // * iOS fails in siso+reproxy mode because of incorrect handling of
+    //   //   input_root_absolute_path value.
+    //   !this.isIOS(),
+    // )
   },
 })
 
