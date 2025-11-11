@@ -43,7 +43,7 @@ class TreeTabsBrowserTest : public InProcessBrowserTest {
   }
 
   void SetTreeTabsEnabled(bool enabled) {
-    profile()->GetPrefs()->SetBoolean(tabs::kTreeTabsEnabled, enabled);
+    profile()->GetPrefs()->SetBoolean(brave_tabs::kTreeTabsEnabled, enabled);
   }
 
   void SetUpOnMainThread() override {
@@ -325,7 +325,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
 
   // Enable both tree tabs and vertical tabs through preference change.
   // Both must be true for OnTreeTabRelatedPrefChanged to call BuildTreeTabs().
-  profile()->GetPrefs()->SetBoolean(tabs::kTreeTabsEnabled, true);
+  profile()->GetPrefs()->SetBoolean(brave_tabs::kTreeTabsEnabled, true);
   profile()->GetPrefs()->SetBoolean(brave_tabs::kVerticalTabsEnabled, true);
 
   // Verify tree structure is created automatically via
@@ -347,7 +347,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
   }
 
   // Enable tree tabs first to create tree structure.
-  profile()->GetPrefs()->SetBoolean(tabs::kTreeTabsEnabled, true);
+  profile()->GetPrefs()->SetBoolean(brave_tabs::kTreeTabsEnabled, true);
   profile()->GetPrefs()->SetBoolean(brave_tabs::kVerticalTabsEnabled, true);
 
   // Verify tree structure is created.
@@ -364,7 +364,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
 
   // Disable tree tabs through preference change.
   // This should trigger OnTreeTabRelatedPrefChanged to call FlattenTreeTabs().
-  profile()->GetPrefs()->SetBoolean(tabs::kTreeTabsEnabled, false);
+  profile()->GetPrefs()->SetBoolean(brave_tabs::kTreeTabsEnabled, false);
 
   // Verify structure is flattened automatically.
   EXPECT_EQ(4, tab_strip_model().count());
@@ -385,7 +385,7 @@ IN_PROC_BROWSER_TEST_F(
   }
 
   // Enable both preferences to create tree structure.
-  profile()->GetPrefs()->SetBoolean(tabs::kTreeTabsEnabled, true);
+  profile()->GetPrefs()->SetBoolean(brave_tabs::kTreeTabsEnabled, true);
   profile()->GetPrefs()->SetBoolean(brave_tabs::kVerticalTabsEnabled, true);
 
   // Verify tree structure is created.
@@ -415,7 +415,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
 
   // Initially tree tabs pref is disabled, but vertical tabs are enabled in the
   // test
-  ASSERT_FALSE(profile()->GetPrefs()->GetBoolean(tabs::kTreeTabsEnabled));
+  ASSERT_FALSE(profile()->GetPrefs()->GetBoolean(brave_tabs::kTreeTabsEnabled));
   ASSERT_TRUE(
       profile()->GetPrefs()->GetBoolean(brave_tabs::kVerticalTabsEnabled));
 
@@ -434,7 +434,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
   }
 
   // Initially tree tabs are disabled, but vertical tabs are enabled.
-  ASSERT_FALSE(profile()->GetPrefs()->GetBoolean(tabs::kTreeTabsEnabled));
+  ASSERT_FALSE(profile()->GetPrefs()->GetBoolean(brave_tabs::kTreeTabsEnabled));
   ASSERT_TRUE(
       profile()->GetPrefs()->GetBoolean(brave_tabs::kVerticalTabsEnabled));
 
@@ -446,7 +446,7 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
 
   // Enable only tree tabs (not vertical tabs).
   profile()->GetPrefs()->SetBoolean(brave_tabs::kVerticalTabsEnabled, false);
-  profile()->GetPrefs()->SetBoolean(tabs::kTreeTabsEnabled, true);
+  profile()->GetPrefs()->SetBoolean(brave_tabs::kTreeTabsEnabled, true);
 
   // Should remain flat because both prefs must be true for tree structure.
   for (int i = 0; i < tab_strip_model().count(); ++i) {

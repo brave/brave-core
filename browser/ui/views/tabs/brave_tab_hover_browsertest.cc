@@ -109,8 +109,8 @@ IN_PROC_BROWSER_TEST_F(BraveTabHoverTest, ThumbnailHelperIsAlwaysAttached) {
             content::WebContentsUserData<ThumbnailTabHelper>::FromWebContents(
                 contents()));
 
-  browser()->profile()->GetPrefs()->SetInteger(brave_tabs::kTabHoverMode,
-                                               brave_tabs::TabHoverMode::TOOLTIP);
+  browser()->profile()->GetPrefs()->SetInteger(
+      brave_tabs::kTabHoverMode, brave_tabs::TabHoverMode::TOOLTIP);
 
   data_list = {};
   data_list.emplace_back(0, TabRendererData());
@@ -167,8 +167,8 @@ IN_PROC_BROWSER_TEST_F(BraveTabHoverTest,
   EXPECT_FALSE(widget->IsVisible());
 
   // In Tooltip mode, the widget should not be made visible.
-  browser()->profile()->GetPrefs()->SetInteger(brave_tabs::kTabHoverMode,
-                                               brave_tabs::TabHoverMode::TOOLTIP);
+  browser()->profile()->GetPrefs()->SetInteger(
+      brave_tabs::kTabHoverMode, brave_tabs::TabHoverMode::TOOLTIP);
   HoverOverTab(active_tab());
   widget = hover_card()->GetWidget();
   ASSERT_NE(nullptr, widget);
@@ -231,8 +231,8 @@ IN_PROC_BROWSER_TEST_F(BraveTabHoverTestWithChromeFlag,
   EXPECT_FALSE(widget->IsVisible());
 
   // In Tooltip mode, the widget should not be made visible.
-  browser()->profile()->GetPrefs()->SetInteger(brave_tabs::kTabHoverMode,
-                                               brave_tabs::TabHoverMode::TOOLTIP);
+  browser()->profile()->GetPrefs()->SetInteger(
+      brave_tabs::kTabHoverMode, brave_tabs::TabHoverMode::TOOLTIP);
   HoverOverTab(active_tab());
   widget = hover_card()->GetWidget();
   ASSERT_NE(nullptr, widget);
