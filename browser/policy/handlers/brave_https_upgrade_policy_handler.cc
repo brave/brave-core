@@ -36,6 +36,8 @@ BraveHttpsUpgradePolicyHandler::BraveHttpsUpgradePolicyHandler()
           static_cast<int>(BraveHttpsUpgradeSetting::kStandard),
           /*clamp=*/false) {}
 
+BraveHttpsUpgradePolicyHandler::~BraveHttpsUpgradePolicyHandler() = default;
+
 void BraveHttpsUpgradePolicyHandler::ApplyPolicySettings(
     const PolicyMap& policies,
     PrefValueMap* prefs) {
@@ -57,7 +59,5 @@ void BraveHttpsUpgradePolicyHandler::ApplyPolicySettings(
   CHECK(prefs);
   prefs->SetInteger(prefs::kManagedDefaultBraveHttpsUpgrade, *content_setting);
 }
-
-BraveHttpsUpgradePolicyHandler::~BraveHttpsUpgradePolicyHandler() = default;
 
 }  // namespace policy
