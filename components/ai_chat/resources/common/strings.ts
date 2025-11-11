@@ -8,7 +8,7 @@ import '$web-common/strings'
 import { AiChatStrings } from 'gen/components/grit/brave_components_webui_strings'
 
 declare global {
-  // Expose the AiChatStrings enum on the global `S` enum.
+  // Expose the feature's enum set on the global `S` enum
   interface Strings {
     AiChatStrings: typeof AiChatStrings
   }
