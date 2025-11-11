@@ -155,7 +155,7 @@ void BraveEphemeralStorageServiceDelegate::OnBrowserAdded(Browser* browser) {
 
 void BraveEphemeralStorageServiceDelegate::CloseTabsForDomainAndSubdomains(
     content::WebContents* contents,
-    const std::string_view ephemeral_domain,
+    const std::string ephemeral_domain,
     CloseTabsForDomainAndSubdomainsCallback callback) {
   bool result = false;
 #if !BUILDFLAG(IS_ANDROID)
@@ -180,7 +180,7 @@ void BraveEphemeralStorageServiceDelegate::CloseTabsForDomainAndSubdomains(
 
 bool BraveEphemeralStorageServiceDelegate::
     IsShieldsDisabledOnAnyHostMatchingDomainOf(
-        const std::string_view ephemeral_domain) const {
+        std::string_view ephemeral_domain) const {
   Profile* profile = Profile::FromBrowserContext(context_);
   CHECK(profile);
   auto* settings_service =

@@ -46,10 +46,10 @@ class BraveEphemeralStorageServiceDelegate :
   void RegisterFirstWindowOpenedCallback(base::OnceClosure callback) override;
   void CloseTabsForDomainAndSubdomains(
       content::WebContents* contents,
-      const std::string_view ephemeral_domain,
+      const std::string ephemeral_domain,
       CloseTabsForDomainAndSubdomainsCallback callback) override;
   bool IsShieldsDisabledOnAnyHostMatchingDomainOf(
-      const std::string_view ephemeral_domain) const override;
+      std::string_view ephemeral_domain) const override;
 
  private:
   raw_ptr<content::BrowserContext> context_ = nullptr;
