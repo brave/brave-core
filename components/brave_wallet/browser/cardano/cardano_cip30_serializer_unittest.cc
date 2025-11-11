@@ -124,4 +124,112 @@ TEST(CardanoCip30SerializerTest, SerializeUtxos) {
             CardanoCip30Serializer::SerializeUtxos({}));
 }
 
+TEST(CardanoCip30SerializerTest, SerializeUtxos_Single) {
+  cardano_rpc::UnspentOutputs utxos;
+  cardano_rpc::UnspentOutput output;
+  output.output_index = 0;
+  output.lovelace_amount = 1000000u;
+  std::vector<uint8_t> tx_bytes;
+  base::HexStringToBytes(
+      "d9ef8dcd983c6fe996d5029e010e224bec191d0f63ff695cdab046abfd79dfbd",
+      &tx_bytes);
+  base::SpanWriter(base::span(output.tx_hash)).Write(tx_bytes);
+  output.address_to = *CardanoAddress::FromString(
+      "addr1qyx2zscdearcexdktcgq6g27jkyff65dw82w6catczfwxz2qjy"
+      "nwf42y3c7ejrrekj5r2fh6kx5m9gcrmywpqxw3np5qjeh38p");
+  utxos.push_back(std::move(output));
+
+  auto result = CardanoCip30Serializer::SerializeUtxos(utxos);
+  EXPECT_TRUE(result.has_value());
+  EXPECT_EQ(result->size(), 1u);
+}
+
+TEST(CardanoCip30SerializerTest, DeserializeAmount_InvalidCBOR) {
+  EXPECT_FALSE(CardanoCip30Serializer::DeserializeAmount("ZZZZ"));
+  EXPECT_FALSE(CardanoCip30Serializer::DeserializeAmount("1a00"));
+  EXPECT_FALSE(CardanoCip30Serializer::DeserializeAmount("6568656c6c6f"));
+}
+
+TEST(CardanoCip30SerializerTest, DeserializeAmount_Zero) {
+  auto serialized = CardanoCip30Serializer::SerializeAmount(0u);
+  EXPECT_TRUE(serialized.has_value());
+  EXPECT_EQ(serialized.value(), "00");
+
+  auto deserialized = CardanoCip30Serializer::DeserializeAmount(*serialized);
+  EXPECT_TRUE(deserialized.has_value());
+  EXPECT_EQ(deserialized.value(), 0u);
+}
+
+TEST(CardanoCip30SerializerTest, DeserializeAmount_SmallValues) {
+  auto serialized_1ada = CardanoCip30Serializer::SerializeAmount(1000000u);
+  EXPECT_TRUE(serialized_1ada.has_value());
+  auto deserialized_1ada =
+      CardanoCip30Serializer::DeserializeAmount(*serialized_1ada);
+  EXPECT_TRUE(deserialized_1ada.has_value());
+  EXPECT_EQ(deserialized_1ada.value(), 1000000u);
+
+  auto serialized_min = CardanoCip30Serializer::SerializeAmount(1u);
+  EXPECT_TRUE(serialized_min.has_value());
+  auto deserialized_min =
+      CardanoCip30Serializer::DeserializeAmount(*serialized_min);
+  EXPECT_TRUE(deserialized_min.has_value());
+  EXPECT_EQ(deserialized_min.value(), 1u);
+}
+
+TEST(CardanoCip30SerializerTest, SerializeAmount_LargeValues) {
+  const uint64_t cardano_max_supply = 45000000000000000ULL;
+
+  auto serialized = CardanoCip30Serializer::SerializeAmount(cardano_max_supply);
+  EXPECT_TRUE(serialized.has_value());
+
+  auto deserialized = CardanoCip30Serializer::DeserializeAmount(*serialized);
+  EXPECT_TRUE(deserialized.has_value());
+  EXPECT_EQ(deserialized.value(), cardano_max_supply);
+}
+
+TEST(CardanoCip30SerializerTest, SerializeAmount_UINT64_MAX_Fails) {
+  auto serialized = CardanoCip30Serializer::SerializeAmount(UINT64_MAX);
+  EXPECT_FALSE(serialized.has_value());
+}
+
+TEST(CardanoCip30SerializerTest, SerializeUtxos_EmptyReturnsEmptyArray) {
+  cardano_rpc::UnspentOutputs empty_utxos;
+  auto result = CardanoCip30Serializer::SerializeUtxos(empty_utxos);
+
+  EXPECT_TRUE(result.has_value());
+  EXPECT_TRUE(result->empty());
+}
+
+TEST(CardanoCip30SerializerTest, Amount_RoundTrip) {
+  std::vector<uint64_t> test_values = {
+      0u,              // Zero
+      1u,              // Minimum
+      1000000u,        // 1 ADA
+      1000000000u,     // 1000 ADA
+      UINT64_MAX / 2,  // Maximum supported (from existing test)
+  };
+
+  for (uint64_t value : test_values) {
+    auto serialized = CardanoCip30Serializer::SerializeAmount(value);
+    ASSERT_TRUE(serialized.has_value()) << "Failed to serialize " << value;
+
+    auto deserialized = CardanoCip30Serializer::DeserializeAmount(*serialized);
+    ASSERT_TRUE(deserialized.has_value()) << "Failed to deserialize " << value;
+    EXPECT_EQ(deserialized.value(), value)
+        << "Round-trip mismatch for " << value;
+  }
+}
+
+// Test that negative values (which convert to large uint64_t) are handled.
+// Note: SerializeAmount takes uint64_t (unsigned), so -1 implicitly converts
+// to UINT64_MAX, which should fail serialization (overflow protection).
+TEST(CardanoCip30SerializerTest, SerializeAmount_NegativeValueConvertsToMax) {
+  uint64_t negative_as_uint = static_cast<uint64_t>(-1);
+  EXPECT_EQ(negative_as_uint, UINT64_MAX);
+
+  auto serialized = CardanoCip30Serializer::SerializeAmount(negative_as_uint);
+  EXPECT_FALSE(serialized.has_value())
+      << "Negative value (converted to UINT64_MAX) should not serialize";
+}
+
 }  // namespace brave_wallet

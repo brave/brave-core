@@ -33,6 +33,8 @@
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
+#include "components/cbor/reader.h"
+#include "components/cbor/values.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
@@ -1165,6 +1167,134 @@ TEST_F(CardanoApiImplTest, GetUtxos_NumericOverflow) {
   }
 }
 
+TEST_F(CardanoApiImplTest, GetUtxos_AllUTXOsSumOverflow) {
+  CreateWallet();
+  UnlockWallet();
+  auto added_account = AddAccount();
+  EXPECT_TRUE(added_account);
+
+  test_rpc_service()->AddUtxo(brave_wallet_service()
+                                  ->GetCardanoWalletService()
+                                  ->GetChangeAddress(added_account->account_id)
+                                  ->address_string,
+                              UINT64_MAX / 2);
+  test_rpc_service()->AddUtxo(brave_wallet_service()
+                                  ->GetCardanoWalletService()
+                                  ->GetChangeAddress(added_account->account_id)
+                                  ->address_string,
+                              UINT64_MAX / 2);
+  test_rpc_service()->AddUtxo(brave_wallet_service()
+                                  ->GetCardanoWalletService()
+                                  ->GetChangeAddress(added_account->account_id)
+                                  ->address_string,
+                              2);
+
+  ON_CALL(*delegate(), GetAllowedAccounts(_, _))
+      .WillByDefault(
+          [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
+            EXPECT_EQ(coin, mojom::CoinType::ADA);
+            EXPECT_EQ(accounts.size(), 1u);
+            EXPECT_EQ(accounts[0], added_account->account_id->unique_key);
+            return std::vector<std::string>(
+                {added_account->account_id->unique_key});
+          });
+
+  EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
+
+  base::test::TestFuture<const std::optional<std::vector<std::string>>&,
+                         mojom::CardanoProviderErrorBundlePtr>
+      future;
+  provider()->GetUtxos(std::nullopt, nullptr, future.GetCallback());
+  auto [utxos, error] = future.Take();
+
+  EXPECT_FALSE(utxos);
+  EXPECT_TRUE(error);
+  EXPECT_EQ(error->code, -2); 
+}
+
+TEST_F(CardanoApiImplTest, GetBalance_Overflow) {
+  CreateWallet();
+  UnlockWallet();
+  auto added_account = AddAccount();
+  EXPECT_TRUE(added_account);
+
+  test_rpc_service()->AddUtxo(brave_wallet_service()
+                                  ->GetCardanoWalletService()
+                                  ->GetChangeAddress(added_account->account_id)
+                                  ->address_string,
+                              UINT64_MAX - 100);
+  test_rpc_service()->AddUtxo(brave_wallet_service()
+                                  ->GetCardanoWalletService()
+                                  ->GetChangeAddress(added_account->account_id)
+                                  ->address_string,
+                              200);
+
+  ON_CALL(*delegate(), GetAllowedAccounts(_, _))
+      .WillByDefault(
+          [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
+            EXPECT_EQ(coin, mojom::CoinType::ADA);
+            EXPECT_EQ(accounts.size(), 1u);
+            EXPECT_EQ(accounts[0], added_account->account_id->unique_key);
+            return std::vector<std::string>(
+                {added_account->account_id->unique_key});
+          });
+
+  EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
+
+  base::test::TestFuture<const std::optional<std::string>&,
+                         mojom::CardanoProviderErrorBundlePtr>
+      future;
+  provider()->GetBalance(future.GetCallback());
+  auto [balance, error] = future.Take();
+
+  EXPECT_FALSE(balance);
+  EXPECT_TRUE(error);
+  EXPECT_EQ(error->code, -2); 
+}
+
+TEST_F(CardanoApiImplTest, GetUtxos_PaginationMultiplicationOverflow) {
+  CreateWallet();
+  UnlockWallet();
+  auto added_account = AddAccount();
+  EXPECT_TRUE(added_account);
+
+  test_rpc_service()->AddUtxo(brave_wallet_service()
+                                  ->GetCardanoWalletService()
+                                  ->GetChangeAddress(added_account->account_id)
+                                  ->address_string,
+                              1000000);
+
+  ON_CALL(*delegate(), GetAllowedAccounts(_, _))
+      .WillByDefault(
+          [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
+            EXPECT_EQ(coin, mojom::CoinType::ADA);
+            EXPECT_EQ(accounts.size(), 1u);
+            EXPECT_EQ(accounts[0], added_account->account_id->unique_key);
+            return std::vector<std::string>(
+                {added_account->account_id->unique_key});
+          });
+
+  EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
+
+  base::test::TestFuture<const std::optional<std::vector<std::string>>&,
+                         mojom::CardanoProviderErrorBundlePtr>
+      future;
+
+  // page * limit would overflow size_t.
+  // Use UINT32_MAX which will pass the cast but fail the multiplication.
+  constexpr uint32_t kLargeValue = UINT32_MAX / 2 + 1;
+  provider()->GetUtxos(
+      std::nullopt,
+      mojom::CardanoProviderPagination::New(kLargeValue, kLargeValue),
+      future.GetCallback());
+
+  auto [utxos, error] = future.Take();
+  EXPECT_FALSE(utxos);
+  EXPECT_TRUE(error);
+  EXPECT_TRUE(error->code == -1 || error->code == -2);
+  EXPECT_FALSE(error->error_message.empty());
+}
+
 TEST_F(CardanoApiImplTest, SubmitTx_Fails) {
   CreateWallet();
   UnlockWallet();
@@ -1683,6 +1813,663 @@ TEST_F(CardanoApiImplTest, SignTx_PartialSign) {
 
   EXPECT_EQ(api_signed_tx.value(), base::HexEncode(signed_tx_bytes));
   EXPECT_FALSE(error);
+}
+
+TEST_F(CardanoApiImplTest, SignTx_RejectsInvalidHexEncoding) {
+  CreateWallet();
+  auto added_account = AddAccount();
+
+  ON_CALL(*delegate(), GetAllowedAccounts(_, _))
+      .WillByDefault(
+          [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
+            return std::vector<std::string>(
+                {added_account->account_id->unique_key});
+          });
+
+  TestFuture<const std::optional<std::string>&,
+             mojom::CardanoProviderErrorBundlePtr>
+      future;
+
+  // Invalid hex string (contains 'Z' which is not a hex digit)
+  std::string invalid_hex = "ABCDEFZ123456789";
+
+  provider()->SignTx(invalid_hex, false, future.GetCallback());
+
+  auto& signature = future.Get<0>();
+  auto& error = future.Get<1>();
+
+  EXPECT_EQ(signature, std::nullopt);
+  ASSERT_TRUE(error);
+  EXPECT_EQ(error->code, -1);  
+  EXPECT_FALSE(error->error_message.empty());
+}
+
+TEST_F(CardanoApiImplTest, SignTx_RejectsInvalidCBOR) {
+  CreateWallet();
+  auto added_account = AddAccount();
+
+  ON_CALL(*delegate(), GetAllowedAccounts(_, _))
+      .WillByDefault(
+          [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
+            return std::vector<std::string>(
+                {added_account->account_id->unique_key});
+          });
+
+  TestFuture<const std::optional<std::string>&,
+             mojom::CardanoProviderErrorBundlePtr>
+      future;
+
+  std::string invalid_cbor = "FF00FF00FF00";  
+
+  provider()->SignTx(invalid_cbor, false, future.GetCallback());
+
+  auto& signature = future.Get<0>();
+  auto& error = future.Get<1>();
+
+  EXPECT_EQ(signature, std::nullopt);
+  ASSERT_TRUE(error);
+  EXPECT_EQ(error->code, -2);  
+}
+
+TEST_F(CardanoApiImplTest, SignTx_UTXOAddressesFromWalletNotDApp) {
+  CreateWallet();
+  auto added_account = AddAccount();
+
+  ON_CALL(*delegate(), GetAllowedAccounts(_, _))
+      .WillByDefault(
+          [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
+            return std::vector<std::string>(
+                {added_account->account_id->unique_key});
+          });
+
+  CardanoTransaction unsigned_tx;
+  SetupUnsignedReferenceTransaction(added_account, unsigned_tx);
+
+  auto unsigned_tx_bytes =
+      CardanoTransactionSerializer().SerializeTransaction(unsigned_tx);
+
+  TestFuture<const std::optional<std::string>&,
+             mojom::CardanoProviderErrorBundlePtr>
+      future;
+
+  SignCardanoTransactionRequestWaiter waiter(brave_wallet_service());
+  provider()->SignTx(base::HexEncode(unsigned_tx_bytes), false,
+                     future.GetCallback());
+
+  mojom::SignCardanoTransactionRequestPtr request = waiter.WaitAndProcess(true);
+
+  auto addr1 = keyring_service()
+                   ->GetCardanoAddress(added_account->account_id,
+                                       mojom::CardanoKeyId::New(
+                                           mojom::CardanoKeyRole::kExternal, 0))
+                   ->address_string;
+  auto addr2 = keyring_service()
+                   ->GetCardanoAddress(added_account->account_id,
+                                       mojom::CardanoKeyId::New(
+                                           mojom::CardanoKeyRole::kExternal, 1))
+                   ->address_string;
+
+  EXPECT_EQ(request->inputs.size(), 2u);
+  EXPECT_EQ(request->inputs[0]->address, addr1);
+  EXPECT_EQ(request->inputs[1]->address, addr2);
+
+  EXPECT_EQ(request->inputs[0]->value, 34451133u);
+  EXPECT_EQ(request->inputs[1]->value, 34451133u);
+
+  auto& signature = future.Get<0>();
+  auto& error = future.Get<1>();
+  EXPECT_TRUE(signature.has_value());
+  EXPECT_FALSE(error);
+}
+
+TEST_F(CardanoApiImplTest, SignTx_PartialSign_OnlySignsOwnedInputs) {
+  CreateWallet();
+  auto added_account = AddAccount();
+
+  ON_CALL(*delegate(), GetAllowedAccounts(_, _))
+      .WillByDefault(
+          [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
+            return std::vector<std::string>(
+                {added_account->account_id->unique_key});
+          });
+
+  CardanoTransaction unsigned_tx;
+  SetupUnsignedReferenceTransaction(added_account, unsigned_tx);
+
+  CardanoTransaction::TxInput foreign_input;
+  foreign_input.utxo_outpoint.txid.fill(77u);
+  foreign_input.utxo_outpoint.index = 0;
+  foreign_input.utxo_value = 5000000;
+  unsigned_tx.AddInput(std::move(foreign_input));
+
+  auto unsigned_tx_bytes =
+      CardanoTransactionSerializer().SerializeTransaction(unsigned_tx);
+
+  TestFuture<const std::optional<std::string>&,
+             mojom::CardanoProviderErrorBundlePtr>
+      future;
+
+  SignCardanoTransactionRequestWaiter waiter(brave_wallet_service());
+
+  provider()->SignTx(base::HexEncode(unsigned_tx_bytes), true,
+                     future.GetCallback());
+
+  mojom::SignCardanoTransactionRequestPtr request = waiter.WaitAndProcess(true);
+
+  EXPECT_EQ(request->inputs.size(), 3u);
+
+  auto addr1 = keyring_service()
+                   ->GetCardanoAddress(added_account->account_id,
+                                       mojom::CardanoKeyId::New(
+                                           mojom::CardanoKeyRole::kExternal, 0))
+                   ->address_string;
+  auto addr2 = keyring_service()
+                   ->GetCardanoAddress(added_account->account_id,
+                                       mojom::CardanoKeyId::New(
+                                           mojom::CardanoKeyRole::kExternal, 1))
+                   ->address_string;
+
+  EXPECT_EQ(request->inputs[0]->address, addr1);
+  EXPECT_EQ(request->inputs[1]->address, addr2);
+
+  // Third is foreign (no address set)
+  EXPECT_EQ(request->inputs[2]->address, "");
+  EXPECT_EQ(request->inputs[2]->value, 0u);
+
+  auto& signature = future.Get<0>();
+  auto& error = future.Get<1>();
+
+  EXPECT_TRUE(signature.has_value());
+  EXPECT_FALSE(error);
+}
+
+TEST_F(CardanoApiImplTest, SignTx_SignatureBindsEntireTransaction) {
+  CreateWallet();
+  auto added_account = AddAccount();
+
+  ON_CALL(*delegate(), GetAllowedAccounts(_, _))
+      .WillByDefault(
+          [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
+            return std::vector<std::string>(
+                {added_account->account_id->unique_key});
+          });
+
+  CardanoTransaction unsigned_tx;
+  SetupUnsignedReferenceTransaction(added_account, unsigned_tx);
+
+  auto unsigned_tx_bytes =
+      CardanoTransactionSerializer().SerializeTransaction(unsigned_tx);
+
+  TestFuture<const std::optional<std::string>&,
+             mojom::CardanoProviderErrorBundlePtr>
+      future;
+
+  SignCardanoTransactionRequestWaiter waiter(brave_wallet_service());
+  provider()->SignTx(base::HexEncode(unsigned_tx_bytes), false,
+                     future.GetCallback());
+
+  waiter.WaitAndProcess(true);
+
+  auto& signature = future.Get<0>();
+  auto& error = future.Get<1>();
+
+  EXPECT_TRUE(signature.has_value());
+  EXPECT_FALSE(error);
+
+}
+
+TEST_F(CardanoApiImplTest, SignTx_UserDeclinesRejectsTransaction) {
+  CreateWallet();
+  auto added_account = AddAccount();
+
+  ON_CALL(*delegate(), GetAllowedAccounts(_, _))
+      .WillByDefault(
+          [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
+            return std::vector<std::string>(
+                {added_account->account_id->unique_key});
+          });
+
+  CardanoTransaction unsigned_tx;
+  SetupUnsignedReferenceTransaction(added_account, unsigned_tx);
+
+  auto unsigned_tx_bytes =
+      CardanoTransactionSerializer().SerializeTransaction(unsigned_tx);
+
+  TestFuture<const std::optional<std::string>&,
+             mojom::CardanoProviderErrorBundlePtr>
+      future;
+
+  SignCardanoTransactionRequestWaiter waiter(brave_wallet_service());
+  provider()->SignTx(base::HexEncode(unsigned_tx_bytes), false,
+                     future.GetCallback());
+
+  waiter.WaitAndProcess(false);
+
+  auto& signature = future.Get<0>();
+  auto& error = future.Get<1>();
+
+  EXPECT_EQ(signature, std::nullopt);
+  ASSERT_TRUE(error);
+  EXPECT_EQ(error->code, -3);  
+}
+
+TEST_F(CardanoApiImplTest, SignData_RejectsUnownedAddress) {
+  CreateWallet();
+  auto added_account = AddAccount();
+
+  ON_CALL(*delegate(), GetAllowedAccounts(_, _))
+      .WillByDefault(
+          [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
+            return std::vector<std::string>(
+                {added_account->account_id->unique_key});
+          });
+
+  std::string unowned_address =
+      "addr1qxrandom123456789abcdefghijklmnopqrstuvwxyzabcdefghijklmnop"
+      "qrstuvwxyzabcdefghijklmnopqrstuvwxyzabcd";
+
+  TestFuture<std::optional<base::Value::Dict>,
+             mojom::CardanoProviderErrorBundlePtr>
+      future;
+
+  provider()->SignData(unowned_address, base::HexEncode("message"),
+                       future.GetCallback());
+
+  auto& signature = future.Get<0>();
+  auto& error = future.Get<1>();
+
+  EXPECT_EQ(signature, std::nullopt);
+  ASSERT_TRUE(error);
+  EXPECT_EQ(error->code, -1);  
+  EXPECT_NE(error->error_message.find("Address is unknown"), std::string::npos);
+}
+
+TEST_F(CardanoApiImplTest, SignData_RejectsInvalidHexPayload) {
+  CreateWallet();
+  auto added_account = AddAccount();
+
+  ON_CALL(*delegate(), GetAllowedAccounts(_, _))
+      .WillByDefault(
+          [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
+            return std::vector<std::string>(
+                {added_account->account_id->unique_key});
+          });
+
+  auto address = keyring_service()->GetCardanoAddress(
+      added_account->account_id,
+      mojom::CardanoKeyId::New(mojom::CardanoKeyRole::kExternal, 0));
+
+  TestFuture<std::optional<base::Value::Dict>,
+             mojom::CardanoProviderErrorBundlePtr>
+      future;
+
+  provider()->SignData(address->address_string, "INVALIDHEXZZ",
+                       future.GetCallback());
+
+  auto& signature = future.Get<0>();
+  auto& error = future.Get<1>();
+
+  EXPECT_EQ(signature, std::nullopt);
+  ASSERT_TRUE(error);
+  EXPECT_EQ(error->code, -1);  
+}
+
+TEST_F(CardanoApiImplTest, SignData_HandlesEmptyPayload) {
+  CreateWallet();
+  auto added_account = AddAccount();
+
+  ON_CALL(*delegate(), GetAllowedAccounts(_, _))
+      .WillByDefault(
+          [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
+            return std::vector<std::string>(
+                {added_account->account_id->unique_key});
+          });
+
+  auto address = keyring_service()->GetCardanoAddress(
+      added_account->account_id,
+      mojom::CardanoKeyId::New(mojom::CardanoKeyRole::kExternal, 0));
+
+  TestFuture<std::optional<base::Value::Dict>,
+             mojom::CardanoProviderErrorBundlePtr>
+      future;
+
+  provider()->SignData(address->address_string, "", future.GetCallback());
+  auto& signature = future.Get<0>();
+  auto& error = future.Get<1>();
+
+  EXPECT_EQ(signature, std::nullopt);
+  ASSERT_TRUE(error);
+  EXPECT_EQ(error->code, -1);  
+}
+
+TEST_F(CardanoApiImplTest, SignData_ValidatesCOSESignatureFormat) {
+  CreateWallet();
+  auto added_account = AddAccount();
+
+  ON_CALL(*delegate(), GetAllowedAccounts(_, _))
+      .WillByDefault(
+          [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
+            return std::vector<std::string>(
+                {added_account->account_id->unique_key});
+          });
+
+  auto address = keyring_service()->GetCardanoAddress(
+      added_account->account_id,
+      mojom::CardanoKeyId::New(mojom::CardanoKeyRole::kExternal, 0));
+
+  SignMessageRequestWaiter waiter(brave_wallet_service());
+
+  TestFuture<std::optional<base::Value::Dict>,
+             mojom::CardanoProviderErrorBundlePtr>
+      future;
+
+  std::string test_message = "Test CIP-8 compliance";
+  provider()->SignData(address->address_string, base::HexEncode(test_message),
+                       future.GetCallback());
+
+  waiter.WaitAndProcess(true);
+
+  auto& signature = future.Get<0>();
+  auto& error = future.Get<1>();
+
+  ASSERT_TRUE(signature);
+  EXPECT_FALSE(error);
+
+  ASSERT_TRUE(signature->contains("key"));
+  ASSERT_TRUE(signature->contains("signature"));
+
+  auto* key_hex = signature->FindString("key");
+  auto* sig_hex = signature->FindString("signature");
+  ASSERT_TRUE(key_hex && sig_hex);
+
+  std::vector<uint8_t> key_bytes;
+  ASSERT_TRUE(base::HexStringToBytes(*key_hex, &key_bytes));
+
+  std::vector<uint8_t> sig_bytes;
+  ASSERT_TRUE(base::HexStringToBytes(*sig_hex, &sig_bytes));
+
+  auto key_cbor = cbor::Reader::Read(key_bytes);
+  ASSERT_TRUE(key_cbor);
+  ASSERT_TRUE(key_cbor->is_map());
+
+  auto& key_map = key_cbor->GetMap();
+  ASSERT_TRUE(key_map.contains(cbor::Value(1)));
+  EXPECT_EQ(key_map.at(cbor::Value(1)).GetInteger(), 1);
+
+  ASSERT_TRUE(key_map.contains(cbor::Value(3)));
+  EXPECT_EQ(key_map.at(cbor::Value(3)).GetInteger(), -8);
+
+  auto sig_cbor = cbor::Reader::Read(sig_bytes);
+  ASSERT_TRUE(sig_cbor);
+  ASSERT_TRUE(sig_cbor->is_array());
+
+  auto& sig_array = sig_cbor->GetArray();
+  EXPECT_EQ(sig_array.size(), 4u);
+
+  ASSERT_TRUE(sig_array[0].is_bytestring());
+
+  auto protected_headers_cbor =
+      cbor::Reader::Read(sig_array[0].GetBytestring());
+  ASSERT_TRUE(protected_headers_cbor);
+  ASSERT_TRUE(protected_headers_cbor->is_map());
+
+  auto& headers_map = protected_headers_cbor->GetMap();
+
+  ASSERT_TRUE(headers_map.contains(cbor::Value(1)));
+  EXPECT_EQ(headers_map.at(cbor::Value(1)).GetInteger(), -8);
+
+  ASSERT_TRUE(headers_map.contains(cbor::Value(4)));
+  ASSERT_TRUE(headers_map.at(cbor::Value(4)).is_bytestring());
+
+  ASSERT_TRUE(headers_map.contains(cbor::Value("address")));
+  ASSERT_TRUE(headers_map.at(cbor::Value("address")).is_bytestring());
+}
+
+TEST_F(CardanoApiImplTest,
+       SignData_AccountSwitchPreventsSigningWithWrongAccount) {
+  CreateWallet();
+  auto account1 = AddAccount();
+  auto account2 = AddAccount();
+
+  ON_CALL(*delegate(), GetAllowedAccounts(_, _))
+      .WillByDefault(
+          [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
+            return std::vector<std::string>({account1->account_id->unique_key});
+          });
+
+  auto address1 = keyring_service()->GetCardanoAddress(
+      account1->account_id,
+      mojom::CardanoKeyId::New(mojom::CardanoKeyRole::kExternal, 0));
+
+  SignMessageRequestWaiter waiter(brave_wallet_service());
+
+  TestFuture<std::optional<base::Value::Dict>,
+             mojom::CardanoProviderErrorBundlePtr>
+      future;
+
+  provider()->SignData(address1->address_string, base::HexEncode("message"),
+                       future.GetCallback());
+
+  keyring_service()->SetSelectedAccountSync(account2->account_id->Clone());
+
+  waiter.WaitAndProcess(true);
+
+  auto& signature = future.Get<0>();
+  auto& error = future.Get<1>();
+
+  ASSERT_TRUE(signature.has_value());
+  EXPECT_FALSE(error);
+
+  EXPECT_TRUE(signature->contains("key"));
+  EXPECT_TRUE(signature->contains("signature"));
+
+}
+
+TEST_F(CardanoApiImplTest, SignData_RejectsAfterWalletLock) {
+  CreateWallet();
+  auto added_account = AddAccount();
+
+  ON_CALL(*delegate(), GetAllowedAccounts(_, _))
+      .WillByDefault(
+          [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
+            return std::vector<std::string>(
+                {added_account->account_id->unique_key});
+          });
+
+  auto address = keyring_service()->GetCardanoAddress(
+      added_account->account_id,
+      mojom::CardanoKeyId::New(mojom::CardanoKeyRole::kExternal, 0));
+
+  keyring_service()->Lock();
+
+  TestFuture<std::optional<base::Value::Dict>,
+             mojom::CardanoProviderErrorBundlePtr>
+      future;
+
+  provider()->SignData(address->address_string, base::HexEncode("message"),
+                       future.GetCallback());
+
+  auto& signature = future.Get<0>();
+  auto& error = future.Get<1>();
+
+  EXPECT_EQ(signature, std::nullopt);
+  ASSERT_TRUE(error);
+}
+
+TEST_F(CardanoApiImplTest, SignData_LargePayloadHandled) {
+  CreateWallet();
+  auto added_account = AddAccount();
+
+  ON_CALL(*delegate(), GetAllowedAccounts(_, _))
+      .WillByDefault(
+          [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
+            return std::vector<std::string>(
+                {added_account->account_id->unique_key});
+          });
+
+  auto address = keyring_service()->GetCardanoAddress(
+      added_account->account_id,
+      mojom::CardanoKeyId::New(mojom::CardanoKeyRole::kExternal, 0));
+
+  SignMessageRequestWaiter waiter(brave_wallet_service());
+
+  TestFuture<std::optional<base::Value::Dict>,
+             mojom::CardanoProviderErrorBundlePtr>
+      future;
+
+  std::string large_message(10240, 'A');
+  provider()->SignData(address->address_string, base::HexEncode(large_message),
+                       future.GetCallback());
+
+  waiter.WaitAndProcess(true);
+
+  auto& signature = future.Get<0>();
+  auto& error = future.Get<1>();
+
+  ASSERT_TRUE(signature);
+  EXPECT_FALSE(error);
+  EXPECT_TRUE(signature->contains("key"));
+  EXPECT_TRUE(signature->contains("signature"));
+}
+
+TEST_F(CardanoApiImplTest, SignData_BinaryPayloadHandled) {
+  CreateWallet();
+  auto added_account = AddAccount();
+
+  ON_CALL(*delegate(), GetAllowedAccounts(_, _))
+      .WillByDefault(
+          [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
+            return std::vector<std::string>(
+                {added_account->account_id->unique_key});
+          });
+
+  auto address = keyring_service()->GetCardanoAddress(
+      added_account->account_id,
+      mojom::CardanoKeyId::New(mojom::CardanoKeyRole::kExternal, 0));
+
+  SignMessageRequestWaiter waiter(brave_wallet_service());
+
+  TestFuture<std::optional<base::Value::Dict>,
+             mojom::CardanoProviderErrorBundlePtr>
+      future;
+
+  std::vector<uint8_t> binary_data;
+  for (int i = 0; i < 256; i++) {
+    binary_data.push_back(static_cast<uint8_t>(i));
+  }
+
+  provider()->SignData(address->address_string, base::HexEncode(binary_data),
+                       future.GetCallback());
+
+  waiter.WaitAndProcess(true);
+
+  auto& signature = future.Get<0>();
+  auto& error = future.Get<1>();
+
+  ASSERT_TRUE(signature);
+  EXPECT_FALSE(error);
+}
+
+TEST_F(CardanoApiImplTest, SignData_MultipleConsecutiveSignaturesIndependent) {
+  CreateWallet();
+  auto added_account = AddAccount();
+
+  ON_CALL(*delegate(), GetAllowedAccounts(_, _))
+      .WillByDefault(
+          [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
+            return std::vector<std::string>(
+                {added_account->account_id->unique_key});
+          });
+
+  auto address = keyring_service()->GetCardanoAddress(
+      added_account->account_id,
+      mojom::CardanoKeyId::New(mojom::CardanoKeyRole::kExternal, 0));
+
+  {
+    SignMessageRequestWaiter waiter(brave_wallet_service());
+    TestFuture<std::optional<base::Value::Dict>,
+               mojom::CardanoProviderErrorBundlePtr>
+        future1;
+
+    provider()->SignData(address->address_string, base::HexEncode("message1"),
+                         future1.GetCallback());
+    waiter.WaitAndProcess(true);
+
+    auto& sig1 = future1.Get<0>();
+    ASSERT_TRUE(sig1);
+  }
+
+  {
+    SignMessageRequestWaiter waiter(brave_wallet_service());
+    TestFuture<std::optional<base::Value::Dict>,
+               mojom::CardanoProviderErrorBundlePtr>
+        future2;
+
+    provider()->SignData(address->address_string, base::HexEncode("message2"),
+                         future2.GetCallback());
+    waiter.WaitAndProcess(true);
+
+    auto& sig2 = future2.Get<0>();
+    ASSERT_TRUE(sig2);
+  }
+
+}
+
+TEST_F(CardanoApiImplTest,
+       SignData_AddressInProtectedHeadersMatchesSigningAddress) {
+  CreateWallet();
+  auto added_account = AddAccount();
+
+  ON_CALL(*delegate(), GetAllowedAccounts(_, _))
+      .WillByDefault(
+          [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
+            return std::vector<std::string>(
+                {added_account->account_id->unique_key});
+          });
+
+  auto address = keyring_service()->GetCardanoAddress(
+      added_account->account_id,
+      mojom::CardanoKeyId::New(mojom::CardanoKeyRole::kExternal, 0));
+  auto cardano_address = CardanoAddress::FromString(address->address_string);
+  ASSERT_TRUE(cardano_address);
+
+  SignMessageRequestWaiter waiter(brave_wallet_service());
+
+  TestFuture<std::optional<base::Value::Dict>,
+             mojom::CardanoProviderErrorBundlePtr>
+      future;
+
+  provider()->SignData(address->address_string, base::HexEncode("test message"),
+                       future.GetCallback());
+
+  waiter.WaitAndProcess(true);
+
+  auto& signature = future.Get<0>();
+  ASSERT_TRUE(signature);
+
+  auto* sig_hex = signature->FindString("signature");
+  ASSERT_TRUE(sig_hex);
+
+  std::vector<uint8_t> sig_bytes;
+  ASSERT_TRUE(base::HexStringToBytes(*sig_hex, &sig_bytes));
+
+  auto sig_cbor = cbor::Reader::Read(sig_bytes);
+  ASSERT_TRUE(sig_cbor && sig_cbor->is_array());
+
+  auto& sig_array = sig_cbor->GetArray();
+  ASSERT_GE(sig_array.size(), 1u);
+  ASSERT_TRUE(sig_array[0].is_bytestring());
+
+  auto protected_headers_cbor =
+      cbor::Reader::Read(sig_array[0].GetBytestring());
+  ASSERT_TRUE(protected_headers_cbor && protected_headers_cbor->is_map());
+
+  auto& headers_map = protected_headers_cbor->GetMap();
+
+  ASSERT_TRUE(headers_map.contains(cbor::Value("address")));
+  auto& address_bytes = headers_map.at(cbor::Value("address")).GetBytestring();
+
+  EXPECT_EQ(address_bytes, cardano_address->ToCborBytes());
 }
 
 }  // namespace brave_wallet
