@@ -27,9 +27,33 @@ import {
   HorizontalSpace,
 } from '../../../../../shared/style'
 
-export const EmptyTokenListState = () => {
+interface Props {
+  onDepositOverride?: () => void
+  onBuyOverride?: () => void
+}
+
+export const EmptyTokenListState = (props: Props) => {
+  const { onDepositOverride, onBuyOverride } = props
+
   // routing
   const history = useHistory()
+
+  // methods
+  const onDeposit = React.useCallback(() => {
+    if (onDepositOverride) {
+      onDepositOverride()
+      return
+    }
+    history.push(WalletRoutes.DepositFundsPageStart)
+  }, [onDepositOverride, history])
+
+  const onBuy = React.useCallback(() => {
+    if (onBuyOverride) {
+      onBuyOverride()
+      return
+    }
+    history.push(WalletRoutes.FundWalletPageStart)
+  }, [onBuyOverride, history])
 
   return (
     <StyledWrapper
@@ -55,7 +79,7 @@ export const EmptyTokenListState = () => {
         <ButtonWrapper>
           <Button
             kind='outline'
-            onClick={() => history.push(WalletRoutes.FundWalletPageStart)}
+            onClick={onBuy}
           >
             {getLocale('braveWalletBuyCryptoButton')}
           </Button>
@@ -64,7 +88,7 @@ export const EmptyTokenListState = () => {
         <ButtonWrapper>
           <Button
             kind='outline'
-            onClick={() => history.push(WalletRoutes.DepositFundsPageStart)}
+            onClick={onDeposit}
           >
             {getLocale('braveWalletDepositCryptoButton')}
           </Button>
