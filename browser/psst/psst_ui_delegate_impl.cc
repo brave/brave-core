@@ -5,14 +5,16 @@
 
 #include "brave/browser/psst/psst_ui_delegate_impl.h"
 
+#include "brave/components/psst/browser/core/brave_psst_utils.h"
+#include "brave/components/psst/common/psst_metadata_schema.h"
+
 namespace psst {
 
 PsstUiDelegateImpl::PsstUiDelegateImpl(
-    BravePsstPermissionContext* permission_context)
-    : permission_context_(permission_context) {
-  CHECK(permission_context);
+    HostContentSettingsMap* host_content_settings_map)
+    : host_content_settings_map_(host_content_settings_map) {
+  CHECK(host_content_settings_map_);
 }
-
 PsstUiDelegateImpl::~PsstUiDelegateImpl() = default;
 
 void PsstUiDelegateImpl::Show(PsstConsentData dialog_data) {
@@ -31,18 +33,18 @@ void PsstUiDelegateImpl::UpdateTasks(
   // Implementation for setting the current progress.
 }
 
-std::optional<PsstPermissionInfo> PsstUiDelegateImpl::GetPsstPermissionInfo(
+std::optional<PsstMetadata> PsstUiDelegateImpl::GetPsstMetadata(
     const url::Origin& origin,
     const std::string& user_id) {
-  return permission_context_->GetPsstPermissionInfo(origin, user_id);
+  return psst::GetPsstMetadata(host_content_settings_map_, origin, user_id);
 }
 
 void PsstUiDelegateImpl::OnUserAcceptedPsstSettings(
     base::Value::List urls_to_skip) {
   // Create the PSST permission when user accepts the dialog
-  permission_context_->GrantPermission(
-      dialog_data_->origin, ConsentStatus::kAllow, dialog_data_->script_version,
-      dialog_data_->user_id, urls_to_skip.Clone());
+  SetPsstMetadata(host_content_settings_map_, dialog_data_->origin,
+                  ConsentStatus::kAllow, dialog_data_->script_version,
+                  dialog_data_->user_id, std::move(urls_to_skip));
 
   if (dialog_data_->apply_changes_callback) {
     std::move(dialog_data_->apply_changes_callback)

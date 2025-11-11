@@ -9,11 +9,10 @@
 #include <optional>
 
 #include "brave/components/psst/browser/content/psst_tab_web_contents_observer.h"
-#include "brave/components/psst/browser/core/brave_psst_permission_context.h"
 #include "brave/components/psst/browser/core/psst_consent_data.h"
-#include "brave/components/psst/common/psst_permission_schema.h"
 #include "brave/components/psst/common/psst_script_responses.h"
 #include "brave/components/psst/common/psst_ui_common.mojom-shared.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
 
 namespace content {
 class WebContents;
@@ -23,7 +22,8 @@ namespace psst {
 
 class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate {
  public:
-  explicit PsstUiDelegateImpl(BravePsstPermissionContext* permission_context);
+  explicit PsstUiDelegateImpl(
+      HostContentSettingsMap* host_content_settings_map);
   ~PsstUiDelegateImpl() override;
 
   PsstUiDelegateImpl(const PsstUiDelegateImpl&) = delete;
@@ -36,7 +36,7 @@ class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate {
                    const std::vector<PolicyTask>& applied_tasks,
                    const mojom::PsstStatus status) override;
 
-  std::optional<PsstPermissionInfo> GetPsstPermissionInfo(
+  std::optional<PsstMetadata> GetPsstMetadata(
       const url::Origin& origin,
       const std::string& user_id) override;
 
@@ -44,8 +44,8 @@ class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate {
   void OnUserAcceptedPsstSettings(base::Value::List urls_to_skip);
 
   raw_ptr<content::WebContents> web_contents_;
-  raw_ptr<BravePsstPermissionContext> permission_context_;
   std::optional<PsstConsentData> dialog_data_;
+  raw_ptr<HostContentSettingsMap> host_content_settings_map_;
 };
 
 }  // namespace psst

@@ -14,7 +14,7 @@
 #include "base/timer/timer.h"
 #include "base/values.h"
 #include "brave/components/psst/browser/core/psst_consent_data.h"
-#include "brave/components/psst/common/psst_permission_schema.h"
+#include "brave/components/psst/common/psst_metadata_schema.h"
 #include "brave/components/psst/common/psst_script_responses.h"
 #include "brave/components/psst/common/psst_ui_common.mojom-shared.h"
 #include "content/public/browser/web_contents_observer.h"
@@ -48,7 +48,7 @@ class PsstTabWebContentsObserver : public content::WebContentsObserver {
                              const std::vector<PolicyTask>& applied_tasks,
                              const mojom::PsstStatus status) = 0;
     // Allows access to the PSST permission object
-    virtual std::optional<PsstPermissionInfo> GetPsstPermissionInfo(
+    virtual std::optional<PsstMetadata> GetPsstMetadata(
         const url::Origin& origin,
         const std::string& user_id) = 0;
   };
