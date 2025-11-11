@@ -13,8 +13,7 @@ namespace brave_tabs {
 namespace {
 
 bool UseCompact() {
-  return base::FeatureList::IsEnabled(
-      tabs::kBraveCompactHorizontalTabs);
+  return base::FeatureList::IsEnabled(tabs::kBraveCompactHorizontalTabs);
 }
 
 }  // namespace

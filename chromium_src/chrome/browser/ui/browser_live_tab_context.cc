@@ -7,9 +7,9 @@
 
 #include "base/feature_list.h"
 #include "base/strings/utf_string_conversions.h"
-#include "chrome/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/public/constants.h"
 #include "chrome/browser/ui/tab_ui_helper.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/public/tab_features.h"
 
 #define GetExtraDataForTab GetExtraDataForTab_ChromiumImpl

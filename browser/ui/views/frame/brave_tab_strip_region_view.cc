@@ -8,10 +8,10 @@
 #include <utility>
 
 #include "brave/browser/ui/tabs/brave_tab_layout_constants.h"
-#include "chrome/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/ui/layout_constants.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/views/tabs/tab_strip_control_button.h"
 #include "chrome/browser/ui/views/tabs/tab_strip_controller.h"
 #include "ui/base/metadata/metadata_impl_macros.h"

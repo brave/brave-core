@@ -4,11 +4,12 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "chrome/browser/ui/views/tabs/tab_style_views.h"
+
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/tabs/brave_tab_layout_constants.h"
-#include "chrome/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/tabs/brave_tab_group_header.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/views/tabs/tab_slot_controller.h"
 
 #define BRAVE_GM2_TAB_STYLE_H \

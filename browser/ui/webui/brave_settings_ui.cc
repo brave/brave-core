@@ -19,7 +19,6 @@
 #include "brave/browser/resources/settings/grit/brave_settings_resources_map.h"
 #include "brave/browser/shell_integrations/buildflags/buildflags.h"
 #include "brave/browser/ui/commands/accelerator_service_factory.h"
-#include "chrome/browser/ui/tabs/features.h"
 #include "brave/browser/ui/webui/navigation_bar_data_provider.h"
 #include "brave/browser/ui/webui/settings/brave_account_settings_handler.h"
 #include "brave/browser/ui/webui/settings/brave_adblock_handler.h"
@@ -53,6 +52,7 @@
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/regional_capabilities/regional_capabilities_service_factory.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/webui/settings/metrics_reporting_handler.h"
 #include "components/regional_capabilities/regional_capabilities_country_id.h"
 #include "components/regional_capabilities/regional_capabilities_service.h"
@@ -256,15 +256,14 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
                           brave_account::features::IsBraveAccountEnabled());
   html_source->AddBoolean("isOriginAllowed",
                           brave_origin::IsBraveOriginEnabled());
-  html_source->AddBoolean(
-      "isTreeTabsFlagEnabled",
-      base::FeatureList::IsEnabled(tabs::kBraveTreeTab));
+  html_source->AddBoolean("isTreeTabsFlagEnabled",
+                          base::FeatureList::IsEnabled(tabs::kBraveTreeTab));
   html_source->AddString("braveSearchEngineName",
                          TemplateURLPrepopulateData::brave_search.name);
   html_source->AddBoolean("isLocaleJapan", IsLocaleJapan(profile));
-  html_source->AddBoolean("isHideVerticalTabCompletelyFlagEnabled",
-                          base::FeatureList::IsEnabled(
-                              tabs::kBraveVerticalTabHideCompletely));
+  html_source->AddBoolean(
+      "isHideVerticalTabCompletelyFlagEnabled",
+      base::FeatureList::IsEnabled(tabs::kBraveVerticalTabHideCompletely));
 }
 
 // static

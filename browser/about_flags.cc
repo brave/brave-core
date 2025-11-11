@@ -9,7 +9,6 @@
 
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/ui/brave_ui_features.h"
-#include "chrome/browser/ui/tabs/features.h"
 #include "brave/browser/updater/buildflags.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_rewriter/common/buildflags/buildflags.h"
@@ -38,6 +37,7 @@
 #include "brave/components/webcompat/core/common/features.h"
 #include "build/build_config.h"
 #include "chrome/browser/buildflags.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "components/content_settings/core/common/features.h"
 #include "components/history/core/browser/features.h"
@@ -324,13 +324,13 @@ const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
       }))
 
 #if BUILDFLAG(IS_LINUX)
-#define BRAVE_CHANGE_ACTIVE_TAB_ON_SCROLL_EVENT_FEATURE_ENTRIES               \
-  EXPAND_FEATURE_ENTRIES({                                                    \
-      "brave-change-active-tab-on-scroll-event",                              \
-      "Change active tab on scroll event",                                    \
-      "Change the active tab when scroll events occur on tab strip.",         \
-      kOsLinux,                                                               \
-      FEATURE_VALUE_TYPE(tabs::kBraveChangeActiveTabOnScrollEvent), \
+#define BRAVE_CHANGE_ACTIVE_TAB_ON_SCROLL_EVENT_FEATURE_ENTRIES       \
+  EXPAND_FEATURE_ENTRIES({                                            \
+      "brave-change-active-tab-on-scroll-event",                      \
+      "Change active tab on scroll event",                            \
+      "Change the active tab when scroll events occur on tab strip.", \
+      kOsLinux,                                                       \
+      FEATURE_VALUE_TYPE(tabs::kBraveChangeActiveTabOnScrollEvent),   \
   })
 #else
 #define BRAVE_CHANGE_ACTIVE_TAB_ON_SCROLL_EVENT_FEATURE_ENTRIES
@@ -415,70 +415,70 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
     {"400ms", tabs::switches::kVerticalTabCollapseDelaySwitch, "400"},
 };
 
-#define BRAVE_TABS_FEATURE_ENTRIES                                             \
-  EXPAND_FEATURE_ENTRIES(                                                      \
-      {                                                                        \
-          "brave-shared-pinned-tabs",                                          \
-          "Shared pinned tab",                                                 \
-          "Pinned tabs are shared across windows",                             \
-          kOsWin | kOsMac | kOsLinux,                                          \
-          FEATURE_VALUE_TYPE(tabs::kBraveSharedPinnedTabs),          \
-      },                                                                       \
-      {                                                                        \
-          "brave-horizontal-tabs-update",                                      \
-          "Updated horizontal tabs design",                                    \
-          "Updates the look and feel or horizontal tabs",                      \
-          kOsWin | kOsMac | kOsLinux,                                          \
-          FEATURE_VALUE_TYPE(tabs::kBraveHorizontalTabsUpdate),      \
-      },                                                                       \
-      {                                                                        \
-          "brave-compact-horizontal-tabs",                                     \
-          "Compact horizontal tabs design",                                    \
-          "Reduces the height of horizontal tabs",                             \
-          kOsWin | kOsMac | kOsLinux,                                          \
-          FEATURE_VALUE_TYPE(tabs::kBraveCompactHorizontalTabs),     \
-      },                                                                       \
-      {                                                                        \
-          "brave-vertical-tab-scroll-bar",                                     \
-          "Show scroll bar on vertical tab strip",                             \
-          "Shows scroll bar on vertical tab strip when it overflows",          \
-          kOsWin | kOsMac | kOsLinux,                                          \
-          FEATURE_VALUE_TYPE(tabs::kBraveVerticalTabScrollBar),      \
-      },                                                                       \
-      {                                                                        \
-          "brave-vertical-tab-hide-completely",                                \
-          "Brave Vertical Tab Hide Completely",                                \
-          "Hides the vertical tab strip when collapsed",                       \
-          kOsWin | kOsMac | kOsLinux,                                          \
-          FEATURE_VALUE_TYPE(tabs::kBraveVerticalTabHideCompletely), \
-      },                                                                       \
-      {                                                                        \
-          "brave-vertical-tab-expand-delay",                                   \
-          "Brave Vertical Tab Expand Delay",                                   \
-          "Delay before expanding the vertical tab strip when hovering",       \
-          kOsWin | kOsMac | kOsLinux,                                          \
-          MULTI_VALUE_TYPE(kVerticalTabExpandDelayChoices),                    \
-      },                                                                       \
-      {                                                                        \
-          "brave-vertical-tab-collapse-delay",                                 \
-          "Brave Vertical Tab Collapse Delay",                                 \
-          "Delay before collapsing the vertical tab strip when mouse exits",   \
-          kOsWin | kOsMac | kOsLinux,                                          \
-          MULTI_VALUE_TYPE(kVerticalTabCollapseDelayChoices),                  \
-      },                                                                       \
-      {                                                                        \
-          "brave-tree-tab",                                                    \
-          "Brave Tree Tab",                                                    \
-          "Enables the Tree Tab feature",                                      \
-          kOsWin | kOsMac | kOsLinux,                                          \
-          FEATURE_VALUE_TYPE(tabs::kBraveTreeTab),                   \
-      },                                                                       \
-      {                                                                        \
-          "brave-renaming-tabs",                                               \
-          "Brave Renaming Tabs",                                               \
-          "Enables renaming tabs via tab context menu.",                       \
-          kOsWin | kOsMac | kOsLinux,                                          \
-          FEATURE_VALUE_TYPE(tabs::kBraveRenamingTabs),              \
+#define BRAVE_TABS_FEATURE_ENTRIES                                           \
+  EXPAND_FEATURE_ENTRIES(                                                    \
+      {                                                                      \
+          "brave-shared-pinned-tabs",                                        \
+          "Shared pinned tab",                                               \
+          "Pinned tabs are shared across windows",                           \
+          kOsWin | kOsMac | kOsLinux,                                        \
+          FEATURE_VALUE_TYPE(tabs::kBraveSharedPinnedTabs),                  \
+      },                                                                     \
+      {                                                                      \
+          "brave-horizontal-tabs-update",                                    \
+          "Updated horizontal tabs design",                                  \
+          "Updates the look and feel or horizontal tabs",                    \
+          kOsWin | kOsMac | kOsLinux,                                        \
+          FEATURE_VALUE_TYPE(tabs::kBraveHorizontalTabsUpdate),              \
+      },                                                                     \
+      {                                                                      \
+          "brave-compact-horizontal-tabs",                                   \
+          "Compact horizontal tabs design",                                  \
+          "Reduces the height of horizontal tabs",                           \
+          kOsWin | kOsMac | kOsLinux,                                        \
+          FEATURE_VALUE_TYPE(tabs::kBraveCompactHorizontalTabs),             \
+      },                                                                     \
+      {                                                                      \
+          "brave-vertical-tab-scroll-bar",                                   \
+          "Show scroll bar on vertical tab strip",                           \
+          "Shows scroll bar on vertical tab strip when it overflows",        \
+          kOsWin | kOsMac | kOsLinux,                                        \
+          FEATURE_VALUE_TYPE(tabs::kBraveVerticalTabScrollBar),              \
+      },                                                                     \
+      {                                                                      \
+          "brave-vertical-tab-hide-completely",                              \
+          "Brave Vertical Tab Hide Completely",                              \
+          "Hides the vertical tab strip when collapsed",                     \
+          kOsWin | kOsMac | kOsLinux,                                        \
+          FEATURE_VALUE_TYPE(tabs::kBraveVerticalTabHideCompletely),         \
+      },                                                                     \
+      {                                                                      \
+          "brave-vertical-tab-expand-delay",                                 \
+          "Brave Vertical Tab Expand Delay",                                 \
+          "Delay before expanding the vertical tab strip when hovering",     \
+          kOsWin | kOsMac | kOsLinux,                                        \
+          MULTI_VALUE_TYPE(kVerticalTabExpandDelayChoices),                  \
+      },                                                                     \
+      {                                                                      \
+          "brave-vertical-tab-collapse-delay",                               \
+          "Brave Vertical Tab Collapse Delay",                               \
+          "Delay before collapsing the vertical tab strip when mouse exits", \
+          kOsWin | kOsMac | kOsLinux,                                        \
+          MULTI_VALUE_TYPE(kVerticalTabCollapseDelayChoices),                \
+      },                                                                     \
+      {                                                                      \
+          "brave-tree-tab",                                                  \
+          "Brave Tree Tab",                                                  \
+          "Enables the Tree Tab feature",                                    \
+          kOsWin | kOsMac | kOsLinux,                                        \
+          FEATURE_VALUE_TYPE(tabs::kBraveTreeTab),                           \
+      },                                                                     \
+      {                                                                      \
+          "brave-renaming-tabs",                                             \
+          "Brave Renaming Tabs",                                             \
+          "Enables renaming tabs via tab context menu.",                     \
+          kOsWin | kOsMac | kOsLinux,                                        \
+          FEATURE_VALUE_TYPE(tabs::kBraveRenamingTabs),                      \
       })
 
 #else

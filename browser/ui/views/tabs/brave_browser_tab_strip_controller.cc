@@ -8,9 +8,9 @@
 #include <utility>
 
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
-#include "chrome/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/tabs/brave_tab_context_menu_contents.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "components/tabs/public/tab_interface.h"

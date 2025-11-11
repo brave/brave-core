@@ -5,11 +5,10 @@
 
 #include "chrome/browser/ui/tabs/features.h"
 
+#include "base/feature_list.h"
 #include "chrome/browser/ui/ui_features.h"
 
 #include <chrome/browser/ui/tabs/features.cc>
-
-#include "base/feature_list.h"
 
 namespace tabs {
 
@@ -18,25 +17,19 @@ BASE_FEATURE(kBraveChangeActiveTabOnScrollEvent,
              base::FEATURE_ENABLED_BY_DEFAULT);
 #endif  // BUILDFLAG(IS_LINUX)
 
-BASE_FEATURE(kBraveSharedPinnedTabs,
-             base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kBraveSharedPinnedTabs, base::FEATURE_DISABLED_BY_DEFAULT);
 
-BASE_FEATURE(kBraveHorizontalTabsUpdate,
-             base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kBraveHorizontalTabsUpdate, base::FEATURE_ENABLED_BY_DEFAULT);
 
-BASE_FEATURE(kBraveCompactHorizontalTabs,
-             base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kBraveCompactHorizontalTabs, base::FEATURE_DISABLED_BY_DEFAULT);
 
-BASE_FEATURE(kBraveVerticalTabScrollBar,
-             base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kBraveVerticalTabScrollBar, base::FEATURE_DISABLED_BY_DEFAULT);
 
-BASE_FEATURE(kBraveVerticalTabHideCompletely,
-             base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kBraveVerticalTabHideCompletely, base::FEATURE_ENABLED_BY_DEFAULT);
 
 BASE_FEATURE(kBraveTreeTab, base::FEATURE_DISABLED_BY_DEFAULT);
 
-BASE_FEATURE(kBraveRenamingTabs,
-             base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kBraveRenamingTabs, base::FEATURE_DISABLED_BY_DEFAULT);
 
 bool HorizontalTabsUpdateEnabled() {
   return base::FeatureList::IsEnabled(kBraveHorizontalTabsUpdate);

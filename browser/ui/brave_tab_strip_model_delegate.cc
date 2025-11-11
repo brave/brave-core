@@ -8,9 +8,9 @@
 #include <algorithm>
 
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
-#include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "components/prefs/pref_service.h"
 
 namespace chrome {

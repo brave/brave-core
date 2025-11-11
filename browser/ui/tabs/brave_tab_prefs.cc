@@ -24,8 +24,7 @@ void RegisterBraveProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kVerticalTabsShowTitleOnWindow, false);
 #endif
 
-  if (base::FeatureList::IsEnabled(
-          tabs::kBraveVerticalTabHideCompletely)) {
+  if (base::FeatureList::IsEnabled(tabs::kBraveVerticalTabHideCompletely)) {
     registry->RegisterBooleanPref(kVerticalTabsHideCompletelyWhenCollapsed,
                                   false);
   }
@@ -45,8 +44,7 @@ void RegisterBraveProfilePrefs(PrefRegistrySimple* registry) {
 void MigrateBraveProfilePrefs(PrefService* prefs) {
   if (auto* pref = prefs->FindPreference(kVerticalTabsShowScrollbar);
       pref && pref->IsDefaultValue() &&
-      base::FeatureList::IsEnabled(
-          tabs::kBraveVerticalTabScrollBar)) {
+      base::FeatureList::IsEnabled(tabs::kBraveVerticalTabScrollBar)) {
     prefs->SetBoolean(kVerticalTabsShowScrollbar, true);
   }
 }

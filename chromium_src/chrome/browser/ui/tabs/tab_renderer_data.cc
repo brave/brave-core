@@ -12,11 +12,11 @@
 #include <chrome/browser/ui/tabs/tab_renderer_data.cc>
 #undef FromTabInModel
 
-#include "chrome/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/shared_pinned_tab_service.h"
 #include "brave/browser/ui/tabs/shared_pinned_tab_service_factory.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/resource_coordinator/tab_load_tracker.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "url/gurl.h"
 
 TabRendererData TabRendererData::FromTabInModel(const TabStripModel* model,

@@ -7,10 +7,10 @@
 
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
-#include "chrome/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/public/constants.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "chrome/browser/ui/tab_ui_helper.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/public/tab_features.h"
 #include "content/public/browser/browser_context.h"
 

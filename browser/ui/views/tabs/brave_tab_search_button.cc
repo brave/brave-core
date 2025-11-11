@@ -7,9 +7,9 @@
 
 #include <memory>
 
-#include "chrome/browser/ui/tabs/features.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "chrome/browser/ui/views/tabs/tab_strip_controller.h"
 #include "components/vector_icons/vector_icons.h"

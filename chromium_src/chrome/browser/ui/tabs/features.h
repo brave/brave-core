@@ -6,9 +6,9 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_TABS_FEATURES_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_TABS_FEATURES_H_
 
-#include "base/feature_list.h"
-
 #include <chrome/browser/ui/tabs/features.h>  // IWYU pragma: export
+
+#include "base/feature_list.h"
 
 namespace tabs {
 
