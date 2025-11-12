@@ -1345,16 +1345,12 @@ public class BrowserViewController: UIViewController {
           clearRecentSearchAlertDismissed = true
         }
 
-        if let _ = presentedViewController as? TabGridHostingController {
-          tabTrayDismissed = true
-        }
-
         shouldEvaluateKeyboardConstraints =
           (activeKeyboardHeight > 0)
           && (presentedViewController == nil
             || searchEngineSettingsDismissed
             || clearRecentSearchAlertDismissed
-            || tabTrayDismissed)
+            || presentedViewController is TabGridHostingController)
 
         if shouldEvaluateKeyboardConstraints {
           var offset = -activeKeyboardHeight
