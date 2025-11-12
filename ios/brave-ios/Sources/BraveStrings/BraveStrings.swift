@@ -6525,14 +6525,14 @@ extension Strings {
       tableName: "BraveShared",
       bundle: .module,
       value: "Auto-Open Keyboard",
-      comment: "The title of the toggle for user to turn on auto-open keyboard when opening a new tab."
+      comment: "The title of the toggle for user to turn on auto-open keyboard when creating a new tab."
     )
     public static let autoOpenKeyboardDescription = NSLocalizedString(
       "tabs.settings.autoOpenKeyboardDescription",
       tableName: "BraveShared",
       bundle: .module,
-      value: "Automatically focus the address bar when opening a new tab",
-      comment: "The description of the toggle for user to turn on auto-open keyboard when opening a new tab."
+      value: "Automatically focus the address bar when creating a new tab",
+      comment: "The description of the toggle for user to turn on auto-open keyboard when creating a new tab."
     )
   }
 }
