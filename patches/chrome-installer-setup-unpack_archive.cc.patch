@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/setup/unpack_archive.cc b/chrome/installer/setup/unpack_archive.cc
-index 564547f24ef30a7b73ce59efdcfcf0bfd5842ef3..482ecb8bd878a784411e07d4733450f5f915f8b4 100644
+index 564547f24ef30a7b73ce59efdcfcf0bfd5842ef3..44ca1fe551dc948e130d67c724dc44fb2766504e 100644
 --- a/chrome/installer/setup/unpack_archive.cc
 +++ b/chrome/installer/setup/unpack_archive.cc
 @@ -7,6 +7,8 @@
@@ -86,7 +86,7 @@ index 564547f24ef30a7b73ce59efdcfcf0bfd5842ef3..482ecb8bd878a784411e07d4733450f5
    // UMA tells us the following about the time required for uncompression as of
    // M75:
    // --- Foreground (<10%) ---
-@@ -63,73 +110,109 @@ base::expected<base::FilePath, InstallStatus> UncompressChromeArchive(
+@@ -63,73 +110,108 @@ base::expected<base::FilePath, InstallStatus> UncompressChromeArchive(
    // More information can also be found with metrics:
    // Setup.Install.LzmaUnPackNTSTATUS_CompressedChromeArchive
    // Setup.Install.LzmaUnPackNTSTATUS_ChromeArchivePatch
@@ -141,7 +141,7 @@ index 564547f24ef30a7b73ce59efdcfcf0bfd5842ef3..482ecb8bd878a784411e07d4733450f5
 +}
  
 -base::expected<base::FilePath, InstallStatus> UnpackChromeArchive(
-+base::expected<void, InstallStatus> UnpackAndMaybePatchChromeArchive(
++base::expected<void, InstallStatus> UnpackChromeArchive(
      const base::FilePath& unpack_path,
      InstallationState& original_state,
      const base::FilePath& setup_exe,
@@ -229,7 +229,7 @@ index 564547f24ef30a7b73ce59efdcfcf0bfd5842ef3..482ecb8bd878a784411e07d4733450f5
    }
  
    // Unpack the uncompressed archive.
-@@ -151,7 +234,7 @@ base::expected<base::FilePath, InstallStatus> UnpackChromeArchive(
+@@ -151,7 +233,7 @@ base::expected<base::FilePath, InstallStatus> UnpackChromeArchive(
    // More information can also be found with metric:
    // Setup.Install.LzmaUnPackNTSTATUS_UncompressedChromeArchive
    installer_state.SetStage(UNPACKING);
@@ -238,7 +238,7 @@ index 564547f24ef30a7b73ce59efdcfcf0bfd5842ef3..482ecb8bd878a784411e07d4733450f5
                                               /*output_file=*/nullptr);
    RecordUnPackMetrics(unpack_status,
                        UnPackConsumer::UNCOMPRESSED_CHROME_ARCHIVE);
-@@ -160,7 +243,7 @@ base::expected<base::FilePath, InstallStatus> UnpackChromeArchive(
+@@ -160,7 +242,7 @@ base::expected<base::FilePath, InstallStatus> UnpackChromeArchive(
          UNPACKING_FAILED, IDS_INSTALL_UNCOMPRESSION_FAILED_BASE, nullptr);
      return base::unexpected(UNPACKING_FAILED);
    }
