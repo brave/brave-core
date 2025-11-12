@@ -26,7 +26,6 @@ source_set("location_bar") {
     "//brave/app:brave_generated_resources_grit",
     "//brave/app/theme:brave_theme_resources",
     "//brave/app/vector_icons",
-    "//brave/browser/ui:brave_tab_features",
     "//brave/browser/ui:brave_tab_prefs",
     "//brave/components/brave_search_conversion",
     "//brave/components/commander/browser",
