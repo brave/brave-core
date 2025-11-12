@@ -163,6 +163,7 @@ export class ModelConfigUI extends ModelConfigUIBase {
       visionSupport: this.hasVisionSupport,
       supportsTools: false,
       isSuggestedModel: false,
+      isNearModel: false,
     }
 
     this.fire('save', { modelConfig })

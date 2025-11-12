@@ -31,6 +31,7 @@ describe('ModelSelector', () => {
       key: 'chat-automatic',
       displayName: 'Automatic',
       isSuggestedModel: true,
+      isNearModel: false,
       supportsTools: true,
       options: {
         leoModelOptions: {
@@ -42,6 +43,7 @@ describe('ModelSelector', () => {
       key: 'chat-basic',
       displayName: 'Basic Model',
       isSuggestedModel: true,
+      isNearModel: false,
       supportsTools: true,
       options: {
         leoModelOptions: {
@@ -53,6 +55,7 @@ describe('ModelSelector', () => {
       key: 'another-chat-basic',
       displayName: 'Another Basic Model',
       isSuggestedModel: false,
+      isNearModel: false,
       supportsTools: false,
       options: {
         leoModelOptions: {
@@ -64,6 +67,7 @@ describe('ModelSelector', () => {
       key: 'chat-premium',
       displayName: 'Premium Model',
       isSuggestedModel: true,
+      isNearModel: false,
       supportsTools: true,
       options: {
         leoModelOptions: {
@@ -75,6 +79,7 @@ describe('ModelSelector', () => {
       key: 'another-chat-premium',
       displayName: 'Another Premium Model',
       isSuggestedModel: false,
+      isNearModel: false,
       supportsTools: false,
       options: {
         leoModelOptions: {
@@ -86,6 +91,7 @@ describe('ModelSelector', () => {
     {
       key: 'chat-custom',
       displayName: 'Custom Model',
+      isNearModel: false,
       options: {
         customModelOptions: {
           modelRequestName: 'Custom Model Request',

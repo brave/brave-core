@@ -830,6 +830,7 @@ const MODELS: Mojom.Model[] = [
     visionSupport: false,
     supportsTools: false,
     isSuggestedModel: true,
+    isNearModel: false,
     options: {
       leoModelOptions: {
         name: 'model-one',
@@ -848,6 +849,7 @@ const MODELS: Mojom.Model[] = [
     visionSupport: true,
     supportsTools: true,
     isSuggestedModel: true,
+    isNearModel: false,
     options: {
       leoModelOptions: {
         name: 'model-two-premium',
@@ -866,6 +868,7 @@ const MODELS: Mojom.Model[] = [
     visionSupport: false,
     supportsTools: false,
     isSuggestedModel: false,
+    isNearModel: false,
     options: {
       leoModelOptions: {
         name: 'model-three-freemium',
@@ -884,6 +887,7 @@ const MODELS: Mojom.Model[] = [
     visionSupport: false,
     supportsTools: true,
     isSuggestedModel: false,
+    isNearModel: false,
     options: {
       leoModelOptions: undefined,
       customModelOptions: {
