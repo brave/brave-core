@@ -114,6 +114,79 @@ TEST_F(CardanoCreateTransactionTaskUnitTest, FixedAmount) {
   EXPECT_EQ(tx.EffectiveFeeAmount(), 168141u);
 }
 
+TEST_F(CardanoCreateTransactionTaskUnitTest, SendAmountIsTooLow) {
+  // 969750 = 4310 * (160 + 65)
+  // 4310 is min utxo value per byte, from protocol parameters.
+  // 160 is fixed utxo overhead.
+  // 65 is size of a tx output with no assets.
+  constexpr auto kMinSendValue = 969750;
+
+  {
+    CardanoCreateTransactionTask task(
+        *cardano_wallet_service_, account_id(),
+        *CardanoAddress::FromString(kMockCardanoAddress1), 0, false);
+
+    TestFuture<base::expected<CardanoTransaction, std::string>> tx_future;
+    task.Start(tx_future.GetCallback());
+
+    EXPECT_EQ(tx_future.Take().error(), WalletInternalErrorMessage());
+  }
+
+  {
+    CardanoCreateTransactionTask task(
+        *cardano_wallet_service_, account_id(),
+        *CardanoAddress::FromString(kMockCardanoAddress1), kMinSendValue / 2,
+        false);
+
+    TestFuture<base::expected<CardanoTransaction, std::string>> tx_future;
+    task.Start(tx_future.GetCallback());
+
+    EXPECT_EQ(tx_future.Take().error(), WalletInternalErrorMessage());
+  }
+
+  {
+    CardanoCreateTransactionTask task(
+        *cardano_wallet_service_, account_id(),
+        *CardanoAddress::FromString(kMockCardanoAddress1), kMinSendValue - 1,
+        false);
+
+    TestFuture<base::expected<CardanoTransaction, std::string>> tx_future;
+    task.Start(tx_future.GetCallback());
+
+    EXPECT_EQ(tx_future.Take().error(), WalletInternalErrorMessage());
+  }
+
+  {
+    CardanoCreateTransactionTask task(
+        *cardano_wallet_service_, account_id(),
+        *CardanoAddress::FromString(kMockCardanoAddress1), kMinSendValue,
+        false);
+
+    TestFuture<base::expected<CardanoTransaction, std::string>> tx_future;
+    task.Start(tx_future.GetCallback());
+
+    auto tx = tx_future.Take().value();
+    EXPECT_EQ(tx.TargetOutput()->amount, 969750u);
+    EXPECT_EQ(tx.ChangeOutput()->amount, 5862109u);
+    EXPECT_EQ(tx.EffectiveFeeAmount(), 168141u);
+  }
+
+  {
+    CardanoCreateTransactionTask task(
+        *cardano_wallet_service_, account_id(),
+        *CardanoAddress::FromString(kMockCardanoAddress1), kMinSendValue + 1,
+        false);
+
+    TestFuture<base::expected<CardanoTransaction, std::string>> tx_future;
+    task.Start(tx_future.GetCallback());
+
+    auto tx = tx_future.Take().value();
+    EXPECT_EQ(tx.TargetOutput()->amount, 969751u);
+    EXPECT_EQ(tx.ChangeOutput()->amount, 5862108u);
+    EXPECT_EQ(tx.EffectiveFeeAmount(), 168141u);
+  }
+}
+
 TEST_F(CardanoCreateTransactionTaskUnitTest, MaxValue) {
   CardanoCreateTransactionTask task(
       *cardano_wallet_service_, account_id(),

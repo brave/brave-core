@@ -74,6 +74,7 @@ void CardanoTestRpcServer::RequestInterceptor(
     cardano_rpc::blockfrost_api::EpochParameters params;
     params.min_fee_a = "44";
     params.min_fee_b = "155381";
+    params.coins_per_utxo_size = "4310";
     url_loader_factory_.AddResponse(
         request.url.spec(), *base::WriteJsonWithOptions(params.ToValue(), 0));
     return;

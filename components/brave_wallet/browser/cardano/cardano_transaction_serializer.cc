@@ -22,6 +22,9 @@
 
 namespace brave_wallet {
 
+// https://github.com/Emurgo/cardano-serialization-lib/blob/c8bb8f43a916d804b89c3e226560265b65f1689a/rust/src/utils.rs#L791
+constexpr uint64_t kMinAdaUtxoConstantOverhead = 160;
+
 namespace {
 
 constexpr std::array<uint8_t, kCardanoWitnessSize> kDummyTxWitnessBytes = {};
@@ -55,26 +58,31 @@ cbor::Value::ArrayValue CardanoTransactionSerializer::SerializeInputs(
   return result;
 }
 
+cbor::Value::ArrayValue CardanoTransactionSerializer::SerializeOutput(
+    const CardanoTransaction::TxOutput& output) {
+  cbor::Value::ArrayValue output_value;
+  output_value.emplace_back(output.address.ToCborBytes());
+
+  bool serialize_as_max_value =
+      (output.type == CardanoTransaction::TxOutputType::kTarget &&
+       options_.max_value_for_target_output) ||
+      (output.type == CardanoTransaction::TxOutputType::kChange &&
+       options_.max_value_for_change_output);
+
+  if (serialize_as_max_value) {
+    output_value.emplace_back(std::numeric_limits<int64_t>::max());
+  } else {
+    output_value.emplace_back(AmountToInt64ForCbor(output.amount));
+  }
+
+  return output_value;
+}
+
 cbor::Value::ArrayValue CardanoTransactionSerializer::SerializeOutputs(
     const CardanoTransaction& tx) {
   cbor::Value::ArrayValue result;
   for (const auto& output : tx.outputs()) {
-    cbor::Value::ArrayValue output_value;
-    output_value.emplace_back(output.address.ToCborBytes());
-
-    bool serialize_as_max_value =
-        (output.type == CardanoTransaction::TxOutputType::kTarget &&
-         options_.max_value_for_target_output) ||
-        (output.type == CardanoTransaction::TxOutputType::kChange &&
-         options_.max_value_for_change_output);
-
-    if (serialize_as_max_value) {
-      output_value.emplace_back(std::numeric_limits<int64_t>::max());
-    } else {
-      output_value.emplace_back(AmountToInt64ForCbor(output.amount));
-    }
-
-    result.emplace_back(std::move(output_value));
+    result.emplace_back(SerializeOutput(output));
   }
 
   return result;
@@ -169,6 +177,48 @@ uint64_t CardanoTransactionSerializer::CalcMinTransactionFee(
       tx_size * epoch_parameters.min_fee_coefficient +
       epoch_parameters.min_fee_constant;
   return fee.ValueOrDie();
+}
+
+std::optional<uint64_t> CardanoTransactionSerializer::CalcMinAdaRequired(
+    const CardanoTransaction::TxOutput& output,
+    const cardano_rpc::EpochParameters& epoch_parameters) {
+  // https://github.com/Emurgo/cardano-serialization-lib/blob/c8bb8f43a916d804b89c3e226560265b65f1689a/rust/src/utils.rs#L767
+
+  CardanoTransaction::TxOutput cur_output = output;
+  // We need 5 iterations as uint64 can be encoded in CBOR in 1, 2, 3, 5, or 9
+  // bytes.
+  for (int i = 0; i < 4; i++) {
+    auto cbor_bytes =
+        cbor::Writer::Write(cbor::Value(SerializeOutput(cur_output)));
+    CHECK(cbor_bytes);
+
+    uint64_t required_lovelace = 0;
+    if (!base::CheckMul(epoch_parameters.coins_per_utxo_size,
+                        base::CheckAdd<uint64_t>(cbor_bytes->size(),
+                                                 kMinAdaUtxoConstantOverhead))
+             .AssignIfValid(&required_lovelace)) {
+      return std::nullopt;
+    }
+
+    if (cur_output.amount < required_lovelace) {
+      // Current output amount is less than required lovelace. But larger
+      // required lovelace may produce larger cbor binary for this output. So we
+      // increase the amount and run loop again.
+      cur_output.amount = required_lovelace;
+    } else {
+      return required_lovelace;
+    }
+  }
+
+  return std::nullopt;
+}
+
+bool CardanoTransactionSerializer::ValidateMinValue(
+    const CardanoTransaction::TxOutput& output,
+    const cardano_rpc::EpochParameters& epoch_parameters) {
+  auto min_ada_required = CardanoTransactionSerializer().CalcMinAdaRequired(
+      output, epoch_parameters);
+  return min_ada_required && output.amount >= min_ada_required.value();
 }
 
 }  // namespace brave_wallet
