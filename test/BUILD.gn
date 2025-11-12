@@ -186,6 +186,7 @@ test("brave_unit_tests") {
     "//brave/browser/ntp_background:unit_tests",
     "//brave/browser/permissions:unit_tests",
     "//brave/browser/playlist/test:unit_tests",
+    "//brave/browser/policy/handlers:unit_tests",
     "//brave/browser/profiles:unit_tests",
     "//brave/browser/profiles:util",
     "//brave/browser/themes",

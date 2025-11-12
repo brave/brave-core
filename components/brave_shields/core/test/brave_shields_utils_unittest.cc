@@ -834,6 +834,36 @@ TEST_F(BraveShieldsUtilTest, GetFingerprintingControlType_ManagedPref) {
                                       map, GURL("http://brave.com")));
 }
 
+/* HTTPS UPGRADE */
+TEST_F(BraveShieldsUtilTest, GetHttpsUpgradeControlType_ManagedPref) {
+  auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
+
+  profile()->GetTestingPrefService()->SetManagedPref(
+      prefs::kManagedDefaultBraveHttpsUpgrade,
+      base::Value(CONTENT_SETTING_ALLOW));
+  EXPECT_EQ(ControlType::ALLOW,
+            brave_shields::GetHttpsUpgradeControlType(map, GURL()));
+  EXPECT_EQ(ControlType::ALLOW, brave_shields::GetHttpsUpgradeControlType(
+                                    map, GURL("http://brave.com")));
+
+  profile()->GetTestingPrefService()->SetManagedPref(
+      prefs::kManagedDefaultBraveHttpsUpgrade,
+      base::Value(CONTENT_SETTING_BLOCK));
+  EXPECT_EQ(ControlType::BLOCK,
+            brave_shields::GetHttpsUpgradeControlType(map, GURL()));
+  EXPECT_EQ(ControlType::BLOCK, brave_shields::GetHttpsUpgradeControlType(
+                                    map, GURL("http://brave.com")));
+
+  profile()->GetTestingPrefService()->SetManagedPref(
+      prefs::kManagedDefaultBraveHttpsUpgrade,
+      base::Value(CONTENT_SETTING_ASK));
+  EXPECT_EQ(ControlType::BLOCK_THIRD_PARTY,
+            brave_shields::GetHttpsUpgradeControlType(map, GURL()));
+  EXPECT_EQ(
+      ControlType::BLOCK_THIRD_PARTY,
+      brave_shields::GetHttpsUpgradeControlType(map, GURL("http://brave.com")));
+}
+
 /* NOSCRIPT CONTROL */
 TEST_F(BraveShieldsUtilTest, SetNoScriptControlType_Default) {
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
