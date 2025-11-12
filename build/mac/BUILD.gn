@@ -266,7 +266,7 @@ if (is_official_build && !skip_signing) {
   }
   copy("copy_provisionprofile") {
     sources = [ "${provisionprofile_basename}.provisionprofile" ]
-    outputs = [ "${packaging_dir}/${provisionprofile_basename}.9c57a508dc89402964eb013d30ef6df4da849aa9.provisionprofile" ]
+    outputs = [ "${packaging_dir}/${provisionprofile_basename}.24b42420108116ac21f215640e39f7d004e51498.provisionprofile" ]
   }
 }
 
