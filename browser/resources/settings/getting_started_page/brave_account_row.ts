@@ -28,15 +28,13 @@ export class SettingsBraveAccountRow extends CrLitElement {
 
   static override get properties() {
     return {
-      loading: { type: Boolean },
-      state: { type: Object },
+      state: { type: Number },
     }
   }
 
   private browserProxy: BraveAccountBrowserProxy =
     BraveAccountBrowserProxyImpl.getInstance()
-  protected accessor loading: boolean = true
-  protected accessor state: AccountState
+  protected accessor state: AccountState | undefined = undefined
 
   override connectedCallback() {
     super.connectedCallback()
@@ -65,7 +63,6 @@ export class SettingsBraveAccountRow extends CrLitElement {
   private async loadInitialState() {
     const { state } = await this.browserProxy.rowHandler.getAccountState()
     this.state = state
-    this.loading = false
   }
 }
 

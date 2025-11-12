@@ -9,31 +9,31 @@ import { AccountState } from '../brave_account_row.mojom-webui.js'
 import { loadTimeData } from '//resources/js/load_time_data.js'
 import { SettingsBraveAccountRow } from './brave_account_row.js'
 
-export function getHtml(this: SettingsBraveAccountRow) {
-  const createFirstRow = (
-    title: string,
-    description: string | string[],
-    button?: ReturnType<typeof html>
-  ) => {
-    const descriptions = Array.isArray(description)
-      ? description
-      : [description]
-    return html`
-      <div class="first-row">
-        <div class="circle">
-          <leo-icon name="social-brave-release-favicon-fullheight-color">
-          </leo-icon>
-        </div>
-        <div class="title-and-description">
-          <div class="title">${title}</div>
-          ${descriptions.map(
-            desc => html`<div class="description">${desc}</div>`)}
-        </div>
-        ${button || nothing}
+const createFirstRow = (
+  title: string,
+  description: string | string[],
+  button?: ReturnType<typeof html>
+) => {
+  const descriptions = Array.isArray(description)
+    ? description
+    : [description]
+  return html`
+    <div class="first-row">
+      <div class="circle">
+        <leo-icon name="social-brave-release-favicon-fullheight-color">
+        </leo-icon>
       </div>
-    `
-  }
+      <div class="title-and-description">
+        <div class="title">${title}</div>
+        ${descriptions.map(
+          desc => html`<div class="description">${desc}</div>`)}
+      </div>
+      ${button || nothing}
+    </div>
+  `
+}
 
+export function getHtml(this: SettingsBraveAccountRow) {
   const stateHtml: Record<
     AccountState,
     () => ReturnType<typeof html>
@@ -87,6 +87,6 @@ export function getHtml(this: SettingsBraveAccountRow) {
 
   return html`
     <div class="row-container">
-      ${this.loading ? nothing : stateHtml[this.state]()}
+      ${this.state === undefined ? nothing : stateHtml[this.state]()}
     </div>`
 }
