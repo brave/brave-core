@@ -26,7 +26,7 @@ BackgroundHelperWin::~BackgroundHelperWin() = default;
 
 bool BackgroundHelperWin::IsForeground() const {
   auto* browser = GetLastActiveBrowserWindowInterfaceWithAnyProfile();
-  if (browser) {
+  if (browser && browser->GetWindow()) {
     return ::GetForegroundWindow() ==
            views::HWNDForNativeWindow(browser->GetWindow()->GetNativeWindow());
   }
