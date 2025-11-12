@@ -3,6 +3,21 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+// Set up loadTimeData mock BEFORE importing components
+;(window as any).loadTimeData = {
+  getString: jest.fn((key: string) => {
+    if (key === 'richSearchWidgetsOrigin') {
+      return 'https://example.com'
+    }
+    return ''
+  }),
+  getStringF: jest.fn().mockReturnValue(''),
+  getInteger: jest.fn().mockReturnValue(0),
+  getBoolean: jest.fn().mockReturnValue(false),
+  set: jest.fn(),
+  data_: {},
+}
+
 import * as React from 'react'
 import '@testing-library/jest-dom'
 import { render, screen, waitFor } from '@testing-library/react'
@@ -188,3 +203,71 @@ test(
     expect(screen.queryByTestId('memory-tool-event')).not.toBeInTheDocument()
   },
 )
+
+test('AssistantResponse should not render iframe when richResults is null or empty', () => {
+  const events = [
+    getCompletionEvent('test completion'),
+    getWebSourcesEvent([
+      {
+        title: 'Source 1',
+        faviconUrl: { url: 'https://imgs.example.com/favicon1.ico' },
+        url: { url: 'https://1.example.com/path' },
+      },
+    ]),
+  ]
+
+  const { container } = render(
+    <AssistantResponse
+      events={events}
+      isEntryInteractivityAllowed={false}
+      isLeoModel={true}
+      isEntryInProgress={false}
+      allowedLinks={[]}
+    />,
+  )
+
+  // Should not render any iframes when richResults is empty
+  const iframes = container.querySelectorAll('iframe')
+  expect(iframes).toHaveLength(0)
+})
+
+test('AssistantResponse should render iframe when richResults has data', () => {
+  // Note: This data is made up and doesn't reflect what the actual widgets look like.
+  // We don't test the actual widget rendering here because it can change out of band.
+  const richResultsData = [
+    '{"type":"weather","location":"San Francisco","temp":72}',
+    '{"type":"stock","symbol":"AAPL","price":150.50}',
+    null,
+    undefined,
+    '',
+  ]
+
+  const events = [
+    getCompletionEvent('test completion'),
+    getWebSourcesEvent(
+      [
+        {
+          title: 'Source 1',
+          faviconUrl: { url: 'https://imgs.example.com/favicon1.ico' },
+          url: { url: 'https://1.example.com/path' },
+        },
+      ],
+      // Note: We cast this to a string[] to double check that we're filtering out falsey values.
+      richResultsData as string[],
+    ),
+  ]
+
+  const { container } = render(
+    <AssistantResponse
+      events={events}
+      isEntryInteractivityAllowed={false}
+      isLeoModel={true}
+      isEntryInProgress={false}
+      allowedLinks={[]}
+    />,
+  )
+
+  // Should render iframes for each richResult
+  const iframes = container.querySelectorAll('iframe')
+  expect(iframes).toHaveLength(2)
+})

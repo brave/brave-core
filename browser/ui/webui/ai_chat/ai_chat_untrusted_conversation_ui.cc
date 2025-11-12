@@ -13,6 +13,7 @@
 #include "base/logging.h"
 #include "base/notimplemented.h"
 #include "base/strings/escape.h"
+#include "base/strings/strcat.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
@@ -21,6 +22,7 @@
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/common/ai_chat_urls.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom.h"
@@ -353,6 +355,23 @@ AIChatUntrustedConversationUI::AIChatUntrustedConversationUI(
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ScriptSrc,
       "script-src 'self' chrome-untrusted://resources;");
+
+  // If the feature is not enabled then don't add the origin to the CSP.
+  if (base::FeatureList::IsEnabled(ai_chat::features::kRichSearchWidgets)) {
+    source->OverrideContentSecurityPolicy(
+        network::mojom::CSPDirectiveName::FrameSrc,
+        base::StrCat({"frame-src 'self' ",
+                      ai_chat::features::kRichSearchWidgetsOrigin.Get(), ";"}));
+  }
+
+  // If the feature is not enabled don't specify an origin for loading the rich
+  // search widgets.
+  source->AddString(
+      "richSearchWidgetsOrigin",
+      base::FeatureList::IsEnabled(ai_chat::features::kRichSearchWidgets)
+          ? ai_chat::features::kRichSearchWidgetsOrigin.Get()
+          : "");
+
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::StyleSrc,
       "style-src 'self' 'unsafe-inline' chrome-untrusted://resources "
