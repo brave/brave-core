@@ -1,42 +1,16 @@
 diff --git a/chrome/installer/setup/install_worker.cc b/chrome/installer/setup/install_worker.cc
-index 3393a297bb7120d8082cecc25df15f4e60324425..292fff8379de7a2326be013087ded7ca0750b627 100644
+index 3393a297bb7120d8082cecc25df15f4e60324425..e2813ab845f2a02a2e28a848748d3997c79fe713 100644
 --- a/chrome/installer/setup/install_worker.cc
 +++ b/chrome/installer/setup/install_worker.cc
-@@ -85,6 +85,7 @@ void AddInstallerCopyTasks(const InstallParams& install_params,
- 
-   const InstallerState& installer_state = *install_params.installer_state;
-   const base::FilePath& setup_path = *install_params.setup_path;
-+  const base::FilePath& archive_path = installer_state.uncompressed_archive;
-   const base::FilePath& temp_path = *install_params.temp_path;
-   const base::Version& new_version = *install_params.new_version;
- 
-@@ -106,6 +107,25 @@ void AddInstallerCopyTasks(const InstallParams& install_params,
+@@ -106,6 +106,7 @@ void AddInstallerCopyTasks(const InstallParams& install_params,
      install_list->AddCopyTreeWorkItem(setup_path, active_setup_exe, temp_path,
                                        WorkItem::ALWAYS);
    }
-+
-+  base::FilePath archive_dst(installer_dir.Append(archive_path.BaseName()));
-+  if (archive_path != archive_dst) {
-+    // In the past, we copied rather than moved for system level installs so
-+    // that the permissions of %ProgramFiles% would be picked up.  Now that
-+    // |temp_path| is in %ProgramFiles% for system level installs (and in
-+    // %LOCALAPPDATA% otherwise), there is no need to do this for the archive.
-+    // Setup.exe, on the other hand, is created elsewhere so it must always be
-+    // copied.
-+    if (temp_path.IsParent(archive_path)) {
-+      install_list->AddMoveTreeWorkItem(archive_path, archive_dst, temp_path,
-+                                        WorkItem::ALWAYS_MOVE);
-+    } else {
-+      // This may occur when setup is run out of an existing installation
-+      // directory. We cannot remove the system-level archive.
-+      install_list->AddCopyTreeWorkItem(archive_path, archive_dst, temp_path,
-+                                        WorkItem::ALWAYS);
-+    }
-+  }
++  BRAVE_ADD_INSTALLER_COPY_TASKS
  }
  
  // A callback invoked by |work_item| that adds firewall rules for Chrome. Rules
-@@ -202,6 +222,7 @@ void AddDeleteUninstallEntryForMSIWorkItems(
+@@ -202,6 +203,7 @@ void AddDeleteUninstallEntryForMSIWorkItems(
  void AddChromeWorkItems(const InstallParams& install_params,
                          WorkItemList* install_list) {
    const InstallerState& installer_state = *install_params.installer_state;
@@ -44,7 +18,7 @@ index 3393a297bb7120d8082cecc25df15f4e60324425..292fff8379de7a2326be013087ded7ca
    const base::FilePath& src_path = *install_params.src_path;
    const base::FilePath& temp_path = *install_params.temp_path;
    const base::Version& current_version = *install_params.current_version;
-@@ -216,11 +237,16 @@ void AddChromeWorkItems(const InstallParams& install_params,
+@@ -216,11 +218,16 @@ void AddChromeWorkItems(const InstallParams& install_params,
          installer_state.GetInstallerDirectory(current_version));
      base::FilePath old_archive(
          old_installer_dir.Append(installer::kChromeArchive));
