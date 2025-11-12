@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/setup/unpack_archive.h b/chrome/installer/setup/unpack_archive.h
-index debb8f6917b10c7b0bbd9b83720248f2ff998e5b..0322f8234ef8c25773cca504b75c67d404eb6100 100644
+index debb8f6917b10c7b0bbd9b83720248f2ff998e5b..2c4e031487c5474c261aef4cff6bd425093005c6 100644
 --- a/chrome/installer/setup/unpack_archive.h
 +++ b/chrome/installer/setup/unpack_archive.h
 @@ -18,16 +18,17 @@ namespace installer {
@@ -16,7 +16,7 @@ index debb8f6917b10c7b0bbd9b83720248f2ff998e5b..0322f8234ef8c25773cca504b75c67d4
 +// archive if an uncompressed archive was not specified on the command line and
 +// a compressed archive is found. On success, `uncompressed_archive` will be
 +// given the full path to the uncompressed archive.
-+base::expected<void, InstallStatus> UnpackAndMaybePatchChromeArchive(
++base::expected<void, InstallStatus> UnpackChromeArchive(
      const base::FilePath& unpack_path,
      InstallationState& original_state,
      const base::FilePath& setup_exe,
