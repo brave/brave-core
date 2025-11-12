@@ -11,7 +11,6 @@ import {
   EmailAliasModalResultType,
   EmailAliasModalResult,
 } from './content/email_aliases_modal'
-import BraveCoreThemeProvider from '$web-common/BraveCoreThemeProvider'
 import {
   AuthenticationStatus,
   AuthState,
@@ -94,13 +93,11 @@ const mount = () => {
   }
   createRoot(rootElement).render(
     <StyleSheetManager>
-      <BraveCoreThemeProvider>
-        <EmailAliasesPanelConnected
-          emailAliasesService={emailAliasesService}
-          emailAliasesPanelHandler={emailAliasesPanelHandler}
-          bindObserver={bindObserver}
-        />
-      </BraveCoreThemeProvider>
+      <EmailAliasesPanelConnected
+        emailAliasesService={emailAliasesService}
+        emailAliasesPanelHandler={emailAliasesPanelHandler}
+        bindObserver={bindObserver}
+      />
     </StyleSheetManager>,
   )
 }

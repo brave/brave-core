@@ -21,64 +21,65 @@ const stubEmailAliasesServiceAccountReadyInstance = new StubEmailAliasesService(
 
 export const NewAliasDialog = () => {
   return (
-    <div style={{ width: '420px', margin: '0 auto' }}>
-      <EmailAliasModal
-        aliasCount={demoData.aliases.length}
-        onReturnToMain={() => {}}
-        editing={false}
-        mainEmail={demoData.email}
-        // @ts-expect-error https://github.com/brave/brave-browser/issues/48960
-        emailAliasesService={stubEmailAliasesServiceAccountReadyInstance}
-      />
-    </div>
+    <EmailAliasModal
+      aliasCount={demoData.aliases.length}
+      onReturnToMain={() => {}}
+      editing={false}
+      mainEmail={demoData.email}
+      // @ts-expect-error https://github.com/brave/brave-browser/issues/48960
+      emailAliasesService={stubEmailAliasesServiceAccountReadyInstance}
+    />
   )
 }
 
 export const EditAliasDialog = () => {
   return (
-    <div style={{ width: '420px', margin: '0 auto' }}>
-      <EmailAliasModal
-        editAlias={demoData.aliases[0]}
-        aliasCount={demoData.aliases.length}
-        onReturnToMain={() => {}}
-        editing
-        mainEmail={demoData.email}
-        // @ts-expect-error https://github.com/brave/brave-browser/issues/48960
-        emailAliasesService={stubEmailAliasesServiceAccountReadyInstance}
-      />
-    </div>
+    <EmailAliasModal
+      editAlias={demoData.aliases[0]}
+      aliasCount={demoData.aliases.length}
+      onReturnToMain={() => {}}
+      editing
+      mainEmail={demoData.email}
+      // @ts-expect-error https://github.com/brave/brave-browser/issues/48960
+      emailAliasesService={stubEmailAliasesServiceAccountReadyInstance}
+    />
   )
 }
 
 export const DeleteAliasDialog = () => {
   return (
-    <div style={{ width: '420px', margin: '0 auto' }}>
-      <DeleteAliasModal
-        onReturnToMain={() => {}}
-        alias={demoData.aliases[0]}
-        // @ts-expect-error https://github.com/brave/brave-browser/issues/48960
-        emailAliasesService={stubEmailAliasesServiceAccountReadyInstance}
-      />
-    </div>
+    <DeleteAliasModal
+      onReturnToMain={() => {}}
+      alias={demoData.aliases[0]}
+      // @ts-expect-error https://github.com/brave/brave-browser/issues/48960
+      emailAliasesService={stubEmailAliasesServiceAccountReadyInstance}
+    />
   )
 }
 
 export const Panel = () => {
   return (
-    <div style={{ width: '420px', margin: '0 auto' }}>
-      <EmailAliasModal
-        aliasCount={demoData.aliases.length}
-        onReturnToMain={() => {}}
-        editing={false}
-        mainEmail={demoData.email}
-        bubble={true}
-        // @ts-expect-error https://github.com/brave/brave-browser/issues/48960
-        emailAliasesService={stubEmailAliasesServiceAccountReadyInstance}
-      />
-    </div>
+    <EmailAliasModal
+      aliasCount={demoData.aliases.length}
+      onReturnToMain={() => {}}
+      editing={false}
+      mainEmail={demoData.email}
+      bubble={true}
+      // @ts-expect-error https://github.com/brave/brave-browser/issues/48960
+      emailAliasesService={stubEmailAliasesServiceAccountReadyInstance}
+    />
   )
 }
 
 export default {
   title: 'Email Aliases/EmailAliasModal',
+  decorators: [
+    (Story: any) => {
+      return (
+        <div style={{ width: '420px', margin: '0 auto' }}>
+          <Story />
+        </div>
+      )
+    },
+  ],
 }
