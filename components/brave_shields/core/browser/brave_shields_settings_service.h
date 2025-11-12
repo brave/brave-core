@@ -63,8 +63,7 @@ class BraveShieldsSettingsService : public KeyedService {
   mojom::ContentSettingsOverriddenDataPtr GetJsContentSettingOverriddenData(
       const GURL& url);
 
-  bool IsShieldsDisabledOnAnyHostMatchingDomainOf(
-      const std::string_view ephemeral_domain) const;
+  bool IsShieldsDisabledOnAnyHostMatchingDomainOf(const GURL& url) const;
 
  private:
   const raw_ref<HostContentSettingsMap>

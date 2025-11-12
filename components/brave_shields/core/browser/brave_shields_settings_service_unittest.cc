@@ -438,10 +438,10 @@ TEST_F(BraveShieldsSettingsServiceTest,
   // With no shield settings, should return false
   EXPECT_FALSE(
       brave_shields_settings()->IsShieldsDisabledOnAnyHostMatchingDomainOf(
-          "example.com"));
+          GURL("https://example.com")));
   EXPECT_FALSE(
       brave_shields_settings()->IsShieldsDisabledOnAnyHostMatchingDomainOf(
-          "test.com"));
+          GURL("https://test.com")));
 }
 
 TEST_F(BraveShieldsSettingsServiceTest,
@@ -451,10 +451,10 @@ TEST_F(BraveShieldsSettingsServiceTest,
   brave_shields_settings()->SetBraveShieldsEnabled(false, example_com_url);
   EXPECT_TRUE(
       brave_shields_settings()->IsShieldsDisabledOnAnyHostMatchingDomainOf(
-          "example.com"));
+          GURL("https://example.com")));
   EXPECT_FALSE(
       brave_shields_settings()->IsShieldsDisabledOnAnyHostMatchingDomainOf(
-          "test.com"));
+          GURL("https://test.com")));
 }
 
 TEST_F(BraveShieldsSettingsServiceTest,
@@ -467,10 +467,10 @@ TEST_F(BraveShieldsSettingsServiceTest,
 
   EXPECT_TRUE(
       brave_shields_settings()->IsShieldsDisabledOnAnyHostMatchingDomainOf(
-          "example.com"));
+          GURL("https://example.com")));
   EXPECT_FALSE(
       brave_shields_settings()->IsShieldsDisabledOnAnyHostMatchingDomainOf(
-          "test.com"));
+          GURL("https://test.com")));
 }
 
 TEST_F(BraveShieldsSettingsServiceTest,
@@ -483,10 +483,10 @@ TEST_F(BraveShieldsSettingsServiceTest,
 
   EXPECT_TRUE(
       brave_shields_settings()->IsShieldsDisabledOnAnyHostMatchingDomainOf(
-          "example.com"));
+          GURL("https://example.com")));
   EXPECT_FALSE(
       brave_shields_settings()->IsShieldsDisabledOnAnyHostMatchingDomainOf(
-          "test.com"));
+          GURL("https://test.com")));
 }
 
 TEST_F(BraveShieldsSettingsServiceTest,
@@ -499,7 +499,7 @@ TEST_F(BraveShieldsSettingsServiceTest,
 
   EXPECT_FALSE(
       brave_shields_settings()->IsShieldsDisabledOnAnyHostMatchingDomainOf(
-          "example.com"));
+          GURL("https://example.com")));
 }
 
 TEST_F(BraveShieldsSettingsServiceTest,
@@ -511,7 +511,7 @@ TEST_F(BraveShieldsSettingsServiceTest,
 
   EXPECT_TRUE(
       brave_shields_settings()->IsShieldsDisabledOnAnyHostMatchingDomainOf(
-          "example.com"));
+          GURL("https://example.com")));
 }
 
 TEST_F(BraveShieldsSettingsServiceTest,
@@ -534,16 +534,16 @@ TEST_F(BraveShieldsSettingsServiceTest,
 
   EXPECT_TRUE(
       brave_shields_settings()->IsShieldsDisabledOnAnyHostMatchingDomainOf(
-          "example.com"));
+          GURL("https://example.com")));
   EXPECT_TRUE(
       brave_shields_settings()->IsShieldsDisabledOnAnyHostMatchingDomainOf(
-          "test.com"));
+          GURL("https://test.com")));
   EXPECT_FALSE(
       brave_shields_settings()->IsShieldsDisabledOnAnyHostMatchingDomainOf(
-          "other.com"));
+          GURL("https://other.com")));
   EXPECT_FALSE(
       brave_shields_settings()->IsShieldsDisabledOnAnyHostMatchingDomainOf(
-          "unrelated.com"));
+          GURL("https://unrelated.com")));
 }
 
 TEST_F(BraveShieldsSettingsServiceTest,
@@ -557,10 +557,10 @@ TEST_F(BraveShieldsSettingsServiceTest,
   // Should match for test.com ephemeral domain
   EXPECT_TRUE(
       brave_shields_settings()->IsShieldsDisabledOnAnyHostMatchingDomainOf(
-          "test.com"));
+          GURL("https://test.com")));
   EXPECT_FALSE(
       brave_shields_settings()->IsShieldsDisabledOnAnyHostMatchingDomainOf(
-          "example.com"));
+          GURL("https://example.com")));
 }
 
 TEST_F(BraveShieldsSettingsServiceTest,
@@ -573,10 +573,10 @@ TEST_F(BraveShieldsSettingsServiceTest,
 
   EXPECT_TRUE(
       brave_shields_settings()->IsShieldsDisabledOnAnyHostMatchingDomainOf(
-          "example.com"));
+          GURL("https://example.com:8080")));
   EXPECT_FALSE(
       brave_shields_settings()->IsShieldsDisabledOnAnyHostMatchingDomainOf(
-          "test.com"));
+          GURL("https://test.com")));
 }
 
 TEST_F(BraveShieldsSettingsServiceTest,
@@ -594,10 +594,10 @@ TEST_F(BraveShieldsSettingsServiceTest,
 
   EXPECT_TRUE(
       brave_shields_settings()->IsShieldsDisabledOnAnyHostMatchingDomainOf(
-          "example.com"));
+          GURL("https://example.com")));
   EXPECT_TRUE(
       brave_shields_settings()->IsShieldsDisabledOnAnyHostMatchingDomainOf(
-          "test.com"));
+          GURL("https://test.com")));
 }
 
 TEST_F(BraveShieldsSettingsServiceTest,
@@ -610,8 +610,8 @@ TEST_F(BraveShieldsSettingsServiceTest,
 
   EXPECT_TRUE(
       brave_shields_settings()->IsShieldsDisabledOnAnyHostMatchingDomainOf(
-          "example.com"));
+          GURL("https://example.com")));
   EXPECT_FALSE(
       brave_shields_settings()->IsShieldsDisabledOnAnyHostMatchingDomainOf(
-          "other.com"));
+          GURL("https://other.com")));
 }

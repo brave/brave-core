@@ -37,7 +37,7 @@ class EphemeralStorageServiceDelegate {
       const std::string ephemeral_domain,
       CloseTabsForDomainAndSubdomainsCallback callback) = 0;
   virtual bool IsShieldsDisabledOnAnyHostMatchingDomainOf(
-      std::string_view ephemeral_domain) const = 0;
+      const GURL& url) const = 0;
 };
 
 }  // namespace ephemeral_storage
