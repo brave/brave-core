@@ -777,7 +777,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
       urlTextField.text = ""
     }
 
-    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+    DispatchQueue.main.async {
       // have to add some delay to make sure text field is in the view hierarchy
       urlTextField.becomeFirstResponder()
       self.setLocation(locationText, search: search)
