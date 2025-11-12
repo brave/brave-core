@@ -1,5 +1,5 @@
 diff --git a/components/permissions/BUILD.gn b/components/permissions/BUILD.gn
-index 41b1b8baf48be73411d4ff9804c1e94d1b089aa6..497a8a472f40bc9e03bdd0b8b5d8faba3c20185f 100644
+index 41b1b8baf48be73411d4ff9804c1e94d1b089aa6..1b30eedac4176f66a186471175ec9577ffbdfba7 100644
 --- a/components/permissions/BUILD.gn
 +++ b/components/permissions/BUILD.gn
 @@ -6,7 +6,7 @@ import("//components/guest_view/buildflags/buildflags.gni")
@@ -11,7 +11,23 @@ index 41b1b8baf48be73411d4ff9804c1e94d1b089aa6..497a8a472f40bc9e03bdd0b8b5d8faba
    sources = [
      "constants.cc",
      "constants.h",
-@@ -175,6 +175,7 @@ source_set("permissions") {
+@@ -18,6 +18,7 @@ source_set("permissions_common") {
+   defines = [ "IS_PERMISSIONS_COMMON_IMPL" ]
+   deps = [
+     "//base",
++    "//brave/components/brave_wallet/common/buildflags",
+     "//components/content_settings/core/common",
+   ]
+   public_deps = [ "//printing/buildflags" ]
+@@ -128,6 +129,7 @@ source_set("permissions") {
+   ]
+   deps = [
+     "//base",
++    "//brave/components/brave_wallet/common/buildflags",
+     "//components/back_forward_cache",
+     "//components/content_settings/browser",
+     "//components/content_settings/core/browser",
+@@ -175,6 +177,7 @@ source_set("permissions") {
    if (enable_guest_view) {
      deps += [ "//components/guest_view/browser" ]
    }

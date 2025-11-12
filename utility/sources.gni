@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//brave/utility/importer/sources.gni")
 
@@ -14,15 +15,21 @@ brave_utility_sources = [
 brave_utility_sources += brave_utility_importer_sources
 
 brave_utility_deps = [
+  "//brave/components/brave_wallet/common/buildflags",
   "//brave/components/services/bat_ads:lib",
   "//brave/components/services/bat_ads/public/interfaces",
   "//brave/components/services/bat_rewards:lib",
   "//brave/components/services/bat_rewards/public/interfaces",
-  "//brave/components/services/brave_wallet:lib",
-  "//brave/components/services/brave_wallet/public/mojom",
   "//brave/components/tor/buildflags",
   "//mojo/public/cpp/bindings",
 ]
+
+if (enable_brave_wallet) {
+  brave_utility_deps += [
+    "//brave/components/services/brave_wallet:lib",
+    "//brave/components/services/brave_wallet/public/mojom",
+  ]
+}
 
 if (is_android) {
   # This deps is only to suppress gn check error:

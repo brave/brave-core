@@ -8,6 +8,7 @@ import("//brave/android/brave_java_sources.gni")
 import("//brave/android/java/org/chromium/chrome/browser/billing/sources.gni")
 import("//brave/android/java/org/chromium/chrome/browser/playlist/sources.gni")
 import("//brave/build/android/bytecode/bytecode_rewriter.gni")
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 
 declare_args() {
   brave_android_manifest_includes = []
@@ -44,7 +45,6 @@ brave_chrome_java_deps = [
   "//brave/components/brave_rewards/core/mojom:mojom_java",
   "//brave/components/brave_shields/core/common:mojom_java",
   "//brave/components/brave_vpn/common/mojom:mojom_java",
-  "//brave/components/brave_wallet/common:mojom_java",
   "//brave/components/browser_ui/media/android:java",
   "//brave/components/browser_ui/notifications/android:java",
   "//brave/components/browser_ui/site_settings/android:java",
@@ -78,6 +78,11 @@ brave_chrome_java_deps = [
 
 brave_chrome_java_deps += brave_app_billing_deps
 brave_chrome_java_deps += brave_app_playlist_deps
+
+if (enable_brave_wallet) {
+  brave_chrome_java_deps +=
+      [ "//brave/components/brave_wallet/common:mojom_java" ]
+}
 
 brave_chrome_all_java_deps = [
   "//brave/android/features/tab_ui:java",
@@ -124,14 +129,6 @@ brave_jni_headers_sources = [
   "//brave/android/java/org/chromium/chrome/browser/brave_leo/BraveLeoUtils.java",
   "//brave/android/java/org/chromium/chrome/browser/brave_news/BraveNewsControllerFactory.java",
   "//brave/android/java/org/chromium/chrome/browser/cosmetic_filters/BraveCosmeticFiltersUtils.java",
-  "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/AssetRatioServiceFactory.java",
-  "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/BlockchainRegistryFactory.java",
-  "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/BraveWalletProviderDelegateImplHelper.java",
-  "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/BraveWalletServiceFactory.java",
-  "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/SwapServiceFactory.java",
-  "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/dapps/ConnectAccountFragment.java",
-  "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/permission/BraveDappPermissionPromptDialog.java",
-  "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/WalletNativeUtils.java",
   "//brave/android/java/org/chromium/chrome/browser/misc_metrics/MiscAndroidMetricsFactory.java",
   "//brave/android/java/org/chromium/chrome/browser/ntp_background_images/NTPBackgroundImagesBridge.java",
   "//brave/android/java/org/chromium/chrome/browser/playlist/PlaylistServiceFactoryAndroid.java",
@@ -147,3 +144,16 @@ brave_jni_headers_sources = [
   "//brave/android/java/org/chromium/chrome/browser/youtube_script_injector/BraveYouTubeScriptInjectorNativeHelper.java",
   "//brave/browser/brave_ads/android/java/org/chromium/chrome/browser/BraveAdsNativeHelper.java",
 ]
+
+if (enable_brave_wallet) {
+  brave_jni_headers_sources += [
+    "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/AssetRatioServiceFactory.java",
+    "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/BlockchainRegistryFactory.java",
+    "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/BraveWalletProviderDelegateImplHelper.java",
+    "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/BraveWalletServiceFactory.java",
+    "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/SwapServiceFactory.java",
+    "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/dapps/ConnectAccountFragment.java",
+    "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/permission/BraveDappPermissionPromptDialog.java",
+    "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/WalletNativeUtils.java",
+  ]
+}

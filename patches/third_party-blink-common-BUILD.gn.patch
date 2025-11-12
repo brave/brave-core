@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/common/BUILD.gn b/third_party/blink/common/BUILD.gn
+index 256e5433c3f004098e5be985ff579b1ea93e70ff..e3905e7413ebd83ad1dd71514858e9dcd694faa2 100644
+--- a/third_party/blink/common/BUILD.gn
++++ b/third_party/blink/common/BUILD.gn
+@@ -303,6 +303,7 @@ source_set("common") {
+ 
+   deps = [
+     "//base",
++    "//brave/components/brave_wallet/common/buildflags",
+     "//build:android_buildflags",
+     "//build:chromecast_buildflags",
+     "//media/capture:capture_base",

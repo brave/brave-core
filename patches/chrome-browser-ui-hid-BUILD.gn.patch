@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/hid/BUILD.gn b/chrome/browser/ui/hid/BUILD.gn
+index c1b7d6709724cee52c18c68909709a4236b91734..a1d712bc46af319e1a7f2cd8c9392e91a78614bc 100644
+--- a/chrome/browser/ui/hid/BUILD.gn
++++ b/chrome/browser/ui/hid/BUILD.gn
+@@ -22,6 +22,7 @@ source_set("hid") {
+   ]
+ 
+   deps = [
++    "//brave/components/brave_wallet/common/buildflags",
+     "//chrome/app:generated_resources",
+     "//chrome/browser/profiles:profile",
+     "//chrome/common",

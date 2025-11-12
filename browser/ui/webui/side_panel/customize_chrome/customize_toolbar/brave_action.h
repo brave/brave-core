@@ -12,7 +12,7 @@
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
-#include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/customize_toolbar.mojom.h"
@@ -22,6 +22,10 @@
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/components/brave_vpn/common/pref_names.h"
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/components/brave_wallet/browser/pref_names.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
 namespace customize_chrome {
 
@@ -55,6 +59,7 @@ inline constexpr BraveAction kShowSidePanelAction = {
     .pref_name = kShowSidePanelButton,
     .icon = kLeoBrowserSidebarRightIcon};
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
 inline constexpr BraveAction kShowWalletAction = {
     .id = side_panel::customize_chrome::mojom::ActionId::kShowWallet,
     .display_name_resource_id = IDS_CUSTOMIZE_TOOLBAR_TOGGLE_WALLET,
@@ -62,6 +67,7 @@ inline constexpr BraveAction kShowWalletAction = {
     .category = side_panel::customize_chrome::mojom::CategoryId::kNavigation,
     .pref_name = kShowWalletIconOnToolbar,
     .icon = kLeoProductBraveWalletIcon};
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 inline constexpr BraveAction kShowAIChatAction = {
@@ -106,7 +112,9 @@ inline constexpr auto kBraveActions =
                            const BraveAction*>({
         {kShowAddBookmarkButton.id, &kShowAddBookmarkButton},
         {kShowSidePanelAction.id, &kShowSidePanelAction},
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
         {kShowWalletAction.id, &kShowWalletAction},
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 #if BUILDFLAG(ENABLE_AI_CHAT)
         {kShowAIChatAction.id, &kShowAIChatAction},
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)

@@ -9,7 +9,7 @@
 #include "base/check.h"
 #include "base/check_is_test.h"
 #include "base/containers/contains.h"
-#include "brave/components/brave_wallet/browser/permission_utils.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 
 #define BRAVE_PERMISSION_REQUEST_MANAGER_GET_REQUESTING_ORIGIN \
   if (!ShouldBeGrouppedInRequests(request.get()))
@@ -25,10 +25,15 @@
 
 #include "url/origin.h"
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/components/brave_wallet/browser/permission_utils.h"
+#endif
+
 namespace permissions {
 
 bool PermissionRequestManager::ShouldGroupRequests(PermissionRequest* a,
                                                    PermissionRequest* b) const {
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   url::Origin origin_a;
   url::Origin origin_b;
   if (a->request_type() == RequestType::kBraveEthereum ||
@@ -45,6 +50,7 @@ bool PermissionRequestManager::ShouldGroupRequests(PermissionRequest* a,
       return true;
     }
   }
+#endif
 
   return ::permissions::ShouldGroupRequests(a, b);
 }

@@ -5,7 +5,24 @@
 
 #include "third_party/blink/renderer/modules/permissions/permission_utils.h"
 
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "third_party/blink/renderer/core/workers/worker_global_scope.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#define BRAVE_WALLET_WEB_PRINTING_CASES \
+  case PermissionName::BRAVE_ETHEREUM:  \
+    return "brave_ethereum";            \
+  case PermissionName::BRAVE_SOLANA:    \
+    return "brave_solana";              \
+  case PermissionName::BRAVE_CARDANO:   \
+    return "brave_cardano";
+#else
+#define BRAVE_WALLET_WEB_PRINTING_CASES \
+  case PermissionName::BRAVE_ETHEREUM:  \
+  case PermissionName::BRAVE_SOLANA:    \
+  case PermissionName::BRAVE_CARDANO:   \
+    NOTREACHED();
+#endif
 
 #define WEB_PRINTING                                    \
   BRAVE_ADS:                                            \
@@ -24,20 +41,16 @@
     return "brave_cookies";                             \
   case PermissionName::BRAVE_SPEEDREADER:               \
     return "brave_speedreader";                         \
-  case PermissionName::BRAVE_ETHEREUM:                  \
-    return "brave_ethereum";                            \
-  case PermissionName::BRAVE_SOLANA:                    \
-    return "brave_solana";                              \
+    BRAVE_WALLET_WEB_PRINTING_CASES                     \
   case PermissionName::BRAVE_GOOGLE_SIGN_IN:            \
     return "brave_google_sign_in";                      \
   case PermissionName::BRAVE_LOCALHOST_ACCESS:          \
     return "brave_localhost_access";                    \
   case PermissionName::BRAVE_OPEN_AI_CHAT:              \
     return "brave_open_ai_chat";                        \
-  case PermissionName::BRAVE_CARDANO:                   \
-    return "brave_cardano";                             \
   case PermissionName::WEB_PRINTING
 
 #include <third_party/blink/renderer/modules/permissions/permission_utils.cc>
 
 #undef WEB_PRINTING
+#undef BRAVE_WALLET_WEB_PRINTING_CASES

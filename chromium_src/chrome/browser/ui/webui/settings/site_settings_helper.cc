@@ -8,10 +8,14 @@
 #include <string_view>
 #include <vector>
 
-#include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_pref_provider.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
+#endif
 
 #define HasRegisteredGroupName HasRegisteredGroupName_ChromiumImpl
 #define GetVisiblePermissionCategories \
@@ -28,8 +32,7 @@
   {ContentSettingsType::BRAVE_REFERRERS, nullptr},                    \
   {ContentSettingsType::BRAVE_COOKIES, nullptr},                      \
   {ContentSettingsType::BRAVE_SPEEDREADER, nullptr},                  \
-  {ContentSettingsType::BRAVE_ETHEREUM, "ethereum"},                  \
-  {ContentSettingsType::BRAVE_SOLANA, "solana"},                      \
+  BRAVE_WALLET_CONTENT_SETTINGS_TYPES                                 \
   {ContentSettingsType::BRAVE_GOOGLE_SIGN_IN, "googleSignIn"},        \
   {ContentSettingsType::BRAVE_HTTPS_UPGRADE, nullptr},                \
   {ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE, nullptr},          \
@@ -56,9 +59,17 @@
   {ContentSettingsType::BRAVE_WEBCOMPAT_WEB_SOCKETS_POOL, nullptr}, \
   {ContentSettingsType::BRAVE_WEBCOMPAT_ALL, nullptr}, \
   {ContentSettingsType::BRAVE_SHIELDS_METADATA, nullptr}, \
-  {ContentSettingsType::BRAVE_CARDANO, "cardano"}, \
   {ContentSettingsType::BRAVE_PSST, nullptr},
 // clang-format on
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#define BRAVE_WALLET_CONTENT_SETTINGS_TYPES          \
+  {ContentSettingsType::BRAVE_ETHEREUM, "ethereum"}, \
+      {ContentSettingsType::BRAVE_SOLANA, "solana"}, \
+      {ContentSettingsType::BRAVE_CARDANO, "cardano"},
+#else
+#define BRAVE_WALLET_CONTENT_SETTINGS_TYPES
+#endif
 
 #define BRAVE_SITE_SETTINGS_HELPER_CONTENT_SETTINGS_TYPE_FROM_GROUP_NAME \
   if (name == "autoplay")                                                \
@@ -102,6 +113,7 @@ void BraveGetExceptionForPage(ContentSettingsType type,
 #undef BRAVE_PROVIDER_TYPE_TO_SITE_SETTINGS_SOURCE
 #undef BRAVE_PROVIDER_TO_DEFAULT_SETTINGS_STRING
 #undef BRAVE_CONTENT_SETTINGS_TYPE_GROUP_NAMES_LIST
+#undef BRAVE_WALLET_CONTENT_SETTINGS_TYPES
 #undef BRAVE_SITE_SETTINGS_HELPER_CONTENT_SETTINGS_TYPE_FROM_GROUP_NAME
 #undef BRAVE_SITE_SETTINGS_HELPER_CONTENT_SETTINGS_TYPE_TO_GROUP_NAME
 #undef GetVisiblePermissionCategories
@@ -120,6 +132,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
   if (type == ContentSettingsType::BRAVE_LOCALHOST_ACCESS) {
     return true;
   }
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   if (type == ContentSettingsType::BRAVE_ETHEREUM) {
     return true;
   }
@@ -129,6 +142,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
   if (type == ContentSettingsType::BRAVE_CARDANO) {
     return true;
   }
+#endif
   if (type == ContentSettingsType::BRAVE_SHIELDS) {
     return true;
   }
@@ -146,12 +160,14 @@ std::vector<ContentSettingsType> GetVisiblePermissionCategories(
   types.push_back(ContentSettingsType::BRAVE_LOCALHOST_ACCESS);
   types.push_back(ContentSettingsType::BRAVE_OPEN_AI_CHAT);
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   // Only add Web3-related content settings if wallet is allowed
   if (brave_wallet::IsAllowedForContext(profile)) {
     types.push_back(ContentSettingsType::BRAVE_ETHEREUM);
     types.push_back(ContentSettingsType::BRAVE_SOLANA);
     types.push_back(ContentSettingsType::BRAVE_CARDANO);
   }
+#endif
 
   return types;
 }

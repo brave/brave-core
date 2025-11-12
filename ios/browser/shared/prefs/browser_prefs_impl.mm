@@ -15,8 +15,7 @@
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
-#include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/de_amp/common/pref_names.h"
 #include "brave/components/debounce/core/browser/debounce_service.h"
@@ -37,6 +36,11 @@
 #include "brave/components/brave_vpn/common/pref_names.h"
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
+#include "brave/components/brave_wallet/browser/keyring_service.h"
+#endif
+
 namespace brave {
 
 void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
@@ -45,8 +49,10 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
   brave_rewards::RegisterProfilePrefs(registry);
   brave_rewards::RegisterProfilePrefsForMigration(registry);
   brave_sync::Prefs::RegisterProfilePrefs(registry);
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   brave_wallet::RegisterProfilePrefs(registry);
   brave_wallet::RegisterProfilePrefsForMigration(registry);
+#endif
   de_amp::RegisterProfilePrefs(registry);
   debounce::DebounceService::RegisterProfilePrefs(registry);
   ai_chat::prefs::RegisterProfilePrefs(registry);
@@ -74,8 +80,10 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   brave_ads::RegisterLocalStatePrefs(registry);
   brave_stats::RegisterLocalStatePrefs(registry);
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   brave_wallet::RegisterLocalStatePrefs(registry);
   brave_wallet::RegisterLocalStatePrefsForMigration(registry);
+#endif
   decentralized_dns::RegisterLocalStatePrefs(registry);
   skus::RegisterLocalStatePrefs(registry);
   p3a::P3AService::RegisterPrefs(registry, false);
@@ -105,7 +113,9 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 
 void MigrateObsoleteProfilePrefs(PrefService* prefs) {
   brave_ads::MigrateObsoleteProfilePrefs(prefs);
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   brave_wallet::MigrateObsoleteProfilePrefs(prefs);
+#endif
   ntp_background_images::MigrateObsoleteProfilePrefs(prefs);
 }
 

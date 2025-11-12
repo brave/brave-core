@@ -25,7 +25,7 @@
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
 #include "brave/components/brave_wallet/browser/meld_integration_response_parser.h"
 #include "brave/components/brave_wallet/browser/meld_integration_responses.h"
-#include "brave/components/brave_wallet/common/buildflags.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/meld_integration.mojom-forward.h"
 #include "brave/components/constants/brave_services_key.h"
 #include "brave/components/json/json_helper.h"

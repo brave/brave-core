@@ -18,7 +18,6 @@
 #include "brave/browser/brave_news/brave_news_tab_helper.h"
 #include "brave/browser/brave_rewards/rewards_tab_helper.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
-#include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
 #include "brave/browser/misc_metrics/page_metrics_tab_helper.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
@@ -26,6 +25,7 @@
 #include "brave/browser/ui/brave_ui_features.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/playlist/content/browser/playlist_tab_helper.h"
 #include "brave/components/playlist/core/common/features.h"
@@ -105,6 +105,10 @@
 #if defined(TOOLKIT_VIEWS)
 #include "brave/browser/onboarding/onboarding_tab_helper.h"
 #include "brave/browser/ui/sidebar/sidebar_tab_helper.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #endif
 
 namespace brave {
@@ -203,7 +207,9 @@ void AttachTabHelpers(content::WebContents* web_contents) {
   sidebar::SidebarTabHelper::MaybeCreateForWebContents(web_contents);
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   brave_wallet::BraveWalletTabHelper::CreateForWebContents(web_contents);
+#endif
 
   if (!web_contents->GetBrowserContext()->IsOffTheRecord()) {
     misc_metrics::PageMetricsTabHelper::CreateForWebContents(web_contents);

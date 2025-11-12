@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/psst/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
@@ -31,8 +32,6 @@ test("brave_components_unittests") {
     "//brave/components/brave_policy/ad_block_only_mode:unit_tests",
     "//brave/components/brave_shields/core/browser:unit_tests",
     "//brave/components/brave_shields/core/common:unit_tests",
-    "//brave/components/brave_wallet/browser:unit_tests",
-    "//brave/components/brave_wallet/common:unit_tests",
     "//brave/components/component_updater:unit_tests",
     "//brave/components/email_aliases:unit_tests",
     "//brave/components/json:unit_tests",
@@ -41,6 +40,13 @@ test("brave_components_unittests") {
     "//brave/components/url_sanitizer/core/browser:unit_tests",
     "//components/test:run_all_unittests",
   ]
+
+  if (enable_brave_wallet) {
+    deps += [
+      "//brave/components/brave_wallet/browser:unit_tests",
+      "//brave/components/brave_wallet/common:unit_tests",
+    ]
+  }
 
   if (enable_psst) {
     deps += [
@@ -69,10 +75,12 @@ test("brave_components_unittests") {
     if (enable_ai_chat) {
       deps += [ "//brave/components/ai_chat/content/browser:unit_tests" ]
     }
-    deps += [
-      "//brave/components/brave_wallet/browser:unit_tests",
-      "//brave/components/brave_wallet/renderer/test:unit_tests",
-    ]
+    if (enable_brave_wallet) {
+      deps += [
+        "//brave/components/brave_wallet/browser:unit_tests",
+        "//brave/components/brave_wallet/renderer/test:unit_tests",
+      ]
+    }
   }
 
   if (is_ios) {

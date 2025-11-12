@@ -1,8 +1,16 @@
 diff --git a/content/browser/BUILD.gn b/content/browser/BUILD.gn
-index 548abd4a6857cc47691c276b4b11cb34eadedcdf..9cbd6b08026e37fd67bc7980d6cceb4df72e39cb 100644
+index 548abd4a6857cc47691c276b4b11cb34eadedcdf..f48854bd3caddb69b7eadf68f4136af9669af6fd 100644
 --- a/content/browser/BUILD.gn
 +++ b/content/browser/BUILD.gn
-@@ -3706,6 +3706,7 @@ source_set("browser") {
+@@ -93,6 +93,7 @@ source_set("browser") {
+     "//base",
+     "//base:base_static",
+     "//base:clang_profiling_buildflags",
++    "//brave/components/brave_wallet/common/buildflags",
+     "//base/tracing/protos:chrome_track_event_resources",
+     "//build:android_buildflags",
+     "//build:branding_buildflags",
+@@ -3706,6 +3707,7 @@ source_set("browser") {
    if (is_chromeos) {
      deps += [ "//ash/constants" ]
    }

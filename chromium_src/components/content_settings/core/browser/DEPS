@@ -1,6 +1,7 @@
 include_rules = [
   "+brave/components/content_settings/core/browser",
   "+brave/components/brave_shields/core/common",
+  "+brave/components/brave_wallet/common/buildflags/buildflags.h",
   "+brave/components/constants",
   "+brave/components/psst/buildflags/buildflags.h",
   "+brave/components/psst/common/constants.h",

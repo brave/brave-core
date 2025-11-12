@@ -15,7 +15,7 @@
 #include "brave/components/brave_search/renderer/brave_search_render_frame_observer.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
-#include "brave/components/brave_wallet/common/features.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/cosmetic_filters/renderer/cosmetic_filters_js_render_frame_observer.h"
 #include "brave/components/playlist/content/renderer/playlist_render_frame_observer.h"
 #include "brave/components/playlist/core/common/features.h"
@@ -27,7 +27,6 @@
 #include "brave/components/web_discovery/buildflags/buildflags.h"
 #include "brave/renderer/brave_render_frame_observer.h"
 #include "brave/renderer/brave_render_thread_observer.h"
-#include "brave/renderer/brave_wallet/brave_wallet_render_frame_observer.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "chrome/renderer/chrome_render_thread_observer.h"
 #include "chrome/renderer/process_state.h"
@@ -72,6 +71,11 @@
 #if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
 #include "brave/components/web_discovery/common/features.h"
 #include "brave/components/web_discovery/renderer/blink_document_extractor.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/components/brave_wallet/common/features.h"
+#include "brave/renderer/brave_wallet/brave_wallet_render_frame_observer.h"
 #endif
 
 namespace {
@@ -163,12 +167,14 @@ void BraveContentRendererClient::RenderFrameCreated(
         render_frame, ISOLATED_WORLD_ID_BRAVE_INTERNAL, dynamic_params_closure);
   }
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   if (base::FeatureList::IsEnabled(
           brave_wallet::features::kNativeBraveWalletFeature)) {
     new brave_wallet::BraveWalletRenderFrameObserver(
         render_frame,
         base::BindRepeating(&BraveRenderThreadObserver::GetDynamicParams));
   }
+#endif
 
   new script_injector::ScriptInjectorRenderFrameObserver(render_frame);
 

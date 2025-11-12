@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//extensions/buildflags/buildflags.gni")
 import("//testing/test.gni")
 
@@ -33,12 +34,14 @@ source_set("brave_rewards_impl") {
     "rewards_tab_helper.cc",
   ]
 
-  public_deps = [ ":brave_rewards" ]
+  public_deps = [
+    ":brave_rewards",
+    "//brave/components/brave_wallet/common/buildflags",
+  ]
 
   deps = [
     ":util",
     "//base",
-    "//brave/browser/brave_wallet",
     "//brave/components/brave_rewards/content",
     "//brave/components/brave_rewards/core",
     "//brave/components/brave_rewards/core:features",
@@ -52,6 +55,10 @@ source_set("brave_rewards_impl") {
     "//components/sessions",
     "//extensions/buildflags",
   ]
+
+  if (enable_brave_wallet) {
+    deps += [ "//brave/browser/brave_wallet" ]
+  }
 
   if (enable_extensions) {
     sources += [

@@ -6,6 +6,7 @@
 import("//brave/build/config.gni")
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 import("//chrome/common/features.gni")
 
@@ -18,10 +19,10 @@ source_set("brave_browser_command") {
   deps = [
     "//base",
     "//brave/browser/brave_rewards",
-    "//brave/browser/brave_wallet",
     "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/brave_education",
     "//brave/components/brave_vpn/common/buildflags",
+    "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/constants",
     "//brave/ui/webui/resources/js/brave_browser_command:mojo_bindings",
     "//chrome/browser/profiles:profile",
@@ -29,6 +30,10 @@ source_set("brave_browser_command") {
     "//ui/base:types",
     "//url",
   ]
+
+  if (enable_brave_wallet) {
+    deps += [ "//brave/browser/brave_wallet" ]
+  }
 
   if (enable_ai_chat) {
     deps += [ "//brave/browser/ai_chat" ]

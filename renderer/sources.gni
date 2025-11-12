@@ -6,6 +6,7 @@
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/ai_rewriter/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//brave/components/web_discovery/buildflags/buildflags.gni")
@@ -28,8 +29,7 @@ brave_chrome_renderer_deps = [
   "//brave/components/brave_search/renderer",
   "//brave/components/brave_shields/core/common",
   "//brave/components/brave_vpn/common/buildflags",
-  "//brave/components/brave_wallet/common",
-  "//brave/components/brave_wallet/renderer",
+  "//brave/components/brave_wallet/common/buildflags",
   "//brave/components/cosmetic_filters/renderer",
   "//brave/components/playlist/content/renderer",
   "//brave/components/playlist/core/common/buildflags",
@@ -40,7 +40,6 @@ brave_chrome_renderer_deps = [
   "//brave/components/speedreader/common/buildflags",
   "//brave/components/tor/buildflags",
   "//brave/components/web_discovery/buildflags",
-  "//brave/renderer/brave_wallet",
   "//mojo/public/cpp/bindings",
   "//third_party/blink/public:blink",
   "//third_party/blink/public/common",
@@ -70,6 +69,14 @@ if (enable_ai_rewriter) {
 
 if (enable_brave_vpn) {
   brave_chrome_renderer_deps += [ "//brave/components/brave_vpn/common" ]
+}
+
+if (enable_brave_wallet) {
+  brave_chrome_renderer_deps += [
+    "//brave/components/brave_wallet/common",
+    "//brave/components/brave_wallet/renderer",
+    "//brave/renderer/brave_wallet",
+  ]
 }
 
 if (is_android) {

@@ -158,6 +158,7 @@ RegisterPolymerComponentReplacement(
                 AIChatItem)
             }
             // </if>
+            // <if expr="enable_brave_wallet">
             const isNativeBraveWalletEnabled =
               loadTimeData.getBoolean('isNativeBraveWalletFeatureEnabled')
             const isCardanoDappSupportFeatureEnabled =
@@ -198,6 +199,7 @@ RegisterPolymerComponentReplacement(
                 lists.permissionsAdvanced.splice(currentIndex, 0, cardanoItem)
               }
             }
+            // </if>
           }
         }
         (lists as any).shieldsBasic = [

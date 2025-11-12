@@ -7,6 +7,7 @@
 
 import("//brave/components/brave_education/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//mojo/public/tools/bindings/mojom.gni")
 
 assert(enable_brave_education)
@@ -37,6 +38,7 @@ source_set("brave_education") {
     "//brave/browser/resources/brave_education:resources",
     "//brave/browser/ui/webui/brave_browser_command",
     "//brave/components/brave_vpn/common/buildflags",
+    "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/resources:strings_grit",
     "//chrome/browser:browser_public_dependencies",
     "//chrome/browser/profiles:profile",
@@ -68,6 +70,7 @@ source_set("browser_tests") {
     "//base/test:test_support",
     "//brave/components/brave_education",
     "//brave/components/brave_vpn/common/buildflags",
+    "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/constants",
     "//chrome/browser/ui",
     "//chrome/test:test_support",
@@ -93,6 +96,7 @@ source_set("unit_tests") {
     "//brave/browser/ui/webui/brave_browser_command",
     "//brave/components/brave_education",
     "//brave/components/brave_vpn/common/buildflags",
+    "//brave/components/brave_wallet/common/buildflags",
     "//chrome/browser/ui",
     "//chrome/test:test_support",
     "//components/language/core/browser",

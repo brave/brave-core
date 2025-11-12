@@ -8,6 +8,7 @@
 #include <memory>
 #include <utility>
 
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/services/bat_ads/bat_ads_service_impl.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "brave/components/services/bat_rewards/public/interfaces/rewards_engine_factory.mojom.h"
@@ -24,8 +25,10 @@
 #include "brave/components/services/tor/tor_launcher_impl.h"
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/components/services/brave_wallet/brave_wallet_utils_service_impl.h"
 #include "brave/components/services/brave_wallet/public/mojom/brave_wallet_utils_service.mojom.h"
+#endif
 
 namespace {
 
@@ -54,12 +57,14 @@ auto RunBatAdsService(
   return std::make_unique<bat_ads::BatAdsServiceImpl>(std::move(receiver));
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
 auto RunBraveWalletUtilsService(
     mojo::PendingReceiver<brave_wallet::mojom::BraveWalletUtilsService>
         receiver) {
   return std::make_unique<brave_wallet::BraveWalletUtilsServiceImpl>(
       std::move(receiver));
 }
+#endif
 
 }  // namespace
 
@@ -80,7 +85,9 @@ void BraveContentUtilityClient::RegisterMainThreadServices(
 
   services.Add(RunBatAdsService);
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   services.Add(RunBraveWalletUtilsService);
+#endif
 
   return ChromeContentUtilityClient::RegisterMainThreadServices(services);
 }
