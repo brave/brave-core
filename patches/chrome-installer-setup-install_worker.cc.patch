@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/setup/install_worker.cc b/chrome/installer/setup/install_worker.cc
-index 3393a297bb7120d8082cecc25df15f4e60324425..8e8228cab9b345d7d3690fe6034598a3ba40d753 100644
+index 3393a297bb7120d8082cecc25df15f4e60324425..292fff8379de7a2326be013087ded7ca0750b627 100644
 --- a/chrome/installer/setup/install_worker.cc
 +++ b/chrome/installer/setup/install_worker.cc
 @@ -85,6 +85,7 @@ void AddInstallerCopyTasks(const InstallParams& install_params,
@@ -44,13 +44,7 @@ index 3393a297bb7120d8082cecc25df15f4e60324425..8e8228cab9b345d7d3690fe6034598a3
    const base::FilePath& src_path = *install_params.src_path;
    const base::FilePath& temp_path = *install_params.temp_path;
    const base::Version& current_version = *install_params.current_version;
-@@ -210,17 +231,21 @@ void AddChromeWorkItems(const InstallParams& install_params,
-   const base::FilePath& target_path = installer_state.target_path();
- 
-   if (current_version.IsValid()) {
--    // TODO(crbug.com/441478433): Delete this cleanup some time in 2027.
-     // Delete the archive from an existing install to save some disk space.
-     base::FilePath old_installer_dir(
+@@ -216,11 +237,16 @@ void AddChromeWorkItems(const InstallParams& install_params,
          installer_state.GetInstallerDirectory(current_version));
      base::FilePath old_archive(
          old_installer_dir.Append(installer::kChromeArchive));
