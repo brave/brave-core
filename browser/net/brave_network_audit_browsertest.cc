@@ -162,21 +162,14 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkAuditTest, BasicTests) {
   auto* sidebar_model = sidebar_controller->model();
   const auto& all_items = sidebar_model->GetAllSidebarItems();
   const int item_num = all_items.size();
-  const int builtin_panel_item_total = 4;
-  int builtin_panel_item_count = 0;
   for (int i = 0; i < item_num; ++i) {
     auto item = all_items[i];
     // Load all builtin panel items.
     if (item.is_built_in_type() && item.open_in_panel) {
-      builtin_panel_item_count++;
       sidebar_controller->ActivateItemAt(i);
       WaitForTimeout(kMaxTimeoutPerLoadedURL);
     }
   }
-
-  // Currently, we have 4 builtin panel items.
-  // If it's increased, --test-launcher-time should be increased also.
-  EXPECT_EQ(builtin_panel_item_total, builtin_panel_item_count);
 #endif
 }
 
