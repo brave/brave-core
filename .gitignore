@@ -52,6 +52,8 @@ debug.log
 npm-debug.log
 .npmrc*
 .env*
+!tools/crates/vendor/**/.envrc
+!ui/webui/resources/wasm/vendor/**/.envrc
 engflow.crt
 *.key
 !tools/crates/vendor/**/*.key
