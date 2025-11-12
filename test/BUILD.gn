@@ -1150,6 +1150,7 @@ test("brave_browser_tests") {
       "//brave/browser/ui/views/brave_ads:browser_tests",
       "//brave/browser/ui/views/frame:browser_tests",
       "//brave/browser/ui/views/frame/vertical_tabs:browser_tests",
+      "//brave/browser/ui/views/location_bar",
       "//brave/browser/ui/views/location_bar:browser_tests",
       "//brave/browser/ui/views/page_info:browser_tests",
       "//brave/browser/ui/views/permissions:browser_tests",

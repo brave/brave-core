@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import("//build/config/features.gni")
 import("//testing/test.gni")
 
 source_set("browser_tests") {
@@ -66,5 +67,9 @@ source_set("browser_tests") {
       "//components/policy/core/common:test_support",
       "//components/user_prefs",
     ]
+  }
+
+  if (toolkit_views) {
+    deps += [ "//brave/browser/ui/views/location_bar" ]
   }
 }
