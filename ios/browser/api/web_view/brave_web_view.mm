@@ -208,6 +208,9 @@ class BraveWebViewHolder : public web::WebStateUserData<BraveWebViewHolder> {
   // root navigation turns into a download, this workaround ensures that the
   // info typically updated in that observer method are updated when a download
   // task is created.
+  if (!self.webState || self.webState->IsBeingDestroyed()) {
+    return;
+  }
   [self updateNavigationAvailability];
   [self updateCurrentURLs];
   [self updateVisibleSSLStatus];
