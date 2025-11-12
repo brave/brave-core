@@ -153,13 +153,17 @@ public class ActivityShortcutManager: NSObject {
     switch type {
     case .newTab:
       bvc.openBlankNewTab(
-        attemptLocationFieldFocus: false,
+        attemptLocationFieldFocus: Preferences.General.openKeyboardOnNTPSelection.value,
         isPrivate: bvc.privateBrowsingManager.isPrivateBrowsing,
         isExternal: true
       )
       bvc.popToBVC()
     case .newPrivateTab:
-      bvc.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: true, isExternal: true)
+      bvc.openBlankNewTab(
+        attemptLocationFieldFocus: Preferences.General.openKeyboardOnNTPSelection.value,
+        isPrivate: true,
+        isExternal: true
+      )
       bvc.popToBVC()
     case .openBookmarks:
       bvc.popToBVC()
@@ -170,6 +174,7 @@ public class ActivityShortcutManager: NSObject {
     case .clearBrowsingHistory:
       bvc.clearHistoryAndOpenNewTab()
     case .enableBraveVPN:
+      // need to stay in NTP for Brave VPN flow
       bvc.openBlankNewTab(
         attemptLocationFieldFocus: false,
         isPrivate: bvc.privateBrowsingManager.isPrivateBrowsing,
@@ -192,6 +197,7 @@ public class ActivityShortcutManager: NSObject {
       }
 
       if Preferences.BraveNews.isEnabled.value {
+        // need to stay in NTP for Brave News
         bvc.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: false, isExternal: true)
         bvc.popToBVC()
 

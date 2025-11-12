@@ -1514,13 +1514,6 @@ public class BrowserViewController: UIViewController {
 
       self.webViewContainer.accessibilityElementsHidden = true
       UIAccessibility.post(notification: .screenChanged, argument: nil)
-
-      if setupTasksCompleted,
-        Preferences.General.openKeyboardOnNTPSelection.value,
-        !topToolbar.inOverlayMode
-      {
-        topToolbar.enterOverlayMode(nil, pasted: false, search: false)
-      }
     }
   }
 
@@ -1945,6 +1938,7 @@ public class BrowserViewController: UIViewController {
   func clearHistoryAndOpenNewTab() {
     // When PB Only mode is enabled
     // All private tabs closed and a new private tab is created
+    // Consider this case as launch app and landing in NTP
     if Preferences.Privacy.privateBrowsingOnly.value {
       tabManager.removeAll()
       openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: true, isExternal: true)
@@ -2318,7 +2312,10 @@ extension BrowserViewController: PresentingModalViewControllerDelegate {
 extension BrowserViewController: TabsBarViewControllerDelegate {
   func tabsBarDidSelectAddNewTab(_ isPrivate: Bool) {
     recordCreateTabAction(location: .toolbar)
-    openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: isPrivate)
+    openBlankNewTab(
+      attemptLocationFieldFocus: Preferences.General.openKeyboardOnNTPSelection.value,
+      isPrivate: isPrivate
+    )
   }
 
   func tabsBarDidSelectTab(_ tabsBarController: TabsBarViewController, _ tab: some TabState) {

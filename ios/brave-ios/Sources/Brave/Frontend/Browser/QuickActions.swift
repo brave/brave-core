@@ -99,7 +99,10 @@ public class QuickActions: NSObject {
     withBrowserViewController bvc: BrowserViewController,
     isPrivate: Bool
   ) {
-    bvc.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: isPrivate)
+    bvc.openBlankNewTab(
+      attemptLocationFieldFocus: Preferences.General.openKeyboardOnNTPSelection.value,
+      isPrivate: isPrivate
+    )
   }
 
   fileprivate func dismissAlertPopupView() {
@@ -110,6 +113,7 @@ public class QuickActions: NSObject {
 
   fileprivate func handleScanQR(withBrowserViewController bvc: BrowserViewController) {
     // Open a new tab when Scan QR code is executed from quick long press action
+    // Need to stay in NTP while scanning QR code
     bvc.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: false)
     bvc.scanQRCode()
   }

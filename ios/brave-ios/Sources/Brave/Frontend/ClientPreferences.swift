@@ -148,7 +148,7 @@ extension Preferences {
       default: nil
     )
     /// Whether or not automatically bring up keyboard when select a new tab
-    static let openKeyboardOnNTPSelection = Option<Bool>(
+    public static let openKeyboardOnNTPSelection = Option<Bool>(
       key: "general.open-keyboard-on-ntp-selection",
       default: false
     )
