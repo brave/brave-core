@@ -1,8 +1,8 @@
 diff --git a/components/policy/BUILD.gn b/components/policy/BUILD.gn
-index b9d5654a206d2bae12b6e7b9e6e3635e99568b3c..20289cffa63b46083b2c27e30ef7a5b648814e6c 100644
+index 966203a8b132d67e4f1a1c75381d024ddede9741..5c88d93f8c2dcb199db9338ed2b22148d5120865 100644
 --- a/components/policy/BUILD.gn
 +++ b/components/policy/BUILD.gn
-@@ -102,6 +102,7 @@ action("generate_policy_templates") {
+@@ -101,6 +101,7 @@ action("generate_policy_templates") {
      "--depfile",
      rebase_path(policy_templates_deps_file, root_build_dir),
    ]

@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/bindings/scripts/web_idl/idl_compiler.py b/third_party/blink/renderer/bindings/scripts/web_idl/idl_compiler.py
-index 4a176dc3706f528e3b1a5e12d55d831a91bb370c..c4492b02f9ea759d7bb01f7e1ec501279d0b33be 100644
+index 55e29182c801edfc6874dfbf84cc2ceb557e54ca..52e4f112589e055937c677885a8c6a5e7704d287 100644
 --- a/third_party/blink/renderer/bindings/scripts/web_idl/idl_compiler.py
 +++ b/third_party/blink/renderer/bindings/scripts/web_idl/idl_compiler.py
-@@ -1221,3 +1221,4 @@ class IdlCompiler(object):
+@@ -1266,3 +1266,4 @@ class IdlCompiler(object):
              # the root.
              if old_ir.inherited is None:
                  next_tag = assign_tags_for_tree(old_ir, next_tag)

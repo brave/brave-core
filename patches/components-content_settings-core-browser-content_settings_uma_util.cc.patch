@@ -1,5 +1,5 @@
 diff --git a/components/content_settings/core/browser/content_settings_uma_util.cc b/components/content_settings/core/browser/content_settings_uma_util.cc
-index 1007553c102d55a3773b0adfe55c48dda4c8954f..e119882339b55862475450193fadcb523baba801 100644
+index b01accfaf7ad7d99be4bcd6f92405656bde16576..51076314e8899bcb3754875a2725e764551c5bf3 100644
 --- a/components/content_settings/core/browser/content_settings_uma_util.cc
 +++ b/components/content_settings/core/browser/content_settings_uma_util.cc
 @@ -166,6 +166,7 @@ constexpr auto kHistogramValue = base::MakeFixedFlatMap<ContentSettingsType,
