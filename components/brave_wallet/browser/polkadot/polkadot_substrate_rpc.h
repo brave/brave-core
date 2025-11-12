@@ -16,6 +16,11 @@ namespace brave_wallet {
 
 class NetworkManager;
 
+struct PolkadotBlockHeader {
+  std::array<uint8_t, kPolkadotBlockHashSize> parent_hash = {};
+  uint32_t block_number = 0;
+};
+
 // The main driver for the Polkadot-based RPC calls against the relay chain and
 // the Substrate-based parachains.
 class PolkadotSubstrateRpc {
@@ -36,6 +41,10 @@ class PolkadotSubstrateRpc {
   using GetFinalizedHeadCallback = base::OnceCallback<void(
       std::optional<std::array<uint8_t, kPolkadotBlockHashSize>>,
       std::optional<std::string>)>;
+
+  using GetBlockHeaderCallback =
+      base::OnceCallback<void(std::optional<PolkadotBlockHeader>,
+                              std::optional<std::string>)>;
 
   // Get the name of the chain pointed to by the current network configuration.
   // "Westend" or "Paseo" for the testnets, "Polkadot" for the mainnet.
@@ -61,6 +70,21 @@ class PolkadotSubstrateRpc {
   void GetFinalizedHead(std::string_view chain_id,
                         GetFinalizedHeadCallback callback);
 
+  // Get the header for an associated block hash or, if not provided, the header
+  // for the latest block in the relay chain. This method is used in tandem with
+  // GetFinalizedHead to determine which block hash to use as the start of the
+  // mortality period when signing extrinsics. If the lag between the finalized
+  // block hash and the current block's parent exceeds the maximum lag time,
+  // this block hash is used in the payload that generates the extrinsic
+  // signature.
+  // See:
+  // https://github.com/polkadot-js/api/blob/f45dfc72ec320cab7d69f08010c9921d2a21065f/packages/api-derive/src/tx/signingInfo.ts#L41-L71
+  // https://spec.polkadot.network/id-extrinsics#defn-extrinsic-signature
+  void GetBlockHeader(
+      std::string_view chain_id,
+      std::optional<base::span<uint8_t, kPolkadotBlockHashSize>> block_hash,
+      GetBlockHeaderCallback callback);
+
  private:
   using APIRequestResult = api_request_helper::APIRequestResult;
 
@@ -68,9 +92,11 @@ class PolkadotSubstrateRpc {
                                             base::ListValue params);
 
   GURL GetNetworkURL(std::string_view chain_id);
+
   void OnGetChainName(GetChainNameCallback callback, APIRequestResult res);
   void OnGetAccountBalance(GetAccountBalanceCallback, APIRequestResult res);
   void OnGetFinalizedHead(GetFinalizedHeadCallback, APIRequestResult res);
+  void OnGetBlockHeader(GetBlockHeaderCallback callback, APIRequestResult res);
 
   const raw_ref<NetworkManager> network_manager_;
   api_request_helper::APIRequestHelper api_request_helper_;

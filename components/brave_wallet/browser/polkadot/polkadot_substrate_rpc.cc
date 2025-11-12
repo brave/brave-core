@@ -23,6 +23,9 @@ using APIRequestResult = api_request_helper::APIRequestResult;
 
 namespace {
 
+// Account info comes to us through the wire as 160 hex digits.
+inline constexpr size_t kPolkadotAccountInfoSize = 80;
+
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
   return net::DefineNetworkTrafficAnnotation("polkadot_substrate_rpc", R"(
       semantics {
@@ -62,7 +65,7 @@ bool ReadU128(base::SpanReader<const uint8_t>& reader, mojom::uint128Ptr& out) {
 }
 
 mojom::PolkadotAccountInfoPtr ParseAccountInfoAsHex(
-    base::span<const uint8_t, 80> bytes) {
+    base::span<const uint8_t, kPolkadotAccountInfoSize> bytes) {
   base::SpanReader<const uint8_t> reader(bytes);
   auto account = mojom::PolkadotAccountInfo::New();
 
@@ -172,12 +175,12 @@ mojom::PolkadotAccountInfoPtr ParseAccountInfoFromJson(
 
   std::string_view sv = *str;
 
-  auto hex_bytes = PrefixedHexStringToFixed<80>(sv);
-  if (!hex_bytes) {
+  std::array<uint8_t, kPolkadotAccountInfoSize> hex_bytes = {};
+  if (!PrefixedHexStringToFixed(sv, hex_bytes)) {
     return nullptr;
   }
 
-  auto account = ParseAccountInfoAsHex(*hex_bytes);
+  auto account = ParseAccountInfoAsHex(hex_bytes);
   if (account) {
     return account;
   }
@@ -206,6 +209,20 @@ base::expected<RpcResponse, std::string> HandleRpcCall(
   }
 
   return base::ok(std::move(*res));
+}
+
+std::optional<PolkadotBlockHeader> ParseChainHeaderFromHex(
+    const polkadot_substrate_rpc_responses::PolkadotChainHeader& res) {
+  PolkadotBlockHeader header;
+  if (!PrefixedHexStringToFixed(res.result->parent_hash, header.parent_hash)) {
+    return std::nullopt;
+  }
+
+  if (!base::HexStringToUInt(res.result->number, &header.block_number)) {
+    return std::nullopt;
+  }
+
+  return header;
 }
 
 }  // namespace
@@ -358,13 +375,61 @@ void PolkadotSubstrateRpc::OnGetFinalizedHead(GetFinalizedHeadCallback callback,
     return std::move(callback).Run(std::nullopt, std::nullopt);
   }
 
-  auto block_hash =
-      PrefixedHexStringToFixed<kPolkadotBlockHashSize>(*res->result);
-  if (!block_hash) {
+  std::array<uint8_t, kPolkadotBlockHashSize> block_hash = {};
+  if (!PrefixedHexStringToFixed(*res->result, block_hash)) {
     return std::move(callback).Run(std::nullopt, WalletParsingErrorMessage());
   }
 
   return std::move(callback).Run(block_hash, std::nullopt);
+}
+
+void PolkadotSubstrateRpc::GetBlockHeader(
+    std::string_view chain_id,
+    std::optional<base::span<uint8_t, kPolkadotBlockHashSize>> blockhash,
+    GetBlockHeaderCallback callback) {
+  auto url = GetNetworkURL(chain_id);
+
+  base::ListValue params;
+
+  if (blockhash) {
+    params.Append(base::HexEncode(*blockhash));
+  }
+
+  auto payload =
+      base::WriteJson(MakeRpcRequestJson("chain_getHeader", std::move(params)));
+  CHECK(payload);
+
+  api_request_helper_.Request(
+      net::HttpRequestHeaders::kPostMethod, url, *payload, "application/json",
+      base::BindOnce(&PolkadotSubstrateRpc::OnGetBlockHeader,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void PolkadotSubstrateRpc::OnGetBlockHeader(GetBlockHeaderCallback callback,
+                                            APIRequestResult api_result) {
+  auto res =
+      HandleRpcCall<polkadot_substrate_rpc_responses::PolkadotChainHeader>(
+          api_result);
+
+  if (!res.has_value()) {
+    // We received either a network error, an actual RPC error or JSON that
+    // didn't match our schema.
+    return std::move(callback).Run(std::nullopt, res.error());
+  }
+
+  if (!res->result) {
+    // We received { "result": null } from the RPC, not an error.
+    return std::move(callback).Run(std::nullopt, std::nullopt);
+  }
+
+  auto header = ParseChainHeaderFromHex(*res);
+  if (!header) {
+    // We received { "parentHash": "...", "number": "..." } that contained
+    // invalid hex or hex that exceeded numeric limits.
+    return std::move(callback).Run(std::nullopt, WalletParsingErrorMessage());
+  }
+
+  std::move(callback).Run(std::move(*header), std::nullopt);
 }
 
 GURL PolkadotSubstrateRpc::GetNetworkURL(std::string_view chain_id) {
