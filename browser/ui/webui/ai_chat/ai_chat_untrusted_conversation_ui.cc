@@ -353,6 +353,10 @@ AIChatUntrustedConversationUI::AIChatUntrustedConversationUI(
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ScriptSrc,
       "script-src 'self' chrome-untrusted://resources;");
+
+  source->OverrideContentSecurityPolicy(
+    network::mojom::CSPDirectiveName::FrameSrc,
+    "frame-src 'self' http://localhost:5173;");
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::StyleSrc,
       "style-src 'self' 'unsafe-inline' chrome-untrusted://resources "

@@ -44,7 +44,7 @@ function WebSource(props: { source: mojom.WebSource; citationNumber: number }) {
   )
 }
 
-export default function WebSourcesEvent(props: { sources: mojom.WebSource[] }) {
+export default function WebSourcesEvent(props: { sources: mojom.WebSource[], richResults: string[] }) {
   const [isExpanded, setIsExpanded] = React.useState(false)
 
   const unhiddenSources = props.sources?.slice(0, UNEXPANDED_SOURCES_COUNT)
@@ -86,6 +86,23 @@ export default function WebSourcesEvent(props: { sources: mojom.WebSource[] }) {
             />
           ))}
       </ul>
+      {props.richResults.map((r, i) => <iframe key={i} className={styles.richWidget} src="http://localhost:5173/embed" ref={(iframe) => {
+        if (iframe) {
+          console.log(iframe.contentWindow, r)
+          const sendContent = () => {
+            iframe.contentWindow?.postMessage(JSON.parse(r), 'http://localhost:5173')
+          }
+          sendContent();
+          (window as any).sendContent = sendContent
+          iframe.onload = sendContent
+          window.addEventListener('message', (event) => {
+            if (event.data.type !== 'resize' || event.source !== iframe.contentWindow) {
+              return
+            }
+            iframe.style.height = event.data.height + 'px'
+          })
+        }
+      }} />)}
     </div>
   )
 }

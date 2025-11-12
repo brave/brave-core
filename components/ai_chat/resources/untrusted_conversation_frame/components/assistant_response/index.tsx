@@ -187,7 +187,7 @@ export default function AssistantResponse(props: AssistantResponseProps) {
 
       {!props.isEntryInProgress && (
         <>
-          {sourcesEvent && <WebSourcesEvent sources={sourcesEvent.sources} />}
+          {sourcesEvent && <WebSourcesEvent sources={sourcesEvent.sources} richResults={sourcesEvent.richResults} />}
           {searchQueriesEvent && (
             <SearchSummary searchQueries={searchQueriesEvent.searchQueries} />
           )}
