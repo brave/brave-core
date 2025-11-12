@@ -16,6 +16,31 @@
   <message name="IDS_AVATAR_BUTTON_INCOGNITO_TOOLTIP" desc="Tooltip for the avatar button when the user is in Private mode.">
     You're Private
   </message>
+  <if expr="use_titlecase">
+    </if>
+  <if expr="not use_titlecase">
+    </if>
+  <if expr="use_titlecase">
+    </if>
+  <if expr="not use_titlecase">
+    </if>
+  <if expr="use_titlecase">
+    </if>
+  <if expr="not use_titlecase">
+    </if>
+  <if expr="use_titlecase">
+    </if>
+  <if expr="not use_titlecase">
+    </if>
+  <if expr="use_titlecase">
+    </if>
+  <if expr="not use_titlecase">
+    </if>
+  <if expr="use_titlecase">
+    </if>
+  <if expr="not use_titlecase">
+    </if>
+
   <if expr="is_macosx">
     </if>
   <if expr="is_linux">

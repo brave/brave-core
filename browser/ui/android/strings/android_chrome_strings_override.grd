@@ -123,8 +123,14 @@ CHAR_LIMIT guidelines:
       <message name="IDS_SETTINGS_INCOGNITO_TAB_LOCK_TITLE" desc="Title for a toggle in Settings that allows users to lock their existing Private tabs with a device reauthentication mechanism.">
         Lock Private tabs when you leave Brave
       </message>
+      <message name="IDS_SETTINGS_INCOGNITO_WINDOW_LOCK_TITLE" desc="Title for a toggle in Settings that allows users to lock their existing Private windows with a device reauthentication mechanism.">
+        Lock Private windows when you leave Brave
+      </message>
       <message name="IDS_SETTINGS_INCOGNITO_TAB_LOCK_SUMMARY_ANDROID_SETTING_ON" desc="Summary for a toggle in Settings that allows users to lock their existing Private tabs with a device reauthentication mechanism. This summary is shown to the user when the screen lock setting is on in the device.">
         Use screen lock to see open Private tabs
+      </message>
+      <message name="IDS_SETTINGS_INCOGNITO_WINDOW_LOCK_SUMMARY_ANDROID_SETTING_ON" desc="Summary for a toggle in Settings that allows users to lock their existing Private windows with a device reauthentication mechanism. This summary is shown to the user when the screen lock setting is on in the device.">
+        Use screen lock to see open Private windows
       </message>
       <message name="IDS_BOOKMARK_BAR_SETTING" desc="Title for the bookmark bar setting.">
         Show bookmarks
@@ -176,8 +182,14 @@ CHAR_LIMIT guidelines:
      <message name="IDS_INCOGNITO_REAUTH_PROMO_TITLE" desc="The title of the private re-auth promo card.">
        Lock Private tabs when you leave Brave
      </message>
+     <message name="IDS_INCOGNITO_WINDOW_REAUTH_PROMO_TITLE" desc="The title of the private re-auth promo card when there is a dedicated window for Private tabs.">
+       Lock Private windows when you leave Brave
+     </message>
      <message name="IDS_INCOGNITO_REAUTH_PROMO_DESCRIPTION" desc="The description of the private re-auth promo card.">
        Use screen lock to see open Private tabs
+     </message>
+     <message name="IDS_INCOGNITO_WINDOW_REAUTH_PROMO_DESCRIPTION" desc="The description of the private re-auth promo card when there is a dedicated window for Private tabs.">
+       Use screen lock to see open Private windows
      </message>
      <message name="IDS_INCOGNITO_REAUTH_LOCK_ACTION_TEXT" desc="The label of the button which upon click would turn on the corresponding Brave level Private lock setting after a re-authentication.">
        Turn on Private lock
@@ -206,6 +218,11 @@ CHAR_LIMIT guidelines:
       </message>
       <message name="IDS_MENU_CLOSE_ALL_INCOGNITO_TABS" desc="Menu item for closing all open Private tabs. [CHAR_LIMIT=27]">
         Close all Private tabs
+      </message>
+      <message name="IDS_MENU_CLOSE_ALL_INCOGNITO_WINDOWS" desc="Menu item to close all private windows. [ICU Syntax]">
+        {NUM_WINDOWS, plural,
+          =1 {Close 1 Private window}
+          other {Close # Private windows}}
       </message>
       <message name="IDS_MENU_SWITCH_TO_INCOGNITO" desc="Menu item for switching to private.">
         Switch to Private
@@ -254,6 +271,84 @@ CHAR_LIMIT guidelines:
       <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_PINNED_SELECTED_INCOGNITO" desc="Content description for the pinned tabs that are selected in Private mode">
         <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Pinned Selected Private Tab
       </message>
+         <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_AUDIBLE_INCOGNITO" desc="Content description for a tab that is playing audio in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Audible Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_PINNED_AUDIBLE_INCOGNITO" desc="Content description for a pinned tab that is playing audio in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Pinned Audible Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_SELECTED_AUDIBLE_INCOGNITO" desc="Content description for a selected tab that is playing audio in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Selected Audible Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_SELECTED_PINNED_AUDIBLE_INCOGNITO" desc="Content description for a selected pinned tab that is playing audio in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Selected Pinned Audible Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_MULTISELECTED_AUDIBLE_INCOGNITO" desc="Content description for a multiselected tab that is playing audio in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Multiselected Audible Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_MULTISELECTED_PINNED_AUDIBLE_INCOGNITO" desc="Content description for a multiselected pinned tab that is playing audio in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Multiselected Pinned Audible Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_MUTED_INCOGNITO" desc="Content description for a tab that is muted in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Muted Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_PINNED_MUTED_INCOGNITO" desc="Content description for a pinned tab that is muted in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Pinned Muted Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_SELECTED_MUTED_INCOGNITO" desc="Content description for a selected tab that is muted in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Selected Muted Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_SELECTED_PINNED_MUTED_INCOGNITO" desc="Content description for a selected pinned tab that is muted in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Selected Pinned Muted Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_MULTISELECTED_MUTED_INCOGNITO" desc="Content description for a multiselected tab that is muted in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Multiselected Muted Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_MULTISELECTED_PINNED_MUTED_INCOGNITO" desc="Content description for a multiselected pinned tab that is muted in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Multiselected Pinned Muted Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_RECORDING_INCOGNITO" desc="Content description for a tab that is recording media in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Recording Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_PINNED_RECORDING_INCOGNITO" desc="Content description for a pinned tab that is recording media in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Pinned Recording Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_SELECTED_RECORDING_INCOGNITO" desc="Content description for a selected tab that is recording media in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Selected Recording Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_SELECTED_PINNED_RECORDING_INCOGNITO" desc="Content description for a selected pinned tab that is recording media in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Selected Pinned Recording Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_MULTISELECTED_RECORDING_INCOGNITO" desc="Content description for a multiselected tab that is recording media in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Multiselected Recording Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_MULTISELECTED_PINNED_RECORDING_INCOGNITO" desc="Content description for a multiselected pinned tab that is recording media in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Multiselected Pinned Recording Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_SHARING_INCOGNITO" desc="Content description for a tab that is sharing its content in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Sharing Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_PINNED_SHARING_INCOGNITO" desc="Content description for a pinned tab that is sharing its content in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Pinned Sharing Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_SELECTED_SHARING_INCOGNITO" desc="Content description for a selected tab that is sharing its content in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Selected Sharing Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_SELECTED_PINNED_SHARING_INCOGNITO" desc="Content description for a selected pinned tab that is sharing its content in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Selected Pinned Sharing Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_MULTISELECTED_SHARING_INCOGNITO" desc="Content description for a multiselected tab that is sharing its content in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Multiselected Sharing Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_MULTISELECTED_PINNED_SHARING_INCOGNITO" desc="Content description for a multiselected pinned tab that is sharing its content in Private mode.">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Multiselected Pinned Sharing Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_MULTISELECTED_INCOGNITO" desc="Content description for tabs that are multiselected in Private mode">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Multiselected Private Tab
+      </message>
+      <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB_MULTISELECTED_PINNED_INCOGNITO" desc="Content description for tabs that are multiselected and pinned in Private mode">
+        <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, Multiselected Pinned Private Tab
+      </message>
 
       <message name="IDS_KEYBOARD_SHORTCUT_NEW_INCOGNITO_TAB" desc="A text label that appears next to a keyboard shortcut to open a new tab in Private mode in Brave. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
         Open a new tab in Private mode
@@ -264,6 +359,9 @@ CHAR_LIMIT guidelines:
       <if expr="enable_arcore">
         </if>
 
+      <message name="IDS_INSTANCE_SWITCHER_TITLE_INCOGNITO_WINDOW" desc="Title of an instance entry that has private tabs in it.">
+        Private window
+      </message>
       <message name="IDS_INSTANCE_SWITCHER_DESC_INCOGNITO" desc="Description of an instance entry with private tab(s) only.">
         {TAB_COUNT, plural,
           =1 {<ph name="TAB_COUNT_ONE">%1$s</ph> private tab}
