@@ -148,7 +148,7 @@ class BraveShieldsTabHelper
   const raw_ref<BraveShieldsSettingsService> brave_shields_settings_;
 
   PrefChangeRegistrar local_state_change_registrar_;
-  const raw_ref<ephemeral_storage::EphemeralStorageService>
+  const raw_ptr<ephemeral_storage::EphemeralStorageService>
       ephemeral_storage_service_;
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
