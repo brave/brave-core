@@ -75,6 +75,7 @@
 # Disabling signin promo tests as Brave does not support them.
 -ShowSigninPromoTestExplicitBrowserSignin.*
 -ShowSigninPromoTestWithFeatureFlags.*
+-ShowSigninPromoTestWithFeatureFlagsPromoLimitsExperiment.*
 
 # This test crashes due to invalid memory access as described in the comment in
 # PrefChangeRegistrar::~PrefChangeRegistrar:
@@ -662,6 +663,13 @@
 # because it depends on PageEmbeddingsService being created and that service
 # is not created because we disable kHistoryEmbeddings.
 -ContextualTasksContextServiceFactoryTest.CreatesServiceForProfile
+
+# These tests fail because we disable
+# switches::kSyncEnableBookmarksInTransportMode which leads to
+# AreFoldersForAccountStorageAllowed() failing a CHECK
+-All/BookmarkBubbleViewShoppingCollectionTest.IPHNotShown_NotAProduct/1
+-All/BookmarkBubbleViewShoppingCollectionTest.IPHNotShown_NotInCollection/1
+-All/BookmarkBubbleViewShoppingCollectionTest.IPHShown/1
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
