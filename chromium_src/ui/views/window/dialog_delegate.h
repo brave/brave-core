@@ -8,19 +8,20 @@
 
 #include "ui/views/widget/widget_delegate.h"
 
-#define ResetViewShownTimeStampForTesting                                 \
-  set_should_ignore_snapping(bool should_ignore_snapping) {               \
-    should_ignore_snapping_ = should_ignore_snapping;                     \
-  }                                                                       \
-  bool should_ignore_snapping() const { return should_ignore_snapping_; } \
-                                                                          \
- private:                                                                 \
-  bool should_ignore_snapping_ = false;                                   \
-                                                                          \
- public:                                                                  \
+#define ResetViewShownTimeStampForTesting                   \
+  set_should_ignore_snapping(bool should_ignore_snapping) { \
+    should_ignore_snapping_ = should_ignore_snapping;       \
+  }                                                         \
+  bool should_ignore_snapping() const {                     \
+    return should_ignore_snapping_;                         \
+  }                                                         \
+                                                            \
+ private:                                                   \
+  bool should_ignore_snapping_ = false;                     \
+                                                            \
+ public:                                                    \
   void ResetViewShownTimeStampForTesting
 
-class BraveFirstRunDialog;
 class CrashReportPermissionAskDialogView;
 class WindowClosingConfirmDialogView;
 class PlaylistActionDialog;
@@ -34,7 +35,6 @@ class BraveVpnDnsSettingsNotificiationDialogView;
 
 #define CreatePassKey                                                 \
   CreatePassKey_Unused();                                             \
-  friend class ::BraveFirstRunDialog;                                 \
   friend class ::CrashReportPermissionAskDialogView;                  \
   friend class ::WindowClosingConfirmDialogView;                      \
   friend class ::PlaylistActionDialog;                                \
