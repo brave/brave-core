@@ -87,10 +87,11 @@ public class BrowserViewController: UIViewController {
   /// Backdrop used for displaying greyed background for private tabs
   private let webViewContainerBackdrop: UIView = {
     let webViewContainerBackdrop = UIView()
-    webViewContainerBackdrop.backgroundColor = .braveBackground
+    webViewContainerBackdrop.backgroundColor = PrivateModeBrowserColors().chromeBackground
     webViewContainerBackdrop.alpha = 0
     return webViewContainerBackdrop
   }()
+  private var isContentHiddenInBackground: Bool = false
 
   var readerModeBar: ReaderModeBarView?
   var readerModeCache: ReaderModeCache
@@ -715,6 +716,7 @@ public class BrowserViewController: UIViewController {
       header.contentView.alpha = 0
       presentedViewController?.popoverPresentationController?.containerView?.alpha = 0
       presentedViewController?.view.alpha = 0
+      isContentHiddenInBackground = true
     }
 
     // Stop Voice Search and dismiss controller
@@ -742,10 +744,10 @@ public class BrowserViewController: UIViewController {
     guard let scene = notification.object as? UIScene, scene == currentScene else {
       return
     }
-
-    guard let tab = tabManager.selectedTab, tab.isPrivate else {
+    if !isContentHiddenInBackground {
       return
     }
+    isContentHiddenInBackground = false
     // Re-show any components that might have been hidden because they were being displayed
     // as part of a private mode tab
     UIView.animate(
