@@ -75,6 +75,7 @@
 # Disabling signin promo tests as Brave does not support them.
 -ShowSigninPromoTestExplicitBrowserSignin.*
 -ShowSigninPromoTestWithFeatureFlags.*
+-ShowSigninPromoTestWithFeatureFlagsPromoLimitsExperiment.*
 
 # This test crashes due to invalid memory access as described in the comment in
 # PrefChangeRegistrar::~PrefChangeRegistrar:
@@ -119,12 +120,7 @@
 -LoginStateCheckerTest.*
 -ModelQualityLogsUploaderTest.TotalFlowTimeIsRecorded
 -NotificationContentDetectionServiceFactoryTest.DisabledForAndroidArmAndLowEndDevices
--PasswordChangeDelegateImplTest.LoginPasswordFormIsLogged
--PasswordChangeDelegateImplTest.MetricsReportedFlowOffered
--PasswordChangeDelegateImplTest.OtpDetectionIgnoredWhenPasswordChangeNotStarted
--PasswordChangeDelegateImplTest.OtpDetectionProcessedFieldNotFocusableSkip
--PasswordChangeDelegateImplTest.PasswordChangeFlowCanceled
--PasswordChangeDelegateImplTest.WaitingForAgreement
+-PasswordChangeDelegateImplTest.*
 -PersistentNotificationHandlerWithNotificationContentDetectionAndLoggingTest.ReportNotificationAsSafe
 -PersistentNotificationHandlerWithNotificationContentDetectionAndLoggingTest.ReportUnwarnedNotificationAsSpam
 -PersistentNotificationHandlerWithNotificationContentDetectionAndLoggingTest.ReportWarnedNotificationAsSpam
@@ -306,6 +302,7 @@
 
 # These tests fail because we disable safe browsing enhanced protection and
 # patch safe_browsing::IsEnhancedProtectionEnabled to return false
+-All/ClientSideDetectionHostCreditCardFormReferringAppTest.*/*
 -All/ClientSideDetectionServiceTest.*/*
 -ChromeDownloadManagerDelegateTestWithSafeBrowsing.AutoCanceledReport_Sent
 -ChromeDownloadManagerDelegateTestWithSafeBrowsing.CanceledReportAtShutdown_Persisted
@@ -330,6 +327,8 @@
 -DownloadWarningDesktopHatsUtilsTest.ProductSpecificData_EnhancedSafeBrowsing
 -EnhancedProtectionDownloadTest.*
 -ExternalAppRedirectCheckingTest.ShouldReportExternalAppRedirect
+-GeneratedSafeBrowsingPrefTest.ManagementState
+-GeneratedSafeBrowsingPrefTest.UpdatePreference
 -GeneratedSecuritySettingsBundlePrefTest.BundlePrefUpdatesSafeBrowsingState
 -ImmediateDeepScanTest.ESBRequestScan
 -ImmediateDeepScanTest.EncryptedArchive
@@ -648,6 +647,7 @@
 # implements for the omnibox. The upstream test would probably need to be
 # patched to include that registration code.
 -OmniboxControllerTest.CheckDefaultAutocompleteProviders
+-OmniboxEditModelPopupTest.AimPopupEnabledNavigationFallback
 -OmniboxEditModelTest.*
 
 # These tests fail because we disable uploading these event logs
@@ -658,10 +658,21 @@
 # includes entries not supported by Brave (i.e. "@gemini").
 -OmniboxEditModelPopupTest.GetPopupAccessibilityLabelForCurrentSelection_KeywordMode
 
-# This test fails because ContextualTasksContextService cannot be created
-# because it depends on PageEmbeddingsService being created and that service
-# is not created because we disable kHistoryEmbeddings.
+# These tests fail because ContextualTasksContextService cannot be created
+# because it depends on PageEmbeddingsService being created and that service is
+# not created because we disable kHistoryEmbeddings.
 -ContextualTasksContextServiceFactoryTest.CreatesServiceForProfile
+-PageEmbeddingsServiceTest.*
+
+# These tests fail because we disable
+# switches::kSyncEnableBookmarksInTransportMode which leads to
+# AreFoldersForAccountStorageAllowed() failing a CHECK
+-All/BookmarkBubbleViewShoppingCollectionTest.IPHNotShown_NotAProduct/1
+-All/BookmarkBubbleViewShoppingCollectionTest.IPHNotShown_NotInCollection/1
+-All/BookmarkBubbleViewShoppingCollectionTest.IPHShown/1
+
+# Read anything is disabled
+-All/RenderViewContextMenuReadAnythingTest.AppendPageItems/*
 
 # This test fails because we disable Actor Safety Lists component.
 -ActorSafetyListsComponentInstallerPolicyTest.ComponentRegistered
