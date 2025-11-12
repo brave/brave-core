@@ -14,7 +14,7 @@
 
 namespace brave_ads {
 
-TEST(BraveAdsChallengeBypassRistrettoTest, BuildCredential) {
+TEST(BraveAdsCredentialBuilderTest, BuildCredential) {
   // Act
   std::optional<base::Value::Dict> credential = cbr::MaybeBuildCredential(
       cbr::UnblindedToken(cbr::test::kUnblindedTokenBase64),

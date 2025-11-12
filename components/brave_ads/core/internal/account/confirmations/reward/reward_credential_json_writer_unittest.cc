@@ -42,8 +42,8 @@ TEST_F(BraveAdsRewardCredentialJsonWriterTest, WriteRewardCredential) {
   EXPECT_EQ(base::test::ParseJsonDict(
                 R"JSON(
                     {
-                      "signature": "XsaQ/XqKiWfeTCjFDhkyldsx0086qu6tjgJDCKo+f7kA0eA+mdf3Ae+BjPcDDQ8JfVbVQkI5ub394qdTmE2bRw==",
-                      "t": "PLowz2WF2eGD5zfwZjk9p76HXBLDKMq/3EAZHeG/fE2XGQ48jyte+Ve50ZlasOuYL5mwA8CU2aFMlJrt3DDgCw=="
+                      "signature": "jo8LVg8FpHtLKMakT7WcfGulrCB6ttSJpAaMcD95pDKTcdBRVf1yUDEZmhLKXWTIPDCDRCPKEx3gChO4S5GtHw==",
+                      "t": "/mfTAAjHrWmAlLiEktbqNS/dxoMVdnz1esoVplQUs7yG/apAq2K6OeST6lBTKFJmOq7rV8QbY/DF2HFRMcz/JQ=="
                     })JSON"),
             base::test::ParseJsonDict(*reward_credential));
 }

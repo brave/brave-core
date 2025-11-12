@@ -37,11 +37,11 @@ TEST_F(BraveAdsRequestSignedTokensUrlRequestBuilderTest, BuildUrl) {
   expected_mojom_url_request->url = GURL(
       R"(https://mywallet.ads.bravesoftware.com/v3/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)");
   expected_mojom_url_request->headers = {
-      "digest: SHA-256=dbSPIf2biUcc5mfr0b3dlYtVqnyelAFh1LBD6TjnXZc=",
-      R"(signature: keyId="primary",algorithm="ed25519",headers="digest",signature="lyFlFeZ4+u1DnQSbf2rijak+ezjJzpcZbA9c0uiUcz1t9rSgVwQvBnRRyju+jj5ysFcdNSWjj5csJ0vCbNlGAQ==")",
+      "digest: SHA-256=6vJaxnB5ipkIXjrPAgf3+2+lgtNYrjYuySqPDS72azI=",
+      R"(signature: keyId="primary",algorithm="ed25519",headers="digest",signature="7Nwtj+0lxBgRnA2ewJfZBU+s3yo5NlESR6XExLfeQh10vKdrPw6RWcuNLfxj7i5M/V1SNwRAIm9oEOD3xjoGCA==")",
       "content-type: application/json", "accept: application/json"};
   expected_mojom_url_request->content =
-      R"({"blindedTokens":["Ev5JE4/9TZI/5TqyN9JWfJ1To0HBwQw2rWeAPcdjX3Q=","shDzMRNpQKrQAfRctVm4l0Ulaoek0spX8iabH1+Vx00=","kMI3fgomSSNcT1N8d3b+AlZXybqA3st3Ks6XhwaSRF4="]})";
+      R"({"blindedTokens":["+qJiMi6k0hRzRAEN239nLthLqrNm53O78x/PV8I/JS0=","qJRP/aub7Io1osPghMfENIAZ8ImOH7D/tLzuokEHgQQ=","Rpubvx6PW1Emd4MLEUEvcilslF9IXH4rOf6M/DIw0RQ="]})";
   expected_mojom_url_request->content_type = "application/json";
   expected_mojom_url_request->method = mojom::UrlRequestMethodType::kPost;
   EXPECT_EQ(expected_mojom_url_request, mojom_url_request);

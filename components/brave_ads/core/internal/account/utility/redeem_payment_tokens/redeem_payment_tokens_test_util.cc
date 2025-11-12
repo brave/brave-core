@@ -17,7 +17,7 @@ std::string BuildRedeemPaymentTokensUrlResponseBody() {
                     "signature": "J6Lnoz1Ho5P4YDkcufA+WKUdR4C4f8QJARaT3Cko8RZ6dc777od9NQEaetU+xK3LXmQtmA6jfIUcLR3SCIJl0g==",
                     "t": "Z0GXil+GIQLOSSLHJV78jUE8cMxtwXtoROmv3uW8Qecpvx7L076GNI3TN44uF4uleOo2ZTpeKHzM2eeFHO2K6w=="
                   },
-                  "publicKey": "bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU="
+                  "publicKey": "OqhZpUC8B15u+Gc11rQYRl8O3zOSAUIEC2JuDHI32TM="
                 }
               ]
             })";

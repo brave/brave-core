@@ -5,9 +5,9 @@
 
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_test_util.h"
 
+#include <cstddef>
 #include <optional>
 #include <string>
-#include <vector>
 
 #include "base/check.h"
 #include "base/check_op.h"
@@ -15,27 +15,78 @@
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_util.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_info.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_test_util.h"
+#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/batch_dleq_proof.h"
+#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/blinded_token.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/public_key.h"
+#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/signed_token.h"
+#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/signing_key.h"
+#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/signing_key_test_util.h"
+#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/token.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/unblinded_token.h"
+#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/unblinded_token_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/crypto/crypto_util.h"
 
 namespace brave_ads::test {
 
 namespace {
 
+std::optional<cbr::UnblindedTokenList> GenerateUnblindedTokens(size_t count) {
+  // The server generates a random signing key.
+  cbr::SigningKey signing_key = cbr::test::GetSigningKey();
+  std::optional<cbr::PublicKey> public_key = signing_key.GetPublicKey();
+  CHECK(public_key);
+
+  // The client generates random tokens.
+  cbr::TokenList tokens(count);
+
+  // The client blinds the tokens using a blinding scalar. Blinding ensures that
+  // the tokens are not recognizable or linkable to the original value until
+  // they are unblinded.
+  cbr::BlindedTokenList blinded_tokens;
+  for (auto& token : tokens) {
+    std::optional<cbr::BlindedToken> blinded_token = token.Blind();
+    CHECK(blinded_token);
+    blinded_tokens.push_back(*blinded_token);
+  }
+
+  // The server signs the blinded tokens using its signing key. This signature
+  // proves the server’s endorsement of the tokens.
+  cbr::SignedTokenList signed_tokens;
+  for (const auto& blinded_token : blinded_tokens) {
+    std::optional<cbr::SignedToken> signed_token =
+        signing_key.Sign(blinded_token);
+    CHECK(signed_token);
+    signed_tokens.push_back(*signed_token);
+  }
+
+  // The client verifies the batch DLEQ proof using the public key provided by
+  // the server. This step confirms that the signatures are valid and correspond
+  // to the public key.
+  cbr::BatchDLEQProof batch_dleq_proof(blinded_tokens, signed_tokens,
+                                       signing_key);
+  CHECK(batch_dleq_proof.has_value());
+  CHECK(batch_dleq_proof.Verify(blinded_tokens, signed_tokens, *public_key));
+
+  // The client unblinds the signed tokens using the blinding scalar.
+  return batch_dleq_proof.VerifyAndUnblind(tokens, blinded_tokens,
+                                           signed_tokens, *public_key);
+}
+
 ConfirmationTokenInfo BuildConfirmationToken(
-    const std::string& unblinded_token_base64,
+    const cbr::UnblindedToken& unblinded_token,
     const WalletInfo& wallet) {
   ConfirmationTokenInfo confirmation_token;
 
-  confirmation_token.unblinded_token =
-      cbr::UnblindedToken(unblinded_token_base64);
+  confirmation_token.unblinded_token = unblinded_token;
+  std::optional<std::string> unblinded_token_base64 =
+      unblinded_token.EncodeBase64();
+  CHECK(unblinded_token_base64);
 
   confirmation_token.public_key =
-      cbr::PublicKey("RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnDDk=");
+      cbr::PublicKey("OqhZpUC8B15u+Gc11rQYRl8O3zOSAUIEC2JuDHI32TM=");
 
   std::optional<std::string> signature_base64 =
-      crypto::Sign(unblinded_token_base64, wallet.secret_key_base64);
+      crypto::Sign(*unblinded_token_base64, wallet.secret_key_base64);
   CHECK(signature_base64);
   confirmation_token.signature_base64 = *signature_base64;
 
@@ -46,48 +97,58 @@ ConfirmationTokenInfo BuildConfirmationToken(
 
 }  // namespace
 
+ConfirmationTokenList RefillRandomConfirmationTokens(size_t count) {
+  CHECK_GT(count, 0U);
+
+  std::optional<cbr::UnblindedTokenList> unblinded_tokens =
+      GenerateUnblindedTokens(count);
+
+  const WalletInfo wallet = Wallet();
+
+  ConfirmationTokenList confirmation_tokens;
+  for (const auto& unblinded_token : *unblinded_tokens) {
+    const ConfirmationTokenInfo confirmation_token =
+        BuildConfirmationToken(unblinded_token, wallet);
+    confirmation_tokens.push_back(confirmation_token);
+  }
+
+  GetConfirmationTokens().Add(confirmation_tokens);
+
+  return confirmation_tokens;
+}
+
 ConfirmationTokenList RefillConfirmationTokens(size_t count) {
   CHECK_GT(count, 0U);
 
   ConfirmationTokenList confirmation_tokens = BuildConfirmationTokens(count);
-  GetConfirmationTokens().Set(confirmation_tokens);
+  GetConfirmationTokens().Add(confirmation_tokens);
+
   return confirmation_tokens;
 }
 
 ConfirmationTokenInfo BuildConfirmationToken() {
-  const ConfirmationTokenList confirmation_tokens =
-      BuildConfirmationTokens(/*count=*/1);
-  CHECK(!confirmation_tokens.empty());
-  return confirmation_tokens.front();
+  const cbr::UnblindedToken unblinded_token =
+      cbr::test::UnblindedTokens().front();
+
+  const WalletInfo wallet = Wallet();
+
+  return BuildConfirmationToken(unblinded_token, wallet);
 }
 
 ConfirmationTokenList BuildConfirmationTokens(size_t count) {
   CHECK_GT(count, 0U);
+  CHECK_LE(count, 50U);
 
   const WalletInfo wallet = Wallet();
-
-  const std::vector<std::string> unblinded_tokens_base64 = {
-      R"(PLowz2WF2eGD5zfwZjk9p76HXBLDKMq/3EAZHeG/fE2XGQ48jyte+Ve50ZlasOuYL5mwA8CU2aFMlJrt3DDgC3B1+VD/uyHPfa/+bwYRrpVH5YwNSDEydVx8S4r+BYVY)",
-      R"(hfrMEltWLuzbKQ02Qixh5C/DWiJbdOoaGaidKZ7Mv+cRq5fyxJqemE/MPlARPhl6NgXPHUeyaxzd6/Lk6YHlfXbBA023DYvGMHoKm15NP/nWnZ1V3iLkgOOHZuk80Z4K)",
-      R"(bbpQ1DcxfDA+ycNg9WZvIwinjO0GKnCon1UFxDLoDOLZVnKG3ufruNZi/n8dO+G2AkTiWkUKbi78xCyKsqsXnGYUlA/6MMEOzmR67rZhMwdJHr14Fu+TCI9JscDlWepa)",
-      R"(OlDIXpWRR1/B+1pjPbLyc5sx0V+d7QzQb4NDGUI6F676jy8tL++u57SF4DQhvdEpBrKID+j27RLrbjsecXSjR5oieuH4Bx5mHqTb/rAPI6RpaAXtfXYrCYbf7EPwHTMU)",
-      R"(Y579V5BUcCzAFj6qNX7YnIr+DvH0mugb/nnY5UINdjxziyDJlejJwi0kPaRGmqbVT3+B51lpErt8e66z0jTbAxBfhtXKARFKtGH8WccB6NfCa85XHBmlcuv1+zcFPDJi)",
-      R"(+MPQfSo6UcaZNWtfmbd5je9UIr+FVrCWHl6I5C1ZFD7y7bjP/yz7flTjV+l5mKulbCvsRna7++MhbBz6iC0FvVZGYXLeLn2HSAM7cDgqyW6SEuPzlDeZT6kkTNI7JcQm)",
-      R"(CRXUzo7S0X//u0RGsO534vCoIbrsXgbzLfWw8CLML0CkgMltEGxM6XwBTICl4dqqfhIcLhD0f1WFod7JpuEkj5pW/rg7nl48EX6nmekgd3D2Hz8JgJnSarzP/8+3l+MW)",
-      R"(hQ+6+jh5DUUBFhhGn7bPLDjqrUIKNi/T8QDt1x01bcW9PLADg6aS73dzrVBsHav44+4q1QhFE/93u0KHVtZ1RPKMqkt8MIiC6RG575102nGRTJDA2kSOgUM75hjDsI8z)",
-      R"(6tKJHOtQqpNzFjLGT0gvXlCF0GGKrqQlK82e2tc7gJvQkorg60Y21jEAg8JHbU8D3mBK/riZCILoi1cPCiBDAdhWJNVm003mZ0ShjmbESnKhL/NxRv/0/PB3GQ5iydoc)",
-      R"(ujGlRHnz+UF0h8i6gYDnfeZDUj7qZZz6o29ZJFa3XN2g+yVXgRTws1yv6RAtLCr39OQso6FAT12o8GAvHVEzmRqyzm2XU9gMK5WrNtT/fhr8gQ9RvupdznGKOqmVbuIc)"};
-
-  const size_t modulo = unblinded_tokens_base64.size();
 
   ConfirmationTokenList confirmation_tokens;
 
   for (size_t i = 0; i < count; ++i) {
-    const std::string& unblinded_token_base64 =
-        unblinded_tokens_base64.at(i % modulo);
-    const ConfirmationTokenInfo confirmation_token =
-        BuildConfirmationToken(unblinded_token_base64, wallet);
+    const cbr::UnblindedToken unblinded_token =
+        cbr::test::UnblindedTokens().at(i);
 
+    const ConfirmationTokenInfo confirmation_token =
+        BuildConfirmationToken(unblinded_token, wallet);
     confirmation_tokens.push_back(confirmation_token);
   }
 

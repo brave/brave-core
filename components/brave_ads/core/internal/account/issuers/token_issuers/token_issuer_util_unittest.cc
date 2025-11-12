@@ -32,7 +32,7 @@ TEST_F(BraveAdsTokenIssuerUtilTest,
       /*ping=*/7'200'000, /*confirmation_token_issuer_public_keys=*/{},
       /*payment_token_issuer_public_keys=*/
       {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
-       {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1}});
+       {"OqhZpUC8B15u+Gc11rQYRl8O3zOSAUIEC2JuDHI32TM=", 0.1}});
 
   SetIssuers(issuers);
 
@@ -53,7 +53,7 @@ TEST_F(BraveAdsTokenIssuerUtilTest, TokenIssuerDoesNotExistForPaymentsType) {
   const IssuersInfo issuers = test::BuildIssuers(
       /*ping=*/7'200'000,
       /*confirmation_token_issuer_public_keys=*/
-      {{"bCKwI6tx5LWrZKxWbW5CxaVIGe2N0qGYLfFE+38urCg=", 0.0},
+      {{"OqhZpUC8B15u+Gc11rQYRl8O3zOSAUIEC2JuDHI32TM=", 0.0},
        {"cKo0rk1iS8Obgyni0X3RRoydDIGHsivTkfX/TM1Xl24=", 0.0}},
       /*payment_token_issuer_public_keys=*/{});
 
@@ -92,7 +92,7 @@ TEST_F(BraveAdsTokenIssuerUtilTest, TokenIssuerPublicKeyExistsForPaymentsType) {
   // Act & Assert
   EXPECT_TRUE(TokenIssuerPublicKeyExistsForType(
       TokenIssuerType::kPayments,
-      cbr::PublicKey("bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=")));
+      cbr::PublicKey("OqhZpUC8B15u+Gc11rQYRl8O3zOSAUIEC2JuDHI32TM=")));
 }
 
 TEST_F(BraveAdsTokenIssuerUtilTest,
@@ -111,11 +111,11 @@ TEST_F(BraveAdsTokenIssuerUtilTest, GetTokenIssuerForType) {
   const IssuersInfo issuers = test::BuildIssuers(
       /*ping=*/7'200'000,
       /*confirmation_token_issuer_public_keys=*/
-      {{"bCKwI6tx5LWrZKxWbW5CxaVIGe2N0qGYLfFE+38urCg=", 0.0},
+      {{"OqhZpUC8B15u+Gc11rQYRl8O3zOSAUIEC2JuDHI32TM=", 0.0},
        {"QnShwT9vRebch3WDu28nqlTaNCU5MaOF1n4VV4Q3K1g=", 0.0}},
       /*payment_token_issuer_public_keys=*/
       {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
-       {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1}});
+       {"OqhZpUC8B15u+Gc11rQYRl8O3zOSAUIEC2JuDHI32TM=", 0.1}});
 
   // Act
   std::optional<TokenIssuerInfo> token_issuer =
@@ -128,7 +128,7 @@ TEST_F(BraveAdsTokenIssuerUtilTest, GetTokenIssuerForType) {
                   TokenIssuerType::kPayments,
                   TokenIssuerPublicKeyMap{
                       {"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
-                      {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1}}));
+                      {"OqhZpUC8B15u+Gc11rQYRl8O3zOSAUIEC2JuDHI32TM=", 0.1}}));
 }
 
 TEST_F(BraveAdsTokenIssuerUtilTest, DoNotGetTokenIssuerForMissingType) {
@@ -136,7 +136,7 @@ TEST_F(BraveAdsTokenIssuerUtilTest, DoNotGetTokenIssuerForMissingType) {
   const IssuersInfo issuers = test::BuildIssuers(
       /*ping=*/7'200'000,
       /*confirmation_token_issuer_public_keys=*/
-      {{"bCKwI6tx5LWrZKxWbW5CxaVIGe2N0qGYLfFE+38urCg=", 0.0},
+      {{"OqhZpUC8B15u+Gc11rQYRl8O3zOSAUIEC2JuDHI32TM=", 0.0},
        {"QnShwT9vRebch3WDu28nqlTaNCU5MaOF1n4VV4Q3K1g=", 0.0}},
       /*payment_token_issuer_public_keys=*/{});
 

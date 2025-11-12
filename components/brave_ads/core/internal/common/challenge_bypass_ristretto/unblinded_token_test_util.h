@@ -13,6 +13,8 @@ namespace brave_ads::cbr::test {
 UnblindedToken GetUnblindedToken();
 UnblindedTokenList GetUnblindedTokens();
 
+const UnblindedTokenList& UnblindedTokens();
+
 }  // namespace brave_ads::cbr::test
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_CHALLENGE_BYPASS_RISTRETTO_UNBLINDED_TOKEN_TEST_UTIL_H_
