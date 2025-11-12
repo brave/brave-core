@@ -1,10 +1,6 @@
 include_rules = [
-  "+brave/components/brave_wallet/browser/permission_utils.h",
+  "+brave/components/brave_wallet",
   "+brave/components/permissions",
-  "+components/grit/brave_components_strings.h",
-  "+components/resources/android",
-  "+components/strings/grit/components_strings.h",
-  "+components/vector_icons",
-  "+third_party/widevine/cdm",
-  "+ui/gfx",
+  "+components/grit",
+  "+third_party/widevine/cdm/buildflags.h",
 ]

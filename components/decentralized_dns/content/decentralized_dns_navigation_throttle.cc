@@ -9,7 +9,6 @@
 
 #include "base/functional/bind.h"
 #include "base/task/sequenced_task_runner.h"
-#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/decentralized_dns/content/decentralized_dns_interstitial_controller_client.h"
 #include "brave/components/decentralized_dns/content/decentralized_dns_opt_in_page.h"
 #include "brave/components/decentralized_dns/content/ens_offchain_lookup_interstitial_controller_client.h"
@@ -22,6 +21,11 @@
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
 #include "net/base/net_errors.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
 namespace decentralized_dns {
 
@@ -42,10 +46,12 @@ void DecentralizedDnsNavigationThrottle::MaybeCreateAndAdd(
     return;
   }
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   // Don't create the throttle if Brave Wallet is disabled by policy
   if (!brave_wallet::IsAllowed(user_prefs)) {
     return;
   }
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
   registry.AddThrottle(std::make_unique<DecentralizedDnsNavigationThrottle>(
       registry, user_prefs, local_state, locale));

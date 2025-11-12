@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_PERMISSIONS_BRAVE_DAPP_PERMISSION_PROMPT_DIALOG_CONTROLLER_ANDROID_H_
 
 #include <jni.h>
+
 #include <string>
 #include <vector>
 

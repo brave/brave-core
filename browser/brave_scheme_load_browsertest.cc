@@ -6,7 +6,10 @@
 #include "base/path_service.h"
 #include "base/strings/pattern.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#endif
 #include "brave/components/constants/brave_paths.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
@@ -335,6 +338,7 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
   TestURLIsNotLoadedInPrivateWindow("brave://rewards");
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
 IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
                        WalletPageIsNotAllowedInPrivateWindow) {
   EXPECT_TRUE(IsURLAllowedInIncognito(GURL("http://wallet")));
@@ -347,6 +351,7 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
                        WalletPageIsNotAllowedInGuestWindow) {
   TestURLIsNotLoadedInGuestWindow(GURL("brave://wallet"));
 }
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
 IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
                        BraveSyncPageIsNotAllowedInPrivateWindow) {

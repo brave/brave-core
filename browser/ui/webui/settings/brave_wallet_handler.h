@@ -10,15 +10,20 @@
 #include <utility>
 
 #include "base/memory/weak_ptr.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "chrome/browser/ui/webui/settings/settings_page_ui_handler.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "chrome/browser/ui/webui/settings/settings_page_ui_handler.h"
+#endif
 
 class PrefService;
 class Profile;
 class TestBraveWalletHandler;
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
 class BraveWalletHandler : public settings::SettingsPageUIHandler {
  public:
   BraveWalletHandler();
@@ -73,5 +78,6 @@ class BraveWalletHandler : public settings::SettingsPageUIHandler {
   base::OnceClosure chain_callback_for_testing_;
   base::WeakPtrFactory<BraveWalletHandler> weak_ptr_factory_{this};
 };
+#endif
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_WALLET_HANDLER_H_

@@ -3,33 +3,37 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-static_library("content") {
-  sources = [
-    "decentralized_dns_interstitial_controller_client.cc",
-    "decentralized_dns_interstitial_controller_client.h",
-    "decentralized_dns_navigation_throttle.cc",
-    "decentralized_dns_navigation_throttle.h",
-    "decentralized_dns_opt_in_page.cc",
-    "decentralized_dns_opt_in_page.h",
-    "ens_offchain_lookup_interstitial_controller_client.cc",
-    "ens_offchain_lookup_interstitial_controller_client.h",
-    "ens_offchain_lookup_opt_in_page.cc",
-    "ens_offchain_lookup_opt_in_page.h",
-  ]
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 
-  deps = [
-    "//base",
-    "//brave/components/brave_wallet/common",
-    "//brave/components/decentralized_dns/core",
-    "//brave/components/resources:static_resources",
-    "//brave/components/resources:strings",
-    "//components/prefs",
-    "//components/security_interstitials/content:security_interstitial_page",
-    "//components/security_interstitials/core",
-    "//components/user_prefs",
-    "//content/public/browser",
-    "//net",
-    "//ui/base",
-    "//url",
-  ]
+if (enable_brave_wallet) {
+  static_library("content") {
+    sources = [
+      "decentralized_dns_interstitial_controller_client.cc",
+      "decentralized_dns_interstitial_controller_client.h",
+      "decentralized_dns_navigation_throttle.cc",
+      "decentralized_dns_navigation_throttle.h",
+      "decentralized_dns_opt_in_page.cc",
+      "decentralized_dns_opt_in_page.h",
+      "ens_offchain_lookup_interstitial_controller_client.cc",
+      "ens_offchain_lookup_interstitial_controller_client.h",
+      "ens_offchain_lookup_opt_in_page.cc",
+      "ens_offchain_lookup_opt_in_page.h",
+    ]
+
+    deps = [
+      "//base",
+      "//brave/components/brave_wallet/common",
+      "//brave/components/decentralized_dns/core",
+      "//brave/components/resources:static_resources",
+      "//brave/components/resources:strings",
+      "//components/prefs",
+      "//components/security_interstitials/content:security_interstitial_page",
+      "//components/security_interstitials/core",
+      "//components/user_prefs",
+      "//content/public/browser",
+      "//net",
+      "//ui/base",
+      "//url",
+    ]
+  }
 }

@@ -15,6 +15,13 @@
 #include "base/functional/bind.h"
 #include "base/json/json_writer.h"
 #include "base/values.h"
+#include "brave/grit/brave_generated_resources.h"
+#include "chrome/browser/profiles/profile.h"
+#include "components/prefs/pref_service.h"
+#include "content/public/browser/web_ui.h"
+#include "ui/base/l10n/l10n_util.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
@@ -24,12 +31,9 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
-#include "brave/grit/brave_generated_resources.h"
-#include "chrome/browser/profiles/profile.h"
-#include "components/prefs/pref_service.h"
-#include "content/public/browser/web_ui.h"
-#include "ui/base/l10n/l10n_util.h"
+#endif
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
 namespace {
 
 base::Value::Dict MakeSelectValue(const std::u16string& name,
@@ -505,3 +509,4 @@ void BraveWalletHandler::IsNativeWalletEnabled(const base::Value::List& args) {
   ResolveJavascriptCallback(
       args[0], base::Value(::brave_wallet::IsNativeWalletEnabled()));
 }
+#endif

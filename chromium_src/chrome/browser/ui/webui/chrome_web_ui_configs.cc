@@ -5,12 +5,16 @@
 
 #include "chrome/browser/ui/webui/chrome_web_ui_configs.h"
 
-#include "brave/browser/ui/webui/brave_wallet/wallet_page_ui.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_account/features.h"
 #include "brave/components/brave_education/buildflags.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "content/public/browser/webui_config_map.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/browser/ui/webui/brave_wallet/wallet_page_ui.h"
+#endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
@@ -27,9 +31,11 @@
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_top_ui.h"
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/browser/ui/webui/brave_shields/shields_panel_ui.h"
-#include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
 #include "brave/browser/ui/webui/private_new_tab_page/brave_private_new_tab_ui.h"
 #include "brave/browser/ui/webui/webcompat_reporter/webcompat_reporter_ui.h"
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
+#endif
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/browser/ui/webui/speedreader/speedreader_toolbar_ui.h"
 #endif
@@ -91,8 +97,10 @@ void RegisterChromeWebUIConfigs() {
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   map.AddWebUIConfig(std::make_unique<SpeedreaderToolbarUIConfig>());
 #endif
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   map.AddWebUIConfig(std::make_unique<WalletPageUIConfig>());
   map.AddWebUIConfig(std::make_unique<WalletPanelUIConfig>());
+#endif
   map.AddWebUIConfig(
       std::make_unique<webcompat_reporter::WebcompatReporterUIConfig>());
   if (brave_account::features::IsBraveAccountEnabled()) {

@@ -16,7 +16,7 @@
 #include "brave/components/brave_search_conversion/features.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
-#include "brave/components/brave_wallet/common/features.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/debounce/core/common/features.h"
 #include "brave/components/google_sign_in_permission/features.h"
 #include "brave/components/ntp_background_images/browser/features.h"
@@ -29,6 +29,10 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/components/brave_vpn/common/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/components/brave_wallet/common/features.h"
 #endif
 
 #define BRAVE_AI_CHAT_FLAGS \
@@ -48,6 +52,12 @@
 #define BRAVE_VPN_FLAG
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#define BRAVE_WALLET_FLAG &brave_wallet::features::kNativeBraveWalletFeature,
+#else
+#define BRAVE_WALLET_FLAG
+#endif
+
 // clang-format off
 #define kForceWebContentsDarkMode kForceWebContentsDarkMode,                   \
     BRAVE_AI_CHAT_FLAGS                                                        \
@@ -55,7 +65,7 @@
     BRAVE_VPN_FLAG                                                             \
     &brave_rewards::features::kBraveRewards,                                   \
     &brave_search_conversion::features::kOmniboxBanner,                        \
-    &brave_wallet::features::kNativeBraveWalletFeature,                        \
+    BRAVE_WALLET_FLAG                                                          \
     &playlist::features::kPlaylist,                                            \
     &download::features::kParallelDownloading,                                 \
     &preferences::features::kBraveBackgroundVideoPlayback,                     \
@@ -87,6 +97,7 @@
 #undef BRAVE_AI_CHAT_FLAGS
 #undef BRAVE_WEB_DISCOVERY_FLAG
 #undef BRAVE_VPN_FLAG
+#undef BRAVE_WALLET_FLAG
 
 namespace chrome {
 namespace android {

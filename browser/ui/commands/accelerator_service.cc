@@ -21,7 +21,7 @@
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
-#include "brave/components/brave_wallet/common/pref_names.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/commands/browser/accelerator_pref_manager.h"
 #include "brave/components/commands/common/accelerator_parsing.h"
@@ -55,6 +55,10 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
 #include "brave/components/brave_wayback_machine/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/components/brave_wallet/common/pref_names.h"
 #endif
 
 namespace commands {
@@ -417,7 +421,11 @@ bool AcceleratorService::IsCommandDisabledByPolicy(int command_id) const {
     case IDC_SHOW_BRAVE_WALLET:
     case IDC_SHOW_BRAVE_WALLET_PANEL:
     case IDC_CLOSE_BRAVE_WALLET_PANEL:
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
       return pref_service_->GetBoolean(brave_wallet::prefs::kDisabledByPolicy);
+#else
+      return true;  // Wallet not compiled in, always disabled
+#endif
     case IDC_SHOW_BRAVE_REWARDS:
     case IDC_OFFERS_AND_REWARDS_FOR_PAGE:
       return pref_service_->GetBoolean(brave_rewards::prefs::kDisabledByPolicy);

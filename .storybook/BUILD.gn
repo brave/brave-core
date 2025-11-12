@@ -5,6 +5,7 @@
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 
 group("storybook") {
@@ -20,10 +21,13 @@ group("storybook") {
     "//brave/components/brave_rewards/core/mojom:mojom_js",
     "//brave/components/brave_shields/core/common:mojom_js",
     "//brave/components/brave_vpn/common/mojom:mojom_js",
-    "//brave/components/brave_wallet/common:mojom_js",
     "//mojo/public/js:bindings",
     "//mojo/public/js:resources",
   ]
+
+  if (enable_brave_wallet) {
+    deps += [ "//brave/components/brave_wallet/common:mojom_js" ]
+  }
 
   if (enable_ai_chat) {
     deps += [ "//brave/components/ai_chat/core/common/mojom:mojom_js" ]

@@ -19,10 +19,14 @@
 #include "brave/browser/net/brave_site_hacks_network_delegate_helper.h"
 #include "brave/browser/net/brave_stp_util.h"
 #include "brave/browser/net/brave_user_agent_network_delegate_helper.h"
-#include "brave/browser/net/decentralized_dns_network_delegate_helper.h"
 #include "brave/browser/net/global_privacy_control_network_delegate_helper.h"
 #include "brave/browser/net/search_ads_header_network_delegate_helper.h"
 #include "brave/components/brave_shields/core/common/features.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/browser/net/decentralized_dns_network_delegate_helper.h"
+#endif
 #include "brave/components/brave_user_agent/common/features.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/browser_process.h"
@@ -63,9 +67,11 @@ void BraveRequestHandler::SetupCallbacks() {
       base::BindRepeating(brave::OnBeforeURLRequest_CommonStaticRedirectWork);
   before_url_request_callbacks_.push_back(callback);
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   callback = base::BindRepeating(
       decentralized_dns::OnBeforeURLRequest_DecentralizedDnsPreRedirectWork);
   before_url_request_callbacks_.push_back(callback);
+#endif
 
   if (base::FeatureList::IsEnabled(
           brave_shields::features::kBraveLocalhostAccessPermission)) {

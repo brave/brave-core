@@ -6,6 +6,10 @@
 #ifndef BRAVE_COMPONENTS_PERMISSIONS_CONTEXTS_BRAVE_WALLET_PERMISSION_CONTEXT_H_
 #define BRAVE_COMPONENTS_PERMISSIONS_CONTEXTS_BRAVE_WALLET_PERMISSION_CONTEXT_H_
 
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+
 #include <map>
 #include <optional>
 #include <queue>
@@ -104,5 +108,7 @@ class BraveWalletPermissionContext
 };
 
 }  // namespace permissions
+
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
 #endif  // BRAVE_COMPONENTS_PERMISSIONS_CONTEXTS_BRAVE_WALLET_PERMISSION_CONTEXT_H_

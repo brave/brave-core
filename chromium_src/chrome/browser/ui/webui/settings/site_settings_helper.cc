@@ -8,10 +8,14 @@
 #include <string_view>
 #include <vector>
 
-#include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_pref_provider.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
+#endif
 
 #define HasRegisteredGroupName HasRegisteredGroupName_ChromiumImpl
 #define GetVisiblePermissionCategories \
@@ -56,7 +60,7 @@
   {ContentSettingsType::BRAVE_WEBCOMPAT_WEB_SOCKETS_POOL, nullptr}, \
   {ContentSettingsType::BRAVE_WEBCOMPAT_ALL, nullptr}, \
   {ContentSettingsType::BRAVE_SHIELDS_METADATA, nullptr}, \
-  {ContentSettingsType::BRAVE_CARDANO, "cardano"}, \
+  {ContentSettingsType::BRAVE_CARDANO, "cardano"},                    \
   {ContentSettingsType::BRAVE_PSST, nullptr},
 // clang-format on
 
@@ -120,6 +124,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
   if (type == ContentSettingsType::BRAVE_LOCALHOST_ACCESS) {
     return true;
   }
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   if (type == ContentSettingsType::BRAVE_ETHEREUM) {
     return true;
   }
@@ -129,6 +134,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
   if (type == ContentSettingsType::BRAVE_CARDANO) {
     return true;
   }
+#endif
   if (type == ContentSettingsType::BRAVE_SHIELDS) {
     return true;
   }
@@ -146,12 +152,14 @@ std::vector<ContentSettingsType> GetVisiblePermissionCategories(
   types.push_back(ContentSettingsType::BRAVE_LOCALHOST_ACCESS);
   types.push_back(ContentSettingsType::BRAVE_OPEN_AI_CHAT);
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   // Only add Web3-related content settings if wallet is allowed
   if (brave_wallet::IsAllowedForContext(profile)) {
     types.push_back(ContentSettingsType::BRAVE_ETHEREUM);
     types.push_back(ContentSettingsType::BRAVE_SOLANA);
     types.push_back(ContentSettingsType::BRAVE_CARDANO);
   }
+#endif
 
   return types;
 }

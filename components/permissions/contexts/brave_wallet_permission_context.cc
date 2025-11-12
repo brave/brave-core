@@ -5,6 +5,10 @@
 
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
 
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+
 #include <optional>
 #include <utility>
 
@@ -433,3 +437,5 @@ void BraveWalletPermissionContext::ResetAllPermissions(
 }
 
 }  // namespace permissions
+
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)

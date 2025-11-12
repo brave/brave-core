@@ -37,6 +37,7 @@
 #include "brave/browser/ui/views/toolbar/side_panel_button.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/brave_switches.h"
 #include "brave/components/playlist/core/common/features.h"
 #include "brave/components/sidebar/browser/constants.h"
@@ -279,6 +280,10 @@ class SidebarBrowserTest : public InProcessBrowserTest {
     }
 #endif
 
+#if !BUILDFLAG(ENABLE_BRAVE_WALLET)
+    item_count -= 1;
+#endif
+
     return item_count;
   }
 
@@ -425,6 +430,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, WebTypePanelTest) {
   EXPECT_EQ(0, tab_model()->active_index());
   EXPECT_EQ(tab_model()->GetWebContentsAt(0)->GetVisibleURL(), iter->url);
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   // Activate second sidebar item(wallet) and check it's loaded at current tab.
   iter = std::ranges::find(items, SidebarItem::BuiltInItemType::kWallet,
                            &SidebarItem::built_in_item_type);
@@ -432,10 +438,12 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, WebTypePanelTest) {
   controller()->ActivateItemAt(std::distance(items.begin(), iter));
   EXPECT_EQ(0, tab_model()->active_index());
   EXPECT_EQ(tab_model()->GetWebContentsAt(0)->GetVisibleURL(), iter->url);
+#endif
   // New tab is not created.
   EXPECT_EQ(2, tab_model()->count());
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, IterateBuiltInWebTypeTest) {
   // Click builtin wallet item and it's loaded at current active tab.
   const auto items = model()->GetAllSidebarItems();
@@ -504,6 +512,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, IterateBuiltInWebTypeTest) {
   EXPECT_EQ(0, tab_model()->active_index());
 #endif
 }
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
                        BookmarksPanelShownAfterReadingListTest) {
@@ -1136,6 +1145,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, UnManagedPanelEntryTest) {
   EXPECT_EQ(SidePanelEntryId::kBookmarks, panel_ui->GetCurrentEntryId());
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
                        OpenUnManagedPanelAfterDeletingDefaultWebTypeItem) {
   auto* panel_ui = browser()->GetFeatures().side_panel_ui();
@@ -1156,6 +1166,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
   WaitUntil(base::BindLambdaForTesting(
       [&]() { return GetSidePanel()->GetVisible(); }));
 }
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, TabSpecificAndGlobalPanelsTest) {
   // Create another tab.

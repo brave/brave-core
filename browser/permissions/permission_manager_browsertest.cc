@@ -3,7 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "components/permissions/permission_manager.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "build/buildflag.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
 
 #include <array>
 
@@ -28,6 +31,7 @@
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "components/network_session_configurator/common/network_switches.h"
 #include "components/permissions/content_setting_permission_context_base.h"
+#include "components/permissions/permission_manager.h"
 #include "components/permissions/permission_request_manager.h"
 #include "components/permissions/permissions_client.h"
 #include "content/public/browser/web_contents.h"
@@ -488,3 +492,5 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest, GetCanonicalOrigin) {
 }
 
 }  // namespace permissions
+
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)

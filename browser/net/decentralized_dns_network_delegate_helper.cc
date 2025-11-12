@@ -10,11 +10,6 @@
 #include <vector>
 
 #include "base/check.h"
-#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
-#include "brave/components/brave_wallet/browser/json_rpc_service.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/decentralized_dns/core/constants.h"
 #include "brave/components/decentralized_dns/core/utils.h"
 #include "brave/components/ipfs/ipfs_utils.h"
@@ -23,6 +18,15 @@
 #include "content/public/browser/browser_context.h"
 #include "net/base/net_errors.h"
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+#include "brave/components/brave_wallet/browser/json_rpc_service.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
+
 namespace decentralized_dns {
 
 int OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
@@ -30,6 +34,7 @@ int OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
     std::shared_ptr<brave::BraveRequestInfo> ctx) {
   DCHECK(!next_callback.is_null());
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   if (!ctx->browser_context || ctx->browser_context->IsOffTheRecord() ||
       !g_browser_process) {
     return net::OK;
@@ -82,10 +87,12 @@ int OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
 
     return net::ERR_IO_PENDING;
   }
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
   return net::OK;
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
 void OnBeforeURLRequest_EnsRedirectWork(
     const brave::ResponseCallback& next_callback,
     std::shared_ptr<brave::BraveRequestInfo> ctx,
@@ -147,5 +154,6 @@ void OnBeforeURLRequest_UnstoppableDomainsRedirectWork(
     next_callback.Run();
   }
 }
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
 }  // namespace decentralized_dns

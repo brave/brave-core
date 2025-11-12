@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 import("//extensions/buildflags/buildflags.gni")
@@ -40,8 +41,6 @@ brave_browser_net_sources = [
   "//brave/browser/net/brave_system_request_handler.h",
   "//brave/browser/net/brave_user_agent_network_delegate_helper.cc",
   "//brave/browser/net/brave_user_agent_network_delegate_helper.h",
-  "//brave/browser/net/decentralized_dns_network_delegate_helper.cc",
-  "//brave/browser/net/decentralized_dns_network_delegate_helper.h",
   "//brave/browser/net/global_privacy_control_network_delegate_helper.cc",
   "//brave/browser/net/global_privacy_control_network_delegate_helper.h",
   "//brave/browser/net/resource_context_data.cc",
@@ -52,11 +51,17 @@ brave_browser_net_sources = [
   "//brave/browser/net/url_context.h",
 ]
 
+if (enable_brave_wallet) {
+  brave_browser_net_sources += [
+    "//brave/browser/net/decentralized_dns_network_delegate_helper.cc",
+    "//brave/browser/net/decentralized_dns_network_delegate_helper.h",
+  ]
+}
+
 brave_browser_net_deps = [
   "//base",
   "//brave/app:brave_generated_resources_grit",
   "//brave/browser:browser_process",
-  "//brave/browser/brave_wallet",
   "//brave/browser/profiles:util",
   "//brave/common",
   "//brave/components/brave_ads/browser",
@@ -68,13 +73,8 @@ brave_browser_net_deps = [
   "//brave/components/brave_shields/content/browser",
   "//brave/components/brave_shields/core/browser",
   "//brave/components/brave_shields/core/common",
-  "//brave/components/brave_wallet/browser",
-  "//brave/components/brave_wallet/common",
-  "//brave/components/brave_wallet/common:mojom",
   "//brave/components/constants",
   "//brave/components/constants:brave_service_key_helper",
-  "//brave/components/decentralized_dns/content",
-  "//brave/components/decentralized_dns/core",
   "//brave/components/geolocation",
   "//brave/components/query_filter",
   "//brave/components/safebrowsing",
@@ -102,6 +102,17 @@ brave_browser_net_deps = [
   "//third_party/re2",
   "//url",
 ]
+
+if (enable_brave_wallet) {
+  brave_browser_net_deps += [
+    "//brave/browser/brave_wallet",
+    "//brave/components/brave_wallet/browser",
+    "//brave/components/brave_wallet/common",
+    "//brave/components/brave_wallet/common:mojom",
+    "//brave/components/decentralized_dns/content",
+    "//brave/components/decentralized_dns/core",
+  ]
+}
 
 if (enable_extensions) {
   brave_browser_net_deps += [ "//extensions/common:common_constants" ]

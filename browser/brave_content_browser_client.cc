@@ -28,11 +28,15 @@
 #include "brave/browser/brave_shields/brave_farbling_service_factory.h"
 #include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
+#include "brave/browser/cosmetic_filters/cosmetic_filters_tab_helper.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
-#include "brave/browser/cosmetic_filters/cosmetic_filters_tab_helper.h"
+#endif
 #include "brave/browser/debounce/debounce_service_factory.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
@@ -71,11 +75,7 @@
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_shields/core/common/shields_settings.mojom.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_p3a_private.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/components/brave_wallet/common/common_utils.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/containers/buildflags/buildflags.h"
@@ -83,7 +83,10 @@
 #include "brave/components/cosmetic_filters/common/cosmetic_filters.mojom.h"
 #include "brave/components/de_amp/browser/de_amp_body_handler.h"
 #include "brave/components/debounce/content/browser/debounce_navigation_throttle.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/components/decentralized_dns/content/decentralized_dns_navigation_throttle.h"
+#endif
 #include "brave/components/email_aliases/features.h"
 #include "brave/components/global_privacy_control/global_privacy_control_utils.h"
 #include "brave/components/google_sign_in_permission/google_sign_in_permission_throttle.h"
@@ -296,6 +299,18 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/brave_browser_main_extra_parts_p3a.h"
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
+#include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl.h"
+#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
+#include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_p3a_private.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
+#endif
+
 namespace {
 
 bool HandleURLReverseOverrideRewrite(GURL* url,
@@ -372,6 +387,7 @@ void BindCosmeticFiltersResources(
                                 std::move(receiver)));
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
 void MaybeBindWalletP3A(
     content::RenderFrameHost* const frame_host,
     mojo::PendingReceiver<brave_wallet::mojom::BraveWalletP3A> receiver) {
@@ -388,6 +404,7 @@ void MaybeBindWalletP3A(
         std::move(receiver));
   }
 }
+#endif
 
 void BindBraveSearchFallbackHost(
     content::ChildProcessId process_id,
@@ -666,6 +683,7 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
       .Add<brave_rewards::mojom::RewardsPageHandler>();
 
 #if !BUILDFLAG(IS_ANDROID)
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   registry.ForWebUI<WalletPageUI>()
       .Add<brave_wallet::mojom::PageHandlerFactory>()
       .Add<brave_rewards::mojom::RewardsPageHandler>();
@@ -673,6 +691,7 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
   registry.ForWebUI<WalletPanelUI>()
       .Add<brave_wallet::mojom::PanelHandlerFactory>()
       .Add<brave_rewards::mojom::RewardsPageHandler>();
+#endif
 
   auto ntp_refresh_registration =
       registry.ForWebUI<BraveNewTabPageUI>()
@@ -868,6 +887,7 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
         base::BindRepeating(&BindBraveSearchDefaultHost));
   }
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   map->Add<brave_wallet::mojom::BraveWalletP3A>(
       base::BindRepeating(&MaybeBindWalletP3A));
   if (brave_wallet::IsAllowedForContext(
@@ -883,6 +903,7 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
       }
     }
   }
+#endif
 
   map->Add<skus::mojom::SkusService>(
       base::BindRepeating(&MaybeBindSkusSdkImpl));
@@ -891,7 +912,7 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
       base::BindRepeating(&MaybeBindBraveVpnImpl));
 #endif
 
-#if BUILDFLAG(IS_ANDROID)
+#if BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_BRAVE_WALLET)
   content::RegisterWebUIControllerInterfaceBinder<
       brave_wallet::mojom::PageHandlerFactory, AndroidWalletPageUI>(map);
 #endif
@@ -1278,10 +1299,12 @@ void BraveContentBrowserClient::CreateThrottlesForNavigation(
       context->IsTor());
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   decentralized_dns::DecentralizedDnsNavigationThrottle::MaybeCreateAndAdd(
       registry, user_prefs::UserPrefs::Get(context),
       g_browser_process->local_state(),
       g_browser_process->GetApplicationLocale());
+#endif
 
   // Debounce
   debounce::DebounceNavigationThrottle::MaybeCreateAndAdd(

@@ -29,8 +29,7 @@
 #include "brave/components/brave_rewards/core/mojom/rewards_engine.mojom.h"
 #include "brave/components/brave_rewards/core/remote_worker.h"
 #include "brave/components/brave_rewards/core/rewards_flags.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/services/bat_rewards/public/interfaces/rewards_engine_factory.mojom.h"
 #include "build/build_config.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -52,9 +51,11 @@ namespace network {
 class SimpleURLLoader;
 }  // namespace network
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
 namespace brave_wallet {
 class BraveWalletService;
 }
+#endif
 
 namespace brave_rewards {
 
@@ -86,7 +87,12 @@ class RewardsServiceImpl final : public RewardsService,
                      RequestImageCallback request_image_callback,
                      CancelImageRequestCallback cancel_image_request_callback,
                      content::StoragePartition* storage_partition,
-                     brave_wallet::BraveWalletService* brave_wallet_service);
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+                     brave_wallet::BraveWalletService* brave_wallet_service
+#else
+                     void* brave_wallet_service
+#endif
+  );
 
   RewardsServiceImpl(const RewardsServiceImpl&) = delete;
   RewardsServiceImpl& operator=(const RewardsServiceImpl&) = delete;
@@ -286,6 +292,7 @@ class RewardsServiceImpl final : public RewardsService,
                            LoadURLCallback callback,
                            std::unique_ptr<std::string> response_body);
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   void OnGetSPLTokenAccountBalance(
       GetSPLTokenAccountBalanceCallback callback,
       const std::string& amount,
@@ -293,6 +300,7 @@ class RewardsServiceImpl final : public RewardsService,
       const std::string& amount_string,
       brave_wallet::mojom::SolanaProviderError error,
       const std::string& error_message);
+#endif
 
   void ShowNotificationTipsPaid();
 
@@ -443,7 +451,11 @@ class RewardsServiceImpl final : public RewardsService,
   const RequestImageCallback request_image_callback_;
   const CancelImageRequestCallback cancel_image_request_callback_;
   raw_ptr<content::StoragePartition> storage_partition_;  // NOT OWNED
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   raw_ptr<brave_wallet::BraveWalletService> brave_wallet_service_ = nullptr;
+#else
+  raw_ptr<void> brave_wallet_service_ = nullptr;
+#endif
   mojo::AssociatedReceiver<mojom::RewardsEngineClient> receiver_;
   mojo::AssociatedRemote<mojom::RewardsEngine> engine_;
   mojo::Remote<mojom::RewardsEngineFactory> engine_factory_;

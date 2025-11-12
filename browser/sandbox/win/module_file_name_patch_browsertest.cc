@@ -13,7 +13,7 @@
 // This header is private to //content/browser and can be used only from
 // content_browser_tests, but we don't have such target, so we workaround it
 // with `nogncheck`.
-#include "content/browser/gpu/gpu_process_host.h"  // nogncheck
+#include "content/browser/gpu/gpu_process_host.h"
 
 using sandbox::policy::features::kModuleFileNamePatch;
 

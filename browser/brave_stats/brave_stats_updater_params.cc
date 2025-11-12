@@ -17,7 +17,7 @@
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_referrals/common/pref_names.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
-#include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "build/build_config.h"
 #include "chrome/browser/headless/headless_mode_util.h"
@@ -25,6 +25,10 @@
 #include "content/public/common/content_switches.h"
 #include "net/base/url_util.h"
 #include "url/gurl.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/components/brave_wallet/browser/pref_names.h"
+#endif
 
 namespace brave_stats {
 
@@ -115,12 +119,16 @@ std::string BraveStatsUpdaterParams::GetProcessArchParam() const {
 }
 
 std::string BraveStatsUpdaterParams::GetWalletEnabledParam() const {
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   uint8_t usage_bitset = 0;
   if (wallet_last_unlocked_ > last_reported_wallet_unlock_) {
     usage_bitset = UsageBitfieldFromTimestamp(wallet_last_unlocked_,
                                               last_reported_wallet_unlock_);
   }
   return base::NumberToString(usage_bitset);
+#else
+  return "0";
+#endif
 }
 
 void BraveStatsUpdaterParams::LoadPrefs() {
@@ -129,10 +137,12 @@ void BraveStatsUpdaterParams::LoadPrefs() {
   last_check_month_ = stats_pref_service_->GetInteger(kLastCheckMonth);
   first_check_made_ = stats_pref_service_->GetBoolean(kFirstCheckMade);
   week_of_installation_ = stats_pref_service_->GetString(kWeekOfInstallation);
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   wallet_last_unlocked_ =
       stats_pref_service_->GetTime(kBraveWalletLastUnlockTime);
   last_reported_wallet_unlock_ =
       stats_pref_service_->GetTime(kBraveWalletPingReportedUnlockTime);
+#endif
   if (week_of_installation_.empty())
     week_of_installation_ = GetLastMondayAsYMD();
 
@@ -157,9 +167,11 @@ void BraveStatsUpdaterParams::SavePrefs() {
   stats_pref_service_->SetBoolean(kFirstCheckMade, true);
   stats_pref_service_->SetString(kWeekOfInstallation, week_of_installation_);
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   last_reported_wallet_unlock_ = wallet_last_unlocked_;
   stats_pref_service_->SetTime(kBraveWalletPingReportedUnlockTime,
                                last_reported_wallet_unlock_);
+#endif
 }
 
 std::string BraveStatsUpdaterParams::BooleanToString(bool bool_value) const {

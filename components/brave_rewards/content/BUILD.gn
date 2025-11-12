@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/brave_rewards/core/engine/config.gni")
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//extensions/buildflags/buildflags.gni")
 
 static_library("content") {
@@ -35,15 +36,12 @@ static_library("content") {
     "//brave/components/brave_rewards/core:features",
     "//brave/components/brave_rewards/core/buildflags",
     "//brave/components/brave_rewards/core/engine",
-    "//brave/components/brave_wallet/browser",
-    "//brave/components/brave_wallet/common",
-    "//brave/components/brave_wallet/common:mojom",
+    "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/ntp_background_images/common",
     "//brave/components/p3a_utils",
     "//brave/components/resources",
     "//brave/components/resources:strings_grit",
     "//brave/components/services/bat_rewards/public/interfaces",
-    "//brave/components/services/brave_wallet/public/mojom",
     "//brave/components/time_period_storage",
     "//components/country_codes",
     "//components/favicon/core",
@@ -63,6 +61,15 @@ static_library("content") {
     "//ui/gfx",
     "//url",
   ]
+
+  if (enable_brave_wallet) {
+    deps += [
+      "//brave/components/brave_wallet/browser",
+      "//brave/components/brave_wallet/common",
+      "//brave/components/brave_wallet/common:mojom",
+      "//brave/components/services/brave_wallet/public/mojom",
+    ]
+  }
 
   public_deps = [ "//brave/components/brave_rewards/core/engine:headers" ]
 }

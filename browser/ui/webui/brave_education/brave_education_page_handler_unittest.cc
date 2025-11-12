@@ -13,6 +13,7 @@
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_education/education_urls.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "content/public/test/browser_task_environment.h"
@@ -64,7 +65,9 @@ class BraveEducationPageHandlerTest : public testing::Test {
     supported_commands.insert(
         supported_commands.end(),
         {brave_browser_command::mojom::Command::kOpenRewardsOnboarding,
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
          brave_browser_command::mojom::Command::kOpenWalletOnboarding,
+#endif
          brave_browser_command::mojom::Command::kOpenVPNOnboarding,
 #if BUILDFLAG(ENABLE_AI_CHAT)
          brave_browser_command::mojom::Command::kOpenAIChat
@@ -91,6 +94,7 @@ class BraveEducationPageHandlerTest : public testing::Test {
   std::vector<std::string> actions_;
 };
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
 TEST_F(BraveEducationPageHandlerTest, BasicCommandsExecuted) {
   auto& handler = CreateHandler();
 
@@ -107,6 +111,7 @@ TEST_F(BraveEducationPageHandlerTest, BasicCommandsExecuted) {
   EXPECT_EQ(actions()[0], "open-url: chrome://wallet/");
   EXPECT_EQ(actions()[1], "open-rewards-panel");
 }
+#endif
 
 TEST_F(BraveEducationPageHandlerTest, VPNCommandsExecuted) {
   auto& handler = CreateHandler();
@@ -151,10 +156,12 @@ TEST_F(BraveEducationPageHandlerTest, OffTheRecordProfile) {
   // calls `CanExecuteCommand` before calling `ExecuteCommand`
   //
   // Since OTR does not allow, callback is immediately called w/ false
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   handler->CanExecuteCommand(
       brave_browser_command::mojom::Command::kOpenWalletOnboarding,
       future.GetCallback());
   ASSERT_FALSE(future.Get());
+#endif
 
   handler->CanExecuteCommand(
       brave_browser_command::mojom::Command::kOpenRewardsOnboarding,

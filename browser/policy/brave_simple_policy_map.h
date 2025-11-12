@@ -12,7 +12,7 @@
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
-#include "brave/components/brave_wallet/common/pref_names.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/de_amp/common/pref_names.h"
@@ -41,7 +41,7 @@
 #endif
 
 #if BUILDFLAG(DEPRECATE_IPFS)
-#include "brave/components/ipfs/ipfs_prefs.h"  // nogncheck
+#include "brave/components/ipfs/ipfs_prefs.h"
 #endif                                         // BUILDFLAG(DEPRECATE_IPFS)
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
@@ -52,13 +52,19 @@
 #include "brave/components/brave_wayback_machine/pref_names.h"
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/components/brave_wallet/common/pref_names.h"
+#endif
+
 namespace policy {
 
 inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
     {policy::key::kBraveRewardsDisabled,
      brave_rewards::prefs::kDisabledByPolicy, base::Value::Type::BOOLEAN},
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
     {policy::key::kBraveWalletDisabled, brave_wallet::prefs::kDisabledByPolicy,
      base::Value::Type::BOOLEAN},
+#endif
     {policy::key::kBraveShieldsDisabledForUrls,
      kManagedBraveShieldsDisabledForUrls, base::Value::Type::LIST},
     {policy::key::kBraveShieldsEnabledForUrls,
