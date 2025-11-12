@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/chrome_browser_interface_binders_webui_parts_desktop.cc b/chrome/browser/chrome_browser_interface_binders_webui_parts_desktop.cc
-index 8f31d8c6757f6810f1810cd2060ca2f7741c0ebd..89365301bff0e6c24aff28890ab11b01f6806b91 100644
+index cefb74e5d7d0b9837d557000d082d8fc721839a2..499fe7de4dbd6eecab877216378774f25ed3a1c8 100644
 --- a/chrome/browser/chrome_browser_interface_binders_webui_parts_desktop.cc
 +++ b/chrome/browser/chrome_browser_interface_binders_webui_parts_desktop.cc
 @@ -577,6 +577,7 @@ void PopulateChromeWebUIFrameInterfaceBrokersTrustedPartsDesktop(
