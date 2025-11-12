@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/history/history_ui.cc b/chrome/browser/ui/webui/history/history_ui.cc
-index 24d39b8aa0b757240944cb835317b6b477098a73..bcdde5f592c01d381ce56db9a7a9bdf608b18cff 100644
+index f13c85b49910ad80921753eaa2be32063e0c852c..4fdd77f596f8b285c265d0d1178591a5e253f3e4 100644
 --- a/chrome/browser/ui/webui/history/history_ui.cc
 +++ b/chrome/browser/ui/webui/history/history_ui.cc
-@@ -84,6 +84,7 @@ content::WebUIDataSource* CreateAndAddHistoryUIHTMLSource(Profile* profile) {
+@@ -83,6 +83,7 @@ content::WebUIDataSource* CreateAndAddHistoryUIHTMLSource(Profile* profile) {
        base::FeatureList::IsEnabled(syncer::kReplaceSyncPromosWithSignInPromos));
  
    HistoryUtil::PopulateCommonSourceForHistory(source, profile);
