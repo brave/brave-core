@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/setup/unpack_archive.h b/chrome/installer/setup/unpack_archive.h
-index debb8f6917b10c7b0bbd9b83720248f2ff998e5b..377cda68cdbe49bc4c80bba3387458da89d77892 100644
+index debb8f6917b10c7b0bbd9b83720248f2ff998e5b..0322f8234ef8c25773cca504b75c67d404eb6100 100644
 --- a/chrome/installer/setup/unpack_archive.h
 +++ b/chrome/installer/setup/unpack_archive.h
-@@ -18,16 +18,19 @@ namespace installer {
+@@ -18,16 +18,17 @@ namespace installer {
  class InstallationState;
  class InstallerState;
  
@@ -22,9 +22,7 @@ index debb8f6917b10c7b0bbd9b83720248f2ff998e5b..377cda68cdbe49bc4c80bba3387458da
      const base::FilePath& setup_exe,
      const base::CommandLine& cmd_line,
 -    const InstallerState& installer_state);
-+    const InstallerState& installer_state,
-+    ArchiveType* archive_type,
-+    base::FilePath& uncompressed_archive);
++    InstallerState& installer_state);
  
  }  // namespace installer
  

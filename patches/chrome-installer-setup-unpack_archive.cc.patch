@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/setup/unpack_archive.cc b/chrome/installer/setup/unpack_archive.cc
-index 564547f24ef30a7b73ce59efdcfcf0bfd5842ef3..1f4f4f77b3c721668465d3970a6bf31cc958d53c 100644
+index 564547f24ef30a7b73ce59efdcfcf0bfd5842ef3..482ecb8bd878a784411e07d4733450f5f915f8b4 100644
 --- a/chrome/installer/setup/unpack_archive.cc
 +++ b/chrome/installer/setup/unpack_archive.cc
 @@ -7,6 +7,8 @@
@@ -86,7 +86,7 @@ index 564547f24ef30a7b73ce59efdcfcf0bfd5842ef3..1f4f4f77b3c721668465d3970a6bf31c
    // UMA tells us the following about the time required for uncompression as of
    // M75:
    // --- Foreground (<10%) ---
-@@ -63,32 +110,63 @@ base::expected<base::FilePath, InstallStatus> UncompressChromeArchive(
+@@ -63,73 +110,109 @@ base::expected<base::FilePath, InstallStatus> UncompressChromeArchive(
    // More information can also be found with metrics:
    // Setup.Install.LzmaUnPackNTSTATUS_CompressedChromeArchive
    // Setup.Install.LzmaUnPackNTSTATUS_ChromeArchivePatch
@@ -147,21 +147,22 @@ index 564547f24ef30a7b73ce59efdcfcf0bfd5842ef3..1f4f4f77b3c721668465d3970a6bf31c
      const base::FilePath& setup_exe,
      const base::CommandLine& cmd_line,
 -    const InstallerState& installer_state) {
-+    const InstallerState& installer_state,
-+    ArchiveType* archive_type,
-+    base::FilePath& uncompressed_archive) {
-+  *archive_type = UNKNOWN_ARCHIVE_TYPE;
++    InstallerState& installer_state) {
++  installer_state.archive_type = UNKNOWN_ARCHIVE_TYPE;
    base::FilePath install_archive =
        cmd_line.GetSwitchValuePath(switches::kInstallArchive);
    // If this is an uncompressed installation then pass the uncompressed
    // chrome.7z directly, so the chrome.packed.7z unpacking step will be
    // bypassed.
 -  base::FilePath uncompressed_archive =
-+  uncompressed_archive =
++  installer_state.uncompressed_archive =
        cmd_line.GetSwitchValuePath(switches::kUncompressedArchive);
-   if (!install_archive.empty() || uncompressed_archive.empty()) {
-     if (!uncompressed_archive.empty()) {
-@@ -97,26 +175,26 @@ base::expected<base::FilePath, InstallStatus> UnpackChromeArchive(
+-  if (!install_archive.empty() || uncompressed_archive.empty()) {
+-    if (!uncompressed_archive.empty()) {
++  if (!install_archive.empty() || installer_state.uncompressed_archive.empty()) {
++    if (!installer_state.uncompressed_archive.empty()) {
+       LOG(ERROR)
+           << "A compressed archive and an uncompressed archive were both "
               "provided. This is unsupported. Please provide one archive.";
        return base::unexpected(UNSUPPORTED_OPTION);
      }
@@ -199,34 +200,45 @@ index 564547f24ef30a7b73ce59efdcfcf0bfd5842ef3..1f4f4f77b3c721668465d3970a6bf31c
 -          << " not found.";
 +              << archive_helper->compressed_archive().value();
 +      RETURN_IF_ERROR(UncompressAndPatchChromeArchive(
-+          original_state, installer_state, archive_helper.get(), archive_type,
++          original_state, installer_state, archive_helper.get(), &installer_state.archive_type,
 +          previous_version));
-+      uncompressed_archive = archive_helper->target();
-+      DCHECK(!uncompressed_archive.empty());
++      installer_state.uncompressed_archive = archive_helper->target();
++      DCHECK(!installer_state.uncompressed_archive.empty());
      }
    }
  
-@@ -124,12 +202,18 @@ base::expected<base::FilePath, InstallStatus> UnpackChromeArchive(
+   // Check for an uncompressed archive alongside the current executable if one
    // was not given or generated.
-   if (uncompressed_archive.empty()) {
-     uncompressed_archive = setup_exe.DirName().Append(kChromeArchive);
+-  if (uncompressed_archive.empty()) {
+-    uncompressed_archive = setup_exe.DirName().Append(kChromeArchive);
 -    if (base::PathExists(uncompressed_archive)) {
++  if (installer_state.uncompressed_archive.empty()) {
++    installer_state.uncompressed_archive = setup_exe.DirName().Append(kChromeArchive);
 +  }
 +
-+  if (*archive_type == UNKNOWN_ARCHIVE_TYPE) {
++  if (installer_state.archive_type == UNKNOWN_ARCHIVE_TYPE) {
 +    // An archive was not uncompressed or patched above.
-+    if (uncompressed_archive.empty() ||
-+        !base::PathExists(uncompressed_archive)) {
++    if (installer_state.uncompressed_archive.empty() ||
++        !base::PathExists(installer_state.uncompressed_archive)) {
        LOG(ERROR) << "Cannot install Chrome without an uncompressed archive.";
        installer_state.WriteInstallerResult(
            INVALID_ARCHIVE, IDS_INSTALL_INVALID_ARCHIVE_BASE, nullptr);
        return base::unexpected(INVALID_ARCHIVE);
      }
-+    *archive_type = FULL_ARCHIVE_TYPE;
++    installer_state.archive_type = FULL_ARCHIVE_TYPE;
    }
  
    // Unpack the uncompressed archive.
-@@ -160,7 +244,7 @@ base::expected<base::FilePath, InstallStatus> UnpackChromeArchive(
+@@ -151,7 +234,7 @@ base::expected<base::FilePath, InstallStatus> UnpackChromeArchive(
+   // More information can also be found with metric:
+   // Setup.Install.LzmaUnPackNTSTATUS_UncompressedChromeArchive
+   installer_state.SetStage(UNPACKING);
+-  UnPackStatus unpack_status = UnPackArchive(uncompressed_archive, unpack_path,
++  UnPackStatus unpack_status = UnPackArchive(installer_state.uncompressed_archive, unpack_path,
+                                              /*output_file=*/nullptr);
+   RecordUnPackMetrics(unpack_status,
+                       UnPackConsumer::UNCOMPRESSED_CHROME_ARCHIVE);
+@@ -160,7 +243,7 @@ base::expected<base::FilePath, InstallStatus> UnpackChromeArchive(
          UNPACKING_FAILED, IDS_INSTALL_UNCOMPRESSION_FAILED_BASE, nullptr);
      return base::unexpected(UNPACKING_FAILED);
    }
