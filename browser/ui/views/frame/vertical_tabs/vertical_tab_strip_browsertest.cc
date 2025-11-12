@@ -13,7 +13,6 @@
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/tabs/brave_tab_menu_model.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
-#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
@@ -1150,7 +1149,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripSwitchTest, DisableSwitch) {
 class VerticalTabStripScrollBarFlagTest : public VerticalTabStripBrowserTest {
  public:
   VerticalTabStripScrollBarFlagTest()
-      : feature_list_(tabs::features::kBraveVerticalTabScrollBar) {}
+      : feature_list_(tabs::kBraveVerticalTabScrollBar) {}
 
   ~VerticalTabStripScrollBarFlagTest() override = default;
 
@@ -1171,7 +1170,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripScrollBarFlagTest, MigrationTest) {
 class VerticalTabStripHideCompletelyTest : public VerticalTabStripBrowserTest {
  public:
   VerticalTabStripHideCompletelyTest()
-      : feature_list_(tabs::features::kBraveVerticalTabHideCompletely) {}
+      : feature_list_(tabs::kBraveVerticalTabHideCompletely) {}
 
   ~VerticalTabStripHideCompletelyTest() override = default;
 

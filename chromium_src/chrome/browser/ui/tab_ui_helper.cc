@@ -7,7 +7,7 @@
 
 #include <string>
 
-#include "brave/browser/ui/tabs/features.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "content/public/browser/navigation_controller.h"
 
 #define GetTitle GetTitle_ChromiumImpl
@@ -27,7 +27,7 @@ void TabUIHelper::SetCustomTitle(const std::optional<std::u16string>& title) {
 }
 
 std::u16string TabUIHelper::GetTitle() const {
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveRenamingTabs)) {
+  if (!base::FeatureList::IsEnabled(tabs::kBraveRenamingTabs)) {
     return GetTitle_ChromiumImpl();
   }
 

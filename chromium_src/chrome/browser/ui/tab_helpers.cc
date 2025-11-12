@@ -4,13 +4,13 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/brave_tab_helpers.h"
-#include "brave/browser/ui/tabs/features.h"
 #include "chrome/browser/font_prewarmer_tab_helper.h"
 #include "chrome/browser/net/net_error_tab_helper.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/ui_features.h"
 
 // Enable ThumbnailTabHelper
-#define kWebUITabStrip kWebUITabStrip) || base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs
+#define kWebUITabStrip kWebUITabStrip) || base::FeatureList::IsEnabled(tabs::kBraveSharedPinnedTabs
 #define BRAVE_TAB_HELPERS brave::AttachTabHelpers(web_contents);
 
 // Dummy class for avoiding some TabHelpers from being added to the WebContents.

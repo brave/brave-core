@@ -16,15 +16,15 @@
 #include "base/feature_list.h"
 #include "base/functional/callback_forward.h"
 #include "base/notimplemented.h"
-#include "brave/browser/ui/tabs/brave_tab_layout_constants.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
-#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/layout_constants.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/views/tabs/alert_indicator_button.h"
 #include "chrome/browser/ui/views/tabs/tab_close_button.h"
 #include "chrome/browser/ui/views/tabs/tab_slot_controller.h"
@@ -103,7 +103,7 @@ BEGIN_METADATA(BraveTab, RenameTextfield)
 END_METADATA
 
 BraveTab::BraveTab(TabSlotController* controller) : Tab(controller) {
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveRenamingTabs)) {
+  if (!base::FeatureList::IsEnabled(tabs::kBraveRenamingTabs)) {
     return;
   }
   rename_textfield_ =
@@ -180,7 +180,7 @@ std::optional<SkColor> BraveTab::GetGroupColor() const {
     return {};
   }
 
-  if (!tabs::features::HorizontalTabsUpdateEnabled()) {
+  if (!tabs::HorizontalTabsUpdateEnabled()) {
     return Tab::GetGroupColor();
   }
 

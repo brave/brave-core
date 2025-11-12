@@ -9,11 +9,11 @@
 
 #include "base/check.h"
 #include "brave/browser/ui/color/brave_color_id.h"
-#include "brave/browser/ui/tabs/brave_tab_layout_constants.h"
-#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/layout_constants.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/tab_group_model.h"
 #include "chrome/browser/ui/tabs/tab_style.h"
 #include "chrome/browser/ui/views/tabs/tab_group_style.h"
@@ -51,8 +51,7 @@ void BraveTabGroupHeader::AddedToWidget() {
 void BraveTabGroupHeader::VisualsChanged() {
   TabGroupHeader::VisualsChanged();
 
-  if (!tabs::features::HorizontalTabsUpdateEnabled() &&
-      !ShouldShowVerticalTabs()) {
+  if (!tabs::HorizontalTabsUpdateEnabled() && !ShouldShowVerticalTabs()) {
     return;
   }
 
@@ -60,7 +59,7 @@ void BraveTabGroupHeader::VisualsChanged() {
   title_->SetSubpixelRenderingEnabled(false);
 
   if (!ShouldShowVerticalTabs()) {
-    title_->SetLineHeight(brave_tabs::kTabGroupLineHeight);
+    title_->SetLineHeight(tabs::kTabGroupLineHeight);
   }
 
   auto font_list = title_->font_list();
@@ -100,11 +99,10 @@ void BraveTabGroupHeader::VisualsChanged() {
 }
 
 int BraveTabGroupHeader::GetDesiredWidth() const {
-  if (!tabs::features::HorizontalTabsUpdateEnabled() ||
-      ShouldShowVerticalTabs()) {
+  if (!tabs::HorizontalTabsUpdateEnabled() || ShouldShowVerticalTabs()) {
     return TabGroupHeader::GetDesiredWidth();
   }
-  return brave_tabs::kHorizontalTabInset * 2 + title_chip_->width();
+  return tabs::kHorizontalTabInset * 2 + title_chip_->width();
 }
 
 void BraveTabGroupHeader::Layout(PassKey) {

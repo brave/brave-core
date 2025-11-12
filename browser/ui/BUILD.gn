@@ -33,7 +33,6 @@ group("ui_public_dependencies") {
     "//chrome/browser/ui:ui_public_dependencies",
   ]
   public_deps = [
-    ":brave_tab_features",
     ":brave_tab_prefs",
     "//brave/components/brave_wayback_machine/buildflags",
     "//brave/components/containers/buildflags",
@@ -1394,46 +1393,16 @@ source_set("ui") {
   }
 }
 
-source_set("brave_layout_constants") {
-  visibility = [ "//chrome/browser/ui:layout_constants" ]
-  sources = [
-    "brave_layout_constants.cc",
-    "brave_layout_constants.h",
-    "tabs/brave_tab_layout_constants.cc",
-    "tabs/brave_tab_layout_constants.h",
-  ]
-
-  # Circular dependency on "//chrome/browser/ui:layout_constants" is addressed
-  # via brave_chrome_browser_ui_layout_constants_allow_circular_includes_from
-  # in brave/browser/sources.gni. This approach is only done as a one-off
-  # because "//chrome/browser/ui/views" target is a `component` and it depends
-  # on "//chrome/browser/ui:layout_constants".
-  deps = [
-    ":brave_tab_features",
-    "//ui/base",
-  ]
-}
-
 source_set("brave_tab_prefs") {
   sources = [
     "tabs/brave_tab_prefs.cc",
     "tabs/brave_tab_prefs.h",
   ]
-  deps = [
-    ":brave_tab_features",
-    "//components/prefs",
-  ]
-}
+  deps = [ "//components/prefs" ]
 
-source_set("brave_tab_features") {
-  sources = [
-    "tabs/features.cc",
-    "tabs/features.h",
-  ]
-  deps = [
-    "//base",
-    "//chrome/browser/ui:ui_features",
-  ]
+  if (!is_android) {
+    deps += [ "//chrome/browser/ui/tabs:features" ]
+  }
 }
 
 source_set("unit_tests") {

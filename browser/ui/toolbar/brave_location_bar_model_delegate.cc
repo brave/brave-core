@@ -8,10 +8,10 @@
 #include "base/check.h"
 #include "base/feature_list.h"
 #include "brave/browser/ui/brave_scheme_utils.h"
-#include "brave/browser/ui/tabs/features.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/navigation_entry.h"
@@ -53,7 +53,7 @@ BraveLocationBarModelDelegate::FormattedStringWithEquivalentMeaning(
 
 bool BraveLocationBarModelDelegate::GetURL(GURL* url) const {
 #if !BUILDFLAG(IS_ANDROID)
-  if (base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs) &&
+  if (base::FeatureList::IsEnabled(tabs::kBraveSharedPinnedTabs) &&
       tab_strip_model_->profile()->GetPrefs()->GetBoolean(
           brave_tabs::kSharedPinnedTab)) {
     content::NavigationEntry* entry = GetNavigationEntry();

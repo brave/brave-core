@@ -7,9 +7,9 @@
 
 #include "base/feature_list.h"
 #include "base/strings/utf_string_conversions.h"
-#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/public/constants.h"
 #include "chrome/browser/ui/tab_ui_helper.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/public/tab_features.h"
 
 #define GetExtraDataForTab GetExtraDataForTab_ChromiumImpl
@@ -21,7 +21,7 @@
 std::map<std::string, std::string> BrowserLiveTabContext::GetExtraDataForTab(
     int index) const {
   auto extra_data = GetExtraDataForTab_ChromiumImpl(index);
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveRenamingTabs)) {
+  if (!base::FeatureList::IsEnabled(tabs::kBraveRenamingTabs)) {
     return extra_data;
   }
 

@@ -5,9 +5,8 @@
 
 #include "chrome/browser/ui/tabs/tab_style.h"
 
-#include "brave/browser/ui/tabs/brave_tab_layout_constants.h"
-#include "brave/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/layout_constants.h"
+#include "chrome/browser/ui/tabs/features.h"
 
 namespace {
 
@@ -16,42 +15,41 @@ namespace {
 class BraveTabStyle : public TabStyle {
  public:
   int GetTabOverlap() const override {
-    if (!tabs::features::HorizontalTabsUpdateEnabled()) {
+    if (!tabs::HorizontalTabsUpdateEnabled()) {
       return TabStyle::GetTabOverlap();
     }
-    return brave_tabs::kHorizontalTabOverlap;
+    return tabs::kHorizontalTabOverlap;
   }
 
   int GetTopCornerRadius() const override {
-    if (!tabs::features::HorizontalTabsUpdateEnabled()) {
+    if (!tabs::HorizontalTabsUpdateEnabled()) {
       return TabStyle::GetTopCornerRadius();
     }
-    return brave_tabs::kTabBorderRadius;
+    return tabs::kTabBorderRadius;
   }
 
   int GetBottomCornerRadius() const override {
-    if (!tabs::features::HorizontalTabsUpdateEnabled()) {
+    if (!tabs::HorizontalTabsUpdateEnabled()) {
       return TabStyle::GetBottomCornerRadius();
     }
-    return brave_tabs::kTabBorderRadius;
+    return tabs::kTabBorderRadius;
   }
 
   gfx::Insets GetContentsInsets() const override {
-    if (!tabs::features::HorizontalTabsUpdateEnabled()) {
+    if (!tabs::HorizontalTabsUpdateEnabled()) {
       return TabStyle::GetContentsInsets();
     }
-    return gfx::Insets::VH(0, brave_tabs::GetHorizontalTabPadding() +
-                                  brave_tabs::kHorizontalTabInset);
+    return gfx::Insets::VH(
+        0, tabs::GetHorizontalTabPadding() + tabs::kHorizontalTabInset);
   }
 
   int GetPinnedWidth(const bool is_split) const override {
     // We can ignore |is_split| because we're always using same width.
-    return brave_tabs::GetHorizontalTabHeight() +
-           brave_tabs::kHorizontalTabInset * 2;
+    return tabs::GetHorizontalTabHeight() + tabs::kHorizontalTabInset * 2;
   }
 
   int GetDragHandleExtension(int height) const override {
-    if (!tabs::features::HorizontalTabsUpdateEnabled()) {
+    if (!tabs::HorizontalTabsUpdateEnabled()) {
       return TabStyle::GetDragHandleExtension(height);
     }
     // The "drag handle extension" is the amount of space in DIP at the top of

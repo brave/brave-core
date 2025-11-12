@@ -8,12 +8,12 @@
 #include <memory>
 
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
-#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/frame/brave_non_client_hit_test_helper.h"
 #include "brave/browser/ui/views/frame/brave_window_frame_graphic.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/view_ids.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "ui/base/hit_test.h"
@@ -74,7 +74,7 @@ int BraveBrowserFrameViewMac::GetTopInset(bool restored) const {
     return 0;
   }
 
-  if (!tabs::features::HorizontalTabsUpdateEnabled()) {
+  if (!tabs::HorizontalTabsUpdateEnabled()) {
     return BrowserFrameViewMac::GetTopInset(restored);
   }
 

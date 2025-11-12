@@ -743,14 +743,3 @@ if (is_mac) {
   brave_chrome_browser_allow_circular_includes_from +=
       [ "//brave/browser/upgrade_when_idle" ]
 }
-
-# brave/browser/ui/brave_layout_constants.cc includes some headers (e.g. from
-# brave/browser/ui/tabs) that are currently in //brave/browser/ui:ui target,
-# which depends on //chrome/browser:browser_public_dependencies.
-# This approach is only done as a one-off here because
-# "//chrome/browser/ui/views" target is a `component` and it depends on
-# "//chrome/browser/ui:layout_constants".
-brave_chrome_browser_ui_layout_constants_public_deps =
-    [ "//brave/browser/ui:brave_layout_constants" ]
-brave_chrome_browser_ui_layout_constants_allow_circular_includes_from =
-    [ "//brave/browser/ui:brave_layout_constants" ]

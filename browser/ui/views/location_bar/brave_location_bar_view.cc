@@ -15,7 +15,6 @@
 #include "brave/browser/themes/brave_theme_service.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
-#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
 #include "brave/browser/ui/views/brave_news/brave_news_action_icon_view.h"
 #include "brave/browser/ui/views/location_bar/brave_search_conversion/promotion_button_controller.h"
@@ -29,6 +28,7 @@
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/omnibox/omnibox_edit_model.h"
 #include "chrome/browser/ui/omnibox/omnibox_theme.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 #include "chrome/browser/ui/views/omnibox/omnibox_view_views.h"
@@ -354,7 +354,7 @@ int BraveLocationBarView::GetBorderRadius() const {
 }
 
 void BraveLocationBarView::FocusLocation(bool is_user_initiated) {
-  if (base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs) &&
+  if (base::FeatureList::IsEnabled(tabs::kBraveSharedPinnedTabs) &&
       browser_->profile()->GetPrefs()->GetBoolean(
           brave_tabs::kSharedPinnedTab)) {
     // When updating dummy contents, this could be called even when the widget

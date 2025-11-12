@@ -7,12 +7,12 @@
 
 #include <utility>
 
-#include "brave/browser/ui/tabs/features.h"
 #include "brave/components/vector_icons/vector_icons.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/gfx/paint_vector_icon.h"
 
-using tabs::features::HorizontalTabsUpdateEnabled;
+using tabs::HorizontalTabsUpdateEnabled;
 
 // static
 gfx::Size BraveNewTabButton::GetButtonSize() {

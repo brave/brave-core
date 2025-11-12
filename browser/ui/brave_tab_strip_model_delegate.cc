@@ -8,16 +8,16 @@
 #include <algorithm>
 
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
-#include "brave/browser/ui/tabs/features.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "components/prefs/pref_service.h"
 
 namespace chrome {
 
 bool BraveTabStripModelDelegate::CanMoveTabsToWindow(
     const std::vector<int>& indices) {
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs) ||
+  if (!base::FeatureList::IsEnabled(tabs::kBraveSharedPinnedTabs) ||
       !browser_->profile()->GetPrefs()->GetBoolean(
           brave_tabs::kSharedPinnedTab)) {
     return BrowserTabStripModelDelegate::CanMoveTabsToWindow(indices);

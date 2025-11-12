@@ -65,9 +65,9 @@
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/bookmark/bookmark_prefs_service_factory.h"
 #include "brave/browser/ui/commands/accelerator_service_factory.h"
-#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/shared_pinned_tab_service_factory.h"
 #include "brave/components/commands/common/features.h"
+#include "chrome/browser/ui/tabs/features.h"
 #else
 #include "brave/browser/brave_shields/filter_list_service_factory.h"
 #include "brave/browser/ntp_background/android/ntp_background_images_bridge.h"
@@ -177,7 +177,7 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   BraveSyncAlertsServiceFactory::GetInstance();
 
 #if !BUILDFLAG(IS_ANDROID)
-  if (base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs)) {
+  if (base::FeatureList::IsEnabled(tabs::kBraveSharedPinnedTabs)) {
     SharedPinnedTabServiceFactory::GetInstance();
   }
 #endif

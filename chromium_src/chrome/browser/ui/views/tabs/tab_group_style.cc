@@ -5,10 +5,10 @@
 
 #include "chrome/browser/ui/views/tabs/tab_group_style.h"
 
-#include "brave/browser/ui/tabs/brave_tab_layout_constants.h"
-#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/tabs/brave_tab_group_underline.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "chrome/browser/ui/layout_constants.h"
+#include "chrome/browser/ui/tabs/features.h"
 
 #define TabGroupUnderline BraveTabGroupUnderline
 #define TabGroupStyle TabGroupStyle_ChromiumImpl
@@ -63,23 +63,23 @@ SkPath TabGroupStyle::GetUnderlinePath(gfx::Rect local_bounds) const {
 
 gfx::Insets TabGroupStyle::GetInsetsForHeaderChip() const {
   auto insets = TabGroupStyle_ChromiumImpl::GetInsetsForHeaderChip();
-  if (!tabs::features::HorizontalTabsUpdateEnabled()) {
+  if (!tabs::HorizontalTabsUpdateEnabled()) {
     return insets;
   }
   if (!ShouldShowVerticalTabs()) {
-    return gfx::Insets::VH(brave_tabs::GetTabGroupTitleVerticalInset(),
-                           brave_tabs::GetTabGroupTitleHorizontalInset());
+    return gfx::Insets::VH(tabs::GetTabGroupTitleVerticalInset(),
+                           tabs::GetTabGroupTitleHorizontalInset());
   }
   return insets;
 }
 
 gfx::Point TabGroupStyle::GetTitleChipOffset(
     std::optional<int> text_height) const {
-  if (!tabs::features::HorizontalTabsUpdateEnabled()) {
+  if (!tabs::HorizontalTabsUpdateEnabled()) {
     return TabGroupStyle_ChromiumImpl::GetTitleChipOffset(text_height);
   }
-  return gfx::Point(brave_tabs::kHorizontalTabInset,
-                    brave_tabs::kHorizontalTabVerticalSpacing);
+  return gfx::Point(tabs::kHorizontalTabInset,
+                    tabs::kHorizontalTabVerticalSpacing);
 }
 
 bool TabGroupStyle::ShouldShowVerticalTabs() const {
@@ -87,15 +87,15 @@ bool TabGroupStyle::ShouldShowVerticalTabs() const {
 }
 
 float TabGroupStyle::GetEmptyChipSize() const {
-  if (!tabs::features::HorizontalTabsUpdateEnabled()) {
+  if (!tabs::HorizontalTabsUpdateEnabled()) {
     return TabGroupStyle_ChromiumImpl::GetEmptyChipSize();
   }
-  return brave_tabs::GetHorizontalTabHeight();
+  return tabs::GetHorizontalTabHeight();
 }
 
 int TabGroupStyle::GetChipCornerRadius() const {
-  if (!tabs::features::HorizontalTabsUpdateEnabled()) {
+  if (!tabs::HorizontalTabsUpdateEnabled()) {
     return TabGroupStyle_ChromiumImpl::GetChipCornerRadius();
   }
-  return brave_tabs::kTabBorderRadius;
+  return tabs::kTabBorderRadius;
 }

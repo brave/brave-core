@@ -7,11 +7,11 @@
 
 #include <algorithm>
 
-#include "brave/browser/ui/tabs/brave_tab_layout_constants.h"
-#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/tabs/brave_tab_group_header.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "cc/paint/paint_flags.h"
+#include "chrome/browser/ui/layout_constants.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/views/tabs/tab_group_style.h"
 #include "chrome/browser/ui/views/tabs/tab_group_views.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -52,14 +52,14 @@ gfx::Insets BraveTabGroupUnderline::GetInsetsForUnderline(
     return {};
   }
 
-  if (!tabs::features::HorizontalTabsUpdateEnabled()) {
+  if (!tabs::HorizontalTabsUpdateEnabled()) {
     return TabGroupUnderline::GetInsetsForUnderline(sibling_view);
   }
 
   // For horizontal tabs, the underline should be inset slightly within the
   // visual edges of the tab.
   int horizontal_inset =
-      TabGroupUnderline::kStrokeThickness + brave_tabs::kHorizontalTabInset;
+      TabGroupUnderline::kStrokeThickness + tabs::kHorizontalTabInset;
 
   return gfx::Insets::VH(0, horizontal_inset);
 }
@@ -94,7 +94,7 @@ gfx::Rect BraveTabGroupUnderline::CalculateTabGroupUnderlineBounds(
 }
 
 void BraveTabGroupUnderline::OnPaint(gfx::Canvas* canvas) {
-  if (!tabs::features::HorizontalTabsUpdateEnabled()) {
+  if (!tabs::HorizontalTabsUpdateEnabled()) {
     return TabGroupUnderline::OnPaint(canvas);
   }
 
@@ -117,10 +117,10 @@ bool BraveTabGroupUnderline::ShouldShowVerticalTabs() const {
 
 // static
 int BraveTabGroupUnderline::GetStrokeInset() {
-  if (!tabs::features::HorizontalTabsUpdateEnabled()) {
+  if (!tabs::HorizontalTabsUpdateEnabled()) {
     return TabGroupUnderline::GetStrokeInset();
   }
-  return brave_tabs::kHorizontalTabInset;
+  return tabs::kHorizontalTabInset;
 }
 
 BEGIN_METADATA(BraveTabGroupUnderline)

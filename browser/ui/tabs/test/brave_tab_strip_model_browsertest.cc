@@ -11,7 +11,6 @@
 #include "base/task/current_thread.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
-#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/public/constants.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/app/chrome_command_ids.h"
@@ -23,6 +22,7 @@
 #include "chrome/browser/ui/browser_live_tab_context.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_renderer_data.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -166,8 +166,7 @@ class BraveTabStripModelRenamingTabBrowserTest : public BraveTabStripModelTest {
   }
 
   BraveTabStripModelRenamingTabBrowserTest() {
-    scoped_feature_list_.InitAndEnableFeature(
-        tabs::features::kBraveRenamingTabs);
+    scoped_feature_list_.InitAndEnableFeature(tabs::kBraveRenamingTabs);
   }
   ~BraveTabStripModelRenamingTabBrowserTest() override = default;
 
