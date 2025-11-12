@@ -1328,6 +1328,7 @@ public class BrowserViewController: UIViewController {
         var activeKeyboardHeight: CGFloat = 0
         var searchEngineSettingsDismissed = false
         var clearRecentSearchAlertDismissed = false
+        var tabTrayDismissed = false
 
         if let keyboardHeight = keyboardState?.intersectionHeightForView(self.view) {
           activeKeyboardHeight = keyboardHeight
@@ -1350,11 +1351,16 @@ public class BrowserViewController: UIViewController {
           clearRecentSearchAlertDismissed = true
         }
 
+        if let _ = presentedViewController as? TabGridHostingController {
+          tabTrayDismissed = true
+        }
+
         shouldEvaluateKeyboardConstraints =
           (activeKeyboardHeight > 0)
           && (presentedViewController == nil
             || searchEngineSettingsDismissed
-            || clearRecentSearchAlertDismissed)
+            || clearRecentSearchAlertDismissed
+            || tabTrayDismissed)
 
         if shouldEvaluateKeyboardConstraints {
           var offset = -activeKeyboardHeight
