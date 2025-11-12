@@ -177,7 +177,6 @@ test("brave_unit_tests") {
     "//brave/browser/decentralized_dns/test:unit_tests",
     "//brave/browser/email_aliases:unit_tests",
     "//brave/browser/ephemeral_storage:unit_tests",
-    "//brave/browser/first_run:unit_tests",
     "//brave/browser/global_privacy_control:unit_tests",
     "//brave/browser/metrics:brave_metrics_unit_tests",
     "//brave/browser/misc_metrics:unit_tests",
