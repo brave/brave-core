@@ -67,9 +67,8 @@ BraveShieldsTabHelper::BraveShieldsTabHelper(content::WebContents* web_contents)
       brave_shields_settings_(
           CHECK_DEREF(BraveShieldsSettingsServiceFactory::GetForProfile(
               Profile::FromBrowserContext(web_contents->GetBrowserContext())))),
-      ephemeral_storage_service_(
-          CHECK_DEREF(EphemeralStorageServiceFactory::GetForContext(
-              web_contents->GetBrowserContext()))) {
+      ephemeral_storage_service_(EphemeralStorageServiceFactory::GetForContext(
+          web_contents->GetBrowserContext())) {
   favicon::ContentFaviconDriver::FromWebContents(web_contents)
       ->AddObserver(this);
   observation_.Observe(&*host_content_settings_map_);
@@ -477,6 +476,11 @@ void BraveShieldsTabHelper::BlockAllowedScripts(
 void BraveShieldsTabHelper::EnforceSiteDataCleanup() {
   auto* site_instance = web_contents()->GetSiteInstance();
   CHECK(site_instance);
+
+  if (!ephemeral_storage_service_) {
+    return;
+  }
+
   // Start manual cleanup.
   ephemeral_storage_service_->CleanupTLDEphemeralStorage(
       web_contents(), site_instance->GetStoragePartitionConfig(), true);
