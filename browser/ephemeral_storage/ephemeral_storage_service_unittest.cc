@@ -5,6 +5,7 @@
 
 #include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
 
+#include <string_view>
 #include <vector>
 
 #include "base/test/scoped_feature_list.h"
@@ -54,12 +55,12 @@ class MockDelegate : public EphemeralStorageServiceDelegate {
               (override));
   MOCK_METHOD(bool,
               IsShieldsDisabledOnAnyHostMatchingDomainOf,
-              (const std::string_view ephemeral_domain),
+              (std::string_view ephemeral_domain),
               (const override));
   MOCK_METHOD(void,
               CloseTabsForDomainAndSubdomains,
               (content::WebContents * contents,
-               std::string_view ephemeral_domain,
+               const std::string ephemeral_domain,
                CloseTabsForDomainAndSubdomainsCallback callback),
               (override));
 
