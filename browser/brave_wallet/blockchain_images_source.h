@@ -11,6 +11,7 @@
 
 #include "base/gtest_prod_util.h"
 #include "base/memory/weak_ptr.h"
+#include "brave/components/brave_wallet/browser/blockchain_images_source_base.h"
 #include "content/public/browser/url_data_source.h"
 
 namespace base {
@@ -20,20 +21,12 @@ class FilePath;
 namespace brave_wallet {
 
 // This serves background image data.
-class BlockchainImagesSource : public content::URLDataSource {
+class BlockchainImagesSource : public content::URLDataSource,
+                               public BlockchainImagesSourceBase {
  public:
   explicit BlockchainImagesSource(const base::FilePath& base_path);
 
-  ~BlockchainImagesSource() override;
-
-  BlockchainImagesSource(const BlockchainImagesSource&) = delete;
-  BlockchainImagesSource& operator=(const BlockchainImagesSource&) = delete;
-  std::string getImagePath();
-
  private:
-  FRIEND_TEST_ALL_PREFIXES(BlockchainImagesSourceTest, GetMimeType);
-  friend class BlockchainImagesSourceTest;
-
   // content::URLDataSource overrides:
   std::string GetSource() override;
   void StartDataRequest(const GURL& url,
@@ -41,12 +34,6 @@ class BlockchainImagesSource : public content::URLDataSource {
                         GotDataCallback callback) override;
   std::string GetMimeType(const GURL& url) override;
   bool AllowCaching() override;
-
-  void OnGotImageFile(GotDataCallback callback,
-                      std::optional<std::string> input);
-
-  base::FilePath base_path_;
-  base::WeakPtrFactory<BlockchainImagesSource> weak_factory_;
 };
 
 }  // namespace brave_wallet

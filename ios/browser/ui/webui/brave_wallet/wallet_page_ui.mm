@@ -25,6 +25,7 @@
 #include "brave/components/brave_wallet_page/resources/grit/brave_wallet_page_generated_map.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/ios/browser/brave_wallet/asset_ratio_service_factory.h"
+#include "brave/ios/browser/brave_wallet/blockchain_images_source.h"
 #include "brave/ios/browser/brave_wallet/brave_wallet_ipfs_service_factory.h"
 #include "brave/ios/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/ios/browser/brave_wallet/meld_integration_service_factory.h"
@@ -87,6 +88,10 @@ WalletPageUI::WalletPageUI(web::WebUIIOS* web_ui, const GURL& url)
 
   auto* profile = ProfileIOS::FromWebUIIOS(web_ui);
   web::URLDataSourceIOS::Add(profile, new SanitizedImageSource(profile));
+  base::FilePath path = profile->GetStatePath().DirName();
+  path = path.AppendASCII(brave_wallet::kWalletBaseDirectory);
+  web::URLDataSourceIOS::Add(profile,
+                             new brave_wallet::BlockchainImagesSource(path));
 
   web_ui->GetWebState()->GetInterfaceBinderForMainFrame()->AddInterface(
       base::BindRepeating(&WalletPageUI::BindInterface,
