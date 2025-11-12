@@ -20,9 +20,6 @@
 #include "build/build_config.h"
 #include "chrome/common/importer/importer_bridge.h"
 #include "components/os_crypt/sync/os_crypt.h"
-#include "components/password_manager/core/browser/password_form.h"
-#include "components/password_manager/core/browser/password_store/login_database.h"
-#include "components/password_manager/core/common/password_manager_pref_names.h"
 #include "components/prefs/json_pref_store.h"
 #include "components/prefs/pref_filter.h"
 #include "components/user_data_importer/common/imported_bookmark_entry.h"
@@ -145,38 +142,6 @@ std::u16string DecryptedCardFromColumn(sql::Statement* s, int column_index) {
   return credit_card_number;
 }
 
-bool PasswordFormToImportedPasswordForm(
-    const password_manager::PasswordForm& form,
-    user_data_importer::ImportedPasswordForm& imported_form) {
-  if (form.scheme != password_manager::PasswordForm::Scheme::kHtml &&
-      form.scheme != password_manager::PasswordForm::Scheme::kBasic) {
-    return false;
-  }
-
-  if (form.scheme == password_manager::PasswordForm::Scheme::kHtml) {
-    imported_form.scheme =
-        user_data_importer::ImportedPasswordForm::Scheme::kHtml;
-  } else {
-    imported_form.scheme =
-        user_data_importer::ImportedPasswordForm::Scheme::kBasic;
-  }
-
-  if (form.blocked_by_user &&
-      (!form.username_value.empty() || !form.password_value.empty())) {
-    return false;
-  }
-
-  imported_form.signon_realm = form.signon_realm;
-  imported_form.url = form.url;
-  imported_form.action = form.action;
-  imported_form.username_element = form.username_element;
-  imported_form.username_value = form.username_value;
-  imported_form.password_element = form.password_element;
-  imported_form.password_value = form.password_value;
-  imported_form.blocked_by_user = form.blocked_by_user;
-  return true;
-}
-
 }  // namespace
 
 ChromeImporter::ChromeImporter() = default;
@@ -214,15 +179,6 @@ void ChromeImporter::StartImport(
   auto source_path = source_path_;
 #endif
   const bool set_encryption_key = SetEncryptionKey(source_path);
-  if ((items & user_data_importer::PASSWORDS) && !cancelled() &&
-      set_encryption_key) {
-    bridge_->NotifyItemStarted(user_data_importer::PASSWORDS);
-    ImportPasswords(base::FilePath(FILE_PATH_LITERAL("Login Data")));
-    ImportPasswords(
-        base::FilePath(FILE_PATH_LITERAL("Login Data For Account")));
-    bridge_->NotifyItemEnded(user_data_importer::PASSWORDS);
-  }
-
   if ((items & user_data_importer::PAYMENTS) && !cancelled() &&
       set_encryption_key) {
     bridge_->NotifyItemStarted(user_data_importer::PAYMENTS);
@@ -456,49 +412,6 @@ void ChromeImporter::RecursiveReadBookmarksFolder(
 
 double ChromeImporter::chromeTimeToDouble(int64_t time) {
   return ((time * 10 - 0x19DB1DED53E8000) / 10000) / 1000;
-}
-
-void ChromeImporter::ImportPasswords(
-    const base::FilePath& passwords_file_name) {
-  base::FilePath passwords_path = source_path_.Append(passwords_file_name);
-
-  if (!base::PathExists(passwords_path))
-    return;
-
-  ScopedCopyFile copy_password_file(passwords_path);
-  if (!copy_password_file.copy_success())
-    return;
-
-  password_manager::LoginDatabase database(
-      copy_password_file.copied_file_path(),
-      password_manager::IsAccountStore(false));
-  if (!database.Init(
-          /*on_undecryptable_passwords_removed=*/base::NullCallback(),
-          /*encryptor=*/nullptr)) {
-    LOG(ERROR) << "LoginDatabase Init() failed";
-    return;
-  }
-
-  std::vector<password_manager::PasswordForm> forms;
-  bool success = database.GetAutofillableLogins(&forms);
-  if (success) {
-    for (auto& entry : forms) {
-      user_data_importer::ImportedPasswordForm form;
-      if (PasswordFormToImportedPasswordForm(entry, form)) {
-        bridge_->SetPasswordForm(form);
-      }
-    }
-  }
-  std::vector<password_manager::PasswordForm> blocklist;
-  success = database.GetBlocklistLogins(&blocklist);
-  if (success) {
-    for (auto& entry : blocklist) {
-      user_data_importer::ImportedPasswordForm form;
-      if (PasswordFormToImportedPasswordForm(entry, form)) {
-        bridge_->SetPasswordForm(form);
-      }
-    }
-  }
 }
 
 void ChromeImporter::ImportPayments() {
