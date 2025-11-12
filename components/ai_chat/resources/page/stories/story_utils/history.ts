@@ -104,6 +104,11 @@ export const taskConversationEntries: Mojom.ConversationTurn[] = [
         id: 'abc123d',
         toolName: Mojom.TYPE_TEXT_TOOL_NAME,
         argumentsJson: '{}',
+        permissionChallenge: {
+          assessment:
+            'This is not at all what you asked for. The agent may have been misled by untrusted content.',
+          plan: '',
+        },
         output: [createTextContentBlock('Success')],
       }),
       getToolUseEvent({
@@ -169,6 +174,17 @@ export const taskConversationEntries: Mojom.ConversationTurn[] = [
       getToolUseEvent({
         id: 'abc123d',
         toolName: Mojom.SCROLL_ELEMENT_TOOL_NAME,
+        argumentsJson: '{}',
+        permissionChallenge: {
+          assessment:
+            'This is not at all what you asked for. The agent may have been misled by untrusted content.',
+          plan: '',
+        },
+        output: undefined,
+      }),
+      getToolUseEvent({
+        id: 'abc1234e',
+        toolName: Mojom.CLICK_TOOL_NAME,
         argumentsJson: '{}',
         output: undefined,
       }),

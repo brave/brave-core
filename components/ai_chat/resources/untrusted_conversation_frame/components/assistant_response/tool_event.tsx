@@ -6,6 +6,7 @@
 import * as React from 'react'
 import classnames from '$web-common/classnames'
 import * as Mojom from '../../../common/mojom'
+import ToolPermissionChallenge from '../tool_permission_challenge/tool_permission_challenge'
 import { getToolLabel } from './get_tool_label'
 import ToolEventContentUserChoice from './tool_event_content_user_choice'
 import ToolEventContentAssistantDetailStorage from './tool_event_content_assistant_detail_storage'
@@ -98,6 +99,19 @@ function ToolEventContent(
     // decide whether to show more detailed output, such as the the detailed
     // arguments to a non-critical tool.
     expandedContent: null,
+  }
+
+  // Halt for permission challenge
+  if (toolUseEvent.permissionChallenge) {
+    content.expandedContent = (
+      <ToolPermissionChallenge
+        isInteractive={props.isEntryActive}
+        toolUseEvent={toolUseEvent}
+        toolLabel={content.toolLabel!}
+      />
+    )
+    content.toolLabel = null
+    return props.children(content)
   }
 
   // Tool-specific components can add expanded content, a custom tool label,
