@@ -6,6 +6,7 @@
 #include "brave/browser/brave_ads/creatives/search_result_ad/creative_search_result_ad_tab_helper.h"
 
 #include <string>
+#include <string_view>
 #include <utility>
 
 #include "base/check.h"
@@ -37,7 +38,7 @@ namespace {
 
 AdsService* g_ads_service_for_testing = nullptr;
 
-constexpr char kDataPlacementIdVisibilityCheckJavaScript[] =
+constexpr std::string_view kDataPlacementIdVisibilityCheckJavaScript =
     R"(
         (function () {
           const element = document.querySelector('div[data-placement-id="$1"]');

@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_value_util.h"
 
 #include <algorithm>
+#include <string_view>
 
 #include "base/containers/circular_deque.h"
 #include "base/test/values_test_util.h"
@@ -22,7 +23,7 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kNotificationAdAsJson[] =
+constexpr std::string_view kNotificationAdAsJson =
     R"JSON(
         {
           "advertiser_id": "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2",
@@ -37,7 +38,7 @@ constexpr char kNotificationAdAsJson[] =
           "uuid": "9bac9ae4-693c-4569-9b3e-300e357780cf"
         })JSON";
 
-constexpr char kNotificationAdsAsJson[] =
+constexpr std::string_view kNotificationAdsAsJson =
     R"JSON(
         [
           {

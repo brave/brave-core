@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/public/history/ad_history_item_value_util.h"
 
+#include <string_view>
+
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
@@ -21,7 +23,7 @@ namespace {
 
 // The fields `ad_content`, `category_content`, and `created_at` in the legacy
 // format have been renamed to `adContent`, `categoryContent`, and `createdAt`.
-constexpr char kAdHistoryItemAsJson[] =
+constexpr std::string_view kAdHistoryItemAsJson =
     R"JSON(
         {
           "adContent": {
@@ -48,7 +50,7 @@ constexpr char kAdHistoryItemAsJson[] =
           "createdAt": "12993327900000000"
         })JSON";
 
-constexpr char kLegacyAdHistoryItemAsJson[] =
+constexpr std::string_view kLegacyAdHistoryItemAsJson =
     R"JSON(
         {
           "ad_content": {

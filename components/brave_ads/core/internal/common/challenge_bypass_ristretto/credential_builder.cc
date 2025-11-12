@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/credential_builder.h"
 
+#include <string_view>
+
 #include "base/check.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/token_preimage.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/unblinded_token.h"
@@ -15,8 +17,8 @@ namespace brave_ads::cbr {
 
 namespace {
 
-constexpr char kVerificationSignatureKey[] = "signature";
-constexpr char kTokenPreimageKey[] = "t";
+constexpr std::string_view kVerificationSignatureKey = "signature";
+constexpr std::string_view kTokenPreimageKey = "t";
 
 }  // namespace
 

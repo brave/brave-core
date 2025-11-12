@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/user_engagement/reactions/reactions_value_util.h"
 
+#include <string_view>
+
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/reactions/reactions.h"
@@ -18,14 +20,14 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kReactionMapAsJson[] =
+constexpr std::string_view kReactionMapAsJson =
     R"JSON(
         {
           "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2": 1,
           "untargeted": 2
         })JSON";
 
-constexpr char kReactionSetAsJson[] =
+constexpr std::string_view kReactionSetAsJson =
     R"JSON(
         [
           "546fe7b0-5047-4f28-a11c-81f14edcf0f6",

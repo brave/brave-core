@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/studies_user_data.h"
 
 #include <optional>
+#include <string_view>
 #include <utility>
 
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
@@ -15,9 +16,9 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kStudiesKey[] = "studies";
-constexpr char kTrialNameKey[] = "name";
-constexpr char kGroupNameKey[] = "group";
+constexpr std::string_view kStudiesKey = "studies";
+constexpr std::string_view kTrialNameKey = "name";
+constexpr std::string_view kGroupNameKey = "group";
 
 }  // namespace
 

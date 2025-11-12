@@ -53,7 +53,7 @@ namespace ntp_background_images {
 
 namespace {
 
-constexpr char kPlacementdId[] = "326eb47b-467b-46ab-ac1b-5f5de780b344";
+constexpr char kPlacementId[] = "326eb47b-467b-46ab-ac1b-5f5de780b344";
 constexpr char kCampaignId[] = "fb7ee174-5430-4fb9-8e97-29bf14e8d828";
 constexpr char kCreativeInstanceId[] = "c0d61af3-3b85-4af4-a3cc-cf1b3dd40e70";
 constexpr char kCompanyName[] = "Technikke";
@@ -344,7 +344,7 @@ class ViewCounterServiceTest : public testing::Test {
 
   brave_ads::NewTabPageAdInfo BuildNewTabPageAd() {
     brave_ads::NewTabPageAdInfo ad;
-    ad.placement_id = kPlacementdId;
+    ad.placement_id = kPlacementId;
     ad.campaign_id = kCampaignId;
     ad.creative_instance_id = kCreativeInstanceId;
     ad.company_name = kCompanyName;

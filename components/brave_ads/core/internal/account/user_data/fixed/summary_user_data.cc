@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/summary_user_data.h"
 
+#include <string_view>
 #include <utility>
 
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/summary_user_data_util.h"
@@ -16,8 +17,8 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kSummaryKey[] = "totals";
-constexpr char kAdFormatKey[] = "ad_format";
+constexpr std::string_view kSummaryKey = "totals";
+constexpr std::string_view kAdFormatKey = "ad_format";
 
 }  // namespace
 

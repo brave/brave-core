@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <string>
+#include <string_view>
 
 #include "base/base_switches.h"
 #include "base/check.h"
@@ -80,7 +81,7 @@ const base::Feature* const kFeatures[] = {
     &kUserActivityFeature,
     &kUserIdleDetectionFeature};
 
-constexpr char kFeaturesSeparators[] = ",:<";
+constexpr std::string_view kFeaturesSeparators = ",:<";
 
 base::flat_set<std::string> ParseCommandLineSwitches() {
   const auto* const command_line = base::CommandLine::ForCurrentProcess();

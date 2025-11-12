@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/content/browser/creatives/search_result_ad/creative_search_result_ad_handler.h"
 
 #include <memory>
+#include <string_view>
 #include <utility>
 
 #include "base/check.h"
@@ -28,8 +29,8 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kAllowedDomain[] = "https://search.brave.com";
-constexpr char kDisallowedDomain[] = "https://brave.com";
+constexpr std::string_view kAllowedDomain = "https://search.brave.com";
+constexpr std::string_view kDisallowedDomain = "https://brave.com";
 
 }  // namespace
 

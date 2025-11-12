@@ -5,8 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 
-#include <iostream>
 #include <memory>
+#include <string_view>
 
 #include "base/check.h"
 #include "base/files/file_path.h"
@@ -38,10 +38,10 @@ namespace brave_ads::test {
 
 namespace {
 
-constexpr char kIfTimeStoodStill[] =
+constexpr std::string_view kIfTimeStoodStill =
     "If time stood still, each moment would be stopped; frozen";
 
-constexpr char kYouCantTravelBackInTime[] =
+constexpr std::string_view kYouCantTravelBackInTime =
     "You Can't Travel Back in Time, Scientists Say! Unless, of course, you are "
     "travelling at 88 mph";
 

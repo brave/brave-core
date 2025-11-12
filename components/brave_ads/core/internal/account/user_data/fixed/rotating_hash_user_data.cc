@@ -7,6 +7,7 @@
 
 #include <optional>
 #include <string>
+#include <string_view>
 
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/rotating_hash_user_data_util.h"
@@ -15,7 +16,7 @@
 namespace brave_ads {
 
 namespace {
-constexpr char kRotatingHashKey[] = "rotatingHash";
+constexpr std::string_view kRotatingHashKey = "rotatingHash";
 }  // namespace
 
 base::Value::Dict BuildRotatingHashUserData(

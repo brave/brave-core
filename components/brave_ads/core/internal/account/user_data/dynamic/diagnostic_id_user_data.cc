@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/account/user_data/dynamic/diagnostic_id_user_data.h"
 
 #include <string>
+#include <string_view>
 
 #include "base/uuid.h"
 #include "brave/components/brave_ads/core/internal/prefs/pref_util.h"
@@ -15,7 +16,7 @@
 namespace brave_ads {
 
 namespace {
-constexpr char kDiagnosticIdKey[] = "diagnosticId";
+constexpr std::string_view kDiagnosticIdKey = "diagnosticId";
 }  // namespace
 
 base::Value::Dict BuildDiagnosticIdUserData() {

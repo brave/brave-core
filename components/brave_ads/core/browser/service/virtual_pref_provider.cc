@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/browser/service/virtual_pref_provider.h"
 
+#include <string_view>
 #include <utility>
 
 #include "base/check.h"
@@ -20,13 +21,13 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kSkuEnvironmentPrefix[] = "skus:";
-constexpr char kSkuOrdersKey[] = "orders";
-constexpr char kSkuOrderLocationKey[] = "location";
-constexpr char kSkuOrderCreatedAtKey[] = "created_at";
-constexpr char kSkuOrderExpiresAtKey[] = "expires_at";
-constexpr char kSkuOrderLastPaidAtKey[] = "last_paid_at";
-constexpr char kSkuOrderStatusKey[] = "status";
+constexpr std::string_view kSkuEnvironmentPrefix = "skus:";
+constexpr std::string_view kSkuOrdersKey = "orders";
+constexpr std::string_view kSkuOrderLocationKey = "location";
+constexpr std::string_view kSkuOrderCreatedAtKey = "created_at";
+constexpr std::string_view kSkuOrderExpiresAtKey = "expires_at";
+constexpr std::string_view kSkuOrderLastPaidAtKey = "last_paid_at";
+constexpr std::string_view kSkuOrderStatusKey = "status";
 
 std::string RemoveSkuEnvironmentPrefix(const std::string& environment) {
   const size_t pos = environment.find(':');

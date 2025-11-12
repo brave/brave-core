@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/reward/redeem_reward_confirmation.h"
 
 #include <optional>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -39,7 +40,7 @@
 namespace brave_ads {
 
 namespace {
-constexpr char kPaymentTokenKey[] = "paymentToken";
+constexpr std::string_view kPaymentTokenKey = "paymentToken";
 }  // namespace
 
 RedeemRewardConfirmation::RedeemRewardConfirmation(

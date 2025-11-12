@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource_info.h"
 
 #include <optional>
+#include <string_view>
 
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/anti_targeting_feature.h"
 #include "url/gurl.h"
@@ -14,8 +15,8 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kVersionKey[] = "version";
-constexpr char kSitesKey[] = "sites";
+constexpr std::string_view kVersionKey = "version";
+constexpr std::string_view kSitesKey = "sites";
 
 }  // namespace
 

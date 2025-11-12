@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_value_util.h"
 
+#include <string_view>
+
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_token_info.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_test_util.h"
@@ -16,7 +18,7 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kConfirmationTokensAsJson[] =
+constexpr std::string_view kConfirmationTokensAsJson =
     R"JSON(
         [
           {

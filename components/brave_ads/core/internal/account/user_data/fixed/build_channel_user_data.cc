@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/build_channel_user_data.h"
 
+#include <string_view>
+
 #include "base/check.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
@@ -12,7 +14,7 @@
 namespace brave_ads {
 
 namespace {
-constexpr char kBuildChannelKey[] = "buildChannel";
+constexpr std::string_view kBuildChannelKey = "buildChannel";
 }  // namespace
 
 base::Value::Dict BuildBuildChannelUserData() {

@@ -7,6 +7,7 @@
 
 #include <optional>
 #include <string>
+#include <string_view>
 
 #include "base/uuid.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/unblinded_token.h"
@@ -18,11 +19,11 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kTransactionIdKey[] = "transaction_id";
-constexpr char kUnblindedTokenKey[] = "unblinded_token";
-constexpr char kPublicKey[] = "public_key";
-constexpr char kConfirmationTypeKey[] = "confirmation_type";
-constexpr char kAdTypeKey[] = "ad_type";
+constexpr std::string_view kTransactionIdKey = "transaction_id";
+constexpr std::string_view kUnblindedTokenKey = "unblinded_token";
+constexpr std::string_view kPublicKey = "public_key";
+constexpr std::string_view kConfirmationTypeKey = "confirmation_type";
+constexpr std::string_view kAdTypeKey = "ad_type";
 
 }  // namespace
 

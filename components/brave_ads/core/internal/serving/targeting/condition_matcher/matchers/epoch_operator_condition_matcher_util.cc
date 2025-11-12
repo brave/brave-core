@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/serving/targeting/condition_matcher/matchers/epoch_operator_condition_matcher_util.h"
 
 #include <optional>
+#include <string_view>
 
 #include "base/strings/pattern.h"
 #include "base/time/time.h"
@@ -16,12 +17,14 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kEqualOperatorConditionMatcherPrefix[] = "[T=]:";
-constexpr char kNotEqualOperatorConditionMatcherPrefix[] = "[T≠]:";
-constexpr char kGreaterThanOperatorConditionMatcherPrefix[] = "[T>]:";
-constexpr char kGreaterThanOrEqualOperatorConditionMatcherPrefix[] = "[T≥]:";
-constexpr char kLessThanOperatorConditionMatcherPrefix[] = "[T<]:";
-constexpr char kLessThanOrEqualOperatorConditionMatcherPrefix[] = "[T≤]:";
+constexpr std::string_view kEqualOperatorConditionMatcherPrefix = "[T=]:";
+constexpr std::string_view kNotEqualOperatorConditionMatcherPrefix = "[T≠]:";
+constexpr std::string_view kGreaterThanOperatorConditionMatcherPrefix = "[T>]:";
+constexpr std::string_view kGreaterThanOrEqualOperatorConditionMatcherPrefix =
+    "[T≥]:";
+constexpr std::string_view kLessThanOperatorConditionMatcherPrefix = "[T<]:";
+constexpr std::string_view kLessThanOrEqualOperatorConditionMatcherPrefix =
+    "[T≤]:";
 
 }  // namespace
 

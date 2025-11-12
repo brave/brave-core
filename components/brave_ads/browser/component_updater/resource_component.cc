@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/browser/component_updater/resource_component.h"
 
+#include <string_view>
+
 #include "base/check.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
@@ -19,14 +21,14 @@ namespace brave_ads {
 namespace {
 
 constexpr int kSchemaVersion = 1;
-constexpr char kSchemaVersionKey[] = "schemaVersion";
+constexpr std::string_view kSchemaVersionKey = "schemaVersion";
 
-constexpr char kManifestVersionKey[] = "version";
+constexpr std::string_view kManifestVersionKey = "version";
 
-constexpr char kResourcesKey[] = "resources";
-constexpr char kResourceIdKey[] = "id";
-constexpr char kResourceFilenameKey[] = "filename";
-constexpr char kResourceVersionKey[] = "version";
+constexpr std::string_view kResourcesKey = "resources";
+constexpr std::string_view kResourceIdKey = "id";
+constexpr std::string_view kResourceFilenameKey = "filename";
+constexpr std::string_view kResourceVersionKey = "version";
 
 constexpr base::FilePath::CharType kManifestJsonFile[] =
     FILE_PATH_LITERAL("manifest.json");

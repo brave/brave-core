@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_signal_history_value_util.h"
 
+#include <string_view>
+
 #include "base/json/values_util.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_signal_history_info.h"
 
@@ -12,8 +14,8 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kSignaledAtKey[] = "created_at";
-constexpr char kWeightKey[] = "weight";
+constexpr std::string_view kSignaledAtKey = "created_at";
+constexpr std::string_view kWeightKey = "weight";
 constexpr int kDefaultWeight = 0;
 
 }  // namespace

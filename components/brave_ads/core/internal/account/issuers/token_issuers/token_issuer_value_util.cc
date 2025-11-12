@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/account/issuers/token_issuers/token_issuer_value_util.h"
 
 #include <string>
+#include <string_view>
 #include <utility>
 
 #include "base/check_op.h"
@@ -19,12 +20,12 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kTokenIssuerTypeKey[] = "name";
-constexpr char kTokenIssuerPublicKeysKey[] = "publicKeys";
-constexpr char kTokenIssuerPublicKeyKey[] = "publicKey";
-constexpr char kTokenIssuerAssociatedValueKey[] = "associatedValue";
+constexpr std::string_view kTokenIssuerTypeKey = "name";
+constexpr std::string_view kTokenIssuerPublicKeysKey = "publicKeys";
+constexpr std::string_view kTokenIssuerPublicKeyKey = "publicKey";
+constexpr std::string_view kTokenIssuerAssociatedValueKey = "associatedValue";
 
-constexpr char kUndefinedTokenIssuerType[] = "";
+constexpr std::string_view kUndefinedTokenIssuerType;
 constexpr char kConfirmationTokenIssuerType[] = "confirmations";
 constexpr char kPaymentTokenIssuerType[] = "payments";
 

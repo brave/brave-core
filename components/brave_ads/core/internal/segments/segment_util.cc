@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/segments/segment_util.h"
 
 #include <algorithm>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -22,7 +23,7 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kSegmentSeparator[] = "-";
+constexpr std::string_view kSegmentSeparator = "-";
 
 std::vector<std::string> SplitSegment(const std::string& segment) {
   CHECK(!segment.empty());

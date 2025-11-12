@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/account/utility/tokens_util.h"
 
 #include <string>
+#include <string_view>
 
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/batch_dleq_proof.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/blinded_token.h"
@@ -16,9 +17,9 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kBatchDLEQProofKey[] = "batchProof";
-constexpr char kSignedTokensKey[] = "signedTokens";
-constexpr char kPublicKeyKey[] = "publicKey";
+constexpr std::string_view kBatchDLEQProofKey = "batchProof";
+constexpr std::string_view kSignedTokensKey = "signedTokens";
+constexpr std::string_view kPublicKeyKey = "publicKey";
 
 }  // namespace
 

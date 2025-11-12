@@ -7,6 +7,7 @@
 
 #include <limits>
 #include <optional>
+#include <string_view>
 
 #include "base/numerics/ranges.h"
 #include "base/strings/pattern.h"
@@ -18,12 +19,14 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kEqualOperatorConditionMatcherPrefix[] = "[R=]:";
-constexpr char kNotEqualOperatorConditionMatcherPrefix[] = "[R≠]:";
-constexpr char kGreaterThanOperatorConditionMatcherPrefix[] = "[R>]:";
-constexpr char kGreaterThanOrEqualOperatorConditionMatcherPrefix[] = "[R≥]:";
-constexpr char kLessThanOperatorConditionMatcherPrefix[] = "[R<]:";
-constexpr char kLessThanOrEqualOperatorConditionMatcherPrefix[] = "[R≤]:";
+constexpr std::string_view kEqualOperatorConditionMatcherPrefix = "[R=]:";
+constexpr std::string_view kNotEqualOperatorConditionMatcherPrefix = "[R≠]:";
+constexpr std::string_view kGreaterThanOperatorConditionMatcherPrefix = "[R>]:";
+constexpr std::string_view kGreaterThanOrEqualOperatorConditionMatcherPrefix =
+    "[R≥]:";
+constexpr std::string_view kLessThanOperatorConditionMatcherPrefix = "[R<]:";
+constexpr std::string_view kLessThanOrEqualOperatorConditionMatcherPrefix =
+    "[R≤]:";
 
 }  // namespace
 

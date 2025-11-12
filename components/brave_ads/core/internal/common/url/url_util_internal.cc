@@ -18,22 +18,22 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kChromeScheme[] = "chrome";
+constexpr std::string_view kChromeScheme = "chrome";
 
-constexpr char kGettingStartedHostName[] = "getting-started";
-constexpr char kRewardsHostName[] = "rewards";
-constexpr char kSyncHostName[] = "sync";
-constexpr char kLeoAiHostName[] = "leo-ai";
-constexpr char kWalletHostName[] = "wallet";
+constexpr std::string_view kGettingStartedHostName = "getting-started";
+constexpr std::string_view kRewardsHostName = "rewards";
+constexpr std::string_view kSyncHostName = "sync";
+constexpr std::string_view kLeoAiHostName = "leo-ai";
+constexpr std::string_view kWalletHostName = "wallet";
 
-constexpr char kSettingsHostName[] = "settings";
+constexpr std::string_view kSettingsHostName = "settings";
 
-constexpr char kSurveyPanelistPath[] = "/surveyPanelist";
+constexpr std::string_view kSurveyPanelistPath = "/surveyPanelist";
 
-constexpr char kSearchEnginesPath[] = "/searchEngines";
-constexpr char kSearchPath[] = "/search";
-constexpr char kDefaultSearchPath[] = "/search/defaultSearch";
-constexpr char kSearchQuery[] = "search";
+constexpr std::string_view kSearchEnginesPath = "/searchEngines";
+constexpr std::string_view kSearchPath = "/search";
+constexpr std::string_view kDefaultSearchPath = "/search/defaultSearch";
+constexpr std::string_view kSearchQuery = "search";
 
 }  // namespace
 

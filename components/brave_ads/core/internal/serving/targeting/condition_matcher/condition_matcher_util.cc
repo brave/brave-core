@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <cstddef>
 #include <optional>
+#include <string_view>
 
 #include "base/strings/pattern.h"
 #include "base/strings/string_number_conversions.h"
@@ -22,8 +23,8 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kPrefPathOperatorPrefixPattern[] = "[?]:*";
-constexpr char kPrefPathNotOperatorPrefix[] = "[!]:";
+constexpr std::string_view kPrefPathOperatorPrefixPattern = "[?]:*";
+constexpr std::string_view kPrefPathNotOperatorPrefix = "[!]:";
 
 std::string MaybeStripOperatorPrefix(const std::string& pref_path) {
   if (!base::MatchPattern(pref_path, kPrefPathOperatorPrefixPattern)) {

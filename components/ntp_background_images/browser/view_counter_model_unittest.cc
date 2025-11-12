@@ -5,6 +5,8 @@
 
 #include "brave/components/ntp_background_images/browser/view_counter_model.h"
 
+#include <cstddef>
+
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/common/view_counter_pref_registry.h"
@@ -241,8 +243,8 @@ TEST_F(ViewCounterModelTest, NTPBackgroundImagesWithSIDisabledTest) {
       model.GetCurrentBrandedImageIndex();
 
   int expected_wallpaper_index;
-  constexpr int kTestPageViewCount = 30;
-  for (int i = 0; i < kTestPageViewCount; ++i) {
+  constexpr size_t kTestPageViewCount = 30;
+  for (size_t i = 0; i < kTestPageViewCount; ++i) {
     expected_wallpaper_index = i % model.total_image_count_;
     EXPECT_EQ(expected_wallpaper_index, model.current_wallpaper_image_index());
     model.RegisterPageView();
@@ -255,7 +257,7 @@ TEST_F(ViewCounterModelTest, NTPBackgroundImagesWithSIDisabledTest) {
   // Disable background image and check its count is not changed.
   const int latest_wallpaper_index = model.current_wallpaper_image_index();
   model.set_show_wallpaper(false);
-  for (int i = 0; i < kTestPageViewCount; ++i) {
+  for (size_t i = 0; i < kTestPageViewCount; ++i) {
     EXPECT_EQ(latest_wallpaper_index, model.current_wallpaper_image_index());
     model.RegisterPageView();
   }
@@ -290,7 +292,7 @@ TEST_F(ViewCounterModelTest, NTPSuperReferralTest) {
 
   // Loading any number of times and check branded wallpaper is visible always
   // with proper index from the start.
-  for (int i = 0; i < 10; ++i) {
+  for (size_t i = 0; i < 10; ++i) {
     EXPECT_TRUE(model.ShouldShowSponsoredImages());
     const auto current_index = model.GetCurrentBrandedImageIndex();
     // Always first campaign is used in SR mode.

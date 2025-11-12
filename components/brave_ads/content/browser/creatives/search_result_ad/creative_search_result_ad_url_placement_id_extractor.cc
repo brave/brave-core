@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/content/browser/creatives/search_result_ad/creative_search_result_ad_url_placement_id_extractor.h"
 
 #include <optional>
+#include <string_view>
 
 #include "brave/components/brave_search/common/brave_search_utils.h"
 #include "net/base/url_util.h"
@@ -15,8 +16,8 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kAllowedUrlPath[] = "/a/redirect";
-constexpr char kPlacementIdQueryKey[] = "placement_id";
+constexpr std::string_view kAllowedUrlPath = "/a/redirect";
+constexpr std::string_view kPlacementIdQueryKey = "placement_id";
 
 }  // namespace
 

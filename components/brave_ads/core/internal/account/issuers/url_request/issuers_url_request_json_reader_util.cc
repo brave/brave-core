@@ -5,14 +5,16 @@
 
 #include "brave/components/brave_ads/core/internal/account/issuers/url_request/issuers_url_request_json_reader_util.h"
 
+#include <string_view>
+
 #include "brave/components/brave_ads/core/internal/account/issuers/token_issuers/token_issuer_value_util.h"
 
 namespace brave_ads::json::reader {
 
 namespace {
 
-constexpr char kPingKey[] = "ping";
-constexpr char kIssuersKey[] = "issuers";
+constexpr std::string_view kPingKey = "ping";
+constexpr std::string_view kIssuersKey = "issuers";
 
 }  // namespace
 

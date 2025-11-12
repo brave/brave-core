@@ -17,8 +17,8 @@ BuildConfirmationTypeForCountAndIntersperseOtherTypes(
     size_t count) {
   CHECK_GT(count, 0U);
 
-  const int confirmation_type_max_value =
-      static_cast<int>(mojom::ConfirmationType::kMaxValue);
+  const auto confirmation_type_max_value =
+      static_cast<size_t>(mojom::ConfirmationType::kMaxValue);
 
   std::vector<mojom::ConfirmationType> mojom_confirmation_types;
   mojom_confirmation_types.reserve(count + confirmation_type_max_value - 1);
@@ -27,7 +27,8 @@ BuildConfirmationTypeForCountAndIntersperseOtherTypes(
     mojom_confirmation_types.push_back(mojom_confirmation_type);
   }
 
-  // Sprinkle in one of each confirmation type, other than `confirmation_type`.
+  // Sprinkle in one of each confirmation type, other than
+  // `mojom_confirmation_type`.
   for (size_t i = 0; i < confirmation_type_max_value; ++i) {
     const auto other_mojom_confirmation_type =
         static_cast<mojom::ConfirmationType>(i);

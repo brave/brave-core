@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/history/ad_history_value_util_internal.h"
 
+#include <string_view>
+
 #include "base/json/values_util.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
@@ -16,28 +18,28 @@ namespace brave_ads {
 namespace {
 
 // Created at.
-constexpr char kCreatedAtKey[] = "createdAt";
-constexpr char kLegacyCreatedAtKey[] = "created_at";
+constexpr std::string_view kCreatedAtKey = "createdAt";
+constexpr std::string_view kLegacyCreatedAtKey = "created_at";
 
 // Ad content.
-constexpr char kAdContentKey[] = "adContent";
-constexpr char kLegacyAdContentKey[] = "ad_content";
-constexpr char kType[] = "adType";
-constexpr char kConfirmationType[] = "adAction";
-constexpr char kPlacementId[] = "placementId";
-constexpr char kCreativeInstanceId[] = "creativeInstanceId";
-constexpr char kCreativeSetId[] = "creativeSetId";
-constexpr char kCampaignId[] = "campaignId";
-constexpr char kAdvertiserId[] = "advertiserId";
-constexpr char kSegment[] = "segment";
-constexpr char kTitle[] = "brand";
-constexpr char kDescription[] = "brandInfo";
-constexpr char kTargetUrl[] = "brandUrl";
+constexpr std::string_view kAdContentKey = "adContent";
+constexpr std::string_view kLegacyAdContentKey = "ad_content";
+constexpr std::string_view kType = "adType";
+constexpr std::string_view kConfirmationType = "adAction";
+constexpr std::string_view kPlacementId = "placementId";
+constexpr std::string_view kCreativeInstanceId = "creativeInstanceId";
+constexpr std::string_view kCreativeSetId = "creativeSetId";
+constexpr std::string_view kCampaignId = "campaignId";
+constexpr std::string_view kAdvertiserId = "advertiserId";
+constexpr std::string_view kSegment = "segment";
+constexpr std::string_view kTitle = "brand";
+constexpr std::string_view kDescription = "brandInfo";
+constexpr std::string_view kTargetUrl = "brandUrl";
 
 // Segment content.
-constexpr char kSegmentContentKey[] = "categoryContent";
-constexpr char kLegacySegmentContentKey[] = "category_content";
-constexpr char kSegmentKey[] = "category";
+constexpr std::string_view kSegmentContentKey = "categoryContent";
+constexpr std::string_view kLegacySegmentContentKey = "category_content";
+constexpr std::string_view kSegmentKey = "category";
 
 }  // namespace
 

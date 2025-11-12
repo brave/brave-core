@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_value_util.h"
 
+#include <string_view>
+
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
@@ -19,7 +21,7 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kNewTabPageAdAsJson[] = R"JSON({
+constexpr std::string_view kNewTabPageAdAsJson = R"JSON({
     "type": "new_tab_page_ad",
     "placement_id": "9bac9ae4-693c-4569-9b3e-300e357780cf",
     "campaign_id": "84197fc8-830a-4a8e-8339-7a70c2bfa104",

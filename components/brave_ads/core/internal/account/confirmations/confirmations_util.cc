@@ -7,6 +7,7 @@
 
 #include <optional>
 #include <string>
+#include <string_view>
 
 #include "base/base64url.h"
 #include "base/check.h"
@@ -23,7 +24,7 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kVerificationSignatureKey[] = "signature";
+constexpr std::string_view kVerificationSignatureKey = "signature";
 
 bool Verify(const ConfirmationInfo& confirmation) {
   CHECK(confirmation.reward);
