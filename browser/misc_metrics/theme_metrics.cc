@@ -40,6 +40,12 @@ void ThemeMetrics::ReportMetrics() {
     return;
   }
 
+  // our p3a records dark_mode::BraveDarkModeType whenever theme mode changes.
+  // And we use BrowserColorScheme instead of it. It's underlying int value is
+  // different with brave dark mode type. For this migration step, color scheme
+  // type is converted to existing p3a value(BraveDarkModeType).
+  // TODO(https://github.com/brave/brave-browser/issues/50811): Remove type
+  // converting.
   UMA_HISTOGRAM_EXACT_LINEAR(
       kBrowserColorSchemeHistogramName,
       static_cast<int>(GetBraveDarkModeType(theme_service_)), 3);
