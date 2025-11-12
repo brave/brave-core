@@ -28,7 +28,8 @@ class TabGridHostingController: UIHostingController<TabGridView> {
     openTabsModel: OpenTabsModel?,
     toolbarUrlActionsDelegate: ToolbarUrlActionsDelegate?,
     profileController: BraveProfileController?,
-    windowProtection: WindowProtection?
+    windowProtection: WindowProtection?,
+    didAddTab: @escaping () -> Void
   ) {
     self.tabManager = tabManager  // Basically only held for TabTrayTransition
     let viewModel = TabGridViewModel(
@@ -40,7 +41,13 @@ class TabGridHostingController: UIHostingController<TabGridView> {
       windowProtection: windowProtection
     )
     containerView = .init(isPrivateBrowsing: viewModel.isPrivateBrowsing)
-    super.init(rootView: TabGridView(viewModel: viewModel, containerView: containerView))
+    super.init(
+      rootView: TabGridView(
+        viewModel: viewModel,
+        containerView: containerView,
+        didAddTab: didAddTab
+      )
+    )
   }
 
   @available(*, unavailable)
@@ -52,6 +59,7 @@ class TabGridHostingController: UIHostingController<TabGridView> {
 struct TabGridView: View {
   @Bindable var viewModel: TabGridViewModel
   var containerView: TabGridContainerView
+  var didAddTab: () -> Void
 
   @Environment(\.dismiss) private var dismiss
   @Environment(\.colorScheme) private var colorScheme
@@ -457,6 +465,7 @@ struct TabGridView: View {
         // Let the tab show up in the collection view first
         DispatchQueue.main.async { [self] in
           dismiss()
+          didAddTab()
         }
       } label: {
         Label(Strings.TabGrid.newTabAccessibilityLabel, braveSystemImage: "leo.plus.add")
@@ -767,7 +776,8 @@ extension Animation {
   )
   TabGridView(
     viewModel: viewModel,
-    containerView: .init(isPrivateBrowsing: viewModel.isPrivateBrowsing)
+    containerView: .init(isPrivateBrowsing: viewModel.isPrivateBrowsing),
+    didAddTab: {}
   )
 }
 #endif

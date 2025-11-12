@@ -555,6 +555,7 @@ extension BrowserViewController {
               newTabPageController.scrollToBraveNews()
             } else {
               // Make a new tab and scroll to it
+              // Need to stay in NTP for Brave News
               self.openBlankNewTab(
                 attemptLocationFieldFocus: false,
                 isPrivate: false,

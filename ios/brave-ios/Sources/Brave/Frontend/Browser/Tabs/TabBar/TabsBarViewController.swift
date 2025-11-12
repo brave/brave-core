@@ -191,9 +191,7 @@ class TabsBarViewController: UIViewController {
   }
 
   @objc func addTabPressed() {
-    tabManager?.addTabAndSelect(
-      isPrivate: tabManager?.privateBrowsingManager.isPrivateBrowsing == true
-    )
+    delegate?.tabsBarDidSelectAddNewTab(tabManager?.privateBrowsingManager.isPrivateBrowsing == true)
   }
 
   @objc private func didLongPressAddTab(_ longPress: UILongPressGestureRecognizer) {

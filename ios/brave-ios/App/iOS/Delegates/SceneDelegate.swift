@@ -633,7 +633,7 @@ extension SceneDelegate {
     if let browserViewController = scene.browserViewController {
       guard let siteURL = intentURL, let url = URL(string: siteURL), url.isWebPage() else {
         browserViewController.openBlankNewTab(
-          attemptLocationFieldFocus: false,
+          attemptLocationFieldFocus: Preferences.General.openKeyboardOnNTPSelection.value,
           isPrivate: Preferences.Privacy.privateBrowsingOnly.value
         )
         return

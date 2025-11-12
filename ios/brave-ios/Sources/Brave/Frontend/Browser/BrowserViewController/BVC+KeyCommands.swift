@@ -47,7 +47,7 @@ extension BrowserViewController {
 
   @objc private func newTabKeyCommand() {
     openBlankNewTab(
-      attemptLocationFieldFocus: false,
+      attemptLocationFieldFocus: Preferences.General.openKeyboardOnNTPSelection.value,
       isPrivate: privateBrowsingManager.isPrivateBrowsing
     )
   }
@@ -58,12 +58,17 @@ extension BrowserViewController {
     if !privateBrowsingManager.isPrivateBrowsing, Preferences.Privacy.privateBrowsingLock.value {
       self.askForLocalAuthentication { [weak self] success, error in
         if success {
-          self?.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: true)
-
+          self?.openBlankNewTab(
+            attemptLocationFieldFocus: Preferences.General.openKeyboardOnNTPSelection.value,
+            isPrivate: true
+          )
         }
       }
     } else {
-      openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: true)
+      openBlankNewTab(
+        attemptLocationFieldFocus: Preferences.General.openKeyboardOnNTPSelection.value,
+        isPrivate: true
+      )
     }
   }
 
