@@ -578,6 +578,35 @@ ConversationAPIClient::ParseResponseEvent(base::Value::Dict& response_event,
       web_sources_event->sources.push_back(
           mojom::WebSource::New(*title, item_url, item_favicon_url));
     }
+
+    // Rich Data
+    const base::Value::List* rich_results =
+        response_event.FindList("rich_results");
+    if (rich_results) {
+      for (auto& item : *rich_results) {
+        if (!item.is_dict()) {
+          continue;
+        }
+
+        const base::Value::List* rich_sources_item =
+            item.GetDict().FindList("results");
+        if (!rich_sources_item) {
+          continue;
+        }
+
+        for (auto& rich_source_item : *rich_sources_item) {
+          if (!rich_source_item.is_dict()) {
+            continue;
+          }
+
+          // Add the raw JSON string to the rich results list
+          std::string json;
+          base::JSONWriter::Write(rich_source_item, &json);
+          web_sources_event->rich_results.push_back(json);
+        }
+      }
+    }
+
     if (web_sources_event->sources.empty()) {
       return std::nullopt;
     }
