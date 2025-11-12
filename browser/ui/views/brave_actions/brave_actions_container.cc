@@ -10,6 +10,7 @@
 
 #include "base/feature_list.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
+#include "brave/browser/ui/page_info/features.h"
 #include "brave/browser/ui/views/brave_actions/brave_rewards_action_view.h"
 #include "brave/browser/ui/views/brave_actions/brave_shields_action_view.h"
 #include "brave/browser/ui/views/rounded_separator.h"
@@ -53,10 +54,10 @@ void BraveActionsContainer::Init() {
   brave_button_separator_->SetBorder(views::CreateEmptyBorder(
       gfx::Insets::TLBR(0, kSeparatorMargin, 0, kSeparatorMargin)));
   // Just in case the extensions load before this function does (not likely!)
-  // make sure separator is at index 0
-  AddChildViewAt(brave_button_separator_, 0);
-  AddActionViewForShields();
+  // add children to the front in reverse order.
   AddActionViewForRewards();
+  AddActionViewForShields();
+  AddChildViewAt(brave_button_separator_, 0);
 
   // React to Brave Rewards preferences changes.
   show_brave_rewards_button_.Init(
@@ -78,8 +79,13 @@ bool BraveActionsContainer::ShouldShowBraveRewardsAction() const {
 }
 
 void BraveActionsContainer::AddActionViewForShields() {
+  // Do not create the shields button if the shields UI is displayed in the Page
+  // Info bubble.
+  if (page_info::features::IsShowBraveShieldsInPageInfoEnabled()) {
+    return;
+  }
   shields_action_btn_ = AddChildViewAt(
-      std::make_unique<BraveShieldsActionView>(browser_window_interface_), 1);
+      std::make_unique<BraveShieldsActionView>(browser_window_interface_), 0);
   shields_action_btn_->SetPreferredSize(GetActionSize());
   shields_action_btn_->Init();
 }
@@ -87,7 +93,7 @@ void BraveActionsContainer::AddActionViewForShields() {
 void BraveActionsContainer::AddActionViewForRewards() {
   auto button =
       std::make_unique<BraveRewardsActionView>(browser_window_interface_);
-  rewards_action_btn_ = AddChildViewAt(std::move(button), 2);
+  rewards_action_btn_ = AddChildViewAt(std::move(button), 0);
   rewards_action_btn_->SetPreferredSize(GetActionSize());
   rewards_action_btn_->SetVisible(ShouldShowBraveRewardsAction());
   rewards_action_btn_->Update();
@@ -140,6 +146,7 @@ void BraveActionsContainer::ChildPreferredSizeChanged(views::View* child) {
 void BraveActionsContainer::OnBraveRewardsPreferencesChanged() {
   if (rewards_action_btn_) {
     rewards_action_btn_->SetVisible(ShouldShowBraveRewardsAction());
+    UpdateVisibility();
   }
 }
 

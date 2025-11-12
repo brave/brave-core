@@ -1178,6 +1178,7 @@ test("brave_browser_tests") {
       "//brave/browser/brave_shields/ad_block_custom_resources_browsertest.cc",
       "//brave/browser/brave_shields/ad_block_only_mode_browsertest.cc",
       "//brave/browser/ssl/certificate_transparency_browsertest.cc",
+      "//brave/browser/ui/toolbar/brave_location_bar_model_delegate_browsertest.cc",
       "//brave/browser/ui/views/toolbar/wallet_button_notification_source_browsertest.cc",
     ]
     deps += [
@@ -1190,12 +1191,14 @@ test("brave_browser_tests") {
       "//brave/browser/sharing_hub:browser_tests",
       "//brave/browser/sync:browser_tests",
       "//brave/browser/ui/geolocation:browser_tests",
+      "//brave/browser/ui/page_info",
       "//brave/browser/ui/tabs:tab_strip",
       "//brave/browser/ui/toolbar:brave_app_menu_browser_tests",
       "//brave/browser/ui/webui/side_panel/customize_chrome:browser_tests",
       "//brave/browser/ui/whats_new:browser_test",
       "//brave/browser/url_sanitizer:browser_tests",
       "//brave/components/brave_wallet/browser:test_support",
+      "//brave/components/vector_icons",
       "//chrome:packed_resources",
       "//chrome/browser/apps/app_service",
       "//chrome/browser/apps/app_service:constants",

@@ -21,6 +21,9 @@ class BraveLocationBarModelDelegate : public BrowserLocationBarModelDelegate {
   static void FormattedStringFromURL(const GURL& url,
                                      std::u16string* new_formatted_url);
 
+  // LocationBarModelDelegate:
+  const gfx::VectorIcon* GetVectorIconOverride() const override;
+
  private:
   std::u16string FormattedStringWithEquivalentMeaning(
       const GURL& url,
