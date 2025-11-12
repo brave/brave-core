@@ -1,16 +1,8 @@
 diff --git a/chrome/installer/setup/setup_main.cc b/chrome/installer/setup/setup_main.cc
-index bf5b9a610a7cd3ddfce42bf848a997b6ac26c529..4f2d0958fe9b15df4fa2f1cbb24dfdf39c924287 100644
+index bf5b9a610a7cd3ddfce42bf848a997b6ac26c529..0cc5a61b2585d097687ba348eb7f02bf3d0f1d68 100644
 --- a/chrome/installer/setup/setup_main.cc
 +++ b/chrome/installer/setup/setup_main.cc
-@@ -68,6 +68,7 @@
- #include "chrome/common/chrome_switches.h"
- #include "chrome/install_static/install_details.h"
- #include "chrome/install_static/install_util.h"
-+#include "chrome/installer/setup/archive_patch_helper.h"
- #include "chrome/installer/setup/brand_behaviors.h"
- #include "chrome/installer/setup/configure_app_container_sandbox.h"
- #include "chrome/installer/setup/downgrade_cleanup.h"
-@@ -701,6 +702,8 @@ installer::InstallStatus InstallProducts(InstallationState& original_state,
+@@ -701,6 +701,8 @@ installer::InstallStatus InstallProducts(InstallationState& original_state,
      }
    }
  
@@ -19,19 +11,18 @@ index bf5b9a610a7cd3ddfce42bf848a997b6ac26c529..4f2d0958fe9b15df4fa2f1cbb24dfdf3
    return install_status;
  }
  
-@@ -1204,8 +1207,9 @@ InstallStatus InstallProductsHelper(InstallationState& original_state,
+@@ -1204,8 +1206,8 @@ InstallStatus InstallProductsHelper(InstallationState& original_state,
      return TEMP_DIR_FAILED;
    }
  
 -  RETURN_IF_ERROR(UnpackChromeArchive(unpack_path, original_state, setup_exe,
 -                                      cmd_line, installer_state));
 +  RETURN_IF_ERROR(UnpackAndMaybePatchChromeArchive(
-+      unpack_path, original_state, setup_exe, cmd_line, installer_state,
-+      &installer_state.archive_type, installer_state.uncompressed_archive));
++      unpack_path, original_state, setup_exe, cmd_line, installer_state));
  
    VLOG(1) << "unpacked to " << unpack_path.value();
  
-@@ -1243,9 +1247,9 @@ InstallStatus InstallProductsHelper(InstallationState& original_state,
+@@ -1243,9 +1245,9 @@ InstallStatus InstallProductsHelper(InstallationState& original_state,
        const base::Version current_version(
            installer_state.GetCurrentVersion(original_state));
        InstallParams install_params = {
@@ -44,7 +35,7 @@ index bf5b9a610a7cd3ddfce42bf848a997b6ac26c529..4f2d0958fe9b15df4fa2f1cbb24dfdf3
        };
  
        install_status =
-@@ -1526,6 +1530,7 @@ int SetupMain() {
+@@ -1526,6 +1528,7 @@ int SetupMain() {
                                       &exit_code)) {
      return exit_code;
    }
