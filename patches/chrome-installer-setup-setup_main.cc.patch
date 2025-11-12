@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/setup/setup_main.cc b/chrome/installer/setup/setup_main.cc
-index bf5b9a610a7cd3ddfce42bf848a997b6ac26c529..502e60acc7b7e6fa2827b25c0101db3976fe7d8c 100644
+index bf5b9a610a7cd3ddfce42bf848a997b6ac26c529..4f2d0958fe9b15df4fa2f1cbb24dfdf39c924287 100644
 --- a/chrome/installer/setup/setup_main.cc
 +++ b/chrome/installer/setup/setup_main.cc
 @@ -68,6 +68,7 @@
@@ -19,20 +19,19 @@ index bf5b9a610a7cd3ddfce42bf848a997b6ac26c529..502e60acc7b7e6fa2827b25c0101db39
    return install_status;
  }
  
-@@ -1204,8 +1207,10 @@ InstallStatus InstallProductsHelper(InstallationState& original_state,
+@@ -1204,8 +1207,9 @@ InstallStatus InstallProductsHelper(InstallationState& original_state,
      return TEMP_DIR_FAILED;
    }
  
 -  RETURN_IF_ERROR(UnpackChromeArchive(unpack_path, original_state, setup_exe,
 -                                      cmd_line, installer_state));
-+  base::FilePath uncompressed_archive;
 +  RETURN_IF_ERROR(UnpackAndMaybePatchChromeArchive(
 +      unpack_path, original_state, setup_exe, cmd_line, installer_state,
-+      &installer_state.archive_type, uncompressed_archive));
++      &installer_state.archive_type, installer_state.uncompressed_archive));
  
    VLOG(1) << "unpacked to " << unpack_path.value();
  
-@@ -1243,9 +1248,9 @@ InstallStatus InstallProductsHelper(InstallationState& original_state,
+@@ -1243,9 +1247,9 @@ InstallStatus InstallProductsHelper(InstallationState& original_state,
        const base::Version current_version(
            installer_state.GetCurrentVersion(original_state));
        InstallParams install_params = {
@@ -40,12 +39,12 @@ index bf5b9a610a7cd3ddfce42bf848a997b6ac26c529..502e60acc7b7e6fa2827b25c0101db39
 -          current_version,    src_path,       temp_path.path(),
 -          *installer_version,
 +          installer_state,  original_state,       setup_exe,
-+          current_version,  uncompressed_archive, src_path,
++          current_version,  installer_state.uncompressed_archive, src_path,
 +          temp_path.path(), *installer_version,
        };
  
        install_status =
-@@ -1526,6 +1531,7 @@ int SetupMain() {
+@@ -1526,6 +1530,7 @@ int SetupMain() {
                                       &exit_code)) {
      return exit_code;
    }
