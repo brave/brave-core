@@ -9,7 +9,8 @@ import Label from '@brave/leo/react/label'
 import classnames from '$web-common/classnames'
 import { getLocale } from '$web-common/locale'
 import * as Mojom from '../../../common/mojom'
-import { getModelIcon } from '../../../common/constants'
+import { getModelIcon, NEAR_AI_LEARN_MORE_URL } from '../../../common/constants'
+import { NearIcon } from '../near_label/near_label'
 import styles from './model_menu_item_style.module.scss'
 
 interface ModelContentProps {
@@ -17,10 +18,12 @@ interface ModelContentProps {
   isCurrent: boolean
   showDetails?: boolean
   showPremiumLabel?: boolean
+  onClickLearnMore?: () => void
 }
 
 const ModelContent = (props: ModelContentProps) => {
-  const { model, isCurrent, showDetails, showPremiumLabel } = props
+  const { model, isCurrent, showDetails, showPremiumLabel, onClickLearnMore } =
+    props
 
   const isCustomModel = model.options.customModelOptions
 
@@ -77,19 +80,39 @@ const ModelContent = (props: ModelContentProps) => {
       </div>
       <div className={styles.column}>
         <div className={styles.nameAndLabel}>
-          <div className={styles.modelName}>{model.displayName}</div>
+          <div className={styles.modelName}>
+            {model.displayName}
+            {model.isNearModel && <NearIcon />}
+          </div>
           {label}
         </div>
         {showDetails && (
-          <p className={styles.modelSubtitle}>
-            {isCustomModel
-              ? model.options.customModelOptions?.modelRequestName
-              : getLocale(
-                  `CHAT_UI_${model.key
-                    .toUpperCase()
-                    .replaceAll('-', '_')}_SUBTITLE`,
-                )}
-          </p>
+          <>
+            <p className={styles.modelSubtitle}>
+              {isCustomModel
+                ? model.options.customModelOptions?.modelRequestName
+                : getLocale(
+                    `CHAT_UI_${model.key
+                      .toUpperCase()
+                      .replaceAll('-', '_')}_SUBTITLE`,
+                  )}
+            </p>
+            {onClickLearnMore && model.isNearModel && (
+              <a
+                // While we preventDefault, we still need to pass the href
+                // here so we can continue to show link previews.
+                href={NEAR_AI_LEARN_MORE_URL}
+                className={styles.learnMoreLink}
+                onClick={(e) => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  onClickLearnMore()
+                }}
+              >
+                {getLocale(S.CHAT_UI_LEARN_MORE)}
+              </a>
+            )}
+          </>
         )}
       </div>
     </>
@@ -101,7 +124,14 @@ interface MenuItemProps extends ModelContentProps {
 }
 
 export function ModelMenuItem(props: MenuItemProps) {
-  const { model, isCurrent, showDetails, showPremiumLabel, onClick } = props
+  const {
+    model,
+    isCurrent,
+    showDetails,
+    showPremiumLabel,
+    onClick,
+    onClickLearnMore,
+  } = props
   return (
     <leo-menu-item
       data-key={model.key}
@@ -113,6 +143,7 @@ export function ModelMenuItem(props: MenuItemProps) {
         isCurrent={isCurrent}
         showPremiumLabel={showPremiumLabel}
         showDetails={showDetails}
+        onClickLearnMore={onClickLearnMore}
       />
     </leo-menu-item>
   )

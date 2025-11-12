@@ -34,11 +34,18 @@
 
 .column {
   flex-grow: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .modelName {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
   font: var(--leo-font-default-regular);
   color: var(--leo-color-text-primary);
+  gap: var(--leo-spacing-s);
 }
 
 .modelSubtitle {
@@ -59,4 +66,13 @@
 
 .modelLabel {
   display: flex;
+}
+
+.learnMoreLink {
+  font: var(--leo-font-small-regular);
+  text-decoration: underline;
+  color: var(--leo-color-text-tertiary);
+  &:hover {
+    color: var(--leo-color-text-interactive);
+  }
 }

@@ -792,4 +792,7 @@
   <message name="IDS_CHAT_UI_CONTENT_AGENT_WARNING_TEXT" desc="Warning message for content agent" formatter_data="webui=AiChat">
     Enabling AI to browse automatically for you may cause harmful, unintended consequences for your privacy, finances, and online communications. <ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
   </message>
+  <message name="IDS_AI_CHAT_VERIFIED_LABEL" desc="Label for the verified NEAR AI model" formatter_data="webui=AiChat">
+    Verified
+  </message>
 </grit-part>
