@@ -550,8 +550,6 @@ source_set("ui") {
       "views/omnibox/brave_rounded_omnibox_results_frame.h",
       "views/omnibox/brave_search_conversion_promotion_view.cc",
       "views/omnibox/brave_search_conversion_promotion_view.h",
-      "views/overlay/brave_back_to_tab_label_button.cc",
-      "views/overlay/brave_back_to_tab_label_button.h",
       "views/overlay/brave_video_overlay_window_views.cc",
       "views/overlay/brave_video_overlay_window_views.h",
       "views/page_action/brave_page_action_icon_container_view.cc",
