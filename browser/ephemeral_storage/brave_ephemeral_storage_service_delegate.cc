@@ -179,15 +179,13 @@ void BraveEphemeralStorageServiceDelegate::CloseTabsForDomainAndSubdomains(
 }
 
 bool BraveEphemeralStorageServiceDelegate::
-    IsShieldsDisabledOnAnyHostMatchingDomainOf(
-        std::string_view ephemeral_domain) const {
+    IsShieldsDisabledOnAnyHostMatchingDomainOf(const GURL& url) const {
   Profile* profile = Profile::FromBrowserContext(context_);
   CHECK(profile);
   auto* settings_service =
       BraveShieldsSettingsServiceFactory::GetForProfile(profile);
   CHECK(settings_service);
-  return settings_service->IsShieldsDisabledOnAnyHostMatchingDomainOf(
-      ephemeral_domain);
+  return settings_service->IsShieldsDisabledOnAnyHostMatchingDomainOf(url);
 }
 
 }  // namespace ephemeral_storage

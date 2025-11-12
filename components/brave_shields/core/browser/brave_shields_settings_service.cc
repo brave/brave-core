@@ -258,11 +258,9 @@ BraveShieldsSettingsService::GetJsContentSettingOverriddenData(
 }
 
 bool BraveShieldsSettingsService::IsShieldsDisabledOnAnyHostMatchingDomainOf(
-    const std::string_view ephemeral_domain) const {
+    const GURL& url) const {
   // First check the exact domain
-  if (const auto url =
-          GURL(base::StrCat({url::kHttpsScheme, "://", ephemeral_domain}));
-      CONTENT_SETTING_BLOCK ==
+  if (CONTENT_SETTING_BLOCK ==
       host_content_settings_map_->GetContentSetting(
           url, GURL(), ContentSettingsType::BRAVE_SHIELDS)) {
     return true;
@@ -293,6 +291,7 @@ bool BraveShieldsSettingsService::IsShieldsDisabledOnAnyHostMatchingDomainOf(
       continue;
     }
 
+    const auto ephemeral_domain = net::URLToEphemeralStorageDomain(url);
     if (const GURL pattern_url(
             base::StrCat({url::kHttpsScheme, "://", pattern_host}));
         pattern_url.is_valid() &&

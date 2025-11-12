@@ -55,7 +55,7 @@ class MockDelegate : public EphemeralStorageServiceDelegate {
               (override));
   MOCK_METHOD(bool,
               IsShieldsDisabledOnAnyHostMatchingDomainOf,
-              (std::string_view ephemeral_domain),
+              (const GURL& url),
               (const override));
   MOCK_METHOD(void,
               CloseTabsForDomainAndSubdomains,
