@@ -7,6 +7,7 @@
 
 #include <optional>
 #include <string>
+#include <string_view>
 
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/unblinded_token.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
@@ -15,9 +16,9 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kUnblindedTokenKey[] = "unblinded_token";
-constexpr char kPublicKey[] = "public_key";
-constexpr char kSignature[] = "signature";
+constexpr std::string_view kUnblindedTokenKey = "unblinded_token";
+constexpr std::string_view kPublicKey = "public_key";
+constexpr std::string_view kSignature = "signature";
 
 }  // namespace
 

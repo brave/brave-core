@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/catalog_user_data.h"
 
+#include <string_view>
+
 #include "brave/components/brave_ads/core/internal/catalog/catalog_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 
@@ -12,8 +14,8 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kCatalogKey[] = "catalog";
-constexpr char kIdKey[] = "id";
+constexpr std::string_view kCatalogKey = "catalog";
+constexpr std::string_view kIdKey = "id";
 
 }  // namespace
 

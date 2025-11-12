@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/public/prefs/obsolete_pref_util.h"
 
+#include <string_view>
+
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
@@ -13,7 +15,7 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kObsoleteShouldShowSearchResultAdClickedInfoBar[] =
+constexpr std::string_view kObsoleteShouldShowSearchResultAdClickedInfoBar =
     "brave.brave_ads.should_show_search_result_ad_clicked_infobar";
 
 constexpr const char* kObsoleteP2APrefPaths[] = {

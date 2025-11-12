@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/segment_user_data.h"
 
+#include <string_view>
+
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
@@ -12,7 +14,7 @@
 namespace brave_ads {
 
 namespace {
-constexpr char kSegmentKey[] = "segment";
+constexpr std::string_view kSegmentKey = "segment";
 }  // namespace
 
 base::Value::Dict BuildSegmentUserData(const TransactionInfo& transaction) {

@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/account/user_data/dynamic/system_timestamp_user_data.h"
 
+#include <string_view>
+
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
@@ -12,7 +14,7 @@
 namespace brave_ads {
 
 namespace {
-constexpr char kSystemTimestampKey[] = "systemTimestamp";
+constexpr std::string_view kSystemTimestampKey = "systemTimestamp";
 }  // namespace
 
 base::Value::Dict BuildSystemTimestampUserData() {

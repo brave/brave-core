@@ -79,8 +79,8 @@ std::optional<base::Value> MaybeGetDictPrefValue(const base::Value& pref_value,
 
 std::optional<base::Value> MaybeGetListPrefValue(const base::Value& pref_value,
                                                  const std::string& key) {
-  int index;
-  if (!base::StringToInt(key, &index)) {
+  size_t index;
+  if (!base::StringToSizeT(key, &index)) {
     // Invalid pref path key, because this should be an integer index for the
     // list.
     return std::nullopt;
@@ -88,7 +88,7 @@ std::optional<base::Value> MaybeGetListPrefValue(const base::Value& pref_value,
 
   const base::Value::List& list = pref_value.GetList();
 
-  if (index < 0 || index > static_cast<int>(list.size()) - 1) {
+  if (index > list.size() - 1) {
     // Invalid pref path key, because the list index is out of bounds.
     return std::nullopt;
   }

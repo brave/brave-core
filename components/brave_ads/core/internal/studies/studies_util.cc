@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <iterator>
+#include <string_view>
 
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 
@@ -14,7 +15,7 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kActiveFieldTrialStudyPrefix[] = "BraveAds.";
+constexpr std::string_view kActiveFieldTrialStudyPrefix = "BraveAds.";
 
 base::FieldTrial::ActiveGroups GetActiveFieldTrialStudyGroups() {
   base::FieldTrial::ActiveGroups active_field_trial_groups;

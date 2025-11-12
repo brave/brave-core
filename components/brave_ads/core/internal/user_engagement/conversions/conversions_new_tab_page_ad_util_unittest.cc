@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <cstddef>
+
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
@@ -109,8 +111,8 @@ TEST_F(BraveAdsConversionsNewTabPageAdUtilTest,
                                   /*should_generate_random_uuids=*/false);
 
   // Act & Assert
-  for (int i = 0; i < static_cast<int>(mojom::ConfirmationType::kMaxValue);
-       ++i) {
+  for (size_t i = 0;
+       i < static_cast<size_t>(mojom::ConfirmationType::kMaxValue); ++i) {
     const auto confirmation_type = static_cast<mojom::ConfirmationType>(i);
     if (confirmation_type == mojom::ConfirmationType::kViewedImpression ||
         confirmation_type == mojom::ConfirmationType::kClicked) {

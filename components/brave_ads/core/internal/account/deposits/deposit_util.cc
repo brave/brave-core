@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/deposits/deposit_util.h"
 
+#include <string_view>
 #include <utility>
 
 #include "base/functional/bind.h"
@@ -17,7 +18,7 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kFirstTimeKey[] = "firstTime";
+constexpr std::string_view kFirstTimeKey = "firstTime";
 
 void CheckIfFirstTimeAndDepositWithUserDataCallback(
     mojom::AdType ad_type,

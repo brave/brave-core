@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/created_at_timestamp_user_data.h"
 
+#include <string_view>
+
 #include "base/check.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_util.h"
@@ -13,7 +15,7 @@
 namespace brave_ads {
 
 namespace {
-constexpr char kCreatedAtTimestampKey[] = "createdAtTimestamp";
+constexpr std::string_view kCreatedAtTimestampKey = "createdAtTimestamp";
 }  // namespace
 
 base::Value::Dict BuildCreatedAtTimestampUserData(

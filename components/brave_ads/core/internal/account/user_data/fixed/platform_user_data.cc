@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/platform_user_data.h"
 
 #include <string>
+#include <string_view>
 
 #include "brave/components/brave_ads/core/internal/common/platform/platform_helper.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
@@ -13,7 +14,7 @@
 namespace brave_ads {
 
 namespace {
-constexpr char kPlatformKey[] = "platform";
+constexpr std::string_view kPlatformKey = "platform";
 }  // namespace
 
 base::Value::Dict BuildPlatformUserData() {

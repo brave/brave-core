@@ -6,6 +6,7 @@
 #include "brave/browser/brave_ads/creatives/search_result_ad/creative_search_result_ad_clicked_infobar_delegate.h"
 
 #include <memory>
+#include <string_view>
 #include <utility>
 
 #include "base/check.h"
@@ -31,7 +32,7 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kLearnMoreUrl[] =
+constexpr std::string_view kLearnMoreUrl =
     "https://search.brave.com/help/conversion-reporting";
 
 std::unique_ptr<infobars::InfoBar> CreateSearchResultAdClickedInfoBar() {

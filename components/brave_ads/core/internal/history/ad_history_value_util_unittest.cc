@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/history/ad_history_value_util.h"
 
+#include <string_view>
+
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
@@ -18,7 +20,7 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kAdHistoryAsJson[] = R"JSON(
+constexpr std::string_view kAdHistoryAsJson = R"JSON(
   [
     {
       "adDetailRows": [

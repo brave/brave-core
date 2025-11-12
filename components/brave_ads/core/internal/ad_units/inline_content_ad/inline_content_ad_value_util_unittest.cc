@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/public/ad_units/inline_content_ad/inline_content_ad_value_util.h"
 
+#include <string_view>
+
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
@@ -18,7 +20,7 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kInlineContentAdAsJson[] =
+constexpr std::string_view kInlineContentAdAsJson =
     R"JSON(
         {
           "advertiserId": "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2",

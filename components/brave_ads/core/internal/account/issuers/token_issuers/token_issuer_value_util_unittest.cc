@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/account/issuers/token_issuers/token_issuer_value_util.h"
 
+#include <string_view>
+
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/token_issuers/token_issuer_info.h"
@@ -16,7 +18,7 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kTokenIssuersAsJson[] = R"JSON(
+constexpr std::string_view kTokenIssuersAsJson = R"JSON(
   [
     {
       "name": "confirmations",

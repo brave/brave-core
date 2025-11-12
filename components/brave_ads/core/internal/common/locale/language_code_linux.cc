@@ -9,12 +9,12 @@
 
 #include <optional>
 #include <string>
-
+#include <string_view>
 
 namespace brave_ads {
 
 namespace {
-constexpr char kDelimiters[] = "-_";
+constexpr std::string_view kDelimiters = "-_";
 }  // namespace
 
 std::optional<std::string> MaybeGetLanguageCodeString() {

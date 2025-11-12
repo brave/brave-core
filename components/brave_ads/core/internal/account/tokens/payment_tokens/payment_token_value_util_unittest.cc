@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_value_util.h"
 
+#include <string_view>
+
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_info.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_tokens_test_util.h"
@@ -16,7 +18,7 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kPaymentTokensAsJson[] =
+constexpr std::string_view kPaymentTokensAsJson =
     R"JSON(
         [
           {

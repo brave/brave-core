@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/account/confirmations/payload/confirmation_payload_json_writer.h"
 
+#include <string_view>
+
 #include "base/check.h"
 #include "base/json/json_writer.h"
 #include "base/values.h"
@@ -16,9 +18,9 @@ namespace brave_ads::json::writer {
 
 namespace {
 
-constexpr char kTransactionIdKey[] = "transactionId";
-constexpr char kCreativeInstanceIdKey[] = "creativeInstanceId";
-constexpr char kTypeKey[] = "type";
+constexpr std::string_view kTransactionIdKey = "transactionId";
+constexpr std::string_view kCreativeInstanceIdKey = "creativeInstanceId";
+constexpr std::string_view kTypeKey = "type";
 
 }  // namespace
 

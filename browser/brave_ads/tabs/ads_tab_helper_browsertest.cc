@@ -73,7 +73,7 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kHostName[] = "brave.com";
+constexpr std::string_view kHostName = "brave.com";
 
 constexpr char kHandleRequestUrlPath[] = "/handle_request";
 constexpr char kHttpStatusCodeQueryKey[] = "http_status_code";

@@ -5,6 +5,8 @@
 
 #include "brave/components/ntp_background_images/browser/new_tab_takeover_infobar_util.h"
 
+#include <cstddef>
+
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_registry.h"
 #include "brave/components/ntp_background_images/common/infobar_constants.h"
@@ -37,7 +39,7 @@ class NewTabTakeoverInfobarUtilTest : public testing::Test {
 TEST_F(NewTabTakeoverInfobarUtilTest, ShouldDisplayInfobar) {
   SetRewardsEnabled(/*enabled=*/false);
 
-  for (int i = 0; i < kNewTabTakeoverInfobarRemainingDisplayCountThreshold;
+  for (size_t i = 0; i < kNewTabTakeoverInfobarRemainingDisplayCountThreshold;
        ++i) {
     EXPECT_TRUE(ShouldDisplayNewTabTakeoverInfobar(pref_service()));
     RecordNewTabTakeoverInfobarWasDisplayed(pref_service());

@@ -5,6 +5,7 @@
 
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_rich_media_source.h"
 
+#include <cstddef>
 #include <memory>
 #include <string>
 #include <utility>
@@ -169,8 +170,9 @@ TEST_F(NTPSponsoredRichMediaSourceTest, AllowCaching) {
 }
 
 TEST_F(NTPSponsoredRichMediaSourceTest, GetContentSecurityPolicy) {
-  for (int i = 0;
-       i < static_cast<int>(network::mojom::CSPDirectiveName::kMaxValue); ++i) {
+  for (size_t i = 0;
+       i < static_cast<size_t>(network::mojom::CSPDirectiveName::kMaxValue);
+       ++i) {
     const auto directive = static_cast<network::mojom::CSPDirectiveName>(i);
     switch (directive) {
       case network::mojom::CSPDirectiveName::FrameAncestors: {

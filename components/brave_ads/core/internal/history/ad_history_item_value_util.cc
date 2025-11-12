@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/public/history/ad_history_item_value_util.h"
 
+#include <string_view>
+
 #include "base/json/values_util.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/ads_core/ads_core_util.h"
@@ -19,30 +21,30 @@ namespace brave_ads {
 namespace {
 
 // Created at.
-constexpr char kCreatedAtKey[] = "createdAt";
+constexpr std::string_view kCreatedAtKey = "createdAt";
 
 // Ad content.
-constexpr char kAdContentKey[] = "adContent";
-constexpr char kType[] = "adType";
-constexpr char kConfirmationType[] = "adAction";
-constexpr char kPlacementId[] = "placementId";
-constexpr char kCreativeInstanceId[] = "creativeInstanceId";
-constexpr char kCreativeSetId[] = "creativeSetId";
-constexpr char kCampaignId[] = "campaignId";
-constexpr char kAdvertiserId[] = "advertiserId";
-constexpr char kSegment[] = "segment";
-constexpr char kTitle[] = "brand";
-constexpr char kDescription[] = "brandInfo";
-constexpr char kTargetUrl[] = "brandUrl";
-constexpr char kTargetDisplayUrl[] = "brandDisplayUrl";
-constexpr char kLikeAdReactionType[] = "likeAction";
-constexpr char kIsSaved[] = "savedAd";
-constexpr char kIsAdMarkedAsInappropriate[] = "flaggedAd";
+constexpr std::string_view kAdContentKey = "adContent";
+constexpr std::string_view kType = "adType";
+constexpr std::string_view kConfirmationType = "adAction";
+constexpr std::string_view kPlacementId = "placementId";
+constexpr std::string_view kCreativeInstanceId = "creativeInstanceId";
+constexpr std::string_view kCreativeSetId = "creativeSetId";
+constexpr std::string_view kCampaignId = "campaignId";
+constexpr std::string_view kAdvertiserId = "advertiserId";
+constexpr std::string_view kSegment = "segment";
+constexpr std::string_view kTitle = "brand";
+constexpr std::string_view kDescription = "brandInfo";
+constexpr std::string_view kTargetUrl = "brandUrl";
+constexpr std::string_view kTargetDisplayUrl = "brandDisplayUrl";
+constexpr std::string_view kLikeAdReactionType = "likeAction";
+constexpr std::string_view kIsSaved = "savedAd";
+constexpr std::string_view kIsAdMarkedAsInappropriate = "flaggedAd";
 
 // Segment content.
-constexpr char kSegmentContentKey[] = "categoryContent";
-constexpr char kSegmentKey[] = "category";
-constexpr char kLikeSegmentReactionTypeKey[] = "optAction";
+constexpr std::string_view kSegmentContentKey = "categoryContent";
+constexpr std::string_view kSegmentKey = "category";
+constexpr std::string_view kLikeSegmentReactionTypeKey = "optAction";
 
 }  // namespace
 

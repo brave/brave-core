@@ -7,13 +7,14 @@
 
 #include <optional>
 #include <string>
+#include <string_view>
 
 #include "base/android/locale_utils.h"
 
 namespace brave_ads {
 
 namespace {
-constexpr char kDelimiters[] = "-_";
+constexpr std::string_view kDelimiters = "-_";
 }  // namespace
 
 std::optional<std::string> MaybeGetLanguageCodeString() {

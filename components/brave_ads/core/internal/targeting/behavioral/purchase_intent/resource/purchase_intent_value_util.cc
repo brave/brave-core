@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <cstddef>
 #include <string>
+#include <string_view>
 #include <utility>
 
 #include "base/strings/string_util.h"
@@ -18,17 +19,17 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kVersionKey[] = "version";
+constexpr std::string_view kVersionKey = "version";
 
-constexpr char kSegmentsKey[] = "segments";
+constexpr std::string_view kSegmentsKey = "segments";
 
-constexpr char kSegmentKeyphrasesKey[] = "segment_keywords";
+constexpr std::string_view kSegmentKeyphrasesKey = "segment_keywords";
 
-constexpr char kFunnelKeyphrasesKey[] = "funnel_keywords";
+constexpr std::string_view kFunnelKeyphrasesKey = "funnel_keywords";
 
-constexpr char kFunnelsKey[] = "funnel_sites";
-constexpr char kFunnelSegmentsKey[] = "segments";
-constexpr char kFunnelSitesKey[] = "sites";
+constexpr std::string_view kFunnelsKey = "funnel_sites";
+constexpr std::string_view kFunnelSegmentsKey = "segments";
+constexpr std::string_view kFunnelSitesKey = "sites";
 
 constexpr int kDefaultFunnelSiteWeight = 1;
 

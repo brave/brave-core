@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/non_reward/url_request_builders/create_non_reward_confirmation_url_request_builder.h"
 
 #include <optional>
+#include <string_view>
 
 #include "brave/components/brave_ads/core/internal/account/confirmations/non_reward/non_reward_confirmation_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/non_reward/non_reward_confirmation_util.h"
@@ -19,7 +20,7 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kExpectedUrl[] =
+constexpr std::string_view kExpectedUrl =
     R"(https://anonymous.ads.bravesoftware.com/v4/confirmation/8b742869-6e4a-490c-ac31-31b49130098a)";
 constexpr char kExpectedUrlRequestContent[] =
     R"JSON({"creativeInstanceId":"546fe7b0-5047-4f28-a11c-81f14edcf0f6","type":"view"})JSON";

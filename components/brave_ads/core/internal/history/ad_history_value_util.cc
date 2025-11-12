@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/history/ad_history_value_util.h"
 
+#include <string_view>
+
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/history/ad_history_value_util_internal.h"
@@ -15,9 +17,9 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kUuidKey[] = "uuid";
-constexpr char kCreatedAtKey[] = "timestampInMilliseconds";
-constexpr char kRowKey[] = "adDetailRows";
+constexpr std::string_view kUuidKey = "uuid";
+constexpr std::string_view kCreatedAtKey = "timestampInMilliseconds";
+constexpr std::string_view kRowKey = "adDetailRows";
 
 }  // namespace
 

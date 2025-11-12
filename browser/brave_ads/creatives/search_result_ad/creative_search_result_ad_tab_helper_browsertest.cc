@@ -7,6 +7,7 @@
 
 #include <memory>
 #include <optional>
+#include <string_view>
 
 #include "base/path_service.h"
 #include "base/strings/strcat.h"
@@ -39,14 +40,14 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kAllowedDomain[] = "search.brave.com";
-constexpr char kNotAllowedDomain[] = "brave.com";
-constexpr char kClickRedirectPath[] = "/a/redirect";
-constexpr char kTargetDomain[] = "example.com";
-constexpr char kTargetPath[] = "/simple.html";
+constexpr std::string_view kAllowedDomain = "search.brave.com";
+constexpr std::string_view kNotAllowedDomain = "brave.com";
+constexpr std::string_view kClickRedirectPath = "/a/redirect";
+constexpr std::string_view kTargetDomain = "example.com";
+constexpr std::string_view kTargetPath = "/simple.html";
 constexpr char kSearchResultUrlPath[] =
     "/brave_ads/creative_search_result_ad.html";
-constexpr char kSearchResultClickedUrlPath[] =
+constexpr std::string_view kSearchResultClickedUrlPath =
     "/a/"
     "redirect?click_url=https%3A%2F%2Fexample.com%2Fsimple.html&placement_id="
     "824657d0-eaed-4b80-8a42-a18c12f2977d";

@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/common/subdivision/url_request/subdivision_url_request_json_reader_util.h"
 
+#include <string_view>
+
 #include "base/json/json_reader.h"
 #include "base/strings/string_util.h"
 #include "base/values.h"
@@ -13,8 +15,8 @@ namespace brave_ads::json::reader {
 
 namespace {
 
-constexpr char kCountryKey[] = "country";
-constexpr char kRegionKey[] = "region";
+constexpr std::string_view kCountryKey = "country";
+constexpr std::string_view kRegionKey = "region";
 
 }  // namespace
 

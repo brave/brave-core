@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/browser/reminder/reminder_util.h"
 
+#include <string_view>
+
 #include "base/notreached.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_constants.h"
@@ -16,9 +18,9 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kReminderNotificationAdPlacementId[] =
+constexpr std::string_view kReminderNotificationAdPlacementId =
     "e64373ac-2ca5-4f6b-b497-1f1d7ccd40c8";
-constexpr char kReminderNotificationAdTargetUrl[] =
+constexpr std::string_view kReminderNotificationAdTargetUrl =
     "https://support.brave.app/hc/en-us/articles/14648356808845";
 
 }  // namespace

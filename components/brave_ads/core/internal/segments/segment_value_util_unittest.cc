@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/segments/segment_value_util.h"
 
+#include <string_view>
+
 #include "base/test/values_test_util.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -15,7 +17,7 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kSegmentsAsJson[] =
+constexpr std::string_view kSegmentsAsJson =
     R"JSON(
         [
           "technology & computing",

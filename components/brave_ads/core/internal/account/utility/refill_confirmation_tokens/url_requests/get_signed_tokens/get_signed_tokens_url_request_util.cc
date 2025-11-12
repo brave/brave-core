@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/account/utility/refill_confirmation_tokens/url_requests/get_signed_tokens/get_signed_tokens_url_request_util.h"
 
+#include <string_view>
+
 #include "base/check.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_token_info.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_util.h"
@@ -17,7 +19,7 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kCaptchaIdKey[] = "captcha_id";
+constexpr std::string_view kCaptchaIdKey = "captcha_id";
 
 std::optional<std::string> Sign(const cbr::UnblindedToken& unblinded_token,
                                 const WalletInfo& wallet) {

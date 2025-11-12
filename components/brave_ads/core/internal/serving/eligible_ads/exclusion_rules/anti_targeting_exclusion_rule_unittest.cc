@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/anti_targeting_exclusion_rule.h"
 
 #include <memory>
+#include <string_view>
 
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/resources/country_components_test_constants.h"
@@ -19,7 +20,7 @@
 namespace brave_ads {
 
 namespace {
-constexpr char kAntiTargetedSite[] = "https://www.brave.com";
+constexpr std::string_view kAntiTargetedSite = "https://www.brave.com";
 }  // namespace
 
 class BraveAdsAntiTargetingExclusionRuleTest : public test::TestBase {

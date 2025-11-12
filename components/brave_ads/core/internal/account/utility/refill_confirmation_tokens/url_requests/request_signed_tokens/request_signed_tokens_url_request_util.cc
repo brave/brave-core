@@ -5,12 +5,14 @@
 
 #include "brave/components/brave_ads/core/internal/account/utility/refill_confirmation_tokens/url_requests/request_signed_tokens/request_signed_tokens_url_request_util.h"
 
+#include <string_view>
+
 namespace brave_ads {
 
 namespace {
 
-constexpr char kIsEligibleKey[] = "isEligible";
-constexpr char kNonceKey[] = "nonce";
+constexpr std::string_view kIsEligibleKey = "isEligible";
+constexpr std::string_view kNonceKey = "nonce";
 
 }  // namespace
 

@@ -21,9 +21,9 @@ class BraveAdsAccountUtilTest : public test::TestBase {};
 
 TEST_F(BraveAdsAccountUtilTest, AlwaysAllowDepositsForRewardsUser) {
   // Act & Assert
-  for (int i = 0; i < static_cast<int>(mojom::AdType::kMaxValue); ++i) {
-    for (int j = 0; j < static_cast<int>(mojom::ConfirmationType::kMaxValue);
-         ++j) {
+  for (size_t i = 0; i < static_cast<size_t>(mojom::AdType::kMaxValue); ++i) {
+    for (size_t j = 0;
+         j < static_cast<size_t>(mojom::ConfirmationType::kMaxValue); ++j) {
       EXPECT_TRUE(IsAllowedToDeposit(test::kCreativeInstanceId,
                                      static_cast<mojom::AdType>(i),
                                      static_cast<mojom::ConfirmationType>(j)));
@@ -36,8 +36,8 @@ TEST_F(BraveAdsAccountUtilTest, AllowInlineContentAdDepositsForNonRewardsUser) {
   test::DisableBraveRewards();
 
   // Act & Assert
-  for (int i = 0; i < static_cast<int>(mojom::ConfirmationType::kMaxValue);
-       ++i) {
+  for (size_t i = 0;
+       i < static_cast<size_t>(mojom::ConfirmationType::kMaxValue); ++i) {
     EXPECT_TRUE(IsAllowedToDeposit(test::kCreativeInstanceId,
                                    mojom::AdType::kInlineContentAd,
                                    static_cast<mojom::ConfirmationType>(i)));
@@ -53,8 +53,8 @@ TEST_F(
   test::OptOutOfBraveNewsAds();
 
   // Act & Assert
-  for (int i = 0; i < static_cast<int>(mojom::ConfirmationType::kMaxValue);
-       ++i) {
+  for (size_t i = 0;
+       i < static_cast<size_t>(mojom::ConfirmationType::kMaxValue); ++i) {
     EXPECT_FALSE(IsAllowedToDeposit(test::kCreativeInstanceId,
                                     mojom::AdType::kInlineContentAd,
                                     static_cast<mojom::ConfirmationType>(i)));
@@ -67,8 +67,8 @@ TEST_F(BraveAdsAccountUtilTest,
   test::DisableBraveRewards();
 
   // Act & Assert
-  for (int i = 0; i < static_cast<int>(mojom::ConfirmationType::kMaxValue);
-       ++i) {
+  for (size_t i = 0;
+       i < static_cast<size_t>(mojom::ConfirmationType::kMaxValue); ++i) {
     EXPECT_TRUE(IsAllowedToDeposit(test::kCreativeInstanceId,
                                    mojom::AdType::kPromotedContentAd,
                                    static_cast<mojom::ConfirmationType>(i)));
@@ -84,8 +84,8 @@ TEST_F(
   test::OptOutOfBraveNewsAds();
 
   // Act & Assert
-  for (int i = 0; i < static_cast<int>(mojom::ConfirmationType::kMaxValue);
-       ++i) {
+  for (size_t i = 0;
+       i < static_cast<size_t>(mojom::ConfirmationType::kMaxValue); ++i) {
     EXPECT_FALSE(IsAllowedToDeposit(test::kCreativeInstanceId,
                                     mojom::AdType::kPromotedContentAd,
                                     static_cast<mojom::ConfirmationType>(i)));
@@ -97,8 +97,8 @@ TEST_F(BraveAdsAccountUtilTest, AllowNewTabPageAdDepositsForNonRewardsUser) {
   test::DisableBraveRewards();
 
   // Act & Assert
-  for (int i = 0; i < static_cast<int>(mojom::ConfirmationType::kMaxValue);
-       ++i) {
+  for (size_t i = 0;
+       i < static_cast<size_t>(mojom::ConfirmationType::kMaxValue); ++i) {
     EXPECT_TRUE(IsAllowedToDeposit(test::kCreativeInstanceId,
                                    mojom::AdType::kNewTabPageAd,
                                    static_cast<mojom::ConfirmationType>(i)));
@@ -114,8 +114,8 @@ TEST_F(
   test::OptOutOfNewTabPageAds();
 
   // Act & Assert
-  for (int i = 0; i < static_cast<int>(mojom::ConfirmationType::kMaxValue);
-       ++i) {
+  for (size_t i = 0;
+       i < static_cast<size_t>(mojom::ConfirmationType::kMaxValue); ++i) {
     EXPECT_FALSE(IsAllowedToDeposit(test::kCreativeInstanceId,
                                     mojom::AdType::kNewTabPageAd,
                                     static_cast<mojom::ConfirmationType>(i)));
@@ -132,8 +132,8 @@ TEST_F(
                           mojom::NewTabPageAdMetricType::kDisabled);
 
   // Act & Assert
-  for (int i = 0; i < static_cast<int>(mojom::ConfirmationType::kMaxValue);
-       ++i) {
+  for (size_t i = 0;
+       i < static_cast<size_t>(mojom::ConfirmationType::kMaxValue); ++i) {
     EXPECT_FALSE(IsAllowedToDeposit(test::kCreativeInstanceId,
                                     mojom::AdType::kNewTabPageAd,
                                     static_cast<mojom::ConfirmationType>(i)));
@@ -146,8 +146,8 @@ TEST_F(BraveAdsAccountUtilTest,
   test::DisableBraveRewards();
 
   // Act & Assert
-  for (int i = 0; i < static_cast<int>(mojom::ConfirmationType::kMaxValue);
-       ++i) {
+  for (size_t i = 0;
+       i < static_cast<size_t>(mojom::ConfirmationType::kMaxValue); ++i) {
     EXPECT_FALSE(IsAllowedToDeposit(test::kCreativeInstanceId,
                                     mojom::AdType::kNotificationAd,
                                     static_cast<mojom::ConfirmationType>(i)));
@@ -160,8 +160,8 @@ TEST_F(BraveAdsAccountUtilTest,
   test::DisableBraveRewards();
 
   // Act & Assert
-  for (int i = 0; i < static_cast<int>(mojom::ConfirmationType::kMaxValue);
-       ++i) {
+  for (size_t i = 0;
+       i < static_cast<size_t>(mojom::ConfirmationType::kMaxValue); ++i) {
     const auto confirmation_type = static_cast<mojom::ConfirmationType>(i);
 
     const bool is_allowed_to_deposit =

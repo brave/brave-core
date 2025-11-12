@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/page_land_user_data.h"
 
+#include <string_view>
+
 #include "brave/components/brave_ads/core/internal/common/net/http/http_status_code_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 
@@ -12,7 +14,7 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kHttpResponseStatusKey[] = "httpResponseStatus";
+constexpr std::string_view kHttpResponseStatusKey = "httpResponseStatus";
 constexpr char kNonsensicalHttpStatusCode[] = "---";
 
 }  // namespace
