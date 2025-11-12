@@ -7,12 +7,19 @@ assert(!is_android)
 
 static_library("tabs") {
   sources = [
+    "impl/brave_tab_strip_collection.cc",
+    "impl/brave_tab_strip_collection_delegate.cc",
+    "impl/tree_tab_node.cc",
+    "impl/tree_tab_node_tab_collection.cc",
+    "public/brave_tab_strip_collection.h",
+    "public/brave_tab_strip_collection_delegate.h",
     "public/tree_tab_node.h",
     "public/tree_tab_node_id.h",
-    "tree_tab_node.cc",
+    "public/tree_tab_node_tab_collection.h",
   ]
 
   deps = [
+    "//base",
     "//components/tab_groups",
     "//components/tabs:public",
   ]

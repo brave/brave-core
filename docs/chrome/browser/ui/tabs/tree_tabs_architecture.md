@@ -1,0 +1,399 @@
+# Tree Tabs Architecture
+
+## Overview
+
+This document explores the implementation of "Tree Tabs" - a feature that allows
+users to see their tabs organized in a hierarchical tree structure based on
+their opener relationships. The tree tabs implementation builds upon the
+existing **Group Tabs** architecture in Chromium, extending the tab collection
+framework to support hierarchical tab organization.
+
+## Foundation: Group Tabs Architecture
+
+Before diving into tree tabs, it's essential to understand the existing Group Tabs architecture that serves as the foundation.
+
+### Core Components
+
+#### 1. TabCollection Hierarchy
+
+The tab collection framework is designed as a hierarchical system that can contain both tabs and other collections:
+
+```cpp
+class TabCollection {
+public:
+  // Type describes the various kinds of tab collections:
+  // - TABSTRIP:  The main container for tabs in a browser window.
+  // - PINNED:    A container for pinned tabs.
+  // - UNPINNED:  A container for unpinned tabs.
+  // - GROUP:     A container to grouped tabs.
+  // - SPLIT:     A container for split tabs.
+  enum class Type { TABSTRIP, PINNED, UNPINNED, GROUP, SPLIT };
+  
+  // Hierarchical structure support
+  TabInterface* AddTab(std::unique_ptr<TabInterface> tab, size_t index);
+  T* AddCollection(std::unique_ptr<T> collection, size_t index);
+  ...
+};
+```
+
+The TabCollection provides recursive representation of groups of tabs. 
+So examplary structure would be like this:
+
+```
+TabStripCollection
+ ├── PinnedCollection
+ │    ├── Tab 1
+ │    └── Tab 2
+ │
+ └── UnpinnedCollection
+      ├── GroupTabCollection (Group A)
+      │    ├── Tab 3
+      │    └── Tab 4
+      ├── SplitTabCollection
+      │    ├── Tab 6
+      │    └── Tab 7
+      └── Tab 5
+```
+
+The TabCollection also **manages ownership** of its tabs and child collections, 
+ensuring proper lifecycle management. So **only TabStripModel** can directly
+manipulate TabCollection hierarchy.
+
+**TabStripModel** owns **TabStripCollection** with the name `contents_data_`,
+and access and manipulates tabs and collections through it. So we can think of
+TabStripCollection as the **central interface of tab management** for 
+TabStripModel.
+
+
+#### 2. TabGroup as Metadata Container
+
+**TabGroupTabCollection** is a specialized TabCollection that manages grouped
+tabs. But it's focusing on managing the lifecycle of tabs within the group, while
+the actual group metadata is stored in a separate **TabGroup** class.
+
+```cpp
+class TabGroupTabCollection : public TabCollection {
+  // OWNS the TabGroup metadata
+  std::unique_ptr<TabGroup> group_;
+};
+```
+
+**TabGroup** contains all group-related metadata:
+
+```cpp
+class TabGroup {
+  // All group metadata is stored here
+
+  // Color, title, collapsed state, etc.
+  tab_groups::TabGroupVisualData visual_data_;
+
+  // Also provides the accessors for TabInterface within the group
+  tabs::TabInterface* GetFirstTab() const;
+  tabs::TabInterface* GetLastTab() const;
+};
+```
+
+The important point here is that **TabGroupTabCollection** is not exposed to
+UI components except **TabStripModel**. Instead, UI components access group 
+metadata through **TabGroupModel**.
+
+#### 4. TabGroupModel as Registry
+
+**TabGroupModel** only contains TabGroup references for access. **TabGroupModel**
+is also owned by **TabStripModel**.
+
+```cpp
+class TabGroupModel {
+  // Registry pointing to TabGroups (doesn't own them)
+  std::map<tab_groups::TabGroupId, raw_ptr<TabGroup>> groups_;
+  
+  // These will be called by TabStrripModel when it manipulates
+  // TabGroupTabCollection.
+  void AddTabGroup(TabGroup* group, base::PassKey<TabStripModel>);
+  void RemoveTabGroup(const tab_groups::TabGroupId& id, base::PassKey<TabStripModel>);
+};
+```
+
+**Critical Access Pattern**: 
+- **TabCollection system** manages ownership
+- **UI components** (except TabStripModel) must access **TabGroup** via **TabGroupModel**, never **TabGroupTabCollection** directly
+
+#### 5. TabGroupChanged Notifications
+All changes to tab groups will be notified through **TabStripModelObserver**,
+typically observed by UI components:
+
+```cpp
+class TabStripModelObserver {
+  virtual void OnTabGroupChanged(const TabGroupChange& change);
+};
+```
+
+Change details are encapsulated in the **TabGroupChange** struct:
+
+```cpp
+struct TabGroupChange {
+  // A group is created when the first tab is added to it and closed when the
+  // last tab is removed from it. Whenever the set of tabs in the group changes,
+  // a kContentsChange event is fired. Whenever the group's visual data changes,
+  // such as its title or color, a kVisualsChange event is fired. Whenever the
+  // group is moved by interacting with its header, a kMoved event is fired.
+  enum Type {
+    kCreated,
+    kEditorOpened,
+    kVisualsChanged,
+    kMoved,
+    kClosed
+  };
+
+  // Base class for all changes. Similar to TabStripModelChange::Delta.
+  struct Delta { virtual ~Delta() = default; };
+  struct VisualsChange : public Delta { ... };
+  struct CreateChange : public Delta { ...  };
+```
+
+
+## Tree Tabs Implementation
+
+Building on this foundation, tree tabs extend the collection framework with 
+hierarchical tab relationships based on opener connections.
+
+### Core Components
+
+#### 1. TreeTabNodeTabCollection as Central Management System
+
+**TreeTabNodeTabCollection** is the central component managing the hierarchical
+tree system. And **TreeTabNode** is the metadata container for tree-related
+information. This will be owned by **TreeTabNodeTabCollection**.
+
+
+```cpp
+class TabCollection {
+public:
+  enum class Type { TABSTRIP, PINNED, UNPINNED, GROUP, SPLIT,
+                     TREE_TAB_NODE  // New type for tree tab nodes
+                  };
+}
+```
+
+```cpp
+class TreeTabNodeTabCollection : public TabCollection {
+  raw_ptr<TabInterface> current_tab_;     // The tab this node represents
+  std::unique_ptr<TreeTabNode> node_;     // OWNS the TreeTabNode metadata
+  
+  // Called when tree tab is truned on or off to build/flatten tree structure
+  static void BuildTreeTabs(TabCollection& root, /* callbacks */);
+  static void FlattenTreeTabs(TabCollection& root, /* callbacks */);
+  
+  // Hierarchy navigation  
+  TreeTabNodeTabCollection* GetTopLevelAncestor();
+  std::vector<std::variant<TabInterface*, TabCollection*>> GetTreeNodeChildren();
+
+  // A class that represents metadata about the tree tab node.
+  std::unique_ptr<TreeTabNode> node_;
+};
+```
+
+
+The **TreeTabNodeTabCollection** owns one tab(or groups/split if needed in future)
+and other **TreeTabNodeTabCollection** as its children, forming a tree structure.
+So we would have structure of tree tabs like this when it's enabled:
+
+```TabStripCollection
+ ├── PinnedCollection
+ │    ├── Tab 1
+ │    └── Tab 2
+ │
+ └── UnpinnedCollection
+      ├── TreeTabNodeTabCollection
+      │    ├── Tab3
+      │    ├── TreeTabNodeTabCollection
+      │    │    ├── Tab4
+      │    │    └── TreeTabNodeTabCollection
+      │    │        └── Tab6
+      ...
+```
+
+
+#### 2. TreeTabNode as Metadata Container  
+
+**TreeTabNode** contains all tree-related metadata:
+
+```cpp
+class TreeTabNode {
+  tree_tab::TreeTabNodeId id_;
+  int level_ = 0;        // Depth in tree (root = 0)
+  int height_ = 0;       // Height of subtree rooted at this node
+  bool collapsed_ = false; // Hide/show child tabs
+  
+  // Tree structure calculations
+  int CalculateLevelAndHeightRecursively();
+  void OnChildHeightChanged();
+};
+```
+
+#### 3. TreeTabModel as Registry
+
+**TreeTabModel** only contains TreeTabNode references for access:
+
+```cpp
+class TreeTabModel {
+  // Registry pointing to TreeTabNodes (doesn't own them)
+  std::map<tree_tab::TreeTabNodeId, raw_ptr<const TreeTabNode>> tree_tab_nodes_;
+  
+  // Node lifecycle coordinated with TreeTabNodeTabCollection
+  void AddTreeTabNode(const TreeTabNode& node);
+  void RemoveTreeTabNode(const tree_tab::TreeTabNodeId& id);
+  
+  // Tree queries for UI components
+  const TreeTabNode* GetNode(const tree_tab::TreeTabNodeId& id) const;
+  int GetTreeHeight(const tree_tab::TreeTabNodeId& id) const;
+  
+  // Callbacks for UI updates
+  base::RepeatingCallbackList<void(const TreeTabNode&)> add_callbacks_;
+  base::RepeatingCallbackList<void(const tree_tab::TreeTabNodeId&)> remove_callbacks_;
+};
+```
+
+Note that this relationship is similar to the existing  **TabGroup** and 
+**TabGroupTabCollection** relationship. Which means:
+* **TreeTabNodeTabCollection** manages the lifecycle of tabs within the tree,
+while the actual tree metadata is stored in a separate **TreeTabNode** class.  
+* **TreeTabNode** is stored in **TreeTabModel** for UI access and it's owned by
+  **TabStripModel**.
+* Only **TabStripModel** can directly manipulate **TreeTabNodeTabCollection**.
+* UI components access tree metadata through **TreeTabNode**.
+
+### Mode-Specific Behavior via Delegate Pattern
+Currently, we have complicated conditionals scattered throughout the tab UI
+regarding mode, such as:
+
+```cpp
+void Layout() {
+  if (is_vertical_tab) {
+
+  } else {
+
+  }
+}
+```
+
+So when we add tree tabs, we want to avoid adding more conditionals like:
+
+```cpp
+void Layout() {
+  if (is_tree_tabs_mode) {
+    // Tree-specific layout
+  } else if (is_vertical_tab) {
+    // Vertical tab layout
+  } else {
+    // Default layout
+  }
+  😭
+}
+```
+
+This is really hard to maintain and extend. Instead, we use a delegate pattern
+to cleanly separate mode-specific behavior while minimizing conditionals.
+
+#### BraveTabStripCollectionDelegate - Base Delegate
+
+```cpp
+class BraveTabStripCollectionDelegate {
+public:
+  // Determines if this delegate should handle tab manipulation
+  virtual bool ShouldHandleTabManipulation() const { return false; }
+  
+  // Pre/post-processing hooks for tab operations
+  virtual void AddTabRecursive(std::unique_ptr<TabInterface> tab, size_t index,
+                              std::optional<tab_groups::TabGroupId> new_group_id,
+                              bool new_pinned_state,
+                              TabInterface* opener) const {}
+  
+  virtual std::unique_ptr<TabInterface> RemoveTabAtIndexRecursive(size_t index) const { 
+    return nullptr; 
+  }
+  
+  virtual void MoveTabsRecursive(const std::vector<int>& tab_indices,
+                                size_t destination_index,
+                                /* ... */) const {}
+};
+```
+
+**Purpose**: Provides a leeway for pre/post-processing of `TabStripCollection`'s behavior without modifying core collection logic.
+
+#### BraveTreeTabStripCollectionDelegate - Tree Mode Specialization
+
+```cpp
+class BraveTreeTabStripCollectionDelegate : public BraveTabStripCollectionDelegate {
+public:
+  // Activates tree-specific handling
+  bool ShouldHandleTabManipulation() const override { return true; }
+  
+  // Tree-aware tab operations with pre/post-processing
+  void AddTabRecursive(std::unique_ptr<TabInterface> tab, size_t index,
+                      std::optional<tab_groups::TabGroupId> new_group_id,
+                      bool new_pinned_state,
+                      TabInterface* opener) const override;
+  std::unique_ptr<TabInterface> RemoveTabAtIndexRecursive(size_t index) const override;
+  void MoveTabsRecursive(const std::vector<int>& tab_indices,
+                        size_t destination_index,
+                        /* ... */) const override;
+
+private:
+  base::WeakPtr<TreeTabModel> tree_tab_model_;
+};
+```
+
+##### Clean Architecture Benefits
+
+This delegate pattern eliminates the need for conditionals throughout the codebase:
+
+```cpp
+// Instead of this everywhere:
+void TabStripCollection::AddTab(/*...*/) {
+  if (is_tree_tabs_mode) {
+    // Tree-specific logic
+  } else {
+    // Default logic  
+  }
+}
+
+// We have clean delegation:
+void BraveTabStripCollection::AddTabRecursive(/*...*/) {
+  if (delegate_ && delegate_->ShouldHandleTabManipulation()) {
+    delegate_->AddTabRecursive(/*...*/);  // Tree delegate handles it
+  } else {
+    // Default collection behavior
+  }
+}
+
+// We can find tree-specific logic encapsulated in the delegate class only.
+void BraveTreeTabStripCollectionDelegate::AddTabRecursive(/*...*/) {
+  // Tree-specific addition logic here: Wrap a new tab in TreeTabNodeTabCollection.
+}
+```
+
+### Observer Extensions
+
+#### TreeTabChanged Notifications
+
+The existing `TabStripModelObserver` is extended with tree-specific change notifications:
+
+```cpp
+struct TreeTabChange {
+  enum Type { kNodeCreated, kNodeWillBeDestroyed };
+  
+  struct CreatedChange : public Delta {
+    raw_ref<const TreeTabNode> node;
+  };
+  
+  struct WillBeDestroyedChange : public Delta {  
+    raw_ref<const TreeTabNode> node;
+  };
+};
+
+class TabStripModelObserver {
+  // Extended observer interface
+  virtual void OnTreeTabChanged(const TreeTabChange& change);
+};
+```
