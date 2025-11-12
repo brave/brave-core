@@ -107,6 +107,7 @@ void SavePromoCode(installer::InstallStatus install_status) {
                                           &exit_code)) {                  \
     return exit_code;                                                     \
   }
+#define BRAVE_UPDATE_INSTALL_STATUS UpdateInstallStatus();
 #define UpdateInstallStatus() \
   UpdateInstallStatus(installer_state->archive_type, install_status)
 #include <chrome/installer/setup/setup_main.cc>

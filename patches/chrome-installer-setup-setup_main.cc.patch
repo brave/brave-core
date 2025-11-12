@@ -1,12 +1,12 @@
 diff --git a/chrome/installer/setup/setup_main.cc b/chrome/installer/setup/setup_main.cc
-index bf5b9a610a7cd3ddfce42bf848a997b6ac26c529..0898ba06b8dfea1eeb32ceba25789d0bda998daa 100644
+index bf5b9a610a7cd3ddfce42bf848a997b6ac26c529..1d405ed2fbc98a220d95ee80ede7174b2afb3acc 100644
 --- a/chrome/installer/setup/setup_main.cc
 +++ b/chrome/installer/setup/setup_main.cc
 @@ -701,6 +701,8 @@ installer::InstallStatus InstallProducts(InstallationState& original_state,
      }
    }
  
-+  UpdateInstallStatus();
++  BRAVE_UPDATE_INSTALL_STATUS
 +
    return install_status;
  }
