@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/setup/unpack_archive.cc b/chrome/installer/setup/unpack_archive.cc
-index 564547f24ef30a7b73ce59efdcfcf0bfd5842ef3..44ca1fe551dc948e130d67c724dc44fb2766504e 100644
+index 564547f24ef30a7b73ce59efdcfcf0bfd5842ef3..f3e978e654f912eabb42248be5dc11bb33caf37f 100644
 --- a/chrome/installer/setup/unpack_archive.cc
 +++ b/chrome/installer/setup/unpack_archive.cc
 @@ -7,6 +7,8 @@
@@ -140,8 +140,7 @@ index 564547f24ef30a7b73ce59efdcfcf0bfd5842ef3..44ca1fe551dc948e130d67c724dc44fb
 +  return base::ok();
 +}
  
--base::expected<base::FilePath, InstallStatus> UnpackChromeArchive(
-+base::expected<void, InstallStatus> UnpackChromeArchive(
+ base::expected<base::FilePath, InstallStatus> UnpackChromeArchive(
      const base::FilePath& unpack_path,
      InstallationState& original_state,
      const base::FilePath& setup_exe,
@@ -243,7 +242,7 @@ index 564547f24ef30a7b73ce59efdcfcf0bfd5842ef3..44ca1fe551dc948e130d67c724dc44fb
      return base::unexpected(UNPACKING_FAILED);
    }
 -  return base::ok(uncompressed_archive);
-+  return base::ok();
++  return base::ok(installer_state.uncompressed_archive);
  }
  
  }  // namespace installer
