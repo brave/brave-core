@@ -5,6 +5,7 @@
 
 import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js'
 
+import { AccountState } from '../brave_account_row.mojom-webui.js'
 import {
   BraveAccountBrowserProxy,
   BraveAccountBrowserProxyImpl
@@ -27,17 +28,42 @@ export class SettingsBraveAccountRow extends CrLitElement {
 
   static override get properties() {
     return {
-      signedIn: { type: Boolean, reflect: true },
+      state: { type: Number },
     }
-  }
-
-  protected onButtonClicked() {
-    this.browserProxy.rowHandler.openDialog()
   }
 
   private browserProxy: BraveAccountBrowserProxy =
     BraveAccountBrowserProxyImpl.getInstance()
-  protected accessor signedIn: boolean = false
+  protected accessor state: AccountState | undefined = undefined
+
+  override connectedCallback() {
+    super.connectedCallback()
+
+    this.loadInitialState()
+    this.browserProxy.rowClientCallbackRouter.updateState.addListener(
+      (state: AccountState) => { this.state = state; });
+  }
+
+  protected onLogOutButtonClicked() {
+    this.browserProxy.authentication.logOut()
+  }
+
+  protected onResendConfirmationEmailButtonClicked() {
+    this.browserProxy.authentication.resendConfirmationEmail()
+  }
+
+  protected onCancelRegistrationButtonClicked() {
+    this.browserProxy.authentication.cancelRegistration()
+  }
+
+  protected onGetStartedButtonClicked() {
+    this.browserProxy.rowHandler.openDialog()
+  }
+
+  private async loadInitialState() {
+    const { state } = await this.browserProxy.rowHandler.getAccountState()
+    this.state = state
+  }
 }
 
 declare global {

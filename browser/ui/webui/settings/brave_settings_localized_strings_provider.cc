@@ -1184,13 +1184,24 @@ void BraveAddBraveAccountStrings(content::WebUIDataSource* html_source) {
   }
 
   webui::LocalizedString localized_strings[] = {
-      {"braveAccountRowTitle", IDS_SETTINGS_BRAVE_ACCOUNT_ROW_TITLE},
-      {"braveAccountRowDescription",
-       IDS_SETTINGS_BRAVE_ACCOUNT_ROW_DESCRIPTION},
+      {"braveAccountLoggedOutRowTitle",
+       IDS_SETTINGS_BRAVE_ACCOUNT_LOGGED_OUT_ROW_TITLE},
+      {"braveAccountLoggedOutRowDescription",
+       IDS_SETTINGS_BRAVE_ACCOUNT_LOGGED_OUT_ROW_DESCRIPTION},
       {"braveAccountGetStartedButtonLabel",
        IDS_SETTINGS_BRAVE_ACCOUNT_GET_STARTED_BUTTON_LABEL},
-      {"braveAccountManageAccountButtonLabel",
-       IDS_SETTINGS_BRAVE_ACCOUNT_MANAGE_ACCOUNT_BUTTON_LABEL},
+      {"braveAccountVerificationRowTitle",
+       IDS_SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_TITLE},
+      {"braveAccountVerificationRowDescription1",
+       IDS_SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_1},
+      {"braveAccountVerificationRowDescription2",
+       IDS_SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_2},
+      {"braveAccountResendConfirmationEmailButtonLabel",
+       IDS_SETTINGS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_BUTTON_LABEL},
+      {"braveAccountCancelRegistrationButtonLabel",
+       IDS_SETTINGS_BRAVE_ACCOUNT_CANCEL_REGISTRATION_BUTTON_LABEL},
+      {"braveAccountLogOutButtonLabel",
+       IDS_SETTINGS_BRAVE_ACCOUNT_LOG_OUT_BUTTON_LABEL},
   };
 
   html_source->AddLocalizedStrings(localized_strings);
