@@ -6,11 +6,13 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_INSTALLER_SETUP_INSTALLER_STATE_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_INSTALLER_SETUP_INSTALLER_STATE_H_
 
+#include "base/files/file_path.h"
 #include "chrome/installer/util/util_constants.h"
 
 #define RequiresActiveSetup                                     \
   RequiresActiveSetup() const;                                  \
   ArchiveType archive_type = ArchiveType::UNKNOWN_ARCHIVE_TYPE; \
+  base::FilePath uncompressed_archive;                          \
   void Unused
 
 #include <chrome/installer/setup/installer_state.h>  // IWYU pragma: export
