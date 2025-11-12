@@ -10,6 +10,7 @@
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/webui_url_constants.h"
+#include "components/grit/brave_components_webui_strings.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "ui/webui/webui_util.h"
@@ -23,6 +24,8 @@ AIChatAgentNewTabPageUI::AIChatAgentNewTabPageUI(content::WebUI* web_ui)
   webui::SetupWebUIDataSource(
       source, kAiChatAgentNewTabPageGenerated,
       IDR_AI_CHAT_AGENT_NEW_TAB_PAGE_STATIC_AI_CHAT_AGENT_NEW_TAB_PAGE_HTML);
+
+  source->AddLocalizedStrings(webui::kAiChatAgentNtpStrings);
 
   AddBackgroundColorToSource(source, web_ui->GetWebContents());
 }
