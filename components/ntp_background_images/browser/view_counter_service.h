@@ -157,6 +157,7 @@ class ViewCounterService : public KeyedService,
   void OnPreferenceChanged(const std::string& pref_name);
 
   // brave_ads::AdsServiceObserver:
+  void OnDidInitializeAdsService() override;
   void OnDidClearAdsServiceData() override;
 
   // content_settings::Observer:
