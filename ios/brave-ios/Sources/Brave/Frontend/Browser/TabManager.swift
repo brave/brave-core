@@ -786,7 +786,7 @@ class TabManager: NSObject {
   /// Will forget all data instantly with no delay
   @MainActor func forgetDataOnAppExitDomains() {
     guard BraveCore.FeatureList.kBraveShredFeature.enabled else { return }
-    let shredOnAppExitURLs = Domain.allDomainsWithShredLevelAppExit()?
+    let shredOnAppExitURLs = Domain.allDomainsWithShredLevelAppExit()
       .compactMap { domain -> URL? in
         guard let urlString = domain.url,
           let url = URL(string: urlString),
@@ -796,7 +796,7 @@ class TabManager: NSObject {
         }
         return url
       }
-    guard let shredOnAppExitURLs, !shredOnAppExitURLs.isEmpty else { return }
+    guard !shredOnAppExitURLs.isEmpty else { return }
     Task {
       await forgetData(for: shredOnAppExitURLs)
     }
