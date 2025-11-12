@@ -242,6 +242,8 @@ void ZCashCompleteTransactionTask::SignOrchardPart() {
   spends_bundle.sk = *sk;
   spends_bundle.fvk = *fvk;
   spends_bundle.inputs = transaction_.orchard_part().inputs;
+  // TODO(cypt4): Remove after s->t transaction support.
+  CHECK(!transaction_.orchard_part().outputs.empty());
   auto orchard_bundle_manager = OrchardBundleManager::Create(
       *state_tree_bytes, spends_bundle, transaction_.orchard_part().outputs);
 
