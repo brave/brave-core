@@ -1,32 +1,13 @@
 diff --git a/chrome/installer/setup/install_worker_unittest.cc b/chrome/installer/setup/install_worker_unittest.cc
-index 6574446d3239516f7ba7715fb7001ab63178d6f2..eb2b61894e725b7f5f268776ef861f034e2723a8 100644
+index 6574446d3239516f7ba7715fb7001ab63178d6f2..809c89c5fac3b8c1f2832816bd0141853c4c64e8 100644
 --- a/chrome/installer/setup/install_worker_unittest.cc
 +++ b/chrome/installer/setup/install_worker_unittest.cc
-@@ -256,6 +256,8 @@ class InstallWorkerTest : public testing::Test {
-     // Don't bother ensuring that these paths exist. Since we're just
-     // building the work item lists and not running them, they shouldn't
-     // actually be touched.
-+    archive_path_ =
-+        base::FilePath(L"C:\\UnlikelyPath\\Temp\\chrome_123\\chrome.7z");
-     src_path_ = base::FilePath(
-         L"C:\\UnlikelyPath\\Temp\\chrome_123\\source\\Chrome-bin");
-     setup_path_ =
-@@ -266,6 +268,7 @@ class InstallWorkerTest : public testing::Test {
-  protected:
-   std::unique_ptr<base::Version> current_version_;
-   std::unique_ptr<base::Version> new_version_;
-+  base::FilePath archive_path_;
-   base::FilePath setup_path_;
-   base::FilePath src_path_;
-   base::FilePath temp_dir_;
-@@ -319,8 +322,8 @@ TEST_F(InstallWorkerTest, TestInstallChromeSystem) {
-   const base::Version current_version(
-       installer_state->GetCurrentVersion(*installation_state));
-   installer::InstallParams install_params = {
--      *installer_state, *installation_state, setup_path_,   current_version,
--      src_path_,        temp_dir_,           *new_version_,
-+      *installer_state, *installation_state, setup_path_, current_version,
-+      archive_path_,    src_path_,           temp_dir_,   *new_version_,
-   };
+@@ -300,6 +300,8 @@ TEST_F(InstallWorkerTest, TestInstallChromeSystem) {
+   std::unique_ptr<InstallerState> installer_state(
+       BuildChromeInstallerState(system_level, *installation_state,
+                                 InstallerState::SINGLE_INSTALL_OR_UPDATE));
++  installer_state->uncompressed_archive =
++      base::FilePath(L"C:\\UnlikelyPath\\Temp\\chrome_123\\chrome.7z");
  
-   // Set up expectations for setup.exe's on-os-upgrade handler.
+   // Set up some expectations.
+   // TODO(robertshield): Set up some real expectations.
