@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/setup/install_worker.cc b/chrome/installer/setup/install_worker.cc
-index 3393a297bb7120d8082cecc25df15f4e60324425..e2813ab845f2a02a2e28a848748d3997c79fe713 100644
+index 3393a297bb7120d8082cecc25df15f4e60324425..c418458f97f593fa5805dc9d125ea1ee08191591 100644
 --- a/chrome/installer/setup/install_worker.cc
 +++ b/chrome/installer/setup/install_worker.cc
 @@ -106,6 +106,7 @@ void AddInstallerCopyTasks(const InstallParams& install_params,
@@ -10,33 +10,11 @@ index 3393a297bb7120d8082cecc25df15f4e60324425..e2813ab845f2a02a2e28a848748d3997
  }
  
  // A callback invoked by |work_item| that adds firewall rules for Chrome. Rules
-@@ -202,6 +203,7 @@ void AddDeleteUninstallEntryForMSIWorkItems(
- void AddChromeWorkItems(const InstallParams& install_params,
-                         WorkItemList* install_list) {
-   const InstallerState& installer_state = *install_params.installer_state;
-+  const base::FilePath& archive_path = installer_state.uncompressed_archive;
-   const base::FilePath& src_path = *install_params.src_path;
-   const base::FilePath& temp_path = *install_params.temp_path;
-   const base::Version& current_version = *install_params.current_version;
-@@ -216,11 +218,16 @@ void AddChromeWorkItems(const InstallParams& install_params,
+@@ -216,6 +217,7 @@ void AddChromeWorkItems(const InstallParams& install_params,
          installer_state.GetInstallerDirectory(current_version));
      base::FilePath old_archive(
          old_installer_dir.Append(installer::kChromeArchive));
--    auto* delete_old_archive_work_item =
--        install_list->AddDeleteTreeWorkItem(old_archive, temp_path);
--    // Don't cause failure of |install_list| if this WorkItem fails.
--    delete_old_archive_work_item->set_best_effort(true);
--    delete_old_archive_work_item->set_rollback_enabled(false);
-+    // Don't delete the archive that we are actually installing from.
-+    if (archive_path != old_archive) {
-+      auto* delete_old_archive_work_item =
-+          install_list->AddDeleteTreeWorkItem(old_archive, temp_path);
-+      // Don't cause failure of |install_list| if this WorkItem fails.
-+      delete_old_archive_work_item->set_best_effort(true);
-+      // No need to roll this back; if installation fails we'll be moved to the
-+      // "-full" channel anyway.
-+      delete_old_archive_work_item->set_rollback_enabled(false);
-+    }
-   }
- 
-   // Delete any new_chrome.exe if present (we will end up creating a new one
++    BRAVE_MAYBE_ABORT_ADD_CHROME_WORK_ITEMS
+     auto* delete_old_archive_work_item =
+         install_list->AddDeleteTreeWorkItem(old_archive, temp_path);
+     // Don't cause failure of |install_list| if this WorkItem fails.

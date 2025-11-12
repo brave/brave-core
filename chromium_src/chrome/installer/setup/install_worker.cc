@@ -198,7 +198,10 @@ void UpdateBraveVpn(const base::FilePath& target_path,
                                         WorkItem::ALWAYS);                    \
     }                                                                         \
   }
+#define BRAVE_MAYBE_ABORT_ADD_CHROME_WORK_ITEMS \
+  if (old_archive == installer_state.uncompressed_archive) return;
 #include <chrome/installer/setup/install_worker.cc>
+#undef BRAVE_MAYBE_ABORT_ADD_CHROME_WORK_ITEMS
 #undef BRAVE_ADD_INSTALLER_COPY_TASKS
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #undef AddUpdateDowngradeVersionItem
