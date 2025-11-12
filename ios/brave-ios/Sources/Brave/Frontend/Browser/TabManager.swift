@@ -1431,9 +1431,12 @@ class TabManager: NSObject {
       return
     }
 
-    // Tab was created with no active webview session data.
-    // Restore tab data from Core-Data URL, and configure it.
-    if sessionTab.interactionState.isEmpty {
+    tab.lastTitle = sessionTab.title
+    do {
+      try tab.restore(using: sessionTab.interactionState)
+    } catch {
+      // Tab was created with no active webview session data or invalid data.
+      // Restore tab data from Core-Data URL, and configure it.
       if let tabURL = sessionTab.url {
         let request =
           InternalURL.isValid(url: tabURL)
@@ -1445,11 +1448,7 @@ class TabManager: NSObject {
         tab.lastTitle = TabManager.aboutBlankBlockedURL.absoluteDisplayString
         tab.loadRequest(URLRequest(url: TabManager.aboutBlankBlockedURL))
       }
-      return
     }
-
-    tab.lastTitle = sessionTab.title
-    tab.restore(using: sessionTab.interactionState)
   }
 
   /// Restores all tabs.
@@ -1547,7 +1546,9 @@ class TabManager: NSObject {
 
     if let interactionState = recentlyClosed.interactionState, !interactionState.isEmpty {
       tab.lastTitle = recentlyClosed.title ?? ""
-      tab.restore(using: interactionState)
+      // We dont need to handle a failed restore for recently closed because `addTab` above already
+      // starts a request for the recently closed tabs last URL
+      try? tab.restore(using: interactionState)
     }
 
     selectTab(tab)
