@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/setup/setup_main.cc b/chrome/installer/setup/setup_main.cc
-index bf5b9a610a7cd3ddfce42bf848a997b6ac26c529..bca8a75ce7fa61fec3c7257908a360eba722b770 100644
+index bf5b9a610a7cd3ddfce42bf848a997b6ac26c529..502e60acc7b7e6fa2827b25c0101db3976fe7d8c 100644
 --- a/chrome/installer/setup/setup_main.cc
 +++ b/chrome/installer/setup/setup_main.cc
 @@ -68,6 +68,7 @@
@@ -10,27 +10,7 @@ index bf5b9a610a7cd3ddfce42bf848a997b6ac26c529..bca8a75ce7fa61fec3c7257908a360eb
  #include "chrome/installer/setup/brand_behaviors.h"
  #include "chrome/installer/setup/configure_app_container_sandbox.h"
  #include "chrome/installer/setup/downgrade_cleanup.h"
-@@ -666,6 +667,7 @@ installer::InstallStatus InstallProducts(InstallationState& original_state,
-                                          InstallerState* installer_state) {
-   DCHECK(installer_state);
-   installer::InstallStatus install_status = installer::UNKNOWN_STATUS;
-+  installer::ArchiveType archive_type = installer::UNKNOWN_ARCHIVE_TYPE;
-   installer_state->SetStage(installer::PRECONDITIONS);
-   // Remove any legacy "-full" values from the product's "ap" value.
-   installer::UpdateInstallStatus();
-@@ -680,8 +682,9 @@ installer::InstallStatus InstallProducts(InstallationState& original_state,
-   if (CheckPreInstallConditions(original_state, *installer_state,
-                                 &install_status)) {
-     VLOG(1) << "Installing to " << installer_state->target_path().value();
--    install_status = InstallProductsHelper(original_state, setup_exe, cmd_line,
--                                           prefs, *installer_state);
-+    install_status =
-+        InstallProductsHelper(original_state, setup_exe, cmd_line, prefs,
-+                              *installer_state, &archive_type);
-   } else {
-     // CheckPreInstallConditions must set the status on failure.
-     DCHECK_NE(install_status, installer::UNKNOWN_STATUS);
-@@ -701,6 +704,8 @@ installer::InstallStatus InstallProducts(InstallationState& original_state,
+@@ -701,6 +702,8 @@ installer::InstallStatus InstallProducts(InstallationState& original_state,
      }
    }
  
@@ -39,18 +19,7 @@ index bf5b9a610a7cd3ddfce42bf848a997b6ac26c529..bca8a75ce7fa61fec3c7257908a360eb
    return install_status;
  }
  
-@@ -1190,7 +1195,9 @@ InstallStatus InstallProductsHelper(InstallationState& original_state,
-                                     const base::FilePath& setup_exe,
-                                     const base::CommandLine& cmd_line,
-                                     const InitialPreferences& prefs,
--                                    InstallerState& installer_state) {
-+                                    InstallerState& installer_state,
-+                                    ArchiveType* archive_type) {
-+  DCHECK(archive_type);
-   const bool system_install = installer_state.system_install();
- 
-   // Create a temp folder where we will unpack Chrome archive. If it fails,
-@@ -1204,8 +1211,10 @@ InstallStatus InstallProductsHelper(InstallationState& original_state,
+@@ -1204,8 +1207,10 @@ InstallStatus InstallProductsHelper(InstallationState& original_state,
      return TEMP_DIR_FAILED;
    }
  
@@ -59,11 +28,11 @@ index bf5b9a610a7cd3ddfce42bf848a997b6ac26c529..bca8a75ce7fa61fec3c7257908a360eb
 +  base::FilePath uncompressed_archive;
 +  RETURN_IF_ERROR(UnpackAndMaybePatchChromeArchive(
 +      unpack_path, original_state, setup_exe, cmd_line, installer_state,
-+      archive_type, uncompressed_archive));
++      &installer_state.archive_type, uncompressed_archive));
  
    VLOG(1) << "unpacked to " << unpack_path.value();
  
-@@ -1243,9 +1252,9 @@ InstallStatus InstallProductsHelper(InstallationState& original_state,
+@@ -1243,9 +1248,9 @@ InstallStatus InstallProductsHelper(InstallationState& original_state,
        const base::Version current_version(
            installer_state.GetCurrentVersion(original_state));
        InstallParams install_params = {
@@ -76,7 +45,7 @@ index bf5b9a610a7cd3ddfce42bf848a997b6ac26c529..bca8a75ce7fa61fec3c7257908a360eb
        };
  
        install_status =
-@@ -1526,6 +1535,7 @@ int SetupMain() {
+@@ -1526,6 +1531,7 @@ int SetupMain() {
                                       &exit_code)) {
      return exit_code;
    }
