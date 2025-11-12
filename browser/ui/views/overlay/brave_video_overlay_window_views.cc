@@ -13,7 +13,6 @@
 #include "base/feature_list.h"
 #include "base/strings/strcat.h"
 #include "base/strings/utf_string_conversions.h"
-#include "brave/browser/ui/views/overlay/brave_back_to_tab_label_button.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/ui/color/nala/nala_color_id.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
@@ -262,18 +261,6 @@ void BraveVideoOverlayWindowViews::OnUpdateControlsBounds() {
            fullscreen_button_->size().width(),
        close_controls_view_->origin().y()});
 
-  if (back_to_tab_label_button_) {
-    back_to_tab_label_button_->SetMinSize(close_button_size);
-    back_to_tab_label_button_->SetMaxSize(close_button_size);
-    back_to_tab_label_button_->SetSize(close_button_size);
-    back_to_tab_label_button_->SetPosition(
-        {fullscreen_button_->origin().x() -
-             (kTopControlSpacing - close_button_insets.left() -
-              back_to_tab_label_button_->GetInsets().right()) -
-             back_to_tab_label_button_->size().width(),
-         close_controls_view_->origin().y()});
-  }
-
   // Lay out controls in the middle of window
   std::vector<views::View*> visible_controls;
   if (previous_track_controls_view_->GetVisible()) {
@@ -326,22 +313,6 @@ void BraveVideoOverlayWindowViews::UpdateControlIcons() {
       ui::ImageModel::FromVectorIcon(kLeoFullscreenOnIcon,
                                      kColorPipWindowForeground,
                                      kTopControlIconSize));
-
-  if (back_to_tab_label_button_) {
-    back_to_tab_label_button_->SetImageModel(
-        views::Button::STATE_NORMAL,
-        ui::ImageModel::FromVectorIcon(kLeoPictureInPictureReturnIcon,
-                                       kColorPipWindowForeground,
-                                       kTopControlIconSize));
-    // Calling this will clear accessible name as well. We should reset it and
-    // tooltip text.
-    back_to_tab_label_button_->SetText({});
-
-    back_to_tab_label_button_->SetAccessibleName(
-        std::u16string(back_to_tab_label_button_->GetText()));
-    back_to_tab_label_button_->SetTooltipText(
-        back_to_tab_label_button_->GetAccessibleName());
-  }
 
   previous_track_controls_view_->override_icon(kLeoPreviousOutlineIcon);
 }
