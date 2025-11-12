@@ -145,7 +145,6 @@ void NTPBackgroundImagesService::Init() {
                               override_sponsored_images_component_path);
   } else {
     RegisterBackgroundImagesComponent();
-    RegisterSponsoredImagesComponent();
 
     pref_change_registrar_.Add(
         variations::prefs::kVariationsCountry,
@@ -212,23 +211,18 @@ void NTPBackgroundImagesService::ScheduleNextSponsoredImagesComponentUpdate() {
     return;
   }
 
-  if (!sponsored_images_component_id_) {
-    SCOPED_CRASH_KEY_STRING64("Issue50267", "failure_reason",
-                              "sponsored_images_component_id_ is null");
-    base::debug::DumpWithoutCrashing();
-    return;
-  }
-
   const base::Time next_update_check_time =
       base::Time::Now() + features::kSponsoredImagesUpdateCheckAfter.Get();
   sponsored_images_update_check_timer_.Start(
       FROM_HERE, next_update_check_time,
       base::BindOnce(sponsored_images_update_check_callback_));
 
-  VLOG(6)
-      << "Scheduled update check for NTP Sponsored Images component with ID "
-      << sponsored_images_component_id_.value() << " at "
-      << base::TimeFormatFriendlyDateAndTime(next_update_check_time);
+  if (sponsored_images_component_id_) {
+    VLOG(6)
+        << "Scheduled update check for NTP Sponsored Images component with ID "
+        << *sponsored_images_component_id_ << " at "
+        << base::TimeFormatFriendlyDateAndTime(next_update_check_time);
+  }
 }
 
 void NTPBackgroundImagesService::CheckSponsoredImagesComponentUpdate(
@@ -259,15 +253,17 @@ void NTPBackgroundImagesService::RegisterSponsoredImagesComponent() {
     return;
   }
 
-  if (sponsored_images_component_id_ == data->component_id.data()) {
+  if (sponsored_images_component_id_ == data->component_id) {
+    // Already registered.
     return;
   }
 
   if (sponsored_images_component_id_) {
+    // Unregister previous component.
     component_update_service_->UnregisterComponent(
         *sponsored_images_component_id_);
   }
-  sponsored_images_component_id_ = data->component_id.data();
+  sponsored_images_component_id_ = data->component_id;
 
   VLOG(0) << "Registering NTP Sponsored Images component for " << country_code
           << " with ID " << data->component_id;
@@ -283,7 +279,7 @@ void NTPBackgroundImagesService::RegisterSponsoredImagesComponent() {
   // However, this background interval is too long for SI. Use 15mins interval.
   sponsored_images_update_check_callback_ = base::BindRepeating(
       &NTPBackgroundImagesService::CheckSponsoredImagesComponentUpdate,
-      base::Unretained(this), data->component_id.data());
+      base::Unretained(this), std::string(data->component_id));
 
   last_updated_at_ = base::Time::Now();
 
@@ -414,7 +410,12 @@ void NTPBackgroundImagesService::OnPreferenceChanged(
 }
 
 void NTPBackgroundImagesService::OnVariationsCountryPrefChanged() {
-  RegisterSponsoredImagesComponent();
+  if (sponsored_images_component_id_) {
+    // Re-register the Sponsored Images component when the country preference
+    // changes. Defer first registration until ads service initialization
+    // completes, to prevent race conditions.
+    RegisterSponsoredImagesComponent();
+  }
 }
 
 void NTPBackgroundImagesService::RegisterSuperReferralComponent() {
@@ -537,6 +538,7 @@ NTPSponsoredImagesData* NTPBackgroundImagesService::GetSponsoredImagesData(
   const bool is_super_referrals_enabled =
       base::FeatureList::IsEnabled(features::kBraveNTPSuperReferralWallpaper);
   if (is_super_referrals_enabled) {
+    SCOPED_CRASH_KEY_BOOL("Issue50267", "super_referral", super_referral);
     SCOPED_CRASH_KEY_STRING64("Issue50267", "failure_reason",
                               "Super referrals are enabled");
     base::debug::DumpWithoutCrashing();
@@ -622,6 +624,9 @@ void NTPBackgroundImagesService::OnGetSponsoredComponentJsonData(
   std::optional<base::Value::Dict> json_value = base::JSONReader::ReadDict(
       json_string, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!json_value) {
+    SCOPED_CRASH_KEY_STRING64("Issue50267", "variations_country_code",
+                              GetVariationsCountryCode(variations_service_));
+    SCOPED_CRASH_KEY_STRING64("Issue50267", "json_string", json_string);
     SCOPED_CRASH_KEY_STRING64("Issue50267", "failure_reason", "Invalid JSON");
     base::debug::DumpWithoutCrashing();
     DVLOG(2) << "Read json data failed. Invalid JSON data";

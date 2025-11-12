@@ -121,6 +121,10 @@ ViewCounterService::~ViewCounterService() {
   host_content_settings_map_->RemoveObserver(this);
 }
 
+void ViewCounterService::OnDidInitializeAdsService() {
+  background_images_service_->RegisterSponsoredImagesComponent();
+}
+
 void ViewCounterService::OnDidClearAdsServiceData() {
   background_images_service_->ForceSponsoredComponentUpdate();
 }
