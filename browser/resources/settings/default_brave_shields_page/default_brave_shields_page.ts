@@ -38,6 +38,7 @@ interface BraveShieldsPage {
     httpsUpgradeControlType: HTMLSelectElement,
     noScriptControlToggle: SettingsToggleButtonElement,
     setContactInfoSaveFlagToggle: SettingsToggleButtonElement,
+    allowElementBlockerInPrivateModeToggle: SettingsToggleButtonElement,
   }
 }
 
@@ -173,6 +174,14 @@ class BraveShieldsPage extends BraveShieldsPageBase {
           type: chrome.settingsPrivate.PrefType.BOOLEAN,
           value: true,
         }
+      },
+      isAllowElementBlockerInPrivateModeEnabled_: {
+        type: Object,
+        value: {
+          key: '',
+          type: chrome.settingsPrivate.PrefType.BOOLEAN,
+          value: true,
+        }
       }
     }
   }
@@ -188,6 +197,8 @@ class BraveShieldsPage extends BraveShieldsPageBase {
     PrefObject<boolean>
   private declare isFingerprintingEnabled_: chrome.settingsPrivate.PrefObject<boolean>
   private declare isContactInfoSaveFlagEnabled_: chrome.settingsPrivate.
+    PrefObject<boolean>
+  private declare isAllowElementBlockerInPrivateModeEnabled_: chrome.settingsPrivate.
     PrefObject<boolean>
   private declare fingerprintingControlTypes_: ControlType[]
   private declare fingerprintingControlType_: string
@@ -292,6 +303,14 @@ class BraveShieldsPage extends BraveShieldsPageBase {
         value: value.contactInfoSaveFlag,
       }
     })
+
+    this.browserProxy_.getAllowElementBlockerInPrivateModeEnabled().then(value => {
+      this.isAllowElementBlockerInPrivateModeEnabled_ = {
+        key: '',
+        type: chrome.settingsPrivate.PrefType.BOOLEAN,
+        value: value,
+      }
+    })
   }
 
   onAdControlChange_ () {
@@ -328,6 +347,12 @@ class BraveShieldsPage extends BraveShieldsPageBase {
   onForgetFirstPartyStorageToggleChange_ () {
     this.browserProxy_.setForgetFirstPartyStorageEnabled(
       this.$.forgetFirstPartyStorageControlType.checked
+    )
+  }
+
+  onAllowElementBlockerInPrivateModeToggle_ () {
+    this.browserProxy_.setAllowElementBlockerInPrivateModeEnabled(
+      this.$.allowElementBlockerInPrivateModeToggle.checked
     )
   }
 

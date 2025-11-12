@@ -38,6 +38,9 @@ export interface DefaultBraveShieldsBrowserProxy {
   setContactInfoSaveFlag: (value: boolean) => void
   getContactInfo: () => Promise<ContactInfo>
 
+  getAllowElementBlockerInPrivateModeEnabled: () => Promise<boolean>
+  setAllowElementBlockerInPrivateModeEnabled: (value: boolean) => void
+
   getHideBlockAllCookieTogle: () => Promise<boolean>
 }
 
@@ -117,6 +120,13 @@ implements DefaultBraveShieldsBrowserProxy {
 
   getHideBlockAllCookieTogle () {
     return sendWithPromise('getHideBlockAllCookieTogle')
+  }
+
+  getAllowElementBlockerInPrivateModeEnabled () {
+    return sendWithPromise('getAllowElementBlockerInPrivateModeEnabled')
+  }
+  setAllowElementBlockerInPrivateModeEnabled (value: boolean) {
+    chrome.send('setAllowElementBlockerInPrivateModeEnabled', [value])
   }
 
   static getInstance(): DefaultBraveShieldsBrowserProxy {

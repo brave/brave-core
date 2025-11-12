@@ -197,6 +197,16 @@ void BraveShieldsSettingsService::SetForgetFirstPartyStorageEnabled(
   MaybeRecordShieldsUsageP3A(kChangedPerSiteShields, local_state_);
   RecordForgetFirstPartySetting(&*host_content_settings_map_);
 }
+
+bool GetAllowElementBlockerInPrivateModeEnabled(const GURL& url) {
+  ContentSetting setting = host_content_settings_map_->GetContentSetting(
+      url, url, ContentSettingsType::BRAVE_ALLOW_EB_IN_PRIVATE);
+
+  return setting == CONTENT_SETTING_ALLOW;
+}
+  
+void SetAllowElementBlockerInPrivateModeEnabled(bool is_enabled, const GURL& url);
+
 #endif
 
 void BraveShieldsSettingsService::SetDefaultAutoShredMode(
