@@ -41,11 +41,7 @@ void BlockchainImagesSourceBase::StartDataRequestForPath(
 
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
-      base::BindOnce(
-          [](const base::FilePath& path) {
-            return base::ReadFileToBytes(path);
-          },
-          images_path),
+      base::BindOnce(&base::ReadFileToBytes, images_path),
       base::BindOnce(&BlockchainImagesSourceBase::OnGotImageFileBytes,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
@@ -58,7 +54,8 @@ void BlockchainImagesSourceBase::OnGotImageFileBytes(
     return;
   }
 
-  std::move(callback).Run(base::MakeRefCounted<base::RefCountedBytes>(*input));
+  std::move(callback).Run(
+      base::MakeRefCounted<base::RefCountedBytes>(std::move(*input)));
 }
 
 std::string BlockchainImagesSourceBase::GetMimeTypeForPath(
