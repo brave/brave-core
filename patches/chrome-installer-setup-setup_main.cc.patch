@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/setup/setup_main.cc b/chrome/installer/setup/setup_main.cc
-index bf5b9a610a7cd3ddfce42bf848a997b6ac26c529..05c1fe3b1a018c774d26c3672bc3883d5abdfeac 100644
+index bf5b9a610a7cd3ddfce42bf848a997b6ac26c529..0898ba06b8dfea1eeb32ceba25789d0bda998daa 100644
 --- a/chrome/installer/setup/setup_main.cc
 +++ b/chrome/installer/setup/setup_main.cc
 @@ -701,6 +701,8 @@ installer::InstallStatus InstallProducts(InstallationState& original_state,
@@ -11,19 +11,6 @@ index bf5b9a610a7cd3ddfce42bf848a997b6ac26c529..05c1fe3b1a018c774d26c3672bc3883d
    return install_status;
  }
  
-@@ -1243,9 +1245,9 @@ InstallStatus InstallProductsHelper(InstallationState& original_state,
-       const base::Version current_version(
-           installer_state.GetCurrentVersion(original_state));
-       InstallParams install_params = {
--          installer_state,    original_state, setup_exe,
--          current_version,    src_path,       temp_path.path(),
--          *installer_version,
-+          installer_state,  original_state,       setup_exe,
-+          current_version,  installer_state.uncompressed_archive, src_path,
-+          temp_path.path(), *installer_version,
-       };
- 
-       install_status =
 @@ -1526,6 +1528,7 @@ int SetupMain() {
                                       &exit_code)) {
      return exit_code;
