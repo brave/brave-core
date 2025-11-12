@@ -291,7 +291,7 @@ class DomainTests: CoreDataTestCase {
     Preferences.Shields.shredLevelRaw.value = nil
     XCTAssertEqual(Preferences.Shields.shredLevel, .never)
 
-    var allDomainsWithShredLevelAppExit = Domain.allDomainsWithShredLevelAppExit() ?? []
+    var allDomainsWithShredLevelAppExit = Domain.allDomainsWithShredLevelAppExit()
     XCTAssertEqual(allDomainsWithShredLevelAppExit.count, 1)
     XCTAssertFalse(allDomainsWithShredLevelAppExit.contains(where: { $0.url == domain.url }))
     XCTAssertTrue(allDomainsWithShredLevelAppExit.contains(where: { $0.url == domain2.url }))
@@ -302,12 +302,35 @@ class DomainTests: CoreDataTestCase {
     XCTAssertEqual(Preferences.Shields.shredLevel, .appExit)
 
     // should contain domain2 & domain3
-    allDomainsWithShredLevelAppExit = Domain.allDomainsWithShredLevelAppExit() ?? []
+    allDomainsWithShredLevelAppExit = Domain.allDomainsWithShredLevelAppExit()
     XCTAssertEqual(allDomainsWithShredLevelAppExit.count, 2)
     XCTAssertFalse(allDomainsWithShredLevelAppExit.contains(where: { $0.url == domain.url }))
     XCTAssertTrue(allDomainsWithShredLevelAppExit.contains(where: { $0.url == domain2.url }))
     XCTAssertTrue(allDomainsWithShredLevelAppExit.contains(where: { $0.url == domain3.url }))
   }
+
+  @MainActor func testAllDomainsWithShredLevelAppExitGlobalPref() {
+    Preferences.Shields.shredLevel = .appExit
+    // Add some mock data
+    let domainURL = URL(string: "https://brave.com")!
+    let domain = Domain.getOrCreate(forUrl: domainURL, persistent: true)
+    domain.shredLevel = .appExit
+    // Add secure & insecure Domain object for same baseDomain, but set
+    // explicit shred level on secure version to verify explicit opt-out for
+    // baseDomain matches will be filtered out of default value shred level
+    // matches. See brave-browser#46560.
+    let insecureDomainURL = URL(string: "http://github.com")!
+    _ = Domain.getOrCreate(forUrl: insecureDomainURL, persistent: true)
+    let secureDomainURL = URL(string: "https://github.com")!
+    let secureDomain = Domain.getOrCreate(forUrl: secureDomainURL, persistent: true)
+    secureDomain.shredLevel = .never
+
+    // verify insecureDomain is filtered out because baseDomain matches
+    let allDomainsWithShredLevelAppExit = Domain.allDomainsWithShredLevelAppExit()
+    XCTAssertEqual(allDomainsWithShredLevelAppExit.count, 1)
+    XCTAssertEqual(allDomainsWithShredLevelAppExit.first?.url, "https://brave.com")
+  }
+
 }
 
 extension Domain {
