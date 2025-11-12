@@ -32,6 +32,10 @@ std::optional<EpochParameters> EpochParameters::FromBlockfrostApiValue(
                             &result.min_fee_constant)) {
     return std::nullopt;
   }
+  if (!base::StringToUint64(api_epoch_parameters->coins_per_utxo_size,
+                            &result.coins_per_utxo_size)) {
+    return std::nullopt;
+  }
 
   return result;
 }

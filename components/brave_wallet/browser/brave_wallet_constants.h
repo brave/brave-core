@@ -440,6 +440,7 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_JUPITER_SWAP_DISCLAIMER_DESCRIPTION},
     {"braveWalletSwapFeesNotice", IDS_BRAVE_WALLET_SWAP_FEES_NOTICE},
     {"braveWalletDecimalPlacesError", IDS_BRAVE_WALLET_DECIMAL_PLACES_ERROR},
+    {"braveWalletMinOneAdaError", IDS_BRAVE_WALLET_MIN_ONE_ADA_ERROR},
     {"braveWalletCreateAccountDescription",
      IDS_BRAVE_WALLET_CREATE_ACCOUNT_DESCRIPTION},
     {"braveWalletCreateAccountYes", IDS_BRAVE_WALLET_CREATE_ACCOUNT_YES},

@@ -26,32 +26,6 @@ namespace {
 constexpr int kCardanoKnapsackSolverIterations = 1000;
 constexpr int kSetFeeAndChangeForTransactionIterations = 10;
 
-// static
-uint64_t GetCostOfChangeOutput(
-    const CardanoTransaction& tx,
-    const cardano_rpc::EpochParameters& latest_epoch_parameters) {
-  CHECK(tx.ChangeOutput());
-
-  auto tx_with_change = tx;
-  CardanoTransaction::TxInput fake_input;
-  fake_input.utxo_value = tx.amount();
-  tx_with_change.AddInput(std::move(fake_input));
-
-  auto fee_with_change =
-      CardanoTransactionSerializer(
-          {.max_value_for_change_output = true, .use_dummy_witness_set = true})
-          .CalcMinTransactionFee(tx_with_change, latest_epoch_parameters);
-
-  auto tx_without_change = tx_with_change;
-  tx_without_change.ClearChangeOutput();
-  auto fee_without_change =
-      CardanoTransactionSerializer(
-          {.max_value_for_change_output = true, .use_dummy_witness_set = true})
-          .CalcMinTransactionFee(tx_without_change, latest_epoch_parameters);
-
-  return base::ClampSub(fee_with_change, fee_without_change);
-}
-
 bool SetFeeAndChangeForTransaction(
     CardanoTransaction& tx,
     const cardano_rpc::EpochParameters& latest_epoch_parameters) {
@@ -109,18 +83,6 @@ void CardanoKnapsackSolver::RunSolverForTransaction(
     return;
   }
 
-  // TODO(https://github.com/brave/brave-browser/issues/45278): implement with
-  // `coins_per_utxo_size` protocol parameter.
-  // https://github.com/input-output-hk/cardano-js-sdk/blob/5bc90ee9f24d89db6ea4191d705e7383d52fef6a/packages/tx-construction/src/fees/fees.ts#L141
-
-  // Don't create transaction if output's amount appears to be less than this
-  // threshold. Cost of spending such output should not be higher than its
-  // value.
-  uint64_t dust_output_threshold =
-      transaction.ChangeOutput()
-          ? GetCostOfChangeOutput(transaction, latest_epoch_parameters_)
-          : 0;
-
   std::vector<uint8_t> picked_inputs(inputs_.size(), false);
   for (int i = 0; i < kCardanoKnapsackSolverIterations; ++i) {
     std::ranges::fill(picked_inputs, false);
@@ -159,9 +121,11 @@ void CardanoKnapsackSolver::RunSolverForTransaction(
                                              latest_epoch_parameters_)) {
             continue;
           }
-          // Throw away possible transaction if resulting change amount is less
-          // than dust threshold.
-          if (next_transaction.ChangeOutput()->amount < dust_output_threshold) {
+
+          // Throw away possible transaction if resulting change amount is
+          // less than min ADA for output threshold.
+          if (!CardanoTransactionSerializer().ValidateMinValue(
+                  *next_transaction.ChangeOutput(), latest_epoch_parameters_)) {
             continue;
           }
         }
