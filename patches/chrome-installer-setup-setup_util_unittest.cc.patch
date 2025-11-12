@@ -1,8 +1,16 @@
 diff --git a/chrome/installer/setup/setup_util_unittest.cc b/chrome/installer/setup/setup_util_unittest.cc
-index 507b388af009bc9b200b59e294954e503465b646..0949d9f867015534bd37ba82d272438d4e36a186 100644
+index 507b388af009bc9b200b59e294954e503465b646..ac7398d1aa12efc133b874ff3e8a9c28b6fa8647 100644
 --- a/chrome/installer/setup/setup_util_unittest.cc
 +++ b/chrome/installer/setup/setup_util_unittest.cc
-@@ -374,6 +374,167 @@ TEST(SetupUtilTest, DeleteDowngradeVersion) {
+@@ -34,6 +34,7 @@
+ #include "base/version.h"
+ #include "base/win/registry.h"
+ #include "base/win/scoped_handle.h"
++#include "brave/installer/setup/brave_setup_util.h"
+ #include "build/branding_buildflags.h"
+ #include "build/build_config.h"
+ #include "chrome/install_static/install_details.h"
+@@ -374,6 +375,167 @@ TEST(SetupUtilTest, DeleteDowngradeVersion) {
    ASSERT_FALSE(InstallUtil::GetDowngradeVersion());
  }
  
