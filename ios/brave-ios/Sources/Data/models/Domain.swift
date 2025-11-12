@@ -134,6 +134,13 @@ public final class Domain: NSManagedObject, CRUD {
     return Domain.all(where: shredLevelPredicate)
   }
 
+  /// All domains with an an explicit shred level.
+  public class func allDomainsWithExplicitShredLevel() -> [Domain]? {
+    Domain.all(
+      where: NSPredicate(format: "shield_shredLevel != nil")
+    )
+  }
+
   public static func clearInMemoryDomains() {
     Domain.deleteAll(predicate: nil, context: .new(inMemory: true))
   }
