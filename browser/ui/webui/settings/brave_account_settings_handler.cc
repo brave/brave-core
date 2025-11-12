@@ -7,17 +7,20 @@
 
 #include <utility>
 
-#include "brave/browser/ui/webui/brave_account/brave_account_ui_desktop.h"
+#include "brave/browser/ui/webui/settings/brave_account/brave_account_row_handler.h"
 
 namespace brave_account {
-BraveAccountSettingsHandler::BraveAccountSettingsHandler(
-    mojo::PendingReceiver<mojom::BraveAccountSettingsHandler> handler,
-    content::WebUI* web_ui)
-    : handler_(this, std::move(handler)), web_ui_(web_ui) {}
+
+BraveAccountSettingsHandler::BraveAccountSettingsHandler(content::WebUI* web_ui)
+    : web_ui_(web_ui) {}
 
 BraveAccountSettingsHandler::~BraveAccountSettingsHandler() = default;
 
-void BraveAccountSettingsHandler::OpenDialog() {
-  ShowBraveAccountDialog(web_ui_);
+void BraveAccountSettingsHandler::CreateRowHandler(
+    mojo::PendingReceiver<mojom::RowHandler> row_handler,
+    mojo::PendingRemote<mojom::RowClient> row_client) {
+  row_handler_ = std::make_unique<BraveAccountRowHandler>(
+      std::move(row_handler), std::move(row_client), web_ui_);
 }
+
 }  // namespace brave_account

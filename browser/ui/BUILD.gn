@@ -327,13 +327,16 @@ source_set("ui") {
 
     deps += [
       "//base",
+      "//brave/browser/brave_account",
       "//brave/browser/email_aliases",
       "//brave/browser/ntp_background",
       "//brave/browser/profiles:util",
       "//brave/browser/ui/sidebar",
       "//brave/browser/ui/tabs:tab_model",
       "//brave/browser/ui/tabs:tab_strip",
+      "//brave/browser/ui/webui/settings/brave_account",
       "//brave/common",
+      "//brave/components/brave_account",
       "//brave/components/brave_account:features",
       "//brave/components/brave_account/mojom",
       "//brave/components/brave_wayback_machine/buildflags",

@@ -17,6 +17,7 @@ source_set("unit_tests") {
     deps = [
       "//base/test:test_support",
       "//brave/browser/brave_wallet",
+      "//brave/browser/ui/webui/settings/brave_account:unit_tests",
       "//brave/components/brave_shields/core/common",
       "//brave/components/brave_wallet/browser",
       "//brave/components/brave_wallet/browser:constants",

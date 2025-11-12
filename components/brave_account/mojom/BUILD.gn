@@ -11,7 +11,7 @@ mojom("mojom") {
   if (!is_android && !is_ios) {
     # This is for desktop only.
     # Mobile platforms should load the WebUI by navigating to it in a browser tab.
-    sources += [ "brave_account_settings_handler.mojom" ]
+    sources += [ "brave_account_row.mojom" ]
   }
 
   webui_module_path = "/"

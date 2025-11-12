@@ -1,0 +1,26 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module brave_account.mojom;
+
+enum AccountState {
+  kLoggedOut,
+  kVerification,
+  kLoggedIn,
+};
+
+interface RowClient {
+  UpdateState(AccountState state);
+};
+
+interface RowHandler {
+  GetAccountState() => (AccountState state);
+  OpenDialog();
+};
+
+interface RowHandlerFactory {
+  CreateRowHandler(pending_receiver<RowHandler> row_handler,
+                   pending_remote<RowClient> row_client);
+};
