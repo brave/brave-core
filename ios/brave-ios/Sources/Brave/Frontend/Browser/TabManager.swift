@@ -786,11 +786,33 @@ class TabManager: NSObject {
   /// Will forget all data instantly with no delay
   func forgetDataOnAppExitDomains() {
     guard BraveCore.FeatureList.kBraveShredFeature.enabled else { return }
-    Task {
-      let shredOnAppExitURLs = await Domain.allURLsWithShredLevel(
-        rawShredLevel: SiteShredLevel.appExit.rawValue,
-        isGlobalShredLevel: Preferences.Shields.shredLevel.shredOnAppExit
-      )
+    Task { @MainActor in
+      let shredOnAppExitURLs: [URL]
+      if FeatureList.kBraveShieldsContentSettings.enabled {
+        guard let profile = self.braveCore?.profile,
+          let braveShieldsSettings = BraveShieldsSettingsServiceFactory.get(profile: profile)
+        else { return }
+        // iterate over WKWebsiteDataStore data records
+        let dataRecords = await WKWebsiteDataStore.default().dataRecords(
+          ofTypes: WKWebsiteDataStore.allWebsiteDataTypesIncludingPrivate()
+        )
+        shredOnAppExitURLs = dataRecords.compactMap { record in
+          guard let url = URL(string: "https://" + record.displayName),
+            braveShieldsSettings.autoShredMode(for: url) == .appExit
+          else {
+            return nil
+          }
+          return url
+        }
+        if Preferences.Shields.shredHistoryItems.value {
+          // TODO: History items not in WKWebsiteData need shred
+        }
+      } else {
+        shredOnAppExitURLs = await Domain.allURLsWithShredLevel(
+          rawShredLevel: SiteShredLevel.appExit.rawValue,
+          isGlobalShredLevel: Preferences.Shields.shredLevel.shredOnAppExit
+        )
+      }
       guard !shredOnAppExitURLs.isEmpty else { return }
       await forgetData(for: shredOnAppExitURLs)
     }
@@ -1315,15 +1337,22 @@ class TabManager: NSObject {
       if let shouldShredDomain = shouldShredDomainCache[cacheKey] {
         shouldShredTab = shouldShredDomain
       } else {
-        // Don't access `shredLevel` directly, but `TabState` is unavailable
-        // to access via `BraveShieldsTabHelper`. Temporarily access here until
-        // we switch to using `BraveShieldsSettings` with brave-browser#47350
-        let siteDomain = Domain.getOrCreate(
-          forUrl: url,
-          persistent: !isPrivate
-        )
-        shouldShredTab = siteDomain.shredLevel.shredOnAppExit
-        shouldShredDomainCache[cacheKey] = shouldShredTab
+        if FeatureList.kBraveShieldsContentSettings.enabled {
+          guard let braveCore = self.braveCore else { return false }
+          let profile = isPrivate ? braveCore.profile.offTheRecordProfile : braveCore.profile
+          let braveShieldsSettings = BraveShieldsSettingsServiceFactory.get(profile: profile)
+          shouldShredTab =
+            braveShieldsSettings?.autoShredMode(for: url).siteShredLevel.shredOnAppExit ?? false
+        } else {
+          // Don't access `shredLevel` directly, but `TabState` is unavailable
+          // to access via `BraveShieldsTabHelper`. Deprecated access here until
+          // `kBraveShieldsContentSettings` feature flag is removed.
+          let siteDomain = Domain.getOrCreate(
+            forUrl: url,
+            persistent: !isPrivate
+          )
+          shouldShredTab = siteDomain.shredLevel.shredOnAppExit
+        }
       }
       return shouldShredTab
     }
