@@ -185,7 +185,6 @@ test("brave_unit_tests") {
     "//brave/browser/permissions:unit_tests",
     "//brave/browser/profiles:unit_tests",
     "//brave/browser/profiles:util",
-    "//brave/browser/themes",
     "//brave/browser/ui:unit_tests",
     "//brave/browser/ui/brave_rewards:unit_tests",
     "//brave/browser/ui/brave_tooltips",
@@ -463,7 +462,6 @@ test("brave_unit_tests") {
       "//brave/browser/ui/views/download/bubble:unit_tests",
       "//brave/browser/ui/views/infobars:unit_tests",
       "//brave/browser/ui/views/tabs:unit_tests",
-      "//brave/browser/ui/webui/cr_components:unit_tests",
       "//brave/browser/ui/webui/settings:unit_tests",
       "//brave/browser/ui/webui/side_panel/customize_chrome:unit_tests",
       "//brave/browser/ui/whats_new:unit_test",
@@ -566,6 +564,7 @@ test("brave_unit_tests") {
 
     deps += [
       "//brave/browser/extensions",
+      "//brave/browser/extensions/api:unit_tests",
       "//brave/browser/extensions/manifest_v2:unit_tests",
       "//brave/browser/importer:unit_tests",
       "//brave/common/importer",

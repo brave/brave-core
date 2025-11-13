@@ -19,3 +19,16 @@ function_registration("generated_api_registration") {
     "//extensions/common",
   ]
 }
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "brave_theme_api_unittest.cc" ]
+
+  deps = [
+    "//brave/browser/extensions",
+    "//chrome/browser/themes",
+    "//chrome/test:test_support",
+    "//testing/gtest",
+  ]
+}
