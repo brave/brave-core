@@ -2231,6 +2231,7 @@ enum ZCashAddressError {
   kInvalidUnifiedAddressMissingTransparentPart = 3,
   kInvalidUnifiedAddressMissingOrchardPart = 4,
   kInvalidAddressNetworkMismatch = 5,
+  kNotZCashAccount,
 };
 
 struct ZCashOrchardNoteInfo {
