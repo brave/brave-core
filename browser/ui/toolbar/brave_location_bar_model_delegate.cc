@@ -7,9 +7,12 @@
 
 #include "base/check.h"
 #include "base/feature_list.h"
+#include "brave/browser/brave_shields/brave_shields_tab_helper.h"
 #include "brave/browser/ui/brave_scheme_utils.h"
+#include "brave/browser/ui/page_info/features.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -79,4 +82,43 @@ bool BraveLocationBarModelDelegate::GetURL(GURL* url) const {
 #endif  // !BUILDFLAG(IS_ANDROID)
 
   return ChromeLocationBarModelDelegate::GetURL(url);
+}
+
+const gfx::VectorIcon* BraveLocationBarModelDelegate::GetVectorIconOverride()
+    const {
+  // Defer to the Chromium implementation first.
+  const gfx::VectorIcon* parent_icon =
+      BrowserLocationBarModelDelegate::GetVectorIconOverride();
+  if (parent_icon) {
+    return parent_icon;
+  }
+
+  // Only override the icon if we are on a secure page.
+  if (GetSecurityLevel() != security_state::SECURE) {
+    return nullptr;
+  }
+
+  auto* fallback_icon = &kLeoTuneSmallIcon;
+
+  // Return a fallback icon if the Shields/Page Info integration feature is
+  // disabled.
+  if (!page_info::features::IsShowBraveShieldsInPageInfoEnabled()) {
+    return fallback_icon;
+  }
+
+  // Return a fallback icon if we can't determine the shields status.
+  content::WebContents* web_contents = GetActiveWebContents();
+  if (!web_contents) {
+    return fallback_icon;
+  }
+  auto* shields_helper =
+      brave_shields::BraveShieldsTabHelper::FromWebContents(web_contents);
+  if (!shields_helper) {
+    return fallback_icon;
+  }
+
+  // Return the appropriate shields icon based on the Shields status.
+  return shields_helper->GetBraveShieldsEnabled()
+             ? &kLeoShieldDoneIcon
+             : &kLeoShieldDisableFilledIcon;
 }
