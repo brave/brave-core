@@ -8,7 +8,6 @@
 
 #include <concepts>
 #include <memory>
-#include <optional>
 #include <string>
 #include <utility>
 #include <variant>
@@ -46,12 +45,31 @@ namespace brave_account::endpoint_client {
 
 enum class RequestCancelability { kNonCancelable, kCancelable };
 
+struct NetworkError {
+  int response_code;
+  std::string error_message;
+
+  bool operator==(const NetworkError&) const = default;
+};
+
+struct ParseError {
+  std::string error_message;
+
+  bool operator==(const ParseError&) const = default;
+};
+
+template <detail::IsResponseBody EndpointErrorType>
+using Error = std::variant<NetworkError, ParseError, EndpointErrorType>;
+
+template <IsEndpoint EndpointType>
+using Reply = base::expected<typename EndpointType::Response,
+                             Error<typename EndpointType::Error>>;
+
 template <IsEndpoint T>
 class Client {
   using Response = typename T::Response;
   using Error = typename T::Error;
-  using Expected =
-      base::expected<std::optional<Response>, std::optional<Error>>;
+  using Expected = Reply<T>;
   using Callback = base::OnceCallback<void(int, Expected)>;
 
   // Depending on |C|, either takes ownership of (moves out) |simple_url_loader|
@@ -146,17 +164,46 @@ class Client {
         [](const auto& ptr) { return ptr->ResponseInfo(); }, simple_url_loader);
     const auto headers = response_info ? response_info->headers : nullptr;
     if (!headers) {
-      return std::move(callback).Run(-1, base::unexpected(std::nullopt));
+      return std::move(callback).Run(-1, base::unexpected(NetworkError(-1)));
     }
 
     const auto response_code = headers->response_code();
-    const auto value =
-        base::JSONReader::Read(response_body.value_or(""), base::JSON_PARSE_RFC)
-            .value_or(base::Value());
-    std::move(callback).Run(response_code,
-                            response_code / 100 == 2  // 2xx
-                                ? Expected(Response::FromValue(value))
-                                : base::unexpected(Error::FromValue(value)));
+    const bool is_valid_response_code =
+        response_code >= 100 && response_code <= 599;
+    const bool is_2xx_response_code =
+        response_code >= 200 && response_code <= 299;
+
+    if (!is_valid_response_code || !response_body) {
+      std::move(callback).Run(response_code,
+                              base::unexpected(NetworkError(response_code)));
+    } else if (auto result = base::JSONReader::ReadAndReturnValueWithError(
+                   response_body.value(), base::JSON_PARSE_RFC);
+               !result.has_value()) {
+      // If we have failed to parse JSON then forward the
+      // error.
+      std::move(callback).Run(
+          response_code,
+          base::unexpected(ParseError(std::move(result).error().message)));
+    } else if (!is_2xx_response_code) {
+      if (auto error = Error::FromValue(result.value())) {
+        // Endpoint answers with error.
+        std::move(callback).Run(response_code,
+                                base::unexpected(std::move(*error)));
+      } else {
+        // Endpoint Error's structure is wrong.
+        std::move(callback).Run(
+            response_code,
+            base::unexpected(ParseError("Can't parse endpoint Error")));
+      }
+    } else if (auto response = Response::FromValue(result.value())) {
+      // Forward response.
+      std::move(callback).Run(response_code, base::ok(std::move(*response)));
+    } else {
+      // Endpoint Response's structure is wrong.
+      std::move(callback).Run(
+          response_code,
+          base::unexpected(ParseError("Can't parse endpoint Response")));
+    }
   }
 };
 

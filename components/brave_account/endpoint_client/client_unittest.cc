@@ -105,8 +105,7 @@ struct TestEndpoint {
   static GURL URL() { return GURL("https://example.com/api/query"); }
 };
 
-using Expected =
-    base::expected<std::optional<TestResponse>, std::optional<TestError>>;
+using Expected = Reply<TestEndpoint>;
 
 struct TestCase {
   TestRequest request;
@@ -195,7 +194,8 @@ INSTANTIATE_TEST_SUITE_P(
                  .with_headers = false,
                  .status_code = net::HTTP_CREATED,
                  .server_reply = R"({"invalid": response})",
-                 .expected_reply = Expected(std::nullopt)},
+                 .expected_reply = base::unexpected(
+                     ParseError("expected value at line 1 column 13"))},
         TestCase{.request = TestRequest{{"valid error"}},
                  .with_headers = false,
                  .status_code = net::HTTP_BAD_REQUEST,
@@ -205,7 +205,14 @@ INSTANTIATE_TEST_SUITE_P(
                  .with_headers = false,
                  .status_code = net::HTTP_UNAUTHORIZED,
                  .server_reply = R"({"invalid": error})",
-                 .expected_reply = base::unexpected(std::nullopt)},
+                 .expected_reply = base::unexpected(
+                     ParseError("expected value at line 1 column 13"))},
+        TestCase{.request = TestRequest{{"invalid error structure"}},
+                 .with_headers = false,
+                 .status_code = net::HTTP_UNAUTHORIZED,
+                 .server_reply = R"({"invalid": "error"})",
+                 .expected_reply = base::unexpected(
+                     ParseError("Can't parse endpoint Error"))},
         TestCase{.request = TestRequest{{"request with headers"}},
                  .with_headers = true,
                  .status_code = net::HTTP_OK,
