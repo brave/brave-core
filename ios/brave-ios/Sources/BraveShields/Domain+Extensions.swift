@@ -100,48 +100,4 @@ extension Domain {
         > Preferences.Shields.blockAdsAndTrackingLevel.strength
     }).count
   }
-
-  public class func allDomainsWithShredLevelAppExit() -> [Domain] {
-    let domainsWithExplicitAppExit =
-      Domain.allDomainsWithAutoShredLevel(SiteShredLevel.appExit.rawValue) ?? []
-    guard Preferences.Shields.shredLevel.shredOnAppExit else { return domainsWithExplicitAppExit }
-    // Default value is SiteShredLevel.appExit, so fetch Domain's using default value
-    let domainsWithDefaultShredLevel = Domain.allDomainsWithAutoShredLevel(nil) ?? []
-
-    // A Domain may be created with non-secure scheme, then a separate Domain
-    // may be created with the secure scheme after https upgrade.
-    // WKWebsiteDataStore stores data without a scheme, so we should remove
-    // duplicate Domain's from the domainsWithDefaultShredLevel if the user explicitly
-    // assigned a shred level on it's baseDomain.
-    guard let domainsWithExplicitShredLevel = Domain.allDomainsWithExplicitShredLevel(),
-      !domainsWithExplicitShredLevel.isEmpty
-    else {
-      // no domains with explicit assigned shred level assigned,
-      // so we can return all without shred level assigned
-      return domainsWithExplicitAppExit + domainsWithDefaultShredLevel
-    }
-    let baseDomainsToExclude: Set<String> = Set(
-      domainsWithExplicitShredLevel.compactMap({
-        guard let urlString = $0.url, let url = URL(string: urlString) else {
-          // if no url, not usable for shred
-          return nil
-        }
-        return url.baseDomain
-      })
-    )
-    let domainsWithDefaultShredLevelFiltered =
-      domainsWithDefaultShredLevel
-      .filter { domain in
-        guard let urlString = domain.url, let url = URL(string: urlString),
-          let baseDomain = url.baseDomain
-        else {
-          // if no url, not usable for shred
-          return false
-        }
-        // exclude domain if on exclusion list
-        return !baseDomainsToExclude.contains(baseDomain)
-      }
-
-    return domainsWithExplicitAppExit + domainsWithDefaultShredLevelFiltered
-  }
 }
