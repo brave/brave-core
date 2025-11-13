@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import <Webkit/Webkit.h>
+#import <WebKit/WebKit.h>
 
 @class WebState;
 
