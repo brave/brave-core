@@ -1,0 +1,29 @@
+[package]
+name = "monostate-impl"
+version = "0.1.18"
+authors = ["David Tolnay <dtolnay@gmail.com>"]
+description = "Implementation detail of the monostate crate"
+edition = "2021"
+exclude = ["build.rs"]
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/dtolnay/monostate"
+rust-version = "1.79"
+
+[lib]
+proc-macro = true
+
+[dependencies]
+proc-macro2 = "1.0.80"
+quote = "1.0.35"
+syn = { version = "2.0.59", default-features = false, features = ["parsing", "proc-macro"] }
+
+[package.metadata.docs.rs]
+targets = ["x86_64-unknown-linux-gnu"]
+rustdoc-args = [
+    "--generate-link-to-definition",
+    "--generate-macro-expansion",
+    "--extern-html-root-url=core=https://doc.rust-lang.org",
+    "--extern-html-root-url=alloc=https://doc.rust-lang.org",
+    "--extern-html-root-url=std=https://doc.rust-lang.org",
+    "--extern-html-root-url=proc_macro=https://doc.rust-lang.org",
+]

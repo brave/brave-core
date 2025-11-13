@@ -12,8 +12,9 @@ extern crate zerocopy;
 #[path = "../include.rs"]
 mod util;
 
-use self::util::{util::NotZerocopy, util::AU16};
 use zerocopy::KnownLayout;
+
+use self::util::util::{NotZerocopy, AU16};
 
 fn main() {}
 

@@ -1,0 +1,18 @@
+[package]
+name = "rayon-cond"
+version = "0.4.0"
+authors = ["Josh Stone <cuviper@gmail.com>"]
+description = "Experimental iterator wrapper that is conditionally parallel or serial."
+repository = "https://github.com/cuviper/rayon-cond"
+license = "Apache-2.0/MIT"
+readme = "README.md"
+keywords = ["parallel", "iterator"]
+categories = ["concurrency"]
+exclude = ["/.cirrus.yml"]
+edition = "2021"
+rust-version = "1.63.0"
+
+[dependencies]
+rayon = "1.7"
+itertools = "0.14"
+either = "1.6"

@@ -24,7 +24,7 @@ util_assert_impl_all!(One: imp::TryFromBytes);
 
 #[test]
 fn one() {
-    // TODO(#5): Use `try_transmute` in this test once it's available.
+    // FIXME(#5): Use `try_transmute` in this test once it's available.
     let candidate = ::zerocopy::Ptr::from_ref(&One { a: 42 });
     let candidate = candidate.forget_aligned();
     // SAFETY: `&One` consists entirely of initialized bytes.
@@ -44,7 +44,7 @@ util_assert_impl_all!(Two: imp::TryFromBytes);
 
 #[test]
 fn two() {
-    // TODO(#5): Use `try_transmute` in this test once it's available.
+    // FIXME(#5): Use `try_transmute` in this test once it's available.
     let candidate_a = ::zerocopy::Ptr::from_ref(&Two { a: false });
     let candidate_a = candidate_a.forget_aligned();
     // SAFETY: `&Two` consists entirely of initialized bytes.
@@ -62,7 +62,7 @@ fn two() {
 
 #[test]
 fn two_bad() {
-    // TODO(#5): Use `try_transmute` in this test once it's available.
+    // FIXME(#5): Use `try_transmute` in this test once it's available.
     let candidate = ::zerocopy::Ptr::from_ref(&[2u8][..]);
     let candidate = candidate.forget_aligned();
     // SAFETY: `&[u8]` consists entirely of initialized bytes.
@@ -91,7 +91,7 @@ union BoolAndZst {
 
 #[test]
 fn bool_and_zst() {
-    // TODO(#5): Use `try_transmute` in this test once it's available.
+    // FIXME(#5): Use `try_transmute` in this test once it's available.
     let candidate = ::zerocopy::Ptr::from_ref(&[2u8][..]);
     let candidate = candidate.forget_aligned();
     // SAFETY: `&[u8]` consists entirely of initialized bytes.

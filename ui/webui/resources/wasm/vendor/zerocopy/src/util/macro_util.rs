@@ -17,23 +17,22 @@
 
 #![allow(missing_debug_implementations)]
 
-use core::{
-    mem::{self, ManuallyDrop},
-    ptr::NonNull,
-};
-
-// TODO(#29), TODO(https://github.com/rust-lang/rust/issues/69835): Remove this
-// `cfg` when `size_of_val_raw` is stabilized.
+// FIXME(#29), FIXME(https://github.com/rust-lang/rust/issues/69835): Remove
+// this `cfg` when `size_of_val_raw` is stabilized.
 #[cfg(__ZEROCOPY_INTERNAL_USE_ONLY_NIGHTLY_FEATURES_IN_TESTS)]
 #[cfg(not(target_pointer_width = "16"))]
-use core::ptr;
+use core::ptr::{self, NonNull};
+use core::{
+    marker::PhantomData,
+    mem::{self, ManuallyDrop},
+};
 
 use crate::{
     pointer::{
         invariant::{self, BecauseExclusive, BecauseImmutable, Invariants},
-        TryTransmuteFromPtr,
+        BecauseInvariantsEq, InvariantsEq, SizeEq, TryTransmuteFromPtr,
     },
-    FromBytes, Immutable, IntoBytes, Ptr, TryFromBytes, ValidityError,
+    FromBytes, FromZeros, Immutable, IntoBytes, KnownLayout, Ptr, TryFromBytes, ValidityError,
 };
 
 /// Projects the type of the field at `Index` in `Self`.
@@ -53,15 +52,33 @@ pub unsafe trait Field<Index> {
 #[cfg_attr(
     zerocopy_diagnostic_on_unimplemented_1_78_0,
     diagnostic::on_unimplemented(
-        message = "`{T}` has inter-field padding",
+        message = "`{T}` has {PADDING_BYTES} total byte(s) of padding",
         label = "types with padding cannot implement `IntoBytes`",
         note = "consider using `zerocopy::Unalign` to lower the alignment of individual fields",
         note = "consider adding explicit fields where padding would be",
-        note = "consider using `#[repr(packed)]` to remove inter-field padding"
+        note = "consider using `#[repr(packed)]` to remove padding"
     )
 )]
-pub trait PaddingFree<T: ?Sized, const HAS_PADDING: bool> {}
-impl<T: ?Sized> PaddingFree<T, false> for () {}
+pub trait PaddingFree<T: ?Sized, const PADDING_BYTES: usize> {}
+impl<T: ?Sized> PaddingFree<T, 0> for () {}
+
+// FIXME(#1112): In the slice DST case, we should delegate to *both*
+// `PaddingFree` *and* `DynamicPaddingFree` (and probably rename `PaddingFree`
+// to `StaticPaddingFree` or something - or introduce a third trait with that
+// name) so that we can have more clear error messages.
+
+#[cfg_attr(
+    zerocopy_diagnostic_on_unimplemented_1_78_0,
+    diagnostic::on_unimplemented(
+        message = "`{T}` has one or more padding bytes",
+        label = "types with padding cannot implement `IntoBytes`",
+        note = "consider using `zerocopy::Unalign` to lower the alignment of individual fields",
+        note = "consider adding explicit fields where padding would be",
+        note = "consider using `#[repr(packed)]` to remove padding"
+    )
+)]
+pub trait DynamicPaddingFree<T: ?Sized, const HAS_PADDING: bool> {}
+impl<T: ?Sized> DynamicPaddingFree<T, false> for () {}
 
 /// A type whose size is equal to `align_of::<T>()`.
 #[repr(C)]
@@ -109,8 +126,8 @@ impl<T, U> MaxAlignsOf<T, U> {
 #[cfg(not(target_pointer_width = "16"))]
 const _64K: usize = 1 << 16;
 
-// TODO(#29), TODO(https://github.com/rust-lang/rust/issues/69835): Remove this
-// `cfg` when `size_of_val_raw` is stabilized.
+// FIXME(#29), FIXME(https://github.com/rust-lang/rust/issues/69835): Remove
+// this `cfg` when `size_of_val_raw` is stabilized.
 #[cfg(__ZEROCOPY_INTERNAL_USE_ONLY_NIGHTLY_FEATURES_IN_TESTS)]
 #[cfg(not(target_pointer_width = "16"))]
 #[repr(C, align(65536))]
@@ -122,8 +139,8 @@ struct Aligned64kAllocation([u8; _64K]);
 ///
 /// `ALIGNED_64K_ALLOCATION` is guaranteed to point to the entirety of an
 /// allocation with size and alignment 2^16, and to have valid provenance.
-// TODO(#29), TODO(https://github.com/rust-lang/rust/issues/69835): Remove this
-// `cfg` when `size_of_val_raw` is stabilized.
+// FIXME(#29), FIXME(https://github.com/rust-lang/rust/issues/69835): Remove
+// this `cfg` when `size_of_val_raw` is stabilized.
 #[cfg(__ZEROCOPY_INTERNAL_USE_ONLY_NIGHTLY_FEATURES_IN_TESTS)]
 #[cfg(not(target_pointer_width = "16"))]
 pub const ALIGNED_64K_ALLOCATION: NonNull<[u8]> = {
@@ -139,9 +156,9 @@ pub const ALIGNED_64K_ALLOCATION: NonNull<[u8]> = {
     // - `ptr` is derived from a Rust reference, which is guaranteed to have
     //   valid provenance.
     //
-    // TODO(#429): Once `NonNull::new_unchecked` docs document that it preserves
-    // provenance, cite those docs.
-    // TODO: Replace this `as` with `ptr.cast_mut()` once our MSRV >= 1.65
+    // FIXME(#429): Once `NonNull::new_unchecked` docs document that it
+    // preserves provenance, cite those docs.
+    // FIXME: Replace this `as` with `ptr.cast_mut()` once our MSRV >= 1.65
     #[allow(clippy::as_conversions)]
     unsafe {
         NonNull::new_unchecked(ptr as *mut _)
@@ -152,8 +169,8 @@ pub const ALIGNED_64K_ALLOCATION: NonNull<[u8]> = {
 /// the type `$ty`.
 ///
 /// `trailing_field_offset!` produces code which is valid in a `const` context.
-// TODO(#29), TODO(https://github.com/rust-lang/rust/issues/69835): Remove this
-// `cfg` when `size_of_val_raw` is stabilized.
+// FIXME(#29), FIXME(https://github.com/rust-lang/rust/issues/69835): Remove
+// this `cfg` when `size_of_val_raw` is stabilized.
 #[cfg(__ZEROCOPY_INTERNAL_USE_ONLY_NIGHTLY_FEATURES_IN_TESTS)]
 #[doc(hidden)] // `#[macro_export]` bypasses this module's `#[doc(hidden)]`.
 #[macro_export]
@@ -162,8 +179,6 @@ macro_rules! trailing_field_offset {
         let min_size = {
             let zero_elems: *const [()] =
                 $crate::util::macro_util::core_reexport::ptr::slice_from_raw_parts(
-                    // Work around https://github.com/rust-lang/rust-clippy/issues/12280
-                    #[allow(clippy::incompatible_msrv)]
                     $crate::util::macro_util::core_reexport::ptr::NonNull::<()>::dangling()
                         .as_ptr()
                         .cast_const(),
@@ -234,7 +249,7 @@ macro_rules! trailing_field_offset {
         //   address space. This is guaranteed because the same is guaranteed of
         //   allocated objects. [1]
         //
-        // [1] TODO(#429), TODO(https://github.com/rust-lang/rust/pull/116675):
+        // [1] FIXME(#429), FIXME(https://github.com/rust-lang/rust/pull/116675):
         //     Once these are guaranteed in the Reference, cite it.
         let offset = unsafe { field.cast::<u8>().offset_from(ptr.cast::<u8>()) };
         // Guaranteed not to be lossy: `field` comes after `ptr`, so the offset
@@ -252,8 +267,8 @@ macro_rules! trailing_field_offset {
 /// Computes alignment of `$ty: ?Sized`.
 ///
 /// `align_of!` produces code which is valid in a `const` context.
-// TODO(#29), TODO(https://github.com/rust-lang/rust/issues/69835): Remove this
-// `cfg` when `size_of_val_raw` is stabilized.
+// FIXME(#29), FIXME(https://github.com/rust-lang/rust/issues/69835): Remove
+// this `cfg` when `size_of_val_raw` is stabilized.
 #[cfg(__ZEROCOPY_INTERNAL_USE_ONLY_NIGHTLY_FEATURES_IN_TESTS)]
 #[doc(hidden)] // `#[macro_export]` bypasses this module's `#[doc(hidden)]`.
 #[macro_export]
@@ -266,7 +281,7 @@ macro_rules! align_of {
         // correctly-align the entire struct.
         //
         // This macro computes the alignment of `$ty` by counting the number of
-        // bytes preceeding `_trailing`. For instance, if the alignment of `$ty`
+        // bytes preceding `_trailing`. For instance, if the alignment of `$ty`
         // is `1`, then no padding is required align `_trailing` and it will be
         // located immediately after `_byte` at offset 1. If the alignment of
         // `$ty` is 2, then a single padding byte is required before
@@ -321,8 +336,8 @@ pub type SizeToTag<const SIZE: usize> = <() as size_to_tag::SizeToTag<SIZE>>::Ta
 mod __size_of {
     #[diagnostic::on_unimplemented(
         message = "`{Self}` is unsized",
-        label = "`IntoBytes` needs all field types to be `Sized` in order to determine whether there is inter-field padding",
-        note = "consider using `#[repr(packed)]` to remove inter-field padding",
+        label = "`IntoBytes` needs all field types to be `Sized` in order to determine whether there is padding",
+        note = "consider using `#[repr(packed)]` to remove padding",
         note = "`IntoBytes` does not require the fields of `#[repr(packed)]` types to be `Sized`"
     )]
     pub trait Sized: core::marker::Sized {}
@@ -336,79 +351,116 @@ mod __size_of {
     }
 }
 
-#[cfg(zerocopy_diagnostic_on_unimplemented_1_78_0)]
-pub use __size_of::size_of;
 #[cfg(not(zerocopy_diagnostic_on_unimplemented_1_78_0))]
 pub use core::mem::size_of;
 
-/// Does the struct type `$t` have padding?
+#[cfg(zerocopy_diagnostic_on_unimplemented_1_78_0)]
+pub use __size_of::size_of;
+
+/// How many padding bytes does the struct type `$t` have?
 ///
-/// `$ts` is the list of the type of every field in `$t`. `$t` must be a
-/// struct type, or else `struct_has_padding!`'s result may be meaningless.
+/// `$ts` is the list of the type of every field in `$t`. `$t` must be a struct
+/// type, or else `struct_padding!`'s result may be meaningless.
 ///
-/// Note that `struct_has_padding!`'s results are independent of `repcr` since
-/// they only consider the size of the type and the sizes of the fields.
-/// Whatever the repr, the size of the type already takes into account any
-/// padding that the compiler has decided to add. Structs with well-defined
-/// representations (such as `repr(C)`) can use this macro to check for padding.
-/// Note that while this may yield some consistent value for some `repr(Rust)`
-/// structs, it is not guaranteed across platforms or compilations.
+/// Note that `struct_padding!`'s results are independent of `repcr` since they
+/// only consider the size of the type and the sizes of the fields. Whatever the
+/// repr, the size of the type already takes into account any padding that the
+/// compiler has decided to add. Structs with well-defined representations (such
+/// as `repr(C)`) can use this macro to check for padding. Note that while this
+/// may yield some consistent value for some `repr(Rust)` structs, it is not
+/// guaranteed across platforms or compilations.
 #[doc(hidden)] // `#[macro_export]` bypasses this module's `#[doc(hidden)]`.
 #[macro_export]
-macro_rules! struct_has_padding {
+macro_rules! struct_padding {
     ($t:ty, [$($ts:ty),*]) => {
-        $crate::util::macro_util::size_of::<$t>() > 0 $(+ $crate::util::macro_util::size_of::<$ts>())*
+        $crate::util::macro_util::size_of::<$t>() - (0 $(+ $crate::util::macro_util::size_of::<$ts>())*)
+    };
+}
+
+/// Does the `repr(C)` struct type `$t` have padding?
+///
+/// `$ts` is the list of the type of every field in `$t`. `$t` must be a
+/// `repr(C)` struct type, or else `struct_has_padding!`'s result may be
+/// meaningless.
+#[doc(hidden)] // `#[macro_export]` bypasses this module's `#[doc(hidden)]`.
+#[macro_export]
+macro_rules! repr_c_struct_has_padding {
+    ($t:ty, [$($ts:tt),*]) => {{
+        let layout = $crate::DstLayout::for_repr_c_struct(
+            $crate::util::macro_util::core_reexport::option::Option::None,
+            $crate::util::macro_util::core_reexport::option::Option::None,
+            &[$($crate::repr_c_struct_has_padding!(@field $ts),)*]
+        );
+        layout.requires_static_padding() || layout.requires_dynamic_padding()
+    }};
+    (@field [$t:ty]) => {
+        <[$t] as $crate::KnownLayout>::LAYOUT
+    };
+    (@field $t:ty) => {
+        $crate::DstLayout::for_unpadded_type::<$t>()
     };
 }
 
 /// Does the union type `$t` have padding?
 ///
-/// `$ts` is the list of the type of every field in `$t`. `$t` must be a
-/// union type, or else `union_has_padding!`'s result may be meaningless.
+/// `$ts` is the list of the type of every field in `$t`. `$t` must be a union
+/// type, or else `union_padding!`'s result may be meaningless.
 ///
-/// Note that `union_has_padding!`'s results are independent of `repr` since
-/// they only consider the size of the type and the sizes of the fields.
-/// Whatever the repr, the size of the type already takes into account any
-/// padding that the compiler has decided to add. Unions with well-defined
-/// representations (such as `repr(C)`) can use this macro to check for padding.
-/// Note that while this may yield some consistent value for some `repr(Rust)`
-/// unions, it is not guaranteed across platforms or compilations.
+/// Note that `union_padding!`'s results are independent of `repr` since they
+/// only consider the size of the type and the sizes of the fields. Whatever the
+/// repr, the size of the type already takes into account any padding that the
+/// compiler has decided to add. Unions with well-defined representations (such
+/// as `repr(C)`) can use this macro to check for padding. Note that while this
+/// may yield some consistent value for some `repr(Rust)` unions, it is not
+/// guaranteed across platforms or compilations.
 #[doc(hidden)] // `#[macro_export]` bypasses this module's `#[doc(hidden)]`.
 #[macro_export]
-macro_rules! union_has_padding {
-    ($t:ty, [$($ts:ty),*]) => {
-        false $(|| $crate::util::macro_util::size_of::<$t>() != $crate::util::macro_util::size_of::<$ts>())*
-    };
+macro_rules! union_padding {
+    ($t:ty, [$($ts:ty),*]) => {{
+        let mut max = 0;
+        $({
+            let padding = $crate::util::macro_util::size_of::<$t>() - $crate::util::macro_util::size_of::<$ts>();
+            if padding > max {
+                max = padding;
+            }
+        })*
+        max
+    }};
 }
 
-/// Does the enum type `$t` have padding?
+/// How many padding bytes does the enum type `$t` have?
 ///
 /// `$disc` is the type of the enum tag, and `$ts` is a list of fields in each
 /// square-bracket-delimited variant. `$t` must be an enum, or else
-/// `enum_has_padding!`'s result may be meaningless. An enum has padding if any
-/// of its variant structs [1][2] contain padding, and so all of the variants of
-/// an enum must be "full" in order for the enum to not have padding.
+/// `enum_padding!`'s result may be meaningless. An enum has padding if any of
+/// its variant structs [1][2] contain padding, and so all of the variants of an
+/// enum must be "full" in order for the enum to not have padding.
 ///
-/// The results of `enum_has_padding!` require that the enum is not
-/// `repr(Rust)`, as `repr(Rust)` enums may niche the enum's tag and reduce the
-/// total number of bytes required to represent the enum as a result. As long as
-/// the enum is `repr(C)`, `repr(int)`, or `repr(C, int)`, this will
-/// consistently return whether the enum contains any padding bytes.
+/// The results of `enum_padding!` require that the enum is not `repr(Rust)`, as
+/// `repr(Rust)` enums may niche the enum's tag and reduce the total number of
+/// bytes required to represent the enum as a result. As long as the enum is
+/// `repr(C)`, `repr(int)`, or `repr(C, int)`, this will consistently return
+/// whether the enum contains any padding bytes.
 ///
 /// [1]: https://doc.rust-lang.org/1.81.0/reference/type-layout.html#reprc-enums-with-fields
 /// [2]: https://doc.rust-lang.org/1.81.0/reference/type-layout.html#primitive-representation-of-enums-with-fields
 #[doc(hidden)] // `#[macro_export]` bypasses this module's `#[doc(hidden)]`.
 #[macro_export]
-macro_rules! enum_has_padding {
-    ($t:ty, $disc:ty, $([$($ts:ty),*]),*) => {
-        false $(
-            || $crate::util::macro_util::size_of::<$t>()
-                != (
+macro_rules! enum_padding {
+    ($t:ty, $disc:ty, $([$($ts:ty),*]),*) => {{
+        let mut max = 0;
+        $({
+            let padding = $crate::util::macro_util::size_of::<$t>()
+                - (
                     $crate::util::macro_util::size_of::<$disc>()
                     $(+ $crate::util::macro_util::size_of::<$ts>())*
-                )
-        )*
-    }
+                );
+            if padding > max {
+                max = padding;
+            }
+        })*
+        max
+    }};
 }
 
 /// Does `t` have alignment greater than or equal to `u`?  If not, this macro
@@ -471,69 +523,6 @@ macro_rules! assert_size_eq {
     }};
 }
 
-/// Transmutes a reference of one type to a reference of another type.
-///
-/// # Safety
-///
-/// The caller must guarantee that:
-/// - `Src: IntoBytes + Immutable`
-/// - `Dst: FromBytes + Immutable`
-/// - `size_of::<Src>() == size_of::<Dst>()`
-/// - `align_of::<Src>() >= align_of::<Dst>()`
-#[inline(always)]
-pub const unsafe fn transmute_ref<'dst, 'src: 'dst, Src: 'src, Dst: 'dst>(
-    src: &'src Src,
-) -> &'dst Dst {
-    let src: *const Src = src;
-    let dst = src.cast::<Dst>();
-    // SAFETY:
-    // - We know that it is sound to view the target type of the input reference
-    //   (`Src`) as the target type of the output reference (`Dst`) because the
-    //   caller has guaranteed that `Src: IntoBytes`, `Dst: FromBytes`, and
-    //   `size_of::<Src>() == size_of::<Dst>()`.
-    // - We know that there are no `UnsafeCell`s, and thus we don't have to
-    //   worry about `UnsafeCell` overlap, because `Src: Immutable` and `Dst:
-    //   Immutable`.
-    // - The caller has guaranteed that alignment is not increased.
-    // - We know that the returned lifetime will not outlive the input lifetime
-    //   thanks to the lifetime bounds on this function.
-    //
-    // TODO(#67): Once our MSRV is 1.58, replace this `transmute` with `&*dst`.
-    #[allow(clippy::transmute_ptr_to_ref)]
-    unsafe {
-        mem::transmute(dst)
-    }
-}
-
-/// Transmutes a mutable reference of one type to a mutable reference of another
-/// type.
-///
-/// # Safety
-///
-/// The caller must guarantee that:
-/// - `Src: FromBytes + IntoBytes`
-/// - `Dst: FromBytes + IntoBytes`
-/// - `size_of::<Src>() == size_of::<Dst>()`
-/// - `align_of::<Src>() >= align_of::<Dst>()`
-// TODO(#686): Consider removing the `Immutable` requirement.
-#[inline(always)]
-pub unsafe fn transmute_mut<'dst, 'src: 'dst, Src: 'src, Dst: 'dst>(
-    src: &'src mut Src,
-) -> &'dst mut Dst {
-    let src: *mut Src = src;
-    let dst = src.cast::<Dst>();
-    // SAFETY:
-    // - We know that it is sound to view the target type of the input reference
-    //   (`Src`) as the target type of the output reference (`Dst`) and
-    //   vice-versa because the caller has guaranteed that `Src: FromBytes +
-    //   IntoBytes`, `Dst: FromBytes + IntoBytes`, and `size_of::<Src>() ==
-    //   size_of::<Dst>()`.
-    // - The caller has guaranteed that alignment is not increased.
-    // - We know that the returned lifetime will not outlive the input lifetime
-    //   thanks to the lifetime bounds on this function.
-    unsafe { &mut *dst }
-}
-
 /// Is a given source a valid instance of `Dst`?
 ///
 /// If so, returns `src` casted to a `Ptr<Dst, _>`. Otherwise returns `None`.
@@ -565,7 +554,7 @@ fn try_cast_or_pme<Src, Dst, I, R, S>(
     ValidityError<Ptr<'_, Src, I>, Dst>,
 >
 where
-    // TODO(#2226): There should be a `Src: FromBytes` bound here, but doing so
+    // FIXME(#2226): There should be a `Src: FromBytes` bound here, but doing so
     // requires deeper surgery.
     Src: invariant::Read<I::Aliasing, R>,
     Dst: TryFromBytes
@@ -581,8 +570,7 @@ where
     //   because we assert above that the size of `Dst` equal to the size of
     //   `Src`.
     // - `p as *mut Dst` is a provenance-preserving cast
-    #[allow(clippy::as_conversions)]
-    let c_ptr = unsafe { src.cast_unsized(NonNull::cast::<Dst>) };
+    let c_ptr = unsafe { src.cast_unsized(|p| cast!(p)) };
 
     match c_ptr.try_into_valid() {
         Ok(ptr) => Ok(ptr),
@@ -595,8 +583,7 @@ where
             //   `ptr`, because we assert above that the size of `Dst` is equal
             //   to the size of `Src`.
             // - `p as *mut Src` is a provenance-preserving cast
-            #[allow(clippy::as_conversions)]
-            let ptr = unsafe { ptr.cast_unsized(NonNull::cast::<Src>) };
+            let ptr = unsafe { ptr.cast_unsized(|p| cast!(p)) };
             // SAFETY: `ptr` is `src`, and has the same alignment invariant.
             let ptr = unsafe { ptr.assume_alignment::<I::Alignment>() };
             // SAFETY: `ptr` is `src` and has the same validity invariant.
@@ -649,7 +636,11 @@ where
     //
     //   `MaybeUninit<T>` is guaranteed to have the same size, alignment, and
     //   ABI as `T`
-    let ptr: Ptr<'_, Dst, _> = unsafe { ptr.cast_unsized(NonNull::<mem::MaybeUninit<Dst>>::cast) };
+    let ptr: Ptr<'_, Dst, _> = unsafe {
+        ptr.cast_unsized(|ptr: crate::pointer::PtrInner<'_, mem::MaybeUninit<Dst>>| {
+            ptr.cast_sized()
+        })
+    };
 
     if Dst::is_bit_valid(ptr.forget_aligned()) {
         // SAFETY: Since `Dst::is_bit_valid`, we know that `ptr`'s referent is
@@ -735,7 +726,183 @@ where
             let ptr = unsafe { ptr.assume_alignment::<invariant::Aligned>() };
             Ok(ptr.as_mut())
         }
-        Err(err) => Err(err.map_src(|ptr| ptr.recall_validity().as_mut())),
+        Err(err) => {
+            Err(err.map_src(|ptr| ptr.recall_validity::<_, (_, BecauseInvariantsEq)>().as_mut()))
+        }
+    }
+}
+
+// Used in `transmute_ref!` and friends.
+//
+// This permits us to use the autoref specialization trick to dispatch to
+// associated functions for `transmute_ref` and `transmute_mut` when both `Src`
+// and `Dst` are `Sized`, and to trait methods otherwise. The associated
+// functions, unlike the trait methods, do not require a `KnownLayout` bound.
+// This permits us to add support for transmuting references to unsized types
+// without breaking backwards-compatibility (on v0.8.x) with the old
+// implementation, which did not require a `KnownLayout` bound to transmute
+// sized types.
+#[derive(Copy, Clone)]
+pub struct Wrap<Src, Dst>(pub Src, pub PhantomData<Dst>);
+
+impl<Src, Dst> Wrap<Src, Dst> {
+    #[inline(always)]
+    pub const fn new(src: Src) -> Self {
+        Wrap(src, PhantomData)
+    }
+}
+
+impl<'a, Src, Dst> Wrap<&'a Src, &'a Dst> {
+    /// # Safety
+    /// The caller must guarantee that:
+    /// - `Src: IntoBytes + Immutable`
+    /// - `Dst: FromBytes + Immutable`
+    ///
+    /// # PME
+    ///
+    /// Instantiating this method PMEs unless both:
+    /// - `mem::size_of::<Dst>() == mem::size_of::<Src>()`
+    /// - `mem::align_of::<Dst>() <= mem::align_of::<Src>()`
+    #[inline(always)]
+    #[must_use]
+    pub const unsafe fn transmute_ref(self) -> &'a Dst {
+        static_assert!(Src, Dst => mem::size_of::<Dst>() == mem::size_of::<Src>());
+        static_assert!(Src, Dst => mem::align_of::<Dst>() <= mem::align_of::<Src>());
+
+        let src: *const Src = self.0;
+        let dst = src.cast::<Dst>();
+        // SAFETY:
+        // - We know that it is sound to view the target type of the input reference
+        //   (`Src`) as the target type of the output reference (`Dst`) because the
+        //   caller has guaranteed that `Src: IntoBytes`, `Dst: FromBytes`, and
+        //   `size_of::<Src>() == size_of::<Dst>()`.
+        // - We know that there are no `UnsafeCell`s, and thus we don't have to
+        //   worry about `UnsafeCell` overlap, because `Src: Immutable` and `Dst:
+        //   Immutable`.
+        // - The caller has guaranteed that alignment is not increased.
+        // - We know that the returned lifetime will not outlive the input lifetime
+        //   thanks to the lifetime bounds on this function.
+        //
+        // FIXME(#67): Once our MSRV is 1.58, replace this `transmute` with `&*dst`.
+        #[allow(clippy::transmute_ptr_to_ref)]
+        unsafe {
+            mem::transmute(dst)
+        }
+    }
+}
+
+impl<'a, Src, Dst> Wrap<&'a mut Src, &'a mut Dst> {
+    /// Transmutes a mutable reference of one type to a mutable reference of another
+    /// type.
+    ///
+    /// # PME
+    ///
+    /// Instantiating this method PMEs unless both:
+    /// - `mem::size_of::<Dst>() == mem::size_of::<Src>()`
+    /// - `mem::align_of::<Dst>() <= mem::align_of::<Src>()`
+    #[inline(always)]
+    #[must_use]
+    pub fn transmute_mut(self) -> &'a mut Dst
+    where
+        Src: FromBytes + IntoBytes,
+        Dst: FromBytes + IntoBytes,
+    {
+        static_assert!(Src, Dst => mem::size_of::<Dst>() == mem::size_of::<Src>());
+        static_assert!(Src, Dst => mem::align_of::<Dst>() <= mem::align_of::<Src>());
+
+        let src: *mut Src = self.0;
+        let dst = src.cast::<Dst>();
+        // SAFETY:
+        // - We know that it is sound to view the target type of the input
+        //   reference (`Src`) as the target type of the output reference
+        //   (`Dst`) and vice-versa because `Src: FromBytes + IntoBytes`, `Dst:
+        //   FromBytes + IntoBytes`, and (as asserted above) `size_of::<Src>()
+        //   == size_of::<Dst>()`.
+        // - We asserted above that alignment will not increase.
+        // - We know that the returned lifetime will not outlive the input
+        //   lifetime thanks to the lifetime bounds on this function.
+        unsafe { &mut *dst }
+    }
+}
+
+pub trait TransmuteRefDst<'a> {
+    type Dst: ?Sized;
+
+    #[must_use]
+    fn transmute_ref(self) -> &'a Self::Dst;
+}
+
+impl<'a, Src: ?Sized, Dst: ?Sized> TransmuteRefDst<'a> for Wrap<&'a Src, &'a Dst>
+where
+    Src: KnownLayout<PointerMetadata = usize> + IntoBytes + Immutable,
+    Dst: KnownLayout<PointerMetadata = usize> + FromBytes + Immutable,
+{
+    type Dst = Dst;
+
+    #[inline(always)]
+    fn transmute_ref(self) -> &'a Dst {
+        static_assert!(Src: ?Sized + KnownLayout, Dst: ?Sized + KnownLayout => {
+            Src::LAYOUT.align.get() >= Dst::LAYOUT.align.get()
+        }, "cannot transmute reference when destination type has higher alignment than source type");
+
+        // SAFETY: We only use `S` as `S<Src>` and `D` as `D<Dst>`.
+        unsafe {
+            unsafe_with_size_eq!(<S<Src>, D<Dst>> {
+                let ptr = Ptr::from_ref(self.0)
+                    .transmute::<S<Src>, invariant::Valid, BecauseImmutable>()
+                    .recall_validity::<invariant::Initialized, _>()
+                    .transmute::<D<Dst>, invariant::Initialized, (crate::pointer::BecauseMutationCompatible, _)>()
+                    .recall_validity::<invariant::Valid, _>();
+
+                #[allow(unused_unsafe)]
+                // SAFETY: The preceding `static_assert!` ensures that
+                // `T::LAYOUT.align >= U::LAYOUT.align`. Since `self.0` is
+                // validly-aligned for `T`, it is also validly-aligned for `U`.
+                let ptr = unsafe { ptr.assume_alignment() };
+
+                &ptr.as_ref().0
+            })
+        }
+    }
+}
+
+pub trait TransmuteMutDst<'a> {
+    type Dst: ?Sized;
+    #[must_use]
+    fn transmute_mut(self) -> &'a mut Self::Dst;
+}
+
+impl<'a, Src: ?Sized, Dst: ?Sized> TransmuteMutDst<'a> for Wrap<&'a mut Src, &'a mut Dst>
+where
+    Src: KnownLayout<PointerMetadata = usize> + FromBytes + IntoBytes,
+    Dst: KnownLayout<PointerMetadata = usize> + FromBytes + IntoBytes,
+{
+    type Dst = Dst;
+
+    #[inline(always)]
+    fn transmute_mut(self) -> &'a mut Dst {
+        static_assert!(Src: ?Sized + KnownLayout, Dst: ?Sized + KnownLayout => {
+            Src::LAYOUT.align.get() >= Dst::LAYOUT.align.get()
+        }, "cannot transmute reference when destination type has higher alignment than source type");
+
+        // SAFETY: We only use `S` as `S<Src>` and `D` as `D<Dst>`.
+        unsafe {
+            unsafe_with_size_eq!(<S<Src>, D<Dst>> {
+                let ptr = Ptr::from_mut(self.0)
+                    .transmute::<S<Src>, invariant::Valid, _>()
+                    .recall_validity::<invariant::Initialized, (_, (_, _))>()
+                    .transmute::<D<Dst>, invariant::Initialized, _>()
+                    .recall_validity::<invariant::Valid, (_, (_, _))>();
+
+                #[allow(unused_unsafe)]
+                // SAFETY: The preceding `static_assert!` ensures that
+                // `T::LAYOUT.align >= U::LAYOUT.align`. Since `self.0` is
+                // validly-aligned for `T`, it is also validly-aligned for `U`.
+                let ptr = unsafe { ptr.assume_alignment() };
+
+                &mut ptr.as_mut().0
+            })
+        }
     }
 }
 
@@ -814,7 +981,7 @@ mod tests {
         assert_t_align_gteq_u_align!(u8, AU64, false);
     }
 
-    // TODO(#29), TODO(https://github.com/rust-lang/rust/issues/69835): Remove
+    // FIXME(#29), FIXME(https://github.com/rust-lang/rust/issues/69835): Remove
     // this `cfg` when `size_of_val_raw` is stabilized.
     #[allow(clippy::decimal_literal_representation)]
     #[cfg(__ZEROCOPY_INTERNAL_USE_ONLY_NIGHTLY_FEATURES_IN_TESTS)]
@@ -843,6 +1010,16 @@ mod tests {
         test!(#[repr(C)] (; [AU64]) => Some(0));
         test!(#[repr(C)] (u8; AU64) => Some(8));
         test!(#[repr(C)] (u8; [AU64]) => Some(8));
+
+        #[derive(
+            Immutable, FromBytes, Eq, PartialEq, Ord, PartialOrd, Default, Debug, Copy, Clone,
+        )]
+        #[repr(C)]
+        pub(crate) struct Nested<T, U: ?Sized> {
+            _t: T,
+            _u: U,
+        }
+
         test!(#[repr(C)] (; Nested<u8, AU64>) => Some(0));
         test!(#[repr(C)] (; Nested<u8, [AU64]>) => Some(0));
         test!(#[repr(C)] (u8; Nested<u8, AU64>) => Some(8));
@@ -916,7 +1093,7 @@ mod tests {
         */
     }
 
-    // TODO(#29), TODO(https://github.com/rust-lang/rust/issues/69835): Remove
+    // FIXME(#29), FIXME(https://github.com/rust-lang/rust/issues/69835): Remove
     // this `cfg` when `size_of_val_raw` is stabilized.
     #[allow(clippy::decimal_literal_representation)]
     #[cfg(__ZEROCOPY_INTERNAL_USE_ONLY_NIGHTLY_FEATURES_IN_TESTS)]
@@ -988,14 +1165,15 @@ mod tests {
     }
 
     #[test]
-    fn test_struct_has_padding() {
-        // Test that, for each provided repr, `struct_has_padding!` reports the
+    fn test_struct_padding() {
+        // Test that, for each provided repr, `struct_padding!` reports the
         // expected value.
         macro_rules! test {
             (#[$cfg:meta] ($($ts:ty),*) => $expect:expr) => {{
                 #[$cfg]
-                struct Test($(#[allow(dead_code)] $ts),*);
-                assert_eq!(struct_has_padding!(Test, [$($ts),*]), $expect);
+                #[allow(dead_code)]
+                struct Test($($ts),*);
+                assert_eq!(struct_padding!(Test, [$($ts),*]), $expect);
             }};
             (#[$cfg:meta] $(#[$cfgs:meta])* ($($ts:ty),*) => $expect:expr) => {
                 test!(#[$cfg] ($($ts),*) => $expect);
@@ -1003,30 +1181,66 @@ mod tests {
             };
         }
 
-        test!(#[repr(C)] #[repr(transparent)] #[repr(packed)] () => false);
-        test!(#[repr(C)] #[repr(transparent)] #[repr(packed)] (u8) => false);
-        test!(#[repr(C)] #[repr(transparent)] #[repr(packed)] (u8, ()) => false);
-        test!(#[repr(C)] #[repr(packed)] (u8, u8) => false);
+        test!(#[repr(C)] #[repr(transparent)] #[repr(packed)] () => 0);
+        test!(#[repr(C)] #[repr(transparent)] #[repr(packed)] (u8) => 0);
+        test!(#[repr(C)] #[repr(transparent)] #[repr(packed)] (u8, ()) => 0);
+        test!(#[repr(C)] #[repr(packed)] (u8, u8) => 0);
 
-        test!(#[repr(C)] (u8, AU64) => true);
+        test!(#[repr(C)] (u8, AU64) => 7);
         // Rust won't let you put `#[repr(packed)]` on a type which contains a
         // `#[repr(align(n > 1))]` type (`AU64`), so we have to use `u64` here.
         // It's not ideal, but it definitely has align > 1 on /some/ of our CI
         // targets, and this isn't a particularly complex macro we're testing
         // anyway.
-        test!(#[repr(packed)] (u8, u64) => false);
+        test!(#[repr(packed)] (u8, u64) => 0);
     }
 
     #[test]
-    fn test_union_has_padding() {
-        // Test that, for each provided repr, `union_has_padding!` reports the
+    fn test_repr_c_struct_padding() {
+        // Test that, for each provided repr, `repr_c_struct_padding!` reports
+        // the expected value.
+        macro_rules! test {
+            (($($ts:tt),*) => $expect:expr) => {{
+                #[repr(C)]
+                #[allow(dead_code)]
+                struct Test($($ts),*);
+                assert_eq!(repr_c_struct_has_padding!(Test, [$($ts),*]), $expect);
+            }};
+        }
+
+        // Test static padding
+        test!(() => false);
+        test!(([u8]) => false);
+        test!((u8) => false);
+        test!((u8, [u8]) => false);
+        test!((u8, ()) => false);
+        test!((u8, (), [u8]) => false);
+        test!((u8, u8) => false);
+        test!((u8, u8, [u8]) => false);
+
+        test!((u8, AU64) => true);
+        test!((u8, AU64, [u8]) => true);
+
+        // Test dynamic padding
+        test!((AU64, [AU64]) => false);
+        test!((u8, [AU64]) => true);
+
+        #[repr(align(4))]
+        struct AU32(#[allow(unused)] u32);
+        test!((AU64, [AU64]) => false);
+        test!((AU64, [AU32]) => true);
+    }
+
+    #[test]
+    fn test_union_padding() {
+        // Test that, for each provided repr, `union_padding!` reports the
         // expected value.
         macro_rules! test {
             (#[$cfg:meta] {$($fs:ident: $ts:ty),*} => $expect:expr) => {{
                 #[$cfg]
                 #[allow(unused)] // fields are never read
                 union Test{ $($fs: $ts),* }
-                assert_eq!(union_has_padding!(Test, [$($ts),*]), $expect);
+                assert_eq!(union_padding!(Test, [$($ts),*]), $expect);
             }};
             (#[$cfg:meta] $(#[$cfgs:meta])* {$($fs:ident: $ts:ty),*} => $expect:expr) => {
                 test!(#[$cfg] {$($fs: $ts),*} => $expect);
@@ -1034,19 +1248,19 @@ mod tests {
             };
         }
 
-        test!(#[repr(C)] #[repr(packed)] {a: u8} => false);
-        test!(#[repr(C)] #[repr(packed)] {a: u8, b: u8} => false);
+        test!(#[repr(C)] #[repr(packed)] {a: u8} => 0);
+        test!(#[repr(C)] #[repr(packed)] {a: u8, b: u8} => 0);
 
         // Rust won't let you put `#[repr(packed)]` on a type which contains a
         // `#[repr(align(n > 1))]` type (`AU64`), so we have to use `u64` here.
         // It's not ideal, but it definitely has align > 1 on /some/ of our CI
         // targets, and this isn't a particularly complex macro we're testing
         // anyway.
-        test!(#[repr(C)] #[repr(packed)] {a: u8, b: u64} => true);
+        test!(#[repr(C)] #[repr(packed)] {a: u8, b: u64} => 7);
     }
 
     #[test]
-    fn test_enum_has_padding() {
+    fn test_enum_padding() {
         // Test that, for each provided repr, `enum_has_padding!` reports the
         // expected value.
         macro_rules! test {
@@ -1065,7 +1279,7 @@ mod tests {
                     $($vs ($($ts),*),)*
                 }
                 assert_eq!(
-                    enum_has_padding!(Test, $disc, $([$($ts),*]),*),
+                    enum_padding!(Test, $disc, $([$($ts),*]),*),
                     $expect
                 );
             }};
@@ -1081,41 +1295,41 @@ mod tests {
 
         test!(#[repr(u8)] #[repr(C)] {
             A(u8),
-        } => false);
+        } => 0);
         test!(#[repr(u16)] #[repr(C)] {
             A(u8, u8),
             B(U16),
-        } => false);
+        } => 0);
         test!(#[repr(u32)] #[repr(C)] {
             A(u8, u8, u8, u8),
             B(U16, u8, u8),
             C(u8, u8, U16),
             D(U16, U16),
             E(U32),
-        } => false);
+        } => 0);
 
         // `repr(int)` can pack the discriminant more efficiently
         test!(#[repr(u8)] {
             A(u8, U16),
-        } => false);
+        } => 0);
         test!(#[repr(u8)] {
             A(u8, U16, U32),
-        } => false);
+        } => 0);
 
         // `repr(C)` cannot
         test!(#[repr(u8, C)] {
             A(u8, U16),
-        } => true);
+        } => 2);
         test!(#[repr(u8, C)] {
             A(u8, u8, u8, U32),
-        } => true);
+        } => 4);
 
         // And field ordering can always cause problems
         test!(#[repr(u8)] #[repr(C)] {
             A(U16, u8),
-        } => true);
+        } => 2);
         test!(#[repr(u8)] #[repr(C)] {
             A(U32, u8, u8, u8),
-        } => true);
+        } => 4);
     }
 }

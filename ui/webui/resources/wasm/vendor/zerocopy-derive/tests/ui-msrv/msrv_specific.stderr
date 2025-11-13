@@ -7,19 +7,19 @@ warning: unused `#[macro_use]` import
    = note: `#[warn(unused_imports)]` on by default
 
 error[E0277]: the trait bound `AU16: zerocopy::Unaligned` is not satisfied
-  --> tests/ui-msrv/msrv_specific.rs:35:9
+  --> tests/ui-msrv/msrv_specific.rs:36:9
    |
-35 |         is_into_bytes_1::<IntoBytes1<AU16>>();
+36 |         is_into_bytes_1::<IntoBytes1<AU16>>();
    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `zerocopy::Unaligned` is not implemented for `AU16`
    |
 note: required because of the requirements on the impl of `zerocopy::IntoBytes` for `IntoBytes1<AU16>`
-  --> tests/ui-msrv/msrv_specific.rs:24:10
+  --> tests/ui-msrv/msrv_specific.rs:25:10
    |
-24 | #[derive(IntoBytes)]
+25 | #[derive(IntoBytes)]
    |          ^^^^^^^^^
 note: required by a bound in `is_into_bytes_1`
-  --> tests/ui-msrv/msrv_specific.rs:33:23
+  --> tests/ui-msrv/msrv_specific.rs:34:23
    |
-33 | fn is_into_bytes_1<T: IntoBytes>() {
+34 | fn is_into_bytes_1<T: IntoBytes>() {
    |                       ^^^^^^^^^ required by this bound in `is_into_bytes_1`
    = note: this error originates in the derive macro `IntoBytes` (in Nightly builds, run with -Z macro-backtrace for more info)

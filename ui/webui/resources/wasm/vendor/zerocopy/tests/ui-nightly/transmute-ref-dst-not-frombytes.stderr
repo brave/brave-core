@@ -4,9 +4,14 @@ error[E0277]: the trait bound `Dst: zerocopy::FromBytes` is not satisfied
 23 | const DST_NOT_FROM_BYTES: &Dst = transmute_ref!(&AU16(0));
    |                                  ^^^^^^^^^^^^^^^^^^^^^^^^
    |                                  |
-   |                                  the trait `zerocopy::FromBytes` is not implemented for `Dst`
+   |                                  unsatisfied trait bound
    |                                  required by a bound introduced by this call
    |
+help: the trait `zerocopy::FromBytes` is not implemented for `Dst`
+  --> tests/ui-nightly/transmute-ref-dst-not-frombytes.rs:20:1
+   |
+20 | struct Dst(AU16);
+   | ^^^^^^^^^^
    = note: Consider adding `#[derive(FromBytes)]` to `Dst`
    = help: the following other types implement trait `zerocopy::FromBytes`:
              ()

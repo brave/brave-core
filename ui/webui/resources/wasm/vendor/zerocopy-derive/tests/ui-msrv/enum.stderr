@@ -359,36 +359,36 @@ error[E0277]: the trait bound `bool: FromBytes` is not satisfied
     = help: see issue #48214
     = note: this error originates in the derive macro `FromBytes` (in Nightly builds, run with -Z macro-backtrace for more info)
 
-error[E0277]: the trait bound `(): PaddingFree<IntoBytes1, true>` is not satisfied
+error[E0277]: the trait bound `(): PaddingFree<IntoBytes1, 1_usize>` is not satisfied
    --> tests/ui-msrv/enum.rs:538:10
     |
 538 | #[derive(IntoBytes)]
-    |          ^^^^^^^^^ the trait `PaddingFree<IntoBytes1, true>` is not implemented for `()`
+    |          ^^^^^^^^^ the trait `PaddingFree<IntoBytes1, 1_usize>` is not implemented for `()`
     |
     = help: the following implementations were found:
-              <() as PaddingFree<T, false>>
+              <() as PaddingFree<T, 0_usize>>
     = help: see issue #48214
     = note: this error originates in the derive macro `IntoBytes` (in Nightly builds, run with -Z macro-backtrace for more info)
 
-error[E0277]: the trait bound `(): PaddingFree<IntoBytes2, true>` is not satisfied
+error[E0277]: the trait bound `(): PaddingFree<IntoBytes2, 3_usize>` is not satisfied
    --> tests/ui-msrv/enum.rs:549:10
     |
 549 | #[derive(IntoBytes)]
-    |          ^^^^^^^^^ the trait `PaddingFree<IntoBytes2, true>` is not implemented for `()`
+    |          ^^^^^^^^^ the trait `PaddingFree<IntoBytes2, 3_usize>` is not implemented for `()`
     |
     = help: the following implementations were found:
-              <() as PaddingFree<T, false>>
+              <() as PaddingFree<T, 0_usize>>
     = help: see issue #48214
     = note: this error originates in the derive macro `IntoBytes` (in Nightly builds, run with -Z macro-backtrace for more info)
 
-error[E0277]: the trait bound `(): PaddingFree<IntoBytes3, true>` is not satisfied
+error[E0277]: the trait bound `(): PaddingFree<IntoBytes3, 2_usize>` is not satisfied
    --> tests/ui-msrv/enum.rs:555:10
     |
 555 | #[derive(IntoBytes)]
-    |          ^^^^^^^^^ the trait `PaddingFree<IntoBytes3, true>` is not implemented for `()`
+    |          ^^^^^^^^^ the trait `PaddingFree<IntoBytes3, 2_usize>` is not implemented for `()`
     |
     = help: the following implementations were found:
-              <() as PaddingFree<T, false>>
+              <() as PaddingFree<T, 0_usize>>
     = help: see issue #48214
     = note: this error originates in the derive macro `IntoBytes` (in Nightly builds, run with -Z macro-backtrace for more info)
 

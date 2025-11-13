@@ -70,13 +70,21 @@ fn main() {
     let rustc_version = rustc_version();
 
     if rustc_version >= (Version { major: 1, minor: 77, patch: 0 }) {
-        // This tells the `unexpected_cfgs` lint to expect to see all of these
-        // `cfg`s. The `cargo::` syntax was only added in 1.77, so we don't emit
-        // these on earlier toolchain versions.
         for version_cfg in &version_cfgs {
+            // This tells the `unexpected_cfgs` lint to expect to see all of
+            // these `cfg`s. The `cargo::` syntax was only added in 1.77, so we
+            // don't emit these on earlier toolchain versions.
             println!("cargo:rustc-check-cfg=cfg({})", version_cfg.cfg_name);
+
+            // This tells the `unexpected_cfgs` lint to expect to see `cfg`s of
+            // the form `rust = "1.2.3"`. These aren't real `cfg`s, but we use
+            // them in `cfg_attr(doc_cfg, doc(cfg(rust = "1.2.3")))` on items
+            // that are version-gated so that the rendered Rustdoc shows which
+            // Rust toolchain versions those items are available on.
+            let Version { major, minor, patch } = version_cfg.version;
+            println!("cargo:rustc-check-cfg=cfg(rust, values(\"{}.{}.{}\"))", major, minor, patch);
         }
-        // TODO(https://github.com/rust-lang/rust/issues/124816): Remove these
+        // FIXME(https://github.com/rust-lang/rust/issues/124816): Remove these
         // once they're no longer needed.
         println!("cargo:rustc-check-cfg=cfg(doc_cfg)");
         println!("cargo:rustc-check-cfg=cfg(kani)");

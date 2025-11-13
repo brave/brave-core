@@ -16,5 +16,5 @@ use zerocopy::try_transmute_ref;
 // `try_transmute_ref!` does not support transmuting from a smaller type to a
 // larger one.
 fn main() {
-    let increase_size: Result<&AU16, _> = try_transmute_ref!(&[0u8; 2]);
+    let _increase_size: Result<&AU16, _> = try_transmute_ref!(&[0u8; 2]);
 }

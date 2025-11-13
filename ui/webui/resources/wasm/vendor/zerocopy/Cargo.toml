@@ -13,7 +13,7 @@
 edition = "2021"
 rust-version = "1.56.0"
 name = "zerocopy"
-version = "0.8.24"
+version = "0.8.27"
 authors = [
     "Joshua Liebow-Feeser <joshlf@google.com>",
     "Jack Wrenn <jswrenn@amazon.com>",
@@ -25,7 +25,7 @@ autobins = false
 autoexamples = false
 autotests = false
 autobenches = false
-description = '''Zerocopy makes zero-cost memory manipulation effortless. We write "unsafe" so you don't have to.'''
+description = """Zerocopy makes zero-cost memory manipulation effortless. We write "unsafe" so you don't have to."""
 readme = "README.md"
 keywords = [
     "cast",
@@ -45,16 +45,16 @@ license = "BSD-2-Clause OR Apache-2.0 OR MIT"
 repository = "https://github.com/google/zerocopy"
 
 [package.metadata.build-rs]
-zerocopy-aarch64-simd-1-59-0 = "1.59.0"
 zerocopy-core-error-1-81-0 = "1.81.0"
 zerocopy-diagnostic-on-unimplemented-1-78-0 = "1.78.0"
 zerocopy-generic-bounds-in-const-fn-1-61-0 = "1.61.0"
-zerocopy-panic-in-const-and-vec-try-reserve-1-57-0 = "1.57.0"
 zerocopy-target-has-atomics-1-60-0 = "1.60.0"
+zerocopy-aarch64-simd-1-59-0 = "1.59.0"
+zerocopy-panic-in-const-and-vec-try-reserve-1-57-0 = "1.57.0"
 
 [package.metadata.ci]
-pinned-nightly = "nightly-2025-03-19"
-pinned-stable = "1.85.1"
+pinned-stable = "1.89.0"
+pinned-nightly = "nightly-2025-09-05"
 
 [package.metadata.docs.rs]
 all-features = true
@@ -67,6 +67,20 @@ rustdoc-args = [
 [package.metadata.playground]
 features = ["__internal_use_only_features_that_work_on_stable"]
 
+[features]
+__internal_use_only_features_that_work_on_stable = [
+    "alloc",
+    "derive",
+    "simd",
+    "std",
+]
+alloc = []
+derive = ["zerocopy-derive"]
+float-nightly = []
+simd = []
+simd-nightly = ["simd"]
+std = ["alloc"]
+
 [lib]
 name = "zerocopy"
 path = "src/lib.rs"
@@ -76,7 +90,7 @@ name = "trybuild"
 path = "tests/trybuild.rs"
 
 [dependencies.zerocopy-derive]
-version = "=0.8.24"
+version = "=0.8.27"
 optional = true
 
 [dev-dependencies.either]
@@ -84,6 +98,9 @@ version = "=1.13.0"
 
 [dev-dependencies.elain]
 version = "0.3.0"
+
+[dev-dependencies.glob]
+version = "=0.3.2"
 
 [dev-dependencies.itertools]
 version = "0.11"
@@ -104,21 +121,7 @@ version = "=1.0.89"
 features = ["diff"]
 
 [dev-dependencies.zerocopy-derive]
-version = "=0.8.24"
-
-[features]
-__internal_use_only_features_that_work_on_stable = [
-    "alloc",
-    "derive",
-    "simd",
-    "std",
-]
-alloc = []
-derive = ["zerocopy-derive"]
-float-nightly = []
-simd = []
-simd-nightly = ["simd"]
-std = ["alloc"]
+version = "=0.8.27"
 
 [target."cfg(any())".dependencies.zerocopy-derive]
-version = "=0.8.24"
+version = "=0.8.27"
