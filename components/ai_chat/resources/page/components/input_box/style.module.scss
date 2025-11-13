@@ -4,7 +4,9 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 .form {
-  --editable-padding: 12px var(--leo-spacing-xl) 8px var(--leo-spacing-xl);
+  --editable-padding-top: 12px;
+  --editable-padding-x: var(--leo-spacing-xl);
+  --editable-padding-bottom: 8px;
   --editable-max-height: 300px;
 
   border-radius: var(--leo-radius-xl);

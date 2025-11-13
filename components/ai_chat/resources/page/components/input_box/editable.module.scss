@@ -7,9 +7,14 @@
   position: relative;
   display: block;
   width: 100%;
-  padding: var(--editable-padding);
+  padding: var(--editable-padding-top, 0) var(--editable-padding-x, 0)
+    var(--editable-padding-bottom, 0) var(--editable-padding-x, 0);
   max-height: var(--editable-max-height, unset);
   overflow-y: auto;
+
+  min-height: calc(
+    1lh + var(--editable-padding-top, 0) + var(--editable-padding-bottom, 0)
+  );
 
   &:focus {
     outline: none;
