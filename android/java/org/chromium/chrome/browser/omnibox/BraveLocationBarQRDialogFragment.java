@@ -1,22 +1,17 @@
-/**
- * Copyright (c) 2022 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/.
- */
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.omnibox;
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.hardware.Camera;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,19 +25,19 @@ import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.vision.MultiProcessor;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
+import com.google.cardboard.sdk.qrcode.QrCodeTracker;
+import com.google.cardboard.sdk.qrcode.QrCodeTrackerFactory;
+import com.google.cardboard.sdk.qrcode.camera.CameraSource;
+import com.google.cardboard.sdk.qrcode.camera.CameraSourcePreview;
 
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.qrreader.BarcodeTracker;
-import org.chromium.chrome.browser.qrreader.BarcodeTrackerFactory;
-import org.chromium.chrome.browser.qrreader.CameraSource;
-import org.chromium.chrome.browser.qrreader.CameraSourcePreview;
 import org.chromium.chrome.browser.util.BraveTouchUtils;
 
 import java.io.IOException;
 
-public class BraveLocationBarQRDialogFragment
-        extends DialogFragment implements BarcodeTracker.BarcodeGraphicTrackerCallback {
+public class BraveLocationBarQRDialogFragment extends DialogFragment
+        implements QrCodeTracker.Listener {
     private static final String TAG = "Scan QR Code Dialog";
 
     private CameraSource mCameraSource;
@@ -94,7 +89,7 @@ public class BraveLocationBarQRDialogFragment
         backImageView.setOnClickListener(imageview -> { dismiss(); });
 
         mCameraSourcePreview = (CameraSourcePreview) view.findViewById(R.id.preview);
-        createCameraSource(true, false);
+        createCameraSource();
 
         BraveTouchUtils.ensureMinTouchTarget(backImageView);
 
@@ -104,8 +99,7 @@ public class BraveLocationBarQRDialogFragment
         }
     }
 
-    @SuppressLint("InlinedApi")
-    private void createCameraSource(boolean autoFocus, boolean useFlash) {
+    private void createCameraSource() {
         Context context = getActivity().getApplicationContext();
         // A barcode detector is created to track barcodes.  An associated multi-processor instance
         // is set to receive the barcode detection results, track the barcodes, and maintain
@@ -113,8 +107,8 @@ public class BraveLocationBarQRDialogFragment
         // create a separate tracker instance for each barcode.
         BarcodeDetector barcodeDetector =
                 new BarcodeDetector.Builder(context).setBarcodeFormats(Barcode.ALL_FORMATS).build();
-        BarcodeTrackerFactory barcodeFactory = new BarcodeTrackerFactory(this);
-        barcodeDetector.setProcessor(new MultiProcessor.Builder<>(barcodeFactory).build());
+        QrCodeTrackerFactory qrCodeFactory = new QrCodeTrackerFactory(this);
+        barcodeDetector.setProcessor(new MultiProcessor.Builder<>(qrCodeFactory).build());
 
         if (!barcodeDetector.isOperational()) {
             // Note: The first time that an app using the barcode or face API is installed on a
@@ -128,28 +122,11 @@ public class BraveLocationBarQRDialogFragment
             Log.w(TAG, "Detector dependencies are not yet available.");
         }
 
-        // Creates and starts the camera.  Note that this uses a higher resolution in comparison
-        // to other detection examples to enable the barcode detector to detect small barcodes
-        // at long distances.
-        DisplayMetrics metrics = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
-
-        CameraSource.Builder builder =
-                new CameraSource.Builder(context, barcodeDetector)
-                        .setFacing(CameraSource.CAMERA_FACING_BACK)
-                        .setRequestedPreviewSize(metrics.widthPixels, metrics.heightPixels)
-                        .setRequestedFps(24.0f);
-
-        // Make sure that auto focus is an available option
-        builder = builder.setFocusMode(
-                autoFocus ? Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE : null);
-
-        mCameraSource =
-                builder.setFlashMode(useFlash ? Camera.Parameters.FLASH_MODE_TORCH : null).build();
+        mCameraSource = new CameraSource(context, barcodeDetector);
     }
 
     private void startCameraSource() throws SecurityException {
-        if (mCameraSource != null && mCameraSourcePreview.mCameraExist) {
+        if (mCameraSource != null) {
             // Check that the device has play services available.
             try {
                 int code = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(
@@ -229,7 +206,7 @@ public class BraveLocationBarQRDialogFragment
     }
 
     @Override
-    public void onDetectedQrCode(Barcode barcode) {
+    public void onQrCodeDetected(Barcode barcode) {
         if (barcode == null) {
             return;
         }
