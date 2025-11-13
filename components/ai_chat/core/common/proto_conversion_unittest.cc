@@ -33,6 +33,12 @@ TEST(ProtoConversionTest, SerializeDeserializeWebSourcesEvent_ValidData) {
                             GURL("https://example.com/favicon2.ico"));
   mojom_event->sources.push_back(std::move(source2));
 
+  // Add rich_results
+  mojom_event->rich_results.push_back(
+      R"({"type":"knowledge_graph","title":"Test Knowledge Graph"})");
+  mojom_event->rich_results.push_back(
+      R"({"type":"video","url":"https://example.com/video.mp4"})");
+
   // Serialize to proto
   store::WebSourcesEventProto proto_event;
   SerializeWebSourcesEvent(mojom_event, &proto_event);
@@ -48,6 +54,13 @@ TEST(ProtoConversionTest, SerializeDeserializeWebSourcesEvent_ValidData) {
   EXPECT_EQ(proto_event.sources(1).favicon_url(),
             "https://example.com/favicon2.ico");
 
+  // Verify rich_results in proto
+  ASSERT_EQ(proto_event.rich_results_size(), 2);
+  EXPECT_EQ(proto_event.rich_results(0),
+            R"({"type":"knowledge_graph","title":"Test Knowledge Graph"})");
+  EXPECT_EQ(proto_event.rich_results(1),
+            R"({"type":"video","url":"https://example.com/video.mp4"})");
+
   // Deserialize back to mojom
   auto deserialized_event = DeserializeWebSourcesEvent(proto_event);
 
@@ -55,6 +68,13 @@ TEST(ProtoConversionTest, SerializeDeserializeWebSourcesEvent_ValidData) {
   ASSERT_EQ(deserialized_event->sources.size(), 2u);
   EXPECT_MOJOM_EQ(*deserialized_event->sources[0], *mojom_event->sources[0]);
   EXPECT_MOJOM_EQ(*deserialized_event->sources[1], *mojom_event->sources[1]);
+
+  // Verify rich_results in deserialized mojom
+  ASSERT_EQ(deserialized_event->rich_results.size(), 2u);
+  EXPECT_EQ(deserialized_event->rich_results[0],
+            R"({"type":"knowledge_graph","title":"Test Knowledge Graph"})");
+  EXPECT_EQ(deserialized_event->rich_results[1],
+            R"({"type":"video","url":"https://example.com/video.mp4"})");
 }
 
 TEST(ProtoConversionTest, SerializeWebSourcesEvent_InvalidUrls) {
@@ -122,12 +142,132 @@ TEST(ProtoConversionTest, SerializeDeserializeWebSourcesEvent_EmptySources) {
 
   // Verify empty proto
   EXPECT_EQ(proto_event.sources_size(), 0);
+  EXPECT_EQ(proto_event.rich_results_size(), 0);
 
   // Deserialize back to mojom
   auto deserialized_event = DeserializeWebSourcesEvent(proto_event);
 
   // Verify empty mojom
   EXPECT_EQ(deserialized_event->sources.size(), 0u);
+  EXPECT_EQ(deserialized_event->rich_results.size(), 0u);
+}
+
+TEST(ProtoConversionTest, SerializeDeserializeWebSourcesEvent_RichResultsOnly) {
+  // Create mojom WebSourcesEvent with only rich_results, no sources
+  auto mojom_event = mojom::WebSourcesEvent::New();
+
+  // Add rich_results without sources
+  mojom_event->rich_results.push_back(
+      R"({"type":"answer_box","answer":"42","question":"meaning of life"})");
+  mojom_event->rich_results.push_back(
+      R"({"type":"calculator","result":"123","expression":"100+23"})");
+  mojom_event->rich_results.push_back(
+      R"({"type":"weather","temperature":"72F","location":"San Francisco"})");
+
+  // Serialize to proto
+  store::WebSourcesEventProto proto_event;
+  SerializeWebSourcesEvent(mojom_event, &proto_event);
+
+  // Verify proto data
+  EXPECT_EQ(proto_event.sources_size(), 0);
+  ASSERT_EQ(proto_event.rich_results_size(), 3);
+  EXPECT_EQ(
+      proto_event.rich_results(0),
+      R"({"type":"answer_box","answer":"42","question":"meaning of life"})");
+  EXPECT_EQ(proto_event.rich_results(1),
+            R"({"type":"calculator","result":"123","expression":"100+23"})");
+  EXPECT_EQ(
+      proto_event.rich_results(2),
+      R"({"type":"weather","temperature":"72F","location":"San Francisco"})");
+
+  // Deserialize back to mojom
+  auto deserialized_event = DeserializeWebSourcesEvent(proto_event);
+
+  // Verify deserialized data
+  EXPECT_EQ(deserialized_event->sources.size(), 0u);
+  ASSERT_EQ(deserialized_event->rich_results.size(), 3u);
+  EXPECT_EQ(
+      deserialized_event->rich_results[0],
+      R"({"type":"answer_box","answer":"42","question":"meaning of life"})");
+  EXPECT_EQ(deserialized_event->rich_results[1],
+            R"({"type":"calculator","result":"123","expression":"100+23"})");
+  EXPECT_EQ(
+      deserialized_event->rich_results[2],
+      R"({"type":"weather","temperature":"72F","location":"San Francisco"})");
+}
+
+TEST(ProtoConversionTest,
+     SerializeDeserializeWebSourcesEvent_ComplexRichResults) {
+  // Test with complex nested JSON in rich_results
+  auto mojom_event = mojom::WebSourcesEvent::New();
+
+  auto source = mojom::WebSource::New("Example", GURL("https://example.com"),
+                                      GURL("https://example.com/favicon.ico"));
+  mojom_event->sources.push_back(std::move(source));
+
+  // Add complex nested JSON structures
+  mojom_event->rich_results.push_back(R"({
+    "type":"knowledge_graph",
+    "entity":"Python Programming",
+    "properties":{
+      "category":"Programming Language",
+      "year":1991,
+      "creator":"Guido van Rossum"
+    },
+    "links":[
+      {"title":"Official Site","url":"https://python.org"},
+      {"title":"Documentation","url":"https://docs.python.org"}
+    ]
+  })");
+
+  // Serialize to proto
+  store::WebSourcesEventProto proto_event;
+  SerializeWebSourcesEvent(mojom_event, &proto_event);
+
+  // Verify proto
+  EXPECT_EQ(proto_event.sources_size(), 1);
+  ASSERT_EQ(proto_event.rich_results_size(), 1);
+
+  // Deserialize back to mojom
+  auto deserialized_event = DeserializeWebSourcesEvent(proto_event);
+
+  // Verify deserialized data - the JSON string should be preserved exactly
+  ASSERT_EQ(deserialized_event->rich_results.size(), 1u);
+  EXPECT_EQ(deserialized_event->rich_results[0], mojom_event->rich_results[0]);
+}
+
+TEST(ProtoConversionTest,
+     SerializeDeserializeWebSourcesEvent_EmptyRichResultStrings) {
+  // Test with empty strings in rich_results
+  auto mojom_event = mojom::WebSourcesEvent::New();
+
+  auto source = mojom::WebSource::New("Example", GURL("https://example.com"),
+                                      GURL("https://example.com/favicon.ico"));
+  mojom_event->sources.push_back(std::move(source));
+
+  // Add valid and empty rich_results
+  mojom_event->rich_results.push_back(R"({"type":"valid_data"})");
+  mojom_event->rich_results.push_back("");  // empty string
+  mojom_event->rich_results.push_back(R"({"type":"another_valid"})");
+
+  // Serialize to proto
+  store::WebSourcesEventProto proto_event;
+  SerializeWebSourcesEvent(mojom_event, &proto_event);
+
+  // All rich_results should be serialized, including empty strings
+  ASSERT_EQ(proto_event.rich_results_size(), 3);
+  EXPECT_EQ(proto_event.rich_results(0), R"({"type":"valid_data"})");
+  EXPECT_EQ(proto_event.rich_results(1), "");
+  EXPECT_EQ(proto_event.rich_results(2), R"({"type":"another_valid"})");
+
+  // Deserialize back to mojom
+  auto deserialized_event = DeserializeWebSourcesEvent(proto_event);
+
+  // All rich_results should be deserialized
+  ASSERT_EQ(deserialized_event->rich_results.size(), 3u);
+  EXPECT_EQ(deserialized_event->rich_results[0], R"({"type":"valid_data"})");
+  EXPECT_EQ(deserialized_event->rich_results[1], "");
+  EXPECT_EQ(deserialized_event->rich_results[2], R"({"type":"another_valid"})");
 }
 
 // Tests for ToolUseEvent conversion functions
