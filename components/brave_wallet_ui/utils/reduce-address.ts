@@ -34,13 +34,17 @@ const prefixes = [
   't410',
 ]
 
-export const reduceAddress = (address?: string, fillerChars?: string) => {
+export const reduceAddress = (
+  address?: string,
+  fillerChars?: string,
+  length?: number,
+) => {
   if (!address) {
     return ''
   }
 
-  const frontSliceLength = 4
-  const backSliceLength = 4
+  const frontSliceLength = length ?? 4
+  const backSliceLength = length ?? 4
   const frontPrefixLength =
     prefixes.find((p) => {
       return address.toLowerCase().startsWith(p)

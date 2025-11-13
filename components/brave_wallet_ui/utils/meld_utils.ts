@@ -40,6 +40,8 @@ export const getMeldTokensCoinType = (
       return BraveWallet.CoinType.ZEC
     case 'SOLANA':
       return BraveWallet.CoinType.SOL
+    case 'ADA':
+      return BraveWallet.CoinType.ADA
     default:
       return BraveWallet.CoinType.ETH
   }
@@ -55,6 +57,8 @@ export const getMeldTokensChainId = (
       return BraveWallet.FILECOIN_MAINNET
     case 'ZEC':
       return BraveWallet.Z_CASH_MAINNET
+    case 'ADA':
+      return BraveWallet.CARDANO_MAINNET
     default:
       return asset.chainId
   }

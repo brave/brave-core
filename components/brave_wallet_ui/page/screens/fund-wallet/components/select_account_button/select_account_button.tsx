@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import Tooltip from '@brave/leo/react/tooltip'
 
 // Types
 import { BraveWallet } from '../../../../../constants/types'
@@ -13,6 +14,9 @@ import {
   useReceiveAddressQuery, //
 } from '../../../../../common/slices/api.slice.extra'
 
+// Utils
+import { reduceAddress } from '../../../../../utils/reduce-address'
+
 // Components
 import {
   CreateAccountIcon, //
@@ -21,7 +25,7 @@ import {
 // Styled Components
 import { Column, Row } from '../../../../../components/shared/style'
 import { CaretDown, ControlText, Label, WrapperButton } from '../shared/style'
-import { AccountAddress } from './select_account_button.style'
+import { AccountAddress, TooltipContent } from './select_account_button.style'
 
 interface SelectAccountProps {
   labelText: string
@@ -56,7 +60,14 @@ export const SelectAccountButton = ({
           </Row>
         </Column>
       </WrapperButton>
-      <AccountAddress>{receiveAddress}</AccountAddress>
+      <Tooltip>
+        <TooltipContent slot='content'>{receiveAddress}</TooltipContent>
+        <AccountAddress>
+          {receiveAddress.length > 42
+            ? reduceAddress(receiveAddress, undefined, 18)
+            : receiveAddress}
+        </AccountAddress>
+      </Tooltip>
     </Column>
   )
 }

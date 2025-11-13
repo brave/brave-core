@@ -36,3 +36,12 @@ export const AccountAddress = styled.span`
     background-color: transparent;
   }
 `
+
+export const TooltipContent = styled.div`
+  display: flex;
+  flex-direction: row;
+  max-width: 280px;
+  word-break: break-all;
+  word-wrap: break-word;
+  text-align: left;
+`
