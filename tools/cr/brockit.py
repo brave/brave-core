@@ -1395,7 +1395,7 @@ class Upgrade(Versioned):
         # a patch gets deleted due a cherry-pick finally being made obsolete,
         # which means no apply records ever occurred, and therefore this value
         # is None.
-        if (apply_record):
+        if apply_record:
             apply_record.stage_all_patches(ignore_deleted_files=True)
             has_changes = repository.brave.has_staged_changed()
         else:
