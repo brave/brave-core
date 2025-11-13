@@ -30,3 +30,5 @@ MODE_SPECIFIC_STRINGS = {
         ],
     },
 }
+
+STRING_IDS.append('IDS_SETUP_PATCH_FAILED')
