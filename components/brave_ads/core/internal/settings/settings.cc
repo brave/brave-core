@@ -14,20 +14,25 @@
 
 namespace brave_ads {
 
+namespace {
+
+bool HasConnectedWallet() {
+  return !GetProfileStringPref(brave_rewards::prefs::kExternalWalletType)
+              .empty();
+}
+
+}  // namespace
+
 bool UserHasJoinedBraveRewards() {
   return GetProfileBooleanPref(brave_rewards::prefs::kEnabled);
 }
 
 bool UserHasJoinedBraveRewardsAndNotConnectedWallet() {
-  return UserHasJoinedBraveRewards() &&
-         GetProfileStringPref(brave_rewards::prefs::kExternalWalletType)
-             .empty();
+  return UserHasJoinedBraveRewards() && !HasConnectedWallet();
 }
 
 bool UserHasJoinedBraveRewardsAndConnectedWallet() {
-  return UserHasJoinedBraveRewards() &&
-         !GetProfileStringPref(brave_rewards::prefs::kExternalWalletType)
-              .empty();
+  return UserHasJoinedBraveRewards() && HasConnectedWallet();
 }
 
 bool UserHasOptedInToBraveNewsAds() {
