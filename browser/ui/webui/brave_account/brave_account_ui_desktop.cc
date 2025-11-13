@@ -51,7 +51,7 @@ BraveAccountUIDesktop::BraveAccountUIDesktop(content::WebUI* web_ui)
   CHECK(pref_service);
 
   pref_verification_token_.Init(
-      brave_account::prefs::kVerificationToken, pref_service,
+      brave_account::prefs::kBraveAccountVerificationToken, pref_service,
       base::BindRepeating(&BraveAccountUIDesktop::OnVerificationTokenChanged,
                           base::Unretained(this)));
 }

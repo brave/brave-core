@@ -682,7 +682,7 @@ TEST_P(RegisterFinalizeTest, MapsEndpointExpectedToMojoExpected) {
 
   if (const auto& test_case = CHECK_DEREF(this->GetParam());
       test_case.mojo_expected.has_value()) {
-    EXPECT_EQ(pref_service_.GetString(prefs::kVerificationToken),
+    EXPECT_EQ(pref_service_.GetString(prefs::kBraveAccountVerificationToken),
               test_case.encrypted_verification_token);
   }
 }
@@ -715,15 +715,15 @@ struct VerifyResultTestCase {
                   PrefService& pref_service,
                   base::test::TaskEnvironment& task_environment,
                   base::OneShotTimer& verify_result_timer) {
-    pref_service.SetString(prefs::kVerificationToken,
+    pref_service.SetString(prefs::kBraveAccountVerificationToken,
                            test_case.encrypted_verification_token);
 
     task_environment.FastForwardBy(kVerifyResultPollInterval -
                                    base::Seconds(1));
 
-    EXPECT_EQ(pref_service.GetString(prefs::kVerificationToken),
+    EXPECT_EQ(pref_service.GetString(prefs::kBraveAccountVerificationToken),
               test_case.expected_verification_token);
-    EXPECT_EQ(pref_service.GetString(prefs::kAuthenticationToken),
+    EXPECT_EQ(pref_service.GetString(prefs::kBraveAccountAuthenticationToken),
               test_case.expected_authentication_token);
     if (test_case.expected_verify_result_timer_delay.is_zero()) {
       EXPECT_FALSE(verify_result_timer.IsRunning());
@@ -954,10 +954,10 @@ struct CancelRegistrationTestCase {
   static void Run(const CancelRegistrationTestCase& test_case,
                   PrefService& pref_service,
                   mojom::Authentication& authentication) {
-    pref_service.SetString(prefs::kVerificationToken,
+    pref_service.SetString(prefs::kBraveAccountVerificationToken,
                            test_case.encrypted_verification_token);
     authentication.CancelRegistration();
-    EXPECT_EQ(pref_service.GetString(prefs::kVerificationToken),
+    EXPECT_EQ(pref_service.GetString(prefs::kBraveAccountVerificationToken),
               test_case.expected_verification_token);
   }
 
@@ -1010,10 +1010,10 @@ struct LogOutTestCase {
   static void Run(const LogOutTestCase& test_case,
                   PrefService& pref_service,
                   mojom::Authentication& authentication) {
-    pref_service.SetString(prefs::kAuthenticationToken,
+    pref_service.SetString(prefs::kBraveAccountAuthenticationToken,
                            test_case.encrypted_authentication_token);
     authentication.LogOut();
-    EXPECT_EQ(pref_service.GetString(prefs::kAuthenticationToken),
+    EXPECT_EQ(pref_service.GetString(prefs::kBraveAccountAuthenticationToken),
               test_case.expected_authentication_token);
   }
 

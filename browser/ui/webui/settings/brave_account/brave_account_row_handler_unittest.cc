@@ -101,11 +101,12 @@ TEST_P(BraveAccountRowHandlerGetAccountStateTest, GetAccountState) {
   const auto& test_case = GetParam();
 
   if (!test_case.verification_token.empty()) {
-    prefs().SetString(prefs::kVerificationToken, test_case.verification_token);
+    prefs().SetString(prefs::kBraveAccountVerificationToken,
+                      test_case.verification_token);
   }
 
   if (!test_case.authentication_token.empty()) {
-    prefs().SetString(prefs::kAuthenticationToken,
+    prefs().SetString(prefs::kBraveAccountAuthenticationToken,
                       test_case.authentication_token);
   }
 
@@ -158,10 +159,12 @@ TEST_P(BraveAccountRowHandlerOnPrefChangedTest, OnPrefChanged) {
     case mojom::AccountState::kLoggedOut:
       break;
     case mojom::AccountState::kVerification:
-      prefs().SetString(prefs::kVerificationToken, "verification_token");
+      prefs().SetString(prefs::kBraveAccountVerificationToken,
+                        "verification_token");
       break;
     case mojom::AccountState::kLoggedIn:
-      prefs().SetString(prefs::kAuthenticationToken, "authentication_token");
+      prefs().SetString(prefs::kBraveAccountAuthenticationToken,
+                        "authentication_token");
       break;
   }
 
@@ -171,13 +174,15 @@ TEST_P(BraveAccountRowHandlerOnPrefChangedTest, OnPrefChanged) {
 
   switch (test_case.action) {
     case StateAction::kSetVerificationToken:
-      prefs().SetString(prefs::kVerificationToken, "verification_token");
+      prefs().SetString(prefs::kBraveAccountVerificationToken,
+                        "verification_token");
       break;
     case StateAction::kSetAuthenticationToken:
-      prefs().SetString(prefs::kAuthenticationToken, "authentication_token");
+      prefs().SetString(prefs::kBraveAccountAuthenticationToken,
+                        "authentication_token");
       break;
     case StateAction::kClearAuthenticationToken:
-      prefs().ClearPref(prefs::kAuthenticationToken);
+      prefs().ClearPref(prefs::kBraveAccountAuthenticationToken);
       break;
   }
 

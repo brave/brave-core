@@ -30,7 +30,8 @@ BraveAccountRowHandler::BraveAccountRowHandler(
   CHECK(pref_service_);
   pref_change_registrar_.Init(pref_service_);
   pref_change_registrar_.AddMultiple(
-      {prefs::kVerificationToken, prefs::kAuthenticationToken},
+      {prefs::kBraveAccountVerificationToken,
+       prefs::kBraveAccountAuthenticationToken},
       base::BindRepeating(&BraveAccountRowHandler::OnPrefChanged,
                           base::Unretained(this)));
 }
@@ -46,11 +47,13 @@ void BraveAccountRowHandler::OpenDialog() {
 }
 
 mojom::AccountState BraveAccountRowHandler::GetAccountState() const {
-  if (!pref_service_->GetString(prefs::kAuthenticationToken).empty()) {
+  if (!pref_service_->GetString(prefs::kBraveAccountAuthenticationToken)
+           .empty()) {
     return mojom::AccountState::kLoggedIn;
   }
 
-  if (!pref_service_->GetString(prefs::kVerificationToken).empty()) {
+  if (!pref_service_->GetString(prefs::kBraveAccountVerificationToken)
+           .empty()) {
     return mojom::AccountState::kVerification;
   }
 
