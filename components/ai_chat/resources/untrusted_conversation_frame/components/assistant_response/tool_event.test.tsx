@@ -128,6 +128,51 @@ describe('ToolEvent', () => {
               '{"website_url": "https://www.example.com/path/to/page"}',
             output: undefined,
             permissionChallenge: {
+              assessment: 'This is an assessment',
+              plan: 'This is a plan',
+            },
+          }}
+          isEntryActive={true}
+        />
+      </MockContext>,
+    )
+    expect(
+      screen.getByText(S.CHAT_UI_PERMISSION_CHALLENGE_HEADER),
+    ).toBeInTheDocument()
+
+    expect(screen.getByText('This is an assessment')).toBeInTheDocument()
+    expect(screen.getByText('This is a plan')).toBeInTheDocument()
+
+    const approveButton = screen.getByText(
+      S.CHAT_UI_PERMISSION_CHALLENGE_ALLOW_BUTTON,
+    )
+    fireEvent.click(approveButton)
+    expect(mockProcessPermissionChallenge).toHaveBeenCalledWith('123', true)
+    const denyButton = screen.getByText(
+      S.CHAT_UI_PERMISSION_CHALLENGE_DENY_BUTTON,
+    )
+    fireEvent.click(denyButton)
+    expect(mockProcessPermissionChallenge).toHaveBeenCalledWith('123', false)
+  })
+
+  it('should show permission challenge with no content', () => {
+    const mockProcessPermissionChallenge = jest.fn()
+    render(
+      <MockContext
+        conversationHandler={
+          {
+            processPermissionChallenge: mockProcessPermissionChallenge,
+          } as unknown as Mojom.UntrustedConversationHandlerRemote
+        }
+      >
+        <ToolEvent
+          toolUseEvent={{
+            toolName: Mojom.NAVIGATE_TOOL_NAME,
+            id: '123',
+            argumentsJson:
+              '{"website_url": "https://www.example.com/path/to/page"}',
+            output: undefined,
+            permissionChallenge: {
               // No content to verify they do not gate the rendering of the
               // permission challenge UI.
               assessment: undefined,
