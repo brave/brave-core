@@ -1,15 +1,8 @@
-#![allow(dead_code)]
 use crate::Error;
-use core::{
-    mem::MaybeUninit,
-    num::NonZeroU32,
-    ptr::NonNull,
-    sync::atomic::{fence, AtomicPtr, Ordering},
-};
-use libc::c_void;
+use core::mem::MaybeUninit;
 
 cfg_if! {
-    if #[cfg(any(target_os = "netbsd", target_os = "openbsd", target_os = "android"))] {
+    if #[cfg(any(target_os = "netbsd", target_os = "openbsd", target_os = "android", target_os = "cygwin"))] {
         use libc::__errno as errno_location;
     } else if #[cfg(any(target_os = "linux", target_os = "emscripten", target_os = "hurd", target_os = "redox", target_os = "dragonfly"))] {
         use libc::__errno_location as errno_location;
@@ -40,26 +33,37 @@ cfg_if! {
     }
 }
 
-pub fn last_os_error() -> Error {
-    let errno = unsafe { get_errno() };
+pub(crate) fn last_os_error() -> Error {
+    // We assume that on all targets which use the `util_libc` module `c_int` is equal to `i32`
+    let errno: i32 = unsafe { get_errno() };
+
     if errno > 0 {
-        Error::from(NonZeroU32::new(errno as u32).unwrap())
+        let code = errno
+            .checked_neg()
+            .expect("Positive number can be always negated");
+        Error::from_neg_error_code(code)
     } else {
         Error::ERRNO_NOT_POSITIVE
     }
 }
 
-// Fill a buffer by repeatedly invoking a system call. The `sys_fill` function:
-//   - should return -1 and set errno on failure
-//   - should return the number of bytes written on success
-pub fn sys_fill_exact(
+/// Fill a buffer by repeatedly invoking `sys_fill`.
+///
+/// The `sys_fill` function:
+///   - should return -1 and set errno on failure
+///   - should return the number of bytes written on success
+#[allow(dead_code)]
+pub(crate) fn sys_fill_exact(
     mut buf: &mut [MaybeUninit<u8>],
     sys_fill: impl Fn(&mut [MaybeUninit<u8>]) -> libc::ssize_t,
 ) -> Result<(), Error> {
     while !buf.is_empty() {
         let res = sys_fill(buf);
         match res {
-            res if res > 0 => buf = buf.get_mut(res as usize..).ok_or(Error::UNEXPECTED)?,
+            res if res > 0 => {
+                let len = usize::try_from(res).map_err(|_| Error::UNEXPECTED)?;
+                buf = buf.get_mut(len..).ok_or(Error::UNEXPECTED)?;
+            }
             -1 => {
                 let err = last_os_error();
                 // We should try again if the call was interrupted.
@@ -74,89 +78,4 @@ pub fn sys_fill_exact(
         }
     }
     Ok(())
-}
-
-// A "weak" binding to a C function that may or may not be present at runtime.
-// Used for supporting newer OS features while still building on older systems.
-// Based off of the DlsymWeak struct in libstd:
-// https://github.com/rust-lang/rust/blob/1.61.0/library/std/src/sys/unix/weak.rs#L84
-// except that the caller must manually cast self.ptr() to a function pointer.
-pub struct Weak {
-    name: &'static str,
-    addr: AtomicPtr<c_void>,
-}
-
-impl Weak {
-    // A non-null pointer value which indicates we are uninitialized. This
-    // constant should ideally not be a valid address of a function pointer.
-    // However, if by chance libc::dlsym does return UNINIT, there will not
-    // be undefined behavior. libc::dlsym will just be called each time ptr()
-    // is called. This would be inefficient, but correct.
-    // TODO: Replace with core::ptr::invalid_mut(1) when that is stable.
-    const UNINIT: *mut c_void = 1 as *mut c_void;
-
-    // Construct a binding to a C function with a given name. This function is
-    // unsafe because `name` _must_ be null terminated.
-    pub const unsafe fn new(name: &'static str) -> Self {
-        Self {
-            name,
-            addr: AtomicPtr::new(Self::UNINIT),
-        }
-    }
-
-    // Return the address of a function if present at runtime. Otherwise,
-    // return None. Multiple callers can call ptr() concurrently. It will
-    // always return _some_ value returned by libc::dlsym. However, the
-    // dlsym function may be called multiple times.
-    pub fn ptr(&self) -> Option<NonNull<c_void>> {
-        // Despite having only a single atomic variable (self.addr), we still
-        // cannot always use Ordering::Relaxed, as we need to make sure a
-        // successful call to dlsym() is "ordered before" any data read through
-        // the returned pointer (which occurs when the function is called).
-        // Our implementation mirrors that of the one in libstd, meaning that
-        // the use of non-Relaxed operations is probably unnecessary.
-        match self.addr.load(Ordering::Relaxed) {
-            Self::UNINIT => {
-                let symbol = self.name.as_ptr() as *const _;
-                let addr = unsafe { libc::dlsym(libc::RTLD_DEFAULT, symbol) };
-                // Synchronizes with the Acquire fence below
-                self.addr.store(addr, Ordering::Release);
-                NonNull::new(addr)
-            }
-            addr => {
-                let func = NonNull::new(addr)?;
-                fence(Ordering::Acquire);
-                Some(func)
-            }
-        }
-    }
-}
-
-// SAFETY: path must be null terminated, FD must be manually closed.
-pub unsafe fn open_readonly(path: &str) -> Result<libc::c_int, Error> {
-    debug_assert_eq!(path.as_bytes().last(), Some(&0));
-    loop {
-        let fd = libc::open(path.as_ptr() as *const _, libc::O_RDONLY | libc::O_CLOEXEC);
-        if fd >= 0 {
-            return Ok(fd);
-        }
-        let err = last_os_error();
-        // We should try again if open() was interrupted.
-        if err.raw_os_error() != Some(libc::EINTR) {
-            return Err(err);
-        }
-    }
-}
-
-/// Thin wrapper around the `getrandom()` Linux system call
-#[cfg(any(target_os = "android", target_os = "linux"))]
-pub fn getrandom_syscall(buf: &mut [MaybeUninit<u8>]) -> libc::ssize_t {
-    unsafe {
-        libc::syscall(
-            libc::SYS_getrandom,
-            buf.as_mut_ptr() as *mut libc::c_void,
-            buf.len(),
-            0,
-        ) as libc::ssize_t
-    }
 }
