@@ -42,7 +42,7 @@ public class AnyTabState: TabState {
   public func createWebView() { tab.createWebView() }
   public func deleteWebView() { tab.deleteWebView() }
   public var sessionData: Data? { tab.sessionData }
-  public func restore(using sessionData: Data) { tab.restore(using: sessionData) }
+  public func restore(using sessionData: Data) throws { try tab.restore(using: sessionData) }
   public var isRestoring: Bool { tab.isRestoring }
 
   public var delegate: (any TabDelegate)? {
