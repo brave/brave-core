@@ -376,7 +376,7 @@ void ZCashWalletService::OnCompleteTransactionTaskDone(
     SignAndPostTransactionCallback callback,
     base::expected<ZCashTransaction, std::string> result) {
   CHECK(complete_transaction_tasks_.erase(task));
-  CHECK(original_zcash_transaction.ValidateTransaction());
+  CHECK(original_zcash_transaction.ValidateAmounts());
 
   if (!result.has_value()) {
     std::move(callback).Run("", std::move(original_zcash_transaction),

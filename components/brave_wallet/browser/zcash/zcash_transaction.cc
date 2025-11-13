@@ -422,7 +422,7 @@ uint8_t ZCashTransaction::sighash_type() const {
   return kZCashSigHashAll;
 }
 
-bool ZCashTransaction::ValidateTransaction() {
+bool ZCashTransaction::ValidateAmounts() {
   base::CheckedNumeric<uint64_t> inputs_sum = 0;
   base::CheckedNumeric<uint64_t> outputs_sum = 0;
 
@@ -445,8 +445,6 @@ bool ZCashTransaction::ValidateTransaction() {
   if (!outputs_sum.IsValid() || !inputs_sum.IsValid()) {
     return false;
   }
-
-  CHECK(inputs_sum.ValueOrDie() == TotalInputsAmount());
 
   return outputs_sum.ValueOrDie() == inputs_sum.ValueOrDie();
 }

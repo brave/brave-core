@@ -3150,7 +3150,7 @@ TEST_F(ZCashWalletServiceUnitTest,
   base::expected<ZCashTransaction, std::string> result =
       base::ok(ZCashTransaction());
 
-  // EXPECT_DEATH should trigger because ValidateTransaction will fail
+  // EXPECT_DEATH should trigger because ValidateAmounts will fail
   // and the CHECK will abort
   EXPECT_DEATH(zcash_wallet_service_->OnCompleteTransactionTaskDone(
                    task_ptr, account_id(), invalid_tx, callback.Get(), result),
