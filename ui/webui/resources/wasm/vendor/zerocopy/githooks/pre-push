@@ -18,6 +18,7 @@ echo "Running pre-push git hook: $0"
 ./ci/check_all_toolchains_tested.sh >/dev/null & TOOLCHAINS_PID=$!
 ./ci/check_job_dependencies.sh      >/dev/null & JOB_DEPS_PID=$!
 ./ci/check_readme.sh                >/dev/null & README_PID=$!
+./ci/check_todo.sh                  >/dev/null & XODO_PID=$!
 ./ci/check_versions.sh              >/dev/null & VERSIONS_PID=$!
 
 # `wait <pid>` exits with the same status code as the job it's waiting for.
@@ -30,6 +31,7 @@ wait $FMT_PID
 wait $TOOLCHAINS_PID
 wait $JOB_DEPS_PID
 wait $README_PID
+wait $XODO_PID
 wait $VERSIONS_PID
 
 # Ensure that this script calls all scripts in `ci/*`. This isn't a foolproof

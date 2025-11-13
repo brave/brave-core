@@ -367,7 +367,7 @@ where
         // measure bytes (`source` deref's to `[u8]`, and `remainder` is a
         // `Ptr<[u8]>`), so `source.len() >= remainder.len()`. Thus, this cannot
         // underflow.
-        #[allow(unstable_name_collisions, clippy::incompatible_msrv)]
+        #[allow(unstable_name_collisions)]
         let split_at = unsafe { source.len().unchecked_sub(remainder.len()) };
         let (bytes, suffix) = source.split_at(split_at).map_err(|b| SizeError::new(b).into())?;
         // SAFETY: `try_cast_into` validates size and alignment, and returns a
@@ -479,7 +479,7 @@ where
     #[inline]
     pub fn from_bytes_with_elems(source: B, count: usize) -> Result<Ref<B, T>, CastError<B, T>> {
         static_assert_dst_is_not_zst!(T);
-        let expected_len = match count.size_for_metadata(T::LAYOUT) {
+        let expected_len = match T::size_for_metadata(count) {
             Some(len) => len,
             None => return Err(SizeError::new(source).into()),
         };
@@ -533,7 +533,7 @@ where
         count: usize,
     ) -> Result<(Ref<B, T>, B), CastError<B, T>> {
         static_assert_dst_is_not_zst!(T);
-        let expected_len = match count.size_for_metadata(T::LAYOUT) {
+        let expected_len = match T::size_for_metadata(count) {
             Some(len) => len,
             None => return Err(SizeError::new(source).into()),
         };
@@ -579,7 +579,7 @@ where
         count: usize,
     ) -> Result<(B, Ref<B, T>), CastError<B, T>> {
         static_assert_dst_is_not_zst!(T);
-        let expected_len = match count.size_for_metadata(T::LAYOUT) {
+        let expected_len = match T::size_for_metadata(count) {
             Some(len) => len,
             None => return Err(SizeError::new(source).into()),
         };
@@ -588,7 +588,7 @@ where
         } else {
             return Err(SizeError::new(source).into());
         };
-        // SAFETY: The preceeding `source.len().checked_sub(expected_len)`
+        // SAFETY: The preceding `source.len().checked_sub(expected_len)`
         // guarantees that `split_at` is in-bounds.
         let (bytes, suffix) = unsafe { source.split_at_unchecked(split_at) };
         Self::from_bytes(suffix).map(move |l| (bytes, l))
@@ -658,7 +658,7 @@ where
         let ptr = Ptr::from_mut(b.into_byte_slice_mut())
             .try_cast_into_no_leftover::<T, BecauseExclusive>(None)
             .expect("zerocopy internal error: into_ref should be infallible");
-        let ptr = ptr.recall_validity();
+        let ptr = ptr.recall_validity::<_, (_, (_, _))>();
         ptr.as_mut()
     }
 }
@@ -778,7 +778,7 @@ where
 impl<B, T> DerefMut for Ref<B, T>
 where
     B: ByteSliceMut,
-    // TODO(#251): We can't remove `Immutable` here because it's required by
+    // FIXME(#251): We can't remove `Immutable` here because it's required by
     // the impl of `Deref`, which is a super-trait of `DerefMut`. Maybe we can
     // add a separate inherent method for this?
     T: FromBytes + IntoBytes + KnownLayout + Immutable + ?Sized,
@@ -883,7 +883,7 @@ mod tests {
     #[test]
     fn test_mut_slice_into_ref() {
         // Prior to #1260/#1299, calling `into_ref` on a `&mut [u8]`-backed
-        // `Ref` was not supportd.
+        // `Ref` was not supported.
         let mut buf = [0u8];
         let r = Ref::<&mut [u8], u8>::from_bytes(&mut buf).unwrap();
         assert_eq!(Ref::into_ref(r), &0);
