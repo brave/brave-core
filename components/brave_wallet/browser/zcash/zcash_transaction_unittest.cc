@@ -230,7 +230,7 @@ TEST(ZCashTransaction, ShieldedOutputs) {
     EXPECT_EQ(output, OrchardOutput::FromValue(value).value());
   }
 }
-TEST(ZCashTransactionUtilsUnitTest, ValidateTransaction) {
+TEST(ZCashTransactionUtilsUnitTest, ValidateAmounts) {
   // Valid transparent-only transaction
   {
     ZCashTransaction tx;
@@ -249,7 +249,7 @@ TEST(ZCashTransactionUtilsUnitTest, ValidateTransaction) {
     output2.amount = 10000u;
 
     // 30000 (inputs) = 25000 (outputs) + 5000 (fee)
-    EXPECT_TRUE(tx.ValidateTransaction());
+    EXPECT_TRUE(tx.ValidateAmounts());
   }
 
   // Valid transparent-only transaction with single input/output
@@ -264,7 +264,7 @@ TEST(ZCashTransactionUtilsUnitTest, ValidateTransaction) {
     output.amount = 5000u;
 
     // 10000 (input) = 5000 (output) + 5000 (fee)
-    EXPECT_TRUE(tx.ValidateTransaction());
+    EXPECT_TRUE(tx.ValidateAmounts());
   }
 
   // Invalid transparent transaction - inputs < outputs + fee
@@ -279,7 +279,7 @@ TEST(ZCashTransactionUtilsUnitTest, ValidateTransaction) {
     output.amount = 6000u;
 
     // 10000 (input) < 6000 (output) + 5000 (fee) = 11000
-    EXPECT_FALSE(tx.ValidateTransaction());
+    EXPECT_FALSE(tx.ValidateAmounts());
   }
 
   // Invalid transparent transaction - inputs > outputs + fee
@@ -294,7 +294,7 @@ TEST(ZCashTransactionUtilsUnitTest, ValidateTransaction) {
     output.amount = 10000u;
 
     // 20000 (input) > 10000 (output) + 5000 (fee) = 15000
-    EXPECT_FALSE(tx.ValidateTransaction());
+    EXPECT_FALSE(tx.ValidateAmounts());
   }
 
   // Valid transaction with zero fee
@@ -309,7 +309,7 @@ TEST(ZCashTransactionUtilsUnitTest, ValidateTransaction) {
     output.amount = 10000u;
 
     // 10000 (input) = 10000 (output) + 0 (fee)
-    EXPECT_TRUE(tx.ValidateTransaction());
+    EXPECT_TRUE(tx.ValidateAmounts());
   }
 
   // Valid transaction with empty inputs and outputs (zero fee)
@@ -318,7 +318,7 @@ TEST(ZCashTransactionUtilsUnitTest, ValidateTransaction) {
     tx.set_fee(0u);
 
     // 0 (inputs) = 0 (outputs) + 0 (fee)
-    EXPECT_TRUE(tx.ValidateTransaction());
+    EXPECT_TRUE(tx.ValidateAmounts());
   }
 
   // Test with multiple transparent inputs and outputs
@@ -339,7 +339,7 @@ TEST(ZCashTransactionUtilsUnitTest, ValidateTransaction) {
     }
 
     // 50000 (inputs) = 45000 (outputs) + 5000 (fee)
-    EXPECT_TRUE(tx.ValidateTransaction());
+    EXPECT_TRUE(tx.ValidateAmounts());
   }
 
   // Valid orchard-only transaction
@@ -360,7 +360,7 @@ TEST(ZCashTransactionUtilsUnitTest, ValidateTransaction) {
     output2.value = 10000u;
 
     // 30000 (inputs) = 25000 (outputs) + 5000 (fee)
-    EXPECT_TRUE(tx.ValidateTransaction());
+    EXPECT_TRUE(tx.ValidateAmounts());
   }
 
   // Valid mixed transaction (transparent + orchard)
@@ -385,7 +385,7 @@ TEST(ZCashTransactionUtilsUnitTest, ValidateTransaction) {
     o_output.value = 10000u;
 
     // 30000 (inputs) = 25000 (outputs) + 5000 (fee)
-    EXPECT_TRUE(tx.ValidateTransaction());
+    EXPECT_TRUE(tx.ValidateAmounts());
   }
 
   // Invalid mixed transaction - inputs < outputs + fee
@@ -406,7 +406,7 @@ TEST(ZCashTransactionUtilsUnitTest, ValidateTransaction) {
     o_output.value = 6000u;
 
     // 15000 (inputs) < 16000 (outputs) + 5000 (fee) = 21000
-    EXPECT_FALSE(tx.ValidateTransaction());
+    EXPECT_FALSE(tx.ValidateAmounts());
   }
 
   // Invalid mixed transaction - inputs > outputs + fee
@@ -427,7 +427,7 @@ TEST(ZCashTransactionUtilsUnitTest, ValidateTransaction) {
     o_output.value = 5000u;
 
     // 30000 (inputs) > 15000 (outputs) + 5000 (fee) = 20000
-    EXPECT_FALSE(tx.ValidateTransaction());
+    EXPECT_FALSE(tx.ValidateAmounts());
   }
 
   // Valid transaction with multiple orchard inputs and outputs
@@ -448,7 +448,7 @@ TEST(ZCashTransactionUtilsUnitTest, ValidateTransaction) {
     }
 
     // 60000 (inputs) = 50000 (outputs) + 10000 (fee)
-    EXPECT_TRUE(tx.ValidateTransaction());
+    EXPECT_TRUE(tx.ValidateAmounts());
   }
 
   // Valid transaction with orchard inputs and transparent output
@@ -466,7 +466,7 @@ TEST(ZCashTransactionUtilsUnitTest, ValidateTransaction) {
     t_output.amount = 25000u;
 
     // 30000 (inputs) = 25000 (outputs) + 5000 (fee)
-    EXPECT_TRUE(tx.ValidateTransaction());
+    EXPECT_TRUE(tx.ValidateAmounts());
   }
 
   // Test with large amounts
@@ -481,7 +481,7 @@ TEST(ZCashTransactionUtilsUnitTest, ValidateTransaction) {
     output.amount = 9999999000u;
 
     // 10000000000 (input) = 9999999000 (output) + 1000 (fee)
-    EXPECT_TRUE(tx.ValidateTransaction());
+    EXPECT_TRUE(tx.ValidateAmounts());
   }
 }
 

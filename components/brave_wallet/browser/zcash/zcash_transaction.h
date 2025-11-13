@@ -163,7 +163,7 @@ class ZCashTransaction {
     consensus_brach_id_ = consensus_brach_id;
   }
 
-  bool ValidateTransaction();
+  bool ValidateAmounts();
 
  private:
   TransparentPart transparent_part_;
