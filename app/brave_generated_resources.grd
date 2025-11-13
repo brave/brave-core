@@ -1464,6 +1464,11 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         Enable
       </message>
 
+      <!-- Brave policy -->
+      <message name="IDS_BRAVE_CONTROLLED_SETTING_POLICY" desc="Text displayed in the controlled settings bubble when a setting's value is managed by policy.">
+        This setting is managed by your administrator or by another Brave policy.
+      </message>
+
       <!--Customize Chrome Panel -->
       <message name="IDS_BRAVE_CUSTOMIZE_MENU_TOOLBAR_LABEL" desc="The label for the option to customize toolbar icons in the customization menu on the New Tab Page. This is a button which opens a panel for customizing toolbar icons when clicked.">
         Customize toolbar
