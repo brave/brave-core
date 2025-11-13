@@ -11,10 +11,14 @@ import Icon from '@brave/leo/react/icon'
 import classnames from '$web-common/classnames'
 import * as Mojom from '../../../common/mojom'
 import { getLocale } from '$web-common/locale'
-import { AUTOMATIC_MODEL_KEY } from '../../../common/constants'
+import {
+  AUTOMATIC_MODEL_KEY,
+  NEAR_AI_LEARN_MORE_URL,
+} from '../../../common/constants'
 import { useAIChat } from '../../state/ai_chat_context'
 import { useConversation } from '../../state/conversation_context'
 import { ModelMenuItem } from '../model_menu_item/model_menu_item'
+import { NearIcon } from '../near_label/near_label'
 import styles from './style.module.scss'
 
 export function ModelSelector() {
@@ -101,6 +105,10 @@ export function ModelSelector() {
     [conversationContext.allModels],
   )
 
+  const onClickLearnMore = React.useCallback(() => {
+    aiChatContext.uiHandler?.openURL({ url: NEAR_AI_LEARN_MORE_URL })
+  }, [aiChatContext.uiHandler])
+
   return (
     <ButtonMenu
       className={styles.buttonMenu}
@@ -124,14 +132,17 @@ export function ModelSelector() {
           <span className={styles.anchorButtonText}>
             {conversationContext.currentModel?.displayName ?? ''}
           </span>
-          <Icon
-            name='carat-down'
-            slot='icon-after'
-            className={classnames({
-              [styles.anchorButtonIcon]: true,
-              [styles.anchorButtonIconOpen]: isOpen,
-            })}
-          />
+          <div className={styles.icons}>
+            {conversationContext.currentModel?.isNearModel && <NearIcon />}
+            <Icon
+              name='carat-down'
+              slot='icon-after'
+              className={classnames({
+                [styles.anchorButtonIcon]: true,
+                [styles.anchorButtonIconOpen]: isOpen,
+              })}
+            />
+          </div>
         </div>
       </Button>
 
@@ -158,6 +169,7 @@ export function ModelSelector() {
             showPremiumLabel={!aiChatContext.isPremiumUser}
             showDetails={true}
             onClick={() => conversationContext.setCurrentModel(model)}
+            onClickLearnMore={onClickLearnMore}
           />
         )
       })}
@@ -172,6 +184,7 @@ export function ModelSelector() {
               showPremiumLabel={!aiChatContext.isPremiumUser}
               showDetails={true}
               onClick={() => conversationContext.setCurrentModel(model)}
+              onClickLearnMore={onClickLearnMore}
             />
           )
         })}

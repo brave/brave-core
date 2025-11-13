@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 import * as Mojom from '../../../common/mojom'
-import { render, act } from '@testing-library/react'
+import { render, act, within } from '@testing-library/react'
 import { ModelSelector } from '.'
 import '@testing-library/jest-dom'
 import { useAIChat } from '../../state/ai_chat_context'
@@ -67,7 +67,7 @@ describe('ModelSelector', () => {
       key: 'chat-premium',
       displayName: 'Premium Model',
       isSuggestedModel: true,
-      isNearModel: false,
+      isNearModel: true,
       supportsTools: true,
       options: {
         leoModelOptions: {
@@ -310,4 +310,28 @@ describe('ModelSelector', () => {
       expect(alert).toHaveTextContent('CHAT_UI_AGENT_MODE_MODEL_INFO')
     },
   )
+  it('should display near icon for near models', async () => {
+    render(<ModelSelector />)
+
+    // Make sure the anchor button is visible
+    const anchorButton = getAnchorButton()
+    expect(anchorButton).toHaveTextContent('Basic Model')
+
+    // Make sure the menu is visible
+    const menu = getMenu()
+    expect(menu).toHaveAttribute('isOpen', 'false')
+    await act(async () => {
+      anchorButton?.shadowRoot?.querySelector('button')?.click()
+    })
+    expect(menu).toHaveAttribute('isOpen', 'true')
+
+    // Make sure the default menu items are visible
+    const menuItems = document.querySelectorAll<HTMLElement>('leo-menu-item')
+    expect(menuItems[2]).toHaveTextContent('Premium Model')
+
+    // Check that the near icon is present in the Premium Model menu item
+    const premiumMenuItem = within(menuItems[2])
+    const nearIcon = premiumMenuItem.getByRole('img')
+    expect(nearIcon).toHaveClass('nearIcon')
+  })
 })

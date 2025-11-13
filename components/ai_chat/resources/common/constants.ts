@@ -23,3 +23,5 @@ export function getModelIcon(modelKey: string): string {
 }
 
 export const AUTOMATIC_MODEL_KEY = 'chat-automatic'
+
+export const NEAR_AI_LEARN_MORE_URL = 'https://docs.near.ai/private-ml-sdk/'
