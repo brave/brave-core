@@ -139,6 +139,9 @@
 /* Placeholder text for adding or editing a bookmark */
 "BookmarkUrlPlaceholderText" = "पता";
 
+/* Title for the Brave Account section in settings */
+"BraveAccount" = "Brave अकाउंट";
+
 /* Button to show the brave panel */
 "BravePanel" = "Brave पैनल";
 
@@ -264,36 +267,6 @@
 
 /* Title for Bottom Bar Callout View */
 "callout.bottomBarCalloutTitle" = "Brave टैब्स बार कस्टमाइज़ करें";
-
-/* Description - Description used for main button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutButtonDescription" = "Brave को अपने डिफ़ॉल्ट ब्राउज़र के तौर पर सेट करें?";
-
-/* Subtitle - Description for Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutDescription" = "जब Brave डिफ़ॉल्ट के तौर पर सेट होता है, तो आप जिस भी लिंक को खोलते हैं, वह Brave की प्राइवेसी सुरक्षा की सुविधा के साथ खुलता है.";
-
-/* Title for main button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutPrimaryButtonTitle" = "डिफ़ॉल्ट के तौर पर सेट करें";
-
-/* Description for secondary button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutSecondaryButtonDescription" = "पहले से डिफ़ॉल्ट है?";
-
-/* Title for secondary button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutSecondaryButtonTitle" = "इसे छोड़ें";
-
-/* Title for Default Browser Full Screen Callout */
-"callout.defaultBrowserTitle" = "प्राइवेसी। आसान हो गई है।";
-
-/* Subtitle - Description for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutDescription" = "इससे हमें यह जानने में मदद मिलती है कि कौनसी Brave सुविधाओं का सबसे ज़्यादा इस्तेमाल किया जाता है। Brave Shields और दूसरी प्राइवेसी सेटिंग्स में जाकर Brave सेटिंग्स में कभी भी बदलें।";
-
-/* Title for the link that navigates to a webpage showing information about p3a (Privacy Preserving Analytics) */
-"callout.p3aCalloutLinkTitle" = "हमारे प्राइवेसी संरक्षण प्रोडक्ट अनलिटिक्स (P3A) के बारे में ज़्यादा जानें।";
-
-/* Title for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutTitle" = "Brave को बेहतर बनाने में मदद करें.";
-
-/* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutToggleTitle" = "प्राइवेसी और अनाम प्रोडक्ट की इनसाइट्स शेयर करें।";
 
 /* Subtitle - Description for Privacy Everywhere Full Screen Callout */
 "callout.privacyEverywhereCalloutDescription" = "अपने कंप्यूटर या टैबलेट पर Brave प्राइवेसी पाएँ और डिवाइसों के बीच बुकमार्क & एक्सटेंशन सिंक करें।";
@@ -588,9 +561,6 @@
 
 /* The success message that appears after a user sucessfully adds a new search engine */
 "custonmSearchEngine.thirdPartySearchEngineAddedToastTitle" = "सर्च इंजन जोड़ा गया!";
-
-/* Button text to close the default browser popup. */
-"defaultBrowserCallout.introCancelButtonText" = "अभी नहीं";
 
 /* Button text to open app settings */
 "defaultBrowserCallout.introOpenSettingsButtonText" = "सेटिंग खोलें";
@@ -1201,18 +1171,6 @@
 /* Button to show Brave Rewards. */
 "OBTurnOnButton" = "शुरू करें";
 
-/* The description text shown when there is big tech tracker among trackers. Example usage: Google, Amazon and 32 other trackers blocked */
-"onboarding.blockedAdsOnboardingBigTechInformationText" = "%1$@ और %2$lld और ऐड & ट्रैकर्स ब्लॉक किए गए";
-
-/* The footnote indicating what Brave shields is blocking */
-"onboarding.blockedAdsOnboardingFootnoteText" = "वह सभी बेकार चीजें देखें, जो Brave ने हर पेज पर शील्ड के ज़रिए ब्लॉक की हैं.";
-
-/* The text describing user where they should press in order to open Shield panel */
-"onboarding.blockedAdsOnboardingInstructionsText" = "Brave शील्ड देखने के लिए टैप करें";
-
-/* The description text shown when there is no big tech tracker among trackers. Example usage: 31 Ads & trackers blocked. The number here is presented separately so it is not in translation. */
-"onboarding.blockedAdsOnboardingNoBigTechInformationText" = "विज्ञापन और ट्रैकर ब्लॉक किए गए";
-
 /* Button text to let users know they can use the vpn on all their devices */
 "onboarding.linkReceiptButton" = "अपनी VPN की सदस्यता को लिंक करें";
 
@@ -1222,12 +1180,6 @@
 /* Popup title to let users know they can use the vpn on all their devices */
 "onboarding.linkReceiptTitle" = "अपनी Brave Firewall + VPN की सुरक्षा को बढ़ाएँ";
 
-/* Description for Navigate Settings Screen in Onboarding. This part indicating navigation ('Default Browser App') should match the option in iPhone Settings in that Language. */
-"onboarding.navigateSettingsOnboardingScreenDescription" = "'डिफ़ॉल्ट ब्राउज़र ऐप' ढूँढें";
-
-/* Title for Navigate Settings Screen in Onboarding */
-"onboarding.navigateSettingsOnboardingScreenTitle" = "आपको सेटिंग पर ले जाया जा रहा है...";
-
 /* Description for the NTP pop-over that describes the tracking information on NTP */
 "onboarding.ntpOnboardingPopOverTrackerDescription" = "ट्रैकर्स & ऐड्स को ब्लॉक करके, वेबसाइटें कम डेटा इस्तेमाल करती हैं और जल्दी लोड होती हैं।";
 
@@ -1236,9 +1188,6 @@
 
 /* Title for the Omnibox (URL Bar) pop-over that describes faster load times. */
 "onboarding.omniboxOnboardingPopOverTitle" = "किसी वेबसाइट का नाम या URL टाइप करें";
-
-/* Title for Welcome Screen in Onboarding */
-"onboarding.welcomeScreenTitle" = "Brave में आपका स्वागत है";
 
 /* Continue button to navigate to next onboarding screen. */
 "OnboardingContinueButton" = "जारी रखें";
@@ -1390,7 +1339,7 @@
 /* Title of the alert when a calendar event is available for download */
 "OpenTextCalendarAlertTitle" = "कैलेंडर इवेंट उपलब्ध है";
 
-/* Button title to that opens a website. */
+/* Button title to open a website. */
 "OpenWebsite" = "वेबसाइट खोलें";
 
 /* Brave News Item Menu title */
@@ -1413,9 +1362,6 @@
 
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
 "p3a.settingTitle" = "गोपनीयता-संरक्षण प्रोडक्ट एनालिटिक्स की अनुमति दें (P3A)";
-
-/* No comment provided by engineer. */
-"p3aCalloutCloseAccessibilityLabel" = "गोपनीयता संरक्षण प्रोडक्ट कॉलआउट बंद करें";
 
 /* No comment provided by engineer. */
 "pageSecurityView.pageNotFullySecureTitle" = "इस साइट से आपका कनेक्शन पूरी तरह सुरक्षित नहीं है।";
@@ -1573,8 +1519,11 @@
 /* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
 "playlist.playlistAutoSaveSettingsTitle" = "ऑफ़लाइन प्लेबैक के लिए कॉन्टेंट सेव करें";
 
+/* The title of the button for the user to proceed adding playlist item when the user's disk space is almost full */
+"playlist.playlistDiskSpaceAddAnywayButtonTitle" = "वैसे भी जोड़ें";
+
 /* When the user's disk space is almost full */
-"playlist.playlistDiskSpaceWarningMessage" = "ऑफ़लाइन इस्तेमाल के लिए वीडियो और ऑडियो फ़ाइलें जोड़ने से, आपके डिवाइस की बहुत सारी स्टोरेज इस्तेमाल हो सकती है। स्टोरेज स्पेस खाली करने के लिए कुछ फ़ाइलें हटाएँ।";
+"playlist.playlistDiskSpaceWarningMessage" = "आपके device पर स्पेस कम है। इस वीडियो को प्लेलिस्ट में जोड़ने से डाउनलोड विफल हो सकते हैं या अन्य डाउनलोड प्रभावित हो सकते हैं।";
 
 /* When the user's disk space is almost full */
 "playlist.playlistDiskSpaceWarningTitle" = "स्टोरेज लगभग पूरी भरी है";
@@ -2005,9 +1954,8 @@
 /* A label for a text entry field where the user can provide additional details for a web-compatibility report */
 "reportBrokenAdditionalDetailsRequired" = "अतिरिक्त विवरण";
 
-/* A label for a drop down where the user provides a category for a web-compatibility report
-A placeholder for a drop down where the user provides a category for a web-compatibility report */
-"reportBrokenCategory" = "एक विकल्प चुनें";
+/* A label for a drop down where the user provides a category for a web-compatibility report */
+"reportBrokenCategory" = "आपको कौनसी मुख्य समस्या दिख रही है?";
 
 /* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
 "ReportBrokenContactMe" = "मुझसे संपर्क करें: (वैकल्पिक)";
@@ -2017,6 +1965,9 @@ A placeholder for a drop down where the user provides a category for a web-compa
 
 /* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
 "ReportBrokenContactMeSuggestions" = "ईमेल, Twitter, वगैरह.";
+
+/* A placeholder for a drop down where the user provides a category for a web-compatibility report */
+"ReportBrokenPlaceholder" = "एक विकल्प चुनें";
 
 /* First part of the report a broken site copy. After the colon is a new line and then a website address */
 "ReportBrokenSiteBody1" = "Brave डेवलपर्स को बताएँ कि यह साइट उम्मीद के मुताबिक काम नहीं कर रही है:";
@@ -3089,8 +3040,14 @@ A placeholder for a drop down where the user provides a category for a web-compa
 /* A button title which when tapped will close all of the open tabs for the user */
 "tabGrid.closeAllTabsButtonTitle" = "सभी टैब बंद करें";
 
-/* Accessibility label for a close button that when tapped closes the associated tab */
+/* Label for a close button that when tapped closes the associated tab */
 "tabGrid.closeTab" = "टैब बंद करें";
+
+/* Label for a close button that when tapped closes the associated tabs */
+"tabGrid.closeTabs" = "टैब बंद करें";
+
+/* A button title which when tapped will allow the user to deselect multiple tabs in the tab grid */
+"tabGrid.deselectTabsButtonTitle" = "सभी चुने हुए को हटाएँ";
 
 /* A button title which when tapped will display a menu with more options */
 "tabGrid.moreMenuButtonTitle" = "अधिक";
@@ -3125,11 +3082,20 @@ A placeholder for a drop down where the user provides a category for a web-compa
 /* Accessibility label for the regular browsing option in the browsing mode picker */
 "tabGrid.regularBrowsingModeAccessibilityLabel" = "सामान्य ब्राउज़िंग";
 
+/* A text label showing how many tabs the user has currently selected in edit mode. It is shown next to the number of selected tabs e.g. "Selected tabs: 4" */
+"tabGrid.selectedTabs" = "चुने हुए टैब";
+
+/* A button title which when tapped will allow the user to select multiple tabs in the tab grid */
+"tabGrid.selectTabsButtonTitle" = "टैब  को चुनें";
+
 /* A button title that when tapped allows users to shred all of their tabs */
 "tabGrid.shredAllTabsButtonTitle" = "सभी टैब्स श्रेड करें";
 
 /* A button title that when tapped allows users to shred the currently selected tab */
 "tabGrid.shredSelectedTabButtonTitle" = "चुने गए टैब्स श्रेड करें";
+
+/* A button title that when tapped allows users to shred the currently selected tabs */
+"tabGrid.shredSelectedTabsButtonTitle" = "श्रेड";
 
 /* Accessibility label for a button that allows users to shred their tabs (erase them & associated data) */
 "tabGrid.shredTabsAccessibilityLabel" = "टैब्स श्रेड करें";

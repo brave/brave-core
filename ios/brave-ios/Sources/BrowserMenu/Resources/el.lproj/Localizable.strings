@@ -59,7 +59,7 @@
 "BrowserMenu.showAllButtonTitle" = "Εμφάνιση όλων…";
 
 /* A title shown above the list of actions that are visible on the menu. */
-"BrowserMenu.visibleActionsTitle" = "Όλες οι ενέργειες";
+"BrowserMenu.visibleActionsTitle" = "Κύρια δίκτυα";
 
 /* A title on a button that lets the user switch the active VPN's selected region. */
 "BrowserMenu.vpnButtonTitle" = "VPN";

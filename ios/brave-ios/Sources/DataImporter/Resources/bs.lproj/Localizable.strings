@@ -20,7 +20,7 @@
 "importDataFileSelectorMessage" = "Donesite svoje knjižne oznake, povijest i ostale podatke iz preglednika u Brave.";
 
 /* The title of the main screen that lets the user import data. The title is shown in the navigation bar. */
-"importDataFileSelectorNavigationTitle" = "Uvezite podatke o pregledavanju";
+"importDataFileSelectorNavigationTitle" = "Uvezi podatke o pregledavanju";
 
 /* The title of a Text on screen that explains to the user what type of data can be imported. */
 "importDataFileSelectorTitle" = "Uvezite knjižne oznake i još više toga";
@@ -65,7 +65,7 @@
 "importTutorialDetailedProcessTitle" = "Želite detaljan postupak izvoza?";
 
 /* The title of the tutorial page that shows in the Navigation Bar. */
-"importTutorialScreenTitle" = "Kako izvesti podatke iz Safarija";
+"importTutorialScreenTitle" = "Kako izvesti iz Safarija";
 
 /* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
 "importTutorialStepFiveTitle" = "Spremite datoteku u **Datoteke**, odaberite lokaciju koju ćete kasnije lako pronaći.";

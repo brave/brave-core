@@ -196,11 +196,14 @@
 /* An option setting for automatically shredding when the site is closed */
 "ShredOnSiteTabsClosed" = "사이트 탭이 닫혔을 때";
 
+/* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'. */
+"ShredSiteAllTabsConfirmationMessage" = "파쇄하면 이 사이트에 열린 모든 탭이 닫히고 모든 사이트 데이터가 삭제됩니다. 번복할 수 없습니다.";
+
 /* A list row label for accessing the shred settings screen */
 "ShredSiteData" = "사이트 데이터 파쇄";
 
-/* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'.
-A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'.
+A message for a confirmation window that appears when a user clicks on 'Shred' with multiple tabs selected. */
 "ShredSiteDataConfirmationMessage" = "파쇄하면 이 사이트에 열린 모든 탭이 닫히고 모든 사이트 데이터가 삭제됩니다. 번복할 수 없습니다.";
 
 /* A title for a confirmation window that appears when a user clicks on 'Shred Data' */

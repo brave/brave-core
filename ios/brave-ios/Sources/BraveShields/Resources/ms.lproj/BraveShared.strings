@@ -196,11 +196,14 @@
 /* An option setting for automatically shredding when the site is closed */
 "ShredOnSiteTabsClosed" = "Tab Laman Ditutup";
 
+/* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'. */
+"ShredSiteAllTabsConfirmationMessage" = "Penghapusan akan menutup semua tab, dan memadamkan semua data laman. Tindakan ini tidak boleh dibuat asal.";
+
 /* A list row label for accessing the shred settings screen */
 "ShredSiteData" = "Hapuskan Data Laman";
 
-/* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'.
-A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'.
+A message for a confirmation window that appears when a user clicks on 'Shred' with multiple tabs selected. */
 "ShredSiteDataConfirmationMessage" = "Penghapusan akan menutup semua tab yang dibuka pada laman ini dan memadamkan semua data laman. Tindakan ini tidak boleh dibuat asal.";
 
 /* A title for a confirmation window that appears when a user clicks on 'Shred Data' */

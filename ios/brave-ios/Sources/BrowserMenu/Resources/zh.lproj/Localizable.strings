@@ -59,7 +59,7 @@
 "BrowserMenu.showAllButtonTitle" = "显示全部…";
 
 /* A title shown above the list of actions that are visible on the menu. */
-"BrowserMenu.visibleActionsTitle" = "所有操作";
+"BrowserMenu.visibleActionsTitle" = "主要操作";
 
 /* A title on a button that lets the user switch the active VPN's selected region. */
 "BrowserMenu.vpnButtonTitle" = "VPN";

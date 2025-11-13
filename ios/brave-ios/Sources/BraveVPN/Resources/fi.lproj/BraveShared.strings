@@ -17,7 +17,7 @@
 "vpn.autoRenewSoonExpireTitle" = "Voi ei! Brave VPN -tilauksesi on vanhentumassa.";
 
 /* Title for screen to buy the VPN. */
-"vpn.buyVPNTitle" = "Brave-palomuuri ja -VPN";
+"vpn.buyVPNTitle" = "Brave VPN";
 
 /* Message for an alert when the VPN can't get prices from the App Store */
 "vpn.errorCantGetPricesBody" = "Yhteyden muodostus App Storeen ei onnistunut. Yritä uudelleen muutaman minuutin kuluttua.";

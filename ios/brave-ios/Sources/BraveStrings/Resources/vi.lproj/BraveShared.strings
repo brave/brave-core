@@ -139,6 +139,9 @@
 /* Placeholder text for adding or editing a bookmark */
 "BookmarkUrlPlaceholderText" = "Địa chỉ";
 
+/* Title for the Brave Account section in settings */
+"BraveAccount" = "Tài khoản Brave";
+
 /* Button to show the brave panel */
 "BravePanel" = "Bảng điều khiển Brave";
 
@@ -264,36 +267,6 @@
 
 /* Title for Bottom Bar Callout View */
 "callout.bottomBarCalloutTitle" = "Tùy chỉnh thanh thẻ của Brave";
-
-/* Description - Description used for main button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutButtonDescription" = "Đặt Brave làm trình duyệt mặc định?";
-
-/* Subtitle - Description for Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutDescription" = "Với việc đặt Brave làm mặc định, mọi liên kết bạn chạm vào sẽ mở ra với các biện pháp bảo vệ quyền riêng tư của Brave.";
-
-/* Title for main button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutPrimaryButtonTitle" = "Đặt mặc định";
-
-/* Description for secondary button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutSecondaryButtonDescription" = "Hiện là mặc định?";
-
-/* Title for secondary button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutSecondaryButtonTitle" = "Bỏ qua";
-
-/* Title for Default Browser Full Screen Callout */
-"callout.defaultBrowserTitle" = "Quyền riêng tư. Đơn giản.";
-
-/* Subtitle - Description for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutDescription" = "Điều này giúp chúng tôi biết được những tính năng nào của Brave được sử dụng thường xuyên nhất. Thay đổi bất kỳ lúc nào trong Cài đặt Brave, ở phần \"Lá chắn Brave và Quyền riêng tư\". ";
-
-/* Title for the link that navigates to a webpage showing information about p3a (Privacy Preserving Analytics) */
-"callout.p3aCalloutLinkTitle" = "Tìm hiểu thêm về Phân tích Sản phẩm bảo vệ quyền riêng tư (P3A) của chúng tôi.";
-
-/* Title for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutTitle" = "Giúp cải thiện Brave.";
-
-/* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutToggleTitle" = "Chia sẻ thông tin chi tiết về sản phẩm riêng tư và ẩn danh.";
 
 /* Subtitle - Description for Privacy Everywhere Full Screen Callout */
 "callout.privacyEverywhereCalloutDescription" = "Trải nghiệm sự riêng tư Brave mang lại trên máy tính hoặc máy tính bảng của bạn, và đồng bộ hóa dấu trang & tiện ích giữa các thiết bị.";
@@ -588,9 +561,6 @@
 
 /* The success message that appears after a user sucessfully adds a new search engine */
 "custonmSearchEngine.thirdPartySearchEngineAddedToastTitle" = "Đã thêm công cụ tìm kiếm!";
-
-/* Button text to close the default browser popup. */
-"defaultBrowserCallout.introCancelButtonText" = "Không phải Bây giờ";
 
 /* Button text to open app settings */
 "defaultBrowserCallout.introOpenSettingsButtonText" = "Mở Cài đặt";
@@ -1201,18 +1171,6 @@
 /* Button to show Brave Rewards. */
 "OBTurnOnButton" = "Bắt đầu";
 
-/* The description text shown when there is big tech tracker among trackers. Example usage: Google, Amazon and 32 other trackers blocked */
-"onboarding.blockedAdsOnboardingBigTechInformationText" = "%1$@ và %2$lld quảng cáo & trình theo dõi khác đã bị chặn";
-
-/* The footnote indicating what Brave shields is blocking */
-"onboarding.blockedAdsOnboardingFootnoteText" = "Xem tất cả nội dung xấu mà Brave đã chặn, trên mọi trang, với Lá chắn.";
-
-/* The text describing user where they should press in order to open Shield panel */
-"onboarding.blockedAdsOnboardingInstructionsText" = "Chạm để xem Lá chắn Brave";
-
-/* The description text shown when there is no big tech tracker among trackers. Example usage: 31 Ads & trackers blocked. The number here is presented separately so it is not in translation. */
-"onboarding.blockedAdsOnboardingNoBigTechInformationText" = "Quảng cáo & trình theo dõi bị chặn";
-
 /* Button text to let users know they can use the vpn on all their devices */
 "onboarding.linkReceiptButton" = "Liên kết gói đăng ký VPN của bạn";
 
@@ -1222,12 +1180,6 @@
 /* Popup title to let users know they can use the vpn on all their devices */
 "onboarding.linkReceiptTitle" = "Mở rộng bảo vệ Tường lửa Brave + VPN của bạn";
 
-/* Description for Navigate Settings Screen in Onboarding. This part indicating navigation ('Default Browser App') should match the option in iPhone Settings in that Language. */
-"onboarding.navigateSettingsOnboardingScreenDescription" = "Tìm \"Ứng dụng trình duyệt mặc định\"";
-
-/* Title for Navigate Settings Screen in Onboarding */
-"onboarding.navigateSettingsOnboardingScreenTitle" = "Đang đưa bạn đến mục Cài đặt...";
-
 /* Description for the NTP pop-over that describes the tracking information on NTP */
 "onboarding.ntpOnboardingPopOverTrackerDescription" = "Khi chặn trình theo dõi & quảng cáo, các trang web sử dụng ít dữ liệu hơn và tải nhanh hơn nhiều.";
 
@@ -1236,9 +1188,6 @@
 
 /* Title for the Omnibox (URL Bar) pop-over that describes faster load times. */
 "onboarding.omniboxOnboardingPopOverTitle" = "Nhập tên trang web hoặc URL";
-
-/* Title for Welcome Screen in Onboarding */
-"onboarding.welcomeScreenTitle" = "Chào mứng tới Brave";
 
 /* Continue button to navigate to next onboarding screen. */
 "OnboardingContinueButton" = "Tiếp tục";
@@ -1390,7 +1339,7 @@
 /* Title of the alert when a calendar event is available for download */
 "OpenTextCalendarAlertTitle" = "Sự kiện lịch có sẵn";
 
-/* Button title to that opens a website. */
+/* Button title to open a website. */
 "OpenWebsite" = "Mở trang web";
 
 /* Brave News Item Menu title */
@@ -1413,9 +1362,6 @@
 
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
 "p3a.settingTitle" = "Cho phép Phân tích Sản phẩm bảo vệ quyền riêng tư (P3A)";
-
-/* No comment provided by engineer. */
-"p3aCalloutCloseAccessibilityLabel" = "Đóng Hộp thông tin về Sản phẩm bảo vệ quyền riêng tư";
 
 /* No comment provided by engineer. */
 "pageSecurityView.pageNotFullySecureTitle" = "Kết nối của bạn đến trang web này không hoàn toản bảo mật.";
@@ -1573,8 +1519,11 @@
 /* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
 "playlist.playlistAutoSaveSettingsTitle" = "Lưu nội dung để phát ngoại tuyến";
 
+/* The title of the button for the user to proceed adding playlist item when the user's disk space is almost full */
+"playlist.playlistDiskSpaceAddAnywayButtonTitle" = "Vẫn thêm";
+
 /* When the user's disk space is almost full */
-"playlist.playlistDiskSpaceWarningMessage" = "Việc thêm tệp video và âm thanh để sử dụng ngoại tuyến có thể chiếm nhiều dung lượng lưu trữ trên thiết bị của bạn. Vui lòng xóa một số tệp để giải phóng dung lượng lưu trữ.";
+"playlist.playlistDiskSpaceWarningMessage" = "Thiết bị của bạn hết dung lượng. Thêm video này vào Danh sách phát có thể thất bại hoặc ảnh hưởng đến các lần tải khác.";
 
 /* When the user's disk space is almost full */
 "playlist.playlistDiskSpaceWarningTitle" = "Sắp đầy dung lượng lưu trữ";
@@ -2005,9 +1954,8 @@
 /* A label for a text entry field where the user can provide additional details for a web-compatibility report */
 "reportBrokenAdditionalDetailsRequired" = "Thông tin khác";
 
-/* A label for a drop down where the user provides a category for a web-compatibility report
-A placeholder for a drop down where the user provides a category for a web-compatibility report */
-"reportBrokenCategory" = "Chọn một tùy chọn";
+/* A label for a drop down where the user provides a category for a web-compatibility report */
+"reportBrokenCategory" = "Vấn đề chính bạn gặp phải là gì?";
 
 /* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
 "ReportBrokenContactMe" = "Liên hệ với tôi tại: (tùy chọn)";
@@ -2017,6 +1965,9 @@ A placeholder for a drop down where the user provides a category for a web-compa
 
 /* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
 "ReportBrokenContactMeSuggestions" = "Email, Twitter, v.v.";
+
+/* A placeholder for a drop down where the user provides a category for a web-compatibility report */
+"ReportBrokenPlaceholder" = "Chọn một tùy chọn";
 
 /* First part of the report a broken site copy. After the colon is a new line and then a website address */
 "ReportBrokenSiteBody1" = "Hãy cho các nhà phát triển của Brave biết trang web này không hoạt động như mong đợi:";
@@ -3089,8 +3040,14 @@ A placeholder for a drop down where the user provides a category for a web-compa
 /* A button title which when tapped will close all of the open tabs for the user */
 "tabGrid.closeAllTabsButtonTitle" = "Đóng tất cả thẻ";
 
-/* Accessibility label for a close button that when tapped closes the associated tab */
+/* Label for a close button that when tapped closes the associated tab */
 "tabGrid.closeTab" = "Đóng thẻ";
+
+/* Label for a close button that when tapped closes the associated tabs */
+"tabGrid.closeTabs" = "Đóng thẻ";
+
+/* A button title which when tapped will allow the user to deselect multiple tabs in the tab grid */
+"tabGrid.deselectTabsButtonTitle" = "Bỏ chọn tất cả";
 
 /* A button title which when tapped will display a menu with more options */
 "tabGrid.moreMenuButtonTitle" = "Thêm";
@@ -3125,11 +3082,20 @@ A placeholder for a drop down where the user provides a category for a web-compa
 /* Accessibility label for the regular browsing option in the browsing mode picker */
 "tabGrid.regularBrowsingModeAccessibilityLabel" = "Duyệt thông thường";
 
+/* A text label showing how many tabs the user has currently selected in edit mode. It is shown next to the number of selected tabs e.g. "Selected tabs: 4" */
+"tabGrid.selectedTabs" = "Các tab đã chọn";
+
+/* A button title which when tapped will allow the user to select multiple tabs in the tab grid */
+"tabGrid.selectTabsButtonTitle" = "Chọn tab";
+
 /* A button title that when tapped allows users to shred all of their tabs */
 "tabGrid.shredAllTabsButtonTitle" = "Xóa dữ liệu tất cả thẻ";
 
 /* A button title that when tapped allows users to shred the currently selected tab */
 "tabGrid.shredSelectedTabButtonTitle" = "Xóa dữ liệu thẻ đã chọn";
+
+/* A button title that when tapped allows users to shred the currently selected tabs */
+"tabGrid.shredSelectedTabsButtonTitle" = "Hủy";
 
 /* Accessibility label for a button that allows users to shred their tabs (erase them & associated data) */
 "tabGrid.shredTabsAccessibilityLabel" = "Xóa dữ liệu thẻ";

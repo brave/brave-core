@@ -95,7 +95,7 @@
 "loadingTitle" = "Importation de vos données…";
 
 /* The message shown on the import data screen when there are multiple profiles such as Personal, Work, School, etc. */
-"multipleProfilesMessage" = "Choisissez le profil pour lequel vous souhaitez importer les données";
+"multipleProfilesMessage" = "Choisissez le profil depuis lequel vous souhaitez importer les données";
 
 /* The title shown on the import data screen when there are multiple browser profiles such as Personal, Work, School, etc. */
 "multipleProfilesTitle" = "Plusieurs profils détectés";

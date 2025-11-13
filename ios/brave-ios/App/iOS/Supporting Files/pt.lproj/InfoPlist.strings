@@ -14,13 +14,13 @@
 "NSLocationWhenInUseUsageDescription" = "Os sites que você visitar poderão solicitar sua localização.";
 
 /* Privacy - Microphone Usage Description */
-"NSMicrophoneUsageDescription" = "Assim o Brave pode enviar consultas de pesquisa usando sua voz.";
+"NSMicrophoneUsageDescription" = "Isto permite que o Brave pesquise utilizando a sua voz.";
 
 /* Privacy - Photo Library Additions Usage Description */
 "NSPhotoLibraryAddUsageDescription" = "Isso permite que você salve fotos.";
 
 /* Privacy - Speech Recognition Usage Description */
-"NSSpeechRecognitionUsageDescription" = "Esta autorização é utilizada para ativar o Reconhecimento por voz avançado da Apple. Se não for ativado \"no dispositivo\" o reconhecimento será utilizado e as pesquisas serão totalmente privadas. O Brave não guarda nem compartilha suas pesquisas de voz.";
+"NSSpeechRecognitionUsageDescription" = "Esta autorização é utilizada para ativar o Reconhecimento por voz avançado da Apple. Se não for ativado \"no dispositivo\" o reconhecimento será utilizado e as pesquisas serão totalmente privadas. A brave não guarda nem partilha as suas pesquisas de voz.";
 
 /* No comment provided by engineer. */
 "OPML File" = "Arquivo OPML";

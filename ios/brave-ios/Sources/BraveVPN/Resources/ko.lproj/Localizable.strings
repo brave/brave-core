@@ -101,7 +101,7 @@
 "vpn.contactFormTimezone" = "iOS 시간대";
 
 /* Title for contact form email. */
-"vpn.contactFormTitle" = "Brave Firewall + VPN 문제";
+"vpn.contactFormTitle" = "Brave VPN 문제";
 
 /* Button text to enable Brave VPN */
 "vpn.enableButton" = "사용";
@@ -296,7 +296,7 @@
 "vpn.vpnBackgroundNotificationBody" = "Brave는 백그라운드에서도 계속 사용자를 보호해줍니다.";
 
 /* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationTitle" = "Brave Firewall + VPN 켜짐";
+"vpn.vpnBackgroundNotificationTitle" = "Brave VPN이 켜짐";
 
 /* Text for description of list item which chooses the optimal server for the country region */
 "vpn.vpnCityRegionOptimalDescription" = "가능한 최적의 서버 사용";
@@ -311,7 +311,7 @@
 "vpn.vpnConfigGenericErrorTitle" = "오류";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "Brave Firewall + VPN이 동작하려면 디바이스에 VPN 프로필이 설치되어 있어야 합니다.";
+"vpn.vpnConfigPermissionDeniedErrorBody" = "Brave VPN이 동작하려면 디바이스에 VPN 프로필이 설치되어 있어야 합니다.";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
 "vpn.vpnConfigPermissionDeniedErrorTitle" = "권한 거부됨";
@@ -341,7 +341,7 @@
 "vpn.vpnRegionChangedTitle" = "VPN 리전 변경됨";
 
 /* Message for alert to reset vpn configuration */
-"vpn.vpnResetAlertBody" = "Brave Firewall + VPN 구성이 재설정되고 모든 오류가 정정됩니다. 이 프로세스는 1분 정도 소요됩니다.";
+"vpn.vpnResetAlertBody" = "Brave VPN 구성이 재설정되고 모든 오류가 정정됩니다. 이 프로세스는 1분 정도 소요됩니다.";
 
 /* Title for alert to reset vpn configuration */
 "vpn.vpnResetAlertTitle" = "구성 재설정";

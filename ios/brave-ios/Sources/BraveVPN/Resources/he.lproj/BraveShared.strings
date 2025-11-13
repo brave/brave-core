@@ -17,7 +17,7 @@
 "vpn.autoRenewSoonExpireTitle" = "אוי לא! מנוי VPN של Brave עומד לפוג תוקף.";
 
 /* Title for screen to buy the VPN. */
-"vpn.buyVPNTitle" = "חומת אש VPN + Brave";
+"vpn.buyVPNTitle" = "Brave VPN";
 
 /* Message for an alert when the VPN can't get prices from the App Store */
 "vpn.errorCantGetPricesBody" = "לא ניתן להתחבר ל-App Store, נא לנסות שוב בעוד מספר דקות.";

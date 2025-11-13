@@ -139,6 +139,9 @@
 /* Placeholder text for adding or editing a bookmark */
 "BookmarkUrlPlaceholderText" = "Adres";
 
+/* Title for the Brave Account section in settings */
+"BraveAccount" = "Brave Hesabı";
+
 /* Button to show the brave panel */
 "BravePanel" = "Brave Paneli";
 
@@ -264,36 +267,6 @@
 
 /* Title for Bottom Bar Callout View */
 "callout.bottomBarCalloutTitle" = "Brave Sekmeleri Çubuğunu Özelleştir";
-
-/* Description - Description used for main button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutButtonDescription" = "Brave'i Varsayılan Tarayıcınız Olarak Ayarlamak İster misiniz?";
-
-/* Subtitle - Description for Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutDescription" = "Brave varsayılan olarak ayarlandığında, tıkladığınız her bağlantı Brave'in gizlilik korumasıyla açılır.";
-
-/* Title for main button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutPrimaryButtonTitle" = "Varsayılan Olarak Ayarla";
-
-/* Description for secondary button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutSecondaryButtonDescription" = "Zaten Varsayılan Tarayıcı mı?";
-
-/* Title for secondary button in Default Browser Full Screen Callout */
-"callout.defaultBrowserCalloutSecondaryButtonTitle" = "Bunu Atla";
-
-/* Title for Default Browser Full Screen Callout */
-"callout.defaultBrowserTitle" = "Güvenlik. Artık Çok Kolay.";
-
-/* Subtitle - Description for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutDescription" = "Bu, en sık kullandığınız Brave özelliklerini öğrenmemize yardımcı olur. Brave Ayarları altındaki \"Brave Kalkanları ve Diğer Gizlilik Ayarları\" seçeneğinden istediğiniz zaman değişiklik yapabilirsiniz.";
-
-/* Title for the link that navigates to a webpage showing information about p3a (Privacy Preserving Analytics) */
-"callout.p3aCalloutLinkTitle" = "Gizlilik Korumalı Ürün Analizlerimiz (P3A) hakkında daha fazlasını öğrenin.";
-
-/* Title for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutTitle" = "Brave'i daha iyi hale getirmeye yardım edin.";
-
-/* Title for toggle for enabling p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutToggleTitle" = "Gizli ve Anonim Ürün İçgörülerini Paylaşın.";
 
 /* Subtitle - Description for Privacy Everywhere Full Screen Callout */
 "callout.privacyEverywhereCalloutDescription" = "Bilgisayarınızda veya tabletinizde Brave'in gizliliğinin keyfini çıkarın, cihazlarınız arasında yer işaretlerinizi ve eklentilerinizi senkronize edin.";
@@ -588,9 +561,6 @@
 
 /* The success message that appears after a user sucessfully adds a new search engine */
 "custonmSearchEngine.thirdPartySearchEngineAddedToastTitle" = "Arama motoru eklendi!";
-
-/* Button text to close the default browser popup. */
-"defaultBrowserCallout.introCancelButtonText" = "Şimdi Değil";
 
 /* Button text to open app settings */
 "defaultBrowserCallout.introOpenSettingsButtonText" = "Ayarları Aç";
@@ -1201,18 +1171,6 @@
 /* Button to show Brave Rewards. */
 "OBTurnOnButton" = "Başla";
 
-/* The description text shown when there is big tech tracker among trackers. Example usage: Google, Amazon and 32 other trackers blocked */
-"onboarding.blockedAdsOnboardingBigTechInformationText" = "%1$@ ve %2$lld ile diğer reklamlar & izleyiciler engellendi";
-
-/* The footnote indicating what Brave shields is blocking */
-"onboarding.blockedAdsOnboardingFootnoteText" = "Shields ile Brave'in her sayfada engellediği tüm zararlı içerikleri görün";
-
-/* The text describing user where they should press in order to open Shield panel */
-"onboarding.blockedAdsOnboardingInstructionsText" = "Brave Shields'ı görmek için dokunun";
-
-/* The description text shown when there is no big tech tracker among trackers. Example usage: 31 Ads & trackers blocked. The number here is presented separately so it is not in translation. */
-"onboarding.blockedAdsOnboardingNoBigTechInformationText" = "Reklam & izleyicisi engellendi";
-
 /* Button text to let users know they can use the vpn on all their devices */
 "onboarding.linkReceiptButton" = "VPN aboneliğinizi bağlayın";
 
@@ -1222,12 +1180,6 @@
 /* Popup title to let users know they can use the vpn on all their devices */
 "onboarding.linkReceiptTitle" = "Brave Güvenlik Duvarı + VPN korumanızı genişletin";
 
-/* Description for Navigate Settings Screen in Onboarding. This part indicating navigation ('Default Browser App') should match the option in iPhone Settings in that Language. */
-"onboarding.navigateSettingsOnboardingScreenDescription" = "\"Varsayılan Tarayıcı Uygulaması\"nı arayın";
-
-/* Title for Navigate Settings Screen in Onboarding */
-"onboarding.navigateSettingsOnboardingScreenTitle" = "Ayarlara yönlendiriliyorsunuz...";
-
 /* Description for the NTP pop-over that describes the tracking information on NTP */
 "onboarding.ntpOnboardingPopOverTrackerDescription" = "İzleyiciler & reklamlar engellendiğinde, web siteleri daha az veri kullanır ve çok daha hızlı yüklenir.";
 
@@ -1236,9 +1188,6 @@
 
 /* Title for the Omnibox (URL Bar) pop-over that describes faster load times. */
 "onboarding.omniboxOnboardingPopOverTitle" = "Bir web sitesi adı veya URL yazın";
-
-/* Title for Welcome Screen in Onboarding */
-"onboarding.welcomeScreenTitle" = "Brave'e hoş geldiniz";
 
 /* Continue button to navigate to next onboarding screen. */
 "OnboardingContinueButton" = "Devam";
@@ -1390,7 +1339,7 @@
 /* Title of the alert when a calendar event is available for download */
 "OpenTextCalendarAlertTitle" = "Takvim Etkinliği mevcut";
 
-/* Button title to that opens a website. */
+/* Button title to open a website. */
 "OpenWebsite" = "Web Sitesini Aç";
 
 /* Brave News Item Menu title */
@@ -1413,9 +1362,6 @@
 
 /* The title for the setting that will allow a user to toggle sending privacy preserving analytics to Brave. */
 "p3a.settingTitle" = "Gizlilik Korumalı Ürün Analizine İzin Ver (P3A)";
-
-/* No comment provided by engineer. */
-"p3aCalloutCloseAccessibilityLabel" = "Gizlilik Korumalı Ürün Belirtecini Kapat";
 
 /* No comment provided by engineer. */
 "pageSecurityView.pageNotFullySecureTitle" = "Bu siteye bağlantınız tamamen güvenli değil.";
@@ -1573,8 +1519,11 @@
 /* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
 "playlist.playlistAutoSaveSettingsTitle" = "Çevrimdışı Oynatma için İçeriği Kaydet";
 
+/* The title of the button for the user to proceed adding playlist item when the user's disk space is almost full */
+"playlist.playlistDiskSpaceAddAnywayButtonTitle" = "Yine de Ekle";
+
 /* When the user's disk space is almost full */
-"playlist.playlistDiskSpaceWarningMessage" = "Çevrimdışı kullanım için video ve ses dosyaları eklemek cihazınızda çok fazla depolama alanı kullanabilir. Depolama alanı boşaltmak için lütfen bazı dosyaları kaldırın.";
+"playlist.playlistDiskSpaceWarningMessage" = "Cihazınızda alan yetersiz. Bu videoyu Çalma Listesi'ne eklemek başarısız olabilir veya diğer indirmeleri etkileyebilir.";
 
 /* When the user's disk space is almost full */
 "playlist.playlistDiskSpaceWarningTitle" = "Depolama Alanı Neredeyse Dolu";
@@ -2005,9 +1954,8 @@
 /* A label for a text entry field where the user can provide additional details for a web-compatibility report */
 "reportBrokenAdditionalDetailsRequired" = "Ek detaylar";
 
-/* A label for a drop down where the user provides a category for a web-compatibility report
-A placeholder for a drop down where the user provides a category for a web-compatibility report */
-"reportBrokenCategory" = "Bir seçenek seçin";
+/* A label for a drop down where the user provides a category for a web-compatibility report */
+"reportBrokenCategory" = "Karşılaştığınız ana sorun nedir?";
 
 /* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
 "ReportBrokenContactMe" = "Benimle şuradan iletişime geçin (isteğe bağlı):";
@@ -2017,6 +1965,9 @@ A placeholder for a drop down where the user provides a category for a web-compa
 
 /* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
 "ReportBrokenContactMeSuggestions" = "E-posta, Twitter, vb.";
+
+/* A placeholder for a drop down where the user provides a category for a web-compatibility report */
+"ReportBrokenPlaceholder" = "Bir seçenek seçin";
 
 /* First part of the report a broken site copy. After the colon is a new line and then a website address */
 "ReportBrokenSiteBody1" = "Brave'in geliştiricilerine bu sitenin beklendiği gibi çalışmadığını bildirin:";
@@ -3089,8 +3040,14 @@ A placeholder for a drop down where the user provides a category for a web-compa
 /* A button title which when tapped will close all of the open tabs for the user */
 "tabGrid.closeAllTabsButtonTitle" = "Tüm Sekmeleri Kapat";
 
-/* Accessibility label for a close button that when tapped closes the associated tab */
+/* Label for a close button that when tapped closes the associated tab */
 "tabGrid.closeTab" = "Sekmeyi Kapat";
+
+/* Label for a close button that when tapped closes the associated tabs */
+"tabGrid.closeTabs" = "Sekmeleri Kapat";
+
+/* A button title which when tapped will allow the user to deselect multiple tabs in the tab grid */
+"tabGrid.deselectTabsButtonTitle" = "Tüm seçimleri kaldır";
 
 /* A button title which when tapped will display a menu with more options */
 "tabGrid.moreMenuButtonTitle" = "Daha fazla";
@@ -3125,11 +3082,20 @@ A placeholder for a drop down where the user provides a category for a web-compa
 /* Accessibility label for the regular browsing option in the browsing mode picker */
 "tabGrid.regularBrowsingModeAccessibilityLabel" = "Normal Gezinme";
 
+/* A text label showing how many tabs the user has currently selected in edit mode. It is shown next to the number of selected tabs e.g. "Selected tabs: 4" */
+"tabGrid.selectedTabs" = "Seçilen sekmeler";
+
+/* A button title which when tapped will allow the user to select multiple tabs in the tab grid */
+"tabGrid.selectTabsButtonTitle" = "Sekmeleri Seç";
+
 /* A button title that when tapped allows users to shred all of their tabs */
 "tabGrid.shredAllTabsButtonTitle" = "Tüm Sekmeleri Unut";
 
 /* A button title that when tapped allows users to shred the currently selected tab */
 "tabGrid.shredSelectedTabButtonTitle" = "Seçili Sekmeyi Unut";
+
+/* A button title that when tapped allows users to shred the currently selected tabs */
+"tabGrid.shredSelectedTabsButtonTitle" = "Yok et";
 
 /* Accessibility label for a button that allows users to shred their tabs (erase them & associated data) */
 "tabGrid.shredTabsAccessibilityLabel" = "Sekmeleri Unut";

@@ -146,37 +146,43 @@
 "aichat.internalErrorViewTitle" = "Κάτι πήγε στραβά κατά την επεξεργασία του αιτήματός σας. Δοκιμάστε ξανά αργότερα.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeHaikuMessageDescription" = "Γεια σας, είμαι ο Leo. Παρέχομαι μέσω του Brave και με την υποστήριξη του Claude Haiku, ενός μοντέλου που δημιουργήθηκε από την Anthropic για να υποστηρίζει εργασίες συνομιλίας και επεξεργασίας κειμένου. Το Claude Haiku φιλοξενείται από το Brave μέσω της δικής μας ασφαλούς υποδομής.";
+"aichat.introMessageClaudeHaikuMessageDescription" = "Γεια σας, είμαι ο Leo. Είμαι ένας βοηθός AI από το Brave. Χρησιμοποιώ το Claude Haiku, ένα μοντέλο που δημιουργήθηκε από την Anthropic για να υποστηρίζει εργασίες συνομιλίας και επεξεργασίας κειμένου. Το Claude Haiku φιλοξενείται από το Brave μέσω της δικής μας ασφαλούς υποδομής.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeHaikuModelPurposeDescription" = "Ταχύτατη συζήτηση";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeInstantMessageDescription" = "Γεια σας, είμαι ο Leo. Παρέχομαι μέσω του Brave και με την υποστήριξη του Claude Instant, ενός μοντέλου που δημιουργήθηκε από την Anthropic για να υποστηρίζει εργασίες συνομιλίας και επεξεργασίας κειμένου. Το Claude Instant φιλοξενείται από το Brave μέσω της δικής μας ασφαλούς υποδομής.";
+"aichat.introMessageClaudeInstantMessageDescription" = "Γεια σας, είμαι ο Leo. I'm ένας βοηθός AI από το Brave. Χρησιμοποιώ το Claude Instant, ένα μοντέλο που δημιουργήθηκε από την Anthropic για να υποστηρίζει εργασίες συνομιλίας και επεξεργασίας κειμένου. Το Claude Instant φιλοξενείται από το Brave μέσω της δικής μας ασφαλούς υποδομής.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeSonnetMessageDescription" = "Γεια σας, είμαι ο Leo. Παρέχομαι μέσω του Brave και με την υποστήριξη του Claude Sonnet, ενός μοντέλου που δημιουργήθηκε από την Anthropic για να υποστηρίζει εργασίες συνομιλίας και επεξεργασίας κειμένου. Το Claude Sonnet φιλοξενείται από το Brave μέσω της δικής μας ασφαλούς υποδομής.";
+"aichat.introMessageClaudeSonnetMessageDescription" = "Γεια σας, είμαι ο Leo. Είμαι ένας βοηθός AI από το Brave. Χρησιμοποιώ το Claude Sonnet, ένα μοντέλο που δημιουργήθηκε από την Anthropic για να υποστηρίζει εργασίες συνομιλίας και επεξεργασίας κειμένου. Το Claude Sonnet φιλοξενείται από το Brave μέσω της δικής μας ασφαλούς υποδομής.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeSonnetModelPurposeDescription" = "Εξισορρόπηση ταχύτητας και ευφυΐας";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageDeepSeekR1MessageDescription" = "Γεια, είμαι ο Leo. Είμαι ένας πλήρως διαδικτυακός βοηθός AI από το Brave. Χρησιμοποιώ το DeepSeek R1, ένα μοντέλο που δημιουργήθηκε από τη DeepSeek R1 για την εκτέλεση εργασιών συλλογισμού.";
+"aichat.introMessageDeepSeekR1MessageDescription" = "Γεια σας, είμαι ο Leo. Είμαι ένας βοηθός AI από το Brave. Χρησιμοποιώ το DeepSeek R1, ένα μοντέλο που δημιουργήθηκε από τη DeepSeek για να εκτελεί βαθιές λογικές εργασίες. Το DeepSeek R1 φιλοξενείται από το Brave μέσω της δικής μας ασφαλούς υποδομής.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageDeepSeekR1ModelPurposeDescription" = "Συλλογιστικό μοντέλο";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageGemmaMessageDescription" = "Γεια σας, είμαι ο Leo. Είμαι ένας βοηθός AI από το Brave. Χρησιμοποιώ το Gemma 3 12B, ένα μοντέλο που δημιουργήθηκε από τη Google DeepMind για χρήση και εφαρμογή σε πολλαπλά σενάρια. Το Gemma φιλοξενείται από το Brave μέσω της δικής μας ασφαλούς υποδομής.";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageGemmaPurposeDescription" = "Κείμενο γενικής χρήσης και κατανόηση εικόνων";
 
 /* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
 "aichat.introMessageGenericMessageDescription" = "Γεια σας, είμαι το Leo. Είμαι βοηθός AI από την Brave. Υποστηρίζομαι από το %@. Ρωτήστε με οτιδήποτε και θα κάνω ό,τι μπορώ για να απαντήσω.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageLlamaMessageDescription" = "Γεια σας, είμαι ο Leo. Είμαι ένας πλήρως διαδικτυακός βοηθός AI από το Brave. Χρησιμοποιώ το Llama 3.1 8B, ένα μοντέλο που δημιουργήθηκε από τη Meta για χρήση και εφαρμογή σε πολλαπλά σενάρια. Το Llama φιλοξενείται από το Brave μέσω της δικής μας ασφαλούς υποδομής.";
+"aichat.introMessageLlamaMessageDescription" = "Γεια σας, είμαι ο Leo. Είμαι ένας βοηθός AI από το Brave. Χρησιμοποιώ το Llama 3.1 8B, ένα μοντέλο που δημιουργήθηκε από τη Meta για χρήση και εφαρμογή σε πολλαπλά σενάρια. Το Llama φιλοξενείται από το Brave μέσω της δικής μας ασφαλούς υποδομής.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageLlamaModelPurposeDescription" = "Συνομιλία γενικών θεμάτων";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageQwenMessageDescription" = "Γεια σας, είμαι ο Leo. Είμαι ένας πλήρως διαδικτυακός βοηθός AI από το Brave. Χρησιμοποιώ το Qwen 14B, ένα μοντέλο που δημιουργήθηκε από την Alibaba Cloud για χρήση και εφαρμογή σε πολλαπλά σενάρια. Το Llama φιλοξενείται από το Brave μέσω της δικής μας ασφαλούς υποδομής.";
+"aichat.introMessageQwenMessageDescription" = "Γεια σας, είμαι ο Leo. Είμαι ένας βοηθός AI από το Brave. Χρησιμοποιώ το Qwen 14B, ένα μοντέλο που δημιουργήθηκε από την Alibaba Cloud για χρήση και εφαρμογή σε πολλαπλά σενάρια. Το Qwen φιλοξενείται από το Brave μέσω της δικής μας ασφαλούς υποδομής.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageQwenModelPurposeDescription" = "Συζήτηση γενικής χρήσης, κωδικοποίηση και άλλα";

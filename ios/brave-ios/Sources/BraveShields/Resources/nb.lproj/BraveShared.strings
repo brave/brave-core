@@ -196,11 +196,14 @@
 /* An option setting for automatically shredding when the site is closed */
 "ShredOnSiteTabsClosed" = "Når faner for nettstedet lukkes";
 
+/* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'. */
+"ShredSiteAllTabsConfirmationMessage" = "Makulering vil lukke alle faner, og slette alle nettsteddataene. Dette kan ikke angres.";
+
 /* A list row label for accessing the shred settings screen */
 "ShredSiteData" = "Makuler nettstedsdata";
 
-/* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'.
-A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'.
+A message for a confirmation window that appears when a user clicks on 'Shred' with multiple tabs selected. */
 "ShredSiteDataConfirmationMessage" = "Makulering lukker alle fanene som er åpne for dette nettstedet, og sletter alle nettsteddataene. Handlingen kan ikke angres.";
 
 /* A title for a confirmation window that appears when a user clicks on 'Shred Data' */
