@@ -198,8 +198,8 @@ class BraveShieldsPage extends BraveShieldsPageBase {
   private declare isFingerprintingEnabled_: chrome.settingsPrivate.PrefObject<boolean>
   private declare isContactInfoSaveFlagEnabled_: chrome.settingsPrivate.
     PrefObject<boolean>
-  private declare isAllowElementBlockerInPrivateModeEnabled_: chrome.settingsPrivate.
-    PrefObject<boolean>
+  private declare isAllowElementBlockerInPrivateModeEnabled_: chrome.
+    settingsPrivate.PrefObject<boolean>
   private declare fingerprintingControlTypes_: ControlType[]
   private declare fingerprintingControlType_: string
   private declare httpsUpgradeControlTypes_: ControlType[]
@@ -304,12 +304,13 @@ class BraveShieldsPage extends BraveShieldsPageBase {
       }
     })
 
-    this.browserProxy_.getAllowElementBlockerInPrivateModeEnabled().then(value => {
-      this.isAllowElementBlockerInPrivateModeEnabled_ = {
-        key: '',
-        type: chrome.settingsPrivate.PrefType.BOOLEAN,
-        value: value,
-      }
+    this.browserProxy_.getAllowElementBlockerInPrivateModeEnabled()
+      .then(value => {
+        this.isAllowElementBlockerInPrivateModeEnabled_ = {
+          key: '',
+          type: chrome.settingsPrivate.PrefType.BOOLEAN,
+          value: value,
+        }
     })
   }
 

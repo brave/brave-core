@@ -746,7 +746,10 @@ void BraveRenderViewContextMenu::AppendDeveloperItems() {
       brave_shields::features::kBraveShieldsElementPicker);
 
   const auto* profile = GetProfile();
-  add_block_elements &= profile && !profile->IsOffTheRecord();
+  add_block_elements &=
+      profile &&
+      (!profile->IsOffTheRecord() ||
+       shields_tab_helper->GetAllowElementBlockerInPrivateModeEnabled());
   if (add_block_elements) {
     std::optional<size_t> inspect_index =
         menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_INSPECTELEMENT);

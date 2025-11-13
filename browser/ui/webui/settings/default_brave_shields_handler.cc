@@ -128,13 +128,14 @@ void DefaultBraveShieldsHandler::RegisterMessages() {
           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "getAllowElementBlockerInPrivateModeEnabled",
-      base::BindRepeating(&DefaultBraveShieldsHandler::GetAllowElementBlockerInPrivateModeEnabled,
+      base::BindRepeating(&DefaultBraveShieldsHandler::
+                              GetAllowElementBlockerInPrivateModeEnabled,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "setAllowElementBlockerInPrivateModeEnabled",
-      base::BindRepeating(
-          &DefaultBraveShieldsHandler::SetAllowElementBlockerInPrivateModeEnabled,
-          base::Unretained(this)));
+      base::BindRepeating(&DefaultBraveShieldsHandler::
+                              SetAllowElementBlockerInPrivateModeEnabled,
+                          base::Unretained(this)));
 
   content_settings_observation_.Observe(
       HostContentSettingsMapFactory::GetForProfile(profile_));
@@ -435,12 +436,13 @@ void DefaultBraveShieldsHandler::GetForgetFirstPartyStorageEnabled(
   ResolveJavascriptCallback(args[0], base::Value(result));
 }
 
-void DefaultBraveShieldsHandler::GetAllowElementBlockerInPrivateModeEnabled(const base::Value::List& args) {
+void DefaultBraveShieldsHandler::GetAllowElementBlockerInPrivateModeEnabled(
+    const base::Value::List& args) {
   CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
 
-  // TODO(vadym): implement getting the actual value 
-  bool result = false;//setting != ControlType::ALLOW;
+  bool result = brave_shields::GetAllowElementBlockerInPrivateModeEnabled(
+      g_browser_process->local_state());
   AllowJavascript();
   ResolveJavascriptCallback(args[0], base::Value(result));
 }
@@ -452,8 +454,7 @@ void DefaultBraveShieldsHandler::SetAllowElementBlockerInPrivateModeEnabled(
   if (!args[0].is_bool()) {
     return;
   }
-//  bool value = args[0].GetBool();
 
-// TODO
+  brave_shields::SetAllowElementBlockerInPrivateModeEnabled(
+      g_browser_process->local_state(), args[0].GetBool());
 }
-
