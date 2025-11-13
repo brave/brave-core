@@ -26,10 +26,6 @@ public enum FeedCard: Hashable {
   case sponsor(_ feed: FeedItem)
   /// A group of deals/offers displayed horizontally
   case deals(_ feeds: [FeedItem], title: String?)
-  /// A brave partner item
-  case partner(_ feed: FeedItem)
-  /// A brave display ad card
-  case ad(InlineContentAd)
   /// A single item displayed prompinently with an image
   case headline(_ feed: FeedItem)
   /// A pair of `headline` items that should be displayed side by side horizontally with equal sizes
@@ -53,10 +49,6 @@ public enum FeedCard: Hashable {
       return FeedItemView.Layout.bannerThumbnail.estimatedHeight(for: width)
     case .headline:
       return FeedItemView.Layout.brandedHeadline.estimatedHeight(for: width)
-    case .partner:
-      return FeedItemView.Layout.partner.estimatedHeight(for: width)
-    case .ad:
-      return FeedItemView.Layout.ad.estimatedHeight(for: width)
     case .headlinePair, .headlineRatingCardPair:
       return 300
     case .group, .numbered, .deals:
@@ -67,7 +59,7 @@ public enum FeedCard: Hashable {
   /// A list of feed items that are present in the card
   public var items: [FeedItem] {
     switch self {
-    case .headline(let item), .sponsor(let item), .partner(let item):
+    case .headline(let item), .sponsor(let item):
       return [item]
     case .headlinePair(let pair):
       return [pair.first, pair.second]
@@ -75,8 +67,6 @@ public enum FeedCard: Hashable {
       return [item]
     case .group(let items, _, _, _), .numbered(let items, _), .deals(let items, _):
       return items
-    case .ad:
-      return []
     }
   }
 
@@ -116,10 +106,6 @@ public enum FeedCard: Hashable {
         return .deals(feeds, title: title)
       }
       return self
-    case .partner:
-      return .partner(replacementItem)
-    case .ad(let ad):
-      return .ad(ad)
     }
   }
 }
