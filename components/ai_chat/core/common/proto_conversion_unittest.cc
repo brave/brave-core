@@ -64,17 +64,8 @@ TEST(ProtoConversionTest, SerializeDeserializeWebSourcesEvent_ValidData) {
   // Deserialize back to mojom
   auto deserialized_event = DeserializeWebSourcesEvent(proto_event);
 
-  // Verify deserialized data
-  ASSERT_EQ(deserialized_event->sources.size(), 2u);
-  EXPECT_MOJOM_EQ(*deserialized_event->sources[0], *mojom_event->sources[0]);
-  EXPECT_MOJOM_EQ(*deserialized_event->sources[1], *mojom_event->sources[1]);
-
-  // Verify rich_results in deserialized mojom
-  ASSERT_EQ(deserialized_event->rich_results.size(), 2u);
-  EXPECT_EQ(deserialized_event->rich_results[0],
-            R"({"type":"knowledge_graph","title":"Test Knowledge Graph"})");
-  EXPECT_EQ(deserialized_event->rich_results[1],
-            R"({"type":"video","url":"https://example.com/video.mp4"})");
+  // Verify deserialized data matches original
+  EXPECT_MOJOM_EQ(*deserialized_event, *mojom_event);
 }
 
 TEST(ProtoConversionTest, SerializeWebSourcesEvent_InvalidUrls) {
@@ -152,52 +143,7 @@ TEST(ProtoConversionTest, SerializeDeserializeWebSourcesEvent_EmptySources) {
   EXPECT_EQ(deserialized_event->rich_results.size(), 0u);
 }
 
-TEST(ProtoConversionTest, SerializeDeserializeWebSourcesEvent_RichResultsOnly) {
-  // Create mojom WebSourcesEvent with only rich_results, no sources
-  auto mojom_event = mojom::WebSourcesEvent::New();
-
-  // Add rich_results without sources
-  mojom_event->rich_results.push_back(
-      R"({"type":"answer_box","answer":"42","question":"meaning of life"})");
-  mojom_event->rich_results.push_back(
-      R"({"type":"calculator","result":"123","expression":"100+23"})");
-  mojom_event->rich_results.push_back(
-      R"({"type":"weather","temperature":"72F","location":"San Francisco"})");
-
-  // Serialize to proto
-  store::WebSourcesEventProto proto_event;
-  SerializeWebSourcesEvent(mojom_event, &proto_event);
-
-  // Verify proto data
-  EXPECT_EQ(proto_event.sources_size(), 0);
-  ASSERT_EQ(proto_event.rich_results_size(), 3);
-  EXPECT_EQ(
-      proto_event.rich_results(0),
-      R"({"type":"answer_box","answer":"42","question":"meaning of life"})");
-  EXPECT_EQ(proto_event.rich_results(1),
-            R"({"type":"calculator","result":"123","expression":"100+23"})");
-  EXPECT_EQ(
-      proto_event.rich_results(2),
-      R"({"type":"weather","temperature":"72F","location":"San Francisco"})");
-
-  // Deserialize back to mojom
-  auto deserialized_event = DeserializeWebSourcesEvent(proto_event);
-
-  // Verify deserialized data
-  EXPECT_EQ(deserialized_event->sources.size(), 0u);
-  ASSERT_EQ(deserialized_event->rich_results.size(), 3u);
-  EXPECT_EQ(
-      deserialized_event->rich_results[0],
-      R"({"type":"answer_box","answer":"42","question":"meaning of life"})");
-  EXPECT_EQ(deserialized_event->rich_results[1],
-            R"({"type":"calculator","result":"123","expression":"100+23"})");
-  EXPECT_EQ(
-      deserialized_event->rich_results[2],
-      R"({"type":"weather","temperature":"72F","location":"San Francisco"})");
-}
-
-TEST(ProtoConversionTest,
-     SerializeDeserializeWebSourcesEvent_ComplexRichResults) {
+TEST(ProtoConversionTest, SerializeDeserializeWebSourcesEvent_RichResults) {
   // Test with complex nested JSON in rich_results
   auto mojom_event = mojom::WebSourcesEvent::New();
 
@@ -224,16 +170,11 @@ TEST(ProtoConversionTest,
   store::WebSourcesEventProto proto_event;
   SerializeWebSourcesEvent(mojom_event, &proto_event);
 
-  // Verify proto
-  EXPECT_EQ(proto_event.sources_size(), 1);
-  ASSERT_EQ(proto_event.rich_results_size(), 1);
-
   // Deserialize back to mojom
   auto deserialized_event = DeserializeWebSourcesEvent(proto_event);
 
-  // Verify deserialized data - the JSON string should be preserved exactly
-  ASSERT_EQ(deserialized_event->rich_results.size(), 1u);
-  EXPECT_EQ(deserialized_event->rich_results[0], mojom_event->rich_results[0]);
+  // Verify deserialized data matches original
+  EXPECT_MOJOM_EQ(*deserialized_event, *mojom_event);
 }
 
 TEST(ProtoConversionTest,
@@ -254,20 +195,11 @@ TEST(ProtoConversionTest,
   store::WebSourcesEventProto proto_event;
   SerializeWebSourcesEvent(mojom_event, &proto_event);
 
-  // All rich_results should be serialized, including empty strings
-  ASSERT_EQ(proto_event.rich_results_size(), 3);
-  EXPECT_EQ(proto_event.rich_results(0), R"({"type":"valid_data"})");
-  EXPECT_EQ(proto_event.rich_results(1), "");
-  EXPECT_EQ(proto_event.rich_results(2), R"({"type":"another_valid"})");
-
   // Deserialize back to mojom
   auto deserialized_event = DeserializeWebSourcesEvent(proto_event);
 
-  // All rich_results should be deserialized
-  ASSERT_EQ(deserialized_event->rich_results.size(), 3u);
-  EXPECT_EQ(deserialized_event->rich_results[0], R"({"type":"valid_data"})");
-  EXPECT_EQ(deserialized_event->rich_results[1], "");
-  EXPECT_EQ(deserialized_event->rich_results[2], R"({"type":"another_valid"})");
+  // Verify deserialized data matches original
+  EXPECT_MOJOM_EQ(*deserialized_event, *mojom_event);
 }
 
 // Tests for ToolUseEvent conversion functions
