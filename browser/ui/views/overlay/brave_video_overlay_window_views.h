@@ -12,14 +12,10 @@
 #include "services/media_session/public/cpp/media_position.h"
 #include "ui/views/controls/slider.h"
 
-namespace views {
-class Label;
-}  // namespace views
-
-class OverlayWindowImageButton;
-
-class BraveVideoOverlayWindowViews : public VideoOverlayWindowViews,
-                                     public views::SliderListener {
+// This view is a overlay window over PIP window to show controls on top of the
+// PIP window. We're restyling upstream's controls and adding some
+// functionalities.
+class BraveVideoOverlayWindowViews : public VideoOverlayWindowViews {
  public:
   explicit BraveVideoOverlayWindowViews(
       content::VideoPictureInPictureWindowController* controller);
@@ -28,45 +24,12 @@ class BraveVideoOverlayWindowViews : public VideoOverlayWindowViews,
   // VideoOverlayWindowViews:
   void SetUpViews() override;
   void OnUpdateControlsBounds() override;
-  void SetPlaybackState(PlaybackState playback_state) override;
-  void SetMediaPosition(const media_session::MediaPosition& position) override;
-  bool ControlsHitTestContainsPoint(const gfx::Point& point) override;
-  void SetSeekerEnabled(bool enabled) override;
-  void ShowInactive() override;
-  void Close() override;
-  void Hide() override;
-  int GetNonClientComponent(const gfx::Point& point) override;
   void OnKeyEvent(ui::KeyEvent* event) override;
-
-  // views::SliderListener:
-  void SliderValueChanged(views::Slider* sender,
-                          float value,
-                          float old_value,
-                          views::SliderChangeReason reason) override;
-  void SliderDragStarted(views::Slider* sender) override;
-  void SliderDragEnded(views::Slider* sender) override;
 
  private:
   void UpdateControlIcons();
-  void UpdateTimestampPosition();
-
-  // As SetMediaPosition() is called only when the position is changed due to
-  // playback state, not when it progresses, we should update timestamp by
-  // ourselves.
-  void UpdateTimestampPeriodically();
-
-  void RequestFullscreen();
-
-  std::optional<media_session::MediaPosition> media_position_;
-  base::RepeatingTimer timestamp_update_timer_;
-
-  PlaybackState playback_state_ = PlaybackState::kEndOfVideo;
-
-  raw_ptr<OverlayWindowImageButton> fullscreen_button_ = nullptr;
-  raw_ptr<views::Label> timestamp_ = nullptr;
-  raw_ptr<views::Slider> seeker_ = nullptr;
-  bool is_seeking_ = false;
-  bool was_playing_before_seeking_ = false;
+  void LayoutTopControls();
+  void LayoutCenterControls();
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_OVERLAY_BRAVE_VIDEO_OVERLAY_WINDOW_VIEWS_H_
