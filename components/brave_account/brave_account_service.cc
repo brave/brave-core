@@ -102,7 +102,7 @@ BraveAccountService::BraveAccountService(
 
   pref_change_registrar_.Init(pref_service_);
   pref_change_registrar_.Add(
-      prefs::kVerificationToken,
+      prefs::kBraveAccountVerificationToken,
       base::BindRepeating(&BraveAccountService::OnVerificationTokenChanged,
                           base::Unretained(this)));
   OnVerificationTokenChanged();
@@ -195,12 +195,12 @@ void BraveAccountService::ResendConfirmationEmail() {
 }
 
 void BraveAccountService::CancelRegistration() {
-  pref_service_->ClearPref(prefs::kVerificationToken);
+  pref_service_->ClearPref(prefs::kBraveAccountVerificationToken);
 }
 
 void BraveAccountService::LogOut() {
   // TODO(https://github.com/brave/brave-browser/issues/50651)
-  pref_service_->ClearPref(prefs::kAuthenticationToken);
+  pref_service_->ClearPref(prefs::kBraveAccountAuthenticationToken);
 }
 
 void BraveAccountService::OnRegisterInitialize(
@@ -267,7 +267,7 @@ void BraveAccountService::OnRegisterFinalize(
           .and_then([&](auto response)
                         -> base::expected<mojom::RegisterFinalizeResultPtr,
                                           mojom::RegisterErrorPtr> {
-            pref_service_->SetString(prefs::kVerificationToken,
+            pref_service_->SetString(prefs::kBraveAccountVerificationToken,
                                      encrypted_verification_token);
 
             return mojom::RegisterFinalizeResult::New();
@@ -289,7 +289,7 @@ std::optional<mojom::RegisterErrorCode> BraveAccountService::TransformError(
 }
 
 void BraveAccountService::OnVerificationTokenChanged() {
-  if (pref_service_->GetString(prefs::kVerificationToken).empty()) {
+  if (pref_service_->GetString(prefs::kBraveAccountVerificationToken).empty()) {
     return CHECK_DEREF(verify_result_timer_.get()).Stop();
   }
 
@@ -311,7 +311,7 @@ void BraveAccountService::VerifyResult(
   current_verify_result_request.reset();
 
   const auto encrypted_verification_token =
-      pref_service_->GetString(prefs::kVerificationToken);
+      pref_service_->GetString(prefs::kBraveAccountVerificationToken);
   if (encrypted_verification_token.empty()) {
     return;
   }
@@ -359,12 +359,12 @@ void BraveAccountService::OnVerifyResult(
     // since the auth token is transient on the server
     // and cannot be retrieved again.
     // TODO(https://github.com/brave/brave-browser/issues/50307)
-    pref_service_->ClearPref(prefs::kVerificationToken);
+    pref_service_->ClearPref(prefs::kBraveAccountVerificationToken);
 
     if (const auto encrypted_authentication_token =
             Encrypt(authentication_token);
         !encrypted_authentication_token.empty()) {
-      pref_service_->SetString(prefs::kAuthenticationToken,
+      pref_service_->SetString(prefs::kBraveAccountAuthenticationToken,
                                encrypted_authentication_token);
     }
 
@@ -374,7 +374,7 @@ void BraveAccountService::OnVerifyResult(
   if (response_code == net::HTTP_BAD_REQUEST ||
       response_code == net::HTTP_UNAUTHORIZED) {
     // Polling cannot recover from these errors, so we stop further attempts.
-    return pref_service_->ClearPref(prefs::kVerificationToken);
+    return pref_service_->ClearPref(prefs::kBraveAccountVerificationToken);
   }
 
   // Replace watchdog timer with the normal cadence.

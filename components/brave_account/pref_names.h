@@ -16,14 +16,15 @@ namespace brave_account::prefs {
 // - polling POST /v2/verify/result
 //   to exchange the `verificationToken` for the `authToken`
 //   after the user has verified their email
-inline constexpr char kVerificationToken[] = "brave.account.verification_token";
+inline constexpr char kBraveAccountVerificationToken[] =
+    "brave.account.verification_token";
 
 // This preference will store (`OSCrypt`-encrypted) the (JWT) `authToken`
 // returned by the POST /v2/verify/result endpoint.
 // It is then used for:
 // - authenticating subsequent Brave Account requests
 // - creating new service tokens
-inline constexpr char kAuthenticationToken[] =
+inline constexpr char kBraveAccountAuthenticationToken[] =
     "brave.account.authentication_token";
 
 }  // namespace brave_account::prefs

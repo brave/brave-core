@@ -17,10 +17,10 @@
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "mojo/public/cpp/bindings/remote.h"
 
-NSString* const BraveAccountAuthenticationTokenPref =
-    base::SysUTF8ToNSString(brave_account::prefs::kAuthenticationToken);
-NSString* const BraveAccountVerificationTokenPref =
-    base::SysUTF8ToNSString(brave_account::prefs::kVerificationToken);
+NSString* const BraveAccountAuthenticationTokenPref = base::SysUTF8ToNSString(
+    brave_account::prefs::kBraveAccountAuthenticationToken);
+NSString* const BraveAccountVerificationTokenPref = base::SysUTF8ToNSString(
+    brave_account::prefs::kBraveAccountVerificationToken);
 
 @implementation BraveAccountAuthenticationBridgeImpl {
   mojo::Remote<brave_account::mojom::Authentication> _authentication;

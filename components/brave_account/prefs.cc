@@ -15,8 +15,9 @@ namespace brave_account::prefs {
 
 void RegisterPrefs(PrefRegistrySimple* registry) {
   if (features::IsBraveAccountEnabled()) {
-    registry->RegisterStringPref(kVerificationToken, std::string());
-    registry->RegisterStringPref(kAuthenticationToken, std::string());
+    registry->RegisterStringPref(kBraveAccountVerificationToken, std::string());
+    registry->RegisterStringPref(kBraveAccountAuthenticationToken,
+                                 std::string());
   }
 }
 
