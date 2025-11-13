@@ -42,6 +42,9 @@ BraveBrowserViewLayout::BraveBrowserViewLayout(
     Browser* browser,
     BrowserViewLayoutViews views)
     : BrowserViewLayoutImplOld(std::move(delegate), browser, std::move(views)) {
+  // TODO(anyone): consider a possibility of not passing the browser ptr in
+  // since upstream is actively working on removing the browser from being
+  // passed around. https://github.com/brave/brave-browser/issues/50815
   if (!browser) {
     CHECK_IS_TEST();
   }
