@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/ui/views/tabs/tab.cc b/chrome/browser/ui/views/tabs/tab.cc
-index f5766369d48dc195eb6baced48590d4d75a0d20a..bf06a728b7a2683cd121976df9c9ac3c552d4754 100644
+index f5766369d48dc195eb6baced48590d4d75a0d20a..090c9668dbd7ac7c0500e619ed2b7acc1c4aed49 100644
 --- a/chrome/browser/ui/views/tabs/tab.cc
 +++ b/chrome/browser/ui/views/tabs/tab.cc
-@@ -283,7 +283,7 @@ Tab::Tab(TabSlotController* controller)
+@@ -282,7 +282,7 @@ Tab::Tab(TabSlotController* controller)
+   close_button_->SetHasInkDropActionOnClick(true);
  
  #if BUILDFLAG(IS_CHROMEOS)
-   showing_close_button_ = !controller_->IsLockedForOnTask();
--  close_button_->SetVisible(showing_close_button_);
-+  close_button_->SetVisible(!controller_->ShouldAlwaysHideCloseButton() && showing_close_button_);
+-  showing_close_button_ = !controller_->IsLockedForOnTask();
++  showing_close_button_ = !controller_->ShouldAlwaysHideCloseButton() && !controller_->IsLockedForOnTask();
+   close_button_->SetVisible(showing_close_button_);
  #endif
  
-   tab_close_button_observer_ = std::make_unique<TabCloseButtonObserver>(
 @@ -372,6 +372,7 @@ void Tab::Layout(PassKey) {
    // indicator, but visually it will be smaller at kFaviconSize wide.
    gfx::Rect favicon_bounds(start, contents_rect.y(), 0, 0);
@@ -19,15 +19,6 @@ index f5766369d48dc195eb6baced48590d4d75a0d20a..bf06a728b7a2683cd121976df9c9ac3c
      if (center_icon_) {
        // When centering the favicon, the favicon is allowed to escape the normal
        // contents rect.
-@@ -425,7 +426,7 @@ void Tab::Layout(PassKey) {
-          close_button_actual_size});
-     close_x = visible_left - after_title_padding;
-   }
--  close_button_->SetVisible(showing_close_button_);
-+  close_button_->SetVisible(!controller_->ShouldAlwaysHideCloseButton() && showing_close_button_);
- 
-   if (showing_alert_indicator_) {
-     int right = contents_rect.right();
 @@ -470,6 +471,7 @@ void Tab::Layout(PassKey) {
      int title_right = contents_rect.right();
      if (showing_alert_indicator_) {
@@ -36,7 +27,35 @@ index f5766369d48dc195eb6baced48590d4d75a0d20a..bf06a728b7a2683cd121976df9c9ac3c
      } else if (showing_close_button_) {
        // Allow the title to overlay the close button's empty border padding.
        title_right = close_x - after_title_padding;
-@@ -1198,6 +1200,7 @@ void Tab::UpdateIconVisibility() {
+@@ -1137,7 +1139,7 @@ void Tab::UpdateIconVisibility() {
+     // is given priority over the favicon. The close buton is never shown.
+     showing_alert_indicator_ = has_alert_icon;
+     showing_icon_ = has_favicon && !has_alert_icon;
+-    showing_close_button_ = false;
++    showing_close_button_ = !controller_->ShouldAlwaysHideCloseButton() && false;
+ 
+     // While animating to or from the pinned state, pinned tabs are rendered as
+     // normal tabs. Force the extra padding on so the favicon doesn't jitter
+@@ -1164,10 +1166,10 @@ void Tab::UpdateIconVisibility() {
+ #if BUILDFLAG(IS_CHROMEOS)
+     // Hide tab close button for OnTask if locked. Only applicable for non-web
+     // browser scenarios.
+-    showing_close_button_ = !controller_->IsLockedForOnTask();
++    showing_close_button_ = !controller_->ShouldAlwaysHideCloseButton() && !controller_->IsLockedForOnTask();
+ #else
+     // Close button is shown on active tabs regardless of the size.
+-    showing_close_button_ = true;
++    showing_close_button_ = !controller_->ShouldAlwaysHideCloseButton() && true;
+ #endif  // BUILDFLAG(IS_CHROMEOS)
+     available_width -= close_button_width;
+ 
+@@ -1193,11 +1195,12 @@ void Tab::UpdateIconVisibility() {
+       available_width -= favicon_width;
+     }
+ 
+-    showing_close_button_ =
++    showing_close_button_ = !controller_->ShouldAlwaysHideCloseButton() &&
+ #if BUILDFLAG(IS_CHROMEOS)
          !controller_->IsLockedForOnTask() &&
  #endif
          large_enough_for_close_button;
