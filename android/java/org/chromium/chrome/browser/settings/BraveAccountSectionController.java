@@ -64,7 +64,7 @@ public class BraveAccountSectionController implements PrefObserver, ConnectionEr
         initBraveAccountService();
 
         setupPreferenceListeners();
-        setupPrefChangeObservers();
+        setupPrefChangeRegistrar();
     }
 
     public void destroy() {
@@ -91,26 +91,8 @@ public class BraveAccountSectionController implements PrefObserver, ConnectionEr
         initBraveAccountService();
     }
 
-    private void initBraveAccountService() {
-        mBraveAccountService =
-                BraveAccountServiceFactory.getInstance().getBraveAccountService(mProfile, this);
-    }
-
-    private void cleanUpBraveAccountService() {
-        if (mBraveAccountService != null) {
-            mBraveAccountService.close();
-            mBraveAccountService = null;
-        }
-    }
-
-    private void setupPrefChangeObservers() {
-        mPrefChangeRegistrar = PrefServiceUtil.createFor(mProfile);
-        mPrefChangeRegistrar.addObserver(BravePref.BRAVE_ACCOUNT_AUTHENTICATION_TOKEN, this);
-        mPrefChangeRegistrar.addObserver(BravePref.BRAVE_ACCOUNT_VERIFICATION_TOKEN, this);
-    }
-
     private void setupPreferenceListeners() {
-        Preference signOutPreference = findPreference(PREF_SIGN_OUT);
+        Preference signOutPreference = mFragment.findPreference(PREF_SIGN_OUT);
         if (signOutPreference != null) {
             signOutPreference.setOnPreferenceClickListener(
                     preference -> {
@@ -121,7 +103,7 @@ public class BraveAccountSectionController implements PrefObserver, ConnectionEr
         }
 
         Preference resendConfirmationEmailPreference =
-                findPreference(PREF_RESEND_CONFIRMATION_EMAIL);
+                mFragment.findPreference(PREF_RESEND_CONFIRMATION_EMAIL);
         if (resendConfirmationEmailPreference != null) {
             resendConfirmationEmailPreference.setOnPreferenceClickListener(
                     preference -> {
@@ -131,7 +113,8 @@ public class BraveAccountSectionController implements PrefObserver, ConnectionEr
                     });
         }
 
-        Preference cancelRegistrationPreference = findPreference(PREF_CANCEL_REGISTRATION);
+        Preference cancelRegistrationPreference =
+                mFragment.findPreference(PREF_CANCEL_REGISTRATION);
         if (cancelRegistrationPreference != null) {
             cancelRegistrationPreference.setOnPreferenceClickListener(
                     preference -> {
@@ -141,7 +124,7 @@ public class BraveAccountSectionController implements PrefObserver, ConnectionEr
                     });
         }
 
-        Preference getStartedPreference = findPreference(PREF_GET_STARTED);
+        Preference getStartedPreference = mFragment.findPreference(PREF_GET_STARTED);
         if (getStartedPreference != null) {
             getStartedPreference.setOnPreferenceClickListener(
                     preference -> {
@@ -149,6 +132,12 @@ public class BraveAccountSectionController implements PrefObserver, ConnectionEr
                         return true;
                     });
         }
+    }
+
+    private void setupPrefChangeRegistrar() {
+        mPrefChangeRegistrar = PrefServiceUtil.createFor(mProfile);
+        mPrefChangeRegistrar.addObserver(BravePref.BRAVE_ACCOUNT_AUTHENTICATION_TOKEN, this);
+        mPrefChangeRegistrar.addObserver(BravePref.BRAVE_ACCOUNT_VERIFICATION_TOKEN, this);
     }
 
     private boolean hasAuthenticationToken() {
@@ -164,12 +153,13 @@ public class BraveAccountSectionController implements PrefObserver, ConnectionEr
     }
 
     private void updateBraveAccountSection() {
-        Preference userInfoPref = findPreference(PREF_USER_INFO);
-        Preference signOutPref = findPreference(PREF_SIGN_OUT);
-        Preference almostTherePref = findPreference(PREF_ALMOST_THERE);
-        Preference resendConfirmationEmailPref = findPreference(PREF_RESEND_CONFIRMATION_EMAIL);
-        Preference cancelRegistrationPref = findPreference(PREF_CANCEL_REGISTRATION);
-        Preference getStartedPref = findPreference(PREF_GET_STARTED);
+        Preference userInfoPref = mFragment.findPreference(PREF_USER_INFO);
+        Preference signOutPref = mFragment.findPreference(PREF_SIGN_OUT);
+        Preference almostTherePref = mFragment.findPreference(PREF_ALMOST_THERE);
+        Preference resendConfirmationEmailPref =
+                mFragment.findPreference(PREF_RESEND_CONFIRMATION_EMAIL);
+        Preference cancelRegistrationPref = mFragment.findPreference(PREF_CANCEL_REGISTRATION);
+        Preference getStartedPref = mFragment.findPreference(PREF_GET_STARTED);
 
         if (hasAuthenticationToken()) { // logged in
             setVisibility(userInfoPref, true);
@@ -201,7 +191,16 @@ public class BraveAccountSectionController implements PrefObserver, ConnectionEr
         }
     }
 
-    private @Nullable Preference findPreference(String key) {
-        return mFragment.findPreference(key);
+    private void initBraveAccountService() {
+        mBraveAccountService =
+                BraveAccountServiceFactory.getInstance().getBraveAccountService(mProfile, this);
+        assert mBraveAccountService != null;
+    }
+
+    private void cleanUpBraveAccountService() {
+        if (mBraveAccountService != null) {
+            mBraveAccountService.close();
+            mBraveAccountService = null;
+        }
     }
 }
