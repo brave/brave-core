@@ -25,7 +25,7 @@ BlockchainImagesSourceBase::BlockchainImagesSourceBase(
 BlockchainImagesSourceBase::~BlockchainImagesSourceBase() = default;
 
 void BlockchainImagesSourceBase::StartDataRequestForPath(
-    const std::string& path,
+    std::string_view path,
     GotDataCallback callback) {
   std::optional<base::Version> version =
       brave_wallet::GetLastInstalledWalletVersion();
@@ -59,7 +59,7 @@ void BlockchainImagesSourceBase::OnGotImageFileBytes(
 }
 
 std::string BlockchainImagesSourceBase::GetMimeTypeForPath(
-    const std::string& path) const {
+    std::string_view path) const {
   if (base::EndsWith(path, ".png", base::CompareCase::INSENSITIVE_ASCII)) {
     return "image/png";
   }
