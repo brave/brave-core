@@ -30,11 +30,8 @@ namespace {
 std::unique_ptr<OrchardBundleManager> ApplyOrchardSignatures(
     std::unique_ptr<OrchardBundleManager> orchard_bundle_manager,
     std::array<uint8_t, kZCashDigestSize> sighash) {
-  DVLOG(1) << "Apply signatures for ZCash transaction";
   // Heavy CPU operation, should be executed on background thread
-  auto result = orchard_bundle_manager->ApplySignature(sighash);
-  DVLOG(1) << "Signatures applied";
-  return result;
+  return orchard_bundle_manager->ApplySignature(sighash);
 }
 #endif  // BUILDFLAG(ENABLE_ORCHARD)
 
@@ -76,7 +73,9 @@ void ZCashCompleteTransactionTask::WorkOnTask() {
   }
 
 #if BUILDFLAG(ENABLE_ORCHARD)
-  if (!transaction_.orchard_part().outputs.empty()) {
+  // Process Orchard part if there are Orchard inputs or outputs
+  if (!transaction_.orchard_part().inputs.empty() ||
+      !transaction_.orchard_part().outputs.empty()) {
     if (!transaction_.orchard_part().anchor_block_height.has_value()) {
       error_ = "Anchor not selected";
       ScheduleWorkOnTask();
@@ -164,6 +163,7 @@ void ZCashCompleteTransactionTask::OnGetLatestBlockHeight(
   transaction_.set_locktime(result.value()->height);
   transaction_.set_expiry_height(result.value()->height +
                                  kDefaultZCashBlockHeightDelta);
+
   ScheduleWorkOnTask();
 }
 
@@ -238,10 +238,12 @@ void ZCashCompleteTransactionTask::SignOrchardPart() {
     ScheduleWorkOnTask();
     return;
   }
+
   OrchardSpendsBundle spends_bundle;
   spends_bundle.sk = *sk;
   spends_bundle.fvk = *fvk;
   spends_bundle.inputs = transaction_.orchard_part().inputs;
+
   auto orchard_bundle_manager = OrchardBundleManager::Create(
       *state_tree_bytes, spends_bundle, transaction_.orchard_part().outputs);
 

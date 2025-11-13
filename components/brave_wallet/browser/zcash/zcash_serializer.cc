@@ -224,11 +224,18 @@ std::array<uint8_t, kZCashDigestSize> ZCashSerializer::CalculateTxIdDigest(
   std::array<uint8_t, kZCashDigestSize> transparent_hash;
   {
     BtcLikeSerializerStream stream;
-    if (!zcash_transaction.transparent_part().IsEmpty()) {
+
+    // For txid digest (T.2), handle transparent components based on presence
+    if (!zcash_transaction.transparent_part().inputs.empty() ||
+        !zcash_transaction.transparent_part().outputs.empty()) {
+      // Case: Has transparent inputs or outputs - include all components
       stream.PushBytes(ZCashSerializer::HashPrevouts(zcash_transaction));
       stream.PushBytes(ZCashSerializer::HashSequences(zcash_transaction));
       stream.PushBytes(ZCashSerializer::HashOutputs(zcash_transaction));
     }
+    // Case: No transparent components - stream remains empty
+    // (BLAKE2b-256("ZTxIdTranspaHash", []))
+
     transparent_hash =
         Blake2b256(stream.data(),
                    base::byte_span_from_cstring(kTransparentHashPersonalizer));
@@ -275,16 +282,22 @@ std::array<uint8_t, kZCashDigestSize> ZCashSerializer::CalculateSignatureDigest(
   {
     BtcLikeSerializerStream stream;
 
-    if (!zcash_transaction.transparent_part().IsEmpty()) {
+    if (!zcash_transaction.transparent_part().inputs.empty()) {
+      // Case: Has transparent inputs - include all components
       stream.Push8(zcash_transaction.sighash_type());
       stream.PushBytes(HashPrevouts(zcash_transaction));
-
       stream.PushBytes(HashAmounts(zcash_transaction));
       stream.PushBytes(HashScriptPubKeys(zcash_transaction));
       stream.PushBytes(HashSequences(zcash_transaction));
       stream.PushBytes(HashOutputs(zcash_transaction));
       stream.PushBytes(HashTxIn(input));
+    } else if (!zcash_transaction.transparent_part().outputs.empty()) {
+      // Case: Doesn't have transparent inputs - use
+      stream.PushBytes(ZCashSerializer::HashPrevouts(zcash_transaction));
+      stream.PushBytes(ZCashSerializer::HashSequences(zcash_transaction));
+      stream.PushBytes(ZCashSerializer::HashOutputs(zcash_transaction));
     }
+    // Case: No transparent components - stream remains empty
 
     transparent_hash =
         Blake2b256(stream.data(),
