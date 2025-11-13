@@ -39,8 +39,7 @@ public class BraveStatusBarColorController extends StatusBarColorController {
             TopUiThemeColorProvider topUiThemeColorProvider,
             EdgeToEdgeSystemBarColorHelper edgeToEdgeSystemBarColorHelper,
             @Nullable DesktopWindowStateManager desktopWindowStateManager,
-            ObservableSupplier<Integer> overviewColorSupplier,
-            boolean supportEdgeToEdge) {
+            ObservableSupplier<Integer> overviewColorSupplier) {
         super(
                 window,
                 isTablet,
@@ -52,8 +51,7 @@ public class BraveStatusBarColorController extends StatusBarColorController {
                 topUiThemeColorProvider,
                 edgeToEdgeSystemBarColorHelper,
                 desktopWindowStateManager,
-                overviewColorSupplier,
-                supportEdgeToEdge);
+                overviewColorSupplier);
 
         // Dark theme doesn't have the regression, apply adjustment to light one only
         if (!ColorUtils.inNightMode(context)) {
