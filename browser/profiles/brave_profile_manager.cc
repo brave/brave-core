@@ -61,10 +61,6 @@ using ntp_background_images::prefs::
 
 namespace {
 
-#if !BUILDFLAG(IS_ANDROID)
-// WIP to pass over CHECK(!IdentityManagerFactory::GetForProfileIfExists(this))
-// on Android tests
-
 // Checks if the user previously had HTTPS-Only Mode enabled. If so,
 // set the HttpsUpgrade default setting to strict.
 void MigrateHttpsUpgradeSettings(Profile* profile) {
@@ -93,11 +89,7 @@ void MigrateHttpsUpgradeSettings(Profile* profile) {
     }
   }
 }
-#endif
 
-#if !BUILDFLAG(IS_ANDROID)
-// WIP to pass over CHECK(!IdentityManagerFactory::GetForProfileIfExists(this))
-// on Android tests
 void RecordInitialP3AValues(Profile* profile) {
   // Preference is unregistered for some reason in profile_manager_unittest
   // TODO(bsclifton): create a proper testing profile
@@ -115,7 +107,6 @@ void RecordInitialP3AValues(Profile* profile) {
         brave_shields::GetFingerprintingControlType(map, GURL()));
   }
 }
-#endif
 
 }  // namespace
 
@@ -166,65 +157,25 @@ void BraveProfileManager::InitProfileUserPrefs(Profile* profile) {
 #endif
 
   ProfileManager::InitProfileUserPrefs(profile);
-#if !BUILDFLAG(IS_ANDROID)
-  // WIP
-  // At `RecordInitialP3AValues` the instance of `HostContentSettingsMap` is
-  // created:
-  // ```
-  // HostContentSettingsMapFactory::GetForProfile
-  // (anonymous namespace)::RecordInitialP3AValues
-  // BraveProfileManager::InitProfileUserPrefs
-  // ProfileImpl::OnLocaleReady
-  // ProfileImpl::OnPrefsLoaded
-  // ProfileImpl::ProfileImpl
-  // Profile::CreateProfile
-  // ProfileManager::CreateProfileHelper
-  // ```
-  // At `HostContentSettingsMapFactory::BuildServiceInstanceFor` there is
-  // `#if BUILDFLAG(IS_ANDROID)` block which creates `TemplateURLService`, which
-  // in its turn creates `IdentityManager`:
-  // ```
-  // IdentityManagerFactory::BuildServiceInstanceForBrowserContext
-  // KeyedServiceTemplatedFactory<KeyedService>::GetServiceForContext
-  // search_engines::(anonymous namespace)::BuildSearchEngineChoiceService
-  // KeyedServiceTemplatedFactory<KeyedService>::GetServiceForContext
-  // TemplateURLServiceFactory::BuildInstanceFor
-  // ```
-  // We must not create `IdentityManager` at early phase of browser
-  // initialization, because there is
-  // ```
-  //   // Check that the IdentityManager was not created before the browser
-  //   context
-  //   // services were created. This ensures that browser tests can override
-  //   the
-  //   // IdentityManager with a fake.
-  //   CHECK(!IdentityManagerFactory::GetForProfileIfExists(this),
-  //         base::NotFatalUntil::M160);
-  // ```
-  // at `ProfileImpl::OnPrefsLoaded` since `cr144`.
-  // Prior to `cr144` this CHECK was under
-  // `kDelayOnProfileCreatedForFullBrowserTransition` flag.
-  //
-  // Chromium commit:
-  // https://source.chromium.org/chromium/chromium/src/+/c2150016298cc880896bc1f81335be279ceac961
-  //
-  // Skip send P3A here for Android, otherwise most of the tests fail on Android
-  RecordInitialP3AValues(profile);
-#endif
 
   brave::SetDefaultSearchVersion(profile, profile->IsNewProfile());
   brave::SetDefaultThirdPartyCookieBlockValue(profile);
   perf::MaybeEnableBraveFeaturesPrefsForPerfTesting(profile);
-#if !BUILDFLAG(IS_ANDROID)
-  // WIP to pass over
-  // CHECK(!IdentityManagerFactory::GetForProfileIfExists(this)) on Android
-  // tests
-  MigrateHttpsUpgradeSettings(profile);
-#endif
 }
 
 void BraveProfileManager::DoFinalInitForServices(Profile* profile,
                                                  bool go_off_the_record) {
+  // Moved RecordInitialP3AValues/MigrateHttpsUpgradeSettings calls here from
+  // BraveProfileManager::InitProfileUserPrefs to pass over
+  // CHECK(!IdentityManagerFactory::GetForProfileIfExists(this)) during
+  // Android tests
+  // TODO(https://github.com/brave/brave-browser/issues/50822)
+  // Move RecordInitialP3AValues from here
+  RecordInitialP3AValues(profile);
+  // TODO(https://github.com/brave/brave-browser/issues/50823)
+  // Move MigrateHttpsUpgradeSettings from here as well
+  MigrateHttpsUpgradeSettings(profile);
+
   ProfileManager::DoFinalInitForServices(profile, go_off_the_record);
   if (!do_final_services_init_) {
     return;
