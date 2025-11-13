@@ -15,4 +15,4 @@ if [[ -z $files ]]
 then
 	exit 1
 fi
-rustfmt --check $files >&2
+./cargo.sh +nightly fmt --check -- $files >&2
