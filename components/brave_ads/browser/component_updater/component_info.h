@@ -11,8 +11,8 @@
 namespace brave_ads {
 
 struct ComponentInfo {
-  std::string_view public_key_base64;
   std::string_view id;
+  std::string_view public_key_base64;
 };
 
 }  // namespace brave_ads
