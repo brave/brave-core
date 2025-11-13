@@ -180,7 +180,7 @@ export const ConversationReactContext =
 export function ConversationContextProvider(props: React.PropsWithChildren) {
   const [context, setContext] = React.useState<ConversationContext>({
     ...defaultContext,
-    setAttachmentsDialog: (attachmentsDialog: 'tabs' | null) => {
+    setAttachmentsDialog: (attachmentsDialog) => {
       setContext((value) => ({
         ...value,
         attachmentsDialog,
@@ -209,12 +209,12 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
 
   // If there are no unassociated tabs, hide the attachments picker.
   React.useEffect(() => {
-    if (unassociatedTabs.length === 0) {
+    if (unassociatedTabs.length === 0 && context.attachmentsDialog === 'tabs') {
       setPartialContext({
         attachmentsDialog: null,
       })
     }
-  }, [unassociatedTabs])
+  }, [unassociatedTabs, context.attachmentsDialog])
 
   const [
     hasDismissedLongConversationInfo,
