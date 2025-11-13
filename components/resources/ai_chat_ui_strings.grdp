@@ -742,7 +742,7 @@
     Navigating the web page to a new address
   </message>
   <message name="IDS_CHAT_UI_TOOL_LABEL_NAVIGATE_WEB_PAGE_WITH_INPUT" desc="Label for the navigate web page tool with a known URL destination" formatter_data="webui=AiChat">
-    Navigated the web page to <ph name="URL">$1<ex>https://www.example.com</ex></ph>
+    Navigating the web page to <ph name="URL">$1<ex>https://www.example.com</ex></ph>
   </message>
   <message name="IDS_AI_CHAT_TASK_PROGRESS_LABEL" desc="Label for the task progress tab in the assistant response" formatter_data="webui=AiChat">
     Progress
@@ -791,6 +791,21 @@
   </message>
   <message name="IDS_CHAT_UI_CONTENT_AGENT_WARNING_TEXT" desc="Warning message for content agent" formatter_data="webui=AiChat">
     Enabling AI to browse automatically for you may cause harmful, unintended consequences for your privacy, finances, and online communications. <ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
+  </message>
+  <message name="IDS_CHAT_UI_PERMISSION_CHALLENGE_HEADER" desc="Heading for permission challenge" formatter_data="webui=AiChat">
+    Security warning
+  </message>
+  <message name="IDS_CHAT_UI_PERMISSION_CHALLENGE_SUMMARY" desc="Summary for permission challenge" formatter_data="webui=AiChat">
+    Brave AI needs your permission for: <ph name="TOOL_LABEL">$1<ex>Navigating to https://www.example.com/path/to/page</ex></ph>
+  </message>
+  <message name="IDS_CHAT_UI_PERMISSION_CHALLENGE_ASSESSMENT_INTRO" desc="Introduction to an assessment for why a permission challenge is being presented" formatter_data="webui=AiChat">
+    The operation was detected as potentially misaligned with your request:
+  </message>
+  <message name="IDS_CHAT_UI_PERMISSION_CHALLENGE_ALLOW_BUTTON" desc="Button text to approve the permission challenge" formatter_data="webui=AiChat">
+    Allow
+  </message>
+  <message name="IDS_CHAT_UI_PERMISSION_CHALLENGE_DENY_BUTTON" desc="Button text to deny the permission challenge" formatter_data="webui=AiChat">
+    Deny
   </message>
   <message name="IDS_AI_CHAT_VERIFIED_LABEL" desc="Label for the verified NEAR AI model" formatter_data="webui=AiChat">
     Verified

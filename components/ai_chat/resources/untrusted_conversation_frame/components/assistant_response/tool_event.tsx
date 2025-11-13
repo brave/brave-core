@@ -6,6 +6,7 @@
 import * as React from 'react'
 import classnames from '$web-common/classnames'
 import * as Mojom from '../../../common/mojom'
+import ToolPermissionChallenge from '../tool_permission_challenge/tool_permission_challenge'
 import { getToolLabel } from './get_tool_label'
 import ToolEventContentUserChoice from './tool_event_content_user_choice'
 import ToolEventContentAssistantDetailStorage from './tool_event_content_assistant_detail_storage'
@@ -100,20 +101,39 @@ function ToolEventContent(
     expandedContent: null,
   }
 
+  // Halt for permission challenge
+  if (toolUseEvent.permissionChallenge) {
+    content.expandedContent = (
+      <ToolPermissionChallenge
+        isInteractive={props.isEntryActive}
+        toolUseEvent={toolUseEvent}
+        toolLabel={content.toolLabel!}
+      />
+    )
+    content.toolLabel = null
+    return props.children(content)
+  }
+
   // Tool-specific components can add expanded content, a custom tool label,
   // or make the expanded content show by default by removing the toolLabel.
-  let component: ToolComponent | null = null
+  let Component: ToolComponent | null = null
 
   if (toolUseEvent.toolName === Mojom.USER_CHOICE_TOOL_NAME) {
-    component = ToolEventContentUserChoice
+    Component = ToolEventContentUserChoice
   }
 
   if (toolUseEvent.toolName === Mojom.ASSISTANT_DETAIL_STORAGE_TOOL_NAME) {
-    component = ToolEventContentAssistantDetailStorage
+    Component = ToolEventContentAssistantDetailStorage
   }
 
-  if (component) {
-    return component({ ...props, toolInput: input, content })
+  if (Component) {
+    return (
+      <Component
+        {...props}
+        toolInput={input}
+        content={content}
+      />
+    )
   }
 
   // default
