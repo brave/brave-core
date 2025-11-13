@@ -107,8 +107,8 @@ mod ffi {
 
     #[derive(Clone)]
     struct CxxSerializableVkeyWitness {
-        pubkey: Vec<u8>,
-        signature: Vec<u8>,
+        pubkey: [u8; 32],
+        signature: [u8; 64],
     }
 
     #[derive(Clone)]
@@ -446,8 +446,8 @@ fn apply_signatures_impl(
 
     for witness in &witnesses.vkey_witness_set {
         vk_witness_array.push(CborValue::Array(vec![
-            CborValue::Bytes(witness.pubkey.clone()),
-            CborValue::Bytes(witness.signature.clone()),
+            CborValue::Bytes(witness.pubkey.to_vec()),
+            CborValue::Bytes(witness.signature.to_vec()),
         ]));
     }
 

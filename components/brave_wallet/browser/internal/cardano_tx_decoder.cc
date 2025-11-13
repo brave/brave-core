@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_wallet/browser/internal/cardano_tx_decoder.h"
 
-#include <algorithm>
 #include <optional>
 #include <vector>
 
@@ -17,13 +16,6 @@
 namespace brave_wallet {
 
 namespace {
-
-rust::Vec<uint8_t> ToRust(base::span<const uint8_t> data) {
-  rust::Vec<uint8_t> vec;
-  vec.reserve(data.size());
-  std::ranges::copy(data, std::back_inserter(vec));
-  return vec;
-}
 
 std::vector<uint8_t> FromRust(const rust::Vec<uint8_t>& vec) {
   return base::ToVector(vec);
@@ -76,8 +68,8 @@ CardanoTxDecoder::SerializableTx FromRust(const CxxSerializableTx& tx) {
 CxxSerializableVkeyWitness ToRust(
     const CardanoTxDecoder::SerializableVkeyWitness& from) {
   CxxSerializableVkeyWitness result;
-  result.pubkey = ToRust(from.public_key);
-  result.signature = ToRust(from.signature_bytes);
+  result.pubkey = from.public_key;
+  result.signature = from.signature_bytes;
   return result;
 }
 

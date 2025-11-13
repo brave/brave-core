@@ -189,6 +189,11 @@ TEST(CardanoTxDecoderTest, DecodeTransaction_EmptyData) {
   EXPECT_FALSE(decode_result.has_value());
 }
 
+TEST(CardanoTxDecoderTest, DecodeTransaction_EmptyTxArray) {
+  std::vector<uint8_t> tx_cbor = {0x80};  // empty cbor array
+  EXPECT_FALSE(CardanoTxDecoder::DecodeTransaction(tx_cbor).has_value());
+}
+
 TEST(CardanoTxDecoderTest, DecodeTransaction_MalformedTransaction) {
   std::vector<uint8_t> malformed_cbor = {
       0x82,  // Array with 2 elements
@@ -208,13 +213,13 @@ TEST(CardanoTxDecoderTest, AddWitnessesToTransaction_ValidSignatures) {
   CardanoTxDecoder::SerializableTxWitness tx_witness;
 
   CardanoTxDecoder::SerializableVkeyWitness sign_result1;
-  sign_result1.public_key = std::vector<uint8_t>(32, 1);
-  sign_result1.signature_bytes = std::vector<uint8_t>(64, 2);
+  sign_result1.public_key.fill(1);
+  sign_result1.signature_bytes.fill(2);
   tx_witness.vkey_witness_set.push_back(std::move(sign_result1));
 
   CardanoTxDecoder::SerializableVkeyWitness sign_result2;
-  sign_result2.public_key = std::vector<uint8_t>(32, 3);
-  sign_result2.signature_bytes = std::vector<uint8_t>(64, 4);
+  sign_result2.public_key.fill(3);
+  sign_result2.signature_bytes.fill(4);
   tx_witness.vkey_witness_set.push_back(std::move(sign_result2));
 
   // Create expected signed transaction
@@ -244,14 +249,14 @@ TEST(CardanoTxDecoderTest, AddWitnessesToTransaction_ValidSignaturesWithTag) {
 
   // Create first signature result
   CardanoTxDecoder::SerializableVkeyWitness sign_result1;
-  sign_result1.public_key = std::vector<uint8_t>(32, 1);
-  sign_result1.signature_bytes = std::vector<uint8_t>(64, 2);
+  sign_result1.public_key.fill(1);
+  sign_result1.signature_bytes.fill(2);
   tx_witness.vkey_witness_set.push_back(std::move(sign_result1));
 
   // Create second signature result
   CardanoTxDecoder::SerializableVkeyWitness sign_result2;
-  sign_result2.public_key = std::vector<uint8_t>(32, 3);
-  sign_result2.signature_bytes = std::vector<uint8_t>(64, 4);
+  sign_result2.public_key.fill(3);
+  sign_result2.signature_bytes.fill(4);
   tx_witness.vkey_witness_set.push_back(std::move(sign_result2));
 
   std::vector<uint8_t> tx_bytes;
@@ -630,8 +635,8 @@ TEST(CardanoTxDecoderTest, AddWitnessesToTransaction_InvalidTransactionData) {
 
   CardanoTxDecoder::SerializableTxWitness sign_results;
   CardanoTxDecoder::SerializableVkeyWitness sign_result;
-  sign_result.public_key = std::vector<uint8_t>(32, 1);
-  sign_result.signature_bytes = std::vector<uint8_t>(64, 2);
+  sign_result.public_key.fill(1);
+  sign_result.signature_bytes.fill(2);
   sign_results.vkey_witness_set.push_back(std::move(sign_result));
 
   auto result = CardanoTxDecoder::AddWitnessesToTransaction(invalid_tx_bytes,
@@ -667,14 +672,18 @@ TEST(CardanoTxDecoderTest, AddWitnessesToTransaction_InvalidTxNoWitness) {
 
   CardanoTxDecoder::SerializableTxWitness sign_results;
   CardanoTxDecoder::SerializableVkeyWitness sign_result;
-  sign_result.public_key = std::vector<uint8_t>(32, 1);
-  sign_result.signature_bytes = std::vector<uint8_t>(64, 2);
+  sign_result.public_key.fill(1);
+  sign_result.signature_bytes.fill(2);
   sign_results.vkey_witness_set.push_back(std::move(sign_result));
   EXPECT_TRUE(CardanoTxDecoder::AddWitnessesToTransaction(valid_minimal_cbor,
                                                           sign_results));
 
   valid_minimal_cbor[0] = 0x81;  // Remove witness set
   valid_minimal_cbor.pop_back();
+  EXPECT_FALSE(CardanoTxDecoder::AddWitnessesToTransaction(valid_minimal_cbor,
+                                                           sign_results));
+
+  valid_minimal_cbor = {0x80};  // Empty cbor array
   EXPECT_FALSE(CardanoTxDecoder::AddWitnessesToTransaction(valid_minimal_cbor,
                                                            sign_results));
 }

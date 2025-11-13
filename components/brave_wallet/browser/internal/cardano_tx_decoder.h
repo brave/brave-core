@@ -63,8 +63,8 @@ class CardanoTxDecoder {
     SerializableVkeyWitness(SerializableVkeyWitness&&);
     SerializableVkeyWitness& operator=(SerializableVkeyWitness&&);
 
-    std::vector<uint8_t> signature_bytes;
-    std::vector<uint8_t> public_key;
+    std::array<uint8_t, 64u> signature_bytes;
+    std::array<uint8_t, 32u> public_key;
   };
 
   struct SerializableTxWitness {

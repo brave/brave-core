@@ -584,8 +584,8 @@ void CardanoApiImpl::OnSignTransactionRequestProcessed(
     }
 
     auto& vkey_witness = witness.vkey_witness_set.emplace_back();
-    vkey_witness.signature_bytes = base::ToVector(sign_result->signature),
-    vkey_witness.public_key = base::ToVector(sign_result->pubkey);
+    vkey_witness.signature_bytes = sign_result->signature,
+    vkey_witness.public_key = sign_result->pubkey;
   }
 
   auto signed_tx = CardanoTxDecoder::AddWitnessesToTransaction(
