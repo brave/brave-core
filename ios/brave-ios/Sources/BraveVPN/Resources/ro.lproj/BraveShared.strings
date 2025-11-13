@@ -17,7 +17,7 @@
 "vpn.autoRenewSoonExpireTitle" = "Oh, nu! Abonamentul tău VPN Brave este pe cale să expire.";
 
 /* Title for screen to buy the VPN. */
-"vpn.buyVPNTitle" = "Firewall Brave + VPN";
+"vpn.buyVPNTitle" = "VPN Brave";
 
 /* Message for an alert when the VPN can't get prices from the App Store */
 "vpn.errorCantGetPricesBody" = "Nu s-a putut conecta la AppStore, te rog să încerci din nou în câteva minute.";

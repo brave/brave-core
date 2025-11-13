@@ -146,25 +146,31 @@
 "aichat.internalErrorViewTitle" = "משהו השתבש בעת עיבוד הבקשה שלך. יש לנסות שוב מאוחר יותר.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeHaikuMessageDescription" = "היי, אני Leo. אני מנוהל במלואי על ידי Brave ומופעל באמצעות Claude Haiku, מודל שנוצר על ידי Anthropic לשימוש במשימות שיחה ועיבוד טקסט. Claude Haiku מנוהל על ידי Brave באמצעות התשתית המאובטחת שלנו.";
+"aichat.introMessageClaudeHaikuMessageDescription" = "היי, אני Leo. אני עוזר AI המנוהל במלואו על ידי Brave. אני מופעל באמצעות Claude Haiku, מודל שנוצר על ידי Anthropic לשימוש ויישום במגוון תרחישים. Claude Haiku מנוהל על ידי Brave באמצעות התשתית המאובטחת שלנו.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeHaikuModelPurposeDescription" = "צ'אט מהיר כברק";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeInstantMessageDescription" = "היי, אני Leo. אני מנוהל במלואי על ידי Brave ומופעל באמצעות Claude Instant, מודל שנוצר על ידי Anthropic לשימוש במשימות שיחה ועיבוד טקסט. Claude Instant מנוהל על ידי Brave באמצעות התשתית המאובטחת שלנו.";
+"aichat.introMessageClaudeInstantMessageDescription" = "היי, אני Leo. I'm an AI assistant by Brave. אני מופעל באמצעות Claude Instant, מודל שנוצר על ידי Anthropic לשימוש ויישום במגוון תרחישים. Claude Instant מנוהל על ידי Brave באמצעות התשתית המאובטחת שלנו.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeSonnetMessageDescription" = "היי, אני Leo. אני מנוהל במלואי על ידי Brave ומופעל באמצעות Claude Sonnet, מודל שנוצר על ידי Anthropic לשימוש במשימות שיחה ועיבוד טקסט. Claude Sonnet מנוהל על ידי Brave באמצעות התשתית המאובטחת שלנו.";
+"aichat.introMessageClaudeSonnetMessageDescription" = "היי, אני Leo. אני עוזר AI המנוהל במלואו על ידי Brave. אני מופעל באמצעות Claude Sonnet, מודל שנוצר על ידי Anthropic לשימוש ויישום במגוון תרחישים. Claude Sonnet מנוהל על ידי Brave באמצעות התשתית המאובטחת שלנו.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeSonnetModelPurposeDescription" = "מהירות ואינטליגנציה מאוזנות";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageDeepSeekR1MessageDescription" = "היי, אני Leo. אני עוזר AI שמנוהל באופן מלא על ידי Brave. אני מופעל באמצעות DeepSeek R1, מודל שנוצר על ידי DeepSeek לביצוע משימות הדורשות חשיבה עמוקה.";
+"aichat.introMessageDeepSeekR1MessageDescription" = "היי, אני Leo. אני עוזר AI המנוהל במלואו על ידי Brave. אני מופעל באמצעות DeepSeek R1, מודל שנוצר על ידי DeepSeek כדי לבצע משימות הנמקות עמוקות. DeepSeek R1 מנוהל על ידי Brave באמצעות התשתית המאובטחת שלנו.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageDeepSeekR1ModelPurposeDescription" = "מודל הסקה";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageGemmaMessageDescription" = "היי, אני ליאו. אני עוזר AI המנוהל במלואו על ידי Brave. אני מופעל על ידי Gemma 3 12B, מודל שנוצר על ידי Google DeepMind לשימוש ויישום במגוון תרחישים. Gemma מנוהל על ידי Brave באמצעות התשתית המאובטחת שלנו.";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageGemmaPurposeDescription" = "הבנת טקסט ותמונות למטרות כלליות";
 
 /* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
 "aichat.introMessageGenericMessageDescription" = "היי, אני Leo, עוזר AI מאת Brave. אני מופעל באמצעות %@. אפשר לשאול אותי כל דבר, ואעשה כמיטב יכולתי לענות.";
@@ -176,7 +182,7 @@
 "aichat.introMessageLlamaModelPurposeDescription" = "צ'אט למטרות כלליות";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageQwenMessageDescription" = "היי, אני Leo. אני עוזר AI המנוהל במלואו על ידי Brave. אני מופעל באמצעות Qwen 14B, מודל שנוצר על ידי Alibaba Cloud לשימוש ויישום במגוון תרחישים. Qwen מנוהל על ידי Brave באמצעות התשתית המאובטחת שלנו.";
+"aichat.introMessageQwenMessageDescription" = "היי, אני Leo. אני עוזר AI המנוהל במלואו על ידי Brave. אני מופעל באמצעות Qwen 14B, מודל שנוצר על ידי Alibaba לשימוש ויישום במגוון תרחישים. Qwen מנוהל על ידי Brave באמצעות התשתית המאובטחת שלנו.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageQwenModelPurposeDescription" = "צ׳אט כללי, תכנות, ועוד";

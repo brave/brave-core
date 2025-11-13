@@ -196,11 +196,14 @@
 /* An option setting for automatically shredding when the site is closed */
 "ShredOnSiteTabsClosed" = "La închiderea filelor site-ului";
 
+/* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'. */
+"ShredSiteAllTabsConfirmationMessage" = "Distrugerea va închide toate filele și va șterge toate datele de pe acest site. Nu se poate anula.";
+
 /* A list row label for accessing the shred settings screen */
 "ShredSiteData" = "Distruge datele site-ului";
 
-/* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'.
-A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'.
+A message for a confirmation window that appears when a user clicks on 'Shred' with multiple tabs selected. */
 "ShredSiteDataConfirmationMessage" = "Distrugerea va închide toate filele deschise ale acestui site și va șterge datele asociate. Nu se poate anula.";
 
 /* A title for a confirmation window that appears when a user clicks on 'Shred Data' */

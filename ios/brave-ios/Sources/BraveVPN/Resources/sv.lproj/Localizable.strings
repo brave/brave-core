@@ -101,7 +101,7 @@
 "vpn.contactFormTimezone" = "iOS tidszon";
 
 /* Title for contact form email. */
-"vpn.contactFormTitle" = "Brave brandvägg + VPN-problem";
+"vpn.contactFormTitle" = "Brave VPN Problem";
 
 /* Button text to enable Brave VPN */
 "vpn.enableButton" = "Aktivera";
@@ -275,7 +275,7 @@
 "vpn.settingsTransportProtocol" = "Transportprotokoll";
 
 /* Button to allow the user to view the App Store receipt. */
-"vpn.settingsViewReceipt" = "Visa App Store-kvitto";
+"vpn.settingsViewReceipt" = "Visa App Store kvitto";
 
 /* The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc. */
 "vpn.settingsVPNKillSwitchDescription" = "När funktionen är aktiverad kopplas din enhet automatiskt bort från internet om din VPN-anslutning oväntat bryts, för att förhindra läckage av IP-adresser och data. [Läs mer](%@)";
@@ -296,7 +296,7 @@
 "vpn.vpnBackgroundNotificationBody" = "Till och med i bakgrunden kommer Brave att skydda dig.";
 
 /* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationTitle" = "Brave brandvägg + VPN är PÅ";
+"vpn.vpnBackgroundNotificationTitle" = "Brave VPN är PÅ";
 
 /* Text for description of list item which chooses the optimal server for the country region */
 "vpn.vpnCityRegionOptimalDescription" = "Använd den bästa tillgängliga servern";
@@ -311,7 +311,7 @@
 "vpn.vpnConfigGenericErrorTitle" = "Fel";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "Brave brandvägg + VPN kräver att en VPN-profil installeras på din enhet för att fungera.";
+"vpn.vpnConfigPermissionDeniedErrorBody" = "Brave VPN kräver att en VPN-profil installeras på din enhet för att fungera.";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
 "vpn.vpnConfigPermissionDeniedErrorTitle" = "Åtkomst nekad";
@@ -341,7 +341,7 @@
 "vpn.vpnRegionChangedTitle" = "VPN-region ändrad";
 
 /* Message for alert to reset vpn configuration */
-"vpn.vpnResetAlertBody" = "Detta kommer återställa din Brave brandvägg + VPN-konfiguration och fixa alla problem. Den här processen kan ta en minut.";
+"vpn.vpnResetAlertBody" = "Detta kommer återställa din Brave VPN-konfiguration och fixa alla problem. Den här processen kan ta en minut.";
 
 /* Title for alert to reset vpn configuration */
 "vpn.vpnResetAlertTitle" = "Återställ konfiguration";

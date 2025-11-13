@@ -1,20 +1,20 @@
 /* Title for bookmarks menu item */
-"widgets.BookmarksMenuItem" = "Favoritos";
+"widgets.BookmarksMenuItem" = "Barra de marcadores";
 
 /* The name of the feature */
 "widgets.braveLeo" = "Leo AI";
 
 /* The name of the feature */
-"widgets.braveNews" = "Brave News";
+"widgets.braveNews" = "Notícias Brave";
 
 /* Title for downloads menu item */
-"widgets.DownloadsMenuItem" = "Downloads";
+"widgets.DownloadsMenuItem" = "Transferências";
 
 /* Description for favorites widget on 'add widget' screen. */
 "widgets.favoritesWidgetDescription" = "Acesse rapidamente seus sites favoritos.";
 
 /* Title for favorites widget on 'add widget' screen. */
-"widgets.favoritesWidgetTitle" = "Favoritos em destaque";
+"widgets.favoritesWidgetTitle" = "Favoritos";
 
 /* Title for history menu item */
 "widgets.HistoryMenuItem" = "Histórico";
@@ -26,7 +26,7 @@
 "widgets.newsClusteringReadMoreButtonTitle" = "Ler mais";
 
 /* Description for Brave News widgets that display the top news */
-"widgets.newsClusteringWidgetDescription" = "Receba as últimas notícias";
+"widgets.newsClusteringWidgetDescription" = "Receba as notícias mais recentes";
 
 /* Title for Brave News widgets that display the top news */
 "widgets.newsClusteringWidgetTitle" = "Principais notícias";
@@ -38,28 +38,28 @@
 "widgets.QRCode" = "Código QR";
 
 /* Description for the search option on the 'shortcuts' widget. */
-"widgets.searchShortcutTitle" = "Pesquisa";
+"widgets.searchShortcutTitle" = "Pesquisar";
 
 /* Description for Brave Shields widget on 'add widget' screen. */
 "widgets.shieldStatsDescription" = "Um resumo de como o Brave economiza seu tempo e protege você on-line.";
 
 /* Title for Brave Shields widget on 'add widget' screen. */
-"widgets.shieldStatsTitle" = "Estatísticas de privacidade";
+"widgets.shieldStatsTitle" = "Estatísticas de Privacidade";
 
 /* Title of Brave Shields widget shown above stat numbers. */
-"widgets.shieldStatsWidgetTitle" = "Estatísticas de privacidade";
+"widgets.shieldStatsWidgetTitle" = "Estatísticas de Privacidade";
 
 /* Button to the browser and enter URL or make a search query there. */
 "widgets.shortcutsEnterURLButton" = "Pesquise ou digite um URL";
 
 /* Button to open new browser tab. */
-"widgets.shortcutsNewTabButton" = "Nova aba";
+"widgets.shortcutsNewTabButton" = "Nova guia";
 
 /* Button to open video playlist window. */
 "widgets.shortcutsPlaylistButton" = "Playlist";
 
 /* Button to open new private browser tab. */
-"widgets.shortcutsPrivateTabButton" = "Aba privada";
+"widgets.shortcutsPrivateTabButton" = "Separador privado";
 
 /* Description for shortcuts widget on 'add widget' screen. */
 "widgets.shortcutsWidgetDescription" = "Acesso rápido para pesquisar na web ou abrir páginas da web no Brave.";

@@ -101,7 +101,7 @@
 "vpn.contactFormTimezone" = "אזור זמן של iOS";
 
 /* Title for contact form email. */
-"vpn.contactFormTitle" = "בעיה עם חומת אש + VPN של Brave";
+"vpn.contactFormTitle" = "בעיה ב-Brave VPN";
 
 /* Button text to enable Brave VPN */
 "vpn.enableButton" = "הפעל";
@@ -275,7 +275,7 @@
 "vpn.settingsTransportProtocol" = "פרוטוקול תעבורה";
 
 /* Button to allow the user to view the App Store receipt. */
-"vpn.settingsViewReceipt" = "הצגת קבלה של App Store";
+"vpn.settingsViewReceipt" = "הצגת קבלה מ-App Store";
 
 /* The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc. */
 "vpn.settingsVPNKillSwitchDescription" = "כשאפשרות זו מופעלת, אם חיבור ה-VPN שלך נופל בפתאומיות, המכשיר שלך ינותק מהאינטרנט אוטומטית כדי למנוע דליפת נתונים וכתובות IP. [למידע נוסף](%@)";
@@ -296,7 +296,7 @@
 "vpn.vpnBackgroundNotificationBody" = "אפילו כשהוא פועל ברקע, Brave ימשיך להגן עליך.";
 
 /* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationTitle" = "חומת אש + VPN של Brave מופעלים";
+"vpn.vpnBackgroundNotificationTitle" = "Brave VPN פעיל";
 
 /* Text for description of list item which chooses the optimal server for the country region */
 "vpn.vpnCityRegionOptimalDescription" = "השתמש בשרת הזמין הטוב ביותר";
@@ -311,7 +311,7 @@
 "vpn.vpnConfigGenericErrorTitle" = "שגיאה";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "חומת אש + VPN של Brave דורשים התקנת פרופיל VPN על המכשיר שלך כדי לפעול.";
+"vpn.vpnConfigPermissionDeniedErrorBody" = "VPN של Brave דורש התקנת פרופיל VPN על המכשיר שלך כדי לפעול.";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
 "vpn.vpnConfigPermissionDeniedErrorTitle" = "הרשאה נדחתה";
@@ -341,7 +341,7 @@
 "vpn.vpnRegionChangedTitle" = "אזור VPN השתנה";
 
 /* Message for alert to reset vpn configuration */
-"vpn.vpnResetAlertBody" = "זה יאפס את התצורה של חומת אש + VPN של Brave ויתקן שגיאות. התהליך הזה עשוי לקחת דקה.";
+"vpn.vpnResetAlertBody" = "זה יאפס את התצורה של Brave VPN ויתקן שגיאות. התהליך הזה עשוי לקחת דקה.";
 
 /* Title for alert to reset vpn configuration */
 "vpn.vpnResetAlertTitle" = "איפוס תצורה";

@@ -110,7 +110,7 @@
 "DomainBlockedTitle" = "Domain blockiert";
 
 /* A description of what the Enable GPC toggle does */
-"EnableGPCDescription" = "Bitte Websites, deine Daten nicht zu verkaufen oder weiterzugeben. [Mehr erfahren] (https://support.brave.app/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings#h_01HHFRRT6B5YTRREA4ZDARGTWM)";
+"EnableGPCDescription" = "Bitte Websites, deine Daten nicht zu verkaufen oder weiterzugeben. [Mehr erfahren](https://support.brave.app/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings#h_01HHFRRT6B5YTRREA4ZDARGTWM)";
 
 /* A label of the GPC toggle */
 "EnableGPCLabel" = "Global Privacy Control aktivieren";
@@ -196,11 +196,14 @@
 /* An option setting for automatically shredding when the site is closed */
 "ShredOnSiteTabsClosed" = "Registerkarten der Website geschlossen";
 
+/* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'. */
+"ShredSiteAllTabsConfirmationMessage" = "Beim Schreddern werden alle Registerkarten geschlossen und alle Website-Daten gelöscht. Dies kann nicht rückgängig gemacht werden.";
+
 /* A list row label for accessing the shred settings screen */
 "ShredSiteData" = "Daten der Website schreddern";
 
-/* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'.
-A message for a confirmation window that appears when a user clicks on 'Shred Data'. */
+/* A message for a confirmation window that appears when a user clicks on 'Shred Data'.
+A message for a confirmation window that appears when a user clicks on 'Shred' with multiple tabs selected. */
 "ShredSiteDataConfirmationMessage" = "Beim Schreddern werden alle auf dieser Website geöffneten Registerkarten geschlossen und alle Website-Daten gelöscht. Dies kann nicht rückgängig gemacht werden.";
 
 /* A title for a confirmation window that appears when a user clicks on 'Shred Data' */

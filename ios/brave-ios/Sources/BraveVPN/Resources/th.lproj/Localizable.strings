@@ -101,7 +101,7 @@
 "vpn.contactFormTimezone" = "เขตเวลาของ iOS";
 
 /* Title for contact form email. */
-"vpn.contactFormTitle" = "ปัญหาของ Brave Firewall + VPN";
+"vpn.contactFormTitle" = "ปัญหา Brave VPN";
 
 /* Button text to enable Brave VPN */
 "vpn.enableButton" = "เปิดการใช้งาน";
@@ -296,7 +296,7 @@
 "vpn.vpnBackgroundNotificationBody" = "แม้จะทำงานอยู่เบื้องหลัง Brave จะยังคงปกป้องคุณต่อไป";
 
 /* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationTitle" = "Brave Firewall + VPN เปิดอยู่";
+"vpn.vpnBackgroundNotificationTitle" = "Brave VPN เปิดอยู่";
 
 /* Text for description of list item which chooses the optimal server for the country region */
 "vpn.vpnCityRegionOptimalDescription" = "ใช้เซิร์ฟเวอร์ที่ดีที่สุด";
@@ -311,7 +311,7 @@
 "vpn.vpnConfigGenericErrorTitle" = "ข้อผิดพลาด";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "Brave Firewall + VPN จำเป็นต้องติดตั้งโปรไฟล์ VPN บนอุปกรณ์ของคุณจึงจะทำงานได้";
+"vpn.vpnConfigPermissionDeniedErrorBody" = "Brave VPN จำเป็นต้องติดตั้งโปรไฟล์ VPN บนอุปกรณ์ของคุณจึงจะทำงานได้ ";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
 "vpn.vpnConfigPermissionDeniedErrorTitle" = "ปฏิเสธการอนุญาต";
@@ -341,7 +341,7 @@
 "vpn.vpnRegionChangedTitle" = "เปลี่ยนภูมิภาค VPN แล้ว";
 
 /* Message for alert to reset vpn configuration */
-"vpn.vpnResetAlertBody" = "การดำเนินการนี้จะรีเซ็ตการกำหนดค่า Brave Firewall + VPN ของคุณและแก้ไขข้อผิดพลาดต่างๆ กระบวนการนี้อาจใช้เวลาสักครู่";
+"vpn.vpnResetAlertBody" = "การดำเนินการนี้จะรีเซ็ตการกำหนดค่า Brave VPN ของคุณและแก้ไขข้อผิดพลาดต่างๆ กระบวนการนี้อาจใช้เวลาสักครู่";
 
 /* Title for alert to reset vpn configuration */
 "vpn.vpnResetAlertTitle" = "รีเซ็ตการกำหนดค่า";

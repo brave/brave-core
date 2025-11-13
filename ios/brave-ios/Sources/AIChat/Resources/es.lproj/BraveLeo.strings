@@ -146,37 +146,43 @@
 "aichat.internalErrorViewTitle" = "Hubo un error al procesar tu solicitud. Vuelve a intentarlo más tarde.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeHaikuMessageDescription" = "Hola, me llamo Leo. Funciono mediante un proxy de Brave y con tecnología de Claude Haiku, un modelo creado por Anthropic para llevar a cabo tareas conversacionales y de procesamiento de texto. Claude Haiku se aloja en los servidores de Brave mediante nuestra segura infraestructura.";
+"aichat.introMessageClaudeHaikuMessageDescription" = "Hola, me llamo Leo. Soy un asistente mediante IA de Brave. Funciono con tecnología de Claude Haiku, un modelo creado por Anthropic para llevar a cabo tareas conversacionales y de procesamiento de texto. Claude Haiku se aloja en los servidores de Brave mediante nuestra segura infraestructura.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeHaikuModelPurposeDescription" = "Conversaciones a la velocidad del rayo";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeInstantMessageDescription" = "Hola, me llamo Leo. Funciono mediante un proxy de Brave y con tecnología de Claude Instant, un modelo creado por Anthropic para llevar a cabo tareas conversacionales y de procesamiento de texto. Claude Instant se aloja en los servidores de Brave mediante nuestra segura infraestructura.";
+"aichat.introMessageClaudeInstantMessageDescription" = "Hola, me llamo Leo. Soy un asistente mediante IA de Brave. Funciono con tecnología de Claude Instant, un modelo creado por Anthropic para llevar a cabo tareas conversacionales y de procesamiento de texto. Claude Instant se aloja en los servidores de Brave mediante nuestra segura infraestructura.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeSonnetMessageDescription" = "Hola, me llamo Leo. Funciono mediante un proxy de Brave y con tecnología de Claude Sonnet, un modelo creado por Anthropic para llevar a cabo tareas conversacionales y de procesamiento de texto. Claude Sonnet se aloja en los servidores de Brave mediante nuestra segura infraestructura.";
+"aichat.introMessageClaudeSonnetMessageDescription" = "Hola, me llamo Leo. Soy un asistente mediante IA de Brave. Funciono con tecnología de Claude Sonnet, un modelo creado por Anthropic para llevar a cabo tareas conversacionales y de procesamiento de texto. Claude Sonnet se aloja en los servidores de Brave mediante nuestra segura infraestructura.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeSonnetModelPurposeDescription" = "Equilibrio entre velocidad e inteligencia";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageDeepSeekR1MessageDescription" = "Hola, me llamo Leo. Soy un ayudante mediante inteligencia artificial que se aloja única y exclusivamente en los servidores de Brave. Funciono con tecnología de DeepSeek R1, un modelo creado por DeepSeek para llevar a cabo tareas de razonamiento.";
+"aichat.introMessageDeepSeekR1MessageDescription" = "Hola, me llamo Leo. Soy un asistente mediante IA de Brave. Funciono con tecnología de DeepSeek R1, un modelo creado por DeepSeek para llevar a cabo tareas de razonamiento profundo. DeepSeek R1 se aloja en los servidores de Brave mediante nuestra segura infraestructura.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageDeepSeekR1ModelPurposeDescription" = "Modelo de razonamiento";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageGemmaMessageDescription" = "Hola, me llamo Leo. Soy un asistente mediante IA de Brave. Funciono con tecnología de Gemma 3 12B, un modelo creado por Google DeepMind para ser de gran utilidad en multitud de situaciones. Gemma se aloja en los servidores de Brave mediante nuestra segura infraestructura.";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageGemmaPurposeDescription" = "Comprensión de textos e imágenes de uso general";
 
 /* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
 "aichat.introMessageGenericMessageDescription" = "Hola, me llamo Leo. Soy asistente de IA de Brave, con la tecnología de %@. Pregúntame lo que quieras y haré todo lo posible por responderte.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageLlamaMessageDescription" = "Hola, me llamo Leo. Soy un ayudante mediante IA que se aloja exclusivamente en los servidores de Brave. Funciono con tecnología de Llama 3.1 8B, un modelo creado por Meta para ser de gran utilidad en multitud de situaciones. Llama se aloja en los servidores de Brave mediante nuestra segura infraestructura.";
+"aichat.introMessageLlamaMessageDescription" = "Hola, me llamo Leo. Soy un asistente mediante IA de Brave. Funciono con tecnología de Llama 3.1 8B, un modelo creado por Meta para ser de gran utilidad en multitud de situaciones. Llama se aloja en los servidores de Brave mediante nuestra segura infraestructura.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageLlamaModelPurposeDescription" = "Chat de uso general";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageQwenMessageDescription" = "Hola, me llamo Leo. Soy un ayudante mediante IA que se aloja exclusivamente en los servidores de Brave. Funciono con tecnología de Qwen 14B, un modelo creado por Alibaba Cloud para ser de gran utilidad en multitud de situaciones. Llama se aloja en los servidores de Brave mediante nuestra segura infraestructura.";
+"aichat.introMessageQwenMessageDescription" = "Hola, me llamo Leo. Soy un asistente mediante IA de Brave. Funciono con tecnología de Qwen 14B, un modelo creado por Alibaba Cloud para ser de gran utilidad en multitud de situaciones. Qwen se aloja en los servidores de Brave mediante nuestra segura infraestructura.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageQwenModelPurposeDescription" = "Chat de propósito general, codificación y más";

@@ -137,7 +137,7 @@
 "aichat.feedbackViewMainTitle" = "Partagez votre avis sur l'IA Brave";
 
 /* The button title for opening paywall screen */
-"aichat.goPremiumButtonTitle" = "Passer à la version premium";
+"aichat.goPremiumButtonTitle" = "Passer à la version Premium";
 
 /* Description about answers are changing with page context */
 "aichat.infoAboutPageContext" = "Façonner les réponses en fonction du contenu de la page";
@@ -161,13 +161,19 @@
 "aichat.introMessageClaudeSonnetModelPurposeDescription" = "L'équilibre parfait entre vitesse et intelligence";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageDeepSeekR1MessageDescription" = "Bonjour, je m'appelle Leo. Je suis un assistant IA entièrement hébergé par Brave. Je suis alimenté par DeepSeek R1, un modèle créé par DeepSeek, pour réaliser des tâches de raisonnement complexes.";
+"aichat.introMessageDeepSeekR1MessageDescription" = "Bonjour, je m'appelle Leo. Je suis un assistant IA basé sur DeepSeek R1, un modèle développé par DeepSeek, conçu pour vous assister dans des tâches de raisonnement approfondi. Le modèle DeepSeek R1 est hébergé par Brave sur une infrastructure interne et sécurisée.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageDeepSeekR1ModelPurposeDescription" = "Modèle de raisonnement";
 
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageGemmaMessageDescription" = "Bonjour, je m'appelle Leo. Je suis un assistant IA basé sur Gemma 3 12B, un modèle développé par Google DeepMind, conçu pour vous assister dans diverses tâches. Le modèle Gemma est hébergé par Brave sur une infrastructure interne et sécurisée.";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageGemmaPurposeDescription" = "Discussions générales et analyse d'images";
+
 /* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
-"aichat.introMessageGenericMessageDescription" = "Bonjour, je m'appelle Leo. Je suis un assistant IA proposé par Brave. Je suis alimenté par %@. Demandez-moi tout ce que vous voulez et je ferai de mon mieux pour répondre à votre question.";
+"aichat.introMessageGenericMessageDescription" = "Bonjour, je m'appelle Leo. Je suis un assistant IA proposé par Brave. Je suis optimisé par %@. Demandez-moi tout ce que vous voulez et je ferai de mon mieux pour répondre à votre question.";
 
 /* The model intro message when you first enter the chat assistant */
 "aichat.introMessageLlamaMessageDescription" = "Bonjour, je m'appelle Leo. Je suis un assistant IA basé sur Llama 3.1 8B, un modèle développé par Meta, conçu pour vous assister dans diverses tâches. Le modèle Llama est hébergé par Brave sur une infrastructure interne et sécurisée.";
@@ -293,22 +299,22 @@
 "aichat.paywallUpsellAccuracyTopicSubTitle" = "Obtenez des réponses plus précises pour des conversations plus nuancées.";
 
 /* The title accuracy entry in paywall upsell screen */
-"aichat.paywallUpsellAccuracyTopicTitle" = "Gardez le fil de la conversation";
+"aichat.paywallUpsellAccuracyTopicTitle" = "Gardez le fil";
 
 /* The subtitle chat length entry in paywall upsell screen */
-"aichat.paywallUpsellChatLengthTopicSubTitle" = "Bénéficiez de limites de taux plus élevées pour des conversations plus longues.";
+"aichat.paywallUpsellChatLengthTopicSubTitle" = "Obtenez des limites de taux plus élevées pour des conversations plus longues.";
 
 /* The title chat length entry in paywall upsell screen */
 "aichat.paywallUpsellChatLengthTopicTitle" = "Discutez plus longtemps";
 
 /* The subtitle creativity entry in paywall upsell screen */
-"aichat.paywallUpsellCreativityTopicSubTitle" = "Accédez à des modèles plus adaptés aux tâches créatives et à la génération de contenu.";
+"aichat.paywallUpsellCreativityTopicSubTitle" = "Accédez à des modèles mieux adaptés aux tâches créatives et à la génération de contenu.";
 
 /* The title creativity entry in paywall upsell screen */
 "aichat.paywallUpsellCreativityTopicTitle" = "Débloquez votre créativité";
 
 /* The subtitle model type entry in paywall upsell screen */
-"aichat.paywallUpsellModelTypeTopicSubTitle" = "Profitez d'un accès prioritaire à des modèles avancés avec des capacités diverses.";
+"aichat.paywallUpsellModelTypeTopicSubTitle" = "Accès prioritaire à des modèles puissants avec différentes compétences.";
 
 /* The title model type entry in paywall upsell screen */
 "aichat.paywallUpsellModelTypeTopicTitle" = "Explorez différents modèles d'IA";
@@ -344,7 +350,7 @@
 "aichat.quickMenuAdvancedSettingsActionTitle" = "Paramètres avancés";
 
 /* The title of action for quick menu which presents payment screen for premium */
-"aichat.quickMenuGoPremiumActionTitle" = "Passer à la version premium";
+"aichat.quickMenuGoPremiumActionTitle" = "Passer à la version Premium";
 
 /* The title of action for quick menu which display subscription management view */
 "aichat.quickMenuManageSubscriptionActionTitle" = "Gérer les abonnements";

@@ -146,31 +146,37 @@
 "aichat.internalErrorViewTitle" = "Дошло је до грешке приликом обраде вашег захтева. Пробајте поново касније.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeHaikuMessageDescription" = "Здраво, зовем се Leo. Brave ми је прокси, а покреће ме Claude Haiku, модел који је креирала компанија Anthropic, како би омогућила разговорне задатке и задатке обраде текста. Claude Haiku се хостује на Brave-овој сопственој безбедној инфраструктури.";
+"aichat.introMessageClaudeHaikuMessageDescription" = "Здраво, зовем се Leo. Ја сам асистент заснован на вештачкој интелигенцији у потпуности хостован од стране компаније Brave. Покреће ме Claude Haiku, модел који је креирала компанија Anthropic како би омогућила разговорне задатке и задатке обраде текста. Claude Haiku се хостује на Brave-овој сопственој безбедној инфраструктури.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeHaikuModelPurposeDescription" = "Муњевито брзо ћаскање";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeInstantMessageDescription" = "Здраво, зовем се Leo. Brave ми је прокси, а покреће ме Claude Instant, модел који је креирала компанија Anthropic како би омогућила разговорне задатке и задатке обраде текста. Claude Instant се хостује на Brave-овој сопственој безбедној инфраструктури.";
+"aichat.introMessageClaudeInstantMessageDescription" = "Здраво, зовем се Leo. Ја сам асистент заснован на вештачкој интелигенцији у потпуности хостован од стране компаније Brave. Покреће ме Claude Instant, модел који је креирала компанија Anthropic како би омогућила разговорне задатке и задатке обраде текста. Claude Instant се хостује на Brave-овој сопственој безбедној инфраструктури.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeSonnetMessageDescription" = "Здраво, зовем се Leo. Brave ми је прокси, а покреће ме Claude Sonnet, модел који је креирала компанија Anthropic како би омогућила разговорне задатке и задатке обраде текста. Claude Sonnet се хостује на Brave-овој сопственој безбедној инфраструктури.";
+"aichat.introMessageClaudeSonnetMessageDescription" = "Здраво, зовем се Leo. Ја сам асистент заснован на вештачкој интелигенцији у потпуности хостован од стране компаније Brave. Покреће ме Claude Sonnet, модел који је креирала компанија Anthropic како би омогућила разговорне задатке и задатке обраде текста. Claude Sonnet се хостује на Brave-овој сопственој безбедној инфраструктури.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeSonnetModelPurposeDescription" = "Балансирана брзина и интелигенција";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageDeepSeekR1MessageDescription" = "Здраво, зовем се Leo. Ја сам асистент заснован на вештачкој интелигенцији у потпуности хостован од стране компаније Brave. Покреће ме DeepSeek R1, модел који је креирала компанија DeepSeek за обављање задатака дубоког резоновања.";
+"aichat.introMessageDeepSeekR1MessageDescription" = "Здраво, зовем се Leo. Ја сам асистент заснован на вештачкој интелигенцији у потпуности хостован од стране компаније Brave. Покреће ме DeepSeek R1, модел који је креирала компанија DeepSeek за обављање задатака дубоког резоновања. DeepSeek R1 се хостује на Brave-овој сопственој безбедној инфраструктури.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageDeepSeekR1ModelPurposeDescription" = "Модел за резоновање";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageGemmaMessageDescription" = "Здраво, зовем се Leo. Ја сам асистент заснован на вештачкој интелигенцији у потпуности хостован од стране компаније Brave. Покреће ме Gemma 3 12B, модел који је креирала компанија Google DeepMind како бих био ефикасан и применљив на многе случајеве употребе. Gemma се хостује на Brave-овој сопственој безбедној инфраструктури.";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageGemmaPurposeDescription" = "Разумевање текста и слика за општу употребу";
 
 /* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
 "aichat.introMessageGenericMessageDescription" = "Здраво, зовем се Leo. Ја сам асистент заснован на вештачкој интелигенцији којег је креирао Brave. Покреће ме %@. Питајте ме било шта и потрудићу се да одговорим.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageLlamaMessageDescription" = "Здраво, зовем се Leo. Ја сам асистент заснован на вештачкој интелигенцији у потпуности хостован од стране компаније Brave. Покреће ме Llama 3.1 8B, модел који је креирала компанија Meta, како бих био ефикасан и применљив на многе случајеве употребе. Llama се хостује на Brave-овој сопственој безбедној инфраструктури.";
+"aichat.introMessageLlamaMessageDescription" = "Здраво, зовем се Leo. Ја сам асистент заснован на вештачкој интелигенцији у потпуности хостован од стране компаније Brave. Покреће ме Llama 3.1 8B, модел који је креирала компанија Meta како бих био ефикасан и применљив на многе случајеве употребе. Llama се хостује на Brave-овој сопственој безбедној инфраструктури.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageLlamaModelPurposeDescription" = "Ћаскање опште намене";

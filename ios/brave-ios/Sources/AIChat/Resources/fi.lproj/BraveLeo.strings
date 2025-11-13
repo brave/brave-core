@@ -146,37 +146,43 @@
 "aichat.internalErrorViewTitle" = "Jokin meni pieleen pyyntösi käsittelyssä. Yritä myöhemmin uudelleen.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeHaikuMessageDescription" = "Hei, olen Leo. Toimin Braven välityksellä, ja toimintani perustuu Claude Haikuun, joka on Anthropicin luoma malli keskustelu- ja tekstinkäsittelytehtäviä varten. Brave ylläpitää Claude Haikua oman suojatun infrastruktuurinsa kautta.";
+"aichat.introMessageClaudeHaikuMessageDescription" = "Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu Claude Haiku -malliin, jonka on luonut Anthropic keskustelu- ja tekstinkäsittelytehtäviin. Claude Haiku on Brave-hostattu oman suojatun infrastruktuurimme kautta.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeHaikuModelPurposeDescription" = "Salamannopea chatti";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeInstantMessageDescription" = "Hei, olen Leo. Toimin Braven välityksellä, ja toimintani perustuu Claude Instantiin, joka on Anthropicin luoma malli keskustelu- ja tekstinkäsittelytehtäviä varten. Brave ylläpitää Claude Instantia oman suojatun infrastruktuurinsa kautta.";
+"aichat.introMessageClaudeInstantMessageDescription" = "Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu Claude Instant -malliin, jonka on luonut Anthropic keskustelu- ja tekstinkäsittelytehtäviin. Claude Instant on Brave-hostattu oman suojatun infrastruktuurimme kautta.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeSonnetMessageDescription" = "Hei, olen Leo. Toimin Braven välityksellä, ja toimintani perustuu Claude Sonnetiin, joka on Anthropicin luoma malli keskustelu- ja tekstinkäsittelytehtäviä varten. Brave ylläpitää Claude Sonnetia oman suojatun infrastruktuurinsa kautta.";
+"aichat.introMessageClaudeSonnetMessageDescription" = "Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu Claude Sonnet -malliin, jonka on luonut Anthropic keskustelu- ja tekstinkäsittelytehtäviin. Claude Sonnet on Brave-hostattu oman suojatun infrastruktuurimme kautta.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageClaudeSonnetModelPurposeDescription" = "Tasapainotettu nopeus ja älykkyys";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageDeepSeekR1MessageDescription" = "Hei, olen Leo. Olen Braven täysin tekoälyperusteinen avustaja. Toimintani perustuu DeepSeek R1:een, DeepSeekin luomaan malliin, joka soveltuu edistyneisiin käyttötarkoituksiin.";
+"aichat.introMessageDeepSeekR1MessageDescription" = "Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu DeepSeek R1: een, DeepSeekin luomaan malliin, joka on suunniteltu syvien päätelmien tekemiseen. DeepSeek R1 on Brave-hostattu oman suojatun infrastruktuurimme kautta.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageDeepSeekR1ModelPurposeDescription" = "Pohdintamalli";
+
+/* The model intro message when you first enter the chat assistant */
+"aichat.introMessageGemmaMessageDescription" = "Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu Gemma 3 12B: hen, Google DeepMindin luomaan malliin, joka on suorituskykyinen ja soveltuu moniin käyttötarkoituksiin. Gemma on Brave-hostattu oman suojatun infrastruktuurimme kautta.";
+
+/* The model's purpose - Describes what it can do best */
+"aichat.introMessageGemmaPurposeDescription" = "Yleiskäyttöinen tekstin ja kuvien ymmärtäminen";
 
 /* The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name */
 "aichat.introMessageGenericMessageDescription" = "Hei, olen Leo. Olen Braven tekoälyavustaja. Palvelun tarjoaa %@. Kysy minulta mitä tahansa, niin yritän vastata parhaani mukaan.";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageLlamaMessageDescription" = "Hei, olen Leo. Olen Braven kokonaan ylläpitämä tekoälyavustaja. Toimintani perustuu Llama 3.1 8B:hen, Metan luomaan malliin, joka on tehokas ja soveltuu moniin käyttötarkoituksiin. Brave ylläpitää Llamaa oman suojatun infrastruktuurinsa kautta.";
+"aichat.introMessageLlamaMessageDescription" = "Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu Llama 3.1 8B: hen, Metan luomaan malliin, joka on suorituskykyinen ja soveltuu moniin käyttötarkoituksiin. Llama on Brave-hostattu oman suojatun infrastruktuurimme kautta.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageLlamaModelPurposeDescription" = "Yleiskäyttöinen chat";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageQwenMessageDescription" = "Hei, olen Leo. Olen Braven kokonaan ylläpitämä tekoälyavustaja. Toimintani perustuu Qwen 14B:hen, Alibaba Cloudin luomaan malliin, joka on tehokas ja soveltuu moniin käyttötarkoituksiin. Brave ylläpitää Qwenia oman suojatun infrastruktuurinsa kautta.";
+"aichat.introMessageQwenMessageDescription" = "Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu Qwen 14B: hen, Alibaba Cloudin luomaan malliin, joka on suorituskykyinen ja soveltuu moniin käyttötarkoituksiin. Qwen on Brave-hostattu oman suojatun infrastruktuurimme kautta.";
 
 /* The model's purpose - Describes what it can do best */
 "aichat.introMessageQwenModelPurposeDescription" = "Yleiseen tarkoitukseen tarkoitettu chatti, koodaus ja paljon muuta";
