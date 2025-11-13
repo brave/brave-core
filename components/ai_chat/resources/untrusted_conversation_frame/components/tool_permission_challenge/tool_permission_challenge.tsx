@@ -30,8 +30,6 @@ interface Props {
 
 export default function ToolPermissionChallenge(props: Props) {
   const conversationContext = useUntrustedConversationContext()
-  const processPermissionChallenge =
-    conversationContext.conversationHandler?.processPermissionChallenge
 
   if (!props.toolUseEvent.permissionChallenge) {
     return null
@@ -76,7 +74,11 @@ export default function ToolPermissionChallenge(props: Props) {
           isDisabled={!props.isInteractive}
           onClick={
             props.isInteractive
-              ? () => processPermissionChallenge?.(props.toolUseEvent.id, true)
+              ? () =>
+                  conversationContext.conversationHandler?.processPermissionChallenge?.(
+                    props.toolUseEvent.id,
+                    true,
+                  )
               : undefined
           }
         >
@@ -90,7 +92,11 @@ export default function ToolPermissionChallenge(props: Props) {
           isDisabled={!props.isInteractive}
           onClick={
             props.isInteractive
-              ? () => processPermissionChallenge?.(props.toolUseEvent.id, false)
+              ? () =>
+                  conversationContext.conversationHandler?.processPermissionChallenge?.(
+                    props.toolUseEvent.id,
+                    false,
+                  )
               : undefined
           }
         >
