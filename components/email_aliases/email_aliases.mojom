@@ -69,6 +69,8 @@ interface EmailAliasesService {
   AddObserver(pending_remote<EmailAliasesServiceObserver> observer);
 };
 
+// Interface for handling `Generate new alias` dialog actions
+// on the browser side.
 interface EmailAliasesPanelHandler {
   // Notify alias creation complete (the bubble can close). Fire and forget.
   OnAliasCreated(string email);
