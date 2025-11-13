@@ -116,18 +116,24 @@ function ToolEventContent(
 
   // Tool-specific components can add expanded content, a custom tool label,
   // or make the expanded content show by default by removing the toolLabel.
-  let component: ToolComponent | null = null
+  let Component: ToolComponent | null = null
 
   if (toolUseEvent.toolName === Mojom.USER_CHOICE_TOOL_NAME) {
-    component = ToolEventContentUserChoice
+    Component = ToolEventContentUserChoice
   }
 
   if (toolUseEvent.toolName === Mojom.ASSISTANT_DETAIL_STORAGE_TOOL_NAME) {
-    component = ToolEventContentAssistantDetailStorage
+    Component = ToolEventContentAssistantDetailStorage
   }
 
-  if (component) {
-    return component({ ...props, toolInput: input, content })
+  if (Component) {
+    return (
+      <Component
+        {...props}
+        toolInput={input}
+        content={content}
+      />
+    )
   }
 
   // default
