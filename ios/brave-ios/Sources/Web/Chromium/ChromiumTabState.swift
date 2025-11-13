@@ -339,8 +339,14 @@ class ChromiumTabState: TabState, TabStateImpl {
     return archiver.encodedData
   }
 
-  func restore(using sessionData: Data) {
-    guard let webView, CWVWebView.isRestoreDataValid(sessionData) else { return }
+  func restore(using sessionData: Data) throws {
+    if sessionData.isEmpty {
+      throw TabRestorationError.invalidData
+    }
+    guard let webView, CWVWebView.isRestoreDataValid(sessionData) else {
+      Logger.module.error("Failed to restore web view with invalid session data")
+      throw TabRestorationError.invalidData
+    }
     do {
       isRestoring = true
       let coder = try NSKeyedUnarchiver(forReadingFrom: sessionData)
@@ -348,6 +354,8 @@ class ChromiumTabState: TabState, TabStateImpl {
       webView.decodeRestorableState(with: coder)
     } catch {
       Logger.module.error("Failed to restore web view with session data: \(error)")
+      isRestoring = false
+      throw TabRestorationError.invalidData
     }
   }
 
