@@ -615,30 +615,33 @@ TEST(OrchardBundleManagerTest, NoOutputs) {
   OrchardBundleManager::OverrideRandomSeedForTesting(3345661u);
 
   OrchardSpendsBundle spends_bundle;
-  spends_bundle.fvk = PrefixedHexStringToFixed<96>(
-                          "0xd9afda03ff892680ea6da2268c5b7e26d92c7f0c1855c46052"
-                          "a2d50c07b5f821e9d54f"
-                          "9a966097f8593e72b5b969fc3ecf9b5a18b0bf2994318a2f3705"
-                          "4a3f376d37288111d4fe"
-                          "53d6ff9862f7da5f87ff2a67e9d601ab5f8414c25ac1f4ec04")
-                          .value();
-  spends_bundle.sk =
-      PrefixedHexStringToFixed<32>(
-          "0x3de2356702a83e1a9b2c701e1005714b89d79d75e69b6e36e3f966c8c3f0c584")
-          .value();
+  EXPECT_TRUE(PrefixedHexStringToFixed(
+      "0xd9afda03ff892680ea6da2268c5b7e26d92c7f0c1855c46052"
+      "a2d50c07b5f821e9d54f"
+      "9a966097f8593e72b5b969fc3ecf9b5a18b0bf2994318a2f3705"
+      "4a3f376d37288111d4fe"
+      "53d6ff9862f7da5f87ff2a67e9d601ab5f8414c25ac1f4ec04",
+      spends_bundle.fvk));
+  EXPECT_TRUE(PrefixedHexStringToFixed(
+      "0x3de2356702a83e1a9b2c701e1005714b89d79d75e69b6e36e3f966c8c3f0c584",
+      spends_bundle.sk));
 
   {
     OrchardInput input;
     input.note.amount = 119940000u;
-    input.note.addr = *PrefixedHexStringToFixed<43>(
+    EXPECT_TRUE(PrefixedHexStringToFixed(
         "0xc140e946097edb3cc19d0b341569c29882ca9c6e2ca54b7e0fc31eb41691f007830b"
-        "5f240f0f02d7cac925");
-    input.note.nullifier = *PrefixedHexStringToFixed<32>(
-        "0xac6558a2ad37288a9810f742979a8861c61b9bd40028835b7d627c16aa8f5f1a");
-    input.note.rho = *PrefixedHexStringToFixed<32>(
-        "0x8636f0a41dab6e82c23c7277de1fbcf7d69acb0cce21ffd29a08e20d851de63d");
-    input.note.seed = *PrefixedHexStringToFixed<32>(
-        "0xa4dc650000000000a5dc650000000000a6dc650000000000a7dc650000000000");
+        "5f240f0f02d7cac925",
+        input.note.addr));
+    EXPECT_TRUE(PrefixedHexStringToFixed(
+        "0xac6558a2ad37288a9810f742979a8861c61b9bd40028835b7d627c16aa8f5f1a",
+        input.note.nullifier));
+    EXPECT_TRUE(PrefixedHexStringToFixed(
+        "0x8636f0a41dab6e82c23c7277de1fbcf7d69acb0cce21ffd29a08e20d851de63d",
+        input.note.rho));
+    EXPECT_TRUE(PrefixedHexStringToFixed(
+        "0xa4dc650000000000a5dc650000000000a6dc650000000000a7dc650000000000",
+        input.note.seed));
     input.note.block_id = 3667204u;
     input.note.orchard_commitment_tree_position = 114568u;
     input.witness = OrchardNoteWitness();
@@ -760,13 +763,13 @@ TEST(OrchardBundleManagerTest, NoOutputs) {
       std::vector<OrchardOutput>());
   EXPECT_TRUE(orchard_bundle_manager);
 
+  std::array<uint8_t, 32> sighash;
+  EXPECT_TRUE(
+      PrefixedHexStringToFixed("0xd3e77b18c34129e4ec1e30bc4b8d29d16"
+                               "b7163ab5829730d8af3f41edc99721c",
+                               sighash));
   auto orchard_raw_part =
-      orchard_bundle_manager
-          ->ApplySignature(
-              PrefixedHexStringToFixed<32>("0xd3e77b18c34129e4ec1e30bc4b8d29d16"
-                                           "b7163ab5829730d8af3f41edc99721c")
-                  .value())
-          ->GetRawTxBytes();
+      orchard_bundle_manager->ApplySignature(sighash)->GetRawTxBytes();
 
   EXPECT_EQ(
       ToHex(orchard_raw_part.value()),
