@@ -30,9 +30,9 @@ namespace brave_wallet {
 namespace {
 constexpr char kTestnetHRP[] = "utest";
 constexpr char kMainnetHRP[] = "u";
-constexpr size_t kPaddedHrpSize = 16;
-constexpr size_t kPubKeyHashSize = 20;
-constexpr size_t kPrefixSize = 2;
+constexpr size_t kPaddedHrpSize = 16u;
+constexpr size_t kPubKeyHashSize = 20u;
+constexpr size_t kPrefixSize = 2u;
 
 std::array<uint8_t, kPaddedHrpSize> GetPaddedHRP(std::string_view hrp) {
   CHECK_LE(hrp.size(), kPaddedHrpSize);
@@ -305,19 +305,6 @@ bool OutputZCashTransparentAddressSupported(const std::string& address,
   }
 
   return true;
-}
-
-// https://zips.z.cash/zip-0317
-base::CheckedNumeric<uint64_t> CalculateZCashTxFee(
-    const uint32_t tx_input_count,
-    const uint32_t orchard_actions_count) {
-  // Use simplified calculation fee form since we don't support p2psh
-  // and shielded addresses
-  auto actions_count = base::CheckMax(
-      base::CheckAdd<uint32_t>(tx_input_count, orchard_actions_count),
-      kDefaultTransparentOutputsCount);
-  return base::CheckMul<uint64_t>(
-      kMarginalFee, base::CheckMax(kGraceActionsCount, actions_count));
 }
 
 bool IsUnifiedAddress(const std::string& address) {

@@ -19,6 +19,11 @@
 
 namespace brave_wallet {
 
+enum class ZCashTargetOutputType {
+  kTransparent,
+  kOrchard,
+};
+
 struct PickInputsResult {
   std::vector<ZCashTransaction::TxInput> inputs;
   uint64_t fee;
@@ -34,10 +39,15 @@ struct PickInputsResult {
   PickInputsResult& operator=(PickInputsResult&& other) = delete;
 };
 
+base::CheckedNumeric<uint64_t> CalculateZCashTxFee(
+    const base::StrictNumeric<uint32_t> transparent_input_count,
+    const base::StrictNumeric<uint32_t> orchard_input_notes,
+    ZCashTargetOutputType output_type);
+
 std::optional<PickInputsResult> PickZCashTransparentInputs(
     const ZCashWalletService::UtxoMap& utxo_map,
     uint64_t amount,
-    size_t orchard_actions_count);
+    ZCashTargetOutputType output_type);
 
 struct PickOrchardInputsResult {
   std::vector<OrchardNote> inputs;
@@ -58,7 +68,8 @@ struct PickOrchardInputsResult {
 #if BUILDFLAG(ENABLE_ORCHARD)
 std::optional<PickOrchardInputsResult> PickZCashOrchardInputs(
     const std::vector<OrchardNote>& notes,
-    uint64_t amount);
+    uint64_t amount,
+    ZCashTargetOutputType output_type);
 #endif  // BUILDFLAG(ENABLE_ORCHARD)
 
 }  // namespace brave_wallet

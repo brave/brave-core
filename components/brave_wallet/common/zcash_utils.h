@@ -181,10 +181,6 @@ base::expected<void, mojom::ZCashAddressError> ValidateOrchardRecipientAddress(
 
 bool OutputZCashTransparentAddressSupported(const std::string& address,
                                             bool is_testnet);
-// https://zips.z.cash/zip-0317
-base::CheckedNumeric<uint64_t> CalculateZCashTxFee(
-    const uint32_t tx_input_count,
-    const uint32_t orchard_actions_count);
 bool IsUnifiedAddress(const std::string& address);
 bool IsUnifiedTestnetAddress(const std::string& address);
 
