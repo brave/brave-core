@@ -586,18 +586,21 @@ TEST_P(AIChatDatabaseTest, MixedEvents) {
           mojom::WebSourcesEvent::New(std::move(sources_first))));
   history[1]->events->emplace_back(
       mojom::ConversationEntryEvent::NewCompletionEvent(
-          mojom::CompletionEvent::New("This is a completion event")));
+          mojom::CompletionEvent::New("This is a completion event",
+                                      std::nullopt)));
   auto& tool_event_first_event = history[1]->events->emplace_back(
       mojom::ConversationEntryEvent::NewToolUseEvent(
           std::move(tool_event_first)));
   history[1]->events->emplace_back(
       mojom::ConversationEntryEvent::NewCompletionEvent(
-          mojom::CompletionEvent::New("This is a second completion event")));
+          mojom::CompletionEvent::New("This is a second completion event",
+                                      std::nullopt)));
 
   history[3]->events->clear();
   history[3]->events->emplace_back(
       mojom::ConversationEntryEvent::NewCompletionEvent(
-          mojom::CompletionEvent::New("This is a third completion event")));
+          mojom::CompletionEvent::New("This is a third completion event",
+                                      std::nullopt)));
   history[3]->events->emplace_back(
       mojom::ConversationEntryEvent::NewSourcesEvent(
           mojom::WebSourcesEvent::New(std::move(sources_second))));

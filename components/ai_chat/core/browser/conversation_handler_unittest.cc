@@ -293,7 +293,7 @@ class ConversationHandlerUnitTest : public testing::Test {
       if (!is_human) {
         events = std::vector<mojom::ConversationEntryEventPtr>();
         events->push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
-            mojom::CompletionEvent::New(entries[i].first)));
+            mojom::CompletionEvent::New(entries[i].first, std::nullopt)));
       }
 
       auto entry = mojom::ConversationTurn::New(
@@ -463,12 +463,12 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText) {
       .WillOnce(::testing::DoAll(
           base::test::RunOnceCallback<7>(EngineConsumer::GenerationResultData(
               mojom::ConversationEntryEvent::NewCompletionEvent(
-                  mojom::CompletionEvent::New(expected_response)),
+                  mojom::CompletionEvent::New(expected_response, std::nullopt)),
               std::nullopt /* model_key */)),
           base::test::RunOnceCallback<8>(
               base::ok(EngineConsumer::GenerationResultData(
                   mojom::ConversationEntryEvent::NewCompletionEvent(
-                      mojom::CompletionEvent::New("")),
+                      mojom::CompletionEvent::New("", std::nullopt)),
                   std::nullopt /* model_key */)))));
 
   EXPECT_FALSE(conversation_handler_->HasAnyHistory());
@@ -495,7 +495,7 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText) {
 
   std::vector<mojom::ConversationEntryEventPtr> response_events;
   response_events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
-      mojom::CompletionEvent::New(expected_response)));
+      mojom::CompletionEvent::New(expected_response, std::nullopt)));
   expected_history.push_back(mojom::ConversationTurn::New(
       std::nullopt, mojom::CharacterType::ASSISTANT,
       mojom::ActionType::RESPONSE, expected_response, std::nullopt,
@@ -560,12 +560,12 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText_WithAssociatedContent) {
       .WillOnce(::testing::DoAll(
           base::test::RunOnceCallback<7>(EngineConsumer::GenerationResultData(
               mojom::ConversationEntryEvent::NewCompletionEvent(
-                  mojom::CompletionEvent::New(expected_response)),
+                  mojom::CompletionEvent::New(expected_response, std::nullopt)),
               std::nullopt /* model_key */)),
           base::test::RunOnceCallback<8>(
               base::ok(EngineConsumer::GenerationResultData(
                   mojom::ConversationEntryEvent::NewCompletionEvent(
-                      mojom::CompletionEvent::New("")),
+                      mojom::CompletionEvent::New("", std::nullopt)),
                   std::nullopt /* model_key */)))));
 
   associated_content_->SetUrl(GURL("https://www.brave.com"));
@@ -586,7 +586,7 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText_WithAssociatedContent) {
 
   std::vector<mojom::ConversationEntryEventPtr> response_events;
   response_events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
-      mojom::CompletionEvent::New(expected_response)));
+      mojom::CompletionEvent::New(expected_response, std::nullopt)));
   expected_history.push_back(mojom::ConversationTurn::New(
       std::nullopt, mojom::CharacterType::ASSISTANT,
       mojom::ActionType::RESPONSE, expected_response, std::nullopt,
@@ -941,7 +941,7 @@ TEST_F(ConversationHandlerUnitTest, UpdateOrCreateLastAssistantEntry_Delta) {
   {
     auto result = EngineConsumer::GenerationResultData(
         mojom::ConversationEntryEvent::NewCompletionEvent(
-            mojom::CompletionEvent::New("This")),
+            mojom::CompletionEvent::New("This", std::nullopt)),
         std::nullopt /* model_key */);
     conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
 
@@ -959,7 +959,7 @@ TEST_F(ConversationHandlerUnitTest, UpdateOrCreateLastAssistantEntry_Delta) {
   {
     auto result = EngineConsumer::GenerationResultData(
         mojom::ConversationEntryEvent::NewCompletionEvent(
-            mojom::CompletionEvent::New(" is ")),
+            mojom::CompletionEvent::New(" is ", std::nullopt)),
         std::nullopt /* model_key */);
     conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
 
@@ -977,7 +977,7 @@ TEST_F(ConversationHandlerUnitTest, UpdateOrCreateLastAssistantEntry_Delta) {
   {
     auto result = EngineConsumer::GenerationResultData(
         mojom::ConversationEntryEvent::NewCompletionEvent(
-            mojom::CompletionEvent::New("successful.")),
+            mojom::CompletionEvent::New("successful.", std::nullopt)),
         std::nullopt /* model_key */);
     conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
 
@@ -1022,7 +1022,7 @@ TEST_F(ConversationHandlerUnitTest,
     // Leading space on the first message should be removed
     auto result = EngineConsumer::GenerationResultData(
         mojom::ConversationEntryEvent::NewCompletionEvent(
-            mojom::CompletionEvent::New(" This is")),
+            mojom::CompletionEvent::New(" This is", std::nullopt)),
         std::nullopt /* model_key */);
     conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
 
@@ -1041,7 +1041,7 @@ TEST_F(ConversationHandlerUnitTest,
     // Leading space on subsequent message should be kept
     auto result = EngineConsumer::GenerationResultData(
         mojom::ConversationEntryEvent::NewCompletionEvent(
-            mojom::CompletionEvent::New(" successful.")),
+            mojom::CompletionEvent::New(" successful.", std::nullopt)),
         std::nullopt /* model_key */);
     conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
 
@@ -1072,7 +1072,7 @@ TEST_F(ConversationHandlerUnitTest, UpdateOrCreateLastAssistantEntry_NotDelta) {
   {
     auto result = EngineConsumer::GenerationResultData(
         mojom::ConversationEntryEvent::NewCompletionEvent(
-            mojom::CompletionEvent::New("This")),
+            mojom::CompletionEvent::New("This", std::nullopt)),
         std::nullopt /* model_key */);
     conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
 
@@ -1091,7 +1091,7 @@ TEST_F(ConversationHandlerUnitTest, UpdateOrCreateLastAssistantEntry_NotDelta) {
     // Leading space should be removed for every partial message
     auto result = EngineConsumer::GenerationResultData(
         mojom::ConversationEntryEvent::NewCompletionEvent(
-            mojom::CompletionEvent::New(" This is ")),
+            mojom::CompletionEvent::New(" This is ", std::nullopt)),
         std::nullopt /* model_key */);
     conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
 
@@ -1109,7 +1109,7 @@ TEST_F(ConversationHandlerUnitTest, UpdateOrCreateLastAssistantEntry_NotDelta) {
   {
     auto result = EngineConsumer::GenerationResultData(
         mojom::ConversationEntryEvent::NewCompletionEvent(
-            mojom::CompletionEvent::New("This is successful.")),
+            mojom::CompletionEvent::New("This is successful.", std::nullopt)),
         std::nullopt /* model_key */);
     conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
 
@@ -1154,7 +1154,7 @@ TEST_F(ConversationHandlerUnitTest,
     // Leading space should be removed for every partial message
     auto result = EngineConsumer::GenerationResultData(
         mojom::ConversationEntryEvent::NewCompletionEvent(
-            mojom::CompletionEvent::New(" This is ")),
+            mojom::CompletionEvent::New(" This is ", std::nullopt)),
         std::nullopt /* model_key */);
     conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
 
@@ -1172,7 +1172,7 @@ TEST_F(ConversationHandlerUnitTest,
   {
     auto result = EngineConsumer::GenerationResultData(
         mojom::ConversationEntryEvent::NewCompletionEvent(
-            mojom::CompletionEvent::New("This is successful.")),
+            mojom::CompletionEvent::New("This is successful.", std::nullopt)),
         std::nullopt /* model_key */);
     conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
 
@@ -1209,7 +1209,7 @@ TEST_F(ConversationHandlerUnitTest, MAYBE_ModifyConversation) {
   conversation_handler_->SetChatHistoryForTesting(CloneHistory(history));
   mojom::ConversationEntryEventPtr expected_new_completion_event =
       mojom::ConversationEntryEvent::NewCompletionEvent(
-          mojom::CompletionEvent::New("new answer"));
+          mojom::CompletionEvent::New("new answer", std::nullopt));
   // Modify an entry for the first time.
   EXPECT_CALL(*engine, GenerateAssistantResponse(_, LastTurnHasText("prompt2"),
                                                  StrEq(""), _, _, _, _, _, _))
@@ -1221,7 +1221,7 @@ TEST_F(ConversationHandlerUnitTest, MAYBE_ModifyConversation) {
           base::test::RunOnceCallback<8>(
               base::ok(EngineConsumer::GenerationResultData(
                   mojom::ConversationEntryEvent::NewCompletionEvent(
-                      mojom::CompletionEvent::New("")),
+                      mojom::CompletionEvent::New("", std::nullopt)),
                   "chat-basic" /* model_key */)))));
   testing::NiceMock<MockConversationHandlerObserver> observer;
   // Verify both entries are removed
@@ -1284,7 +1284,7 @@ TEST_F(ConversationHandlerUnitTest, MAYBE_ModifyConversation) {
           base::test::RunOnceCallback<8>(
               base::ok(EngineConsumer::GenerationResultData(
                   mojom::ConversationEntryEvent::NewCompletionEvent(
-                      mojom::CompletionEvent::New("")),
+                      mojom::CompletionEvent::New("", std::nullopt)),
                   "chat-basic" /* model_key */)))));
 
   conversation_handler_->ModifyConversation(
@@ -1320,7 +1320,7 @@ TEST_F(ConversationHandlerUnitTest, MAYBE_ModifyConversation) {
   response_edit->text = "answer2";  // trimmed
   response_edit->events->at(0) =
       mojom::ConversationEntryEvent::NewCompletionEvent(
-          mojom::CompletionEvent::New("answer2"));
+          mojom::CompletionEvent::New("answer2", std::nullopt));
 
   third_edit_expected_history[1]->edits.emplace();
   third_edit_expected_history[1]->edits->emplace_back(response_edit->Clone());
@@ -1363,12 +1363,13 @@ TEST_F(ConversationHandlerUnitTest, RegenerateAnswer) {
       .WillOnce(::testing::DoAll(
           base::test::RunOnceCallback<7>(EngineConsumer::GenerationResultData(
               mojom::ConversationEntryEvent::NewCompletionEvent(
-                  mojom::CompletionEvent::New("regenerated answer")),
+                  mojom::CompletionEvent::New("regenerated answer",
+                                              std::nullopt)),
               new_model_key)),
           base::test::RunOnceCallback<8>(
               base::ok(EngineConsumer::GenerationResultData(
                   mojom::ConversationEntryEvent::NewCompletionEvent(
-                      mojom::CompletionEvent::New("")),
+                      mojom::CompletionEvent::New("", std::nullopt)),
                   new_model_key)))));
 
   // Verify all four entries are removed (the target assistant turn and all
@@ -1511,7 +1512,7 @@ TEST_F(ConversationHandlerUnitTest,
       std::nullopt, nullptr /* skill */, true, std::nullopt /* model_key */));
   std::vector<mojom::ConversationEntryEventPtr> events;
   events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
-      mojom::CompletionEvent::New("summary")));
+      mojom::CompletionEvent::New("summary", std::nullopt)));
   expected_history.push_back(mojom::ConversationTurn::New(
       "turn-2", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
       "summary", std::nullopt, std::nullopt, std::move(events),
@@ -1578,7 +1579,7 @@ TEST_F(ConversationHandlerUnitTest,
       std::nullopt /* model_key */));
   std::vector<mojom::ConversationEntryEventPtr> events;
   events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
-      mojom::CompletionEvent::New("summary")));
+      mojom::CompletionEvent::New("summary", std::nullopt)));
   expected_history.push_back(mojom::ConversationTurn::New(
       std::nullopt, mojom::CharacterType::ASSISTANT,
       mojom::ActionType::RESPONSE, "summary", std::nullopt, std::nullopt,
@@ -1592,7 +1593,7 @@ TEST_F(ConversationHandlerUnitTest,
       std::nullopt /* model_key */));
   std::vector<mojom::ConversationEntryEventPtr> events2;
   events2.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
-      mojom::CompletionEvent::New("summary2")));
+      mojom::CompletionEvent::New("summary2", std::nullopt)));
   expected_history.push_back(mojom::ConversationTurn::New(
       std::nullopt, mojom::CharacterType::ASSISTANT,
       mojom::ActionType::RESPONSE, "summary2", std::nullopt, std::nullopt,
@@ -1619,12 +1620,12 @@ TEST_F(ConversationHandlerUnitTest,
       .WillOnce(::testing::DoAll(
           base::test::RunOnceCallback<7>(EngineConsumer::GenerationResultData(
               mojom::ConversationEntryEvent::NewCompletionEvent(
-                  mojom::CompletionEvent::New("new answer")),
+                  mojom::CompletionEvent::New("new answer", std::nullopt)),
               std::nullopt /* model_key */)),
           base::test::RunOnceCallback<8>(
               base::ok(EngineConsumer::GenerationResultData(
                   mojom::ConversationEntryEvent::NewCompletionEvent(
-                      mojom::CompletionEvent::New("")),
+                      mojom::CompletionEvent::New("", std::nullopt)),
                   std::nullopt /* model_key */)))));
 
   EXPECT_CALL(observer, OnConversationEntryAdded).Times(6);
@@ -1633,7 +1634,7 @@ TEST_F(ConversationHandlerUnitTest,
       .Times(testing::AtLeast(1));
   std::vector<mojom::ConversationEntryEventPtr> events3;
   events3.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
-      mojom::CompletionEvent::New("new answer")));
+      mojom::CompletionEvent::New("new answer", std::nullopt)));
   auto expected_turn = mojom::ConversationTurn::New(
       std::nullopt, mojom::CharacterType::ASSISTANT,
       mojom::ActionType::RESPONSE, "new answer", std::nullopt, std::nullopt,
@@ -1861,7 +1862,8 @@ TEST_F(ConversationHandlerUnitTest, UploadFile) {
             std::move(done_callback)
                 .Run(base::ok(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewCompletionEvent(
-                        mojom::CompletionEvent::New("This is a lion.")),
+                        mojom::CompletionEvent::New("This is a lion.",
+                                                    std::nullopt)),
                     std::nullopt /* model_key */)));
           });
   ASSERT_FALSE(conversation_handler_->GetCurrentModel().vision_support);
@@ -2236,7 +2238,8 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent, SelectedLanguage) {
       .WillOnce(::testing::DoAll(
           base::test::RunOnceCallback<7>(EngineConsumer::GenerationResultData(
               mojom::ConversationEntryEvent::NewCompletionEvent(
-                  mojom::CompletionEvent::New("Tis but a scratch.")),
+                  mojom::CompletionEvent::New("Tis but a scratch.",
+                                              std::nullopt)),
               std::nullopt /* model_key */)),
           base::test::RunOnceCallback<7>(EngineConsumer::GenerationResultData(
               mojom::ConversationEntryEvent::NewSelectedLanguageEvent(
@@ -2246,7 +2249,7 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent, SelectedLanguage) {
           base::test::RunOnceCallback<8>(
               base::ok(EngineConsumer::GenerationResultData(
                   mojom::ConversationEntryEvent::NewCompletionEvent(
-                      mojom::CompletionEvent::New("")),
+                      mojom::CompletionEvent::New("", std::nullopt)),
                   std::nullopt /* model_key */)))));
 
   EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(testing::AtLeast(1));
@@ -2266,12 +2269,12 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent, SelectedLanguage) {
       .WillOnce(::testing::DoAll(
           base::test::RunOnceCallback<7>(EngineConsumer::GenerationResultData(
               mojom::ConversationEntryEvent::NewCompletionEvent(
-                  mojom::CompletionEvent::New("No, it isn't.")),
+                  mojom::CompletionEvent::New("No, it isn't.", std::nullopt)),
               std::nullopt /* model_key */)),
           base::test::RunOnceCallback<8>(
               base::ok(EngineConsumer::GenerationResultData(
                   mojom::ConversationEntryEvent::NewCompletionEvent(
-                      mojom::CompletionEvent::New("")),
+                      mojom::CompletionEvent::New("", std::nullopt)),
                   std::nullopt /* model_key */)))));
 
   base::RunLoop loop2;
@@ -2342,7 +2345,7 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent, ContentReceipt) {
           base::test::RunOnceCallback<8>(
               base::ok(EngineConsumer::GenerationResultData(
                   mojom::ConversationEntryEvent::NewCompletionEvent(
-                      mojom::CompletionEvent::New("")),
+                      mojom::CompletionEvent::New("", std::nullopt)),
                   std::nullopt /* model_key */)))));
 
   EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(testing::AtLeast(1));
@@ -2582,7 +2585,7 @@ TEST_F(ConversationHandlerUnitTest,
                 std::move(callback).Run(
                     base::ok(EngineConsumer::GenerationResultData(
                         mojom::ConversationEntryEvent::NewCompletionEvent(
-                            mojom::CompletionEvent::New("")),
+                            mojom::CompletionEvent::New("", std::nullopt)),
                         std::nullopt)));
                 run_loop.QuitWhenIdle();
               })));
@@ -2658,7 +2661,7 @@ TEST_F(ConversationHandlerUnitTest,
                 std::move(callback).Run(
                     base::ok(EngineConsumer::GenerationResultData(
                         mojom::ConversationEntryEvent::NewCompletionEvent(
-                            mojom::CompletionEvent::New("")),
+                            mojom::CompletionEvent::New("", std::nullopt)),
                         std::nullopt)));
               })));
 
@@ -2681,7 +2684,7 @@ TEST_F(ConversationHandlerUnitTest,
                 std::move(callback).Run(
                     base::ok(EngineConsumer::GenerationResultData(
                         mojom::ConversationEntryEvent::NewCompletionEvent(
-                            mojom::CompletionEvent::New("")),
+                            mojom::CompletionEvent::New("", std::nullopt)),
                         std::nullopt)));
                 run_loop.Quit();
               }));
@@ -2798,7 +2801,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_PartialEventsGetCombined) {
                 std::move(callback).Run(
                     base::ok(EngineConsumer::GenerationResultData(
                         mojom::ConversationEntryEvent::NewCompletionEvent(
-                            mojom::CompletionEvent::New("")),
+                            mojom::CompletionEvent::New("", std::nullopt)),
                         std::nullopt)));
                 run_loop.Quit();
               })));
@@ -2886,7 +2889,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_CorrectToolCalled) {
                 std::move(callback).Run(
                     base::ok(EngineConsumer::GenerationResultData(
                         mojom::ConversationEntryEvent::NewCompletionEvent(
-                            mojom::CompletionEvent::New("")),
+                            mojom::CompletionEvent::New("", std::nullopt)),
                         std::nullopt)));
               })));
 
@@ -2941,7 +2944,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_CorrectToolCalled) {
                 std::move(callback).Run(
                     base::ok(EngineConsumer::GenerationResultData(
                         mojom::ConversationEntryEvent::NewCompletionEvent(
-                            mojom::CompletionEvent::New("")),
+                            mojom::CompletionEvent::New("", std::nullopt)),
                         std::nullopt)));
                 // Wait for async mojom events to be completed
                 run_loop.QuitWhenIdle();
@@ -3036,7 +3039,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolsCalled) {
                 std::move(callback).Run(
                     base::ok(EngineConsumer::GenerationResultData(
                         mojom::ConversationEntryEvent::NewCompletionEvent(
-                            mojom::CompletionEvent::New("")),
+                            mojom::CompletionEvent::New("", std::nullopt)),
                         std::nullopt)));
               })));
 
@@ -3075,7 +3078,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolsCalled) {
                 std::move(callback).Run(
                     base::ok(EngineConsumer::GenerationResultData(
                         mojom::ConversationEntryEvent::NewCompletionEvent(
-                            mojom::CompletionEvent::New("")),
+                            mojom::CompletionEvent::New("", std::nullopt)),
                         std::nullopt)));
                 run_loop.Quit();
               })));
@@ -3158,7 +3161,7 @@ TEST_F(ConversationHandlerUnitTest,
                 std::move(callback).Run(
                     base::ok(EngineConsumer::GenerationResultData(
                         mojom::ConversationEntryEvent::NewCompletionEvent(
-                            mojom::CompletionEvent::New("")),
+                            mojom::CompletionEvent::New("", std::nullopt)),
                         std::nullopt)));
                 first_generation_loop.Quit();
               })));
@@ -3177,7 +3180,8 @@ TEST_F(ConversationHandlerUnitTest,
               [](EngineConsumer::GenerationDataCallback callback) {
                 callback.Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewCompletionEvent(
-                        mojom::CompletionEvent::New("Here's a new response")),
+                        mojom::CompletionEvent::New("Here's a new response",
+                                                    std::nullopt)),
                     std::nullopt));
               }),
           testing::WithArg<8>(
@@ -3185,7 +3189,7 @@ TEST_F(ConversationHandlerUnitTest,
                 std::move(callback).Run(
                     base::ok(EngineConsumer::GenerationResultData(
                         mojom::ConversationEntryEvent::NewCompletionEvent(
-                            mojom::CompletionEvent::New("")),
+                            mojom::CompletionEvent::New("", std::nullopt)),
                         std::nullopt)));
                 second_generation_loop.Quit();
               })));
@@ -3272,7 +3276,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolIterations) {
                 std::move(callback).Run(
                     base::ok(EngineConsumer::GenerationResultData(
                         mojom::ConversationEntryEvent::NewCompletionEvent(
-                            mojom::CompletionEvent::New("")),
+                            mojom::CompletionEvent::New("", std::nullopt)),
                         std::nullopt)));
               })));
 
@@ -3310,7 +3314,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolIterations) {
                 std::move(callback).Run(
                     base::ok(EngineConsumer::GenerationResultData(
                         mojom::ConversationEntryEvent::NewCompletionEvent(
-                            mojom::CompletionEvent::New("")),
+                            mojom::CompletionEvent::New("", std::nullopt)),
                         std::nullopt)));
               })));
 
@@ -3331,7 +3335,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolIterations) {
                 std::move(callback).Run(
                     base::ok(EngineConsumer::GenerationResultData(
                         mojom::ConversationEntryEvent::NewCompletionEvent(
-                            mojom::CompletionEvent::New("")),
+                            mojom::CompletionEvent::New("", std::nullopt)),
                         std::nullopt)));
                 run_loop.Quit();
               })));
@@ -3407,7 +3411,8 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_ToolNotFound) {
               [](EngineConsumer::GenerationDataCallback data_callback) {
                 data_callback.Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewCompletionEvent(
-                        mojom::CompletionEvent::New("Let me help you...")),
+                        mojom::CompletionEvent::New("Let me help you...",
+                                                    std::nullopt)),
                     std::nullopt));
               }),
           // Then send tool use event via data callback
@@ -3426,7 +3431,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_ToolNotFound) {
             std::move(completion_callback)
                 .Run(base::ok(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewCompletionEvent(
-                        mojom::CompletionEvent::New("")),
+                        mojom::CompletionEvent::New("", std::nullopt)),
                     std::nullopt)));
           })));
 
@@ -3447,7 +3452,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_ToolNotFound) {
             std::move(completion_callback)
                 .Run(base::ok(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewCompletionEvent(
-                        mojom::CompletionEvent::New("")),
+                        mojom::CompletionEvent::New("", std::nullopt)),
                     std::nullopt)));
             run_loop.QuitWhenIdle();
           })));
@@ -3562,7 +3567,8 @@ TEST_P(ConversationHandlerUnitTest_AutoScreenshot,
       .WillOnce(base::test::RunOnceCallback<8>(
           base::ok(EngineConsumer::GenerationResultData(
               mojom::ConversationEntryEvent::NewCompletionEvent(
-                  mojom::CompletionEvent::New("Response with screenshots")),
+                  mojom::CompletionEvent::New("Response with screenshots",
+                                              std::nullopt)),
               std::nullopt /* model_key */))));
 
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
@@ -3617,7 +3623,8 @@ TEST_F(ConversationHandlerUnitTest, NoScreenshotWhenContentExists) {
       .WillOnce(base::test::RunOnceCallback<8>(
           base::ok(EngineConsumer::GenerationResultData(
               mojom::ConversationEntryEvent::NewCompletionEvent(
-                  mojom::CompletionEvent::New("Response without screenshots")),
+                  mojom::CompletionEvent::New("Response without screenshots",
+                                              std::nullopt)),
               std::nullopt /* model_key */))));
 
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
@@ -3720,7 +3727,8 @@ TEST_F(ConversationHandlerUnitTest, ScreenshotsAppendToExistingFiles) {
       .WillOnce(base::test::RunOnceCallback<8>(
           base::ok(EngineConsumer::GenerationResultData(
               mojom::ConversationEntryEvent::NewCompletionEvent(
-                  mojom::CompletionEvent::New("Response with mixed content")),
+                  mojom::CompletionEvent::New("Response with mixed content",
+                                              std::nullopt)),
               std::nullopt /* model_key */))));
 
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
@@ -3848,7 +3856,8 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
       .WillOnce(base::test::RunOnceCallback<8>(
           base::ok(EngineConsumer::GenerationResultData(
               mojom::ConversationEntryEvent::NewCompletionEvent(
-                  mojom::CompletionEvent::New("Response without screenshots")),
+                  mojom::CompletionEvent::New("Response without screenshots",
+                                              std::nullopt)),
               std::nullopt /* model_key */))));
 
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
@@ -3904,7 +3913,8 @@ TEST_F(ConversationHandlerUnitTest,
       .WillOnce(base::test::RunOnceCallback<8>(
           base::ok(EngineConsumer::GenerationResultData(
               mojom::ConversationEntryEvent::NewCompletionEvent(
-                  mojom::CompletionEvent::New("Response with screenshots")),
+                  mojom::CompletionEvent::New("Response with screenshots",
+                                              std::nullopt)),
               std::nullopt /* model_key */))));
 
   // Create mock clients to verify API request progress and UI state changes
@@ -3992,7 +4002,8 @@ TEST_F(ConversationHandlerUnitTest,
       .WillOnce(base::test::RunOnceCallback<8>(
           base::ok(EngineConsumer::GenerationResultData(
               mojom::ConversationEntryEvent::NewCompletionEvent(
-                  mojom::CompletionEvent::New("Response with screenshots")),
+                  mojom::CompletionEvent::New("Response with screenshots",
+                                              std::nullopt)),
               std::nullopt /* model_key */))));
 
   // Create mock clients to verify API request progress and UI state changes
@@ -4150,7 +4161,8 @@ TEST_F(ConversationHandlerUnitTest,
               [](EngineConsumer::GenerationDataCallback callback) {
                 std::move(callback).Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewCompletionEvent(
-                        mojom::CompletionEvent::New("Assistant response")),
+                        mojom::CompletionEvent::New("Assistant response",
+                                                    std::nullopt)),
                     std::nullopt));
               }),
           testing::WithArg<8>(
@@ -4158,7 +4170,7 @@ TEST_F(ConversationHandlerUnitTest,
                 std::move(callback).Run(
                     base::ok(EngineConsumer::GenerationResultData(
                         mojom::ConversationEntryEvent::NewCompletionEvent(
-                            mojom::CompletionEvent::New("")),
+                            mojom::CompletionEvent::New("", std::nullopt)),
                         std::nullopt)));
               })));
 
@@ -4212,7 +4224,8 @@ TEST_F(ConversationHandlerUnitTest,
               [](EngineConsumer::GenerationDataCallback callback) {
                 std::move(callback).Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewCompletionEvent(
-                        mojom::CompletionEvent::New("First response")),
+                        mojom::CompletionEvent::New("First response",
+                                                    std::nullopt)),
                     std::nullopt));
               }),
           testing::WithArg<8>(
@@ -4220,7 +4233,7 @@ TEST_F(ConversationHandlerUnitTest,
                 std::move(callback).Run(
                     base::ok(EngineConsumer::GenerationResultData(
                         mojom::ConversationEntryEvent::NewCompletionEvent(
-                            mojom::CompletionEvent::New("")),
+                            mojom::CompletionEvent::New("", std::nullopt)),
                         std::nullopt)));
               })));
 
@@ -4249,7 +4262,8 @@ TEST_F(ConversationHandlerUnitTest,
               [](EngineConsumer::GenerationDataCallback callback) {
                 std::move(callback).Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewCompletionEvent(
-                        mojom::CompletionEvent::New("Second response")),
+                        mojom::CompletionEvent::New("Second response",
+                                                    std::nullopt)),
                     std::nullopt));
               }),
           testing::WithArg<8>(
@@ -4258,7 +4272,7 @@ TEST_F(ConversationHandlerUnitTest,
                 std::move(callback).Run(
                     base::ok(EngineConsumer::GenerationResultData(
                         mojom::ConversationEntryEvent::NewCompletionEvent(
-                            mojom::CompletionEvent::New("")),
+                            mojom::CompletionEvent::New("", std::nullopt)),
                         std::nullopt)));
                 second_loop.QuitWhenIdle();
               })));
@@ -4299,7 +4313,8 @@ TEST_F(ConversationHandlerUnitTest,
               [](EngineConsumer::GenerationDataCallback callback) {
                 std::move(callback).Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewCompletionEvent(
-                        mojom::CompletionEvent::New("Assistant response")),
+                        mojom::CompletionEvent::New("Assistant response",
+                                                    std::nullopt)),
                     std::nullopt));
               }),
           testing::WithArg<8>(
@@ -4308,7 +4323,7 @@ TEST_F(ConversationHandlerUnitTest,
                 std::move(callback).Run(
                     base::ok(EngineConsumer::GenerationResultData(
                         mojom::ConversationEntryEvent::NewCompletionEvent(
-                            mojom::CompletionEvent::New("")),
+                            mojom::CompletionEvent::New("", std::nullopt)),
                         std::nullopt)));
                 run_loop.QuitWhenIdle();
               })));
@@ -4351,7 +4366,8 @@ TEST_F(ConversationHandlerUnitTest,
               [](EngineConsumer::GenerationDataCallback callback) {
                 std::move(callback).Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewCompletionEvent(
-                        mojom::CompletionEvent::New("Assistant response")),
+                        mojom::CompletionEvent::New("Assistant response",
+                                                    std::nullopt)),
                     std::nullopt));
               }),
           testing::WithArg<8>(
@@ -4359,7 +4375,7 @@ TEST_F(ConversationHandlerUnitTest,
                 std::move(callback).Run(
                     base::ok(EngineConsumer::GenerationResultData(
                         mojom::ConversationEntryEvent::NewCompletionEvent(
-                            mojom::CompletionEvent::New("")),
+                            mojom::CompletionEvent::New("", std::nullopt)),
                         std::nullopt)));
               })));
 
@@ -4456,7 +4472,7 @@ TEST_F(ConversationHandlerUnitTest,
           [&run_loop](EngineConsumer::GenerationCompletedCallback callback) {
             std::move(callback).Run(EngineConsumer::GenerationResultData(
                 mojom::ConversationEntryEvent::NewCompletionEvent(
-                    mojom::CompletionEvent::New("Test response")),
+                    mojom::CompletionEvent::New("Test response", std::nullopt)),
                 std::nullopt));
             run_loop.QuitWhenIdle();
           }));
@@ -4500,7 +4516,7 @@ TEST_F(ConversationHandlerUnitTest,
           [&run_loop](EngineConsumer::GenerationCompletedCallback callback) {
             std::move(callback).Run(EngineConsumer::GenerationResultData(
                 mojom::ConversationEntryEvent::NewCompletionEvent(
-                    mojom::CompletionEvent::New("Test response")),
+                    mojom::CompletionEvent::New("Test response", std::nullopt)),
                 std::nullopt));
             run_loop.QuitWhenIdle();
           }));
@@ -4581,7 +4597,7 @@ TEST_F(ConversationHandlerUnitTest,
           [&run_loop](EngineConsumer::GenerationCompletedCallback callback) {
             std::move(callback).Run(EngineConsumer::GenerationResultData(
                 mojom::ConversationEntryEvent::NewCompletionEvent(
-                    mojom::CompletionEvent::New("Test response")),
+                    mojom::CompletionEvent::New("Test response", std::nullopt)),
                 std::nullopt));
             run_loop.QuitWhenIdle();
           }));
@@ -4650,7 +4666,7 @@ TEST_F(ConversationHandlerUnitTest, PermissionChallenge) {
                 std::move(callback).Run(
                     base::ok(EngineConsumer::GenerationResultData(
                         mojom::ConversationEntryEvent::NewCompletionEvent(
-                            mojom::CompletionEvent::New("")),
+                            mojom::CompletionEvent::New("", std::nullopt)),
                         std::nullopt)));
                 run_loop.QuitWhenIdle();
               })));
@@ -4773,7 +4789,7 @@ TEST_F(ConversationHandlerUnitTest, PermissionChallenge_ToolReturnsChallenge) {
                 std::move(callback).Run(
                     base::ok(EngineConsumer::GenerationResultData(
                         mojom::ConversationEntryEvent::NewCompletionEvent(
-                            mojom::CompletionEvent::New("")),
+                            mojom::CompletionEvent::New("", std::nullopt)),
                         std::nullopt)));
                 run_loop.QuitWhenIdle();
               })));
@@ -4854,7 +4870,7 @@ TEST_F(ConversationHandlerUnitTest, PermissionChallenge_UserDeniesPermission) {
                 std::move(callback).Run(
                     base::ok(EngineConsumer::GenerationResultData(
                         mojom::ConversationEntryEvent::NewCompletionEvent(
-                            mojom::CompletionEvent::New("")),
+                            mojom::CompletionEvent::New("", std::nullopt)),
                         std::nullopt)));
                 first_loop.Quit();
               })));
@@ -4957,7 +4973,7 @@ TEST_F(ConversationHandlerUnitTest,
                 std::move(callback).Run(
                     base::ok(EngineConsumer::GenerationResultData(
                         mojom::ConversationEntryEvent::NewCompletionEvent(
-                            mojom::CompletionEvent::New("")),
+                            mojom::CompletionEvent::New("", std::nullopt)),
                         std::nullopt)));
                 first_loop.Quit();
               })));

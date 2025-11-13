@@ -232,7 +232,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_BasicMessage) {
                   FormatComparableEventsJson(expected_events));
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
-                mojom::CompletionEvent::New(""));
+                mojom::CompletionEvent::New("", std::nullopt));
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
       });
@@ -302,7 +302,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                   FormatComparableEventsJson(expected_events));
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
-                mojom::CompletionEvent::New(""));
+                mojom::CompletionEvent::New("", std::nullopt));
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
       });
@@ -354,7 +354,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_WithSelectedText) {
                   FormatComparableEventsJson(expected_events));
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
-                mojom::CompletionEvent::New(""));
+                mojom::CompletionEvent::New("", std::nullopt));
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
       });
@@ -428,7 +428,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                   FormatComparableEventsJson(expected_events));
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
-                mojom::CompletionEvent::New(""));
+                mojom::CompletionEvent::New("", std::nullopt));
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
       });
@@ -488,7 +488,7 @@ TEST_P(EngineConsumerConversationAPIUnitTest_Rewrite, GenerateEvents) {
                   FormatComparableEventsJson(expected_events));
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
-                mojom::CompletionEvent::New(""));
+                mojom::CompletionEvent::New("", std::nullopt));
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
       });
@@ -542,7 +542,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ToolUse) {
 
   std::vector<mojom::ConversationEntryEventPtr> response_events;
   response_events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
-      mojom::CompletionEvent::New("First I'll look up the weather...")));
+      mojom::CompletionEvent::New("First I'll look up the weather...",
+                                  std::nullopt)));
   response_events.push_back(
       mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
           "get_weather", "call_123", "{\"location\":\"Santa Barbara\"}",
@@ -599,7 +600,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ToolUse) {
                     base::test::IsJson(base::test::ParseJson(expected_events)));
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
-                mojom::CompletionEvent::New(""));
+                mojom::CompletionEvent::New("", std::nullopt));
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
       });
@@ -624,7 +625,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_MultipleToolUse) {
 
   std::vector<mojom::ConversationEntryEventPtr> response_events;
   response_events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
-      mojom::CompletionEvent::New("First I'll look up the weather...")));
+      mojom::CompletionEvent::New("First I'll look up the weather...",
+                                  std::nullopt)));
 
   std::vector<mojom::ContentBlockPtr> temperature_tool_output_content_blocks;
   temperature_tool_output_content_blocks.push_back(
@@ -715,7 +717,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_MultipleToolUse) {
                     base::test::IsJson(expected_events));
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
-                mojom::CompletionEvent::New(""));
+                mojom::CompletionEvent::New("", std::nullopt));
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
       });
@@ -761,7 +763,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
     }
     std::vector<mojom::ConversationEntryEventPtr> response_events;
     response_events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
-        mojom::CompletionEvent::New("First I'll look up the page...")));
+        mojom::CompletionEvent::New("First I'll look up the page...",
+                                    std::nullopt)));
     response_events.push_back(
         mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
             "get_page_content", base::StrCat({"call_123", base::ToString(i)}),
@@ -899,7 +902,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                     base::test::IsJson(expected_events));
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
-                mojom::CompletionEvent::New(""));
+                mojom::CompletionEvent::New("", std::nullopt));
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
       });
@@ -923,7 +926,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ToolUseNoOutput) {
 
   std::vector<mojom::ConversationEntryEventPtr> response_events;
   response_events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
-      mojom::CompletionEvent::New("First I'll look up the weather...")));
+      mojom::CompletionEvent::New("First I'll look up the weather...",
+                                  std::nullopt)));
   response_events.push_back(
       mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
           "get_weather", "call_123", "{\"location\":\"Santa Barbara\"}",
@@ -966,7 +970,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ToolUseNoOutput) {
                     base::test::IsJson(base::test::ParseJson(expected_events)));
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
-                mojom::CompletionEvent::New(""));
+                mojom::CompletionEvent::New("", std::nullopt));
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
       });
@@ -994,7 +998,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ModifyReply) {
   auto search_event = mojom::ConversationEntryEvent::NewSearchStatusEvent(
       mojom::SearchStatusEvent::New());
   auto completion_event = mojom::ConversationEntryEvent::NewCompletionEvent(
-      mojom::CompletionEvent::New("Mandalorian"));
+      mojom::CompletionEvent::New("Mandalorian", std::nullopt));
   events.push_back(search_event.Clone());
   events.push_back(completion_event.Clone());
 
@@ -1002,7 +1006,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ModifyReply) {
   modified_events.push_back(search_event.Clone());
   auto modified_completion_event =
       mojom::ConversationEntryEvent::NewCompletionEvent(
-          mojom::CompletionEvent::New("The Mandalorian"));
+          mojom::CompletionEvent::New("The Mandalorian", std::nullopt));
   modified_events.push_back(modified_completion_event.Clone());
 
   auto edit = mojom::ConversationTurn::New(
@@ -1053,7 +1057,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ModifyReply) {
                   FormatComparableEventsJson(expected_events));
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
-                mojom::CompletionEvent::New(""));
+                mojom::CompletionEvent::New("", std::nullopt));
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
       });
@@ -1087,7 +1091,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_SummarizePage) {
                   FormatComparableEventsJson(expected_events));
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
-                mojom::CompletionEvent::New(""));
+                mojom::CompletionEvent::New("", std::nullopt));
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
       });
@@ -1153,7 +1157,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_UploadImage) {
         EXPECT_EQ(conversation[2].type, ConversationEventType::kChatMessage);
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
-                mojom::CompletionEvent::New(kAssistantResponse));
+                mojom::CompletionEvent::New(kAssistantResponse, std::nullopt));
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
       });
@@ -1169,11 +1173,12 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_UploadImage) {
   engine_->GenerateAssistantResponse({}, history, "", false, {}, std::nullopt,
                                      mojom::ConversationCapability::CHAT,
                                      base::DoNothing(), future.GetCallback());
-  EXPECT_EQ(future.Take(),
-            EngineConsumer::GenerationResultData(
-                mojom::ConversationEntryEvent::NewCompletionEvent(
-                    mojom::CompletionEvent::New(kAssistantResponse)),
-                std::nullopt /* model_key */));
+  EXPECT_EQ(
+      future.Take(),
+      EngineConsumer::GenerationResultData(
+          mojom::ConversationEntryEvent::NewCompletionEvent(
+              mojom::CompletionEvent::New(kAssistantResponse, std::nullopt)),
+          std::nullopt /* model_key */));
   testing::Mock::VerifyAndClearExpectations(mock_api_client);
 }
 
@@ -1411,7 +1416,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
                   FormatComparableEventsJson(expected_events2));
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
-                mojom::CompletionEvent::New("not well structured"));
+                mojom::CompletionEvent::New("not well structured",
+                                            std::nullopt));
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
       })
@@ -1529,7 +1535,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
                   ConversationEventType::kGetSuggestedTopicsForFocusTabs);
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
-                mojom::CompletionEvent::New("\"topics\": []"));
+                mojom::CompletionEvent::New("\"topics\": []", std::nullopt));
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
       });
@@ -1810,7 +1816,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetStrArrFromResponse) {
   auto add_result = [&results](const std::string& completion_text) {
     results.push_back(base::ok(EngineConsumer::GenerationResultData(
         mojom::ConversationEntryEvent::NewCompletionEvent(
-            mojom::CompletionEvent::New(completion_text)),
+            mojom::CompletionEvent::New(completion_text, std::nullopt)),
         std::nullopt)));
   };
 
@@ -1830,7 +1836,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetStrArrFromResponse) {
   // This creates a result with an empty completion
   results.push_back(base::ok(EngineConsumer::GenerationResultData(
       mojom::ConversationEntryEvent::NewCompletionEvent(
-          mojom::CompletionEvent::New("")),
+          mojom::CompletionEvent::New("", std::nullopt)),
       std::nullopt)));
 
   // Add a valid result
@@ -1917,7 +1923,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateQuestionSuggestions) {
                     FormatComparableEventsJson(expected_events));
           auto completion_event =
               mojom::ConversationEntryEvent::NewCompletionEvent(
-                  mojom::CompletionEvent::New("question1|question2|question3"));
+                  mojom::CompletionEvent::New("question1|question2|question3",
+                                              std::nullopt));
           std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
               std::move(completion_event), std::nullopt)));
         });
@@ -1974,7 +1981,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateQuestionSuggestions) {
                       const std::optional<std::string>& model_name) {
           auto completion_event =
               mojom::ConversationEntryEvent::NewCompletionEvent(
-                  mojom::CompletionEvent::New(""));
+                  mojom::CompletionEvent::New("", std::nullopt));
           std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
               std::move(completion_event), std::nullopt)));
         });
@@ -2093,7 +2100,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                     FormatComparableEventsJson(expected_events));
           auto completion_event =
               mojom::ConversationEntryEvent::NewCompletionEvent(
-                  mojom::CompletionEvent::New("Test response"));
+                  mojom::CompletionEvent::New("Test response", std::nullopt));
           std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
               std::move(completion_event), std::nullopt)));
         });
@@ -2158,7 +2165,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                     FormatComparableEventsJson(expected_events));
           auto completion_event =
               mojom::ConversationEntryEvent::NewCompletionEvent(
-                  mojom::CompletionEvent::New("Test response"));
+                  mojom::CompletionEvent::New("Test response", std::nullopt));
           std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
               std::move(completion_event), std::nullopt)));
         });
@@ -2225,7 +2232,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                     FormatComparableEventsJson(expected_events));
           auto completion_event =
               mojom::ConversationEntryEvent::NewCompletionEvent(
-                  mojom::CompletionEvent::New("Test response"));
+                  mojom::CompletionEvent::New("Test response", std::nullopt));
           std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
               std::move(completion_event), std::nullopt)));
         });
@@ -2279,7 +2286,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                     FormatComparableEventsJson(expected_events));
           auto completion_event =
               mojom::ConversationEntryEvent::NewCompletionEvent(
-                  mojom::CompletionEvent::New("Test response"));
+                  mojom::CompletionEvent::New("Test response", std::nullopt));
           std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
               std::move(completion_event), std::nullopt)));
         });
@@ -2338,7 +2345,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                     FormatComparableEventsJson(expected_events));
           auto completion_event =
               mojom::ConversationEntryEvent::NewCompletionEvent(
-                  mojom::CompletionEvent::New("Test response"));
+                  mojom::CompletionEvent::New("Test response", std::nullopt));
           std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
               std::move(completion_event), std::nullopt)));
         });
@@ -2396,7 +2403,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                     FormatComparableEventsJson(expected_events));
           auto completion_event =
               mojom::ConversationEntryEvent::NewCompletionEvent(
-                  mojom::CompletionEvent::New("Test response"));
+                  mojom::CompletionEvent::New("Test response", std::nullopt));
           std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
               std::move(completion_event), std::nullopt)));
         });
@@ -2467,7 +2474,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                   FormatComparableEventsJson(expected_events));
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
-                mojom::CompletionEvent::New("Test response"));
+                mojom::CompletionEvent::New("Test response", std::nullopt));
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
       });
@@ -2512,7 +2519,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                     const std::optional<std::string>& model_name) {
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
-                mojom::CompletionEvent::New("Test response"));
+                mojom::CompletionEvent::New("Test response", std::nullopt));
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
       });
@@ -2718,7 +2725,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                   FormatComparableEventsJson(expected_events));
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
-                mojom::CompletionEvent::New(""));
+                mojom::CompletionEvent::New("", std::nullopt));
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
       });
@@ -2829,7 +2836,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                   FormatComparableEventsJson(expected_events));
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
-                mojom::CompletionEvent::New(""));
+                mojom::CompletionEvent::New("", std::nullopt));
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
       });
@@ -2894,7 +2901,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_WithOnlyPdfFiles) {
                   FormatComparableEventsJson(expected_events));
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
-                mojom::CompletionEvent::New(""));
+                mojom::CompletionEvent::New("", std::nullopt));
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
       });
@@ -2972,7 +2979,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
                   FormatComparableEventsJson(expected_events));
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
-                mojom::CompletionEvent::New(""));
+                mojom::CompletionEvent::New("", std::nullopt));
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
       });
@@ -3025,7 +3032,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
-                mojom::CompletionEvent::New(""));
+                mojom::CompletionEvent::New("", std::nullopt));
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
         run_loop.Quit();
@@ -3080,7 +3087,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
-                mojom::CompletionEvent::New(""));
+                mojom::CompletionEvent::New("", std::nullopt));
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
         run_loop.Quit();
@@ -3146,7 +3153,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
-                mojom::CompletionEvent::New(""));
+                mojom::CompletionEvent::New("", std::nullopt));
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
         run_loop.Quit();
@@ -3212,7 +3219,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
-                mojom::CompletionEvent::New(""));
+                mojom::CompletionEvent::New("", std::nullopt));
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
         run_loop.Quit();
@@ -3309,7 +3316,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
           }
           auto completion_event =
               mojom::ConversationEntryEvent::NewCompletionEvent(
-                  mojom::CompletionEvent::New(""));
+                  mojom::CompletionEvent::New("", std::nullopt));
           std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
               std::move(completion_event), std::nullopt)));
           run_loop.Quit();
@@ -3436,7 +3443,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
         // Mock successful response
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
-                mojom::CompletionEvent::New("AI is a technology..."));
+                mojom::CompletionEvent::New("AI is a technology...",
+                                            std::nullopt));
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
       });
