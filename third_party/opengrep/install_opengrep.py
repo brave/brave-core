@@ -33,25 +33,25 @@ except ImportError:  # For Py3 compatibility
     from urllib.request import urlopen
 
 # Configuration
-OPENGREP_VERSION = 'v1.11.2'
+OPENGREP_VERSION = 'v1.11.5'
 
 # SHA256 checksums for each platform binary
 # Run: ./script/generate_opengrep_checksums.sh to auto-generate these
 BINARY_CHECKSUMS = {
     'opengrep_osx_arm64': (
-        '6d68f8db5587e9206f964339b4b88c22530668f8165e783441e6f42d90fd9311'),
+        '895ec727663572dd9a5721cb9ae4f97f69c80f15d57b28cbd1e580f882a27028'),
     'opengrep_osx_x86': (
-        'ff2f867af1be145eb22d92a212b4ac24233a1bcecad8240bd5ffcf18d493f626'),
+        'fc0b0d61b20a9b3d160e841540f5c60b456b036527a96d39c8df7a0ae6793bae'),
     'opengrep_manylinux_x86': (
-        'bc1a0d5f8947261b387a636d954524086c5385581f36e4cd508ef87fed189a92'),
+        'b9dd6dede671e1ea2e2628ef4c04ff10afd8de2c4ef50af764b29d5f0980eec3'),
     'opengrep_manylinux_aarch64': (
-        '9928ab115a4a307ae18206279ee8806f74f73a0b03439f1307df079622c49d37'),
+        'd5def7bf466d25e7b57bbcdfd4243c58f297bf3271625f71125d67759dc98742'),
     'opengrep_musllinux_x86': (
-        '0e7aeaef642fd36a686e88d7ef342f12bbe53459f6ee9ed2253a2e4a9e590872'),
+        '564bdb4aae5230b0311af5333f08e8b6eff97b896d8569616957e10da25b8644'),
     'opengrep_musllinux_aarch64': (
-        'f921f174dcbed5c0afd9e4ffe783a714b51087cf9ee211a79bc302a8bb8f7420'),
+        'd28498b42c2a1642e4c83071362802ded8aad4b45bd1b7884aadc55209c38916'),
     'opengrep_windows_x86.exe': (
-        '2c7acfe9a31a4f9d0431c26358ccc3a55482b94de11a59f2e51d2c57adf8ebbd'),
+        '3d9b283fde540cfc91afdc3949bb52ac64262592099c301a8da0d125f87bf552'),
 }
 
 # Installation directory (relative to brave core)
