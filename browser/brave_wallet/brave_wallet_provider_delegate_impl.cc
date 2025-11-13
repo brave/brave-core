@@ -98,6 +98,7 @@ void BraveWalletProviderDelegateImpl::ShowWalletOnboarding() {
 
 void BraveWalletProviderDelegateImpl::ShowAccountCreation(
     mojom::CoinType type) {
+  DCHECK(type == mojom::CoinType::SOL || type == mojom::CoinType::ADA);
   ::brave_wallet::ShowAccountCreation(web_contents(), type);
 }
 
