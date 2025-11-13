@@ -1,0 +1,11 @@
+[source.crates-io]
+replace-with = "vendored-sources"
+
+[source.vendored-sources]
+directory = "../vendor"
+
+[target.wasm32-unknown-unknown]
+rustflags = [
+  '--cfg', 'getrandom_backend="wasm_js"',
+  '-C', 'target-feature=+simd128'
+]
