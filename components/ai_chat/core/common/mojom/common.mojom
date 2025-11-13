@@ -180,7 +180,7 @@ struct WebSource {
 struct WebSourcesEvent {
   array<WebSource> sources;
 
-  // Note: These are expected to be JSON strings in the format of 
+  // Note: These are expected to be JSON strings in the format of
   // https://api-dashboard.search.brave.com/app/documentation/rich-search/responses#RichResult
   // We don't type anything explicitly here because search is likely to change the format
   // of the results and we don't want to need to change this code every time.
