@@ -1621,41 +1621,33 @@ TEST_F(ConversationAPIUnitTest, ParseResponseEvent_ParsesWebSourcesEvent) {
 TEST_F(ConversationAPIUnitTest,
        ParseResponseEvent_ParsesWebSourcesEventWithRichResults) {
   // Test webSources event with valid rich_results data
-  base::Value::Dict event;
-  event.Set("type", "webSources");
-  event.Set("model", "llama-3-8b-instruct");
-
-  // Add regular sources
-  base::Value::List sources;
-  base::Value::Dict source;
-  source.Set("title", "Example Source");
-  source.Set("url", "https://example.com");
-  source.Set("favicon", "https://imgs.search.brave.com/favicon.ico");
-  sources.Append(std::move(source));
-  event.Set("sources", std::move(sources));
-
-  // Add rich_results with nested structure
-  base::Value::List rich_results;
-  base::Value::Dict rich_result_group;
-  base::Value::List results;
-
-  // First rich result item
-  base::Value::Dict rich_item1;
-  rich_item1.Set("type", "knowledge_graph");
-  rich_item1.Set("title", "Knowledge Graph Title");
-  rich_item1.Set("description", "Some description");
-  results.Append(rich_item1.Clone());
-
-  // Second rich result item
-  base::Value::Dict rich_item2;
-  rich_item2.Set("type", "video");
-  rich_item2.Set("url", "https://video.example.com");
-  rich_item2.Set("thumbnail", "https://imgs.search.brave.com/thumb.jpg");
-  results.Append(rich_item2.Clone());
-
-  rich_result_group.Set("results", std::move(results));
-  rich_results.Append(std::move(rich_result_group));
-  event.Set("rich_results", std::move(rich_results));
+  base::Value::Dict event = base::test::ParseJsonDict(R"({
+    "type": "webSources",
+    "model": "llama-3-8b-instruct",
+    "sources": [
+      {
+        "title": "Example Source",
+        "url": "https://example.com",
+        "favicon": "https://imgs.search.brave.com/favicon.ico"
+      }
+    ],
+    "rich_results": [
+      {
+        "results": [
+          {
+            "type": "knowledge_graph",
+            "title": "Knowledge Graph Title",
+            "description": "Some description"
+          },
+          {
+            "type": "video",
+            "url": "https://video.example.com",
+            "thumbnail": "https://imgs.search.brave.com/thumb.jpg"
+          }
+        ]
+      }
+    ]
+  })");
 
   std::optional<EngineConsumer::GenerationResultData> result =
       ConversationAPIClient::ParseResponseEvent(event, model_service_.get());
@@ -1671,29 +1663,19 @@ TEST_F(ConversationAPIUnitTest,
   // Verify rich_results were parsed
   ASSERT_EQ(sources_event->rich_results.size(), 2u);
 
-  // Parse and verify first rich result
-  std::optional<base::Value> parsed_rich1 =
-      base::JSONReader::Read(sources_event->rich_results[0]);
-  ASSERT_TRUE(parsed_rich1);
-  ASSERT_TRUE(parsed_rich1->is_dict());
-  const std::string* type1 = parsed_rich1->GetDict().FindString("type");
-  ASSERT_TRUE(type1);
-  EXPECT_EQ(*type1, "knowledge_graph");
-  const std::string* title1 = parsed_rich1->GetDict().FindString("title");
-  ASSERT_TRUE(title1);
-  EXPECT_EQ(*title1, "Knowledge Graph Title");
+  // Verify first rich result using IsJson
+  EXPECT_THAT(sources_event->rich_results[0], base::test::IsJson(R"({
+                "type": "knowledge_graph",
+                "title": "Knowledge Graph Title",
+                "description": "Some description"
+              })"));
 
-  // Parse and verify second rich result
-  std::optional<base::Value> parsed_rich2 =
-      base::JSONReader::Read(sources_event->rich_results[1]);
-  ASSERT_TRUE(parsed_rich2);
-  ASSERT_TRUE(parsed_rich2->is_dict());
-  const std::string* type2 = parsed_rich2->GetDict().FindString("type");
-  ASSERT_TRUE(type2);
-  EXPECT_EQ(*type2, "video");
-  const std::string* url2 = parsed_rich2->GetDict().FindString("url");
-  ASSERT_TRUE(url2);
-  EXPECT_EQ(*url2, "https://video.example.com");
+  // Verify second rich result using IsJson
+  EXPECT_THAT(sources_event->rich_results[1], base::test::IsJson(R"({
+                "type": "video",
+                "url": "https://video.example.com",
+                "thumbnail": "https://imgs.search.brave.com/thumb.jpg"
+              })"));
 
   EXPECT_EQ(result->model_key, "chat-basic");
 }
@@ -1701,43 +1683,29 @@ TEST_F(ConversationAPIUnitTest,
 TEST_F(ConversationAPIUnitTest,
        ParseResponseEvent_ParsesWebSourcesEventWithMultipleRichResultGroups) {
   // Test webSources event with multiple rich_results groups
-  base::Value::Dict event;
-  event.Set("type", "webSources");
-  event.Set("model", "llama-3-8b-instruct");
-
-  // Add regular sources
-  base::Value::List sources;
-  base::Value::Dict source;
-  source.Set("title", "Example Source");
-  source.Set("url", "https://example.com");
-  sources.Append(std::move(source));
-  event.Set("sources", std::move(sources));
-
-  // Add multiple rich_results groups
-  base::Value::List rich_results;
-
-  // First group
-  base::Value::Dict group1;
-  base::Value::List results1;
-  base::Value::Dict item1;
-  item1.Set("id", "group1_item1");
-  results1.Append(std::move(item1));
-  group1.Set("results", std::move(results1));
-  rich_results.Append(std::move(group1));
-
-  // Second group
-  base::Value::Dict group2;
-  base::Value::List results2;
-  base::Value::Dict item2a;
-  item2a.Set("id", "group2_item1");
-  results2.Append(std::move(item2a));
-  base::Value::Dict item2b;
-  item2b.Set("id", "group2_item2");
-  results2.Append(std::move(item2b));
-  group2.Set("results", std::move(results2));
-  rich_results.Append(std::move(group2));
-
-  event.Set("rich_results", std::move(rich_results));
+  base::Value::Dict event = base::test::ParseJsonDict(R"({
+    "type": "webSources",
+    "model": "llama-3-8b-instruct",
+    "sources": [
+      {
+        "title": "Example Source",
+        "url": "https://example.com"
+      }
+    ],
+    "rich_results": [
+      {
+        "results": [
+          {"id": "group1_item1"}
+        ]
+      },
+      {
+        "results": [
+          {"id": "group2_item1"},
+          {"id": "group2_item2"}
+        ]
+      }
+    ]
+  })");
 
   std::optional<EngineConsumer::GenerationResultData> result =
       ConversationAPIClient::ParseResponseEvent(event, model_service_.get());
@@ -1750,40 +1718,29 @@ TEST_F(ConversationAPIUnitTest,
   // Should have 3 total rich results (1 from group1, 2 from group2)
   ASSERT_EQ(sources_event->rich_results.size(), 3u);
 
-  // Verify each item
-  std::optional<base::Value> parsed1 =
-      base::JSONReader::Read(sources_event->rich_results[0]);
-  ASSERT_TRUE(parsed1);
-  const std::string* id1 = parsed1->GetDict().FindString("id");
-  EXPECT_EQ(*id1, "group1_item1");
-
-  std::optional<base::Value> parsed2 =
-      base::JSONReader::Read(sources_event->rich_results[1]);
-  ASSERT_TRUE(parsed2);
-  const std::string* id2 = parsed2->GetDict().FindString("id");
-  EXPECT_EQ(*id2, "group2_item1");
-
-  std::optional<base::Value> parsed3 =
-      base::JSONReader::Read(sources_event->rich_results[2]);
-  ASSERT_TRUE(parsed3);
-  const std::string* id3 = parsed3->GetDict().FindString("id");
-  EXPECT_EQ(*id3, "group2_item2");
+  // Verify each item using IsJson
+  EXPECT_THAT(sources_event->rich_results[0],
+              base::test::IsJson(R"({"id": "group1_item1"})"));
+  EXPECT_THAT(sources_event->rich_results[1],
+              base::test::IsJson(R"({"id": "group2_item1"})"));
+  EXPECT_THAT(sources_event->rich_results[2],
+              base::test::IsJson(R"({"id": "group2_item2"})"));
 }
 
 TEST_F(ConversationAPIUnitTest,
        ParseResponseEvent_WebSourcesEventWithInvalidRichResults) {
   // Test that invalid rich_results items are skipped gracefully
-  base::Value::Dict event;
-  event.Set("type", "webSources");
-  event.Set("model", "llama-3-8b-instruct");
-
-  // Add regular sources
-  base::Value::List sources;
-  base::Value::Dict source;
-  source.Set("title", "Example Source");
-  source.Set("url", "https://example.com");
-  sources.Append(std::move(source));
-  event.Set("sources", std::move(sources));
+  // Note: Must construct manually to test invalid structures
+  base::Value::Dict event = base::test::ParseJsonDict(R"({
+    "type": "webSources",
+    "model": "llama-3-8b-instruct",
+    "sources": [
+      {
+        "title": "Example Source",
+        "url": "https://example.com"
+      }
+    ]
+  })");
 
   // Add rich_results with various invalid items
   base::Value::List rich_results;
@@ -1792,18 +1749,12 @@ TEST_F(ConversationAPIUnitTest,
   rich_results.Append("invalid_string");
 
   // Invalid: missing "results" key
-  base::Value::Dict invalid_group;
-  invalid_group.Set("other_key", "value");
-  rich_results.Append(std::move(invalid_group));
+  rich_results.Append(base::test::ParseJsonDict(R"({"other_key": "value"})"));
 
   // Valid group
-  base::Value::Dict valid_group;
-  base::Value::List valid_results;
-  base::Value::Dict valid_item;
-  valid_item.Set("id", "valid_item");
-  valid_results.Append(std::move(valid_item));
-  valid_group.Set("results", std::move(valid_results));
-  rich_results.Append(std::move(valid_group));
+  rich_results.Append(base::test::ParseJsonDict(R"({
+    "results": [{"id": "valid_item"}]
+  })"));
 
   // Invalid: results is not a list
   base::Value::Dict invalid_results_group;
@@ -1814,9 +1765,7 @@ TEST_F(ConversationAPIUnitTest,
   base::Value::Dict mixed_group;
   base::Value::List mixed_results;
   mixed_results.Append("invalid_item");  // not a dict
-  base::Value::Dict valid_item2;
-  valid_item2.Set("id", "valid_item2");
-  mixed_results.Append(std::move(valid_item2));
+  mixed_results.Append(base::test::ParseJsonDict(R"({"id": "valid_item2"})"));
   mixed_group.Set("results", std::move(mixed_results));
   rich_results.Append(std::move(mixed_group));
 
@@ -1833,35 +1782,26 @@ TEST_F(ConversationAPIUnitTest,
   // Should only have 2 valid rich results
   ASSERT_EQ(sources_event->rich_results.size(), 2u);
 
-  // Verify the valid items were parsed correctly
-  std::optional<base::Value> parsed1 =
-      base::JSONReader::Read(sources_event->rich_results[0]);
-  ASSERT_TRUE(parsed1);
-  const std::string* id1 = parsed1->GetDict().FindString("id");
-  EXPECT_EQ(*id1, "valid_item");
-
-  std::optional<base::Value> parsed2 =
-      base::JSONReader::Read(sources_event->rich_results[1]);
-  ASSERT_TRUE(parsed2);
-  const std::string* id2 = parsed2->GetDict().FindString("id");
-  EXPECT_EQ(*id2, "valid_item2");
+  // Verify the valid items were parsed correctly using IsJson
+  EXPECT_THAT(sources_event->rich_results[0],
+              base::test::IsJson(R"({"id": "valid_item"})"));
+  EXPECT_THAT(sources_event->rich_results[1],
+              base::test::IsJson(R"({"id": "valid_item2"})"));
 }
 
 TEST_F(ConversationAPIUnitTest,
        ParseResponseEvent_WebSourcesEventWithoutRichResults) {
   // Test that webSources event works fine without rich_results
-  base::Value::Dict event;
-  event.Set("type", "webSources");
-  event.Set("model", "llama-3-8b-instruct");
-
-  base::Value::List sources;
-  base::Value::Dict source;
-  source.Set("title", "Example Source");
-  source.Set("url", "https://example.com");
-  sources.Append(std::move(source));
-  event.Set("sources", std::move(sources));
-
-  // No rich_results field
+  base::Value::Dict event = base::test::ParseJsonDict(R"({
+    "type": "webSources",
+    "model": "llama-3-8b-instruct",
+    "sources": [
+      {
+        "title": "Example Source",
+        "url": "https://example.com"
+      }
+    ]
+  })");
 
   std::optional<EngineConsumer::GenerationResultData> result =
       ConversationAPIClient::ParseResponseEvent(event, model_service_.get());
@@ -1879,20 +1819,17 @@ TEST_F(ConversationAPIUnitTest,
 TEST_F(ConversationAPIUnitTest,
        ParseResponseEvent_WebSourcesEventWithEmptyRichResults) {
   // Test that empty rich_results list is handled correctly
-  base::Value::Dict event;
-  event.Set("type", "webSources");
-  event.Set("model", "llama-3-8b-instruct");
-
-  base::Value::List sources;
-  base::Value::Dict source;
-  source.Set("title", "Example Source");
-  source.Set("url", "https://example.com");
-  sources.Append(std::move(source));
-  event.Set("sources", std::move(sources));
-
-  // Empty rich_results
-  base::Value::List empty_rich_results;
-  event.Set("rich_results", std::move(empty_rich_results));
+  base::Value::Dict event = base::test::ParseJsonDict(R"({
+    "type": "webSources",
+    "model": "llama-3-8b-instruct",
+    "sources": [
+      {
+        "title": "Example Source",
+        "url": "https://example.com"
+      }
+    ],
+    "rich_results": []
+  })");
 
   std::optional<EngineConsumer::GenerationResultData> result =
       ConversationAPIClient::ParseResponseEvent(event, model_service_.get());
