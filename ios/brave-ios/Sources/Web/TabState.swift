@@ -67,6 +67,12 @@ public class TabStateFactory {
   }
 }
 
+/// An error that may occur while restoring tab data
+public enum TabRestorationError: Error {
+  /// The data was not valid
+  case invalidData
+}
+
 /// Core interface for interaction with the web
 @dynamicMemberLookup
 public protocol TabState: AnyObject {
@@ -99,7 +105,9 @@ public protocol TabState: AnyObject {
   /// Restoration session data associated with this TabState.
   var sessionData: Data? { get }
   /// Attempts to restore the TabState using the session data provided
-  func restore(using sessionData: Data)
+  ///
+  /// - Throws: `RestorationError` if restoration fails
+  func restore(using sessionData: Data) throws
   /// Whether or not the TabState is restoring data.
   ///
   /// This is set to true when `restore(using:)` is called and flipped off once the navigation

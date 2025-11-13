@@ -390,7 +390,10 @@ class WebKitTabState: TabState, TabStateImpl {
   var sessionData: Data? {
     webView?.interactionState as? Data
   }
-  func restore(using sessionData: Data) {
+  func restore(using sessionData: Data) throws {
+    if sessionData.isEmpty {
+      throw TabRestorationError.invalidData
+    }
     webView?.interactionState = sessionData
   }
   var canGoBack: Bool {
