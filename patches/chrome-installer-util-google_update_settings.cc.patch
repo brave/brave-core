@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/util/google_update_settings.cc b/chrome/installer/util/google_update_settings.cc
-index aa6e966d2ca32fa33ed411c322600f1a1f378d7a..e4a4163110fe3a823fcd7ce5d37fc1be78abecaf 100644
+index aa6e966d2ca32fa33ed411c322600f1a1f378d7a..69214a3ccaed5004afaff1ae889a6aa03b94d876 100644
 --- a/chrome/installer/util/google_update_settings.cc
 +++ b/chrome/installer/util/google_update_settings.cc
 @@ -33,7 +33,11 @@ using base::win::RegKey;
@@ -25,66 +25,3 @@ index aa6e966d2ca32fa33ed411c322600f1a1f378d7a..e4a4163110fe3a823fcd7ce5d37fc1be
  const GoogleUpdateSettings::UpdatePolicy
      GoogleUpdateSettings::kDefaultUpdatePolicy =
  #if BUILDFLAG(GOOGLE_CHROME_BRANDING)
-@@ -429,9 +437,16 @@ bool GoogleUpdateSettings::ClearReferral() {
-   return ClearGoogleUpdateStrKey(google_update::kRegReferralField);
- }
- 
--void GoogleUpdateSettings::UpdateInstallStatus() {
-+void GoogleUpdateSettings::UpdateInstallStatus(
-+    bool system_install,
-+    installer::ArchiveType archive_type,
-+    int install_return_code) {
-+  DCHECK(archive_type != installer::UNKNOWN_ARCHIVE_TYPE ||
-+         install_return_code != 0);
-+
-   installer::AdditionalParameters additional_parameters;
--  if (UpdateGoogleUpdateApKey(additional_parameters) &&
-+  if (UpdateGoogleUpdateApKey(archive_type, install_return_code,
-+                              &additional_parameters) &&
-       !additional_parameters.Commit()) {
-     PLOG(ERROR) << "Failed to write to application's ClientState key "
-                 << google_update::kRegApField << " = "
-@@ -453,14 +468,36 @@ void GoogleUpdateSettings::SetProgress(bool system_install,
- }
- 
- bool GoogleUpdateSettings::UpdateGoogleUpdateApKey(
--    installer::AdditionalParameters& additional_parameters) {
--  if (additional_parameters.SetFullSuffix(false)) {
--    VLOG(1) << "Removed incremental installer failure key; "
--               "switching to channel: "
--            << additional_parameters.value();
--    return true;
-+    installer::ArchiveType archive_type,
-+    int install_return_code,
-+    installer::AdditionalParameters* additional_parameters) {
-+  DCHECK(archive_type != installer::UNKNOWN_ARCHIVE_TYPE ||
-+         install_return_code != 0);
-+  bool modified = false;
-+
-+  if (archive_type == installer::FULL_ARCHIVE_TYPE || !install_return_code) {
-+    if (additional_parameters->SetFullSuffix(false)) {
-+      VLOG(1) << "Removed incremental installer failure key; "
-+                 "switching to channel: "
-+              << additional_parameters->value();
-+      modified = true;
-+    }
-+  } else if (archive_type == installer::INCREMENTAL_ARCHIVE_TYPE) {
-+    if (additional_parameters->SetFullSuffix(true)) {
-+      VLOG(1) << "Incremental installer failed; switching to channel: "
-+              << additional_parameters->value();
-+      modified = true;
-+    } else {
-+      VLOG(1) << "Incremental installer failure; already on channel: "
-+              << additional_parameters->value();
-+    }
-+  } else {
-+    // It's okay if we don't know the archive type.  In this case, leave the
-+    // "-full" suffix as we found it.
-+    DCHECK_EQ(installer::UNKNOWN_ARCHIVE_TYPE, archive_type);
-   }
--  return false;
-+
-+  return modified;
- }
- 
- GoogleUpdateSettings::UpdatePolicy GoogleUpdateSettings::GetAppUpdatePolicy(
