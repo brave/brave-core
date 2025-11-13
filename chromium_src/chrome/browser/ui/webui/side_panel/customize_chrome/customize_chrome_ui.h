@@ -8,7 +8,6 @@
 
 #include "base/functional/callback_forward.h"
 #include "chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome.mojom.h"
-#include "ui/webui/resources/cr_components/customize_color_scheme_mode/customize_color_scheme_mode.mojom.h"
 
 #define AttachedTabStateUpdated                                            \
   AttachedTabStateUpdated_Unused();                                        \
@@ -27,13 +26,8 @@
   CreatePageHandlerChromium(__VA_ARGS__); \
   void CreatePageHandler(__VA_ARGS__)
 
-#define CreateCustomizeColorSchemeModeHandler(...)           \
-  CreateCustomizeColorSchemeModeHandler_Unused(__VA_ARGS__); \
-  void CreateCustomizeColorSchemeModeHandler(__VA_ARGS__)
-
 #include <chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_ui.h>  // IWYU pragma: export
 
-#undef CreateCustomizeColorSchemeModeHandler
 #undef CreatePageHandler
 #undef AttachedTabStateUpdated
 

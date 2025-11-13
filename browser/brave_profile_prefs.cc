@@ -11,7 +11,6 @@
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 #include "brave/browser/new_tab/new_tab_shows_options.h"
 #include "brave/browser/search_engines/search_engine_tracker.h"
-#include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/translate/brave_translate_prefs_migration.h"
 #include "brave/browser/ui/bookmark/brave_bookmark_prefs.h"
 #include "brave/browser/ui/omnibox/brave_omnibox_client_impl.h"
@@ -114,6 +113,7 @@
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/themes/pref_names.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/webui/welcome_page/brave_welcome_ui_prefs.h"
 #include "brave/components/brave_private_new_tab_ui/common/pref_names.h"
@@ -268,6 +268,9 @@ void RegisterProfilePrefsForMigration(
 #if !BUILDFLAG(IS_ANDROID)
   // Added 10/2022
   registry->RegisterIntegerPref(kDefaultBrowserLaunchingCount, 0);
+
+  // Added 10/2025
+  registry->RegisterBooleanPref(dark_mode::kBraveDarkModeMigrated, false);
 #endif
   brave_wallet::RegisterProfilePrefsForMigration(registry);
 

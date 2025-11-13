@@ -679,14 +679,6 @@ source_set("ui") {
       ]
     }
 
-    if (is_linux && use_dbus) {
-      sources += [
-        "views/brave_dark_mode_manager_linux.cc",
-        "views/brave_dark_mode_manager_linux.h",
-      ]
-      deps += [ "//ui/linux:linux_ui_factory" ]
-    }
-
     if (enable_sparkle) {
       sources += [
         "views/update_recommended_message_box_mac.h",
@@ -793,7 +785,6 @@ source_set("ui") {
     "//brave/browser/brave_rewards:util",
     "//brave/browser/misc_metrics",
     "//brave/browser/shell_integrations/buildflags",
-    "//brave/browser/themes",
     "//brave/browser/ui/brave_ads",
     "//brave/browser/ui/brave_tooltips",
 

@@ -23,7 +23,6 @@
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/net/brave_system_request_handler.h"
 #include "brave/browser/profiles/brave_profile_manager.h"
-#include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/common/brave_channel_info.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component.h"
@@ -155,12 +154,6 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData* startup_data)
 
 void BraveBrowserProcessImpl::Init() {
   BrowserProcessImpl::Init();
-
-  UpdateBraveDarkMode();
-  pref_change_registrar_.Add(
-      kBraveDarkMode,
-      base::BindRepeating(&BraveBrowserProcessImpl::OnBraveDarkModeChanged,
-                          base::Unretained(this)));
 
 #if BUILDFLAG(ENABLE_TOR)
   pref_change_registrar_.Add(
@@ -372,16 +365,6 @@ BraveBrowserProcessImpl::local_data_files_service() {
             brave_component_updater_delegate());
   }
   return local_data_files_service_.get();
-}
-
-void BraveBrowserProcessImpl::UpdateBraveDarkMode() {
-  // Update with proper system theme to make brave theme and base ui components
-  // theme use same theme.
-  dark_mode::SetSystemDarkMode(dark_mode::GetBraveDarkModeType());
-}
-
-void BraveBrowserProcessImpl::OnBraveDarkModeChanged() {
-  UpdateBraveDarkMode();
 }
 
 #if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
