@@ -12,7 +12,9 @@
 
 #include "brave/chromium_src/chrome/installer/chromium_index_helper_begin.h"
 #define UpdateGoogleUpdateApKey UpdateGoogleUpdateApKey_Unused
+#define UpdateInstallStatus UpdateInstallStatus_Unused
 #include <chrome/installer/util/google_update_settings_unittest.cc>
+#undef UpdateInstallStatus
 #undef UpdateGoogleUpdateApKey
 #include "brave/chromium_src/chrome/installer/chromium_index_helper_end.h"
 
@@ -86,5 +88,82 @@ TEST_F(GoogleUpdateSettingsTest, UpdateGoogleUpdateApKey) {
         }
       }
     }
+  }
+}
+
+TEST_F(GoogleUpdateSettingsTest, UpdateInstallStatusTestIncremental) {
+  std::unique_ptr<WorkItemList> work_item_list(WorkItem::CreateWorkItemList());
+  // Test incremental install failure
+  ASSERT_TRUE(CreateApKey(work_item_list.get(), L""))
+      << "Failed to create ap key.";
+  GoogleUpdateSettings::UpdateInstallStatus(
+      false, installer::INCREMENTAL_ARCHIVE_TYPE, installer::INSTALL_FAILED);
+  EXPECT_STREQ(ReadApKeyValue().c_str(), L"-full");
+  work_item_list->Rollback();
+
+  work_item_list.reset(WorkItem::CreateWorkItemList());
+  // Test incremental install success
+  ASSERT_TRUE(CreateApKey(work_item_list.get(), L""))
+      << "Failed to create ap key.";
+  GoogleUpdateSettings::UpdateInstallStatus(false,
+                                            installer::INCREMENTAL_ARCHIVE_TYPE,
+                                            installer::FIRST_INSTALL_SUCCESS);
+  EXPECT_STREQ(ReadApKeyValue().c_str(), L"");
+  work_item_list->Rollback();
+
+  work_item_list.reset(WorkItem::CreateWorkItemList());
+  // Test full install failure
+  ASSERT_TRUE(CreateApKey(work_item_list.get(), L"-full"))
+      << "Failed to create ap key.";
+  GoogleUpdateSettings::UpdateInstallStatus(false, installer::FULL_ARCHIVE_TYPE,
+                                            installer::INSTALL_FAILED);
+  EXPECT_STREQ(ReadApKeyValue().c_str(), L"");
+  work_item_list->Rollback();
+
+  work_item_list.reset(WorkItem::CreateWorkItemList());
+  // Test full install success
+  ASSERT_TRUE(CreateApKey(work_item_list.get(), L"-full"))
+      << "Failed to create ap key.";
+  GoogleUpdateSettings::UpdateInstallStatus(false, installer::FULL_ARCHIVE_TYPE,
+                                            installer::FIRST_INSTALL_SUCCESS);
+  EXPECT_STREQ(ReadApKeyValue().c_str(), L"");
+  work_item_list->Rollback();
+
+  work_item_list.reset(WorkItem::CreateWorkItemList());
+  // Test the case of when "ap" key doesnt exist at all
+  std::wstring ap_key_value = ReadApKeyValue();
+  std::wstring reg_key = GetApKeyPath();
+  HKEY reg_root = HKEY_CURRENT_USER;
+  bool ap_key_deleted = false;
+  RegKey key;
+  if (key.Open(HKEY_CURRENT_USER, reg_key.c_str(),
+               KEY_WOW64_32KEY | KEY_SET_VALUE) != ERROR_SUCCESS) {
+    work_item_list->AddCreateRegKeyWorkItem(reg_root, reg_key, KEY_WOW64_32KEY);
+    ASSERT_TRUE(work_item_list->Do()) << "Failed to create ClientState key.";
+  } else if (key.DeleteValue(google_update::kRegApField) == ERROR_SUCCESS) {
+    ap_key_deleted = true;
+  }
+  // try differential installer
+  GoogleUpdateSettings::UpdateInstallStatus(
+      false, installer::INCREMENTAL_ARCHIVE_TYPE, installer::INSTALL_FAILED);
+  EXPECT_STREQ(ReadApKeyValue().c_str(), L"-full");
+  // try full installer now
+  GoogleUpdateSettings::UpdateInstallStatus(false, installer::FULL_ARCHIVE_TYPE,
+                                            installer::INSTALL_FAILED);
+  EXPECT_STREQ(ReadApKeyValue().c_str(), L"");
+  // Now cleanup to leave the system in unchanged state.
+  // - Diff installer creates an ap key if it didn't exist, so delete this ap
+  // key
+  // - If we created any reg key path for ap, roll it back
+  // - Finally restore the original value of ap key.
+  if (key.Open(HKEY_CURRENT_USER, reg_key.c_str(),
+               KEY_WOW64_32KEY | KEY_SET_VALUE) == ERROR_SUCCESS) {
+    key.DeleteValue(google_update::kRegApField);
+  }
+  work_item_list->Rollback();
+  if (ap_key_deleted) {
+    work_item_list.reset(WorkItem::CreateWorkItemList());
+    ASSERT_TRUE(CreateApKey(work_item_list.get(), ap_key_value))
+        << "Failed to restore ap key.";
   }
 }
