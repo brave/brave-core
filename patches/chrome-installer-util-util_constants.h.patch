@@ -1,24 +1,16 @@
 diff --git a/chrome/installer/util/util_constants.h b/chrome/installer/util/util_constants.h
-index aa736392a7060d254a3014a28a211f3640e915c9..20d445fcd1a022c87b93a3f1e86d3f82cec7a80a 100644
+index aa736392a7060d254a3014a28a211f3640e915c9..44e9d40621844dcec2c4013957363ed4f6cb3929 100644
 --- a/chrome/installer/util/util_constants.h
 +++ b/chrome/installer/util/util_constants.h
-@@ -29,11 +29,11 @@ enum InstallStatus {
+@@ -29,7 +29,7 @@ enum InstallStatus {
    USER_LEVEL_INSTALL_EXISTS = 5,  // User level install already exists.
    SYSTEM_LEVEL_INSTALL_EXISTS = 6,  // Machine level install already exists.
    INSTALL_FAILED = 7,               // Install/update failed.
 -  // SETUP_PATCH_FAILED = 8,        // Failed to patch setup.exe.
--  OS_NOT_SUPPORTED = 9,       // Current OS not supported.
--  OS_ERROR = 10,              // OS API call failed.
--  TEMP_DIR_FAILED = 11,       // Unable to get Temp directory.
--  UNCOMPRESSION_FAILED = 12,  // Failed to uncompress Chrome archive.
 +  SETUP_PATCH_FAILED = 8,           // Failed to patch setup.exe.
-+  OS_NOT_SUPPORTED = 9,             // Current OS not supported.
-+  OS_ERROR = 10,                    // OS API call failed.
-+  TEMP_DIR_FAILED = 11,             // Unable to get Temp directory.
-+  UNCOMPRESSION_FAILED = 12,        // Failed to uncompress Chrome archive.
-   INVALID_ARCHIVE = 13,       // Something wrong with the installer archive.
-   INSUFFICIENT_RIGHTS = 14,   // User trying system level install is not Admin.
-   CHROME_NOT_INSTALLED = 15,  // Chrome not installed (returned in case of
+   OS_NOT_SUPPORTED = 9,       // Current OS not supported.
+   OS_ERROR = 10,              // OS API call failed.
+   TEMP_DIR_FAILED = 11,       // Unable to get Temp directory.
 @@ -70,7 +70,7 @@ enum InstallStatus {
    // CONFLICTING_CHANNEL_EXISTS = 39,
    // READY_MODE_REQUIRES_CHROME = 40,
