@@ -1,0 +1,30 @@
+[package]
+name = "dyn-stack"
+version = "0.10.0"
+edition = "2021"
+authors = ["sarah <>"]
+description = "Dynamic stack wrapper for unsized allocations"
+readme = "README.md"
+repository = "https://github.com/kitegi/dynstack/"
+license = "MIT"
+keywords = ["stack", "allocation", "unsized", "array", "slice"]
+
+[dependencies]
+bytemuck = "1"
+reborrow = "0.5"
+
+[features]
+default = ["std"]
+nightly = []
+std = []
+
+[dev-dependencies]
+criterion = "0.4"
+
+[[bench]]
+name = "dynstack"
+harness = false
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
