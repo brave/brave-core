@@ -30,7 +30,11 @@ DWORD BraveGetEnvironmentVariableW(const wchar_t* var, wchar_t* value, DWORD buf
 #define GetEnvironmentVariableW BraveGetEnvironmentVariableW
 #endif
 
+#define BRAVE_READ_RESOURCES ReadResources(module);
+
 #include <chrome/installer/mini_installer/configuration.cc>
+
+#undef BRAVE_READ_RESOURCES
 
 #if defined(OFFICIAL_BUILD)
 #undef GetEnvironmentVariableW

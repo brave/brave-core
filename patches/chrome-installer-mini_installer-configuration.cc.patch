@@ -1,12 +1,12 @@
 diff --git a/chrome/installer/mini_installer/configuration.cc b/chrome/installer/mini_installer/configuration.cc
-index f247568ff033121f2aeb6d66c505a514e392b9a6..8589857f611aeae973dd93af5b627d0b84ce92d7 100644
+index f247568ff033121f2aeb6d66c505a514e392b9a6..edc94808d1b557e421e5adc87059b4750827ab2c 100644
 --- a/chrome/installer/mini_installer/configuration.cc
 +++ b/chrome/installer/mini_installer/configuration.cc
 @@ -47,6 +47,7 @@ Configuration::~Configuration() {
  
  bool Configuration::Initialize() {
    Clear();
-+  ReadResources(module);
++  BRAVE_READ_RESOURCES
    ReadRegistry();
    return ParseCommandLine(::GetCommandLine());
  }
