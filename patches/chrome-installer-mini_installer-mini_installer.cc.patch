@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/mini_installer/mini_installer.cc b/chrome/installer/mini_installer/mini_installer.cc
-index 44f29f2fafda83685479c791da3aa4ddbd4cde73..413b53ca9b6556c454704eb88827eabaa0630083 100644
+index 44f29f2fafda83685479c791da3aa4ddbd4cde73..7a27e5d88079cb95a7cf70aec21632599cfd9a76 100644
 --- a/chrome/installer/mini_installer/mini_installer.cc
 +++ b/chrome/installer/mini_installer/mini_installer.cc
 @@ -358,11 +358,11 @@ bool ResourceDeleterDelegate::OnResource(const wchar_t* name,
@@ -10,23 +10,12 @@ index 44f29f2fafda83685479c791da3aa4ddbd4cde73..413b53ca9b6556c454704eb88827eaba
                                          PathString& archive_path,
                                          ResourceTypeString& archive_type,
                                          int& max_delete_attempts) {
--  // Generate the setup.exe path where we uncompress setup resource.
+   // Generate the setup.exe path where we uncompress setup resource.
 -  ResourceTypeString setup_type;
-+  // Generate the setup.exe path where we patch/uncompress setup resource.
    PathString setup_name;
    MemoryRange setup_range;
    PathString archive_name;
-@@ -370,7 +370,8 @@ ProcessExitResult UnpackBinaryResources(HMODULE module,
- 
-   // Scan through all types of resources looking for the chrome archive (which
-   // is expected to be either a B7 chrome.packed.7z or a BN chrome.7z) and
--  // installer (which is expected to be a BL setup.ex_, or a BN setup.exe).
-+  // installer (which is expected to be a B7 setup_patch.packed.7z, a BL
-+  // setup.ex_, or a BN setup.exe).
-   for (const auto* type :
-        {kLZMAResourceType, kLZCResourceType, kBinResourceType}) {
-     DWORD error_code = ERROR_SUCCESS;
-@@ -472,8 +473,17 @@ ProcessExitResult RunSetup(const Configuration& configuration,
+@@ -472,8 +472,17 @@ ProcessExitResult RunSetup(const Configuration& configuration,
                             bool compressed_archive) {
    // Get the path to setup.exe.
    PathString setup_exe;
@@ -46,7 +35,7 @@ index 44f29f2fafda83685479c791da3aa4ddbd4cde73..413b53ca9b6556c454704eb88827eaba
    }
  
    // There could be three full paths in the command line for setup.exe (path
-@@ -495,10 +505,20 @@ ProcessExitResult RunSetup(const Configuration& configuration,
+@@ -495,10 +504,20 @@ ProcessExitResult RunSetup(const Configuration& configuration,
      return ProcessExitResult(COMMAND_STRING_OVERFLOW);
    }
  
@@ -67,7 +56,7 @@ index 44f29f2fafda83685479c791da3aa4ddbd4cde73..413b53ca9b6556c454704eb88827eaba
    return RunProcessAndWait(setup_exe.get(), cmd_line.get(),
                             RUN_SETUP_FAILED_FILE_NOT_FOUND,
                             RUN_SETUP_FAILED_PATH_NOT_FOUND,
-@@ -714,7 +734,7 @@ ProcessExitResult WMain(HMODULE module) {
+@@ -714,7 +733,7 @@ ProcessExitResult WMain(HMODULE module) {
  
    // Parse configuration from the command line and resources.
    Configuration configuration;
@@ -76,7 +65,7 @@ index 44f29f2fafda83685479c791da3aa4ddbd4cde73..413b53ca9b6556c454704eb88827eaba
      return ProcessExitResult(GENERIC_INITIALIZATION_FAILURE, ::GetLastError());
    }
  
-@@ -730,14 +750,41 @@ ProcessExitResult WMain(HMODULE module) {
+@@ -730,14 +749,41 @@ ProcessExitResult WMain(HMODULE module) {
      return exit_code;
    }
  
