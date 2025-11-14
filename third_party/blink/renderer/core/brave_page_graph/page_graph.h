@@ -24,6 +24,7 @@
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/core/dom/dom_node_ids.h"
 #include "third_party/blink/renderer/core/execution_context/execution_context.h"
+#include "third_party/blink/renderer/core/frame/local_frame.h"
 #include "third_party/blink/renderer/core/inspector/console_message.h"
 #include "third_party/blink/renderer/core/inspector/protocol/dom.h"
 #include "third_party/blink/renderer/core/inspector/protocol/protocol.h"
@@ -118,7 +119,8 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
                               public Supplement<LocalFrame>,
                               public brave_page_graph::PageGraphContext {
  public:
-  static const char kSupplementName[];
+  static constexpr auto kSupplementIndex =
+      LocalFrame::Supplements::kBravePageGraph;
   static PageGraph* From(LocalFrame&);
   static void ProvideTo(LocalFrame&);
 

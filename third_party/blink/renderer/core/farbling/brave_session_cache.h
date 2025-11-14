@@ -72,7 +72,8 @@ class CORE_EXPORT BraveSessionCache final
     : public GarbageCollected<BraveSessionCache>,
       public Supplement<ExecutionContext> {
  public:
-  static const char kSupplementName[];
+  static constexpr auto kSupplementIndex =
+      ExecutionContext::Supplements::kBraveSessionCache;
 
   explicit BraveSessionCache(ExecutionContext&);
   ~BraveSessionCache() = default;

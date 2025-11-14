@@ -1,0 +1,21 @@
+diff --git a/third_party/blink/renderer/core/execution_context/navigator_base.h b/third_party/blink/renderer/core/execution_context/navigator_base.h
+index d6d42e71ad5b4e577bc1b81f58e6550cffb2e44f..f969f27d8010422ee346506f212bedb0947aeaa1 100644
+--- a/third_party/blink/renderer/core/execution_context/navigator_base.h
++++ b/third_party/blink/renderer/core/execution_context/navigator_base.h
+@@ -45,7 +45,7 @@ class CORE_EXPORT NavigatorBase : public ScriptWrappable,
+                                   public NavigatorOnLine,
+                                   public NavigatorUA,
+                                   public ExecutionContextClient,
+-                                  public Supplementable<NavigatorBase, 16> {
++                                  public Supplementable<NavigatorBase, 17> {
+  public:
+   enum class Supplements {
+     kLockManager = 0,
+@@ -64,6 +64,7 @@ class CORE_EXPORT NavigatorBase : public ScriptWrappable,
+     kSerial = 13,
+     kGeolocation = 14,
+     kGlobalFetchImpl = 15
++    , kBraveNavigator,
+   };
+ 
+   explicit NavigatorBase(ExecutionContext* context);
