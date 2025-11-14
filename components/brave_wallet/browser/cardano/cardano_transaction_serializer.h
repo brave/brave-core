@@ -68,6 +68,10 @@ class CardanoTransactionSerializer {
   cbor::Value::ArrayValue SerializeOutputs(const CardanoTransaction& tx);
   cbor::Value SerializeTxBody(const CardanoTransaction& tx);
   cbor::Value SerializeWitnessSet(const CardanoTransaction& tx);
+
+  std::optional<uint64_t> CalcRequiredCoin(
+      const CardanoTransaction::TxOutput& output,
+      const cardano_rpc::EpochParameters& epoch_parameters);
 };
 
 }  // namespace brave_wallet
