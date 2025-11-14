@@ -21,19 +21,19 @@ std::vector<mojom::ConversationTurnPtr> GetHistoryWithModifiedReply() {
       std::nullopt /* selected_text */, std::nullopt /* events */,
       base::Time::Now(), std::nullopt /* edits */,
       std::nullopt /* uploaded_images */, nullptr /* skill */, false,
-      std::nullopt /* model_key */));
+      std::nullopt /* model_key */, std::nullopt /* is_near_verified */));
 
   std::vector<mojom::ConversationEntryEventPtr> events;
   auto search_event = mojom::ConversationEntryEvent::NewSearchStatusEvent(
       mojom::SearchStatusEvent::New());
   events.push_back(search_event.Clone());
   events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
-      mojom::CompletionEvent::New("Mandalorian")));
+      mojom::CompletionEvent::New("Mandalorian", std::nullopt)));
 
   std::vector<mojom::ConversationEntryEventPtr> modified_events;
   modified_events.push_back(search_event.Clone());
   modified_events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
-      mojom::CompletionEvent::New("The Mandalorian")));
+      mojom::CompletionEvent::New("The Mandalorian", std::nullopt)));
 
   auto edit = mojom::ConversationTurn::New(
       "edit-1", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
@@ -41,7 +41,7 @@ std::vector<mojom::ConversationTurnPtr> GetHistoryWithModifiedReply() {
       std::nullopt /* selected_text*/, std::move(modified_events),
       base::Time::Now(), std::nullopt /* edits */,
       std::nullopt /* uploaded_images */, nullptr /* skill */, false,
-      "chat-basic");
+      "chat-basic", std::nullopt /* is_near_verified */);
   std::vector<mojom::ConversationTurnPtr> edits;
   edits.push_back(std::move(edit));
   history.push_back(mojom::ConversationTurn::New(
@@ -49,14 +49,14 @@ std::vector<mojom::ConversationTurnPtr> GetHistoryWithModifiedReply() {
       "Mandalorian.", std::nullopt /* prompt */,
       std::nullopt /* selected_text*/, std::move(events), base::Time::Now(),
       std::move(edits), std::nullopt /* uploaded_images */, nullptr /* skill */,
-      false, "chat-basic"));
+      false, "chat-basic", std::nullopt /* is_near_verified */));
   history.push_back(mojom::ConversationTurn::New(
       "turn-3", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       "Is it related to a broader series?", std::nullopt /* prompt */,
       std::nullopt /* selected_text */, std::nullopt /* events */,
       base::Time::Now(), std::nullopt /* edits */,
       std::nullopt /* uploaded_images */, nullptr /* skill */, false,
-      "chat-basic"));
+      "chat-basic", std::nullopt /* is_near_verified */));
 
   return history;
 }
