@@ -79,6 +79,9 @@ class EmailAliasesService : public KeyedService,
   void AddObserver(mojo::PendingRemote<mojom::EmailAliasesServiceObserver>
                        observer) override;
 
+  // Returns true if the user is authenticated.
+  bool IsAuthenticated() const;
+
   // Binds the mojom interface to this service
   // Adds a new receiver for the EmailAliasesService Mojo interface.
   void BindInterface(

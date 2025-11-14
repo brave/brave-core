@@ -11,6 +11,7 @@ source_set("internal") {
   deps = [
     "//base",
     "//brave/browser/brave_rewards",
+    "//brave/browser/ui/email_aliases",
     "//brave/browser/ui/sidebar",
     "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/playlist/core/common",
