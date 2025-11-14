@@ -8,13 +8,10 @@
 
 class BraveOmniboxResultView;
 
-#define NotifyOpenListeners            \
-  Unused();                            \
-  friend class BraveOmniboxResultView; \
-  void NotifyOpenListeners
+#define BRAVE_OMNIBOX_POPUP_VIEW_FRIEND friend class BraveOmniboxResultView;
 
 #include <chrome/browser/ui/omnibox/omnibox_popup_view.h>  // IWYU pragma: export
 
-#undef NotifyOpenListeners
+#undef BRAVE_OMNIBOX_POPUP_VIEW_FRIEND
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_OMNIBOX_OMNIBOX_POPUP_VIEW_H_
