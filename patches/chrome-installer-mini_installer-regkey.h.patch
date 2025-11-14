@@ -1,0 +1,15 @@
+diff --git a/chrome/installer/mini_installer/regkey.h b/chrome/installer/mini_installer/regkey.h
+index a83145ea5870ff2e3b332c7111c53708369b6078..14910d5240315ebe0dddaf55c353057611d92182 100644
+--- a/chrome/installer/mini_installer/regkey.h
++++ b/chrome/installer/mini_installer/regkey.h
+@@ -34,8 +34,9 @@ class RegKey {
+                    size_t value_size) const;
+   LONG ReadDWValue(const wchar_t* value_name, DWORD* value) const;
+ 
+-  // Write a value to the registry.
++  // Write a value to the registry.  SZ |value| must be null-terminated.
+   // Returns ERROR_SUCCESS or an error code.
++  LONG WriteSZValue(const wchar_t* value_name, const wchar_t* value);
+   LONG WriteDWValue(const wchar_t* value_name, DWORD value);
+ 
+   // Closes the key if it was open.
