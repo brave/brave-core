@@ -1,111 +1,8 @@
 diff --git a/chrome/installer/mini_installer/mini_installer.cc b/chrome/installer/mini_installer/mini_installer.cc
-index 44f29f2fafda83685479c791da3aa4ddbd4cde73..554e28c37ab76013d8c7b55b677ce19ce7e5ce79 100644
+index 44f29f2fafda83685479c791da3aa4ddbd4cde73..413b53ca9b6556c454704eb88827eabaa0630083 100644
 --- a/chrome/installer/mini_installer/mini_installer.cc
 +++ b/chrome/installer/mini_installer/mini_installer.cc
-@@ -151,6 +151,57 @@ void WriteExtraCode1(const Configuration& configuration, DWORD extra_code_1) {
- 
- #endif  // BUILDFLAG(GOOGLE_CHROME_BRANDING)
- 
-+// Gets the setup.exe path from Registry by looking at the value of Uninstall
-+// string.  |size| is measured in wchar_t units.
-+ProcessExitResult GetSetupExePathForAppGuid(bool system_level,
-+                                            const wchar_t* app_guid,
-+                                            const wchar_t* previous_version,
-+                                            wchar_t* path,
-+                                            size_t size) {
-+  const HKEY root_key = system_level ? HKEY_LOCAL_MACHINE : HKEY_CURRENT_USER;
-+  RegKey key;
-+  LONG result = OpenClientStateKey(root_key, app_guid, KEY_QUERY_VALUE, &key);
-+  if (result == ERROR_SUCCESS) {
-+    result = key.ReadSZValue(kUninstallRegistryValue, path, size);
-+  }
-+  if (result != ERROR_SUCCESS) {
-+    return ProcessExitResult(UNABLE_TO_FIND_REGISTRY_KEY, result);
-+  }
-+
-+  // Check that the path to the existing installer includes the expected
-+  // version number.  It's not necessary for accuracy to verify before/after
-+  // delimiters.
-+  if (!SearchStringI(path, previous_version)) {
-+    return ProcessExitResult(PATCH_NOT_FOR_INSTALLED_VERSION);
-+  }
-+
-+  // Strip double-quotes surrounding the string, if present.
-+  if (size >= 1 && path[0] == '\"') {
-+    size_t path_length = SafeStrLen(path, size);
-+    if (path_length >= 2 && path[path_length - 1] == '\"') {
-+      if (!SafeStrCopy(path, size, path + 1)) {
-+        return ProcessExitResult(PATH_STRING_OVERFLOW);
-+      }
-+      path[path_length - 2] = '\0';
-+    }
-+  }
-+
-+  return ProcessExitResult(SUCCESS_EXIT_CODE);
-+}
-+
-+// Gets the path to setup.exe of the previous version. The overall path is found
-+// in the Uninstall string in the registry. A previous version number specified
-+// in |configuration| is used if available. |size| is measured in wchar_t units.
-+ProcessExitResult GetPreviousSetupExePath(const Configuration& configuration,
-+                                          wchar_t* path,
-+                                          size_t size) {
-+  // Check Chrome's ClientState key for the path to setup.exe. This will have
-+  // the correct path for all well-functioning installs.
-+  return GetSetupExePathForAppGuid(
-+      configuration.is_system_level(), configuration.chrome_app_guid(),
-+      configuration.previous_version(), path, size);
-+}
-+
- // Calls CreateProcess with good default parameters and waits for the process to
- // terminate returning the process exit code. In case of CreateProcess failure,
- // returns a results object with the provided codes as follows:
-@@ -353,16 +404,56 @@ bool ResourceDeleterDelegate::OnResource(const wchar_t* name,
- }
- #endif  // defined(COMPONENT_BUILD)
- 
-+// Applies an differential update to the previous setup.exe provided by
-+// `patch_path` and produces a new setup.exe at the path `target_path`.
-+ProcessExitResult PatchSetup(const Configuration& configuration,
-+                             const PathString& patch_path,
-+                             const PathString& dest_path,
-+                             int& max_delete_attempts) {
-+  CommandString cmd_line;
-+  PathString exe_path;
-+  ProcessExitResult exit_code = GetPreviousSetupExePath(
-+      configuration, exe_path.get(), exe_path.capacity());
-+  if (!exit_code.IsSuccess()) {
-+    return exit_code;
-+  }
-+
-+  if (!cmd_line.append(L"\"") || !cmd_line.append(exe_path.get()) ||
-+      !cmd_line.append(L"\" --") || !cmd_line.append(kCmdUpdateSetupExe) ||
-+      !cmd_line.append(L"=\"") || !cmd_line.append(patch_path.get()) ||
-+      !cmd_line.append(L"\" --") || !cmd_line.append(kCmdNewSetupExe) ||
-+      !cmd_line.append(L"=\"") || !cmd_line.append(dest_path.get()) ||
-+      !cmd_line.append(L"\"")) {
-+    exit_code = ProcessExitResult(COMMAND_STRING_OVERFLOW);
-+  }
-+
-+  if (!exit_code.IsSuccess()) {
-+    return exit_code;
-+  }
-+
-+  // Get any command line option specified for mini_installer and pass them
-+  // on to setup.exe.
-+  AppendCommandLineFlags(configuration.command_line(), &cmd_line);
-+
-+  exit_code = RunProcessAndWait(exe_path.get(), cmd_line.get(),
-+                                SETUP_PATCH_FAILED_FILE_NOT_FOUND,
-+                                SETUP_PATCH_FAILED_PATH_NOT_FOUND,
-+                                SETUP_PATCH_FAILED_COULD_NOT_CREATE_PROCESS);
-+  DeleteWithRetryAndMetrics(patch_path.get(), max_delete_attempts);
-+
-+  return exit_code;
-+}
-+
- }  // namespace
- 
+@@ -358,11 +358,11 @@ bool ResourceDeleterDelegate::OnResource(const wchar_t* name,
  ProcessExitResult UnpackBinaryResources(HMODULE module,
                                          const wchar_t* base_path,
                                          PathString& setup_path,
@@ -119,7 +16,7 @@ index 44f29f2fafda83685479c791da3aa4ddbd4cde73..554e28c37ab76013d8c7b55b677ce19c
    PathString setup_name;
    MemoryRange setup_range;
    PathString archive_name;
-@@ -370,7 +461,8 @@ ProcessExitResult UnpackBinaryResources(HMODULE module,
+@@ -370,7 +370,8 @@ ProcessExitResult UnpackBinaryResources(HMODULE module,
  
    // Scan through all types of resources looking for the chrome archive (which
    // is expected to be either a B7 chrome.packed.7z or a BN chrome.7z) and
@@ -129,7 +26,7 @@ index 44f29f2fafda83685479c791da3aa4ddbd4cde73..554e28c37ab76013d8c7b55b677ce19c
    for (const auto* type :
         {kLZMAResourceType, kLZCResourceType, kBinResourceType}) {
      DWORD error_code = ERROR_SUCCESS;
-@@ -472,8 +564,17 @@ ProcessExitResult RunSetup(const Configuration& configuration,
+@@ -472,8 +473,17 @@ ProcessExitResult RunSetup(const Configuration& configuration,
                             bool compressed_archive) {
    // Get the path to setup.exe.
    PathString setup_exe;
@@ -149,7 +46,7 @@ index 44f29f2fafda83685479c791da3aa4ddbd4cde73..554e28c37ab76013d8c7b55b677ce19c
    }
  
    // There could be three full paths in the command line for setup.exe (path
-@@ -495,10 +596,20 @@ ProcessExitResult RunSetup(const Configuration& configuration,
+@@ -495,10 +505,20 @@ ProcessExitResult RunSetup(const Configuration& configuration,
      return ProcessExitResult(COMMAND_STRING_OVERFLOW);
    }
  
@@ -170,7 +67,7 @@ index 44f29f2fafda83685479c791da3aa4ddbd4cde73..554e28c37ab76013d8c7b55b677ce19c
    return RunProcessAndWait(setup_exe.get(), cmd_line.get(),
                             RUN_SETUP_FAILED_FILE_NOT_FOUND,
                             RUN_SETUP_FAILED_PATH_NOT_FOUND,
-@@ -714,7 +825,7 @@ ProcessExitResult WMain(HMODULE module) {
+@@ -714,7 +734,7 @@ ProcessExitResult WMain(HMODULE module) {
  
    // Parse configuration from the command line and resources.
    Configuration configuration;
@@ -179,7 +76,7 @@ index 44f29f2fafda83685479c791da3aa4ddbd4cde73..554e28c37ab76013d8c7b55b677ce19c
      return ProcessExitResult(GENERIC_INITIALIZATION_FAILURE, ::GetLastError());
    }
  
-@@ -730,14 +841,41 @@ ProcessExitResult WMain(HMODULE module) {
+@@ -730,14 +750,41 @@ ProcessExitResult WMain(HMODULE module) {
      return exit_code;
    }
  
