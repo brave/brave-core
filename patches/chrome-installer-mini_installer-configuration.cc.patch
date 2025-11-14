@@ -1,20 +1,8 @@
 diff --git a/chrome/installer/mini_installer/configuration.cc b/chrome/installer/mini_installer/configuration.cc
-index f247568ff033121f2aeb6d66c505a514e392b9a6..675729eb9cb38b9990bf5a61e4ef651af88f3b4b 100644
+index f247568ff033121f2aeb6d66c505a514e392b9a6..8589857f611aeae973dd93af5b627d0b84ce92d7 100644
 --- a/chrome/installer/mini_installer/configuration.cc
 +++ b/chrome/installer/mini_installer/configuration.cc
-@@ -30,7 +30,11 @@ namespace {
- bool GetGoogleUpdateIsMachineEnvVar() {
-   const DWORD kBufferSize = 2;
-   StackString<kBufferSize> value;
-+#if defined(OFFICIAL_BUILD)
-+  DWORD length = ::GetEnvironmentVariableW(L"BraveSoftwareUpdateIsMachine",
-+#else
-   DWORD length = ::GetEnvironmentVariableW(L"GoogleUpdateIsMachine",
-+#endif
-                                            value.get(), kBufferSize);
-   return length == 1 && *value.get() == L'1';
- }
-@@ -47,6 +51,7 @@ Configuration::~Configuration() {
+@@ -47,6 +47,7 @@ Configuration::~Configuration() {
  
  bool Configuration::Initialize() {
    Clear();
