@@ -16,6 +16,26 @@
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 
+using security_state::SecurityLevel;
+
+class MockBraveLocationBarModelDelegate : public BraveLocationBarModelDelegate {
+ public:
+  using BraveLocationBarModelDelegate::BraveLocationBarModelDelegate;
+  ~MockBraveLocationBarModelDelegate() override = default;
+
+  security_state::SecurityLevel GetSecurityLevel() const override {
+    if (security_level_) {
+      return *security_level_;
+    }
+    return BraveLocationBarModelDelegate::GetSecurityLevel();
+  }
+
+  void SetSecurityLevel(SecurityLevel level) { security_level_ = level; }
+
+ private:
+  std::optional<SecurityLevel> security_level_;
+};
+
 class BraveLocationBarModelDelegateBrowserTest : public InProcessBrowserTest {
  public:
   BraveLocationBarModelDelegateBrowserTest() = default;
@@ -27,7 +47,7 @@ class BraveLocationBarModelDelegateBrowserTest : public InProcessBrowserTest {
     ASSERT_TRUE(embedded_https_test_server().Start());
     ASSERT_TRUE(embedded_test_server()->Start());
 
-    delegate_ = std::make_unique<BraveLocationBarModelDelegate>(
+    delegate_ = std::make_unique<MockBraveLocationBarModelDelegate>(
         browser()->tab_strip_model());
   }
 
@@ -58,7 +78,7 @@ class BraveLocationBarModelDelegateBrowserTest : public InProcessBrowserTest {
   }
 
  protected:
-  std::unique_ptr<BraveLocationBarModelDelegate> delegate_;
+  std::unique_ptr<MockBraveLocationBarModelDelegate> delegate_;
 };
 
 IN_PROC_BROWSER_TEST_F(BraveLocationBarModelDelegateBrowserTest,
@@ -71,8 +91,23 @@ IN_PROC_BROWSER_TEST_F(BraveLocationBarModelDelegateBrowserTest,
 IN_PROC_BROWSER_TEST_F(BraveLocationBarModelDelegateBrowserTest,
                        ReturnsTuneIconForSecurePage) {
   NavigateToHTTPS();
+  EXPECT_EQ(delegate_->GetSecurityLevel(), SecurityLevel::SECURE);
   const gfx::VectorIcon* icon = delegate_->GetVectorIconOverride();
   EXPECT_EQ(icon, &kLeoTuneSmallIcon);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveLocationBarModelDelegateBrowserTest,
+                       ReturnsNullForNonSecureHttpsPage) {
+  NavigateToHTTPS();
+
+  delegate_->SetSecurityLevel(SecurityLevel::NONE);
+  EXPECT_EQ(delegate_->GetVectorIconOverride(), nullptr);
+
+  delegate_->SetSecurityLevel(SecurityLevel::DANGEROUS);
+  EXPECT_EQ(delegate_->GetVectorIconOverride(), nullptr);
+
+  delegate_->SetSecurityLevel(SecurityLevel::WARNING);
+  EXPECT_EQ(delegate_->GetVectorIconOverride(), nullptr);
 }
 
 class BraveLocationBarModelDelegateShieldsBrowserTest

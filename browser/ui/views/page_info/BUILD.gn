@@ -28,6 +28,7 @@ source_set("page_info") {
     "//chrome/browser/ui/webui/top_chrome",
     "//components/strings:components_strings",
     "//components/tabs:public",
+    "//extensions/common",
     "//ui/base",
     "//ui/views/controls/webview",
   ]
