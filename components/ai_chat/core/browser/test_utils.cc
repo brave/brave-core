@@ -167,15 +167,18 @@ std::vector<mojom::ConversationTurnPtr> CreateSampleChatHistory(
         std::nullopt /* prompt */, std::nullopt, std::nullopt,
         now + base::Seconds(i * 60) + base::Hours(future_hours), std::nullopt,
         std::move(uploaded_files), nullptr /* skill */, false,
-        std::nullopt /* model_key */));
+        std::nullopt /* model_key */, std::nullopt /* is_near_verified */));
     // response
     std::vector<mojom::ConversationEntryEventPtr> events;
     events.emplace_back(mojom::ConversationEntryEvent::NewCompletionEvent(
-        mojom::CompletionEvent::New(base::StrCat(
-            {"This is a generated response ", base::NumberToString(i)}))));
+        mojom::CompletionEvent::New(
+            base::StrCat(
+                {"This is a generated response ", base::NumberToString(i)}),
+            std::nullopt)));
     events.emplace_back(mojom::ConversationEntryEvent::NewCompletionEvent(
-        mojom::CompletionEvent::New(base::StrCat(
-            {"and this is more response", base::NumberToString(i)}))));
+        mojom::CompletionEvent::New(base::StrCat({"and this is more response",
+                                                  base::NumberToString(i)}),
+                                    std::nullopt)));
     events.emplace_back(mojom::ConversationEntryEvent::NewSearchQueriesEvent(
         mojom::SearchQueriesEvent::New(std::vector<std::string>{
             base::StrCat({"Something to search for", base::NumberToString(i)}),
@@ -185,7 +188,8 @@ std::vector<mojom::ConversationTurnPtr> CreateSampleChatHistory(
         mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE, "",
         std::nullopt /* prompt */, std::nullopt, std::move(events),
         now + base::Seconds((i * 60) + 30) + base::Hours(future_hours),
-        std::nullopt, std::nullopt, nullptr /* skill */, false, "chat-basic"));
+        std::nullopt, std::nullopt, nullptr /* skill */, false, "chat-basic",
+        std::nullopt));
   }
   return history;
 }

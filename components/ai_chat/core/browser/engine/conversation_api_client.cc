@@ -408,17 +408,24 @@ void ConversationAPIClient::OnQueryCompleted(
   // Handle successful request
   if (success) {
     std::string completion = "";
+    std::optional<std::string> id = std::nullopt;
     std::optional<std::string> model_key = std::nullopt;
     mojom::ConversationEntryEventPtr completion_event = nullptr;
     // We're checking for a value body in case for non-streaming API results.
     // TODO(petemill): server should provide parseable history events even for
     // non-streaming requests?
     if (result.value_body().is_dict()) {
-      const std::string* value =
-          result.value_body().GetDict().FindString("completion");
-      if (value) {
+      const base::Value::Dict& dict = result.value_body().GetDict();
+      const std::string* completion_text = dict.FindString("completion");
+      if (completion_text) {
         // Trimming necessary for Llama 2 which prepends responses with a " ".
-        completion = base::TrimWhitespaceASCII(*value, base::TRIM_ALL);
+        completion =
+            base::TrimWhitespaceASCII(*completion_text, base::TRIM_ALL);
+      }
+
+      const std::string* id_value = dict.FindString("id");
+      if (id_value) {
+        id = *id_value;
       }
 
       const std::string* model_value =
@@ -429,7 +436,7 @@ void ConversationAPIClient::OnQueryCompleted(
     }
 
     completion_event = mojom::ConversationEntryEvent::NewCompletionEvent(
-        mojom::CompletionEvent::New(completion));
+        mojom::CompletionEvent::New(completion, id));
     GenerationResultData data(std::move(completion_event),
                               std::move(model_key));
     std::move(callback).Run(base::ok(std::move(data)));
@@ -519,8 +526,13 @@ ConversationAPIClient::ParseResponseEvent(base::Value::Dict& response_event,
     if (!completion || completion->empty()) {
       return std::nullopt;
     }
+    std::optional<std::string> id;
+    const std::string* id_value = response_event.FindString("id");
+    if (id_value) {
+      id = *id_value;
+    }
     event = mojom::ConversationEntryEvent::NewCompletionEvent(
-        mojom::CompletionEvent::New(*completion));
+        mojom::CompletionEvent::New(*completion, id));
   } else if (*type == "isSearching") {
     event = mojom::ConversationEntryEvent::NewSearchStatusEvent(
         mojom::SearchStatusEvent::New());

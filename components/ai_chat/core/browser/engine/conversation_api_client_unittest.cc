@@ -580,7 +580,7 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_PremiumHeaders) {
         EXPECT_EQ(result.value(),
                   EngineConsumer::GenerationResultData(
                       mojom::ConversationEntryEvent::NewCompletionEvent(
-                          mojom::CompletionEvent::New("")),
+                          mojom::CompletionEvent::New("", std::nullopt)),
                       std::nullopt));
       });
 
@@ -710,7 +710,7 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_NonPremium) {
         EXPECT_EQ(result.value(),
                   EngineConsumer::GenerationResultData(
                       mojom::ConversationEntryEvent::NewCompletionEvent(
-                          mojom::CompletionEvent::New("")),
+                          mojom::CompletionEvent::New("", std::nullopt)),
                       std::nullopt));
       });
 
