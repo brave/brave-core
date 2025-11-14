@@ -36,6 +36,10 @@ source_set("browser_tests") {
       "//chrome/browser/ui",
       "//chrome/test:test_support",
       "//chrome/test:test_support_ui",
+      "//components/content_settings/core/browser",
+      "//components/content_settings/core/common",
+      "//components/policy/core/browser",
+      "//components/policy/core/common",
       "//content/test:test_support",
     ]
   }
