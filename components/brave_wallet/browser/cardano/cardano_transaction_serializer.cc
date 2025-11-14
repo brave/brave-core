@@ -11,20 +11,15 @@
 #include <optional>
 #include <utility>
 
-#include "base/check.h"
 #include "base/numerics/checked_math.h"
 #include "base/numerics/safe_conversions.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_transaction.h"
-#include "brave/components/brave_wallet/browser/internal/hd_key_common.h"
-#include "brave/components/brave_wallet/common/hash_utils.h"
+#include "brave/components/brave_wallet/browser/internal/cardano_tx_decoder.h"
 #include "components/cbor/values.h"
-#include "components/cbor/writer.h"
 
 namespace brave_wallet {
 
 namespace {
-
-constexpr std::array<uint8_t, kCardanoWitnessSize> kDummyTxWitnessBytes = {};
 
 // Chromium's cbor component does not support uint64_t values, only int64_t. We
 // need to be able to store uint64_t amounts in cbor.
@@ -80,85 +75,29 @@ cbor::Value::ArrayValue CardanoTransactionSerializer::SerializeOutputs(
   return result;
 }
 
-cbor::Value CardanoTransactionSerializer::SerializeTxBody(
+std::optional<std::vector<uint8_t>>
+CardanoTransactionSerializer::SerializeTransaction(
     const CardanoTransaction& tx) {
-  // https://github.com/input-output-hk/cardano-js-sdk/blob/5bc90ee9f24d89db6ea4191d705e7383d52fef6a/packages/core/src/Serialization/TransactionBody/TransactionBody.ts#L75-L250
-
-  cbor::Value::MapValue body_map;
-
-  body_map.emplace(0, SerializeInputs(tx));
-  body_map.emplace(1, SerializeOutputs(tx));
-  body_map.emplace(2,
-                   options_.max_value_for_fee
-                       ? std::numeric_limits<int64_t>::max()
-                       : AmountToInt64ForCbor(tx.EffectiveFeeAmount()));  // fee
-  body_map.emplace(3, base::strict_cast<int64_t>(tx.invalid_after()));    // ttl
-
-  return cbor::Value(body_map);
-}
-
-cbor::Value CardanoTransactionSerializer::SerializeWitnessSet(
-    const CardanoTransaction& tx) {
-  // https://github.com/input-output-hk/cardano-js-sdk/blob/5bc90ee9f24d89db6ea4191d705e7383d52fef6a/packages/core/src/Serialization/TransactionWitnessSet/TransactionWitnessSet.ts#L49-L116
-
-  cbor::Value::MapValue witness_map;
-
-  // Verification Key Witness array
-  cbor::Value::ArrayValue vk_witness_array;
-
-  if (options_.use_dummy_witness_set) {
-    // Serialize with dummy signatures for size calculation.
-    for (const auto& _ : tx.inputs()) {
-      cbor::Value::ArrayValue input_array;
-      auto [pubkey, signature] =
-          base::span(kDummyTxWitnessBytes).split_at<kEd25519PublicKeySize>();
-      input_array.emplace_back(pubkey);
-      input_array.emplace_back(signature);
-      vk_witness_array.emplace_back(std::move(input_array));
-    }
-  } else {
-    for (const auto& witness : tx.witnesses()) {
-      cbor::Value::ArrayValue input_array;
-      auto [pubkey, signature] =
-          base::span(witness.witness_bytes).split_at<kEd25519PublicKeySize>();
-      input_array.emplace_back(pubkey);
-      input_array.emplace_back(signature);
-      vk_witness_array.emplace_back(std::move(input_array));
-    }
+  auto serializable_tx = tx.ToSerializableTx();
+  if (!serializable_tx) {
+    return std::nullopt;
   }
-
-  witness_map.emplace(0, std::move(vk_witness_array));
-
-  return cbor::Value(witness_map);
-}
-
-std::vector<uint8_t> CardanoTransactionSerializer::SerializeTransaction(
-    const CardanoTransaction& tx) {
-  // https://github.com/input-output-hk/cardano-js-sdk/blob/5bc90ee9f24d89db6ea4191d705e7383d52fef6a/packages/core/src/Serialization/Transaction.ts#L59-L84
-
-  cbor::Value::ArrayValue transaction_array;
-  transaction_array.push_back(SerializeTxBody(tx));
-  transaction_array.push_back(SerializeWitnessSet(tx));
-  transaction_array.emplace_back(true);  // Valid flag.
-  transaction_array.emplace_back(
-      cbor::Value::SimpleValue::NULL_VALUE);  // Auxilary data.
-
-  std::optional<std::vector<uint8_t>> cbor_bytes =
-      cbor::Writer::Write(cbor::Value(std::move(transaction_array)));
-  CHECK(cbor_bytes);
-  return *cbor_bytes;
+  return CardanoTxDecoder::EncodeTransaction(*serializable_tx);
 }
 
 uint32_t CardanoTransactionSerializer::CalcTransactionSize(
     const CardanoTransaction& tx) {
-  return SerializeTransaction(tx).size();
+  return SerializeTransaction(tx)->size();
 }
 
-std::array<uint8_t, kCardanoTxHashSize> CardanoTransactionSerializer::GetTxHash(
-    const CardanoTransaction& tx) {
-  auto cbor_bytes = cbor::Writer::Write(SerializeTxBody(tx));
-  CHECK(cbor_bytes);
-  return Blake2bHash<kCardanoTxHashSize>({*cbor_bytes});
+std::optional<std::array<uint8_t, kCardanoTxHashSize>>
+CardanoTransactionSerializer::GetTxHash(const CardanoTransaction& tx) {
+  auto serializable_tx = tx.ToSerializableTx();
+  if (!serializable_tx) {
+    return std::nullopt;
+  }
+
+  return CardanoTxDecoder::GetTransactionHash(*serializable_tx);
 }
 
 uint64_t CardanoTransactionSerializer::CalcMinTransactionFee(

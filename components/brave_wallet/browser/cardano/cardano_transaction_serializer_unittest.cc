@@ -46,9 +46,10 @@ CardanoTransaction GetReferenceTransaction() {
   tx.AddOutput(std::move(output2));
 
   CardanoTransaction::TxWitness witness;
-  witness.witness_bytes = test::HexToArray<96>(
+  witness.signature = test::HexToArray<64>(
       "e68ca46554098776f19f1433da96a108ea8bdda693fb1bea748f89adbfa7c2af"
-      "4dd83381fdc64b6123f193e23c983a99c979a1af44b1bda5ea15d06cf7364161"
+      "4dd83381fdc64b6123f193e23c983a99c979a1af44b1bda5ea15d06cf7364161");
+  witness.public_key = test::HexToArray<32>(
       "b7b3609bca439b62e232731fb5290c495601cf40b358f915ade8bcff1eb7b802");
 
   tx.SetWitnesses({witness});
@@ -72,11 +73,11 @@ CardanoTransaction GetNullTransaction() {
 TEST(CardanoTransactionSerializerTest, ReferenceTransaction) {
   CardanoTransaction tx = GetReferenceTransaction();
 
-  EXPECT_EQ(HexEncodeLower(CardanoTransactionSerializer().GetTxHash(tx)),
+  EXPECT_EQ(HexEncodeLower(*CardanoTransactionSerializer().GetTxHash(tx)),
             "a634a34c535a86aa7125023e816d2fac982d530b0848dcc40738a33aca09c9ba");
 
   EXPECT_EQ(
-      HexEncodeLower(CardanoTransactionSerializer().SerializeTransaction(tx)),
+      HexEncodeLower(*CardanoTransactionSerializer().SerializeTransaction(tx)),
       "84a40081825820a7b4c1021fa375a4fccb1ac1b3bb01743b3989b5eb732cc6240a"
       "dd8c71edb9250001828258390144e5e8699ab31de351be61dfeb7c220eff61d29d"
       "9c88ca9d1599b36deb20324c1f3c7c6a216e551523ff7ef4e784f3fde3606a5bac"
@@ -89,8 +90,8 @@ TEST(CardanoTransactionSerializerTest, ReferenceTransaction) {
 
   tx.SetWitnesses({});
   EXPECT_EQ(HexEncodeLower(
-                CardanoTransactionSerializer({.use_dummy_witness_set = true})
-                    .SerializeTransaction(tx)),
+                *CardanoTransactionSerializer({.use_dummy_witness_set = true})
+                     .SerializeTransaction(tx)),
             "84a40081825820a7b4c1021fa375a4fccb1ac1b3bb01743b3989b5eb732cc6240a"
             "dd8c71edb9250001828258390144e5e8699ab31de351be61dfeb7c220eff61d29d"
             "9c88ca9d1599b36deb20324c1f3c7c6a216e551523ff7ef4e784f3fde3606a5bac"
@@ -103,7 +104,7 @@ TEST(CardanoTransactionSerializerTest, ReferenceTransaction) {
 }
 
 TEST(CardanoTransactionSerializerTest, Options) {
-  EXPECT_EQ(HexEncodeLower(CardanoTransactionSerializer().SerializeTransaction(
+  EXPECT_EQ(HexEncodeLower(*CardanoTransactionSerializer().SerializeTransaction(
                 GetReferenceTransaction())),
             "84a40081825820a7b4c1021fa375a4fccb1ac1b3bb01743b3989b5eb732cc6240a"
             "dd8c71edb9250001828258390144e5e8699ab31de351be61dfeb7c220eff61d29d"
@@ -116,8 +117,8 @@ TEST(CardanoTransactionSerializerTest, Options) {
             "e232731fb5290c495601cf40b358f915ade8bcff1eb7b802f5f6");
 
   EXPECT_EQ(HexEncodeLower(
-                CardanoTransactionSerializer({.use_dummy_witness_set = true})
-                    .SerializeTransaction(GetReferenceTransaction())),
+                *CardanoTransactionSerializer({.use_dummy_witness_set = true})
+                     .SerializeTransaction(GetReferenceTransaction())),
             "84a40081825820a7b4c1021fa375a4fccb1ac1b3bb01743b3989b5eb732cc6240a"
             "dd8c71edb9250001828258390144e5e8699ab31de351be61dfeb7c220eff61d29d"
             "9c88ca9d1599b36deb20324c1f3c7c6a216e551523ff7ef4e784f3fde3606a5bac"
@@ -129,8 +130,8 @@ TEST(CardanoTransactionSerializerTest, Options) {
             "000000000000000000000000000000000000000000000000f5f6");
 
   EXPECT_EQ(
-      HexEncodeLower(CardanoTransactionSerializer({.max_value_for_fee = true})
-                         .SerializeTransaction(GetReferenceTransaction())),
+      HexEncodeLower(*CardanoTransactionSerializer({.max_value_for_fee = true})
+                          .SerializeTransaction(GetReferenceTransaction())),
       "84a40081825820a7b4c1021fa375a4fccb1ac1b3bb01743b3989b5eb732cc6240a"
       "dd8c71edb9250001828258390144e5e8699ab31de351be61dfeb7c220eff61d29d"
       "9c88ca9d1599b36deb20324c1f3c7c6a216e551523ff7ef4e784f3fde3606a5bac"
@@ -143,8 +144,8 @@ TEST(CardanoTransactionSerializerTest, Options) {
 
   EXPECT_EQ(
       HexEncodeLower(
-          CardanoTransactionSerializer({.max_value_for_change_output = true})
-              .SerializeTransaction(GetReferenceTransaction())),
+          *CardanoTransactionSerializer({.max_value_for_change_output = true})
+               .SerializeTransaction(GetReferenceTransaction())),
       "84a40081825820a7b4c1021fa375a4fccb1ac1b3bb01743b3989b5eb732cc6240add8c71"
       "edb9250001828258390144e5e8699ab31de351be61dfeb7c220eff61d29d9c88ca9d1599"
       "b36deb20324c1f3c7c6a216e551523ff7ef4e784f3fde3606a5bace785391a0098968082"
@@ -157,8 +158,8 @@ TEST(CardanoTransactionSerializerTest, Options) {
 
   EXPECT_EQ(
       HexEncodeLower(
-          CardanoTransactionSerializer({.max_value_for_target_output = true})
-              .SerializeTransaction(GetReferenceTransaction())),
+          *CardanoTransactionSerializer({.max_value_for_target_output = true})
+               .SerializeTransaction(GetReferenceTransaction())),
       "84a40081825820a7b4c1021fa375a4fccb1ac1b3bb01743b3989b5eb732cc6240add8c71"
       "edb9250001828258390144e5e8699ab31de351be61dfeb7c220eff61d29d9c88ca9d1599"
       "b36deb20324c1f3c7c6a216e551523ff7ef4e784f3fde3606a5bace785391b7fffffffff"
@@ -171,7 +172,7 @@ TEST(CardanoTransactionSerializerTest, Options) {
 }
 
 TEST(CardanoTransactionSerializerTest, SerializeTransaction) {
-  EXPECT_EQ(HexEncodeLower(CardanoTransactionSerializer().SerializeTransaction(
+  EXPECT_EQ(HexEncodeLower(*CardanoTransactionSerializer().SerializeTransaction(
                 GetReferenceTransaction())),
             "84a40081825820a7b4c1021fa375a4fccb1ac1b3bb01743b3989b5eb732cc6240a"
             "dd8c71edb9250001828258390144e5e8699ab31de351be61dfeb7c220eff61d29d"
@@ -183,7 +184,7 @@ TEST(CardanoTransactionSerializerTest, SerializeTransaction) {
             "6123f193e23c983a99c979a1af44b1bda5ea15d06cf7364161b7b3609bca439b62"
             "e232731fb5290c495601cf40b358f915ade8bcff1eb7b802f5f6");
 
-  EXPECT_EQ(HexEncodeLower(CardanoTransactionSerializer().SerializeTransaction(
+  EXPECT_EQ(HexEncodeLower(*CardanoTransactionSerializer().SerializeTransaction(
                 GetNullTransaction())),
             "84a400818258200000000000000000000000000000000000000000000000000000"
             "00000000000000018182400002000300a100818258200000000000000000000000"
@@ -203,12 +204,12 @@ TEST(CardanoTransactionSerializerTest, CalcTransactionSize) {
 }
 
 TEST(CardanoTransactionSerializerTest, GetTxHash) {
-  EXPECT_EQ(HexEncodeLower(CardanoTransactionSerializer().GetTxHash(
+  EXPECT_EQ(HexEncodeLower(*CardanoTransactionSerializer().GetTxHash(
                 GetReferenceTransaction())),
             "a634a34c535a86aa7125023e816d2fac982d530b0848dcc40738a33aca09c9ba");
 
-  EXPECT_EQ(HexEncodeLower(
-                CardanoTransactionSerializer().GetTxHash(GetNullTransaction())),
+  EXPECT_EQ(HexEncodeLower(*CardanoTransactionSerializer().GetTxHash(
+                GetNullTransaction())),
             "b2ea07342a0c25200d1078cf0ea9b74942d1fb6284f812373182f0eb0270f5e6");
 }
 
