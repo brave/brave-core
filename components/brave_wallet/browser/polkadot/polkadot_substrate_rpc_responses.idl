@@ -58,6 +58,9 @@ namespace polkadot_substrate_rpc_responses {
     Error? error;
   };
 
+  // chain_getBlockHash's RPC structure is described here:
+  // https://github.com/w3f/PSPs/blob/b6d570173146e7a012cf43d270177e02ed886e2e/PSPs/drafts/psp-6.md#194-chain_getblockhash
+
   dictionary PolkadotBlockHash {
     DOMString jsonrpc;
     long id;
