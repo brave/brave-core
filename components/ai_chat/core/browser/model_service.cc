@@ -740,6 +740,10 @@ void ModelService::SetDefaultModelKeyWithoutValidationForTesting(
   pref_service_->SetString(kDefaultModelKey, model_key);
 }
 
+void ModelService::AddModelForTesting(mojom::ModelPtr model) {
+  models_.push_back(std::move(model));
+}
+
 const std::string& ModelService::GetDefaultModelKey() {
   return pref_service_->GetString(kDefaultModelKey);
 }

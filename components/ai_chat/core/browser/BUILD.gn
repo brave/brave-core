@@ -163,6 +163,7 @@ source_set("unit_tests") {
     "history_ui_handler_unittest.cc",
     "model_service_unittest.cc",
     "model_validator_unittest.cc",
+    "near_verifier_unittest.cc",
     "tab_tracker_service_unittest.cc",
     "tools/memory_storage_tool_unittest.cc",
     "tools/tool_input_properties_unittest.cc",
