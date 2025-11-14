@@ -93,4 +93,6 @@ void BrowserWindowFeatures::TearDownPreBrowserWindowDestruction() {
     sidebar_controller_->TearDownPreBrowserWindowDestruction();
     playlist_side_panel_coordinator_.reset();
   }
+
+  email_aliases_controller_.reset();
 }
