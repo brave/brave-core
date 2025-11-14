@@ -11,7 +11,6 @@ namespace autofill::features {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kAutofillAiServerModel, base::FEATURE_DISABLED_BY_DEFAULT},
-    {test::kAutofillServerCommunication, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
 }  // namespace autofill::features
