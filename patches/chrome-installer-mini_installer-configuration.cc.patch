@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/mini_installer/configuration.cc b/chrome/installer/mini_installer/configuration.cc
-index f247568ff033121f2aeb6d66c505a514e392b9a6..d8c2d8c504d2cfd90525cd1206907a85d15c14c7 100644
+index f247568ff033121f2aeb6d66c505a514e392b9a6..d61867ec29308b511b5d5fd33fe013938bb9f063 100644
 --- a/chrome/installer/mini_installer/configuration.cc
 +++ b/chrome/installer/mini_installer/configuration.cc
 @@ -30,7 +30,11 @@ namespace {
@@ -22,15 +22,7 @@ index f247568ff033121f2aeb6d66c505a514e392b9a6..d8c2d8c504d2cfd90525cd1206907a85
    ReadRegistry();
    return ParseCommandLine(::GetCommandLine());
  }
-@@ -66,6 +71,7 @@ void Configuration::Clear() {
-   is_system_level_ = false;
-   has_invalid_switch_ = false;
-   should_delete_extracted_files_ = true;
-+  previous_version_ = nullptr;
- }
- 
- // |command_line| is shared with this instance in the sense that this
-@@ -80,7 +86,9 @@ bool Configuration::ParseCommandLine(const wchar_t* command_line) {
+@@ -80,7 +85,9 @@ bool Configuration::ParseCommandLine(const wchar_t* command_line) {
    for (int i = 1; i < argument_count_; ++i) {
      if (0 == ::lstrcmpi(args_[i], L"--system-level"))
        is_system_level_ = true;
