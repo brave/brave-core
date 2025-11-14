@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/mini_installer/configuration.cc b/chrome/installer/mini_installer/configuration.cc
-index f247568ff033121f2aeb6d66c505a514e392b9a6..8b036cb73e1073e44ba62c48a121d9e32fd77260 100644
+index f247568ff033121f2aeb6d66c505a514e392b9a6..d8c2d8c504d2cfd90525cd1206907a85d15c14c7 100644
 --- a/chrome/installer/mini_installer/configuration.cc
 +++ b/chrome/installer/mini_installer/configuration.cc
 @@ -30,7 +30,11 @@ namespace {
@@ -14,12 +14,9 @@ index f247568ff033121f2aeb6d66c505a514e392b9a6..8b036cb73e1073e44ba62c48a121d9e3
                                             value.get(), kBufferSize);
    return length == 1 && *value.get() == L'1';
  }
-@@ -45,8 +49,9 @@ Configuration::~Configuration() {
-   Clear();
- }
+@@ -47,6 +51,7 @@ Configuration::~Configuration() {
  
--bool Configuration::Initialize() {
-+bool Configuration::Initialize(HMODULE module) {
+ bool Configuration::Initialize() {
    Clear();
 +  ReadResources(module);
    ReadRegistry();

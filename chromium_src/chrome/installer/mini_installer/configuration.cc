@@ -3,7 +3,11 @@
 #pragma allow_unsafe_buffers
 #endif
 
+#include "chrome/installer/mini_installer/configuration.h"
+
+#define Initialize() Initialize(HMODULE module)
 #include <chrome/installer/mini_installer/configuration.cc>
+#undef Initialize
 
 namespace mini_installer {
 
