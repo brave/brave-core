@@ -1,0 +1,21 @@
+diff --git a/third_party/blink/renderer/core/execution_context/execution_context.h b/third_party/blink/renderer/core/execution_context/execution_context.h
+index b4cc5736f19f4145de13c9e4d9bd27a97cc0f1b1..6ec4b4e769822c31df1f5c3a4a6e8f9046c9e777 100644
+--- a/third_party/blink/renderer/core/execution_context/execution_context.h
++++ b/third_party/blink/renderer/core/execution_context/execution_context.h
+@@ -131,7 +131,7 @@ enum ReferrerPolicySource { kPolicySourceHttpHeader, kPolicySourceMetaTag };
+ // by an extension developer, but these share an ExecutionContext (the window)
+ // in common.
+ class CORE_EXPORT ExecutionContext
+-    : public Supplementable<ExecutionContext, 34>,
++    : public Supplementable<ExecutionContext, 35>,
+       public MojoBindingContext,
+       public UseCounterAndConsoleLogger,
+       public FeatureContext {
+@@ -171,6 +171,7 @@ class CORE_EXPORT ExecutionContext
+     kExecutionContextClipboardEventState = 31,
+     kCachedVideoFramePool = 32,
+     kCanvasResourceProviderCache = 33
++    , kBraveSessionCache,
+   };
+ 
+   ExecutionContext(const ExecutionContext&) = delete;
