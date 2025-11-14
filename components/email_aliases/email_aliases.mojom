@@ -46,8 +46,6 @@ interface EmailAliasesServiceObserver {
 };
 
 // Interface for managing email aliases
-// TODO(https://github.com/brave/brave-browser/issues/48515):
-// Look into using `request<>` for function calls in this interface.
 interface EmailAliasesService {
 
   // Initiate authentication using the user's auth email.
@@ -69,6 +67,18 @@ interface EmailAliasesService {
 
   // Add an email aliases observer.
   AddObserver(pending_remote<EmailAliasesServiceObserver> observer);
+};
 
+// Interface for handling `Generate new alias` dialog actions
+// on the browser side.
+interface EmailAliasesPanelHandler {
+  // Notify alias creation complete (the bubble can close). Fire and forget.
+  OnAliasCreated(string email);
+
+  // Invoke manage aliases (show settings page)
+  OnManageAliases();
+
+  // Dialog closed without action.
+  OnCancelAliasCreation();
 };
 

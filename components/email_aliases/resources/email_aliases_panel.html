@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <base href="/">
+  <meta charset="utf-8">
+  <title>Email Aliases Panel</title>
+  <link rel="stylesheet" href="chrome://resources/brave/css/reset.css">
+  <link rel="stylesheet" href="chrome://resources/css/text_defaults_md.css">
+  <link rel="stylesheet" href="chrome://resources/brave/css/nala.css">
+  <script src="chrome://resources/js/load_time_data_deprecated.js"></script>
+  <script src="/strings.js"></script>
+  <style>
+    html,
+    body {
+      margin: 0;
+    }
+    :host, body, #mountPoint {
+      display: block;
+      width: 420px;
+      max-width: 420px;
+      height: auto;
+    }
+    #mountPoint {
+      padding: 2em;
+    }
+  </style>
+  </head>
+<body>
+  <script src="chrome://resources/brave/leo.bundle.js"></script>
+  <script type="module" src="email_aliases_panel.bundle.js"></script>
+  <div id="mountPoint"></div>
+</body>
+</html>
+
+
