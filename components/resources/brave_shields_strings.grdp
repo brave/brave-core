@@ -139,11 +139,11 @@
   <message name="IDS_BRAVE_SHIELDS_SCRIPTS_BLOCKED" desc="A label for scripts Scripts blocked option.">
     Block scripts
   </message>
-  
+
   <message name="IDS_BRAVE_SHIELDS_SCRIPTS_BLOCKED_OVERRIDDEN" desc="A label for scripts Scripts blocked option which is overridden by rule.">
     (enforced)
   </message>
-  
+
    <message name="IDS_BRAVE_SHIELDS_SCRIPTS_BLOCKED_OVERRIDDEN_BY_EXTENSION" desc="A label for scripts Scripts blocked option which is overridden by extension rule.">
     (enforced by extension)
   </message>
@@ -298,5 +298,9 @@
 
   <message name="IDS_BRAVE_SHIELDS_ONBOARDING_CLICK_TO_VIEW_LABEL" desc="Label for the onboarding bubble to guide the user to the Shield icon">
     Click the Brave icon to view Brave Shields.
+  </message>
+
+  <message name="IDS_BRAVE_SHIELDS_PAGE_INFO_SITE_INFO_LINK" desc="Link text for Site Info tab on Page Info bubble">
+    Site Info
   </message>
 </grit-part>

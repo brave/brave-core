@@ -37,22 +37,25 @@ void BravePageInfoBubbleView::AnnouncePageOpened(std::u16string announcement) {
   // This method is called after any PageInfo subpage is opened and allows us to
   // customize child views added by the superclass.
   PageInfoBubbleView::AnnouncePageOpened(std::move(announcement));
+
+  if (!customize_view_) {
+    return;
+  }
+
   CustomizeChromiumViews();
   SizeToContents();
 
   // When a subpage is opened programmatically (e.g. when the page info bubble
   // is opened directly to a subpage), ensure that the Site Settings tab is
   // active.
-  if (page_info::features::IsShowBraveShieldsInPageInfoEnabled()) {
-    SwitchToTab(Tab::kSiteSettings);
-  }
+  SwitchToTab(Tab::kSiteSettings);
 }
 
 gfx::Size BravePageInfoBubbleView::CalculatePreferredSize(
     const views::SizeBounds& available_size) const {
   gfx::Size size = PageInfoBubbleView::CalculatePreferredSize(available_size);
 
-  if (page_info::features::IsShowBraveShieldsInPageInfoEnabled()) {
+  if (customize_view_) {
     // This bubble needs to be larger than the parent class in order to show the
     // full tab switcher and Shields content.
     constexpr int kMinBubbleWidth = 388;
@@ -73,7 +76,8 @@ void BravePageInfoBubbleView::ChildPreferredSizeChanged(View* child) {
 void BravePageInfoBubbleView::PrimaryPageChanged(content::Page& page) {
   // The superclass closes the bubble when this event occurs. Since we are
   // displaying the Shields UI and we want users to be able to toggle Shields
-  // settings (which reloads the page) without closing the bubble.
+  // settings (which reloads the page) without closing the bubble, do nothing
+  // here and let `DidFinishNavigation` determine whether to close the bubble.
 }
 
 void BravePageInfoBubbleView::DidFinishNavigation(
@@ -91,8 +95,8 @@ void BravePageInfoBubbleView::DidFinishNavigation(
       return false;
     }
 
-    // Close the bubble if the Shields integration flag is not enabled.
-    if (!page_info::features::IsShowBraveShieldsInPageInfoEnabled()) {
+    // Close the bubble if we are not customizing the base view.
+    if (!customize_view_) {
       return true;
     }
 
@@ -134,7 +138,11 @@ Tab BravePageInfoBubbleView::GetInitialTab() {
 }
 
 void BravePageInfoBubbleView::InitializeView() {
-  if (!page_info::features::IsShowBraveShieldsInPageInfoEnabled()) {
+  customize_view_ =
+      page_info::features::IsShowBraveShieldsInPageInfoEnabled() &&
+      BraveShieldsPageInfoView::ShouldShowForWebContents(web_contents());
+
+  if (!customize_view_) {
     return;
   }
 
@@ -170,7 +178,7 @@ void BravePageInfoBubbleView::InitializeView() {
 }
 
 void BravePageInfoBubbleView::CustomizeChromiumViews() {
-  if (!page_info::features::IsShowBraveShieldsInPageInfoEnabled()) {
+  if (!customize_view_) {
     return;
   }
 
