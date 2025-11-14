@@ -25,6 +25,8 @@ class DraggingTabsSession : public DraggingTabsSessionChromium {
   // DraggingTabSessionChromium:
   gfx::Point GetAttachedDragPoint(gfx::Point point_in_screen) override;
   void MoveAttached(gfx::Point point_in_screen) override;
+  std::optional<tab_groups::TabGroupId> CalculateGroupForDraggedTabs(
+      int to_index) override;
 
  private:
   int mouse_y_offset_ = 0;
