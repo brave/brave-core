@@ -5,8 +5,11 @@
 
 #include "chrome/installer/mini_installer/configuration.h"
 
+#include <cassert>
+
 #include "build/branding_buildflags.h"
 #include "chrome/installer/mini_installer/appid.h"
+#include "chrome/installer/mini_installer/mini_string.h"
 
 #define Initialize() Initialize(HMODULE module)
 
@@ -17,7 +20,21 @@
 #define NEED_TO_UNDEF_BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING
 #endif
 
+#if defined(OFFICIAL_BUILD)
+namespace {
+DWORD BraveGetEnvironmentVariableW(const wchar_t* var, wchar_t* value, DWORD bufSize) {
+  assert(::lstrcmp(var, L"GoogleUpdateIsMachine") == 0);
+  return ::GetEnvironmentVariableW(L"BraveSoftwareUpdateIsMachine", value, bufSize);
+}
+}  // namespace
+#define GetEnvironmentVariableW BraveGetEnvironmentVariableW
+#endif
+
 #include <chrome/installer/mini_installer/configuration.cc>
+
+#if defined(OFFICIAL_BUILD)
+#undef GetEnvironmentVariableW
+#endif
 
 #if defined(NEED_TO_UNDEF_BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING)
 #undef BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING
