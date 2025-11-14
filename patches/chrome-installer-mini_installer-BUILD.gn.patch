@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/mini_installer/BUILD.gn b/chrome/installer/mini_installer/BUILD.gn
-index 93cfcfeffc0b7b23cf2a8365ee4a6a2b08e86672..aacc74fdabda50a408bde951132f328978b9bf3b 100644
+index 93cfcfeffc0b7b23cf2a8365ee4a6a2b08e86672..75922038a9b4bafd01aa4f07f6f01b26bcee31c7 100644
 --- a/chrome/installer/mini_installer/BUILD.gn
 +++ b/chrome/installer/mini_installer/BUILD.gn
 @@ -140,7 +140,7 @@ if (enable_uncompressed_archive) {
@@ -11,19 +11,7 @@ index 93cfcfeffc0b7b23cf2a8365ee4a6a2b08e86672..aacc74fdabda50a408bde951132f3289
    script = "//chrome/tools/build/win/create_installer_archive.py"
  
    release_file = "chrome.release"
-@@ -181,6 +181,11 @@ action("mini_installer_archive") {
-     "--build_time",
-     build_timestamp,
- 
-+    # Optional arguments to generate diff installer.
-+    #'--last_chrome_installer=C:/Temp/base',
-+    #'--setup_exe_format=DIFF',
-+    #'--diff_algorithm=ZUCCHINI',
-+
-     # Optional argument for verbose archiving output.
-     #"--verbose",
-   ]
-@@ -318,6 +323,7 @@ template("generate_mini_installer") {
+@@ -318,6 +318,7 @@ template("generate_mini_installer") {
        no_default_deps = true
        ldflags += [ "/ENTRY:MainEntryPoint" ]
      }
