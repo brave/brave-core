@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/mini_installer/mini_installer.cc b/chrome/installer/mini_installer/mini_installer.cc
-index 44f29f2fafda83685479c791da3aa4ddbd4cde73..d7142301d7e1d25d349fc651f83f732d49bd908c 100644
+index 44f29f2fafda83685479c791da3aa4ddbd4cde73..d89ef88b16cbbfead1923f6af1cdef0030f297a7 100644
 --- a/chrome/installer/mini_installer/mini_installer.cc
 +++ b/chrome/installer/mini_installer/mini_installer.cc
 @@ -358,11 +358,11 @@ bool ResourceDeleterDelegate::OnResource(const wchar_t* name,
@@ -35,20 +35,7 @@ index 44f29f2fafda83685479c791da3aa4ddbd4cde73..d7142301d7e1d25d349fc651f83f732d
    }
  
    // There could be three full paths in the command line for setup.exe (path
-@@ -495,10 +504,20 @@ ProcessExitResult RunSetup(const Configuration& configuration,
-     return ProcessExitResult(COMMAND_STRING_OVERFLOW);
-   }
- 
-+  // Append the command line param for the previous version of Chrome.
-+  if (configuration.previous_version() &&
-+      (!cmd_line.append(L" --") || !cmd_line.append(kCmdPreviousVersion) ||
-+       !cmd_line.append(L"=\"") ||
-+       !cmd_line.append(configuration.previous_version()) ||
-+       !cmd_line.append(L"\""))) {
-+    return ProcessExitResult(COMMAND_STRING_OVERFLOW);
-+  }
-+
-   // Get any command line option specified for mini_installer and pass them
+@@ -499,6 +508,7 @@ ProcessExitResult RunSetup(const Configuration& configuration,
    // on to setup.exe
    AppendCommandLineFlags(configuration.command_line(), &cmd_line);
  
@@ -56,7 +43,7 @@ index 44f29f2fafda83685479c791da3aa4ddbd4cde73..d7142301d7e1d25d349fc651f83f732d
    return RunProcessAndWait(setup_exe.get(), cmd_line.get(),
                             RUN_SETUP_FAILED_FILE_NOT_FOUND,
                             RUN_SETUP_FAILED_PATH_NOT_FOUND,
-@@ -730,14 +749,41 @@ ProcessExitResult WMain(HMODULE module) {
+@@ -730,14 +740,41 @@ ProcessExitResult WMain(HMODULE module) {
      return exit_code;
    }
  
