@@ -22,7 +22,7 @@ namespace ai_chat {
 namespace {
 
 constexpr char kVerificationPathPrefix[] = "v1/near-result-verification/";
-constexpr base::TimeDelta kPendingRetryInterval = base::Seconds(1);
+constexpr base::TimeDelta kPendingRetryInterval = base::Seconds(2);
 constexpr base::TimeDelta kServerErrorRetryInterval = base::Seconds(10);
 constexpr base::TimeDelta kMaxPendingTime = base::Minutes(1);
 constexpr char kStatusKey[] = "status";

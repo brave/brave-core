@@ -2184,10 +2184,12 @@ void ConversationHandler::OnNEARVerificationComplete(
     return;
   }
 
-  observers_.Notify(&Observer::OnNEARVerificationUpdate, this, turn_uuid,
-                    verified);
+  (*turn_it)->is_near_verified = verified;
 
   OnHistoryUpdate(turn_it->Clone());
+
+  observers_.Notify(&Observer::OnNEARVerificationUpdate, this, turn_uuid,
+                    verified);
 }
 
 }  // namespace ai_chat
