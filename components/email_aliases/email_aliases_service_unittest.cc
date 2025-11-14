@@ -703,8 +703,4 @@ TEST_F(EmailAliasesAPITest, ApiFetch_AttachesAuthTokenAndAPIKeyHeaders) {
   EXPECT_EQ(seen_api_key, BUILDFLAG(BRAVE_SERVICES_KEY));
 }
 
-TEST_F(EmailAliasesAPITest, ApiFetch_AttachesAuthTokenAndAPIKeyHeaders) {
-}
-
-
 }  // namespace email_aliases
