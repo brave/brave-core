@@ -15,6 +15,12 @@ source_set("frame") {
 
   deps = [
     "//base",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui/tabs:tab_strip",
+    "//chrome/common:constants",
+    "//components/prefs",
+    "//components/tabs:public",
+    "//components/tabs:split_tabs",
     "//ui/compositor",
     "//ui/views",
   ]

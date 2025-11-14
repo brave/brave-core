@@ -6,17 +6,14 @@
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 
 // static
-int BraveContentsViewUtil::GetMargin() {
-  if (@available(macOS 26, *)) {
-    return 8;
-  }
-  return 4;
+int BraveContentsViewUtil::GetBorderRadius() {
+  return 6;
 }
 
-// static
-int BraveContentsViewUtil::GetBorderRadius() {
+int BraveContentsViewUtil::GetBorderRadiusAroundWindow() {
   if (@available(macOS 26, *)) {
-    return 18;
+    return 17;
   }
+
   return 6;
 }
