@@ -14,6 +14,8 @@ namespace prefs {
 // content settings.
 inline constexpr char kManagedDefaultBraveHttpsUpgrade[] =
     "brave.profile.managed_default_content_settings.brave_https_upgrade";
+inline constexpr char kManagedDefaultBraveReferrersSetting[] =
+    "brave.profile.managed_default_content_settings.brave_referrers";
 
 }  // namespace prefs
 

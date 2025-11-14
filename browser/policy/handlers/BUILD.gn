@@ -7,6 +7,8 @@ static_library("handlers") {
   sources = [
     "brave_https_upgrade_policy_handler.cc",
     "brave_https_upgrade_policy_handler.h",
+    "brave_referrers_policy_handler.cc",
+    "brave_referrers_policy_handler.h",
   ]
 
   deps = [
@@ -20,7 +22,10 @@ static_library("handlers") {
 
 source_set("unit_tests") {
   testonly = true
-  sources = [ "brave_https_upgrade_policy_handler_unittest.cc" ]
+  sources = [
+    "brave_https_upgrade_policy_handler_unittest.cc",
+    "brave_referrers_policy_handler_unittest.cc",
+  ]
 
   deps = [
     ":handlers",
