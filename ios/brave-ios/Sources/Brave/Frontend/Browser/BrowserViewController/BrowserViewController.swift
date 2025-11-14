@@ -127,7 +127,7 @@ public class BrowserViewController: UIViewController {
   let feedDataSource: FeedDataSource
 
   private var postSetupTasks: [() -> Void] = []
-  /*private*/ var setupTasksCompleted: Bool = false
+  private var setupTasksCompleted: Bool = false
 
   private var privateModeCancellable: AnyCancellable?
   private var appReviewCancelable: AnyCancellable?
