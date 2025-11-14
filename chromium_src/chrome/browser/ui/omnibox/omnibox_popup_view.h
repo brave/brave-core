@@ -8,12 +8,10 @@
 
 class BraveOmniboxResultView;
 
-#define controller_ \
-  controller_;      \
-  friend class BraveOmniboxResultView
+#define BRAVE_OMNIBOX_POPUP_VIEW_FRIEND friend class BraveOmniboxResultView;
 
 #include <chrome/browser/ui/omnibox/omnibox_popup_view.h>  // IWYU pragma: export
 
-#undef controller_
+#undef BRAVE_OMNIBOX_POPUP_VIEW_FRIEND
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_OMNIBOX_OMNIBOX_POPUP_VIEW_H_
