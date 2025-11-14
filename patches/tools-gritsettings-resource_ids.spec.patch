@@ -1,5 +1,5 @@
 diff --git a/tools/gritsettings/resource_ids.spec b/tools/gritsettings/resource_ids.spec
-index b137d827595addbd4e8880ee14dc3b7cd1261dbb..79b8051fe1cca25ffe633f2b55713ab6f282aebd 100644
+index 6ed8fba243f6351a0f45cf459379e45ba405cf72..84c38f35a3bcda024e0aa85b499db77faf12a29d 100644
 --- a/tools/gritsettings/resource_ids.spec
 +++ b/tools/gritsettings/resource_ids.spec
 @@ -38,6 +38,9 @@
@@ -12,7 +12,7 @@ index b137d827595addbd4e8880ee14dc3b7cd1261dbb..79b8051fe1cca25ffe633f2b55713ab6
    "chrome/app/google_chrome_strings.grd": {
      "messages": [800],
    },
-@@ -241,114 +244,114 @@
+@@ -241,90 +244,90 @@
      "META": {"sizes": {"includes": [10],}},
      "includes": [2960],
    },
@@ -23,10 +23,6 @@ index b137d827595addbd4e8880ee14dc3b7cd1261dbb..79b8051fe1cca25ffe633f2b55713ab6
 -  "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/chromeos/app_install/resources.grd": {
 -    "META": {"sizes": {"includes": [5]}},
 -    "includes": [3000],
--  },
--  "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/chromeos/audio/resources.grd": {
--    "META": {"sizes": {"includes": [30]}},
--    "includes": [3060],
 -  },
 -  "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/chromeos/bluetooth_pairing_dialog/resources.grd": {
 -    "META": {"sizes": {"includes": [10],}},
@@ -104,26 +100,6 @@ index b137d827595addbd4e8880ee14dc3b7cd1261dbb..79b8051fe1cca25ffe633f2b55713ab6
 -    "META": {"sizes": {"includes": [35]}},
 -    "includes": [3400],
 -  },
--  "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/chromeos/multidevice_setup/multidevice_setup_resources.grd": {
--    "META": {"sizes": {"includes": [10]}},
--    "includes": [3420],
--  },
--  "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/chromeos/nearby_internals/resources.grd": {
--    "META": {"sizes": {"includes": [40]}},
--    "includes": [3460],
--  },
--  "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/chromeos/nearby_share/resources.grd": {
--    "META": {"sizes": {"includes": [100]}},
--    "includes": [3480],
--  },
--  "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/chromeos/network_ui/resources.grd": {
--    "META": {"sizes": {"includes": [20]}},
--    "includes": [3500],
--  },
--  "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/chromeos/notification_tester/resources.grd": {
--    "META": {"sizes": {"includes": [5]}},
--    "includes": [3520],
--  },
 +#  "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/chromeos/add_supervision/resources.grd": {
 +#    "META": {"sizes": {"includes": [10],}},
 +#    "includes": [2980],
@@ -131,10 +107,6 @@ index b137d827595addbd4e8880ee14dc3b7cd1261dbb..79b8051fe1cca25ffe633f2b55713ab6
 +#  "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/chromeos/app_install/resources.grd": {
 +#    "META": {"sizes": {"includes": [5]}},
 +#    "includes": [3000],
-+#  },
-+#  "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/chromeos/audio/resources.grd": {
-+#    "META": {"sizes": {"includes": [30]}},
-+#    "includes": [3060],
 +#  },
 +#  "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/chromeos/bluetooth_pairing_dialog/resources.grd": {
 +#    "META": {"sizes": {"includes": [10],}},
@@ -212,30 +184,10 @@ index b137d827595addbd4e8880ee14dc3b7cd1261dbb..79b8051fe1cca25ffe633f2b55713ab6
 +#    "META": {"sizes": {"includes": [35]}},
 +#    "includes": [3400],
 +#  },
-+#  "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/chromeos/multidevice_setup/multidevice_setup_resources.grd": {
-+#    "META": {"sizes": {"includes": [10]}},
-+#    "includes": [3420],
-+#  },
-+#  "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/chromeos/nearby_internals/resources.grd": {
-+#    "META": {"sizes": {"includes": [40]}},
-+#    "includes": [3460],
-+#  },
-+#  "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/chromeos/nearby_share/resources.grd": {
-+#    "META": {"sizes": {"includes": [100]}},
-+#    "includes": [3480],
-+#  },
-+#  "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/chromeos/network_ui/resources.grd": {
-+#    "META": {"sizes": {"includes": [20]}},
-+#    "includes": [3500],
-+#  },
-+#  "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/chromeos/notification_tester/resources.grd": {
-+#    "META": {"sizes": {"includes": [5]}},
-+#    "includes": [3520],
-+#  },
-   "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/chromeos/parent_access/resources.grd": {
-     "META": {"sizes": {"includes": [50],}},
-     "includes": [3540],
-@@ -426,7 +429,7 @@
+   "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/chromeos/multidevice_setup/multidevice_setup_resources.grd": {
+     "META": {"sizes": {"includes": [10]}},
+     "includes": [3420],
+@@ -422,7 +425,7 @@
      "includes": [3900],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/extensions/resources.grd": {
@@ -244,7 +196,7 @@ index b137d827595addbd4e8880ee14dc3b7cd1261dbb..79b8051fe1cca25ffe633f2b55713ab6
      "includes": [3920],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/extensions_zero_state_promo/resources.grd": {
-@@ -466,7 +469,7 @@
+@@ -462,7 +465,7 @@
      "includes": [4030],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/history/resources.grd": {
@@ -253,7 +205,7 @@ index b137d827595addbd4e8880ee14dc3b7cd1261dbb..79b8051fe1cca25ffe633f2b55713ab6
      "includes": [4040],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/infobar_internals/resources.grd": {
-@@ -626,7 +629,7 @@
+@@ -622,7 +625,7 @@
      "includes": [4720],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/settings/resources.grd": {
@@ -262,7 +214,7 @@ index b137d827595addbd4e8880ee14dc3b7cd1261dbb..79b8051fe1cca25ffe633f2b55713ab6
      "includes": [4740],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/settings_shared/resources.grd": {
-@@ -654,7 +657,7 @@
+@@ -650,7 +653,7 @@
      "includes": [4820],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/side_panel/customize_chrome/resources.grd": {
@@ -271,7 +223,7 @@ index b137d827595addbd4e8880ee14dc3b7cd1261dbb..79b8051fe1cca25ffe633f2b55713ab6
      "includes": [4840],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/side_panel/history/resources.grd": {
-@@ -1089,6 +1092,9 @@
+@@ -1085,6 +1088,9 @@
      "META": {"join": 2},
      "messages": [7020],
    },
