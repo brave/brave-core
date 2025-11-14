@@ -153,7 +153,7 @@ void CardanoCreateTransactionTask::RunSolverForTransaction() {
 
   if (!CardanoTransactionSerializer().ValidateMinValue(
           *solved_transaction->TargetOutput(), *latest_epoch_parameters_)) {
-    StopWithError(WalletInternalErrorMessage());
+    StopWithError(WalletAmountTooSmallErrorMessage());
     return;
   }
 

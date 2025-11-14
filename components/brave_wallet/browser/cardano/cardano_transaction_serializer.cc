@@ -187,7 +187,7 @@ std::optional<uint64_t> CardanoTransactionSerializer::CalcMinAdaRequired(
   CardanoTransaction::TxOutput cur_output = output;
   // We need 5 iterations as uint64 can be encoded in CBOR in 1, 2, 3, 5, or 9
   // bytes.
-  for (int i = 0; i < 4; i++) {
+  for (int i = 0; i < 5; i++) {
     auto cbor_bytes =
         cbor::Writer::Write(cbor::Value(SerializeOutput(cur_output)));
     CHECK(cbor_bytes);

@@ -129,7 +129,7 @@ TEST_F(CardanoCreateTransactionTaskUnitTest, SendAmountIsTooLow) {
     TestFuture<base::expected<CardanoTransaction, std::string>> tx_future;
     task.Start(tx_future.GetCallback());
 
-    EXPECT_EQ(tx_future.Take().error(), WalletInternalErrorMessage());
+    EXPECT_EQ(tx_future.Take().error(), WalletAmountTooSmallErrorMessage());
   }
 
   {
@@ -141,7 +141,7 @@ TEST_F(CardanoCreateTransactionTaskUnitTest, SendAmountIsTooLow) {
     TestFuture<base::expected<CardanoTransaction, std::string>> tx_future;
     task.Start(tx_future.GetCallback());
 
-    EXPECT_EQ(tx_future.Take().error(), WalletInternalErrorMessage());
+    EXPECT_EQ(tx_future.Take().error(), WalletAmountTooSmallErrorMessage());
   }
 
   {
@@ -153,7 +153,7 @@ TEST_F(CardanoCreateTransactionTaskUnitTest, SendAmountIsTooLow) {
     TestFuture<base::expected<CardanoTransaction, std::string>> tx_future;
     task.Start(tx_future.GetCallback());
 
-    EXPECT_EQ(tx_future.Take().error(), WalletInternalErrorMessage());
+    EXPECT_EQ(tx_future.Take().error(), WalletAmountTooSmallErrorMessage());
   }
 
   {

@@ -171,6 +171,7 @@
   <message name="IDS_BRAVE_WALLET_SWAP_FEES_NOTICE" desc="Swap fees notice">Quote includes a <ph name="SWAP_FEE_PERCENTAGE">$1</ph> Brave fee.</message>
   <message name="IDS_BRAVE_WALLET_DECIMAL_PLACES_ERROR" desc="Amount decimal places error">Too many decimal places</message>
   <message name="IDS_BRAVE_WALLET_MIN_ONE_ADA_ERROR" desc="Minimum required ADA value for sending error">Minimum required is 1 ADA</message>
+  <message name="IDS_BRAVE_WALLET_AMOUNT_TOO_SMALL_ERROR" desc="Send amount is too small error">Send amount is too small</message>
   <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT_DESCRIPTION" desc="Create Account Tab Description">You don’t yet have a <ph name="ACCOUNT_TYPE"><ex>Solana</ex>$1</ph> account. Create one now?</message>
   <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT_YES" desc="Create Account Tab Yes Button">Yes</message>
   <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT_NO" desc="Create Account Tab No Button">No</message>
