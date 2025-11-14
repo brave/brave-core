@@ -1,8 +1,8 @@
 diff --git a/components/infobars/core/infobar_delegate.h b/components/infobars/core/infobar_delegate.h
-index 20a8371d17c74787a7f1307b76d986ecc35fc092..df77f37857aa5c85cea22230ffaa5e85b3408446 100644
+index f5261d58ae434695166aec7e96e3ca4fd4e7e64b..3284ec0ab76f1f972fa8afd57f27475b24cc1385 100644
 --- a/components/infobars/core/infobar_delegate.h
 +++ b/components/infobars/core/infobar_delegate.h
-@@ -195,6 +195,7 @@ class InfoBarDelegate {
+@@ -211,6 +211,7 @@ class InfoBarDelegate {
      PIN_INFOBAR_DELEGATE = 127,
      SESSION_RESTORE_INFOBAR_DELEGATE = 128,
      ROLL_BACK_MODE_B_INFOBAR_DELEGATE = 129,
