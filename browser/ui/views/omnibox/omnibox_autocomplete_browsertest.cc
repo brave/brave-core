@@ -29,15 +29,13 @@ class OmniboxAutocompleteTest : public InProcessBrowserTest {
   OmniboxEditModel* edit_model() {
     return location_bar()->GetOmniboxController()->edit_model();
   }
-  OmniboxPopupView* popup_view() {
-    return BrowserView::GetBrowserViewForBrowser(browser())
-        ->GetLocationBarView()
-        ->GetOmniboxPopupView();
+  OmniboxController* controller() {
+    return location_bar()->GetOmniboxController();
   }
 };
 
 IN_PROC_BROWSER_TEST_F(OmniboxAutocompleteTest, AutocompleteDisabledTest) {
-  EXPECT_FALSE(popup_view()->IsOpen());
+  EXPECT_FALSE(controller()->IsPopupOpen());
   EXPECT_TRUE(location_bar()
                   ->GetOmniboxController()
                   ->autocomplete_controller()
@@ -57,7 +55,7 @@ IN_PROC_BROWSER_TEST_F(OmniboxAutocompleteTest, AutocompleteDisabledTest) {
                    ->autocomplete_controller()
                    ->result()
                    .empty());
-  EXPECT_TRUE(popup_view()->IsOpen());
+  EXPECT_TRUE(controller()->IsPopupOpen());
 
   location_bar()->GetOmniboxController()->StopAutocomplete(
       /*clear_result=*/true);
@@ -73,5 +71,5 @@ IN_PROC_BROWSER_TEST_F(OmniboxAutocompleteTest, AutocompleteDisabledTest) {
                   ->autocomplete_controller()
                   ->result()
                   .empty());
-  EXPECT_FALSE(popup_view()->IsOpen());
+  EXPECT_FALSE(controller()->IsPopupOpen());
 }
