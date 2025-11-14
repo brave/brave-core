@@ -28,22 +28,13 @@
 
 namespace brave_account {
 
-namespace {
-
-template <typename EndpointExpected>
-struct EndpointResponse {
-  net::HttpStatusCode http_status_code;
-  EndpointExpected endpoint_expected;
-};
-
-}  // namespace
+using endpoints::PasswordFinalize;
+using endpoints::PasswordInit;
+using endpoints::VerifyResult;
 
 struct RegisterInitializeTestCase {
-  using Endpoint = endpoints::PasswordInit;
-  using EndpointExpected =
-      base::expected<std::optional<endpoints::PasswordInit::Response>,
-                     std::optional<endpoints::PasswordInit::Error>>;
-  using EndpointResponse = EndpointResponse<EndpointExpected>;
+  using Endpoint = PasswordInit;
+  using EndpointResponse = Endpoint::Response;
   using MojoExpected = base::expected<mojom::RegisterInitializeResultPtr,
                                       mojom::RegisterErrorPtr>;
 
@@ -101,8 +92,9 @@ const RegisterInitializeTestCase* InitializeErrorMissingOrFailedToParse() {
           .blinded_message = "blinded_message",
           .fail_encryption = {},  // not used
           .fail_decryption = {},  // not used
-          .endpoint_response = {{net::HTTP_INTERNAL_SERVER_ERROR,
-                                 base::unexpected(std::nullopt)}},
+          .endpoint_response = {{.error = net::OK,
+                                 .status = net::HTTP_INTERNAL_SERVER_ERROR,
+                                 .body = std::nullopt}},
           .mojo_expected = base::unexpected(mojom::RegisterError::New(
               net::HTTP_INTERNAL_SERVER_ERROR, std::nullopt)),
       });
@@ -117,10 +109,12 @@ const RegisterInitializeTestCase* InitializeErrorCodeIsNull() {
           .blinded_message = "blinded_message",
           .fail_encryption = {},  // not used
           .fail_decryption = {},  // not used
-          .endpoint_response = {{net::HTTP_BAD_REQUEST, base::unexpected([] {
-                                   endpoints::PasswordInit::Error error;
-                                   error.code = base::Value();
-                                   return error;
+          .endpoint_response = {{.error = net::OK,
+                                 .status = net::HTTP_BAD_REQUEST,
+                                 .body = base::unexpected([] {
+                                   PasswordInit::Response::ErrorBody body;
+                                   body.code = base::Value();
+                                   return body;
                                  }())}},
           .mojo_expected = base::unexpected(
               mojom::RegisterError::New(net::HTTP_BAD_REQUEST, std::nullopt)),
@@ -136,10 +130,12 @@ const RegisterInitializeTestCase* InitializeNewAccountEmailRequired() {
           .blinded_message = "blinded_message",
           .fail_encryption = {},  // not used
           .fail_decryption = {},  // not used
-          .endpoint_response = {{net::HTTP_BAD_REQUEST, base::unexpected([] {
-                                   endpoints::PasswordInit::Error error;
-                                   error.code = base::Value(11005);
-                                   return error;
+          .endpoint_response = {{.error = net::OK,
+                                 .status = net::HTTP_BAD_REQUEST,
+                                 .body = base::unexpected([] {
+                                   PasswordInit::Response::ErrorBody body;
+                                   body.code = base::Value(11005);
+                                   return body;
                                  }())}},
           .mojo_expected = base::unexpected(mojom::RegisterError::New(
               net::HTTP_BAD_REQUEST,
@@ -156,10 +152,12 @@ const RegisterInitializeTestCase* InitializeIntentNotAllowed() {
           .blinded_message = "blinded_message",
           .fail_encryption = {},  // not used
           .fail_decryption = {},  // not used
-          .endpoint_response = {{net::HTTP_BAD_REQUEST, base::unexpected([] {
-                                   endpoints::PasswordInit::Error error;
-                                   error.code = base::Value(13003);
-                                   return error;
+          .endpoint_response = {{.error = net::OK,
+                                 .status = net::HTTP_BAD_REQUEST,
+                                 .body = base::unexpected([] {
+                                   PasswordInit::Response::ErrorBody body;
+                                   body.code = base::Value(13003);
+                                   return body;
                                  }())}},
           .mojo_expected = base::unexpected(mojom::RegisterError::New(
               net::HTTP_BAD_REQUEST,
@@ -176,10 +174,12 @@ const RegisterInitializeTestCase* InitializeTooManyVerifications() {
           .blinded_message = "blinded_message",
           .fail_encryption = {},  // not used
           .fail_decryption = {},  // not used
-          .endpoint_response = {{net::HTTP_BAD_REQUEST, base::unexpected([] {
-                                   endpoints::PasswordInit::Error error;
-                                   error.code = base::Value(13001);
-                                   return error;
+          .endpoint_response = {{.error = net::OK,
+                                 .status = net::HTTP_BAD_REQUEST,
+                                 .body = base::unexpected([] {
+                                   PasswordInit::Response::ErrorBody body;
+                                   body.code = base::Value(13001);
+                                   return body;
                                  }())}},
           .mojo_expected = base::unexpected(mojom::RegisterError::New(
               net::HTTP_BAD_REQUEST,
@@ -196,10 +196,12 @@ const RegisterInitializeTestCase* InitializeAccountExists() {
           .blinded_message = "blinded_message",
           .fail_encryption = {},  // not used
           .fail_decryption = {},  // not used
-          .endpoint_response = {{net::HTTP_BAD_REQUEST, base::unexpected([] {
-                                   endpoints::PasswordInit::Error error;
-                                   error.code = base::Value(13004);
-                                   return error;
+          .endpoint_response = {{.error = net::OK,
+                                 .status = net::HTTP_BAD_REQUEST,
+                                 .body = base::unexpected([] {
+                                   PasswordInit::Response::ErrorBody body;
+                                   body.code = base::Value(13004);
+                                   return body;
                                  }())}},
           .mojo_expected = base::unexpected(mojom::RegisterError::New(
               net::HTTP_BAD_REQUEST, mojom::RegisterErrorCode::kAccountExists)),
@@ -215,10 +217,12 @@ const RegisterInitializeTestCase* InitializeEmailDomainNotSupported() {
           .blinded_message = "blinded_message",
           .fail_encryption = {},  // not used
           .fail_decryption = {},  // not used
-          .endpoint_response = {{net::HTTP_BAD_REQUEST, base::unexpected([] {
-                                   endpoints::PasswordInit::Error error;
-                                   error.code = base::Value(13006);
-                                   return error;
+          .endpoint_response = {{.error = net::OK,
+                                 .status = net::HTTP_BAD_REQUEST,
+                                 .body = base::unexpected([] {
+                                   PasswordInit::Response::ErrorBody body;
+                                   body.code = base::Value(13006);
+                                   return body;
                                  }())}},
           .mojo_expected = base::unexpected(mojom::RegisterError::New(
               net::HTTP_BAD_REQUEST,
@@ -235,10 +239,12 @@ const RegisterInitializeTestCase* InitializeUnauthorized() {
           .blinded_message = "blinded_message",
           .fail_encryption = {},  // not used
           .fail_decryption = {},  // not used
-          .endpoint_response = {{net::HTTP_UNAUTHORIZED, base::unexpected([] {
-                                   endpoints::PasswordInit::Error error;
-                                   error.code = base::Value(0);
-                                   return error;
+          .endpoint_response = {{.error = net::OK,
+                                 .status = net::HTTP_UNAUTHORIZED,
+                                 .body = base::unexpected([] {
+                                   PasswordInit::Response::ErrorBody body;
+                                   body.code = base::Value(0);
+                                   return body;
                                  }())}},
           .mojo_expected = base::unexpected(mojom::RegisterError::New(
               net::HTTP_UNAUTHORIZED,
@@ -255,11 +261,12 @@ const RegisterInitializeTestCase* InitializeServerError() {
           .blinded_message = "blinded_message",
           .fail_encryption = {},  // not used
           .fail_decryption = {},  // not used
-          .endpoint_response = {{net::HTTP_INTERNAL_SERVER_ERROR,
-                                 base::unexpected([] {
-                                   endpoints::PasswordInit::Error error;
-                                   error.code = base::Value(0);
-                                   return error;
+          .endpoint_response = {{.error = net::OK,
+                                 .status = net::HTTP_INTERNAL_SERVER_ERROR,
+                                 .body = base::unexpected([] {
+                                   PasswordInit::Response::ErrorBody body;
+                                   body.code = base::Value(0);
+                                   return body;
                                  }())}},
           .mojo_expected = base::unexpected(mojom::RegisterError::New(
               net::HTTP_INTERNAL_SERVER_ERROR,
@@ -276,10 +283,12 @@ const RegisterInitializeTestCase* InitializeUnknown() {
           .blinded_message = "blinded_message",
           .fail_encryption = {},  // not used
           .fail_decryption = {},  // not used
-          .endpoint_response = {{net::HTTP_TOO_EARLY, base::unexpected([] {
-                                   endpoints::PasswordInit::Error error;
-                                   error.code = base::Value(42);
-                                   return error;
+          .endpoint_response = {{.error = net::OK,
+                                 .status = net::HTTP_TOO_EARLY,
+                                 .body = base::unexpected([] {
+                                   PasswordInit::Response::ErrorBody body;
+                                   body.code = base::Value(42);
+                                   return body;
                                  }())}},
           .mojo_expected = base::unexpected(
               mojom::RegisterError::New(net::HTTP_TOO_EARLY, std::nullopt)),
@@ -295,7 +304,9 @@ const RegisterInitializeTestCase* InitializeResponseMissingOrFailedToParse() {
           .blinded_message = "blinded_message",
           .fail_encryption = {},  // not used
           .fail_decryption = {},  // not used
-          .endpoint_response = {{net::HTTP_OK, base::ok(std::nullopt)}},
+          .endpoint_response = {{.error = net::OK,
+                                 .status = net::HTTP_OK,
+                                 .body = std::nullopt}},
           .mojo_expected = base::unexpected(
               mojom::RegisterError::New(net::HTTP_OK, std::nullopt)),
       });
@@ -310,14 +321,16 @@ const RegisterInitializeTestCase* InitializeVerificationTokenEmpty() {
           .blinded_message = "blinded_message",
           .fail_encryption = {},  // not used
           .fail_decryption = {},  // not used
-          .endpoint_response = {{net::HTTP_OK,
-                                 [] {
-                                   endpoints::PasswordInit::Response response;
-                                   response.verification_token = "";
-                                   response.serialized_response =
-                                       "serialized_response";
-                                   return response;
-                                 }()}},
+          .endpoint_response = {{.error = net::OK,
+                                 .status = net::HTTP_OK,
+                                 .body =
+                                     [] {
+                                       PasswordInit::Response::SuccessBody body;
+                                       body.verification_token = "";
+                                       body.serialized_response =
+                                           "serialized_response";
+                                       return body;
+                                     }()}},
           .mojo_expected = base::unexpected(
               mojom::RegisterError::New(net::HTTP_OK, std::nullopt)),
       });
@@ -332,14 +345,16 @@ const RegisterInitializeTestCase* InitializeSerializedResponseEmpty() {
           .blinded_message = "blinded_message",
           .fail_encryption = {},  // not used
           .fail_decryption = {},  // not used
-          .endpoint_response = {{net::HTTP_OK,
-                                 [] {
-                                   endpoints::PasswordInit::Response response;
-                                   response.verification_token =
-                                       "verification_token";
-                                   response.serialized_response = "";
-                                   return response;
-                                 }()}},
+          .endpoint_response = {{.error = net::OK,
+                                 .status = net::HTTP_OK,
+                                 .body =
+                                     [] {
+                                       PasswordInit::Response::SuccessBody body;
+                                       body.verification_token =
+                                           "verification_token";
+                                       body.serialized_response = "";
+                                       return body;
+                                     }()}},
           .mojo_expected = base::unexpected(
               mojom::RegisterError::New(net::HTTP_OK, std::nullopt)),
       });
@@ -354,15 +369,17 @@ const RegisterInitializeTestCase* InitializeVerificationTokenFailedToEncrypt() {
           .blinded_message = "blinded_message",
           .fail_encryption = true,
           .fail_decryption = {},  // not used
-          .endpoint_response = {{net::HTTP_OK,
-                                 [] {
-                                   endpoints::PasswordInit::Response response;
-                                   response.verification_token =
-                                       "verification_token";
-                                   response.serialized_response =
-                                       "serialized_response";
-                                   return response;
-                                 }()}},
+          .endpoint_response = {{.error = net::OK,
+                                 .status = net::HTTP_OK,
+                                 .body =
+                                     [] {
+                                       PasswordInit::Response::SuccessBody body;
+                                       body.verification_token =
+                                           "verification_token";
+                                       body.serialized_response =
+                                           "serialized_response";
+                                       return body;
+                                     }()}},
           .mojo_expected = base::unexpected(mojom::RegisterError::New(
               std::nullopt,
               mojom::RegisterErrorCode::kVerificationTokenEncryptionFailed)),
@@ -378,15 +395,17 @@ const RegisterInitializeTestCase* InitializeSuccess() {
           .blinded_message = "blinded_message",
           .fail_encryption = false,
           .fail_decryption = {},  // not used
-          .endpoint_response = {{net::HTTP_OK,
-                                 [] {
-                                   endpoints::PasswordInit::Response response;
-                                   response.verification_token =
-                                       "verification_token";
-                                   response.serialized_response =
-                                       "serialized_response";
-                                   return response;
-                                 }()}},
+          .endpoint_response = {{.error = net::OK,
+                                 .status = net::HTTP_OK,
+                                 .body =
+                                     [] {
+                                       PasswordInit::Response::SuccessBody body;
+                                       body.verification_token =
+                                           "verification_token";
+                                       body.serialized_response =
+                                           "serialized_response";
+                                       return body;
+                                     }()}},
           .mojo_expected = mojom::RegisterInitializeResult::New(
               base::Base64Encode("verification_token"), "serialized_response"),
       });
@@ -425,11 +444,8 @@ INSTANTIATE_TEST_SUITE_P(
     RegisterInitializeTest::kNameGenerator);
 
 struct RegisterFinalizeTestCase {
-  using Endpoint = endpoints::PasswordFinalize;
-  using EndpointExpected =
-      base::expected<std::optional<endpoints::PasswordFinalize::Response>,
-                     std::optional<endpoints::PasswordFinalize::Error>>;
-  using EndpointResponse = EndpointResponse<EndpointExpected>;
+  using Endpoint = PasswordFinalize;
+  using EndpointResponse = Endpoint::Response;
   using MojoExpected =
       base::expected<mojom::RegisterFinalizeResultPtr, mojom::RegisterErrorPtr>;
 
@@ -507,8 +523,9 @@ const RegisterFinalizeTestCase* FinalizeErrorMissingOrFailedToParse() {
           .serialized_record = "serialized_record",
           .fail_encryption = {},  // not used
           .fail_decryption = false,
-          .endpoint_response = {{net::HTTP_INTERNAL_SERVER_ERROR,
-                                 base::unexpected(std::nullopt)}},
+          .endpoint_response = {{.error = net::OK,
+                                 .status = net::HTTP_INTERNAL_SERVER_ERROR,
+                                 .body = std::nullopt}},
           .mojo_expected = base::unexpected(mojom::RegisterError::New(
               net::HTTP_INTERNAL_SERVER_ERROR, std::nullopt)),
       });
@@ -524,10 +541,12 @@ const RegisterFinalizeTestCase* FinalizeErrorCodeIsNull() {
           .serialized_record = "serialized_record",
           .fail_encryption = {},  // not used
           .fail_decryption = false,
-          .endpoint_response = {{net::HTTP_NOT_FOUND, base::unexpected([] {
-                                   endpoints::PasswordFinalize::Error error;
-                                   error.code = base::Value();
-                                   return error;
+          .endpoint_response = {{.error = net::OK,
+                                 .status = net::HTTP_NOT_FOUND,
+                                 .body = base::unexpected([] {
+                                   PasswordFinalize::Response::ErrorBody body;
+                                   body.code = base::Value();
+                                   return body;
                                  }())}},
           .mojo_expected = base::unexpected(
               mojom::RegisterError::New(net::HTTP_NOT_FOUND, std::nullopt)),
@@ -544,10 +563,12 @@ const RegisterFinalizeTestCase* FinalizeInterimPasswordStateNotFound() {
           .serialized_record = "serialized_record",
           .fail_encryption = {},  // not used
           .fail_decryption = false,
-          .endpoint_response = {{net::HTTP_NOT_FOUND, base::unexpected([] {
-                                   endpoints::PasswordFinalize::Error error;
-                                   error.code = base::Value(14001);
-                                   return error;
+          .endpoint_response = {{.error = net::OK,
+                                 .status = net::HTTP_NOT_FOUND,
+                                 .body = base::unexpected([] {
+                                   PasswordFinalize::Response::ErrorBody body;
+                                   body.code = base::Value(14001);
+                                   return body;
                                  }())}},
           .mojo_expected = base::unexpected(mojom::RegisterError::New(
               net::HTTP_NOT_FOUND,
@@ -565,10 +586,12 @@ const RegisterFinalizeTestCase* FinalizeInterimPasswordStateExpired() {
           .serialized_record = "serialized_record",
           .fail_encryption = {},  // not used
           .fail_decryption = false,
-          .endpoint_response = {{net::HTTP_BAD_REQUEST, base::unexpected([] {
-                                   endpoints::PasswordFinalize::Error error;
-                                   error.code = base::Value(14002);
-                                   return error;
+          .endpoint_response = {{.error = net::OK,
+                                 .status = net::HTTP_BAD_REQUEST,
+                                 .body = base::unexpected([] {
+                                   PasswordFinalize::Response::ErrorBody body;
+                                   body.code = base::Value(14002);
+                                   return body;
                                  }())}},
           .mojo_expected = base::unexpected(mojom::RegisterError::New(
               net::HTTP_BAD_REQUEST,
@@ -586,10 +609,12 @@ const RegisterFinalizeTestCase* FinalizeUnauthorized() {
           .serialized_record = "serialized_record",
           .fail_encryption = {},  // not used
           .fail_decryption = false,
-          .endpoint_response = {{net::HTTP_UNAUTHORIZED, base::unexpected([] {
-                                   endpoints::PasswordFinalize::Error error;
-                                   error.code = base::Value(0);
-                                   return error;
+          .endpoint_response = {{.error = net::OK,
+                                 .status = net::HTTP_UNAUTHORIZED,
+                                 .body = base::unexpected([] {
+                                   PasswordFinalize::Response::ErrorBody body;
+                                   body.code = base::Value(0);
+                                   return body;
                                  }())}},
           .mojo_expected = base::unexpected(mojom::RegisterError::New(
               net::HTTP_UNAUTHORIZED,
@@ -606,10 +631,12 @@ const RegisterFinalizeTestCase* FinalizeForbidden() {
       .serialized_record = "serialized_record",
       .fail_encryption = {},  // not used
       .fail_decryption = false,
-      .endpoint_response = {{net::HTTP_FORBIDDEN, base::unexpected([] {
-                               endpoints::PasswordFinalize::Error error;
-                               error.code = base::Value(0);
-                               return error;
+      .endpoint_response = {{.error = net::OK,
+                             .status = net::HTTP_FORBIDDEN,
+                             .body = base::unexpected([] {
+                               PasswordFinalize::Response::ErrorBody body;
+                               body.code = base::Value(0);
+                               return body;
                              }())}},
       .mojo_expected = base::unexpected(mojom::RegisterError::New(
           net::HTTP_FORBIDDEN, mojom::RegisterErrorCode::kMiscServerError)),
@@ -626,11 +653,12 @@ const RegisterFinalizeTestCase* FinalizeServerError() {
           .serialized_record = "serialized_record",
           .fail_encryption = {},  // not used
           .fail_decryption = false,
-          .endpoint_response = {{net::HTTP_INTERNAL_SERVER_ERROR,
-                                 base::unexpected([] {
-                                   endpoints::PasswordFinalize::Error error;
-                                   error.code = base::Value(0);
-                                   return error;
+          .endpoint_response = {{.error = net::OK,
+                                 .status = net::HTTP_INTERNAL_SERVER_ERROR,
+                                 .body = base::unexpected([] {
+                                   PasswordFinalize::Response::ErrorBody body;
+                                   body.code = base::Value(0);
+                                   return body;
                                  }())}},
           .mojo_expected = base::unexpected(mojom::RegisterError::New(
               net::HTTP_INTERNAL_SERVER_ERROR,
@@ -647,10 +675,12 @@ const RegisterFinalizeTestCase* FinalizeUnknown() {
       .serialized_record = "serialized_record",
       .fail_encryption = {},  // not used
       .fail_decryption = false,
-      .endpoint_response = {{net::HTTP_TOO_EARLY, base::unexpected([] {
-                               endpoints::PasswordFinalize::Error error;
-                               error.code = base::Value(42);
-                               return error;
+      .endpoint_response = {{.error = net::OK,
+                             .status = net::HTTP_TOO_EARLY,
+                             .body = base::unexpected([] {
+                               PasswordFinalize::Response::ErrorBody body;
+                               body.code = base::Value(42);
+                               return body;
                              }())}},
       .mojo_expected = base::unexpected(
           mojom::RegisterError::New(net::HTTP_TOO_EARLY, std::nullopt)),
@@ -666,8 +696,10 @@ const RegisterFinalizeTestCase* FinalizeSuccess() {
       .serialized_record = "serialized_record",
       .fail_encryption = {},  // not used
       .fail_decryption = false,
-      .endpoint_response = {{net::HTTP_OK,
-                             endpoints::PasswordFinalize::Response()}},
+      .endpoint_response = {{.error = net::OK,
+                             .status = net::HTTP_OK,
+                             .body =
+                                 PasswordFinalize::Response::SuccessBody()}},
       .mojo_expected = mojom::RegisterFinalizeResult::New(),
   });
   return kFinalizeSuccess.get();
@@ -705,11 +737,8 @@ INSTANTIATE_TEST_SUITE_P(
     RegisterFinalizeTest::kNameGenerator);
 
 struct VerifyResultTestCase {
-  using Endpoint = endpoints::VerifyResult;
-  using EndpointExpected =
-      base::expected<std::optional<endpoints::VerifyResult::Response>,
-                     std::optional<endpoints::VerifyResult::Error>>;
-  using EndpointResponse = EndpointResponse<EndpointExpected>;
+  using Endpoint = VerifyResult;
+  using EndpointResponse = Endpoint::Response;
 
   static void Run(const VerifyResultTestCase& test_case,
                   PrefService& pref_service,
@@ -786,12 +815,14 @@ const VerifyResultTestCase* VerifyResultSuccessAuthTokenNull() {
               base::Base64Encode("encrypted_verification_token"),
           .fail_encryption = {},  // not used
           .fail_decryption = false,
-          .endpoint_response = {{net::HTTP_OK,
-                                 [] {
-                                   endpoints::VerifyResult::Response response;
-                                   response.auth_token = base::Value();
-                                   return response;
-                                 }()}},
+          .endpoint_response = {{.error = net::OK,
+                                 .status = net::HTTP_OK,
+                                 .body =
+                                     [] {
+                                       VerifyResult::Response::SuccessBody body;
+                                       body.auth_token = base::Value();
+                                       return body;
+                                     }()}},
           .expected_verification_token =
               base::Base64Encode("encrypted_verification_token"),
           .expected_authentication_token = "",
@@ -808,12 +839,14 @@ const VerifyResultTestCase* VerifyResultSuccessAuthTokenEmpty() {
               base::Base64Encode("encrypted_verification_token"),
           .fail_encryption = {},  // not used
           .fail_decryption = false,
-          .endpoint_response = {{net::HTTP_OK,
-                                 [] {
-                                   endpoints::VerifyResult::Response response;
-                                   response.auth_token = base::Value("");
-                                   return response;
-                                 }()}},
+          .endpoint_response = {{.error = net::OK,
+                                 .status = net::HTTP_OK,
+                                 .body =
+                                     [] {
+                                       VerifyResult::Response::SuccessBody body;
+                                       body.auth_token = base::Value("");
+                                       return body;
+                                     }()}},
           .expected_verification_token =
               base::Base64Encode("encrypted_verification_token"),
           .expected_authentication_token = "",
@@ -829,12 +862,14 @@ const VerifyResultTestCase* VerifyResultSuccess() {
           base::Base64Encode("encrypted_verification_token"),
       .fail_encryption = {},  // not used
       .fail_decryption = false,
-      .endpoint_response = {{net::HTTP_OK,
-                             [] {
-                               endpoints::VerifyResult::Response response;
-                               response.auth_token = base::Value("auth_token");
-                               return response;
-                             }()}},
+      .endpoint_response = {{.error = net::OK,
+                             .status = net::HTTP_OK,
+                             .body =
+                                 [] {
+                                   VerifyResult::Response::SuccessBody body;
+                                   body.auth_token = base::Value("auth_token");
+                                   return body;
+                                 }()}},
       .expected_verification_token = "",
       .expected_authentication_token = base::Base64Encode("auth_token"),
       .expected_verify_result_timer_delay = {},
@@ -852,13 +887,15 @@ VerifyResultSuccessAuthenticationTokenFailedToEncrypt() {
               base::Base64Encode("encrypted_verification_token"),
           .fail_encryption = true,
           .fail_decryption = false,
-          .endpoint_response = {{net::HTTP_OK,
-                                 [] {
-                                   endpoints::VerifyResult::Response response;
-                                   response.auth_token =
-                                       base::Value("auth_token");
-                                   return response;
-                                 }()}},
+          .endpoint_response = {{.error = net::OK,
+                                 .status = net::HTTP_OK,
+                                 .body =
+                                     [] {
+                                       VerifyResult::Response::SuccessBody body;
+                                       body.auth_token =
+                                           base::Value("auth_token");
+                                       return body;
+                                     }()}},
           .expected_verification_token = "",
           .expected_authentication_token = "",
           .expected_verify_result_timer_delay = {},
@@ -874,10 +911,12 @@ const VerifyResultTestCase* VerifyResultBadRequest() {
               base::Base64Encode("encrypted_verification_token"),
           .fail_encryption = false,
           .fail_decryption = false,
-          .endpoint_response = {{net::HTTP_BAD_REQUEST, base::unexpected([] {
-                                   endpoints::VerifyResult::Error error;
-                                   error.code = base::Value(0);
-                                   return error;
+          .endpoint_response = {{.error = net::OK,
+                                 .status = net::HTTP_BAD_REQUEST,
+                                 .body = base::unexpected([] {
+                                   VerifyResult::Response::ErrorBody body;
+                                   body.code = base::Value(0);
+                                   return body;
                                  }())}},
           .expected_verification_token = "",
           .expected_authentication_token = "",
@@ -894,10 +933,12 @@ const VerifyResultTestCase* VerifyResultUnauthorized() {
               base::Base64Encode("encrypted_verification_token"),
           .fail_encryption = false,
           .fail_decryption = false,
-          .endpoint_response = {{net::HTTP_UNAUTHORIZED, base::unexpected([] {
-                                   endpoints::VerifyResult::Error error;
-                                   error.code = base::Value(0);
-                                   return error;
+          .endpoint_response = {{.error = net::OK,
+                                 .status = net::HTTP_UNAUTHORIZED,
+                                 .body = base::unexpected([] {
+                                   VerifyResult::Response::ErrorBody body;
+                                   body.code = base::Value(0);
+                                   return body;
                                  }())}},
           .expected_verification_token = "",
           .expected_authentication_token = "",
@@ -914,11 +955,12 @@ const VerifyResultTestCase* VerifyResultInternalServerError() {
               base::Base64Encode("encrypted_verification_token"),
           .fail_encryption = {},  // not used
           .fail_decryption = false,
-          .endpoint_response = {{net::HTTP_INTERNAL_SERVER_ERROR,
-                                 base::unexpected([] {
-                                   endpoints::VerifyResult::Error error;
-                                   error.code = base::Value(0);
-                                   return error;
+          .endpoint_response = {{.error = net::OK,
+                                 .status = net::HTTP_INTERNAL_SERVER_ERROR,
+                                 .body = base::unexpected([] {
+                                   VerifyResult::Response::ErrorBody body;
+                                   body.code = base::Value(0);
+                                   return body;
                                  }())}},
           .expected_verification_token =
               base::Base64Encode("encrypted_verification_token"),

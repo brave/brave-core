@@ -26,6 +26,7 @@
 #include "brave/components/brave_account/features.h"
 #include "brave/components/brave_account/prefs.h"
 #include "components/prefs/testing_pref_service.h"
+#include "net/http/http_status_code.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -64,21 +65,22 @@ class BraveAccountServiceTest : public testing::TestWithParam<const TestCase*> {
 
     if constexpr (requires { typename TestCase::Endpoint; }) {
       if (test_case.endpoint_response) {
-        auto as_dict = [](const auto& opt) {
-          return opt ? opt->ToValue() : base::Value::Dict();
-        };
+        const auto& endpoint_response_status =
+            test_case.endpoint_response->status;
+        CHECK(endpoint_response_status);
 
-        const auto& endpoint_expected =
-            test_case.endpoint_response->endpoint_expected;
-        base::Value value(endpoint_expected.has_value()
-                              ? as_dict(endpoint_expected.value())
-                              : as_dict(endpoint_expected.error()));
-
+        const auto& endpoint_response_body = test_case.endpoint_response->body;
+        base::Value value(endpoint_response_body
+                              ? endpoint_response_body->has_value()
+                                    ? endpoint_response_body->value().ToValue()
+                                    : endpoint_response_body->error().ToValue()
+                              : base::Value::Dict());
         const auto body = base::WriteJson(value);
         CHECK(body);
+
         test_url_loader_factory_.AddResponse(
             TestCase::Endpoint::URL().spec(), *body,
-            test_case.endpoint_response->http_status_code);
+            static_cast<net::HttpStatusCode>(*endpoint_response_status));
       }
     }
 
