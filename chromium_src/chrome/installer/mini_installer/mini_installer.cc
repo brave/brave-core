@@ -3,6 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#ifdef UNSAFE_BUFFERS_BUILD
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
+#include "chrome/installer/mini_installer/mini_installer.h"
+
 #include "base/compiler_specific.h"
 #include "build/branding_buildflags.h"
 #include "chrome/installer/mini_installer/configuration.h"
@@ -10,6 +17,12 @@
 #include "chrome/installer/mini_installer/mini_string.h"
 #include "chrome/installer/mini_installer/regkey.h"
 
+
+#if defined(OFFICIAL_BUILD) && !BUILDFLAG(GOOGLE_CHROME_BRANDING)
+#undef BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING
+#define BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING() (1)
+#define NEED_TO_RESET_BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING
+#endif  // defined(OFFICIAL_BUILD)
 
 #define BRAVE_RUN_SETUP                                                      \
   PathString installer_filename;                                             \
@@ -30,57 +43,23 @@
     }                                                                        \
   }
 
-#if defined(OFFICIAL_BUILD)
-#undef BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING
-#define BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING() (1)
-#endif  // defined(OFFICIAL_BUILD)
-
 namespace mini_installer {
 
+namespace {
+ProcessExitResult PatchSetup(const Configuration& configuration,
+                             const PathString& patch_path,
+                             const PathString& dest_path,
+                             int& max_delete_attempts);
+}  // namespace
+
 #if BUILDFLAG(GOOGLE_CHROME_BRANDING)
-
-bool OpenInstallStateKey(const Configuration& configuration, RegKey* key);
-
-// This function sets the flag in registry to indicate that Google Update
-// should try full installer next time. If the current installer works, this
-// flag is cleared by setup.exe at the end of install.
-void SetInstallerFlags(const Configuration& configuration) {
-  StackString<128> value;
-
-  RegKey key;
-  if (!OpenInstallStateKey(configuration, &key)) {
-    return;
-  }
-
-  // TODO(grt): Trim legacy modifiers (chrome,chromeframe,apphost,applauncher,
-  // multi,readymode,stage,migrating,multifail) from the ap value.
-
-  LONG ret = key.ReadSZValue(kApRegistryValue, value.get(), value.capacity());
-
-  // The conditions below are handling two cases:
-  // 1. When ap value is present, we want to add the required tag only if it
-  //    is not present.
-  // 2. When ap value is missing, we are going to create it with the required
-  //    tag.
-  if ((ret == ERROR_SUCCESS) || (ret == ERROR_FILE_NOT_FOUND)) {
-    if (ret == ERROR_FILE_NOT_FOUND) {
-      value.clear();
-    }
-
-    if (!StrEndsWith(value.get(), kFullInstallerSuffix) &&
-        value.append(kFullInstallerSuffix)) {
-      key.WriteSZValue(kApRegistryValue, value.get());
-    }
-  }
-}
+void SetInstallerFlags(const Configuration& configuration);
 #endif
 
 }  // namespace mini_installer
 
 #include <chrome/installer/mini_installer/mini_installer.cc>
-#if defined(OFFICIAL_BUILD)
-#undef BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING
-#endif  // defined(OFFICIAL_BUILD)
+
 #undef BRAVE_RUN_SETUP
 
 namespace mini_installer {
@@ -236,4 +215,142 @@ bool ParseReferralCode(const wchar_t* installer_filename,
   return true;
 }
 
+#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
+
+// This function sets the flag in registry to indicate that Google Update
+// should try full installer next time. If the current installer works, this
+// flag is cleared by setup.exe at the end of install.
+void SetInstallerFlags(const Configuration& configuration) {
+  StackString<128> value;
+
+  RegKey key;
+  if (!OpenInstallStateKey(configuration, &key)) {
+    return;
+  }
+
+  // TODO(grt): Trim legacy modifiers (chrome,chromeframe,apphost,applauncher,
+  // multi,readymode,stage,migrating,multifail) from the ap value.
+
+  LONG ret = key.ReadSZValue(kApRegistryValue, value.get(), value.capacity());
+
+  // The conditions below are handling two cases:
+  // 1. When ap value is present, we want to add the required tag only if it
+  //    is not present.
+  // 2. When ap value is missing, we are going to create it with the required
+  //    tag.
+  if ((ret == ERROR_SUCCESS) || (ret == ERROR_FILE_NOT_FOUND)) {
+    if (ret == ERROR_FILE_NOT_FOUND) {
+      value.clear();
+    }
+
+    if (!StrEndsWith(value.get(), kFullInstallerSuffix) &&
+        value.append(kFullInstallerSuffix)) {
+      key.WriteSZValue(kApRegistryValue, value.get());
+    }
+  }
+}
+
+#endif  // BUILDFLAG(GOOGLE_CHROME_BRANDING)
+
+// Gets the setup.exe path from Registry by looking at the value of Uninstall
+// string.  |size| is measured in wchar_t units.
+ProcessExitResult GetSetupExePathForAppGuid(bool system_level,
+                                            const wchar_t* app_guid,
+                                            const wchar_t* previous_version,
+                                            wchar_t* path,
+                                            size_t size) {
+  const HKEY root_key = system_level ? HKEY_LOCAL_MACHINE : HKEY_CURRENT_USER;
+  RegKey key;
+  LONG result = OpenClientStateKey(root_key, app_guid, KEY_QUERY_VALUE, &key);
+  if (result == ERROR_SUCCESS) {
+    result = key.ReadSZValue(kUninstallRegistryValue, path, size);
+  }
+  if (result != ERROR_SUCCESS) {
+    return ProcessExitResult(UNABLE_TO_FIND_REGISTRY_KEY, result);
+  }
+
+  // Check that the path to the existing installer includes the expected
+  // version number.  It's not necessary for accuracy to verify before/after
+  // delimiters.
+  if (!SearchStringI(path, previous_version)) {
+    return ProcessExitResult(PATCH_NOT_FOR_INSTALLED_VERSION);
+  }
+
+  // Strip double-quotes surrounding the string, if present.
+  if (size >= 1 && path[0] == '\"') {
+    size_t path_length = SafeStrLen(path, size);
+    if (path_length >= 2 && path[path_length - 1] == '\"') {
+      if (!SafeStrCopy(path, size, path + 1)) {
+        return ProcessExitResult(PATH_STRING_OVERFLOW);
+      }
+      path[path_length - 2] = '\0';
+    }
+  }
+
+  return ProcessExitResult(SUCCESS_EXIT_CODE);
+}
+
+// Gets the path to setup.exe of the previous version. The overall path is found
+// in the Uninstall string in the registry. A previous version number specified
+// in |configuration| is used if available. |size| is measured in wchar_t units.
+ProcessExitResult GetPreviousSetupExePath(const Configuration& configuration,
+                                          wchar_t* path,
+                                          size_t size) {
+  // Check Chrome's ClientState key for the path to setup.exe. This will have
+  // the correct path for all well-functioning installs.
+  return GetSetupExePathForAppGuid(
+      configuration.is_system_level(), configuration.chrome_app_guid(),
+      configuration.previous_version(), path, size);
+}
+
+namespace {
+
+// Applies an differential update to the previous setup.exe provided by
+// `patch_path` and produces a new setup.exe at the path `target_path`.
+ProcessExitResult PatchSetup(const Configuration& configuration,
+                             const PathString& patch_path,
+                             const PathString& dest_path,
+                             int& max_delete_attempts) {
+  CommandString cmd_line;
+  PathString exe_path;
+  ProcessExitResult exit_code = GetPreviousSetupExePath(
+      configuration, exe_path.get(), exe_path.capacity());
+  if (!exit_code.IsSuccess()) {
+    return exit_code;
+  }
+
+  if (!cmd_line.append(L"\"") || !cmd_line.append(exe_path.get()) ||
+      !cmd_line.append(L"\" --") || !cmd_line.append(kCmdUpdateSetupExe) ||
+      !cmd_line.append(L"=\"") || !cmd_line.append(patch_path.get()) ||
+      !cmd_line.append(L"\" --") || !cmd_line.append(kCmdNewSetupExe) ||
+      !cmd_line.append(L"=\"") || !cmd_line.append(dest_path.get()) ||
+      !cmd_line.append(L"\"")) {
+    exit_code = ProcessExitResult(COMMAND_STRING_OVERFLOW);
+  }
+
+  if (!exit_code.IsSuccess()) {
+    return exit_code;
+  }
+
+  // Get any command line option specified for mini_installer and pass them
+  // on to setup.exe.
+  AppendCommandLineFlags(configuration.command_line(), &cmd_line);
+
+  exit_code = RunProcessAndWait(exe_path.get(), cmd_line.get(),
+                                SETUP_PATCH_FAILED_FILE_NOT_FOUND,
+                                SETUP_PATCH_FAILED_PATH_NOT_FOUND,
+                                SETUP_PATCH_FAILED_COULD_NOT_CREATE_PROCESS);
+  DeleteWithRetryAndMetrics(patch_path.get(), max_delete_attempts);
+
+  return exit_code;
+}
+
+}  // namespace
+
 }  // namespace mini_installer
+
+#if defined(NEED_TO_RESET_BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING)
+#undef BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING
+#define BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING() (0)
+#undef NEED_TO_RESET_BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING
+#endif
