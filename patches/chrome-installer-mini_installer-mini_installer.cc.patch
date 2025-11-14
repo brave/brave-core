@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/mini_installer/mini_installer.cc b/chrome/installer/mini_installer/mini_installer.cc
-index 44f29f2fafda83685479c791da3aa4ddbd4cde73..7a27e5d88079cb95a7cf70aec21632599cfd9a76 100644
+index 44f29f2fafda83685479c791da3aa4ddbd4cde73..d7142301d7e1d25d349fc651f83f732d49bd908c 100644
 --- a/chrome/installer/mini_installer/mini_installer.cc
 +++ b/chrome/installer/mini_installer/mini_installer.cc
 @@ -358,11 +358,11 @@ bool ResourceDeleterDelegate::OnResource(const wchar_t* name,
@@ -56,15 +56,6 @@ index 44f29f2fafda83685479c791da3aa4ddbd4cde73..7a27e5d88079cb95a7cf70aec2163259
    return RunProcessAndWait(setup_exe.get(), cmd_line.get(),
                             RUN_SETUP_FAILED_FILE_NOT_FOUND,
                             RUN_SETUP_FAILED_PATH_NOT_FOUND,
-@@ -714,7 +733,7 @@ ProcessExitResult WMain(HMODULE module) {
- 
-   // Parse configuration from the command line and resources.
-   Configuration configuration;
--  if (!configuration.Initialize()) {
-+  if (!configuration.Initialize(module)) {
-     return ProcessExitResult(GENERIC_INITIALIZATION_FAILURE, ::GetLastError());
-   }
- 
 @@ -730,14 +749,41 @@ ProcessExitResult WMain(HMODULE module) {
      return exit_code;
    }

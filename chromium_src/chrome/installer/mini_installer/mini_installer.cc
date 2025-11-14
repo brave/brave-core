@@ -58,7 +58,11 @@ void SetInstallerFlags(const Configuration& configuration);
 
 }  // namespace mini_installer
 
+#define Initialize() Initialize(module)
+
 #include <chrome/installer/mini_installer/mini_installer.cc>
+
+#undef Initialize
 
 #undef BRAVE_RUN_SETUP
 
