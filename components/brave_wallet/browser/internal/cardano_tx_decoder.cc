@@ -17,6 +17,9 @@ namespace brave_wallet {
 
 namespace {
 
+// https://cips.cardano.org/cip/CIP-0009#updatable-protocol-parameters
+constexpr size_t kMaxCardanoTransactionSize = 16 * 1024;  // 16384
+
 std::vector<uint8_t> FromRust(const rust::Vec<uint8_t>& vec) {
   return base::ToVector(vec);
 }
@@ -172,6 +175,10 @@ CardanoTxDecoder::~CardanoTxDecoder() = default;
 // static
 std::optional<CardanoTxDecoder::DecodedTx> CardanoTxDecoder::DecodeTransaction(
     base::span<const uint8_t> cbor_bytes) {
+  if (cbor_bytes.size() > kMaxCardanoTransactionSize) {
+    return std::nullopt;
+  }
+
   auto result = decode_cardano_transaction(base::SpanToRustSlice(cbor_bytes));
   if (!result->is_ok()) {
     return std::nullopt;

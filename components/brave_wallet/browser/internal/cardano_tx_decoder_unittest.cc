@@ -134,6 +134,26 @@ TEST(CardanoTxDecoderTest, DecodeTransaction_ValidTransaction) {
   }
 }
 
+TEST(CardanoTxDecoderTest, DecodeTransaction_MaxSizeLimit) {
+  auto tx = GetSignedReferenceTransaction();
+  for (auto i = 0; i < 1000; ++i) {
+    auto input = tx.inputs()[0];
+    input.utxo_outpoint.index = i + 100;
+    tx.AddInput(input);
+    auto tx_bytes = CardanoTransactionSerializer().SerializeTransaction(tx);
+    if (tx_bytes.size() > 16 * 1024) {
+      break;
+    }
+    auto decode_result = CardanoTxDecoder::DecodeTransaction(tx_bytes);
+    EXPECT_TRUE(decode_result.has_value());
+  }
+
+  auto tx_bytes = CardanoTransactionSerializer().SerializeTransaction(tx);
+  EXPECT_GT(tx_bytes.size(), 16u * 1024u);
+  auto decode_result = CardanoTxDecoder::DecodeTransaction(tx_bytes);
+  EXPECT_FALSE(decode_result.has_value());
+}
+
 TEST(CardanoTxDecoderTest, DecodeTransaction_ValidTransactionWithTag) {
   std::vector<uint8_t> tx_bytes;
   ASSERT_TRUE(base::HexStringToBytes(kTaggedTx, &tx_bytes));
