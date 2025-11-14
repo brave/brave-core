@@ -440,12 +440,12 @@ void PolkadotSubstrateRpc::GetBlockHash(std::string_view chain_id,
   base::ListValue params;
 
   if (block_number) {
-    params.Append(static_cast<double>(*block_number));
+    // The RPC nodes expect to see a block numbers like 13094409 as "00C7CE09".
+    params.Append(base::HexEncode(base::U32ToBigEndian(*block_number)));
   }
 
-  auto payload = base::WriteJsonWithOptions(
-      MakeRpcRequestJson("chain_getBlockHash", std::move(params)),
-      base::OPTIONS_OMIT_DOUBLE_TYPE_PRESERVATION);
+  auto payload = base::WriteJson(
+      MakeRpcRequestJson("chain_getBlockHash", std::move(params)));
   CHECK(payload);
 
   api_request_helper_.Request(
