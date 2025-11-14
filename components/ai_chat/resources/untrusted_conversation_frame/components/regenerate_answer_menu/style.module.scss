@@ -110,3 +110,11 @@
 .footerGap {
   min-height: 47px;
 }
+
+.iconAndLabel {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: var(--leo-spacing-s);
+}

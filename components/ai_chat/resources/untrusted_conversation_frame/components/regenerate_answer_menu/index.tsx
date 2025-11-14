@@ -13,6 +13,7 @@ import * as Mojom from '../../../common/mojom'
 import {
   ModelMenuItem, //
 } from '../../../page/components/model_menu_item/model_menu_item'
+import { NearLabel } from '../../../page/components/near_label/near_label'
 import styles from './style.module.scss'
 
 interface Props {
@@ -22,14 +23,22 @@ interface Props {
   onRegenerate: (selectedModelKey: string) => void
   leoModels: Mojom.Model[]
   turnModelKey: string
+  isNearTeeVerified?: boolean
 }
 
 export function RegenerateAnswerMenu(props: Props) {
-  const { isOpen, onOpen, onClose, onRegenerate, leoModels, turnModelKey } =
-    props
+  const {
+    isOpen,
+    onOpen,
+    onClose,
+    onRegenerate,
+    leoModels,
+    turnModelKey,
+    isNearTeeVerified,
+  } = props
 
-  const modelDisplayName =
-    leoModels.find((model) => model.key === turnModelKey)?.displayName ?? ''
+  const turnModel = leoModels.find((model) => model.key === turnModelKey)
+  const modelDisplayName = turnModel?.displayName ?? ''
 
   const handleRegenerate = React.useCallback(
     (modelKey: string) => {
@@ -68,13 +77,16 @@ export function RegenerateAnswerMenu(props: Props) {
       >
         <div className={styles.anchorButtonContent}>
           <span className={styles.anchorButtonText}>{modelDisplayName}</span>
-          <Icon
-            name='carat-down'
-            className={classnames({
-              [styles.anchorButtonIcon]: true,
-              [styles.anchorButtonIconOpen]: isOpen,
-            })}
-          />
+          <div className={styles.iconAndLabel}>
+            {turnModel?.isNearModel && isNearTeeVerified && <NearLabel />}
+            <Icon
+              name='carat-down'
+              className={classnames({
+                [styles.anchorButtonIcon]: true,
+                [styles.anchorButtonIconOpen]: isOpen,
+              })}
+            />
+          </div>
         </div>
       </Button>
       {leoModels.map((model) => (

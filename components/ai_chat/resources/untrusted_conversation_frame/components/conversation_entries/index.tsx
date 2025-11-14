@@ -385,6 +385,10 @@ function ConversationEntries() {
                               : undefined
                           }
                           onCopyTextClicked={handleCopyText}
+                          // Once available in conversation entry, we should
+                          // pass verification status here.
+                          // https://github.com/brave/aichat/issues/928
+                          isNearTeeVerified={false}
                         />
                       )}
                   </>

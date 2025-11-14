@@ -20,6 +20,7 @@ type RatingStatus = (typeof statuses)[number]
 interface ContextActionsAssistantProps {
   turnUuid?: string
   turnModelKey?: string
+  isNearTeeVerified?: boolean
   onEditAnswerClicked?: () => void
   onCopyTextClicked?: () => void
 }
@@ -121,6 +122,7 @@ export default function ContextActionsAssistant(
           onRegenerate={handleRegenerateAnswer}
           leoModels={leoModels}
           turnModelKey={props.turnModelKey}
+          isNearTeeVerified={props.isNearTeeVerified}
         />
       )}
     </div>
