@@ -14,5 +14,6 @@ mojom("mojom") {
     sources += [ "brave_account_row.mojom" ]
   }
 
+  generate_java = true
   webui_module_path = "/"
 }
