@@ -351,7 +351,7 @@ void OnRewriteSuggestionCompleted(
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 email_aliases::EmailAliasesController* GetEmailAliasesController(
-    Browser* browser) {
+    BrowserWindowInterface* browser) {
   if (!browser) {
     return nullptr;
   }
