@@ -99,8 +99,6 @@ const blink::BlinkStorageKey* GetStorageKey(blink::ExecutionContext* context) {
 
 namespace brave {
 
-constexpr char BraveSessionCache::kSupplementName[] = "BraveSessionCache";
-
 blink::WebContentSettingsClient* GetContentSettingsClientFor(
     ExecutionContext* context) {
   if (!context) {
