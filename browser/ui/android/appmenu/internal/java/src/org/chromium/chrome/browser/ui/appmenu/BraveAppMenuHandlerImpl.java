@@ -59,7 +59,7 @@ class BraveAppMenuHandlerImpl extends AppMenuHandlerImpl {
             mAppMenuDragHelper.finishDragging();
             assert mAppMenu != null;
             if (mAppMenu.getListView() != null) {
-               mAppMenu.getListView().scrollTo(0, 0);
+                mAppMenu.getListView().scrollTo(0, 0);
             }
         }
         return show;
