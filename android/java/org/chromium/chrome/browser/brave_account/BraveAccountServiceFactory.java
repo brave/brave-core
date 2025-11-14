@@ -21,17 +21,12 @@ import org.chromium.mojo.system.impl.CoreImpl;
 @JNINamespace("chrome::android")
 @NullMarked
 public class BraveAccountServiceFactory {
-    private static final Object sLock = new Object();
-    private static @Nullable BraveAccountServiceFactory sInstance;
+    private static class LazyHolder {
+        static final BraveAccountServiceFactory INSTANCE = new BraveAccountServiceFactory();
+    }
 
     public static BraveAccountServiceFactory getInstance() {
-        synchronized (sLock) {
-            if (sInstance == null) {
-                sInstance = new BraveAccountServiceFactory();
-            }
-        }
-
-        return sInstance;
+        return LazyHolder.INSTANCE;
     }
 
     private BraveAccountServiceFactory() {}

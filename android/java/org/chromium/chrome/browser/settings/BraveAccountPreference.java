@@ -20,15 +20,17 @@ import org.chromium.components.browser_ui.settings.ChromeBasePreference;
 /** A preference for Brave Account that supports customizing title and summary text colors. */
 @NullMarked
 public class BraveAccountPreference extends ChromeBasePreference {
-    private final int mTitleTextColor;
-    private final int mSummaryTextColor;
+    private final int mTitleTextColorResId;
+    private final int mSummaryTextColorResId;
 
     public BraveAccountPreference(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.brave_account_preference);
-        mTitleTextColor = a.getColor(R.styleable.brave_account_preference_title_text_color, 0);
-        mSummaryTextColor = a.getColor(R.styleable.brave_account_preference_summary_text_color, 0);
+        mTitleTextColorResId =
+                a.getResourceId(R.styleable.brave_account_preference_title_text_color, 0);
+        mSummaryTextColorResId =
+                a.getResourceId(R.styleable.brave_account_preference_summary_text_color, 0);
         a.recycle();
     }
 
@@ -37,8 +39,8 @@ public class BraveAccountPreference extends ChromeBasePreference {
         super.onBindViewHolder(holder);
 
         if (holder.findViewById(android.R.id.title) instanceof TextView titleView) {
-            if (mTitleTextColor != 0) {
-                titleView.setTextColor(mTitleTextColor);
+            if (mTitleTextColorResId != 0) {
+                titleView.setTextColor(getContext().getColor(mTitleTextColorResId));
             } else if (!isSelectable()) {
                 // Restore the default primary text color when the preference is non-selectable.
                 TypedArray ta =
@@ -51,9 +53,9 @@ public class BraveAccountPreference extends ChromeBasePreference {
             }
         }
 
-        if (mSummaryTextColor != 0
+        if (mSummaryTextColorResId != 0
                 && holder.findViewById(android.R.id.summary) instanceof TextView summaryView) {
-            summaryView.setTextColor(mSummaryTextColor);
+            summaryView.setTextColor(getContext().getColor(mSummaryTextColorResId));
         }
     }
 }

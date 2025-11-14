@@ -43,7 +43,7 @@
         android:order="5"
         android:title="@string/prefs_brave_account_cancel_registration"
         app:title_text_color="@color/systemfeedback_error_text"/>
-    <org.chromium.components.browser_ui.settings.ChromeBasePreference
+    <org.chromium.chrome.browser.settings.BraveAccountPreference
         android:key="get_started"
         android:order="6"
         android:icon="@drawable/ic_brave"

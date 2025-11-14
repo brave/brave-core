@@ -5,6 +5,8 @@
 
 package org.chromium.chrome.browser.settings;
 
+import android.app.Activity;
+
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
@@ -128,7 +130,16 @@ public class BraveAccountSectionController implements PrefObserver, ConnectionEr
         if (getStartedPreference != null) {
             getStartedPreference.setOnPreferenceClickListener(
                     preference -> {
-                        BraveAccountCustomTabActivity.show(mFragment.getActivity());
+                        if (!mFragment.isAdded() || mFragment.isDetached()) {
+                            return false;
+                        }
+
+                        Activity activity = mFragment.getActivity();
+                        if (activity == null || activity.isFinishing()) {
+                            return false;
+                        }
+
+                        BraveAccountCustomTabActivity.show(activity);
                         return true;
                     });
         }
@@ -146,6 +157,10 @@ public class BraveAccountSectionController implements PrefObserver, ConnectionEr
     }
 
     private void updateBraveAccountSection() {
+        if (!mFragment.isAdded() || mFragment.isDetached()) {
+            return;
+        }
+
         Preference userInfoPref = mFragment.findPreference(PREF_USER_INFO);
         Preference signOutPref = mFragment.findPreference(PREF_SIGN_OUT);
         Preference almostTherePref = mFragment.findPreference(PREF_ALMOST_THERE);
