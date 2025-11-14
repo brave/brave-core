@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/frame/local_frame.h b/third_party/blink/renderer/core/frame/local_frame.h
-index 648455136f6a70a6c6b9c93febec6f6071bd7447..cba31394e4a09ccb0767ce668224a93061ba1b10 100644
+index 6a09da6989fc007aed611cdce1939c2bf03deb49..61bd4b3b0d8923dba3216f67675f80165f5dce84 100644
 --- a/third_party/blink/renderer/core/frame/local_frame.h
 +++ b/third_party/blink/renderer/core/frame/local_frame.h
 @@ -193,7 +193,7 @@ class CORE_EXPORT LocalFrame final

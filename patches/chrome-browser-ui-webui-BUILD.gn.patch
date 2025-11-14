@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/BUILD.gn b/chrome/browser/ui/webui/BUILD.gn
-index 4f960ccc7f8de220dc254610010695887cceb747..9f31e89bd1410839b74391f8870fd96fbc49f712 100644
+index cb492c369351913d81c34eb09850d1f877e74195..15a4d11d7a2ea198b9dbdcd94c7903c220d8663c 100644
 --- a/chrome/browser/ui/webui/BUILD.gn
 +++ b/chrome/browser/ui/webui/BUILD.gn
-@@ -130,6 +130,7 @@ source_set("configs") {
+@@ -132,6 +132,7 @@ source_set("configs") {
    if (enable_session_service) {
      deps += [ "//chrome/browser/ui/webui/tab_strip_internals" ]
    }
