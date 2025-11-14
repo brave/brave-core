@@ -63,6 +63,8 @@ static_library("browser") {
     "model_service.h",
     "model_validator.cc",
     "model_validator.h",
+    "near_verifier.cc",
+    "near_verifier.h",
     "tab_tracker_service.cc",
     "tab_tracker_service.h",
     "tools/memory_storage_tool.cc",
