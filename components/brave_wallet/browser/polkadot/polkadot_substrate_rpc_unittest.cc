@@ -1096,7 +1096,7 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetBlockHash) {
         "id": 1,
         "jsonrpc": "2.0",
         "method": "chain_getBlockHash",
-        "params": [13094409]
+        "params": ["00C7CE09"]
       })";
 
     EXPECT_EQ(base::test::ParseJsonDict(
@@ -1141,7 +1141,7 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetBlockHash) {
         "id": 1,
         "jsonrpc": "2.0",
         "method": "chain_getBlockHash",
-        "params": [0]
+        "params": ["00000000"]
       })";
 
     EXPECT_EQ(base::test::ParseJsonDict(
