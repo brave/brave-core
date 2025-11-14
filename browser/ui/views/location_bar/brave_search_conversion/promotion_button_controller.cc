@@ -137,15 +137,18 @@ bool PromotionButtonController::ShouldShowSearchPromotionButton() {
   // Promotion button will be shown for current search provider's
   // suggestion entries to make users search with brave search with that
   // suggestion.
-  OmniboxEditModel* edit_model = browser_->window()
-                                     ->GetLocationBar()
-                                     ->GetOmniboxController()
-                                     ->edit_model();
-  if (!edit_model->PopupIsOpen()) {
+  if (!browser_->window()
+           ->GetLocationBar()
+           ->GetOmniboxController()
+           ->IsPopupOpen()) {
     return false;
   }
 
   // Only show promotion for search query. Not url.
+  OmniboxEditModel* edit_model = browser_->window()
+                                     ->GetLocationBar()
+                                     ->GetOmniboxController()
+                                     ->edit_model();
   if (edit_model->CurrentTextIsURL()) {
     return false;
   }
