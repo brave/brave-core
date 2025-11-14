@@ -668,8 +668,8 @@
       <message name="IDS_COOKIES_TITLE" desc="Title for the Cookies settings screen [CHAR_LIMIT=32]">
           Cookies
       </message>
-      <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_SITE_INFO" desc="Content description for the page icon that gives more site information when clicked. The icon can be a magnifier for search result pages, or other icons representing the page state.">
-        Site information
+      <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_SITE_INFO_DIALOG" is_accessibility_with_no_ui="true" desc="Spoken by screen readers to describe the Site information dialog, which provides more site information when clicked.">
+        Site information, dialog
       </message>
       <message name="IDS_ACCESSIBILITY_TOOLBAR_VIEW_SITE_INFO" desc="Spoken by screen readers to explain that clicking on the status icon will show more site information when clicked. The string is read in the context of the 'Double tap to...' Android screen reader accessibility prompt e.g. 'Double tap to view site information'.">
         View site information
@@ -1061,6 +1061,12 @@
       </message>
       <message name="IDS_JUMP_START_OMNIBOX_SUMMARY" desc="When this preference is enabled, Brave start-up time is reduced, and the user is taken directly to an active Omnibox">
         Launch Brave with the Omnibox focused, reducing start-up time on low-end devices.
+      </message>
+      <message name="IDS_TOUCHPAD_OVERSCROLL_HISTORY_NAVIGATION_TITLE" desc="Title of the preference to enable swipe-to-navigate by touchpad horizontal overscroll">
+        Swipe between pages using a touchpad
+      </message>
+      <message name="IDS_TOUCHPAD_OVERSCROLL_HISTORY_NAVIGATION_SUMMARY" desc="Summary of the preference to enable swipe-to-navigate by touchpad horizontal overscroll">
+        Navigate back and forth by swiping with two fingers on the touchpad
       </message>
 
       <message name="IDS_CARET_BROWSING_TITLE" desc="Title of preference that allows the user to navigate pages with a text caret.">
