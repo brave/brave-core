@@ -43,10 +43,10 @@ RegisterPolymerTemplateModifications({
     } else {
       additionalProtections.setAttribute('hidden', 'true')
     }
-    const siteDataTrigger = templateContent.getElementById('site-data-trigger')
+    const siteDataTrigger = templateContent.getElementById('siteDataTrigger')
     if (!siteDataTrigger) {
       console.error(
-        '[Brave Settings Overrides] Could not find site-data-trigger id ' +
+        '[Brave Settings Overrides] Could not find siteDataTrigger id ' +
         'on cookies page')
     } else {
       siteDataTrigger.setAttribute('hidden', 'true')
