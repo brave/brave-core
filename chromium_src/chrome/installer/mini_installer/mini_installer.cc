@@ -25,6 +25,13 @@
 #endif  // defined(OFFICIAL_BUILD)
 
 #define BRAVE_RUN_SETUP                                                      \
+  if (configuration.previous_version() &&                                    \
+      (!cmd_line.append(L" --") || !cmd_line.append(kCmdPreviousVersion) ||  \
+       !cmd_line.append(L"=\"") ||                                           \
+       !cmd_line.append(configuration.previous_version()) ||                 \
+       !cmd_line.append(L"\""))) {                                           \
+    return ProcessExitResult(COMMAND_STRING_OVERFLOW);                       \
+  }                                                                          \
   PathString installer_filename;                                             \
   wchar_t value[MAX_PATH] = {0, };                                           \
   const bool result =                                                        \
