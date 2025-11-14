@@ -38,6 +38,7 @@ source_set("unit_tests") {
     "is_request_body_unittest.cc",
     "is_request_unittest.cc",
     "is_response_body_unittest.cc",
+    "is_response_unittest.cc",
     "maybe_strip_with_headers_unittest.cc",
   ]
 
