@@ -64,6 +64,13 @@ if (!is_android) {
   chromium_unit_tests_deps += [ "//components:components_unittests" ]
 }
 
+if (is_win) {
+  chromium_unit_tests_deps += [
+    "//chrome/installer/setup:setup_unittests",
+    "//chrome/installer/util:installer_util_unittests",
+  ]
+}
+
 group("chromium_unit_tests") {
   testonly = true
   data_deps = chromium_unit_tests_deps
