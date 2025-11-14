@@ -179,38 +179,52 @@ uint64_t CardanoTransactionSerializer::CalcMinTransactionFee(
   return fee.ValueOrDie();
 }
 
+std::optional<uint64_t> CardanoTransactionSerializer::CalcRequiredCoin(
+    const CardanoTransaction::TxOutput& output,
+    const cardano_rpc::EpochParameters& epoch_parameters) {
+  auto cbor_bytes = cbor::Writer::Write(
+      cbor::Value(CardanoTransactionSerializer().SerializeOutput(output)));
+  CHECK(cbor_bytes);
+
+  uint64_t required_coin = 0;
+  if (!base::CheckMul<uint64_t>(
+           epoch_parameters.coins_per_utxo_size,
+           base::CheckAdd<uint64_t>(cbor_bytes->size(),
+                                    kMinAdaUtxoConstantOverhead))
+           .AssignIfValid(&required_coin)) {
+    return std::nullopt;
+  }
+
+  return required_coin;
+}
+
 std::optional<uint64_t> CardanoTransactionSerializer::CalcMinAdaRequired(
     const CardanoTransaction::TxOutput& output,
     const cardano_rpc::EpochParameters& epoch_parameters) {
   // https://github.com/Emurgo/cardano-serialization-lib/blob/c8bb8f43a916d804b89c3e226560265b65f1689a/rust/src/utils.rs#L767
 
   CardanoTransaction::TxOutput cur_output = output;
-  // We need 5 iterations as uint64 can be encoded in CBOR in 1, 2, 3, 5, or 9
-  // bytes.
-  for (int i = 0; i < 5; i++) {
-    auto cbor_bytes =
-        cbor::Writer::Write(cbor::Value(SerializeOutput(cur_output)));
-    CHECK(cbor_bytes);
-
-    uint64_t required_lovelace = 0;
-    if (!base::CheckMul(epoch_parameters.coins_per_utxo_size,
-                        base::CheckAdd<uint64_t>(cbor_bytes->size(),
-                                                 kMinAdaUtxoConstantOverhead))
-             .AssignIfValid(&required_lovelace)) {
+  // We need at most 5 iterations as uint64 can be encoded by CBOR in 1, 2, 3,
+  // 5, or 9 bytes. Each iteration strictly increases the amount to the required
+  // lovelace. Last iteration moved out of the loop assuming output having 9
+  // bytes for amount max(uint64) produces the largest coin requirement.
+  for (int i = 0; i < 4; i++) {
+    auto required_coin = CalcRequiredCoin(cur_output, epoch_parameters);
+    if (!required_coin) {
       return std::nullopt;
     }
 
-    if (cur_output.amount < required_lovelace) {
+    if (cur_output.amount < required_coin.value()) {
       // Current output amount is less than required lovelace. But larger
       // required lovelace may produce larger cbor binary for this output. So we
       // increase the amount and run loop again.
-      cur_output.amount = required_lovelace;
+      cur_output.amount = required_coin.value();
     } else {
-      return required_lovelace;
+      return required_coin.value();
     }
   }
-
-  return std::nullopt;
+  cur_output.amount = std::numeric_limits<int64_t>::max();
+  return CalcRequiredCoin(cur_output, epoch_parameters);
 }
 
 bool CardanoTransactionSerializer::ValidateMinValue(
