@@ -80,6 +80,10 @@ class AIChatDatabase {
                                            uint64_t total_tokens,
                                            uint64_t trimmed_tokens);
 
+  // Updates the NEAR verification status of a conversation entry
+  virtual bool UpdateEntryVerificationStatus(std::string_view entry_uuid,
+                                             bool verified);
+
   // Deletes the conversation with the provided UUID
   virtual bool DeleteConversation(std::string_view conversation_uuid);
 

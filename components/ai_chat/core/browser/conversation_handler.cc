@@ -42,6 +42,7 @@
 #include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/model_validator.h"
+#include "brave/components/ai_chat/core/browser/near_verifier.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
@@ -125,6 +126,11 @@ ConversationHandler::ConversationHandler(
           std::make_unique<AssociatedContentManager>(this)),
       tool_providers_(std::move(tool_providers)),
       metadata_(conversation),
+      near_verifier_(
+          url_loader_factory,
+          model_service,
+          base::BindRepeating(&ConversationHandler::OnNEARVerificationComplete,
+                              base::Unretained(this))),
       ai_chat_service_(ai_chat_service),
       model_service_(model_service),
       credential_manager_(credential_manager),
@@ -1587,6 +1593,10 @@ void ConversationHandler::OnEngineCompletionComplete(
   }
   OnConversationEntryAdded(chat_history_.back());
 
+  if (!chat_history_.empty()) {
+    near_verifier_.MaybeVerifyConversationEntry(*chat_history_.back());
+  }
+
   // Check if we need title generation (after assistant response is added)
   if (engine_->RequiresClientSideTitleGeneration() &&
       chat_history_.size() == 2) {
@@ -2161,6 +2171,13 @@ void ConversationHandler::OnAutoScreenshotsTaken(
 
   // Continue with the original callback
   std::move(callback).Run();
+}
+
+void ConversationHandler::OnNEARVerificationComplete(
+    const std::string& turn_uuid,
+    bool verified) {
+  observers_.Notify(&Observer::OnNEARVerificationUpdate, this, turn_uuid,
+                    verified);
 }
 
 }  // namespace ai_chat
