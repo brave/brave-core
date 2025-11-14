@@ -82,6 +82,8 @@ The swift-format configuration is located at `//brave/ios/.swift-format` and
 controls formatting rules, but file-level ignores must be done using inline
 comments.
 
+See for more details: https://github.com/swiftlang/swift-format/blob/main/Documentation/IgnoringSource.md
+
 ### Presubmit Checks
 
 To ignore files from presubmit checks, you need to adjust the
