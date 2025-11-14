@@ -8,10 +8,9 @@ import * as React from 'react'
 import { StyleSheetManager } from 'styled-components'
 import {
   EmailAliasModal,
-  EmailAliasModalActionType,
-  EmailAliasModalAction,
+  EmailAliasModalResultType,
+  EmailAliasModalResult,
 } from './content/email_aliases_modal'
-import BraveCoreThemeProvider from '$web-common/BraveCoreThemeProvider'
 import {
   AuthenticationStatus,
   AuthState,
@@ -24,7 +23,7 @@ import {
   EmailAliasesPanelHandler,
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
 
-const EmailAliasesPanelConnected = ({
+export const EmailAliasesPanelConnected = ({
   emailAliasesService,
   emailAliasesPanelHandler,
   bindObserver,
@@ -60,16 +59,16 @@ const EmailAliasesPanelConnected = ({
   }, [])
   return (
     <EmailAliasModal
-      onReturnToMain={(action: EmailAliasModalAction) => {
+      onReturnToMain={(action: EmailAliasModalResult) => {
         switch (action.type) {
-          case EmailAliasModalActionType.Cancel:
-            emailAliasesPanelHandler.onCancel()
+          case EmailAliasModalResultType.Cancelled:
+            emailAliasesPanelHandler.onCancelAliasCreation()
             break
-          case EmailAliasModalActionType.Manage:
+          case EmailAliasModalResultType.ShouldManageAliases:
             emailAliasesPanelHandler.onManageAliases()
             break
-          case EmailAliasModalActionType.Alias:
-            emailAliasesPanelHandler.onAliasCreationComplete(action.email)
+          case EmailAliasModalResultType.AliasCreated:
+            emailAliasesPanelHandler.onAliasCreated(action.email)
             break
         }
       }}
@@ -77,15 +76,13 @@ const EmailAliasesPanelConnected = ({
       mainEmail={authState.email}
       aliasCount={aliasesState.length}
       emailAliasesService={emailAliasesService}
-      bubble={true}
+      bubble
     />
   )
 }
 
 const mount = () => {
-  const rootElement = document
-    .getElementById('mountPoint')!
-    .attachShadow({ mode: 'open' })
+  const rootElement = document.getElementById('mountPoint')!
   const emailAliasesService = EmailAliasesService.getRemote()
   const emailAliasesPanelHandler = EmailAliasesPanelHandler.getRemote()
   const bindObserver = (observer: EmailAliasesServiceObserverInterface) => {
@@ -95,14 +92,12 @@ const mount = () => {
     return () => observerReceiver.$.close()
   }
   createRoot(rootElement).render(
-    <StyleSheetManager target={rootElement.getRootNode() as ShadowRoot}>
-      <BraveCoreThemeProvider>
-        <EmailAliasesPanelConnected
-          emailAliasesService={emailAliasesService}
-          emailAliasesPanelHandler={emailAliasesPanelHandler}
-          bindObserver={bindObserver}
-        />
-      </BraveCoreThemeProvider>
+    <StyleSheetManager>
+      <EmailAliasesPanelConnected
+        emailAliasesService={emailAliasesService}
+        emailAliasesPanelHandler={emailAliasesPanelHandler}
+        bindObserver={bindObserver}
+      />
     </StyleSheetManager>,
   )
 }
