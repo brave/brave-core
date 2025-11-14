@@ -5,6 +5,11 @@
 
 #include "base/compiler_specific.h"
 #include "build/branding_buildflags.h"
+#include "chrome/installer/mini_installer/configuration.h"
+#include "chrome/installer/mini_installer/mini_installer_constants.h"
+#include "chrome/installer/mini_installer/mini_string.h"
+#include "chrome/installer/mini_installer/regkey.h"
+
 
 #define BRAVE_RUN_SETUP                                                      \
   PathString installer_filename;                                             \
@@ -29,6 +34,48 @@
 #undef BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING
 #define BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING() (1)
 #endif  // defined(OFFICIAL_BUILD)
+
+namespace mini_installer {
+
+#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
+
+bool OpenInstallStateKey(const Configuration& configuration, RegKey* key);
+
+// This function sets the flag in registry to indicate that Google Update
+// should try full installer next time. If the current installer works, this
+// flag is cleared by setup.exe at the end of install.
+void SetInstallerFlags(const Configuration& configuration) {
+  StackString<128> value;
+
+  RegKey key;
+  if (!OpenInstallStateKey(configuration, &key)) {
+    return;
+  }
+
+  // TODO(grt): Trim legacy modifiers (chrome,chromeframe,apphost,applauncher,
+  // multi,readymode,stage,migrating,multifail) from the ap value.
+
+  LONG ret = key.ReadSZValue(kApRegistryValue, value.get(), value.capacity());
+
+  // The conditions below are handling two cases:
+  // 1. When ap value is present, we want to add the required tag only if it
+  //    is not present.
+  // 2. When ap value is missing, we are going to create it with the required
+  //    tag.
+  if ((ret == ERROR_SUCCESS) || (ret == ERROR_FILE_NOT_FOUND)) {
+    if (ret == ERROR_FILE_NOT_FOUND) {
+      value.clear();
+    }
+
+    if (!StrEndsWith(value.get(), kFullInstallerSuffix) &&
+        value.append(kFullInstallerSuffix)) {
+      key.WriteSZValue(kApRegistryValue, value.get());
+    }
+  }
+}
+#endif
+
+}  // namespace mini_installer
 
 #include <chrome/installer/mini_installer/mini_installer.cc>
 #if defined(OFFICIAL_BUILD)
