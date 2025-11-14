@@ -1,7 +1,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_INSTALLER_SETUP_UNPACK_ARCHIVE_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_INSTALLER_SETUP_UNPACK_ARCHIVE_H_
 
-// N.B. This file does not include upstream's implementation.
+// N.B. This file does not #include upstream's implementation.
 
 #include "base/types/expected.h"
 #include "chrome/installer/util/util_constants.h"

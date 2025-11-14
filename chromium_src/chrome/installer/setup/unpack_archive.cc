@@ -5,7 +5,7 @@
 // This file defines the unpack function needed to unpack compressed and
 // uncompressed archives in setup.exe.
 
-// N.B. This file does not include upstream's implementation.
+// N.B. This file does not #include upstream's implementation.
 
 #include "chrome/installer/setup/unpack_archive.h"
 
