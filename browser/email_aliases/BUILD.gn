@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//build/config/ui.gni")
+
 static_library("email_aliases") {
   sources = [
     "email_aliases_service_factory.cc",
@@ -35,4 +37,27 @@ source_set("unit_tests") {
     "//mojo/public/cpp/bindings",
     "//testing/gtest",
   ]
+}
+
+if (toolkit_views) {
+  source_set("browser_tests") {
+    testonly = true
+
+    defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+    sources = [ "email_aliases_browsertest.cc" ]
+
+    deps = [
+      ":email_aliases",
+      "//brave/browser/ui/email_aliases",
+      "//brave/components/email_aliases:email_aliases_api_types",
+      "//brave/components/email_aliases:features",
+      "//brave/components/email_aliases:service",
+      "//chrome/browser",
+      "//chrome/browser/ui/views/bubble",
+      "//chrome/test:test_support",
+    ]
+
+    data = [ "//brave/test/data/email_aliases" ]
+  }
 }
