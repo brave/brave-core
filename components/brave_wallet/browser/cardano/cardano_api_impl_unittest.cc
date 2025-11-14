@@ -11,12 +11,9 @@
 #include <vector>
 
 #include "base/containers/span_writer.h"
-#include "base/memory/raw_ptr.h"
 #include "base/run_loop.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/test/bind.h"
-#include "base/test/gmock_callback_support.h"
-#include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
@@ -28,10 +25,8 @@
 #include "brave/components/brave_wallet/browser/cardano/cardano_transaction_serializer.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
-#include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
-#include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
@@ -1299,15 +1294,11 @@ TEST_F(CardanoApiImplTest, SignTx_Declined) {
                 {added_account->account_id->unique_key});
           });
 
-  test_rpc_service()->AddUtxo(brave_wallet_service()
-                                  ->GetCardanoWalletService()
-                                  ->GetChangeAddress(added_account->account_id)
-                                  ->address_string,
-                              100000);
+  CardanoTransaction unsigned_tx;
+  SetupUnsignedReferenceTransaction(added_account, unsigned_tx);
 
-  auto address = keyring_service()->GetCardanoAddress(
-      added_account->account_id,
-      mojom::CardanoKeyId::New(mojom::CardanoKeyRole::kExternal, 0));
+  auto unsigned_tx_bytes =
+      CardanoTransactionSerializer().SerializeTransaction(unsigned_tx);
 
   TestFuture<const std::optional<std::string>&,
              mojom::CardanoProviderErrorBundlePtr>
@@ -1315,17 +1306,8 @@ TEST_F(CardanoApiImplTest, SignTx_Declined) {
 
   SignCardanoTransactionRequestWaiter waiter(brave_wallet_service());
 
-  provider()->SignTx(
-      "84a40081825820a7b4c1021fa375a4fccb1ac1b3bb01743b3989b5eb732cc6240a"
-      "dd8c71edb9250001828258390144e5e8699ab31de351be61dfeb7c220eff61d29d"
-      "9c88ca9d1599b36deb20324c1f3c7c6a216e551523ff7ef4e784f3fde3606a5bac"
-      "e785391a0098968082583901e057e6ff439d606a3e6c47a00b867734098461b83a"
-      "d9943242b6bc04b7b276465449b932964b6173bc9f38a87677136918dc79f746c1"
-      "c21d1a017286c0021a0002917d031a08ed50c4a10081825820e68ca46554098776"
-      "f19f1433da96a108ea8bdda693fb1bea748f89adbfa7c2af58404dd83381fdc64b"
-      "6123f193e23c983a99c979a1af44b1bda5ea15d06cf7364161b7b3609bca439b62"
-      "e232731fb5290c495601cf40b358f915ade8bcff1eb7b802f5f6",
-      true, future.GetCallback());
+  provider()->SignTx(base::HexEncode(unsigned_tx_bytes), true,
+                     future.GetCallback());
 
   waiter.WaitAndProcess(false);
 
@@ -1333,7 +1315,8 @@ TEST_F(CardanoApiImplTest, SignTx_Declined) {
   auto& error = future.Get<1>();
 
   EXPECT_FALSE(signed_tx);
-  EXPECT_TRUE(error);
+  EXPECT_EQ(error, mojom::CardanoProviderErrorBundle::New(
+                       -3, WalletUserRejectedRequestErrorMessage(), nullptr));
 }
 
 TEST_F(CardanoApiImplTest, SignTx_DeclinedByPartialSignError) {

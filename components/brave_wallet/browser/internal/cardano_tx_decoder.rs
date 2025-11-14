@@ -19,13 +19,17 @@ use ciborium::{de::from_reader, Value as CborValue};
 
 // Re-export types for external use
 #[allow(unused_imports)]
-use crate::ffi::CxxRestoredCardanoBody;
+use crate::ffi::CxxSerializableTx;
 #[allow(unused_imports)]
-use crate::ffi::CxxRestoredCardanoInput;
+use crate::ffi::CxxSerializableTxBody;
 #[allow(unused_imports)]
-use crate::ffi::CxxRestoredCardanoOutput;
+use crate::ffi::CxxSerializableTxInput;
 #[allow(unused_imports)]
-use crate::ffi::CxxWitness;
+use crate::ffi::CxxSerializableTxOutput;
+#[allow(unused_imports)]
+use crate::ffi::CxxSerializableTxWitness;
+#[allow(unused_imports)]
+use crate::ffi::CxxSerializableVkeyWitness;
 
 const TRANSACTION_BODY_INDEX: usize = 0;
 const WITNESS_SET_INDEX: usize = 1;
@@ -51,14 +55,17 @@ macro_rules! impl_result {
             }
 
             fn unwrap(self: &mut $r) -> Box<$t> {
-                Box::new((self.0.as_mut().unwrap()).take().unwrap())
+                match std::mem::replace(&mut self.0, Err(Error::AlreadyUnwrapped)) {
+                    Ok(v) => Box::new(v),
+                    Err(e) => panic!("{}", e.to_string()),
+                }
             }
         }
 
         impl From<Result<$f, Error>> for $r {
             fn from(result: Result<$f, Error>) -> Self {
                 match result {
-                    Ok(v) => Self(Ok(Some($t(v)))),
+                    Ok(v) => Self(Ok($t(v))),
                     Err(e) => Self(Err(e)),
                 }
             }
@@ -81,28 +88,38 @@ macro_rules! impl_error {
 #[cxx::bridge(namespace = brave_wallet)]
 mod ffi {
     #[derive(Clone)]
-    struct CxxRestoredCardanoInput {
-        tx_hash: Vec<u8>,
+    struct CxxSerializableTxInput {
+        tx_hash: [u8; 32],
         index: u32,
     }
 
     #[derive(Clone)]
-    struct CxxRestoredCardanoOutput {
+    struct CxxSerializableTxOutput {
         addr: Vec<u8>,
         amount: u64,
     }
 
     #[derive(Clone)]
-    struct CxxRestoredCardanoBody {
-        inputs: Vec<CxxRestoredCardanoInput>,
-        outputs: Vec<CxxRestoredCardanoOutput>,
-        raw_body: Vec<u8>,
+    struct CxxSerializableTxBody {
+        inputs: Vec<CxxSerializableTxInput>,
+        outputs: Vec<CxxSerializableTxOutput>,
     }
 
-    #[allow(dead_code)]
-    struct CxxWitness {
-        pubkey: Vec<u8>,
-        signature: Vec<u8>,
+    #[derive(Clone)]
+    struct CxxSerializableVkeyWitness {
+        pubkey: [u8; 32],
+        signature: [u8; 64],
+    }
+
+    #[derive(Clone)]
+    struct CxxSerializableTxWitness {
+        vkey_witness_set: Vec<CxxSerializableVkeyWitness>,
+    }
+
+    #[derive(Clone)]
+    struct CxxSerializableTx {
+        body: CxxSerializableTxBody,
+        witness: CxxSerializableTxWitness,
     }
 
     extern "Rust" {
@@ -114,7 +131,7 @@ mod ffi {
         fn decode_cardano_transaction(bytes: &[u8]) -> Box<CxxDecodedCardanoTransactionResult>;
         fn apply_signatures(
             bytes: &[u8],
-            witnesses: Vec<CxxWitness>,
+            witnesses: CxxSerializableTxWitness,
         ) -> Box<CxxSignedCardanoTransactionResult>;
 
         fn is_ok(self: &CxxDecodedCardanoTransactionResult) -> bool;
@@ -122,7 +139,9 @@ mod ffi {
         fn unwrap(
             self: &mut CxxDecodedCardanoTransactionResult,
         ) -> Box<CxxDecodedCardanoTransaction>;
-        fn tx_body(self: &CxxDecodedCardanoTransaction) -> CxxRestoredCardanoBody;
+        fn tx(self: &CxxDecodedCardanoTransaction) -> CxxSerializableTx;
+        fn raw_body(self: &CxxDecodedCardanoTransaction) -> Vec<u8>;
+        fn raw_tx(self: &CxxDecodedCardanoTransaction) -> Vec<u8>;
 
         fn is_ok(self: &CxxSignedCardanoTransactionResult) -> bool;
         fn error_message(self: &CxxSignedCardanoTransactionResult) -> String;
@@ -148,6 +167,8 @@ pub enum Error {
     SerializationError,
     /// Failed to resolve witness array from transaction
     WitnessArrayResolutionError,
+    /// Already unwrapped
+    AlreadyUnwrapped,
 }
 
 impl fmt::Display for Error {
@@ -161,13 +182,17 @@ impl fmt::Display for Error {
             Error::WitnessArrayResolutionError => {
                 write!(f, "Failed to resolve witness array from transaction")
             }
+            Error::AlreadyUnwrapped => write!(f, "Already unwrapped"),
         }
     }
 }
 
 struct CxxDecodedCardanoTransactionValue {
-    body: CxxRestoredCardanoBody,
+    tx: CxxSerializableTx,
+    raw_body: Vec<u8>,
+    raw_tx: Vec<u8>,
 }
+
 struct CxxSignedCardanoTransactionValue {
     signed_bytes: Vec<u8>,
 }
@@ -175,8 +200,8 @@ struct CxxSignedCardanoTransactionValue {
 pub struct CxxDecodedCardanoTransaction(CxxDecodedCardanoTransactionValue);
 pub struct CxxSignedCardanoTransaction(CxxSignedCardanoTransactionValue);
 
-pub struct CxxDecodedCardanoTransactionResult(Result<Option<CxxDecodedCardanoTransaction>, Error>);
-pub struct CxxSignedCardanoTransactionResult(Result<Option<CxxSignedCardanoTransaction>, Error>);
+pub struct CxxDecodedCardanoTransactionResult(Result<CxxDecodedCardanoTransaction, Error>);
+pub struct CxxSignedCardanoTransactionResult(Result<CxxSignedCardanoTransaction, Error>);
 
 impl_result!(
     CxxDecodedCardanoTransaction,
@@ -192,17 +217,16 @@ impl_result!(
 
 /// Extracts the transaction body from a Cardano transaction CBOR
 /// https://github.com/IntersectMBO/cardano-ledger/blob/master/eras/conway/impl/cddl-files/conway.cddl#L17-L18
-fn extract_cardano_body(cbor_value: &CborValue) -> Result<CxxRestoredCardanoBody, Error> {
+fn extract_cardano_body(cbor_value: &CborValue) -> Result<(CxxSerializableTxBody, Vec<u8>), Error> {
     let transaction_array = match cbor_value {
         CborValue::Array(arr) => arr,
         _ => return Err(Error::InvalidTransactionFormat),
     };
 
-    if transaction_array.is_empty() {
+    if TRANSACTION_BODY_INDEX >= transaction_array.len() {
         return Err(Error::InvalidTransactionFormat);
-    }
+    };
 
-    // Extract transaction body (first element)
     let body_value = &transaction_array[TRANSACTION_BODY_INDEX];
     let body_map = match body_value {
         CborValue::Map(map) => map,
@@ -217,12 +241,17 @@ fn extract_cardano_body(cbor_value: &CborValue) -> Result<CxxRestoredCardanoBody
     let mut raw_body = Vec::new();
     ciborium::ser::into_writer(body_value, &mut raw_body).map_err(|_| Error::SerializationError)?;
 
-    Ok(CxxRestoredCardanoBody { inputs, outputs, raw_body })
+    Ok((CxxSerializableTxBody { inputs, outputs }, raw_body))
+}
+
+fn extract_witness(_cbor_value: &CborValue) -> Result<CxxSerializableTxWitness, Error> {
+    // Don't support extracting witness from the transaction yet.
+    Ok(CxxSerializableTxWitness { vkey_witness_set: Vec::new() })
 }
 
 fn extract_inputs(
     body_map: &[(CborValue, CborValue)],
-) -> Result<Vec<CxxRestoredCardanoInput>, Error> {
+) -> Result<Vec<CxxSerializableTxInput>, Error> {
     let inputs_value = find_map_value(body_map, INPUTS_KEY)?;
     // Inputs are stored directly in an array value or in a tag value wrapping an
     // array.
@@ -249,17 +278,19 @@ fn extract_inputs(
         };
 
         // Extract transaction hash and index
-        let tx_hash_bytes = match &input_array[0] {
-            CborValue::Bytes(bytes) => bytes.clone(),
+        let tx_hash: [u8; 32] = match &input_array[0] {
+            CborValue::Bytes(bytes) => {
+                bytes.clone().try_into().map_err(|_| Error::InvalidInputFormat)?
+            }
             _ => return Err(Error::InvalidInputFormat),
         };
 
-        let index = match &input_array[1] {
+        let index: u32 = match &input_array[1] {
             CborValue::Integer(i) => (*i).try_into().map_err(|_| Error::InvalidInputFormat)?,
             _ => return Err(Error::InvalidInputFormat),
         };
 
-        inputs.push(CxxRestoredCardanoInput { tx_hash: tx_hash_bytes, index });
+        inputs.push(CxxSerializableTxInput { tx_hash, index });
     }
 
     Ok(inputs)
@@ -267,7 +298,7 @@ fn extract_inputs(
 
 fn extract_outputs(
     body_map: &[(CborValue, CborValue)],
-) -> Result<Vec<CxxRestoredCardanoOutput>, Error> {
+) -> Result<Vec<CxxSerializableTxOutput>, Error> {
     let outputs_value = find_map_value(body_map, OUTPUTS_KEY)?;
     let outputs_array = match outputs_value {
         Some(CborValue::Array(arr)) => arr,
@@ -297,7 +328,7 @@ fn extract_outputs(
             _ => return Err(Error::InvalidOutputFormat),
         };
 
-        outputs.push(CxxRestoredCardanoOutput { addr: addr_bytes, amount });
+        outputs.push(CxxSerializableTxOutput { addr: addr_bytes, amount });
     }
 
     Ok(outputs)
@@ -313,33 +344,46 @@ fn find_map_value(map: &[(CborValue, CborValue)], key: u8) -> Result<Option<&Cbo
 }
 
 pub fn decode_cardano_transaction(bytes: &[u8]) -> Box<CxxDecodedCardanoTransactionResult> {
-    let cbor_value: CborValue = match from_reader(bytes) {
-        Ok(value) => value,
-        Err(_) => {
-            return Box::new(CxxDecodedCardanoTransactionResult::from(Err(Error::CborDecodeError)));
-        }
-    };
+    Box::new(CxxDecodedCardanoTransactionResult::from(decode_cardano_transaction_impl(bytes)))
+}
 
-    let body = match extract_cardano_body(&cbor_value) {
-        Ok(body) => body,
-        Err(e) => {
-            return Box::new(CxxDecodedCardanoTransactionResult::from(Err(e)));
-        }
-    };
+fn decode_cardano_transaction_impl(
+    bytes: &[u8],
+) -> Result<CxxDecodedCardanoTransactionValue, Error> {
+    let cbor_value: CborValue = from_reader(bytes).map_err(|_| Error::CborDecodeError)?;
 
-    let decoded_tx = CxxDecodedCardanoTransactionValue { body };
-    Box::new(CxxDecodedCardanoTransactionResult::from(Ok(decoded_tx)))
+    let (body, raw_body) = extract_cardano_body(&cbor_value)?;
+
+    let witness = extract_witness(&cbor_value)?;
+
+    Ok({
+        CxxDecodedCardanoTransactionValue {
+            tx: CxxSerializableTx { body, witness },
+            raw_body,
+            raw_tx: bytes.to_vec(),
+        }
+    })
 }
 
 impl CxxDecodedCardanoTransaction {
-    fn tx_body(self: &CxxDecodedCardanoTransaction) -> CxxRestoredCardanoBody {
-        self.0.body.clone()
+    fn tx(self: &CxxDecodedCardanoTransaction) -> CxxSerializableTx {
+        self.0.tx.clone()
+    }
+
+    fn raw_body(self: &CxxDecodedCardanoTransaction) -> Vec<u8> {
+        self.0.raw_body.clone()
+    }
+
+    fn raw_tx(self: &CxxDecodedCardanoTransaction) -> Vec<u8> {
+        self.0.raw_tx.clone()
     }
 }
 
-/// Creates a CxxSignedCardanoTransactionResult with the specified error
-fn box_error(error: Error) -> Box<CxxSignedCardanoTransactionResult> {
-    Box::new(CxxSignedCardanoTransactionResult::from(Err(error)))
+pub fn apply_signatures(
+    bytes: &[u8],
+    witnesses: CxxSerializableTxWitness,
+) -> Box<CxxSignedCardanoTransactionResult> {
+    Box::new(CxxSignedCardanoTransactionResult::from(apply_signatures_impl(bytes, witnesses)))
 }
 
 /// Applies signatures to an unsigned Cardano transaction
@@ -347,34 +391,29 @@ fn box_error(error: Error) -> Box<CxxSignedCardanoTransactionResult> {
 /// This function preserves existing witnesses and adds new signatures.
 /// The vk_witness set follows the Cardano format: {0: [[pubkey1, signature1],
 /// ...]}
-pub fn apply_signatures(
+fn apply_signatures_impl(
     bytes: &[u8],
-    witnesses: Vec<CxxWitness>,
-) -> Box<CxxSignedCardanoTransactionResult> {
-    let mut cbor_value: CborValue = match from_reader(bytes) {
-        Ok(value) => value,
-        Err(_) => {
-            return box_error(Error::CborDecodeError);
-        }
-    };
+    witnesses: CxxSerializableTxWitness,
+) -> Result<CxxSignedCardanoTransactionValue, Error> {
+    let mut cbor_value: CborValue = from_reader(bytes).map_err(|_| Error::CborDecodeError)?;
 
     let transaction_array = match &mut cbor_value {
         CborValue::Array(arr) => arr,
-        _ => {
-            return box_error(Error::InvalidTransactionFormat);
-        }
+        _ => return Err(Error::InvalidTransactionFormat),
     };
 
-    if transaction_array.len() <= WITNESS_SET_INDEX {
-        return box_error(Error::InvalidTransactionFormat);
-    }
+    if WITNESS_SET_INDEX >= transaction_array.len() {
+        return Err(Error::InvalidTransactionFormat);
+    };
 
-    // Append new witnesses to existing witness set
-    if let CborValue::Map(witness_map) = &mut transaction_array[WITNESS_SET_INDEX] {
-        let vk_witness_entry = {
-            // If not found, insert a SET_TAG entry with an empty array so it will be found
-            // below
-            if !witness_map.iter().any(|(k, _)| {
+    let CborValue::Map(witness_map) = &mut transaction_array[WITNESS_SET_INDEX] else {
+        return Err(Error::WitnessArrayResolutionError);
+    };
+
+    let vk_witness_entry = {
+        // If not found, insert a SET_TAG entry with an empty array so it will be found
+        // below
+        if !witness_map.iter().any(|(k, _)| {
                 matches!(k, CborValue::Integer(i) if *i == ciborium::value::Integer::from(VK_WITNESS_KEY))
             }) {
                 witness_map.push((
@@ -382,48 +421,42 @@ pub fn apply_signatures(
                     CborValue::Tag(SET_TAG, Box::new(CborValue::Array(Vec::new()))),
                 ));
             }
-            witness_map.iter_mut()
+        witness_map.iter_mut()
                 .find(|(k, _)| {
                     matches!(k, CborValue::Integer(i) if *i == ciborium::value::Integer::from(VK_WITNESS_KEY))
                 })
-        };
+    };
 
-        // Get vk_witness array(possible tagged) and append witness items.
-        if let Some((_, vk_witness_value)) = vk_witness_entry {
-            let vk_witness_array = match vk_witness_value {
-                CborValue::Array(arr) => arr,
-                CborValue::Tag(SET_TAG, tagged_array) => match &mut **tagged_array {
-                    CborValue::Array(arr) => arr,
-                    _ => {
-                        return box_error(Error::InvalidInputFormat);
-                    }
-                },
-                _ => {
-                    return box_error(Error::InvalidInputFormat);
-                }
-            };
-
-            for witness in witnesses {
-                vk_witness_array.push(CborValue::Array(vec![
-                    CborValue::Bytes(witness.pubkey),
-                    CborValue::Bytes(witness.signature),
-                ]));
+    // Get vk_witness array(possible tagged) and append witness items.
+    let Some((_, vk_witness_value)) = vk_witness_entry else {
+        return Err(Error::WitnessArrayResolutionError);
+    };
+    let vk_witness_array = match vk_witness_value {
+        CborValue::Array(arr) => arr,
+        CborValue::Tag(SET_TAG, tagged_array) => match &mut **tagged_array {
+            CborValue::Array(arr) => arr,
+            _ => {
+                return Err(Error::InvalidInputFormat);
             }
-        } else {
-            return box_error(Error::WitnessArrayResolutionError);
+        },
+        _ => {
+            return Err(Error::InvalidInputFormat);
         }
-    } else {
-        return box_error(Error::WitnessArrayResolutionError);
+    };
+
+    for witness in &witnesses.vkey_witness_set {
+        vk_witness_array.push(CborValue::Array(vec![
+            CborValue::Bytes(witness.pubkey.to_vec()),
+            CborValue::Bytes(witness.signature.to_vec()),
+        ]));
     }
 
     // Serialize the signed transaction
     let mut signed_bytes = Vec::new();
-    if let Err(_) = ciborium::ser::into_writer(&cbor_value, &mut signed_bytes) {
-        return box_error(Error::SerializationError);
-    }
+    ciborium::ser::into_writer(&cbor_value, &mut signed_bytes)
+        .map_err(|_| Error::SerializationError)?;
 
-    let signed_tx = CxxSignedCardanoTransactionValue { signed_bytes };
-    Box::new(CxxSignedCardanoTransactionResult::from(Ok(signed_tx)))
+    Ok(CxxSignedCardanoTransactionValue { signed_bytes })
 }
 
 impl CxxSignedCardanoTransaction {
