@@ -40,7 +40,8 @@ TEST_F(BraveReferrersPolicyHandlerTest, ApplyPolicyWithWrongTypeValue) {
   SetAndApplyPolicy(base::Value(false));
 
   base::Value* result;
-  EXPECT_FALSE(prefs().GetValue(prefs::kManagedDefaultBraveReferrers, &result));
+  EXPECT_FALSE(
+      prefs().GetValue(prefs::kManagedDefaultBraveReferrersSetting, &result));
 }
 
 TEST_F(BraveReferrersPolicyHandlerTest, ApplyPolicyWithLessThanMinValue) {
@@ -49,7 +50,8 @@ TEST_F(BraveReferrersPolicyHandlerTest, ApplyPolicyWithLessThanMinValue) {
   SetAndApplyPolicy(base::Value(out_of_range_value));
 
   base::Value* result;
-  EXPECT_FALSE(prefs().GetValue(prefs::kManagedDefaultBraveReferrers, &result));
+  EXPECT_FALSE(
+      prefs().GetValue(prefs::kManagedDefaultBraveReferrersSetting, &result));
 }
 
 TEST_F(BraveReferrersPolicyHandlerTest, ApplyPolicyWithGreaterThanMaxValue) {
@@ -58,7 +60,8 @@ TEST_F(BraveReferrersPolicyHandlerTest, ApplyPolicyWithGreaterThanMaxValue) {
   SetAndApplyPolicy(base::Value(out_of_range_value));
 
   base::Value* result;
-  EXPECT_FALSE(prefs().GetValue(prefs::kManagedDefaultBraveReferrers, &result));
+  EXPECT_FALSE(
+      prefs().GetValue(prefs::kManagedDefaultBraveReferrersSetting, &result));
 }
 
 TEST_F(BraveReferrersPolicyHandlerTest, ApplyPolicyWithAllowReferrerValue) {
@@ -68,7 +71,7 @@ TEST_F(BraveReferrersPolicyHandlerTest, ApplyPolicyWithAllowReferrerValue) {
 
   int result;
   EXPECT_TRUE(
-      prefs().GetInteger(prefs::kManagedDefaultBraveReferrers, &result));
+      prefs().GetInteger(prefs::kManagedDefaultBraveReferrersSetting, &result));
   EXPECT_THAT(result, testing::Eq(CONTENT_SETTING_ALLOW));
 }
 
@@ -79,7 +82,7 @@ TEST_F(BraveReferrersPolicyHandlerTest, ApplyPolicyWithBlockReferrerValue) {
 
   int result;
   EXPECT_TRUE(
-      prefs().GetInteger(prefs::kManagedDefaultBraveReferrers, &result));
+      prefs().GetInteger(prefs::kManagedDefaultBraveReferrersSetting, &result));
   EXPECT_THAT(result, testing::Eq(CONTENT_SETTING_BLOCK));
 }
 

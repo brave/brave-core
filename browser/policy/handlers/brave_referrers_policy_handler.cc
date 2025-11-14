@@ -10,6 +10,7 @@
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/pref_names.h"
 #include "components/policy/core/browser/configuration_policy_handler.h"
+#include "components/policy/core/common/policy_map.h"
 #include "components/policy/policy_constants.h"
 #include "components/prefs/pref_value_map.h"
 
@@ -55,7 +56,8 @@ void BraveReferrersPolicyHandler::ApplyPolicySettings(const PolicyMap& policies,
   }
 
   CHECK(prefs);
-  prefs->SetInteger(prefs::kManagedDefaultBraveReferrers, *content_setting);
+  prefs->SetInteger(prefs::kManagedDefaultBraveReferrersSetting,
+                    *content_setting);
 }
 
 }  // namespace policy

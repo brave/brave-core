@@ -8,7 +8,11 @@
 
 #include "components/policy/core/browser/configuration_policy_handler.h"
 
+class PrefValueMap;
+
 namespace policy {
+
+class PolicyMap;
 
 // Values for the DefaultBraveReferrersSetting policy. These must be in sync
 // with the policy definition DefaultBraveReferrersSetting.yaml.
