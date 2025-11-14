@@ -127,7 +127,7 @@ public class BrowserViewController: UIViewController {
   let feedDataSource: FeedDataSource
 
   private var postSetupTasks: [() -> Void] = []
-  private var setupTasksCompleted: Bool = false
+  /*private*/ var setupTasksCompleted: Bool = false
 
   private var privateModeCancellable: AnyCancellable?
   private var appReviewCancelable: AnyCancellable?
@@ -1322,7 +1322,6 @@ public class BrowserViewController: UIViewController {
         var activeKeyboardHeight: CGFloat = 0
         var searchEngineSettingsDismissed = false
         var clearRecentSearchAlertDismissed = false
-        var tabTrayDismissed = false
 
         if let keyboardHeight = keyboardState?.intersectionHeightForView(self.view) {
           activeKeyboardHeight = keyboardHeight
@@ -1345,11 +1344,20 @@ public class BrowserViewController: UIViewController {
           clearRecentSearchAlertDismissed = true
         }
 
+        var legacyTabTrayDismissed = false
+        if let presentedNavigationController = presentedViewController
+          as? UINavigationController,
+          presentedNavigationController.topViewController is TabTrayController
+        {
+          legacyTabTrayDismissed = true
+        }
+
         shouldEvaluateKeyboardConstraints =
           (activeKeyboardHeight > 0)
           && (presentedViewController == nil
             || searchEngineSettingsDismissed
             || clearRecentSearchAlertDismissed
+            || legacyTabTrayDismissed
             || presentedViewController is TabGridHostingController)
 
         if shouldEvaluateKeyboardConstraints {
@@ -2581,6 +2589,9 @@ extension BrowserViewController: TabTrayDelegate {
 
   func didCreateTab() {
     recordCreateTabAction(location: .tabTray)
+    if Preferences.General.openKeyboardOnNTPSelection.value {
+      focusURLBar()
+    }
   }
 }
 
