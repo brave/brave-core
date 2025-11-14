@@ -5,8 +5,12 @@
 
 #include "chrome/installer/mini_installer/configuration.h"
 
+#include "chrome/installer/mini_installer/appid.h"
+
 #define Initialize() Initialize(HMODULE module)
+#define kAppGuid kAppGuid; previous_version_ = nullptr
 #include <chrome/installer/mini_installer/configuration.cc>
+#undef kAppGuid
 #undef Initialize
 
 namespace mini_installer {
