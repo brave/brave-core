@@ -11,9 +11,7 @@ const Log = require('./logging')
 const util = require('./util')
 const applyReverts = require('./applyReverts')
 
-const REVERT_UPSTREAM_UNTIL_WINDOWS_HAS_OMAHA_4 = [
-  'a4d120daa3b09272d0dfe4a7ce20157dc18cb74e',
-]
+const REVERT_UPSTREAM_UNTIL_WINDOWS_HAS_OMAHA_4 = []
 
 function toGClientConfigItem(name, value, pretty = true) {
   const valueMap = {
