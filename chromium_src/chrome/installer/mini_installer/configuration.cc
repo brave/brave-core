@@ -1,0 +1,39 @@
+#ifdef UNSAFE_BUFFERS_BUILD
+// TODO(crbug.com/40285824): Remove this and convert code to safer constructs.
+#pragma allow_unsafe_buffers
+#endif
+
+#include <chrome/installer/mini_installer/configuration.cc>
+
+namespace mini_installer {
+
+void Configuration::ReadResources(HMODULE module) {
+  HRSRC resource_info_block =
+      FindResource(module, MAKEINTRESOURCE(ID_PREVIOUS_VERSION), RT_RCDATA);
+  if (!resource_info_block)
+    return;
+
+  HGLOBAL data_handle = LoadResource(module, resource_info_block);
+  if (!data_handle)
+    return;
+
+  // The data is a Unicode string, so it must be a multiple of two bytes.
+  DWORD version_size = SizeofResource(module, resource_info_block);
+  if (!version_size || (version_size & 0x01) != 0)
+    return;
+
+  void* version_data = LockResource(data_handle);
+  if (!version_data)
+    return;
+
+  const wchar_t* version_string = reinterpret_cast<wchar_t*>(version_data);
+  size_t version_len = version_size / sizeof(wchar_t);
+
+  // The string must be terminated.
+  if (version_string[version_len - 1])
+    return;
+
+  previous_version_ = version_string;
+}
+
+}  // namespace mini_installer
