@@ -7,6 +7,7 @@
 
 #include "brave/browser/policy/brave_simple_policy_map.h"
 #include "brave/browser/policy/handlers/brave_adblock_policy_handler.h"
+#include "brave/browser/policy/handlers/brave_fingerprinting_v2_policy_handler.h"
 #include "brave/browser/policy/handlers/brave_https_upgrade_policy_handler.h"
 #include "brave/browser/policy/handlers/brave_referrers_policy_handler.h"
 #include "brave/browser/policy/handlers/brave_remember_1p_storage_policy_handler.h"
@@ -29,6 +30,7 @@ std::unique_ptr<ConfigurationPolicyHandlerList> BuildHandlerList(
   }
 
   handlers->AddHandler(std::make_unique<BraveAdblockPolicyHandler>());
+  handlers->AddHandler(std::make_unique<BraveFingerprintingV2PolicyHandler>());
   handlers->AddHandler(std::make_unique<BraveHttpsUpgradePolicyHandler>());
   handlers->AddHandler(std::make_unique<BraveReferrersPolicyHandler>());
   handlers->AddHandler(std::make_unique<BraveRemember1PStoragePolicyHandler>());
