@@ -409,6 +409,12 @@
   <message name="IDS_SETTINGS_YOUR_SAVED_INFO" desc="Name of the settings page which allows managing data saved by users in chrome.">
     Your saved info
   </message>
+  <message name="IDS_IDENTITY_DOCS_SUBMENU_OPTION" desc="Text label of the Identity docs item in the Your saved info 3-dot submenu">
+    Identity docs
+  </message>
+  <message name="IDS_TRAVEL_SUBMENU_OPTION" desc="Text label of the Travel item in the Your saved info 3-dot submenu">
+    Travel
+  </message>
   <message name="IDS_SETTINGS_YOUR_SAVED_INFO_DESCRIPTION" desc="Description of the 'Your saved info' page.">
     Manage your autofill info for faster browsing — info like passwords, payment methods, addresses, and ID cards
   </message>
@@ -1949,6 +1955,9 @@
   </message>
 
   <!-- Bundled Security Settings (chrome://settings/security) -->
+  <message name="IDS_SETTINGS_SECURITY_BUNDLE_RESET_TO_DEFAULTS_BUTTON_LABEL" desc="Label of button which resets security-settings-bundle to default settings">
+    Reset to defaults
+  </message>
   <message name="IDS_SETTINGS_SECURITY_TITLE" desc="Name of security page header">
     Browsing protection
   </message>
@@ -1969,6 +1978,15 @@
   </message>
   <message name="IDS_SETTINGS_SECURITY_SAFE_BROWSING_ENHANCED_TITLE" desc="Name of Safe Browsing enhanced protection">
     Enhanced Protection
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_FEATURE_ROW_STATE_ENHANCED" desc="The state text denoting that a security feature is in the enhanced state.">
+    Enhanced
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_FEATURE_ROW_STATE_STANDARD" desc="The state text denoting that a security feature is in the standard state.">
+    Standard
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_FEATURE_ROW_STATE_OFF" desc="The state text denoting that a security feature is in the off state.">
+    Off
   </message>
 
   <!-- Secure Connections -->
@@ -3683,6 +3701,9 @@
     </message>
     <message name="IDS_SETTINGS_ACCOUNT_HISTORY_TOGGLE" desc="Title of the merged toggle in the account settings page combining the data types history, tabs, and saved tab groups. Shown on next to the toggle that controls whether these data types should be saved in the Brave sync chain and synced across devices.">
       History and tabs
+    </message>
+    <message name="IDS_SETTINGS_ACCOUNT_HISTORY_TOGGLE_SUB_LABEL_OFF" desc="Subtitle describing the effects of turning on the merged toggle in the account settings page, combining the data types history, tabs, and saved tab groups. Shown on next to the toggle that controls whether these data types should be saved in the Brave sync chain and synced across devices. Shown only if the toggle is off.">
+      Turn on to get your browsing history and tabs from other devices
     </message>
     <message name="IDS_SETTINGS_GOOGLE_SERVICES_PAGE_TITLE" desc="Name of the settings page for managing Brave services.">
       Brave services

@@ -1040,8 +1040,6 @@ are declared in tools/grit/grit_args.gni.
       <if expr="not is_chromeos and not is_android">
         </if>
 
-      <if expr="is_win">
-        </if>
       <if expr="is_chromeos">
         </if>
 
