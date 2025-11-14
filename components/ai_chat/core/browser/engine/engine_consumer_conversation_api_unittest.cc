@@ -397,7 +397,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
       "turn-3", mojom::CharacterType::HUMAN, mojom::ActionType::RESPONSE,
       "Is it related to a broader series?", std::nullopt /* prompt */,
       std::nullopt, std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
-      nullptr /* skill */, false, std::nullopt /* model_key */));
+      nullptr /* skill */, false, std::nullopt /* model_key */,
+      std::nullopt /* is_near_verified */));
   std::string expected_events = R"([
     {"role": "user", "type": "pageText", "content": "This is my page. I have spoken."},
     {"role": "user", "type": "pageExcerpt", "content": "I have spoken."},
@@ -535,7 +536,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ToolUse) {
       "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       "What is the weather in Santa Barbara?", std::nullopt /* prompt */,
       std::nullopt, std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
-      nullptr /* skill */, false, std::nullopt /* model_key */));
+      nullptr /* skill */, false, std::nullopt /* model_key */,
+      std::nullopt /* is_near_verified */));
 
   std::vector<mojom::ContentBlockPtr> tool_output_content_blocks;
   tool_output_content_blocks.push_back(mojom::ContentBlock::NewTextContentBlock(
@@ -554,7 +556,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ToolUse) {
       "turn-2", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
       "First I'll look up the weather...", std::nullopt /* prompt */,
       std::nullopt, std::move(response_events), base::Time::Now(), std::nullopt,
-      std::nullopt, nullptr /* skill */, false, std::nullopt /* model_key */));
+      std::nullopt, nullptr /* skill */, false, std::nullopt /* model_key */,
+      std::nullopt /* is_near_verified */));
 
   std::string expected_events = R"([
     {
@@ -622,7 +625,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_MultipleToolUse) {
       "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       "What is the weather in Santa Barbara?", std::nullopt /* prompt */,
       std::nullopt, std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
-      nullptr /* skill */, false, std::nullopt /* model_key */));
+      nullptr /* skill */, false, std::nullopt /* model_key */,
+      std::nullopt /* is_near_verified */));
 
   std::vector<mojom::ConversationEntryEventPtr> response_events;
   response_events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
@@ -651,7 +655,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_MultipleToolUse) {
       "turn-2", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
       "First I'll look up the weather...", std::nullopt /* prompt */,
       std::nullopt, std::move(response_events), base::Time::Now(), std::nullopt,
-      std::nullopt, nullptr /* skill */, false, std::nullopt /* model_key */));
+      std::nullopt, nullptr /* skill */, false, std::nullopt /* model_key */,
+      std::nullopt /* is_near_verified */));
 
   std::string expected_events = R"([
     {
@@ -751,7 +756,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
         mojom::ActionType::QUERY, "What is this web page about?",
         std::nullopt /* prompt */, std::nullopt, std::nullopt,
         base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */,
-        false, std::nullopt /* model_key */));
+        false, std::nullopt /* model_key */,
+        std::nullopt /* is_near_verified */));
     std::vector<mojom::ContentBlockPtr> tool_output_content_blocks;
     if (i == 0 || i == 2) {
       tool_output_content_blocks.push_back(
@@ -923,7 +929,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ToolUseNoOutput) {
       "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       "What is the weather in Santa Barbara?", std::nullopt /* prompt */,
       std::nullopt, std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
-      nullptr /* skill */, false, std::nullopt /* model_key */));
+      nullptr /* skill */, false, std::nullopt /* model_key */,
+      std::nullopt /* is_near_verified */));
 
   std::vector<mojom::ConversationEntryEventPtr> response_events;
   response_events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
@@ -938,7 +945,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ToolUseNoOutput) {
       "turn-2", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
       "First I'll look up the weather...", std::nullopt /* prompt */,
       std::nullopt, std::move(response_events), base::Time::Now(), std::nullopt,
-      std::nullopt, nullptr /* skill */, false, std::nullopt /* model_key */));
+      std::nullopt, nullptr /* skill */, false, std::nullopt /* model_key */,
+      std::nullopt /* is_near_verified */));
 
   // If somehow the conversation is sent without the tool output, the
   // request should not include the tool request, since most LLM APIs will fail
@@ -993,7 +1001,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ModifyReply) {
       "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       "Which show is 'This is the way' from?", std::nullopt /* prompt */,
       std::nullopt, std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
-      nullptr /* skill */, false, std::nullopt /* model_key */));
+      nullptr /* skill */, false, std::nullopt /* model_key */,
+      std::nullopt /* is_near_verified */));
 
   std::vector<mojom::ConversationEntryEventPtr> events;
   auto search_event = mojom::ConversationEntryEvent::NewSearchStatusEvent(
@@ -1014,19 +1023,22 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ModifyReply) {
       "edit-1", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
       "The Mandalorian.", std::nullopt /* prompt */, std::nullopt,
       std::move(modified_events), base::Time::Now(), std::nullopt, std::nullopt,
-      nullptr /* skill */, false, std::nullopt /* model_key */);
+      nullptr /* skill */, false, std::nullopt /* model_key */,
+      std::nullopt /* is_near_verified */);
   std::vector<mojom::ConversationTurnPtr> edits;
   edits.push_back(std::move(edit));
   history.push_back(mojom::ConversationTurn::New(
       "turn-2", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
       "Mandalorian.", std::nullopt /* prompt */, std::nullopt,
       std::move(events), base::Time::Now(), std::move(edits), std::nullopt,
-      nullptr /* skill */, false, std::nullopt /* model_key */));
+      nullptr /* skill */, false, std::nullopt /* model_key */,
+      std::nullopt /* is_near_verified */));
   history.push_back(mojom::ConversationTurn::New(
       "turn-3", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       "Is it related to a broader series?", std::nullopt /* prompt */,
       std::nullopt, std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
-      nullptr /* skill */, false, std::nullopt /* model_key */));
+      nullptr /* skill */, false, std::nullopt /* model_key */,
+      std::nullopt /* is_near_verified */));
   std::string expected_events = R"([
     {"role": "user", "type": "pageText", "content": "I have spoken."},
     {"role": "user", "type": "chatMessage",
@@ -1168,7 +1180,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_UploadImage) {
       "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::UNSPECIFIED,
       "What are these images?", kTestPrompt, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, Clone(uploaded_images),
-      nullptr /* skill */, false, std::nullopt /* model_key */));
+      nullptr /* skill */, false, std::nullopt /* model_key */,
+      std::nullopt /* is_near_verified */));
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
   engine_->GenerateAssistantResponse({}, history, "", false, {}, std::nullopt,
@@ -1179,7 +1192,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_UploadImage) {
       EngineConsumer::GenerationResultData(
           mojom::ConversationEntryEvent::NewCompletionEvent(
               mojom::CompletionEvent::New(kAssistantResponse, std::nullopt)),
-          std::nullopt /* model_key */, std::nullopt /* is_near_verified */));
+          std::nullopt /* model_key */));
   testing::Mock::VerifyAndClearExpectations(mock_api_client);
 }
 
@@ -1216,7 +1229,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
             mojom::ConversationEntryEvent::NewCompletionEvent(
                 mojom::CompletionEvent::New(
                     "{ \"topics\": [\"topic1\", \"topic2\", \"topic3\", "
-                    "\"topic7\"] }"));
+                    "\"topic7\"] }",
+                    std::nullopt));
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
       })
@@ -1235,7 +1249,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
             mojom::ConversationEntryEvent::NewCompletionEvent(
                 mojom::CompletionEvent::New(
                     "{ \"topics\": [\"topic3\", \"topic4\", \"topic5\", "
-                    "\"topic6\"] }"));
+                    "\"topic6\"] }",
+                    std::nullopt));
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
       })
@@ -1255,7 +1270,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
                 mojom::CompletionEvent::New(
                     "{ \"topics\": [\"topic1\", \"topic3\", \"topic4\", "
                     "\"topic5\", "
-                    "\"topic7\"] }"));
+                    "\"topic7\"] }",
+                    std::nullopt));
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
       });
@@ -1290,7 +1306,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
             mojom::ConversationEntryEvent::NewCompletionEvent(
                 mojom::CompletionEvent::New(
                     "{ \"topics\": [\"topic1\", \"topic2\", \"topic3\", "
-                    "\"topic7\"] }"));
+                    "\"topic7\"] }",
+                    std::nullopt));
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
       })
@@ -1334,7 +1351,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
             mojom::ConversationEntryEvent::NewCompletionEvent(
                 mojom::CompletionEvent::New(
                     "{ \"topics\": [\"topic1\", \"topic2\", \"topic3\", "
-                    "\"topic7\"] }"));
+                    "\"topic7\"] }",
+                    std::nullopt));
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
       })
@@ -1353,7 +1371,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
             mojom::ConversationEntryEvent::NewCompletionEvent(
                 mojom::CompletionEvent::New(
                     "{ \"topics\": [\"topic3\", \"topic4\", \"topic5\", "
-                    "\"topic6\"] }"));
+                    "\"topic6\"] }",
+                    std::nullopt));
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
       })
@@ -1400,7 +1419,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
             mojom::ConversationEntryEvent::NewCompletionEvent(
                 mojom::CompletionEvent::New(
                     "{ \"topics\": [\"topic1\", \"topic2\", \"topic3\", "
-                    "\"topic7\"] }"));
+                    "\"topic7\"] }",
+                    std::nullopt));
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
       })
@@ -1438,7 +1458,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
             mojom::ConversationEntryEvent::NewCompletionEvent(
                 mojom::CompletionEvent::New(
                     "{ \"topics\": [\"topic1\", \"topic2\", \"topic3\", "
-                    "\"topic7\"] }"));
+                    "\"topic7\"] }",
+                    std::nullopt));
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
       });
@@ -1470,7 +1491,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
             mojom::ConversationEntryEvent::NewCompletionEvent(
                 mojom::CompletionEvent::New(
                     "{ \"topics\": [\"topic1\", \"topic2\", \"topic3\", "
-                    "\"topic7\"] }"));
+                    "\"topic7\"] }",
+                    std::nullopt));
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
       })
@@ -1489,7 +1511,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
             mojom::ConversationEntryEvent::NewCompletionEvent(
                 mojom::CompletionEvent::New(
                     "{ \"topics\": [\"topic3\", \"topic4\", \"topic5\", "
-                    "\"topic6\"] }"));
+                    "\"topic6\"] }",
+                    std::nullopt));
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
       })
@@ -1507,7 +1530,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetSuggestedTopics) {
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
                 mojom::CompletionEvent::New(
-                    "{ \"topics\": \"not an array of strings\" }"));
+                    "{ \"topics\": \"not an array of strings\" }",
+                    std::nullopt));
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
       });
@@ -1576,7 +1600,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
                 mojom::CompletionEvent::New(
-                    "{ \"topics\": [\"topic1\", \"topic2\"] }"));
+                    "{ \"topics\": [\"topic1\", \"topic2\"] }", std::nullopt));
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
       });
@@ -1626,7 +1650,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs) {
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
                 mojom::CompletionEvent::New(
-                    "{ \"tab_ids\": [\"id1\", \"id2\"] }"));
+                    "{ \"tab_ids\": [\"id1\", \"id2\"] }", std::nullopt));
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
       })
@@ -1644,7 +1668,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs) {
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
                 mojom::CompletionEvent::New(
-                    "{ \"tab_ids\": [\"id75\", \"id76\"] }"));
+                    "{ \"tab_ids\": [\"id75\", \"id76\"] }", std::nullopt));
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
       });
@@ -1690,7 +1714,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs) {
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
                 mojom::CompletionEvent::New(
-                    "{ \"tab_ids\": [\"id3\", \"id5\"] }"));
+                    "{ \"tab_ids\": [\"id3\", \"id5\"] }", std::nullopt));
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
       })
@@ -1708,7 +1732,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs) {
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
                 mojom::CompletionEvent::New(
-                    "{ \"tab_ids\": [\"id75\", \"id76\"] }"));
+                    "{ \"tab_ids\": [\"id75\", \"id76\"] }", std::nullopt));
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
       });
@@ -1737,7 +1761,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs) {
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
                 mojom::CompletionEvent::New(
-                    "{ \"tab_ids\": [\"id3\", \"id5\"] }"));
+                    "{ \"tab_ids\": [\"id3\", \"id5\"] }", std::nullopt));
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
       })
@@ -1776,7 +1800,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs) {
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
                 mojom::CompletionEvent::New(
-                    "{ \"tab_ids\": [\"id3\", \"id5\"] }"));
+                    "{ \"tab_ids\": [\"id3\", \"id5\"] }", std::nullopt));
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
       })
@@ -1791,7 +1815,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GetFocusTabs) {
         auto completion_event =
             mojom::ConversationEntryEvent::NewCompletionEvent(
                 mojom::CompletionEvent::New(
-                    "I don't follow human instructions."));
+                    "I don't follow human instructions.", std::nullopt));
         std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
             std::move(completion_event), std::nullopt)));
       });
@@ -3046,7 +3070,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
       "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       "Human message", std::nullopt, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt);
+      std::nullopt, std::nullopt);
   history.push_back(std::move(turn));
 
   engine_->GenerateAssistantResponse(
@@ -3103,7 +3127,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
       "existing-turn", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       "Human message", std::nullopt, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt);
+      std::nullopt, std::nullopt);
   history.push_back(std::move(turn));
 
   engine_->GenerateAssistantResponse(
@@ -3168,7 +3192,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
       "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       "Human message", std::nullopt, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt);
+      std::nullopt, std::nullopt);
   history.push_back(std::move(turn));
 
   engine_->GenerateAssistantResponse(
@@ -3236,14 +3260,14 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
       "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       "First human message", std::nullopt, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt);
+      std::nullopt, std::nullopt);
   history.push_back(std::move(turn1));
 
   auto response1 = mojom::ConversationTurn::New(
       "response-1", mojom::CharacterType::ASSISTANT,
       mojom::ActionType::RESPONSE, "First assistant response", std::nullopt,
       std::nullopt, std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
-      nullptr /* skill */, false, std::nullopt);
+      nullptr /* skill */, false, std::nullopt, std::nullopt);
   history.push_back(std::move(response1));
 
   // Second turn
@@ -3251,7 +3275,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
       "turn-2", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       "Second human message", std::nullopt, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt);
+      std::nullopt, std::nullopt);
   history.push_back(std::move(turn2));
 
   engine_->GenerateAssistantResponse(
@@ -3281,14 +3305,14 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
       "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       "Human message 1", std::nullopt, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt);
+      std::nullopt, std::nullopt);
   history.push_back(std::move(turn1));
 
   auto turn2 = mojom::ConversationTurn::New(
       "turn-2", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       "Human message 2", std::nullopt, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt);
+      std::nullopt, std::nullopt);
   history.push_back(std::move(turn2));
 
   auto* mock_api_client = GetMockConversationAPIClient();
