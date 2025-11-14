@@ -381,6 +381,9 @@
       <message name="IDS_TAB_SELECTION_EDITOR_ADD_BOOKMARKS_FOLDER_NAME" desc="File name for a new folder containing all selected bookmarks to add from the Tab Selection Editor menu, followed by a timestamp">
         New Folder - <ph name="CURRENT_TIMESTAMP_MS">%1$s<ex>1582667748515</ex></ph>
       </message>
+      <message name="IDS_DONE_BUTTON_TEXT" desc="Text for the Done button used to confirm selections in the Tab Editor/Item Picker. [CHAR_LIMIT=12]">
+        Done
+      </message>
 
       <!-- Tab Grid Dialog strings -->
       <message name="IDS_REMOVE_TAB_FROM_GROUP" desc="Content description for an action which removes a tab from its group.">
@@ -1075,11 +1078,15 @@
           =1 {Move tab to new window}
           other {Move tab to another window}}
       </message>
-      <message name="IDS_MOVE_TAB_LEFT" desc="Menu item for moving a tab to the left in the tab strip order.">
-        Move tab left
+      <message name="IDS_MOVE_TABS_LEFT" desc="Menu item for moving tab(s) to the left in the tab strip order.">
+        {TAB_COUNT, plural,
+          =1 {Move tab left}
+          other {Move tabs left}}
       </message>
-      <message name="IDS_MOVE_TAB_RIGHT" desc="Menu item for moving a tab to the right in the tab strip order.">
-        Move tab right
+      <message name="IDS_MOVE_TABS_RIGHT" desc="Menu item for moving tab(s) to the right in the tab strip order.">
+        {TAB_COUNT, plural,
+          =1 {Move tab right}
+          other {Move tabs right}}
       </message>
       <message name="IDS_MOVE_TAB_GROUP_LEFT" desc="Menu item for moving a tab group to the left in the tab strip order.">
         Move tab group left

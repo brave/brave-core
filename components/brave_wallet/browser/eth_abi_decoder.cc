@@ -111,9 +111,9 @@ std::optional<DecoderResult<M>> GetUintFromData(ByteView input) {
   uint256_t value;
   // TODO(apaymyshev): we don't need string in this bytes->string->bytes
   // conversion here.
-  if (!HexValueToUint256(
-          base::StrCat({"0x", HexEncodeLower(input.first(kWordSize))}),
-          &value)) {
+  if (!HexValueToUint256(base::StrCat({"0x", brave_wallet::HexEncodeLower(
+                                                 input.first(kWordSize))}),
+                         &value)) {
     return std::nullopt;
   }
 
@@ -202,7 +202,8 @@ std::optional<DecoderResult<base::Value>> GetBytesHexFromData(
 
   size_t parts_size = parts_count * kWordSize;
   return DecoderResult<base::Value>(
-      base::Value(base::StrCat({"0x", HexEncodeLower(remaining.first(size))})),
+      base::Value(base::StrCat(
+          {"0x", brave_wallet::HexEncodeLower(remaining.first(size))})),
       GetSubByteView(remaining, parts_size), consumed + parts_size);
 }
 
@@ -479,7 +480,8 @@ std::optional<std::vector<std::string>> UniswapEncodedPathDecode(
   }
 
   // Parse first hop address.
-  path.push_back(base::StrCat({"0x", HexEncodeLower(*reader.Read(20u))}));
+  path.push_back(
+      base::StrCat({"0x", brave_wallet::HexEncodeLower(*reader.Read(20u))}));
 
   while (true) {
     if (!reader.remaining()) {
@@ -493,7 +495,8 @@ std::optional<std::vector<std::string>> UniswapEncodedPathDecode(
 
     // Parse next hop.
     if (auto address = reader.Read(20u)) {
-      path.push_back(base::StrCat({"0x", HexEncodeLower(*address)}));
+      path.push_back(
+          base::StrCat({"0x", brave_wallet::HexEncodeLower(*address)}));
     } else {
       return std::nullopt;
     }

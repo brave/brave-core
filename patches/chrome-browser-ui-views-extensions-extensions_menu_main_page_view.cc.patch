@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/ui/views/extensions/extensions_menu_main_page_view.cc b/chrome/browser/ui/views/extensions/extensions_menu_main_page_view.cc
-index 72ca2718fcd915774665a085f362f277a152f072..3bb7ca5fadf4a082cf7367986d42f7ad2dcf8b87 100644
+index 77df4de9c4e2026722afb46e2bfb36a35f149a2f..ea991b454b3efed60c019844b6bf9bde48f28d70 100644
 --- a/chrome/browser/ui/views/extensions/extensions_menu_main_page_view.cc
 +++ b/chrome/browser/ui/views/extensions/extensions_menu_main_page_view.cc
-@@ -216,6 +216,7 @@ void ExtensionsMenuMainPageView::CreateAndInsertMenuItem(
-     ExtensionMenuItemView::SitePermissionsButtonAccess
-         site_permissions_button_access,
+@@ -211,6 +211,7 @@ void ExtensionsMenuMainPageView::CreateAndInsertMenuItem(
+     extensions::ExtensionId extension_id,
+     ExtensionsMenuViewModel::MenuItemInfo menu_item,
      int index) {
 +  BRAVE_EXTENSION_MENU_MAIN_PAGE_VIEW_CREATE_AND_INSERT_MENU_ITEM
    // base::Unretained() below is safe because `menu_handler_` lifetime is

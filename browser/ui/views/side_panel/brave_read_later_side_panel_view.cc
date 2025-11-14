@@ -78,7 +78,7 @@ class ReadLaterSidePanelHeaderView : public views::View {
         AddChildView(std::make_unique<views::ImageButton>(base::BindRepeating(
             [](SidePanelUI* side_panel_ui) {
               if (side_panel_ui) {
-                side_panel_ui->Close();
+                side_panel_ui->Close(SidePanelEntry::PanelType::kContent);
               }
             },
             scope.GetBrowserWindowInterface().GetFeatures().side_panel_ui())));

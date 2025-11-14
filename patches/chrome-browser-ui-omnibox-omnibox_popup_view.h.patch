@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/omnibox/omnibox_popup_view.h b/chrome/browser/ui/omnibox/omnibox_popup_view.h
+index c7c8dd1f83c0505afcce63600be909530f1dba08..11a107b580286ddd9b8e03f4aee7f3843d07d3ee 100644
+--- a/chrome/browser/ui/omnibox/omnibox_popup_view.h
++++ b/chrome/browser/ui/omnibox/omnibox_popup_view.h
+@@ -60,6 +60,7 @@ class OmniboxPopupView {
+   virtual raw_ptr<OmniboxPopupViewWebUI> GetOmniboxPopupViewWebUI() = 0;
+ 
+  protected:
++  BRAVE_OMNIBOX_POPUP_VIEW_FRIEND
+   friend class OmniboxResultView;
+   friend class OmniboxSuggestionButtonRowView;
+ 

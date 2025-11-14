@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/editing/commands/clipboard_commands.cc b/third_party/blink/renderer/core/editing/commands/clipboard_commands.cc
-index a5ac9d4a417ac8e75e761c40841f41ab9057c761..7891fcc7661952f6a28a1062511778aaf1306ccf 100644
+index 80c15ef5381aa08c0c6ce3f51534bb04af64775d..49a026a5e00533eed132e71d88f6487a3c1f1483 100644
 --- a/third_party/blink/renderer/core/editing/commands/clipboard_commands.cc
 +++ b/third_party/blink/renderer/core/editing/commands/clipboard_commands.cc
 @@ -353,6 +353,7 @@ bool ClipboardCommands::ExecuteCopy(LocalFrame& frame,

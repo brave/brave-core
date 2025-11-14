@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
+import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.back_press.BackPressManager;
@@ -36,6 +37,7 @@ import org.chromium.chrome.browser.tabmodel.TabCreatorManager;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuBlocker;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
+import org.chromium.chrome.browser.ui.browser_window.ChromeAndroidTask;
 import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.system.StatusBarColorController.StatusBarColorProvider;
@@ -62,6 +64,7 @@ public class FullScreenCustomTabRootUiCoordinator extends BaseCustomTabRootUiCoo
             @NonNull ObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
             @NonNull BrowserControlsManager browserControlsManager,
             @NonNull ActivityWindowAndroid windowAndroid,
+            @NonNull OneshotSupplier<ChromeAndroidTask> chromeAndroidTaskSupplier,
             @NonNull ActivityLifecycleDispatcher activityLifecycleDispatcher,
             @NonNull ObservableSupplier<LayoutManagerImpl> layoutManagerSupplier,
             @NonNull MenuOrKeyboardActionController menuOrKeyboardActionController,
@@ -91,7 +94,8 @@ public class FullScreenCustomTabRootUiCoordinator extends BaseCustomTabRootUiCoo
             @NonNull Runnable openInBrowserRunnable,
             @NonNull EdgeToEdgeManager edgeToEdgeManager,
             @Nullable DesktopWindowStateManager desktopWindowStateManager,
-            @Nullable Supplier<BrowserServicesThemeColorProvider> webAppThemeColorProvider) {
+            @Nullable Supplier<BrowserServicesThemeColorProvider> webAppThemeColorProvider,
+            @Nullable String clientPackageName) {
         super(
                 activity,
                 shareDelegateSupplier,
@@ -103,6 +107,7 @@ public class FullScreenCustomTabRootUiCoordinator extends BaseCustomTabRootUiCoo
                 tabModelSelectorSupplier,
                 browserControlsManager,
                 windowAndroid,
+                chromeAndroidTaskSupplier,
                 activityLifecycleDispatcher,
                 layoutManagerSupplier,
                 menuOrKeyboardActionController,
@@ -131,7 +136,8 @@ public class FullScreenCustomTabRootUiCoordinator extends BaseCustomTabRootUiCoo
                 openInBrowserRunnable,
                 edgeToEdgeManager,
                 desktopWindowStateManager,
-                webAppThemeColorProvider);
+                webAppThemeColorProvider,
+                clientPackageName);
     }
 
     @Override

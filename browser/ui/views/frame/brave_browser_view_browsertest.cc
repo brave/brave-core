@@ -76,8 +76,6 @@ class BraveBrowserViewTest : public InProcessBrowserTest {
     return brave_browser_view()->vertical_tab_strip_host_view_;
   }
 
-  views::View* main_container() { return browser_view()->main_container(); }
-
   views::View* contents_container() {
     return browser_view()->contents_container();
   }
@@ -250,7 +248,6 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
   auto* panel_ui = browser()->GetFeatures().side_panel_ui();
   panel_ui->Toggle();
   views::View* contents_container = browser_view()->contents_container();
-  views::View* main_container = browser_view()->main_container();
   views::View* side_panel = browser_view()->contents_height_side_panel();
   const auto rounded_corners_margin = BraveContentsViewUtil::kMarginThickness;
 
@@ -259,9 +256,9 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
     // with main container's local bounds. As views local bounds' origin is (0,
     // 0), checking child view's margin with child view's bounds works.
     EXPECT_EQ(contents_container->bounds().x() - rounded_corners_margin,
-              main_container->GetLocalBounds().x());
+              browser_view()->GetLocalBounds().x());
     EXPECT_EQ(contents_container->bounds().bottom() + rounded_corners_margin,
-              main_container->GetLocalBounds().bottom());
+              browser_view()->GetLocalBounds().bottom());
     EXPECT_EQ(rounded_corners_margin,
               BraveContentsViewUtil::GetRoundedCornersWebViewMargin(browser()));
     EXPECT_EQ(0, side_panel->GetProperty(views::kMarginsKey)->left());
@@ -275,9 +272,9 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
     // Check contents container doesn't have any margin. So, contents container
     // should have same left & bottom with main container.
     EXPECT_EQ(contents_container->bounds().x(),
-              main_container->GetLocalBounds().x());
+              browser_view()->GetLocalBounds().x());
     EXPECT_EQ(contents_container->bounds().bottom(),
-              main_container->GetLocalBounds().bottom());
+              browser_view()->GetLocalBounds().bottom());
     EXPECT_EQ(0,
               BraveContentsViewUtil::GetRoundedCornersWebViewMargin(browser()));
     EXPECT_EQ(0, side_panel->GetProperty(views::kMarginsKey)->left());
@@ -294,9 +291,9 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
   EXPECT_EQ(rounded_corners_margin,
             BraveContentsViewUtil::GetRoundedCornersWebViewMargin(browser()));
   EXPECT_EQ(contents_container->bounds().x() - rounded_corners_margin,
-            main_container->GetLocalBounds().x());
+            browser_view()->GetLocalBounds().x());
   EXPECT_EQ(contents_container->bounds().bottom() + rounded_corners_margin,
-            main_container->GetLocalBounds().bottom());
+            browser_view()->GetLocalBounds().bottom());
   EXPECT_EQ(0, side_panel->GetProperty(views::kMarginsKey)->left());
   EXPECT_EQ(rounded_corners_margin,
             side_panel->GetProperty(views::kMarginsKey)->bottom());
@@ -312,9 +309,9 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
 
   if (IsRoundedCornersEnabled()) {
     EXPECT_EQ(contents_container->bounds().x() - rounded_corners_margin,
-              main_container->GetLocalBounds().x());
+              browser_view()->GetLocalBounds().x());
     EXPECT_EQ(contents_container->bounds().bottom() + rounded_corners_margin,
-              main_container->GetLocalBounds().bottom());
+              browser_view()->GetLocalBounds().bottom());
     EXPECT_EQ(0, side_panel->GetProperty(views::kMarginsKey)->left());
     EXPECT_EQ(rounded_corners_margin,
               side_panel->GetProperty(views::kMarginsKey)->bottom());
@@ -324,9 +321,9 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
               side_panel->layer()->rounded_corner_radii());
   } else {
     EXPECT_EQ(contents_container->bounds().x(),
-              main_container->GetLocalBounds().x());
+              browser_view()->GetLocalBounds().x());
     EXPECT_EQ(contents_container->bounds().bottom(),
-              main_container->GetLocalBounds().bottom());
+              browser_view()->GetLocalBounds().bottom());
     EXPECT_EQ(0, side_panel->GetProperty(views::kMarginsKey)->left());
     EXPECT_EQ(0, side_panel->GetProperty(views::kMarginsKey)->bottom());
     EXPECT_EQ(0, side_panel->GetProperty(views::kMarginsKey)->right());

@@ -25,7 +25,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.RadioGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -62,6 +61,7 @@ import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider
 import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsVisibilityDelegate;
 import org.chromium.chrome.browser.browser_controls.TopControlsStacker;
 import org.chromium.chrome.browser.browserservices.intents.BrowserServicesIntentDataProvider;
+import org.chromium.chrome.browser.browserservices.ui.controller.trustedwebactivity.ClientPackageNameProvider;
 import org.chromium.chrome.browser.compositor.CompositorViewHolder;
 import org.chromium.chrome.browser.compositor.layouts.LayoutRenderHost;
 import org.chromium.chrome.browser.compositor.layouts.LayoutUpdateHost;
@@ -100,7 +100,7 @@ import org.chromium.chrome.browser.omnibox.LocationBarEmbedderUiOverrides;
 import org.chromium.chrome.browser.omnibox.LocationBarLayout;
 import org.chromium.chrome.browser.omnibox.OverrideUrlLoadingDelegate;
 import org.chromium.chrome.browser.omnibox.UrlBarEditingTextStateProvider;
-import org.chromium.chrome.browser.omnibox.navattach.NavigationAttachmentsCoordinator;
+import org.chromium.chrome.browser.omnibox.fusebox.NavigationAttachmentsCoordinator;
 import org.chromium.chrome.browser.omnibox.status.StatusCoordinator.PageInfoAction;
 import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteDelegate;
 import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteUIContext;
@@ -1000,6 +1000,12 @@ public class BytecodeTest {
                         BrowserServicesThemeColorProvider.class));
         Assert.assertTrue(
                 methodExists(
+                        "org/chromium/chrome/browser/customtabs/BaseCustomTabActivity",
+                        "getClientPackageNameProvider",
+                        MethodModifier.REGULAR,
+                        ClientPackageNameProvider.class));
+        Assert.assertTrue(
+                methodExists(
                         "org/chromium/chrome/browser/ChromeTabbedActivity",
                         "onMenuOrKeyboardAction",
                         MethodModifier.REGULAR,
@@ -1038,7 +1044,7 @@ public class BytecodeTest {
                 methodExists(
                         "org/chromium/chrome/browser/toolbar/adaptive/AdaptiveToolbarStatePredictor", // presubmit: ignore-long-line
                         "isValidSegment",
-                        MethodModifier.REGULAR,
+                        MethodModifier.STATIC,
                         boolean.class,
                         int.class));
         Assert.assertTrue(
@@ -1125,6 +1131,7 @@ public class BytecodeTest {
                         AutocompleteMatch.class,
                         GURL.class,
                         long.class,
+                        boolean.class,
                         boolean.class,
                         boolean.class));
 
@@ -1362,6 +1369,7 @@ public class BytecodeTest {
                         ObservableSupplier.class,
                         OneshotSupplier.class,
                         WindowAndroid.class,
+                        OneshotSupplier.class,
                         Supplier.class,
                         Supplier.class,
                         StatusBarColorController.class,
@@ -1662,7 +1670,8 @@ public class BytecodeTest {
                         BrowserControlsStateProvider.class,
                         boolean.class,
                         PageZoomManager.class,
-                        Function.class));
+                        Function.class,
+                        MultiInstanceManager.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/omnibox/LocationBarMediator",
@@ -1685,8 +1694,9 @@ public class BytecodeTest {
                         ObservableSupplier.class,
                         BrowserControlsStateProvider.class,
                         Supplier.class,
-                        ObservableSupplier.class,
-                        PageZoomIndicatorCoordinator.class));
+                        ObservableSupplierImpl.class,
+                        PageZoomIndicatorCoordinator.class,
+                        MultiInstanceManager.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/AppHooks",
@@ -1752,6 +1762,7 @@ public class BytecodeTest {
                         OneshotSupplier.class,
                         BrowserControlsManager.class,
                         ActivityWindowAndroid.class,
+                        OneshotSupplier.class,
                         ActivityLifecycleDispatcher.class,
                         ObservableSupplier.class,
                         MenuOrKeyboardActionController.class,
@@ -1785,7 +1796,8 @@ public class BytecodeTest {
                         ManualFillingComponentSupplier.class,
                         EdgeToEdgeManager.class,
                         ObservableSupplier.class,
-                        ObservableSupplier.class));
+                        ObservableSupplier.class,
+                        OneshotSupplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/bookmarks/BookmarkToolbar",
@@ -1977,9 +1989,8 @@ public class BytecodeTest {
                 constructorsMatch(
                         "org/chromium/chrome/browser/ui/system/StatusBarColorController", // presubmit: ignore-long-line
                         "org/chromium/chrome/browser/ui/system/BraveStatusBarColorController", // presubmit: ignore-long-line
-                        Window.class,
+                        Activity.class,
                         boolean.class,
-                        Context.class,
                         StatusBarColorProvider.class,
                         ObservableSupplier.class,
                         ActivityLifecycleDispatcher.class,

@@ -1,5 +1,5 @@
 diff --git a/build/config/unsafe_buffers_paths.txt b/build/config/unsafe_buffers_paths.txt
-index 4433777ae40e045da1b9f8747e3fefff67d68ac0..3dc37fc965afe923ea222ca73bb886d0e5be0540 100644
+index 2834dc9501aee63a4e4cdcc1170dcc5676f1dde9..4431b4d7d1936eb49300278f00dcb97e211454ed 100644
 --- a/build/config/unsafe_buffers_paths.txt
 +++ b/build/config/unsafe_buffers_paths.txt
 @@ -32,3 +32,8 @@ $../../
