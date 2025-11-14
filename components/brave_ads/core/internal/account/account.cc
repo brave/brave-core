@@ -222,10 +222,6 @@ void Account::MaybeInitializeUserRewards() {
 
   BLOG(1, "Initialize user rewards");
 
-  // We do not need to destroy the `user_rewards` object when a user resets
-  // Brave Rewards because the associated data and the `Ads` instance will be
-  // destroyed.
-
   if (!HasWallet()) {
     return;
   }
@@ -276,6 +272,7 @@ void Account::OnNotifyDidInitializeAds() {
 
 void Account::OnNotifyPrefDidChange(const std::string& path) {
   if (DoesMatchUserHasJoinedBraveRewardsPrefPath(path)) {
+    // No need to destroy `user_rewards_`; disabling Brave Rewards resets Ads.
     Initialize();
   }
 }
