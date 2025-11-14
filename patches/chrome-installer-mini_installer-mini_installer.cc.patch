@@ -1,43 +1,9 @@
 diff --git a/chrome/installer/mini_installer/mini_installer.cc b/chrome/installer/mini_installer/mini_installer.cc
-index 44f29f2fafda83685479c791da3aa4ddbd4cde73..9aaf5989790538f38516f3e877aeb7fdfc03fdb5 100644
+index 44f29f2fafda83685479c791da3aa4ddbd4cde73..554e28c37ab76013d8c7b55b677ce19ce7e5ce79 100644
 --- a/chrome/installer/mini_installer/mini_installer.cc
 +++ b/chrome/installer/mini_installer/mini_installer.cc
-@@ -149,8 +149,91 @@ void WriteExtraCode1(const Configuration& configuration, DWORD extra_code_1) {
-   }
- }
+@@ -151,6 +151,57 @@ void WriteExtraCode1(const Configuration& configuration, DWORD extra_code_1) {
  
-+// This function sets the flag in registry to indicate that Google Update
-+// should try full installer next time. If the current installer works, this
-+// flag is cleared by setup.exe at the end of install.
-+void SetInstallerFlags(const Configuration& configuration) {
-+  StackString<128> value;
-+
-+  RegKey key;
-+  if (!OpenInstallStateKey(configuration, &key)) {
-+    return;
-+  }
-+
-+  // TODO(grt): Trim legacy modifiers (chrome,chromeframe,apphost,applauncher,
-+  // multi,readymode,stage,migrating,multifail) from the ap value.
-+
-+  LONG ret = key.ReadSZValue(kApRegistryValue, value.get(), value.capacity());
-+
-+  // The conditions below are handling two cases:
-+  // 1. When ap value is present, we want to add the required tag only if it
-+  //    is not present.
-+  // 2. When ap value is missing, we are going to create it with the required
-+  //    tag.
-+  if ((ret == ERROR_SUCCESS) || (ret == ERROR_FILE_NOT_FOUND)) {
-+    if (ret == ERROR_FILE_NOT_FOUND) {
-+      value.clear();
-+    }
-+
-+    if (!StrEndsWith(value.get(), kFullInstallerSuffix) &&
-+        value.append(kFullInstallerSuffix)) {
-+      key.WriteSZValue(kApRegistryValue, value.get());
-+    }
-+  }
-+}
  #endif  // BUILDFLAG(GOOGLE_CHROME_BRANDING)
  
 +// Gets the setup.exe path from Registry by looking at the value of Uninstall
@@ -94,7 +60,7 @@ index 44f29f2fafda83685479c791da3aa4ddbd4cde73..9aaf5989790538f38516f3e877aeb7fd
  // Calls CreateProcess with good default parameters and waits for the process to
  // terminate returning the process exit code. In case of CreateProcess failure,
  // returns a results object with the provided codes as follows:
-@@ -353,16 +436,56 @@ bool ResourceDeleterDelegate::OnResource(const wchar_t* name,
+@@ -353,16 +404,56 @@ bool ResourceDeleterDelegate::OnResource(const wchar_t* name,
  }
  #endif  // defined(COMPONENT_BUILD)
  
@@ -153,7 +119,7 @@ index 44f29f2fafda83685479c791da3aa4ddbd4cde73..9aaf5989790538f38516f3e877aeb7fd
    PathString setup_name;
    MemoryRange setup_range;
    PathString archive_name;
-@@ -370,7 +493,8 @@ ProcessExitResult UnpackBinaryResources(HMODULE module,
+@@ -370,7 +461,8 @@ ProcessExitResult UnpackBinaryResources(HMODULE module,
  
    // Scan through all types of resources looking for the chrome archive (which
    // is expected to be either a B7 chrome.packed.7z or a BN chrome.7z) and
@@ -163,7 +129,7 @@ index 44f29f2fafda83685479c791da3aa4ddbd4cde73..9aaf5989790538f38516f3e877aeb7fd
    for (const auto* type :
         {kLZMAResourceType, kLZCResourceType, kBinResourceType}) {
      DWORD error_code = ERROR_SUCCESS;
-@@ -472,8 +596,17 @@ ProcessExitResult RunSetup(const Configuration& configuration,
+@@ -472,8 +564,17 @@ ProcessExitResult RunSetup(const Configuration& configuration,
                             bool compressed_archive) {
    // Get the path to setup.exe.
    PathString setup_exe;
@@ -183,7 +149,7 @@ index 44f29f2fafda83685479c791da3aa4ddbd4cde73..9aaf5989790538f38516f3e877aeb7fd
    }
  
    // There could be three full paths in the command line for setup.exe (path
-@@ -495,10 +628,20 @@ ProcessExitResult RunSetup(const Configuration& configuration,
+@@ -495,10 +596,20 @@ ProcessExitResult RunSetup(const Configuration& configuration,
      return ProcessExitResult(COMMAND_STRING_OVERFLOW);
    }
  
@@ -204,7 +170,7 @@ index 44f29f2fafda83685479c791da3aa4ddbd4cde73..9aaf5989790538f38516f3e877aeb7fd
    return RunProcessAndWait(setup_exe.get(), cmd_line.get(),
                             RUN_SETUP_FAILED_FILE_NOT_FOUND,
                             RUN_SETUP_FAILED_PATH_NOT_FOUND,
-@@ -714,7 +857,7 @@ ProcessExitResult WMain(HMODULE module) {
+@@ -714,7 +825,7 @@ ProcessExitResult WMain(HMODULE module) {
  
    // Parse configuration from the command line and resources.
    Configuration configuration;
@@ -213,7 +179,7 @@ index 44f29f2fafda83685479c791da3aa4ddbd4cde73..9aaf5989790538f38516f3e877aeb7fd
      return ProcessExitResult(GENERIC_INITIALIZATION_FAILURE, ::GetLastError());
    }
  
-@@ -730,14 +873,41 @@ ProcessExitResult WMain(HMODULE module) {
+@@ -730,14 +841,41 @@ ProcessExitResult WMain(HMODULE module) {
      return exit_code;
    }
  
