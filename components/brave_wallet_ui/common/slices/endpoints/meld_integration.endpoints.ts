@@ -56,6 +56,7 @@ const supportedChains = [
   'CELO',
   'ARBITRUM',
   'AVAXC',
+  'ADA',
 ]
 
 export const meldIntegrationEndpoints = ({

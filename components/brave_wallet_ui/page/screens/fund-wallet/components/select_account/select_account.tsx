@@ -132,6 +132,7 @@ export const SelectAccount = (props: SelectAccountProps) => {
         <Column
           fullWidth={true}
           padding='0px 16px'
+          justifyContent='flex-start'
           height='90vh'
         >
           {selectAccountContent}
