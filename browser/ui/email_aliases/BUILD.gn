@@ -1,0 +1,20 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("email_aliases") {
+  sources = [
+    "email_aliases_controller.cc",
+    "email_aliases_controller.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/email_aliases:service",
+    "//brave/components/resources:strings_grit",
+    "//chrome/browser/ui/views/bubble",
+    "//chrome/browser/ui/views/location_bar",
+    "//components/autofill/content/browser",
+  ]
+}
