@@ -90,6 +90,8 @@ void NEARVerifier::MaybeVerifyConversationEntry(
   state->model_name = model_name;
   state->start_time = base::TimeTicks::Now();
 
+  base::flat_set<std::string> known_log_ids;
+
   for (const auto& event : turn.events.value()) {
     if (!event->is_completion_event()) {
       continue;
@@ -100,10 +102,13 @@ void NEARVerifier::MaybeVerifyConversationEntry(
       continue;
     }
 
-    state->pending_requests++;
+    if (!known_log_ids.insert(*completion_event->log_id).second) {
+      // Duplicate log ID, skip
+      continue;
+    }
 
-    VerifyLogId(verification_states_[turn_uuid].get(),
-                *completion_event->log_id);
+    state->pending_requests++;
+    VerifyLogId(state.get(), *completion_event->log_id);
   }
 
   if (state->pending_requests == 0) {

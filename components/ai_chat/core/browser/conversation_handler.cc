@@ -2176,8 +2176,18 @@ void ConversationHandler::OnAutoScreenshotsTaken(
 void ConversationHandler::OnNEARVerificationComplete(
     const std::string& turn_uuid,
     bool verified) {
+  auto turn_it = std::ranges::find_if(
+      chat_history_.rbegin(), chat_history_.rend(),
+      [&turn_uuid](const auto& turn) { return turn->uuid == turn_uuid; });
+
+  if (turn_it == chat_history_.rend()) {
+    return;
+  }
+
   observers_.Notify(&Observer::OnNEARVerificationUpdate, this, turn_uuid,
                     verified);
+
+  OnHistoryUpdate(turn_it->Clone());
 }
 
 }  // namespace ai_chat
