@@ -212,7 +212,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 -      <cr-icon icon=\\"cr:chevron-right\\" slot=\\"suffix-icon\\"></cr-icon>
 +      <cr-icon icon=\\"window-edit\\" slot=\\"prefix-icon\\"></cr-icon>
      </cr-button>
-     \${this.ntpNextFeaturesEnabled_ ? html\`
+     \${this.ntpNextFeaturesEnabled_ && this.aimPolicyEnabled_ ? html\`
        <hr class=\\"sp-cards-separator\\">
        <div id=\\"tools\\" class=\\"section sp-card\\">
 @@ -107,10 +101,9 @@
