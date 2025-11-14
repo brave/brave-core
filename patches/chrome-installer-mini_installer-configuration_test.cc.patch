@@ -1,0 +1,13 @@
+diff --git a/chrome/installer/mini_installer/configuration_test.cc b/chrome/installer/mini_installer/configuration_test.cc
+index 5b5dc03732d89b493670f8c5b752170ea66aab92..6fd4ee4e19f9d2dd42b14c5fb06eb0bce86d0b9b 100644
+--- a/chrome/installer/mini_installer/configuration_test.cc
++++ b/chrome/installer/mini_installer/configuration_test.cc
+@@ -44,7 +44,7 @@ class ScopedGoogleUpdateIsMachine {
+ class TestConfiguration : public Configuration {
+  public:
+   explicit TestConfiguration(const wchar_t* command_line) {
+-    EXPECT_TRUE(Initialize());
++    EXPECT_TRUE(Initialize(::GetModuleHandle(nullptr)));
+     EXPECT_TRUE(ParseCommandLine(command_line));
+   }
+ 
