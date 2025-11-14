@@ -18,11 +18,7 @@
 #include "base/test/task_environment.h"
 #include "base/time/time.h"
 #include "base/values.h"
-#include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
-#include "brave/components/ai_chat/core/common/pref_names.h"
-#include "components/os_crypt/sync/os_crypt_mocker.h"
-#include "components/prefs/testing_pref_service.h"
 #include "net/http/http_status_code.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
@@ -86,13 +82,7 @@ mojom::ConversationTurnPtr CreateTurnWithCompletionEvents(
 class AIChatNEARVerifierTest : public testing::Test {
  public:
   void SetUp() override {
-    OSCryptMocker::SetUp();
-    prefs::RegisterProfilePrefs(pref_service_.registry());
-    prefs::RegisterProfilePrefsForMigration(pref_service_.registry());
-    ModelService::RegisterProfilePrefs(pref_service_.registry());
-
-    model_service_ = std::make_unique<ModelService>(&pref_service_);
-    model_service_->AddModelForTesting(CreateNEARTestModel());
+    test_model_ = CreateNEARTestModel();
 
     test_url_loader_factory_.SetInterceptor(base::BindRepeating(
         &AIChatNEARVerifierTest::HandleRequest, base::Unretained(this)));
@@ -102,15 +92,14 @@ class AIChatNEARVerifierTest : public testing::Test {
             &test_url_loader_factory_);
 
     verifier_ = std::make_unique<NEARVerifier>(
-        shared_url_loader_factory_, model_service_.get(),
+        shared_url_loader_factory_,
+        base::BindRepeating(&AIChatNEARVerifierTest::GetModel,
+                            base::Unretained(this)),
         base::BindRepeating(&AIChatNEARVerifierTest::OnVerificationComplete,
                             base::Unretained(this)));
   }
 
-  void TearDown() override {
-    verifier_.reset();
-    OSCryptMocker::TearDown();
-  }
+  void TearDown() override { verifier_.reset(); }
 
  protected:
   void SetVerificationStatus(const std::string& log_id,
@@ -118,6 +107,13 @@ class AIChatNEARVerifierTest : public testing::Test {
     auto path = base::StrCat(
         {"/v1/near-result-verification/", kTestModelName, "/", log_id});
     pending_responses_[path] = verified;
+  }
+
+  const mojom::Model* GetModel(std::string_view model_key) {
+    if (model_key == kTestModelKey) {
+      return test_model_.get();
+    }
+    return nullptr;
   }
 
   void HandleRequest(const network::ResourceRequest& request) {
@@ -160,8 +156,7 @@ class AIChatNEARVerifierTest : public testing::Test {
 
   base::test::TaskEnvironment task_environment_{
       base::test::TaskEnvironment::TimeSource::MOCK_TIME};
-  TestingPrefServiceSimple pref_service_;
-  std::unique_ptr<ModelService> model_service_;
+  mojom::ModelPtr test_model_;
   network::TestURLLoaderFactory test_url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   std::unique_ptr<NEARVerifier> verifier_;

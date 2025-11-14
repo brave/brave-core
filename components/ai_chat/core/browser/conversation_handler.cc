@@ -128,7 +128,8 @@ ConversationHandler::ConversationHandler(
       metadata_(conversation),
       near_verifier_(
           url_loader_factory,
-          model_service,
+          base::BindRepeating(&ModelService::GetModel,
+                              base::Unretained(model_service)),
           base::BindRepeating(&ConversationHandler::OnNEARVerificationComplete,
                               base::Unretained(this))),
       ai_chat_service_(ai_chat_service),

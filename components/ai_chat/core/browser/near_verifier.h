@@ -11,7 +11,6 @@
 
 #include "base/containers/flat_map.h"
 #include "base/functional/callback.h"
-#include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
@@ -24,17 +23,17 @@ class SharedURLLoaderFactory;
 
 namespace ai_chat {
 
-class ModelService;
-
 class NEARVerifier {
  public:
+  using GetModelCallback =
+      base::RepeatingCallback<const mojom::Model*(std::string_view model_key)>;
   using VerificationCompletionCallback =
       base::RepeatingCallback<void(const std::string& turn_uuid,
                                    bool verified)>;
 
   NEARVerifier(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-      ModelService* model_service,
+      GetModelCallback get_model_callback,
       VerificationCompletionCallback completion_callback);
 
   NEARVerifier(const NEARVerifier&) = delete;
@@ -69,7 +68,7 @@ class NEARVerifier {
   void CompleteVerification(const std::string& turn_uuid, bool verified);
 
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
-  raw_ptr<ModelService> model_service_;
+  GetModelCallback get_model_callback_;
   VerificationCompletionCallback completion_callback_;
 
   std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;

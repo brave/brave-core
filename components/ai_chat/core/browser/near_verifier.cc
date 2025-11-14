@@ -11,7 +11,6 @@
 #include "base/functional/bind.h"
 #include "base/strings/strcat.h"
 #include "base/time/time.h"
-#include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
@@ -56,10 +55,10 @@ NEARVerifier::VerificationState::~VerificationState() = default;
 
 NEARVerifier::NEARVerifier(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    ModelService* model_service,
+    GetModelCallback get_model_callback,
     VerificationCompletionCallback completion_callback)
     : url_loader_factory_(url_loader_factory),
-      model_service_(model_service),
+      get_model_callback_(std::move(get_model_callback)),
       completion_callback_(std::move(completion_callback)) {}
 
 NEARVerifier::~NEARVerifier() = default;
@@ -71,7 +70,7 @@ void NEARVerifier::MaybeVerifyConversationEntry(
     return;
   }
 
-  const auto* model = model_service_->GetModel(*turn.model_key);
+  const auto* model = get_model_callback_.Run(*turn.model_key);
   if (!model || !model->is_near_model) {
     return;
   }
