@@ -5,11 +5,25 @@
 
 #include "chrome/installer/mini_installer/configuration.h"
 
+#include "build/branding_buildflags.h"
 #include "chrome/installer/mini_installer/appid.h"
 
 #define Initialize() Initialize(HMODULE module)
+
 #define kAppGuid kAppGuid; previous_version_ = nullptr
+
+#if defined(OFFICIAL_BUILD) && !BUILDFLAG(GOOGLE_CHROME_BRANDING)
+#define BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING() (1)
+#define NEED_TO_UNDEF_BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING
+#endif
+
 #include <chrome/installer/mini_installer/configuration.cc>
+
+#if defined(NEED_TO_UNDEF_BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING)
+#undef BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING
+#undef NEED_TO_UNDEF_BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING
+#endif
+
 #undef kAppGuid
 #undef Initialize
 
