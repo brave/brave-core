@@ -42,15 +42,35 @@ mojom::CardanoKeyId CardanoDefaultDelegationKeyId() {
   return mojom::CardanoKeyId(mojom::CardanoKeyRole::kStaking, 0);
 }
 
-CardanoAddress MakeCaranoAddressFromKeys(
+std::optional<CardanoAddress> MakeCaranoAddressFromKeys(
     bool is_testnet,
     const HDKeyEd25519Slip23& payment_hd_key,
     const HDKeyEd25519Slip23& delegation_hd_key) {
-  return CardanoAddress::FromParts(
-      is_testnet,
-      Blake2bHash<kPaymentKeyHashLength>({payment_hd_key.GetPublicKeyAsSpan()}),
-      Blake2bHash<kStakeKeyHashLength>(
-          {delegation_hd_key.GetPublicKeyAsSpan()}));
+  std::array<uint8_t, kCardanoKeyHashLength * 2> payload = {};
+  auto [payment_hash, delegation_hash] =
+      base::span(payload).split_at<kCardanoKeyHashLength>();
+  Blake2bHash({payment_hd_key.GetPublicKeyAsSpan()}, payment_hash);
+  Blake2bHash({delegation_hd_key.GetPublicKeyAsSpan()}, delegation_hash);
+
+  return CardanoAddress::FromPayload(
+      CardanoAddress::AddressType::kPaymentKeyHashStakeKeyHash,
+      is_testnet ? CardanoAddress::NetworkTag::kTestnets
+                 : CardanoAddress::NetworkTag::kMainnet,
+      payload);
+}
+
+std::optional<CardanoAddress> MakeStakeCaranoAddressFromKey(
+    bool is_testnet,
+    const HDKeyEd25519Slip23& delegation_hd_key) {
+  std::array<uint8_t, kCardanoKeyHashLength> payload = {};
+  auto delegation_hash = base::span(payload);
+  Blake2bHash({delegation_hd_key.GetPublicKeyAsSpan()}, delegation_hash);
+
+  return CardanoAddress::FromPayload(
+      CardanoAddress::AddressType::kNoPaymentStakeHash,
+      is_testnet ? CardanoAddress::NetworkTag::kTestnets
+                 : CardanoAddress::NetworkTag::kMainnet,
+      payload);
 }
 
 }  // namespace
@@ -77,11 +97,24 @@ mojom::CardanoAddressPtr CardanoHDKeyring::GetAddress(
     return nullptr;
   }
 
-  return mojom::CardanoAddress::New(
-      MakeCaranoAddressFromKeys(IsTestnet(), *payment_hd_key,
-                                *delegation_hd_key)
-          .ToString(),
-      payment_key_id.Clone());
+  auto address = MakeCaranoAddressFromKeys(IsTestnet(), *payment_hd_key,
+                                           *delegation_hd_key);
+  if (!address) {
+    return nullptr;
+  }
+
+  return mojom::CardanoAddress::New(address->ToString(),
+                                    payment_key_id.Clone());
+}
+
+std::optional<CardanoAddress> CardanoHDKeyring::GetStakeAddress(
+    uint32_t account) {
+  auto delegation_hd_key = DeriveKey(account, CardanoDefaultDelegationKeyId());
+  if (!delegation_hd_key) {
+    return std::nullopt;
+  }
+
+  return MakeStakeCaranoAddressFromKey(IsTestnet(), *delegation_hd_key);
 }
 
 std::optional<std::string> CardanoHDKeyring::AddNewHDAccount(uint32_t index) {

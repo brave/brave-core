@@ -2880,6 +2880,18 @@ mojom::CardanoAddressPtr KeyringService::GetCardanoAddress(
                                      *payment_key_id);
 }
 
+std::optional<CardanoAddress> KeyringService::GetCardanoStakeAddress(
+    const mojom::AccountIdPtr& account_id) {
+  CHECK(IsCardanoAccount(account_id));
+
+  auto* cardano_keyring = GetKeyring<CardanoHDKeyring>(account_id->keyring_id);
+  if (!cardano_keyring) {
+    return {};
+  }
+
+  return cardano_keyring->GetStakeAddress(account_id->account_index);
+}
+
 std::optional<CardanoSignMessageResult>
 KeyringService::SignMessageByCardanoKeyring(
     const mojom::AccountIdPtr& account_id,

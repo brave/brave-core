@@ -327,6 +327,13 @@ mojom::CardanoAddressPtr CardanoWalletService::GetChangeAddress(
       mojom::CardanoKeyId::New(mojom::CardanoKeyRole::kExternal, 0));
 }
 
+std::optional<CardanoAddress> CardanoWalletService::GetStakeAddress(
+    const mojom::AccountIdPtr& account_id) {
+  CHECK(IsCardanoAccount(account_id));
+
+  return keyring_service().GetCardanoStakeAddress(account_id);
+}
+
 cardano_rpc::CardanoRpc* CardanoWalletService::GetCardanoRpc(
     const std::string& chain_id) {
   if (chain_id == mojom::kCardanoMainnet) {
