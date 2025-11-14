@@ -24,11 +24,11 @@ constexpr std::string_view kTokenIssuersAsJson = R"JSON(
       "name": "confirmations",
       "publicKeys": [
         {
-          "publicKey": "QnShwT9vRebch3WDu28nqlTaNCU5MaOF1n4VV4Q3K1g=",
+          "publicKey": "OqhZpUC8B15u+Gc11rQYRl8O3zOSAUIEC2JuDHI32TM=",
           "associatedValue": "0"
         },
         {
-          "publicKey": "bCKwI6tx5LWrZKxWbW5CxaVIGe2N0qGYLfFE+38urCg=",
+          "publicKey": "QnShwT9vRebch3WDu28nqlTaNCU5MaOF1n4VV4Q3K1g=",
           "associatedValue": "0"
         }
       ]
@@ -41,7 +41,7 @@ constexpr std::string_view kTokenIssuersAsJson = R"JSON(
           "associatedValue": "0"
         },
         {
-          "publicKey": "bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=",
+          "publicKey": "OqhZpUC8B15u+Gc11rQYRl8O3zOSAUIEC2JuDHI32TM=",
           "associatedValue": "0.1"
         }
       ]

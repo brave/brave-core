@@ -39,7 +39,7 @@ TEST_F(BraveAdsIssuersUrlRequestJsonReaderUtilTest, ParseTokenIssuers) {
           "name": "confirmations",
           "publicKeys": [
             {
-              "publicKey": "bCKwI6tx5LWrZKxWbW5CxaVIGe2N0qGYLfFE+38urCg=",
+              "publicKey": "OqhZpUC8B15u+Gc11rQYRl8O3zOSAUIEC2JuDHI32TM=",
               "associatedValue": ""
             },
             {
@@ -56,7 +56,7 @@ TEST_F(BraveAdsIssuersUrlRequestJsonReaderUtilTest, ParseTokenIssuers) {
               "associatedValue": "0.0"
             },
             {
-              "publicKey": "bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=",
+              "publicKey": "OqhZpUC8B15u+Gc11rQYRl8O3zOSAUIEC2JuDHI32TM=",
               "associatedValue": "0.1"
             }
           ]

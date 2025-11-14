@@ -54,7 +54,7 @@ TEST_F(BraveAdsConfirmationPayloadJsonWriterTest,
                 R"JSON(
                     {
                       "blindedPaymentTokens": [
-                        "Ev5JE4/9TZI/5TqyN9JWfJ1To0HBwQw2rWeAPcdjX3Q="
+                        "+qJiMi6k0hRzRAEN239nLthLqrNm53O78x/PV8I/JS0="
                       ],
                       "buildChannel": "release",
                       "catalog": [
@@ -66,7 +66,7 @@ TEST_F(BraveAdsConfirmationPayloadJsonWriterTest,
                       "creativeInstanceId": "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
                       "diagnosticId": "c1298fde-7fdb-401f-a3ce-0b58fe86e6e2",
                       "platform": "windows",
-                      "publicKey": "RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnDDk=",
+                      "publicKey": "OqhZpUC8B15u+Gc11rQYRl8O3zOSAUIEC2JuDHI32TM=",
                       "rotatingHash": "jBdiJH7Hu3wj31WWNLjKV5nVxFxWSDWkYh5zXCS3rXY=",
                       "segment": "untargeted",
                       "studies": [],

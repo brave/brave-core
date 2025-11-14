@@ -22,14 +22,14 @@ constexpr std::string_view kConfirmationTokensAsJson =
     R"JSON(
         [
           {
-            "public_key": "RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnDDk=",
-            "signature": "+yxJmIDobOZ5DBncIVuzjQEZfIa0+UPrSQhzA5pwEAL9qC4UW7A1H35nKAhVLehJlXnnfMVKV02StVO3fBU5CQ==",
-            "unblinded_token": "PLowz2WF2eGD5zfwZjk9p76HXBLDKMq/3EAZHeG/fE2XGQ48jyte+Ve50ZlasOuYL5mwA8CU2aFMlJrt3DDgC3B1+VD/uyHPfa/+bwYRrpVH5YwNSDEydVx8S4r+BYVY"
+            "public_key": "OqhZpUC8B15u+Gc11rQYRl8O3zOSAUIEC2JuDHI32TM=",
+            "signature": "pWHhVf6jDdMbt2tKKk3E0JJAB7J5lGnJej/Vi9/UgQpdqw9kKBgvmj4ke0R2MP2n2ynhRjM1sRVZiez0G2hpCA==",
+            "unblinded_token": "/mfTAAjHrWmAlLiEktbqNS/dxoMVdnz1esoVplQUs7yG/apAq2K6OeST6lBTKFJmOq7rV8QbY/DF2HFRMcz/JTrpqSWv/sNVO/Pi8nHDyl3CET+S2CKkMmYlXW3DgqxW"
           },
           {
-            "public_key": "RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnDDk=",
-            "signature": "WeBTGGAvueivHOo33UKGTgDRw7fF/Hp9+tNZYDlUjc9CIKt/+ksh4X+mVxSMXc2E1chUWqUDME7DFFuDhasmCg==",
-            "unblinded_token": "hfrMEltWLuzbKQ02Qixh5C/DWiJbdOoaGaidKZ7Mv+cRq5fyxJqemE/MPlARPhl6NgXPHUeyaxzd6/Lk6YHlfXbBA023DYvGMHoKm15NP/nWnZ1V3iLkgOOHZuk80Z4K"
+            "public_key": "OqhZpUC8B15u+Gc11rQYRl8O3zOSAUIEC2JuDHI32TM=",
+            "signature": "4gR1GFr60vt8qJhZtuKHwJsysnH42dqD6lCt9f12krhXnAPKxZwwQXM583bH38vBooEG5sKkRaPPQltP5/c5AQ==",
+            "unblinded_token": "8o+uKml91AthZzZgdH0iVGtZHfK2lAmPFdlhfF8rXnF67OtwnzHntFOimAmE73L7d9zh2sl0TJMv0mYwFf3zfsLb7m0IE1e3UqGPVaKP3B+rLmCjbSau+mfzjqQ8OQMS"
           }
         ])JSON";
 
@@ -67,6 +67,8 @@ TEST_F(BraveAdsConfirmationTokenValueUtilTest, ConfirmationTokensFromValue) {
       ConfirmationTokensFromValue(list);
 
   // Assert
+  const ConfirmationTokenList expected_confirmation_tokens =
+      test::BuildConfirmationTokens(/*count=*/2);
   EXPECT_EQ(test::BuildConfirmationTokens(/*count=*/2), confirmation_tokens);
 }
 

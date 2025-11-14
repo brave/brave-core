@@ -16,6 +16,10 @@ class ConfirmationTokens;
 
 namespace test {
 
+// Call this function to refill confirmation tokens for testing purposes with
+// random unblinded tokens.
+ConfirmationTokenList RefillRandomConfirmationTokens(size_t count);
+
 // Call this function to refill confirmation tokens for testing purposes if
 // code paths call `Confirmations::Confirm`, `MaybeGetConfirmationToken`, or
 // `BuildReward`. If code paths call `RefillConfirmationTokens::MaybeRefill`,

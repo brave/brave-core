@@ -29,7 +29,7 @@ PaymentTokenInfo BuildPaymentToken(const std::string& payment_token_base64) {
   CHECK(payment_token.unblinded_token.has_value());
 
   payment_token.public_key =
-      cbr::PublicKey("RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnDDk=");
+      cbr::PublicKey("OqhZpUC8B15u+Gc11rQYRl8O3zOSAUIEC2JuDHI32TM=");
   CHECK(payment_token.public_key.has_value());
 
   payment_token.confirmation_type = mojom::ConfirmationType::kViewedImpression;

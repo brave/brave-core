@@ -6,6 +6,9 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_CHALLENGE_BYPASS_RISTRETTO_TOKEN_PREIMAGE_TEST_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_CHALLENGE_BYPASS_RISTRETTO_TOKEN_PREIMAGE_TEST_UTIL_H_
 
+#include <string>
+#include <vector>
+
 namespace brave_ads::cbr {
 
 class TokenPreimage;
@@ -14,6 +17,8 @@ namespace test {
 
 TokenPreimage GetTokenPreimage();
 TokenPreimage GetInvalidTokenPreimage();
+
+const std::vector<std::string>& GetTokenPreimages();
 
 }  // namespace test
 
