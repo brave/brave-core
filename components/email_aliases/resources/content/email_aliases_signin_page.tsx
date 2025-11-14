@@ -58,7 +58,7 @@ const BeforeSendingEmailForm = ({
     try {
       await emailAliasesService.requestAuthentication(email)
     } catch (errorMessage) {
-      setErrorMessage(errorMessage.toString())
+      setErrorMessage(errorMessage as string)
     }
   }
 
