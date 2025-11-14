@@ -18,45 +18,48 @@ import org.chromium.ui.base.WindowAndroid;
 import java.util.function.Supplier;
 
 /**
- * Brave extension for {@link AppMenuHandlerImpl}.
- * See {@code BraveAppMenuHandlerImplClassAdapter} for bytecode manipulation logic.
- * See {@code BytecodeTest} for bytecode related tests.
+ * Brave extension for {@link AppMenuHandlerImpl}. See {@code BraveAppMenuHandlerImplClassAdapter}
+ * for bytecode manipulation logic. See {@code BytecodeTest} for bytecode related tests.
  */
 @NullMarked
 class BraveAppMenuHandlerImpl extends AppMenuHandlerImpl {
-   /** Will be deleted in bytecode, value from the parent class will be used instead. */
-   private @Nullable AppMenu mAppMenu;
-   /** Will be deleted in bytecode, value from the parent class will be used instead. */
-   private @Nullable AppMenuDragHelper mAppMenuDragHelper;
+    /** Will be deleted in bytecode, value from the parent class will be used instead. */
+    private @Nullable AppMenu mAppMenu;
 
-   public BraveAppMenuHandlerImpl(Context context,
-                                  AppMenuPropertiesDelegate delegate,
-                                  AppMenuDelegate appMenuDelegate,
-                                  View decorView,
-                                  ActivityLifecycleDispatcher activityLifecycleDispatcher,
-                                  View hardwareButtonAnchorView, Supplier<Rect> appRect,
-                                  WindowAndroid windowAndroid,
-                                  BrowserControlsStateProvider browserControlsStateProvider) {
-      super(context,
-              delegate,
-              appMenuDelegate,
-              decorView,
-              activityLifecycleDispatcher,
-              hardwareButtonAnchorView,
-              appRect,
-              windowAndroid,
-              browserControlsStateProvider);
-   }
+    /** Will be deleted in bytecode, value from the parent class will be used instead. */
+    private @Nullable AppMenuDragHelper mAppMenuDragHelper;
 
-   @Override
-   boolean showAppMenu(@Nullable View anchorView, boolean startDragging) {
-      final boolean show = super.showAppMenu(anchorView, startDragging);
-      if (show) {
-         assert mAppMenuDragHelper != null;
-         mAppMenuDragHelper.finishDragging();
-         assert mAppMenu != null;
-         mAppMenu.getListView().scrollTo(0, 0);
-      }
-      return show;
-   }
+    public BraveAppMenuHandlerImpl(
+            Context context,
+            AppMenuPropertiesDelegate delegate,
+            AppMenuDelegate appMenuDelegate,
+            View decorView,
+            ActivityLifecycleDispatcher activityLifecycleDispatcher,
+            View hardwareButtonAnchorView,
+            Supplier<Rect> appRect,
+            WindowAndroid windowAndroid,
+            BrowserControlsStateProvider browserControlsStateProvider) {
+        super(
+                context,
+                delegate,
+                appMenuDelegate,
+                decorView,
+                activityLifecycleDispatcher,
+                hardwareButtonAnchorView,
+                appRect,
+                windowAndroid,
+                browserControlsStateProvider);
+    }
+
+    @Override
+    boolean showAppMenu(@Nullable View anchorView, boolean startDragging) {
+        final boolean show = super.showAppMenu(anchorView, startDragging);
+        if (show) {
+            assert mAppMenuDragHelper != null;
+            mAppMenuDragHelper.finishDragging();
+            assert mAppMenu != null;
+            mAppMenu.getListView().scrollTo(0, 0);
+        }
+        return show;
+    }
 }

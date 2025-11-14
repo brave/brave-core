@@ -8,9 +8,9 @@ package org.brave.bytecode;
 import org.objectweb.asm.ClassVisitor;
 
 public class BraveAppMenuHandlerImplClassAdapter extends BraveClassVisitor {
-    static String sAppMenuHandlerImpl =
-            "org/chromium/chrome/browser/ui/appmenu/AppMenuHandlerImpl";
-    static String sBraveAppMenuHandlerImpl = "org/chromium/chrome/browser/ui/appmenu/BraveAppMenuHandlerImpl";
+    static String sAppMenuHandlerImpl = "org/chromium/chrome/browser/ui/appmenu/AppMenuHandlerImpl";
+    static String sBraveAppMenuHandlerImpl =
+            "org/chromium/chrome/browser/ui/appmenu/BraveAppMenuHandlerImpl";
 
     public BraveAppMenuHandlerImplClassAdapter(ClassVisitor visitor) {
         super(visitor);
