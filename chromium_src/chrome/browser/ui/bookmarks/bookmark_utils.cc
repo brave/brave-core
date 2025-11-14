@@ -5,11 +5,12 @@
 
 #include "chrome/browser/ui/bookmarks/bookmark_utils.h"
 
+#include "brave/browser/resources/bookmark_icon/grit/bookmark_icon_resources.h"
 #include "brave/browser/ui/bookmark/bookmark_helper.h"
+#include "brave/browser/ui/brave_ui_features.h"
 #include "brave/components/constants/pref_names.h"
 #include "build/build_config.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
-#include "chrome/grit/theme_resources.h"
 #include "components/bookmarks/common/bookmark_pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
@@ -44,16 +45,15 @@ void BraveToggleBookmarkBarState(content::BrowserContext* browser_context) {
 #define ShouldShowAppsShortcutInBookmarkBar \
   ShouldShowAppsShortcutInBookmarkBar_Unused
 
+#if defined(TOOLKIT_VIEWS)
+#define GetBookmarkFolderIcon GetBookmarkFolderIcon_UnUsed
+#endif
+
 #define ToggleBookmarkBarWhenVisible                                       \
   ToggleBookmarkBarWhenVisible(content::BrowserContext* browser_context) { \
     BraveToggleBookmarkBarState(browser_context);                          \
   }                                                                        \
   void ToggleBookmarkBarWhenVisible_ChromiumImpl
-
-#if defined(TOOLKIT_VIEWS)
-// Override folder icon to use a fixed 20px size similar to saved groups.
-#define GetBookmarkFolderIcon GetBookmarkFolderIcon_ChromiumImpl
-#endif  // defined(TOOLKIT_VIEWS)
 
 #include <chrome/browser/ui/bookmarks/bookmark_utils.cc>
 
@@ -64,6 +64,10 @@ void BraveToggleBookmarkBarState(content::BrowserContext* browser_context) {
 #undef ToggleBookmarkBarWhenVisible
 #undef IsAppsShortcutEnabled
 #undef ShouldShowAppsShortcutInBookmarkBar
+
+#if defined(TOOLKIT_VIEWS)
+#undef GetBookmarkFolderIcon
+#endif
 
 namespace chrome {
 
@@ -76,15 +80,47 @@ bool ShouldShowAppsShortcutInBookmarkBar(Profile* profile) {
 }
 
 #if defined(TOOLKIT_VIEWS)
-// Brave override: return folder icons at 20px like the saved groups icon.
+
+ui::ImageModel GetFilledBookmarkFolderIcon(BookmarkFolderIconType icon_type,
+                                           ui::ColorVariant color) {
+  int default_id = IDR_BRAVE_BOOKMARK_FOLDER_CLOSED_LIGHT;
+
+  const auto generator = [](int default_id, BookmarkFolderIconType icon_type,
+                            ui::ColorVariant color,
+                            const ui::ColorProvider* color_provider) {
+    gfx::ImageSkia folder;
+    SkColor sk_color = color.ResolveToSkColor(color_provider);
+
+    const int resource_id = color_utils::IsDark(sk_color)
+                                ? IDR_BRAVE_BOOKMARK_FOLDER_CLOSED_LIGHT
+                                : IDR_BRAVE_BOOKMARK_FOLDER_CLOSED_DARK;
+    folder = *ui::ResourceBundle::GetSharedInstance()
+                  .GetNativeImageNamed(resource_id)
+                  .ToImageSkia();
+    return gfx::ImageSkia(std::make_unique<RTLFlipSource>(folder),
+                          folder.size());
+  };
+  const gfx::Size size =
+      ui::ResourceBundle::GetSharedInstance().GetImageNamed(default_id).Size();
+  return ui::ImageModel::FromImageGenerator(
+      base::BindRepeating(generator, default_id, icon_type, std::move(color)),
+      size);
+}
+
 ui::ImageModel GetBookmarkFolderIcon(BookmarkFolderIconType icon_type,
                                      ui::ColorVariant color) {
+  // If the flag is enabled, use the old "filled" bookmark icon.
+  if (base::FeatureList::IsEnabled(features::kBraveFilledBookmarkFolderIcon)) {
+    return GetFilledBookmarkFolderIcon(icon_type, color);
+  }
+
   const gfx::VectorIcon* id = icon_type == BookmarkFolderIconType::kManaged
                                   ? &vector_icons::kFolderManagedRefreshIcon
                                   : &vector_icons::kFolderChromeRefreshIcon;
   // Use toolbar icon color for visual consistency with other toolbar icons.
   return ui::ImageModel::FromVectorIcon(*id, kColorToolbarButtonIcon, 20);
 }
+
 #endif  // defined(TOOLKIT_VIEWS)
 
 }  // namespace chrome

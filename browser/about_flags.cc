@@ -734,6 +734,14 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           FEATURE_VALUE_TYPE(features::kBraveNtpSearchWidget),                 \
       },                                                                       \
       {                                                                        \
+          "brave-filled-bookmark-folder-icon",                                 \
+          "Use filled bookmark folder icon",                                   \
+          "Uses the legacy filled bookmark folder icon instead of the "        \
+          "default outlined icon",                                             \
+          kOsDesktop,                                                          \
+          FEATURE_VALUE_TYPE(features::kBraveFilledBookmarkFolderIcon),        \
+      },                                                                       \
+      {                                                                        \
           "brave-ntp-refresh-enabled",                                         \
           "New Tab Page refresh",                                              \
           "Enables the refreshed version of the New Tab Page",                 \
