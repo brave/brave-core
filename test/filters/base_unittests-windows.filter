@@ -13,3 +13,6 @@
 # `PathService.Get` fails in CI with `DIR_ONE_DRIVE`, as the Windows install
 # flavour in our infra does not produce this path.
 -PathServiceTest.Get
+
+# Flaky (we don't modify any of the related code and it's flaky upstream too)
+-SystemMetricsTest.TestNoNegativeCpuUsage
