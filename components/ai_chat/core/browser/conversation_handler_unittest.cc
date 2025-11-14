@@ -306,7 +306,7 @@ class ConversationHandlerUnitTest : public testing::Test {
           base::Time::Now(), std::nullopt /* edits */,
           std::nullopt /* uploaed_images */, nullptr /* skill */,
           entries[i].second /* from_brave_search_SERP */,
-          std::nullopt /* model_key */);
+          std::nullopt /* model_key */, std::nullopt /* is_near_verified */);
       expected_history.push_back(entry.Clone());
       history.push_back(std::move(entry));
     }

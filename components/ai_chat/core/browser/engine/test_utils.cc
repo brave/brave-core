@@ -21,7 +21,7 @@ std::vector<mojom::ConversationTurnPtr> GetHistoryWithModifiedReply() {
       std::nullopt /* selected_text */, std::nullopt /* events */,
       base::Time::Now(), std::nullopt /* edits */,
       std::nullopt /* uploaded_images */, nullptr /* skill */, false,
-      std::nullopt /* model_key */));
+      std::nullopt /* model_key */, std::nullopt /* is_near_verified */));
 
   std::vector<mojom::ConversationEntryEventPtr> events;
   auto search_event = mojom::ConversationEntryEvent::NewSearchStatusEvent(

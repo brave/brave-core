@@ -386,12 +386,13 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
       "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       "Which show is this catchphrase from?", std::nullopt /* prompt */,
       "I have spoken.", std::nullopt, base::Time::Now(), std::nullopt,
-      std::nullopt, nullptr /* skill */, false, std::nullopt /* model_key */));
+      std::nullopt, nullptr /* skill */, false, std::nullopt /* model_key */,
+      std::nullopt /* is_near_verified */));
   history.push_back(mojom::ConversationTurn::New(
       "turn-2", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
       "The Mandalorian.", std::nullopt /* prompt */, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt /* model_key */));
+      std::nullopt /* model_key */, std::nullopt /* is_near_verified */));
   history.push_back(mojom::ConversationTurn::New(
       "turn-3", mojom::CharacterType::HUMAN, mojom::ActionType::RESPONSE,
       "Is it related to a broader series?", std::nullopt /* prompt */,
@@ -775,14 +776,14 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
         "First I'll look up the page...", std::nullopt /* prompt */,
         std::nullopt, std::move(response_events), base::Time::Now(),
         std::nullopt, std::nullopt, nullptr /* skill */, false,
-        std::nullopt /* model_key */));
+        std::nullopt /* model_key */, std::nullopt /* is_near_verified */));
     history.push_back(mojom::ConversationTurn::New(
         "turn-" + base::NumberToString(i * 3 + 2),
         mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
         "The page has some great content", std::nullopt /* prompt */,
         std::nullopt, std::nullopt, base::Time::Now(), std::nullopt,
-        std::nullopt, nullptr /* skill */, false,
-        std::nullopt /* model_key */));
+        std::nullopt, nullptr /* skill */, false, std::nullopt /* model_key */,
+        std::nullopt /* is_near_verified */));
   }
 
   std::string expected_events = R"([
@@ -1178,7 +1179,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_UploadImage) {
       EngineConsumer::GenerationResultData(
           mojom::ConversationEntryEvent::NewCompletionEvent(
               mojom::CompletionEvent::New(kAssistantResponse, std::nullopt)),
-          std::nullopt /* model_key */));
+          std::nullopt /* model_key */, std::nullopt /* is_near_verified */));
   testing::Mock::VerifyAndClearExpectations(mock_api_client);
 }
 
@@ -3409,7 +3410,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
       std::nullopt /* selected_text */, std::nullopt /* events */,
       base::Time::Now(), std::nullopt /* edits */,
       std::nullopt /* uploaded_files */, std::move(skill_entry), false,
-      std::nullopt /* model_key */));
+      std::nullopt /* model_key */, std::nullopt /* is_near_verified */));
 
   MockConversationAPIClient* mock_client = GetMockConversationAPIClient();
 

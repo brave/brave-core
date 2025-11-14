@@ -167,7 +167,7 @@ std::vector<mojom::ConversationTurnPtr> CreateSampleChatHistory(
         std::nullopt /* prompt */, std::nullopt, std::nullopt,
         now + base::Seconds(i * 60) + base::Hours(future_hours), std::nullopt,
         std::move(uploaded_files), nullptr /* skill */, false,
-        std::nullopt /* model_key */));
+        std::nullopt /* model_key */, std::nullopt /* is_near_verified */));
     // response
     std::vector<mojom::ConversationEntryEventPtr> events;
     events.emplace_back(mojom::ConversationEntryEvent::NewCompletionEvent(
