@@ -17,6 +17,10 @@
 #include "brave/browser/ui/views/speedreader/reader_mode_toolbar_view.h"
 #endif
 
+namespace gfx {
+class RoundedCornersF;
+}  // namespace gfx
+
 class BraveContentsContainerView :
 #if BUILDFLAG(ENABLE_SPEEDREADER)
     public ReaderModeToolbarView::Delegate,
@@ -51,7 +55,7 @@ class BraveContentsContainerView :
   FRIEND_TEST_ALL_PREFIXES(SideBySideEnabledBrowserTest,
                            BraveMultiContentsViewTest);
 
-  float GetCornerRadius(bool for_border) const;
+  gfx::RoundedCornersF GetCornerRadius(bool for_border) const;
 
   raw_ref<BrowserView> browser_view_;
 
