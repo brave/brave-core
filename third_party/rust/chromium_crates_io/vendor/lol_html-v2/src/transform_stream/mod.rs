@@ -70,26 +70,6 @@ where
         }
     }
 
-    fn buffer_blocked_bytes(
-        &mut self,
-        data: &[u8],
-        consumed_byte_count: usize,
-    ) -> Result<(), RewritingError> {
-        if self.has_buffered_data {
-            self.buffer.shift(consumed_byte_count);
-        } else {
-            self.buffer
-                .init_with(&data[consumed_byte_count..])
-                .map_err(RewritingError::MemoryLimitExceeded)?;
-
-            self.has_buffered_data = true;
-        }
-
-        trace!(@buffer self.buffer);
-
-        Ok(())
-    }
-
     pub fn write(&mut self, data: &[u8]) -> Result<(), RewritingError> {
         trace!(@write data);
 
@@ -112,7 +92,17 @@ where
             .flush_remaining_input(chunk, consumed_byte_count);
 
         if consumed_byte_count < chunk.len() {
-            self.buffer_blocked_bytes(data, consumed_byte_count)?;
+            if self.has_buffered_data {
+                self.buffer.shift(consumed_byte_count);
+            } else if let Some(unconsumed) = data.get(consumed_byte_count..) {
+                self.buffer
+                    .init_with(unconsumed)
+                    .map_err(RewritingError::MemoryLimitExceeded)?;
+
+                self.has_buffered_data = true;
+            } else {
+                debug_assert!(false);
+            }
         } else {
             self.has_buffered_data = false;
         }
