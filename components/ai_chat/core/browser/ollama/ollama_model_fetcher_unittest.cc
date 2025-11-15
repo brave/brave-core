@@ -48,7 +48,7 @@ class MockOllamaService : public OllamaService {
 
   // Test helpers to trigger callbacks
   void TriggerFetchModelsCallback(
-      std::optional<std::vector<ModelInfo>> models) {
+      std::optional<std::vector<std::string>> models) {
     if (fetch_models_callback_) {
       std::move(fetch_models_callback_).Run(std::move(models));
     }
@@ -126,15 +126,7 @@ TEST_F(OllamaModelFetcherTest, FetchModelsAddsNewModels) {
   ollama_model_fetcher()->FetchModels();
 
   // Simulate FetchModels response with 2 models
-  std::vector<OllamaService::ModelInfo> mock_models;
-  OllamaService::ModelInfo model1;
-  model1.name = "llama2:7b";
-  mock_models.push_back(model1);
-
-  OllamaService::ModelInfo model2;
-  model2.name = "mistral:latest";
-  mock_models.push_back(model2);
-
+  std::vector<std::string> mock_models = {"llama2:7b", "mistral:latest"};
   mock_ollama_service()->TriggerFetchModelsCallback(std::move(mock_models));
 
   // Simulate ShowModel responses for each model
@@ -166,15 +158,7 @@ TEST_F(OllamaModelFetcherTest, FetchModelsRemovesObsoleteModels) {
   // First fetch - add 2 models
   ollama_model_fetcher()->FetchModels();
 
-  std::vector<OllamaService::ModelInfo> mock_models;
-  OllamaService::ModelInfo model1;
-  model1.name = "llama2:7b";
-  mock_models.push_back(model1);
-
-  OllamaService::ModelInfo model2;
-  model2.name = "mistral:latest";
-  mock_models.push_back(model2);
-
+  std::vector<std::string> mock_models = {"llama2:7b", "mistral:latest"};
   mock_ollama_service()->TriggerFetchModelsCallback(std::move(mock_models));
 
   OllamaService::ModelDetails details;
@@ -201,11 +185,7 @@ TEST_F(OllamaModelFetcherTest, FetchModelsRemovesObsoleteModels) {
   // needed)
   ollama_model_fetcher()->FetchModels();
 
-  std::vector<OllamaService::ModelInfo> updated_models;
-  OllamaService::ModelInfo updated_model;
-  updated_model.name = "llama2:7b";
-  updated_models.push_back(updated_model);
-
+  std::vector<std::string> updated_models = {"llama2:7b"};
   mock_ollama_service()->TriggerFetchModelsCallback(std::move(updated_models));
 
   EXPECT_TRUE(base::test::RunUntil([&]() {
@@ -267,15 +247,7 @@ TEST_F(OllamaModelFetcherTest, PrefChangeTriggersModelFetch) {
   pref_service()->SetBoolean(prefs::kBraveAIChatOllamaFetchEnabled, true);
 
   // Simulate FetchModels response
-  std::vector<OllamaService::ModelInfo> mock_models;
-  OllamaService::ModelInfo model1;
-  model1.name = "llama2:7b";
-  mock_models.push_back(model1);
-
-  OllamaService::ModelInfo model2;
-  model2.name = "mistral:latest";
-  mock_models.push_back(model2);
-
+  std::vector<std::string> mock_models = {"llama2:7b", "mistral:latest"};
   mock_ollama_service()->TriggerFetchModelsCallback(std::move(mock_models));
 
   // Simulate ShowModel responses
@@ -296,15 +268,7 @@ TEST_F(OllamaModelFetcherTest, PrefChangeDoesntTriggersRemove) {
   pref_service()->SetBoolean(prefs::kBraveAIChatOllamaFetchEnabled, true);
 
   // Simulate FetchModels response
-  std::vector<OllamaService::ModelInfo> mock_models;
-  OllamaService::ModelInfo model1;
-  model1.name = "llama2:7b";
-  mock_models.push_back(model1);
-
-  OllamaService::ModelInfo model2;
-  model2.name = "mistral:latest";
-  mock_models.push_back(model2);
-
+  std::vector<std::string> mock_models = {"llama2:7b", "mistral:latest"};
   mock_ollama_service()->TriggerFetchModelsCallback(std::move(mock_models));
 
   OllamaService::ModelDetails details;

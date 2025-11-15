@@ -28,16 +28,6 @@ namespace ai_chat {
 // Implements the mojom::OllamaService interface for UI communication.
 class OllamaService : public KeyedService, public mojom::OllamaService {
  public:
-  struct ModelInfo {
-    std::string name;
-    ModelInfo();
-    ModelInfo(const ModelInfo&);
-    ModelInfo& operator=(const ModelInfo&);
-    ModelInfo(ModelInfo&&);
-    ModelInfo& operator=(ModelInfo&&);
-    ~ModelInfo();
-  };
-
   struct ModelDetails {
     uint32_t context_length = 0;
     bool has_vision = false;
@@ -50,7 +40,7 @@ class OllamaService : public KeyedService, public mojom::OllamaService {
   };
 
   using ModelsCallback =
-      base::OnceCallback<void(std::optional<std::vector<ModelInfo>>)>;
+      base::OnceCallback<void(std::optional<std::vector<std::string>>)>;
   using ModelDetailsCallback =
       base::OnceCallback<void(std::optional<ModelDetails>)>;
 
@@ -105,7 +95,7 @@ class OllamaService : public KeyedService, public mojom::OllamaService {
                               std::unique_ptr<network::SimpleURLLoader> loader,
                               std::optional<std::string> response);
 
-  std::optional<std::vector<ModelInfo>> ParseModelsResponse(
+  std::optional<std::vector<std::string>> ParseModelsResponse(
       const std::string& response_body);
   std::optional<ModelDetails> ParseModelDetailsResponse(
       const std::string& response_body);
