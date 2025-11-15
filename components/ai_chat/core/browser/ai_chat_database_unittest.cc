@@ -778,6 +778,39 @@ TEST_P(AIChatDatabaseTest, UpdateConversationTokenInfo) {
   EXPECT_EQ(conversation->trimmed_tokens, updated_trimmed_tokens);
 }
 
+TEST_P(AIChatDatabaseTest, UpdateEntryVerificationStatus) {
+  const std::string uuid = "for_verification_status";
+  mojom::ConversationPtr metadata = mojom::Conversation::New(
+      uuid, "title", base::Time::Now(), true, std::nullopt, 0, 0, false,
+      std::vector<mojom::AssociatedContentPtr>());
+
+  auto history = CreateSampleChatHistory(2u);
+  EXPECT_TRUE(db_->AddConversation(metadata->Clone(), {}, history[0]->Clone()));
+  EXPECT_TRUE(db_->AddConversationEntry(uuid, history[1]->Clone()));
+  EXPECT_TRUE(db_->AddConversationEntry(uuid, history[2]->Clone()));
+  EXPECT_TRUE(db_->AddConversationEntry(uuid, history[3]->Clone()));
+
+  mojom::ConversationArchivePtr result = db_->GetConversationData(uuid);
+  ASSERT_EQ(result->entries.size(), 4u);
+  for (const auto& entry : result->entries) {
+    EXPECT_FALSE(entry->is_near_verified.has_value());
+  }
+
+  EXPECT_TRUE(
+      db_->UpdateEntryVerificationStatus(*result->entries[2]->uuid, false));
+  EXPECT_TRUE(
+      db_->UpdateEntryVerificationStatus(*result->entries[3]->uuid, true));
+
+  mojom::ConversationArchivePtr result_2 = db_->GetConversationData(uuid);
+  ASSERT_EQ(result_2->entries.size(), 4u);
+  EXPECT_FALSE(result_2->entries[0]->is_near_verified.has_value());
+  EXPECT_FALSE(result_2->entries[1]->is_near_verified.has_value());
+  ASSERT_TRUE(result_2->entries[2]->is_near_verified.has_value());
+  EXPECT_FALSE(*result_2->entries[2]->is_near_verified);
+  ASSERT_TRUE(result_2->entries[3]->is_near_verified.has_value());
+  EXPECT_TRUE(*result_2->entries[3]->is_near_verified);
+}
+
 TEST_P(AIChatDatabaseTest, AddOrUpdateAssociatedContent) {
   const std::string uuid = "for_associated_content";
   const std::string content_uuid = "content_uuid";
@@ -1405,15 +1438,6 @@ TEST_P(AIChatDatabaseMigrationTest, MigrationToVCurrent) {
 }
 
 TEST_P(AIChatDatabaseMigrationTest, Migration_Version7To8_SkillColumn) {
-  // Skip this test if we're already at the target version or higher
-  if (version() >= 8) {
-    return;
-  }
-
-  // This test verifies that migration from version 7 to 8 correctly adds
-  // the smart_mode_data column (backward compability column name for skill
-  // feature) to the conversation_entry table.
-
   // Create and persist a conversation entry before migration
   auto history = CreateSampleChatHistory(1u);
   const std::string uuid = "migration_test_v7_to_v8";
@@ -1422,6 +1446,15 @@ TEST_P(AIChatDatabaseMigrationTest, Migration_Version7To8_SkillColumn) {
       false, std::vector<mojom::AssociatedContentPtr>());
 
   EXPECT_TRUE(db_->AddConversation(metadata->Clone(), {}, history[0]->Clone()));
+
+  // Skip this test if we're already at the target version or higher
+  if (version() >= 8) {
+    return;
+  }
+
+  // This test verifies that migration from version 7 to 8 correctly adds
+  // the smart_mode_data column (backward compability column name for skill
+  // feature) to the conversation_entry table.
 
   // Verify the conversation was created
   auto conversations = db_->GetAllConversations();
