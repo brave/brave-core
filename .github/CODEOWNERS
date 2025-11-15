@@ -157,12 +157,6 @@ components/time_period_storage/ @brave/p3a-reviewers
 # Perf predictor
 components/brave_perf_predictor/ @brave/adblock-team
 
-# Permissions
-browser/permissions/**/*expiration* @goodov
-browser/permissions/**/*lifetime* @goodov
-components/permissions/**/*expiration* @goodov
-components/permissions/**/*lifetime* @goodov
-
 # Java patching
 build/android/bytecode/ @brave/java-patch-reviewers
 patches/*.java.patch @brave/java-patch-reviewers
