@@ -6,6 +6,9 @@
 #include "base/functional/callback.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/run_loop.h"
+#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
+#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
@@ -60,86 +63,146 @@ class AdblockOnlyModeBrowserTestBase : public PlatformBrowserTest {
 
   PrefService* profile_prefs() { return GetProfile()->GetPrefs(); }
 
-  void SetupAggressiveShieldsParameters() {
+  brave_shields::BraveShieldsSettingsService* brave_shields_settings() {
+    return BraveShieldsSettingsServiceFactory::GetForProfile(GetProfile());
+  }
+
+  // Setup settings causing web compat issues to verify that Adblock Only Mode
+  // overrides them.
+  void SetupSettingsCausingWebCompatIssues() {
+    // Block JavaScript.
     SetNoScriptControlType(host_content_settings_map(), ControlType::BLOCK,
                            GURL());
 
+    // Block third-party cookies.
     SetCookieControlType(host_content_settings_map(), profile_prefs(),
                          ControlType::BLOCK_THIRD_PARTY, GURL(), nullptr);
 
+    // Enable Brave Fingerprinting protection.
     SetFingerprintingControlType(host_content_settings_map(),
                                  ControlType::DEFAULT, GURL());
 
+    // Set `Upgrade connections to HTTPS` to require HTTPS.
+    SetHttpsUpgradeControlType(host_content_settings_map(), ControlType::BLOCK,
+                               GURL());
+
+    // Set forget first-party storage to enabled.
+    brave_shields_settings()->SetForgetFirstPartyStorageEnabled(true, GURL());
+
+    // Enable language fingerprinting reduction.
     profile_prefs()->SetBoolean(prefs::kReduceLanguageEnabled, true);
 
+    // Enable De-AMP.
     profile_prefs()->SetBoolean(de_amp::kDeAmpPrefEnabled, true);
 
+    // Enable URL debouncing.
     profile_prefs()->SetBoolean(debounce::prefs::kDebounceEnabled, true);
   }
 
-  void VerifyAggressiveShieldsParameters() {
+  void VerifySettingsCausingWebCompatIssues() {
+    // Verify that JavaScript is blocked.
     EXPECT_EQ(GetNoScriptControlType(host_content_settings_map(), GURL()),
               ControlType::BLOCK);
 
+    // Verify that third-party cookies are blocked.
     EXPECT_EQ(GetCookieControlType(host_content_settings_map(),
                                    cookie_settings().get(), GURL()),
               ControlType::BLOCK_THIRD_PARTY);
 
+    // Verify that Brave Fingerprinting protection is enabled.
     EXPECT_EQ(GetFingerprintingControlType(host_content_settings_map(), GURL()),
               ControlType::DEFAULT);
 
+    // Verify that `Upgrade connections to HTTPS` is set to require HTTPS.
+    EXPECT_EQ(GetHttpsUpgradeControlType(host_content_settings_map(), GURL()),
+              ControlType::BLOCK);
+
+    // Verify that referrer policy is capped.
+    EXPECT_FALSE(brave_shields::AreReferrersAllowed(host_content_settings_map(),
+                                                    GURL()));
+
+    // Verify that forget first-party storage is enabled.
+    EXPECT_TRUE(
+        brave_shields_settings()->GetForgetFirstPartyStorageEnabled(GURL()));
+
+    // Verify that language fingerprinting reduction is enabled and not managed.
     EXPECT_TRUE(profile_prefs()->GetBoolean(prefs::kReduceLanguageEnabled));
     EXPECT_FALSE(
         profile_prefs()->IsManagedPreference(prefs::kReduceLanguageEnabled));
 
+    // Verify that De-AMP is enabled and not managed.
     EXPECT_TRUE(profile_prefs()->GetBoolean(de_amp::kDeAmpPrefEnabled));
     EXPECT_FALSE(
         profile_prefs()->IsManagedPreference(de_amp::kDeAmpPrefEnabled));
 
+    // Verify that URL debouncing is enabled and not managed.
     EXPECT_TRUE(profile_prefs()->GetBoolean(debounce::prefs::kDebounceEnabled));
     EXPECT_FALSE(profile_prefs()->IsManagedPreference(
         debounce::prefs::kDebounceEnabled));
 
+    // Verify that tracking query parameters filtering is enabled and not
+    // managed.
     EXPECT_TRUE(profile_prefs()->GetBoolean(
         query_filter::kTrackingQueryParametersFilteringEnabled));
     EXPECT_FALSE(profile_prefs()->IsManagedPreference(
         query_filter::kTrackingQueryParametersFilteringEnabled));
 
+    // Verify that Global Privacy Control is enabled and not managed.
     EXPECT_TRUE(profile_prefs()->GetBoolean(
         global_privacy_control::kGlobalPrivacyControlEnabled));
     EXPECT_FALSE(profile_prefs()->IsManagedPreference(
         global_privacy_control::kGlobalPrivacyControlEnabled));
   }
 
-  void VerifyAdblockOnlyModeParameters() {
+  void VerifyAdblockOnlyModeSettings() {
+    // Verify that JavaScript is allowed.
     EXPECT_EQ(GetNoScriptControlType(host_content_settings_map(), GURL()),
               ControlType::ALLOW);
 
+    // Verify that cookies are allowed.
     EXPECT_EQ(GetCookieControlType(host_content_settings_map(),
                                    cookie_settings().get(), GURL()),
               ControlType::ALLOW);
 
+    // Verify that Brave Fingerprinting protection is disabled.
     EXPECT_EQ(GetFingerprintingControlType(host_content_settings_map(), GURL()),
               ControlType::ALLOW);
 
+    // Verify that `Upgrade connections to HTTPS` is set to standard mode.
+    EXPECT_EQ(GetHttpsUpgradeControlType(host_content_settings_map(), GURL()),
+              ControlType::BLOCK_THIRD_PARTY);
+
+    // Verify that referrers are not capped.
+    EXPECT_TRUE(brave_shields::AreReferrersAllowed(host_content_settings_map(),
+                                                   GURL()));
+
+    // Verify that forget first-party storage is disabled.
+    EXPECT_FALSE(
+        brave_shields_settings()->GetForgetFirstPartyStorageEnabled(GURL()));
+
+    // Verify that language fingerprinting reduction is disabled and managed.
     EXPECT_FALSE(profile_prefs()->GetBoolean(prefs::kReduceLanguageEnabled));
     EXPECT_TRUE(
         profile_prefs()->IsManagedPreference(prefs::kReduceLanguageEnabled));
 
+    // Verify that De-AMP is disabled and managed.
     EXPECT_FALSE(profile_prefs()->GetBoolean(de_amp::kDeAmpPrefEnabled));
     EXPECT_TRUE(
         profile_prefs()->IsManagedPreference(de_amp::kDeAmpPrefEnabled));
 
+    // Verify that URL debouncing is disabled and managed.
     EXPECT_FALSE(
         profile_prefs()->GetBoolean(debounce::prefs::kDebounceEnabled));
     EXPECT_TRUE(profile_prefs()->IsManagedPreference(
         debounce::prefs::kDebounceEnabled));
 
+    // Verify that tracking query parameters filtering is disabled and managed.
     EXPECT_FALSE(profile_prefs()->GetBoolean(
         query_filter::kTrackingQueryParametersFilteringEnabled));
     EXPECT_TRUE(profile_prefs()->IsManagedPreference(
         query_filter::kTrackingQueryParametersFilteringEnabled));
 
+    // Verify that Global Privacy Control is disabled and managed.
     EXPECT_FALSE(profile_prefs()->GetBoolean(
         global_privacy_control::kGlobalPrivacyControlEnabled));
     EXPECT_TRUE(profile_prefs()->IsManagedPreference(
@@ -167,47 +230,48 @@ class AdblockOnlyModeBrowserTest : public AdblockOnlyModeBrowserTestBase {
 };
 
 IN_PROC_BROWSER_TEST_F(AdblockOnlyModeBrowserTest,
-                       CheckAdblockOnlyModeEnabled) {
+                       AdblockOnlyModeOverridesSettings) {
   EXPECT_FALSE(local_state()->GetBoolean(prefs::kAdBlockOnlyModeEnabled));
-  SetupAggressiveShieldsParameters();
+  SetupSettingsCausingWebCompatIssues();
 
   AdblockOnlyModeChangeObserver observer(profile_prefs());
   local_state()->SetBoolean(prefs::kAdBlockOnlyModeEnabled, true);
   observer.Wait();
 
-  VerifyAdblockOnlyModeParameters();
+  VerifyAdblockOnlyModeSettings();
 }
 
-IN_PROC_BROWSER_TEST_F(AdblockOnlyModeBrowserTest,
-                       PRE_CheckAdblockOnlyModeEnabledWithBrowserRestart) {
+IN_PROC_BROWSER_TEST_F(
+    AdblockOnlyModeBrowserTest,
+    PRE_AdblockOnlyModeOverridesSettingsAfterBrowserRestart) {
   EXPECT_FALSE(local_state()->GetBoolean(prefs::kAdBlockOnlyModeEnabled));
-  SetupAggressiveShieldsParameters();
+  SetupSettingsCausingWebCompatIssues();
 
   local_state()->SetBoolean(prefs::kAdBlockOnlyModeEnabled, true);
 }
 
 IN_PROC_BROWSER_TEST_F(AdblockOnlyModeBrowserTest,
-                       CheckAdblockOnlyModeEnabledWithBrowserRestart) {
-  VerifyAdblockOnlyModeParameters();
+                       AdblockOnlyModeOverridesSettingsAfterBrowserRestart) {
+  VerifyAdblockOnlyModeSettings();
 }
 
 IN_PROC_BROWSER_TEST_F(AdblockOnlyModeBrowserTest,
-                       PRE_CheckAdblockOnlyModeDisabled) {
+                       PRE_AdblockOnlyModeDisablingRestoresSettings) {
   EXPECT_FALSE(local_state()->GetBoolean(prefs::kAdBlockOnlyModeEnabled));
-  SetupAggressiveShieldsParameters();
+  SetupSettingsCausingWebCompatIssues();
 
   local_state()->SetBoolean(prefs::kAdBlockOnlyModeEnabled, true);
 }
 
 IN_PROC_BROWSER_TEST_F(AdblockOnlyModeBrowserTest,
-                       CheckAdblockOnlyModeDisabled) {
-  VerifyAdblockOnlyModeParameters();
+                       AdblockOnlyModeDisablingRestoresSettings) {
+  VerifyAdblockOnlyModeSettings();
 
   AdblockOnlyModeChangeObserver observer(profile_prefs());
   local_state()->SetBoolean(prefs::kAdBlockOnlyModeEnabled, false);
   observer.Wait();
 
-  VerifyAggressiveShieldsParameters();
+  VerifySettingsCausingWebCompatIssues();
 }
 
 class AdblockOnlyModeFeatureDisabledBrowserTest
@@ -226,7 +290,7 @@ class AdblockOnlyModeFeatureDisabledBrowserTest
 IN_PROC_BROWSER_TEST_F(AdblockOnlyModeFeatureDisabledBrowserTest,
                        PRE_AdblockOnlyModeCannotBeEnabled) {
   EXPECT_FALSE(local_state()->GetBoolean(prefs::kAdBlockOnlyModeEnabled));
-  SetupAggressiveShieldsParameters();
+  SetupSettingsCausingWebCompatIssues();
 
   local_state()->SetBoolean(prefs::kAdBlockOnlyModeEnabled, true);
 }
@@ -234,7 +298,7 @@ IN_PROC_BROWSER_TEST_F(AdblockOnlyModeFeatureDisabledBrowserTest,
 IN_PROC_BROWSER_TEST_F(AdblockOnlyModeFeatureDisabledBrowserTest,
                        AdblockOnlyModeCannotBeEnabled) {
   // Adblock only mode is not applied because the feature is not enabled.
-  VerifyAggressiveShieldsParameters();
+  VerifySettingsCausingWebCompatIssues();
 }
 
 }  // namespace brave_shields
