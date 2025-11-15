@@ -232,7 +232,7 @@ public class BraveShieldsContentSettings {
 
     public static void setAllowElementBlockerInPrivateModeEnabledPref(boolean value) {
         setShields(
-                ProfileManager.getLastUsedRegularProfile(),
+                null,
                 "",
                 BraveShieldsContentSettings.RESOURCE_IDENTIFIER_ALLOW_ELEMENT_BLOCKER_IN_PRIVATE,
                 value,
@@ -241,7 +241,7 @@ public class BraveShieldsContentSettings {
 
     public static boolean getAllowElementBlockerInPrivateModeEnabledPref() {
         return getShields(
-                ProfileManager.getLastUsedRegularProfile(),
+                null,
                 "",
                 BraveShieldsContentSettings.RESOURCE_IDENTIFIER_ALLOW_ELEMENT_BLOCKER_IN_PRIVATE);
     }

@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.informers;
 
 import org.chromium.base.Log;
+import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.cosmetic_filters.BraveCosmeticFiltersUtils;
