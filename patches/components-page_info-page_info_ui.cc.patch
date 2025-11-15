@@ -1,0 +1,12 @@
+diff --git a/components/page_info/page_info_ui.cc b/components/page_info/page_info_ui.cc
+index 9ab09f4939b3b54cacefe877c1130dd1971b2f32..cebdf684eeec58ec49ef84fb15789657461b57f0 100644
+--- a/components/page_info/page_info_ui.cc
++++ b/components/page_info/page_info_ui.cc
+@@ -173,6 +173,7 @@ base::span<const PageInfoUI::PermissionUIInfo> GetContentSettingsUIInfo() {
+        IDS_SITE_SETTINGS_TYPE_WEB_APP_INSTALLATION,
+        IDS_SITE_SETTINGS_TYPE_WEB_APP_INSTALLATION_MID_SENTENCE},
+ #endif
++      BRAVE_GET_CONTENT_SETTINGS_UI_INFO
+   };
+   return kPermissionUIInfo;
+ }

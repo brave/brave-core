@@ -7,12 +7,18 @@
 
 #define PageInfo PageInfo_ChromiumImpl
 
-#define BRAVE_PAGE_INFO_SHOULD_SHOW_PERMISSION          \
-  if (!delegate_->BraveShouldShowPermission(info.type)) \
-    return false;
+#define BRAVE_PAGE_INFO_KPERMISSIONTYPE \
+  ContentSettingsType::JAVASCRIPT_OPTIMIZER,
+
+#define BRAVE_PAGE_INFO_SHOULD_SHOW_PERMISSION         \
+  int _brave_should_show_permission =                  \
+      delegate_->BraveShouldShowPermission(info.type); \
+  if (_brave_should_show_permission != -1)             \
+    return _brave_should_show_permission;
 
 #include <components/page_info/page_info.cc>
 #undef BRAVE_PAGE_INFO_SHOULD_SHOW_PERMISSION
+#undef BRAVE_PAGE_INFO_KPERMISSIONTYPE
 #undef PageInfo
 
 std::set<net::SchemefulSite> PageInfo::GetTwoSitePermissionRequesters(

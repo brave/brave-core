@@ -8,9 +8,10 @@
 
 #include "components/page_info/page_info_delegate.h"
 
-#define IsContentDisplayedInVrHeadset                           \
-  BraveShouldShowPermission(ContentSettingsType type) override; \
-  virtual bool IsContentDisplayedInVrHeadset
+#define IsContentDisplayedInVrHeadset                               \
+  IsContentDisplayedInVrHeadset() override;                         \
+  int BraveShouldShowPermission(ContentSettingsType type) override; \
+  bool _Unused_
 
 #include <chrome/browser/ui/page_info/chrome_page_info_delegate.h>  // IWYU pragma: export
 #undef IsContentDisplayedInVrHeadset
