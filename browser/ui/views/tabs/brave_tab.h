@@ -58,6 +58,8 @@ class BraveTab : public Tab, public views::TextfieldController {
   friend class BraveTabTest;
   friend class BraveTabRenamingUnitTest;
 
+  FRIEND_TEST_ALL_PREFIXES(BraveTabTest, ShouldAlwaysHideTabCloseButton);
+
   FRIEND_TEST_ALL_PREFIXES(BraveTabRenamingUnitTest,
                            ClickingOutsideRenamingTabCommitsRename);
 
@@ -97,6 +99,9 @@ class BraveTab : public Tab, public views::TextfieldController {
 
   // Reveals the title label which is in base class member.
   views::Label* title_for_test() const { return title_; }
+
+  // Reveals the close button which is in base class member.
+  TabCloseButton* close_button_for_test() const { return close_button_.get(); }
 
   raw_ptr<RenameTextfield> rename_textfield_ = nullptr;
 

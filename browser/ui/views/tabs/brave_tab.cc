@@ -214,7 +214,7 @@ void BraveTab::UpdateIconVisibility() {
 void BraveTab::Layout(PassKey) {
   LayoutSuperclass<Tab>(this);
   if (IsAtMinWidthForVerticalTabStrip()) {
-    if (showing_close_button_) {
+    if (close_button_->GetVisible()) {
       close_button_->SetX(GetLocalBounds().CenterPoint().x() -
                           (close_button_->width() / 2));
 

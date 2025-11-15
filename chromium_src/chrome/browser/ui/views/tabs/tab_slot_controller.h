@@ -12,8 +12,15 @@
       Tab* tab, const std::optional<std::u16string>& title) {} \
   virtual const Browser* GetBrowser()
 
+// Add a method to TabSlotController to determine whether to hide the close
+// button regardless of its state.
+#define ShouldCompactLeadingEdge()      \
+  ShouldCompactLeadingEdge() const = 0; \
+  virtual bool ShouldAlwaysHideCloseButton()
+
 #include <chrome/browser/ui/views/tabs/tab_slot_controller.h>  // IWYU pragma: export
 
+#undef ShouldCompactLeadingEdge
 #undef IsGroupCollapsed
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_SLOT_CONTROLLER_H_

@@ -49,7 +49,13 @@
 #include "ui/views/layout/flex_layout.h"
 
 BraveTabStrip::BraveTabStrip(std::unique_ptr<TabStripController> controller)
-    : TabStrip(std::move(controller)) {}
+    : TabStrip(std::move(controller)) {
+  always_hide_close_button_.Init(
+      brave_tabs::kAlwaysHideTabCloseButton,
+      controller_->GetProfile()->GetPrefs(),
+      base::BindRepeating(&BraveTabStrip::OnAlwaysHideCloseButtonPrefChanged,
+                          base::Unretained(this)));
+}
 
 BraveTabStrip::~BraveTabStrip() = default;
 
@@ -227,6 +233,10 @@ void BraveTabStrip::SetCustomTitleForTab(
 
   static_cast<BraveBrowserTabStripController*>(controller_.get())
       ->SetCustomTitleForTab(*index, title);
+}
+
+bool BraveTabStrip::ShouldAlwaysHideCloseButton() const {
+  return *always_hide_close_button_;
 }
 
 void BraveTabStrip::EnterTabRenameModeAt(int index) {
@@ -407,6 +417,14 @@ void BraveTabStrip::UpdateTabContainer() {
 
 bool BraveTabStrip::ShouldShowVerticalTabs() const {
   return tabs::utils::ShouldShowVerticalTabs(GetBrowser());
+}
+
+void BraveTabStrip::OnAlwaysHideCloseButtonPrefChanged() {
+  // Invalidate layout of all tabs to update close button visibility.
+  // The visibility of close button is updated in Tab::Layout().
+  for (int i = 0; i < GetTabCount(); ++i) {
+    tab_at(i)->InvalidateLayout();
+  }
 }
 
 TabContainer* BraveTabStrip::GetTabContainerForTesting() {
