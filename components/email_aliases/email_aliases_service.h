@@ -13,6 +13,7 @@
 
 #include "base/functional/callback.h"
 #include "base/memory/weak_ptr.h"
+#include "base/observer_list.h"
 #include "base/timer/elapsed_timer.h"
 #include "base/timer/timer.h"
 #include "base/values.h"
@@ -41,7 +42,7 @@ namespace email_aliases {
 class EmailAliasesService : public KeyedService,
                             public mojom::EmailAliasesService {
  public:
-  EmailAliasesService(
+  explicit EmailAliasesService(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   ~EmailAliasesService() override;
 
@@ -78,6 +79,9 @@ class EmailAliasesService : public KeyedService,
   // will immediately receive the current state upon registration.
   void AddObserver(mojo::PendingRemote<mojom::EmailAliasesServiceObserver>
                        observer) override;
+
+  // Returns true if the user is ready to create a new alias.
+  bool IsReadyToCreate() const;
 
   // Binds the mojom interface to this service
   // Adds a new receiver for the EmailAliasesService Mojo interface.
@@ -203,6 +207,12 @@ class EmailAliasesService : public KeyedService,
   // Elapsed timer for the current verification polling window. Used to
   // enforce a maximum total polling duration.
   std::optional<base::ElapsedTimer> session_poll_elapsed_timer_;
+
+  // Number of aliases created by the user.
+  int number_of_aliases_ = 0;
+
+  // Maximum number of aliases allowed for the user.
+  const int max_aliases_ = 5;
 
   // WeakPtrFactory to safely bind callbacks across async network operations.
   base::WeakPtrFactory<EmailAliasesService> weak_factory_{this};

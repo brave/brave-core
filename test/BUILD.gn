@@ -861,6 +861,7 @@ test("brave_browser_tests") {
     "//brave/browser/brave_wallet:tab_helper",
     "//brave/browser/browsing_data:browser_tests",
     "//brave/browser/decentralized_dns/test:browser_tests",
+    "//brave/browser/email_aliases:browser_tests",
     "//brave/browser/ephemeral_storage:browser_tests",
     "//brave/browser/extensions",
     "//brave/browser/extensions:test_support",
