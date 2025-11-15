@@ -976,24 +976,16 @@ class TabManager: NSObject {
       // if we're only forgetting 1 site, we can query history by it's domain
       let query = urls.count == 1 ? urls.first?.baseDomain : nil
 
-      let nodes = await withCheckedContinuation { continuation in
-        var historyCancellable: HistoryCancellable?
-        _ = historyCancellable
-        historyCancellable = historyAPI.search(
-          withQuery: query,
-          options: HistorySearchOptions(
-            maxCount: 0,
-            hostOnly: false,
-            duplicateHandling: .keepAll,
-            begin: nil,
-            end: nil
-          ),
-          completion: {
-            historyCancellable = nil
-            continuation.resume(returning: $0)
-          }
+      let nodes = await historyAPI.search(
+        withQuery: query,
+        options: HistorySearchOptions(
+          maxCount: 0,
+          hostOnly: false,
+          duplicateHandling: .keepAll,
+          begin: nil,
+          end: nil
         )
-      }.filter { node in
+      ).filter { node in
         guard let baseDomain = node.url.baseDomain else { return false }
         return baseDomains.contains(baseDomain)
       }

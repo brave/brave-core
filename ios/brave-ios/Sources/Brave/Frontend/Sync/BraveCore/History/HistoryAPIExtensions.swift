@@ -67,4 +67,22 @@ extension BraveHistoryAPI {
       }
     }
   }
+
+  @MainActor func search(
+    withQuery query: String?,
+    options: HistorySearchOptions
+  ) async -> [HistoryNode] {
+    await withCheckedContinuation { continuation in
+      var historyCancellable: HistoryCancellable?
+      _ = historyCancellable
+      historyCancellable = search(
+        withQuery: query,
+        options: options,
+        completion: {
+          historyCancellable = nil
+          continuation.resume(returning: $0)
+        }
+      )
+    }
+  }
 }
