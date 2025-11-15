@@ -233,6 +233,7 @@ import org.chromium.mojo.system.MojoException;
 import org.chromium.ui.KeyboardUtils;
 import org.chromium.ui.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -1873,6 +1874,45 @@ public abstract class BraveActivity extends ChromeActivity
                 tabModel.getTabRemover().closeTabs(TabClosureParams.closeTab(tab).build(), false);
             }
         }
+    }
+
+    /** Close all tabs whose domain matches with a given TLD. */
+    public boolean closeTabsWithTLD(@NonNull final String tld) {
+        final TabModel tabModel = getCurrentTabModel();
+        final int count = tabModel.getCount();
+        final List<Tab> tabsToClose = new ArrayList<>();
+
+        // Collect all tabs that match the TLD
+        for (int i = 0; i < count; i++) {
+            Tab tab = tabModel.getTabAt(i);
+            if (tab != null) {
+                String spec = tab.getUrl().getSpec();
+                if (spec == null) continue;
+
+                String domain = UrlUtilities.getDomainAndRegistry(spec, false);
+                if (domain == null || domain.isEmpty()) {
+                    continue;
+                }
+
+                if (domain.equals(tld)) {
+                    tabsToClose.add(tab);
+                }
+            }
+        }
+
+        // Close all matching tabs in a single operation
+        if (!tabsToClose.isEmpty()) {
+            try {
+                tabModel.getTabRemover()
+                        .closeTabs(
+                                TabClosureParams.closeTabs(tabsToClose).allowUndo(false).build(),
+                                false);
+                return true; // Successfully initiated tab closure
+            } catch (Exception e) {
+                return false; // Failed to close tabs
+            }
+        }
+        return false;
     }
 
     /**

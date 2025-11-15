@@ -9,21 +9,29 @@
 
 #include "base/check.h"
 #include "base/logging.h"
+#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "chrome/browser/browsing_data/chrome_browsing_data_remover_constants.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser_finder.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browsing_data_filter_builder.h"
 #include "content/public/browser/browsing_data_remover.h"
 #include "content/public/browser/dom_storage_context.h"
+#include "content/public/browser/web_contents.h"
 #include "net/base/features.h"
 #include "net/base/schemeful_site.h"
+#include "net/base/url_util.h"
 #include "url/origin.h"
 
 #if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_list.h"
+#else
+#include "brave/browser/brave_shields/android/ephemeral_storage_utils.h"
 #endif
 
 namespace ephemeral_storage {
@@ -143,5 +151,40 @@ void BraveEphemeralStorageServiceDelegate::OnBrowserAdded(Browser* browser) {
   BrowserList::RemoveObserver(this);
 }
 #endif
+
+void BraveEphemeralStorageServiceDelegate::CloseTabsForDomainAndSubdomains(
+    content::WebContents* contents,
+    const std::string ephemeral_domain,
+    CloseTabsForDomainAndSubdomainsCallback callback) {
+  bool result = false;
+#if !BUILDFLAG(IS_ANDROID)
+  CHECK(contents);
+  tabs::TabInterface* tab = tabs::TabInterface::GetFromContents(contents);
+  if (!tab) {
+    std::move(callback).Run(false);
+    return;
+  }
+  BrowserWindowInterface* browser = tab->GetBrowserWindowInterface();
+  if (!browser) {
+    std::move(callback).Run(false);
+    return;
+  }
+  result = static_cast<BraveTabStripModel*>(browser->GetTabStripModel())
+               ->CloseTabsWithTLD(ephemeral_domain);
+#else
+  result = CloseTabsWithTLD(ephemeral_domain);
+#endif
+  std::move(callback).Run(result);
+}
+
+bool BraveEphemeralStorageServiceDelegate::
+    IsShieldsDisabledOnAnyHostMatchingDomainOf(const GURL& url) const {
+  Profile* profile = Profile::FromBrowserContext(context_);
+  CHECK(profile);
+  auto* settings_service =
+      BraveShieldsSettingsServiceFactory::GetForProfile(profile);
+  CHECK(settings_service);
+  return settings_service->IsShieldsDisabledOnAnyHostMatchingDomainOf(url);
+}
 
 }  // namespace ephemeral_storage

@@ -10,11 +10,13 @@
 #include <vector>
 
 #include "base/check.h"
+#include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/strings/strcat.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
+#include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_pref_names.h"
 #include "brave/components/ephemeral_storage/url_storage_checker.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
@@ -23,6 +25,7 @@
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/site_instance.h"
 #include "content/public/browser/storage_partition_config.h"
+#include "content/public/browser/web_contents.h"
 #include "net/base/features.h"
 #include "net/base/schemeful_site.h"
 #include "net/base/url_util.h"
@@ -254,6 +257,43 @@ void EphemeralStorageService::AddObserver(
 void EphemeralStorageService::RemoveObserver(
     EphemeralStorageServiceObserver* observer) {
   observer_list_.RemoveObserver(observer);
+}
+
+void EphemeralStorageService::CleanupTLDEphemeralStorage(
+    content::WebContents* contents,
+    const content::StoragePartitionConfig& storage_partition_config,
+    const bool enforced_by_user) {
+  if (!base::FeatureList::IsEnabled(
+          brave_shields::features::kBraveShredFeature)) {
+    return;
+  }
+
+  CHECK(contents);
+  if (!enforced_by_user &&
+      delegate_->IsShieldsDisabledOnAnyHostMatchingDomainOf(
+          contents->GetLastCommittedURL())) {
+    // Do not start auto shred if shields is disabled on any host matching the
+    // domain or ephemeral_domain is empty.
+    return;
+  }
+
+  const auto ephemeral_domain =
+      net::URLToEphemeralStorageDomain(contents->GetLastCommittedURL());
+  const TLDEphemeralAreaKey key(ephemeral_domain, storage_partition_config);
+  delegate_->CloseTabsForDomainAndSubdomains(
+      contents, std::move(ephemeral_domain),
+      base::BindOnce(&EphemeralStorageService::OnDomainAndSubdomainTabsClosed,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(key)));
+}
+
+void EphemeralStorageService::OnDomainAndSubdomainTabsClosed(
+    const TLDEphemeralAreaKey& key,
+    const bool result) {
+  if (!result) {
+    LOG(ERROR) << "Failed to close tabs for domain and subdomains.";
+    return;
+  }
+  CleanupTLDEphemeralArea(key, true, true);
 }
 
 void EphemeralStorageService::FirstPartyStorageAreaInUse(
