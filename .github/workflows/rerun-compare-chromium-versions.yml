@@ -11,6 +11,10 @@ on:
     types:
       - closed
 
+permissions:
+  contents: read
+  actions: write
+
 jobs:
   rerun-compare-chromium-versions:
 ## TODO: Temporary workaround for the above issue
