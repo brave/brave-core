@@ -18,6 +18,12 @@
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "components/content_settings/core/common/content_settings.h"
+#include "components/policy/core/browser/browser_policy_connector.h"
+#include "components/policy/core/common/mock_configuration_policy_provider.h"
+#include "components/policy/core/common/policy_map.h"
+#include "components/policy/core/common/policy_types.h"
+#include "components/policy/policy_constants.h"
 #include "content/public/test/browser_test.h"
 #include "net/base/features.h"
 
@@ -719,6 +725,66 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultIncognitoBrowserTest,
   // But it is queued and should happen eventually.
   EXPECT_EQ(1u, WaitForCleanupAfterKeepAlive());
   EXPECT_EQ(0u, GetAllCookies().size());
+}
+
+class EphemeralStorageForgetByDefaultDisabledByPolicyTest
+    : public EphemeralStorageForgetByDefaultBrowserTest {
+ public:
+  EphemeralStorageForgetByDefaultDisabledByPolicyTest() = default;
+  ~EphemeralStorageForgetByDefaultDisabledByPolicyTest() override = default;
+
+  void SetUpInProcessBrowserTestFixture() override {
+    PlatformBrowserTest::SetUpInProcessBrowserTestFixture();
+    EXPECT_CALL(provider_, IsInitializationComplete(testing::_))
+        .WillRepeatedly(testing::Return(true));
+    policy::BrowserPolicyConnector::SetPolicyProviderForTesting(&provider_);
+
+    DisableForgetFirstPartyByPolicy();
+  }
+
+ private:
+  void DisableForgetFirstPartyByPolicy() {
+    policy::PolicyMap policies;
+    policies.Set(policy::key::kDefaultBraveRemember1PStorageSetting,
+                 policy::POLICY_LEVEL_MANDATORY, policy::POLICY_SCOPE_USER,
+                 policy::POLICY_SOURCE_PLATFORM,
+                 base::Value(CONTENT_SETTING_ALLOW), nullptr);
+    provider_.UpdateChromePolicy(policies);
+  }
+
+  policy::MockConfigurationPolicyProvider provider_;
+};
+
+IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultDisabledByPolicyTest,
+                       PRE_DontForgetFirstPartyAfterRestart) {
+  const GURL a_site_set_cookie_url(
+      "https://a.com/set-cookie?name=acom;path=/"
+      ";SameSite=None;Secure;Max-Age=600");
+
+  // This call is ignored because Forget First Party Storage functionality is
+  // disabled by policy.
+  brave_shields_settings_->SetForgetFirstPartyStorageEnabled(
+      true, a_site_set_cookie_url);
+
+  // Cookies should NOT exist for a.com.
+  EXPECT_EQ(0u, GetAllCookies().size());
+
+  EXPECT_TRUE(LoadURLInNewTab(a_site_set_cookie_url));
+
+  // Cookies SHOULD exist for a.com.
+  EXPECT_EQ(1u, GetAllCookies().size());
+
+  // Navigate to b.com to check if a.com cookies are not cleared.
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), b_site_ephemeral_storage_url_));
+}
+
+IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultDisabledByPolicyTest,
+                       DontForgetFirstPartyAfterRestart) {
+  // a.com cookies should not be cleared because Forget First Party Storage
+  // functionality is disabled by policy.
+  EXPECT_EQ(0u, WaitForCleanupAfterKeepAlive());
+  EXPECT_EQ(1u, GetAllCookies().size());
 }
 
 }  // namespace ephemeral_storage

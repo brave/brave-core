@@ -1,0 +1,35 @@
+caption: Control first-party storage retention behavior
+default: null
+desc: |-
+  This policy determines whether Brave remembers or forgets first-party storage data when users close tabs or navigate away.
+
+            If this policy is set to 1 (RememberFirstPartyStorage), first-party storage data is preserved across sessions.
+
+            If this policy is set to 2 (ForgetFirstPartyStorage), first-party storage data is cleared when tabs are closed or users navigate away.
+
+            If left unset, Brave preserves first-party storage data across sessions by default, but users can modify this through Brave Shields settings.
+example_value: 1
+features:
+  can_be_mandatory: true
+  can_be_recommended: false
+  dynamic_refresh: true
+  per_profile: true
+items:
+- caption: Remember first-party storage data
+  name: RememberFirstPartyStorage
+  value: 1
+- caption: Forget first-party storage data
+  name: ForgetFirstPartyStorage
+  value: 2
+owners:
+- managed-policies@brave.com
+schema:
+  enum:
+  - 1
+  - 2
+  type: integer
+supported_on:
+- chrome.*:142-
+- android:142-
+tags: []
+type: int-enum

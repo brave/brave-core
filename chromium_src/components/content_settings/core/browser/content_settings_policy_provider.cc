@@ -14,18 +14,21 @@
 #define BRAVE_MANAGED_PREFS \
   kManagedBraveShieldsDisabledForUrls, kManagedBraveShieldsEnabledForUrls,
 
-#define BRAVE_MANAGED_DEFAULT                    \
-  {ContentSettingsType::BRAVE_FINGERPRINTING_V2, \
-   kManagedDefaultBraveFingerprintingV2},        \
-      {ContentSettingsType::BRAVE_HTTPS_UPGRADE, \
-       prefs::kManagedDefaultBraveHttpsUpgrade}, \
-      {ContentSettingsType::BRAVE_REFERRERS,     \
-       prefs::kManagedDefaultBraveReferrersSetting},
+#define BRAVE_MANAGED_DEFAULT                          \
+  {ContentSettingsType::BRAVE_FINGERPRINTING_V2,       \
+   kManagedDefaultBraveFingerprintingV2},              \
+      {ContentSettingsType::BRAVE_HTTPS_UPGRADE,       \
+       prefs::kManagedDefaultBraveHttpsUpgrade},       \
+      {ContentSettingsType::BRAVE_REFERRERS,           \
+       prefs::kManagedDefaultBraveReferrersSetting},   \
+      {ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE, \
+       prefs::kManagedDefaultBraveRemember1PStorageSetting},
 
-#define BRAVE_MANAGED_DEFAULT_PREFS            \
-  kManagedDefaultBraveFingerprintingV2,        \
-      prefs::kManagedDefaultBraveHttpsUpgrade, \
-      prefs::kManagedDefaultBraveReferrersSetting,
+#define BRAVE_MANAGED_DEFAULT_PREFS                \
+  kManagedDefaultBraveFingerprintingV2,            \
+      prefs::kManagedDefaultBraveHttpsUpgrade,     \
+      prefs::kManagedDefaultBraveReferrersSetting, \
+      prefs::kManagedDefaultBraveRemember1PStorageSetting,
 
 #include <components/content_settings/core/browser/content_settings_policy_provider.cc>
 #undef BRAVE_MANAGED_DEFAULT_PREFS

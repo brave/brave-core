@@ -28,6 +28,7 @@ _brave_policies = [
   "BraveSoftware/DefaultBraveFingerprintingV2Setting.yaml",
   "BraveSoftware/DefaultBraveHttpsUpgradeSetting.yaml",
   "BraveSoftware/DefaultBraveReferrersSetting.yaml",
+  "BraveSoftware/DefaultBraveRemember1PStorageSetting.yaml",
   "BraveSoftware/IPFSEnabled.yaml",
   "BraveSoftware/TorDisabled.yaml",
 ]
