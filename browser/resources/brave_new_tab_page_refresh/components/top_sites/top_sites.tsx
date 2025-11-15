@@ -20,6 +20,7 @@ import { style, collapsedTileColumnCount } from './top_sites.style'
 export function TopSites() {
   const actions = useTopSitesActions()
 
+  const maxCustomTopSites = useTopSitesState((s) => s.maxCustomTopSites)
   const showTopSites = useTopSitesState((s) => s.showTopSites)
   const listKind = useTopSitesState((s) => s.topSitesListKind)
   const topSites = useTopSitesState((s) => s.topSites)
@@ -45,7 +46,8 @@ export function TopSites() {
     return () => document.body.classList.remove('ntp-top-sites-wide')
   }, [showTopSites, expanded])
 
-  const showAddButton = listKind === TopSitesListKind.kCustom
+  const showAddButton =
+    listKind === TopSitesListKind.kCustom && topSites.length < maxCustomTopSites
   const tileCount = topSites.length + (showAddButton ? 1 : 0)
 
   function onTopSiteContextMenu(topSite: TopSite, event: React.MouseEvent) {
