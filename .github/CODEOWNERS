@@ -2,8 +2,8 @@ build/commands/ @brave/build-commands-reviewers
 patches/ @brave/patch-reviewers
 chromium_src/ @brave/chromium-src-reviewers
 script/audit_deps.py @brave/sec-team
-script/build-bisect.py @bsclifton
-script/uplift.py @bsclifton
+script/build-bisect.py @brave/brave-core-python-scripts
+script/uplift.py @brave/brave-core-python-scripts
 /README.md @bsclifton
 script/deps.py @brave/deps-reviewers
 package*.json @brave/js-deps-reviewers
@@ -18,7 +18,7 @@ chromium_src/ui/views/view.h @brave/brave-core-owners
 
 # brave/browser/ui/BUILD.gn should not have new source files added to it. see
 # https://github.com/brave/brave-core/blob/master/docs/gni_sources.md#circular-dependencies-circular-dependencies
-browser/ui/BUILD.gn @bridiver
+browser/ui/BUILD.gn @brave/browser-ui-build-gen
 
 # BraveBrowserProcess public interface
 # Global services should use GlobalDesktopFeatures
@@ -26,19 +26,19 @@ browser/ui/BUILD.gn @bridiver
 browser/brave_browser_process.h @brave/brave-core-owners
 
 # Deprecated - do not use
-BraveNewsUtils.java @bridiver
+BraveNewsUtils.java @brave/deprecated-checker
 
 # New WebUI should use RegisterChromeWebUIConfigs
-browser/ui/webui/brave_web_uicontroller_factory.cc @bridiver @petemill
+browser/ui/webui/brave_web_uicontroller_factory.cc @brave/deprecated-checker
 
 # BraveComponent is deprecated
-components/brave_component_updater/browser/brave_component.h @bridiver @antonok-edm
-components/brave_component_updater/browser/local_data_files_observer.h @bridiver @antonok-edm
-components/brave_component_updater/browser/local_data_files_service.h @bridiver @antonok-edm
-components/brave_component_updater/browser/BUILD.gn @bridiver
+components/brave_component_updater/browser/brave_component.h @brave/deprecated-checker
+components/brave_component_updater/browser/local_data_files_observer.h @brave/deprecated-checker
+components/brave_component_updater/browser/local_data_files_service.h @brave/deprecated-checker
+components/brave_component_updater/browser/BUILD.gn @brave/deprecated-checker
 
 # BravePrefServiceBridge is deprecated
-browser/android/preferences/brave_pref_service_bridge.cc @bridiver
+browser/android/preferences/brave_pref_service_bridge.cc @brave/deprecated-checker
 
 # Rewards
 browser/brave_rewards/ @brave/rewards-client
@@ -78,7 +78,7 @@ brave/components/brave_ads/core/internal/security/**/*.mm @brave/ads-client
 
 # Brave l10n components are deprecated. Use Chromium's functionality
 # unless no equivalent is available.
-brave/components/l10n/ @tmancey @bridiver
+brave/components/l10n/ @brave/deprecated-checker
 
 # Network
 browser/net/ @brave/brave-core-owners
@@ -119,10 +119,10 @@ browser/ui/views/infobars/brave_wayback_machine_* @simonhong
 components/brave_wayback_machine @simonhong
 
 # Licensing of third-party components
-common/licenses/ @fmarier
-script/brave_license_helper.py @fmarier
-script/check_npm_licenses.py @fmarier
-script/generate_licenses.py @fmarier
+common/licenses/ @brave/license-reviewer
+script/brave_license_helper.py @brave/license-reviewer
+script/check_npm_licenses.py @brave/license-reviewer
+script/generate_licenses.py @brave/license-reviewer
 
 # Crypto Wallets
 browser/brave_wallet/ @brave/crypto-wallets-core
@@ -158,10 +158,10 @@ components/time_period_storage/ @brave/p3a-reviewers
 components/brave_perf_predictor/ @brave/adblock-team
 
 # Permissions
-browser/permissions/**/*expiration* @goodov
-browser/permissions/**/*lifetime* @goodov
-components/permissions/**/*expiration* @goodov
-components/permissions/**/*lifetime* @goodov
+browser/permissions/**/*expiration* @brave/permissions-reviewer
+browser/permissions/**/*lifetime* @brave/permissions-reviewer
+components/permissions/**/*expiration* @brave/permissions-reviewer
+components/permissions/**/*lifetime* @brave/permissions-reviewer
 
 # Java patching
 build/android/bytecode/ @brave/java-patch-reviewers
@@ -198,19 +198,19 @@ android/java/org/chromium/chrome/browser/preferences/BravePrefServiceBridge.java
 
 # GitHub configuration
 /.github/ @brave/devops-team
-/.github/CODEOWNERS @bridiver @bsclifton
+/.github/CODEOWNERS @brave/codeowners
 /.github/PULL_REQUEST_TEMPLATE.md @bsclifton
 
 # Semgrep configuration
 /.semgrepignore @thypon
 
 # Deprecated android util directory
-android/java/org/chromium/chrome/browser/util @bridiver
+android/java/org/chromium/chrome/browser/util @brave/deprecated-checker
 # This file should be removed once our UI is adjusted to Dynamic Colors
 android/java/org/chromium/chrome/browser/util/BraveDynamicColors.java @brave/Android
 
 # mojo interfaces should be implemented directly by the underlying classes
-browser/ai_chat/ai_chat_settings_helper.* @bridiver @petemill
+browser/ai_chat/ai_chat_settings_helper.* @brave/mojo-interfaces
 
 # These rules are last to take precedence over directory rules.Do not add any
 # new rules below this line without checking with @bridiver
@@ -220,7 +220,7 @@ browser/ai_chat/ai_chat_settings_helper.* @bridiver @petemill
 
 # Rust deps
 **/Cargo.* @brave/rust-deps-reviewers
-third_party/rust @bridiver @cdesouza-chromium
+third_party/rust @brave/3p-rust
 
 # include_rules
 DEPS @brave/deps-reviewers
@@ -265,13 +265,13 @@ components/skus/common/skus_utils.h @brave/sec-team
 # for brave_exec_script_allowlist
 build/dotfile_settings.gni @brave/brave-core-owners
 
-docs/gni_sources.md @bridiver
-docs/keyed_services.md @bridiver
+docs/gni_sources.md @brave/docs-reviewer
+docs/keyed_services.md @brave/docs-reviewer
 
-build/commands/lib/branding.js @bridiver
+build/commands/lib/branding.js @brave/branding-code-reviewer
 
 # deprecated
-/components/constants @bridiver
+/components/constants @brave/deprecated-checker
 
 # changes to upstream content settings should be done as patches
 content_settings_registry.cc @brave/content-settings-reviewers
