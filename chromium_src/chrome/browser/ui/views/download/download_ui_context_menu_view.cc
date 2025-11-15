@@ -5,7 +5,6 @@
 
 #include "chrome/browser/ui/views/download/download_ui_context_menu_view.h"
 
-#include "brave/browser/download/brave_download_commands.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/download/bubble/download_bubble_prefs.h"
 #include "chrome/browser/download/download_ui_model.h"
@@ -22,6 +21,8 @@
 DownloadUiContextMenuView::~DownloadUiContextMenuView() = default;
 
 ui::SimpleMenuModel* DownloadUiContextMenuView::GetMenuModel() {
+  // TODO(https://github.com/brave/brave-browser/issues/50753) Move this logic
+  // to DownloadUiContextMenu.
   auto* model = DownloadUiContextMenuViewChromium::GetMenuModel();
   if (!model) {
     return nullptr;
@@ -34,7 +35,7 @@ ui::SimpleMenuModel* DownloadUiContextMenuView::GetMenuModel() {
 
   // Early return if |model| has the item. |model| is cached by base class.
   if (auto index =
-          model->GetIndexOfCommandId(BraveDownloadCommands::REMOVE_FROM_LIST)) {
+          model->GetIndexOfCommandId(DownloadCommands::REMOVE_FROM_LIST)) {
     return model;
   }
 
@@ -46,7 +47,7 @@ ui::SimpleMenuModel* DownloadUiContextMenuView::GetMenuModel() {
 
   if (auto index =
           model->GetIndexOfCommandId(DownloadCommands::SHOW_IN_FOLDER)) {
-    model->InsertItemAt(*index + 1, BraveDownloadCommands::REMOVE_FROM_LIST,
+    model->InsertItemAt(*index + 1, DownloadCommands::REMOVE_FROM_LIST,
                         l10n_util::GetStringUTF16(
                             IDS_DOWNLOAD_BUBBLE_ITEM_CTX_MENU_REMOVE_ITEM));
   }
@@ -55,7 +56,9 @@ ui::SimpleMenuModel* DownloadUiContextMenuView::GetMenuModel() {
 }
 
 bool DownloadUiContextMenuView::IsCommandIdEnabled(int command_id) const {
-  if (command_id == BraveDownloadCommands::REMOVE_FROM_LIST) {
+  // TODO(https://github.com/brave/brave-browser/issues/50753) Move this logic
+  // to DownloadItemModel once we remove this class.
+  if (command_id == DownloadCommands::REMOVE_FROM_LIST) {
     return true;
   }
 
@@ -63,7 +66,9 @@ bool DownloadUiContextMenuView::IsCommandIdEnabled(int command_id) const {
 }
 
 bool DownloadUiContextMenuView::IsCommandIdChecked(int command_id) const {
-  if (command_id == BraveDownloadCommands::REMOVE_FROM_LIST) {
+  // TODO(https://github.com/brave/brave-browser/issues/50753) Move this logic
+  // to DownloadItemModel once we remove this class.
+  if (command_id == DownloadCommands::REMOVE_FROM_LIST) {
     return false;
   }
 
@@ -71,7 +76,9 @@ bool DownloadUiContextMenuView::IsCommandIdChecked(int command_id) const {
 }
 
 bool DownloadUiContextMenuView::IsCommandIdVisible(int command_id) const {
-  if (command_id == BraveDownloadCommands::REMOVE_FROM_LIST) {
+  // TODO(https://github.com/brave/brave-browser/issues/50753) Move this logic
+  // to DownloadItemModel once we remove this class.
+  if (command_id == DownloadCommands::REMOVE_FROM_LIST) {
     return true;
   }
 
@@ -80,7 +87,9 @@ bool DownloadUiContextMenuView::IsCommandIdVisible(int command_id) const {
 
 void DownloadUiContextMenuView::ExecuteCommand(int command_id,
                                                int event_flags) {
-  if (command_id == BraveDownloadCommands::REMOVE_FROM_LIST) {
+  // TODO(https://github.com/brave/brave-browser/issues/50753) Move this logic
+  // to DownloadItemModel once we remove this class.
+  if (command_id == DownloadCommands::REMOVE_FROM_LIST) {
     GetDownload()->GetDownloadItem()->Remove();
     return;
   }

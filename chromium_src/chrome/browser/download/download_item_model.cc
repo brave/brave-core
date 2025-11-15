@@ -14,14 +14,57 @@
   case DownloadCommands::REMOVE_FROM_LIST: \
   case DownloadCommands::DELETE_LOCAL_FILE
 
+#define DownloadItemModel DownloadItemModel_Chromium
+
 #include <chrome/browser/download/download_item_model.cc>
 
+#undef DownloadItemModel
 #undef EDIT_WITH_MEDIA_APP
+
+// static
+DownloadUIModel::DownloadUIModelPtr DownloadItemModel::Wrap(
+    download::DownloadItem* download) {
+  return std::make_unique<DownloadItemModel>(download);
+}
+
+// static
+DownloadUIModel::DownloadUIModelPtr DownloadItemModel::Wrap(
+    download::DownloadItem* download,
+    std::unique_ptr<DownloadUIModel::StatusTextBuilderBase>
+        status_text_builder) {
+  return std::make_unique<DownloadItemModel>(download,
+                                             std::move(status_text_builder));
+}
 
 void DownloadItemModel::DeleteLocalFile() {
   // Passing base::DoNothing() as a callback because we don't have follow-up
   // actions to take after the deletion.
   // In case of success, DownloadItemModel will be updated by itself.
   // On the other hand, if the deletion fails, we don't have to do anything.
-  download_->DeleteFile(base::DoNothing());
+  // Note that we're calling non-const version of GetDownloadItem() here.
+  DownloadUIModel::GetDownloadItem()->DeleteFile(base::DoNothing());
 }
+
+#if !BUILDFLAG(IS_ANDROID)
+bool DownloadItemModel::IsCommandEnabled(
+    const DownloadCommands* download_commands,
+    DownloadCommands::Command command) const {
+  if (command == DownloadCommands::DELETE_LOCAL_FILE) {
+    return GetState() == download::DownloadItem::COMPLETE &&
+           !GetFileExternallyRemoved() && !GetFullPath().empty();
+  }
+
+  return DownloadItemModel_Chromium::IsCommandEnabled(download_commands,
+                                                      command);
+}
+
+void DownloadItemModel::ExecuteCommand(DownloadCommands* download_commands,
+                                       DownloadCommands::Command command) {
+  if (command == DownloadCommands::DELETE_LOCAL_FILE) {
+    DeleteLocalFile();
+    return;
+  }
+
+  DownloadItemModel_Chromium::ExecuteCommand(download_commands, command);
+}
+#endif  // !BUILDFLAG(IS_ANDROID)
