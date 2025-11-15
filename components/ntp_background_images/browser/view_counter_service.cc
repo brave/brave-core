@@ -137,6 +137,13 @@ void ViewCounterService::RecordViewedAdEvent(
     const std::string& campaign_id,
     const std::string& creative_instance_id,
     brave_ads::mojom::NewTabPageAdMetricType mojom_ad_metric_type) {
+  // IPF campaigns are the only ones to use a metric type of kDisabled, but
+  // this condition should be changed if that expectation changes.
+  if (mojom_ad_metric_type ==
+      brave_ads::mojom::NewTabPageAdMetricType::kDisabled) {
+    RecordInProductFeatureView();
+  }
+
   branded_new_tab_count_state_->AddDelta(1);
   UpdateP3AValues();
 
@@ -150,6 +157,13 @@ void ViewCounterService::RecordClickedAdEvent(
     const std::string& creative_instance_id,
     const std::string& /*target_url*/,
     brave_ads::mojom::NewTabPageAdMetricType mojom_ad_metric_type) {
+  // IPF campaigns are the only ones to use a metric type of kDisabled, but
+  // this condition should be changed if that expectation changes.
+  if (mojom_ad_metric_type ==
+      brave_ads::mojom::NewTabPageAdMetricType::kDisabled) {
+    RecordInProductFeatureClick();
+  }
+
   MaybeTriggerNewTabPageAdEvent(
       placement_id, creative_instance_id, mojom_ad_metric_type,
       brave_ads::mojom::NewTabPageAdEventType::kClicked);
