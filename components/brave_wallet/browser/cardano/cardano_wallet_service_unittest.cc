@@ -175,6 +175,80 @@ TEST_F(CardanoWalletServiceUnitTest, GetChangeAddress) {
             "cxpy8vz4k2g73yc9nzvalpwnvgmkxpq6jdpa8");
 }
 
+TEST_F(CardanoWalletServiceUnitTest,
+       GetUsedAddresses_ReturnsSingleAddressOnly) {
+  SetupCardanoAccount();
+  auto addresses = cardano_wallet_service_->GetUsedAddresses(account_id());
+
+  ASSERT_EQ(addresses.size(), 1u);
+  EXPECT_EQ(addresses[0]->payment_key_id->role,
+            mojom::CardanoKeyRole::kExternal);
+  EXPECT_EQ(addresses[0]->payment_key_id->index, 0u);
+  EXPECT_EQ(addresses[0]->address_string,
+            "addr1q9gn9ra9l2mz35uc0ww0qkgf5mugczqyxvr5wegdacxa724hwphl5wrg6u8s8"
+            "cxpy8vz4k2g73yc9nzvalpwnvgmkxpq6jdpa8");
+}
+
+TEST_F(CardanoWalletServiceUnitTest, GetUnusedAddresses_ReturnsEmptyArray) {
+  SetupCardanoAccount();
+  auto addresses = cardano_wallet_service_->GetUnusedAddresses(account_id());
+
+  EXPECT_EQ(addresses.size(), 0u);
+}
+
+TEST_F(CardanoWalletServiceUnitTest,
+       GetChangeAddress_ReturnsSameAsUsedAddress) {
+  SetupCardanoAccount();
+
+  auto used_addresses = cardano_wallet_service_->GetUsedAddresses(account_id());
+  auto change_address = cardano_wallet_service_->GetChangeAddress(account_id());
+
+  ASSERT_EQ(used_addresses.size(), 1u);
+  ASSERT_TRUE(change_address);
+  EXPECT_EQ(change_address->address_string, used_addresses[0]->address_string);
+  EXPECT_EQ(change_address->payment_key_id->role,
+            mojom::CardanoKeyRole::kExternal);
+  EXPECT_EQ(change_address->payment_key_id->index, 0u);
+}
+
+TEST_F(CardanoWalletServiceUnitTest, AllAddressMethods_ReturnSameAddress) {
+  SetupCardanoAccount();
+
+  auto used_addresses = cardano_wallet_service_->GetUsedAddresses(account_id());
+  auto change_address = cardano_wallet_service_->GetChangeAddress(account_id());
+
+  ASSERT_EQ(used_addresses.size(), 1u);
+  ASSERT_TRUE(change_address);
+
+  const std::string expected_address =
+      "addr1q9gn9ra9l2mz35uc0ww0qkgf5mugczqyxvr5wegdacxa724hwphl5wrg6u8s8"
+      "cxpy8vz4k2g73yc9nzvalpwnvgmkxpq6jdpa8";
+
+  EXPECT_EQ(used_addresses[0]->address_string, expected_address);
+  EXPECT_EQ(change_address->address_string, expected_address);
+  EXPECT_EQ(used_addresses[0]->payment_key_id->role,
+            mojom::CardanoKeyRole::kExternal);
+  EXPECT_EQ(used_addresses[0]->payment_key_id->index, 0u);
+  EXPECT_EQ(change_address->payment_key_id->role,
+            mojom::CardanoKeyRole::kExternal);
+  EXPECT_EQ(change_address->payment_key_id->index, 0u);
+}
+
+TEST_F(CardanoWalletServiceUnitTest, NoAddressMethod_ReturnsMultipleAddresses) {
+  SetupCardanoAccount();
+
+  auto used_addresses = cardano_wallet_service_->GetUsedAddresses(account_id());
+  EXPECT_EQ(used_addresses.size(), 1u);
+
+  auto unused_addresses =
+      cardano_wallet_service_->GetUnusedAddresses(account_id());
+  EXPECT_EQ(unused_addresses.size(), 0u);
+
+  EXPECT_LE(used_addresses.size(), 1u);
+
+  EXPECT_EQ(unused_addresses.size(), 0u);
+}
+
 TEST_F(CardanoWalletServiceUnitTest, CreateAndSignCardanoTransaction) {
   // TODO(https://github.com/brave/brave-browser/issues/45278): needs more tests
   // for all corner cases.
@@ -228,4 +302,80 @@ TEST_F(CardanoWalletServiceUnitTest, CreateAndSignCardanoTransaction) {
       cardano_test_rpc_server_->captured_raw_tx());
 }
 
+TEST_F(CardanoWalletServiceUnitTest,
+       SignAndPostTransaction_RejectsAfterWalletLock) {
+  SetupCardanoAccount();
+
+  base::MockCallback<CardanoWalletService::CardanoCreateTransactionTaskCallback>
+      create_callback;
+
+  base::expected<CardanoTransaction, std::string> captured_tx;
+
+  EXPECT_CALL(create_callback, Run(_))
+      .WillOnce(DoAll(SaveArg<0>(&captured_tx),
+                      RunOnceClosure(task_environment_.QuitClosure())));
+
+  cardano_wallet_service_->CreateCardanoTransaction(
+      account_id(), *CardanoAddress::FromString(kMockCardanoAddress1), 7400000,
+      false, create_callback.Get());
+  task_environment_.RunUntilQuit();
+  testing::Mock::VerifyAndClearExpectations(&create_callback);
+
+  ASSERT_TRUE(captured_tx.has_value());
+
+  keyring_service_->Lock();
+  EXPECT_TRUE(keyring_service_->IsLockedSync());
+
+  base::MockCallback<CardanoWalletService::SignAndPostTransactionCallback>
+      post_callback;
+
+  std::string captured_error;
+  EXPECT_CALL(post_callback, Run(_, _, _))
+      .WillOnce(DoAll(SaveArg<2>(&captured_error),
+                      RunOnceClosure(task_environment_.QuitClosure())));
+
+  cardano_wallet_service_->SignAndPostTransaction(
+      account_id(), captured_tx.value(), post_callback.Get());
+
+  task_environment_.RunUntilQuit();
+  testing::Mock::VerifyAndClearExpectations(&post_callback);
+
+  EXPECT_FALSE(captured_error.empty());
+}
+
+TEST_F(CardanoWalletServiceUnitTest,
+       SignAndPostTransaction_HandlesLargeTransaction) {
+  SetupCardanoAccount();
+
+  base::MockCallback<CardanoWalletService::CardanoCreateTransactionTaskCallback>
+      create_callback;
+
+  base::expected<CardanoTransaction, std::string> captured_result;
+
+  EXPECT_CALL(create_callback, Run(_))
+      .WillOnce(DoAll(SaveArg<0>(&captured_result),
+                      RunOnceClosure(task_environment_.QuitClosure())));
+
+  cardano_wallet_service_->CreateCardanoTransaction(
+      account_id(), *CardanoAddress::FromString(kMockCardanoAddress1),
+      45000000000000000, false, create_callback.Get());
+  task_environment_.RunUntilQuit();
+  testing::Mock::VerifyAndClearExpectations(&create_callback);
+
+  if (captured_result.has_value()) {
+    base::MockCallback<CardanoWalletService::SignAndPostTransactionCallback>
+        post_callback;
+
+    EXPECT_CALL(post_callback, Run(_, _, _))
+        .WillOnce(RunOnceClosure(task_environment_.QuitClosure()));
+
+    cardano_wallet_service_->SignAndPostTransaction(
+        account_id(), captured_result.value(), post_callback.Get());
+
+    task_environment_.RunUntilQuit();
+    testing::Mock::VerifyAndClearExpectations(&post_callback);
+  } else {
+    EXPECT_FALSE(captured_result.error().empty());
+  }
+}
 }  // namespace brave_wallet
