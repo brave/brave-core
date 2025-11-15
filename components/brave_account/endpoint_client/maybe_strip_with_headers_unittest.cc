@@ -6,10 +6,12 @@
 #include "brave/components/brave_account/endpoint_client/maybe_strip_with_headers.h"
 
 #include <concepts>
+#include <optional>
 #include <tuple>
 
 #include "base/values.h"
 #include "brave/components/brave_account/endpoint_client/request_types.h"
+#include "brave/components/brave_account/endpoint_client/response.h"
 #include "brave/components/brave_account/endpoint_client/with_headers.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -25,6 +27,12 @@ struct TestRequestBody {
 
 using TestRequest = POST<TestRequestBody>;
 
+struct TestResponseBody {
+  static std::optional<TestResponseBody> FromValue(const base::Value&);
+};
+
+using TestResponse = Response<TestResponseBody, TestResponseBody>;
+
 template <typename T>
 struct MaybeStripWithHeadersTest : testing::Test {
   using TestType = std::tuple_element_t<0, T>;
@@ -35,7 +43,9 @@ using MaybeStripWithHeadersTestTypes =
     testing::Types<std::tuple<void*, void*>,
                    std::tuple<volatile int, volatile int>,
                    std::tuple<TestRequest, TestRequest>,
-                   std::tuple<WithHeaders<TestRequest>, TestRequest>>;
+                   std::tuple<WithHeaders<TestRequest>, TestRequest>,
+                   std::tuple<TestResponse, TestResponse>,
+                   std::tuple<WithHeaders<TestResponse>, TestResponse>>;
 
 }  // namespace
 

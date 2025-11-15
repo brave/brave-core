@@ -17,6 +17,7 @@
 #include "base/types/expected.h"
 #include "brave/components/brave_account/endpoint_client/client.h"
 #include "brave/components/brave_account/endpoint_client/is_endpoint.h"
+#include "brave/components/brave_account/endpoint_client/response.h"
 #include "brave/components/brave_account/endpoints/error.h"
 #include "net/http/http_status_code.h"
 #include "services/network/public/cpp/resource_request.h"
@@ -31,15 +32,19 @@ inline bool operator==(const Error& lhs, const Error& rhs) {
   return lhs.code == rhs.code;
 }
 
+template <typename T, typename E>
+bool operator==(const endpoint_client::Response<T, E>& lhs,
+                const endpoint_client::Response<T, E>& rhs) {
+  return lhs.error == rhs.error && lhs.status == rhs.status &&
+         lhs.body == rhs.body;
+}
+
 template <endpoint_client::IsEndpoint T>
 struct EndpointTestCase {
-  using Expected = base::expected<std::optional<typename T::Response>,
-                                  std::optional<typename T::Error>>;
-
   std::string test_name;
   net::HttpStatusCode http_status_code;
-  std::string raw_reply;
-  Expected reply;
+  std::string raw_response_body;
+  T::Response expected_response;
 };
 
 template <endpoint_client::IsEndpoint T>
@@ -56,16 +61,15 @@ class EndpointTest : public testing::TestWithParam<const EndpointTestCase<T>*> {
     test_url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
         [&](const network::ResourceRequest& resource_request) {
           test_url_loader_factory_.AddResponse(resource_request.url.spec(),
-                                               test_case.raw_reply,
+                                               test_case.raw_response_body,
                                                test_case.http_status_code);
         }));
 
-    base::test::TestFuture<int, typename EndpointTestCase<T>::Expected> future;
+    base::test::TestFuture<typename T::Response> future;
     endpoint_client::Client<T>::Send(
         test_url_loader_factory_.GetSafeWeakWrapper(), typename T::Request(),
         future.GetCallback());
-    EXPECT_EQ(future.Take(),
-              std::tie(test_case.http_status_code, test_case.reply));
+    EXPECT_EQ(future.Take(), test_case.expected_response);
   }
 
   base::test::TaskEnvironment task_environment_;

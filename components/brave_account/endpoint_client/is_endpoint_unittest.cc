@@ -13,6 +13,7 @@
 #include "base/values.h"
 #include "brave/components/brave_account/endpoint_client/concept_test.h"
 #include "brave/components/brave_account/endpoint_client/request_types.h"
+#include "brave/components/brave_account/endpoint_client/response.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
@@ -28,47 +29,32 @@ struct ValidRequestBody {
 
 using ValidRequest = POST<ValidRequestBody>;
 
-struct InvalidResponseBody {};
+struct InvalidResponse {};
 
 struct ValidResponseBody {
   static std::optional<ValidResponseBody> FromValue(const base::Value&);
 };
 
-struct InvalidErrorBody {};
+using ValidResponse = Response<ValidResponseBody, ValidResponseBody>;
 
-struct ValidErrorBody {
-  static std::optional<ValidErrorBody> FromValue(const base::Value&);
-};
-
-struct EndpointInvalidRequestBody {
-  static constexpr char kName[] = "EndpointInvalidRequestBody";
+struct EndpointInvalidRequest {
+  static constexpr char kName[] = "EndpointInvalidRequest";
   using Request = InvalidRequest;
-  using Response = ValidResponseBody;
-  using Error = ValidErrorBody;
+  using Response = ValidResponse;
   static GURL URL();
 };
 
-struct EndpointInvalidResponseBody {
-  static constexpr char kName[] = "EndpointInvalidResponseBody";
+struct EndpointInvalidResponse {
+  static constexpr char kName[] = "EndpointInvalidResponse";
   using Request = ValidRequest;
-  using Response = InvalidResponseBody;
-  using Error = ValidErrorBody;
-  static GURL URL();
-};
-
-struct EndpointInvalidErrorBody {
-  static constexpr char kName[] = "EndpointInvalidErrorBody";
-  using Request = ValidRequest;
-  using Response = ValidResponseBody;
-  using Error = InvalidErrorBody;
+  using Response = InvalidResponse;
   static GURL URL();
 };
 
 struct EndpointInvalidURL {
   static constexpr char kName[] = "EndpointInvalidURL";
   using Request = ValidRequest;
-  using Response = ValidResponseBody;
-  using Error = ValidErrorBody;
+  using Response = ValidResponse;
   static std::string URL();
 };
 
@@ -77,9 +63,8 @@ using IsEndpointConceptTest = ConceptTest::Fixture<T>;
 
 // Hand-crafted invalid endpoints.
 using EndpointTestTypes =
-    testing::Types<std::tuple<EndpointInvalidRequestBody, std::false_type>,
-                   std::tuple<EndpointInvalidResponseBody, std::false_type>,
-                   std::tuple<EndpointInvalidErrorBody, std::false_type>,
+    testing::Types<std::tuple<EndpointInvalidRequest, std::false_type>,
+                   std::tuple<EndpointInvalidResponse, std::false_type>,
                    std::tuple<EndpointInvalidURL, std::false_type>>;
 
 }  // namespace
@@ -109,15 +94,7 @@ struct MaybeResponse {};
 
 template <>
 struct MaybeResponse<true> {
-  using Response = ValidResponseBody;
-};
-
-template <bool>
-struct MaybeError {};
-
-template <>
-struct MaybeError<true> {
-  using Error = ValidErrorBody;
+  using Response = ValidResponse;
 };
 
 template <bool>
@@ -128,39 +105,29 @@ struct MaybeURL<true> {
   static GURL URL();
 };
 
-template <bool HasRequest, bool HasResponse, bool HasError, bool HasURL>
+template <bool HasRequest, bool HasResponse, bool HasURL>
 struct EndpointCase : MaybeRequest<HasRequest>,
                       MaybeResponse<HasResponse>,
-                      MaybeError<HasError>,
                       MaybeURL<HasURL> {
   static constexpr bool kHasRequest = HasRequest;
   static constexpr bool kHasResponse = HasResponse;
-  static constexpr bool kHasError = HasError;
   static constexpr bool kHasURL = HasURL;
   static constexpr bool kSatisfiesConcept =
-      kHasRequest && kHasResponse && kHasError && kHasURL;
+      kHasRequest && kHasResponse && kHasURL;
 };
 
 template <typename>
 struct IsEndpointConceptMatrixTest : testing::Test {};
 
 // Exhaustive presence/absence matrix.
-using EndpointMatrix = testing::Types<EndpointCase<false, false, false, false>,
-                                      EndpointCase<false, false, false, true>,
-                                      EndpointCase<false, false, true, false>,
-                                      EndpointCase<false, false, true, true>,
-                                      EndpointCase<false, true, false, false>,
-                                      EndpointCase<false, true, false, true>,
-                                      EndpointCase<false, true, true, false>,
-                                      EndpointCase<false, true, true, true>,
-                                      EndpointCase<true, false, false, false>,
-                                      EndpointCase<true, false, false, true>,
-                                      EndpointCase<true, false, true, false>,
-                                      EndpointCase<true, false, true, true>,
-                                      EndpointCase<true, true, false, false>,
-                                      EndpointCase<true, true, false, true>,
-                                      EndpointCase<true, true, true, false>,
-                                      EndpointCase<true, true, true, true>>;
+using EndpointMatrix = testing::Types<EndpointCase<false, false, false>,
+                                      EndpointCase<false, false, true>,
+                                      EndpointCase<false, true, false>,
+                                      EndpointCase<false, true, true>,
+                                      EndpointCase<true, false, false>,
+                                      EndpointCase<true, false, true>,
+                                      EndpointCase<true, true, false>,
+                                      EndpointCase<true, true, true>>;
 
 struct EndpointName {
   template <typename T>
@@ -170,7 +137,7 @@ struct EndpointName {
           std::string bits;
           ((bits += (bools ? "1" : "0")), ...);
           return bits;
-        }(T::kHasRequest, T::kHasResponse, T::kHasError, T::kHasURL) +
+        }(T::kHasRequest, T::kHasResponse, T::kHasURL) +
         "_Endpoint";
 
     if (!T::kHasRequest) {
@@ -179,10 +146,6 @@ struct EndpointName {
 
     if (!T::kHasResponse) {
       name += "NoResponse";
-    }
-
-    if (!T::kHasError) {
-      name += "NoError";
     }
 
     if (!T::kHasURL) {

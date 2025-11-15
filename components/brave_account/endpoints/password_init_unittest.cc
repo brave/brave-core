@@ -16,8 +16,8 @@
 
 namespace brave_account::endpoints {
 
-bool operator==(const PasswordInit::Response& lhs,
-                const PasswordInit::Response& rhs) {
+bool operator==(const PasswordInit::Response::SuccessBody& lhs,
+                const PasswordInit::Response::SuccessBody& rhs) {
   return lhs.serialized_response == rhs.serialized_response &&
          lhs.verification_token == rhs.verification_token;
 }
@@ -30,14 +30,15 @@ const PasswordInitTestCase* Success() {
   static const base::NoDestructor<PasswordInitTestCase> kSuccess(
       {.test_name = "success",
        .http_status_code = net::HTTP_OK,
-       .raw_reply = R"({ "serializedResponse": "34c375d933e3c",
-                         "verificationToken": "eyJhbGciOiJFUz" })",
-       .reply = [] {
-         PasswordInit::Response response;
-         response.serialized_response = "34c375d933e3c";
-         response.verification_token = "eyJhbGciOiJFUz";
-         return response;
-       }()});
+       .raw_response_body = R"({ "serializedResponse": "34c375d933e3c",
+                                 "verificationToken": "eyJhbGciOiJFUz" })",
+       .expected_response = {
+           .error = net::OK, .status = net::HTTP_OK, .body = [] {
+             PasswordInit::Response::SuccessBody body;
+             body.serialized_response = "34c375d933e3c";
+             body.verification_token = "eyJhbGciOiJFUz";
+             return body;
+           }()}});
   return kSuccess.get();
 }
 
@@ -58,15 +59,17 @@ const PasswordInitTestCase* ApplicationJsonError() {
   static const base::NoDestructor<PasswordInitTestCase> kApplicationJsonError(
       {.test_name = "application_json_error",
        .http_status_code = net::HTTP_BAD_REQUEST,
-       .raw_reply =
+       .raw_response_body =
            R"({ "code": 13004,
                 "error": "account already exists",
                 "status": 400 })",
-       .reply = base::unexpected([] {
-         PasswordInit::Error error;
-         error.code = base::Value(13004);
-         return error;
-       }())});
+       .expected_response = {.error = net::OK,
+                             .status = net::HTTP_BAD_REQUEST,
+                             .body = base::unexpected([] {
+                               PasswordInit::Response::ErrorBody error;
+                               error.code = base::Value(13004);
+                               return error;
+                             }())}});
   return kApplicationJsonError.get();
 }
 
@@ -78,8 +81,10 @@ const PasswordInitTestCase* NonApplicationJsonError() {
       kNonApplicationJsonError(
           {.test_name = "non_application_json_error",
            .http_status_code = net::HTTP_INTERNAL_SERVER_ERROR,
-           .raw_reply = "non-application/json error",
-           .reply = base::unexpected(std::nullopt)});
+           .raw_response_body = "non-application/json error",
+           .expected_response = {.error = net::OK,
+                                 .status = net::HTTP_INTERNAL_SERVER_ERROR,
+                                 .body = std::nullopt}});
   return kNonApplicationJsonError.get();
 }
 

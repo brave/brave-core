@@ -8,6 +8,7 @@
 
 #include "brave/components/brave_account/endpoint_client/is_endpoint.h"
 #include "brave/components/brave_account/endpoint_client/request_types.h"
+#include "brave/components/brave_account/endpoint_client/response.h"
 #include "brave/components/brave_account/endpoints/error.h"
 #include "brave/components/brave_account/endpoints/host.h"
 #include "brave/components/brave_account/endpoints/password_init_request.h"
@@ -18,8 +19,7 @@ namespace brave_account::endpoints {
 
 struct PasswordInit {
   using Request = endpoint_client::POST<PasswordInitRequest>;
-  using Response = PasswordInitResponse;
-  using Error = Error;
+  using Response = endpoint_client::Response<PasswordInitResponse, Error>;
 
   static GURL URL() { return Host().Resolve("/v2/accounts/password/init"); }
 };

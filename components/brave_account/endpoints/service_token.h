@@ -8,6 +8,7 @@
 
 #include "brave/components/brave_account/endpoint_client/is_endpoint.h"
 #include "brave/components/brave_account/endpoint_client/request_types.h"
+#include "brave/components/brave_account/endpoint_client/response.h"
 #include "brave/components/brave_account/endpoints/error.h"
 #include "brave/components/brave_account/endpoints/host.h"
 #include "brave/components/brave_account/endpoints/service_token_request.h"
@@ -18,8 +19,7 @@ namespace brave_account::endpoints {
 
 struct ServiceToken {
   using Request = endpoint_client::POST<ServiceTokenRequest>;
-  using Response = ServiceTokenResponse;
-  using Error = Error;
+  using Response = endpoint_client::Response<ServiceTokenResponse, Error>;
 
   static GURL URL() { return Host().Resolve("/v2/auth/service_token"); }
 };
