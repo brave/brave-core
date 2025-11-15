@@ -11,6 +11,7 @@
 
 #include "base/run_loop.h"
 #include "base/test/bind.h"
+#include "base/test/gmock_callback_support.h"
 #include "base/test/run_until.h"
 #include "base/test/task_environment.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
@@ -37,35 +38,11 @@ class MockOllamaService : public OllamaService {
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
       : OllamaService(url_loader_factory) {}
 
-  void FetchModels(ModelsCallback callback) override {
-    fetch_models_callback_ = std::move(callback);
-  }
-
-  void ShowModel(const std::string& model_name,
-                 ModelDetailsCallback callback) override {
-    show_model_callbacks_[model_name] = std::move(callback);
-  }
-
-  // Test helpers to trigger callbacks
-  void TriggerFetchModelsCallback(
-      std::optional<std::vector<std::string>> models) {
-    if (fetch_models_callback_) {
-      std::move(fetch_models_callback_).Run(std::move(models));
-    }
-  }
-
-  void TriggerShowModelCallback(const std::string& model_name,
-                                std::optional<ModelDetails> details) {
-    auto it = show_model_callbacks_.find(model_name);
-    if (it != show_model_callbacks_.end()) {
-      std::move(it->second).Run(std::move(details));
-      show_model_callbacks_.erase(it);
-    }
-  }
-
- private:
-  ModelsCallback fetch_models_callback_;
-  std::map<std::string, ModelDetailsCallback> show_model_callbacks_;
+  MOCK_METHOD(void, FetchModels, (ModelsCallback), (override));
+  MOCK_METHOD(void,
+              ShowModel,
+              (const std::string&, ModelDetailsCallback),
+              (override));
 };
 
 }  // namespace
@@ -122,20 +99,22 @@ class OllamaModelFetcherTest : public testing::Test {
 TEST_F(OllamaModelFetcherTest, FetchModelsAddsNewModels) {
   size_t initial_count = model_service()->GetModels().size();
 
-  // Trigger FetchModels
-  ollama_model_fetcher()->FetchModels();
-
-  // Simulate FetchModels response with 2 models
+  // Setup mock expectations
   std::vector<std::string> mock_models = {"llama2:7b", "mistral:latest"};
-  mock_ollama_service()->TriggerFetchModelsCallback(std::move(mock_models));
+  EXPECT_CALL(*mock_ollama_service(), FetchModels(_))
+      .WillOnce(base::test::RunOnceCallback<0>(std::move(mock_models)));
 
-  // Simulate ShowModel responses for each model
   OllamaService::ModelDetails details;
   details.context_length = 4096;
   details.has_vision = false;
 
-  mock_ollama_service()->TriggerShowModelCallback("llama2:7b", details);
-  mock_ollama_service()->TriggerShowModelCallback("mistral:latest", details);
+  EXPECT_CALL(*mock_ollama_service(), ShowModel("llama2:7b", _))
+      .WillOnce(base::test::RunOnceCallback<1>(details));
+  EXPECT_CALL(*mock_ollama_service(), ShowModel("mistral:latest", _))
+      .WillOnce(base::test::RunOnceCallback<1>(details));
+
+  // Trigger FetchModels
+  ollama_model_fetcher()->FetchModels();
 
   EXPECT_TRUE(base::test::RunUntil([&]() {
     return model_service()->GetModels().size() == initial_count + 2;
@@ -156,17 +135,20 @@ TEST_F(OllamaModelFetcherTest, FetchModelsAddsNewModels) {
 
 TEST_F(OllamaModelFetcherTest, FetchModelsRemovesObsoleteModels) {
   // First fetch - add 2 models
-  ollama_model_fetcher()->FetchModels();
-
   std::vector<std::string> mock_models = {"llama2:7b", "mistral:latest"};
-  mock_ollama_service()->TriggerFetchModelsCallback(std::move(mock_models));
+  EXPECT_CALL(*mock_ollama_service(), FetchModels(_))
+      .WillOnce(base::test::RunOnceCallback<0>(std::move(mock_models)));
 
   OllamaService::ModelDetails details;
   details.context_length = 4096;
   details.has_vision = false;
 
-  mock_ollama_service()->TriggerShowModelCallback("llama2:7b", details);
-  mock_ollama_service()->TriggerShowModelCallback("mistral:latest", details);
+  EXPECT_CALL(*mock_ollama_service(), ShowModel("llama2:7b", _))
+      .WillOnce(base::test::RunOnceCallback<1>(details));
+  EXPECT_CALL(*mock_ollama_service(), ShowModel("mistral:latest", _))
+      .WillOnce(base::test::RunOnceCallback<1>(details));
+
+  ollama_model_fetcher()->FetchModels();
 
   EXPECT_TRUE(base::test::RunUntil([&]() {
     const auto& models = model_service()->GetModels();
@@ -183,10 +165,11 @@ TEST_F(OllamaModelFetcherTest, FetchModelsRemovesObsoleteModels) {
 
   // Second fetch - only 1 model remains (llama2 is not new, so no detail fetch
   // needed)
-  ollama_model_fetcher()->FetchModels();
-
   std::vector<std::string> updated_models = {"llama2:7b"};
-  mock_ollama_service()->TriggerFetchModelsCallback(std::move(updated_models));
+  EXPECT_CALL(*mock_ollama_service(), FetchModels(_))
+      .WillOnce(base::test::RunOnceCallback<0>(std::move(updated_models)));
+
+  ollama_model_fetcher()->FetchModels();
 
   EXPECT_TRUE(base::test::RunUntil([&]() {
     const auto& models = model_service()->GetModels();
@@ -203,38 +186,36 @@ TEST_F(OllamaModelFetcherTest, FetchModelsRemovesObsoleteModels) {
 }
 
 TEST_F(OllamaModelFetcherTest, FetchModelsHandlesEmptyResponse) {
-  base::RunLoop run_loop;
-
   size_t initial_count = model_service()->GetModels().size();
+
+  bool callback_called = false;
+  EXPECT_CALL(*mock_ollama_service(), FetchModels(_))
+      .WillOnce([&callback_called](OllamaService::ModelsCallback callback) {
+        std::move(callback).Run(std::nullopt);
+        callback_called = true;
+      });
 
   ollama_model_fetcher()->FetchModels();
 
-  // Simulate empty response (nullopt)
-  mock_ollama_service()->TriggerFetchModelsCallback(std::nullopt);
-
-  // Post a task to quit after callback completes
-  base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE, run_loop.QuitClosure());
-  run_loop.Run();
+  EXPECT_TRUE(base::test::RunUntil([&]() { return callback_called; }));
 
   const auto& models_after = model_service()->GetModels();
   EXPECT_EQ(initial_count, models_after.size());
 }
 
 TEST_F(OllamaModelFetcherTest, FetchModelsHandlesInvalidJSON) {
-  base::RunLoop run_loop;
-
   size_t initial_count = model_service()->GetModels().size();
+
+  bool callback_called = false;
+  EXPECT_CALL(*mock_ollama_service(), FetchModels(_))
+      .WillOnce([&callback_called](OllamaService::ModelsCallback callback) {
+        std::move(callback).Run(std::nullopt);
+        callback_called = true;
+      });
 
   ollama_model_fetcher()->FetchModels();
 
-  // Simulate invalid JSON response (nullopt)
-  mock_ollama_service()->TriggerFetchModelsCallback(std::nullopt);
-
-  // Post a task to quit after callback completes
-  base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE, run_loop.QuitClosure());
-  run_loop.Run();
+  EXPECT_TRUE(base::test::RunUntil([&]() { return callback_called; }));
 
   const auto& models_after = model_service()->GetModels();
   EXPECT_EQ(initial_count, models_after.size());
@@ -243,20 +224,21 @@ TEST_F(OllamaModelFetcherTest, FetchModelsHandlesInvalidJSON) {
 TEST_F(OllamaModelFetcherTest, PrefChangeTriggersModelFetch) {
   size_t initial_count = model_service()->GetModels().size();
 
-  // Enable Ollama fetching - this will trigger FetchModels
-  pref_service()->SetBoolean(prefs::kBraveAIChatOllamaFetchEnabled, true);
-
-  // Simulate FetchModels response
   std::vector<std::string> mock_models = {"llama2:7b", "mistral:latest"};
-  mock_ollama_service()->TriggerFetchModelsCallback(std::move(mock_models));
+  EXPECT_CALL(*mock_ollama_service(), FetchModels(_))
+      .WillOnce(base::test::RunOnceCallback<0>(std::move(mock_models)));
 
-  // Simulate ShowModel responses
   OllamaService::ModelDetails details;
   details.context_length = 4096;
   details.has_vision = false;
 
-  mock_ollama_service()->TriggerShowModelCallback("llama2:7b", details);
-  mock_ollama_service()->TriggerShowModelCallback("mistral:latest", details);
+  EXPECT_CALL(*mock_ollama_service(), ShowModel("llama2:7b", _))
+      .WillOnce(base::test::RunOnceCallback<1>(details));
+  EXPECT_CALL(*mock_ollama_service(), ShowModel("mistral:latest", _))
+      .WillOnce(base::test::RunOnceCallback<1>(details));
+
+  // Enable Ollama fetching - this will trigger FetchModels
+  pref_service()->SetBoolean(prefs::kBraveAIChatOllamaFetchEnabled, true);
 
   EXPECT_TRUE(base::test::RunUntil([&]() {
     return model_service()->GetModels().size() == initial_count + 2;
@@ -265,18 +247,20 @@ TEST_F(OllamaModelFetcherTest, PrefChangeTriggersModelFetch) {
 
 TEST_F(OllamaModelFetcherTest, PrefChangeDoesntTriggersRemove) {
   // First add some models
-  pref_service()->SetBoolean(prefs::kBraveAIChatOllamaFetchEnabled, true);
-
-  // Simulate FetchModels response
   std::vector<std::string> mock_models = {"llama2:7b", "mistral:latest"};
-  mock_ollama_service()->TriggerFetchModelsCallback(std::move(mock_models));
+  EXPECT_CALL(*mock_ollama_service(), FetchModels(_))
+      .WillOnce(base::test::RunOnceCallback<0>(std::move(mock_models)));
 
   OllamaService::ModelDetails details;
   details.context_length = 4096;
   details.has_vision = false;
 
-  mock_ollama_service()->TriggerShowModelCallback("llama2:7b", details);
-  mock_ollama_service()->TriggerShowModelCallback("mistral:latest", details);
+  EXPECT_CALL(*mock_ollama_service(), ShowModel("llama2:7b", _))
+      .WillOnce(base::test::RunOnceCallback<1>(details));
+  EXPECT_CALL(*mock_ollama_service(), ShowModel("mistral:latest", _))
+      .WillOnce(base::test::RunOnceCallback<1>(details));
+
+  pref_service()->SetBoolean(prefs::kBraveAIChatOllamaFetchEnabled, true);
 
   EXPECT_TRUE(base::test::RunUntil([&]() {
     const auto& models = model_service()->GetModels();
