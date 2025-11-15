@@ -8,10 +8,13 @@
 
 #include "chrome/browser/download/download_ui_model.h"
 
-// Implement DeleteLocalFile method to remove the download item from disk.
+// Implements a few methods
+// * DeleteLocalFile() methods to remove the download item from disk.
+// * CopyDownloadLinkToClipboard() to copy the download item's URL to clipboard.
 #define SetOpenWhenComplete(...)             \
   SetOpenWhenComplete(__VA_ARGS__) override; \
-  void DeleteLocalFile()
+  void DeleteLocalFile() override;           \
+  void CopyDownloadLinkToClipboard()
 
 #include <chrome/browser/download/download_item_model.h>  // IWYU pragma: export
 

@@ -6,13 +6,15 @@
 #include "chrome/browser/download/download_item_model.h"
 
 #include "chrome/browser/download/download_commands.h"
+#include "ui/base/clipboard/scoped_clipboard_writer.h"
 
 // Add switch-case handling for Brave-specific commands.
 // These cases are not used by the DownloadItemModel, so just fall through.
-#define EDIT_WITH_MEDIA_APP                \
-  EDIT_WITH_MEDIA_APP:                     \
-  case DownloadCommands::REMOVE_FROM_LIST: \
-  case DownloadCommands::DELETE_LOCAL_FILE
+#define EDIT_WITH_MEDIA_APP                 \
+  EDIT_WITH_MEDIA_APP:                      \
+  case DownloadCommands::REMOVE_FROM_LIST:  \
+  case DownloadCommands::DELETE_LOCAL_FILE: \
+  case DownloadCommands::COPY_DOWNLOAD_LINK
 
 #include <chrome/browser/download/download_item_model.cc>
 
@@ -24,4 +26,12 @@ void DownloadItemModel::DeleteLocalFile() {
   // In case of success, DownloadItemModel will be updated by itself.
   // On the other hand, if the deletion fails, we don't have to do anything.
   download_->DeleteFile(base::DoNothing());
+}
+
+void DownloadItemModel::CopyDownloadLinkToClipboard() {
+  auto url = GetURL();
+  CHECK(url.is_valid())
+      << "This call must be reached only when the URL is valid.";
+  ui::ScopedClipboardWriter clipboard_writer(ui::ClipboardBuffer::kCopyPaste);
+  clipboard_writer.WriteText(base::UTF8ToUTF16(url.spec()));
 }

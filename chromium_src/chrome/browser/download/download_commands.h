@@ -17,6 +17,8 @@
 // Note that we keep Command::kMaxValue as the last value of Chromium's max
 // value as it's used for histogramming purposes. We don't want our commands to
 // be counted in.
+// NOTE: Update the BRAVE_DOWNLOAD_COMMANDS_SWITCH_CASES macro in
+// brave_download_commands_macros.h when adding new commands here.
 #define OPEN_WITH_MEDIA_APP                                             \
   /* Removes the download item from the list. The actual file is not */ \
   /* deleted. Used by download shelf view. */                           \
@@ -24,6 +26,8 @@
   /* Remove downloaded file from disk and and remove the download item from */ \
   /* the list. Used by download bubble view. */                                \
   DELETE_LOCAL_FILE = 24,                                                      \
+  /* Copy download link to clipboard from DownloadUIContextMenuView */         \
+  COPY_DOWNLOAD_LINK = 25,                                                  \
   OPEN_WITH_MEDIA_APP
 
 #include <chrome/browser/download/download_commands.h>  // IWYU pragma: export

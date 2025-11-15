@@ -6,6 +6,7 @@
 brave_browser_download_sources = [
   "//brave/browser/download/brave_download_commands.cc",
   "//brave/browser/download/brave_download_commands.h",
+  "//brave/browser/download/brave_download_commands_macros.h",
   "//brave/browser/download/brave_download_item_model.cc",
   "//brave/browser/download/brave_download_item_model.h",
 ]
