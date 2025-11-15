@@ -8,3 +8,5 @@
 # builds for non-mobile builds (mac, linux, win)
 
 safe_browsing_mode = 1
+
+enable_backup_ref_ptr_instance_tracer = true
