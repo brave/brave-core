@@ -605,28 +605,74 @@ const util = {
 
     // Import args_generated.gni into args.gn.
     const argsGnFilePath = path.join(outputDir, 'args.gn')
-    const generatedArgsImportLine = `import("//${path
-      .relative(config.srcDir, generatedArgsFilePath)
-      .replace(/\\/g, '/')}")`
+    const srcRelativeBuildDir = `//${path
+      .relative(config.srcDir, outputDir)
+      .replace(/\\/g, '/')}`
 
     // Check if the import statement from args_generated.gni is present in
     // args.gn, even if the user has made modifications. This import statement
     // can also be commented out, allowing the user to fully ignore generated
     // arguments.
     fs.ensureFileSync(argsGnFilePath)
-    const isArgsGnValid = fs
-      .readFileSync(argsGnFilePath, { encoding: 'utf-8' })
-      .includes(generatedArgsImportLine)
+    let argsGnContent = fs.readFileSync(argsGnFilePath, {
+      encoding: 'utf-8',
+    })
+
+    const wrapWithDefaultArgs = buildArgs.brave_version_major !== undefined
+    const isArgsGnValid = wrapWithDefaultArgs
+      ? argsGnContent.includes('default_args("args_generated")')
+      : argsGnContent.includes(
+          `import("${srcRelativeBuildDir}/args_generated.gni")`,
+        )
+
+    if (wrapWithDefaultArgs) {
+      // GN doesn't set these vars during args.gn parsing. Workaround this with
+      // a current_host.gni file.
+      util.writeFileIfModified(
+        path.join(config.srcDir, 'out', 'current_host.gni'),
+        [
+          `current_host_os = "${config.hostOS}"`,
+          `current_host_cpu = "${process.arch}"`,
+        ].join('\n'),
+      )
+    }
 
     if (!isArgsGnValid) {
-      const argsGnContent = [
+      const extraArgsLine = '# Put your extra args AFTER this line.'
+      // Keep everything after the extra args line.
+      const extraArgsLineIndex = argsGnContent.indexOf(extraArgsLine)
+      const extraArgsContent =
+        extraArgsLineIndex !== -1
+          ? argsGnContent.slice(extraArgsLineIndex).trim()
+          : extraArgsLine
+
+      const buildArgsLines = wrapWithDefaultArgs
+        ? [
+            'import("//brave/build/args/default_args.gni")',
+            '',
+            'default_args("args_generated") {',
+            `  import("${srcRelativeBuildDir}/args_generated.gni")`,
+            '',
+            ...extraArgsContent.split('\n').map((line) => '  ' + line),
+            '}',
+            '',
+            `forward_variables_from(read_file("${srcRelativeBuildDir}/args_generated.json", "json"), "*")`,
+          ]
+        : [
+            `import("${srcRelativeBuildDir}/args_generated.gni")`,
+            '',
+            ...extraArgsContent,
+          ]
+      argsGnContent = [
         "# This file is user-editable. It won't be overwritten as long as it imports",
-        '# args_generated.gni, even if the import statement is commented out.\n',
-        generatedArgsImportLine,
+        '# args_generated.gni, even if the import statement is commented out.',
         '',
-        '# Put your extra args AFTER this line.',
+        ...buildArgsLines,
+        '',
       ].join('\n')
-      fs.writeFileSync(argsGnFilePath, argsGnContent + '\n')
+    }
+
+    if (util.writeFileIfModified(argsGnFilePath, argsGnContent)) {
       Log.status(`${argsGnFilePath} has been updated`)
     }
 
