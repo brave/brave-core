@@ -144,6 +144,9 @@ class Repository:
         The contents of the file read. If more than one file is provided, the
         contents of all files are appended to the same string.
         """
+
+        # Replaces \ in path with / for Windows.
+        files = [str(PurePath(file).as_posix()) for file in files]
         return self.run_git('show',
                             *[f'{commit}:{file}' for file in files],
                             no_trim=True)
