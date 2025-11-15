@@ -13,6 +13,7 @@
 #include "brave/browser/ui/views/frame/brave_browser_view_layout.h"
 #include "brave/browser/ui/views/frame/brave_tab_strip_region_view.h"
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
+#include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view_delegate_impl.h"
 #include "brave/browser/ui/views/infobars/brave_infobar_container_view.h"
 #include "brave/browser/ui/views/side_panel/brave_side_panel.h"
 #include "brave/browser/ui/views/side_panel/brave_side_panel_coordinator.h"
@@ -32,14 +33,22 @@
 #define BookmarkBarView BraveBookmarkBarView
 #define UpdateExclusiveAccessBubble UpdateExclusiveAccessBubble_ChromiumImpl
 #define MultiContentsView BraveMultiContentsView
+#define MultiContentsViewDelegateImpl BraveMultiContentsViewDelegateImpl
 
 #define BRAVE_BROWSER_VIEW_LAYOUT_CONVERTED_HIT_TEST \
   if (dst->GetWidget() != src->GetWidget()) {        \
     return false;                                    \
   }
 
+// When web panel's tab is activated, don't need to change
+// tab contents. Tab contents is still same.
+#define BRAVE_BROWSER_VIEW_ON_ACTIVE_TAB_CHANGED \
+  change_tab_contents &= !IsWebPanelContents(new_contents);
+
 #include <chrome/browser/ui/views/frame/browser_view.cc>
 
+#undef BRAVE_BROWSER_VIEW_ON_ACTIVE_TAB_CHANGED
+#undef MultiContentsViewDelegateImpl
 #undef MultiContentsView
 #undef UpdateExclusiveAccessBubble
 #undef BookmarkBarView
@@ -48,6 +57,10 @@
 #undef BrowserViewLayout
 #undef InfoBarContainerView
 #undef BRAVE_BROWSER_VIEW_LAYOUT_CONVERTED_HIT_TEST
+
+bool BrowserView::IsWebPanelContents(content::WebContents* contents) {
+  NOTREACHED();
+}
 
 void BrowserView::SetNativeWindowPropertyForWidget(views::Widget* widget) {
   // Sets a kBrowserWindowKey to given child |widget| so that we can get
