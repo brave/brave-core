@@ -93,7 +93,8 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             @Nullable HomeButtonDisplay homeButtonDisplay,
             @Nullable ExtensionToolbarCoordinator extensionToolbarCoordinator,
             TopControlsStacker topControlsStacker,
-            BrowserControlsStateProvider browserControlsStateProvider) {
+            BrowserControlsStateProvider browserControlsStateProvider,
+            Supplier<Integer> incognitoWindowCountSupplier) {
         super(
                 controlContainer,
                 toolbarLayout,
@@ -129,7 +130,8 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 homeButtonDisplay,
                 extensionToolbarCoordinator,
                 topControlsStacker,
-                browserControlsStateProvider);
+                browserControlsStateProvider,
+                incognitoWindowCountSupplier);
 
         mBraveToolbarLayout = toolbarLayout;
         mBraveMenuButtonCoordinator = browsingModeMenuButtonCoordinator;
