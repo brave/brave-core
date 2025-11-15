@@ -8,9 +8,9 @@
 #include <memory>
 #include <string>
 
-#include "base/run_loop.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "brave/components/ai_chat/core/common/mojom/ollama.mojom.h"
 #include "net/base/net_errors.h"
 #include "net/http/http_status_code.h"
@@ -70,26 +70,18 @@ TEST_F(OllamaServiceTest, ConnectedSuccess) {
   test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaBaseUrl,
                                          kOllamaSuccessResponse);
 
-  base::RunLoop run_loop;
-  ollama_client()->IsConnected(base::BindLambdaForTesting([&](bool connected) {
-    EXPECT_TRUE(connected);
-    run_loop.Quit();
-  }));
-
-  run_loop.Run();
+  base::test::TestFuture<bool> future;
+  ollama_client()->IsConnected(future.GetCallback());
+  EXPECT_TRUE(future.Get());
 }
 
 TEST_F(OllamaServiceTest, ConnectedFailure) {
   test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaBaseUrl, "",
                                          net::HTTP_INTERNAL_SERVER_ERROR);
 
-  base::RunLoop run_loop;
-  ollama_client()->IsConnected(base::BindLambdaForTesting([&](bool connected) {
-    EXPECT_FALSE(connected);
-    run_loop.Quit();
-  }));
-
-  run_loop.Run();
+  base::test::TestFuture<bool> future;
+  ollama_client()->IsConnected(future.GetCallback());
+  EXPECT_FALSE(future.Get());
 }
 
 TEST_F(OllamaServiceTest, ConnectedNoResponse) {
@@ -99,13 +91,9 @@ TEST_F(OllamaServiceTest, ConnectedNoResponse) {
       network::mojom::URLResponseHead::New(), "",
       network::URLLoaderCompletionStatus(net::ERR_CONNECTION_REFUSED));
 
-  base::RunLoop run_loop;
-  ollama_client()->IsConnected(base::BindLambdaForTesting([&](bool connected) {
-    EXPECT_FALSE(connected);
-    run_loop.Quit();
-  }));
-
-  run_loop.Run();
+  base::test::TestFuture<bool> future;
+  ollama_client()->IsConnected(future.GetCallback());
+  EXPECT_FALSE(future.Get());
 }
 
 TEST_F(OllamaServiceTest, ConnectedWrongResponse) {
@@ -113,30 +101,23 @@ TEST_F(OllamaServiceTest, ConnectedWrongResponse) {
   test_url_loader_factory()->AddResponse(ai_chat::mojom::kOllamaBaseUrl,
                                          "Some other response");
 
-  base::RunLoop run_loop;
-  ollama_client()->IsConnected(base::BindLambdaForTesting([&](bool connected) {
-    EXPECT_TRUE(connected);
-    run_loop.Quit();
-  }));
-
-  run_loop.Run();
+  base::test::TestFuture<bool> future;
+  ollama_client()->IsConnected(future.GetCallback());
+  EXPECT_TRUE(future.Get());
 }
 
 TEST_F(OllamaServiceTest, FetchModelsSuccess) {
   test_url_loader_factory()->AddResponse(
       ai_chat::mojom::kOllamaListModelsAPIEndpoint, kOllamaModelsResponse);
 
-  base::RunLoop run_loop;
-  ollama_client()->FetchModels(base::BindLambdaForTesting(
-      [&](std::optional<std::vector<OllamaService::ModelInfo>> models) {
-        ASSERT_TRUE(models.has_value());
-        ASSERT_EQ(2u, models->size());
-        EXPECT_EQ("llama2:7b", (*models)[0].name);
-        EXPECT_EQ("mistral:latest", (*models)[1].name);
-        run_loop.Quit();
-      }));
+  base::test::TestFuture<std::optional<std::vector<std::string>>> future;
+  ollama_client()->FetchModels(future.GetCallback());
 
-  run_loop.Run();
+  const auto& models = future.Get();
+  ASSERT_TRUE(models.has_value());
+  ASSERT_EQ(2u, models->size());
+  EXPECT_EQ("llama2:7b", (*models)[0]);
+  EXPECT_EQ("mistral:latest", (*models)[1]);
 }
 
 TEST_F(OllamaServiceTest, FetchModelsNoResponse) {
@@ -146,56 +127,36 @@ TEST_F(OllamaServiceTest, FetchModelsNoResponse) {
       network::mojom::URLResponseHead::New(), "",
       network::URLLoaderCompletionStatus(net::ERR_CONNECTION_REFUSED));
 
-  base::RunLoop run_loop;
-  ollama_client()->FetchModels(base::BindLambdaForTesting(
-      [&](std::optional<std::vector<OllamaService::ModelInfo>> models) {
-        EXPECT_FALSE(models.has_value());
-        run_loop.Quit();
-      }));
-
-  run_loop.Run();
+  base::test::TestFuture<std::optional<std::vector<std::string>>> future;
+  ollama_client()->FetchModels(future.GetCallback());
+  EXPECT_FALSE(future.Get().has_value());
 }
 
 TEST_F(OllamaServiceTest, FetchModelsEmptyResponse) {
   test_url_loader_factory()->AddResponse(
       ai_chat::mojom::kOllamaListModelsAPIEndpoint, "");
 
-  base::RunLoop run_loop;
-  ollama_client()->FetchModels(base::BindLambdaForTesting(
-      [&](std::optional<std::vector<OllamaService::ModelInfo>> models) {
-        EXPECT_FALSE(models.has_value());
-        run_loop.Quit();
-      }));
-
-  run_loop.Run();
+  base::test::TestFuture<std::optional<std::vector<std::string>>> future;
+  ollama_client()->FetchModels(future.GetCallback());
+  EXPECT_FALSE(future.Get().has_value());
 }
 
 TEST_F(OllamaServiceTest, FetchModelsInvalidJSON) {
   test_url_loader_factory()->AddResponse(
       ai_chat::mojom::kOllamaListModelsAPIEndpoint, "{invalid json}");
 
-  base::RunLoop run_loop;
-  ollama_client()->FetchModels(base::BindLambdaForTesting(
-      [&](std::optional<std::vector<OllamaService::ModelInfo>> models) {
-        EXPECT_FALSE(models.has_value());
-        run_loop.Quit();
-      }));
-
-  run_loop.Run();
+  base::test::TestFuture<std::optional<std::vector<std::string>>> future;
+  ollama_client()->FetchModels(future.GetCallback());
+  EXPECT_FALSE(future.Get().has_value());
 }
 
 TEST_F(OllamaServiceTest, FetchModelsMissingModelsKey) {
   test_url_loader_factory()->AddResponse(
       ai_chat::mojom::kOllamaListModelsAPIEndpoint, R"({"other_key": []})");
 
-  base::RunLoop run_loop;
-  ollama_client()->FetchModels(base::BindLambdaForTesting(
-      [&](std::optional<std::vector<OllamaService::ModelInfo>> models) {
-        EXPECT_FALSE(models.has_value());
-        run_loop.Quit();
-      }));
-
-  run_loop.Run();
+  base::test::TestFuture<std::optional<std::vector<std::string>>> future;
+  ollama_client()->FetchModels(future.GetCallback());
+  EXPECT_FALSE(future.Get().has_value());
 }
 
 TEST_F(OllamaServiceTest, FetchModelsInvalidModelStructure) {
@@ -211,15 +172,12 @@ TEST_F(OllamaServiceTest, FetchModelsInvalidModelStructure) {
   test_url_loader_factory()->AddResponse(
       ai_chat::mojom::kOllamaListModelsAPIEndpoint, kInvalidModelsResponse);
 
-  base::RunLoop run_loop;
-  ollama_client()->FetchModels(base::BindLambdaForTesting(
-      [&](std::optional<std::vector<OllamaService::ModelInfo>> models) {
-        ASSERT_TRUE(models.has_value());
-        EXPECT_EQ(0u, models->size());
-        run_loop.Quit();
-      }));
+  base::test::TestFuture<std::optional<std::vector<std::string>>> future;
+  ollama_client()->FetchModels(future.GetCallback());
 
-  run_loop.Run();
+  const auto& models = future.Get();
+  ASSERT_TRUE(models.has_value());
+  EXPECT_EQ(0u, models->size());
 }
 
 TEST_F(OllamaServiceTest, ShowModelSuccess) {
@@ -353,8 +311,8 @@ TEST_F(OllamaServiceTest, ParseModelsResponse_Valid) {
   auto result = ollama_client()->ParseModelsResponse(kValidResponse);
   ASSERT_TRUE(result.has_value());
   ASSERT_EQ(2u, result->size());
-  EXPECT_EQ("llama2:7b", (*result)[0].name);
-  EXPECT_EQ("mistral:latest", (*result)[1].name);
+  EXPECT_EQ("llama2:7b", (*result)[0]);
+  EXPECT_EQ("mistral:latest", (*result)[1]);
 }
 
 TEST_F(OllamaServiceTest, ParseModelsResponse_InvalidJSON) {
@@ -387,7 +345,7 @@ TEST_F(OllamaServiceTest, ParseModelsResponse_InvalidModelStructure) {
   ASSERT_TRUE(result.has_value());
   // Only the valid model should be included
   ASSERT_EQ(1u, result->size());
-  EXPECT_EQ("valid:model", (*result)[0].name);
+  EXPECT_EQ("valid:model", (*result)[0]);
 }
 
 // Direct tests for ParseModelDetailsResponse private method

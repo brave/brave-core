@@ -11,7 +11,6 @@
 
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
-#include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "net/http/http_request_headers.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
@@ -19,18 +18,9 @@
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace ai_chat {
-
-// OllamaService::ModelInfo implementation
-OllamaService::ModelInfo::ModelInfo() = default;
-OllamaService::ModelInfo::ModelInfo(const ModelInfo&) = default;
-OllamaService::ModelInfo& OllamaService::ModelInfo::operator=(
-    const ModelInfo&) = default;
-OllamaService::ModelInfo::ModelInfo(ModelInfo&&) = default;
-OllamaService::ModelInfo& OllamaService::ModelInfo::operator=(ModelInfo&&) =
-    default;
-OllamaService::ModelInfo::~ModelInfo() = default;
 
 // OllamaService::ModelDetails implementation
 OllamaService::ModelDetails::ModelDetails() = default;
@@ -180,7 +170,7 @@ void OllamaService::ShowModel(const std::string& model_name,
   auto loader = network::SimpleURLLoader::Create(std::move(request),
                                                  kOllamaModelDetailsAnnotation);
 
-  std::string body = base::StrCat({"{\"model\":\"", model_name, "\"}"});
+  std::string body = absl::StrFormat("{\"model\":\"%s\"}", model_name);
   loader->AttachStringForUpload(body, "application/json");
 
   auto* loader_ptr = loader.get();
@@ -203,8 +193,8 @@ void OllamaService::OnModelDetailsComplete(
   std::move(callback).Run(ParseModelDetailsResponse(*response));
 }
 
-std::optional<std::vector<OllamaService::ModelInfo>>
-OllamaService::ParseModelsResponse(const std::string& response_body) {
+std::optional<std::vector<std::string>> OllamaService::ParseModelsResponse(
+    const std::string& response_body) {
   std::optional<base::Value::Dict> json_dict = base::JSONReader::ReadDict(
       response_body, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
   if (!json_dict) {
@@ -216,7 +206,7 @@ OllamaService::ParseModelsResponse(const std::string& response_body) {
     return std::nullopt;
   }
 
-  std::vector<ModelInfo> models;
+  std::vector<std::string> models;
   for (const auto& model : *models_list) {
     const base::Value::Dict* model_dict = model.GetIfDict();
     if (!model_dict) {
@@ -228,9 +218,7 @@ OllamaService::ParseModelsResponse(const std::string& response_body) {
       continue;
     }
 
-    ModelInfo info;
-    info.name = *model_name;
-    models.push_back(std::move(info));
+    models.push_back(*model_name);
   }
 
   return models;
@@ -258,6 +246,8 @@ OllamaService::ParseModelDetailsResponse(const std::string& response_body) {
   }
 
   // Check capabilities for vision support
+  // See:
+  // https://github.com/ollama/ollama/blob/main/docs/api.md#show-model-information
   const base::Value::List* capabilities = json_dict->FindList("capabilities");
   if (capabilities) {
     for (const auto& capability : *capabilities) {

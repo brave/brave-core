@@ -13,9 +13,11 @@
 #include "base/metrics/field_trial_params.h"
 #include "base/numerics/safe_math.h"
 #include "base/scoped_observation.h"
+#include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/model_validator.h"
+#include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
@@ -31,10 +33,6 @@ namespace {
 using ::testing::_;
 using ::testing::NiceMock;
 
-// Keys for custom model prefs
-constexpr char kCustomModelItemModelKey[] = "model_request_name";
-constexpr char kCustomModelItemEndpointUrlKey[] = "endpoint_url";
-
 class MockModelServiceObserver : public ModelService::Observer {
  public:
   MockModelServiceObserver() = default;
@@ -49,6 +47,7 @@ class MockModelServiceObserver : public ModelService::Observer {
               (const std::string&, const std::string&),
               (override));
   MOCK_METHOD(void, OnModelListUpdated, (), (override));
+  MOCK_METHOD(void, OnModelRemoved, (const std::string&), (override));
 
  private:
   base::ScopedObservation<ModelService, ModelService::Observer>
@@ -395,6 +394,8 @@ TEST_F(ModelServiceTest, DeleteCustomModelsByEndpoint) {
   const GURL endpoint2 = GURL("http://other.com");
 
   // Add multiple custom models with different endpoints
+  std::string model1_key;
+  std::string model2_key;
   {
     mojom::ModelPtr model1 = mojom::Model::New();
     model1->display_name = "Model 1";
@@ -413,6 +414,11 @@ TEST_F(ModelServiceTest, DeleteCustomModelsByEndpoint) {
     model3->options = mojom::ModelOptions::NewCustomModelOptions(
         mojom::CustomModelOptions::New("model3", 0, 0, 0, "", endpoint2, ""));
     GetService()->AddCustomModel(std::move(model3));
+
+    auto custom_models = GetService()->GetCustomModels();
+    ASSERT_EQ(custom_models.size(), 3u);
+    model1_key = custom_models[0]->key;
+    model2_key = custom_models[1]->key;
   }
 
   {
@@ -420,26 +426,33 @@ TEST_F(ModelServiceTest, DeleteCustomModelsByEndpoint) {
     EXPECT_EQ(custom_models.size(), 3u);
   }
 
+  // Expect OnModelRemoved to be called for model1 and model2
+  EXPECT_CALL(*observer_, OnModelRemoved(model1_key)).Times(1);
+  EXPECT_CALL(*observer_, OnModelRemoved(model2_key)).Times(1);
+  EXPECT_CALL(*observer_, OnModelListUpdated()).Times(1);
+
   // Delete all models with endpoint1
-  GetService()->MaybeDeleteCustomModels(base::BindRepeating(
-      [](const GURL& target_endpoint, const base::Value::Dict& model_dict) {
+  GetService()->MaybeDeleteCustomModels(base::BindLambdaForTesting(
+      [&endpoint1](const base::Value::Dict& model_dict) {
         const std::string* endpoint_str =
             model_dict.FindString(kCustomModelItemEndpointUrlKey);
-        return endpoint_str && GURL(*endpoint_str) == target_endpoint;
-      },
-      endpoint1));
+        return endpoint_str && GURL(*endpoint_str) == endpoint1;
+      }));
 
   auto custom_models = GetService()->GetCustomModels();
   EXPECT_EQ(custom_models.size(), 1u);
   EXPECT_EQ(custom_models[0]->display_name, "Model 3");
   EXPECT_EQ(custom_models[0]->options->get_custom_model_options()->endpoint,
             endpoint2);
+
+  testing::Mock::VerifyAndClearExpectations(observer_.get());
 }
 
 TEST_F(ModelServiceTest, DeleteCustomModelByNameAndEndpoint) {
   const GURL endpoint = GURL("http://example.com");
 
   // Add multiple custom models with the same endpoint
+  std::string model1_key;
   {
     mojom::ModelPtr model1 = mojom::Model::New();
     model1->display_name = "Model 1";
@@ -452,6 +465,10 @@ TEST_F(ModelServiceTest, DeleteCustomModelByNameAndEndpoint) {
     model2->options = mojom::ModelOptions::NewCustomModelOptions(
         mojom::CustomModelOptions::New("model2", 0, 0, 0, "", endpoint, ""));
     GetService()->AddCustomModel(std::move(model2));
+
+    auto custom_models = GetService()->GetCustomModels();
+    ASSERT_EQ(custom_models.size(), 2u);
+    model1_key = custom_models[0]->key;
   }
 
   {
@@ -459,19 +476,20 @@ TEST_F(ModelServiceTest, DeleteCustomModelByNameAndEndpoint) {
     EXPECT_EQ(custom_models.size(), 2u);
   }
 
+  // Expect OnModelRemoved to be called for model1 only
+  EXPECT_CALL(*observer_, OnModelRemoved(model1_key)).Times(1);
+  EXPECT_CALL(*observer_, OnModelListUpdated()).Times(1);
+
   // Delete only model1
-  GetService()->MaybeDeleteCustomModels(base::BindRepeating(
-      [](const std::string& target_name, const GURL& target_endpoint,
-         const base::Value::Dict& model_dict) {
+  GetService()->MaybeDeleteCustomModels(base::BindLambdaForTesting(
+      [&endpoint](const base::Value::Dict& model_dict) {
         const std::string* endpoint_str =
             model_dict.FindString(kCustomModelItemEndpointUrlKey);
         const std::string* model_name =
             model_dict.FindString(kCustomModelItemModelKey);
-        return endpoint_str && model_name &&
-               GURL(*endpoint_str) == target_endpoint &&
-               *model_name == target_name;
-      },
-      "model1", endpoint));
+        return endpoint_str && model_name && GURL(*endpoint_str) == endpoint &&
+               *model_name == "model1";
+      }));
 
   auto custom_models = GetService()->GetCustomModels();
   EXPECT_EQ(custom_models.size(), 1u);
@@ -479,6 +497,8 @@ TEST_F(ModelServiceTest, DeleteCustomModelByNameAndEndpoint) {
   EXPECT_EQ(
       custom_models[0]->options->get_custom_model_options()->model_request_name,
       "model2");
+
+  testing::Mock::VerifyAndClearExpectations(observer_.get());
 }
 
 TEST_F(ModelServiceTest, DeleteCustomModelsByEndpoint_WithDefaultModel) {
@@ -502,28 +522,29 @@ TEST_F(ModelServiceTest, DeleteCustomModelsByEndpoint_WithDefaultModel) {
   GetService()->SetDefaultModelKey(custom_model_key);
   EXPECT_EQ(GetService()->GetDefaultModelKey(), custom_model_key);
 
-  // Expect observer to be called when default model is removed
+  // Expect observers to be called when default model is removed
   const std::string expected_default = features::kAIModelsDefaultKey.Get();
   EXPECT_CALL(*observer_,
               OnDefaultModelChanged(custom_model_key, expected_default))
       .Times(1);
+  EXPECT_CALL(*observer_, OnModelRemoved(custom_model_key)).Times(1);
   // Expect OnModelListUpdated to be called when InitModels is called
   EXPECT_CALL(*observer_, OnModelListUpdated()).Times(1);
 
   // Delete the model
-  GetService()->MaybeDeleteCustomModels(base::BindRepeating(
-      [](const GURL& target_endpoint, const base::Value::Dict& model_dict) {
+  GetService()->MaybeDeleteCustomModels(base::BindLambdaForTesting(
+      [&endpoint](const base::Value::Dict& model_dict) {
         const std::string* endpoint_str =
             model_dict.FindString(kCustomModelItemEndpointUrlKey);
-        return endpoint_str && GURL(*endpoint_str) == target_endpoint;
-      },
-      endpoint));
+        return endpoint_str && GURL(*endpoint_str) == endpoint;
+      }));
+
+  // Verify OnDefaultModelChanged was called
+  testing::Mock::VerifyAndClearExpectations(observer_.get());
 
   // Default model should be reset to the platform default
   EXPECT_NE(GetService()->GetDefaultModelKey(), custom_model_key);
   EXPECT_EQ(GetService()->GetDefaultModelKey(), expected_default);
-
-  testing::Mock::VerifyAndClearExpectations(observer_.get());
 }
 
 TEST_F(ModelServiceTest, GetCustomModels) {

@@ -59,10 +59,8 @@ namespace {
 constexpr char kDefaultModelKey[] = "brave.ai_chat.default_model_key";
 constexpr char kCustomModelsList[] = "brave.ai_chat.custom_models";
 constexpr char kCustomModelItemLabelKey[] = "label";
-constexpr char kCustomModelItemModelKey[] = "model_request_name";
 constexpr char kCustomModelContextSizeKey[] = "context_size";
 constexpr char kCustomModelSystemPromptKey[] = "model_system_prompt";
-constexpr char kCustomModelItemEndpointUrlKey[] = "endpoint_url";
 constexpr char kCustomModelItemApiKey[] = "api_key";
 constexpr char kCustomModelItemKey[] = "key";
 constexpr char kCustomModelVisionSupport[] = "vision_support";
@@ -1001,15 +999,16 @@ void ModelService::DeleteCustomModel(uint32_t index) {
 
 void ModelService::MaybeDeleteCustomModels(CustomModelPredicate predicate) {
   ScopedListPrefUpdate update(pref_service_, kCustomModelsList);
-  std::vector<std::string> removed_keys;
+  bool any_removed = false;
 
-  // Remove models matching predicate (iterate in reverse to avoid index issues)
-  for (size_t i = update->size(); i > 0; --i) {
-    const base::Value::Dict& model_dict = (*update)[i - 1].GetDict();
+  // Remove models matching predicate
+  auto it = update->begin();
+  while (it != update->end()) {
+    const base::Value::Dict& model_dict = it->GetDict();
 
     if (predicate.Run(model_dict)) {
       std::string removed_key = *model_dict.FindString(kCustomModelItemKey);
-      removed_keys.push_back(removed_key);
+      any_removed = true;
 
       // Check if this is the default model
       if (GetDefaultModelKey() == removed_key) {
@@ -1021,18 +1020,19 @@ void ModelService::MaybeDeleteCustomModels(CustomModelPredicate predicate) {
         }
       }
 
-      update->erase(update->begin() + (i - 1));
-    }
-  }
+      it = update->erase(it);
 
-  if (!removed_keys.empty()) {
-    InitModels();
-
-    for (const auto& removed_key : removed_keys) {
+      // Notify observers immediately after removing
       for (auto& obs : observers_) {
         obs.OnModelRemoved(removed_key);
       }
+    } else {
+      ++it;
     }
+  }
+
+  if (any_removed) {
+    InitModels();
   }
 }
 

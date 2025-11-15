@@ -18,6 +18,7 @@
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/ollama/ollama_service.h"
+#include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "url/gurl.h"
@@ -27,10 +28,6 @@ namespace ai_chat {
 namespace {
 
 constexpr uint32_t kDefaultContextSize = 8192;
-
-// Keys for custom model prefs
-constexpr char kCustomModelItemModelKey[] = "model_request_name";
-constexpr char kCustomModelItemEndpointUrlKey[] = "endpoint_url";
 
 }  // namespace
 
@@ -73,7 +70,7 @@ void OllamaModelFetcher::FetchModels() {
 }
 
 void OllamaModelFetcher::OnModelsFetched(
-    std::optional<std::vector<OllamaService::ModelInfo>> models) {
+    std::optional<std::vector<std::string>> models) {
   if (!models) {
     return;
   }
@@ -99,8 +96,8 @@ void OllamaModelFetcher::OnModelsFetched(
 
   // Build set of current Ollama models from the response
   std::set<std::string> current_ollama_models;
-  for (const auto& model : *models) {
-    current_ollama_models.insert(model.name);
+  for (const auto& model_name : *models) {
+    current_ollama_models.insert(model_name);
   }
 
   // Remove Ollama models that are no longer available
@@ -123,18 +120,18 @@ void OllamaModelFetcher::OnModelsFetched(
   pending_models_.clear();
 
   // Fetch detailed information for each new model
-  for (const auto& model : *models) {
-    if (existing_ollama_model_names.contains(model.name)) {
+  for (const auto& model_name : *models) {
+    if (existing_ollama_model_names.contains(model_name)) {
       continue;
     }
 
     // Store basic info and fetch detailed information
     PendingModelInfo pending_info;
-    pending_info.model_name = model.name;
-    pending_info.display_name = model.name;
-    pending_models_[model.name] = std::move(pending_info);
+    pending_info.model_name = model_name;
+    pending_info.display_name = model_name;
+    pending_models_[model_name] = std::move(pending_info);
 
-    FetchModelDetails(model.name);
+    FetchModelDetails(model_name);
   }
 }
 
