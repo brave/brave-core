@@ -12,12 +12,15 @@
 #include "base/functional/callback.h"
 #include "brave/browser/ui/views/page_info/brave_page_info_view_ids.h"
 #include "brave/browser/ui/webui/brave_shields/shields_panel_ui.h"
+#include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/ui/webui/top_chrome/webui_contents_wrapper.h"
 #include "chrome/browser/ui/webui/webui_embedding_context.h"
 #include "components/grit/brave_components_strings.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/web_contents.h"
+#include "content/public/common/url_constants.h"
+#include "extensions/common/constants.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/gfx/geometry/rounded_corners_f.h"
 #include "ui/views/controls/webview/unhandled_keyboard_event_handler.h"
@@ -111,6 +114,25 @@ BraveShieldsPageInfoView::BraveShieldsPageInfoView(
 }
 
 BraveShieldsPageInfoView::~BraveShieldsPageInfoView() = default;
+
+bool BraveShieldsPageInfoView::ShouldShowForWebContents(
+    content::WebContents* web_contents) {
+  if (!web_contents) {
+    return false;
+  }
+
+  const GURL& url = web_contents->GetLastCommittedURL();
+
+  if (url.SchemeIs(url::kAboutScheme) || url.SchemeIs(url::kBlobScheme) ||
+      url.SchemeIs(url::kDataScheme) || url.SchemeIs(url::kFileSystemScheme) ||
+      url.SchemeIs(kMagnetScheme) || url.SchemeIs(kBraveUIScheme) ||
+      url.SchemeIs(content::kChromeUIScheme) ||
+      url.SchemeIs(extensions::kExtensionScheme)) {
+    return false;
+  }
+
+  return true;
+}
 
 void BraveShieldsPageInfoView::ShowRepeatedReloadsView() {
   LoadShieldsURL(contents_wrapper_->web_contents()->GetController(),

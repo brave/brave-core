@@ -7,7 +7,6 @@
 
 #include "brave/components/vector_icons/vector_icons.h"
 #include "components/grit/brave_components_strings.h"
-#include "components/strings/grit/components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/models/image_model.h"
@@ -171,7 +170,7 @@ int BravePageInfoTabSwitcher::GetTabButtonText(Tab tab) const {
     case Tab::kShields:
       return IDS_BRAVE_SHIELDS;
     case Tab::kSiteSettings:
-      return IDS_PAGE_INFO_SITE_SETTINGS_LINK;
+      return IDS_BRAVE_SHIELDS_PAGE_INFO_SITE_INFO_LINK;
   }
 }
 
