@@ -6520,6 +6520,20 @@ extension Strings {
           "Keep private browsing tabs open when you close the app, ensuring private browsing sessions continue seamlessly.",
         comment: ""
       )
+    public static let autoOpenKeyboardTitle = NSLocalizedString(
+      "tabs.settings.autoOpenKeyboardTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Auto-Open Keyboard",
+      comment: "The title of the toggle for user to turn on auto-open keyboard when creating a new tab."
+    )
+    public static let autoOpenKeyboardDescription = NSLocalizedString(
+      "tabs.settings.autoOpenKeyboardDescription",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Automatically focus the address bar when creating a new tab",
+      comment: "The description of the toggle for user to turn on auto-open keyboard when creating a new tab."
+    )
   }
 }
 

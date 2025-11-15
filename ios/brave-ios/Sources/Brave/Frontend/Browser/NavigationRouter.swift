@@ -108,7 +108,10 @@ public enum NavigationPath: Equatable {
     if let newURL = url {
       bvc.switchToTabForURLOrOpen(newURL, isPrivate: isPrivate, isPrivileged: false)
     } else {
-      bvc.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: isPrivate)
+      bvc.openBlankNewTab(
+        attemptLocationFieldFocus: Preferences.General.openKeyboardOnNTPSelection.value,
+        isPrivate: isPrivate
+      )
     }
   }
 
@@ -135,21 +138,30 @@ public enum NavigationPath: Equatable {
       }
     case .newTab:
       bvc.openBlankNewTab(
-        attemptLocationFieldFocus: false,
+        attemptLocationFieldFocus: Preferences.General.openKeyboardOnNTPSelection.value,
         isPrivate: bvc.privateBrowsingManager.isPrivateBrowsing
       )
     case .newPrivateTab:
       if Preferences.Privacy.lockWithPasscode.value {
-        bvc.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: true)
+        bvc.openBlankNewTab(
+          attemptLocationFieldFocus: Preferences.General.openKeyboardOnNTPSelection.value,
+          isPrivate: true
+        )
       } else {
         if Preferences.Privacy.privateBrowsingLock.value {
           bvc.askForLocalAuthentication(viewType: .external) { [weak bvc] success, _ in
             if success {
-              bvc?.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: true)
+              bvc?.openBlankNewTab(
+                attemptLocationFieldFocus: Preferences.General.openKeyboardOnNTPSelection.value,
+                isPrivate: true
+              )
             }
           }
         } else {
-          bvc.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: true)
+          bvc.openBlankNewTab(
+            attemptLocationFieldFocus: Preferences.General.openKeyboardOnNTPSelection.value,
+            isPrivate: true
+          )
         }
       }
     case .bookmarks:
@@ -169,6 +181,7 @@ public enum NavigationPath: Equatable {
     case .scanQRCode:
       bvc.scanQRCode()
     case .braveNews:
+      // need to stay in NTP for Brave News
       bvc.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: false, isExternal: true)
       bvc.popToBVC()
       guard let newTabPageController = bvc.tabManager.selectedTab?.newTabPageViewController else {
