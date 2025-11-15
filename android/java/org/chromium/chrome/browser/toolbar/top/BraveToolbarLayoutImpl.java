@@ -137,6 +137,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import java.util.function.Supplier;
 
 public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         implements BraveToolbarLayout,
@@ -1589,7 +1590,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             ToolbarDataProvider toolbarDataProvider,
             ToolbarTabController tabController,
             MenuButtonCoordinator menuButtonCoordinator,
-            ToggleTabStackButtonCoordinator tabSwitcherButtonCoordinator,
+            @Nullable ToggleTabStackButtonCoordinator tabSwitcherButtonCoordinator,
             HistoryDelegate historyDelegate,
             UserEducationHelper userEducationHelper,
             ObservableSupplier<Tracker> trackerSupplier,
@@ -1600,7 +1601,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             @Nullable HomeButtonDisplay homeButtonDisplay,
             @Nullable ExtensionToolbarCoordinator extensionToolbarCoordinator,
             ThemeColorProvider themeColorProvider,
-            IncognitoStateProvider incognitoStateProvider) {
+            IncognitoStateProvider incognitoStateProvider,
+            @Nullable Supplier<Integer> incognitoWindowCountSupplier) {
         super.initialize(
                 toolbarDataProvider,
                 tabController,
@@ -1616,7 +1618,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 homeButtonDisplay,
                 extensionToolbarCoordinator,
                 themeColorProvider,
-                incognitoStateProvider);
+                incognitoStateProvider,
+                incognitoWindowCountSupplier);
 
         BraveMenuButtonCoordinator.setMenuFromBottom(
                 isMenuButtonOnBottomControls() || isMenuOnBottomWithBottomAddressBar());
