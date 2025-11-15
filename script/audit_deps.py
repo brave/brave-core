@@ -31,7 +31,11 @@ IGNORED_NPM_ADVISORIES = [
 ]
 
 # Use all (sub)paths except these for npm audit.
-NPM_EXCLUDE_PATHS = ['build', os.path.join('node_modules')]
+NPM_EXCLUDE_PATHS = [
+    'build',
+    os.path.join('node_modules'),
+    os.path.join('tools', 'crates')
+]
 
 # Only check Cargo.lock for these paths.
 CARGO_INCLUDE_PATHS = [
