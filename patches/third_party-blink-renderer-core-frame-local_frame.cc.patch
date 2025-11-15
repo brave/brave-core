@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/core/frame/local_frame.cc b/third_party/blink/renderer/core/frame/local_frame.cc
+index 3805db629d92c2b61b3475a18a0c079f7e7a752f..10b43cd8c2bb5da716d5d4789c026313b1474287 100644
+--- a/third_party/blink/renderer/core/frame/local_frame.cc
++++ b/third_party/blink/renderer/core/frame/local_frame.cc
+@@ -538,6 +538,7 @@ void LocalFrame::Trace(Visitor* visitor) const {
+   visitor->Trace(remote_object_gateway_factory_impl_);
+   visitor->Trace(remote_object_gateway_impl_);
+   visitor->Trace(text_suggestion_backend_impl_);
++  visitor->Trace(page_graph_);
+   Frame::Trace(visitor);
+   visitor->Trace(dev_tools_frontend_impl_);
+ }

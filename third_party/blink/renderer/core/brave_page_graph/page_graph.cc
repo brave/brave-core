@@ -240,9 +240,9 @@ PageGraph* GetPageGraphFromIsolate(v8::Isolate* isolate) {
 
   if (auto* top_local_frame =
           blink::DynamicTo<blink::LocalFrame>(&frame->Tree().Top())) {
-    return blink::PageGraph::From(*top_local_frame);
+    return top_local_frame->GetPageGraph();
   } else {
-    return blink::PageGraph::From(*frame);
+    return frame->GetPageGraph();
   }
 }
 
@@ -341,16 +341,11 @@ static void AssignSecurityOriginToNodeDOMRoot(
 }  // namespace
 
 // static
-PageGraph* PageGraph::From(LocalFrame& frame) {
-  return Supplement<LocalFrame>::From<PageGraph>(frame);
-}
-
-// static
 void PageGraph::ProvideTo(LocalFrame& frame) {
   if (!base::FeatureList::IsEnabled(brave_page_graph::features::kPageGraph)) {
     return;
   }
-  CHECK(!PageGraph::From(frame));
+  CHECK(!frame.GetPageGraph());
   CHECK(frame.IsLocalRoot());
   Page* page = frame.GetPage();
   CHECK(page);
@@ -362,8 +357,8 @@ void PageGraph::ProvideTo(LocalFrame& frame) {
     blink::Node* initiator_node =
         blink::DOMNodeIds::NodeForId(initiator_dom_node_id);
     if (initiator_node) {
-      auto* initiator_tree_page_graph = Supplement<LocalFrame>::From<PageGraph>(
-          *initiator_node->TreeRoot().GetDocument().GetFrame());
+      auto initiator_tree_page_graph =
+          initiator_node->TreeRoot().GetDocument().GetFrame()->GetPageGraph();
       if (initiator_tree_page_graph) {
         frame.GetProbeSink()->AddPageGraph(initiator_tree_page_graph);
         return;
@@ -377,8 +372,7 @@ void PageGraph::ProvideTo(LocalFrame& frame) {
     if (!main_local_frame) {
       continue;
     }
-    auto* related_page_graph =
-        Supplement<LocalFrame>::From<PageGraph>(main_local_frame);
+    auto related_page_graph = main_local_frame->GetPageGraph();
     if (related_page_graph) {
       frame.GetProbeSink()->AddPageGraph(related_page_graph);
       return;
@@ -391,8 +385,7 @@ void PageGraph::ProvideTo(LocalFrame& frame) {
     if (!main_local_frame) {
       continue;
     }
-    auto* ordinary_page_graph =
-        Supplement<LocalFrame>::From<PageGraph>(main_local_frame);
+    auto ordinary_page_graph = main_local_frame->GetPageGraph();
     if (ordinary_page_graph) {
       frame.GetProbeSink()->AddPageGraph(ordinary_page_graph);
       return;
@@ -402,11 +395,11 @@ void PageGraph::ProvideTo(LocalFrame& frame) {
   // Create a new PageGraph for the current frame.
   PageGraph* page_graph = MakeGarbageCollected<PageGraph>(frame);
   frame.GetProbeSink()->AddPageGraph(page_graph);
-  Supplement<LocalFrame>::ProvideTo(frame, page_graph);
+  frame.SetPageGraph(page_graph);
 }
 
 PageGraph::PageGraph(LocalFrame& local_frame)
-    : Supplement<LocalFrame>(local_frame),
+    : local_frame_(local_frame),
       frame_id_(GetFrameId(local_frame)),
       script_tracker_(this),
       request_tracker_(this) {
@@ -444,7 +437,7 @@ PageGraph::PageGraph(LocalFrame& local_frame)
 PageGraph::~PageGraph() = default;
 
 void PageGraph::Trace(blink::Visitor* visitor) const {
-  Supplement<LocalFrame>::Trace(visitor);
+  visitor->Trace(local_frame_);
   visitor->Trace(execution_context_nodes_);
   visitor->Trace(processed_js_urls_);
 }
@@ -968,8 +961,7 @@ void PageGraph::ConsoleMessageAdded(blink::ConsoleMessage* console_message) {
     blink::LocalFrame* frame = console_message->Frame();
     blink::Document* document = frame ? frame->GetDocument() : nullptr;
     if (!document) {
-      frame = GetSupplementable();
-      document = frame->GetDocument();
+      document = local_frame_->GetDocument();
       if (!document) {
         return nullptr;
       }
@@ -2171,7 +2163,7 @@ NodeBinding* PageGraph::GetBindingNode(const Binding binding,
 }
 
 bool PageGraph::IsRootFrame() const {
-  return GetSupplementable()->IsLocalRoot();
+  return local_frame_->IsLocalRoot();
 }
 
 }  // namespace blink

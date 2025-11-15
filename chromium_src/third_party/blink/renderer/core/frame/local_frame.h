@@ -8,6 +8,10 @@
 
 class SkBitmap;
 
+namespace blink {
+class PageGraph;
+}  // namespace blink
+
 #define CopyImageAtViewportPoint                                      \
   CopyImageAtViewportPoint_UnUsed() {}                                \
   SkBitmap GetImageAtViewportPoint(const gfx::Point& viewport_point); \
@@ -17,7 +21,24 @@ class SkBitmap;
   ScriptEnabled(const KURL& script_url); \
   bool ScriptEnabled_ChromiumImpl
 
+#define PerformSpellCheck                                          \
+  PerformSpellCheck();                                             \
+  ForwardDeclaredMember<PageGraph> GetPageGraph() const {          \
+    return page_graph_;                                            \
+  }                                                                \
+  void SetPageGraph(ForwardDeclaredMember<PageGraph> page_graph) { \
+    page_graph_ = page_graph;                                      \
+  }                                                                \
+  void Unused
+
+#define link_preview_triggerer_ \
+  link_preview_triggerer_;      \
+  ForwardDeclaredMember<PageGraph> page_graph_
+
 #include <third_party/blink/renderer/core/frame/local_frame.h>  // IWYU pragma: export
+
+#undef link_preview_triggerer_
+#undef PerformSpellCheck
 #undef ScriptEnabled
 #undef CopyImageAtViewportPoint
 

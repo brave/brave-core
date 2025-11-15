@@ -116,12 +116,9 @@ enum class ResourceType : uint8_t;
 // https://docs.google.com/presentation/d/1pHjF3TNCX--j0ss3SK09pXlVOFK0Cdq6HkMcOzcov1o/edit#slide=id.g4983c55b2d55fcc7_42
 
 class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
-                              public Supplement<LocalFrame>,
+                              public GarbageCollectedMixin,
                               public brave_page_graph::PageGraphContext {
  public:
-  static constexpr auto kSupplementIndex =
-      LocalFrame::Supplements::kBravePageGraph;
-  static PageGraph* From(LocalFrame&);
   static void ProvideTo(LocalFrame&);
 
   explicit PageGraph(LocalFrame& local_frame);
@@ -457,6 +454,7 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
   // frame tree.
   bool IsRootFrame() const;
 
+  blink::Member<LocalFrame> local_frame_;
   // The blink assigned frame id for the local root's frame.
   const brave_page_graph::FrameId frame_id_;
   // Script tracker helper.
