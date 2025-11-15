@@ -51,9 +51,9 @@ AdBlockSubscriptionFiltersProvider::AdBlockSubscriptionFiltersProvider(
 AdBlockSubscriptionFiltersProvider::~AdBlockSubscriptionFiltersProvider() =
     default;
 
-void AdBlockSubscriptionFiltersProvider::LoadFilterSet(
+void AdBlockSubscriptionFiltersProvider::LoadFilters(
     base::OnceCallback<
-        void(base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)> cb) {
+        void(std::vector<unsigned char> filter_buffer, uint8_t permission_mask)> cb) {
   const auto flow = perfetto::Flow::FromPointer(this);
   TRACE_EVENT("brave.adblock",
               "AdBlockSubscriptionFiltersProvider::LoadFilterSet", flow);
@@ -70,13 +70,14 @@ std::string AdBlockSubscriptionFiltersProvider::GetNameForDebugging() {
 
 void AdBlockSubscriptionFiltersProvider::OnDATFileDataReady(
     base::OnceCallback<
-        void(base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)> cb,
+        void(std::vector<unsigned char> filter_buffer, uint8_t permission_mask)> cb,
     const perfetto::Flow& flow,
     const DATFileDataBuffer& dat_buf) {
   TRACE_EVENT("brave.adblock",
               "AdBlockSubscriptionFiltersProvider::OnDATFileDataReady", flow);
-  std::move(cb).Run(base::BindOnce(
-      &AddDATBufferToFilterSet,
+  // TODO metadata!
+  std::move(cb).Run(dat_buf, 0);
+  /*    &AddDATBufferToFilterSet,
       base::BindOnce(
           [](scoped_refptr<base::SequencedTaskRunner> task_runner,
              base::RepeatingCallback<void(const adblock::FilterListMetadata&)>
@@ -87,7 +88,7 @@ void AdBlockSubscriptionFiltersProvider::OnDATFileDataReady(
           },
           base::SingleThreadTaskRunner::GetCurrentDefault(),
           on_metadata_retrieved_),
-      dat_buf, flow));
+      dat_buf, flow));*/
 }
 
 void AdBlockSubscriptionFiltersProvider::OnListAvailable() {
