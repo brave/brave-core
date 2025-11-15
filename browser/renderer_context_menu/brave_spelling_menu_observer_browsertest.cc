@@ -1,7 +1,7 @@
-/* Copyright 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include <memory>
 
@@ -76,28 +76,16 @@ class BraveSpellingMenuObserverTest : public InProcessBrowserTest {
  private:
   std::unique_ptr<SpellingMenuObserver> observer_;
   std::unique_ptr<BraveMockRenderViewContextMenu> menu_;
-
-#if BUILDFLAG(IS_WIN) && BUILDFLAG(USE_BROWSER_SPELLCHECKER)
-  base::test::ScopedFeatureList feature_list_;
-#endif  // BUILDFLAG(IS_WIN) && BUILDFLAG(USE_BROWSER_SPELLCHECKER)
 };
 
-#if BUILDFLAG(IS_WIN) && BUILDFLAG(USE_BROWSER_SPELLCHECKER)
-BraveSpellingMenuObserverTest::BraveSpellingMenuObserverTest() {
-  feature_list_.InitAndDisableFeature(
-      spellcheck::kWinDelaySpellcheckServiceInit);
-}
-#else
 BraveSpellingMenuObserverTest::BraveSpellingMenuObserverTest() = default;
-#endif
 
 BraveSpellingMenuObserverTest::~BraveSpellingMenuObserverTest() = default;
 
 }  // namespace
 
 // Tests that right-clicking not add "Ask Brave for suggestions".
-IN_PROC_BROWSER_TEST_F(BraveSpellingMenuObserverTest,
-                       CheckAskBraveNotShown) {
+IN_PROC_BROWSER_TEST_F(BraveSpellingMenuObserverTest, CheckAskBraveNotShown) {
   // Test menu with a misspelled word.
   Reset();
   InitMenu("wiimode", nullptr);

@@ -265,7 +265,7 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
             menuItems.add(buildSimpleMenuItem(R.string.brave_wallet_add_network_set_as_active));
 
             ListMenu.Delegate delegate =
-                    (model) -> {
+                    (model, view) -> {
                         int textId = model.get(ListMenuItemProperties.TITLE_ID);
                         if (textId == R.string.edit) {
                             mListener.onItemEdit(networkInfo, false);

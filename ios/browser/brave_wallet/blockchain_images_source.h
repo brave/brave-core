@@ -24,9 +24,9 @@ class BlockchainImagesSource : public web::URLDataSourceIOS,
  private:
   // web::URLDataSourceIOS overrides:
   std::string GetSource() const override;
-  void StartDataRequest(const std::string& path,
+  void StartDataRequest(std::string_view path,
                         GotDataCallback callback) override;
-  std::string GetMimeType(const std::string& path) const override;
+  std::string GetMimeType(std::string_view path) const override;
   bool AllowCaching() const override;
 };
 

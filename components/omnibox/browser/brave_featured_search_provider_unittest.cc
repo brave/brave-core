@@ -56,7 +56,8 @@ class BraveFeaturedSearchProviderTest : public testing::Test {
 
   void SetUp() override {
     client_ = std::make_unique<FakeAutocompleteProviderClient>();
-    provider_ = base::MakeRefCounted<FeaturedSearchProvider>(client_.get());
+    provider_ = base::MakeRefCounted<FeaturedSearchProvider>(
+        client_.get(), /*show_iph_matches=*/true);
   }
 
   void RunTest(const std::vector<TestData>& test_cases) {

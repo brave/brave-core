@@ -53,8 +53,7 @@ void SaveSkusStateToFile(const base::FilePath& path,
 
 }  // namespace
 
-SkusInternalsUI::SkusInternalsUI(content::WebUI* web_ui,
-                                 const std::string& name)
+SkusInternalsUI::SkusInternalsUI(content::WebUI* web_ui, std::string_view name)
     : content::WebUIController(web_ui),
       local_state_(g_browser_process->local_state()) {
   CreateAndAddWebUIDataSource(web_ui, name, kSkusInternalsGenerated,
@@ -256,7 +255,9 @@ std::string SkusInternalsUI::GetSkusStateAsString() const {
       continue;
     }
 
-    if (auto value = base::JSONReader::Read(kv.second.GetString()); value) {
+    if (auto value = base::JSONReader::Read(
+            kv.second.GetString(), base::JSON_PARSE_CHROMIUM_EXTENSIONS);
+        value) {
       dict.Set(kv.first, std::move(*value));
     }
   }

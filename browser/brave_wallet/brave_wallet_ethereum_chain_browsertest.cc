@@ -86,7 +86,7 @@ std::string EncodeQuery(const std::string& query) {
   return std::string(buffer.data(), buffer.length());
 }
 
-void ExtractParameters(const std::string& params,
+void ExtractParameters(std::string_view params,
                        std::map<std::string, std::string>* result) {
   for (const std::string& pair : base::SplitString(
            params, "&", base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL)) {

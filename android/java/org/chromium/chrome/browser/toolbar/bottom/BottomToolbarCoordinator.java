@@ -14,6 +14,8 @@ import android.view.ViewStub;
 
 import androidx.core.content.ContextCompat;
 
+import com.google.android.material.button.MaterialButton;
+
 import org.chromium.base.Callback;
 import org.chromium.base.CallbackController;
 import org.chromium.base.ContextUtils;
@@ -75,7 +77,7 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
     private final BraveScrollingBottomViewResourceFrameLayout mScrollingBottomView;
     private HomeButton mHomeButton;
     private BookmarksButton mBookmarksButton;
-    private BottomToolbarNewTabButton mNewTabButton;
+    private MaterialButton mNewTabButton;
     private final View mBottomContainerTopShadow;
     private boolean mBookmarkButtonFilled;
     private final ObservableSupplier<BookmarkModel> mBookmarkModelSupplier;
@@ -338,6 +340,9 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
 
         mLayoutStateProvider = layoutStateProvider;
         mLayoutStateProvider.addObserver(mLayoutStateObserver);
+        // Set layout state provider for browsing mode coordinator to detect tab overview mode
+        ((BrowsingModeBottomToolbarCoordinator) mBrowsingModeCoordinator)
+                .setLayoutStateProvider(layoutStateProvider);
     }
 
     public void updateBookmarkButton(boolean isBookmarked, boolean editingAllowed) {

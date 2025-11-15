@@ -26,7 +26,7 @@ std::string UntrustedSanitizedImageSource::GetSource() const {
 }
 
 void UntrustedSanitizedImageSource::StartDataRequest(
-    const std::string& path,
+    std::string_view path,
     web::URLDataSourceIOS::GotDataCallback callback) {
   GURL url =
       GURL(chrome::kChromeUntrustedUIImageURL).GetWithEmptyPath().Resolve(path);

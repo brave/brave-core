@@ -25,7 +25,7 @@ void BraveAccountNavigationThrottle::MaybeCreateAndAdd(
 
   if (const GURL& url = registry.GetNavigationHandle().GetURL();
       !url.SchemeIs(content::kChromeUIScheme) ||
-      url.host_piece() != kBraveAccountHost || url.path_piece() != "/") {
+      url.host() != kBraveAccountHost || url.path() != "/") {
     return;
   }
 

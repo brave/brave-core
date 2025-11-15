@@ -1,8 +1,8 @@
 diff --git a/components/os_crypt/sync/key_storage_kwallet.cc b/components/os_crypt/sync/key_storage_kwallet.cc
-index 7a4fbad37b2d4c6545ec290394b8207af38aef73..28e94f16e57553b93984e474c223a8be64884848 100644
+index 0f5d4c9a6267ece46ccd9fa35d04d7c63a7f3ca5..9bddf3bd396f3c77c698c296583a33f678416197 100644
 --- a/components/os_crypt/sync/key_storage_kwallet.cc
 +++ b/components/os_crypt/sync/key_storage_kwallet.cc
-@@ -126,6 +126,7 @@ std::optional<std::string> KeyStorageKWallet::GetKeyImpl() {
+@@ -127,6 +127,7 @@ std::optional<std::string> KeyStorageKWallet::GetKeyImpl() {
  
    // Get the existing password.
    std::optional<std::string> password;
@@ -10,7 +10,7 @@ index 7a4fbad37b2d4c6545ec290394b8207af38aef73..28e94f16e57553b93984e474c223a8be
    if (kwallet_dbus_->ReadPassword(handle_, KeyStorageLinux::kFolderName,
                                    KeyStorageLinux::kKey, app_name_,
                                    &password) != KWalletDBus::SUCCESS) {
-@@ -142,6 +143,7 @@ std::optional<std::string> KeyStorageKWallet::GetKeyImpl() {
+@@ -143,6 +144,7 @@ std::optional<std::string> KeyStorageKWallet::GetKeyImpl() {
  bool KeyStorageKWallet::InitFolder() {
    bool has_folder = false;
    KWalletDBus::Error error = kwallet_dbus_->HasFolder(

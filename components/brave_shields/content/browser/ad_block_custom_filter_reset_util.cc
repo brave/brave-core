@@ -14,18 +14,18 @@
 namespace brave_shields {
 
 namespace {
-constexpr std::array<std::string_view, 16> kCustomFilterPatternsToSkip = {
-    // Scriptlets
-    "+js(",
+constexpr auto kCustomFilterPatternsToSkip = std::to_array<std::string_view>(
+    {// Scriptlets
+     "+js(",
 
-    // Procedural cosmetic filters
-    ":has(", ":has-text(", ":matches-attr(", ":matches-css(",
-    ":matches-css-before(", ":matches-css-after(", ":matches-media(",
-    ":matches-path(", ":matches-prop(", ":min-text-length(", ":not(",
-    ":others(", ":upward(", ":watch-attr(", ":xpath("};
+     // Procedural cosmetic filters
+     ":has(", ":has-text(", ":matches-attr(", ":matches-css(",
+     ":matches-css-before(", ":matches-css-after(", ":matches-media(",
+     ":matches-path(", ":matches-prop(", ":min-text-length(", ":not(",
+     ":others(", ":upward(", ":watch-attr(", ":xpath("});
 
-bool IsInAllowList(const std::string& custom_filter_line) {
-  for (const auto& pattern : kCustomFilterPatternsToSkip) {
+bool IsInAllowList(std::string_view custom_filter_line) {
+  for (std::string_view pattern : kCustomFilterPatternsToSkip) {
     if (custom_filter_line.find(pattern) != std::string::npos) {
       return true;
     }
@@ -36,18 +36,18 @@ bool IsInAllowList(const std::string& custom_filter_line) {
 }  // namespace
 
 std::optional<std::string> ResetCustomFiltersForHost(
-    const std::string& host,
-    const std::string& custom_filters) {
+    std::string_view host,
+    std::string_view custom_filters) {
   if (host.empty() || custom_filters.empty()) {
     return std::nullopt;
   }
 
   std::string result;
   const auto starts_with_str = base::StrCat({host, "##"});
-  base::StringTokenizer tokenizer(custom_filters, "\n");
+  base::StringViewTokenizer tokenizer(custom_filters, "\n");
   while (tokenizer.GetNext()) {
-    const std::string token{
-        base::TrimWhitespaceASCII(tokenizer.token(), base::TRIM_ALL)};
+    std::string_view token =
+        base::TrimWhitespaceASCII(tokenizer.token(), base::TRIM_ALL);
     if (token.starts_with(starts_with_str) && !IsInAllowList(token)) {
       continue;  // Exclude line from the result
     }
@@ -56,17 +56,17 @@ std::optional<std::string> ResetCustomFiltersForHost(
   return result;
 }
 
-bool IsCustomFiltersAvailable(const std::string& host,
-                              const std::string& custom_filters) {
+bool IsCustomFiltersAvailable(std::string_view host,
+                              std::string_view custom_filters) {
   if (host.empty() || custom_filters.empty()) {
     return false;
   }
 
   const auto starts_with_str = base::StrCat({host, "##"});
-  base::StringTokenizer tokenizer(custom_filters, "\n");
+  base::StringViewTokenizer tokenizer(custom_filters, "\n");
   while (tokenizer.GetNext()) {
-    const std::string token{
-        base::TrimWhitespaceASCII(tokenizer.token(), base::TRIM_ALL)};
+    std::string_view token =
+        base::TrimWhitespaceASCII(tokenizer.token(), base::TRIM_ALL);
     if (token.starts_with(starts_with_str) && !IsInAllowList(token)) {
       return true;
     }

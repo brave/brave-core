@@ -132,8 +132,8 @@ class AdBlockService {
 
   void EnableTag(const std::string& tag, bool enabled);
   void AddUserCosmeticFilter(const std::string& filter);
-  void ResetCosmeticFilter(const std::string& host);
-  bool AreAnyBlockedElementsPresent(const std::string& host);
+  void ResetCosmeticFilter(std::string_view host);
+  bool AreAnyBlockedElementsPresent(std::string_view host);
 
   // Methods for brave://adblock-internals.
   using GetDebugInfoCallback =

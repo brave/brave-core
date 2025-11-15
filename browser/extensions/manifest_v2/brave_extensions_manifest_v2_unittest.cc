@@ -9,13 +9,11 @@
 #include "base/path_service.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/extensions/manifest_v2/brave_extensions_manifest_v2_migrator.h"
-#include "brave/browser/extensions/manifest_v2/brave_hosted_extensions.h"
 #include "brave/browser/extensions/manifest_v2/features.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/extensions/extension_management.h"
 #include "chrome/browser/extensions/extension_service_test_base.h"
-#include "chrome/browser/extensions/install_signer.h"
-#include "chrome/browser/extensions/install_verifier.h"
+#include "chrome/browser/extensions/install_verifier_factory.h"
 #include "chrome/browser/extensions/manifest_v2_experiment_manager.h"
 #include "chrome/browser/extensions/mv2_deprecation_impact_checker.h"
 #include "chrome/browser/extensions/mv2_experiment_stage.h"
@@ -23,6 +21,9 @@
 #include "extensions/browser/extension_prefs.h"
 #include "extensions/browser/extension_registrar.h"
 #include "extensions/browser/extension_registry.h"
+#include "extensions/browser/extension_util.h"
+#include "extensions/browser/install_signer.h"
+#include "extensions/browser/install_verifier.h"
 #include "extensions/common/constants.h"
 #include "extensions/common/extension_builder.h"
 #include "extensions/common/extension_features.h"
@@ -41,7 +42,7 @@ struct BraveExtensionsManifestV2Test
     extensions::InstallSignature signature = {};
     auto dict = signature.ToDict();
     extensions::ExtensionPrefs::Get(profile())->SetInstallSignature(&dict);
-    extensions::InstallVerifier::Get(profile())->Init();
+    extensions::InstallVerifierFactory::GetForBrowserContext(profile())->Init();
   }
 
  private:
@@ -71,7 +72,8 @@ TEST_F(BraveExtensionsManifestV2Test, CheckInstallVerifier) {
             .SetLocation(extensions::mojom::ManifestLocation::kExternalPolicy)
             .Build();
 
-    auto* install_verifier = extensions::InstallVerifier::Get(profile());
+    auto* install_verifier =
+        extensions::InstallVerifierFactory::GetForBrowserContext(profile());
 
     auto disable_reason = extensions::disable_reason::DISABLE_NONE;
     EXPECT_EQ(

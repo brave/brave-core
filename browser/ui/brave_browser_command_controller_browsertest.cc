@@ -472,16 +472,13 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
 
   // initially no panel is showing
   EXPECT_FALSE(side_panel_coordinator->IsSidePanelEntryShowing(ai_chat_key));
-  EXPECT_FALSE(side_panel_coordinator->IsSidePanelShowing());
   // after command, ai chat panel is showing
   browser()->command_controller()->ExecuteCommand(IDC_TOGGLE_AI_CHAT);
-  EXPECT_TRUE(side_panel_coordinator->IsSidePanelShowing());
   EXPECT_TRUE(side_panel_coordinator->IsSidePanelEntryShowing(ai_chat_key));
   // after command again, no panel is showing
   browser()->command_controller()->ExecuteCommand(IDC_TOGGLE_AI_CHAT);
   WaitForSidePanelClose();
   EXPECT_FALSE(side_panel_coordinator->IsSidePanelEntryShowing(ai_chat_key));
-  EXPECT_FALSE(side_panel_coordinator->IsSidePanelShowing());
 
   // open a different side panel
   SidePanelEntryKey bookmarks_key =
@@ -490,13 +487,11 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
                                  SidePanelOpenTrigger::kToolbarButton);
   // after command, ai chat panel is showing
   browser()->command_controller()->ExecuteCommand(IDC_TOGGLE_AI_CHAT);
-  EXPECT_TRUE(side_panel_coordinator->IsSidePanelShowing());
   EXPECT_TRUE(side_panel_coordinator->IsSidePanelEntryShowing(ai_chat_key));
   // after command again, no panel is showing
   browser()->command_controller()->ExecuteCommand(IDC_TOGGLE_AI_CHAT);
   WaitForSidePanelClose();
   EXPECT_FALSE(side_panel_coordinator->IsSidePanelEntryShowing(ai_chat_key));
-  EXPECT_FALSE(side_panel_coordinator->IsSidePanelShowing());
 }
 #endif
 

@@ -269,7 +269,7 @@ BraveBrowserView* BraveBrowserView::From(BrowserView* view) {
 }
 
 bool BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
-    Browser* browser) {
+    const Browser* browser) {
   if (!browser->is_type_normal()) {
     return false;
   }
@@ -913,6 +913,14 @@ void BraveBrowserView::HideSplitView() {
   UpdateRoundedCornersUI();
 }
 
+void BraveBrowserView::ReparentTopContainerForEndOfImmersive() {
+  if (tabs::utils::ShouldShowVerticalTabs(browser())) {
+    return;
+  }
+
+  BrowserView::ReparentTopContainerForEndOfImmersive();
+}
+
 BraveMultiContentsView* BraveBrowserView::GetBraveMultiContentsView() const {
   return BraveMultiContentsView::From(multi_contents_view_);
 }
@@ -1099,7 +1107,8 @@ void BraveBrowserView::UpdateWebViewRoundedCorners() {
 
   // In fullscreen-for-tab mode (e.g. full-screen video), no corners should be
   // rounded.
-  if (auto* exclusive_access_manager = GetExclusiveAccessManager()) {
+  if (auto* exclusive_access_manager =
+          browser_->GetFeatures().exclusive_access_manager()) {
     if (auto* controller = exclusive_access_manager->fullscreen_controller()) {
       if (controller->IsWindowFullscreenForTabOrPending()) {
         corners = gfx::RoundedCornersF(0);

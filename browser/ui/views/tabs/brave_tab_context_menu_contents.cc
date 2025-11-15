@@ -256,7 +256,7 @@ void BraveTabContextMenuContents::ExecuteBraveCommand(int command_id) {
 
       auto all_muted = model_->all_muted();
       for (auto* contents : contentses) {
-        SetTabAudioMuted(contents, !all_muted, TabMutedReason::AUDIO_INDICATOR,
+        SetTabAudioMuted(contents, !all_muted, TabMutedReason::kAudioIndicator,
                          /*extension_id=*/std::string());
       }
       return;

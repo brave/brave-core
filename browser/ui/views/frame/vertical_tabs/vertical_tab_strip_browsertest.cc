@@ -34,10 +34,10 @@
 #include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/tabs/features.h"
-#include "chrome/browser/ui/views/frame/browser_non_client_frame_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
@@ -138,10 +138,10 @@ class VerticalTabStripBrowserTest : public InProcessBrowserTest {
   BraveBrowserView* browser_view() {
     return static_cast<BraveBrowserView*>(browser()->window());
   }
-  BrowserNonClientFrameView* browser_non_client_frame_view() {
+  BrowserFrameView* browser_non_client_frame_view() {
     return browser_view()->browser_widget()->GetFrameView();
   }
-  const BrowserNonClientFrameView* browser_non_client_frame_view() const {
+  const BrowserFrameView* browser_non_client_frame_view() const {
     return browser_view()->browser_widget()->GetFrameView();
   }
 
@@ -430,8 +430,11 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, MAYBE_Fullscreen) {
   ASSERT_TRUE(browser_view()
                   ->vertical_tab_strip_host_view_->GetPreferredSize()
                   .width());
-  auto* fullscreen_controller =
-      browser_view()->GetExclusiveAccessManager()->fullscreen_controller();
+  auto* fullscreen_controller = browser_view()
+                                    ->browser()
+                                    ->GetFeatures()
+                                    .exclusive_access_manager()
+                                    ->fullscreen_controller();
   {
     auto observer = FullscreenNotificationObserver(browser());
     fullscreen_controller->ToggleBrowserFullscreenMode(/*user_initiated=*/true);
@@ -978,7 +981,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripDragAndDropBrowserTest,
         EXPECT_EQ(2, std::ranges::count_if(*browser_list, [&](Browser* b) {
                     return b->profile() == browser()->profile();
                   }));
-        auto* new_browser = browser_list->GetLastActive();
+        auto* new_browser = GetLastActiveBrowserWindowInterfaceWithAnyProfile();
         auto* browser_view = BrowserView::GetBrowserViewForBrowser(new_browser);
         auto* tab = browser_view->tabstrip()->tab_at(0);
         ASSERT_TRUE(tab);
@@ -987,7 +990,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripDragAndDropBrowserTest,
         EXPECT_TRUE(tab->IsMouseHovered());
         EXPECT_TRUE(tab->dragging());
         ReleaseMouse();
-        new_browser->window()->Close();
+        new_browser->GetWindow()->Close();
       }));
 }
 

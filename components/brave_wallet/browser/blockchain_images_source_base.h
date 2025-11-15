@@ -34,9 +34,8 @@ class BlockchainImagesSourceBase {
 
   using GotDataCallback =
       base::OnceCallback<void(scoped_refptr<base::RefCountedMemory>)>;
-  void StartDataRequestForPath(const std::string& path,
-                               GotDataCallback callback);
-  std::string GetMimeTypeForPath(const std::string& path) const;
+  void StartDataRequestForPath(std::string_view path, GotDataCallback callback);
+  std::string GetMimeTypeForPath(std::string_view path) const;
   bool AllowCaching() const { return true; }
   void OnGotImageFileBytes(
       base::OnceCallback<void(scoped_refptr<base::RefCountedMemory>)> callback,

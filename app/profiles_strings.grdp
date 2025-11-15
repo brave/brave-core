@@ -55,6 +55,77 @@
     Hi, <ph name="PROFILE_NAME">$1<ex>User</ex></ph>
   </message>
 
+  <!-- Identity error message for passkey unlock experiment -->
+  <if expr="use_titlecase">
+    <message name="IDS_AVATAR_BUTTON_PASSKEYS_ERROR_UNLOCK" desc="A short label for the avatar button, shown when the user needs to verify their identity to unlock usage of their Brave Password Manager passkeys on this device. Tapping the button will open the profile menu. The word 'passkey' is distinct from 'password', consult the glossary for a translation.">
+      Unlock Your Passkeys
+    </message>
+  </if>
+  <if expr="not use_titlecase">
+    <message name="IDS_AVATAR_BUTTON_PASSKEYS_ERROR_UNLOCK" desc="A short label for the avatar button, shown when the user needs to verify their identity to unlock usage of their Brave Password Manager passkeys on this device. Tapping the button will open the profile menu. The word 'passkey' is distinct from 'password', consult the glossary for a translation.">
+      Unlock your passkeys
+    </message>
+  </if>
+  <if expr="use_titlecase">
+    <message name="IDS_AVATAR_BUTTON_PASSKEYS_ERROR_GET" desc="A short label for the avatar button, shown when the user needs to verify their identity to unlock usage of their Brave Password Manager passkeys on this device. Tapping the button will open the profile menu. The word 'passkey' is distinct from 'password', consult the glossary for a translation.">
+      Get Your Passkeys
+    </message>
+  </if>
+  <if expr="not use_titlecase">
+    <message name="IDS_AVATAR_BUTTON_PASSKEYS_ERROR_GET" desc="A short label for the avatar button, shown when the user needs to verify their identity to unlock usage of their Brave Password Manager passkeys on this device. Tapping the button will open the profile menu. The word 'passkey' is distinct from 'password', consult the glossary for a translation.">
+      Get your passkeys
+    </message>
+  </if>
+  <if expr="use_titlecase">
+    <message name="IDS_AVATAR_BUTTON_PASSKEYS_ERROR_VERIFY" desc="A short label for the avatar button, shown when the user needs to verify their identity to unlock usage of their Brave Password Manager passkeys on this device. Tapping the button will open the profile menu. The word 'passkey' is distinct from 'password', consult the glossary for a translation.">
+      Verify It's You
+    </message>
+  </if>
+  <if expr="not use_titlecase">
+    <message name="IDS_AVATAR_BUTTON_PASSKEYS_ERROR_VERIFY" desc="A short label for the avatar button, shown when the user needs to verify their identity to unlock usage of their Brave Password Manager passkeys on this device. Tapping the button will open the profile menu. The word 'passkey' is distinct from 'password', consult the glossary for a translation.">
+      Verify it's you
+    </message>
+  </if>
+  <message name="IDS_PROFILE_MENU_PASSKEYS_ERROR_DESCRIPTION_UNLOCK" desc="Subtitle in the profile menu, shown when the user needs to verify their identity to unlock usage of their Brave Password Manager passkeys on this device, e.g. by presenting a PIN. The word 'passkey' is distinct from 'password', consult the glossary for a translation.">
+    Verify it’s you to save and use your passkeys on this device
+  </message>
+  <message name="IDS_PROFILE_MENU_PASSKEYS_ERROR_DESCRIPTION_GET" desc="Subtitle in the profile menu, shown when the user needs to verify their identity to unlock usage of their Brave Password Manager passkeys on this device, e.g. by presenting a PIN. The word 'passkey' is distinct from 'password', consult the glossary for a translation.">
+    Get your passkeys on this device with Brave Password Manager
+  </message>
+  <message name="IDS_PROFILE_MENU_PASSKEYS_ERROR_DESCRIPTION_VERIFY" desc="Subtitle in the profile menu, shown when the user needs to verify their identity to unlock usage of their Brave Password Manager passkeys on this device, e.g. by presenting a PIN. The word 'passkey' is distinct from 'password', consult the glossary for a translation.">
+    Verify it’s you to get your passkeys on this device
+  </message>
+  <if expr="use_titlecase">
+    <message name="IDS_PROFILE_MENU_PASSKEYS_ERROR_BUTTON_UNLOCK" desc="Button in the profile menu, shown when the user needs to verify their identity to unlock usage of their Brave Password Manager passkeys on this device, e.g. by presenting a PIN. Tapping the button will open a tab asking the user to verify their identity with a PIN or other challenge. The word 'passkey' is distinct from 'password', consult the glossary for a translation.">
+      Unlock Your Passkeys
+    </message>
+  </if>
+  <if expr="not use_titlecase">
+    <message name="IDS_PROFILE_MENU_PASSKEYS_ERROR_BUTTON_UNLOCK" desc="Button in the profile menu, shown when the user needs to verify their identity to unlock usage of their Brave Password Manager passkeys on this device, e.g. by presenting a PIN. Tapping the button will open a tab asking the user to verify their identity with a PIN or other challenge. The word 'passkey' is distinct from 'password', consult the glossary for a translation.">
+      Unlock your passkeys
+    </message>
+  </if>
+  <if expr="use_titlecase">
+    <message name="IDS_PROFILE_MENU_PASSKEYS_ERROR_BUTTON_GET" desc="Button in the profile menu, shown when the user needs to verify their identity to unlock usage of their Brave Password Manager passkeys on this device, e.g. by presenting a PIN. Tapping the button will open a tab asking the user to verify their identity with a PIN or other challenge. The word 'passkey' is distinct from 'password', consult the glossary for a translation.">
+      Get Passkeys
+    </message>
+  </if>
+  <if expr="not use_titlecase">
+    <message name="IDS_PROFILE_MENU_PASSKEYS_ERROR_BUTTON_GET" desc="Button in the profile menu, shown when the user needs to verify their identity to unlock usage of their Brave Password Manager passkeys on this device, e.g. by presenting a PIN. Tapping the button will open a tab asking the user to verify their identity with a PIN or other challenge. The word 'passkey' is distinct from 'password', consult the glossary for a translation.">
+      Get passkeys
+    </message>
+  </if>
+  <if expr="use_titlecase">
+    <message name="IDS_PROFILE_MENU_PASSKEYS_ERROR_BUTTON_VERIFY" desc="Button in the profile menu, shown when the user needs to verify their identity to unlock usage of their Brave Password Manager passkeys on this device, e.g. by presenting a PIN. Tapping the button will open a tab asking the user to verify their identity with a PIN or other challenge. The word 'passkey' is distinct from 'password', consult the glossary for a translation.">
+      Verify It's You
+    </message>
+  </if>
+  <if expr="not use_titlecase">
+    <message name="IDS_PROFILE_MENU_PASSKEYS_ERROR_BUTTON_VERIFY" desc="Button in the profile menu, shown when the user needs to verify their identity to unlock usage of their Brave Password Manager passkeys on this device, e.g. by presenting a PIN. Tapping the button will open a tab asking the user to verify their identity with a PIN or other challenge. The word 'passkey' is distinct from 'password', consult the glossary for a translation.">
+      Verify it's you
+    </message>
+  </if>
+
   <!-- Multi-profile -->
   <message name="IDS_PROFILES_MENU_NAME" desc="The name of menu for profiles (Mac and linux) and name for the launcher menu section (Mac).">
     Profiles
@@ -114,12 +185,12 @@
   </message>
   <if expr="use_titlecase">
       <message name="IDS_PROFILES_VERIFY_ACCOUNT_BUTTON" desc="The label of the button that is shown when the user is in a Signin paused state. When the user clicks this button, they will be prompted to enter their Brave sync chain credentials.">
-        Verify It’s You
+        Verify It's You
       </message>
     </if>
     <if expr="not use_titlecase">
       <message name="IDS_PROFILES_VERIFY_ACCOUNT_BUTTON" desc="The label of the button that is shown when the user is in a Signin paused state. When the user clicks this button, they will be prompted to enter their Brave sync chain credentials.">
-        Verify it’s you
+        Verify it's you
       </message>
     </if>
   <message name="IDS_PROFILE_MENU_SIGNIN_PROMO_DESCRIPTION" desc="Text for the sign-in promo in the profile menu when the used is signed out, describing the benefits of signing in.">
@@ -809,6 +880,24 @@
     <message name="IDS_PROFILE_PICKER_BACK_BUTTON_SIGN_IN_LABEL" desc="Label for a button that navigates user to the previous page from the 'Sign in' page">
       Back from sign in
     </message>
+    <message name="IDS_PROFILE_PICKER_MAIN_VIEW_TITLE_KEEP_WORK_AND_LIFE_SEPARATE" desc="Profile picker main view title.">
+      Keep work and life separate
+    </message>
+    <message name="IDS_PROFILE_PICKER_MAIN_VIEW_TITLE_GOT_ANOTHER_GOOGLE_ACCOUNT" desc="Profile picker main view title.">
+      Got another Brave sync chain?
+    </message>
+    <message name="IDS_PROFILE_PICKER_MAIN_VIEW_TITLE_KEEP_TASKS_SEPARATE" desc="Profile picker main view title.">
+      Keep school, side projects, and other tasks separate
+    </message>
+    <message name="IDS_PROFILE_PICKER_MAIN_VIEW_TITLE_SHARING_A_COMPUTER" desc="Profile picker main view title.">
+      Sharing a computer?
+    </message>
+    <message name="IDS_PROFILE_PICKER_MAIN_VIEW_SUBTITLE_SHARING_A_COMPUTER" desc="Profile picker main view subtitle.">
+      Keep your bookmarks, passwords, and settings separate. Add a new profile now.
+    </message>
+    <message name="IDS_PROFILE_PICKER_MAIN_VIEW_SUBTITLE_KEEP_EVERYTHING_IN_CHROME" desc="Profile picker main view subtitle.">
+      Profiles let you separate work, personal, and play without switching to another browser. Add a new profile now.
+    </message>
     <message name="IDS_PROFILE_PICKER_PROFILE_CARD_NEEDS_SIGNIN_PROMPT" desc="Text on the profile card signaling that the user must sign-in in order to open a profile">
       Sign in
     </message>
@@ -884,6 +973,10 @@
     <message name="IDS_PROFILE_PICKER_PROFILE_CREATION_FLOW_NOT_NOW_BUTTON_LABEL" desc="Label for a button to decline a prompt to sign in">
       Continue without an account
     </message>
+    <message name="IDS_PROFILE_PICKER_PROFILE_CREATION_FLOW_STAY_SIGNED_OUT_BUTTON_LABEL" desc="Label for a button to decline a prompt to sign in">
+      Stay signed out
+    </message>
+
     <!-- TODO(crbug.com/40267173): Update the string ids for local profile
          creatiom since they are now used outside the Profile Picker, in
          Profile Customization UI instead. -->
@@ -972,6 +1065,9 @@
       <message name="IDS_FRE_DECLINE_SIGN_IN_BUTTON_TITLE" desc="The title of the button giving the users the choice not to sign in to Brave">
         Don't sign in
       </message>
+      <message name="IDS_FRE_STAY_SIGNED_OUT_BUTTON_TITLE" desc="The title of the button giving the users the choice not to sign in to Brave">
+        Stay signed out
+      </message>
       <message name="IDS_FRE_ACCEPT_SIGN_IN_BUTTON_TITLE" desc="The title of the button giving the users the choice to sign in to Brave">
         Sign in
       </message>
@@ -979,6 +1075,9 @@
     <if expr="use_titlecase">
       <message name="IDS_FRE_DECLINE_SIGN_IN_BUTTON_TITLE" desc="In Title Case. The title of the button giving the users the choice not to sign in to Brave">
         Don't Sign In
+      </message>
+      <message name="IDS_FRE_STAY_SIGNED_OUT_BUTTON_TITLE" desc="The title of the button giving the users the choice not to sign in to Brave">
+        Stay Signed Out
       </message>
       <message name="IDS_FRE_ACCEPT_SIGN_IN_BUTTON_TITLE" desc="In Title Case. The title of the button giving the users the choice to sign in to Brave">
         Sign In
@@ -1187,8 +1286,8 @@
     <message name="IDS_HISTORY_SYNC_OPT_IN_REJECT_BUTTON" desc="Decline button of the history sync opt in screen which offers the user to turn on the data types history, tabs, and saved tab groups.">
       No thanks
     </message>
-    <message name="IDS_HISTORY_SYNC_DISABLED_ERROR_DESCRIPTION" desc="Message that is shown in an error dialog when a user tries to sign in to use a service that requires history sync opt in (e.g. sharing/joining tab groups), but sync is disabled.">
-      Your organization turned off saving history and tabs in your Brave sync chain
+    <message name="IDS_TABS_DISABLED_ERROR_DESCRIPTION" desc="Message that is shown in an error dialog when a user tries to sign in to use a service that requires history sync opt in (e.g. sharing/joining tab groups), but sync is disabled.">
+      Your organization turned off saving tabs in your Brave sync chain
     </message>
     <!-- Avatar Button Promos Desktop -->
     <if expr="not use_titlecase">

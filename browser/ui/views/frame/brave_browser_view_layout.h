@@ -8,30 +8,15 @@
 
 #include <memory>
 
-#include "chrome/browser/ui/views/frame/browser_view_layout.h"
+#include "chrome/browser/ui/views/frame/layout/browser_view_layout_impl_old.h"
 
 class SidebarContainerView;
 
-class BraveBrowserViewLayout : public BrowserViewLayout {
+class BraveBrowserViewLayout : public BrowserViewLayoutImplOld {
  public:
   BraveBrowserViewLayout(std::unique_ptr<BrowserViewLayoutDelegate> delegate,
-                         BrowserView* browser_view,
-                         views::View* window_scrim,
-                         views::View* top_container,
-                         WebAppFrameToolbarView* web_app_frame_toolbar,
-                         views::Label* web_app_window_title,
-                         TabStripRegionView* tab_strip_region_view,
-                         views::View* vertical_tab_strip_container,
-                         views::View* toolbar,
-                         InfoBarContainerView* infobar_container,
-                         views::View* main_container,
-                         views::View* contents_container,
-                         MultiContentsView* multi_contents_view,
-                         views::View* left_aligned_side_panel_separator,
-                         views::View* contents_height_side_panel,
-                         views::View* right_aligned_side_panel_separator,
-                         views::View* side_panel_rounded_corner,
-                         views::View* contents_separator);
+                         Browser* browser,
+                         BrowserViewLayoutViews views);
   ~BraveBrowserViewLayout() override;
 
   void set_contents_background(views::View* contents_background) {
@@ -50,7 +35,7 @@ class BraveBrowserViewLayout : public BrowserViewLayout {
     sidebar_separator_ = sidebar_separator;
   }
 
-  views::View* contents_container() { return contents_container_; }
+  views::View* contents_container() { return views().contents_container; }
 
   // Returns the ideal sidebar width, given the current available width. Used
   // for determining the target width in sidebar width animations.

@@ -126,7 +126,14 @@ void CommanderService::Shutdown() {
   items_.clear();
 }
 
-void CommanderService::OnBrowserClosing(Browser* browser) {
+void CommanderService::OnBrowserAdded(Browser* browser) {
+  browser_close_subscriptions_[browser] = browser->RegisterBrowserDidClose(
+      base::BindRepeating(&CommanderService::OnBrowserDidClose,
+                          weak_ptr_factory_.GetWeakPtr()));
+}
+
+void CommanderService::OnBrowserDidClose(BrowserWindowInterface* browser) {
+  browser_close_subscriptions_.erase(browser);
   if (last_browser_ == browser) {
     last_browser_ = nullptr;
     browser_list_observation_.Reset();

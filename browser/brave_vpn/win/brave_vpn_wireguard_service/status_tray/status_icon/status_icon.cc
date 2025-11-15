@@ -15,7 +15,7 @@
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/status_tray/status_icon/native_popup_menu.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/status_tray/status_icon/tray_menu_model.h"
 #include "ui/gfx/geometry/point.h"
-#include "ui/gfx/icon_util.h"
+#include "ui/gfx/win/icon_util.h"
 
 namespace brave_vpn {
 namespace {

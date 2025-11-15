@@ -62,7 +62,7 @@ UIViewController* GetParentControllerFromView(UIView* view) {
 ///////////////////////////////////////////////////////////////////////////////
 
 SkusInternalsUI::SkusInternalsUI(web::WebUIIOS* web_ui, const GURL& url)
-    : web::WebUIIOSController(web_ui, url.host()),
+    : web::WebUIIOSController(web_ui, url.GetHost()),
       local_state_(GetApplicationContext()->GetLocalState()) {
   // Set up the brave://skus-internals/ source.
   brave::CreateAndAddWebUIDataSource(
@@ -204,7 +204,9 @@ std::string SkusInternalsUI::GetSkusStateAsString() const {
       continue;
     }
 
-    if (auto value = base::JSONReader::Read(kv.second.GetString()); value) {
+    if (auto value = base::JSONReader::Read(
+            kv.second.GetString(), base::JSON_PARSE_CHROMIUM_EXTENSIONS);
+        value) {
       dict.Set(kv.first, std::move(*value));
     }
   }
