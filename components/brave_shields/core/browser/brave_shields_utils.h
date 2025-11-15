@@ -135,6 +135,10 @@ base::Token GetFarblingToken(HostContentSettingsMap* map, const GURL& url);
 
 bool IsDeveloperModeEnabled(PrefService* profile_state);
 
+void SetAllowElementBlockerInPrivateModeEnabled(PrefService* local_state,
+                                                bool value);
+bool GetAllowElementBlockerInPrivateModeEnabled(PrefService* local_state);
+
 }  // namespace brave_shields
 
 #endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_BROWSER_BRAVE_SHIELDS_UTILS_H_

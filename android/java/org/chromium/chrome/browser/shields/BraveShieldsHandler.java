@@ -56,6 +56,7 @@ import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 import org.chromium.chrome.browser.cosmetic_filters.BraveCosmeticFiltersUtils;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
+import org.chromium.chrome.browser.informers.BraveElementBlockerOnPrivateTabInformer;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -829,7 +830,9 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         TextView blockElementsText =
                 mSecondaryLayout.findViewById(R.id.brave_shields_block_element_text);
         blockElementsText.setVisibility(
-                !isPrivateWindow
+                (!isPrivateWindow
+                                        || BraveShieldsContentSettings
+                                                .getAllowElementBlockerInPrivateModeEnabledPref())
                                 && ChromeFeatureList.isEnabled(
                                         BraveFeatureList.BRAVE_SHIELDS_ELEMENT_PICKER)
                         ? View.VISIBLE
@@ -840,8 +843,14 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
                     public void onClick(View view) {
                         hideBraveShieldsMenu();
                         Tab currentActiveTab = mIconFetcher.getTab();
-                        BraveCosmeticFiltersUtils.launchContentPickerForWebContent(
-                                currentActiveTab);
+                        if (isPrivateWindow
+                                && BraveShieldsContentSettings
+                                        .getAllowElementBlockerInPrivateModeEnabledPref()) {
+                            BraveElementBlockerOnPrivateTabInformer.show(currentActiveTab);
+                        } else {
+                            BraveCosmeticFiltersUtils.launchContentPickerForWebContent(
+                                    currentActiveTab);
+                        }
                     }
                 });
     }
