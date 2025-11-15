@@ -49,3 +49,5 @@ This is only an estimate. The **github** view may differ.
     file to all clients via component updater.
 *   [Git Configuration](git_configuration.md) - General recommendations for
     setting up and optimizing your Git environment.
+*   [Ignoring Files from Format and Presubmit Checks](ignoring_format_checks.md) -
+    How to exclude files from format and presubmit checks.
