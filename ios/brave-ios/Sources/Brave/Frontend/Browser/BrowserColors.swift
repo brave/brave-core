@@ -153,7 +153,10 @@ struct StandardBrowserColors: BrowserColors {
   }
 
   var tabBarTabBackground: UIColor {
-    .init(light: .primitiveNeutral95, dark: .primitiveNeutral5)
+    .init(
+      lightColor: UIColor.black.withAlphaComponent(0.05),
+      darkColor: UIColor.black.withAlphaComponent(0.1)
+    )
   }
 
   var tabBarTabActiveBackground: UIColor {
@@ -260,7 +263,7 @@ struct PrivateModeBrowserColors: BrowserColors {
   }
 
   var tabBarTabBackground: UIColor {
-    .init(braveSystemName: .primitivePrivateWindow5)
+    UIColor.black.withAlphaComponent(0.05)
   }
 
   var tabBarTabActiveBackground: UIColor {
