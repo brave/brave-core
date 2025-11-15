@@ -6,4 +6,5 @@ include_rules += [
   "+brave/components/brave_vpn/browser/connection/ikev2/win",
   "+brave/components/brave_vpn/common/buildflags",
   "+brave/installer",
+  "+brave/third_party/bspatch"
 ]

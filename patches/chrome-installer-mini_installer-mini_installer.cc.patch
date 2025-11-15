@@ -1,8 +1,54 @@
 diff --git a/chrome/installer/mini_installer/mini_installer.cc b/chrome/installer/mini_installer/mini_installer.cc
-index 44f29f2fafda83685479c791da3aa4ddbd4cde73..6231ec19c1955931f1caf1cf7b862f8003095e8c 100644
+index 44f29f2fafda83685479c791da3aa4ddbd4cde73..7a27e5d88079cb95a7cf70aec21632599cfd9a76 100644
 --- a/chrome/installer/mini_installer/mini_installer.cc
 +++ b/chrome/installer/mini_installer/mini_installer.cc
-@@ -499,6 +499,7 @@ ProcessExitResult RunSetup(const Configuration& configuration,
+@@ -358,11 +358,11 @@ bool ResourceDeleterDelegate::OnResource(const wchar_t* name,
+ ProcessExitResult UnpackBinaryResources(HMODULE module,
+                                         const wchar_t* base_path,
+                                         PathString& setup_path,
++                                        ResourceTypeString& setup_type,
+                                         PathString& archive_path,
+                                         ResourceTypeString& archive_type,
+                                         int& max_delete_attempts) {
+   // Generate the setup.exe path where we uncompress setup resource.
+-  ResourceTypeString setup_type;
+   PathString setup_name;
+   MemoryRange setup_range;
+   PathString archive_name;
+@@ -472,8 +472,17 @@ ProcessExitResult RunSetup(const Configuration& configuration,
+                            bool compressed_archive) {
+   // Get the path to setup.exe.
+   PathString setup_exe;
+-  if (!setup_exe.assign(setup_path)) {
+-    return ProcessExitResult(COMMAND_STRING_OVERFLOW);
++
++  if (*setup_path != L'\0') {
++    if (!setup_exe.assign(setup_path)) {
++      return ProcessExitResult(COMMAND_STRING_OVERFLOW);
++    }
++  } else {
++    ProcessExitResult exit_code = GetPreviousSetupExePath(
++        configuration, setup_exe.get(), setup_exe.capacity());
++    if (!exit_code.IsSuccess()) {
++      return exit_code;
++    }
+   }
+ 
+   // There could be three full paths in the command line for setup.exe (path
+@@ -495,10 +504,20 @@ ProcessExitResult RunSetup(const Configuration& configuration,
+     return ProcessExitResult(COMMAND_STRING_OVERFLOW);
+   }
+ 
++  // Append the command line param for the previous version of Chrome.
++  if (configuration.previous_version() &&
++      (!cmd_line.append(L" --") || !cmd_line.append(kCmdPreviousVersion) ||
++       !cmd_line.append(L"=\"") ||
++       !cmd_line.append(configuration.previous_version()) ||
++       !cmd_line.append(L"\""))) {
++    return ProcessExitResult(COMMAND_STRING_OVERFLOW);
++  }
++
+   // Get any command line option specified for mini_installer and pass them
    // on to setup.exe
    AppendCommandLineFlags(configuration.command_line(), &cmd_line);
  
@@ -10,3 +56,56 @@ index 44f29f2fafda83685479c791da3aa4ddbd4cde73..6231ec19c1955931f1caf1cf7b862f80
    return RunProcessAndWait(setup_exe.get(), cmd_line.get(),
                             RUN_SETUP_FAILED_FILE_NOT_FOUND,
                             RUN_SETUP_FAILED_PATH_NOT_FOUND,
+@@ -714,7 +733,7 @@ ProcessExitResult WMain(HMODULE module) {
+ 
+   // Parse configuration from the command line and resources.
+   Configuration configuration;
+-  if (!configuration.Initialize()) {
++  if (!configuration.Initialize(module)) {
+     return ProcessExitResult(GENERIC_INITIALIZATION_FAILURE, ::GetLastError());
+   }
+ 
+@@ -730,14 +749,41 @@ ProcessExitResult WMain(HMODULE module) {
+     return exit_code;
+   }
+ 
++#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
++  // Set the magic suffix in registry to try full installer next time. We ignore
++  // any errors here and we try to set the suffix for user level unless
++  // GoogleUpdateIsMachine=1 is present in the environment or --system-level is
++  // on the command line in which case we set it for system level instead. This
++  // only applies to the Google Chrome distribution.
++  SetInstallerFlags(configuration);
++#endif
++
+   int max_delete_attempts = 0;
+   PathString setup_path;
++  ResourceTypeString setup_type;
+   PathString archive_path;
+   ResourceTypeString archive_type;
+ 
+   exit_code =
+-      UnpackBinaryResources(module, base_path.get(), setup_path, archive_path,
+-                            archive_type, max_delete_attempts);
++      UnpackBinaryResources(module, base_path.get(), setup_path, setup_type,
++                            archive_path, archive_type, max_delete_attempts);
++
++  // If a compressed setup patch was found, run the previous setup.exe to
++  // patch and generate the new setup.exe.
++  if (exit_code.IsSuccess() && setup_type.compare(kLZMAResourceType) == 0) {
++    PathString setup_dest_path;
++    if (!setup_dest_path.assign(base_path.get()) ||
++        !setup_dest_path.append(kSetupExe)) {
++      return ProcessExitResult(PATH_STRING_OVERFLOW);
++    }
++    exit_code = PatchSetup(configuration, setup_path, setup_dest_path,
++                           max_delete_attempts);
++    if (exit_code.IsSuccess()) {
++      setup_path.assign(setup_dest_path);
++    } else {
++      setup_path.clear();
++    }
++  }
+ 
+   // While unpacking the binaries, we paged in a whole bunch of memory that
+   // we don't need anymore.  Let's give it back to the pool before running
