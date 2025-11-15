@@ -132,7 +132,6 @@ extension FeedItem {
     public var urlHash: String
     public var baseScore: Double?
     public var offersCategory: String?
-    public var creativeInstanceID: String?
 
     public func hash(into hasher: inout Hasher) {
       hasher.combine(urlHash)
@@ -154,7 +153,6 @@ extension FeedItem {
       case urlHash = "url_hash"
       case baseScore = "score"
       case offersCategory = "offers_category"
-      case creativeInstanceID = "creative_instance_id"
     }
   }
 }

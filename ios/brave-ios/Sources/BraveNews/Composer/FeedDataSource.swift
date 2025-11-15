@@ -107,8 +107,6 @@ public class FeedDataSource: ObservableObject {
     }
   }
 
-  /// An ads object to handle inserting Inline Content Ads within the Brave News sequence
-  public var getAdsAPI: (() -> BraveAds)?
   public var historyAPI: BraveHistoryAPI?
 
   private let todayQueue = DispatchQueue(label: "com.brave.today")
@@ -976,11 +974,9 @@ public class FeedDataSource: ObservableObject {
       return [
         .repeating([.headline(paired: false)], times: 2),
         ratedNewsRow,
-        .partner,
         .categoryGroup,
         .repeating([.headline(paired: false)], times: 2),
         .repeating([.headline(paired: true)], times: 2),
-        .braveAd,
         .repeating([.headline(paired: false)], times: 2),
         .brandedGroup(numbered: true),
         .group,
@@ -1014,7 +1010,6 @@ public class FeedDataSource: ObservableObject {
           .headline(paired: false)
         ]
       ),
-      .braveAd,
       .repeating(
         createRepeatingFeedElements(
           withRatingCard: AppReviewManager.shared.shouldShowNewsRatingCard()
@@ -1032,8 +1027,7 @@ public class FeedDataSource: ObservableObject {
         sequence: rules,
         followedSources: followedSources,
         hiddenSources: hiddenSources,
-        followedChannels: followedChannels.mapValues(Set.init),
-        ads: getAdsAPI?()
+        followedChannels: followedChannels.mapValues(Set.init)
       )
       // Move to OSSignposter when we're 15+
       let log = OSLog(
@@ -1058,17 +1052,6 @@ public class FeedDataSource: ObservableObject {
           self.state = .success(generatedCards)
         }
       }
-      if generatedCards.count < 10,
-        generatedCards.allSatisfy({
-          if case .ad = $0 {
-            return true
-          }
-          return false
-        })
-      {
-        // If there are less than 10 cards and they all are ads, show nothing
-        generatedCards.removeAll()
-      }
       os_signpost(
         .end,
         log: log,
@@ -1085,10 +1068,6 @@ public class FeedDataSource: ObservableObject {
 enum FeedSequenceElement {
   /// Display a sponsored image with the content type of `product`
   case sponsor
-  /// Display a headline from a list of partnered items
-  case partner
-  /// Displays a Brave ad from the ads catalog
-  case braveAd
   /// Displays a horizontal list of deals with the content type of `brave_offers`
   case deals
   /// Displays an `article` type item in a headline card. Can also be displayed as two (smaller) paired

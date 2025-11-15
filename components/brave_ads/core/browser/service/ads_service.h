@@ -110,7 +110,7 @@ class AdsService : public KeyedService {
   // `InlineContentAdInfo` containing the info for the ad.
   virtual void MaybeServeInlineContentAd(
       const std::string& dimensions,
-      MaybeServeInlineContentAdCallback callback) = 0;
+      MaybeServeInlineContentAdCallback callback) {}
 
   // Called when a user views or interacts with an inline content ad to trigger
   // a `mojom_ad_event_type` event for the specified `placement_id` and
@@ -124,7 +124,7 @@ class AdsService : public KeyedService {
       const std::string& placement_id,
       const std::string& creative_instance_id,
       mojom::InlineContentAdEventType mojom_ad_event_type,
-      TriggerAdEventCallback callback) = 0;
+      TriggerAdEventCallback callback) {}
 
   // Called to prefetch a new tab page ad.
   virtual void PrefetchNewTabPageAd() = 0;
@@ -176,7 +176,7 @@ class AdsService : public KeyedService {
       const std::string& placement_id,
       const std::string& creative_instance_id,
       mojom::PromotedContentAdEventType mojom_ad_event_type,
-      TriggerAdEventCallback callback) = 0;
+      TriggerAdEventCallback callback) {}
 
   // Called to get the search result ad specified by `placement_id`. The
   // callback takes one argument - `mojom::CreativeSearchResultAdInfoPtr`

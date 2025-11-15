@@ -28,7 +28,6 @@ struct FeedCardGenerator: AsyncSequence {
   private var followedSources: Set<String>
   private var hiddenSources: Set<String>
   private var followedChannels: [String: Set<String>]
-  private var ads: BraveAds?
 
   init(
     scoredItems: [FeedItem],
@@ -36,14 +35,12 @@ struct FeedCardGenerator: AsyncSequence {
     followedSources: Set<String>,
     hiddenSources: Set<String>,
     followedChannels: [String: Set<String>],
-    ads: BraveAds?
   ) {
     self.items = scoredItems
     self.sequence = sequence
     self.followedSources = followedSources
     self.hiddenSources = hiddenSources
     self.followedChannels = followedChannels
-    self.ads = ads
   }
 
   func makeAsyncIterator() -> AsyncIterator {
@@ -72,17 +69,14 @@ struct FeedCardGenerator: AsyncSequence {
     }
     let feedItems = feedsFromEnabledSources.sorted(by: <)
     let sponsors = feedItems.filter { $0.content.contentType == .sponsor }
-    let partners = feedItems.filter { $0.content.contentType == .partner }
     let deals = feedItems.filter { $0.content.contentType == .deals }
     let articles = feedItems.filter { $0.content.contentType == .article }
 
     return AsyncIterator(
       sponsors: sponsors,
       deals: deals,
-      partners: partners,
       articles: articles,
-      sequence: sequence,
-      ads: ads
+      sequence: sequence
     )
   }
 }
@@ -91,31 +85,23 @@ extension FeedCardGenerator {
   struct AsyncIterator: AsyncIteratorProtocol {
     var sponsors: [FeedItem]
     var deals: [FeedItem]
-    var partners: [FeedItem]
     var articles: [FeedItem]
     var sequence: [FeedSequenceElement]
-    let ads: BraveAds?
     private let categoryGroupFillStrategy: CategoryFillStrategy<String>
     private let dealsFillStrategy: CategoryFillStrategy<String?>
-    private var contentAdsQueryFailed: Bool = false
-    private var inlineContentAdsPurged: Bool = false
     private var repeatingSequence: [FeedSequenceElement]?
     private var repeatedSequenceCardCount: Int = 0
 
     init(
       sponsors: [FeedItem],
       deals: [FeedItem],
-      partners: [FeedItem],
       articles: [FeedItem],
-      sequence: [FeedSequenceElement],
-      ads: BraveAds? = nil
+      sequence: [FeedSequenceElement]
     ) {
       self.sponsors = sponsors
       self.deals = deals
-      self.partners = partners
       self.articles = articles
       self.sequence = sequence
-      self.ads = ads
       // These fill strategies currently require knowledge of the current set of filtered items so we'll
       // create them here instead and use them directly in `makeCards(for:fillStrategy:)`
       self.categoryGroupFillStrategy = CategoryFillStrategy(
@@ -177,34 +163,6 @@ extension FeedCardGenerator {
           let title = $0.first?.content.offersCategory
           return [.deals($0, title: title)]
         }
-      case .partner:
-        let imageExists = { (item: FeedItem) -> Bool in
-          item.content.imageURL != nil
-        }
-        return fillStrategy.next(from: &partners, where: imageExists).map {
-          [.partner($0)]
-        }
-      case .braveAd:
-        // If we fail to obtain inline content ads during a card gen it can be assumed that
-        // all further calls will fail since cards are generated all at once
-        guard !contentAdsQueryFailed, let ads = ads, ads.isServiceRunning() else { return [] }
-        if !inlineContentAdsPurged {
-          inlineContentAdsPurged = true
-          _ = await Task { @MainActor in
-            await ads.purgeOrphanedAdEvents(for: .inlineContentAd)
-          }.value
-        }
-        let contentAd = await Task { @MainActor in
-          await ads.maybeServeInlineContentAd("900x750").1
-        }.value
-        guard let ad = contentAd else {
-          contentAdsQueryFailed = true
-          Logger.module.debug(
-            "Inline content ads could not be filled; Skipping for the rest of this feed generation"
-          )
-          return []
-        }
-        return [.ad(ad)]
       case .headline(let paired):
         if articles.isEmpty { return [] }
         let imageExists = { (item: FeedItem) -> Bool in
