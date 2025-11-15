@@ -1,8 +1,8 @@
 diff --git a/build/config/unsafe_buffers_paths.txt b/build/config/unsafe_buffers_paths.txt
-index 4433777ae40e045da1b9f8747e3fefff67d68ac0..3dc37fc965afe923ea222ca73bb886d0e5be0540 100644
+index 4433777ae40e045da1b9f8747e3fefff67d68ac0..1a8c8a1f001cc6253cb6d6516686973b6f41b680 100644
 --- a/build/config/unsafe_buffers_paths.txt
 +++ b/build/config/unsafe_buffers_paths.txt
-@@ -32,3 +32,8 @@ $../../
+@@ -32,3 +32,9 @@ $../../
  -ui/gl/  # Unsafe generated files.
  -url/third_party/
  -v8/
@@ -11,3 +11,4 @@ index 4433777ae40e045da1b9f8747e3fefff67d68ac0..3dc37fc965afe923ea222ca73bb886d0
 +-brave/third_party/bitcoin-core/
 +-brave/third_party/ethash/
 +-brave/third_party/argon2/
++-brave/third_party/wireguard-android/
