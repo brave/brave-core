@@ -18,6 +18,7 @@ source_set("unit_tests") {
     "//brave/components/omnibox/browser/brave_history_quick_provider_unittest.cc",
     "//brave/components/omnibox/browser/brave_history_url_provider_unittest.cc",
     "//brave/components/omnibox/browser/brave_local_history_zero_suggest_provider_unittest.cc",
+    "//brave/components/omnibox/browser/brave_search_ask_helper_unittest.cc",
     "//brave/components/omnibox/browser/brave_search_provider_unittest.cc",
     "//brave/components/omnibox/browser/brave_shortcuts_provider_unittest.cc",
     "//brave/components/omnibox/browser/omnibox_autocomplete_unittest.cc",

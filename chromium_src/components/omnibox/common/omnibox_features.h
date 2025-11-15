@@ -13,7 +13,7 @@
 namespace omnibox {
 
 BASE_DECLARE_FEATURE(kOmniboxTabSwitchByDefault);
-
+BASE_DECLARE_FEATURE(kRouteQuestionsToAskBrave);
 }
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_OMNIBOX_COMMON_OMNIBOX_FEATURES_H_

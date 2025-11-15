@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/omnibox/omnibox_edit_model.cc b/chrome/browser/ui/omnibox/omnibox_edit_model.cc
-index 1f4d2e9df60f2e17fc9d20920414a3d4217ed5ca..83dc0a3b488cd18c991e8b82f8fcd0533d0352e7 100644
+index 1f4d2e9df60f2e17fc9d20920414a3d4217ed5ca..3e20217dc68f16b16e5678c450af8974c85089b3 100644
 --- a/chrome/browser/ui/omnibox/omnibox_edit_model.cc
 +++ b/chrome/browser/ui/omnibox/omnibox_edit_model.cc
 @@ -665,6 +665,7 @@ void OmniboxEditModel::StartAutocomplete(bool has_selected_text,
@@ -10,3 +10,11 @@ index 1f4d2e9df60f2e17fc9d20920414a3d4217ed5ca..83dc0a3b488cd18c991e8b82f8fcd053
    controller_->StartAutocomplete(input_);
  }
  
+@@ -2473,6 +2474,7 @@ void OmniboxEditModel::OpenMatch(OmniboxPopupSelection selection,
+       ->UpdateMatchDestinationURLWithAdditionalSearchboxStats(
+           elapsed_time_since_user_first_modified_omnibox, &match);
+ 
++  BRAVE_OMNIBOX_EDIT_MODEL_OPEN_MATCH
+   GURL destination_url = action ? action->getUrl() : match.destination_url;
+ 
+   // Save the result of the interaction, but do not record the histogram yet.
