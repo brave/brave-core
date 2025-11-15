@@ -1071,6 +1071,17 @@ void AIChatService::OnAssociatedContentUpdated(ConversationHandler* handler) {
   QueueMaybeUnloadConversation(handler);
 }
 
+void AIChatService::OnNEARVerificationUpdate(ConversationHandler* handler,
+                                             const std::string& turn_uuid,
+                                             bool verified) {
+  if (ai_chat_db_ && !handler->GetIsTemporary()) {
+    ai_chat_db_
+        .AsyncCall(
+            base::IgnoreResult(&AIChatDatabase::UpdateEntryVerificationStatus))
+        .WithArgs(turn_uuid, verified);
+  }
+}
+
 void AIChatService::GetConversations(GetConversationsCallback callback) {
   LoadConversationsLazy(base::BindOnce(
       [](GetConversationsCallback callback,

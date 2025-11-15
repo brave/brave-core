@@ -13,6 +13,7 @@ import * as Mojom from '../../../common/mojom'
 import {
   ModelMenuItem, //
 } from '../../../page/components/model_menu_item/model_menu_item'
+import { NearLabel } from '../../../page/components/near_label/near_label'
 import styles from './style.module.scss'
 
 interface Props {
@@ -22,11 +23,19 @@ interface Props {
   onRegenerate: (selectedModelKey: string) => void
   leoModels: Mojom.Model[]
   turnModelKey: string
+  turnNEARVerified?: boolean
 }
 
 export function RegenerateAnswerMenu(props: Props) {
-  const { isOpen, onOpen, onClose, onRegenerate, leoModels, turnModelKey } =
-    props
+  const {
+    isOpen,
+    onOpen,
+    onClose,
+    onRegenerate,
+    leoModels,
+    turnModelKey,
+    turnNEARVerified,
+  } = props
 
   const modelDisplayName =
     leoModels.find((model) => model.key === turnModelKey)?.displayName ?? ''
@@ -68,6 +77,7 @@ export function RegenerateAnswerMenu(props: Props) {
       >
         <div className={styles.anchorButtonContent}>
           <span className={styles.anchorButtonText}>{modelDisplayName}</span>
+          {turnNEARVerified && <NearLabel />}
           <Icon
             name='carat-down'
             className={classnames({

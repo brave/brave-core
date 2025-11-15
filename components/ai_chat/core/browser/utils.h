@@ -48,6 +48,8 @@ EngineConsumer::GenerationDataCallback BindParseRewriteReceivedData(
 // 1024x768
 SkBitmap ScaleDownBitmap(const SkBitmap& bitmap);
 
+GURL GetEndpointUrl(bool premium, const std::string& path);
+
 }  // namespace ai_chat
 
 #endif  // BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_UTILS_H_

@@ -56,7 +56,7 @@
 
 .anchorButtonContent {
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: 1fr auto auto;
   align-items: center;
   gap: var(--leo-spacing-s);
   overflow: hidden;
