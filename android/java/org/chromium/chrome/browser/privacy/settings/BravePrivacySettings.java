@@ -150,6 +150,7 @@ public class BravePrivacySettings extends PrivacySettings {
         PREF_SHIELDS_SAVE_CONTACT_INFO,
         PREF_CONTENT_FILTERING,
         PREF_FORGET_FIRST_PARTY_STORAGE,
+        PREF_ALLOW_ELEMENTS_BLOCKING_ON_PRIVATE_TABS,
         PREF_CLEAR_DATA_SECTION, //  clear data automatically  section
         PREF_CLEAR_ON_EXIT,
         PREF_CLEAR_BROWSING_DATA,
