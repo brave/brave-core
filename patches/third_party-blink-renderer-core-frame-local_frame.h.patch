@@ -1,21 +1,30 @@
 diff --git a/third_party/blink/renderer/core/frame/local_frame.h b/third_party/blink/renderer/core/frame/local_frame.h
-index 648455136f6a70a6c6b9c93febec6f6071bd7447..cba31394e4a09ccb0767ce668224a93061ba1b10 100644
+index 2bc02bd81e6687c60d83c1b0c96109c017bfd004..c98d55de3d5accc8241ccfc033ffdc4c78f4e113 100644
 --- a/third_party/blink/renderer/core/frame/local_frame.h
 +++ b/third_party/blink/renderer/core/frame/local_frame.h
-@@ -193,7 +193,7 @@ class CORE_EXPORT LocalFrame final
-     : public Frame,
-       public FrameScheduler::Delegate,
-       public BackForwardCacheLoaderHelperImpl::Delegate,
--      public Supplementable<LocalFrame, 5> {
-+      public Supplementable<LocalFrame, 6> {
-  public:
-   enum class Supplements {
-     kRemoteObjectGatewayImpl = 0,
-@@ -201,6 +201,7 @@ class CORE_EXPORT LocalFrame final
-     kImageDownloaderImpl = 2,
-     kTextSuggestionBackendImpl = 3,
-     kDevToolsFrontendImpl = 4
-+    , kBravePageGraph,
-   };
+@@ -1027,6 +1027,16 @@ class CORE_EXPORT LocalFrame final
+     dev_tools_frontend_impl_ = dev_tools_frontend_impl;
+   }
  
-   // Returns the LocalFrame instance for the given |frame_token|.
++  ForwardDeclaredMember<PageGraph>
++  GetPageGraph() const {
++    return page_graph_;
++  }
++  void SetPageGraph(
++      ForwardDeclaredMember<PageGraph>
++          page_graph) {
++    page_graph_ = page_graph;
++  }
++
+  private:
+   friend class FrameNavigationDisabler;
+   // LocalFrameMojoHandler is a part of LocalFrame.
+@@ -1310,6 +1320,8 @@ class CORE_EXPORT LocalFrame final
+   ForwardDeclaredMember<RemoteObjectGatewayImpl> remote_object_gateway_impl_;
+   ForwardDeclaredMember<DevToolsFrontendImpl, InspectorFrontendClient>
+       dev_tools_frontend_impl_;
++  ForwardDeclaredMember<PageGraph>
++      page_graph_;
+ 
+   void OnStorageAccessCallback(base::OnceCallback<void(bool)> callback,
+                                mojom::blink::StorageTypeAccessed storage_type,

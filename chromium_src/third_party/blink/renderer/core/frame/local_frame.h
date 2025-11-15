@@ -8,6 +8,10 @@
 
 class SkBitmap;
 
+namespace blink {
+class PageGraph;
+}  // namespace blink
+
 #define CopyImageAtViewportPoint                                      \
   CopyImageAtViewportPoint_UnUsed() {}                                \
   SkBitmap GetImageAtViewportPoint(const gfx::Point& viewport_point); \
