@@ -7,8 +7,8 @@
 
 #include <windows.h>
 
-#include <ras.h>
-#include <raserror.h>
+#include <Ras.h>
+#include <RasError.h>
 #include <stdio.h>
 
 #include <optional>

@@ -100,26 +100,18 @@ def __adjust_handlers(ctx, step_config, handlers):
 
         if rule_name == "blink/generate_bindings":
             # This step requires increased timeouts to work.
-            rule["timeout"] = "10m"
-            reproxy_config = rule.get("reproxy_config")
-            if reproxy_config:
-                reproxy_config["exec_timeout"] = "10m"
-                reproxy_config["reclient_timeout"] = "10m"
-
-            __wrap_python_with_chromium_src_inputs_handler(rule, handlers, [])
+            __set_rule_timeout(rule, "15m")
+            __wrap_python_with_chromium_src_inputs_handler(ctx, rule, handlers)
             continue
 
         if rule_name.startswith("clang"):
             found_clang_rule = True
-            __wrap_with_redirect_cc_handler(rule, handlers)
-            if not __HOST_OS_IS_LINUX:
-                rule["remote_wrapper"] = __CLANG_REMOTE_WRAPPER
-                __ensure_list(rule, "inputs").append(__LINUX_CLANG_BINARY)
-                __ensure_list(rule, "executables").append(__LINUX_CLANG_BINARY)
+            __set_rule_timeout(rule, "10m")
+            __wrap_with_redirect_cc_handler(ctx, rule, handlers)
             continue
 
         if rule_name == "mojo/mojom_parser":
-            __wrap_python_with_chromium_src_inputs_handler(rule, handlers, [])
+            __wrap_python_with_chromium_src_inputs_handler(ctx, rule, handlers)
             continue
 
     # If no clang rule was found, add one with redirect_cc handler to handle
@@ -155,7 +147,11 @@ def __remove_labels_from_platforms(step_config):
 
 # Wraps a rule with the redirect_cc handler to handle C/C++ source file
 # overrides from chromium_src directory.
-def __wrap_with_redirect_cc_handler(rule, handlers):
+def __wrap_with_redirect_cc_handler(ctx, rule, handlers):
+    if not __HOST_OS_IS_LINUX:
+        __set_remote_wrapper(ctx, rule, __CLANG_REMOTE_WRAPPER)
+        __append_executables(rule, __LINUX_CLANG_BINARY)
+
     handler_name = rule.get("handler")
     # If the rule has no handler, use the default redirect_cc handler.
     if not handler_name:
@@ -251,12 +247,8 @@ def __redirect_cc_handler(ctx, cmd):
 
 # Wraps Python rules with chromium_src inputs handler and sets up remote wrapper
 # for Python execution with proper PYTHONPATH configuration.
-def __wrap_python_with_chromium_src_inputs_handler(rule, handlers,
-                                                   fixed_inputs):
-    rule["remote_wrapper"] = __PYTHON_REMOTE_WRAPPER
-    reproxy_config = rule.get("reproxy_config")
-    if reproxy_config:
-        reproxy_config["remote_wrapper"] = __PYTHON_REMOTE_WRAPPER
+def __wrap_python_with_chromium_src_inputs_handler(ctx, rule, handlers):
+    __set_remote_wrapper(ctx, rule, __PYTHON_REMOTE_WRAPPER)
 
     # Create a new handler name by appending _chromium_src suffix.
     handler_name = rule.get("handler")
@@ -284,7 +276,7 @@ def __wrap_python_with_chromium_src_inputs_handler(rule, handlers,
         handlers[new_handler_name] = __create_handler([
             "brave/script/brave_chromium_utils.py",
             "brave/script/override_utils.py",
-        ] + fixed_inputs)
+        ])
 
     rule["handler"] = new_handler_name
 
@@ -310,6 +302,40 @@ def __chromium_src_inputs_handler(ctx, cmd, fixed_inputs):
 
     ctx.actions.fix(inputs=new_inputs)
     return __evolve_struct(cmd, inputs=new_inputs)
+
+
+# Sets the timeout for a rule.
+def __set_rule_timeout(rule, duration):
+    rule["timeout"] = duration
+    rule["exec_timeout"] = duration
+    reproxy_config = rule.get("reproxy_config")
+    if reproxy_config:
+        reproxy_config["exec_timeout"] = duration
+        reproxy_config["reclient_timeout"] = duration
+
+
+# Sets the remote wrapper for a rule.
+def __set_remote_wrapper(ctx, rule, wrapper):
+    if __is_remote_disabled(rule):
+        return
+    rule["remote_wrapper"] = wrapper
+    reproxy_config = rule.get("reproxy_config")
+    if reproxy_config:
+        reproxy_config["remote_wrapper"] = wrapper
+    __append_executables(rule, ctx.fs.canonpath(wrapper))
+
+
+# Appends executables to the rule.
+def __append_executables(rule, *executables):
+    if __is_remote_disabled(rule):
+        return
+    __ensure_list(rule, "inputs").extend(executables)
+    __ensure_list(rule, "executables").extend(executables)
+
+
+# Checks if the remote is disabled for a rule.
+def __is_remote_disabled(rule):
+    return rule.get("remote") == False
 
 
 # Ensures a list field exists in a dict and returns it.
