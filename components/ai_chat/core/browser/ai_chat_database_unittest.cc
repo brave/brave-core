@@ -284,10 +284,12 @@ TEST_P(AIChatDatabaseTest, WebSourcesEvent) {
 
     history[1]->events->emplace_back(
         mojom::ConversationEntryEvent::NewSourcesEvent(
-            mojom::WebSourcesEvent::New(std::move(sources_first))));
+            mojom::WebSourcesEvent::New(std::move(sources_first),
+                                        std::vector<std::string>())));
     history[3]->events->emplace_back(
         mojom::ConversationEntryEvent::NewSourcesEvent(
-            mojom::WebSourcesEvent::New(std::move(sources_second))));
+            mojom::WebSourcesEvent::New(std::move(sources_second),
+                                        std::vector<std::string>())));
   }
 
   EXPECT_TRUE(db_->AddConversation(metadata->Clone(), {}, history[0]->Clone()));
@@ -329,10 +331,12 @@ TEST_P(AIChatDatabaseTest, WebSourcesEvent_Invalid) {
 
     history[1]->events->emplace_back(
         mojom::ConversationEntryEvent::NewSourcesEvent(
-            mojom::WebSourcesEvent::New(std::move(sources_first))));
+            mojom::WebSourcesEvent::New(std::move(sources_first),
+                                        std::vector<std::string>())));
     history[3]->events->emplace_back(
         mojom::ConversationEntryEvent::NewSourcesEvent(
-            mojom::WebSourcesEvent::New(std::move(sources_second))));
+            mojom::WebSourcesEvent::New(std::move(sources_second),
+                                        std::vector<std::string>())));
     history[5]->events->emplace_back(
         mojom::ConversationEntryEvent::NewSourcesEvent(
             mojom::WebSourcesEvent::New()));
@@ -583,7 +587,8 @@ TEST_P(AIChatDatabaseTest, MixedEvents) {
   history[1]->events->clear();
   history[1]->events->emplace_back(
       mojom::ConversationEntryEvent::NewSourcesEvent(
-          mojom::WebSourcesEvent::New(std::move(sources_first))));
+          mojom::WebSourcesEvent::New(std::move(sources_first),
+                                      std::vector<std::string>())));
   history[1]->events->emplace_back(
       mojom::ConversationEntryEvent::NewCompletionEvent(
           mojom::CompletionEvent::New("This is a completion event")));
@@ -600,7 +605,8 @@ TEST_P(AIChatDatabaseTest, MixedEvents) {
           mojom::CompletionEvent::New("This is a third completion event")));
   history[3]->events->emplace_back(
       mojom::ConversationEntryEvent::NewSourcesEvent(
-          mojom::WebSourcesEvent::New(std::move(sources_second))));
+          mojom::WebSourcesEvent::New(std::move(sources_second),
+                                      std::vector<std::string>())));
   history[3]->events->emplace_back(
       mojom::ConversationEntryEvent::NewToolUseEvent(
           std::move(tool_event_second)));
