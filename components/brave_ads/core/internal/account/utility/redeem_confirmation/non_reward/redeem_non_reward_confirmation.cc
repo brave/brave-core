@@ -86,7 +86,8 @@ void RedeemNonRewardConfirmation::CreateConfirmationCallback(
   BLOG(6, UrlResponseToString(mojom_url_response));
   BLOG(7, UrlResponseHeadersToString(mojom_url_response));
 
-  if (mojom_url_response.status_code != net::HTTP_NO_CONTENT) {
+  if (mojom_url_response.status_code < 200 ||
+      mojom_url_response.status_code > 299) {
     return redeem_confirmation.FailedToRedeemConfirmation(
         confirmation,
         /*should_retry=*/true);
