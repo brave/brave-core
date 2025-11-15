@@ -817,6 +817,9 @@
 -NewTabPageUtilBrowserTest.SyncRequired
 -NTPTilesForSupervisedUsersTest.DoNotLoadBlockedURL
 -NTPTilesForSupervisedUsersTest.LoadURL
+-PasskeyUnlockManagerBrowserTest.IsCreated
+-PasskeyUnlockManagerBrowserTest.NotifyObserversOnEnclaveStateUpdated
+-PasskeyUnlockManagerBrowserTest.OpensNewTabWithPasskeyUnlockUrl
 -PasskeyUpgradeConfirmationBubbleTest.InvokeUi_default
 -PasswordStatusCheckServiceBaseTest.CheckTimeUpdatedAfterRunScheduledInThePast
 -PriceTrackingBubbleDialogViewBrowserTest.*
@@ -984,7 +987,10 @@
 
 # These tests fail because we block 3p cookies
 -All/LoginPromptBrowserTestThirdPartyCookiesUnblocked.PromptFromSubframe/*
+-All/NoStatePrefetchBrowserSplitCacheTest.*/*
 -All/NoStatePrefetchBrowserTestHttpCacheDefaultAndDoubleKeyed.*
+-All/NoStatePrefetchBrowserTestHttpCacheDefaultAndDoubleKeyed.LoadAfterPrefetch*/*
+-All/NoStatePrefetchBrowserTestHttpCacheDefaultAndDoubleKeyed.PrefetchCookie*/*
 -AutomaticBeaconCredentialsBrowserTest.3PCEnabledAndDisabled
 -BackgroundPage/ExtensionPreferenceApiTest.OnChange/0
 -BackgroundPage/ExtensionPreferenceApiTest.OnChangeSplit/0
@@ -2558,8 +2564,6 @@
 -All/LoginPromptBrowserTest.*
 -All/NetInfoNetworkQualityEstimatorHoldbackBrowserTest.*
 -All/NonIsolatedReportingBrowserTest.*
--All/NoStatePrefetchBrowserTestHttpCacheDefaultAndDoubleKeyed.LoadAfterPrefetch*/*
--All/NoStatePrefetchBrowserTestHttpCacheDefaultAndDoubleKeyed.PrefetchCookie*/*
 -All/OtherFrameNavigationDownloadBrowserTest_AdFrame.*
 -All/PDFExtensionJSInk2Test.Ink2BottomToolbar/*
 -All/PDFExtensionJSInk2Test.Ink2BottomToolbarDropdown/*

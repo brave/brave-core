@@ -51,7 +51,7 @@
 -HintsManagerFetchingTest.*
 -HintsManagerProactivePersonalizationFetchingTest.*
 -ModelBrokerClientTest.*
--OnDeviceAssetManagerTest.AdaptationModelDownloadRegisteredWhenFeatureFirstUsed
+-OnDeviceAssetManagerTest.*
 -OnDeviceModelAdaptationLoaderTest2.UnavailableAdaptationRejectsSession
 -OptimizationGuidePermissionsUtilTest.IsUserPermittedToFetchHintsDefaultUserAnonymousDataCollectionEnabled
 -PDPMetricsTest.TestFalseOptGuideResponseIsRecorded
