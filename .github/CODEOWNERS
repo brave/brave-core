@@ -225,10 +225,6 @@ third_party/rust @bridiver @cdesouza-chromium
 # include_rules
 DEPS @brave/deps-reviewers
 
-# sources.gni - see docs/gni_sources.md
-**/sources.gni @brave/sources-gni-reviewers
-**/*_sources.gni @brave/sources-gni-reviewers
-android/brave_java_sources.gni @brave/Android
 docs/gni_sources.md @brave/sources-gni-reviewers
 
 # Rust code
