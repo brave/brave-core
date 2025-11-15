@@ -1,16 +1,7 @@
 diff --git a/chrome/browser/ui/views/tabs/tab.cc b/chrome/browser/ui/views/tabs/tab.cc
-index f5766369d48dc195eb6baced48590d4d75a0d20a..090c9668dbd7ac7c0500e619ed2b7acc1c4aed49 100644
+index f5766369d48dc195eb6baced48590d4d75a0d20a..301da242759f34de8554222e73ab5edc66040a35 100644
 --- a/chrome/browser/ui/views/tabs/tab.cc
 +++ b/chrome/browser/ui/views/tabs/tab.cc
-@@ -282,7 +282,7 @@ Tab::Tab(TabSlotController* controller)
-   close_button_->SetHasInkDropActionOnClick(true);
- 
- #if BUILDFLAG(IS_CHROMEOS)
--  showing_close_button_ = !controller_->IsLockedForOnTask();
-+  showing_close_button_ = !controller_->ShouldAlwaysHideCloseButton() && !controller_->IsLockedForOnTask();
-   close_button_->SetVisible(showing_close_button_);
- #endif
- 
 @@ -372,6 +372,7 @@ void Tab::Layout(PassKey) {
    // indicator, but visually it will be smaller at kFaviconSize wide.
    gfx::Rect favicon_bounds(start, contents_rect.y(), 0, 0);
@@ -27,39 +18,3 @@ index f5766369d48dc195eb6baced48590d4d75a0d20a..090c9668dbd7ac7c0500e619ed2b7acc
      } else if (showing_close_button_) {
        // Allow the title to overlay the close button's empty border padding.
        title_right = close_x - after_title_padding;
-@@ -1137,7 +1139,7 @@ void Tab::UpdateIconVisibility() {
-     // is given priority over the favicon. The close buton is never shown.
-     showing_alert_indicator_ = has_alert_icon;
-     showing_icon_ = has_favicon && !has_alert_icon;
--    showing_close_button_ = false;
-+    showing_close_button_ = !controller_->ShouldAlwaysHideCloseButton() && false;
- 
-     // While animating to or from the pinned state, pinned tabs are rendered as
-     // normal tabs. Force the extra padding on so the favicon doesn't jitter
-@@ -1164,10 +1166,10 @@ void Tab::UpdateIconVisibility() {
- #if BUILDFLAG(IS_CHROMEOS)
-     // Hide tab close button for OnTask if locked. Only applicable for non-web
-     // browser scenarios.
--    showing_close_button_ = !controller_->IsLockedForOnTask();
-+    showing_close_button_ = !controller_->ShouldAlwaysHideCloseButton() && !controller_->IsLockedForOnTask();
- #else
-     // Close button is shown on active tabs regardless of the size.
--    showing_close_button_ = true;
-+    showing_close_button_ = !controller_->ShouldAlwaysHideCloseButton() && true;
- #endif  // BUILDFLAG(IS_CHROMEOS)
-     available_width -= close_button_width;
- 
-@@ -1193,11 +1195,12 @@ void Tab::UpdateIconVisibility() {
-       available_width -= favicon_width;
-     }
- 
--    showing_close_button_ =
-+    showing_close_button_ = !controller_->ShouldAlwaysHideCloseButton() &&
- #if BUILDFLAG(IS_CHROMEOS)
-         !controller_->IsLockedForOnTask() &&
- #endif
-         large_enough_for_close_button;
-+    BRAVE_UI_VIEWS_TABS_TAB_UPDATE_ICON_VISIBILITY
-     if (showing_close_button_) {
-       available_width -= close_button_width;
-     }
