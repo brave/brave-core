@@ -15,15 +15,26 @@ using DraggingTabsSessionBrave = DraggingTabsSession;
 
 #define DraggingTabsSession DraggingTabsSessionChromium
 
-#define GetAttachedDragPoint       \
-  Unused_GetAttachedDragPoint() {  \
-    return {};                     \
-  }                                \
-  friend DraggingTabsSessionBrave; \
-  virtual gfx::Point GetAttachedDragPoint
+// Provides GetPasskey() method to allow Brave version of DragginTabSession
+// can call TabStripModel's methods with the passkey.
+#define MoveAttachedImpl(...)                      \
+  MoveAttachedImpl_Unused() {}                     \
+                                                   \
+  friend DraggingTabsSessionBrave;                 \
+  base::PassKey<DraggingTabsSession> GetPassKey(); \
+                                                   \
+  void MoveAttachedImpl(__VA_ARGS__)
+
+// Make GetAttachedDragPoint() virtual to override it in Brave.
+#define GetAttachedDragPoint virtual GetAttachedDragPoint
+
+// Make CalculateGroupForDraggedTabs() virtual to override it in Brave.
+#define CalculateGroupForDraggedTabs virtual CalculateGroupForDraggedTabs
 
 #include <chrome/browser/ui/views/tabs/dragging/dragging_tabs_session.h>  // IWYU pragma: export
 
+#undef MoveAttachedImpl
+#undef CalculateGroupForDraggedTabs
 #undef GetAttachedDragPoint
 #undef DraggingTabsSession
 
