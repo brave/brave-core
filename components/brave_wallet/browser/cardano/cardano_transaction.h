@@ -48,7 +48,7 @@ class CardanoTransaction {
     TxInput& operator=(const TxInput& other);
     TxInput(TxInput&& other);
     TxInput& operator=(TxInput&& other);
-    auto operator<=>(const TxInput& other) const = default;
+    bool operator==(const TxInput& other) const = default;
 
     base::Value::Dict ToValue() const;
     static std::optional<TxInput> FromValue(const base::Value::Dict& value);
@@ -57,7 +57,8 @@ class CardanoTransaction {
 
     CardanoAddress utxo_address;
     Outpoint utxo_outpoint;
-    uint64_t utxo_value = 0;
+    base::StrictNumeric<uint64_t> utxo_value = 0u;
+    cardano_rpc::UnspentOutput::Tokens utxo_tokens;
   };
 
   // Transaction witness. Matches a TxInput within transaction based on its
@@ -96,6 +97,7 @@ class CardanoTransaction {
     TxOutputType type = TxOutputType::kTarget;
     CardanoAddress address;
     uint64_t amount = 0;
+    cardano_rpc::UnspentOutput::Tokens tokens;
   };
 
   CardanoTransaction();
@@ -156,6 +158,8 @@ class CardanoTransaction {
 
   // Adjust amount of change output so transaction fee is equal to `min_fee`.
   bool MoveSurplusFeeToChangeOutput(uint64_t min_fee);
+
+  bool MoveTokensToChangeOutput();
 
   uint32_t invalid_after() const { return invalid_after_; }
   void set_invalid_after(uint32_t invalid_after) {

@@ -39,21 +39,21 @@ CardanoTransaction GetUnsignedReferenceTransaction() {
   input.utxo_outpoint.txid = test::HexToArray<32>(
       "a7b4c1021fa375a4fccb1ac1b3bb01743b3989b5eb732cc6240add8c71edb925");
   input.utxo_outpoint.index = 0;
-  input.utxo_value = 34451133;
+  input.utxo_value = 34451133u;
   tx.AddInput(std::move(input));
 
   CardanoTransaction::TxOutput output1;
   output1.address = *CardanoAddress::FromString(
       "addr1q9zwt6rfn2e3mc63hesal6muyg807cwjnkwg3j5azkvmxm0tyqeyc8eu034zzmj4z53"
       "l7lh5u7z08l0rvp49ht88s5uskl6tsl");
-  output1.amount = 10000000;
+  output1.amount = 10000000u;
   tx.AddOutput(std::move(output1));
 
   CardanoTransaction::TxOutput output2;
   output2.address = *CardanoAddress::FromString(
       "addr1q8s90ehlgwwkq637d3r6qzuxwu6qnprphqadn9pjg2mtcp9hkfmyv4zfhyefvjmpww7"
       "f7w9gwem3x6gcm3ulw3kpcgws9sgrhg");
-  output2.amount = 24282816;
+  output2.amount = 24282816u;
   output2.type = CardanoTransaction::TxOutputType::kChange;
   tx.AddOutput(std::move(output2));
 
@@ -69,7 +69,7 @@ CardanoTransaction GetSignedReferenceTransaction() {
   input.utxo_outpoint.txid = test::HexToArray<32>(
       "a7b4c1021fa375a4fccb1ac1b3bb01743b3989b5eb732cc6240add8c71edb925");
   input.utxo_outpoint.index = 0;
-  input.utxo_value = 34451133;
+  input.utxo_value = 34451133u;
   tx.AddInput(std::move(input));
 
   CardanoTransaction::TxOutput output1;

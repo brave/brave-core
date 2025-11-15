@@ -5,7 +5,7 @@
 
 // Cardano RPC structures.
 namespace cardano_rpc {
-  // https://docs.blockfrost.io/#tag/cardano--blocks/GET/blocks/latest
+  // https://docs.blockfrost.io/#tag/cardano--blocks/get/blocks/latest
   dictionary Block {
     // uint32_t
     DOMString height;
@@ -17,7 +17,7 @@ namespace cardano_rpc {
     DOMString epoch;
   };
 
-  // https://docs.blockfrost.io/#tag/cardano--epochs/GET/epochs/latest
+  // https://docs.blockfrost.io/#tag/cardano--epochs/get/epochs/latest
   dictionary EpochParameters {
     // uint64_t
     DOMString min_fee_a;
@@ -27,13 +27,13 @@ namespace cardano_rpc {
   };
 
 
-  // https://docs.blockfrost.io/#tag/cardano--addresses/GET/addresses/%7Baddress%7D/utxos
+  // https://docs.blockfrost.io/#tag/cardano--addresses/get/addresses/%7Baddress%7D/utxos
   dictionary UnspentOutputAsset {
     DOMString unit;
     DOMString quantity;
   };
 
-  // https://docs.blockfrost.io/#tag/cardano--addresses/GET/addresses/%7Baddress%7D/utxos
+  // https://docs.blockfrost.io/#tag/cardano--addresses/get/addresses/%7Baddress%7D/utxos
   dictionary UnspentOutput {
     DOMString tx_hash;
 
@@ -43,7 +43,7 @@ namespace cardano_rpc {
     UnspentOutputAsset[] amount;
   };
 
-  // https://docs.blockfrost.io/#tag/cardano--transactions/GET/txs/%7Bhash%7D
+  // https://docs.blockfrost.io/#tag/cardano--transactions/get/txs/%7Bhash%7D
   dictionary Transaction {
     DOMString hash;
   };
