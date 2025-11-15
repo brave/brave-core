@@ -154,6 +154,14 @@ bool MigrateFrom7to8(sql::Database* db) {
   return statement.is_valid() && statement.Run();
 }
 
+bool MigrateFrom8to9(sql::Database* db) {
+  static constexpr char kAddIsNearVerifiedColumnQuery[] =
+      "ALTER TABLE conversation_entry ADD COLUMN is_near_verified INTEGER";
+  sql::Statement statement(
+      db->GetUniqueStatement(kAddIsNearVerifiedColumnQuery));
+  return statement.is_valid() && statement.Run();
+}
+
 }  // namespace
 
 // These database versions should roll together unless we develop migrations.
@@ -166,7 +174,7 @@ constexpr int kLowestSupportedDatabaseVersion = 1;
 constexpr int kCompatibleDatabaseVersionNumber = 7;
 
 // Current version of the database. Increase if breaking changes are made.
-constexpr int kCurrentDatabaseVersion = 8;
+constexpr int kCurrentDatabaseVersion = 9;
 
 AIChatDatabase::AIChatDatabase(const base::FilePath& db_file_path,
                                os_crypt_async::Encryptor encryptor)
@@ -292,6 +300,15 @@ sql::InitStatus AIChatDatabase::InitInternal() {
                             meta_table.SetVersionNumber(8);
       }
       current_version = 8;
+    }
+    if (migration_success && current_version == 8) {
+      migration_success = MigrateFrom8to9(&GetDB());
+      if (migration_success) {
+        migration_success = meta_table.SetCompatibleVersionNumber(
+                                kCompatibleDatabaseVersionNumber) &&
+                            meta_table.SetVersionNumber(9);
+      }
+      current_version = 9;
     }
 
     // Migration unsuccessful, raze the database and re-init
@@ -421,7 +438,7 @@ std::vector<mojom::ConversationTurnPtr> AIChatDatabase::GetConversationEntries(
       "editing_entry_uuid, "
       // Note: Column name kept as 'smart_mode_data' for backward compatibility
       // (feature is now called 'skills').
-      "action_type, selected_text, model_key, smart_mode_data"
+      "action_type, selected_text, model_key, smart_mode_data, is_near_verified"
       " FROM conversation_entry"
       " WHERE conversation_uuid=?"
       " ORDER BY date ASC";
@@ -463,6 +480,13 @@ std::vector<mojom::ConversationTurnPtr> AIChatDatabase::GetConversationEntries(
         skill = DeserializeSkillEntry(proto_skill);
       }
     }
+
+    // Retrieve is_near_verified
+    std::optional<bool> is_near_verified;
+    if (statement.GetColumnType(index) != sql::ColumnType::kNull) {
+      is_near_verified = statement.ColumnBool(index);
+    }
+    index++;
 
     auto entry = mojom::ConversationTurn::New(
         entry_uuid, character_type, action_type, text, prompt, selected_text,
@@ -889,8 +913,8 @@ bool AIChatDatabase::AddConversationEntry(
         " character_type, action_type, selected_text, model_key,"
         // Note: Column name kept as 'smart_mode_data' for backward
         // compatibility (feature is now called 'skills').
-        " smart_mode_data)"
-        " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        " smart_mode_data, is_near_verified)"
+        " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     insert_conversation_entry_statement.Assign(
         GetDB().GetUniqueStatement(kInsertEditingConversationEntryQuery));
   } else {
@@ -899,8 +923,8 @@ bool AIChatDatabase::AddConversationEntry(
         " entry_text, prompt, character_type, action_type, selected_text,"
         // Note: Column name kept as 'smart_mode_data' for backward
         // compatibility (feature is now called 'skills').
-        " model_key, smart_mode_data)"
-        " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        " model_key, smart_mode_data, is_near_verified)"
+        " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     insert_conversation_entry_statement.Assign(
         GetDB().GetUniqueStatement(kInsertConversationEntryQuery));
   }
@@ -934,6 +958,14 @@ bool AIChatDatabase::AddConversationEntry(
                               proto_skill.SerializeAsString())) {
       return false;
     }
+  } else {
+    insert_conversation_entry_statement.BindNull(index++);
+  }
+
+  // Bind is_near_verified
+  if (entry->is_near_verified.has_value()) {
+    insert_conversation_entry_statement.BindBool(
+        index++, entry->is_near_verified.value());
   } else {
     insert_conversation_entry_statement.BindNull(index++);
   }
@@ -1188,6 +1220,27 @@ bool AIChatDatabase::UpdateConversationTokenInfo(
   statement.BindInt64(0, total_tokens);
   statement.BindInt64(1, trimmed_tokens);
   statement.BindString(2, conversation_uuid);
+
+  return statement.Run();
+}
+
+bool AIChatDatabase::UpdateEntryVerificationStatus(std::string_view entry_uuid,
+                                                   bool verified) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  DVLOG(4) << __func__ << " for " << entry_uuid << " with verified "
+           << verified;
+  if (!LazyInit()) {
+    return false;
+  }
+
+  static constexpr char kUpdateEntryVerificationQuery[] =
+      "UPDATE conversation_entry SET is_near_verified=? WHERE uuid=?";
+  sql::Statement statement(
+      GetDB().GetCachedStatement(SQL_FROM_HERE, kUpdateEntryVerificationQuery));
+  CHECK(statement.is_valid());
+
+  statement.BindBool(0, verified);
+  statement.BindString(1, entry_uuid);
 
   return statement.Run();
 }
@@ -1607,7 +1660,8 @@ bool AIChatDatabase::CreateSchema() {
       "model_key TEXT,"
       // Encrypted skill data
       // Note: Column name kept as 'smart_mode_data' for backward compatibility
-      "smart_mode_data BLOB)";
+      "smart_mode_data BLOB,"
+      "is_near_verified INTEGER)";
   // TODO(petemill): Forking can be achieved by associating each
   // ConversationEntry with a parent ConversationEntry.
   // TODO(petemill): Store a model name with each entry to know when
