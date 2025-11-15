@@ -250,18 +250,6 @@ export interface WalletInitializedPayload {
   allAccounts: BraveWallet.AllAccountsInfo
 }
 
-export type AmountValidationErrorType =
-  | 'fromAmountDecimalsOverflow'
-  | 'toAmountDecimalsOverflow'
-
-export type SwapValidationErrorType =
-  | AmountValidationErrorType
-  | 'insufficientBalance'
-  | 'insufficientFundsForGas'
-  | 'insufficientAllowance'
-  | 'insufficientLiquidity'
-  | 'unknownError'
-
 export interface BaseTransactionParams {
   network: BraveWallet.NetworkInfo
   fromAccount: Pick<

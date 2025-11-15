@@ -50,10 +50,13 @@ std::string LatestBlockPayload(int height, int slot, int epoch) {
   return base::ToString(result);
 }
 
-std::string LatestEpochParameters(int min_fee_a, int min_fee_b) {
+std::string LatestEpochParameters(int min_fee_a,
+                                  int min_fee_b,
+                                  int coins_per_utxo_size) {
   base::Value::Dict result;
   result.Set("min_fee_a", min_fee_a);
   result.Set("min_fee_b", min_fee_b);
+  result.Set("coins_per_utxo_size", coins_per_utxo_size);
   return base::ToString(result);
 }
 
@@ -232,20 +235,23 @@ TEST_F(CardanoRpcUnitTest, GetLatestEpochParameters) {
       epoch_params_future;
 
   // GetLatestEpochParameters works.
-  url_loader_factory_.AddResponse(req_url, LatestEpochParameters(100, 200));
+  url_loader_factory_.AddResponse(req_url,
+                                  LatestEpochParameters(100, 200, 300));
   cardano_mainnet_rpc_->GetLatestEpochParameters(
       epoch_params_future.GetCallback());
   EXPECT_EQ(epoch_params_future.Take().value(),
             (cardano_rpc::EpochParameters{.min_fee_coefficient = 100,
-                                          .min_fee_constant = 200}));
+                                          .min_fee_constant = 200,
+                                          .coins_per_utxo_size = 300}));
 
   // GetLatestEpochParameters works.
-  url_loader_factory_.AddResponse(req_url, LatestEpochParameters(7, 5));
+  url_loader_factory_.AddResponse(req_url, LatestEpochParameters(7, 5, 2));
   cardano_mainnet_rpc_->GetLatestEpochParameters(
       epoch_params_future.GetCallback());
   EXPECT_EQ(epoch_params_future.Take().value(),
             (cardano_rpc::EpochParameters{.min_fee_coefficient = 7,
-                                          .min_fee_constant = 5}));
+                                          .min_fee_constant = 5,
+                                          .coins_per_utxo_size = 2}));
 
   // Invalid value returned.
   url_loader_factory_.AddResponse(req_url, R"({"some": "string"})");
@@ -254,7 +260,7 @@ TEST_F(CardanoRpcUnitTest, GetLatestEpochParameters) {
   EXPECT_EQ(epoch_params_future.Take().error(), WalletParsingErrorMessage());
 
   // HTTP Error returned.
-  url_loader_factory_.AddResponse(req_url, LatestEpochParameters(123, 7),
+  url_loader_factory_.AddResponse(req_url, LatestEpochParameters(123, 7, 88),
                                   net::HTTP_INTERNAL_SERVER_ERROR);
   cardano_mainnet_rpc_->GetLatestEpochParameters(
       epoch_params_future.GetCallback());
@@ -262,12 +268,13 @@ TEST_F(CardanoRpcUnitTest, GetLatestEpochParameters) {
 
   // Testnet works.
   url_loader_factory_.AddResponse(testnet_rpc_url_ + "epochs/latest/parameters",
-                                  LatestEpochParameters(100, 200));
+                                  LatestEpochParameters(100, 200, 300));
   cardano_testnet_rpc_->GetLatestEpochParameters(
       epoch_params_future.GetCallback());
   EXPECT_EQ(epoch_params_future.Take().value(),
             (cardano_rpc::EpochParameters{.min_fee_coefficient = 100,
-                                          .min_fee_constant = 200}));
+                                          .min_fee_constant = 200,
+                                          .coins_per_utxo_size = 300}));
 }
 
 TEST_F(CardanoRpcUnitTest, GetUtxoList) {

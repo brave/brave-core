@@ -31,10 +31,12 @@ TEST(CardanoRpcSchema, EpochParameters) {
   blockfrost_api::EpochParameters valid;
   valid.min_fee_a = "10";
   valid.min_fee_b = "20";
+  valid.coins_per_utxo_size = "30";
 
-  EXPECT_EQ(
-      *EpochParameters::FromBlockfrostApiValue(valid.Clone()),
-      EpochParameters({.min_fee_coefficient = 10, .min_fee_constant = 20}));
+  EXPECT_EQ(*EpochParameters::FromBlockfrostApiValue(valid.Clone()),
+            EpochParameters({.min_fee_coefficient = 10,
+                             .min_fee_constant = 20,
+                             .coins_per_utxo_size = 30}));
 
   for (auto* value : kInvalidUint64Values) {
     auto invalid = valid.Clone();
