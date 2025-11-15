@@ -288,3 +288,7 @@ content_settings_types.mojom @brave/content-settings-reviewers
 # Brave Account
 *brave_account* @szilardszaloki
 *BraveAccount* @szilardszaloki
+**/android/**/*brave_account* @szilardszaloki @brave/Android
+**/android/**/*BraveAccount* @szilardszaloki @brave/Android
+**/ios/**/*brave_account* @szilardszaloki @brave/ios
+**/ios/**/*BraveAccount* @szilardszaloki @brave/ios
