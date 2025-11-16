@@ -32,6 +32,7 @@ constexpr auto kBraveDisabledTrialNames =
         "FencedFrames",
         "Fledge",
         "Parakeet",
+        "Prerender2CrossOriginIframes",
         "SignedExchangeSubresourcePrefetch",
         "SubresourceWebBundles",
     });
@@ -41,6 +42,7 @@ constexpr auto kBraveDisabledTrialFeatures =
         blink::mojom::OriginTrialFeature::kAdInterestGroupAPI,
         blink::mojom::OriginTrialFeature::kDigitalGoods,
         blink::mojom::OriginTrialFeature::kParakeet,
+        blink::mojom::OriginTrialFeature::kPrerender2CrossOriginIframes,
     });
 
 }  // namespace
