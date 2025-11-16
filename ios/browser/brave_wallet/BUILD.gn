@@ -23,6 +23,7 @@ source_set("brave_wallet") {
     "swap_service_factory.h",
     "wallet_data_files_installer_delegate_impl.h",
     "wallet_data_files_installer_delegate_impl.mm",
+    "wallet_page_handler_bridge.h",
   ]
   deps = [
     "//base",

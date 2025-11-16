@@ -20,9 +20,9 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @protocol AIChatUIHandlerBridge;
+@protocol WalletPageHandlerBridge;
 
-CWV_EXPORT
-@interface BraveNavigationAction : CWVNavigationAction
+CWV_EXPORT @interface BraveNavigationAction : CWVNavigationAction
 /// YES if the navigation target frame is the main frame.
 @property(nonatomic, readonly, getter=isTargetFrameMain) BOOL targetFrameIsMain;
 /// YES if the navigation target frame is cross-origin with respect to the the
@@ -117,6 +117,13 @@ CWV_EXPORT
 @interface BraveWebView (AIChatWebUI)
 /// A bridge for handling Leo AI WebUI page actions
 @property(nonatomic, weak, nullable) id<AIChatUIHandlerBridge> aiChatUIHandler;
+@end
+
+CWV_EXPORT
+@interface BraveWebView (WalletWebUI)
+/// A bridge for handling Brave Wallet WebUI page actions
+@property(nonatomic, weak, nullable) id<WalletPageHandlerBridge>
+    walletPageHandler;
 @end
 
 NS_ASSUME_NONNULL_END
