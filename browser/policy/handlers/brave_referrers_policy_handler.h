@@ -17,8 +17,8 @@ class PolicyMap;
 // Values for the DefaultBraveReferrersSetting policy. These must be in sync
 // with the policy definition DefaultBraveReferrersSetting.yaml.
 enum class BraveReferrersSetting {
-  kAllowReferrer = 1,
-  kBlockReferrer = 2,
+  kAllowPermissiveReferrerPolicy = 1,
+  kCapToStrictReferrerPolicy = 2,
 };
 
 // Handles the |policy::key::kDefaultBraveReferrersSetting| policy.
