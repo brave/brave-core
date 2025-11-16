@@ -32,6 +32,7 @@
 #include "components/lens/lens_features.h"
 #include "components/manta/features.h"
 #include "components/metrics/metrics_features.h"
+#include "components/metrics/private_metrics/private_metrics_features.h"
 #include "components/metrics/structured/structured_metrics_features.h"
 #include "components/network_time/network_time_tracker.h"
 #include "components/omnibox/common/omnibox_features.h"
@@ -192,6 +193,8 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &lens::features::kLensOverlay,
       &lens::features::kLensStandalone,
       &media::kLiveCaption,
+      &metrics::features::kStructuredMetrics,
+      &metrics::private_metrics::kPrivateMetricsFeature,
       &metrics::structured::kPhoneHubStructuredMetrics,
       &net::features::kEnableWebTransportDraft07,
       &net::features::kTpcdMetadataGrants,

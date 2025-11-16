@@ -148,6 +148,8 @@ source_set("unit_tests") {
     "//components/legion",
     "//components/lens",
     "//components/manta",
+    "//components/metrics",
+    "//components/metrics/private_metrics:private_metrics_features",
     "//components/metrics/structured:structured_metrics_features",
     "//components/network_time",
     "//components/omnibox/browser",

@@ -76,6 +76,7 @@ specific_include_rules = {
   "feature_defaults_unittest\.cc": [
     "+android_webview/common/aw_features.h",
     "+components/enterprise/connectors/core/features.h",
+    "+components/metrics/private_metrics/private_metrics_features.h",
     "+extensions/common/extension_features.h",
     "+gpu/config/gpu_finch_features.h",
     "+net/base/features.h",
