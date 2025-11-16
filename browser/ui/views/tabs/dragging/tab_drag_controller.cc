@@ -97,6 +97,12 @@ TabDragController::Liveness TabDragController::Init(
     return TabDragController::Liveness::ALIVE;
   }
 
+  // Update IsMaximized and IsFullscreen states for vertical mode.
+  auto* top_level_widget = widget->GetTopLevelWidget();
+  DCHECK(top_level_widget);
+  was_source_maximized_ = top_level_widget->IsMaximized();
+  was_source_fullscreen_ = top_level_widget->IsFullscreen();
+
   // Adjust coordinate for vertical mode.
   const int x =
       mouse_offset.x() - GetXCoordinateAdjustmentForMultiSelectedTabs(
@@ -245,4 +251,20 @@ gfx::Vector2d TabDragController::GetVerticalTabStripWidgetOffset() {
   auto tabstrip_widget_bounds = tabstrip_widget->GetWindowBoundsInScreen();
 
   return browser_widget_bounds.origin() - tabstrip_widget_bounds.origin();
+}
+
+void TabDragController::RestoreAttachedWindowForDrag() {
+  if (!is_showing_vertical_tabs_) {
+    TabDragControllerChromium::RestoreAttachedWindowForDrag();
+    return;
+  }
+
+  const gfx::Size restored_size = CalculateDraggedWindowSize(attached_context_);
+
+  views::Widget* widget = GetAttachedBrowserWidget();
+  widget->SetVisibilityChangedAnimationsEnabled(false);
+  widget->Restore();
+  widget->SetVisibilityChangedAnimationsEnabled(true);
+
+  widget->SetSize(restored_size);
 }
