@@ -1,24 +1,24 @@
-Total size 55301K
+Total size 57871K
 
-GROUP chromium [30693K total]
+GROUP chromium [32326K total]
    217K chromeAutofillStatesData 2025.6.13.84507 [AutofillStates]
-   698K crl-set-10435902620562040753.data 10143 [CertificateRevocation]
-    31K chromeCommerceHeuristics 2023.3.30.1305 [CommerceHeuristics]
-   161K Crowd Deny 2025.11.6.121 [Crowd Deny]
+   688K crl-set-16521762353220662231.data 10158 [CertificateRevocation]
+   107K Crowd Deny 2025.11.13.121 [Crowd Deny]
      9K fileTypePolicies 144.0.7512.1 [FileTypePolicies]
      7K history_search_strings_farmhashed.binarypb 6.7431.9692 [HistorySearch]
     10K MEI Preload 1.0.7.1744928549 [MEIPreload]
   7744K OnDeviceHeadSuggestENUS500000 20251024.824731831.14 [OnDeviceHeadSuggestModel]
-   363K Optimization Hints 568 [OptimizationHints]
+   363K Optimization Hints 572 [OptimizationHints]
      1K Origin Trials Updates 1.0.0.19 [OriginTrials]
-   379K pkiMetadata 1482 [PKIMetadata]
+   379K pkiMetadata 1492 [PKIMetadata]
      4K sslErrorAssistant 7 [SSLErrorAssistant]
    179K safetyTips 3087 [SafetyTips]
    240K Subresource Filtering Rules 9.62.0 [Subresource Filter]
     11K trustToken 2025.9.29.1 [TrustTokenKeyCommitments]
  18987K WidevineCdm 4.10.2891.0 [WidevineCdm]
   1642K zxcvbnData 3 [ZxcvbnData]
+  1728K hyphens-data 120.0.6050.0 [hyphen-data]
 
-GROUP large_files [18620K total]
-  1863K Safe Browsing\ChromeExtMalware.store.32_13407178804591474
- 16757K Safe Browsing\UrlSoceng.store.4_13407178804328476
+GROUP large_files [19527K total]
+  1862K Safe Browsing\ChromeExtMalware.store.32_13407783792875896
+ 17665K Safe Browsing\UrlSoceng.store.4_13407783792585627
