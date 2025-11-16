@@ -5,6 +5,8 @@
 
 static_library("handlers") {
   sources = [
+    "brave_adblock_policy_handler.cc",
+    "brave_adblock_policy_handler.h",
     "brave_https_upgrade_policy_handler.cc",
     "brave_https_upgrade_policy_handler.h",
     "brave_referrers_policy_handler.cc",
@@ -25,6 +27,7 @@ static_library("handlers") {
 source_set("unit_tests") {
   testonly = true
   sources = [
+    "brave_adblock_policy_handler_unittest.cc",
     "brave_https_upgrade_policy_handler_unittest.cc",
     "brave_referrers_policy_handler_unittest.cc",
     "brave_remember_1p_storage_policy_handler_unittest.cc",
