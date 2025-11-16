@@ -165,6 +165,13 @@ struct WebSource {
 
 struct WebSourcesEvent {
   array<WebSource> sources;
+
+  // Note: These are expected to be JSON strings in the format of
+  // https://api-dashboard.search.brave.com/app/documentation/rich-search/responses#RichResult
+  // We don't type anything explicitly here because the schema changes often and the expectation is
+  // that this data is simply passed through to a renderer that does understand the data
+  // format and is updated more frequently than the browser.
+  array<string> rich_results;
 };
 
 struct CompletionEvent {

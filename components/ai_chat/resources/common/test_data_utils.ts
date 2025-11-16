@@ -43,7 +43,7 @@ export function getWebSourcesEvent(
 ): Mojom.ConversationEntryEvent {
   return {
     ...eventTemplate,
-    sourcesEvent: { sources },
+    sourcesEvent: { sources, richResults: [] },
   }
 }
 
