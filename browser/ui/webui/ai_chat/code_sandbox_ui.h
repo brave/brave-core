@@ -7,7 +7,6 @@
 #define BRAVE_BROWSER_UI_WEBUI_AI_CHAT_CODE_SANDBOX_UI_H_
 
 #include <memory>
-#include <string>
 
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/browser/webui_config.h"
@@ -37,13 +36,6 @@ class CodeSandboxUI : public ui::UntrustedWebUIController {
 
   CodeSandboxUI(const CodeSandboxUI&) = delete;
   CodeSandboxUI& operator=(const CodeSandboxUI&) = delete;
-
- private:
-  static bool ShouldHandleRequest(const std::string& path);
-  static void HandleScriptRequest(
-      base::WeakPtr<content::BrowserContext> browser_context,
-      const std::string& path,
-      content::WebUIDataSource::GotDataCallback callback);
 };
 
 }  // namespace ai_chat

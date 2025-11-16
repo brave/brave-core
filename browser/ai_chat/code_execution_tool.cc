@@ -11,21 +11,18 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
-#include "base/task/single_thread_task_runner.h"
-#include "base/time/time.h"
 #include "base/values.h"
-#include "brave/browser/ai_chat/ai_chat_service_factory.h"
-#include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_input_properties.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_utils.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/common/chrome_isolated_world_ids.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"
+#include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
 #include "ui/base/page_transition_types.h"
 #include "url/gurl.h"
 
@@ -39,12 +36,8 @@ constexpr base::TimeDelta kExecutionTimeLimit = base::Seconds(10);
 
 class CodeSandboxWebContentsObserver : public content::WebContentsObserver {
  public:
-  using LoadCompleteCallback = base::OnceCallback<void(std::string)>;
-
-  explicit CodeSandboxWebContentsObserver(content::WebContents* web_contents,
-                                          LoadCompleteCallback callback)
-      : content::WebContentsObserver(web_contents),
-        load_complete_callback_(std::move(callback)) {}
+  explicit CodeSandboxWebContentsObserver(content::WebContents* web_contents)
+      : content::WebContentsObserver(web_contents) {}
 
   ~CodeSandboxWebContentsObserver() override = default;
 
@@ -58,21 +51,12 @@ class CodeSandboxWebContentsObserver : public content::WebContentsObserver {
     console_messages_.push_back(base::UTF16ToUTF8(message));
   }
 
-  void DidFinishLoad(content::RenderFrameHost* render_frame_host,
-                     const GURL& validated_url) override {
-    if (!render_frame_host->GetParent() && load_complete_callback_) {
-      auto console_output = base::JoinString(console_messages_, "\n");
-      // Post the task since we cannot delete the WebContents while
-      // the observer is notifying us.
-      base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
-          FROM_HERE, base::BindOnce(std::move(load_complete_callback_),
-                                    std::move(console_output)));
-    }
+  std::string GetConsoleContents() const {
+    return base::JoinString(console_messages_, "\n");
   }
 
  private:
   std::vector<std::string> console_messages_;
-  LoadCompleteCallback load_complete_callback_;
 };
 
 CodeExecutionTool::CodeExecutionRequest::CodeExecutionRequest(
@@ -88,11 +72,7 @@ CodeExecutionTool::CodeExecutionRequest::CodeExecutionRequest(
 CodeExecutionTool::CodeExecutionRequest::~CodeExecutionRequest() = default;
 
 CodeExecutionTool::CodeExecutionTool(content::BrowserContext* browser_context)
-    : profile_(Profile::FromBrowserContext(browser_context)),
-      ai_chat_service_(
-          AIChatServiceFactory::GetForBrowserContext(browser_context)) {
-  CHECK(ai_chat_service_);
-}
+    : profile_(Profile::FromBrowserContext(browser_context)) {}
 
 CodeExecutionTool::~CodeExecutionTool() {
   for (auto& request : requests_) {
@@ -166,9 +146,6 @@ void CodeExecutionTool::UseTool(const std::string& input_json,
                     "} catch (error) {console.error('Error:', "
                     "error.toString()); } })(undefined, undefined)"});
 
-  auto request_id =
-      ai_chat_service_->StoreCodeExecutionToolScript(std::move(wrapped_js));
-
   auto otr_profile_id = Profile::OTRProfileID::CreateUniqueForCodeSandbox();
   auto* otr_profile = profile_->GetOffTheRecordProfile(
       otr_profile_id, true /* create_if_needed */);
@@ -181,23 +158,41 @@ void CodeExecutionTool::UseTool(const std::string& input_json,
 
   auto request_it = std::prev(requests_.end());
   request_it->observer = std::make_unique<CodeSandboxWebContentsObserver>(
-      request_it->web_contents.get(),
-      base::BindOnce(&CodeExecutionTool::HandleResult,
-                     weak_ptr_factory_.GetWeakPtr(), request_it));
+      request_it->web_contents.get());
 
-  auto sandbox_url =
-      GURL(base::StrCat({kAIChatCodeSandboxUIURL, request_id, "/"}));
+  auto* rfh = request_it->web_contents->GetPrimaryMainFrame();
+  rfh->GetRemoteAssociatedInterfaces()->GetInterface(&request_it->injector);
+
   request_it->web_contents->GetController().LoadURL(
-      sandbox_url, content::Referrer(), ui::PAGE_TRANSITION_TYPED,
-      std::string());
+      GURL(kAIChatCodeSandboxUIURL), content::Referrer(),
+      ui::PAGE_TRANSITION_TYPED, std::string());
+
+  auto wrapped_js_utf16 = base::UTF8ToUTF16(wrapped_js);
+  request_it->injector->RequestAsyncExecuteScript(
+      ISOLATED_WORLD_ID_BRAVE_INTERNAL, wrapped_js_utf16,
+      blink::mojom::UserActivationOption::kDoNotActivate,
+      blink::mojom::PromiseResultOption::kAwait,
+      base::BindOnce(&CodeExecutionTool::HandleScriptResult,
+                     weak_ptr_factory_.GetWeakPtr(), request_it));
 
   auto time_limit =
       execution_time_limit_for_testing_.value_or(kExecutionTimeLimit);
   request_it->timeout_timer.Start(
       FROM_HERE, time_limit,
-      base::BindOnce(&CodeExecutionTool::HandleResult,
-                     weak_ptr_factory_.GetWeakPtr(), request_it,
-                     "Error: Time limit exceeded"));
+      base::BindOnce(&CodeExecutionTool::HandleTimeout,
+                     weak_ptr_factory_.GetWeakPtr(), request_it));
+}
+
+void CodeExecutionTool::HandleScriptResult(
+    std::list<CodeExecutionRequest>::iterator request_it,
+    base::Value result) {
+  auto console_output = request_it->observer->GetConsoleContents();
+  HandleResult(request_it, console_output);
+}
+
+void CodeExecutionTool::HandleTimeout(
+    std::list<CodeExecutionRequest>::iterator request_it) {
+  HandleResult(request_it, "Error: Time limit exceeded");
 }
 
 void CodeExecutionTool::HandleResult(
