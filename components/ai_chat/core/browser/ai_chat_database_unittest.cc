@@ -117,6 +117,7 @@ TEST_P(AIChatDatabaseTest, AddAndGetConversationAndEntries) {
     // Add skill data to test skill persistence
     history[0]->skill =
         mojom::SkillEntry::New("test", "This is a test skill prompt");
+    history[1]->is_near_verified = true;
 
     // Create the conversation metadata which gets persisted
     // when the first entry is asked to be persisted.
@@ -160,6 +161,11 @@ TEST_P(AIChatDatabaseTest, AddAndGetConversationAndEntries) {
     ASSERT_TRUE(result->entries[0]->skill);
     EXPECT_EQ(result->entries[0]->skill->shortcut, "test");
     EXPECT_EQ(result->entries[0]->skill->prompt, "This is a test skill prompt");
+
+    // Verify is_near_verified was persisted correctly
+    EXPECT_FALSE(result->entries[0]->is_near_verified.has_value());
+    ASSERT_TRUE(result->entries[1]->is_near_verified.has_value());
+    EXPECT_TRUE(*result->entries[1]->is_near_verified);
 
     EXPECT_EQ(result->associated_content.size(), has_content ? 1u : 0u);
     if (has_content) {
@@ -779,39 +785,6 @@ TEST_P(AIChatDatabaseTest, UpdateConversationTokenInfo) {
   conversation = GetConversation(FROM_HERE, conversations, uuid);
   EXPECT_EQ(conversation->total_tokens, updated_total_tokens);
   EXPECT_EQ(conversation->trimmed_tokens, updated_trimmed_tokens);
-}
-
-TEST_P(AIChatDatabaseTest, UpdateEntryVerificationStatus) {
-  const std::string uuid = "for_verification_status";
-  mojom::ConversationPtr metadata = mojom::Conversation::New(
-      uuid, "title", base::Time::Now(), true, std::nullopt, 0, 0, false,
-      std::vector<mojom::AssociatedContentPtr>());
-
-  auto history = CreateSampleChatHistory(2u);
-  EXPECT_TRUE(db_->AddConversation(metadata->Clone(), {}, history[0]->Clone()));
-  EXPECT_TRUE(db_->AddConversationEntry(uuid, history[1]->Clone()));
-  EXPECT_TRUE(db_->AddConversationEntry(uuid, history[2]->Clone()));
-  EXPECT_TRUE(db_->AddConversationEntry(uuid, history[3]->Clone()));
-
-  mojom::ConversationArchivePtr result = db_->GetConversationData(uuid);
-  ASSERT_EQ(result->entries.size(), 4u);
-  for (const auto& entry : result->entries) {
-    EXPECT_FALSE(entry->is_near_verified.has_value());
-  }
-
-  EXPECT_TRUE(
-      db_->UpdateEntryVerificationStatus(*result->entries[2]->uuid, false));
-  EXPECT_TRUE(
-      db_->UpdateEntryVerificationStatus(*result->entries[3]->uuid, true));
-
-  mojom::ConversationArchivePtr result_2 = db_->GetConversationData(uuid);
-  ASSERT_EQ(result_2->entries.size(), 4u);
-  EXPECT_FALSE(result_2->entries[0]->is_near_verified.has_value());
-  EXPECT_FALSE(result_2->entries[1]->is_near_verified.has_value());
-  ASSERT_TRUE(result_2->entries[2]->is_near_verified.has_value());
-  EXPECT_FALSE(*result_2->entries[2]->is_near_verified);
-  ASSERT_TRUE(result_2->entries[3]->is_near_verified.has_value());
-  EXPECT_TRUE(*result_2->entries[3]->is_near_verified);
 }
 
 TEST_P(AIChatDatabaseTest, AddOrUpdateAssociatedContent) {

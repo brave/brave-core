@@ -1224,27 +1224,6 @@ bool AIChatDatabase::UpdateConversationTokenInfo(
   return statement.Run();
 }
 
-bool AIChatDatabase::UpdateEntryVerificationStatus(std::string_view entry_uuid,
-                                                   bool verified) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  DVLOG(4) << __func__ << " for " << entry_uuid << " with verified "
-           << verified;
-  if (!LazyInit()) {
-    return false;
-  }
-
-  static constexpr char kUpdateEntryVerificationQuery[] =
-      "UPDATE conversation_entry SET is_near_verified=? WHERE uuid=?";
-  sql::Statement statement(
-      GetDB().GetCachedStatement(SQL_FROM_HERE, kUpdateEntryVerificationQuery));
-  CHECK(statement.is_valid());
-
-  statement.BindBool(0, verified);
-  statement.BindString(1, entry_uuid);
-
-  return statement.Run();
-}
-
 bool AIChatDatabase::DeleteConversation(std::string_view conversation_uuid) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!LazyInit()) {
