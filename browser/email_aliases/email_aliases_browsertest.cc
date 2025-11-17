@@ -414,6 +414,20 @@ IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserTest, ContextMenuAuthorized) {
   ContextMenuWaiter menu_waiter(IDC_NEW_EMAIL_ALIAS);
   RunContextMenuOn("type-email");
   menu_waiter.WaitForMenuOpenAndClose();
+  // Wait for bubble.
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return !!email_aliases_controller->GetBubbleForTesting(); }));
+
+  auto* bubble = email_aliases_controller->GetBubbleForTesting();
+  auto* bubble_web_contents =
+      bubble->GetContentsWrapperForTesting()->web_contents();
+  InjectHelpers(bubble_web_contents);
+  Wait("#create-alias-button:not([isDisabled=\"true\"])", bubble_web_contents);
+  Click("#create-alias-button:not([isDisabled=\"true\"])", bubble_web_contents);
+
+  // Wait for bubble close
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return !email_aliases_controller->GetBubbleForTesting(); }));
 
   EXPECT_TRUE(AwaitText("#type-email", "new@alias.com"));
 }
