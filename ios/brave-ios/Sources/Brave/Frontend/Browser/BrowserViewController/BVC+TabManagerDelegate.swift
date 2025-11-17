@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import AIChat
 import BraveCore
 import BraveShared
 import BraveShields
@@ -32,6 +33,10 @@ extension BrowserViewController: TabManagerDelegate {
     tab.pageMetadataHelper = .init(tab: tab)
     tab.faviconTabHelper = .init(tab: tab)
     tab.userActivityHelper = .init(tab: tab)
+    tab.aiChatWebUIHelper = .init(tab: tab)
+    tab.aiChatWebUIHelper?.handler = { [weak self] tab, action in
+      self?.handleAIChatWebUIPageAction(tab, action: action)
+    }
     let profile =
       tab.isPrivate ? profileController.profile.offTheRecordProfile : profileController.profile
     let braveShieldsHelper: BraveShieldsTabHelper = .init(
