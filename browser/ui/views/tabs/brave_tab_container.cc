@@ -87,7 +87,7 @@ BraveTabContainer::BraveTabContainer(
       brave_tabs::kVerticalTabsCollapsed, prefs,
       base::BindRepeating(&BraveTabContainer::UpdateLayoutOrientation,
                           base::Unretained(this)));
-  if (base::FeatureList::IsEnabled(tabs::features::kBraveTreeTab)) {
+  if (base::FeatureList::IsEnabled(tabs::kBraveTreeTab)) {
     tree_tabs_enabled_.Init(
         brave_tabs::kTreeTabsEnabled, prefs,
         base::BindRepeating(&BraveTabContainer::UpdateLayoutOrientation,
@@ -283,7 +283,7 @@ void BraveTabContainer::UpdateLayoutOrientation() {
   layout_helper_->set_tab_strip(
       static_cast<TabStrip*>(base::to_address(tab_slot_controller_)));
 
-  if (base::FeatureList::IsEnabled(tabs::features::kBraveTreeTab)) {
+  if (base::FeatureList::IsEnabled(tabs::kBraveTreeTab)) {
     layout_helper_->set_use_tree_tabs(*tree_tabs_enabled_);
   }
 

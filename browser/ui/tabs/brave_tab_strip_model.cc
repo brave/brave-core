@@ -18,7 +18,6 @@
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/brave_tree_tab_strip_collection_delegate.h"
-#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/tree_tab_model.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/tabs/public/brave_tab_strip_collection.h"
@@ -183,7 +182,7 @@ void BraveTabStripModel::OnTreeTabRelatedPrefChanged() {
 }
 
 void BraveTabStripModel::BuildTreeTabs() {
-  CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveTreeTab));
+  CHECK(base::FeatureList::IsEnabled(tabs::kBraveTreeTab));
   CHECK(!tree_tab_model_);
   tree_tab_model_ = std::make_unique<TreeTabModel>();
 
