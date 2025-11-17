@@ -836,7 +836,6 @@ source_set("ui") {
     "//brave/components/debounce/core/browser",
     "//brave/components/debounce/core/common",
     "//brave/components/decentralized_dns/core",
-    "//brave/components/email_aliases/resources:email_aliases_panel_generated_resources",
     "//brave/components/google_sign_in_permission",
     "//brave/components/infobars/core",
     "//brave/components/l10n/common",

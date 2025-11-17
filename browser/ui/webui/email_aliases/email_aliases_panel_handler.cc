@@ -29,8 +29,7 @@ EmailAliasesPanelHandler::GetEmailAliasesController() {
   return nullptr;
 }
 
-void EmailAliasesPanelHandler::OnAliasCreationComplete(
-    const std::string& email) {
+void EmailAliasesPanelHandler::OnAliasCreated(const std::string& email) {
   if (auto* controller = GetEmailAliasesController()) {
     controller->OnAliasCreationComplete(email);
   }
@@ -42,7 +41,7 @@ void EmailAliasesPanelHandler::OnManageAliases() {
   }
 }
 
-void EmailAliasesPanelHandler::OnCancel() {
+void EmailAliasesPanelHandler::OnCancelAliasCreation() {
   if (auto* controller = GetEmailAliasesController()) {
     controller->CloseBubble();
   }

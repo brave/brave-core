@@ -31,9 +31,9 @@ class EmailAliasesPanelHandler
   email_aliases::EmailAliasesController* GetEmailAliasesController();
 
   // email_aliases::mojom::EmailAliasesPanelHandler:
-  void OnAliasCreationComplete(const std::string& email) override;
+  void OnAliasCreated(const std::string& email) override;
   void OnManageAliases() override;
-  void OnCancel() override;
+  void OnCancelAliasCreation() override;
 
   const raw_ptr<TopChromeWebUIController> webui_controller_ = nullptr;
   mojo::Receiver<email_aliases::mojom::EmailAliasesPanelHandler> receiver_;

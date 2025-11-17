@@ -431,9 +431,6 @@ bool BraveRenderViewContextMenu::IsCommandIdEnabled(int id) const {
 #endif
     case IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENTS:
       return true;
-    case IDC_NEW_EMAIL_ALIAS:
-      return GetBrowser() &&
-             GetBrowser()->GetFeatures().email_aliases_controller();
     case IDC_OPEN_IN_CONTAINER:
       return true;
     case IDC_NEW_EMAIL_ALIAS:

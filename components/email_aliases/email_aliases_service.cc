@@ -525,14 +525,9 @@ void EmailAliasesService::OnRefreshAliasesResponse(
     alias_obj->email = entry.alias;
     aliases.push_back(std::move(alias_obj));
   }
-  number_of_aliases_ = aliases.size();
   for (auto& observer : observers_) {
     observer->OnAliasesUpdated(mojo::Clone(aliases));
   }
-}
-
-bool EmailAliasesService::IsReadyToCreate() const {
-  return !auth_token_.empty() && number_of_aliases_ < max_aliases_;
 }
 
 }  // namespace email_aliases

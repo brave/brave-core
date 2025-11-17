@@ -208,12 +208,6 @@ class EmailAliasesService : public KeyedService,
   // enforce a maximum total polling duration.
   std::optional<base::ElapsedTimer> session_poll_elapsed_timer_;
 
-  // Number of aliases created by the user.
-  int number_of_aliases_ = 0;
-
-  // Maximum number of aliases allowed for the user.
-  const int max_aliases_ = 5;
-
   // WeakPtrFactory to safely bind callbacks across async network operations.
   base::WeakPtrFactory<EmailAliasesService> weak_factory_{this};
 };
