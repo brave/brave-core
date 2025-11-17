@@ -6,15 +6,21 @@
 const path = require('path')
 const fs = require('fs-extra')
 const GitPatcher = require('./gitPatcher')
-const { TemporaryGitRepository } = require('./testUtils')
+const { runGitAsync } = require('./util')
 const os = require('os')
+
+const dirPrefixTmp = 'brave-browser-test-git-apply-'
 
 const file1InitialContent = 'this is a test'
 const file1ModifiedContent = 'this is modified'
 const file1Name = 'file1'
 const writeReadFileOptions = { encoding: 'utf8' }
 
-async function getPatch(repo, modifiedFilePath) {
+function runGitAsyncWithErrorLog(repoPath, gitArgs) {
+  return runGitAsync(repoPath, gitArgs, false, true)
+}
+
+function getPatch(gitRepoPath, modifiedFilePath) {
   const singleDiffArgs = [
     'diff',
     '--src-prefix=a/',
@@ -22,22 +28,33 @@ async function getPatch(repo, modifiedFilePath) {
     '--full-index',
     modifiedFilePath,
   ]
-  return repo.runGit(singleDiffArgs)
+  return runGitAsyncWithErrorLog(gitRepoPath, singleDiffArgs)
 }
 
 describe('Apply Patches', function () {
-  let gitPatcher, repo, patchPath, testFile1Path, testFile1PatchPath
+  let gitPatcher, repoPath, patchPath, testFile1Path, testFile1PatchPath
 
   beforeEach(async function () {
     // Setup test Git repo and test Patch directory
     patchPath = await fs.mkdtemp(
-      path.join(os.tmpdir(), 'brave-browser-test-git-apply-patches-'),
+      path.join(os.tmpdir(), dirPrefixTmp + 'patches-'),
     )
-    repo = await TemporaryGitRepository.create('brave-browser-test-git-apply-')
-    testFile1Path = path.join(repo.path, file1Name)
+    repoPath = await fs.mkdtemp(path.join(os.tmpdir(), dirPrefixTmp))
+    testFile1Path = path.join(repoPath, file1Name)
+    await runGitAsyncWithErrorLog(repoPath, ['init'])
+    await runGitAsyncWithErrorLog(repoPath, [
+      'config',
+      'user.email',
+      'unittests@local',
+    ])
+    await runGitAsyncWithErrorLog(repoPath, [
+      'config',
+      'user.name',
+      'Unit Tests',
+    ])
     await fs.writeFile(testFile1Path, file1InitialContent, writeReadFileOptions)
-    await repo.runGit(['add', '.'])
-    await repo.runGit(['commit', '-m', '"file1 initial"'])
+    await runGitAsyncWithErrorLog(repoPath, ['add', '.'])
+    await runGitAsyncWithErrorLog(repoPath, ['commit', '-m', '"file1 initial"'])
     // modify content file
     await fs.writeFile(
       testFile1Path,
@@ -45,12 +62,12 @@ describe('Apply Patches', function () {
       writeReadFileOptions,
     )
     // get patch
-    const file1PatchContent = await getPatch(repo, file1Name)
+    const file1PatchContent = await getPatch(repoPath, file1Name)
     // write patch
     testFile1PatchPath = path.join(patchPath, file1Name + '.patch')
     await fs.writeFile(testFile1PatchPath, file1PatchContent)
     // reset file change
-    await repo.runGit(['reset', '--hard', 'HEAD'])
+    await runGitAsyncWithErrorLog(repoPath, ['reset', '--hard', 'HEAD'])
     // sanity test
     const testFile1Content = await fs.readFile(
       testFile1Path,
@@ -62,17 +79,21 @@ describe('Apply Patches', function () {
       console.error('Setup fail: file was not reset - ' + testFile1Path)
       throw new Error(err)
     }
-    gitPatcher = new GitPatcher(patchPath, repo.path, false)
+    gitPatcher = new GitPatcher(patchPath, repoPath, false)
   })
 
   function validate() {
-    if (!repo.path || !patchPath) {
+    if (!repoPath || !patchPath) {
       throw new Error('test setup failed!')
     }
   }
 
   afterEach(async function () {
-    await repo.cleanup()
+    try {
+      await fs.remove(repoPath)
+    } catch (err) {
+      console.warn(`Test cleanup: could not remove directory at ${repoPath}`)
+    }
     try {
       await fs.remove(patchPath)
     } catch (err) {
@@ -147,8 +168,13 @@ describe('Apply Patches', function () {
     await fs.unlink(testFile1PatchPath)
     // remove target file
     await fs.unlink(testFile1Path)
-    await repo.runGit(['rm', testFile1Path])
-    await repo.runGit(['commit', '-a', '-m', '"remove target"'])
+    await runGitAsyncWithErrorLog(repoPath, ['rm', testFile1Path])
+    await runGitAsyncWithErrorLog(repoPath, [
+      'commit',
+      '-a',
+      '-m',
+      '"remove target"',
+    ])
     // apply again
     const status = await gitPatcher.applyPatches()
     expect(status).toHaveLength(1)
@@ -166,8 +192,13 @@ describe('Apply Patches', function () {
     await gitPatcher.applyPatches()
     // remove target file
     await fs.unlink(testFile1Path)
-    await repo.runGit(['rm', testFile1Path])
-    await repo.runGit(['commit', '-a', '-m', '"remove target"'])
+    await runGitAsyncWithErrorLog(repoPath, ['rm', testFile1Path])
+    await runGitAsyncWithErrorLog(repoPath, [
+      'commit',
+      '-a',
+      '-m',
+      '"remove target"',
+    ])
     // apply again
     const status = await gitPatcher.applyPatches()
     expect(status).toHaveLength(1)
@@ -214,13 +245,13 @@ describe('Apply Patches', function () {
   test('handles no patch dir', async function () {
     validate()
     const badPatchPath = path.join(patchPath, 'not-exist')
-    const noDirPatcher = new GitPatcher(badPatchPath, repo.path)
+    const noDirPatcher = new GitPatcher(badPatchPath, repoPath)
     const status = await noDirPatcher.applyPatches()
     expect(status).toHaveLength(0)
   })
 
   test('handles no repo dir', async function () {
-    const badRepoPath = path.join(repo.path, 'not-exist')
+    const badRepoPath = path.join(repoPath, 'not-exist')
     const noRepoPatcher = new GitPatcher(patchPath, badRepoPath)
     await expect(noRepoPatcher.applyPatches()).rejects.toThrowError()
   })
