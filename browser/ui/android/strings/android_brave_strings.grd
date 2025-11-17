@@ -1315,6 +1315,9 @@ Are you sure you want to do this?
       <message name="IDS_OPENING_SCREEN_NEW_TAB" desc="Option for new tab">
         New tab
       </message>
+      <message name="IDS_RECENT_TABS_DIALOG_TITLE" desc="Title for recent tabs dialog">
+        Get back to your most recent tab
+      </message>
       <message name="IDS_PHOTO_BY" desc="Text for image credit for background images on NTP">
         Photo by <ph name="PHOTO_BY">%1$s</ph>
       </message>

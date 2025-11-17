@@ -1,0 +1,24 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/config/android/rules.gni")
+
+android_library("java") {
+  sources = [
+    "java/src/org/chromium/chrome/browser/ui/messages/snackbar/BraveSnackbarManager.java",
+    "java/src/org/chromium/chrome/browser/ui/messages/snackbar/BraveSnackbarView.java",
+  ]
+
+  deps = [
+    "//base:base_java",
+    "//chrome/browser/ui/android/edge_to_edge:factory_java",
+    "//chrome/browser/ui/android/edge_to_edge:java",
+    "//chrome/browser/ui/messages/android:java",
+    "//ui/android:ui_full_java",
+    "//ui/edge_to_edge:java",
+  ]
+
+  resources_package = "org.chromium.chrome.browser.ui.messages.snackbar"
+}

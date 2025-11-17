@@ -281,6 +281,9 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
                     .registerOnSharedPreferenceChangeListener(mPreferenceListener);
         }
         setNtpViews();
+
+        // Show recent tabs dialog for variant B if NTP was shown after inactivity
+        maybeShowRecentTabsDialog();
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -1430,5 +1433,50 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
 
     private void updateMvtOnTablet() {
         assert false : "This method should be removed in the bytecode!";
+    }
+
+    /**
+     * Shows the recent tabs snackbar if variant B is active, and either OPTION_NEW_TAB or
+     * OPTION_NEW_TAB_AFTER_INACTIVITY is selected. For OPTION_NEW_TAB_AFTER_INACTIVITY, only shows
+     * when app was returned from background after inactivity threshold.
+     */
+    private void maybeShowRecentTabsDialog() {
+        // Check if feature is enabled and variant is B
+        if (!BraveFreshNtpHelper.isEnabled()) {
+            return;
+        }
+
+        String variant = BraveFreshNtpHelper.getVariant();
+        if (variant == null || !variant.equals("B")) {
+            return;
+        }
+
+        // Check if OPTION_NEW_TAB or OPTION_NEW_TAB_AFTER_INACTIVITY is selected
+        int openingScreenOption =
+                ChromeSharedPreferences.getInstance()
+                        .readInt(BravePreferenceKeys.BRAVE_NEW_TAB_PAGE_OPENING_SCREEN, 1);
+        if (openingScreenOption
+                        != BravePreferenceKeys.BRAVE_OPENING_SCREEN_OPTION_NEW_TAB_AFTER_INACTIVITY
+                && openingScreenOption != BravePreferenceKeys.BRAVE_OPENING_SCREEN_OPTION_NEW_TAB) {
+            return;
+        }
+
+        // Check the flag set by BraveReturnToChromeUtil when NTP was shown
+        // For OPTION_NEW_TAB_AFTER_INACTIVITY, flag is set only after inactivity threshold
+        // For OPTION_NEW_TAB, flag is set whenever NTP is shown at startup
+        boolean shouldShowSnackbar =
+                ChromeSharedPreferences.getInstance()
+                        .readBoolean(BravePreferenceKeys.BRAVE_SHOW_RECENT_TABS_SNACKBAR, false);
+        if (!shouldShowSnackbar) {
+            return;
+        }
+
+        // Clear the flag so snackbar is only shown once
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(BravePreferenceKeys.BRAVE_SHOW_RECENT_TABS_SNACKBAR, false);
+
+        // Show the snackbar
+        BraveRecentTabsSnackbarHelper snackbarHelper = new BraveRecentTabsSnackbarHelper();
+        snackbarHelper.showSnackbar((BraveActivity) mActivity);
     }
 }
