@@ -123,7 +123,8 @@ class HistoryModel: NSObject, ObservableObject {
   func refreshHistory(query: String? = nil) {
     currentSearchQuery = query
 
-    refreshTask = Task { @MainActor in
+    refreshTask = Task { @MainActor [weak self] in
+      guard let self = self else { return }
       for key in sectionDetails.keys {
         sectionDetails.updateValue([], forKey: key)
       }
