@@ -56,7 +56,7 @@ class ZCashCreateOrchardToTransparentTransactionTask {
   const raw_ref<ZCashWalletService> zcash_wallet_service_;  // Owns `this`.
   ZCashActionContext context_;
   std::string transparent_address_;
-  uint64_t amount_;
+  uint64_t amount_ = 0;
 
   std::optional<std::string> error_;
 
