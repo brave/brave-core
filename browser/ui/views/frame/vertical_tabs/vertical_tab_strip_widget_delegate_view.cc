@@ -17,6 +17,7 @@
 #include "chrome/browser/ui/views/theme_copying_widget.h"
 #include "chrome/common/pref_names.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/views/background.h"
 #include "ui/views/layout/fill_layout.h"
 #include "ui/views/view_utils.h"
 
@@ -93,6 +94,8 @@ VerticalTabStripWidgetDelegateView::VerticalTabStripWidgetDelegateView(
   widget_observation_.AddObservation(host_->GetWidget());
 
   ChildPreferredSizeChanged(region_view_);
+
+  SetBackground(views::CreateSolidBackground(SK_ColorRED));
 }
 
 void VerticalTabStripWidgetDelegateView::AddedToWidget() {
@@ -190,7 +193,10 @@ void VerticalTabStripWidgetDelegateView::UpdateWidgetBounds() {
 
   DCHECK(tabs::utils::ShouldShowVerticalTabs(browser_view_->browser()));
 
+  constexpr auto kExtraWidthForExapndingArea = 10;
   auto insets = host_->GetInsets();
+  insets.set_left(insets.left() + kExtraWidthForExapndingArea);
+
   widget_bounds.set_width(widget_bounds.width() + insets.width());
   if (GetInsets() != insets) {
     SetBorder(insets.IsEmpty() ? nullptr : views::CreateEmptyBorder(insets));
@@ -200,6 +206,8 @@ void VerticalTabStripWidgetDelegateView::UpdateWidgetBounds() {
     // TODO(sko) This feels like a little bit janky during animation.
     // Test if we can alleviate it.
     widget_bounds.set_x(host_bounds.right() - widget_bounds.width());
+  } else {
+    widget_bounds.set_x(widget_bounds.x() - kExtraWidthForExapndingArea);
   }
 
   const bool need_to_call_layout =
