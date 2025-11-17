@@ -60,7 +60,7 @@ class HistoryModel: NSObject, ObservableObject {
   private var listener: HistoryServiceListener?
   private let maxFetchCount: UInt = 200
   private var currentSearchQuery: String?
-  private var historyCancellable: HistoryCancellable?
+  private var refreshTask: Task<(), any Error>?
 
   @Published
   var isHistoryServiceLoaded = false
@@ -113,6 +113,7 @@ class HistoryModel: NSObject, ObservableObject {
 
   deinit {
     listener?.destroy()
+    refreshTask?.cancel()
   }
 
   func refreshHistory() {
@@ -122,7 +123,8 @@ class HistoryModel: NSObject, ObservableObject {
   func refreshHistory(query: String? = nil) {
     currentSearchQuery = query
 
-    Task { @MainActor in
+    refreshTask = Task { @MainActor [weak self] in
+      guard let self = self else { return }
       for key in sectionDetails.keys {
         sectionDetails.updateValue([], forKey: key)
       }
@@ -132,15 +134,7 @@ class HistoryModel: NSObject, ObservableObject {
         duplicateHandling: (query ?? "").isEmpty ? .removePerDay : .removeAll
       )
 
-      let historyItems = await withCheckedContinuation { continuation in
-        self.historyCancellable = api?.search(
-          withQuery: query,
-          options: options,
-          completion: {
-            continuation.resume(returning: $0)
-          }
-        )
-      }
+      let historyItems = await api?.search(withQuery: query, options: options) ?? []
 
       try Task.checkCancellation()
 
