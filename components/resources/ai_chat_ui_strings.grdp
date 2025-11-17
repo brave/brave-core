@@ -147,6 +147,9 @@
   <message name="IDS_CHAT_UI_MODEL_LOCAL_LABEL" desc="Label identifying that an AI Chat model is a local model" formatter_data="webui=AiChat">
     Local
   </message>
+  <message name="IDS_CHAT_UI_MODEL_BETA_LABEL" desc="Label identifying that an AI Chat model is a Beta model" formatter_data="webui=AiChat">
+    Beta
+  </message>
   <message name="IDS_CHAT_UI_RECOMMENDED_MODELS_BUTTON" desc="Button label to show recommended models" formatter_data="webui=AiChat">
     Recommended models
   </message>
