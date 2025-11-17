@@ -129,12 +129,6 @@ void ZCashCreateOrchardToTransparentTransactionTask::CreateTransaction() {
   }
   zcash_transaction.set_fee(pick_result->fee);
 
-  if (!context_.account_internal_addr) {
-    error_ = "Internal address error";
-    ScheduleWorkOnTask();
-    return;
-  }
-
   if (!spendable_notes_->anchor_block_id) {
     error_ = "Failed to select anchor";
     ScheduleWorkOnTask();
@@ -149,22 +143,21 @@ void ZCashCreateOrchardToTransparentTransactionTask::CreateTransaction() {
       zcash_transaction.transparent_part().outputs.emplace_back();
   transparent_output.address = transparent_address_;
 
-  // Calculate the amount to send.
-  uint64_t send_amount = amount_;
-  if (amount_ == kZCashFullAmount) {
-    // For max amount, send everything minups fees and change.
-    send_amount =
-        base::CheckSub<uint64_t>(zcash_transaction.TotalInputsAmount(),
-                                 zcash_transaction.fee(), pick_result->change)
-            .ValueOrDie();
-  }
+  // Change should be 0 when sending full amount.
+  CHECK(!(amount_ == kZCashFullAmount) || (pick_result->change == 0));
 
-  transparent_output.amount = send_amount;
+  // Calculate the amount to send.
+  uint64_t actual_send_amount =
+      base::CheckSub<uint64_t>(zcash_transaction.TotalInputsAmount(),
+                               zcash_transaction.fee(), pick_result->change)
+          .ValueOrDie();
+  transparent_output.amount = actual_send_amount;
   transparent_output.script_pubkey = ZCashAddressToScriptPubkey(
       transparent_output.address,
       IsZCashTestnetKeyring(context_.account_id->keyring_id));
 
   // Create Orchard change output if needed.
+  CHECK(context_.account_internal_addr);
   if (pick_result->change != 0) {
     OrchardOutput& orchard_output =
         zcash_transaction.orchard_part().outputs.emplace_back();
@@ -173,7 +166,7 @@ void ZCashCreateOrchardToTransparentTransactionTask::CreateTransaction() {
   }
 
   // Set transaction metadata.
-  zcash_transaction.set_amount(send_amount);
+  zcash_transaction.set_amount(actual_send_amount);
   zcash_transaction.set_to(transparent_address_);
 
   transaction_ = std::move(zcash_transaction);
