@@ -47,7 +47,7 @@ TEST(PolkadotExtrinsics, UnsignedTransfer) {
 
   EXPECT_EQ(transfer_extrinsic.SendAmount(), 1234u);
   EXPECT_EQ(base::HexEncode(transfer_extrinsic.Recipient()), kBob);
-  EXPECT_EQ(base::HexEncode(transfer_extrinsic.ToHex(mojom::kPolkadotTestnet)),
+  EXPECT_EQ(transfer_extrinsic.ToHex(mojom::kPolkadotTestnet),
             testnet_extrinsic);
 
   // The above example JS uses a Polkadot testnet. For mainnet, we should have a
@@ -64,7 +64,7 @@ TEST(PolkadotExtrinsics, UnsignedTransfer) {
   const char* mainnet_extrinsic =
       R"(98040500008EAF04151687736326C9FEA17E25FC5287613693C912909CB226AA4794F26A484913)";
 
-  EXPECT_EQ(base::HexEncode(transfer_extrinsic.ToHex(mojom::kPolkadotMainnet)),
+  EXPECT_EQ(transfer_extrinsic.ToHex(mojom::kPolkadotMainnet),
             mainnet_extrinsic);
 }
 
@@ -88,9 +88,8 @@ TEST(PolkadotExtrinsics, UnsignedTransferNumericLimits) {
 
     const char* testnet_extrinsic =
         R"(D4040400008EAF04151687736326C9FEA17E25FC5287613693C912909CB226AA4794F26A4833FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF)";
-    EXPECT_EQ(
-        base::HexEncode(transfer_extrinsic.ToHex(mojom::kPolkadotTestnet)),
-        testnet_extrinsic);
+    EXPECT_EQ(transfer_extrinsic.ToHex(mojom::kPolkadotTestnet),
+              testnet_extrinsic);
   }
 
   {
@@ -99,9 +98,8 @@ TEST(PolkadotExtrinsics, UnsignedTransferNumericLimits) {
 
     const char* testnet_extrinsic =
         R"(94040400008EAF04151687736326C9FEA17E25FC5287613693C912909CB226AA4794F26A4800)";
-    EXPECT_EQ(
-        base::HexEncode(transfer_extrinsic.ToHex(mojom::kPolkadotTestnet)),
-        testnet_extrinsic);
+    EXPECT_EQ(transfer_extrinsic.ToHex(mojom::kPolkadotTestnet),
+              testnet_extrinsic);
   }
 }
 
@@ -125,10 +123,8 @@ TEST(PolkadotExtrinsics, DecodedUnsignedTransfer) {
     const char* testnet_extrinsic =
         R"(98040400008EAF04151687736326C9FEA17E25FC5287613693C912909CB226AA4794F26A484913)";
 
-    std::vector<uint8_t> bytes;
-    base::HexStringToBytes(testnet_extrinsic, &bytes);
-
-    auto transfer_extrinsic = PolkadotUnsignedTransfer::FromHex(bytes);
+    auto transfer_extrinsic =
+        PolkadotUnsignedTransfer::FromHex(testnet_extrinsic);
 
     EXPECT_EQ(transfer_extrinsic.value().SendAmount(), 1234u);
     EXPECT_EQ(base::HexEncode(transfer_extrinsic.value().Recipient()), kBob);
@@ -138,10 +134,8 @@ TEST(PolkadotExtrinsics, DecodedUnsignedTransfer) {
     const char* mainnet_extrinsic =
         R"(98040500008EAF04151687736326C9FEA17E25FC5287613693C912909CB226AA4794F26A484913)";
 
-    std::vector<uint8_t> bytes;
-    base::HexStringToBytes(mainnet_extrinsic, &bytes);
-
-    auto transfer_extrinsic = PolkadotUnsignedTransfer::FromHex(bytes);
+    auto transfer_extrinsic =
+        PolkadotUnsignedTransfer::FromHex(mainnet_extrinsic);
 
     EXPECT_EQ(transfer_extrinsic.value().SendAmount(), 1234u);
     EXPECT_EQ(base::HexEncode(transfer_extrinsic.value().Recipient()), kBob);
@@ -153,10 +147,8 @@ TEST(PolkadotExtrinsics, DecodeNumericLimits) {
     const char* testnet_extrinsic =
         R"(D4040400008EAF04151687736326C9FEA17E25FC5287613693C912909CB226AA4794F26A4833FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF)";
 
-    std::vector<uint8_t> bytes;
-    base::HexStringToBytes(testnet_extrinsic, &bytes);
-
-    auto transfer_extrinsic = PolkadotUnsignedTransfer::FromHex(bytes);
+    auto transfer_extrinsic =
+        PolkadotUnsignedTransfer::FromHex(testnet_extrinsic);
 
     EXPECT_EQ(transfer_extrinsic.value().SendAmount(),
               std::numeric_limits<uint128_t>::max());
@@ -173,11 +165,7 @@ TEST(PolkadotExtrinsics, InvalidDecode) {
 
     for (size_t i = 0; i < mainnet_extrinsic.size() - 1; ++i) {
       auto input = mainnet_extrinsic.substr(0, i);
-
-      std::vector<uint8_t> bytes;
-      base::HexStringToBytes(input, &bytes);
-
-      auto transfer_extrinsic = PolkadotUnsignedTransfer::FromHex(bytes);
+      auto transfer_extrinsic = PolkadotUnsignedTransfer::FromHex(input);
       EXPECT_FALSE(transfer_extrinsic) << input;
     }
   }
@@ -194,10 +182,7 @@ TEST(PolkadotExtrinsics, InvalidDecode) {
     };
 
     for (auto input : inputs) {
-      std::vector<uint8_t> bytes;
-      base::HexStringToBytes(input, &bytes);
-
-      auto transfer_extrinsic = PolkadotUnsignedTransfer::FromHex(bytes);
+      auto transfer_extrinsic = PolkadotUnsignedTransfer::FromHex(input);
       EXPECT_FALSE(transfer_extrinsic) << input;
     }
   }

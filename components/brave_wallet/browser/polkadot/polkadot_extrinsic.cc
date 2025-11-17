@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_extrinsic.h"
 
+#include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_extrinsic.rs.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
@@ -33,8 +34,7 @@ PolkadotUnsignedTransfer::PolkadotUnsignedTransfer(
   base::span(recipient_).copy_from_nonoverlapping(recipient);
 }
 
-std::vector<uint8_t> PolkadotUnsignedTransfer::ToHex(
-    std::string_view chain_id) const {
+std::string PolkadotUnsignedTransfer::ToHex(std::string_view chain_id) const {
   CHECK(IsPolkadotNetwork(chain_id));
 
   uint8_t balances_pallet_idx = 0;
@@ -55,18 +55,23 @@ std::vector<uint8_t> PolkadotUnsignedTransfer::ToHex(
       static_cast<uint64_t>(send_amount_ & 0xffffffffffffffff), recipient_,
       balances_pallet_idx, transfer_allow_death_call_index);
 
-  return std::vector<uint8_t>(buf.begin(), buf.end());
+  return base::HexEncode(std::vector<uint8_t>(buf.begin(), buf.end()));
 }
 
 // static
 std::optional<PolkadotUnsignedTransfer> PolkadotUnsignedTransfer::FromHex(
-    base::span<const uint8_t> input) {
+    std::string_view input) {
   std::array<uint8_t, kPolkadotSubstrateAccountIdSize> pubkey = {};
   uint64_t send_amount_high = 0;
   uint64_t send_amount_low = 0;
 
+  std::vector<uint8_t> bytes;
+  if (!base::HexStringToBytes(input, &bytes)) {
+    return std::nullopt;
+  }
+
   if (!brave_wallet::decode_unsigned_transfer_allow_death(
-          rust::Slice<const uint8_t>(input.data(), input.size()),
+          rust::Slice<const uint8_t>(bytes.data(), bytes.size()),
           rust::Slice<uint8_t>(pubkey.data(), pubkey.size()), send_amount_high,
           send_amount_low)) {
     return std::nullopt;

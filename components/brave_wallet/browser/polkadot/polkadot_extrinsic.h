@@ -9,6 +9,7 @@
 #include <stdint.h>
 
 #include <array>
+#include <string>
 #include <string_view>
 
 #include "base/containers/span.h"
@@ -34,12 +35,12 @@ class PolkadotUnsignedTransfer {
   // hex string encoded with the SCALE-encoded length of the string along with
   // the extrinsic version, the pallet index, call index, and the account
   // address type.
-  std::vector<uint8_t> ToHex(std::string_view chain_id) const;
+  std::string ToHex(std::string_view chain_id) const;
 
   // FromHex recreates the unsigned transfer extrinsic from the provided
   // bytes. This method is the dual of ToHex().
   static std::optional<PolkadotUnsignedTransfer> FromHex(
-      base::span<const uint8_t> input);
+      std::string_view input);
 
   // Get the send amount associated with this extrinsic.
   uint128_t SendAmount() const noexcept { return send_amount_; }
