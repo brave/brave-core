@@ -5,8 +5,6 @@
 
 const fs = require('fs-extra')
 const path = require('path')
-const os = require('os')
-const { runGitAsync } = require('./util')
 
 // HACK: determines the executable path from the gn target name
 // Alternative: gn desc <buildDir> <target> outputs --format=json
@@ -101,46 +99,10 @@ const getApplicableFilters = (config, suite) => {
   return filterFilePaths
 }
 
-
-// Manages a Git repository in a temporary directory for testing purposes.
-class TemporaryGitRepository {
-
-  static async create(tmpDirPrefix = 'brave-browser-test-') {
-    const repoPath = await fs.mkdtemp(path.join(os.tmpdir(), tmpDirPrefix))
-    const repo = new TemporaryGitRepository(repoPath)
-    await repo.runGit(['init'])
-    await repo.runGit(['config', 'user.email', 'unittests@local'])
-    await repo.runGit(['config', 'user.name', 'Unit Tests'])
-    return repo
-  }
-
-  // Not meant to be called directly. Use create(...) instead.
-  constructor(repoPath) {
-    this.path = repoPath
-  }
-
-  async runGit(gitArgs, logError = true) {
-    return runGitAsync(this.path, gitArgs, false, logError)
-  }
-
-  async cleanup() {
-    if (this.path) {
-      try {
-        await fs.remove(this.path)
-      } catch (err) {
-        console.warn(
-          `Test cleanup: could not remove directory at ${this.path}`,
-        )
-      }
-    }
-  }
-}
-
 module.exports = {
   gnTargetToExecutableName,
   getTestBinary,
   getTestsToRun,
   getApplicableFilters,
   getChromiumTestsSuites,
-  TemporaryGitRepository,
 }
