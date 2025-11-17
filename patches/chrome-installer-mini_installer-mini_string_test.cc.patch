@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/mini_installer/mini_string_test.cc b/chrome/installer/mini_installer/mini_string_test.cc
-index 07f639cb36ddef1b1f9350d2d314689359205ada..9ba9e8c49b6e007999b69acc7c2085ac80749df3 100644
+index 07f639cb36ddef1b1f9350d2d314689359205ada..a84e5e7eaeab1a450683708ae649295574742772 100644
 --- a/chrome/installer/mini_installer/mini_string_test.cc
 +++ b/chrome/installer/mini_installer/mini_string_test.cc
 @@ -60,3 +60,19 @@ TEST_F(MiniInstallerStringTest, StackStringOverflow) {
@@ -15,9 +15,9 @@ index 07f639cb36ddef1b1f9350d2d314689359205ada..9ba9e8c49b6e007999b69acc7c2085ac
 +
 +  StackString<MAX_PATH> str;
 +  EXPECT_TRUE(str.assign(kTestStringSource));
-+  EXPECT_EQ(str.get(), str.findi(kTestStringSource));
-+  EXPECT_EQ(nullptr, str.findi(kTestStringNotFound));
-+  const wchar_t* found = str.findi(kTestStringFind);
++  EXPECT_EQ(str.get(), mini_installer::SearchStringI(str.get(), kTestStringSource));
++  EXPECT_EQ(nullptr, mini_installer::SearchStringI(str.get(), kTestStringNotFound));
++  const wchar_t* found = mini_installer::SearchStringI(str.get(), kTestStringFind);
 +  EXPECT_NE(nullptr, found);
 +  std::wstring check(found, _countof(kTestStringFind) - 1);
 +  EXPECT_EQ(0, lstrcmpi(check.c_str(), kTestStringFind));
