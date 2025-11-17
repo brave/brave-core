@@ -24,6 +24,15 @@
 #define NEED_TO_RESET_BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING
 #endif  // defined(OFFICIAL_BUILD)
 
+#define BRAVE_GET_PREVIOUS_SETUP_EXE_PATH                        \
+  if (*setup_path == L'\0') {                                    \
+    ProcessExitResult exit_code = GetPreviousSetupExePath(       \
+        configuration, setup_exe.get(), setup_exe.capacity());   \
+    if (!exit_code.IsSuccess()) {                                \
+      return exit_code;                                          \
+    }                                                            \
+  }
+
 #define BRAVE_RUN_SETUP                                                      \
   if (configuration.previous_version() &&                                    \
       (!cmd_line.append(L" --") || !cmd_line.append(kCmdPreviousVersion) ||  \
@@ -72,6 +81,8 @@ void SetInstallerFlags(const Configuration& configuration);
 #undef Initialize
 
 #undef BRAVE_RUN_SETUP
+
+#undef BRAVE_GET_PREVIOUS_SETUP_EXE_PATH
 
 namespace mini_installer {
 
