@@ -101,6 +101,13 @@ COMPONENT_EXPORT(AI_CHAT_COMMON)
 BASE_DECLARE_FEATURE(kTabOrganization);
 COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsTabOrganizationEnabled();
 
+// Whether we should show rich search widgets in the conversation.
+COMPONENT_EXPORT(AI_CHAT_COMMON) BASE_DECLARE_FEATURE(kRichSearchWidgets);
+
+// The origin serving the rich search widgets.
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+extern const base::FeatureParam<std::string> kRichSearchWidgetsOrigin;
+
 }  // namespace ai_chat::features
 
 #endif  // BRAVE_COMPONENTS_AI_CHAT_CORE_COMMON_FEATURES_H_
