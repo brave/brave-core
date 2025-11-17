@@ -123,7 +123,7 @@ CWV_EXPORT
 @interface BraveWebView (WalletWebUI)
 /// A bridge for handling Brave Wallet WebUI page actions
 @property(nonatomic, weak, nullable) id<WalletPageHandlerBridge>
-    walletPageHandler;
+    walletPageUIHandler;
 @end
 
 NS_ASSUME_NONNULL_END

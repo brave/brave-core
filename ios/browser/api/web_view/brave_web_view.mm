@@ -150,7 +150,7 @@ class BraveWebViewHolder : public web::WebStateUserData<BraveWebViewHolder> {
 
 @interface BraveWebView ()
 @property(nonatomic, weak) id<AIChatUIHandlerBridge> aiChatUIHandler;
-@property(nonatomic, weak) id<WalletPageHandlerBridge> walletPageHandler;
+@property(nonatomic, weak) id<WalletPageHandlerBridge> walletPageUIHandler;
 @end
 
 @implementation BraveWebView {
@@ -204,7 +204,7 @@ class BraveWebViewHolder : public web::WebStateUserData<BraveWebViewHolder> {
   ai_chat::UIHandlerBridgeHolder::GetOrCreateForWebState(self.webState)
       ->SetBridge(self.aiChatUIHandler);
   brave_wallet::PageHandlerBridgeHolder::GetOrCreateForWebState(self.webState)
-      ->SetBridge(self.walletPageHandler);
+      ->SetBridge(self.walletPageUIHandler);
 }
 
 - (void)updateForOnDownloadCreated {
@@ -344,8 +344,8 @@ class BraveWebViewHolder : public web::WebStateUserData<BraveWebViewHolder> {
 
 @implementation BraveWebView (Wallet)
 
-- (void)setWalletPageHandler:(id<WalletPageHandlerBridge>)bridge {
-  _walletPageHandler = bridge;
+- (void)setWalletPageUIHandler:(id<WalletPageHandlerBridge>)bridge {
+  _walletPageUIHandler = bridge;
   brave_wallet::PageHandlerBridgeHolder::GetOrCreateForWebState(self.webState)
       ->SetBridge(bridge);
 }
