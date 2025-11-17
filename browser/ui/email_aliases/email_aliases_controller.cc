@@ -17,7 +17,7 @@
 namespace {
 constexpr char kEmailAliasesSettingsURL[] = "brave://settings/email-aliases";
 
-static bool g_autoclose_bubble_for_testing = false;
+bool g_autoclose_bubble_for_testing = false;
 
 }  // namespace
 

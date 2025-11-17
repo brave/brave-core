@@ -40,11 +40,10 @@
 
 namespace email_aliases {
 
+namespace {
 constexpr char kSuccessEmail[] = "success@domain.com";
 constexpr char kForbiddenEmail[] = "forbidden@domain.com";
 constexpr char kFailEmail[] = "fail@domain.com";
-
-namespace {
 
 std::unique_ptr<net::test_server::HttpResponse> AuthenticationHandler(
     const net::test_server::HttpRequest& request) {
@@ -286,6 +285,23 @@ class EmailAliasesBrowserTestBase : public InProcessBrowserTest {
         .ExtractString();
   }
 
+  bool AwaitText(const std::string& id, const std::string& expected_text) {
+    constexpr char kAwaitText[] = R"js(
+       (async () => {
+        let waiter = () => {
+          return deepQuery($1).value !== $2
+        };
+        while (waiter()) {
+          await new Promise(r => setTimeout(r, 10));
+        }
+        return true;
+      })()
+    )js";
+    return content::EvalJs(ActiveWebContents(),
+                           content::JsReplace(kGetText, id, expected_text))
+        .ExtractBool();
+  }
+
   void Click(const std::string& id, content::WebContents* contents = nullptr) {
     constexpr char kClick[] = R"js( deepQuery($1).onClick() )js";
     auto ignore = content::ExecJs((contents ? contents : ActiveWebContents()),
@@ -317,13 +333,6 @@ class EmailAliasesBrowserTestBase : public InProcessBrowserTest {
         ->GetWidget()
         ->ShowContextMenuAtPoint(gfx::Point(x, y),
                                  ui::mojom::MenuSourceType::kMouse);
-  }
-
-  void NonBlockingDelay(base::TimeDelta delay) {
-    base::RunLoop run_loop(base::RunLoop::Type::kNestableTasksAllowed);
-    base::SingleThreadTaskRunner::GetCurrentDefault()->PostDelayedTask(
-        FROM_HERE, run_loop.QuitWhenIdleClosure(), delay);
-    run_loop.Run();
   }
 
  private:
@@ -405,10 +414,7 @@ IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserTest, ContextMenuAuthorized) {
   RunContextMenuOn("type-email");
   menu_waiter.WaitForMenuOpenAndClose();
 
-  // Can't use RunUntil because it doesn't support nested message loops.
-  while (GetText("#type-email") != "new@alias.com") {
-    NonBlockingDelay(base::Milliseconds(10));
-  }
+  EXPECT_TRUE(AwaitText("#type-email", "new@alias.com"));
 }
 
 }  // namespace email_aliases

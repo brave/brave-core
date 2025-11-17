@@ -30,6 +30,7 @@
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_rewriter/common/buildflags/buildflags.h"
 #include "brave/components/brave_shields/core/common/features.h"
+#include "brave/components/email_aliases/features.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "chrome/browser/autocomplete/chrome_autocomplete_provider_client.h"
@@ -778,11 +779,13 @@ void BraveRenderViewContextMenu::AppendDeveloperItems() {
                                       IDS_ADBLOCK_CONTEXT_BLOCK_ELEMENTS);
     }
   }
-  if (auto* email_aliases = GetEmailAliasesController(GetBrowser());
-      email_aliases && email_aliases->IsAvailableFor(params_)) {
-    menu_model_.AddSeparator(ui::NORMAL_SEPARATOR);
-    menu_model_.AddItemWithStringId(IDC_NEW_EMAIL_ALIAS,
-                                    IDS_IDC_NEW_EMAIL_ALIAS);
+  if (base::FeatureList::IsEnabled(email_aliases::features::kEmailAliases)) {
+    if (auto* email_aliases = GetEmailAliasesController(GetBrowser());
+        email_aliases && email_aliases->IsAvailableFor(params_)) {
+      menu_model_.AddSeparator(ui::NORMAL_SEPARATOR);
+      menu_model_.AddItemWithStringId(IDC_NEW_EMAIL_ALIAS,
+                                      IDS_IDC_NEW_EMAIL_ALIAS);
+    }
   }
 }
 

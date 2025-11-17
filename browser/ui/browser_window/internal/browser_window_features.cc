@@ -86,10 +86,11 @@ void BrowserWindowFeatures::TearDownPreBrowserWindowDestruction() {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   brave_vpn_controller_.reset();
 #endif
+
+  email_aliases_controller_.reset();
+
   if (sidebar_controller_) {
     sidebar_controller_->TearDownPreBrowserWindowDestruction();
     playlist_side_panel_coordinator_.reset();
   }
-
-  email_aliases_controller_.reset();
 }
