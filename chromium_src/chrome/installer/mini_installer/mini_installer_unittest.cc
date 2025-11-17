@@ -3,17 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "chrome/installer/mini_installer/mini_installer.h"
-
-#define UnpackBinaryResources(...) UnpackBinaryResources(__VA_ARGS__); \
-  const DWORD expected_windows_error =                               \
-      wcscmp(GetParam().expected_setup_resource_type,                \
-             kLZMAResourceType) == 0 ? kNotAnErrorIsPatchUpdate : 0; \
-      EXPECT_EQ(exit_code.windows_error, expected_windows_error)
-
 #include <chrome/installer/mini_installer/mini_installer_unittest.cc>
-
-#undef UnpackBinaryResources
 
 namespace mini_installer {
 
