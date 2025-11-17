@@ -1066,6 +1066,17 @@
     *** mShareButton;
 }
 
+-keep class org.chromium.chrome.browser.ui.appmenu.AppMenuHandlerImpl {
+    public <init>(...);
+    *** mAppMenu;
+    *** mAppMenuDragHelper;
+    *** showAppMenu(...);
+}
+
+-keep class org.chromium.chrome.browser.ui.appmenu.BraveAppMenuHandlerImpl {
+    public <init>(...);
+}
+
 -keep class org.chromium.chrome.browser.ui.AdaptiveToolbarUiCoordinator {
     *** mContext;
     *** mActivityTabProvider;
