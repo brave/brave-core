@@ -200,6 +200,11 @@ class ZCashWalletService : public mojom::ZCashWalletService,
   friend class ZCashAutoSyncManagerTest;
   friend class ZCashShieldSyncServiceTest;
   friend class ZCashWalletServiceUnitTest;
+  FRIEND_TEST_ALL_PREFIXES(ZCashWalletServiceUnitTest,
+                           OnCompleteTransactionTaskDone_InvalidTransaction);
+  FRIEND_TEST_ALL_PREFIXES(
+      ZCashWalletServiceUnitTest,
+      OnCompleteTransactionTaskDone_InvalidResultTransaction);
 
   /*KeyringServiceObserverBase*/
   void Unlocked() override;
@@ -329,6 +334,8 @@ class ZCashWalletService : public mojom::ZCashWalletService,
 
   ZCashRpc& zcash_rpc();
   KeyringService& keyring_service();
+
+  base::PassKey<ZCashWalletService> CreatePassKeyForTesting();
 
   base::FilePath zcash_data_path_;
   raw_ref<KeyringService> keyring_service_;

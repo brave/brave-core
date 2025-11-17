@@ -230,5 +230,259 @@ TEST(ZCashTransaction, ShieldedOutputs) {
     EXPECT_EQ(output, OrchardOutput::FromValue(value).value());
   }
 }
+TEST(ZCashTransactionUtilsUnitTest, ValidateAmounts) {
+  // Valid transparent-only transaction
+  {
+    ZCashTransaction tx;
+    tx.set_fee(5000u);
+
+    // Add transparent inputs
+    auto& input1 = tx.transparent_part().inputs.emplace_back();
+    input1.utxo_value = 10000u;
+    auto& input2 = tx.transparent_part().inputs.emplace_back();
+    input2.utxo_value = 20000u;
+
+    // Add transparent outputs
+    auto& output1 = tx.transparent_part().outputs.emplace_back();
+    output1.amount = 15000u;
+    auto& output2 = tx.transparent_part().outputs.emplace_back();
+    output2.amount = 10000u;
+
+    // 30000 (inputs) = 25000 (outputs) + 5000 (fee)
+    EXPECT_TRUE(tx.ValidateAmounts());
+  }
+
+  // Valid transparent-only transaction with single input/output
+  {
+    ZCashTransaction tx;
+    tx.set_fee(5000u);
+
+    auto& input = tx.transparent_part().inputs.emplace_back();
+    input.utxo_value = 10000u;
+
+    auto& output = tx.transparent_part().outputs.emplace_back();
+    output.amount = 5000u;
+
+    // 10000 (input) = 5000 (output) + 5000 (fee)
+    EXPECT_TRUE(tx.ValidateAmounts());
+  }
+
+  // Invalid transparent transaction - inputs < outputs + fee
+  {
+    ZCashTransaction tx;
+    tx.set_fee(5000u);
+
+    auto& input = tx.transparent_part().inputs.emplace_back();
+    input.utxo_value = 10000u;
+
+    auto& output = tx.transparent_part().outputs.emplace_back();
+    output.amount = 6000u;
+
+    // 10000 (input) < 6000 (output) + 5000 (fee) = 11000
+    EXPECT_FALSE(tx.ValidateAmounts());
+  }
+
+  // Invalid transparent transaction - inputs > outputs + fee
+  {
+    ZCashTransaction tx;
+    tx.set_fee(5000u);
+
+    auto& input = tx.transparent_part().inputs.emplace_back();
+    input.utxo_value = 20000u;
+
+    auto& output = tx.transparent_part().outputs.emplace_back();
+    output.amount = 10000u;
+
+    // 20000 (input) > 10000 (output) + 5000 (fee) = 15000
+    EXPECT_FALSE(tx.ValidateAmounts());
+  }
+
+  // Valid transaction with zero fee
+  {
+    ZCashTransaction tx;
+    tx.set_fee(0u);
+
+    auto& input = tx.transparent_part().inputs.emplace_back();
+    input.utxo_value = 10000u;
+
+    auto& output = tx.transparent_part().outputs.emplace_back();
+    output.amount = 10000u;
+
+    // 10000 (input) = 10000 (output) + 0 (fee)
+    EXPECT_TRUE(tx.ValidateAmounts());
+  }
+
+  // Valid transaction with empty inputs and outputs (zero fee)
+  {
+    ZCashTransaction tx;
+    tx.set_fee(0u);
+
+    // 0 (inputs) = 0 (outputs) + 0 (fee)
+    EXPECT_TRUE(tx.ValidateAmounts());
+  }
+
+  // Test with multiple transparent inputs and outputs
+  {
+    ZCashTransaction tx;
+    tx.set_fee(5000u);
+
+    // Multiple inputs
+    for (uint64_t value : {5000u, 10000u, 15000u, 20000u}) {
+      auto& input = tx.transparent_part().inputs.emplace_back();
+      input.utxo_value = value;
+    }
+
+    // Multiple outputs
+    for (uint64_t amount : {10000u, 15000u, 20000u}) {
+      auto& output = tx.transparent_part().outputs.emplace_back();
+      output.amount = amount;
+    }
+
+    // 50000 (inputs) = 45000 (outputs) + 5000 (fee)
+    EXPECT_TRUE(tx.ValidateAmounts());
+  }
+
+  // Valid orchard-only transaction
+  {
+    ZCashTransaction tx;
+    tx.set_fee(5000u);
+
+    // Add orchard inputs
+    auto& input1 = tx.orchard_part().inputs.emplace_back();
+    input1.note.amount = 10000u;
+    auto& input2 = tx.orchard_part().inputs.emplace_back();
+    input2.note.amount = 20000u;
+
+    // Add orchard outputs
+    auto& output1 = tx.orchard_part().outputs.emplace_back();
+    output1.value = 15000u;
+    auto& output2 = tx.orchard_part().outputs.emplace_back();
+    output2.value = 10000u;
+
+    // 30000 (inputs) = 25000 (outputs) + 5000 (fee)
+    EXPECT_TRUE(tx.ValidateAmounts());
+  }
+
+  // Valid mixed transaction (transparent + orchard)
+  {
+    ZCashTransaction tx;
+    tx.set_fee(5000u);
+
+    // Transparent inputs
+    auto& t_input = tx.transparent_part().inputs.emplace_back();
+    t_input.utxo_value = 10000u;
+
+    // Orchard inputs
+    auto& o_input = tx.orchard_part().inputs.emplace_back();
+    o_input.note.amount = 20000u;
+
+    // Transparent outputs
+    auto& t_output = tx.transparent_part().outputs.emplace_back();
+    t_output.amount = 15000u;
+
+    // Orchard outputs
+    auto& o_output = tx.orchard_part().outputs.emplace_back();
+    o_output.value = 10000u;
+
+    // 30000 (inputs) = 25000 (outputs) + 5000 (fee)
+    EXPECT_TRUE(tx.ValidateAmounts());
+  }
+
+  // Invalid mixed transaction - inputs < outputs + fee
+  {
+    ZCashTransaction tx;
+    tx.set_fee(5000u);
+
+    auto& t_input = tx.transparent_part().inputs.emplace_back();
+    t_input.utxo_value = 10000u;
+
+    auto& o_input = tx.orchard_part().inputs.emplace_back();
+    o_input.note.amount = 5000u;
+
+    auto& t_output = tx.transparent_part().outputs.emplace_back();
+    t_output.amount = 10000u;
+
+    auto& o_output = tx.orchard_part().outputs.emplace_back();
+    o_output.value = 6000u;
+
+    // 15000 (inputs) < 16000 (outputs) + 5000 (fee) = 21000
+    EXPECT_FALSE(tx.ValidateAmounts());
+  }
+
+  // Invalid mixed transaction - inputs > outputs + fee
+  {
+    ZCashTransaction tx;
+    tx.set_fee(5000u);
+
+    auto& t_input = tx.transparent_part().inputs.emplace_back();
+    t_input.utxo_value = 20000u;
+
+    auto& o_input = tx.orchard_part().inputs.emplace_back();
+    o_input.note.amount = 10000u;
+
+    auto& t_output = tx.transparent_part().outputs.emplace_back();
+    t_output.amount = 10000u;
+
+    auto& o_output = tx.orchard_part().outputs.emplace_back();
+    o_output.value = 5000u;
+
+    // 30000 (inputs) > 15000 (outputs) + 5000 (fee) = 20000
+    EXPECT_FALSE(tx.ValidateAmounts());
+  }
+
+  // Valid transaction with multiple orchard inputs and outputs
+  {
+    ZCashTransaction tx;
+    tx.set_fee(10000u);
+
+    // Multiple orchard inputs
+    for (uint64_t amount : {10000u, 20000u, 30000u}) {
+      auto& input = tx.orchard_part().inputs.emplace_back();
+      input.note.amount = amount;
+    }
+
+    // Multiple orchard outputs (total = 50000)
+    for (uint64_t value : {15000u, 20000u, 15000u}) {
+      auto& output = tx.orchard_part().outputs.emplace_back();
+      output.value = value;
+    }
+
+    // 60000 (inputs) = 50000 (outputs) + 10000 (fee)
+    EXPECT_TRUE(tx.ValidateAmounts());
+  }
+
+  // Valid transaction with orchard inputs and transparent output
+  {
+    ZCashTransaction tx;
+    tx.set_fee(5000u);
+
+    auto& input1 = tx.orchard_part().inputs.emplace_back();
+    input1.note.amount = 10000u;
+    auto& input2 = tx.orchard_part().inputs.emplace_back();
+    input2.note.amount = 20000u;
+
+    // Transparent output (orchard to transparent transaction)
+    auto& t_output = tx.transparent_part().outputs.emplace_back();
+    t_output.amount = 25000u;
+
+    // 30000 (inputs) = 25000 (outputs) + 5000 (fee)
+    EXPECT_TRUE(tx.ValidateAmounts());
+  }
+
+  // Test with large amounts
+  {
+    ZCashTransaction tx;
+    tx.set_fee(1000u);
+
+    auto& input = tx.transparent_part().inputs.emplace_back();
+    input.utxo_value = 10000000000u;
+
+    auto& output = tx.transparent_part().outputs.emplace_back();
+    output.amount = 9999999000u;
+
+    // 10000000000 (input) = 9999999000 (output) + 1000 (fee)
+    EXPECT_TRUE(tx.ValidateAmounts());
+  }
+}
 
 }  // namespace brave_wallet
