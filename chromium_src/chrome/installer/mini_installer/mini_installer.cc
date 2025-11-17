@@ -29,7 +29,7 @@
     exit_code.windows_error = kIsLZMAResourceType;                           \
   }
 
-#define BRAVE_GET_PREVIOUS_SETUP_EXE_PATH                        \
+#define BRAVE_ASSIGN_PREVIOUS_SETUP_EXE_IF_SETUP_PATH_EMPTY      \
   if (*setup_path == L'\0') {                                    \
     ProcessExitResult exit_code = GetPreviousSetupExePath(       \
         configuration, setup_exe.get(), setup_exe.capacity());   \
@@ -38,7 +38,7 @@
     }                                                            \
   }
 
-#define BRAVE_RUN_SETUP                                                      \
+#define BRAVE_MAYBE_APPEND_PREVIOUS_VERSION_AND_PARSE_REFERRAL_CODE          \
   if (configuration.previous_version() &&                                    \
       (!cmd_line.append(L" --") || !cmd_line.append(kCmdPreviousVersion) ||  \
        !cmd_line.append(L"=\"") ||                                           \
@@ -64,11 +64,11 @@
     }                                                                        \
   }
 
-#define BRAVE_SET_INSTALLER_FLAGS SetInstallerFlags(configuration);
+#define BRAVE_APPEND_FULL_SUFFIX_IN_REGISTRY SetInstallerFlags(configuration);
 
 // If a compressed setup patch was found, run the previous setup.exe to
 // patch and generate the new setup.exe.
-#define BRAVE_RUN_PREVIOUS_SETUP_EXE \
+#define BRAVE_MAYBE_PATCH_PREVIOUS_SETUP_EXE                                 \
   if (exit_code.IsSuccess() && exit_code.windows_error == kIsLZMAResourceType) { \
     PathString setup_dest_path;                                              \
     if (!setup_dest_path.assign(base_path.get()) ||                          \
@@ -102,10 +102,10 @@ void SetInstallerFlags(const Configuration& configuration);
 #include <chrome/installer/mini_installer/mini_installer.cc>
 
 #undef Initialize
-#undef BRAVE_RUN_PREVIOUS_SETUP_EXE
-#undef BRAVE_SET_INSTALLER_FLAGS
-#undef BRAVE_RUN_SETUP
-#undef BRAVE_GET_PREVIOUS_SETUP_EXE_PATH
+#undef BRAVE_MAYBE_PATCH_PREVIOUS_SETUP_EXE
+#undef BRAVE_APPEND_FULL_SUFFIX_IN_REGISTRY
+#undef BRAVE_MAYBE_APPEND_PREVIOUS_VERSION_AND_PARSE_REFERRAL_CODE
+#undef BRAVE_ASSIGN_PREVIOUS_SETUP_EXE_IF_SETUP_PATH_EMPTY
 #undef BRAVE_STUFF_PATCH_FLAG_INTO_WINDOWS_ERROR
 
 namespace mini_installer {
