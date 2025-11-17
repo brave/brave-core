@@ -769,9 +769,6 @@
   <message name="IDS_REWARDS_ADS_VIEWED_TOOLTIP" desc="">
     This shows the number of Brave Ads you've seen this month that qualify for earning BAT.
   </message>
-  <message name="IDS_REWARDS_AD_TYPE_INLINE_CONTENT_LABEL" desc="">
-    Brave News ads
-  </message>
   <message name="IDS_REWARDS_AD_TYPE_NEW_TAB_PAGE_LABEL" desc="">
     New tab page ads
   </message>
