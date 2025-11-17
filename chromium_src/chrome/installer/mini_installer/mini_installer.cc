@@ -26,7 +26,7 @@
 
 #define BRAVE_STUFF_PATCH_FLAG_INTO_WINDOWS_ERROR                            \
   if (exit_code.IsSuccess() && setup_type.compare(kLZMAResourceType) == 0) { \
-    exit_code.windows_error = kIsLZMAResourceType;                           \
+    exit_code.windows_error = kNotAnErrorIsPatchUpdate;                           \
   }
 
 #define BRAVE_ASSIGN_PREVIOUS_SETUP_EXE_IF_SETUP_PATH_EMPTY      \
@@ -69,7 +69,7 @@
 // If a compressed setup patch was found, run the previous setup.exe to
 // patch and generate the new setup.exe.
 #define BRAVE_MAYBE_PATCH_PREVIOUS_SETUP_EXE                                 \
-  if (exit_code.IsSuccess() && exit_code.windows_error == kIsLZMAResourceType) { \
+  if (exit_code.IsSuccess() && exit_code.windows_error == kNotAnErrorIsPatchUpdate) { \
     PathString setup_dest_path;                                              \
     if (!setup_dest_path.assign(base_path.get()) ||                          \
         !setup_dest_path.append(kSetupExe)) {                                \
