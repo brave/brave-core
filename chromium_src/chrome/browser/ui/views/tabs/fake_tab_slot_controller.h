@@ -12,8 +12,23 @@
   IsGroupCollapsed(__VA_ARGS__) const override; \
   const Browser* GetBrowser()
 
+// Add override for ShouldAlwaysHideTabCloseButton() and setters to control its
+// return value in tests.
+#define ShouldCompactLeadingEdge()                      \
+  ShouldCompactLeadingEdge() const override;            \
+                                                        \
+ private:                                               \
+  bool should_always_hide_close_button_ = false;        \
+                                                        \
+ public:                                                \
+  void set_should_always_hide_close_button(bool hide) { \
+    should_always_hide_close_button_ = hide;            \
+  }                                                     \
+  bool ShouldAlwaysHideCloseButton()
+
 #include <chrome/browser/ui/views/tabs/fake_tab_slot_controller.h>  // IWYU pragma: export
 
+#undef ShouldCompactLeadingEdge
 #undef IsGroupCollapsed
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_FAKE_TAB_SLOT_CONTROLLER_H_

@@ -28,9 +28,6 @@
   title_left = alert_indicator_button_->x() +                      \
                alert_indicator_button_->width() + after_title_padding;
 
-#define BRAVE_UI_VIEWS_TABS_TAB_UPDATE_ICON_VISIBILITY \
-  showing_close_button_ &= mouse_hovered();
-
 // `UpdateIconVisibility` currently has an early return when the tab view's
 // height is less than `GetLayoutConstant(TAB_HEIGHT)`. Unfortunately, when in
 // vertical tabs mode this will prevent the favicon and close button from
@@ -45,6 +42,22 @@
 #include <chrome/browser/ui/views/tabs/tab.cc>
 
 #undef GetLayoutConstant
-#undef BRAVE_UI_VIEWS_TABS_TAB_UPDATE_ICON_VISIBILITY
 #undef BRAVE_UI_VIEWS_TABS_TAB_ALERT_INDICATOR_POSITION
 #undef BRAVE_UI_VIEWS_TABS_TAB_LAYOUT_ADJUST_ICON_POSITION
+
+ControllableCloseButtonState::ControllableCloseButtonState(
+    TabSlotController& controller,
+    Tab& tab)
+    : controller(controller), tab(tab) {}
+
+ControllableCloseButtonState::~ControllableCloseButtonState() = default;
+
+bool ControllableCloseButtonState::operator=(bool show) {
+  showing_close_button = show;
+  return showing_close_button;
+}
+
+ControllableCloseButtonState::operator bool() const {
+  return !controller->ShouldAlwaysHideCloseButton() &&
+         (tab->IsActive() || tab->mouse_hovered()) && showing_close_button;
+}

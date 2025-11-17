@@ -64,3 +64,7 @@
 const Browser* TabStrip::GetBrowser() const {
   return controller_->GetBrowser();
 }
+
+bool TabStrip::ShouldAlwaysHideCloseButton() const {
+  return false;
+}

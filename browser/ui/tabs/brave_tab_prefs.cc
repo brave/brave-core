@@ -39,6 +39,8 @@ void RegisterBraveProfilePrefs(PrefRegistrySimple* registry) {
   if (base::FeatureList::IsEnabled(tabs::kBraveTreeTab)) {
     registry->RegisterBooleanPref(kTreeTabsEnabled, false);
   }
+
+  registry->RegisterBooleanPref(kAlwaysHideTabCloseButton, false);
 }
 
 void MigrateBraveProfilePrefs(PrefService* prefs) {
