@@ -336,13 +336,6 @@ class EmailAliasesBrowserTestBase : public InProcessBrowserTest {
                                  ui::mojom::MenuSourceType::kMouse);
   }
 
-  void NonBlockingDelay(base::TimeDelta delay) {
-    base::RunLoop run_loop(base::RunLoop::Type::kNestableTasksAllowed);
-    base::SingleThreadTaskRunner::GetCurrentDefault()->PostDelayedTask(
-        FROM_HERE, run_loop.QuitWhenIdleClosure(), delay);
-    run_loop.Run();
-  }
-
  private:
   content::ContentMockCertVerifier mock_cert_verifier_;
   net::EmbeddedTestServer https_server_{net::EmbeddedTestServer::TYPE_HTTPS};
