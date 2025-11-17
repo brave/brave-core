@@ -147,20 +147,46 @@ std::vector<int> GetSelectedIndices(Browser* browser) {
 
 /**
  * @note This function creates a default filename like
- * "bookmarks_10_31_24.html", for example, if the date was October 31, 2024.
+ * "2024_09_01_Brave_browser_bookmarks.html", for example,
+ * if the date is September 1, 2024.
  *
  * @note This function mimics the behavior of a function with the same name in
- * the Chromium source code.
+ * the Chromium source code, but uses a Brave-specific filename format.
  *
  * @see
  * https://source.chromium.org/chromium/chromium/src/+/main:chrome/browser/extensions/api/bookmark_manager_private/bookmark_manager_private_api.cc;l=205-222?q=IDS_EXPORT_BOOKMARKS_DEFAULT_FILENAME
  */
 base::FilePath GetDefaultFilepathForBookmarkExport() {
-  std::string bookmarks_MM_DD_YY = l10n_util::GetStringFUTF8(
-      IDS_EXPORT_BOOKMARKS_DEFAULT_FILENAME,
-      base::TimeFormatShortDateNumeric(base::Time::Now()));
+  // Use an unlocalized, fixed numeric date pattern so filenames sort
+  // chronologically regardless of user locale. Keep the localized
+  // filename part from IDS_EXPORT_BOOKMARKS_DEFAULT_FILENAME to allow
+  // translation of the descriptive portion.
+  // Unlocalized pattern returns UTF-8 string.
+  const std::string date_utf8 =
+      base::UnlocalizedTimeFormatWithPattern(base::Time::Now(), "yyyy_MM_dd");
 
-  base::FilePath path = base::FilePath::FromUTF8Unsafe(bookmarks_MM_DD_YY);
+  constexpr size_t datePlaceholderLength = 2;
+  const std::u16string date = base::UTF8ToUTF16(date_utf8);
+
+  // IDS_EXPORT_BOOKMARKS_DEFAULT_FILENAME is a localizable string that may
+  // include a %s placeholder for the date. Fall back to a Brave-specific
+  // template if the localized string doesn't contain a placeholder.
+  std::u16string template_str =
+      l10n_util::GetStringUTF16(IDS_EXPORT_BOOKMARKS_DEFAULT_FILENAME);
+
+  std::u16string filename_utf16;
+
+  size_t pos = template_str.find(u"%s");
+
+  if (pos != std::u16string::npos) {
+    filename_utf16 = template_str;
+    filename_utf16.replace(pos, datePlaceholderLength, date);
+  } else {
+    // Fallback to old Brave-specific filename using the unlocalized date.
+    filename_utf16 = date + u"_Brave_browser_bookmarks.html";
+  }
+
+  base::FilePath path = base::FilePath::FromUTF16Unsafe(filename_utf16);
   base::FilePath::StringType path_str = path.value();
   base::i18n::ReplaceIllegalCharactersInPath(&path_str, '_');
   base::FilePath default_path;
