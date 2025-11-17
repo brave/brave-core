@@ -48,24 +48,24 @@ CodeSandboxUI::CodeSandboxUI(content::WebUI* web_ui)
 
   source->SetDefaultResource(IDR_AI_CHAT_CODE_SANDBOX_UI_HTML);
 
-  source->OverrideContentSecurityPolicy(
-      network::mojom::CSPDirectiveName::DefaultSrc, "default-src 'none';");
+//   source->OverrideContentSecurityPolicy(
+//       network::mojom::CSPDirectiveName::DefaultSrc, "default-src 'none';");
 
-  source->OverrideContentSecurityPolicy(
-      network::mojom::CSPDirectiveName::ScriptSrc, "script-src 'self';");
+//   source->OverrideContentSecurityPolicy(
+//       network::mojom::CSPDirectiveName::ScriptSrc, "script-src 'self';");
 
-  source->OverrideContentSecurityPolicy(
-      network::mojom::CSPDirectiveName::ConnectSrc, "connect-src 'none';");
-  source->OverrideContentSecurityPolicy(
-      network::mojom::CSPDirectiveName::ObjectSrc, "object-src 'none';");
-  source->OverrideContentSecurityPolicy(
-      network::mojom::CSPDirectiveName::FrameSrc, "frame-src 'none';");
-  source->OverrideContentSecurityPolicy(
-      network::mojom::CSPDirectiveName::WorkerSrc, "worker-src 'none';");
-  source->OverrideContentSecurityPolicy(
-      network::mojom::CSPDirectiveName::FormAction, "form-action 'none';");
-  source->OverrideContentSecurityPolicy(
-      network::mojom::CSPDirectiveName::BaseURI, "base-uri 'none';");
+//   source->OverrideContentSecurityPolicy(
+//       network::mojom::CSPDirectiveName::ConnectSrc, "connect-src 'none';");
+//   source->OverrideContentSecurityPolicy(
+//       network::mojom::CSPDirectiveName::ObjectSrc, "object-src 'none';");
+//   source->OverrideContentSecurityPolicy(
+//       network::mojom::CSPDirectiveName::FrameSrc, "frame-src 'none';");
+//   source->OverrideContentSecurityPolicy(
+//       network::mojom::CSPDirectiveName::WorkerSrc, "worker-src 'none';");
+//   source->OverrideContentSecurityPolicy(
+//       network::mojom::CSPDirectiveName::FormAction, "form-action 'none';");
+//   source->OverrideContentSecurityPolicy(
+//       network::mojom::CSPDirectiveName::BaseURI, "base-uri 'none';");
 }
 
 CodeSandboxUI::~CodeSandboxUI() = default;

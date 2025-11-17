@@ -87,11 +87,9 @@ std::string_view CodeExecutionTool::Name() const {
 }
 
 std::string_view CodeExecutionTool::Description() const {
-  return "Execute JavaScript code and return console.log output. "
-         "Use this tool to run JavaScript code snippets and see their output. "
-         "The code must be synchronous and not use any asynchronous functions. "
-         "The code will be executed in a sandboxed environment and any "
-         "console.log statements will be captured and returned as the result.";
+  return "Execute JavaScript code for performing calculations/computations. "
+         "Ensure snippet ends with return statement. Always return a string. "
+         "Do not use console logging statements.";
 }
 
 std::optional<base::Value::Dict> CodeExecutionTool::InputProperties() const {
@@ -167,10 +165,11 @@ void CodeExecutionTool::UseTool(const std::string& input_json,
       GURL(kAIChatCodeSandboxUIURL), content::Referrer(),
       ui::PAGE_TRANSITION_TYPED, std::string());
 
+  wrapped_js = "(function() { return 'Hello, world!'; })()";
   auto wrapped_js_utf16 = base::UTF8ToUTF16(wrapped_js);
   request_it->injector->RequestAsyncExecuteScript(
       ISOLATED_WORLD_ID_BRAVE_INTERNAL, wrapped_js_utf16,
-      blink::mojom::UserActivationOption::kDoNotActivate,
+      blink::mojom::UserActivationOption::kActivate,
       blink::mojom::PromiseResultOption::kAwait,
       base::BindOnce(&CodeExecutionTool::HandleScriptResult,
                      weak_ptr_factory_.GetWeakPtr(), request_it));
@@ -186,8 +185,12 @@ void CodeExecutionTool::UseTool(const std::string& input_json,
 void CodeExecutionTool::HandleScriptResult(
     std::list<CodeExecutionRequest>::iterator request_it,
     base::Value result) {
-  auto console_output = request_it->observer->GetConsoleContents();
-  HandleResult(request_it, console_output);
+  LOG(ERROR) << "HandleScriptResult: " << result.DebugString();
+  if (!result.is_string()) {
+    HandleResult(request_it, "Error: Invalid result type");
+    return;
+  }
+  HandleResult(request_it, result.GetString());
 }
 
 void CodeExecutionTool::HandleTimeout(
