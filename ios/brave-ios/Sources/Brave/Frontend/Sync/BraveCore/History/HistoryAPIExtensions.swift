@@ -72,17 +72,28 @@ extension BraveHistoryAPI {
     withQuery query: String?,
     options: HistorySearchOptions
   ) async -> [HistoryNode] {
-    await withCheckedContinuation { continuation in
-      var historyCancellable: HistoryCancellable?
-      _ = historyCancellable
-      historyCancellable = search(
-        withQuery: query,
-        options: options,
-        completion: {
-          historyCancellable = nil
-          continuation.resume(returning: $0)
+    let holder = HistoryCancellableHolder()
+    return await withTaskCancellationHandler(
+      operation: {
+        return await withCheckedContinuation { continuation in
+          holder.value = search(
+            withQuery: query,
+            options: options,
+            completion: {
+              holder.value = nil
+              continuation.resume(returning: $0)
+            }
+          )
         }
-      )
-    }
+      },
+      onCancel: {
+        holder.value?.cancel()
+      }
+    )
   }
+}
+
+/// Holder to suppress the Sendable warning on `HistoryCancellable`.
+private final class HistoryCancellableHolder: @unchecked Sendable {
+  var value: HistoryCancellable?
 }

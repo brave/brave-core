@@ -60,6 +60,7 @@ class HistoryModel: NSObject, ObservableObject {
   private var listener: HistoryServiceListener?
   private let maxFetchCount: UInt = 200
   private var currentSearchQuery: String?
+  private var refreshTask: Task<(), any Error>?
 
   @Published
   var isHistoryServiceLoaded = false
@@ -112,6 +113,7 @@ class HistoryModel: NSObject, ObservableObject {
 
   deinit {
     listener?.destroy()
+    refreshTask?.cancel()
   }
 
   func refreshHistory() {
@@ -121,7 +123,7 @@ class HistoryModel: NSObject, ObservableObject {
   func refreshHistory(query: String? = nil) {
     currentSearchQuery = query
 
-    Task { @MainActor in
+    refreshTask = Task { @MainActor in
       for key in sectionDetails.keys {
         sectionDetails.updateValue([], forKey: key)
       }
