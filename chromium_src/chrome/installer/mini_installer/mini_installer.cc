@@ -61,6 +61,24 @@
 
 #define BRAVE_SET_INSTALLER_FLAGS SetInstallerFlags(configuration);
 
+// If a compressed setup patch was found, run the previous setup.exe to
+// patch and generate the new setup.exe.
+#define BRAVE_RUN_PREVIOUS_SETUP_EXE \
+  if (exit_code.IsSuccess() && setup_type.compare(kLZMAResourceType) == 0) { \
+    PathString setup_dest_path;                                              \
+    if (!setup_dest_path.assign(base_path.get()) ||                          \
+        !setup_dest_path.append(kSetupExe)) {                                \
+      return ProcessExitResult(PATH_STRING_OVERFLOW);                        \
+    }                                                                        \
+    exit_code = PatchSetup(configuration, setup_path, setup_dest_path,       \
+                           max_delete_attempts);                             \
+    if (exit_code.IsSuccess()) {                                             \
+      setup_path.assign(setup_dest_path);                                    \
+    } else {                                                                 \
+      setup_path.clear();                                                    \
+    }                                                                        \
+  }
+
 namespace mini_installer {
 
 namespace {
@@ -79,11 +97,9 @@ void SetInstallerFlags(const Configuration& configuration);
 #include <chrome/installer/mini_installer/mini_installer.cc>
 
 #undef Initialize
-
+#undef BRAVE_RUN_PREVIOUS_SETUP_EXE
 #undef BRAVE_SET_INSTALLER_FLAGS
-
 #undef BRAVE_RUN_SETUP
-
 #undef BRAVE_GET_PREVIOUS_SETUP_EXE_PATH
 
 namespace mini_installer {
