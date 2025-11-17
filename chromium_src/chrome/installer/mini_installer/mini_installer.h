@@ -6,11 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_INSTALLER_MINI_INSTALLER_MINI_INSTALLER_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_INSTALLER_MINI_INSTALLER_MINI_INSTALLER_H_
 
-#define setup_path setup_path, ResourceTypeString& setup_type
-
 #include <chrome/installer/mini_installer/mini_installer.h>  // IWYU pragma: export
-
-#undef setup_path
 
 namespace mini_installer {
 typedef StackString<128> ReferralCodeString;
@@ -21,6 +17,9 @@ typedef StackString<128> ReferralCodeString;
 
 bool ParseReferralCode(const wchar_t* installer_filename,
                        ReferralCodeString* referral_code);
+
+constexpr DWORD kIsLZMAResourceType = 0x12345678;
+
 }  // namespace mini_installer
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_INSTALLER_MINI_INSTALLER_MINI_INSTALLER_H_

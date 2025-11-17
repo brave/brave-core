@@ -1,21 +1,16 @@
 diff --git a/chrome/installer/mini_installer/mini_installer.cc b/chrome/installer/mini_installer/mini_installer.cc
-index 44f29f2fafda83685479c791da3aa4ddbd4cde73..fcd48a5a4ce16041a0a5f5cefc0d66b370b675e2 100644
+index 44f29f2fafda83685479c791da3aa4ddbd4cde73..cfe0506787126de490b650ccd53d65891bbf5554 100644
 --- a/chrome/installer/mini_installer/mini_installer.cc
 +++ b/chrome/installer/mini_installer/mini_installer.cc
-@@ -358,11 +358,11 @@ bool ResourceDeleterDelegate::OnResource(const wchar_t* name,
- ProcessExitResult UnpackBinaryResources(HMODULE module,
-                                         const wchar_t* base_path,
-                                         PathString& setup_path,
-+                                        ResourceTypeString& setup_type,
-                                         PathString& archive_path,
-                                         ResourceTypeString& archive_type,
-                                         int& max_delete_attempts) {
-   // Generate the setup.exe path where we uncompress setup resource.
--  ResourceTypeString setup_type;
-   PathString setup_name;
-   MemoryRange setup_range;
-   PathString archive_name;
-@@ -475,6 +475,7 @@ ProcessExitResult RunSetup(const Configuration& configuration,
+@@ -462,6 +462,7 @@ ProcessExitResult UnpackBinaryResources(HMODULE module,
+   }
+ #endif  // defined(COMPONENT_BUILD)
+ 
++  BRAVE_STUFF_PATCH_FLAG_INTO_WINDOWS_ERROR
+   return exit_code;
+ }
+ 
+@@ -475,6 +476,7 @@ ProcessExitResult RunSetup(const Configuration& configuration,
    if (!setup_exe.assign(setup_path)) {
      return ProcessExitResult(COMMAND_STRING_OVERFLOW);
    }
@@ -23,7 +18,7 @@ index 44f29f2fafda83685479c791da3aa4ddbd4cde73..fcd48a5a4ce16041a0a5f5cefc0d66b3
  
    // There could be three full paths in the command line for setup.exe (path
    // to exe itself, path to archive and path to log file), so we declare
-@@ -499,6 +500,7 @@ ProcessExitResult RunSetup(const Configuration& configuration,
+@@ -499,6 +501,7 @@ ProcessExitResult RunSetup(const Configuration& configuration,
    // on to setup.exe
    AppendCommandLineFlags(configuration.command_line(), &cmd_line);
  
@@ -31,7 +26,7 @@ index 44f29f2fafda83685479c791da3aa4ddbd4cde73..fcd48a5a4ce16041a0a5f5cefc0d66b3
    return RunProcessAndWait(setup_exe.get(), cmd_line.get(),
                             RUN_SETUP_FAILED_FILE_NOT_FOUND,
                             RUN_SETUP_FAILED_PATH_NOT_FOUND,
-@@ -729,15 +731,18 @@ ProcessExitResult WMain(HMODULE module) {
+@@ -729,6 +732,7 @@ ProcessExitResult WMain(HMODULE module) {
    if (!GetWorkDir(module, &base_path, &exit_code)) {
      return exit_code;
    }
@@ -39,15 +34,10 @@ index 44f29f2fafda83685479c791da3aa4ddbd4cde73..fcd48a5a4ce16041a0a5f5cefc0d66b3
  
    int max_delete_attempts = 0;
    PathString setup_path;
-+  ResourceTypeString setup_type;
-   PathString archive_path;
-   ResourceTypeString archive_type;
- 
+@@ -738,6 +742,7 @@ ProcessExitResult WMain(HMODULE module) {
    exit_code =
--      UnpackBinaryResources(module, base_path.get(), setup_path, archive_path,
--                            archive_type, max_delete_attempts);
-+      UnpackBinaryResources(module, base_path.get(), setup_path, setup_type,
-+                            archive_path, archive_type, max_delete_attempts);
+       UnpackBinaryResources(module, base_path.get(), setup_path, archive_path,
+                             archive_type, max_delete_attempts);
 +  BRAVE_RUN_PREVIOUS_SETUP_EXE
  
    // While unpacking the binaries, we paged in a whole bunch of memory that
