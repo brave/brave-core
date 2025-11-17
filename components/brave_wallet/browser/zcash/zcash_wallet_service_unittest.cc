@@ -3152,9 +3152,52 @@ TEST_F(ZCashWalletServiceUnitTest,
 
   // EXPECT_DEATH should trigger because ValidateAmounts will fail
   // and the CHECK will abort
-  EXPECT_DEATH(zcash_wallet_service_->OnCompleteTransactionTaskDone(
-                   task_ptr, account_id(), invalid_tx, callback.Get(), result),
-               "");
+  EXPECT_DEATH_IF_SUPPORTED(
+      zcash_wallet_service_->OnCompleteTransactionTaskDone(
+          task_ptr, account_id(), invalid_tx, callback.Get(), result),
+      "");
+}
+
+TEST_F(ZCashWalletServiceUnitTest,
+       OnCompleteTransactionTaskDone_InvalidTransaction) {
+  ZCashTransaction valid_tx;
+  {
+    valid_tx.set_fee(5000u);
+    auto& input = valid_tx.transparent_part().inputs.emplace_back();
+    input.utxo_value = 10000u;
+    auto& output = valid_tx.transparent_part().outputs.emplace_back();
+    output.amount = 21000u;
+  }
+  EXPECT_TRUE(valid_tx.ValidateAmount());
+
+  // Create a task and add it to the complete_transaction_tasks_ set
+  auto [task_it, inserted] =
+      zcash_wallet_service_->complete_transaction_tasks_.insert(
+          std::make_unique<ZCashCompleteTransactionTask>(
+              zcash_wallet_service_->CreatePassKeyForTesting(),
+              *zcash_wallet_service_,
+              zcash_wallet_service_->CreateActionContext(account_id()),
+              *keyring_service(), valid_tx));
+  ASSERT_TRUE(inserted);
+  auto* task_ptr = task_it->get();
+
+  // Create a dummy callback
+  base::MockCallback<ZCashWalletService::SignAndPostTransactionCallback>
+      callback;
+
+  ZCashTransaction result_invalid_tx = valid_tx;
+  result_invalid_tx.set_fee(1000u);
+  EXPECT_FALSE(valid_tx.ValidateAmount());
+
+  base::expected<ZCashTransaction, std::string> result =
+      base::ok(result_invalid_tx);
+
+  // EXPECT_DEATH should trigger because ValidateAmounts will fail for the
+  // result_invalid_tx and the CHECK will abort
+  EXPECT_DEATH_IF_SUPPORTED(
+      zcash_wallet_service_->OnCompleteTransactionTaskDone(
+          task_ptr, account_id(), invalid_tx, callback.Get(), result),
+      "");
 }
 
 }  // namespace brave_wallet

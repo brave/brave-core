@@ -384,6 +384,8 @@ void ZCashWalletService::OnCompleteTransactionTaskDone(
     return;
   }
 
+  CHECK(result.value().ValidateAmounts());
+
   auto tx = ZCashSerializer::SerializeRawTransaction(result.value());
 
   zcash_rpc_->SendTransaction(
