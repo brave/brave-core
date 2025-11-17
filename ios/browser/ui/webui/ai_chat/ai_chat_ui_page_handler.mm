@@ -163,7 +163,8 @@ void AIChatUIPageHandler::SubmitVoiceQuery(const std::string& conversation_uuid,
       base::SysNSStringToUTF8(query), std::nullopt /* prompt */,
       std::nullopt /* selected_text */, std::nullopt /* events */,
       base::Time::Now(), std::nullopt, std::nullopt /* uploaded images */,
-      nullptr /* skill */, false, std::nullopt /* model_key */);
+      nullptr /* skill */, false, std::nullopt /* model_key */,
+      std::nullopt /* is_near_verified */);
   conversation->SubmitHumanConversationEntry(std::move(turn));
 }
 

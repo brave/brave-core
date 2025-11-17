@@ -489,10 +489,9 @@ std::vector<mojom::ConversationTurnPtr> AIChatDatabase::GetConversationEntries(
       while (event_statement.Step()) {
         int event_order = event_statement.ColumnInt(0);
         std::string completion = DecryptColumnToString(event_statement, 1);
-        events.emplace_back(
-            Event{event_order,
-                  mojom::ConversationEntryEvent::NewCompletionEvent(
-                      mojom::CompletionEvent::New(completion, std::nullopt))});
+        events.emplace_back(Event{
+            event_order, mojom::ConversationEntryEvent::NewCompletionEvent(
+                             mojom::CompletionEvent::New(completion))});
       }
     }
 

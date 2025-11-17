@@ -171,14 +171,11 @@ std::vector<mojom::ConversationTurnPtr> CreateSampleChatHistory(
     // response
     std::vector<mojom::ConversationEntryEventPtr> events;
     events.emplace_back(mojom::ConversationEntryEvent::NewCompletionEvent(
-        mojom::CompletionEvent::New(
-            base::StrCat(
-                {"This is a generated response ", base::NumberToString(i)}),
-            std::nullopt)));
+        mojom::CompletionEvent::New(base::StrCat(
+            {"This is a generated response ", base::NumberToString(i)}))));
     events.emplace_back(mojom::ConversationEntryEvent::NewCompletionEvent(
-        mojom::CompletionEvent::New(base::StrCat({"and this is more response",
-                                                  base::NumberToString(i)}),
-                                    std::nullopt)));
+        mojom::CompletionEvent::New(base::StrCat(
+            {"and this is more response", base::NumberToString(i)}))));
     events.emplace_back(mojom::ConversationEntryEvent::NewSearchQueriesEvent(
         mojom::SearchQueriesEvent::New(std::vector<std::string>{
             base::StrCat({"Something to search for", base::NumberToString(i)}),

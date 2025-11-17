@@ -1468,7 +1468,7 @@ void ConversationHandler::OnGetStagedEntriesFromContent(
 
     std::vector<mojom::ConversationEntryEventPtr> events;
     events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
-        mojom::CompletionEvent::New(entry.summary, std::nullopt)));
+        mojom::CompletionEvent::New(entry.summary)));
     chat_history_.push_back(mojom::ConversationTurn::New(
         base::Uuid::GenerateRandomV4().AsLowercaseString(),
         CharacterType::ASSISTANT, mojom::ActionType::RESPONSE, entry.summary,

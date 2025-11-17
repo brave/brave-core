@@ -28,12 +28,12 @@ std::vector<mojom::ConversationTurnPtr> GetHistoryWithModifiedReply() {
       mojom::SearchStatusEvent::New());
   events.push_back(search_event.Clone());
   events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
-      mojom::CompletionEvent::New("Mandalorian", std::nullopt)));
+      mojom::CompletionEvent::New("Mandalorian")));
 
   std::vector<mojom::ConversationEntryEventPtr> modified_events;
   modified_events.push_back(search_event.Clone());
   modified_events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
-      mojom::CompletionEvent::New("The Mandalorian", std::nullopt)));
+      mojom::CompletionEvent::New("The Mandalorian")));
 
   auto edit = mojom::ConversationTurn::New(
       "edit-1", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,

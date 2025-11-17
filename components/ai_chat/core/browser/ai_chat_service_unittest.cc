@@ -494,7 +494,7 @@ TEST_P(AIChatServiceUnitTest,
                   std::move(done_callback)
                       .Run(base::ok(EngineConsumer::GenerationResultData(
                           mojom::ConversationEntryEvent::NewCompletionEvent(
-                              mojom::CompletionEvent::New("", std::nullopt)),
+                              mojom::CompletionEvent::New("")),
                           std::nullopt /* model_key */)));
                 },
                 std::move(done_callback));

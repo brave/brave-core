@@ -192,7 +192,6 @@ struct CompletionEvent {
   // TODO(petemill): Use ContentBlock or even array<ContentBlock>
   // and rely less on multiple events.
   string completion;
-  string? id;
 };
 
 struct SelectedLanguageEvent {
