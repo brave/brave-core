@@ -8,13 +8,12 @@
 #include "base/json/json_reader.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
-#include "base/test/bind.h"
 #include "base/test/run_until.h"
+#include "base/time/time.h"
 #include "brave/browser/email_aliases/email_aliases_service_factory.h"
 #include "brave/browser/ui/email_aliases/email_aliases_controller.h"
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/components/constants/brave_paths.h"
-#include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/email_aliases/email_aliases_api.h"
 #include "brave/components/email_aliases/email_aliases_service.h"
 #include "brave/components/email_aliases/features.h"
@@ -320,6 +319,13 @@ class EmailAliasesBrowserTestBase : public InProcessBrowserTest {
                                  ui::mojom::MenuSourceType::kMouse);
   }
 
+  void NonBlockingDelay(base::TimeDelta delay) {
+    base::RunLoop run_loop(base::RunLoop::Type::kNestableTasksAllowed);
+    base::SingleThreadTaskRunner::GetCurrentDefault()->PostDelayedTask(
+        FROM_HERE, run_loop.QuitWhenIdleClosure(), delay);
+    run_loop.Run();
+  }
+
  private:
   content::ContentMockCertVerifier mock_cert_verifier_;
   net::EmbeddedTestServer https_server_{net::EmbeddedTestServer::TYPE_HTTPS};
@@ -393,12 +399,16 @@ IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserTest, ContextMenuAuthorized) {
 
   EmailAliasesController::DisableAutoCloseBubbleForTesting(true);
 
+  EXPECT_EQ("", GetText("#type-email"));
+
   ContextMenuWaiter menu_waiter(IDC_NEW_EMAIL_ALIAS);
   RunContextMenuOn("type-email");
   menu_waiter.WaitForMenuOpenAndClose();
 
-  ASSERT_TRUE(base::test::RunUntil(
-      [&]() { return GetText("#type-email") == "new@alias.com"; }));
+  // Can't use RunUntil because it doesn't support nested message loops.
+  while (GetText("#type-email") != "new@alias.com") {
+    NonBlockingDelay(base::Milliseconds(10));
+  }
 }
 
 }  // namespace email_aliases
