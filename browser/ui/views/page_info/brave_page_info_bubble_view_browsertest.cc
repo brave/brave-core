@@ -56,6 +56,15 @@ void ClickButton(views::View* bubble_view, int button_id) {
                      base::TimeTicks(), ui::EF_LEFT_MOUSE_BUTTON, 0));
 }
 
+void SetIdentityInfoForBubble(const PageInfoUI::IdentityInfo& identity) {
+  auto* bubble_view = GetBubbleView();
+  ASSERT_TRUE(bubble_view);
+  auto* presenter = bubble_view->presenter_for_testing();
+  ASSERT_TRUE(presenter);
+  ASSERT_TRUE(presenter->ui_for_testing());
+  presenter->ui_for_testing()->SetIdentityInfo(identity);
+}
+
 }  // namespace
 
 class BravePageInfoBubbleViewBrowserTestBase : public InProcessBrowserTest {
@@ -97,6 +106,20 @@ class BravePageInfoBubbleViewBrowserTestBase : public InProcessBrowserTest {
     auto* shields_view = bubble_view->GetViewByID(
         static_cast<int>(BravePageInfoViewID::kShieldsWebView));
     return shields_view && shields_view->IsDrawn();
+  }
+
+  void VerifyTabSwitcherNotRendered(views::View* bubble_view) {
+    // Verify that both tab switcher buttons do not exist.
+    EXPECT_FALSE(bubble_view->GetViewByID(
+        static_cast<int>(BravePageInfoViewID::kTabSwitcherShieldsButton)));
+    EXPECT_FALSE(bubble_view->GetViewByID(
+        static_cast<int>(BravePageInfoViewID::kTabSwitcherSiteSettingsButton)));
+
+    // Verify that the site settings pages are visible.
+    EXPECT_TRUE(IsSiteSettingsViewDrawn(bubble_view));
+
+    // Verify that the shields web UI is not visible.
+    EXPECT_FALSE(IsShieldsViewDrawn(bubble_view));
   }
 };
 
@@ -168,15 +191,30 @@ IN_PROC_BROWSER_TEST_F(BravePageInfoBubbleViewBrowserTest,
   // Create identity info with a security warning and sent it to the UI.
   PageInfoUI::IdentityInfo identity;
   identity.safe_browsing_status = PageInfo::SAFE_BROWSING_STATUS_MALWARE;
-  auto* presenter =
-      static_cast<PageInfoBubbleView*>(bubble_view)->presenter_for_testing();
-  ASSERT_TRUE(presenter);
-  ASSERT_TRUE(presenter->ui_for_testing());
-  presenter->ui_for_testing()->SetIdentityInfo(identity);
+  SetIdentityInfoForBubble(identity);
 
   // After setting security info, the initial tab should be Site Settings.
   EXPECT_EQ(bubble_view->GetInitialTab(),
             BravePageInfoTabSwitcher::Tab::kSiteSettings);
+}
+
+// Test that the customized page info bubble is not used for WebUIs.
+IN_PROC_BROWSER_TEST_F(BravePageInfoBubbleViewBrowserTest,
+                       BraveBubbleNotUsedForInternalPages) {
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL("about:blank")));
+  OpenPageInfoBubble(browser());
+  auto* bubble_view = GetBubbleView();
+  ASSERT_TRUE(bubble_view);
+  VerifyTabSwitcherNotRendered(bubble_view);
+
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), GURL("brave://settings")));
+  OpenPageInfoBubble(browser());
+  EXPECT_FALSE(GetBubbleView());
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL("file:///invalid")));
+  OpenPageInfoBubble(browser());
+  EXPECT_FALSE(GetBubbleView());
 }
 
 // Test the behavior of the tab switcher.

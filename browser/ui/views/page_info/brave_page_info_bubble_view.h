@@ -93,6 +93,9 @@ class BravePageInfoBubbleView
   // UI components.
   raw_ptr<BravePageInfoTabSwitcher> tab_switcher_ = nullptr;
   raw_ptr<BraveShieldsPageInfoView> shields_page_view_ = nullptr;
+
+  // Indicates whether customizations are being applied to the page info bubble.
+  bool customize_view_ = false;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_PAGE_INFO_BRAVE_PAGE_INFO_BUBBLE_VIEW_H_
