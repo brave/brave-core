@@ -1310,12 +1310,6 @@ void BraveVerticalTabStripRegionView::ScheduleFloatingModeTimer() {
     return;
   }
 
-  if (auto* widget = GetWidget();
-      !widget || !widget->GetTopLevelWidget()->IsActive()) {
-    // When the browser isn't active, don't schedule.
-    return;
-  }
-
   if (state_ == State::kCollapsed) {
     auto get_expand_delay = []() {
       constexpr int kDefaultDelay = 0;
