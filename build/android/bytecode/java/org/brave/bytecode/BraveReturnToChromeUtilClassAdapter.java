@@ -20,5 +20,10 @@ public class BraveReturnToChromeUtilClassAdapter extends BraveClassVisitor {
                 sReturnToChromeUtilClassName,
                 "shouldShowNtpAsHomeSurfaceAtStartup",
                 sBraveReturnToChromeUtilClassName);
+
+        changeMethodOwner(
+                sReturnToChromeUtilClassName,
+                "createNewTabAndShowHomeSurfaceUi",
+                sBraveReturnToChromeUtilClassName);
     }
 }

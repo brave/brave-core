@@ -12,6 +12,7 @@ import android.widget.RadioGroup;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceViewHolder;
 
+import org.chromium.base.BravePreferenceKeys;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
@@ -24,10 +25,6 @@ import java.util.ArrayList;
 @NullMarked
 public class BraveRadioButtonGroupOpeningScreenPreference extends Preference
         implements RadioGroup.OnCheckedChangeListener {
-    // Option values
-    private static final int OPTION_LAST_OPEN_TAB = 0;
-    private static final int OPTION_NEW_TAB_AFTER_INACTIVITY = 1;
-    private static final int OPTION_NEW_TAB = 2;
     private static final int OPTIONS_SIZE = 3;
 
     // Inactivity hours by variant
@@ -67,21 +64,23 @@ public class BraveRadioButtonGroupOpeningScreenPreference extends Preference
         mGroup.setOnCheckedChangeListener(this);
 
         mButtons.set(
-                OPTION_LAST_OPEN_TAB,
+                BravePreferenceKeys.BRAVE_OPENING_SCREEN_OPTION_LAST_OPEN_TAB,
                 (RadioButtonWithDescription)
                         holder.findViewById(R.id.new_opening_screen_last_open_tab_radio_button));
         mButtons.set(
-                OPTION_NEW_TAB_AFTER_INACTIVITY,
+                BravePreferenceKeys.BRAVE_OPENING_SCREEN_OPTION_NEW_TAB_AFTER_INACTIVITY,
                 (RadioButtonWithDescription)
                         holder.findViewById(
                                 R.id.new_opening_screen_new_tab_after_inactivity_radio_button));
         mButtons.set(
-                OPTION_NEW_TAB,
+                BravePreferenceKeys.BRAVE_OPENING_SCREEN_OPTION_NEW_TAB,
                 (RadioButtonWithDescription)
                         holder.findViewById(R.id.new_opening_screen_new_tab_radio_button));
 
         // Set dynamic text for inactivity option based on variant
-        RadioButtonWithDescription inactivityButton = mButtons.get(OPTION_NEW_TAB_AFTER_INACTIVITY);
+        RadioButtonWithDescription inactivityButton =
+                mButtons.get(
+                        BravePreferenceKeys.BRAVE_OPENING_SCREEN_OPTION_NEW_TAB_AFTER_INACTIVITY);
         if (inactivityButton != null) {
             String variant = BraveFreshNtpHelper.getVariant();
             int hours = INACTIVITY_HOURS_VARIANT_B_D; // Default for variants B and D
