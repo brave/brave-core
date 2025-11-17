@@ -143,4 +143,12 @@ bool IsTabOrganizationEnabled() {
   return base::FeatureList::IsEnabled(features::kTabOrganization);
 }
 
+BASE_FEATURE(kNEARModels,
+             "AIChatNEARModels",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
+bool IsNEARModelsEnabled() {
+  return base::FeatureList::IsEnabled(features::kNEARModels);
+}
+
 }  // namespace ai_chat::features
