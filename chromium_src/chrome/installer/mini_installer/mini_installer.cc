@@ -59,6 +59,8 @@
     }                                                                        \
   }
 
+#define BRAVE_SET_INSTALLER_FLAGS SetInstallerFlags(configuration);
+
 namespace mini_installer {
 
 namespace {
@@ -68,9 +70,7 @@ ProcessExitResult PatchSetup(const Configuration& configuration,
                              int& max_delete_attempts);
 }  // namespace
 
-#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
 void SetInstallerFlags(const Configuration& configuration);
-#endif
 
 }  // namespace mini_installer
 
@@ -79,6 +79,8 @@ void SetInstallerFlags(const Configuration& configuration);
 #include <chrome/installer/mini_installer/mini_installer.cc>
 
 #undef Initialize
+
+#undef BRAVE_SET_INSTALLER_FLAGS
 
 #undef BRAVE_RUN_SETUP
 
@@ -237,12 +239,15 @@ bool ParseReferralCode(const wchar_t* installer_filename,
   return true;
 }
 
-#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
-
-// This function sets the flag in registry to indicate that Google Update
-// should try full installer next time. If the current installer works, this
-// flag is cleared by setup.exe at the end of install.
 void SetInstallerFlags(const Configuration& configuration) {
+#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
+  // Set the magic suffix in registry to try full installer next time. We ignore
+  // any errors here and we try to set the suffix for user level unless
+  // GoogleUpdateIsMachine=1 is present in the environment or --system-level is
+  // on the command line in which case we set it for system level instead. If
+  // the current installer works, the flag to try full installer is cleared by
+  // setup.exe at the end of install.
+
   StackString<128> value;
 
   RegKey key;
@@ -270,9 +275,9 @@ void SetInstallerFlags(const Configuration& configuration) {
       key.WriteSZValue(kApRegistryValue, value.get());
     }
   }
+#endif  // BUILDFLAG(GOOGLE_CHROME_BRANDING)
 }
 
-#endif  // BUILDFLAG(GOOGLE_CHROME_BRANDING)
 
 // Gets the setup.exe path from Registry by looking at the value of Uninstall
 // string.  |size| is measured in wchar_t units.
