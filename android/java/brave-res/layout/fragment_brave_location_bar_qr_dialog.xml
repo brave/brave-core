@@ -54,7 +54,7 @@
                     android:layout_height="300dp"
                     android:layout_marginTop="10dp">
 
-                    <com.google.cardboard.sdk.qrcode.camera.CameraSourcePreview
+                    <org.chromium.chrome.browser.qrreader.CameraSourcePreview
                          android:id="@+id/preview"
                          android:layout_width="match_parent"
                          android:layout_height="match_parent"
