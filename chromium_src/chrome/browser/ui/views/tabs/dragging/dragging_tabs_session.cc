@@ -30,3 +30,8 @@
 
 #undef GetStandardWidth
 #undef DraggingTabsSession
+
+base::PassKey<DraggingTabsSessionChromium>
+DraggingTabsSessionChromium::GetPassKey() {
+  return base::PassKey<DraggingTabsSessionChromium>();
+}
