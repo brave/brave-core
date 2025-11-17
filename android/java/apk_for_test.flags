@@ -277,6 +277,24 @@
     public <init>(...);
 }
 
+-keep class org.chromium.chrome.browser.ui.messages.snackbar.SnackbarView {
+    *** mContainerView;
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.ui.messages.snackbar.BraveSnackbarView {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager {
+    *** mView;
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.ui.messages.snackbar.BraveSnackbarManager {
+    public <init>(...);
+}
+
 -keep class org.chromium.base.shared_preferences.StrictPreferenceKeyChecker {
     <init>(...);
     *** isKeyInUse(...);
