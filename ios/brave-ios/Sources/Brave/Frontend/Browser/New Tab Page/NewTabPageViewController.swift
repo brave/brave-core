@@ -811,25 +811,9 @@ class NewTabPageViewController: UIViewController {
         inNewTab: false,
         switchingToPrivateMode: false
       )
-    case .bravePartnerLearnMoreTapped:
-      delegate?.navigateToInput(
-        URL.brave.braveNews.absoluteString,
-        inNewTab: false,
-        switchingToPrivateMode: false
-      )
     case .itemAction(.opened(let inNewTab, let switchingToPrivateMode), let context):
       guard let url = context.item.content.url else { return }
       let item = context.item
-      if !switchingToPrivateMode, item.content.contentType == .partner,
-        let creativeInstanceID = item.content.creativeInstanceID
-      {
-        rewards.ads.triggerPromotedContentAdEvent(
-          item.content.urlHash,
-          creativeInstanceId: creativeInstanceID,
-          eventType: .clicked,
-          completion: { _ in }
-        )
-      }
       if switchingToPrivateMode, Preferences.Privacy.privateBrowsingLock.value {
         self.askForLocalAuthentication { [weak self] success, error in
           if success {
@@ -863,24 +847,6 @@ class NewTabPageViewController: UIViewController {
         let alert = FeedActionAlertView.feedDisabledAlertView(for: context.item)
         alert.present(on: self)
       }
-    case .inlineContentAdAction(.opened(let inNewTab, let switchingToPrivateMode), let ad):
-      guard let url = ad.targetURL.asURL else { return }
-      if !switchingToPrivateMode {
-        rewards.ads.triggerInlineContentAdEvent(
-          ad.placementID,
-          creativeInstanceId: ad.creativeInstanceID,
-          eventType: .clicked,
-          completion: { _ in }
-        )
-      }
-      delegate?.navigateToInput(
-        url.absoluteString,
-        inNewTab: inNewTab,
-        switchingToPrivateMode: switchingToPrivateMode
-      )
-    case .inlineContentAdAction(.toggledSource, _):
-      // Inline content ads have no source
-      break
     case .rateCardAction(.rateBrave):
       Preferences.Review.newsCardShownDate.value = Date()
       guard

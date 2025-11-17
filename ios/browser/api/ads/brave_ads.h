@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 OBJC_EXPORT NSString* const kBraveAdsFirstRunAtPrefName;
 
-@class NotificationAdIOS, InlineContentAdIOS, NewTabPageAdIOS;
+@class NotificationAdIOS, NewTabPageAdIOS;
 
 OBJC_EXPORT
 @protocol BraveAdsNotificationHandler
@@ -116,16 +116,6 @@ OBJC_EXPORT
               double estimatedEarnings,
               NSDate* _Nullable nextPaymentDate))completion;
 
-- (void)maybeServeInlineContentAd:(NSString*)dimensions
-                       completion:
-                           (void (^)(NSString* dimensions,
-                                     InlineContentAdIOS* _Nullable))completion;
-
-- (void)triggerInlineContentAdEvent:(NSString*)placementId
-                 creativeInstanceId:(NSString*)creativeInstanceId
-                          eventType:(BraveAdsInlineContentAdEventType)eventType
-                         completion:(void (^)(BOOL success))completion;
-
 - (void)triggerNewTabPageAdEvent:(NSString*)wallpaperId
               creativeInstanceId:(NSString*)creativeInstanceId
                       metricType:(BraveAdsNewTabPageAdMetricType)metricType
@@ -139,12 +129,6 @@ OBJC_EXPORT
 - (void)triggerNotificationAdEvent:(NSString*)placementId
                          eventType:(BraveAdsNotificationAdEventType)eventType
                         completion:(void (^)(BOOL success))completion;
-
-- (void)triggerPromotedContentAdEvent:(NSString*)placementId
-                   creativeInstanceId:(NSString*)creativeInstanceId
-                            eventType:
-                                (BraveAdsPromotedContentAdEventType)eventType
-                           completion:(void (^)(BOOL success))completion;
 
 - (void)triggerSearchResultAdClickedEvent:(NSString*)placementId
                                completion:(void (^)(BOOL success))completion;

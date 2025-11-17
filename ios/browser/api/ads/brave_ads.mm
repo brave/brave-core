@@ -31,7 +31,6 @@
 #import "brave/build/ios/mojom/cpp_transformations.h"
 #include "brave/components/brave_ads/core/browser/service/virtual_pref_provider.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
-#include "brave/components/brave_ads/core/public/ad_units/inline_content_ad/inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
 #include "brave/components/brave_ads/core/public/ads.h"
@@ -52,7 +51,6 @@
 #import "brave/ios/browser/api/ads/ads_client_bridge.h"
 #import "brave/ios/browser/api/ads/ads_client_ios.h"
 #import "brave/ios/browser/api/ads/brave_ads.mojom.objc+private.h"
-#import "brave/ios/browser/api/ads/inline_content_ad_ios.h"
 #import "brave/ios/browser/api/ads/new_tab_page_ad_ios.h"
 #import "brave/ios/browser/api/ads/notification_ad_ios.h"
 #import "brave/ios/browser/api/common/common_operations.h"
@@ -100,11 +98,6 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 @interface NotificationAdIOS ()
 - (instancetype)initWithNotificationAdInfo:
     (const brave_ads::NotificationAdInfo&)info;
-@end
-
-@interface InlineContentAdIOS ()
-- (instancetype)initWithInlineContentAdInfo:
-    (const brave_ads::InlineContentAdInfo&)info;
 @end
 
 @interface NewTabPageAdIOS ()
@@ -1494,44 +1487,6 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
       }));
 }
 
-- (void)maybeServeInlineContentAd:(NSString*)dimensionsArg
-                       completion:(void (^)(NSString* dimensions,
-                                            InlineContentAdIOS*))completion {
-  if (![self isServiceRunning]) {
-    return completion(/*dimensions=*/@"", /*inlineContentAd=*/nil);
-  }
-
-  adsService->MaybeServeInlineContentAd(
-      base::SysNSStringToUTF8(dimensionsArg),
-      base::BindOnce(
-          ^(const std::string& dimensions,
-            base::optional_ref<const brave_ads::InlineContentAdInfo> ad) {
-            if (!ad) {
-              return completion(base::SysUTF8ToNSString(dimensions),
-                                /*inlineContentAd=*/nil);
-            }
-
-            const auto inline_content_ad =
-                [[InlineContentAdIOS alloc] initWithInlineContentAdInfo:*ad];
-            completion(base::SysUTF8ToNSString(dimensions), inline_content_ad);
-          }));
-}
-
-- (void)triggerInlineContentAdEvent:(NSString*)placementId
-                 creativeInstanceId:(NSString*)creativeInstanceId
-                          eventType:(BraveAdsInlineContentAdEventType)eventType
-                         completion:(void (^)(BOOL success))completion {
-  if (![self isServiceRunning]) {
-    return completion(/*success=*/false);
-  }
-
-  adsService->TriggerInlineContentAdEvent(
-      base::SysNSStringToUTF8(placementId),
-      base::SysNSStringToUTF8(creativeInstanceId),
-      static_cast<brave_ads::mojom::InlineContentAdEventType>(eventType),
-      base::BindOnce(completion));
-}
-
 - (void)triggerNewTabPageAdEvent:(NSString*)wallpaperId
               creativeInstanceId:(NSString*)creativeInstanceId
                       metricType:(BraveAdsNewTabPageAdMetricType)metricType
@@ -1583,22 +1538,6 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
   adsService->TriggerNotificationAdEvent(
       base::SysNSStringToUTF8(placementId),
       static_cast<brave_ads::mojom::NotificationAdEventType>(eventType),
-      base::BindOnce(completion));
-}
-
-- (void)triggerPromotedContentAdEvent:(NSString*)placementId
-                   creativeInstanceId:(NSString*)creativeInstanceId
-                            eventType:
-                                (BraveAdsPromotedContentAdEventType)eventType
-                           completion:(void (^)(BOOL success))completion {
-  if (![self isServiceRunning]) {
-    return completion(/*success=*/false);
-  }
-
-  adsService->TriggerPromotedContentAdEvent(
-      base::SysNSStringToUTF8(placementId),
-      base::SysNSStringToUTF8(creativeInstanceId),
-      static_cast<brave_ads::mojom::PromotedContentAdEventType>(eventType),
       base::BindOnce(completion));
 }
 

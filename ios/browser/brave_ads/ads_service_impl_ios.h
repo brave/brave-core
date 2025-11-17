@@ -82,15 +82,6 @@ class AdsServiceImplIOS : public AdsService {
 
   void GetStatementOfAccounts(GetStatementOfAccountsCallback callback) override;
 
-  void MaybeServeInlineContentAd(
-      const std::string& dimensions,
-      MaybeServeInlineContentAdCallback callback) override;
-  void TriggerInlineContentAdEvent(
-      const std::string& placement_id,
-      const std::string& creative_instance_id,
-      mojom::InlineContentAdEventType mojom_ad_event_type,
-      TriggerAdEventCallback callback) override;
-
   std::optional<NewTabPageAdInfo> MaybeGetPrefetchedNewTabPageAd() override;
   void PrefetchNewTabPageAd() override;
   void OnFailedToPrefetchNewTabPageAd(
@@ -105,12 +96,6 @@ class AdsServiceImplIOS : public AdsService {
       const std::string& creative_instance_id,
       mojom::NewTabPageAdMetricType mojom_ad_metric_type,
       mojom::NewTabPageAdEventType mojom_ad_event_type,
-      TriggerAdEventCallback callback) override;
-
-  void TriggerPromotedContentAdEvent(
-      const std::string& placement_id,
-      const std::string& creative_instance_id,
-      mojom::PromotedContentAdEventType mojom_ad_event_type,
       TriggerAdEventCallback callback) override;
 
   void MaybeGetSearchResultAd(const std::string& placement_id,

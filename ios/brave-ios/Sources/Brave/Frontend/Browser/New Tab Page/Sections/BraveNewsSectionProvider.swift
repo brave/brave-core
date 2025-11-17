@@ -34,12 +34,8 @@ class BraveNewsSectionProvider: NSObject, NTPObservableSectionProvider {
     case errorCardTappedRefresh
     /// The user tapped to show more brave offers on one of the deal cards
     case moreBraveOffersTapped
-    /// The user tapped to learn more about brave partners
-    case bravePartnerLearnMoreTapped
     /// The user performed an action on a feed item
     case itemAction(FeedItemAction, context: FeedItemActionContext)
-    /// The user performed an action on an inline content ad
-    case inlineContentAdAction(FeedItemAction, ad: InlineContentAd)
     /// The user performed an action on an Rate brave card
     case rateCardAction(RatingCardAction)
   }
@@ -78,8 +74,6 @@ class BraveNewsSectionProvider: NSObject, NTPObservableSectionProvider {
     collectionView.register(FeedCardCell<DealsFeedGroupView>.self)
     collectionView.register(FeedCardCell<NumberedFeedGroupView>.self)
     collectionView.register(FeedCardCell<SponsorCardView>.self)
-    collectionView.register(FeedCardCell<PartnerCardView>.self)
-    collectionView.register(FeedCardCell<AdCardView>.self)
   }
 
   var landscapeBehavior: NTPLandscapeSizingBehavior {
@@ -229,29 +223,6 @@ class BraveNewsSectionProvider: NSObject, NTPObservableSectionProvider {
         recordWeeklyCardsViewedP3A(cardViewed: true)
         recordWeeklyMaxRowsViewedP3A()
       }
-      if case .partner(let item) = card,
-        let creativeInstanceID = item.content.creativeInstanceID
-      {
-        iabTrackedCellContexts[indexPath] = .init(collectionView: collectionView) { [weak self] in
-          self?.rewards.ads.triggerPromotedContentAdEvent(
-            item.content.urlHash,
-            creativeInstanceId: creativeInstanceID,
-            eventType: .viewedImpression,
-            completion: { _ in }
-          )
-        }
-      }
-      if case .ad(let ad) = card {
-        iabTrackedCellContexts[indexPath] = .init(collectionView: collectionView) { [weak self] in
-          self?.rewards.ads.triggerInlineContentAdEvent(
-            ad.placementID,
-            creativeInstanceId: ad.creativeInstanceID,
-            eventType: .viewedImpression,
-            completion: { _ in }
-          )
-          self?.recordWeeklyAdsViewedP3A(adViewed: true)
-        }
-      }
       if case .headlineRatingCardPair = card {
         // The rating card is presented
         Preferences.Review.newsCardShownDate.value = Date()
@@ -366,23 +337,6 @@ class BraveNewsSectionProvider: NSObject, NTPObservableSectionProvider {
       cell.content.actionHandler = handler(for: item, card: card, indexPath: indexPath)
       cell.content.contextMenu = contextMenu(for: item, card: card, indexPath: indexPath)
       return cell
-    case .partner(let item):
-      let cell = collectionView.dequeueReusableCell(for: indexPath) as FeedCardCell<PartnerCardView>
-      cell.content.feedView.setupWithItem(item)
-      cell.content.actionHandler = handler(for: item, card: card, indexPath: indexPath)
-      cell.content.contextMenu = contextMenu(for: item, card: card, indexPath: indexPath)
-      cell.content.promotedButtonTapped = { [weak self] in
-        self?.actionHandler(.bravePartnerLearnMoreTapped)
-      }
-      return cell
-    case .ad(let ad):
-      let cell = collectionView.dequeueReusableCell(for: indexPath) as FeedCardCell<AdCardView>
-      cell.content.feedView.setupWithInlineContentAd(ad)
-      cell.content.contextMenu = inlineContentAdContextMenu(ad)
-      cell.content.actionHandler = { [weak self] index, action in
-        self?.actionHandler(.inlineContentAdAction(action, ad: ad))
-      }
-      return cell
     case .headlinePair(let pair):
       let cell =
         collectionView.dequeueReusableCell(for: indexPath)
@@ -472,48 +426,6 @@ class BraveNewsSectionProvider: NSObject, NTPObservableSectionProvider {
     indexPath: IndexPath
   ) -> (Int, FeedItemAction) -> Void {
     return handler(from: { _ in item }, card: card, indexPath: indexPath)
-  }
-
-  private func inlineContentAdContextMenu(_ ad: InlineContentAd) -> FeedItemMenu {
-    typealias MenuActionHandler = (_ ad: InlineContentAd) -> Void
-
-    func itemActionHandler(_ action: FeedItemAction, _ ad: InlineContentAd) {
-      self.actionHandler(.inlineContentAdAction(action, ad: ad))
-    }
-
-    let openInNewTabHandler: MenuActionHandler = { ad in
-      itemActionHandler(.opened(inNewTab: true), ad)
-    }
-    let openInNewPrivateTabHandler: MenuActionHandler = { ad in
-      itemActionHandler(.opened(inNewTab: true, switchingToPrivateMode: true), ad)
-    }
-    return .init { index -> UIMenu? in
-      func mapDeferredHandler(_ handler: @escaping MenuActionHandler) -> UIActionHandler {
-        return UIAction.deferredActionHandler { _ in
-          handler(ad)
-        }
-      }
-      var openInNewTab: UIAction {
-        .init(
-          title: Strings.openNewTabButtonTitle,
-          image: UIImage(braveSystemNamed: "leo.browser.mobile-tab-new"),
-          handler: mapDeferredHandler(openInNewTabHandler)
-        )
-      }
-
-      var openInNewPrivateTab: UIAction {
-        .init(
-          title: Strings.openNewPrivateTabButtonTitle,
-          image: UIImage(braveSystemNamed: "leo.product.private-window"),
-          handler: mapDeferredHandler(openInNewPrivateTabHandler)
-        )
-      }
-
-      let children: [UIMenu] = [
-        UIMenu(title: "", options: [.displayInline], children: [openInNewTab, openInNewPrivateTab])
-      ]
-      return UIMenu(title: ad.targetURL, children: children)
-    }
   }
 
   private func contextMenu(
@@ -700,33 +612,6 @@ extension FeedItemView {
     if isBrandVisible {
       brandContainerView.textLabel.text = feedItem.source.name
     }
-  }
-}
-
-extension FeedItemView {
-  func setupWithInlineContentAd(_ ad: InlineContentAd) {
-    titleLabel.text = ad.title
-    thumbnailImageView.sd_setImage(
-      with: ad.imageURL.asURL,
-      placeholderImage: nil,
-      options: .avoidAutoSetImage,
-      completed: { (image, _, cacheType, _) in
-        if cacheType == .none {
-          UIView.transition(
-            with: self.thumbnailImageView,
-            duration: 0.35,
-            options: [.transitionCrossDissolve, .curveEaseInOut],
-            animations: {
-              self.thumbnailImageView.image = image
-            }
-          )
-        } else {
-          self.thumbnailImageView.image = image
-        }
-      }
-    )
-    brandContainerView.textLabel.text = ad.message
-    callToActionButton.setTitle(ad.ctaText, for: .normal)
   }
 }
 

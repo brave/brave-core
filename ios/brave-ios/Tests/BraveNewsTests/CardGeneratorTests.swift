@@ -103,8 +103,7 @@ final class CardGeneratorTests: XCTestCase {
       sequence: sequence,
       followedSources: [],
       hiddenSources: [],
-      followedChannels: [:],
-      ads: nil
+      followedChannels: [:]
     )
     let cards = try await generator.allCards
     XCTAssertTrue(cards.isEmpty)
@@ -122,8 +121,7 @@ final class CardGeneratorTests: XCTestCase {
       sequence: sequence,
       followedSources: [],
       hiddenSources: [],
-      followedChannels: ["en_US": ["Top Sources"]],
-      ads: nil
+      followedChannels: ["en_US": ["Top Sources"]]
     )
     let expectedItems = Self.scoredItems.filter({
       $0.source.localeDetails?.contains(where: {
@@ -147,8 +145,7 @@ final class CardGeneratorTests: XCTestCase {
       sequence: sequence,
       followedSources: [],
       hiddenSources: ["1"],
-      followedChannels: ["en_US": ["Top Sources"]],
-      ads: nil
+      followedChannels: ["en_US": ["Top Sources"]]
     )
     let expectedItems = Self.scoredItems.filter({
       if $0.source.id == "1" { return false }
@@ -168,8 +165,7 @@ final class CardGeneratorTests: XCTestCase {
       sequence: [],
       followedSources: [],
       hiddenSources: [],
-      followedChannels: [:],
-      ads: nil
+      followedChannels: [:]
     )
     let cards = try await generator.allCards
     XCTAssertTrue(cards.isEmpty)
@@ -185,8 +181,7 @@ final class CardGeneratorTests: XCTestCase {
       sequence: sequence,
       followedSources: Set(Self.mockSources.map(\.id)),
       hiddenSources: [],
-      followedChannels: [:],
-      ads: nil
+      followedChannels: [:]
     )
     let expectedItem = Self.scoredItems.first(where: { $0.content.contentType == .article })
     let cards = try await generator.allCards
@@ -210,8 +205,7 @@ final class CardGeneratorTests: XCTestCase {
       sequence: sequence,
       followedSources: Set(Self.mockSources.map(\.id)),
       hiddenSources: [],
-      followedChannels: [:],
-      ads: nil
+      followedChannels: [:]
     )
     let expectedItems = Self.scoredItems.filter({
       $0.content.contentType == .article && $0.content.imageURL != nil
@@ -239,8 +233,7 @@ final class CardGeneratorTests: XCTestCase {
       sequence: sequence,
       followedSources: Set(Self.mockSources.map(\.id)),
       hiddenSources: [],
-      followedChannels: [:],
-      ads: nil
+      followedChannels: [:]
     )
     let expectedItems = Self.scoredItems.filter({
       $0.content.contentType == .article && $0.source.category == "Top News"
@@ -293,8 +286,7 @@ final class CardGeneratorTests: XCTestCase {
       sequence: sequence,
       followedSources: [dealsSource.id],
       hiddenSources: [],
-      followedChannels: [:],
-      ads: nil
+      followedChannels: [:]
     )
     let cards = try await generator.allCards
     XCTAssertEqual(cards.count, 1)
@@ -361,8 +353,7 @@ final class CardGeneratorTests: XCTestCase {
       sequence: sequence,
       followedSources: ["1"],  // Following source 1 directly
       hiddenSources: [],
-      followedChannels: ["en_US": ["Top Sources"]],  // Following source 2 indirectly
-      ads: nil
+      followedChannels: ["en_US": ["Top Sources"]]  // Following source 2 indirectly
     )
     let cards = try await generator.allCards
     XCTAssertEqual(cards.count, items.count)
