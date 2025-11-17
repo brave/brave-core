@@ -72,7 +72,8 @@ void BraveTreeTabStripCollectionDelegate::AddTabRecursive(
       // Find insertion index among the opener collection
       const auto opener_index = *collection_->GetIndexOfTabRecursive(
           static_cast<tabs::TreeTabNodeTabCollection*>(opener_collection)
-              ->current_tab().get());
+              ->current_tab()
+              .get());
       auto target_index = 0;
       auto tab_count = 0;
 
@@ -156,36 +157,16 @@ BraveTreeTabStripCollectionDelegate::RemoveTabAtIndexRecursive(
     CHECK(tree_tab_model_);
     tree_tab_model_->RemoveTreeTabNode(tree_tab_node_collection->node().id());
 
-    auto* tree_node_owner_collection =
-        tree_tab_node_collection->GetParentCollection();
-
     // Remove the tab first so that we can keep the |index| correct.
     auto tab = collection_->RemoveTabAtIndexRecursive(index, GetPassKey());
 
     // Get direct children of |tree_tab_node_collection| and re-add them to the
     // owner collection to preserve the tree structure.
-    auto local_index = tree_node_owner_collection->GetIndexOfCollection(
-        tree_tab_node_collection);
-    CHECK(local_index.has_value());
-
-    auto children = tree_tab_node_collection->GetTreeNodeChildren();
-    for (auto& child : base::Reversed(children)) {
-      std::visit(
-          absl::Overload{
-              [&](tabs::TabInterface* tab) {
-                tree_node_owner_collection->AddTab(
-                    tree_tab_node_collection->MaybeRemoveTab(tab),
-                    *local_index);
-              },
-              [&](tabs::TabCollection* collection) {
-                tree_node_owner_collection->AddCollection(
-                    tree_tab_node_collection->MaybeRemoveCollection(collection),
-                    *local_index);
-              }},
-          child);
-    }
+    MoveChildrenOfTreeTabNodeToParent(tree_tab_node_collection);
 
     // Remove the tree tab node collection from owner
+    auto* tree_node_owner_collection =
+        tree_tab_node_collection->GetParentCollection();
     CHECK(tree_node_owner_collection);
     auto removed_collection = tree_node_owner_collection->MaybeRemoveCollection(
         tree_tab_node_collection);
@@ -203,83 +184,41 @@ void BraveTreeTabStripCollectionDelegate::MoveTabsRecursive(
     bool new_pinned_state,
     const std::set<tabs::TabCollection::Type>& retain_collection_types) const {
   CHECK(!tab_indices.empty());
-  LOG(ERROR) << __FUNCTION__ << " moving tab from " << tab_indices[0] << " to "
-             << destination_index;
-  if (static_cast<size_t>(tab_indices[0]) == destination_index) {
-    return;
+  std::vector<tabs::TabInterface*> moving_tabs;
+  std::ranges::transform(
+      tab_indices, std::back_inserter(moving_tabs),
+      [this](int index) { return collection_->GetTabAtIndexRecursive(index); });
+  CHECK(!moving_tabs.empty());
+
+  // Before removing the tree tab node from the parent, make sure all
+  // children of the tree tab node are moved to the parent.
+  for (auto* moving_tab : base::Reversed(moving_tabs)) {
+    auto* moving_tab_tree_node = GetParentTreeNodeCollectionOfTab(moving_tab);
+    MoveChildrenOfTreeTabNodeToParent(
+        static_cast<tabs::TreeTabNodeTabCollection*>(moving_tab_tree_node));
   }
 
-  // Find the nearest tree tab node collection of the first tab.
-  auto* moving_tab = collection_->GetTabAtIndexRecursive(tab_indices[0]);
-  CHECK(moving_tab);
+  // Remove the moving tab first from the original parent.
+  std::vector<std::unique_ptr<tabs::TabCollection>>
+      unique_moving_tab_collections;
+  for (auto* moving_tab : base::Reversed(moving_tabs)) {
+    auto* moving_tab_tree_node = GetParentTreeNodeCollectionOfTab(moving_tab);
+    CHECK(moving_tab_tree_node);
 
-  auto find_nearest_parent_tree_node = [&](tabs::TabInterface* tab) {
-    auto* parent_collection =
-        collection_->GetParentCollection(tab, GetPassKey());
-    CHECK(parent_collection);
-    while (parent_collection->type() != tabs::TabCollection::Type::TREE_NODE) {
-      parent_collection = parent_collection->GetParentCollection();
-      CHECK(parent_collection);
-    }
-    return parent_collection;
-  };
-  auto* moving_tab_tree_node = find_nearest_parent_tree_node(moving_tab);
-
-  // 2. Remove the moving tab first from the original parent.
-  auto* moving_tab_parent_node = moving_tab_tree_node->GetParentCollection();
-  while (
-      moving_tab_parent_node->type() != tabs::TabCollection::Type::TREE_NODE &&
-      moving_tab_parent_node->type() != tabs::TabCollection::Type::UNPINNED) {
-    moving_tab_parent_node = moving_tab_parent_node->GetParentCollection();
-    CHECK(moving_tab_parent_node);
-  };
-
-  // 2-1. Before removing the tree tab node from the parent, make sure all children
-  //     of the tree tab node are moved to the parent.
-  auto children = static_cast<tabs::TreeTabNodeTabCollection*>(moving_tab_tree_node)->GetTreeNodeChildren();
-  auto local_index = moving_tab_parent_node->GetIndexOfCollection(
-      moving_tab_tree_node);
-  LOG(ERROR) << "Moving children count: " << children.size() << " at index: " << *local_index;
-  for (auto& child : base::Reversed(children)) {
-    if (std::holds_alternative<tabs::TabInterface*>(child) && std::get<tabs::TabInterface*>(child) == moving_tab) {
-      LOG(ERROR) << "Skipping moving tab itself";
-      continue;
-    }
-
-    std::visit(
-        absl::Overload{
-            [&](tabs::TabInterface* tab) {
-              moving_tab_parent_node->AddTab(
-                  moving_tab_tree_node->MaybeRemoveTab(tab),
-                  *local_index);
-            },
-            [&](tabs::TabCollection* collection) {
-              moving_tab_parent_node->AddCollection(
-                  moving_tab_tree_node->MaybeRemoveCollection(collection),
-                  *local_index);
-            }},
-        child);
+    auto* moving_tab_parent_node =
+        GetAttachableCollectionForTreeTabNode(moving_tab_tree_node->GetParentCollection());
+    unique_moving_tab_collections.push_back(
+        moving_tab_parent_node->MaybeRemoveCollection(moving_tab_tree_node));
   }
 
-  CHECK(moving_tab_parent_node->ContainsCollection(moving_tab_tree_node));
-  auto unique_moving_tab_collection =
-      moving_tab_parent_node->MaybeRemoveCollection(moving_tab_tree_node);
-
-  // ----------------
-
-  // We'll move the moving tab's tree node into the collection of the destination
-  // index.
+  // We'll move the moving tab's tree node into the collection of the
+  // destination index.
   const auto tab_count = collection_->TabCountRecursive();
-  LOG(ERROR) << "Destination tab index: " <<
-      (destination_index >= tab_count ? tab_count - 1 : destination_index) << " Tab count: " << tab_count;
   const bool insert_after = destination_index >= tab_count;
   auto* destination_tab = collection_->GetTabAtIndexRecursive(
-      // static_cast<size_t>(tab_indices[0]) < destination_index ? destination_index - 1
-      //                                   : destination_index);
       destination_index >= tab_count ? tab_count - 1 : destination_index);
-  auto* destination_tree_node = find_nearest_parent_tree_node(destination_tab);
-  // LOG(ERROR) << "destination tab index: "
-  //            << *collection_->GetIndexOfTabRecursive(destination_tab);
+  auto* destination_tree_node =
+      GetParentTreeNodeCollectionOfTab(destination_tab);
 
   // Insert the parent tree node collection to the destination parent collection
   // so that the parent tree node could be located before the destination parent
@@ -293,27 +232,9 @@ void BraveTreeTabStripCollectionDelegate::MoveTabsRecursive(
              tabs::TabCollection::Type::TREE_NODE &&
          new_parent_node_for_moving_tab->type() !=
              tabs::TabCollection::Type::UNPINNED) {
-    LOG(ERROR) << "Going up";
     new_parent_node_for_moving_tab =
         new_parent_node_for_moving_tab->GetParentCollection();
     CHECK(new_parent_node_for_moving_tab);
-  }
-
-  if (new_parent_node_for_moving_tab->type() ==
-      tabs::TabCollection::Type::UNPINNED) {
-    LOG(ERROR) << "new parent node for moving tab found: "
-                  "Unpinned ";
-  } else if (new_parent_node_for_moving_tab->type() ==
-             tabs::TabCollection::Type::TREE_NODE) {
-    auto index = collection_->GetIndexOfTabRecursive(
-        static_cast<tabs::TreeTabNodeTabCollection*>(
-            new_parent_node_for_moving_tab)
-            ->current_tab().get());
-    CHECK(index.has_value());
-    LOG(ERROR) << "new parent node for moving tab found at: "
-               << base::NumberToString(*index);
-  } else {
-    NOTREACHED();
   }
 
   // Insert the moving tab collection into the new parent collection.
@@ -322,9 +243,76 @@ void BraveTreeTabStripCollectionDelegate::MoveTabsRecursive(
   // TODO() When group/split is involved, this check will fail.
   CHECK(index.has_value());
   index = insert_after ? *index + 1 : *index;
-  new_parent_node_for_moving_tab->AddCollection(
-      std::move(unique_moving_tab_collection), *index);
-  LOG(ERROR) << "Target Index: " << *index << " Result  among tabstrip: "
-             << *collection_->GetIndexOfTabRecursive(moving_tab);
-  CHECK_EQ(*collection_->GetIndexOfTabRecursive(moving_tab), destination_index);
+  for (auto& unique_moving_tab_collection : unique_moving_tab_collections) {
+    new_parent_node_for_moving_tab->AddCollection(
+        std::move(unique_moving_tab_collection), *index);
+  }
+}
+
+void BraveTreeTabStripCollectionDelegate::MoveChildrenOfTreeTabNodeToParent(
+    tabs::TreeTabNodeTabCollection* tree_tab_node_collection) const {
+  auto* tree_node_owner_collection =
+      tree_tab_node_collection->GetParentCollection();
+  auto local_index = tree_node_owner_collection->GetIndexOfCollection(
+      tree_tab_node_collection);
+  CHECK(local_index.has_value());
+
+  MoveChildrenOfTreeTabNodeToNode(tree_tab_node_collection,
+                                  tree_node_owner_collection, *local_index);
+}
+
+void BraveTreeTabStripCollectionDelegate::MoveChildrenOfTreeTabNodeToNode(
+    tabs::TreeTabNodeTabCollection* tree_tab_node_collection,
+    tabs::TabCollection* target_collection,
+    size_t target_index) const {
+  CHECK_LT(target_index, target_collection->ChildCount());
+
+  auto children = tree_tab_node_collection->GetTreeNodeChildren();
+  for (auto& child : base::Reversed(children)) {
+    std::visit(
+        absl::Overload{
+            [&](tabs::TabInterface* tab) {
+              if (tab == tree_tab_node_collection->current_tab().get()) {
+                // Skipping moving current tab itself
+                return;
+              }
+
+              target_collection->AddTab(
+                  tree_tab_node_collection->MaybeRemoveTab(tab), target_index);
+            },
+            [&](tabs::TabCollection* collection) {
+              target_collection->AddCollection(
+                  tree_tab_node_collection->MaybeRemoveCollection(collection),
+                  target_index);
+            }},
+        child);
+  }
+}
+
+tabs::TreeTabNodeTabCollection*
+BraveTreeTabStripCollectionDelegate::GetParentTreeNodeCollectionOfTab(
+    tabs::TabInterface* tab) const {
+  auto* parent_collection = collection_->GetParentCollection(tab, GetPassKey());
+  CHECK(parent_collection);
+  while (parent_collection->type() != tabs::TabCollection::Type::TREE_NODE) {
+    parent_collection = parent_collection->GetParentCollection();
+    CHECK(parent_collection);
+    if (parent_collection->type() == tabs::TabCollection::Type::UNPINNED) {
+      return nullptr;
+    }
+  }
+  return static_cast<tabs::TreeTabNodeTabCollection*>(parent_collection);
+}
+
+tabs::TabCollection*
+BraveTreeTabStripCollectionDelegate::GetAttachableCollectionForTreeTabNode(
+    tabs::TabCollection* attachable_collection) const {
+  CHECK(attachable_collection);
+  while (attachable_collection->type() !=
+             tabs::TabCollection::Type::TREE_NODE &&
+         attachable_collection->type() != tabs::TabCollection::Type::UNPINNED) {
+    attachable_collection = attachable_collection->GetParentCollection();
+    CHECK(attachable_collection);
+  }
+  return attachable_collection;
 }

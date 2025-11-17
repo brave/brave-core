@@ -7,6 +7,10 @@
 
 class TreeTabModel;
 
+namespace tabs {
+class TreeTabNodeTabCollection;
+}  // namespace tabs
+
 // A delegate for BraveTabStripCollection when in tree tab mode.
 // This class do pre/post processing for tab manipulation methods so that we can
 // keep tabs in a valid tree tab structure.
@@ -35,6 +39,32 @@ class BraveTreeTabStripCollectionDelegate
                              retain_collection_types) const override;
 
  private:
+  // Move all direct children of TreeTabNodeTabCollection to its parent at the
+  // position of the TreeTabNodeTabCollection. The "current tab" of the given
+  // tree tab node collection will be skipped.
+  void MoveChildrenOfTreeTabNodeToParent(
+      tabs::TreeTabNodeTabCollection* tree_tab_node_collection) const;
+
+  // Move all direct children of TreeTabNodeTabCollection except the
+  // "current_tab" to the target TreeTabNodeTabCollection.
+  void MoveChildrenOfTreeTabNodeToNode(
+      tabs::TreeTabNodeTabCollection* tree_tab_node_collection,
+      tabs::TabCollection* target_collection,
+      size_t target_index) const;
+
+  // Returns parent TreeTabNodeTabCollection of the given tab. In case the tab's
+  // direct parent is not a TreeTabNodeTabCollection, e.g. GROUP, SPLIT, it goes
+  // up the tree until it finds a TreeTabNodeTabCollection or reaches the
+  // unpinned collection.
+  tabs::TreeTabNodeTabCollection* GetParentTreeNodeCollectionOfTab(
+      tabs::TabInterface* tab) const;
+
+  // Find the nearest attachable collection from the given tab collection, such as
+  // TreeTabNodeTabCollection or UnpinnedTabCollection. It traverses up the tree
+  // until it finds such collection.
+  tabs::TabCollection* GetAttachableCollectionForTreeTabNode(
+      tabs::TabCollection* tab_collection) const;
+
   bool in_desturction_ = false;
 
   base::WeakPtr<TreeTabModel> tree_tab_model_;
