@@ -24,6 +24,11 @@
 #define NEED_TO_RESET_BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING
 #endif  // defined(OFFICIAL_BUILD)
 
+#define BRAVE_STUFF_PATCH_FLAG_INTO_WINDOWS_ERROR                            \
+  if (exit_code.IsSuccess() && setup_type.compare(kLZMAResourceType) == 0) { \
+    exit_code.windows_error = kIsLZMAResourceType;                           \
+  }
+
 #define BRAVE_GET_PREVIOUS_SETUP_EXE_PATH                        \
   if (*setup_path == L'\0') {                                    \
     ProcessExitResult exit_code = GetPreviousSetupExePath(       \
@@ -64,7 +69,7 @@
 // If a compressed setup patch was found, run the previous setup.exe to
 // patch and generate the new setup.exe.
 #define BRAVE_RUN_PREVIOUS_SETUP_EXE \
-  if (exit_code.IsSuccess() && setup_type.compare(kLZMAResourceType) == 0) { \
+  if (exit_code.IsSuccess() && exit_code.windows_error == kIsLZMAResourceType) { \
     PathString setup_dest_path;                                              \
     if (!setup_dest_path.assign(base_path.get()) ||                          \
         !setup_dest_path.append(kSetupExe)) {                                \
@@ -101,6 +106,7 @@ void SetInstallerFlags(const Configuration& configuration);
 #undef BRAVE_SET_INSTALLER_FLAGS
 #undef BRAVE_RUN_SETUP
 #undef BRAVE_GET_PREVIOUS_SETUP_EXE_PATH
+#undef BRAVE_STUFF_PATCH_FLAG_INTO_WINDOWS_ERROR
 
 namespace mini_installer {
 
