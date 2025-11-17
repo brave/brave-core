@@ -432,11 +432,6 @@ Config.prototype.buildArgs = function () {
     use_siso: this.useSiso,
     use_libfuzzer: this.use_libfuzzer,
     enable_update_notifications: this.isOfficialBuild(),
-    v8_enable_drumbrake:
-      (this.targetArch === 'x64' || this.targetArch === 'arm64')
-      && (this.targetOS === 'win'
-        || this.targetOS === 'linux'
-        || this.targetOS === 'mac'),
   }
 
   if (this.targetOS !== 'ios') {
