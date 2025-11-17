@@ -3159,16 +3159,16 @@ TEST_F(ZCashWalletServiceUnitTest,
 }
 
 TEST_F(ZCashWalletServiceUnitTest,
-       OnCompleteTransactionTaskDone_InvalidTransaction) {
+       OnCompleteTransactionTaskDone_InvalidResultTransaction) {
   ZCashTransaction valid_tx;
   {
     valid_tx.set_fee(5000u);
     auto& input = valid_tx.transparent_part().inputs.emplace_back();
     input.utxo_value = 10000u;
     auto& output = valid_tx.transparent_part().outputs.emplace_back();
-    output.amount = 21000u;
+    output.amount = 5000u;
   }
-  EXPECT_TRUE(valid_tx.ValidateAmount());
+  EXPECT_TRUE(valid_tx.ValidateAmounts());
 
   // Create a task and add it to the complete_transaction_tasks_ set
   auto [task_it, inserted] =
@@ -3187,7 +3187,7 @@ TEST_F(ZCashWalletServiceUnitTest,
 
   ZCashTransaction result_invalid_tx = valid_tx;
   result_invalid_tx.set_fee(1000u);
-  EXPECT_FALSE(valid_tx.ValidateAmount());
+  EXPECT_FALSE(result_invalid_tx.ValidateAmounts());
 
   base::expected<ZCashTransaction, std::string> result =
       base::ok(result_invalid_tx);
@@ -3196,7 +3196,7 @@ TEST_F(ZCashWalletServiceUnitTest,
   // result_invalid_tx and the CHECK will abort
   EXPECT_DEATH_IF_SUPPORTED(
       zcash_wallet_service_->OnCompleteTransactionTaskDone(
-          task_ptr, account_id(), invalid_tx, callback.Get(), result),
+          task_ptr, account_id(), result_invalid_tx, callback.Get(), result),
       "");
 }
 

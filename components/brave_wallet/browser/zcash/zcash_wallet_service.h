@@ -202,6 +202,9 @@ class ZCashWalletService : public mojom::ZCashWalletService,
   friend class ZCashWalletServiceUnitTest;
   FRIEND_TEST_ALL_PREFIXES(ZCashWalletServiceUnitTest,
                            OnCompleteTransactionTaskDone_InvalidTransaction);
+  FRIEND_TEST_ALL_PREFIXES(
+      ZCashWalletServiceUnitTest,
+      OnCompleteTransactionTaskDone_InvalidResultTransaction);
 
   /*KeyringServiceObserverBase*/
   void Unlocked() override;
