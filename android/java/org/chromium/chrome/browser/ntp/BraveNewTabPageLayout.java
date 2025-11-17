@@ -282,7 +282,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
         }
         setNtpViews();
 
-        // Show recent tabs dialog for variant B if NTP was shown after inactivity
+        // Show recent tabs dialog for variants B and C if NTP was shown after inactivity
         maybeShowRecentTabsDialog();
     }
 
@@ -1436,18 +1436,18 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
     }
 
     /**
-     * Shows the recent tabs snackbar if variant B is active, and either OPTION_NEW_TAB or
+     * Shows the recent tabs snackbar if variant B or C is active, and either OPTION_NEW_TAB or
      * OPTION_NEW_TAB_AFTER_INACTIVITY is selected. For OPTION_NEW_TAB_AFTER_INACTIVITY, only shows
      * when app was returned from background after inactivity threshold.
      */
     private void maybeShowRecentTabsDialog() {
-        // Check if feature is enabled and variant is B
+        // Check if feature is enabled and variant is B or C
         if (!BraveFreshNtpHelper.isEnabled()) {
             return;
         }
 
         String variant = BraveFreshNtpHelper.getVariant();
-        if (variant == null || !variant.equals("B")) {
+        if (variant == null || (!variant.equals("B") && !variant.equals("C"))) {
             return;
         }
 
