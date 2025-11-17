@@ -117,9 +117,6 @@ class AIChatService : public KeyedService,
                                       uint64_t total_tokens,
                                       uint64_t trimmed_tokens) override;
   void OnAssociatedContentUpdated(ConversationHandler* handler) override;
-  void OnNEARVerificationUpdate(ConversationHandler* handler,
-                                const std::string& turn_uuid,
-                                bool verified) override;
 
   // mojom::TabDataObserver
   void TabDataChanged(std::vector<mojom::TabDataPtr> tab_data) override;

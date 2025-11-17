@@ -542,6 +542,72 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText) {
   ExpectConversationHistoryEquals(FROM_HERE, history, expected_history, false);
 }
 
+TEST_F(ConversationHandlerUnitTest, SubmitSelectedText_WithNEARVerification) {
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+
+  std::string selected_text = "Verified content.";
+  std::string expected_turn_text =
+      l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_SELECTED_TEXT);
+  const std::string expected_response = "This is verified.";
+
+  EXPECT_CALL(*engine, GenerateAssistantResponse(
+                           _, LastTurnHasSelectedText(selected_text), StrEq(""),
+                           _, _, _, _, _, _))
+      .WillOnce(::testing::DoAll(
+          base::test::RunOnceCallback<7>(EngineConsumer::GenerationResultData(
+              mojom::ConversationEntryEvent::NewCompletionEvent(
+                  mojom::CompletionEvent::New(expected_response)),
+              std::nullopt /* model_key */, true /* is_near_verified */)),
+          base::test::RunOnceCallback<8>(
+              base::ok(EngineConsumer::GenerationResultData(
+                  nullptr, std::nullopt /* model_key */,
+                  true /* is_near_verified */)))));
+
+  conversation_handler_->associated_content_manager()->ClearContent();
+
+  std::vector<mojom::ConversationTurnPtr> expected_history;
+
+  expected_history.push_back(mojom::ConversationTurn::New(
+      std::nullopt, mojom::CharacterType::HUMAN,
+      mojom::ActionType::SUMMARIZE_SELECTED_TEXT, expected_turn_text,
+      std::nullopt, selected_text, std::nullopt, base::Time::Now(),
+      std::nullopt, std::nullopt, nullptr /* skill */, false,
+      std::nullopt /* model_key */, std::nullopt /* is_near_verified */));
+
+  std::vector<mojom::ConversationEntryEventPtr> response_events;
+  response_events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
+      mojom::CompletionEvent::New(expected_response)));
+  expected_history.push_back(mojom::ConversationTurn::New(
+      std::nullopt, mojom::CharacterType::ASSISTANT,
+      mojom::ActionType::RESPONSE, expected_response, std::nullopt,
+      std::nullopt, std::move(response_events), base::Time::Now(), std::nullopt,
+      std::nullopt, nullptr /* skill */, false, std::nullopt /* model_key */,
+      true /* is_near_verified */));
+
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+  EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(1);
+  EXPECT_CALL(client, OnConversationHistoryUpdate(
+                          TurnEq(mojom::ConversationTurnPtr().get())))
+      .Times(1);
+  EXPECT_CALL(client,
+              OnConversationHistoryUpdate(TurnEq(expected_history[1].get())))
+      .Times(3);
+  EXPECT_CALL(client, OnAPIRequestInProgress(false)).Times(1);
+  EXPECT_CALL(*engine, SanitizeInput(StrEq(selected_text)));
+  EXPECT_CALL(*engine, SanitizeInput(StrEq(expected_turn_text)));
+
+  conversation_handler_->SubmitSelectedText(
+      selected_text, mojom::ActionType::SUMMARIZE_SELECTED_TEXT);
+
+  task_environment_.RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&client);
+
+  EXPECT_TRUE(conversation_handler_->HasAnyHistory());
+  const auto& history = conversation_handler_->GetConversationHistory();
+  ExpectConversationHistoryEquals(FROM_HERE, history, expected_history, false);
+}
+
 TEST_F(ConversationHandlerUnitTest, SubmitSelectedText_WithAssociatedContent) {
   // Test with page contents.
   MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(

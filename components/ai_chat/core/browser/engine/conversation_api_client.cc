@@ -18,6 +18,7 @@
 #include "base/containers/checked_iterators.h"
 #include "base/containers/fixed_flat_map.h"
 #include "base/containers/flat_map.h"
+#include "base/containers/map_util.h"
 #include "base/functional/bind.h"
 #include "base/json/json_writer.h"
 #include "base/logging.h"
@@ -377,6 +378,7 @@ void ConversationAPIClient::OnQueryCompleted(
   if (success) {
     std::string completion = "";
     std::optional<std::string> model_key = std::nullopt;
+    std::optional<bool> is_near_verified = std::nullopt;
     mojom::ConversationEntryEventPtr completion_event = nullptr;
     // We're checking for a value body in case for non-streaming API results.
     // TODO(petemill): server should provide parseable history events even for
@@ -396,10 +398,16 @@ void ConversationAPIClient::OnQueryCompleted(
       }
     }
 
+    const auto& headers = result.headers();
+    if (const auto* header_value =
+            base::FindOrNull(headers, kBraveNearVerifiedHeader)) {
+      is_near_verified = *header_value == "true";
+    }
+
     completion_event = mojom::ConversationEntryEvent::NewCompletionEvent(
         mojom::CompletionEvent::New(completion));
-    GenerationResultData data(std::move(completion_event),
-                              std::move(model_key));
+    GenerationResultData data(std::move(completion_event), std::move(model_key),
+                              is_near_verified);
     std::move(callback).Run(base::ok(std::move(data)));
     return;
   }

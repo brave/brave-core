@@ -42,7 +42,6 @@
 #include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/model_validator.h"
-#include "brave/components/ai_chat/core/browser/near_verifier.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
@@ -126,12 +125,6 @@ ConversationHandler::ConversationHandler(
           std::make_unique<AssociatedContentManager>(this)),
       tool_providers_(std::move(tool_providers)),
       metadata_(conversation),
-      near_verifier_(
-          url_loader_factory,
-          base::BindRepeating(&ModelService::GetModel,
-                              base::Unretained(model_service)),
-          base::BindRepeating(&ConversationHandler::OnNEARVerificationComplete,
-                              base::Unretained(this))),
       ai_chat_service_(ai_chat_service),
       model_service_(model_service),
       credential_manager_(credential_manager),
@@ -1254,80 +1247,91 @@ void ConversationHandler::UpdateOrCreateLastAssistantEntry(
 
   auto& entry = chat_history_.back();
   auto& event = result.event;
-  if (event->is_completion_event()) {
-    if (!engine_->SupportsDeltaTextResponses() || entry->events->size() == 0 ||
-        !entry->events->back()->is_completion_event()) {
-      // The start of completion responses needs whitespace trim
-      // TODO(petemill): This should happen server-side?
-      event->get_completion_event()->completion = base::TrimWhitespaceASCII(
-          event->get_completion_event()->completion, base::TRIM_LEADING);
+
+  // Only update if verification status is pending, or did not already fail.
+  if (result.is_near_verified.has_value() &&
+      (!entry->is_near_verified.has_value() || *entry->is_near_verified)) {
+    entry->is_near_verified = result.is_near_verified;
+  }
+
+  if (event) {
+    if (event->is_completion_event()) {
+      if (!engine_->SupportsDeltaTextResponses() ||
+          entry->events->size() == 0 ||
+          !entry->events->back()->is_completion_event()) {
+        // The start of completion responses needs whitespace trim
+        // TODO(petemill): This should happen server-side?
+        event->get_completion_event()->completion = base::TrimWhitespaceASCII(
+            event->get_completion_event()->completion, base::TRIM_LEADING);
+      }
+
+      // Optimize by merging with previous completion events if delta updates
+      // are supported or otherwise replacing the previous event.
+      if (entry->events->size() > 0) {
+        auto& last_event = entry->events->back();
+        if (last_event->is_completion_event()) {
+          // Merge completion events
+          if (engine_->SupportsDeltaTextResponses()) {
+            event->get_completion_event()->completion =
+                base::StrCat({last_event->get_completion_event()->completion,
+                              event->get_completion_event()->completion});
+          }
+          // Remove the last event because we'll replace in both delta and
+          // non-delta cases
+          entry->events->pop_back();
+        }
+      }
+
+      // TODO(petemill): Remove ConversationTurn.text backwards compatibility
+      // when all UI is updated to instead use ConversationEntryEvent items.
+      entry->text = event->get_completion_event()->completion;
     }
 
-    // Optimize by merging with previous completion events if delta updates
-    // are supported or otherwise replacing the previous event.
-    if (entry->events->size() > 0) {
+    if (event->is_tool_use_event() && entry->events->size() > 0) {
+      // Tool use events can be partial and may need to be combined with the
+      // previous event.
       auto& last_event = entry->events->back();
-      if (last_event->is_completion_event()) {
-        // Merge completion events
-        if (engine_->SupportsDeltaTextResponses()) {
-          event->get_completion_event()->completion =
-              base::StrCat({last_event->get_completion_event()->completion,
-                            event->get_completion_event()->completion});
-        }
-        // Remove the last event because we'll replace in both delta and
-        // non-delta cases
-        entry->events->pop_back();
+      auto& tool_use_event = event->get_tool_use_event();
+
+      DVLOG(2) << __func__
+               << " Got event for tool use: " << tool_use_event->tool_name
+               << " is empty? " << tool_use_event->tool_name.empty()
+               << " with input: " << tool_use_event->arguments_json;
+
+      if (last_event->is_tool_use_event() &&
+          tool_use_event->tool_name.empty()) {
+        last_event->get_tool_use_event()->arguments_json =
+            base::StrCat({last_event->get_tool_use_event()->arguments_json,
+                          tool_use_event->arguments_json});
+        // TODO(petemill): Don't clone
+        OnHistoryUpdate(entry.Clone());
+        return;
       }
     }
 
-    // TODO(petemill): Remove ConversationTurn.text backwards compatibility when
-    // all UI is updated to instead use ConversationEntryEvent items.
-    entry->text = event->get_completion_event()->completion;
-  }
-
-  if (event->is_tool_use_event() && entry->events->size() > 0) {
-    // Tool use events can be partial and may need to be combined with the
-    // previous event.
-    auto& last_event = entry->events->back();
-    auto& tool_use_event = event->get_tool_use_event();
-
-    DVLOG(2) << __func__
-             << " Got event for tool use: " << tool_use_event->tool_name
-             << " is empty? " << tool_use_event->tool_name.empty()
-             << " with input: " << tool_use_event->arguments_json;
-
-    if (last_event->is_tool_use_event() && tool_use_event->tool_name.empty()) {
-      last_event->get_tool_use_event()->arguments_json =
-          base::StrCat({last_event->get_tool_use_event()->arguments_json,
-                        tool_use_event->arguments_json});
-      // TODO(petemill): Don't clone
-      OnHistoryUpdate(entry.Clone());
+    if (event->is_conversation_title_event()) {
+      OnConversationTitleChanged(event->get_conversation_title_event()->title);
+      // Don't add this event to history
       return;
     }
-  }
 
-  if (event->is_conversation_title_event()) {
-    OnConversationTitleChanged(event->get_conversation_title_event()->title);
-    // Don't add this event to history
-    return;
-  }
+    if (event->is_selected_language_event()) {
+      OnSelectedLanguageChanged(
+          event->get_selected_language_event()->selected_language);
+      // Don't add this event to history
+      return;
+    }
 
-  if (event->is_selected_language_event()) {
-    OnSelectedLanguageChanged(
-        event->get_selected_language_event()->selected_language);
-    // Don't add this event to history
-    return;
-  }
+    if (event->is_content_receipt_event()) {
+      OnConversationTokenInfoChanged(
+          event->get_content_receipt_event()->total_tokens,
+          event->get_content_receipt_event()->trimmed_tokens);
+      // Don't add this event to history
+      return;
+    }
 
-  if (event->is_content_receipt_event()) {
-    OnConversationTokenInfoChanged(
-        event->get_content_receipt_event()->total_tokens,
-        event->get_content_receipt_event()->trimmed_tokens);
-    // Don't add this event to history
-    return;
+    entry->events->push_back(std::move(event));
   }
-
-  entry->events->push_back(std::move(event));
   // Update clients for partial entries but not observers, who will get notified
   // when we know this is a complete entry.
   OnHistoryUpdate(entry.Clone());
@@ -1580,8 +1584,9 @@ void ConversationHandler::OnEngineCompletionComplete(
   // Handle success, which might mean do nothing much since all data was passed
   // in the streaming "received" callback.
   DVLOG(2) << __func__ << ": With value";
-  if (result->event && result->event->is_completion_event() &&
-      !result->event->get_completion_event()->completion.empty()) {
+  if ((result->event && result->event->is_completion_event() &&
+       !result->event->get_completion_event()->completion.empty()) ||
+      result->is_near_verified.has_value()) {
     UpdateOrCreateLastAssistantEntry(std::move(*result));
   } else {
     // This is a workaround for any occasions where the engine returns
@@ -1593,10 +1598,6 @@ void ConversationHandler::OnEngineCompletionComplete(
     }
   }
   OnConversationEntryAdded(chat_history_.back());
-
-  if (!chat_history_.empty()) {
-    near_verifier_.MaybeVerifyConversationEntry(*chat_history_.back());
-  }
 
   // Check if we need title generation (after assistant response is added)
   if (engine_->RequiresClientSideTitleGeneration() &&
@@ -2172,25 +2173,6 @@ void ConversationHandler::OnAutoScreenshotsTaken(
 
   // Continue with the original callback
   std::move(callback).Run();
-}
-
-void ConversationHandler::OnNEARVerificationComplete(
-    const std::string& turn_uuid,
-    bool verified) {
-  auto turn_it = std::ranges::find_if(
-      chat_history_.rbegin(), chat_history_.rend(),
-      [&turn_uuid](const auto& turn) { return turn->uuid == turn_uuid; });
-
-  if (turn_it == chat_history_.rend()) {
-    return;
-  }
-
-  (*turn_it)->is_near_verified = verified;
-
-  OnHistoryUpdate(turn_it->Clone());
-
-  observers_.Notify(&Observer::OnNEARVerificationUpdate, this, turn_uuid,
-                    verified);
 }
 
 }  // namespace ai_chat

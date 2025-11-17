@@ -31,7 +31,6 @@
 #include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
-#include "brave/components/ai_chat/core/browser/near_verifier.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_provider.h"
 #include "brave/components/ai_chat/core/browser/types.h"
@@ -107,9 +106,6 @@ class ConversationHandler : public mojom::ConversationHandler,
         ConversationHandler* handler,
         const std::string& selected_language) {}
     virtual void OnAssociatedContentUpdated(ConversationHandler* handler) {}
-    virtual void OnNEARVerificationUpdate(ConversationHandler* handler,
-                                          const std::string& turn_uuid,
-                                          bool verified) {}
   };
 
   struct Suggestion {
@@ -407,9 +403,6 @@ class ConversationHandler : public mojom::ConversationHandler,
   void MaybeSwitchToVisionModel(
       const std::optional<std::vector<mojom::UploadedFilePtr>>& uploaded_files);
 
-  // Callback for NEAR verification completion
-  void OnNEARVerificationComplete(const std::string& turn_uuid, bool verified);
-
   std::unique_ptr<AssociatedContentManager> associated_content_manager_;
 
   std::string model_key_;
@@ -474,8 +467,6 @@ class ConversationHandler : public mojom::ConversationHandler,
   // held in memory forever, we don't currently prune the tab IDs once they
   // close. Therefore, these are not guaranteed to be active.
   std::set<int32_t> task_tab_ids_;
-
-  NEARVerifier near_verifier_;
 
   raw_ptr<AIChatService, DanglingUntriaged> ai_chat_service_;
   raw_ptr<ModelService> model_service_;
