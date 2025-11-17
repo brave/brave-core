@@ -15,8 +15,6 @@
 #include "brave/components/brave_ads/core/internal/account/statement/statement_feature.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_payment_tokens/redeem_payment_tokens_feature.h"
 #include "brave/components/brave_ads/core/internal/account/utility/tokens_feature.h"
-#include "brave/components/brave_ads/core/internal/ad_units/inline_content_ad/inline_content_ad_feature.h"
-#include "brave/components/brave_ads/core/internal/ad_units/promoted_content_ad/promoted_content_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_feature.h"
 #include "brave/components/brave_ads/core/internal/common/subdivision/subdivision_feature.h"
 #include "brave/components/brave_ads/core/internal/common/test/command_line_switch_test_info.h"
@@ -25,11 +23,9 @@
 #include "brave/components/brave_ads/core/internal/reminders/reminders_feature.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/eligible_ads_feature.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/exclusion_rule_feature.h"
-#include "brave/components/brave_ads/core/internal/serving/inline_content_ad_serving_feature.h"
 #include "brave/components/brave_ads/core/internal/serving/new_tab_page_ad_serving_feature.h"
 #include "brave/components/brave_ads/core/internal/serving/notification_ad_serving_feature.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rule_feature.h"
-#include "brave/components/brave_ads/core/internal/serving/prediction/model_based/creative_inline_content_ad_model_based_predictor_feature.h"
 #include "brave/components/brave_ads/core/internal/serving/prediction/model_based/creative_new_tab_page_ad_model_based_predictor_feature.h"
 #include "brave/components/brave_ads/core/internal/serving/prediction/model_based/creative_notification_ad_model_based_predictor_feature.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/anti_targeting_feature.h"
@@ -103,10 +99,6 @@ struct ParamInfo final {
      .did_override_from_command_line = true},
     {.command_line_switch =
          {switches::kEnableFeatures,
-          kCreativeInlineContentAdModelBasedPredictorFeature.name},
-     .did_override_from_command_line = true},
-    {.command_line_switch =
-         {switches::kEnableFeatures,
           kCreativeNewTabPageAdModelBasedPredictorFeature.name},
      .did_override_from_command_line = true},
     {.command_line_switch =
@@ -120,12 +112,6 @@ struct ParamInfo final {
                              kExclusionRulesFeature.name},
      .did_override_from_command_line = true},
     {.command_line_switch = {switches::kEnableFeatures, kAdHistoryFeature.name},
-     .did_override_from_command_line = true},
-    {.command_line_switch = {switches::kEnableFeatures,
-                             kInlineContentAdFeature.name},
-     .did_override_from_command_line = true},
-    {.command_line_switch = {switches::kEnableFeatures,
-                             kInlineContentAdServingFeature.name},
      .did_override_from_command_line = true},
     {.command_line_switch = {switches::kEnableFeatures, kIssuersFeature.name},
      .did_override_from_command_line = true},
@@ -143,9 +129,6 @@ struct ParamInfo final {
      .did_override_from_command_line = true},
     {.command_line_switch = {switches::kEnableFeatures,
                              kPermissionRulesFeature.name},
-     .did_override_from_command_line = true},
-    {.command_line_switch = {switches::kEnableFeatures,
-                             kPromotedContentAdFeature.name},
      .did_override_from_command_line = true},
     {.command_line_switch = {switches::kEnableFeatures,
                              kPurchaseIntentFeature.name},
@@ -205,10 +188,6 @@ struct ParamInfo final {
      .did_override_from_command_line = true},
     {.command_line_switch =
          {variations::switches::kForceFieldTrialParams,
-          kCreativeInlineContentAdModelBasedPredictorFeature.name},
-     .did_override_from_command_line = true},
-    {.command_line_switch =
-         {variations::switches::kForceFieldTrialParams,
           kCreativeNewTabPageAdModelBasedPredictorFeature.name},
      .did_override_from_command_line = true},
     {.command_line_switch =
@@ -223,12 +202,6 @@ struct ParamInfo final {
      .did_override_from_command_line = true},
     {.command_line_switch = {variations::switches::kForceFieldTrialParams,
                              kAdHistoryFeature.name},
-     .did_override_from_command_line = true},
-    {.command_line_switch = {variations::switches::kForceFieldTrialParams,
-                             kInlineContentAdFeature.name},
-     .did_override_from_command_line = true},
-    {.command_line_switch = {variations::switches::kForceFieldTrialParams,
-                             kInlineContentAdServingFeature.name},
      .did_override_from_command_line = true},
     {.command_line_switch = {variations::switches::kForceFieldTrialParams,
                              kIssuersFeature.name},
@@ -247,9 +220,6 @@ struct ParamInfo final {
      .did_override_from_command_line = true},
     {.command_line_switch = {variations::switches::kForceFieldTrialParams,
                              kPermissionRulesFeature.name},
-     .did_override_from_command_line = true},
-    {.command_line_switch = {variations::switches::kForceFieldTrialParams,
-                             kPromotedContentAdFeature.name},
      .did_override_from_command_line = true},
     {.command_line_switch = {variations::switches::kForceFieldTrialParams,
                              kPurchaseIntentFeature.name},

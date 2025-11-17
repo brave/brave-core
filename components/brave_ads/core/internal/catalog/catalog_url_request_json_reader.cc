@@ -228,95 +228,6 @@ std::optional<CatalogCreativeNotificationAdInfo> ParseCreativeNotificationAd(
   return creative;
 }
 
-std::optional<CatalogCreativeInlineContentAdInfo> ParseCreativeInlineContentAd(
-    const base::Value::Dict& dict) {
-  CatalogCreativeInlineContentAdInfo creative;
-
-  const std::string* const title = dict.FindString("title");
-  if (!title || title->empty()) {
-    BLOG(1, "Invalid inline content ad title");
-    return std::nullopt;
-  }
-  creative.payload.title = *title;
-
-  const std::string* const description = dict.FindString("description");
-  if (!description || description->empty()) {
-    BLOG(1, "Invalid inline content ad description");
-    return std::nullopt;
-  }
-  creative.payload.description = *description;
-
-  const std::string* const image_url = dict.FindString("imageUrl");
-  if (!image_url || image_url->empty()) {
-    BLOG(1, "Invalid inline content ad image URL");
-    return std::nullopt;
-  }
-  creative.payload.image_url = GURL(*image_url);
-  if (!ShouldSupportUrl(creative.payload.image_url)) {
-    BLOG(1, "Unsupported inline content ad image URL");
-    return std::nullopt;
-  }
-
-  const std::string* const dimensions = dict.FindString("dimensions");
-  if (!dimensions || dimensions->empty()) {
-    BLOG(1, "Invalid inline content ad dimensions");
-    return std::nullopt;
-  }
-  creative.payload.dimensions = *dimensions;
-
-  const std::string* const cta_text = dict.FindString("ctaText");
-  if (!cta_text || cta_text->empty()) {
-    BLOG(1, "Invalid inline content ad CTA text");
-    return std::nullopt;
-  }
-  creative.payload.cta_text = *cta_text;
-
-  const std::string* const target_url = dict.FindString("targetUrl");
-  if (!target_url || target_url->empty()) {
-    BLOG(1, "Invalid inline content ad target URL");
-    return std::nullopt;
-  }
-  creative.payload.target_url = GURL(*target_url);
-  if (!ShouldSupportUrl(creative.payload.target_url)) {
-    BLOG(1, "Unsupported inline content ad target URL");
-    return std::nullopt;
-  }
-
-  return creative;
-}
-
-std::optional<CatalogCreativePromotedContentAdInfo>
-ParseCreativePromotedContentAd(const base::Value::Dict& dict) {
-  CatalogCreativePromotedContentAdInfo creative;
-
-  const std::string* const title = dict.FindString("title");
-  if (!title || title->empty()) {
-    BLOG(1, "Invalid promoted content ad title");
-    return std::nullopt;
-  }
-  creative.payload.title = *title;
-
-  const std::string* const description = dict.FindString("description");
-  if (!description || description->empty()) {
-    BLOG(1, "Invalid promoted content ad description");
-    return std::nullopt;
-  }
-  creative.payload.description = *description;
-
-  const std::string* const feed = dict.FindString("feed");
-  if (!feed || feed->empty()) {
-    BLOG(1, "Invalid promoted content ad feed URL");
-    return std::nullopt;
-  }
-  creative.payload.target_url = GURL(*feed);
-  if (!ShouldSupportUrl(creative.payload.target_url)) {
-    BLOG(1, "Unsupported promoted content ad feed URL");
-    return std::nullopt;
-  }
-
-  return creative;
-}
-
 std::optional<CatalogTypeInfo> ParseCreativeType(
     const base::Value::Dict& dict) {
   const base::Value::Dict* const type_dict = dict.FindDict("type");
@@ -428,18 +339,6 @@ bool ParseCreative(const base::Value::Dict& dict,
     return ParseCreativeForType<CatalogCreativeNotificationAdInfo>(
         ParseCreativeNotificationAd, creative_set, *creative_instance_id,
         *payload_dict, *type, creative_set.creative_notification_ads);
-  }
-
-  if (type->code == "inline_content_all_v1") {
-    return ParseCreativeForType<CatalogCreativeInlineContentAdInfo>(
-        ParseCreativeInlineContentAd, creative_set, *creative_instance_id,
-        *payload_dict, *type, creative_set.creative_inline_content_ads);
-  }
-
-  if (type->code == "promoted_content_all_v1") {
-    return ParseCreativeForType<CatalogCreativePromotedContentAdInfo>(
-        ParseCreativePromotedContentAd, creative_set, *creative_instance_id,
-        *payload_dict, *type, creative_set.creative_promoted_content_ads);
   }
 
   // Unsupported type, ignore it to avoid failing the entire catalog.

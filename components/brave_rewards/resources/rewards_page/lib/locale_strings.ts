@@ -31,7 +31,6 @@ export type StringKey =
   | 'adsSettingsTitle'
   | 'adsSettingsText'
   | 'adsViewedTooltip'
-  | 'adTypeInlineContentLabel'
   | 'adTypeNewTabPageLabel'
   | 'adTypeNotificationLabel'
   | 'adTypeOffLabel'

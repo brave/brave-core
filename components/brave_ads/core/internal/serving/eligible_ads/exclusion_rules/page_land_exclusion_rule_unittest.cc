@@ -123,7 +123,7 @@ TEST_F(BraveAdsPageLandExclusionRuleTest,
   ad_events.push_back(ad_event_2);
 
   const AdEventInfo ad_event_3 = test::BuildAdEvent(
-      creative_ad_2, mojom::AdType::kPromotedContentAd,
+      creative_ad_2, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kLanded,
       /*created_at=*/test::Now(), /*should_generate_random_uuids=*/true);
   ad_events.push_back(ad_event_3);

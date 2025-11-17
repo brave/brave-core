@@ -46,18 +46,6 @@ void MaybePurgeNewTabPageAdEvents() {
   }
 }
 
-void MaybePurgeBraveNewsAdEvents() {
-  if (UserHasJoinedBraveRewards()) {
-    // Do not purge ad events if the user has joined Brave Rewards.
-    return;
-  }
-
-  if (!UserHasOptedInToBraveNewsAds()) {
-    PurgeAdEventsForType(mojom::AdType::kInlineContentAd);
-    PurgeAdEventsForType(mojom::AdType::kPromotedContentAd);
-  }
-}
-
 }  // namespace
 
 Maintenance::Maintenance() {
@@ -94,8 +82,6 @@ void Maintenance::RepeatedlyScheduleAfterCallback() {
 void Maintenance::OnNotifyPrefDidChange(const std::string& path) {
   if (DoesMatchUserHasOptedInToNewTabPageAdsPrefPath(path)) {
     MaybePurgeNewTabPageAdEvents();
-  } else if (DoesMatchUserHasOptedInToBraveNewsAdsPrefPath(path)) {
-    MaybePurgeBraveNewsAdEvents();
   }
 }
 

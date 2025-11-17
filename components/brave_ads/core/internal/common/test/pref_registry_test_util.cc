@@ -10,7 +10,6 @@
 #include "brave/components/brave_ads/core/internal/common/test/profile_pref_registry_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
-#include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 
@@ -67,10 +66,6 @@ void RegisterProfilePrefs() {
   RegisterProfileBooleanPref(brave_rewards::prefs::kEnabled, true);
   RegisterProfileStringPref(brave_rewards::prefs::kExternalWalletType,
                             "connected");
-
-  // Brave News prefs.
-  RegisterProfileBooleanPref(brave_news::prefs::kBraveNewsOptedIn, true);
-  RegisterProfileBooleanPref(brave_news::prefs::kNewTabPageShowToday, true);
 
   // New tab page background image prefs.
   RegisterProfileBooleanPref(

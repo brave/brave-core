@@ -13,9 +13,7 @@
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/catalog_os_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/catalog_segment_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/creative/catalog_type_info.h"
-#include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/creative/inline_content_ad/catalog_creative_inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/creative/notification_ad/catalog_creative_notification_ad_info.h"
-#include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/creative/promoted_content_ad/catalog_creative_promoted_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/test/file_test_util.h"
@@ -77,51 +75,6 @@ CatalogCampaignInfo BuildCatalogCampaign1() {
       GURL("https://brave.com/1/notification_ad");
   catalog_creative_notification_ads.push_back(catalog_creative_notification_ad);
 
-  // Creative Promoted Content Ads
-  CatalogCreativePromotedContentAdList catalog_creative_promoted_content_ads;
-
-  CatalogCreativePromotedContentAdInfo catalog_creative_promoted_content_ad;
-  catalog_creative_promoted_content_ad.instance_id =
-      "60001aa5-9368-45d2-81fc-e69887d278c5";
-  CatalogTypeInfo catalog_type_promoted_content_ad_type;
-  catalog_type_promoted_content_ad_type.code = "promoted_content_all_v1";
-  catalog_type_promoted_content_ad_type.name = "promoted_content";
-  catalog_type_promoted_content_ad_type.platform = "all";
-  catalog_type_promoted_content_ad_type.version = 1;
-  catalog_creative_promoted_content_ad.type =
-      catalog_type_promoted_content_ad_type;
-  catalog_creative_promoted_content_ad.payload.title = "Promoted Content 1";
-  catalog_creative_promoted_content_ad.payload.description =
-      "Test Promoted Content Ad Campaign 1";
-  catalog_creative_promoted_content_ad.payload.target_url =
-      GURL("https://brave.com/1/promoted_content_ad");
-  catalog_creative_promoted_content_ads.push_back(
-      catalog_creative_promoted_content_ad);
-
-  // Creative Inline Content Ads
-  CatalogCreativeInlineContentAdList catalog_creative_inline_content_ads;
-
-  CatalogCreativeInlineContentAdInfo catalog_creative_inline_content_ad;
-  catalog_creative_inline_content_ad.instance_id =
-      "b0615969-6ee0-4559-b50c-f84be23302e4";
-  CatalogTypeInfo catalog_type_inline_content_ad_type;
-  catalog_type_inline_content_ad_type.code = "inline_content_all_v1";
-  catalog_type_inline_content_ad_type.name = "inline_content";
-  catalog_type_inline_content_ad_type.platform = "all";
-  catalog_type_inline_content_ad_type.version = 1;
-  catalog_creative_inline_content_ad.type = catalog_type_inline_content_ad_type;
-  catalog_creative_inline_content_ad.payload.title = "Inline Content 1";
-  catalog_creative_inline_content_ad.payload.description =
-      "Test Inline Content Ad Campaign 1";
-  catalog_creative_inline_content_ad.payload.image_url =
-      GURL("https://www.brave.com/1/image.png");
-  catalog_creative_inline_content_ad.payload.dimensions = "200x100";
-  catalog_creative_inline_content_ad.payload.cta_text = "Call to Action Text 1";
-  catalog_creative_inline_content_ad.payload.target_url =
-      GURL("https://brave.com/1/inline_content_ad");
-  catalog_creative_inline_content_ads.push_back(
-      catalog_creative_inline_content_ad);
-
   // Conversions
   CatalogConversionList catalog_conversions;
 
@@ -148,10 +101,6 @@ CatalogCampaignInfo BuildCatalogCampaign1() {
   catalog_creative_set.oses = catalog_oses;
   catalog_creative_set.creative_notification_ads =
       catalog_creative_notification_ads;
-  catalog_creative_set.creative_inline_content_ads =
-      catalog_creative_inline_content_ads;
-  catalog_creative_set.creative_promoted_content_ads =
-      catalog_creative_promoted_content_ads;
   catalog_creative_set.conversions = catalog_conversions;
   catalog_creative_sets.push_back(catalog_creative_set);
 
@@ -237,51 +186,6 @@ CatalogCampaignInfo BuildCatalogCampaign2() {
       GURL("https://brave.com/2/notification_ad");
   catalog_creative_notification_ads.push_back(catalog_creative_notification_ad);
 
-  // Creative Promoted Content Ads
-  CatalogCreativePromotedContentAdList catalog_creative_promoted_content_ads;
-
-  CatalogCreativePromotedContentAdInfo catalog_creative_promoted_content_ad;
-  catalog_creative_promoted_content_ad.instance_id =
-      "9f2f49ab-77d7-4e99-9428-472dc8e04f90";
-  CatalogTypeInfo catalog_type_promoted_content_ad_type;
-  catalog_type_promoted_content_ad_type.code = "promoted_content_all_v1";
-  catalog_type_promoted_content_ad_type.name = "promoted_content";
-  catalog_type_promoted_content_ad_type.platform = "all";
-  catalog_type_promoted_content_ad_type.version = 1;
-  catalog_creative_promoted_content_ad.type =
-      catalog_type_promoted_content_ad_type;
-  catalog_creative_promoted_content_ad.payload.title = "Promoted Content 2";
-  catalog_creative_promoted_content_ad.payload.description =
-      "Test Promoted Content Ad Campaign 2";
-  catalog_creative_promoted_content_ad.payload.target_url =
-      GURL("https://brave.com/2/promoted_content_ad");
-  catalog_creative_promoted_content_ads.push_back(
-      catalog_creative_promoted_content_ad);
-
-  // Creative Inline Content Ads
-  CatalogCreativeInlineContentAdList catalog_creative_inline_content_ads;
-
-  CatalogCreativeInlineContentAdInfo catalog_creative_inline_content_ad;
-  catalog_creative_inline_content_ad.instance_id =
-      "de54add5-ba76-469d-891f-b4d9f8e09b3d";
-  CatalogTypeInfo catalog_type_inline_content_ad_type;
-  catalog_type_inline_content_ad_type.code = "inline_content_all_v1";
-  catalog_type_inline_content_ad_type.name = "inline_content";
-  catalog_type_inline_content_ad_type.platform = "all";
-  catalog_type_inline_content_ad_type.version = 1;
-  catalog_creative_inline_content_ad.type = catalog_type_inline_content_ad_type;
-  catalog_creative_inline_content_ad.payload.title = "Inline Content 2";
-  catalog_creative_inline_content_ad.payload.description =
-      "Test Inline Content Ad Campaign 2";
-  catalog_creative_inline_content_ad.payload.image_url =
-      GURL("https://www.brave.com/2/image.png");
-  catalog_creative_inline_content_ad.payload.dimensions = "100x200";
-  catalog_creative_inline_content_ad.payload.cta_text = "Call to Action Text 2";
-  catalog_creative_inline_content_ad.payload.target_url =
-      GURL("https://brave.com/2/inline_content_ad");
-  catalog_creative_inline_content_ads.push_back(
-      catalog_creative_inline_content_ad);
-
   // Conversions
   CatalogConversionList catalog_conversions;
 
@@ -307,10 +211,6 @@ CatalogCampaignInfo BuildCatalogCampaign2() {
   catalog_creative_set.oses = catalog_oses;
   catalog_creative_set.creative_notification_ads =
       catalog_creative_notification_ads;
-  catalog_creative_set.creative_promoted_content_ads =
-      catalog_creative_promoted_content_ads;
-  catalog_creative_set.creative_inline_content_ads =
-      catalog_creative_inline_content_ads;
   catalog_creative_set.conversions = catalog_conversions;
   catalog_creative_sets.push_back(catalog_creative_set);
 

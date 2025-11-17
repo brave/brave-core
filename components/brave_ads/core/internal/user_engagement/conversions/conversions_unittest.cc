@@ -38,7 +38,7 @@ TEST_F(BraveAdsConversionsTest,
   // Arrange
   const base::test::ScopedFeatureList scoped_feature_list(kConversionsFeature);
 
-  const AdInfo ad_1 = test::BuildAd(mojom::AdType::kInlineContentAd,
+  const AdInfo ad_1 = test::BuildAd(mojom::AdType::kNotificationAd,
                                     /*should_generate_random_uuids=*/true);
   test::BuildAndSaveCreativeSetConversion(ad_1.creative_set_id,
                                           test::kMatchingUrlPattern,
@@ -74,7 +74,7 @@ TEST_F(BraveAdsConversionsTest, DoNotCapConversionsWithinTheSameCreativeSet) {
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kConversionsFeature, {{"creative_set_conversion_cap", "0"}});
 
-  const AdInfo ad = test::BuildAd(mojom::AdType::kInlineContentAd,
+  const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
                                   /*should_generate_random_uuids=*/true);
   test::BuildAndSaveCreativeSetConversion(ad.creative_set_id,
                                           test::kMatchingUrlPattern,
@@ -104,7 +104,7 @@ TEST_F(BraveAdsConversionsTest, CapConversionsWithinTheSameCreativeSet) {
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       kConversionsFeature, {{"creative_set_conversion_cap", "2"}});
 
-  const AdInfo ad = test::BuildAd(mojom::AdType::kInlineContentAd,
+  const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
                                   /*should_generate_random_uuids=*/true);
   test::BuildAndSaveCreativeSetConversion(ad.creative_set_id,
                                           test::kMatchingUrlPattern,

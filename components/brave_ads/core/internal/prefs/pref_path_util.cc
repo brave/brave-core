@@ -6,7 +6,6 @@
 #include "brave/components/brave_ads/core/internal/prefs/pref_path_util.h"
 
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
-#include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 
@@ -14,11 +13,6 @@ namespace brave_ads {
 
 bool DoesMatchUserHasJoinedBraveRewardsPrefPath(const std::string& path) {
   return path == brave_rewards::prefs::kEnabled;
-}
-
-bool DoesMatchUserHasOptedInToBraveNewsAdsPrefPath(const std::string& path) {
-  return path == brave_news::prefs::kBraveNewsOptedIn ||
-         path == brave_news::prefs::kNewTabPageShowToday;
 }
 
 bool DoesMatchUserHasOptedInToNewTabPageAdsPrefPath(const std::string& path) {
