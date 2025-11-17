@@ -8,9 +8,7 @@ package org.chromium.chrome.browser.ntp;
 import static org.chromium.ui.base.ViewUtils.dpToPx;
 
 import android.app.Activity;
-import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
-import android.os.Build;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.util.Pair;
@@ -25,23 +23,19 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.widget.ImageViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.RequestManager;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.chromium.base.Log;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.brave_news.mojom.BraveNewsController;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.QRCodeShareDialogFragment;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_news.CardBuilderFeedCard;
 import org.chromium.chrome.browser.brave_news.models.FeedItemsCard;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
-import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 import org.chromium.chrome.browser.ntp_background_images.model.BackgroundImage;
 import org.chromium.chrome.browser.ntp_background_images.model.NTPImage;
@@ -195,40 +189,13 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         } else if (holder instanceof ImageCreditViewHolder) {
             ImageCreditViewHolder imageCreditViewHolder = (ImageCreditViewHolder) holder;
 
-            if (mNtpImage instanceof Wallpaper
-                    && NTPImageUtil.isReferralEnabled()
-                    && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                imageCreditViewHolder.mSuperReferralLogo.setVisibility(View.VISIBLE);
-                imageCreditViewHolder.mCreditTv.setVisibility(View.GONE);
-                int floatingButtonIcon = R.drawable.ic_qr_code;
-                imageCreditViewHolder.mSuperReferralLogo.setImageResource(floatingButtonIcon);
-                int floatingButtonIconColor =
-                        GlobalNightModeStateProviderHolder.getInstance().isInNightMode()
-                                ? android.R.color.white
-                                : android.R.color.black;
-                ImageViewCompat.setImageTintList(
-                        imageCreditViewHolder.mSuperReferralLogo,
-                        ColorStateList.valueOf(mActivity.getColor(floatingButtonIconColor)));
-                imageCreditViewHolder.mSuperReferralLogo.setOnClickListener(
-                        view -> {
-                            QRCodeShareDialogFragment qRCodeShareDialogFragment =
-                                    new QRCodeShareDialogFragment();
-                            qRCodeShareDialogFragment.setQRCodeText(
-                                    BraveConstants.BRAVE_REF_URL
-                                            + mNTPBackgroundImagesBridge.getSuperReferralCode());
-                            qRCodeShareDialogFragment.show(
-                                    ((BraveActivity) mActivity).getSupportFragmentManager(),
-                                    "QRCodeShareDialogFragment");
-                        });
-
-            } else if (UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+            if (UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                             .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)
                     && mSponsoredTab != null
                     && NTPImageUtil.shouldEnableNTPFeature()) {
                 if (mNtpImage instanceof BackgroundImage) {
                     BackgroundImage backgroundImage = (BackgroundImage) mNtpImage;
                     imageCreditViewHolder.mSponsoredLogo.setVisibility(View.GONE);
-                    imageCreditViewHolder.mSuperReferralLogo.setVisibility(View.GONE);
 
                     if (backgroundImage.getImageCredit() != null) {
                         String imageCreditStr =
@@ -264,7 +231,7 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     }
                 }
             }
-            if (!NTPImageUtil.isReferralEnabled() && mSponsoredLogo != null) {
+            if (mSponsoredLogo != null) {
                 imageCreditViewHolder.mSponsoredLogo.setVisibility(View.VISIBLE);
                 imageCreditViewHolder.mSponsoredLogo.setImageBitmap(mSponsoredLogo);
                 imageCreditViewHolder.mSponsoredLogo.setOnClickListener(
@@ -675,7 +642,6 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public static class ImageCreditViewHolder extends RecyclerView.ViewHolder {
         LinearLayout mNtpImageCreditLayout;
         FrameLayout mImageCreditLayout;
-        FloatingActionButton mSuperReferralLogo;
         TextView mCreditTv;
         ImageView mSponsoredLogo;
 
@@ -684,8 +650,6 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             this.mNtpImageCreditLayout =
                     (LinearLayout) itemView.findViewById(R.id.ntp_image_credit_layout);
             this.mImageCreditLayout = (FrameLayout) itemView.findViewById(R.id.image_credit_layout);
-            this.mSuperReferralLogo =
-                    (FloatingActionButton) itemView.findViewById(R.id.super_referral_logo);
             this.mCreditTv = (TextView) itemView.findViewById(R.id.credit_text);
             this.mSponsoredLogo = (ImageView) itemView.findViewById(R.id.sponsored_logo);
             BraveTouchUtils.ensureMinTouchTarget(this.mCreditTv);

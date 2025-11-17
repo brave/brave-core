@@ -16,20 +16,13 @@ import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.ntp_background_images.model.BackgroundImage;
 import org.chromium.chrome.browser.ntp_background_images.model.ImageCredit;
 import org.chromium.chrome.browser.ntp_background_images.model.NTPImage;
-import org.chromium.chrome.browser.ntp_background_images.model.TopSite;
 import org.chromium.chrome.browser.ntp_background_images.model.Wallpaper;
-import org.chromium.chrome.browser.ntp_background_images.util.NewTabPageListener;
 import org.chromium.chrome.browser.profiles.Profile;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class NTPBackgroundImagesBridge {
     private long mNativeNTPBackgroundImagesBridge;
     private final ObserverList<NTPBackgroundImageServiceObserver> mObservers =
             new ObserverList<NTPBackgroundImageServiceObserver>();
-    private static final List<TopSite> sTopSites = new ArrayList<>();
-    private static NewTabPageListener sNewTabPageListener;
 
     public abstract static class NTPBackgroundImageServiceObserver {
         public abstract void onUpdated();
@@ -99,47 +92,6 @@ public class NTPBackgroundImagesBridge {
                         wallpaper.metricType());
     }
 
-    public boolean isSuperReferral() {
-        return NTPBackgroundImagesBridgeJni.get().isSuperReferral(
-                mNativeNTPBackgroundImagesBridge, NTPBackgroundImagesBridge.this);
-    }
-
-    public String getSuperReferralThemeName() {
-        return NTPBackgroundImagesBridgeJni.get().getSuperReferralThemeName(
-                mNativeNTPBackgroundImagesBridge, NTPBackgroundImagesBridge.this);
-    }
-
-    public String getSuperReferralCode() {
-        return NTPBackgroundImagesBridgeJni.get().getSuperReferralCode(
-                mNativeNTPBackgroundImagesBridge, NTPBackgroundImagesBridge.this);
-    }
-
-    public void getTopSites() {
-        sTopSites.clear();
-        NTPBackgroundImagesBridgeJni.get()
-                .getTopSites(mNativeNTPBackgroundImagesBridge, NTPBackgroundImagesBridge.this);
-    }
-
-    public String getReferralApiKey() {
-        return NTPBackgroundImagesBridgeJni.get().getReferralApiKey(
-                mNativeNTPBackgroundImagesBridge, NTPBackgroundImagesBridge.this);
-    }
-
-    public void setNewTabPageListener(NewTabPageListener newTabPageListener) {
-        sNewTabPageListener = newTabPageListener;
-    }
-
-    @CalledByNative
-    public static void loadTopSitesData(
-            String name, String destinationUrl, String backgroundColor, String imagePath) {
-        sTopSites.add(new TopSite(name, destinationUrl, backgroundColor, imagePath));
-    }
-
-    @CalledByNative
-    public static void topSitesLoaded() {
-        sNewTabPageListener.updateTopSites(sTopSites);
-    }
-
     @CalledByNative
     public static BackgroundImage createWallpaper(String imagePath, String author, String link) {
         return new BackgroundImage(imagePath, 0, 0, new ImageCredit(author, link));
@@ -194,19 +146,5 @@ public class NTPBackgroundImagesBridge {
                 String creativeInstanceId,
                 String destinationUrl,
                 int metricType);
-
-        void getTopSites(long nativeNTPBackgroundImagesBridge, NTPBackgroundImagesBridge caller);
-
-        boolean isSuperReferral(
-                long nativeNTPBackgroundImagesBridge, NTPBackgroundImagesBridge caller);
-
-        String getSuperReferralThemeName(
-                long nativeNTPBackgroundImagesBridge, NTPBackgroundImagesBridge caller);
-
-        String getSuperReferralCode(
-                long nativeNTPBackgroundImagesBridge, NTPBackgroundImagesBridge caller);
-
-        String getReferralApiKey(
-                long nativeNTPBackgroundImagesBridge, NTPBackgroundImagesBridge caller);
     }
 }
