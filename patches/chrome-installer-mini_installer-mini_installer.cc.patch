@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/mini_installer/mini_installer.cc b/chrome/installer/mini_installer/mini_installer.cc
-index 44f29f2fafda83685479c791da3aa4ddbd4cde73..cfe0506787126de490b650ccd53d65891bbf5554 100644
+index 44f29f2fafda83685479c791da3aa4ddbd4cde73..14e01e32520b87ef5cbc96a346326f07d5ddf853 100644
 --- a/chrome/installer/mini_installer/mini_installer.cc
 +++ b/chrome/installer/mini_installer/mini_installer.cc
 @@ -462,6 +462,7 @@ ProcessExitResult UnpackBinaryResources(HMODULE module,
@@ -14,7 +14,7 @@ index 44f29f2fafda83685479c791da3aa4ddbd4cde73..cfe0506787126de490b650ccd53d6589
    if (!setup_exe.assign(setup_path)) {
      return ProcessExitResult(COMMAND_STRING_OVERFLOW);
    }
-+  BRAVE_GET_PREVIOUS_SETUP_EXE_PATH
++  BRAVE_ASSIGN_PREVIOUS_SETUP_EXE_IF_SETUP_PATH_EMPTY
  
    // There could be three full paths in the command line for setup.exe (path
    // to exe itself, path to archive and path to log file), so we declare
@@ -22,7 +22,7 @@ index 44f29f2fafda83685479c791da3aa4ddbd4cde73..cfe0506787126de490b650ccd53d6589
    // on to setup.exe
    AppendCommandLineFlags(configuration.command_line(), &cmd_line);
  
-+  BRAVE_RUN_SETUP
++  BRAVE_MAYBE_APPEND_PREVIOUS_VERSION_AND_PARSE_REFERRAL_CODE
    return RunProcessAndWait(setup_exe.get(), cmd_line.get(),
                             RUN_SETUP_FAILED_FILE_NOT_FOUND,
                             RUN_SETUP_FAILED_PATH_NOT_FOUND,
@@ -30,7 +30,7 @@ index 44f29f2fafda83685479c791da3aa4ddbd4cde73..cfe0506787126de490b650ccd53d6589
    if (!GetWorkDir(module, &base_path, &exit_code)) {
      return exit_code;
    }
-+  BRAVE_SET_INSTALLER_FLAGS
++  BRAVE_APPEND_FULL_SUFFIX_IN_REGISTRY
  
    int max_delete_attempts = 0;
    PathString setup_path;
@@ -38,7 +38,7 @@ index 44f29f2fafda83685479c791da3aa4ddbd4cde73..cfe0506787126de490b650ccd53d6589
    exit_code =
        UnpackBinaryResources(module, base_path.get(), setup_path, archive_path,
                              archive_type, max_delete_attempts);
-+  BRAVE_RUN_PREVIOUS_SETUP_EXE
++  BRAVE_MAYBE_PATCH_PREVIOUS_SETUP_EXE
  
    // While unpacking the binaries, we paged in a whole bunch of memory that
    // we don't need anymore.  Let's give it back to the pool before running
