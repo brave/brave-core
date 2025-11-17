@@ -6,7 +6,7 @@
 #include "brave/ios/browser/ui/webui/brave_wallet/wallet_page_handler.h"
 
 #include "base/notimplemented.h"
-#include "brave/ios/browser/brave_wallet/wallet_page_handler_bridge.h"
+#include "brave/components/brave_wallet/ios/browser/wallet_page_handler_bridge.h"
 #include "brave/ios/browser/ui/webui/brave_wallet/wallet_page_handler_bridge_holder.h"
 #include "ios/web/public/web_state.h"
 
