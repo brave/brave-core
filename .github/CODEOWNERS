@@ -262,7 +262,9 @@ docs/keyed_services.md @bridiver
 
 build/commands/lib/branding.js @bridiver
 
-# deprecated
+# Deprecated - these should go in the appropriate component/feature directory.
+# brave/common is also ok for constants/prefs that don't neatly fit anywhere
+# else and are only for desktop/android, but this should be very rare.
 /components/constants @bridiver
 
 # changes to upstream content settings should be done as patches
