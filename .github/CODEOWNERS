@@ -16,10 +16,6 @@ rewrite/ @brave/brave-core-owners
 # Do not add to BRAVE_VIEW_OWNED_BY_CLIENT_PASS_KEY
 chromium_src/ui/views/view.h @brave/brave-core-owners
 
-# brave/browser/ui/BUILD.gn should not have new source files added to it. see
-# https://github.com/brave/brave-core/blob/master/docs/gni_sources.md#circular-dependencies-circular-dependencies
-browser/ui/BUILD.gn @bridiver
-
 # BraveBrowserProcess public interface
 # Global services should use GlobalDesktopFeatures
 # https://chromium.googlesource.com/chromium/src/+/main/docs/chrome_browser_design_principles.md#structure_modularity
