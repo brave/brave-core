@@ -729,6 +729,9 @@ const util = {
       if (
         config.isCI &&
         config.hostOS !== 'win' && // gn clean has issues with symlinks.
+        // Release builds can have steps that can be interrupted by timeouts. We
+        // don't want to clean the build in this case.
+        !config.isBraveReleaseBuild() &&
         buildGuard.wasInterrupted()
       ) {
         await util.runAsync('gn', ['clean', outputDir], options)
