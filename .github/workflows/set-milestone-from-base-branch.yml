@@ -11,6 +11,7 @@ permissions:
   contents: read
   pull-requests: write
   issues: write
+  repository-projects: read # required for "gh pr edit": https://github.com/cli/cli/issues/6274
 
 jobs:
   set-pr-milestone:
