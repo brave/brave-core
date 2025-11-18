@@ -16,6 +16,8 @@ source_set("brave_wallet") {
     "nft_ui.mm",
     "wallet_page_handler.h",
     "wallet_page_handler.mm",
+    "wallet_page_handler_bridge_holder.h",
+    "wallet_page_handler_bridge_holder.mm",
     "wallet_page_ui.h",
     "wallet_page_ui.mm",
   ]
@@ -25,6 +27,7 @@ source_set("brave_wallet") {
     "//brave/components/brave_wallet/browser:constants",
     "//brave/components/brave_wallet/browser:wallet_handler",
     "//brave/components/brave_wallet/common",
+    "//brave/components/brave_wallet/ios/browser",
     "//brave/components/brave_wallet_ui/line_chart:line_chart_display_generated",
     "//brave/components/brave_wallet_ui/market:market_display_generated",
     "//brave/components/brave_wallet_ui/nft:nft_display_generated",
