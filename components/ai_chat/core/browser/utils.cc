@@ -52,10 +52,6 @@ namespace ai_chat {
 
 namespace {
 
-#if !defined(OFFICIAL_BUILD)
-constexpr char kAIChatServerUrl[] = "ai-chat-server-url";
-#endif
-
 const base::flat_map<mojom::ActionType, std::string>&
 GetActionTypeQuestionMap() {
   static const base::NoDestructor<
@@ -266,7 +262,7 @@ GURL GetEndpointUrl(bool premium, const std::string& path) {
   // If a runtime AI Chat URL is provided, use it.
   std::string ai_chat_url =
       base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(
-          kAIChatServerUrl);
+          "ai-chat-server-url");
   if (!ai_chat_url.empty()) {
     GURL url = GURL(base::StrCat({ai_chat_url, "/", path}));
     CHECK(url.is_valid()) << "Invalid API Url: " << url.spec();
