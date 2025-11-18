@@ -1,20 +1,20 @@
 diff --git a/third_party/blink/renderer/core/execution_context/navigator_base.h b/third_party/blink/renderer/core/execution_context/navigator_base.h
-index d6d42e71ad5b4e577bc1b81f58e6550cffb2e44f..f969f27d8010422ee346506f212bedb0947aeaa1 100644
+index 85b582e97a0d23fb66f4d4d2d28322519b200b0f..951a14666eb0719930bac91fa2e941cbe98a3881 100644
 --- a/third_party/blink/renderer/core/execution_context/navigator_base.h
 +++ b/third_party/blink/renderer/core/execution_context/navigator_base.h
-@@ -45,7 +45,7 @@ class CORE_EXPORT NavigatorBase : public ScriptWrappable,
+@@ -49,7 +49,7 @@ class CORE_EXPORT NavigatorBase : public ScriptWrappable,
                                    public NavigatorOnLine,
                                    public NavigatorUA,
                                    public ExecutionContextClient,
--                                  public Supplementable<NavigatorBase, 16> {
-+                                  public Supplementable<NavigatorBase, 17> {
+-                                  public Supplementable<NavigatorBase, 15> {
++                                  public Supplementable<NavigatorBase, 16> {
   public:
    enum class Supplements {
      kLockManager = 0,
-@@ -64,6 +64,7 @@ class CORE_EXPORT NavigatorBase : public ScriptWrappable,
+@@ -67,6 +67,7 @@ class CORE_EXPORT NavigatorBase : public ScriptWrappable,
+     kNavigatorML = 12,
      kSerial = 13,
-     kGeolocation = 14,
-     kGlobalFetchImpl = 15
+     kGeolocation = 14
 +    , kBraveNavigator,
    };
  
