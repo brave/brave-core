@@ -34,10 +34,6 @@ class BraveBrowserViewLayout : public BrowserViewLayout {
                          views::View* contents_separator);
   ~BraveBrowserViewLayout() override;
 
-  void set_contents_background(views::View* contents_background) {
-    contents_background_ = contents_background;
-  }
-
   void set_vertical_tab_strip_host(views::View* vertical_tab_strip_host) {
     vertical_tab_strip_host_ = vertical_tab_strip_host;
   }
@@ -82,7 +78,6 @@ class BraveBrowserViewLayout : public BrowserViewLayout {
   raw_ptr<views::View, DanglingUntriaged> vertical_tab_strip_host_ = nullptr;
   raw_ptr<SidebarContainerView, DanglingUntriaged> sidebar_container_ = nullptr;
   raw_ptr<views::View> sidebar_separator_ = nullptr;
-  raw_ptr<views::View> contents_background_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_VIEW_LAYOUT_H_

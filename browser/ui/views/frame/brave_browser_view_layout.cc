@@ -210,10 +210,6 @@ void BraveBrowserViewLayout::LayoutContentsContainerView(
     const gfx::Rect& available_bounds) {
   main_container_->SetBoundsRect(available_bounds);
 
-  if (contents_background_) {
-    contents_background_->SetBoundsRect(available_bounds);
-  }
-
   gfx::Rect contents_container_bounds = main_container_->GetLocalBounds();
   if (vertical_tab_strip_host_) {
     // Both vertical tab impls should not be enabled together.

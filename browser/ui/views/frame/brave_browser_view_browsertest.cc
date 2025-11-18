@@ -20,6 +20,7 @@
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/tab_modal_confirm_dialog.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -38,9 +39,11 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "ui/color/color_provider.h"
 #include "ui/compositor/layer.h"
 #include "ui/gfx/animation/animation.h"
 #include "ui/gfx/animation/animation_test_api.h"
+#include "ui/views/background.h"
 #include "ui/views/view_class_properties.h"
 #include "ui/views/widget/widget.h"
 #include "ui/views/widget/widget_delegate.h"
@@ -208,24 +211,6 @@ class BraveBrowserViewWithRoundedCornersTest
 };
 
 IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
-                       ContentsBackgroundEventHandleTest) {
-  EXPECT_TRUE(brave_browser_view()->contents_background_view_);
-
-  EXPECT_EQ(brave_browser_view()->contents_background_view_->bounds(),
-            brave_browser_view()->main_container()->bounds());
-
-  content::WebContents* web_contents =
-      browser()->tab_strip_model()->GetActiveWebContents();
-  gfx::Point screen_point = web_contents->GetContainerBounds().CenterPoint();
-
-  // Check contents background is not event handler for web contents region
-  // point.
-  views::View::ConvertPointFromScreen(browser_view(), &screen_point);
-  EXPECT_NE(brave_browser_view()->contents_background_view_,
-            browser_view()->GetEventHandlerForPoint(screen_point));
-}
-
-IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
                        RoundedCornersForContentsTest) {
   const gfx::AnimationTestApi::RenderModeResetter disable_rich_animations_ =
       gfx::AnimationTestApi::SetRichAnimationRenderMode(
@@ -235,6 +220,11 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
   panel_ui->Toggle();
   views::View* contents_container = browser_view()->contents_container();
   views::View* main_container = browser_view()->main_container();
+
+  // For rounded corners, main container needs background to have proper
+  // bg color as contents container has margin.
+  EXPECT_TRUE(kColorToolbar == main_container->GetBackground()->color());
+
   views::View* side_panel = browser_view()->contents_height_side_panel();
   const auto rounded_corners_margin = BraveContentsViewUtil::kMarginThickness;
 
