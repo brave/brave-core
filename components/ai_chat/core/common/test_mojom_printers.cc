@@ -118,6 +118,9 @@ void PrintTo(const ConversationEntryEvent& event, std::ostream* os) {
         *os << "    favicon_url: " << s->favicon_url.possibly_invalid_spec()
             << "\n";
       }
+      for (const auto& r : event.get_sources_event()->rich_results) {
+        *os << "  - rich_result: " << r << "\n";
+      }
       break;
     }
     case Tag::kToolUseEvent: {

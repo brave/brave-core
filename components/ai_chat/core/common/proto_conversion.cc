@@ -39,6 +39,12 @@ mojom::WebSourcesEventPtr DeserializeWebSourcesEvent(
     }
     mojom_event->sources.push_back(std::move(mojom_source));
   }
+
+  mojom_event->rich_results.reserve(proto_event.rich_results_size());
+  for (const auto& rich_result : proto_event.rich_results()) {
+    mojom_event->rich_results.push_back(rich_result);
+  }
+
   return mojom_event;
 }
 
@@ -61,6 +67,11 @@ void SerializeWebSourcesEvent(const mojom::WebSourcesEventPtr& mojom_event,
     proto_source->set_title(mojom_source->title);
     proto_source->set_url(mojom_source->url.spec());
     proto_source->set_favicon_url(mojom_source->favicon_url.spec());
+  }
+
+  proto_event->clear_rich_results();
+  for (const auto& rich_result : mojom_event->rich_results) {
+    proto_event->add_rich_results(rich_result);
   }
 }
 
