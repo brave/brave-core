@@ -13,6 +13,7 @@
 #include "base/check_op.h"
 #include "base/compiler_specific.h"
 #include "base/logging.h"
+#include "base/strings/string_view_util.h"
 #include "base/time/time.h"
 #include "components/cbor/reader.h"
 #include "components/cbor/writer.h"
@@ -225,7 +226,8 @@ bool CoseSign1::Verify(const bssl::ParsedCertificateList& cert_chain) {
 
   std::string_view low_cert_spki;
   if (!net::asn1::ExtractSPKIFromDERCert(
-          cert_chain.front()->der_cert().AsStringView(), &low_cert_spki)) {
+          base::as_string_view(cert_chain.front()->der_cert()),
+          &low_cert_spki)) {
     LOG(ERROR) << "COSE verification: could not extract SPKI from cert";
     return false;
   }
