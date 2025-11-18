@@ -19,6 +19,7 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/system/sys_info.h"
+#include "brave/browser/ai_chat/code_sandbox_navigation_throttle.h"
 #include "brave/browser/brave_account/brave_account_navigation_throttle.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_browser_features.h"
@@ -1296,6 +1297,8 @@ void BraveContentBrowserClient::CreateThrottlesForNavigation(
 #endif
 
   brave_search::BackupResultsNavigationThrottle::MaybeCreateAndAdd(registry);
+
+  ai_chat::CodeSandboxNavigationThrottle::MaybeCreateAndAdd(registry);
 }
 
 // Updates the global privacy control web preference and returns true if it is
