@@ -6,6 +6,7 @@
 #include "brave/ios/browser/api/certificate/models/brave_certificate_signature.h"
 
 #include "base/strings/string_number_conversions.h"
+#include "base/strings/string_view_util.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/ios/browser/api/certificate/utils/brave_certificate_utils.h"
 #include "brave/ios/browser/api/certificate/utils/brave_certificate_x509_utils.h"
@@ -38,8 +39,8 @@
     if (certificate::x509_utils::ParseAlgorithmIdentifier(
             certificate->signature_algorithm_tlv(), &signature_oid,
             &signature_params)) {
-      _objectIdentifier =
-          certificate::utils::NSStringToData(signature_oid.AsString());
+      _objectIdentifier = certificate::utils::NSStringToData(
+          std::string(base::as_string_view(signature_oid)));
 
       std::string absolute_oid =
           certificate::x509_utils::NIDToAbsoluteOID(signature_oid);
@@ -48,17 +49,18 @@
       }
 
       if (!certificate::x509_utils::IsNull(signature_params)) {
-        std::string signature_params_string = signature_params.AsString();
+        std::string signature_params_string =
+            std::string(base::as_string_view(signature_params));
         _parameters = base::SysUTF8ToNSString(base::HexEncode(
             signature_params_string.data(), signature_params_string.size()));
       }
     }
 
-    std::string signature_string =
-        certificate->signature_value().bytes().AsString();
+    std::string signature_string = std::string(
+        base::as_string_view(certificate->signature_value().bytes()));
     _signatureHexEncoded = base::SysUTF8ToNSString(
         base::HexEncode(signature_string.data(), signature_string.size()));
-    _bytesSize = certificate->signature_value().bytes().Length();
+    _bytesSize = certificate->signature_value().bytes().size();
   }
   return self;
 }
