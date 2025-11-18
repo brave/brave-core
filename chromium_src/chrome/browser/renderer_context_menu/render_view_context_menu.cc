@@ -18,6 +18,7 @@
 #include "brave/browser/autocomplete/brave_autocomplete_scheme_classifier.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_shields/brave_shields_tab_helper.h"
+#include "brave/browser/cosmetic_filters/brave_element_blocker_on_private_tab_infobar.h"
 #include "brave/browser/cosmetic_filters/cosmetic_filters_tab_helper.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
@@ -39,6 +40,7 @@
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/common/channel_info.h"
 #include "components/grit/brave_components_strings.h"
+#include "components/infobars/content/content_infobar_manager.h"
 #include "components/omnibox/browser/autocomplete_classifier.h"
 #include "components/omnibox/browser/autocomplete_controller.h"
 #include "components/omnibox/browser/autocomplete_match_type.h"
@@ -503,10 +505,22 @@ void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
           source_web_contents_, base::UTF16ToUTF8(params_.selection_text));
       break;
 #endif
-    case IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENTS:
-      cosmetic_filters::CosmeticFiltersTabHelper::LaunchContentPicker(
-          source_web_contents_);
-      break;
+    case IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENTS: {
+      const auto* profile = GetProfile();
+      if (profile->IsOffTheRecord()) {
+        // warn the user that element blocker feature in private browsing mode
+        // writes data to the normal browsing profile mode
+        infobars::ContentInfoBarManager* infobar_manager =
+            infobars::ContentInfoBarManager::FromWebContents(
+                source_web_contents_);
+        CHECK(infobar_manager);
+        BraveElementBlockerOnPrivateTabInfoBarDelegate::Create(
+            infobar_manager, source_web_contents_);
+      } else {
+        cosmetic_filters::CosmeticFiltersTabHelper::LaunchContentPicker(
+            source_web_contents_);
+      }
+    } break;
     case IDC_NEW_EMAIL_ALIAS:
       if (auto* email_aliases = GetEmailAliasesController(GetBrowser())) {
         email_aliases->ShowBubble(GetRenderFrameHost(),
@@ -766,7 +780,10 @@ void BraveRenderViewContextMenu::AppendDeveloperItems() {
       brave_shields::features::kBraveShieldsElementPicker);
 
   const auto* profile = GetProfile();
-  add_block_elements &= profile && !profile->IsOffTheRecord();
+  add_block_elements &=
+      profile &&
+      (!profile->IsOffTheRecord() ||
+       shields_tab_helper->GetAllowElementBlockerInPrivateModeEnabled());
   if (add_block_elements) {
     std::optional<size_t> inspect_index =
         menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_INSPECTELEMENT);

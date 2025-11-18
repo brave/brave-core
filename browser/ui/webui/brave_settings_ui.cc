@@ -33,6 +33,7 @@
 #include "brave/components/brave_account/features.h"
 #include "brave/components/brave_origin/brave_origin_handler.h"
 #include "brave/components/brave_origin/brave_origin_utils.h"
+#include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/features.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
@@ -221,6 +222,10 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
   html_source->AddBoolean("isForgetFirstPartyStorageFeatureEnabled",
                           base::FeatureList::IsEnabled(
                               net::features::kBraveForgetFirstPartyStorage));
+  html_source->AddBoolean(
+      "isBlockElementFeatureEnabled",
+      base::FeatureList::IsEnabled(
+          brave_shields::features::kBraveShieldsElementPicker));
   html_source->AddBoolean("isBraveRewardsSupported",
                           brave_rewards::IsSupportedForProfile(profile));
   html_source->AddBoolean(

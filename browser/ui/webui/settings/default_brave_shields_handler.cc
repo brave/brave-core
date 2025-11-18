@@ -126,6 +126,16 @@ void DefaultBraveShieldsHandler::RegisterMessages() {
       base::BindRepeating(
           &DefaultBraveShieldsHandler::GetHideBlockAllCookieFlag,
           base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "getAllowElementBlockerInPrivateModeEnabled",
+      base::BindRepeating(&DefaultBraveShieldsHandler::
+                              GetAllowElementBlockerInPrivateModeEnabled,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "setAllowElementBlockerInPrivateModeEnabled",
+      base::BindRepeating(&DefaultBraveShieldsHandler::
+                              SetAllowElementBlockerInPrivateModeEnabled,
+                          base::Unretained(this)));
 
   content_settings_observation_.Observe(
       HostContentSettingsMapFactory::GetForProfile(profile_));
@@ -424,4 +434,27 @@ void DefaultBraveShieldsHandler::GetForgetFirstPartyStorageEnabled(
 
   AllowJavascript();
   ResolveJavascriptCallback(args[0], base::Value(result));
+}
+
+void DefaultBraveShieldsHandler::GetAllowElementBlockerInPrivateModeEnabled(
+    const base::Value::List& args) {
+  CHECK_EQ(args.size(), 1U);
+  CHECK(profile_);
+
+  bool result = brave_shields::GetAllowElementBlockerInPrivateModeEnabled(
+      g_browser_process->local_state());
+  AllowJavascript();
+  ResolveJavascriptCallback(args[0], base::Value(result));
+}
+
+void DefaultBraveShieldsHandler::SetAllowElementBlockerInPrivateModeEnabled(
+    const base::Value::List& args) {
+  CHECK_EQ(args.size(), 1U);
+  CHECK(profile_);
+  if (!args[0].is_bool()) {
+    return;
+  }
+
+  brave_shields::SetAllowElementBlockerInPrivateModeEnabled(
+      g_browser_process->local_state(), args[0].GetBool());
 }
