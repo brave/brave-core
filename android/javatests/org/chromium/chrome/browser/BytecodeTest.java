@@ -1551,7 +1551,8 @@ public class BytecodeTest {
                         Supplier.class,
                         Runnable.class,
                         int.class,
-                        MenuButtonCoordinator.VisibilityDelegate.class));
+                        MenuButtonCoordinator.VisibilityDelegate.class,
+                        boolean.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/share/ShareDelegateImpl",
