@@ -9,6 +9,7 @@
 #include <chrome/browser/ui/ui_features.cc>
 #undef HasTabSearchToolbarButton
 
+#include "base/feature_list.h"
 #include "base/feature_override.h"
 
 namespace features {
@@ -28,5 +29,7 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
 bool HasTabSearchToolbarButton() {
   return true;
 }
+
+BASE_FEATURE(kForcePopupToBeOpenedAsTab, base::FEATURE_DISABLED_BY_DEFAULT);
 
 }  // namespace features
