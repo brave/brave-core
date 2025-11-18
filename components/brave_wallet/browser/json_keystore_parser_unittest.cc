@@ -59,7 +59,7 @@ TEST(JsonKeystoreParser, DecryptPrivateKeyFromJsonKeystore) {
       *base::span(*private_key).to_fixed_extent<32>());
   EXPECT_EQ(GetHexAddr(hd_key.get()),
             "0xb14ab53e38da1c172f877dbc6d65e4a1b0474c3c");
-  EXPECT_EQ(HexEncodeLower(*private_key),
+  EXPECT_EQ(base::HexEncodeLower(*private_key),
             "efca4cdd31923b50f4214af5d2ae10e7ac45a5019e9431cc195482d707485378");
 
   // wrong password

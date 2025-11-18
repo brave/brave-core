@@ -17,7 +17,6 @@
 #include "base/files/file_util.h"
 #include "base/threading/scoped_blocking_call.h"
 #include "base/types/expected_macros.h"
-#include "brave/components/brave_wallet/common/hex_utils.h"
 #include "sql/meta_table.h"
 #include "sql/statement.h"
 

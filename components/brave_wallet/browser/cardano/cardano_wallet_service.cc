@@ -24,7 +24,6 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/cardano_address.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
-#include "brave/components/brave_wallet/common/hex_utils.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace brave_wallet {
@@ -282,7 +281,7 @@ void CardanoWalletService::OnGetTransactionStatus(
     return;
   }
 
-  if (HexEncodeLower(transaction.value()->tx_hash) != txid) {
+  if (base::HexEncodeLower(transaction.value()->tx_hash) != txid) {
     std::move(callback).Run(base::unexpected(WalletInternalErrorMessage()));
     return;
   }
