@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_strip.cc b/chrome/browser/ui/views/tabs/tab_strip.cc
-index 09b3d2ecfff2115c1472b2189a1484af9d713f04..b72cee18f27ad6bc906d113c9b1eedd795e21e5e 100644
+index 09b3d2ecfff2115c1472b2189a1484af9d713f04..34d4d43663855879f5274894511786277c40d917 100644
 --- a/chrome/browser/ui/views/tabs/tab_strip.cc
 +++ b/chrome/browser/ui/views/tabs/tab_strip.cc
 @@ -548,6 +548,7 @@ class TabStrip::TabDragContextImpl : public TabDragContext,
@@ -18,3 +18,12 @@ index 09b3d2ecfff2115c1472b2189a1484af9d713f04..b72cee18f27ad6bc906d113c9b1eedd7
        // If there's a group header here, and we're dragging a group, we might
        // end up on either side of that header. Check both cases to find the
        // best option.
+@@ -1464,7 +1466,7 @@ void TabStrip::SetSelection(const ui::ListSelectionModel& new_selection) {
+       const tab_groups::TabGroupId new_group = selected_tab->group().value();
+       // If the tab that is about to be selected is in a collapsed group,
+       // automatically expand the group.
+-      if (IsGroupCollapsed(new_group)) {
++      if (IsGroupCollapsed(new_group) && !drag_context_->IsDragSessionActive()) {
+         ToggleTabGroupCollapsedState(
+             new_group, ToggleTabGroupCollapsedStateOrigin::kTabsSelected);
+       }

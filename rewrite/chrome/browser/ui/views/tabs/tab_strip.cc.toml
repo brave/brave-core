@@ -1,0 +1,19 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+[[substitution]]
+description = 'Insert Brave-specific macro in CalculateBoundsForDraggedViews()'
+re_pattern = '(std::vector<gfx::Rect> CalculateBoundsForDraggedViews\(\s*const std::vector<TabSlotView\*>& views\) override {)'
+replace = '\1\n    BRAVE_TAB_DRAG_CONTEXT_IMPL_CALCULATE_BOUNDS_FOR_DRAGGED_VIEWS'
+
+[[substitution]]
+description = 'Insert Brave-specific macro in CalculateInsertionIndex()'
+re_pattern = '(int CalculateInsertionIndex\(const gfx::Rect& dragged_bounds,[\s\S]*continue;\n\s*}\n)'
+replace = '\1\n      BRAVE_TAB_DRAG_CONTEXT_IMPL_CALCULATE_INSERTION_INDEX'
+
+[[substitution]]
+description = 'Prevent auto expanding tab groups during drag-and-drop inside SetSelection()'
+re_pattern = '(TabStrip::SetSelection\(const ui::ListSelectionModel& new_selection\) {[\s\S]*if \()(IsGroupCollapsed\(new_group\))'
+replace = '\1\2 && !drag_context_->IsDragSessionActive()'
