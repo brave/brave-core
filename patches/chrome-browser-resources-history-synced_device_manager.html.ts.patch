@@ -1,20 +1,23 @@
 diff --git a/chrome/browser/resources/history/synced_device_manager.html.ts b/chrome/browser/resources/history/synced_device_manager.html.ts
-index e2676d4c40cb24854939d8d96f2296f14467aa7b..4446d5c253f8a8ba3af11ecd8a469ea41135e741 100644
+index e2676d4c40cb24854939d8d96f2296f14467aa7b..f072f0894fd9612fc1b3463c2e26bb5cd672838e 100644
 --- a/chrome/browser/resources/history/synced_device_manager.html.ts
 +++ b/chrome/browser/resources/history/synced_device_manager.html.ts
-@@ -31,6 +31,7 @@ export function getHtml(this: HistorySyncedDeviceManagerElement) {
+@@ -31,18 +31,6 @@ export function getHtml(this: HistorySyncedDeviceManagerElement) {
    ${this.noSyncedTabsMessage_()}
  </div>
  
-+<!--
- <div id="sign-in-guide"
-     ?hidden="${!this.showSignInGuide_()
-       || this.replaceSyncPromosWithSignInPromos_}">
-@@ -42,6 +43,7 @@ export function getHtml(this: HistorySyncedDeviceManagerElement) {
-     $i18n{turnOnSyncButton}
-   </cr-button>
- </div>
-+-->
- 
+-<div id="sign-in-guide"
+-    ?hidden="${!this.showSignInGuide_()
+-      || this.replaceSyncPromosWithSignInPromos_}">
+-  <div id="sync-promo-illustration"></div>
+-  <div id="turn-on-sync-promo">$i18n{turnOnSyncPromo}</div>
+-  <div id="turn-on-sync-promo-desc">$i18n{turnOnSyncPromoDesc}</div>
+-  <cr-button id="turn-on-sync-button" class="action-button"
+-      @click="${this.onTurnOnSyncClick_}">
+-    $i18n{turnOnSyncButton}
+-  </cr-button>
+-</div>
+-
  <if expr="not is_chromeos">
    ${this.shouldShowHistorySyncOptIn_() ? html`
+     <div id="history-sync-optin" class="history-sync-optin">
