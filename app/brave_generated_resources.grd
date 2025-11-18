@@ -518,6 +518,30 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <message name="IDS_EXTENSIONS_BRAVE_HOSTED" desc="Displayed in extensions management UI if an extension is hosted on the Brave server.">
         Brave-hosted
       </message>
+      <message name="IDS_EXTENSIONS_MV2_DEPRECATION_PANEL_WARNING_SUBTITLE_2" desc="Subtitle text displayed in the manifest v2 deprecation panel for the warning stage.">
+        {NUM_EXTENSIONS, plural,
+          =1 {Remove or replace it with similar extensions from the <ph name="BEGIN_LINK">&lt;a href="$1" aria-description="$2" target="_blank"&gt;</ph>Web Store<ph name="END_LINK">&lt;/a&gt;</ph>.
+              &lt;br&gt;
+              Brave hosts several Manifest V2 extensions on Brave servers, you can find them in the &lt;a href="chrome://settings/extensions/v2" target="_blank"&gt;settings&lt;/a&gt;.
+          }
+          other {Remove or replace them with similar extensions from the <ph name="BEGIN_LINK">&lt;a href="$1" aria-description="$2" target="_blank"&gt;</ph>Web Store<ph name="END_LINK">&lt;/a&gt;</ph>
+                &lt;br&gt;
+                Brave hosts several Manifest V2 extensions on Brave servers, you can find them in the &lt;a href="chrome://settings/extensions/v2" target="_blank"&gt;settings&lt;/a&gt;.
+          }
+        }
+      </message>
+      <message name="IDS_EXTENSIONS_MV2_DEPRECATION_PANEL_DISABLED_SUBTITLE_2" desc="Subtitle text displayed in the manifest v2 deprecation panel for the disabled stage.">
+        {NUM_EXTENSIONS, plural,
+          =1 {Brave recommends that you remove it. <ph name="BEGIN_LINK">&lt;a href="$1" aria-description="$2" target="_blank"&gt;</ph>Learn more about supported extensions<ph name="END_LINK">&lt;/a&gt;</ph>
+              &lt;br&gt;
+              Brave hosts several Manifest V2 extensions on Brave servers, you can find them in the &lt;a href="chrome://settings/extensions/v2" target="_blank"&gt;settings&lt;/a&gt;.
+          }
+          other {Brave recommends that you remove them. <ph name="BEGIN_LINK">&lt;a href="$1" aria-description="$2" target="_blank"&gt;</ph>Learn more about supported extensions<ph name="END_LINK">&lt;/a&gt;</ph>
+                &lt;br&gt;
+                Brave hosts several Manifest V2 extensions on Brave servers, you can find them in the &lt;a href="chrome://settings/extensions/v2" target="_blank"&gt;settings&lt;/a&gt;.
+          }
+        }
+      </message>
 
       <!-- App shortcuts -->
       <if expr="not is_win">

@@ -4,9 +4,11 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/extensions/manifest_v2/brave_hosted_extensions.h"
+#include "brave/browser/extensions/manifest_v2/features.h"
 #include "brave/browser/ui/webui/navigation_bar_data_provider.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/webui/plural_string_handler.h"
 #include "chrome/common/buildflags.h"
 #include "chrome/grit/generated_resources.h"
 #include "content/public/browser/web_ui_data_source.h"
@@ -33,6 +35,21 @@ void BraveAddExtensionsResources(content::WebUIDataSource* source,
   source->AddString("braveHostedExtensions", mv2_extensions);
 }
 
+std::unique_ptr<PluralStringHandler> BraveUpdatePluralStringHandler(
+    std::unique_ptr<PluralStringHandler> plural_string_handler) {
+  if (base::FeatureList::IsEnabled(
+          extensions_mv2::features::kExtensionsManifestV2)) {
+    plural_string_handler->AddLocalizedString(
+        "mv2DeprecationPanelWarningSubtitle",
+        IDS_EXTENSIONS_MV2_DEPRECATION_PANEL_WARNING_SUBTITLE_2);
+
+    plural_string_handler->AddLocalizedString(
+        "mv2DeprecationPanelDisabledSubtitle",
+        IDS_EXTENSIONS_MV2_DEPRECATION_PANEL_DISABLED_SUBTITLE_2);
+  }
+  return plural_string_handler;
+}
+
 }  // namespace
 
 }  // namespace extensions
@@ -50,7 +67,11 @@ void BraveAddExtensionsResources(content::WebUIDataSource* source,
 #define BRAVE_CREATE_EXTENSIONS_SOURCE \
   BraveAddExtensionsResources(source, profile);
 
+#define AddMessageHandler(...) \
+  AddMessageHandler(BraveUpdatePluralStringHandler(__VA_ARGS__))
+
 #include <chrome/browser/ui/webui/extensions/extensions_ui.cc>
 #undef BRAVE_CREATE_EXTENSIONS_SOURCE
 #undef IDS_EXTENSIONS_ITEM_SOURCE_WEBSTORE
 #undef IDS_EXTENSIONS_ITEM_CHROME_WEB_STORE
+#undef AddMessageHandler
