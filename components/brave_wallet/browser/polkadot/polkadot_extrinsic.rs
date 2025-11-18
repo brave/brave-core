@@ -30,8 +30,7 @@ const UNSIGNED_TRANSFER_ALLOW_DEATH_MIN_LEN: usize = 4 + 32 + 1;
 mod ffi {
     extern "Rust" {
         fn encode_unsigned_transfer_allow_death(
-            send_amount_high: u64,
-            send_amount_low: u64,
+            send_amount_bytes: &[u8; 16],
             pubkey: &[u8; 32],
             balances_pallet_idx: u8,
             transfer_allow_death_call_idx: u8,
@@ -39,16 +38,14 @@ mod ffi {
 
         fn decode_unsigned_transfer_allow_death(
             mut input: &[u8],
-            pubkey: &mut [u8],
-            send_amount_high: &mut u64,
-            send_amount_low: &mut u64,
+            pubkey: &mut [u8; 32],
+            send_amount: &mut [u8; 16],
         ) -> bool;
     }
 }
 
 fn encode_unsigned_transfer_allow_death(
-    send_amount_high: u64,
-    send_amount_low: u64,
+    send_amount_bytes: &[u8; 16],
     pubkey: &[u8; 32],
     balances_pallet_idx: u8,
     transfer_allow_death_call_idx: u8,
@@ -62,8 +59,7 @@ fn encode_unsigned_transfer_allow_death(
 
     buf.extend_from_slice(pubkey);
 
-    let send_amount: u128 = ((send_amount_high as u128) << 64) | (send_amount_low as u128);
-    Compact(send_amount).encode_to(&mut buf);
+    Compact(u128::from_le_bytes(*send_amount_bytes)).encode_to(&mut buf);
 
     Compact(buf.len() as u64).using_encoded(|encoded_len| {
         buf.splice(0..0, encoded_len.iter().copied());
@@ -74,9 +70,8 @@ fn encode_unsigned_transfer_allow_death(
 
 fn decode_unsigned_transfer_allow_death(
     mut input: &[u8],
-    pubkey: &mut [u8],
-    send_amount_high: &mut u64,
-    send_amount_low: &mut u64,
+    pubkey: &mut [u8; 32],
+    send_amount_bytes: &mut [u8; 16],
 ) -> bool {
     let Ok(len) = Compact::<u64>::decode(&mut input) else {
         return false;
@@ -113,7 +108,6 @@ fn decode_unsigned_transfer_allow_death(
         return false;
     }
 
-    println!("{}", input.iter().map(|b| format!("{b:02x}")).collect::<String>());
     pubkey.copy_from_slice(&input[1..1 + 32]);
     input = &input[1 + 32..];
 
@@ -123,8 +117,7 @@ fn decode_unsigned_transfer_allow_death(
 
     let send_amount = send_amount.0;
 
-    *send_amount_high = (send_amount >> 64) as u64;
-    *send_amount_low = (send_amount & 0xffffffffffffffff) as u64;
+    send_amount_bytes.copy_from_slice(&send_amount.to_le_bytes());
 
     true
 }
