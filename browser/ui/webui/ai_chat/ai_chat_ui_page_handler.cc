@@ -33,7 +33,7 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/favicon/favicon_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser_navigator.h"
 #include "chrome/browser/ui/chrome_select_file_policy.h"
 #include "chrome/browser/ui/singleton_tabs.h"
 #include "components/favicon/core/favicon_service.h"
@@ -252,21 +252,11 @@ void AIChatUIPageHandler::GetPluralString(const std::string& key,
 }
 
 void AIChatUIPageHandler::OpenAIChatSettings() {
-  content::WebContents* contents_to_navigate =
-      (active_chat_tab_helper_) ? &active_chat_tab_helper_->GetWebContents()
-                                : owner_web_contents_.get();
 #if !BUILDFLAG(IS_ANDROID)
   const GURL url(kAIChatSettingsURL);
-  if (auto* browser = chrome::FindBrowserWithTab(contents_to_navigate)) {
-    ShowSingletonTab(browser, url);
-  } else {
-    contents_to_navigate->OpenURL(
-        {url, content::Referrer(), WindowOpenDisposition::NEW_FOREGROUND_TAB,
-         ui::PAGE_TRANSITION_LINK, false},
-        /*navigation_handle_callback=*/{});
-  }
+  ShowSingletonTab(profile_, url);
 #else
-  ai_chat::ShowBraveLeoSettings(contents_to_navigate);
+  ai_chat::ShowBraveLeoSettings(owner_web_contents_.get());
 #endif
 }
 
@@ -282,21 +272,16 @@ void AIChatUIPageHandler::OpenMemorySettings() {
 void AIChatUIPageHandler::OpenConversationFullPage(
     const std::string& conversation_uuid) {
   CHECK(ai_chat::features::IsAIChatHistoryEnabled());
-  CHECK(active_chat_tab_helper_);
 #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
   if (ai_chat_metrics_) {
     ai_chat_metrics_->RecordFullPageSwitch();
   }
 #endif
-  active_chat_tab_helper_->GetWebContents().OpenURL(
-      {
-          ConversationUrl(conversation_uuid),
-          content::Referrer(),
-          WindowOpenDisposition::NEW_FOREGROUND_TAB,
-          ui::PAGE_TRANSITION_TYPED,
-          false,
-      },
-      {});
+  NavigateParams params(profile_, ConversationUrl(conversation_uuid),
+                        ui::PAGE_TRANSITION_TYPED);
+  params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  params.referrer = content::Referrer();
+  Navigate(&params);
 }
 
 void AIChatUIPageHandler::OpenAIChatAgentProfile() {
@@ -312,13 +297,10 @@ void AIChatUIPageHandler::OpenURL(const GURL& url) {
     return;
   }
 
-  content::WebContents* contents_to_navigate =
-      (active_chat_tab_helper_) ? &active_chat_tab_helper_->GetWebContents()
-                                : owner_web_contents_.get();
-  contents_to_navigate->OpenURL(
-      {url, content::Referrer(), WindowOpenDisposition::NEW_FOREGROUND_TAB,
-       ui::PAGE_TRANSITION_LINK, false},
-      /*navigation_handle_callback=*/{});
+  NavigateParams params(profile_, url, ui::PAGE_TRANSITION_LINK);
+  params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  params.referrer = content::Referrer();
+  Navigate(&params);
 }
 
 void AIChatUIPageHandler::OpenStorageSupportUrl() {
@@ -329,10 +311,7 @@ void AIChatUIPageHandler::GoPremium() {
 #if !BUILDFLAG(IS_ANDROID)
   OpenURL(GURL(kLeoGoPremiumUrl));
 #else
-  auto* contents_to_navigate = (active_chat_tab_helper_)
-                                   ? &active_chat_tab_helper_->GetWebContents()
-                                   : owner_web_contents_.get();
-  ai_chat::GoPremium(contents_to_navigate);
+  ai_chat::GoPremium(owner_web_contents_.get());
 #endif
 }
 
@@ -344,10 +323,7 @@ void AIChatUIPageHandler::ManagePremium() {
 #if !BUILDFLAG(IS_ANDROID)
   OpenURL(GURL(kURLManagePremium));
 #else
-  auto* contents_to_navigate = (active_chat_tab_helper_)
-                                   ? &active_chat_tab_helper_->GetWebContents()
-                                   : owner_web_contents_.get();
-  ai_chat::ManagePremium(contents_to_navigate);
+  ai_chat::ManagePremium(owner_web_contents_.get());
 #endif
 }
 
