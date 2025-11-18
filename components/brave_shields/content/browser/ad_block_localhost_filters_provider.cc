@@ -33,8 +33,9 @@ constexpr char kLocalhostBadfilters[] = R"(
 
 }  // namespace
 
-AdBlockLocalhostFiltersProvider::AdBlockLocalhostFiltersProvider()
-    : AdBlockFiltersProvider(true) {
+AdBlockLocalhostFiltersProvider::AdBlockLocalhostFiltersProvider(
+    AdBlockFiltersProviderManager* manager)
+    : AdBlockFiltersProvider(true, manager) {
   NotifyObservers(engine_is_default_);
 }
 

@@ -74,6 +74,7 @@ bool IsAdBlockOnlyModeSupportedAndFeatureEnabled(const std::string& locale) {
 
 AdBlockComponentServiceManager::AdBlockComponentServiceManager(
     PrefService* local_state,
+    AdBlockFiltersProviderManager* filters_provider_manager,
     std::string locale,
     component_updater::ComponentUpdateService* cus,
     AdBlockFilterListCatalogProvider* catalog_provider,
@@ -82,6 +83,7 @@ AdBlockComponentServiceManager::AdBlockComponentServiceManager(
       locale_(locale),
       component_update_service_(cus),
       catalog_provider_(catalog_provider),
+      filters_provider_manager_(filters_provider_manager),
       list_p3a_(list_p3a) {
   catalog_provider_->LoadFilterListCatalog(
       base::BindOnce(&AdBlockComponentServiceManager::OnFilterListCatalogLoaded,
@@ -177,8 +179,8 @@ void AdBlockComponentServiceManager::StartRegionalServices() {
       if (existing_provider == component_filters_providers_.end()) {
         auto regional_filters_provider =
             std::make_unique<AdBlockComponentFiltersProvider>(
-                component_update_service_, catalog_entry,
-                catalog_entry.first_party_protections);
+                component_update_service_, filters_provider_manager_,
+                catalog_entry, catalog_entry.first_party_protections);
         component_filters_providers_.insert(
             {catalog_entry.uuid, std::move(regional_filters_provider)});
       }
@@ -315,8 +317,8 @@ void AdBlockComponentServiceManager::EnableFilterList(const std::string& uuid,
     }
     auto regional_filters_provider =
         std::make_unique<AdBlockComponentFiltersProvider>(
-            component_update_service_, *catalog_entry,
-            catalog_entry->first_party_protections);
+            component_update_service_, filters_provider_manager_,
+            *catalog_entry, catalog_entry->first_party_protections);
     component_filters_providers_.insert(
         {uuid, std::move(regional_filters_provider)});
   } else {

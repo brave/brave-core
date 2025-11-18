@@ -18,6 +18,7 @@
 #include "base/values.h"
 #include "brave/components/brave_shields/core/browser/ad_block_component_filters_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filter_list_catalog_provider.h"
+#include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
 #include "brave/components/brave_shields/core/browser/ad_block_list_p3a.h"
 #include "components/prefs/pref_service.h"
 
@@ -35,6 +36,7 @@ class AdBlockComponentServiceManager
  public:
   explicit AdBlockComponentServiceManager(
       PrefService* local_state,
+      AdBlockFiltersProviderManager* filters_provider_manager,
       std::string locale,
       component_updater::ComponentUpdateService* cus,
       AdBlockFilterListCatalogProvider* catalog_provider,
@@ -94,6 +96,8 @@ class AdBlockComponentServiceManager
   raw_ptr<component_updater::ComponentUpdateService> component_update_service_
       GUARDED_BY_CONTEXT(sequence_checker_);
   raw_ptr<AdBlockFilterListCatalogProvider> catalog_provider_
+      GUARDED_BY_CONTEXT(sequence_checker_);
+  raw_ptr<AdBlockFiltersProviderManager> filters_provider_manager_
       GUARDED_BY_CONTEXT(sequence_checker_);
 
   std::unique_ptr<PrefChangeRegistrar> local_state_change_registrar_;

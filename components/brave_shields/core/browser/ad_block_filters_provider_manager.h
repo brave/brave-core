@@ -19,11 +19,6 @@
 
 using brave_component_updater::DATFileDataBuffer;
 
-namespace base {
-template <typename T>
-class NoDestructor;
-}  // namespace base
-
 namespace brave_shields {
 
 // AdBlockFiltersProviderManager is both an AdBlockFiltersProvider and an
@@ -37,11 +32,11 @@ namespace brave_shields {
 class AdBlockFiltersProviderManager : public AdBlockFiltersProvider,
                                       public AdBlockFiltersProvider::Observer {
  public:
+  AdBlockFiltersProviderManager();
+  ~AdBlockFiltersProviderManager() override;
   AdBlockFiltersProviderManager(const AdBlockFiltersProviderManager&) = delete;
   AdBlockFiltersProviderManager& operator=(
       const AdBlockFiltersProviderManager&) = delete;
-
-  static AdBlockFiltersProviderManager* GetInstance();
 
   void LoadFilterSet(
       base::OnceCallback<void(
@@ -63,8 +58,6 @@ class AdBlockFiltersProviderManager : public AdBlockFiltersProvider,
   std::string GetNameForDebugging() override;
 
  private:
-  friend base::NoDestructor<AdBlockFiltersProviderManager>;
-
   void FinishCombinating(
       base::OnceCallback<
           void(base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)> cb,
@@ -78,9 +71,6 @@ class AdBlockFiltersProviderManager : public AdBlockFiltersProvider,
   base::CancelableTaskTracker task_tracker_;
 
   base::WeakPtrFactory<AdBlockFiltersProviderManager> weak_factory_{this};
-
-  AdBlockFiltersProviderManager();
-  ~AdBlockFiltersProviderManager() override;
 };
 
 }  // namespace brave_shields

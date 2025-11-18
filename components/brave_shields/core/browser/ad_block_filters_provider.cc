@@ -12,17 +12,23 @@
 
 namespace brave_shields {
 
-AdBlockFiltersProvider::AdBlockFiltersProvider(bool engine_is_default)
-    : engine_is_default_(engine_is_default) {
-  AdBlockFiltersProviderManager::GetInstance()->AddProvider(this,
-                                                            engine_is_default_);
+AdBlockFiltersProvider::AdBlockFiltersProvider(
+    bool engine_is_default,
+    AdBlockFiltersProviderManager* filters_provider_manager)
+    : engine_is_default_(engine_is_default),
+      filters_provider_manager_(filters_provider_manager) {
+  // Can be nullptr in tests (deferred setter)
+  if (filters_provider_manager_ != nullptr) {
+    filters_provider_manager_->AddProvider(this, engine_is_default_);
+  }
 }
 
 AdBlockFiltersProvider::AdBlockFiltersProvider() = default;
 
 AdBlockFiltersProvider::~AdBlockFiltersProvider() {
-  AdBlockFiltersProviderManager::GetInstance()->RemoveProvider(
-      this, engine_is_default_);
+  if (filters_provider_manager_ != nullptr) {
+    filters_provider_manager_->RemoveProvider(this, engine_is_default_);
+  }
 }
 
 void AdBlockFiltersProvider::AddObserver(

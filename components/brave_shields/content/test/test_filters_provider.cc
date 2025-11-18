@@ -9,7 +9,9 @@
 #include <utility>
 
 #include "base/check.h"
+#include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
+#include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
 
 using brave_component_updater::DATFileDataBuffer;
 
@@ -31,7 +33,9 @@ TestFiltersProvider::TestFiltersProvider(const std::string& rules,
                                          bool engine_is_default,
                                          uint8_t permission_mask,
                                          bool is_initialized)
-    : AdBlockFiltersProvider(engine_is_default),
+    : AdBlockFiltersProvider(
+          engine_is_default,
+          nullptr),  // must be set later by RegisterToFiltersProviderManager
       rules_(rules),
       permission_mask_(permission_mask),
       is_initialized_(is_initialized) {
@@ -41,6 +45,12 @@ TestFiltersProvider::TestFiltersProvider(const std::string& rules,
 }
 
 TestFiltersProvider::~TestFiltersProvider() = default;
+
+void TestFiltersProvider::RegisterToFiltersProviderManager(
+    AdBlockFiltersProviderManager* manager) {
+  AdBlockFiltersProvider::filters_provider_manager_ = manager;
+  filters_provider_manager_->AddProvider(this, engine_is_default_);
+}
 
 std::string TestFiltersProvider::GetNameForDebugging() {
   return "TestFiltersProvider";

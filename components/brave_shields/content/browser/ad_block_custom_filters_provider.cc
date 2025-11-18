@@ -40,8 +40,9 @@ constexpr uint8_t kCustomFiltersPermissionLevel = UINT8_MAX;
 }  // namespace
 
 AdBlockCustomFiltersProvider::AdBlockCustomFiltersProvider(
-    PrefService* local_state)
-    : AdBlockFiltersProvider(false), local_state_(local_state) {
+    PrefService* local_state,
+    AdBlockFiltersProviderManager* manager)
+    : AdBlockFiltersProvider(false, manager), local_state_(local_state) {
   NotifyObservers(engine_is_default_);
 }
 

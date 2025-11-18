@@ -7,15 +7,15 @@
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_CONTENT_TEST_TEST_FILTERS_PROVIDER_H_
 
 #include <string>
-#include <vector>
 
 #include "base/functional/callback.h"
-#include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
 #include "brave/components/brave_shields/core/browser/adblock/rs/src/lib.rs.h"
 #include "third_party/rust/cxx/v1/cxx.h"
 
 namespace brave_shields {
+
+class AdBlockFiltersProviderManager;
 
 class TestFiltersProvider : public AdBlockFiltersProvider {
  public:
@@ -25,6 +25,8 @@ class TestFiltersProvider : public AdBlockFiltersProvider {
                       uint8_t permission_mask = 0,
                       bool is_initialized = true);
   ~TestFiltersProvider() override;
+
+  void RegisterToFiltersProviderManager(AdBlockFiltersProviderManager* manager);
 
   void LoadFilterSet(
       base::OnceCallback<void(
