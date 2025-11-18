@@ -42,10 +42,11 @@ public class BraveMenuButtonCoordinator extends MenuButtonCoordinator {
             Supplier<Boolean> isInOverviewModeSupplier,
             ThemeColorProvider themeColorProvider,
             IncognitoStateProvider incognitoStateProvider,
-            Supplier<MenuButtonState> menuButtonStateSupplier,
+            Supplier<@Nullable MenuButtonState> menuButtonStateSupplier,
             Runnable onMenuButtonClicked,
             @IdRes int menuButtonId,
-            @Nullable VisibilityDelegate visibilityDelegate) {
+            @Nullable VisibilityDelegate visibilityDelegate,
+            boolean isWebApp) {
         super(
                 activity,
                 appMenuCoordinatorSupplier,
@@ -60,7 +61,8 @@ public class BraveMenuButtonCoordinator extends MenuButtonCoordinator {
                 menuButtonStateSupplier,
                 onMenuButtonClicked,
                 menuButtonId,
-                visibilityDelegate);
+                visibilityDelegate,
+                isWebApp);
 
         mActivity = windowAndroid.getActivity().get();
     }
