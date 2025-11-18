@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 .buttonMenu {
+  --leo-menu-max-height: 320px;
   leo-menu-item {
     display: flex;
     align-items: center;
