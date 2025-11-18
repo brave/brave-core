@@ -31,16 +31,15 @@ class PolkadotUnsignedTransfer {
       base::span<uint8_t, kPolkadotSubstrateAccountIdSize> recipient,
       uint128_t send_amount);
 
-  // ToHex is the analog of the polkadot-js api's implementation which creates a
-  // hex string encoded with the SCALE-encoded length of the string along with
-  // the extrinsic version, the pallet index, call index, and the account
-  // address type.
-  std::string ToHex(std::string_view chain_id) const;
+  // Encode is the analog of the polkadot-js api's toHex() implementation which
+  // creates a hex string encoded with the SCALE-encoded length of the string
+  // along with the extrinsic version, the pallet index, call index, and the
+  // account address type.
+  std::string Encode(std::string_view chain_id) const;
 
-  // FromHex recreates the unsigned transfer extrinsic from the provided
-  // bytes. This method is the dual of ToHex().
-  static std::optional<PolkadotUnsignedTransfer> FromHex(
-      std::string_view input);
+  // Decode recreates the unsigned transfer extrinsic from the provided
+  // hex string. This method is the dual of Encode().
+  static std::optional<PolkadotUnsignedTransfer> Decode(std::string_view input);
 
   // Get the send amount associated with this extrinsic.
   uint128_t send_amount() const { return send_amount_; }

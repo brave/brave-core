@@ -37,7 +37,7 @@ TEST(PolkadotExtrinsics, UnsignedTransfer) {
   //   const api = await ApiPromise.create({ provider: httpProvider });
   //   const BOB = '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty';
   //   const transfer = api.tx.balances.transferAllowDeath(BOB, 1234);
-  //   console.log(transfer.toHex());
+  //   console.log(transfer.Encode());
   //
   //   outputs 0x98040400008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a484913
   // clang-format on
@@ -47,7 +47,7 @@ TEST(PolkadotExtrinsics, UnsignedTransfer) {
 
   EXPECT_EQ(transfer_extrinsic.send_amount(), 1234u);
   EXPECT_EQ(base::HexEncode(transfer_extrinsic.recipient()), kBob);
-  EXPECT_EQ(transfer_extrinsic.ToHex(mojom::kPolkadotTestnet),
+  EXPECT_EQ(transfer_extrinsic.Encode(mojom::kPolkadotTestnet),
             testnet_extrinsic);
 
   // The above example JS uses a Polkadot testnet. For mainnet, we should have a
@@ -64,7 +64,7 @@ TEST(PolkadotExtrinsics, UnsignedTransfer) {
   const char* mainnet_extrinsic =
       R"(98040500008EAF04151687736326C9FEA17E25FC5287613693C912909CB226AA4794F26A484913)";
 
-  EXPECT_EQ(transfer_extrinsic.ToHex(mojom::kPolkadotMainnet),
+  EXPECT_EQ(transfer_extrinsic.Encode(mojom::kPolkadotMainnet),
             mainnet_extrinsic);
 }
 
@@ -88,7 +88,7 @@ TEST(PolkadotExtrinsics, UnsignedTransferNumericLimits) {
 
     const char* testnet_extrinsic =
         R"(D4040400008EAF04151687736326C9FEA17E25FC5287613693C912909CB226AA4794F26A4833FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF)";
-    EXPECT_EQ(transfer_extrinsic.ToHex(mojom::kPolkadotTestnet),
+    EXPECT_EQ(transfer_extrinsic.Encode(mojom::kPolkadotTestnet),
               testnet_extrinsic);
   }
 
@@ -98,7 +98,7 @@ TEST(PolkadotExtrinsics, UnsignedTransferNumericLimits) {
 
     const char* testnet_extrinsic =
         R"(94040400008EAF04151687736326C9FEA17E25FC5287613693C912909CB226AA4794F26A4800)";
-    EXPECT_EQ(transfer_extrinsic.ToHex(mojom::kPolkadotTestnet),
+    EXPECT_EQ(transfer_extrinsic.Encode(mojom::kPolkadotTestnet),
               testnet_extrinsic);
   }
 }
@@ -124,7 +124,7 @@ TEST(PolkadotExtrinsics, DecodedUnsignedTransfer) {
         R"(98040400008EAF04151687736326C9FEA17E25FC5287613693C912909CB226AA4794F26A484913)";
 
     auto transfer_extrinsic =
-        PolkadotUnsignedTransfer::FromHex(testnet_extrinsic);
+        PolkadotUnsignedTransfer::Decode(testnet_extrinsic);
 
     EXPECT_EQ(transfer_extrinsic.value().send_amount(), 1234u);
     EXPECT_EQ(base::HexEncode(transfer_extrinsic.value().recipient()), kBob);
@@ -135,7 +135,7 @@ TEST(PolkadotExtrinsics, DecodedUnsignedTransfer) {
         R"(98040500008EAF04151687736326C9FEA17E25FC5287613693C912909CB226AA4794F26A484913)";
 
     auto transfer_extrinsic =
-        PolkadotUnsignedTransfer::FromHex(mainnet_extrinsic);
+        PolkadotUnsignedTransfer::Decode(mainnet_extrinsic);
 
     EXPECT_EQ(transfer_extrinsic.value().send_amount(), 1234u);
     EXPECT_EQ(base::HexEncode(transfer_extrinsic.value().recipient()), kBob);
@@ -148,7 +148,7 @@ TEST(PolkadotExtrinsics, DecodeNumericLimits) {
         R"(D4040400008EAF04151687736326C9FEA17E25FC5287613693C912909CB226AA4794F26A4833FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF)";
 
     auto transfer_extrinsic =
-        PolkadotUnsignedTransfer::FromHex(testnet_extrinsic);
+        PolkadotUnsignedTransfer::Decode(testnet_extrinsic);
 
     EXPECT_EQ(transfer_extrinsic.value().send_amount(),
               std::numeric_limits<uint128_t>::max());
@@ -165,7 +165,7 @@ TEST(PolkadotExtrinsics, InvalidDecode) {
 
     for (size_t i = 0; i < mainnet_extrinsic.size() - 1; ++i) {
       auto input = mainnet_extrinsic.substr(0, i);
-      auto transfer_extrinsic = PolkadotUnsignedTransfer::FromHex(input);
+      auto transfer_extrinsic = PolkadotUnsignedTransfer::Decode(input);
       EXPECT_FALSE(transfer_extrinsic) << input;
     }
   }
@@ -182,7 +182,7 @@ TEST(PolkadotExtrinsics, InvalidDecode) {
     };
 
     for (auto input : inputs) {
-      auto transfer_extrinsic = PolkadotUnsignedTransfer::FromHex(input);
+      auto transfer_extrinsic = PolkadotUnsignedTransfer::Decode(input);
       EXPECT_FALSE(transfer_extrinsic) << input;
     }
   }

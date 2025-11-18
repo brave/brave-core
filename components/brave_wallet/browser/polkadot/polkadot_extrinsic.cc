@@ -34,7 +34,7 @@ PolkadotUnsignedTransfer::PolkadotUnsignedTransfer(
   base::span(recipient_).copy_from_nonoverlapping(recipient);
 }
 
-std::string PolkadotUnsignedTransfer::ToHex(std::string_view chain_id) const {
+std::string PolkadotUnsignedTransfer::Encode(std::string_view chain_id) const {
   CHECK(IsPolkadotNetwork(chain_id));
 
   uint8_t balances_pallet_idx = 0;
@@ -59,7 +59,7 @@ std::string PolkadotUnsignedTransfer::ToHex(std::string_view chain_id) const {
 }
 
 // static
-std::optional<PolkadotUnsignedTransfer> PolkadotUnsignedTransfer::FromHex(
+std::optional<PolkadotUnsignedTransfer> PolkadotUnsignedTransfer::Decode(
     std::string_view input) {
   std::array<uint8_t, kPolkadotSubstrateAccountIdSize> pubkey = {};
   uint64_t send_amount_high = 0;
