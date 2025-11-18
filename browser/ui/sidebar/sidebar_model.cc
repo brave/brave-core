@@ -151,9 +151,9 @@ void SidebarModel::OnItemRemoved(const SidebarItem& item, size_t index) {
   RemoveItemAt(index);
 }
 
-void SidebarModel::OnURLVisited(history::HistoryService* history_service,
-                                const history::URLRow& url_row,
-                                const history::VisitRow& new_visit) {
+void SidebarModel::OnURLVisited(
+    history::HistoryService* history_service,
+    const history::VisitedURLInfo& visited_url_info) {
   for (const auto& item : GetAllSidebarItems()) {
     // Don't try to update builtin items image. It uses bundled one.
     if (item.is_built_in_type()) {
@@ -162,7 +162,7 @@ void SidebarModel::OnURLVisited(history::HistoryService* history_service,
 
     // If same url is added to history service, try to fetch favicon to update
     // for item.
-    if (item.url.host() == url_row.url().host()) {
+    if (item.url.host() == visited_url_info.url_row.url().host()) {
       // Favicon seems cached after this callback.
       // TODO(simonhong): Find more deterministic method instead of using
       // delayed task.
