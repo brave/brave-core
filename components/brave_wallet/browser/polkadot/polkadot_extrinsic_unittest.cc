@@ -15,12 +15,32 @@ namespace {
 
 // Use the BOB account here:
 // https://westend.subscan.io/account/5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty
-inline constexpr const char* kBob =
+inline constexpr const char kBob[] =
     "8EAF04151687736326C9FEA17E25FC5287613693C912909CB226AA4794F26A48";
+
+// These can be trivially derived using something like:
+// clang-format off
+//
+// curl -H "Content-Type: application/json" -d '{"id":1, "jsonrpc":"2.0", "method": "system_chain", "params":[]}' https://westend-rpc.polkadot.io
+// outputs => {"jsonrpc":"2.0","id":1,"result":"Westend"}
+//
+// clang-format on
+inline constexpr const char kWestendChainType[] = "Westend";
+inline constexpr const char kPolkadotChainType[] = "Polkadot";
+inline constexpr const char kWestendAssetHubChainType[] = "Westend Asset Hub";
+inline constexpr const char kPolkadotAssetHubChainType[] = "Polkadot Asset Hub";
 
 }  // namespace
 
 TEST(PolkadotExtrinsics, UnsignedTransfer) {
+  // Test we can construct an unsigned extrinsic representing a
+  // transfer_allow_death call and then serialize it appropriately to a hex
+  // string.
+
+  PolkadotChainMetadata metadata;
+  metadata.AddChainMetadata(mojom::kPolkadotTestnet, kWestendChainType);
+  metadata.AddChainMetadata(mojom::kPolkadotMainnet, kPolkadotChainType);
+
   std::array<uint8_t, kPolkadotSubstrateAccountIdSize> pubkey = {};
   base::HexStringToSpan(kBob, pubkey);
 
@@ -47,7 +67,7 @@ TEST(PolkadotExtrinsics, UnsignedTransfer) {
 
   EXPECT_EQ(transfer_extrinsic.send_amount(), 1234u);
   EXPECT_EQ(base::HexEncode(transfer_extrinsic.recipient()), kBob);
-  EXPECT_EQ(transfer_extrinsic.Encode(mojom::kPolkadotTestnet),
+  EXPECT_EQ(transfer_extrinsic.Encode(mojom::kPolkadotTestnet, metadata),
             testnet_extrinsic);
 
   // The above example JS uses a Polkadot testnet. For mainnet, we should have a
@@ -64,11 +84,79 @@ TEST(PolkadotExtrinsics, UnsignedTransfer) {
   const char* mainnet_extrinsic =
       R"(98040500008EAF04151687736326C9FEA17E25FC5287613693C912909CB226AA4794F26A484913)";
 
-  EXPECT_EQ(transfer_extrinsic.Encode(mojom::kPolkadotMainnet),
+  EXPECT_EQ(transfer_extrinsic.Encode(mojom::kPolkadotMainnet, metadata),
+            mainnet_extrinsic);
+}
+
+TEST(PolkadotExtrinsics, UnsignedTransferAssetHub) {
+  // Test that when our code is setup to point to a different parachain, such as
+  // AssetHub, that we can still generate an extrinsic with the correct pallet
+  // and call indices.
+
+  PolkadotChainMetadata metadata;
+  metadata.AddChainMetadata(mojom::kPolkadotTestnet, kWestendAssetHubChainType);
+  metadata.AddChainMetadata(mojom::kPolkadotMainnet,
+                            kPolkadotAssetHubChainType);
+
+  std::array<uint8_t, kPolkadotSubstrateAccountIdSize> pubkey = {};
+  base::HexStringToSpan(kBob, pubkey);
+
+  uint128_t send_amount = 1234;
+
+  PolkadotUnsignedTransfer transfer_extrinsic(pubkey, send_amount);
+
+  // This test vector matches the output from the polkadot-js api:
+  // clang-format off
+  //
+  //   import { ApiPromise, HttpProvider } from '@polkadot/api';
+  //
+  //   const httpProvider = new HttpProvider('https://westend-asset-hub-rpc.polkadot.io');
+  //   const api = await ApiPromise.create({ provider: httpProvider });
+  //   const BOB = '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty';
+  //   const transfer = api.tx.balances.transferAllowDeath(BOB, 1234);
+  //   console.log(transfer.toHex());
+  //
+  //   outputs 0x98040a00008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a484913
+  // clang-format on
+
+  const char* testnet_extrinsic =
+      R"(98040A00008EAF04151687736326C9FEA17E25FC5287613693C912909CB226AA4794F26A484913)";
+
+  EXPECT_EQ(transfer_extrinsic.send_amount(), 1234u);
+  EXPECT_EQ(base::HexEncode(transfer_extrinsic.recipient()), kBob);
+  EXPECT_EQ(transfer_extrinsic.Encode(mojom::kPolkadotTestnet, metadata),
+            testnet_extrinsic);
+
+  // The above example JS uses a Polkadot testnet. For mainnet, we should have a
+  // different index for the Balances pallet.
+  // We build the API off of the RPC endpoints here:
+  // clang-format off
+  //
+  //   const httpProvider = new HttpProvider('https://asset-hub-polkadot-rpc.n.dwellir.com');
+  //
+  // clang-format on
+  //
+  // A full list of Polkadot network hosts can be found here:
+  // https://docs.polkadot.com/develop/networks
+  //
+  // There are other available mainnets we can test with such as:
+  // https://polkadot-public-rpc.blockops.network/rpc
+
+  const char* mainnet_extrinsic =
+      R"(98040A00008EAF04151687736326C9FEA17E25FC5287613693C912909CB226AA4794F26A484913)";
+
+  EXPECT_EQ(transfer_extrinsic.Encode(mojom::kPolkadotMainnet, metadata),
             mainnet_extrinsic);
 }
 
 TEST(PolkadotExtrinsics, UnsignedTransferNumericLimits) {
+  // Test our extrinsic creation and serialization using numeric limits for a
+  // uint128_t.
+
+  PolkadotChainMetadata metadata;
+  metadata.AddChainMetadata(mojom::kPolkadotTestnet, kWestendChainType);
+  metadata.AddChainMetadata(mojom::kPolkadotMainnet, kPolkadotChainType);
+
   std::array<uint8_t, kPolkadotSubstrateAccountIdSize> pubkey = {};
   base::HexStringToSpan(kBob, pubkey);
 
@@ -88,7 +176,7 @@ TEST(PolkadotExtrinsics, UnsignedTransferNumericLimits) {
 
     const char* testnet_extrinsic =
         R"(D4040400008EAF04151687736326C9FEA17E25FC5287613693C912909CB226AA4794F26A4833FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF)";
-    EXPECT_EQ(transfer_extrinsic.Encode(mojom::kPolkadotTestnet),
+    EXPECT_EQ(transfer_extrinsic.Encode(mojom::kPolkadotTestnet, metadata),
               testnet_extrinsic);
   }
 
@@ -98,12 +186,19 @@ TEST(PolkadotExtrinsics, UnsignedTransferNumericLimits) {
 
     const char* testnet_extrinsic =
         R"(94040400008EAF04151687736326C9FEA17E25FC5287613693C912909CB226AA4794F26A4800)";
-    EXPECT_EQ(transfer_extrinsic.Encode(mojom::kPolkadotTestnet),
+    EXPECT_EQ(transfer_extrinsic.Encode(mojom::kPolkadotTestnet, metadata),
               testnet_extrinsic);
   }
 }
 
 TEST(PolkadotExtrinsics, DecodedUnsignedTransfer) {
+  // Test that we can appropriately decode the hex representation of an
+  // extrinsic for a given relay chain.
+
+  PolkadotChainMetadata metadata;
+  metadata.AddChainMetadata(mojom::kPolkadotTestnet, kWestendChainType);
+  metadata.AddChainMetadata(mojom::kPolkadotMainnet, kPolkadotChainType);
+
   // These extrinsics can be verified using the polkadot-js API as such:
   // clang-format off
   //
@@ -123,8 +218,8 @@ TEST(PolkadotExtrinsics, DecodedUnsignedTransfer) {
     const char* testnet_extrinsic =
         R"(98040400008EAF04151687736326C9FEA17E25FC5287613693C912909CB226AA4794F26A484913)";
 
-    auto transfer_extrinsic =
-        PolkadotUnsignedTransfer::Decode(testnet_extrinsic);
+    auto transfer_extrinsic = PolkadotUnsignedTransfer::Decode(
+        mojom::kPolkadotTestnet, metadata, testnet_extrinsic);
 
     EXPECT_EQ(transfer_extrinsic.value().send_amount(), 1234u);
     EXPECT_EQ(base::HexEncode(transfer_extrinsic.value().recipient()), kBob);
@@ -134,8 +229,54 @@ TEST(PolkadotExtrinsics, DecodedUnsignedTransfer) {
     const char* mainnet_extrinsic =
         R"(98040500008EAF04151687736326C9FEA17E25FC5287613693C912909CB226AA4794F26A484913)";
 
-    auto transfer_extrinsic =
-        PolkadotUnsignedTransfer::Decode(mainnet_extrinsic);
+    auto transfer_extrinsic = PolkadotUnsignedTransfer::Decode(
+        mojom::kPolkadotMainnet, metadata, mainnet_extrinsic);
+
+    EXPECT_EQ(transfer_extrinsic.value().send_amount(), 1234u);
+    EXPECT_EQ(base::HexEncode(transfer_extrinsic.value().recipient()), kBob);
+  }
+}
+
+TEST(PolkadotExtrinsics, DecodedUnsignedTransferAssetHub) {
+  // Test that we can decode extrinsics for a specific parachain, like AssetHub.
+
+  PolkadotChainMetadata metadata;
+  metadata.AddChainMetadata(mojom::kPolkadotTestnet, kWestendAssetHubChainType);
+  metadata.AddChainMetadata(mojom::kPolkadotMainnet,
+                            kPolkadotAssetHubChainType);
+
+  // These extrinsics can be verified using the polkadot-js API as such:
+  // clang-format off
+  //
+  //   import { GenericExtrinsic as Extrinsic } from '@polkadot/types/extrinsic';
+  //   import { GENERAL_EXTRINSIC } from '@polkadot/types/extrinsic/constants';
+  //   import { ApiPromise, HttpProvider } from '@polkadot/api';
+  //
+  //   const httpProvider = new HttpProvider('https://westend-asset-hub-rpc.polkadot.io');
+  //   const api = await ApiPromise.create({ provider: httpProvider });
+  //   const tester = new Extrinsic(api.registry, '0x98040A00008EAF04151687736326C9FEA17E25FC5287613693C912909CB226AA4794F26A484913', { preamble: GENERAL_EXTRINSIC, version: 4});
+  //   console.log(JSON.stringify(tester.toHuman()));
+  //
+  //   outputs => {"isSigned":false,"method":{"args":{"dest":{"Id":"5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty"},"value":"1,234"},"method":"transferAllowDeath","section":"balances"}}
+  // clang-format on
+
+  {
+    const char* testnet_extrinsic =
+        R"(98040A00008EAF04151687736326C9FEA17E25FC5287613693C912909CB226AA4794F26A484913)";
+
+    auto transfer_extrinsic = PolkadotUnsignedTransfer::Decode(
+        mojom::kPolkadotTestnet, metadata, testnet_extrinsic);
+
+    EXPECT_EQ(transfer_extrinsic.value().send_amount(), 1234u);
+    EXPECT_EQ(base::HexEncode(transfer_extrinsic.value().recipient()), kBob);
+  }
+
+  {
+    const char* mainnet_extrinsic =
+        R"(98040A00008EAF04151687736326C9FEA17E25FC5287613693C912909CB226AA4794F26A484913)";
+
+    auto transfer_extrinsic = PolkadotUnsignedTransfer::Decode(
+        mojom::kPolkadotMainnet, metadata, mainnet_extrinsic);
 
     EXPECT_EQ(transfer_extrinsic.value().send_amount(), 1234u);
     EXPECT_EQ(base::HexEncode(transfer_extrinsic.value().recipient()), kBob);
@@ -143,20 +284,44 @@ TEST(PolkadotExtrinsics, DecodedUnsignedTransfer) {
 }
 
 TEST(PolkadotExtrinsics, DecodeNumericLimits) {
+  // Test extrinsic decoding for numeric limits.
+
+  PolkadotChainMetadata metadata;
+  metadata.AddChainMetadata(mojom::kPolkadotTestnet, kWestendChainType);
+  metadata.AddChainMetadata(mojom::kPolkadotMainnet, kPolkadotChainType);
+
   {
     const char* testnet_extrinsic =
         R"(D4040400008EAF04151687736326C9FEA17E25FC5287613693C912909CB226AA4794F26A4833FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF)";
 
-    auto transfer_extrinsic =
-        PolkadotUnsignedTransfer::Decode(testnet_extrinsic);
+    auto transfer_extrinsic = PolkadotUnsignedTransfer::Decode(
+        mojom::kPolkadotTestnet, metadata, testnet_extrinsic);
 
     EXPECT_EQ(transfer_extrinsic.value().send_amount(),
               std::numeric_limits<uint128_t>::max());
     EXPECT_EQ(base::HexEncode(transfer_extrinsic.value().recipient()), kBob);
   }
+
+  {
+    const char testnet_extrinsic[] =
+        R"(94040400008EAF04151687736326C9FEA17E25FC5287613693C912909CB226AA4794F26A4800)";
+
+    auto transfer_extrinsic = PolkadotUnsignedTransfer::Decode(
+        mojom::kPolkadotTestnet, metadata, testnet_extrinsic);
+
+    EXPECT_EQ(transfer_extrinsic.value().send_amount(), 0u);
+    EXPECT_EQ(base::HexEncode(transfer_extrinsic.value().recipient()), kBob);
+  }
 }
 
 TEST(PolkadotExtrinsics, InvalidDecode) {
+  // Test that subtle differences in the hex-encoded extrinsics will cause our
+  // code to fail to parse.
+
+  PolkadotChainMetadata metadata;
+  metadata.AddChainMetadata(mojom::kPolkadotTestnet, kWestendChainType);
+  metadata.AddChainMetadata(mojom::kPolkadotMainnet, kPolkadotChainType);
+
   {
     // Valid data, but not enough.
 
@@ -165,7 +330,8 @@ TEST(PolkadotExtrinsics, InvalidDecode) {
 
     for (size_t i = 0; i < mainnet_extrinsic.size() - 1; ++i) {
       auto input = mainnet_extrinsic.substr(0, i);
-      auto transfer_extrinsic = PolkadotUnsignedTransfer::Decode(input);
+      auto transfer_extrinsic = PolkadotUnsignedTransfer::Decode(
+          mojom::kPolkadotMainnet, metadata, input);
       EXPECT_FALSE(transfer_extrinsic) << input;
     }
   }
@@ -182,9 +348,45 @@ TEST(PolkadotExtrinsics, InvalidDecode) {
     };
 
     for (auto input : inputs) {
-      auto transfer_extrinsic = PolkadotUnsignedTransfer::Decode(input);
+      auto transfer_extrinsic = PolkadotUnsignedTransfer::Decode(
+          mojom::kPolkadotMainnet, metadata, input);
       EXPECT_FALSE(transfer_extrinsic) << input;
     }
+  }
+}
+
+TEST(PolkadotExtrinsics, InvalidDecodeFromIncompatibleParachain) {
+  // Test the case where we have a valid extrinsics for a specific parachain
+  // that's not compatible with the current one we're supplying.
+
+  constexpr const char kPolkadotAssetHubTestnet[] =
+      "polkadot_testnet_asset_hub";
+
+  constexpr const char kPolkadotAssetHubMainnet[] =
+      "polkadot_mainnet_asset_hub";
+
+  PolkadotChainMetadata metadata;
+  metadata.AddChainMetadata(mojom::kPolkadotTestnet, kWestendChainType);
+  metadata.AddChainMetadata(mojom::kPolkadotMainnet, kPolkadotChainType);
+  metadata.AddChainMetadata(kPolkadotAssetHubTestnet,
+                            kWestendAssetHubChainType);
+  metadata.AddChainMetadata(kPolkadotAssetHubMainnet,
+                            kPolkadotAssetHubChainType);
+
+  const char* testnet_extrinsic =
+      R"(98040400008EAF04151687736326C9FEA17E25FC5287613693C912909CB226AA4794F26A484913)";
+
+  auto transfer_extrinsic = PolkadotUnsignedTransfer::Decode(
+      mojom::kPolkadotTestnet, metadata, testnet_extrinsic);
+
+  EXPECT_EQ(transfer_extrinsic.value().send_amount(), 1234u);
+  EXPECT_EQ(base::HexEncode(transfer_extrinsic.value().recipient()), kBob);
+
+  for (std::string_view chain_id :
+       {mojom::kPolkadotMainnet, kPolkadotAssetHubTestnet,
+        kPolkadotAssetHubMainnet}) {
+    EXPECT_FALSE((PolkadotUnsignedTransfer::Decode(chain_id, metadata,
+                                                   testnet_extrinsic)));
   }
 }
 

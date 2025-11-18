@@ -19,6 +19,34 @@
 
 namespace brave_wallet {
 
+// PolkadotChainMetadata stores a hash map that maps a chain id from our side to
+// the runtime metadata of the specified chain's ChainSpec. This value is
+// currently obtained from a "system_chain" RPC call documented here:
+// https://github.com/w3f/PSPs/blob/b6d570173146e7a012cf43d270177e02ed886e2e/PSPs/drafts/psp-6.md#154-system_chain
+//
+// In the future, this will most likely be replaced by the hex string that
+// describes the capabilities of the connected remote described here:
+// https://github.com/w3f/PSPs/blob/b6d570173146e7a012cf43d270177e02ed886e2e/PSPs/drafts/psp-6.md#1119-state_getmetadata
+// https://spec.polkadot.network/sect-metadata
+//
+// To this end, we're able to support the relay chain and multiple independent
+// parachains which will all contain their own pallet indices for the common
+// pallets we need like Balance.
+struct PolkadotChainMetadata {
+ public:
+  PolkadotChainMetadata();
+  ~PolkadotChainMetadata();
+
+  // Associate the chain metadata for chain_name with the chain_id we use on our
+  // end.
+  void AddChainMetadata(std::string_view chain_id, std::string_view chain_name);
+
+  const ChainMetadata& chain_metadata() const { return *chain_metadata_; }
+
+ private:
+  ::rust::Box<ChainMetadata> chain_metadata_;
+};
+
 // An unsigned extrinsic that represents the "transfer_allow_death" call from
 // the Balances pallet. Note, the hosted Westend nodes uses the same runtime
 // metadata as the Kusama chains which have the Balances pallet living at
@@ -35,11 +63,15 @@ class PolkadotUnsignedTransfer {
   // creates a hex string encoded with the SCALE-encoded length of the string
   // along with the extrinsic version, the pallet index, call index, and the
   // account address type.
-  std::string Encode(std::string_view chain_id) const;
+  std::string Encode(std::string_view chain_id,
+                     const PolkadotChainMetadata& chain_metadata) const;
 
   // Decode recreates the unsigned transfer extrinsic from the provided
   // hex string. This method is the dual of Encode().
-  static std::optional<PolkadotUnsignedTransfer> Decode(std::string_view input);
+  static std::optional<PolkadotUnsignedTransfer> Decode(
+      std::string_view chain_id,
+      const PolkadotChainMetadata& chain_metadata,
+      std::string_view input);
 
   // Get the send amount associated with this extrinsic.
   uint128_t send_amount() const { return send_amount_; }
