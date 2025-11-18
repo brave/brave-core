@@ -380,7 +380,8 @@ function ConversationEntries() {
                           turnUuid={firstEntryEdit.uuid}
                           turnModelKey={turnModelKey}
                           turnNEARVerified={
-                            group[group.length - 1].isNearVerified
+                            group[group.length - 1].nearVerificationStatus
+                              ?.verified
                           }
                           onEditAnswerClicked={
                             canEditEntry

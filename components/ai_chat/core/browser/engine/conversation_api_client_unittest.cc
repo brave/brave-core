@@ -1388,7 +1388,7 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_NEARVerification) {
         EXPECT_TRUE(result.event->is_completion_event());
         EXPECT_EQ(result.event->get_completion_event()->completion,
                   expected_completion_response);
-        EXPECT_FALSE(result.is_near_verified.has_value());
+        EXPECT_FALSE(result.is_near_verified);
       });
 
   EXPECT_CALL(mock_callbacks, OnCompleted(_))

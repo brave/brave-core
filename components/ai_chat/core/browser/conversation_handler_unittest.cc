@@ -573,7 +573,7 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText_WithNEARVerification) {
       mojom::ActionType::SUMMARIZE_SELECTED_TEXT, expected_turn_text,
       std::nullopt, selected_text, std::nullopt, base::Time::Now(),
       std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt /* model_key */, std::nullopt /* is_near_verified */));
+      std::nullopt /* model_key */, nullptr /* near_verification_status */));
 
   std::vector<mojom::ConversationEntryEventPtr> response_events;
   response_events.push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
@@ -583,7 +583,7 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText_WithNEARVerification) {
       mojom::ActionType::RESPONSE, expected_response, std::nullopt,
       std::nullopt, std::move(response_events), base::Time::Now(), std::nullopt,
       std::nullopt, nullptr /* skill */, false, std::nullopt /* model_key */,
-      true /* is_near_verified */));
+      mojom::NEARVerificationStatus::New(true)));
 
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
   EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(1);

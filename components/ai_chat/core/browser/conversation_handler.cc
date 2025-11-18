@@ -1250,8 +1250,10 @@ void ConversationHandler::UpdateOrCreateLastAssistantEntry(
 
   // Only update if verification status is pending, or did not already fail.
   if (result.is_near_verified.has_value() &&
-      (!entry->is_near_verified.has_value() || *entry->is_near_verified)) {
-    entry->is_near_verified = result.is_near_verified;
+      (!entry->near_verification_status ||
+       entry->near_verification_status->verified)) {
+    entry->near_verification_status =
+        mojom::NEARVerificationStatus::New(*result.is_near_verified);
   }
 
   if (event) {
