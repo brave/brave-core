@@ -18,6 +18,7 @@ import {
   removeReasoning,
   removeCitationsWithMissingLinks,
 } from '../conversation_entries/conversation_entries_utils'
+import RichSearchWidget from './rich_search_widget'
 
 interface BaseProps {
   // Whether data is currently being received (generated)
@@ -173,6 +174,14 @@ export default function AssistantResponse(props: AssistantResponseProps) {
 
   return (
     <>
+      {sourcesEvent?.richResults
+        .filter((r) => r)
+        .map((r) => (
+          <RichSearchWidget
+            key={r}
+            jsonData={r}
+          />
+        ))}
       {props.events?.map((event, i) => (
         <AssistantEvent
           key={i}
