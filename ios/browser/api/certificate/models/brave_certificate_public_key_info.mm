@@ -9,6 +9,7 @@
 
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
+#include "base/strings/string_view_util.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/ios/browser/api/certificate/models/brave_certificate_enums.h"
 #include "brave/ios/browser/api/certificate/utils/brave_certificate_utils.h"
@@ -45,8 +46,8 @@
 
       if (certificate::x509_utils::ParseAlgorithmSequence(
               algorithm_tlv, &algorithm_oid, &parameters)) {
-        _objectIdentifier =
-            certificate::utils::NSStringToData(algorithm_oid.AsString());
+        _objectIdentifier = certificate::utils::NSStringToData(
+            std::string(base::as_string_view(algorithm_oid)));
 
         std::string absolute_oid =
             certificate::x509_utils::NIDToAbsoluteOID(algorithm_oid);
@@ -55,7 +56,8 @@
         }
 
         if (!certificate::x509_utils::IsNull(parameters)) {
-          std::string parameters_string = parameters.AsString();
+          std::string parameters_string =
+              std::string(base::as_string_view(parameters));
           _parameters = base::SysUTF8ToNSString(base::HexEncode(
               parameters_string.data(), parameters_string.size()));
         }
@@ -136,7 +138,8 @@
             [external_representation length]);
         if (certificate::x509_utils::ParseRSAPublicKeyInfo(spk, &modulus,
                                                            &public_exponent)) {
-          std::string modulus_string = modulus.AsString();
+          std::string modulus_string =
+              std::string(base::as_string_view(modulus));
           _keyHexEncoded = base::SysUTF8ToNSString(
               base::HexEncode(modulus_string.data(), modulus_string.size()));
 
