@@ -4,38 +4,29 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import Icon from '@brave/leo/react/icon'
-import ProgressRing from '@brave/leo/react/progressRing'
 import { getLocale } from '$web-common/locale'
 import CodeBlock from '../code_block'
-import { ToolComponent } from './tool_event'
-import styles from './code_execution_tool_event.module.scss'
+import type { ToolComponent, ToolUseContent } from './tool_event'
+import styles from './tool_event_code_execution.module.scss'
 import '../../../common/strings'
 
-const CodeExecutionToolEvent: ToolComponent = ({
-  toolUseEvent,
-  toolInput,
-  content,
-  children,
-}) => {
-  // Extract the code from the tool input
+const ToolEventCodeExecution: ToolComponent = (props) => {
   const jsCode = React.useMemo(() => {
-    if (!toolInput?.script) return ''
-    return typeof toolInput.script === 'string' ? toolInput.script : ''
-  }, [toolInput])
+    if (!props.toolInput?.script) return ''
+    return typeof props.toolInput.script === 'string'
+      ? props.toolInput.script
+      : ''
+  }, [props.toolInput])
 
-  // Extract the output from the tool use event
   const output = React.useMemo(() => {
-    if (!toolUseEvent.output?.[0]?.textContentBlock?.text) return ''
-    return toolUseEvent.output[0].textContentBlock.text
-  }, [toolUseEvent.output])
+    if (!props.toolUseEvent.output?.[0]?.textContentBlock?.text) return ''
+    return props.toolUseEvent.output[0].textContentBlock.text
+  }, [props.toolUseEvent.output])
 
-  // Custom content for the code execution tool
-  const customContent = {
-    ...content,
-    toolText: (
+  const content: ToolUseContent = {
+    toolLabel: props.content.toolLabel,
+    expandedContent: (
       <div className={styles.codeExecutionTool}>
-        <span>{getLocale(S.CHAT_UI_CODE_EXECUTION_TITLE)}</span>
         {jsCode && (
           <div className={styles.codeExecutionContent}>
             <div className={styles.codeSection}>
@@ -64,19 +55,9 @@ const CodeExecutionToolEvent: ToolComponent = ({
         )}
       </div>
     ),
-    statusIcon: (
-      <span data-testid='code-execution-completed-icon'>
-        <Icon name='code' />
-      </span>
-    ),
-    progressIcon: (
-      <span data-testid='code-execution-progress-icon'>
-        <ProgressRing />
-      </span>
-    ),
   }
 
-  return children(customContent)
+  return props.children(content)
 }
 
-export default CodeExecutionToolEvent
+export default ToolEventCodeExecution

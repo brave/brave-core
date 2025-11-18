@@ -879,8 +879,8 @@
   <message name="IDS_AI_CHAT_VERIFIED_LABEL" desc="Label for the verified NEAR AI model" formatter_data="webui=AiChat">
     Verified
   </message>
-  <message name="IDS_CHAT_UI_CODE_EXECUTION_TITLE" desc="Title for code execution tool event" formatter_data="webui=AiChat">
-    Code Execution
+  <message name="IDS_CHAT_UI_TOOL_LABEL_CODE_EXECUTION" desc="Title for code execution tool event" formatter_data="webui=AiChat">
+    Executed code in sandbox
   </message>
   <message name="IDS_CHAT_UI_CODE_EXECUTION_CODE_LABEL" desc="Label for code section in code execution tool" formatter_data="webui=AiChat">
     Code:
