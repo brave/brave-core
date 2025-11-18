@@ -103,6 +103,13 @@ void ZCashCreateOrchardToTransparentTransactionTask::OnGetSpendableNotes(
   }
 
   spendable_notes_ = std::move(*result.value());
+
+  if (!spendable_notes_->anchor_block_id) {
+    error_ = "Failed to select anchor";
+    ScheduleWorkOnTask();
+    return;
+  }
+
   ScheduleWorkOnTask();
 }
 
@@ -129,12 +136,7 @@ void ZCashCreateOrchardToTransparentTransactionTask::CreateTransaction() {
   }
   zcash_transaction.set_fee(pick_result->fee);
 
-  if (!spendable_notes_->anchor_block_id) {
-    error_ = "Failed to select anchor";
-    ScheduleWorkOnTask();
-    return;
-  }
-
+  CHECK(spendable_notes_->anchor_block_id);
   zcash_transaction.orchard_part().anchor_block_height =
       spendable_notes_->anchor_block_id.value();
 
