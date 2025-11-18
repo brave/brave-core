@@ -8,7 +8,6 @@
 #include <algorithm>
 
 #include "base/check.h"
-#include "base/check_op.h"
 #include "base/functional/bind.h"
 #include "base/rand_util.h"
 #include "brave/components/ntp_background_images/browser/features.h"
