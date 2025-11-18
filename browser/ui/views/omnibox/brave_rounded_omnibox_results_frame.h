@@ -17,7 +17,8 @@ class BraveRoundedOmniboxResultsFrame : public RoundedOmniboxResultsFrame {
   METADATA_HEADER(BraveRoundedOmniboxResultsFrame, RoundedOmniboxResultsFrame)
  public:
   BraveRoundedOmniboxResultsFrame(views::View* contents,
-                                  LocationBarView* location_bar);
+                                  LocationBarView* location_bar,
+                                  bool forward_mouse_events);
   ~BraveRoundedOmniboxResultsFrame() override;
 
  private:
