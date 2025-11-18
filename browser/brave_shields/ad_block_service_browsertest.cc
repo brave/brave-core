@@ -3150,6 +3150,41 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ContentPicker) {
     EXPECT_FALSE(menu.IsItemEnabled(IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENTS));
   }
 }
+
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
+                       ContentPickerInPrivateModeIsNotAvailableByDefault) {
+  const GURL tab_url =
+      embedded_test_server()->GetURL("a.com", "/cosmetic_filtering.html");
+  Browser* private_browser = CreateIncognitoBrowser();
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(private_browser, tab_url));
+  content::WebContents* contents =
+      private_browser->tab_strip_model()->GetActiveWebContents();
+
+  content::ContextMenuParams params;
+  params.page_url = tab_url;
+  TestRenderViewContextMenu menu(*contents->GetPrimaryMainFrame(), params);
+  menu.Init();
+  EXPECT_FALSE(menu.IsItemEnabled(IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENTS));
+}
+
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
+                       ContentPickerInPrivateModeCanBeEnabled) {
+  brave_shields::SetAllowElementBlockerInPrivateModeEnabled(local_state(),
+                                                            true);
+  const GURL tab_url =
+      embedded_test_server()->GetURL("a.com", "/cosmetic_filtering.html");
+  Browser* private_browser = CreateIncognitoBrowser();
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(private_browser, tab_url));
+  content::WebContents* contents =
+      private_browser->tab_strip_model()->GetActiveWebContents();
+
+  content::ContextMenuParams params;
+  params.page_url = tab_url;
+  TestRenderViewContextMenu menu(*contents->GetPrimaryMainFrame(), params);
+  menu.Init();
+  EXPECT_TRUE(menu.IsItemEnabled(IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENTS));
+}
+
 #endif  // !BUILDFLAG(IS_ANDROID)
 
 class AdBlockServiceTestJsPerformance : public AdBlockServiceTest {

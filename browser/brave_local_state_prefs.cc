@@ -102,6 +102,10 @@
 #include "brave/browser/updater/updater_p3a.h"
 #endif
 
+#if !BUILDFLAG(IS_IOS)
+#include "brave/components/brave_shields/core/common/pref_names.h"
+#endif
+
 namespace brave {
 
 void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry) {
@@ -230,6 +234,11 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 
 #if BUILDFLAG(ENABLE_OMAHA4)
   brave_updater::RegisterLocalStatePrefs(registry);
+#endif
+
+#if !BUILDFLAG(IS_IOS)
+  registry->RegisterBooleanPref(
+      brave_shields::prefs::kAllowElementBlockerInPrivateMode, false);
 #endif
 }
 

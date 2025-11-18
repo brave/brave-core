@@ -73,6 +73,10 @@ class DefaultBraveShieldsHandler
                         const std::optional<std::string>& contact_info,
                         const bool contact_info_save_flag,
                         const std::vector<std::string>& components);
+  void GetAllowElementBlockerInPrivateModeEnabled(
+      const base::Value::List& args);
+  void SetAllowElementBlockerInPrivateModeEnabled(
+      const base::Value::List& args);
 
   raw_ptr<Profile> profile_ = nullptr;
   raw_ptr<brave_shields::BraveShieldsSettingsService> brave_shields_settings_ =
