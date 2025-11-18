@@ -364,7 +364,8 @@ struct AIChatResponseMessageView_Previews: PreviewProvider {
           uploadedFiles: nil,
           skill: nil,
           fromBraveSearchSerp: false,
-          modelKey: nil
+          modelKey: nil,
+          nearVerificationStatus: nil
         ),
       isEntryInProgress: false,
       lastEdited: Date(),
