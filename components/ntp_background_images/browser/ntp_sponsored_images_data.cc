@@ -11,7 +11,6 @@
 #include "base/files/file_path.h"
 #include "base/logging.h"
 #include "base/strings/string_util.h"
-#include "base/time/time_delta_from_string.h"
 #include "base/uuid.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/public/common/url/url_util.h"
