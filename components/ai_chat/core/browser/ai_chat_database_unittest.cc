@@ -117,6 +117,8 @@ TEST_P(AIChatDatabaseTest, AddAndGetConversationAndEntries) {
     // Add skill data to test skill persistence
     history[0]->skill =
         mojom::SkillEntry::New("test", "This is a test skill prompt");
+    history[1]->near_verification_status =
+        mojom::NEARVerificationStatus::New(true);
 
     // Create the conversation metadata which gets persisted
     // when the first entry is asked to be persisted.
@@ -160,6 +162,11 @@ TEST_P(AIChatDatabaseTest, AddAndGetConversationAndEntries) {
     ASSERT_TRUE(result->entries[0]->skill);
     EXPECT_EQ(result->entries[0]->skill->shortcut, "test");
     EXPECT_EQ(result->entries[0]->skill->prompt, "This is a test skill prompt");
+
+    // Verify near_verification_status was persisted correctly
+    EXPECT_FALSE(result->entries[0]->near_verification_status);
+    ASSERT_TRUE(result->entries[1]->near_verification_status);
+    EXPECT_TRUE(result->entries[1]->near_verification_status->verified);
 
     EXPECT_EQ(result->associated_content.size(), has_content ? 1u : 0u);
     if (has_content) {
@@ -1408,15 +1415,6 @@ TEST_P(AIChatDatabaseMigrationTest, MigrationToVCurrent) {
 }
 
 TEST_P(AIChatDatabaseMigrationTest, Migration_Version7To8_SkillColumn) {
-  // Skip this test if we're already at the target version or higher
-  if (version() >= 8) {
-    return;
-  }
-
-  // This test verifies that migration from version 7 to 8 correctly adds
-  // the smart_mode_data column (backward compability column name for skill
-  // feature) to the conversation_entry table.
-
   // Create and persist a conversation entry before migration
   auto history = CreateSampleChatHistory(1u);
   const std::string uuid = "migration_test_v7_to_v8";
@@ -1425,6 +1423,15 @@ TEST_P(AIChatDatabaseMigrationTest, Migration_Version7To8_SkillColumn) {
       false, std::vector<mojom::AssociatedContentPtr>());
 
   EXPECT_TRUE(db_->AddConversation(metadata->Clone(), {}, history[0]->Clone()));
+
+  // Skip this test if we're already at the target version or higher
+  if (version() >= 8) {
+    return;
+  }
+
+  // This test verifies that migration from version 7 to 8 correctly adds
+  // the smart_mode_data column (backward compability column name for skill
+  // feature) to the conversation_entry table.
 
   // Verify the conversation was created
   auto conversations = db_->GetAllConversations();
