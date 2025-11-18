@@ -6,6 +6,7 @@
 #include <string_view>
 
 #include "base/memory/raw_ptr.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/strings/pattern.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_browsertest.h"

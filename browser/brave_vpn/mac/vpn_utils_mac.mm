@@ -5,6 +5,7 @@
 
 #include "brave/browser/brave_vpn/mac/vpn_utils_mac.h"
 
+#include "base/memory/scoped_refptr.h"
 #include "brave/components/brave_vpn/browser/connection/ikev2/mac/ikev2_connection_api_impl_mac.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 

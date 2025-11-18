@@ -7,6 +7,7 @@
 
 #include <memory>
 
+#include "base/memory/scoped_refptr.h"
 #include "base/notreached.h"
 #include "base/test/test_future.h"
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"

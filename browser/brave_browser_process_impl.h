@@ -8,6 +8,7 @@
 
 #include <memory>
 
+#include "base/memory/scoped_refptr.h"
 #include "base/sequence_checker.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"

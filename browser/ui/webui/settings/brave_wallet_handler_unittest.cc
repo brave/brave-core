@@ -13,6 +13,7 @@
 #include <vector>
 
 #include "base/json/json_reader.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/run_loop.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"

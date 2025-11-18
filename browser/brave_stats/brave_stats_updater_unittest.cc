@@ -10,6 +10,7 @@
 
 #include "base/command_line.h"
 #include "base/files/scoped_temp_dir.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/strings/string_split.h"
 #include "base/system/sys_info.h"
 #include "base/test/bind.h"

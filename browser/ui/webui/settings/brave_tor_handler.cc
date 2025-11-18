@@ -20,6 +20,7 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/memory/ref_counted_memory.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/values.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/components/tor/pref_names.h"

@@ -5,6 +5,7 @@
 
 #include "brave/browser/net/brave_system_request_handler.h"
 
+#include "base/memory/scoped_refptr.h"
 #include "brave/components/constants/network_constants.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
