@@ -877,4 +877,13 @@ bool IsDeveloperModeEnabled(PrefService* profile_state) {
   return profile_state->GetBoolean(prefs::kAdBlockDeveloperMode);
 }
 
+void SetAllowElementBlockerInPrivateModeEnabled(PrefService* local_state,
+                                                bool value) {
+  local_state->SetBoolean(prefs::kAllowElementBlockerInPrivateMode, value);
+}
+
+bool GetAllowElementBlockerInPrivateModeEnabled(PrefService* local_state) {
+  return local_state->GetBoolean(prefs::kAllowElementBlockerInPrivateMode);
+}
+
 }  // namespace brave_shields
