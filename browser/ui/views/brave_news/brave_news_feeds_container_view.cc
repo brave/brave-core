@@ -8,11 +8,11 @@
 #include <memory>
 
 #include "brave/browser/brave_news/brave_news_tab_helper.h"
-#include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/ui/views/brave_news/brave_news_feed_item_view.h"
 #include "content/public/browser/web_contents.h"
 #include "third_party/skia/include/core/SkColor.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/color/color_provider_key.h"
 #include "ui/gfx/geometry/insets.h"
 #include "ui/gfx/geometry/size.h"
 #include "ui/views/background.h"
@@ -32,7 +32,8 @@ constexpr SkColor kBorderColorDark = SkColorSetRGB(59, 62, 79);
 }  // namespace
 
 BraveNewsFeedsContainerView::BraveNewsFeedsContainerView(
-    content::WebContents* contents) {
+    content::WebContents* contents)
+    : contents_(contents) {
   auto* tab_helper = BraveNewsTabHelper::FromWebContents(contents);
 
   auto available_feeds = tab_helper->GetAvailableFeedUrls();
@@ -59,8 +60,10 @@ BraveNewsFeedsContainerView::~BraveNewsFeedsContainerView() = default;
 
 void BraveNewsFeedsContainerView::OnThemeChanged() {
   views::View::OnThemeChanged();
-  auto is_dark = dark_mode::GetActiveBraveDarkModeType() ==
-                 dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK;
+
+  auto is_dark =
+      contents_->GetColorMode() == ui::ColorProviderKey::ColorMode::kDark;
+
   constexpr float kCornerRadius = 12;
   SetBackground(views::CreateRoundedRectBackground(
       is_dark ? kBackgroundColorDark : kBackgroundColorLight, kCornerRadius));

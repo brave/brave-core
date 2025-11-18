@@ -11,10 +11,8 @@
 #include "base/metrics/histogram_macros.h"
 #include "brave/browser/new_tab/new_tab_shows_options.h"
 #include "brave/browser/profiles/profile_util.h"
-#include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
-#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search/instant_service.h"
 #include "chrome/browser/search/instant_service_factory.h"
@@ -22,14 +20,7 @@
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_ui.h"
 
-BraveAppearanceHandler::BraveAppearanceHandler() {
-  local_state_change_registrar_.Init(g_browser_process->local_state());
-  local_state_change_registrar_.Add(
-      kBraveDarkMode,
-      base::BindRepeating(&BraveAppearanceHandler::OnBraveDarkModeChanged,
-                          base::Unretained(this)));
-}
-
+BraveAppearanceHandler::BraveAppearanceHandler() = default;
 BraveAppearanceHandler::~BraveAppearanceHandler() = default;
 
 // TODO(simonhong): Use separate handler for NTP settings.
@@ -49,14 +40,6 @@ void BraveAppearanceHandler::RegisterMessages() {
       base::BindRepeating(&BraveAppearanceHandler::OnPreferenceChanged,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
-      "setBraveThemeType",
-      base::BindRepeating(&BraveAppearanceHandler::SetBraveThemeType,
-                          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "getBraveThemeType",
-      base::BindRepeating(&BraveAppearanceHandler::GetBraveThemeType,
-                          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
       "getNewTabShowsOptionsList",
       base::BindRepeating(&BraveAppearanceHandler::GetNewTabShowsOptionsList,
                           base::Unretained(this)));
@@ -65,36 +48,6 @@ void BraveAppearanceHandler::RegisterMessages() {
       base::BindRepeating(
           &BraveAppearanceHandler::ShouldShowNewTabDashboardSettings,
           base::Unretained(this)));
-}
-
-void BraveAppearanceHandler::SetBraveThemeType(const base::Value::List& args) {
-  CHECK_EQ(args.size(), 1U);
-  CHECK(args[0].is_int());
-  AllowJavascript();
-
-  int int_type = args[0].GetInt();
-  dark_mode::SetBraveDarkModeType(
-      static_cast<dark_mode::BraveDarkModeType>(int_type));
-}
-
-void BraveAppearanceHandler::GetBraveThemeType(const base::Value::List& args) {
-  CHECK_EQ(args.size(), 1U);
-  AllowJavascript();
-  // GetBraveThemeType() should be used because settings option displays all
-  // available options including default.
-  ResolveJavascriptCallback(
-      args[0],
-      base::Value(static_cast<int>(dark_mode::GetBraveDarkModeType())));
-}
-
-void BraveAppearanceHandler::OnBraveDarkModeChanged() {
-  // GetBraveThemeType() should be used because settings option displays all
-  // available options including default.
-  if (IsJavascriptAllowed()) {
-    FireWebUIListener(
-        "brave-theme-type-changed",
-        base::Value(static_cast<int>(dark_mode::GetBraveDarkModeType())));
-  }
 }
 
 void BraveAppearanceHandler::OnPreferenceChanged(const std::string& pref_name) {

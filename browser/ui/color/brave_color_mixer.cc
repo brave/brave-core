@@ -6,7 +6,6 @@
 #include "brave/browser/ui/color/brave_color_mixer.h"
 
 #include "base/numerics/safe_conversions.h"
-#include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/color/color_palette.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
@@ -624,34 +623,12 @@ void AddBravePrivateThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorToolbarButtonActivated] = {SkColorSetRGB(0x7C, 0x91, 0xFF)};
   mixer[kColorSidebarButtonPressed] = {kColorToolbarButtonActivated};
 
-  // |key.color_mode| always dark as we use dark native theme for
-  // private/tor/guest profile. See BraveBrowserWidget::GetNativeTheme().
-  // Exceptionally, below side panel header colors should be brave theme
-  // specific because side panel header colors should be aligned with side panel
-  // contents.
-  const bool is_dark = dark_mode::GetActiveBraveDarkModeType() ==
-                       dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK;
-  // These colors should be nala colors, but we don't necessarily match the
-  // theme in the browser, so we hardcode light/dark values.
-  // kColorDividerSubtle
-  mixer[kColorSidebarPanelHeaderSeparator] = {
-      is_dark ? nala::kColorPrimitiveNeutral20
-              : nala::kColorPrimitiveNeutral90};
-  // kColorContainerBackground
-  mixer[kColorSidebarPanelHeaderBackground] = {
-      is_dark ? nala::kColorPrimitiveNeutral5
-              : nala::kColorPrimitiveNeutral100};
-  mixer[kColorSidebarPanelHeaderTitle] = {is_dark
-                                              ? nala::kColorPrimitiveNeutral90
-                                              : nala::kColorPrimitiveNeutral10};
-  // kColorIconDefault
-  mixer[kColorSidebarPanelHeaderButton] = {
-      is_dark ? nala::kColorPrimitiveNeutral90
-              : nala::kColorPrimitiveNeutral10};
-  // kColorNeutral60
+  mixer[kColorSidebarPanelHeaderSeparator] = {nala::kColorPrimitiveNeutral20};
+  mixer[kColorSidebarPanelHeaderBackground] = {nala::kColorPrimitiveNeutral5};
+  mixer[kColorSidebarPanelHeaderTitle] = {nala::kColorPrimitiveNeutral90};
+  mixer[kColorSidebarPanelHeaderButton] = {nala::kColorPrimitiveNeutral90};
   mixer[kColorSidebarPanelHeaderButtonHovered] = {
-      is_dark ? nala::kColorPrimitiveNeutral80
-              : nala::kColorPrimitiveNeutral25};
+      nala::kColorPrimitiveNeutral80};
 }
 
 void AddBraveTorThemeColorMixer(ui::ColorProvider* provider,

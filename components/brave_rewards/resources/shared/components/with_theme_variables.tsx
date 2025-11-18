@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
@@ -44,17 +45,9 @@ function normalizeThemeName (name: string) {
 
 export function WithThemeVariables (props: { children: React.ReactNode }) {
   const styledComponentsTheme = React.useContext(ThemeContext) || {}
-  const [themeName, setThemeName] = React.useState('')
-
-  React.useEffect(() => {
-    if (chrome && chrome.braveTheme) {
-      chrome.braveTheme.getBraveThemeType(setThemeName)
-      chrome.braveTheme.onBraveThemeTypeChanged.addListener(setThemeName)
-    }
-  }, [])
 
   const currentTheme = normalizeThemeName(
-    themeName || styledComponentsTheme.name || '')
+    styledComponentsTheme.name || '')
 
   return (
     <Wrapper className={`brave-theme-${currentTheme}`}>

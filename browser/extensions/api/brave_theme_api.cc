@@ -5,36 +5,46 @@
 
 #include "brave/browser/extensions/api/brave_theme_api.h"
 
-#include <memory>
 #include <optional>
-#include <string>
 
-#include "base/json/json_writer.h"
-#include "base/values.h"
-#include "brave/browser/themes/brave_dark_mode_utils.h"
+#include "base/notreached.h"
 #include "brave/common/extensions/api/brave_theme.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/themes/theme_service.h"
+#include "chrome/browser/themes/theme_service_factory.h"
+
+namespace {
+
+ThemeService::BrowserColorScheme ConvertToBrowserColorScheme(
+    const std::string scheme) {
+  if (scheme == "System") {
+    return ThemeService::BrowserColorScheme::kSystem;
+  } else if (scheme == "Light") {
+    return ThemeService::BrowserColorScheme::kLight;
+  } else if (scheme == "Dark") {
+    return ThemeService::BrowserColorScheme::kDark;
+  }
+
+  NOTREACHED();
+}
+
+}  // namespace
 
 namespace extensions::api {
 
-ExtensionFunction::ResponseAction BraveThemeGetBraveThemeListFunction::Run() {
-  std::string json_string;
-  base::JSONWriter::Write(dark_mode::GetBraveDarkModeTypeList(), &json_string);
-  return RespondNow(WithArguments(json_string));
-}
-
-ExtensionFunction::ResponseAction BraveThemeGetBraveThemeTypeFunction::Run() {
-  const std::string theme_type =
-      dark_mode::GetStringFromBraveDarkModeType(
-          dark_mode::GetActiveBraveDarkModeType());
-  return RespondNow(WithArguments(theme_type));
-}
-
+// TODO(https://github.com/brave/brave-browser/issues/50556): Remove this. Only
+// Welcome UI uses this api. Welcome UI can use CustomizeColorSchemeModeHandler
+// instead.
 ExtensionFunction::ResponseAction BraveThemeSetBraveThemeTypeFunction::Run() {
   std::optional<brave_theme::SetBraveThemeType::Params> params =
       brave_theme::SetBraveThemeType::Params::Create(args());
   EXTENSION_FUNCTION_VALIDATE(params);
 
-  dark_mode::SetBraveDarkModeType(params->type);
+  auto* theme_service = ThemeServiceFactory::GetForProfile(
+      Profile::FromBrowserContext(browser_context()));
+  CHECK(theme_service);
+  theme_service->SetBrowserColorScheme(
+      ConvertToBrowserColorScheme(params->type));
 
   return RespondNow(NoArguments());
 }

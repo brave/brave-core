@@ -6,14 +6,15 @@
 #include "base/check.h"
 #include "base/path_service.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
+#include "brave/browser/themes/pref_names.h"
 #include "brave/browser/ui/color/brave_color_id.h"
-#include "brave/browser/ui/color/brave_color_mixer.h"
 #include "brave/browser/ui/color/color_palette.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/ui/color/nala/nala_color_id.h"
 #include "build/build_config.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/profiles/profile_test_util.h"
@@ -23,8 +24,8 @@
 #include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
-#include "chrome/browser/ui/omnibox/omnibox_theme.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/prefs/pref_service.h"
@@ -34,9 +35,6 @@
 #include "testing/gtest/include/gtest/gtest-spi.h"
 #include "ui/color/color_provider.h"
 #include "ui/color/color_provider_key.h"
-#include "ui/native_theme/native_theme.h"
-#include "ui/native_theme/native_theme_observer.h"
-#include "ui/native_theme/os_settings_provider.h"
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/tor/tor_profile_manager.h"
@@ -92,121 +90,6 @@ class BraveThemeServiceTest : public InProcessBrowserTest {
   }
 #endif
 };
-
-namespace {
-
-class TestNativeThemeObserver : public ui::NativeThemeObserver {
- public:
-  TestNativeThemeObserver() = default;
-  ~TestNativeThemeObserver() override = default;
-
-  MOCK_METHOD1(OnNativeThemeUpdated, void(ui::NativeTheme*));
-};
-
-}  // namespace
-
-class BraveThemeServiceTestWithoutSystemTheme : public InProcessBrowserTest {
- public:
-  BraveThemeServiceTestWithoutSystemTheme() {
-    dark_mode::SetUseSystemDarkModeEnabledForTest(false);
-  }
-};
-
-IN_PROC_BROWSER_TEST_F(BraveThemeServiceTestWithoutSystemTheme,
-                       BraveThemeChangeTest) {
-  Profile* profile = browser()->profile();
-  auto test_theme_color = kColorForTest;
-
-  // Test light theme
-  dark_mode::SetBraveDarkModeType(
-      dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT);
-  EXPECT_EQ(dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT,
-            dark_mode::GetActiveBraveDarkModeType());
-
-  const ui::ColorProvider* color_provider =
-      ThemeServiceFactory::GetForProfile(profile)->GetColorProvider();
-  EXPECT_EQ(kLightColorForTest, color_provider->GetColor(test_theme_color));
-
-  // Test dark theme
-  dark_mode::SetBraveDarkModeType(
-      dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK);
-  EXPECT_EQ(dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK,
-            dark_mode::GetActiveBraveDarkModeType());
-
-  color_provider =
-      ThemeServiceFactory::GetForProfile(profile)->GetColorProvider();
-  EXPECT_EQ(kDarkColorForTest, color_provider->GetColor(test_theme_color));
-
-  // Test dark theme private
-  Profile* profile_private =
-      profile->GetPrimaryOTRProfile(/*create_if_needed=*/true);
-  const ui::ColorProvider* color_provider_private =
-      ThemeServiceFactory::GetForProfile(profile_private)->GetColorProvider();
-  // Private color mixer overrides are not loaded because there's no theme.
-  EXPECT_EQ(kDarkColorForTest,
-            color_provider_private->GetColor(test_theme_color));
-}
-
-// Test whether appropriate native/web theme observer is called when brave theme
-// is changed.
-IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, ThemeObserverTest) {
-  // Initially set to light.
-  dark_mode::SetBraveDarkModeType(
-      dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT);
-
-  // Check theme observer is called twice by changing theme.
-  // One for changing to dark and the other for changing to light.
-  TestNativeThemeObserver native_theme_observer;
-  EXPECT_CALL(native_theme_observer,
-              OnNativeThemeUpdated(ui::NativeTheme::GetInstanceForNativeUi()))
-      .Times(2);
-  ui::NativeTheme::GetInstanceForNativeUi()->AddObserver(
-      &native_theme_observer);
-
-  TestNativeThemeObserver web_theme_observer;
-  EXPECT_CALL(web_theme_observer,
-              OnNativeThemeUpdated(ui::NativeTheme::GetInstanceForWeb()))
-      .Times(2);
-
-  ui::NativeTheme::GetInstanceForWeb()->AddObserver(&web_theme_observer);
-
-  dark_mode::SetBraveDarkModeType(
-      dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK);
-  dark_mode::SetBraveDarkModeType(
-      dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT);
-
-  ui::NativeTheme::GetInstanceForNativeUi()->RemoveObserver(
-      &native_theme_observer);
-  ui::NativeTheme::GetInstanceForWeb()->RemoveObserver(&web_theme_observer);
-}
-
-IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, SystemThemeChangeTest) {
-  ui::NativeTheme::PreferredColorScheme initial_mode =
-      ui::NativeTheme::GetInstanceForNativeUi()->preferred_color_scheme();
-
-  // Change to light.
-  dark_mode::SetBraveDarkModeType(
-      dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT);
-  EXPECT_EQ(ui::NativeTheme::GetInstanceForNativeUi()->preferred_color_scheme(),
-            ui::NativeTheme::PreferredColorScheme::kLight);
-
-  dark_mode::SetBraveDarkModeType(
-      dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK);
-  EXPECT_EQ(ui::NativeTheme::GetInstanceForNativeUi()->preferred_color_scheme(),
-            ui::NativeTheme::PreferredColorScheme::kDark);
-
-  dark_mode::SetBraveDarkModeType(
-      dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT);
-  EXPECT_EQ(ui::NativeTheme::GetInstanceForNativeUi()->preferred_color_scheme(),
-            ui::NativeTheme::PreferredColorScheme::kLight);
-
-  ASSERT_TRUE(dark_mode::SystemDarkModeEnabled());
-  dark_mode::SetBraveDarkModeType(
-      dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DEFAULT);
-  EXPECT_EQ(
-      initial_mode,
-      ui::NativeTheme::GetInstanceForNativeUi()->preferred_color_scheme());
-}
 
 // Check some colors from color provider pipeline.
 IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, ColorProviderTest) {
@@ -269,4 +152,39 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, NonNormalWindowDarkModeTest) {
   key = browser_widget->GetColorProviderKeyForTesting();
   EXPECT_EQ(ui::ColorProviderKey::ColorMode::kDark, key.color_mode);
 #endif
+}
+
+IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, PRE_BraveDarkModeMigrationTest) {
+  auto* local_state = g_browser_process->local_state();
+  auto* profile_prefs = browser()->profile()->GetPrefs();
+
+  // Check on first launch.
+  EXPECT_EQ(dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DEFAULT,
+            static_cast<dark_mode::BraveDarkModeType>(
+                local_state->GetInteger(kBraveDarkMode)));
+  EXPECT_EQ(ThemeService::BrowserColorScheme::kSystem,
+            static_cast<ThemeService::BrowserColorScheme>(
+                profile_prefs->GetInteger(prefs::kBrowserColorScheme)));
+  EXPECT_TRUE(profile_prefs->GetBoolean(dark_mode::kBraveDarkModeMigrated));
+
+  // Set migration is not yet done and brave dark mode is dark for checking
+  // migration at next launch.
+  profile_prefs->SetBoolean(dark_mode::kBraveDarkModeMigrated, false);
+  local_state->SetInteger(
+      kBraveDarkMode,
+      static_cast<int>(
+          dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK));
+}
+
+IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, BraveDarkModeMigrationTest) {
+  auto* local_state = g_browser_process->local_state();
+  auto* profile_prefs = browser()->profile()->GetPrefs();
+
+  EXPECT_EQ(dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK,
+            static_cast<dark_mode::BraveDarkModeType>(
+                local_state->GetInteger(kBraveDarkMode)));
+  EXPECT_EQ(ThemeService::BrowserColorScheme::kDark,
+            static_cast<ThemeService::BrowserColorScheme>(
+                profile_prefs->GetInteger(prefs::kBrowserColorScheme)));
+  EXPECT_TRUE(profile_prefs->GetBoolean(dark_mode::kBraveDarkModeMigrated));
 }

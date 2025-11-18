@@ -6,15 +6,8 @@
 #ifndef BRAVE_BROWSER_THEMES_BRAVE_THEME_SERVICE_H_
 #define BRAVE_BROWSER_THEMES_BRAVE_THEME_SERVICE_H_
 
-#include <memory>
-
-#include "base/gtest_prod_util.h"
 #include "chrome/browser/themes/theme_service.h"
 #include "components/prefs/pref_member.h"
-
-namespace extensions {
-class BraveThemeEventRouter;
-}  // namespace extensions
 
 class Profile;
 
@@ -27,19 +20,13 @@ class BraveThemeService : public ThemeService {
   bool GetIsGrayscale() const override;
 
  private:
-  FRIEND_TEST_ALL_PREFIXES(BraveThemeEventRouterBrowserTest, ThemeChangeTest);
-
-  // Own |mock_router|.
-  void SetBraveThemeEventRouterForTesting(
-      extensions::BraveThemeEventRouter* mock_router);
-
 #if defined(TOOLKIT_VIEWS)
   // Called when the darker theme pref is changed to notify that theme has
   // changed.
   void OnDarkerThemePrefChanged();
 #endif  // defined(TOOLKIT_VIEWS)
 
-  std::unique_ptr<extensions::BraveThemeEventRouter> brave_theme_event_router_;
+  void MigrateBrowserColorSchemeFromBraveDarkModePrefs(Profile* profile);
 
   BooleanPrefMember darker_theme_enabled_;
 };
