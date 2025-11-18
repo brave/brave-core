@@ -164,9 +164,10 @@ void CodeExecutionTool::UseTool(const std::string& input_json,
     return;
   }
 
-  auto wrapped_js = base::StrCat(
-      {"try {", *script,
-       "} catch (error) {console.error('Error:', error.toString());}"});
+  auto wrapped_js =
+      base::StrCat({"(function(window, location) { try {", *script,
+                    "} catch (error) {console.error('Error:', "
+                    "error.toString()); } })(undefined, undefined)"});
 
   auto request_id = script_storage_->StoreScript(std::move(wrapped_js));
 

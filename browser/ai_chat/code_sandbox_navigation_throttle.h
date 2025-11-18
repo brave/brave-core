@@ -35,4 +35,3 @@ class CodeSandboxNavigationThrottle : public content::NavigationThrottle {
 }  // namespace ai_chat
 
 #endif  // BRAVE_BROWSER_AI_CHAT_CODE_SANDBOX_NAVIGATION_THROTTLE_H_
-

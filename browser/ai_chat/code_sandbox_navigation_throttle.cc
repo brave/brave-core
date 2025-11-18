@@ -57,4 +57,3 @@ const char* CodeSandboxNavigationThrottle::GetNameForLogging() {
 }
 
 }  // namespace ai_chat
-
