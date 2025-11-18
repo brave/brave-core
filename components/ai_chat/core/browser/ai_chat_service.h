@@ -11,11 +11,13 @@
 #include <functional>
 #include <map>
 #include <memory>
+#include <optional>
 #include <string>
 #include <string_view>
 #include <utility>
 #include <vector>
 
+#include "base/containers/flat_map.h"
 #include "base/functional/callback.h"
 #include "base/functional/callback_helpers.h"
 #include "base/memory/raw_ptr.h"
@@ -28,7 +30,6 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_feedback_api.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
-#include "brave/components/ai_chat/core/browser/code_sandbox_script_storage.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_provider_factory.h"
@@ -249,9 +250,9 @@ class AIChatService : public KeyedService,
     ai_chat_db_ = std::move(db);
   }
 
-  CodeSandboxScriptStorage* code_sandbox_script_storage() {
-    return &code_sandbox_script_storage_;
-  }
+  std::string StoreCodeExecutionToolScript(std::string script);
+  std::optional<std::string> ConsumeCodeExecutionToolScript(
+      std::string_view request_id);
 
  private:
   friend class AIChatServiceUnitTest;
@@ -363,8 +364,8 @@ class AIChatService : public KeyedService,
   // Memory tool that is available and shared across all conversations.
   std::unique_ptr<MemoryStorageTool> memory_tool_;
 
-  // Storage for code sandbox scripts
-  CodeSandboxScriptStorage code_sandbox_script_storage_;
+  // Storage for code execution tool scripts
+  base::flat_map<std::string, std::string> code_execution_tool_scripts_;
 
   base::FilePath profile_path_;
 

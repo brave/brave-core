@@ -33,8 +33,6 @@ static_library("browser") {
     "associated_content_manager.h",
     "bookmarks_page_handler.cc",
     "bookmarks_page_handler.h",
-    "code_sandbox_script_storage.cc",
-    "code_sandbox_script_storage.h",
     "constants.cc",
     "constants.h",
     "conversation_handler.cc",
