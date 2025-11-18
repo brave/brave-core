@@ -105,7 +105,7 @@ public class BraveMultiWindowUtils extends MultiWindowUtils {
                     List<InstanceInfo> allInstances = multiInstanceManagerApi31.getInstanceInfo();
                     if (allInstances != null && allInstances.size() > 1) {
                         for (int i = 1; i < allInstances.size(); i++) {
-                            multiInstanceManagerApi31.closeInstance(
+                            multiInstanceManagerApi31.closeWindow(
                                     allInstances.get(i).instanceId, allInstances.get(i).taskId);
                         }
                     }
