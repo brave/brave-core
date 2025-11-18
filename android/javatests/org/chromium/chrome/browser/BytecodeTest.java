@@ -1707,8 +1707,9 @@ public class BytecodeTest {
                         ObservableSupplier.class,
                         BrowserControlsStateProvider.class,
                         Supplier.class,
-                        ObservableSupplierImpl.class,
+                        ObservableSupplier.class,
                         PageZoomIndicatorCoordinator.class,
+                        NavigationAttachmentsCoordinator.class,
                         MultiInstanceManager.class));
         Assert.assertTrue(
                 constructorsMatch(
