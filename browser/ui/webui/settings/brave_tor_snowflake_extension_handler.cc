@@ -10,7 +10,6 @@
 
 #include "base/check.h"
 #include "base/check_op.h"
-#include "base/memory/scoped_refptr.h"
 #include "brave/components/tor/pref_names.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/extensions/extension_allowlist.h"

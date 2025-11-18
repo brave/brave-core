@@ -15,6 +15,7 @@
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
+#include "base/memory/scoped_refptr.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/brave_file_select_utils.h"

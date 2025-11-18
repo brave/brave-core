@@ -5,6 +5,7 @@
 
 #include <optional>
 
+#include "base/memory/scoped_refptr.h"
 #include "base/values.h"
 #include "brave/browser/brave_browser_main_extra_parts.h"
 #include "extensions/common/extension.h"

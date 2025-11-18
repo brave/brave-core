@@ -7,7 +7,6 @@
 
 #include "brave/components/brave_ads/core/internal/common/test/profile_pref_value_test_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
-#include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 
@@ -20,11 +19,6 @@ void DisableBraveRewards() {
 
 void DisconnectExternalBraveRewardsWallet() {
   SetProfileStringPrefValue(brave_rewards::prefs::kExternalWalletType, "");
-}
-
-void OptOutOfBraveNewsAds() {
-  SetProfileBooleanPrefValue(brave_news::prefs::kBraveNewsOptedIn, false);
-  SetProfileBooleanPrefValue(brave_news::prefs::kNewTabPageShowToday, false);
 }
 
 void OptOutOfNewTabPageAds() {
@@ -49,7 +43,6 @@ void OptOutOfSearchResultAds() {
 }
 
 void OptOutOfAllAds() {
-  OptOutOfBraveNewsAds();
   OptOutOfNewTabPageAds();
   OptOutOfNotificationAds();
   OptOutOfSearchResultAds();

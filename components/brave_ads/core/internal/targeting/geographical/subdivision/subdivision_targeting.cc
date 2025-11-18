@@ -30,11 +30,9 @@ bool DoesRequireResourceForNewTabPageAds() {
 
 bool DoesRequireResource() {
   // Require resource only if:
-  // - User has opted into Brave News ads.
   // - The user has opted into new tab page ads and and joined Brave Rewards.
   // - User has joined Brave Rewards and opted into notification ads.
-  return UserHasOptedInToBraveNewsAds() ||
-         DoesRequireResourceForNewTabPageAds() ||
+  return DoesRequireResourceForNewTabPageAds() ||
          UserHasOptedInToNotificationAds();
 }
 
@@ -226,7 +224,6 @@ void SubdivisionTargeting::OnNotifyPrefDidChange(const std::string& path) {
   } else if (path == prefs::kSubdivisionTargetingUserSelectedSubdivision) {
     UpdateUserSelectedSubdivision();
   } else if (DoesMatchUserHasJoinedBraveRewardsPrefPath(path) ||
-             DoesMatchUserHasOptedInToBraveNewsAdsPrefPath(path) ||
              DoesMatchUserHasOptedInToNewTabPageAdsPrefPath(path) ||
              DoesMatchUserHasOptedInToNotificationAdsPrefPath(path)) {
     // This condition should include all the preferences that are present in the

@@ -7,7 +7,6 @@
 
 #include <memory>
 #include <string_view>
-#include <utility>
 
 #include "base/check.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"

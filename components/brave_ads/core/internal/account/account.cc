@@ -9,9 +9,7 @@
 
 #include "base/check.h"
 #include "base/check_op.h"
-#include "base/debug/crash_logging.h"
 #include "base/functional/bind.h"
-#include "base/notreached.h"
 #include "brave/components/brave_ads/core/internal/account/account_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations.h"
@@ -152,15 +150,6 @@ void Account::ProcessDepositCallback(
     bool success,
     const TransactionInfo& transaction) const {
   if (!success) {
-    SCOPED_CRASH_KEY_NUMBER("Issue50267", "ad_type",
-                            static_cast<int>(mojom_ad_type));
-    SCOPED_CRASH_KEY_NUMBER("Issue50267", "confirmation_type",
-                            static_cast<int>(mojom_confirmation_type));
-    SCOPED_CRASH_KEY_STRING64("Issue50267", "creative_instance_id",
-                              creative_instance_id);
-    SCOPED_CRASH_KEY_STRING64("Issue50267", "failure_reason",
-                              "Failed to add transaction");
-    DUMP_WILL_BE_NOTREACHED();
     return FailedToProcessDeposit(creative_instance_id, mojom_ad_type,
                                   mojom_confirmation_type);
   }
@@ -222,10 +211,6 @@ void Account::MaybeInitializeUserRewards() {
 
   BLOG(1, "Initialize user rewards");
 
-  // We do not need to destroy the `user_rewards` object when a user resets
-  // Brave Rewards because the associated data and the `Ads` instance will be
-  // destroyed.
-
   if (!HasWallet()) {
     return;
   }
@@ -276,6 +261,7 @@ void Account::OnNotifyDidInitializeAds() {
 
 void Account::OnNotifyPrefDidChange(const std::string& path) {
   if (DoesMatchUserHasJoinedBraveRewardsPrefPath(path)) {
+    // No need to destroy `user_rewards_`; disabling Brave Rewards resets Ads.
     Initialize();
   }
 }

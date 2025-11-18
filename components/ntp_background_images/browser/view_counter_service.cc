@@ -134,7 +134,6 @@ void ViewCounterService::OnContentSettingChanged(
 
 void ViewCounterService::RecordViewedAdEvent(
     const std::string& placement_id,
-    const std::string& campaign_id,
     const std::string& creative_instance_id,
     brave_ads::mojom::NewTabPageAdMetricType mojom_ad_metric_type) {
   branded_new_tab_count_state_->AddDelta(1);

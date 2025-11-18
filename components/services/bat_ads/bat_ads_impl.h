@@ -15,7 +15,6 @@
 
 namespace brave_ads {
 class Ads;
-struct InlineContentAdInfo;
 struct NewTabPageAdInfo;
 }  // namespace brave_ads
 
@@ -57,15 +56,6 @@ class BatAdsImpl final : public mojom::BatAds {
 
   void GetStatementOfAccounts(GetStatementOfAccountsCallback callback) override;
 
-  void MaybeServeInlineContentAd(
-      const std::string& dimensions,
-      MaybeServeInlineContentAdCallback callback) override;
-  void TriggerInlineContentAdEvent(
-      const std::string& placement_id,
-      const std::string& creative_instance_id,
-      brave_ads::mojom::InlineContentAdEventType mojom_ad_event_type,
-      TriggerInlineContentAdEventCallback callback) override;
-
   void ParseAndSaveNewTabPageAds(
       base::Value::Dict data,
       ParseAndSaveNewTabPageAdsCallback callback) override;
@@ -83,12 +73,6 @@ class BatAdsImpl final : public mojom::BatAds {
       const std::string& placement_id,
       brave_ads::mojom::NotificationAdEventType mojom_ad_event_type,
       TriggerNotificationAdEventCallback callback) override;
-
-  void TriggerPromotedContentAdEvent(
-      const std::string& placement_id,
-      const std::string& creative_instance_id,
-      brave_ads::mojom::PromotedContentAdEventType mojom_ad_event_type,
-      TriggerPromotedContentAdEventCallback callback) override;
 
   void MaybeGetSearchResultAd(const std::string& placement_id,
                               MaybeGetSearchResultAdCallback callback) override;

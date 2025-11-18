@@ -24,6 +24,7 @@
 #include "brave/components/email_aliases/email_aliases_api.h"
 #include "brave/components/email_aliases/features.h"
 #include "components/grit/brave_components_strings.h"
+#include "mojo/public/cpp/bindings/callback_helpers.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/resource_request.h"
@@ -184,10 +185,16 @@ void EmailAliasesService::RequestAuthentication(
           network::SimpleURLLoader::RETRY_ON_NETWORK_CHANGE);
   verification_simple_url_loader_->AttachStringForUpload(*body,
                                                          "application/json");
+
+  // Wrap the mojo result callback for case when user's cancelled verification
+  // flow. It is an error to drop response callbacks which still correspond to
+  // an open interface pipe.
+  auto wrapper = mojo::WrapCallbackWithDefaultInvokeIfNotRun(
+      std::move(callback), base::unexpected(std::string()));
   verification_simple_url_loader_->DownloadToString(
       url_loader_factory_.get(),
       base::BindOnce(&EmailAliasesService::OnRequestAuthenticationResponse,
-                     base::Unretained(this), std::move(callback)),
+                     base::Unretained(this), std::move(wrapper)),
       kMaxResponseLength.InBytesUnsigned());
 }
 

@@ -36,9 +36,8 @@ TEST_F(BraveAdsSummaryUserDataTest, BuildSummaryUserData) {
       mojom::ConfirmationType::kClicked, mojom::AdType::kNotificationAd);
   payment_tokens.push_back(payment_token_3);
 
-  const PaymentTokenInfo payment_token_4 =
-      test::BuildPaymentToken(mojom::ConfirmationType::kViewedImpression,
-                              mojom::AdType::kInlineContentAd);
+  const PaymentTokenInfo payment_token_4 = test::BuildPaymentToken(
+      mojom::ConfirmationType::kViewedImpression, mojom::AdType::kNewTabPageAd);
   payment_tokens.push_back(payment_token_4);
 
   // Act & Assert
@@ -52,7 +51,7 @@ TEST_F(BraveAdsSummaryUserDataTest, BuildSummaryUserData) {
                           "view": 2
                         },
                         {
-                          "ad_format": "inline_content_ad",
+                          "ad_format": "new_tab_page_ad",
                           "view": 1
                         }
                       ]

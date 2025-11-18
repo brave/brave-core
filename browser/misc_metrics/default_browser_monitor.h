@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_MISC_METRICS_DEFAULT_BROWSER_MONITOR_H_
 #define BRAVE_BROWSER_MISC_METRICS_DEFAULT_BROWSER_MONITOR_H_
 
+#include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/timer/wall_clock_timer.h"

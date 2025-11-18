@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/functional/callback_helpers.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/run_loop.h"
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
 #include "brave/components/brave_vpn/browser/brave_vpn_service.h"

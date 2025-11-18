@@ -125,6 +125,21 @@ constexpr char kSponsoredRichMediaCampaignsJson[] = R"(
       ]
     })";
 
+brave_ads::NewTabPageAdInfo BuildNewTabPageAd() {
+  brave_ads::NewTabPageAdInfo ad;
+  ad.placement_id = kPlacementId;
+  ad.campaign_id = kCampaignId;
+  ad.creative_instance_id = kCreativeInstanceId;
+  ad.company_name = kCompanyName;
+  ad.alt = kAltText;
+  ad.target_url = GURL(kTargetUrl);
+  return ad;
+}
+
+int GetInitialCountToBrandedWallpaper() {
+  return features::kInitialCountToBrandedWallpaper.Get() - 1;
+}
+
 }  // namespace
 
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
@@ -340,21 +355,6 @@ class ViewCounterServiceTest : public testing::Test {
     SetBackgroundImagesVisibility(true);
     MockBackgroundImagesData();
     EXPECT_TRUE(view_counter_service_->CanShowBackgroundImages());
-  }
-
-  brave_ads::NewTabPageAdInfo BuildNewTabPageAd() {
-    brave_ads::NewTabPageAdInfo ad;
-    ad.placement_id = kPlacementId;
-    ad.campaign_id = kCampaignId;
-    ad.creative_instance_id = kCreativeInstanceId;
-    ad.company_name = kCompanyName;
-    ad.alt = kAltText;
-    ad.target_url = GURL(kTargetUrl);
-    return ad;
-  }
-
-  int GetInitialCountToBrandedWallpaper() const {
-    return features::kInitialCountToBrandedWallpaper.Get() - 1;
   }
 
   std::optional<base::Value::Dict>

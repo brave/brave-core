@@ -11,6 +11,7 @@
 
 #include "base/check.h"
 #include "base/memory/raw_ptr.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/path_service.h"
 #include "base/task/single_thread_task_runner.h"
 #include "brave/browser/brave_browser_process.h"

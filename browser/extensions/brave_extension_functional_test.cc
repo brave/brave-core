@@ -5,6 +5,7 @@
 
 #include "brave/browser/extensions/brave_extension_functional_test.h"
 
+#include "base/memory/scoped_refptr.h"
 #include "base/path_service.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/extensions/chrome_extension_test_notification_observer.h"

@@ -64,21 +64,13 @@ TEST_F(
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_5);
 
-  TransactionInfo transaction_6 = test::BuildUnreconciledTransaction(
-      /*value=*/0.0, mojom::AdType::kInlineContentAd,
-      mojom::ConfirmationType::kViewedImpression,
-      /*should_generate_random_uuids=*/true);
-  transactions.push_back(transaction_6);
-
   // Act
   const base::flat_map<mojom::AdType, int32_t> ads_summary =
       GetAdsSummaryForDateRange(transactions, from_time, test::DistantFuture());
 
   // Assert
   const base::flat_map<mojom::AdType, int32_t> expected_ads_summary = {
-      {mojom::AdType::kNotificationAd, 2},
-      {mojom::AdType::kNewTabPageAd, 1},
-      {mojom::AdType::kInlineContentAd, 1}};
+      {mojom::AdType::kNotificationAd, 2}, {mojom::AdType::kNewTabPageAd, 1}};
   EXPECT_EQ(expected_ads_summary, ads_summary);
 }
 
@@ -125,12 +117,6 @@ TEST_F(
       mojom::ConfirmationType::kViewedImpression,
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_5);
-
-  TransactionInfo transaction_6 = test::BuildUnreconciledTransaction(
-      /*value=*/0.0, mojom::AdType::kInlineContentAd,
-      mojom::ConfirmationType::kViewedImpression,
-      /*should_generate_random_uuids=*/true);
-  transactions.push_back(transaction_6);
 
   // Act
   const base::flat_map<mojom::AdType, int32_t> ads_summary =

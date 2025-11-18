@@ -11,6 +11,7 @@
 #include "base/check.h"
 #include "base/check_op.h"
 #include "base/functional/bind.h"
+#include "base/memory/scoped_refptr.h"
 #include "brave/browser/net/brave_request_handler.h"
 #include "brave/components/constants/network_constants.h"
 #include "content/public/browser/browser_context.h"

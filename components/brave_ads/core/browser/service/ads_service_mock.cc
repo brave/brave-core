@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/browser/service/ads_service_mock.h"
 
-#include <utility>
-
 namespace brave_ads {
 
 AdsServiceMock::AdsServiceMock() : AdsService(/*delegate=*/nullptr) {}

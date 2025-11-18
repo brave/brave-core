@@ -310,7 +310,7 @@ describe('ModelSelector', () => {
       expect(alert).toHaveTextContent('CHAT_UI_AGENT_MODE_MODEL_INFO')
     },
   )
-  it('should display near icon for near models', async () => {
+  it('should display near icon and beta label for near models', async () => {
     render(<ModelSelector />)
 
     // Make sure the anchor button is visible
@@ -327,11 +327,13 @@ describe('ModelSelector', () => {
 
     // Make sure the default menu items are visible
     const menuItems = document.querySelectorAll<HTMLElement>('leo-menu-item')
-    expect(menuItems[2]).toHaveTextContent('Premium Model')
+    const nearMenuItem = menuItems[2]
+
+    // Check that the beta label is visible
+    expect(nearMenuItem).toHaveTextContent('CHAT_UI_MODEL_BETA_LABEL')
 
     // Check that the near icon is present in the Premium Model menu item
-    const premiumMenuItem = within(menuItems[2])
-    const nearIcon = premiumMenuItem.getByRole('img')
+    const nearIcon = within(nearMenuItem).getByRole('img')
     expect(nearIcon).toHaveClass('nearIcon')
   })
 })

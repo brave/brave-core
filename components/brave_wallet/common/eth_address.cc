@@ -114,7 +114,7 @@ std::string EthAddress::ToChecksumAddress(uint256_t eip1191_chaincode) const {
         base::NumberToString(static_cast<uint64_t>(eip1191_chaincode)) + "0x";
   }
 
-  const std::string address_str = HexEncodeLower(bytes_);
+  const std::string address_str = base::HexEncodeLower(bytes_);
   const std::string hash_str = base::HexEncode(
       KeccakHash(base::as_byte_span(base::StrCat({prefix, address_str}))));
 

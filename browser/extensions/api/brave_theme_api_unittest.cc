@@ -5,6 +5,7 @@
 
 #include "brave/browser/extensions/api/brave_theme_api.h"
 
+#include "base/memory/scoped_refptr.h"
 #include "chrome/browser/extensions/extension_api_unittest.h"
 #include "chrome/browser/themes/theme_service.h"
 #include "chrome/browser/themes/theme_service_factory.h"

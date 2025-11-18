@@ -19,15 +19,6 @@ bool CanConvertAdEvent(const AdEventInfo& ad_event) {
            ad_event.confirmation_type == mojom::ConfirmationType::kClicked;
   }
 
-  if (ad_event.type == mojom::AdType::kInlineContentAd ||
-      ad_event.type == mojom::AdType::kPromotedContentAd) {
-    // For non-Rewards users, allow view-through and click-through conversions
-    // for inline content and promoted content ads.
-    return ad_event.confirmation_type ==
-               mojom::ConfirmationType::kViewedImpression ||
-           ad_event.confirmation_type == mojom::ConfirmationType::kClicked;
-  }
-
   // Otherwise, only allow click-through conversions.
   return ad_event.confirmation_type == mojom::ConfirmationType::kClicked;
 }

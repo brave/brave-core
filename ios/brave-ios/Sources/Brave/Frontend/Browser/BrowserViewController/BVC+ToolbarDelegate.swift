@@ -645,7 +645,7 @@ extension BrowserViewController: TopToolbarDelegate {
         }
       }
 
-      let permissionStatus = await speechRecognizer.askForUserPermission()
+      let permissionStatus = await SpeechRecognizer.requestPermission()
 
       if permissionStatus {
         openVoiceSearch(speechRecognizer: speechRecognizer)

@@ -9,6 +9,7 @@
 #include "base/containers/span.h"
 #include "base/feature_list.h"
 #include "base/memory/raw_ptr.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/path_service.h"
 #include "base/types/cxx23_to_underlying.h"
 #include "base/types/zip.h"

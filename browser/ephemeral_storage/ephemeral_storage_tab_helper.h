@@ -10,6 +10,7 @@
 #include <string>
 
 #include "base/containers/flat_set.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/unguessable_token.h"
 #include "brave/browser/ephemeral_storage/tld_ephemeral_lifetime.h"

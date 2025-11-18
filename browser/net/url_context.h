@@ -12,6 +12,7 @@
 #include <string>
 
 #include "base/memory/raw_ptr.h"
+#include "base/memory/scoped_refptr.h"
 #include "content/public/browser/frame_tree_node_id.h"
 #include "net/base/network_anonymization_key.h"
 #include "net/http/http_request_headers.h"

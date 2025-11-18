@@ -198,8 +198,8 @@ BackgroundFacade::GetSponsoredImageBackground() {
   auto sponsored_image = ReadSponsoredImageData(*data);
   if (sponsored_image) {
     view_counter_service_->RecordViewedAdEvent(
-        sponsored_image->wallpaper_id, sponsored_image->campaign_id,
-        sponsored_image->creative_instance_id, sponsored_image->metric_type);
+        sponsored_image->wallpaper_id, sponsored_image->creative_instance_id,
+        sponsored_image->metric_type);
   }
 
   return sponsored_image;

@@ -31,12 +31,6 @@ bool IsAllowedToDeposit(const std::string& creative_instance_id,
   // Evaluate deposit eligibility for non-Rewards users based on ad type and
   // other conditions.
   switch (mojom_ad_type) {
-    case mojom::AdType::kInlineContentAd:
-    case mojom::AdType::kPromotedContentAd: {
-      // Only allow deposits for non-Rewards users who have joined Brave News.
-      return UserHasOptedInToBraveNewsAds();
-    }
-
     case mojom::AdType::kNewTabPageAd: {
       // Only allow deposits for non-Rewards users who have opted into new tab
       // page ads.

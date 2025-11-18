@@ -715,8 +715,9 @@ void NTPBackgroundImagesService::MarkThisInstallIsNotSuperReferralForever() {
   }
 }
 
+// static
 bool NTPBackgroundImagesService::IsValidSuperReferralComponentInfo(
-    const base::Value::Dict& component_info) const {
+    const base::Value::Dict& component_info) {
   return component_info.FindString(kPublicKey) &&
          component_info.FindString(kComponentIDKey) &&
          component_info.FindString(kThemeNameKey);

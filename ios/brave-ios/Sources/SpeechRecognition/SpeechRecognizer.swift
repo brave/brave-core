@@ -69,14 +69,9 @@ public class SpeechRecognizer: ObservableObject {
   private var task: SFSpeechRecognitionTask?
   private let recognizer = SFSpeechRecognizer()
 
-  @MainActor
-  public func askForUserPermission() async -> Bool {
-    // Ask for Record Permission if not permitted throw error
-    guard await AVAudioSession.sharedInstance().hasPermissionToRecord() else {
-      return false
-    }
-
-    return true
+  public class func requestPermission() async -> Bool {
+    // Ask for Record Permission. If not permitted returns false
+    await AVAudioApplication.requestRecordPermission()
   }
 
   @MainActor
@@ -283,18 +278,5 @@ public class SpeechRecognizer: ObservableObject {
     }
 
     isSilent = isCurrentlySilent
-  }
-}
-
-extension AVAudioSession {
-  /// Ask for recording permission
-  ///  this is used for access microphone
-  /// - Returns: Authorization state
-  func hasPermissionToRecord() async -> Bool {
-    await withCheckedContinuation { continuation in
-      requestRecordPermission { authorized in
-        continuation.resume(returning: authorized)
-      }
-    }
   }
 }

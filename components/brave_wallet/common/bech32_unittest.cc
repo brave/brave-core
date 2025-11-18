@@ -11,7 +11,7 @@
 #include <string_view>
 #include <utility>
 
-#include "brave/components/brave_wallet/common/hex_utils.h"
+#include "base/strings/string_number_conversions.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet::bech32 {
@@ -110,7 +110,7 @@ TEST(Bech32UnitTest, TestVectors_BIP173) {
     // Test that we can encode/decode it as a bitcoin bech32 address.
     auto decoded = DecodeForBitcoin(address);
     ASSERT_TRUE(decoded);
-    EXPECT_EQ(HexEncodeLower(decoded->data), bytes_hex);
+    EXPECT_EQ(base::HexEncodeLower(decoded->data), bytes_hex);
     EXPECT_EQ(EncodeForBitcoin(decoded->data, decoded->hrp, decoded->witness),
               address);
   }
@@ -213,7 +213,7 @@ TEST(Bech32UnitTest, TestVectors_BIP350) {
     // Test that we can encode/decode it as a bitcoin bech32 address.
     auto decoded = DecodeForBitcoin(address);
     ASSERT_TRUE(decoded);
-    EXPECT_EQ(HexEncodeLower(decoded->data), bytes_hex);
+    EXPECT_EQ(base::HexEncodeLower(decoded->data), bytes_hex);
     EXPECT_EQ(EncodeForBitcoin(decoded->data, decoded->hrp, decoded->witness),
               address);
   }

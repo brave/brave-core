@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_wallet/browser/eth_topics_builder.h"
 
-#include "brave/components/brave_wallet/common/hex_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {

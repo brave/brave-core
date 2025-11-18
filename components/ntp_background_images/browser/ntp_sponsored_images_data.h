@@ -11,7 +11,6 @@
 #include <vector>
 
 #include "base/files/file_path.h"
-#include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "ui/gfx/geometry/point.h"
@@ -138,9 +137,6 @@ struct NTPSponsoredImagesData {
 
   void ParseCampaigns(const base::Value::List& list,
                       const base::FilePath& installed_dir);
-  std::optional<Campaign> MaybeParseCampaign(
-      const base::Value::Dict& dict,
-      const base::FilePath& installed_dir);
 
   void ParseSuperReferrals(const base::Value::Dict& dict,
                            const base::FilePath& installed_dir);

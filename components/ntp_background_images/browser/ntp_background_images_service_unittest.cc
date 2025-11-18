@@ -990,8 +990,8 @@ TEST_F(NTPBackgroundImagesServiceTest, WithSuperReferralCodeTest) {
   EXPECT_TRUE(service_->mapping_table_requested);
   EXPECT_FALSE(service_->marked_this_install_is_not_super_referral_forever);
 
-  EXPECT_FALSE(
-      service_->IsValidSuperReferralComponentInfo(pref_service_.GetDict(
+  EXPECT_FALSE(NTPBackgroundImagesService::IsValidSuperReferralComponentInfo(
+      pref_service_.GetDict(
           prefs::kNewTabPageCachedSuperReferralComponentInfo)));
   service_->OnGetMappingTableData(kTestMappingTable);
   EXPECT_TRUE(pref_service_.GetBoolean(
@@ -1014,8 +1014,9 @@ TEST_F(NTPBackgroundImagesServiceTest, WithSuperReferralCodeTest) {
   const NTPSponsoredImagesData* const data =
       service_->GetSponsoredImagesData(/*super_referral=*/true,
                                        /*supports_rich_media=*/true);
-  EXPECT_TRUE(service_->IsValidSuperReferralComponentInfo(pref_service_.GetDict(
-      prefs::kNewTabPageCachedSuperReferralComponentInfo)));
+  EXPECT_TRUE(NTPBackgroundImagesService::IsValidSuperReferralComponentInfo(
+      pref_service_.GetDict(
+          prefs::kNewTabPageCachedSuperReferralComponentInfo)));
   EXPECT_TRUE(data->IsSuperReferral());
   EXPECT_THAT(pref_service_.GetString(
                   prefs::kNewTabPageCachedSuperReferralComponentData),
@@ -1028,8 +1029,8 @@ TEST_F(NTPBackgroundImagesServiceTest, WithSuperReferralCodeTest) {
   EXPECT_THAT(
       pref_service_.GetString(prefs::kNewTabPageCachedSuperReferralCode),
       ::testing::IsEmpty());
-  EXPECT_FALSE(
-      service_->IsValidSuperReferralComponentInfo(pref_service_.GetDict(
+  EXPECT_FALSE(NTPBackgroundImagesService::IsValidSuperReferralComponentInfo(
+      pref_service_.GetDict(
           prefs::kNewTabPageCachedSuperReferralComponentInfo)));
   EXPECT_THAT(pref_service_.GetString(
                   prefs::kNewTabPageCachedSuperReferralComponentData),

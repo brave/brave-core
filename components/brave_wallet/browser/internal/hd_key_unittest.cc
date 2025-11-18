@@ -23,7 +23,6 @@
 #include "brave/components/brave_wallet/common/encoding_utils.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
-#include "brave/components/brave_wallet/common/hex_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
@@ -324,7 +323,8 @@ TEST(HDKeyUnitTest, GenerateFromExtendedKey) {
             base::to_underlying(ExtendedKeyVersion::kXprv));
   auto* hdkey_from_pri = parsed_xprv->hdkey.get();
   EXPECT_EQ(hdkey_from_pri->depth_, 5u);
-  EXPECT_EQ(HexEncodeLower(hdkey_from_pri->parent_fingerprint_), "31a507b8");
+  EXPECT_EQ(base::HexEncodeLower(hdkey_from_pri->parent_fingerprint_),
+            "31a507b8");
   EXPECT_EQ(hdkey_from_pri->index_, 2u);
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(hdkey_from_pri->chain_code_)),
             "9452b549be8cea3ecb7a84bec10dcfd94afe4d129ebfd3b3cb58eedf394ed271");
@@ -334,7 +334,7 @@ TEST(HDKeyUnitTest, GenerateFromExtendedKey) {
   EXPECT_EQ(
       base::ToLowerASCII(base::HexEncode(hdkey_from_pri->public_key_)),
       "024d902e1a2fc7a8755ab5b694c575fce742c48d9ff192e63df5193e4c7afe1f9c");
-  EXPECT_EQ(HexEncodeLower(hdkey_from_pri->GetIdentifier()),
+  EXPECT_EQ(base::HexEncodeLower(hdkey_from_pri->GetIdentifier()),
             "26132fdbe7bf89cbc64cf8dafa3f9f88b8666220");
 
   // m/0/2147483647'/1/2147483646'/2
@@ -345,7 +345,8 @@ TEST(HDKeyUnitTest, GenerateFromExtendedKey) {
             base::to_underlying(ExtendedKeyVersion::kXpub));
   auto* hdkey_from_pub = parsed_xpub->hdkey.get();
   EXPECT_EQ(hdkey_from_pub->depth_, 5u);
-  EXPECT_EQ(HexEncodeLower(hdkey_from_pub->parent_fingerprint_), "31a507b8");
+  EXPECT_EQ(base::HexEncodeLower(hdkey_from_pub->parent_fingerprint_),
+            "31a507b8");
   EXPECT_EQ(hdkey_from_pub->index_, 2u);
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(hdkey_from_pub->chain_code_)),
             "9452b549be8cea3ecb7a84bec10dcfd94afe4d129ebfd3b3cb58eedf394ed271");
@@ -353,7 +354,7 @@ TEST(HDKeyUnitTest, GenerateFromExtendedKey) {
   EXPECT_EQ(
       base::ToLowerASCII(base::HexEncode(hdkey_from_pub->public_key_)),
       "024d902e1a2fc7a8755ab5b694c575fce742c48d9ff192e63df5193e4c7afe1f9c");
-  EXPECT_EQ(HexEncodeLower(hdkey_from_pub->GetIdentifier()),
+  EXPECT_EQ(base::HexEncodeLower(hdkey_from_pub->GetIdentifier()),
             "26132fdbe7bf89cbc64cf8dafa3f9f88b8666220");
 
   auto parsed_zprv = HDKey::GenerateFromExtendedKey(kBtcMainnetImportAccount0);
@@ -361,7 +362,8 @@ TEST(HDKeyUnitTest, GenerateFromExtendedKey) {
             base::to_underlying(ExtendedKeyVersion::kZprv));
   auto* hdkey_from_zprv = parsed_zprv->hdkey.get();
   EXPECT_EQ(hdkey_from_zprv->depth_, 3u);
-  EXPECT_EQ(HexEncodeLower(hdkey_from_zprv->parent_fingerprint_), "7ef32bdb");
+  EXPECT_EQ(base::HexEncodeLower(hdkey_from_zprv->parent_fingerprint_),
+            "7ef32bdb");
   EXPECT_EQ(hdkey_from_zprv->index_, 2147483648u);
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(hdkey_from_zprv->chain_code_)),
             "4a53a0ab21b9dc95869c4e92a161194e03c0ef3ff5014ac692f433c4765490fc");
@@ -371,7 +373,7 @@ TEST(HDKeyUnitTest, GenerateFromExtendedKey) {
   EXPECT_EQ(
       base::ToLowerASCII(base::HexEncode(hdkey_from_zprv->public_key_)),
       "02707a62fdacc26ea9b63b1c197906f56ee0180d0bcf1966e1a2da34f5f3a09a9b");
-  EXPECT_EQ(HexEncodeLower(hdkey_from_zprv->GetIdentifier()),
+  EXPECT_EQ(base::HexEncodeLower(hdkey_from_zprv->GetIdentifier()),
             "fd13aac9a294188cdfe1331a8d94880bccbef8c1");
 
   auto parsed_vprv = HDKey::GenerateFromExtendedKey(kBtcTestnetImportAccount0);
@@ -379,7 +381,8 @@ TEST(HDKeyUnitTest, GenerateFromExtendedKey) {
             base::to_underlying(ExtendedKeyVersion::kVprv));
   auto* hdkey_from_vprv = parsed_vprv->hdkey.get();
   EXPECT_EQ(hdkey_from_vprv->depth_, 3u);
-  EXPECT_EQ(HexEncodeLower(hdkey_from_vprv->parent_fingerprint_), "0ef4b1af");
+  EXPECT_EQ(base::HexEncodeLower(hdkey_from_vprv->parent_fingerprint_),
+            "0ef4b1af");
   EXPECT_EQ(hdkey_from_vprv->index_, 2147483648u);
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(hdkey_from_vprv->chain_code_)),
             "3c8c2037ee4c1621da0d348db51163709a622d0d2838dde6d8419c51f6301c62");
@@ -389,7 +392,7 @@ TEST(HDKeyUnitTest, GenerateFromExtendedKey) {
   EXPECT_EQ(
       base::ToLowerASCII(base::HexEncode(hdkey_from_vprv->public_key_)),
       "03b88e0fbe3f646337ed93bc0c0f3b843fcf7d2589e5ec884754e6402027a890b4");
-  EXPECT_EQ(HexEncodeLower(hdkey_from_vprv->GetIdentifier()),
+  EXPECT_EQ(base::HexEncodeLower(hdkey_from_vprv->GetIdentifier()),
             "e99b862826a40a32c24c79785d06b19de3fb076f");
 }
 
@@ -573,7 +576,7 @@ TEST(HDKeyUnitTest, SignDer) {
   auto signature = hdkey->SignDer(hashed);
   // https://github.com/bitcoin/bitcoin/blob/v24.0/src/test/key_tests.cpp#L141
   EXPECT_EQ(
-      HexEncodeLower(*signature),
+      base::HexEncodeLower(*signature),
       "304402205dbbddda71772d95ce91cd2d14b592cfbc1dd0aabd6a394b6c2d377bbe59d31d"
       "022014ddda21494a4e221f0824f0b8b924c43fa43c0ad57dccdaa11f81a6bd4582f6");
 }

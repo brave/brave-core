@@ -46,19 +46,6 @@ TEST_F(BraveAdsSettingsTest, UserHasJoinedBraveRewardsAndNotConnectedWallet) {
   EXPECT_TRUE(UserHasJoinedBraveRewardsAndNotConnectedWallet());
 }
 
-TEST_F(BraveAdsSettingsTest, UserHasOptedInToBraveNewsAds) {
-  // Act & Assert
-  EXPECT_TRUE(UserHasOptedInToBraveNewsAds());
-}
-
-TEST_F(BraveAdsSettingsTest, UserHasNotOptedInToBraveNews) {
-  // Arrange
-  test::OptOutOfBraveNewsAds();
-
-  // Act & Assert
-  EXPECT_FALSE(UserHasOptedInToBraveNewsAds());
-}
-
 TEST_F(BraveAdsSettingsTest, UserHasOptedInToNewTabPageAds) {
   // Act & Assert
   EXPECT_TRUE(UserHasOptedInToNewTabPageAds());

@@ -9,6 +9,7 @@
 #include <string_view>
 
 #include "base/memory/raw_ptr.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/run_loop.h"
 #include "base/test/bind.h"
 #include "brave/browser/brave_wallet/asset_ratio_service_factory.h"

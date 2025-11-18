@@ -14,6 +14,32 @@
 
 namespace ntp_background_images {
 
+namespace {
+
+bool ShouldReportNewTabPageAdEvent(
+    brave_ads::mojom::NewTabPageAdEventType mojom_ad_event_type) {
+  switch (mojom_ad_event_type) {
+    case brave_ads::mojom::NewTabPageAdEventType::kClicked:
+    case brave_ads::mojom::NewTabPageAdEventType::kInteraction:
+    case brave_ads::mojom::NewTabPageAdEventType::kMediaPlay:
+    case brave_ads::mojom::NewTabPageAdEventType::kMedia25:
+    case brave_ads::mojom::NewTabPageAdEventType::kMedia100: {
+      return true;
+    }
+
+    case brave_ads::mojom::NewTabPageAdEventType::kServedImpression:
+    case brave_ads::mojom::NewTabPageAdEventType::kViewedImpression: {
+      // Handled in `view_counter_service`.
+      return false;
+    }
+  }
+
+  NOTREACHED() << "Unexpected value for mojom::NewTabPageAdEventType: "
+               << base::to_underlying(mojom_ad_event_type);
+}
+
+}  // namespace
+
 NTPSponsoredRichMediaAdEventHandler::NTPSponsoredRichMediaAdEventHandler(
     brave_ads::AdsService* ads_service)
     : ads_service_(ads_service) {}
@@ -43,28 +69,6 @@ void NTPSponsoredRichMediaAdEventHandler::MaybeReportRichMediaAdEvent(
                                            mojom_ad_event_type,
                                            /*intentional*/ base::DoNothing());
   }
-}
-
-bool NTPSponsoredRichMediaAdEventHandler::ShouldReportNewTabPageAdEvent(
-    brave_ads::mojom::NewTabPageAdEventType mojom_ad_event_type) const {
-  switch (mojom_ad_event_type) {
-    case brave_ads::mojom::NewTabPageAdEventType::kClicked:
-    case brave_ads::mojom::NewTabPageAdEventType::kInteraction:
-    case brave_ads::mojom::NewTabPageAdEventType::kMediaPlay:
-    case brave_ads::mojom::NewTabPageAdEventType::kMedia25:
-    case brave_ads::mojom::NewTabPageAdEventType::kMedia100: {
-      return true;
-    }
-
-    case brave_ads::mojom::NewTabPageAdEventType::kServedImpression:
-    case brave_ads::mojom::NewTabPageAdEventType::kViewedImpression: {
-      // Handled in `view_counter_service`.
-      return false;
-    }
-  }
-
-  NOTREACHED() << "Unexpected value for mojom::NewTabPageAdEventType: "
-               << base::to_underlying(mojom_ad_event_type);
 }
 
 }  // namespace ntp_background_images

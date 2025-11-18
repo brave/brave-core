@@ -9,6 +9,7 @@
 #include <array>
 #include <string_view>
 
+#include "base/memory/scoped_refptr.h"
 #include "net/http/http_response_headers.h"
 #include "url/gurl.h"
 #include "url/origin.h"

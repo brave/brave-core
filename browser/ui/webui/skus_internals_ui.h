@@ -9,6 +9,7 @@
 #include <string>
 
 #include "base/memory/raw_ptr.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/values.h"
 #include "brave/components/skus/common/skus_internals.mojom.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"

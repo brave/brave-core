@@ -20,6 +20,7 @@
 #include "base/i18n/file_util_icu.h"
 #include "base/i18n/time_formatting.h"
 #include "base/logging.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/notreached.h"
 #include "base/path_service.h"
 #include "base/strings/utf_string_conversions.h"

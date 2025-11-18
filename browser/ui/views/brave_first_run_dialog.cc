@@ -10,7 +10,6 @@
 
 #include "base/check.h"
 #include "base/functional/bind.h"
-#include "base/memory/scoped_refptr.h"
 #include "base/run_loop.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/first_run/first_run.h"

@@ -12,8 +12,8 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_vpn/browser/connection/wireguard/credentials/brave_vpn_wireguard_profile_credentials.h"
-#include "brave/components/brave_vpn/common/win/brave_windows_service_watcher.h"
 #include "brave/components/brave_vpn/browser/connection/wireguard/wireguard_connection_api_impl_base.h"
+#include "brave/components/brave_vpn/common/win/brave_windows_service_watcher.h"
 
 namespace brave_vpn {
 

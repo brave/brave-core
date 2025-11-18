@@ -11,6 +11,7 @@
 //   Use of this source code is governed by a BSD-style license that can be
 //   found in the LICENSE file.
 
+#include "base/memory/scoped_refptr.h"
 #include "chrome/browser/net/system_network_context_manager.h"
 #include "chrome/browser/ssl/ssl_browsertest_util.h"
 #include "chrome/browser/ui/browser.h"

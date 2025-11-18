@@ -42,9 +42,6 @@ class NTPSponsoredRichMediaAdEventHandler
       brave_ads::mojom::NewTabPageAdEventType mojom_ad_event_type) override;
 
  private:
-  bool ShouldReportNewTabPageAdEvent(
-      brave_ads::mojom::NewTabPageAdEventType mojom_ad_event_type) const;
-
   const raw_ptr<brave_ads::AdsService> ads_service_ = nullptr;  // Not owned.
 
   mojo::Receiver<mojom::SponsoredRichMediaAdEventHandler> receiver_{this};

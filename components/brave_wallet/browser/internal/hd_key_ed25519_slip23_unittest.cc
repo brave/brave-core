@@ -19,7 +19,6 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/internal/hd_key_common.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
-#include "brave/components/brave_wallet/common/hex_utils.h"
 #include "crypto/hash.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/boringssl/src/include/openssl/curve25519.h"
@@ -45,7 +44,7 @@ TEST(HDKeyEd25519Slip23UnitTest, TestVector1) {
       entropy);
 
   auto message = crypto::hash::Sha512(base::byte_span_from_cstring("abc"));
-  EXPECT_EQ(HexEncodeLower(message),
+  EXPECT_EQ(base::HexEncodeLower(message),
             "ddaf35a193617abacc417349ae204131"
             "12e6fa4e89a97ea20a9eeee64b55d39a"
             "2192992a274fc1a836ba3c23a3feebbd"
@@ -53,11 +52,11 @@ TEST(HDKeyEd25519Slip23UnitTest, TestVector1) {
 
   auto master_key =
       HDKeyEd25519Slip23::GenerateMasterKeyFromBip39Entropy(entropy);
-  EXPECT_EQ(HexEncodeLower(master_key->GetPublicKeyAsSpan()),
+  EXPECT_EQ(base::HexEncodeLower(master_key->GetPublicKeyAsSpan()),
             "311f8914b8934efbe7cbb8cc4745853d"
             "e12e8ea402df6f9f69b18d2792c6bed8");
   auto signature = *master_key->Sign(message);
-  EXPECT_EQ(HexEncodeLower(signature),
+  EXPECT_EQ(base::HexEncodeLower(signature),
             "843aa4353184193bdf01aab7f636ac53"
             "f86746dd97a2a2e01fe7923c37bfec40"
             "b68a73881a26ba57dc974abc1123d086"
@@ -68,7 +67,7 @@ TEST(HDKeyEd25519Slip23UnitTest, TestVector1) {
                      ->DeriveChild(DerivationIndex::Hardened(1815))
                      ->DeriveChild(DerivationIndex::Hardened(0));
 
-  EXPECT_EQ(HexEncodeLower(derived->GetPublicKeyAsSpan()),
+  EXPECT_EQ(base::HexEncodeLower(derived->GetPublicKeyAsSpan()),
             "a79619cd18f11202741213ab003dd40b"
             "ffb2a31e8ad1bc5aab6f02be3c8aa921");
 }
@@ -81,7 +80,7 @@ TEST(HDKeyEd25519Slip23UnitTest, TestVector2) {
       entropy);
 
   auto message = crypto::hash::Sha512(base::byte_span_from_cstring("abc"));
-  EXPECT_EQ(HexEncodeLower(message),
+  EXPECT_EQ(base::HexEncodeLower(message),
             "ddaf35a193617abacc417349ae204131"
             "12e6fa4e89a97ea20a9eeee64b55d39a"
             "2192992a274fc1a836ba3c23a3feebbd"
@@ -89,11 +88,11 @@ TEST(HDKeyEd25519Slip23UnitTest, TestVector2) {
 
   auto master_key =
       HDKeyEd25519Slip23::GenerateMasterKeyFromBip39Entropy(entropy);
-  EXPECT_EQ(HexEncodeLower(master_key->GetPublicKeyAsSpan()),
+  EXPECT_EQ(base::HexEncodeLower(master_key->GetPublicKeyAsSpan()),
             "6fd8d9c696b01525cc45f15583fc9447"
             "c66e1c71fd1a11c8885368404cd0a4ab");
   auto signature = *master_key->Sign(message);
-  EXPECT_EQ(HexEncodeLower(signature),
+  EXPECT_EQ(base::HexEncodeLower(signature),
             "f363d78e0a315ae1fc0ceb6b8efdd163"
             "1a3a2ce16f6cf43f596ff92c4a7b2926"
             "39c6e352cc24efcf80ccea39cbdb7ec9"
@@ -104,7 +103,7 @@ TEST(HDKeyEd25519Slip23UnitTest, TestVector2) {
                      ->DeriveChild(DerivationIndex::Normal(1815))
                      ->DeriveChild(DerivationIndex::Normal(0));
 
-  EXPECT_EQ(HexEncodeLower(derived->GetPublicKeyAsSpan()),
+  EXPECT_EQ(base::HexEncodeLower(derived->GetPublicKeyAsSpan()),
             "b857a8cd1dbbfed1824359d9d9e58bc8"
             "ffb9f66812b404f4c6ffc315629835bf");
 }
@@ -112,7 +111,7 @@ TEST(HDKeyEd25519Slip23UnitTest, TestVector2) {
 TEST(HDKeyEd25519Slip23UnitTest, RandomEntropyDeepDerivation) {
   std::array<uint8_t, 32> entropy = {};
   base::RandBytes(entropy);
-  SCOPED_TRACE(testing::Message() << HexEncodeLower(entropy));
+  SCOPED_TRACE(testing::Message() << base::HexEncodeLower(entropy));
 
   auto key = HDKeyEd25519Slip23::GenerateMasterKeyFromBip39Entropy(entropy);
   ASSERT_TRUE(key);
@@ -232,19 +231,19 @@ TEST(HDKeyEd25519Slip23UnitTest, CardanoSdkCryptoSlip23) {
 
     // Reference implementation encodes pubkey as `pubkey|chain_code`.
     ASSERT_EQ(*test_dict.FindString("pubkey"),
-              HexEncodeLower(key->GetPublicKeyAsSpan()) +
-                  HexEncodeLower(key->GetChainCodeAsSpanForTesting()));
+              base::HexEncodeLower(key->GetPublicKeyAsSpan()) +
+                  base::HexEncodeLower(key->GetChainCodeAsSpanForTesting()));
 
     // Reference implementation encodes private key as
     // `scalar|prefix|chain_code`.
     ASSERT_EQ(*test_dict.FindString("privatekey"),
-              HexEncodeLower(key->GetScalarAsSpanForTesting()) +
-                  HexEncodeLower(key->GetPrefixAsSpanForTesting()) +
-                  HexEncodeLower(key->GetChainCodeAsSpanForTesting()));
+              base::HexEncodeLower(key->GetScalarAsSpanForTesting()) +
+                  base::HexEncodeLower(key->GetPrefixAsSpanForTesting()) +
+                  base::HexEncodeLower(key->GetChainCodeAsSpanForTesting()));
 
-    ASSERT_EQ(
-        *test_dict.FindString("signature"),
-        HexEncodeLower(*key->Sign(base::byte_span_from_cstring("message"))));
+    ASSERT_EQ(*test_dict.FindString("signature"),
+              base::HexEncodeLower(
+                  *key->Sign(base::byte_span_from_cstring("message"))));
   }
 }
 

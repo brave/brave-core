@@ -13,6 +13,7 @@
 #include "base/check_op.h"
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/metrics/histogram_macros.h"
 #include "brave/browser/net/brave_request_handler.h"
 #include "brave/components/brave_shields/content/browser/adblock_stub_response.h"

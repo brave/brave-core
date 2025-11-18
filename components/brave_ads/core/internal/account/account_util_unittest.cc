@@ -31,67 +31,6 @@ TEST_F(BraveAdsAccountUtilTest, AlwaysAllowDepositsForRewardsUser) {
   }
 }
 
-TEST_F(BraveAdsAccountUtilTest, AllowInlineContentAdDepositsForNonRewardsUser) {
-  // Arrange
-  test::DisableBraveRewards();
-
-  // Act & Assert
-  for (size_t i = 0;
-       i < static_cast<size_t>(mojom::ConfirmationType::kMaxValue); ++i) {
-    EXPECT_TRUE(IsAllowedToDeposit(test::kCreativeInstanceId,
-                                   mojom::AdType::kInlineContentAd,
-                                   static_cast<mojom::ConfirmationType>(i)));
-  }
-}
-
-TEST_F(
-    BraveAdsAccountUtilTest,
-    DoNotAllowInlineContentAdDepositsForNonRewardsUserIfOptedOutOfBraveNews) {
-  // Arrange
-  test::DisableBraveRewards();
-
-  test::OptOutOfBraveNewsAds();
-
-  // Act & Assert
-  for (size_t i = 0;
-       i < static_cast<size_t>(mojom::ConfirmationType::kMaxValue); ++i) {
-    EXPECT_FALSE(IsAllowedToDeposit(test::kCreativeInstanceId,
-                                    mojom::AdType::kInlineContentAd,
-                                    static_cast<mojom::ConfirmationType>(i)));
-  }
-}
-
-TEST_F(BraveAdsAccountUtilTest,
-       AllowPromotedContentAdDepositsForNonRewardsUser) {
-  // Arrange
-  test::DisableBraveRewards();
-
-  // Act & Assert
-  for (size_t i = 0;
-       i < static_cast<size_t>(mojom::ConfirmationType::kMaxValue); ++i) {
-    EXPECT_TRUE(IsAllowedToDeposit(test::kCreativeInstanceId,
-                                   mojom::AdType::kPromotedContentAd,
-                                   static_cast<mojom::ConfirmationType>(i)));
-  }
-}
-
-TEST_F(
-    BraveAdsAccountUtilTest,
-    DoNotAllowPromotedContentAdDepositsForNonRewardsUserIfOptedOutOfBraveNews) {
-  // Arrange
-  test::DisableBraveRewards();
-
-  test::OptOutOfBraveNewsAds();
-
-  // Act & Assert
-  for (size_t i = 0;
-       i < static_cast<size_t>(mojom::ConfirmationType::kMaxValue); ++i) {
-    EXPECT_FALSE(IsAllowedToDeposit(test::kCreativeInstanceId,
-                                    mojom::AdType::kPromotedContentAd,
-                                    static_cast<mojom::ConfirmationType>(i)));
-  }
-}
-
 TEST_F(BraveAdsAccountUtilTest, AllowNewTabPageAdDepositsForNonRewardsUser) {
   // Arrange
   test::DisableBraveRewards();

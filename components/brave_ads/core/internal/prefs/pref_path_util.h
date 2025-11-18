@@ -12,8 +12,6 @@ namespace brave_ads {
 
 bool DoesMatchUserHasJoinedBraveRewardsPrefPath(const std::string& path);
 
-bool DoesMatchUserHasOptedInToBraveNewsAdsPrefPath(const std::string& path);
-
 bool DoesMatchUserHasOptedInToNewTabPageAdsPrefPath(const std::string& path);
 
 bool DoesMatchUserHasOptedInToNotificationAdsPrefPath(const std::string& path);

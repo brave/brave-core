@@ -76,12 +76,6 @@ void NewTabPageAdEventHandler::GetCreativeAdCallback(
   const NewTabPageAdInfo ad = BuildNewTabPageAd(placement_id, creative_ad);
   if (!ad.IsValid()) {
     BLOG(0, "Failed to fire new tab page ad event due to the ad being invalid");
-    SCOPED_CRASH_KEY_NUMBER("Issue50267", "event_type",
-                            static_cast<int>(mojom_ad_event_type));
-    SCOPED_CRASH_KEY_STRING64("Issue50267", "creative_instance_id",
-                              creative_instance_id);
-    SCOPED_CRASH_KEY_STRING64("Issue50267", "failure_reason", "Invalid ad");
-    DUMP_WILL_BE_NOTREACHED();
     return FailedToFireEvent(placement_id, creative_instance_id,
                              mojom_ad_event_type, std::move(callback));
   }
@@ -101,13 +95,6 @@ void NewTabPageAdEventHandler::GetAdEventsCallback(
     const AdEventList& ad_events) {
   if (!success) {
     BLOG(1, "New tab page ad: Failed to get ad events");
-    SCOPED_CRASH_KEY_NUMBER("Issue50267", "event_type",
-                            static_cast<int>(mojom_ad_event_type));
-    SCOPED_CRASH_KEY_STRING64("Issue50267", "creative_instance_id",
-                              ad.creative_instance_id);
-    SCOPED_CRASH_KEY_STRING64("Issue50267", "failure_reason",
-                              "Failed to get ad events");
-    DUMP_WILL_BE_NOTREACHED();
     return FailedToFireEvent(ad.placement_id, ad.creative_instance_id,
                              mojom_ad_event_type, std::move(callback));
   }

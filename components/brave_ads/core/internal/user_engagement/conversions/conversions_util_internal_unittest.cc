@@ -23,7 +23,7 @@ namespace brave_ads {
 class BraveAdsConversionsUtilInternalTest : public test::TestBase {};
 
 TEST_F(BraveAdsConversionsUtilInternalTest,
-       CanConvertAdEventForNonRewardsUser) {
+       CanOnlyConvertClickThroughAdEventForNonRewardsUser) {
   // Arrange
   test::DisableBraveRewards();
 
@@ -38,19 +38,8 @@ TEST_F(BraveAdsConversionsUtilInternalTest,
          j < static_cast<size_t>(mojom::ConfirmationType::kMaxValue); ++j) {
       const auto confirmation_type = static_cast<mojom::ConfirmationType>(j);
 
-      bool expected_can_convert_ad_event;
-      if (mojom_ad_type == mojom::AdType::kInlineContentAd ||
-          mojom_ad_type == mojom::AdType::kPromotedContentAd) {
-        // For non-Rewards users who have opted into Brave News, allow
-        // view-through and click-through conversions.
-        expected_can_convert_ad_event =
-            confirmation_type == mojom::ConfirmationType::kViewedImpression ||
-            confirmation_type == mojom::ConfirmationType::kClicked;
-      } else {
-        // Otherwise, only allow click-through conversions.
-        expected_can_convert_ad_event =
-            confirmation_type == mojom::ConfirmationType::kClicked;
-      }
+      const bool expected_can_convert_ad_event =
+          confirmation_type == mojom::ConfirmationType::kClicked;
 
       const AdEventInfo ad_event =
           BuildAdEvent(ad, confirmation_type, /*created_at=*/test::Now());
@@ -59,7 +48,8 @@ TEST_F(BraveAdsConversionsUtilInternalTest,
   }
 }
 
-TEST_F(BraveAdsConversionsUtilInternalTest, CanConvertAdEventForRewardsUser) {
+TEST_F(BraveAdsConversionsUtilInternalTest,
+       CanConvertViewOrClickThroughAdEventForRewardsUser) {
   // Act & Assert
   for (size_t i = 0; i < static_cast<size_t>(mojom::AdType::kMaxValue); ++i) {
     const auto mojom_ad_type = static_cast<mojom::AdType>(i);

@@ -9,7 +9,6 @@
 #include <memory>
 #include <optional>
 #include <string>
-#include <vector>
 
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
@@ -67,7 +66,6 @@ class ViewCounterService : public KeyedService,
 
   void RecordViewedAdEvent(
       const std::string& placement_id,
-      const std::string& campaign_id,
       const std::string& creative_instance_id,
       brave_ads::mojom::NewTabPageAdMetricType mojom_ad_metric_type);
   void RecordClickedAdEvent(
