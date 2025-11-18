@@ -79,7 +79,7 @@ export default function ToolPermissionChallenge(props: Props) {
                     props.toolUseEvent.id,
                     true,
                   )
-              : undefined
+              : () => {}
           }
         >
           <div className={styles.permissionButtonText}>
@@ -97,7 +97,7 @@ export default function ToolPermissionChallenge(props: Props) {
                     props.toolUseEvent.id,
                     false,
                   )
-              : undefined
+              : () => {}
           }
         >
           <div className={styles.permissionButtonText}>
