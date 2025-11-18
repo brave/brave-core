@@ -12,6 +12,7 @@ rust_static_library("zcash_protocol") {
     "//brave/components/brave_wallet/browser/zcash/rust:rust_lib_cxx_generated",
   ]
   crate_name = "zcash_protocol"
+  edition = "2021"
   crate_root = "src/components/zcash_protocol/src/lib.rs"
   sources = [
     "src/components/zcash_protocol/src/consensus.rs",

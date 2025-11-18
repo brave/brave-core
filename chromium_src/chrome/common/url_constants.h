@@ -259,6 +259,12 @@ inline constexpr char kGoogleAccountNameEmailAddressEditURL[] =
 inline constexpr char kGoogleTwoFactorIntersitialURL[] =
     "https://support.brave.app/";
 
+// The scheme used for google-chrome:// URLs.
+// TODO(b/446672134): Use a distinct value for each brand (e.g.,
+//  Google Chrome vs. Chromium) and install mode (e.g., stable vs.
+//  side-by-side beta).
+inline constexpr char kGoogleChromeURLScheme[] = "google-chrome";
+
 // URL of the Google Password Manager.
 inline constexpr char kGooglePasswordManagerURL[] = "https://support.brave.app";
 
@@ -299,8 +305,15 @@ inline constexpr char16_t kManagedUiLearnMoreUrl[] =
 inline constexpr char kInsecureDownloadBlockingLearnMoreUrl[] =
     "https://support.brave.app/";
 
-// "myactivity.google.com" URL for the history checkbox in ClearBrowsingData.
+// "myactivity.google.com" URLs with their respective UTM sources.
+// - In the Clear Browsing Data footer.
+// - In the Clear Browsing Data "notice about other forms of history".
+// - On the history page.
 inline constexpr char16_t kMyActivityUrlInClearBrowsingData[] =
+    u"https://support.brave.app/";
+inline constexpr char16_t kMyActivityUrlInClearBrowsingDataNotice[] =
+    u"https://support.brave.app/";
+inline constexpr char16_t kMyActivityUrlInHistory[] =
     u"https://support.brave.app/";
 
 // The URL for the Gemini Personal Context page.
@@ -364,6 +377,9 @@ inline constexpr char kAddressesAndPaymentMethodsLearnMoreURL[] =
 // The URL for the "Pay over time" support page.
 inline constexpr char16_t kPayOverTimeLearnMoreUrl[] =
     u"https://support.brave.app";
+
+// The URL for the Wallet website.
+inline constexpr char16_t kWalletUrl[] = u"https://support.brave.app";
 
 // Help URL for Autofill Prediction Improvements.
 inline constexpr char16_t kAutofillAiLearnMoreURL[] =
@@ -445,6 +461,14 @@ inline constexpr char16_t kSyncEncryptionHelpURL[] =
 // The URL for the "Learn more" link when there is a sync error.
 inline constexpr char kSyncErrorsHelpURL[] = "https://support.brave.app/";
 
+// Legacy URL to the sync google dashboard.
+inline constexpr char kLegacySyncGoogleDashboardURL[] =
+    "https://support.brave.app/";
+
+// New URL to the sync google dashboard.
+inline constexpr char kNewSyncGoogleDashboardURL[] =
+    "https://support.brave.app/";
+
 inline constexpr char kSyncGoogleDashboardURL[] = "https://support.brave.app/";
 
 // The URL for the "Learn more" page for sync setup on the personal stuff page.
@@ -500,6 +524,9 @@ inline constexpr char16_t kHistorySearchV2SettingURL[] =
 // The URL for the "Learn more" page for Wallpaper Search.
 inline constexpr char kWallpaperSearchLearnMorePageURL[] =
     "https://support.brave.app/";
+
+// The URL for the passed in Google Wallet.
+inline constexpr char kWalletPassesPageURL[] = "https://support.brave.app/";
 
 // The URL for the "Learn more" page for Wallpaper Search for managed users.
 inline constexpr char kWallpaperSearchLearnMorePageManagedURL[] =

@@ -2582,8 +2582,7 @@ TEST_F(ConversationHandlerUnitTest,
   // Mock engine to return no new entry
   base::RunLoop run_loop;
   EXPECT_CALL(*engine, GenerateAssistantResponse)
-      .WillOnce(testing::DoAll(
-          // Complete the request
+      .WillOnce(  // Complete the request
           testing::WithArg<8>(
               [&](EngineConsumer::GenerationCompletedCallback callback) {
                 std::move(callback).Run(
@@ -2592,7 +2591,7 @@ TEST_F(ConversationHandlerUnitTest,
                             mojom::CompletionEvent::New("")),
                         std::nullopt)));
                 run_loop.QuitWhenIdle();
-              })));
+              }));
 
   // Submit a human entry to trigger the mocked response
   conversation_handler_->SubmitHumanConversationEntry("Test question",

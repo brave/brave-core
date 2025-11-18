@@ -284,9 +284,10 @@ static constexpr webui::LocalizedString kStrings[] = {
 }  // namespace
 
 void CreateAndAddRewardsPageDataSource(content::WebUI& web_ui,
-                                       const std::string& host) {
+                                       std::string_view host) {
   auto* browser_context = web_ui.GetWebContents()->GetBrowserContext();
-  auto* source = content::WebUIDataSource::CreateAndAdd(browser_context, host);
+  auto* source = content::WebUIDataSource::CreateAndAdd(browser_context,
+                                                        std::string(host));
   auto* profile = Profile::FromWebUI(&web_ui);
 
   webui::SetupWebUIDataSource(source, kRewardsPageGenerated,

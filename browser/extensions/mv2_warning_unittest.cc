@@ -32,7 +32,7 @@ TEST(Mv2WarningTest, ExtensionManifestVersions) {
     return dict;
   };
 
-  std::string error;
+  std::u16string error;
   scoped_refptr<extensions::Extension> extension =
       extensions::Extension::Create(
           base::FilePath(), extensions::mojom::ManifestLocation::kUnpacked,

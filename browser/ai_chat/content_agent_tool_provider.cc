@@ -25,6 +25,7 @@
 #include "brave/components/ai_chat/core/common/features.h"
 #include "chrome/browser/actor/actor_keyed_service.h"
 #include "chrome/browser/actor/actor_task.h"
+#include "chrome/browser/actor/actor_task_metadata.h"
 #include "chrome/browser/actor/browser_action_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_navigator.h"
@@ -81,7 +82,8 @@ std::vector<base::WeakPtr<Tool>> ContentAgentToolProvider::GetTools() {
 void ContentAgentToolProvider::StopAllTasks() {
   if (!task_id_.is_null()) {
     // `success` sets whether the task ends as state kFinished or kCancelled
-    actor_service_->StopTask(task_id_, true /* success */);
+    actor_service_->StopTask(task_id_,
+                             actor::ActorTask::StoppedReason::kTaskComplete);
   }
 }
 
@@ -135,6 +137,7 @@ void ContentAgentToolProvider::ExecuteActions(
 
   actor_service_->PerformActions(
       actor::TaskId(actions.task_id()), std::move(requests.value()),
+      actor::ActorTaskMetadata(),
       base::BindOnce(&ContentAgentToolProvider::OnActionsFinished,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }

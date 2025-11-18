@@ -14,8 +14,8 @@
 #include "chrome/browser/ui/exclusive_access/exclusive_access_context.h"
 #include "chrome/browser/ui/views/side_panel/side_panel.h"
 
-#define BrowserViewLayoutDelegateImplNew \
-  BrowserViewLayoutDelegateImplNew;      \
+#define BrowserViewLayoutDelegateImplOld \
+  BrowserViewLayoutDelegateImplOld;      \
   friend class BraveBrowserView;         \
   void SetNativeWindowPropertyForWidget(views::Widget* widget)
 #define BrowserWindow BraveBrowserWindow
@@ -33,12 +33,6 @@
   GetTabSearchBubbleHost_Unused(); \
   virtual TabSearchBubbleHost* GetTabSearchBubbleHost
 
-#define UpdateExclusiveAccessBubble                            \
-  UpdateExclusiveAccessBubble_ChromiumImpl(                    \
-      const ExclusiveAccessBubbleParams& params,               \
-      ExclusiveAccessBubbleHideCallback first_hide_callback);  \
-  void UpdateExclusiveAccessBubble
-
 #if BUILDFLAG(IS_WIN)
 // On Windows <winuser.h> defines LoadAccelerators
 // Using push_macro seems to be causing #undef not to work in Chromium 125.
@@ -49,9 +43,12 @@
 #define LoadAccelerators virtual LoadAccelerators
 #define ShowSplitView virtual ShowSplitView
 #define HideSplitView virtual HideSplitView
+#define ReparentTopContainerForEndOfImmersive \
+  virtual ReparentTopContainerForEndOfImmersive
 
 #include <chrome/browser/ui/views/frame/browser_view.h>  // IWYU pragma: export
 
+#undef ReparentTopContainerForEndOfImmersive
 #undef HideSplitView
 #undef ShowSplitView
 #undef LoadAccelerators
@@ -59,7 +56,6 @@
 // #pragma pop_macro("LoadAccelerators")
 #endif
 
-#undef UpdateExclusiveAccessBubble
 #undef GetTabSearchBubbleHost
 #undef GetTabStripVisible
 #undef MaybeUpdateDevtools
@@ -68,6 +64,6 @@
 #undef SidePanel
 #undef BrowserViewLayout
 #undef BrowserWindow
-#undef BrowserViewLayoutDelegateImplNew
+#undef BrowserViewLayoutDelegateImplOld
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_BROWSER_VIEW_H_

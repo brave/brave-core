@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/util/shell_util.cc b/chrome/installer/util/shell_util.cc
-index 743340d2fa68b6aa1cd68bcae7888c1ad6923088..975a9ffff76d4e50637647a06ea50e8e89eec6bf 100644
+index 20676da390a7a8b16848ecb6e5d222a5844aa53d..0dfd4162bf041e1127b941eadb1d967b2fcc6d18 100644
 --- a/chrome/installer/util/shell_util.cc
 +++ b/chrome/installer/util/shell_util.cc
-@@ -372,6 +372,7 @@ void GetChromeProgIdEntries(
+@@ -379,6 +379,7 @@ void GetChromeProgIdEntries(
    app_info.delegate_clsid = install_static::GetLegacyCommandExecuteImplClsid();
  
    GetProgIdEntries(app_info, entries);
@@ -10,7 +10,7 @@ index 743340d2fa68b6aa1cd68bcae7888c1ad6923088..975a9ffff76d4e50637647a06ea50e8e
  
    // Get ProgId entries for PDF documents.
    app_info.prog_id = GetPDFProgId(suffix);
-@@ -476,6 +477,7 @@ void GetShellIntegrationEntries(
+@@ -483,6 +484,7 @@ void GetShellIntegrationEntries(
    // Register HTML and PDF Prog IDs (e.g., ChromePDF) with the corresponding
    // file association.
    for (int i = 0; ShellUtil::kPotentialFileAssociations[i] != nullptr; i++) {
@@ -18,7 +18,7 @@ index 743340d2fa68b6aa1cd68bcae7888c1ad6923088..975a9ffff76d4e50637647a06ea50e8e
      entries->push_back(std::make_unique<RegistryEntry>(
          capabilities + L"\\FileAssociations",
          ShellUtil::kPotentialFileAssociations[i],
-@@ -503,6 +505,7 @@ void GetAppExtRegistrationEntries(
+@@ -510,6 +512,7 @@ void GetAppExtRegistrationEntries(
    std::wstring key_name =
        base::StrCat({ShellUtil::kRegClasses, kFilePathSeparator, ext,
                      kFilePathSeparator, ShellUtil::kRegOpenWithProgids});

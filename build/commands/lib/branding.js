@@ -690,23 +690,6 @@ exports.update = () => {
       'java',
       'res',
     )
-    const androidBrowserHubInternalResSource = path.join(
-      config.braveCoreDir,
-      'browser',
-      'hub',
-      'internal',
-      'android',
-      'res',
-    )
-    const androidBrowserHubInternalResDest = path.join(
-      config.srcDir,
-      'chrome',
-      'browser',
-      'hub',
-      'internal',
-      'android',
-      'res',
-    )
 
     const uiAndroidResSource = path.join(
       config.braveCoreDir,
@@ -740,7 +723,6 @@ exports.update = () => {
       [androidFeaturesTabUiResSource]: [androidFeaturesTabUiDest],
       [androidComponentsOmniboxResSource]: [androidComponentsOmniboxResDest],
       [androidBrowserPrivateResSource]: [androidBrowserPrivateResDest],
-      [androidBrowserHubInternalResSource]: [androidBrowserHubInternalResDest],
       [uiAndroidResSource]: [uiAndroidResDest],
     }
 

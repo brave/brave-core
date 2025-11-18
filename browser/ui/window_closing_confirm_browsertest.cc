@@ -303,10 +303,11 @@ IN_PROC_BROWSER_TEST_F(WindowClosingConfirmBrowserTest,
   // Ensure that we have enough disk space to download the large file.
   {
     base::ScopedAllowBlockingForTesting allow_blocking;
-    int64_t free_space = base::SysInfo::AmountOfFreeDiskSpace(
+    std::optional<int64_t> free_space = base::SysInfo::AmountOfFreeDiskSpace(
         GetDownloadDirectory(brave_browser));
-    ASSERT_LE(parameters.size, free_space)
-        << "Not enough disk space to download. Got " << free_space;
+    ASSERT_TRUE(free_space.has_value());
+    ASSERT_LE(parameters.size, *free_space)
+        << "Not enough disk space to download. Got " << *free_space;
   }
 
   // Make browser has two tabs.

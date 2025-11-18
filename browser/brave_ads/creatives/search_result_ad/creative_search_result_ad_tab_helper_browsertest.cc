@@ -158,7 +158,7 @@ class BraveAdsCreativeSearchResultAdTabHelperTest
   std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
       const net::test_server::HttpRequest& request) {
     const GURL url = request.GetURL();
-    if (!url.path_piece().starts_with(kClickRedirectPath)) {
+    if (!url.path().starts_with(kClickRedirectPath)) {
       return nullptr;
     }
 

@@ -1,5 +1,5 @@
 diff --git a/build/util/android_chrome_version.py b/build/util/android_chrome_version.py
-index 5f4ed97ef3b2423dff77f10540c2b786f894ca1a..90489d402305afbb604488fbc8d81e3947675dd5 100755
+index 6f04eee8e4394263a938ee80595c915d1e4ab3a7..54d4eef566ae89f0cb2dcacd05826f654fe64e5f 100755
 --- a/build/util/android_chrome_version.py
 +++ b/build/util/android_chrome_version.py
 @@ -231,6 +231,7 @@ def _GetAbisToDigitMask(build_number, patch_number):
@@ -10,7 +10,7 @@ index 5f4ed97ef3b2423dff77f10540c2b786f894ca1a..90489d402305afbb604488fbc8d81e39
    use_new_scheme = (build_number >= 5750
                      or (build_number == 5672 and patch_number >= 176)
                      or (build_number == 5735 and patch_number >= 53))
-@@ -363,7 +364,7 @@ def GenerateVersionCodes(build_number, patch_number, arch):
+@@ -367,7 +368,7 @@ def GenerateVersionCodes(build_number, patch_number, arch):
  
    Thus, this method is responsible for the final two digits of versionCode.
    """

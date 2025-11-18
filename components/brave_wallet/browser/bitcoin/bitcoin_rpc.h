@@ -17,6 +17,7 @@
 #include "base/types/expected.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_rpc_responses.h"
+#include "third_party/abseil-cpp/absl/container/node_hash_map.h"
 
 namespace brave_wallet {
 class NetworkManager;
@@ -110,7 +111,7 @@ class BitcoinRpc {
   const raw_ref<NetworkManager> network_manager_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   // Uses hostname as key. Tracks request throttling(if required) per host.
-  std::map<std::string, EndpointQueue> endpoints_;
+  absl::node_hash_map<std::string, EndpointQueue> endpoints_;
   APIRequestHelper api_request_helper_;
   base::WeakPtrFactory<BitcoinRpc> weak_ptr_factory_{this};
 };

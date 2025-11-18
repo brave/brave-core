@@ -9,13 +9,13 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.core.widget.ImageViewCompat;
+
+import com.google.android.material.button.MaterialButton;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
@@ -31,12 +31,12 @@ public class AppMenuIconRowFooter extends LinearLayout implements View.OnClickLi
     private AppMenuHandler mAppMenuHandler;
     private AppMenuDelegate mAppMenuDelegate;
 
-    private ImageButton mForwardButton;
-    private ImageButton mBookmarkButton;
-    private ImageButton mDownloadButton;
-    private ImageButton mShareButton;
-    private ImageButton mHomeButton;
-    private ImageButton mReloadButton;
+    private MaterialButton mForwardButton;
+    private MaterialButton mBookmarkButton;
+    private MaterialButton mDownloadButton;
+    private MaterialButton mShareButton;
+    private MaterialButton mHomeButton;
+    private MaterialButton mReloadButton;
 
     public AppMenuIconRowFooter(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -48,29 +48,64 @@ public class AppMenuIconRowFooter extends LinearLayout implements View.OnClickLi
 
         mForwardButton = findViewById(R.id.forward_menu_id);
         mForwardButton.setOnClickListener(this);
+        Drawable forwardIcon = AppCompatResources.getDrawable(getContext(), R.drawable.btn_forward);
+        DrawableCompat.setTintList(
+                forwardIcon,
+                AppCompatResources.getColorStateList(
+                        getContext(), R.color.default_icon_color_tint_list));
+        mForwardButton.setIcon(forwardIcon);
 
         mBookmarkButton = findViewById(R.id.bookmark_this_page_id);
         mBookmarkButton.setOnClickListener(this);
+        // Make the button checkable so it can show the tonal background when checked
+        mBookmarkButton.setCheckable(true);
+        Drawable bookmarkIcon =
+                AppCompatResources.getDrawable(getContext(), R.drawable.star_outline_24dp);
+        DrawableCompat.setTintList(
+                bookmarkIcon,
+                AppCompatResources.getColorStateList(
+                        getContext(), R.color.default_icon_color_tint_list));
+        mBookmarkButton.setIcon(bookmarkIcon);
 
         mDownloadButton = findViewById(R.id.offline_page_id);
         mDownloadButton.setOnClickListener(this);
+        Drawable downloadIcon =
+                AppCompatResources.getDrawable(
+                        getContext(), R.drawable.ic_file_download_white_24dp);
+        DrawableCompat.setTintList(
+                downloadIcon,
+                AppCompatResources.getColorStateList(
+                        getContext(), R.color.default_icon_color_tint_list));
+        mDownloadButton.setIcon(downloadIcon);
 
         mShareButton = findViewById(R.id.share_menu_id);
         mShareButton.setOnClickListener(this);
+        Drawable shareIcon = AppCompatResources.getDrawable(getContext(), R.drawable.share_icon);
+        DrawableCompat.setTintList(
+                shareIcon,
+                AppCompatResources.getColorStateList(
+                        getContext(), R.color.default_icon_color_tint_list));
+        mShareButton.setIcon(shareIcon);
 
         mHomeButton = findViewById(R.id.home_menu_id);
         mHomeButton.setOnClickListener(this);
+        Drawable homeIcon =
+                AppCompatResources.getDrawable(getContext(), R.drawable.btn_toolbar_home);
+        DrawableCompat.setTintList(
+                homeIcon,
+                AppCompatResources.getColorStateList(
+                        getContext(), R.color.default_icon_color_tint_list));
+        mHomeButton.setIcon(homeIcon);
 
         mReloadButton = findViewById(R.id.reload_menu_id);
         mReloadButton.setOnClickListener(this);
-
-        // ImageView tinting doesn't work with LevelListDrawable, use Drawable tinting instead.
-        // See https://crbug.com/891593 for details.
-        Drawable icon = AppCompatResources.getDrawable(getContext(), R.drawable.btn_reload_stop);
-        DrawableCompat.setTintList(icon,
+        Drawable reloadIcon =
+                AppCompatResources.getDrawable(getContext(), R.drawable.btn_reload_stop);
+        DrawableCompat.setTintList(
+                reloadIcon,
                 AppCompatResources.getColorStateList(
                         getContext(), R.color.default_icon_color_tint_list));
-        mReloadButton.setImageDrawable(icon);
+        mReloadButton.setIcon(reloadIcon);
     }
 
     /**
@@ -103,14 +138,20 @@ public class AppMenuIconRowFooter extends LinearLayout implements View.OnClickLi
     }
 
     /**
-     * Called when the current tab's load state  has changed.
+     * Called when the current tab's load state has changed.
+     *
      * @param isLoading Whether the tab is currently loading.
      */
     public void loadingStateChanged(boolean isLoading) {
-        mReloadButton.getDrawable().setLevel(isLoading
-                        ? getResources().getInteger(R.integer.reload_button_level_stop)
-                        : getResources().getInteger(R.integer.reload_button_level_reload));
-        mReloadButton.setContentDescription(isLoading
+        Drawable icon = mReloadButton.getIcon();
+        if (icon != null) {
+            icon.setLevel(
+                    isLoading
+                            ? getResources().getInteger(R.integer.reload_button_level_stop)
+                            : getResources().getInteger(R.integer.reload_button_level_reload));
+        }
+        mReloadButton.setContentDescription(
+                isLoading
                         ? getContext().getString(R.string.accessibility_btn_stop_loading)
                         : getContext().getString(R.string.accessibility_btn_refresh));
     }
@@ -119,15 +160,19 @@ public class AppMenuIconRowFooter extends LinearLayout implements View.OnClickLi
         mBookmarkButton.setEnabled(bookmarkBridge.isEditBookmarksEnabled());
 
         if (currentTab != null && bookmarkBridge.hasBookmarkIdForTab(currentTab)) {
-            mBookmarkButton.setImageResource(R.drawable.btn_star_filled);
+            mBookmarkButton.setIcon(
+                    AppCompatResources.getDrawable(getContext(), R.drawable.btn_star_filled));
             mBookmarkButton.setContentDescription(getContext().getString(R.string.edit_bookmark));
-            ImageViewCompat.setImageTintList(mBookmarkButton,
-                    AppCompatResources.getColorStateList(
-                            getContext(), R.color.default_icon_color_accent1_tint_list));
+            // Set checked state - this automatically applies the tonal background
+            // just like upstream does
+            mBookmarkButton.setChecked(true);
         } else {
-            mBookmarkButton.setImageResource(R.drawable.star_outline_24dp);
+            mBookmarkButton.setIcon(
+                    AppCompatResources.getDrawable(getContext(), R.drawable.star_outline_24dp));
             mBookmarkButton.setContentDescription(
                     getContext().getString(R.string.accessibility_menu_bookmark));
+            // Set unchecked state - this removes the tonal background
+            mBookmarkButton.setChecked(false);
         }
     }
 }

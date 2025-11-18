@@ -8,6 +8,7 @@
 
 #include <memory>
 
+#include "base/callback_list.h"
 #include "brave/components/tabs/public/tree_tab_node_id.h"
 #include "components/tabs/public/tab_collection.h"
 #include "components/tabs/public/tab_interface.h"

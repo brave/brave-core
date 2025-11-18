@@ -61,7 +61,7 @@ std::optional<std::string> RefineParseURL(const std::string& value,
   if (!url.is_valid() || !url.has_query()) {
     return std::nullopt;
   }
-  auto query_value = ExtractValueFromQueryString(url.query_piece(), key);
+  auto query_value = ExtractValueFromQueryString(url.query(), key);
   return query_value;
 }
 

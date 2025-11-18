@@ -12,7 +12,7 @@
 #undef IsHandledURL
 #undef IsHandledProtocol
 
-bool ProfileIOData::IsHandledProtocol(const std::string& scheme) {
+bool ProfileIOData::IsHandledProtocol(std::string_view scheme) {
   if (scheme == kBraveUIScheme)
     return true;
   return IsHandledProtocol_ChromiumImpl(scheme);

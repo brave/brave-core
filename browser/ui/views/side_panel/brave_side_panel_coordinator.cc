@@ -69,17 +69,8 @@ void BraveSidePanelCoordinator::OnTabStripModelChanged(
   }
 }
 
-std::unique_ptr<views::View> BraveSidePanelCoordinator::CreateHeader() {
-  auto header = SidePanelCoordinator::CreateHeader();
-
-  // Brave has its own side panel navigation in the form of the SideBar, so
-  // hide the Chromium combobox-style header.
-  header->SetVisible(false);
-  return header;
-}
-
 void BraveSidePanelCoordinator::Toggle() {
-  if (IsSidePanelShowing() &&
+  if (IsSidePanelShowing(SidePanelEntry::PanelType::kContent) &&
       !browser_view_->contents_height_side_panel()->IsClosing()) {
     Close();
   } else if (const auto key = GetLastActiveEntryKey()) {
@@ -103,7 +94,8 @@ void BraveSidePanelCoordinator::OnViewVisibilityChanged(
   // See the comment of SidePanelCoordinator::OnViewVisibilityChanged()
   // about this condition.
   bool update_items_state = true;
-  if (observed_view->GetVisible() || !current_key_) {
+  if (observed_view->GetVisible() ||
+      !current_key(SidePanelEntry::PanelType::kContent)) {
     update_items_state = false;
   }
 
@@ -159,7 +151,8 @@ void BraveSidePanelCoordinator::PopulateSidePanel(
     SidePanelEntry* entry,
     std::optional<std::unique_ptr<views::View>> content_view) {
   CHECK(entry);
-  actions::ActionItem* const action_item = GetActionItem(entry->key());
+  actions::ActionItem* const action_item =
+      SidePanelUtil::GetActionItem(browser_view_->browser(), entry->key());
   if (!action_item) {
     const std::string entry_id = SidePanelEntryIdToString(entry->key().id());
     LOG(ERROR) << __func__ << " no side panel action item for " << entry_id;
@@ -174,17 +167,6 @@ void BraveSidePanelCoordinator::PopulateSidePanel(
   SidePanelCoordinator::PopulateSidePanel(supress_animations, unique_key,
                                           std::move(open_trigger), entry,
                                           std::move(content_view));
-}
-
-void BraveSidePanelCoordinator::NotifyPinnedContainerOfActiveStateChange(
-    SidePanelEntryKey key,
-    bool is_active) {
-  if (!browser_view_->toolbar()->pinned_toolbar_actions_container()) {
-    return;
-  }
-
-  SidePanelCoordinator::NotifyPinnedContainerOfActiveStateChange(key,
-                                                                 is_active);
 }
 
 BraveBrowserView* BraveSidePanelCoordinator::GetBraveBrowserView() {

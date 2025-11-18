@@ -20,10 +20,10 @@ bool ShouldThemifyFaviconForEntry(content::NavigationEntry* entry) {
   const GURL& virtual_url = entry->GetVirtualURL();
   // Don't theme for certain brave favicons which are full color
   if (virtual_url.SchemeIs(content::kChromeUIScheme) &&
-      (virtual_url.host_piece() == kRewardsPageHost ||
-       virtual_url.host_piece() == kWalletPageHost ||
-       virtual_url.host_piece() == kAIChatUIHost ||
-       virtual_url.host_piece() == chrome::kChromeUINewTabHost)) {
+      (virtual_url.host() == kRewardsPageHost ||
+       virtual_url.host() == kWalletPageHost ||
+       virtual_url.host() == kAIChatUIHost ||
+       virtual_url.host() == chrome::kChromeUINewTabHost)) {
     return false;
   }
   return ShouldThemifyFaviconForEntry_ChromiumImpl(entry);

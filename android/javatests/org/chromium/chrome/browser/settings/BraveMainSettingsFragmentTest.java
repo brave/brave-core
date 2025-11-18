@@ -67,7 +67,7 @@ public class BraveMainSettingsFragmentTest {
         "display_section",
         "tabs",
         "media",
-        "appearance",
+        "brave_appearance",
         "background_images",
         "accessibility",
         "brave_languages",

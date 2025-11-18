@@ -73,7 +73,7 @@ scoped_refptr<TLDEphemeralLifetime> TLDEphemeralLifetime::GetOrCreate(
   return base::MakeRefCounted<TLDEphemeralLifetime>(key);
 }
 
-void TLDEphemeralLifetime::SetShieldsStateOnHost(const std::string& host,
+void TLDEphemeralLifetime::SetShieldsStateOnHost(std::string_view host,
                                                  bool enabled) {
   shields_state_on_hosts_[host] = enabled;
 }

@@ -55,7 +55,6 @@ std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
       new net::test_server::BasicHttpResponse());
   http_response->set_code(net::HTTP_OK);
   http_response->set_content_type("text/html");
-  std::string request_path = request.GetURL().path();
   http_response->set_content(R"({
     "jsonrpc": "2.0",
     "id": 1,

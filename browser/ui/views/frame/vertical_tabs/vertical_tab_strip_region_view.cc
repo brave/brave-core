@@ -41,7 +41,6 @@
 #include "chrome/browser/ui/tabs/tab_style.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
-#include "chrome/browser/ui/views/frame/browser_non_client_frame_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/tabs/tab_strip_scroll_container.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_button.h"
@@ -877,6 +876,8 @@ void BraveVerticalTabStripRegionView::UpdateLayout(bool in_destruction) {
   if (tabs::utils::ShouldShowVerticalTabs(browser_) && !in_destruction) {
     if (!Contains(original_region_view_)) {
       original_parent_of_region_view_ = original_region_view_->parent();
+      tab_strip_region_view_original_index_ =
+          original_parent_of_region_view_->GetIndexOf(original_region_view_);
       original_parent_of_region_view_->RemoveChildView(original_region_view_);
       contents_view_->AddChildView(original_region_view_.get());
     }
@@ -896,12 +897,9 @@ void BraveVerticalTabStripRegionView::UpdateLayout(bool in_destruction) {
   } else {
     if (Contains(original_region_view_)) {
       contents_view_->RemoveChildView(original_region_view_);
-      // TabStrip should be added before other views so that we can preserve
-      // the z-order. At this moment, tab strip is the first child of the
-      // parent view.
-      // https://github.com/chromium/chromium/blob/bdcef78b63f64119bbe950386b2495a045629f0e/chrome/browser/ui/views/frame/browser_view.cc#L904
+      CHECK(tab_strip_region_view_original_index_.has_value());
       original_parent_of_region_view_->AddChildViewAt(
-          original_region_view_.get(), 0);
+          original_region_view_.get(), *tab_strip_region_view_original_index_);
     }
 
     static_cast<views::FlexLayout*>(original_region_view_->GetLayoutManager())

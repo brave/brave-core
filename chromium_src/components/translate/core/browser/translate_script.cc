@@ -32,11 +32,11 @@ namespace translate {
 GURL ChromiumTranslateScript::AddHostLocaleToUrl(const GURL& url) {
   GURL result = ::translate::AddHostLocaleToUrl(url);
   const GURL google_translate_script(kScriptURL);
-  if (result.host_piece() == google_translate_script.host_piece()) {
+  if (result.host() == google_translate_script.host()) {
     const GURL brave_translate_script(kBraveTranslateScriptURL);
     GURL::Replacements replaces;
-    replaces.SetHostStr(brave_translate_script.host_piece());
-    replaces.SetPathStr(brave_translate_script.path_piece());
+    replaces.SetHostStr(brave_translate_script.host());
+    replaces.SetPathStr(brave_translate_script.path());
     return result.ReplaceComponents(replaces);
   }
   return result;

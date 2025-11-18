@@ -162,7 +162,7 @@ class TestWebUIControllerFactory : public content::WebUIControllerFactory {
   std::unique_ptr<content::WebUIController> CreateWebUIControllerForURL(
       content::WebUI* web_ui,
       const GURL& url) override {
-    if (url.host_piece() == kWalletPageHost) {
+    if (url.host() == kWalletPageHost) {
       return std::make_unique<AndroidWalletPageUI>(web_ui, url);
     }
 
@@ -172,7 +172,7 @@ class TestWebUIControllerFactory : public content::WebUIControllerFactory {
   content::WebUI::TypeID GetWebUIType(content::BrowserContext* browser_context,
                                       const GURL& url) override {
     if (url.SchemeIs(content::kChromeUIScheme) &&
-        url.host_piece() == kWalletPageHost && url.path_piece() == "/swap") {
+        url.host() == kWalletPageHost && url.path() == "/swap") {
       return reinterpret_cast<content::WebUI::TypeID>(1);
     }
 

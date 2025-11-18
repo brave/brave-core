@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/rand_util.h"
+#include "base/strings/strcat.h"
 #include "base/task/single_thread_task_runner.h"
 #include "base/trace_event/trace_event.h"
 #include "brave/components/brave_shields/content/browser/ad_block_custom_filter_reset_util.h"
@@ -47,13 +48,13 @@ AdBlockCustomFiltersProvider::AdBlockCustomFiltersProvider(
 AdBlockCustomFiltersProvider::~AdBlockCustomFiltersProvider() {}
 
 void AdBlockCustomFiltersProvider::AddUserCosmeticFilter(
-    const std::string& filter) {
+    std::string_view filter) {
   std::string custom_filters = GetCustomFilters();
-  UpdateCustomFilters(custom_filters + '\n' + filter);
+  UpdateCustomFilters(base::StrCat({custom_filters, "\n", filter}));
 }
 
 bool AdBlockCustomFiltersProvider::AreAnyBlockedElementsPresent(
-    const std::string& host) {
+    std::string_view host) {
   if (host.empty()) {
     return false;
   }
@@ -61,8 +62,7 @@ bool AdBlockCustomFiltersProvider::AreAnyBlockedElementsPresent(
   return IsCustomFiltersAvailable(host, GetCustomFilters());
 }
 
-void AdBlockCustomFiltersProvider::ResetCosmeticFilter(
-    const std::string& host) {
+void AdBlockCustomFiltersProvider::ResetCosmeticFilter(std::string_view host) {
   if (host.empty()) {
     return;
   }
@@ -80,11 +80,10 @@ std::string AdBlockCustomFiltersProvider::GetNameForDebugging() {
   return "AdBlockCustomFiltersProvider";
 }
 
-void AdBlockCustomFiltersProvider::CreateSiteExemption(
-    const std::string& host) {
+void AdBlockCustomFiltersProvider::CreateSiteExemption(std::string_view host) {
   std::string custom_filters = GetCustomFilters();
-  UpdateCustomFilters(custom_filters + '\n' + "@@||" + host +
-                      "^$first-party\n");
+  UpdateCustomFilters(
+      base::StrCat({custom_filters, "\n", "@@||", host, "^$first-party\n"}));
 }
 
 std::string AdBlockCustomFiltersProvider::GetCustomFilters() {
@@ -96,7 +95,7 @@ std::string AdBlockCustomFiltersProvider::GetCustomFilters() {
 }
 
 bool AdBlockCustomFiltersProvider::UpdateCustomFilters(
-    const std::string& custom_filters) {
+    std::string_view custom_filters) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!local_state_) {
     return false;
@@ -110,7 +109,7 @@ bool AdBlockCustomFiltersProvider::UpdateCustomFilters(
 
 bool AdBlockCustomFiltersProvider::UpdateCustomFiltersFromSettings(
     PrefService* profile_prefs,
-    const std::string& custom_filters) {
+    std::string_view custom_filters) {
   if (!IsDeveloperModeEnabled(profile_prefs)) {
     return false;
   }

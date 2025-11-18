@@ -27,6 +27,7 @@
 #include "base/json/json_writer.h"
 #include "base/logging.h"
 #include "base/notreached.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/task/single_thread_task_runner.h"
@@ -1116,7 +1117,8 @@ void RewardsServiceImpl::NotifyPublisherPageVisit(
   visit_data->domain = *publisher_domain;
   visit_data->name = *publisher_domain;
   visit_data->path = parsed_url.has_path() ? parsed_url.PathForRequest() : "";
-  visit_data->url = parsed_url.scheme() + "://" + *publisher_domain + "/";
+  visit_data->url =
+      base::StrCat({parsed_url.scheme(), "://", *publisher_domain, "/"});
   visit_data->favicon_url = favicon_url;
 
   engine_->NotifyPublisherPageVisit(tab_id, std::move(visit_data),
@@ -1675,7 +1677,7 @@ void RewardsServiceImpl::OnExternalWalletLoginStarted(
 
   for (auto& [key, value] : params->cookies) {
     auto cookie = net::CanonicalCookie::CreateSanitizedCookie(
-        url, key, value, /*domain=*/"", url.path(),
+        url, key, value, /*domain=*/"", std::string(url.path()),
         /*creation_time=*/now, expiration_time, /*last_access_time=*/now,
         /*secure=*/true, /*http_only=*/false, net::CookieSameSite::STRICT_MODE,
         net::COOKIE_PRIORITY_DEFAULT, /*partition_key=*/std::nullopt,

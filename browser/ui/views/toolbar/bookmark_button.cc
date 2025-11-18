@@ -34,8 +34,8 @@ void BraveBookmarkButton::SetToggled(bool on) {
 void BraveBookmarkButton::UpdateImageAndText() {
   const ui::ColorProvider* color_provider = GetColorProvider();
   SkColor icon_color = color_provider->GetColor(kColorToolbarButtonIcon);
-  const gfx::VectorIcon& icon =
-      active_ ? omnibox::kStarActiveIcon : omnibox::kStarIcon;
+  const gfx::VectorIcon& icon = active_ ? omnibox::kStarActiveChromeRefreshIcon
+                                        : omnibox::kStarChromeRefreshIcon;
   SetImageModel(
       views::Button::STATE_NORMAL,
       ui::ImageModel::FromVectorIcon(icon, icon_color, GetIconSize()));

@@ -567,10 +567,10 @@ ConversationAPIClient::ParseResponseEvent(base::Value::Dict& response_event,
         continue;
       }
       // Validate favicon is private source
-      if (favicon_url && (!item_favicon_url.SchemeIs(url::kHttpsScheme) ||
-                          base::CompareCaseInsensitiveASCII(
-                              item_favicon_url.host_piece(),
-                              kAllowedWebSourceFaviconHost) != 0)) {
+      if (favicon_url &&
+          (!item_favicon_url.SchemeIs(url::kHttpsScheme) ||
+           base::CompareCaseInsensitiveASCII(
+               item_favicon_url.host(), kAllowedWebSourceFaviconHost) != 0)) {
         DVLOG(2) << "webSource event contained disallowed host or scheme: "
                  << item.DebugString();
         continue;

@@ -1,8 +1,8 @@
 diff --git a/third_party/libwebp/visibility.gni b/third_party/libwebp/visibility.gni
-index c9f06c36ac0b9ed34f13cb0741d0994338c1eb3d..acd6348320c97dcffef10be66501d2c0628acdea 100644
+index 03012cc382eae65b745a8b999e034c4aa99329dc..9a29f8370de541939989373df4f1335652630876 100644
 --- a/third_party/libwebp/visibility.gni
 +++ b/third_party/libwebp/visibility.gni
-@@ -20,3 +20,4 @@ allowed_visibility = [
+@@ -24,3 +24,4 @@ cwebp_exe_allowed_visibility = [
    "//clank/android_webview/*",
    "//clank/java/*",
  ]

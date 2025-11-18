@@ -25,7 +25,7 @@ class SkusInternalsUI : public content::WebUIController,
                         public skus::mojom::SkusInternals,
                         public ui::SelectFileDialog::Listener {
  public:
-  SkusInternalsUI(content::WebUI* web_ui, const std::string& host);
+  SkusInternalsUI(content::WebUI* web_ui, std::string_view host);
   ~SkusInternalsUI() override;
   SkusInternalsUI(const SkusInternalsUI&) = delete;
   SkusInternalsUI& operator=(const SkusInternalsUI&) = delete;

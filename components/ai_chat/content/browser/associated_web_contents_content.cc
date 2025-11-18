@@ -150,7 +150,7 @@ void AssociatedWebContentsContent::GetPageContent(
   }
   if (print_preview_extraction_delegate_ &&
       kPrintPreviewRetrievalHosts.contains(
-          web_contents()->GetLastCommittedURL().host_piece())) {
+          web_contents()->GetLastCommittedURL().host())) {
     // Get content using print preview image capture for server-side OCR
     DVLOG(1) << __func__ << " print preview url";
     // For print preview hosts, we always return empty content to trigger
@@ -321,7 +321,7 @@ void AssociatedWebContentsContent::GetScreenshots(
   if (print_preview_extraction_delegate_ &&
       (IsPdf(web_contents()) ||
        kPrintPreviewRetrievalHosts.contains(
-           web_contents()->GetLastCommittedURL().host_piece()))) {
+           web_contents()->GetLastCommittedURL().host()))) {
     // Use print preview extraction for PDFs and print preview hosts
     // when delegate is available
     print_preview_extraction_delegate_->CaptureImages(

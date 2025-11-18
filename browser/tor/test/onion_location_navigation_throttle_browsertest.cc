@@ -62,15 +62,15 @@ std::unique_ptr<net::test_server::HttpResponse> HandleOnionLocation(
     </html>
   )html");
 
-  if (request.GetURL().path_piece() == kTestOnionPath) {
+  if (request.GetURL().path() == kTestOnionPath) {
     http_response->AddCustomHeader("onion-location", kTestOnionURL);
     // Subsequent headers should be ignored.
     http_response->AddCustomHeader("onion-location", kTestOnionURL2);
-  } else if (request.GetURL().path_piece() == kTestInvalidScheme) {
+  } else if (request.GetURL().path() == kTestInvalidScheme) {
     http_response->AddCustomHeader("onion-location", kTestInvalidSchemeURL);
-  } else if (request.GetURL().path_piece() == kTestNotOnion) {
+  } else if (request.GetURL().path() == kTestNotOnion) {
     http_response->AddCustomHeader("onion-location", kTestNotOnionURL);
-  } else if (request.GetURL().path_piece() == kTestErrorPage) {
+  } else if (request.GetURL().path() == kTestErrorPage) {
     http_response->AddCustomHeader("onion-location", kTestAttackerOnionURL);
     http_response->set_content(R"html(
         <html>
@@ -82,7 +82,7 @@ std::unique_ptr<net::test_server::HttpResponse> HandleOnionLocation(
           </head>
         </html>
       )html");
-  } else if (request.GetURL().path_piece() == kDownload) {
+  } else if (request.GetURL().path() == kDownload) {
     http_response->set_content_type("application/octet-stream");
     http_response->set_content("Some data");
     http_response->AddCustomHeader("onion-location", kTestAttackerOnionURL);
@@ -164,16 +164,21 @@ class OnionLocationNavigationThrottleBrowserTest : public InProcessBrowserTest {
     }
     BrowserList* browser_list = BrowserList::GetInstance();
     ASSERT_EQ(2U, browser_list->size());
-    Browser* tor_browser = browser_list->get(1);
-    ASSERT_TRUE(tor_browser->profile()->IsTor());
+    Browser* tor_browser;
+    for (Browser* a_browser : *browser_list) {
+      if (a_browser->profile()->IsTor()) {
+        tor_browser = a_browser;
+      }
+    }
+    ASSERT_NE(nullptr, tor_browser);
     content::WebContents* tor_web_contents =
-        tor_browser->tab_strip_model()->GetActiveWebContents();
+        tor_browser->GetTabStripModel()->GetActiveWebContents();
     navigation_observer.Wait();
     EXPECT_EQ(tor_web_contents->GetVisibleURL(), url);
     // We don't close the original tab
-    EXPECT_EQ(browser->tab_strip_model()->count(), is_tor ? 2 : 1);
+    EXPECT_EQ(browser->GetTabStripModel()->count(), is_tor ? 2 : 1);
     // No new tab in Tor window
-    EXPECT_EQ(tor_browser->tab_strip_model()->count(), is_tor ? 2 : 1);
+    EXPECT_EQ(tor_browser->GetTabStripModel()->count(), is_tor ? 2 : 1);
   }
 
   Browser* OpenTorWindow() {
@@ -288,10 +293,9 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   BrowserList* browser_list = BrowserList::GetInstance();
   EXPECT_EQ(1U, browser_list->size());
-  ASSERT_FALSE(browser_list->get(0)->profile()->IsTor());
+  ASSERT_FALSE(browser()->profile()->IsTor());
 
-  web_contents =
-      browser_list->get(0)->tab_strip_model()->GetActiveWebContents();
+  web_contents = browser()->tab_strip_model()->GetActiveWebContents();
   EXPECT_EQ(web_contents->GetVisibleURL(), url);
 }
 
@@ -308,10 +312,9 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest, NotOnion) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   BrowserList* browser_list = BrowserList::GetInstance();
   EXPECT_EQ(1U, browser_list->size());
-  ASSERT_FALSE(browser_list->get(0)->profile()->IsTor());
+  ASSERT_FALSE(browser()->profile()->IsTor());
 
-  web_contents =
-      browser_list->get(0)->tab_strip_model()->GetActiveWebContents();
+  web_contents = browser()->tab_strip_model()->GetActiveWebContents();
   EXPECT_EQ(web_contents->GetVisibleURL(), url);
 }
 
@@ -328,10 +331,9 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest, HTTPHost) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   BrowserList* browser_list = BrowserList::GetInstance();
   EXPECT_EQ(1U, browser_list->size());
-  ASSERT_FALSE(browser_list->get(0)->profile()->IsTor());
+  ASSERT_FALSE(browser()->profile()->IsTor());
 
-  web_contents =
-      browser_list->get(0)->tab_strip_model()->GetActiveWebContents();
+  web_contents = browser()->tab_strip_model()->GetActiveWebContents();
   EXPECT_EQ(web_contents->GetVisibleURL(), url);
 }
 

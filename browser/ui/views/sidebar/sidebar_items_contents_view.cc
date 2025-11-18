@@ -38,8 +38,8 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/app/vector_icons/vector_icons.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
 #include "chrome/browser/ui/views/event_utils.h"
 #include "components/prefs/pref_service.h"
 #include "ui/base/default_style.h"
@@ -72,7 +72,7 @@ constexpr gfx::Size kIconSize(SidebarButtonView::kExternalIconSize,
 std::string GetFirstCharFromURL(const GURL& url) {
   DCHECK(url.is_valid());
 
-  std::string target = url.host();
+  std::string_view target = url.host();
   if (target.empty()) {
     target = url.spec();
   }
@@ -81,7 +81,7 @@ std::string GetFirstCharFromURL(const GURL& url) {
   } else {
     target = target.substr(0, 1);
   }
-  return target;
+  return std::string(target);
 }
 
 sidebar::SidebarService* GetSidebarService(Browser* browser) {
@@ -369,7 +369,7 @@ void SidebarItemsContentsView::ShowItemAddedFeedbackBubble(
 void SidebarItemsContentsView::ShowItemAddedFeedbackBubble(
     views::View* anchor_view) {
   // Only launch feedback bubble for active browser window.
-  DCHECK_EQ(browser_, BrowserList::GetInstance()->GetLastActive());
+  DCHECK_EQ(browser_, GetLastActiveBrowserWindowInterfaceWithAnyProfile());
   DCHECK(!observation_.IsObserving());
 
   if (item_added_bubble_launched_for_test_) {

@@ -20,11 +20,12 @@ import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
 import org.chromium.chrome.browser.lens.LensController;
 import org.chromium.chrome.browser.locale.LocaleManager;
-import org.chromium.chrome.browser.omnibox.navattach.NavigationFulfillmentType;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.theme.ThemeUtils;
 import org.chromium.chrome.browser.ui.theme.BrandedColorScheme;
+import org.chromium.components.browser_ui.accessibility.PageZoomIndicatorCoordinator;
+import org.chromium.components.omnibox.AutocompleteRequestType;
 import org.chromium.components.search_engines.TemplateUrlService;
 import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.modaldialog.ModalDialogManager;
@@ -69,11 +70,11 @@ public class BraveLocationBarMediator extends LocationBarMediator {
             OmniboxUma omniboxUma,
             BooleanSupplier isToolbarMicEnabledSupplier,
             OmniboxSuggestionsDropdownEmbedderImpl dropdownEmbedder,
-            @Nullable ObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
+            ObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
             @Nullable BrowserControlsStateProvider browserControlsStateProvider,
             Supplier<@Nullable ModalDialogManager> modalDialogManagerSupplier,
-            ObservableSupplier<@NavigationFulfillmentType Integer>
-                    navigationFulfillmentTypeSupplier) {
+            ObservableSupplier<@AutocompleteRequestType Integer> autocompleteRequestTypeSupplier,
+            @Nullable PageZoomIndicatorCoordinator pageZoomIndicatorCoordinator) {
         super(
                 context,
                 locationBarLayout,
@@ -93,7 +94,8 @@ public class BraveLocationBarMediator extends LocationBarMediator {
                 tabModelSelectorSupplier,
                 browserControlsStateProvider,
                 modalDialogManagerSupplier,
-                navigationFulfillmentTypeSupplier);
+                autocompleteRequestTypeSupplier,
+                pageZoomIndicatorCoordinator);
     }
 
     public static Class<OmniboxUma> getOmniboxUmaClass() {
@@ -162,15 +164,11 @@ public class BraveLocationBarMediator extends LocationBarMediator {
         if (mIsTablet) {
             return mUrlHasFocus || mIsUrlFocusChangeInProgress;
         } else {
-            return !mIsTablet && !shouldShowDeleteButton()
-                    && (mUrlHasFocus || mIsUrlFocusChangeInProgress
+            return !shouldShowDeleteButton()
+                    && (mUrlHasFocus
+                            || mIsUrlFocusChangeInProgress
                             || mIsLocationBarFocusedFromNtpScroll);
         }
-    }
-
-    protected boolean shouldShowDeleteButton() {
-        assert false;
-        return false;
     }
 
     void qrButtonClicked(View view) {

@@ -31,7 +31,7 @@ namespace brave_ads {
 
 BackgroundHelperLinux::BackgroundHelperLinux() {
   BrowserList::AddObserver(this);
-  OnBrowserSetLastActive(BrowserList::GetInstance()->GetLastActive());
+  OnBrowserSetLastActive(nullptr);
 }
 
 BackgroundHelperLinux::~BackgroundHelperLinux() {

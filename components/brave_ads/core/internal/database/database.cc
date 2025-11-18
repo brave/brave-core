@@ -233,10 +233,9 @@ mojom::DBTransactionResultInfo::StatusCode Database::Initialize(
           kFailedToInitializeMetaTable;
     }
 
-    memory_pressure_listener_ = std::make_unique<base::MemoryPressureListener>(
-        FROM_HERE, base::MemoryPressureListenerTag::kAdsDatabase,
-        base::BindRepeating(&Database::MemoryPressureListenerCallback,
-                            weak_factory_.GetWeakPtr()));
+    memory_pressure_listener_registration_ =
+        std::make_unique<base::MemoryPressureListenerRegistration>(
+            FROM_HERE, base::MemoryPressureListenerTag::kAdsDatabase, this);
 
     is_initialized_ = true;
   }
@@ -420,9 +419,7 @@ void Database::ErrorCallback(int extended_error,
   }
 }
 
-void Database::MemoryPressureListenerCallback(
-    base::MemoryPressureListener::
-        MemoryPressureLevel /*memory_pressure_level*/) {
+void Database::OnMemoryPressure(base::MemoryPressureLevel /*level*/) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   db_.TrimMemory();

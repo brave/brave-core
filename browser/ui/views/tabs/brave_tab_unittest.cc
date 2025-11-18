@@ -64,10 +64,9 @@ TEST_F(BraveTabTest, TabHeightTest) {
                 GetLayoutConstant(TABSTRIP_TOOLBAR_OVERLAP),
             tab.GetContentsBounds().height());
 
-  SkPath mask = tab.tab_style_views()->GetPath(TabStyle::PathType::kFill,
-                                               /* scale */ 1.0,
-                                               /* force_active */ false,
-                                               TabStyle::RenderUnits::kDips);
+  SkPath mask = tab.tab_style_views()->GetPath(
+      TabStyle::PathType::kFill,
+      /* scale */ 1.0, {.render_units = TabStyle::RenderUnits::kDips});
   SkRegion clip_region;
   clip_region.setRect({0, 0, tab.width(), tab.height()});
   SkRegion mask_region;

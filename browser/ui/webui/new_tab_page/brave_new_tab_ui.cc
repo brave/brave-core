@@ -63,7 +63,7 @@ using ntp_background_images::NTPCustomImagesSource;
 
 BraveNewTabUI::BraveNewTabUI(
     content::WebUI* web_ui,
-    const std::string& name,
+    std::string_view name,
     brave_ads::AdsService* ads_service,
     ntp_background_images::ViewCounterService* view_counter_service,
     regional_capabilities::RegionalCapabilitiesService* regional_capabilities)
@@ -84,7 +84,7 @@ BraveNewTabUI::BraveNewTabUI(
 
   if (brave::ShouldNewTabShowBlankpage(profile)) {
     content::WebUIDataSource* source =
-        content::WebUIDataSource::CreateAndAdd(profile, name);
+        content::WebUIDataSource::CreateAndAdd(profile, std::string(name));
     source->SetDefaultResource(IDR_BRAVE_BLANK_NEW_TAB_HTML);
     AddBackgroundColorToSource(source, web_contents);
     return;
