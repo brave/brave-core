@@ -90,13 +90,7 @@ static_assert(
 
 // Values used before the migration away from ResourceIdentifier, kept
 // around for migration purposes only.
-inline constexpr char kObsoleteAds[] = "ads";
-inline constexpr char kObsoleteCookies[] = "cookies";
-inline constexpr char kObsoleteShieldsCookies[] = "shieldsCookies";
 inline constexpr char kObsoleteCosmeticFiltering[] = "cosmeticFiltering";
-
-// Some users were not properly migrated from fingerprinting V1.
-inline constexpr char kObsoleteFingerprinting[] = "fingerprinting";
 
 // Key for procedural and action filters in the UrlCosmeticResources struct from
 // adblock-rust
