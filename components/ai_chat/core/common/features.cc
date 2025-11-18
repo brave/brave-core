@@ -143,4 +143,10 @@ bool IsTabOrganizationEnabled() {
   return base::FeatureList::IsEnabled(features::kTabOrganization);
 }
 
+BASE_FEATURE(kRichSearchWidgets, base::FEATURE_DISABLED_BY_DEFAULT);
+
+const base::FeatureParam<std::string> kRichSearchWidgetsOrigin{
+    &kRichSearchWidgets, "rich_search_widgets_origin",
+    "https://browser-ai-includes.brave.app"};
+
 }  // namespace ai_chat::features
