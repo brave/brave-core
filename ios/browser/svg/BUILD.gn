@@ -37,8 +37,8 @@ source_set("svg") {
     "//third_party/skia/src/xml/SkXMLWriter.h",
   ]
 
-  sources += skia_svg_public
-  sources += skia_svg_sources
+  sources += skia_svg_renderer_public
+  sources += skia_svg_renderer_sources
   sources += skia_skottie_sources
   sources += skia_skresources_sources
   sources += skia_sksg_sources
