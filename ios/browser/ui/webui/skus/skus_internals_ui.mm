@@ -10,7 +10,6 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/files/file_util.h"
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"

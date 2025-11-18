@@ -10,14 +10,11 @@
 #include <string>
 #include <vector>
 
+#include "base/files/file_path.h"
 #include "base/values.h"
 #include "build/build_config.h"
 #include "components/user_data_importer/common/importer_type.h"
 #include "extensions/buildflags/buildflags.h"
-
-namespace base {
-class FilePath;
-}  // namespace base
 
 // Chrome / Chromium paths
 // https://chromium.googlesource.com/chromium/src/+/HEAD/docs/user_data_dir.md

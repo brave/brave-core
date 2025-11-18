@@ -9,7 +9,9 @@
 #include <string>
 #include <vector>
 
-#include "base/files/file_util.h"
+namespace base {
+class FilePath;
+}  // namespace base
 
 namespace brave {
 // Verify that the netlog file was written, appears to be well formed, and

@@ -9,7 +9,6 @@
 #include "brave/common/importer/chrome_importer_utils.h"
 
 #include "base/apple/foundation_util.h"
-#include "base/files/file_util.h"
 
 base::FilePath GetChromeUserDataFolder() {
   base::FilePath result = base::apple::GetUserLibraryPath();

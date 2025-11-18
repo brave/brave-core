@@ -11,7 +11,6 @@
 
 #include "base/base64.h"
 #include "base/containers/to_vector.h"
-#include "base/files/file_util.h"
 #include "base/functional/bind.h"
 #include "base/path_service.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
