@@ -117,7 +117,8 @@ TEST_P(AIChatDatabaseTest, AddAndGetConversationAndEntries) {
     // Add skill data to test skill persistence
     history[0]->skill =
         mojom::SkillEntry::New("test", "This is a test skill prompt");
-    history[1]->is_near_verified = true;
+    history[1]->near_verification_status =
+        mojom::NEARVerificationStatus::New(true);
 
     // Create the conversation metadata which gets persisted
     // when the first entry is asked to be persisted.
@@ -162,10 +163,10 @@ TEST_P(AIChatDatabaseTest, AddAndGetConversationAndEntries) {
     EXPECT_EQ(result->entries[0]->skill->shortcut, "test");
     EXPECT_EQ(result->entries[0]->skill->prompt, "This is a test skill prompt");
 
-    // Verify is_near_verified was persisted correctly
-    EXPECT_FALSE(result->entries[0]->is_near_verified.has_value());
-    ASSERT_TRUE(result->entries[1]->is_near_verified.has_value());
-    EXPECT_TRUE(*result->entries[1]->is_near_verified);
+    // Verify near_verification_status was persisted correctly
+    EXPECT_FALSE(result->entries[0]->near_verification_status);
+    ASSERT_TRUE(result->entries[1]->near_verification_status);
+    EXPECT_TRUE(result->entries[1]->near_verification_status->verified);
 
     EXPECT_EQ(result->associated_content.size(), has_content ? 1u : 0u);
     if (has_content) {

@@ -482,16 +482,17 @@ std::vector<mojom::ConversationTurnPtr> AIChatDatabase::GetConversationEntries(
     }
 
     // Retrieve is_near_verified
-    std::optional<bool> is_near_verified;
+    mojom::NEARVerificationStatusPtr near_verification_status;
     if (statement.GetColumnType(index) != sql::ColumnType::kNull) {
-      is_near_verified = statement.ColumnBool(index);
+      near_verification_status =
+          mojom::NEARVerificationStatus::New(statement.ColumnBool(index));
     }
     index++;
 
     auto entry = mojom::ConversationTurn::New(
         entry_uuid, character_type, action_type, text, prompt, selected_text,
         std::nullopt, date, std::nullopt, std::nullopt, std::move(skill), false,
-        model_key, nullptr);
+        model_key, std::move(near_verification_status));
 
     // events
     struct Event {
@@ -963,9 +964,9 @@ bool AIChatDatabase::AddConversationEntry(
   }
 
   // Bind is_near_verified
-  if (entry->is_near_verified.has_value()) {
+  if (entry->near_verification_status) {
     insert_conversation_entry_statement.BindBool(
-        index++, entry->is_near_verified.value());
+        index++, entry->near_verification_status->verified);
   } else {
     insert_conversation_entry_statement.BindNull(index++);
   }
