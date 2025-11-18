@@ -23,6 +23,8 @@ static_library("ai_chat") {
     "browser_tool_provider_factory.h",
     "code_execution_tool.cc",
     "code_execution_tool.h",
+    "code_sandbox_navigation_throttle.cc",
+    "code_sandbox_navigation_throttle.h",
     "tab_data_web_contents_observer.cc",
     "tab_data_web_contents_observer.h",
     "tab_tracker_service_factory.cc",
