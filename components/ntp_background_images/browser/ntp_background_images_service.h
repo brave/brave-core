@@ -157,8 +157,8 @@ class NTPBackgroundImagesService {
   void OnGetMappingTableData(const std::string& json_string);
 
   std::string GetReferralPromoCode() const;
-  bool IsValidSuperReferralComponentInfo(
-      const base::Value::Dict& component_info) const;
+  static bool IsValidSuperReferralComponentInfo(
+      const base::Value::Dict& component_info);
 
   void ScheduleNextSponsoredImagesComponentUpdate();
   void CheckSponsoredImagesComponentUpdate(const std::string& component_id);

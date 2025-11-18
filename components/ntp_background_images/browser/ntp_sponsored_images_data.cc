@@ -56,141 +56,7 @@ std::optional<std::string> ToString(WallpaperType wallpaper_type) {
   return std::nullopt;
 }
 
-}  // namespace
-
-TopSite::TopSite() = default;
-TopSite::TopSite(const std::string& i_name,
-                 const std::string& i_destination_url,
-                 const std::string& i_image_path,
-                 const base::FilePath& i_image_file)
-    : name(i_name),
-      destination_url(i_destination_url),
-      image_path(i_image_path),
-      image_file(i_image_file) {}
-
-TopSite::TopSite(const TopSite& other) = default;
-
-TopSite& TopSite::operator=(const TopSite& other) = default;
-
-TopSite::TopSite(TopSite&& other) noexcept = default;
-
-TopSite& TopSite::operator=(TopSite&& other) noexcept = default;
-
-TopSite::~TopSite() = default;
-
-bool TopSite::IsValid() const {
-  return !name.empty() && !destination_url.empty() && !image_file.empty();
-}
-
-Logo::Logo() = default;
-
-Logo::Logo(const Logo& other) = default;
-
-Logo& Logo::operator=(const Logo& other) = default;
-
-Logo::Logo(Logo&& other) noexcept = default;
-
-Logo& Logo::operator=(Logo&& other) noexcept = default;
-
-Logo::~Logo() = default;
-
-Creative::Creative() = default;
-Creative::Creative(WallpaperType wallpaper_type,
-                   const base::FilePath& file_path,
-                   const gfx::Point& point,
-                   const Logo& test_logo,
-                   const std::string& creative_instance_id)
-    : wallpaper_type(wallpaper_type),
-      file_path(file_path),
-      focal_point(point),
-      creative_instance_id(creative_instance_id),
-      logo(test_logo) {}
-
-Creative::Creative(const Creative& other) = default;
-
-Creative& Creative::operator=(const Creative& other) = default;
-
-Creative::Creative(Creative&& other) noexcept = default;
-
-Creative& Creative::operator=(Creative&& other) noexcept = default;
-
-Creative::~Creative() = default;
-
-Campaign::Campaign() = default;
-
-Campaign::Campaign(const Campaign&) = default;
-
-Campaign& Campaign::operator=(const Campaign&) = default;
-
-Campaign::Campaign(Campaign&& other) noexcept = default;
-
-Campaign& Campaign::operator=(Campaign&& other) noexcept = default;
-
-Campaign::~Campaign() = default;
-
-bool Campaign::IsValid() const {
-  return !creatives.empty();
-}
-
-NTPSponsoredImagesData::NTPSponsoredImagesData() = default;
-NTPSponsoredImagesData::NTPSponsoredImagesData(
-    const base::Value::Dict& dict,
-    const base::FilePath& installed_dir)
-    : NTPSponsoredImagesData() {
-  const std::optional<int> schema_version = dict.FindInt(kSchemaVersionKey);
-  if (schema_version != kExpectedSchemaVersion) {
-    // Currently, only version 1 is supported. Update this code to maintain.
-    return;
-  }
-
-  url_prefix = absl::StrFormat("%s://%s/", content::kChromeUIScheme,
-                               kBrandedWallpaperHost);
-  if (const std::string* const name = dict.FindString(kThemeNameKey)) {
-    theme_name = *name;
-    url_prefix += kSuperReferralPath;
-  } else {
-    url_prefix += kSponsoredImagesPath;
-  }
-
-  if (const base::Value::List* const value = dict.FindList(kCampaignsKey)) {
-    ParseCampaigns(*value, installed_dir);
-  }
-
-  ParseSuperReferrals(dict, installed_dir);
-}
-
-NTPSponsoredImagesData::NTPSponsoredImagesData(
-    const NTPSponsoredImagesData& data) = default;
-
-NTPSponsoredImagesData& NTPSponsoredImagesData::operator=(
-    const NTPSponsoredImagesData& data) = default;
-
-NTPSponsoredImagesData::NTPSponsoredImagesData(
-    NTPSponsoredImagesData&& other) noexcept = default;
-
-NTPSponsoredImagesData& NTPSponsoredImagesData::operator=(
-    NTPSponsoredImagesData&& other) noexcept = default;
-
-NTPSponsoredImagesData::~NTPSponsoredImagesData() = default;
-
-void NTPSponsoredImagesData::ParseCampaigns(
-    const base::Value::List& list,
-    const base::FilePath& installed_dir) {
-  for (const auto& value : list) {
-    const base::Value::Dict* const dict = value.GetIfDict();
-    if (!dict) {
-      // Invalid campaign.
-      continue;
-    }
-
-    if (const std::optional<Campaign> campaign =
-            MaybeParseCampaign(*dict, installed_dir)) {
-      campaigns.push_back(*campaign);
-    }
-  }
-}
-
-std::optional<Campaign> NTPSponsoredImagesData::MaybeParseCampaign(
+std::optional<Campaign> MaybeParseCampaign(
     const base::Value::Dict& dict,
     const base::FilePath& installed_dir) {
   Campaign campaign;
@@ -390,6 +256,140 @@ std::optional<Campaign> NTPSponsoredImagesData::MaybeParseCampaign(
   }
 
   return campaign;
+}
+
+}  // namespace
+
+TopSite::TopSite() = default;
+TopSite::TopSite(const std::string& i_name,
+                 const std::string& i_destination_url,
+                 const std::string& i_image_path,
+                 const base::FilePath& i_image_file)
+    : name(i_name),
+      destination_url(i_destination_url),
+      image_path(i_image_path),
+      image_file(i_image_file) {}
+
+TopSite::TopSite(const TopSite& other) = default;
+
+TopSite& TopSite::operator=(const TopSite& other) = default;
+
+TopSite::TopSite(TopSite&& other) noexcept = default;
+
+TopSite& TopSite::operator=(TopSite&& other) noexcept = default;
+
+TopSite::~TopSite() = default;
+
+bool TopSite::IsValid() const {
+  return !name.empty() && !destination_url.empty() && !image_file.empty();
+}
+
+Logo::Logo() = default;
+
+Logo::Logo(const Logo& other) = default;
+
+Logo& Logo::operator=(const Logo& other) = default;
+
+Logo::Logo(Logo&& other) noexcept = default;
+
+Logo& Logo::operator=(Logo&& other) noexcept = default;
+
+Logo::~Logo() = default;
+
+Creative::Creative() = default;
+Creative::Creative(WallpaperType wallpaper_type,
+                   const base::FilePath& file_path,
+                   const gfx::Point& point,
+                   const Logo& test_logo,
+                   const std::string& creative_instance_id)
+    : wallpaper_type(wallpaper_type),
+      file_path(file_path),
+      focal_point(point),
+      creative_instance_id(creative_instance_id),
+      logo(test_logo) {}
+
+Creative::Creative(const Creative& other) = default;
+
+Creative& Creative::operator=(const Creative& other) = default;
+
+Creative::Creative(Creative&& other) noexcept = default;
+
+Creative& Creative::operator=(Creative&& other) noexcept = default;
+
+Creative::~Creative() = default;
+
+Campaign::Campaign() = default;
+
+Campaign::Campaign(const Campaign&) = default;
+
+Campaign& Campaign::operator=(const Campaign&) = default;
+
+Campaign::Campaign(Campaign&& other) noexcept = default;
+
+Campaign& Campaign::operator=(Campaign&& other) noexcept = default;
+
+Campaign::~Campaign() = default;
+
+bool Campaign::IsValid() const {
+  return !creatives.empty();
+}
+
+NTPSponsoredImagesData::NTPSponsoredImagesData() = default;
+NTPSponsoredImagesData::NTPSponsoredImagesData(
+    const base::Value::Dict& dict,
+    const base::FilePath& installed_dir)
+    : NTPSponsoredImagesData() {
+  const std::optional<int> schema_version = dict.FindInt(kSchemaVersionKey);
+  if (schema_version != kExpectedSchemaVersion) {
+    // Currently, only version 1 is supported. Update this code to maintain.
+    return;
+  }
+
+  url_prefix = absl::StrFormat("%s://%s/", content::kChromeUIScheme,
+                               kBrandedWallpaperHost);
+  if (const std::string* const name = dict.FindString(kThemeNameKey)) {
+    theme_name = *name;
+    url_prefix += kSuperReferralPath;
+  } else {
+    url_prefix += kSponsoredImagesPath;
+  }
+
+  if (const base::Value::List* const value = dict.FindList(kCampaignsKey)) {
+    ParseCampaigns(*value, installed_dir);
+  }
+
+  ParseSuperReferrals(dict, installed_dir);
+}
+
+NTPSponsoredImagesData::NTPSponsoredImagesData(
+    const NTPSponsoredImagesData& data) = default;
+
+NTPSponsoredImagesData& NTPSponsoredImagesData::operator=(
+    const NTPSponsoredImagesData& data) = default;
+
+NTPSponsoredImagesData::NTPSponsoredImagesData(
+    NTPSponsoredImagesData&& other) noexcept = default;
+
+NTPSponsoredImagesData& NTPSponsoredImagesData::operator=(
+    NTPSponsoredImagesData&& other) noexcept = default;
+
+NTPSponsoredImagesData::~NTPSponsoredImagesData() = default;
+
+void NTPSponsoredImagesData::ParseCampaigns(
+    const base::Value::List& list,
+    const base::FilePath& installed_dir) {
+  for (const auto& value : list) {
+    const base::Value::Dict* const dict = value.GetIfDict();
+    if (!dict) {
+      // Invalid campaign.
+      continue;
+    }
+
+    if (const std::optional<Campaign> campaign =
+            MaybeParseCampaign(*dict, installed_dir)) {
+      campaigns.push_back(*campaign);
+    }
+  }
 }
 
 void NTPSponsoredImagesData::ParseSuperReferrals(

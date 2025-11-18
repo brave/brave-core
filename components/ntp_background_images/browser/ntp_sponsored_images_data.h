@@ -137,9 +137,6 @@ struct NTPSponsoredImagesData {
 
   void ParseCampaigns(const base::Value::List& list,
                       const base::FilePath& installed_dir);
-  std::optional<Campaign> MaybeParseCampaign(
-      const base::Value::Dict& dict,
-      const base::FilePath& installed_dir);
 
   void ParseSuperReferrals(const base::Value::Dict& dict,
                            const base::FilePath& installed_dir);
