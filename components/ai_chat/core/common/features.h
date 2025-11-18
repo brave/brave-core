@@ -101,6 +101,10 @@ COMPONENT_EXPORT(AI_CHAT_COMMON)
 BASE_DECLARE_FEATURE(kTabOrganization);
 COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsTabOrganizationEnabled();
 
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+BASE_DECLARE_FEATURE(kNEARModels);
+COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsNEARModelsEnabled();
+
 // Whether we should show rich search widgets in the conversation.
 COMPONENT_EXPORT(AI_CHAT_COMMON) BASE_DECLARE_FEATURE(kRichSearchWidgets);
 

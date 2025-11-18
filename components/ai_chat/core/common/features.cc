@@ -143,6 +143,14 @@ bool IsTabOrganizationEnabled() {
   return base::FeatureList::IsEnabled(features::kTabOrganization);
 }
 
+BASE_FEATURE(kNEARModels,
+             "AIChatNEARModels",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
+bool IsNEARModelsEnabled() {
+  return base::FeatureList::IsEnabled(features::kNEARModels);
+}
+
 BASE_FEATURE(kRichSearchWidgets, base::FEATURE_DISABLED_BY_DEFAULT);
 
 const base::FeatureParam<std::string> kRichSearchWidgetsOrigin{
