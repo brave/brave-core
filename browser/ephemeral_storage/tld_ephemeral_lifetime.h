@@ -11,6 +11,7 @@
 #include "base/containers/flat_map.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/ref_counted.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
 #include "content/public/browser/storage_partition_config.h"

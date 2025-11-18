@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_EXTENSIONS_BRAVE_EXTENSION_FUNCTIONAL_TEST_H_
 
 #include "base/files/file_path.h"
+#include "base/memory/scoped_refptr.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
 #include "chrome/browser/extensions/extension_service.h"
 

@@ -5,6 +5,7 @@
 
 #include "brave/browser/extensions/brave_base_local_data_files_browsertest.h"
 
+#include "base/memory/scoped_refptr.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/task/thread_pool.h"

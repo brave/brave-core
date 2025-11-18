@@ -7,7 +7,6 @@
 
 #include "base/check.h"
 #include "base/memory/raw_ref.h"
-#include "base/memory/scoped_refptr.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/ui/brave_ads/notification_ad_delegate.h"
 #include "brave/browser/ui/brave_ads/notification_ad_popup_handler.h"

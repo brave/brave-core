@@ -6,6 +6,7 @@
 #include "brave/browser/brave_vpn/vpn_utils.h"
 
 #include "base/functional/bind.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/notreached.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_manager.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"

@@ -6,6 +6,7 @@
 #include <memory>
 
 #include "base/functional/function_ref.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/path_service.h"
 #include "base/strings/strcat.h"
 #include "base/test/thread_test_helper.h"

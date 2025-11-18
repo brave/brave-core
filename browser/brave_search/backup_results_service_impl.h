@@ -11,6 +11,7 @@
 #include <optional>
 #include <string>
 
+#include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/timer/timer.h"
 #include "brave/components/brave_search/browser/backup_results_metrics.h"

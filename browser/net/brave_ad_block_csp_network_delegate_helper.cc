@@ -8,6 +8,7 @@
 #include <optional>
 #include <string>
 
+#include "base/memory/scoped_refptr.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/net/url_context.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"

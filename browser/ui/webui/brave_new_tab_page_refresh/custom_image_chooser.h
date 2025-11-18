@@ -12,6 +12,7 @@
 #include "base/files/file_path.h"
 #include "base/functional/callback.h"
 #include "base/memory/raw_ref.h"
+#include "base/memory/scoped_refptr.h"
 #include "ui/shell_dialogs/select_file_dialog.h"
 
 class Profile;

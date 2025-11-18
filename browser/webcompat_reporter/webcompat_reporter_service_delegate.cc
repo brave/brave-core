@@ -8,6 +8,7 @@
 #include <optional>
 
 #include "base/check.h"
+#include "base/memory/scoped_refptr.h"
 #include "brave/common/brave_channel_info.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/core/browser/ad_block_component_service_manager.h"

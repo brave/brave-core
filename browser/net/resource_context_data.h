@@ -14,6 +14,7 @@
 
 #include "base/containers/unique_ptr_adapters.h"
 #include "base/memory/ref_counted.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/supports_user_data.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/content_browser_client.h"

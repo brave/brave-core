@@ -8,6 +8,7 @@
 #include <memory>
 #include <utility>
 
+#include "base/memory/scoped_refptr.h"
 #include "base/test/test_future.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_utils.h"

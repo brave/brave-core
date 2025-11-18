@@ -6,6 +6,7 @@
 #include <string>
 #include <string_view>
 
+#include "base/memory/scoped_refptr.h"
 #include "base/path_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/constants/brave_paths.h"

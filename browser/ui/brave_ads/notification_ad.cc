@@ -7,6 +7,7 @@
 
 #include <vector>
 
+#include "base/memory/scoped_refptr.h"
 #include "base/strings/string_util.h"
 
 namespace brave_ads {

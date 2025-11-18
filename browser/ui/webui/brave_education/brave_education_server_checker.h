@@ -12,6 +12,7 @@
 
 #include "base/functional/callback.h"
 #include "base/memory/raw_ref.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_education/education_urls.h"
 

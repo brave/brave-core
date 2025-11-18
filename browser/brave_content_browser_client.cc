@@ -15,6 +15,7 @@
 #include "base/check_op.h"
 #include "base/command_line.h"
 #include "base/functional/bind.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/system/sys_info.h"

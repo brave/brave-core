@@ -5,6 +5,7 @@
 
 #include <string>
 
+#include "base/memory/scoped_refptr.h"
 #include "brave/browser/net/brave_stp_util.h"
 #include "brave/browser/net/url_context.h"
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"

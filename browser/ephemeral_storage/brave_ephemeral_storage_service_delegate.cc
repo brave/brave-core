@@ -9,6 +9,7 @@
 
 #include "base/check.h"
 #include "base/logging.h"
+#include "base/memory/scoped_refptr.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "chrome/browser/browsing_data/chrome_browsing_data_remover_constants.h"
 #include "chrome/browser/profiles/profile.h"

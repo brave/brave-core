@@ -16,6 +16,7 @@
 #include "base/check_op.h"
 #include "base/logging.h"
 #include "base/memory/ref_counted_memory.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/types/expected.h"
 #include "brave/browser/ai_chat/print_preview_extractor.h"

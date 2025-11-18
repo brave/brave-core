@@ -8,6 +8,7 @@
 #include <string>
 #include <string_view>
 
+#include "base/memory/scoped_refptr.h"
 #include "base/no_destructor.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 

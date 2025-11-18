@@ -16,7 +16,6 @@
 #include "content/public/browser/storage_partition.h"
 #include "url/gurl.h"
 
-
 namespace extensions {
 
 namespace {
