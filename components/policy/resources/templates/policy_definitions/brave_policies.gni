@@ -25,6 +25,7 @@ _brave_policies = [
   "BraveSoftware/BraveWebDiscoveryEnabled.yaml",
   "BraveSoftware/BraveWalletDisabled.yaml",
   "BraveSoftware/BraveWaybackMachineEnabled.yaml",
+  "BraveSoftware/DefaultBraveAdblockSetting.yaml",
   "BraveSoftware/DefaultBraveFingerprintingV2Setting.yaml",
   "BraveSoftware/DefaultBraveHttpsUpgradeSetting.yaml",
   "BraveSoftware/DefaultBraveReferrersSetting.yaml",
