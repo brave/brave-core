@@ -298,7 +298,7 @@ class EmailAliasesBrowserTestBase : public InProcessBrowserTest {
       })()
     )js";
     return content::EvalJs(ActiveWebContents(),
-                           content::JsReplace(kGetText, id, expected_text))
+                           content::JsReplace(kAwaitText, id, expected_text))
         .ExtractBool();
   }
 
