@@ -10,16 +10,12 @@ namespace ntp_background_images {
 
 inline constexpr char kBackgroundWallpaperHost[] = "background-wallpaper";
 inline constexpr char kBrandedWallpaperHost[] = "branded-wallpaper";
-inline constexpr char kSuperReferralPath[] = "super-referral/";
 inline constexpr char kSponsoredImagesPath[] = "sponsored-images/";
 
 inline constexpr char kCustomWallpaperHost[] = "custom-wallpaper";
 inline constexpr char kCustomWallpaperURL[] = "chrome://custom-wallpaper/";
 
 inline constexpr char kCampaignsKey[] = "campaigns";
-
-inline constexpr char kPublicKey[] = "publicKey";
-inline constexpr char kComponentIDKey[] = "componentID";
 
 inline constexpr char kThemeNameKey[] = "themeName";
 
@@ -34,12 +30,7 @@ inline constexpr char kImageSourceKey[] = "source";
 inline constexpr char kImageAuthorKey[] = "author";
 inline constexpr char kImageLinkKey[] = "link";
 
-inline constexpr char kTopSitesKey[] = "topSites";
-inline constexpr char kTopSiteNameKey[] = "name";
-inline constexpr char kTopSiteIconURLKey[] = "iconUrl";
-
 inline constexpr char kDestinationURLKey[] = "destinationUrl";
-inline constexpr char kBackgroundColorKey[] = "backgroundColor";
 inline constexpr char kCompanyNameKey[] = "companyName";
 
 inline constexpr char kCreativeInstanceIDKey[] = "creativeInstanceId";

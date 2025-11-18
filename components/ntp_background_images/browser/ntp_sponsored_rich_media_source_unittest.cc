@@ -15,11 +15,8 @@
 #include "base/containers/span.h"
 #include "base/files/file_path.h"
 #include "base/memory/ref_counted_memory.h"
-#include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/strings/string_view_util.h"
-#include "base/test/scoped_feature_list.h"
-#include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service_waiter.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_source_test_util.h"
@@ -42,12 +39,6 @@ base::FilePath GetComponentPath() {
 class NTPSponsoredRichMediaSourceTest : public testing::Test {
  protected:
   void SetUp() override {
-    // Disable the super referral wallpaper feature, as it relies on referral
-    // codes that are not initialized. Note: Super Referrals are being
-    // deprecated, see https://github.com/brave/brave-browser/issues/44403.
-    feature_list_.InitAndDisableFeature(
-        features::kBraveNTPSuperReferralWallpaper);
-
     NTPBackgroundImagesService::RegisterLocalStatePrefsForMigration(
         pref_service_.registry());
 
@@ -98,7 +89,6 @@ class NTPSponsoredRichMediaSourceTest : public testing::Test {
   }
 
   content::BrowserTaskEnvironment task_environment_;
-  base::test::ScopedFeatureList feature_list_;
   TestingPrefServiceSimple pref_service_;
 
   std::unique_ptr<NTPBackgroundImagesService> background_images_service_;

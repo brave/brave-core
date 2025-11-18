@@ -79,7 +79,6 @@ static_library("browser") {
   } else {
     deps += [
       "//brave/components/brave_ads/browser",
-      "//brave/components/brave_referrals/browser",
       "//content/public/browser",
       "//content/public/common",
       "//net",

@@ -13,13 +13,10 @@
 #include "base/check.h"
 #include "base/i18n/rtl.h"
 #include "base/strings/utf_string_conversions.h"
-#include "brave/browser/ntp_background/view_counter_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui_utils.h"
 #include "brave/components/constants/pref_names.h"
-#include "brave/components/ntp_background_images/browser/ntp_sponsored_images_data.h"
-#include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "chrome/browser/ntp_tiles/chrome_most_visited_sites_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/new_tab_page/ntp_pref_names.h"
@@ -27,8 +24,6 @@
 #include "components/ntp_tiles/most_visited_sites.h"
 #include "components/ntp_tiles/tile_type.h"
 #include "components/prefs/pref_service.h"
-
-using ntp_background_images::ViewCounterServiceFactory;
 
 TopSitesMessageHandler::TopSitesMessageHandler(Profile* profile)
     : profile_(profile),
@@ -96,32 +91,6 @@ void TopSitesMessageHandler::OnURLsAvailable(
   base::Value::List tiles;
   int tile_id = 1;
 
-  // Super Referral feature only present in regular tabs (not private tabs)
-  auto* service = ViewCounterServiceFactory::GetForProfile(profile_);
-  if (service) {
-    for (auto& top_site : service->GetTopSitesData()) {
-      base::Value::Dict tile_value;
-      if (top_site.name.empty()) {
-        tile_value.Set("title", top_site.destination_url);
-        tile_value.Set("title_direction", base::i18n::LEFT_TO_RIGHT);
-      } else {
-        tile_value.Set("title", top_site.name);
-        tile_value.Set("title_direction",
-                       base::i18n::GetFirstStrongCharacterDirection(
-                           base::UTF8ToUTF16(top_site.name)));
-      }
-      tile_value.Set("id", tile_id++);
-      tile_value.Set("url", top_site.destination_url);
-      tile_value.Set("favicon", top_site.image_path);
-      tile_value.Set("defaultSRTopSite", true);
-      tile_value.Set("source",
-                     static_cast<int32_t>(ntp_tiles::TileSource::ALLOWLIST));
-      tile_value.Set("title_source", static_cast<int32_t>(
-                                         ntp_tiles::TileTitleSource::INFERRED));
-      tiles.Append(std::move(tile_value));
-    }
-  }
-
   for (auto& tile : sections.at(ntp_tiles::SectionType::PERSONALIZED)) {
     base::Value::Dict tile_value;
     if (tile.title.empty()) {
@@ -161,12 +130,6 @@ int TopSitesMessageHandler::GetCustomLinksNum() const {
       ChromeMostVisitedSitesFactory::NewForProfile(profile_);
   if (most_visited_sites) {
     custom_links_num += most_visited_sites->GetCustomLinkNum();
-  }
-
-  // In NTP SR mode, SR tiles are also shown in tiles.
-  auto* service = ViewCounterServiceFactory::GetForProfile(profile_);
-  if (service) {
-    custom_links_num += service->GetTopSitesData().size();
   }
 
   return custom_links_num;

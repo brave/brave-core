@@ -68,8 +68,6 @@ TEST_F(ViewCounterModelTest, NTPSponsoredImagesTest) {
   // Set current campaign index explicitely to test easily.
   model.current_campaign_index_ = 1;
 
-  EXPECT_FALSE(model.always_show_branded_wallpaper_);
-
   // Loading initial count times.
   for (int i = 0; i < features::kInitialCountToBrandedWallpaper.Get() - 1;
        ++i) {
@@ -108,8 +106,6 @@ TEST_F(ViewCounterModelTest, NTPSponsoredImagesCountToBrandedWallpaperTest) {
 
   // Set current campaign index explicitely to test easily.
   model.current_campaign_index_ = 1;
-
-  EXPECT_FALSE(model.always_show_branded_wallpaper_);
 
   // Count is 1 so we should not show branded wallpaper.
   EXPECT_FALSE(model.ShouldShowSponsoredImages());
@@ -279,29 +275,6 @@ TEST_F(ViewCounterModelTest, NTPBackgroundImagesWithEmptyCampaignTest) {
     EXPECT_EQ(i % model.total_image_count_,
               model.current_wallpaper_image_index());
     model.RegisterPageView();
-  }
-}
-
-TEST_F(ViewCounterModelTest, NTPSuperReferralTest) {
-  ViewCounterModel model(prefs());
-
-  model.set_always_show_branded_wallpaper(true);
-  model.SetCampaignsTotalBrandedImageCount({kTestImageCount});
-  model.set_total_image_count(kTestImageCount);
-  const int initial_wallpaper_index = model.current_wallpaper_image_index();
-
-  // Loading any number of times and check branded wallpaper is visible always
-  // with proper index from the start.
-  for (size_t i = 0; i < 10; ++i) {
-    EXPECT_TRUE(model.ShouldShowSponsoredImages());
-    const auto current_index = model.GetCurrentBrandedImageIndex();
-    // Always first campaign is used in SR mode.
-    EXPECT_EQ(0UL, std::get<0>(current_index));
-    EXPECT_EQ(i % kTestImageCount, std::get<1>(current_index));
-    model.RegisterPageView();
-
-    // Background wallpaper index is not changed in NTP SR mode.
-    EXPECT_EQ(initial_wallpaper_index, model.current_wallpaper_image_index());
   }
 }
 

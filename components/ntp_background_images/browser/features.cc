@@ -9,12 +9,6 @@
 
 namespace ntp_background_images::features {
 
-// TODO(https://github.com/brave/brave-browser/issues/44403): Remove super
-// referrals.
-BASE_FEATURE(kBraveNTPSuperReferralWallpaper,
-             "BraveNTPSuperReferralWallpaperName",
-             base::FEATURE_DISABLED_BY_DEFAULT);
-
 BASE_FEATURE(kBraveNTPBrandedWallpaperSurveyPanelist,
              base::FEATURE_ENABLED_BY_DEFAULT);
 

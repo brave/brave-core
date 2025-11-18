@@ -9,7 +9,6 @@
 #include <string>
 
 #include "base/test/task_environment.h"
-#include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "components/prefs/testing_pref_service.h"
@@ -26,16 +25,12 @@ class NTPBackgroundImagesSourceTest : public testing::Test {
     PrefRegistrySimple* const pref_registry = pref_service_.registry();
     NTPBackgroundImagesService::RegisterLocalStatePrefsForMigration(
         pref_registry);
-    brave::RegisterPrefsForBraveReferralsService(pref_registry);
 
     background_images_service_ = std::make_unique<NTPBackgroundImagesService>(
         /*variations_service=*/nullptr, /*component_update_service=*/nullptr,
         &pref_service_);
     background_images_source_ = std::make_unique<NTPBackgroundImagesSource>(
         background_images_service_.get());
-
-    pref_service_.SetDict(prefs::kNewTabPageCachedSuperReferralComponentInfo,
-                          base::Value::Dict());
   }
 
  protected:

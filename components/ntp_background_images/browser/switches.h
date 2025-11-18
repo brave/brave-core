@@ -12,10 +12,6 @@ namespace ntp_background_images::switches {
 inline constexpr char kOverrideSponsoredImagesComponentPath[] =
     "ntp-sponsored-images-component-path";
 
-//  Optional testing override of the super referral component's path.
-inline constexpr char kOverrideSuperReferralsComponentPath[] =
-    "ntp-super-referrals-component-path";
-
 }  // namespace ntp_background_images::switches
 
 #endif  // BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_SWITCHES_H_
