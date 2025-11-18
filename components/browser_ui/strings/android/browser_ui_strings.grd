@@ -324,6 +324,9 @@
       <message name="IDS_PROVIDED_BY_GOOGLE" desc="Generic label for something that comes from Brave servers.">
         Provided by Brave
       </message>
+      <message name="IDS_TURN_ON" desc="Generic label for a user to turn">
+        Turn on
+      </message>
 
       <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_FORWARD" desc="Content description for the forward navigation button.">
         Go forward
@@ -808,6 +811,9 @@
       <message name="IDS_ACCESSIBILITY_NEXT_SLIDE" desc="The accessibility text of the next slide button in a Picture-in-Picture window that allow users to navigate to the next slide.">
         Next slide
       </message>
+      <message name="IDS_ACCESSIBILITY_LISTEN_IN_THE_BACKGROUND" desc="The accessibility text for the button in a Picture-in-Picture window that closes the window and keeps the media playing in the background.">
+        Listen in the background
+      </message>
       <message name="IDS_MEDIA_NOTIFICATION_INCOGNITO" desc="Text used as a placeholder for a media notification about playing media, when notification is shown from Private tab.">
         A site is playing media
       </message>
@@ -1057,6 +1063,13 @@
         Launch Brave with the Omnibox focused, reducing start-up time on low-end devices.
       </message>
 
+      <message name="IDS_CARET_BROWSING_TITLE" desc="Title of preference that allows the user to navigate pages with a text caret.">
+        Navigate pages with a text cursor when a keyboard is attached
+      </message>
+      <message name="IDS_CARET_BROWSING_SUMMARY" desc="Summary of preference that allows the user to navigate pages with a text caret.">
+        To turn caret browsing on or off, use the shortcut F7
+      </message>
+
       <!-- Text Size Contrast -->
       <message name="IDS_TEXT_SIZE_CONTRAST_TITLE" translateable="false" desc="Title of the preference that allows the user to update the accessibility smart zoom feature that applies to the web contents.">
         Text size contrast
@@ -1119,6 +1132,16 @@
       </message>
       <message name="IDS_PAGE_ZOOM_IPH_MESSAGE" desc="Text for in-product help bubble that appears to alert user of the new Zoom option in the main menu">
         You can zoom in or out on sites you visit
+      </message>
+      <!-- Zoom Indicator -->
+      <message name="IDS_ZOOM_BUTTON_CONTENT_DESCRIPTION" desc="Content description for the zoom indicator on the location bar.">
+        {ZOOM_PERCENTAGE, plural,
+          =1 {Zoom}
+          other {Zoom: <ph name="ZOOM_PERCENTAGE_NUMBER">%1$d<ex>120</ex></ph>%%}
+        }
+      </message>
+      <message name="IDS_PAGE_ZOOM_FULLSCREEN_BUTTON_CONTENT_DESCRIPTION" desc="Content description for the fullscreen button in the zoom menu.">
+        Fullscreen
       </message>
 
       <!-- Search resumption module strings -->
