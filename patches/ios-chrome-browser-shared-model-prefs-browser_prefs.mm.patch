@@ -1,5 +1,5 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-index 249bac4626537c0474a587ded89280380ca0d6d4..ba372f8e0c6dbad28cdb34e0fa33ef40a8fe8e99 100644
+index 9f34ac7f131b5bc0b1a0e22185ede874cc21ac6a..70b416122049752ef5a867f554f76801027c2698 100644
 --- a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 @@ -695,6 +695,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
@@ -10,7 +10,7 @@ index 249bac4626537c0474a587ded89280380ca0d6d4..ba372f8e0c6dbad28cdb34e0fa33ef40
  }
  
  void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -1162,6 +1163,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+@@ -1165,6 +1166,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
    // Deprecated 10/2025.
    registry->RegisterStringPref(kLegacySyncSessionsGUID, std::string());
    registry->RegisterBooleanPref(prefs::kFingerprintingProtectionEnabled, true);

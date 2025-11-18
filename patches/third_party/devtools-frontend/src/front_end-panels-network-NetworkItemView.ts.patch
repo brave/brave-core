@@ -1,8 +1,8 @@
 diff --git a/front_end/panels/network/NetworkItemView.ts b/front_end/panels/network/NetworkItemView.ts
-index f8286389735e62920717960bd4b91c318b43fe5d..67db763d20d37f19a1c49ab98952ac819d57987c 100644
+index 3632401031cde7da512137ca1b622b899752c749..80e3885d479f728622dd937c0a30bb36619d01ed 100644
 --- a/front_end/panels/network/NetworkItemView.ts
 +++ b/front_end/panels/network/NetworkItemView.ts
-@@ -360,3 +360,4 @@ export class NetworkItemView extends UI.TabbedPane.TabbedPane {
+@@ -361,3 +361,4 @@ export class NetworkItemView extends UI.TabbedPane.TabbedPane {
      return this.#headersViewComponent;
    }
  }

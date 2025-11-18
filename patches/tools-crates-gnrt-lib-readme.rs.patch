@@ -1,8 +1,8 @@
 diff --git a/tools/crates/gnrt/lib/readme.rs b/tools/crates/gnrt/lib/readme.rs
-index 6bb911cd449ae1dd1e0a7a67b715842e07410705..f024eda066a895f7a1ec813c21dd5fdef99e7012 100644
+index 609a9c71b32e1faba757f53b8d5e1ef2a31a108a..cb7ef05b11215f2129f4ae2f3afe02616005b748 100644
 --- a/tools/crates/gnrt/lib/readme.rs
 +++ b/tools/crates/gnrt/lib/readme.rs
-@@ -127,6 +127,7 @@ fn readme_file_from_package<'a>(
+@@ -121,6 +121,7 @@ fn readme_file_from_package<'a>(
      });
      let license_files = if let Some(config_license_files) = config_license_files {
          for path in config_license_files.iter() {
@@ -10,7 +10,7 @@ index 6bb911cd449ae1dd1e0a7a67b715842e07410705..f024eda066a895f7a1ec813c21dd5fde
              ensure!(
                  does_license_file_exist(path)?,
                  "`gnrt_config.toml` for `{crate_name}` crate listed \
-@@ -146,7 +147,7 @@ fn readme_file_from_package<'a>(
+@@ -140,7 +141,7 @@ fn readme_file_from_package<'a>(
          Vec::new()
      };
  
@@ -19,7 +19,7 @@ index 6bb911cd449ae1dd1e0a7a67b715842e07410705..f024eda066a895f7a1ec813c21dd5fde
          bail!(
              r#"License file not found for crate `{name}-{version}`.
  
-@@ -240,6 +241,9 @@ enum LicenseKind {
+@@ -235,6 +236,9 @@ enum LicenseKind {
  
      /// https://spdx.org/licenses/BSL-1.0.html
      BSL,
@@ -29,7 +29,7 @@ index 6bb911cd449ae1dd1e0a7a67b715842e07410705..f024eda066a895f7a1ec813c21dd5fde
  }
  
  impl Display for LicenseKind {
-@@ -257,6 +261,9 @@ impl Display for LicenseKind {
+@@ -252,6 +256,9 @@ impl Display for LicenseKind {
              LicenseKind::Zlib => write!(f, "Zlib"),
              LicenseKind::Unicode3 => write!(f, "Unicode-3.0"),
              LicenseKind::BSL => write!(f, "BSL-1.0"),
@@ -39,7 +39,7 @@ index 6bb911cd449ae1dd1e0a7a67b715842e07410705..f024eda066a895f7a1ec813c21dd5fde
          }
      }
  }
-@@ -305,6 +312,11 @@ static LICENSE_STRING_TO_LICENSE_KIND: LazyLock<HashMap<&'static str, Vec<Licens
+@@ -300,6 +307,11 @@ static LICENSE_STRING_TO_LICENSE_KIND: LazyLock<HashMap<&'static str, Vec<Licens
              ("Unicode-3.0", vec![LicenseKind::Unicode3]),
              ("Zlib", vec![LicenseKind::Zlib]),
              ("BSL-1.0", vec![LicenseKind::BSL]),
