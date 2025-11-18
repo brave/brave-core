@@ -72,7 +72,7 @@ class BraveMultiInstanceManagerApi31 extends MultiInstanceManagerApi31 {
             TabModelSelector selector =
                     TabWindowManagerSingleton.getInstance().getTabModelSelectorById(mInstanceId);
             if (selector != null && selector.getTotalTabCount() == 0) {
-                closeInstance(mInstanceId, CloseWindowAppSource.NO_TABS_IN_WINDOW);
+                closeWindow(mInstanceId, CloseWindowAppSource.NO_TABS_IN_WINDOW);
             }
             if (MultiWindowUtils.getInstanceCount() == 1) {
                 BraveMultiWindowUtils.updateEnableMultiWindows(false);
