@@ -72,8 +72,6 @@ enum AdType {
   kUndefined = 0,
   kNotificationAd,
   kNewTabPageAd,
-  kPromotedContentAd,
-  kInlineContentAd,
   kSearchResultAd
 };
 
@@ -151,18 +149,6 @@ enum NewTabPageAdEventType {
   kMediaPlay,
   kMedia25,
   kMedia100
-};
-
-enum PromotedContentAdEventType {
-  kServedImpression = 0,
-  kViewedImpression,
-  kClicked
-};
-
-enum InlineContentAdEventType {
-  kServedImpression = 0,
-  kViewedImpression,
-  kClicked
 };
 
 struct CreativeSearchResultAdInfo {

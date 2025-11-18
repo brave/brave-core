@@ -25,16 +25,12 @@ namespace brave_ads {
 AdHandler::AdHandler()
     : purchase_intent_processor_(purchase_intent_resource_),
       text_classification_processor_(text_classification_resource_),
-      inline_content_ad_handler_(site_visit_,
-                                 subdivision_targeting_,
-                                 anti_targeting_resource_),
       new_tab_page_ad_handler_(site_visit_,
                                subdivision_targeting_,
                                anti_targeting_resource_),
       notification_ad_handler_(site_visit_,
                                subdivision_targeting_,
                                anti_targeting_resource_),
-      promoted_content_ad_handler_(site_visit_),
       search_result_ad_handler_(site_visit_) {
   conversions_observation_.Observe(&conversions_);
   site_visit_observation_.Observe(&site_visit_);
@@ -76,38 +72,6 @@ void AdHandler::TriggerNewTabPageAdEvent(
   new_tab_page_ad_handler_.TriggerEvent(placement_id, creative_instance_id,
                                         mojom_ad_event_type,
                                         std::move(callback));
-}
-
-void AdHandler::TriggerPromotedContentAdEvent(
-    const std::string& placement_id,
-    const std::string& creative_instance_id,
-    mojom::PromotedContentAdEventType mojom_ad_event_type,
-    TriggerAdEventCallback callback) {
-  CHECK(!placement_id.empty());
-
-  promoted_content_ad_handler_.TriggerEvent(placement_id, creative_instance_id,
-                                            mojom_ad_event_type,
-                                            std::move(callback));
-}
-
-void AdHandler::MaybeServeInlineContentAd(
-    const std::string& dimensions,
-    MaybeServeInlineContentAdCallback callback) {
-  CHECK(!dimensions.empty());
-
-  inline_content_ad_handler_.MaybeServe(dimensions, std::move(callback));
-}
-
-void AdHandler::TriggerInlineContentAdEvent(
-    const std::string& placement_id,
-    const std::string& creative_instance_id,
-    mojom::InlineContentAdEventType mojom_ad_event_type,
-    TriggerAdEventCallback callback) {
-  CHECK(!placement_id.empty());
-
-  inline_content_ad_handler_.TriggerEvent(placement_id, creative_instance_id,
-                                          mojom_ad_event_type,
-                                          std::move(callback));
 }
 
 std::optional<mojom::CreativeSearchResultAdInfoPtr>

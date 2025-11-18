@@ -18,7 +18,6 @@
 #include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_resource_constants.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
-#include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -109,23 +108,6 @@ TEST_F(BraveAdsPurchaseIntentResourceTest,
 }
 
 TEST_F(BraveAdsPurchaseIntentResourceTest,
-       DoNotLoadResourceWhenOptingInToBraveNewsAds) {
-  // Arrange
-  test::OptOutOfAllAds();
-
-  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
-                                   test::kCountryComponentId);
-  ASSERT_FALSE(resource_->IsLoaded());
-
-  // Act
-  SetProfileBooleanPref(brave_news::prefs::kBraveNewsOptedIn, true);
-  SetProfileBooleanPref(brave_news::prefs::kNewTabPageShowToday, true);
-
-  // Assert
-  EXPECT_FALSE(resource_->IsLoaded());
-}
-
-TEST_F(BraveAdsPurchaseIntentResourceTest,
        DoNotLoadResourceWhenOptingInToNewTabPageAds) {
   // Arrange
   test::OptOutOfAllAds();
@@ -164,7 +146,6 @@ TEST_F(BraveAdsPurchaseIntentResourceTest,
 TEST_F(BraveAdsPurchaseIntentResourceTest,
        DoNotResetResourceIfAlreadyOptedInToNotificationAds) {
   // Arrange
-  test::OptOutOfBraveNewsAds();
   test::OptOutOfNewTabPageAds();
   test::OptOutOfSearchResultAds();
 

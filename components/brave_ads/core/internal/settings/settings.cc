@@ -8,7 +8,6 @@
 #include "brave/components/brave_ads/core/internal/prefs/pref_util.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_feature.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
-#include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 
@@ -33,11 +32,6 @@ bool UserHasJoinedBraveRewardsAndNotConnectedWallet() {
 
 bool UserHasJoinedBraveRewardsAndConnectedWallet() {
   return UserHasJoinedBraveRewards() && HasConnectedWallet();
-}
-
-bool UserHasOptedInToBraveNewsAds() {
-  return GetProfileBooleanPref(brave_news::prefs::kBraveNewsOptedIn) &&
-         GetProfileBooleanPref(brave_news::prefs::kNewTabPageShowToday);
 }
 
 bool UserHasOptedInToNewTabPageAds() {

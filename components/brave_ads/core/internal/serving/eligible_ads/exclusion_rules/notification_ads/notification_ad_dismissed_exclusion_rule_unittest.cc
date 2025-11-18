@@ -125,7 +125,7 @@ TEST_F(
       ad_2, mojom::ConfirmationType::kDismissed, /*created_at=*/test::Now());
   ad_events.push_back(ad_event_2);
 
-  const AdInfo ad_3 = test::BuildAd(mojom::AdType::kPromotedContentAd,
+  const AdInfo ad_3 = test::BuildAd(mojom::AdType::kNotificationAd,
                                     /*should_generate_random_uuids=*/true);
   const AdEventInfo ad_event_3 = BuildAdEvent(
       ad_3, mojom::ConfirmationType::kDismissed, /*created_at=*/test::Now());

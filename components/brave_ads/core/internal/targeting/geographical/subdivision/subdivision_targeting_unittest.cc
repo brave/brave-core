@@ -17,7 +17,6 @@
 #include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting_constants.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
-#include "brave/components/brave_news/common/pref_names.h"
 #include "net/http/http_status_code.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -67,22 +66,6 @@ TEST_F(BraveAdsSubdivisionTargetingTest,
                          prefs::kSubdivisionTargetingAutoDetectedSubdivision));
 }
 
-TEST_F(BraveAdsSubdivisionTargetingTest, DoNotFetchWhenOptingInToBraveNewsAds) {
-  // Arrange
-  test::OptOutOfAllAds();
-
-  MockHttpOkUrlResponse(/*country_code=*/"US", /*subdivision_code=*/"CA");
-
-  NotifyDidInitializeAds();
-
-  // Act
-  SetProfileBooleanPref(brave_news::prefs::kBraveNewsOptedIn, true);
-  SetProfileBooleanPref(brave_news::prefs::kNewTabPageShowToday, true);
-
-  // Assert
-  EXPECT_FALSE(SubdivisionTargeting::ShouldAllow());
-}
-
 TEST_F(BraveAdsSubdivisionTargetingTest,
        DoNotFetchWhenOptingOutOfNotificationAds) {
   // Arrange
@@ -95,21 +78,6 @@ TEST_F(BraveAdsSubdivisionTargetingTest,
   // Act & Assert
   EXPECT_CALL(ads_client_mock_, UrlRequest).Times(0);
   SetProfileBooleanPref(prefs::kOptedInToNotificationAds, false);
-}
-
-TEST_F(BraveAdsSubdivisionTargetingTest,
-       DoNotFetchWhenOptingOutOfBraveNewsAds) {
-  // Arrange
-  test::OptOutOfAllAds();
-
-  MockHttpOkUrlResponse(/*country_code=*/"US", /*subdivision_code=*/"CA");
-
-  NotifyDidInitializeAds();
-
-  // Act & Assert
-  EXPECT_CALL(ads_client_mock_, UrlRequest).Times(0);
-  SetProfileBooleanPref(brave_news::prefs::kBraveNewsOptedIn, false);
-  SetProfileBooleanPref(brave_news::prefs::kNewTabPageShowToday, false);
 }
 
 TEST_F(BraveAdsSubdivisionTargetingTest,
