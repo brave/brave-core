@@ -1,8 +1,16 @@
 diff --git a/components/page_info/page_info.cc b/components/page_info/page_info.cc
-index 19830648fa7e2782f850aa6add7458d088962ee4..ba4bc93ec009b8a06ff0d4a125bc041ded7bb081 100644
+index 19830648fa7e2782f850aa6add7458d088962ee4..360e830c3f88e130f701608fe9314949efa55df7 100644
 --- a/components/page_info/page_info.cc
 +++ b/components/page_info/page_info.cc
-@@ -1375,6 +1375,7 @@ void PageInfo::PopulatePermissionInfo(PermissionInfo& permission_info,
+@@ -162,6 +162,7 @@ ContentSettingsType kPermissionType[] = {
+     ContentSettingsType::WEB_PRINTING,
+ #endif  // BUILDFLAG(IS_CHROMEOS)
+     ContentSettingsType::LOCAL_NETWORK_ACCESS,
++    BRAVE_PAGE_INFO_KPERMISSIONTYPE
+ };
+ 
+ // The list of setting types which request permission for a pair of requesting
+@@ -1375,6 +1376,7 @@ void PageInfo::PopulatePermissionInfo(PermissionInfo& permission_info,
  // via `HasContentSettingChangedViaPageInfo(type)`.
  bool PageInfo::ShouldShowPermission(
      const PageInfo::PermissionInfo& info) const {
