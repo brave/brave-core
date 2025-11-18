@@ -35,3 +35,7 @@ void AndroidWalletPageHandler::ShowWalletBackupUI() {
 void AndroidWalletPageHandler::UnlockWalletUI() {
   ::brave_wallet::UnlockWallet();
 }
+
+void AndroidWalletPageHandler::ShowOnboarding(bool is_new_wallet) {
+  ::brave_wallet::ShowOnboarding(is_new_wallet);
+}

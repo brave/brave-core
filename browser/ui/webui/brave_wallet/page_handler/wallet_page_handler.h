@@ -28,6 +28,7 @@ class WalletPageHandler : public brave_wallet::mojom::PageHandler {
   void ShowApprovePanelUI() override;
   void ShowWalletBackupUI() override;
   void UnlockWalletUI() override;
+  void ShowOnboarding(bool is_new_wallet) override;
 
  private:
   raw_ptr<Profile> profile_ = nullptr;  // NOT OWNED
