@@ -10,7 +10,18 @@
 namespace views {
 
 int LayoutProvider::GetCornerRadiusMetric(ShapeContextTokensOverride id) const {
-  return 4;
+  switch (id) {
+    case ShapeContextTokensOverride::kOmniboxExpandedRadius:
+      return 4;
+    case ShapeContextTokensOverride::kRoundedCornersBorderRadius:
+      return 4;
+    case ShapeContextTokensOverride::kRoundedCornersBorderRadiusAtWindowCorner:
+      return 4;
+    default:
+      break;
+  }
+
+  NOTREACHED();
 }
 
 }  // namespace views

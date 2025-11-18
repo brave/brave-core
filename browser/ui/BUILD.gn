@@ -503,8 +503,6 @@ source_set("ui") {
       "views/bookmarks/saved_tab_groups/brave_saved_tab_group_button.h",
       "views/brave_javascript_tab_modal_dialog_view_views.cc",
       "views/brave_javascript_tab_modal_dialog_view_views.h",
-      "views/brave_layout_provider.cc",
-      "views/brave_layout_provider.h",
       "views/brave_news/brave_news_bubble_view.cc",
       "views/brave_news/brave_news_bubble_view.h",
       "views/brave_news/brave_news_feed_item_view.cc",
@@ -625,6 +623,7 @@ source_set("ui") {
     deps += [
       "//brave/browser/ui/darker_theme",
       "//brave/browser/ui/side_panel",
+      "//brave/browser/ui/views:layout_provider",
       "//brave/browser/ui/views/frame",
       "//brave/browser/ui/views/location_bar",
       "//chrome/browser:shell_integration",

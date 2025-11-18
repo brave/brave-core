@@ -17,7 +17,12 @@
 #include "components/tabs/public/split_tab_id.h"
 #include "ui/compositor/layer.h"
 #include "ui/gfx/geometry/rounded_corners_f.h"
+#include "ui/views/layout/layout_provider.h"
 #include "ui/views/view.h"
+
+using views::ShapeContextTokensOverride::kRoundedCornersBorderRadius;
+using views::ShapeContextTokensOverride::
+    kRoundedCornersBorderRadiusAtWindowCorner;
 
 namespace {
 
@@ -31,9 +36,12 @@ constexpr ViewShadow::ShadowParameters kShadow{
 std::unique_ptr<ViewShadow> BraveContentsViewUtil::CreateShadow(
     views::View* view) {
   DCHECK(view);
-  auto shadow = std::make_unique<ViewShadow>(view, GetBorderRadius(), kShadow);
-  view->layer()->SetRoundedCornerRadius(
-      gfx::RoundedCornersF(GetBorderRadius()));
+  auto* layout_provider = views::LayoutProvider::Get();
+  auto shadow = std::make_unique<ViewShadow>(
+      view, layout_provider->GetCornerRadiusMetric(kRoundedCornersBorderRadius),
+      kShadow);
+  view->layer()->SetRoundedCornerRadius(gfx::RoundedCornersF(
+      layout_provider->GetCornerRadiusMetric(kRoundedCornersBorderRadius)));
   view->layer()->SetIsFastRoundedCorner(true);
   return shadow;
 }
@@ -49,9 +57,14 @@ int BraveContentsViewUtil::GetRoundedCornersWebViewMargin(Browser* browser) {
 gfx::RoundedCornersF BraveContentsViewUtil::GetRoundedCornersForContentsView(
     BrowserWindowInterface* browser_window_interface,
     tabs::TabInterface* tab) {
-  auto rounded_corners = gfx::RoundedCornersF(GetBorderRadiusAroundWindow());
-  rounded_corners.set_upper_left(GetBorderRadius());
-  rounded_corners.set_upper_right(GetBorderRadius());
+  auto* layout_provider = views::LayoutProvider::Get();
+  auto rounded_corners =
+      gfx::RoundedCornersF(layout_provider->GetCornerRadiusMetric(
+          kRoundedCornersBorderRadiusAtWindowCorner));
+  const auto rounded_corners_border_radius =
+      layout_provider->GetCornerRadiusMetric(kRoundedCornersBorderRadius);
+  rounded_corners.set_upper_left(rounded_corners_border_radius);
+  rounded_corners.set_upper_right(rounded_corners_border_radius);
 
   const bool show_vertical_tab = tabs::utils::ShouldShowVerticalTabs(
       browser_window_interface->GetBrowserForMigrationOnly());
@@ -102,25 +115,12 @@ gfx::RoundedCornersF BraveContentsViewUtil::GetRoundedCornersForContentsView(
   }
 
   if (has_right_side_ui) {
-    rounded_corners.set_lower_right(GetBorderRadius());
+    rounded_corners.set_lower_right(rounded_corners_border_radius);
   }
 
   if (has_left_side_ui) {
-    rounded_corners.set_lower_left(GetBorderRadius());
+    rounded_corners.set_lower_left(rounded_corners_border_radius);
   }
 
   return rounded_corners;
 }
-
-#if !BUILDFLAG(IS_MAC)
-
-// static
-int BraveContentsViewUtil::GetBorderRadius() {
-  return 4;
-}
-
-// static
-int BraveContentsViewUtil::GetBorderRadiusAroundWindow() {
-  return 4;
-}
-#endif

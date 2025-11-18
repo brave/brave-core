@@ -30,14 +30,6 @@ class BraveContentsViewUtil {
   // The distance between main content areas and other UI elements.
   static constexpr int kMarginThickness = 4;
 
-  // The border radius applied to main content areas.
-  // Different value per platforms.
-  static int GetBorderRadius();
-
-  // The border radius of the corner attached to the corner of the browser
-  // window
-  static int GetBorderRadiusAroundWindow();
-
   // Creates a drop shadow for the specified content area view.
   static std::unique_ptr<ViewShadow> CreateShadow(views::View* view);
 

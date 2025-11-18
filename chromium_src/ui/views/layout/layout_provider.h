@@ -13,6 +13,8 @@ namespace views {
 // `RoundedOmniboxResultsFrame`.
 enum class ShapeContextTokensOverride {
   kOmniboxExpandedRadius,
+  kRoundedCornersBorderRadius,
+  kRoundedCornersBorderRadiusAtWindowCorner,
 };
 
 }  // namespace views
@@ -20,9 +22,9 @@ enum class ShapeContextTokensOverride {
 // This function is added to allow callers to retrieve an overriden value for
 // `kOmniboxExpandedRadius` by just replacing `ShapeContextTokens` on the
 // caller.
-#define GetDialogInsetsForContentType                                \
-  Unused();                                                          \
-  int GetCornerRadiusMetric(ShapeContextTokensOverride token) const; \
+#define GetDialogInsetsForContentType                                        \
+  Unused();                                                                  \
+  virtual int GetCornerRadiusMetric(ShapeContextTokensOverride token) const; \
   gfx::Insets GetDialogInsetsForContentType
 
 #include <ui/views/layout/layout_provider.h>  // IWYU pragma: export

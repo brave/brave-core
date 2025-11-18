@@ -42,9 +42,14 @@
 #include "ui/compositor/layer.h"
 #include "ui/gfx/animation/animation.h"
 #include "ui/gfx/animation/animation_test_api.h"
+#include "ui/views/layout/layout_provider.h"
 #include "ui/views/view_class_properties.h"
 #include "ui/views/widget/widget.h"
 #include "ui/views/widget/widget_delegate.h"
+
+using views::ShapeContextTokensOverride::kRoundedCornersBorderRadius;
+using views::ShapeContextTokensOverride::
+    kRoundedCornersBorderRadiusAtWindowCorner;
 
 class BraveBrowserViewTest : public InProcessBrowserTest {
  public:
@@ -254,6 +259,13 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
   views::View* side_panel = browser_view()->contents_height_side_panel();
   const auto rounded_corners_margin = BraveContentsViewUtil::kMarginThickness;
 
+  auto* layout_provider = views::LayoutProvider::Get();
+  const auto rounded_corners_border_radius =
+      layout_provider->GetCornerRadiusMetric(kRoundedCornersBorderRadius);
+  const auto rounded_corners_border_radius_at_window_corner =
+      layout_provider->GetCornerRadiusMetric(
+          kRoundedCornersBorderRadiusAtWindowCorner);
+
   if (IsRoundedCornersEnabled()) {
     // Check contents container has margin by comparing simply its left & bottom
     // with main container's local bounds. As views local bounds' origin is (0,
@@ -269,7 +281,7 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
               side_panel->GetProperty(views::kMarginsKey)->bottom());
     EXPECT_EQ(rounded_corners_margin,
               side_panel->GetProperty(views::kMarginsKey)->right());
-    EXPECT_EQ(gfx::RoundedCornersF(BraveContentsViewUtil::GetBorderRadius()),
+    EXPECT_EQ(gfx::RoundedCornersF(rounded_corners_border_radius),
               side_panel->layer()->rounded_corner_radii());
     const auto contents_view_radii = browser_view()
                                          ->GetActiveContentsContainerView()
@@ -278,17 +290,14 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
     EXPECT_EQ(BraveContentsViewUtil::GetRoundedCornersForContentsView(browser(),
                                                                       nullptr),
               contents_view_radii);
-    EXPECT_EQ(BraveContentsViewUtil::GetBorderRadius(),
-              contents_view_radii.upper_left());
-    EXPECT_EQ(BraveContentsViewUtil::GetBorderRadius(),
-              contents_view_radii.upper_right());
+    EXPECT_EQ(rounded_corners_border_radius, contents_view_radii.upper_left());
+    EXPECT_EQ(rounded_corners_border_radius, contents_view_radii.upper_right());
 
     // lower-left radius should be radius around window as there is no ui
     // between browser window border and contents.
-    EXPECT_EQ(BraveContentsViewUtil::GetBorderRadiusAroundWindow(),
+    EXPECT_EQ(rounded_corners_border_radius_at_window_corner,
               contents_view_radii.lower_left());
-    EXPECT_EQ(BraveContentsViewUtil::GetBorderRadius(),
-              contents_view_radii.lower_right());
+    EXPECT_EQ(rounded_corners_border_radius, contents_view_radii.lower_right());
   } else {
     // Check contents container doesn't have any margin. So, contents container
     // should have same left & bottom with main container.
@@ -324,7 +333,7 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
             side_panel->GetProperty(views::kMarginsKey)->bottom());
   EXPECT_EQ(rounded_corners_margin,
             side_panel->GetProperty(views::kMarginsKey)->right());
-  EXPECT_EQ(gfx::RoundedCornersF(BraveContentsViewUtil::GetBorderRadius()),
+  EXPECT_EQ(gfx::RoundedCornersF(rounded_corners_border_radius),
             side_panel->layer()->rounded_corner_radii());
 
   const auto start_contents_view_radii = browser_view()
@@ -335,13 +344,13 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
                                            ->GetContentsContainerViews()[1]
                                            ->contents_view()
                                            ->GetBackgroundRadii();
-  EXPECT_EQ(BraveContentsViewUtil::GetBorderRadiusAroundWindow(),
+  EXPECT_EQ(rounded_corners_border_radius_at_window_corner,
             start_contents_view_radii.lower_left());
-  EXPECT_EQ(BraveContentsViewUtil::GetBorderRadius(),
+  EXPECT_EQ(rounded_corners_border_radius,
             start_contents_view_radii.lower_right());
-  EXPECT_EQ(BraveContentsViewUtil::GetBorderRadius(),
+  EXPECT_EQ(rounded_corners_border_radius,
             end_contents_view_radii.lower_left());
-  EXPECT_EQ(BraveContentsViewUtil::GetBorderRadius(),
+  EXPECT_EQ(rounded_corners_border_radius,
             end_contents_view_radii.lower_right());
 
   // Create new active tab to not have split tab as a active tab.
@@ -359,7 +368,7 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
               side_panel->GetProperty(views::kMarginsKey)->bottom());
     EXPECT_EQ(rounded_corners_margin,
               side_panel->GetProperty(views::kMarginsKey)->right());
-    EXPECT_EQ(gfx::RoundedCornersF(BraveContentsViewUtil::GetBorderRadius()),
+    EXPECT_EQ(gfx::RoundedCornersF(rounded_corners_border_radius),
               side_panel->layer()->rounded_corner_radii());
     const auto contents_view_radii = browser_view()
                                          ->GetActiveContentsContainerView()
@@ -368,17 +377,14 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
     EXPECT_EQ(BraveContentsViewUtil::GetRoundedCornersForContentsView(browser(),
                                                                       nullptr),
               contents_view_radii);
-    EXPECT_EQ(BraveContentsViewUtil::GetBorderRadius(),
-              contents_view_radii.upper_left());
-    EXPECT_EQ(BraveContentsViewUtil::GetBorderRadius(),
-              contents_view_radii.upper_right());
+    EXPECT_EQ(rounded_corners_border_radius, contents_view_radii.upper_left());
+    EXPECT_EQ(rounded_corners_border_radius, contents_view_radii.upper_right());
 
     // lower-left radius should be radius around window as there is no ui
     // between browser window border and contents.
-    EXPECT_EQ(BraveContentsViewUtil::GetBorderRadiusAroundWindow(),
+    EXPECT_EQ(rounded_corners_border_radius_at_window_corner,
               contents_view_radii.lower_left());
-    EXPECT_EQ(BraveContentsViewUtil::GetBorderRadius(),
-              contents_view_radii.lower_right());
+    EXPECT_EQ(rounded_corners_border_radius, contents_view_radii.lower_right());
   } else {
     EXPECT_EQ(contents_container->bounds().x(),
               main_container->GetLocalBounds().x());

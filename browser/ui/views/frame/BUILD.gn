@@ -9,10 +9,6 @@ source_set("frame") {
     "brave_contents_view_util.h",
   ]
 
-  if (is_mac) {
-    sources += [ "brave_contents_view_util_mac.mm" ]
-  }
-
   deps = [
     "//base",
     "//chrome/browser/profiles:profile",

@@ -30,6 +30,7 @@
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/geometry/rounded_corners_f.h"
 #include "ui/views/border.h"
+#include "ui/views/layout/layout_provider.h"
 
 namespace {
 
@@ -140,7 +141,8 @@ void BraveContentsContainerView::UpdateBorderRoundedCorners() {
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   if (reader_mode_toolbar_) {
     reader_mode_toolbar_->SetCornerRadius(
-        BraveContentsViewUtil::GetBorderRadius());
+        views::LayoutProvider::Get()->GetCornerRadiusMetric(
+            views::ShapeContextTokensOverride::kRoundedCornersBorderRadius));
   }
 #endif
 }
