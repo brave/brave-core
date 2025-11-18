@@ -231,7 +231,9 @@ class BraveShieldsPage extends BraveShieldsPageBase {
       this.browserProxy_.isAdControlEnabled(),
       this.browserProxy_.isFirstPartyCosmeticFilteringEnabled()
     ]).then(([adControlEnabled, hide1pContent]) => {
-      if (adControlEnabled) {
+      // When Adblock Only Mode is enabled, set ad control type to 'allow'
+      // (shown as Disabled in UI) based on spec and Figma design.
+      if (adControlEnabled && !this.isAdBlockOnlyModeEnabled_) {
         this.adControlType_ = hide1pContent ? 'block' : 'block_third_party'
       } else {
         this.adControlType_ = 'allow'
