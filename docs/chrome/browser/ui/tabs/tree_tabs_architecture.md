@@ -16,7 +16,7 @@ Before diving into tree tabs, it's essential to understand the existing Group Ta
 
 #### 1. TabCollection Hierarchy
 
-The tab collection framework is designed as a hierarchical system that can contain both tabs and other collections:
+The [tab collection](https://source.chromium.org/chromium/chromium/src/+/main:components/tabs/public/tab_collection.h;drc=ecd02bc4ab0da9efc6f1765f4f46fb46252f3167) framework is designed as a hierarchical system that can contain both tabs and other collections:
 
 ```cpp
 class TabCollection {
@@ -59,15 +59,15 @@ The TabCollection also **manages ownership** of its tabs and child collections,
 ensuring proper lifecycle management. So **only TabStripModel** can directly
 manipulate TabCollection hierarchy.
 
-**TabStripModel** owns **TabStripCollection** with the name `contents_data_`,
+[**TabStripModel** owns **TabStripCollection** with the name `contents_data_`](https://source.chromium.org/chromium/chromium/src/+/main:chrome/browser/ui/tabs/tab_strip_model.h;l=1379;drc=3170b88bbe6677b6b465c81fe18f7a4cb93bc67c),
 and access and manipulates tabs and collections through it. So we can think of
-TabStripCollection as the **central interface of tab management** for 
+[`TabStripCollection`](https://source.chromium.org/chromium/chromium/src/+/main:components/tabs/public/tab_strip_collection.h;drc=a6e87177f32db34e28997e3f2d9fc67968e58fab) as the **central interface of tab management** for 
 TabStripModel.
 
 
 #### 2. TabGroup as Metadata Container
 
-**TabGroupTabCollection** is a specialized TabCollection that manages grouped
+[**TabGroupTabCollection**](https://source.chromium.org/chromium/chromium/src/+/main:components/tabs/public/tab_group_tab_collection.h;drc=6c7213c72cc5e42c881d0ae57127ffe550963893) is a specialized TabCollection that manages grouped
 tabs. But it's focusing on managing the lifecycle of tabs within the group, while
 the actual group metadata is stored in a separate **TabGroup** class.
 
@@ -78,7 +78,7 @@ class TabGroupTabCollection : public TabCollection {
 };
 ```
 
-**TabGroup** contains all group-related metadata:
+[**TabGroup**](https://source.chromium.org/chromium/chromium/src/+/main:components/tabs/public/tab_group.h;drc=fcc336e81a365fd858cae859059b29be8f995427) contains all group-related metadata:
 
 ```cpp
 class TabGroup {
@@ -99,8 +99,8 @@ metadata through **TabGroupModel**.
 
 #### 4. TabGroupModel as Registry
 
-**TabGroupModel** only contains TabGroup references for access. **TabGroupModel**
-is also owned by **TabStripModel**.
+[**TabGroupModel**](https://source.chromium.org/chromium/chromium/src/+/main:chrome/browser/ui/tabs/tab_group_model.h;drc=fb8950cdd1c1de2b7d7fcc92ebbc5c84c03107a9) only contains TabGroup references for access. [**TabGroupModel**
+is also owned by **TabStripModel**](https://source.chromium.org/chromium/chromium/src/+/main:chrome/browser/ui/tabs/tab_strip_model.h;l=1382;drc=3170b88bbe6677b6b465c81fe18f7a4cb93bc67c).
 
 ```cpp
 class TabGroupModel {
@@ -119,7 +119,7 @@ class TabGroupModel {
 - **UI components** (except TabStripModel) must access **TabGroup** via **TabGroupModel**, never **TabGroupTabCollection** directly
 
 #### 5. TabGroupChanged Notifications
-All changes to tab groups will be notified through **TabStripModelObserver**,
+All changes to tab groups will be [notified through **TabStripModelObserver**](https://source.chromium.org/chromium/chromium/src/+/main:chrome/browser/ui/tabs/tab_strip_model_observer.h;l=549;drc=3170b88bbe6677b6b465c81fe18f7a4cb93bc67c),
 typically observed by UI components:
 
 ```cpp
@@ -128,7 +128,7 @@ class TabStripModelObserver {
 };
 ```
 
-Change details are encapsulated in the **TabGroupChange** struct:
+Change details are encapsulated in the [**TabGroupChange**](https://source.chromium.org/chromium/chromium/src/+/main:chrome/browser/ui/tabs/tab_strip_model_observer.h;l=263;drc=3170b88bbe6677b6b465c81fe18f7a4cb93bc67c) struct:
 
 ```cpp
 struct TabGroupChange {
