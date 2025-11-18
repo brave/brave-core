@@ -15,7 +15,6 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/test/task_environment.h"
 #include "base/test/values_test_util.h"
-#include "base/time/time.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service_mock.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
@@ -32,8 +31,6 @@
 #include "build/build_config.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings_types.h"
-#include "components/metrics/metrics_pref_names.h"
-#include "components/metrics/metrics_service.h"
 #include "components/prefs/testing_pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -198,13 +195,7 @@ class ViewCounterServiceTest : public testing::Test {
     RegisterProfilePrefs(prefs_.registry());
     HostContentSettingsMap::RegisterProfilePrefs(prefs_.registry());
 
-    NTPBackgroundImagesService::RegisterLocalStatePrefsForMigration(
-        local_state_.registry());
     RegisterLocalStatePrefs(local_state_.registry());
-    metrics::MetricsService::RegisterPrefs(local_state_.registry());
-
-    local_state_.SetInt64(metrics::prefs::kInstallDate,
-                          base::Time::Now().InSecondsFSinceUnixEpoch());
 
     host_content_settings_map_ = new HostContentSettingsMap(
         &prefs_, /* is_off_the_record=*/false, /*store_last_modified=*/false,
@@ -307,16 +298,6 @@ class ViewCounterServiceTest : public testing::Test {
     EXPECT_TRUE(view_counter_service_->CanShowBackgroundImages());
   }
 
-  void InitBackgroundAndSponsoredRichMediaWallpapers() {
-    SetSponsoredImagesVisibility(true);
-    MockSponsoredImagesData(WallpaperType::kRichMedia);
-    EXPECT_TRUE(view_counter_service_->CanShowSponsoredImages());
-
-    SetBackgroundImagesVisibility(true);
-    MockBackgroundImagesData();
-    EXPECT_TRUE(view_counter_service_->CanShowBackgroundImages());
-  }
-
   std::optional<base::Value::Dict>
   CycleThroughPageViewsAndMaybeGetNewTabTakeoverWallpaper() {
     // Loading initial count times.
@@ -330,34 +311,6 @@ class ViewCounterServiceTest : public testing::Test {
     }
 
     return view_counter_service_->GetCurrentWallpaperForDisplay();
-  }
-
-  void VerifyGetNewTabTakeoverWallpaperExpectation() {
-    EXPECT_CALL(ads_service_mock_, PrefetchNewTabPageAd)
-        .Times(GetInitialCountToBrandedWallpaper());
-    EXPECT_CALL(ads_service_mock_, MaybeGetPrefetchedNewTabPageAd);
-    const brave_ads::NewTabPageAdInfo ad = BuildNewTabPageAd();
-    ON_CALL(ads_service_mock_, MaybeGetPrefetchedNewTabPageAd)
-        .WillByDefault(::testing::Return(ad));
-    EXPECT_CALL(ads_service_mock_, OnFailedToPrefetchNewTabPageAd).Times(0);
-
-    const std::optional<base::Value::Dict> wallpaper =
-        CycleThroughPageViewsAndMaybeGetNewTabTakeoverWallpaper();
-    ASSERT_TRUE(wallpaper);
-
-    const std::string* url = wallpaper->FindString(kWallpaperURLKey);
-    ASSERT_TRUE(url);
-
-    const std::string* placement_id = wallpaper->FindString(kWallpaperIDKey);
-    ASSERT_TRUE(placement_id);
-
-    const std::string* creative_instance_id =
-        wallpaper->FindString(kCreativeInstanceIDKey);
-    ASSERT_TRUE(creative_instance_id);
-
-    const std::string* target_url =
-        wallpaper->FindStringByDottedPath(kLogoDestinationURLPath);
-    ASSERT_TRUE(target_url);
   }
 
   void VerifyDoNotGetNewTabTakeoverWallpaperExpectation() {
