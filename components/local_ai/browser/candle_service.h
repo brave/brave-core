@@ -29,9 +29,14 @@ class CandleService : public mojom::CandleService {
   void BindEmbeddingGemma(
       mojo::PendingRemote<mojom::EmbeddingGemmaInterface>) override;
 
-  void Embed(const std::string& text, EmbedCallback callback) override;
+  void GetDefaultModelPath(GetDefaultModelPathCallback callback) override;
 
-  void RunEmbeddingGemmaInit();
+  void LoadModelFiles(const base::FilePath& weights_path,
+                      const base::FilePath& tokenizer_path,
+                      const base::FilePath& config_path,
+                      LoadModelFilesCallback callback) override;
+
+  void Embed(const std::string& text, EmbedCallback callback) override;
 
  private:
   friend class base::NoDestructor<CandleService>;
@@ -39,8 +44,8 @@ class CandleService : public mojom::CandleService {
   CandleService();
   ~CandleService() override;
 
-  void OnEmbeddingGemmaModelFilesLoaded(mojom::ModelFilesPtr model_files);
-  void OnEmbeddingGemmaInit(bool success);
+  void OnEmbeddingGemmaModelFilesLoaded(LoadModelFilesCallback callback,
+                                        mojom::ModelFilesPtr model_files);
 
   mojo::ReceiverSet<mojom::CandleService> receivers_;
 

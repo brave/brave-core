@@ -38,8 +38,9 @@ LocalAIInternalsUI::LocalAIInternalsUI(content::WebUI* web_ui)
       network::mojom::CSPDirectiveName::ConnectSrc,
       "connect-src chrome://resources chrome-untrusted://resources 'self';");
 
-  // Serve the HTML page
+  // Serve the HTML page and JavaScript
   source->AddResourcePath("", IDR_LOCAL_AI_INTERNALS_HTML);
+  source->AddResourcePath("local_ai.js", IDR_LOCAL_AI_INTERNALS_JS);
   source->SetDefaultResource(IDR_LOCAL_AI_INTERNALS_HTML);
 
   source->UseStringsJs();

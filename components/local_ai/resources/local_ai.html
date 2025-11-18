@@ -41,8 +41,44 @@
       <p><strong>Check the console for logs from both contexts.</strong></p>
     </div>
 
-    <h2>Embedding Gemma WASM (from ~/Downloads/embeddinggemma-300m):</h2>
-    <iframe src="chrome-untrusted://candle-embedding-gemma-wasm/"
+    <h2>Embedding Gemma WASM:</h2>
+    <div class="model-config">
+      <h3>Model Configuration</h3>
+      <p>Enter file paths to load the model:</p>
+      <div class="input-group">
+        <label>Weights file (model.safetensors):
+          <input type="text" id="weightsPath"
+            placeholder="Loading default path..."
+            style="width: 100%; padding: 8px; margin: 5px 0;">
+        </label>
+      </div>
+      <div class="input-group">
+        <label>Tokenizer file (tokenizer.json):
+          <input type="text" id="tokenizerPath"
+            placeholder="Loading default path..."
+            style="width: 100%; padding: 8px; margin: 5px 0;">
+        </label>
+      </div>
+      <div class="input-group">
+        <label>Config file (config.json):
+          <input type="text" id="configPath"
+            placeholder="Loading default path..."
+            style="width: 100%; padding: 8px; margin: 5px 0;">
+        </label>
+      </div>
+      <button id="loadModelBtn"
+        style="padding: 10px 20px; margin: 10px 0; cursor: pointer;
+        background: #1a73e8; color: white; border: none;
+        border-radius: 4px;">
+        Load Model
+      </button>
+      <div id="loadStatus"
+        style="padding: 10px; margin: 10px 0; border-radius: 4px;
+        display: none;"></div>
+    </div>
+    <iframe id="embeddingIframe"
+      src="chrome-untrusted://candle-embedding-gemma-wasm/"
       title="Candle Embedding Gemma WASM"></iframe>
+    <script src="local_ai.js"></script>
   </body>
 </html>
