@@ -121,7 +121,7 @@ public final class Domain: NSManagedObject, CRUD {
 
   /// Returns all domains with a given `SiteShredLevel`s rawValue, or `nil`
   /// for Domains with no shred level assigned.
-  public class func allDomainsWithAutoShredLevel(
+  class func allDomainsWithAutoShredLevel(
     _ rawShredLevel: String?,
     context: NSManagedObjectContext
   ) -> [Domain]? {
