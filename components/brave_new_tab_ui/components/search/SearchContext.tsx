@@ -78,6 +78,7 @@ class SearchPage implements PageInterface {
   onContextualInputStatusChanged(token: string, status: FileUploadStatus, errorType: FileUploadErrorType | null) { }
   onTabStripChanged() { }
   addFileContext(token: string, fileInfo: SelectedFileInfo) { }
+  setKeywordSelected(isKeywordSelected: boolean): void {}
 }
 
 export const search = new SearchPage()
