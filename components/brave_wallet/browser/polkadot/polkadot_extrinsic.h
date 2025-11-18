@@ -43,11 +43,11 @@ class PolkadotUnsignedTransfer {
       std::string_view input);
 
   // Get the send amount associated with this extrinsic.
-  uint128_t SendAmount() const noexcept { return send_amount_; }
+  uint128_t send_amount() const { return send_amount_; }
 
   // Get a view of the public key of the intended recipient for this
   // transaction.
-  base::span<const uint8_t> Recipient() const noexcept { return recipient_; }
+  base::span<const uint8_t> recipient() const { return recipient_; }
 
  private:
   std::array<uint8_t, kPolkadotSubstrateAccountIdSize> recipient_ = {};

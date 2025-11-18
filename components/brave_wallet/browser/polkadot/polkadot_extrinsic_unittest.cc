@@ -45,8 +45,8 @@ TEST(PolkadotExtrinsics, UnsignedTransfer) {
   const char* testnet_extrinsic =
       R"(98040400008EAF04151687736326C9FEA17E25FC5287613693C912909CB226AA4794F26A484913)";
 
-  EXPECT_EQ(transfer_extrinsic.SendAmount(), 1234u);
-  EXPECT_EQ(base::HexEncode(transfer_extrinsic.Recipient()), kBob);
+  EXPECT_EQ(transfer_extrinsic.send_amount(), 1234u);
+  EXPECT_EQ(base::HexEncode(transfer_extrinsic.recipient()), kBob);
   EXPECT_EQ(transfer_extrinsic.ToHex(mojom::kPolkadotTestnet),
             testnet_extrinsic);
 
@@ -126,8 +126,8 @@ TEST(PolkadotExtrinsics, DecodedUnsignedTransfer) {
     auto transfer_extrinsic =
         PolkadotUnsignedTransfer::FromHex(testnet_extrinsic);
 
-    EXPECT_EQ(transfer_extrinsic.value().SendAmount(), 1234u);
-    EXPECT_EQ(base::HexEncode(transfer_extrinsic.value().Recipient()), kBob);
+    EXPECT_EQ(transfer_extrinsic.value().send_amount(), 1234u);
+    EXPECT_EQ(base::HexEncode(transfer_extrinsic.value().recipient()), kBob);
   }
 
   {
@@ -137,8 +137,8 @@ TEST(PolkadotExtrinsics, DecodedUnsignedTransfer) {
     auto transfer_extrinsic =
         PolkadotUnsignedTransfer::FromHex(mainnet_extrinsic);
 
-    EXPECT_EQ(transfer_extrinsic.value().SendAmount(), 1234u);
-    EXPECT_EQ(base::HexEncode(transfer_extrinsic.value().Recipient()), kBob);
+    EXPECT_EQ(transfer_extrinsic.value().send_amount(), 1234u);
+    EXPECT_EQ(base::HexEncode(transfer_extrinsic.value().recipient()), kBob);
   }
 }
 
@@ -150,9 +150,9 @@ TEST(PolkadotExtrinsics, DecodeNumericLimits) {
     auto transfer_extrinsic =
         PolkadotUnsignedTransfer::FromHex(testnet_extrinsic);
 
-    EXPECT_EQ(transfer_extrinsic.value().SendAmount(),
+    EXPECT_EQ(transfer_extrinsic.value().send_amount(),
               std::numeric_limits<uint128_t>::max());
-    EXPECT_EQ(base::HexEncode(transfer_extrinsic.value().Recipient()), kBob);
+    EXPECT_EQ(base::HexEncode(transfer_extrinsic.value().recipient()), kBob);
   }
 }
 
