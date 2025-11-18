@@ -40,10 +40,11 @@ export function getToolUseEvent(
 
 export function getWebSourcesEvent(
   sources: Mojom.WebSource[],
+  richResults?: string[],
 ): Mojom.ConversationEntryEvent {
   return {
     ...eventTemplate,
-    sourcesEvent: { sources, richResults: [] },
+    sourcesEvent: { sources, richResults: richResults ?? [] },
   }
 }
 
