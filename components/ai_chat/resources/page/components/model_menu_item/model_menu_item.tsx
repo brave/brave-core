@@ -39,6 +39,17 @@ const ModelContent = (props: ModelContentProps) => {
         </Label>
       )
     }
+    if (model.isNearModel) {
+      return (
+        <Label
+          mode='outline'
+          color='neutral'
+          className={styles.modelLabel}
+        >
+          {getLocale(S.CHAT_UI_MODEL_BETA_LABEL)}
+        </Label>
+      )
+    }
     if (
       model.options.leoModelOptions?.access === Mojom.ModelAccess.PREMIUM
       && showPremiumLabel
