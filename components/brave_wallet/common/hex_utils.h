@@ -14,6 +14,7 @@
 #include "base/containers/span.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
+#include "brave/components/brave_wallet/common/hex_utils.h"
 
 namespace brave_wallet {
 
@@ -27,10 +28,6 @@ bool WritePrefixedHexStringToFixed(std::string_view input,
 // TODO(apaymyshev): rename it to To0xHex or something like that.
 std::string ToHex(std::string_view data);
 std::string ToHex(base::span<const uint8_t> data);
-
-// Returns a hex string representation of a binary buffer. The returned hex
-// string will be in lower case, without the 0x prefix.
-std::string HexEncodeLower(base::span<const uint8_t> bytes);
 
 // Determines if the passed in hex string is valid
 bool IsValidHexString(std::string_view hex_input);

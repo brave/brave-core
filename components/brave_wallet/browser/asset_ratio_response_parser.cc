@@ -16,7 +16,6 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
-#include "brave/components/brave_wallet/common/hex_utils.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace brave_wallet {

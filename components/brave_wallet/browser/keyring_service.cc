@@ -2929,12 +2929,12 @@ KeyringService::SignCip30MessageByCardanoKeyring(
   }
 
   base::Value::Dict result;
-  result.Set("key",
-             HexEncodeLower(CardanoCip30Serializer::SerializeSignedDataKey(
-                 *cardano_address, signature_pair->pubkey)));
+  result.Set("key", base::HexEncodeLower(
+                        CardanoCip30Serializer::SerializeSignedDataKey(
+                            *cardano_address, signature_pair->pubkey)));
   result.Set(
       "signature",
-      HexEncodeLower(CardanoCip30Serializer::SerializeSignedDataSignature(
+      base::HexEncodeLower(CardanoCip30Serializer::SerializeSignedDataSignature(
           *cardano_address, message, signature_pair->signature)));
   return result;
 }

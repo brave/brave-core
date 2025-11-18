@@ -24,7 +24,6 @@
 #include "brave/components/brave_wallet/browser/cardano/cardano_wallet_service.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/components/brave_wallet/common/hex_utils.h"
 #include "net/http/http_status_code.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"  // IWYU pragma: keep
 
@@ -228,7 +227,7 @@ CardanoTestRpcServer::GetUtxos() {
 void CardanoTestRpcServer::AddUtxo(const std::string& address,
                                    uint64_t amount) {
   auto& utxo = utxos_map_[address].emplace_back();
-  utxo.tx_hash = HexEncodeLower(CreateNewTxHash());
+  utxo.tx_hash = base::HexEncodeLower(CreateNewTxHash());
   utxo.output_index = "13";
   utxo.amount.emplace_back();
   utxo.amount.back().quantity = base::NumberToString(amount);

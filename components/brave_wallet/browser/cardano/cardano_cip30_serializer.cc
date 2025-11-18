@@ -12,8 +12,8 @@
 #include "base/check.h"
 #include "base/numerics/checked_math.h"
 #include "base/numerics/safe_conversions.h"
+#include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/common/cardano_address.h"
-#include "brave/components/brave_wallet/common/hex_utils.h"
 #include "components/cbor/reader.h"
 #include "components/cbor/values.h"
 #include "components/cbor/writer.h"
@@ -122,7 +122,7 @@ std::optional<std::string> CardanoCip30Serializer::SerializeAmount(
   auto amount_serialized =
       cbor::Writer::Write(cbor::Value(amount_to_serialize));
   CHECK(amount_serialized);
-  return HexEncodeLower(*amount_serialized);
+  return base::HexEncodeLower(*amount_serialized);
 }
 
 // static
@@ -175,7 +175,7 @@ std::optional<std::vector<std::string>> CardanoCip30Serializer::SerializeUtxos(
         cbor::Writer::Write(cbor::Value(std::move(cbor_utxo)));
     CHECK(cbor_utxo_serialized);
 
-    serialized_utxos.push_back(HexEncodeLower(*cbor_utxo_serialized));
+    serialized_utxos.push_back(base::HexEncodeLower(*cbor_utxo_serialized));
   }
   return serialized_utxos;
 }
