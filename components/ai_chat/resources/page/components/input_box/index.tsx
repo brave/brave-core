@@ -28,7 +28,7 @@ import Editable from './editable'
 import { stringifyContent } from './editable_content'
 
 const LEARN_MORE_CONTENT_AGENT_URL =
-  'https://support.brave.app/hc/en-us/sections/20991947768717-Leo-AI'
+  'https://support.brave.app/hc/en-us/articles/41240379376909'
 
 type Props = Pick<
   ConversationContext,
