@@ -95,6 +95,32 @@
 -ImageServiceConsentHelperTest.*
 -ImageServiceImplTest.*
 
+# These tests fail because IdentityManager's primary account has no kSignin
+# consent level
+-AccountUtilsTest.*
+-ContextualTasksServiceImplTest.CreateTaskFromUrl_MatchesPrimaryAccount
+
+# These tests fail because we do not record permissions UKM, see
+# brave/chromium_src/components/permissions/permission_uma_util.cc
+# GetUkmSourceId override.
+-PermissionsDelegationUmaUtilTest.PermissionAiRelevanceModelUkmTest
+
+# This test fails because we override GetTypesWithTemporaryGrantsInHcsm to
+# return an empty vector.
+-All/PEPCInitiatedPermissionRequestTestWithAutolocate.PEPCRequestHeuristicallyGrantedGeolocation/0
+
+# These tests fail because we disable popular site suggestions functionality
+-MostVisitedSitesTest.ShouldDeduplicatePopularSitesWithMostVisitedIffHostAndTitleMatches
+-MostVisitedSitesTest.ShouldHandleTopSitesCacheHit
+-MostVisitedSitesWithEnterpriseShortcutsTest.ShouldMixEnterpriseAndCustomShortcuts
+-MostVisitedSitesWithEnterpriseShortcutsTest.ShouldMixEnterpriseShortcutsAndTopSites
+-MostVisitedSitesWithCustomLinksTest.DisableCustomLinksWhenInitialized
+
+# These tests fail because we do not record permissions UKM, see
+# brave/chromium_src/components/permissions/permission_uma_util.cc
+# GetUkmSourceId override.
+-Accuracies/PermissionRequestManagerApproximateGeolocationTest.ReportAccuracyInUma*
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AccountInvestigatorTest.*
 -AccountReconcilorDiceTest.*
@@ -163,9 +189,6 @@
 -LeakDetectionDelegateTest.StartCheckWithEnhancedProtection
 -LocationBarModelUtilTest.GetSecurityVectorIconWithSecureLevel
 -MirrorTableMultilogin/AccountReconcilorTestMirrorMultilogin.TableRowTest/*
--MostVisitedSitesTest.ShouldDeduplicatePopularSitesWithMostVisitedIffHostAndTitleMatches
--MostVisitedSitesTest.ShouldHandleTopSitesCacheHit
--MostVisitedSitesWithCustomLinksTest.DisableCustomLinksWhenInitialized
 -OhttpKeyServiceTest.AsyncFetch_PrefChanges_BackgroundHprtDisabled
 -OhttpKeyServiceTest.GetOhttpKey_BackgroundLookupsForbidden
 -OnDeviceModelAdaptationLoaderTest.*

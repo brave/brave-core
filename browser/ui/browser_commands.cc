@@ -430,7 +430,7 @@ void ToggleActiveTabAudioMute(Browser* browser) {
   }
 
   bool mute_tab = !contents->IsAudioMuted();
-  SetTabAudioMuted(contents, mute_tab, TabMutedReason::AUDIO_INDICATOR,
+  SetTabAudioMuted(contents, mute_tab, TabMutedReason::kAudioIndicator,
                    std::string());
 }
 

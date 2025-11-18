@@ -40,7 +40,7 @@
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 AIChatUI::AIChatUI(web::WebUIIOS* web_ui, const GURL& url)
-    : web::WebUIIOSController(web_ui, url.host()),
+    : web::WebUIIOSController(web_ui, url.GetHost()),
       profile_(ProfileIOS::FromWebUIIOS(web_ui)) {
   DCHECK(profile_);
   DCHECK(!profile_->IsOffTheRecord());

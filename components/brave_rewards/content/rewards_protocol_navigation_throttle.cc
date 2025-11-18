@@ -82,8 +82,8 @@ bool IsValidWalletProviderRedirect(
 
   std::string wallet_provider;
   const auto redirect_path_segments =
-      base::SplitString(redirect_url.path_piece(), "/", base::TRIM_WHITESPACE,
-                        base::SPLIT_WANT_NONEMPTY);
+      base::SplitStringPiece(redirect_url.path(), "/", base::TRIM_WHITESPACE,
+                             base::SPLIT_WANT_NONEMPTY);
   if (!redirect_path_segments.empty()) {
     wallet_provider = redirect_path_segments[0];
   }
@@ -95,11 +95,10 @@ bool IsValidWalletProviderRedirect(
           [&](std::string_view host_piece) {
             return referrer_url.DomainIs(host_piece);
           },
-          &GURL::host_piece)) {
-    LOG(ERROR) << referrer_url.host_piece() << " was trying to redirect to "
-               << redirect_url.scheme_piece() << "://"
-               << redirect_url.host_piece() << redirect_url.path_piece()
-               << ", but it's not allowed.";
+          &GURL::host)) {
+    LOG(ERROR) << referrer_url.host() << " was trying to redirect to "
+               << redirect_url.scheme() << "://" << redirect_url.host()
+               << redirect_url.path() << ", but it's not allowed.";
     return false;
   }
 

@@ -10,6 +10,7 @@
 
 #include "base/debug/dump_without_crashing.h"
 #include "base/hash/hash.h"
+#include "base/strings/strcat.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
 #include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
@@ -144,8 +145,8 @@ void SetShieldsMetadata(HostContentSettingsMap* map,
 }
 
 base::Token CreateStableFarblingToken(const GURL& url) {
-  const uint32_t high = base::PersistentHash(url.host_piece()) +
-                        g_stable_farbling_tokens_seed - 1;
+  const uint32_t high =
+      base::PersistentHash(url.host()) + g_stable_farbling_tokens_seed - 1;
   const uint32_t low = base::PersistentHash(base::byte_span_from_ref(high));
   return base::Token(high, low);
 }
@@ -663,7 +664,7 @@ void SetHttpsUpgradeControlType(HostContentSettingsMap* map,
   if (url.is_empty()) {
     map->ClearSettingsForOneType(ContentSettingsType::HTTP_ALLOWED);
   } else {
-    const GURL& secure_url = GURL("https://" + url.host());
+    const GURL& secure_url = GURL(base::StrCat({"https://", url.host()}));
     map->SetWebsiteSettingDefaultScope(
         secure_url, GURL(), ContentSettingsType::HTTP_ALLOWED, base::Value());
   }

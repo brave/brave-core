@@ -24,7 +24,7 @@ struct ResourcePath;
 // Add brave resource path mapping and localized strings to new data source.
 content::WebUIDataSource* CreateAndAddWebUIDataSource(
     content::WebUI* web_ui,
-    const std::string& name,
+    std::string_view name,
     base::span<const webui::ResourcePath> resource_paths,
     int html_resource_id,
     bool disable_trusted_types_csp = false);

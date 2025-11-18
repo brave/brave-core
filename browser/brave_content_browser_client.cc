@@ -66,7 +66,6 @@
 #include "brave/components/brave_account/features.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "brave/components/brave_education/buildflags.h"
-#include "brave/components/brave_origin/common/mojom/brave_origin_settings.mojom.h"
 #include "brave/components/brave_rewards/content/rewards_protocol_navigation_throttle.h"
 #include "brave/components/brave_search/browser/backup_results_service.h"
 #include "brave/components/brave_search/browser/brave_search_default_host.h"
@@ -89,13 +88,11 @@
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
-#include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/cosmetic_filters/browser/cosmetic_filters_resources.h"
 #include "brave/components/cosmetic_filters/common/cosmetic_filters.mojom.h"
 #include "brave/components/de_amp/browser/de_amp_body_handler.h"
 #include "brave/components/debounce/content/browser/debounce_navigation_throttle.h"
 #include "brave/components/decentralized_dns/content/decentralized_dns_navigation_throttle.h"
-#include "brave/components/email_aliases/features.h"
 #include "brave/components/google_sign_in_permission/google_sign_in_permission_throttle.h"
 #include "brave/components/google_sign_in_permission/google_sign_in_permission_util.h"
 #include "brave/components/ntp_background_images/browser/mojom/ntp_background_images.mojom.h"
@@ -141,6 +138,7 @@
 #include "content/public/browser/navigation_throttle_registry.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/render_process_host.h"
+#include "content/public/browser/site_instance.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/weak_document_ptr.h"
 #include "content/public/browser/web_ui_browser_interface_broker_registry.h"
@@ -250,14 +248,11 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 #include "brave/browser/ui/webui/private_new_tab_page/brave_private_new_tab_ui.h"
-#include "brave/components/brave_account/mojom/brave_account_settings_handler.mojom.h"
 #include "brave/components/brave_new_tab_ui/brave_new_tab_page.mojom.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_private_new_tab_ui/common/brave_private_new_tab.mojom.h"
 #include "brave/components/brave_shields/core/common/brave_shields_panel.mojom.h"
-#include "brave/components/commands/common/commands.mojom.h"
-#include "brave/components/commands/common/features.h"
 #include "components/omnibox/browser/searchbox.mojom.h"
 #endif
 
@@ -273,11 +268,6 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if BUILDFLAG(ENABLE_BRAVE_EDUCATION)
 #include "brave/browser/ui/webui/brave_education/brave_education_page_ui.h"
-#endif
-
-#if BUILDFLAG(ENABLE_CONTAINERS)
-#include "brave/components/containers/core/common/features.h"
-#include "brave/components/containers/core/mojom/containers.mojom.h"
 #endif
 
 #if BUILDFLAG(IS_WIN)
@@ -414,10 +404,10 @@ void BindBraveSearchDefaultHost(
   if (profile->IsRegularProfile()) {
     auto* template_url_service =
         TemplateURLServiceFactory::GetForProfile(profile);
-    const std::string host = frame_host->GetLastCommittedURL().host();
     mojo::MakeSelfOwnedReceiver(
         std::make_unique<brave_search::BraveSearchDefaultHost>(
-            host, template_url_service, profile->GetPrefs()),
+            frame_host->GetLastCommittedURL().host(), template_url_service,
+            profile->GetPrefs()),
         std::move(receiver));
   } else {
     // Dummy API which always returns false for private contexts.
@@ -883,20 +873,6 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   content::RegisterWebUIControllerInterfaceBinder<
       brave_rewards::mojom::RewardsPageHandler,
       brave_rewards::RewardsPageTopUI>(map);
-  if (base::FeatureList::IsEnabled(commands::features::kBraveCommands)) {
-    content::RegisterWebUIControllerInterfaceBinder<
-        commands::mojom::CommandsService, BraveSettingsUI>(map);
-  }
-  if (brave_account::features::IsBraveAccountEnabled()) {
-    content::RegisterWebUIControllerInterfaceBinder<
-        brave_account::mojom::BraveAccountSettingsHandler, BraveSettingsUI>(
-        map);
-  }
-
-  if (base::FeatureList::IsEnabled(email_aliases::kEmailAliases)) {
-    content::RegisterWebUIControllerInterfaceBinder<
-        email_aliases::mojom::EmailAliasesService, BraveSettingsUI>(map);
-  }
 
   map->Add<color_change_listener::mojom::PageHandler>(
       base::BindRepeating(&MaybeBindColorChangeHandler));
@@ -910,12 +886,6 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
     // WebUI -> Browser interface
     content::RegisterWebUIControllerInterfaceBinder<
         ai_chat::mojom::AIChatUIHandler, AIChatUI>(map);
-#if !BUILDFLAG(IS_ANDROID)
-    content::RegisterWebUIControllerInterfaceBinder<
-        ai_chat::mojom::AIChatSettingsHelper, BraveSettingsUI>(map);
-    content::RegisterWebUIControllerInterfaceBinder<
-        ai_chat::mojom::CustomizationSettingsHandler, BraveSettingsUI>(map);
-#endif
   }
 #if BUILDFLAG(IS_ANDROID)
   if (ai_chat::IsAIChatEnabled(prefs)) {
@@ -935,18 +905,6 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   content::RegisterWebUIControllerInterfaceBinder<
       brave_browser_command::mojom::BraveBrowserCommandHandlerFactory,
       BraveEducationPageUI>(map);
-#endif
-
-#if BUILDFLAG(ENABLE_CONTAINERS)
-  if (base::FeatureList::IsEnabled(containers::features::kContainers)) {
-    content::RegisterWebUIControllerInterfaceBinder<
-        containers::mojom::ContainersSettingsHandler, BraveSettingsUI>(map);
-  }
-#endif
-#if !BUILDFLAG(IS_ANDROID)
-  // Register BraveOrigin handler for settings WebUI
-  content::RegisterWebUIControllerInterfaceBinder<
-      brave_origin::mojom::BraveOriginSettingsHandler, BraveSettingsUI>(map);
 #endif
 }
 

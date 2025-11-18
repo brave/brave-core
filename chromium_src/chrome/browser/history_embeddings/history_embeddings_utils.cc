@@ -11,7 +11,6 @@ namespace history_embeddings {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kLaunchedHistoryEmbeddings, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kLaunchedHistoryEmbeddingsAnswers, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
 }  // namespace history_embeddings

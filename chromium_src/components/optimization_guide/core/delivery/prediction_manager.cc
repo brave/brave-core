@@ -54,6 +54,7 @@ PredictionManager::~PredictionManager() {}
 void PredictionManager::AddObserverForOptimizationTargetModel(
     proto::OptimizationTarget optimization_target,
     const std::optional<proto::Any>& model_metadata,
+    scoped_refptr<base::SequencedTaskRunner> model_task_runner,
     OptimizationTargetModelObserver* observer) {}
 
 void PredictionManager::RemoveObserverForOptimizationTargetModel(
@@ -66,6 +67,10 @@ void PredictionManager::SetPredictionModelFetcherForTesting(
 void PredictionManager::SetPredictionModelDownloadManagerForTesting(
     std::unique_ptr<PredictionModelDownloadManager>
         prediction_model_download_manager) {}
+
+void PredictionManager::SetModelDownloadSchedulingParams(
+    proto::OptimizationTarget optimization_target,
+    const download::SchedulingParams& params) {}
 
 base::flat_set<proto::OptimizationTarget>
 PredictionManager::GetRegisteredOptimizationTargets() const {

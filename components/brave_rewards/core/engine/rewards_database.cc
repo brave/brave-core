@@ -222,10 +222,9 @@ mojom::DBCommandResponse::Status RewardsDatabase::Initialize(
     }
 
     initialized_ = true;
-    memory_pressure_listener_ = std::make_unique<base::MemoryPressureListener>(
-        FROM_HERE, base::MemoryPressureListenerTag::kRewardsDatabase,
-        base::BindRepeating(&RewardsDatabase::OnMemoryPressure,
-                            base::Unretained(this)));
+    memory_pressure_listener_registration_ =
+        std::make_unique<base::MemoryPressureListenerRegistration>(
+            FROM_HERE, base::MemoryPressureListenerTag::kRewardsDatabase, this);
   } else {
     table_version = meta_table_.GetVersionNumber();
   }
@@ -343,8 +342,7 @@ int RewardsDatabase::GetTablesCount() {
   return tables_count;
 }
 
-void RewardsDatabase::OnMemoryPressure(
-    base::MemoryPressureListener::MemoryPressureLevel memory_pressure_level) {
+void RewardsDatabase::OnMemoryPressure(base::MemoryPressureLevel level) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   db_.TrimMemory();
 }

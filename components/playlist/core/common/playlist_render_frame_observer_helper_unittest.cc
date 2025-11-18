@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/json/values_util.h"
+#include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/playlist/core/common/mojom/playlist.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"

@@ -13,6 +13,7 @@
 #include "brave/browser/ui/views/tabs/switches.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/views/frame/browser_native_widget.h"
 #include "components/prefs/pref_service.h"
 
 #if !BUILDFLAG(IS_MAC)
@@ -96,7 +97,7 @@ std::pair<int, int> GetLeadingTrailingCaptionButtonWidth(
   // On Mac, window caption buttons are drawn by the system.
   return {80, 0};
 #elif BUILDFLAG(IS_LINUX)
-  if (!frame->UseCustomFrame()) {
+  if (!frame->browser_native_widget()->UseCustomFrame()) {
     // We're using system provided title bar and border. As we don't have our
     // own window caption button at all, there's no caption button width.
     return {};

@@ -14,7 +14,6 @@
 #include "base/strings/escape.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
-#include "brave/browser/extensions/manifest_v2/brave_hosted_extensions.h"
 #include "brave/components/constants/brave_services_key.h"
 #include "brave/components/constants/brave_services_key_helper.h"
 #include "brave/components/constants/network_constants.h"
@@ -26,6 +25,7 @@
 #include "components/update_client/update_query_params.h"
 #include "content/public/browser/web_contents.h"
 #include "extensions/browser/crx_file_info.h"
+#include "extensions/browser/extension_util.h"
 #include "extensions/common/extension_urls.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/resource_request.h"
@@ -83,7 +83,7 @@ GURL GetCrxDownloadUrl(const base::Value::Dict& update_manifest,
     const GURL url(*codebase);
     if (!url.is_valid() || !brave::ShouldAddBraveServicesKeyHeader(url)) {
       // URL is not valid or doest't point to the Brave's server.
-      if (url.host_piece().ends_with(".test")) {
+      if (url.host().ends_with(".test")) {
         CHECK_IS_TEST();
         return url;
       }

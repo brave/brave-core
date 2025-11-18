@@ -17,16 +17,15 @@ namespace ai_chat {
 
 bool IsBraveSearchURL(const GURL& url) {
   return url.is_valid() && url.SchemeIs(url::kHttpsScheme) &&
-         url.host_piece() ==
-             brave_domains::GetServicesDomain(kBraveSearchURLPrefix);
+         url.host() == brave_domains::GetServicesDomain(kBraveSearchURLPrefix);
 }
 
 bool IsOpenAIChatButtonFromBraveSearchURL(const GURL& url) {
   // Use search.brave.com in all cases because href on search site is
   // hardcoded to search.brave.com for all environments.
   return url.is_valid() && url.SchemeIs(url::kHttpsScheme) &&
-         url.host_piece() == "search.brave.com" && url.path_piece() == "/leo" &&
-         !url.ref_piece().empty();
+         url.host() == "search.brave.com" && url.path() == "/leo" &&
+         !url.ref().empty();
 }
 
 }  // namespace ai_chat

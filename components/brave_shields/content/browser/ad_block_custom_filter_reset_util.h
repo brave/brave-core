@@ -12,11 +12,11 @@
 namespace brave_shields {
 
 std::optional<std::string> ResetCustomFiltersForHost(
-    const std::string& host,
-    const std::string& custom_filters);
+    std::string_view host,
+    std::string_view custom_filters);
 
-bool IsCustomFiltersAvailable(const std::string& host,
-                              const std::string& custom_filters);
+bool IsCustomFiltersAvailable(std::string_view host,
+                              std::string_view custom_filters);
 
 }  // namespace brave_shields
 

@@ -142,7 +142,8 @@ TEST_P(ClientTest, Send) {
         const auto& element = elements->front();
         EXPECT_EQ(element.type(), network::DataElement::Tag::kBytes);
         const auto body = base::JSONReader::Read(
-            element.As<network::DataElementBytes>().AsStringPiece());
+            element.As<network::DataElementBytes>().AsStringPiece(),
+            base::JSON_PARSE_CHROMIUM_EXTENSIONS);
         if (!body || !body->is_dict()) {
           return ADD_FAILURE()
                  << "body is std::nullopt or not a base::Value::Dict!";

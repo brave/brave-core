@@ -44,7 +44,7 @@ std::unique_ptr<WebUIIOSController> NewWebUIIOS(WebUIIOS* web_ui,
 
 WebUIIOSFactoryFunction GetUntrustedWebUIIOSFactoryFunction(const GURL& url) {
   DCHECK(url.SchemeIs(kChromeUIUntrustedScheme));
-  const std::string_view url_host = url.host_piece();
+  const std::string_view url_host = url.host();
 
   if (url_host == kAIChatUntrustedConversationUIHost &&
       ai_chat::features::IsAIChatWebUIEnabled()) {
@@ -67,8 +67,7 @@ WebUIIOSFactoryFunction GetWebUIIOSFactoryFunction(const GURL& url) {
     return GetUntrustedWebUIIOSFactoryFunction(url);
   }
 
-  const std::string url_host = url.host();
-
+  std::string_view url_host = url.host();
   if (url_host == kAdsInternalsHost) {
     return &NewWebUIIOS<AdsInternalsUI>;
   } else if (url_host == kBraveAccountHost &&

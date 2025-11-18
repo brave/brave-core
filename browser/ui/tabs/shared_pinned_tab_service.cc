@@ -26,6 +26,7 @@
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
+#include "chrome/browser/ui/tabs/tab_strip_model_delegate.h"
 #include "chrome/browser/ui/webui/webui_embedding_context.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/navigation_handle.h"
@@ -303,10 +304,13 @@ void SharedPinnedTabService::OnBrowserSetLastActive(Browser* browser) {
   }
 }
 
-void SharedPinnedTabService::OnBrowserClosing(Browser* browser) {
+void SharedPinnedTabService::BrowserClosing(TabStripModel* tab_strip_model) {
   DVLOG(2) << __FUNCTION__;
+  Browser* browser = tab_strip_model->delegate()
+                         ->GetBrowserWindowInterface()
+                         ->GetBrowserForMigrationOnly();
   if (!browsers_.contains(browser)) {
-    // This could be called multiple times for the same |browser|
+    // In case this is called multiple times for the same browser
     return;
   }
 
@@ -333,7 +337,6 @@ void SharedPinnedTabService::OnBrowserClosing(Browser* browser) {
     CHECK(!profile_will_be_destroyed_);
 
     // Try caching shared contents from the closing browser.
-    auto* tab_strip_model = browser->tab_strip_model();
     for (int i = tab_strip_model->IndexOfFirstNonPinnedTab() - 1; i >= 0; --i) {
       auto* web_contents = tab_strip_model->GetWebContentsAt(i);
       if (!web_contents || !SharedContentsData::FromWebContents(web_contents)) {
@@ -345,7 +348,7 @@ void SharedPinnedTabService::OnBrowserClosing(Browser* browser) {
     }
 
     for (auto& pinned_tab_data : pinned_tab_data_) {
-      if (pinned_tab_data.contents_owner_model == browser->tab_strip_model()) {
+      if (pinned_tab_data.contents_owner_model == tab_strip_model) {
         pinned_tab_data.contents_owner_model = nullptr;
       }
     }

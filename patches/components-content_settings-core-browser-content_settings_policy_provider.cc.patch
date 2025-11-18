@@ -1,5 +1,5 @@
 diff --git a/components/content_settings/core/browser/content_settings_policy_provider.cc b/components/content_settings/core/browser/content_settings_policy_provider.cc
-index 174e7f0c9e714bc7a792d9dc69fbc8c01d064146..e924faa3b30c8908e59fae2786043e54d9aff5af 100644
+index c6203c87b6ed3e6b8e702f8e8269a9c9c7f51e76..0d9143605285db25a0d5817397826cb83aee542c 100644
 --- a/components/content_settings/core/browser/content_settings_policy_provider.cc
 +++ b/components/content_settings/core/browser/content_settings_policy_provider.cc
 @@ -51,6 +51,7 @@ struct PrefsForManagedContentSettingsMapEntry {

@@ -81,7 +81,7 @@ std::optional<std::string> GetDetectionScript(content::RenderFrameHost* rfh) {
   }
 
   // Only run scripts when there is an exact hostname match.
-  auto iter = kScriptMap.find(url.host_piece());
+  auto iter = kScriptMap.find(url.host());
   if (iter == kScriptMap.end()) {
     return std::nullopt;
   }

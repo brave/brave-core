@@ -18,7 +18,8 @@
 
 namespace brave_rewards::internal {
 
-class RewardsDatabase : public mojom::RewardsDatabase {
+class RewardsDatabase : public mojom::RewardsDatabase,
+                        public base::MemoryPressureListener {
  public:
   explicit RewardsDatabase(const base::FilePath& path);
 
@@ -57,15 +58,16 @@ class RewardsDatabase : public mojom::RewardsDatabase {
 
   int GetTablesCount();
 
-  void OnMemoryPressure(
-      base::MemoryPressureListener::MemoryPressureLevel memory_pressure_level);
+  // MemoryPressureListener overrides:
+  void OnMemoryPressure(base::MemoryPressureLevel level) override;
 
   const base::FilePath db_path_;
   sql::Database db_;
   sql::MetaTable meta_table_;
   bool initialized_ = false;
 
-  std::unique_ptr<base::MemoryPressureListener> memory_pressure_listener_;
+  std::unique_ptr<base::MemoryPressureListenerRegistration>
+      memory_pressure_listener_registration_;
 
   SEQUENCE_CHECKER(sequence_checker_);
 };

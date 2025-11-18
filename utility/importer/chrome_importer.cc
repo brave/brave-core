@@ -135,8 +135,7 @@ bool SetEncryptionKey(const base::FilePath& source_path) {
 
 std::u16string DecryptedCardFromColumn(sql::Statement* s, int column_index) {
   std::u16string credit_card_number;
-  std::string encrypted_number;
-  s->ColumnBlobAsString(column_index, &encrypted_number);
+  std::string encrypted_number = s->ColumnBlobAsString(column_index);
   if (!encrypted_number.empty()) {
     OSCrypt::DecryptString16(encrypted_number, &credit_card_number);
   }
@@ -344,8 +343,7 @@ void ChromeImporter::LoadFaviconData(
       if (!usage.favicon_url.is_valid())
         continue;  // Don't bother importing favicons with invalid URLs.
 
-      std::vector<uint8_t> data;
-      s.ColumnBlobAsVector(1, &data);
+      std::vector<uint8_t> data = s.ColumnBlobAsVector(1);
       if (data.empty())
         continue;  // Data definitely invalid.
 

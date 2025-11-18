@@ -144,7 +144,7 @@ void PublishersController::GetPublisherForSite(
                        const mojom::Publisher& publisher) {
                       return publisher.site_url.host() == site_host;
                     },
-                    site_host)));
+                    std::string(site_host))));
           },
           weak_ptr_factory_.GetWeakPtr(), site_url, std::move(callback)),
       false);

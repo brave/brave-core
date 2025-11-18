@@ -1150,7 +1150,8 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, TabSpecificAndGlobalPanelsTest) {
 
   // No panel when activated tab at 1 because we don't open any global panel.
   tab_model()->ActivateTabAt(1);
-  EXPECT_FALSE(panel_ui->IsSidePanelShowing());
+  EXPECT_FALSE(
+      panel_ui->IsSidePanelShowing(SidePanelEntry::PanelType::kContent));
 
   // Open global panel when active tab index is 1.
   panel_ui->Show(SidePanelEntryId::kBookmarks);
@@ -1307,7 +1308,8 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserTestWithkSidebarShowAlwaysOnStable,
   testing::Mock::VerifyAndClearExpectations(&observer_);
 
   panel_ui->Close();
-  EXPECT_FALSE(panel_ui->IsSidePanelShowing());
+  EXPECT_FALSE(
+      panel_ui->IsSidePanelShowing(SidePanelEntry::PanelType::kContent));
 
   // Check one shot panel is not opened anymore.
   EXPECT_CALL(observer_, OnActiveIndexChanged(testing::_, testing::_)).Times(0);
@@ -1315,7 +1317,8 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserTestWithkSidebarShowAlwaysOnStable,
       browser(), GURL("https://www.brave.com/"),
       WindowOpenDisposition::NEW_FOREGROUND_TAB,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
-  EXPECT_FALSE(panel_ui->IsSidePanelShowing());
+  EXPECT_FALSE(
+      panel_ui->IsSidePanelShowing(SidePanelEntry::PanelType::kContent));
   testing::Mock::VerifyAndClearExpectations(&observer_);
 
   observation_.Reset();

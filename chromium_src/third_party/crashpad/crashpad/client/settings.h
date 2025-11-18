@@ -8,9 +8,9 @@
 
 #include "util/misc/uuid.h"
 
-#define GetClientID                          \
-  GetClientID_ChromiumImpl(UUID* client_id); \
-  bool GetClientID
+#define GetClientID(...)                 \
+  GetClientID_ChromiumImpl(__VA_ARGS__); \
+  bool GetClientID(__VA_ARGS__)
 
 #include <third_party/crashpad/crashpad/client/settings.h>  // IWYU pragma: export
 

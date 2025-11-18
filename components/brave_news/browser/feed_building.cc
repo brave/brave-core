@@ -318,7 +318,7 @@ bool ShouldDisplayFeedItem(const mojom::FeedItemPtr& feed_item,
 }
 
 bool BuildFeed(const std::vector<mojom::FeedItemPtr>& feed_items,
-               const std::unordered_set<std::string>& history_hosts,
+               const absl::flat_hash_set<std::string>& history_hosts,
                Publishers* publishers,
                mojom::Feed* feed,
                const SubscriptionsSnapshot& subscriptions) {
