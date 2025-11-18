@@ -20,6 +20,10 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "content/public/test/browser_test.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
+#include "testing/gmock/include/gmock/gmock.h"
+#include "testing/gtest/include/gtest/gtest.h"
+
+using testing::HasSubstr;
 
 namespace ai_chat {
 
@@ -107,8 +111,7 @@ IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest,
 
   std::string output;
   ExecuteCode(script, &output);
-  EXPECT_TRUE(output.find("Refused to connect") != std::string::npos)
-      << "Expected 'Refused to connect' in output, got: " << output;
+  EXPECT_THAT(output, HasSubstr("action has been blocked"));
 }
 
 IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, ExecutionTimeout) {
@@ -127,6 +130,19 @@ IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest, ExecutionTimeout) {
   std::string output;
   ExecuteCode(script, &output);
   EXPECT_EQ(output, "Error: Time limit exceeded");
+}
+
+IN_PROC_BROWSER_TEST_F(AIChatCodeExecutionToolBrowserTest,
+                       WindowAndLocationAreUndefined) {
+  std::string script = R"(
+    console.log('window: ' + typeof window);
+    console.log('location: ' + typeof location);
+  )";
+
+  std::string output;
+  ExecuteCode(script, &output);
+  EXPECT_THAT(output, HasSubstr("window: undefined"));
+  EXPECT_THAT(output, HasSubstr("location: undefined"));
 }
 
 }  // namespace ai_chat
