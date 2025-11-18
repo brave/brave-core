@@ -8,8 +8,10 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/page_info/features.h"
 #include "brave/browser/ui/views/page_info/brave_page_info_view_ids.h"
+#include "brave/components/brave_shields/core/common/features.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 #include "chrome/browser/ui/views/location_bar/location_icon_view.h"
@@ -21,6 +23,7 @@
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "components/page_info/page_info.h"
 #include "content/public/test/browser_test.h"
+#include "content/public/test/test_navigation_observer.h"
 #include "ui/events/test/test_event.h"
 #include "ui/views/controls/button/button.h"
 #include "ui/views/test/button_test_api.h"
@@ -291,4 +294,52 @@ IN_PROC_BROWSER_TEST_F(BravePageInfoBubbleViewFlagDisabledBrowserTest,
 
   // Verify that the shields web UI is not visible.
   EXPECT_FALSE(IsShieldsViewDrawn(bubble_view));
+}
+
+class BravePageInfoBubbleViewRepeatedReloadsBrowserTest
+    : public BravePageInfoBubbleViewBrowserTestBase {
+ public:
+  BravePageInfoBubbleViewRepeatedReloadsBrowserTest() {
+    using brave_shields::features::kAdblockOnlyMode;
+    using brave_shields::features::kAdblockOnlyModePromptAfterPageReloadsMax;
+    using brave_shields::features::kAdblockOnlyModePromptAfterPageReloadsMin;
+
+    feature_list_.InitWithFeaturesAndParameters(
+        {{page_info::features::kShowBraveShieldsInPageInfo, {}},
+         {kAdblockOnlyMode,
+          {{kAdblockOnlyModePromptAfterPageReloadsMin.name, "2"},
+           {kAdblockOnlyModePromptAfterPageReloadsMax.name, "3"}}}},
+        {});
+  }
+
+  ~BravePageInfoBubbleViewRepeatedReloadsBrowserTest() override = default;
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
+};
+
+// Test that the page info bubble is automatically opened and shows the shields
+// tab after repeated reloads.
+IN_PROC_BROWSER_TEST_F(BravePageInfoBubbleViewRepeatedReloadsBrowserTest,
+                       AutoOpenAfterRepeatedReloads) {
+  GURL test_url = embedded_https_test_server().GetURL("/test.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), test_url));
+
+  auto reload = [&]() {
+    content::TestNavigationObserver reload_observer(
+        browser()->tab_strip_model()->GetActiveWebContents());
+    chrome::Reload(browser(), WindowOpenDisposition::CURRENT_TAB);
+    reload_observer.Wait();
+  };
+
+  // The first reload should not open the bubble.
+  reload();
+  EXPECT_FALSE(GetBubbleView());
+
+  // The second reload should open the bubble with the Shield tab visible.
+  reload();
+  auto* bubble_view = GetBubbleView();
+  ASSERT_TRUE(bubble_view);
+  EXPECT_TRUE(IsShieldsViewDrawn(bubble_view));
+  EXPECT_FALSE(IsSiteSettingsViewDrawn(bubble_view));
 }
