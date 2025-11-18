@@ -107,10 +107,10 @@ TEST(NTPSponsoredImagesDataTest, ParseSponsoredImageCampaign) {
   NTPSponsoredImagesData data(dict, installed_dir);
   EXPECT_THAT(data.IsValid(), testing::IsTrue());
 
-  ASSERT_EQ(data.campaigns.size(), 1u);
+  ASSERT_EQ(data.campaigns.size(), 1U);
   const auto& campaign = data.campaigns[0];
   EXPECT_EQ(campaign.campaign_id, "65933e82-6b21-440b-9956-c0f675ca7435");
-  ASSERT_EQ(campaign.creatives.size(), 1u);
+  ASSERT_EQ(campaign.creatives.size(), 1U);
   const auto& creative = campaign.creatives[0];
   EXPECT_EQ(creative.wallpaper_type, WallpaperType::kImage);
   EXPECT_EQ(creative.creative_instance_id,
@@ -141,10 +141,10 @@ TEST(NTPSponsoredImagesDataTest, ParseSponsoredRichMediaCampaign) {
   NTPSponsoredImagesData data(dict, installed_dir);
   EXPECT_THAT(data.IsValid(), testing::IsTrue());
 
-  ASSERT_EQ(data.campaigns.size(), 1u);
+  ASSERT_EQ(data.campaigns.size(), 1U);
   const auto& campaign = data.campaigns[0];
   EXPECT_EQ(campaign.campaign_id, "c27a3fae-ee9e-48a2-b3a7-f4675744e6ec");
-  ASSERT_EQ(campaign.creatives.size(), 1u);
+  ASSERT_EQ(campaign.creatives.size(), 1U);
   const auto& creative = campaign.creatives[0];
   EXPECT_EQ(creative.wallpaper_type, WallpaperType::kRichMedia);
   EXPECT_EQ(creative.creative_instance_id,
