@@ -98,6 +98,18 @@ AdBlockOnlyModePolicies AdBlockOnlyModePolicyManager::GetPoliciesImpl() const {
   policies.emplace(policy::key::kDefaultBraveFingerprintingV2Setting,
                    base::Value(CONTENT_SETTING_ALLOW));
 
+  // Set `Upgrade connections to HTTPS` to standard mode.
+  policies.emplace(policy::key::kDefaultBraveHttpsUpgradeSetting,
+                   base::Value(CONTENT_SETTING_ASK));
+
+  // Disable referrer policy capping.
+  policies.emplace(policy::key::kDefaultBraveReferrersSetting,
+                   base::Value(CONTENT_SETTING_ALLOW));
+
+  // Disable forget first-party storage.
+  policies.emplace(policy::key::kDefaultBraveRemember1PStorageSetting,
+                   base::Value(CONTENT_SETTING_ALLOW));
+
   // Disable language fingerprinting reduction.
   policies.emplace(policy::key::kBraveReduceLanguageEnabled,
                    base::Value(false));

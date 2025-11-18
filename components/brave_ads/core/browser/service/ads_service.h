@@ -105,27 +105,6 @@ class AdsService : public KeyedService {
   virtual void GetStatementOfAccounts(
       GetStatementOfAccountsCallback callback) = 0;
 
-  // Called to serve an inline content ad for the specified `dimensions`. The
-  // callback takes two arguments - `std::string` containing the dimensions and
-  // `InlineContentAdInfo` containing the info for the ad.
-  virtual void MaybeServeInlineContentAd(
-      const std::string& dimensions,
-      MaybeServeInlineContentAdCallback callback) {}
-
-  // Called when a user views or interacts with an inline content ad to trigger
-  // a `mojom_ad_event_type` event for the specified `placement_id` and
-  // `creative_instance_id`. `placement_id` should be a 128-bit random GUID in
-  // the form of version 4. See RFC 4122, section 4.4. The same `placement_id`
-  // generated for the viewed impression event should be used for all other
-  // events for the same ad placement. The callback takes one argument - `bool`
-  // is set to `true` if successful otherwise `false`. Must be called before the
-  // `mojom::InlineContentAdEventType::target_url` landing page is opened.
-  virtual void TriggerInlineContentAdEvent(
-      const std::string& placement_id,
-      const std::string& creative_instance_id,
-      mojom::InlineContentAdEventType mojom_ad_event_type,
-      TriggerAdEventCallback callback) {}
-
   // Called to prefetch a new tab page ad.
   virtual void PrefetchNewTabPageAd() = 0;
 
@@ -163,20 +142,6 @@ class AdsService : public KeyedService {
       mojom::NewTabPageAdMetricType mojom_ad_metric_type,
       mojom::NewTabPageAdEventType mojom_ad_event_type,
       TriggerAdEventCallback callback) = 0;
-
-  // Called when a user views or interacts with a promoted content ad to trigger
-  // a `mojom_ad_event_type` event for the specified `placement_id` and
-  // `creative_instance_id`. `placement_id` should be a 128-bit random GUID in
-  // the form of version 4. See RFC 4122, section 4.4. The same `placement_id`
-  // generated for the viewed impression event should be used for all other
-  // events for the same ad placement. The callback takes one argument - `bool`
-  // is set to `true` if successful otherwise `false`. Must be called before the
-  // `mojom::PromotedContentAdEventType::target_url` landing page is opened.
-  virtual void TriggerPromotedContentAdEvent(
-      const std::string& placement_id,
-      const std::string& creative_instance_id,
-      mojom::PromotedContentAdEventType mojom_ad_event_type,
-      TriggerAdEventCallback callback) {}
 
   // Called to get the search result ad specified by `placement_id`. The
   // callback takes one argument - `mojom::CreativeSearchResultAdInfoPtr`

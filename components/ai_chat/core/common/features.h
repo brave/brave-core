@@ -105,6 +105,15 @@ COMPONENT_EXPORT(AI_CHAT_COMMON)
 BASE_DECLARE_FEATURE(kNEARModels);
 COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsNEARModelsEnabled();
 
+// Whether we should show rich search widgets in the conversation.
+COMPONENT_EXPORT(AI_CHAT_COMMON) BASE_DECLARE_FEATURE(kRichSearchWidgets);
+
+// The origin serving the rich search widgets.
+// TODO(https://github.com/brave/brave-browser/issues/50901): Remove this once
+// we have env setup properly for the origins.
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+extern const base::FeatureParam<std::string> kRichSearchWidgetsOrigin;
+
 }  // namespace ai_chat::features
 
 #endif  // BRAVE_COMPONENTS_AI_CHAT_CORE_COMMON_FEATURES_H_

@@ -19,7 +19,6 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/resource/conversion_resource_constants.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_callback.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
-#include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -119,41 +118,6 @@ TEST_F(BraveAdsConversionResourceTest, DoNotLoadResourceIfOptedOutOfAllAds) {
   EXPECT_FALSE(resource_->IsLoaded());
 }
 
-TEST_F(BraveAdsConversionResourceTest, LoadResourceWhenOptingInToBraveNewsAds) {
-  // Arrange
-  test::OptOutOfAllAds();
-
-  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
-                                   test::kCountryComponentId);
-  ASSERT_FALSE(resource_->IsLoaded());
-
-  // Act
-  SetProfileBooleanPref(brave_news::prefs::kBraveNewsOptedIn, true);
-  SetProfileBooleanPref(brave_news::prefs::kNewTabPageShowToday, true);
-
-  // Assert
-  EXPECT_TRUE(resource_->IsLoaded());
-}
-
-TEST_F(BraveAdsConversionResourceTest,
-       DoNotResetResourceIfAlreadyOptedInToBraveNewsAds) {
-  // Arrange
-  test::OptOutOfNewTabPageAds();
-  test::OptOutOfNotificationAds();
-  test::OptOutOfSearchResultAds();
-
-  NotifyResourceComponentDidChange(test::kCountryComponentManifestVersion,
-                                   test::kCountryComponentId);
-  ASSERT_TRUE(resource_->IsLoaded());
-
-  // Act
-  SetProfileBooleanPref(brave_news::prefs::kBraveNewsOptedIn, true);
-  SetProfileBooleanPref(brave_news::prefs::kNewTabPageShowToday, true);
-
-  // Assert
-  EXPECT_TRUE(resource_->IsLoaded());
-}
-
 TEST_F(BraveAdsConversionResourceTest,
        LoadResourceWhenOptingInToNewTabPageAds) {
   // Arrange
@@ -177,7 +141,6 @@ TEST_F(BraveAdsConversionResourceTest,
 TEST_F(BraveAdsConversionResourceTest,
        DoNotResetResourceIfAlreadyOptedInToNewTabPageAds) {
   // Arrange
-  test::OptOutOfBraveNewsAds();
   test::OptOutOfNotificationAds();
   test::OptOutOfSearchResultAds();
 
@@ -215,7 +178,6 @@ TEST_F(BraveAdsConversionResourceTest,
 TEST_F(BraveAdsConversionResourceTest,
        DoNotResetResourceIfAlreadyOptedInToNotificationAds) {
   // Arrange
-  test::OptOutOfBraveNewsAds();
   test::OptOutOfNewTabPageAds();
   test::OptOutOfSearchResultAds();
 
@@ -249,7 +211,6 @@ TEST_F(BraveAdsConversionResourceTest,
 TEST_F(BraveAdsConversionResourceTest,
        DoNotResetResourceIfAlreadyOptedInToSearchResultAds) {
   // Arrange
-  test::OptOutOfBraveNewsAds();
   test::OptOutOfNewTabPageAds();
   test::OptOutOfNotificationAds();
 

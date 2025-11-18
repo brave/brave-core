@@ -65,18 +65,12 @@ TEST_F(
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_5);
 
-  TransactionInfo transaction_6 = test::BuildUnreconciledTransaction(
-      /*value=*/0.0, mojom::AdType::kInlineContentAd,
-      mojom::ConfirmationType::kViewedImpression,
-      /*should_generate_random_uuids=*/true);
-  transactions.push_back(transaction_6);
-
   // Act
   const size_t ads_received = GetAdsReceivedForDateRange(
       transactions, from_time, test::DistantFuture());
 
   // Assert
-  EXPECT_EQ(4U, ads_received);
+  EXPECT_EQ(3U, ads_received);
 }
 
 TEST_F(
@@ -122,12 +116,6 @@ TEST_F(
       mojom::ConfirmationType::kViewedImpression,
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_5);
-
-  TransactionInfo transaction_6 = test::BuildUnreconciledTransaction(
-      /*value=*/0.0, mojom::AdType::kInlineContentAd,
-      mojom::ConfirmationType::kViewedImpression,
-      /*should_generate_random_uuids=*/true);
-  transactions.push_back(transaction_6);
 
   // Act
   const size_t ads_received = GetAdsReceivedForDateRange(

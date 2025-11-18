@@ -217,7 +217,7 @@ struct AIChatPromptInputView: View {
 
   @MainActor
   private func activateSpeechRecognition() async {
-    let permissionStatus = await speechRecognizer.askForUserPermission()
+    let permissionStatus = await SpeechRecognizer.requestPermission()
     if permissionStatus {
       isVoiceEntryPresented = true
     } else {

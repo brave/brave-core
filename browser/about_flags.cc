@@ -561,6 +561,13 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           FEATURE_VALUE_TYPE(ai_chat::features::kAIChatHistory),               \
       },                                                                       \
       {                                                                        \
+          "brave-ai-chat-rich-search-widgets",                                 \
+          "Brave AI Chat Rich Search Widgets",                                 \
+          "Enables AI Chat Rich Search Widgets",                               \
+          kOsWin | kOsMac | kOsLinux | kOsAndroid,                             \
+          FEATURE_VALUE_TYPE(ai_chat::features::kRichSearchWidgets),           \
+      },                                                                       \
+      {                                                                        \
           "brave-ai-chat-user-choice-tool",                                    \
           "Brave AI Chat User Choice Tool",                                    \
           "AI can offer a multiple choice question to the user during a "      \
