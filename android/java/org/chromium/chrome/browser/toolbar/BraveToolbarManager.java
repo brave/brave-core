@@ -63,6 +63,7 @@ import org.chromium.chrome.browser.tabmodel.TabClosureParams;
 import org.chromium.chrome.browser.tabmodel.TabCreatorManager;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tasks.tab_management.TabGroupUiOneshotSupplier;
+import org.chromium.chrome.browser.theme.AdjustedTopUiThemeColorProvider;
 import org.chromium.chrome.browser.theme.BottomUiThemeColorProvider;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.theme.TopUiThemeColorProvider;
@@ -168,6 +169,7 @@ public class BraveToolbarManager extends ToolbarManager
             CompositorViewHolder compositorViewHolder,
             Callback<Boolean> urlFocusChangedCallback,
             TopUiThemeColorProvider topUiThemeColorProvider,
+            @Nullable AdjustedTopUiThemeColorProvider adjustedTopUiThemeColorProvider,
             TabObscuringHandler tabObscuringHandler,
             ObservableSupplier<ShareDelegate> shareDelegateSupplier,
             List<ButtonDataProvider> buttonDataProviders,
@@ -218,6 +220,7 @@ public class BraveToolbarManager extends ToolbarManager
                 compositorViewHolder,
                 urlFocusChangedCallback,
                 topUiThemeColorProvider,
+                adjustedTopUiThemeColorProvider,
                 tabObscuringHandler,
                 shareDelegateSupplier,
                 buttonDataProviders,
