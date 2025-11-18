@@ -591,7 +591,7 @@ TEST_F(ZCashWalletServiceUnitTest, SignAndPostTransaction) {
     input.utxo_address = "t1c61yifRMgyhMsBYsFDBa5aEQkgU65CGau";
     input.utxo_value = 537000;
     input.script_pub_key =
-        ZCashAddressToScriptPubkey(input.utxo_address, false);
+        ZCashAddressToScriptPubkey(input.utxo_address, false).value();
 
     zcash_transaction.transparent_part().inputs.push_back(std::move(input));
   }
@@ -600,7 +600,8 @@ TEST_F(ZCashWalletServiceUnitTest, SignAndPostTransaction) {
     ZCashTransaction::TxOutput output;
     output.address = "t1KrG29yWzoi7Bs2pvsgXozZYPvGG4D3sGi";
     output.amount = 500000;
-    output.script_pubkey = ZCashAddressToScriptPubkey(output.address, false);
+    output.script_pubkey =
+        ZCashAddressToScriptPubkey(output.address, false).value();
 
     zcash_transaction.transparent_part().outputs.push_back(std::move(output));
   }
@@ -608,7 +609,8 @@ TEST_F(ZCashWalletServiceUnitTest, SignAndPostTransaction) {
   {
     ZCashTransaction::TxOutput output;
     output.address = "t1c61yifRMgyhMsBYsFDBa5aEQkgU65CGau";
-    output.script_pubkey = ZCashAddressToScriptPubkey(output.address, false);
+    output.script_pubkey =
+        ZCashAddressToScriptPubkey(output.address, false).value();
     output.amount = 35000;
 
     zcash_transaction.transparent_part().outputs.push_back(std::move(output));

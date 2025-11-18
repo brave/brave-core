@@ -104,9 +104,11 @@ void ZCashCreateTransparentToOrchardTransactionTask::CreateTransaction() {
         zcash_transaction.transparent_part().outputs.emplace_back();
     change_output.address = change_address_->address_string;
     change_output.amount = pick_transparent_inputs_result->change;
-    change_output.script_pubkey = ZCashAddressToScriptPubkey(
-        change_output.address,
-        IsZCashTestnetKeyring(context_.account_id->keyring_id));
+    change_output.script_pubkey =
+        ZCashAddressToScriptPubkey(
+            change_output.address,
+            IsZCashTestnetKeyring(context_.account_id->keyring_id))
+            .value();
   }
 
   // Create shielded output

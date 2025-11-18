@@ -194,8 +194,9 @@ std::optional<std::string> PubkeyHashToTransparentAddress(
 std::optional<DecodedZCashTransparentAddress> DecodeZCashTransparentAddress(
     const std::string& address);
 
-std::vector<uint8_t> ZCashAddressToScriptPubkey(const std::string& address,
-                                                bool testnet);
+std::optional<std::vector<uint8_t>> ZCashAddressToScriptPubkey(
+    const std::string& address,
+    bool testnet);
 
 std::optional<std::string> GetMergedUnifiedAddress(
     const std::vector<ParsedAddress>& parts,
