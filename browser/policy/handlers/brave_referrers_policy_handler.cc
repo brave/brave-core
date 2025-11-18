@@ -23,8 +23,10 @@ namespace {
 // keeping the policy values stable.
 constexpr auto kPolicyValueToContentSettingMap =
     base::MakeFixedFlatMap<BraveReferrersSetting, ContentSetting>({
-        {BraveReferrersSetting::kAllowReferrer, CONTENT_SETTING_ALLOW},
-        {BraveReferrersSetting::kBlockReferrer, CONTENT_SETTING_BLOCK},
+        {BraveReferrersSetting::kAllowPermissiveReferrerPolicy,
+         CONTENT_SETTING_ALLOW},
+        {BraveReferrersSetting::kCapToStrictReferrerPolicy,
+         CONTENT_SETTING_BLOCK},
     });
 
 }  // namespace
@@ -32,8 +34,9 @@ constexpr auto kPolicyValueToContentSettingMap =
 BraveReferrersPolicyHandler::BraveReferrersPolicyHandler()
     : IntRangePolicyHandlerBase(
           key::kDefaultBraveReferrersSetting,
-          static_cast<int>(BraveReferrersSetting::kAllowReferrer),
-          static_cast<int>(BraveReferrersSetting::kBlockReferrer),
+          static_cast<int>(
+              BraveReferrersSetting::kAllowPermissiveReferrerPolicy),
+          static_cast<int>(BraveReferrersSetting::kCapToStrictReferrerPolicy),
           /*clamp=*/false) {}
 
 BraveReferrersPolicyHandler::~BraveReferrersPolicyHandler() = default;

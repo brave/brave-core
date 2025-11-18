@@ -46,7 +46,8 @@ TEST_F(BraveReferrersPolicyHandlerTest, ApplyPolicyWithWrongTypeValue) {
 
 TEST_F(BraveReferrersPolicyHandlerTest, ApplyPolicyWithLessThanMinValue) {
   const int out_of_range_value =
-      static_cast<int>(BraveReferrersSetting::kAllowReferrer) - 1;
+      static_cast<int>(BraveReferrersSetting::kAllowPermissiveReferrerPolicy) -
+      1;
   SetAndApplyPolicy(base::Value(out_of_range_value));
 
   base::Value* result;
@@ -56,7 +57,7 @@ TEST_F(BraveReferrersPolicyHandlerTest, ApplyPolicyWithLessThanMinValue) {
 
 TEST_F(BraveReferrersPolicyHandlerTest, ApplyPolicyWithGreaterThanMaxValue) {
   const int out_of_range_value =
-      static_cast<int>(BraveReferrersSetting::kBlockReferrer) + 1;
+      static_cast<int>(BraveReferrersSetting::kCapToStrictReferrerPolicy) + 1;
   SetAndApplyPolicy(base::Value(out_of_range_value));
 
   base::Value* result;
@@ -66,7 +67,7 @@ TEST_F(BraveReferrersPolicyHandlerTest, ApplyPolicyWithGreaterThanMaxValue) {
 
 TEST_F(BraveReferrersPolicyHandlerTest, ApplyPolicyWithAllowReferrerValue) {
   const int valid_value =
-      static_cast<int>(BraveReferrersSetting::kAllowReferrer);
+      static_cast<int>(BraveReferrersSetting::kAllowPermissiveReferrerPolicy);
   SetAndApplyPolicy(base::Value(valid_value));
 
   int result;
@@ -77,7 +78,7 @@ TEST_F(BraveReferrersPolicyHandlerTest, ApplyPolicyWithAllowReferrerValue) {
 
 TEST_F(BraveReferrersPolicyHandlerTest, ApplyPolicyWithBlockReferrerValue) {
   const int valid_value =
-      static_cast<int>(BraveReferrersSetting::kBlockReferrer);
+      static_cast<int>(BraveReferrersSetting::kCapToStrictReferrerPolicy);
   SetAndApplyPolicy(base::Value(valid_value));
 
   int result;

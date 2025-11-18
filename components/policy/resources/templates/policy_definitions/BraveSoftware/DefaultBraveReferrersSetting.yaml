@@ -1,13 +1,15 @@
-caption: Control referrer information access
+caption: Control referrer information access for permissive referrer policy
 default: null
 desc: |-
-  This policy determines whether websites can access referrer information when users navigate from one site to another.
+  This policy determines how websites can access referrer information when a very permissive referrer policy is specified (i.e., "unsafe-url").
 
-            If this policy is set to 1 (AllowReferrer), referrer header transmission is allowed.
+            If this policy is set to 1 (AllowPermissiveReferrerPolicy), permissive referrer policies are allowed (i.e., "unsafe-url" requests contain the full URL of the referrer).
 
-            If this policy is set to 2 (BlockReferrer), referrer header transmission is blocked.
+            If this policy is set to 2 (CapToStrictReferrerPolicy), referrer values are capped to "strict-origin-when-cross-origin" policy, so cross-origin requests contain only the origin of the referrer or no referrer if downgraded from HTTPS to HTTP. Same-origin requests contain the full URL of the referrer.
 
-            If left unset, referrer header transmission is blocked by default, but users can change this via "Block cookies" control in Brave Shields settings (allowed if "Allow all cookies", blocked otherwise).
+            If left unset, referrer values are capped to "strict-origin-when-cross-origin" policy by default, but users can modify this by:
+            - changing the cookie control in the Shields panel to "Allow all cookies"
+            - disabling Shields on a specific site
 example_value: 2
 features:
   can_be_mandatory: true
@@ -15,11 +17,11 @@ features:
   dynamic_refresh: true
   per_profile: true
 items:
-- caption: Allow referrer header transmission
-  name: AllowReferrer
+- caption: Allow permissive referrer policies (i.e., "unsafe-url")
+  name: AllowPermissiveReferrerPolicy
   value: 1
-- caption: Block referrer header transmission
-  name: BlockReferrer
+- caption: Cap referrer values to "strict-origin-when-cross-origin" policy
+  name: CapToStrictReferrerPolicy
   value: 2
 owners:
 - managed-policies@brave.com
