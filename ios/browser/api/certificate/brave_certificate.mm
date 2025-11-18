@@ -8,6 +8,7 @@
 #include "base/apple/foundation_util.h"
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/strings/string_view_util.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/time/time.h"
 #include "brave/ios/browser/api/certificate/models/brave_certificate_enums.h"
@@ -89,7 +90,7 @@
 
 - (void)parseCertificate {
   std::string serial_number_string =
-      extended_cert_->tbs().serial_number.AsString();
+      std::string(base::as_string_view(extended_cert_->tbs().serial_number));
 
   bssl::der::BitString subject_unique_id;
   if (extended_cert_->tbs().subject_unique_id) {
