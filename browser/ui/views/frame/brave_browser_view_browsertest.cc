@@ -10,6 +10,7 @@
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/bookmark/bookmark_helper.h"
+#include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
@@ -100,8 +101,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, LayoutWithVerticalTabTest) {
   EXPECT_FALSE(bookmark_bar()->GetVisible());
 
   const bool rounded_corners =
-      BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
-          browser());
+      BraveBrowser::ShouldUseBraveWebViewRoundedCornersForContents(browser());
 
   // With rounded corners, we need
   // distance(tabs::kMarginForVerticalTabContainers) between vertical tab and

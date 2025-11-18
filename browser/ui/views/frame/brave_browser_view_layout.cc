@@ -345,7 +345,7 @@ void BraveBrowserViewLayout::UpdateContentsContainerInsets(
   if (tabs::utils::ShouldShowVerticalTabs(browser_view_->browser()) &&
       !IsFullscreenForBrowser()) {
     const int margin_with_vertical_tab =
-        BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
+        BraveBrowser::ShouldUseBraveWebViewRoundedCornersForContents(
             browser_view_->browser())
             ? (tabs::kMarginForVerticalTabContainers / 2)
             : 0;

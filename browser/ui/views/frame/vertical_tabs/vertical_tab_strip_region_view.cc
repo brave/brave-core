@@ -804,8 +804,7 @@ gfx::Size BraveVerticalTabStripRegionView::GetMinimumSize() const {
   // If minumum size changes during the floating, it could affect
   // contents size. It could cause contents area flickering.
   // Append same border width to |size|.
-  if (BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
-          browser_)) {
+  if (BraveBrowser::ShouldUseBraveWebViewRoundedCornersForContents(browser_)) {
     size.Enlarge(-(tabs::kMarginForVerticalTabContainers / 2), 0);
   } else {
     size.Enlarge(kBorderThickness, 0);
