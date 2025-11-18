@@ -25,8 +25,6 @@ export default function RichSearchWidget(props: { jsonData: string }) {
           )
         }
 
-        // Send content immediately (in case its already loaded) and when the iframe loads.
-        sendContent()
         iframe.onload = sendContent
 
         window.addEventListener('message', (event) => {

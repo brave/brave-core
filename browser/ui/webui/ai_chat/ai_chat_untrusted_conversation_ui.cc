@@ -360,8 +360,9 @@ AIChatUntrustedConversationUI::AIChatUntrustedConversationUI(
   if (base::FeatureList::IsEnabled(ai_chat::features::kRichSearchWidgets)) {
     source->OverrideContentSecurityPolicy(
         network::mojom::CSPDirectiveName::FrameSrc,
-        base::StrCat({"frame-src 'self' ",
-                      ai_chat::features::kRichSearchWidgetsOrigin.Get(), ";"}));
+        base::StrCat({"frame-src ",
+                      ai_chat::features::kRichSearchWidgetsOrigin.Get(),
+                      "/embed.html;"}));
   }
 
   // If the feature is not enabled don't specify an origin for loading the rich
