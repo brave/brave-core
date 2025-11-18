@@ -19,6 +19,7 @@ import toml
 import brave_chromium_utils
 
 PRESERVE_PATTERNS = [
+    'candle_embedding_gemma/.cargo/config.toml',
     'vendor/.clang-format',
     'vendor/*/README.chromium',
 ]
