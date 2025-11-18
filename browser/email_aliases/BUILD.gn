@@ -36,3 +36,22 @@ source_set("unit_tests") {
     "//testing/gtest",
   ]
 }
+
+source_set("browser_tests") {
+  testonly = true
+
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+  sources = [ "email_aliases_browsertest.cc" ]
+
+  deps = [
+    ":email_aliases",
+    "//brave/browser/ui/email_aliases",
+    "//brave/components/email_aliases:email_aliases_api_types",
+    "//brave/components/email_aliases:features",
+    "//brave/components/email_aliases:service",
+    "//chrome/browser",
+    "//chrome/browser/ui/views/bubble",
+    "//chrome/test:test_support",
+  ]
+}

@@ -5,11 +5,12 @@
 
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 
-#include "base/memory/ptr_util.h"
 #include "base/notreached.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
+#include "brave/browser/email_aliases/email_aliases_service_factory.h"
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/brave_rewards/rewards_panel_coordinator.h"
+#include "brave/browser/ui/email_aliases/email_aliases_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
@@ -67,6 +68,14 @@ void BrowserWindowFeatures::InitPostBrowserViewConstruction(
   brave_vpn_controller_ = std::make_unique<BraveVPNController>(browser_view);
 #endif
 
+  if (auto* email_aliases_service =
+          email_aliases::EmailAliasesServiceFactory::GetServiceForProfile(
+              browser_view->GetProfile())) {
+    email_aliases_controller_ =
+        std::make_unique<email_aliases::EmailAliasesController>(
+            browser_view, email_aliases_service);
+  }
+
   BrowserWindowFeatures_ChromiumImpl::InitPostBrowserViewConstruction(
       browser_view);
 }
@@ -80,4 +89,5 @@ void BrowserWindowFeatures::TearDownPreBrowserWindowDestruction() {
     sidebar_controller_->TearDownPreBrowserWindowDestruction();
     playlist_side_panel_coordinator_.reset();
   }
+  email_aliases_controller_.reset();
 }
