@@ -6,7 +6,6 @@
 // Check environment before doing anything.
 require('../lib/checkEnvironment')
 
-const fs = require('fs')
 const program = require('commander')
 const path = require('path')
 const config = require('../lib/config')
@@ -68,30 +67,28 @@ function syncBrave(program) {
 async function RunCommand() {
   program.parse(process.argv)
 
+  depotTools.installDepotTools()
+
+  const gClientConfig =
+    program.init || config.isCI ? {} : syncUtil.readDefaultGClientConfig()
+
   // --target_os, --target_arch as lists make sense only for `init/sync`
   // commands. Handle comma-separated values here and only pass the first value
   // to the config.update() call.
-  const targetOSList = program.target_os?.split(',')
+  const targetOSList = program.target_os?.split(',').filter(Boolean)
   if (targetOSList) {
     program.target_os = targetOSList[0]
+    gClientConfig.target_os = targetOSList
   }
-  const targetArchList = program.target_arch?.split(',')
+  const targetArchList = program.target_arch?.split(',').filter(Boolean)
   if (targetArchList) {
     program.target_arch = targetArchList[0]
+    gClientConfig.target_cpu = targetArchList
   }
 
   config.update(program)
 
-  depotTools.installDepotTools()
-
-  if (
-    program.init
-    || program.target_os
-    || program.target_arch
-    || !fs.existsSync(config.defaultGClientFile)
-  ) {
-    syncUtil.buildDefaultGClientConfig(targetOSList, targetArchList)
-  }
+  syncUtil.buildDefaultGClientConfig(gClientConfig)
 
   if (config.isCI) {
     program.delete_unused_deps = true

@@ -164,8 +164,10 @@ function buildChromiumRelease(buildOptions = {}) {
 
   depotTools.installDepotTools()
   syncUtil.buildDefaultGClientConfig(
-    [config.targetOS],
-    [config.targetArch],
+    {
+      target_os: [config.targetOS],
+      target_cpu: [config.targetArch],
+    },
     true,
   )
 

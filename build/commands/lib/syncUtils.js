@@ -28,30 +28,34 @@ function toGClientConfigItem(name, value, pretty = true) {
 }
 
 function buildDefaultGClientConfig(
-  targetOSList,
-  targetArchList,
+  gclientConfigOverrides = {},
   onlyChromium = false,
 ) {
-  const items = [
-    {
-      managed: false,
-      name: 'src',
-      url: config.chromiumRepo,
-      custom_deps: {
-        // wasm_corpus has around 50k files, not used in the build.
-        'src/testing/libfuzzer/fuzzers/wasm_corpus': null,
-        // chromium-variations .git takes ~4 GB, not used in the build.
-        'src/third_party/chromium-variations': null,
+  const gClientConfig = {
+    solutions: [
+      {
+        managed: false,
+        name: 'src',
+        url: config.chromiumRepo,
+        custom_deps: {
+          // wasm_corpus has around 50k files, not used in the build.
+          'src/testing/libfuzzer/fuzzers/wasm_corpus': null,
+          // chromium-variations .git takes ~4 GB, not used in the build.
+          'src/third_party/chromium-variations': null,
+        },
+        custom_vars: {
+          'checkout_pgo_profiles': config.isBraveReleaseBuild(),
+        },
       },
-      custom_vars: {
-        'checkout_clang_coverage_tools': true,
-        'checkout_pgo_profiles': config.isBraveReleaseBuild(),
-      },
-    },
-  ]
+    ],
+    // Host OS and host CPU are always implied even if not specified.
+    target_os: [],
+    target_cpu: [],
+  }
 
+  // Add brave-core as a non-managed solution to handle DEPS.
   if (!onlyChromium) {
-    items.push({
+    gClientConfig.solutions.push({
       managed: false,
       name: 'src/brave',
       // We do not use gclient to manage brave-core, so this should not
@@ -60,19 +64,56 @@ function buildDefaultGClientConfig(
     })
   }
 
-  let out = toGClientConfigItem('solutions', items)
-
+  // Set the cache directory if provided.
   if (process.env.GIT_CACHE_PATH) {
-    out += toGClientConfigItem('cache_dir', process.env.GIT_CACHE_PATH)
+    gClientConfig.cache_dir = process.env.GIT_CACHE_PATH
   }
-  if (targetOSList) {
-    out += toGClientConfigItem('target_os', targetOSList, false)
-  }
-  if (targetArchList) {
-    out += toGClientConfigItem('target_cpu', targetArchList, false)
+
+  // Merge gclient config with current overrides.
+  mergeGClientConfig(gClientConfig, gclientConfigOverrides)
+
+  // Generate the gclient config file.
+  let out = ''
+  for (const [key, value] of Object.entries(gClientConfig)) {
+    const singleLineValue = toGClientConfigItem(key, value, false)
+    if (singleLineValue.length > 80) {
+      out += toGClientConfigItem(key, value, true)
+    } else {
+      out += singleLineValue
+    }
   }
 
   util.writeFileIfModified(config.defaultGClientFile, out)
+}
+
+function readDefaultGClientConfig() {
+  if (!fs.existsSync(config.defaultGClientFile)) {
+    return {}
+  }
+
+  try {
+    const script = `
+import json
+import sys
+
+out = {}
+exec(open(r"""${config.defaultGClientFile.replace(/\\/g, '/')}""", 'r').read(), globals(), out)
+json.dump(out, sys.stdout)
+`
+    const result = util.run('python3', ['-'], {
+      skipLogging: true,
+      input: script,
+      encoding: 'utf8',
+      continueOnFail: true,
+    })
+    if (result.status !== 0) {
+      throw new Error(result.stderr.toString().trim())
+    }
+    return JSON.parse(result.stdout.toString().trim())
+  } catch (error) {
+    Log.warn(`Failed to evaluate ${config.defaultGClientFile}:\n${error}`)
+    return {}
+  }
 }
 
 function shouldUpdateChromium(latestSyncInfo, expectedSyncInfo) {
@@ -235,8 +276,39 @@ async function checkInternalDepsEndpoint() {
   }
 }
 
+function mergeGClientConfig(target, source) {
+  for (const [key, value] of Object.entries(source)) {
+    if (value instanceof Object) {
+      if (Array.isArray(value)) {
+        const targetValue = target[key]
+        if (
+          (value.length > 0 && value[0] instanceof Object)
+          || (Array.isArray(targetValue)
+            && targetValue.length > 0
+            && targetValue[0] instanceof Object)
+        ) {
+          target[key] = targetValue || []
+          // If array of objects, deep merge each object.
+          value.forEach((item, i) => {
+            target[key][i] = mergeGClientConfig(target[key][i] || {}, item)
+          })
+        } else {
+          // Otherwise, overwrite the whole array.
+          target[key] = value
+        }
+      } else {
+        target[key] = mergeGClientConfig(target[key] || {}, value)
+      }
+    } else {
+      target[key] = value
+    }
+  }
+  return target
+}
+
 module.exports = {
   buildDefaultGClientConfig,
+  readDefaultGClientConfig,
   syncChromium,
   checkInternalDepsEndpoint,
 }
