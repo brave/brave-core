@@ -233,6 +233,49 @@ TEST_F(ZCashCreateOrchardToTransparentTransactionTaskTest, TransactionCreated) {
 }
 
 TEST_F(ZCashCreateOrchardToTransparentTransactionTaskTest,
+       TransactionCreated_NoAnchorBlockId) {
+  ON_CALL(mock_orchard_sync_state(), GetSpendableNotes(_, _))
+      .WillByDefault([&](const mojom::AccountIdPtr& account_id,
+                         const OrchardAddrRawPart& addr) {
+        OrchardSyncState::SpendableNotesBundle spendable_notes_bundle;
+        {
+          OrchardNote note;
+          note.block_id = 1u;
+          note.amount = 70000u;
+          spendable_notes_bundle.spendable_notes.push_back(std::move(note));
+        }
+
+        {
+          OrchardNote note;
+          note.block_id = 2u;
+          note.amount = 80000u;
+          spendable_notes_bundle.spendable_notes.push_back(std::move(note));
+        }
+
+        return spendable_notes_bundle;
+      });
+
+  base::MockCallback<ZCashWalletService::CreateTransactionCallback> callback;
+
+  std::unique_ptr<ZCashCreateOrchardToTransparentTransactionTask> task =
+      std::make_unique<ZCashCreateOrchardToTransparentTransactionTask>(
+          pass_key(), zcash_wallet_service(), action_context(),
+          kTransparentAddress, 100000u);
+
+  base::expected<ZCashTransaction, std::string> tx_result;
+  EXPECT_CALL(callback, Run(_))
+      .WillOnce(::testing::DoAll(
+          SaveArg<0>(&tx_result),
+          base::test::RunOnceClosure(task_environment().QuitClosure())));
+
+  task->Start(callback.Get());
+
+  task_environment().RunUntilQuit();
+
+  EXPECT_FALSE(tx_result.has_value());
+}
+
+TEST_F(ZCashCreateOrchardToTransparentTransactionTaskTest,
        TransactionCreated_MaxAmount) {
   ON_CALL(mock_orchard_sync_state(), GetSpendableNotes(_, _))
       .WillByDefault([&](const mojom::AccountIdPtr& account_id,
