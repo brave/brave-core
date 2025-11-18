@@ -188,7 +188,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &history_clusters::internal::kHistoryClustersNavigationContextClustering,
       &history_clusters::internal::kJourneys,
       &history_clusters::internal::kJourneysImages,
-      &history_clusters::internal::kOmniboxAction,
       &history_clusters::internal::kOmniboxHistoryClusterProvider,
       &history_embeddings::kHistoryEmbeddings,
       &history_embeddings::kHistoryEmbeddingsAnswers,
