@@ -179,6 +179,7 @@ const MEMORY_HISTORY: Mojom.ConversationTurn[] = [
     fromBraveSearchSERP: false,
     skill: undefined,
     modelKey: '1',
+    nearVerificationStatus: undefined,
   },
   {
     uuid: 'assistant-1',
@@ -207,6 +208,7 @@ const MEMORY_HISTORY: Mojom.ConversationTurn[] = [
     fromBraveSearchSERP: false,
     skill: undefined,
     modelKey: '1',
+    nearVerificationStatus: undefined,
   },
   {
     uuid: 'user-2',
@@ -222,6 +224,7 @@ const MEMORY_HISTORY: Mojom.ConversationTurn[] = [
     fromBraveSearchSERP: false,
     skill: undefined,
     modelKey: '1',
+    nearVerificationStatus: undefined,
   },
   {
     uuid: 'assistant-2',
@@ -250,6 +253,7 @@ const MEMORY_HISTORY: Mojom.ConversationTurn[] = [
     fromBraveSearchSERP: false,
     skill: undefined,
     modelKey: '1',
+    nearVerificationStatus: undefined,
   },
   {
     uuid: 'user-3',
@@ -265,6 +269,7 @@ const MEMORY_HISTORY: Mojom.ConversationTurn[] = [
     fromBraveSearchSERP: false,
     skill: undefined,
     modelKey: '1',
+    nearVerificationStatus: undefined,
   },
   {
     uuid: 'assistant-3',
@@ -295,6 +300,7 @@ const MEMORY_HISTORY: Mojom.ConversationTurn[] = [
     fromBraveSearchSERP: false,
     skill: undefined,
     modelKey: '1',
+    nearVerificationStatus: undefined,
   },
 ]
 
@@ -316,6 +322,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
       prompt: 'Translate the following text to English',
     },
     modelKey: '1',
+    nearVerificationStatus: undefined,
   },
   {
     uuid: 'skill-response',
@@ -336,6 +343,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     fromBraveSearchSERP: false,
     skill: undefined,
     modelKey: '1',
+    nearVerificationStatus: undefined,
   },
   {
     uuid: 'turn-uuid',
@@ -351,6 +359,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     fromBraveSearchSERP: false,
     skill: undefined,
     modelKey: '1',
+    nearVerificationStatus: undefined,
   },
   {
     uuid: undefined,
@@ -370,6 +379,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     fromBraveSearchSERP: false,
     skill: undefined,
     modelKey: '1',
+    nearVerificationStatus: undefined,
   },
   {
     uuid: undefined,
@@ -385,6 +395,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     fromBraveSearchSERP: false,
     skill: undefined,
     modelKey: '1',
+    nearVerificationStatus: undefined,
   },
   // Show how a Task is displayed within history. Use the AssistantTask story for
   // viewing an active Task.
@@ -403,6 +414,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     fromBraveSearchSERP: false,
     skill: undefined,
     modelKey: '1',
+    nearVerificationStatus: undefined,
   },
   {
     uuid: undefined,
@@ -422,6 +434,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     fromBraveSearchSERP: false,
     skill: undefined,
     modelKey: '1',
+    nearVerificationStatus: undefined,
   },
   {
     uuid: undefined,
@@ -437,6 +450,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     fromBraveSearchSERP: false,
     skill: undefined,
     modelKey: '1',
+    nearVerificationStatus: undefined,
   },
   {
     uuid: undefined,
@@ -456,6 +470,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     fromBraveSearchSERP: false,
     skill: undefined,
     modelKey: '1',
+    nearVerificationStatus: undefined,
   },
   {
     uuid: undefined,
@@ -471,6 +486,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     fromBraveSearchSERP: false,
     skill: undefined,
     modelKey: '1',
+    nearVerificationStatus: undefined,
   },
   {
     uuid: undefined,
@@ -505,6 +521,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     fromBraveSearchSERP: false,
     skill: undefined,
     modelKey: '1',
+    nearVerificationStatus: undefined,
   },
   {
     uuid: undefined,
@@ -521,6 +538,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     fromBraveSearchSERP: false,
     skill: undefined,
     modelKey: '1',
+    nearVerificationStatus: undefined,
   },
   {
     uuid: undefined,
@@ -559,6 +577,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     fromBraveSearchSERP: false,
     skill: undefined,
     modelKey: '1',
+    nearVerificationStatus: undefined,
   },
   {
     uuid: undefined,
@@ -582,6 +601,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
         fromBraveSearchSERP: false,
         skill: undefined,
         modelKey: '1',
+        nearVerificationStatus: undefined,
       },
     ],
     createdTime: { internalValue: BigInt('13278618001000000') },
@@ -590,6 +610,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     fromBraveSearchSERP: false,
     skill: undefined,
     modelKey: '1',
+    nearVerificationStatus: undefined,
   },
   {
     uuid: undefined,
@@ -611,6 +632,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     fromBraveSearchSERP: false,
     skill: undefined,
     modelKey: '1',
+    nearVerificationStatus: undefined,
   },
   {
     uuid: undefined,
@@ -633,6 +655,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     fromBraveSearchSERP: false,
     skill: undefined,
     modelKey: '1',
+    nearVerificationStatus: undefined,
   },
   {
     uuid: undefined,
@@ -648,6 +671,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     fromBraveSearchSERP: false,
     skill: undefined,
     modelKey: '1',
+    nearVerificationStatus: undefined,
   },
   {
     uuid: undefined,
@@ -676,6 +700,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     fromBraveSearchSERP: false,
     skill: undefined,
     modelKey: '1',
+    nearVerificationStatus: undefined,
   },
   {
     uuid: undefined,
@@ -696,6 +721,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     fromBraveSearchSERP: false,
     skill: undefined,
     modelKey: '1',
+    nearVerificationStatus: undefined,
   },
   {
     uuid: undefined,
@@ -730,6 +756,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     fromBraveSearchSERP: false,
     skill: undefined,
     modelKey: '1',
+    nearVerificationStatus: undefined,
   },
   {
     uuid: undefined,
@@ -749,6 +776,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     fromBraveSearchSERP: false,
     skill: undefined,
     modelKey: '1',
+    nearVerificationStatus: undefined,
   },
   {
     uuid: undefined,
@@ -783,6 +811,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     fromBraveSearchSERP: false,
     skill: undefined,
     modelKey: '1',
+    nearVerificationStatus: undefined,
   },
   // Show that tool use events are NOT interactive if they are not the last entry in the
   // group of assistant conversation entries.
@@ -800,6 +829,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     fromBraveSearchSERP: false,
     skill: undefined,
     modelKey: '1',
+    nearVerificationStatus: undefined,
   },
   // Show that single or multipletool use events are interactive if they are the
   // last entry in thegroup of assistant conversation entries.
@@ -820,6 +850,7 @@ const HISTORY: Mojom.ConversationTurn[] = [
     fromBraveSearchSERP: false,
     skill: undefined,
     modelKey: '1',
+    nearVerificationStatus: undefined,
   },
 ]
 
