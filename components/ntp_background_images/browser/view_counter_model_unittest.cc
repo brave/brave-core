@@ -243,8 +243,8 @@ TEST_F(ViewCounterModelTest, NTPBackgroundImagesWithSIDisabledTest) {
       model.GetCurrentBrandedImageIndex();
 
   int expected_wallpaper_index;
-  constexpr size_t kTestPageViewCount = 30;
-  for (size_t i = 0; i < kTestPageViewCount; ++i) {
+  constexpr int kTestPageViewCount = 30;
+  for (int i = 0; i < kTestPageViewCount; ++i) {
     expected_wallpaper_index = i % model.total_image_count_;
     EXPECT_EQ(expected_wallpaper_index, model.current_wallpaper_image_index());
     model.RegisterPageView();

@@ -14,6 +14,7 @@
 #include <IOKit/network/IONetworkInterface.h>
 #include <sys/mount.h>
 
+#include <cstddef>
 #include <string>
 #include <utility>
 
@@ -57,7 +58,7 @@ class MountedVolumes {
   MountedVolumes& operator=(const MountedVolumes&) = delete;
   ~MountedVolumes() = default;
 
-  int count() const { return count_; }
+  size_t count() const { return count_; }
 
   base::span<const struct statfs> as_span() {
     // SAFETY: This is the nature of this API, where `count_` represents the
