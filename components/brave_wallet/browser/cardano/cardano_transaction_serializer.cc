@@ -182,8 +182,6 @@ uint64_t CardanoTransactionSerializer::CalcMinTransactionFee(
 std::optional<uint64_t> CardanoTransactionSerializer::CalcRequiredCoin(
     const CardanoTransaction::TxOutput& output,
     const cardano_rpc::EpochParameters& epoch_parameters) {
-  DCHECK_GT(epoch_parameters.coins_per_utxo_size, 0u);
-
   auto cbor_bytes = cbor::Writer::Write(
       cbor::Value(CardanoTransactionSerializer().SerializeOutput(output)));
   CHECK(cbor_bytes);
