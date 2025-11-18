@@ -518,7 +518,7 @@ TEST_F(EngineConsumerOAIUnitTest,
       nullptr,                         // No skill
       false,                           // Not from Brave SERP
       std::nullopt,                    // No model_key
-      std::nullopt                     // is_near_verified
+      nullptr                          // near_verification_status
       ));
 
   // Prepare to capture API client request
@@ -588,13 +588,13 @@ TEST_F(EngineConsumerOAIUnitTest,
       mojom::ActionType::SUMMARIZE_SELECTED_TEXT, human_input,
       std::nullopt /* prompt */, selected_text, std::nullopt, base::Time::Now(),
       std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt /* model_key */, std::nullopt /* is_near_verified */));
+      std::nullopt /* model_key */, nullptr /* near_verification_status */));
 
   history.push_back(mojom::ConversationTurn::New(
       "turn-2", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
       assistant_input, std::nullopt /* prompt */, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt /* model_key */, std::nullopt /* is_near_verified */));
+      std::nullopt /* model_key */, nullptr /* near_verification_status */));
 
   auto* client = GetClient();
   auto run_loop = std::make_unique<base::RunLoop>();
@@ -781,7 +781,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponseUploadImage) {
       "What are these images?", kTestPrompt, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, Clone(uploaded_images),
       nullptr /* skill */, false, std::nullopt /* model_key */,
-      std::nullopt /* is_near_verified */));
+      nullptr /* near_verification_status */));
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
   engine_->GenerateAssistantResponse({}, history, "", false, {}, std::nullopt,
                                      mojom::ConversationCapability::CHAT,
@@ -862,7 +862,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponseUploadPdf) {
       "Analyze these PDF files", kTestPrompt, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, Clone(uploaded_pdfs),
       nullptr /* skill */, false, std::nullopt /* model_key */,
-      std::nullopt /* is_near_verified */));
+      nullptr /* near_verification_status */));
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
   engine_->GenerateAssistantResponse({}, history, "", false, {}, std::nullopt,
@@ -937,7 +937,7 @@ TEST_F(EngineConsumerOAIUnitTest,
       "Analyze this PDF file", kTestPrompt, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, Clone(uploaded_pdfs),
       nullptr /* skill */, false, std::nullopt /* model_key */,
-      std::nullopt /* is_near_verified */));
+      nullptr /* near_verification_status */));
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
   engine_->GenerateAssistantResponse({}, history, "", false, {}, std::nullopt,
@@ -1084,7 +1084,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponseMixedUploads) {
       "What do you see in these files?", kTestPrompt, std::nullopt,
       std::nullopt, base::Time::Now(), std::nullopt, Clone(all_files),
       nullptr /* skill */, false, std::nullopt /* model_key */,
-      std::nullopt /* is_near_verified */));
+      nullptr /* near_verification_status */));
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
   engine_->GenerateAssistantResponse({}, history, "", false, {}, std::nullopt,
@@ -1428,21 +1428,21 @@ TEST_F(EngineConsumerOAIUnitTest,
       "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       "Human message 1", std::nullopt, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt, std::nullopt);
+      std::nullopt, nullptr);
   conversation_history.push_back(std::move(turn1));
 
   auto turn2 = mojom::ConversationTurn::New(
       "turn-2", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
       "Assistant message 1", std::nullopt, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt, std::nullopt);
+      std::nullopt, nullptr);
   conversation_history.push_back(std::move(turn2));
 
   auto turn3 = mojom::ConversationTurn::New(
       "turn-3", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       "Human message 2", std::nullopt, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt, std::nullopt);
+      std::nullopt, nullptr);
   conversation_history.push_back(std::move(turn3));
 
   auto messages = engine_->BuildMessages(
@@ -1496,7 +1496,7 @@ TEST_F(EngineConsumerOAIUnitTest,
       "existing-turn", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       "Human message", std::nullopt, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt, std::nullopt);
+      std::nullopt, nullptr);
   conversation_history.push_back(std::move(turn));
 
   auto messages = engine_->BuildMessages(
@@ -1534,7 +1534,7 @@ TEST_F(EngineConsumerOAIUnitTest,
       "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       "Human message", std::nullopt, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt, std::nullopt);
+      std::nullopt, nullptr);
   conversation_history.push_back(std::move(turn));
 
   auto messages = engine_->BuildMessages(
@@ -1577,14 +1577,14 @@ TEST_F(EngineConsumerOAIUnitTest,
       "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       "Human message 1", std::nullopt, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt, std::nullopt);
+      std::nullopt, nullptr);
   conversation_history.push_back(std::move(turn1));
 
   auto turn2 = mojom::ConversationTurn::New(
       "turn-2", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       "Human message 2", std::nullopt, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt, std::nullopt);
+      std::nullopt, nullptr);
   conversation_history.push_back(std::move(turn2));
 
   auto messages = engine_->BuildMessages(
@@ -1627,7 +1627,7 @@ TEST_F(EngineConsumerOAIUnitTest, BuildMessages_EmptyPageContentsMap) {
       "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       "Human message", std::nullopt, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt, std::nullopt);
+      std::nullopt, nullptr);
   conversation_history.push_back(std::move(turn));
 
   auto messages = engine_->BuildMessages(
@@ -1653,7 +1653,7 @@ TEST_F(EngineConsumerOAIUnitTest, BuildMessages_NonExistentTurnId) {
       "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       "Human message", std::nullopt, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt, std::nullopt);
+      std::nullopt, nullptr);
   conversation_history.push_back(std::move(turn));
 
   auto messages = engine_->BuildMessages(
@@ -1685,14 +1685,14 @@ TEST_F(EngineConsumerOAIUnitTest,
       "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       "Human message 1", std::nullopt, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt, std::nullopt);
+      std::nullopt, nullptr);
   conversation_history.push_back(std::move(turn1));
 
   auto turn2 = mojom::ConversationTurn::New(
       "turn-2", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       "Human message 2", std::nullopt, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt, std::nullopt);
+      std::nullopt, nullptr);
   conversation_history.push_back(std::move(turn2));
 
   // Gets the content of a page content event
@@ -1819,13 +1819,13 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateConversationTitle_Success) {
       "What is artificial intelligence?", std::nullopt, std::nullopt,
       std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
       nullptr /* skill */, false, std::nullopt,
-      std::nullopt /* is_near_verified */));
+      nullptr /* near_verification_status */));
   history.push_back(mojom::ConversationTurn::New(
       "turn-2", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
       "AI is a technology that enables machines to simulate human "
       "intelligence.",
       std::nullopt, std::nullopt, std::nullopt, base::Time::Now(), std::nullopt,
-      std::nullopt, nullptr /* skill */, false, std::nullopt, std::nullopt));
+      std::nullopt, nullptr /* skill */, false, std::nullopt, nullptr));
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
 
@@ -1916,12 +1916,12 @@ TEST_F(EngineConsumerOAIUnitTest,
       "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       "Analyze these pages", std::nullopt, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt, std::nullopt));
+      std::nullopt, nullptr));
   history.push_back(mojom::ConversationTurn::New(
       "turn-2", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
       "Analysis completed.", std::nullopt, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt, std::nullopt));
+      std::nullopt, nullptr));
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
 
@@ -1998,12 +1998,12 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateConversationTitle_WithSelectedText) {
       "Explain this concept", std::nullopt,
       "Machine learning is a subset of AI", std::nullopt, base::Time::Now(),
       std::nullopt, std::nullopt, nullptr /* skill */, false, std::nullopt,
-      std::nullopt));
+      nullptr));
   history.push_back(mojom::ConversationTurn::New(
       "turn-2", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
       "Machine learning allows computers to learn patterns from data.",
       std::nullopt, std::nullopt, std::nullopt, base::Time::Now(), std::nullopt,
-      std::nullopt, nullptr /* skill */, false, std::nullopt, std::nullopt));
+      std::nullopt, nullptr /* skill */, false, std::nullopt, nullptr));
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
 
@@ -2065,13 +2065,13 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateConversationTitle_WithUploadedFiles) {
       "What's in this image?", std::nullopt, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, std::move(uploaded_files),
       nullptr /* skill */, false, std::nullopt,
-      std::nullopt /* is_near_verified */));
+      nullptr /* near_verification_status */));
   history.push_back(mojom::ConversationTurn::New(
       "turn-2", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
       "The image shows a beautiful sunset over mountains.", std::nullopt,
       std::nullopt, std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
       nullptr /* skill */, false, std::nullopt,
-      std::nullopt /* is_near_verified */));
+      nullptr /* near_verification_status */));
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
 
@@ -2132,7 +2132,7 @@ TEST_F(EngineConsumerOAIUnitTest,
         "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
         "Hello", std::nullopt, std::nullopt, std::nullopt, base::Time::Now(),
         std::nullopt, std::nullopt, nullptr /* skill */, false, std::nullopt,
-        std::nullopt));
+        nullptr));
 
     base::test::TestFuture<EngineConsumer::GenerationResult> future;
     engine_->GenerateConversationTitle(page_contents, history,
@@ -2150,17 +2150,17 @@ TEST_F(EngineConsumerOAIUnitTest,
         "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
         "Hello", std::nullopt, std::nullopt, std::nullopt, base::Time::Now(),
         std::nullopt, std::nullopt, nullptr /* skill */, false, std::nullopt,
-        std::nullopt));
+        nullptr));
     history.push_back(mojom::ConversationTurn::New(
         "turn-2", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
         "Hi there!", std::nullopt, std::nullopt, std::nullopt,
         base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */,
-        false, std::nullopt, std::nullopt));
+        false, std::nullopt, nullptr));
     history.push_back(mojom::ConversationTurn::New(
         "turn-3", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
         "How are you?", std::nullopt, std::nullopt, std::nullopt,
         base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */,
-        false, std::nullopt, std::nullopt));
+        false, std::nullopt, nullptr));
 
     base::test::TestFuture<EngineConsumer::GenerationResult> future;
     engine_->GenerateConversationTitle(page_contents, history,
@@ -2183,12 +2183,12 @@ TEST_F(EngineConsumerOAIUnitTest,
         "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
         "Hello", std::nullopt, std::nullopt, std::nullopt, base::Time::Now(),
         std::nullopt, std::nullopt, nullptr /* skill */, false, std::nullopt,
-        std::nullopt));
+        nullptr));
     history.push_back(mojom::ConversationTurn::New(
         "turn-2", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
         "How are you?", std::nullopt, std::nullopt, std::nullopt,
         base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */,
-        false, std::nullopt, std::nullopt));
+        false, std::nullopt, nullptr));
 
     base::test::TestFuture<EngineConsumer::GenerationResult> future;
     engine_->GenerateConversationTitle(page_contents, history,
@@ -2206,12 +2206,12 @@ TEST_F(EngineConsumerOAIUnitTest,
         "turn-1", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
         "Hello", std::nullopt, std::nullopt, std::nullopt, base::Time::Now(),
         std::nullopt, std::nullopt, nullptr /* skill */, false, std::nullopt,
-        std::nullopt));
+        nullptr));
     history.push_back(mojom::ConversationTurn::New(
         "turn-2", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
         "Hi there!", std::nullopt, std::nullopt, std::nullopt,
         base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */,
-        false, std::nullopt, std::nullopt));
+        false, std::nullopt, nullptr));
 
     base::test::TestFuture<EngineConsumer::GenerationResult> future;
     engine_->GenerateConversationTitle(page_contents, history,
@@ -2231,12 +2231,12 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateConversationTitle_APIError) {
   history.push_back(mojom::ConversationTurn::New(
       "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY, "Hello",
       std::nullopt, std::nullopt, std::nullopt, base::Time::Now(), std::nullopt,
-      std::nullopt, nullptr /* skill */, false, std::nullopt, std::nullopt));
+      std::nullopt, nullptr /* skill */, false, std::nullopt, nullptr));
   history.push_back(mojom::ConversationTurn::New(
       "turn-2", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
       "Hi there!", std::nullopt, std::nullopt, std::nullopt, base::Time::Now(),
       std::nullopt, std::nullopt, nullptr /* skill */, false, std::nullopt,
-      std::nullopt));
+      nullptr));
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
 
@@ -2266,12 +2266,12 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateConversationTitle_TitleTooLong) {
   history.push_back(mojom::ConversationTurn::New(
       "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY, "Hello",
       std::nullopt, std::nullopt, std::nullopt, base::Time::Now(), std::nullopt,
-      std::nullopt, nullptr /* skill */, false, std::nullopt, std::nullopt));
+      std::nullopt, nullptr /* skill */, false, std::nullopt, nullptr));
   history.push_back(mojom::ConversationTurn::New(
       "turn-2", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
       "Hi there!", std::nullopt, std::nullopt, std::nullopt, base::Time::Now(),
       std::nullopt, std::nullopt, nullptr /* skill */, false, std::nullopt,
-      std::nullopt));
+      nullptr));
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
 
@@ -2306,12 +2306,12 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateConversationTitle_EmptyResponse) {
   history.push_back(mojom::ConversationTurn::New(
       "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY, "Hello",
       std::nullopt, std::nullopt, std::nullopt, base::Time::Now(), std::nullopt,
-      std::nullopt, nullptr /* skill */, false, std::nullopt, std::nullopt));
+      std::nullopt, nullptr /* skill */, false, std::nullopt, nullptr));
   history.push_back(mojom::ConversationTurn::New(
       "turn-2", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
       "Hi there!", std::nullopt, std::nullopt, std::nullopt, base::Time::Now(),
       std::nullopt, std::nullopt, nullptr /* skill */, false, std::nullopt,
-      std::nullopt));
+      nullptr));
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
 
@@ -2346,12 +2346,12 @@ TEST_F(EngineConsumerOAIUnitTest,
   history.push_back(mojom::ConversationTurn::New(
       "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY, "Hello",
       std::nullopt, std::nullopt, std::nullopt, base::Time::Now(), std::nullopt,
-      std::nullopt, nullptr /* skill */, false, std::nullopt, std::nullopt));
+      std::nullopt, nullptr /* skill */, false, std::nullopt, nullptr));
   history.push_back(mojom::ConversationTurn::New(
       "turn-2", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
       "Hi there!", std::nullopt, std::nullopt, std::nullopt, base::Time::Now(),
       std::nullopt, std::nullopt, nullptr /* skill */, false, std::nullopt,
-      std::nullopt));
+      nullptr));
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
 
@@ -2388,12 +2388,12 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateConversationTitle_NullEvent) {
   history.push_back(mojom::ConversationTurn::New(
       "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY, "Hello",
       std::nullopt, std::nullopt, std::nullopt, base::Time::Now(), std::nullopt,
-      std::nullopt, nullptr /* skill */, false, std::nullopt, std::nullopt));
+      std::nullopt, nullptr /* skill */, false, std::nullopt, nullptr));
   history.push_back(mojom::ConversationTurn::New(
       "turn-2", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
       "Hi there!", std::nullopt, std::nullopt, std::nullopt, base::Time::Now(),
       std::nullopt, std::nullopt, nullptr /* skill */, false, std::nullopt,
-      std::nullopt));
+      nullptr));
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
 
@@ -2426,12 +2426,12 @@ TEST_F(EngineConsumerOAIUnitTest,
   history.push_back(mojom::ConversationTurn::New(
       "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY, "Hello",
       std::nullopt, std::nullopt, std::nullopt, base::Time::Now(), std::nullopt,
-      std::nullopt, nullptr /* skill */, false, std::nullopt, std::nullopt));
+      std::nullopt, nullptr /* skill */, false, std::nullopt, nullptr));
   history.push_back(mojom::ConversationTurn::New(
       "turn-2", mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
       "Hi there!", std::nullopt, std::nullopt, std::nullopt, base::Time::Now(),
       std::nullopt, std::nullopt, nullptr /* skill */, false, std::nullopt,
-      std::nullopt));
+      nullptr));
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
 
@@ -2474,7 +2474,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponse_WithSkill) {
       std::nullopt /* selected_text */, std::nullopt /* events */,
       base::Time::Now(), std::nullopt /* edits */,
       std::nullopt /* uploaded_files */, std::move(skill_entry), false,
-      std::nullopt /* model_key */, std::nullopt /* is_near_verified */));
+      std::nullopt /* model_key */, nullptr /* near_verification_status */));
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
 

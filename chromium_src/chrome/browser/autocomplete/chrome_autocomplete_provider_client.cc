@@ -117,7 +117,7 @@ void ChromeAutocompleteProviderClient::OpenLeo(const std::u16string& query) {
           base::Time::Now(), std::nullopt /* edits */,
           std::nullopt /* uploaded images */, nullptr /* skill */,
           false /* from_brave_search_SERP */, std::nullopt /* model_key */,
-          std::nullopt /* is_near_verified */);
+          nullptr /* near_verification_status */);
 
   auto* profile_metrics =
       misc_metrics::ProfileMiscMetricsServiceFactory::GetServiceForContext(

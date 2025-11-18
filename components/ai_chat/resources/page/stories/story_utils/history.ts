@@ -29,7 +29,7 @@ export const taskConversationEntries: Mojom.ConversationTurn[] = [
     fromBraveSearchSERP: false,
     skill: undefined,
     modelKey: '1',
-    isNearVerified: undefined,
+    nearVerificationStatus: undefined,
   },
   {
     uuid: undefined,
@@ -123,7 +123,7 @@ export const taskConversationEntries: Mojom.ConversationTurn[] = [
     fromBraveSearchSERP: false,
     skill: undefined,
     modelKey: '1',
-    isNearVerified: undefined,
+    nearVerificationStatus: undefined,
   },
   {
     uuid: undefined,
@@ -155,7 +155,7 @@ export const taskConversationEntries: Mojom.ConversationTurn[] = [
     fromBraveSearchSERP: false,
     skill: undefined,
     modelKey: '1',
-    isNearVerified: undefined,
+    nearVerificationStatus: undefined,
   },
   {
     uuid: undefined,
@@ -202,6 +202,6 @@ export const taskConversationEntries: Mojom.ConversationTurn[] = [
     fromBraveSearchSERP: false,
     skill: undefined,
     modelKey: '1',
-    isNearVerified: undefined,
+    nearVerificationStatus: undefined,
   },
 ]

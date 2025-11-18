@@ -74,7 +74,7 @@ export function createConversationTurnWithDefaults(
     modelKey: undefined,
     actionType: Mojom.ActionType.UNSPECIFIED,
     characterType: Mojom.CharacterType.ASSISTANT,
-    isNearVerified: undefined,
+    nearVerificationStatus: undefined,
     text: '',
 
     ...props,
