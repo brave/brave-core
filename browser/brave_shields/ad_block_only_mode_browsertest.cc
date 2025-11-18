@@ -89,6 +89,10 @@ class AdblockOnlyModeBrowserTestBase : public PlatformBrowserTest {
     // Set forget first-party storage to enabled.
     brave_shields_settings()->SetForgetFirstPartyStorageEnabled(true, GURL());
 
+    // Set Adblock functionality to `Allow ads`.
+    SetAdControlType(host_content_settings_map(), ControlType::ALLOW, GURL(),
+                     local_state());
+
     // Enable language fingerprinting reduction.
     profile_prefs()->SetBoolean(prefs::kReduceLanguageEnabled, true);
 
@@ -124,6 +128,10 @@ class AdblockOnlyModeBrowserTestBase : public PlatformBrowserTest {
     // Verify that forget first-party storage is enabled.
     EXPECT_TRUE(
         brave_shields_settings()->GetForgetFirstPartyStorageEnabled(GURL()));
+
+    // Verify that Adblock functionality is set to `Allow ads`.
+    EXPECT_EQ(GetAdControlType(host_content_settings_map(), GURL()),
+              ControlType::ALLOW);
 
     // Verify that language fingerprinting reduction is enabled and not managed.
     EXPECT_TRUE(profile_prefs()->GetBoolean(prefs::kReduceLanguageEnabled));
@@ -179,6 +187,10 @@ class AdblockOnlyModeBrowserTestBase : public PlatformBrowserTest {
     // Verify that forget first-party storage is disabled.
     EXPECT_FALSE(
         brave_shields_settings()->GetForgetFirstPartyStorageEnabled(GURL()));
+
+    // Verify that Adblock functionality is set to `Block ads`.
+    EXPECT_EQ(GetAdControlType(host_content_settings_map(), GURL()),
+              ControlType::BLOCK);
 
     // Verify that language fingerprinting reduction is disabled and managed.
     EXPECT_FALSE(profile_prefs()->GetBoolean(prefs::kReduceLanguageEnabled));
