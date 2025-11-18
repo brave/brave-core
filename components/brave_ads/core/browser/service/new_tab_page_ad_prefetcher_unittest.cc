@@ -17,6 +17,25 @@
 
 namespace brave_ads {
 
+namespace {
+
+NewTabPageAdInfo BuildNewTabPageAd() {
+  NewTabPageAdInfo ad;
+  ad.type = mojom::AdType::kNewTabPageAd;
+  ad.placement_id = "placement_id";
+  ad.creative_instance_id = "creative_instance_id";
+  ad.creative_set_id = "creative_set_id";
+  ad.campaign_id = "campaign_id";
+  ad.advertiser_id = "advertiser_id";
+  ad.segment = "segment";
+  ad.target_url = GURL("https://brave.com");
+  ad.company_name = "company_name";
+  ad.alt = "alt";
+  return ad;
+}
+
+}  // namespace
+
 class BraveAdsNewTabPageAdPrefetcherTest : public ::testing::Test {
  public:
   BraveAdsNewTabPageAdPrefetcherTest()
@@ -30,21 +49,6 @@ class BraveAdsNewTabPageAdPrefetcherTest : public ::testing::Test {
 
   void ResetPrefetcher() {
     prefetcher_ = std::make_unique<NewTabPageAdPrefetcher>(*ads_service_);
-  }
-
-  NewTabPageAdInfo BuildNewTabPageAd() {
-    NewTabPageAdInfo ad;
-    ad.type = mojom::AdType::kNewTabPageAd;
-    ad.placement_id = "placement_id";
-    ad.creative_instance_id = "creative_instance_id";
-    ad.creative_set_id = "creative_set_id";
-    ad.campaign_id = "campaign_id";
-    ad.advertiser_id = "advertiser_id";
-    ad.segment = "segment";
-    ad.target_url = GURL("https://brave.com");
-    ad.company_name = "company_name";
-    ad.alt = "alt";
-    return ad;
   }
 
  private:

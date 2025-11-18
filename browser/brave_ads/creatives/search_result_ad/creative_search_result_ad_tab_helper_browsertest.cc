@@ -79,6 +79,51 @@ class ScopedTestingAdsServiceSetter {
       const ScopedTestingAdsServiceSetter&) = delete;
 };
 
+std::optional<size_t> GetIndexByPlacementId(const std::string& placement_id) {
+  return base::OptionalFromPtr(
+      base::FindOrNull(kCreativeAdPlacementIdToIndex, placement_id));
+}
+
+mojom::CreativeSearchResultAdInfoPtr GenerateCreativeSearchResultAd(
+    const std::string& placement_id) {
+  auto mojom_creative_ad = mojom::CreativeSearchResultAdInfo::New();
+  mojom_creative_ad->placement_id = placement_id;
+
+  const auto iter =
+      kCreativeAdPlacementIdToIndex.find(mojom_creative_ad->placement_id);
+  if (iter == kCreativeAdPlacementIdToIndex.cend()) {
+    return {};
+  }
+  const size_t ad_index = iter->second;
+
+  const std::string index = base::StrCat({"-", base::NumberToString(ad_index)});
+  mojom_creative_ad->creative_instance_id =
+      base::StrCat({"data-creative-instance-id", index});
+  mojom_creative_ad->creative_set_id =
+      base::StrCat({"data-creative-set-id", index});
+  mojom_creative_ad->campaign_id = base::StrCat({"data-campaign-id", index});
+  mojom_creative_ad->advertiser_id =
+      base::StrCat({"data-advertiser-id", index});
+  mojom_creative_ad->target_url =
+      GURL(base::StrCat({"https://foo.com/page", index}));
+  mojom_creative_ad->headline_text =
+      base::StrCat({"data-headline-text", index});
+  mojom_creative_ad->description = base::StrCat({"data-description", index});
+  mojom_creative_ad->value = 0.5 + static_cast<double>(ad_index);
+
+  auto mojom_conversion = mojom::CreativeSetConversionInfo::New();
+  mojom_conversion->url_pattern =
+      base::StrCat({"data-conversion-url-pattern-value", index});
+  if (ad_index == 1) {
+    mojom_conversion->verifiable_advertiser_public_key_base64 =
+        base::StrCat({"data-conversion-advertiser-public-key-value", index});
+  }
+  mojom_conversion->observation_window = base::Days(ad_index);
+  mojom_creative_ad->creative_set_conversion = std::move(mojom_conversion);
+
+  return mojom_creative_ad;
+}
+
 }  // namespace
 
 class BraveAdsCreativeSearchResultAdTabHelperTest
@@ -189,53 +234,6 @@ class SampleBraveAdsCreativeSearchResultAdTabHelperTest
     return GetURL(kAllowedDomain, kSearchResultUrlPath);
   }
 
-  std::optional<size_t> GetIndexByPlacementId(
-      const std::string& placement_id) const {
-    return base::OptionalFromPtr(
-        base::FindOrNull(kCreativeAdPlacementIdToIndex, placement_id));
-  }
-
-  mojom::CreativeSearchResultAdInfoPtr GenerateCreativeSearchResultAd(
-      const std::string& placement_id) {
-    auto mojom_creative_ad = mojom::CreativeSearchResultAdInfo::New();
-    mojom_creative_ad->placement_id = placement_id;
-
-    const auto iter =
-        kCreativeAdPlacementIdToIndex.find(mojom_creative_ad->placement_id);
-    if (iter == kCreativeAdPlacementIdToIndex.cend()) {
-      return {};
-    }
-    const size_t ad_index = iter->second;
-
-    const std::string index =
-        base::StrCat({"-", base::NumberToString(ad_index)});
-    mojom_creative_ad->creative_instance_id =
-        base::StrCat({"data-creative-instance-id", index});
-    mojom_creative_ad->creative_set_id =
-        base::StrCat({"data-creative-set-id", index});
-    mojom_creative_ad->campaign_id = base::StrCat({"data-campaign-id", index});
-    mojom_creative_ad->advertiser_id =
-        base::StrCat({"data-advertiser-id", index});
-    mojom_creative_ad->target_url =
-        GURL(base::StrCat({"https://foo.com/page", index}));
-    mojom_creative_ad->headline_text =
-        base::StrCat({"data-headline-text", index});
-    mojom_creative_ad->description = base::StrCat({"data-description", index});
-    mojom_creative_ad->value = 0.5 + static_cast<double>(ad_index);
-
-    auto mojom_conversion = mojom::CreativeSetConversionInfo::New();
-    mojom_conversion->url_pattern =
-        base::StrCat({"data-conversion-url-pattern-value", index});
-    if (ad_index == 1) {
-      mojom_conversion->verifiable_advertiser_public_key_base64 =
-          base::StrCat({"data-conversion-advertiser-public-key-value", index});
-    }
-    mojom_conversion->observation_window = base::Days(ad_index);
-    mojom_creative_ad->creative_set_conversion = std::move(mojom_conversion);
-
-    return mojom_creative_ad;
-  }
-
   content::WebContents* LoadAndCheckSampleSearchResultAdWebPage(
       const GURL& url) {
     auto run_loop1 = std::make_unique<base::RunLoop>();
@@ -247,7 +245,7 @@ class SampleBraveAdsCreativeSearchResultAdTabHelperTest
             ::testing::_))
         .Times(2)
         .WillRepeatedly(
-            [this, &run_loop1, &run_loop2](
+            [&run_loop1, &run_loop2](
                 mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
                 mojom::SearchResultAdEventType /*mojom_ad_event_type*/,
                 TriggerAdEventCallback /*callback*/) {
@@ -288,14 +286,14 @@ IN_PROC_BROWSER_TEST_F(SampleBraveAdsCreativeSearchResultAdTabHelperTest,
       LoadAndCheckSampleSearchResultAdWebPage(GetSearchResultUrl());
 
   EXPECT_CALL(ads_service(), MaybeGetSearchResultAd)
-      .WillOnce([this](const std::string& placement_id,
-                       MaybeGetSearchResultAdCallback callback) {
+      .WillOnce([](const std::string& placement_id,
+                   MaybeGetSearchResultAdCallback callback) {
         std::move(callback).Run(GenerateCreativeSearchResultAd(placement_id));
       });
 
   base::RunLoop run_loop;
   EXPECT_CALL(ads_service(), TriggerSearchResultAdEvent)
-      .WillOnce([this, &run_loop](
+      .WillOnce([&run_loop](
                     mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
                     mojom::SearchResultAdEventType mojom_ad_event_type,
                     TriggerAdEventCallback /*callback*/) {
@@ -324,7 +322,7 @@ IN_PROC_BROWSER_TEST_F(SampleBraveAdsCreativeSearchResultAdTabHelperTest,
 
   base::RunLoop run_loop;
   EXPECT_CALL(ads_service(), TriggerSearchResultAdEvent)
-      .WillOnce([this, &run_loop](
+      .WillOnce([&run_loop](
                     mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
                     mojom::SearchResultAdEventType mojom_ad_event_type,
                     TriggerAdEventCallback /*callback*/) {
@@ -342,8 +340,8 @@ IN_PROC_BROWSER_TEST_F(SampleBraveAdsCreativeSearchResultAdTabHelperTest,
       });
 
   EXPECT_CALL(ads_service(), MaybeGetSearchResultAd)
-      .WillOnce([this](const std::string& placement_id,
-                       MaybeGetSearchResultAdCallback callback) {
+      .WillOnce([](const std::string& placement_id,
+                   MaybeGetSearchResultAdCallback callback) {
         std::move(callback).Run(GenerateCreativeSearchResultAd(placement_id));
       });
 
@@ -359,14 +357,14 @@ IN_PROC_BROWSER_TEST_F(SampleBraveAdsCreativeSearchResultAdTabHelperTest,
   LoadAndCheckSampleSearchResultAdWebPage(GetSearchResultUrl());
 
   EXPECT_CALL(ads_service(), MaybeGetSearchResultAd)
-      .WillOnce([this](const std::string& placement_id,
-                       MaybeGetSearchResultAdCallback callback) {
+      .WillOnce([](const std::string& placement_id,
+                   MaybeGetSearchResultAdCallback callback) {
         std::move(callback).Run(GenerateCreativeSearchResultAd(placement_id));
       });
 
   base::RunLoop run_loop;
   EXPECT_CALL(ads_service(), TriggerSearchResultAdEvent)
-      .WillOnce([this, &run_loop](
+      .WillOnce([&run_loop](
                     mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
                     mojom::SearchResultAdEventType mojom_ad_event_type,
                     TriggerAdEventCallback /*callback*/) {
@@ -399,14 +397,14 @@ IN_PROC_BROWSER_TEST_F(SampleBraveAdsCreativeSearchResultAdTabHelperTest,
   LoadAndCheckSampleSearchResultAdWebPage(GetSearchResultUrl());
 
   EXPECT_CALL(ads_service(), MaybeGetSearchResultAd)
-      .WillOnce([this](const std::string& placement_id,
-                       MaybeGetSearchResultAdCallback callback) {
+      .WillOnce([](const std::string& placement_id,
+                   MaybeGetSearchResultAdCallback callback) {
         std::move(callback).Run(GenerateCreativeSearchResultAd(placement_id));
       });
 
   base::RunLoop run_loop;
   EXPECT_CALL(ads_service(), TriggerSearchResultAdEvent)
-      .WillOnce([this, &run_loop](
+      .WillOnce([&run_loop](
                     mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
                     mojom::SearchResultAdEventType mojom_ad_event_type,
                     TriggerAdEventCallback /*callback*/) {
