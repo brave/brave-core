@@ -16,37 +16,31 @@ namespace local_ai {
 
 namespace {
 
-mojom::ModelFilesPtr LoadEmbeddingGemmaModelFilesFromDisk() {
-  auto home_dir = base::PathService::CheckedGet(base::DIR_HOME);
-
-  base::FilePath model_dir =
-      home_dir.Append("Downloads").Append("embeddinggemma-300m");
-
-  base::FilePath weights_path = model_dir.Append("model.safetensors");
-  base::FilePath tokenizer_path = model_dir.Append("tokenizer.json");
-  base::FilePath config_path = model_dir.Append("config.json");
-
+mojom::ModelFilesPtr LoadEmbeddingGemmaModelFilesFromDisk(
+    const base::FilePath& weights_path,
+    const base::FilePath& tokenizer_path,
+    const base::FilePath& config_path) {
   auto weights_opt = base::ReadFileToBytes(weights_path);
   if (!weights_opt) {
-    LOG(ERROR) << "Failed to read model weights from: " << weights_path;
+    DVLOG(0) << "Failed to read model weights from: " << weights_path;
     return nullptr;
   }
 
   auto tokenizer_opt = base::ReadFileToBytes(tokenizer_path);
   if (!tokenizer_opt) {
-    LOG(ERROR) << "Failed to read tokenizer from: " << tokenizer_path;
+    DVLOG(0) << "Failed to read tokenizer from: " << tokenizer_path;
     return nullptr;
   }
 
   auto config_opt = base::ReadFileToBytes(config_path);
   if (!config_opt) {
-    LOG(ERROR) << "Failed to read config from: " << config_path;
+    DVLOG(0) << "Failed to read config from: " << config_path;
     return nullptr;
   }
 
-  LOG(ERROR) << "Loaded weights, size: " << weights_opt->size();
-  LOG(ERROR) << "Loaded tokenizer, size: " << tokenizer_opt->size();
-  LOG(ERROR) << "Loaded config, size: " << config_opt->size();
+  DVLOG(1) << "Loaded weights, size: " << weights_opt->size();
+  DVLOG(1) << "Loaded tokenizer, size: " << tokenizer_opt->size();
+  DVLOG(1) << "Loaded config, size: " << config_opt->size();
 
   // Create BigBuffer directly - it will automatically use shared memory for
   // large data (> 64KB)
@@ -81,13 +75,45 @@ void CandleService::BindEmbeddingGemma(
     embedding_gemma_remote_.reset();
   }
   embedding_gemma_remote_.Bind(std::move(pending_remote));
-  // Initialize immediately when bound
-  RunEmbeddingGemmaInit();
+  // Don't auto-initialize - wait for user to provide file paths
+}
+
+void CandleService::GetDefaultModelPath(GetDefaultModelPathCallback callback) {
+  auto home_dir = base::PathService::CheckedGet(base::DIR_HOME);
+  base::FilePath model_dir =
+      home_dir.Append("Downloads").Append("embeddinggemma-300m");
+  std::move(callback).Run(model_dir);
+}
+
+void CandleService::LoadModelFiles(const base::FilePath& weights_path,
+                                   const base::FilePath& tokenizer_path,
+                                   const base::FilePath& config_path,
+                                   LoadModelFilesCallback callback) {
+  if (!embedding_gemma_remote_) {
+    DVLOG(0) << "Embedding Gemma interface not bound";
+    std::move(callback).Run(false);
+    return;
+  }
+
+  DVLOG(1) << "Loading Embedding Gemma model files from specified paths...";
+  DVLOG(1) << "Weights: " << weights_path;
+  DVLOG(1) << "Tokenizer: " << tokenizer_path;
+  DVLOG(1) << "Config: " << config_path;
+
+  // Load model files on a background thread to avoid blocking
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE,
+      {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
+       base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN},
+      base::BindOnce(&LoadEmbeddingGemmaModelFilesFromDisk, weights_path,
+                     tokenizer_path, config_path),
+      base::BindOnce(&CandleService::OnEmbeddingGemmaModelFilesLoaded,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void CandleService::Embed(const std::string& text, EmbedCallback callback) {
   if (!embedding_gemma_remote_) {
-    LOG(ERROR) << "Embedding Gemma not initialized";
+    DVLOG(0) << "Embedding Gemma not initialized";
     std::move(callback).Run({});
     return;
   }
@@ -95,39 +121,16 @@ void CandleService::Embed(const std::string& text, EmbedCallback callback) {
   embedding_gemma_remote_->Embed(text, std::move(callback));
 }
 
-void CandleService::RunEmbeddingGemmaInit() {
-  LOG(ERROR) << "Loading Embedding Gemma model files from disk...";
-
-  // Load model files on a background thread to avoid blocking
-  base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE,
-      {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
-       base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN},
-      base::BindOnce(&LoadEmbeddingGemmaModelFilesFromDisk),
-      base::BindOnce(&CandleService::OnEmbeddingGemmaModelFilesLoaded,
-                     weak_ptr_factory_.GetWeakPtr()));
-}
-
 void CandleService::OnEmbeddingGemmaModelFilesLoaded(
+    LoadModelFilesCallback callback,
     mojom::ModelFilesPtr model_files) {
   if (!model_files) {
-    LOG(ERROR) << "Failed to load embedding gemma model files from disk";
+    DVLOG(0) << "Failed to load embedding gemma model files from disk";
+    std::move(callback).Run(false);
     return;
   }
 
-  LOG(ERROR) << "Model files loaded, sending Init request...";
-  embedding_gemma_remote_->Init(
-      std::move(model_files),
-      base::BindOnce(&CandleService::OnEmbeddingGemmaInit,
-                     weak_ptr_factory_.GetWeakPtr()));
-}
-
-void CandleService::OnEmbeddingGemmaInit(bool success) {
-  if (success) {
-    LOG(ERROR) << "Embedding Gemma model initialized successfully!";
-  } else {
-    LOG(ERROR) << "Failed to initialize Embedding Gemma model";
-  }
+  embedding_gemma_remote_->Init(std::move(model_files), std::move(callback));
 }
 
 }  // namespace local_ai
