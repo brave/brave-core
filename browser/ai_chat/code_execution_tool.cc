@@ -16,7 +16,6 @@
 #include "base/values.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
-#include "brave/components/ai_chat/core/browser/code_sandbox_script_storage.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_input_properties.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_utils.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -89,12 +88,10 @@ CodeExecutionTool::CodeExecutionRequest::CodeExecutionRequest(
 CodeExecutionTool::CodeExecutionRequest::~CodeExecutionRequest() = default;
 
 CodeExecutionTool::CodeExecutionTool(content::BrowserContext* browser_context)
-    : profile_(Profile::FromBrowserContext(browser_context)) {
-  auto* ai_chat_service =
-      AIChatServiceFactory::GetForBrowserContext(browser_context);
-  CHECK(ai_chat_service);
-  script_storage_ = ai_chat_service->code_sandbox_script_storage();
-  CHECK(script_storage_);
+    : profile_(Profile::FromBrowserContext(browser_context)),
+      ai_chat_service_(
+          AIChatServiceFactory::GetForBrowserContext(browser_context)) {
+  CHECK(ai_chat_service_);
 }
 
 CodeExecutionTool::~CodeExecutionTool() {
@@ -169,7 +166,8 @@ void CodeExecutionTool::UseTool(const std::string& input_json,
                     "} catch (error) {console.error('Error:', "
                     "error.toString()); } })(undefined, undefined)"});
 
-  auto request_id = script_storage_->StoreScript(std::move(wrapped_js));
+  auto request_id =
+      ai_chat_service_->StoreCodeExecutionToolScript(std::move(wrapped_js));
 
   auto otr_profile_id = Profile::OTRProfileID::CreateUniqueForCodeSandbox();
   auto* otr_profile = profile_->GetOffTheRecordProfile(

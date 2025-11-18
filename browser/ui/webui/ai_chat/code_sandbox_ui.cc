@@ -10,7 +10,6 @@
 #include "base/memory/ref_counted_memory.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
-#include "brave/components/ai_chat/core/browser/code_sandbox_script_storage.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/resources/grit/ai_chat_ui_generated_map.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -98,8 +97,7 @@ void CodeSandboxUI::HandleScriptRequest(
   auto* ai_chat_service =
       AIChatServiceFactory::GetForBrowserContext(original_profile);
   if (ai_chat_service) {
-    auto script = ai_chat_service->code_sandbox_script_storage()->ConsumeScript(
-        request_id);
+    auto script = ai_chat_service->ConsumeCodeExecutionToolScript(request_id);
     if (script) {
       script_content = std::move(*script);
     }
