@@ -13,6 +13,7 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/confirmation_queue_database_table.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposits_database_table.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_table.h"
+#include "brave/components/brave_ads/core/internal/common/database/database_table_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/campaigns_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table.h"
@@ -44,6 +45,42 @@ void MigrateToV44(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
   Vacuum(mojom_db_transaction);
 }
 
+void MigrateToV53(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
+  CHECK(mojom_db_transaction);
+
+  Execute(mojom_db_transaction, R"(
+      DELETE FROM
+        ad_events
+      WHERE
+        type = 'inline_content_ad'
+        OR type = 'promoted_content_ad')");
+
+  Execute(mojom_db_transaction, R"(
+      DELETE FROM
+        ad_history
+      WHERE
+        type = 'inline_content_ad'
+        OR type = 'promoted_content_ad')");
+
+  Execute(mojom_db_transaction, R"(
+      DELETE FROM
+        transactions
+      WHERE
+        ad_type = 'inline_content_ad'
+        OR ad_type = 'promoted_content_ad')");
+
+  Execute(mojom_db_transaction, R"(
+      DELETE FROM
+        confirmation_queue
+      WHERE
+        ad_type = 'inline_content_ad'
+        OR ad_type = 'promoted_content_ad')");
+
+  DropTable(mojom_db_transaction, "creative_inline_content_ads");
+
+  DropTable(mojom_db_transaction, "creative_promoted_content_ads");
+}
+
 void Migrate(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
              int to_version) {
   CHECK(mojom_db_transaction);
@@ -51,6 +88,11 @@ void Migrate(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
   switch (to_version) {
     case 44: {
       MigrateToV44(mojom_db_transaction);
+      break;
+    }
+
+    case 53: {
+      MigrateToV53(mojom_db_transaction);
       break;
     }
 

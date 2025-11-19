@@ -111,6 +111,11 @@ PaymentTokenList PaymentTokensFromValue(const base::Value::List& list) {
 
     // Ad type
     if (const auto* const ad_type = dict->FindString(kAdTypeKey)) {
+      if (*ad_type == "inline_content_ad" ||
+          *ad_type == "promoted_content_ad") {
+        BLOG(0, "Dropping legacy ad type payment token");
+        continue;
+      }
       payment_token.ad_type = ToMojomAdType(*ad_type);
     }
 
